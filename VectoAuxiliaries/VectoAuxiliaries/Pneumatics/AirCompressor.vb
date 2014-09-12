@@ -1,8 +1,8 @@
 ﻿
 
 Namespace Pneumatics
-
     Public Class AirCompressor
+        Implements IAirCompressor
 
         Private Const MinRatio As Single = 1.25
         Private Const MaxRatio As Single = 5.5
@@ -19,7 +19,7 @@ Namespace Pneumatics
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Property PulleyGearRatio() As Single
+        Public Property PulleyGearRatio() As Single Implements IAirCompressor.PulleyGearRatio
             Get
                 Return _pulleyGearRatio
             End Get
@@ -38,7 +38,7 @@ Namespace Pneumatics
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Property PulleyGearEfficiency() As Single
+        Public Property PulleyGearEfficiency() As Single Implements IAirCompressor.PulleyGearEfficiency
             Get
                 Return _pulleyGearEfficiency
             End Get
@@ -78,7 +78,7 @@ Namespace Pneumatics
         ''' </summary>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function Initialise() As Boolean
+        Public Function Initialise() As Boolean Implements IAirCompressor.Initialise
             Return _map.Initialise()
         End Function
 
@@ -88,7 +88,7 @@ Namespace Pneumatics
         ''' <param name="engineRpm">Engine speed in rpm</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Function GetFlowRate(ByVal engineRpm As Integer) As Single
+        Public Function GetFlowRate(ByVal engineRpm As Integer) As Single Implements IAirCompressor.GetFlowRate
             Dim compressorRpm As Single = engineRpm * PulleyGearRatio
             Return _map.GetFlowRate(compressorRpm)
         End Function
@@ -99,7 +99,7 @@ Namespace Pneumatics
         ''' <param name="engineRpm">Engine speed in rpm</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function GetPowerCompressorOff(ByVal engineRpm As Integer) As Single
+        Public Function GetPowerCompressorOff(ByVal engineRpm As Integer) As Single Implements IAirCompressor.GetPowerCompressorOff
             Return GetCompressorPower(engineRpm, False)
         End Function
 
@@ -109,7 +109,7 @@ Namespace Pneumatics
         ''' <param name="engineRpm">Engine speed in rpm</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function GetPowerCompressorOn(ByVal engineRpm As Integer) As Single
+        Public Function GetPowerCompressorOn(ByVal engineRpm As Integer) As Single Implements IAirCompressor.GetPowerCompressorOn
             Return GetCompressorPower(engineRpm, True)
         End Function
 
@@ -119,7 +119,7 @@ Namespace Pneumatics
         ''' <param name="engineRpm">Engine speed in rpm</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function GetPowerDifference(ByVal engineRpm As Integer) As Single
+        Public Function GetPowerDifference(ByVal engineRpm As Integer) As Single Implements IAirCompressor.GetPowerDifference
             Dim powerOn As Single = GetPowerCompressorOn(engineRpm)
             Dim powerOff As Single = GetPowerCompressorOff(engineRpm)
             Return powerOn - powerOff

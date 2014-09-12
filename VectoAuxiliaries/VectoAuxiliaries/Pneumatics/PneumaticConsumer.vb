@@ -46,6 +46,16 @@
         ''' <param name="volumePerCycle"></param>
         ''' <remarks></remarks>
         Public Sub New(ByVal name As String, ByVal volumePerCycle As Single)
+            If name = String.Empty Then
+                Throw New ArgumentException("Name cannot be empty string")
+            End If
+
+            If Math.Abs(volumePerCycle - 0.0) < 0.001 Then
+                Throw New ArgumentOutOfRangeException("volumePerCycle",
+                                                      volumePerCycle,
+                                                      "Supplied volume should be grater than zero")
+            End If
+
             _name = name
             _volumePerCycle = volumePerCycle
         End Sub

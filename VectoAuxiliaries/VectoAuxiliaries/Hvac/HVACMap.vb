@@ -2,6 +2,7 @@ Imports System.IO
 
 Namespace Hvac
     Public Class HVACMap
+        Implements IHVACMap
         'Some sort of multi-dimensional map implemented here
         'No interpolation - too expensive/complex to implement?
         'Set list of choices in each dimension of input
@@ -37,7 +38,12 @@ Namespace Hvac
             filePath = path
         End Sub
 
-        Public Function Initialise() As Boolean
+        ''' <summary>
+        ''' Initialise the map data
+        ''' </summary>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public Function Initialise() As Boolean Implements IHVACMap.Initialise
             If (File.Exists(filePath)) Then
                 Using sr As StreamReader = New StreamReader(filePath)
                     'get array of lines from csv
@@ -71,14 +77,27 @@ Namespace Hvac
             End If
         End Function
 
-
-        Public Function GetMechanicalDemand(ByVal region As Integer, ByVal season As Integer) As Integer
+        ''' <summary>
+        ''' Get the average mechanical demand for the given imput parameters
+        ''' </summary>
+        ''' <param name="region"></param>
+        ''' <param name="season"></param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public Function GetMechanicalDemand(ByVal region As Integer, ByVal season As Integer) As Integer Implements IHVACMap.GetMechanicalDemand
             Dim key As InputValues = New InputValues(region, season)
             Dim val As OutputValues = map(key)
             Return val.MechanicalDemand
         End Function
 
-        Public Function GetElectricalDemand(ByVal region As Integer, ByVal season As Integer) As Integer
+        ''' <summary>
+        ''' Get the average electrical demand for the given imput parameters
+        ''' </summary>
+        ''' <param name="region"></param>
+        ''' <param name="season"></param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public Function GetElectricalDemand(ByVal region As Integer, ByVal season As Integer) As Integer Implements IHVACMap.GetElectricalDemand
             Dim key As InputValues = New InputValues(region, season)
             If (map.ContainsKey(key)) Then
                 Dim val As OutputValues = map(key)
@@ -94,8 +113,8 @@ Namespace Hvac
             Private ReadOnly season As Integer
 
             Public Sub New(ByVal region As Integer, ByVal season As Integer)
-                Me.Region = region
-                Me.Season = season
+                Me.region = region
+                Me.season = season
             End Sub
         End Structure
 
