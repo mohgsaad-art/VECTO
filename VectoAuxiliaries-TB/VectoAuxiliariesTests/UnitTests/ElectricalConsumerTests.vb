@@ -6,7 +6,12 @@ Namespace UnitTests
     <TestFixture()>
     Public Class ElectricalConsumerTests
 
-#Region "Factory Methods"
+#Region "Helpers"
+
+        Private Const GoodName As String = "Test"
+        Private Const GoodPower As Single = 10.0
+        Private Const BadName As String = ""
+        Private Const BadPower As Single = 0.0
 
         Public Function GetGoodConsumer() As ElectricalConsumer
             Return New ElectricalConsumer(GoodName, GoodPower)
@@ -14,12 +19,6 @@ Namespace UnitTests
 
 #End Region
 
-#Region "Test Constants"
-        Private Const GoodName As String = "Test"
-        Private Const GoodPower As Single = 10.0
-        Private BadName As String = String.Empty
-        Private Const BadPower As Single = 0.0
-#End Region
 
         <Test()>
         Public Sub CreateNewTest()

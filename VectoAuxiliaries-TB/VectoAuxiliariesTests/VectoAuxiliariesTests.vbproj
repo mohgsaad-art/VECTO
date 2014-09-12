@@ -86,6 +86,7 @@
     <Import Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UnitTests\AverageHVACLoadDemandTests.vb" />
     <Compile Include="UnitTests\HVACMapTests.vb" />
     <Compile Include="UnitTests\PneumaticConsumerTests.vb" />
     <Compile Include="UnitTests\AirCompressorTests.vb" />
@@ -192,7 +193,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Hvac\" />
     <Folder Include="IntegrationTests\" />
   </ItemGroup>
   <Choose>
