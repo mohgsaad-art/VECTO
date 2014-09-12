@@ -86,7 +86,7 @@
     <Import Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Hvac\HVACMapTests.vb" />
+    <Compile Include="UnitTests\HVACMapTests.vb" />
     <Compile Include="UnitTests\PneumaticConsumerTests.vb" />
     <Compile Include="UnitTests\AirCompressorTests.vb" />
     <Compile Include="UnitTests\AlternatorMapTests.vb" />
@@ -133,21 +133,57 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="packages.config" />
-    <None Include="TestFiles\testAlternatorMap.csv" />
-    <None Include="TestFiles\testAlternatorMapNotEnoughRows.csv" />
-    <None Include="TestFiles\testAlternatorMapReadOnly.csv" />
-    <None Include="TestFiles\testAlternatorMapWithInvalidEfficiency.csv" />
-    <None Include="TestFiles\testAlternatorMapWithInvalidPower.csv" />
-    <None Include="TestFiles\testAlternatorMapWithInvalidRpm.csv" />
-    <None Include="TestFiles\testAlternatorMapWrongNoOfColumns.csv" />
-    <None Include="TestFiles\testCompressorMap.csv" />
-    <None Include="TestFiles\testCompressorMapInvalidFlow.csv" />
-    <None Include="TestFiles\testCompressorMapInvalidOffPower.csv" />
-    <None Include="TestFiles\testCompressorMapInvalidOnPower.csv" />
-    <None Include="TestFiles\testCompressorMapInvalidRpm.csv" />
-    <None Include="TestFiles\testCompressorMapNotEnoughRows.csv" />
-    <None Include="TestFiles\testCompressorMapWrongNumberOfColumns.csv" />
-    <None Include="TestFiles\TestHvacMap.csv" />
+    <Content Include="TestFiles\testAlternatorMap.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\testAlternatorMapNotEnoughRows.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\testAlternatorMapReadOnly.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\testAlternatorMapWithInvalidEfficiency.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\testAlternatorMapWithInvalidPower.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\testAlternatorMapWithInvalidRpm.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\testAlternatorMapWrongNoOfColumns.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\testCompressorMap.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\testCompressorMapInvalidFlow.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\testCompressorMapInvalidOffPower.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\testCompressorMapInvalidOnPower.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\testCompressorMapInvalidRpm.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\testCompressorMapNotEnoughRows.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\testCompressorMapWrongNumberOfColumns.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\TestHvacMap.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\testHvacMapInvalidRowData.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\testHvacMapWrongColumns.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VectoAuxiliaries\VectoAuxiliaries.vbproj">
@@ -156,6 +192,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Hvac\" />
     <Folder Include="IntegrationTests\" />
   </ItemGroup>
   <Choose>
