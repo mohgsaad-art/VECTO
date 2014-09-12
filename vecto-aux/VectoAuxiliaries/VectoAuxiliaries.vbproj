@@ -67,6 +67,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Hvac\IHVACMap.vb" />
     <Compile Include="Pneumatics\AirCompressor.vb" />
     <Compile Include="Electrics\Alternator.vb" />
     <Compile Include="Electrics\AlternatorMap.vb" />
@@ -77,6 +78,7 @@
     <Compile Include="Hvac\HVACMap.vb" />
     <Compile Include="Electrics\IAlternator.vb" />
     <Compile Include="Electrics\IAlternatorMap.vb" />
+    <Compile Include="Pneumatics\IAirCompressor.vb" />
     <Compile Include="Pneumatics\ICompressorMap.vb" />
     <Compile Include="Electrics\IElectricalConsumer.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
