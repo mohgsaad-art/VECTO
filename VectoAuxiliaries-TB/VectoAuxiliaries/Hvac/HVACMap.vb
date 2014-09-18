@@ -29,8 +29,22 @@ Namespace Hvac
 
 #End Region
 
+
+        'constants for .vaux headers
+        Private Const REGIONheader As String = "Region"
+        Private Const SEASONheader As String = "Season"
+        Private Const MECHDheader As String = "MechD"
+        Private Const ELECDheader As String = "ElecD"
+
         'Private Fields
-        Public Property _mapHeaders As Dictionary(Of String, HVACMapParameter)
+        Private _mapDimensions As Integer
+        Private _mapPath As String
+        Private _mechanicalDemandLookupKW As Single
+        Private _electricalDemandLookupKW As Single
+        Private _map As List(Of String())
+
+        ' Public Property _mapHeaders As Dictionary(Of String, HVACMapParameter)
+        Private _mapHeaders As Dictionary(Of String, HVACMapParameter)
         Public Property MapHeaders As Dictionary(Of String, HVACMapParameter) Implements IHVACMap.MapHeaders
             Get
                 Return Me._mapHeaders
@@ -39,12 +53,6 @@ Namespace Hvac
                 Me._mapHeaders = Value
             End Set
         End Property
-
-        Private _map As List(Of String())
-        Private _mapDimensions As Integer
-        Private _mapPath As String
-        Private _mechanicalDemandLookupKW As Single
-        Private _electricalDemandLookupKW As Single
 
 
         'Constructor
@@ -109,6 +117,7 @@ Namespace Hvac
             Return True
 
         End Function
+
         Private Function validateMap() As Boolean
 
             'Lets make sure we have header and also data.
@@ -139,10 +148,13 @@ Namespace Hvac
             Return True
 
         End Function
-        Public Sub InitialiseMapHeaders()
+        Private Sub InitialiseMapHeaders()
 
-            'Region, CountryCode, Season, MechD, ElecD
-            Dim region As New HVACMapParameter With {.Key = "Region",
+            'Not all properties in the HVACMapParameter POCO are initialised here 
+            'As some can only be populated dynamically such as OrdinalPosition.
+
+            'Region
+            Dim region As New HVACMapParameter With {.Key = REGIONheader,
                                                      .Description = "Region Code",
                                                      .Max = 0,
                                                      .Min = 0,
@@ -150,20 +162,10 @@ Namespace Hvac
                                                      .Notes = "",
                                                      .SystemType = GetType(Integer),
                                                      .SearchControlType = GetType(System.Windows.Forms.ComboBox)}
+            MapHeaders.Add(REGIONheader, region)
 
-            MapHeaders.Add("Region", region)
-
-            Dim countryCode As New HVACMapParameter With {.Key = "CountryCode",
-                                                     .Description = "Country Code",
-                                                     .Max = 0,
-                                                     .Min = 0,
-                                                     .Name = "Country Code",
-                                                     .Notes = "",
-                                                     .SystemType = GetType(Integer),
-                                                     .SearchControlType = GetType(System.Windows.Forms.ComboBox)}
-            MapHeaders.Add("CountryCode", countryCode)
-
-            Dim season As New HVACMapParameter With {.Key = "Season",
+            'Season
+            Dim season As New HVACMapParameter With {.Key = SEASONheader,
                                                      .Description = "Season Code",
                                                      .Max = 0,
                                                      .Min = 0,
@@ -171,10 +173,19 @@ Namespace Hvac
                                                      .Notes = "",
                                                      .SystemType = GetType(Integer),
                                                      .SearchControlType = GetType(System.Windows.Forms.ComboBox)}
-            MapHeaders.Add("Season", season)
+            MapHeaders.Add(SEASONheader, season)
 
+            '*************************************************************************************************
+            '     Author.
+            '
+            '     Add more inputs here - Ensure that these match exactly with the headers in the .vaux file.
+            '
+            '     This could be done dynamically with a loadable configuration file, but takes more time
+            '
+            '************************************************************************************************
 
-            Dim mechD As New HVACMapParameter With {.Key = "MechD",
+            'MechD
+            Dim mechD As New HVACMapParameter With {.Key = MECHDheader,
                                                      .Description = "MechD",
                                                      .Max = 0,
                                                      .Min = 0,
@@ -182,10 +193,11 @@ Namespace Hvac
                                                      .Notes = "",
                                                      .SystemType = GetType(Integer),
                                                      .IsOutput = True}
+            MapHeaders.Add(MECHDheader, mechD)
 
-            MapHeaders.Add("MechD", mechD)
 
-            Dim elecD As New HVACMapParameter With {.Key = "ElecD",
+            'ElecD
+            Dim elecD As New HVACMapParameter With {.Key = ELECDheader,
                                                      .Description = "ElecD",
                                                      .Max = 0,
                                                      .Min = 0,
@@ -193,14 +205,12 @@ Namespace Hvac
                                                      .Notes = "",
                                                      .SystemType = GetType(Integer),
                                                      .IsOutput = True}
-
-            MapHeaders.Add("ElecD", elecD)
-
+            MapHeaders.Add(ELECDheader, elecD)
 
         End Sub
 
 
-        'Map Enquiry Methods
+        'Public Map Enquiry Methods
         Public Function GetMapHeaders() As Dictionary(Of String, HVACMapParameter) Implements IHVACMap.GetMapHeaders
 
             Return MapHeaders
@@ -260,14 +270,41 @@ Namespace Hvac
             Return results
 
         End Function
-
         Public Function GetMechanicalDemand(region As Integer, season As Integer) As Integer Implements IHVACMap.GetMechanicalDemand
-            Return 1
+
+            Dim search As String() = {region.ToString(), season.ToString(), "", ""}
+
+            If (GetMapSubSet(search).Count <> 1) Then
+                Throw New Exception("Not Exactly one result returned for these inputs.")
+            End If
+
+            'get mechanical demand
+            Dim resultStr As String = GetMapSubSet(search).First()(_mapHeaders(MECHDheader).OrdinalPosition)
+
+            Dim resultInt As Integer = Integer.Parse(resultStr)
+
+            Return resultInt
+
+
+        End Function
+        Public Function GetElectricalDemand(region As Integer, season As Integer) As Integer Implements IHVACMap.GetElectricalDemand
+
+            Dim search As String() = {region.ToString(), season.ToString(), "", ""}
+
+            If (GetMapSubSet(search).Count <> 1) Then
+                Throw New Exception("Not Exactly one result returned for these inputs.")
+            End If
+
+            'get electrical demand
+            Dim resultStr As String = GetMapSubSet(search).First()(_mapHeaders(ELECDheader).OrdinalPosition)
+
+            Dim resultInt As Integer = Integer.Parse(resultStr)
+
+            Return resultInt
+
         End Function
 
-        Public Function GetElectricalDemand(region As Integer, season As Integer) As Integer Implements IHVACMap.GetElectricalDemand
-            Return 1
-        End Function
+
 
     End Class
 
