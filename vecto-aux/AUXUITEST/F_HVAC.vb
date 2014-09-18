@@ -1,5 +1,6 @@
 ﻿
 Imports VectoAuxiliaries.Hvac
+Imports System.Windows.Forms
 
 
 
@@ -194,6 +195,13 @@ Public Class F_HVAC
 
 
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
+
+        Dim v1 As Integer = _map.GetMechanicalDemand(1, 1)
+
+        Dim v2 As Integer = _map.GetMechanicalDemand(1, 2)
+
+        MessageBox.Show(v1.ToString() & "  -  " & v2.ToString())
+
 
     End Sub
 
