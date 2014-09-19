@@ -5,21 +5,25 @@ Namespace Mocks
     Public Class AlternatorMock
         Implements IAlternator
 
+        Private _gearPullyRatio As Single = 1
+        Private _gearPullyEfficiency As Single = 1
+
+
         Public Property PulleyGearRatio() As Single Implements IAlternator.PulleyGearRatio
             Get
-                Return 1.0
+                Return _gearPullyRatio
             End Get
             Set(ByVal value As Single)
-
+                _gearPullyRatio = value
             End Set
         End Property
 
         Public Property PulleyGearEfficiency() As Single Implements IAlternator.PulleyGearEfficiency
             Get
-                Return 1.0
+                Return _gearPullyEfficiency
             End Get
             Set(ByVal value As Single)
-
+                _gearPullyEfficiency = value
             End Set
         End Property
 

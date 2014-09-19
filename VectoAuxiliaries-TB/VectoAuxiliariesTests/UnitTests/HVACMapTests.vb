@@ -56,11 +56,9 @@ Namespace UnitTests
             Assert.IsTrue(target.Initialise())
         End Sub
 
-
-        <TestCase(3, 1, 24)>
-        <TestCase(3, 2, 192)>
-        <TestCase(3, 3, 24)>
-        <TestCase(3, 4, 192)>
+        <TestCase(1, 1, 8   )>
+        <TestCase(1, 3, 8   )>
+        <TestCase(5, 4, 320 )> _
         Public Sub GetMechanicalDemandTest(ByVal region As Integer, ByVal season As Integer, result As Integer)
             Dim target As HVACMap = GetInitialisedMap()
             Dim expected As Integer = result
@@ -68,10 +66,10 @@ Namespace UnitTests
             Assert.AreEqual(expected, actual)
         End Sub
 
-        <TestCase(3, 1, 12)>
-        <TestCase(3, 2, 48)>
-        <TestCase(3, 3, 12)>
-        <TestCase(3, 4, 48)>
+
+        <TestCase(1, 1, 4)>
+        <TestCase(1, 3, 4)>
+        <TestCase(5, 4, 80)> _
         Public Sub GetElectricalDemandTest(ByVal region As Integer, ByVal season As Integer, result As Integer)
             Dim target As HVACMap = GetInitialisedMap()
             Dim expected As Integer = result
@@ -88,7 +86,6 @@ Namespace UnitTests
         End Sub
 
     End Class
-
 
 End Namespace
 
