@@ -32,7 +32,7 @@ Namespace My
         
         <Global.System.Diagnostics.DebuggerStepThroughAttribute()>  _
         Protected Overrides Sub OnCreateMainForm()
-            Me.MainForm = Global.AUXUITEST.F_HVAC
+            Me.MainForm = Global.AUXUITEST.LaunchPad
         End Sub
     End Class
 End Namespace
