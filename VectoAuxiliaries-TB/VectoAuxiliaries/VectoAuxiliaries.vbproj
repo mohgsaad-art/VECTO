@@ -50,6 +50,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -68,6 +69,8 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Electrics\HVACInputs.vb" />
+    <Compile Include="Electrics\IHVACInputs.vb" />
     <Compile Include="Hvac\HVACMapParameter.vb" />
     <Compile Include="Hvac\IHVACMap.vb" />
     <Compile Include="Pneumatics\AirCompressor.vb" />
@@ -100,6 +103,12 @@
     </Compile>
     <Compile Include="Pneumatics\IPneumaticConsumer.vb" />
     <Compile Include="Pneumatics\PneumaticConsumer.vb" />
+    <Compile Include="UI\F_HVAC.Designer.vb">
+      <DependentUpon>F_HVAC.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UI\F_HVAC.vb">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
@@ -107,6 +116,9 @@
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\F_HVAC.resx">
+      <DependentUpon>F_HVAC.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -121,6 +133,7 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
