@@ -75,13 +75,6 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="F_HVAC.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="F_HVAC.Designer.vb">
-      <DependentUpon>F_HVAC.vb</DependentUpon>
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="LaunchPad.Designer.vb">
       <DependentUpon>LaunchPad.vb</DependentUpon>
     </Compile>
@@ -106,9 +99,6 @@
     <Compile Include="Program.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="F_HVAC.resx">
-      <DependentUpon>F_HVAC.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="LaunchPad.resx">
       <DependentUpon>LaunchPad.vb</DependentUpon>
     </EmbeddedResource>

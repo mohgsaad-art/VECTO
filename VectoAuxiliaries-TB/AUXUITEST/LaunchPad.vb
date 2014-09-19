@@ -12,4 +12,13 @@
 
 
 
+    Private Sub LaunchPad_Load(sender As Object, e As EventArgs)
+
+
+
+    End Sub
+
+    Private Sub LaunchPad_Activated(sender As Object, e As EventArgs)
+
+    End Sub
 End Class

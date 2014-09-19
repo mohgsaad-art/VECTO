@@ -3,7 +3,6 @@ Imports System.Windows.Forms
 
 Namespace UI
 
-
     Public Class F_HVAC
 
         'Private Fields
@@ -170,6 +169,8 @@ Namespace UI
 
             _map = New HVACMap(_mapPath)
 
+            _map.Initialise()
+
             _mapFilter.Clear()
             For Each item As KeyValuePair(Of String, HVACMapParameter) In _map.GetMapHeaders
                 _mapFilter.Add("")
@@ -180,14 +181,10 @@ Namespace UI
         End Sub
 
 
+        Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
+            Me.Close()
+        End Sub
     End Class
-
-
-
-
-
-
-
 
 
 End Namespace

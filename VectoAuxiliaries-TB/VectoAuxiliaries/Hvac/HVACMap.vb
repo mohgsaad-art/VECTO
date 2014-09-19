@@ -29,8 +29,7 @@ Namespace Hvac
 
 #End Region
 
-
-        'constants for .vaux headers
+        'Constants for .vaux headers
         Private Const REGIONheader As String = "Region"
         Private Const SEASONheader As String = "Season"
         Private Const MECHDheader As String = "MechD"
@@ -43,8 +42,9 @@ Namespace Hvac
         Private _electricalDemandLookupKW As Single
         Private _map As List(Of String())
 
-        ' Public Property _mapHeaders As Dictionary(Of String, HVACMapParameter)
+        'Public Property _mapHeaders As Dictionary(Of String, HVACMapParameter)
         Private _mapHeaders As Dictionary(Of String, HVACMapParameter)
+
         Public Property MapHeaders As Dictionary(Of String, HVACMapParameter) Implements IHVACMap.MapHeaders
             Get
                 Return Me._mapHeaders
@@ -54,7 +54,6 @@ Namespace Hvac
             End Set
         End Property
 
-
         'Constructor
         ''' <summary>
         ''' Constructor
@@ -62,57 +61,61 @@ Namespace Hvac
         ''' <param name="iMapPath"></param>
         ''' <remarks></remarks>
         Public Sub New(iMapPath As String)
-
             _mapPath = iMapPath
-            MapHeaders = New Dictionary(Of String, HVACMapParameter)()
-            _map = New List(Of String())
-
-            InitialiseMapHeaders()
-
-            Initialise()
-
-            Dim result As Object = (From line In _map Where line(0) = "2")
-
-
         End Sub
 
         'Initialisers and Map related Methods
         Public Function Initialise() As Boolean Implements IHVACMap.Initialise
 
+            MapHeaders = New Dictionary(Of String, HVACMapParameter)()
+            _map = New List(Of String())
+
+            InitialiseMapHeaders()
+
             Dim myData As String
             Dim linesArray As String()
 
+            'Check map file can be found.
             Try
-
                 myData = System.IO.File.ReadAllText(_mapPath, System.Text.Encoding.UTF8)
-                linesArray = (From s As String In myData.Split(vbLf) Select s.Trim).ToArray
+            Catch ex As FileNotFoundException
+                Throw New ArgumentException("The map file was not found")
+            End Try
 
 
+            linesArray = (From s As String In myData.Split(vbLf) Select s.Trim).ToArray
 
-                'getValuesIntoMap
-                For Each line As String In linesArray
-                    _map.Add(line.Split(","c))
-                Next
+            'getValuesIntoMap
+            Dim lineNumber As Integer = 0
+            For Each line As String In linesArray
 
-                _mapDimensions = _map(0).Length
+                Dim values As String() = line.Split(","c)
 
-                'Validate Map
-                If validateMap() = False Then
-                    Throw New Exception("Unable to complete Load of HVAC MAP")
+                'Test number of values
+                If values.Count <> _mapHeaders.Count Then
+                    Throw New System.ArgumentException("Row contains inconsistant values")
                 End If
 
-                'Set Unique Values for headers which can be used as a selection device.
+                Dim intTest As Single
 
+                'Check lines all contain valid rows ( Assume Single )
+                For Each v As String In values
+                    If lineNumber > 0 AndAlso Not Single.TryParse(v, intTest) Then
+                        Throw New InvalidCastException("A non numeric value was found in the map file")
+                    End If
+                Next
 
-            Catch ffe As FileNotFoundException
+                lineNumber += 1
+                _map.Add(values)
 
-                Throw ffe
+            Next
 
-            Catch ex As Exception
+            _mapDimensions = _map(0).Length
 
-                Throw ex
-
-            End Try
+            'Validate Map
+            If validateMap() = False Then
+                Throw New Exception("Unable to complete Load of HVAC MAP")
+            End If
 
             Return True
 
@@ -275,7 +278,7 @@ Namespace Hvac
             Dim search As String() = {region.ToString(), season.ToString(), "", ""}
 
             If (GetMapSubSet(search).Count <> 1) Then
-                Throw New Exception("Not Exactly one result returned for these inputs.")
+                Throw New ArgumentException("Not Exactly one result returned for these inputs.")
             End If
 
             'get mechanical demand
@@ -292,7 +295,7 @@ Namespace Hvac
             Dim search As String() = {region.ToString(), season.ToString(), "", ""}
 
             If (GetMapSubSet(search).Count <> 1) Then
-                Throw New Exception("Not Exactly one result returned for these inputs.")
+                Throw New ArgumentException("Not Exactly one result returned for these inputs.")
             End If
 
             'get electrical demand
