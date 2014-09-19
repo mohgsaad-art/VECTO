@@ -22,14 +22,14 @@ Namespace UnitTests
         Private Function GetAverageHVACLoadDemandIntance() As AverageHVACLoadDemand
             Dim alt As IAlternator = GetAlternatorMock()
             Dim map As IHVACMap = GetHVACMapMock()
-            Dim target As AverageHVACLoadDemand = New AverageHVACLoadDemand(map, alt)
+            Dim target As AverageHVACLoadDemand = New AverageHVACLoadDemand(map, alt, Nothing)
             Return target
         End Function
 
         Private Function GetInitialisedAverageHVACLoadDemandIntance() As AverageHVACLoadDemand
             Dim alt As IAlternator = GetAlternatorMock()
             Dim map As IHVACMap = GetHVACMapMock()
-            Dim target As AverageHVACLoadDemand = New AverageHVACLoadDemand(map, alt)
+            Dim target As AverageHVACLoadDemand = New AverageHVACLoadDemand(map, alt, Nothing)
             target.Initialise()
             Return target
         End Function
@@ -51,19 +51,19 @@ Namespace UnitTests
         <Test()> Public Sub AverageMechanicalPowerAtCrankTest()
             Dim target As AverageHVACLoadDemand = GetInitialisedAverageHVACLoadDemandIntance()
             Dim expected As Integer = 10
-            Dim actual As Integer = target.AverageMechanicalPowerAtCrank()
+            Dim actual As Integer = target.AverageMechanicalPowerDemandAtCrank(100)
         End Sub
 
         <Test()> Public Sub AverageElectricalPowerAtAlternatorTest()
             Dim target As AverageHVACLoadDemand = GetInitialisedAverageHVACLoadDemandIntance()
             Dim expected As Integer = 10
-            Dim actual As Integer = target.AverageMechanicalPowerAtCrank()
+            Dim actual As Integer = target.AverageMechanicalPowerDemandAtCrank(100)
         End Sub
 
         <Test()> Public Sub AverageElectricalPowerAtCrankTest()
             Dim target As AverageHVACLoadDemand = GetInitialisedAverageHVACLoadDemandIntance()
             Dim expected As Integer = 10
-            Dim actual As Integer = target.AverageMechanicalPowerAtCrank()
+            Dim actual As Integer = target.AverageMechanicalPowerDemandAtCrank(100)
         End Sub
 
     End Class
