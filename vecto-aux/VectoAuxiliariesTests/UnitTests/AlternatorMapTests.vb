@@ -7,6 +7,11 @@ Namespace UnitTests
     <TestFixture()>
     Public Class AlternatorMapTests
 
+        Private Const _GOODMAP As String = "TestFiles\testAlternatorMap.csv"
+        Private Const _INVALIDRPMMAP As String = "TestFiles\testAlternatorMapWithInvalidRpm.csv"
+        Private Const _IVALIDEFFICIENCYMAP As String = "TestFiles\testAlternatorMapWithInvalidEfficiency.csv"
+        Private Const _INVALIDPOWERMAP As String = "TestFiles\testAlternatorMapWithInvalidPower.csv"
+
         <Test()>
         Public Sub CreateNewAlternatorMapInstanceTest()
             Dim path As String = "test"
@@ -46,21 +51,21 @@ Namespace UnitTests
 
         <Test(), ExpectedException("System.InvalidCastException")>
         Public Sub InitialiseInvalidRpmThrowsExceptionTest()
-            Dim path As String = "C:\DEV\VECTO\VectoAuxiliaries\VectoAuxiliariesTests\TestFiles\testAlternatorMapWithInvalidRpm.csv"
+            Dim path As String = _INVALIDRPMMAP
             Dim target As AlternatorMap = New AlternatorMap(path)
             target.Initialise()
         End Sub
 
         <Test(), ExpectedException("System.InvalidCastException")>
         Public Sub InitialiseInvalidEfficiencyThrowsExceptionTest()
-            Dim path As String = "C:\DEV\VECTO\VectoAuxiliaries\VectoAuxiliariesTests\TestFiles\testAlternatorMapWithInvalidEfficiency.csv"
+            Dim path As String = _IVALIDEFFICIENCYMAP
             Dim target As AlternatorMap = New AlternatorMap(path)
             target.Initialise()
         End Sub
 
         <Test(), ExpectedException("System.InvalidCastException")>
         Public Sub InitialiseInvalidPowerThrowsExceptionTest()
-            Dim path As String = "C:\DEV\VECTO\VectoAuxiliaries\VectoAuxiliariesTests\TestFiles\testAlternatorMapWithInvalidPower.csv"
+            Dim path As String = _INVALIDPOWERMAP
             Dim target As AlternatorMap = New AlternatorMap(path)
             target.Initialise()
         End Sub
@@ -138,7 +143,7 @@ Namespace UnitTests
         End Function
 
         Private Function GetMap() As AlternatorMap
-            Dim path As String = "C:\DEV\VECTO\VectoAuxiliaries\VectoAuxiliariesTests\TestFiles\testAlternatorMap.csv"
+            Dim path As String = _GOODMAP
             Dim target As AlternatorMap = New AlternatorMap(path)
             Return target
         End Function

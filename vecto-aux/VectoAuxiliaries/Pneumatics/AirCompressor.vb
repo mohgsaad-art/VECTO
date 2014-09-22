@@ -1,6 +1,8 @@
 ﻿
 
 Namespace Pneumatics
+
+
     Public Class AirCompressor
         Implements IAirCompressor
 
@@ -82,6 +84,13 @@ Namespace Pneumatics
             Return _map.Initialise()
         End Function
 
+        'Queryable Compressor Methods
+        '
+        'Compressor ( Speed ) Flow Rate 
+        'Power @ Crank From Pnumatics compressor off ( A )
+        'Power @ Crank From Pnumatics compressor On  ( B )
+        'Power   Delta ( A ) vs ( B )
+
         ''' <summary>
         ''' Returns the flow rate [litres/second] of compressor for the given engine rpm
         ''' </summary>
@@ -142,4 +151,5 @@ Namespace Pneumatics
         End Function
 
     End Class
+
 End Namespace

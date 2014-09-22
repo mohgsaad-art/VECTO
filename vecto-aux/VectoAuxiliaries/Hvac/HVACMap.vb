@@ -7,8 +7,6 @@ Namespace Hvac
     Public Class HVACMap
         Implements IHVACMap
 
-
-
 #Region "Header Comments"
 
         'Some sort of multi-dimensional map implemented here
@@ -212,7 +210,6 @@ Namespace Hvac
 
         End Sub
 
-
         'Public Map Enquiry Methods
         Public Function GetMapHeaders() As Dictionary(Of String, HVACMapParameter) Implements IHVACMap.GetMapHeaders
 
@@ -306,8 +303,6 @@ Namespace Hvac
             Return resultInt
 
         End Function
-
-
 
     End Class
 
