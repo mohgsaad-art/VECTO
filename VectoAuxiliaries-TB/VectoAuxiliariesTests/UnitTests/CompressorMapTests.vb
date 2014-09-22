@@ -6,6 +6,14 @@ Namespace UnitTests
     <TestFixture()>
     Public Class CompressorMapTests
 
+        Private Const GOODMAP As String = "TestFiles\testCompressorMap.csv"
+        Private Const INVALIDPOWERCOMPRESSORONMAP As String = "TestFiles\testCompressorMapInvalidOnPower.csv"
+        Private Const INVALIDPOWERCOMPRESSOROFFMAP As String = "TestFiles\testCompressorMapInvalidOffPower.csv"
+        Private Const INVALIDFLOWRATEMAP As String = "TestFiles\testCompressorMapInvalidFlow.csv"
+        Private Const INSSUFICIENTROWSMAP As String = "TestFiles\testCompressorMapNotEnoughRows.csv"
+        Private Const INVALIDRPMMAP As String = "TestFiles\testCompressorMapInvalidRpm.csv"
+
+
 #Region "Helpers"
 
         Private Function GetInitialiseMap() As CompressorMap
@@ -15,7 +23,7 @@ Namespace UnitTests
         End Function
 
         Private Function GetMap() As CompressorMap
-            Dim path As String = "C:\DEV\VECTO\VectoAuxiliaries\VectoAuxiliariesTests\TestFiles\testCompressorMap.csv"
+            Dim path As String = GOODMAP
             Dim target As CompressorMap = New CompressorMap(path)
             Return target
         End Function
@@ -51,35 +59,35 @@ Namespace UnitTests
 
         <Test(), ExpectedException("System.InvalidCastException")>
         Public Sub InitialisationInvalidRpmThrowsExceptionTest()
-            Dim path As String = "C:\DEV\VECTO\VectoAuxiliaries\VectoAuxiliariesTests\TestFiles\testCompressorMapInvalidRpm.csv"
+            Dim path As String = INVALIDRPMMAP
             Dim target As CompressorMap = New CompressorMap(path)
             target.Initialise()
         End Sub
 
         <Test(), ExpectedException("System.InvalidCastException")>
         Public Sub InitialisationInvalidFlowRateThrowsExceptionTest()
-            Dim path As String = "C:\DEV\VECTO\VectoAuxiliaries\VectoAuxiliariesTests\TestFiles\testCompressorMapInvalidFlow.csv"
+            Dim path As String = INVALIDFLOWRATEMAP
             Dim target As CompressorMap = New CompressorMap(path)
             target.Initialise()
         End Sub
 
         <Test(), ExpectedException("System.InvalidCastException")>
         Public Sub InitialisationInvalidPowerCompressorOnThrowsExceptionTest()
-            Dim path As String = "C:\DEV\VECTO\VectoAuxiliaries\VectoAuxiliariesTests\TestFiles\testCompressorMapInvalidOnPower.csv"
+            Dim path As String = INVALIDPOWERCOMPRESSORONMAP
             Dim target As CompressorMap = New CompressorMap(path)
             target.Initialise()
         End Sub
 
         <Test(), ExpectedException("System.InvalidCastException")>
         Public Sub InitialisationInvalidPowerCompressorOffThrowsExceptionTest()
-            Dim path As String = "C:\DEV\VECTO\VectoAuxiliaries\VectoAuxiliariesTests\TestFiles\testCompressorMapInvalidOffPower.csv"
+            Dim path As String = INVALIDPOWERCOMPRESSOROFFMAP
             Dim target As CompressorMap = New CompressorMap(path)
             target.Initialise()
         End Sub
 
         <Test(), ExpectedException("System.ArgumentException")>
         Public Sub InitialisationInsufficientRowsThrowsExceptionTest()
-            Dim path As String = "C:\DEV\VECTO\VectoAuxiliaries\VectoAuxiliariesTests\TestFiles\testCompressorMapNotEnoughRows.csv"
+            Dim path As String = INSSUFICIENTROWSMAP
             Dim target As CompressorMap = New CompressorMap(path)
             target.Initialise()
         End Sub
@@ -160,4 +168,5 @@ Namespace UnitTests
         End Sub
 
     End Class
+
 End Namespace
