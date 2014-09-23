@@ -44,7 +44,7 @@
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function Initialise() As Boolean
-            Return True ''TODO: Initialisation of the alternator model
+            Return _alternator.Initialise()
         End Function
 
         ''' <summary>
@@ -52,7 +52,7 @@
         ''' </summary>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function GetAveragePowerAtAlternator() As Single
+        Public Function GetAveragePowerDemandAtAlternator() As Single
             Dim total As Single = (From ctx In ElectricalConsumers
                     Select ctx.Power).Sum()
             Return total
@@ -65,7 +65,7 @@
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function GetAveragePowerAtCrank(ByVal engineRpm As Integer) As Single
-            Dim elecPower As Single = GetAveragePowerAtAlternator()
+            Dim elecPower As Single = GetAveragePowerDemandAtAlternator()
             Dim alternatorEfficiency As Single = _alternator.GetEfficiency(engineRpm)
             Dim demandFromAlternator As Single = elecPower / alternatorEfficiency
             Dim powerAtCrank As Single = demandFromAlternator / _alternator.PulleyGearEfficiency
