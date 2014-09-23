@@ -9,6 +9,7 @@ Namespace Hvac
         Public Property Region As Integer
         Public Property Season As Integer
 
+
         Public Sub New(ByVal map As IHVACMap, ByVal alternator As IAlternator, inputs As IHVACInputs)
             Me.map = map
             Me.alternator = alternator

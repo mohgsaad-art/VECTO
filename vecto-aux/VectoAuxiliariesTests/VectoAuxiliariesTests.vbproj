@@ -88,7 +88,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Mocks\HVACMapMock.vb" />
-    <Compile Include="UnitTests\AverageHVACLoadDemandTests.vb" />
+    <Compile Include="UnitTests\AverageHVACLoadDemandMAPTests.vb" />
+    <Compile Include="UnitTests\AveragePneumaticLoadTests.vb" />
     <Compile Include="UnitTests\HVACMapTests.vb" />
     <Compile Include="UnitTests\PneumaticConsumerTests.vb" />
     <Compile Include="UnitTests\AirCompressorTests.vb" />
@@ -186,6 +187,21 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestFiles\testHvacMapWrongColumns.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\testPneumaticAirFlowRateToMechanicalDemandMap - InvalidKey.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\testPneumaticAirFlowRateToMechanicalDemandMap - NotEnoughElements.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\testPneumaticAirFlowRateToMechanicalDemandMap - InvalidElements.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\testPneumaticAirFlowRateToMechanicalDemandMap - NotEnoughRows.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\testPneumaticAirFlowRateToMechanicalDemandMap - GoodMap.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="TestFiles\HVACMap.vaux" />

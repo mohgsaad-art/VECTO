@@ -12,6 +12,7 @@ Namespace UnitTests
         Private Const INVALIDFLOWRATEMAP As String = "TestFiles\testCompressorMapInvalidFlow.csv"
         Private Const INSSUFICIENTROWSMAP As String = "TestFiles\testCompressorMapNotEnoughRows.csv"
         Private Const INVALIDRPMMAP As String = "TestFiles\testCompressorMapInvalidRpm.csv"
+        Private Const INVALIDNUMBEROFCOLUMNS As String = "TestFiles\testCompressorMapWrongNumberOfColumns.csv"
 
 
 #Region "Helpers"
@@ -52,7 +53,7 @@ Namespace UnitTests
 
         <Test(), ExpectedException("System.ArgumentException")>
         Public Sub InitialisationWrongNumberOfColumnsThrowsExceptionTest()
-            Dim path As String = "C:\DEV\VECTO\VectoAuxiliaries\VectoAuxiliariesTests\TestFiles\testCompressorMapWrongNumberOfColumns.csv"
+            Dim path As String = INVALIDNUMBEROFCOLUMNS
             Dim target As CompressorMap = New CompressorMap(path)
             target.Initialise()
         End Sub
