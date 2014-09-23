@@ -61,10 +61,11 @@ Namespace UnitTests
 
         <Test()>
         Public Sub GetAveragePowerAtAlternatorTest()
-            Dim target As AverageElectricalDemand = GetAverageElectricalDemandInstance()
 
-            Dim actual As Single = target.GetAveragePowerAtAlternator()
-            Assert.Fail("test not complete")
+            Dim target As AverageElectricalDemand = GetAverageElectricalDemandInstance()
+            Dim actual As Single = target.GetAveragePowerDemandAtAlternator()
+            Assert.AreEqual(actual, 200)
+
         End Sub
 
         <Test()>

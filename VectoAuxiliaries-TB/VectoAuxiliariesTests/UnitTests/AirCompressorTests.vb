@@ -5,7 +5,6 @@ Imports VectoAuxiliariesTests.Mocks
 Namespace UnitTests
 
     <TestFixture()>
-    <Category("Pnuematic - Compressor")>
     Public Class AirCompressorTests
 #Region "Test Constants"
         Private Const GoodEfficiency As Single = 1
