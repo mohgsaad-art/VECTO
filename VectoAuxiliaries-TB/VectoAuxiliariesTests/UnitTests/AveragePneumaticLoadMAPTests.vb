@@ -14,6 +14,10 @@ Namespace UnitTests
         Private Const MAP_FILENOTFOUND As String = "File_NotFound.csv"
 
 
+        ''' <summary>
+        ''' Test Suite
+        ''' </summary>
+        ''' <remarks></remarks>
         <Test>
         Public Sub CreateNewFlowMechPowerMap()
 
@@ -21,7 +25,6 @@ Namespace UnitTests
             Assert.IsNotNull(target)
 
         End Sub
-
         <Test>
         Public Sub InitialiseTest()
 
@@ -29,7 +32,6 @@ Namespace UnitTests
             Assert.IsTrue(target.Initialise())
 
         End Sub
-
         <Test>
         <ExpectedException("System.ArgumentException")>
         Public Sub InvalidElementsFlowMechPowerMap()
@@ -38,25 +40,18 @@ Namespace UnitTests
             Assert.IsTrue(target.Initialise())
 
         End Sub
-
         <Test>
         <ExpectedException("System.ArgumentException")>
         Public Sub NotEnoughElementsFlowMechPowerMap()
-
             Dim target As New AirFlowRateMechanicalDemandMap(MAP_NOTENOUGHELEMENTS)
             Assert.IsTrue(target.Initialise())
-
         End Sub
-
         <Test>
        <ExpectedException("System.ArgumentException")>
         Public Sub NotEnoughRowsFlowMechPowerMap()
-
             Dim target As New AirFlowRateMechanicalDemandMap(MAP_NOTENOUGHROWS)
             Assert.IsTrue(target.Initialise())
-
         End Sub
-
         <Test>
        <ExpectedException("System.ArgumentException")>
         Public Sub FileNotFoundFlowMechPowerMap_ThrowArgumentException()
@@ -65,7 +60,6 @@ Namespace UnitTests
             Assert.IsTrue(target.Initialise())
 
         End Sub
-
         <Test>
         <ExpectedException("System.ArgumentException")>
         Public Sub InvalidKeyFlowRatePowerMap_ThrowArgumentOutOfRangeException()
