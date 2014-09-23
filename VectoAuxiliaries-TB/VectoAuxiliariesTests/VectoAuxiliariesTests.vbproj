@@ -87,9 +87,11 @@
     <Import Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mocks\AirFlowRateMechanicalDemandMapMock.vb" />
     <Compile Include="Mocks\HVACMapMock.vb" />
     <Compile Include="UnitTests\AverageHVACLoadDemandMAPTests.vb" />
-    <Compile Include="UnitTests\AveragePneumaticLoadTests.vb" />
+    <Compile Include="UnitTests\AveragePneumaticLoadMAPTests.vb" />
+    <Compile Include="UnitTests\AveragePneumaticLoadDemandTests.vb" />
     <Compile Include="UnitTests\HVACMapTests.vb" />
     <Compile Include="UnitTests\PneumaticConsumerTests.vb" />
     <Compile Include="UnitTests\AirCompressorTests.vb" />
