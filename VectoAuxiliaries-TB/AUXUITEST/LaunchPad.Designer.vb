@@ -23,6 +23,7 @@ Partial Class LaunchPad
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.btnHVAC = New System.Windows.Forms.Button()
+        Me.btnCompressor = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'btnHVAC
@@ -34,11 +35,21 @@ Partial Class LaunchPad
         Me.btnHVAC.Text = "HVAC"
         Me.btnHVAC.UseVisualStyleBackColor = True
         '
+        'btnCompressor
+        '
+        Me.btnCompressor.Location = New System.Drawing.Point(164, 26)
+        Me.btnCompressor.Name = "btnCompressor"
+        Me.btnCompressor.Size = New System.Drawing.Size(106, 46)
+        Me.btnCompressor.TabIndex = 1
+        Me.btnCompressor.Text = "Compressor"
+        Me.btnCompressor.UseVisualStyleBackColor = True
+        '
         'LaunchPad
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(426, 335)
+        Me.Controls.Add(Me.btnCompressor)
         Me.Controls.Add(Me.btnHVAC)
         Me.Name = "LaunchPad"
         Me.Text = "LaunchPad"
@@ -46,4 +57,5 @@ Partial Class LaunchPad
 
     End Sub
     Friend WithEvents btnHVAC As System.Windows.Forms.Button
+    Friend WithEvents btnCompressor As System.Windows.Forms.Button
 End Class

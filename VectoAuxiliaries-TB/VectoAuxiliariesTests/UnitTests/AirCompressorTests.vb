@@ -146,5 +146,20 @@ Namespace UnitTests
             Assert.AreEqual(expected, actual)
         End Sub
 
+
+        <Test>
+        Public Sub GetAveragePowerDemandPerCompressorUnitFlowRate()
+
+            Dim comp As AirCompressor = GetGoodCompressor()
+
+            Dim expected As Single = 0.01
+            Dim actual As Single = comp.GetAveragePowerDemandPerCompressorUnitFlowRate
+            Assert.AreEqual(actual, expected)
+
+
+        End Sub
+
+
+
     End Class
 End Namespace

@@ -31,5 +31,9 @@ Namespace Pneumatics
         ''' <remarks>Single</remarks>
         Function GetPowerCompressorOff(ByVal rpm As Integer) As Single
 
+        'Returns Average Power Demand Per Compressor Unit FlowRate
+        Function GetAveragePowerDemandPerCompressorUnitFlowRate() As Single
+
+
     End Interface
 End Namespace

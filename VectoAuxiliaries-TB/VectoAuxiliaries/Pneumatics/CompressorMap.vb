@@ -11,6 +11,11 @@ Namespace Pneumatics
 
         Private ReadOnly filePath As String
 
+        Private _averagePowerDemandPerCompressorUnitFlowRate As Single
+
+
+
+
         ''' <summary>
         ''' Dictionary of values keyed by the rpm valaues in the csv file
         ''' Values are held as a tuple as follows
@@ -20,6 +25,18 @@ Namespace Pneumatics
         ''' </summary>
         ''' <remarks></remarks>
         Private map As Dictionary(Of Integer, CompressorMapValues)
+
+
+        'Returns the AveragePowerDemand ( Power On ) per unit flow rate
+        Public Function AveragePowerDemandPerCompressorUnitFlowRate() As Single Implements ICompressorMap.GetAveragePowerDemandPerCompressorUnitFlowRate
+
+
+
+            Return _averagePowerDemandPerCompressorUnitFlowRate
+
+
+        End Function
+
 
         ''' <summary>
         ''' Creates a new instance of the CompressorMap class
@@ -60,11 +77,22 @@ Namespace Pneumatics
                         End If
                     Next
                 End Using
+
+                'Calculate the Average Power Demand Per Compressor Unit FlowRate
+                Dim powerDividedByFlowRateSum As Single = 0
+                For Each speed As KeyValuePair(Of Integer, CompressorMapValues) In map
+                    powerDividedByFlowRateSum += speed.Value.PowerCompressorOn / speed.Value.FlowRate
+                Next
+                _averagePowerDemandPerCompressorUnitFlowRate = powerDividedByFlowRateSum / map.Count
+
             Else
                 Throw New ArgumentException("supplied input file does not exist")
             End If
 
+            'If we get here then all should be well and we can return a True value of success.
             Return True
+
+
         End Function
 
         ''' <summary>
@@ -150,6 +178,7 @@ Namespace Pneumatics
         ''' Power - Compressor Off
         ''' </summary>
         ''' <remarks></remarks>
+        ''' 
         Private Structure CompressorMapValues
 
             ''' <summary>
@@ -187,6 +216,11 @@ Namespace Pneumatics
 
 
 
-
     End Class
+
+
+
+
+
+
 End Namespace

@@ -168,6 +168,24 @@ Namespace UnitTests
             Dim value As Single = target.GetPowerCompressorOff(rpm)
         End Sub
 
+
+        <Test>
+        Public Sub GetAveragePowerDemandPerCompressorUnitFlowRate()
+
+            Dim target As CompressorMap = GetInitialiseMap()
+
+            Dim expected As Single
+            Dim actual As Single
+
+            expected = 0.01
+
+            actual = target.AveragePowerDemandPerCompressorUnitFlowRate
+
+            Assert.AreEqual(expected, actual)
+
+        End Sub
+
+
     End Class
 
 End Namespace
