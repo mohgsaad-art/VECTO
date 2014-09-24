@@ -78,7 +78,6 @@
     <Compile Include="Electrics\AlternatorMap.vb" />
     <Compile Include="Electrics\AverageElectricalDemand.vb" />
     <Compile Include="Hvac\AverageHVACLoadDemand.vb" />
-    <Compile Include="Pneumatics\AirFlowRateMechanicalDemandMap.vb" />
     <Compile Include="Pneumatics\AveragePneumaticLoadDemand.vb" />
     <Compile Include="Pneumatics\CompressorMap.vb" />
     <Compile Include="Electrics\ElectricalConsumer.vb" />
@@ -86,7 +85,6 @@
     <Compile Include="Electrics\IAlternator.vb" />
     <Compile Include="Electrics\IAlternatorMap.vb" />
     <Compile Include="Pneumatics\IAirCompressor.vb" />
-    <Compile Include="Pneumatics\IAirFlowRateMechanicalDemandMap.vb" />
     <Compile Include="Pneumatics\ICompressorMap.vb" />
     <Compile Include="Electrics\IElectricalConsumer.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -106,10 +104,34 @@
     </Compile>
     <Compile Include="Pneumatics\IPneumaticConsumer.vb" />
     <Compile Include="Pneumatics\PneumaticConsumer.vb" />
+    <Compile Include="UI\ElectricalConsumers.Designer.vb">
+      <DependentUpon>ElectricalConsumers.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ElectricalConsumers.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\F_Alternator.Designer.vb">
+      <DependentUpon>F_Alternator.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UI\F_Alternator.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\F_Compressor.Designer.vb">
+      <DependentUpon>F_Compressor.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UI\F_Compressor.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="UI\F_HVAC.Designer.vb">
       <DependentUpon>F_HVAC.vb</DependentUpon>
     </Compile>
     <Compile Include="UI\F_HVAC.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\F_PneumaticConsumers.Designer.vb">
+      <DependentUpon>F_PneumaticConsumers.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UI\F_PneumaticConsumers.vb">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
@@ -120,8 +142,14 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\F_Compressor.resx">
+      <DependentUpon>F_Compressor.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\F_HVAC.resx">
       <DependentUpon>F_HVAC.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\F_PneumaticConsumers.resx">
+      <DependentUpon>F_PneumaticConsumers.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

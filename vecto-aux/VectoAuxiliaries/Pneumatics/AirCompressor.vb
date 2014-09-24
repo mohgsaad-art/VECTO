@@ -1,7 +1,5 @@
 ﻿
-
 Namespace Pneumatics
-
 
     Public Class AirCompressor
         Implements IAirCompressor
@@ -91,6 +89,10 @@ Namespace Pneumatics
         'Power @ Crank From Pnumatics compressor On  ( B )
         'Power   Delta ( A ) vs ( B )
 
+
+        'Return Average Power Demand Per Compressor Unit Flow Rate
+
+
         ''' <summary>
         ''' Returns the flow rate [litres/second] of compressor for the given engine rpm
         ''' </summary>
@@ -149,6 +151,18 @@ Namespace Pneumatics
                 Return _map.GetPowerCompressorOff(compressorRpm)
             End If
         End Function
+
+
+
+
+
+        Public Function GetAveragePowerDemandPerCompressorUnitFlowRate() As Single Implements IAirCompressor.GetAveragePowerDemandPerCompressorUnitFlowRate
+
+            Return _map.GetAveragePowerDemandPerCompressorUnitFlowRate()
+
+        End Function
+
+
 
     End Class
 

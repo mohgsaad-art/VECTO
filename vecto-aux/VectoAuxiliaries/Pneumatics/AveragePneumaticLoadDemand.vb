@@ -5,7 +5,7 @@ Namespace Pneumatics
     Public Class AveragePneumaticLoadDemand
 
 
-        Private _map As IAirFlowRateMechanicalDemandMap
+        Private _compressor As IAirCompressor
         Private _pneumaticConsumers As List(Of IPneumaticConsumer)
         Private _pulleyGearEfficiency As Single
 
@@ -34,11 +34,16 @@ Namespace Pneumatics
         End Property
 
         'Constructors
-        Public Sub New(iMap As IAirFlowRateMechanicalDemandMap, iTotalCycleTimeSeconds As Integer, iPulleyGearEfficiency As Single, Optional consumers As List(Of IPneumaticConsumer) = Nothing)
+        Public Sub New(iCompressor As IAirCompressor, iTotalCycleTimeSeconds As Integer, iPulleyGearEfficiency As Single, Optional consumers As List(Of IPneumaticConsumer) = Nothing)
 
-            _map = iMap
+            _compressor = iCompressor
             _pulleyGearEfficiency = iPulleyGearEfficiency
             _TotalCycleTimeSeconds = iTotalCycleTimeSeconds
+
+            If iCompressor.Initialise() <> True Then
+                Throw New ArgumentException("This Module requires a valid compressor")
+            End If
+
 
             If Not consumers Is Nothing AndAlso consumers.Count > 0 Then
                 _pneumaticConsumers = consumers
@@ -52,22 +57,10 @@ Namespace Pneumatics
         'Get Average Power Demand @ Crank From Pneumatics
         Public Function GetAveragePowerDemandAtCrankFromPneumatics() As Single
 
-            Dim flowPowerRatioSum As Single
             Dim averagePowerDemandPerCompressorUnitFlowRate As Single
             Dim effectiveTotalAirRequired As Single
 
-
-            For Each demand As IPneumaticConsumer In _pneumaticConsumers
-                flowPowerRatioSum += demand.VolumePerCycle / _map.GetPower(demand.VolumePerCycle)
-            Next
-
-            If flowPowerRatioSum = 0 OrElse PneumaticConsumers.Count() = 0 Then
-                averagePowerDemandPerCompressorUnitFlowRate = 0
-            Else
-                averagePowerDemandPerCompressorUnitFlowRate = flowPowerRatioSum / PneumaticConsumers.Count()
-            End If
-
-
+            averagePowerDemandPerCompressorUnitFlowRate = _compressor.GetAveragePowerDemandPerCompressorUnitFlowRate
 
             effectiveTotalAirRequired = GetTotalRequiredAirPerCompressorUnitDeliveryRate() / TotalCycleTimeSeconds
 

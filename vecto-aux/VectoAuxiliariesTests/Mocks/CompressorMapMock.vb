@@ -30,5 +30,14 @@ Namespace Mocks
         Public Function GetPowerCompressorOff(ByVal rpm As Integer) As Single Implements ICompressorMap.GetPowerCompressorOff
             Return 5.0
         End Function
+
+
+        Public Function GetAveragePowerDemandPerCompressorUnitFlowRate() As Single Implements ICompressorMap.GetAveragePowerDemandPerCompressorUnitFlowRate
+
+            Return 0.01
+
+        End Function
+
+
     End Class
 End Namespace

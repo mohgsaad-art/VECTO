@@ -87,10 +87,7 @@
     <Import Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Mocks\AirFlowRateMechanicalDemandMapMock.vb" />
     <Compile Include="Mocks\HVACMapMock.vb" />
-    <Compile Include="UnitTests\AverageHVACLoadDemandMAPTests.vb" />
-    <Compile Include="UnitTests\AveragePneumaticLoadMAPTests.vb" />
     <Compile Include="UnitTests\AveragePneumaticLoadDemandTests.vb" />
     <Compile Include="UnitTests\HVACMapTests.vb" />
     <Compile Include="UnitTests\PneumaticConsumerTests.vb" />
@@ -189,21 +186,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestFiles\testHvacMapWrongColumns.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestFiles\testPneumaticAirFlowRateToMechanicalDemandMap - InvalidKey.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestFiles\testPneumaticAirFlowRateToMechanicalDemandMap - NotEnoughElements.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestFiles\testPneumaticAirFlowRateToMechanicalDemandMap - InvalidElements.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestFiles\testPneumaticAirFlowRateToMechanicalDemandMap - NotEnoughRows.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestFiles\testPneumaticAirFlowRateToMechanicalDemandMap - GoodMap.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="TestFiles\HVACMap.vaux" />

@@ -36,6 +36,8 @@
             Me.txtMechanicalDemand = New System.Windows.Forms.TextBox()
             Me.lblElectricalDemand = New System.Windows.Forms.Label()
             Me.txtElectricalDemand = New System.Windows.Forms.TextBox()
+            Me.lblPulleyGearRatio = New System.Windows.Forms.Label()
+            Me.txtPulleyGearRatio = New System.Windows.Forms.TextBox()
             CType(Me.dgMapResults, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
@@ -44,17 +46,17 @@
             Me.dgMapResults.AllowUserToAddRows = False
             Me.dgMapResults.AllowUserToDeleteRows = False
             Me.dgMapResults.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-            Me.dgMapResults.Location = New System.Drawing.Point(14, 183)
+            Me.dgMapResults.Location = New System.Drawing.Point(14, 164)
             Me.dgMapResults.MultiSelect = False
             Me.dgMapResults.Name = "dgMapResults"
             Me.dgMapResults.ReadOnly = True
             Me.dgMapResults.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-            Me.dgMapResults.Size = New System.Drawing.Size(650, 218)
+            Me.dgMapResults.Size = New System.Drawing.Size(650, 245)
             Me.dgMapResults.TabIndex = 0
             '
             'btnSave
             '
-            Me.btnSave.Location = New System.Drawing.Point(497, 425)
+            Me.btnSave.Location = New System.Drawing.Point(497, 426)
             Me.btnSave.Name = "btnSave"
             Me.btnSave.Size = New System.Drawing.Size(75, 23)
             Me.btnSave.TabIndex = 1
@@ -63,7 +65,7 @@
             '
             'btnCancel
             '
-            Me.btnCancel.Location = New System.Drawing.Point(584, 425)
+            Me.btnCancel.Location = New System.Drawing.Point(584, 426)
             Me.btnCancel.Name = "btnCancel"
             Me.btnCancel.Size = New System.Drawing.Size(75, 23)
             Me.btnCancel.TabIndex = 2
@@ -100,22 +102,22 @@
             '
             'pnlSearchBar
             '
-            Me.pnlSearchBar.Location = New System.Drawing.Point(16, 114)
+            Me.pnlSearchBar.Location = New System.Drawing.Point(16, 95)
             Me.pnlSearchBar.Name = "pnlSearchBar"
             Me.pnlSearchBar.Size = New System.Drawing.Size(643, 59)
             Me.pnlSearchBar.TabIndex = 6
             '
             'txtPullyEfficiency
             '
-            Me.txtPullyEfficiency.Location = New System.Drawing.Point(107, 60)
+            Me.txtPullyEfficiency.Location = New System.Drawing.Point(102, 53)
             Me.txtPullyEfficiency.Name = "txtPullyEfficiency"
-            Me.txtPullyEfficiency.Size = New System.Drawing.Size(46, 20)
+            Me.txtPullyEfficiency.Size = New System.Drawing.Size(35, 20)
             Me.txtPullyEfficiency.TabIndex = 7
             '
             'lblPullyEfficiency
             '
             Me.lblPullyEfficiency.AutoSize = True
-            Me.lblPullyEfficiency.Location = New System.Drawing.Point(20, 63)
+            Me.lblPullyEfficiency.Location = New System.Drawing.Point(15, 57)
             Me.lblPullyEfficiency.Name = "lblPullyEfficiency"
             Me.lblPullyEfficiency.Size = New System.Drawing.Size(81, 13)
             Me.lblPullyEfficiency.TabIndex = 8
@@ -124,7 +126,7 @@
             'lblMechanicalDemand
             '
             Me.lblMechanicalDemand.AutoSize = True
-            Me.lblMechanicalDemand.Location = New System.Drawing.Point(175, 63)
+            Me.lblMechanicalDemand.Location = New System.Drawing.Point(291, 58)
             Me.lblMechanicalDemand.Name = "lblMechanicalDemand"
             Me.lblMechanicalDemand.Size = New System.Drawing.Size(132, 13)
             Me.lblMechanicalDemand.TabIndex = 9
@@ -132,7 +134,7 @@
             '
             'txtMechanicalDemand
             '
-            Me.txtMechanicalDemand.Location = New System.Drawing.Point(315, 59)
+            Me.txtMechanicalDemand.Location = New System.Drawing.Point(431, 54)
             Me.txtMechanicalDemand.Name = "txtMechanicalDemand"
             Me.txtMechanicalDemand.ReadOnly = True
             Me.txtMechanicalDemand.Size = New System.Drawing.Size(56, 20)
@@ -142,7 +144,7 @@
             'lblElectricalDemand
             '
             Me.lblElectricalDemand.AutoSize = True
-            Me.lblElectricalDemand.Location = New System.Drawing.Point(390, 62)
+            Me.lblElectricalDemand.Location = New System.Drawing.Point(493, 58)
             Me.lblElectricalDemand.Name = "lblElectricalDemand"
             Me.lblElectricalDemand.Size = New System.Drawing.Size(120, 13)
             Me.lblElectricalDemand.TabIndex = 11
@@ -150,18 +152,36 @@
             '
             'txtElectricalDemand
             '
-            Me.txtElectricalDemand.Location = New System.Drawing.Point(516, 59)
+            Me.txtElectricalDemand.Location = New System.Drawing.Point(619, 54)
             Me.txtElectricalDemand.Name = "txtElectricalDemand"
             Me.txtElectricalDemand.ReadOnly = True
             Me.txtElectricalDemand.Size = New System.Drawing.Size(26, 20)
             Me.txtElectricalDemand.TabIndex = 12
             Me.txtElectricalDemand.Text = "0"
             '
+            'lblPulleyGearRatio
+            '
+            Me.lblPulleyGearRatio.AutoSize = True
+            Me.lblPulleyGearRatio.Location = New System.Drawing.Point(139, 57)
+            Me.lblPulleyGearRatio.Name = "lblPulleyGearRatio"
+            Me.lblPulleyGearRatio.Size = New System.Drawing.Size(86, 13)
+            Me.lblPulleyGearRatio.TabIndex = 14
+            Me.lblPulleyGearRatio.Text = " Pully Gear Ratio"
+            '
+            'txtPulleyGearRatio
+            '
+            Me.txtPulleyGearRatio.Location = New System.Drawing.Point(227, 53)
+            Me.txtPulleyGearRatio.Name = "txtPulleyGearRatio"
+            Me.txtPulleyGearRatio.Size = New System.Drawing.Size(39, 20)
+            Me.txtPulleyGearRatio.TabIndex = 13
+            '
             'F_HVAC
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.ClientSize = New System.Drawing.Size(674, 460)
+            Me.ClientSize = New System.Drawing.Size(674, 458)
+            Me.Controls.Add(Me.lblPulleyGearRatio)
+            Me.Controls.Add(Me.txtPulleyGearRatio)
             Me.Controls.Add(Me.txtElectricalDemand)
             Me.Controls.Add(Me.lblElectricalDemand)
             Me.Controls.Add(Me.txtMechanicalDemand)
@@ -195,6 +215,8 @@
         Friend WithEvents txtMechanicalDemand As System.Windows.Forms.TextBox
         Friend WithEvents lblElectricalDemand As System.Windows.Forms.Label
         Friend WithEvents txtElectricalDemand As System.Windows.Forms.TextBox
+        Friend WithEvents lblPulleyGearRatio As System.Windows.Forms.Label
+        Friend WithEvents txtPulleyGearRatio As System.Windows.Forms.TextBox
 
     End Class
 

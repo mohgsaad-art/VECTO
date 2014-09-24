@@ -10,30 +10,30 @@ Namespace UnitTests
     Public Class AveragePneumaticLoadDemandTests
 
 
-        Private Const MAP_GOOD As String = "TestFiles\testPneumaticAirFlowRateToMechanicalDemandMap - GoodMap.csv"
-
-        Private map As IAirFlowRateMechanicalDemandMap
         Private noConsumers As New List(Of IPneumaticConsumer)
         Private threeConsumers As New List(Of IPneumaticConsumer)
+        Private compressor As IAirCompressor
 
 
 
         'Constructors
         Public Sub New()
 
+
+            compressor = New AirCompressor(New CompressorMapMock(False))
+
             initialise()
+
 
         End Sub
 
 
         Private Sub initialise()
 
-            map = New AirFlowRateMechanicalDemandMapMock()
-            map.Initialise()
-
             threeConsumers.Add(New PneumaticConsumer("Doors", 100))
             threeConsumers.Add(New PneumaticConsumer("HairDrier", 200))
             threeConsumers.Add(New PneumaticConsumer("BalloonInflater", 300))
+
 
         End Sub
 
@@ -41,11 +41,11 @@ Namespace UnitTests
         <Test>
         Public Sub AveragePowerDemandAtCrank_ThreeConsumers()
 
-            Dim target = New AveragePneumaticLoadDemand(map, 10, 0.5, threeConsumers)
+            Dim target = New AveragePneumaticLoadDemand(compressor, 10, 0.5, threeConsumers)
 
-            Dim result As Single = target.GetAveragePowerDemandAtCrankFromPneumatics()
+            Dim result As Single = Math.Round(target.GetAveragePowerDemandAtCrankFromPneumatics(), 2)
 
-            Dim expected As Single = 7666.666
+            Dim expected As Single = 1.2
 
             Assert.AreEqual(result, expected)
 
@@ -54,7 +54,7 @@ Namespace UnitTests
         <Test>
         Public Sub TotalAirDeliveryRate_ThreeConsumers()
 
-            Dim target = New AveragePneumaticLoadDemand(map, 10, 0.5, threeConsumers)
+            Dim target = New AveragePneumaticLoadDemand(compressor, 10, 0.5, threeConsumers)
 
             Dim result As Single = target.GetTotalRequiredAirPerCompressorUnitDeliveryRate()
 
@@ -67,11 +67,11 @@ Namespace UnitTests
         <Test>
         Public Sub TotalAirDeliveryRate_NoConsumers()
 
-            Dim target = New AveragePneumaticLoadDemand(map, 10, 0.5, Nothing)
+            Dim target = New AveragePneumaticLoadDemand(compressor, 10, 0.5, Nothing)
 
             Dim result As Single = target.GetTotalRequiredAirPerCompressorUnitDeliveryRate()
 
-            Dim expected As Single = 600
+            Dim expected As Single = 0.01
 
             Assert.AreEqual(result, 0)
 
@@ -80,7 +80,7 @@ Namespace UnitTests
         <Test>
         Public Sub AveragePowerDemandAtCrank_NoConsumers()
 
-            Dim target = New AveragePneumaticLoadDemand(map, 10, 0.5, Nothing)
+            Dim target = New AveragePneumaticLoadDemand(compressor, 10, 0.5, Nothing)
 
             Dim result As Single = target.GetAveragePowerDemandAtCrankFromPneumatics()
 
