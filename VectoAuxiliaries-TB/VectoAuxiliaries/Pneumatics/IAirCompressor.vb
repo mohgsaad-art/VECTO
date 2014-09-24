@@ -54,5 +54,13 @@
         ''' <returns></returns>
         ''' <remarks></remarks>
         Function GetPowerDifference(ByVal engineRpm As Integer) As Single
+
+        ''' <summary>
+        ''' Returns Average PoweDemand PeCompressor UnitFlowRate 
+        ''' </summary>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Function GetAveragePowerDemandPerCompressorUnitFlowRate() As Single
+
     End Interface
 End NameSpace
