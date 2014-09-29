@@ -21,7 +21,7 @@ Public Class F_VECTO
     Private Changed As Boolean = False
     Private pgDriver As TabPage
     Private pgDriverON As Boolean = True
-
+    'test Comment
     Private AuxDlog As F_VEH_AuxDlog
     Private EStechs As New List(Of String)
 
