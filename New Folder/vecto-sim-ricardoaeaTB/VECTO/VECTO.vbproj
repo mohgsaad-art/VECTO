@@ -439,6 +439,12 @@
   <ItemGroup>
     <None Include="Resources\F_VECTO.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\VectoAuxiliaries-TB\VectoAuxiliaries\VectoAuxiliaries.vbproj">
+      <Project>{fdeee460-0b8a-4ef6-8d9e-72f203a50f65}</Project>
+      <Name>VectoAuxiliaries</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
