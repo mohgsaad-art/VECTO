@@ -1079,7 +1079,7 @@ Partial Class F_VECTO
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
-    End Sub
+End Sub
     Friend WithEvents TabPgGen As System.Windows.Forms.TabPage
     Friend WithEvents TabControl1 As System.Windows.Forms.TabControl
     Friend WithEvents StatusStrip1 As System.Windows.Forms.StatusStrip
