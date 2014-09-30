@@ -1,0 +1,59 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "VECTO", "VECTO\VECTO.vbproj", "{AAC0F132-0A9F-45B3-B682-77AC9B24B352}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "VectoAuxiliaries", "..\VectoAuxiliaries-TB\VectoAuxiliaries\VectoAuxiliaries.vbproj", "{FDEEE460-0B8A-4EF6-8D9E-72F203A50F65}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "VectoAuxiliariesTests", "..\VectoAuxiliaries-TB\VectoAuxiliariesTests\VectoAuxiliariesTests.vbproj", "{6F31F8B2-6AB3-4F85-8AC9-D09ADCA6432D}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 4
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://tfs00.element.root.com:8080/tfs/tfscollection
+		SccProjectUniqueName0 = ..\\VectoAuxiliaries-TB\\VectoAuxiliaries\\VectoAuxiliaries.vbproj
+		SccProjectName0 = ../VectoAuxiliaries-TB/VectoAuxiliaries
+		SccLocalPath0 = ..\\VectoAuxiliaries-TB\\VectoAuxiliaries
+		SccProjectUniqueName1 = ..\\VectoAuxiliaries-TB\\VectoAuxiliariesTests\\VectoAuxiliariesTests.vbproj
+		SccProjectName1 = ../VectoAuxiliaries-TB/VectoAuxiliariesTests
+		SccLocalPath1 = ..\\VectoAuxiliaries-TB\\VectoAuxiliariesTests
+		SccLocalPath2 = .
+		SccProjectUniqueName3 = VECTO\\VECTO.vbproj
+		SccProjectName3 = VECTO
+		SccLocalPath3 = VECTO
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AAC0F132-0A9F-45B3-B682-77AC9B24B352}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAC0F132-0A9F-45B3-B682-77AC9B24B352}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAC0F132-0A9F-45B3-B682-77AC9B24B352}.Debug|x86.ActiveCfg = Debug|x86
+		{AAC0F132-0A9F-45B3-B682-77AC9B24B352}.Debug|x86.Build.0 = Debug|x86
+		{AAC0F132-0A9F-45B3-B682-77AC9B24B352}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAC0F132-0A9F-45B3-B682-77AC9B24B352}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AAC0F132-0A9F-45B3-B682-77AC9B24B352}.Release|x86.ActiveCfg = Release|x86
+		{AAC0F132-0A9F-45B3-B682-77AC9B24B352}.Release|x86.Build.0 = Release|x86
+		{FDEEE460-0B8A-4EF6-8D9E-72F203A50F65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDEEE460-0B8A-4EF6-8D9E-72F203A50F65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDEEE460-0B8A-4EF6-8D9E-72F203A50F65}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FDEEE460-0B8A-4EF6-8D9E-72F203A50F65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDEEE460-0B8A-4EF6-8D9E-72F203A50F65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDEEE460-0B8A-4EF6-8D9E-72F203A50F65}.Release|x86.ActiveCfg = Release|Any CPU
+		{6F31F8B2-6AB3-4F85-8AC9-D09ADCA6432D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F31F8B2-6AB3-4F85-8AC9-D09ADCA6432D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F31F8B2-6AB3-4F85-8AC9-D09ADCA6432D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6F31F8B2-6AB3-4F85-8AC9-D09ADCA6432D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F31F8B2-6AB3-4F85-8AC9-D09ADCA6432D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F31F8B2-6AB3-4F85-8AC9-D09ADCA6432D}.Release|x86.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
