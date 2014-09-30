@@ -210,7 +210,7 @@ Public Class cVECTO
                 If AuxEntryKV.Key = sKey.AUX.HVAC Then
                     dic.Add("PulleyGearEfficiencyHVAC", AuxEntryKV.Value.PulleyGearEfficiencyHVAC)
                     dic.Add("PulleyGearRatioHVAC", AuxEntryKV.Value.PulleyGearRatioHVAC)
-                    dic.Add("MapInputs", AuxEntryKV.Value.HVACMapInputs)
+                    dic.Add("HVACMapInputs", AuxEntryKV.Value.HVACMapInputs)
                 End If
 
                 'TODO - TB BIG CHANGE HERE ( PNEUMATIC SYSTEM )
@@ -329,16 +329,46 @@ Public Class cVECTO
 
                     AuxDef = True
 
+
+
+                    'TB 29/9/2014 Here is where we read the Auxilliary Augmented Properties where they appear.
+
+                    'Electrical System
                     If AuxID = sKey.AUX.ElecSys Then
                         If Not dic("TechList") Is Nothing Then
                             For Each str In dic("TechList")
                                 EStechs.Add(str)
                             Next
                         End If
+
                     End If
 
-                    'TB 29/9/2014 Here is where we read the Auxilliary Augmented Properties where they appear.
-                    '
+
+                    'HVAC System
+                    If AuxID = sKey.AUX.HVAC Then
+
+                      If Not dic("HVACMapInputs") Is Nothing Then
+                            AuxEntry.HVACMapInputs = Newtonsoft.Json.JsonConvert.DeserializeObject(dic("HVACMapInputs").ToString, GetType(Dictionary(Of String, Single)))
+                      End If
+
+                      If Not dic("PulleyGearRatioHVAC") Is Nothing Then
+                          AuxEntry.PulleyGearRatioHVAC = dic("PulleyGearRatioHVAC")
+                      End If
+
+                      If Not dic("PulleyGearEfficiencyHVAC") Is Nothing Then
+                          AuxEntry.PulleyGearEfficiencyHVAC = dic("PulleyGearEfficiencyHVAC")
+                      End If
+
+
+                    End If
+
+
+                    'Pneumatic Systems
+                    If AuxID = sKey.AUX.PneumSys Then
+
+
+                    End If
+
 
                 Next
             End If

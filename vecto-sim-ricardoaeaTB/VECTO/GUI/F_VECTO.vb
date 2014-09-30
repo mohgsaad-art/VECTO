@@ -363,6 +363,8 @@ Public Class F_VECTO
             If Not VEC0.ReadFile() Then
                 VEC0 = Nothing
                 MsgBox("Failed to load " & fFILE(file, True) & "!")
+
+
                 Exit Sub
             End If
         Catch ex As Exception
@@ -382,6 +384,9 @@ Public Class F_VECTO
                     'Continue...
             End Select
         End If
+
+
+
 
 
         'Update Form
@@ -416,11 +421,45 @@ Public Class F_VECTO
             Else
                 LV0.SubItems.Add(AuxEntryKV.Value.Path.OriginalPath)
 
-                '
-                'TB 29/9/2014 - This is where we read the contents of the auxilaries and add them to the respective properties of this form's class.
 
+               'TB 30/9/14 - Read Aux Path Entries and add to form.
+                If Not VEC0.AuxPaths(sKey.AUX.HVAC) Is Nothing Then
 
+                      If (Not VEC0.AuxPaths(sKey.AUX.HVAC).HVACMapInputs Is Nothing) Then
+                            HVACMapInputs = VEC0.AuxPaths(sKey.AUX.HVAC).HVACMapInputs
+                            Else
+                            HVACMapInputs = New Dictionary(Of String, Single)()
+                      End If
 
+                      PulleyGearEfficiencyHVAC = VEC0.AuxPaths(sKey.AUX.HVAC).PulleyGearEfficiencyHVAC
+                      PulleyGearRatioHVAC = VEC0.AuxPaths(sKey.AUX.HVAC).PulleyGearRatioHVAC
+
+                  End If
+
+                  If Not VEC0.AuxPaths(sKey.AUX.ElecSys) Is Nothing Then
+
+                      If (Not VEC0.AuxPaths(sKey.AUX.ElecSys).ConsumerListES Is Nothing) Then
+                          ConsumerListES = VEC0.AuxPaths(sKey.AUX.ElecSys).ConsumerListES
+                        Else
+                          ConsumerListES = New List(Of VectoAuxiliaries.Electrics.ElectricalConsumer)
+                      End If
+
+                      PulleyGearEfficiencyES = VEC0.AuxPaths(sKey.AUX.ElecSys).PulleyGearEfficiencyES
+                      PulleyGearRatioES = VEC0.AuxPaths(sKey.AUX.ElecSys).PulleyGearEfficiencyES
+                  End If
+
+                  If Not VEC0.AuxPaths(sKey.AUX.PneumSys).ConsumerListPS Is Nothing Then
+
+                    If (Not VEC0.AuxPaths(sKey.AUX.PneumSys).ConsumerListPS Is Nothing) Then
+                     ConsumerListPS = VEC0.AuxPaths(sKey.AUX.PneumSys).ConsumerListPS
+                    Else
+                     ConsumerListPS = New List(Of VectoAuxiliaries.Pneumatics.PneumaticConsumer)
+                    End If
+
+                      PulleyGearEfficiencyPS = VEC0.AuxPaths(sKey.AUX.ElecSys).PulleyGearEfficiencyPS
+                      PulleyGearRatioES = VEC0.AuxPaths(sKey.AUX.ElecSys).PulleyGearEfficiencyPS
+
+                  End If
 
             End If
             LvAux.Items.Add(LV0)
@@ -818,10 +857,58 @@ lbDlog:
             AuxDlog.TbPath.Text = SelItem.SubItems(2).Text
         End If
 
+
+        'Preset the DIALOG Details depending on the edit type.
+        AuxDlog.ListItems.Clear()
+        Select AuxDlog.TbID.Text
+
+            '**** ELECTRICS ****
+            Case sKey.AUX.ElecSys.ToString()
+             For Each item As VectoAuxiliaries.Electrics.ElectricalConsumer In ConsumerListES
+               AuxDlog.ListItems.Add(item.Name, item.Power)
+             Next
+
+            AuxDlog.txtPulleyGearEfficiency.Text = PulleyGearEfficiencyES.ToString()
+            AuxDlog.txtPulleyGearRatio.Text = PulleyGearRatioES.ToString()
+
+            '============================================================================================
+
+            '**** PNEUMATICS ****
+            Case sKey.AUX.PneumSys.ToString()
+             For Each item As VectoAuxiliaries.Pneumatics.PneumaticConsumer In ConsumerListPS
+               AuxDlog.ListItems.Add(item.Name, item.VolumePerCycle)
+             Next
+
+            '------Get Pully Values
+            AuxDlog.txtPulleyGearEfficiency.Text = PulleyGearEfficiencyPS.ToString()
+            AuxDlog.txtPulleyGearRatio.Text = PulleyGearRatioPS
+
+            '============================================================================================
+
+            '**** HVAC ****
+            Case sKey.AUX.HVAC.ToString()
+
+            '----- Get list of MAP Inputs
+
+            For Each item As KeyValuePair(Of String, Single) In HVACMapInputs
+             AuxDlog.ListItems.Add(item.Key, item.Value)
+            Next
+
+            '------Get Pully Values
+            AuxDlog.txtPulleyGearEfficiency.Text = PulleyGearEfficiencyHVAC.ToString()
+            AuxDlog.txtPulleyGearRatio.Text = PulleyGearRatioHVAC.ToString()
+
+            '============================================================================================
+
+
+            End Select
+
         If AuxDlog.ShowDialog = Windows.Forms.DialogResult.OK Then
 
-'Set New Systems Properties
 
+
+
+        'GET DIALOG DETAILS Dependend on type being edited.
 
         Select Case AuxDlog.TbID.Text
 
@@ -1350,4 +1437,7 @@ Public Sub UpdatePic()
 #End Region
 
 
+Private Sub LvAux_SelectedIndexChanged(sender As Object, e As EventArgs) Handles LvAux.SelectedIndexChanged
+
+End Sub
 End Class
