@@ -181,6 +181,7 @@
     </Compile>
     <Compile Include="Input Files\cAux.vb" />
     <Compile Include="Input Files\cAuxEntry.vb" />
+    <Compile Include="Input Files\cAuxEntryPS.vb" />
     <Compile Include="Input Files\cENG.vb" />
     <Compile Include="Input Files\cGBX.vb" />
     <Compile Include="cConfig.vb" />

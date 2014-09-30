@@ -41,6 +41,9 @@ Public Class F_VEH_AuxDlog
 
     End Sub
 
+
+
+
     'Initialise form
     Private Sub F_VEH_AuxDlog_Load(sender As Object, e As System.EventArgs) Handles Me.Load
         Me.Text = CbType.Text
