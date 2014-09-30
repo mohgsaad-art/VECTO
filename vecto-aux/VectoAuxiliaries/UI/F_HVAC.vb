@@ -10,6 +10,8 @@ Namespace UI
         Private _cfgPath As String
         Private _map As HVACMap
         Private _mapFilter As List(Of String) = New List(Of String)()
+        Private _selectedInputs As New Dictionary(Of String, String)
+
 
         'Properties
         Public Property MapPath As String
@@ -24,6 +26,21 @@ Namespace UI
 
 
         End Property
+
+        Public Property Inputs As Dictionary(Of String, String)
+
+            Get
+                Return _selectedInputs
+            End Get
+
+            Private Set(value As Dictionary(Of String, String))
+                _selectedInputs = value
+            End Set
+
+        End Property
+
+
+
 
         'Helpers
         Private Sub BuildSearchBar()
@@ -113,6 +130,24 @@ Namespace UI
         End Sub
 
 
+        'Constructors
+        Public Sub New()
+
+            ' This call is required by the designer.
+            InitializeComponent()
+
+            ' Add any initialization after the InitializeComponent() call.
+
+        End Sub
+
+        Public Sub New(ByVal iMapPath As String)
+
+            Me.New()
+
+            MapPath = iMapPath
+
+        End Sub
+
         'Event Handlers
         '**************
         'Programatically attached when filer is built
@@ -147,43 +182,121 @@ Namespace UI
         End Sub
         Private Sub F_HVAC_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
+            'If we have a map on load lets try and get the information
+            If (MapPath.Length <> 0) Then
+
+                GetMapData()
+
+            End If
+
 
         End Sub
+
+
+        Private Sub GetMapData()
+
+            'Dim openFileDialog1 = New OpenFileDialog()
+
+            'openFileDialog1.InitialDirectory = "."
+            'openFileDialog1.Filter = "Map Files (*.vaux)|*.vaux"
+            'openFileDialog1.FilterIndex = 1
+            'openFileDialog1.RestoreDirectory = True
+
+            'openFileDialog1.ShowDialog(Me)
+            'MapPath = openFileDialog1.FileName
+
+            'openFileDialog1.Dispose()
+
+            Try
+
+                _map = New HVACMap(_mapPath)
+                _map.Initialise()
+
+                _mapFilter.Clear()
+                For Each item As KeyValuePair(Of String, HVACMapParameter) In _map.GetMapHeaders
+                    _mapFilter.Add("")
+                Next
+
+                BuildSearchBar()
+
+            Catch ex As Exception
+
+                MessageBox.Show("An error has occured while trying to read the map file selected ")
+                'TODO:Log this error message.
+                DialogResult = Windows.Forms.DialogResult.Abort
+                Me.Close()
+
+            End Try
+
+
+
+
+
+        End Sub
+
+
+
         Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
 
+            DialogResult = Windows.Forms.DialogResult.OK
 
         End Sub
         Private Sub btnBrowseMap_Click(sender As Object, e As EventArgs) Handles btnBrowseMap.Click
 
-            Dim openFileDialog1 = New OpenFileDialog()
 
-            openFileDialog1.InitialDirectory = "."
-            openFileDialog1.Filter = "Map Files (*.vaux)|*.vaux"
-            openFileDialog1.FilterIndex = 1
-            openFileDialog1.RestoreDirectory = True
-
-            openFileDialog1.ShowDialog(Me)
-            MapPath = openFileDialog1.FileName
-
-            openFileDialog1.Dispose()
-
-            _map = New HVACMap(_mapPath)
-
-            _map.Initialise()
-
-            _mapFilter.Clear()
-            For Each item As KeyValuePair(Of String, HVACMapParameter) In _map.GetMapHeaders
-                _mapFilter.Add("")
-            Next
-
-            BuildSearchBar()
 
         End Sub
 
 
         Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
+
+            DialogResult = Windows.Forms.DialogResult.Cancel
             Me.Close()
+
         End Sub
+
+
+        Private Sub F_HVAC_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+
+            'If closing as a result of OK being pressed
+            Select DialogResult
+
+
+                Case Windows.Forms.DialogResult.OK
+
+                    If (Me.dgMapResults.Rows.Count > 0 AndAlso Me.dgMapResults.SelectedRows.Count = 1) Then
+
+                        Inputs.Clear()
+
+                        'Build a list of Inputs
+                        For Each p As HVACMapParameter In _map.MapHeaders.OrderBy(Function(x) x.Value.OrdinalPosition).Select(Function(x) x.Value)
+                            Dim val As String = Me.dgMapResults.SelectedRows(0).Cells(p.OrdinalPosition).Value.ToString()
+                            If Not p.IsOutput Then
+                                Inputs.Add(p.Name, val)
+                            End If
+                        Next
+                    Else
+                        'Cancel the event as nothing has been selected althoug the users has pressed the ok button indicating a submit.
+                        MessageBox.Show("You do not have a selected row.")
+                        e.Cancel = True
+                    End If
+
+                Case Else
+                    Inputs.Clear()
+                    txtMapFile.Text = String.Empty
+
+
+
+            End Select
+
+
+
+
+
+
+
+        End Sub
+
     End Class
 
 

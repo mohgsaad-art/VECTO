@@ -30,14 +30,10 @@
             Me.txtMapFile = New System.Windows.Forms.TextBox()
             Me.lblMapFile = New System.Windows.Forms.Label()
             Me.pnlSearchBar = New System.Windows.Forms.Panel()
-            Me.txtPullyEfficiency = New System.Windows.Forms.TextBox()
-            Me.lblPullyEfficiency = New System.Windows.Forms.Label()
             Me.lblMechanicalDemand = New System.Windows.Forms.Label()
             Me.txtMechanicalDemand = New System.Windows.Forms.TextBox()
             Me.lblElectricalDemand = New System.Windows.Forms.Label()
             Me.txtElectricalDemand = New System.Windows.Forms.TextBox()
-            Me.lblPulleyGearRatio = New System.Windows.Forms.Label()
-            Me.txtPulleyGearRatio = New System.Windows.Forms.TextBox()
             CType(Me.dgMapResults, System.ComponentModel.ISupportInitialize).BeginInit()
             Me.SuspendLayout()
             '
@@ -107,22 +103,6 @@
             Me.pnlSearchBar.Size = New System.Drawing.Size(643, 59)
             Me.pnlSearchBar.TabIndex = 6
             '
-            'txtPullyEfficiency
-            '
-            Me.txtPullyEfficiency.Location = New System.Drawing.Point(102, 53)
-            Me.txtPullyEfficiency.Name = "txtPullyEfficiency"
-            Me.txtPullyEfficiency.Size = New System.Drawing.Size(35, 20)
-            Me.txtPullyEfficiency.TabIndex = 7
-            '
-            'lblPullyEfficiency
-            '
-            Me.lblPullyEfficiency.AutoSize = True
-            Me.lblPullyEfficiency.Location = New System.Drawing.Point(15, 57)
-            Me.lblPullyEfficiency.Name = "lblPullyEfficiency"
-            Me.lblPullyEfficiency.Size = New System.Drawing.Size(81, 13)
-            Me.lblPullyEfficiency.TabIndex = 8
-            Me.lblPullyEfficiency.Text = " Pully Efficiency"
-            '
             'lblMechanicalDemand
             '
             Me.lblMechanicalDemand.AutoSize = True
@@ -159,35 +139,15 @@
             Me.txtElectricalDemand.TabIndex = 12
             Me.txtElectricalDemand.Text = "0"
             '
-            'lblPulleyGearRatio
-            '
-            Me.lblPulleyGearRatio.AutoSize = True
-            Me.lblPulleyGearRatio.Location = New System.Drawing.Point(139, 57)
-            Me.lblPulleyGearRatio.Name = "lblPulleyGearRatio"
-            Me.lblPulleyGearRatio.Size = New System.Drawing.Size(86, 13)
-            Me.lblPulleyGearRatio.TabIndex = 14
-            Me.lblPulleyGearRatio.Text = " Pully Gear Ratio"
-            '
-            'txtPulleyGearRatio
-            '
-            Me.txtPulleyGearRatio.Location = New System.Drawing.Point(227, 53)
-            Me.txtPulleyGearRatio.Name = "txtPulleyGearRatio"
-            Me.txtPulleyGearRatio.Size = New System.Drawing.Size(39, 20)
-            Me.txtPulleyGearRatio.TabIndex = 13
-            '
             'F_HVAC
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
             Me.ClientSize = New System.Drawing.Size(674, 458)
-            Me.Controls.Add(Me.lblPulleyGearRatio)
-            Me.Controls.Add(Me.txtPulleyGearRatio)
             Me.Controls.Add(Me.txtElectricalDemand)
             Me.Controls.Add(Me.lblElectricalDemand)
             Me.Controls.Add(Me.txtMechanicalDemand)
             Me.Controls.Add(Me.lblMechanicalDemand)
-            Me.Controls.Add(Me.lblPullyEfficiency)
-            Me.Controls.Add(Me.txtPullyEfficiency)
             Me.Controls.Add(Me.pnlSearchBar)
             Me.Controls.Add(Me.lblMapFile)
             Me.Controls.Add(Me.txtMapFile)
@@ -209,14 +169,10 @@
         Friend WithEvents txtMapFile As System.Windows.Forms.TextBox
         Friend WithEvents lblMapFile As System.Windows.Forms.Label
         Friend WithEvents pnlSearchBar As System.Windows.Forms.Panel
-        Friend WithEvents txtPullyEfficiency As System.Windows.Forms.TextBox
-        Friend WithEvents lblPullyEfficiency As System.Windows.Forms.Label
         Friend WithEvents lblMechanicalDemand As System.Windows.Forms.Label
         Friend WithEvents txtMechanicalDemand As System.Windows.Forms.TextBox
         Friend WithEvents lblElectricalDemand As System.Windows.Forms.Label
         Friend WithEvents txtElectricalDemand As System.Windows.Forms.TextBox
-        Friend WithEvents lblPulleyGearRatio As System.Windows.Forms.Label
-        Friend WithEvents txtPulleyGearRatio As System.Windows.Forms.TextBox
 
     End Class
 
