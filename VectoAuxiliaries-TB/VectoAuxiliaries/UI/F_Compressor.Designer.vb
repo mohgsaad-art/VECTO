@@ -41,7 +41,7 @@ Namespace UI
             'lblPullyEfficiency
             '
             Me.lblPullyEfficiency.AutoSize = True
-            Me.lblPullyEfficiency.Location = New System.Drawing.Point(6, 63)
+            Me.lblPullyEfficiency.Location = New System.Drawing.Point(6, 116)
             Me.lblPullyEfficiency.Name = "lblPullyEfficiency"
             Me.lblPullyEfficiency.Size = New System.Drawing.Size(87, 13)
             Me.lblPullyEfficiency.TabIndex = 21
@@ -49,7 +49,7 @@ Namespace UI
             '
             'txtPullyEfficiency
             '
-            Me.txtPullyEfficiency.Location = New System.Drawing.Point(105, 60)
+            Me.txtPullyEfficiency.Location = New System.Drawing.Point(105, 113)
             Me.txtPullyEfficiency.Name = "txtPullyEfficiency"
             Me.txtPullyEfficiency.Size = New System.Drawing.Size(46, 20)
             Me.txtPullyEfficiency.TabIndex = 20
@@ -84,7 +84,7 @@ Namespace UI
             '
             'btnCancel
             '
-            Me.btnCancel.Location = New System.Drawing.Point(518, 113)
+            Me.btnCancel.Location = New System.Drawing.Point(518, 166)
             Me.btnCancel.Name = "btnCancel"
             Me.btnCancel.Size = New System.Drawing.Size(75, 23)
             Me.btnCancel.TabIndex = 15
@@ -93,7 +93,7 @@ Namespace UI
             '
             'btnSave
             '
-            Me.btnSave.Location = New System.Drawing.Point(431, 113)
+            Me.btnSave.Location = New System.Drawing.Point(431, 166)
             Me.btnSave.Name = "btnSave"
             Me.btnSave.Size = New System.Drawing.Size(75, 23)
             Me.btnSave.TabIndex = 14
@@ -104,7 +104,7 @@ Namespace UI
             '
             Me.lblMapLabel.AutoSize = True
             Me.lblMapLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-            Me.lblMapLabel.Location = New System.Drawing.Point(59, 25)
+            Me.lblMapLabel.Location = New System.Drawing.Point(59, 78)
             Me.lblMapLabel.Name = "lblMapLabel"
             Me.lblMapLabel.Size = New System.Drawing.Size(34, 13)
             Me.lblMapLabel.TabIndex = 28
@@ -112,7 +112,7 @@ Namespace UI
             '
             'txtMapPath
             '
-            Me.txtMapPath.Location = New System.Drawing.Point(105, 22)
+            Me.txtMapPath.Location = New System.Drawing.Point(105, 75)
             Me.txtMapPath.Name = "txtMapPath"
             Me.txtMapPath.ReadOnly = True
             Me.txtMapPath.Size = New System.Drawing.Size(397, 20)
@@ -121,7 +121,7 @@ Namespace UI
             'btnBrowsePowerMap
             '
             Me.btnBrowsePowerMap.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-            Me.btnBrowsePowerMap.Location = New System.Drawing.Point(512, 22)
+            Me.btnBrowsePowerMap.Location = New System.Drawing.Point(512, 75)
             Me.btnBrowsePowerMap.Name = "btnBrowsePowerMap"
             Me.btnBrowsePowerMap.Size = New System.Drawing.Size(75, 23)
             Me.btnBrowsePowerMap.TabIndex = 26
@@ -131,7 +131,7 @@ Namespace UI
             'lblPulleyGearRatio
             '
             Me.lblPulleyGearRatio.AutoSize = True
-            Me.lblPulleyGearRatio.Location = New System.Drawing.Point(163, 64)
+            Me.lblPulleyGearRatio.Location = New System.Drawing.Point(163, 117)
             Me.lblPulleyGearRatio.Name = "lblPulleyGearRatio"
             Me.lblPulleyGearRatio.Size = New System.Drawing.Size(81, 13)
             Me.lblPulleyGearRatio.TabIndex = 30
@@ -139,7 +139,7 @@ Namespace UI
             '
             'txtPulleyEfficiency
             '
-            Me.txtPulleyEfficiency.Location = New System.Drawing.Point(250, 61)
+            Me.txtPulleyEfficiency.Location = New System.Drawing.Point(250, 114)
             Me.txtPulleyEfficiency.Name = "txtPulleyEfficiency"
             Me.txtPulleyEfficiency.Size = New System.Drawing.Size(41, 20)
             Me.txtPulleyEfficiency.TabIndex = 29
@@ -148,7 +148,7 @@ Namespace UI
             '
             Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
             Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-            Me.ClientSize = New System.Drawing.Size(602, 147)
+            Me.ClientSize = New System.Drawing.Size(652, 272)
             Me.Controls.Add(Me.lblPulleyGearRatio)
             Me.Controls.Add(Me.txtPulleyEfficiency)
             Me.Controls.Add(Me.lblMapLabel)
