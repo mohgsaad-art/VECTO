@@ -1,19 +1,19 @@
 ﻿Namespace Electrics
     Public Interface IElectricalConsumer
-        ''' <summary>
-        ''' Name of the Consumer
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        ReadOnly Property Name() As String
 
-        ''' <summary>
-        ''' Power Consumprion of Consumer (Watts)
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        ReadOnly Property Power() As Single
+
+         Property Category As String
+         Property ConsumerName As String
+         Property BaseVehicle As Boolean
+         Property NominalConsumptionAmps As Single
+         Property PhaseIdle_TractionOn As Single
+         Property NumberInActualVehicle As Integer
+         Property PowerNetVoltage As Single
+
+         Property AvgConsumptionAmps As Single
+
+         Function TotalAvgConumptionAmps(Optional PhaseIdle_TractionOnBasedOnCycle As Single = Nothing) As Single
+
+
     End Interface
 End Namespace
