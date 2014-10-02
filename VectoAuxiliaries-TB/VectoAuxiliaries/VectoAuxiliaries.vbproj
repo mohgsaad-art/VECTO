@@ -69,6 +69,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Electrics\ElectricalConsumerList.vb" />
     <Compile Include="Electrics\HVACInputs.vb" />
     <Compile Include="Electrics\IHVACInputs.vb" />
     <Compile Include="Hvac\HVACMapParameter.vb" />
