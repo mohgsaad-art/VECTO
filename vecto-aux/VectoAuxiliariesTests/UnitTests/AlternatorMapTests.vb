@@ -73,65 +73,58 @@ Namespace UnitTests
 
         <Test()>
         Public Sub GetEfficiencyKeyPassedTest()
-            Dim target As AlternatorMap = GetInitialisedMap()
-            Dim expected As Single = 0.1
-            target.GetEfficiency(100)
-            Dim value As Single = target.GetEfficiency(100)
-            Assert.AreEqual(expected, value)
+            'Dim target As AlternatorMap = GetInitialisedMap()
+            'Dim expected As Single = 0.1
+            'target.GetEfficiency()
+            'Dim value As Single = target.GetEfficiency(100)
+            'Assert.AreEqual(expected, value)
 
-            expected = 0.9
-            value = target.GetEfficiency(900)
-            Assert.AreEqual(expected, value)
+            'expected = 0.9
+            'value = target.GetEfficiency(900)
+            'Assert.AreEqual(expected, value)
+
+            Assert.Fail()
         End Sub
 
         <Test()>
         Public Sub GetEfficiencyInterpolationTest()
-            Dim target As AlternatorMap = GetInitialisedMap()
-            Dim expected As Single = 0.15
-            Dim value As Single = target.GetEfficiency(150)
-            Assert.AreEqual(expected, value)
+            'Dim target As AlternatorMap = GetInitialisedMap()
+            'Dim expected As Single = 0.15
+            'Dim value As Single = target.GetEfficiency(150)
+            'Assert.AreEqual(expected, value)
 
-            expected = 0.85
-            value = target.GetEfficiency(850)
-            Assert.AreEqual(expected, value)
+            'expected = 0.85
+            'value = target.GetEfficiency(850)
+            'Assert.AreEqual(expected, value)
+
+            Assert.Fail()
         End Sub
 
         <TestCase(0)>
         <TestCase(1000)>
         <ExpectedException("System.ArgumentOutOfRangeException")> _
         Public Sub GetEfficiencyRpmOutOfRangeThrowsExceptionTest(ByVal rpm As Integer)
-            Dim target As AlternatorMap = GetInitialisedMap()
-            Dim value As Single = target.GetEfficiency(rpm)
-        End Sub
+            'Dim target As AlternatorMap = GetInitialisedMap()
+            'Dim value As Single = target.GetEfficiency(rpm)
 
-
-        <Test()>
-        Public Sub GetPowerKeyPassedTest()
-            Dim target As AlternatorMap = GetInitialisedMap()
-            Dim expected As Single = 250.0
-            Dim value As Single = target.GetMaximumRegenerationPower(100)
-            Assert.AreEqual(expected, value)
-
-            expected = 0.9
-            value = target.GetEfficiency(900)
-            Assert.AreEqual(expected, value)
-        End Sub
-
-        <Test()>
-        Public Sub GetPowerInterpolationTest()
-            Dim target As AlternatorMap = GetInitialisedMap()
-            Dim expected As Single = 375.0
-            Dim value As Single = target.GetMaximumRegenerationPower(150)
-            Assert.AreEqual(expected, value)
+            Assert.Fail()
 
         End Sub
+
+
+
+
+
 
         <TestCase(0)>
         <TestCase(1000)>
         <ExpectedException("System.ArgumentOutOfRangeException")>
         Public Sub GetPowerRpmOutOfRangeThrowsExceptionTest(ByVal rpm As Integer)
-            Dim target As AlternatorMap = GetInitialisedMap()
-            Dim value As Single = target.GetMaximumRegenerationPower(rpm)
+            'Dim target As AlternatorMap = GetInitialisedMap()
+            'Dim value As Single = target.GetMaximumRegenerationPower(rpm)
+
+            Assert.Fail()
+
         End Sub
 
 #Region "Helpers"

@@ -5,18 +5,28 @@ Namespace Mocks
     Public Class ElectricalConsumerMock
         Implements IElectricalConsumer
 
-        Public ReadOnly Property Name() As String Implements IElectricalConsumer.Name
-            Get
-                Return "TestName"
-            End Get
-        End Property
+        Public Property AvgConsumptionAmps As Single Implements IElectricalConsumer.AvgConsumptionAmps
 
-        Public ReadOnly Property Power() As Single Implements IElectricalConsumer.Power
-            Get
-                Return 100.0
-            End Get
-        End Property
+        Public Property BaseVehicle As Boolean Implements IElectricalConsumer.BaseVehicle
 
-    End Class
+        Public Property Category As String Implements IElectricalConsumer.Category
+
+        Public Property ConsumerName As String Implements IElectricalConsumer.ConsumerName
+
+        Public Property NominalConsumptionAmps As Single Implements IElectricalConsumer.NominalConsumptionAmps
+
+        Public Property NumberInActualVehicle As Integer Implements IElectricalConsumer.NumberInActualVehicle
+
+        Public Property PhaseIdle_TractionOn As Single Implements IElectricalConsumer.PhaseIdle_TractionOn
+
+        Public Property PowerNetVoltage As Single Implements IElectricalConsumer.PowerNetVoltage
+
+        Public Function TotalAvgConumptionAmps(Optional PhaseIdle_TractionOnBasedOnCycle As Single = 0.0) As Single Implements IElectricalConsumer.TotalAvgConumptionAmps
+         Return 9
+         'TODO: Check
+        End Function
+
+
+        End Class
 
 End Namespace
