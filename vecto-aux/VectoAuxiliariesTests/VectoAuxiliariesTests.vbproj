@@ -195,7 +195,7 @@
     <Content Include="TestFiles\TestHvacMap - MissingHeader.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\testAlternatoMap.csv">
+    <Content Include="TestFiles\testAlternatorMap.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
