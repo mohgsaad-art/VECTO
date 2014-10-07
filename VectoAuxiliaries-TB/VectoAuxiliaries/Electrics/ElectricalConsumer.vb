@@ -21,9 +21,15 @@
 
         Public Function TotalAvgConumptionAmps(Optional PhaseIdle_TractionOnBasedOnCycle As Single = 0.0) As Single Implements IElectricalConsumer.TotalAvgConumptionAmps
 
-        'TODO'
+        'This set means we dont have to add it here.
+        If BaseVehicle Then Return 0
 
-        Throw New NotImplementedException()
+        '
+         If "Doors per Door" Then
+             Return PhaseIdle_TractionOnBasedOnCycle * NominalConsumptionAmps * NumberInActualVehicle
+         Else
+             Return PhaseIdle_TractionOn * NominalConsumptionAmps * NumberInActualVehicle
+         End If
 
 
         End Function
@@ -37,6 +43,7 @@
             If PhaseIdle_TractionOn < 0 Or PhaseIdle_TractionOn > 1 Then Throw New ArgumentException("PhaseIdle_TractionOn must have a value between 0 and 1")
             If NominalConsumptionAmps < 0 Or NominalConsumptionAmps > 1 Then Throw New ArgumentException("NominalConsumptionAmps must have a value between 0 and 1")
             If PowerNetVoltage < 6 Or PowerNetVoltage > 48 Then Throw New ArgumentException("PowerNetVoltage must have a value between 6 and 48")
+
 
             'Good, now assign.
             Me.BaseVehicle = BaseVehicle
