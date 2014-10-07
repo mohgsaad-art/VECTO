@@ -2,30 +2,20 @@
 
     Public Class AverageElectricalDemand
 
-        Private _alternator As IAlternator
+        Public _powerNetVoltage As Single = 26.3
+
         ''' <summary>
         ''' Alternator Model
         ''' </summary>
         ''' <value></value>
         ''' <returns></returns>
-        Public ReadOnly Property Alternator() As IAlternator
-            Get
-                Return _alternator
-            End Get
-        End Property
+        'Public ReadOnly Property Alternator() As IAlternator
+        '    Get
+        '        Return _alternator
+        '    End Get
+        'End Property
 
-        Private _electricalConsumers As List(Of IElectricalConsumer)
-        ''' <summary>
-        ''' List of Electrical Consumers
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public ReadOnly Property ElectricalConsumers() As List(Of IElectricalConsumer)
-            Get
-                Return _electricalConsumers
-            End Get
-        End Property
+        Private _electricalConsumers As IElectricalConsumerList
 
         ''' <summary>
         ''' Creates a new instance of the AverageElectricalDemand class
@@ -33,8 +23,8 @@
         ''' <param name="alternator">Alternator Models</param>
         ''' <param name="electricalConsumers">List of Electrical Consumers</param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal alternator As IAlternator, ByVal electricalConsumers As List(Of IElectricalConsumer))
-            _alternator = alternator
+        Public Sub New(ByVal electricalConsumers As IElectricalConsumerList, powerNetVoltage As Single)
+            _powerNetVoltage = powerNetVoltage
             _electricalConsumers = electricalConsumers
         End Sub
 
@@ -44,7 +34,7 @@
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function Initialise() As Boolean
-            Return _alternator.Initialise()
+
         End Function
 
         ''' <summary>
@@ -53,23 +43,21 @@
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function GetAveragePowerDemandAtAlternator() As Single
-            Dim total As Single = (From ctx In ElectricalConsumers
-                    Select ctx.Power).Sum()
-            Return total
+
+            ' Return _electricalConsumers.GetTotalAverageDemandAmps()
+
+            Return 5000 ' TODO:FIX THIS
         End Function
 
-        ''' <summary>
-        ''' GEts the total average power at the crank for all electrical consumers as a given engine rpm
-        ''' </summary>
-        ''' <param name="engineRpm"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
+
         Public Function GetAveragePowerAtCrank(ByVal engineRpm As Integer) As Single
             Dim elecPower As Single = GetAveragePowerDemandAtAlternator()
-            Dim alternatorEfficiency As Single = _alternator.GetEfficiency(engineRpm)
+            Dim alternatorEfficiency As Single = 0 '_alternator.GetEfficiency(engineRpm) TODO: Fix THis.
             Dim demandFromAlternator As Single = elecPower / alternatorEfficiency
-            Dim powerAtCrank As Single = demandFromAlternator / _alternator.PulleyGearEfficiency
+            Dim powerAtCrank As Single = 0 ' TODO : FIX THIS demandFromAlternator / _alternator.PulleyGearEfficiency
             Return powerAtCrank
         End Function
+
+
     End Class
 End Namespace
