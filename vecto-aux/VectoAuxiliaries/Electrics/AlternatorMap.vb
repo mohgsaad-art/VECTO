@@ -2,9 +2,6 @@
 
 Namespace Electrics
 
-
-
-
     ''' <summary>
     ''' Alternator Efficiency Map - 
     ''' </summary>
@@ -86,30 +83,29 @@ Namespace Electrics
         ''' <remarks></remarks>
         Public Function GetEfficiency(ByVal rpm As Integer, ByVal amps As Integer) As AlternatorMapValues
 
-            Dim results As AlternatorMapValues
+
             Dim key As New AlternatorMapKey(amps, rpm)
 
-            Return results
+            Return GetValueOrInterpolate(key)
   
         End Function
-
 
 
         ''' <summary>
         ''' Returns a AlternatorMapValues instance containing the entries at a given key, or new interpolated values
         ''' </summary>
         ''' <returns>AlternatorMapValues</returns>
-        ''' <remarks>Throws exception if rpm are outside map</remarks>
+        ''' <remarks>Throws exception if Rpm or Amps are outside the map </remarks>
         Private Function GetValueOrInterpolate(mapKey As AlternatorMapKey) As AlternatorMapValues
             'check the rpm is within the map
 
 
-            'Dim min As AlternatorMapKey = map.Keys.Min()
-            'Dim max As AlternatorMapKey = map.Keys.Max()
+            Dim min As AlternatorMapKey = map.Keys.Min()
+            Dim max As AlternatorMapKey = map.Keys.Max()
 
-            'If mapKey.amps < 0 OrElse mapKey.amps > max.amps OrElse mapKey.rpm < 0 OrElse mapKey.rpm > max.rpm Then
-            '    Throw New ArgumentOutOfRangeException(String.Format("Extrapolation - Amp/Rpm Values should should be in the range {0} to {1}", min.ToString(), max.ToString()))
-            'End If
+            If mapKey.amps < min.amps Or mapKey.amps > max.amps Or mapKey.rpm < min.rpm Or mapKey.rpm > max.rpm Then
+                Throw New ArgumentOutOfRangeException(String.Format("Extrapolation - Amp/Rpm Values should should be in the range {0} to {1}", min.ToString(), max.ToString()))
+            End If
 
             'Check if the rpm is in the current memo
             'If supplied present key, we can just return the values
@@ -124,6 +120,7 @@ Namespace Electrics
             Dim ampsPre As AlternatorMapValues
             Dim ampsPost As AlternatorMapValues
 
+            'Pre and Post Data Points
             Dim intRpmPre As Integer
             Dim intRpmPost As Integer
             Dim intAmpsPre As Integer
@@ -140,8 +137,18 @@ Namespace Electrics
             ampsPre = map(New AlternatorMapKey(intAmpsPost, intRpmPre))
             ampsPost = map(New AlternatorMapKey(intAmpsPost, intRpmPost))
 
-
-            '**********     A-B  Efficiency  ( Lower Amps )  ************
+            '*************************************************************************
+            'The following biaxial linear interpolation formula was provided
+            'by Engineering. See example below.
+            '
+            '       1500   2000   4000
+            '   10             A-B              <=Interpolated Horizontally
+            '              (C-D)-(A-B)          <=Interpolated Virtically
+            '   27             C-D              <=Interpolated Horizontally
+            '
+            '************************************************************************
+            '
+            '***    A-B  Efficiency  ( Lower Using Lower Amps ) 
             'get the delta values for rpm and the values
              Dim dRpm As Integer = intRpmPost - intRpmPre
              Dim dRpmEfficiency As Single = rpmPost.Efficiency - rpmPre.Efficiency
@@ -152,7 +159,7 @@ Namespace Electrics
             'calculate the new values
              Dim AB_Efficiency As Single = ((mapKey.rpm - intRpmPre) * rpmEfficiencySlope) + rpmPre.Efficiency
 
-             '**********     C-D Efficiency  ( Higher Amps )  ************
+             '***    C-D Efficiency  ( Using Higher Amps )  
             'get the delta values for rpm and the values
              dRpm = intRpmPost - intRpmPre
              dRpmEfficiency = ampsPost.Efficiency - ampsPre.Efficiency
@@ -176,30 +183,16 @@ Namespace Electrics
              Dim ABCDEfficiency As Single = ((mapKey.amps - intAmpsPre) * ampsEfficiencySlope) + AB_Efficiency
 
 
-            Return New AlternatorMapValues(ABCDEfficiency)
+             Return New AlternatorMapValues(ABCDEfficiency)
 
 
 
         End Function
 
-        ''' <summary>
-        ''' Encapsulates Efficiency and Maximum Regeneration Power values for Alternator
-        ''' </summary>
-       'Public Structure AlternatorMapValues
 
-
-       '     Public ReadOnly Efficiency As Single
-
-
-
-       '     Public Sub New(ByVal efficiency As Single)
-       '         Me.Efficiency = efficiency
-       '     End Sub
-
-       ' End Structure
 
        Private Structure AlternatorMapKey
-
+             Implements IComparable
 
            Public amps As Integer
            Public rpm As Integer
@@ -219,6 +212,37 @@ Namespace Electrics
           Return "Amps:" & amps & " / " & "Rpm:" & rpm
 
         End Function
+
+         Public Function CompareTo(obj As Object) As Integer Implements IComparable.CompareTo
+
+
+           Dim compared As AlternatorMapKey = CType(obj, AlternatorMapKey)
+
+           Dim otherAlternatorMapKey As AlternatorMapKey = CType(obj, AlternatorMapKey)
+
+           'Same Place
+           If (Me.amps = otherAlternatorMapKey.amps AndAlso Me.rpm = otherAlternatorMapKey.rpm) Then
+
+            Return 0
+
+           End If
+
+           'smaller
+           If (Me.amps > otherAlternatorMapKey.amps) Or (Me.rpm > otherAlternatorMapKey.rpm) Then
+
+           Return 1
+
+           Else
+
+           Return -1
+
+           End If
+
+
+
+
+         End Function
+
 
        End Structure
 
