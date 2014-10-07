@@ -14,7 +14,7 @@ Namespace UnitTests
         Private Const BadPower As Single = 0.0
 
         Public Function GetGoodConsumer() As ElectricalConsumer
-            Return New ElectricalConsumer(GoodName, GoodPower)
+            Return New ElectricalConsumer(False, "Doors", "Door52", 5, 0.9, 26.3)
         End Function
 
 #End Region
@@ -28,7 +28,8 @@ Namespace UnitTests
 
         <Test(), ExpectedException("System.ArgumentException")>
         Public Sub CreateNewInvalidNameTest()
-            Dim target As ElectricalConsumer = New ElectricalConsumer(BadName, 10.0)
+           ' Dim target As ElectricalConsumer = New ElectricalConsumer(BadName, 10.0)
+           Assert.Fail()
         End Sub
 
         ' TODO: Probably need to define too high a power and implement check
@@ -36,7 +37,8 @@ Namespace UnitTests
         <TestCase(BadPower)> _
         <ExpectedException("System.ArgumentOutOfRangeException")>
         Public Sub CreateNewInvalidPowerTest(ByVal power As Single)
-            Dim target As ElectricalConsumer = New ElectricalConsumer(GoodName, power)
+          '  Dim target As ElectricalConsumer = New ElectricalConsumer(GoodName, power)
+          Assert.Fail()
         End Sub
 
 
@@ -44,7 +46,7 @@ Namespace UnitTests
         Public Sub GetNameTest()
             Dim target As ElectricalConsumer = GetGoodConsumer()
             Dim expected As String = GoodName
-            Dim actual As String = target.Name
+            Dim actual As String = target.ConsumerName
             Assert.AreEqual(expected, actual)
         End Sub
 
@@ -52,8 +54,9 @@ Namespace UnitTests
         Public Sub GetPowerTest()
             Dim target As ElectricalConsumer = GetGoodConsumer()
             Dim expected As Single = GoodPower
-            Dim actual As Single = target.Power
-            Assert.AreEqual(expected, actual)
+           ' Dim actual As Single = target.Power
+           ' Assert.AreEqual(expected, actual)
+           Assert.Fail()
         End Sub
     End Class
 End Namespace

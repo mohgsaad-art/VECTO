@@ -13,7 +13,7 @@ Namespace UnitTests
             Dim consumers As List(Of IElectricalConsumer) = New List(Of IElectricalConsumer)()
             consumers.Add(New ElectricalConsumerMock)
             consumers.Add(New ElectricalConsumerMock)
-            Return New AverageElectricalDemand(alt, consumers)
+            Return New AverageElectricalDemand(consumers, 26.3)
         End Function
 #End Region
 
@@ -32,7 +32,7 @@ Namespace UnitTests
         <Test()>
         Public Sub GetElectricalConsumersTest()
             Dim target As AverageElectricalDemand = GetAverageElectricalDemandInstance()
-            Assert.IsTrue(target.ElectricalConsumers.Any())
+            Assert.Fail()
         End Sub
 
         <Test()>
@@ -41,9 +41,11 @@ Namespace UnitTests
             Dim consumers As List(Of IElectricalConsumer) = New List(Of IElectricalConsumer)()
             Dim mock As ElectricalConsumerMock = New ElectricalConsumerMock
             consumers.Add(mock)
-            Dim target As AverageElectricalDemand = New AverageElectricalDemand(alt, consumers)
+            Dim target As AverageElectricalDemand = New AverageElectricalDemand(consumers, 26.3)
 
-            Assert.IsTrue(target.ElectricalConsumers.Contains(mock))
+            'Assert.IsTrue(target.ElectricalConsumers.Contains(mock))
+            Assert.Fail()
+
         End Sub
 
 
@@ -53,9 +55,10 @@ Namespace UnitTests
             Dim consumers As List(Of IElectricalConsumer) = New List(Of IElectricalConsumer)()
             Dim mock As ElectricalConsumerMock = New ElectricalConsumerMock
             consumers.Add(mock)
-            Dim target As AverageElectricalDemand = New AverageElectricalDemand(alt, consumers)
+            Dim target As AverageElectricalDemand = New AverageElectricalDemand(consumers, 26.3)
 
-            Assert.AreSame(alt, target.Alternator)
+            'Assert.AreSame(alt, target.Alternator) TODO: CHECK
+            Assert.Fail()
         End Sub
 
 
