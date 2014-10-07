@@ -860,12 +860,13 @@ lbDlog:
 
         'Preset the DIALOG Details depending on the edit type.
         AuxDlog.ListItems.Clear()
-        Select AuxDlog.TbID.Text
+        Select Case AuxDlog.TbID.Text
 
             '**** ELECTRICS ****
             Case sKey.AUX.ElecSys.ToString()
              For Each item As VectoAuxiliaries.Electrics.ElectricalConsumer In ConsumerListES
-               AuxDlog.ListItems.Add(item.Name, item.Power)
+              ' AuxDlog.ListItems.Add(item.Name, item.Power)
+              'TODO: FIX THIS ABOVE
              Next
 
             AuxDlog.txtPulleyGearEfficiency.Text = PulleyGearEfficiencyES.ToString()
@@ -915,7 +916,8 @@ lbDlog:
             '**** ELECTRICS ****
             Case sKey.AUX.ElecSys.ToString()
              For Each item As KeyValuePair(Of String, Single) In AuxDlog.ListItems
-               ConsumerListES.Add(New VectoAuxiliaries.Electrics.ElectricalConsumer(item.Key, item.Value))
+             'TODO: FIX THIS
+              ' ConsumerListES.Add(New VectoAuxiliaries.Electrics.ElectricalConsumer(item.Key, item.Value))
              Next
 
             PulleyGearEfficiencyES = CType(AuxDlog.txtPulleyGearEfficiency.Text, Single)
