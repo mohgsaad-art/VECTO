@@ -1,4 +1,9 @@
-﻿Public Class HVACInputs
+﻿
+Namespace hvac
+
+
+Public Class HVACInputs
+
     Implements IHVACInputs
 
     Public Property Region As Integer Implements IHVACInputs.Region
@@ -19,3 +24,7 @@
 
 
 End Class
+
+
+End Namespace
+
