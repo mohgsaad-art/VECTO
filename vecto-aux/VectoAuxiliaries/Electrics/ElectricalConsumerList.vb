@@ -44,14 +44,23 @@ Private _items As New Dictionary(Of String, IElectricalConsumer)
 
    End Sub
 
-   Public Function GetTotalAverageDemandAmps(doorDutyCyclePercentage? As Single) As Single Implements Electrics.IElectricalConsumerList.GetTotalAverageDemandAmps
+   Public Function GetTotalAverageDemandAmps(doorDutyCyclePercentage? As Single, excludeOnBase As Boolean) As Single Implements Electrics.IElectricalConsumerList.GetTotalAverageDemandAmps
 
    'Sanity check.
    If doorDutyCyclePercentage Is Nothing Or doorDutyCyclePercentage > 1 Or doorDutyCyclePercentage < 0 Then
+
      Throw New ArgumentException("doorDutyCyclePercentage must be between 0 and 1")
+
    End If
 
-    Dim Amps As Single = Aggregate item In Items Into Sum(item.Value.TotalAvgConumptionAmps(doorDutyCyclePercentage))
+     Dim Amps As Single
+
+     If excludeOnBase Then
+       Amps = Aggregate item In Items Where item.Value.BaseVehicle = False Into Sum(item.Value.TotalAvgConumptionAmps(doorDutyCyclePercentage))
+     Else
+       Amps = Aggregate item In Items Into Sum(item.Value.TotalAvgConumptionAmps(doorDutyCyclePercentage))
+     End If
+
 
     Return Amps
 

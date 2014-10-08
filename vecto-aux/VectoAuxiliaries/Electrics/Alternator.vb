@@ -90,7 +90,7 @@ Namespace Electrics
         ''' <remarks>rpm must result in alternator rpm values that fall within the alternator efficiency map</remarks>
         Public Function GetEfficiency(ByVal engineRpm As Single) As Single Implements IAlternator.GetEfficiency
             Dim alternatorspeed As Single = engineRpm * PulleyGearRatio
-            Dim value As Single = _map.GetEfficiency(alternatorspeed)
+            Dim value As Single '= _map.GetEfficiency(alternatorspeed)
             Return value
         End Function
 
@@ -101,7 +101,7 @@ Namespace Electrics
         ''' <remarks></remarks>
         Public Function GetMaximumRegenerationPower(ByVal engineRpm As Single) As Single Implements IAlternator.GetMaximumRegenerationPower
             Dim alternatorspeed As Single = engineRpm * PulleyGearRatio
-            Dim value As Single = _map.GetMaximumRegenerationPower(alternatorspeed)
+            Dim value As Single '= _map.GetMaximumRegenerationPower(alternatorspeed)
             Return value
         End Function
 

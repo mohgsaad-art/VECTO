@@ -7,6 +7,7 @@
     Public Class ElectricalConsumer
         Implements IElectricalConsumer
 
+
         'Calculated
         Private Property AvgConsumptionAmps As Single Implements IElectricalConsumer.AvgConsumptionAmps
 
@@ -21,29 +22,29 @@
 
         Public Function TotalAvgConumptionAmps(Optional PhaseIdle_TractionOnBasedOnCycle As Single = 0.0) As Single Implements IElectricalConsumer.TotalAvgConumptionAmps
 
-        'This set means we dont have to add it here.
-        If BaseVehicle Then Return 0
-
-        '
-         If "Doors per Door" Then
-             Return PhaseIdle_TractionOnBasedOnCycle * NominalConsumptionAmps * NumberInActualVehicle
-         Else
-             Return PhaseIdle_TractionOn * NominalConsumptionAmps * NumberInActualVehicle
-         End If
+           If ConsumerName = "Doors per Door" Then
+               Return PhaseIdle_TractionOnBasedOnCycle * NominalConsumptionAmps * NumberInActualVehicle
+           Else
+               Return PhaseIdle_TractionOn * NominalConsumptionAmps * NumberInActualVehicle
+           End If
 
 
         End Function
 
+        Public Function TotalAvgConsumptionInWatts(Optional PhaseIdle_TractionOnBasedOnCycle As Single = 0.0) As Single Implements Electrics.IElectricalConsumer.TotalAvgConsumptionInWatts
+            Return TotalAvgConumptionAmps(PhaseIdle_TractionOnBasedOnCycle) * PowerNetVoltage
+        End Function
 
-       Public Sub New(BaseVehicle As Boolean, Category As String, ConsumerName As String, NominalConsumptionAmps As Single, PhaseIdle_TractionOn As Single, PowerNetVoltageas As Single)
+
+       Public Sub New(BaseVehicle As Boolean, Category As String, ConsumerName As String, NominalConsumptionAmps As Single, PhaseIdle_TractionOn As Single, PowerNetVoltage As Single, numberInVehicle As Integer)
 
             'Illegal Value Check.
             If Category.Trim.Length = 0 Then Throw New ArgumentException("Category Name cannot be empty")
             If ConsumerName.Trim.Length = 0 Then Throw New ArgumentException("ConsumerName Name cannot be empty")
-            If PhaseIdle_TractionOn < 0 Or PhaseIdle_TractionOn > 1 Then Throw New ArgumentException("PhaseIdle_TractionOn must have a value between 0 and 1")
-            If NominalConsumptionAmps < 0 Or NominalConsumptionAmps > 1 Then Throw New ArgumentException("NominalConsumptionAmps must have a value between 0 and 1")
-            If PowerNetVoltage < 6 Or PowerNetVoltage > 48 Then Throw New ArgumentException("PowerNetVoltage must have a value between 6 and 48")
-
+            If PhaseIdle_TractionOn < ElectricConstants.PhaseIdleTractionOnMin Or PhaseIdle_TractionOn > ElectricConstants.PhaseIdleTractionMax Then Throw New ArgumentException("PhaseIdle_TractionOn must have a value between 0 and 1")
+            If NominalConsumptionAmps < ElectricConstants.NonminalConsumerConsumptionAmpsMin Or NominalConsumptionAmps > ElectricConstants.NominalConsumptionAmpsMax Then Throw New ArgumentException("NominalConsumptionAmps must have a value between 0 and 100")
+            If PowerNetVoltage < ElectricConstants.PowenetVoltageMin Or PowerNetVoltage > ElectricConstants.PowenetVoltageMax Then Throw New ArgumentException("PowerNetVoltage must have a value between 6 and 48")
+            If numberInVehicle < 0 Then Throw New ArgumentException("Cannot have less than 0 consumers in the vehicle")
 
             'Good, now assign.
             Me.BaseVehicle = BaseVehicle
@@ -52,6 +53,7 @@
             Me.NominalConsumptionAmps = NominalConsumptionAmps
             Me.PhaseIdle_TractionOn = PhaseIdle_TractionOn
             Me.PowerNetVoltage = PowerNetVoltage
+            Me.NumberInActualVehicle = numberInVehicle
 
        End Sub
 

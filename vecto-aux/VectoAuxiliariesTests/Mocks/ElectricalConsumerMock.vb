@@ -5,6 +5,7 @@ Namespace Mocks
     Public Class ElectricalConsumerMock
         Implements IElectricalConsumer
 
+
         Public Property AvgConsumptionAmps As Single Implements IElectricalConsumer.AvgConsumptionAmps
 
         Public Property BaseVehicle As Boolean Implements IElectricalConsumer.BaseVehicle
@@ -24,6 +25,13 @@ Namespace Mocks
         Public Function TotalAvgConumptionAmps(Optional PhaseIdle_TractionOnBasedOnCycle As Single = 0.0) As Single Implements IElectricalConsumer.TotalAvgConumptionAmps
          Return 9
          'TODO: Check
+        End Function
+
+
+        Public Function TotalAvgConsumptionInWatts(Optional PhaseIdle_TractionOnBasedOnCycle As Single = 0.0) As Single Implements IElectricalConsumer.TotalAvgConsumptionInWatts
+
+            Return 9 * 26.3
+
         End Function
 
 

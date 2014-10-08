@@ -72,9 +72,11 @@
     <Compile Include="Electrics\AlternatorMapValues.vb" />
     <Compile Include="Electrics\AlternatorsEfficiency.vb" />
     <Compile Include="Electrics\ElectricalConsumerList.vb" />
-    <Compile Include="Electrics\HVACInputs.vb" />
+    <Compile Include="Electrics\ElectricConstants.vb" />
+    <Compile Include="Hvac\HVACInputs.vb" />
+    <Compile Include="Electrics\IAlternator.vb" />
     <Compile Include="Electrics\IElectricalConsumerList.vb" />
-    <Compile Include="Electrics\IHVACInputs.vb" />
+    <Compile Include="Hvac\IHVACInputs.vb" />
     <Compile Include="Hvac\HVACMapParameter.vb" />
     <Compile Include="Hvac\IHVACMap.vb" />
     <Compile Include="Pneumatics\AirCompressor.vb" />
@@ -86,7 +88,6 @@
     <Compile Include="Pneumatics\CompressorMap.vb" />
     <Compile Include="Electrics\ElectricalConsumer.vb" />
     <Compile Include="Hvac\HVACMap.vb" />
-    <Compile Include="Electrics\IAlternator.vb" />
     <Compile Include="Electrics\IAlternatorMap.vb" />
     <Compile Include="Pneumatics\IAirCompressor.vb" />
     <Compile Include="Pneumatics\ICompressorMap.vb" />

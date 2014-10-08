@@ -19,13 +19,11 @@ Namespace Mocks
             End If
         End Function
 
-        Public Function GetEfficiency(ByVal rpm As Integer) As Single Implements IAlternatorMap.GetEfficiency
-            Return 0.5
+        Public Function GetEfficiency(ByVal rpm As Integer, ByVal amps As Integer) As AlternatorMapValues Implements IAlternatorMap.GetEfficiency
+            Return New AlternatorMapValues()
         End Function
 
-        Public Function GetMaximumRegenerationPower(ByVal rpm As Integer) As Single Implements IAlternatorMap.GetMaximumRegenerationPower
-            Return 100
-        End Function
+
     End Class
 
 End Namespace
