@@ -7,7 +7,7 @@ Namespace UnitTests
 
 
     <TestFixture()>
-    Public Class AlternatorTests
+    Public Class AlternatorsRegenTests
 
 #Region "Test Constants"
 

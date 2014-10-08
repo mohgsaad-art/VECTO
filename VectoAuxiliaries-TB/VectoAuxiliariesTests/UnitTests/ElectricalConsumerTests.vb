@@ -8,13 +8,10 @@ Namespace UnitTests
 
 #Region "Helpers"
 
-        Private Const GoodName As String = "Test"
-        Private Const GoodPower As Single = 10.0
-        Private Const BadName As String = ""
-        Private Const BadPower As Single = 0.0
+
 
         Public Function GetGoodConsumer() As ElectricalConsumer
-            Return New ElectricalConsumer(False, "Doors", "Door52", 5, 0.9, 26.3)
+            Return New ElectricalConsumer(False, "Doors", "Doors per Door", 20, 0.5, 26.3, 1)
         End Function
 
 #End Region
@@ -26,37 +23,53 @@ Namespace UnitTests
             Assert.IsNotNull(target)
         End Sub
 
-        <Test(), ExpectedException("System.ArgumentException")>
-        Public Sub CreateNewInvalidNameTest()
-           ' Dim target As ElectricalConsumer = New ElectricalConsumer(BadName, 10.0)
-           Assert.Fail()
-        End Sub
+      '  <Test(), ExpectedException("System.ArgumentException")>
 
-        ' TODO: Probably need to define too high a power and implement check
-        <TestCase(BadPower)> _
-        <TestCase(BadPower)> _
-        <ExpectedException("System.ArgumentOutOfRangeException")>
-        Public Sub CreateNewInvalidPowerTest(ByVal power As Single)
-          '  Dim target As ElectricalConsumer = New ElectricalConsumer(GoodName, power)
-          Assert.Fail()
-        End Sub
+      <Test(), ExpectedException("System.ArgumentException")>
+      Public Sub ZeroLengthConsumerNameTest()
+
+        Dim target As New ElectricalConsumer(False, "Doors", "", 20, 0.5, 26.3, 1)
+
+      End Sub
+
+      <Test(), ExpectedException("System.ArgumentException")>
+      Public Sub ZeroLengthCategoryNameTest_ThrowsArgumentException()
+
+        Dim target As New ElectricalConsumer(False, "", "Doors per Door", 20, 0.5, 26.3, 1)
+
+      End Sub
 
 
-        <Test()>
-        Public Sub GetNameTest()
-            Dim target As ElectricalConsumer = GetGoodConsumer()
-            Dim expected As String = GoodName
-            Dim actual As String = target.ConsumerName
-            Assert.AreEqual(expected, actual)
-        End Sub
+      'TooLow     NominalConsumption
+      'TooHigh    NominalConsumption
 
-        <Test()>
-        Public Sub GetPowerTest()
-            Dim target As ElectricalConsumer = GetGoodConsumer()
-            Dim expected As Single = GoodPower
-           ' Dim actual As Single = target.Power
-           ' Assert.AreEqual(expected, actual)
-           Assert.Fail()
-        End Sub
+
+      <Test(), ExpectedException("System.ArgumentException")>
+      Public Sub ToLow_PhaseIdleTractionOn_ThrowsArgumentException()
+            Dim target As New ElectricalConsumer(False, "", "Doors per Door", 20, ElectricConstants.PhaseIdleTractionOnMin - 1, 26.3, 1)
+      End Sub
+
+      <Test(), ExpectedException("System.ArgumentException")>
+      Public Sub ToHigh_PhaseIdleTractionOn_ThrowsArgumentException()
+            Dim target As New ElectricalConsumer(False, "", "Doors per Door", 20, ElectricConstants.PhaseIdleTractionMax + 1, 26.3, 1)
+      End Sub
+
+
+      <Test(), ExpectedException("System.ArgumentException")>
+      Public Sub ToLowNumberInVehicle_ThrowsArgumentException()
+            Dim target As New ElectricalConsumer(False, "", "Doors per Door", 20, 0.5, 26.3, -1)
+      End Sub
+
+      'TooLow     PowerNetVoltage
+      <Test(), ExpectedException("System.ArgumentException")>
+      Public Sub ToLowPowerNetVoltageTest_ThrowsArgumentException()
+            Dim target As New ElectricalConsumer(False, "", "Doors per Door", 20, 0.5, ElectricConstants.PowenetVoltageMin - 1, 1)
+      End Sub
+
+      'TooHigh    PowerNetVoltage
+      Public Sub ToHighPowerNetVoltageTest_ThrowsArgumentException()
+            Dim target As New ElectricalConsumer(False, "", "Doors per Door", 20, 0.5, ElectricConstants.PowenetVoltageMax + 1, 1)
+      End Sub
+
     End Class
 End Namespace

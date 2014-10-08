@@ -7,6 +7,7 @@ Namespace Electrics
     ''' </summary>
     ''' <remarks></remarks>
     Public Class AlternatorMap
+    Implements IAlternatorMap
 
 
         ''' <summary>
@@ -33,7 +34,7 @@ Namespace Electrics
         ''' </summary>
         ''' <returns>Boolean - true if map is created successfully</returns>
         ''' <remarks></remarks>
-        Public Function Initialise() As Boolean
+        Public Function Initialise() As Boolean Implements IAlternatorMap.Initialise
             If File.Exists(filePath) Then
                 Using sr As StreamReader = New StreamReader(filePath)
                     'get array og lines fron csv
@@ -81,13 +82,13 @@ Namespace Electrics
         ''' <param name="rpm">alternator rotation speed</param>
         ''' <returns>Single</returns>
         ''' <remarks></remarks>
-        Public Function GetEfficiency(ByVal rpm As Integer, ByVal amps As Integer) As AlternatorMapValues
+        Public Function GetEfficiency(ByVal rpm As Integer, ByVal amps As Integer) As AlternatorMapValues Implements IAlternatorMap.GetEfficiency
 
 
             Dim key As New AlternatorMapKey(amps, rpm)
 
             Return GetValueOrInterpolate(key)
-  
+
         End Function
 
 
