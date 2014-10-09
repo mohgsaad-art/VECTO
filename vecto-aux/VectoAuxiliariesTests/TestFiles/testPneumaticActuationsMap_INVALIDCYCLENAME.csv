@@ -1,0 +1,16 @@
+﻿ConsumerName, CycleName, Actuations
+Brakes,,191
+Brakes,,153
+Brakes,Suburban,49
+Brakes,Inerurban,190
+Brakes,Coach,27
+Park break + 2 doors,Heavy urban,82
+Park break + 2 doors,Urban,75
+Park break + 2 doors,Suburban,25
+Park break + 2 doors,Inerurban,9
+Park break + 2 doors,Coach,6
+Kneeling,Heavy urban,27
+Kneeling,Urban,25
+Kneeling,Suburban,6
+Kneeling,Inerurban,0
+Kneeling,Coach,0

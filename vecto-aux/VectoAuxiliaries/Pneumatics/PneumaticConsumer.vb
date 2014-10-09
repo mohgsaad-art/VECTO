@@ -3,7 +3,7 @@
         Implements IPneumaticConsumer
 
         Private ReadOnly _name As String
-        Private ReadOnly _volumePerCycle As Single
+        Private ReadOnly _volumePerActuation As Single
 
         ''' <summary>
         ''' Name of the consumer
@@ -11,7 +11,7 @@
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public ReadOnly Property Name() As String Implements IPneumaticConsumer.Name
+        Public ReadOnly Property Name() As String Implements IPneumaticConsumer.ConsumerName
             Get
                 Return _name
             End Get
@@ -23,9 +23,9 @@
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public ReadOnly Property VolumePerCycle() As Single Implements IPneumaticConsumer.VolumePerCycle
+        Public ReadOnly Property VolumePerCycle() As Single Implements IPneumaticConsumer.VolumePerActuation
             Get
-                Return _volumePerCycle
+                Return _volumePerActuation
             End Get
         End Property
 
@@ -45,19 +45,19 @@
         ''' <param name="name"></param>
         ''' <param name="volumePerCycle"></param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal name As String, ByVal volumePerCycle As Single)
+        Public Sub New(ByVal name As String, ByVal volumePerActuation As Single)
             If name = String.Empty Then
                 Throw New ArgumentException("Name cannot be empty string")
             End If
 
             If Math.Abs(volumePerCycle - 0.0) < 0.001 Then
-                Throw New ArgumentOutOfRangeException("volumePerCycle",
+                Throw New ArgumentOutOfRangeException("volumePerActuation",
                                                       volumePerCycle,
                                                       "Supplied volume should be grater than zero")
             End If
 
             _name = name
-            _volumePerCycle = volumePerCycle
+            _volumePerActuation = _volumePerActuation
         End Sub
     End Class
 End Namespace

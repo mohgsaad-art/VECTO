@@ -92,6 +92,7 @@
     <Compile Include="UnitTests\AveragePneumaticLoadDemandTests.vb" />
     <Compile Include="UnitTests\ElectricalConsumerListTests.vb" />
     <Compile Include="UnitTests\HVACMapTests.vb" />
+    <Compile Include="UnitTests\PneumaticActuationsMapTests.vb" />
     <Compile Include="UnitTests\PneumaticConsumerTests.vb" />
     <Compile Include="UnitTests\AirCompressorTests.vb" />
     <Compile Include="UnitTests\AlternatorMapTests.vb" />
@@ -138,6 +139,9 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="packages.config" />
+    <Content Include="TestFiles\testPneumaticActuationsMap_GOODMAP.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestFiles\testAlternatorMapNotEnoughRows.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -197,6 +201,21 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestFiles\testAlternatorMap.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\cstrPneumaticActuationsMapPath_INCORRECTCOLUMNS.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\testPneumaticActuationsMap_DUPLICATEKEY.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\testPneumaticActuationsMap_INVALIDCYCLENAME.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\testPneumaticActuationsMap_INVALIDCONSUMERNAME.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\testPneumaticActuationsMap_GOODMAP - Copy.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
