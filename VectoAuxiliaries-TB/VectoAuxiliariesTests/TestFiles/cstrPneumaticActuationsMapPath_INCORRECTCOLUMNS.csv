@@ -1,0 +1,16 @@
+﻿ConsumerName, CycleName
+Brakes,Heavy urban
+Brakes,Urban
+Brakes,Suburban
+Brakes,Inerurban
+Brakes,Coach
+Park break + 2 doors,Heavy urban
+Park break + 2 doors,Urban
+Park break + 2 doors,Suburban
+Park break + 2 doors,Inerurban
+Park break + 2 doors,Coach
+Kneeling,Heavy urban
+Kneeling,Urban
+Kneeling,Suburban
+Kneeling,Inerurban
+Kneeling,Coach
