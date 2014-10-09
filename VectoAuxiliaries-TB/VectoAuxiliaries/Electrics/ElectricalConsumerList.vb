@@ -19,9 +19,7 @@ Private _items As New Dictionary(Of String, IElectricalConsumer)
    Public Sub AddConsumer(consumer As IElectricalConsumer) Implements Electrics.IElectricalConsumerList.AddConsumer
 
      If Not _items.ContainsKey(consumer.ConsumerName) Then
-
-     _items.Add(consumer.ConsumerName, consumer)
-
+       _items.Add(consumer.ConsumerName, consumer)
      Else
 
      Throw New ArgumentException("Consumer Already Present in the list")

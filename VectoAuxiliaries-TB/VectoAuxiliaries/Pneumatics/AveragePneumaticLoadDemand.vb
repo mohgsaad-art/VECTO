@@ -73,7 +73,7 @@ Namespace Pneumatics
         'Get Total Required Air Delivery Rate
         Public Function GetTotalRequiredAirPerCompressorUnitDeliveryRate() As Single
 
-            Return PneumaticConsumers.Sum(Function(item) item.VolumePerCycle())
+            Return PneumaticConsumers.Sum(Function(item) item.VolumePerActuation())
 
         End Function
 
