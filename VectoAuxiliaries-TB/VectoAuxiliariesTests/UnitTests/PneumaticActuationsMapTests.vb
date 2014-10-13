@@ -87,9 +87,12 @@ Public Sub ValueLookupTest()
     target.Initialise()
 
     'Brakes,Coach,27
-    Dim actual As Integer = target.GetNumActuations(New ActuationsKey("Brakes", "Coach"))
 
-    Dim expected As Integer = 27
+    Dim actual As Integer = target.GetNumActuations(New ActuationsKey("Brakes", "Urban"))
+
+
+
+    Dim expected As Integer = 153
 
     Assert.AreEqual(expected, actual)
 

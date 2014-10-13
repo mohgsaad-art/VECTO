@@ -93,7 +93,6 @@
     <Compile Include="UnitTests\ElectricalConsumerListTests.vb" />
     <Compile Include="UnitTests\HVACMapTests.vb" />
     <Compile Include="UnitTests\PneumaticActuationsMapTests.vb" />
-    <Compile Include="UnitTests\PneumaticConsumerTests.vb" />
     <Compile Include="UnitTests\AirCompressorTests.vb" />
     <Compile Include="UnitTests\AlternatorMapTests.vb" />
     <Compile Include="UnitTests\AlternatorTests.vb" />

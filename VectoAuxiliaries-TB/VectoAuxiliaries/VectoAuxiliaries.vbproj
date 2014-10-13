@@ -108,11 +108,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Pneumatics\IPneumaticConsumer.vb" />
-    <Compile Include="Pneumatics\IPneumaticConsumerList.vb" />
-    <Compile Include="Pneumatics\PneumaticConsumer.vb" />
-    <Compile Include="Pneumatics\PneumaticConsumerList.vb" />
+    <Compile Include="Pneumatics\IPneumaticActuationsMAP.vb" />
+    <Compile Include="Pneumatics\IPneumaticsAuxilliariesConfig.vb" />
+    <Compile Include="Pneumatics\IPneumaticUserInputsConfig.vb" />
     <Compile Include="Pneumatics\PneumaticActuationsMap.vb" />
+    <Compile Include="Pneumatics\PneumaticsAuxilliariesConfig.vb" />
+    <Compile Include="Pneumatics\PneumaticUserInputsConfig.vb" />
     <Compile Include="UI\ElectricalConsumers.Designer.vb">
       <DependentUpon>ElectricalConsumers.vb</DependentUpon>
     </Compile>
