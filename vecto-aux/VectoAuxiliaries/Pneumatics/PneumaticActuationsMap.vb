@@ -4,13 +4,14 @@ Imports System.IO
 Namespace Pneumatics
 
 Public Class PneumaticActuationsMAP
+Implements IPneumaticActuationsMAP
 
 
 Private map As Dictionary(Of ActuationsKey, Integer)
 Private filePath As String
 
 
-Public Function GetNumActuations(key As ActuationsKey) As Integer
+Public Function GetNumActuations(key As ActuationsKey) As Integer Implements IPneumaticActuationsMAP.GetNumActuations
 
    If map Is Nothing OrElse Not map.ContainsKey(key) Then
     Throw New ArgumentException("Not in map")
@@ -24,13 +25,14 @@ End Function
 
 Public Sub New(filePath As String)
 
-Me.filePath = filePath
+   Me.filePath = filePath
+   Initialise()
 
 
 
 End Sub
 
- Public Function Initialise() As Boolean
+ Public Function Initialise() As Boolean Implements IPneumaticActuationsMAP.Initialise
 
             Dim newKey As ActuationsKey
             Dim numActuations As Single
