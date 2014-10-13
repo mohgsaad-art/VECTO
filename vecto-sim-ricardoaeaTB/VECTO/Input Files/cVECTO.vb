@@ -198,28 +198,28 @@ Public Class cVECTO
 
         'TB 29/9/2014 - Augmentation of Auxillary information to be stored in the configuration file post 2.0.4-Beta release
 
-                'TODO - TB BIG CHANGE HERE ELECTRICAL SYSTEM 
-                If AuxEntryKV.Key = sKey.AUX.ElecSys Then
-                    dic.Add("PulleyGearEfficiencyES", AuxEntryKV.Value.PulleyGearEfficiencyES)
-                    dic.Add("PulleyGearRatioES", AuxEntryKV.Value.PulleyGearRatioES)
-                    dic.Add("TechList", EStechs)
-                    dic.Add("ConsumersES", AuxEntryKV.Value.ConsumerListES)
-                End If
+                ''TODO - TB BIG CHANGE HERE ELECTRICAL SYSTEM 
+                'If AuxEntryKV.Key = sKey.AUX.ElecSys Then
+                '    dic.Add("PulleyGearEfficiencyES", AuxEntryKV.Value.PulleyGearEfficiencyES)
+                '    dic.Add("PulleyGearRatioES", AuxEntryKV.Value.PulleyGearRatioES)
+                '    dic.Add("TechList", EStechs)
+                '    dic.Add("ConsumersES", AuxEntryKV.Value.ConsumerListES)
+                'End If
 
-                'TODO - TB BIG CHANGE HERE ( HVAC SYSTEM )
-                If AuxEntryKV.Key = sKey.AUX.HVAC Then
-                    dic.Add("PulleyGearEfficiencyHVAC", AuxEntryKV.Value.PulleyGearEfficiencyHVAC)
-                    dic.Add("PulleyGearRatioHVAC", AuxEntryKV.Value.PulleyGearRatioHVAC)
-                    dic.Add("HVACMapInputs", AuxEntryKV.Value.HVACMapInputs)
-                End If
+                ''TODO - TB BIG CHANGE HERE ( HVAC SYSTEM )
+                'If AuxEntryKV.Key = sKey.AUX.HVAC Then
+                '    dic.Add("PulleyGearEfficiencyHVAC", AuxEntryKV.Value.PulleyGearEfficiencyHVAC)
+                '    dic.Add("PulleyGearRatioHVAC", AuxEntryKV.Value.PulleyGearRatioHVAC)
+                '    dic.Add("MapInputs", AuxEntryKV.Value.HVACMapInputs)
+                'End If
 
-                'TODO - TB BIG CHANGE HERE ( PNEUMATIC SYSTEM )
-                If AuxEntryKV.Key = sKey.AUX.PneumSys Then
-                    dic.Add("PulleyGearEfficiencyPS", AuxEntryKV.Value.PulleyGearEfficiencyPS)
-                    dic.Add("PulleyGearRatioPS", AuxEntryKV.Value.PulleyGearRatioPS)
-                    dic.Add("ConsumersPS", AuxEntryKV.Value.ConsumerListPS)
+                ''TODO - TB BIG CHANGE HERE ( PNEUMATIC SYSTEM )
+                'If AuxEntryKV.Key = sKey.AUX.PneumSys Then
+                '    dic.Add("PulleyGearEfficiencyPS", AuxEntryKV.Value.PulleyGearEfficiencyPS)
+                '    dic.Add("PulleyGearRatioPS", AuxEntryKV.Value.PulleyGearRatioPS)
+                '    dic.Add("ConsumersPS", AuxEntryKV.Value.ConsumerListPS)
 
-                End If
+                'End If
 
                 ls.Add(dic)
             Next
@@ -329,46 +329,16 @@ Public Class cVECTO
 
                     AuxDef = True
 
-
-
-                    'TB 29/9/2014 Here is where we read the Auxilliary Augmented Properties where they appear.
-
-                    'Electrical System
                     If AuxID = sKey.AUX.ElecSys Then
                         If Not dic("TechList") Is Nothing Then
                             For Each str In dic("TechList")
                                 EStechs.Add(str)
                             Next
                         End If
-
                     End If
 
-
-                    'HVAC System
-                    If AuxID = sKey.AUX.HVAC Then
-
-                      If Not dic("HVACMapInputs") Is Nothing Then
-                            AuxEntry.HVACMapInputs = Newtonsoft.Json.JsonConvert.DeserializeObject(dic("HVACMapInputs").ToString, GetType(Dictionary(Of String, Single)))
-                      End If
-
-                      If Not dic("PulleyGearRatioHVAC") Is Nothing Then
-                          AuxEntry.PulleyGearRatioHVAC = dic("PulleyGearRatioHVAC")
-                      End If
-
-                      If Not dic("PulleyGearEfficiencyHVAC") Is Nothing Then
-                          AuxEntry.PulleyGearEfficiencyHVAC = dic("PulleyGearEfficiencyHVAC")
-                      End If
-
-
-                    End If
-
-
-                    'Pneumatic Systems
-                    If AuxID = sKey.AUX.PneumSys Then
-
-
-                    End If
-
+                    'TB 29/9/2014 Here is where we read the Auxilliary Augmented Properties where they appear.
+                    '
 
                 Next
             End If

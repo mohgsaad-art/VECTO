@@ -13,9 +13,9 @@
         Public PulleyGearRatioHVAC As Single
 
 
-        Public ConsumerListES As List(Of VectoAuxiliaries.Electrics.ElectricalConsumer)
-        Public ConsumerListPS As List(Of VectoAuxiliaries.Pneumatics.PneumaticConsumer)
-        Public HVACMapInputs As Dictionary(Of String, Single)
+        'Public ConsumerListES As List(Of VectoAuxiliaries.Electrics.ElectricalConsumer)
+        'Public ConsumerListPS As List(Of VectoAuxiliaries.Pneumatics.PneumaticConsumer)
+        'Public HVACMapInputs As Dictionary(Of String, Single)
 
         Public Sub New()
             Path = New cSubPath
