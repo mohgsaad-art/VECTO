@@ -120,6 +120,29 @@ Namespace UnitTests
 
          End Sub
 
+        'CompressorGearEfficiency = 0.99
+        <Test()>
+         Public Sub AverageLoadValueUsingDefaultAuxValues_AveragePowerAtTheCrank_0_99EFTest()
+
+         initialise()
+
+         _defaultInputConfig.CompressorGearEfficiency = 0.99
+
+            Dim psAuxConfig = CType(New PneumaticsAuxilliariesConfig(True), IPneumaticsAuxilliariesConfig)
+            Dim psActuationsMap = CType(New PneumaticActuationsMAP(_actuationsMapPath), IPneumaticActuationsMAP)
+            Dim psCompressorMap = CType(New CompressorMap(_compressorMapPath), ICompressorMap)
+
+            psCompressorMap.Initialise()
+
+            Dim target As New AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
+
+            Dim expected As Single = 0.025780227
+            Dim actual As Single = target.GetAveragePowerDemandAtCrankFromPneumatics()
+
+            Assert.AreEqual(expected, actual)
+
+         End Sub
+
         <Test()>
          Public Sub AverageLoadValueUsingDefaultAuxValues_TotalRequiredAirDeliveryRateTest()
 
@@ -140,22 +163,149 @@ Namespace UnitTests
 
          End Sub
 
-
-        'CompressorGearEfficiency = 0.99
-
         'SmartRegeneration = False
+        <Test()>
+         Public Sub AverageLoadValueUsingDefaultAuxValues_TotalRequiredAirDeliveryRate_SmartRegenOffTest()
+
+         initialise()
+
+            Dim psAuxConfig = CType(New PneumaticsAuxilliariesConfig(True), IPneumaticsAuxilliariesConfig)
+            Dim psActuationsMap = CType(New PneumaticActuationsMAP(_actuationsMapPath), IPneumaticActuationsMAP)
+            Dim psCompressorMap = CType(New CompressorMap(_compressorMapPath), ICompressorMap)
+
+            psCompressorMap.Initialise()
+
+            _defaultInputConfig.SmartRegeneration = False
+
+            Dim target As New AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
+
+            Dim expected As Single = 8863.295
+            Dim actual As Single = target.TotalAirConsumedPerCycle()
+
+            Assert.AreEqual(expected, actual)
+
+         End Sub
 
         'RetarderBrake = False
+        <Test()>
+         Public Sub AverageLoadValueUsingDefaultAuxValues_TotalRequiredAirDeliveryRate_RetarderBrakeOffTest()
+
+         initialise()
+
+            Dim psAuxConfig = CType(New PneumaticsAuxilliariesConfig(True), IPneumaticsAuxilliariesConfig)
+            Dim psActuationsMap = CType(New PneumaticActuationsMAP(_actuationsMapPath), IPneumaticActuationsMAP)
+            Dim psCompressorMap = CType(New CompressorMap(_compressorMapPath), ICompressorMap)
+
+            psCompressorMap.Initialise()
+
+            _defaultInputConfig.RetarderBrake = False
+
+            Dim target As New AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
+
+            Dim expected As Single = 8541.45
+
+            Dim actual As Single = Math.Round(target.TotalAirConsumedPerCycle(), 2)
+
+            Assert.AreEqual(expected, actual)
+
+         End Sub
 
         'KneelingHeightMilimeters = 100
+        <Test()>
+         Public Sub AverageLoadValueUsingDefaultAuxValues_TotalRequiredAirDeliveryRate_Kneeling100mmTest()
+
+         initialise()
+
+            Dim psAuxConfig = CType(New PneumaticsAuxilliariesConfig(True), IPneumaticsAuxilliariesConfig)
+            Dim psActuationsMap = CType(New PneumaticActuationsMAP(_actuationsMapPath), IPneumaticActuationsMAP)
+            Dim psCompressorMap = CType(New CompressorMap(_compressorMapPath), ICompressorMap)
+
+            psCompressorMap.Initialise()
+
+            _defaultInputConfig.KneelingHeightMilimeters = 100
+
+            Dim target As New AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
+
+            Dim expected As Single = 8557.52
+
+            Dim actual As Single = Math.Round(target.TotalAirConsumedPerCycle(), 2)
+
+            Assert.AreEqual(expected, actual)
+
+         End Sub
 
         'AirSuspensionControl = "mechanically"
+        <Test()>
+         Public Sub AverageLoadValueUsingDefaultAuxValues_TotalRequiredAirDeliveryRate_AirSuspension_mechanicallyTest()
+
+         initialise()
+
+            Dim psAuxConfig = CType(New PneumaticsAuxilliariesConfig(True), IPneumaticsAuxilliariesConfig)
+            Dim psActuationsMap = CType(New PneumaticActuationsMAP(_actuationsMapPath), IPneumaticActuationsMAP)
+            Dim psCompressorMap = CType(New CompressorMap(_compressorMapPath), ICompressorMap)
+
+            psCompressorMap.Initialise()
+
+            _defaultInputConfig.AirSuspensionControl = "mechanically"
+
+            Dim target As New AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
+
+            Dim expected As Single = 8726.18
+
+            Dim actual As Single = Math.Round(target.TotalAirConsumedPerCycle(), 2)
+
+            Assert.AreEqual(expected, actual)
+
+         End Sub
 
         'AdBlueDosing = "electric"
+        <Test()>
+         Public Sub AverageLoadValueUsingDefaultAuxValues_TotalRequiredAirDeliveryRate_AdBlueDosing_electric_Test()
+
+         initialise()
+
+            Dim psAuxConfig = CType(New PneumaticsAuxilliariesConfig(True), IPneumaticsAuxilliariesConfig)
+            Dim psActuationsMap = CType(New PneumaticActuationsMAP(_actuationsMapPath), IPneumaticActuationsMAP)
+            Dim psCompressorMap = CType(New CompressorMap(_compressorMapPath), ICompressorMap)
+
+            psCompressorMap.Initialise()
+
+            _defaultInputConfig.AdBlueDosing = "electric"
+
+            Dim target As New AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
+
+            Dim expected As Single = 6712.46
+
+            Dim actual As Single = Math.Round(target.TotalAirConsumedPerCycle(), 2)
+
+            Assert.AreEqual(expected, actual)
+
+         End Sub
 
         'Doors = "electric"
+        <Test()>
+         Public Sub AverageLoadValueUsingDefaultAuxValues_TotalRequiredAirDeliveryRate_Doors_electric_Test()
 
-        'SmartAirCompression = false
+         initialise()
+
+            Dim psAuxConfig = CType(New PneumaticsAuxilliariesConfig(True), IPneumaticsAuxilliariesConfig)
+            Dim psActuationsMap = CType(New PneumaticActuationsMAP(_actuationsMapPath), IPneumaticActuationsMAP)
+            Dim psCompressorMap = CType(New CompressorMap(_compressorMapPath), ICompressorMap)
+
+            psCompressorMap.Initialise()
+
+            _defaultInputConfig.Doors = "electric"
+
+            Dim target As New AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
+
+            Dim expected As Single = 6880.88
+
+            Dim actual As Single = Math.Round(target.TotalAirConsumedPerCycle(), 2)
+
+            Assert.AreEqual(expected, actual)
+
+         End Sub
+
 
 
     End Class
