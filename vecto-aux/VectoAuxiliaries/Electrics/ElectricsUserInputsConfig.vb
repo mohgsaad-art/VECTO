@@ -1,0 +1,26 @@
+﻿Imports VectoAuxiliaries.Electrics
+Namespace Electrics
+
+Public Class ElectricsUserInputsConfig
+Implements IElectricsUserInputsConfig
+
+
+Public Property PowerNetVoltage As Single Implements IElectricsUserInputsConfig.PowerNetVoltage
+Public Property AlternatorMap As String Implements IElectricsUserInputsConfig.AlternatorMap
+Public Property AlternatorGearEfficiency As Single Implements IElectricsUserInputsConfig.AlternatorGearEfficiency
+Public Property ElectricalConsumers As IElectricalConsumerList Implements IElectricsUserInputsConfig.ElectricalConsumers
+Public Property DoorActuationTimeSecond As Integer Implements IElectricsUserInputsConfig.DoorActuationTimeSecond
+
+
+Public Property ResultCardIdleAmps As Dictionary(Of Single, Single) Implements IElectricsUserInputsConfig.ResultCardIdleAmps
+Public Property ResultCardTractionAmps As Dictionary(Of Single, Single) Implements IElectricsUserInputsConfig.ResultCardTractionAmps
+Public Property ResultCardOverrunAmps As Dictionary(Of Single, Single) Implements IElectricsUserInputsConfig.ResultCardOverrunAmps
+
+
+
+End Class
+
+End Namespace
+
+
+

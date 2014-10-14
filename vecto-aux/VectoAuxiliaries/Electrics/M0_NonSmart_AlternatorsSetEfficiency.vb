@@ -3,7 +3,8 @@ Imports VectoAuxiliaries.Hvac
 Namespace Electrics
 
 
-Public Class AlternatorsEfficiency
+Public Class M0_NonSmart_AlternatorsSetEfficiency
+ Implements IM0_NonSmart_AlternatorsSetEfficiency
 
  Private _electricalConsumersList As IElectricalConsumerList
  Private _hvacInputs As IHVACInputs
@@ -32,7 +33,9 @@ Public Class AlternatorsEfficiency
 
     End Sub
 
-    Public Function GetEfficiency(crankRPM As Integer, DoorCycleActuationPercentage As Single) As Single
+
+
+    Public Function GetEfficiency(crankRPM As Integer, DoorCycleActuationPercentage As Single) As Single Implements IM0_NonSmart_AlternatorsSetEfficiency.GetEfficiency
 
           'Sanity Check.
           If crankRPM < 1 Then Throw New ArgumentException("CrankRMP must be greater than zero")
@@ -48,7 +51,7 @@ Public Class AlternatorsEfficiency
 
     End Function
 
-   Public Function GetHVACElectricalPowerDemandAmps() As Single
+    Public Function GetHVACElectricalPowerDemandAmps() As Single Implements IM0_NonSmart_AlternatorsSetEfficiency.GetHVACElectricalPowerDemandAmps
 
         Return _hvacMap.GetElectricalDemand(_hvacInputs.Region, _hvacInputs.Season) / _powernetVoltage
 

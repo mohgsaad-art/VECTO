@@ -8,30 +8,24 @@ Namespace UnitTests
     Public Class AverageElectricalDemandTests
 
 #Region "Helpers"
-        Private Function GetAverageElectricalDemandInstance() As AverageElectricalDemand
+        Private Function GetAverageElectricalDemandInstance() As M2_AverageElectricalLoadDemand
             Dim alt As IAlternator = New AlternatorMock
-            Dim consumers As List(Of IElectricalConsumer) = New List(Of IElectricalConsumer)()
-            consumers.Add(New ElectricalConsumerMock)
-            consumers.Add(New ElectricalConsumerMock)
-            Return New AverageElectricalDemand(consumers, 26.3)
+            Dim consumers As IElectricalConsumerList = CType(New ElectricalConsumerList(), IElectricalConsumerList)
+
+            Return New M2_AverageElectricalLoadDemand(consumers, 26.3)
         End Function
 #End Region
 
         <Test()>
         Public Sub NewTest()
-            Dim target As AverageElectricalDemand = GetAverageElectricalDemandInstance()
+            Dim target As M2_AverageElectricalLoadDemand = GetAverageElectricalDemandInstance()
             Assert.IsNotNull(target)
         End Sub
 
-        <Test()>
-        Public Sub InitialiseTest()
-            Dim target As AverageElectricalDemand = GetAverageElectricalDemandInstance()
-            Assert.IsTrue(target.Initialise())
-        End Sub
 
         <Test()>
         Public Sub GetElectricalConsumersTest()
-            Dim target As AverageElectricalDemand = GetAverageElectricalDemandInstance()
+            Dim target As M2_AverageElectricalLoadDemand = GetAverageElectricalDemandInstance()
             Assert.Fail()
         End Sub
 
@@ -41,7 +35,7 @@ Namespace UnitTests
             Dim consumers As List(Of IElectricalConsumer) = New List(Of IElectricalConsumer)()
             Dim mock As ElectricalConsumerMock = New ElectricalConsumerMock
             consumers.Add(mock)
-            Dim target As AverageElectricalDemand = New AverageElectricalDemand(consumers, 26.3)
+            Dim target As M2_AverageElectricalLoadDemand = New M2_AverageElectricalLoadDemand(consumers, 26.3)
 
             'Assert.IsTrue(target.ElectricalConsumers.Contains(mock))
             Assert.Fail()
@@ -50,22 +44,9 @@ Namespace UnitTests
 
 
         <Test()>
-        Public Sub GetAlternatorTest()
-            Dim alt As IAlternator = New AlternatorMock
-            Dim consumers As List(Of IElectricalConsumer) = New List(Of IElectricalConsumer)()
-            Dim mock As ElectricalConsumerMock = New ElectricalConsumerMock
-            consumers.Add(mock)
-            Dim target As AverageElectricalDemand = New AverageElectricalDemand(consumers, 26.3)
-
-            'Assert.AreSame(alt, target.Alternator) TODO: CHECK
-            Assert.Fail()
-        End Sub
-
-
-        <Test()>
         Public Sub GetAveragePowerAtAlternatorTest()
 
-            Dim target As AverageElectricalDemand = GetAverageElectricalDemandInstance()
+            Dim target As M2_AverageElectricalLoadDemand = GetAverageElectricalDemandInstance()
             Dim actual As Single = target.GetAveragePowerDemandAtAlternator()
             Assert.AreEqual(actual, 200)
 
@@ -73,7 +54,7 @@ Namespace UnitTests
 
         <Test()>
         Public Sub GetAveragePowerAtCrankTest()
-            Dim target As AverageElectricalDemand = GetAverageElectricalDemandInstance()
+            Dim target As M2_AverageElectricalLoadDemand = GetAverageElectricalDemandInstance()
             Dim expected As Single = 400.0
             Dim actual As Single = target.GetAveragePowerAtCrank(100)
             Assert.AreEqual(expected, actual)
