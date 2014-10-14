@@ -9,7 +9,7 @@ Imports VectoAuxiliaries.Hvac
 Namespace UnitTests
 
 <TestFixture()>
-Public Class AlternatorsEfficiencyTests
+Public Class M0_NonSmart_AlternatorsSetEfficiencyTests
 
 Private Const cstrAlternatorsEfficiencyMapLocation As String = "tests\testAlternatorMap.csv"
 Private Const cstrHVACMapLocation As String = "TestFiles\TestHvacMap.csv"
@@ -45,41 +45,41 @@ End Sub
 
 <Test()>
 Public Sub CreateNewTest()
-       Dim target As AlternatorsEfficiency = New AlternatorsEfficiency(elecConsumers, hvacInputs, hvacMap, alternatorMap, powernetVoltage)
+       Dim target As M0_NonSmart_AlternatorsSetEfficiency = New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers, hvacInputs, hvacMap, alternatorMap, powernetVoltage)
        Assert.IsNotNull(target)
 End Sub
 
 <Test()>
 <ExpectedException("System.ArgumentException")>
 Public Sub CreateNew_MissingElecConsumers_ThrowArgumentExceptionTest()
-       Dim target As AlternatorsEfficiency = New AlternatorsEfficiency(Nothing, hvacInputs, hvacMap, alternatorMap, powernetVoltage)
+       Dim target As M0_NonSmart_AlternatorsSetEfficiency = New M0_NonSmart_AlternatorsSetEfficiency(Nothing, hvacInputs, hvacMap, alternatorMap, powernetVoltage)
 End Sub
 
 <Test()>
 <ExpectedException("System.ArgumentException")>
 Public Sub CreateNew_MissingHVACInputs_ThrowArgumentExceptionTest()
-       Dim target As AlternatorsEfficiency = New AlternatorsEfficiency(elecConsumers, Nothing, hvacMap, alternatorMap, powernetVoltage)
+       Dim target As M0_NonSmart_AlternatorsSetEfficiency = New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers, Nothing, hvacMap, alternatorMap, powernetVoltage)
 End Sub
 
 
 <Test()>
 <ExpectedException("System.ArgumentException")>
 Public Sub CreateNew_MissingHVACMAP_ThrowArgumentExceptionTest()
-       Dim target As AlternatorsEfficiency = New AlternatorsEfficiency(elecConsumers, hvacInputs, Nothing, alternatorMap, powernetVoltage)
+       Dim target As M0_NonSmart_AlternatorsSetEfficiency = New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers, hvacInputs, Nothing, alternatorMap, powernetVoltage)
 End Sub
 
 
 <Test()>
 <ExpectedException("System.ArgumentException")>
 Public Sub CreateNew_MissingAlternatorMap_ThrowArgumentExceptionTest()
-       Dim target As AlternatorsEfficiency = New AlternatorsEfficiency(elecConsumers, hvacInputs, hvacMap, Nothing, powernetVoltage)
+       Dim target As M0_NonSmart_AlternatorsSetEfficiency = New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers, hvacInputs, hvacMap, Nothing, powernetVoltage)
 End Sub
 
 
 
 <Test()>
 Public Sub EfficiencyValueTest()
-       Dim target As AlternatorsEfficiency = New AlternatorsEfficiency(elecConsumers, hvacInputs, hvacMap, alternatorMap, powernetVoltage)
+       Dim target As M0_NonSmart_AlternatorsSetEfficiency = New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers, hvacInputs, hvacMap, alternatorMap, powernetVoltage)
 
        Dim actual As Single = target.GetEfficiency(2000, 1)
 
@@ -94,7 +94,7 @@ End Sub
 <Test()>
 Public Sub HVAC_PowerDemandAmpsTest()
 
-      Dim target As AlternatorsEfficiency = New AlternatorsEfficiency(elecConsumers, hvacInputs, hvacMap, alternatorMap, powernetVoltage)
+      Dim target As M0_NonSmart_AlternatorsSetEfficiency = New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers, hvacInputs, hvacMap, alternatorMap, powernetVoltage)
 
       Dim actual As Single
       Dim expected As Single = 152.091263F   '( HVAC POWER OUTPUT IN KW not Watts )

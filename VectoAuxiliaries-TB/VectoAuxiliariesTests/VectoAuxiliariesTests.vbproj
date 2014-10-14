@@ -88,7 +88,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Mocks\HVACMapMock.vb" />
-    <Compile Include="UnitTests\AlternatorsEfficiencyTests.vb" />
+    <Compile Include="UnitTests\M0_NonSmart_AlternatorsSetEfficiencyTests.vb" />
     <Compile Include="UnitTests\AveragePneumaticLoadDemandTests.vb" />
     <Compile Include="UnitTests\ElectricalConsumerListTests.vb" />
     <Compile Include="UnitTests\HVACMapTests.vb" />
@@ -118,6 +118,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="UnitTests\ResultCardTests.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
