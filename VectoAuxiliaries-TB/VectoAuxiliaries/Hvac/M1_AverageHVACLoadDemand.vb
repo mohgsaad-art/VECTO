@@ -1,7 +1,8 @@
 ﻿Imports VectoAuxiliaries.Electrics
 
 Namespace Hvac
-    Public Class AverageHVACLoadDemand
+
+    Public Class M1_AverageHVACLoadDemand
 
         Dim map As IHVACMap
         Dim alternator As IAlternator
