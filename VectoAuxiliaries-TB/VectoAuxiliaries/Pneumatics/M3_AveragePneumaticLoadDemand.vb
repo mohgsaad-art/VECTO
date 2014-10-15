@@ -2,7 +2,7 @@
 
 Namespace Pneumatics
 
-    Public Class AveragePneumaticLoadDemand
+    Public Class M3_AveragePneumaticLoadDemand
 
 
         Private _pneumaticUserInputsConfig As IPneumaticUserInputsConfig

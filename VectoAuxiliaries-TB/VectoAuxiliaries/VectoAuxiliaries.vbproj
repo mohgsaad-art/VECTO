@@ -93,8 +93,8 @@
     <Compile Include="Electrics\Alternator.vb" />
     <Compile Include="Electrics\AlternatorMap.vb" />
     <Compile Include="Electrics\M2_AverageElectricalLoadDemand.vb" />
-    <Compile Include="Hvac\AverageHVACLoadDemand.vb" />
-    <Compile Include="Pneumatics\AveragePneumaticLoadDemand.vb" />
+    <Compile Include="Hvac\M1_AverageHVACLoadDemand.vb" />
+    <Compile Include="Pneumatics\M3_AveragePneumaticLoadDemand.vb" />
     <Compile Include="Pneumatics\CompressorMap.vb" />
     <Compile Include="Electrics\ElectricalConsumer.vb" />
     <Compile Include="Hvac\HVACMap.vb" />
