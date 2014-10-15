@@ -16,6 +16,7 @@ Public Property ResultCardIdleAmps As Dictionary(Of Single, Single) Implements I
 Public Property ResultCardTractionAmps As Dictionary(Of Single, Single) Implements IElectricsUserInputsConfig.ResultCardTractionAmps
 Public Property ResultCardOverrunAmps As Dictionary(Of Single, Single) Implements IElectricsUserInputsConfig.ResultCardOverrunAmps
 
+Public Property SmartElectrical As Boolean Implements IElectricsUserInputsConfig.SmartElectrical
 
 
 End Class

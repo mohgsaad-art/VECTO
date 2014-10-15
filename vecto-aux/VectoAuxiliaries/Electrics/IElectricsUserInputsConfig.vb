@@ -13,6 +13,9 @@ Property DoorActuationTimeSecond As Integer
 Property ResultCardIdleAmps As Dictionary(Of Single, Single)
 Property ResultCardTractionAmps As Dictionary(Of Single, Single)
 Property ResultCardOverrunAmps As Dictionary(Of Single, Single)
+Property SmartElectrical As Boolean
+
+
 
 End Interface
 
