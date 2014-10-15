@@ -80,20 +80,6 @@ _items.Add(c19.ConsumerName, c19)
 _items.Add(c20.ConsumerName, c20)
 
 
-Dim v As Single = GetTotalAverageDemandAmps(0.96, True)
-
-For Each load As KeyValuePair(Of String, IElectricalConsumer) In _items
-
- Console.WriteLine(load.Key & " -> " & load.Value.TotalAvgConumptionAmps(0.096))
-
-
-Next
-
-
-
-Dim totals As Single = Aggregate i In _items Into Sum(i.Value.PhaseIdle_TractionOn * i.Value.NominalConsumptionAmps * i.Value.NumberInActualVehicle)
-
-
 
 End Sub
 

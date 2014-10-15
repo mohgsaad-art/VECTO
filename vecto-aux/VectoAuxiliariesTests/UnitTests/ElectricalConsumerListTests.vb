@@ -4,22 +4,10 @@ Imports VectoAuxiliaries.Electrics
 <TestFixture()>
 Public Class ElectricalConsumerListTests
 
-Private TestConsumerList As ElectricalConsumerList
+Private TestConsumerList As ElectricalConsumerList = New ElectricalConsumerList(26.3,True)
 
 
 Sub New()
-
-
-   TestConsumerList = New ElectricalConsumerList(26.3, True)
-
-   'Add two OnBaseVehicle consumers
-   TestConsumerList.AddConsumer(New ElectricalConsumer(True, "TEST1", "Exclude1", 10, 1, 26.3, 1))
-   TestConsumerList.AddConsumer(New ElectricalConsumer(True, "TEST2", "Exclude2", 10, 1, 26.3, 1))
-
-   'Add two NOT onBaseVehicle consumers
-   TestConsumerList.AddConsumer(New ElectricalConsumer(False, "TEST3", "Include1", 10, 1, 26.3, 1))
-   TestConsumerList.AddConsumer(New ElectricalConsumer(False, "TEST4", "Include2", 10, 1, 26.3, 1))
-
 
 End Sub
 
@@ -27,7 +15,7 @@ End Sub
 <Test()>
 Public Sub CreateNewTest()
 
-   Dim target As New ElectricalConsumerList(26.3)
+   Dim target As New ElectricalConsumerList(26.3, True)
 
    Assert.IsNotNull(target)
 
@@ -37,34 +25,41 @@ End Sub
 <Test()>
 Public Sub SumAllConsumersTest()
 
-     Dim actual As Single = TestConsumerList.GetTotalAverageDemandAmps(1, False)
-     Dim expected = 40
+     TestConsumerList.Items("Controllers,Valves etc").NumberInActualVehicle=1
 
-     Assert.AreEqual(expected, actual)
+     Dim actual As Single = TestConsumerList.GetTotalAverageDemandAmps(0.096, False)
+
+    TestConsumerList.Items("Controllers,Valves etc").NumberInActualVehicle=1
+
+     Dim expected = 60.63
+
+     Assert.AreEqual(expected, Math.Round(actual,2))
 
 End Sub
 
 <Test()>
 Public Sub SumNonExcludedConsumersTest()
 
-     Dim actual As Single = TestConsumerList.GetTotalAverageDemandAmps(1, True)
-     Dim expected = 20
-
-     Assert.AreEqual(expected, actual)
+     TestConsumerList.Items("Controllers,Valves etc").NumberInActualVehicle=1
+     Dim actual As Single = TestConsumerList.GetTotalAverageDemandAmps(0.096, True)
+     TestConsumerList.Items("Controllers,Valves etc").NumberInActualVehicle=0
+     Dim expected = 35.63
+     Assert.AreEqual(expected, Math.Round(actual,2))
 
 End Sub
 
 
-<Test()>
-<ExpectedException("System.ArgumentException")>
+<Test()>            
+<ExpectedException("System.ArgumentException")>  _
 Public Sub DuplicateConsumersTest_ThrowsArgumentException()
 
    Dim target As New ElectricalConsumerList(26.3)
-
    'Add two OnBaseVehicle consumers
    target.AddConsumer(New ElectricalConsumer(True, "TEST", "Exclude1", 10, 1, 26.3, 1))
    target.AddConsumer(New ElectricalConsumer(True, "TEST", "Exclude1", 10, 1, 26.3, 1))
 
 End Sub
+
+
 
 End Class
