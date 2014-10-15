@@ -10,7 +10,7 @@ Private TestConsumerList As ElectricalConsumerList
 Sub New()
 
 
-   TestConsumerList = New ElectricalConsumerList()
+   TestConsumerList = New ElectricalConsumerList(26.3, True)
 
    'Add two OnBaseVehicle consumers
    TestConsumerList.AddConsumer(New ElectricalConsumer(True, "TEST1", "Exclude1", 10, 1, 26.3, 1))
@@ -27,7 +27,7 @@ End Sub
 <Test()>
 Public Sub CreateNewTest()
 
-   Dim target As New ElectricalConsumerList()
+   Dim target As New ElectricalConsumerList(26.3)
 
    Assert.IsNotNull(target)
 
@@ -59,7 +59,7 @@ End Sub
 <ExpectedException("System.ArgumentException")>
 Public Sub DuplicateConsumersTest_ThrowsArgumentException()
 
-   Dim target As New ElectricalConsumerList()
+   Dim target As New ElectricalConsumerList(26.3)
 
    'Add two OnBaseVehicle consumers
    target.AddConsumer(New ElectricalConsumer(True, "TEST", "Exclude1", 10, 1, 26.3, 1))

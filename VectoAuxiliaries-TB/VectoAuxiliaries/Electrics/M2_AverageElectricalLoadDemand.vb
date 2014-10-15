@@ -6,6 +6,7 @@
         Private _electricalConsumers As IElectricalConsumerList
         Private _module0 As IM0_NonSmart_AlternatorsSetEfficiency
         Private _alternatorPulleyEffiency As Single
+        Private _doorsPercentageZeroToOne As Single
 
 
         Public Sub New(ByVal electricalConsumers As IElectricalConsumerList, m0 As IM0_NonSmart_AlternatorsSetEfficiency, altPulleyEfficiency As Single, powerNetVoltage As Single)
@@ -27,26 +28,31 @@
         End Sub
 
 
-
         ''' <summary>
-        ''' Gets the total average power at the alternator for all electrical consumers
+        ''' 
         ''' </summary>
+        ''' <param name="doorDutyCycleZeroToOne"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function GetAveragePowerDemandAtAlternator() As Single
+        Public Function GetAveragePowerDemandAtAlternator(doorDutyCycleZeroToOne As Single) As Single
 
-           '  Return _electricalConsumers.GetTotalAverageDemandAmps()
+             Return _electricalConsumers.GetTotalAverageDemandAmps(doorDutyCycleZeroToOne, False)
 
-            Return 5000 ' TODO:FIX THIS
         End Function
 
 
-        Public Function GetAveragePowerAtCrank(ByVal engineRpm As Integer) As Single
-            Dim elecPower As Single = GetAveragePowerDemandAtAlternator()
-            Dim alternatorEfficiency As Single = 0 '_alternator.GetEfficiency(engineRpm) TODO: Fix THis.
-            Dim demandFromAlternator As Single = elecPower / alternatorEfficiency
-            Dim powerAtCrank As Single = 0 ' TODO : FIX THIS demandFromAlternator / _alternator.PulleyGearEfficiency
-            Return powerAtCrank
+        Public Function GetAveragePowerAtCrank(ByVal engineRpm As Integer, doorDutyCycleZeroToOne As Single) As Single
+
+            Dim ElectricalPowerDemandsWatts As Single = GetAveragePowerDemandAtAlternator(doorDutyCycleZeroToOne) * _powerNetVoltage
+            Dim alternatorsEfficiency As Single       = _module0.GetEfficiency(engineRpm,doorDutyCycleZeroToOne)
+            Dim ElectricalPowerDemandsWattsDividedByAlternatorEfficiency as Single = ElectricalPowerDemandsWatts / alternatorsEfficiency
+
+            Dim averagePowerDemandAtCrankFromElectricsWatts As Single
+           
+            averagePowerDemandAtCrankFromElectricsWatts = ElectricalPowerDemandsWattsDividedByAlternatorEfficiency / _alternatorPulleyEffiency
+
+            Return  averagePowerDemandAtCrankFromElectricsWatts
+
         End Function
 
 

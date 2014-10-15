@@ -96,7 +96,7 @@
     <Compile Include="UnitTests\AirCompressorTests.vb" />
     <Compile Include="UnitTests\AlternatorMapTests.vb" />
     <Compile Include="UnitTests\AlternatorTests.vb" />
-    <Compile Include="UnitTests\AverageElectricalDemandTests.vb" />
+    <Compile Include="UnitTests\M2_AverageElectricalLoadTests.vb" />
     <Compile Include="UnitTests\CompressorMapTests.vb" />
     <Compile Include="UnitTests\ElectricalConsumerTests.vb" />
     <Compile Include="Mocks\AlternatorMapMock.vb" />
