@@ -6,15 +6,99 @@ Namespace Electrics
 Public Class ElectricalConsumerList
 Implements IElectricalConsumerList
 
+
 Private _items As New Dictionary(Of String, IElectricalConsumer)
+Private _powernetVoltage As Single
+
+        Public ReadOnly Property Items As Dictionary(Of String, IElectricalConsumer) Implements IElectricalConsumerList.Items
+            Get
+            Return _items
+            End Get
+        End Property
+
+'Create Empty List
+Public Sub New(powenetVoltage As Single, Optional createDefaultList As Boolean = False)
+
+_powernetVoltage = powenetVoltage
+
+If createDefaultList Then SetDefaultConsumerList()
 
 
-   Public ReadOnly Property Items As Dictionary(Of String, IElectricalConsumer) Implements Electrics.IElectricalConsumerList.Items
-       Get
-        Return _items
 
-       End Get
-   End Property
+End Sub
+
+
+Public Sub SetDefaultConsumerList()
+
+ 'This populates the default settings as per engineering spreadsheet.
+ 'Vehicle Basic Equipment' category can be added or remove by customers.
+
+ _items.Clear()
+
+ Dim c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20 As IElectricalConsumer
+
+c1 = CType(New ElectricalConsumer(False, "Doors", "Doors per Door",                                                                         3.00, 0.96, _powernetVoltage, 3), IElectricalConsumer)
+c2 = CType(New ElectricalConsumer(True, "Veh Electronics &Engine", "Controllers,Valves etc",                                               25.00, 1.00, _powernetVoltage, 0), IElectricalConsumer)
+c3 = CType(New ElectricalConsumer(False, "Vehicle basic equipment", "Radio City",                                                           2.00, 0.80, _powernetVoltage, 1), IElectricalConsumer)
+c4 = CType(New ElectricalConsumer(False, "Vehicle basic equipment", "Radio Intercity",                                                      5.00, 0.80, _powernetVoltage, 0), IElectricalConsumer)
+c5 = CType(New ElectricalConsumer(False, "Vehicle basic equipment", "Radio/Audio Tourism",                                                  9.00, 0.80, _powernetVoltage, 0), IElectricalConsumer)
+c6 = CType(New ElectricalConsumer(False, "Vehicle basic equipment", "Fridge",                                                               4.00, 0.50, _powernetVoltage, 0), IElectricalConsumer)
+c7 = CType(New ElectricalConsumer(False, "Vehicle basic equipment", "Kitchen Standard",                                                    67.00, 0.05, _powernetVoltage, 0), IElectricalConsumer)
+c8 = CType(New ElectricalConsumer(False, "Vehicle basic equipment", "Interior lights City/ Intercity + Doorlights [1/m]",                   1.00, 0.70, _powernetVoltage, 12), IElectricalConsumer)
+c9 = CType(New ElectricalConsumer(False, "Vehicle basic equipment", "LED Interior lights ceiling city/ontercity + door [1/m]",              0.60, 0.70, _powernetVoltage, 0), IElectricalConsumer)
+c10 = CType(New ElectricalConsumer(False, "Vehicle basic equipment", "Interior lights Tourism + reading [1/m]",                             1.10, 0.70, _powernetVoltage, 0), IElectricalConsumer)
+c11 = CType(New ElectricalConsumer(False, "Vehicle basic equipment", "LED Interior lights ceiling Tourism + LED reading [1/m]",             0.66, 0.70, _powernetVoltage, 0), IElectricalConsumer)
+c12 = CType(New ElectricalConsumer(False, "Customer Specific Equipment", "External Displays Font/Side/Rear",                                2.65, 1.00, _powernetVoltage, 4), IElectricalConsumer)
+c13 = CType(New ElectricalConsumer(False, "Customer Specific Equipment", "Internal display per unit ( front side rear)",                    1.06, 1.00, _powernetVoltage, 1), IElectricalConsumer)
+c14 = CType(New ElectricalConsumer(False, "Customer Specific Equipment", "CityBus Ref EBSF Table4 Devices ITS No Displays",                 9.30, 1.00, _powernetVoltage, 1), IElectricalConsumer)
+c15 = CType(New ElectricalConsumer(False, "Lights", "Exterior Lights BULB",                                                                 7.40, 1.00, _powernetVoltage, 1), IElectricalConsumer)
+c16 = CType(New ElectricalConsumer(False, "Lights", "Day running lights LED bonus",                                                        -0.72, 1.00, _powernetVoltage, 1), IElectricalConsumer)
+c17 = CType(New ElectricalConsumer(False, "Lights", "Antifog rear lights LED bonus",                                                       -0.17, 1.00, _powernetVoltage, 1), IElectricalConsumer)
+c18 = CType(New ElectricalConsumer(False, "Lights", "Position lights LED bonus",                                                           -1.20, 1.00, _powernetVoltage, 1), IElectricalConsumer)
+c19 = CType(New ElectricalConsumer(False, "Lights", "Direction lights LED bonus",                                                          -0.30, 1.00, _powernetVoltage, 1), IElectricalConsumer)
+c20 = CType(New ElectricalConsumer(False, "Lights", "Brake Lights",                                                                        -1.20, 1.00, _powernetVoltage, 1), IElectricalConsumer)
+
+_items.Add(c1.ConsumerName, c1)
+_items.Add(c2.ConsumerName, c2)
+_items.Add(c3.ConsumerName, c3)
+_items.Add(c4.ConsumerName, c4)
+_items.Add(c5.ConsumerName, c5)
+_items.Add(c6.ConsumerName, c6)
+_items.Add(c7.ConsumerName, c7)
+_items.Add(c8.ConsumerName, c8)
+_items.Add(c9.ConsumerName, c9)
+_items.Add(c10.ConsumerName, c10)
+_items.Add(c11.ConsumerName, c11)
+_items.Add(c12.ConsumerName, c12)
+_items.Add(c13.ConsumerName, c13)
+_items.Add(c14.ConsumerName, c14)
+_items.Add(c15.ConsumerName, c15)
+_items.Add(c16.ConsumerName, c16)
+_items.Add(c17.ConsumerName, c17)
+_items.Add(c18.ConsumerName, c18)
+_items.Add(c19.ConsumerName, c19)
+_items.Add(c20.ConsumerName, c20)
+
+
+Dim v As Single = GetTotalAverageDemandAmps(0.96, True)
+
+For Each load As KeyValuePair(Of String, IElectricalConsumer) In _items
+
+ Console.WriteLine(load.Key & " -> " & load.Value.TotalAvgConumptionAmps(0.096))
+
+
+Next
+
+
+
+Dim totals As Single = Aggregate i In _items Into Sum(i.Value.PhaseIdle_TractionOn * i.Value.NominalConsumptionAmps * i.Value.NumberInActualVehicle)
+
+
+
+End Sub
+
+
+
 
    Public Sub AddConsumer(consumer As IElectricalConsumer) Implements Electrics.IElectricalConsumerList.AddConsumer
 
@@ -63,6 +147,7 @@ Private _items As New Dictionary(Of String, IElectricalConsumer)
     Return Amps
 
    End Function
+
 
 
 End Class
