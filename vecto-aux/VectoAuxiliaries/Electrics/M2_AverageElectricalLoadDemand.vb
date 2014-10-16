@@ -36,7 +36,7 @@
         End Function
 
 
-        Public Function GetAveragePowerAtCrank(ByVal engineRpm As Integer, doorDutyCycleZeroToOne As Single) As Single
+        Public Function GetAveragePowerAtCrank(ByVal engineRpm As Integer) As Single
 
             Dim ElectricalPowerDemandsWatts As Single = GetAveragePowerDemandAtAlternator() * _powerNetVoltage
             Dim alternatorsEfficiency As Single       = _module0.GetEfficiency(engineRpm)
