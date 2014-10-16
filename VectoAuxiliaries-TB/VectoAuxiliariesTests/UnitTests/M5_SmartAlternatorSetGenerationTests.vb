@@ -3,6 +3,7 @@ Imports VectoAuxiliaries.Pneumatics
 Imports VectoAuxiliariesTests.Mocks
 Imports VectoAuxiliaries.Electrics
 Imports VectoAuxiliaries.Hvac
+Imports VectoAuxiliaries
 
 Namespace UnitTests
 
@@ -19,16 +20,19 @@ Private const _altGearPullyEfficiency As Single =0.8
 'Private fields
 Private _m05 As M0_5_SmartAlternatorSetEfficiency
 Private _target As M5__SmartAlternatorSetGeneration
+Private _signals As ISignals = New Signals
 
 Private sub Initialise()
 
-Dim elecConsumers As New ElectricalConsumerList(26.3,0.096,True)
+_signals.EngineSpeed= 2000
+
+Dim elecConsumers As New ElectricalConsumerList(_powerNetVoltage,0.096,True)
 Dim hvacInputs As New HVACInputs(1,1)
 Dim  hvacMap As New HVACMap(_hvacMap)
 hvacMap.Initialise()
 Dim alternatoMap As New AlternatorMap(_altMap)
 alternatoMap.Initialise()
-Dim m0 As New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers,hvacInputs,hvacMap,alternatoMap,_powerNetVoltage)
+Dim m0 As New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers,hvacInputs,hvacMap,alternatoMap,_powerNetVoltage,_signals)
 
 'Results Cards
 Dim readings = new Dictionary(Of single, single)
@@ -39,7 +43,10 @@ Dim idleResult As New ResultCard(readings)
 Dim tractionResult As New ResultCard(readings)
 Dim overrunResult As New ResultCard(readings)
 
-_m05 = New M0_5_SmartAlternatorSetEfficiency(m0,elecConsumers,alternatoMap,idleResult,tractionResult,overrunResult)
+Dim signals As ISignals = New Signals
+signals.EngineSpeed=2000
+
+_m05 = New M0_5_SmartAlternatorSetEfficiency(m0,elecConsumers,alternatoMap,idleResult,tractionResult,overrunResult,signals)
 
 End Sub
 

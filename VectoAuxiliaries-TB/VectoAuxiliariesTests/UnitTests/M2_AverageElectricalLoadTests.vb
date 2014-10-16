@@ -2,18 +2,25 @@
 Imports VectoAuxiliaries.Hvac
 Imports NUnit.Framework
 Imports VectoAuxiliariesTests.Mocks
+imports VectoAuxiliaries
 
 Namespace UnitTests
 
     <TestFixture()>
     Public Class M2_AverageElectricalDemandTests
 
+    Private signals As ISignals = New Signals
+
     Private Const csngDoorDutyCycleZeroToOne As Single = 0.0963391136801541
+    Private Const csngPowernetVoltage As Single = 26.3
 
 
 
 #Region "Helpers"
         Private Function GetAverageElectricalDemandInstance() As M2_AverageElectricalLoadDemand
+
+        signals.EngineSpeed=2000
+
 
             Dim consumers As IElectricalConsumerList = CType(New ElectricalConsumerList(26.3,0.096, True), IElectricalConsumerList)
             Dim hvacInp As IHVACInputs = CType(New HVACInputs(1, 1), IHVACInputs)
@@ -21,7 +28,7 @@ Namespace UnitTests
             hvacmap.Initialise()
             Dim altMap As IAlternatorMap = CType(New AlternatorMap("testfiles\testAlternatorMap.csv"), IAlternatorMap)
             altMap.Initialise()
-            Dim m0 As New M0_NonSmart_AlternatorsSetEfficiency(consumers, hvacInp, hvacmap, altMap, 26.3)
+            Dim m0 As New M0_NonSmart_AlternatorsSetEfficiency(consumers, hvacInp, hvacmap, altMap, 26.3,signals)
 
             'Get Consumers.
 
