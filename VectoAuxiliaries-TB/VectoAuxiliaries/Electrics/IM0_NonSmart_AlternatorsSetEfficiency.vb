@@ -2,7 +2,7 @@
 
 
      Function GetHVACElectricalPowerDemandAmps() As Single
-     Function GetEfficiency(crankRPM As Integer, DoorCycleActuationPercentage As Single) As Single
+     Function GetEfficiency(crankRPM As Integer) As Single
 
 
 End Interface

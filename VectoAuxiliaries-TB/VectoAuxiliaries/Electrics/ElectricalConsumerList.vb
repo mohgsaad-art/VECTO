@@ -9,6 +9,7 @@ Implements IElectricalConsumerList
 
 Private _items As New Dictionary(Of String, IElectricalConsumer)
 Private _powernetVoltage As Single
+Private _doorDutyCycleZeroToOne As single
 
         Public ReadOnly Property Items As Dictionary(Of String, IElectricalConsumer) Implements IElectricalConsumerList.Items
             Get
@@ -17,11 +18,13 @@ Private _powernetVoltage As Single
         End Property
 
 'Create Empty List
-Public Sub New(powenetVoltage As Single, Optional createDefaultList As Boolean = False)
+Public Sub New(powernetVoltage As Single,doorDutyCycle_ZeroToOne As single, Optional createDefaultList As Boolean = False)
 
-_powernetVoltage = powenetVoltage
+_powernetVoltage = powernetVoltage
 
 If createDefaultList Then SetDefaultConsumerList()
+
+_doorDutyCycleZeroToOne = doorDutyCycle_ZeroToOne
 
 
 
@@ -112,21 +115,16 @@ End Sub
 
    End Sub
 
-   Public Function GetTotalAverageDemandAmps(doorDutyCyclePercentage? As Single, excludeOnBase As Boolean) As Single Implements Electrics.IElectricalConsumerList.GetTotalAverageDemandAmps
+   Public Function GetTotalAverageDemandAmps(excludeOnBase As Boolean) As Single Implements Electrics.IElectricalConsumerList.GetTotalAverageDemandAmps
 
-   'Sanity check.
-   If doorDutyCyclePercentage Is Nothing Or doorDutyCyclePercentage > 1 Or doorDutyCyclePercentage < 0 Then
 
-     Throw New ArgumentException("doorDutyCyclePercentage must be between 0 and 1")
-
-   End If
 
      Dim Amps As Single
 
      If excludeOnBase Then
-       Amps = Aggregate item In Items Where item.Value.BaseVehicle = False Into Sum(item.Value.TotalAvgConumptionAmps(doorDutyCyclePercentage))
+       Amps = Aggregate item In Items Where item.Value.BaseVehicle = False Into Sum(item.Value.TotalAvgConumptionAmps(_doorDutyCycleZeroToOne))
      Else
-       Amps = Aggregate item In Items Into Sum(item.Value.TotalAvgConumptionAmps(doorDutyCyclePercentage))
+       Amps = Aggregate item In Items Into Sum(item.Value.TotalAvgConumptionAmps(_doorDutyCycleZeroToOne))
      End If
 
 

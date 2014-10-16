@@ -35,15 +35,14 @@ Public Class M0_NonSmart_AlternatorsSetEfficiency
 
 
 
-    Public Function GetEfficiency(crankRPM As Integer, DoorCycleActuationPercentage As Single) As Single Implements IM0_NonSmart_AlternatorsSetEfficiency.GetEfficiency
+    Public Function GetEfficiency(crankRPM As Integer) As Single Implements IM0_NonSmart_AlternatorsSetEfficiency.GetEfficiency
 
           'Sanity Check.
           If crankRPM < 1 Then Throw New ArgumentException("CrankRMP must be greater than zero")
-          If DoorCycleActuationPercentage < 0 Or DoorCycleActuationPercentage > 1 Then Throw New ArgumentException("DoorCyclyActuationPercentage must be between 0 and 1")
 
           Dim rotationalSpeed As Single = crankRPM
           Dim currentHVACDemandAmps As Single = _hvacMap.GetElectricalDemand(_hvacInputs.Region, _hvacInputs.Season)
-          Dim currentElectricalConsumerDemandAmp As Single = _electricalConsumersList.GetTotalAverageDemandAmps(DoorCycleActuationPercentage, True)
+          Dim currentElectricalConsumerDemandAmp As Single = _electricalConsumersList.GetTotalAverageDemandAmps(True)
 
           Dim totalDemandAmps As Single = currentHVACDemandAmps + currentElectricalConsumerDemandAmp
 
