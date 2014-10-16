@@ -89,6 +89,7 @@
     <Compile Include="Hvac\IHVACInputs.vb" />
     <Compile Include="Hvac\HVACMapParameter.vb" />
     <Compile Include="Hvac\IHVACMap.vb" />
+    <Compile Include="ISignals.vb" />
     <Compile Include="Pneumatics\ActuationsKey.vb" />
     <Compile Include="Pneumatics\M4_AirCompressor.vb" />
     <Compile Include="Electrics\AlternatorMap.vb" />
@@ -123,6 +124,7 @@
     <Compile Include="Pneumatics\PneumaticActuationsMap.vb" />
     <Compile Include="Pneumatics\PneumaticsAuxilliariesConfig.vb" />
     <Compile Include="Pneumatics\PneumaticUserInputsConfig.vb" />
+    <Compile Include="Signals.vb" />
     <Compile Include="UI\ElectricalConsumers.Designer.vb">
       <DependentUpon>ElectricalConsumers.vb</DependentUpon>
     </Compile>
