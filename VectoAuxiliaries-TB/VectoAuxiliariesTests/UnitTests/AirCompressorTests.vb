@@ -5,7 +5,7 @@ Imports VectoAuxiliariesTests.Mocks
 Namespace UnitTests
 
     <TestFixture()>
-    Public Class AirCompressorTests
+    Public Class M4_AirCompressorTests
 #Region "Test Constants"
         Private Const GoodEfficiency As Single = 1
         Private Const TooLowEfficiency As Single = 0.1
@@ -27,9 +27,9 @@ Namespace UnitTests
             Return New CompressorMapMock(True)
         End Function
 
-        Private Function GetGoodCompressor() As AirCompressor
+        Private Function GetGoodCompressor() As M4_AirCompressor
             Dim map As ICompressorMap = GetNonFailingCompressorMapMock()
-            Dim target As AirCompressor = New AirCompressor(map, GoodRatio, GoodEfficiency)
+            Dim target As M4_AirCompressor = New M4_AirCompressor(map, GoodRatio, GoodEfficiency)
             Return target
         End Function
 #End Region
@@ -37,14 +37,14 @@ Namespace UnitTests
         <Test()>
         Public Sub CreateNewJustPathTest()
             Dim map As ICompressorMap = GetNonFailingCompressorMapMock()
-            Dim target As AirCompressor = New AirCompressor(map)
+            Dim target As M4_AirCompressor = New M4_AirCompressor(map)
             Assert.IsNotNull(target)
         End Sub
 
         <Test()>
         Public Sub CreateNewAllParametersTest()
             Dim map As ICompressorMap = GetNonFailingCompressorMapMock()
-            Dim target As AirCompressor = New AirCompressor(map, GoodRatio, GoodEfficiency)
+            Dim target As M4_AirCompressor = New M4_AirCompressor(map, GoodRatio, GoodEfficiency)
             Assert.IsNotNull(target)
         End Sub
 
@@ -52,27 +52,27 @@ Namespace UnitTests
         <Test()>
         Public Sub InitialiseTest()
             Dim map As ICompressorMap = GetNonFailingCompressorMapMock()
-            Dim target As AirCompressor = New AirCompressor(map)
+            Dim target As M4_AirCompressor = New M4_AirCompressor(map)
             Assert.IsTrue(target.Initialise())
         End Sub
 
         <Test(), ExpectedException("System.ArgumentException")>
         Public Sub InitialiseInvalidMapTest()
             Dim map As ICompressorMap = GetFailingCompressorMapMock()
-            Dim target As AirCompressor = New AirCompressor(map)
+            Dim target As M4_AirCompressor = New M4_AirCompressor(map)
             target.Initialise()
         End Sub
 
         <Test()>
         Public Sub GetEfficiencyTest()
-            Dim comp As AirCompressor = GetGoodCompressor()
+            Dim comp As M4_AirCompressor = GetGoodCompressor()
             Dim target = comp.PulleyGearEfficiency
             Assert.AreEqual(target, GoodEfficiency)
         End Sub
 
         <Test()>
         Public Sub SetEfficiencyTest()
-            Dim comp As AirCompressor = GetGoodCompressor()
+            Dim comp As M4_AirCompressor = GetGoodCompressor()
             Dim target As Single = 0.3
             comp.PulleyGearEfficiency = target
             Dim actual As Single = comp.PulleyGearEfficiency
@@ -83,21 +83,21 @@ Namespace UnitTests
         <TestCase(TooHighEfficiency)> _
         <ExpectedException("System.ArgumentOutOfRangeException")>
         Public Sub SetEfficiencyOutOfRangeTest(ByVal efficiency As Single)
-            Dim comp As AirCompressor = GetGoodCompressor()
+            Dim comp As M4_AirCompressor = GetGoodCompressor()
             comp.PulleyGearEfficiency = efficiency
         End Sub
 
 
         <Test()>
         Public Sub GetRatioTest()
-            Dim comp As AirCompressor = GetGoodCompressor()
+            Dim comp As M4_AirCompressor = GetGoodCompressor()
             Dim target = comp.PulleyGearRatio
             Assert.AreEqual(target, GoodRatio)
         End Sub
 
         <Test()>
         Public Sub SetRatioTest()
-            Dim comp As AirCompressor = GetGoodCompressor()
+            Dim comp As M4_AirCompressor = GetGoodCompressor()
             Dim target As Single = 3
             comp.PulleyGearRatio = target
             Dim actual As Single = comp.PulleyGearRatio
@@ -108,13 +108,13 @@ Namespace UnitTests
         <TestCase(TooHighRatio)> _
         <ExpectedException("System.ArgumentOutOfRangeException")>
         Public Sub SetRatioOutOfRangeTest(ByVal ratio As Single)
-            Dim comp As AirCompressor = GetGoodCompressor()
+            Dim comp As M4_AirCompressor = GetGoodCompressor()
             comp.PulleyGearRatio = ratio
         End Sub
 
         <Test()>
         Public Sub GetCompressorFlowRateTest()
-            Dim comp As AirCompressor = GetGoodCompressor()
+            Dim comp As M4_AirCompressor = GetGoodCompressor()
             Dim expected As Single = 2.0
             Dim actual = comp.GetFlowRate(100)
             Assert.AreEqual(expected, actual)
@@ -122,7 +122,7 @@ Namespace UnitTests
 
         <Test()>
         Public Sub GetPowerCompressorOffTest()
-            Dim comp As AirCompressor = GetGoodCompressor()
+            Dim comp As M4_AirCompressor = GetGoodCompressor()
             Dim expected As Single = 5.0
             Dim actual = comp.GetPowerCompressorOff(100)
             Assert.AreEqual(expected, actual)
@@ -131,7 +131,7 @@ Namespace UnitTests
 
         <Test()>
         Public Sub GetPowerCompressorOnTest()
-            Dim comp As AirCompressor = GetGoodCompressor()
+            Dim comp As M4_AirCompressor = GetGoodCompressor()
             Dim expected As Single = 8.0
             Dim actual = comp.GetPowerCompressorOn(100)
             Assert.AreEqual(expected, actual)
@@ -140,7 +140,7 @@ Namespace UnitTests
 
         <Test()>
         Public Sub GetPowerDifferenceTest()
-            Dim comp As AirCompressor = GetGoodCompressor()
+            Dim comp As M4_AirCompressor = GetGoodCompressor()
             Dim expected As Single = 3.0
             Dim actual = comp.GetPowerDifference(100)
             Assert.AreEqual(expected, actual)
@@ -150,7 +150,7 @@ Namespace UnitTests
         <Test>
         Public Sub GetAveragePowerDemandPerCompressorUnitFlowRate()
 
-            Dim comp As AirCompressor = GetGoodCompressor()
+            Dim comp As M4_AirCompressor = GetGoodCompressor()
 
             Dim expected As Single = 0.01
             Dim actual As Single = comp.GetAveragePowerDemandPerCompressorUnitFlowRate

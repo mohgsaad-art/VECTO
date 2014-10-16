@@ -1,5 +1,5 @@
 ﻿Namespace Pneumatics
-    Public Interface IAirCompressor
+    Public Interface IM4_AirCompressor
         ''' <summary>
         ''' Ratio of Gear or Pulley used to drive the compressor
         ''' </summary>

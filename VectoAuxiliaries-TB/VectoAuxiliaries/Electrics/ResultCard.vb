@@ -13,7 +13,7 @@ Private _results As Dictionary(Of Single, Single)
 Public Sub New(results As Dictionary(Of Single, Single))
 
    If results Is Nothing Then Throw New ArgumentException("A dictionary of smart results must be supplied.")
-   If results.Count < 2 Then Throw New ArgumentException("More than two entries are needed to interpolate results")
+
   _results = results
 
 End Sub
@@ -23,6 +23,8 @@ End Sub
 
 Public Function GetSmartCurrentResult(key As Single) As Single Implements IResultCard.GetSmartCurrentResult
 
+
+  If _results.Count<2 then Return 0.1
 
   Return GetOrInterpolate(key)
 

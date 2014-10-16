@@ -39,15 +39,8 @@ Public Sub CreateNewBanResultsNullTest()
 
 End Sub
 
-<Test()>
-<ExpectedException("System.ArgumentException")>
-Public Sub CreateNewBanResultsInsufficientEntriesTest()
 
 
- Dim target As New ResultCard(New Dictionary(Of Single, Single))
-
-
-End Sub
 
 <Test()>
 Public Sub GetBotomBoundryValueTest()
@@ -106,6 +99,18 @@ Public Sub GetExtrapolatedValue10AmpsTest()
 
 Dim expected As Single = 9
 Dim actual As Single = resultCard.GetSmartCurrentResult(10)
+
+Assert.AreEqual(expected, actual)
+
+End Sub
+
+<Test()>
+Public Sub EmptyOrInsufficientResultsTest()
+
+Dim resultSet As New Dictionary(of single , Single )
+
+Dim expected As Single = 0.1
+Dim actual As Single = (New ResultCard(resultSet)).GetSmartCurrentResult(10)
 
 Assert.AreEqual(expected, actual)
 
