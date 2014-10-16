@@ -57,7 +57,7 @@ Namespace UnitTests
         Public Sub GetAveragePowerAtCrankTest()
             Dim target As M2_AverageElectricalLoadDemand = GetAverageElectricalDemandInstance()
             Dim expected As Single = 2356.12964
-            Dim actual As Single = target.GetAveragePowerAtCrank(2000, csngDoorDutyCycleZeroToOne)
+            Dim actual As Single = target.GetAveragePowerAtCrank(2000)
             Assert.AreEqual(expected, actual)
         End Sub
 
