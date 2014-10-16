@@ -4,7 +4,6 @@ Namespace Electrics
 Public Class M5__SmartAlternatorSetGeneration
  Implements IM5_SmartAlternatorSetGeneration
 
-
 Private _powerNetVoltage As Single
 Private _m05 As M0_5_SmartAlternatorSetEfficiency
 Private _alternatorGearEfficiency As single
