@@ -14,8 +14,8 @@ Namespace UnitTests
 
 #Region "Helpers"
         Private Function GetAverageElectricalDemandInstance() As M2_AverageElectricalLoadDemand
-            Dim alt As IAlternator = New AlternatorMock
-            Dim consumers As IElectricalConsumerList = CType(New ElectricalConsumerList(26.3, True), IElectricalConsumerList)
+
+            Dim consumers As IElectricalConsumerList = CType(New ElectricalConsumerList(26.3,0.096, True), IElectricalConsumerList)
             Dim hvacInp As IHVACInputs = CType(New HVACInputs(1, 1), IHVACInputs)
             Dim hvacmap As IHVACMap = CType(New HVACMap("testfiles\TestHvacMap.csv"), IHVACMap)
             hvacmap.Initialise()
@@ -46,9 +46,9 @@ Namespace UnitTests
         Public Sub GetAveragePowerAtAlternatorTest()
 
 
-            Dim expected As Single =35.63705
+            Dim expected As Single =35.634
             Dim target As M2_AverageElectricalLoadDemand = GetAverageElectricalDemandInstance()
-            Dim actual As Single = target.GetAveragePowerDemandAtAlternator(csngDoorDutyCycleZeroToOne)
+            Dim actual As Single = target.GetAveragePowerDemandAtAlternator()
             Assert.AreEqual(expected,actual)
 
         End Sub
@@ -56,7 +56,7 @@ Namespace UnitTests
         <Test()>
         Public Sub GetAveragePowerAtCrankTest()
             Dim target As M2_AverageElectricalLoadDemand = GetAverageElectricalDemandInstance()
-            Dim expected As Single = 2356.33154
+            Dim expected As Single = 2356.12964
             Dim actual As Single = target.GetAveragePowerAtCrank(2000, csngDoorDutyCycleZeroToOne)
             Assert.AreEqual(expected, actual)
         End Sub

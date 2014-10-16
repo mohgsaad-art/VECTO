@@ -6,7 +6,7 @@
         Private _electricalConsumers As IElectricalConsumerList
         Private _module0 As IM0_NonSmart_AlternatorsSetEfficiency
         Private _alternatorPulleyEffiency As Single
-        Private _doorsPercentageZeroToOne As Single
+
 
 
         Public Sub New(ByVal electricalConsumers As IElectricalConsumerList, m0 As IM0_NonSmart_AlternatorsSetEfficiency, altPulleyEfficiency As Single, powerNetVoltage As Single)
@@ -28,23 +28,18 @@
         End Sub
 
 
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' <param name="doorDutyCycleZeroToOne"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Function GetAveragePowerDemandAtAlternator(doorDutyCycleZeroToOne As Single) As Single
 
-             Return _electricalConsumers.GetTotalAverageDemandAmps(doorDutyCycleZeroToOne, False)
+        Public Function GetAveragePowerDemandAtAlternator() As Single
+
+             Return _electricalConsumers.GetTotalAverageDemandAmps(False)
 
         End Function
 
 
         Public Function GetAveragePowerAtCrank(ByVal engineRpm As Integer, doorDutyCycleZeroToOne As Single) As Single
 
-            Dim ElectricalPowerDemandsWatts As Single = GetAveragePowerDemandAtAlternator(doorDutyCycleZeroToOne) * _powerNetVoltage
-            Dim alternatorsEfficiency As Single       = _module0.GetEfficiency(engineRpm,doorDutyCycleZeroToOne)
+            Dim ElectricalPowerDemandsWatts As Single = GetAveragePowerDemandAtAlternator() * _powerNetVoltage
+            Dim alternatorsEfficiency As Single       = _module0.GetEfficiency(engineRpm)
             Dim ElectricalPowerDemandsWattsDividedByAlternatorEfficiency as Single = ElectricalPowerDemandsWatts / alternatorsEfficiency
 
             Dim averagePowerDemandAtCrankFromElectricsWatts As Single

@@ -88,6 +88,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Mocks\HVACMapMock.vb" />
+    <Compile Include="UnitTests\M0_5_SmartAlternatorSetEfficiencyTests.vb" />
     <Compile Include="UnitTests\M0_NonSmart_AlternatorsSetEfficiencyTests.vb" />
     <Compile Include="UnitTests\AveragePneumaticLoadDemandTests.vb" />
     <Compile Include="UnitTests\ElectricalConsumerListTests.vb" />
@@ -95,12 +96,10 @@
     <Compile Include="UnitTests\PneumaticActuationsMapTests.vb" />
     <Compile Include="UnitTests\AirCompressorTests.vb" />
     <Compile Include="UnitTests\AlternatorMapTests.vb" />
-    <Compile Include="UnitTests\AlternatorTests.vb" />
     <Compile Include="UnitTests\M2_AverageElectricalLoadTests.vb" />
     <Compile Include="UnitTests\CompressorMapTests.vb" />
     <Compile Include="UnitTests\ElectricalConsumerTests.vb" />
     <Compile Include="Mocks\AlternatorMapMock.vb" />
-    <Compile Include="Mocks\AlternatorMock.vb" />
     <Compile Include="Mocks\CompressorMapMock.vb" />
     <Compile Include="Mocks\ElectricalConsumerMock.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />

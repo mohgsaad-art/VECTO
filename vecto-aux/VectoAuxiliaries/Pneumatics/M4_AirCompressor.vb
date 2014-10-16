@@ -1,8 +1,8 @@
 ﻿
 Namespace Pneumatics
 
-    Public Class AirCompressor
-        Implements IAirCompressor
+    Public Class M4_AirCompressor
+        Implements IM4_AirCompressor
 
         Private Const MinRatio As Single = 1.25
         Private Const MaxRatio As Single = 5.5
@@ -19,7 +19,7 @@ Namespace Pneumatics
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Property PulleyGearRatio() As Single Implements IAirCompressor.PulleyGearRatio
+        Public Property PulleyGearRatio() As Single Implements IM4_AirCompressor.PulleyGearRatio
             Get
                 Return _pulleyGearRatio
             End Get
@@ -38,7 +38,7 @@ Namespace Pneumatics
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Property PulleyGearEfficiency() As Single Implements IAirCompressor.PulleyGearEfficiency
+        Public Property PulleyGearEfficiency() As Single Implements IM4_AirCompressor.PulleyGearEfficiency
             Get
                 Return _pulleyGearEfficiency
             End Get
@@ -78,7 +78,7 @@ Namespace Pneumatics
         ''' </summary>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function Initialise() As Boolean Implements IAirCompressor.Initialise
+        Public Function Initialise() As Boolean Implements IM4_AirCompressor.Initialise
             Return _map.Initialise()
         End Function
 
@@ -99,7 +99,7 @@ Namespace Pneumatics
         ''' <param name="engineRpm">Engine speed in rpm</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function GetFlowRate(ByVal engineRpm As Integer) As Single Implements IAirCompressor.GetFlowRate
+        Public Function GetFlowRate(ByVal engineRpm As Integer) As Single Implements IM4_AirCompressor.GetFlowRate
             Dim compressorRpm As Single = engineRpm * PulleyGearRatio
             Return _map.GetFlowRate(compressorRpm)
         End Function
@@ -110,7 +110,7 @@ Namespace Pneumatics
         ''' <param name="engineRpm">Engine speed in rpm</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function GetPowerCompressorOff(ByVal engineRpm As Integer) As Single Implements IAirCompressor.GetPowerCompressorOff
+        Public Function GetPowerCompressorOff(ByVal engineRpm As Integer) As Single Implements IM4_AirCompressor.GetPowerCompressorOff
             Return GetCompressorPower(engineRpm, False)
         End Function
 
@@ -120,7 +120,7 @@ Namespace Pneumatics
         ''' <param name="engineRpm">Engine speed in rpm</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function GetPowerCompressorOn(ByVal engineRpm As Integer) As Single Implements IAirCompressor.GetPowerCompressorOn
+        Public Function GetPowerCompressorOn(ByVal engineRpm As Integer) As Single Implements IM4_AirCompressor.GetPowerCompressorOn
             Return GetCompressorPower(engineRpm, True)
         End Function
 
@@ -130,7 +130,7 @@ Namespace Pneumatics
         ''' <param name="engineRpm">Engine speed in rpm</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function GetPowerDifference(ByVal engineRpm As Integer) As Single Implements IAirCompressor.GetPowerDifference
+        Public Function GetPowerDifference(ByVal engineRpm As Integer) As Single Implements IM4_AirCompressor.GetPowerDifference
             Dim powerOn As Single = GetPowerCompressorOn(engineRpm)
             Dim powerOff As Single = GetPowerCompressorOff(engineRpm)
             Return powerOn - powerOff
@@ -156,7 +156,7 @@ Namespace Pneumatics
 
 
 
-        Public Function GetAveragePowerDemandPerCompressorUnitFlowRate() As Single Implements IAirCompressor.GetAveragePowerDemandPerCompressorUnitFlowRate
+        Public Function GetAveragePowerDemandPerCompressorUnitFlowRate() As Single Implements IM4_AirCompressor.GetAveragePowerDemandPerCompressorUnitFlowRate
 
             Return _map.GetAveragePowerDemandPerCompressorUnitFlowRate()
 

@@ -12,42 +12,52 @@ Private _resultCardTraction As IResultCard
 Private _resultCardOverrun As IResultCard
 
 
-Public ReadOnly Property SmartIdleCurrent As single
-    Get
 
-    End Get
-End Property
-Public ReadOnly Property AlternatorsEfficiencyIdleResultCard As single
-    Get
+Public Function SmartIdleCurrent() As single
 
-    End Get
-End Property
+ Return _resultCardIdle.GetSmartCurrentResult(HvacPlusNonBaseCurrents())
 
+end Function
 
-Public readonly Property SmartTractionCurrent As Single
-    Get
+Public Function AlternatorsEfficiencyIdleResultCard(ByVal rpm As integer ) As single
 
-    End Get
-End Property
-Public readonly Property AlternatorsEfficiencyTractionOnResultCard As Single
-    Get
+    Return _alternatorMap.GetEfficiency(rpm, SmartIdleCurrent()).Efficiency
 
-    End Get
-End Property
+End Function
 
 
-Public ReadOnly Property SmartOverrunCurrent As Single
-    Get
 
-    End Get
-End Property
-Public ReadOnly Property AlternatorsEfficiencyOverrunResultCard As single
-    Get
+Public function SmartTractionCurrent As Single
 
-    End Get
-End Property
+ Return _resultCardTraction.GetSmartCurrentResult(HvacPlusNonBaseCurrents())
+
+End Function
+
+Public Function AlternatorsEfficiencyTractionOnResultCard(ByVal rpm As integer ) As Single
+
+    Return _alternatorMap.GetEfficiency(rpm, SmartTractionCurrent()).Efficiency
+
+End Function
 
 
+Public Function SmartOverrunCurrent As Single
+
+ Return _resultCardOverrun.GetSmartCurrentResult(HvacPlusNonBaseCurrents())
+
+End Function
+
+Public Function AlternatorsEfficiencyOverrunResultCard(ByVal rpm As integer) As single
+
+    Return _alternatorMap.GetEfficiency(rpm, SmartOverrunCurrent()).Efficiency
+
+End Function
+
+
+Private function HvacPlusNonBaseCurrents() As Single
+
+   Return _m0.GetHVACElectricalPowerDemandAmps() + _electricalConsumables.GetTotalAverageDemandAmps(true)
+
+End Function
 
 Public Sub new ( m0 As IM0_NonSmart_AlternatorsSetEfficiency, _
                  electricalConsumables as IElectricalConsumerList, _ 
@@ -62,14 +72,17 @@ Public Sub new ( m0 As IM0_NonSmart_AlternatorsSetEfficiency, _
                  If alternatorMap        is Nothing then throw new ArgumentException("Must supply a valid alternator map")
                  if  resultCardIdle      is nothing then throw new ArgumentException("Result Card 'IDLE' must be supplied even if it has no contents")
                  if  resultCardTraction  is nothing then throw new ArgumentException("Result Card 'TRACTION' must be supplied even if it has no contents")
-                 if  resultCardOverrun   is nothing then throw new ArgumentException("Result Card 'OVERRUN' must be supplied even if it has no contents")               
+                 if  resultCardOverrun   is nothing then throw new ArgumentException("Result Card 'OVERRUN' must be supplied even if it has no contents") 
+              
  
                  'Assignments to private variables.
+                 _m0=m0
                  _electricalConsumables   = electricalConsumables
                  _alternatorMap           = alternatorMap
                  _resultCardIdle          = resultCardIdle
                  _resultCardTraction      = resultCardTraction
                  _resultCardOverrun       = resultCardOverrun
+
                                                                                                                              
 End Sub                                      
 

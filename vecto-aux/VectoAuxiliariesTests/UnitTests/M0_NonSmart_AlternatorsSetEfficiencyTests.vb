@@ -27,7 +27,7 @@ Private powernetVoltage As Single = 26.3
 Public Sub New()
 
    'Setup consumers and HVAC ( 1 Consumer in Test Category )
-    elecConsumers = CType(New ElectricalConsumerList(26.3), IElectricalConsumerList)
+    elecConsumers = CType(New ElectricalConsumerList(0.096,26.3), IElectricalConsumerList)
     elecConsumers.AddConsumer(New ElectricalConsumer(False, "TEST", "CONSUMER1", 20, 0.5, 26.3, 1))
 
     'Setup HVAC
@@ -81,7 +81,7 @@ End Sub
 Public Sub EfficiencyValueTest()
        Dim target As M0_NonSmart_AlternatorsSetEfficiency = New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers, hvacInputs, hvacMap, alternatorMap, powernetVoltage)
 
-       Dim actual As Single = target.GetEfficiency(2000, 1)
+       Dim actual As Single = target.GetEfficiency(2000)
 
        Dim expected As Single = 0.6375106
 

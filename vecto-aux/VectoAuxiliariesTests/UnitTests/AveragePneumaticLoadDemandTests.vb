@@ -8,7 +8,7 @@ Imports VectoAuxiliaries
 Namespace UnitTests
 
     <TestFixture>
-    Public Class AveragePneumaticLoadDemandTests
+    Public Class M3_AveragePneumaticLoadDemandTests
 
 
 
@@ -71,7 +71,7 @@ Namespace UnitTests
          Dim psCompressorMap = CType(New CompressorMap(_compressorMapPath), ICompressorMap)
 
           psCompressorMap.Initialise()
-          Dim target As New AveragePneumaticLoadDemand(psUserInputsConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
+          Dim target As New M3_AveragePneumaticLoadDemand(psUserInputsConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
 
 
 
@@ -90,7 +90,7 @@ Namespace UnitTests
 
          psCompressorMap.Initialise()
 
-         Dim target As New AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
+         Dim target As New M3_AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
 
          Dim expected As Single = 7947.684
          Dim actual As Single = target.TotalAirDemand()
@@ -111,7 +111,7 @@ Namespace UnitTests
 
             psCompressorMap.Initialise()
 
-            Dim target As New AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
+            Dim target As New M3_AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
 
             Dim expected As Single = 0.0319030322
             Dim actual As Single = target.GetAveragePowerDemandAtCrankFromPneumatics()
@@ -134,7 +134,7 @@ Namespace UnitTests
 
             psCompressorMap.Initialise()
 
-            Dim target As New AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
+            Dim target As New M3_AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
 
             Dim expected As Single = 0.025780227
             Dim actual As Single = target.GetAveragePowerDemandAtCrankFromPneumatics()
@@ -154,7 +154,7 @@ Namespace UnitTests
 
             psCompressorMap.Initialise()
 
-            Dim target As New AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
+            Dim target As New M3_AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
 
             Dim expected As Single = 7947.684
             Dim actual As Single = target.TotalAirConsumedPerCycle()
@@ -177,7 +177,7 @@ Namespace UnitTests
 
             _defaultInputConfig.SmartRegeneration = False
 
-            Dim target As New AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
+            Dim target As New M3_AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
 
             Dim expected As Single = 8863.295
             Dim actual As Single = target.TotalAirConsumedPerCycle()
@@ -200,7 +200,7 @@ Namespace UnitTests
 
             _defaultInputConfig.RetarderBrake = False
 
-            Dim target As New AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
+            Dim target As New M3_AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
 
             Dim expected As Single = 8541.45
 
@@ -224,7 +224,7 @@ Namespace UnitTests
 
             _defaultInputConfig.KneelingHeightMilimeters = 100
 
-            Dim target As New AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
+            Dim target As New M3_AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
 
             Dim expected As Single = 8557.52
 
@@ -248,7 +248,7 @@ Namespace UnitTests
 
             _defaultInputConfig.AirSuspensionControl = "mechanically"
 
-            Dim target As New AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
+            Dim target As New M3_AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
 
             Dim expected As Single = 8726.18
 
@@ -272,7 +272,7 @@ Namespace UnitTests
 
             _defaultInputConfig.AdBlueDosing = "electric"
 
-            Dim target As New AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
+            Dim target As New M3_AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
 
             Dim expected As Single = 6712.46
 
@@ -296,7 +296,7 @@ Namespace UnitTests
 
             _defaultInputConfig.Doors = "electric"
 
-            Dim target As New AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
+            Dim target As New M3_AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
 
             Dim expected As Single = 6880.88
 
