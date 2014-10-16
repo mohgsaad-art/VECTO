@@ -29,7 +29,7 @@
         ''' <param name="engineRpm">Engine speed in rpm</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Function GetFlowRate(ByVal engineRpm As Integer) As Single
+        Function GetFlowRate() As Single
 
         ''' <summary>
         ''' Returns the power consumed for the given engine rpm when compressor is off
@@ -37,7 +37,7 @@
         ''' <param name="engineRpm">Engine speed in rpm</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Function GetPowerCompressorOff(ByVal engineRpm As Integer) As Single
+        Function GetPowerCompressorOff() As Single
 
         ''' <summary>
         ''' Returns the power consumed for the given engine rpm when compressor is on
@@ -45,7 +45,7 @@
         ''' <param name="engineRpm">Engine speed in rpm</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Function GetPowerCompressorOn(ByVal engineRpm As Integer) As Single
+        Function GetPowerCompressorOn() As Single
 
         ''' <summary>
         ''' Returns the difference in power between compressonr on and compressor off operation at the given engine rpm
@@ -53,7 +53,7 @@
         ''' <param name="engineRpm">Engine speed in rpm</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Function GetPowerDifference(ByVal engineRpm As Integer) As Single
+        Function GetPowerDifference() As Single
 
         ''' <summary>
         ''' Returns Average PoweDemand PeCompressor UnitFlowRate 

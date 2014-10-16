@@ -1,6 +1,8 @@
 ﻿Imports NUnit.Framework
 Imports VectoAuxiliaries.Pneumatics
 Imports VectoAuxiliariesTests.Mocks
+Imports VectoAuxiliaries
+
 
 Namespace UnitTests
 
@@ -16,6 +18,10 @@ Namespace UnitTests
         Private Const TooHighRatio As Single = 6.0
 
 #End Region
+
+
+Private _signals As ISignals = New Signals
+
 
 #Region "Factory Methods"
 
@@ -37,7 +43,8 @@ Namespace UnitTests
         <Test()>
         Public Sub CreateNewJustPathTest()
             Dim map As ICompressorMap = GetNonFailingCompressorMapMock()
-            Dim target As M4_AirCompressor = New M4_AirCompressor(map)
+            _signals.EngineSpeed=100
+            Dim target As M4_AirCompressor = New M4_AirCompressor(map,_signals)
             Assert.IsNotNull(target)
         End Sub
 
@@ -52,14 +59,16 @@ Namespace UnitTests
         <Test()>
         Public Sub InitialiseTest()
             Dim map As ICompressorMap = GetNonFailingCompressorMapMock()
-            Dim target As M4_AirCompressor = New M4_AirCompressor(map)
+            _signals.EngineSpeed=100
+            Dim target As M4_AirCompressor = New M4_AirCompressor(map,_signals)
             Assert.IsTrue(target.Initialise())
         End Sub
 
         <Test(), ExpectedException("System.ArgumentException")>
         Public Sub InitialiseInvalidMapTest()
             Dim map As ICompressorMap = GetFailingCompressorMapMock()
-            Dim target As M4_AirCompressor = New M4_AirCompressor(map)
+            _signals.EngineSpeed=100
+            Dim target As M4_AirCompressor = New M4_AirCompressor(map,_signals)
             target.Initialise()
         End Sub
 
@@ -116,7 +125,7 @@ Namespace UnitTests
         Public Sub GetCompressorFlowRateTest()
             Dim comp As M4_AirCompressor = GetGoodCompressor()
             Dim expected As Single = 2.0
-            Dim actual = comp.GetFlowRate(100)
+            Dim actual = comp.GetFlowRate()
             Assert.AreEqual(expected, actual)
         End Sub
 
@@ -124,7 +133,7 @@ Namespace UnitTests
         Public Sub GetPowerCompressorOffTest()
             Dim comp As M4_AirCompressor = GetGoodCompressor()
             Dim expected As Single = 5.0
-            Dim actual = comp.GetPowerCompressorOff(100)
+            Dim actual = comp.GetPowerCompressorOff()
             Assert.AreEqual(expected, actual)
         End Sub
 
@@ -133,7 +142,7 @@ Namespace UnitTests
         Public Sub GetPowerCompressorOnTest()
             Dim comp As M4_AirCompressor = GetGoodCompressor()
             Dim expected As Single = 8.0
-            Dim actual = comp.GetPowerCompressorOn(100)
+            Dim actual = comp.GetPowerCompressorOn()
             Assert.AreEqual(expected, actual)
         End Sub
 
@@ -142,7 +151,7 @@ Namespace UnitTests
         Public Sub GetPowerDifferenceTest()
             Dim comp As M4_AirCompressor = GetGoodCompressor()
             Dim expected As Single = 3.0
-            Dim actual = comp.GetPowerDifference(100)
+            Dim actual = comp.GetPowerDifference()
             Assert.AreEqual(expected, actual)
         End Sub
 

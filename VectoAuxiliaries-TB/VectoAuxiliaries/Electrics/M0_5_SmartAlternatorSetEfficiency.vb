@@ -10,6 +10,7 @@ Private _alternatorMap As IAlternatorMap
 Private _resultCardIdle As IResultCard
 Private _resultCardTraction As IResultCard
 Private _resultCardOverrun As IResultCard
+Private _signals As ISignals
 
 
 
@@ -19,9 +20,9 @@ Public Function SmartIdleCurrent() As single
 
 end Function
 
-Public Function AlternatorsEfficiencyIdleResultCard(ByVal rpm As integer ) As single
+Public Function AlternatorsEfficiencyIdleResultCard( ) As single
 
-    Return _alternatorMap.GetEfficiency(rpm, SmartIdleCurrent()).Efficiency
+    Return _alternatorMap.GetEfficiency(_signals.EngineSpeed, SmartIdleCurrent()).Efficiency
 
 End Function
 
@@ -33,9 +34,9 @@ Public function SmartTractionCurrent As Single
 
 End Function
 
-Public Function AlternatorsEfficiencyTractionOnResultCard(ByVal rpm As integer ) As Single
+Public Function AlternatorsEfficiencyTractionOnResultCard() As Single
 
-    Return _alternatorMap.GetEfficiency(rpm, SmartTractionCurrent()).Efficiency
+    Return _alternatorMap.GetEfficiency(_signals.EngineSpeed, SmartTractionCurrent()).Efficiency
 
 End Function
 
@@ -46,9 +47,9 @@ Public Function SmartOverrunCurrent As Single
 
 End Function
 
-Public Function AlternatorsEfficiencyOverrunResultCard(ByVal rpm As integer) As single
+Public Function AlternatorsEfficiencyOverrunResultCard() As single
 
-    Return _alternatorMap.GetEfficiency(rpm, SmartOverrunCurrent()).Efficiency
+    Return _alternatorMap.GetEfficiency(_signals.EngineSpeed, SmartOverrunCurrent()).Efficiency
 
 End Function
 
@@ -64,7 +65,8 @@ Public Sub new ( m0 As IM0_NonSmart_AlternatorsSetEfficiency, _
                  alternatorMap As IAlternatorMap, _
                  resultCardIdle As IResultCard, _
                  resultCardTraction As IResultCard, _
-                 resultCardOverrun As IResultCard)
+                 resultCardOverrun As IResultCard,
+                 signals As ISignals)
 
                  'Sanity Check on supplied arguments, throw an argument exception
                  If m0 is Nothing  then Throw New ArgumentException("Module 0 must be supplied")
@@ -73,7 +75,7 @@ Public Sub new ( m0 As IM0_NonSmart_AlternatorsSetEfficiency, _
                  if  resultCardIdle      is nothing then throw new ArgumentException("Result Card 'IDLE' must be supplied even if it has no contents")
                  if  resultCardTraction  is nothing then throw new ArgumentException("Result Card 'TRACTION' must be supplied even if it has no contents")
                  if  resultCardOverrun   is nothing then throw new ArgumentException("Result Card 'OVERRUN' must be supplied even if it has no contents") 
-              
+                 If  signals             is Nothing then Throw New ArgumentException("No Signals Reference object was provided ")
  
                  'Assignments to private variables.
                  _m0=m0
@@ -82,6 +84,7 @@ Public Sub new ( m0 As IM0_NonSmart_AlternatorsSetEfficiency, _
                  _resultCardIdle          = resultCardIdle
                  _resultCardTraction      = resultCardTraction
                  _resultCardOverrun       = resultCardOverrun
+                 _signals                 = signals
 
                                                                                                                              
 End Sub                                      
