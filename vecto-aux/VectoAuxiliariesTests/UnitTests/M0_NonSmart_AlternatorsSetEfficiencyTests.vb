@@ -1,4 +1,5 @@
 ﻿Imports NUnit.Framework
+Imports VectoAuxiliaries
 Imports VectoAuxiliaries.Pneumatics
 Imports VectoAuxiliariesTests.Mocks
 Imports VectoAuxiliaries.Electrics
@@ -19,12 +20,15 @@ Private elecConsumers As IElectricalConsumerList
 Private hvacInputs As IHVACInputs
 Private hvacMap As IHVACMap
 Private alternatorMap As IAlternatorMap
-
+Private signals As Signals = New Signals 
 Private powernetVoltage As Single = 26.3
 
 
 
 Public Sub New()
+
+
+    signals.EngineSpeed=2000
 
    'Setup consumers and HVAC ( 1 Consumer in Test Category )
     elecConsumers = CType(New ElectricalConsumerList(0.096,26.3), IElectricalConsumerList)
@@ -45,43 +49,43 @@ End Sub
 
 <Test()>
 Public Sub CreateNewTest()
-       Dim target As M0_NonSmart_AlternatorsSetEfficiency = New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers, hvacInputs, hvacMap, alternatorMap, powernetVoltage)
+       Dim target As M0_NonSmart_AlternatorsSetEfficiency = New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers, hvacInputs, hvacMap, alternatorMap, powernetVoltage,signals)
        Assert.IsNotNull(target)
 End Sub
 
 <Test()>
 <ExpectedException("System.ArgumentException")>
 Public Sub CreateNew_MissingElecConsumers_ThrowArgumentExceptionTest()
-       Dim target As M0_NonSmart_AlternatorsSetEfficiency = New M0_NonSmart_AlternatorsSetEfficiency(Nothing, hvacInputs, hvacMap, alternatorMap, powernetVoltage)
+       Dim target As M0_NonSmart_AlternatorsSetEfficiency = New M0_NonSmart_AlternatorsSetEfficiency(Nothing, hvacInputs, hvacMap, alternatorMap, powernetVoltage,signals)
 End Sub
 
 <Test()>
 <ExpectedException("System.ArgumentException")>
 Public Sub CreateNew_MissingHVACInputs_ThrowArgumentExceptionTest()
-       Dim target As M0_NonSmart_AlternatorsSetEfficiency = New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers, Nothing, hvacMap, alternatorMap, powernetVoltage)
+       Dim target As M0_NonSmart_AlternatorsSetEfficiency = New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers, Nothing, hvacMap, alternatorMap, powernetVoltage,signals)
 End Sub
 
 
 <Test()>
 <ExpectedException("System.ArgumentException")>
 Public Sub CreateNew_MissingHVACMAP_ThrowArgumentExceptionTest()
-       Dim target As M0_NonSmart_AlternatorsSetEfficiency = New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers, hvacInputs, Nothing, alternatorMap, powernetVoltage)
+       Dim target As M0_NonSmart_AlternatorsSetEfficiency = New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers, hvacInputs, Nothing, alternatorMap, powernetVoltage,signals)
 End Sub
 
 
 <Test()>
 <ExpectedException("System.ArgumentException")>
 Public Sub CreateNew_MissingAlternatorMap_ThrowArgumentExceptionTest()
-       Dim target As M0_NonSmart_AlternatorsSetEfficiency = New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers, hvacInputs, hvacMap, Nothing, powernetVoltage)
+       Dim target As M0_NonSmart_AlternatorsSetEfficiency = New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers, hvacInputs, hvacMap, Nothing, powernetVoltage,signals)
 End Sub
 
 
 
 <Test()>
 Public Sub EfficiencyValueTest()
-       Dim target As M0_NonSmart_AlternatorsSetEfficiency = New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers, hvacInputs, hvacMap, alternatorMap, powernetVoltage)
+       Dim target As M0_NonSmart_AlternatorsSetEfficiency = New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers, hvacInputs, hvacMap, alternatorMap, powernetVoltage,signals)
 
-       Dim actual As Single = target.GetEfficiency(2000)
+       Dim actual As Single = target.GetEfficiency()
 
        Dim expected As Single = 0.6375106
 
@@ -94,7 +98,7 @@ End Sub
 <Test()>
 Public Sub HVAC_PowerDemandAmpsTest()
 
-      Dim target As M0_NonSmart_AlternatorsSetEfficiency = New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers, hvacInputs, hvacMap, alternatorMap, powernetVoltage)
+      Dim target As M0_NonSmart_AlternatorsSetEfficiency = New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers, hvacInputs, hvacMap, alternatorMap, powernetVoltage,signals)
 
       Dim actual As Single
       Dim expected As Single = 152.091263F   '( HVAC POWER OUTPUT IN KW not Watts )

@@ -2,7 +2,7 @@
 
 
      Function GetHVACElectricalPowerDemandAmps() As Single
-     Function GetEfficiency(crankRPM As Integer) As Single
+     Function GetEfficiency() As Single
 
 
 End Interface

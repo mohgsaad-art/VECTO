@@ -13,6 +13,8 @@ Namespace Pneumatics
         Private _pulleyGearEfficiency As Single
         Private _map As ICompressorMap
 
+        Private _signals As ISignals
+
         ''' <summary>
         ''' Ratio of Gear or Pulley used to drive the compressor
         ''' </summary>
@@ -56,8 +58,9 @@ Namespace Pneumatics
         ''' </summary>
         ''' <param name="map">map of compressor values against compressor rpm</param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal map As ICompressorMap)
+        Public Sub New(ByVal map As ICompressorMap, signals As ISignals)
             _map = map
+            _signals = signals
         End Sub
 
         ''' <summary>
@@ -99,8 +102,8 @@ Namespace Pneumatics
         ''' <param name="engineRpm">Engine speed in rpm</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function GetFlowRate(ByVal engineRpm As Integer) As Single Implements IM4_AirCompressor.GetFlowRate
-            Dim compressorRpm As Single = engineRpm * PulleyGearRatio
+        Public Function GetFlowRate() As Single Implements IM4_AirCompressor.GetFlowRate
+            Dim compressorRpm As Single = _signals.EngineSpeed * PulleyGearRatio
             Return _map.GetFlowRate(compressorRpm)
         End Function
 
@@ -110,8 +113,8 @@ Namespace Pneumatics
         ''' <param name="engineRpm">Engine speed in rpm</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function GetPowerCompressorOff(ByVal engineRpm As Integer) As Single Implements IM4_AirCompressor.GetPowerCompressorOff
-            Return GetCompressorPower(engineRpm, False)
+        Public Function GetPowerCompressorOff() As Single Implements IM4_AirCompressor.GetPowerCompressorOff
+            Return GetCompressorPower(False)
         End Function
 
         ''' <summary>
@@ -120,8 +123,8 @@ Namespace Pneumatics
         ''' <param name="engineRpm">Engine speed in rpm</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function GetPowerCompressorOn(ByVal engineRpm As Integer) As Single Implements IM4_AirCompressor.GetPowerCompressorOn
-            Return GetCompressorPower(engineRpm, True)
+        Public Function GetPowerCompressorOn() As Single Implements IM4_AirCompressor.GetPowerCompressorOn
+            Return GetCompressorPower( True)
         End Function
 
         ''' <summary>
@@ -130,9 +133,9 @@ Namespace Pneumatics
         ''' <param name="engineRpm">Engine speed in rpm</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Function GetPowerDifference(ByVal engineRpm As Integer) As Single Implements IM4_AirCompressor.GetPowerDifference
-            Dim powerOn As Single = GetPowerCompressorOn(engineRpm)
-            Dim powerOff As Single = GetPowerCompressorOff(engineRpm)
+        Public Function GetPowerDifference() As Single Implements IM4_AirCompressor.GetPowerDifference
+            Dim powerOn As Single = GetPowerCompressorOn()
+            Dim powerOff As Single = GetPowerCompressorOff()
             Return powerOn - powerOff
         End Function
 
@@ -143,8 +146,8 @@ Namespace Pneumatics
         ''' <param name="compressorOn">Is compressor on</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function GetCompressorPower(ByVal engineRpm As Integer, ByVal compressorOn As Boolean) As Single
-            Dim compressorRpm As Single = engineRpm * PulleyGearRatio
+        Private Function GetCompressorPower( ByVal compressorOn As Boolean) As Single
+            Dim compressorRpm As Single = _signals.EngineSpeed * PulleyGearRatio
             If compressorOn Then
                 Return _map.GetPowerCompressorOn(compressorRpm)
             Else

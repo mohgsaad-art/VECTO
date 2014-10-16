@@ -26,19 +26,19 @@ Private _alternatorGearEfficiency As single
 
     Public Function AlternatorsGenerationPowerAtCrankIdleWatts(rpm As Integer) As Single Implements IM5_SmartAlternatorSetGeneration.AlternatorsGenerationPowerAtCrankIdleWatts
 
-      Return (_m05.SmartIdleCurrent() * _powerNetVoltage) / ( _m05.AlternatorsEfficiencyIdleResultCard(rpm) * _alternatorGearEfficiency)
+      Return (_m05.SmartIdleCurrent() * _powerNetVoltage) / ( _m05.AlternatorsEfficiencyIdleResultCard() * _alternatorGearEfficiency)
 
     End Function
 
     Public Function AlternatorsGenerationPowerAtCrankOverrunWatts(rpm As Integer) As Single Implements IM5_SmartAlternatorSetGeneration.AlternatorsGenerationPowerAtCrankOverrunWatts
 
-          Return (_m05.SmartOverrunCurrent() * _powerNetVoltage) / ( _m05.AlternatorsEfficiencyOverrunResultCard(rpm) * _alternatorGearEfficiency)
+          Return (_m05.SmartOverrunCurrent() * _powerNetVoltage) / ( _m05.AlternatorsEfficiencyOverrunResultCard() * _alternatorGearEfficiency)
 
     End Function
 
     Public Function AlternatorsGenerationPowerAtCrankTractionOnWatts(rpm As Integer) As Single Implements IM5_SmartAlternatorSetGeneration.AlternatorsGenerationPowerAtCrankTractionOnWatts
 
-              Return (_m05.SmartTractionCurrent() * _powerNetVoltage) / ( _m05.AlternatorsEfficiencyTractionOnResultCard(rpm) * _alternatorGearEfficiency)
+              Return (_m05.SmartTractionCurrent() * _powerNetVoltage) / ( _m05.AlternatorsEfficiencyTractionOnResultCard() * _alternatorGearEfficiency)
 
     End Function
 
