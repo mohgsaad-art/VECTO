@@ -1,4 +1,8 @@
-﻿Public Interface IPneumaticUserInputsConfig
+﻿
+Namespace Pneumatics
+
+
+Public Interface IPneumaticUserInputsConfig
 
 
 Property CompressorType As String
@@ -15,8 +19,9 @@ Property AdBlueDosing As String 'pnmeumatic or electric
 Property Doors As String 'pneumatic or electric
 
 
-
-
-
-
 End Interface
+
+
+End Namespace
+
+

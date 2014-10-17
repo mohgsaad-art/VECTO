@@ -1,5 +1,5 @@
 ﻿
-Namespace hvac
+Namespace Hvac
 
 Public Interface IHVACInputs
 

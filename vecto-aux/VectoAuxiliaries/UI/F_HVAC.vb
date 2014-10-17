@@ -165,7 +165,7 @@ Namespace UI
                 _mapFilter(oridnal) = String.Empty
             End If
 
-            Dim results = _map.GetMapSubSet(_mapFilter.ToArray())
+            Dim results as List(Of String()) = _map.GetMapSubSet(_mapFilter.ToArray())
 
             PopulateResultsTable(results)
 

@@ -1,5 +1,5 @@
 ﻿
-Namespace hvac
+Namespace Hvac
 
 
 Public Class HVACInputs

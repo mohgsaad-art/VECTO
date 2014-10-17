@@ -199,7 +199,6 @@ Public Class F_VEH_AuxDlog
     ''' <summary>
     ''' HVAC VALIDATION
     ''' </summary>
-    ''' <param name="message">Returns a string with any errors</param>
     ''' <returns></returns>
     ''' <remarks></remarks>
     Private Function ValidateHVAC() As Boolean

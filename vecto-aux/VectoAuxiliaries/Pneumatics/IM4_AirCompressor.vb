@@ -26,7 +26,6 @@
         ''' <summary>
         ''' Returns the flow rate [litres/second] of compressor for the given engine rpm
         ''' </summary>
-        ''' <param name="engineRpm">Engine speed in rpm</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
         Function GetFlowRate() As Single
@@ -34,7 +33,6 @@
         ''' <summary>
         ''' Returns the power consumed for the given engine rpm when compressor is off
         ''' </summary>
-        ''' <param name="engineRpm">Engine speed in rpm</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
         Function GetPowerCompressorOff() As Single
@@ -42,7 +40,6 @@
         ''' <summary>
         ''' Returns the power consumed for the given engine rpm when compressor is on
         ''' </summary>
-        ''' <param name="engineRpm">Engine speed in rpm</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
         Function GetPowerCompressorOn() As Single
@@ -50,8 +47,7 @@
         ''' <summary>
         ''' Returns the difference in power between compressonr on and compressor off operation at the given engine rpm
         ''' </summary>
-        ''' <param name="engineRpm">Engine speed in rpm</param>
-        ''' <returns></returns>
+        ''' <returns>Single / Watts</returns>
         ''' <remarks></remarks>
         Function GetPowerDifference() As Single
 

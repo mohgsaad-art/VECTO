@@ -15,12 +15,20 @@ Namespace UnitTests
 
         Private Const GoodRatio As Single = 1
         Private Const TooLowRatio As Single = 1.0
-        Private Const TooHighRatio As Single = 6.0
+        Private Const TooHighRatio As Single = 6    
 
 #End Region
 
 
 Private _signals As ISignals = New Signals
+
+
+Public Sub new()
+
+_signals.EngineSpeed=100
+
+
+End Sub
 
 
 #Region "Factory Methods"
@@ -35,7 +43,7 @@ Private _signals As ISignals = New Signals
 
         Private Function GetGoodCompressor() As M4_AirCompressor
             Dim map As ICompressorMap = GetNonFailingCompressorMapMock()
-            Dim target As M4_AirCompressor = New M4_AirCompressor(map, GoodRatio, GoodEfficiency)
+            Dim target As M4_AirCompressor = New M4_AirCompressor(map, GoodRatio, GoodEfficiency, _signals)
             Return target
         End Function
 #End Region
@@ -51,7 +59,7 @@ Private _signals As ISignals = New Signals
         <Test()>
         Public Sub CreateNewAllParametersTest()
             Dim map As ICompressorMap = GetNonFailingCompressorMapMock()
-            Dim target As M4_AirCompressor = New M4_AirCompressor(map, GoodRatio, GoodEfficiency)
+            Dim target As M4_AirCompressor = New M4_AirCompressor(map, GoodRatio, GoodEfficiency,_signals)
             Assert.IsNotNull(target)
         End Sub
 
