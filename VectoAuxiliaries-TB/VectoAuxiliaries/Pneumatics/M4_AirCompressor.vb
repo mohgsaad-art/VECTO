@@ -12,7 +12,6 @@ Namespace Pneumatics
         Private _pulleyGearRatio As Single
         Private _pulleyGearEfficiency As Single
         Private _map As ICompressorMap
-
         Private _signals As ISignals
 
         ''' <summary>
@@ -70,10 +69,13 @@ Namespace Pneumatics
         ''' <param name="pulleyGearRatio">Ratio of Pulley/Gear</param>
         ''' <param name="pulleyGearEfficiency">Efficiency of Pulley/Gear</param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal map As ICompressorMap, ByVal pulleyGearRatio As Single, ByVal pulleyGearEfficiency As Single)
+        Public Sub New(ByVal map As ICompressorMap, ByVal pulleyGearRatio As Single, ByVal pulleyGearEfficiency As Single, signals As ISignals)
+
             _map = map
             _pulleyGearRatio = pulleyGearRatio
             _pulleyGearEfficiency = pulleyGearEfficiency
+            _signals = signals
+            
         End Sub
 
         ''' <summary>
@@ -99,7 +101,6 @@ Namespace Pneumatics
         ''' <summary>
         ''' Returns the flow rate [litres/second] of compressor for the given engine rpm
         ''' </summary>
-        ''' <param name="engineRpm">Engine speed in rpm</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function GetFlowRate() As Single Implements IM4_AirCompressor.GetFlowRate
@@ -110,7 +111,6 @@ Namespace Pneumatics
         ''' <summary>
         ''' Returns the power consumed for the given engine rpm when compressor is off
         ''' </summary>
-        ''' <param name="engineRpm">Engine speed in rpm</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function GetPowerCompressorOff() As Single Implements IM4_AirCompressor.GetPowerCompressorOff
@@ -120,7 +120,6 @@ Namespace Pneumatics
         ''' <summary>
         ''' Returns the power consumed for the given engine rpm when compressor is on
         ''' </summary>
-        ''' <param name="engineRpm">Engine speed in rpm</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function GetPowerCompressorOn() As Single Implements IM4_AirCompressor.GetPowerCompressorOn
@@ -130,7 +129,6 @@ Namespace Pneumatics
         ''' <summary>
         ''' Returns the difference in power between compressonr on and compressor off operation at the given engine rpm
         ''' </summary>
-        ''' <param name="engineRpm">Engine speed in rpm</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function GetPowerDifference() As Single Implements IM4_AirCompressor.GetPowerDifference
@@ -142,7 +140,6 @@ Namespace Pneumatics
         ''' <summary>
         ''' Looks up the compressor power from the map at given engine speed
         ''' </summary>
-        ''' <param name="engineRpm">Engine speed in rpm</param>
         ''' <param name="compressorOn">Is compressor on</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
@@ -154,9 +151,6 @@ Namespace Pneumatics
                 Return _map.GetPowerCompressorOff(compressorRpm)
             End If
         End Function
-
-
-
 
 
         Public Function GetAveragePowerDemandPerCompressorUnitFlowRate() As Single Implements IM4_AirCompressor.GetAveragePowerDemandPerCompressorUnitFlowRate

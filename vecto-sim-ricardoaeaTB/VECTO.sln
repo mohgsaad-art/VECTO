@@ -9,9 +9,16 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "VectoAuxiliaries", "..\Vect
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "VectoAuxiliariesTests", "..\VectoAuxiliaries-TB\VectoAuxiliariesTests\VectoAuxiliariesTests.vbproj", "{6F31F8B2-6AB3-4F85-8AC9-D09ADCA6432D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DF50B0A7-5651-4568-9FB9-8768882CFFDB}"
+	ProjectSection(SolutionItems) = preProject
+		Performance1.psess = Performance1.psess
+	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AuxillaryTestHarness", "AuxillaryTestHarness\AuxillaryTestHarness.vbproj", "{BFCFD8BD-2FF5-4F63-80CE-5B94FDC8298E}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 4
+		SccNumberOfProjects = 5
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://tfs00.element.root.com:8080/tfs/tfscollection
 		SccLocalPath0 = .
@@ -24,6 +31,9 @@ Global
 		SccProjectUniqueName3 = VECTO\\VECTO.vbproj
 		SccProjectName3 = VECTO
 		SccLocalPath3 = VECTO
+		SccProjectUniqueName4 = AuxillaryTestHarness\\AuxillaryTestHarness.vbproj
+		SccProjectName4 = AuxillaryTestHarness
+		SccLocalPath4 = AuxillaryTestHarness
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,8 +62,17 @@ Global
 		{6F31F8B2-6AB3-4F85-8AC9-D09ADCA6432D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F31F8B2-6AB3-4F85-8AC9-D09ADCA6432D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6F31F8B2-6AB3-4F85-8AC9-D09ADCA6432D}.Release|x86.ActiveCfg = Release|Any CPU
+		{BFCFD8BD-2FF5-4F63-80CE-5B94FDC8298E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFCFD8BD-2FF5-4F63-80CE-5B94FDC8298E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFCFD8BD-2FF5-4F63-80CE-5B94FDC8298E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BFCFD8BD-2FF5-4F63-80CE-5B94FDC8298E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFCFD8BD-2FF5-4F63-80CE-5B94FDC8298E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFCFD8BD-2FF5-4F63-80CE-5B94FDC8298E}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal

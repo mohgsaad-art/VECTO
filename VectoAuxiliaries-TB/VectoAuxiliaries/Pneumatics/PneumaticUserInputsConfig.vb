@@ -3,6 +3,10 @@
 Public Class PneumaticUserInputsConfig
 Implements IPneumaticUserInputsConfig
 
+
+
+
+
 'pnmeumatic or electric
 Public Property AdBlueDosing As String Implements IPneumaticUserInputsConfig.AdBlueDosing
 'mechanical or electrical
@@ -25,10 +29,28 @@ Public Property SmartAirCompression As Boolean Implements IPneumaticUserInputsCo
 Public Property SmartRegeneration As Boolean Implements IPneumaticUserInputsConfig.SmartRegeneration
 
 
+Public Sub New( optional setToDefaults As Boolean = False)
 
 
-Public Sub New()
+If setToDefaults then SetPropertiesToDefaults()
 
+End Sub
+
+Public sub SetPropertiesToDefaults()
+
+
+            ActuationsMap=""
+            AdBlueDosing="pneumatic"
+            AirSuspensionControl="electrically"
+            CompressorGearEfficiency=0.8
+            CompressorGearRatio=0
+            CompressorMap=""
+            CompressorType=""
+            Doors="pneumatic"
+            KneelingHeightMilimeters=80
+            RetarderBrake=True
+            SmartAirCompression=True
+            SmartRegeneration=True  
 
 End Sub
 

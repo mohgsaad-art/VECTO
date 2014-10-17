@@ -84,7 +84,6 @@ Namespace Electrics
         ''' <remarks></remarks>
         Public Function GetEfficiency(ByVal rpm As Integer, ByVal amps As Integer) As AlternatorMapValues Implements IAlternatorMap.GetEfficiency
 
-
             Dim key As New AlternatorMapKey(amps, rpm)
 
             Return GetValueOrInterpolate(key)
@@ -189,8 +188,6 @@ Namespace Electrics
 
 
         End Function
-
-
 
        Private Structure AlternatorMapKey
              Implements IComparable

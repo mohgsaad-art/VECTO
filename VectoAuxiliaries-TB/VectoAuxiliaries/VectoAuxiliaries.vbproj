@@ -72,6 +72,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuxillaryEnvironment.vb" />
     <Compile Include="Electrics\AlternatorMapValues.vb" />
     <Compile Include="Electrics\ElectricsUserInputsConfig.vb" />
     <Compile Include="Electrics\IElectricsUserInputsConfig.vb" />
@@ -84,12 +85,17 @@
     <Compile Include="Electrics\IM0_NonSmart_AlternatorsSetEfficiency.vb" />
     <Compile Include="Electrics\M5__SmartAlternatorSetGeneration.vb" />
     <Compile Include="Electrics\ResultCard.vb" />
+    <Compile Include="Hvac\HVACConstants.vb" />
     <Compile Include="Hvac\HVACInputs.vb" />
     <Compile Include="Electrics\IElectricalConsumerList.vb" />
+    <Compile Include="Hvac\HVACUserInputsConfig.vb" />
     <Compile Include="Hvac\IHVACInputs.vb" />
     <Compile Include="Hvac\HVACMapParameter.vb" />
     <Compile Include="Hvac\IHVACMap.vb" />
+    <Compile Include="Hvac\IHVACUserInputsConfig.vb" />
+    <Compile Include="Hvac\IM1_AverageHVACLoadDemand.vb" />
     <Compile Include="ISignals.vb" />
+    <Compile Include="IVectoInputs.vb" />
     <Compile Include="Pneumatics\ActuationsKey.vb" />
     <Compile Include="Pneumatics\M4_AirCompressor.vb" />
     <Compile Include="Electrics\AlternatorMap.vb" />
@@ -155,6 +161,7 @@
     <Compile Include="UI\F_PneumaticConsumers.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="VectoInputs.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
@@ -174,7 +181,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Hvac\HVACMap.vaux" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
