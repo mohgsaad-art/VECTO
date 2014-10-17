@@ -15,6 +15,12 @@ Public Class ElectricConstants
     Public Const NominalConsumptionAmpsMax As Integer = 100
 
 
+    'Alternator
+    public const  AlternatorPulleyEfficiencyMin as single =0.1
+    public const  AlternatorPulleyEfficiencyMax as single =1
+
+
+
 
 End Class
 
