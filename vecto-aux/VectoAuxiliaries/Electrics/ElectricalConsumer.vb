@@ -37,7 +37,7 @@
 
         Public Function TotalAvgConsumptionInWatts(Optional PhaseIdle_TractionOnBasedOnCycle As Single = 0.0) As Single Implements Electrics.IElectricalConsumer.TotalAvgConsumptionInWatts
             Return TotalAvgConumptionAmps(PhaseIdle_TractionOnBasedOnCycle) * PowerNetVoltage
-        End Function
+        End Function 
 
 
        Public Sub New(BaseVehicle As Boolean, Category As String, ConsumerName As String, NominalConsumptionAmps As Single, PhaseIdle_TractionOn As Single, PowerNetVoltage As Single, numberInVehicle As Integer)
