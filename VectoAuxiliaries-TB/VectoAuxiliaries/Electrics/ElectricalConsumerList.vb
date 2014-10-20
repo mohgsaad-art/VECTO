@@ -17,6 +17,9 @@ Public ReadOnly Property Items As List(Of  IElectricalConsumer) Implements IElec
     End Get
 End Property
 
+
+
+
 'Create Empty List
 Public Sub New(powernetVoltage As Single,doorDutyCycle_ZeroToOne As single, Optional createDefaultList As Boolean = False)
 
@@ -29,6 +32,10 @@ _doorDutyCycleZeroToOne = doorDutyCycle_ZeroToOne
 
 
 End Sub
+
+
+
+
 
 
 Public Sub SetDefaultConsumerList()
