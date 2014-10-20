@@ -3,7 +3,7 @@ Namespace Electrics
 
 Public Interface IElectricalConsumerList
 
-    ReadOnly Property Items As Dictionary(Of String, IElectricalConsumer)
+    ReadOnly Property Items As List(Of  IElectricalConsumer)
     Sub AddConsumer(consumer As IElectricalConsumer)
     Sub RemoveConsumer(consumer As IElectricalConsumer)
     Function GetTotalAverageDemandAmps(excludeOnBase As Boolean) As Single

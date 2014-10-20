@@ -7,15 +7,15 @@ Public Class ElectricalConsumerList
 Implements IElectricalConsumerList
 
 
-Private _items As New Dictionary(Of String, IElectricalConsumer)
+Private _items As New List(Of IElectricalConsumer)
 Private _powernetVoltage As Single
 Private _doorDutyCycleZeroToOne As single
 
-        Public ReadOnly Property Items As Dictionary(Of String, IElectricalConsumer) Implements IElectricalConsumerList.Items
-            Get
-            Return _items
-            End Get
-        End Property
+Public ReadOnly Property Items As List(Of  IElectricalConsumer) Implements IElectricalConsumerList.Items
+    Get
+    Return _items
+    End Get
+End Property
 
 'Create Empty List
 Public Sub New(powernetVoltage As Single,doorDutyCycle_ZeroToOne As single, Optional createDefaultList As Boolean = False)
@@ -61,26 +61,26 @@ c18 = CType(New ElectricalConsumer(False, "Lights", "Position lights LED bonus",
 c19 = CType(New ElectricalConsumer(False, "Lights", "Direction lights LED bonus",                                                          -0.30, 1.00, _powernetVoltage, 1), IElectricalConsumer)
 c20 = CType(New ElectricalConsumer(False, "Lights", "Brake Lights",                                                                        -1.20, 1.00, _powernetVoltage, 1), IElectricalConsumer)
 
-_items.Add(c1.ConsumerName, c1)
-_items.Add(c2.ConsumerName, c2)
-_items.Add(c3.ConsumerName, c3)
-_items.Add(c4.ConsumerName, c4)
-_items.Add(c5.ConsumerName, c5)
-_items.Add(c6.ConsumerName, c6)
-_items.Add(c7.ConsumerName, c7)
-_items.Add(c8.ConsumerName, c8)
-_items.Add(c9.ConsumerName, c9)
-_items.Add(c10.ConsumerName, c10)
-_items.Add(c11.ConsumerName, c11)
-_items.Add(c12.ConsumerName, c12)
-_items.Add(c13.ConsumerName, c13)
-_items.Add(c14.ConsumerName, c14)
-_items.Add(c15.ConsumerName, c15)
-_items.Add(c16.ConsumerName, c16)
-_items.Add(c17.ConsumerName, c17)
-_items.Add(c18.ConsumerName, c18)
-_items.Add(c19.ConsumerName, c19)
-_items.Add(c20.ConsumerName, c20)
+_items.Add(c1)
+_items.Add(c2)
+_items.Add(c3)
+_items.Add(c4)
+_items.Add(c5)
+_items.Add(c6)
+_items.Add(c7)
+_items.Add(c8)
+_items.Add(c9)
+_items.Add(c10)
+_items.Add(c11)
+_items.Add(c12)
+_items.Add(c13)
+_items.Add(c14)
+_items.Add(c15)
+_items.Add(c16)
+_items.Add(c17)
+_items.Add(c18)
+_items.Add(c19)
+_items.Add(c20)
 
 
 
@@ -91,8 +91,8 @@ End Sub
 
    Public Sub AddConsumer(consumer As IElectricalConsumer) Implements Electrics.IElectricalConsumerList.AddConsumer
 
-     If Not _items.ContainsKey(consumer.ConsumerName) Then
-       _items.Add(consumer.ConsumerName, consumer)
+     If Not _items.Contains(consumer) Then
+       _items.Add(consumer)
      Else
 
      Throw New ArgumentException("Consumer Already Present in the list")
@@ -103,9 +103,9 @@ End Sub
 
    Public Sub RemoveConsumer(consumer As IElectricalConsumer) Implements Electrics.IElectricalConsumerList.RemoveConsumer
 
-    If _items.ContainsKey(consumer.ConsumerName) Then
+    If _items.Contains(consumer) Then
 
-    _items.Remove(consumer.ConsumerName)
+    _items.Remove(consumer)
 
     Else
 
@@ -122,9 +122,9 @@ End Sub
      Dim Amps As Single
 
      If excludeOnBase Then
-       Amps = Aggregate item In Items Where item.Value.BaseVehicle = False Into Sum(item.Value.TotalAvgConumptionAmps(_doorDutyCycleZeroToOne))
+       Amps = Aggregate item In Items Where item.BaseVehicle = False Into Sum(item.TotalAvgConumptionAmps(_doorDutyCycleZeroToOne))
      Else
-       Amps = Aggregate item In Items Into Sum(item.Value.TotalAvgConumptionAmps(_doorDutyCycleZeroToOne))
+       Amps = Aggregate item In Items Into Sum(item.TotalAvgConumptionAmps(_doorDutyCycleZeroToOne))
      End If
 
 

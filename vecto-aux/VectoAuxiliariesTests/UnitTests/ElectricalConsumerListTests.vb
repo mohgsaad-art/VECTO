@@ -25,11 +25,11 @@ End Sub
 <Test()>
 Public Sub SumAllConsumersTest()
 
-     TestConsumerList.Items("Controllers,Valves etc").NumberInActualVehicle=1
+     TestConsumerList.Items.First(Function(item) item.ConsumerName= "Controllers,Valves etc").NumberInActualVehicle=1
 
      Dim actual As Single = TestConsumerList.GetTotalAverageDemandAmps( False)
 
-    TestConsumerList.Items("Controllers,Valves etc").NumberInActualVehicle=1
+     TestConsumerList.Items.First(Function(item) item.ConsumerName= "Controllers,Valves etc").NumberInActualVehicle=0
 
      Dim expected = 60.63
 
@@ -40,9 +40,9 @@ End Sub
 <Test()>
 Public Sub SumNonExcludedConsumersTest()
 
-     TestConsumerList.Items("Controllers,Valves etc").NumberInActualVehicle=1
+     TestConsumerList.Items.First(Function(item) item.ConsumerName= "Controllers,Valves etc").NumberInActualVehicle=1
      Dim actual As Single = TestConsumerList.GetTotalAverageDemandAmps(True)
-     TestConsumerList.Items("Controllers,Valves etc").NumberInActualVehicle=0
+     TestConsumerList.Items.First(Function(item) item.ConsumerName= "Controllers,Valves etc").NumberInActualVehicle=0
      Dim expected = 35.63
      Assert.AreEqual(expected, Math.Round(actual,2))
 
