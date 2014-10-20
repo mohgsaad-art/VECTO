@@ -131,34 +131,10 @@
     <Compile Include="Pneumatics\PneumaticsAuxilliariesConfig.vb" />
     <Compile Include="Pneumatics\PneumaticUserInputsConfig.vb" />
     <Compile Include="Signals.vb" />
-    <Compile Include="UI\ElectricalConsumers.Designer.vb">
-      <DependentUpon>ElectricalConsumers.vb</DependentUpon>
-    </Compile>
-    <Compile Include="UI\ElectricalConsumers.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\F_Alternator.Designer.vb">
-      <DependentUpon>F_Alternator.vb</DependentUpon>
-    </Compile>
-    <Compile Include="UI\F_Alternator.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\F_Compressor.Designer.vb">
-      <DependentUpon>F_Compressor.vb</DependentUpon>
-    </Compile>
-    <Compile Include="UI\F_Compressor.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="UI\F_HVAC.Designer.vb">
       <DependentUpon>F_HVAC.vb</DependentUpon>
     </Compile>
     <Compile Include="UI\F_HVAC.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\F_PneumaticConsumers.Designer.vb">
-      <DependentUpon>F_PneumaticConsumers.vb</DependentUpon>
-    </Compile>
-    <Compile Include="UI\F_PneumaticConsumers.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="VectoInputs.vb" />
@@ -170,14 +146,8 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\F_Compressor.resx">
-      <DependentUpon>F_Compressor.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="UI\F_HVAC.resx">
       <DependentUpon>F_HVAC.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\F_PneumaticConsumers.resx">
-      <DependentUpon>F_PneumaticConsumers.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

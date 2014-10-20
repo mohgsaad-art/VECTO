@@ -8,6 +8,10 @@
         Implements IElectricalConsumer
 
 
+
+
+
+
         'Calculated
         Private Property AvgConsumptionAmps As Single Implements IElectricalConsumer.AvgConsumptionAmps
 
@@ -56,6 +60,24 @@
             Me.NumberInActualVehicle = numberInVehicle
 
        End Sub
+
+
+
+
+        Public Overrides Function Equals(obj As Object) As Boolean
+
+         Dim other As IElectricalConsumer = CType(obj, IElectricalConsumer)
+          
+
+             Return Me.ConsumerName=other.ConsumerName
+
+
+        End Function
+
+        Public Overrides Function GetHashCode() As Integer
+            Return 0
+        End Function
+      
 
 
     End Class

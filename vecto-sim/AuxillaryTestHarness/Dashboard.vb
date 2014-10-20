@@ -1,13 +1,9 @@
-﻿
-Imports VectoAuxiliaries
+﻿Imports VectoAuxiliaries
 Imports VectoAuxiliaries.Electrics
-
 
 Public Class Dashboard
 
-
 public auxEnvironment As New AuxillaryEnvironment("")
-
 
 Private Sub Dashboard_Load( sender As Object,  e As EventArgs) Handles MyBase.Load
 
@@ -37,18 +33,13 @@ Private Sub CreateBindings
      chkSmartElectricals.DataBindings.Add("Checked",auxEnvironment.ElectricalUserInputsConfig,"SmartElectrical")
 
 
-     Dim cIndex As Integer = gvElectricalConsumables.Columns.Add("ConsumerName","ConsumerName")
-     gvElectricalConsumables.Columns(cIndex).DataPropertyName="Value.ConsumerName"
+     'Dim cIndex As Integer = gvElectricalConsumables.Columns.Add("ConsumerName","ConsumerName")
+     'gvElectricalConsumables.Columns(cIndex).DataPropertyName="Value.ConsumerName"
 
+     'Dim list As New List(of IElectricalConsumer)
 
-      Dim list As New List(of IElectricalConsumer)
+     'gvElectricalConsumables.DataSource = list
 
-
-
-      gvElectricalConsumables.DataSource = list
-
-
-  
 
 End Sub
 
