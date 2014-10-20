@@ -62,13 +62,13 @@ Partial Class Dashboard
         Me.tabPneumaticConfig = New System.Windows.Forms.TabPage()
         Me.tabHVACConfig = New System.Windows.Forms.TabPage()
         Me.tabPlayground = New System.Windows.Forms.TabPage()
-        Me.bndgsElecConsumables = New System.Windows.Forms.BindingSource(Me.components)
         Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.btnStart = New System.Windows.Forms.Button()
-        Me.btnBack = New System.Windows.Forms.Button()
-        Me.btnForward = New System.Windows.Forms.Button()
-        Me.btnFinish = New System.Windows.Forms.Button()
         Me.btnCancel = New System.Windows.Forms.Button()
+        Me.btnFinish = New System.Windows.Forms.Button()
+        Me.btnForward = New System.Windows.Forms.Button()
+        Me.btnBack = New System.Windows.Forms.Button()
+        Me.btnStart = New System.Windows.Forms.Button()
+        Me.brcElecConsumers = New System.Windows.Forms.BindingSource(Me.components)
         Me.tabMain.SuspendLayout
         Me.tabGeneralConfig.SuspendLayout
         Me.tabElectricalConfig.SuspendLayout
@@ -76,8 +76,8 @@ Partial Class Dashboard
         CType(Me.DataGridView2,System.ComponentModel.ISupportInitialize).BeginInit
         CType(Me.DataGridView1,System.ComponentModel.ISupportInitialize).BeginInit
         CType(Me.gvElectricalConsumables,System.ComponentModel.ISupportInitialize).BeginInit
-        CType(Me.bndgsElecConsumables,System.ComponentModel.ISupportInitialize).BeginInit
         Me.Panel1.SuspendLayout
+        CType(Me.brcElecConsumers,System.ComponentModel.ISupportInitialize).BeginInit
         Me.SuspendLayout
         '
         'tabMain
@@ -91,7 +91,7 @@ Partial Class Dashboard
         Me.tabMain.Location = New System.Drawing.Point(13, 14)
         Me.tabMain.Name = "tabMain"
         Me.tabMain.SelectedIndex = 0
-        Me.tabMain.Size = New System.Drawing.Size(751, 467)
+        Me.tabMain.Size = New System.Drawing.Size(894, 477)
         Me.tabMain.TabIndex = 0
         Me.tabMain.Tag = ""
         '
@@ -104,7 +104,7 @@ Partial Class Dashboard
         Me.tabGeneralConfig.Location = New System.Drawing.Point(4, 22)
         Me.tabGeneralConfig.Name = "tabGeneralConfig"
         Me.tabGeneralConfig.Padding = New System.Windows.Forms.Padding(3)
-        Me.tabGeneralConfig.Size = New System.Drawing.Size(743, 441)
+        Me.tabGeneralConfig.Size = New System.Drawing.Size(886, 451)
         Me.tabGeneralConfig.TabIndex = 0
         Me.tabGeneralConfig.Text = "GeneralConfig"
         Me.tabGeneralConfig.UseVisualStyleBackColor = true
@@ -165,7 +165,7 @@ Partial Class Dashboard
         Me.tabElectricalConfig.Location = New System.Drawing.Point(4, 22)
         Me.tabElectricalConfig.Name = "tabElectricalConfig"
         Me.tabElectricalConfig.Padding = New System.Windows.Forms.Padding(3)
-        Me.tabElectricalConfig.Size = New System.Drawing.Size(743, 441)
+        Me.tabElectricalConfig.Size = New System.Drawing.Size(886, 451)
         Me.tabElectricalConfig.TabIndex = 1
         Me.tabElectricalConfig.Text = "ElectricalConfig"
         Me.tabElectricalConfig.UseVisualStyleBackColor = true
@@ -189,7 +189,7 @@ Partial Class Dashboard
         DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
         DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
         Me.DataGridView3.DefaultCellStyle = DataGridViewCellStyle2
-        Me.DataGridView3.Location = New System.Drawing.Point(502, 331)
+        Me.DataGridView3.Location = New System.Drawing.Point(613, 353)
         Me.DataGridView3.Name = "DataGridView3"
         DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control
@@ -199,7 +199,7 @@ Partial Class Dashboard
         DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText
         DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
         Me.DataGridView3.RowHeadersDefaultCellStyle = DataGridViewCellStyle3
-        Me.DataGridView3.Size = New System.Drawing.Size(191, 81)
+        Me.DataGridView3.Size = New System.Drawing.Size(218, 81)
         Me.DataGridView3.TabIndex = 18
         '
         'DataGridView2
@@ -221,7 +221,7 @@ Partial Class Dashboard
         DataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText
         DataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
         Me.DataGridView2.DefaultCellStyle = DataGridViewCellStyle5
-        Me.DataGridView2.Location = New System.Drawing.Point(260, 331)
+        Me.DataGridView2.Location = New System.Drawing.Point(324, 353)
         Me.DataGridView2.Name = "DataGridView2"
         DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control
@@ -231,7 +231,7 @@ Partial Class Dashboard
         DataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText
         DataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
         Me.DataGridView2.RowHeadersDefaultCellStyle = DataGridViewCellStyle6
-        Me.DataGridView2.Size = New System.Drawing.Size(191, 81)
+        Me.DataGridView2.Size = New System.Drawing.Size(218, 81)
         Me.DataGridView2.TabIndex = 17
         '
         'DataGridView1
@@ -253,7 +253,7 @@ Partial Class Dashboard
         DataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText
         DataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
         Me.DataGridView1.DefaultCellStyle = DataGridViewCellStyle8
-        Me.DataGridView1.Location = New System.Drawing.Point(33, 328)
+        Me.DataGridView1.Location = New System.Drawing.Point(35, 353)
         Me.DataGridView1.Name = "DataGridView1"
         DataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control
@@ -263,13 +263,13 @@ Partial Class Dashboard
         DataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText
         DataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
         Me.DataGridView1.RowHeadersDefaultCellStyle = DataGridViewCellStyle9
-        Me.DataGridView1.Size = New System.Drawing.Size(191, 81)
+        Me.DataGridView1.Size = New System.Drawing.Size(218, 81)
         Me.DataGridView1.TabIndex = 16
         '
         'Label9
         '
         Me.Label9.AutoSize = true
-        Me.Label9.Location = New System.Drawing.Point(505, 315)
+        Me.Label9.Location = New System.Drawing.Point(616, 333)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(83, 13)
         Me.Label9.TabIndex = 15
@@ -278,7 +278,7 @@ Partial Class Dashboard
         'Label8
         '
         Me.Label8.AutoSize = true
-        Me.Label8.Location = New System.Drawing.Point(260, 315)
+        Me.Label8.Location = New System.Drawing.Point(326, 332)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(84, 13)
         Me.Label8.TabIndex = 14
@@ -287,7 +287,7 @@ Partial Class Dashboard
         'Label7
         '
         Me.Label7.AutoSize = true
-        Me.Label7.Location = New System.Drawing.Point(30, 312)
+        Me.Label7.Location = New System.Drawing.Point(39, 333)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(62, 13)
         Me.Label7.TabIndex = 13
@@ -314,6 +314,8 @@ Partial Class Dashboard
         '
         'gvElectricalConsumables
         '
+        Me.gvElectricalConsumables.AllowUserToOrderColumns = true
+        Me.gvElectricalConsumables.AutoGenerateColumns = false
         DataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Control
         DataGridViewCellStyle10.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
@@ -323,6 +325,7 @@ Partial Class Dashboard
         DataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
         Me.gvElectricalConsumables.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle10
         Me.gvElectricalConsumables.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.gvElectricalConsumables.DataSource = Me.brcElecConsumers
         DataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Window
         DataGridViewCellStyle11.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
@@ -341,7 +344,7 @@ Partial Class Dashboard
         DataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText
         DataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
         Me.gvElectricalConsumables.RowHeadersDefaultCellStyle = DataGridViewCellStyle12
-        Me.gvElectricalConsumables.Size = New System.Drawing.Size(659, 127)
+        Me.gvElectricalConsumables.Size = New System.Drawing.Size(803, 149)
         Me.gvElectricalConsumables.TabIndex = 10
         '
         'txtDoorActuationTimeSeconds
@@ -446,44 +449,8 @@ Partial Class Dashboard
         Me.Panel1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.Panel1.Location = New System.Drawing.Point(0, 0)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(813, 566)
+        Me.Panel1.Size = New System.Drawing.Size(937, 566)
         Me.Panel1.TabIndex = 1
-        '
-        'btnStart
-        '
-        Me.btnStart.Location = New System.Drawing.Point(320, 511)
-        Me.btnStart.Name = "btnStart"
-        Me.btnStart.Size = New System.Drawing.Size(75, 23)
-        Me.btnStart.TabIndex = 1
-        Me.btnStart.Text = "|< Start"
-        Me.btnStart.UseVisualStyleBackColor = true
-        '
-        'btnBack
-        '
-        Me.btnBack.Location = New System.Drawing.Point(437, 511)
-        Me.btnBack.Name = "btnBack"
-        Me.btnBack.Size = New System.Drawing.Size(75, 23)
-        Me.btnBack.TabIndex = 2
-        Me.btnBack.Text = "<< Back"
-        Me.btnBack.UseVisualStyleBackColor = true
-        '
-        'btnForward
-        '
-        Me.btnForward.Location = New System.Drawing.Point(521, 511)
-        Me.btnForward.Name = "btnForward"
-        Me.btnForward.Size = New System.Drawing.Size(75, 23)
-        Me.btnForward.TabIndex = 3
-        Me.btnForward.Text = "Fwd >>"
-        Me.btnForward.UseVisualStyleBackColor = true
-        '
-        'btnFinish
-        '
-        Me.btnFinish.Location = New System.Drawing.Point(645, 511)
-        Me.btnFinish.Name = "btnFinish"
-        Me.btnFinish.Size = New System.Drawing.Size(75, 23)
-        Me.btnFinish.TabIndex = 4
-        Me.btnFinish.Text = "Finish  >|"
-        Me.btnFinish.UseVisualStyleBackColor = true
         '
         'btnCancel
         '
@@ -494,11 +461,47 @@ Partial Class Dashboard
         Me.btnCancel.Text = "Cancel"
         Me.btnCancel.UseVisualStyleBackColor = true
         '
+        'btnFinish
+        '
+        Me.btnFinish.Location = New System.Drawing.Point(645, 511)
+        Me.btnFinish.Name = "btnFinish"
+        Me.btnFinish.Size = New System.Drawing.Size(75, 23)
+        Me.btnFinish.TabIndex = 4
+        Me.btnFinish.Text = "Finish  >|"
+        Me.btnFinish.UseVisualStyleBackColor = true
+        '
+        'btnForward
+        '
+        Me.btnForward.Location = New System.Drawing.Point(521, 511)
+        Me.btnForward.Name = "btnForward"
+        Me.btnForward.Size = New System.Drawing.Size(75, 23)
+        Me.btnForward.TabIndex = 3
+        Me.btnForward.Text = "Fwd >>"
+        Me.btnForward.UseVisualStyleBackColor = true
+        '
+        'btnBack
+        '
+        Me.btnBack.Location = New System.Drawing.Point(437, 511)
+        Me.btnBack.Name = "btnBack"
+        Me.btnBack.Size = New System.Drawing.Size(75, 23)
+        Me.btnBack.TabIndex = 2
+        Me.btnBack.Text = "<< Back"
+        Me.btnBack.UseVisualStyleBackColor = true
+        '
+        'btnStart
+        '
+        Me.btnStart.Location = New System.Drawing.Point(320, 511)
+        Me.btnStart.Name = "btnStart"
+        Me.btnStart.Size = New System.Drawing.Size(75, 23)
+        Me.btnStart.TabIndex = 1
+        Me.btnStart.Text = "|< Start"
+        Me.btnStart.UseVisualStyleBackColor = true
+        '
         'Dashboard
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(813, 566)
+        Me.ClientSize = New System.Drawing.Size(937, 566)
         Me.Controls.Add(Me.Panel1)
         Me.Name = "Dashboard"
         Me.Text = "Dashboard"
@@ -511,8 +514,8 @@ Partial Class Dashboard
         CType(Me.DataGridView2,System.ComponentModel.ISupportInitialize).EndInit
         CType(Me.DataGridView1,System.ComponentModel.ISupportInitialize).EndInit
         CType(Me.gvElectricalConsumables,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.bndgsElecConsumables,System.ComponentModel.ISupportInitialize).EndInit
         Me.Panel1.ResumeLayout(false)
+        CType(Me.brcElecConsumers,System.ComponentModel.ISupportInitialize).EndInit
         Me.ResumeLayout(false)
 
 End Sub
@@ -543,11 +546,11 @@ End Sub
     Friend WithEvents chkSmartElectricals As System.Windows.Forms.CheckBox
     Friend WithEvents Label6 As System.Windows.Forms.Label
     Friend WithEvents gvElectricalConsumables As System.Windows.Forms.DataGridView
-    Friend WithEvents bndgsElecConsumables As System.Windows.Forms.BindingSource
     Friend WithEvents Panel1 As System.Windows.Forms.Panel
     Friend WithEvents btnCancel As System.Windows.Forms.Button
     Friend WithEvents btnFinish As System.Windows.Forms.Button
     Friend WithEvents btnForward As System.Windows.Forms.Button
     Friend WithEvents btnBack As System.Windows.Forms.Button
     Friend WithEvents btnStart As System.Windows.Forms.Button
+    Friend WithEvents brcElecConsumers As System.Windows.Forms.BindingSource
 End Class
