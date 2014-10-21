@@ -58,7 +58,12 @@ Private Sub SetupControls()
      gvElectricalConsumables.Columns(cIndex).Width = 50
 
      'ResultCard Grids
+
+     'Handler for deleting rows.
+
+
      'IDLE
+
      cIndex = gvResultsCardIdle.Columns.Add("Amps", "Amps")
      gvResultsCardIdle.Columns(cIndex).DataPropertyName = "Amps"
      gvResultsCardIdle.Columns(cIndex).Width = 65
@@ -112,26 +117,28 @@ Private Sub CreateBindings()
          Dim idleBinding = new BindingList(Of SmartResult)
          idleBinding = New BindingList(Of SmartResult)(auxEnvironment.ElectricalUserInputsConfig.ResultCardIdle)
          idleBinding.AllowNew=true   
+         idleBinding.AllowRemove=True
          gvResultsCardIdle.DataSource=idleBinding 
+
+
                 
          'TRACTION
          Dim tractionBinding As BindingList(Of SmartResult)
          tractionBinding = New BindingList(Of SmartResult)(auxEnvironment.ElectricalUserInputsConfig.ResultCardTraction)
          tractionBinding.AllowNew=true   
+         tractionBinding.AllowRemove=true           
          gvResultsCardTraction.DataSource = tractionBinding
         
          'OVERRUN
          Dim overrunBinding As BindingList(Of SmartResult)
          overrunBinding = New BindingList(Of SmartResult)(auxEnvironment.ElectricalUserInputsConfig.ResultCardOverrun)
          overrunBinding.AllowNew=true   
+         overrunBinding.AllowRemove=true   
          gvResultsCardOverrun.DataSource=overrunBinding
 
 
 
 End Sub
-
-
-
 
 
 Private Sub gvElectricalConsumables_CellEndEdit(sender As Object, e As DataGridViewCellEventArgs) Handles gvElectricalConsumables.CellEndEdit
@@ -143,70 +150,99 @@ End Sub
 
 Private Sub gvElectricalConsumables_CellValidating(sender As Object, e As DataGridViewCellValidatingEventArgs) Handles gvElectricalConsumables.CellValidating
 
-
    Dim column As DataGridViewColumn = gvElectricalConsumables.Columns(e.ColumnIndex)
-   Dim message As String = String.Empty
+   Dim s As Single
 
-   If Not column.ReadOnly Then
-       e.Cancel = Not IsValidElectricalConsumableEdit(column, e.FormattedValue, message)
-   End If
-
-
-
-
-
-End Sub
-
-
-Private Function IsValidElectricalConsumableEdit(column As DataGridViewColumn, val As String, ByRef message As String) As Boolean
-
-    Dim s As Single
-
-    Dim tip = column.CellType
+   If  column.ReadOnly Then return
 
 
 
     Select Case column.Name
 
      Case "NominalConsumptionAmps"
-           Return True
+           If Not IsNumeric(e.FormattedValue) Then
+             MessageBox.Show("This value must be numeric")
+             e.Cancel=true
+          End if
 
      Case "NumberInActualVehicle"
-           If Not IsNumeric(val) Then
+           If Not IsNumeric(e.FormattedValue) Then
              MessageBox.Show("This value must be numeric")
-             Return False
+            e.Cancel=true
           Else
-            s = Single.Parse(val)
+            s = Single.Parse(e.FormattedValue)
            End If
            If s Mod 1 > 0 OrElse s < 0 Then
               MessageBox.Show("This value must be a positive whole number ( Integer ) ")
-              Return False
+             e.Cancel=true
            End If
 
 
      Case "PhaseIdle_TractionOn"
-           If Not IsNumeric(val) Then
+           If Not IsNumeric(e.FormattedValue) Then
              MessageBox.Show("This value must be numeric")
-             Return False
+             e.Cancel=true
            Else
-            s = Single.Parse(val)
+            s = Single.Parse(e.FormattedValue)
            End If
            If s < 0 OrElse s > 1 Then
               MessageBox.Show("This must be a value between 0 and 1 ")
-              Return False
+              e.Cancel=true
            End If
 
 
     End Select
 
+End Sub
 
 
-    Return True
+Private Sub SmartResult_CellValidating( sender As Object,  e As DataGridViewCellValidatingEventArgs) Handles gvResultsCardIdle.CellValidating
 
-End Function
+   Dim column As DataGridViewColumn = gvElectricalConsumables.Columns(e.ColumnIndex)
 
-
-Private Sub Panel1_Paint( sender As Object,  e As PaintEventArgs) Handles Panel1.Paint
+   If Not IsNumeric(e.FormattedValue) Then
+       MessageBox.Show("This value must be numeric")
+       e.Cancel=true      
+   End If
 
 End Sub
+
+
+
+  private sub resultCard_CellMouseUp( sender As Object,  e as DataGridViewCellMouseEventArgs) Handles gvResultsCardIdle.CellMouseUp, gvResultsCardTraction.CellMouseUp, gvResultsCardOverrun.CellMouseUp
+    
+      Dim dgv As DataGridView = CType( sender, DataGridView)
+
+
+        if e.Button = MouseButtons.Right then
+        
+            dgv.Rows(e.RowIndex).Selected = true
+            Dim rowIndex As Integer  = e.RowIndex
+            dgv.CurrentCell = dgv.Rows(e.RowIndex).Cells(1)
+            resultCardContextMenu.Show(dgv, e.Location)
+            resultCardContextMenu.Show(Cursor.Position)
+
+        End if
+
+
+    end sub
+
+    private sub resultCardContextMenu_Click( sender As object,  e as  EventArgs) Handles resultCardContextMenu.Click
+    
+         Dim menu As ContextMenuStrip = CType( sender, ContextMenuStrip)
+
+         Dim grid as DataGridView  = DirectCast( menu.SourceControl, DataGridView)
+
+         'DirectCast(menu.SourceControl,System.Windows.Forms.DataGridView).SelectedRows(0).IsNewRow
+
+        If Not grid.SelectedRows(0).IsNewRow then
+        
+            grid.Rows.RemoveAt(grid.SelectedRows(0).Index)
+
+        End if
+
+    end sub
+
+
+
 End Class
