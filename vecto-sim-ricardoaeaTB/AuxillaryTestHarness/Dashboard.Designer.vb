@@ -69,6 +69,8 @@ Partial Class Dashboard
         Me.btnForward = New System.Windows.Forms.Button()
         Me.btnBack = New System.Windows.Forms.Button()
         Me.btnStart = New System.Windows.Forms.Button()
+        Me.resultCardContextMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.tabMain.SuspendLayout
         Me.tabGeneralConfig.SuspendLayout
         Me.tabElectricalConfig.SuspendLayout
@@ -78,6 +80,7 @@ Partial Class Dashboard
         CType(Me.gvElectricalConsumables,System.ComponentModel.ISupportInitialize).BeginInit
         CType(Me.brcElecConsumers,System.ComponentModel.ISupportInitialize).BeginInit
         Me.Panel1.SuspendLayout
+        Me.resultCardContextMenu.SuspendLayout
         Me.SuspendLayout
         '
         'tabMain
@@ -104,7 +107,7 @@ Partial Class Dashboard
         Me.tabGeneralConfig.Location = New System.Drawing.Point(4, 22)
         Me.tabGeneralConfig.Name = "tabGeneralConfig"
         Me.tabGeneralConfig.Padding = New System.Windows.Forms.Padding(3)
-        Me.tabGeneralConfig.Size = New System.Drawing.Size(886, 571)
+        Me.tabGeneralConfig.Size = New System.Drawing.Size(886, 610)
         Me.tabGeneralConfig.TabIndex = 0
         Me.tabGeneralConfig.Text = "GeneralConfig"
         Me.tabGeneralConfig.UseVisualStyleBackColor = true
@@ -415,7 +418,7 @@ Partial Class Dashboard
         '
         Me.tabPneumaticConfig.Location = New System.Drawing.Point(4, 22)
         Me.tabPneumaticConfig.Name = "tabPneumaticConfig"
-        Me.tabPneumaticConfig.Size = New System.Drawing.Size(886, 571)
+        Me.tabPneumaticConfig.Size = New System.Drawing.Size(886, 610)
         Me.tabPneumaticConfig.TabIndex = 2
         Me.tabPneumaticConfig.Text = "PneumaticConfig"
         Me.tabPneumaticConfig.UseVisualStyleBackColor = true
@@ -424,7 +427,7 @@ Partial Class Dashboard
         '
         Me.tabHVACConfig.Location = New System.Drawing.Point(4, 22)
         Me.tabHVACConfig.Name = "tabHVACConfig"
-        Me.tabHVACConfig.Size = New System.Drawing.Size(886, 571)
+        Me.tabHVACConfig.Size = New System.Drawing.Size(886, 610)
         Me.tabHVACConfig.TabIndex = 3
         Me.tabHVACConfig.Text = "HVACConfig"
         Me.tabHVACConfig.UseVisualStyleBackColor = true
@@ -433,7 +436,7 @@ Partial Class Dashboard
         '
         Me.tabPlayground.Location = New System.Drawing.Point(4, 22)
         Me.tabPlayground.Name = "tabPlayground"
-        Me.tabPlayground.Size = New System.Drawing.Size(886, 571)
+        Me.tabPlayground.Size = New System.Drawing.Size(886, 610)
         Me.tabPlayground.TabIndex = 4
         Me.tabPlayground.Text = "Playground"
         Me.tabPlayground.UseVisualStyleBackColor = true
@@ -497,6 +500,18 @@ Partial Class Dashboard
         Me.btnStart.Text = "|< Start"
         Me.btnStart.UseVisualStyleBackColor = true
         '
+        'resultCardContextMenu
+        '
+        Me.resultCardContextMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.DeleteToolStripMenuItem})
+        Me.resultCardContextMenu.Name = "resultCardContextMenu"
+        Me.resultCardContextMenu.Size = New System.Drawing.Size(108, 26)
+        '
+        'DeleteToolStripMenuItem
+        '
+        Me.DeleteToolStripMenuItem.Name = "DeleteToolStripMenuItem"
+        Me.DeleteToolStripMenuItem.Size = New System.Drawing.Size(107, 22)
+        Me.DeleteToolStripMenuItem.Text = "Delete"
+        '
         'Dashboard
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
@@ -516,6 +531,7 @@ Partial Class Dashboard
         CType(Me.gvElectricalConsumables,System.ComponentModel.ISupportInitialize).EndInit
         CType(Me.brcElecConsumers,System.ComponentModel.ISupportInitialize).EndInit
         Me.Panel1.ResumeLayout(false)
+        Me.resultCardContextMenu.ResumeLayout(false)
         Me.ResumeLayout(false)
 
 End Sub
@@ -553,4 +569,6 @@ End Sub
     Friend WithEvents btnStart As System.Windows.Forms.Button
     Friend WithEvents brcElecConsumers As System.Windows.Forms.BindingSource
     Public WithEvents gvResultsCardIdle As System.Windows.Forms.DataGridView
+    Friend WithEvents resultCardContextMenu As System.Windows.Forms.ContextMenuStrip
+    Friend WithEvents DeleteToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 End Class
