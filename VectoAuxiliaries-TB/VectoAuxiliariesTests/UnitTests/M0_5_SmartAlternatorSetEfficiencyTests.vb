@@ -32,9 +32,9 @@ signals.EngineSpeed=2000
 Dim m0 As New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers,hvacInputs,hvacMap,alternatoMap,26.3,signals)
 
 'Results Cards
-Dim readings = new Dictionary(Of single, single)
-readings.Add(10,8)
-readings.Add(70,63)
+Dim readings = new List(of SmartResult)
+readings.Add(new SmartResult(10,8))
+readings.Add(New SmartResult(70,63))
 
 Dim idleResult As New ResultCard(readings)
 Dim tractionResult As New ResultCard(readings)
