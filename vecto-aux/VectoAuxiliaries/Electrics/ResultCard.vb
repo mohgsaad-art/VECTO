@@ -7,12 +7,12 @@ Public Class ResultCard
 Implements IResultCard
 
 
-Private _results As Dictionary(Of Single, Single)
+Private _results As List(Of SmartResult)
 
 
-Public Sub New(results As Dictionary(Of Single, Single))
+Public Sub New(results As List( of SmartResult))
 
-   If results Is Nothing Then Throw New ArgumentException("A dictionary of smart results must be supplied.")
+   If results Is Nothing Then Throw New ArgumentException("A list of smart results must be supplied.")
 
   _results = results
 
@@ -21,18 +21,18 @@ End Sub
 
 
 
-Public Function GetSmartCurrentResult(key As Single) As Single Implements IResultCard.GetSmartCurrentResult
+Public Function GetSmartCurrentResult(amps As Single) As Single Implements IResultCard.GetSmartCurrentResult
 
 
   If _results.Count<2 then Return 0.1
 
-  Return GetOrInterpolate(key)
+  Return GetOrInterpolate(amps)
 
 
 End Function
 
 
-Private Function GetOrInterpolate(key As Single) As Single
+Private Function GetOrInterpolate(amps As Single) As Single
 
 Dim pre As Single
 Dim post As Single
@@ -43,51 +43,52 @@ Dim smartAmps As Single
 Dim maxKey As Single
 Dim minKey As Single
 
-     maxKey = (From k In _results Select k).Last.Key
-     minKey = (From k In _results Select k).First.Key
+     maxKey = _results.Max.Amps
+     minKey = _results.Min.Amps
 
+     Dim compareKey As SmartResult = New SmartResult( amps,0)
 
      'Is on boundary check
-     If _results.ContainsKey(key) Then Return _results(key)
+     If _results.Contains(compareKey) Then Return _results.OrderBy( Function(x) x.Amps).First( Function( x ) x.Amps=compareKey.Amps ).SmartAmps
 
      'Is over map - Extrapolate
-     If key > maxKey Then
+     If amps > maxKey Then
 
             'get the entries before and after the supplied key
-             pre = (From m In _results Order By m.Key Where m.Key < maxKey Select m).Last().Key
+             pre = (From a In _results Order By a.amps  Where a.amps < maxKey Select a ).Last().Amps
              post = maxKey
 
             'get the delta values 
              dAmps = post - pre
-             dSmartAmps = _results(post) - _results(pre)
+             dSmartAmps = ( From da In _results Order By da.Amps Where da.Amps=post ).First().SmartAmps - ( From da In _results Order By da.Amps Where da.Amps=pre ).First().SmartAmps
 
             'calculate the slopes
              smartAmpsSlope = dSmartAmps / dAmps
 
             'calculate the new values
-             smartAmps = ((key - post) * smartAmpsSlope) + _results(post)
+             smartAmps = ((amps - post) * smartAmpsSlope) + ( From da In _results Order By da.Amps Where da.Amps=post ).First().SmartAmps
 
              Return smartAmps
 
      End If
 
      'Is under map - Extrapolate
-     If key < minKey Then
+     If amps < minKey Then
 
             'get the entries before and after the supplied key
             'Post is the first entry and pre is the penultimate to first entry
              post = minKey
-             pre = (From k In _results Order By k.Key Where k.Key > minKey Select k).First.Key
+             pre = (From k In _results Order By k.amps Where k.amps > minKey Select k).First().Amps
 
             'get the delta values 
              dAmps = post - pre
-             dSmartAmps = _results(post) - _results(pre)
+             dSmartAmps = ( From da In _results Order By da.Amps Where da.Amps=post ).First().SmartAmps - ( From da In _results Order By da.Amps Where da.Amps=pre ).First().SmartAmps
 
             'calculate the slopes
              smartAmpsSlope = dSmartAmps / dAmps
 
             'calculate the new values
-             smartAmps = ((key - post) * smartAmpsSlope) + _results(post)
+             smartAmps = ((amps - post) * smartAmpsSlope) + ( From da In _results Order By da.Amps Where da.Amps=post ).First().SmartAmps
 
              Return smartAmps
      End If
@@ -95,18 +96,18 @@ Dim minKey As Single
      'Is Inside map - Interpolate
 
             'get the entries before and after the supplied rpm
-             pre = (From m In _results Where m.Key < key Select m).Last().Key
-             post = (From m In _results Where m.Key > key Select m).First().Key
+             pre = (From m In _results Order By m.amps Where m.amps < amps Select m).Last().Amps
+             post = (From m In _results Where m.amps > amps Select m).First().Amps
 
             'get the delta values for rpm and the map values
              dAmps = post - pre
-             dSmartAmps = _results(post) - _results(pre)
+             dSmartAmps =  ( From da In _results Order By da.Amps Where da.Amps=post ).First().SmartAmps - ( From da In _results Order By da.Amps Where da.Amps=pre ).First().SmartAmps
 
             'calculate the slopes
              smartAmpsSlope = dSmartAmps / dAmps
 
             'calculate the new values
-             smartAmps = ((key - pre) * smartAmpsSlope) + _results(pre)
+             smartAmps = ((amps - post) * smartAmpsSlope) + ( From da In _results Order By da.Amps Where da.Amps=post ).First().SmartAmps
 
 
             Return smartAmps

@@ -10,9 +10,9 @@ Property AlternatorGearEfficiency As Single
 Property ElectricalConsumers As IElectricalConsumerList
 Property DoorActuationTimeSecond As Integer
 
-Property ResultCardIdleAmps As Dictionary(Of Single, Single)
-Property ResultCardTractionAmps As Dictionary(Of Single, Single)
-Property ResultCardOverrunAmps As Dictionary(Of Single, Single)
+Property ResultCardIdle As List(Of SmartResult)
+Property ResultCardTraction As List(Of SmartResult)
+Property ResultCardOverrun As List(Of SmartResult)
 Property SmartElectrical As Boolean
 
 End Interface

@@ -2,7 +2,7 @@
 
 Public Interface IResultCard
 
-Function GetSmartCurrentResult(key As Single) As Single
+Function GetSmartCurrentResult(Amps As Single) As Single
 
 End Interface
 

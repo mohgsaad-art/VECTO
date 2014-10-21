@@ -85,6 +85,7 @@
     <Compile Include="Electrics\IM0_NonSmart_AlternatorsSetEfficiency.vb" />
     <Compile Include="Electrics\M5__SmartAlternatorSetGeneration.vb" />
     <Compile Include="Electrics\ResultCard.vb" />
+    <Compile Include="Electrics\SmartResult.vb" />
     <Compile Include="Hvac\HVACConstants.vb" />
     <Compile Include="Hvac\HVACInputs.vb" />
     <Compile Include="Electrics\IElectricalConsumerList.vb" />

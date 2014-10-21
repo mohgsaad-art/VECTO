@@ -15,8 +15,8 @@ Public Class AuxillaryEnvironment
 
 
  'Pneumatics
- Private Property PneumaticUserInputsConfig As IPneumaticUserInputsConfig
- Private Property PneumaticAuxillariesConfig As IPneumaticsAuxilliariesConfig
+public Property PneumaticUserInputsConfig As IPneumaticUserInputsConfig
+public Property PneumaticAuxillariesConfig As IPneumaticsAuxilliariesConfig
 
  'Hvac
  Public Property  HvacUserInputsConfig As IHVACUserInputsConfig
@@ -49,9 +49,9 @@ Private Sub setDefaults()
  ElectricalUserInputsConfig = New  ElectricsUserInputsConfig() With {.DoorActuationTimeSecond=4, 
                                                                      .ElectricalConsumers= New ElectricalConsumerList(VectoInputs.PowerNetVoltage,0.1,true),
                                                                      .PowerNetVoltage= VectoInputs.PowerNetVoltage,
-                                                                     .ResultCardIdleAmps= New Dictionary(Of Single, Single),
-                                                                     .ResultCardOverrunAmps= New Dictionary(Of Single, Single),
-                                                                     .ResultCardTractionAmps=New Dictionary(Of Single, Single),
+                                                                     .ResultCardIdle= New List(Of SmartResult),
+                                                                     .ResultCardOverrun= New List(Of SmartResult),
+                                                                     .ResultCardTraction=New List(Of SmartResult),
                                                                      .SmartElectrical=True}
 
  HvacUserInputsConfig = New HVACUserInputsConfig(1,1,New HVACInputs(),"HVACMAPPATHGOESHERE.CSV")
