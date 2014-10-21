@@ -7,11 +7,6 @@
     Public Class ElectricalConsumer
         Implements IElectricalConsumer
 
-
-
-
-
-
         'Calculated
         Private Property AvgConsumptionAmps As Single Implements IElectricalConsumer.AvgConsumptionAmps
 
