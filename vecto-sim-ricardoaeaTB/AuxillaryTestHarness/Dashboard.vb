@@ -309,101 +309,138 @@ End Sub
 
 '****** PNEUMATIC VALIDATION
 
-Public Sub Validating_PneumaticHandler( sender As Object, e As CancelEventArgs ) Handles  txtAdBlueNIperMinute.Validating,  txtBrakingWithRetarderNIperKG.Validating, txtBrakingNoRetarderNIperKG.Validating, txtAirControlledSuspensionNIperMinute.Validating, txtBreakingPerKneelingNIperKGinMM.Validating, txtSmartRegenFractionTotalAirDemand.Validating, txtPerStopBrakeActuationNIperKG.Validating, txtPerDoorOpeningNI.Validating, txtOverrunUtilisationForCompressionFraction.Validating, txtNonSmartRegenFractionTotalAirDemand.Validating, txtDeadVolumeLitres.Validating, txtDeadVolBlowOutsPerLitresperHour.Validating, txtKneelingHeightMillimeters.Validating, txtCompressorMap.Validating, txtCompressorGearRatio.Validating, txtCompressorGearEfficiency.Validating, txtActuationsMap.Validating, cboDoors.Validating, cboCompressorType.Validating, cboAirSuspensionControl.Validating, cboAdBlueDosing.Validating
+public sub Validating_PneumaticHandler( sender as Object, e As CancelEventArgs  ) Handles  txtAdBlueNIperMinute.Validating,  txtBrakingWithRetarderNIperKG.Validating, txtBrakingNoRetarderNIperKG.Validating, txtAirControlledSuspensionNIperMinute.Validating, txtBreakingPerKneelingNIperKGinMM.Validating, txtSmartRegenFractionTotalAirDemand.Validating, txtPerStopBrakeActuationNIperKG.Validating, txtPerDoorOpeningNI.Validating, txtOverrunUtilisationForCompressionFraction.Validating, txtNonSmartRegenFractionTotalAirDemand.Validating, txtDeadVolumeLitres.Validating, txtDeadVolBlowOutsPerLitresperHour.Validating, txtKneelingHeightMillimeters.Validating, txtCompressorMap.Validating, txtCompressorGearRatio.Validating, txtCompressorGearEfficiency.Validating, txtActuationsMap.Validating, cboDoors.Validating, cboCompressorType.Validating, cboAirSuspensionControl.Validating, cboAdBlueDosing.Validating
 
-Dim control As Control = CType( sender, Control)
 
-Select Case control.Name
+    e.Cancel= Validate_Pneumatics()
 
-     case "txtAdBlueNIperMinute"
+
+End Sub
+
+
+Public function Validate_Pneumatics(  ) As boolean
+
+       Dim result As Boolean = true
+
+       'PNEUMATIC AUXILLARIES PART
+       '***************************
+
+
+       'AdBlue NI per Minute : txtAdBlueNIperMinute
        If Not IsZeroOrPostiveNumber(txtAdBlueNIperMinute.Text) then 
-         e.Cancel=true
-         errorProvider.SetError(txtAdBlueNIperMinute ,"Please provide a non negative number.")    
+         errorProvider.SetError(txtAdBlueNIperMinute ,"Please provide a non negative number.") 
+         result= false
+       Else
+          errorProvider.SetError(txtAdBlueNIperMinute ,String.Empty) 
        End if
 
-      case "txtOverrunUtilisationForCompressionFraction"
-         If Not IsNumberBetweenZeroandOne(txtOverrunUtilisationForCompressionFraction.Text) then 
-         e.Cancel=true
+       'Overrun Utilisation For Compression Fraction : txtOverrunUtilisationForCompressionFraction
+       If Not IsNumberBetweenZeroandOne(txtOverrunUtilisationForCompressionFraction.Text) then 
          errorProvider.SetError(txtOverrunUtilisationForCompressionFraction ,"Please provide a non negative between 0 and 1.")    
+         result = false
+         Else
+         errorProvider.SetError(txtOverrunUtilisationForCompressionFraction ,String.Empty)           
        End if
 
-      case "txtBrakingWithRetarderNIperKG"
-        If Not IsZeroOrPostiveNumber(txtBrakingWithRetarderNIperKG.Text) then 
-         e.Cancel=true
-         errorProvider.SetError(txtBrakingWithRetarderNIperKG ,"Please provide a non negative number.")    
+       'Braking With Retarder NI per KG : txtBrakingWithRetarderNIperKG
+       If Not IsZeroOrPostiveNumber(txtBrakingWithRetarderNIperKG.Text) then 
+         errorProvider.SetError(txtBrakingWithRetarderNIperKG ,"Please provide a non negative number.") 
+         result = false
+        Else
+         errorProvider.SetError(txtBrakingWithRetarderNIperKG ,String.Empty)         
        End if
 
-      case "txtBrakingNoRetarderNIperKG"
+       'Braking No Retarder NI per KG : txtBrakingNoRetarderNIperKG
        If Not IsZeroOrPostiveNumber(txtBrakingNoRetarderNIperKG.Text) then 
-         e.Cancel=true
-         errorProvider.SetError(txtBrakingNoRetarderNIperKG ,"Please provide a non negative number.")    
+         errorProvider.SetError(txtBrakingNoRetarderNIperKG ,"Please provide a non negative number.") 
+         result=false
+       Else
+         errorProvider.SetError(txtBrakingNoRetarderNIperKG ,String.Empty)        
        End if
 
-      case "txtBreakingPerKneelingNIperKGinMM"
+       'Breaking Per Kneeling NI per KG in MM : txtBreakingPerKneelingNIperKGinMM
        If Not IsZeroOrPostiveNumber(txtBreakingPerKneelingNIperKGinMM.Text) then 
-         e.Cancel=true
          errorProvider.SetError(txtBreakingPerKneelingNIperKGinMM ,"Please provide a non negative number.")    
+         result=false
+       Else
+         errorProvider.SetError(txtBreakingPerKneelingNIperKGinMM ,String.Empty)     
        End if
 
-      case "txtPerDoorOpeningNI"
+       'Per Door Opening NI : txtPerDoorOpeningNI
        If Not IsZeroOrPostiveNumber(txtPerDoorOpeningNI.Text) then 
-         e.Cancel=true
          errorProvider.SetError(txtPerDoorOpeningNI ,"Please provide a non negative number.")    
+         result=false
+       Else
+         errorProvider.SetError(txtPerDoorOpeningNI ,String.Empty)          
        End if
 
-      case "txtPerStopBrakeActuationNIperKG"
+       'Per Stop Brake Actuation NI per KG : txtPerStopBrakeActuationNIperKG
        If Not IsZeroOrPostiveNumber(txtPerStopBrakeActuationNIperKG.Text) then 
-         e.Cancel=true
-         errorProvider.SetError(txtPerStopBrakeActuationNIperKG ,"Please provide a non negative number.")    
+         errorProvider.SetError(txtPerStopBrakeActuationNIperKG ,"Please provide a non negative number.")  
+         result=false  
+       Else
+         errorProvider.SetError(txtPerStopBrakeActuationNIperKG ,String.Empty)         
        End if
 
-      case "txtAirControlledSuspensionNIperMinute"
+       'Air Controlled Suspension NI per Minute : txtAirControlledSuspensionNIperMinute
        If Not IsZeroOrPostiveNumber(txtAirControlledSuspensionNIperMinute.Text) then 
-         e.Cancel=true
-         errorProvider.SetError(txtAirControlledSuspensionNIperMinute ,"Please provide a non negative number.")    
+         errorProvider.SetError(txtAirControlledSuspensionNIperMinute ,"Please provide a non negative number.")
+         result=false    
+       Else
+         errorProvider.SetError(txtAirControlledSuspensionNIperMinute ,String.Empty)       
        End if
 
-      case "txtNonSmartRegenFractionTotalAirDemand"
+       'Non Smart Regen Fraction Total Air Demand : txtNonSmartRegenFractionTotalAirDemand
        If Not IsZeroOrPostiveNumber(txtNonSmartRegenFractionTotalAirDemand.Text) then 
-         e.Cancel=true
-         errorProvider.SetError(txtNonSmartRegenFractionTotalAirDemand ,"Please provide a non negative number.")    
+         errorProvider.SetError(txtNonSmartRegenFractionTotalAirDemand ,"Please provide a non negative number.")  
+         result=false    
+       Else
+         errorProvider.SetError(txtNonSmartRegenFractionTotalAirDemand ,String.Empty)         
        End if
 
-
-      case "txtSmartRegenFractionTotalAirDemand"
-         If Not IsNumberBetweenZeroandOne(txtSmartRegenFractionTotalAirDemand.Text) then 
-         e.Cancel=true
+       'Smart Regen Fraction Total Air Demand : txtSmartRegenFractionTotalAirDemand
+       If Not IsNumberBetweenZeroandOne(txtSmartRegenFractionTotalAirDemand.Text) then 
          errorProvider.SetError(txtSmartRegenFractionTotalAirDemand ,"Please provide a non negative between 0 and 1.")    
+         result=False
+       Else
+         errorProvider.SetError(txtSmartRegenFractionTotalAirDemand ,String.Empty)       
        End if
 
 
-      case "txtDeadVolumeLitres"
-         If Not IsZeroOrPostiveNumber(txtDeadVolumeLitres.Text) then 
-         e.Cancel=true
+       'Dead Volume Litres : txtDeadVolumeLitres
+       If Not IsZeroOrPostiveNumber(txtDeadVolumeLitres.Text) then 
          errorProvider.SetError(txtDeadVolumeLitres ,"Please provide a non negative between 0 and 1.")    
+         result=False
+       Else
+         errorProvider.SetError(txtDeadVolumeLitres ,String.Empty)           
        End if
 
 
-      case "txtDeadVolBlowOutsPerLitresperHour"
-         If Not IsZeroOrPostiveNumber(txtDeadVolBlowOutsPerLitresperHour.Text) then 
-         e.Cancel=true
-         errorProvider.SetError(txtDeadVolBlowOutsPerLitresperHour ,"Please provide a non negative between 0 and 1.")    
+       'Dead Vol BlowOuts Per Litresper Hour : txtDeadVolBlowOutsPerLitresperHour
+       If Not IsZeroOrPostiveNumber(txtDeadVolBlowOutsPerLitresperHour.Text) then 
+         errorProvider.SetError(txtDeadVolBlowOutsPerLitresperHour ,"Please provide a non negative between 0 and 1.")
+         result=false    
+        Else
+         errorProvider.SetError(txtDeadVolBlowOutsPerLitresperHour ,String.Empty)        
        End if
 
 
-       'USER CONFIG
-
-        case "cboCompressorType"
-         If cboCompressorType.SelectedIndex<1 then 
-         e.Cancel=true
+       'USER CONFIG PART 
+       '*****************************************************************************************
+       If cboCompressorType.SelectedIndex<1 then 
          errorProvider.SetError(cboCompressorType ,"Please select a Compressor type from the Dropdown list.")    
+         result=false
+       Else
+         errorProvider.SetError(cboCompressorType ,String.Empty)        
        End if
 
-        case "txtCompressorMap"
+        'Compressor Map path : txtCompressorMap
         'Test for empty after trim
         If txtCompressorMap.Text.Trim.Length=0 then
-         e.Cancel=true
-         errorProvider.SetError(txtCompressorMap ,"Please enter the localtion of a valid compressor map.")    
+         errorProvider.SetError(txtCompressorMap ,"Please enter the localtion of a valid compressor map.") 
+         result=false   
+        else
+         errorProvider.SetError(txtCompressorMap ,String.Empty) 
         End if
         'Test File is valid
         Dim comp As CompressorMap
@@ -411,44 +448,41 @@ Select Case control.Name
 
         comp = New CompressorMap( txtCompressorMap.Text)
         comp.Initialise()
-
+         errorProvider.SetError(txtCompressorMap ,String.Empty) 
         Catch ex As Exception
-
-         e.Cancel=true
          errorProvider.SetError(txtCompressorMap ,"Error : map is invalid or cannot be found, please select a Cvalid compressor map")  
-
+         result=false
         End Try
 
 
-        case "txtCompressorGearEfficiency"
+        'case "txtCompressorGearEfficiency"
 
-        case "txtCompressorGearRatio"
+        'case "txtCompressorGearRatio"
 
-        case "txtActuationsMap"
+        'case "txtActuationsMap"
 
-        case "chkSmartAirCompression"
+        'case "chkSmartAirCompression"
 
-        case "chkSmartRegeneration"
+        'case "chkSmartRegeneration"
 
-        case "chkRetarderBrake"
+        'case "chkRetarderBrake"
 
-        case "txtKneelingHeightMillimeters"
+        'case "txtKneelingHeightMillimeters"
 
-        case "cboAirSuspensionControl" 
+        'case "cboAirSuspensionControl" 
 
-        case "cboAdBlueDosing"
+        'case "cboAdBlueDosing"
 
-        case "cboDoors.DataBindings"
-
-
-         
-End Select
+        'case "cboDoors.DataBindings"
 
 
-End Sub
+Return result
 
 
-Public Sub Validated_PneumaticHandler( sender As Object, e As EventArgs ) Handles tabMain.Validating, txtAdBlueNIperMinute.Validating, txtAdBlueNIperMinute.Validated, txtSmartRegenFractionTotalAirDemand.Validated, txtPerStopBrakeActuationNIperKG.Validated, txtPerDoorOpeningNI.Validated, txtOverrunUtilisationForCompressionFraction.Validated, txtNonSmartRegenFractionTotalAirDemand.Validated, txtDeadVolumeLitres.Validated, txtDeadVolBlowOutsPerLitresperHour.Validated, txtBreakingPerKneelingNIperKGinMM.Validated, txtBrakingWithRetarderNIperKG.Validated, txtBrakingNoRetarderNIperKG.Validated, txtAirControlledSuspensionNIperMinute.Validated, txtKneelingHeightMillimeters.Validated, txtCompressorMap.Validated, txtCompressorGearRatio.Validated, txtCompressorGearEfficiency.Validated, txtActuationsMap.Validated, cboDoors.Validated, cboCompressorType.Validated, cboAirSuspensionControl.Validated, cboAdBlueDosing.Validated
+End function
+
+
+Public Sub Validated_PneumaticHandler( sender As Object, e As EventArgs ) Handles txtAdBlueNIperMinute.Validating, txtAdBlueNIperMinute.Validated, txtSmartRegenFractionTotalAirDemand.Validated, txtPerStopBrakeActuationNIperKG.Validated, txtPerDoorOpeningNI.Validated, txtOverrunUtilisationForCompressionFraction.Validated, txtNonSmartRegenFractionTotalAirDemand.Validated, txtDeadVolumeLitres.Validated, txtDeadVolBlowOutsPerLitresperHour.Validated, txtBreakingPerKneelingNIperKGinMM.Validated, txtBrakingWithRetarderNIperKG.Validated, txtBrakingNoRetarderNIperKG.Validated, txtAirControlledSuspensionNIperMinute.Validated, txtKneelingHeightMillimeters.Validated, txtCompressorMap.Validated, txtCompressorGearRatio.Validated, txtCompressorGearEfficiency.Validated, txtActuationsMap.Validated, cboDoors.Validated, cboCompressorType.Validated, cboAirSuspensionControl.Validated, cboAdBlueDosing.Validated
 
 Dim control As Control = CType( sender, Control)
 
@@ -520,4 +554,7 @@ End Sub
 
 
 
+Private Sub btnStart_Click( sender As Object,  e As EventArgs) Handles btnStart.Click
+        Validate_Pneumatics()
+End Sub
 End Class
