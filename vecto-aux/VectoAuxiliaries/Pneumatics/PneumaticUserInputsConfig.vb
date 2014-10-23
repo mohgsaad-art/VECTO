@@ -23,7 +23,7 @@ Public Property ActuationsMap As String Implements IPneumaticUserInputsConfig.Ac
 
 'pneumatic or electric
 Public Property Doors As String Implements IPneumaticUserInputsConfig.Doors
-Public Property KneelingHeightMilimeters As Single Implements IPneumaticUserInputsConfig.KneelingHeightMilimeters
+Public Property KneelingHeightMillimeters As Single Implements IPneumaticUserInputsConfig.KneelingHeightMillimeters
 Public Property RetarderBrake As Boolean Implements IPneumaticUserInputsConfig.RetarderBrake
 Public Property SmartAirCompression As Boolean Implements IPneumaticUserInputsConfig.SmartAirCompression
 Public Property SmartRegeneration As Boolean Implements IPneumaticUserInputsConfig.SmartRegeneration
@@ -39,15 +39,15 @@ End Sub
 Public sub SetPropertiesToDefaults()
 
 
-            ActuationsMap=""
-            AdBlueDosing="pneumatic"
-            AirSuspensionControl="electrically"
+            ActuationsMap="C:\Users\tb28\Source\Workspaces\VECTO\vecto-aux\VectoAuxiliariesTests\TestFiles\testPneumaticActuationsMap_GOODMAP.csv"
+            AdBlueDosing="Pneumatic"
+            AirSuspensionControl="Electrically"
             CompressorGearEfficiency=0.8
             CompressorGearRatio=0
-            CompressorMap=""
+            CompressorMap="C:\Users\tb28\Source\Workspaces\VECTO\vecto-aux\VectoAuxiliariesTests\TestFiles\testCompressorMap.csv"
             CompressorType=""
-            Doors="pneumatic"
-            KneelingHeightMilimeters=80
+            Doors="Pneumatic"
+            KneelingHeightMillimeters=80
             RetarderBrake=True
             SmartAirCompression=True
             SmartRegeneration=True  

@@ -5,7 +5,7 @@ Implements IPneumaticsAuxilliariesConfig
 
 
 Public Property AdBlueNIperMinute As Single Implements IPneumaticsAuxilliariesConfig.AdBlueNIperMinute
-Public Property AirControlledSuspecsionNIperMinute As Single Implements IPneumaticsAuxilliariesConfig.AirControlledSuspecsionNIperMinute
+Public Property AirControlledSuspensionNIperMinute As Single Implements IPneumaticsAuxilliariesConfig.AirControlledSuspensionNIperMinute
 Public Property BrakingNoRetarderNIperKG As Single Implements IPneumaticsAuxilliariesConfig.BrakingNoRetarderNIperKG
 Public Property BrakingWithRetarderNIperKG As Single Implements IPneumaticsAuxilliariesConfig.BrakingWithRetarderNIperKG
 Public Property BreakingPerKneelingNIperKGinMM As Single Implements IPneumaticsAuxilliariesConfig.BreakingPerKneelingNIperKGinMM
@@ -33,7 +33,7 @@ Public Sub SetDefaults()
      BreakingPerKneelingNIperKGinMM = 0.000066
      PerDoorOpeningNI = 12.7
      PerStopBrakeActuationNIperKG = 0.00064
-     AirControlledSuspecsionNIperMinute = 15
+     AirControlledSuspensionNIperMinute = 15
      AdBlueNIperMinute = 21.25
      NonSmartRegenFractionTotalAirDemand = 0.26
      SmartRegenFractionTotalAirDemand = 0.12

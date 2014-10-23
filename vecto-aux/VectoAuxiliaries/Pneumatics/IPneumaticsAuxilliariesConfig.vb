@@ -6,7 +6,7 @@ Property BrakingNoRetarderNIperKG As Single
 Property BreakingPerKneelingNIperKGinMM As Single
 Property PerDoorOpeningNI As Single
 Property PerStopBrakeActuationNIperKG As Single
-Property AirControlledSuspecsionNIperMinute As Single
+Property AirControlledSuspensionNIperMinute As Single
 Property AdBlueNIperMinute As Single
 Property NonSmartRegenFractionTotalAirDemand As Single
 Property SmartRegenFractionTotalAirDemand As Single

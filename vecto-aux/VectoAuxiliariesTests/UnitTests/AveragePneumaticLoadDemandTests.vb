@@ -47,7 +47,7 @@ Namespace UnitTests
         _defaultInputConfig.CompressorGearEfficiency = 0.8
         _defaultInputConfig.SmartRegeneration = True
         _defaultInputConfig.RetarderBrake = True
-        _defaultInputConfig.KneelingHeightMilimeters = 80
+        _defaultInputConfig.KneelingHeightMillimeters = 80
         _defaultInputConfig.AirSuspensionControl = "electrically"
         _defaultInputConfig.AdBlueDosing = "pneumatic"
         _defaultInputConfig.Doors = "pneumatic"
@@ -222,7 +222,7 @@ Namespace UnitTests
 
             psCompressorMap.Initialise()
 
-            _defaultInputConfig.KneelingHeightMilimeters = 100
+            _defaultInputConfig.KneelingHeightMillimeters = 100
 
             Dim target As New M3_AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
 
