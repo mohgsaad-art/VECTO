@@ -90,7 +90,7 @@ Namespace Pneumatics
            '** Kneeling **
            numActuationsPerCycle = _pneumaticsActuationsMap.GetNumActuations(New ActuationsKey("Kneeling", _cycleName))
            '=IF(COUNTBLANK(F35),G35,F35)*K11*K16
-           airConsumptionPerActuationNI = _pneumaticAuxillariesConfig.BreakingPerKneelingNIperKGinMM * _vehicleMassKG * _pneumaticUserInputsConfig.KneelingHeightMilimeters
+           airConsumptionPerActuationNI = _pneumaticAuxillariesConfig.BreakingPerKneelingNIperKGinMM * _vehicleMassKG * _pneumaticUserInputsConfig.KneelingHeightMillimeters
            Kneeling = numActuationsPerCycle * airConsumptionPerActuationNI
 
            '** AdBlue **
@@ -110,7 +110,7 @@ Namespace Pneumatics
 
            '** AirSuspension  **
            '=IF(K12="electrically",0,G38*F54) - Suplied Spreadsheet
-           AirSuspension = If(_pneumaticUserInputsConfig.AirSuspensionControl = "electrically", 0, _pneumaticAuxillariesConfig.AirControlledSuspecsionNIperMinute * _cycleDurationMinutes)
+           AirSuspension = If(_pneumaticUserInputsConfig.AirSuspensionControl = "electrically", 0, _pneumaticAuxillariesConfig.AirControlledSuspensionNIperMinute * _cycleDurationMinutes)
 
            '** Total Air Demand **
            TotalAirDemand = Breaks + ParkBrakesplus2Doors + Kneeling + AdBlue + Regeneration + DeadVolBlowOuts + AirSuspension
