@@ -52,9 +52,11 @@ Private Sub setDefaults()
                                                                      .ResultCardIdle= New List(Of SmartResult),
                                                                      .ResultCardOverrun= New List(Of SmartResult),
                                                                      .ResultCardTraction=New List(Of SmartResult),
-                                                                     .SmartElectrical=True}
+                                                                     .SmartElectrical=True,
+                                                                     .AlternatorMap="C:\Users\tb28\Source\Workspaces\VECTO\VectoAuxiliaries-TB\VectoAuxiliariesTests\TestFiles\testAlternatorMap.csv"
+                                                                     }
 
- HvacUserInputsConfig = New HVACUserInputsConfig(1,1,New HVACInputs(),"HVACMAPPATHGOESHERE.CSV")
+ HvacUserInputsConfig = New HVACUserInputsConfig(1,1,New HVACInputs(),"HVACMAPPATHGOESHERE.CSV", New HVACSteadyStateModel())
 
 End Sub
 

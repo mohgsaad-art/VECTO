@@ -19,6 +19,8 @@ End Sub
 
 Private sub Initialise()
 
+
+Dim ssm As New HVACSteadyStateModel(100,100,100)
 Dim elecConsumers As New ElectricalConsumerList(26.3,0.096,True)
 Dim hvacInputs As New HVACInputs(1,1)
 Dim  hvacMap As New HVACMap("testFiles\TestHvacMap.csv")
@@ -29,7 +31,7 @@ alternatoMap.Initialise()
 Dim signals = New Signals()
 signals.EngineSpeed=2000
 
-Dim m0 As New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers,hvacInputs,hvacMap,alternatoMap,26.3,signals)
+Dim m0 As New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers,hvacInputs,alternatoMap,26.3,signals,ssm)
 
 'Results Cards
 Dim readings = new List(of SmartResult)
@@ -74,7 +76,7 @@ End Sub
 Public Sub AlternatorsEfficiencyIdle2000rpmTest()
    Initialise()
 
-   Dim expected As Single = 0.618566155
+   Dim expected As Single = 0.573053837
    Dim actual As Single = target.AlternatorsEfficiencyIdleResultCard()
 
    Assert.AreEqual(expected, actual)
@@ -87,7 +89,7 @@ End Sub
 Public Sub AlternatorsEfficiencyTraction2000rpmTest()
    Initialise()
 
-   Dim expected As Single = 0.618566155
+   Dim expected As Single = 0.573053837
    Dim actual As Single = target.AlternatorsEfficiencyTractionOnResultCard()
 
    Assert.AreEqual(expected, actual)
@@ -99,7 +101,7 @@ End Sub
 Public Sub AlternatorsEfficiencyOverrun2000rpmTest()
    Initialise()
 
-   Dim expected As Single = 0.618566155
+   Dim expected As Single = 0.573053837
    Dim actual As Single = target.AlternatorsEfficiencyOverrunResultCard()
 
    Assert.AreEqual(expected, actual)
