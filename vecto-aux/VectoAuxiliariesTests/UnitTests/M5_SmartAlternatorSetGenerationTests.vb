@@ -21,6 +21,7 @@ Private const _altGearPullyEfficiency As Single =0.8
 Private _m05 As M0_5_SmartAlternatorSetEfficiency
 Private _target As M5__SmartAlternatorSetGeneration
 Private _signals As ISignals = New Signals
+Private ssmHVac As IHVACSteadyStateModel = New HVACSteadyStateModel(100,100,100)
 
 Private sub Initialise()
 
@@ -32,7 +33,7 @@ Dim  hvacMap As New HVACMap(_hvacMap)
 hvacMap.Initialise()
 Dim alternatoMap As New AlternatorMap(_altMap)
 alternatoMap.Initialise()
-Dim m0 As New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers,hvacInputs,hvacMap,alternatoMap,_powerNetVoltage,_signals)
+Dim m0 As New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers,hvacInputs,alternatoMap,_powerNetVoltage,_signals,ssmHVac)
 
 'Results Cards
 Dim readings = new List(Of SmartResult)
@@ -64,7 +65,7 @@ Public Sub  PowerAtCrankIdleWatts()
 
  Initialise()
  _target = New M5__SmartAlternatorSetGeneration(_m05,_powerNetVoltage,_altGearPullyEfficiency)
- Dim expected As Single =1681.428f
+ Dim expected As Single =2006.922f
  Dim actual As Single = _target.AlternatorsGenerationPowerAtCrankIdleWatts(_rpm)
 
  Assert.AreEqual( expected, CType(Math.Round( actual,3), Single))
@@ -76,7 +77,7 @@ Public Sub  PowerAtCrankTractionWatts()
 
  Initialise()
  _target = New M5__SmartAlternatorSetGeneration(_m05,_powerNetVoltage,_altGearPullyEfficiency)
- Dim expected As Single =1681.428
+ Dim expected As Single =2006.922
  Dim actual As Single = _target.AlternatorsGenerationPowerAtCrankTractionOnWatts(_rpm)
 
  Assert.AreEqual( expected, CType(Math.Round(actual,3),Single))
@@ -88,7 +89,7 @@ Public Sub  PowerAtCrankOverrunWatts()
 
  Initialise()
  _target = New M5__SmartAlternatorSetGeneration(_m05,_powerNetVoltage,_altGearPullyEfficiency)
- Dim expected As Single =1681.428
+ Dim expected As Single =2006.922
 
  Dim actual As Single = _target.AlternatorsGenerationPowerAtCrankOverrunWatts(_rpm)
 

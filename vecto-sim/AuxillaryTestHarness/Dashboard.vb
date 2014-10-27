@@ -5,27 +5,13 @@ Imports System.ComponentModel
 
 Public Class Dashboard
 
+#Region "Fields"
+
 Public auxEnvironment As New AuxillaryEnvironment("")
+private TabColors As Dictionary( Of TabPage, Color)  = new   Dictionary( Of TabPage, Color) ()
 
-Private Sub Dashboard_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+#End Region
 
-cboCycle.SelectedIndex = 0
-
-  SetupControls()
-
-  CreateBindings()
-
-  'Validate Pneumatics
-
-
-  ' ValidateChildren(True)
-
-
-End Sub
-
-Private Sub cboCycle_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboCycle.SelectedIndexChanged
-
-End Sub
 
 Private Sub SetupControls()
 
@@ -117,6 +103,8 @@ Private Sub SetupControls()
 
 End Sub
 
+#Region "Binding Control"
+
 Private Sub CreateBindings()
 
      'AuxEnvironment.Vecto Bindings
@@ -159,11 +147,12 @@ Private Sub CreateBindings()
 
 
         'Pneumatic Auxillaries Binding
-        txtAdBlueNIperMinute.DataBindings.Add("Text",auxEnvironment.PneumaticAuxillariesConfig,"AdBlueNIperMinute")
+        txtAdBlueNIperMinute.DataBindings.Add("Text",auxEnvironment.PneumaticAuxillariesConfig,"AdBlueNIperMinute")     
+
         txtOverrunUtilisationForCompressionFraction.DataBindings.Add("Text",auxEnvironment.PneumaticAuxillariesConfig,"OverrunUtilisationForCompressionFraction")
         txtBrakingWithRetarderNIperKG.DataBindings.Add("Text",auxEnvironment.PneumaticAuxillariesConfig,"BrakingWithRetarderNIperKG")
         txtBrakingNoRetarderNIperKG.DataBindings.Add("Text",auxEnvironment.PneumaticAuxillariesConfig,"BrakingNoRetarderNIperKG")
-        txtBreakingPerKneelingNIperKGinMM.DataBindings.Add("Text",auxEnvironment.PneumaticAuxillariesConfig,"BreakingPerKneelingNIperKGinMM")
+        txtBreakingPerKneelingNIperKGinMM.DataBindings.Add("Text",auxEnvironment.PneumaticAuxillariesConfig,"BreakingPerKneelingNIperKGinMM",true,DataSourceUpdateMode.OnPropertyChanged,nothing,"0.########")
         txtPerDoorOpeningNI.DataBindings.Add("Text",auxEnvironment.PneumaticAuxillariesConfig,"PerDoorOpeningNI")
         txtPerStopBrakeActuationNIperKG.DataBindings.Add("Text",auxEnvironment.PneumaticAuxillariesConfig,"PerStopBrakeActuationNIperKG")
         txtAirControlledSuspensionNIperMinute.DataBindings.Add("Text",auxEnvironment.PneumaticAuxillariesConfig,"AirControlledSuspensionNIperMinute")
@@ -188,136 +177,102 @@ Private Sub CreateBindings()
 
 End Sub
 
-
-Private Sub gvElectricalConsumables_CellEndEdit(sender As Object, e As DataGridViewCellEventArgs) Handles gvElectricalConsumables.CellEndEdit
-
-End Sub
-
-
-Private Sub gvElectricalConsumables_CellValidating(sender As Object, e As DataGridViewCellValidatingEventArgs) Handles gvElectricalConsumables.CellValidating
-
-   Dim column As DataGridViewColumn = gvElectricalConsumables.Columns(e.ColumnIndex)
-   Dim s As Single
-
-   If  column.ReadOnly Then return
+Private Sub EnsureBinding()
+        With tabMain
+            Dim lastSelectedTabIndex As Integer = .SelectedIndex
+            If lastSelectedTabIndex < 0 OrElse lastSelectedTabIndex > .TabCount Then lastSelectedTabIndex = 0
+            For currentTab As Integer = 0 To .TabCount - 1
+                .SelectedIndex = currentTab
+            Next
+            .SelectedIndex = 0
+        End With
+    End Sub
 
 
-
-    Select Case column.Name
-
-     Case "NominalConsumptionAmps"
-           If Not IsNumeric(e.FormattedValue) Then
-             MessageBox.Show("This value must be numeric")
-             e.Cancel=true
-          End if
-
-     Case "NumberInActualVehicle"
-           If Not IsNumeric(e.FormattedValue) Then
-             MessageBox.Show("This value must be numeric")
-            e.Cancel=true
-          Else
-            s = Single.Parse(e.FormattedValue)
-           End If
-           If s Mod 1 > 0 OrElse s < 0 Then
-              MessageBox.Show("This value must be a positive whole number ( Integer ) ")
-             e.Cancel=true
-           End If
+#End Region
 
 
-     Case "PhaseIdle_TractionOn"
-           If Not IsNumeric(e.FormattedValue) Then
-             MessageBox.Show("This value must be numeric")
-             e.Cancel=true
-           Else
-            s = Single.Parse(e.FormattedValue)
-           End If
-           If s < 0 OrElse s > 1 Then
-              MessageBox.Show("This must be a value between 0 and 1 ")
-              e.Cancel=true
-           End If
+'Validation
+
+#Region "Validation Helpers"
 
 
-    End Select
+Public Function IsPostiveNumber(byval test As string)As boolean
 
-End Sub
+     'Is this numeric sanity check.
+     If Not IsNumeric(test) then Return False
 
+     Dim number As Single
 
-Private Sub SmartResult_CellValidating( sender As Object,  e As DataGridViewCellValidatingEventArgs) Handles gvResultsCardIdle.CellValidating
+     If Not Single.TryParse( test,  number)  then Return false
 
-   Dim column As DataGridViewColumn = gvElectricalConsumables.Columns(e.ColumnIndex)
+     If number<=0 then Return False
+     
 
-   If Not IsNumeric(e.FormattedValue) Then
-       MessageBox.Show("This value must be numeric")
-       e.Cancel=true      
-   End If
+     Return true
+  
+End Function
 
-End Sub
+Public Function IsZeroOrPostiveNumber(byval test As string)As boolean
 
+     'Is this numeric sanity check.
+     If Not IsNumeric(test) then Return False
 
-private sub resultCard_CellMouseUp( sender As Object,  e as DataGridViewCellMouseEventArgs) Handles gvResultsCardIdle.CellMouseUp, gvResultsCardTraction.CellMouseUp, gvResultsCardOverrun.CellMouseUp
-    
-      Dim dgv As DataGridView = CType( sender, DataGridView)
+     Dim number As Single
 
+     If Not Single.TryParse( test,  number)  then Return false
 
-        if e.Button = MouseButtons.Right then
+     If number<0 then Return False
+     
 
-            resultCardContextMenu.Show(dgv, e.Location)
-            resultCardContextMenu.Show(Cursor.Position)
+     Return true
+  
+End Function
 
-        End if
+Public Function IsNumberBetweenZeroandOne( test As String )
 
+     'Is this numeric sanity check.
+     If Not IsNumeric(test) then Return False
 
-    end sub
+     Dim number As Single
 
+     If Not Single.TryParse( test,  number)  then Return false
 
-Private Sub resultCardContextMenu_ItemClicked( sender As Object,  e As ToolStripItemClickedEventArgs) Handles resultCardContextMenu.ItemClicked
+     If number<0 orelse number >1  then Return False
 
-      Dim menu As ContextMenuStrip = CType( sender, ContextMenuStrip)
+     Return True
+     
+End Function
 
-      Dim grid as DataGridView  = DirectCast( menu.SourceControl, DataGridView)
+Public Function IsIntegerZeroOrPositiveNumber( test As string)
 
-      Select Case e.ClickedItem.Text
+     'Is this numeric sanity check.
+     If Not IsNumeric(test) then Return False
 
+     'if not integer then return false
 
-      Case "Delete"
+     Dim number As integer
 
-         For Each selectedRow As datagridviewrow In grid.SelectedRows
+     If Not integer.TryParse( test,  number)  then Return false
 
-            If Not selectedRow.IsNewRow then
-            
-                grid.Rows.RemoveAt(selectedRow.Index)
-           
-            End if
-           
-         Next
+     If number<0   then Return False
 
-      case "Insert"
-
-
-      End Select
-    
-
-
-
-
+     Return True
 
 
+End Function
 
+#End Region
 
-End Sub
+#REgion "Validation Control"
 
 
 '****** PNEUMATIC VALIDATION
+public sub Validating_PneumaticHandler( sender as Object, e As CancelEventArgs  )   Handles  txtAdBlueNIperMinute.Validating,  txtBrakingWithRetarderNIperKG.Validating, txtBrakingNoRetarderNIperKG.Validating, txtAirControlledSuspensionNIperMinute.Validating, txtBreakingPerKneelingNIperKGinMM.Validating, txtSmartRegenFractionTotalAirDemand.Validating, txtPerStopBrakeActuationNIperKG.Validating, txtPerDoorOpeningNI.Validating, txtOverrunUtilisationForCompressionFraction.Validating, txtNonSmartRegenFractionTotalAirDemand.Validating, txtDeadVolumeLitres.Validating, txtDeadVolBlowOutsPerLitresperHour.Validating, txtKneelingHeightMillimeters.Validating, txtCompressorMap.Validating, txtCompressorGearRatio.Validating, txtCompressorGearEfficiency.Validating, txtActuationsMap.Validating, cboDoors.Validating, cboCompressorType.Validating, cboAirSuspensionControl.Validating, cboAdBlueDosing.Validating                
 
-public sub Validating_PneumaticHandler( sender as Object, e As CancelEventArgs  ) Handles  txtAdBlueNIperMinute.Validating,  txtBrakingWithRetarderNIperKG.Validating, txtBrakingNoRetarderNIperKG.Validating, txtAirControlledSuspensionNIperMinute.Validating, txtBreakingPerKneelingNIperKGinMM.Validating, txtSmartRegenFractionTotalAirDemand.Validating, txtPerStopBrakeActuationNIperKG.Validating, txtPerDoorOpeningNI.Validating, txtOverrunUtilisationForCompressionFraction.Validating, txtNonSmartRegenFractionTotalAirDemand.Validating, txtDeadVolumeLitres.Validating, txtDeadVolBlowOutsPerLitresperHour.Validating, txtKneelingHeightMillimeters.Validating, txtCompressorMap.Validating, txtCompressorGearRatio.Validating, txtCompressorGearEfficiency.Validating, txtActuationsMap.Validating, cboDoors.Validating, cboCompressorType.Validating, cboAirSuspensionControl.Validating, cboAdBlueDosing.Validating
-
-
-    e.Cancel= Validate_Pneumatics()
-
+    e.Cancel= Not Validate_Pneumatics()
 
 End Sub
-
-
 Public function Validate_Pneumatics(  ) As boolean
 
        Dim result As Boolean = true
@@ -454,26 +409,69 @@ Public function Validate_Pneumatics(  ) As boolean
          result=false
         End Try
 
+        'Compressor Gear Efficiency : txtCompressorGearEfficiency"
+        If NOT  IsNumberBetweenZeroandOne(txtCompressorGearEfficiency.Text) then
+          errorProvider.SetError(txtCompressorGearEfficiency ,"Please enter a number between 0 and 1") 
+          result=false
+        else
+          errorProvider.SetError(txtCompressorGearEfficiency ,String.Empty) 
+        End If
 
-        'case "txtCompressorGearEfficiency"
+        'Compressor Gear Ratio : txtCompressorGearRatio
+        If NOT  IsPostiveNumber(txtCompressorGearRatio.Text) then
+          errorProvider.SetError(txtCompressorGearRatio ,"Please enter a number greater than 0.") 
+          result=false
+        else
+          errorProvider.SetError(txtCompressorGearRatio ,String.Empty) 
+        End If
 
-        'case "txtCompressorGearRatio"
 
-        'case "txtActuationsMap"
+        'Actuations Map : txtActuationsMap
 
-        'case "chkSmartAirCompression"
+        'NOT Required but included here so readers can see this is a positive ommission
+        '******************************************************************************
+        'Smart Air Compression : chkSmartAirCompression
+        'Smart Regeneration : chkSmartRegeneration
+        'Retarder Brake : chkRetarderBrake
 
-        'case "chkSmartRegeneration"
+        'txtKneelingHeightMillimeters : txtKneelingHeightMillimeters
+        If NOT  IsPostiveNumber(txtKneelingHeightMillimeters.Text) then
+          errorProvider.SetError(txtKneelingHeightMillimeters ,"Please enter a number greater than 0.") 
+          result=false
+        else
+          errorProvider.SetError(txtKneelingHeightMillimeters ,String.Empty) 
+        End If
 
-        'case "chkRetarderBrake"
+        'cboAirSuspensionControl : cboAirSuspensionControl
+        If cboAirSuspensionControl.SelectedIndex<1  then
+          errorProvider.SetError(cboAirSuspensionControl ,"Please make a selection.") 
+          result=false
+        else
+          errorProvider.SetError(cboAirSuspensionControl ,String.Empty) 
+        End If
 
-        'case "txtKneelingHeightMillimeters"
+        'cboAdBlueDosing : cboAdBlueDosing
+        If cboAdBlueDosing.SelectedIndex<1  then
+          errorProvider.SetError(cboAdBlueDosing ,"Please make a selection.") 
+          result=false
+        else
+          errorProvider.SetError(cboAdBlueDosing ,String.Empty) 
+        End if
 
-        'case "cboAirSuspensionControl" 
+        'cboDoors : cboDoors
+        If cboDoors.SelectedIndex<1  then
+          errorProvider.SetError(cboDoors ,"Please make a selection.") 
+          result=false
+        else
+          errorProvider.SetError(cboDoors ,String.Empty) 
+        End if
 
-        'case "cboAdBlueDosing"
 
-        'case "cboDoors.DataBindings"
+        'Set Tab Color
+
+        UpdateTabStatus("tabPneumaticConfig",result)
+
+
 
 
 Return result
@@ -481,80 +479,306 @@ Return result
 
 End function
 
-
-Public Sub Validated_PneumaticHandler( sender As Object, e As EventArgs ) Handles txtAdBlueNIperMinute.Validating, txtAdBlueNIperMinute.Validated, txtSmartRegenFractionTotalAirDemand.Validated, txtPerStopBrakeActuationNIperKG.Validated, txtPerDoorOpeningNI.Validated, txtOverrunUtilisationForCompressionFraction.Validated, txtNonSmartRegenFractionTotalAirDemand.Validated, txtDeadVolumeLitres.Validated, txtDeadVolBlowOutsPerLitresperHour.Validated, txtBreakingPerKneelingNIperKGinMM.Validated, txtBrakingWithRetarderNIperKG.Validated, txtBrakingNoRetarderNIperKG.Validated, txtAirControlledSuspensionNIperMinute.Validated, txtKneelingHeightMillimeters.Validated, txtCompressorMap.Validated, txtCompressorGearRatio.Validated, txtCompressorGearEfficiency.Validated, txtActuationsMap.Validated, cboDoors.Validated, cboCompressorType.Validated, cboAirSuspensionControl.Validated, cboAdBlueDosing.Validated
-
-Dim control As Control = CType( sender, Control)
-
-       errorProvider.SetError(control ,string.Empty)
-
-End Sub
-
-
-
 '*****  ELECTRICAL VALIDATION
+public sub Validating_ElectricsHandler( sender as Object, e As CancelEventArgs  ) Handles txtPowernetVoltage.Validating,  txtAlternatorMapPath.Validating, txtAlternatorGearEfficiency.Validating, txtDoorActuationTimeSeconds.Validating 
 
-'Validation helpers
+    e.Cancel= Not Validate_Electrics()
 
-Public Function IsZeroOrPostiveNumber(byval test As string)As boolean
+End Sub
+Public function Validate_Electrics() As boolean
 
-     'Is this numeric sanity check.
-     If Not IsNumeric(test) then Return False
+Dim result As Boolean = true
 
-     Dim number As Single
-
-     If Not Single.TryParse( test,  number)  then Return false
-
-     If number<0 then Return False
-     
-
-     Return true
   
-End Function
-
-Public Function IsNumberBetweenZeroandOne( test As String )
-
-     'Is this numeric sanity check.
-     If Not IsNumeric(test) then Return False
-
-     Dim number As Single
-
-     If Not Single.TryParse( test,  number)  then Return false
-
-     If number<0 orelse number >1  then Return False
-
-     Return True
-     
-End Function
+       'Powernet Voltage : txtPowernetVoltage
+       If Not IsPostiveNumber(txtPowernetVoltage.Text) then 
+         errorProvider.SetError(txtPowernetVoltage ,"Please provide a non negative number.") 
+         result= false
+       Else
+          errorProvider.SetError(txtPowernetVoltage ,String.Empty) 
+       End if
 
 
-Public Function IsIntegerZeroOrPositiveNumber( test As string)
+        'Alternator Map  path : txtAlternatorMapPath
+        'Test for empty after trim
+        If txtAlternatorMapPath.Text.Trim.Length=0 then
+         errorProvider.SetError(txtAlternatorMapPath ,"Please enter the localtion of a valid compressor map.") 
+         result=false   
+        else
+         errorProvider.SetError(txtAlternatorMapPath ,String.Empty) 
+        End if
 
-     'Is this numeric sanity check.
-     If Not IsNumeric(test) then Return False
-
-     'if not integer then return false
-
-     Dim number As integer
-
-     If Not integer.TryParse( test,  number)  then Return false
-
-     If number<0   then Return False
-
-     Return True
+        'Test File is valid
+        Dim alt As AlternatorMap
+        Try
+        alt = New AlternatorMap( txtAlternatorMapPath.Text)
+        alt.Initialise()
+         errorProvider.SetError(txtAlternatorMapPath ,String.Empty) 
+        Catch ex As Exception
+         errorProvider.SetError(txtAlternatorMapPath ,"Error : map is invalid or cannot be found, please select a Cvalid compressor map")  
+         result=false
+        End Try
 
 
-End Function
+       'Door Action Time : txtDoorActuationTimeSeconds
+       If Not IsPostiveNumber(txtDoorActuationTimeSeconds.Text) then 
+         errorProvider.SetError(txtDoorActuationTimeSeconds ,"Please provide a non negative number.") 
+         result= false
+       Else
+          errorProvider.SetError(txtDoorActuationTimeSeconds ,String.Empty) 
+       End if
 
 
-Private Sub tabMain_Validating( sender As Object,  e As CancelEventArgs) Handles tabMain.Validating
+               UpdateTabStatus("tabElectricalConfig",result)
+
+
+       Return result
+
+
+End Function 
+
+'*****  HVAC VALIDATION
+
+
+'*****  IMPUTS VALIDATION
+
+
+#End Region
+
+
+
+'Form Controls & Events
+
+Private Sub Dashboard_Load(sender As Object, e As EventArgs) Handles MyBase.Load 
+
+  'Required for OwnerDraw, this is required in order to color the tabs when a validation error occurs to draw
+  'The attention of the user to the fact that attention is required on a particlar tab.
+  TabColors.Add(tabGeneralConfig,Control.DefaultBackColor)
+  TabColors.Add(tabElectricalConfig,Control.DefaultBackColor)
+  TabColors.Add(tabPneumaticConfig,Control.DefaultBackColor)
+  TabColors.Add(tabHVACConfig,Control.DefaultBackColor)
+  TabColors.Add(tabPlayground,Control.DefaultBackColor)
+
+  'This is here only for testing purposes, the actual cycle will be a result of Vecto input.
+  cboCycle.SelectedIndex = 0
+
+  'General Setup of all controls 
+  SetupControls()
+
+  'Binding Values in Aux environment to the input controls on relevent tabs in the form.
+  CreateBindings()
+
+  'This function is neccesary because binding does not occur when the page is invisible, so a track across all of them
+  'Is required in order to set the binding. This only needs to be done once at at setup time. after values are set in the
+  'Aux environment either by setting defaults of reading and setting from the Auxillaries persistance file.
+  EnsureBinding()
+
+
+  'Additional atatched events
+  'For Tab Coloring, this is the place where the background will get filled on the tab when attention is required.
+  AddHandler tabMain.DrawItem , new System.Windows.Forms.DrawItemEventHandler(addressof tabMain_DrawItem)
+
+
+End Sub
+
+#Region "Tab Header Color Change"
+
+Private sub UpdateTabStatus( pageName as string, resultGood As Boolean)
+
+
+       Dim page As TabPage = tabMain.TabPages(pageName)
+
+           If Not resultGood
+
+       SetTabHeader( page, Color.Red)
+
+       Else
+              SetTabHeader( page, Control.DefaultBackColor)
+
+       End If
+
+
+
+
+End Sub
+
+private sub SetTabHeader( page as TabPage,  color As Color)
+
+    TabColors(page) = color
+    tabMain.Invalidate()
+
+End Sub
+
+private sub tabMain_DrawItem( sender As object,  e As DrawItemEventArgs) 
+
+    dim br as Brush = New SolidBrush(TabColors(tabMain.TabPages(e.Index)))
+
+
+    using ( br  ) 
+    
+        e.Graphics.FillRectangle(br, e.Bounds)
+        dim sz as SizeF= e.Graphics.MeasureString(tabMain.TabPages(e.Index).Text, e.Font)
+        e.Graphics.DrawString(tabMain.TabPages(e.Index).Text, e.Font, Brushes.Black, e.Bounds.Left + (e.Bounds.Width - sz.Width) / 2, e.Bounds.Top + (e.Bounds.Height - sz.Height) / 2 + 1)
+
+        Dim  rect As Rectangle = e.Bounds
+        rect.Offset(-1,-1)
+        rect.Inflate(1, 1)
+       ' e.Graphics.DrawRectangle(Pens.DarkGray, rect)
+        'e.DrawFocusRectangle()
+
+    End using
+
+
+
+
+End Sub
+
+
+#End Region 
+
+#Region "GridHandlers"
+
+
+
+Private Sub gvElectricalConsumables_CellValidating(sender As Object, e As DataGridViewCellValidatingEventArgs) Handles gvElectricalConsumables.CellValidating 
+
+   Dim column As DataGridViewColumn = gvElectricalConsumables.Columns(e.ColumnIndex)
+   Dim s As Single
+
+
+   If e.ColumnIndex=-1 then 
+
+   e.Cancel=true 
+   Exit sub
+   
+   End If
+
+
+
+   If  column.ReadOnly  Then return
+
+
+
+
+    Select Case column.Name
+
+     Case "NominalConsumptionAmps"
+           If Not IsNumeric(e.FormattedValue) Then
+             MessageBox.Show("This value must be numeric")
+             e.Cancel=true
+          End if
+
+     Case "NumberInActualVehicle"
+           If Not IsNumeric(e.FormattedValue) Then
+             MessageBox.Show("This value must be numeric")
+            e.Cancel=true
+          Else
+            s = Single.Parse(e.FormattedValue)
+           End If
+           If s Mod 1 > 0 OrElse s < 0 Then
+              MessageBox.Show("This value must be a positive whole number ( Integer ) ")
+             e.Cancel=true
+           End If
+
+
+     Case "PhaseIdle_TractionOn"
+           If Not IsNumeric(e.FormattedValue) Then
+             MessageBox.Show("This value must be numeric")
+             e.Cancel=true
+           Else
+            s = Single.Parse(e.FormattedValue)
+           End If
+           If s < 0 OrElse s > 1 Then
+              MessageBox.Show("This must be a value between 0 and 1 ")
+              e.Cancel=true
+           End If
+
+
+    End Select
+
+End Sub
+
+
+Private Sub SmartResult_CellValidating( sender As Object,  e As DataGridViewCellValidatingEventArgs) Handles gvResultsCardIdle.CellValidating, gvResultsCardTraction.CellValidating, gvResultsCardOverrun.CellValidating 
+
+   Dim column As DataGridViewColumn = gvElectricalConsumables.Columns(e.ColumnIndex)
+
+   If Not IsNumeric(e.FormattedValue) Then
+       MessageBox.Show("This value must be numeric")
+       e.Cancel=true      
+   End If
+
+End Sub
+
+
+private sub resultCard_CellMouseUp( sender As Object,  e as DataGridViewCellMouseEventArgs)  
+    
+      Dim dgv As DataGridView = CType( sender, DataGridView)
+
+
+        if e.Button = MouseButtons.Right then
+
+            resultCardContextMenu.Show(dgv, e.Location)
+            resultCardContextMenu.Show(Cursor.Position)
+
+        End if
+
+
+    end sub
+
+
+Private Sub resultCardContextMenu_ItemClicked( sender As Object,  e As ToolStripItemClickedEventArgs) Handles resultCardContextMenu.ItemClicked 
+
+      Dim menu As ContextMenuStrip = CType( sender, ContextMenuStrip)
+
+      Dim grid as DataGridView  = DirectCast( menu.SourceControl, DataGridView)
+
+      Select Case e.ClickedItem.Text
+
+
+      Case "Delete"
+
+         For Each selectedRow As datagridviewrow In grid.SelectedRows
+
+            If Not selectedRow.IsNewRow then
+            
+                grid.Rows.RemoveAt(selectedRow.Index)
+           
+            End if
+           
+         Next
+
+      case "Insert"
+
+
+      End Select
+    
+
+
+
+
+
+
+
 
 End Sub
 
 
 
 
-Private Sub btnStart_Click( sender As Object,  e As EventArgs) Handles btnStart.Click
+#End Region
+
+#Region "Button Handlers"
+
+Private Sub btnStart_Click( sender As Object,  e As EventArgs) Handles btnStart.Click 
         Validate_Pneumatics()
+        Validate_Electrics()
+
 End Sub
+
+
+#End Region
+
+
+
 End Class

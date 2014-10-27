@@ -8,13 +8,15 @@ Namespace Hvac
 
     Private _m0 As IM0_NonSmart_AlternatorsSetEfficiency
     Private _alternatorGearEfficiency As Single 
+    Private _compressorGearEfficiency As single
     Private _hvacInputs As IHVACInputs
     Private _hvacMap As IHVACMap
     Private _signals As ISignals
     Private _powernetVoltage As single
+    Private _steadyStateModel As IHVACSteadyStateModel
 
 
-    Public Sub new ( m0 As IM0_NonSmart_AlternatorsSetEfficiency, hvacMap As IHVACMap, hvacInputs As IHVACInputs, altGearEfficiency As Single, powernetVoltage As Single, signals As ISignals )
+    Public Sub new ( m0 As IM0_NonSmart_AlternatorsSetEfficiency, hvacMap As IHVACMap, hvacInputs As IHVACInputs, altGearEfficiency As Single,compressorGearEfficiency As Single,  powernetVoltage As Single, signals As ISignals, ssm As IHVACSteadyStateModel )
 
           'Sanity Check - Illegal operations without all params.
           If m0 is Nothing then  Throw New ArgumentException("Module0 as supplied is null")
@@ -26,6 +28,10 @@ Namespace Hvac
           If signals is Nothing then Throw New Exception ("Signals object as supplied is null")
           If powernetVoltage< ElectricConstants.PowenetVoltageMin orelse powernetVoltage> ElectricConstants.PowenetVoltageMax then _
           Throw New ArgumentException(String.Format("PowenetVoltage supplied must be in the range {0} to {1}",ElectricConstants.PowenetVoltageMin,ElectricConstants.PowenetVoltageMax))
+          If ssm is Nothing then Throw New ArgumentException("Steady State model was not supplied")
+          If compressorGearEfficiency< 0 orelse altGearEfficiency> 1 then _
+              Throw New ArgumentException(String.Format("Compressor Gear efficiency must be between {0} and {1}",0,1 ))
+
 
           'Assign
           _m0=m0
@@ -33,24 +39,41 @@ Namespace Hvac
           _hvacInputs = hvacInputs
           _alternatorGearEfficiency=altGearEfficiency
           _signals = _Signals
+          _steadyStateModel=ssm
+          _compressorGearEfficiency = compressorGearEfficiency
+
+
          
     End Sub
 
 
+        Public Function AveragePowerDemandAtCrankFromHVACMechanicalsWatts() As Single Implements IM1_AverageHVACLoadDemand.AveragePowerDemandAtCrankFromHVACMechanicalsWatts          
+            
+            Return _steadyStateModel.HVACMechanicalLoadPowerWatts / _compressorGearEfficiency
+
+
+        End Function
+
        Public Function AveragePowerDemandAtAlternatorFromHVACElectricsWatts() As Single Implements IM1_AverageHVACLoadDemand.AveragePowerDemandAtAlternatorFromHVACElectricsWatts
-          Return 100'TODO FIX THIS
+
+       Return _steadyStateModel.HVACElectricalLoadPowerWatts
+
        End Function
 
         Public Function AveragePowerDemandAtCrankFromHVACElectricsWatts() As Single Implements IM1_AverageHVACLoadDemand.AveragePowerDemandAtCrankFromHVACElectricsWatts     
-           Return 100'TODO FIX THIS
+
+        
+       Return _steadyStateModel.HVACElectricalLoadPowerWatts/ _m0.GetEfficiency()
+
         End Function
 
-        Public Function AveragePowerDemandAtCrankFromHVACMechanicalsWatts() As Single Implements IM1_AverageHVACLoadDemand.AveragePowerDemandAtCrankFromHVACMechanicalsWatts          
-               Return 100'TODO FIX THIS
-        End Function
 
         Public Function HVACFuelingLitresPerHour() As Single Implements IM1_AverageHVACLoadDemand.HVACFuelingLitresPerHour   
-               Return 100'TODO FIX THI
+
+
+            Return _steadyStateModel.HVACFuellingLitresPerHour
+
+
         End Function
 
 

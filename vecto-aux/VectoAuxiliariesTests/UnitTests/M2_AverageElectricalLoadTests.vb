@@ -13,6 +13,7 @@ Namespace UnitTests
 
     Private Const csngDoorDutyCycleZeroToOne As Single = 0.0963391136801541
     Private Const csngPowernetVoltage As Single = 26.3
+    Private ssmHVac As IHVACSteadyStateModel = New HVACSteadyStateModel(100,100,100)
 
 
 
@@ -28,7 +29,7 @@ Namespace UnitTests
             hvacmap.Initialise()
             Dim altMap As IAlternatorMap = CType(New AlternatorMap("testfiles\testAlternatorMap.csv"), IAlternatorMap)
             altMap.Initialise()
-            Dim m0 As New M0_NonSmart_AlternatorsSetEfficiency(consumers, hvacInp, hvacmap, altMap, 26.3,signals)
+            Dim m0 As New M0_NonSmart_AlternatorsSetEfficiency(consumers,hvacInp, altMap, 26.3,signals,ssmHVac)
 
             'Get Consumers.
 
@@ -63,7 +64,7 @@ Namespace UnitTests
         <Test()>
         Public Sub GetAveragePowerAtCrankTest()
             Dim target As M2_AverageElectricalLoadDemand = GetAverageElectricalDemandInstance()
-            Dim expected As Single = 2356.12964
+            Dim expected As Single = 2286.36719
             Dim actual As Single = target.GetAveragePowerAtCrank(2000)
             Assert.AreEqual(expected, actual)
         End Sub
