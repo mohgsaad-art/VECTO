@@ -76,6 +76,8 @@
     <Compile Include="Electrics\AlternatorMapValues.vb" />
     <Compile Include="Electrics\ElectricsUserInputsConfig.vb" />
     <Compile Include="Electrics\IElectricsUserInputsConfig.vb" />
+    <Compile Include="Electrics\IM0_5_SmartAlternatorSetEfficiency.vb" />
+    <Compile Include="Electrics\IM2_AverageElectricalLoadDemand.vb" />
     <Compile Include="Electrics\IM5_SmartAlternatorSetGeneration.vb" />
     <Compile Include="Electrics\IResultCard.vb" />
     <Compile Include="Electrics\M0_5_SmartAlternatorSetEfficiency.vb" />
@@ -100,6 +102,7 @@
     <Compile Include="ISignals.vb" />
     <Compile Include="IVectoInputs.vb" />
     <Compile Include="Pneumatics\ActuationsKey.vb" />
+    <Compile Include="Pneumatics\IM3_AveragePneumaticLoadDemand.vb" />
     <Compile Include="Pneumatics\M4_AirCompressor.vb" />
     <Compile Include="Electrics\AlternatorMap.vb" />
     <Compile Include="Electrics\M2_AverageElectricalLoadDemand.vb" />
@@ -134,6 +137,12 @@
     <Compile Include="Pneumatics\PneumaticsAuxilliariesConfig.vb" />
     <Compile Include="Pneumatics\PneumaticUserInputsConfig.vb" />
     <Compile Include="Signals.vb" />
+    <Compile Include="UI\Dashboard.Designer.vb">
+      <DependentUpon>Dashboard.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Dashboard.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="UI\F_HVAC.Designer.vb">
       <DependentUpon>F_HVAC.vb</DependentUpon>
     </Compile>
@@ -148,6 +157,9 @@
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Dashboard.resx">
+      <DependentUpon>Dashboard.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\F_HVAC.resx">
       <DependentUpon>F_HVAC.vb</DependentUpon>

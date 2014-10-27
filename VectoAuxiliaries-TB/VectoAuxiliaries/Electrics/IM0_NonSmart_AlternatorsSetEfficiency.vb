@@ -1,8 +1,8 @@
 ﻿Public Interface IM0_NonSmart_AlternatorsSetEfficiency
 
 
-     Function GetHVACElectricalPowerDemandAmps() As Single
-     Function GetEfficiency() As Single
+     readonly property  GetHVACElectricalPowerDemandAmps() As Single
+     readonly property  AlternatorsEfficiency() As Single
 
 
 End Interface
