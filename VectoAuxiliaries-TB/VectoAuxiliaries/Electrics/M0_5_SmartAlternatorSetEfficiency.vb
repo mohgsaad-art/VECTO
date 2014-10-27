@@ -16,7 +16,10 @@ Private _signals As ISignals
 
 Public Function SmartIdleCurrent() As single
 
- Return _resultCardIdle.GetSmartCurrentResult(HvacPlusNonBaseCurrents())
+Dim hvac_Plus_None_Base  As Single = HvacPlusNonBaseCurrents()
+Dim smart_idle_current As Single = _resultCardIdle.GetSmartCurrentResult(hvac_Plus_None_Base)
+
+ Return  smart_idle_current
 
 end Function
 

@@ -43,7 +43,7 @@ Public sub SetPropertiesToDefaults()
             AdBlueDosing="Pneumatic"
             AirSuspensionControl="Electrically"
             CompressorGearEfficiency=0.8
-            CompressorGearRatio=0
+            CompressorGearRatio=0.6
             CompressorMap="C:\Users\tb28\Source\Workspaces\VECTO\VectoAuxiliaries-TB\VectoAuxiliariesTests\TestFiles\testCompressorMap.csv"
             CompressorType=""
             Doors="Pneumatic"
