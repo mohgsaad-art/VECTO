@@ -126,21 +126,21 @@ Private Sub CreateBindings()
 
          'IDLE
          Dim idleBinding = new BindingList(Of SmartResult)
-         idleBinding = New BindingList(Of SmartResult)(auxEnvironment.ElectricalUserInputsConfig.ResultCardIdle)
+         idleBinding = New BindingList(Of SmartResult)(auxEnvironment.ElectricalUserInputsConfig.ResultCardIdle.Results)
          idleBinding.AllowNew=true   
          idleBinding.AllowRemove=True
          gvResultsCardIdle.DataSource=idleBinding 
              
          'TRACTION
          Dim tractionBinding As BindingList(Of SmartResult)
-         tractionBinding = New BindingList(Of SmartResult)(auxEnvironment.ElectricalUserInputsConfig.ResultCardTraction)
+         tractionBinding = New BindingList(Of SmartResult)(auxEnvironment.ElectricalUserInputsConfig.ResultCardTraction.Results)
          tractionBinding.AllowNew=true   
          tractionBinding.AllowRemove=true           
          gvResultsCardTraction.DataSource = tractionBinding
         
          'OVERRUN
          Dim overrunBinding As BindingList(Of SmartResult)
-         overrunBinding = New BindingList(Of SmartResult)(auxEnvironment.ElectricalUserInputsConfig.ResultCardOverrun)
+         overrunBinding = New BindingList(Of SmartResult)(auxEnvironment.ElectricalUserInputsConfig.ResultCardOverrun.Results)
          overrunBinding.AllowNew=true   
          overrunBinding.AllowRemove=true   
          gvResultsCardOverrun.DataSource=overrunBinding
@@ -173,7 +173,20 @@ Private Sub CreateBindings()
         txtKneelingHeightMillimeters.DataBindings.Add("Text",auxEnvironment.PneumaticUserInputsConfig,"KneelingHeightMillimeters")  
         cboAirSuspensionControl.DataBindings.Add("Text",auxEnvironment.PneumaticUserInputsConfig,"AirSuspensionControl")       
         cboAdBlueDosing.DataBindings.Add("Text",auxEnvironment.PneumaticUserInputsConfig,"AdBlueDosing")             
-        cboDoors.DataBindings.Add("Text",auxEnvironment.PneumaticUserInputsConfig,"Doors")                      
+        cboDoors.DataBindings.Add("Text",auxEnvironment.PneumaticUserInputsConfig,"Doors")    
+        
+        'HVAC Bindings     
+        txtHVACElectricalLoadPowerWatts.DataBindings.Add("Text", auxEnvironment.HvacUserInputsConfig.SteadyStateModel,"HVACElectricalLoadPowerWatts")
+        txtHVACFuellingLitresPerHour.DataBindings.Add("Text", auxEnvironment.HvacUserInputsConfig.SteadyStateModel,"HVACFuellingLitresPerHour")
+        txtHVACMechanicalLoadPowerWatts.DataBindings.Add("Text", auxEnvironment.HvacUserInputsConfig.SteadyStateModel,"HVACMechanicalLoadPowerWatts")
+
+        'Signals
+        chkClutchEngaged.DataBindings.Add("Checked", auxEnvironment.Signals,"ClutchEngaged")
+        txtEngineDrivelinePower.DataBindings.Add("Text", auxEnvironment.Signals,"EngineDrivelinePower")
+        txtEngineDrivelineTorque.DataBindings.Add("Text", auxEnvironment.Signals,"EngineDrivelineTorque")
+        txtEngineMotoringPower.DataBindings.Add("Text", auxEnvironment.Signals,"EngineMotoringPower")
+        txtEngineSpeed.DataBindings.Add("Text", auxEnvironment.Signals,"EngineSpeed",False,DataSourceUpdateMode.OnPropertyChanged)
+                
 
 End Sub
 
@@ -537,6 +550,53 @@ Dim result As Boolean = true
 
 End Function 
 
+'****** HVAC VALIDATION
+public sub Validating_HVACHandler( sender as Object, e As CancelEventArgs  ) Handles txtHVACMechanicalLoadPowerWatts.Validating, txtHVACFuellingLitresPerHour.Validating, txtHVACElectricalLoadPowerWatts.Validating 
+
+    e.Cancel= Not Validate_HVAC()
+
+End Sub
+
+
+Public function Validate_HVAC() As boolean
+
+Dim result As Boolean = true
+
+  
+       'HVAC Electrical Load Power Watts : txtHVACElectricalLoadPowerWatts
+       If Not IsZeroOrPostiveNumber(txtHVACElectricalLoadPowerWatts.Text) then 
+         errorProvider.SetError(txtHVACElectricalLoadPowerWatts ,"Please provide a non negative number.") 
+         result= false
+       Else
+          errorProvider.SetError(txtHVACElectricalLoadPowerWatts ,String.Empty) 
+       End if
+
+       'HVAC Mechanical Load Power Watts : txtHVACMechanicalLoadPowerWatts
+       If Not IsZeroOrPostiveNumber(txtHVACMechanicalLoadPowerWatts.Text) then 
+         errorProvider.SetError(txtHVACMechanicalLoadPowerWatts ,"Please provide a non negative number.") 
+         result= false
+       Else
+          errorProvider.SetError(txtHVACMechanicalLoadPowerWatts ,String.Empty) 
+       End if
+
+
+       'HVAC Fuelling Litres Per Hour : txtHVACFuellingLitresPerHour
+       If Not IsZeroOrPostiveNumber(txtHVACFuellingLitresPerHour.Text) then 
+         errorProvider.SetError(txtHVACFuellingLitresPerHour ,"Please provide a non negative number.") 
+         result= false
+       Else
+          errorProvider.SetError(txtHVACFuellingLitresPerHour ,String.Empty) 
+       End if
+
+       UpdateTabStatus("tabHVACConfig",result)
+
+
+   Return result
+
+
+End Function
+
+
 '*****  HVAC VALIDATION
 
 
@@ -779,6 +839,28 @@ End Sub
 
 #End Region
 
+
+
+Private Sub btnInitialiseAuxPlayGround_Click( sender As Object,  e As EventArgs) Handles btnInitialise.Click
+     
+      auxEnvironment.Initialise()
+
+       'Bind Outputs to environment
+      txtM0_Out_AlternatorsEfficiency.DataBindings.Clear()
+      txtM0_Out_AlternatorsEfficiency.DataBindings.Add("Text", auxEnvironment.M0,"AlternatorsEfficiency")    
+
+
+
+
+
+End Sub
+
+
+
+Private Sub txtEngineSpeed_TextChanged( sender As Object,  e As EventArgs) Handles txtEngineSpeed.TextChanged
+
+
+End Sub
 
 
 End Class

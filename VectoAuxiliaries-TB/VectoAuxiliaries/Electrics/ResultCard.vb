@@ -9,6 +9,12 @@ Implements IResultCard
 
 Private _results As List(Of SmartResult)
 
+Public  ReadOnly Property Results As List(Of SmartResult) Implements IResultCard.Results
+    Get
+    Return _results
+    End Get
+End Property
+
 
 Public Sub New(results As List( of SmartResult))
 

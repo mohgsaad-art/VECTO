@@ -3,6 +3,7 @@
 Namespace Pneumatics
 
     Public Class M3_AveragePneumaticLoadDemand
+    Implements IM3_AveragePneumaticLoadDemand
 
 
         Private _pneumaticUserInputsConfig As IPneumaticUserInputsConfig
@@ -21,8 +22,6 @@ Namespace Pneumatics
             Return _totalAirDemand
             End Get
         End Property
-
-
 
 
         'Constructors
@@ -122,7 +121,7 @@ Namespace Pneumatics
 
 
         'Get Average Power Demand @ Crank From Pneumatics
-        Public Function GetAveragePowerDemandAtCrankFromPneumatics() As Single
+        Public Function GetAveragePowerDemandAtCrankFromPneumatics() As Single Implements IM3_AveragePneumaticLoadDemand.GetAveragePowerDemandAtCrankFromPneumatics
 
             Dim averagePowerDemandAtCrankFromPneumatics As Single = _pneumaticsCompressorFlowRateMap.GetAveragePowerDemandPerCompressorUnitFlowRate _
                                                                                   * (TotalAirDemand / (_cycleDurationMinutes * 60))
@@ -136,7 +135,7 @@ Namespace Pneumatics
         End Function
 
         'Get Total Required Air Delivery Rate
-        Public Function TotalAirConsumedPerCycle() As Single
+        Public Function TotalAirConsumedPerCycle() As Single Implements IM3_AveragePneumaticLoadDemand.TotalAirConsumedPerCycle
 
             Return TotalAirDemand
 
