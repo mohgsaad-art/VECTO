@@ -6,6 +6,8 @@ Namespace Electrics
 Public Class M0_NonSmart_AlternatorsSetEfficiency
  Implements IM0_NonSmart_AlternatorsSetEfficiency
 
+
+
  Private _electricalConsumersList As IElectricalConsumerList
  Private _hvacInputs As IHVACInputs
  Private _alternatorEfficiencyMap As IAlternatorMap
@@ -36,9 +38,9 @@ Public Class M0_NonSmart_AlternatorsSetEfficiency
     End Sub
 
 
+    Public ReadOnly Property  AlternatorsEfficiency As Single Implements IM0_NonSmart_AlternatorsSetEfficiency.AlternatorsEfficiency
 
-    Public Function GetEfficiency() As Single Implements IM0_NonSmart_AlternatorsSetEfficiency.GetEfficiency
-
+    Get
           'Sanity Check.
           If _signals.EngineSpeed < 1 Then Return 0
 
@@ -47,14 +49,23 @@ Public Class M0_NonSmart_AlternatorsSetEfficiency
           Dim totalDemandAmps As Single = baseCurrentDemandAmps + GetHVACElectricalPowerDemandAmps
 
           Return _alternatorEfficiencyMap.GetEfficiency(_signals.EngineSpeed, totalDemandAmps).Efficiency
+    End Get
 
-    End Function
 
-    Public Function GetHVACElectricalPowerDemandAmps() As Single Implements IM0_NonSmart_AlternatorsSetEfficiency.GetHVACElectricalPowerDemandAmps
+    end property
 
-        Return _steadyStateModelHVAC.HVACElectricalLoadPowerWatts / _powernetVoltage
 
-  End Function
+    Public readonly property GetHVACElectricalPowerDemandAmps As Single Implements IM0_NonSmart_AlternatorsSetEfficiency.GetHVACElectricalPowerDemandAmps
+        Get
+          Return _steadyStateModelHVAC.HVACElectricalLoadPowerWatts / _powernetVoltage
+        End Get
+    End Property
+
+ 
+
+
+
+
 
 
 End Class

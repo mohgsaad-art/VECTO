@@ -38,9 +38,10 @@ Namespace Hvac
           _hvacMap= hvacMap
           _hvacInputs = hvacInputs
           _alternatorGearEfficiency=altGearEfficiency
-          _signals = _Signals
+          _signals = signals
           _steadyStateModel=ssm
           _compressorGearEfficiency = compressorGearEfficiency
+          _powernetVoltage=powernetVoltage
 
 
          
@@ -63,7 +64,7 @@ Namespace Hvac
         Public Function AveragePowerDemandAtCrankFromHVACElectricsWatts() As Single Implements IM1_AverageHVACLoadDemand.AveragePowerDemandAtCrankFromHVACElectricsWatts     
 
         
-       Return _steadyStateModel.HVACElectricalLoadPowerWatts/ _m0.GetEfficiency()
+       Return _steadyStateModel.HVACElectricalLoadPowerWatts/ _m0.AlternatorsEfficiency()
 
         End Function
 

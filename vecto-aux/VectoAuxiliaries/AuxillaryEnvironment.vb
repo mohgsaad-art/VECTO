@@ -24,6 +24,80 @@ public Property PneumaticAuxillariesConfig As IPneumaticsAuxilliariesConfig
  'Vecto Signals
  public Property Signals As ISignals
 
+ 'Test instantiations
+
+
+  Public M0 As IM0_NonSmart_AlternatorsSetEfficiency
+  Public M05 As IM0_5_SmartAlternatorSetEfficiency
+  Public M1 As IM1_AverageHVACLoadDemand
+  Public M2 As IM2_AverageElectricalLoadDemand
+  Public M3 As IM3_AveragePneumaticLoadDemand
+  Public M4 As IM4_AirCompressor
+  Public M5 As IM5_SmartAlternatorSetGeneration
+
+
+Public Sub Initialise()
+
+Dim alternatoMap As IAlternatorMap = New AlternatorMap(ElectricalUserInputsConfig.AlternatorMap)
+alternatoMap.Initialise()
+
+Dim actuationsMap As  IPneumaticActuationsMAP = New PneumaticActuationsMAP( PneumaticUserInputsConfig.ActuationsMap)
+
+Dim compressorMap As ICompressorMap = New CompressorMap( PneumaticUserInputsConfig.CompressorMap)
+compressorMap.Initialise()
+
+
+
+M0 = New M0_NonSmart_AlternatorsSetEfficiency( ElectricalUserInputsConfig.ElectricalConsumers,
+                                               New HVACInputs,
+                                               alternatoMap,
+                                               ElectricalUserInputsConfig.PowerNetVoltage,
+                                               Signals,
+                                               HvacUserInputsConfig.SteadyStateModel)
+
+
+M05 = New M0_5_SmartAlternatorSetEfficiency(M0, 
+                                            ElectricalUserInputsConfig.ElectricalConsumers, 
+                                            alternatoMap,
+                                            ElectricalUserInputsConfig.ResultCardIdle,
+                                            ElectricalUserInputsConfig.ResultCardTraction,
+                                            ElectricalUserInputsConfig.ResultCardTraction,Signals)
+
+
+M1 = New M1_AverageHVACLoadDemand(M0,
+                                  New HVACMap(""),
+                                  New HVACInputs(), 
+                                  ElectricalUserInputsConfig.AlternatorGearEfficiency, 
+                                  PneumaticUserInputsConfig.CompressorGearEfficiency,
+                                  ElectricalUserInputsConfig.PowerNetVoltage,
+                                  Signals,
+                                  HvacUserInputsConfig.SteadyStateModel)
+
+
+M2 = New M2_AverageElectricalLoadDemand(ElectricalUserInputsConfig.ElectricalConsumers,
+                                        M0,
+                                        ElectricalUserInputsConfig.AlternatorGearEfficiency, 
+                                        ElectricalUserInputsConfig.PowerNetVoltage )
+
+
+
+M3 = New M3_AveragePneumaticLoadDemand(PneumaticUserInputsConfig,
+         PneumaticAuxillariesConfig,
+         actuationsMap,
+         compressorMap, 
+         VectoInputs.VehicleWeightKG,
+         VectoInputs.Cycle,
+         VectoInputs.CycleDurationMinutes)
+
+
+M4 = New M4_AirCompressor(compressorMap,Signals)
+
+
+M5 = New M5__SmartAlternatorSetGeneration( M05, VectoInputs.PowerNetVoltage,ElectricalUserInputsConfig.AlternatorGearEfficiency)
+
+
+
+End Sub
  
 Public Sub new(auxConfigFile As String)
 
@@ -40,7 +114,7 @@ Private Sub setDefaults()
 
 'Here's where the magic happens.
 
- VectoInputs = New VectoInputs With {.Cycle="Urban", .VehicleWeightKG=16500, .PowerNetVoltage=26.3}
+ VectoInputs = New VectoInputs With {.Cycle="Urban", .VehicleWeightKG=16500, .PowerNetVoltage=26.3, .CycleDurationMinutes=51.9}
  
  'Pneumatics
  PneumaticUserInputsConfig  = New PneumaticUserInputsConfig(true) 
@@ -48,15 +122,24 @@ Private Sub setDefaults()
 
  ElectricalUserInputsConfig = New  ElectricsUserInputsConfig() With {.DoorActuationTimeSecond=4, 
                                                                      .ElectricalConsumers= New ElectricalConsumerList(VectoInputs.PowerNetVoltage,0.1,true),
+                                                                     .AlternatorGearEfficiency=0.8,
                                                                      .PowerNetVoltage= VectoInputs.PowerNetVoltage,
-                                                                     .ResultCardIdle= New List(Of SmartResult),
-                                                                     .ResultCardOverrun= New List(Of SmartResult),
-                                                                     .ResultCardTraction=New List(Of SmartResult),
+                                                                     .ResultCardIdle= New  ResultCard( New List(Of SmartResult)),
+                                                                     .ResultCardOverrun= New ResultCard(New List(Of SmartResult)),
+                                                                     .ResultCardTraction=New  ResultCard(New List(Of SmartResult)),
                                                                      .SmartElectrical=True,
                                                                      .AlternatorMap="C:\Users\tb28\Source\Workspaces\VECTO\vecto-aux\VectoAuxiliariesTests\TestFiles\testAlternatorMap.csv"
                                                                      }
 
- HvacUserInputsConfig = New HVACUserInputsConfig(1,1,New HVACInputs(),"HVACMAPPATHGOESHERE.CSV", New HVACSteadyStateModel())
+ HvacUserInputsConfig = New HVACUserInputsConfig( New HVACSteadyStateModel(100,100,100))
+
+
+
+
+ Signals = New Signals With { .EngineSpeed=2000, .TotalCycleTimeSeconds=3060, .ClutchEngaged=False}
+
+
+
 
 End Sub
 

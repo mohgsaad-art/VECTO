@@ -3,6 +3,8 @@ Namespace Electrics
 
 
 Public Class M0_5_SmartAlternatorSetEfficiency
+Implements IM0_5_SmartAlternatorSetEfficiency
+
 
 private _m0 As IM0_NonSmart_AlternatorsSetEfficiency
 Private _electricalConsumables As IElectricalConsumerList
@@ -14,7 +16,7 @@ Private _signals As ISignals
 
 
 
-Public Function SmartIdleCurrent() As single
+Public Function SmartIdleCurrent() As single Implements  IM0_5_SmartAlternatorSetEfficiency.SmartIdleCurrent
 
 Dim hvac_Plus_None_Base  As Single = HvacPlusNonBaseCurrents()
 Dim smart_idle_current As Single = _resultCardIdle.GetSmartCurrentResult(hvac_Plus_None_Base)
@@ -23,7 +25,7 @@ Dim smart_idle_current As Single = _resultCardIdle.GetSmartCurrentResult(hvac_Pl
 
 end Function
 
-Public Function AlternatorsEfficiencyIdleResultCard( ) As single
+Public Function AlternatorsEfficiencyIdleResultCard( ) As single Implements IM0_5_SmartAlternatorSetEfficiency.AlternatorsEfficiencyIdleResultCard
 
     Return _alternatorMap.GetEfficiency(_signals.EngineSpeed, SmartIdleCurrent()).Efficiency
 
@@ -31,26 +33,26 @@ End Function
 
 
 
-Public function SmartTractionCurrent As Single
+Public function SmartTractionCurrent As Single Implements IM0_5_SmartAlternatorSetEfficiency.SmartTractionCurrent
 
  Return _resultCardTraction.GetSmartCurrentResult(HvacPlusNonBaseCurrents())
 
 End Function
 
-Public Function AlternatorsEfficiencyTractionOnResultCard() As Single
+Public Function AlternatorsEfficiencyTractionOnResultCard() As Single Implements IM0_5_SmartAlternatorSetEfficiency.AlternatorsEfficiencyTractionOnResultCard
 
     Return _alternatorMap.GetEfficiency(_signals.EngineSpeed, SmartTractionCurrent()).Efficiency
 
 End Function
 
 
-Public Function SmartOverrunCurrent As Single
+Public Function SmartOverrunCurrent As Single Implements IM0_5_SmartAlternatorSetEfficiency.SmartOverrunCurrent
 
  Return _resultCardOverrun.GetSmartCurrentResult(HvacPlusNonBaseCurrents())
 
 End Function
 
-Public Function AlternatorsEfficiencyOverrunResultCard() As single
+Public Function AlternatorsEfficiencyOverrunResultCard() As single Implements IM0_5_SmartAlternatorSetEfficiency.AlternatorsEfficiencyOverrunResultCard
 
     Return _alternatorMap.GetEfficiency(_signals.EngineSpeed, SmartOverrunCurrent()).Efficiency
 

@@ -87,7 +87,7 @@ End Sub
 Public Sub EfficiencyValueTest()
        Dim target As M0_NonSmart_AlternatorsSetEfficiency = New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers, hvacInputs, alternatorMap, powernetVoltage,signals,ssm)
 
-       Dim actual As Single = target.GetEfficiency()
+       Dim actual As Single = target.AlternatorsEfficiency
 
        Dim expected As Single = 0.6375106
 

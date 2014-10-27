@@ -35,7 +35,6 @@ Partial Class Dashboard
         Dim DataGridViewCellStyle22 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle23 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle24 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Me.brcElecConsumers = New System.Windows.Forms.BindingSource(Me.components)
         Me.pnlMain = New System.Windows.Forms.Panel()
         Me.btnCancel = New System.Windows.Forms.Button()
         Me.btnFinish = New System.Windows.Forms.Button()
@@ -123,6 +122,7 @@ Partial Class Dashboard
         Me.txtPerStopBrakeActuationNIperKG = New System.Windows.Forms.TextBox()
         Me.txtSmartRegenFractionTotalAirDemand = New System.Windows.Forms.TextBox()
         Me.tabHVACConfig = New System.Windows.Forms.TabPage()
+        Me.lblHVACTitle = New System.Windows.Forms.Label()
         Me.txtHVACFuellingLitresPerHour = New System.Windows.Forms.TextBox()
         Me.lblHVACFuellingLitresPerHour = New System.Windows.Forms.Label()
         Me.txtHVACMechanicalLoadPowerWatts = New System.Windows.Forms.TextBox()
@@ -130,11 +130,27 @@ Partial Class Dashboard
         Me.txtHVACElectricalLoadPowerWatts = New System.Windows.Forms.TextBox()
         Me.lblHVACElectricalLoadPowerWatts = New System.Windows.Forms.Label()
         Me.tabPlayground = New System.Windows.Forms.TabPage()
+        Me.lblM0Outputs = New System.Windows.Forms.Label()
+        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.lblAlternatorsEfficiency = New System.Windows.Forms.Label()
+        Me.txtM0_Out_AlternatorsEfficiency = New System.Windows.Forms.TextBox()
+        Me.txtM0_Out_HVacElectricalCurrentDemand = New System.Windows.Forms.TextBox()
+        Me.btnInitialise = New System.Windows.Forms.Button()
+        Me.chkClutchEngaged = New System.Windows.Forms.CheckBox()
+        Me.lblTotalCycleTimeSeconds = New System.Windows.Forms.Label()
+        Me.lblEngineSpeed = New System.Windows.Forms.Label()
+        Me.lblEngineMotoringPower = New System.Windows.Forms.Label()
+        Me.lblEngineDrivelineTorque = New System.Windows.Forms.Label()
+        Me.lblEngineDrivelinePower = New System.Windows.Forms.Label()
+        Me.txtTotalCycleTimeSeconds = New System.Windows.Forms.TextBox()
+        Me.txtEngineSpeed = New System.Windows.Forms.TextBox()
+        Me.txtEngineMotoringPower = New System.Windows.Forms.TextBox()
+        Me.txtEngineDrivelineTorque = New System.Windows.Forms.TextBox()
+        Me.txtEngineDrivelinePower = New System.Windows.Forms.TextBox()
         Me.resultCardContextMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
-        Me.lblHVACTitle = New System.Windows.Forms.Label()
-        CType(Me.brcElecConsumers,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.lblOutHVACElectricalCurrentDemand = New System.Windows.Forms.Label()
         Me.pnlMain.SuspendLayout
         Me.tabMain.SuspendLayout
         Me.tabGeneralConfig.SuspendLayout
@@ -147,6 +163,8 @@ Partial Class Dashboard
         Me.pnlPneumaticsUserInput.SuspendLayout
         Me.pnlPneumaticAuxillaries.SuspendLayout
         Me.tabHVACConfig.SuspendLayout
+        Me.tabPlayground.SuspendLayout
+        Me.Panel1.SuspendLayout
         Me.resultCardContextMenu.SuspendLayout
         CType(Me.ErrorProvider,System.ComponentModel.ISupportInitialize).BeginInit
         Me.SuspendLayout
@@ -1099,6 +1117,17 @@ Partial Class Dashboard
         Me.tabHVACConfig.Text = "HVACConfig"
         Me.tabHVACConfig.UseVisualStyleBackColor = true
         '
+        'lblHVACTitle
+        '
+        Me.lblHVACTitle.AutoSize = true
+        Me.lblHVACTitle.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblHVACTitle.ForeColor = System.Drawing.SystemColors.MenuHighlight
+        Me.lblHVACTitle.Location = New System.Drawing.Point(31, 37)
+        Me.lblHVACTitle.Name = "lblHVACTitle"
+        Me.lblHVACTitle.Size = New System.Drawing.Size(164, 13)
+        Me.lblHVACTitle.TabIndex = 25
+        Me.lblHVACTitle.Text = "Steady State Output Values"
+        '
         'txtHVACFuellingLitresPerHour
         '
         Me.txtHVACFuellingLitresPerHour.Location = New System.Drawing.Point(192, 189)
@@ -1149,12 +1178,169 @@ Partial Class Dashboard
         '
         'tabPlayground
         '
+        Me.tabPlayground.Controls.Add(Me.lblM0Outputs)
+        Me.tabPlayground.Controls.Add(Me.Panel1)
+        Me.tabPlayground.Controls.Add(Me.btnInitialise)
+        Me.tabPlayground.Controls.Add(Me.chkClutchEngaged)
+        Me.tabPlayground.Controls.Add(Me.lblTotalCycleTimeSeconds)
+        Me.tabPlayground.Controls.Add(Me.lblEngineSpeed)
+        Me.tabPlayground.Controls.Add(Me.lblEngineMotoringPower)
+        Me.tabPlayground.Controls.Add(Me.lblEngineDrivelineTorque)
+        Me.tabPlayground.Controls.Add(Me.lblEngineDrivelinePower)
+        Me.tabPlayground.Controls.Add(Me.txtTotalCycleTimeSeconds)
+        Me.tabPlayground.Controls.Add(Me.txtEngineSpeed)
+        Me.tabPlayground.Controls.Add(Me.txtEngineMotoringPower)
+        Me.tabPlayground.Controls.Add(Me.txtEngineDrivelineTorque)
+        Me.tabPlayground.Controls.Add(Me.txtEngineDrivelinePower)
         Me.tabPlayground.Location = New System.Drawing.Point(4, 22)
         Me.tabPlayground.Name = "tabPlayground"
         Me.tabPlayground.Size = New System.Drawing.Size(909, 610)
         Me.tabPlayground.TabIndex = 4
         Me.tabPlayground.Text = "Playground"
         Me.tabPlayground.UseVisualStyleBackColor = true
+        '
+        'lblM0Outputs
+        '
+        Me.lblM0Outputs.AutoSize = true
+        Me.lblM0Outputs.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblM0Outputs.Location = New System.Drawing.Point(244, 29)
+        Me.lblM0Outputs.Name = "lblM0Outputs"
+        Me.lblM0Outputs.Size = New System.Drawing.Size(229, 13)
+        Me.lblM0Outputs.TabIndex = 23
+        Me.lblM0Outputs.Text = "M0-Non-Smart Alternator Set Efficiency"
+        '
+        'Panel1
+        '
+        Me.Panel1.Controls.Add(Me.lblOutHVACElectricalCurrentDemand)
+        Me.Panel1.Controls.Add(Me.lblAlternatorsEfficiency)
+        Me.Panel1.Controls.Add(Me.txtM0_Out_AlternatorsEfficiency)
+        Me.Panel1.Controls.Add(Me.txtM0_Out_HVacElectricalCurrentDemand)
+        Me.Panel1.Location = New System.Drawing.Point(244, 49)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(223, 100)
+        Me.Panel1.TabIndex = 22
+        '
+        'lblAlternatorsEfficiency
+        '
+        Me.lblAlternatorsEfficiency.AutoSize = true
+        Me.lblAlternatorsEfficiency.Location = New System.Drawing.Point(29, 52)
+        Me.lblAlternatorsEfficiency.Name = "lblAlternatorsEfficiency"
+        Me.lblAlternatorsEfficiency.Size = New System.Drawing.Size(106, 13)
+        Me.lblAlternatorsEfficiency.TabIndex = 24
+        Me.lblAlternatorsEfficiency.Text = "Alternators Efficiency"
+        '
+        'txtM0_Out_AlternatorsEfficiency
+        '
+        Me.txtM0_Out_AlternatorsEfficiency.Location = New System.Drawing.Point(32, 68)
+        Me.txtM0_Out_AlternatorsEfficiency.Name = "txtM0_Out_AlternatorsEfficiency"
+        Me.txtM0_Out_AlternatorsEfficiency.Size = New System.Drawing.Size(100, 20)
+        Me.txtM0_Out_AlternatorsEfficiency.TabIndex = 1
+        '
+        'txtM0_Out_HVacElectricalCurrentDemand
+        '
+        Me.txtM0_Out_HVacElectricalCurrentDemand.Location = New System.Drawing.Point(32, 25)
+        Me.txtM0_Out_HVacElectricalCurrentDemand.Name = "txtM0_Out_HVacElectricalCurrentDemand"
+        Me.txtM0_Out_HVacElectricalCurrentDemand.Size = New System.Drawing.Size(100, 20)
+        Me.txtM0_Out_HVacElectricalCurrentDemand.TabIndex = 0
+        '
+        'btnInitialise
+        '
+        Me.btnInitialise.Location = New System.Drawing.Point(25, 315)
+        Me.btnInitialise.Name = "btnInitialise"
+        Me.btnInitialise.Size = New System.Drawing.Size(75, 23)
+        Me.btnInitialise.TabIndex = 21
+        Me.btnInitialise.Text = "Initialise"
+        Me.btnInitialise.UseVisualStyleBackColor = true
+        '
+        'chkClutchEngaged
+        '
+        Me.chkClutchEngaged.AutoSize = true
+        Me.chkClutchEngaged.Location = New System.Drawing.Point(25, 29)
+        Me.chkClutchEngaged.Name = "chkClutchEngaged"
+        Me.chkClutchEngaged.Size = New System.Drawing.Size(102, 17)
+        Me.chkClutchEngaged.TabIndex = 20
+        Me.chkClutchEngaged.Text = "Clutch Engaged"
+        Me.chkClutchEngaged.UseVisualStyleBackColor = true
+        '
+        'lblTotalCycleTimeSeconds
+        '
+        Me.lblTotalCycleTimeSeconds.AutoSize = true
+        Me.lblTotalCycleTimeSeconds.Location = New System.Drawing.Point(25, 246)
+        Me.lblTotalCycleTimeSeconds.Name = "lblTotalCycleTimeSeconds"
+        Me.lblTotalCycleTimeSeconds.Size = New System.Drawing.Size(134, 13)
+        Me.lblTotalCycleTimeSeconds.TabIndex = 14
+        Me.lblTotalCycleTimeSeconds.Text = "Total Cycle Time Seconds "
+        '
+        'lblEngineSpeed
+        '
+        Me.lblEngineSpeed.AutoSize = true
+        Me.lblEngineSpeed.Location = New System.Drawing.Point(23, 201)
+        Me.lblEngineSpeed.Name = "lblEngineSpeed"
+        Me.lblEngineSpeed.Size = New System.Drawing.Size(107, 13)
+        Me.lblEngineSpeed.TabIndex = 13
+        Me.lblEngineSpeed.Text = "Engine Speed (RPM)"
+        '
+        'lblEngineMotoringPower
+        '
+        Me.lblEngineMotoringPower.AutoSize = true
+        Me.lblEngineMotoringPower.Location = New System.Drawing.Point(24, 157)
+        Me.lblEngineMotoringPower.Name = "lblEngineMotoringPower"
+        Me.lblEngineMotoringPower.Size = New System.Drawing.Size(117, 13)
+        Me.lblEngineMotoringPower.TabIndex = 12
+        Me.lblEngineMotoringPower.Text = "Engine Motoring Power"
+        '
+        'lblEngineDrivelineTorque
+        '
+        Me.lblEngineDrivelineTorque.AutoSize = true
+        Me.lblEngineDrivelineTorque.Location = New System.Drawing.Point(24, 112)
+        Me.lblEngineDrivelineTorque.Name = "lblEngineDrivelineTorque"
+        Me.lblEngineDrivelineTorque.Size = New System.Drawing.Size(121, 13)
+        Me.lblEngineDrivelineTorque.TabIndex = 11
+        Me.lblEngineDrivelineTorque.Text = "Engine Driveline Torque"
+        '
+        'lblEngineDrivelinePower
+        '
+        Me.lblEngineDrivelinePower.AutoSize = true
+        Me.lblEngineDrivelinePower.Location = New System.Drawing.Point(22, 70)
+        Me.lblEngineDrivelinePower.Name = "lblEngineDrivelinePower"
+        Me.lblEngineDrivelinePower.Size = New System.Drawing.Size(120, 13)
+        Me.lblEngineDrivelinePower.TabIndex = 10
+        Me.lblEngineDrivelinePower.Text = "Engine Driveline Power "
+        '
+        'txtTotalCycleTimeSeconds
+        '
+        Me.txtTotalCycleTimeSeconds.Location = New System.Drawing.Point(25, 263)
+        Me.txtTotalCycleTimeSeconds.Name = "txtTotalCycleTimeSeconds"
+        Me.txtTotalCycleTimeSeconds.Size = New System.Drawing.Size(100, 20)
+        Me.txtTotalCycleTimeSeconds.TabIndex = 5
+        '
+        'txtEngineSpeed
+        '
+        Me.txtEngineSpeed.Location = New System.Drawing.Point(25, 214)
+        Me.txtEngineSpeed.Name = "txtEngineSpeed"
+        Me.txtEngineSpeed.Size = New System.Drawing.Size(100, 20)
+        Me.txtEngineSpeed.TabIndex = 4
+        '
+        'txtEngineMotoringPower
+        '
+        Me.txtEngineMotoringPower.Location = New System.Drawing.Point(25, 174)
+        Me.txtEngineMotoringPower.Name = "txtEngineMotoringPower"
+        Me.txtEngineMotoringPower.Size = New System.Drawing.Size(100, 20)
+        Me.txtEngineMotoringPower.TabIndex = 3
+        '
+        'txtEngineDrivelineTorque
+        '
+        Me.txtEngineDrivelineTorque.Location = New System.Drawing.Point(25, 129)
+        Me.txtEngineDrivelineTorque.Name = "txtEngineDrivelineTorque"
+        Me.txtEngineDrivelineTorque.Size = New System.Drawing.Size(100, 20)
+        Me.txtEngineDrivelineTorque.TabIndex = 2
+        '
+        'txtEngineDrivelinePower
+        '
+        Me.txtEngineDrivelinePower.Location = New System.Drawing.Point(25, 85)
+        Me.txtEngineDrivelinePower.Name = "txtEngineDrivelinePower"
+        Me.txtEngineDrivelinePower.Size = New System.Drawing.Size(100, 20)
+        Me.txtEngineDrivelinePower.TabIndex = 1
         '
         'resultCardContextMenu
         '
@@ -1172,16 +1358,14 @@ Partial Class Dashboard
         '
         Me.ErrorProvider.ContainerControl = Me
         '
-        'lblHVACTitle
+        'lblOutHVACElectricalCurrentDemand
         '
-        Me.lblHVACTitle.AutoSize = true
-        Me.lblHVACTitle.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblHVACTitle.ForeColor = System.Drawing.SystemColors.MenuHighlight
-        Me.lblHVACTitle.Location = New System.Drawing.Point(31, 37)
-        Me.lblHVACTitle.Name = "lblHVACTitle"
-        Me.lblHVACTitle.Size = New System.Drawing.Size(164, 13)
-        Me.lblHVACTitle.TabIndex = 25
-        Me.lblHVACTitle.Text = "Steady State Output Values"
+        Me.lblOutHVACElectricalCurrentDemand.AutoSize = true
+        Me.lblOutHVACElectricalCurrentDemand.Location = New System.Drawing.Point(32, 6)
+        Me.lblOutHVACElectricalCurrentDemand.Name = "lblOutHVACElectricalCurrentDemand"
+        Me.lblOutHVACElectricalCurrentDemand.Size = New System.Drawing.Size(182, 13)
+        Me.lblOutHVACElectricalCurrentDemand.TabIndex = 25
+        Me.lblOutHVACElectricalCurrentDemand.Text = "Out HVAC Electrical Current Demand"
         '
         'Dashboard
         '
@@ -1192,7 +1376,6 @@ Partial Class Dashboard
         Me.Controls.Add(Me.pnlMain)
         Me.Name = "Dashboard"
         Me.Text = "Dashboard"
-        CType(Me.brcElecConsumers,System.ComponentModel.ISupportInitialize).EndInit
         Me.pnlMain.ResumeLayout(false)
         Me.tabMain.ResumeLayout(false)
         Me.tabGeneralConfig.ResumeLayout(false)
@@ -1210,6 +1393,10 @@ Partial Class Dashboard
         Me.pnlPneumaticAuxillaries.PerformLayout
         Me.tabHVACConfig.ResumeLayout(false)
         Me.tabHVACConfig.PerformLayout
+        Me.tabPlayground.ResumeLayout(false)
+        Me.tabPlayground.PerformLayout
+        Me.Panel1.ResumeLayout(false)
+        Me.Panel1.PerformLayout
         Me.resultCardContextMenu.ResumeLayout(false)
         CType(Me.ErrorProvider,System.ComponentModel.ISupportInitialize).EndInit
         Me.ResumeLayout(false)
@@ -1221,7 +1408,6 @@ End Sub
     Friend WithEvents btnForward As System.Windows.Forms.Button
     Friend WithEvents btnBack As System.Windows.Forms.Button
     Friend WithEvents btnStart As System.Windows.Forms.Button
-    Friend WithEvents brcElecConsumers As System.Windows.Forms.BindingSource
     Friend WithEvents resultCardContextMenu As System.Windows.Forms.ContextMenuStrip
     Friend WithEvents DeleteToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ErrorProvider As System.Windows.Forms.ErrorProvider
@@ -1314,4 +1500,22 @@ End Sub
     Friend WithEvents txtHVACElectricalLoadPowerWatts As System.Windows.Forms.TextBox
     Friend WithEvents lblHVACElectricalLoadPowerWatts As System.Windows.Forms.Label
     Friend WithEvents lblHVACTitle As System.Windows.Forms.Label
+    Friend WithEvents lblTotalCycleTimeSeconds As System.Windows.Forms.Label
+    Friend WithEvents lblEngineSpeed As System.Windows.Forms.Label
+    Friend WithEvents lblEngineMotoringPower As System.Windows.Forms.Label
+    Friend WithEvents lblEngineDrivelineTorque As System.Windows.Forms.Label
+    Friend WithEvents lblEngineDrivelinePower As System.Windows.Forms.Label
+    Friend WithEvents txtTotalCycleTimeSeconds As System.Windows.Forms.TextBox
+    Friend WithEvents txtEngineSpeed As System.Windows.Forms.TextBox
+    Friend WithEvents txtEngineMotoringPower As System.Windows.Forms.TextBox
+    Friend WithEvents txtEngineDrivelineTorque As System.Windows.Forms.TextBox
+    Friend WithEvents txtEngineDrivelinePower As System.Windows.Forms.TextBox
+    Friend WithEvents chkClutchEngaged As System.Windows.Forms.CheckBox
+    Friend WithEvents btnInitialise As System.Windows.Forms.Button
+    Friend WithEvents lblM0Outputs As System.Windows.Forms.Label
+    Friend WithEvents Panel1 As System.Windows.Forms.Panel
+    Friend WithEvents lblAlternatorsEfficiency As System.Windows.Forms.Label
+    Friend WithEvents txtM0_Out_AlternatorsEfficiency As System.Windows.Forms.TextBox
+    Friend WithEvents txtM0_Out_HVacElectricalCurrentDemand As System.Windows.Forms.TextBox
+    Friend WithEvents lblOutHVACElectricalCurrentDemand As System.Windows.Forms.Label
 End Class

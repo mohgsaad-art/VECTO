@@ -12,9 +12,9 @@ Public Property ElectricalConsumers As IElectricalConsumerList Implements IElect
 Public Property DoorActuationTimeSecond As Integer Implements IElectricsUserInputsConfig.DoorActuationTimeSecond
 
 
-Public Property ResultCardIdle As List(Of SmartResult) Implements IElectricsUserInputsConfig.ResultCardIdle
-Public Property ResultCardTraction As List(Of SmartResult) Implements IElectricsUserInputsConfig.ResultCardTraction
-Public Property ResultCardOverrun As List(Of SmartResult) Implements IElectricsUserInputsConfig.ResultCardOverrun
+Public Property ResultCardIdle As IResultCard Implements IElectricsUserInputsConfig.ResultCardIdle
+Public Property ResultCardTraction As IResultCard Implements IElectricsUserInputsConfig.ResultCardTraction
+Public Property ResultCardOverrun As IResultCard Implements IElectricsUserInputsConfig.ResultCardOverrun
 
 Public Property SmartElectrical As Boolean Implements IElectricsUserInputsConfig.SmartElectrical
 

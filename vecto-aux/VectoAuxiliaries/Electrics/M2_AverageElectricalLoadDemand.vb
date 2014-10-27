@@ -1,6 +1,7 @@
 ﻿Namespace Electrics
 
     Public Class M2_AverageElectricalLoadDemand
+    Implements IM2_AverageElectricalLoadDemand
 
         Public _powerNetVoltage As Single = 26.3
         Private _electricalConsumers As IElectricalConsumerList
@@ -29,17 +30,17 @@
 
 
 
-        Public Function GetAveragePowerDemandAtAlternator() As Single
+        Public Function GetAveragePowerDemandAtAlternator() As Single Implements IM2_AverageElectricalLoadDemand.GetAveragePowerDemandAtAlternator
 
              Return _electricalConsumers.GetTotalAverageDemandAmps(False)
 
         End Function
 
 
-        Public Function GetAveragePowerAtCrank(ByVal engineRpm As Integer) As Single
+        Public Function GetAveragePowerAtCrank(ByVal engineRpm As Integer) As Single Implements IM2_AverageElectricalLoadDemand.GetAveragePowerAtCrank
 
             Dim ElectricalPowerDemandsWatts As Single = GetAveragePowerDemandAtAlternator() * _powerNetVoltage
-            Dim alternatorsEfficiency As Single       = _module0.GetEfficiency()
+            Dim alternatorsEfficiency As Single       = _module0.AlternatorsEfficiency
             Dim ElectricalPowerDemandsWattsDividedByAlternatorEfficiency as Single = ElectricalPowerDemandsWatts / alternatorsEfficiency
 
             Dim averagePowerDemandAtCrankFromElectricsWatts As Single
