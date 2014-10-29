@@ -641,8 +641,7 @@ Private Sub Dashboard_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
   'Finally Initialise Environment.
   auxEnvironment.Initialise()
-
-   Timer1.Start()
+  SetProcessingStatus()
 
 End Sub
 
@@ -836,8 +835,11 @@ End Sub
 #Region "Button Handlers"
 
 Private Sub btnStart_Click( sender As Object,  e As EventArgs) Handles btnStart.Click 
-        Validate_Pneumatics()
-        Validate_Electrics()
+    auxEnvironment.Initialise()
+    processing=true
+    SetProcessingStatus
+
+Timer1.Start
 
 End Sub
 
@@ -873,10 +875,42 @@ Private sub RefreshDisplays()
      txtM3_out_TotalAirConsumedPerCycleInLitres.Text=auxEnvironment.M3.TotalAirConsumedPerCycle
 
      'M4
-     txtM4_out_CompressorFlowRate.Text = auxEnvironment.M4.GetAveragePowerDemandPerCompressorUnitFlowRate
-     'txtM4_out_CompresssorPwrOnMinusPwrOff.Text=auxEnvironment.M4.GetPowerDifference
-     txtM4_out_PowerAtCrankFromPneumaticsCompressorOFF.Text= auxEnvironment.M4.GetPowerCompressorOff
-     'txtM4_out_PowerAtCrankFromPneumaticsCompressorON.Text= auxEnvironment.M4.GetPowerCompressorOn
+      txtM4_out_CompressorFlowRate.Text = auxEnvironment.M4.GetFlowRate
+      txtM4_out_CompresssorPwrOnMinusPwrOff.Text=auxEnvironment.M4.GetPowerDifference
+      txtM4_out_PowerAtCrankFromPneumaticsCompressorOFF.Text= auxEnvironment.M4.GetPowerCompressorOff
+      txtM4_out_PowerAtCrankFromPneumaticsCompressorON.Text= auxEnvironment.M4.GetPowerCompressorOn
+
+      'M5
+      txtM5_out_AltRegenPowerAtCrankIdleWatts.text= auxEnvironment.m5.AlternatorsGenerationPowerAtCrankIdleWatts
+      txtM5_out_AltRegenPowerAtCrankOverrunWatts.text= auxEnvironment.m5.AlternatorsGenerationPowerAtCrankOverrunWatts
+      txtM5_out_AltRegenPowerAtCrankTractionWatts.text= auxEnvironment.m5.AlternatorsGenerationPowerAtCrankTractionOnWatts
+
+ 
+
+End Sub
+
+
+
+Private processing As Boolean = False
+
+
+Private sub SetProcessingStatus()
+
+Dim thisExe As System.Reflection.Assembly 
+Dim file as System.IO.Stream 
+thisExe = System.Reflection.Assembly.GetExecutingAssembly()
+
+If processing then
+
+file  = thisExe.GetManifestResourceStream("AuxillaryTestHarness.greenLight.jpg")
+
+Else
+
+file  = thisExe.GetManifestResourceStream("AuxillaryTestHarness.amberLight.jpg")
+
+End If
+
+me.pictureBox1.Image = Image.FromStream(file)
 
 
 End Sub
@@ -885,7 +919,11 @@ End Sub
 
 Private Sub RefreshDisplayValues_Timed( sender As Object,  e As EventArgs) Handles Timer1.Tick
 
+  
+  SetProcessingStatus()
+
   RefreshDisplays()
+
 
 End Sub
 
@@ -911,6 +949,18 @@ End Sub
 
 
     End Function
+
+
+Private Sub btnFinish_Click( sender As Object,  e As EventArgs) Handles btnFinish.Click
+
+
+    processing=False
+    SetProcessingStatus
+
+
+ Timer1.Stop
+
+End Sub
 
 
 End Class
