@@ -7,10 +7,11 @@
         Private _electricalConsumers As IElectricalConsumerList
         Private _module0 As IM0_NonSmart_AlternatorsSetEfficiency
         Private _alternatorPulleyEffiency As Single
+        Private _signals As Signals
 
 
 
-        Public Sub New(ByVal electricalConsumers As IElectricalConsumerList, m0 As IM0_NonSmart_AlternatorsSetEfficiency, altPulleyEfficiency As Single, powerNetVoltage As Single)
+        Public Sub New(ByVal electricalConsumers As IElectricalConsumerList, m0 As IM0_NonSmart_AlternatorsSetEfficiency, altPulleyEfficiency As Single, powerNetVoltage As Single, signals as ISignals )
 
         If electricalConsumers Is Nothing Then Throw New ArgumentException("Electrical Consumer List must be supplied")
         If m0 Is Nothing Then Throw New ArgumentException("Must supply module 0")
@@ -37,7 +38,7 @@
         End Function
 
 
-        Public Function GetAveragePowerAtCrank(ByVal engineRpm As Integer) As Single Implements IM2_AverageElectricalLoadDemand.GetAveragePowerAtCrank
+        Public Function GetAveragePowerAtCrank() As Single Implements IM2_AverageElectricalLoadDemand.GetAveragePowerAtCrank
 
             Dim ElectricalPowerDemandsWatts As Single = GetAveragePowerDemandAtAlternator() * _powerNetVoltage
             Dim alternatorsEfficiency As Single       = _module0.AlternatorsEfficiency
