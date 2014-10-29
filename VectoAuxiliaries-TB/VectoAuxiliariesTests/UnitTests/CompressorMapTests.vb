@@ -97,21 +97,21 @@ Namespace UnitTests
         <Test()>
         Public Sub GetFlowRateKeyPassedTest()
             Dim target As CompressorMap = GetInitialiseMap()
-            Dim expected As Single = 200
-            Dim value As Single = target.GetFlowRate(100)
+            Dim expected As Single = 400
+            Dim value As Single = target.GetFlowRate(2000)
             Assert.AreEqual(expected, value)
         End Sub
 
         <Test()>
         Public Sub GetFlowRateInterpolaitionTest()
             Dim target As CompressorMap = GetInitialiseMap()
-            Dim expected As Single = 300
-            Dim value As Single = target.GetFlowRate(150)
+            Dim expected As Single = 500
+            Dim value As Single = target.GetFlowRate(2500)
             Assert.AreEqual(expected, value)
         End Sub
 
         <TestCase(50)> _
-        <TestCase(550)> _
+        <TestCase(8000)> _
         <ExpectedException("System.ArgumentOutOfRangeException")>
         Public Sub GetFlowRateRpmOutOfRangeThrowExceptionTest(ByVal rpm As Integer)
             Dim target As CompressorMap = GetInitialiseMap()
@@ -122,16 +122,16 @@ Namespace UnitTests
         <Test()>
         Public Sub GetPowerCompressorOnKeyPassedTest()
             Dim target As CompressorMap = GetInitialiseMap()
-            Dim expected As Single = 2
-            Dim value As Single = target.GetPowerCompressorOn(100)
+            Dim expected As Single = 4
+            Dim value As Single = target.GetPowerCompressorOn(2000)
             Assert.AreEqual(expected, value)
         End Sub
 
         <Test()>
         Public Sub GetPowerCompressorOnInterpolaitionTest()
             Dim target As CompressorMap = GetInitialiseMap()
-            Dim expected As Single = 3
-            Dim value As Single = target.GetPowerCompressorOn(150)
+            Dim expected As Single = 5
+            Dim value As Single = target.GetPowerCompressorOn(2500)
             Assert.AreEqual(expected, value)
         End Sub
 
@@ -147,16 +147,16 @@ Namespace UnitTests
         <Test()>
         Public Sub GetPowerCompressorOffKeyPassedTest()
             Dim target As CompressorMap = GetInitialiseMap()
-            Dim expected As Single = 1
-            Dim value As Single = target.GetPowerCompressorOff(100)
+            Dim expected As Single = 2
+            Dim value As Single = target.GetPowerCompressorOff(2000)
             Assert.AreEqual(expected, value)
         End Sub
 
         <Test()>
         Public Sub GetPowerCompressorOffInterpolaitionTest()
             Dim target As CompressorMap = GetInitialiseMap()
-            Dim expected As Single = 1.5
-            Dim value As Single = target.GetPowerCompressorOff(150)
+            Dim expected As Single = 2.5
+            Dim value As Single = target.GetPowerCompressorOff(2500)
             Assert.AreEqual(expected, value)
         End Sub
 
