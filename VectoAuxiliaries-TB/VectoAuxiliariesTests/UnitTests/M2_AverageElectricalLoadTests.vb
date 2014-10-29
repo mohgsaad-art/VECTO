@@ -20,7 +20,7 @@ Namespace UnitTests
 #Region "Helpers"
         Private Function GetAverageElectricalDemandInstance() As M2_AverageElectricalLoadDemand
 
-        signals.EngineSpeed=2000
+            signals.EngineSpeed=2000
 
 
             Dim consumers As IElectricalConsumerList = CType(New ElectricalConsumerList(26.3,0.096, True), IElectricalConsumerList)
@@ -35,7 +35,7 @@ Namespace UnitTests
 
 
 
-            Return New M2_AverageElectricalLoadDemand(consumers, m0, 0.8, 26.3)
+            Return New M2_AverageElectricalLoadDemand(consumers, m0, 0.8, 26.3,signals)
 
 
         End Function
@@ -64,8 +64,8 @@ Namespace UnitTests
         <Test()>
         Public Sub GetAveragePowerAtCrankTest()
             Dim target As M2_AverageElectricalLoadDemand = GetAverageElectricalDemandInstance()
-            Dim expected As Single = 2286.36719
-            Dim actual As Single = target.GetAveragePowerAtCrank(2000)
+            Dim expected As Single = 1673.52527
+            Dim actual As Single = target.GetAveragePowerAtCrank()
             Assert.AreEqual(expected, actual)
         End Sub
 

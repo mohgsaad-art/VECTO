@@ -130,9 +130,38 @@ Partial Class Dashboard
         Me.txtHVACElectricalLoadPowerWatts = New System.Windows.Forms.TextBox()
         Me.lblHVACElectricalLoadPowerWatts = New System.Windows.Forms.Label()
         Me.tabPlayground = New System.Windows.Forms.TabPage()
-        Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.lblM2AverageElectricalLoadTitle = New System.Windows.Forms.Label()
+        Me.pnl_M2_Displays = New System.Windows.Forms.Panel()
+        Me.lblM2_AvgPwrDmdAtCrankFromElectrics = New System.Windows.Forms.Label()
+        Me.lblM2_AveragePowerDemandAtAlternatorFromElectrics = New System.Windows.Forms.Label()
+        Me.txtM2_out_AvgPowerAtCrankFromElectrics = New System.Windows.Forms.TextBox()
+        Me.txtM2_out_AvgPowerAtAltFromElectrics = New System.Windows.Forms.TextBox()
+        Me.lblM1_HVACAverageLoad = New System.Windows.Forms.Label()
+        Me.pnl_M1_Displays = New System.Windows.Forms.Panel()
+        Me.lblM1_HVACFuelling = New System.Windows.Forms.Label()
+        Me.lblM1_AvgPowerDemandAtCrankHVACElectrics = New System.Windows.Forms.Label()
+        Me.lblM1_AveragePowerDemandAtAlternatorElectrics = New System.Windows.Forms.Label()
+        Me.lblM1_AveragePowerDemandAtCrank = New System.Windows.Forms.Label()
+        Me.txtM1_out_HVACFuelling = New System.Windows.Forms.TextBox()
+        Me.txtM1_out_AvgPwrAtCrankFromHVACElec = New System.Windows.Forms.TextBox()
+        Me.txtM1_out_AvgPowerDemandAtAlternatorHvacElectrics = New System.Windows.Forms.TextBox()
+        Me.txtM1_out_AvgPowerDemandAtCrankMech = New System.Windows.Forms.TextBox()
+        Me.lblM05SmartalternatorSetEfficiency = New System.Windows.Forms.Label()
+        Me.pnl_M05_Displays = New System.Windows.Forms.Panel()
+        Me.lblM05_AlternatorsEfficiencyOverrun = New System.Windows.Forms.Label()
+        Me.lblM05SmartOverrunCurrent = New System.Windows.Forms.Label()
+        Me.lblM05_AlternatorsEfficiencyTraction = New System.Windows.Forms.Label()
+        Me.lblM05_SmartTractionCurrent = New System.Windows.Forms.Label()
+        Me.lblM05AlternatorsEfficiencyIdle = New System.Windows.Forms.Label()
+        Me.lblM05_SmartIdleCurrent = New System.Windows.Forms.Label()
+        Me.txtM05_out_AlternatorsEfficiencyOverrun = New System.Windows.Forms.TextBox()
+        Me.txtM05_out_SmartOverrunCurrent = New System.Windows.Forms.TextBox()
+        Me.txtM05_out_AlternatorsEfficiencyTraction = New System.Windows.Forms.TextBox()
+        Me.txtM05_out_SmartTractionCurrent = New System.Windows.Forms.TextBox()
+        Me.txtM05_Out_AlternatorsEfficiencyIdle = New System.Windows.Forms.TextBox()
+        Me.txtM05_OutSmartIdleCurrent = New System.Windows.Forms.TextBox()
         Me.lblM0Outputs = New System.Windows.Forms.Label()
-        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.pnl_M0_Displays = New System.Windows.Forms.Panel()
         Me.lblOutHVACElectricalCurrentDemand = New System.Windows.Forms.Label()
         Me.lblAlternatorsEfficiency = New System.Windows.Forms.Label()
         Me.txtM0_Out_AlternatorsEfficiency = New System.Windows.Forms.TextBox()
@@ -152,35 +181,22 @@ Partial Class Dashboard
         Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
-        Me.lblM05SmartalternatorSetEfficiency = New System.Windows.Forms.Label()
-        Me.txtM05_OutSmartIdleCurrent = New System.Windows.Forms.TextBox()
-        Me.txtM05_Out_AlternatorsEfficiencyIdle = New System.Windows.Forms.TextBox()
-        Me.txtM05_out_SmartTractionCurrent = New System.Windows.Forms.TextBox()
-        Me.txtM05_out_AlternatorsEfficiencyTraction = New System.Windows.Forms.TextBox()
-        Me.txtM05_out_SmartOverrunCurrent = New System.Windows.Forms.TextBox()
-        Me.txtM05_out_AlternatorsEfficiencyOverrun = New System.Windows.Forms.TextBox()
-        Me.lblM05_SmartIdleCurrent = New System.Windows.Forms.Label()
-        Me.lblM05AlternatorsEfficiencyIdle = New System.Windows.Forms.Label()
-        Me.lblM05_SmartTractionCurrent = New System.Windows.Forms.Label()
-        Me.lblM05_AlternatorsEfficiencyTraction = New System.Windows.Forms.Label()
-        Me.lblM05SmartOverrunCurrent = New System.Windows.Forms.Label()
-        Me.lblM05_AlternatorsEfficiencyOverrun = New System.Windows.Forms.Label()
-        Me.Panel3 = New System.Windows.Forms.Panel()
-        Me.lblM1_HVACAverageLoad = New System.Windows.Forms.Label()
-        Me.txtM1_out_AvgPowerDemandAtCrankMech = New System.Windows.Forms.TextBox()
-        Me.txtM1_out_AvgPowerDemandAtAlternatorHvacElectrics = New System.Windows.Forms.TextBox()
-        Me.txtM1_out_AvgPwrAtCrankFromHVACElec = New System.Windows.Forms.TextBox()
-        Me.txtM1_out_HVACFuelling = New System.Windows.Forms.TextBox()
-        Me.lblM1_AveragePowerDemandAtCrank = New System.Windows.Forms.Label()
-        Me.lblM1_AveragePowerDemandAtAlternatorElectrics = New System.Windows.Forms.Label()
-        Me.lblM1_AvgPowerDemandAtCrankHVACElectrics = New System.Windows.Forms.Label()
-        Me.lblM1_HVACFuelling = New System.Windows.Forms.Label()
-        Me.Panel4 = New System.Windows.Forms.Panel()
-        Me.lblM2AverageElectricalLoadTitle = New System.Windows.Forms.Label()
-        Me.txtM2_out_AvgPowerAtAltFromElectrics = New System.Windows.Forms.TextBox()
-        Me.txtM2_out_AvgPowerAtCrankFromElectrics = New System.Windows.Forms.TextBox()
-        Me.lblM2_AveragePowerDemandAtAlternatorFromElectrics = New System.Windows.Forms.Label()
-        Me.lblM2_AvgPwrDmdAtCrankFromElectrics = New System.Windows.Forms.Label()
+        Me.pnl_M3_Displays = New System.Windows.Forms.Panel()
+        Me.lblM3_AveragePneumaticLoad = New System.Windows.Forms.Label()
+        Me.txtM3_out_AveragePowerAtCrankFromPneumatics = New System.Windows.Forms.TextBox()
+        Me.txtM3_out_TotalAirConsumedPerCycleInLitres = New System.Windows.Forms.TextBox()
+        Me.lbl_M3_AvgPowerAtCrankFromPneumatics = New System.Windows.Forms.Label()
+        Me.lblM3_TotAirConsumptionPerCycleLitres = New System.Windows.Forms.Label()
+        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.txtM4_out_CompressorFlowRate = New System.Windows.Forms.TextBox()
+        Me.txtM4_out_CompresssorPwrOnMinusPwrOff = New System.Windows.Forms.TextBox()
+        Me.txtM4_out_PowerAtCrankFromPneumaticsCompressorOFF = New System.Windows.Forms.TextBox()
+        Me.txtM4_out_PowerAtCrankFromPneumaticsCompressorON = New System.Windows.Forms.TextBox()
+        Me.lblM4_CompressorFlowRate = New System.Windows.Forms.Label()
+        Me.lblM4_CompressorOnOffPowerDelta = New System.Windows.Forms.Label()
+        Me.lblM4_PowerAtCrankFromPSCompressorOFF = New System.Windows.Forms.Label()
+        Me.lblM4_PowerAtCrankFromPSCompressorON = New System.Windows.Forms.Label()
+        Me.lblM4_AirCompressor = New System.Windows.Forms.Label()
         Me.pnlMain.SuspendLayout
         Me.tabMain.SuspendLayout
         Me.tabGeneralConfig.SuspendLayout
@@ -194,12 +210,14 @@ Partial Class Dashboard
         Me.pnlPneumaticAuxillaries.SuspendLayout
         Me.tabHVACConfig.SuspendLayout
         Me.tabPlayground.SuspendLayout
-        Me.Panel2.SuspendLayout
-        Me.Panel1.SuspendLayout
+        Me.pnl_M2_Displays.SuspendLayout
+        Me.pnl_M1_Displays.SuspendLayout
+        Me.pnl_M05_Displays.SuspendLayout
+        Me.pnl_M0_Displays.SuspendLayout
         Me.resultCardContextMenu.SuspendLayout
         CType(Me.ErrorProvider,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.Panel3.SuspendLayout
-        Me.Panel4.SuspendLayout
+        Me.pnl_M3_Displays.SuspendLayout
+        Me.Panel1.SuspendLayout
         Me.SuspendLayout
         '
         'pnlMain
@@ -218,7 +236,7 @@ Partial Class Dashboard
         '
         'btnCancel
         '
-        Me.btnCancel.Location = New System.Drawing.Point(827, 670)
+        Me.btnCancel.Location = New System.Drawing.Point(827, 676)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(75, 23)
         Me.btnCancel.TabIndex = 5
@@ -227,7 +245,7 @@ Partial Class Dashboard
         '
         'btnFinish
         '
-        Me.btnFinish.Location = New System.Drawing.Point(745, 671)
+        Me.btnFinish.Location = New System.Drawing.Point(745, 677)
         Me.btnFinish.Name = "btnFinish"
         Me.btnFinish.Size = New System.Drawing.Size(75, 23)
         Me.btnFinish.TabIndex = 4
@@ -236,7 +254,7 @@ Partial Class Dashboard
         '
         'btnForward
         '
-        Me.btnForward.Location = New System.Drawing.Point(621, 671)
+        Me.btnForward.Location = New System.Drawing.Point(621, 677)
         Me.btnForward.Name = "btnForward"
         Me.btnForward.Size = New System.Drawing.Size(75, 23)
         Me.btnForward.TabIndex = 3
@@ -245,7 +263,7 @@ Partial Class Dashboard
         '
         'btnBack
         '
-        Me.btnBack.Location = New System.Drawing.Point(537, 671)
+        Me.btnBack.Location = New System.Drawing.Point(537, 677)
         Me.btnBack.Name = "btnBack"
         Me.btnBack.Size = New System.Drawing.Size(75, 23)
         Me.btnBack.TabIndex = 2
@@ -254,7 +272,7 @@ Partial Class Dashboard
         '
         'btnStart
         '
-        Me.btnStart.Location = New System.Drawing.Point(420, 671)
+        Me.btnStart.Location = New System.Drawing.Point(420, 677)
         Me.btnStart.Name = "btnStart"
         Me.btnStart.Size = New System.Drawing.Size(75, 23)
         Me.btnStart.TabIndex = 1
@@ -273,7 +291,7 @@ Partial Class Dashboard
         Me.tabMain.Location = New System.Drawing.Point(12, 12)
         Me.tabMain.Name = "tabMain"
         Me.tabMain.SelectedIndex = 0
-        Me.tabMain.Size = New System.Drawing.Size(917, 636)
+        Me.tabMain.Size = New System.Drawing.Size(917, 658)
         Me.tabMain.TabIndex = 0
         Me.tabMain.Tag = ""
         '
@@ -1212,14 +1230,18 @@ Partial Class Dashboard
         'tabPlayground
         '
         Me.tabPlayground.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.tabPlayground.Controls.Add(Me.lblM2AverageElectricalLoadTitle)
-        Me.tabPlayground.Controls.Add(Me.Panel4)
-        Me.tabPlayground.Controls.Add(Me.lblM1_HVACAverageLoad)
-        Me.tabPlayground.Controls.Add(Me.Panel3)
-        Me.tabPlayground.Controls.Add(Me.lblM05SmartalternatorSetEfficiency)
-        Me.tabPlayground.Controls.Add(Me.Panel2)
-        Me.tabPlayground.Controls.Add(Me.lblM0Outputs)
+        Me.tabPlayground.Controls.Add(Me.lblM4_AirCompressor)
         Me.tabPlayground.Controls.Add(Me.Panel1)
+        Me.tabPlayground.Controls.Add(Me.lblM3_AveragePneumaticLoad)
+        Me.tabPlayground.Controls.Add(Me.pnl_M3_Displays)
+        Me.tabPlayground.Controls.Add(Me.lblM2AverageElectricalLoadTitle)
+        Me.tabPlayground.Controls.Add(Me.pnl_M2_Displays)
+        Me.tabPlayground.Controls.Add(Me.lblM1_HVACAverageLoad)
+        Me.tabPlayground.Controls.Add(Me.pnl_M1_Displays)
+        Me.tabPlayground.Controls.Add(Me.lblM05SmartalternatorSetEfficiency)
+        Me.tabPlayground.Controls.Add(Me.pnl_M05_Displays)
+        Me.tabPlayground.Controls.Add(Me.lblM0Outputs)
+        Me.tabPlayground.Controls.Add(Me.pnl_M0_Displays)
         Me.tabPlayground.Controls.Add(Me.chkClutchEngaged)
         Me.tabPlayground.Controls.Add(Me.lblTotalCycleTimeSeconds)
         Me.tabPlayground.Controls.Add(Me.lblEngineSpeed)
@@ -1233,67 +1255,330 @@ Partial Class Dashboard
         Me.tabPlayground.Controls.Add(Me.txtEngineDrivelinePower)
         Me.tabPlayground.Location = New System.Drawing.Point(4, 22)
         Me.tabPlayground.Name = "tabPlayground"
-        Me.tabPlayground.Size = New System.Drawing.Size(909, 610)
+        Me.tabPlayground.Size = New System.Drawing.Size(909, 632)
         Me.tabPlayground.TabIndex = 4
         Me.tabPlayground.Text = "Playground"
         Me.tabPlayground.UseVisualStyleBackColor = true
         '
-        'Panel2
+        'lblM2AverageElectricalLoadTitle
         '
-        Me.Panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Panel2.Controls.Add(Me.lblM05_AlternatorsEfficiencyOverrun)
-        Me.Panel2.Controls.Add(Me.lblM05SmartOverrunCurrent)
-        Me.Panel2.Controls.Add(Me.lblM05_AlternatorsEfficiencyTraction)
-        Me.Panel2.Controls.Add(Me.lblM05_SmartTractionCurrent)
-        Me.Panel2.Controls.Add(Me.lblM05AlternatorsEfficiencyIdle)
-        Me.Panel2.Controls.Add(Me.lblM05_SmartIdleCurrent)
-        Me.Panel2.Controls.Add(Me.txtM05_out_AlternatorsEfficiencyOverrun)
-        Me.Panel2.Controls.Add(Me.txtM05_out_SmartOverrunCurrent)
-        Me.Panel2.Controls.Add(Me.txtM05_out_AlternatorsEfficiencyTraction)
-        Me.Panel2.Controls.Add(Me.txtM05_out_SmartTractionCurrent)
-        Me.Panel2.Controls.Add(Me.txtM05_Out_AlternatorsEfficiencyIdle)
-        Me.Panel2.Controls.Add(Me.txtM05_OutSmartIdleCurrent)
-        Me.Panel2.Location = New System.Drawing.Point(164, 174)
-        Me.Panel2.Name = "Panel2"
-        Me.Panel2.Size = New System.Drawing.Size(223, 283)
-        Me.Panel2.TabIndex = 24
+        Me.lblM2AverageElectricalLoadTitle.AutoSize = true
+        Me.lblM2AverageElectricalLoadTitle.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblM2AverageElectricalLoadTitle.Location = New System.Drawing.Point(379, 14)
+        Me.lblM2AverageElectricalLoadTitle.Name = "lblM2AverageElectricalLoadTitle"
+        Me.lblM2AverageElectricalLoadTitle.Size = New System.Drawing.Size(189, 13)
+        Me.lblM2AverageElectricalLoadTitle.TabIndex = 29
+        Me.lblM2AverageElectricalLoadTitle.Text = "M2-Avg Electrical Load Demand"
+        '
+        'pnl_M2_Displays
+        '
+        Me.pnl_M2_Displays.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnl_M2_Displays.Controls.Add(Me.lblM2_AvgPwrDmdAtCrankFromElectrics)
+        Me.pnl_M2_Displays.Controls.Add(Me.lblM2_AveragePowerDemandAtAlternatorFromElectrics)
+        Me.pnl_M2_Displays.Controls.Add(Me.txtM2_out_AvgPowerAtCrankFromElectrics)
+        Me.pnl_M2_Displays.Controls.Add(Me.txtM2_out_AvgPowerAtAltFromElectrics)
+        Me.pnl_M2_Displays.Location = New System.Drawing.Point(381, 33)
+        Me.pnl_M2_Displays.Name = "pnl_M2_Displays"
+        Me.pnl_M2_Displays.Size = New System.Drawing.Size(200, 100)
+        Me.pnl_M2_Displays.TabIndex = 28
+        '
+        'lblM2_AvgPwrDmdAtCrankFromElectrics
+        '
+        Me.lblM2_AvgPwrDmdAtCrankFromElectrics.AutoSize = true
+        Me.lblM2_AvgPwrDmdAtCrankFromElectrics.Location = New System.Drawing.Point(7, 52)
+        Me.lblM2_AvgPwrDmdAtCrankFromElectrics.Name = "lblM2_AvgPwrDmdAtCrankFromElectrics"
+        Me.lblM2_AvgPwrDmdAtCrankFromElectrics.Size = New System.Drawing.Size(177, 13)
+        Me.lblM2_AvgPwrDmdAtCrankFromElectrics.TabIndex = 3
+        Me.lblM2_AvgPwrDmdAtCrankFromElectrics.Text = "Avg Pwr Dmd@Crank from Electrics"
+        '
+        'lblM2_AveragePowerDemandAtAlternatorFromElectrics
+        '
+        Me.lblM2_AveragePowerDemandAtAlternatorFromElectrics.AutoSize = true
+        Me.lblM2_AveragePowerDemandAtAlternatorFromElectrics.Location = New System.Drawing.Point(8, 9)
+        Me.lblM2_AveragePowerDemandAtAlternatorFromElectrics.Name = "lblM2_AveragePowerDemandAtAlternatorFromElectrics"
+        Me.lblM2_AveragePowerDemandAtAlternatorFromElectrics.Size = New System.Drawing.Size(170, 13)
+        Me.lblM2_AveragePowerDemandAtAlternatorFromElectrics.TabIndex = 2
+        Me.lblM2_AveragePowerDemandAtAlternatorFromElectrics.Text = "Avg Pwr Dmd @ Alt From Electrics"
+        '
+        'txtM2_out_AvgPowerAtCrankFromElectrics
+        '
+        Me.txtM2_out_AvgPowerAtCrankFromElectrics.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.txtM2_out_AvgPowerAtCrankFromElectrics.Location = New System.Drawing.Point(8, 68)
+        Me.txtM2_out_AvgPowerAtCrankFromElectrics.Name = "txtM2_out_AvgPowerAtCrankFromElectrics"
+        Me.txtM2_out_AvgPowerAtCrankFromElectrics.Size = New System.Drawing.Size(100, 20)
+        Me.txtM2_out_AvgPowerAtCrankFromElectrics.TabIndex = 1
+        '
+        'txtM2_out_AvgPowerAtAltFromElectrics
+        '
+        Me.txtM2_out_AvgPowerAtAltFromElectrics.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.txtM2_out_AvgPowerAtAltFromElectrics.Location = New System.Drawing.Point(9, 25)
+        Me.txtM2_out_AvgPowerAtAltFromElectrics.Name = "txtM2_out_AvgPowerAtAltFromElectrics"
+        Me.txtM2_out_AvgPowerAtAltFromElectrics.Size = New System.Drawing.Size(100, 20)
+        Me.txtM2_out_AvgPowerAtAltFromElectrics.TabIndex = 0
+        '
+        'lblM1_HVACAverageLoad
+        '
+        Me.lblM1_HVACAverageLoad.AutoSize = true
+        Me.lblM1_HVACAverageLoad.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblM1_HVACAverageLoad.Location = New System.Drawing.Point(164, 423)
+        Me.lblM1_HVACAverageLoad.Name = "lblM1_HVACAverageLoad"
+        Me.lblM1_HVACAverageLoad.Size = New System.Drawing.Size(143, 13)
+        Me.lblM1_HVACAverageLoad.TabIndex = 27
+        Me.lblM1_HVACAverageLoad.Text = "M1-HVAC_AverageLoad"
+        '
+        'pnl_M1_Displays
+        '
+        Me.pnl_M1_Displays.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnl_M1_Displays.Controls.Add(Me.lblM1_HVACFuelling)
+        Me.pnl_M1_Displays.Controls.Add(Me.lblM1_AvgPowerDemandAtCrankHVACElectrics)
+        Me.pnl_M1_Displays.Controls.Add(Me.lblM1_AveragePowerDemandAtAlternatorElectrics)
+        Me.pnl_M1_Displays.Controls.Add(Me.lblM1_AveragePowerDemandAtCrank)
+        Me.pnl_M1_Displays.Controls.Add(Me.txtM1_out_HVACFuelling)
+        Me.pnl_M1_Displays.Controls.Add(Me.txtM1_out_AvgPwrAtCrankFromHVACElec)
+        Me.pnl_M1_Displays.Controls.Add(Me.txtM1_out_AvgPowerDemandAtAlternatorHvacElectrics)
+        Me.pnl_M1_Displays.Controls.Add(Me.txtM1_out_AvgPowerDemandAtCrankMech)
+        Me.pnl_M1_Displays.Location = New System.Drawing.Point(166, 442)
+        Me.pnl_M1_Displays.Name = "pnl_M1_Displays"
+        Me.pnl_M1_Displays.Size = New System.Drawing.Size(200, 176)
+        Me.pnl_M1_Displays.TabIndex = 26
+        '
+        'lblM1_HVACFuelling
+        '
+        Me.lblM1_HVACFuelling.AutoSize = true
+        Me.lblM1_HVACFuelling.Location = New System.Drawing.Point(4, 133)
+        Me.lblM1_HVACFuelling.Name = "lblM1_HVACFuelling"
+        Me.lblM1_HVACFuelling.Size = New System.Drawing.Size(75, 13)
+        Me.lblM1_HVACFuelling.TabIndex = 7
+        Me.lblM1_HVACFuelling.Text = "HVAC Fuelling"
+        '
+        'lblM1_AvgPowerDemandAtCrankHVACElectrics
+        '
+        Me.lblM1_AvgPowerDemandAtCrankHVACElectrics.AutoSize = true
+        Me.lblM1_AvgPowerDemandAtCrankHVACElectrics.Location = New System.Drawing.Point(4, 92)
+        Me.lblM1_AvgPowerDemandAtCrankHVACElectrics.Name = "lblM1_AvgPowerDemandAtCrankHVACElectrics"
+        Me.lblM1_AvgPowerDemandAtCrankHVACElectrics.Size = New System.Drawing.Size(173, 13)
+        Me.lblM1_AvgPowerDemandAtCrankHVACElectrics.TabIndex = 6
+        Me.lblM1_AvgPowerDemandAtCrankHVACElectrics.Text = "Avg Pwr Dmd @ Crank HVAC Elec"
+        '
+        'lblM1_AveragePowerDemandAtAlternatorElectrics
+        '
+        Me.lblM1_AveragePowerDemandAtAlternatorElectrics.AutoSize = true
+        Me.lblM1_AveragePowerDemandAtAlternatorElectrics.Location = New System.Drawing.Point(5, 51)
+        Me.lblM1_AveragePowerDemandAtAlternatorElectrics.Name = "lblM1_AveragePowerDemandAtAlternatorElectrics"
+        Me.lblM1_AveragePowerDemandAtAlternatorElectrics.Size = New System.Drawing.Size(176, 13)
+        Me.lblM1_AveragePowerDemandAtAlternatorElectrics.TabIndex = 5
+        Me.lblM1_AveragePowerDemandAtAlternatorElectrics.Text = "Avg Pwr Dmd @ Alt HVAC Electrics"
+        '
+        'lblM1_AveragePowerDemandAtCrank
+        '
+        Me.lblM1_AveragePowerDemandAtCrank.AutoSize = true
+        Me.lblM1_AveragePowerDemandAtCrank.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblM1_AveragePowerDemandAtCrank.Location = New System.Drawing.Point(6, 8)
+        Me.lblM1_AveragePowerDemandAtCrank.Name = "lblM1_AveragePowerDemandAtCrank"
+        Me.lblM1_AveragePowerDemandAtCrank.Size = New System.Drawing.Size(147, 13)
+        Me.lblM1_AveragePowerDemandAtCrank.TabIndex = 4
+        Me.lblM1_AveragePowerDemandAtCrank.Text = "Avg Pwr Dmd @ Crank Mech"
+        '
+        'txtM1_out_HVACFuelling
+        '
+        Me.txtM1_out_HVACFuelling.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.txtM1_out_HVACFuelling.Location = New System.Drawing.Point(7, 149)
+        Me.txtM1_out_HVACFuelling.Name = "txtM1_out_HVACFuelling"
+        Me.txtM1_out_HVACFuelling.Size = New System.Drawing.Size(100, 20)
+        Me.txtM1_out_HVACFuelling.TabIndex = 3
+        '
+        'txtM1_out_AvgPwrAtCrankFromHVACElec
+        '
+        Me.txtM1_out_AvgPwrAtCrankFromHVACElec.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.txtM1_out_AvgPwrAtCrankFromHVACElec.Location = New System.Drawing.Point(7, 108)
+        Me.txtM1_out_AvgPwrAtCrankFromHVACElec.Name = "txtM1_out_AvgPwrAtCrankFromHVACElec"
+        Me.txtM1_out_AvgPwrAtCrankFromHVACElec.Size = New System.Drawing.Size(100, 20)
+        Me.txtM1_out_AvgPwrAtCrankFromHVACElec.TabIndex = 2
+        '
+        'txtM1_out_AvgPowerDemandAtAlternatorHvacElectrics
+        '
+        Me.txtM1_out_AvgPowerDemandAtAlternatorHvacElectrics.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.txtM1_out_AvgPowerDemandAtAlternatorHvacElectrics.Location = New System.Drawing.Point(7, 65)
+        Me.txtM1_out_AvgPowerDemandAtAlternatorHvacElectrics.Name = "txtM1_out_AvgPowerDemandAtAlternatorHvacElectrics"
+        Me.txtM1_out_AvgPowerDemandAtAlternatorHvacElectrics.Size = New System.Drawing.Size(100, 20)
+        Me.txtM1_out_AvgPowerDemandAtAlternatorHvacElectrics.TabIndex = 1
+        '
+        'txtM1_out_AvgPowerDemandAtCrankMech
+        '
+        Me.txtM1_out_AvgPowerDemandAtCrankMech.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.txtM1_out_AvgPowerDemandAtCrankMech.Location = New System.Drawing.Point(7, 24)
+        Me.txtM1_out_AvgPowerDemandAtCrankMech.Name = "txtM1_out_AvgPowerDemandAtCrankMech"
+        Me.txtM1_out_AvgPowerDemandAtCrankMech.Size = New System.Drawing.Size(100, 20)
+        Me.txtM1_out_AvgPowerDemandAtCrankMech.TabIndex = 0
+        '
+        'lblM05SmartalternatorSetEfficiency
+        '
+        Me.lblM05SmartalternatorSetEfficiency.AutoSize = true
+        Me.lblM05SmartalternatorSetEfficiency.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblM05SmartalternatorSetEfficiency.Location = New System.Drawing.Point(163, 141)
+        Me.lblM05SmartalternatorSetEfficiency.Name = "lblM05SmartalternatorSetEfficiency"
+        Me.lblM05SmartalternatorSetEfficiency.Size = New System.Drawing.Size(169, 13)
+        Me.lblM05SmartalternatorSetEfficiency.TabIndex = 25
+        Me.lblM05SmartalternatorSetEfficiency.Text = "M05-Smart Alt Set Efficiency"
+        '
+        'pnl_M05_Displays
+        '
+        Me.pnl_M05_Displays.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnl_M05_Displays.Controls.Add(Me.lblM05_AlternatorsEfficiencyOverrun)
+        Me.pnl_M05_Displays.Controls.Add(Me.lblM05SmartOverrunCurrent)
+        Me.pnl_M05_Displays.Controls.Add(Me.lblM05_AlternatorsEfficiencyTraction)
+        Me.pnl_M05_Displays.Controls.Add(Me.lblM05_SmartTractionCurrent)
+        Me.pnl_M05_Displays.Controls.Add(Me.lblM05AlternatorsEfficiencyIdle)
+        Me.pnl_M05_Displays.Controls.Add(Me.lblM05_SmartIdleCurrent)
+        Me.pnl_M05_Displays.Controls.Add(Me.txtM05_out_AlternatorsEfficiencyOverrun)
+        Me.pnl_M05_Displays.Controls.Add(Me.txtM05_out_SmartOverrunCurrent)
+        Me.pnl_M05_Displays.Controls.Add(Me.txtM05_out_AlternatorsEfficiencyTraction)
+        Me.pnl_M05_Displays.Controls.Add(Me.txtM05_out_SmartTractionCurrent)
+        Me.pnl_M05_Displays.Controls.Add(Me.txtM05_Out_AlternatorsEfficiencyIdle)
+        Me.pnl_M05_Displays.Controls.Add(Me.txtM05_OutSmartIdleCurrent)
+        Me.pnl_M05_Displays.Location = New System.Drawing.Point(164, 158)
+        Me.pnl_M05_Displays.Name = "pnl_M05_Displays"
+        Me.pnl_M05_Displays.Size = New System.Drawing.Size(199, 259)
+        Me.pnl_M05_Displays.TabIndex = 24
+        '
+        'lblM05_AlternatorsEfficiencyOverrun
+        '
+        Me.lblM05_AlternatorsEfficiencyOverrun.AutoSize = true
+        Me.lblM05_AlternatorsEfficiencyOverrun.Location = New System.Drawing.Point(11, 213)
+        Me.lblM05_AlternatorsEfficiencyOverrun.Name = "lblM05_AlternatorsEfficiencyOverrun"
+        Me.lblM05_AlternatorsEfficiencyOverrun.Size = New System.Drawing.Size(147, 13)
+        Me.lblM05_AlternatorsEfficiencyOverrun.TabIndex = 11
+        Me.lblM05_AlternatorsEfficiencyOverrun.Text = "Alternators Efficiency Overrun"
+        '
+        'lblM05SmartOverrunCurrent
+        '
+        Me.lblM05SmartOverrunCurrent.AutoSize = true
+        Me.lblM05SmartOverrunCurrent.Location = New System.Drawing.Point(11, 172)
+        Me.lblM05SmartOverrunCurrent.Name = "lblM05SmartOverrunCurrent"
+        Me.lblM05SmartOverrunCurrent.Size = New System.Drawing.Size(112, 13)
+        Me.lblM05SmartOverrunCurrent.TabIndex = 10
+        Me.lblM05SmartOverrunCurrent.Text = "Smart Overrun Current"
+        '
+        'lblM05_AlternatorsEfficiencyTraction
+        '
+        Me.lblM05_AlternatorsEfficiencyTraction.AutoSize = true
+        Me.lblM05_AlternatorsEfficiencyTraction.Location = New System.Drawing.Point(10, 130)
+        Me.lblM05_AlternatorsEfficiencyTraction.Name = "lblM05_AlternatorsEfficiencyTraction"
+        Me.lblM05_AlternatorsEfficiencyTraction.Size = New System.Drawing.Size(148, 13)
+        Me.lblM05_AlternatorsEfficiencyTraction.TabIndex = 9
+        Me.lblM05_AlternatorsEfficiencyTraction.Text = "Alternators Efficiency Traction"
+        '
+        'lblM05_SmartTractionCurrent
+        '
+        Me.lblM05_SmartTractionCurrent.AutoSize = true
+        Me.lblM05_SmartTractionCurrent.Location = New System.Drawing.Point(10, 87)
+        Me.lblM05_SmartTractionCurrent.Name = "lblM05_SmartTractionCurrent"
+        Me.lblM05_SmartTractionCurrent.Size = New System.Drawing.Size(113, 13)
+        Me.lblM05_SmartTractionCurrent.TabIndex = 8
+        Me.lblM05_SmartTractionCurrent.Text = "Smart Traction Current"
+        '
+        'lblM05AlternatorsEfficiencyIdle
+        '
+        Me.lblM05AlternatorsEfficiencyIdle.AutoSize = true
+        Me.lblM05AlternatorsEfficiencyIdle.Location = New System.Drawing.Point(11, 45)
+        Me.lblM05AlternatorsEfficiencyIdle.Name = "lblM05AlternatorsEfficiencyIdle"
+        Me.lblM05AlternatorsEfficiencyIdle.Size = New System.Drawing.Size(126, 13)
+        Me.lblM05AlternatorsEfficiencyIdle.TabIndex = 7
+        Me.lblM05AlternatorsEfficiencyIdle.Text = "Alternators Efficiency Idle"
+        '
+        'lblM05_SmartIdleCurrent
+        '
+        Me.lblM05_SmartIdleCurrent.AutoSize = true
+        Me.lblM05_SmartIdleCurrent.Location = New System.Drawing.Point(11, 5)
+        Me.lblM05_SmartIdleCurrent.Name = "lblM05_SmartIdleCurrent"
+        Me.lblM05_SmartIdleCurrent.Size = New System.Drawing.Size(91, 13)
+        Me.lblM05_SmartIdleCurrent.TabIndex = 6
+        Me.lblM05_SmartIdleCurrent.Text = "Smart Idle Current"
+        '
+        'txtM05_out_AlternatorsEfficiencyOverrun
+        '
+        Me.txtM05_out_AlternatorsEfficiencyOverrun.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.txtM05_out_AlternatorsEfficiencyOverrun.Location = New System.Drawing.Point(11, 226)
+        Me.txtM05_out_AlternatorsEfficiencyOverrun.Name = "txtM05_out_AlternatorsEfficiencyOverrun"
+        Me.txtM05_out_AlternatorsEfficiencyOverrun.Size = New System.Drawing.Size(100, 20)
+        Me.txtM05_out_AlternatorsEfficiencyOverrun.TabIndex = 5
+        '
+        'txtM05_out_SmartOverrunCurrent
+        '
+        Me.txtM05_out_SmartOverrunCurrent.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.txtM05_out_SmartOverrunCurrent.Location = New System.Drawing.Point(11, 187)
+        Me.txtM05_out_SmartOverrunCurrent.Name = "txtM05_out_SmartOverrunCurrent"
+        Me.txtM05_out_SmartOverrunCurrent.Size = New System.Drawing.Size(100, 20)
+        Me.txtM05_out_SmartOverrunCurrent.TabIndex = 4
+        '
+        'txtM05_out_AlternatorsEfficiencyTraction
+        '
+        Me.txtM05_out_AlternatorsEfficiencyTraction.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.txtM05_out_AlternatorsEfficiencyTraction.Location = New System.Drawing.Point(11, 143)
+        Me.txtM05_out_AlternatorsEfficiencyTraction.Name = "txtM05_out_AlternatorsEfficiencyTraction"
+        Me.txtM05_out_AlternatorsEfficiencyTraction.Size = New System.Drawing.Size(100, 20)
+        Me.txtM05_out_AlternatorsEfficiencyTraction.TabIndex = 3
+        '
+        'txtM05_out_SmartTractionCurrent
+        '
+        Me.txtM05_out_SmartTractionCurrent.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.txtM05_out_SmartTractionCurrent.Location = New System.Drawing.Point(11, 102)
+        Me.txtM05_out_SmartTractionCurrent.Name = "txtM05_out_SmartTractionCurrent"
+        Me.txtM05_out_SmartTractionCurrent.Size = New System.Drawing.Size(100, 20)
+        Me.txtM05_out_SmartTractionCurrent.TabIndex = 2
+        '
+        'txtM05_Out_AlternatorsEfficiencyIdle
+        '
+        Me.txtM05_Out_AlternatorsEfficiencyIdle.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.txtM05_Out_AlternatorsEfficiencyIdle.Location = New System.Drawing.Point(11, 60)
+        Me.txtM05_Out_AlternatorsEfficiencyIdle.Name = "txtM05_Out_AlternatorsEfficiencyIdle"
+        Me.txtM05_Out_AlternatorsEfficiencyIdle.Size = New System.Drawing.Size(100, 20)
+        Me.txtM05_Out_AlternatorsEfficiencyIdle.TabIndex = 1
+        '
+        'txtM05_OutSmartIdleCurrent
+        '
+        Me.txtM05_OutSmartIdleCurrent.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.txtM05_OutSmartIdleCurrent.Location = New System.Drawing.Point(11, 19)
+        Me.txtM05_OutSmartIdleCurrent.Name = "txtM05_OutSmartIdleCurrent"
+        Me.txtM05_OutSmartIdleCurrent.Size = New System.Drawing.Size(100, 20)
+        Me.txtM05_OutSmartIdleCurrent.TabIndex = 0
         '
         'lblM0Outputs
         '
         Me.lblM0Outputs.AutoSize = true
         Me.lblM0Outputs.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblM0Outputs.Location = New System.Drawing.Point(164, 29)
+        Me.lblM0Outputs.Location = New System.Drawing.Point(164, 13)
         Me.lblM0Outputs.Name = "lblM0Outputs"
-        Me.lblM0Outputs.Size = New System.Drawing.Size(229, 13)
+        Me.lblM0Outputs.Size = New System.Drawing.Size(189, 13)
         Me.lblM0Outputs.TabIndex = 23
-        Me.lblM0Outputs.Text = "M0-Non-Smart Alternator Set Efficiency"
+        Me.lblM0Outputs.Text = "M0-Non-Smart Alt Set Efficiency"
         '
-        'Panel1
+        'pnl_M0_Displays
         '
-        Me.Panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Panel1.Controls.Add(Me.lblOutHVACElectricalCurrentDemand)
-        Me.Panel1.Controls.Add(Me.lblAlternatorsEfficiency)
-        Me.Panel1.Controls.Add(Me.txtM0_Out_AlternatorsEfficiency)
-        Me.Panel1.Controls.Add(Me.txtM0_Out_HVacElectricalCurrentDemand)
-        Me.Panel1.ForeColor = System.Drawing.Color.Black
-        Me.Panel1.Location = New System.Drawing.Point(164, 49)
-        Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(223, 100)
-        Me.Panel1.TabIndex = 22
+        Me.pnl_M0_Displays.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnl_M0_Displays.Controls.Add(Me.lblOutHVACElectricalCurrentDemand)
+        Me.pnl_M0_Displays.Controls.Add(Me.lblAlternatorsEfficiency)
+        Me.pnl_M0_Displays.Controls.Add(Me.txtM0_Out_AlternatorsEfficiency)
+        Me.pnl_M0_Displays.Controls.Add(Me.txtM0_Out_HVacElectricalCurrentDemand)
+        Me.pnl_M0_Displays.ForeColor = System.Drawing.Color.Black
+        Me.pnl_M0_Displays.Location = New System.Drawing.Point(164, 33)
+        Me.pnl_M0_Displays.Name = "pnl_M0_Displays"
+        Me.pnl_M0_Displays.Size = New System.Drawing.Size(199, 100)
+        Me.pnl_M0_Displays.TabIndex = 22
         '
         'lblOutHVACElectricalCurrentDemand
         '
         Me.lblOutHVACElectricalCurrentDemand.AutoSize = true
-        Me.lblOutHVACElectricalCurrentDemand.Location = New System.Drawing.Point(32, 6)
+        Me.lblOutHVACElectricalCurrentDemand.Location = New System.Drawing.Point(9, 8)
         Me.lblOutHVACElectricalCurrentDemand.Name = "lblOutHVACElectricalCurrentDemand"
-        Me.lblOutHVACElectricalCurrentDemand.Size = New System.Drawing.Size(182, 13)
+        Me.lblOutHVACElectricalCurrentDemand.Size = New System.Drawing.Size(162, 13)
         Me.lblOutHVACElectricalCurrentDemand.TabIndex = 25
-        Me.lblOutHVACElectricalCurrentDemand.Text = "Out HVAC Electrical Current Demand"
+        Me.lblOutHVACElectricalCurrentDemand.Text = "HVAC Electrical Current Demand"
         '
         'lblAlternatorsEfficiency
         '
         Me.lblAlternatorsEfficiency.AutoSize = true
-        Me.lblAlternatorsEfficiency.Location = New System.Drawing.Point(29, 52)
+        Me.lblAlternatorsEfficiency.Location = New System.Drawing.Point(9, 49)
         Me.lblAlternatorsEfficiency.Name = "lblAlternatorsEfficiency"
         Me.lblAlternatorsEfficiency.Size = New System.Drawing.Size(106, 13)
         Me.lblAlternatorsEfficiency.TabIndex = 24
@@ -1302,7 +1587,7 @@ Partial Class Dashboard
         'txtM0_Out_AlternatorsEfficiency
         '
         Me.txtM0_Out_AlternatorsEfficiency.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
-        Me.txtM0_Out_AlternatorsEfficiency.Location = New System.Drawing.Point(32, 68)
+        Me.txtM0_Out_AlternatorsEfficiency.Location = New System.Drawing.Point(12, 65)
         Me.txtM0_Out_AlternatorsEfficiency.Name = "txtM0_Out_AlternatorsEfficiency"
         Me.txtM0_Out_AlternatorsEfficiency.Size = New System.Drawing.Size(100, 20)
         Me.txtM0_Out_AlternatorsEfficiency.TabIndex = 1
@@ -1310,7 +1595,7 @@ Partial Class Dashboard
         'txtM0_Out_HVacElectricalCurrentDemand
         '
         Me.txtM0_Out_HVacElectricalCurrentDemand.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
-        Me.txtM0_Out_HVacElectricalCurrentDemand.Location = New System.Drawing.Point(32, 25)
+        Me.txtM0_Out_HVacElectricalCurrentDemand.Location = New System.Drawing.Point(9, 25)
         Me.txtM0_Out_HVacElectricalCurrentDemand.Name = "txtM0_Out_HVacElectricalCurrentDemand"
         Me.txtM0_Out_HVacElectricalCurrentDemand.Size = New System.Drawing.Size(100, 20)
         Me.txtM0_Out_HVacElectricalCurrentDemand.TabIndex = 0
@@ -1318,7 +1603,7 @@ Partial Class Dashboard
         'chkClutchEngaged
         '
         Me.chkClutchEngaged.AutoSize = true
-        Me.chkClutchEngaged.Location = New System.Drawing.Point(25, 29)
+        Me.chkClutchEngaged.Location = New System.Drawing.Point(25, 13)
         Me.chkClutchEngaged.Name = "chkClutchEngaged"
         Me.chkClutchEngaged.Size = New System.Drawing.Size(102, 17)
         Me.chkClutchEngaged.TabIndex = 20
@@ -1328,7 +1613,7 @@ Partial Class Dashboard
         'lblTotalCycleTimeSeconds
         '
         Me.lblTotalCycleTimeSeconds.AutoSize = true
-        Me.lblTotalCycleTimeSeconds.Location = New System.Drawing.Point(25, 246)
+        Me.lblTotalCycleTimeSeconds.Location = New System.Drawing.Point(25, 230)
         Me.lblTotalCycleTimeSeconds.Name = "lblTotalCycleTimeSeconds"
         Me.lblTotalCycleTimeSeconds.Size = New System.Drawing.Size(134, 13)
         Me.lblTotalCycleTimeSeconds.TabIndex = 14
@@ -1337,7 +1622,7 @@ Partial Class Dashboard
         'lblEngineSpeed
         '
         Me.lblEngineSpeed.AutoSize = true
-        Me.lblEngineSpeed.Location = New System.Drawing.Point(23, 201)
+        Me.lblEngineSpeed.Location = New System.Drawing.Point(23, 185)
         Me.lblEngineSpeed.Name = "lblEngineSpeed"
         Me.lblEngineSpeed.Size = New System.Drawing.Size(107, 13)
         Me.lblEngineSpeed.TabIndex = 13
@@ -1346,7 +1631,7 @@ Partial Class Dashboard
         'lblEngineMotoringPower
         '
         Me.lblEngineMotoringPower.AutoSize = true
-        Me.lblEngineMotoringPower.Location = New System.Drawing.Point(24, 157)
+        Me.lblEngineMotoringPower.Location = New System.Drawing.Point(24, 141)
         Me.lblEngineMotoringPower.Name = "lblEngineMotoringPower"
         Me.lblEngineMotoringPower.Size = New System.Drawing.Size(117, 13)
         Me.lblEngineMotoringPower.TabIndex = 12
@@ -1355,7 +1640,7 @@ Partial Class Dashboard
         'lblEngineDrivelineTorque
         '
         Me.lblEngineDrivelineTorque.AutoSize = true
-        Me.lblEngineDrivelineTorque.Location = New System.Drawing.Point(24, 112)
+        Me.lblEngineDrivelineTorque.Location = New System.Drawing.Point(24, 96)
         Me.lblEngineDrivelineTorque.Name = "lblEngineDrivelineTorque"
         Me.lblEngineDrivelineTorque.Size = New System.Drawing.Size(121, 13)
         Me.lblEngineDrivelineTorque.TabIndex = 11
@@ -1364,7 +1649,7 @@ Partial Class Dashboard
         'lblEngineDrivelinePower
         '
         Me.lblEngineDrivelinePower.AutoSize = true
-        Me.lblEngineDrivelinePower.Location = New System.Drawing.Point(22, 70)
+        Me.lblEngineDrivelinePower.Location = New System.Drawing.Point(22, 54)
         Me.lblEngineDrivelinePower.Name = "lblEngineDrivelinePower"
         Me.lblEngineDrivelinePower.Size = New System.Drawing.Size(120, 13)
         Me.lblEngineDrivelinePower.TabIndex = 10
@@ -1372,35 +1657,35 @@ Partial Class Dashboard
         '
         'txtTotalCycleTimeSeconds
         '
-        Me.txtTotalCycleTimeSeconds.Location = New System.Drawing.Point(25, 263)
+        Me.txtTotalCycleTimeSeconds.Location = New System.Drawing.Point(25, 247)
         Me.txtTotalCycleTimeSeconds.Name = "txtTotalCycleTimeSeconds"
         Me.txtTotalCycleTimeSeconds.Size = New System.Drawing.Size(100, 20)
         Me.txtTotalCycleTimeSeconds.TabIndex = 5
         '
         'txtEngineSpeed
         '
-        Me.txtEngineSpeed.Location = New System.Drawing.Point(25, 214)
+        Me.txtEngineSpeed.Location = New System.Drawing.Point(25, 198)
         Me.txtEngineSpeed.Name = "txtEngineSpeed"
         Me.txtEngineSpeed.Size = New System.Drawing.Size(100, 20)
         Me.txtEngineSpeed.TabIndex = 4
         '
         'txtEngineMotoringPower
         '
-        Me.txtEngineMotoringPower.Location = New System.Drawing.Point(25, 174)
+        Me.txtEngineMotoringPower.Location = New System.Drawing.Point(25, 158)
         Me.txtEngineMotoringPower.Name = "txtEngineMotoringPower"
         Me.txtEngineMotoringPower.Size = New System.Drawing.Size(100, 20)
         Me.txtEngineMotoringPower.TabIndex = 3
         '
         'txtEngineDrivelineTorque
         '
-        Me.txtEngineDrivelineTorque.Location = New System.Drawing.Point(25, 129)
+        Me.txtEngineDrivelineTorque.Location = New System.Drawing.Point(25, 113)
         Me.txtEngineDrivelineTorque.Name = "txtEngineDrivelineTorque"
         Me.txtEngineDrivelineTorque.Size = New System.Drawing.Size(100, 20)
         Me.txtEngineDrivelineTorque.TabIndex = 2
         '
         'txtEngineDrivelinePower
         '
-        Me.txtEngineDrivelinePower.Location = New System.Drawing.Point(25, 85)
+        Me.txtEngineDrivelinePower.Location = New System.Drawing.Point(25, 69)
         Me.txtEngineDrivelinePower.Name = "txtEngineDrivelinePower"
         Me.txtEngineDrivelinePower.Size = New System.Drawing.Size(100, 20)
         Me.txtEngineDrivelinePower.TabIndex = 1
@@ -1424,268 +1709,154 @@ Partial Class Dashboard
         'Timer1
         '
         '
-        'lblM05SmartalternatorSetEfficiency
+        'pnl_M3_Displays
         '
-        Me.lblM05SmartalternatorSetEfficiency.AutoSize = true
-        Me.lblM05SmartalternatorSetEfficiency.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblM05SmartalternatorSetEfficiency.Location = New System.Drawing.Point(163, 157)
-        Me.lblM05SmartalternatorSetEfficiency.Name = "lblM05SmartalternatorSetEfficiency"
-        Me.lblM05SmartalternatorSetEfficiency.Size = New System.Drawing.Size(209, 13)
-        Me.lblM05SmartalternatorSetEfficiency.TabIndex = 25
-        Me.lblM05SmartalternatorSetEfficiency.Text = "M05-Smart Alternator Set Efficiency"
+        Me.pnl_M3_Displays.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnl_M3_Displays.Controls.Add(Me.lblM3_TotAirConsumptionPerCycleLitres)
+        Me.pnl_M3_Displays.Controls.Add(Me.lbl_M3_AvgPowerAtCrankFromPneumatics)
+        Me.pnl_M3_Displays.Controls.Add(Me.txtM3_out_TotalAirConsumedPerCycleInLitres)
+        Me.pnl_M3_Displays.Controls.Add(Me.txtM3_out_AveragePowerAtCrankFromPneumatics)
+        Me.pnl_M3_Displays.Location = New System.Drawing.Point(379, 159)
+        Me.pnl_M3_Displays.Name = "pnl_M3_Displays"
+        Me.pnl_M3_Displays.Size = New System.Drawing.Size(200, 100)
+        Me.pnl_M3_Displays.TabIndex = 30
         '
-        'txtM05_OutSmartIdleCurrent
+        'lblM3_AveragePneumaticLoad
         '
-        Me.txtM05_OutSmartIdleCurrent.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
-        Me.txtM05_OutSmartIdleCurrent.Location = New System.Drawing.Point(32, 19)
-        Me.txtM05_OutSmartIdleCurrent.Name = "txtM05_OutSmartIdleCurrent"
-        Me.txtM05_OutSmartIdleCurrent.Size = New System.Drawing.Size(100, 20)
-        Me.txtM05_OutSmartIdleCurrent.TabIndex = 0
+        Me.lblM3_AveragePneumaticLoad.AutoSize = true
+        Me.lblM3_AveragePneumaticLoad.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblM3_AveragePneumaticLoad.Location = New System.Drawing.Point(376, 141)
+        Me.lblM3_AveragePneumaticLoad.Name = "lblM3_AveragePneumaticLoad"
+        Me.lblM3_AveragePneumaticLoad.Size = New System.Drawing.Size(195, 13)
+        Me.lblM3_AveragePneumaticLoad.TabIndex = 31
+        Me.lblM3_AveragePneumaticLoad.Text = "M3-Avg Pneumatic Load Demand"
         '
-        'txtM05_Out_AlternatorsEfficiencyIdle
+        'txtM3_out_AveragePowerAtCrankFromPneumatics
         '
-        Me.txtM05_Out_AlternatorsEfficiencyIdle.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
-        Me.txtM05_Out_AlternatorsEfficiencyIdle.Location = New System.Drawing.Point(32, 64)
-        Me.txtM05_Out_AlternatorsEfficiencyIdle.Name = "txtM05_Out_AlternatorsEfficiencyIdle"
-        Me.txtM05_Out_AlternatorsEfficiencyIdle.Size = New System.Drawing.Size(100, 20)
-        Me.txtM05_Out_AlternatorsEfficiencyIdle.TabIndex = 1
+        Me.txtM3_out_AveragePowerAtCrankFromPneumatics.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.txtM3_out_AveragePowerAtCrankFromPneumatics.Location = New System.Drawing.Point(10, 22)
+        Me.txtM3_out_AveragePowerAtCrankFromPneumatics.Name = "txtM3_out_AveragePowerAtCrankFromPneumatics"
+        Me.txtM3_out_AveragePowerAtCrankFromPneumatics.Size = New System.Drawing.Size(100, 20)
+        Me.txtM3_out_AveragePowerAtCrankFromPneumatics.TabIndex = 0
         '
-        'txtM05_out_SmartTractionCurrent
+        'txtM3_out_TotalAirConsumedPerCycleInLitres
         '
-        Me.txtM05_out_SmartTractionCurrent.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
-        Me.txtM05_out_SmartTractionCurrent.Location = New System.Drawing.Point(32, 109)
-        Me.txtM05_out_SmartTractionCurrent.Name = "txtM05_out_SmartTractionCurrent"
-        Me.txtM05_out_SmartTractionCurrent.Size = New System.Drawing.Size(100, 20)
-        Me.txtM05_out_SmartTractionCurrent.TabIndex = 2
+        Me.txtM3_out_TotalAirConsumedPerCycleInLitres.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.txtM3_out_TotalAirConsumedPerCycleInLitres.Location = New System.Drawing.Point(10, 67)
+        Me.txtM3_out_TotalAirConsumedPerCycleInLitres.Name = "txtM3_out_TotalAirConsumedPerCycleInLitres"
+        Me.txtM3_out_TotalAirConsumedPerCycleInLitres.Size = New System.Drawing.Size(100, 20)
+        Me.txtM3_out_TotalAirConsumedPerCycleInLitres.TabIndex = 1
         '
-        'txtM05_out_AlternatorsEfficiencyTraction
+        'lbl_M3_AvgPowerAtCrankFromPneumatics
         '
-        Me.txtM05_out_AlternatorsEfficiencyTraction.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
-        Me.txtM05_out_AlternatorsEfficiencyTraction.Location = New System.Drawing.Point(32, 149)
-        Me.txtM05_out_AlternatorsEfficiencyTraction.Name = "txtM05_out_AlternatorsEfficiencyTraction"
-        Me.txtM05_out_AlternatorsEfficiencyTraction.Size = New System.Drawing.Size(100, 20)
-        Me.txtM05_out_AlternatorsEfficiencyTraction.TabIndex = 3
+        Me.lbl_M3_AvgPowerAtCrankFromPneumatics.AutoSize = true
+        Me.lbl_M3_AvgPowerAtCrankFromPneumatics.Location = New System.Drawing.Point(9, 4)
+        Me.lbl_M3_AvgPowerAtCrankFromPneumatics.Name = "lbl_M3_AvgPowerAtCrankFromPneumatics"
+        Me.lbl_M3_AvgPowerAtCrankFromPneumatics.Size = New System.Drawing.Size(182, 13)
+        Me.lbl_M3_AvgPowerAtCrankFromPneumatics.TabIndex = 2
+        Me.lbl_M3_AvgPowerAtCrankFromPneumatics.Text = "Avg Power@Crank From Pneumatics"
         '
-        'txtM05_out_SmartOverrunCurrent
+        'lblM3_TotAirConsumptionPerCycleLitres
         '
-        Me.txtM05_out_SmartOverrunCurrent.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
-        Me.txtM05_out_SmartOverrunCurrent.Location = New System.Drawing.Point(32, 199)
-        Me.txtM05_out_SmartOverrunCurrent.Name = "txtM05_out_SmartOverrunCurrent"
-        Me.txtM05_out_SmartOverrunCurrent.Size = New System.Drawing.Size(100, 20)
-        Me.txtM05_out_SmartOverrunCurrent.TabIndex = 4
+        Me.lblM3_TotAirConsumptionPerCycleLitres.AutoSize = true
+        Me.lblM3_TotAirConsumptionPerCycleLitres.Location = New System.Drawing.Point(8, 49)
+        Me.lblM3_TotAirConsumptionPerCycleLitres.Name = "lblM3_TotAirConsumptionPerCycleLitres"
+        Me.lblM3_TotAirConsumptionPerCycleLitres.Size = New System.Drawing.Size(136, 13)
+        Me.lblM3_TotAirConsumptionPerCycleLitres.TabIndex = 3
+        Me.lblM3_TotAirConsumptionPerCycleLitres.Text = "Total Air Cosumed/Cycle(L)"
         '
-        'txtM05_out_AlternatorsEfficiencyOverrun
+        'Panel1
         '
-        Me.txtM05_out_AlternatorsEfficiencyOverrun.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
-        Me.txtM05_out_AlternatorsEfficiencyOverrun.Location = New System.Drawing.Point(32, 240)
-        Me.txtM05_out_AlternatorsEfficiencyOverrun.Name = "txtM05_out_AlternatorsEfficiencyOverrun"
-        Me.txtM05_out_AlternatorsEfficiencyOverrun.Size = New System.Drawing.Size(100, 20)
-        Me.txtM05_out_AlternatorsEfficiencyOverrun.TabIndex = 5
+        Me.Panel1.Controls.Add(Me.lblM4_PowerAtCrankFromPSCompressorON)
+        Me.Panel1.Controls.Add(Me.lblM4_PowerAtCrankFromPSCompressorOFF)
+        Me.Panel1.Controls.Add(Me.lblM4_CompressorOnOffPowerDelta)
+        Me.Panel1.Controls.Add(Me.lblM4_CompressorFlowRate)
+        Me.Panel1.Controls.Add(Me.txtM4_out_PowerAtCrankFromPneumaticsCompressorON)
+        Me.Panel1.Controls.Add(Me.txtM4_out_PowerAtCrankFromPneumaticsCompressorOFF)
+        Me.Panel1.Controls.Add(Me.txtM4_out_CompresssorPwrOnMinusPwrOff)
+        Me.Panel1.Controls.Add(Me.txtM4_out_CompressorFlowRate)
+        Me.Panel1.Location = New System.Drawing.Point(379, 281)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(200, 179)
+        Me.Panel1.TabIndex = 32
         '
-        'lblM05_SmartIdleCurrent
+        'txtM4_out_CompressorFlowRate
         '
-        Me.lblM05_SmartIdleCurrent.AutoSize = true
-        Me.lblM05_SmartIdleCurrent.Location = New System.Drawing.Point(32, 6)
-        Me.lblM05_SmartIdleCurrent.Name = "lblM05_SmartIdleCurrent"
-        Me.lblM05_SmartIdleCurrent.Size = New System.Drawing.Size(91, 13)
-        Me.lblM05_SmartIdleCurrent.TabIndex = 6
-        Me.lblM05_SmartIdleCurrent.Text = "Smart Idle Current"
+        Me.txtM4_out_CompressorFlowRate.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.txtM4_out_CompressorFlowRate.Location = New System.Drawing.Point(13, 28)
+        Me.txtM4_out_CompressorFlowRate.Name = "txtM4_out_CompressorFlowRate"
+        Me.txtM4_out_CompressorFlowRate.Size = New System.Drawing.Size(100, 20)
+        Me.txtM4_out_CompressorFlowRate.TabIndex = 0
         '
-        'lblM05AlternatorsEfficiencyIdle
+        'txtM4_out_CompresssorPwrOnMinusPwrOff
         '
-        Me.lblM05AlternatorsEfficiencyIdle.AutoSize = true
-        Me.lblM05AlternatorsEfficiencyIdle.Location = New System.Drawing.Point(32, 46)
-        Me.lblM05AlternatorsEfficiencyIdle.Name = "lblM05AlternatorsEfficiencyIdle"
-        Me.lblM05AlternatorsEfficiencyIdle.Size = New System.Drawing.Size(126, 13)
-        Me.lblM05AlternatorsEfficiencyIdle.TabIndex = 7
-        Me.lblM05AlternatorsEfficiencyIdle.Text = "Alternators Efficiency Idle"
+        Me.txtM4_out_CompresssorPwrOnMinusPwrOff.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.txtM4_out_CompresssorPwrOnMinusPwrOff.Location = New System.Drawing.Point(13, 69)
+        Me.txtM4_out_CompresssorPwrOnMinusPwrOff.Name = "txtM4_out_CompresssorPwrOnMinusPwrOff"
+        Me.txtM4_out_CompresssorPwrOnMinusPwrOff.Size = New System.Drawing.Size(100, 20)
+        Me.txtM4_out_CompresssorPwrOnMinusPwrOff.TabIndex = 1
         '
-        'lblM05_SmartTractionCurrent
+        'txtM4_out_PowerAtCrankFromPneumaticsCompressorOFF
         '
-        Me.lblM05_SmartTractionCurrent.AutoSize = true
-        Me.lblM05_SmartTractionCurrent.Location = New System.Drawing.Point(31, 91)
-        Me.lblM05_SmartTractionCurrent.Name = "lblM05_SmartTractionCurrent"
-        Me.lblM05_SmartTractionCurrent.Size = New System.Drawing.Size(113, 13)
-        Me.lblM05_SmartTractionCurrent.TabIndex = 8
-        Me.lblM05_SmartTractionCurrent.Text = "Smart Traction Current"
+        Me.txtM4_out_PowerAtCrankFromPneumaticsCompressorOFF.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.txtM4_out_PowerAtCrankFromPneumaticsCompressorOFF.Location = New System.Drawing.Point(13, 107)
+        Me.txtM4_out_PowerAtCrankFromPneumaticsCompressorOFF.Name = "txtM4_out_PowerAtCrankFromPneumaticsCompressorOFF"
+        Me.txtM4_out_PowerAtCrankFromPneumaticsCompressorOFF.Size = New System.Drawing.Size(100, 20)
+        Me.txtM4_out_PowerAtCrankFromPneumaticsCompressorOFF.TabIndex = 2
         '
-        'lblM05_AlternatorsEfficiencyTraction
+        'txtM4_out_PowerAtCrankFromPneumaticsCompressorON
         '
-        Me.lblM05_AlternatorsEfficiencyTraction.AutoSize = true
-        Me.lblM05_AlternatorsEfficiencyTraction.Location = New System.Drawing.Point(31, 136)
-        Me.lblM05_AlternatorsEfficiencyTraction.Name = "lblM05_AlternatorsEfficiencyTraction"
-        Me.lblM05_AlternatorsEfficiencyTraction.Size = New System.Drawing.Size(148, 13)
-        Me.lblM05_AlternatorsEfficiencyTraction.TabIndex = 9
-        Me.lblM05_AlternatorsEfficiencyTraction.Text = "Alternators Efficiency Traction"
+        Me.txtM4_out_PowerAtCrankFromPneumaticsCompressorON.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.txtM4_out_PowerAtCrankFromPneumaticsCompressorON.Location = New System.Drawing.Point(13, 148)
+        Me.txtM4_out_PowerAtCrankFromPneumaticsCompressorON.Name = "txtM4_out_PowerAtCrankFromPneumaticsCompressorON"
+        Me.txtM4_out_PowerAtCrankFromPneumaticsCompressorON.Size = New System.Drawing.Size(100, 20)
+        Me.txtM4_out_PowerAtCrankFromPneumaticsCompressorON.TabIndex = 3
         '
-        'lblM05SmartOverrunCurrent
+        'lblM4_CompressorFlowRate
         '
-        Me.lblM05SmartOverrunCurrent.AutoSize = true
-        Me.lblM05SmartOverrunCurrent.Location = New System.Drawing.Point(32, 180)
-        Me.lblM05SmartOverrunCurrent.Name = "lblM05SmartOverrunCurrent"
-        Me.lblM05SmartOverrunCurrent.Size = New System.Drawing.Size(112, 13)
-        Me.lblM05SmartOverrunCurrent.TabIndex = 10
-        Me.lblM05SmartOverrunCurrent.Text = "Smart Overrun Current"
+        Me.lblM4_CompressorFlowRate.AutoSize = true
+        Me.lblM4_CompressorFlowRate.Location = New System.Drawing.Point(13, 11)
+        Me.lblM4_CompressorFlowRate.Name = "lblM4_CompressorFlowRate"
+        Me.lblM4_CompressorFlowRate.Size = New System.Drawing.Size(143, 13)
+        Me.lblM4_CompressorFlowRate.TabIndex = 4
+        Me.lblM4_CompressorFlowRate.Text = "Compressor Flow Rate L/min"
         '
-        'lblM05_AlternatorsEfficiencyOverrun
+        'lblM4_CompressorOnOffPowerDelta
         '
-        Me.lblM05_AlternatorsEfficiencyOverrun.AutoSize = true
-        Me.lblM05_AlternatorsEfficiencyOverrun.Location = New System.Drawing.Point(32, 226)
-        Me.lblM05_AlternatorsEfficiencyOverrun.Name = "lblM05_AlternatorsEfficiencyOverrun"
-        Me.lblM05_AlternatorsEfficiencyOverrun.Size = New System.Drawing.Size(147, 13)
-        Me.lblM05_AlternatorsEfficiencyOverrun.TabIndex = 11
-        Me.lblM05_AlternatorsEfficiencyOverrun.Text = "Alternators Efficiency Overrun"
+        Me.lblM4_CompressorOnOffPowerDelta.AutoSize = true
+        Me.lblM4_CompressorOnOffPowerDelta.Location = New System.Drawing.Point(13, 54)
+        Me.lblM4_CompressorOnOffPowerDelta.Name = "lblM4_CompressorOnOffPowerDelta"
+        Me.lblM4_CompressorOnOffPowerDelta.Size = New System.Drawing.Size(162, 13)
+        Me.lblM4_CompressorOnOffPowerDelta.TabIndex = 5
+        Me.lblM4_CompressorOnOffPowerDelta.Text = "Compressor PwrOn minus PwrOff"
         '
-        'Panel3
+        'lblM4_PowerAtCrankFromPSCompressorOFF
         '
-        Me.Panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Panel3.Controls.Add(Me.lblM1_HVACFuelling)
-        Me.Panel3.Controls.Add(Me.lblM1_AvgPowerDemandAtCrankHVACElectrics)
-        Me.Panel3.Controls.Add(Me.lblM1_AveragePowerDemandAtAlternatorElectrics)
-        Me.Panel3.Controls.Add(Me.lblM1_AveragePowerDemandAtCrank)
-        Me.Panel3.Controls.Add(Me.txtM1_out_HVACFuelling)
-        Me.Panel3.Controls.Add(Me.txtM1_out_AvgPwrAtCrankFromHVACElec)
-        Me.Panel3.Controls.Add(Me.txtM1_out_AvgPowerDemandAtAlternatorHvacElectrics)
-        Me.Panel3.Controls.Add(Me.txtM1_out_AvgPowerDemandAtCrankMech)
-        Me.Panel3.Location = New System.Drawing.Point(405, 49)
-        Me.Panel3.Name = "Panel3"
-        Me.Panel3.Size = New System.Drawing.Size(200, 184)
-        Me.Panel3.TabIndex = 26
+        Me.lblM4_PowerAtCrankFromPSCompressorOFF.AutoSize = true
+        Me.lblM4_PowerAtCrankFromPSCompressorOFF.Location = New System.Drawing.Point(13, 91)
+        Me.lblM4_PowerAtCrankFromPSCompressorOFF.Name = "lblM4_PowerAtCrankFromPSCompressorOFF"
+        Me.lblM4_PowerAtCrankFromPSCompressorOFF.Size = New System.Drawing.Size(185, 13)
+        Me.lblM4_PowerAtCrankFromPSCompressorOFF.TabIndex = 6
+        Me.lblM4_PowerAtCrankFromPSCompressorOFF.Text = "Pwr@Crank From PS CompressorOFF"
         '
-        'lblM1_HVACAverageLoad
+        'lblM4_PowerAtCrankFromPSCompressorON
         '
-        Me.lblM1_HVACAverageLoad.AutoSize = true
-        Me.lblM1_HVACAverageLoad.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblM1_HVACAverageLoad.Location = New System.Drawing.Point(403, 30)
-        Me.lblM1_HVACAverageLoad.Name = "lblM1_HVACAverageLoad"
-        Me.lblM1_HVACAverageLoad.Size = New System.Drawing.Size(146, 13)
-        Me.lblM1_HVACAverageLoad.TabIndex = 27
-        Me.lblM1_HVACAverageLoad.Text = "M1_HVAC_AverageLoad"
+        Me.lblM4_PowerAtCrankFromPSCompressorON.AutoSize = true
+        Me.lblM4_PowerAtCrankFromPSCompressorON.Location = New System.Drawing.Point(13, 133)
+        Me.lblM4_PowerAtCrankFromPSCompressorON.Name = "lblM4_PowerAtCrankFromPSCompressorON"
+        Me.lblM4_PowerAtCrankFromPSCompressorON.Size = New System.Drawing.Size(181, 13)
+        Me.lblM4_PowerAtCrankFromPSCompressorON.TabIndex = 7
+        Me.lblM4_PowerAtCrankFromPSCompressorON.Text = "Pwr@Crank From PS CompressorON"
         '
-        'txtM1_out_AvgPowerDemandAtCrankMech
+        'lblM4_AirCompressor
         '
-        Me.txtM1_out_AvgPowerDemandAtCrankMech.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
-        Me.txtM1_out_AvgPowerDemandAtCrankMech.Location = New System.Drawing.Point(7, 24)
-        Me.txtM1_out_AvgPowerDemandAtCrankMech.Name = "txtM1_out_AvgPowerDemandAtCrankMech"
-        Me.txtM1_out_AvgPowerDemandAtCrankMech.Size = New System.Drawing.Size(100, 20)
-        Me.txtM1_out_AvgPowerDemandAtCrankMech.TabIndex = 0
-        '
-        'txtM1_out_AvgPowerDemandAtAlternatorHvacElectrics
-        '
-        Me.txtM1_out_AvgPowerDemandAtAlternatorHvacElectrics.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
-        Me.txtM1_out_AvgPowerDemandAtAlternatorHvacElectrics.Location = New System.Drawing.Point(7, 65)
-        Me.txtM1_out_AvgPowerDemandAtAlternatorHvacElectrics.Name = "txtM1_out_AvgPowerDemandAtAlternatorHvacElectrics"
-        Me.txtM1_out_AvgPowerDemandAtAlternatorHvacElectrics.Size = New System.Drawing.Size(100, 20)
-        Me.txtM1_out_AvgPowerDemandAtAlternatorHvacElectrics.TabIndex = 1
-        '
-        'txtM1_out_AvgPwrAtCrankFromHVACElec
-        '
-        Me.txtM1_out_AvgPwrAtCrankFromHVACElec.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
-        Me.txtM1_out_AvgPwrAtCrankFromHVACElec.Location = New System.Drawing.Point(7, 108)
-        Me.txtM1_out_AvgPwrAtCrankFromHVACElec.Name = "txtM1_out_AvgPwrAtCrankFromHVACElec"
-        Me.txtM1_out_AvgPwrAtCrankFromHVACElec.Size = New System.Drawing.Size(100, 20)
-        Me.txtM1_out_AvgPwrAtCrankFromHVACElec.TabIndex = 2
-        '
-        'txtM1_out_HVACFuelling
-        '
-        Me.txtM1_out_HVACFuelling.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
-        Me.txtM1_out_HVACFuelling.Location = New System.Drawing.Point(7, 149)
-        Me.txtM1_out_HVACFuelling.Name = "txtM1_out_HVACFuelling"
-        Me.txtM1_out_HVACFuelling.Size = New System.Drawing.Size(100, 20)
-        Me.txtM1_out_HVACFuelling.TabIndex = 3
-        '
-        'lblM1_AveragePowerDemandAtCrank
-        '
-        Me.lblM1_AveragePowerDemandAtCrank.AutoSize = true
-        Me.lblM1_AveragePowerDemandAtCrank.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblM1_AveragePowerDemandAtCrank.Location = New System.Drawing.Point(6, 8)
-        Me.lblM1_AveragePowerDemandAtCrank.Name = "lblM1_AveragePowerDemandAtCrank"
-        Me.lblM1_AveragePowerDemandAtCrank.Size = New System.Drawing.Size(147, 13)
-        Me.lblM1_AveragePowerDemandAtCrank.TabIndex = 4
-        Me.lblM1_AveragePowerDemandAtCrank.Text = "Avg Pwr Dmd @ Crank Mech"
-        '
-        'lblM1_AveragePowerDemandAtAlternatorElectrics
-        '
-        Me.lblM1_AveragePowerDemandAtAlternatorElectrics.AutoSize = true
-        Me.lblM1_AveragePowerDemandAtAlternatorElectrics.Location = New System.Drawing.Point(5, 51)
-        Me.lblM1_AveragePowerDemandAtAlternatorElectrics.Name = "lblM1_AveragePowerDemandAtAlternatorElectrics"
-        Me.lblM1_AveragePowerDemandAtAlternatorElectrics.Size = New System.Drawing.Size(176, 13)
-        Me.lblM1_AveragePowerDemandAtAlternatorElectrics.TabIndex = 5
-        Me.lblM1_AveragePowerDemandAtAlternatorElectrics.Text = "Avg Pwr Dmd @ Alt HVAC Electrics"
-        '
-        'lblM1_AvgPowerDemandAtCrankHVACElectrics
-        '
-        Me.lblM1_AvgPowerDemandAtCrankHVACElectrics.AutoSize = true
-        Me.lblM1_AvgPowerDemandAtCrankHVACElectrics.Location = New System.Drawing.Point(4, 92)
-        Me.lblM1_AvgPowerDemandAtCrankHVACElectrics.Name = "lblM1_AvgPowerDemandAtCrankHVACElectrics"
-        Me.lblM1_AvgPowerDemandAtCrankHVACElectrics.Size = New System.Drawing.Size(173, 13)
-        Me.lblM1_AvgPowerDemandAtCrankHVACElectrics.TabIndex = 6
-        Me.lblM1_AvgPowerDemandAtCrankHVACElectrics.Text = "Avg Pwr Dmd @ Crank HVAC Elec"
-        '
-        'lblM1_HVACFuelling
-        '
-        Me.lblM1_HVACFuelling.AutoSize = true
-        Me.lblM1_HVACFuelling.Location = New System.Drawing.Point(4, 133)
-        Me.lblM1_HVACFuelling.Name = "lblM1_HVACFuelling"
-        Me.lblM1_HVACFuelling.Size = New System.Drawing.Size(75, 13)
-        Me.lblM1_HVACFuelling.TabIndex = 7
-        Me.lblM1_HVACFuelling.Text = "HVAC Fuelling"
-        '
-        'Panel4
-        '
-        Me.Panel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Panel4.Controls.Add(Me.lblM2_AvgPwrDmdAtCrankFromElectrics)
-        Me.Panel4.Controls.Add(Me.lblM2_AveragePowerDemandAtAlternatorFromElectrics)
-        Me.Panel4.Controls.Add(Me.txtM2_out_AvgPowerAtCrankFromElectrics)
-        Me.Panel4.Controls.Add(Me.txtM2_out_AvgPowerAtAltFromElectrics)
-        Me.Panel4.Location = New System.Drawing.Point(405, 266)
-        Me.Panel4.Name = "Panel4"
-        Me.Panel4.Size = New System.Drawing.Size(200, 128)
-        Me.Panel4.TabIndex = 28
-        '
-        'lblM2AverageElectricalLoadTitle
-        '
-        Me.lblM2AverageElectricalLoadTitle.AutoSize = true
-        Me.lblM2AverageElectricalLoadTitle.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblM2AverageElectricalLoadTitle.Location = New System.Drawing.Point(403, 248)
-        Me.lblM2AverageElectricalLoadTitle.Name = "lblM2AverageElectricalLoadTitle"
-        Me.lblM2AverageElectricalLoadTitle.Size = New System.Drawing.Size(164, 13)
-        Me.lblM2AverageElectricalLoadTitle.TabIndex = 29
-        Me.lblM2AverageElectricalLoadTitle.Text = "M2 Average Electrical Load"
-        '
-        'txtM2_out_AvgPowerAtAltFromElectrics
-        '
-        Me.txtM2_out_AvgPowerAtAltFromElectrics.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
-        Me.txtM2_out_AvgPowerAtAltFromElectrics.Location = New System.Drawing.Point(9, 25)
-        Me.txtM2_out_AvgPowerAtAltFromElectrics.Name = "txtM2_out_AvgPowerAtAltFromElectrics"
-        Me.txtM2_out_AvgPowerAtAltFromElectrics.Size = New System.Drawing.Size(100, 20)
-        Me.txtM2_out_AvgPowerAtAltFromElectrics.TabIndex = 0
-        '
-        'txtM2_out_AvgPowerAtCrankFromElectrics
-        '
-        Me.txtM2_out_AvgPowerAtCrankFromElectrics.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
-        Me.txtM2_out_AvgPowerAtCrankFromElectrics.Location = New System.Drawing.Point(8, 78)
-        Me.txtM2_out_AvgPowerAtCrankFromElectrics.Name = "txtM2_out_AvgPowerAtCrankFromElectrics"
-        Me.txtM2_out_AvgPowerAtCrankFromElectrics.Size = New System.Drawing.Size(100, 20)
-        Me.txtM2_out_AvgPowerAtCrankFromElectrics.TabIndex = 1
-        '
-        'lblM2_AveragePowerDemandAtAlternatorFromElectrics
-        '
-        Me.lblM2_AveragePowerDemandAtAlternatorFromElectrics.AutoSize = true
-        Me.lblM2_AveragePowerDemandAtAlternatorFromElectrics.Location = New System.Drawing.Point(8, 9)
-        Me.lblM2_AveragePowerDemandAtAlternatorFromElectrics.Name = "lblM2_AveragePowerDemandAtAlternatorFromElectrics"
-        Me.lblM2_AveragePowerDemandAtAlternatorFromElectrics.Size = New System.Drawing.Size(170, 13)
-        Me.lblM2_AveragePowerDemandAtAlternatorFromElectrics.TabIndex = 2
-        Me.lblM2_AveragePowerDemandAtAlternatorFromElectrics.Text = "Avg Pwr Dmd @ Alt From Electrics"
-        '
-        'lblM2_AvgPwrDmdAtCrankFromElectrics
-        '
-        Me.lblM2_AvgPwrDmdAtCrankFromElectrics.AutoSize = true
-        Me.lblM2_AvgPwrDmdAtCrankFromElectrics.Location = New System.Drawing.Point(7, 60)
-        Me.lblM2_AvgPwrDmdAtCrankFromElectrics.Name = "lblM2_AvgPwrDmdAtCrankFromElectrics"
-        Me.lblM2_AvgPwrDmdAtCrankFromElectrics.Size = New System.Drawing.Size(177, 13)
-        Me.lblM2_AvgPwrDmdAtCrankFromElectrics.TabIndex = 3
-        Me.lblM2_AvgPwrDmdAtCrankFromElectrics.Text = "Avg Pwr Dmd@Crank from Electrics"
+        Me.lblM4_AirCompressor.AutoSize = true
+        Me.lblM4_AirCompressor.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblM4_AirCompressor.Location = New System.Drawing.Point(379, 265)
+        Me.lblM4_AirCompressor.Name = "lblM4_AirCompressor"
+        Me.lblM4_AirCompressor.Size = New System.Drawing.Size(112, 13)
+        Me.lblM4_AirCompressor.TabIndex = 33
+        Me.lblM4_AirCompressor.Text = "M4-Air Compressor"
         '
         'Dashboard
         '
@@ -1715,16 +1886,20 @@ Partial Class Dashboard
         Me.tabHVACConfig.PerformLayout
         Me.tabPlayground.ResumeLayout(false)
         Me.tabPlayground.PerformLayout
-        Me.Panel2.ResumeLayout(false)
-        Me.Panel2.PerformLayout
-        Me.Panel1.ResumeLayout(false)
-        Me.Panel1.PerformLayout
+        Me.pnl_M2_Displays.ResumeLayout(false)
+        Me.pnl_M2_Displays.PerformLayout
+        Me.pnl_M1_Displays.ResumeLayout(false)
+        Me.pnl_M1_Displays.PerformLayout
+        Me.pnl_M05_Displays.ResumeLayout(false)
+        Me.pnl_M05_Displays.PerformLayout
+        Me.pnl_M0_Displays.ResumeLayout(false)
+        Me.pnl_M0_Displays.PerformLayout
         Me.resultCardContextMenu.ResumeLayout(false)
         CType(Me.ErrorProvider,System.ComponentModel.ISupportInitialize).EndInit
-        Me.Panel3.ResumeLayout(false)
-        Me.Panel3.PerformLayout
-        Me.Panel4.ResumeLayout(false)
-        Me.Panel4.PerformLayout
+        Me.pnl_M3_Displays.ResumeLayout(false)
+        Me.pnl_M3_Displays.PerformLayout
+        Me.Panel1.ResumeLayout(false)
+        Me.Panel1.PerformLayout
         Me.ResumeLayout(false)
 
 End Sub
@@ -1838,13 +2013,13 @@ End Sub
     Friend WithEvents txtEngineDrivelinePower As System.Windows.Forms.TextBox
     Friend WithEvents chkClutchEngaged As System.Windows.Forms.CheckBox
     Friend WithEvents lblM0Outputs As System.Windows.Forms.Label
-    Friend WithEvents Panel1 As System.Windows.Forms.Panel
+    Friend WithEvents pnl_M0_Displays As System.Windows.Forms.Panel
     Friend WithEvents lblAlternatorsEfficiency As System.Windows.Forms.Label
     Friend WithEvents txtM0_Out_AlternatorsEfficiency As System.Windows.Forms.TextBox
     Friend WithEvents txtM0_Out_HVacElectricalCurrentDemand As System.Windows.Forms.TextBox
     Friend WithEvents lblOutHVACElectricalCurrentDemand As System.Windows.Forms.Label
     Friend WithEvents Timer1 As System.Windows.Forms.Timer
-    Friend WithEvents Panel2 As System.Windows.Forms.Panel
+    Friend WithEvents pnl_M05_Displays As System.Windows.Forms.Panel
     Friend WithEvents lblM05SmartalternatorSetEfficiency As System.Windows.Forms.Label
     Friend WithEvents lblM05_AlternatorsEfficiencyOverrun As System.Windows.Forms.Label
     Friend WithEvents lblM05SmartOverrunCurrent As System.Windows.Forms.Label
@@ -1859,7 +2034,7 @@ End Sub
     Friend WithEvents txtM05_Out_AlternatorsEfficiencyIdle As System.Windows.Forms.TextBox
     Friend WithEvents txtM05_OutSmartIdleCurrent As System.Windows.Forms.TextBox
     Friend WithEvents lblM1_HVACAverageLoad As System.Windows.Forms.Label
-    Friend WithEvents Panel3 As System.Windows.Forms.Panel
+    Friend WithEvents pnl_M1_Displays As System.Windows.Forms.Panel
     Friend WithEvents lblM1_HVACFuelling As System.Windows.Forms.Label
     Friend WithEvents lblM1_AvgPowerDemandAtCrankHVACElectrics As System.Windows.Forms.Label
     Friend WithEvents lblM1_AveragePowerDemandAtAlternatorElectrics As System.Windows.Forms.Label
@@ -1869,9 +2044,25 @@ End Sub
     Friend WithEvents txtM1_out_AvgPowerDemandAtAlternatorHvacElectrics As System.Windows.Forms.TextBox
     Friend WithEvents txtM1_out_AvgPowerDemandAtCrankMech As System.Windows.Forms.TextBox
     Friend WithEvents lblM2AverageElectricalLoadTitle As System.Windows.Forms.Label
-    Friend WithEvents Panel4 As System.Windows.Forms.Panel
+    Friend WithEvents pnl_M2_Displays As System.Windows.Forms.Panel
     Friend WithEvents lblM2_AvgPwrDmdAtCrankFromElectrics As System.Windows.Forms.Label
     Friend WithEvents lblM2_AveragePowerDemandAtAlternatorFromElectrics As System.Windows.Forms.Label
     Friend WithEvents txtM2_out_AvgPowerAtCrankFromElectrics As System.Windows.Forms.TextBox
     Friend WithEvents txtM2_out_AvgPowerAtAltFromElectrics As System.Windows.Forms.TextBox
+    Friend WithEvents lblM3_AveragePneumaticLoad As System.Windows.Forms.Label
+    Friend WithEvents pnl_M3_Displays As System.Windows.Forms.Panel
+    Friend WithEvents lblM3_TotAirConsumptionPerCycleLitres As System.Windows.Forms.Label
+    Friend WithEvents lbl_M3_AvgPowerAtCrankFromPneumatics As System.Windows.Forms.Label
+    Friend WithEvents txtM3_out_TotalAirConsumedPerCycleInLitres As System.Windows.Forms.TextBox
+    Friend WithEvents txtM3_out_AveragePowerAtCrankFromPneumatics As System.Windows.Forms.TextBox
+    Friend WithEvents lblM4_AirCompressor As System.Windows.Forms.Label
+    Friend WithEvents Panel1 As System.Windows.Forms.Panel
+    Friend WithEvents lblM4_PowerAtCrankFromPSCompressorON As System.Windows.Forms.Label
+    Friend WithEvents lblM4_PowerAtCrankFromPSCompressorOFF As System.Windows.Forms.Label
+    Friend WithEvents lblM4_CompressorOnOffPowerDelta As System.Windows.Forms.Label
+    Friend WithEvents lblM4_CompressorFlowRate As System.Windows.Forms.Label
+    Friend WithEvents txtM4_out_PowerAtCrankFromPneumaticsCompressorON As System.Windows.Forms.TextBox
+    Friend WithEvents txtM4_out_PowerAtCrankFromPneumaticsCompressorOFF As System.Windows.Forms.TextBox
+    Friend WithEvents txtM4_out_CompresssorPwrOnMinusPwrOff As System.Windows.Forms.TextBox
+    Friend WithEvents txtM4_out_CompressorFlowRate As System.Windows.Forms.TextBox
 End Class

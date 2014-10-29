@@ -65,10 +65,10 @@ Public Sub  PowerAtCrankIdleWatts()
 
  Initialise()
  _target = New M5__SmartAlternatorSetGeneration(_m05,_powerNetVoltage,_altGearPullyEfficiency)
- Dim expected As Single =2006.922f
+ Dim expected As Single =1642.96362
  Dim actual As Single = _target.AlternatorsGenerationPowerAtCrankIdleWatts(_rpm)
 
- Assert.AreEqual( expected, CType(Math.Round( actual,3), Single))
+ Assert.AreEqual( expected,  actual)
 
 End Sub
 
@@ -77,10 +77,10 @@ Public Sub  PowerAtCrankTractionWatts()
 
  Initialise()
  _target = New M5__SmartAlternatorSetGeneration(_m05,_powerNetVoltage,_altGearPullyEfficiency)
- Dim expected As Single =2006.922
+ Dim expected As Single =1642.96362
  Dim actual As Single = _target.AlternatorsGenerationPowerAtCrankTractionOnWatts(_rpm)
 
- Assert.AreEqual( expected, CType(Math.Round(actual,3),Single))
+ Assert.AreEqual( expected, actual)
 
 End Sub
 
@@ -89,11 +89,11 @@ Public Sub  PowerAtCrankOverrunWatts()
 
  Initialise()
  _target = New M5__SmartAlternatorSetGeneration(_m05,_powerNetVoltage,_altGearPullyEfficiency)
- Dim expected As Single =2006.922
+ Dim expected As Single =1642.96362
 
  Dim actual As Single = _target.AlternatorsGenerationPowerAtCrankOverrunWatts(_rpm)
 
- Assert.AreEqual( expected,CType( Math.Round(actual,3),Single))
+ Assert.AreEqual( expected,actual)
 
 End Sub
 

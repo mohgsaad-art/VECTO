@@ -126,10 +126,10 @@ Namespace Electrics
             Dim intAmpsPre As Integer
             Dim intAmpsPost As Integer
 
-            intRpmPre = (From m In map Where m.Key.rpm < mapKey.rpm Select m.Key.rpm).Last()
-            intRpmPost = (From m In map Where m.Key.rpm > mapKey.rpm Select m.Key.rpm).First()
-            intAmpsPre = (From m In map Where m.Key.amps < mapKey.amps Select m.Key.amps).Last()
-            intAmpsPost = (From m In map Where m.Key.amps > mapKey.amps Select m.Key.amps).First()
+            intRpmPre = (From m In map Where m.Key.rpm <= mapKey.rpm Select m.Key.rpm).Last()
+            intRpmPost = (From m In map Where m.Key.rpm => mapKey.rpm Select m.Key.rpm).First()
+            intAmpsPre = (From m In map Where m.Key.amps <= mapKey.amps Select m.Key.amps).Last()
+            intAmpsPost = (From m In map Where m.Key.amps => mapKey.amps Select m.Key.amps).First()
 
             rpmPre = map(New AlternatorMapKey(intAmpsPre, intRpmPre))
             rpmPost = map(New AlternatorMapKey(intAmpsPre, intRpmPost))
@@ -157,7 +157,7 @@ Namespace Electrics
              Dim rpmEfficiencySlope As Single = dRpmEfficiency / dRpm
 
             'calculate the new values
-             Dim AB_Efficiency As Single = ((mapKey.rpm - intRpmPre) * rpmEfficiencySlope) + rpmPre.Efficiency
+             Dim AB_Efficiency As Single = If( drpm=0,rpmPre.Efficiency, ((mapKey.rpm - intRpmPre) * rpmEfficiencySlope) + rpmPre.Efficiency)
 
              '***    C-D Efficiency  ( Using Higher Amps )  
             'get the delta values for rpm and the values
@@ -168,7 +168,7 @@ Namespace Electrics
              rpmEfficiencySlope = dRpmEfficiency / dRpm
 
             'calculate the new values
-             Dim CD_Efficiency As Single = ((mapKey.rpm - intRpmPre) * rpmEfficiencySlope) + ampsPre.Efficiency
+             Dim CD_Efficiency As Single = If( dRpm=0, rpmPre.Efficiency, ((mapKey.rpm - intRpmPre) * rpmEfficiencySlope) + ampsPre.Efficiency)
 
 
              '(C-D) - (A-B) Efficiency
@@ -180,7 +180,7 @@ Namespace Electrics
              Dim ampsEfficiencySlope As Single = dAmpEfficiency / dAmps
 
              'calculate final Values
-             Dim ABCDEfficiency As Single = ((mapKey.amps - intAmpsPre) * ampsEfficiencySlope) + AB_Efficiency
+             Dim ABCDEfficiency As Single = If( dAmps=0, CD_Efficiency, ((mapKey.amps - intAmpsPre) * ampsEfficiencySlope) + AB_Efficiency)
 
 
              Return New AlternatorMapValues(ABCDEfficiency)
