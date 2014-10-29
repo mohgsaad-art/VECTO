@@ -77,7 +77,7 @@ M1 = New M1_AverageHVACLoadDemand(M0,
 M2 = New M2_AverageElectricalLoadDemand(ElectricalUserInputsConfig.ElectricalConsumers,
                                         M0,
                                         ElectricalUserInputsConfig.AlternatorGearEfficiency, 
-                                        ElectricalUserInputsConfig.PowerNetVoltage )
+                                        ElectricalUserInputsConfig.PowerNetVoltage,Signals )
 
 
 

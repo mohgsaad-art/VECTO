@@ -190,7 +190,7 @@ Public Sub EmptyOrInsufficientResultsTest()
 
 Dim resultSet As new List(Of SmartResult)
 
-Dim expected As Single = 0.1
+Dim expected As Single = 10
 Dim actual As Single = (New ResultCard(resultSet)).GetSmartCurrentResult(10)
 
 Assert.AreEqual(expected, actual)

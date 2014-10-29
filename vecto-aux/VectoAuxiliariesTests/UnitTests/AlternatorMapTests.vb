@@ -96,6 +96,58 @@ Namespace UnitTests
 
         End Sub
 
+
+         <TestCase(10, 3000)> _
+         Public Sub GetEfficiencySingleBoundary10_3000(ByVal amps As Integer, ByVal rpm As Integer)
+
+            Dim target As AlternatorMap = GetInitialisedMap()
+            Dim actual As Single = target.GetEfficiency(rpm, amps).Efficiency
+            Dim expected As Single = 0.63
+            Assert.AreEqual(expected, actual)
+
+        End Sub
+
+        <TestCase(10, 7000)> _
+         Public Sub GetEfficiencySingleBoundary10_7000(ByVal amps As Integer, ByVal rpm As Integer)
+
+            Dim target As AlternatorMap = GetInitialisedMap()
+            Dim actual As Single = target.GetEfficiency(rpm, amps).Efficiency
+            Dim expected As Single = 0.475
+            Assert.AreEqual(expected, actual)
+
+        End Sub
+
+
+        <TestCase(136, 1500)> _
+         Public Sub GetEfficiencySingleBoundary136_1500(ByVal amps As Integer, ByVal rpm As Integer)
+
+            Dim target As AlternatorMap = GetInitialisedMap()
+            Dim actual As Single = target.GetEfficiency(rpm, amps).Efficiency
+            Dim expected As Single = 0
+            Assert.AreEqual(expected, actual)
+
+        End Sub
+
+        <TestCase(136, 3000)> _
+         Public Sub GetEfficiencySingleBoundary136_3000(ByVal amps As Integer, ByVal rpm As Integer)
+
+            Dim target As AlternatorMap = GetInitialisedMap()
+            Dim actual As Single = target.GetEfficiency(rpm, amps).Efficiency
+            Dim expected As Single = 0.3347
+            Assert.AreEqual(expected, actual)
+
+        End Sub
+
+        <TestCase(136, 7000)> _
+         Public Sub GetEfficiencySingleBoundary136_7000(ByVal amps As Integer, ByVal rpm As Integer)
+
+            Dim target As AlternatorMap = GetInitialisedMap()
+            Dim actual As Single = target.GetEfficiency(rpm, amps).Efficiency
+            Dim expected As Single = 0.5953
+            Assert.AreEqual(expected, actual)
+
+        End Sub
+
         <TestCase(10, 1500)> _
         Public Sub GetEfficiencyOnLowerBoundary(ByVal amps As Integer, ByVal rpm As Integer)
 
@@ -115,7 +167,7 @@ Namespace UnitTests
 
         End Sub
         <TestCase(136, 7000)> _
-          Public Sub GetEfficiencyTopBoundary(ByVal amps As Integer, ByVal rpm As Integer)
+          Public Sub GetEfficiencyTopBoundry136_7000(ByVal amps As Integer, ByVal rpm As Integer)
 
             Dim target As AlternatorMap = GetInitialisedMap()
             Dim actual As Single = target.GetEfficiency(rpm, amps).Efficiency
@@ -125,6 +177,17 @@ Namespace UnitTests
 
         End Sub
 
+
+        <TestCase(15, 1500)> _
+          Public Sub GetEfficiency15_1500(ByVal amps As Integer, ByVal rpm As Integer)
+
+            Dim target As AlternatorMap = GetInitialisedMap()
+            Dim actual As Single = target.GetEfficiency(rpm, amps).Efficiency
+            Dim expected As Single = 0.615
+
+             Assert.AreEqual(expected, actual)
+
+        End Sub
 
 #Region "Helpers"
 

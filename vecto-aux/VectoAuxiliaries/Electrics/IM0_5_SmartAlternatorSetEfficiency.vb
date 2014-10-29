@@ -5,12 +5,12 @@ Namespace Electrics
 Public Interface IM0_5_SmartAlternatorSetEfficiency
 
 
-Function SmartIdleCurrent() As single
-Function AlternatorsEfficiencyIdleResultCard( ) As single
-Function SmartTractionCurrent As Single
-Function AlternatorsEfficiencyTractionOnResultCard() As Single
-Function SmartOverrunCurrent As Single
-Function AlternatorsEfficiencyOverrunResultCard() As single
+readonly property SmartIdleCurrent() As single
+readonly property AlternatorsEfficiencyIdleResultCard( ) As single
+readonly property SmartTractionCurrent As Single
+readonly property AlternatorsEfficiencyTractionOnResultCard() As Single
+readonly property SmartOverrunCurrent As Single
+readonly property AlternatorsEfficiencyOverrunResultCard() As single
 
 
 

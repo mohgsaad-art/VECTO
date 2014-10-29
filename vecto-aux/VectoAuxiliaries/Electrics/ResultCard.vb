@@ -30,7 +30,7 @@ End Sub
 Public Function GetSmartCurrentResult(amps As Single) As Single Implements IResultCard.GetSmartCurrentResult
 
 
-  If _results.Count<2 then Return 0.1
+  If _results.Count<2 then Return 10
 
   Return GetOrInterpolate(amps)
 

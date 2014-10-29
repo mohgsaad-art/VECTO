@@ -866,9 +866,17 @@ Private sub RefreshDisplays()
 
      'M2
      txtM2_out_AvgPowerAtAltFromElectrics.Text=auxEnvironment.M2.GetAveragePowerDemandAtAlternator
-     txtM2_out_AvgPowerAtCrankFromElectrics.Text=auxEnvironment.M2.GetAveragePowerAtCrank(2000)
+     txtM2_out_AvgPowerAtCrankFromElectrics.Text=auxEnvironment.M2.GetAveragePowerAtCrank()
 
+     'M3
+     txtM3_out_AveragePowerAtCrankFromPneumatics.Text=auxEnvironment.M3.GetAveragePowerDemandAtCrankFromPneumatics
+     txtM3_out_TotalAirConsumedPerCycleInLitres.Text=auxEnvironment.M3.TotalAirConsumedPerCycle
 
+     'M4
+     txtM4_out_CompressorFlowRate.Text = auxEnvironment.M4.GetAveragePowerDemandPerCompressorUnitFlowRate
+     'txtM4_out_CompresssorPwrOnMinusPwrOff.Text=auxEnvironment.M4.GetPowerDifference
+     txtM4_out_PowerAtCrankFromPneumaticsCompressorOFF.Text= auxEnvironment.M4.GetPowerCompressorOff
+     'txtM4_out_PowerAtCrankFromPneumaticsCompressorON.Text= auxEnvironment.M4.GetPowerCompressorOn
 
 
 End Sub
