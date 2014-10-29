@@ -185,7 +185,7 @@ Private Sub CreateBindings()
         txtEngineDrivelinePower.DataBindings.Add("Text", auxEnvironment.Signals,"EngineDrivelinePower")
         txtEngineDrivelineTorque.DataBindings.Add("Text", auxEnvironment.Signals,"EngineDrivelineTorque")
         txtEngineMotoringPower.DataBindings.Add("Text", auxEnvironment.Signals,"EngineMotoringPower")
-        txtEngineSpeed.DataBindings.Add("Text", auxEnvironment.Signals,"EngineSpeed",False,DataSourceUpdateMode.OnPropertyChanged)
+        txtEngineSpeed.DataBindings.Add("Text", auxEnvironment.Signals,"EngineSpeed")
                 
 
 End Sub
@@ -639,6 +639,11 @@ Private Sub Dashboard_Load(sender As Object, e As EventArgs) Handles MyBase.Load
   AddHandler tabMain.DrawItem , new System.Windows.Forms.DrawItemEventHandler(addressof tabMain_DrawItem)
 
 
+  'Finally Initialise Environment.
+  auxEnvironment.Initialise()
+
+   Timer1.Start()
+
 End Sub
 
 #Region "Tab Header Color Change"
@@ -840,15 +845,28 @@ End Sub
 #End Region
 
 
+Private sub RefreshDisplays()
 
-Private Sub btnInitialiseAuxPlayGround_Click( sender As Object,  e As EventArgs) Handles btnInitialise.Click
-     
-      auxEnvironment.Initialise()
+    'M0 Refresh Output Displays
+    txtM0_Out_AlternatorsEfficiency.Text= auxEnvironment.M0.AlternatorsEfficiency
+    txtM0_Out_HVacElectricalCurrentDemand.Text=auxEnvironment.M0.GetHVACElectricalPowerDemandAmps
 
-       'Bind Outputs to environment
-      txtM0_Out_AlternatorsEfficiency.DataBindings.Clear()
-      txtM0_Out_AlternatorsEfficiency.DataBindings.Add("Text", auxEnvironment.M0,"AlternatorsEfficiency")    
+    'M05
+     txtM05_OutSmartIdleCurrent.Text= auxEnvironment.M05.SmartIdleCurrent
+     txtM05_Out_AlternatorsEfficiencyIdle.Text=auxEnvironment.M05.AlternatorsEfficiencyIdleResultCard
+     txtM05_out_SmartTractionCurrent.Text = auxEnvironment.M05.SmartTractionCurrent
+     txtM05_out_AlternatorsEfficiencyTraction.Text=auxEnvironment.M05.AlternatorsEfficiencyTractionOnResultCard
+     txtM05_out_SmartOverrunCurrent.Text= auxEnvironment.M05.SmartOverrunCurrent
+     txtM05_out_AlternatorsEfficiencyOverrun.Text = auxEnvironment.M05.AlternatorsEfficiencyOverrunResultCard
+     'M1
+     txtM1_out_AvgPowerDemandAtAlternatorHvacElectrics.Text= auxEnvironment.M1.AveragePowerDemandAtAlternatorFromHVACElectricsWatts
+     txtM1_out_AvgPowerDemandAtCrankMech.Text= auxEnvironment.M1.AveragePowerDemandAtCrankFromHVACMechanicalsWatts
+     txtM1_out_AvgPwrAtCrankFromHVACElec.Text=auxEnvironment.M1.AveragePowerDemandAtCrankFromHVACElectricsWatts
+     txtM1_out_HVACFuelling.Text=auxEnvironment.M1.HVACFuelingLitresPerHour
 
+     'M2
+     txtM2_out_AvgPowerAtAltFromElectrics.Text=auxEnvironment.M2.GetAveragePowerDemandAtAlternator
+     txtM2_out_AvgPowerAtCrankFromElectrics.Text=auxEnvironment.M2.GetAveragePowerAtCrank(2000)
 
 
 
@@ -857,10 +875,34 @@ End Sub
 
 
 
-Private Sub txtEngineSpeed_TextChanged( sender As Object,  e As EventArgs) Handles txtEngineSpeed.TextChanged
+Private Sub RefreshDisplayValues_Timed( sender As Object,  e As EventArgs) Handles Timer1.Tick
 
+  RefreshDisplays()
 
 End Sub
+
+
+   'Form Overrides
+    Protected Overrides Function ProcessCmdKey(ByRef msg As Message, keyData As Keys) As Boolean
+
+        if keyData = Keys.Enter andalso me.AcceptButton is nothing   then
+        dim box As TextBoxBase = CType( me.ActiveControl ,TextBoxBase)
+
+        if box is nothing orelse not box.Multiline then
+          
+          me.SelectNextControl(me.ActiveControl, true, true, true, true)
+          return true
+        
+       End If
+      
+       End If
+       
+
+        Return MyBase.ProcessCmdKey(msg, keyData)
+
+
+
+    End Function
 
 
 End Class
