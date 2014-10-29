@@ -39,12 +39,12 @@ End Sub
 Public sub SetPropertiesToDefaults()
 
 
-            ActuationsMap="C:\Users\tb28\Source\Workspaces\VECTO\vecto-aux\VectoAuxiliariesTests\TestFiles\testPneumaticActuationsMap_GOODMAP.csv"
+            ActuationsMap="testPneumaticActuationsMap_GOODMAP.csv"
             AdBlueDosing="Pneumatic"
             AirSuspensionControl="Electrically"
             CompressorGearEfficiency=0.8
-            CompressorGearRatio=0.6
-            CompressorMap="C:\Users\tb28\Source\Workspaces\VECTO\vecto-aux\VectoAuxiliariesTests\TestFiles\testCompressorMap.csv"
+            CompressorGearRatio=1.0
+            CompressorMap="testCompressorMap.csv"
             CompressorType=""
             Doors="Pneumatic"
             KneelingHeightMillimeters=80

@@ -4,10 +4,10 @@ Namespace Pneumatics
     Public Class M4_AirCompressor
         Implements IM4_AirCompressor
 
-        Private Const MinRatio As Single = 1.25
-        Private Const MaxRatio As Single = 5.5
-        Private Const MinEff As Single = 0.25
-        Private Const MaxEff As Single = 0.95
+        Private Const MinRatio As Single = 1
+        Private Const MaxRatio As Single = 10
+        Private Const MinEff As Single = 0
+        Private Const MaxEff As Single = 1
 
         Private _pulleyGearRatio As Single
         Private _pulleyGearEfficiency As Single
@@ -57,10 +57,10 @@ Namespace Pneumatics
         ''' </summary>
         ''' <param name="map">map of compressor values against compressor rpm</param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal map As ICompressorMap, signals As ISignals)
-            _map = map
-            _signals = signals
-        End Sub
+        'Public Sub New(ByVal map As ICompressorMap, signals As ISignals)
+        '    _map = map
+        '    _signals = signals
+        'End Sub
 
         ''' <summary>
         ''' Creates a new instance of the AirCompressor Class
@@ -69,7 +69,7 @@ Namespace Pneumatics
         ''' <param name="pulleyGearRatio">Ratio of Pulley/Gear</param>
         ''' <param name="pulleyGearEfficiency">Efficiency of Pulley/Gear</param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal map As ICompressorMap, ByVal pulleyGearRatio As Single, ByVal pulleyGearEfficiency As Single, signals As ISignals)
+        Public Sub New(ByVal map As ICompressorMap, byref pulleyGearRatio As Single, byref pulleyGearEfficiency As Single, signals As ISignals)
 
             _map = map
             _pulleyGearRatio = pulleyGearRatio

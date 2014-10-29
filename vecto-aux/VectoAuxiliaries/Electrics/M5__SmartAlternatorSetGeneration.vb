@@ -10,6 +10,7 @@ Private _alternatorGearEfficiency As single
 
 
 
+
     Public Sub new ( m05 As M0_5_SmartAlternatorSetEfficiency, ByVal powernetVoltage As single, alternatorGearEfficiency As single)
 
     'sanity check
@@ -22,21 +23,22 @@ Private _alternatorGearEfficiency As single
     _powerNetVoltage=powernetVoltage
     _alternatorGearEfficiency = alternatorGearEfficiency
 
+
     End Sub
 
-    Public Function AlternatorsGenerationPowerAtCrankIdleWatts(rpm As Integer) As Single Implements IM5_SmartAlternatorSetGeneration.AlternatorsGenerationPowerAtCrankIdleWatts
+    Public Function AlternatorsGenerationPowerAtCrankIdleWatts() As Single Implements IM5_SmartAlternatorSetGeneration.AlternatorsGenerationPowerAtCrankIdleWatts
 
       Return (_m05.SmartIdleCurrent() * _powerNetVoltage) / ( _m05.AlternatorsEfficiencyIdleResultCard() * _alternatorGearEfficiency)
 
     End Function
 
-    Public Function AlternatorsGenerationPowerAtCrankOverrunWatts(rpm As Integer) As Single Implements IM5_SmartAlternatorSetGeneration.AlternatorsGenerationPowerAtCrankOverrunWatts
+    Public Function AlternatorsGenerationPowerAtCrankOverrunWatts() As Single Implements IM5_SmartAlternatorSetGeneration.AlternatorsGenerationPowerAtCrankOverrunWatts
 
           Return (_m05.SmartOverrunCurrent() * _powerNetVoltage) / ( _m05.AlternatorsEfficiencyOverrunResultCard() * _alternatorGearEfficiency)
 
     End Function
 
-    Public Function AlternatorsGenerationPowerAtCrankTractionOnWatts(rpm As Integer) As Single Implements IM5_SmartAlternatorSetGeneration.AlternatorsGenerationPowerAtCrankTractionOnWatts
+    Public Function AlternatorsGenerationPowerAtCrankTractionOnWatts() As Single Implements IM5_SmartAlternatorSetGeneration.AlternatorsGenerationPowerAtCrankTractionOnWatts
 
               Return (_m05.SmartTractionCurrent() * _powerNetVoltage) / ( _m05.AlternatorsEfficiencyTractionOnResultCard() * _alternatorGearEfficiency)
 

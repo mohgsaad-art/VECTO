@@ -9,13 +9,13 @@ Namespace UnitTests
     <TestFixture()>
     Public Class M4_AirCompressorTests
 #Region "Test Constants"
-        Private Const GoodEfficiency As Single = 1
-        Private Const TooLowEfficiency As Single = 0.1
-        Private Const TooHighEfficiency As Single = 1.0
+        Private Const GoodEfficiency As Single = 0.7
+        Private Const TooLowEfficiency As Single = -1
+        Private Const TooHighEfficiency As Single = 1.1
 
         Private Const GoodRatio As Single = 1
-        Private Const TooLowRatio As Single = 1.0
-        Private Const TooHighRatio As Single = 6    
+        Private Const TooLowRatio As Single = -1
+        Private Const TooHighRatio As Single = 12
 
 #End Region
 
@@ -52,7 +52,7 @@ End Sub
         Public Sub CreateNewJustPathTest()
             Dim map As ICompressorMap = GetNonFailingCompressorMapMock()
             _signals.EngineSpeed=100
-            Dim target As M4_AirCompressor = New M4_AirCompressor(map,_signals)
+            Dim target As M4_AirCompressor = New M4_AirCompressor(map,2,0.8,_signals)
             Assert.IsNotNull(target)
         End Sub
 
@@ -68,7 +68,7 @@ End Sub
         Public Sub InitialiseTest()
             Dim map As ICompressorMap = GetNonFailingCompressorMapMock()
             _signals.EngineSpeed=100
-            Dim target As M4_AirCompressor = New M4_AirCompressor(map,_signals)
+            Dim target As M4_AirCompressor = New M4_AirCompressor(map,2,0.8,_signals)
             Assert.IsTrue(target.Initialise())
         End Sub
 
@@ -76,7 +76,7 @@ End Sub
         Public Sub InitialiseInvalidMapTest()
             Dim map As ICompressorMap = GetFailingCompressorMapMock()
             _signals.EngineSpeed=100
-            Dim target As M4_AirCompressor = New M4_AirCompressor(map,_signals)
+            Dim target As M4_AirCompressor = New M4_AirCompressor(map,2,0.8,_signals)
             target.Initialise()
         End Sub
 

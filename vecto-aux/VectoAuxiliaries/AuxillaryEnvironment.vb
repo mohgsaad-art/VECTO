@@ -90,7 +90,7 @@ M3 = New M3_AveragePneumaticLoadDemand(PneumaticUserInputsConfig,
          VectoInputs.CycleDurationMinutes)
 
 
-M4 = New M4_AirCompressor(compressorMap,Signals)
+M4 = New M4_AirCompressor(compressorMap,PneumaticUserInputsConfig.CompressorGearRatio,PneumaticUserInputsConfig.CompressorGearEfficiency,Signals)
 
 
 M5 = New M5__SmartAlternatorSetGeneration( M05, VectoInputs.PowerNetVoltage,ElectricalUserInputsConfig.AlternatorGearEfficiency)
@@ -128,7 +128,7 @@ Private Sub setDefaults()
                                                                      .ResultCardOverrun= New ResultCard(New List(Of SmartResult)),
                                                                      .ResultCardTraction=New  ResultCard(New List(Of SmartResult)),
                                                                      .SmartElectrical=True,
-                                                                     .AlternatorMap="C:\Users\tb28\Source\Workspaces\VECTO\vecto-aux\VectoAuxiliariesTests\TestFiles\testAlternatorMap.csv"
+                                                                     .AlternatorMap="testAlternatorMap.csv"
                                                                      }
 
  HvacUserInputsConfig = New HVACUserInputsConfig( New HVACSteadyStateModel(100,100,100))

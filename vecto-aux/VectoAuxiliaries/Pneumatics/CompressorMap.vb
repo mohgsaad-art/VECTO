@@ -31,7 +31,6 @@ Namespace Pneumatics
         Public Function AveragePowerDemandPerCompressorUnitFlowRate() As Single Implements ICompressorMap.GetAveragePowerDemandPerCompressorUnitFlowRate
 
 
-
             Return _averagePowerDemandPerCompressorUnitFlowRate
 
 

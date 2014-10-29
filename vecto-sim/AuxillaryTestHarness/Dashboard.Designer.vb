@@ -23,24 +23,22 @@ Partial Class Dashboard
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle25 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle26 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle27 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle28 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle29 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle30 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle31 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle32 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle33 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle34 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle35 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle36 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.pnlMain = New System.Windows.Forms.Panel()
         Me.btnCancel = New System.Windows.Forms.Button()
-        Me.btnFinish = New System.Windows.Forms.Button()
         Me.btnForward = New System.Windows.Forms.Button()
         Me.btnBack = New System.Windows.Forms.Button()
-        Me.btnStart = New System.Windows.Forms.Button()
         Me.tabMain = New System.Windows.Forms.TabControl()
         Me.tabGeneralConfig = New System.Windows.Forms.TabPage()
         Me.cboCycle = New System.Windows.Forms.ComboBox()
@@ -130,6 +128,22 @@ Partial Class Dashboard
         Me.txtHVACElectricalLoadPowerWatts = New System.Windows.Forms.TextBox()
         Me.lblHVACElectricalLoadPowerWatts = New System.Windows.Forms.Label()
         Me.tabPlayground = New System.Windows.Forms.TabPage()
+        Me.lblM4_AirCompressor = New System.Windows.Forms.Label()
+        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.lblM4_PowerAtCrankFromPSCompressorON = New System.Windows.Forms.Label()
+        Me.lblM4_PowerAtCrankFromPSCompressorOFF = New System.Windows.Forms.Label()
+        Me.lblM4_CompressorOnOffPowerDelta = New System.Windows.Forms.Label()
+        Me.lblM4_CompressorFlowRate = New System.Windows.Forms.Label()
+        Me.txtM4_out_PowerAtCrankFromPneumaticsCompressorON = New System.Windows.Forms.TextBox()
+        Me.txtM4_out_PowerAtCrankFromPneumaticsCompressorOFF = New System.Windows.Forms.TextBox()
+        Me.txtM4_out_CompresssorPwrOnMinusPwrOff = New System.Windows.Forms.TextBox()
+        Me.txtM4_out_CompressorFlowRate = New System.Windows.Forms.TextBox()
+        Me.lblM3_AveragePneumaticLoad = New System.Windows.Forms.Label()
+        Me.pnl_M3_Displays = New System.Windows.Forms.Panel()
+        Me.lblM3_TotAirConsumptionPerCycleLitres = New System.Windows.Forms.Label()
+        Me.lbl_M3_AvgPowerAtCrankFromPneumatics = New System.Windows.Forms.Label()
+        Me.txtM3_out_TotalAirConsumedPerCycleInLitres = New System.Windows.Forms.TextBox()
+        Me.txtM3_out_AveragePowerAtCrankFromPneumatics = New System.Windows.Forms.TextBox()
         Me.lblM2AverageElectricalLoadTitle = New System.Windows.Forms.Label()
         Me.pnl_M2_Displays = New System.Windows.Forms.Panel()
         Me.lblM2_AvgPwrDmdAtCrankFromElectrics = New System.Windows.Forms.Label()
@@ -166,37 +180,32 @@ Partial Class Dashboard
         Me.lblAlternatorsEfficiency = New System.Windows.Forms.Label()
         Me.txtM0_Out_AlternatorsEfficiency = New System.Windows.Forms.TextBox()
         Me.txtM0_Out_HVacElectricalCurrentDemand = New System.Windows.Forms.TextBox()
-        Me.chkClutchEngaged = New System.Windows.Forms.CheckBox()
-        Me.lblTotalCycleTimeSeconds = New System.Windows.Forms.Label()
-        Me.lblEngineSpeed = New System.Windows.Forms.Label()
-        Me.lblEngineMotoringPower = New System.Windows.Forms.Label()
-        Me.lblEngineDrivelineTorque = New System.Windows.Forms.Label()
-        Me.lblEngineDrivelinePower = New System.Windows.Forms.Label()
-        Me.txtTotalCycleTimeSeconds = New System.Windows.Forms.TextBox()
-        Me.txtEngineSpeed = New System.Windows.Forms.TextBox()
-        Me.txtEngineMotoringPower = New System.Windows.Forms.TextBox()
-        Me.txtEngineDrivelineTorque = New System.Windows.Forms.TextBox()
-        Me.txtEngineDrivelinePower = New System.Windows.Forms.TextBox()
         Me.resultCardContextMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
-        Me.pnl_M3_Displays = New System.Windows.Forms.Panel()
-        Me.lblM3_AveragePneumaticLoad = New System.Windows.Forms.Label()
-        Me.txtM3_out_AveragePowerAtCrankFromPneumatics = New System.Windows.Forms.TextBox()
-        Me.txtM3_out_TotalAirConsumedPerCycleInLitres = New System.Windows.Forms.TextBox()
-        Me.lbl_M3_AvgPowerAtCrankFromPneumatics = New System.Windows.Forms.Label()
-        Me.lblM3_TotAirConsumptionPerCycleLitres = New System.Windows.Forms.Label()
-        Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.txtM4_out_CompressorFlowRate = New System.Windows.Forms.TextBox()
-        Me.txtM4_out_CompresssorPwrOnMinusPwrOff = New System.Windows.Forms.TextBox()
-        Me.txtM4_out_PowerAtCrankFromPneumaticsCompressorOFF = New System.Windows.Forms.TextBox()
-        Me.txtM4_out_PowerAtCrankFromPneumaticsCompressorON = New System.Windows.Forms.TextBox()
-        Me.lblM4_CompressorFlowRate = New System.Windows.Forms.Label()
-        Me.lblM4_CompressorOnOffPowerDelta = New System.Windows.Forms.Label()
-        Me.lblM4_PowerAtCrankFromPSCompressorOFF = New System.Windows.Forms.Label()
-        Me.lblM4_PowerAtCrankFromPSCompressorON = New System.Windows.Forms.Label()
-        Me.lblM4_AirCompressor = New System.Windows.Forms.Label()
+        Me.Panel3 = New System.Windows.Forms.Panel()
+        Me.lblM5_SmartAltSetGeneration = New System.Windows.Forms.Label()
+        Me.txtM5_out_AltRegenPowerAtCrankIdleWatts = New System.Windows.Forms.TextBox()
+        Me.txtM5_out_AltRegenPowerAtCrankTractionWatts = New System.Windows.Forms.TextBox()
+        Me.lblM5_AltRegenPowerAtCrankIdleW = New System.Windows.Forms.Label()
+        Me.M5_AlternatorGenerationPowerAtCrankOverrunWatts = New System.Windows.Forms.Label()
+        Me.txtM5_out_AltRegenPowerAtCrankOverrunWatts = New System.Windows.Forms.TextBox()
+        Me.lblM5_AlternatorRegenPowerAtCrankTractionWatts = New System.Windows.Forms.Label()
+        Me.txtEngineDrivelinePower = New System.Windows.Forms.TextBox()
+        Me.txtEngineDrivelineTorque = New System.Windows.Forms.TextBox()
+        Me.txtEngineMotoringPower = New System.Windows.Forms.TextBox()
+        Me.txtEngineSpeed = New System.Windows.Forms.TextBox()
+        Me.txtTotalCycleTimeSeconds = New System.Windows.Forms.TextBox()
+        Me.lblEngineDrivelinePower = New System.Windows.Forms.Label()
+        Me.lblEngineDrivelineTorque = New System.Windows.Forms.Label()
+        Me.lblEngineMotoringPower = New System.Windows.Forms.Label()
+        Me.lblEngineSpeed = New System.Windows.Forms.Label()
+        Me.lblTotalCycleTimeSeconds = New System.Windows.Forms.Label()
+        Me.chkClutchEngaged = New System.Windows.Forms.CheckBox()
+        Me.btnStart = New System.Windows.Forms.Button()
+        Me.btnFinish = New System.Windows.Forms.Button()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.pnlMain.SuspendLayout
         Me.tabMain.SuspendLayout
         Me.tabGeneralConfig.SuspendLayout
@@ -210,51 +219,42 @@ Partial Class Dashboard
         Me.pnlPneumaticAuxillaries.SuspendLayout
         Me.tabHVACConfig.SuspendLayout
         Me.tabPlayground.SuspendLayout
+        Me.Panel1.SuspendLayout
+        Me.pnl_M3_Displays.SuspendLayout
         Me.pnl_M2_Displays.SuspendLayout
         Me.pnl_M1_Displays.SuspendLayout
         Me.pnl_M05_Displays.SuspendLayout
         Me.pnl_M0_Displays.SuspendLayout
         Me.resultCardContextMenu.SuspendLayout
         CType(Me.ErrorProvider,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.pnl_M3_Displays.SuspendLayout
-        Me.Panel1.SuspendLayout
+        Me.Panel3.SuspendLayout
+        CType(Me.PictureBox1,System.ComponentModel.ISupportInitialize).BeginInit
         Me.SuspendLayout
         '
         'pnlMain
         '
         Me.pnlMain.Controls.Add(Me.btnCancel)
-        Me.pnlMain.Controls.Add(Me.btnFinish)
         Me.pnlMain.Controls.Add(Me.btnForward)
         Me.pnlMain.Controls.Add(Me.btnBack)
-        Me.pnlMain.Controls.Add(Me.btnStart)
         Me.pnlMain.Controls.Add(Me.tabMain)
         Me.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlMain.Location = New System.Drawing.Point(0, 0)
         Me.pnlMain.Name = "pnlMain"
-        Me.pnlMain.Size = New System.Drawing.Size(945, 712)
+        Me.pnlMain.Size = New System.Drawing.Size(945, 742)
         Me.pnlMain.TabIndex = 1
         '
         'btnCancel
         '
-        Me.btnCancel.Location = New System.Drawing.Point(827, 676)
+        Me.btnCancel.Location = New System.Drawing.Point(827, 702)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(75, 23)
         Me.btnCancel.TabIndex = 5
         Me.btnCancel.Text = "Cancel"
         Me.btnCancel.UseVisualStyleBackColor = true
         '
-        'btnFinish
-        '
-        Me.btnFinish.Location = New System.Drawing.Point(745, 677)
-        Me.btnFinish.Name = "btnFinish"
-        Me.btnFinish.Size = New System.Drawing.Size(75, 23)
-        Me.btnFinish.TabIndex = 4
-        Me.btnFinish.Text = "Finish  >|"
-        Me.btnFinish.UseVisualStyleBackColor = true
-        '
         'btnForward
         '
-        Me.btnForward.Location = New System.Drawing.Point(621, 677)
+        Me.btnForward.Location = New System.Drawing.Point(621, 703)
         Me.btnForward.Name = "btnForward"
         Me.btnForward.Size = New System.Drawing.Size(75, 23)
         Me.btnForward.TabIndex = 3
@@ -263,21 +263,12 @@ Partial Class Dashboard
         '
         'btnBack
         '
-        Me.btnBack.Location = New System.Drawing.Point(537, 677)
+        Me.btnBack.Location = New System.Drawing.Point(537, 703)
         Me.btnBack.Name = "btnBack"
         Me.btnBack.Size = New System.Drawing.Size(75, 23)
         Me.btnBack.TabIndex = 2
         Me.btnBack.Text = "<< Back"
         Me.btnBack.UseVisualStyleBackColor = true
-        '
-        'btnStart
-        '
-        Me.btnStart.Location = New System.Drawing.Point(420, 677)
-        Me.btnStart.Name = "btnStart"
-        Me.btnStart.Size = New System.Drawing.Size(75, 23)
-        Me.btnStart.TabIndex = 1
-        Me.btnStart.Text = "|< Start"
-        Me.btnStart.UseVisualStyleBackColor = true
         '
         'tabMain
         '
@@ -291,7 +282,7 @@ Partial Class Dashboard
         Me.tabMain.Location = New System.Drawing.Point(12, 12)
         Me.tabMain.Name = "tabMain"
         Me.tabMain.SelectedIndex = 0
-        Me.tabMain.Size = New System.Drawing.Size(917, 658)
+        Me.tabMain.Size = New System.Drawing.Size(917, 669)
         Me.tabMain.TabIndex = 0
         Me.tabMain.Tag = ""
         '
@@ -304,7 +295,7 @@ Partial Class Dashboard
         Me.tabGeneralConfig.Location = New System.Drawing.Point(4, 22)
         Me.tabGeneralConfig.Name = "tabGeneralConfig"
         Me.tabGeneralConfig.Padding = New System.Windows.Forms.Padding(3)
-        Me.tabGeneralConfig.Size = New System.Drawing.Size(909, 610)
+        Me.tabGeneralConfig.Size = New System.Drawing.Size(909, 632)
         Me.tabGeneralConfig.TabIndex = 0
         Me.tabGeneralConfig.Text = "GeneralConfig"
         Me.tabGeneralConfig.UseVisualStyleBackColor = true
@@ -366,7 +357,7 @@ Partial Class Dashboard
         Me.tabElectricalConfig.Location = New System.Drawing.Point(4, 22)
         Me.tabElectricalConfig.Name = "tabElectricalConfig"
         Me.tabElectricalConfig.Padding = New System.Windows.Forms.Padding(3)
-        Me.tabElectricalConfig.Size = New System.Drawing.Size(909, 610)
+        Me.tabElectricalConfig.Size = New System.Drawing.Size(909, 632)
         Me.tabElectricalConfig.TabIndex = 1
         Me.tabElectricalConfig.Text = "ElectricalConfig"
         Me.tabElectricalConfig.UseVisualStyleBackColor = true
@@ -382,97 +373,97 @@ Partial Class Dashboard
         '
         'gvResultsCardOverrun
         '
-        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.gvResultsCardOverrun.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle25.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle25.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle25.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        DataGridViewCellStyle25.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle25.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle25.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle25.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.gvResultsCardOverrun.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle25
         Me.gvResultsCardOverrun.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.gvResultsCardOverrun.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle26.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle26.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle26.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        DataGridViewCellStyle26.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle26.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle26.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle26.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.gvResultsCardOverrun.DefaultCellStyle = DataGridViewCellStyle26
         Me.gvResultsCardOverrun.Location = New System.Drawing.Point(590, 451)
         Me.gvResultsCardOverrun.Name = "gvResultsCardOverrun"
-        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        DataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.gvResultsCardOverrun.RowHeadersDefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle27.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle27.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle27.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        DataGridViewCellStyle27.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle27.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle27.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle27.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.gvResultsCardOverrun.RowHeadersDefaultCellStyle = DataGridViewCellStyle27
         Me.gvResultsCardOverrun.Size = New System.Drawing.Size(246, 125)
         Me.gvResultsCardOverrun.TabIndex = 18
         '
         'gvResultsCardTraction
         '
-        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle4.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.gvResultsCardTraction.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle28.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle28.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle28.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        DataGridViewCellStyle28.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle28.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle28.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle28.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.gvResultsCardTraction.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle28
         Me.gvResultsCardTraction.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle5.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        DataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.gvResultsCardTraction.DefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle29.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle29.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle29.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        DataGridViewCellStyle29.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle29.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle29.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle29.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.gvResultsCardTraction.DefaultCellStyle = DataGridViewCellStyle29
         Me.gvResultsCardTraction.Location = New System.Drawing.Point(311, 451)
         Me.gvResultsCardTraction.Name = "gvResultsCardTraction"
-        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle6.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        DataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.gvResultsCardTraction.RowHeadersDefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle30.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle30.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle30.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        DataGridViewCellStyle30.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle30.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle30.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle30.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.gvResultsCardTraction.RowHeadersDefaultCellStyle = DataGridViewCellStyle30
         Me.gvResultsCardTraction.Size = New System.Drawing.Size(258, 125)
         Me.gvResultsCardTraction.TabIndex = 17
         '
         'gvResultsCardIdle
         '
-        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle7.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        DataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.gvResultsCardIdle.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle7
+        DataGridViewCellStyle31.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle31.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle31.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        DataGridViewCellStyle31.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle31.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle31.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle31.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.gvResultsCardIdle.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle31
         Me.gvResultsCardIdle.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle8.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        DataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.gvResultsCardIdle.DefaultCellStyle = DataGridViewCellStyle8
+        DataGridViewCellStyle32.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle32.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle32.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        DataGridViewCellStyle32.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle32.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle32.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle32.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.gvResultsCardIdle.DefaultCellStyle = DataGridViewCellStyle32
         Me.gvResultsCardIdle.Location = New System.Drawing.Point(35, 451)
         Me.gvResultsCardIdle.Name = "gvResultsCardIdle"
-        DataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle9.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        DataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.gvResultsCardIdle.RowHeadersDefaultCellStyle = DataGridViewCellStyle9
+        DataGridViewCellStyle33.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle33.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle33.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        DataGridViewCellStyle33.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle33.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle33.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle33.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.gvResultsCardIdle.RowHeadersDefaultCellStyle = DataGridViewCellStyle33
         Me.gvResultsCardIdle.Size = New System.Drawing.Size(256, 125)
         Me.gvResultsCardIdle.TabIndex = 16
         '
@@ -524,33 +515,33 @@ Partial Class Dashboard
         '
         'gvElectricalConsumables
         '
-        DataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle10.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        DataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.gvElectricalConsumables.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle10
+        DataGridViewCellStyle34.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle34.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle34.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        DataGridViewCellStyle34.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle34.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle34.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle34.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.gvElectricalConsumables.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle34
         Me.gvElectricalConsumables.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        DataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle11.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        DataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.gvElectricalConsumables.DefaultCellStyle = DataGridViewCellStyle11
+        DataGridViewCellStyle35.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle35.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle35.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        DataGridViewCellStyle35.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle35.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle35.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle35.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.gvElectricalConsumables.DefaultCellStyle = DataGridViewCellStyle35
         Me.gvElectricalConsumables.Location = New System.Drawing.Point(33, 170)
         Me.gvElectricalConsumables.Name = "gvElectricalConsumables"
-        DataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle12.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        DataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.gvElectricalConsumables.RowHeadersDefaultCellStyle = DataGridViewCellStyle12
+        DataGridViewCellStyle36.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle36.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle36.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        DataGridViewCellStyle36.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle36.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle36.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle36.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.gvElectricalConsumables.RowHeadersDefaultCellStyle = DataGridViewCellStyle36
         Me.gvElectricalConsumables.Size = New System.Drawing.Size(803, 250)
         Me.gvElectricalConsumables.TabIndex = 10
         '
@@ -624,7 +615,7 @@ Partial Class Dashboard
         Me.tabPneumaticConfig.Controls.Add(Me.pnlPneumaticAuxillaries)
         Me.tabPneumaticConfig.Location = New System.Drawing.Point(4, 22)
         Me.tabPneumaticConfig.Name = "tabPneumaticConfig"
-        Me.tabPneumaticConfig.Size = New System.Drawing.Size(909, 610)
+        Me.tabPneumaticConfig.Size = New System.Drawing.Size(909, 632)
         Me.tabPneumaticConfig.TabIndex = 2
         Me.tabPneumaticConfig.Text = "PneumaticConfig"
         Me.tabPneumaticConfig.UseVisualStyleBackColor = true
@@ -1163,7 +1154,7 @@ Partial Class Dashboard
         Me.tabHVACConfig.Controls.Add(Me.lblHVACElectricalLoadPowerWatts)
         Me.tabHVACConfig.Location = New System.Drawing.Point(4, 22)
         Me.tabHVACConfig.Name = "tabHVACConfig"
-        Me.tabHVACConfig.Size = New System.Drawing.Size(909, 610)
+        Me.tabHVACConfig.Size = New System.Drawing.Size(909, 632)
         Me.tabHVACConfig.TabIndex = 3
         Me.tabHVACConfig.Text = "HVACConfig"
         Me.tabHVACConfig.UseVisualStyleBackColor = true
@@ -1230,10 +1221,15 @@ Partial Class Dashboard
         'tabPlayground
         '
         Me.tabPlayground.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.tabPlayground.Controls.Add(Me.lblM5_SmartAltSetGeneration)
+        Me.tabPlayground.Controls.Add(Me.Panel3)
+        Me.tabPlayground.Controls.Add(Me.PictureBox1)
         Me.tabPlayground.Controls.Add(Me.lblM4_AirCompressor)
+        Me.tabPlayground.Controls.Add(Me.btnFinish)
         Me.tabPlayground.Controls.Add(Me.Panel1)
         Me.tabPlayground.Controls.Add(Me.lblM3_AveragePneumaticLoad)
         Me.tabPlayground.Controls.Add(Me.pnl_M3_Displays)
+        Me.tabPlayground.Controls.Add(Me.btnStart)
         Me.tabPlayground.Controls.Add(Me.lblM2AverageElectricalLoadTitle)
         Me.tabPlayground.Controls.Add(Me.pnl_M2_Displays)
         Me.tabPlayground.Controls.Add(Me.lblM1_HVACAverageLoad)
@@ -1255,10 +1251,160 @@ Partial Class Dashboard
         Me.tabPlayground.Controls.Add(Me.txtEngineDrivelinePower)
         Me.tabPlayground.Location = New System.Drawing.Point(4, 22)
         Me.tabPlayground.Name = "tabPlayground"
-        Me.tabPlayground.Size = New System.Drawing.Size(909, 632)
+        Me.tabPlayground.Size = New System.Drawing.Size(909, 643)
         Me.tabPlayground.TabIndex = 4
         Me.tabPlayground.Text = "Playground"
         Me.tabPlayground.UseVisualStyleBackColor = true
+        '
+        'lblM4_AirCompressor
+        '
+        Me.lblM4_AirCompressor.AutoSize = true
+        Me.lblM4_AirCompressor.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblM4_AirCompressor.Location = New System.Drawing.Point(379, 265)
+        Me.lblM4_AirCompressor.Name = "lblM4_AirCompressor"
+        Me.lblM4_AirCompressor.Size = New System.Drawing.Size(112, 13)
+        Me.lblM4_AirCompressor.TabIndex = 33
+        Me.lblM4_AirCompressor.Text = "M4-Air Compressor"
+        '
+        'Panel1
+        '
+        Me.Panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Panel1.Controls.Add(Me.lblM4_PowerAtCrankFromPSCompressorON)
+        Me.Panel1.Controls.Add(Me.lblM4_PowerAtCrankFromPSCompressorOFF)
+        Me.Panel1.Controls.Add(Me.lblM4_CompressorOnOffPowerDelta)
+        Me.Panel1.Controls.Add(Me.lblM4_CompressorFlowRate)
+        Me.Panel1.Controls.Add(Me.txtM4_out_PowerAtCrankFromPneumaticsCompressorON)
+        Me.Panel1.Controls.Add(Me.txtM4_out_PowerAtCrankFromPneumaticsCompressorOFF)
+        Me.Panel1.Controls.Add(Me.txtM4_out_CompresssorPwrOnMinusPwrOff)
+        Me.Panel1.Controls.Add(Me.txtM4_out_CompressorFlowRate)
+        Me.Panel1.Location = New System.Drawing.Point(379, 281)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(200, 183)
+        Me.Panel1.TabIndex = 32
+        '
+        'lblM4_PowerAtCrankFromPSCompressorON
+        '
+        Me.lblM4_PowerAtCrankFromPSCompressorON.AutoSize = true
+        Me.lblM4_PowerAtCrankFromPSCompressorON.Location = New System.Drawing.Point(13, 129)
+        Me.lblM4_PowerAtCrankFromPSCompressorON.Name = "lblM4_PowerAtCrankFromPSCompressorON"
+        Me.lblM4_PowerAtCrankFromPSCompressorON.Size = New System.Drawing.Size(181, 13)
+        Me.lblM4_PowerAtCrankFromPSCompressorON.TabIndex = 7
+        Me.lblM4_PowerAtCrankFromPSCompressorON.Text = "Pwr@Crank From PS CompressorON"
+        '
+        'lblM4_PowerAtCrankFromPSCompressorOFF
+        '
+        Me.lblM4_PowerAtCrankFromPSCompressorOFF.AutoSize = true
+        Me.lblM4_PowerAtCrankFromPSCompressorOFF.Location = New System.Drawing.Point(13, 87)
+        Me.lblM4_PowerAtCrankFromPSCompressorOFF.Name = "lblM4_PowerAtCrankFromPSCompressorOFF"
+        Me.lblM4_PowerAtCrankFromPSCompressorOFF.Size = New System.Drawing.Size(185, 13)
+        Me.lblM4_PowerAtCrankFromPSCompressorOFF.TabIndex = 6
+        Me.lblM4_PowerAtCrankFromPSCompressorOFF.Text = "Pwr@Crank From PS CompressorOFF"
+        '
+        'lblM4_CompressorOnOffPowerDelta
+        '
+        Me.lblM4_CompressorOnOffPowerDelta.AutoSize = true
+        Me.lblM4_CompressorOnOffPowerDelta.Location = New System.Drawing.Point(13, 50)
+        Me.lblM4_CompressorOnOffPowerDelta.Name = "lblM4_CompressorOnOffPowerDelta"
+        Me.lblM4_CompressorOnOffPowerDelta.Size = New System.Drawing.Size(162, 13)
+        Me.lblM4_CompressorOnOffPowerDelta.TabIndex = 5
+        Me.lblM4_CompressorOnOffPowerDelta.Text = "Compressor PwrOn minus PwrOff"
+        '
+        'lblM4_CompressorFlowRate
+        '
+        Me.lblM4_CompressorFlowRate.AutoSize = true
+        Me.lblM4_CompressorFlowRate.Location = New System.Drawing.Point(13, 7)
+        Me.lblM4_CompressorFlowRate.Name = "lblM4_CompressorFlowRate"
+        Me.lblM4_CompressorFlowRate.Size = New System.Drawing.Size(143, 13)
+        Me.lblM4_CompressorFlowRate.TabIndex = 4
+        Me.lblM4_CompressorFlowRate.Text = "Compressor Flow Rate L/min"
+        '
+        'txtM4_out_PowerAtCrankFromPneumaticsCompressorON
+        '
+        Me.txtM4_out_PowerAtCrankFromPneumaticsCompressorON.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.txtM4_out_PowerAtCrankFromPneumaticsCompressorON.Location = New System.Drawing.Point(13, 144)
+        Me.txtM4_out_PowerAtCrankFromPneumaticsCompressorON.Name = "txtM4_out_PowerAtCrankFromPneumaticsCompressorON"
+        Me.txtM4_out_PowerAtCrankFromPneumaticsCompressorON.Size = New System.Drawing.Size(100, 20)
+        Me.txtM4_out_PowerAtCrankFromPneumaticsCompressorON.TabIndex = 3
+        '
+        'txtM4_out_PowerAtCrankFromPneumaticsCompressorOFF
+        '
+        Me.txtM4_out_PowerAtCrankFromPneumaticsCompressorOFF.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.txtM4_out_PowerAtCrankFromPneumaticsCompressorOFF.Location = New System.Drawing.Point(13, 103)
+        Me.txtM4_out_PowerAtCrankFromPneumaticsCompressorOFF.Name = "txtM4_out_PowerAtCrankFromPneumaticsCompressorOFF"
+        Me.txtM4_out_PowerAtCrankFromPneumaticsCompressorOFF.Size = New System.Drawing.Size(100, 20)
+        Me.txtM4_out_PowerAtCrankFromPneumaticsCompressorOFF.TabIndex = 2
+        '
+        'txtM4_out_CompresssorPwrOnMinusPwrOff
+        '
+        Me.txtM4_out_CompresssorPwrOnMinusPwrOff.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.txtM4_out_CompresssorPwrOnMinusPwrOff.Location = New System.Drawing.Point(13, 65)
+        Me.txtM4_out_CompresssorPwrOnMinusPwrOff.Name = "txtM4_out_CompresssorPwrOnMinusPwrOff"
+        Me.txtM4_out_CompresssorPwrOnMinusPwrOff.Size = New System.Drawing.Size(100, 20)
+        Me.txtM4_out_CompresssorPwrOnMinusPwrOff.TabIndex = 1
+        '
+        'txtM4_out_CompressorFlowRate
+        '
+        Me.txtM4_out_CompressorFlowRate.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.txtM4_out_CompressorFlowRate.Location = New System.Drawing.Point(13, 24)
+        Me.txtM4_out_CompressorFlowRate.Name = "txtM4_out_CompressorFlowRate"
+        Me.txtM4_out_CompressorFlowRate.Size = New System.Drawing.Size(100, 20)
+        Me.txtM4_out_CompressorFlowRate.TabIndex = 0
+        '
+        'lblM3_AveragePneumaticLoad
+        '
+        Me.lblM3_AveragePneumaticLoad.AutoSize = true
+        Me.lblM3_AveragePneumaticLoad.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblM3_AveragePneumaticLoad.Location = New System.Drawing.Point(376, 141)
+        Me.lblM3_AveragePneumaticLoad.Name = "lblM3_AveragePneumaticLoad"
+        Me.lblM3_AveragePneumaticLoad.Size = New System.Drawing.Size(195, 13)
+        Me.lblM3_AveragePneumaticLoad.TabIndex = 31
+        Me.lblM3_AveragePneumaticLoad.Text = "M3-Avg Pneumatic Load Demand"
+        '
+        'pnl_M3_Displays
+        '
+        Me.pnl_M3_Displays.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnl_M3_Displays.Controls.Add(Me.lblM3_TotAirConsumptionPerCycleLitres)
+        Me.pnl_M3_Displays.Controls.Add(Me.lbl_M3_AvgPowerAtCrankFromPneumatics)
+        Me.pnl_M3_Displays.Controls.Add(Me.txtM3_out_TotalAirConsumedPerCycleInLitres)
+        Me.pnl_M3_Displays.Controls.Add(Me.txtM3_out_AveragePowerAtCrankFromPneumatics)
+        Me.pnl_M3_Displays.Location = New System.Drawing.Point(379, 159)
+        Me.pnl_M3_Displays.Name = "pnl_M3_Displays"
+        Me.pnl_M3_Displays.Size = New System.Drawing.Size(200, 100)
+        Me.pnl_M3_Displays.TabIndex = 30
+        '
+        'lblM3_TotAirConsumptionPerCycleLitres
+        '
+        Me.lblM3_TotAirConsumptionPerCycleLitres.AutoSize = true
+        Me.lblM3_TotAirConsumptionPerCycleLitres.Location = New System.Drawing.Point(8, 49)
+        Me.lblM3_TotAirConsumptionPerCycleLitres.Name = "lblM3_TotAirConsumptionPerCycleLitres"
+        Me.lblM3_TotAirConsumptionPerCycleLitres.Size = New System.Drawing.Size(136, 13)
+        Me.lblM3_TotAirConsumptionPerCycleLitres.TabIndex = 3
+        Me.lblM3_TotAirConsumptionPerCycleLitres.Text = "Total Air Cosumed/Cycle(L)"
+        '
+        'lbl_M3_AvgPowerAtCrankFromPneumatics
+        '
+        Me.lbl_M3_AvgPowerAtCrankFromPneumatics.AutoSize = true
+        Me.lbl_M3_AvgPowerAtCrankFromPneumatics.Location = New System.Drawing.Point(9, 4)
+        Me.lbl_M3_AvgPowerAtCrankFromPneumatics.Name = "lbl_M3_AvgPowerAtCrankFromPneumatics"
+        Me.lbl_M3_AvgPowerAtCrankFromPneumatics.Size = New System.Drawing.Size(182, 13)
+        Me.lbl_M3_AvgPowerAtCrankFromPneumatics.TabIndex = 2
+        Me.lbl_M3_AvgPowerAtCrankFromPneumatics.Text = "Avg Power@Crank From Pneumatics"
+        '
+        'txtM3_out_TotalAirConsumedPerCycleInLitres
+        '
+        Me.txtM3_out_TotalAirConsumedPerCycleInLitres.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.txtM3_out_TotalAirConsumedPerCycleInLitres.Location = New System.Drawing.Point(10, 67)
+        Me.txtM3_out_TotalAirConsumedPerCycleInLitres.Name = "txtM3_out_TotalAirConsumedPerCycleInLitres"
+        Me.txtM3_out_TotalAirConsumedPerCycleInLitres.Size = New System.Drawing.Size(100, 20)
+        Me.txtM3_out_TotalAirConsumedPerCycleInLitres.TabIndex = 1
+        '
+        'txtM3_out_AveragePowerAtCrankFromPneumatics
+        '
+        Me.txtM3_out_AveragePowerAtCrankFromPneumatics.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.txtM3_out_AveragePowerAtCrankFromPneumatics.Location = New System.Drawing.Point(10, 22)
+        Me.txtM3_out_AveragePowerAtCrankFromPneumatics.Name = "txtM3_out_AveragePowerAtCrankFromPneumatics"
+        Me.txtM3_out_AveragePowerAtCrankFromPneumatics.Size = New System.Drawing.Size(100, 20)
+        Me.txtM3_out_AveragePowerAtCrankFromPneumatics.TabIndex = 0
         '
         'lblM2AverageElectricalLoadTitle
         '
@@ -1339,7 +1485,7 @@ Partial Class Dashboard
         Me.pnl_M1_Displays.Controls.Add(Me.txtM1_out_AvgPowerDemandAtCrankMech)
         Me.pnl_M1_Displays.Location = New System.Drawing.Point(166, 442)
         Me.pnl_M1_Displays.Name = "pnl_M1_Displays"
-        Me.pnl_M1_Displays.Size = New System.Drawing.Size(200, 176)
+        Me.pnl_M1_Displays.Size = New System.Drawing.Size(200, 185)
         Me.pnl_M1_Displays.TabIndex = 26
         '
         'lblM1_HVACFuelling
@@ -1600,96 +1746,6 @@ Partial Class Dashboard
         Me.txtM0_Out_HVacElectricalCurrentDemand.Size = New System.Drawing.Size(100, 20)
         Me.txtM0_Out_HVacElectricalCurrentDemand.TabIndex = 0
         '
-        'chkClutchEngaged
-        '
-        Me.chkClutchEngaged.AutoSize = true
-        Me.chkClutchEngaged.Location = New System.Drawing.Point(25, 13)
-        Me.chkClutchEngaged.Name = "chkClutchEngaged"
-        Me.chkClutchEngaged.Size = New System.Drawing.Size(102, 17)
-        Me.chkClutchEngaged.TabIndex = 20
-        Me.chkClutchEngaged.Text = "Clutch Engaged"
-        Me.chkClutchEngaged.UseVisualStyleBackColor = true
-        '
-        'lblTotalCycleTimeSeconds
-        '
-        Me.lblTotalCycleTimeSeconds.AutoSize = true
-        Me.lblTotalCycleTimeSeconds.Location = New System.Drawing.Point(25, 230)
-        Me.lblTotalCycleTimeSeconds.Name = "lblTotalCycleTimeSeconds"
-        Me.lblTotalCycleTimeSeconds.Size = New System.Drawing.Size(134, 13)
-        Me.lblTotalCycleTimeSeconds.TabIndex = 14
-        Me.lblTotalCycleTimeSeconds.Text = "Total Cycle Time Seconds "
-        '
-        'lblEngineSpeed
-        '
-        Me.lblEngineSpeed.AutoSize = true
-        Me.lblEngineSpeed.Location = New System.Drawing.Point(23, 185)
-        Me.lblEngineSpeed.Name = "lblEngineSpeed"
-        Me.lblEngineSpeed.Size = New System.Drawing.Size(107, 13)
-        Me.lblEngineSpeed.TabIndex = 13
-        Me.lblEngineSpeed.Text = "Engine Speed (RPM)"
-        '
-        'lblEngineMotoringPower
-        '
-        Me.lblEngineMotoringPower.AutoSize = true
-        Me.lblEngineMotoringPower.Location = New System.Drawing.Point(24, 141)
-        Me.lblEngineMotoringPower.Name = "lblEngineMotoringPower"
-        Me.lblEngineMotoringPower.Size = New System.Drawing.Size(117, 13)
-        Me.lblEngineMotoringPower.TabIndex = 12
-        Me.lblEngineMotoringPower.Text = "Engine Motoring Power"
-        '
-        'lblEngineDrivelineTorque
-        '
-        Me.lblEngineDrivelineTorque.AutoSize = true
-        Me.lblEngineDrivelineTorque.Location = New System.Drawing.Point(24, 96)
-        Me.lblEngineDrivelineTorque.Name = "lblEngineDrivelineTorque"
-        Me.lblEngineDrivelineTorque.Size = New System.Drawing.Size(121, 13)
-        Me.lblEngineDrivelineTorque.TabIndex = 11
-        Me.lblEngineDrivelineTorque.Text = "Engine Driveline Torque"
-        '
-        'lblEngineDrivelinePower
-        '
-        Me.lblEngineDrivelinePower.AutoSize = true
-        Me.lblEngineDrivelinePower.Location = New System.Drawing.Point(22, 54)
-        Me.lblEngineDrivelinePower.Name = "lblEngineDrivelinePower"
-        Me.lblEngineDrivelinePower.Size = New System.Drawing.Size(120, 13)
-        Me.lblEngineDrivelinePower.TabIndex = 10
-        Me.lblEngineDrivelinePower.Text = "Engine Driveline Power "
-        '
-        'txtTotalCycleTimeSeconds
-        '
-        Me.txtTotalCycleTimeSeconds.Location = New System.Drawing.Point(25, 247)
-        Me.txtTotalCycleTimeSeconds.Name = "txtTotalCycleTimeSeconds"
-        Me.txtTotalCycleTimeSeconds.Size = New System.Drawing.Size(100, 20)
-        Me.txtTotalCycleTimeSeconds.TabIndex = 5
-        '
-        'txtEngineSpeed
-        '
-        Me.txtEngineSpeed.Location = New System.Drawing.Point(25, 198)
-        Me.txtEngineSpeed.Name = "txtEngineSpeed"
-        Me.txtEngineSpeed.Size = New System.Drawing.Size(100, 20)
-        Me.txtEngineSpeed.TabIndex = 4
-        '
-        'txtEngineMotoringPower
-        '
-        Me.txtEngineMotoringPower.Location = New System.Drawing.Point(25, 158)
-        Me.txtEngineMotoringPower.Name = "txtEngineMotoringPower"
-        Me.txtEngineMotoringPower.Size = New System.Drawing.Size(100, 20)
-        Me.txtEngineMotoringPower.TabIndex = 3
-        '
-        'txtEngineDrivelineTorque
-        '
-        Me.txtEngineDrivelineTorque.Location = New System.Drawing.Point(25, 113)
-        Me.txtEngineDrivelineTorque.Name = "txtEngineDrivelineTorque"
-        Me.txtEngineDrivelineTorque.Size = New System.Drawing.Size(100, 20)
-        Me.txtEngineDrivelineTorque.TabIndex = 2
-        '
-        'txtEngineDrivelinePower
-        '
-        Me.txtEngineDrivelinePower.Location = New System.Drawing.Point(25, 69)
-        Me.txtEngineDrivelinePower.Name = "txtEngineDrivelinePower"
-        Me.txtEngineDrivelinePower.Size = New System.Drawing.Size(100, 20)
-        Me.txtEngineDrivelinePower.TabIndex = 1
-        '
         'resultCardContextMenu
         '
         Me.resultCardContextMenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.DeleteToolStripMenuItem})
@@ -1709,161 +1765,203 @@ Partial Class Dashboard
         'Timer1
         '
         '
-        'pnl_M3_Displays
+        'Panel3
         '
-        Me.pnl_M3_Displays.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnl_M3_Displays.Controls.Add(Me.lblM3_TotAirConsumptionPerCycleLitres)
-        Me.pnl_M3_Displays.Controls.Add(Me.lbl_M3_AvgPowerAtCrankFromPneumatics)
-        Me.pnl_M3_Displays.Controls.Add(Me.txtM3_out_TotalAirConsumedPerCycleInLitres)
-        Me.pnl_M3_Displays.Controls.Add(Me.txtM3_out_AveragePowerAtCrankFromPneumatics)
-        Me.pnl_M3_Displays.Location = New System.Drawing.Point(379, 159)
-        Me.pnl_M3_Displays.Name = "pnl_M3_Displays"
-        Me.pnl_M3_Displays.Size = New System.Drawing.Size(200, 100)
-        Me.pnl_M3_Displays.TabIndex = 30
+        Me.Panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Panel3.Controls.Add(Me.lblM5_AlternatorRegenPowerAtCrankTractionWatts)
+        Me.Panel3.Controls.Add(Me.M5_AlternatorGenerationPowerAtCrankOverrunWatts)
+        Me.Panel3.Controls.Add(Me.txtM5_out_AltRegenPowerAtCrankOverrunWatts)
+        Me.Panel3.Controls.Add(Me.lblM5_AltRegenPowerAtCrankIdleW)
+        Me.Panel3.Controls.Add(Me.txtM5_out_AltRegenPowerAtCrankTractionWatts)
+        Me.Panel3.Controls.Add(Me.txtM5_out_AltRegenPowerAtCrankIdleWatts)
+        Me.Panel3.Location = New System.Drawing.Point(380, 486)
+        Me.Panel3.Name = "Panel3"
+        Me.Panel3.Size = New System.Drawing.Size(197, 141)
+        Me.Panel3.TabIndex = 36
         '
-        'lblM3_AveragePneumaticLoad
+        'lblM5_SmartAltSetGeneration
         '
-        Me.lblM3_AveragePneumaticLoad.AutoSize = true
-        Me.lblM3_AveragePneumaticLoad.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblM3_AveragePneumaticLoad.Location = New System.Drawing.Point(376, 141)
-        Me.lblM3_AveragePneumaticLoad.Name = "lblM3_AveragePneumaticLoad"
-        Me.lblM3_AveragePneumaticLoad.Size = New System.Drawing.Size(195, 13)
-        Me.lblM3_AveragePneumaticLoad.TabIndex = 31
-        Me.lblM3_AveragePneumaticLoad.Text = "M3-Avg Pneumatic Load Demand"
+        Me.lblM5_SmartAltSetGeneration.AutoSize = true
+        Me.lblM5_SmartAltSetGeneration.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblM5_SmartAltSetGeneration.Location = New System.Drawing.Point(379, 470)
+        Me.lblM5_SmartAltSetGeneration.Name = "lblM5_SmartAltSetGeneration"
+        Me.lblM5_SmartAltSetGeneration.Size = New System.Drawing.Size(168, 13)
+        Me.lblM5_SmartAltSetGeneration.TabIndex = 37
+        Me.lblM5_SmartAltSetGeneration.Text = "M5-Smart Alt Set Generation"
         '
-        'txtM3_out_AveragePowerAtCrankFromPneumatics
+        'txtM5_out_AltRegenPowerAtCrankIdleWatts
         '
-        Me.txtM3_out_AveragePowerAtCrankFromPneumatics.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
-        Me.txtM3_out_AveragePowerAtCrankFromPneumatics.Location = New System.Drawing.Point(10, 22)
-        Me.txtM3_out_AveragePowerAtCrankFromPneumatics.Name = "txtM3_out_AveragePowerAtCrankFromPneumatics"
-        Me.txtM3_out_AveragePowerAtCrankFromPneumatics.Size = New System.Drawing.Size(100, 20)
-        Me.txtM3_out_AveragePowerAtCrankFromPneumatics.TabIndex = 0
+        Me.txtM5_out_AltRegenPowerAtCrankIdleWatts.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.txtM5_out_AltRegenPowerAtCrankIdleWatts.Location = New System.Drawing.Point(8, 21)
+        Me.txtM5_out_AltRegenPowerAtCrankIdleWatts.Name = "txtM5_out_AltRegenPowerAtCrankIdleWatts"
+        Me.txtM5_out_AltRegenPowerAtCrankIdleWatts.Size = New System.Drawing.Size(100, 20)
+        Me.txtM5_out_AltRegenPowerAtCrankIdleWatts.TabIndex = 0
         '
-        'txtM3_out_TotalAirConsumedPerCycleInLitres
+        'txtM5_out_AltRegenPowerAtCrankTractionWatts
         '
-        Me.txtM3_out_TotalAirConsumedPerCycleInLitres.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
-        Me.txtM3_out_TotalAirConsumedPerCycleInLitres.Location = New System.Drawing.Point(10, 67)
-        Me.txtM3_out_TotalAirConsumedPerCycleInLitres.Name = "txtM3_out_TotalAirConsumedPerCycleInLitres"
-        Me.txtM3_out_TotalAirConsumedPerCycleInLitres.Size = New System.Drawing.Size(100, 20)
-        Me.txtM3_out_TotalAirConsumedPerCycleInLitres.TabIndex = 1
+        Me.txtM5_out_AltRegenPowerAtCrankTractionWatts.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.txtM5_out_AltRegenPowerAtCrankTractionWatts.Location = New System.Drawing.Point(8, 64)
+        Me.txtM5_out_AltRegenPowerAtCrankTractionWatts.Name = "txtM5_out_AltRegenPowerAtCrankTractionWatts"
+        Me.txtM5_out_AltRegenPowerAtCrankTractionWatts.Size = New System.Drawing.Size(100, 20)
+        Me.txtM5_out_AltRegenPowerAtCrankTractionWatts.TabIndex = 1
         '
-        'lbl_M3_AvgPowerAtCrankFromPneumatics
+        'lblM5_AltRegenPowerAtCrankIdleW
         '
-        Me.lbl_M3_AvgPowerAtCrankFromPneumatics.AutoSize = true
-        Me.lbl_M3_AvgPowerAtCrankFromPneumatics.Location = New System.Drawing.Point(9, 4)
-        Me.lbl_M3_AvgPowerAtCrankFromPneumatics.Name = "lbl_M3_AvgPowerAtCrankFromPneumatics"
-        Me.lbl_M3_AvgPowerAtCrankFromPneumatics.Size = New System.Drawing.Size(182, 13)
-        Me.lbl_M3_AvgPowerAtCrankFromPneumatics.TabIndex = 2
-        Me.lbl_M3_AvgPowerAtCrankFromPneumatics.Text = "Avg Power@Crank From Pneumatics"
+        Me.lblM5_AltRegenPowerAtCrankIdleW.AutoSize = true
+        Me.lblM5_AltRegenPowerAtCrankIdleW.Location = New System.Drawing.Point(5, 5)
+        Me.lblM5_AltRegenPowerAtCrankIdleW.Name = "lblM5_AltRegenPowerAtCrankIdleW"
+        Me.lblM5_AltRegenPowerAtCrankIdleW.Size = New System.Drawing.Size(165, 13)
+        Me.lblM5_AltRegenPowerAtCrankIdleW.TabIndex = 2
+        Me.lblM5_AltRegenPowerAtCrankIdleW.Text = "Alt Regen Pwr@tCrank IdleWatts"
         '
-        'lblM3_TotAirConsumptionPerCycleLitres
+        'M5_AlternatorGenerationPowerAtCrankOverrunWatts
         '
-        Me.lblM3_TotAirConsumptionPerCycleLitres.AutoSize = true
-        Me.lblM3_TotAirConsumptionPerCycleLitres.Location = New System.Drawing.Point(8, 49)
-        Me.lblM3_TotAirConsumptionPerCycleLitres.Name = "lblM3_TotAirConsumptionPerCycleLitres"
-        Me.lblM3_TotAirConsumptionPerCycleLitres.Size = New System.Drawing.Size(136, 13)
-        Me.lblM3_TotAirConsumptionPerCycleLitres.TabIndex = 3
-        Me.lblM3_TotAirConsumptionPerCycleLitres.Text = "Total Air Cosumed/Cycle(L)"
+        Me.M5_AlternatorGenerationPowerAtCrankOverrunWatts.AutoSize = true
+        Me.M5_AlternatorGenerationPowerAtCrankOverrunWatts.Location = New System.Drawing.Point(8, 87)
+        Me.M5_AlternatorGenerationPowerAtCrankOverrunWatts.Name = "M5_AlternatorGenerationPowerAtCrankOverrunWatts"
+        Me.M5_AlternatorGenerationPowerAtCrankOverrunWatts.Size = New System.Drawing.Size(186, 13)
+        Me.M5_AlternatorGenerationPowerAtCrankOverrunWatts.TabIndex = 5
+        Me.M5_AlternatorGenerationPowerAtCrankOverrunWatts.Text = "Alt Regen Pwr@Crank Overrun Watts"
         '
-        'Panel1
+        'txtM5_out_AltRegenPowerAtCrankOverrunWatts
         '
-        Me.Panel1.Controls.Add(Me.lblM4_PowerAtCrankFromPSCompressorON)
-        Me.Panel1.Controls.Add(Me.lblM4_PowerAtCrankFromPSCompressorOFF)
-        Me.Panel1.Controls.Add(Me.lblM4_CompressorOnOffPowerDelta)
-        Me.Panel1.Controls.Add(Me.lblM4_CompressorFlowRate)
-        Me.Panel1.Controls.Add(Me.txtM4_out_PowerAtCrankFromPneumaticsCompressorON)
-        Me.Panel1.Controls.Add(Me.txtM4_out_PowerAtCrankFromPneumaticsCompressorOFF)
-        Me.Panel1.Controls.Add(Me.txtM4_out_CompresssorPwrOnMinusPwrOff)
-        Me.Panel1.Controls.Add(Me.txtM4_out_CompressorFlowRate)
-        Me.Panel1.Location = New System.Drawing.Point(379, 281)
-        Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(200, 179)
-        Me.Panel1.TabIndex = 32
+        Me.txtM5_out_AltRegenPowerAtCrankOverrunWatts.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.txtM5_out_AltRegenPowerAtCrankOverrunWatts.Location = New System.Drawing.Point(8, 105)
+        Me.txtM5_out_AltRegenPowerAtCrankOverrunWatts.Name = "txtM5_out_AltRegenPowerAtCrankOverrunWatts"
+        Me.txtM5_out_AltRegenPowerAtCrankOverrunWatts.Size = New System.Drawing.Size(100, 20)
+        Me.txtM5_out_AltRegenPowerAtCrankOverrunWatts.TabIndex = 4
         '
-        'txtM4_out_CompressorFlowRate
+        'lblM5_AlternatorRegenPowerAtCrankTractionWatts
         '
-        Me.txtM4_out_CompressorFlowRate.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
-        Me.txtM4_out_CompressorFlowRate.Location = New System.Drawing.Point(13, 28)
-        Me.txtM4_out_CompressorFlowRate.Name = "txtM4_out_CompressorFlowRate"
-        Me.txtM4_out_CompressorFlowRate.Size = New System.Drawing.Size(100, 20)
-        Me.txtM4_out_CompressorFlowRate.TabIndex = 0
+        Me.lblM5_AlternatorRegenPowerAtCrankTractionWatts.AutoSize = true
+        Me.lblM5_AlternatorRegenPowerAtCrankTractionWatts.Location = New System.Drawing.Point(5, 48)
+        Me.lblM5_AlternatorRegenPowerAtCrankTractionWatts.Name = "lblM5_AlternatorRegenPowerAtCrankTractionWatts"
+        Me.lblM5_AlternatorRegenPowerAtCrankTractionWatts.Size = New System.Drawing.Size(190, 13)
+        Me.lblM5_AlternatorRegenPowerAtCrankTractionWatts.TabIndex = 6
+        Me.lblM5_AlternatorRegenPowerAtCrankTractionWatts.Text = "Alt Regen Pwr@tCrank Traction Watts"
         '
-        'txtM4_out_CompresssorPwrOnMinusPwrOff
+        'txtEngineDrivelinePower
         '
-        Me.txtM4_out_CompresssorPwrOnMinusPwrOff.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
-        Me.txtM4_out_CompresssorPwrOnMinusPwrOff.Location = New System.Drawing.Point(13, 69)
-        Me.txtM4_out_CompresssorPwrOnMinusPwrOff.Name = "txtM4_out_CompresssorPwrOnMinusPwrOff"
-        Me.txtM4_out_CompresssorPwrOnMinusPwrOff.Size = New System.Drawing.Size(100, 20)
-        Me.txtM4_out_CompresssorPwrOnMinusPwrOff.TabIndex = 1
+        Me.txtEngineDrivelinePower.Location = New System.Drawing.Point(25, 76)
+        Me.txtEngineDrivelinePower.Name = "txtEngineDrivelinePower"
+        Me.txtEngineDrivelinePower.Size = New System.Drawing.Size(100, 20)
+        Me.txtEngineDrivelinePower.TabIndex = 1
         '
-        'txtM4_out_PowerAtCrankFromPneumaticsCompressorOFF
+        'txtEngineDrivelineTorque
         '
-        Me.txtM4_out_PowerAtCrankFromPneumaticsCompressorOFF.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
-        Me.txtM4_out_PowerAtCrankFromPneumaticsCompressorOFF.Location = New System.Drawing.Point(13, 107)
-        Me.txtM4_out_PowerAtCrankFromPneumaticsCompressorOFF.Name = "txtM4_out_PowerAtCrankFromPneumaticsCompressorOFF"
-        Me.txtM4_out_PowerAtCrankFromPneumaticsCompressorOFF.Size = New System.Drawing.Size(100, 20)
-        Me.txtM4_out_PowerAtCrankFromPneumaticsCompressorOFF.TabIndex = 2
+        Me.txtEngineDrivelineTorque.Location = New System.Drawing.Point(25, 120)
+        Me.txtEngineDrivelineTorque.Name = "txtEngineDrivelineTorque"
+        Me.txtEngineDrivelineTorque.Size = New System.Drawing.Size(100, 20)
+        Me.txtEngineDrivelineTorque.TabIndex = 2
         '
-        'txtM4_out_PowerAtCrankFromPneumaticsCompressorON
+        'txtEngineMotoringPower
         '
-        Me.txtM4_out_PowerAtCrankFromPneumaticsCompressorON.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
-        Me.txtM4_out_PowerAtCrankFromPneumaticsCompressorON.Location = New System.Drawing.Point(13, 148)
-        Me.txtM4_out_PowerAtCrankFromPneumaticsCompressorON.Name = "txtM4_out_PowerAtCrankFromPneumaticsCompressorON"
-        Me.txtM4_out_PowerAtCrankFromPneumaticsCompressorON.Size = New System.Drawing.Size(100, 20)
-        Me.txtM4_out_PowerAtCrankFromPneumaticsCompressorON.TabIndex = 3
+        Me.txtEngineMotoringPower.Location = New System.Drawing.Point(25, 165)
+        Me.txtEngineMotoringPower.Name = "txtEngineMotoringPower"
+        Me.txtEngineMotoringPower.Size = New System.Drawing.Size(100, 20)
+        Me.txtEngineMotoringPower.TabIndex = 3
         '
-        'lblM4_CompressorFlowRate
+        'txtEngineSpeed
         '
-        Me.lblM4_CompressorFlowRate.AutoSize = true
-        Me.lblM4_CompressorFlowRate.Location = New System.Drawing.Point(13, 11)
-        Me.lblM4_CompressorFlowRate.Name = "lblM4_CompressorFlowRate"
-        Me.lblM4_CompressorFlowRate.Size = New System.Drawing.Size(143, 13)
-        Me.lblM4_CompressorFlowRate.TabIndex = 4
-        Me.lblM4_CompressorFlowRate.Text = "Compressor Flow Rate L/min"
+        Me.txtEngineSpeed.Location = New System.Drawing.Point(25, 205)
+        Me.txtEngineSpeed.Name = "txtEngineSpeed"
+        Me.txtEngineSpeed.Size = New System.Drawing.Size(100, 20)
+        Me.txtEngineSpeed.TabIndex = 4
         '
-        'lblM4_CompressorOnOffPowerDelta
+        'txtTotalCycleTimeSeconds
         '
-        Me.lblM4_CompressorOnOffPowerDelta.AutoSize = true
-        Me.lblM4_CompressorOnOffPowerDelta.Location = New System.Drawing.Point(13, 54)
-        Me.lblM4_CompressorOnOffPowerDelta.Name = "lblM4_CompressorOnOffPowerDelta"
-        Me.lblM4_CompressorOnOffPowerDelta.Size = New System.Drawing.Size(162, 13)
-        Me.lblM4_CompressorOnOffPowerDelta.TabIndex = 5
-        Me.lblM4_CompressorOnOffPowerDelta.Text = "Compressor PwrOn minus PwrOff"
+        Me.txtTotalCycleTimeSeconds.Location = New System.Drawing.Point(25, 254)
+        Me.txtTotalCycleTimeSeconds.Name = "txtTotalCycleTimeSeconds"
+        Me.txtTotalCycleTimeSeconds.Size = New System.Drawing.Size(100, 20)
+        Me.txtTotalCycleTimeSeconds.TabIndex = 5
         '
-        'lblM4_PowerAtCrankFromPSCompressorOFF
+        'lblEngineDrivelinePower
         '
-        Me.lblM4_PowerAtCrankFromPSCompressorOFF.AutoSize = true
-        Me.lblM4_PowerAtCrankFromPSCompressorOFF.Location = New System.Drawing.Point(13, 91)
-        Me.lblM4_PowerAtCrankFromPSCompressorOFF.Name = "lblM4_PowerAtCrankFromPSCompressorOFF"
-        Me.lblM4_PowerAtCrankFromPSCompressorOFF.Size = New System.Drawing.Size(185, 13)
-        Me.lblM4_PowerAtCrankFromPSCompressorOFF.TabIndex = 6
-        Me.lblM4_PowerAtCrankFromPSCompressorOFF.Text = "Pwr@Crank From PS CompressorOFF"
+        Me.lblEngineDrivelinePower.AutoSize = true
+        Me.lblEngineDrivelinePower.Location = New System.Drawing.Point(22, 61)
+        Me.lblEngineDrivelinePower.Name = "lblEngineDrivelinePower"
+        Me.lblEngineDrivelinePower.Size = New System.Drawing.Size(120, 13)
+        Me.lblEngineDrivelinePower.TabIndex = 10
+        Me.lblEngineDrivelinePower.Text = "Engine Driveline Power "
         '
-        'lblM4_PowerAtCrankFromPSCompressorON
+        'lblEngineDrivelineTorque
         '
-        Me.lblM4_PowerAtCrankFromPSCompressorON.AutoSize = true
-        Me.lblM4_PowerAtCrankFromPSCompressorON.Location = New System.Drawing.Point(13, 133)
-        Me.lblM4_PowerAtCrankFromPSCompressorON.Name = "lblM4_PowerAtCrankFromPSCompressorON"
-        Me.lblM4_PowerAtCrankFromPSCompressorON.Size = New System.Drawing.Size(181, 13)
-        Me.lblM4_PowerAtCrankFromPSCompressorON.TabIndex = 7
-        Me.lblM4_PowerAtCrankFromPSCompressorON.Text = "Pwr@Crank From PS CompressorON"
+        Me.lblEngineDrivelineTorque.AutoSize = true
+        Me.lblEngineDrivelineTorque.Location = New System.Drawing.Point(24, 103)
+        Me.lblEngineDrivelineTorque.Name = "lblEngineDrivelineTorque"
+        Me.lblEngineDrivelineTorque.Size = New System.Drawing.Size(121, 13)
+        Me.lblEngineDrivelineTorque.TabIndex = 11
+        Me.lblEngineDrivelineTorque.Text = "Engine Driveline Torque"
         '
-        'lblM4_AirCompressor
+        'lblEngineMotoringPower
         '
-        Me.lblM4_AirCompressor.AutoSize = true
-        Me.lblM4_AirCompressor.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblM4_AirCompressor.Location = New System.Drawing.Point(379, 265)
-        Me.lblM4_AirCompressor.Name = "lblM4_AirCompressor"
-        Me.lblM4_AirCompressor.Size = New System.Drawing.Size(112, 13)
-        Me.lblM4_AirCompressor.TabIndex = 33
-        Me.lblM4_AirCompressor.Text = "M4-Air Compressor"
+        Me.lblEngineMotoringPower.AutoSize = true
+        Me.lblEngineMotoringPower.Location = New System.Drawing.Point(24, 148)
+        Me.lblEngineMotoringPower.Name = "lblEngineMotoringPower"
+        Me.lblEngineMotoringPower.Size = New System.Drawing.Size(117, 13)
+        Me.lblEngineMotoringPower.TabIndex = 12
+        Me.lblEngineMotoringPower.Text = "Engine Motoring Power"
+        '
+        'lblEngineSpeed
+        '
+        Me.lblEngineSpeed.AutoSize = true
+        Me.lblEngineSpeed.Location = New System.Drawing.Point(23, 192)
+        Me.lblEngineSpeed.Name = "lblEngineSpeed"
+        Me.lblEngineSpeed.Size = New System.Drawing.Size(107, 13)
+        Me.lblEngineSpeed.TabIndex = 13
+        Me.lblEngineSpeed.Text = "Engine Speed (RPM)"
+        '
+        'lblTotalCycleTimeSeconds
+        '
+        Me.lblTotalCycleTimeSeconds.AutoSize = true
+        Me.lblTotalCycleTimeSeconds.Location = New System.Drawing.Point(25, 237)
+        Me.lblTotalCycleTimeSeconds.Name = "lblTotalCycleTimeSeconds"
+        Me.lblTotalCycleTimeSeconds.Size = New System.Drawing.Size(134, 13)
+        Me.lblTotalCycleTimeSeconds.TabIndex = 14
+        Me.lblTotalCycleTimeSeconds.Text = "Total Cycle Time Seconds "
+        '
+        'chkClutchEngaged
+        '
+        Me.chkClutchEngaged.AutoSize = true
+        Me.chkClutchEngaged.Location = New System.Drawing.Point(25, 20)
+        Me.chkClutchEngaged.Name = "chkClutchEngaged"
+        Me.chkClutchEngaged.Size = New System.Drawing.Size(102, 17)
+        Me.chkClutchEngaged.TabIndex = 20
+        Me.chkClutchEngaged.Text = "Clutch Engaged"
+        Me.chkClutchEngaged.UseVisualStyleBackColor = true
+        '
+        'btnStart
+        '
+        Me.btnStart.Location = New System.Drawing.Point(25, 392)
+        Me.btnStart.Name = "btnStart"
+        Me.btnStart.Size = New System.Drawing.Size(102, 23)
+        Me.btnStart.TabIndex = 1
+        Me.btnStart.Text = "Start Processing"
+        Me.btnStart.UseVisualStyleBackColor = true
+        '
+        'btnFinish
+        '
+        Me.btnFinish.Location = New System.Drawing.Point(25, 448)
+        Me.btnFinish.Name = "btnFinish"
+        Me.btnFinish.Size = New System.Drawing.Size(100, 23)
+        Me.btnFinish.TabIndex = 4
+        Me.btnFinish.Text = "Stop Processing"
+        Me.btnFinish.UseVisualStyleBackColor = true
+        '
+        'PictureBox1
+        '
+        Me.PictureBox1.Location = New System.Drawing.Point(28, 280)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(100, 94)
+        Me.PictureBox1.TabIndex = 34
+        Me.PictureBox1.TabStop = false
         '
         'Dashboard
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange
-        Me.ClientSize = New System.Drawing.Size(945, 712)
+        Me.ClientSize = New System.Drawing.Size(945, 742)
         Me.Controls.Add(Me.pnlMain)
         Me.Name = "Dashboard"
         Me.Text = "Dashboard"
@@ -1886,6 +1984,10 @@ Partial Class Dashboard
         Me.tabHVACConfig.PerformLayout
         Me.tabPlayground.ResumeLayout(false)
         Me.tabPlayground.PerformLayout
+        Me.Panel1.ResumeLayout(false)
+        Me.Panel1.PerformLayout
+        Me.pnl_M3_Displays.ResumeLayout(false)
+        Me.pnl_M3_Displays.PerformLayout
         Me.pnl_M2_Displays.ResumeLayout(false)
         Me.pnl_M2_Displays.PerformLayout
         Me.pnl_M1_Displays.ResumeLayout(false)
@@ -1896,19 +1998,16 @@ Partial Class Dashboard
         Me.pnl_M0_Displays.PerformLayout
         Me.resultCardContextMenu.ResumeLayout(false)
         CType(Me.ErrorProvider,System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnl_M3_Displays.ResumeLayout(false)
-        Me.pnl_M3_Displays.PerformLayout
-        Me.Panel1.ResumeLayout(false)
-        Me.Panel1.PerformLayout
+        Me.Panel3.ResumeLayout(false)
+        Me.Panel3.PerformLayout
+        CType(Me.PictureBox1,System.ComponentModel.ISupportInitialize).EndInit
         Me.ResumeLayout(false)
 
 End Sub
     Friend WithEvents pnlMain As System.Windows.Forms.Panel
     Friend WithEvents btnCancel As System.Windows.Forms.Button
-    Friend WithEvents btnFinish As System.Windows.Forms.Button
     Friend WithEvents btnForward As System.Windows.Forms.Button
     Friend WithEvents btnBack As System.Windows.Forms.Button
-    Friend WithEvents btnStart As System.Windows.Forms.Button
     Friend WithEvents resultCardContextMenu As System.Windows.Forms.ContextMenuStrip
     Friend WithEvents DeleteToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ErrorProvider As System.Windows.Forms.ErrorProvider
@@ -2001,17 +2100,6 @@ End Sub
     Friend WithEvents txtHVACElectricalLoadPowerWatts As System.Windows.Forms.TextBox
     Friend WithEvents lblHVACElectricalLoadPowerWatts As System.Windows.Forms.Label
     Friend WithEvents lblHVACTitle As System.Windows.Forms.Label
-    Friend WithEvents lblTotalCycleTimeSeconds As System.Windows.Forms.Label
-    Friend WithEvents lblEngineSpeed As System.Windows.Forms.Label
-    Friend WithEvents lblEngineMotoringPower As System.Windows.Forms.Label
-    Friend WithEvents lblEngineDrivelineTorque As System.Windows.Forms.Label
-    Friend WithEvents lblEngineDrivelinePower As System.Windows.Forms.Label
-    Friend WithEvents txtTotalCycleTimeSeconds As System.Windows.Forms.TextBox
-    Friend WithEvents txtEngineSpeed As System.Windows.Forms.TextBox
-    Friend WithEvents txtEngineMotoringPower As System.Windows.Forms.TextBox
-    Friend WithEvents txtEngineDrivelineTorque As System.Windows.Forms.TextBox
-    Friend WithEvents txtEngineDrivelinePower As System.Windows.Forms.TextBox
-    Friend WithEvents chkClutchEngaged As System.Windows.Forms.CheckBox
     Friend WithEvents lblM0Outputs As System.Windows.Forms.Label
     Friend WithEvents pnl_M0_Displays As System.Windows.Forms.Panel
     Friend WithEvents lblAlternatorsEfficiency As System.Windows.Forms.Label
@@ -2065,4 +2153,27 @@ End Sub
     Friend WithEvents txtM4_out_PowerAtCrankFromPneumaticsCompressorOFF As System.Windows.Forms.TextBox
     Friend WithEvents txtM4_out_CompresssorPwrOnMinusPwrOff As System.Windows.Forms.TextBox
     Friend WithEvents txtM4_out_CompressorFlowRate As System.Windows.Forms.TextBox
+    Friend WithEvents lblM5_SmartAltSetGeneration As System.Windows.Forms.Label
+    Friend WithEvents Panel3 As System.Windows.Forms.Panel
+    Friend WithEvents M5_AlternatorGenerationPowerAtCrankOverrunWatts As System.Windows.Forms.Label
+    Friend WithEvents txtM5_out_AltRegenPowerAtCrankOverrunWatts As System.Windows.Forms.TextBox
+    Friend WithEvents lblM5_AltRegenPowerAtCrankIdleW As System.Windows.Forms.Label
+    Friend WithEvents txtM5_out_AltRegenPowerAtCrankTractionWatts As System.Windows.Forms.TextBox
+    Friend WithEvents txtM5_out_AltRegenPowerAtCrankIdleWatts As System.Windows.Forms.TextBox
+    Friend WithEvents lblM5_AlternatorRegenPowerAtCrankTractionWatts As System.Windows.Forms.Label
+    Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
+    Friend WithEvents btnFinish As System.Windows.Forms.Button
+    Friend WithEvents btnStart As System.Windows.Forms.Button
+    Friend WithEvents chkClutchEngaged As System.Windows.Forms.CheckBox
+    Friend WithEvents lblTotalCycleTimeSeconds As System.Windows.Forms.Label
+    Friend WithEvents lblEngineSpeed As System.Windows.Forms.Label
+    Friend WithEvents lblEngineMotoringPower As System.Windows.Forms.Label
+    Friend WithEvents lblEngineDrivelineTorque As System.Windows.Forms.Label
+    Friend WithEvents lblEngineDrivelinePower As System.Windows.Forms.Label
+    Friend WithEvents txtTotalCycleTimeSeconds As System.Windows.Forms.TextBox
+    Friend WithEvents txtEngineSpeed As System.Windows.Forms.TextBox
+    Friend WithEvents txtEngineMotoringPower As System.Windows.Forms.TextBox
+    Friend WithEvents txtEngineDrivelineTorque As System.Windows.Forms.TextBox
+    Friend WithEvents txtEngineDrivelinePower As System.Windows.Forms.TextBox
+
 End Class

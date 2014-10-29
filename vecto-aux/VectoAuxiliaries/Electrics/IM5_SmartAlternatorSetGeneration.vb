@@ -2,9 +2,9 @@
 
 
 
-function AlternatorsGenerationPowerAtCrankIdleWatts(rpm As Integer) As Single
-function  AlternatorsGenerationPowerAtCrankTractionOnWatts(rpm As Integer) As Single
-function  AlternatorsGenerationPowerAtCrankOverrunWatts(rpm As Integer) As Single 
+function AlternatorsGenerationPowerAtCrankIdleWatts() As Single
+function  AlternatorsGenerationPowerAtCrankTractionOnWatts() As Single
+function  AlternatorsGenerationPowerAtCrankOverrunWatts() As Single 
 
 
 
