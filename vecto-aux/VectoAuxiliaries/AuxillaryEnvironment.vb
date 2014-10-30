@@ -24,6 +24,10 @@ public Property PneumaticAuxillariesConfig As IPneumaticsAuxilliariesConfig
  'Vecto Signals
  public Property Signals As ISignals
 
+
+
+
+
  'Test instantiations
 
 
@@ -38,6 +42,9 @@ public Property PneumaticAuxillariesConfig As IPneumaticsAuxilliariesConfig
 
 Public Sub Initialise()
 
+
+
+
 Dim alternatoMap As IAlternatorMap = New AlternatorMap(ElectricalUserInputsConfig.AlternatorMap)
 alternatoMap.Initialise()
 
@@ -46,6 +53,7 @@ Dim actuationsMap As  IPneumaticActuationsMAP = New PneumaticActuationsMAP( Pneu
 Dim compressorMap As ICompressorMap = New CompressorMap( PneumaticUserInputsConfig.CompressorMap)
 compressorMap.Initialise()
 
+ElectricalUserInputsConfig.ElectricalConsumers.DoorDutyCycleFraction = GetDoorActuationTimeFraction()
 
 
 M0 = New M0_NonSmart_AlternatorsSetEfficiency( ElectricalUserInputsConfig.ElectricalConsumers,
@@ -120,8 +128,12 @@ Private Sub setDefaults()
  PneumaticUserInputsConfig  = New PneumaticUserInputsConfig(true) 
  PneumaticAuxillariesConfig = New PneumaticsAuxilliariesConfig(true)
 
+
+
+
+
+
  ElectricalUserInputsConfig = New  ElectricsUserInputsConfig() With {.DoorActuationTimeSecond=4, 
-                                                                     .ElectricalConsumers= New ElectricalConsumerList(VectoInputs.PowerNetVoltage,0.1,true),
                                                                      .AlternatorGearEfficiency=0.8,
                                                                      .PowerNetVoltage= VectoInputs.PowerNetVoltage,
                                                                      .ResultCardIdle= New  ResultCard( New List(Of SmartResult)),
@@ -134,14 +146,34 @@ Private Sub setDefaults()
  HvacUserInputsConfig = New HVACUserInputsConfig( New HVACSteadyStateModel(100,100,100))
 
 
+ Signals = New Signals With { .EngineSpeed=2000, .TotalCycleTimeSeconds=3114, .ClutchEngaged=False}
 
 
- Signals = New Signals With { .EngineSpeed=2000, .TotalCycleTimeSeconds=3060, .ClutchEngaged=False}
+ 'Set Electricals.
+
+
+ Dim doorDutyCycleFraction as Single = GetDoorActuationTimeFraction
+
+ ElectricalUserInputsConfig.ElectricalConsumers= New ElectricalConsumerList(VectoInputs.PowerNetVoltage,doorDutyCycleFraction,true)
 
 
 
 
 End Sub
+
+Private Function GetDoorActuationTimeFraction()As Single
+
+ Dim actuationsMap as PneumaticActuationsMAP = New PneumaticActuationsMAP( PneumaticUserInputsConfig.ActuationsMap )
+ Dim actuationsKey As ActuationsKey = New ActuationsKey( "Park brake + 2 doors",VectoInputs.Cycle)
+
+ Dim numActuations       as single = actuationsMap.GetNumActuations( actuationsKey)
+ Dim secondsPerActuation As single = ElectricalUserInputsConfig.DoorActuationTimeSecond
+
+ Dim doorDutyCycleFraction as Single = (numActuations * secondsPerActuation)/Signals.TotalCycleTimeSeconds
+
+ Return doorDutyCycleFraction
+
+End Function
 
 
 End Class

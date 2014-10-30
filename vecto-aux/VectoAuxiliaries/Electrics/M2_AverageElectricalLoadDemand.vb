@@ -33,7 +33,7 @@
 
         Public Function GetAveragePowerDemandAtAlternator() As Single Implements IM2_AverageElectricalLoadDemand.GetAveragePowerDemandAtAlternator
 
-             Return _electricalConsumers.GetTotalAverageDemandAmps(False)
+             Return _electricalConsumers.GetTotalAverageDemandAmps(False) * _powerNetVoltage
 
         End Function
 

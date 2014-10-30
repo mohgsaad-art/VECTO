@@ -7,6 +7,7 @@ Public Interface IElectricalConsumerList
     Sub AddConsumer(consumer As IElectricalConsumer)
     Sub RemoveConsumer(consumer As IElectricalConsumer)
     Function GetTotalAverageDemandAmps(excludeOnBase As Boolean) As Single
+    Property DoorDutyCycleFraction As single
 
 End Interface
 

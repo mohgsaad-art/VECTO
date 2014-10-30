@@ -296,28 +296,28 @@ Public Class F_VEH_AuxDlog
         If fbAUX.OpenDialog(fFileRepl(Me.TbPath.Text, VehPath)) Then Me.TbPath.Text = fFileWoDir(fbAUX.Files(0), VehPath)
 
         If (TbID.Text = sKey.AUX.HVAC AndAlso Me.TbPath.Text.Length <> 0) Then
-            Dim frmHVAC As New VectoAuxiliaries.UI.F_HVAC(Me.TbPath.Text)
+            'Dim frmHVAC As New VectoAuxiliaries.UI.F_HVAC(Me.TbPath.Text)
 
-            'If we have results then populate the inputs tab
-            If (frmHVAC.ShowDialog() = Windows.Forms.DialogResult.OK) Then
+            ''If we have results then populate the inputs tab
+            'If (frmHVAC.ShowDialog() = Windows.Forms.DialogResult.OK) Then
 
-                dgvInputs.Rows.Clear()
+            '    dgvInputs.Rows.Clear()
 
-                ListItems.Clear()
+            '    ListItems.Clear()
 
-                For Each item As KeyValuePair(Of String, String) In frmHVAC.Inputs
+            '    For Each item As KeyValuePair(Of String, String) In frmHVAC.Inputs
 
-                    Dim row As DataGridViewRow = dgvInputs.Rows(dgvInputs.Rows.Add())
-                    row.Cells(0).Value = item.Key
-                    row.Cells(1).Value = item.Value
+            '        Dim row As DataGridViewRow = dgvInputs.Rows(dgvInputs.Rows.Add())
+            '        row.Cells(0).Value = item.Key
+            '        row.Cells(1).Value = item.Value
 
 
-                    ListItems.Add(item.Key, item.Value)
+            '        ListItems.Add(item.Key, item.Value)
 
-                Next
+            '    Next
 
  
-            End If
+            'End If
 
 
         End If

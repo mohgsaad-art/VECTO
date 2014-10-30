@@ -30,6 +30,7 @@
 
         End Function
 
+        <System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage>
         Public Function TotalAvgConsumptionInWatts(Optional PhaseIdle_TractionOnBasedOnCycle As Single = 0.0) As Single Implements Electrics.IElectricalConsumer.TotalAvgConsumptionInWatts
             Return TotalAvgConumptionAmps(PhaseIdle_TractionOnBasedOnCycle) * PowerNetVoltage
         End Function 
@@ -69,6 +70,7 @@
 
         End Function
 
+        <System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage>
         Public Overrides Function GetHashCode() As Integer
             Return 0
         End Function
