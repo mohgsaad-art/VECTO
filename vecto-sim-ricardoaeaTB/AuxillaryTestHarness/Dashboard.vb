@@ -18,6 +18,8 @@ Private Sub SetupControls()
 
       Dim cIndex As Integer = 0
 
+      gvElectricalConsumables.AutoGenerateColumns=false
+
      'ElectricalConsumerGrid 
      'Columns
      cIndex = gvElectricalConsumables.Columns.Add("Category", "Category")
@@ -108,7 +110,7 @@ End Sub
 Private Sub CreateBindings()
 
      'AuxEnvironment.Vecto Bindings
-     txtPowernetVoltage.DataBindings.Add("Text", auxEnvironment.VectoInputs, "PowerNetVoltage")
+     txtPowernetVoltage.DataBindings.Add("Text", auxEnvironment.ElectricalUserInputsConfig, "PowerNetVoltage")
      txtVehicleWeightKG.DataBindings.Add("Text", auxEnvironment.VectoInputs, "VehicleWeightKG")
      cboCycle.DataBindings.Add("Text", auxEnvironment.VectoInputs, "Cycle")
 
@@ -186,6 +188,7 @@ Private Sub CreateBindings()
         txtEngineDrivelineTorque.DataBindings.Add("Text", auxEnvironment.Signals,"EngineDrivelineTorque")
         txtEngineMotoringPower.DataBindings.Add("Text", auxEnvironment.Signals,"EngineMotoringPower")
         txtEngineSpeed.DataBindings.Add("Text", auxEnvironment.Signals,"EngineSpeed")
+        txtTotalCycleTimeSeconds.DataBindings.Add("Text",auxEnvironment.Signals,"TotalCycleTimeSeconds")
                 
 
 End Sub

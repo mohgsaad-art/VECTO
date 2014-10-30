@@ -1,4 +1,6 @@
 ﻿
+Imports System.Diagnostics.CodeAnalysis
+
 Namespace Electrics
 
 
@@ -61,7 +63,7 @@ Public readonly property  AlternatorsEfficiencyOverrunResultCard() As single Imp
 End Property
 
 
-
+<ExcludeFromCodeCoverage>
 Private function HvacPlusNonBaseCurrents() As Single
 
    Return _m0.GetHVACElectricalPowerDemandAmps() + _electricalConsumables.GetTotalAverageDemandAmps(true)
