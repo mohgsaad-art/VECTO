@@ -91,6 +91,7 @@
     <Compile Include="Hvac\HVACConstants.vb" />
     <Compile Include="Hvac\HVACInputs.vb" />
     <Compile Include="Electrics\IElectricalConsumerList.vb" />
+    <Compile Include="Hvac\HVACMap.vb" />
     <Compile Include="Hvac\HVACSteadyStateModel.vb" />
     <Compile Include="Hvac\HVACUserInputsConfig.vb" />
     <Compile Include="Hvac\IHVACInputs.vb" />
@@ -110,7 +111,6 @@
     <Compile Include="Pneumatics\M3_AveragePneumaticLoadDemand.vb" />
     <Compile Include="Pneumatics\CompressorMap.vb" />
     <Compile Include="Electrics\ElectricalConsumer.vb" />
-    <Compile Include="Hvac\HVACMap.vb" />
     <Compile Include="Electrics\IAlternatorMap.vb" />
     <Compile Include="Pneumatics\IM4_AirCompressor.vb" />
     <Compile Include="Pneumatics\ICompressorMap.vb" />
@@ -137,18 +137,6 @@
     <Compile Include="Pneumatics\PneumaticsAuxilliariesConfig.vb" />
     <Compile Include="Pneumatics\PneumaticUserInputsConfig.vb" />
     <Compile Include="Signals.vb" />
-    <Compile Include="UI\Dashboard.Designer.vb">
-      <DependentUpon>Dashboard.vb</DependentUpon>
-    </Compile>
-    <Compile Include="UI\Dashboard.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\F_HVAC.Designer.vb">
-      <DependentUpon>F_HVAC.vb</DependentUpon>
-    </Compile>
-    <Compile Include="UI\F_HVAC.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="VectoInputs.vb" />
   </ItemGroup>
   <ItemGroup>
@@ -157,12 +145,6 @@
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\Dashboard.resx">
-      <DependentUpon>Dashboard.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\F_HVAC.resx">
-      <DependentUpon>F_HVAC.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -176,7 +158,9 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="UI\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
