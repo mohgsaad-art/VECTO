@@ -54,7 +54,7 @@ Namespace UnitTests
         Public Sub GetAveragePowerAtAlternatorTest()
 
 
-            Dim expected As Single =35.634
+            Dim expected As Single =937.1157
             Dim target As M2_AverageElectricalLoadDemand = GetAverageElectricalDemandInstance()
             Dim actual As Single = target.GetAveragePowerDemandAtAlternator()
             Assert.AreEqual(expected,actual)
@@ -64,7 +64,7 @@ Namespace UnitTests
         <Test()>
         Public Sub GetAveragePowerAtCrankTest()
             Dim target As M2_AverageElectricalLoadDemand = GetAverageElectricalDemandInstance()
-            Dim expected As Single = 1673.52527
+            Dim expected As Single = 2272.85522
             Dim actual As Single = target.GetAveragePowerAtCrank()
             Assert.AreEqual(expected, actual)
         End Sub

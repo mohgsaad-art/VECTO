@@ -966,4 +966,92 @@ Private Sub btnFinish_Click( sender As Object,  e As EventArgs) Handles btnFinis
 End Sub
 
 
+Private Sub Button2_Click( sender As Object,  e As EventArgs) Handles Button2.Click
+
+    Dim altMap As IAlternatorMap = New AlternatorMap("testAlternatorMap.csv")
+    Dim efficiency , rpm, amp As Single
+    
+    altMap.Initialise()
+
+    Dim CrankSpeed As New System.Collections.Generic.List(Of single)
+    CrankSpeed.AddRange(New single() {1500,2000,4000,6000,7000})
+    Dim amps As New List(Of single)
+    amps.AddRange(New single() {10,27,53,63,68,125,136})
+
+    'On Boundaries
+    Console.WriteLine("On BOUNDARY TESTS")
+    Console.WriteLine("_________________")
+    Console.WriteLine("")
+    For Each  rpm  in CrankSpeed 
+     For Each amp  In amps
+         efficiency  = altMap.GetEfficiency( rpm, amp).Efficiency
+        Console.WriteLine(String.Format("RPM:{0} , AMP:{1}, EFF:{2})",rpm.ToString(),amp.ToString(),efficiency.ToString()))
+     Next
+    Next
+
+    Console.WriteLine("")
+    Console.WriteLine("Four Corner Points With Interpolated other")
+    Console.WriteLine("_________________")
+    Console.WriteLine("")
+
+    rpm=1500 : amp=55
+    efficiency = altMap.GetEfficiency( rpm, amp).Efficiency
+    Console.WriteLine(String.Format("RPM:{0} , AMP:{1}, EFF:{2})",rpm.ToString(),amp.ToString(),efficiency.ToString()))
+    rpm=7000 : amp=55
+    efficiency = altMap.GetEfficiency( rpm, amp).Efficiency
+    Console.WriteLine(String.Format("RPM:{0} , AMP:{1}, EFF:{2})",rpm.ToString(),amp.ToString(),efficiency.ToString()))
+    rpm=3000 : amp=10
+    efficiency = altMap.GetEfficiency( rpm, amp).Efficiency
+    Console.WriteLine(String.Format("RPM:{0} , AMP:{1}, EFF:{2})",rpm.ToString(),amp.ToString(),efficiency.ToString()))
+    rpm=3000 : amp=136
+    efficiency = altMap.GetEfficiency( rpm, amp).Efficiency
+    Console.WriteLine(String.Format("RPM:{0} , AMP:{1}, EFF:{2})",rpm.ToString(),amp.ToString(),efficiency.ToString()))
+
+    Console.WriteLine("")
+    Console.WriteLine("Interpolated Both - four data points")
+    Console.WriteLine("_________________")
+    Console.WriteLine("")
+
+    rpm=1750 : amp=18
+    efficiency = altMap.GetEfficiency( rpm, amp).Efficiency
+    Console.WriteLine(String.Format("RPM:{0} , AMP:{1}, EFF:{2})",rpm.ToString(),amp.ToString(),efficiency.ToString()))
+    rpm=6500 : amp=18
+    efficiency = altMap.GetEfficiency( rpm, amp).Efficiency
+    Console.WriteLine(String.Format("RPM:{0} , AMP:{1}, EFF:{2})",rpm.ToString(),amp.ToString(),efficiency.ToString()))
+
+    rpm=1750 : amp=130
+    efficiency = altMap.GetEfficiency( rpm, amp).Efficiency
+    Console.WriteLine(String.Format("RPM:{0} , AMP:{1}, EFF:{2})",rpm.ToString(),amp.ToString(),efficiency.ToString()))
+    rpm=6500 : amp=130
+    efficiency = altMap.GetEfficiency( rpm, amp).Efficiency
+    Console.WriteLine(String.Format("RPM:{0} , AMP:{1}, EFF:{2})",rpm.ToString(),amp.ToString(),efficiency.ToString()))
+
+    Console.WriteLine("")
+    Console.WriteLine("Range Limiting")
+    Console.WriteLine("_________________")
+    Console.WriteLine("")
+
+    rpm=0 : amp=0
+    efficiency = altMap.GetEfficiency( rpm, amp).Efficiency
+    Console.WriteLine(String.Format("RPM:{0} , AMP:{1}, EFF:{2})",rpm.ToString(),amp.ToString(),efficiency.ToString()))
+    rpm=0 : amp=10
+    efficiency = altMap.GetEfficiency( rpm, amp).Efficiency
+    Console.WriteLine(String.Format("RPM:{0} , AMP:{1}, EFF:{2})",rpm.ToString(),amp.ToString(),efficiency.ToString()))
+    rpm=0 : amp=200
+    efficiency = altMap.GetEfficiency( rpm, amp).Efficiency
+    Console.WriteLine(String.Format("RPM:{0} , AMP:{1}, EFF:{2})",rpm.ToString(),amp.ToString(),efficiency.ToString()))
+    rpm=1500 : amp=200
+    efficiency = altMap.GetEfficiency( rpm, amp).Efficiency
+    Console.WriteLine(String.Format("RPM:{0} , AMP:{1}, EFF:{2})",rpm.ToString(),amp.ToString(),efficiency.ToString()))
+    rpm=7000 : amp=200
+    efficiency = altMap.GetEfficiency( rpm, amp).Efficiency
+    Console.WriteLine(String.Format("RPM:{0} , AMP:{1}, EFF:{2})",rpm.ToString(),amp.ToString(),efficiency.ToString()))
+    rpm=8000 : amp=200
+    efficiency = altMap.GetEfficiency( rpm, amp).Efficiency
+    Console.WriteLine(String.Format("RPM:{0} , AMP:{1}, EFF:{2})",rpm.ToString(),amp.ToString(),efficiency.ToString()))
+
+
+End Sub
+
+
 End Class
