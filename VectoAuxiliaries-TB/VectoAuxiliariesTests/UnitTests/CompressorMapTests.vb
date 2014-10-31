@@ -122,7 +122,7 @@ Namespace UnitTests
         <Test()>
         Public Sub GetPowerCompressorOnKeyPassedTest()
             Dim target As CompressorMap = GetInitialiseMap()
-            Dim expected As Single = 4
+            Dim expected As Single = 4000
             Dim value As Single = target.GetPowerCompressorOn(2000)
             Assert.AreEqual(expected, value)
         End Sub
@@ -130,7 +130,7 @@ Namespace UnitTests
         <Test()>
         Public Sub GetPowerCompressorOnInterpolaitionTest()
             Dim target As CompressorMap = GetInitialiseMap()
-            Dim expected As Single = 5
+            Dim expected As Single = 5000
             Dim value As Single = target.GetPowerCompressorOn(2500)
             Assert.AreEqual(expected, value)
         End Sub
@@ -147,7 +147,7 @@ Namespace UnitTests
         <Test()>
         Public Sub GetPowerCompressorOffKeyPassedTest()
             Dim target As CompressorMap = GetInitialiseMap()
-            Dim expected As Single = 2
+            Dim expected As Single = 2000
             Dim value As Single = target.GetPowerCompressorOff(2000)
             Assert.AreEqual(expected, value)
         End Sub
@@ -155,7 +155,7 @@ Namespace UnitTests
         <Test()>
         Public Sub GetPowerCompressorOffInterpolaitionTest()
             Dim target As CompressorMap = GetInitialiseMap()
-            Dim expected As Single = 2.5
+            Dim expected As Single = 2500
             Dim value As Single = target.GetPowerCompressorOff(2500)
             Assert.AreEqual(expected, value)
         End Sub
@@ -177,7 +177,7 @@ Namespace UnitTests
             Dim expected As Single
             Dim actual As Single
 
-            expected = 0.01
+            expected = 10
 
             actual = target.AveragePowerDemandPerCompressorUnitFlowRate
 
