@@ -40,7 +40,7 @@
 
         Public Function GetAveragePowerAtCrank() As Single Implements IM2_AverageElectricalLoadDemand.GetAveragePowerAtCrank
 
-            Dim ElectricalPowerDemandsWatts As Single = GetAveragePowerDemandAtAlternator() * _powerNetVoltage
+            Dim ElectricalPowerDemandsWatts As Single = GetAveragePowerDemandAtAlternator()
             Dim alternatorsEfficiency As Single       = _module0.AlternatorsEfficiency
             Dim ElectricalPowerDemandsWattsDividedByAlternatorEfficiency as Single = ElectricalPowerDemandsWatts / alternatorsEfficiency
 

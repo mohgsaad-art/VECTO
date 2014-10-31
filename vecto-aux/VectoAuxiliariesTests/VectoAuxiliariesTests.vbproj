@@ -220,6 +220,9 @@
     <Content Include="TestFiles\testPneumaticActuationsMap_GOODMAP - Copy.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="TestFiles\testCompressorMap - Copy.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VectoAuxiliaries\VectoAuxiliaries.vbproj">

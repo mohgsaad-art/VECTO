@@ -13,181 +13,55 @@ Namespace UnitTests
         Private Const _IVALIDEFFICIENCYMAP As String = "TestFiles\testAlternatorMapWithInvalidEfficiency.csv"
         Private Const _INVALIDPOWERMAP As String = "TestFiles\testAlternatorMapWithInvalidPower.csv"
 
-        <Test()>
-        Public Sub CreateNewAlternatorMapInstanceTest()
-            Dim path As String = "test"
-            Dim target As AlternatorMap = New AlternatorMap(path)
+<Test()>
+<TestCase(10,1500,0.6150f)> _
+<TestCase(10,4000,0.6400f)> _
+<TestCase(10,7000,0.4750f)> _
+<TestCase(63,1500,0.0000f)> _
+<TestCase(63,4000,0.7400f)> _
+<TestCase(63,7000,0.6580f)> _
+<TestCase(136,1500,0.0000f)> _
+<TestCase(136,4000,0.6694f)> _
+<TestCase(136,7000,0.5953f)> _
+Public Sub BoundryTests(ByVal amps as integer, ByVal  rpm as integer,  ByVal expected as single)
 
-            Assert.IsNotNull(target)
-        End Sub
+   Dim map As IAlternatorMap = GetInitialisedMap()
+   Dim target As IAlternatorMap = GetInitialisedMap( )
+   Dim actual As Single = map.GetEfficiency( rpm,amps).Efficiency
+   Assert.AreEqual(expected, actual)
 
-        <Test()>
-        Public Sub InitialiseTest()
-            Dim target As AlternatorMap = GetMap()
-            Dim actual As Boolean = target.Initialise()
-            Assert.IsTrue(actual)
-        End Sub
+End Sub
 
-        <Test(), ExpectedException("System.ArgumentException")>
-        Public Sub InitialiseNoFileSuppliedThrowsExceptionTest()
-            Dim path As String = ""
-            Dim target As AlternatorMap = New AlternatorMap(path)
-            target.Initialise()
-        End Sub
+<TestCase(55,1500,0.15576f)> _
+<TestCase(55,7000,0.6304f)> _
+<TestCase(10,3000,0.63f)> _
+<TestCase(136,3000,0.3347f)> _
+Public sub FourCornerWithInterpolatedOtherTest(ByVal amps as integer, ByVal  rpm as integer,  ByVal expected as single)
 
-        <Test(), ExpectedException("System.ArgumentException")>
-        Public Sub InitialiseWrongNumberOfColumnsThrowsExceptionTest()
-            Dim path As String = "C:\DEV\VECTO\VectoAuxiliaries\VectoAuxiliariesTests\TestFiles\testAlternatorMapWrongNoOfColumns.csv"
-            Dim target As AlternatorMap = New AlternatorMap(path)
-            target.Initialise()
-        End Sub
+   Dim map As IAlternatorMap = GetInitialisedMap()
+   Dim target As IAlternatorMap = GetInitialisedMap( )
 
-        <Test(), ExpectedException("System.ArgumentException")>
-        Public Sub InitialiseInsufficientRowsThrowsExceptionTest()
-            Dim path As String = "C:\DEV\VECTO\VectoAuxiliaries\VectoAuxiliariesTests\TestFiles\testAlternatorMapNotEnoughRows.csv"
-            Dim target As AlternatorMap = New AlternatorMap(path)
-            target.Initialise()
-        End Sub
+   Dim actual As Single = map.GetEfficiency( rpm,amps).Efficiency
 
+   Assert.AreEqual(expected, actual)
+End Sub
 
-        <Test(), ExpectedException("System.InvalidCastException")>
-        Public Sub InitialiseInvalidRpmThrowsExceptionTest()
-            Dim path As String = _INVALIDRPMMAP
-            Dim target As AlternatorMap = New AlternatorMap(path)
-            target.Initialise()
-        End Sub
+<TestCase(18,1750,0.656323552f)>   _
+<TestCase(18,6500,0.5280294f)>   _
+<TestCase(130,1750,0.0f)>  _
+<TestCase(130,6500,0.6150136f)>  _
+Public sub InterpolatedCornersBothMidPreviousTest(ByVal amps as integer, ByVal  rpm as integer,  ByVal expected as single)
 
-        <Test(), ExpectedException("System.InvalidCastException")>
-        Public Sub InitialiseInvalidAmpsThrowsExceptionTest()
-            Dim path As String = _INVALIDAMPSMAP
-            Dim target As AlternatorMap = New AlternatorMap(path)
-            target.Initialise()
-        End Sub
+   Dim map As IAlternatorMap = GetInitialisedMap()
+   Dim target As IAlternatorMap = GetInitialisedMap( )
 
-        <Test(), ExpectedException("System.InvalidCastException")>
-        Public Sub InitialiseInvalidEfficiencyThrowsExceptionTest()
-            Dim path As String = _IVALIDEFFICIENCYMAP
-            Dim target As AlternatorMap = New AlternatorMap(path)
-            target.Initialise()
-        End Sub
+   Dim actual As Single = map.GetEfficiency( rpm,amps).Efficiency
 
-        <TestCase(2300, 15)> _
-        Public Sub GetEfficiencyInterpolationTest(ByVal rpm As Integer, ByVal amps As Integer)
+   Assert.AreEqual(expected, actual)
 
-            Dim target As AlternatorMap = GetInitialisedMap()
-            Dim expected As Single = 0.6444162
-            Dim value As Single = target.GetEfficiency(rpm, amps).Efficiency
-            Assert.AreEqual(expected, value)
-            Assert.AreEqual(expected, value)
-
-        End Sub
+End Sub
 
 
-        <TestCase(0, 0)> _
-        <TestCase(0, 1500)> _
-        <TestCase(10, 0)> _
-        <TestCase(136, 8000)> _
-        <TestCase(200, 7000)> _
-        <ExpectedException("System.ArgumentOutOfRangeException")> _
-        Public Sub GetEfficiencyRpmOutOfRangeThrowsExceptionTest(ByVal amps As Integer, ByVal rpm As Integer)
-
-            Dim target As AlternatorMap = GetInitialisedMap()
-            Dim value As AlternatorMapValues = target.GetEfficiency(rpm, amps)
-
-        End Sub
-
-
-         <TestCase(10, 3000)> _
-         Public Sub GetEfficiencySingleBoundary10_3000(ByVal amps As Integer, ByVal rpm As Integer)
-
-            Dim target As AlternatorMap = GetInitialisedMap()
-            Dim actual As Single = target.GetEfficiency(rpm, amps).Efficiency
-            Dim expected As Single = 0.63
-            Assert.AreEqual(expected, actual)
-
-        End Sub
-
-        <TestCase(10, 7000)> _
-         Public Sub GetEfficiencySingleBoundary10_7000(ByVal amps As Integer, ByVal rpm As Integer)
-
-            Dim target As AlternatorMap = GetInitialisedMap()
-            Dim actual As Single = target.GetEfficiency(rpm, amps).Efficiency
-            Dim expected As Single = 0.475
-            Assert.AreEqual(expected, actual)
-
-        End Sub
-
-
-        <TestCase(136, 1500)> _
-         Public Sub GetEfficiencySingleBoundary136_1500(ByVal amps As Integer, ByVal rpm As Integer)
-
-            Dim target As AlternatorMap = GetInitialisedMap()
-            Dim actual As Single = target.GetEfficiency(rpm, amps).Efficiency
-            Dim expected As Single = 0
-            Assert.AreEqual(expected, actual)
-
-        End Sub
-
-        <TestCase(136, 3000)> _
-         Public Sub GetEfficiencySingleBoundary136_3000(ByVal amps As Integer, ByVal rpm As Integer)
-
-            Dim target As AlternatorMap = GetInitialisedMap()
-            Dim actual As Single = target.GetEfficiency(rpm, amps).Efficiency
-            Dim expected As Single = 0.3347
-            Assert.AreEqual(expected, actual)
-
-        End Sub
-
-        <TestCase(136, 7000)> _
-         Public Sub GetEfficiencySingleBoundary136_7000(ByVal amps As Integer, ByVal rpm As Integer)
-
-            Dim target As AlternatorMap = GetInitialisedMap()
-            Dim actual As Single = target.GetEfficiency(rpm, amps).Efficiency
-            Dim expected As Single = 0.5953
-            Assert.AreEqual(expected, actual)
-
-        End Sub
-
-        <TestCase(10, 1500)> _
-        Public Sub GetEfficiencyOnLowerBoundary(ByVal amps As Integer, ByVal rpm As Integer)
-
-            Dim target As AlternatorMap = GetInitialisedMap()
-            Dim actual As Single = target.GetEfficiency(rpm, amps).Efficiency
-            Dim expected As Single = 0.615
-            Assert.AreEqual(expected, actual)
-
-        End Sub
-        <TestCase(27, 2000)> _
-        Public Sub GetEfficiencyOnInterimBoundary(ByVal amps As Integer, ByVal rpm As Integer)
-            Dim target As AlternatorMap = GetInitialisedMap()
-            Dim actual As Single = target.GetEfficiency(rpm, amps).Efficiency
-            Dim expected As Single = 0.7
-
-            Assert.AreEqual(expected, actual)
-
-        End Sub
-        <TestCase(136, 7000)> _
-          Public Sub GetEfficiencyTopBoundry136_7000(ByVal amps As Integer, ByVal rpm As Integer)
-
-            Dim target As AlternatorMap = GetInitialisedMap()
-            Dim actual As Single = target.GetEfficiency(rpm, amps).Efficiency
-            Dim expected As Single = 0.5953
-
-             Assert.AreEqual(expected, actual)
-
-        End Sub
-
-
-        <TestCase(15, 1500)> _
-          Public Sub GetEfficiency15_1500(ByVal amps As Integer, ByVal rpm As Integer)
-
-            Dim target As AlternatorMap = GetInitialisedMap()
-            Dim actual As Single = target.GetEfficiency(rpm, amps).Efficiency
-            Dim expected As Single = 0.615
-
-             Assert.AreEqual(expected, actual)
-
-        End Sub
 
 #Region "Helpers"
 

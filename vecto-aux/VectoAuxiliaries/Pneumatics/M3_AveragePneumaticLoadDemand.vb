@@ -82,7 +82,7 @@ Namespace Pneumatics
            '** ParkBrakesBreakplus2Doors **                                                     Park break + 2 doors
            numActuationsPerCycle = _pneumaticsActuationsMap.GetNumActuations(New ActuationsKey("Park brake + 2 doors", _cycleName))
            '=SUM(IF(K14="electric",0,IF(COUNTBLANK(F36),G36,F36)),PRODUCT(K16*IF(COUNTBLANK(F37),G37,F37)))
-           airConsumptionPerActuationNI = If(_pneumaticUserInputsConfig.Doors = "electric", 0, _pneumaticAuxillariesConfig.PerDoorOpeningNI)
+           airConsumptionPerActuationNI = If(_pneumaticUserInputsConfig.Doors = "Electric", 0, _pneumaticAuxillariesConfig.PerDoorOpeningNI)
            airConsumptionPerActuationNI += (_pneumaticAuxillariesConfig.PerStopBrakeActuationNIperKG * _vehicleMassKG)
            ParkBrakesplus2Doors = numActuationsPerCycle * airConsumptionPerActuationNI
 
@@ -94,13 +94,15 @@ Namespace Pneumatics
 
            '** AdBlue **
            '=IF(K13="electric",0,G39*F54)- Supplied Spreadsheet
-           AdBlue = If(_pneumaticUserInputsConfig.AdBlueDosing = "electric", 0, _pneumaticAuxillariesConfig.AdBlueNIperMinute * _cycleDurationMinutes)
+           AdBlue = If(_pneumaticUserInputsConfig.AdBlueDosing = "Electric", 0, _pneumaticAuxillariesConfig.AdBlueNIperMinute * _cycleDurationMinutes)
 
            '** Regeneration **   
            '=SUM(R6:R9)*IF(K9="yes",IF(COUNTBLANK(F41),G41,F41),IF(COUNTBLANK(F40),G40,F40)) - Supplied SpreadSheet
            Regeneration = (Breaks + ParkBrakesplus2Doors + Kneeling + AdBlue)
-           Regeneration *= If(_pneumaticUserInputsConfig.SmartRegeneration, _pneumaticAuxillariesConfig.SmartRegenFractionTotalAirDemand, _
+           Dim regenFraction As Single = If(_pneumaticUserInputsConfig.SmartRegeneration, _pneumaticAuxillariesConfig.SmartRegenFractionTotalAirDemand, _
                                                                             _pneumaticAuxillariesConfig.NonSmartRegenFractionTotalAirDemand)
+           Regeneration = Regeneration * regenFraction
+
            '** DeadVolBlowOuts **
            '=IF(COUNTBLANK(F43),G43,F43)/(F54/60) - Supplied SpreadSheet
            numActuationsPerCycle = _pneumaticAuxillariesConfig.DeadVolBlowOutsPerLitresperHour / (60 / _cycleDurationMinutes)
@@ -109,7 +111,7 @@ Namespace Pneumatics
 
            '** AirSuspension  **
            '=IF(K12="electrically",0,G38*F54) - Suplied Spreadsheet
-           AirSuspension = If(_pneumaticUserInputsConfig.AirSuspensionControl = "electrically", 0, _pneumaticAuxillariesConfig.AirControlledSuspensionNIperMinute * _cycleDurationMinutes)
+           AirSuspension = If(_pneumaticUserInputsConfig.AirSuspensionControl = "Electrically", 0, _pneumaticAuxillariesConfig.AirControlledSuspensionNIperMinute * _cycleDurationMinutes)
 
            '** Total Air Demand **
            TotalAirDemand = Breaks + ParkBrakesplus2Doors + Kneeling + AdBlue + Regeneration + DeadVolBlowOuts + AirSuspension
