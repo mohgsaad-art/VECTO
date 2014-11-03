@@ -36,7 +36,7 @@ End Sub
 <TestCase(55,7000,0.6304f)> _
 <TestCase(10,3000,0.63f)> _
 <TestCase(136,3000,0.3347f)> _
-Public sub FourCornerWithInterpolatedOtherTest(ByVal amps as integer, ByVal  rpm as integer,  ByVal expected as single)
+Public sub FourCornerWithInterpolatedOtherTest(ByVal amps as single, ByVal  rpm as single,  ByVal expected as single)
 
    Dim map As IAlternatorMap = GetInitialisedMap()
    Dim target As IAlternatorMap = GetInitialisedMap( )
@@ -49,8 +49,8 @@ End Sub
 <TestCase(18,1750,0.656323552f)>   _
 <TestCase(18,6500,0.5280294f)>   _
 <TestCase(130,1750,0.0f)>  _
-<TestCase(130,6500,0.6150136f)>  _
-Public sub InterpolatedCornersBothMidPreviousTest(ByVal amps as integer, ByVal  rpm as integer,  ByVal expected as single)
+<TestCase(130.5f,6500,0.6144f)>  _
+Public sub InterpolatedCornersBothMidPreviousTest(ByVal amps as single, ByVal  rpm as single,  ByVal expected as single)
 
    Dim map As IAlternatorMap = GetInitialisedMap()
    Dim target As IAlternatorMap = GetInitialisedMap( )
@@ -60,6 +60,46 @@ Public sub InterpolatedCornersBothMidPreviousTest(ByVal amps as integer, ByVal  
    Assert.AreEqual(expected, actual)
 
 End Sub
+
+
+<Test()> _
+<TestCase(18.5f,  1750, 0.6587500f)>   _
+<TestCase(40,     1750, 0.4736750f)>   _
+<TestCase(58,     1750, 0.1602250f)>   _
+<TestCase(65.5f,  1750, 0.2095500f)>   _
+<TestCase(96.5f,  1750, 0.1730000f)>   _
+<TestCase(130.5f, 1750, 0.0000000f)>   _
+<TestCase(18.5f,  3000, 0.6580250f)>   _
+<TestCase(40,     3000, 0.5983000f)>   _
+<TestCase(58,     3000, 0.4768250f)>   _
+<TestCase(65.5f,  3000, 0.5783500f)>   _
+<TestCase(96.5f,  3000, 0.5268000f)>   _
+<TestCase(130.5f, 3000, 0.3373500f)>   _
+<TestCase(18.5f,  5000, 0.6054750f)>   _
+<TestCase(40,     5000, 0.6572500f)>   _
+<TestCase(58,     5000, 0.7006000f)>   _
+<TestCase(65.5f,  5000, 0.7151250f)>   _
+<TestCase(96.5f,  5000, 0.6870250f)>   _
+<TestCase(130.5f, 5000, 0.6505750f)>   _
+<TestCase(18.5f,  6500, 0.5296250f)>   _
+<TestCase(40,     6500, 0.5982500f)>   _
+<TestCase(58,     6500, 0.6557000f)>   _
+<TestCase(65.5f,  6500, 0.6814250f)>   _		
+<TestCase(96.5f,  6500, 0.6561750f)>   _
+<TestCase(130.5f, 6500, 0.6144000f)>   _
+Public Sub InterpolatedAllMidPointsTest( byval amps As Single, byval rpm As Single, byval expected As single)
+
+
+   Dim map As IAlternatorMap = GetInitialisedMap()
+   Dim target As IAlternatorMap = GetInitialisedMap( )
+
+   Dim actual As Single = map.GetEfficiency( rpm,amps).Efficiency
+
+   Assert.AreEqual(expected, CType(Math.Round(actual,6),Single))
+
+
+End Sub
+
 
 
 
@@ -79,6 +119,11 @@ End Sub
 
 #End Region
 
-    End Class
+
+
+
+End Class
+
+
 
 End Namespace

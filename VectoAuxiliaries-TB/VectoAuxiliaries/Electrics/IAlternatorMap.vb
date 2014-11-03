@@ -15,7 +15,7 @@ Namespace Electrics
         ''' <param name="rpm">alternator rotation speed</param>
         ''' <returns>Single</returns>
         ''' <remarks></remarks>
-        Function GetEfficiency(ByVal rpm As Integer, ByVal amps As Integer) As AlternatorMapValues
+        Function GetEfficiency(ByVal rpm As single, ByVal amps As single) As AlternatorMapValues
 
     End Interface
 

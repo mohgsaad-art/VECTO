@@ -74,6 +74,7 @@
   <ItemGroup>
     <Compile Include="AuxillaryEnvironment.vb" />
     <Compile Include="Electrics\AlternatorMapValues.vb" />
+    <Compile Include="Electrics\AlternatorMap.vb" />
     <Compile Include="Electrics\ElectricsUserInputsConfig.vb" />
     <Compile Include="Electrics\IElectricsUserInputsConfig.vb" />
     <Compile Include="Electrics\IM0_5_SmartAlternatorSetEfficiency.vb" />
@@ -105,7 +106,7 @@
     <Compile Include="Pneumatics\ActuationsKey.vb" />
     <Compile Include="Pneumatics\IM3_AveragePneumaticLoadDemand.vb" />
     <Compile Include="Pneumatics\M4_AirCompressor.vb" />
-    <Compile Include="Electrics\AlternatorMap.vb" />
+    <Compile Include="Electrics\AlternatorMapOLDREMOVELATER.vb" />
     <Compile Include="Electrics\M2_AverageElectricalLoadDemand.vb" />
     <Compile Include="Hvac\M1_AverageHVACLoadDemand.vb" />
     <Compile Include="Pneumatics\M3_AveragePneumaticLoadDemand.vb" />

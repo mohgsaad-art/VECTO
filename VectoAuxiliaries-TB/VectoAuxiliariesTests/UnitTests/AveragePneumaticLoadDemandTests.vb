@@ -86,7 +86,7 @@ Namespace UnitTests
 
          Dim target As New M3_AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
 
-         Dim expected As Single = 7947.684
+         Dim expected As Single = 7664.94
          Dim actual As Single = target.TotalAirDemand()
 
          Assert.AreEqual(expected, actual)
@@ -107,7 +107,7 @@ Namespace UnitTests
 
             Dim target As New M3_AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
 
-            Dim expected As Single = 31.9030322
+            Dim expected As Single = 30.7680626
             Dim actual As Single = target.GetAveragePowerDemandAtCrankFromPneumatics()
 
             Assert.AreEqual(expected, actual)
@@ -130,7 +130,7 @@ Namespace UnitTests
 
             Dim target As New M3_AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
 
-            Dim expected As Single = 25.78023
+            Dim expected As Single = 24.863081
             Dim actual As Single = target.GetAveragePowerDemandAtCrankFromPneumatics()
 
             Assert.AreEqual(expected, actual)
@@ -150,7 +150,7 @@ Namespace UnitTests
 
             Dim target As New M3_AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
 
-            Dim expected As Single = 7947.684
+            Dim expected As Single = 7664.94
             Dim actual As Single = target.TotalAirConsumedPerCycle()
 
             Assert.AreEqual(expected, actual)
@@ -173,7 +173,7 @@ Namespace UnitTests
 
             Dim target As New M3_AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
 
-            Dim expected As Single = 8863.295
+            Dim expected As Single = 8545.207
             Dim actual As Single = target.TotalAirConsumedPerCycle()
 
             Assert.AreEqual(expected, actual)
@@ -220,7 +220,7 @@ Namespace UnitTests
 
             Dim target As New M3_AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
 
-            Dim expected As Single = 8557.52
+            Dim expected As Single = 8274.78
 
             Dim actual As Single = Math.Round(target.TotalAirConsumedPerCycle(), 2)
 
@@ -240,11 +240,11 @@ Namespace UnitTests
 
             psCompressorMap.Initialise()
 
-            _defaultInputConfig.AirSuspensionControl = "mechanically"
+            _defaultInputConfig.AirSuspensionControl = "Mechanically"
 
             Dim target As New M3_AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
 
-            Dim expected As Single = 8726.18
+            Dim expected As Single = 8443.44
 
             Dim actual As Single = Math.Round(target.TotalAirConsumedPerCycle(), 2)
 
@@ -264,11 +264,11 @@ Namespace UnitTests
 
             psCompressorMap.Initialise()
 
-            _defaultInputConfig.AdBlueDosing = "Electric"
+            _defaultInputConfig.AdBlueDosing = "Pneumatic"
 
             Dim target As New M3_AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
 
-            Dim expected As Single = 7490.96
+            Dim expected As Single = 7664.94
 
             Dim actual As Single = Math.Round(target.TotalAirConsumedPerCycle(), 2)
 
@@ -292,7 +292,7 @@ Namespace UnitTests
 
             Dim target As New M3_AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
 
-            Dim expected As Single = 6880.88
+            Dim expected As Single = 6598.14
 
             Dim actual As Single = Math.Round(target.TotalAirConsumedPerCycle(), 2)
 
