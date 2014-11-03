@@ -1,41 +1,278 @@
-﻿Imports System.IO
+﻿
+Imports System.Text
+Imports System.IO
 
 Namespace Electrics
 
-    ''' <summary>
-    ''' Alternator Efficiency Map - 
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Class AlternatorMap
-    Implements IAlternatorMap
+Public Class AlternatorMap
+Implements IAlternatorMap
+
+    Private ReadOnly filePath As String
+
+    Public map As New List(Of MapPoint)
+    Public yRange As List(Of Single)
+    Public xRange As List(Of Single)
+    Private minX, minY, maxX, maxY As Single
+
+    'Required Action Test or Interpolation Type
+    Public Function OnBoundaryYInterpolatedX(x As Single, y As Single) As Boolean
+        Return yRange.Contains(y) AndAlso Not xRange.Contains(x)
+    End Function
+    Public Function OnBoundaryXInterpolatedY(x As Single, y As Single) As Boolean
+        Return Not yRange.Contains(y) AndAlso xRange.Contains(x)
+    End Function
+    Public Function ONBoundaryXY(x As Single, y As Single) As Boolean
+        Return (From sector In map Where sector.Y = y AndAlso sector.x = x).Count = 1
+    End Function
+
+    'Determine Value Methods
+    Private Function GetOnBoundaryXY(x As Single, y As Single) As Single
+        Return (From sector In map Where sector.Y = y AndAlso sector.x = x).First().v
+    End Function
+    Private Function GetOnBoundaryYInterpolatedX(x As Single, y As Single) As Single
+
+        Dim x0, x1, v0, v1, slope, dx As Single
+
+        x0 = (From p In xRange Order By p Where p < x).Last()
+        x1 = (From p In xRange Order By p Where p > x).First()
+        dx = x1 - x0
+
+        v0 = GetOnBoundaryXY(x0, y)
+        v1 = GetOnBoundaryXY(x1, y)
+
+       slope = (v1 - v0) / (x1 - x0)
+
+        Return v0 + ((x - x0) * slope)
+
+    End Function
+    Private Function GetOnBoundaryXInterpolatedY(x As Single, y As Single) As Single
+
+        Dim y0, y1, v0, v1, dy, v, slope As Single
+
+        y0 = (From p In yRange Order By p Where p < y).Last()
+        y1 = (From p In yRange Order By p Where p > y).First()
+        dy = y1 - y0
+
+        v0 = GetOnBoundaryXY(x, y0)
+        v1 = GetOnBoundaryXY(x, y1)
+
+        slope = (v1 - v0) / (y1 - y0)
+
+        v = v0 + ((y - y0) * slope)
+
+        Return v
+
+    End Function
+    Private Function GetBiLinearInterpolatedValue(x As Single, y As Single) As Single
+
+        Dim q11, q12, q21, q22, x1, x2, y1, y2, r1, r2, p As Single
+
+        y1 = (From mapSector As MapPoint In map Where mapSector.Y < y).Last().Y
+        y2 = (From mapSector As MapPoint In map Where mapSector.Y > y).First().Y
+
+        x1 = (From mapSector As MapPoint In map Where mapSector.x < x).Last().x
+        x2 = (From mapSector As MapPoint In map Where mapSector.x > x).First().x
+
+        q11 = GetOnBoundaryXY(x1, y1)
+        q12 = GetOnBoundaryXY(x1, y2)
+
+        q21 = GetOnBoundaryXY(x2, y1)
+        q22 = GetOnBoundaryXY(x2, y2)
+
+        r1 = ((x2 - x) / (x2 - x1)) * q11 + ((x - x1) / (x2 - x1)) * q21
+
+        r2 = ((x2 - x) / (x2 - x1)) * q12 + ((x - x1) / (x2 - x1)) * q22
 
 
-        ''' <summary>
-        ''' path to csv file containing map data
-        ''' expects header row
-        ''' Columns - [rpm - integer], [efficiency float, range 0-1], [max regen power float]
-        ''' </summary>
-        ''' <remarks></remarks>
-        Private ReadOnly filePath As String
+        p = ((y2 - y) / (y2 - y1)) * r1 + ((y - y1) / (y2 - y1)) * r2
 
-        Private map As Dictionary(Of AlternatorMapKey, AlternatorMapValues)
 
-        ''' <summary>
-        ''' Creates a new instance of AlternatorMap class
-        ''' </summary>
-        ''' <param name="filePath">full path to csv data</param>
-        ''' <remarks></remarks>
-        Public Sub New(ByVal filePath As String)
-            Me.filePath = filePath
+        Return p
+
+    End Function
+
+    'Utilities
+    Private Sub fillMapWithDefaults()
+
+
+
+        map.Add(New MapPoint(10, 1500, 0.615))
+        map.Add(New MapPoint(27, 1500, 0.7))
+        map.Add(New MapPoint(53, 1500, 0.1947))
+        map.Add(New MapPoint(63, 1500, 0.0))
+        map.Add(New MapPoint(68, 1500, 0.0))
+        map.Add(New MapPoint(125, 1500, 0.0))
+        map.Add(New MapPoint(136, 1500, 0.0))
+        map.Add(New MapPoint(10, 2000, 0.62))
+        map.Add(New MapPoint(27, 2000, 0.7))
+        map.Add(New MapPoint(53, 2000, 0.3))
+        map.Add(New MapPoint(63, 2000, 0.1462))
+        map.Add(New MapPoint(68, 2000, 0.692))
+        map.Add(New MapPoint(125, 2000, 0.0))
+        map.Add(New MapPoint(136, 2000, 0.0))
+        map.Add(New MapPoint(10, 4000, 0.64))
+        map.Add(New MapPoint(27, 4000, 0.6721))
+        map.Add(New MapPoint(53, 4000, 0.7211))
+        map.Add(New MapPoint(63, 4000, 0.74))
+        map.Add(New MapPoint(68, 4000, 0.7352))
+        map.Add(New MapPoint(125, 4000, 0.68))
+        map.Add(New MapPoint(136, 4000, 0.6694))
+        map.Add(New MapPoint(10, 6000, 0.53))
+        map.Add(New MapPoint(27, 6000, 0.5798))
+        map.Add(New MapPoint(53, 6000, 0.656))
+        map.Add(New MapPoint(63, 6000, 0.6853))
+        map.Add(New MapPoint(68, 6000, 0.7))
+        map.Add(New MapPoint(125, 6000, 0.6329))
+        map.Add(New MapPoint(136, 6000, 0.62))
+        map.Add(New MapPoint(10, 7000, 0.475))
+        map.Add(New MapPoint(27, 7000, 0.5337))
+        map.Add(New MapPoint(53, 7000, 0.6235))
+        map.Add(New MapPoint(63, 7000, 0.658))
+        map.Add(New MapPoint(68, 7000, 0.6824))
+        map.Add(New MapPoint(125, 7000, 0.6094))
+        map.Add(New MapPoint(136, 7000, 0.5953))
+
+
+
+
+    End Sub
+    Private Sub getMapRanges()
+
+        yRange = (From coords As MapPoint In map Order By coords.Y Select coords.Y Distinct).ToList()
+        xRange = (From coords As MapPoint In map Order By coords.x Select coords.x Distinct).ToList()
+
+        minX = xRange.First
+        maxX = xRange.Last
+        minY = yRange.First
+        maxY = yRange.Last
+
+
+    End Sub
+
+    'Single entry point to determine Value on map
+    Public Function GetValue(x As Single, y As Single) As Single
+
+
+        'Limiting
+        If x < minX Then x = minX
+        If x > maxX Then x = maxX
+        If y < minY Then y = minY
+        If y > maxY Then y = maxY
+
+        'Satisfies both data points - non interpolated value
+        If ONBoundaryXY(x, y) Then Return GetOnBoundaryXY(x, y)
+
+        'Satisfies only x or y - single interpolation value
+        If OnBoundaryXInterpolatedY(x, y) Then Return GetOnBoundaryXInterpolatedY(x, y)
+        If OnBoundaryYInterpolatedX(x, y) Then Return GetOnBoundaryYInterpolatedX(x, y)
+
+        'satisfies no data points - Bi-Linear interpolation
+        Return GetBiLinearInterpolatedValue(x, y)
+
+
+    End Function
+    Public Function ReturnDefaultMapValueTests() As String
+
+        Dim sb = New StringBuilder()
+        Dim x, y As Single
+
+        'All Sector Values
+        sb.AppendLine("All Values From Map")
+        sb.AppendLine("-------------------")
+        For Each x In xRange
+
+            For Each y In yRange
+                sb.AppendLine(String.Format("X:{0}, Y:{1}, V:{2}", x, y, GetValue(x, y)))
+            Next
+
+        Next
+
+        sb.AppendLine("")
+        sb.AppendLine("Four Corners with interpolated other")
+        sb.AppendLine("-------------------")
+        x = 1500 : y = 18.5
+        sb.AppendLine(String.Format("X:{0}, Y:{1}, V:{2}", x, y, GetValue(x, y)))
+        x = 7000 : y = 96.5
+        sb.AppendLine(String.Format("X:{0}, Y:{1}, V:{2}", x, y, GetValue(x, y)))
+        x = 1750 : y = 10
+        sb.AppendLine(String.Format("X:{0}, Y:{1}, V:{2}", x, y, GetValue(x, y)))
+        x = 6500 : y = 10
+        sb.AppendLine(String.Format("X:{0}, Y:{1}, V:{2}", x, y, GetValue(x, y)))
+
+        sb.AppendLine("")
+        sb.AppendLine("Interpolated both")
+        sb.AppendLine("-------------------")
+
+        Dim mx, my As Single
+        For x = 0 To xRange.Count - 2
+
+            For y = 0 To yRange.Count - 2
+
+                mx = xRange(x) + (xRange(x + 1) - xRange(x)) / 2
+                my = yRange(y) + (yRange(y + 1) - yRange(y)) / 2
+
+                sb.AppendLine(String.Format("X:{0}, Y:{1}, V:{2}", mx, my, GetValue(mx, my)))
+
+
+            Next
+
+        Next
+
+        sb.AppendLine("")
+        sb.AppendLine("MIKE -> 40 & 1000")
+        sb.AppendLine("-------------------")
+        x = 1000 : y = 40
+        sb.AppendLine(String.Format("X:{0}, Y:{1}, V:{2}", x, y, GetValue(x, y)))
+
+
+
+
+        Return sb.ToString()
+
+    End Function
+
+    'Constructors
+    Public Sub New(filepath As String)
+
+        Me.filePath = filepath
+
+        Initialise()
+
+        getMapRanges()
+
+    End Sub
+    Public Sub New(values As List(Of MapPoint))
+
+        map = values
+        getMapRanges()
+
+    End Sub
+
+    Public Class MapPoint
+
+        Public Y As Single
+        Public x As Single
+        Public v As Single
+
+        Public Sub New(y As Single, x As Single, v As Single)
+
+            Me.Y = y
+            Me.x = x
+            Me.v = v
+
         End Sub
 
-        ''' <summary>
-        ''' Initialise the map from supplied csv data
-        ''' </summary>
-        ''' <returns>Boolean - true if map is created successfully</returns>
-        ''' <remarks></remarks>
+    End Class
+
+
+        Public Function GetEfficiency(rpm As single, amps As single) As AlternatorMapValues Implements IAlternatorMap.GetEfficiency
+
+           Return New AlternatorMapValues( GetValue(rpm,amps))
+
+        End Function
+
         Public Function Initialise() As Boolean Implements IAlternatorMap.Initialise
-            If File.Exists(filePath) Then
+                    If File.Exists(filePath) Then
                 Using sr As StreamReader = New StreamReader(filePath)
                     'get array og lines fron csv
                     Dim lines() As String = sr.ReadToEnd().Split(CType(Environment.NewLine, Char()), StringSplitOptions.RemoveEmptyEntries)
@@ -45,7 +282,7 @@ Namespace Electrics
                         Throw New ArgumentException("Insufficient rows in csv to build a usable map")
                     End If
 
-                    map = New Dictionary(Of AlternatorMapKey, AlternatorMapValues)()
+                    map = New List(Of MapPoint)
                     Dim firstline As Boolean = True
 
                     For Each line As String In lines
@@ -59,11 +296,9 @@ Namespace Electrics
                             'add values to map
 
                             'Create AlternatorKey
-                            Dim aKey As AlternatorMapKey = New AlternatorMapKey(elements(0), elements(1))
-                            Dim aValue As AlternatorMapValues = New AlternatorMapValues()
+                            Dim newPoint as MapPoint = New  MapPoint(elements(0),elements(1),elements(2))
 
-                            'Add Efficiency Value to Key.
-                            map.Add(aKey, New AlternatorMapValues(elements(2)))
+                            map.Add(newPoint)
 
                         Else
                             firstline = False
@@ -76,237 +311,14 @@ Namespace Electrics
             End If
         End Function
 
-        ''' <summary>
-        ''' Returns the alternator efficiency at given rpm
-        ''' </summary>
-        ''' <param name="rpm">alternator rotation speed</param>
-        ''' <returns>Single</returns>
-        ''' <remarks></remarks>
-        Public Function GetEfficiency(ByVal rpm As Integer, ByVal amps As Integer) As AlternatorMapValues Implements IAlternatorMap.GetEfficiency
 
-            Dim key As New AlternatorMapKey(amps, rpm)
-
-            Return GetValueOrInterpolate(key)
-
-        End Function
-
-
-        ''' <summary>
-        ''' Returns a AlternatorMapValues instance containing the entries at a given key, or new interpolated values
-        ''' </summary>
-        ''' <returns>AlternatorMapValues</returns>
-        ''' <remarks>Throws exception if Rpm or Amps are outside the map </remarks>
-        Private Function GetValueOrInterpolate(mapKey As AlternatorMapKey) As AlternatorMapValues
-            'check the rpm is within the map
-
-
-            Dim min As AlternatorMapKey = map.Keys.Min()
-            Dim max As AlternatorMapKey = map.Keys.Max()
-
-            'If mapKey.amps < min.amps Or mapKey.amps > max.amps Or mapKey.rpm < min.rpm Or mapKey.rpm > max.rpm Then
-            '    Throw New ArgumentOutOfRangeException(String.Format("Extrapolation - Amp/Rpm Values should should be in the range {0} to {1}", min.ToString(), max.ToString()))
-            'End If
-
-
-            'LIMITING
-            If mapKey.amps < min.amps then mapKey.amps=min.amps
-            If mapKey.amps > max.amps then mapKey.amps = max.amps
-            If mapKey.rpm  < min.rpm  then mapKey.rpm = min.rpm
-            If mapKey.rpm  > max.rpm  then mapKey.rpm= max.rpm
-
-
-
-
-            'Check if the rpm is in the current memo
-            'If supplied present key, we can just return the values
-            If map.ContainsKey(mapKey) Then
-                Return map(mapKey)
-            End If
-
-
-            'Get Pre and Post Keys
-            Dim rpmPre As AlternatorMapValues
-            Dim rpmPost As AlternatorMapValues
-            Dim ampsPre As AlternatorMapValues
-            Dim ampsPost As AlternatorMapValues
-
-            'Pre and Post Data Points
-            Dim intRpmPre As Integer
-            Dim intRpmPost As Integer
-            Dim intAmpsPre As Integer
-            Dim intAmpsPost As Integer
-
-
-            intRpmPre = (From m In map Where m.Key.rpm <= mapKey.rpm Select m.Key.rpm).Last()
-            intRpmPost = (From m In map Where m.Key.rpm => mapKey.rpm Select m.Key.rpm).First()
-            intAmpsPre = (From m In map Where m.Key.amps <= mapKey.amps Select m.Key.amps).Last()
-            intAmpsPost = (From m In map Where m.Key.amps => mapKey.amps Select m.Key.amps).First()
-
-
-            Dim dAmps As Single
-            dim dAmpEfficiency as single
-            Dim ampsEfficiencySlope as single
-            Dim dRpm As Integer 
-            Dim dRpmEfficiency as single
-            Dim rpmEfficiencySlope As Single 
-            Dim interpolatedEfficiency As single
-            Dim ampPreEfficiency As Single
-            Dim ampPostEfficiency As Single
-            Dim rpmPreEfficiency As Single
-            Dim rpmPostEfficiency As Single
-            
-
-            '***********  IF PRE AND POST RPM  OR PRE AND POST AMPS are the same, the calculation is different. ***********
-            'SO
-
-            'Case RPM is the same
-            If intRpmPre = intRpmPost then
-
-              dAmps = intAmpsPost - intAmpsPre
-              ampPreEfficiency =  map( New AlternatorMapKey( intAmpsPre, intRpmPre)).Efficiency 
-              ampPostEfficiency = map( New AlternatorMapKey( intAmpsPost, intRpmPre)).Efficiency 
-
-              interpolatedEfficiency = ampPreEfficiency + (  ( ampPostEfficiency-ampPreEfficiency  ) *   (( mapKey.amps - intAmpsPre ) / ( intAmpsPost-intAmpsPre  )))
-              
-              Return New AlternatorMapValues(interpolatedEfficiency)
-
-            End If
-
-
-            If intAmpsPre = intAmpsPost then
-
-              rpmPreEfficiency =  map( New AlternatorMapKey( intAmpsPre, intRpmPre)).Efficiency 
-              rpmPostEfficiency = map( New AlternatorMapKey( intAmpsPre, intRpmPost)).Efficiency 
-
-              interpolatedEfficiency = rpmPreEfficiency + (  ( rpmPostEfficiency-rpmPreEfficiency  ) *   (( mapKey.rpm - intRpmPre ) / ( intRpmPost-intRpmPre  )))
-              
-             Return New AlternatorMapValues(interpolatedEfficiency)
-
-
-            End If
-
-
-
-
-            rpmPre = map(New AlternatorMapKey(intAmpsPre, intRpmPre))
-            rpmPost = map(New AlternatorMapKey(intAmpsPre, intRpmPost))
-
-            ampsPre = map(New AlternatorMapKey(intAmpsPost, intRpmPre))
-            ampsPost = map(New AlternatorMapKey(intAmpsPost, intRpmPost))
-
-            '*************************************************************************
-            'The following biaxial linear interpolation formula was provided
-            'by Engineering. See example below.
-            '
-            '       1500   2000   4000
-            '   10             A-B              <=Interpolated Horizontally
-            '              (C-D)-(A-B)          <=Interpolated Virtically
-            '   27             C-D              <=Interpolated Horizontally
-            '
-            '************************************************************************
-            '
-            '***    A-B  Efficiency  ( Lower Using Lower Amps ) 
-            'get the delta values for rpm and the values
-              dRpm = intRpmPost - intRpmPre
-              dRpmEfficiency  = rpmPost.Efficiency - rpmPre.Efficiency
-
-            'calculate the slopes
-              rpmEfficiencySlope = dRpmEfficiency / dRpm
-
-            'calculate the new values
-              'Dim AB_Efficiency As Single = If( drpm=0,rpmPre.Efficiency, ((mapKey.rpm - intRpmPre) * rpmEfficiencySlope) + rpmPre.Efficiency)
-              Dim AB_Efficiency As Single =  ((mapKey.rpm - intRpmPre) * rpmEfficiencySlope) + rpmPre.Efficiency
-
-             '***    C-D Efficiency  ( Using Higher Amps )  
-             'get the delta values for rpm and the values
-             dRpm = intRpmPost - intRpmPre
-             dRpmEfficiency = ampsPost.Efficiency - ampsPre.Efficiency
-
-            'calculate the slopes
-             rpmEfficiencySlope = dRpmEfficiency / dRpm
-
-            'calculate the new values
-             'Dim CD_Efficiency As Single = If( dRpm=0, rpmPre.Efficiency, ((mapKey.rpm - intRpmPre) * rpmEfficiencySlope) + ampsPre.Efficiency)
-              Dim CD_Efficiency As Single = ((mapKey.rpm - intRpmPre) * rpmEfficiencySlope) + ampsPre.Efficiency
-
-             '(C-D) - (A-B) Efficiency
-             'Deltas
-             dAmps  = intAmpsPost - intAmpsPre
-             dAmpEfficiency  = CD_Efficiency - AB_Efficiency
-
-             'slopes
-              ampsEfficiencySlope  = dAmpEfficiency / dAmps
-
-             'calculate final Values
-            ' Dim ABCDEfficiency As Single = If( dAmps=0, CD_Efficiency, ((mapKey.amps - intAmpsPre) * ampsEfficiencySlope) + AB_Efficiency)
-              Dim ABCDEfficiency As Single =  ((mapKey.amps - intAmpsPre) * ampsEfficiencySlope) + AB_Efficiency
-
-
-             Return New AlternatorMapValues(ABCDEfficiency)
-
-
-
-        End Function
-
-       Private Structure AlternatorMapKey
-             Implements IComparable
-
-           Public amps As Integer
-           Public rpm As Integer
-
-
-
-        Public Sub New(ByVal amps As Integer, ByVal rpm As Integer)
-
-        Me.amps = amps
-        Me.rpm = rpm
-
-
-        End Sub
-
-        Public Overrides Function ToString() As String
-
-          Return "Amps:" & amps & " / " & "Rpm:" & rpm
-
-        End Function
-
-         Public Function CompareTo(obj As Object) As Integer Implements IComparable.CompareTo
-
-
-           Dim compared As AlternatorMapKey = CType(obj, AlternatorMapKey)
-
-           Dim otherAlternatorMapKey As AlternatorMapKey = CType(obj, AlternatorMapKey)
-
-           'Same Place
-           If (Me.amps = otherAlternatorMapKey.amps AndAlso Me.rpm = otherAlternatorMapKey.rpm) Then
-
-            Return 0
-
-           End If
-
-           'smaller
-           If (Me.amps > otherAlternatorMapKey.amps) Or (Me.rpm > otherAlternatorMapKey.rpm) Then
-
-           Return 1
-
-           Else
-
-           Return -1
-
-           End If
-
-
-
-
-         End Function
-
-
-       End Structure
-
-
-    End Class
-
-
+End Class
 
 
 End Namespace
+
+
+
+
+
+

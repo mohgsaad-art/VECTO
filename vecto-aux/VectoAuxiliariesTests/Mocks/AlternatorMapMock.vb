@@ -19,7 +19,7 @@ Namespace Mocks
             End If
         End Function
 
-        Public Function GetEfficiency(ByVal rpm As Integer, ByVal amps As Integer) As AlternatorMapValues Implements IAlternatorMap.GetEfficiency
+        Public Function GetEfficiency(ByVal rpm As single, ByVal amps As single) As AlternatorMapValues Implements IAlternatorMap.GetEfficiency
             Return New AlternatorMapValues()
         End Function
 
