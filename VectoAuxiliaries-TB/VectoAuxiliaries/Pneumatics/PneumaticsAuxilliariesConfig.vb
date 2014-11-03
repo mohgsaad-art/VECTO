@@ -28,7 +28,7 @@ End Sub
 Public Sub SetDefaults()
 
      OverrunUtilisationForCompressionFraction = 0.97
-     BrakingWithRetarderNIperKG = 0.0006
+     BrakingWithRetarderNIperKG = 0.0005
      BrakingNoRetarderNIperKG = 0.00081
      BreakingPerKneelingNIperKGinMM = 0.000066
      PerDoorOpeningNI = 12.7
