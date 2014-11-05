@@ -3,7 +3,7 @@
 Public Interface IM2_AverageElectricalLoadDemand
 
     Function GetAveragePowerDemandAtAlternator() As Single
-    Function GetAveragePowerAtCrank() As Single
+    Function GetAveragePowerAtCrankFromElectrics() As Single
 
 End Interface
 

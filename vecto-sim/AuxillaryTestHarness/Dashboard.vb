@@ -871,7 +871,7 @@ Private sub RefreshDisplays()
 
      'M2
      txtM2_out_AvgPowerAtAltFromElectrics.Text=auxEnvironment.M2.GetAveragePowerDemandAtAlternator
-     txtM2_out_AvgPowerAtCrankFromElectrics.Text=auxEnvironment.M2.GetAveragePowerAtCrank()
+     txtM2_out_AvgPowerAtCrankFromElectrics.Text=auxEnvironment.M2.GetAveragePowerAtCrankFromElectrics()
 
      'M3
      txtM3_out_AveragePowerAtCrankFromPneumatics.Text=auxEnvironment.M3.GetAveragePowerDemandAtCrankFromPneumatics

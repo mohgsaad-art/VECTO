@@ -9,7 +9,6 @@
 '
 ' See the LICENSE.txt for the specific language governing permissions and limitations.
 
-Imports VectoAuxiliaries.ElectricalConsumers
 
 Imports System.Collections.Generic
 

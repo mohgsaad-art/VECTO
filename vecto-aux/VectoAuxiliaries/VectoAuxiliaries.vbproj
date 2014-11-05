@@ -73,6 +73,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AuxillaryEnvironment.vb" />
+    <Compile Include="DownstreamModules\IM6.vb" />
+    <Compile Include="DownstreamModules\IM7.vb" />
+    <Compile Include="DownstreamModules\M7.vb" />
     <Compile Include="Electrics\AlternatorMapValues.vb" />
     <Compile Include="Electrics\AlternatorMap.vb" />
     <Compile Include="Electrics\ElectricsUserInputsConfig.vb" />
@@ -103,6 +106,7 @@
     <Compile Include="Hvac\IM1_AverageHVACLoadDemand.vb" />
     <Compile Include="ISignals.vb" />
     <Compile Include="IVectoInputs.vb" />
+    <Compile Include="DownstreamModules\M6.vb" />
     <Compile Include="Pneumatics\ActuationsKey.vb" />
     <Compile Include="Pneumatics\IM3_AveragePneumaticLoadDemand.vb" />
     <Compile Include="Pneumatics\M4_AirCompressor.vb" />
