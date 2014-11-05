@@ -1,0 +1,91 @@
+﻿Imports VectoAuxiliaries.Electrics
+Imports VectoAuxiliaries.Pneumatics
+Imports VectoAuxiliaries.Hvac
+
+Namespace DownstreamModules
+
+Public Class M7
+     implements IM7
+
+       Private _m5 As IM5_SmartAlternatorSetGeneration
+       Private _m6 As IM6
+       Private _signals As ISignals
+
+        'Boolan  Conditions IE 
+        Private readonly property C1 As Boolean
+
+           Get
+             Return _m6.OverrunFlag=1 Andalso _signals.ClutchEngaged Andalso _signals.InNeutral=false
+           End Get
+
+       End Property
+
+
+        'Internal Switched Outputs 
+        Private readonly Property SW1 As Single
+           Get
+           Return If ( _signals.Idle, _m5.AlternatorsGenerationPowerAtCrankIdleWatts, _m5.AlternatorsGenerationPowerAtCrankTractionOnWatts)
+           End Get
+       End Property
+        Private readonly Property SW2 As Single
+           Get
+             Return  If( C1, _m6.SmartElecAndPneumaticAltPowerGenAtCrank, SW1)
+           End Get
+       End Property
+        Private readonly Property SW3 As Single
+           Get
+            Return If( C1,_m6.SmartElecAndPneumaticAirCompPowerGenAtCrank,_m6.AveragePowerDemandAtCrankFromPneumatics)
+           End Get
+       End Property
+        Private readonly Property SW4 As Single
+           Get
+            Return If( C1,_m6.SmartElecOnlyAltPowerGenAtCrank,SW1)
+           End Get
+       End Property
+        Private readonly Property SW5 As Single
+           Get
+           Return If( C1, _m6.SmartPneumaticOnlyAirCompPowerGenAtCrank,_m6.AveragePowerDemandAtCrankFromPneumatics)
+           End Get
+       End Property
+       
+
+        'Public readonly properties  ( Outputs )
+        Public ReadOnly Property SmartElectricalAndPneumaticAuxAltPowerGenAtCrank As Single Implements IM7.SmartElectricalAndPneumaticAuxAltPowerGenAtCrank
+            Get
+               Return SW2
+            End Get
+        End Property
+        Public ReadOnly Property SmartElectricalAndPneumaticAuxAirCompPowerGenAtCrank As Single Implements IM7.SmartElectricalAndPneumaticAuxAirCompPowerGenAtCrank
+            Get
+            Return SW3
+            End Get
+        End Property
+        Public ReadOnly Property SmartElectricalOnlyAuxAltPowerGenAtCrank As Single Implements IM7.SmartElectricalOnlyAuxAltPowerGenAtCrank
+            Get
+            Return SW4
+            End Get
+        End Property
+        Public ReadOnly Property SmartPneumaticOnlyAuxAirCompPowerGenAtCrank As Single Implements IM7.SmartPneumaticOnlyAuxAirCompPowerGenAtCrank
+            Get
+            Return SW5
+            End Get
+        End Property
+
+        Public sub new ( m5 as IM5_SmartAlternatorSetGeneration, _
+                         m6 As IM6, _
+                         signals As ISignals)
+            
+          _m5  = m5
+          _m6  = m6
+          _signals = signals
+
+        End Sub
+
+
+End Class
+
+
+End Namespace
+
+
+
