@@ -43,7 +43,8 @@ End Sub
 'OP2  OP2     :Smart Electrical & Pneumatic Aux : Air comp   power gen @ Crank
 'OP3  OP3     :Smart Electrical Aux : Alternator             Power Gen @ Crank
 'OP4  OP4     :Smart Electrical Aux : Ait Compressor         Power Gen @ Crank 
-<Test()>
+<Test()> _
+<TestCase(100,200,false,0,false,true,300,400,500,600,700,1000,2000,3000,4000)> _
 Public Sub InputOutputTests(IP1 As Single,  _  
                             IP2 As Single,  _ 
                             IP3 As Boolean, _

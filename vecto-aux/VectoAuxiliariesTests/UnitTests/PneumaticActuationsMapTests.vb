@@ -80,22 +80,34 @@ Public Sub EmptyCycleNameTest()
 End Sub
 
 <Test()>
-Public Sub ValueLookupTest()
+<TestCase("Brakes","Heavy urban",191)> _
+<TestCase("Brakes","Urban",153)> _
+<TestCase("Brakes","Suburban",49)> _
+<TestCase("Brakes","Interurban",190)> _
+<TestCase("Brakes","Coach",27)> _
+<TestCase("Park brake + 2 doors","Heavy urban",82)> _
+<TestCase("Park brake + 2 doors","Urban",75)> _
+<TestCase("Park brake + 2 doors","Suburban",25)> _
+<TestCase("Park brake + 2 doors","Interurban",9)> _
+<TestCase("Park brake + 2 doors","Coach",6)> _
+<TestCase("Kneeling","Heavy urban",27)> _
+<TestCase("Kneeling","Urban",25)> _
+<TestCase("Kneeling","Suburban",6)> _
+<TestCase("Kneeling","Interurban",0)> _
+<TestCase("Kneeling","Coach",0)> _
+Public Sub ValueLookupTest(key As String, cycle As String, expected As integer)
 
  Dim target As New PneumaticActuationsMAP(cstrPneumaticActuationsMapPath_GOODMAP)
 
     target.Initialise()
+    Dim actual As Integer
 
-    'Brakes,Coach,27
+    try
+       actual = target.GetNumActuations(New ActuationsKey(key, cycle))
+    Catch ex As Exception
 
-    Dim actual As Integer = target.GetNumActuations(New ActuationsKey("Brakes", "Urban"))
-
-
-
-    Dim expected As Integer = 153
-
+    end try
     Assert.AreEqual(expected, actual)
-
 
 End Sub
 

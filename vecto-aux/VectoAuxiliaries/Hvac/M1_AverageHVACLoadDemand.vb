@@ -65,7 +65,7 @@ Namespace Hvac
         Public Function AveragePowerDemandAtCrankFromHVACElectricsWatts() As Single Implements IM1_AverageHVACLoadDemand.AveragePowerDemandAtCrankFromHVACElectricsWatts
 
 
-       Return _steadyStateModel.HVACElectricalLoadPowerWatts / _m0.AlternatorsEfficiency()
+       Return _steadyStateModel.HVACElectricalLoadPowerWatts / _m0.AlternatorsEfficiency() / _alternatorGearEfficiency
 
         End Function
 

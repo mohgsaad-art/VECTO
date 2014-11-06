@@ -69,7 +69,7 @@ M05 = New M0_5_SmartAlternatorSetEfficiency(M0,
                                             alternatoMap,
                                             ElectricalUserInputsConfig.ResultCardIdle,
                                             ElectricalUserInputsConfig.ResultCardTraction,
-                                            ElectricalUserInputsConfig.ResultCardTraction,Signals)
+                                            ElectricalUserInputsConfig.ResultCardOverrun,Signals)
 
 
 M1 = New M1_AverageHVACLoadDemand(M0,

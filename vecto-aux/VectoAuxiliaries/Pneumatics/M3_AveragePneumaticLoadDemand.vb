@@ -46,7 +46,7 @@ Namespace Pneumatics
 
 
             'Total up the blow demands from compressor map
-            _averagePowerDemandPerCompressorUnitFlowRateInKWPerLitresPerSecond = _pneumaticsCompressorFlowRateMap.GetAveragePowerDemandPerCompressorUnitFlowRate()
+            _averagePowerDemandPerCompressorUnitFlowRateInKWPerLitresPerSecond = _pneumaticsCompressorFlowRateMap.GetAveragePowerDemandPerCompressorUnitFlowRate() /60
 
             'Calculate the Total Required Air Delivery Rate L / S
             _totalAirDemand = TotalAirDemandCalculation()

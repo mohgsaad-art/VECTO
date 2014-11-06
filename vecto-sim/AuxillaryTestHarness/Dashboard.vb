@@ -107,6 +107,7 @@ End Sub
 
 #Region "Binding Control"
 
+
 Private Sub CreateBindings()
 
      'AuxEnvironment.Vecto Bindings
@@ -121,8 +122,10 @@ Private Sub CreateBindings()
      chkSmartElectricals.DataBindings.Add("Checked", auxEnvironment.ElectricalUserInputsConfig, "SmartElectrical")
 
      'Electrical ConsumablesGrid
-     Dim electricalConsumerBinding As New BindingList(Of IElectricalConsumer)(auxEnvironment.ElectricalUserInputsConfig.ElectricalConsumers.Items )
+     Dim electricalConsumerBinding  As New BindingList(Of IElectricalConsumer)(auxEnvironment.ElectricalUserInputsConfig.ElectricalConsumers.Items ) 
      gvElectricalConsumables.DataSource = electricalConsumerBinding
+
+
 
      'ResultCards
 
@@ -863,6 +866,7 @@ Private sub RefreshDisplays()
      txtM05_out_AlternatorsEfficiencyTraction.Text=auxEnvironment.M05.AlternatorsEfficiencyTractionOnResultCard
      txtM05_out_SmartOverrunCurrent.Text= auxEnvironment.M05.SmartOverrunCurrent
      txtM05_out_AlternatorsEfficiencyOverrun.Text = auxEnvironment.M05.AlternatorsEfficiencyOverrunResultCard
+
      'M1
      txtM1_out_AvgPowerDemandAtAlternatorHvacElectrics.Text= auxEnvironment.M1.AveragePowerDemandAtAlternatorFromHVACElectricsWatts
      txtM1_out_AvgPowerDemandAtCrankMech.Text= auxEnvironment.M1.AveragePowerDemandAtCrankFromHVACMechanicalsWatts
@@ -932,7 +936,7 @@ End Sub
 
 
    'Form Overrides
-    Protected Overrides Function ProcessCmdKey(ByRef msg As Message, keyData As Keys) As Boolean
+Protected Overrides Function ProcessCmdKey(ByRef msg As Message, keyData As Keys) As Boolean
 
         if keyData = Keys.Enter andalso me.AcceptButton is nothing   then
         dim box As TextBoxBase = CType( me.ActiveControl ,TextBoxBase)
@@ -1061,6 +1065,43 @@ Private Sub Button2_Click( sender As Object,  e As EventArgs) Handles Button2.Cl
 
 
 End Sub
+
+
+
+
+Private Sub gvElectricalConsumables_CellFormatting( sender As Object,  e As DataGridViewCellFormattingEventArgs) Handles gvElectricalConsumables.CellFormatting
+
+
+    If e.ColumnIndex=4 andalso e.RowIndex=0 then
+
+       e.CellStyle.BackColor = Color.LightGray
+       e.CellStyle.ForeColor=color.LightGray
+      
+
+    End If
+
+
+
+End Sub
+
+
+
+
+
+Private Sub gvElectricalConsumables_CellBeginEdit( sender As Object,  e As DataGridViewCellCancelEventArgs) Handles gvElectricalConsumables.CellBeginEdit
+
+    If e.ColumnIndex=4 andalso e.RowIndex=0 then
+
+     MessageBox.Show("This cell is calculated and cannot be edited")
+     e.Cancel=true
+
+    End If
+
+ 
+
+
+End Sub
+
 
 
 End Class
