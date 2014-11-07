@@ -34,6 +34,10 @@ Public Property _PowerDifference                             As single
     End Function
 
 
+   Public Sub new()
+
+   End Sub
+
    Public Sub new(AveragePowerDemandPerCompressorUnitFlowRate as single , _
                   FlowRate           As single, _
                   PowerCompressorOff As Single, _

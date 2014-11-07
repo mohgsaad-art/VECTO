@@ -33,7 +33,7 @@ public property _SmartPneumaticsOnlyCompressorFlag             As integer
     End Property
     Public ReadOnly Property OverrunFlag As Integer Implements IM6.OverrunFlag
         Get
-        Return OverrunFlag
+        Return _OverrunFlag
         End Get
     End Property
     Public ReadOnly Property SmartElecAndPneumaticAirCompPowerGenAtCrank As Single Implements IM6.SmartElecAndPneumaticAirCompPowerGenAtCrank
