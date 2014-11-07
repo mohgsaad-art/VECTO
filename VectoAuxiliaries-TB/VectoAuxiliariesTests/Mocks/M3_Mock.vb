@@ -19,6 +19,11 @@ Public Class M3_Mock
     End Function
 
 
+
+Public Sub new()
+
+End Sub
+
 Public Sub new ( GetAveragePowerDemandAtCrankFromPneumatics As Single,TotalAirConsumedPerCycle As single )
 
 _GetAveragePowerDemandAtCrankFromPneumatics= GetAveragePowerDemandAtCrankFromPneumatics

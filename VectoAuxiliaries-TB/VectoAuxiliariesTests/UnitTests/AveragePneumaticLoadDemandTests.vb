@@ -25,6 +25,7 @@ Namespace UnitTests
         Private _compressorMapPath As String = "Testfiles\testCompressorMap.csv"
 
         Private _defaultInputConfig As IPneumaticUserInputsConfig
+        Private _Signals As ISignals = New Signals
 
 
         'Constructors
@@ -47,6 +48,9 @@ Namespace UnitTests
         _defaultInputConfig.Doors = "Pneumatic"
         _defaultInputConfig.SmartAirCompression = True
 
+        _Signals.TotalCycleTimeSeconds=3114
+
+
 
         End Sub
 
@@ -64,8 +68,9 @@ Namespace UnitTests
          Dim psActuationsMap = CType(New PneumaticActuationsMAP(_actuationsMapPath), IPneumaticActuationsMAP)
          Dim psCompressorMap = CType(New CompressorMap(_compressorMapPath), ICompressorMap)
 
+
           psCompressorMap.Initialise()
-          Dim target As New M3_AveragePneumaticLoadDemand(psUserInputsConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
+          Dim target As New M3_AveragePneumaticLoadDemand(psUserInputsConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _signals)
 
 
 
@@ -84,7 +89,7 @@ Namespace UnitTests
 
          psCompressorMap.Initialise()
 
-         Dim target As New M3_AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
+         Dim target As New M3_AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _signals)
 
          Dim expected As Single = 7664.94
          Dim actual As Single = target.TotalAirDemand()
@@ -105,22 +110,22 @@ Namespace UnitTests
 
             psCompressorMap.Initialise()
 
-            Dim target As New M3_AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
+            Dim target As New M3_AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _signals)
 
-            Dim expected As Single = 30.7680626
+            Dim expected As Single = 0.512801051
             Dim actual As Single = target.GetAveragePowerDemandAtCrankFromPneumatics()
 
             Assert.AreEqual(expected, actual)
 
          End Sub
 
-        'CompressorGearEfficiency = 0.99
+
         <Test()>
-         Public Sub AverageLoadValueUsingDefaultAuxValues_AveragePowerAtTheCrank_0_99EFTest()
+         Public Sub AverageLoadValueUsingDefaultAuxValues_AveragePowerAtTheCrank_0_80EFTest()
 
          initialise()
 
-         _defaultInputConfig.CompressorGearEfficiency = 0.99
+         _defaultInputConfig.CompressorGearEfficiency = 0.8
 
             Dim psAuxConfig = CType(New PneumaticsAuxilliariesConfig(True), IPneumaticsAuxilliariesConfig)
             Dim psActuationsMap = CType(New PneumaticActuationsMAP(_actuationsMapPath), IPneumaticActuationsMAP)
@@ -128,9 +133,9 @@ Namespace UnitTests
 
             psCompressorMap.Initialise()
 
-            Dim target As New M3_AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
+            Dim target As New M3_AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _signals)
 
-            Dim expected As Single = 24.863081
+            Dim expected As Single = 0.512801051
             Dim actual As Single = target.GetAveragePowerDemandAtCrankFromPneumatics()
 
             Assert.AreEqual(expected, actual)
@@ -148,7 +153,7 @@ Namespace UnitTests
 
             psCompressorMap.Initialise()
 
-            Dim target As New M3_AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
+            Dim target As New M3_AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _signals)
 
             Dim expected As Single = 7664.94
             Dim actual As Single = target.TotalAirConsumedPerCycle()
@@ -171,7 +176,7 @@ Namespace UnitTests
 
             _defaultInputConfig.SmartRegeneration = False
 
-            Dim target As New M3_AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
+            Dim target As New M3_AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _signals)
 
             Dim expected As Single = 8545.207
             Dim actual As Single = target.TotalAirConsumedPerCycle()
@@ -194,7 +199,7 @@ Namespace UnitTests
 
             _defaultInputConfig.RetarderBrake = False
 
-            Dim target As New M3_AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
+            Dim target As New M3_AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _signals)
 
             Dim expected As Single = 8541.45
 
@@ -218,7 +223,7 @@ Namespace UnitTests
 
             _defaultInputConfig.KneelingHeightMillimeters = 100
 
-            Dim target As New M3_AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
+            Dim target As New M3_AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _signals)
 
             Dim expected As Single = 8274.78
 
@@ -242,7 +247,7 @@ Namespace UnitTests
 
             _defaultInputConfig.AirSuspensionControl = "Mechanically"
 
-            Dim target As New M3_AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
+            Dim target As New M3_AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _signals)
 
             Dim expected As Single = 8443.44
 
@@ -266,7 +271,7 @@ Namespace UnitTests
 
             _defaultInputConfig.AdBlueDosing = "Pneumatic"
 
-            Dim target As New M3_AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
+            Dim target As New M3_AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _signals)
 
             Dim expected As Single = 7664.94
 
@@ -290,7 +295,7 @@ Namespace UnitTests
 
             _defaultInputConfig.Doors = "Electric"
 
-            Dim target As New M3_AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _cycleDurationMinutes)
+            Dim target As New M3_AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _signals)
 
             Dim expected As Single = 6598.14
 

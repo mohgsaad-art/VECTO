@@ -11,11 +11,11 @@ Public Class M7
        Private _m6 As IM6
        Private _signals As ISignals
 
-        'Boolan  Conditions IE 
+        'Boolan  Conditions
         Private readonly property C1 As Boolean
 
            Get
-             Return _m6.OverrunFlag=1 Andalso _signals.ClutchEngaged Andalso _signals.InNeutral=false
+             Return If(_m6.OverrunFlag=1,True,False) Andalso _signals.ClutchEngaged Andalso _signals.InNeutral=false
            End Get
 
        End Property
@@ -48,7 +48,6 @@ Public Class M7
            End Get
        End Property
        
-
         'Public readonly properties  ( Outputs )
         Public ReadOnly Property SmartElectricalAndPneumaticAuxAltPowerGenAtCrank As Single Implements IM7.SmartElectricalAndPneumaticAuxAltPowerGenAtCrank
             Get

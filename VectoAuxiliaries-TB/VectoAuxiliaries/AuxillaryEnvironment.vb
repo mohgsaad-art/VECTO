@@ -95,7 +95,7 @@ M3 = New M3_AveragePneumaticLoadDemand(PneumaticUserInputsConfig,
          compressorMap, 
          VectoInputs.VehicleWeightKG,
          VectoInputs.Cycle,
-         VectoInputs.CycleDurationMinutes)
+         Signals)
 
 
 M4 = New M4_AirCompressor(compressorMap,PneumaticUserInputsConfig.CompressorGearRatio,PneumaticUserInputsConfig.CompressorGearEfficiency,Signals)

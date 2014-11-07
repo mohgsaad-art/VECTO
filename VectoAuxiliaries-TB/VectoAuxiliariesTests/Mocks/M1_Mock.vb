@@ -14,7 +14,7 @@ Public _AveragePowerDemandAtCrankFromHVACMechanicalsWatts As Single
 Public _HVACFuelingLitresPerHour As single
 
     Public Function AveragePowerDemandAtAlternatorFromHVACElectricsWatts() As Single Implements IM1_AverageHVACLoadDemand.AveragePowerDemandAtAlternatorFromHVACElectricsWatts
-       Return AveragePowerDemandAtAlternatorFromHVACElectricsWatts
+       Return _AveragePowerDemandAtAlternatorFromHVACElectricsWatts
     End Function
 
     Public Function AveragePowerDemandAtCrankFromHVACElectricsWatts() As Single Implements IM1_AverageHVACLoadDemand.AveragePowerDemandAtCrankFromHVACElectricsWatts
@@ -29,6 +29,11 @@ Public _HVACFuelingLitresPerHour As single
        Return _HVACFuelingLitresPerHour
     End Function
 
+
+
+Public Sub new()
+
+End Sub
 
 Public Sub new ( AveragePowerDemandAtAlternatorFromHVACElectricsWatts  As Single, _
                  AveragePowerDemandAtCrankFromHVACElectricsWatts       As single, _
