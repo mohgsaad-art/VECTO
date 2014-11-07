@@ -21,6 +21,10 @@ Public _GetAveragePowerDemandAtAlternator   As Single
     End Function
 
 
+Public Sub new()
+
+End Sub
+
 
 Public Sub new ( GetAveragePowerAtCrankFromElectrics As Single,GetAveragePowerDemandAtAlternator As single )
 

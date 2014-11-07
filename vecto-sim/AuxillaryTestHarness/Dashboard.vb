@@ -521,7 +521,7 @@ Dim result As Boolean = true
         'Alternator Map  path : txtAlternatorMapPath
         'Test for empty after trim
         If txtAlternatorMapPath.Text.Trim.Length=0 then
-         errorProvider.SetError(txtAlternatorMapPath ,"Please enter the localtion of a valid compressor map.") 
+         errorProvider.SetError(txtAlternatorMapPath ,"Please enter the localtion of a valid alternator map.") 
          result=false   
         else
          errorProvider.SetError(txtAlternatorMapPath ,String.Empty) 
@@ -534,7 +534,7 @@ Dim result As Boolean = true
         alt.Initialise()
          errorProvider.SetError(txtAlternatorMapPath ,String.Empty) 
         Catch ex As Exception
-         errorProvider.SetError(txtAlternatorMapPath ,"Error : map is invalid or cannot be found, please select a Cvalid compressor map")  
+         errorProvider.SetError(txtAlternatorMapPath ,"Error : map is invalid or cannot be found, please select a valid alternator map")  
          result=false
         End Try
 

@@ -17,6 +17,7 @@ Namespace Pneumatics
         Private _totalAirDemand As Single
 
 
+
         Public ReadOnly Property TotalAirDemand As Single
             Get
             Return _totalAirDemand
@@ -32,7 +33,7 @@ Namespace Pneumatics
                       ByRef pneumaticsCompressorFlowRateMap As ICompressorMap,
                       vehicleMassKG As Single, _
                       cycleName As String,
-                      cycleDurationMinutes As Single
+                      signals As ISignals
                   )
 
 
@@ -42,7 +43,7 @@ Namespace Pneumatics
             _pneumaticsCompressorFlowRateMap = pneumaticsCompressorFlowRateMap
             _vehicleMassKG = vehicleMassKG
             _cycleName = cycleName
-            _cycleDurationMinutes = cycleDurationMinutes
+            _cycleDurationMinutes = signals.TotalCycleTimeSeconds /60
 
 
             'Total up the blow demands from compressor map
@@ -125,10 +126,10 @@ Namespace Pneumatics
         'Get Average Power Demand @ Crank From Pneumatics
         Public Function GetAveragePowerDemandAtCrankFromPneumatics() As Single Implements IM3_AveragePneumaticLoadDemand.GetAveragePowerDemandAtCrankFromPneumatics
 
-            Dim averagePowerDemandAtCrankFromPneumatics As Single = _pneumaticsCompressorFlowRateMap.GetAveragePowerDemandPerCompressorUnitFlowRate _
+            Dim averagePowerDemandAtCrankFromPneumatics As Single = (_pneumaticsCompressorFlowRateMap.GetAveragePowerDemandPerCompressorUnitFlowRate /60) _
                                                                                   * (TotalAirDemand / (_cycleDurationMinutes * 60))
 
-            averagePowerDemandAtCrankFromPneumatics /= _pneumaticUserInputsConfig.CompressorGearEfficiency
+            averagePowerDemandAtCrankFromPneumatics  =  averagePowerDemandAtCrankFromPneumatics / _pneumaticUserInputsConfig.CompressorGearEfficiency
 
 
             Return averagePowerDemandAtCrankFromPneumatics

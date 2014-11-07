@@ -102,8 +102,8 @@
     <Compile Include="UnitTests\M1_AverageHVACLoadDemandTests.vb" />
     <Compile Include="UnitTests\M1_HVACAverageLoadDemandTests.vb" />
     <Compile Include="UnitTests\M5_SmartAlternatorSetGenerationTests.vb" />
-    <Compile Include="UnitTests\M6.vb" />
-    <Compile Include="UnitTests\M7.vb" />
+    <Compile Include="UnitTests\M6Tests.vb" />
+    <Compile Include="UnitTests\M7Tests.vb" />
     <Compile Include="UnitTests\PneumaticActuationsMapTests.vb" />
     <Compile Include="UnitTests\AirCompressorTests.vb" />
     <Compile Include="UnitTests\AlternatorMapTests.vb" />

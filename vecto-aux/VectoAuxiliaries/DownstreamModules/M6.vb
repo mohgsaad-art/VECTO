@@ -38,7 +38,7 @@ Implements IM6
     End Property
  Public ReadOnly Property SmartElecAndPneumaticAltPowerGenAtCrank As Single Implements IM6.SmartElecAndPneumaticAltPowerGenAtCrank
         Get
-         Return Max1
+         Return Max1 * -1
         End Get
     End Property
  Public ReadOnly Property SmartElecAndPneumaticAirCompPowerGenAtCrank As Single Implements IM6.SmartElecAndPneumaticAirCompPowerGenAtCrank
@@ -53,7 +53,7 @@ Implements IM6
     End Property
  Public ReadOnly Property SmartElecOnlyAltPowerGenAtCrank As Single Implements IM6.SmartElecOnlyAltPowerGenAtCrank
         Get
-         Return Max2
+         Return Max2 * -1
         End Get
     End Property
  Public ReadOnly Property SmartPneumaticOnlyAirCompPowerGenAtCrank As Single Implements IM6.SmartPneumaticOnlyAirCompPowerGenAtCrank
@@ -82,13 +82,13 @@ End Property
 'Max of Sum5 vs Sum10
 Public ReadOnly Property Max1 As Single
     Get
-       Return If( Sum5 > Sum10, Sum5, Sum10)
+       Return If( Sum5 > Sum10, Sum5, Sum10) 
     End Get
 End Property
 'Max of Sum10 vs Sum7
 Public ReadOnly Property Max2 As Single
     Get
-        Return If( Sum7 > Sum10, Sum7, Sum10)
+        Return If( Sum7 > Sum10, Sum7, Sum10) 
     End Get
 End Property
 
@@ -122,16 +122,18 @@ End Property
 'Sums
 Public ReadOnly Property Sum1 As Single
     Get
-      Return  _m1.AveragePowerDemandAtCrankFromHVACElectricsWatts + _m2.GetAveragePowerAtCrankFromElectrics
+      Return  _m1.AveragePowerDemandAtCrankFromHVACElectricsWatts() + _m2.GetAveragePowerAtCrankFromElectrics()
     End Get
 End Property
 Public ReadOnly Property Sum2 As Single
     Get
 
-    Return _signals.PreExistingAuxPower + _
-           _m1.AveragePowerDemandAtCrankFromHVACMechanicalsWatts +  _
-           _m3.GetAveragePowerDemandAtCrankFromPneumatics + _
-           SW1
+
+    Dim returnValue As Single = _signals.PreExistingAuxPower +_m1.AveragePowerDemandAtCrankFromHVACMechanicalsWatts + SW1 + _m3.GetAveragePowerDemandAtCrankFromPneumatics
+
+    Return  returnValue
+
+           
 
     End Get
 End Property
@@ -208,7 +210,7 @@ Public ReadOnly Property Sum15 As Single
 End Property
 Public ReadOnly property Sum16 as single
     Get
-      Return Sum14 + Sum16
+      Return Sum14 + Sum15
     End Get
 End Property
 Public ReadOnly Property Sum17 As Single

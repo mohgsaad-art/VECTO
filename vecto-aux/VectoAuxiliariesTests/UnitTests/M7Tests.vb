@@ -44,29 +44,29 @@ End Sub
 'OP3  OP3     :Smart Electrical Aux : Alternator             Power Gen @ Crank
 'OP4  OP4     :Smart Electrical Aux : Ait Compressor         Power Gen @ Crank 
 <Test()> _
-<TestCase(100,200,false,0,false,true,300,400,500,600,700,1000,2000,3000,4000)> _
-Public Sub InputOutputTests(IP1 As Single,  _  
-                            IP2 As Single,  _ 
-                            IP3 As Boolean, _
-                            IP4 As Single,  _
-                            IP5 As Boolean, _
-                            IP6 As Boolean, _
-                            IP7 As Single,  _
-                            IP8 As Single,  _
-                            IP9 As single,  _
-                            IP10 As Single, _
-                            IP11 As Single, _
-                            IP12 As Single, _
-                            IP13 As Single, _
-                            OP1  As Single, _
-                            OP2  As Single,  _
-                            OP3  As Single,  _
-                            OP4  As Single  )
+<TestCase(100,200,false,0,false,true,300,400,500,600,700,100,600,100,600)> _
+<TestCase(100,200,true,0,false,true,300,400,500,600,700,200,600,200,600)> _
+<TestCase(100,200,false,1,true,false,300,400,500,600,700,300,400,500,700)> _
+Public Sub InputOutputTests(byval IP1 As Single,  _
+                            byval IP2 As Single,  _
+                            byval IP3 As Boolean, _
+                            byval IP4 As Single,  _
+                            byval IP5 As Boolean, _
+                            byval IP6 As Boolean, _
+                            byval IP7 As Single,  _
+                            byval IP8 As Single,  _
+                            byval IP9 As single,  _
+                            byval IP10 As Single, _
+                            byval IP11 As Single, _
+                            byval OP1  As Single, _
+                            byval OP2  As Single, _
+                            byval OP3  As Single, _
+                            byval OP4  As Single  )
 
                             'Instantiate new mocks.
                             M5 = New M5_Mock()
                             M6 = New M6_Mock()                         
-                            Signals = New Signals
+                            Signals = New Signals()
 
                             'Assign from TestCaseValues
                             M5._AlternatorsGenerationPowerAtCrankTractionOnWatts=IP1
@@ -85,12 +85,15 @@ Public Sub InputOutputTests(IP1 As Single,  _
             'Create Instance of M7 from 
             Dim target As IM7 = New M7(M5,M6,Signals)
 
-
-
-            Assert.AreEqual(OP1, target.SmartElectricalAndPneumaticAuxAltPowerGenAtCrank)
-            Assert.AreEqual(OP2, target.SmartElectricalAndPneumaticAuxAirCompPowerGenAtCrank)
-            Assert.AreEqual(OP3, target.SmartElectricalOnlyAuxAltPowerGenAtCrank)
-            Assert.AreEqual(OP4, target.SmartPneumaticOnlyAuxAirCompPowerGenAtCrank)
+            Dim OP1act As Single   = target.SmartElectricalAndPneumaticAuxAltPowerGenAtCrank
+            Dim OP2act As Single   = target.SmartElectricalAndPneumaticAuxAirCompPowerGenAtCrank
+            Dim OP3act As Single   = target.SmartElectricalOnlyAuxAltPowerGenAtCrank
+            Dim OP4act As Single   = target.SmartPneumaticOnlyAuxAirCompPowerGenAtCrank
+            
+            Assert.AreEqual(OP1, OP1act)
+            Assert.AreEqual(OP2, OP2act)
+            Assert.AreEqual(OP3, OP3act)
+            Assert.AreEqual(OP4, OP4act)
              
 
  Assert.IsNotNull(target)
