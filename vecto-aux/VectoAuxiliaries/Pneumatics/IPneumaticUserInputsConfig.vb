@@ -5,7 +5,6 @@ Namespace Pneumatics
 Public Interface IPneumaticUserInputsConfig
 
 
-Property CompressorType            As String
 Property CompressorMap             As String
 Property CompressorGearEfficiency  As Single
 Property CompressorGearRatio       As Single

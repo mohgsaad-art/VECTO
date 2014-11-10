@@ -12,8 +12,6 @@ Public Property AdBlueDosing As String Implements IPneumaticUserInputsConfig.AdB
 'mechanical or electrical
 Public Property AirSuspensionControl As String Implements IPneumaticUserInputsConfig.AirSuspensionControl
 
-Public Property CompressorType As String Implements IPneumaticUserInputsConfig.CompressorType
-
 Public Property CompressorMap As String Implements IPneumaticUserInputsConfig.CompressorMap
 Public Property CompressorGearEfficiency As Single Implements IPneumaticUserInputsConfig.CompressorGearEfficiency
 Public Property CompressorGearRatio As Single Implements IPneumaticUserInputsConfig.CompressorGearRatio
@@ -45,7 +43,6 @@ Public sub SetPropertiesToDefaults()
             CompressorGearEfficiency=0.8
             CompressorGearRatio=1.0
             CompressorMap="testCompressorMap.csv"
-            CompressorType=""
             Doors="Pneumatic"
             KneelingHeightMillimeters=80
             RetarderBrake=True

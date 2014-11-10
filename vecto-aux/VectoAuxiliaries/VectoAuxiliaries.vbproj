@@ -75,7 +75,9 @@
     <Compile Include="AuxillaryEnvironment.vb" />
     <Compile Include="DownstreamModules\IM6.vb" />
     <Compile Include="DownstreamModules\IM7.vb" />
+    <Compile Include="DownstreamModules\IM8.vb" />
     <Compile Include="DownstreamModules\M7.vb" />
+    <Compile Include="DownstreamModules\M8.vb" />
     <Compile Include="Electrics\AlternatorMapValues.vb" />
     <Compile Include="Electrics\AlternatorMap.vb" />
     <Compile Include="Electrics\ElectricsUserInputsConfig.vb" />
