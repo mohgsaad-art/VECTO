@@ -54,6 +54,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Moq">
+      <HintPath>..\..\vecto-sim-ricardoaeaTB\packages\Moq.4.2.1409.1722\lib\net40\Moq.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
@@ -94,6 +97,7 @@
     <Compile Include="Mocks\M4_Mock.vb" />
     <Compile Include="Mocks\M5_Mock.vb" />
     <Compile Include="Mocks\M6_Mock.vb" />
+    <Compile Include="Mocks\M7_Mock.vb" />
     <Compile Include="UnitTests\M0_5_SmartAlternatorSetEfficiencyTests.vb" />
     <Compile Include="UnitTests\M0_NonSmart_AlternatorsSetEfficiencyTests.vb" />
     <Compile Include="UnitTests\AveragePneumaticLoadDemandTests.vb" />
@@ -104,6 +108,7 @@
     <Compile Include="UnitTests\M5_SmartAlternatorSetGenerationTests.vb" />
     <Compile Include="UnitTests\M6Tests.vb" />
     <Compile Include="UnitTests\M7Tests.vb" />
+    <Compile Include="UnitTests\M8Tests.vb" />
     <Compile Include="UnitTests\PneumaticActuationsMapTests.vb" />
     <Compile Include="UnitTests\AirCompressorTests.vb" />
     <Compile Include="UnitTests\AlternatorMapTests.vb" />

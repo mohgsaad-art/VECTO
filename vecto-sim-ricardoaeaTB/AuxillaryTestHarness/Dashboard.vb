@@ -9,6 +9,7 @@ Public Class Dashboard
 
 Public auxEnvironment As New AuxillaryEnvironment("")
 private TabColors As Dictionary( Of TabPage, Color)  = new   Dictionary( Of TabPage, Color) ()
+Private processing As Boolean = False
 
 #End Region
 
@@ -104,7 +105,6 @@ Private Sub SetupControls()
 
 
 End Sub
-
 #Region "Binding Control"
 
 
@@ -166,8 +166,7 @@ Private Sub CreateBindings()
         txtDeadVolumeLitres.DataBindings.Add("Text",auxEnvironment.PneumaticAuxillariesConfig,"DeadVolumeLitres")
         txtDeadVolBlowOutsPerLitresperHour.DataBindings.Add("Text",auxEnvironment.PneumaticAuxillariesConfig,"DeadVolBlowOutsPerLitresperHour")
 
-        'Pneumatic UserInputsConfig Binding
-        cboCompressorType.DataBindings.Add("Text",auxEnvironment.PneumaticUserInputsConfig,"CompressorType")        
+        'Pneumatic UserInputsConfig Binding    
         txtCompressorMap.DataBindings.Add("Text",auxEnvironment.PneumaticUserInputsConfig,"CompressorMap")             
         txtCompressorGearEfficiency.DataBindings.Add("Text",auxEnvironment.PneumaticUserInputsConfig,"CompressorGearEfficiency") 
         txtCompressorGearRatio.DataBindings.Add("Text",auxEnvironment.PneumaticUserInputsConfig,"CompressorGearRatio")      
@@ -186,7 +185,10 @@ Private Sub CreateBindings()
         txtHVACMechanicalLoadPowerWatts.DataBindings.Add("Text", auxEnvironment.HvacUserInputsConfig.SteadyStateModel,"HVACMechanicalLoadPowerWatts")
 
         'Signals
+        chkInNeutral.DataBindings.Add("Checked",auxEnvironment.Signals,"InNeutral")
+        chkIdle.DataBindings.Add("Checked",auxEnvironment.Signals,"Idle")
         chkClutchEngaged.DataBindings.Add("Checked", auxEnvironment.Signals,"ClutchEngaged")
+        txtPreExistingAuxPower.DataBindings.Add("Text",auxEnvironment.Signals,"PreExistingAuxPower")
         txtEngineDrivelinePower.DataBindings.Add("Text", auxEnvironment.Signals,"EngineDrivelinePower")
         txtEngineDrivelineTorque.DataBindings.Add("Text", auxEnvironment.Signals,"EngineDrivelineTorque")
         txtEngineMotoringPower.DataBindings.Add("Text", auxEnvironment.Signals,"EngineMotoringPower")
@@ -212,7 +214,6 @@ Private Sub EnsureBinding()
 
 
 'Validation
-
 #Region "Validation Helpers"
 
 
@@ -282,12 +283,11 @@ Public Function IsIntegerZeroOrPositiveNumber( test As string)
 End Function
 
 #End Region
-
 #REgion "Validation Control"
 
 
 '****** PNEUMATIC VALIDATION
-public sub Validating_PneumaticHandler( sender as Object, e As CancelEventArgs  )   Handles  txtAdBlueNIperMinute.Validating,  txtBrakingWithRetarderNIperKG.Validating, txtBrakingNoRetarderNIperKG.Validating, txtAirControlledSuspensionNIperMinute.Validating, txtBreakingPerKneelingNIperKGinMM.Validating, txtSmartRegenFractionTotalAirDemand.Validating, txtPerStopBrakeActuationNIperKG.Validating, txtPerDoorOpeningNI.Validating, txtOverrunUtilisationForCompressionFraction.Validating, txtNonSmartRegenFractionTotalAirDemand.Validating, txtDeadVolumeLitres.Validating, txtDeadVolBlowOutsPerLitresperHour.Validating, txtKneelingHeightMillimeters.Validating, txtCompressorMap.Validating, txtCompressorGearRatio.Validating, txtCompressorGearEfficiency.Validating, txtActuationsMap.Validating, cboDoors.Validating, cboCompressorType.Validating, cboAirSuspensionControl.Validating, cboAdBlueDosing.Validating                
+public sub Validating_PneumaticHandler( sender as Object, e As CancelEventArgs  )   Handles  txtAdBlueNIperMinute.Validating,  txtBrakingWithRetarderNIperKG.Validating, txtBrakingNoRetarderNIperKG.Validating, txtAirControlledSuspensionNIperMinute.Validating, txtBreakingPerKneelingNIperKGinMM.Validating, txtSmartRegenFractionTotalAirDemand.Validating, txtPerStopBrakeActuationNIperKG.Validating, txtPerDoorOpeningNI.Validating, txtOverrunUtilisationForCompressionFraction.Validating, txtNonSmartRegenFractionTotalAirDemand.Validating, txtDeadVolumeLitres.Validating, txtDeadVolBlowOutsPerLitresperHour.Validating, txtKneelingHeightMillimeters.Validating, txtCompressorMap.Validating, txtCompressorGearRatio.Validating, txtCompressorGearEfficiency.Validating, txtActuationsMap.Validating, cboDoors.Validating,  cboAirSuspensionControl.Validating, cboAdBlueDosing.Validating                
 
     e.Cancel= Not Validate_Pneumatics()
 
@@ -401,13 +401,6 @@ Public function Validate_Pneumatics(  ) As boolean
 
        'USER CONFIG PART 
        '*****************************************************************************************
-       If cboCompressorType.SelectedIndex<1 then 
-         errorProvider.SetError(cboCompressorType ,"Please select a Compressor type from the Dropdown list.")    
-         result=false
-       Else
-         errorProvider.SetError(cboCompressorType ,String.Empty)        
-       End if
-
         'Compressor Map path : txtCompressorMap
         'Test for empty after trim
         If txtCompressorMap.Text.Trim.Length=0 then
@@ -562,8 +555,6 @@ public sub Validating_HVACHandler( sender as Object, e As CancelEventArgs  ) Han
     e.Cancel= Not Validate_HVAC()
 
 End Sub
-
-
 Public function Validate_HVAC() As boolean
 
 Dim result As Boolean = true
@@ -602,19 +593,12 @@ Dim result As Boolean = true
 
 End Function
 
-
-'*****  HVAC VALIDATION
-
-
 '*****  IMPUTS VALIDATION
-
 
 #End Region
 
 
-
 'Form Controls & Events
-
 Private Sub Dashboard_Load(sender As Object, e As EventArgs) Handles MyBase.Load 
 
   'Required for OwnerDraw, this is required in order to color the tabs when a validation error occurs to draw
@@ -708,8 +692,6 @@ End Sub
 
 #Region "GridHandlers"
 
-
-
 Private Sub gvElectricalConsumables_CellValidating(sender As Object, e As DataGridViewCellValidatingEventArgs) Handles gvElectricalConsumables.CellValidating 
 
    Dim column As DataGridViewColumn = gvElectricalConsumables.Columns(e.ColumnIndex)
@@ -767,8 +749,6 @@ Private Sub gvElectricalConsumables_CellValidating(sender As Object, e As DataGr
     End Select
 
 End Sub
-
-
 Private Sub SmartResult_CellValidating( sender As Object,  e As DataGridViewCellValidatingEventArgs) Handles gvResultsCardIdle.CellValidating, gvResultsCardTraction.CellValidating, gvResultsCardOverrun.CellValidating 
 
    Dim column As DataGridViewColumn = gvElectricalConsumables.Columns(e.ColumnIndex)
@@ -779,8 +759,6 @@ Private Sub SmartResult_CellValidating( sender As Object,  e As DataGridViewCell
    End If
 
 End Sub
-
-
 private sub resultCard_CellMouseUp( sender As Object,  e as DataGridViewCellMouseEventArgs)  
     
       Dim dgv As DataGridView = CType( sender, DataGridView)
@@ -795,8 +773,6 @@ private sub resultCard_CellMouseUp( sender As Object,  e as DataGridViewCellMous
 
 
     end sub
-
-
 Private Sub resultCardContextMenu_ItemClicked( sender As Object,  e As ToolStripItemClickedEventArgs) Handles resultCardContextMenu.ItemClicked 
 
       Dim menu As ContextMenuStrip = CType( sender, ContextMenuStrip)
@@ -832,9 +808,33 @@ Private Sub resultCardContextMenu_ItemClicked( sender As Object,  e As ToolStrip
 
 
 End Sub
+Private Sub gvElectricalConsumables_CellFormatting( sender As Object,  e As DataGridViewCellFormattingEventArgs) Handles gvElectricalConsumables.CellFormatting
+
+
+    If e.ColumnIndex=4 andalso e.RowIndex=0 then
+
+       e.CellStyle.BackColor = Color.LightGray
+       e.CellStyle.ForeColor=color.LightGray
+      
+
+    End If
 
 
 
+End Sub
+Private Sub gvElectricalConsumables_CellBeginEdit( sender As Object,  e As DataGridViewCellCancelEventArgs) Handles gvElectricalConsumables.CellBeginEdit
+
+    If e.ColumnIndex=4 andalso e.RowIndex=0 then
+
+     MessageBox.Show("This cell is calculated and cannot be edited")
+     e.Cancel=true
+
+    End If
+
+ 
+
+
+End Sub
 
 #End Region
 
@@ -848,10 +848,16 @@ Private Sub btnStart_Click( sender As Object,  e As EventArgs) Handles btnStart.
 Timer1.Start
 
 End Sub
+Private Sub btnFinish_Click( sender As Object,  e As EventArgs) Handles btnFinish.Click
 
+    processing=False
+    SetProcessingStatus
+
+ Timer1.Stop
+
+End Sub
 
 #End Region
-
 
 Private sub RefreshDisplays()
 
@@ -892,14 +898,31 @@ Private sub RefreshDisplays()
       txtM5_out_AltRegenPowerAtCrankOverrunWatts.text= auxEnvironment.m5.AlternatorsGenerationPowerAtCrankOverrunWatts
       txtM5_out_AltRegenPowerAtCrankTractionWatts.text= auxEnvironment.m5.AlternatorsGenerationPowerAtCrankTractionOnWatts
 
+      'M6
+      txtM6_out_OverrunFlag.Text= auxEnvironment.M6.OverrunFlag
+      txtM6_out_SmartElectricalAndPneumaticsCompressorFlag.Text= auxEnvironment.M6.SmartElecAndPneumaticsCompressorFlag
+      txtM6_out_SmartElectriclAndPneumaticsAltPowerGenAtCrank.Text= auxEnvironment.M6.SmartElecAndPneumaticAltPowerGenAtCrank
+      txtM6_out_SmartElectricalAndPneumaticAirCompPowerGenAtCrank.Text= auxEnvironment.M6.SmartElecAndPneumaticAirCompPowerGenAtCrank
+      txtM6_out_SmarElectricalOnlyAltPowerGenAtCrank.Text=auxEnvironment.M6.SmartElecOnlyAltPowerGenAtCrank
+      txtM6_out_AveragePowerDemandAtCrankFromPneumatics.Text= auxEnvironment.M6.AveragePowerDemandAtCrankFromPneumatics
+      txtM6_out_SmartPneumaticOnlyAirCompPowerGenAtCrank.Text=auxEnvironment.M6.SmartPneumaticOnlyAirCompPowerGenAtCrank
+      txtM6_out_AveragePowerDemandAtCrankFromElectricsIncHVAC.Text= auxEnvironment.M6.AvgPowerDemandAtCrankFromElectricsIncHVAC
+      txtM6_out_SmartPneumaticsOnlyCompressorFlag.Text= auxEnvironment.M6.SmartPneumaticsOnlyCompressorFlag
+
+      'M7
+      txtM7_out_SmartElectricalAndPneumaticsAux_AltPowerGenAtCrank.Text= auxEnvironment.M7.SmartElectricalAndPneumaticAuxAltPowerGenAtCrank
+      txtM7_out_SmartElectricalAndPneumaticAux_AirCompPowerGenAtCrank.Text = auxEnvironment.M7.SmartElectricalAndPneumaticAuxAirCompPowerGenAtCrank
+      txtM7_out_SmartElecOnlyAux_AltPwrGenAtCrank.Text = auxEnvironment.M7.SmartElectricalOnlyAuxAltPowerGenAtCrank
+      txtM7_out_SmartPneumaticsOnlyAux_AirCompPwrRegenAtCrank.Text=auxEnvironment.M7.SmartPneumaticOnlyAuxAirCompPowerGenAtCrank
+
+
+      'M8
+      txtM8_out_AuxPowerAtCrankFromAllAncillaries.Text = auxEnvironment.M8.AuxPowerAtCrankFromElectricalHVACAndPneumaticsAncillaries
+      txtM8_out_SmartElectricalAltPwrGenAtCrank.Text = auxEnvironment.M8.SmartElectricalAlternatorPowerGenAtCrank
+      txtM8_out_CompressorFlag.Text= auxEnvironment.M8.CompressorFlag
  
 
 End Sub
-
-
-
-Private processing As Boolean = False
-
 
 Private sub SetProcessingStatus()
 
@@ -922,8 +945,6 @@ me.pictureBox1.Image = Image.FromStream(file)
 
 End Sub
 
-
-
 Private Sub RefreshDisplayValues_Timed( sender As Object,  e As EventArgs) Handles Timer1.Tick
 
   
@@ -934,8 +955,7 @@ Private Sub RefreshDisplayValues_Timed( sender As Object,  e As EventArgs) Handl
 
 End Sub
 
-
-   'Form Overrides
+'Form Overrides
 Protected Overrides Function ProcessCmdKey(ByRef msg As Message, keyData As Keys) As Boolean
 
         if keyData = Keys.Enter andalso me.AcceptButton is nothing   then
@@ -956,152 +976,6 @@ Protected Overrides Function ProcessCmdKey(ByRef msg As Message, keyData As Keys
 
 
     End Function
-
-
-Private Sub btnFinish_Click( sender As Object,  e As EventArgs) Handles btnFinish.Click
-
-
-    processing=False
-    SetProcessingStatus
-
-
- Timer1.Stop
-
-End Sub
-
-
-Private Sub Button2_Click( sender As Object,  e As EventArgs) Handles Button2.Click
-
-    Dim altMap As IAlternatorMap = New AlternatorMap("testAlternatorMap.csv")
-    Dim efficiency , rpm, amp As Single
-    
-    altMap.Initialise()
-
-    Dim CrankSpeed As New System.Collections.Generic.List(Of single)
-    CrankSpeed.AddRange(New single() {1500,2000,4000,6000,7000})
-    Dim amps As New List(Of single)
-    amps.AddRange(New single() {10,27,53,63,68,125,136})
-
-    'On Boundaries
-    Console.WriteLine("On BOUNDARY TESTS")
-    Console.WriteLine("_________________")
-    Console.WriteLine("")
-    For Each  rpm  in CrankSpeed 
-     For Each amp  In amps
-         efficiency  = altMap.GetEfficiency( rpm, amp).Efficiency
-        Console.WriteLine(String.Format("RPM:{0} , AMP:{1}, EFF:{2})",rpm.ToString(),amp.ToString(),efficiency.ToString()))
-     Next
-    Next
-
-    Console.WriteLine("")
-    Console.WriteLine("Four Corner Points With Interpolated other")
-    Console.WriteLine("_________________")
-    Console.WriteLine("")
-
-    rpm=1500 : amp=18.5
-    efficiency = altMap.GetEfficiency( rpm, amp).Efficiency
-    Console.WriteLine(String.Format("RPM:{0} , AMP:{1}, EFF:{2})",rpm.ToString(),amp.ToString(),efficiency.ToString()))
-    rpm=7000 : amp=96.5
-    efficiency = altMap.GetEfficiency( rpm, amp).Efficiency
-    Console.WriteLine(String.Format("RPM:{0} , AMP:{1}, EFF:{2})",rpm.ToString(),amp.ToString(),efficiency.ToString()))
-    rpm=1750 : amp=10
-    efficiency = altMap.GetEfficiency( rpm, amp).Efficiency
-    Console.WriteLine(String.Format("RPM:{0} , AMP:{1}, EFF:{2})",rpm.ToString(),amp.ToString(),efficiency.ToString()))
-    rpm=6500 : amp=10
-    efficiency = altMap.GetEfficiency( rpm, amp).Efficiency
-    Console.WriteLine(String.Format("RPM:{0} , AMP:{1}, EFF:{2})",rpm.ToString(),amp.ToString(),efficiency.ToString()))
-
-    Console.WriteLine("")
-    Console.WriteLine("Interpolated Both - four data points")
-    Console.WriteLine("_________________")
-    Console.WriteLine("")
-
-    rpm=1750 : amp=18.5
-    efficiency = altMap.GetEfficiency( rpm, amp).Efficiency
-    Console.WriteLine(String.Format("RPM:{0} , AMP:{1}, EFF:{2})",rpm.ToString(),amp.ToString(),efficiency.ToString()))
-    rpm=6500 : amp=18.5
-    efficiency = altMap.GetEfficiency( rpm, amp).Efficiency
-    Console.WriteLine(String.Format("RPM:{0} , AMP:{1}, EFF:{2})",rpm.ToString(),amp.ToString(),efficiency.ToString()))
-
-    rpm=1750 : amp=96.5
-    efficiency = altMap.GetEfficiency( rpm, amp).Efficiency
-    Console.WriteLine(String.Format("RPM:{0} , AMP:{1}, EFF:{2})",rpm.ToString(),amp.ToString(),efficiency.ToString()))
-    rpm=6500 : amp=96.4
-    efficiency = altMap.GetEfficiency( rpm, amp).Efficiency
-    Console.WriteLine(String.Format("RPM:{0} , AMP:{1}, EFF:{2})",rpm.ToString(),amp.ToString(),efficiency.ToString()))
-
-    Console.WriteLine("")
-    Console.WriteLine("Range Limiting")
-    Console.WriteLine("_________________")
-    Console.WriteLine("")
-
-    rpm=0 : amp=0
-    efficiency = altMap.GetEfficiency( rpm, amp).Efficiency
-    Console.WriteLine(String.Format("RPM:{0} , AMP:{1}, EFF:{2})",rpm.ToString(),amp.ToString(),efficiency.ToString()))
-    rpm=0 : amp=10
-    efficiency = altMap.GetEfficiency( rpm, amp).Efficiency
-    Console.WriteLine(String.Format("RPM:{0} , AMP:{1}, EFF:{2})",rpm.ToString(),amp.ToString(),efficiency.ToString()))
-    rpm=0 : amp=200
-    efficiency = altMap.GetEfficiency( rpm, amp).Efficiency
-    Console.WriteLine(String.Format("RPM:{0} , AMP:{1}, EFF:{2})",rpm.ToString(),amp.ToString(),efficiency.ToString()))
-    rpm=1500 : amp=200
-    efficiency = altMap.GetEfficiency( rpm, amp).Efficiency
-    Console.WriteLine(String.Format("RPM:{0} , AMP:{1}, EFF:{2})",rpm.ToString(),amp.ToString(),efficiency.ToString()))
-    rpm=7000 : amp=200
-    efficiency = altMap.GetEfficiency( rpm, amp).Efficiency
-    Console.WriteLine(String.Format("RPM:{0} , AMP:{1}, EFF:{2})",rpm.ToString(),amp.ToString(),efficiency.ToString()))
-    rpm=8000 : amp=200
-    efficiency = altMap.GetEfficiency( rpm, amp).Efficiency
-    Console.WriteLine(String.Format("RPM:{0} , AMP:{1}, EFF:{2})",rpm.ToString(),amp.ToString(),efficiency.ToString()))
-
-
-    Console.WriteLine("")
-    Console.WriteLine("MIKES 40*1000")
-    Console.WriteLine("_________________")
-    Console.WriteLine("")
-    rpm=1000 : amp=40
-    Console.WriteLine(String.Format("RPM:{0} , AMP:{1}, EFF:{2})",rpm.ToString(),amp.ToString(),efficiency.ToString()))
-
-
-
-End Sub
-
-
-
-
-Private Sub gvElectricalConsumables_CellFormatting( sender As Object,  e As DataGridViewCellFormattingEventArgs) Handles gvElectricalConsumables.CellFormatting
-
-
-    If e.ColumnIndex=4 andalso e.RowIndex=0 then
-
-       e.CellStyle.BackColor = Color.LightGray
-       e.CellStyle.ForeColor=color.LightGray
-      
-
-    End If
-
-
-
-End Sub
-
-
-
-
-
-Private Sub gvElectricalConsumables_CellBeginEdit( sender As Object,  e As DataGridViewCellCancelEventArgs) Handles gvElectricalConsumables.CellBeginEdit
-
-    If e.ColumnIndex=4 andalso e.RowIndex=0 then
-
-     MessageBox.Show("This cell is calculated and cannot be edited")
-     e.Cancel=true
-
-    End If
-
- 
-
-
-End Sub
-
 
 
 End Class
