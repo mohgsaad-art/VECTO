@@ -3,6 +3,7 @@ Imports VectoAuxiliaries.Electrics
 Imports VectoAuxiliaries.Pneumatics
 Imports VectoAuxiliaries.Hvac
 Imports System.IO
+Imports VectoAuxiliaries.DownstreamModules
 
 
 Public Class AuxillaryEnvironment
@@ -38,6 +39,12 @@ public Property PneumaticAuxillariesConfig As IPneumaticsAuxilliariesConfig
   Public M3 As IM3_AveragePneumaticLoadDemand
   Public M4 As IM4_AirCompressor
   Public M5 As IM5_SmartAlternatorSetGeneration
+  Public M6 As IM6
+  Public M7 As IM7
+  Public M8 As IM8
+  
+
+
 
 
 Public Sub Initialise()
@@ -103,6 +110,13 @@ M4 = New M4_AirCompressor(compressorMap,PneumaticUserInputsConfig.CompressorGear
 
 M5 = New M5__SmartAlternatorSetGeneration( M05, VectoInputs.PowerNetVoltage,ElectricalUserInputsConfig.AlternatorGearEfficiency)
 
+
+M6 = New M6(M1,M2,M3,M4,M5,Signals)
+
+
+M7 = New M7(M5,M6,Signals)
+
+M8 = New M8(M1,M6,M7,Signals)
 
 
 End Sub
