@@ -109,6 +109,7 @@
     <Compile Include="UnitTests\M6Tests.vb" />
     <Compile Include="UnitTests\M7Tests.vb" />
     <Compile Include="UnitTests\M8Tests.vb" />
+    <Compile Include="UnitTests\M9Tests.vb" />
     <Compile Include="UnitTests\PneumaticActuationsMapTests.vb" />
     <Compile Include="UnitTests\AirCompressorTests.vb" />
     <Compile Include="UnitTests\AlternatorMapTests.vb" />
