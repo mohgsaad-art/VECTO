@@ -4,6 +4,7 @@ Imports VectoAuxiliaries.Pneumatics
 Imports VectoAuxiliaries.Hvac
 Imports System.IO
 Imports VectoAuxiliaries.DownstreamModules
+Imports System.Windows.Forms
 
 
 Public Class AuxillaryEnvironment
@@ -42,6 +43,7 @@ public Property PneumaticAuxillariesConfig As IPneumaticsAuxilliariesConfig
   Public M6 As IM6
   Public M7 As IM7
   Public M8 As IM8
+  Public M9 As IM9
   
 
 
@@ -59,6 +61,15 @@ Dim actuationsMap As  IPneumaticActuationsMAP = New PneumaticActuationsMAP( Pneu
 
 Dim compressorMap As ICompressorMap = New CompressorMap( PneumaticUserInputsConfig.CompressorMap)
 compressorMap.Initialise()
+
+Dim fuelMap As IFUELMAP = New cMAP()
+fuelMap.FilePath= VectoInputs.FuelMap
+If Not fuelMap.ReadFile() then 
+MessageBox.Show("Unable to read fuel map, aborting.")
+return
+End If
+fuelMap.Triangulate()
+
 
 ElectricalUserInputsConfig.ElectricalConsumers.DoorDutyCycleFraction = GetDoorActuationTimeFraction()
 
@@ -118,6 +129,8 @@ M7 = New M7(M5,M6,Signals)
 
 M8 = New M8(M1,M6,M7,Signals)
 
+M9 = New M9(M1,M4,M6,M8,fuelMap,PneumaticAuxillariesConfig,Signals)
+
 
 End Sub
  
@@ -136,13 +149,11 @@ Private Sub setDefaults()
 
 'Here's where the magic happens.
 
- VectoInputs = New VectoInputs With {.Cycle="Urban", .VehicleWeightKG=16500, .PowerNetVoltage=26.3, .CycleDurationMinutes=51.9}
+ VectoInputs = New VectoInputs With {.Cycle="Urban", .VehicleWeightKG=16500, .PowerNetVoltage=26.3, .CycleDurationMinutes=51.9,.FuelMap="testFuelGoodMap.vmap"}
  
  'Pneumatics
  PneumaticUserInputsConfig  = New PneumaticUserInputsConfig(true) 
  PneumaticAuxillariesConfig = New PneumaticsAuxilliariesConfig(true)
-
-
 
 
 
