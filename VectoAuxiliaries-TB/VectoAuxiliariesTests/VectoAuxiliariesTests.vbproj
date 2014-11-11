@@ -98,6 +98,7 @@
     <Compile Include="Mocks\M5_Mock.vb" />
     <Compile Include="Mocks\M6_Mock.vb" />
     <Compile Include="Mocks\M7_Mock.vb" />
+    <Compile Include="UnitTests\FuelMapTests.vb" />
     <Compile Include="UnitTests\M0_5_SmartAlternatorSetEfficiencyTests.vb" />
     <Compile Include="UnitTests\M0_NonSmart_AlternatorsSetEfficiencyTests.vb" />
     <Compile Include="UnitTests\AveragePneumaticLoadDemandTests.vb" />
@@ -207,6 +208,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestFiles\CombinedAlternatorPowerMap.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\testFuelGoodMap.vmap">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="TestFiles\HVACMap.vaux" />

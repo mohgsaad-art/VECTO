@@ -73,8 +73,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AuxillaryEnvironment.vb" />
+    <Compile Include="DownstreamModules\cDelaunayMap.vb" />
+    <Compile Include="DownstreamModules\cFile V3.vb" />
     <Compile Include="DownstreamModules\cMAP.vb" />
-    <Compile Include="DownstreamModules\IFUEL.vb" />
+    <Compile Include="DownstreamModules\IFUELMAP.vb" />
     <Compile Include="DownstreamModules\IM6.vb" />
     <Compile Include="DownstreamModules\IM7.vb" />
     <Compile Include="DownstreamModules\IM8.vb" />
