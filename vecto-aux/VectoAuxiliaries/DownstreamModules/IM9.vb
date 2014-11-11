@@ -17,9 +17,6 @@ Public Interface IM9
  readonly property TotalCycleFuelConsumptionCompressorOffContinuously as single
 
 
- 
-
-
 End Interface
 
 

@@ -114,6 +114,7 @@ Private Sub CreateBindings()
      txtPowernetVoltage.DataBindings.Add("Text", auxEnvironment.ElectricalUserInputsConfig, "PowerNetVoltage")
      txtVehicleWeightKG.DataBindings.Add("Text", auxEnvironment.VectoInputs, "VehicleWeightKG")
      cboCycle.DataBindings.Add("Text", auxEnvironment.VectoInputs, "Cycle")
+     txtFuelMap.DataBindings.Add("Text",auxEnvironment.VectoInputs,"FuelMap")
 
      'Electricals General
      txtAlternatorMapPath.DataBindings.Add("Text", auxEnvironment.ElectricalUserInputsConfig, "AlternatorMap")
@@ -920,6 +921,13 @@ Private sub RefreshDisplays()
       txtM8_out_AuxPowerAtCrankFromAllAncillaries.Text = auxEnvironment.M8.AuxPowerAtCrankFromElectricalHVACAndPneumaticsAncillaries
       txtM8_out_SmartElectricalAltPwrGenAtCrank.Text = auxEnvironment.M8.SmartElectricalAlternatorPowerGenAtCrank
       txtM8_out_CompressorFlag.Text= auxEnvironment.M8.CompressorFlag
+
+      'M9
+      txtM9_out_LitresOfAirConsumptionCompressorONContinuously.Text= auxEnvironment.M9.LitresOfAirCompressorOnContinually
+      txtM9_out_LitresOfAirCompressorOnlyOnInOverrun.Text=auxEnvironment.M9.LitresOfAirCompressorOnOnlyInOverrun
+      txtM9_out_TotalCycleFuelConsumptionCompressorOnContinuously.Text=auxEnvironment.M9.TotalCycleFuelConsumptionCompressorOnContinuously
+      txtM9_out_TotalCycleFuelConsumptionCompressorOFFContinuously.Text=auxEnvironment.M9.TotalCycleFuelConsumptionCompressorOffContinuously
+
  
 
 End Sub
@@ -947,10 +955,13 @@ End Sub
 
 Private Sub RefreshDisplayValues_Timed( sender As Object,  e As EventArgs) Handles Timer1.Tick
 
-  
+  auxEnvironment.M9.CycleStep(1)  
+
   SetProcessingStatus()
 
   RefreshDisplays()
+
+
 
 
 End Sub

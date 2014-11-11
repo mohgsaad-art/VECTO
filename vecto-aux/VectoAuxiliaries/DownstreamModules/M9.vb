@@ -9,7 +9,7 @@ Implements  IM9
 
 
  
- #Region "Aggregates"
+#Region "Aggregates"
 
 'AG1
 Private _LitresOfAirCompressorOnContinuallyAggregate As Single
@@ -22,14 +22,16 @@ Private _TotalCycleFuelConsumptionCompressorOnContinuouslyAggregate As Single
 
 #End Region
  
- #Region "Constructor Requirements"
+#Region "Constructor Requirements"
+
 Private M1 As IM1_AverageHVACLoadDemand
 Private M4 As IM4_AirCompressor
 Private M6 As IM6
 Private M8 As IM8
-Private Signals As ISignals
 Private FMAP As IFUELMAP
 Private PSAC As IPneumaticsAuxilliariesConfig
+Private Signals As ISignals
+
 #end region
  
  #Region "Public Readonly Properties"
@@ -114,18 +116,16 @@ End Property
      Return S9 * PSAC.OverrunUtilisationForCompressionFraction
      End Get
  End Property
-
  private ReadOnly Property S11 As Single
      Get
-
+       Return FMAP.fFCdelaunay_Intp(Signals.EngineSpeed,s7)
      End Get
  End Property
-  private ReadOnly Property S12 As Single
+ private ReadOnly Property S12 As Single
       Get
-
+          return   FMAP.fFCdelaunay_Intp(Signals.EngineSpeed,s8)
       End Get
   End Property
-
 
  'Public Utility Methods.
  Public Sub ClearAggregates() Implements IM9.ClearAggregates
@@ -136,12 +136,12 @@ End Property
         End Sub
 
  'Clear down at the beginning of a cycle.      
-  Public Sub CycleStep(Optional stepTimeInSeconds As Single = 0.0) Implements IM9.CycleStep
+ Public Sub CycleStep(Optional stepTimeInSeconds As Single = 0.0) Implements IM9.CycleStep
 
           _LitresOfAirCompressorOnContinuallyAggregate +=stepTimeInSeconds* M4.GetAveragePowerDemandPerCompressorUnitFlowRate
           _LitresOfAirCompressorOnOnlyInOverrunAggregate +=stepTimeInSeconds * s10
-          _TotalCycleFuelConsumptionCompressorOffContinuouslyAggregate +=stepTimeInSeconds * 1
-          _TotalCycleFuelConsumptionCompressorOnContinuouslyAggregate+= stepTimeInSeconds * 1
+          _TotalCycleFuelConsumptionCompressorOnContinuouslyAggregate+= stepTimeInSeconds * s11
+          _TotalCycleFuelConsumptionCompressorOffContinuouslyAggregate +=stepTimeInSeconds * s12
 
   End Sub
 
