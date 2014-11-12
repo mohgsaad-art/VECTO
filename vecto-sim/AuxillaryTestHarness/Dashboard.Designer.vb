@@ -127,6 +127,16 @@ Partial Class Dashboard
         Me.txtHVACElectricalLoadPowerWatts = New System.Windows.Forms.TextBox()
         Me.lblHVACElectricalLoadPowerWatts = New System.Windows.Forms.Label()
         Me.tabPlayground = New System.Windows.Forms.TabPage()
+        Me.lblM9Title = New System.Windows.Forms.Label()
+        Me.pnlM9 = New System.Windows.Forms.Panel()
+        Me.lblM9TotalCycleFuelConsumptionCompressorOFFContinuously = New System.Windows.Forms.Label()
+        Me.txtM9_out_TotalCycleFuelConsumptionCompressorOFFContinuously = New System.Windows.Forms.TextBox()
+        Me.lblM9TotalCycleFuelConsumptionCompressorOnContinuously = New System.Windows.Forms.Label()
+        Me.txtM9_out_TotalCycleFuelConsumptionCompressorOnContinuously = New System.Windows.Forms.TextBox()
+        Me.lblM9LitresOfAirCompressoryOnlyOnInOverrun = New System.Windows.Forms.Label()
+        Me.lblM9LitresOfAirCompressorOnContinuously = New System.Windows.Forms.Label()
+        Me.txtM9_out_LitresOfAirCompressorOnlyOnInOverrun = New System.Windows.Forms.TextBox()
+        Me.txtM9_out_LitresOfAirConsumptionCompressorONContinuously = New System.Windows.Forms.TextBox()
         Me.lblM8_Title = New System.Windows.Forms.Label()
         Me.pnlM8 = New System.Windows.Forms.Panel()
         Me.lblM8CompressorFlag = New System.Windows.Forms.Label()
@@ -247,16 +257,6 @@ Partial Class Dashboard
         Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
-        Me.pnlM9 = New System.Windows.Forms.Panel()
-        Me.lblM9TotalCycleFuelConsumptionCompressorOnContinuously = New System.Windows.Forms.Label()
-        Me.txtM9_out_TotalCycleFuelConsumptionCompressorOnContinuously = New System.Windows.Forms.TextBox()
-        Me.lblM9LitresOfAirCompressoryOnlyOnInOverrun = New System.Windows.Forms.Label()
-        Me.lblM9LitresOfAirCompressorOnContinuously = New System.Windows.Forms.Label()
-        Me.txtM9_out_LitresOfAirCompressorOnlyOnInOverrun = New System.Windows.Forms.TextBox()
-        Me.txtM9_out_LitresOfAirConsumptionCompressorONContinuously = New System.Windows.Forms.TextBox()
-        Me.lblM9Title = New System.Windows.Forms.Label()
-        Me.lblM9TotalCycleFuelConsumptionCompressorOFFContinuously = New System.Windows.Forms.Label()
-        Me.txtM9_out_TotalCycleFuelConsumptionCompressorOFFContinuously = New System.Windows.Forms.TextBox()
         Me.pnlMain.SuspendLayout
         Me.tabMain.SuspendLayout
         Me.tabGeneralConfig.SuspendLayout
@@ -270,6 +270,7 @@ Partial Class Dashboard
         Me.pnlPneumaticAuxillaries.SuspendLayout
         Me.tabHVACConfig.SuspendLayout
         Me.tabPlayground.SuspendLayout
+        Me.pnlM9.SuspendLayout
         Me.pnlM8.SuspendLayout
         Me.Panel4.SuspendLayout
         Me.Panel2.SuspendLayout
@@ -283,7 +284,6 @@ Partial Class Dashboard
         Me.pnl_M0_Displays.SuspendLayout
         Me.resultCardContextMenu.SuspendLayout
         CType(Me.ErrorProvider,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.pnlM9.SuspendLayout
         Me.SuspendLayout
         '
         'pnlMain
@@ -1310,6 +1310,102 @@ Partial Class Dashboard
         Me.tabPlayground.TabIndex = 4
         Me.tabPlayground.Text = "Playground"
         Me.tabPlayground.UseVisualStyleBackColor = true
+        '
+        'lblM9Title
+        '
+        Me.lblM9Title.AutoSize = true
+        Me.lblM9Title.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblM9Title.ForeColor = System.Drawing.SystemColors.Highlight
+        Me.lblM9Title.Location = New System.Drawing.Point(831, 190)
+        Me.lblM9Title.MaximumSize = New System.Drawing.Size(250, 0)
+        Me.lblM9Title.Name = "lblM9Title"
+        Me.lblM9Title.Size = New System.Drawing.Size(248, 26)
+        Me.lblM9Title.TabIndex = 50
+        Me.lblM9Title.Text = "M9-Air Delivery & Fuel Calculation Smart And Non Smart Pneumatics Over the cycle"
+        '
+        'pnlM9
+        '
+        Me.pnlM9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlM9.Controls.Add(Me.lblM9TotalCycleFuelConsumptionCompressorOFFContinuously)
+        Me.pnlM9.Controls.Add(Me.txtM9_out_TotalCycleFuelConsumptionCompressorOFFContinuously)
+        Me.pnlM9.Controls.Add(Me.lblM9TotalCycleFuelConsumptionCompressorOnContinuously)
+        Me.pnlM9.Controls.Add(Me.txtM9_out_TotalCycleFuelConsumptionCompressorOnContinuously)
+        Me.pnlM9.Controls.Add(Me.lblM9LitresOfAirCompressoryOnlyOnInOverrun)
+        Me.pnlM9.Controls.Add(Me.lblM9LitresOfAirCompressorOnContinuously)
+        Me.pnlM9.Controls.Add(Me.txtM9_out_LitresOfAirCompressorOnlyOnInOverrun)
+        Me.pnlM9.Controls.Add(Me.txtM9_out_LitresOfAirConsumptionCompressorONContinuously)
+        Me.pnlM9.Location = New System.Drawing.Point(837, 224)
+        Me.pnlM9.Name = "pnlM9"
+        Me.pnlM9.Size = New System.Drawing.Size(308, 176)
+        Me.pnlM9.TabIndex = 49
+        '
+        'lblM9TotalCycleFuelConsumptionCompressorOFFContinuously
+        '
+        Me.lblM9TotalCycleFuelConsumptionCompressorOFFContinuously.AutoSize = true
+        Me.lblM9TotalCycleFuelConsumptionCompressorOFFContinuously.Location = New System.Drawing.Point(6, 134)
+        Me.lblM9TotalCycleFuelConsumptionCompressorOFFContinuously.Name = "lblM9TotalCycleFuelConsumptionCompressorOFFContinuously"
+        Me.lblM9TotalCycleFuelConsumptionCompressorOFFContinuously.Size = New System.Drawing.Size(297, 13)
+        Me.lblM9TotalCycleFuelConsumptionCompressorOFFContinuously.TabIndex = 8
+        Me.lblM9TotalCycleFuelConsumptionCompressorOFFContinuously.Text = "Total Cycle Fuel Consumption : Compressor OFF Continuously"
+        '
+        'txtM9_out_TotalCycleFuelConsumptionCompressorOFFContinuously
+        '
+        Me.txtM9_out_TotalCycleFuelConsumptionCompressorOFFContinuously.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.txtM9_out_TotalCycleFuelConsumptionCompressorOFFContinuously.Location = New System.Drawing.Point(6, 150)
+        Me.txtM9_out_TotalCycleFuelConsumptionCompressorOFFContinuously.Name = "txtM9_out_TotalCycleFuelConsumptionCompressorOFFContinuously"
+        Me.txtM9_out_TotalCycleFuelConsumptionCompressorOFFContinuously.Size = New System.Drawing.Size(100, 20)
+        Me.txtM9_out_TotalCycleFuelConsumptionCompressorOFFContinuously.TabIndex = 7
+        '
+        'lblM9TotalCycleFuelConsumptionCompressorOnContinuously
+        '
+        Me.lblM9TotalCycleFuelConsumptionCompressorOnContinuously.AutoSize = true
+        Me.lblM9TotalCycleFuelConsumptionCompressorOnContinuously.Location = New System.Drawing.Point(6, 91)
+        Me.lblM9TotalCycleFuelConsumptionCompressorOnContinuously.Name = "lblM9TotalCycleFuelConsumptionCompressorOnContinuously"
+        Me.lblM9TotalCycleFuelConsumptionCompressorOnContinuously.Size = New System.Drawing.Size(291, 13)
+        Me.lblM9TotalCycleFuelConsumptionCompressorOnContinuously.TabIndex = 6
+        Me.lblM9TotalCycleFuelConsumptionCompressorOnContinuously.Text = "Total Cycle Fuel Consumption : Compressor On Continuously"
+        '
+        'txtM9_out_TotalCycleFuelConsumptionCompressorOnContinuously
+        '
+        Me.txtM9_out_TotalCycleFuelConsumptionCompressorOnContinuously.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.txtM9_out_TotalCycleFuelConsumptionCompressorOnContinuously.Location = New System.Drawing.Point(6, 107)
+        Me.txtM9_out_TotalCycleFuelConsumptionCompressorOnContinuously.Name = "txtM9_out_TotalCycleFuelConsumptionCompressorOnContinuously"
+        Me.txtM9_out_TotalCycleFuelConsumptionCompressorOnContinuously.Size = New System.Drawing.Size(100, 20)
+        Me.txtM9_out_TotalCycleFuelConsumptionCompressorOnContinuously.TabIndex = 4
+        '
+        'lblM9LitresOfAirCompressoryOnlyOnInOverrun
+        '
+        Me.lblM9LitresOfAirCompressoryOnlyOnInOverrun.AutoSize = true
+        Me.lblM9LitresOfAirCompressoryOnlyOnInOverrun.Location = New System.Drawing.Point(6, 48)
+        Me.lblM9LitresOfAirCompressoryOnlyOnInOverrun.Name = "lblM9LitresOfAirCompressoryOnlyOnInOverrun"
+        Me.lblM9LitresOfAirCompressoryOnlyOnInOverrun.Size = New System.Drawing.Size(219, 13)
+        Me.lblM9LitresOfAirCompressoryOnlyOnInOverrun.TabIndex = 3
+        Me.lblM9LitresOfAirCompressoryOnlyOnInOverrun.Text = "Litres Of Air : Compressor Only On In Overrun"
+        '
+        'lblM9LitresOfAirCompressorOnContinuously
+        '
+        Me.lblM9LitresOfAirCompressorOnContinuously.AutoSize = true
+        Me.lblM9LitresOfAirCompressorOnContinuously.Location = New System.Drawing.Point(6, 9)
+        Me.lblM9LitresOfAirCompressorOnContinuously.Name = "lblM9LitresOfAirCompressorOnContinuously"
+        Me.lblM9LitresOfAirCompressorOnContinuously.Size = New System.Drawing.Size(205, 13)
+        Me.lblM9LitresOfAirCompressorOnContinuously.TabIndex = 2
+        Me.lblM9LitresOfAirCompressorOnContinuously.Text = "Litres Of Air : Compressor On Continuously"
+        '
+        'txtM9_out_LitresOfAirCompressorOnlyOnInOverrun
+        '
+        Me.txtM9_out_LitresOfAirCompressorOnlyOnInOverrun.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.txtM9_out_LitresOfAirCompressorOnlyOnInOverrun.Location = New System.Drawing.Point(6, 64)
+        Me.txtM9_out_LitresOfAirCompressorOnlyOnInOverrun.Name = "txtM9_out_LitresOfAirCompressorOnlyOnInOverrun"
+        Me.txtM9_out_LitresOfAirCompressorOnlyOnInOverrun.Size = New System.Drawing.Size(100, 20)
+        Me.txtM9_out_LitresOfAirCompressorOnlyOnInOverrun.TabIndex = 1
+        '
+        'txtM9_out_LitresOfAirConsumptionCompressorONContinuously
+        '
+        Me.txtM9_out_LitresOfAirConsumptionCompressorONContinuously.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.txtM9_out_LitresOfAirConsumptionCompressorONContinuously.Location = New System.Drawing.Point(6, 25)
+        Me.txtM9_out_LitresOfAirConsumptionCompressorONContinuously.Name = "txtM9_out_LitresOfAirConsumptionCompressorONContinuously"
+        Me.txtM9_out_LitresOfAirConsumptionCompressorONContinuously.Size = New System.Drawing.Size(100, 20)
+        Me.txtM9_out_LitresOfAirConsumptionCompressorONContinuously.TabIndex = 0
         '
         'lblM8_Title
         '
@@ -2419,102 +2515,6 @@ Partial Class Dashboard
         '
         Me.Timer1.Interval = 1000
         '
-        'pnlM9
-        '
-        Me.pnlM9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlM9.Controls.Add(Me.lblM9TotalCycleFuelConsumptionCompressorOFFContinuously)
-        Me.pnlM9.Controls.Add(Me.txtM9_out_TotalCycleFuelConsumptionCompressorOFFContinuously)
-        Me.pnlM9.Controls.Add(Me.lblM9TotalCycleFuelConsumptionCompressorOnContinuously)
-        Me.pnlM9.Controls.Add(Me.txtM9_out_TotalCycleFuelConsumptionCompressorOnContinuously)
-        Me.pnlM9.Controls.Add(Me.lblM9LitresOfAirCompressoryOnlyOnInOverrun)
-        Me.pnlM9.Controls.Add(Me.lblM9LitresOfAirCompressorOnContinuously)
-        Me.pnlM9.Controls.Add(Me.txtM9_out_LitresOfAirCompressorOnlyOnInOverrun)
-        Me.pnlM9.Controls.Add(Me.txtM9_out_LitresOfAirConsumptionCompressorONContinuously)
-        Me.pnlM9.Location = New System.Drawing.Point(837, 224)
-        Me.pnlM9.Name = "pnlM9"
-        Me.pnlM9.Size = New System.Drawing.Size(308, 176)
-        Me.pnlM9.TabIndex = 49
-        '
-        'lblM9TotalCycleFuelConsumptionCompressorOnContinuously
-        '
-        Me.lblM9TotalCycleFuelConsumptionCompressorOnContinuously.AutoSize = true
-        Me.lblM9TotalCycleFuelConsumptionCompressorOnContinuously.Location = New System.Drawing.Point(6, 91)
-        Me.lblM9TotalCycleFuelConsumptionCompressorOnContinuously.Name = "lblM9TotalCycleFuelConsumptionCompressorOnContinuously"
-        Me.lblM9TotalCycleFuelConsumptionCompressorOnContinuously.Size = New System.Drawing.Size(291, 13)
-        Me.lblM9TotalCycleFuelConsumptionCompressorOnContinuously.TabIndex = 6
-        Me.lblM9TotalCycleFuelConsumptionCompressorOnContinuously.Text = "Total Cycle Fuel Consumption : Compressor On Continuously"
-        '
-        'txtM9_out_TotalCycleFuelConsumptionCompressorOnContinuously
-        '
-        Me.txtM9_out_TotalCycleFuelConsumptionCompressorOnContinuously.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
-        Me.txtM9_out_TotalCycleFuelConsumptionCompressorOnContinuously.Location = New System.Drawing.Point(6, 107)
-        Me.txtM9_out_TotalCycleFuelConsumptionCompressorOnContinuously.Name = "txtM9_out_TotalCycleFuelConsumptionCompressorOnContinuously"
-        Me.txtM9_out_TotalCycleFuelConsumptionCompressorOnContinuously.Size = New System.Drawing.Size(100, 20)
-        Me.txtM9_out_TotalCycleFuelConsumptionCompressorOnContinuously.TabIndex = 4
-        '
-        'lblM9LitresOfAirCompressoryOnlyOnInOverrun
-        '
-        Me.lblM9LitresOfAirCompressoryOnlyOnInOverrun.AutoSize = true
-        Me.lblM9LitresOfAirCompressoryOnlyOnInOverrun.Location = New System.Drawing.Point(6, 48)
-        Me.lblM9LitresOfAirCompressoryOnlyOnInOverrun.Name = "lblM9LitresOfAirCompressoryOnlyOnInOverrun"
-        Me.lblM9LitresOfAirCompressoryOnlyOnInOverrun.Size = New System.Drawing.Size(219, 13)
-        Me.lblM9LitresOfAirCompressoryOnlyOnInOverrun.TabIndex = 3
-        Me.lblM9LitresOfAirCompressoryOnlyOnInOverrun.Text = "Litres Of Air : Compressor Only On In Overrun"
-        '
-        'lblM9LitresOfAirCompressorOnContinuously
-        '
-        Me.lblM9LitresOfAirCompressorOnContinuously.AutoSize = true
-        Me.lblM9LitresOfAirCompressorOnContinuously.Location = New System.Drawing.Point(6, 9)
-        Me.lblM9LitresOfAirCompressorOnContinuously.Name = "lblM9LitresOfAirCompressorOnContinuously"
-        Me.lblM9LitresOfAirCompressorOnContinuously.Size = New System.Drawing.Size(205, 13)
-        Me.lblM9LitresOfAirCompressorOnContinuously.TabIndex = 2
-        Me.lblM9LitresOfAirCompressorOnContinuously.Text = "Litres Of Air : Compressor On Continuously"
-        '
-        'txtM9_out_LitresOfAirCompressorOnlyOnInOverrun
-        '
-        Me.txtM9_out_LitresOfAirCompressorOnlyOnInOverrun.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
-        Me.txtM9_out_LitresOfAirCompressorOnlyOnInOverrun.Location = New System.Drawing.Point(6, 64)
-        Me.txtM9_out_LitresOfAirCompressorOnlyOnInOverrun.Name = "txtM9_out_LitresOfAirCompressorOnlyOnInOverrun"
-        Me.txtM9_out_LitresOfAirCompressorOnlyOnInOverrun.Size = New System.Drawing.Size(100, 20)
-        Me.txtM9_out_LitresOfAirCompressorOnlyOnInOverrun.TabIndex = 1
-        '
-        'txtM9_out_LitresOfAirConsumptionCompressorONContinuously
-        '
-        Me.txtM9_out_LitresOfAirConsumptionCompressorONContinuously.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
-        Me.txtM9_out_LitresOfAirConsumptionCompressorONContinuously.Location = New System.Drawing.Point(6, 25)
-        Me.txtM9_out_LitresOfAirConsumptionCompressorONContinuously.Name = "txtM9_out_LitresOfAirConsumptionCompressorONContinuously"
-        Me.txtM9_out_LitresOfAirConsumptionCompressorONContinuously.Size = New System.Drawing.Size(100, 20)
-        Me.txtM9_out_LitresOfAirConsumptionCompressorONContinuously.TabIndex = 0
-        '
-        'lblM9Title
-        '
-        Me.lblM9Title.AutoSize = true
-        Me.lblM9Title.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblM9Title.ForeColor = System.Drawing.SystemColors.Highlight
-        Me.lblM9Title.Location = New System.Drawing.Point(831, 190)
-        Me.lblM9Title.MaximumSize = New System.Drawing.Size(250, 0)
-        Me.lblM9Title.Name = "lblM9Title"
-        Me.lblM9Title.Size = New System.Drawing.Size(248, 26)
-        Me.lblM9Title.TabIndex = 50
-        Me.lblM9Title.Text = "M9-Air Delivery & Fuel Calculation Smart And Non Smart Pneumatics Over the cycle"
-        '
-        'lblM9TotalCycleFuelConsumptionCompressorOFFContinuously
-        '
-        Me.lblM9TotalCycleFuelConsumptionCompressorOFFContinuously.AutoSize = true
-        Me.lblM9TotalCycleFuelConsumptionCompressorOFFContinuously.Location = New System.Drawing.Point(6, 134)
-        Me.lblM9TotalCycleFuelConsumptionCompressorOFFContinuously.Name = "lblM9TotalCycleFuelConsumptionCompressorOFFContinuously"
-        Me.lblM9TotalCycleFuelConsumptionCompressorOFFContinuously.Size = New System.Drawing.Size(297, 13)
-        Me.lblM9TotalCycleFuelConsumptionCompressorOFFContinuously.TabIndex = 8
-        Me.lblM9TotalCycleFuelConsumptionCompressorOFFContinuously.Text = "Total Cycle Fuel Consumption : Compressor OFF Continuously"
-        '
-        'txtM9_out_TotalCycleFuelConsumptionCompressorOFFContinuously
-        '
-        Me.txtM9_out_TotalCycleFuelConsumptionCompressorOFFContinuously.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
-        Me.txtM9_out_TotalCycleFuelConsumptionCompressorOFFContinuously.Location = New System.Drawing.Point(6, 150)
-        Me.txtM9_out_TotalCycleFuelConsumptionCompressorOFFContinuously.Name = "txtM9_out_TotalCycleFuelConsumptionCompressorOFFContinuously"
-        Me.txtM9_out_TotalCycleFuelConsumptionCompressorOFFContinuously.Size = New System.Drawing.Size(100, 20)
-        Me.txtM9_out_TotalCycleFuelConsumptionCompressorOFFContinuously.TabIndex = 7
-        '
         'Dashboard
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
@@ -2543,6 +2543,8 @@ Partial Class Dashboard
         Me.tabHVACConfig.PerformLayout
         Me.tabPlayground.ResumeLayout(false)
         Me.tabPlayground.PerformLayout
+        Me.pnlM9.ResumeLayout(false)
+        Me.pnlM9.PerformLayout
         Me.pnlM8.ResumeLayout(false)
         Me.pnlM8.PerformLayout
         Me.Panel4.ResumeLayout(false)
@@ -2566,8 +2568,6 @@ Partial Class Dashboard
         Me.pnl_M0_Displays.PerformLayout
         Me.resultCardContextMenu.ResumeLayout(false)
         CType(Me.ErrorProvider,System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlM9.ResumeLayout(false)
-        Me.pnlM9.PerformLayout
         Me.ResumeLayout(false)
 
 End Sub

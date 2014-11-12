@@ -13,9 +13,9 @@ Imports System.Collections.Generic
 Public Class cVh
 
     'From DRI file
-    Private lV As List(Of Single)       'Ist-Geschw. in Zwischensekunden.
-    Private lV0ogl As List(Of Single)   'Original DRI-Geschwindigkeit. Wird nicht geändert.
-    Private lV0 As List(Of Single)      'DRI-Geschwindigkeit. Bei Geschw.-Reduktion in Zeitschritt t wird LV0(t+1) reduziert.
+    Private lV As List(Of Single)       'Actual speed. intermediate in seconds
+    Private lV0ogl As List(Of Single)   'Original DRI - speed . Is not changed
+    Private lV0 As List(Of Single)      'DRI - speed . Speed ​​reduction at time step t in LV0 (t + 1) is reduced..
     Private lGears As List(Of Short)
     Private lPadd As List(Of Single)
     Private lVairVres As List(Of Single)
