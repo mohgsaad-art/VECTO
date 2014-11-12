@@ -132,7 +132,7 @@ End Sub
         <Test()>
         Public Sub GetCompressorFlowRateTest()
             Dim comp As M4_AirCompressor = GetGoodCompressor()
-            Dim expected As Single = 2.0
+            Dim expected As Single = 0.0333333351f
             Dim actual = comp.GetFlowRate()
             Assert.AreEqual(expected, actual)
         End Sub
