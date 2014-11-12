@@ -118,12 +118,14 @@ End Property
  End Property
  private ReadOnly Property S11 As Single
      Get
-       Return FMAP.fFCdelaunay_Intp(Signals.EngineSpeed,s7)
+       'Divide by 3600 to get grams per second.
+       Return FMAP.fFCdelaunay_Intp(Signals.EngineSpeed,s7) / 3600
      End Get
  End Property
  private ReadOnly Property S12 As Single
       Get
-          return   FMAP.fFCdelaunay_Intp(Signals.EngineSpeed,s8)
+          'Divide by 3600 to get grams per second.
+          return   FMAP.fFCdelaunay_Intp(Signals.EngineSpeed,s8) /3600
       End Get
   End Property
 
