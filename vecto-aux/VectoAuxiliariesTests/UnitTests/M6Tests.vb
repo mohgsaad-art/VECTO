@@ -4,7 +4,7 @@ Imports VectoAuxiliaries.Hvac
 Imports VectoAuxiliaries.DownstreamModules
 Imports NUnit.Framework
 Imports VectoAuxiliaries
-Imports Moq;
+Imports Moq
 
 Namespace UnitTests
 
