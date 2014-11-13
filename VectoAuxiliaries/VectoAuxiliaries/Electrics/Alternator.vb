@@ -61,7 +61,7 @@ Namespace Electrics
         End Sub
 
         ''' <summary>
-        ''' Creates a new instance of the Alternator class
+        ''' Constructor
         ''' </summary>
         ''' <param name="ratio">pulley / gear ratio to engine</param>
         ''' <param name="efficiency">pulley / gear efficiency to engine</param>
@@ -119,4 +119,6 @@ Namespace Electrics
         End Function
 
     End Class
+
+
 End Namespace
