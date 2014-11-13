@@ -6,9 +6,8 @@ Namespace DownstreamModules
 
 Public Class M9
 Implements  IM9
-
-
  
+
 #Region "Aggregates"
 
 'AG1
@@ -158,7 +157,6 @@ End Property
                 Me.Signals=signals  
 
         End Sub
-
 
 
 End Class
