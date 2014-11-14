@@ -130,10 +130,12 @@ End Property
 
  'Public Utility Methods.
  Public Sub ClearAggregates() Implements IM9.ClearAggregates
+
           _LitresOfAirCompressorOnContinuallyAggregate =0
           _LitresOfAirCompressorOnOnlyInOverrunAggregate =0
           _TotalCycleFuelConsumptionCompressorOffContinuouslyAggregate =0
           _TotalCycleFuelConsumptionCompressorOnContinuouslyAggregate=0
+
         End Sub
 
  'Clear down at the beginning of a cycle.      

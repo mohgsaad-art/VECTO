@@ -97,15 +97,15 @@ Public Sub SmartElectricalOffTest()
     Dim AveragePowerDemandatCrankFromElectricsInHVAC As Single = target.AvgPowerDemandAtCrankFromElectricsIncHVAC
     Dim SmartPneumaticsOnlySmartCompressorFlag As Integer = target.SmartPneumaticsOnlyCompressorFlag
 
-    Assert.AreEqual(0,OverRunFlag                                         )
-    Assert.AreEqual(0,SmartElecAndPneumaticsCompressorFlag                )
-    Assert.AreEqual(0,SmartElectricalAndPneumaticAlternatorPowerGenAtCrank)
-    Assert.AreEqual(200,SmartElectricalAndPneumaticAirCompPowerGenAtCrank )
-    Assert.AreEqual(0,SmartElectricalOnlyAlternatorPowerGenAtCrank        )
-    Assert.AreEqual(200,AveragePowerDemandAtCrankFromPneumatics           )
-    Assert.AreEqual(200,SmartPneumaticsOnlyAirCompPowerGenAtCrank         )
-    Assert.AreEqual(320,AveragePowerDemandatCrankFromElectricsInHVAC      )
-    Assert.AreEqual(0,SmartPneumaticsOnlySmartCompressorFlag              )
+    Assert.AreEqual(0,OverRunFlag                                          )
+    Assert.AreEqual(0,SmartElecAndPneumaticsCompressorFlag                 )
+    Assert.AreEqual(0,SmartElectricalAndPneumaticAlternatorPowerGenAtCrank )
+    Assert.AreEqual(200,SmartElectricalAndPneumaticAirCompPowerGenAtCrank  )
+    Assert.AreEqual(0,SmartElectricalOnlyAlternatorPowerGenAtCrank         )
+    Assert.AreEqual(200,AveragePowerDemandAtCrankFromPneumatics            )
+    Assert.AreEqual(200,SmartPneumaticsOnlyAirCompPowerGenAtCrank          )
+    Assert.AreEqual(320,AveragePowerDemandatCrankFromElectricsInHVAC       )
+    Assert.AreEqual(0,SmartPneumaticsOnlySmartCompressorFlag               )
 
 
 End Sub
