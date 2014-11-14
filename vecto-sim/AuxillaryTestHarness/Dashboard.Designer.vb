@@ -257,6 +257,12 @@ Partial Class Dashboard
         Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+        Me.lblM10_Title = New System.Windows.Forms.Label()
+        Me.pnlM10 = New System.Windows.Forms.Panel()
+        Me.lblM10_BaseFuelConsumptionAithAverageAuxLoads = New System.Windows.Forms.Label()
+        Me.txtM10_out_BaseFCWithAvgAuxLoads = New System.Windows.Forms.TextBox()
+        Me.lblM10_FuelConsumptionWithSmartPneumaticsAndAverageElectricalPowerDemand = New System.Windows.Forms.Label()
+        Me.txtM10_out_FCWithSmartPSAndAvgElecPowerDemand = New System.Windows.Forms.TextBox()
         Me.pnlMain.SuspendLayout
         Me.tabMain.SuspendLayout
         Me.tabGeneralConfig.SuspendLayout
@@ -284,6 +290,7 @@ Partial Class Dashboard
         Me.pnl_M0_Displays.SuspendLayout
         Me.resultCardContextMenu.SuspendLayout
         CType(Me.ErrorProvider,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.pnlM10.SuspendLayout
         Me.SuspendLayout
         '
         'pnlMain
@@ -293,7 +300,7 @@ Partial Class Dashboard
         Me.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlMain.Location = New System.Drawing.Point(0, 0)
         Me.pnlMain.Name = "pnlMain"
-        Me.pnlMain.Size = New System.Drawing.Size(1190, 794)
+        Me.pnlMain.Size = New System.Drawing.Size(1279, 794)
         Me.pnlMain.TabIndex = 1
         '
         'btnCancel
@@ -1264,6 +1271,8 @@ Partial Class Dashboard
         'tabPlayground
         '
         Me.tabPlayground.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.tabPlayground.Controls.Add(Me.pnlM10)
+        Me.tabPlayground.Controls.Add(Me.lblM10_Title)
         Me.tabPlayground.Controls.Add(Me.lblM9Title)
         Me.tabPlayground.Controls.Add(Me.pnlM9)
         Me.tabPlayground.Controls.Add(Me.lblM8_Title)
@@ -1958,9 +1967,9 @@ Partial Class Dashboard
         Me.lblM4_CompressorFlowRate.AutoSize = true
         Me.lblM4_CompressorFlowRate.Location = New System.Drawing.Point(13, 7)
         Me.lblM4_CompressorFlowRate.Name = "lblM4_CompressorFlowRate"
-        Me.lblM4_CompressorFlowRate.Size = New System.Drawing.Size(143, 13)
+        Me.lblM4_CompressorFlowRate.Size = New System.Drawing.Size(134, 13)
         Me.lblM4_CompressorFlowRate.TabIndex = 4
-        Me.lblM4_CompressorFlowRate.Text = "Compressor Flow Rate L/min"
+        Me.lblM4_CompressorFlowRate.Text = "Compressor Flow Rate L/S"
         '
         'txtM4_out_PowerAtCrankFromPneumaticsCompressorON
         '
@@ -2515,12 +2524,72 @@ Partial Class Dashboard
         '
         Me.Timer1.Interval = 1000
         '
+        'lblM10_Title
+        '
+        Me.lblM10_Title.AutoSize = true
+        Me.lblM10_Title.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblM10_Title.ForeColor = System.Drawing.SystemColors.Highlight
+        Me.lblM10_Title.Location = New System.Drawing.Point(838, 405)
+        Me.lblM10_Title.MaximumSize = New System.Drawing.Size(250, 0)
+        Me.lblM10_Title.Name = "lblM10_Title"
+        Me.lblM10_Title.Size = New System.Drawing.Size(247, 39)
+        Me.lblM10_Title.TabIndex = 51
+        Me.lblM10_Title.Text = "M10 - Actual FC Calc 4 True Air Delivery for smart and non Smart Pneunmatics over"& _ 
+    " the cycle"
+        '
+        'pnlM10
+        '
+        Me.pnlM10.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlM10.Controls.Add(Me.lblM10_FuelConsumptionWithSmartPneumaticsAndAverageElectricalPowerDemand)
+        Me.pnlM10.Controls.Add(Me.lblM10_BaseFuelConsumptionAithAverageAuxLoads)
+        Me.pnlM10.Controls.Add(Me.txtM10_out_FCWithSmartPSAndAvgElecPowerDemand)
+        Me.pnlM10.Controls.Add(Me.txtM10_out_BaseFCWithAvgAuxLoads)
+        Me.pnlM10.Location = New System.Drawing.Point(837, 447)
+        Me.pnlM10.Name = "pnlM10"
+        Me.pnlM10.Size = New System.Drawing.Size(308, 108)
+        Me.pnlM10.TabIndex = 50
+        '
+        'lblM10_BaseFuelConsumptionAithAverageAuxLoads
+        '
+        Me.lblM10_BaseFuelConsumptionAithAverageAuxLoads.AutoSize = true
+        Me.lblM10_BaseFuelConsumptionAithAverageAuxLoads.Location = New System.Drawing.Point(6, 9)
+        Me.lblM10_BaseFuelConsumptionAithAverageAuxLoads.Name = "lblM10_BaseFuelConsumptionAithAverageAuxLoads"
+        Me.lblM10_BaseFuelConsumptionAithAverageAuxLoads.Size = New System.Drawing.Size(231, 13)
+        Me.lblM10_BaseFuelConsumptionAithAverageAuxLoads.TabIndex = 2
+        Me.lblM10_BaseFuelConsumptionAithAverageAuxLoads.Text = "Base Fuel Consumption with average Aux loads"
+        '
+        'txtM10_out_BaseFCWithAvgAuxLoads
+        '
+        Me.txtM10_out_BaseFCWithAvgAuxLoads.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.txtM10_out_BaseFCWithAvgAuxLoads.Location = New System.Drawing.Point(6, 25)
+        Me.txtM10_out_BaseFCWithAvgAuxLoads.Name = "txtM10_out_BaseFCWithAvgAuxLoads"
+        Me.txtM10_out_BaseFCWithAvgAuxLoads.Size = New System.Drawing.Size(100, 20)
+        Me.txtM10_out_BaseFCWithAvgAuxLoads.TabIndex = 0
+        '
+        'lblM10_FuelConsumptionWithSmartPneumaticsAndAverageElectricalPowerDemand
+        '
+        Me.lblM10_FuelConsumptionWithSmartPneumaticsAndAverageElectricalPowerDemand.AutoSize = true
+        Me.lblM10_FuelConsumptionWithSmartPneumaticsAndAverageElectricalPowerDemand.Location = New System.Drawing.Point(6, 48)
+        Me.lblM10_FuelConsumptionWithSmartPneumaticsAndAverageElectricalPowerDemand.MaximumSize = New System.Drawing.Size(300, 0)
+        Me.lblM10_FuelConsumptionWithSmartPneumaticsAndAverageElectricalPowerDemand.Name = "lblM10_FuelConsumptionWithSmartPneumaticsAndAverageElectricalPowerDemand"
+        Me.lblM10_FuelConsumptionWithSmartPneumaticsAndAverageElectricalPowerDemand.Size = New System.Drawing.Size(267, 26)
+        Me.lblM10_FuelConsumptionWithSmartPneumaticsAndAverageElectricalPowerDemand.TabIndex = 3
+        Me.lblM10_FuelConsumptionWithSmartPneumaticsAndAverageElectricalPowerDemand.Text = "Fuel Consumption with Smart Pneumatics and average Electrical Power Demand"
+        '
+        'txtM10_out_FCWithSmartPSAndAvgElecPowerDemand
+        '
+        Me.txtM10_out_FCWithSmartPSAndAvgElecPowerDemand.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.txtM10_out_FCWithSmartPSAndAvgElecPowerDemand.Location = New System.Drawing.Point(6, 77)
+        Me.txtM10_out_FCWithSmartPSAndAvgElecPowerDemand.Name = "txtM10_out_FCWithSmartPSAndAvgElecPowerDemand"
+        Me.txtM10_out_FCWithSmartPSAndAvgElecPowerDemand.Size = New System.Drawing.Size(100, 20)
+        Me.txtM10_out_FCWithSmartPSAndAvgElecPowerDemand.TabIndex = 1
+        '
         'Dashboard
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange
-        Me.ClientSize = New System.Drawing.Size(1190, 794)
+        Me.ClientSize = New System.Drawing.Size(1279, 794)
         Me.Controls.Add(Me.pnlMain)
         Me.Name = "Dashboard"
         Me.Text = "Dashboard"
@@ -2568,6 +2637,8 @@ Partial Class Dashboard
         Me.pnl_M0_Displays.PerformLayout
         Me.resultCardContextMenu.ResumeLayout(false)
         CType(Me.ErrorProvider,System.ComponentModel.ISupportInitialize).EndInit
+        Me.pnlM10.ResumeLayout(false)
+        Me.pnlM10.PerformLayout
         Me.ResumeLayout(false)
 
 End Sub
@@ -2793,5 +2864,11 @@ End Sub
     Friend WithEvents lblM9Title As System.Windows.Forms.Label
     Friend WithEvents lblM9TotalCycleFuelConsumptionCompressorOFFContinuously As System.Windows.Forms.Label
     Friend WithEvents txtM9_out_TotalCycleFuelConsumptionCompressorOFFContinuously As System.Windows.Forms.TextBox
+    Friend WithEvents pnlM10 As System.Windows.Forms.Panel
+    Friend WithEvents lblM10_FuelConsumptionWithSmartPneumaticsAndAverageElectricalPowerDemand As System.Windows.Forms.Label
+    Friend WithEvents lblM10_BaseFuelConsumptionAithAverageAuxLoads As System.Windows.Forms.Label
+    Friend WithEvents txtM10_out_FCWithSmartPSAndAvgElecPowerDemand As System.Windows.Forms.TextBox
+    Friend WithEvents txtM10_out_BaseFCWithAvgAuxLoads As System.Windows.Forms.TextBox
+    Friend WithEvents lblM10_Title As System.Windows.Forms.Label
 
 End Class

@@ -5,13 +5,11 @@ Imports VectoAuxiliaries.DownstreamModules
 
 Namespace DownstreamModules
 
-
-Public Class M10
-Implements IM10
-
-
-'Privates
-#Region "Private Fields  = > Constructor Requirements"
+ Public Class M10
+  Implements IM10
+ 
+ 'Private
+ #Region "Private Fields  = > Constructor Requirements"
 
 Private m3 As IM3_AveragePneumaticLoadDemand
 Private m9 As IM9
@@ -19,14 +17,14 @@ Private m9 As IM9
 Private signals As ISignals
 
 #End Region
-Private Enum InterpolationType
+ Private Enum InterpolationType
  NonSmartPneumtaics
  SmartPneumtaics
 End Enum
-Private Function Interpolate(  interpType As InterpolationType) As Single
+ Private Function Interpolate(  interpType As InterpolationType) As Single
 
   Dim returnValue As Single
-  Dim x1,y1,x2,y2,x3,y3 As Single
+  Dim x1,y1,x2,y2,x3,y3, xTA As Single
   
   x1=m9.LitresOfAirCompressorOnContinually
   y1=m9.TotalCycleFuelConsumptionCompressorOnContinuously
@@ -34,15 +32,23 @@ Private Function Interpolate(  interpType As InterpolationType) As Single
   y2=m9.TotalCycleFuelConsumptionCompressorOffContinuously
   x3=m9.LitresOfAirCompressorOnOnlyInOverrun
   y3=m9.TotalCycleFuelConsumptionCompressorOffContinuously
+
+  xTA   = m3.TotalAirConsumedPerCycle
+
+
   
   
   Select Case  interpType
   
       'Non-Smart Pneumatics
       Case InterpolationType.NonSmartPneumtaics
+      returnValue = y2 + ( ((y1-y2) * xTA) / x1)
          
       'Smart Pneumatics
       Case InterpolationType.SmartPneumtaics 
+      ReturnValue = y3 + (((y1-y3) /( x1-x3)) * ( xTA - x3))
+
+      
   
   End Select
   
@@ -50,7 +56,6 @@ Private Function Interpolate(  interpType As InterpolationType) As Single
   Return returnValue
 
 End Function
-
  
  'Public 
  #Region "Public Properties"
@@ -68,20 +73,18 @@ End Function
  
 #End Region
  #Region "Contructors"
- 
- Public sub new( m3 As IM3_AveragePneumaticLoadDemand, m9 As IM9, signals As ISignals)
+  
+  Public sub new( m3 As IM3_AveragePneumaticLoadDemand, m9 As IM9, signals As ISignals)
 
-   Me.m3=Me
+   Me.m3=m3
    Me.m9=m9
    Me.signals= signals
    
 End Sub
-
-#end region
-
-
-End Class
-
+ 
+ #end region
+ 
+ End Class
 
 
 End Namespace

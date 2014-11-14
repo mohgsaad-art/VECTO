@@ -44,6 +44,9 @@ public Property PneumaticAuxillariesConfig As IPneumaticsAuxilliariesConfig
   Public M7 As IM7
   Public M8 As IM8
   Public M9 As IM9
+  Public M10 As IM10
+  
+
   
 
 
@@ -130,6 +133,8 @@ M7 = New M7(M5,M6,Signals)
 M8 = New M8(M1,M6,M7,Signals)
 
 M9 = New M9(M1,M4,M6,M8,fuelMap,PneumaticAuxillariesConfig,Signals)
+
+M10 = New M10(M3,M9,Signals)
 
 
 End Sub

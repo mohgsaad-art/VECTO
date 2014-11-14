@@ -10,6 +10,7 @@ Public Class Dashboard
 Public auxEnvironment As New AuxillaryEnvironment("")
 private TabColors As Dictionary( Of TabPage, Color)  = new   Dictionary( Of TabPage, Color) ()
 Private processing As Boolean = False
+Private SecondsIntoCycle As Integer=0
 
 #End Region
 
@@ -842,6 +843,8 @@ End Sub
 #Region "Button Handlers"
 
 Private Sub btnStart_Click( sender As Object,  e As EventArgs) Handles btnStart.Click 
+
+SecondsIntoCycle=0
     auxEnvironment.Initialise()
     processing=true
     SetProcessingStatus
@@ -928,6 +931,10 @@ Private sub RefreshDisplays()
       txtM9_out_TotalCycleFuelConsumptionCompressorOnContinuously.Text=auxEnvironment.M9.TotalCycleFuelConsumptionCompressorOnContinuously
       txtM9_out_TotalCycleFuelConsumptionCompressorOFFContinuously.Text=auxEnvironment.M9.TotalCycleFuelConsumptionCompressorOffContinuously
 
+
+      'M10
+      txtM10_out_BaseFCWithAvgAuxLoads.Text = auxEnvironment.M10.BaseFuelConsumptionWithAverageAuxiliaryLoads
+      txtM10_out_FCWithSmartPSAndAvgElecPowerDemand.Text = auxEnvironment.M10.FuelConsumptionSmartPneumaticsAndAverageElectricalPowerDemand
  
 
 End Sub
@@ -955,7 +962,14 @@ End Sub
 
 Private Sub RefreshDisplayValues_Timed( sender As Object,  e As EventArgs) Handles Timer1.Tick
 
-  auxEnvironment.M9.CycleStep(1)  
+
+  If SecondsIntoCycle=0 then auxEnvironment.M9.CycleStep( auxEnvironment.Signals.TotalCycleTimeSeconds)  
+
+
+  SecondsIntoCycle+=1
+
+
+
 
   SetProcessingStatus()
 
