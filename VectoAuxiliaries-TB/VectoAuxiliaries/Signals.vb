@@ -4,6 +4,9 @@ Implements ISignals
 
 
 
+
+  Private _smartElectrics As Boolean
+
     Public Property ClutchEngaged As Boolean Implements ISignals.ClutchEngaged
 
     Public Property EngineDrivelinePower As Single Implements ISignals.EngineDrivelinePower
@@ -15,6 +18,19 @@ Implements ISignals
     Public Property EngineSpeed As Integer Implements ISignals.EngineSpeed
 
     Public Property SmartElectrics As Boolean Implements ISignals.SmartElectrics
+    Get
+    Return _smartElectrics
+    End Get
+    Set(value As Boolean)
+
+    _smartElectrics=value
+
+    Debug.WriteLine(String.Format("SmartElectrics {0}", _smartElectrics))
+
+    End Set
+
+     end property
+
 
     Public Property SmartPneumatics As Boolean Implements ISignals.SmartPneumatics
 

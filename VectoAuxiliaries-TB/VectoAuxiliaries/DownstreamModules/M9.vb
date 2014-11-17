@@ -107,7 +107,7 @@ End Property
 End Property
  Private readonly Property S9 As single
     Get
-     Return M4.GetAveragePowerDemandPerCompressorUnitFlowRate * M6.OverrunFlag * M8.CompressorFlag
+     Return M4.GetFlowRate * M6.OverrunFlag * M8.CompressorFlag
     End Get
 End Property
  Private ReadOnly Property S10 As Single
@@ -141,7 +141,7 @@ End Property
  'Clear down at the beginning of a cycle.      
  Public Sub CycleStep(Optional stepTimeInSeconds As Single = 0.0) Implements IM9.CycleStep
 
-          _LitresOfAirCompressorOnContinuallyAggregate +=stepTimeInSeconds* M4.GetAveragePowerDemandPerCompressorUnitFlowRate
+          _LitresOfAirCompressorOnContinuallyAggregate +=stepTimeInSeconds* M4.GetFlowRate 
           _LitresOfAirCompressorOnOnlyInOverrunAggregate +=stepTimeInSeconds * s10
           _TotalCycleFuelConsumptionCompressorOnContinuouslyAggregate+= stepTimeInSeconds * s11
           _TotalCycleFuelConsumptionCompressorOffContinuouslyAggregate +=stepTimeInSeconds * s12

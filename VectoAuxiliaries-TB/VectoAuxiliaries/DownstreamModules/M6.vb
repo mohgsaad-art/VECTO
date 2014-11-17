@@ -8,20 +8,61 @@ Namespace DownstreamModules
 Public Class M6
 Implements IM6
 
-
- private _m1      As IM1_AverageHVACLoadDemand
- private _m2      As IM2_AverageElectricalLoadDemand
- private _m3      As IM3_AveragePneumaticLoadDemand
- Private _m4      As IM4_AirCompressor
- Private _m5      As IM5_SmartAlternatorSetGeneration
- Private _signals As ISignals
-
-
+ #Region "Private Field - Constructor requirements"
+  private _m1      As IM1_AverageHVACLoadDemand
+  private _m2      As IM2_AverageElectricalLoadDemand
+  private _m3      As IM3_AveragePneumaticLoadDemand
+  Private _m4      As IM4_AirCompressor
+  Private _m5      As IM5_SmartAlternatorSetGeneration
+  Private _signals As ISignals
+ #End Region
+ 
+ 'OUT1
+ Public ReadOnly Property OverrunFlag As Integer Implements IM6.OverrunFlag
+        
+        Get
+           Return  VC0
+        End Get
+    End Property
+ 'OUT2
+ Public ReadOnly Property SmartElecAndPneumaticsCompressorFlag As integer Implements IM6.SmartElecAndPneumaticsCompressorFlag
+        Get
+         Return VC2
+        End Get
+    End Property
+ 'OUT3
+ Public ReadOnly Property SmartElecAndPneumaticAltPowerGenAtCrank As Single Implements IM6.SmartElecAndPneumaticAltPowerGenAtCrank
+        Get
+        'Multiply * 1 @ Engineering Request
+         Return Max1 * -1
+        End Get
+    End Property
+ 'OUT4
+ Public ReadOnly Property SmartElecAndPneumaticAirCompPowerGenAtCrank As Single Implements IM6.SmartElecAndPneumaticAirCompPowerGenAtCrank
+        Get
+        Return Sum16
+        End Get
+End Property
+ 'OUT5
+ Public ReadOnly Property SmartElecOnlyAltPowerGenAtCrank As Single Implements IM6.SmartElecOnlyAltPowerGenAtCrank
+        Get
+         'Multiply * -1 @ Engineering request.
+         Return Max2 * -1
+        End Get
+    End Property
+ 'OUT6
  Public ReadOnly Property AveragePowerDemandAtCrankFromPneumatics As Single Implements IM6.AveragePowerDemandAtCrankFromPneumatics
         Get
          Return _m3.GetAveragePowerDemandAtCrankFromPneumatics
         End Get
     End Property
+ 'OUT7
+ Public ReadOnly Property SmartPneumaticOnlyAirCompPowerGenAtCrank As Single Implements IM6.SmartPneumaticOnlyAirCompPowerGenAtCrank
+        Get
+         Return Sum19
+        End Get
+    End Property
+ 'OUT8
  Public ReadOnly Property AvgPowerDemandAtCrankFromElectricsIncHVAC As Single Implements IM6.AvgPowerDemandAtCrankFromElectricsIncHVAC
         Get
  
@@ -30,37 +71,7 @@ Implements IM6
         End Get
 
     End Property
- Public ReadOnly Property OverrunFlag As Integer Implements IM6.OverrunFlag
-        
-        Get
-           Return  VC0
-        End Get
-    End Property
- Public ReadOnly Property SmartElecAndPneumaticAltPowerGenAtCrank As Single Implements IM6.SmartElecAndPneumaticAltPowerGenAtCrank
-        Get
-         Return Max1 * -1
-        End Get
-    End Property
- Public ReadOnly Property SmartElecAndPneumaticAirCompPowerGenAtCrank As Single Implements IM6.SmartElecAndPneumaticAirCompPowerGenAtCrank
-        Get
-        Return Sum16
-        End Get
-    End Property
- Public ReadOnly Property SmartElecAndPneumaticsCompressorFlag As integer Implements IM6.SmartElecAndPneumaticsCompressorFlag
-        Get
-         Return VC2
-        End Get
-    End Property
- Public ReadOnly Property SmartElecOnlyAltPowerGenAtCrank As Single Implements IM6.SmartElecOnlyAltPowerGenAtCrank
-        Get
-         Return Max2 * -1
-        End Get
-    End Property
- Public ReadOnly Property SmartPneumaticOnlyAirCompPowerGenAtCrank As Single Implements IM6.SmartPneumaticOnlyAirCompPowerGenAtCrank
-        Get
-         Return Sum19
-        End Get
-    End Property
+ 'OUT9
  Public ReadOnly Property SmartPneumaticsOnlyCompressorFlag As Integer Implements IM6.SmartPneumaticsOnlyCompressorFlag
         Get
          Return VC4
@@ -95,7 +106,7 @@ End Property
 'Value Choices
 Public ReadOnly Property VC0 As Single
     Get
-    Return  If( Sum3<0,1,0)
+    Return  If( Sum3<=0,1,0)
     End Get
 End Property
 Public ReadOnly Property VC1 As Single

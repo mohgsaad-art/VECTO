@@ -127,6 +127,18 @@ Partial Class Dashboard
         Me.txtHVACElectricalLoadPowerWatts = New System.Windows.Forms.TextBox()
         Me.lblHVACElectricalLoadPowerWatts = New System.Windows.Forms.Label()
         Me.tabPlayground = New System.Windows.Forms.TabPage()
+        Me.mblM11_Title = New System.Windows.Forms.Label()
+        Me.pnlM11 = New System.Windows.Forms.Panel()
+        Me.lblM11_TotalCycleFuelConsumptionZeroElectricalLoad = New System.Windows.Forms.Label()
+        Me.txtM11_out_TotalCycleFuelConsumptionZeroElectricalLoad = New System.Windows.Forms.TextBox()
+        Me.lblM11_TotalCycleFuelConsumptionSmartElectricalLoad = New System.Windows.Forms.Label()
+        Me.txtM11_out_TotalCycleFuelConsumptionSmartElectricalLoad = New System.Windows.Forms.TextBox()
+        Me.lblM11_TotalCycleElectricalDemand = New System.Windows.Forms.Label()
+        Me.txtM11_out_TotalCycleElectricalDemand = New System.Windows.Forms.TextBox()
+        Me.lblM11_SmartElectricalTotalCycleElectricalEnergyGenerated = New System.Windows.Forms.Label()
+        Me.lblM11_TotalCycleElectricalEnergyGenOverrunOnly = New System.Windows.Forms.Label()
+        Me.txtM11_out_SmartElectricalTotalCycleElectricalEnergyGenerated = New System.Windows.Forms.TextBox()
+        Me.txtM11_out_TotalCycleElectricalEnergyGenOverrunOnly = New System.Windows.Forms.TextBox()
         Me.chkSignalsSmartAirCompression = New System.Windows.Forms.CheckBox()
         Me.chkSignalsSmartElectrics = New System.Windows.Forms.CheckBox()
         Me.pnlM10 = New System.Windows.Forms.Panel()
@@ -265,18 +277,6 @@ Partial Class Dashboard
         Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
-        Me.mblM11_Title = New System.Windows.Forms.Label()
-        Me.pnlM11 = New System.Windows.Forms.Panel()
-        Me.lblM11_TotalCycleElectricalDemand = New System.Windows.Forms.Label()
-        Me.txtM11_out_TotalCycleElectricalDemand = New System.Windows.Forms.TextBox()
-        Me.lblM11_SmartElectricalTotalCycleElectricalEnergyGenerated = New System.Windows.Forms.Label()
-        Me.lblM11_TotalCycleElectricalEnergyGenOverrunOnly = New System.Windows.Forms.Label()
-        Me.txtM11_out_SmartElectricalTotalCycleElectricalEnergyGenerated = New System.Windows.Forms.TextBox()
-        Me.txtM11_out_TotalCycleElectricalEnergyGenOverrunOnly = New System.Windows.Forms.TextBox()
-        Me.lblM11_TotalCycleFuelConsumptionZeroElectricalLoad = New System.Windows.Forms.Label()
-        Me.txtM11_out_TotalCycleFuelConsumptionZeroElectricalLoad = New System.Windows.Forms.TextBox()
-        Me.lblM11_TotalCycleFuelConsumptionSmartElectricalLoad = New System.Windows.Forms.Label()
-        Me.txtM11_out_TotalCycleFuelConsumptionSmartElectricalLoad = New System.Windows.Forms.TextBox()
         Me.pnlMain.SuspendLayout
         Me.tabMain.SuspendLayout
         Me.tabGeneralConfig.SuspendLayout
@@ -290,6 +290,7 @@ Partial Class Dashboard
         Me.pnlPneumaticAuxillaries.SuspendLayout
         Me.tabHVACConfig.SuspendLayout
         Me.tabPlayground.SuspendLayout
+        Me.pnlM11.SuspendLayout
         Me.pnlM10.SuspendLayout
         Me.pnlM9.SuspendLayout
         Me.pnlM8.SuspendLayout
@@ -305,7 +306,6 @@ Partial Class Dashboard
         Me.pnl_M0_Displays.SuspendLayout
         Me.resultCardContextMenu.SuspendLayout
         CType(Me.ErrorProvider,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.pnlM11.SuspendLayout
         Me.SuspendLayout
         '
         'pnlMain
@@ -355,7 +355,7 @@ Partial Class Dashboard
         Me.tabGeneralConfig.Location = New System.Drawing.Point(4, 22)
         Me.tabGeneralConfig.Name = "tabGeneralConfig"
         Me.tabGeneralConfig.Padding = New System.Windows.Forms.Padding(3)
-        Me.tabGeneralConfig.Size = New System.Drawing.Size(1158, 704)
+        Me.tabGeneralConfig.Size = New System.Drawing.Size(1470, 704)
         Me.tabGeneralConfig.TabIndex = 0
         Me.tabGeneralConfig.Text = "GeneralConfig"
         Me.tabGeneralConfig.UseVisualStyleBackColor = true
@@ -442,7 +442,7 @@ Partial Class Dashboard
         Me.tabElectricalConfig.Location = New System.Drawing.Point(4, 22)
         Me.tabElectricalConfig.Name = "tabElectricalConfig"
         Me.tabElectricalConfig.Padding = New System.Windows.Forms.Padding(3)
-        Me.tabElectricalConfig.Size = New System.Drawing.Size(1158, 704)
+        Me.tabElectricalConfig.Size = New System.Drawing.Size(1470, 704)
         Me.tabElectricalConfig.TabIndex = 1
         Me.tabElectricalConfig.Text = "ElectricalConfig"
         Me.tabElectricalConfig.UseVisualStyleBackColor = true
@@ -700,7 +700,7 @@ Partial Class Dashboard
         Me.tabPneumaticConfig.Controls.Add(Me.pnlPneumaticAuxillaries)
         Me.tabPneumaticConfig.Location = New System.Drawing.Point(4, 22)
         Me.tabPneumaticConfig.Name = "tabPneumaticConfig"
-        Me.tabPneumaticConfig.Size = New System.Drawing.Size(1158, 704)
+        Me.tabPneumaticConfig.Size = New System.Drawing.Size(1470, 704)
         Me.tabPneumaticConfig.TabIndex = 2
         Me.tabPneumaticConfig.Text = "PneumaticConfig"
         Me.tabPneumaticConfig.UseVisualStyleBackColor = true
@@ -1219,7 +1219,7 @@ Partial Class Dashboard
         Me.tabHVACConfig.Controls.Add(Me.lblHVACElectricalLoadPowerWatts)
         Me.tabHVACConfig.Location = New System.Drawing.Point(4, 22)
         Me.tabHVACConfig.Name = "tabHVACConfig"
-        Me.tabHVACConfig.Size = New System.Drawing.Size(1158, 704)
+        Me.tabHVACConfig.Size = New System.Drawing.Size(1470, 704)
         Me.tabHVACConfig.TabIndex = 3
         Me.tabHVACConfig.Text = "HVACConfig"
         Me.tabHVACConfig.UseVisualStyleBackColor = true
@@ -1338,6 +1338,121 @@ Partial Class Dashboard
         Me.tabPlayground.TabIndex = 4
         Me.tabPlayground.Text = "Playground"
         Me.tabPlayground.UseVisualStyleBackColor = true
+        '
+        'mblM11_Title
+        '
+        Me.mblM11_Title.AutoSize = true
+        Me.mblM11_Title.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.mblM11_Title.ForeColor = System.Drawing.SystemColors.Highlight
+        Me.mblM11_Title.Location = New System.Drawing.Point(1152, 6)
+        Me.mblM11_Title.MaximumSize = New System.Drawing.Size(270, 0)
+        Me.mblM11_Title.Name = "mblM11_Title"
+        Me.mblM11_Title.Size = New System.Drawing.Size(259, 26)
+        Me.mblM11_Title.TabIndex = 55
+        Me.mblM11_Title.Text = "M11 Electrical Energy FC Call for Smart and Non Smart Pneumatics over the cycle"
+        '
+        'pnlM11
+        '
+        Me.pnlM11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlM11.Controls.Add(Me.lblM11_TotalCycleFuelConsumptionZeroElectricalLoad)
+        Me.pnlM11.Controls.Add(Me.txtM11_out_TotalCycleFuelConsumptionZeroElectricalLoad)
+        Me.pnlM11.Controls.Add(Me.lblM11_TotalCycleFuelConsumptionSmartElectricalLoad)
+        Me.pnlM11.Controls.Add(Me.txtM11_out_TotalCycleFuelConsumptionSmartElectricalLoad)
+        Me.pnlM11.Controls.Add(Me.lblM11_TotalCycleElectricalDemand)
+        Me.pnlM11.Controls.Add(Me.txtM11_out_TotalCycleElectricalDemand)
+        Me.pnlM11.Controls.Add(Me.lblM11_SmartElectricalTotalCycleElectricalEnergyGenerated)
+        Me.pnlM11.Controls.Add(Me.lblM11_TotalCycleElectricalEnergyGenOverrunOnly)
+        Me.pnlM11.Controls.Add(Me.txtM11_out_SmartElectricalTotalCycleElectricalEnergyGenerated)
+        Me.pnlM11.Controls.Add(Me.txtM11_out_TotalCycleElectricalEnergyGenOverrunOnly)
+        Me.pnlM11.Location = New System.Drawing.Point(1153, 36)
+        Me.pnlM11.Name = "pnlM11"
+        Me.pnlM11.Size = New System.Drawing.Size(308, 244)
+        Me.pnlM11.TabIndex = 54
+        '
+        'lblM11_TotalCycleFuelConsumptionZeroElectricalLoad
+        '
+        Me.lblM11_TotalCycleFuelConsumptionZeroElectricalLoad.AutoSize = true
+        Me.lblM11_TotalCycleFuelConsumptionZeroElectricalLoad.Location = New System.Drawing.Point(9, 192)
+        Me.lblM11_TotalCycleFuelConsumptionZeroElectricalLoad.Name = "lblM11_TotalCycleFuelConsumptionZeroElectricalLoad"
+        Me.lblM11_TotalCycleFuelConsumptionZeroElectricalLoad.Size = New System.Drawing.Size(251, 13)
+        Me.lblM11_TotalCycleFuelConsumptionZeroElectricalLoad.TabIndex = 10
+        Me.lblM11_TotalCycleFuelConsumptionZeroElectricalLoad.Text = "Total Cycle : Fuel Consumption Zero Electrical Load"
+        '
+        'txtM11_out_TotalCycleFuelConsumptionZeroElectricalLoad
+        '
+        Me.txtM11_out_TotalCycleFuelConsumptionZeroElectricalLoad.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.txtM11_out_TotalCycleFuelConsumptionZeroElectricalLoad.Location = New System.Drawing.Point(9, 208)
+        Me.txtM11_out_TotalCycleFuelConsumptionZeroElectricalLoad.Name = "txtM11_out_TotalCycleFuelConsumptionZeroElectricalLoad"
+        Me.txtM11_out_TotalCycleFuelConsumptionZeroElectricalLoad.Size = New System.Drawing.Size(100, 20)
+        Me.txtM11_out_TotalCycleFuelConsumptionZeroElectricalLoad.TabIndex = 9
+        '
+        'lblM11_TotalCycleFuelConsumptionSmartElectricalLoad
+        '
+        Me.lblM11_TotalCycleFuelConsumptionSmartElectricalLoad.AutoSize = true
+        Me.lblM11_TotalCycleFuelConsumptionSmartElectricalLoad.Location = New System.Drawing.Point(9, 149)
+        Me.lblM11_TotalCycleFuelConsumptionSmartElectricalLoad.Name = "lblM11_TotalCycleFuelConsumptionSmartElectricalLoad"
+        Me.lblM11_TotalCycleFuelConsumptionSmartElectricalLoad.Size = New System.Drawing.Size(256, 13)
+        Me.lblM11_TotalCycleFuelConsumptionSmartElectricalLoad.TabIndex = 8
+        Me.lblM11_TotalCycleFuelConsumptionSmartElectricalLoad.Text = "Total Cycle : Fuel Consumption Smart Electrical Load"
+        '
+        'txtM11_out_TotalCycleFuelConsumptionSmartElectricalLoad
+        '
+        Me.txtM11_out_TotalCycleFuelConsumptionSmartElectricalLoad.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.txtM11_out_TotalCycleFuelConsumptionSmartElectricalLoad.Location = New System.Drawing.Point(9, 165)
+        Me.txtM11_out_TotalCycleFuelConsumptionSmartElectricalLoad.Name = "txtM11_out_TotalCycleFuelConsumptionSmartElectricalLoad"
+        Me.txtM11_out_TotalCycleFuelConsumptionSmartElectricalLoad.Size = New System.Drawing.Size(100, 20)
+        Me.txtM11_out_TotalCycleFuelConsumptionSmartElectricalLoad.TabIndex = 7
+        '
+        'lblM11_TotalCycleElectricalDemand
+        '
+        Me.lblM11_TotalCycleElectricalDemand.AutoSize = true
+        Me.lblM11_TotalCycleElectricalDemand.Location = New System.Drawing.Point(6, 102)
+        Me.lblM11_TotalCycleElectricalDemand.Name = "lblM11_TotalCycleElectricalDemand"
+        Me.lblM11_TotalCycleElectricalDemand.Size = New System.Drawing.Size(149, 13)
+        Me.lblM11_TotalCycleElectricalDemand.TabIndex = 6
+        Me.lblM11_TotalCycleElectricalDemand.Text = "Total Cycle Electrical Demand"
+        '
+        'txtM11_out_TotalCycleElectricalDemand
+        '
+        Me.txtM11_out_TotalCycleElectricalDemand.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.txtM11_out_TotalCycleElectricalDemand.Location = New System.Drawing.Point(6, 118)
+        Me.txtM11_out_TotalCycleElectricalDemand.Name = "txtM11_out_TotalCycleElectricalDemand"
+        Me.txtM11_out_TotalCycleElectricalDemand.Size = New System.Drawing.Size(100, 20)
+        Me.txtM11_out_TotalCycleElectricalDemand.TabIndex = 4
+        '
+        'lblM11_SmartElectricalTotalCycleElectricalEnergyGenerated
+        '
+        Me.lblM11_SmartElectricalTotalCycleElectricalEnergyGenerated.AutoSize = true
+        Me.lblM11_SmartElectricalTotalCycleElectricalEnergyGenerated.Location = New System.Drawing.Point(6, 59)
+        Me.lblM11_SmartElectricalTotalCycleElectricalEnergyGenerated.Name = "lblM11_SmartElectricalTotalCycleElectricalEnergyGenerated"
+        Me.lblM11_SmartElectricalTotalCycleElectricalEnergyGenerated.Size = New System.Drawing.Size(274, 13)
+        Me.lblM11_SmartElectricalTotalCycleElectricalEnergyGenerated.TabIndex = 3
+        Me.lblM11_SmartElectricalTotalCycleElectricalEnergyGenerated.Text = "Smart Electrical : TotalCycle Electrical Energy Generated"
+        '
+        'lblM11_TotalCycleElectricalEnergyGenOverrunOnly
+        '
+        Me.lblM11_TotalCycleElectricalEnergyGenOverrunOnly.AutoSize = true
+        Me.lblM11_TotalCycleElectricalEnergyGenOverrunOnly.Location = New System.Drawing.Point(6, 12)
+        Me.lblM11_TotalCycleElectricalEnergyGenOverrunOnly.Name = "lblM11_TotalCycleElectricalEnergyGenOverrunOnly"
+        Me.lblM11_TotalCycleElectricalEnergyGenOverrunOnly.Size = New System.Drawing.Size(269, 13)
+        Me.lblM11_TotalCycleElectricalEnergyGenOverrunOnly.TabIndex = 2
+        Me.lblM11_TotalCycleElectricalEnergyGenOverrunOnly.Text = "Total Cycle : Electrical Energy Generated  Overrun Only"
+        '
+        'txtM11_out_SmartElectricalTotalCycleElectricalEnergyGenerated
+        '
+        Me.txtM11_out_SmartElectricalTotalCycleElectricalEnergyGenerated.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.txtM11_out_SmartElectricalTotalCycleElectricalEnergyGenerated.Location = New System.Drawing.Point(6, 75)
+        Me.txtM11_out_SmartElectricalTotalCycleElectricalEnergyGenerated.Name = "txtM11_out_SmartElectricalTotalCycleElectricalEnergyGenerated"
+        Me.txtM11_out_SmartElectricalTotalCycleElectricalEnergyGenerated.Size = New System.Drawing.Size(100, 20)
+        Me.txtM11_out_SmartElectricalTotalCycleElectricalEnergyGenerated.TabIndex = 1
+        '
+        'txtM11_out_TotalCycleElectricalEnergyGenOverrunOnly
+        '
+        Me.txtM11_out_TotalCycleElectricalEnergyGenOverrunOnly.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.txtM11_out_TotalCycleElectricalEnergyGenOverrunOnly.Location = New System.Drawing.Point(6, 36)
+        Me.txtM11_out_TotalCycleElectricalEnergyGenOverrunOnly.Name = "txtM11_out_TotalCycleElectricalEnergyGenOverrunOnly"
+        Me.txtM11_out_TotalCycleElectricalEnergyGenOverrunOnly.Size = New System.Drawing.Size(100, 20)
+        Me.txtM11_out_TotalCycleElectricalEnergyGenOverrunOnly.TabIndex = 0
         '
         'chkSignalsSmartAirCompression
         '
@@ -2623,121 +2738,6 @@ Partial Class Dashboard
         '
         Me.Timer1.Interval = 1000
         '
-        'mblM11_Title
-        '
-        Me.mblM11_Title.AutoSize = true
-        Me.mblM11_Title.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.mblM11_Title.ForeColor = System.Drawing.SystemColors.Highlight
-        Me.mblM11_Title.Location = New System.Drawing.Point(1152, 8)
-        Me.mblM11_Title.MaximumSize = New System.Drawing.Size(240, 0)
-        Me.mblM11_Title.Name = "mblM11_Title"
-        Me.mblM11_Title.Size = New System.Drawing.Size(234, 39)
-        Me.mblM11_Title.TabIndex = 55
-        Me.mblM11_Title.Text = "M11 Electrical Energy FC Call for Smart and Non Smart Pneumatics over the cycle"
-        '
-        'pnlM11
-        '
-        Me.pnlM11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.pnlM11.Controls.Add(Me.lblM11_TotalCycleFuelConsumptionZeroElectricalLoad)
-        Me.pnlM11.Controls.Add(Me.txtM11_out_TotalCycleFuelConsumptionZeroElectricalLoad)
-        Me.pnlM11.Controls.Add(Me.lblM11_TotalCycleFuelConsumptionSmartElectricalLoad)
-        Me.pnlM11.Controls.Add(Me.txtM11_out_TotalCycleFuelConsumptionSmartElectricalLoad)
-        Me.pnlM11.Controls.Add(Me.lblM11_TotalCycleElectricalDemand)
-        Me.pnlM11.Controls.Add(Me.txtM11_out_TotalCycleElectricalDemand)
-        Me.pnlM11.Controls.Add(Me.lblM11_SmartElectricalTotalCycleElectricalEnergyGenerated)
-        Me.pnlM11.Controls.Add(Me.lblM11_TotalCycleElectricalEnergyGenOverrunOnly)
-        Me.pnlM11.Controls.Add(Me.txtM11_out_SmartElectricalTotalCycleElectricalEnergyGenerated)
-        Me.pnlM11.Controls.Add(Me.txtM11_out_TotalCycleElectricalEnergyGenOverrunOnly)
-        Me.pnlM11.Location = New System.Drawing.Point(1153, 51)
-        Me.pnlM11.Name = "pnlM11"
-        Me.pnlM11.Size = New System.Drawing.Size(308, 244)
-        Me.pnlM11.TabIndex = 54
-        '
-        'lblM11_TotalCycleElectricalDemand
-        '
-        Me.lblM11_TotalCycleElectricalDemand.AutoSize = true
-        Me.lblM11_TotalCycleElectricalDemand.Location = New System.Drawing.Point(6, 102)
-        Me.lblM11_TotalCycleElectricalDemand.Name = "lblM11_TotalCycleElectricalDemand"
-        Me.lblM11_TotalCycleElectricalDemand.Size = New System.Drawing.Size(149, 13)
-        Me.lblM11_TotalCycleElectricalDemand.TabIndex = 6
-        Me.lblM11_TotalCycleElectricalDemand.Text = "Total Cycle Electrical Demand"
-        '
-        'txtM11_out_TotalCycleElectricalDemand
-        '
-        Me.txtM11_out_TotalCycleElectricalDemand.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
-        Me.txtM11_out_TotalCycleElectricalDemand.Location = New System.Drawing.Point(6, 118)
-        Me.txtM11_out_TotalCycleElectricalDemand.Name = "txtM11_out_TotalCycleElectricalDemand"
-        Me.txtM11_out_TotalCycleElectricalDemand.Size = New System.Drawing.Size(100, 20)
-        Me.txtM11_out_TotalCycleElectricalDemand.TabIndex = 4
-        '
-        'lblM11_SmartElectricalTotalCycleElectricalEnergyGenerated
-        '
-        Me.lblM11_SmartElectricalTotalCycleElectricalEnergyGenerated.AutoSize = true
-        Me.lblM11_SmartElectricalTotalCycleElectricalEnergyGenerated.Location = New System.Drawing.Point(6, 59)
-        Me.lblM11_SmartElectricalTotalCycleElectricalEnergyGenerated.Name = "lblM11_SmartElectricalTotalCycleElectricalEnergyGenerated"
-        Me.lblM11_SmartElectricalTotalCycleElectricalEnergyGenerated.Size = New System.Drawing.Size(274, 13)
-        Me.lblM11_SmartElectricalTotalCycleElectricalEnergyGenerated.TabIndex = 3
-        Me.lblM11_SmartElectricalTotalCycleElectricalEnergyGenerated.Text = "Smart Electrical : TotalCycle Electrical Energy Generated"
-        '
-        'lblM11_TotalCycleElectricalEnergyGenOverrunOnly
-        '
-        Me.lblM11_TotalCycleElectricalEnergyGenOverrunOnly.AutoSize = true
-        Me.lblM11_TotalCycleElectricalEnergyGenOverrunOnly.Location = New System.Drawing.Point(6, 12)
-        Me.lblM11_TotalCycleElectricalEnergyGenOverrunOnly.Name = "lblM11_TotalCycleElectricalEnergyGenOverrunOnly"
-        Me.lblM11_TotalCycleElectricalEnergyGenOverrunOnly.Size = New System.Drawing.Size(269, 13)
-        Me.lblM11_TotalCycleElectricalEnergyGenOverrunOnly.TabIndex = 2
-        Me.lblM11_TotalCycleElectricalEnergyGenOverrunOnly.Text = "Total Cycle : Electrical Energy Generated  Overrun Only"
-        '
-        'txtM11_out_SmartElectricalTotalCycleElectricalEnergyGenerated
-        '
-        Me.txtM11_out_SmartElectricalTotalCycleElectricalEnergyGenerated.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
-        Me.txtM11_out_SmartElectricalTotalCycleElectricalEnergyGenerated.Location = New System.Drawing.Point(6, 75)
-        Me.txtM11_out_SmartElectricalTotalCycleElectricalEnergyGenerated.Name = "txtM11_out_SmartElectricalTotalCycleElectricalEnergyGenerated"
-        Me.txtM11_out_SmartElectricalTotalCycleElectricalEnergyGenerated.Size = New System.Drawing.Size(100, 20)
-        Me.txtM11_out_SmartElectricalTotalCycleElectricalEnergyGenerated.TabIndex = 1
-        '
-        'txtM11_out_TotalCycleElectricalEnergyGenOverrunOnly
-        '
-        Me.txtM11_out_TotalCycleElectricalEnergyGenOverrunOnly.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
-        Me.txtM11_out_TotalCycleElectricalEnergyGenOverrunOnly.Location = New System.Drawing.Point(6, 36)
-        Me.txtM11_out_TotalCycleElectricalEnergyGenOverrunOnly.Name = "txtM11_out_TotalCycleElectricalEnergyGenOverrunOnly"
-        Me.txtM11_out_TotalCycleElectricalEnergyGenOverrunOnly.Size = New System.Drawing.Size(100, 20)
-        Me.txtM11_out_TotalCycleElectricalEnergyGenOverrunOnly.TabIndex = 0
-        '
-        'lblM11_TotalCycleFuelConsumptionZeroElectricalLoad
-        '
-        Me.lblM11_TotalCycleFuelConsumptionZeroElectricalLoad.AutoSize = true
-        Me.lblM11_TotalCycleFuelConsumptionZeroElectricalLoad.Location = New System.Drawing.Point(9, 192)
-        Me.lblM11_TotalCycleFuelConsumptionZeroElectricalLoad.Name = "lblM11_TotalCycleFuelConsumptionZeroElectricalLoad"
-        Me.lblM11_TotalCycleFuelConsumptionZeroElectricalLoad.Size = New System.Drawing.Size(251, 13)
-        Me.lblM11_TotalCycleFuelConsumptionZeroElectricalLoad.TabIndex = 10
-        Me.lblM11_TotalCycleFuelConsumptionZeroElectricalLoad.Text = "Total Cycle : Fuel Consumption Zero Electrical Load"
-        '
-        'txtM11_out_TotalCycleFuelConsumptionZeroElectricalLoad
-        '
-        Me.txtM11_out_TotalCycleFuelConsumptionZeroElectricalLoad.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
-        Me.txtM11_out_TotalCycleFuelConsumptionZeroElectricalLoad.Location = New System.Drawing.Point(9, 208)
-        Me.txtM11_out_TotalCycleFuelConsumptionZeroElectricalLoad.Name = "txtM11_out_TotalCycleFuelConsumptionZeroElectricalLoad"
-        Me.txtM11_out_TotalCycleFuelConsumptionZeroElectricalLoad.Size = New System.Drawing.Size(100, 20)
-        Me.txtM11_out_TotalCycleFuelConsumptionZeroElectricalLoad.TabIndex = 9
-        '
-        'lblM11_TotalCycleFuelConsumptionSmartElectricalLoad
-        '
-        Me.lblM11_TotalCycleFuelConsumptionSmartElectricalLoad.AutoSize = true
-        Me.lblM11_TotalCycleFuelConsumptionSmartElectricalLoad.Location = New System.Drawing.Point(9, 149)
-        Me.lblM11_TotalCycleFuelConsumptionSmartElectricalLoad.Name = "lblM11_TotalCycleFuelConsumptionSmartElectricalLoad"
-        Me.lblM11_TotalCycleFuelConsumptionSmartElectricalLoad.Size = New System.Drawing.Size(256, 13)
-        Me.lblM11_TotalCycleFuelConsumptionSmartElectricalLoad.TabIndex = 8
-        Me.lblM11_TotalCycleFuelConsumptionSmartElectricalLoad.Text = "Total Cycle : Fuel Consumption Smart Electrical Load"
-        '
-        'txtM11_out_TotalCycleFuelConsumptionSmartElectricalLoad
-        '
-        Me.txtM11_out_TotalCycleFuelConsumptionSmartElectricalLoad.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
-        Me.txtM11_out_TotalCycleFuelConsumptionSmartElectricalLoad.Location = New System.Drawing.Point(9, 165)
-        Me.txtM11_out_TotalCycleFuelConsumptionSmartElectricalLoad.Name = "txtM11_out_TotalCycleFuelConsumptionSmartElectricalLoad"
-        Me.txtM11_out_TotalCycleFuelConsumptionSmartElectricalLoad.Size = New System.Drawing.Size(100, 20)
-        Me.txtM11_out_TotalCycleFuelConsumptionSmartElectricalLoad.TabIndex = 7
-        '
         'Dashboard
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
@@ -2766,6 +2766,8 @@ Partial Class Dashboard
         Me.tabHVACConfig.PerformLayout
         Me.tabPlayground.ResumeLayout(false)
         Me.tabPlayground.PerformLayout
+        Me.pnlM11.ResumeLayout(false)
+        Me.pnlM11.PerformLayout
         Me.pnlM10.ResumeLayout(false)
         Me.pnlM10.PerformLayout
         Me.pnlM9.ResumeLayout(false)
@@ -2793,8 +2795,6 @@ Partial Class Dashboard
         Me.pnl_M0_Displays.PerformLayout
         Me.resultCardContextMenu.ResumeLayout(false)
         CType(Me.ErrorProvider,System.ComponentModel.ISupportInitialize).EndInit
-        Me.pnlM11.ResumeLayout(false)
-        Me.pnlM11.PerformLayout
         Me.ResumeLayout(false)
 
 End Sub

@@ -45,6 +45,8 @@ public Property PneumaticAuxillariesConfig As IPneumaticsAuxilliariesConfig
   Public M8 As IM8
   Public M9 As IM9
   Public M10 As IM10
+  Public M11 As IM11
+  
   
 
   
@@ -136,6 +138,8 @@ M9 = New M9(M1,M4,M6,M8,fuelMap,PneumaticAuxillariesConfig,Signals)
 
 M10 = New M10(M3,M9,Signals)
 
+M11 = New M11(M1,M3,M6,M8,fuelMap,Signals)
+
 
 End Sub
  
@@ -153,6 +157,12 @@ End Sub
 Private Sub setDefaults()
 
 'Here's where the magic happens.
+
+
+ 'Assign Smarts to signals
+ 'Signals.SmartElectrics= ElectricalUserInputsConfig.SmartElectrical
+ 'Signals.SmartPneumatics= PneumaticUserInputsConfig.SmartAirCompression
+
 
  VectoInputs = New VectoInputs With {.Cycle="Urban", .VehicleWeightKG=16500, .PowerNetVoltage=26.3, .CycleDurationMinutes=51.9,.FuelMap="testFuelGoodMap.vmap"}
  
