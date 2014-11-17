@@ -121,7 +121,10 @@ Private Sub CreateBindings()
      txtAlternatorMapPath.DataBindings.Add("Text", auxEnvironment.ElectricalUserInputsConfig, "AlternatorMap")
      txtAlternatorGearEfficiency.DataBindings.Add("Text", auxEnvironment.ElectricalUserInputsConfig, "AlternatorGearEfficiency")
      txtDoorActuationTimeSeconds.DataBindings.Add("Text", auxEnvironment.ElectricalUserInputsConfig, "DoorActuationTimeSecond")
-     chkSmartElectricals.DataBindings.Add("Checked", auxEnvironment.ElectricalUserInputsConfig, "SmartElectrical")
+     chkSmartElectricals.DataBindings.Add("Checked", auxEnvironment.ElectricalUserInputsConfig, "SmartElectrical",False,DataSourceUpdateMode.OnPropertyChanged)
+
+     'TODO:NOT NEEDED IN NORMAL OPS ONLY FOR TEST HARNESS
+     chkSignalsSmartElectrics.DataBindings.Add("Checked", auxEnvironment.Signals, "SmartElectrics",False,DataSourceUpdateMode.OnPropertyChanged)
 
      'Electrical ConsumablesGrid
      Dim electricalConsumerBinding  As New BindingList(Of IElectricalConsumer)(auxEnvironment.ElectricalUserInputsConfig.ElectricalConsumers.Items ) 
@@ -172,12 +175,17 @@ Private Sub CreateBindings()
         txtCompressorMap.DataBindings.Add("Text",auxEnvironment.PneumaticUserInputsConfig,"CompressorMap")             
         txtCompressorGearEfficiency.DataBindings.Add("Text",auxEnvironment.PneumaticUserInputsConfig,"CompressorGearEfficiency") 
         txtCompressorGearRatio.DataBindings.Add("Text",auxEnvironment.PneumaticUserInputsConfig,"CompressorGearRatio")      
-        txtActuationsMap.DataBindings.Add("Text",auxEnvironment.PneumaticUserInputsConfig,"ActuationsMap")        
-        chkSmartAirCompression.DataBindings.Add("Checked",auxEnvironment.PneumaticUserInputsConfig,"SmartAirCompression")       
-        chkSmartRegeneration.DataBindings.Add("Checked",auxEnvironment.PneumaticUserInputsConfig,"SmartRegeneration")         
+        txtActuationsMap.DataBindings.Add("Text",auxEnvironment.PneumaticUserInputsConfig,"ActuationsMap")      
+        chkSmartAirCompression.DataBindings.Add("Checked",auxEnvironment.PneumaticUserInputsConfig,"SmartAirCompression", False,DataSourceUpdateMode.OnPropertyChanged)  
+         
+        'TODO:NOT NEEDED IN NORMAL OPS ONLY FOR TEST HARNESS     
+        chkSignalsSmartAirCompression.DataBindings.Add("Checked",auxEnvironment.Signals,"SmartPneumatics",False,DataSourceUpdateMode.OnPropertyChanged)
+
+
+        chkSmartRegeneration.DataBindings.Add("Checked",auxEnvironment.PneumaticUserInputsConfig,"SmartRegeneration",False,DataSourceUpdateMode.OnPropertyChanged)         
         chkRetarderBrake.DataBindings.Add("Checked",auxEnvironment.PneumaticUserInputsConfig,"RetarderBrake")          
         txtKneelingHeightMillimeters.DataBindings.Add("Text",auxEnvironment.PneumaticUserInputsConfig,"KneelingHeightMillimeters")  
-        cboAirSuspensionControl.DataBindings.Add("Text",auxEnvironment.PneumaticUserInputsConfig,"AirSuspensionControl")       
+        cboAirSuspensionControl.DataBindings.Add("Text",auxEnvironment.PneumaticUserInputsConfig,"AirSuspensionControl",False)       
         cboAdBlueDosing.DataBindings.Add("Text",auxEnvironment.PneumaticUserInputsConfig,"AdBlueDosing")             
         cboDoors.DataBindings.Add("Text",auxEnvironment.PneumaticUserInputsConfig,"Doors")    
         
@@ -187,9 +195,9 @@ Private Sub CreateBindings()
         txtHVACMechanicalLoadPowerWatts.DataBindings.Add("Text", auxEnvironment.HvacUserInputsConfig.SteadyStateModel,"HVACMechanicalLoadPowerWatts")
 
         'Signals
-        chkInNeutral.DataBindings.Add("Checked",auxEnvironment.Signals,"InNeutral")
-        chkIdle.DataBindings.Add("Checked",auxEnvironment.Signals,"Idle")
-        chkClutchEngaged.DataBindings.Add("Checked", auxEnvironment.Signals,"ClutchEngaged")
+        chkInNeutral.DataBindings.Add("Checked",auxEnvironment.Signals,"InNeutral",False,DataSourceUpdateMode.OnPropertyChanged)
+        chkIdle.DataBindings.Add("Checked",auxEnvironment.Signals,"Idle",False,DataSourceUpdateMode.OnPropertyChanged)
+        chkClutchEngaged.DataBindings.Add("Checked", auxEnvironment.Signals,"ClutchEngaged",False,DataSourceUpdateMode.OnPropertyChanged)
         txtPreExistingAuxPower.DataBindings.Add("Text",auxEnvironment.Signals,"PreExistingAuxPower")
         txtEngineDrivelinePower.DataBindings.Add("Text", auxEnvironment.Signals,"EngineDrivelinePower")
         txtEngineDrivelineTorque.DataBindings.Add("Text", auxEnvironment.Signals,"EngineDrivelineTorque")
@@ -935,6 +943,14 @@ Private sub RefreshDisplays()
       'M10
       txtM10_out_BaseFCWithAvgAuxLoads.Text = auxEnvironment.M10.BaseFuelConsumptionWithAverageAuxiliaryLoads
       txtM10_out_FCWithSmartPSAndAvgElecPowerDemand.Text = auxEnvironment.M10.FuelConsumptionSmartPneumaticsAndAverageElectricalPowerDemand
+
+
+      'M11
+      txtM11_out_TotalCycleElectricalEnergyGenOverrunOnly.Text = auxEnvironment.M11.SmartElectricalTotalCycleElectricalEnergyGeneratedDuringOverrunOnly
+      txtM11_out_SmartElectricalTotalCycleElectricalEnergyGenerated.Text = auxEnvironment.M11.SmartElectricalTotalCycleEletricalEnergyGenerated
+      txtM11_out_TotalCycleElectricalDemand.Text = auxEnvironment.M11.TotalCycleElectricalDemand
+      txtM11_out_TotalCycleFuelConsumptionSmartElectricalLoad.Text = auxEnvironment.M11.TotalCycleFuelConsumptionSmartElectricalLoad
+      txtM11_out_TotalCycleFuelConsumptionZeroElectricalLoad.Text = auxEnvironment.M11.TotalCycleFuelConsumptionZeroElectricalLoad
  
 
 End Sub
@@ -963,7 +979,13 @@ End Sub
 Private Sub RefreshDisplayValues_Timed( sender As Object,  e As EventArgs) Handles Timer1.Tick
 
 
-  If SecondsIntoCycle=0 then auxEnvironment.M9.CycleStep( auxEnvironment.Signals.TotalCycleTimeSeconds)  
+  If SecondsIntoCycle=0 then 
+   
+  auxEnvironment.M9.CycleStep( auxEnvironment.Signals.TotalCycleTimeSeconds)  
+
+  auxEnvironment.M11.CycleStep( auxEnvironment.Signals.TotalCycleTimeSeconds)
+  End If
+
 
 
   SecondsIntoCycle+=1
