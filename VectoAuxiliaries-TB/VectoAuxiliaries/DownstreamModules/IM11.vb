@@ -1,7 +1,6 @@
 ﻿Imports VectoAuxiliaries.Electrics
 Imports VectoAuxiliaries.Pneumatics
 Imports VectoAuxiliaries.Hvac
-Imports VectoAuxiliaries.DownstreamModules
 
 Namespace DownstreamModules
 

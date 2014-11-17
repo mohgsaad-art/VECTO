@@ -112,7 +112,7 @@ Namespace UnitTests
 
             Dim target As New M3_AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _signals)
 
-            Dim expected As Single = 0.512801051
+            Dim expected As Single = 1846.08362
             Dim actual As Single = target.GetAveragePowerDemandAtCrankFromPneumatics()
 
             Assert.AreEqual(expected, actual)
@@ -135,7 +135,7 @@ Namespace UnitTests
 
             Dim target As New M3_AveragePneumaticLoadDemand(_defaultInputConfig, psAuxConfig, psActuationsMap, psCompressorMap, _vehicleMassKG, "Urban", _signals)
 
-            Dim expected As Single = 0.512801051
+            Dim expected As Single = 1846.08362
             Dim actual As Single = target.GetAveragePowerDemandAtCrankFromPneumatics()
 
             Assert.AreEqual(expected, actual)

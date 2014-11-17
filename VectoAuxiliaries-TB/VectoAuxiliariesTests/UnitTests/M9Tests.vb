@@ -10,59 +10,6 @@ Namespace UnitTests
 <TestFixture()>
 Public Class M9Tests
 
-
-public class MockFuel50PC
-Implements IFUELMAP
-
-
-   Public Function fFCdelaunay_Intp(nU As Single, Tq As Single) As Single Implements IFUELMAP.fFCdelaunay_Intp
-
-       Return (nU + Tq ) * 0.5
-
-   End Function
-
-   Public Property FilePath As String Implements IFUELMAP.FilePath
-
-   Public Function ReadFile(Optional ShowMsg As Boolean = True) As Boolean Implements IFUELMAP.ReadFile
-   Return true
-   End Function
-
-            Public ReadOnly Property FC As List(Of Single) Implements IFUELMAP.FC
-                Get
-
-                End Get
-            End Property
-
-            Public ReadOnly Property MapDim As Integer Implements IFUELMAP.MapDim
-                Get
-
-                End Get
-            End Property
-
-            Public ReadOnly Property nU As List(Of Single) Implements IFUELMAP.nU
-                Get
-
-                End Get
-            End Property
-
-            Public ReadOnly Property Tq As List(Of Single) Implements IFUELMAP.Tq
-                Get
-
-                End Get
-            End Property
-
-            Public Function Triangulate() As Boolean Implements IFUELMAP.Triangulate
-
-            End Function
-End Class
-
-
-Private M1 As IM1_AverageHVACLoadDemand
-Private M4 As IM4_AirCompressor
-Private M6 As IM6
-Private M8 As IM8
-
-
 <Test()> _
 <TestCase(50,50,400,200,100,1200,50,0,0,0.5f,50f,0,  0.180613413f,0.180590272f)> _
 <TestCase(50,50,400,200,100,1200,50,1,0,0.5f,50f,0,  0.180613413f,0.180590272f)> _
@@ -97,7 +44,7 @@ Public Sub ValuesInOutTests(IP1  As Single,
       m4Mock.Setup   ( Function(x) x.GetPowerCompressorOff)                             .Returns(IP4)
       sgnlsMock.Setup( Function(x) x.EngineDrivelineTorque)                             .Returns(IP5)
       sgnlsMock.Setup( Function(x) x.EngineSpeed)                                       .Returns(IP6)
-      m4Mock.Setup   ( Function(x) x.GetAveragePowerDemandPerCompressorUnitFlowRate)    .Returns(IP7)
+      m4Mock.Setup   ( Function(x) x.GetFlowRate)                                       .Returns(IP7)
       m6Mock.Setup   ( Function(x) x.OverrunFlag)                                       .Returns(IP8)
       m8Mock.Setup   ( Function(x) x.CompressorFlag)                                    .Returns(IP9)
       psac.Setup     ( Function(x) x.OverrunUtilisationForCompressionFraction)          .Returns(IP10)

@@ -126,7 +126,7 @@ Namespace Pneumatics
         'Get Average Power Demand @ Crank From Pneumatics
         Public Function GetAveragePowerDemandAtCrankFromPneumatics() As Single Implements IM3_AveragePneumaticLoadDemand.GetAveragePowerDemandAtCrankFromPneumatics
 
-            Dim averagePowerDemandAtCrankFromPneumatics As Single = (_pneumaticsCompressorFlowRateMap.GetAveragePowerDemandPerCompressorUnitFlowRate /60) _
+            Dim averagePowerDemandAtCrankFromPneumatics As Single = (_pneumaticsCompressorFlowRateMap.GetAveragePowerDemandPerCompressorUnitFlowRate * 60) _
                                                                                   * (TotalAirDemand / (_cycleDurationMinutes * 60))
 
             averagePowerDemandAtCrankFromPneumatics  =  averagePowerDemandAtCrankFromPneumatics / _pneumaticUserInputsConfig.CompressorGearEfficiency
