@@ -1,5 +1,5 @@
 ﻿
-Namespace Pneumatics
+Namespace Hvac
 
 
 Public Interface IM1_AverageHVACLoadDemand
@@ -11,11 +11,6 @@ Function AveragePowerDemandAtAlternatorFromHVACElectricsWatts() As Single
 Function AveragePowerDemandAtCrankFromHVACElectricsWatts() As Single
 
 Function HVACFuelingLitresPerHour() As Single
-
-
-
-
-
 
 End Interface
 

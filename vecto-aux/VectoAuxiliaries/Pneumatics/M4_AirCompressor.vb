@@ -106,7 +106,7 @@ Namespace Pneumatics
         Public Function GetFlowRate() As Single Implements IM4_AirCompressor.GetFlowRate
             Dim compressorRpm As Single = _signals.EngineSpeed * PulleyGearRatio
 
-            ''Flow Rate in the map is Litres/Hour so divide by 60 to get Units per second.
+            ''Flow Rate in the map is Litres/min so divide by 60 to get Units per second.
             Return _map.GetFlowRate(compressorRpm) / 60
 
         End Function
