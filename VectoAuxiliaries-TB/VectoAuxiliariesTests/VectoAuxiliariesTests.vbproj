@@ -106,6 +106,8 @@
     <Compile Include="UnitTests\ElectricalConsumerListTests.vb" />
     <Compile Include="UnitTests\HVACMapTests.vb" />
     <Compile Include="UnitTests\M10Tests.vb" />
+    <Compile Include="UnitTests\M13Tests.vb" />
+    <Compile Include="UnitTests\M12Tests.vb" />
     <Compile Include="UnitTests\M11Tests.vb" />
     <Compile Include="UnitTests\M1_AverageHVACLoadDemandTests.vb" />
     <Compile Include="UnitTests\M1_HVACAverageLoadDemandTests.vb" />
