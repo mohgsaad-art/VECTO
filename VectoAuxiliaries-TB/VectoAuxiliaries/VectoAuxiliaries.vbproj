@@ -79,12 +79,16 @@
     <Compile Include="DownstreamModules\IFUELMAP.vb" />
     <Compile Include="DownstreamModules\IM10.vb" />
     <Compile Include="DownstreamModules\IM11.vb" />
+    <Compile Include="DownstreamModules\IM12.vb" />
+    <Compile Include="DownstreamModules\IM13.vb" />
     <Compile Include="DownstreamModules\IM6.vb" />
     <Compile Include="DownstreamModules\IM7.vb" />
     <Compile Include="DownstreamModules\IM8.vb" />
     <Compile Include="DownstreamModules\IM9.vb" />
     <Compile Include="DownstreamModules\M10.vb" />
     <Compile Include="DownstreamModules\M11.vb" />
+    <Compile Include="DownstreamModules\M12.vb" />
+    <Compile Include="DownstreamModules\M13.vb" />
     <Compile Include="DownstreamModules\M7.vb" />
     <Compile Include="DownstreamModules\M8.vb" />
     <Compile Include="DownstreamModules\M9.vb" />

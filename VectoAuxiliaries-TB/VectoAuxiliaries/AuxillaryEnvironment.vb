@@ -46,13 +46,10 @@ public Property PneumaticAuxillariesConfig As IPneumaticsAuxilliariesConfig
   Public M9 As IM9
   Public M10 As IM10
   Public M11 As IM11
+  Public M12 As IM12
   
   
-
-  
-
-
-
+ 
 
 Public Sub Initialise()
 
@@ -139,6 +136,10 @@ M9 = New M9(M1,M4,M6,M8,fuelMap,PneumaticAuxillariesConfig,Signals)
 M10 = New M10(M3,M9,Signals)
 
 M11 = New M11(M1,M3,M6,M8,fuelMap,Signals)
+
+M12 = New M12( M11, Signals )
+
+
 
 
 End Sub
