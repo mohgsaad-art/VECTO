@@ -952,6 +952,8 @@ Private sub RefreshDisplays()
       txtM11_out_TotalCycleFuelConsumptionSmartElectricalLoad.Text = auxEnvironment.M11.TotalCycleFuelConsumptionSmartElectricalLoad
       txtM11_out_TotalCycleFuelConsumptionZeroElectricalLoad.Text = auxEnvironment.M11.TotalCycleFuelConsumptionZeroElectricalLoad
  
+      'M12
+      txtM12_out_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand.Text = auxEnvironment.M12.FuelconsumptionwithsmartElectricsandAveragePneumaticPowerDemand
 
 End Sub
 

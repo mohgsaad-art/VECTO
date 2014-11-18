@@ -1,0 +1,53 @@
+﻿Imports VectoAuxiliaries.Electrics
+Imports VectoAuxiliaries.Pneumatics
+Imports VectoAuxiliaries.Hvac
+Imports VectoAuxiliaries.DownstreamModules
+Imports NUnit.Framework
+Imports VectoAuxiliaries
+Imports Moq
+
+Namespace UnitTests
+<TestFixture()> _
+Public Class M13Tests
+
+<Test()> _
+<TestCase(50,	60,	70,	FALSE,	FALSE,	80, 140   )> _
+<TestCase(50,	60,	70,	FALSE,	TRUE,	80, 130   )> _
+<TestCase(50,	60,	70,	TRUE,	FALSE,	80, 150   )> _
+<TestCase(50,	60,	70,	TRUE,	TRUE,	80, 140   )> _
+Public Sub InputOutputValues( IP1  As single,
+                              IP2  As single, 
+                              IP3  As single,
+                              IP4  As Boolean, 
+                              IP5  As Boolean, 
+                              IP6  As single,
+                              OUT1 As single)
+
+'Arrange
+Dim m1  As New Mock(Of  IM1_AverageHVACLoadDemand)
+Dim m10 As New Mock(Of IM10)
+Dim M12 As New Mock(Of IM12)
+Dim Signals As New Mock(Of ISignals)
+
+m12.Setup     ( Function(x) x.FuelconsumptionwithsmartElectricsandAveragePneumaticPowerDemand) .Returns( IP1 )
+m10.Setup     ( Function(x) x.BaseFuelConsumptionWithAverageAuxiliaryLoads)                    .Returns( IP2 )
+m10.Setup     ( Function(x) x.FuelConsumptionSmartPneumaticsAndAverageElectricalPowerDemand)   .Returns( IP3 )
+Signals.Setup ( Function(x) x.SmartPneumatics)                                                 .Returns( IP4 )
+Signals.Setup ( Function(x) x.SmartElectrics)                                                  .Returns( IP5 )
+m1.Setup      ( Function(x) x.HVACFuelingLitresPerHour)                                        .Returns( IP6 )
+
+
+'Act
+ Dim target  = New M13( m1.Object, m10.Object, M12.Object, Signals.Object)
+       
+'Assert
+Assert.AreEqual( target.TotalCycleFuelConsumption, OUT1 )
+
+End Sub
+
+End Class
+
+End Namespace
+
+
+
