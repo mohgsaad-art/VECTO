@@ -955,6 +955,10 @@ Private sub RefreshDisplays()
       'M12
       txtM12_out_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand.Text = auxEnvironment.M12.FuelconsumptionwithsmartElectricsandAveragePneumaticPowerDemand
 
+
+      'M13
+      txtM13_out_TotalCycleFuelCalculation.Text = auxEnvironment.M13.TotalCycleFuelConsumption
+
 End Sub
 
 Private sub SetProcessingStatus()

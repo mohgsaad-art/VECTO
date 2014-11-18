@@ -127,6 +127,10 @@ Partial Class Dashboard
         Me.txtHVACElectricalLoadPowerWatts = New System.Windows.Forms.TextBox()
         Me.lblHVACElectricalLoadPowerWatts = New System.Windows.Forms.Label()
         Me.tabPlayground = New System.Windows.Forms.TabPage()
+        Me.pnlM12 = New System.Windows.Forms.Panel()
+        Me.lblM12_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand = New System.Windows.Forms.Label()
+        Me.txtM12_out_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand = New System.Windows.Forms.TextBox()
+        Me.lblM12_Title = New System.Windows.Forms.Label()
         Me.mblM11_Title = New System.Windows.Forms.Label()
         Me.pnlM11 = New System.Windows.Forms.Panel()
         Me.lblM11_TotalCycleFuelConsumptionZeroElectricalLoad = New System.Windows.Forms.Label()
@@ -277,10 +281,10 @@ Partial Class Dashboard
         Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
-        Me.lblM12_Title = New System.Windows.Forms.Label()
-        Me.Panel5 = New System.Windows.Forms.Panel()
-        Me.lblM12_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand = New System.Windows.Forms.Label()
-        Me.txtM12_out_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand = New System.Windows.Forms.TextBox()
+        Me.lblM13_Title = New System.Windows.Forms.Label()
+        Me.pnlM13 = New System.Windows.Forms.Panel()
+        Me.lblM13_FinalFCOverTheCycle = New System.Windows.Forms.Label()
+        Me.txtM13_out_TotalCycleFuelCalculation = New System.Windows.Forms.TextBox()
         Me.pnlMain.SuspendLayout
         Me.tabMain.SuspendLayout
         Me.tabGeneralConfig.SuspendLayout
@@ -294,6 +298,7 @@ Partial Class Dashboard
         Me.pnlPneumaticAuxillaries.SuspendLayout
         Me.tabHVACConfig.SuspendLayout
         Me.tabPlayground.SuspendLayout
+        Me.pnlM12.SuspendLayout
         Me.pnlM11.SuspendLayout
         Me.pnlM10.SuspendLayout
         Me.pnlM9.SuspendLayout
@@ -310,7 +315,7 @@ Partial Class Dashboard
         Me.pnl_M0_Displays.SuspendLayout
         Me.resultCardContextMenu.SuspendLayout
         CType(Me.ErrorProvider,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.Panel5.SuspendLayout
+        Me.pnlM13.SuspendLayout
         Me.SuspendLayout
         '
         'pnlMain
@@ -1291,7 +1296,9 @@ Partial Class Dashboard
         'tabPlayground
         '
         Me.tabPlayground.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.tabPlayground.Controls.Add(Me.Panel5)
+        Me.tabPlayground.Controls.Add(Me.pnlM13)
+        Me.tabPlayground.Controls.Add(Me.lblM13_Title)
+        Me.tabPlayground.Controls.Add(Me.pnlM12)
         Me.tabPlayground.Controls.Add(Me.lblM12_Title)
         Me.tabPlayground.Controls.Add(Me.mblM11_Title)
         Me.tabPlayground.Controls.Add(Me.pnlM11)
@@ -1345,6 +1352,47 @@ Partial Class Dashboard
         Me.tabPlayground.TabIndex = 4
         Me.tabPlayground.Text = "Playground"
         Me.tabPlayground.UseVisualStyleBackColor = true
+        '
+        'pnlM12
+        '
+        Me.pnlM12.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlM12.Controls.Add(Me.lblM12_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand)
+        Me.pnlM12.Controls.Add(Me.txtM12_out_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand)
+        Me.pnlM12.Location = New System.Drawing.Point(1157, 325)
+        Me.pnlM12.Name = "pnlM12"
+        Me.pnlM12.Size = New System.Drawing.Size(308, 75)
+        Me.pnlM12.TabIndex = 57
+        '
+        'lblM12_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand
+        '
+        Me.lblM12_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand.AutoSize = true
+        Me.lblM12_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand.Location = New System.Drawing.Point(6, 12)
+        Me.lblM12_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand.MaximumSize = New System.Drawing.Size(260, 0)
+        Me.lblM12_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand.Name = "lblM12_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand"
+        Me.lblM12_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand.Size = New System.Drawing.Size(257, 26)
+        Me.lblM12_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand.TabIndex = 2
+        Me.lblM12_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand.Text = "Fuel Consumption With Smart Electrics And Average Pneumatic Power Demand"
+        '
+        'txtM12_out_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand
+        '
+        Me.txtM12_out_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.txtM12_out_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand.Location = New System.Drawing.Point(8, 44)
+        Me.txtM12_out_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand.Name = "txtM12_out_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand"
+        Me.txtM12_out_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand.Size = New System.Drawing.Size(100, 20)
+        Me.txtM12_out_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand.TabIndex = 0
+        '
+        'lblM12_Title
+        '
+        Me.lblM12_Title.AutoSize = true
+        Me.lblM12_Title.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblM12_Title.ForeColor = System.Drawing.SystemColors.Highlight
+        Me.lblM12_Title.Location = New System.Drawing.Point(1155, 289)
+        Me.lblM12_Title.MaximumSize = New System.Drawing.Size(270, 0)
+        Me.lblM12_Title.Name = "lblM12_Title"
+        Me.lblM12_Title.Size = New System.Drawing.Size(265, 26)
+        Me.lblM12_Title.TabIndex = 56
+        Me.lblM12_Title.Text = "M12  Actual FC calculation for true electrical demand for smart Electrics over th"& _ 
+    "e cycle "
         '
         'mblM11_Title
         '
@@ -2745,46 +2793,45 @@ Partial Class Dashboard
         '
         Me.Timer1.Interval = 1000
         '
-        'lblM12_Title
+        'lblM13_Title
         '
-        Me.lblM12_Title.AutoSize = true
-        Me.lblM12_Title.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblM12_Title.ForeColor = System.Drawing.SystemColors.Highlight
-        Me.lblM12_Title.Location = New System.Drawing.Point(1155, 289)
-        Me.lblM12_Title.MaximumSize = New System.Drawing.Size(270, 0)
-        Me.lblM12_Title.Name = "lblM12_Title"
-        Me.lblM12_Title.Size = New System.Drawing.Size(265, 26)
-        Me.lblM12_Title.TabIndex = 56
-        Me.lblM12_Title.Text = "M12  Actual FC calculation for true electrical demand for smart Electrics over th"& _ 
-    "e cycle "
+        Me.lblM13_Title.AutoSize = true
+        Me.lblM13_Title.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblM13_Title.ForeColor = System.Drawing.SystemColors.Highlight
+        Me.lblM13_Title.Location = New System.Drawing.Point(1157, 418)
+        Me.lblM13_Title.MaximumSize = New System.Drawing.Size(270, 0)
+        Me.lblM13_Title.Name = "lblM13_Title"
+        Me.lblM13_Title.Size = New System.Drawing.Size(240, 13)
+        Me.lblM13_Title.TabIndex = 58
+        Me.lblM13_Title.Text = "M13: Final FC calculation over the cycle "
         '
-        'Panel5
+        'pnlM13
         '
-        Me.Panel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Panel5.Controls.Add(Me.lblM12_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand)
-        Me.Panel5.Controls.Add(Me.txtM12_out_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand)
-        Me.Panel5.Location = New System.Drawing.Point(1157, 325)
-        Me.Panel5.Name = "Panel5"
-        Me.Panel5.Size = New System.Drawing.Size(308, 75)
-        Me.Panel5.TabIndex = 57
+        Me.pnlM13.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlM13.Controls.Add(Me.lblM13_FinalFCOverTheCycle)
+        Me.pnlM13.Controls.Add(Me.txtM13_out_TotalCycleFuelCalculation)
+        Me.pnlM13.Location = New System.Drawing.Point(1157, 434)
+        Me.pnlM13.Name = "pnlM13"
+        Me.pnlM13.Size = New System.Drawing.Size(308, 75)
+        Me.pnlM13.TabIndex = 59
         '
-        'lblM12_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand
+        'lblM13_FinalFCOverTheCycle
         '
-        Me.lblM12_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand.AutoSize = true
-        Me.lblM12_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand.Location = New System.Drawing.Point(6, 12)
-        Me.lblM12_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand.MaximumSize = New System.Drawing.Size(260, 0)
-        Me.lblM12_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand.Name = "lblM12_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand"
-        Me.lblM12_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand.Size = New System.Drawing.Size(257, 26)
-        Me.lblM12_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand.TabIndex = 2
-        Me.lblM12_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand.Text = "Fuel Consumption With Smart Electrics And Average Pneumatic Power Demand"
+        Me.lblM13_FinalFCOverTheCycle.AutoSize = true
+        Me.lblM13_FinalFCOverTheCycle.Location = New System.Drawing.Point(6, 12)
+        Me.lblM13_FinalFCOverTheCycle.MaximumSize = New System.Drawing.Size(260, 0)
+        Me.lblM13_FinalFCOverTheCycle.Name = "lblM13_FinalFCOverTheCycle"
+        Me.lblM13_FinalFCOverTheCycle.Size = New System.Drawing.Size(138, 13)
+        Me.lblM13_FinalFCOverTheCycle.TabIndex = 2
+        Me.lblM13_FinalFCOverTheCycle.Text = "Total Cycle Fuel Calculation"
         '
-        'txtM12_out_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand
+        'txtM13_out_TotalCycleFuelCalculation
         '
-        Me.txtM12_out_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
-        Me.txtM12_out_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand.Location = New System.Drawing.Point(8, 44)
-        Me.txtM12_out_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand.Name = "txtM12_out_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand"
-        Me.txtM12_out_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand.Size = New System.Drawing.Size(100, 20)
-        Me.txtM12_out_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand.TabIndex = 0
+        Me.txtM13_out_TotalCycleFuelCalculation.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.txtM13_out_TotalCycleFuelCalculation.Location = New System.Drawing.Point(8, 44)
+        Me.txtM13_out_TotalCycleFuelCalculation.Name = "txtM13_out_TotalCycleFuelCalculation"
+        Me.txtM13_out_TotalCycleFuelCalculation.Size = New System.Drawing.Size(100, 20)
+        Me.txtM13_out_TotalCycleFuelCalculation.TabIndex = 0
         '
         'Dashboard
         '
@@ -2814,6 +2861,8 @@ Partial Class Dashboard
         Me.tabHVACConfig.PerformLayout
         Me.tabPlayground.ResumeLayout(false)
         Me.tabPlayground.PerformLayout
+        Me.pnlM12.ResumeLayout(false)
+        Me.pnlM12.PerformLayout
         Me.pnlM11.ResumeLayout(false)
         Me.pnlM11.PerformLayout
         Me.pnlM10.ResumeLayout(false)
@@ -2843,8 +2892,8 @@ Partial Class Dashboard
         Me.pnl_M0_Displays.PerformLayout
         Me.resultCardContextMenu.ResumeLayout(false)
         CType(Me.ErrorProvider,System.ComponentModel.ISupportInitialize).EndInit
-        Me.Panel5.ResumeLayout(false)
-        Me.Panel5.PerformLayout
+        Me.pnlM13.ResumeLayout(false)
+        Me.pnlM13.PerformLayout
         Me.ResumeLayout(false)
 
 End Sub
@@ -3090,9 +3139,13 @@ End Sub
     Friend WithEvents lblM11_TotalCycleElectricalEnergyGenOverrunOnly As System.Windows.Forms.Label
     Friend WithEvents txtM11_out_SmartElectricalTotalCycleElectricalEnergyGenerated As System.Windows.Forms.TextBox
     Friend WithEvents txtM11_out_TotalCycleElectricalEnergyGenOverrunOnly As System.Windows.Forms.TextBox
-    Friend WithEvents Panel5 As System.Windows.Forms.Panel
+    Friend WithEvents pnlM12 As System.Windows.Forms.Panel
     Friend WithEvents lblM12_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand As System.Windows.Forms.Label
     Friend WithEvents txtM12_out_FuelConsumptionWithSmartElectricsAndAveragePneumaticPowerDemand As System.Windows.Forms.TextBox
     Friend WithEvents lblM12_Title As System.Windows.Forms.Label
+    Friend WithEvents lblM13_Title As System.Windows.Forms.Label
+    Friend WithEvents pnlM13 As System.Windows.Forms.Panel
+    Friend WithEvents lblM13_FinalFCOverTheCycle As System.Windows.Forms.Label
+    Friend WithEvents txtM13_out_TotalCycleFuelCalculation As System.Windows.Forms.TextBox
 
 End Class
