@@ -969,11 +969,11 @@ thisExe = System.Reflection.Assembly.GetExecutingAssembly()
 
 If processing then
 
-file  = thisExe.GetManifestResourceStream("AuxillaryTestHarness.greenLight.jpg")
+file  = thisExe.GetManifestResourceStream("AuxiliaryTestHarness.greenLight.jpg")
 
 Else
 
-file  = thisExe.GetManifestResourceStream("AuxillaryTestHarness.amberLight.jpg")
+file  = thisExe.GetManifestResourceStream("AuxiliaryTestHarness.amberLight.jpg")
 
 End If
 
