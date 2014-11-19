@@ -8,10 +8,10 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("AuxillaryTestHarness")> 
+<Assembly: AssemblyTitle("AuxiliaryTestHarness")> 
 <Assembly: AssemblyDescription("")> 
 <Assembly: AssemblyCompany("AEA Group")> 
-<Assembly: AssemblyProduct("AuxillaryTestHarness")> 
+<Assembly: AssemblyProduct("AuxiliaryTestHarness")> 
 <Assembly: AssemblyCopyright("Copyright © AEA Group 2014")> 
 <Assembly: AssemblyTrademark("")> 
 

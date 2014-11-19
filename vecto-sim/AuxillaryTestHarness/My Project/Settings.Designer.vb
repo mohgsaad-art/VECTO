@@ -64,9 +64,9 @@ Namespace My
     Friend Module MySettingsProperty
         
         <Global.System.ComponentModel.Design.HelpKeywordAttribute("My.Settings")>  _
-        Friend ReadOnly Property Settings() As Global.AuxillaryTestHarness.My.MySettings
+        Friend ReadOnly Property Settings() As Global.AuxiliaryTestHarness.My.MySettings
             Get
-                Return Global.AuxillaryTestHarness.My.MySettings.Default
+                Return Global.AuxiliaryTestHarness.My.MySettings.Default
             End Get
         End Property
     End Module
