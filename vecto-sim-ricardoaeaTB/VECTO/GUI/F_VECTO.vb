@@ -19,26 +19,14 @@ Public Class F_VECTO
 
     Private VECTOfile As String
     Private Changed As Boolean = False
+
     Private pgDriver As TabPage
+
     Private pgDriverON As Boolean = True
 
     Private AuxDlog As F_VEH_AuxDlog
+
     Private EStechs As New List(Of String)
-
-    ''TB:29/9/14 - New Fields associated with HVAC,PNeumatics as Electrical Systems *********************
-    ' Public ConsumerListES As List(Of VectoAuxiliaries.Electrics.ElectricalConsumer) = New List(Of VectoAuxiliaries.Electrics.ElectricalConsumer)()
-    ' Public PulleyGearEfficiencyES As Single
-    ' Public PulleyGearRatioES As Single
-
-    ' Public ConsumerListPS As List(Of VectoAuxiliaries.Pneumatics.PneumaticConsumer) = New List(Of VectoAuxiliaries.Pneumatics.PneumaticConsumer)()
-    ' Public PulleyGearEfficiencyPS As Single
-    ' Public PulleyGearRatioPS As Single
-
-    ' Public HVACMapInputs As Dictionary(Of String, Single) = New Dictionary(Of String, Single)()
-    ' Public PulleyGearEfficiencyHVAC As Single
-    ' Public PulleyGearRatioHVAC As Single
-
-    '**************************************************************************************************
 
     'Initialise form
     Private Sub F02_GEN_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -104,9 +92,6 @@ Public Class F_VECTO
         Me.TbUnderSpeed.Text = cDeclaration.Underspeed
         Me.TbVmin.Text = cDeclaration.ECvmin
 
-
-        'TB 29/9/14 - Note on existing code. 
-        'This sets Up Default Values for Aux Type is exactly the right numbers of them and their ID's are not in the list. these dont seem to need to be added by the user I guess.
         If LvAux.Items.Count <> 5 OrElse (Me.LvAux.Items(0).Text <> sKey.AUX.Fan OrElse Me.LvAux.Items(1).Text <> sKey.AUX.SteerPump OrElse Me.LvAux.Items(2).Text <> sKey.AUX.HVAC OrElse Me.LvAux.Items(3).Text <> sKey.AUX.ElecSys OrElse Me.LvAux.Items(4).Text <> sKey.AUX.PneumSys) Then
             Me.LvAux.Items.Clear()
 
@@ -155,8 +140,6 @@ Public Class F_VECTO
             End If
             Me.LvAux.Items.Add(LV0)
 
-
-
         End If
 
 
@@ -177,7 +160,7 @@ Public Class F_VECTO
             End If
         End If
     End Sub
-    'This is just a test comment. TODO: REMOVE IT
+
 
 #Region "Browse Buttons"
 
@@ -348,7 +331,7 @@ Public Class F_VECTO
     Public Sub VECTOload2Form(ByVal file As String)
         Dim x As Int16
         Dim VEC0 As cVECTO
-        Dim AuxEntryKV As KeyValuePair(Of String, cAuxEntry)
+        Dim AuxEntryKV As KeyValuePair(Of String, cVECTO.cAuxEntry)
         Dim LV0 As ListViewItem
         Dim sb As cSubPath
 
@@ -400,9 +383,6 @@ Public Class F_VECTO
         'VACC
         Me.TbDesMaxFile.Text = VEC0.DesMaxFile(True)
 
-
-
-
         Me.LvAux.Items.Clear()
         For Each AuxEntryKV In VEC0.AuxPaths
             LV0 = New ListViewItem
@@ -410,18 +390,8 @@ Public Class F_VECTO
             LV0.SubItems.Add(AuxEntryKV.Value.Type)
             If Cfg.DeclMode Then
                 LV0.SubItems.Add(AuxEntryKV.Value.TechStr)
-
-                'TB 29/9/2014 - TODO: Need to work out what to do about Declaration mode for the augmentations.
-
             Else
                 LV0.SubItems.Add(AuxEntryKV.Value.Path.OriginalPath)
-
-                '
-                'TB 29/9/2014 - This is where we read the contents of the auxilaries and add them to the respective properties of this form's class.
-
-
-
-
             End If
             LvAux.Items.Add(LV0)
         Next
@@ -481,7 +451,7 @@ Public Class F_VECTO
     Private Function VECTOsave(ByVal file As String) As Boolean
 
         Dim VEC0 As cVECTO
-        Dim AuxEntry As cAuxEntry
+        Dim AuxEntry As cVECTO.cAuxEntry
         Dim LV0 As ListViewItem
         Dim sb As cSubPath
 
@@ -511,49 +481,17 @@ Public Class F_VECTO
         'a_DesMax
         VEC0.DesMaxFile = Me.TbDesMaxFile.Text
 
-        'TB 29/9/2014 - Here is where we assemble the cAuxEntry instances for addition
         For Each LV0 In LvAux.Items
-            AuxEntry = New cAuxEntry
+            AuxEntry = New cVECTO.cAuxEntry
 
             If Cfg.DeclMode Then
                 AuxEntry.TechStr = LV0.SubItems(2).Text
-
-                'TB: 29/9/2014 - TODO: Need to know how to set Declaration Mode Values for this stuff here.
-
-
             Else
                 AuxEntry.Path.Init(fPATH(file), LV0.SubItems(2).Text)
-
-                'Engineering Mode.
-                'Detect which system we are currently addressing.
-
-                'Select Case LV0.SubItems(0).Text
-
-                '   Case sKey.AUX.HVAC
-                '   AuxEntry.HVACMapInputs = Me.HVACMapInputs
-                '   AuxEntry.PulleyGearEfficiencyHVAC = Me.PulleyGearEfficiencyHVAC
-                '   AuxEntry.PulleyGearRatioHVAC = Me.PulleyGearRatioHVAC
-
-                '   Case sKey.AUX.ElecSys
-                '   AuxEntry.ConsumerListES = Me.ConsumerListES
-                '   AuxEntry.PulleyGearEfficiencyES = Me.PulleyGearEfficiencyES
-                '   AuxEntry.PulleyGearRatioES = Me.PulleyGearRatioES
-
-                '   Case sKey.AUX.PneumSys
-                '   AuxEntry.ConsumerListPS = Me.ConsumerListPS
-                '   AuxEntry.PulleyGearEfficiencyPS = Me.PulleyGearEfficiencyPS
-                '   AuxEntry.PulleyGearRatioPS = Me.PulleyGearRatioPS
-
-                'End Select
-
-
-
             End If
 
             AuxEntry.Type = LV0.SubItems(1).Text
             VEC0.AuxPaths.Add(LV0.SubItems(0).Text, AuxEntry)
-
-
         Next
 
         VEC0.EStechs = EStechs
@@ -731,9 +669,11 @@ Public Class F_VECTO
         Dim LV0 As ListViewItem
         Dim ID As String
 
-        AuxDlog.ClearAllValues(True)
         AuxDlog.VehPath = fPATH(VECTOfile)
-
+        AuxDlog.TbPath.Text = ""
+        AuxDlog.CbType.SelectedIndex = -1
+        AuxDlog.CbType.Text = ""
+        AuxDlog.TbID.Text = ""       '!!! Vorher Type setzen weil ID beim ändern von Type überschrieben wird !!!"
 
 lbDlog:
         If AuxDlog.ShowDialog = Windows.Forms.DialogResult.OK Then
@@ -795,7 +735,7 @@ lbDlog:
         SelItem = LvAux.SelectedItems(0)
 
         AuxDlog.VehPath = fPATH(VECTOfile)
-
+        AuxDlog.CbType.SelectedIndex = -1
         AuxDlog.CbType.Text = SelItem.SubItems(1).Text
         AuxDlog.TbID.Text = SelItem.SubItems(0).Text    'After Type-set!
 
@@ -819,52 +759,6 @@ lbDlog:
         End If
 
         If AuxDlog.ShowDialog = Windows.Forms.DialogResult.OK Then
-
-'Set New Systems Properties
-
-
-        'Select Case AuxDlog.TbID.Text
-
-        '    '**** ELECTRICS ****
-        '    Case sKey.AUX.ElecSys.ToString()
-        '     For Each item As KeyValuePair(Of String, Single) In AuxDlog.ListItems
-        '       ConsumerListES.Add(New VectoAuxiliaries.Electrics.ElectricalConsumer(item.Key, item.Value))
-        '     Next
-
-        '    PulleyGearEfficiencyES = CType(AuxDlog.txtPulleyGearEfficiency.Text, Single)
-        '    PulleyGearRatioES = CType(AuxDlog.txtPulleyGearRatio.Text, Single)
-
-        '    '============================================================================================
-
-        '    '**** PNEUMATICS ****
-        '    Case sKey.AUX.PneumSys.ToString()
-        '     For Each item As KeyValuePair(Of String, Single) In AuxDlog.ListItems
-        '       ConsumerListPS.Add(New VectoAuxiliaries.Pneumatics.PneumaticConsumer(item.Key, item.Value))
-        '     Next
-        '    '------Get Pully Values
-        '    PulleyGearEfficiencyPS = CType(AuxDlog.txtPulleyGearEfficiency.Text, Single)
-        '    PulleyGearRatioPS = CType(AuxDlog.txtPulleyGearRatio.Text, Single)
-
-        '    '============================================================================================
-
-        '    '**** HVAC ****
-        '    Case sKey.AUX.HVAC.ToString()
-
-        '    '----- Get list of MAP Inputs
-        '    For Each item As KeyValuePair(Of String, Single) In AuxDlog.ListItems
-        '     HVACMapInputs.Add(item.Key, item.Value)
-        '    Next
-
-        '    '------Get Pully Values
-        '    PulleyGearEfficiencyHVAC = CType(AuxDlog.txtPulleyGearEfficiency.Text, Single)
-        '    PulleyGearRatioHVAC = CType(AuxDlog.txtPulleyGearRatio.Text, Single)
-
-        '    '============================================================================================
-
-        'End Select
-
-
-
             SelItem.SubItems(0).Text = UCase(Trim(AuxDlog.TbID.Text))
             SelItem.SubItems(1).Text = Trim(AuxDlog.CbType.Text)
 
@@ -928,7 +822,74 @@ lbDlog:
         Me.Close()
     End Sub
 
+#Region "Cycle list"
 
+    Private Sub LvCycles_DoubleClick(sender As Object, e As System.EventArgs) Handles LvCycles.DoubleClick
+        If Me.LvCycles.SelectedItems.Count > 0 Then OpenFiles(fFileRepl(Me.LvCycles.SelectedItems(0).SubItems(0).Text, fPATH(VECTOfile)))
+    End Sub
+
+    Private Sub LvCycles_KeyDown(sender As Object, e As System.Windows.Forms.KeyEventArgs) Handles LvCycles.KeyDown
+        Select Case e.KeyCode
+            Case Keys.Delete, Keys.Back
+                RemoveCycle()
+            Case Keys.Enter
+                If Me.LvCycles.SelectedItems.Count > 0 Then Me.LvCycles.SelectedItems(0).BeginEdit()
+        End Select
+    End Sub
+
+
+    Private Sub BtDRIadd_Click(sender As System.Object, e As System.EventArgs) Handles BtDRIadd.Click
+        Dim str As String
+        Dim GenDir As String
+
+        GenDir = fPATH(VECTOfile)
+
+        If fbDRI.OpenDialog("", True) Then
+
+            For Each str In fbDRI.Files
+                Me.LvCycles.Items.Add(fFileWoDir(str, GenDir))
+            Next
+
+            Change()
+
+        End If
+
+    End Sub
+
+    Private Sub BtDRIrem_Click(sender As System.Object, e As System.EventArgs) Handles BtDRIrem.Click
+        RemoveCycle()
+    End Sub
+
+    Private Sub RemoveCycle()
+        Dim i As Integer
+
+        If LvCycles.SelectedItems.Count = 0 Then
+            If LvCycles.Items.Count = 0 Then
+                Exit Sub
+            Else
+                LvCycles.Items(LvCycles.Items.Count - 1).Selected = True
+            End If
+        End If
+
+        i = LvCycles.SelectedItems(0).Index
+
+        LvCycles.SelectedItems(0).Remove()
+
+        If LvCycles.Items.Count > 0 Then
+            If i < LvCycles.Items.Count Then
+                LvCycles.Items(i).Selected = True
+            Else
+                LvCycles.Items(LvCycles.Items.Count - 1).Selected = True
+            End If
+
+            LvCycles.Focus()
+        End If
+
+        Change()
+
+    End Sub
+
+#End Region
 
 #Region "Enable/Disable GUI controls"
 
@@ -993,7 +954,7 @@ lbDlog:
 
 #End Region
 
-Public Sub UpdatePic()
+    Public Sub UpdatePic()
         Dim VEH0 As New cVEH
         Dim ENG0 As cENG
         Dim GBX0 As cGBX
@@ -1246,6 +1207,7 @@ Public Sub UpdatePic()
 
     End Sub
 
+
 #Region "Open File Context Menu"
 
     Private CmFiles As String()
@@ -1280,74 +1242,6 @@ Public Sub UpdatePic()
 
 #End Region
 
-#Region "Cycle list"
-
-    Private Sub LvCycles_DoubleClick(sender As Object, e As System.EventArgs) Handles LvCycles.DoubleClick
-        If Me.LvCycles.SelectedItems.Count > 0 Then OpenFiles(fFileRepl(Me.LvCycles.SelectedItems(0).SubItems(0).Text, fPATH(VECTOfile)))
-    End Sub
-
-    Private Sub LvCycles_KeyDown(sender As Object, e As System.Windows.Forms.KeyEventArgs) Handles LvCycles.KeyDown
-        Select Case e.KeyCode
-            Case Keys.Delete, Keys.Back
-                RemoveCycle()
-            Case Keys.Enter
-                If Me.LvCycles.SelectedItems.Count > 0 Then Me.LvCycles.SelectedItems(0).BeginEdit()
-        End Select
-    End Sub
-
-
-    Private Sub BtDRIadd_Click(sender As System.Object, e As System.EventArgs) Handles BtDRIadd.Click
-        Dim str As String
-        Dim GenDir As String
-
-        GenDir = fPATH(VECTOfile)
-
-        If fbDRI.OpenDialog("", True) Then
-
-            For Each str In fbDRI.Files
-                Me.LvCycles.Items.Add(fFileWoDir(str, GenDir))
-            Next
-
-            Change()
-
-        End If
-
-    End Sub
-
-    Private Sub BtDRIrem_Click(sender As System.Object, e As System.EventArgs) Handles BtDRIrem.Click
-        RemoveCycle()
-    End Sub
-
-    Private Sub RemoveCycle()
-        Dim i As Integer
-
-        If LvCycles.SelectedItems.Count = 0 Then
-            If LvCycles.Items.Count = 0 Then
-                Exit Sub
-            Else
-                LvCycles.Items(LvCycles.Items.Count - 1).Selected = True
-            End If
-        End If
-
-        i = LvCycles.SelectedItems(0).Index
-
-        LvCycles.SelectedItems(0).Remove()
-
-        If LvCycles.Items.Count > 0 Then
-            If i < LvCycles.Items.Count Then
-                LvCycles.Items(i).Selected = True
-            Else
-                LvCycles.Items(LvCycles.Items.Count - 1).Selected = True
-            End If
-
-            LvCycles.Focus()
-        End If
-
-        Change()
-
-    End Sub
-
-#End Region
 
 
 End Class

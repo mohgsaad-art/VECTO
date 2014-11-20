@@ -452,15 +452,12 @@ Public Class F_MAINForm
 
         ComLineShutDown = False
 
-        'File Browser Initialise  - Comment Added TB 25/9/14
         FB_Initialize()
 
-        'File Form Title - Including Version - Comment Added TB 25/9/14
         Me.Text = "VECTO " & VECTOvers
 
 
-        'FileLists_________________________________________________
-
+        'FileLists
         JobListView = New cFileListView(MyConfPath & "joblist.txt")
         JobListView.LVbox = Me.LvGEN
         CycleListView = New cFileListView(MyConfPath & "cyclelist.txt")
@@ -737,7 +734,6 @@ Public Class F_MAINForm
         End Select
     End Sub
 
-    'Invoke Vecto Form on Double click - Edits Job : Comment Added TB 25/9/14
     Private Sub ListViewGEN_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles LvGEN.DoubleClick
         If Me.LvGEN.SelectedItems.Count > 0 Then
             Me.LvGEN.SelectedItems(0).Checked = Not Me.LvGEN.SelectedItems(0).Checked
