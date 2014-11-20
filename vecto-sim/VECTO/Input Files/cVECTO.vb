@@ -9,7 +9,6 @@
 '
 ' See the LICENSE.txt for the specific language governing permissions and limitations.
 
-
 Imports System.Collections.Generic
 
 Public Class cVECTO
@@ -60,7 +59,16 @@ Public Class cVECTO
     Public SavedInDeclMode As Boolean
 
 
+    Public Class cAuxEntry
+        Public Type As String
+        Public Path As cSubPath
+        Public TechStr As String = ""
 
+        Public Sub New()
+            Path = New cSubPath
+        End Sub
+
+    End Class
 
     Public Function CreateFileList() As Boolean
         Dim Aux0 As cAuxEntry
@@ -183,8 +191,6 @@ Public Class cVECTO
             dic0.Add("Cycles", ls)
         End If
 
-        'Limited Information regarding Auxillaries under 2.0.4-Beta release, 
-
         'Aux
         If AuxPaths.Count > 0 Then
             ls = New List(Of Object)
@@ -195,30 +201,9 @@ Public Class cVECTO
                 dic.Add("Path", AuxEntryKV.Value.Path.PathOrDummy)
                 dic.Add("Technology", AuxEntryKV.Value.TechStr)
 
-        'TB 29/9/2014 - Augmentation of Auxillary information to be stored in the configuration file post 2.0.4-Beta release
-
-                ''TODO - TB BIG CHANGE HERE ELECTRICAL SYSTEM 
-                'If AuxEntryKV.Key = sKey.AUX.ElecSys Then
-                '    dic.Add("PulleyGearEfficiencyES", AuxEntryKV.Value.PulleyGearEfficiencyES)
-                '    dic.Add("PulleyGearRatioES", AuxEntryKV.Value.PulleyGearRatioES)
-                '    dic.Add("TechList", EStechs)
-                '    dic.Add("ConsumersES", AuxEntryKV.Value.ConsumerListES)
-                'End If
-
-                ''TODO - TB BIG CHANGE HERE ( HVAC SYSTEM )
-                'If AuxEntryKV.Key = sKey.AUX.HVAC Then
-                '    dic.Add("PulleyGearEfficiencyHVAC", AuxEntryKV.Value.PulleyGearEfficiencyHVAC)
-                '    dic.Add("PulleyGearRatioHVAC", AuxEntryKV.Value.PulleyGearRatioHVAC)
-                '    dic.Add("MapInputs", AuxEntryKV.Value.HVACMapInputs)
-                'End If
-
-                ''TODO - TB BIG CHANGE HERE ( PNEUMATIC SYSTEM )
-                'If AuxEntryKV.Key = sKey.AUX.PneumSys Then
-                '    dic.Add("PulleyGearEfficiencyPS", AuxEntryKV.Value.PulleyGearEfficiencyPS)
-                '    dic.Add("PulleyGearRatioPS", AuxEntryKV.Value.PulleyGearRatioPS)
-                '    dic.Add("ConsumersPS", AuxEntryKV.Value.ConsumerListPS)
-
-                'End If
+                If AuxEntryKV.Key = sKey.AUX.ElecSys Then
+                    dic.Add("TechList", EStechs)
+                End If
 
                 ls.Add(dic)
             Next
@@ -321,7 +306,6 @@ Public Class cVECTO
                     AuxEntry.Type = dic("Type")
                     AuxEntry.Path.Init(MyPath, dic("Path"))
 
-
                     If Not dic("Technology") Is Nothing Then AuxEntry.TechStr = dic("Technology")
 
                     AuxPaths.Add(AuxID, AuxEntry)
@@ -335,9 +319,6 @@ Public Class cVECTO
                             Next
                         End If
                     End If
-
-                    'TB 29/9/2014 Here is where we read the Auxilliary Augmented Properties where they appear.
-                    '
 
                 Next
             End If
