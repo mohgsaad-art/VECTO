@@ -393,7 +393,7 @@ Public function Validate_Pneumatics(  ) As boolean
 
        'Dead Volume Litres : txtDeadVolumeLitres
        If Not IsZeroOrPostiveNumber(txtDeadVolumeLitres.Text) then 
-         errorProvider.SetError(txtDeadVolumeLitres ,"Please provide a non negative between 0 and 1.")    
+         errorProvider.SetError(txtDeadVolumeLitres ,"Please provide a non negative number.")    
          result=False
        Else
          errorProvider.SetError(txtDeadVolumeLitres ,String.Empty)           
@@ -402,7 +402,7 @@ Public function Validate_Pneumatics(  ) As boolean
 
        'Dead Vol BlowOuts Per Litresper Hour : txtDeadVolBlowOutsPerLitresperHour
        If Not IsZeroOrPostiveNumber(txtDeadVolBlowOutsPerLitresperHour.Text) then 
-         errorProvider.SetError(txtDeadVolBlowOutsPerLitresperHour ,"Please provide a non negative between 0 and 1.")
+         errorProvider.SetError(txtDeadVolBlowOutsPerLitresperHour ,"Please provide a non negative number.")
          result=false    
         Else
          errorProvider.SetError(txtDeadVolBlowOutsPerLitresperHour ,String.Empty)        
@@ -540,6 +540,15 @@ Dim result As Boolean = true
          errorProvider.SetError(txtAlternatorMapPath ,"Error : map is invalid or cannot be found, please select a valid alternator map")  
          result=false
         End Try
+
+
+        'Alternator Gear Efficiency : txtAlternatorGearEfficiency
+        If Not IsNumberBetweenZeroandOne( txtAlternatorGearEfficiency.Text) then
+         ErrorProvider.SetError( txtAlternatorGearEfficiency, "Please enter a number between 0 an 1")
+         result = false
+        Else
+         ErrorProvider.SetError( txtAlternatorGearEfficiency,String.Empty)        
+        End If
 
 
        'Door Action Time : txtDoorActuationTimeSeconds
@@ -769,7 +778,7 @@ Private Sub SmartResult_CellValidating( sender As Object,  e As DataGridViewCell
    End If
 
 End Sub
-private sub resultCard_CellMouseUp( sender As Object,  e as DataGridViewCellMouseEventArgs)  
+private sub resultCard_CellMouseUp( sender As Object,  e as DataGridViewCellMouseEventArgs) Handles gvResultsCardIdle.CellMouseUp, gvResultsCardTraction.CellMouseUp, gvResultsCardOverrun.CellMouseUp  
     
       Dim dgv As DataGridView = CType( sender, DataGridView)
 

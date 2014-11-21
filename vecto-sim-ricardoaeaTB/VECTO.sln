@@ -11,7 +11,7 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "VectoAuxiliariesTests", "..
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DF50B0A7-5651-4568-9FB9-8768882CFFDB}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AuxillaryTestHarness", "AuxillaryTestHarness\AuxillaryTestHarness.vbproj", "{BFCFD8BD-2FF5-4F63-80CE-5B94FDC8298E}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AuxiliaryTestHarness", "AuxillaryTestHarness\AuxiliaryTestHarness.vbproj", "{BFCFD8BD-2FF5-4F63-80CE-5B94FDC8298E}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
@@ -25,12 +25,12 @@ Global
 		SccProjectUniqueName2 = ..\\VectoAuxiliaries-TB\\VectoAuxiliariesTests\\VectoAuxiliariesTests.vbproj
 		SccProjectName2 = ../VectoAuxiliaries-TB/VectoAuxiliariesTests
 		SccLocalPath2 = ..\\VectoAuxiliaries-TB\\VectoAuxiliariesTests
-		SccProjectUniqueName3 = VECTO\\VECTO.vbproj
-		SccProjectName3 = VECTO
-		SccLocalPath3 = VECTO
-		SccProjectUniqueName4 = AuxillaryTestHarness\\AuxillaryTestHarness.vbproj
-		SccProjectName4 = AuxillaryTestHarness
-		SccLocalPath4 = AuxillaryTestHarness
+		SccProjectUniqueName3 = AuxillaryTestHarness\\AuxiliaryTestHarness.vbproj
+		SccProjectName3 = AuxillaryTestHarness
+		SccLocalPath3 = AuxillaryTestHarness
+		SccProjectUniqueName4 = VECTO\\VECTO.vbproj
+		SccProjectName4 = VECTO
+		SccLocalPath4 = VECTO
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
