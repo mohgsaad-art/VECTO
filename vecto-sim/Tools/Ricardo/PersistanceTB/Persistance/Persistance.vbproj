@@ -1,0 +1,236 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F0F0EC84-132C-4687-A14A-97DFD0CCB6DA}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>VectoAuxiliaries.My.MyApplication</StartupObject>
+    <RootNamespace>VectoAuxiliaries</RootNamespace>
+    <AssemblyName>Persistance</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>WindowsForms</MyType>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>Persistance.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>Persistance.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+    <Import Include="System.Threading.Tasks" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ActuationsKey.vb" />
+    <Compile Include="AlternatorMap.vb" />
+    <Compile Include="AlternatorMapOLDREMOVELATER.vb" />
+    <Compile Include="AlternatorMapValues.vb" />
+    <Compile Include="AuxillaryEnvironment.vb" />
+    <Compile Include="cDelaunayMap.vb" />
+    <Compile Include="cFile V3.vb" />
+    <Compile Include="cMAP.vb" />
+    <Compile Include="CompressorMap.vb" />
+    <Compile Include="Dashboard.Designer.vb">
+      <DependentUpon>Dashboard.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Dashboard.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ElectricalConsumer.vb" />
+    <Compile Include="ElectricalConsumerList.vb" />
+    <Compile Include="ElectricConstants.vb" />
+    <Compile Include="ElectricsUserInputsConfig.vb" />
+    <Compile Include="Form1.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.vb">
+      <DependentUpon>Form1.vb</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HVACConstants.vb" />
+    <Compile Include="HVACInputs.vb" />
+    <Compile Include="HVACMap.vb" />
+    <Compile Include="HVACMapParameter.vb" />
+    <Compile Include="HVACSteadyStateModel.vb" />
+    <Compile Include="HVACUserInputsConfig.vb" />
+    <Compile Include="IAlternatorMap.vb" />
+    <Compile Include="ICompressorMap.vb" />
+    <Compile Include="IElectricalConsumer.vb" />
+    <Compile Include="IElectricalConsumerList.vb" />
+    <Compile Include="IElectricsUserInputsConfig.vb" />
+    <Compile Include="IFUELMAP.vb" />
+    <Compile Include="IHVACInputs.vb" />
+    <Compile Include="IHVACMap.vb" />
+    <Compile Include="IHVACSteadyStateModel.vb" />
+    <Compile Include="IHVACUserInputsConfig.vb" />
+    <Compile Include="IM0_5_SmartAlternatorSetEfficiency.vb" />
+    <Compile Include="IM0_NonSmart_AlternatorsSetEfficiency.vb" />
+    <Compile Include="IM10.vb" />
+    <Compile Include="IM11.vb" />
+    <Compile Include="IM12.vb" />
+    <Compile Include="IM13.vb" />
+    <Compile Include="IM1_AverageHVACLoadDemand.vb" />
+    <Compile Include="IM2_AverageElectricalLoadDemand.vb" />
+    <Compile Include="IM3_AveragePneumaticLoadDemand.vb" />
+    <Compile Include="IM4_AirCompressor.vb" />
+    <Compile Include="IM5_SmartAlternatorSetGeneration.vb" />
+    <Compile Include="IM6.vb" />
+    <Compile Include="IM7.vb" />
+    <Compile Include="IM8.vb" />
+    <Compile Include="IM9.vb" />
+    <Compile Include="IPneumaticActuationsMAP.vb" />
+    <Compile Include="IPneumaticsAuxilliariesConfig.vb" />
+    <Compile Include="IPneumaticUserInputsConfig.vb" />
+    <Compile Include="IResultCard.vb" />
+    <Compile Include="ISignals.vb" />
+    <Compile Include="IVectoInputs.vb" />
+    <Compile Include="M0_5_SmartAlternatorSetEfficiency.vb" />
+    <Compile Include="M0_NonSmart_AlternatorsSetEfficiency.vb" />
+    <Compile Include="M10.vb" />
+    <Compile Include="M11.vb" />
+    <Compile Include="M12.vb" />
+    <Compile Include="M13.vb" />
+    <Compile Include="M1_AverageHVACLoadDemand.vb" />
+    <Compile Include="M2_AverageElectricalLoadDemand.vb" />
+    <Compile Include="M3_AveragePneumaticLoadDemand.vb" />
+    <Compile Include="M4_AirCompressor.vb" />
+    <Compile Include="M5__SmartAlternatorSetGeneration.vb" />
+    <Compile Include="M6.vb" />
+    <Compile Include="M7.vb" />
+    <Compile Include="M8.vb" />
+    <Compile Include="M9.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="PneumaticActuationsMap.vb" />
+    <Compile Include="PneumaticsAuxilliariesConfig.vb" />
+    <Compile Include="PneumaticUserInputsConfig.vb" />
+    <Compile Include="ResultCard.vb" />
+    <Compile Include="ResultCardResult.vb" />
+    <Compile Include="Signals.vb" />
+    <Compile Include="SmartResult.vb" />
+    <Compile Include="VectoInputs.vb" />
+    <Compile Include="VectoJsonHeader.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Dashboard.resx">
+      <DependentUpon>Dashboard.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="App.config" />
+    <EmbeddedResource Include="Images\amberLight.jpg" />
+    <EmbeddedResource Include="Images\greenLight.jpg" />
+    <Content Include="testAlternatorMap - Copy.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="testAlternatorMap.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="testCompressorMap.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="testFuelGoodMap.vmap">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="testPneumaticActuationsMap_GOODMAP.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="JSONConverters\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
