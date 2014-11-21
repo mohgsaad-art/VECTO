@@ -55,9 +55,10 @@ Public Class AuxilaryComparisonTests
     Dim auxFresh = New AuxillaryEnvironment("")
     Dim auxNow   = New AuxillaryEnvironment("")
     Dim compareResult As Boolean
-    
-    'Act
     auxNow.ElectricalUserInputsConfig.AlternatorGearEfficiency= If( auxNow.ElectricalUserInputsConfig.AlternatorGearEfficiency+0.1>1, 1, auxNow.ElectricalUserInputsConfig.AlternatorGearEfficiency+0.1)
+
+    'Act
+    compareResult = auxFresh.ConfigValuesAreTheSameAs( auxNow )
 
     Assert.AreEqual( false,compareResult )
 
@@ -70,9 +71,10 @@ Public Class AuxilaryComparisonTests
     Dim auxFresh = New AuxillaryEnvironment("")
     Dim auxNow   = New AuxillaryEnvironment("")
     Dim compareResult As Boolean
-    
-    'Act
     auxNow.ElectricalUserInputsConfig.AlternatorMap = auxNow.ElectricalUserInputsConfig.AlternatorMap & "X"
+
+    'Act
+    compareResult = auxFresh.ConfigValuesAreTheSameAs( auxNow )
 
     Assert.AreEqual( false,compareResult )
 
@@ -85,9 +87,10 @@ Public Class AuxilaryComparisonTests
     Dim auxFresh = New AuxillaryEnvironment("")
     Dim auxNow   = New AuxillaryEnvironment("")
     Dim compareResult As Boolean
-    
-    'Act
     auxNow.ElectricalUserInputsConfig.DoorActuationTimeSecond+=1
+
+    'Act
+    compareResult = auxFresh.ConfigValuesAreTheSameAs( auxNow )
 
     Assert.AreEqual( false,compareResult )
 
@@ -100,9 +103,10 @@ Public Class AuxilaryComparisonTests
     Dim auxFresh = New AuxillaryEnvironment("")
     Dim auxNow   = New AuxillaryEnvironment("")
     Dim compareResult As Boolean
-    
-    'Act
     auxNow.ElectricalUserInputsConfig.ElectricalConsumers.Items.RemoveAt(0)
+
+    'Act
+    compareResult = auxFresh.ConfigValuesAreTheSameAs( auxNow )
 
     Assert.AreEqual( false,compareResult )
 
@@ -115,9 +119,10 @@ Public Class AuxilaryComparisonTests
     Dim auxFresh = New AuxillaryEnvironment("")
     Dim auxNow   = New AuxillaryEnvironment("")
     Dim compareResult As Boolean
-    
-    'Act
     auxNow.ElectricalUserInputsConfig.ElectricalConsumers.Items(0).AvgConsumptionAmps+=1
+
+    'Act
+    compareResult = auxFresh.ConfigValuesAreTheSameAs( auxNow )
 
     Assert.AreEqual( false,compareResult )
 
@@ -130,9 +135,10 @@ Public Class AuxilaryComparisonTests
     Dim auxFresh = New AuxillaryEnvironment("")
     Dim auxNow   = New AuxillaryEnvironment("")
     Dim compareResult As Boolean
-    
-    'Act
     auxNow.ElectricalUserInputsConfig.ElectricalConsumers.Items(0).BaseVehicle= NOT auxNow.ElectricalUserInputsConfig.ElectricalConsumers.Items(0).BaseVehicle
+
+    'Act
+    compareResult = auxFresh.ConfigValuesAreTheSameAs( auxNow )
 
     Assert.AreEqual( false,compareResult )
 
@@ -145,10 +151,11 @@ Public Class AuxilaryComparisonTests
     Dim auxFresh = New AuxillaryEnvironment("")
     Dim auxNow   = New AuxillaryEnvironment("")
     Dim compareResult As Boolean
-    
-    'Act
     Dim cat As String = auxNow.ElectricalUserInputsConfig.ElectricalConsumers.Items(0).Category
     auxNow.ElectricalUserInputsConfig.ElectricalConsumers.Items(0).Category= cat & "x"
+
+    'Act
+    compareResult = auxFresh.ConfigValuesAreTheSameAs( auxNow )
 
     Assert.AreEqual( false,compareResult )
 
@@ -161,10 +168,11 @@ Public Class AuxilaryComparisonTests
     Dim auxFresh = New AuxillaryEnvironment("")
     Dim auxNow   = New AuxillaryEnvironment("")
     Dim compareResult As Boolean
-    
-    'Act
     Dim cname As String = auxNow.ElectricalUserInputsConfig.ElectricalConsumers.Items(0).ConsumerName
     auxNow.ElectricalUserInputsConfig.ElectricalConsumers.Items(0).ConsumerName= cName & "x"
+
+    'Act
+    compareResult = auxFresh.ConfigValuesAreTheSameAs( auxNow )
 
     Assert.AreEqual( false,compareResult )
 
@@ -177,15 +185,15 @@ Public Class AuxilaryComparisonTests
     Dim auxFresh = New AuxillaryEnvironment("")
     Dim auxNow   = New AuxillaryEnvironment("")
     Dim compareResult As Boolean
-    
-    'Act
     Dim cname As single = auxNow.ElectricalUserInputsConfig.ElectricalConsumers.Items(0).NominalConsumptionAmps
     auxNow.ElectricalUserInputsConfig.ElectricalConsumers.Items(0).NominalConsumptionAmps+=1
+
+    'Act
+    compareResult = auxFresh.ConfigValuesAreTheSameAs( auxNow )
 
     Assert.AreEqual( false,compareResult )
 
     End Sub
-   '********************
     <Test()>
     <Category("ElectricalUserConfig")> _
     Public Sub ElectricalUserConfig_Unequal_Consumers_NumberInActualVehicle_UnequalTest()
@@ -194,10 +202,11 @@ Public Class AuxilaryComparisonTests
     Dim auxFresh = New AuxillaryEnvironment("")
     Dim auxNow   = New AuxillaryEnvironment("")
     Dim compareResult As Boolean
-    
-    'Act
     Dim cname As single = auxNow.ElectricalUserInputsConfig.ElectricalConsumers.Items(0).NumberInActualVehicle
     auxNow.ElectricalUserInputsConfig.ElectricalConsumers.Items(0).NumberInActualVehicle+=1
+
+    'Act
+    compareResult = auxFresh.ConfigValuesAreTheSameAs( auxNow )
 
     Assert.AreEqual( false,compareResult )
 
