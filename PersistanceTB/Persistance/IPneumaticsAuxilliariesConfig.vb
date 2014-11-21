@@ -1,0 +1,16 @@
+﻿Public Interface IPneumaticsAuxilliariesConfig
+
+Property OverrunUtilisationForCompressionFraction As Single
+Property BrakingWithRetarderNIperKG As Single
+Property BrakingNoRetarderNIperKG As Single
+Property BreakingPerKneelingNIperKGinMM As Single
+Property PerDoorOpeningNI As Single
+Property PerStopBrakeActuationNIperKG As Single
+Property AirControlledSuspensionNIperMinute As Single
+Property AdBlueNIperMinute As Single
+Property NonSmartRegenFractionTotalAirDemand As Single
+Property SmartRegenFractionTotalAirDemand As Single
+Property DeadVolumeLitres As Single
+Property DeadVolBlowOutsPerLitresperHour As Single
+
+End Interface
