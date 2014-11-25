@@ -129,6 +129,21 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resource1.resx</DependentUpon>
     </Compile>
+    <Compile Include="UI\cFileBrowser.vb" />
+    <Compile Include="UI\FB_Dialog.designer.vb">
+      <DependentUpon>FB_Dialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UI\FB_Dialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FB_FavDlog.designer.vb">
+      <DependentUpon>FB_FavDlog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UI\FB_FavDlog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FB_Global.vb" />
+    <Compile Include="UI\VECTO_Types.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Dashboard.resx">
@@ -144,6 +159,13 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resource1.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\FB_Dialog.resx">
+      <DependentUpon>FB_Dialog.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\FB_FavDlog.resx">
+      <DependentUpon>FB_FavDlog.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -207,6 +229,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
