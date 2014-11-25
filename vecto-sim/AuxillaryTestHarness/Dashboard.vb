@@ -1002,17 +1002,11 @@ Private Sub RefreshDisplayValues_Timed( sender As Object,  e As EventArgs) Handl
   End If
 
 
-
   SecondsIntoCycle+=1
-
-
-
 
   SetProcessingStatus()
 
   RefreshDisplays()
-
-
 
 
 End Sub
@@ -1040,4 +1034,58 @@ Protected Overrides Function ProcessCmdKey(ByRef msg As Message, keyData As Keys
     End Function
 
 
+Private Sub btnSave_Click( sender As Object,  e As EventArgs) Handles btnSave.Click
+
+  auxEnvironment.ClearDown()
+
+  auxEnvironment.Save("TESTHARNESCONFIG.Json")
+
+
+
+End Sub
+
+Private Sub btnLoad_Click( sender As Object,  e As EventArgs) Handles btnLoad.Click
+
+  'JSON METHOD
+  'Release existing databindings
+  UnbindAllControls( Me)
+
+
+  auxEnvironment.Load("TESTHARNESCONFIG.Json")
+
+  ''Only required for Harness environment
+  auxEnvironment.Initialise()
+
+  CreateBindings()
+
+End Sub
+
+
+
+public sub UnbindAllControls(ByRef container As Control)   
+  'Clear all of the controls within the container object
+  'If "Recurse" is true, then also clear controls within any sub-containers
+  Dim ctrl As Control = Nothing
+ 
+  For Each ctrl In container.Controls
+
+           ctrl.DataBindings.Clear()
+
+           If ctrl.HasChildren then
+              UnbindAllControls(ctrl)
+           End If
+
+  next
+
+End Sub
+
+
+Private Sub btnFuelMap_Click( sender As Object,  e As EventArgs) Handles btnFuelMap.Click
+
+                'If fbVEH.OpenDialog(fFileRepl(Me.TbVEH.Text, 
+                'fPATH(VECTOfile))) Then 
+
+                'End If
+                'Me.TbVEH.Text = fFileWoDir(fbVEH.Files(0), fPATH(VECTOfile))
+End Sub
 End Class
