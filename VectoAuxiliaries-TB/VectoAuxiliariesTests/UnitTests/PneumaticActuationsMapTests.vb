@@ -8,12 +8,12 @@ Namespace Pneumatics
 <TestFixture()>
 Public Class PneumaticActuationsMapTests
 
-Public Const cstrPneumaticActuationsMapPath_GOODMAP As String = "TestFiles\testPneumaticActuationsMap_GOODMAP.csv"
-Public Const cstrPneumaticActuationsMapPath_INCORRECTCOLUMNS As String = "TestFiles\testPneumaticActuationsMap_INCORRECTCOLUMNS.csv"
-Public Const cstrPneumaticActuationsMapPath_INVALIDINTEGERVALUE As String = "TestFiles\testPneumaticActuationsMap_INVALIDINTEGERVALUE.csv"
-Public Const cstrPneumaticActuationsMapPath_DUPLICATEKEY As String = "TestFiles\testPneumaticActuationsMap_DUPLICATEKEY.csv"
-Public Const cstrPneumaticActuationsMapPath_INVALIDCONSUMERNAME As String = "TestFiles\testPneumaticActuationsMap_INVALIDCONSUMERNAME.csv"
-Public Const cstrPneumaticActuationsMapPath_INVALIDCYCLENAME As String = "TestFiles\testPneumaticActuationsMap_INVALIDCYCLENAME.csv"
+Public Const cstrPneumaticActuationsMapPath_GOODMAP As String = "TestFiles\testPneumaticActuationsMap_GOODMAP.apac"
+Public Const cstrPneumaticActuationsMapPath_INCORRECTCOLUMNS As String = "TestFiles\testPneumaticActuationsMap_INCORRECTCOLUMNS.apac"
+Public Const cstrPneumaticActuationsMapPath_INVALIDINTEGERVALUE As String = "TestFiles\testPneumaticActuationsMap_INVALIDINTEGERVALUE.apac"
+Public Const cstrPneumaticActuationsMapPath_DUPLICATEKEY As String = "TestFiles\testPneumaticActuationsMap_DUPLICATEKEY.apac"
+Public Const cstrPneumaticActuationsMapPath_INVALIDCONSUMERNAME As String = "TestFiles\testPneumaticActuationsMap_INVALIDCONSUMERNAME.apac"
+Public Const cstrPneumaticActuationsMapPath_INVALIDCYCLENAME As String = "TestFiles\testPneumaticActuationsMap_INVALIDCYCLENAME.apac"
 
 
 

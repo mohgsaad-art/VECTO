@@ -7,11 +7,11 @@ Namespace UnitTests
     <TestFixture()>
     Public Class AlternatorMapTests
 
-        Private Const _GOODMAP As String = "TestFiles\testAlternatorMap.csv"
-        Private Const _INVALIDRPMMAP As String = "TestFiles\testAlternatorMapWithInvalidRpm.csv"
-        Private Const _INVALIDAMPSMAP As String = "TestFiles\testAlternatorMapWithInvalidAmps.csv"
-        Private Const _IVALIDEFFICIENCYMAP As String = "TestFiles\testAlternatorMapWithInvalidEfficiency.csv"
-        Private Const _INVALIDPOWERMAP As String = "TestFiles\testAlternatorMapWithInvalidPower.csv"
+        Private Const _GOODMAP As String = "TestFiles\testAlternatorMap.aalt"
+        Private Const _INVALIDRPMMAP As String = "TestFiles\testAlternatorMapWithInvalidRpm.aalt"
+        Private Const _INVALIDAMPSMAP As String = "TestFiles\testAlternatorMapWithInvalidAmps.aalt"
+        Private Const _IVALIDEFFICIENCYMAP As String = "TestFiles\testAlternatorMapWithInvalidEfficiency.aalt"
+        Private Const _INVALIDPOWERMAP As String = "TestFiles\testAlternatorMapWithInvalidPower.aalt"
 
 <Test()>
 <TestCase(10,1500,0.6150f)> _

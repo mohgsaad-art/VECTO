@@ -6,13 +6,13 @@ Namespace UnitTests
     <TestFixture()>
     Public Class CompressorMapTests
 
-        Private Const GOODMAP As String = "TestFiles\testCompressorMap.csv"
-        Private Const INVALIDPOWERCOMPRESSORONMAP As String = "TestFiles\testCompressorMapInvalidOnPower.csv"
-        Private Const INVALIDPOWERCOMPRESSOROFFMAP As String = "TestFiles\testCompressorMapInvalidOffPower.csv"
-        Private Const INVALIDFLOWRATEMAP As String = "TestFiles\testCompressorMapInvalidFlow.csv"
-        Private Const INSSUFICIENTROWSMAP As String = "TestFiles\testCompressorMapNotEnoughRows.csv"
-        Private Const INVALIDRPMMAP As String = "TestFiles\testCompressorMapInvalidRpm.csv"
-        Private Const INVALIDNUMBEROFCOLUMNS As String = "TestFiles\testCompressorMapWrongNumberOfColumns.csv"
+        Private Const GOODMAP As String = "TestFiles\testCompressorMap.acmp"
+        Private Const INVALIDPOWERCOMPRESSORONMAP As String = "TestFiles\testCompressorMapInvalidOnPower.acmp"
+        Private Const INVALIDPOWERCOMPRESSOROFFMAP As String = "TestFiles\testCompressorMapInvalidOffPower.acmp"
+        Private Const INVALIDFLOWRATEMAP As String = "TestFiles\testCompressorMapInvalidFlow.acmp"
+        Private Const INSSUFICIENTROWSMAP As String = "TestFiles\testCompressorMapNotEnoughRows.acmp"
+        Private Const INVALIDRPMMAP As String = "TestFiles\testCompressorMapInvalidRpm.acmp"
+        Private Const INVALIDNUMBEROFCOLUMNS As String = "TestFiles\testCompressorMapWrongNumberOfColumns.acmp"
 
 
 #Region "Helpers"

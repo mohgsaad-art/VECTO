@@ -12,9 +12,9 @@ Namespace UnitTests
 <TestFixture()>
 Public Class M0_NonSmart_AlternatorsSetEfficiencyTests
 
-Private Const cstrAlternatorsEfficiencyMapLocation As String = "tests\testAlternatorMap.csv"
+Private Const cstrAlternatorsEfficiencyMapLocation As String = "tests\testAlternatorMap.aalt"
 Private Const cstrHVACMapLocation As String = "TestFiles\TestHvacMap.csv"
-Private Const cstrAlternatorMap As String = "TestFiles\testAlternatorMap.csv"
+Private Const cstrAlternatorMap As String = "TestFiles\testAlternatorMap.aalt"
 
 Private elecConsumers As IElectricalConsumerList
 Private hvacInputs As IHVACInputs

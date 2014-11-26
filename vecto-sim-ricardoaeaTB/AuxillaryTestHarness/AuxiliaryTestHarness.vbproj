@@ -181,18 +181,18 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="App.config" />
-    <Content Include="testAlternatorMap.csv">
+    <None Include="testAlternatorMap.aalt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <Content Include="testCompressorMap.acmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="testCompressorMap.csv">
+    <None Include="testPneumaticActuationsMap_GOODMAP.apac">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="testPneumaticActuationsMap_GOODMAP.csv">
+    </None>
+    <None Include="testAlternatorMap - Copy.aalt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="testAlternatorMap - Copy.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </None>
     <Content Include="testFuelGoodMap.vmap">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

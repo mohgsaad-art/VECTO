@@ -27,7 +27,7 @@ Namespace UnitTests
             Dim hvacInp As IHVACInputs = CType(New HVACInputs(1, 1), IHVACInputs)
             Dim hvacmap As IHVACMap = CType(New HVACMap("testfiles\TestHvacMap.csv"), IHVACMap)
             hvacmap.Initialise()
-            Dim altMap As IAlternatorMap = CType(New AlternatorMap("testfiles\testAlternatorMap.csv"), IAlternatorMap)
+            Dim altMap As IAlternatorMap = CType(New AlternatorMap("testfiles\testAlternatorMap.aalt"), IAlternatorMap)
             altMap.Initialise()
             Dim m0 As New M0_NonSmart_AlternatorsSetEfficiency(consumers,hvacInp, altMap, 26.3,signals,ssmHVac)
 

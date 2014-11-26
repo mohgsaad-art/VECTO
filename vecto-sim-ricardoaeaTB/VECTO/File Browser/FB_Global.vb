@@ -13,7 +13,7 @@
 ''' Global File Brower properties and cFilebrowser instances.
 ''' </summary>
 ''' <remarks></remarks>
-Module FB_Global
+public Module FB_Global
 
     Public FB_FolderHistory(19) As String
     Public FB_Drives() As String
@@ -40,6 +40,8 @@ Module FB_Global
     Public fbCDx As cFileBrowser
 
     Public fbVMOD As cFileBrowser
+
+
 
 
 End Module
