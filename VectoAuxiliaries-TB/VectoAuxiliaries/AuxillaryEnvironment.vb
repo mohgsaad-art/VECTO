@@ -158,7 +158,7 @@ End Sub
  
  Sub new()
 
-   Call Me.New("")
+   Call Me.New("EMPTY")
 
  End Sub
 
@@ -185,6 +185,7 @@ If auxConfigFile is Nothing orelse auxConfigFile.Trim().Length=0 orelse Not FILE
     Else
     
     setDefaults()
+    'ElectricalUserInputsConfig.ElectricalConsumers.Items.Clear
     If Not Load(auxConfigFile)
       MessageBox.Show(String.Format("Unable to load file  {0}", auxConfigFile))
     End If
@@ -219,7 +220,7 @@ Private Sub setDefaults()
                                                                      .ResultCardOverrun= New ResultCard(New List(Of SmartResult)),
                                                                      .ResultCardTraction=New  ResultCard(New List(Of SmartResult)),
                                                                      .SmartElectrical=True,
-                                                                     .AlternatorMap="testAlternatorMap.csv"
+                                                                     .AlternatorMap="testAlternatorMap.aalt"
                                                                      }
 
  HvacUserInputsConfig = New HVACUserInputsConfig( New HVACSteadyStateModel(100,100,100))

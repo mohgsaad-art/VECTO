@@ -37,12 +37,12 @@ End Sub
 Public sub SetPropertiesToDefaults()
 
 
-            ActuationsMap="testPneumaticActuationsMap_GOODMAP.csv"
+            ActuationsMap=""
             AdBlueDosing="Pneumatic"
             AirSuspensionControl="Electrically"
             CompressorGearEfficiency=0.8
             CompressorGearRatio=1.0
-            CompressorMap="testCompressorMap.csv"
+            CompressorMap="testCompressorMap.acmp"
             Doors="Pneumatic"
             KneelingHeightMillimeters=80
             RetarderBrake=True
