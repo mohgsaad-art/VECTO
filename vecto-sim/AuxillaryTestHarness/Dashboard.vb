@@ -12,6 +12,8 @@ private TabColors As Dictionary( Of TabPage, Color)  = new   Dictionary( Of TabP
 Private processing As Boolean = False
 Private SecondsIntoCycle As Integer=0
 
+Private vectoFile As String = "C:\Users\tb28\Source\Workspaces\VECTO\vecto-sim\AuxillaryTestHarness\bin\Debug\vectopath.vecto"
+
 #End Region
 
 
@@ -449,6 +451,25 @@ Public function Validate_Pneumatics(  ) As boolean
 
 
         'Actuations Map : txtActuationsMap
+        If txtActuationsMap.Text.Trim.Length=0 then
+         errorProvider.SetError(txtActuationsMap ,"Please enter the localtion of a valid Pneumatic Actuations map.") 
+         result=false   
+        else
+         errorProvider.SetError(txtActuationsMap ,String.Empty) 
+        End if
+        'Test File is valid
+        Dim actuations As PneumaticActuationsMAP
+        Try
+
+        actuations = New PneumaticActuationsMap( txtActuationsMap.Text)
+         actuations.Initialise()
+         errorProvider.SetError(txtActuationsMap ,String.Empty) 
+        Catch ex As Exception
+         errorProvider.SetError(txtActuationsMap ,"Error : Pneumatic Actuations map is invalid or cannot be found, please select a valid map")  
+         result=false
+        End Try
+
+
 
         'NOT Required but included here so readers can see this is a positive ommission
         '******************************************************************************
@@ -612,6 +633,19 @@ Dim result As Boolean = true
 
 End Function
 
+
+Public Function ValidateAll() As Boolean
+
+  If Validate_Pneumatics=False Orelse Validate_Electrics=false Orelse Validate_Pneumatics=False
+
+  Return False
+  
+  End If
+
+  Return true
+
+End Function
+
 '*****  IMPUTS VALIDATION
 
 #End Region
@@ -649,7 +683,7 @@ Private Sub Dashboard_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
 
   'Finally Initialise Environment.
-  auxEnvironment.Initialise()
+  'auxEnvironment.Initialise()
   SetProcessingStatus()
 
 End Sub
@@ -861,12 +895,27 @@ End Sub
 
 Private Sub btnStart_Click( sender As Object,  e As EventArgs) Handles btnStart.Click 
 
-SecondsIntoCycle=0
+
+If Not ValidateAll then 
+
+MessageBox.Show("There are validation errors, please fix before trying again")
+Exit sub
+
+End If
+
+try
+   SecondsIntoCycle=0
     auxEnvironment.Initialise()
     processing=true
     SetProcessingStatus
+    Timer1.Start
 
-Timer1.Start
+    Catch ex As Exception
+
+     MessageBox.Show("Unable to initialise :" & ex.Message)
+
+    End Try
+    
 
 End Sub
 Private Sub btnFinish_Click( sender As Object,  e As EventArgs) Handles btnFinish.Click
@@ -1027,7 +1076,7 @@ Protected Overrides Function ProcessCmdKey(ByRef msg As Message, keyData As Keys
        End If
        
 
-        Return MyBase.ProcessCmdKey(msg, keyData)
+       Return MyBase.ProcessCmdKey(msg, keyData)
 
 
 
@@ -1082,10 +1131,111 @@ End Sub
 
 Private Sub btnFuelMap_Click( sender As Object,  e As EventArgs) Handles btnFuelMap.Click
 
-                'If fbVEH.OpenDialog(fFileRepl(Me.TbVEH.Text, 
-                'fPATH(VECTOfile))) Then 
+               Dim fbAux As New cFileBrowser(True,false)
 
-                'End If
-                'Me.TbVEH.Text = fFileWoDir(fbVEH.Files(0), fPATH(VECTOfile))
+               
+
+              ' Dim vectoFile As String = "C:\Users\tb28\Source\Workspaces\VECTO\vecto-sim\AuxillaryTestHarness\bin\Debug\vectopath.vecto"
+               Dim fname As String = fFILE( vectoFile,true)    
+
+                fbAux.Extensions = New String() {"vmap"}
+              '  If fbAux.OpenDialog(fFileRepl(fname, fPATH(VECTOfile))) Then 
+               If fbAux.OpenDialog( fPATH(VECTOfile)) Then 
+
+                 txtFuelMap.Text = fFileWoDir(fbAux.Files(0), fPATH(VECTOfile))
+
+                End If
+
+        'fbFileLists.Extensions = New String() {"txt"}
+        'fbVECTO.Extensions = New String() {"vecto"}
+        'fbVEH.Extensions = New String() {"vveh"} - Vehicle FIle
+        'fbMAP.Extensions = New String() {"vmap"} - Fuel Map
+        'fbDRI.Extensions = New String() {"vdri"} - Diving Cycle
+        'fbFLD.Extensions = New String() {"vfld"} - Full Load & Drag Toque
+        'fbENG.Extensions = New String() {"veng"} - Vehicle Engine
+        'fbGBX.Extensions = New String() {"vgbx"} - Vehicle Gearbox
+        'fbACC.Extensions = New String() {"vacc"} - Acceleration Limiting Input File
+        'fbAUX.Extensions = New String() {"vaux"} - Vehicle Auxiliaries
+        'fbGBS.Extensions = New String() {"vgbs"} - Shift Polygons
+        'fbRLM.Extensions = New String() {"vrlm"} - Retarder Loss Input
+        'fbTLM.Extensions = New String() {"vtlm"} - Tranmission Loss Map
+        'fbTCC.Extensions = New String() {"vtcc"} - Torque Converter Characteristics
+        'fbCDx.Extensions = New String() {"vcdv", "vcdb"} -  Cross Wind Correction Speed types
+
+        'fbVMOD.Extensions = New String() {"vmod"} - Modal Results.
+
+        
+
+
 End Sub
+
+Private Sub btnAlternatorMapPath_Click( sender As Object,  e As EventArgs) Handles btnAlternatorMapPath.Click
+
+        
+
+               Dim fbAux As New cFileBrowser(True,false)
+
+               
+
+              ' Dim vectoFile As String = "C:\Users\tb28\Source\Workspaces\VECTO\vecto-sim\AuxillaryTestHarness\bin\Debug\vectopath.vecto"
+               Dim fname As String = fFILE( vectoFile,true)    
+
+                fbAux.Extensions = New String() {"AALT"}
+                If fbAux.OpenDialog(fPATH(VECTOfile)) Then 
+
+                 txtAlternatorMapPath.Text = fFileWoDir(fbAux.Files(0), fPATH(VECTOfile))
+
+               End If
+
+               Validate_Electrics
+
+
+End Sub
+
+
+
+Private Sub btnCompressorMap_Click( sender As Object,  e As EventArgs) Handles btnCompressorMap.Click
+
+
+               Dim fbAux As New cFileBrowser(True,false)
+
+               
+
+              ' Dim vectoFile As String = "C:\Users\tb28\Source\Workspaces\VECTO\vecto-sim\AuxillaryTestHarness\bin\Debug\vectopath.vecto"
+               Dim fname As String = fFILE( vectoFile,true)    
+
+                fbAux.Extensions = New String() {"ACMP"}
+                If fbAux.OpenDialog(fPATH(VECTOfile)) Then 
+
+                 txtCompressorMap.Text = fFileWoDir(fbAux.Files(0), fPATH(VECTOfile))
+
+               End If
+
+               Validate_Pneumatics
+
+
+
+End Sub
+
+
+
+Private Sub btnActuationsMap_Click( sender As Object,  e As EventArgs) Handles btnActuationsMap.Click
+
+               Dim fbAux As New cFileBrowser(True,false)              
+
+              ' Dim vectoFile As String = "C:\Users\tb28\Source\Workspaces\VECTO\vecto-sim\AuxillaryTestHarness\bin\Debug\vectopath.vecto"
+               Dim fname As String = fFILE( vectoFile,true)    
+
+                fbAux.Extensions = New String() {"APAC"}
+                If fbAux.OpenDialog(fPATH(VECTOfile)) Then 
+
+                 txtActuationsMap.Text = fFileWoDir(fbAux.Files(0), fPATH(VECTOfile))
+
+                End If
+
+                Validate_Pneumatics
+
+End Sub
+
+
 End Class

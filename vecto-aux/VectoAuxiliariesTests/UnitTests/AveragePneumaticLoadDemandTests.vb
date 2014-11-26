@@ -21,8 +21,8 @@ Namespace UnitTests
         Private _cycleDurationMinutes As Single = 51.9
         Private _totalAirDemand As Single
 
-        Private _actuationsMapPath As String = "Testfiles\testPneumaticActuationsMap_GOODMAP.csv"
-        Private _compressorMapPath As String = "Testfiles\testCompressorMap.csv"
+        Private _actuationsMapPath As String = "Testfiles\testPneumaticActuationsMap_GOODMAP.apac"
+        Private _compressorMapPath As String = "Testfiles\testCompressorMap.acmp"
 
         Private _defaultInputConfig As IPneumaticUserInputsConfig
         Private _Signals As ISignals = New Signals

@@ -167,43 +167,43 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="packages.config" />
-    <Content Include="TestFiles\testPneumaticActuationsMap_GOODMAP.csv">
+    <Content Include="TestFiles\testPneumaticActuationsMap_GOODMAP.apac">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\testAlternatorMapNotEnoughRows.csv">
+    <Content Include="TestFiles\testAlternatorMapNotEnoughRows.aalt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\testAlternatorMapReadOnly.csv">
+    <Content Include="TestFiles\testAlternatorMapReadOnly.aalt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\testAlternatorMapWithInvalidEfficiency.csv">
+    <Content Include="TestFiles\testAlternatorMapWithInvalidEfficiency.aalt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\testAlternatorMapWithInvalidRpm.csv">
+    <Content Include="TestFiles\testAlternatorMapWithInvalidRpm.aalt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\testAlternatorMapWrongNoOfColumns.csv">
+    <Content Include="TestFiles\testAlternatorMapWrongNoOfColumns.aalt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\testCompressorMap.csv">
+    <Content Include="TestFiles\testCompressorMap.acmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\testCompressorMapInvalidFlow.csv">
+    <Content Include="TestFiles\testCompressorMapInvalidFlow.acmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\testCompressorMapInvalidOffPower.csv">
+    <Content Include="TestFiles\testCompressorMapInvalidOffPower.acmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\testCompressorMapInvalidOnPower.csv">
+    <Content Include="TestFiles\testCompressorMapInvalidOnPower.acmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\testCompressorMapInvalidRpm.csv">
+    <Content Include="TestFiles\testCompressorMapInvalidRpm.acmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\testCompressorMapNotEnoughRows.csv">
+    <Content Include="TestFiles\testCompressorMapNotEnoughRows.acmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\testCompressorMapWrongNumberOfColumns.csv">
+    <Content Include="TestFiles\testCompressorMapWrongNumberOfColumns.acmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestFiles\TestHvacMap.csv">
@@ -234,25 +234,25 @@
     <Content Include="TestFiles\TestHvacMap - MissingHeader.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\testAlternatorMap.csv">
+    <None Include="TestFiles\testAlternatorMap.aalt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </None>
     <Content Include="TestFiles\cstrPneumaticActuationsMapPath_INCORRECTCOLUMNS.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\testPneumaticActuationsMap_DUPLICATEKEY.csv">
+    <Content Include="TestFiles\testPneumaticActuationsMap_DUPLICATEKEY.apac">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\testPneumaticActuationsMap_INVALIDCYCLENAME.csv">
+    <Content Include="TestFiles\testPneumaticActuationsMap_INVALIDCYCLENAME.apac">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\testPneumaticActuationsMap_INVALIDCONSUMERNAME.csv">
+    <Content Include="TestFiles\testPneumaticActuationsMap_INVALIDCONSUMERNAME.apac">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\testPneumaticActuationsMap_GOODMAP - Copy.csv">
+    <Content Include="TestFiles\testPneumaticActuationsMap_GOODMAP - Copy.apac">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\testCompressorMap - Copy.csv">
+    <Content Include="TestFiles\testCompressorMap - Copy.acmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

@@ -1038,11 +1038,8 @@ Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Clic
 
   auxEnvironment.ClearDown()
 
-  dim settings = new JsonSerializerSettings()
-  settings.TypeNameHandling = TypeNameHandling.Objects
-  Dim  output As string = JsonConvert.SerializeObject(auxEnvironment, Formatting.Indented, settings)
+  auxEnvironment.Save()
 
-  File.WriteAllText("auxilaryConfig.json", output)
 
   'BINARY METHOD
  'Dim formatter = New BinaryFormatter
@@ -1059,26 +1056,19 @@ End Sub
 
 Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
 
-dim settings = new JsonSerializerSettings()
-settings.TypeNameHandling = TypeNameHandling.Objects
+
 
   'JSON METHOD
   'Release existing databindings
   UnbindAllControls( Me)
 
-   auxEnvironment.ClearDown()
 
-   Dim output As String  = File.ReadAllText("auxilaryConfig.json")
-
-   auxEnvironment =  JsonConvert.DeserializeObject( Of AuxillaryEnvironment)(output,settings)
-
+  auxEnvironment.Load()
 
   ''Only required for Harness environment
   auxEnvironment.Initialise()
 
   CreateBindings()
-
-
 
  'BINARY METHOD
   'Dim formatter As IFormatter = New BinaryFormatter()

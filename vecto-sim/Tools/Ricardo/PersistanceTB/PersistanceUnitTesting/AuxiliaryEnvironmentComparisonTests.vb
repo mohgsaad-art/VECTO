@@ -846,6 +846,29 @@ Public Class AuxilaryComparisonTests
     #End Region
 
 
+    <Test()>
+    <Category("Persistance")> _
+    Public Sub Persistance_A_BasicSaveAndLoad()
+
+    'Arrange
+    Dim auxEmpty = New AuxillaryEnvironment("EMPTY")
+    Dim auxDefault  = New AuxillaryEnvironment("")
+    Dim actual        As Boolean =false
+    Dim expected      As Boolean = true
+
+
+    'Act
+    auxDefault.Save()
+    auxEmpty.Load()
+    actual =auxEmpty.ConfigValuesAreTheSameAs(auxDefault)
+
+   
+
+    Assert.AreEqual( expected,actual )
+
+    End Sub
+
+
 
 
 

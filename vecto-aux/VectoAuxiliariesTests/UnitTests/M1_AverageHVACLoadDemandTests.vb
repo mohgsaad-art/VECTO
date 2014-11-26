@@ -10,7 +10,7 @@ Namespace UnitTests
 <TestFixture()>
 Public Class M1_AverageHVACLoadDemandTests
 
-  Private Const _GOODMAP As String = "TestFiles\testAlternatorMap.csv"
+  Private Const _GOODMAP As String = "TestFiles\testAlternatorMap.aalt"
 
 Private signals As ISignals = New Signals With {.EngineSpeed=2000}
 Private powernetVoltage As Single = 26.3

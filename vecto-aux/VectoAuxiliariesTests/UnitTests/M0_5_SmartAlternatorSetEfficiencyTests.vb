@@ -25,7 +25,7 @@ Dim elecConsumers As New ElectricalConsumerList(26.3,0.096,True)
 Dim hvacInputs As New HVACInputs(1,1)
 'Dim  hvacMap As New HVACMap("testFiles\TestHvacMap.csv")
 'hvacMap.Initialise()
-Dim alternatoMap As New AlternatorMap("testFiles\testAlternatormap.csv")
+Dim alternatoMap As New AlternatorMap("testFiles\testAlternatormap.aalt")
 alternatoMap.Initialise()
 
 Dim signals = New Signals()

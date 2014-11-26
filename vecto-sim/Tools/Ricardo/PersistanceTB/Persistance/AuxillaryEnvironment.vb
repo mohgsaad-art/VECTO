@@ -158,8 +158,27 @@ End Sub
  
 Public Sub new(auxConfigFile As String)
 
+If auxConfigFile="EMPTY" then 
 
-If auxConfigFile is Nothing orelse auxConfigFile.Trim().Length=0 orelse Not FILE.Exists(auxConfigFile) then
+
+ElectricalUserInputsConfig = New  ElectricsUserInputsConfig() With { .PowerNetVoltage= 26.3}
+
+
+ElectricalUserInputsConfig.ElectricalConsumers= New ElectricalConsumerList(26.3,0.096,true)
+ElectricalUserInputsConfig.ResultCardIdle = new ResultCard( New List(Of SmartResult ))
+ElectricalUserInputsConfig.ResultCardOverrun= new ResultCard( New List(Of SmartResult ))
+ElectricalUserInputsConfig.ResultCardTraction= new ResultCard( New List(Of SmartResult ))
+
+PneumaticAuxillariesConfig= New PneumaticsAuxilliariesConfig(False)
+PneumaticUserInputsConfig= New PneumaticUserInputsConfig(False)
+HvacUserInputsConfig = New HVACUserInputsConfig()
+HvacUserInputsConfig.SteadyStateModel= New HVACSteadyStateModel()
+
+return
+
+End If
+
+If auxConfigFile is Nothing orelse auxConfigFile.Trim().Length=0 orelse Not FILE.Exists(auxConfigFile)  then
 
     setdefaults()
 
@@ -341,9 +360,7 @@ Private Function CompareHVACConfig( other As AuxillaryEnvironment) As Boolean
 End Function
 
 
-Public Function ShallowCopy() As AuxillaryEnvironment
-    Return DirectCast(Me.MemberwiseClone(), AuxillaryEnvironment)
-  End Function
+
 
 Public Function ConfigValuesAreTheSameAs( other As AuxillaryEnvironment) As Boolean
 
@@ -355,6 +372,158 @@ Public Function ConfigValuesAreTheSameAs( other As AuxillaryEnvironment) As Bool
    Return true
 
 End Function
+
+
+'Persistance Functions
+Public Function Save( optional filePath As String = "auxilaryConfig.json" ) As Boolean
+
+  Dim returnValue As Boolean = true
+  Dim settings = new JsonSerializerSettings()
+  settings.TypeNameHandling = TypeNameHandling.Objects
+
+ 'JSON METHOD
+ try
+
+  Dim  output As string = JsonConvert.SerializeObject(me, Formatting.Indented, settings)
+
+  File.WriteAllText(filePath, output)
+
+  Catch ex as Exception
+  
+    'TODO:Do something meaningfull here perhaps logging
+  
+     returnValue= False
+  End Try
+  
+  Return returnValue
+
+End Function
+Public Function Load( optional filePath As String = "auxilaryConfig.json" ) As Boolean
+
+  Dim returnValue As Boolean = true
+  Dim settings = new JsonSerializerSettings()
+  Dim tmpAux As AuxillaryEnvironment
+
+  settings.TypeNameHandling = TypeNameHandling.Objects
+
+ 'JSON METHOD
+ try
+
+   me.ClearDown()
+
+   Dim output As String  = File.ReadAllText("auxilaryConfig.json")
+
+   tmpAux =  JsonConvert.DeserializeObject( Of AuxillaryEnvironment)(output,settings)
+
+   'This is where we Assume values of loaded( Deserialized ) object.
+   AssumeValuesOfOther( tmpAux ) 
+
+  Catch ex as Exception
+  
+    'TODO:Do something meaningfull here perhaps logging
+  
+     returnValue= False
+  End Try
+  
+  Return returnValue
+
+End Function
+
+'Persistance Helpers
+Private sub AssumeValuesOfOther( other As AuxillaryEnvironment )
+
+   CloneElectricaConfiguration( other )
+   ClonePneumaticsAuxiliariesConfig( other )
+   ClonePneumaticsUserInputsConfig(other)
+   CloneHVAC(other)
+
+End sub
+Private sub CloneElectricaConfiguration( other as AuxillaryEnvironment) 
+
+'AlternatorGearEfficiency
+me.ElectricalUserInputsConfig.AlternatorGearEfficiency  =  other.ElectricalUserInputsConfig.AlternatorGearEfficiency
+'AlternatorMap
+me.ElectricalUserInputsConfig.AlternatorMap             = other.ElectricalUserInputsConfig.AlternatorMap
+'DoorActuationTimeSecond
+me.ElectricalUserInputsConfig.DoorActuationTimeSecond   = other.ElectricalUserInputsConfig.DoorActuationTimeSecond
+
+'Electrical Consumer list
+Me.ElectricalUserInputsConfig.ElectricalConsumers.Items.Clear
+For  Each otherConsumer As IElectricalConsumer In other.ElectricalUserInputsConfig.ElectricalConsumers.Items    
+  
+      Dim  newConsumer = New ElectricalConsumer( otherConsumer.BaseVehicle,            _
+                                                 otherConsumer.Category,               _
+                                                 otherConsumer.ConsumerName,           _
+                                                 otherConsumer.NominalConsumptionAmps, _
+                                                 otherConsumer.PhaseIdle_TractionOn,   _
+                                                 otherConsumer.PowerNetVoltage,        _
+                                                 otherConsumer.NumberInActualVehicle   )
+       
+      Me.ElectricalUserInputsConfig.ElectricalConsumers.Items.Add( newConsumer )
+
+Next
+
+'PowerNetVoltage
+other.ElectricalUserInputsConfig.PowerNetVoltage = other.ElectricalUserInputsConfig.PowerNetVoltage 
+'ResultCardIdle
+Me.ElectricalUserInputsConfig.ResultCardIdle.Results.Clear
+For each result As SmartResult In other.ElectricalUserInputsConfig.ResultCardIdle.Results
+       Me.ElectricalUserInputsConfig.ResultCardIdle.Results.Add( New SmartResult(result.Amps,result.SmartAmps))    
+Next
+'ResultCardOverrun
+For each result As SmartResult In other.ElectricalUserInputsConfig.ResultCardOverrun.Results
+        Me.ElectricalUserInputsConfig.ResultCardOverrun.Results.Add( New SmartResult(result.Amps,result.SmartAmps))       
+Next
+'ResultCardTraction
+For each result As SmartResult In other.ElectricalUserInputsConfig.ResultCardTraction.Results
+        Me.ElectricalUserInputsConfig.ResultCardTraction.Results.Add( New SmartResult(result.Amps,result.SmartAmps))          
+Next
+'SmartElectrical
+Me.ElectricalUserInputsConfig.SmartElectrical = other.ElectricalUserInputsConfig.SmartElectrical 
+
+End Sub
+Private sub ClonePneumaticsAuxiliariesConfig( other as AuxillaryEnvironment) 
+
+ Me.PneumaticAuxillariesConfig.AdBlueNIperMinute                        =other.PneumaticAuxillariesConfig.AdBlueNIperMinute 
+ Me.PneumaticAuxillariesConfig.AirControlledSuspensionNIperMinute       =other.PneumaticAuxillariesConfig.AirControlledSuspensionNIperMinute 
+ Me.PneumaticAuxillariesConfig.BrakingNoRetarderNIperKG                 =other.PneumaticAuxillariesConfig.BrakingNoRetarderNIperKG 
+ Me.PneumaticAuxillariesConfig.BrakingWithRetarderNIperKG               =other.PneumaticAuxillariesConfig.BrakingWithRetarderNIperKG 
+ Me.PneumaticAuxillariesConfig.BreakingPerKneelingNIperKGinMM           =other.PneumaticAuxillariesConfig.BreakingPerKneelingNIperKGinMM 
+ Me.PneumaticAuxillariesConfig.DeadVolBlowOutsPerLitresperHour          =other.PneumaticAuxillariesConfig.DeadVolBlowOutsPerLitresperHour 
+ Me.PneumaticAuxillariesConfig.DeadVolumeLitres                         =other.PneumaticAuxillariesConfig.DeadVolumeLitres 
+ Me.PneumaticAuxillariesConfig.NonSmartRegenFractionTotalAirDemand      =other.PneumaticAuxillariesConfig.NonSmartRegenFractionTotalAirDemand 
+ Me.PneumaticAuxillariesConfig.PerDoorOpeningNI                         =other.PneumaticAuxillariesConfig.PerDoorOpeningNI 
+ Me.PneumaticAuxillariesConfig.PerStopBrakeActuationNIperKG             =other.PneumaticAuxillariesConfig.PerStopBrakeActuationNIperKG 
+ Me.PneumaticAuxillariesConfig.SmartRegenFractionTotalAirDemand         =other.PneumaticAuxillariesConfig.SmartRegenFractionTotalAirDemand 
+ Me.PneumaticAuxillariesConfig.OverrunUtilisationForCompressionFraction =other.PneumaticAuxillariesConfig.OverrunUtilisationForCompressionFraction 
+
+End Sub
+Private Sub ClonePneumaticsUserInputsConfig ( other As AuxillaryEnvironment )
+
+  Me.PneumaticUserInputsConfig.ActuationsMap = other.PneumaticUserInputsConfig.ActuationsMap 
+  Me.PneumaticUserInputsConfig.AdBlueDosing = other.PneumaticUserInputsConfig.AdBlueDosing 
+  Me.PneumaticUserInputsConfig.AirSuspensionControl = other.PneumaticUserInputsConfig.AirSuspensionControl 
+  Me.PneumaticUserInputsConfig.CompressorGearEfficiency = other.PneumaticUserInputsConfig.CompressorGearEfficiency
+  Me.PneumaticUserInputsConfig.CompressorGearRatio = other.PneumaticUserInputsConfig.CompressorGearRatio 
+  Me.PneumaticUserInputsConfig.CompressorMap = other.PneumaticUserInputsConfig.CompressorMap 
+  Me.PneumaticUserInputsConfig.Doors = other.PneumaticUserInputsConfig.Doors 
+  Me.PneumaticUserInputsConfig.KneelingHeightMillimeters = other.PneumaticUserInputsConfig.KneelingHeightMillimeters 
+  Me.PneumaticUserInputsConfig.RetarderBrake = other.PneumaticUserInputsConfig.RetarderBrake 
+  Me.PneumaticUserInputsConfig.SmartAirCompression = other.PneumaticUserInputsConfig.SmartAirCompression 
+  Me.PneumaticUserInputsConfig.SmartRegeneration = other.PneumaticUserInputsConfig.SmartRegeneration 
+
+
+End Sub
+Private Sub CloneHVAC( other As AuxillaryEnvironment)
+
+  Me.HvacUserInputsConfig.SteadyStateModel.HVACElectricalLoadPowerWatts = other.HvacUserInputsConfig.SteadyStateModel.HVACElectricalLoadPowerWatts 
+  Me.HvacUserInputsConfig.SteadyStateModel.HVACFuellingLitresPerHour    = other.HvacUserInputsConfig.SteadyStateModel.HVACFuellingLitresPerHour 
+  Me.HvacUserInputsConfig.SteadyStateModel.HVACMechanicalLoadPowerWatts = other.HvacUserInputsConfig.SteadyStateModel.HVACMechanicalLoadPowerWatts 
+
+
+End Sub
+
+
 
 End Class
 
