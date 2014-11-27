@@ -7,6 +7,8 @@ Namespace DownstreamModules
 
 Public Class M13
  Implements IM13
+
+ Private Const FUEL_DENSITY_L3 As Single = 835
  
 Private m1  As IM1_AverageHVACLoadDemand
 Private m10 As IM10
@@ -35,9 +37,20 @@ Private readonly Property Sum4 As Single
 End Property
 Private readonly Property Sum5 As Single
     Get
-     Return SW3 + m1.HVACFuelingLitresPerHour
+     Return  m1.HVACFuelingLitresPerHour * FUEL_DENSITY_L3
     End Get
 End Property
+Private ReadOnly Property Sum6 As Single
+    Get
+     Return SW3 + Sum5
+    End Get
+End Property
+Private ReadOnly Property Sum7 As Single
+    Get
+      Return  Sum6/ FUEL_DENSITY_L3
+    End Get
+End Property
+
    
 Private readonly Property SW1 As Single
     Get
@@ -55,12 +68,6 @@ Private readonly Property SW3 As Single
     End Get
 End Property
 
-
-Public ReadOnly Property TotalCycleFuelConsumption As Single Implements IM13.TotalCycleFuelConsumption
-    Get
-     Return Sum5
-    End Get
-End Property
 Public Sub new ( m1 As IM1_AverageHVACLoadDemand, m10 As IM10, m12 As IM12 , signals As ISignals)
 
       me.m1   =  m1
@@ -71,6 +78,17 @@ Public Sub new ( m1 As IM1_AverageHVACLoadDemand, m10 As IM10, m12 As IM12 , sig
 End Sub
 
 
+        Public ReadOnly Property TotalCycleFuelConsumptionGrams As Single Implements IM13.TotalCycleFuelConsumptionGrams
+            Get
+          Return Sum6
+            End Get
+        End Property
+
+        Public ReadOnly Property TotalCycleFuelConsumptionLitres As Single Implements IM13.TotalCycleFuelConsumptionLitres
+            Get
+             Return  Sum7
+            End Get
+        End Property
 End Class
 
 

@@ -927,6 +927,144 @@ Private Sub btnFinish_Click( sender As Object,  e As EventArgs) Handles btnFinis
 
 End Sub
 
+
+Private Sub btnSave_Click( sender As Object,  e As EventArgs) Handles btnSave.Click
+
+  auxEnvironment.ClearDown()
+
+  auxEnvironment.Save("TESTHARNESCONFIG.Json")
+
+
+
+End Sub
+Private Sub btnLoad_Click( sender As Object,  e As EventArgs) Handles btnLoad.Click
+
+  'JSON METHOD
+  'Release existing databindings
+  UnbindAllControls( Me)
+
+
+  auxEnvironment.Load("TESTHARNESCONFIG.Json")
+
+  ''Only required for Harness environment
+  auxEnvironment.Initialise()
+
+  CreateBindings()
+
+End Sub
+
+
+
+Private Sub btnFuelMap_Click( sender As Object,  e As EventArgs) Handles btnFuelMap.Click
+
+               Dim fbAux As New cFileBrowser(True,false)
+
+               
+
+              ' Dim vectoFile As String = "C:\Users\tb28\Source\Workspaces\VECTO\vecto-sim\AuxillaryTestHarness\bin\Debug\vectopath.vecto"
+               Dim fname As String = fFILE( vectoFile,true)    
+
+                fbAux.Extensions = New String() {"vmap"}
+              '  If fbAux.OpenDialog(fFileRepl(fname, fPATH(VECTOfile))) Then 
+               If fbAux.OpenDialog( fPATH(VECTOfile)) Then 
+
+                 txtFuelMap.Text = fFileWoDir(fbAux.Files(0), fPATH(VECTOfile))
+
+                End If
+
+        'fbFileLists.Extensions = New String() {"txt"}
+        'fbVECTO.Extensions = New String() {"vecto"}
+        'fbVEH.Extensions = New String() {"vveh"} - Vehicle FIle
+        'fbMAP.Extensions = New String() {"vmap"} - Fuel Map
+        'fbDRI.Extensions = New String() {"vdri"} - Diving Cycle
+        'fbFLD.Extensions = New String() {"vfld"} - Full Load & Drag Toque
+        'fbENG.Extensions = New String() {"veng"} - Vehicle Engine
+        'fbGBX.Extensions = New String() {"vgbx"} - Vehicle Gearbox
+        'fbACC.Extensions = New String() {"vacc"} - Acceleration Limiting Input File
+        'fbAUX.Extensions = New String() {"vaux"} - Vehicle Auxiliaries
+        'fbGBS.Extensions = New String() {"vgbs"} - Shift Polygons
+        'fbRLM.Extensions = New String() {"vrlm"} - Retarder Loss Input
+        'fbTLM.Extensions = New String() {"vtlm"} - Tranmission Loss Map
+        'fbTCC.Extensions = New String() {"vtcc"} - Torque Converter Characteristics
+        'fbCDx.Extensions = New String() {"vcdv", "vcdb"} -  Cross Wind Correction Speed types
+
+        'fbVMOD.Extensions = New String() {"vmod"} - Modal Results.
+
+        
+
+
+End Sub
+Private Sub btnAlternatorMapPath_Click( sender As Object,  e As EventArgs) Handles btnAlternatorMapPath.Click
+
+        
+
+               Dim fbAux As New cFileBrowser(True,false)
+
+               
+
+              ' Dim vectoFile As String = "C:\Users\tb28\Source\Workspaces\VECTO\vecto-sim\AuxillaryTestHarness\bin\Debug\vectopath.vecto"
+               Dim fname As String = fFILE( vectoFile,true)    
+
+                fbAux.Extensions = New String() {"AALT"}
+                If fbAux.OpenDialog(fPATH(VECTOfile)) Then 
+
+                 txtAlternatorMapPath.Text = fFileWoDir(fbAux.Files(0), fPATH(VECTOfile))
+
+               End If
+
+               Validate_Electrics
+
+               'Causes Binding to fire
+               txtAlternatorMapPath.Focus
+
+End Sub
+Private Sub btnCompressorMap_Click( sender As Object,  e As EventArgs) Handles btnCompressorMap.Click
+
+
+               Dim fbAux As New cFileBrowser(True,false)
+
+               
+
+              ' Dim vectoFile As String = "C:\Users\tb28\Source\Workspaces\VECTO\vecto-sim\AuxillaryTestHarness\bin\Debug\vectopath.vecto"
+               Dim fname As String = fFILE( vectoFile,true)    
+
+                fbAux.Extensions = New String() {"ACMP"}
+                If fbAux.OpenDialog(fPATH(VECTOfile)) Then 
+
+                 txtCompressorMap.Text = fFileWoDir(fbAux.Files(0), fPATH(VECTOfile))
+
+               End If
+
+               Validate_Pneumatics
+
+               'Causes binding to fire
+               txtCompressorMap.Focus
+
+
+End Sub
+Private Sub btnActuationsMap_Click( sender As Object,  e As EventArgs) Handles btnActuationsMap.Click
+
+               Dim fbAux As New cFileBrowser(True,false)              
+
+              ' Dim vectoFile As String = "C:\Users\tb28\Source\Workspaces\VECTO\vecto-sim\AuxillaryTestHarness\bin\Debug\vectopath.vecto"
+               Dim fname As String = fFILE( vectoFile,true)    
+
+                fbAux.Extensions = New String() {"APAC"}
+                If fbAux.OpenDialog(fPATH(VECTOfile)) Then 
+
+                 txtActuationsMap.Text = fFileWoDir(fbAux.Files(0), fPATH(VECTOfile))
+
+                End If
+
+                Validate_Pneumatics
+
+                'Causes Binding to fire.
+                txtActuationsMap.Focus
+
+End Sub
+
+
+
 #End Region
 
 Private sub RefreshDisplays()
@@ -1015,7 +1153,8 @@ Private sub RefreshDisplays()
 
 
       'M13
-      txtM13_out_TotalCycleFuelCalculation.Text = auxEnvironment.M13.TotalCycleFuelConsumption
+      txtM13_out_TotalCycleFuelCalculationGramsGRAMS.Text = auxEnvironment.M13.TotalCycleFuelConsumptionGrams
+      txtM13_out_TotalCycleFuelCalculationGramsLitres.Text = auxEnvironment.M13.TotalCycleFuelConsumptionLitres
 
 End Sub
 
@@ -1083,33 +1222,6 @@ Protected Overrides Function ProcessCmdKey(ByRef msg As Message, keyData As Keys
     End Function
 
 
-Private Sub btnSave_Click( sender As Object,  e As EventArgs) Handles btnSave.Click
-
-  auxEnvironment.ClearDown()
-
-  auxEnvironment.Save("TESTHARNESCONFIG.Json")
-
-
-
-End Sub
-
-Private Sub btnLoad_Click( sender As Object,  e As EventArgs) Handles btnLoad.Click
-
-  'JSON METHOD
-  'Release existing databindings
-  UnbindAllControls( Me)
-
-
-  auxEnvironment.Load("TESTHARNESCONFIG.Json")
-
-  ''Only required for Harness environment
-  auxEnvironment.Initialise()
-
-  CreateBindings()
-
-End Sub
-
-
 
 public sub UnbindAllControls(ByRef container As Control)   
   'Clear all of the controls within the container object
@@ -1125,115 +1237,6 @@ public sub UnbindAllControls(ByRef container As Control)
            End If
 
   next
-
-End Sub
-
-
-Private Sub btnFuelMap_Click( sender As Object,  e As EventArgs) Handles btnFuelMap.Click
-
-               Dim fbAux As New cFileBrowser(True,false)
-
-               
-
-              ' Dim vectoFile As String = "C:\Users\tb28\Source\Workspaces\VECTO\vecto-sim\AuxillaryTestHarness\bin\Debug\vectopath.vecto"
-               Dim fname As String = fFILE( vectoFile,true)    
-
-                fbAux.Extensions = New String() {"vmap"}
-              '  If fbAux.OpenDialog(fFileRepl(fname, fPATH(VECTOfile))) Then 
-               If fbAux.OpenDialog( fPATH(VECTOfile)) Then 
-
-                 txtFuelMap.Text = fFileWoDir(fbAux.Files(0), fPATH(VECTOfile))
-
-                End If
-
-        'fbFileLists.Extensions = New String() {"txt"}
-        'fbVECTO.Extensions = New String() {"vecto"}
-        'fbVEH.Extensions = New String() {"vveh"} - Vehicle FIle
-        'fbMAP.Extensions = New String() {"vmap"} - Fuel Map
-        'fbDRI.Extensions = New String() {"vdri"} - Diving Cycle
-        'fbFLD.Extensions = New String() {"vfld"} - Full Load & Drag Toque
-        'fbENG.Extensions = New String() {"veng"} - Vehicle Engine
-        'fbGBX.Extensions = New String() {"vgbx"} - Vehicle Gearbox
-        'fbACC.Extensions = New String() {"vacc"} - Acceleration Limiting Input File
-        'fbAUX.Extensions = New String() {"vaux"} - Vehicle Auxiliaries
-        'fbGBS.Extensions = New String() {"vgbs"} - Shift Polygons
-        'fbRLM.Extensions = New String() {"vrlm"} - Retarder Loss Input
-        'fbTLM.Extensions = New String() {"vtlm"} - Tranmission Loss Map
-        'fbTCC.Extensions = New String() {"vtcc"} - Torque Converter Characteristics
-        'fbCDx.Extensions = New String() {"vcdv", "vcdb"} -  Cross Wind Correction Speed types
-
-        'fbVMOD.Extensions = New String() {"vmod"} - Modal Results.
-
-        
-
-
-End Sub
-
-Private Sub btnAlternatorMapPath_Click( sender As Object,  e As EventArgs) Handles btnAlternatorMapPath.Click
-
-        
-
-               Dim fbAux As New cFileBrowser(True,false)
-
-               
-
-              ' Dim vectoFile As String = "C:\Users\tb28\Source\Workspaces\VECTO\vecto-sim\AuxillaryTestHarness\bin\Debug\vectopath.vecto"
-               Dim fname As String = fFILE( vectoFile,true)    
-
-                fbAux.Extensions = New String() {"AALT"}
-                If fbAux.OpenDialog(fPATH(VECTOfile)) Then 
-
-                 txtAlternatorMapPath.Text = fFileWoDir(fbAux.Files(0), fPATH(VECTOfile))
-
-               End If
-
-               Validate_Electrics
-
-
-End Sub
-
-
-
-Private Sub btnCompressorMap_Click( sender As Object,  e As EventArgs) Handles btnCompressorMap.Click
-
-
-               Dim fbAux As New cFileBrowser(True,false)
-
-               
-
-              ' Dim vectoFile As String = "C:\Users\tb28\Source\Workspaces\VECTO\vecto-sim\AuxillaryTestHarness\bin\Debug\vectopath.vecto"
-               Dim fname As String = fFILE( vectoFile,true)    
-
-                fbAux.Extensions = New String() {"ACMP"}
-                If fbAux.OpenDialog(fPATH(VECTOfile)) Then 
-
-                 txtCompressorMap.Text = fFileWoDir(fbAux.Files(0), fPATH(VECTOfile))
-
-               End If
-
-               Validate_Pneumatics
-
-
-
-End Sub
-
-
-
-Private Sub btnActuationsMap_Click( sender As Object,  e As EventArgs) Handles btnActuationsMap.Click
-
-               Dim fbAux As New cFileBrowser(True,false)              
-
-              ' Dim vectoFile As String = "C:\Users\tb28\Source\Workspaces\VECTO\vecto-sim\AuxillaryTestHarness\bin\Debug\vectopath.vecto"
-               Dim fname As String = fFILE( vectoFile,true)    
-
-                fbAux.Extensions = New String() {"APAC"}
-                If fbAux.OpenDialog(fPATH(VECTOfile)) Then 
-
-                 txtActuationsMap.Text = fFileWoDir(fbAux.Files(0), fPATH(VECTOfile))
-
-                End If
-
-                Validate_Pneumatics
 
 End Sub
 
