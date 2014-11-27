@@ -8,7 +8,9 @@ Namespace DownstreamModules
 Public Interface IM13
 
 
-ReadOnly Property TotalCycleFuelConsumption As Single
+ReadOnly Property TotalCycleFuelConsumptionGrams As Single
+ReadOnly Property TotalCycleFuelConsumptionLitres As Single 
+
 
 
 End Interface
