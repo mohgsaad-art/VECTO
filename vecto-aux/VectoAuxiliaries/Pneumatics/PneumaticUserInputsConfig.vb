@@ -37,7 +37,7 @@ End Sub
 Public sub SetPropertiesToDefaults()
 
 
-            ActuationsMap=""
+            ActuationsMap="testPneumaticActuationsMap_GOODMAP.apac"
             AdBlueDosing="Pneumatic"
             AirSuspensionControl="Electrically"
             CompressorGearEfficiency=0.8

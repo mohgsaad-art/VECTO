@@ -37,7 +37,7 @@ Private readonly Property Sum4 As Single
 End Property
 Private readonly Property Sum5 As Single
     Get
-     Return  m1.HVACFuelingLitresPerHour * FUEL_DENSITY_L3
+     Return  ( m1.HVACFuelingLitresPerHour * ( signals.TotalCycleTimeSeconds/3600)) * FUEL_DENSITY_L3
     End Get
 End Property
 Private ReadOnly Property Sum6 As Single
