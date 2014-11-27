@@ -10,18 +10,22 @@ Namespace UnitTests
 <TestFixture()> _
 Public Class M13Tests
 
+Private Const FUEL_DENSITY_percm3 As Single = 0.835
+
+
 <Test()> _
-<TestCase(50,	60,	70,	FALSE,	FALSE,	80, 140   )> _
-<TestCase(50,	60,	70,	FALSE,	TRUE,	80, 130   )> _
-<TestCase(50,	60,	70,	TRUE,	FALSE,	80, 150   )> _
-<TestCase(50,	60,	70,	TRUE,	TRUE,	80, 140   )> _
+<TestCase(50,	60,	70,	FALSE,	FALSE,	0.5f, 477.5f , 0.571856287f )> _
+<TestCase(50,	60,	70,	FALSE,	TRUE,	0.5f, 467.5f , 0.55988024f )> _
+<TestCase(50,	60,	70,	TRUE,	FALSE,	0.5f, 487.5f , 0.583832335f )> _
+<TestCase(50,	60,	70,	TRUE,	TRUE,	0.5f, 477.5f , 0.571856287f )> _
 Public Sub InputOutputValues( IP1  As single,
                               IP2  As single, 
                               IP3  As single,
                               IP4  As Boolean, 
                               IP5  As Boolean, 
                               IP6  As single,
-                              OUT1 As single)
+                              OUT1 As single,
+                              OUT2 As single)
 
 'Arrange
 Dim m1  As New Mock(Of  IM1_AverageHVACLoadDemand)
@@ -41,8 +45,8 @@ m1.Setup      ( Function(x) x.HVACFuelingLitresPerHour)                         
  Dim target  = New M13( m1.Object, m10.Object, M12.Object, Signals.Object)
        
 'Assert
-Assert.AreEqual( target.TotalCycleFuelConsumption, OUT1 )
-
+Assert.AreEqual( target.TotalCycleFuelConsumptionGrams, OUT1 )
+Assert.AreEqual( target.TotalCycleFuelConsumptionLitres, OUT2 )
 End Sub
 
 End Class
