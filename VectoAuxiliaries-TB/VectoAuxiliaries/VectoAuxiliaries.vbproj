@@ -76,6 +76,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuxiliaryConfig.vb" />
     <Compile Include="AuxillaryEnvironment.vb" />
     <Compile Include="DownstreamModules\cDelaunayMap.vb" />
     <Compile Include="DownstreamModules\cFile V3.vb" />
@@ -162,6 +163,27 @@
     <Compile Include="Pneumatics\PneumaticsAuxilliariesConfig.vb" />
     <Compile Include="Pneumatics\PneumaticUserInputsConfig.vb" />
     <Compile Include="Signals.vb" />
+    <Compile Include="UI\cFileBrowser.vb" />
+    <Compile Include="UI\Dashboard.Designer.vb">
+      <DependentUpon>Dashboard.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Dashboard.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FB_Dialog.designer.vb">
+      <DependentUpon>FB_Dialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UI\FB_Dialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FB_FavDlog.designer.vb">
+      <DependentUpon>FB_FavDlog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UI\FB_FavDlog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FB_Global.vb" />
+    <Compile Include="UI\VECTO_Types.vb" />
     <Compile Include="VectoInputs.vb" />
   </ItemGroup>
   <ItemGroup>
@@ -170,6 +192,16 @@
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Dashboard.resx">
+      <DependentUpon>Dashboard.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\FB_Dialog.resx">
+      <DependentUpon>FB_Dialog.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\FB_FavDlog.resx">
+      <DependentUpon>FB_FavDlog.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -184,9 +216,7 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="UI\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
