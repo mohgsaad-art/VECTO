@@ -5,6 +5,8 @@ Imports System.IO
 Imports VectoAuxiliaries.DownstreamModules
 Imports System.Windows.Forms
 Imports Newtonsoft.Json
+imports VectoAuxiliaries
+
 
 
 <Serializable()>

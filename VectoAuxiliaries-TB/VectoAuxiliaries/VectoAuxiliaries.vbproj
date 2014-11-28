@@ -128,8 +128,6 @@
     <Compile Include="Hvac\IHVACUserInputsConfig.vb" />
     <Compile Include="Hvac\IM1_AverageHVACLoadDemand.vb" />
     <Compile Include="IAuxiliaryConfig.vb" />
-    <Compile Include="ISignals.vb" />
-    <Compile Include="IVectoInputs.vb" />
     <Compile Include="DownstreamModules\M6.vb" />
     <Compile Include="Pneumatics\ActuationsKey.vb" />
     <Compile Include="Pneumatics\IM3_AveragePneumaticLoadDemand.vb" />
@@ -165,7 +163,6 @@
     <Compile Include="Pneumatics\PneumaticActuationsMap.vb" />
     <Compile Include="Pneumatics\PneumaticsAuxilliariesConfig.vb" />
     <Compile Include="Pneumatics\PneumaticUserInputsConfig.vb" />
-    <Compile Include="Signals.vb" />
     <Compile Include="UI\cFileBrowser.vb" />
     <Compile Include="UI\frmAuxiliaryConfig.Designer.vb">
       <DependentUpon>frmAuxiliaryConfig.vb</DependentUpon>
@@ -187,7 +184,6 @@
     </Compile>
     <Compile Include="UI\FB_Global.vb" />
     <Compile Include="UI\VECTO_Types.vb" />
-    <Compile Include="VectoInputs.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">

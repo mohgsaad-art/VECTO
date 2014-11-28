@@ -1,5 +1,5 @@
 ﻿Imports System.Reflection
-Imports AdvancedAuxiliaryInterfaces
+Imports VectoAuxiliaries
 
 Public Class AuxLauncher
 
@@ -71,6 +71,8 @@ Dim message As String = String.Empty
 'Set Statics
 advancedAuxiliaries.VectoInputs.Cycle="Urban"
 advancedAuxiliaries.VectoInputs.VehicleWeightKG=16500
+advancedAuxiliaries.VectoInputs.FuelMap= "testFuelGoodMap.vmap"
+advancedAuxiliaries.VectoInputs.PowerNetVoltage=26.3
 
 
 'set Signals
@@ -102,11 +104,11 @@ Try
 
   advancedAuxiliaries = DirectCast(obj.Unwrap, IAdvancedAuxiliaries)
 
-  If Not advancedAuxiliaries.Configure(txtAdvancedAuxiliaries.Text, "C:\Users\tb28\Source\Workspaces\VECTO\vecto-sim-ricardoaeaTB\AuxillaryTestHarness\bin\Debug\vectopath.vecto") then
+ ' If Not advancedAuxiliaries.Configure(txtAdvancedAuxiliaries.Text, "C:\Users\tb28\Source\Workspaces\VECTO\vecto-sim-ricardoaeaTB\AuxillaryTestHarness\bin\Debug\vectopath.vecto") then
 
-  MessageBox.Show("Unable to configure Advanced Auxilliaries")
+    ' MessageBox.Show("Unable to configure Advanced Auxilliaries")
 
-  End If
+ ' End If
 
   Catch ex As Exception
 
