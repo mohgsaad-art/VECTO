@@ -12,7 +12,7 @@ ReadOnly Property AuxiliaryVersion As String
 
 
 'Static Values
-property VectoInputs As AdvancedAuxiliaryInterfaces.IVectoInputs
+property VectoInputs As IVectoInputs
 
 'Running Properties
 property Signals as ISignals

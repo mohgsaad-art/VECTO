@@ -258,6 +258,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\vecto-sim\AdvancedAuxiliaryInterfaces\AdvancedAuxiliaryInterfaces.vbproj">
+      <Project>{b4b9bd2f-fd8f-4bb8-82fa-e2154d2c7fbd}</Project>
+      <Name>AdvancedAuxiliaryInterfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\VectoAuxiliaries\VectoAuxiliaries.vbproj">
       <Project>{FDEEE460-0B8A-4EF6-8D9E-72F203A50F65}</Project>
       <Name>VectoAuxiliaries</Name>

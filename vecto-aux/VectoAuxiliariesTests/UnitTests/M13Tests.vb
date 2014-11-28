@@ -6,6 +6,7 @@ Imports NUnit.Framework
 Imports VectoAuxiliaries
 Imports Moq
 
+
 Namespace UnitTests
 <TestFixture()> _
 Public Class M13Tests
