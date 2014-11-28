@@ -14,10 +14,10 @@ Private Const FUEL_DENSITY_percm3 As Single = 0.835
 
 
 <Test()> _
-<TestCase(50,	60,	70,	FALSE,	FALSE,	0.5f, 477.5f , 0.571856287f )> _
-<TestCase(50,	60,	70,	FALSE,	TRUE,	0.5f, 467.5f , 0.55988024f )> _
-<TestCase(50,	60,	70,	TRUE,	FALSE,	0.5f, 487.5f , 0.583832335f )> _
-<TestCase(50,	60,	70,	TRUE,	TRUE,	0.5f, 477.5f , 0.571856287f )> _
+<TestCase(50,	60,	70,	FALSE,	FALSE,	100, 72287.5f , 86.57185629f )> _
+<TestCase(50,	60,	70,	FALSE,	TRUE,	100, 72277.5f , 86.55988024f )> _
+<TestCase(50,	60,	70,	TRUE,	FALSE,	100, 72297.5f , 86.58383234f )> _
+<TestCase(50,	60,	70,	TRUE,	TRUE,	100, 72287.5f , 86.57185629f )> _
 Public Sub InputOutputValues( IP1  As single,
                               IP2  As single, 
                               IP3  As single,
@@ -39,14 +39,15 @@ m10.Setup     ( Function(x) x.FuelConsumptionSmartPneumaticsAndAverageElectrical
 Signals.Setup ( Function(x) x.SmartPneumatics)                                                 .Returns( IP4 )
 Signals.Setup ( Function(x) x.SmartElectrics)                                                  .Returns( IP5 )
 m1.Setup      ( Function(x) x.HVACFuelingLitresPerHour)                                        .Returns( IP6 )
+Signals.Setup ( Function(x) x.TotalCycleTimeSeconds)                                           .Returns( 3114)
 
 
 'Act
  Dim target  = New M13( m1.Object, m10.Object, M12.Object, Signals.Object)
        
 'Assert
-Assert.AreEqual( target.TotalCycleFuelConsumptionGrams, OUT1 )
-Assert.AreEqual( target.TotalCycleFuelConsumptionLitres, OUT2 )
+Assert.AreEqual( OUT1, target.TotalCycleFuelConsumptionGrams )
+Assert.AreEqual( OUT2,target.TotalCycleFuelConsumptionLitres )
 End Sub
 
 End Class

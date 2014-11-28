@@ -1,7 +1,7 @@
 ﻿
-Imports VectoAuxiliaries.Hvac
-Imports VectoAuxiliaries.Electrics
-Imports VectoAuxiliaries.Pneumatics
+Imports AdvancedAuxiliaryInterfaces.Hvac
+Imports AdvancedAuxiliaryInterfaces.Electrics
+Imports AdvancedAuxiliaryInterfaces.Pneumatics
 
 Namespace Hvac
 
