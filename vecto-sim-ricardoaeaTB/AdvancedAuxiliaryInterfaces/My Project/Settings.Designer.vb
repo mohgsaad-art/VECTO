@@ -64,9 +64,9 @@ Namespace My
     Friend Module MySettingsProperty
         
         <Global.System.ComponentModel.Design.HelpKeywordAttribute("My.Settings")>  _
-        Friend ReadOnly Property Settings() As Global.AdvancedAuxiliaryInterfaces.My.MySettings
+        Friend ReadOnly Property Settings() As Global.VectoAuxiliaries.My.MySettings
             Get
-                Return Global.AdvancedAuxiliaryInterfaces.My.MySettings.Default
+                Return Global.VectoAuxiliaries.My.MySettings.Default
             End Get
         End Property
     End Module

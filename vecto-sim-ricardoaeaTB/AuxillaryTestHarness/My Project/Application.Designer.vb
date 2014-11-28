@@ -32,7 +32,7 @@ Namespace My
         
         <Global.System.Diagnostics.DebuggerStepThroughAttribute()>  _
         Protected Overrides Sub OnCreateMainForm()
-            Me.MainForm = Global.AuxiliaryTestHarness.Dashboard
+            Me.MainForm = Global.AuxiliaryTestHarness.AuxLauncher
         End Sub
     End Class
 End Namespace
