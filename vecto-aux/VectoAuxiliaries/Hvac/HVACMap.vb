@@ -1,5 +1,5 @@
 Imports System.IO
-Imports VectoAuxiliaries.Electrics
+Imports AdvancedAuxiliaryInterfaces.Electrics
 Imports System.Windows.Forms
 
 Namespace Hvac

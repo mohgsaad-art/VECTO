@@ -76,6 +76,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdvancedAuxiliaries.vb" />
     <Compile Include="AuxiliaryConfig.vb" />
     <Compile Include="AuxillaryEnvironment.vb" />
     <Compile Include="DownstreamModules\cDelaunayMap.vb" />
@@ -113,6 +114,7 @@
     <Compile Include="Electrics\M5__SmartAlternatorSetGeneration.vb" />
     <Compile Include="Electrics\ResultCard.vb" />
     <Compile Include="Electrics\SmartResult.vb" />
+    <Compile Include="FilePathUtils.vb" />
     <Compile Include="Hvac\HVACConstants.vb" />
     <Compile Include="Hvac\HVACInputs.vb" />
     <Compile Include="Electrics\IElectricalConsumerList.vb" />
@@ -125,6 +127,7 @@
     <Compile Include="Hvac\IHVACSteadyStateModel.vb" />
     <Compile Include="Hvac\IHVACUserInputsConfig.vb" />
     <Compile Include="Hvac\IM1_AverageHVACLoadDemand.vb" />
+    <Compile Include="IAuxiliaryConfig.vb" />
     <Compile Include="ISignals.vb" />
     <Compile Include="IVectoInputs.vb" />
     <Compile Include="DownstreamModules\M6.vb" />
@@ -164,10 +167,10 @@
     <Compile Include="Pneumatics\PneumaticUserInputsConfig.vb" />
     <Compile Include="Signals.vb" />
     <Compile Include="UI\cFileBrowser.vb" />
-    <Compile Include="UI\Dashboard.Designer.vb">
-      <DependentUpon>Dashboard.vb</DependentUpon>
+    <Compile Include="UI\frmAuxiliaryConfig.Designer.vb">
+      <DependentUpon>frmAuxiliaryConfig.vb</DependentUpon>
     </Compile>
-    <Compile Include="UI\Dashboard.vb">
+    <Compile Include="UI\frmAuxiliaryConfig.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\FB_Dialog.designer.vb">
@@ -193,8 +196,8 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Dashboard.resx">
-      <DependentUpon>Dashboard.vb</DependentUpon>
+    <EmbeddedResource Include="UI\frmAuxiliaryConfig.resx">
+      <DependentUpon>frmAuxiliaryConfig.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\FB_Dialog.resx">
       <DependentUpon>FB_Dialog.vb</DependentUpon>
@@ -216,7 +219,12 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\vecto-sim\AdvancedAuxiliaryInterfaces\AdvancedAuxiliaryInterfaces.vbproj">
+      <Project>{b4b9bd2f-fd8f-4bb8-82fa-e2154d2c7fbd}</Project>
+      <Name>AdvancedAuxiliaryInterfaces</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

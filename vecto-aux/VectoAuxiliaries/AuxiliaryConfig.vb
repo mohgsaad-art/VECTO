@@ -9,6 +9,8 @@ Imports Newtonsoft.Json
 
 <Serializable()>
 Public Class AuxiliaryConfig
+ Implements IAuxiliaryConfig
+
 
  'Vecto
  Public Property VectoInputs As IVectoInputs
@@ -250,7 +252,7 @@ End Function
 
 
 'Persistance Functions
-Public Function Save(  filePath As String ) As Boolean
+Public Function Save(  auxFile As String ) As Boolean
 
 
   Dim returnValue As Boolean = true
@@ -262,7 +264,7 @@ Public Function Save(  filePath As String ) As Boolean
 
   Dim  output As string = JsonConvert.SerializeObject(me, Formatting.Indented, settings)
 
-  File.WriteAllText(filePath, output)
+  File.WriteAllText(auxFile , output)
 
   Catch ex as Exception
   
@@ -275,7 +277,7 @@ Public Function Save(  filePath As String ) As Boolean
   Return returnValue
 
 End Function
-Public Function Load(  filePath As String  ) As Boolean
+Public Function Load(  auxFile As String  ) As Boolean
 
   Dim returnValue As Boolean = true
   Dim settings As JsonSerializerSettings = new JsonSerializerSettings()
@@ -287,7 +289,7 @@ Public Function Load(  filePath As String  ) As Boolean
  try
 
 
-   Dim output As String  = File.ReadAllText(filePath)
+   Dim output As String  = File.ReadAllText(auxFile)
 
    tmpAux =  JsonConvert.DeserializeObject( Of AuxiliaryConfig)(output,settings)
 
@@ -405,5 +407,26 @@ End Sub
 #End Region
 
 
+    Public Function ConfigValuesAreTheSameAs1(other As AuxiliaryConfig) As Boolean Implements IAuxiliaryConfig.ConfigValuesAreTheSameAs
+
+    End Function
+
+    Public Property ElectricalUserInputsConfig1 As IElectricsUserInputsConfig Implements IAuxiliaryConfig.ElectricalUserInputsConfig
+
+    Public Property HvacUserInputsConfig1 As IHVACUserInputsConfig Implements IAuxiliaryConfig.HvacUserInputsConfig
+
+    Public Function Load1(filePath As String) As Boolean Implements IAuxiliaryConfig.Load
+
+    End Function
+
+    Public Property PneumaticAuxillariesConfig1 As IPneumaticsAuxilliariesConfig Implements IAuxiliaryConfig.PneumaticAuxillariesConfig
+
+    Public Property PneumaticUserInputsConfig1 As IPneumaticUserInputsConfig Implements IAuxiliaryConfig.PneumaticUserInputsConfig
+
+    Public Function Save1(filePath As String) As Boolean Implements IAuxiliaryConfig.Save
+
+    End Function
+
+    Public Property VectoInputs1 As IVectoInputs Implements IAuxiliaryConfig.VectoInputs
 End Class
 

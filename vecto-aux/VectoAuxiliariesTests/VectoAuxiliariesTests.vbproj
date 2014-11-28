@@ -104,6 +104,7 @@
     <Compile Include="Mocks\M6_Mock.vb" />
     <Compile Include="Mocks\M7_Mock.vb" />
     <Compile Include="Mocks\MockFuel50PC.vb" />
+    <Compile Include="UnitTests\FilePathUtilityTests.vb" />
     <Compile Include="UnitTests\FuelMapTests.vb" />
     <Compile Include="UnitTests\M0_5_SmartAlternatorSetEfficiencyTests.vb" />
     <Compile Include="UnitTests\M0_NonSmart_AlternatorsSetEfficiencyTests.vb" />

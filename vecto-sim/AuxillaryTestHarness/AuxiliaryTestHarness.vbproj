@@ -103,6 +103,12 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuxLauncher.Designer.vb">
+      <DependentUpon>AuxLauncher.vb</DependentUpon>
+    </Compile>
+    <Compile Include="AuxLauncher.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Dashboard.Designer.vb">
       <DependentUpon>Dashboard.vb</DependentUpon>
     </Compile>
@@ -146,6 +152,9 @@
     <Compile Include="UI\VECTO_Types.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="AuxLauncher.resx">
+      <DependentUpon>AuxLauncher.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Dashboard.resx">
       <DependentUpon>Dashboard.vb</DependentUpon>
     </EmbeddedResource>
@@ -201,6 +210,10 @@
     <ProjectReference Include="..\..\vecto-aux\VectoAuxiliaries\VectoAuxiliaries.vbproj">
       <Project>{fdeee460-0b8a-4ef6-8d9e-72f203a50f65}</Project>
       <Name>VectoAuxiliaries</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AdvancedAuxiliaryInterfaces\AdvancedAuxiliaryInterfaces.vbproj">
+      <Project>{b4b9bd2f-fd8f-4bb8-82fa-e2154d2c7fbd}</Project>
+      <Name>AdvancedAuxiliaryInterfaces</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

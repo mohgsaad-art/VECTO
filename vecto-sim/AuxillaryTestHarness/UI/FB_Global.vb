@@ -60,8 +60,14 @@ Module FB_Global
     private        EngDrag As String = "<DRAG>"
     
 #Region "File path functions"
-
-    'When no path is specified, then insert either HomeDir or MainDir   Special-folders
+    
+    ''' <summary>
+    ''' When no path is specified, then insert either HomeDir or MainDir   Special-folders
+    ''' </summary>
+    ''' <param name="file"></param>
+    ''' <param name="MainDir"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public Function fFileRepl(ByVal file As String, Optional ByVal MainDir As String = "") As String
 
         Dim ReplPath As String
@@ -101,7 +107,13 @@ Module FB_Global
 
     End Function
 
-    'Path one-level-up      "C:\temp\ordner1\"  >>  "C:\temp\"
+    
+    ''' <summary>
+    ''' Path one-level-up      "C:\temp\ordner1\"  >>  "C:\temp\"
+    ''' </summary>
+    ''' <param name="Pfad"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Private Function fPathUp(ByVal Pfad As String) As String
         Dim x As Int16
 
@@ -115,7 +127,14 @@ Module FB_Global
 
     End Function
 
-    'File name without the path    "C:\temp\TEST.txt"  >>  "TEST.txt" oder "TEST"
+    '
+    ''' <summary>
+    ''' File name without the path    "C:\temp\TEST.txt"  >>  "TEST.txt" oder "TEST"
+    ''' </summary>
+    ''' <param name="Pfad"></param>
+    ''' <param name="MitEndung"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public Function fFILE(ByVal Pfad As String, ByVal MitEndung As Boolean) As String
         Dim x As Int16
         x = Pfad.LastIndexOf("\") + 1
@@ -127,12 +146,25 @@ Module FB_Global
         Return Pfad
     End Function
 
-    'Filename without extension   "C:\temp\TEST.txt" >> "C:\temp\TEST"
+    
+    ''' <summary>
+    ''' Filename without extension   "C:\temp\TEST.txt" >> "C:\temp\TEST"
+    ''' </summary>
+    ''' <param name="Path"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public Function fFileWoExt(ByVal Path As String) As String
         Return fPATH(Path) & fFILE(Path, False)
     End Function
 
-    'Filename without path if Path = WorkDir or MainDir
+    '
+    ''' <summary>
+    ''' Filename without path if Path = WorkDir or MainDir
+    ''' </summary>
+    ''' <param name="file"></param>
+    ''' <param name="MainDir"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public Function fFileWoDir(ByVal file As String, Optional ByVal MainDir As String = "") As String
         Dim path As String
 
@@ -147,9 +179,14 @@ Module FB_Global
         Return file
 
     End Function
-
-    'Path alone        "C:\temp\TEST.txt"  >>  "C:\temp\"
-    '                   "TEST.txt"          >>  ""
+               
+    ''' <summary>
+    ''' Path alone        "C:\temp\TEST.txt"  >>  "C:\temp\"
+    ''' "TEST.txt"          >>  ""
+    ''' </summary>
+    ''' <param name="Pfad"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public Function fPATH(ByVal Pfad As String) As String
         Dim x As Int16
         If Pfad Is Nothing OrElse Pfad.Length < 3 OrElse Pfad.Substring(1, 2) <> ":\" Then Return ""
@@ -157,7 +194,12 @@ Module FB_Global
         Return Microsoft.VisualBasic.Left(Pfad, x + 1)
     End Function
 
-    'Extension alone      "C:\temp\TEST.txt" >> ".txt"
+    ''' <summary>
+    ''' Extension alone      "C:\temp\TEST.txt" >> ".txt"
+    ''' </summary>
+    ''' <param name="Pfad"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public Function fEXT(ByVal Pfad As String) As String
         Dim x As Int16
         x = Pfad.LastIndexOf(".")

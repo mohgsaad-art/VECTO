@@ -1,4 +1,4 @@
-﻿Imports VectoAuxiliaries.Electrics
+﻿Imports AdvancedAuxiliaryInterfaces.Electrics
 Namespace Electrics
 
 Public Class ElectricsUserInputsConfig

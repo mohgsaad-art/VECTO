@@ -1,4 +1,4 @@
-﻿Imports VectoAuxiliaries.Pneumatics
+﻿Imports AdvancedAuxiliaryInterfaces.Pneumatics
 
 Namespace Pneumatics
 

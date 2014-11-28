@@ -19,7 +19,7 @@ Public Class AuxiliaryPersistanceTests
 
      Public Sub SaveDefaultFile()
 
-      dim auxDefault  = New AuxillaryEnvironment("")
+      dim auxDefault  = New AuxiliaryConfig("")
       auxDefault.Save("TestFiles\auxiliaryConfigKEEP.json")
 
      End Sub
@@ -28,8 +28,8 @@ Public Class AuxiliaryPersistanceTests
     Public Sub Persistance_A_BasicLoad()
 
     'Arrange
-    Dim auxEmpty = New AuxillaryEnvironment("EMPTY")
-    Dim auxDefault  = New AuxillaryEnvironment("")
+    Dim auxEmpty = New AuxiliaryConfig("EMPTY")
+    Dim auxDefault  = New AuxiliaryConfig("")
     
     Dim actual        As Boolean =false
     Dim expected      As Boolean = true
@@ -46,7 +46,7 @@ Public Class AuxiliaryPersistanceTests
     Public Sub Persistance_Load_NameNotExist_Test()
 
     'Arrange
-    Dim auxDefault  = New AuxillaryEnvironment("")
+    Dim auxDefault  = New AuxiliaryConfig("")
     Dim expected As boolean = false
     Dim actual   As Boolean = False
 
@@ -66,12 +66,12 @@ Public Class AuxiliaryPersistanceTests
     'Arrange
     Dim expected As boolean = true
     Dim actual   As Boolean = False
-    Dim auxDefault As AuxillaryEnvironment
-    Dim auxTest As AuxillaryEnvironment =  New AuxillaryEnvironment("")
+    Dim auxDefault As AuxiliaryConfig
+    Dim auxTest As AuxiliaryConfig =  New AuxiliaryConfig("")
 
     'Act
     SaveDefaultFile()
-    auxDefault  = New AuxillaryEnvironment("TestFiles\auxiliaryConfigKEEP.json")    
+    auxDefault  = New AuxiliaryConfig("TestFiles\auxiliaryConfigKEEP.json")    
     actual = auxTest.ConfigValuesAreTheSameAs( auxDefault)
     'Assert
     Assert.AreEqual( expected,actual )

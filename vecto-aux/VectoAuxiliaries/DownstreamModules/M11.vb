@@ -1,4 +1,4 @@
-﻿Imports VectoAuxiliaries.Electrics
+﻿Imports AdvancedAuxiliaryInterfaces.Electrics
 Imports VectoAuxiliaries.Pneumatics
 Imports VectoAuxiliaries.Hvac
 

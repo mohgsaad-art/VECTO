@@ -5,18 +5,68 @@ Imports System.ComponentModel
 Imports System.Windows.Forms
 Imports System.Drawing
 
-Public Class Dashboard
+Public Class frmAuxiliaryConfig
 
 #Region "Fields"
 
-Public auxEnvironment As New AuxiliaryConfig("")
+Public auxConfig As AuxiliaryConfig
 Private TabColors As Dictionary(Of TabPage, Color) = New Dictionary(Of TabPage, Color)()
 Private processing As Boolean = False
 Private SecondsIntoCycle As Integer = 0
 
-Private vectoFile As String = "C:\Users\tb28\Source\Workspaces\VECTO\vecto-sim\AuxillaryTestHarness\bin\Debug\vectopath.vecto"
+Private vectoFile As String = ""
+'C:\Users\tb28\Source\Workspaces\VECTO\vecto-sim\AuxillaryTestHarness\bin\Debug\vectopath.vecto
+Private auxFile As string
+
 
 #End Region
+
+
+Private Function ValidateAuxFileName( filename As String ) As Boolean
+
+        If( fileName.Length=0) then
+           MessageBox.Show("Sorry you need to supply a filename for the aux file you want to configure")
+           Return False
+        End If
+
+        Return true
+
+End Function
+
+
+
+Public Sub new( byval fileName As String, byval vectoFileName As String )
+
+
+        If  Not ValidateAuxFileName( fileName ) then
+          Me.DialogResult=Windows.Forms.DialogResult.Abort
+          Me.Close
+        End If
+        'TODO:Better validate this
+        If vectoFileName.Length>0 then vectoFile= vectoFileName  
+              
+
+    ' This call is required by the designer.
+    InitializeComponent()
+    
+    ' Add any initialization after the InitializeComponent() call.
+    auxFile = fileName
+
+    Try
+
+     auxConfig = New AuxiliaryConfig( auxFile )
+
+    Catch ex As Exception
+
+       MessageBox.Show( "The filename you supplied {0} was invalid or could not be found ", fileName )
+     Me.DialogResult=Windows.Forms.DialogResult.Abort
+     Me.Close
+
+    End Try
+
+
+    
+End Sub
 
 
 Private Sub SetupControls()
@@ -115,21 +165,21 @@ End Sub
 
 Private Sub CreateBindings()
 
-     'AuxEnvironment.Vecto Bindings
-     txtPowernetVoltage.DataBindings.Add("Text", auxEnvironment.ElectricalUserInputsConfig, "PowerNetVoltage")
-     txtVehicleWeightKG.DataBindings.Add("Text", auxEnvironment.VectoInputs, "VehicleWeightKG")
-     cboCycle.DataBindings.Add("Text", auxEnvironment.VectoInputs, "Cycle")
-     txtFuelMap.DataBindings.Add("Text", auxEnvironment.VectoInputs, "FuelMap")
+     'auxConfig.Vecto Bindings
+     txtPowernetVoltage.DataBindings.Add("Text", auxConfig.ElectricalUserInputsConfig, "PowerNetVoltage")
+     txtVehicleWeightKG.DataBindings.Add("Text", auxConfig.VectoInputs, "VehicleWeightKG")
+     cboCycle.DataBindings.Add("Text", auxConfig.VectoInputs, "Cycle")
+     txtFuelMap.DataBindings.Add("Text", auxConfig.VectoInputs, "FuelMap")
 
      'Electricals General
-     txtAlternatorMapPath.DataBindings.Add("Text", auxEnvironment.ElectricalUserInputsConfig, "AlternatorMap")
-     txtAlternatorGearEfficiency.DataBindings.Add("Text", auxEnvironment.ElectricalUserInputsConfig, "AlternatorGearEfficiency")
-     txtDoorActuationTimeSeconds.DataBindings.Add("Text", auxEnvironment.ElectricalUserInputsConfig, "DoorActuationTimeSecond")
-     chkSmartElectricals.DataBindings.Add("Checked", auxEnvironment.ElectricalUserInputsConfig, "SmartElectrical", False, DataSourceUpdateMode.OnPropertyChanged)
+     txtAlternatorMapPath.DataBindings.Add("Text", auxConfig.ElectricalUserInputsConfig, "AlternatorMap")
+     txtAlternatorGearEfficiency.DataBindings.Add("Text", auxConfig.ElectricalUserInputsConfig, "AlternatorGearEfficiency")
+     txtDoorActuationTimeSeconds.DataBindings.Add("Text", auxConfig.ElectricalUserInputsConfig, "DoorActuationTimeSecond")
+     chkSmartElectricals.DataBindings.Add("Checked", auxConfig.ElectricalUserInputsConfig, "SmartElectrical", False, DataSourceUpdateMode.OnPropertyChanged)
 
 
      'Electrical ConsumablesGrid
-     Dim electricalConsumerBinding As New BindingList(Of IElectricalConsumer)(auxEnvironment.ElectricalUserInputsConfig.ElectricalConsumers.Items)
+     Dim electricalConsumerBinding As New BindingList(Of IElectricalConsumer)(auxConfig.ElectricalUserInputsConfig.ElectricalConsumers.Items)
      gvElectricalConsumables.DataSource = electricalConsumerBinding
 
 
@@ -138,62 +188,62 @@ Private Sub CreateBindings()
 
          'IDLE
          Dim idleBinding = New BindingList(Of SmartResult)
-         idleBinding = New BindingList(Of SmartResult)(auxEnvironment.ElectricalUserInputsConfig.ResultCardIdle.Results)
+         idleBinding = New BindingList(Of SmartResult)(auxConfig.ElectricalUserInputsConfig.ResultCardIdle.Results)
          idleBinding.AllowNew = True
          idleBinding.AllowRemove = True
          gvResultsCardIdle.DataSource = idleBinding
 
          'TRACTION
          Dim tractionBinding As BindingList(Of SmartResult)
-         tractionBinding = New BindingList(Of SmartResult)(auxEnvironment.ElectricalUserInputsConfig.ResultCardTraction.Results)
+         tractionBinding = New BindingList(Of SmartResult)(auxConfig.ElectricalUserInputsConfig.ResultCardTraction.Results)
          tractionBinding.AllowNew = True
          tractionBinding.AllowRemove = True
          gvResultsCardTraction.DataSource = tractionBinding
 
          'OVERRUN
          Dim overrunBinding As BindingList(Of SmartResult)
-         overrunBinding = New BindingList(Of SmartResult)(auxEnvironment.ElectricalUserInputsConfig.ResultCardOverrun.Results)
+         overrunBinding = New BindingList(Of SmartResult)(auxConfig.ElectricalUserInputsConfig.ResultCardOverrun.Results)
          overrunBinding.AllowNew = True
          overrunBinding.AllowRemove = True
          gvResultsCardOverrun.DataSource = overrunBinding
 
 
         'Pneumatic Auxillaries Binding
-        txtAdBlueNIperMinute.DataBindings.Add("Text", auxEnvironment.PneumaticAuxillariesConfig, "AdBlueNIperMinute")
+        txtAdBlueNIperMinute.DataBindings.Add("Text", auxConfig.PneumaticAuxillariesConfig, "AdBlueNIperMinute")
 
-        txtOverrunUtilisationForCompressionFraction.DataBindings.Add("Text", auxEnvironment.PneumaticAuxillariesConfig, "OverrunUtilisationForCompressionFraction")
-        txtBrakingWithRetarderNIperKG.DataBindings.Add("Text", auxEnvironment.PneumaticAuxillariesConfig, "BrakingWithRetarderNIperKG")
-        txtBrakingNoRetarderNIperKG.DataBindings.Add("Text", auxEnvironment.PneumaticAuxillariesConfig, "BrakingNoRetarderNIperKG")
-        txtBreakingPerKneelingNIperKGinMM.DataBindings.Add("Text", auxEnvironment.PneumaticAuxillariesConfig, "BreakingPerKneelingNIperKGinMM", True, DataSourceUpdateMode.OnPropertyChanged, Nothing, "0.########")
-        txtPerDoorOpeningNI.DataBindings.Add("Text", auxEnvironment.PneumaticAuxillariesConfig, "PerDoorOpeningNI")
-        txtPerStopBrakeActuationNIperKG.DataBindings.Add("Text", auxEnvironment.PneumaticAuxillariesConfig, "PerStopBrakeActuationNIperKG")
-        txtAirControlledSuspensionNIperMinute.DataBindings.Add("Text", auxEnvironment.PneumaticAuxillariesConfig, "AirControlledSuspensionNIperMinute")
-        txtNonSmartRegenFractionTotalAirDemand.DataBindings.Add("Text", auxEnvironment.PneumaticAuxillariesConfig, "NonSmartRegenFractionTotalAirDemand")
-        txtSmartRegenFractionTotalAirDemand.DataBindings.Add("Text", auxEnvironment.PneumaticAuxillariesConfig, "SmartRegenFractionTotalAirDemand")
-        txtDeadVolumeLitres.DataBindings.Add("Text", auxEnvironment.PneumaticAuxillariesConfig, "DeadVolumeLitres")
-        txtDeadVolBlowOutsPerLitresperHour.DataBindings.Add("Text", auxEnvironment.PneumaticAuxillariesConfig, "DeadVolBlowOutsPerLitresperHour")
+        txtOverrunUtilisationForCompressionFraction.DataBindings.Add("Text", auxConfig.PneumaticAuxillariesConfig, "OverrunUtilisationForCompressionFraction")
+        txtBrakingWithRetarderNIperKG.DataBindings.Add("Text", auxConfig.PneumaticAuxillariesConfig, "BrakingWithRetarderNIperKG")
+        txtBrakingNoRetarderNIperKG.DataBindings.Add("Text", auxConfig.PneumaticAuxillariesConfig, "BrakingNoRetarderNIperKG")
+        txtBreakingPerKneelingNIperKGinMM.DataBindings.Add("Text", auxConfig.PneumaticAuxillariesConfig, "BreakingPerKneelingNIperKGinMM", True, DataSourceUpdateMode.OnPropertyChanged, Nothing, "0.########")
+        txtPerDoorOpeningNI.DataBindings.Add("Text", auxConfig.PneumaticAuxillariesConfig, "PerDoorOpeningNI")
+        txtPerStopBrakeActuationNIperKG.DataBindings.Add("Text", auxConfig.PneumaticAuxillariesConfig, "PerStopBrakeActuationNIperKG")
+        txtAirControlledSuspensionNIperMinute.DataBindings.Add("Text", auxConfig.PneumaticAuxillariesConfig, "AirControlledSuspensionNIperMinute")
+        txtNonSmartRegenFractionTotalAirDemand.DataBindings.Add("Text", auxConfig.PneumaticAuxillariesConfig, "NonSmartRegenFractionTotalAirDemand")
+        txtSmartRegenFractionTotalAirDemand.DataBindings.Add("Text", auxConfig.PneumaticAuxillariesConfig, "SmartRegenFractionTotalAirDemand")
+        txtDeadVolumeLitres.DataBindings.Add("Text", auxConfig.PneumaticAuxillariesConfig, "DeadVolumeLitres")
+        txtDeadVolBlowOutsPerLitresperHour.DataBindings.Add("Text", auxConfig.PneumaticAuxillariesConfig, "DeadVolBlowOutsPerLitresperHour")
 
         'Pneumatic UserInputsConfig Binding    
-        txtCompressorMap.DataBindings.Add("Text", auxEnvironment.PneumaticUserInputsConfig, "CompressorMap")
-        txtCompressorGearEfficiency.DataBindings.Add("Text", auxEnvironment.PneumaticUserInputsConfig, "CompressorGearEfficiency")
-        txtCompressorGearRatio.DataBindings.Add("Text", auxEnvironment.PneumaticUserInputsConfig, "CompressorGearRatio")
-        txtActuationsMap.DataBindings.Add("Text", auxEnvironment.PneumaticUserInputsConfig, "ActuationsMap")
-        chkSmartAirCompression.DataBindings.Add("Checked", auxEnvironment.PneumaticUserInputsConfig, "SmartAirCompression", False, DataSourceUpdateMode.OnPropertyChanged)
+        txtCompressorMap.DataBindings.Add("Text", auxConfig.PneumaticUserInputsConfig, "CompressorMap")
+        txtCompressorGearEfficiency.DataBindings.Add("Text", auxConfig.PneumaticUserInputsConfig, "CompressorGearEfficiency")
+        txtCompressorGearRatio.DataBindings.Add("Text", auxConfig.PneumaticUserInputsConfig, "CompressorGearRatio")
+        txtActuationsMap.DataBindings.Add("Text", auxConfig.PneumaticUserInputsConfig, "ActuationsMap")
+        chkSmartAirCompression.DataBindings.Add("Checked", auxConfig.PneumaticUserInputsConfig, "SmartAirCompression", False, DataSourceUpdateMode.OnPropertyChanged)
 
 
 
 
-        chkSmartRegeneration.DataBindings.Add("Checked", auxEnvironment.PneumaticUserInputsConfig, "SmartRegeneration", False, DataSourceUpdateMode.OnPropertyChanged)
-        chkRetarderBrake.DataBindings.Add("Checked", auxEnvironment.PneumaticUserInputsConfig, "RetarderBrake")
-        txtKneelingHeightMillimeters.DataBindings.Add("Text", auxEnvironment.PneumaticUserInputsConfig, "KneelingHeightMillimeters")
-        cboAirSuspensionControl.DataBindings.Add("Text", auxEnvironment.PneumaticUserInputsConfig, "AirSuspensionControl", False)
-        cboAdBlueDosing.DataBindings.Add("Text", auxEnvironment.PneumaticUserInputsConfig, "AdBlueDosing")
-        cboDoors.DataBindings.Add("Text", auxEnvironment.PneumaticUserInputsConfig, "Doors")
+        chkSmartRegeneration.DataBindings.Add("Checked", auxConfig.PneumaticUserInputsConfig, "SmartRegeneration", False, DataSourceUpdateMode.OnPropertyChanged)
+        chkRetarderBrake.DataBindings.Add("Checked", auxConfig.PneumaticUserInputsConfig, "RetarderBrake")
+        txtKneelingHeightMillimeters.DataBindings.Add("Text", auxConfig.PneumaticUserInputsConfig, "KneelingHeightMillimeters")
+        cboAirSuspensionControl.DataBindings.Add("Text", auxConfig.PneumaticUserInputsConfig, "AirSuspensionControl", False)
+        cboAdBlueDosing.DataBindings.Add("Text", auxConfig.PneumaticUserInputsConfig, "AdBlueDosing")
+        cboDoors.DataBindings.Add("Text", auxConfig.PneumaticUserInputsConfig, "Doors")
 
         'HVAC Bindings     
-        txtHVACElectricalLoadPowerWatts.DataBindings.Add("Text", auxEnvironment.HvacUserInputsConfig.SteadyStateModel, "HVACElectricalLoadPowerWatts")
-        txtHVACFuellingLitresPerHour.DataBindings.Add("Text", auxEnvironment.HvacUserInputsConfig.SteadyStateModel, "HVACFuellingLitresPerHour")
-        txtHVACMechanicalLoadPowerWatts.DataBindings.Add("Text", auxEnvironment.HvacUserInputsConfig.SteadyStateModel, "HVACMechanicalLoadPowerWatts")
+        txtHVACElectricalLoadPowerWatts.DataBindings.Add("Text", auxConfig.HvacUserInputsConfig.SteadyStateModel, "HVACElectricalLoadPowerWatts")
+        txtHVACFuellingLitresPerHour.DataBindings.Add("Text", auxConfig.HvacUserInputsConfig.SteadyStateModel, "HVACFuellingLitresPerHour")
+        txtHVACMechanicalLoadPowerWatts.DataBindings.Add("Text", auxConfig.HvacUserInputsConfig.SteadyStateModel, "HVACMechanicalLoadPowerWatts")
 
         'Signals
 
@@ -887,7 +937,12 @@ End Sub
 Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
 
 
-  auxEnvironment.Save("TESTHARNESCONFIG.Json")
+  If Not auxConfig.Save(auxFile)
+
+   MessageBox.Show(String.Format("Unable to Save the file '{0}'",auxFile) )
+
+  End If
+  
 
 
 
@@ -899,7 +954,11 @@ Private Sub btnLoad_Click(sender As Object, e As EventArgs) Handles btnLoad.Clic
   UnbindAllControls(Me)
 
 
-  auxEnvironment.Load("TESTHARNESCONFIG.Json")
+  If Not auxConfig.Load(auxFile)
+
+   MessageBox.Show(String.Format("Unable to load the file '{0}'",auxFile) )
+
+  End If
 
   CreateBindings()
 
@@ -1000,9 +1059,6 @@ End Sub
 #End Region
 
 
-
-
-
 'Form Overrides
 Protected Overrides Function ProcessCmdKey(ByRef msg As Message, keyData As Keys) As Boolean
 
@@ -1024,7 +1080,6 @@ Protected Overrides Function ProcessCmdKey(ByRef msg As Message, keyData As Keys
 
 
     End Function
-
 
 
 Public Sub UnbindAllControls(ByRef container As Control)

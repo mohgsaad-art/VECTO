@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class Dashboard
+Partial Class frmAuxiliaryConfig
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -154,12 +154,12 @@ Partial Class Dashboard
         Me.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlMain.Location = New System.Drawing.Point(0, 0)
         Me.pnlMain.Name = "pnlMain"
-        Me.pnlMain.Size = New System.Drawing.Size(1502, 794)
+        Me.pnlMain.Size = New System.Drawing.Size(933, 794)
         Me.pnlMain.TabIndex = 1
         '
         'btnLoad
         '
-        Me.btnLoad.Location = New System.Drawing.Point(946, 749)
+        Me.btnLoad.Location = New System.Drawing.Point(639, 748)
         Me.btnLoad.Name = "btnLoad"
         Me.btnLoad.Size = New System.Drawing.Size(78, 25)
         Me.btnLoad.TabIndex = 11
@@ -168,7 +168,7 @@ Partial Class Dashboard
         '
         'btnCancel
         '
-        Me.btnCancel.Location = New System.Drawing.Point(1156, 749)
+        Me.btnCancel.Location = New System.Drawing.Point(746, 750)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(75, 23)
         Me.btnCancel.TabIndex = 5
@@ -177,7 +177,7 @@ Partial Class Dashboard
         '
         'btnSave
         '
-        Me.btnSave.Location = New System.Drawing.Point(842, 749)
+        Me.btnSave.Location = New System.Drawing.Point(535, 748)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(85, 25)
         Me.btnSave.TabIndex = 10
@@ -195,7 +195,7 @@ Partial Class Dashboard
         Me.tabMain.Location = New System.Drawing.Point(12, 12)
         Me.tabMain.Name = "tabMain"
         Me.tabMain.SelectedIndex = 0
-        Me.tabMain.Size = New System.Drawing.Size(1478, 730)
+        Me.tabMain.Size = New System.Drawing.Size(909, 730)
         Me.tabMain.TabIndex = 0
         Me.tabMain.Tag = ""
         '
@@ -211,7 +211,7 @@ Partial Class Dashboard
         Me.tabGeneralConfig.Location = New System.Drawing.Point(4, 22)
         Me.tabGeneralConfig.Name = "tabGeneralConfig"
         Me.tabGeneralConfig.Padding = New System.Windows.Forms.Padding(3)
-        Me.tabGeneralConfig.Size = New System.Drawing.Size(1470, 704)
+        Me.tabGeneralConfig.Size = New System.Drawing.Size(901, 704)
         Me.tabGeneralConfig.TabIndex = 0
         Me.tabGeneralConfig.Text = "General"
         Me.tabGeneralConfig.UseVisualStyleBackColor = true
@@ -295,7 +295,7 @@ Partial Class Dashboard
         Me.tabElectricalConfig.Location = New System.Drawing.Point(4, 22)
         Me.tabElectricalConfig.Name = "tabElectricalConfig"
         Me.tabElectricalConfig.Padding = New System.Windows.Forms.Padding(3)
-        Me.tabElectricalConfig.Size = New System.Drawing.Size(1470, 704)
+        Me.tabElectricalConfig.Size = New System.Drawing.Size(1456, 704)
         Me.tabElectricalConfig.TabIndex = 1
         Me.tabElectricalConfig.Text = "Electrics"
         Me.tabElectricalConfig.UseVisualStyleBackColor = true
@@ -553,7 +553,7 @@ Partial Class Dashboard
         Me.tabPneumaticConfig.Controls.Add(Me.pnlPneumaticAuxillaries)
         Me.tabPneumaticConfig.Location = New System.Drawing.Point(4, 22)
         Me.tabPneumaticConfig.Name = "tabPneumaticConfig"
-        Me.tabPneumaticConfig.Size = New System.Drawing.Size(1470, 704)
+        Me.tabPneumaticConfig.Size = New System.Drawing.Size(1456, 704)
         Me.tabPneumaticConfig.TabIndex = 2
         Me.tabPneumaticConfig.Text = "Pneumatics"
         Me.tabPneumaticConfig.UseVisualStyleBackColor = true
@@ -1046,7 +1046,7 @@ Partial Class Dashboard
         Me.tabHVACConfig.Controls.Add(Me.lblHVACElectricalLoadPowerWatts)
         Me.tabHVACConfig.Location = New System.Drawing.Point(4, 22)
         Me.tabHVACConfig.Name = "tabHVACConfig"
-        Me.tabHVACConfig.Size = New System.Drawing.Size(1470, 704)
+        Me.tabHVACConfig.Size = New System.Drawing.Size(1456, 704)
         Me.tabHVACConfig.TabIndex = 3
         Me.tabHVACConfig.Text = "HVAC"
         Me.tabHVACConfig.UseVisualStyleBackColor = true
@@ -1130,14 +1130,14 @@ Partial Class Dashboard
         '
         Me.Timer1.Interval = 1000
         '
-        'Dashboard
+        'frmAuxiliaryConfig
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange
-        Me.ClientSize = New System.Drawing.Size(1502, 794)
+        Me.ClientSize = New System.Drawing.Size(933, 794)
         Me.Controls.Add(Me.pnlMain)
-        Me.Name = "Dashboard"
+        Me.Name = "frmAuxiliaryConfig"
         Me.Text = "Auxiliaries Configuration"
         Me.pnlMain.ResumeLayout(false)
         Me.tabMain.ResumeLayout(false)
