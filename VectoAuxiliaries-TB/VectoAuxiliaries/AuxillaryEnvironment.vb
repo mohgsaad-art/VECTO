@@ -479,7 +479,7 @@ For  Each otherConsumer As IElectricalConsumer In other.ElectricalUserInputsConf
 Next
 
 'PowerNetVoltage
-other.ElectricalUserInputsConfig.PowerNetVoltage = other.ElectricalUserInputsConfig.PowerNetVoltage 
+Me.ElectricalUserInputsConfig.PowerNetVoltage = other.ElectricalUserInputsConfig.PowerNetVoltage 
 'ResultCardIdle
 Me.ElectricalUserInputsConfig.ResultCardIdle.Results.Clear
 For each result As SmartResult In other.ElectricalUserInputsConfig.ResultCardIdle.Results
