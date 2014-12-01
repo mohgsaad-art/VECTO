@@ -73,6 +73,7 @@ advancedAuxiliaries.VectoInputs.Cycle="Urban"
 advancedAuxiliaries.VectoInputs.VehicleWeightKG=16500
 advancedAuxiliaries.VectoInputs.FuelMap= "testFuelGoodMap.vmap"
 advancedAuxiliaries.VectoInputs.PowerNetVoltage=26.3
+advancedAuxiliaries.VectoInputs.CycleDurationMinutes=51.9
 
 
 'set Signals
@@ -82,7 +83,17 @@ advancedAuxiliaries.Signals.TotalCycleTimeSeconds=3114
 advancedAuxiliaries.RunStart(txtAdvancedAuxiliaries.Text,message)
 
 'step whole cycle
+'advancedAuxiliaries.CycleStep(3114,message)
 
+
+'Add bindnings
+ 'txtTotalFCGrams.DataBindings.Add("Text", advancedAuxiliaries,"TotalFuelGRAMS")
+ 'txtTotalFCLitres.DataBindings.Add("Text", advancedAuxiliaries,"TotalFuelLITRES")
+
+
+ 'start timer
+
+ timer1.Start
 
 
 End Sub
@@ -104,11 +115,11 @@ Try
 
   advancedAuxiliaries = DirectCast(obj.Unwrap, IAdvancedAuxiliaries)
 
- ' If Not advancedAuxiliaries.Configure(txtAdvancedAuxiliaries.Text, "C:\Users\tb28\Source\Workspaces\VECTO\vecto-sim\AuxillaryTestHarness\bin\Debug\vectopath.vecto") then
 
-    ' MessageBox.Show("Unable to configure Advanced Auxilliaries")
+  lblAuxiliaryName.Text= advancedAuxiliaries.AuxiliaryName
+  lblAuxiliaryVersion.Text = advancedAuxiliaries.AuxiliaryVersion
 
- ' End If
+
 
   Catch ex As Exception
 
@@ -128,4 +139,17 @@ End Sub
 
 
 
+Private Sub Timer1_Tick( sender As Object,  e As EventArgs) Handles Timer1.Tick
+
+If not advancedAuxiliaries is nothing
+  Dim message As string = ""
+
+   advancedAuxiliaries.CycleStep(  Timer1.Interval/1000 , Message)
+   txtTotalFCGrams.Text= advancedAuxiliaries.TotalFuelGRAMS
+   txtTotalFCLitres.Text= advancedAuxiliaries.TotalFuelLITRES
+
+End If
+
+
+End Sub
 End Class

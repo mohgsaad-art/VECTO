@@ -22,6 +22,7 @@ Partial Class AuxLauncher
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Me.txtAdvancedAuxiliaries = New System.Windows.Forms.TextBox()
         Me.btnLaunchAux = New System.Windows.Forms.Button()
         Me.btnRun = New System.Windows.Forms.Button()
@@ -31,11 +32,14 @@ Partial Class AuxLauncher
         Me.txtTotalFCLitres = New System.Windows.Forms.TextBox()
         Me.lblTotalFCGRAMS = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
+        Me.lblAuxiliaryName = New System.Windows.Forms.Label()
+        Me.lblAuxiliaryVersion = New System.Windows.Forms.Label()
+        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.SuspendLayout
         '
         'txtAdvancedAuxiliaries
         '
-        Me.txtAdvancedAuxiliaries.Location = New System.Drawing.Point(22, 30)
+        Me.txtAdvancedAuxiliaries.Location = New System.Drawing.Point(30, 87)
         Me.txtAdvancedAuxiliaries.Name = "txtAdvancedAuxiliaries"
         Me.txtAdvancedAuxiliaries.Size = New System.Drawing.Size(366, 20)
         Me.txtAdvancedAuxiliaries.TabIndex = 0
@@ -43,7 +47,7 @@ Partial Class AuxLauncher
         '
         'btnLaunchAux
         '
-        Me.btnLaunchAux.Location = New System.Drawing.Point(409, 30)
+        Me.btnLaunchAux.Location = New System.Drawing.Point(414, 87)
         Me.btnLaunchAux.Name = "btnLaunchAux"
         Me.btnLaunchAux.Size = New System.Drawing.Size(75, 23)
         Me.btnLaunchAux.TabIndex = 1
@@ -52,7 +56,7 @@ Partial Class AuxLauncher
         '
         'btnRun
         '
-        Me.btnRun.Location = New System.Drawing.Point(409, 81)
+        Me.btnRun.Location = New System.Drawing.Point(414, 138)
         Me.btnRun.Name = "btnRun"
         Me.btnRun.Size = New System.Drawing.Size(75, 23)
         Me.btnRun.TabIndex = 2
@@ -61,7 +65,7 @@ Partial Class AuxLauncher
         '
         'btnStop
         '
-        Me.btnStop.Location = New System.Drawing.Point(409, 141)
+        Me.btnStop.Location = New System.Drawing.Point(414, 198)
         Me.btnStop.Name = "btnStop"
         Me.btnStop.Size = New System.Drawing.Size(75, 23)
         Me.btnStop.TabIndex = 3
@@ -70,7 +74,7 @@ Partial Class AuxLauncher
         '
         'btnInformation
         '
-        Me.btnInformation.Location = New System.Drawing.Point(409, 198)
+        Me.btnInformation.Location = New System.Drawing.Point(414, 255)
         Me.btnInformation.Name = "btnInformation"
         Me.btnInformation.Size = New System.Drawing.Size(75, 23)
         Me.btnInformation.TabIndex = 4
@@ -79,14 +83,14 @@ Partial Class AuxLauncher
         '
         'txtTotalFCGrams
         '
-        Me.txtTotalFCGrams.Location = New System.Drawing.Point(22, 81)
+        Me.txtTotalFCGrams.Location = New System.Drawing.Point(30, 138)
         Me.txtTotalFCGrams.Name = "txtTotalFCGrams"
         Me.txtTotalFCGrams.Size = New System.Drawing.Size(100, 20)
         Me.txtTotalFCGrams.TabIndex = 5
         '
         'txtTotalFCLitres
         '
-        Me.txtTotalFCLitres.Location = New System.Drawing.Point(159, 80)
+        Me.txtTotalFCLitres.Location = New System.Drawing.Point(164, 137)
         Me.txtTotalFCLitres.Name = "txtTotalFCLitres"
         Me.txtTotalFCLitres.Size = New System.Drawing.Size(100, 20)
         Me.txtTotalFCLitres.TabIndex = 6
@@ -94,7 +98,7 @@ Partial Class AuxLauncher
         'lblTotalFCGRAMS
         '
         Me.lblTotalFCGRAMS.AutoSize = true
-        Me.lblTotalFCGRAMS.Location = New System.Drawing.Point(22, 62)
+        Me.lblTotalFCGRAMS.Location = New System.Drawing.Point(30, 119)
         Me.lblTotalFCGRAMS.Name = "lblTotalFCGRAMS"
         Me.lblTotalFCGRAMS.Size = New System.Drawing.Size(77, 13)
         Me.lblTotalFCGRAMS.TabIndex = 7
@@ -103,17 +107,41 @@ Partial Class AuxLauncher
         'Label1
         '
         Me.Label1.AutoSize = true
-        Me.Label1.Location = New System.Drawing.Point(156, 62)
+        Me.Label1.Location = New System.Drawing.Point(161, 119)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(77, 13)
+        Me.Label1.Size = New System.Drawing.Size(72, 13)
         Me.Label1.TabIndex = 8
-        Me.Label1.Text = "TotalFC Grams"
+        Me.Label1.Text = "TotalFC Litres"
+        '
+        'lblAuxiliaryName
+        '
+        Me.lblAuxiliaryName.AutoSize = true
+        Me.lblAuxiliaryName.Location = New System.Drawing.Point(30, 9)
+        Me.lblAuxiliaryName.Name = "lblAuxiliaryName"
+        Me.lblAuxiliaryName.Size = New System.Drawing.Size(39, 13)
+        Me.lblAuxiliaryName.TabIndex = 9
+        Me.lblAuxiliaryName.Text = "Label2"
+        '
+        'lblAuxiliaryVersion
+        '
+        Me.lblAuxiliaryVersion.AutoSize = true
+        Me.lblAuxiliaryVersion.Location = New System.Drawing.Point(30, 37)
+        Me.lblAuxiliaryVersion.Name = "lblAuxiliaryVersion"
+        Me.lblAuxiliaryVersion.Size = New System.Drawing.Size(39, 13)
+        Me.lblAuxiliaryVersion.TabIndex = 10
+        Me.lblAuxiliaryVersion.Text = "Label3"
+        '
+        'Timer1
+        '
+        Me.Timer1.Interval = 1000
         '
         'AuxLauncher
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(527, 363)
+        Me.Controls.Add(Me.lblAuxiliaryVersion)
+        Me.Controls.Add(Me.lblAuxiliaryName)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.lblTotalFCGRAMS)
         Me.Controls.Add(Me.txtTotalFCLitres)
@@ -138,4 +166,7 @@ End Sub
     Friend WithEvents txtTotalFCLitres As System.Windows.Forms.TextBox
     Friend WithEvents lblTotalFCGRAMS As System.Windows.Forms.Label
     Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents lblAuxiliaryName As System.Windows.Forms.Label
+    Friend WithEvents lblAuxiliaryVersion As System.Windows.Forms.Label
+    Friend WithEvents Timer1 As System.Windows.Forms.Timer
 End Class

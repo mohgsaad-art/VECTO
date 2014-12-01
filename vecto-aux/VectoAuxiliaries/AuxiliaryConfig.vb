@@ -9,24 +9,27 @@ imports VectoAuxiliaries
 
 
 
+
 <Serializable()>
 Public Class AuxiliaryConfig
  Implements IAuxiliaryConfig
 
 
+
+
  'Vecto
- Public Property VectoInputs As IVectoInputs
+ Public Property VectoInputs As IVectoInputs  implements IAuxiliaryConfig.VectoInputs
   
  'Electrical
- Public property ElectricalUserInputsConfig As IElectricsUserInputsConfig
+ Public property ElectricalUserInputsConfig As IElectricsUserInputsConfig  Implements IAuxiliaryConfig.ElectricalUserInputsConfig
 
 
  'Pneumatics
- public Property PneumaticUserInputsConfig As IPneumaticUserInputsConfig
- public Property PneumaticAuxillariesConfig As IPneumaticsAuxilliariesConfig
+ public Property PneumaticUserInputsConfig As IPneumaticUserInputsConfig Implements IAuxiliaryConfig.PneumaticUserInputsConfig
+ public Property PneumaticAuxillariesConfig As IPneumaticsAuxilliariesConfig  Implements IAuxiliaryConfig.PneumaticAuxillariesConfig
 
  'Hvac
- Public Property  HvacUserInputsConfig As IHVACUserInputsConfig
+ Public Property  HvacUserInputsConfig As IHVACUserInputsConfig Implements IAuxiliaryConfig.HvacUserInputsConfig
 
  'Vecto Signals
  public Property Signals As ISignals
@@ -226,7 +229,7 @@ Private Function ComparePneumaticUserConfig( other As AuxiliaryConfig ) As Boole
  Return true
 
 End Function
-Private Function CompareHVACConfig( other As AuxiliaryConfig) As Boolean
+Private Function CompareHVACConfig( other As AuxiliaryConfig) As Boolean Implements IAuxiliaryConfig.ConfigValuesAreTheSameAs
 
   If Me.HvacUserInputsConfig.SteadyStateModel.HVACElectricalLoadPowerWatts <> other.HvacUserInputsConfig.SteadyStateModel.HVACElectricalLoadPowerWatts then Return false
   If Me.HvacUserInputsConfig.SteadyStateModel.HVACFuellingLitresPerHour <> other.HvacUserInputsConfig.SteadyStateModel.HVACFuellingLitresPerHour then Return false
@@ -254,7 +257,8 @@ End Function
 
 
 'Persistance Functions
-Public Function Save(  auxFile As String ) As Boolean
+Public Function Save(  auxFile As String ) As Boolean  Implements IAuxiliaryConfig.Save
+
 
 
   Dim returnValue As Boolean = true
@@ -279,7 +283,7 @@ Public Function Save(  auxFile As String ) As Boolean
   Return returnValue
 
 End Function
-Public Function Load(  auxFile As String  ) As Boolean
+Public Function Load(  auxFile As String  ) As Boolean  Implements IAuxiliaryConfig.Load
 
   Dim returnValue As Boolean = true
   Dim settings As JsonSerializerSettings = new JsonSerializerSettings()
@@ -344,7 +348,7 @@ For  Each otherConsumer As IElectricalConsumer In other.ElectricalUserInputsConf
 Next
 
 'PowerNetVoltage
-other.ElectricalUserInputsConfig.PowerNetVoltage = other.ElectricalUserInputsConfig.PowerNetVoltage 
+Me.ElectricalUserInputsConfig.PowerNetVoltage = other.ElectricalUserInputsConfig.PowerNetVoltage 
 'ResultCardIdle
 Me.ElectricalUserInputsConfig.ResultCardIdle.Results.Clear
 For each result As SmartResult In other.ElectricalUserInputsConfig.ResultCardIdle.Results
@@ -409,26 +413,5 @@ End Sub
 #End Region
 
 
-    Public Function ConfigValuesAreTheSameAs1(other As AuxiliaryConfig) As Boolean Implements IAuxiliaryConfig.ConfigValuesAreTheSameAs
-
-    End Function
-
-    Public Property ElectricalUserInputsConfig1 As IElectricsUserInputsConfig Implements IAuxiliaryConfig.ElectricalUserInputsConfig
-
-    Public Property HvacUserInputsConfig1 As IHVACUserInputsConfig Implements IAuxiliaryConfig.HvacUserInputsConfig
-
-    Public Function Load1(filePath As String) As Boolean Implements IAuxiliaryConfig.Load
-
-    End Function
-
-    Public Property PneumaticAuxillariesConfig1 As IPneumaticsAuxilliariesConfig Implements IAuxiliaryConfig.PneumaticAuxillariesConfig
-
-    Public Property PneumaticUserInputsConfig1 As IPneumaticUserInputsConfig Implements IAuxiliaryConfig.PneumaticUserInputsConfig
-
-    Public Function Save1(filePath As String) As Boolean Implements IAuxiliaryConfig.Save
-
-    End Function
-
-    Public Property VectoInputs1 As IVectoInputs Implements IAuxiliaryConfig.VectoInputs
 End Class
 

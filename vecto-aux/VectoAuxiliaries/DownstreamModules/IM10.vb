@@ -1,7 +1,7 @@
-﻿Imports AdvancedAuxiliaryInterfaces.Electrics
-Imports AdvancedAuxiliaryInterfaces.Pneumatics
-Imports AdvancedAuxiliaryInterfaces.Hvac
-Imports AdvancedAuxiliaryInterfaces.DownstreamModules
+﻿Imports VectoAuxiliaries.Electrics
+Imports VectoAuxiliaries.Pneumatics
+Imports VectoAuxiliaries.Hvac
+Imports VectoAuxiliaries.DownstreamModules
 
 Namespace DownstreamModules
 

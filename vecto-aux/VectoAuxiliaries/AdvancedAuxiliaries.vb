@@ -11,7 +11,12 @@ Public Class AdvancedAuxiliaries
 
 
 
-     Private auxConfig As AuxiliaryConfig
+    Private auxConfig As AuxiliaryConfig
+     
+
+    Public Property Signals As ISignals Implements IAdvancedAuxiliaries.Signals
+    Public Property VectoInputs As IVectoInputs Implements IAdvancedAuxiliaries.VectoInputs
+
    
     Public Sub new( )
 
@@ -21,17 +26,7 @@ Public Class AdvancedAuxiliaries
     End Sub
 
 
-  
- 'Electrical
- 'Public property ElectricalUserInputsConfig As IElectricsUserInputsConfig
-
-
- ''Pneumatics
- 'public Property PneumaticUserInputsConfig As IPneumaticUserInputsConfig
- 'public Property PneumaticAuxillariesConfig As IPneumaticsAuxilliariesConfig
-
- ''Hvac
- 'Public Property  HvacUserInputsConfig As IHVACUserInputsConfig
+ 
 
 
  'Test instantiations
@@ -54,6 +49,10 @@ Public Class AdvancedAuxiliaries
 Public Sub Initialise( auxPath  As String )
 
 auxConfig = New AuxiliaryConfig(auxPath)
+
+'Pass some signals from config to Signals. ( These are stored in the configuration but shared in the signal distribution around modules )
+Signals.SmartElectrics  = auxConfig.ElectricalUserInputsConfig.SmartElectrical
+Signals.SmartPneumatics = auxConfig.PneumaticUserInputsConfig.SmartAirCompression
 
 Dim alternatoMap As IAlternatorMap = New AlternatorMap(auxConfig.ElectricalUserInputsConfig.AlternatorMap)
 alternatoMap.Initialise()
@@ -118,26 +117,14 @@ M3 = New M3_AveragePneumaticLoadDemand(auxConfig.PneumaticUserInputsConfig,
 
 
 M4 = New M4_AirCompressor(compressorMap,auxConfig.PneumaticUserInputsConfig.CompressorGearRatio,auxConfig.PneumaticUserInputsConfig.CompressorGearEfficiency,Signals)
-
-
 M5 = New M5__SmartAlternatorSetGeneration( M05, VectoInputs.PowerNetVoltage,auxConfig.ElectricalUserInputsConfig.AlternatorGearEfficiency)
-
-
 M6 = New M6(M1,M2,M3,M4,M5,Signals)
-
-
 M7 = New M7(M5,M6,Signals)
-
 M8 = New M8(M1,M6,M7,Signals)
-
 M9 = New M9(M1,M4,M6,M8,fuelMap,auxConfig.PneumaticAuxillariesConfig,Signals)
-
 M10 = New M10(M3,M9,Signals)
-
 M11 = New M11(M1,M3,M6,M8,fuelMap,Signals)
-
 M12 = New M12( M11, Signals )
-
 M13 = New M13(M1,M10,M12,Signals)
 
 
@@ -167,7 +154,11 @@ End Sub
     End Function
 
     Public Function CycleStep(seconds As Integer, ByRef message As String) As Boolean Implements VectoAuxiliaries.IAdvancedAuxiliaries.CycleStep
-          throw new NotImplementedException
+         
+       M9.CycleStep( seconds )      
+       M11.CycleStep( seconds )
+     
+     
     End Function
 
     Public Event Message(Message As String, messageType As VectoAuxiliaries.AdvancedAuxiliaryMessageType) Implements VectoAuxiliaries.IAdvancedAuxiliaries.Message
@@ -180,8 +171,9 @@ End Sub
 
     Public Function RunStart( ByVal auxFilePath As String, ByRef message As String) As Boolean Implements VectoAuxiliaries.IAdvancedAuxiliaries.RunStart
           
-       Initialise(auxFilePath)        
 
+       Initialise(auxFilePath)        
+       'CycleStep( Signals.TotalCycleTimeSeconds, message)
 
     End Function
 
@@ -193,13 +185,31 @@ End Sub
 
     Public ReadOnly Property TotalFuelGRAMS As Single Implements VectoAuxiliaries.IAdvancedAuxiliaries.TotalFuelGRAMS
         Get
-              throw new NotImplementedException
+             If Not M13 is Nothing then
+
+               Return M13.TotalCycleFuelConsumptionGrams
+
+               Else
+               'TODO:Issue a message            
+               Return 0
+
+             End If
+
+             
         End Get
     End Property
 
     Public ReadOnly Property TotalFuelLITRES As Single Implements VectoAuxiliaries.IAdvancedAuxiliaries.TotalFuelLITRES
         Get
-              throw new NotImplementedException
+             If Not M13 is Nothing then
+
+               Return M13.TotalCycleFuelConsumptionLitres
+
+               Else
+               'TODO:Issue a message
+               Return 0
+
+             End If
         End Get
     End Property
 
@@ -217,9 +227,6 @@ End Sub
 
 
 
-    Public Property Signals As ISignals Implements IAdvancedAuxiliaries.Signals
-
-    Public Property VectoInputs As IVectoInputs Implements IAdvancedAuxiliaries.VectoInputs
 
     Private Function GetDoorActuationTimeFraction()As Single
    
