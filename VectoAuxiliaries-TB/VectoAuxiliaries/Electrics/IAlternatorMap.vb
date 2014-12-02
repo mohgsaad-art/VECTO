@@ -2,6 +2,7 @@ Namespace Electrics
 
 
     Public Interface IAlternatorMap
+     Inherits IAuxiliaryEvent
         ''' <summary>
         ''' Initialise the map from supplied csv data
         ''' </summary>

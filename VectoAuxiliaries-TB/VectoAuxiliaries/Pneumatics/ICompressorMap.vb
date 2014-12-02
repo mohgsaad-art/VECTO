@@ -1,5 +1,6 @@
 Namespace Pneumatics
     Public Interface ICompressorMap
+    Inherits IAuxiliaryEvent
 
         ''' <summary>
         ''' Initilaises the map from the supplied csv data
@@ -36,4 +37,5 @@ Namespace Pneumatics
 
 
     End Interface
+
 End Namespace

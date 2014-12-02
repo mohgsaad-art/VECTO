@@ -70,6 +70,7 @@
     <Compile Include="Enumerations.vb" />
     <Compile Include="IAdvancedAuxiliaries.vb" />
     <Compile Include="ISignals.vb" />
+    <Compile Include="IAuxiliaryEvent.vb" />
     <Compile Include="IVectoInputs.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
