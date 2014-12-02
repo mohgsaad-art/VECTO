@@ -1,7 +1,9 @@
 ﻿
 Namespace Pneumatics
 
+
     Public Class M4_AirCompressor
+   
         Implements IM4_AirCompressor
 
         Private Const MinRatio As Single = 1
@@ -11,9 +13,10 @@ Namespace Pneumatics
 
         Private _pulleyGearRatio As Single
         Private _pulleyGearEfficiency As Single
-        Private _map As ICompressorMap
+        Private  _map As ICompressorMap 
         Private _signals As ISignals
 
+     
         ''' <summary>
         ''' Ratio of Gear or Pulley used to drive the compressor
         ''' </summary>

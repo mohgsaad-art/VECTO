@@ -11,5 +11,6 @@ Property TotalCycleTimeSeconds As Integer
 property EngineDrivelineTorque as single
 Property Idle As Boolean
 Property InNeutral As Boolean
+Property AuxiliaryEventReportingLevel As AdvancedAuxiliaryMessageType
 
 End Interface

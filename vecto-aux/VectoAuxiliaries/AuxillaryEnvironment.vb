@@ -10,6 +10,7 @@ Imports Newtonsoft.Json
 <Serializable()>
 Public Class AuxillaryEnvironment
 
+
  'Vecto
  Public Property VectoInputs As IVectoInputs
   
@@ -43,6 +44,16 @@ Public Class AuxillaryEnvironment
   Public M11 As IM11
   Public M12 As IM12
   Public M13 As IM13
+
+  Protected WithEvents compressorMap As ICompressorMap
+
+  Public Sub VectoEventHandler( byref sender As Object, message As String, messageType As AdvancedAuxiliaryMessageType) handles compressorMap.AuxiliaryEvent
+
+
+    
+
+
+  End Sub
   
   
 Public Sub ClearDown()
@@ -73,8 +84,10 @@ alternatoMap.Initialise()
 
 Dim actuationsMap As  IPneumaticActuationsMAP = New PneumaticActuationsMAP( PneumaticUserInputsConfig.ActuationsMap)
 
-Dim compressorMap As ICompressorMap = New CompressorMap( PneumaticUserInputsConfig.CompressorMap)
+
+compressorMap = New CompressorMap( PneumaticUserInputsConfig.CompressorMap)
 compressorMap.Initialise()
+
 
 Dim fuelMap As IFUELMAP = New cMAP()
 fuelMap.FilePath= VectoInputs.FuelMap
@@ -196,15 +209,9 @@ End Sub
 
 Private Sub setDefaults()
 
- 'Here's where the magic happens.
+', .CycleDurationMinutes=51.9
 
- 'TODO:
- 'Assign Smarts to signals
- 'Signals.SmartElectrics= ElectricalUserInputsConfig.SmartElectrical
- 'Signals.SmartPneumatics= PneumaticUserInputsConfig.SmartAirCompression
-
-
- VectoInputs = New VectoInputs With {.Cycle="Urban", .VehicleWeightKG=16500, .PowerNetVoltage=26.3, .CycleDurationMinutes=51.9,.FuelMap="testFuelGoodMap.vmap"}
+ VectoInputs = New VectoInputs With {.Cycle="Urban", .VehicleWeightKG=16500, .PowerNetVoltage=26.3,.FuelMap="testFuelGoodMap.vmap"}
  
  'Pneumatics
  PneumaticUserInputsConfig  = New PneumaticUserInputsConfig(true) 
@@ -542,6 +549,8 @@ End Sub
 
 
 #End Region
+
+
 
 
 End Class

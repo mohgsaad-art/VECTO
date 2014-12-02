@@ -132,7 +132,6 @@
     <Compile Include="Pneumatics\ActuationsKey.vb" />
     <Compile Include="Pneumatics\IM3_AveragePneumaticLoadDemand.vb" />
     <Compile Include="Pneumatics\M4_AirCompressor.vb" />
-    <Compile Include="Electrics\AlternatorMapOLDREMOVELATER.vb" />
     <Compile Include="Electrics\M2_AverageElectricalLoadDemand.vb" />
     <Compile Include="Hvac\M1_AverageHVACLoadDemand.vb" />
     <Compile Include="Pneumatics\M3_AveragePneumaticLoadDemand.vb" />

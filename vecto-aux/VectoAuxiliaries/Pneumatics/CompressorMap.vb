@@ -7,7 +7,11 @@ Namespace Pneumatics
     ''' </summary>
     ''' <remarks></remarks>
     Public Class CompressorMap
-        Implements ICompressorMap
+
+        Implements ICompressorMap, 
+        IAuxiliaryEvent
+
+
 
         Private ReadOnly filePath As String
 
@@ -136,8 +140,13 @@ Namespace Pneumatics
             'check the rpm is within the map
             Dim min As Integer = map.Keys.Min()
             Dim max As Integer = map.Keys.Max()
+
             If rpm < min OrElse rpm > max Then
-                Throw New ArgumentOutOfRangeException(String.Format("Extrapolation - rpm should be in the range {0} to {1}", min, max), rpm)
+                OnMessage(Me,String.Format("Compresser has limited RPM of '{2}' to extent of map - rpm should be in the range {0} to {1}", min, max ,rpm), AdvancedAuxiliaryMessageType.Warning)    
+               'Limiting as agreed.
+               If rpm > max then rpm=max
+               If rpm < min then rpm=min
+
             End If
 
             'If supplied rpm is a key, we can just return the appropriate tuple
@@ -215,6 +224,18 @@ Namespace Pneumatics
 
 
 
+        Public Event Message(ByRef sender As Object, message As String, messageType As AdvancedAuxiliaryMessageType) Implements IAuxiliaryEvent.AuxiliaryEvent 
+
+        Public Sub OnMessage(sender As Object, message As String, messageType As AdvancedAuxiliaryMessageType) 
+
+
+          If Not message is Nothing then
+
+          RaiseEvent Message( Me, message, messageType)
+
+          End If
+
+        End Sub
     End Class
 
 

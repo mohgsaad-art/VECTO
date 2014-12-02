@@ -5,6 +5,8 @@ Namespace Mocks
     Public Class CompressorMapMock
         Implements ICompressorMap
 
+
+
         Dim failing As Boolean
 
         Public Sub New(ByVal isFailing As Boolean)
@@ -39,5 +41,7 @@ Namespace Mocks
         End Function
 
 
+
+            Public Event AuxiliaryEvent(ByRef sender As Object, message As String, messageType As VectoAuxiliaries.AdvancedAuxiliaryMessageType) Implements VectoAuxiliaries.IAuxiliaryEvent.AuxiliaryEvent
     End Class
 End Namespace

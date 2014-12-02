@@ -42,6 +42,8 @@ Implements ISignals
 
     Public Property InNeutral As Boolean Implements ISignals.InNeutral
 
+    Public Property AuxiliaryEventReportingLevel As AdvancedAuxiliaryMessageType Implements ISignals.AuxiliaryEventReportingLevel
+
 
 
 End Class

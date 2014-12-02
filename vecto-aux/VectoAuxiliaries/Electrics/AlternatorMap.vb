@@ -7,6 +7,7 @@ Namespace Electrics
 Public Class AlternatorMap
 Implements IAlternatorMap
 
+
     Private ReadOnly filePath As String
 
     Public map As New List(Of MapPoint)
@@ -153,11 +154,19 @@ Implements IAlternatorMap
     Public Function GetValue(x As Single, y As Single) As Single
 
 
-        'Limiting
-        If x < minX Then x = minX
-        If x > maxX Then x = maxX
-        If y < minY Then y = minY
-        If y > maxY Then y = maxY
+       '  If x < minX  OrElse  x > maxX OrElse  y < minY   OrElse  y > maxY  then
+
+           'OnAuxiliaryEvent(String.Format("Alternator Map Limiting : RPM{0}, AMPS{1}",x,y),AdvancedAuxiliaryMessageType.Warning)
+
+
+            'Limiting
+            If x < minX Then x = minX
+            If x > maxX Then x = maxX
+            If y < minY Then y = minY
+            If y > maxY Then y = maxY
+
+       '  End If
+
 
         'Satisfies both data points - non interpolated value
         If ONBoundaryXY(x, y) Then Return GetOnBoundaryXY(x, y)
@@ -311,6 +320,14 @@ Implements IAlternatorMap
             End If
         End Function
 
+
+        Public Event AuxiliaryEvent(ByRef sender As Object, message As String, messageType As AdvancedAuxiliaryMessageType) Implements IAuxiliaryEvent.AuxiliaryEvent
+
+        Protected sub OnAuxiliaryEvent(message As String, messageType As AdvancedAuxiliaryMessageType)
+
+          RaiseEvent  AuxiliaryEvent(Me, message, messageType)
+
+        End Sub
 
 End Class
 
