@@ -3,7 +3,14 @@ Imports VectoAuxiliaries
 
 Public Class AuxLauncher
 
-Public advancedAuxiliaries As IAdvancedAuxiliaries
+Public WithEvents advancedAuxiliaries As IAdvancedAuxiliaries
+
+
+Public Sub AuxEventHandler( ByRef sender As Object, ByVal message As String, ByVal messageType as AdvancedAuxiliaryMessageType)  Handles advancedAuxiliaries.AuxiliaryEvent
+
+   txtEvents.Text+= message
+
+End Sub
 
 
 'Configure
@@ -61,8 +68,7 @@ End Sub
 
 
 
-
-Private Sub btnRun_Click( sender As Object,  e As EventArgs) Handles btnRun.Click
+Private sub setup()
 
 Dim message As String = String.Empty
 
@@ -73,7 +79,7 @@ advancedAuxiliaries.VectoInputs.Cycle="Urban"
 advancedAuxiliaries.VectoInputs.VehicleWeightKG=16500
 advancedAuxiliaries.VectoInputs.FuelMap= "testFuelGoodMap.vmap"
 advancedAuxiliaries.VectoInputs.PowerNetVoltage=26.3
-advancedAuxiliaries.VectoInputs.CycleDurationMinutes=51.9
+'advancedAuxiliaries.VectoInputs.CycleDurationMinutes=51.9
 
 
 'set Signals
@@ -82,18 +88,14 @@ advancedAuxiliaries.Signals.TotalCycleTimeSeconds=3114
 
 advancedAuxiliaries.RunStart(txtAdvancedAuxiliaries.Text,message)
 
-'step whole cycle
-'advancedAuxiliaries.CycleStep(3114,message)
+End Sub
+
+Private Sub btnRun_Click( sender As Object,  e As EventArgs) Handles btnRun.Click
 
 
-'Add bindnings
- 'txtTotalFCGrams.DataBindings.Add("Text", advancedAuxiliaries,"TotalFuelGRAMS")
- 'txtTotalFCLitres.DataBindings.Add("Text", advancedAuxiliaries,"TotalFuelLITRES")
+  setup()
 
-
- 'start timer
-
- timer1.Start
+  timer1.Start
 
 
 End Sub
@@ -102,11 +104,10 @@ End Sub
 
 Private Sub AuxLauncher_Load( sender As Object,  e As EventArgs) Handles MyBase.Load
 
-
+cboWarningLevel.DataSource = System.Enum.GetValues(GetType(AdvancedAuxiliaryMessageType))
+'cboWarningLevel.SelectedIndex=1
 
  Dim obj As System.Runtime.Remoting.ObjectHandle
-
-
 
 
 Try
@@ -115,6 +116,7 @@ Try
 
   advancedAuxiliaries = DirectCast(obj.Unwrap, IAdvancedAuxiliaries)
 
+  advancedAuxiliaries.Signals.AuxiliaryEventReportingLevel=CType(cboWarningLevel.SelectedValue, AdvancedAuxiliaryMessageType)
 
   lblAuxiliaryName.Text= advancedAuxiliaries.AuxiliaryName
   lblAuxiliaryVersion.Text = advancedAuxiliaries.AuxiliaryVersion
@@ -142,7 +144,10 @@ End Sub
 Private Sub Timer1_Tick( sender As Object,  e As EventArgs) Handles Timer1.Tick
 
 If not advancedAuxiliaries is nothing
+
   Dim message As string = ""
+
+   Timer1.Start
 
    advancedAuxiliaries.CycleStep(  Timer1.Interval/1000 , Message)
    txtTotalFCGrams.Text= advancedAuxiliaries.TotalFuelGRAMS
@@ -152,4 +157,34 @@ End If
 
 
 End Sub
+
+Private Sub btnWholeCycle_Click( sender As Object,  e As EventArgs) Handles btnWholeCycle.Click
+  Dim message As string = ""
+
+    setup()
+
+   advancedAuxiliaries.CycleStep(  3114 , Message)
+   txtTotalFCGrams.Text= advancedAuxiliaries.TotalFuelGRAMS
+   txtTotalFCLitres.Text= advancedAuxiliaries.TotalFuelLITRES
+
+End Sub
+
+
+Private Sub btnStop_Click( sender As Object,  e As EventArgs) Handles btnStop.Click
+
+Timer1.Stop
+
+
+End Sub
+
+Private Sub cboWarningLevel_SelectedIndexChanged( sender As Object,  e As EventArgs) Handles cboWarningLevel.SelectedIndexChanged
+
+
+advancedAuxiliaries.Signals.AuxiliaryEventReportingLevel=CType(cboWarningLevel.SelectedValue, AdvancedAuxiliaryMessageType)
+
+
+End Sub
+
+
+
 End Class

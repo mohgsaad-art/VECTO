@@ -35,11 +35,14 @@ Partial Class AuxLauncher
         Me.lblAuxiliaryName = New System.Windows.Forms.Label()
         Me.lblAuxiliaryVersion = New System.Windows.Forms.Label()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+        Me.btnWholeCycle = New System.Windows.Forms.Button()
+        Me.txtEvents = New System.Windows.Forms.TextBox()
+        Me.cboWarningLevel = New System.Windows.Forms.ComboBox()
         Me.SuspendLayout
         '
         'txtAdvancedAuxiliaries
         '
-        Me.txtAdvancedAuxiliaries.Location = New System.Drawing.Point(30, 87)
+        Me.txtAdvancedAuxiliaries.Location = New System.Drawing.Point(30, 101)
         Me.txtAdvancedAuxiliaries.Name = "txtAdvancedAuxiliaries"
         Me.txtAdvancedAuxiliaries.Size = New System.Drawing.Size(366, 20)
         Me.txtAdvancedAuxiliaries.TabIndex = 0
@@ -47,7 +50,7 @@ Partial Class AuxLauncher
         '
         'btnLaunchAux
         '
-        Me.btnLaunchAux.Location = New System.Drawing.Point(414, 87)
+        Me.btnLaunchAux.Location = New System.Drawing.Point(414, 101)
         Me.btnLaunchAux.Name = "btnLaunchAux"
         Me.btnLaunchAux.Size = New System.Drawing.Size(75, 23)
         Me.btnLaunchAux.TabIndex = 1
@@ -56,7 +59,7 @@ Partial Class AuxLauncher
         '
         'btnRun
         '
-        Me.btnRun.Location = New System.Drawing.Point(414, 138)
+        Me.btnRun.Location = New System.Drawing.Point(414, 152)
         Me.btnRun.Name = "btnRun"
         Me.btnRun.Size = New System.Drawing.Size(75, 23)
         Me.btnRun.TabIndex = 2
@@ -65,7 +68,7 @@ Partial Class AuxLauncher
         '
         'btnStop
         '
-        Me.btnStop.Location = New System.Drawing.Point(414, 198)
+        Me.btnStop.Location = New System.Drawing.Point(414, 212)
         Me.btnStop.Name = "btnStop"
         Me.btnStop.Size = New System.Drawing.Size(75, 23)
         Me.btnStop.TabIndex = 3
@@ -74,7 +77,7 @@ Partial Class AuxLauncher
         '
         'btnInformation
         '
-        Me.btnInformation.Location = New System.Drawing.Point(414, 255)
+        Me.btnInformation.Location = New System.Drawing.Point(414, 269)
         Me.btnInformation.Name = "btnInformation"
         Me.btnInformation.Size = New System.Drawing.Size(75, 23)
         Me.btnInformation.TabIndex = 4
@@ -83,14 +86,14 @@ Partial Class AuxLauncher
         '
         'txtTotalFCGrams
         '
-        Me.txtTotalFCGrams.Location = New System.Drawing.Point(30, 138)
+        Me.txtTotalFCGrams.Location = New System.Drawing.Point(30, 152)
         Me.txtTotalFCGrams.Name = "txtTotalFCGrams"
         Me.txtTotalFCGrams.Size = New System.Drawing.Size(100, 20)
         Me.txtTotalFCGrams.TabIndex = 5
         '
         'txtTotalFCLitres
         '
-        Me.txtTotalFCLitres.Location = New System.Drawing.Point(164, 137)
+        Me.txtTotalFCLitres.Location = New System.Drawing.Point(164, 151)
         Me.txtTotalFCLitres.Name = "txtTotalFCLitres"
         Me.txtTotalFCLitres.Size = New System.Drawing.Size(100, 20)
         Me.txtTotalFCLitres.TabIndex = 6
@@ -98,7 +101,7 @@ Partial Class AuxLauncher
         'lblTotalFCGRAMS
         '
         Me.lblTotalFCGRAMS.AutoSize = true
-        Me.lblTotalFCGRAMS.Location = New System.Drawing.Point(30, 119)
+        Me.lblTotalFCGRAMS.Location = New System.Drawing.Point(30, 133)
         Me.lblTotalFCGRAMS.Name = "lblTotalFCGRAMS"
         Me.lblTotalFCGRAMS.Size = New System.Drawing.Size(77, 13)
         Me.lblTotalFCGRAMS.TabIndex = 7
@@ -107,7 +110,7 @@ Partial Class AuxLauncher
         'Label1
         '
         Me.Label1.AutoSize = true
-        Me.Label1.Location = New System.Drawing.Point(161, 119)
+        Me.Label1.Location = New System.Drawing.Point(161, 133)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(72, 13)
         Me.Label1.TabIndex = 8
@@ -135,11 +138,39 @@ Partial Class AuxLauncher
         '
         Me.Timer1.Interval = 1000
         '
+        'btnWholeCycle
+        '
+        Me.btnWholeCycle.Location = New System.Drawing.Point(305, 151)
+        Me.btnWholeCycle.Name = "btnWholeCycle"
+        Me.btnWholeCycle.Size = New System.Drawing.Size(75, 23)
+        Me.btnWholeCycle.TabIndex = 11
+        Me.btnWholeCycle.Text = "Whole Cycle"
+        Me.btnWholeCycle.UseVisualStyleBackColor = true
+        '
+        'txtEvents
+        '
+        Me.txtEvents.Location = New System.Drawing.Point(33, 214)
+        Me.txtEvents.Multiline = true
+        Me.txtEvents.Name = "txtEvents"
+        Me.txtEvents.Size = New System.Drawing.Size(306, 99)
+        Me.txtEvents.TabIndex = 12
+        '
+        'cboWarningLevel
+        '
+        Me.cboWarningLevel.FormattingEnabled = true
+        Me.cboWarningLevel.Location = New System.Drawing.Point(30, 65)
+        Me.cboWarningLevel.Name = "cboWarningLevel"
+        Me.cboWarningLevel.Size = New System.Drawing.Size(121, 21)
+        Me.cboWarningLevel.TabIndex = 13
+        '
         'AuxLauncher
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(527, 363)
+        Me.Controls.Add(Me.cboWarningLevel)
+        Me.Controls.Add(Me.txtEvents)
+        Me.Controls.Add(Me.btnWholeCycle)
         Me.Controls.Add(Me.lblAuxiliaryVersion)
         Me.Controls.Add(Me.lblAuxiliaryName)
         Me.Controls.Add(Me.Label1)
@@ -169,4 +200,7 @@ End Sub
     Friend WithEvents lblAuxiliaryName As System.Windows.Forms.Label
     Friend WithEvents lblAuxiliaryVersion As System.Windows.Forms.Label
     Friend WithEvents Timer1 As System.Windows.Forms.Timer
+    Friend WithEvents btnWholeCycle As System.Windows.Forms.Button
+    Friend WithEvents txtEvents As System.Windows.Forms.TextBox
+    Friend WithEvents cboWarningLevel As System.Windows.Forms.ComboBox
 End Class

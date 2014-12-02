@@ -76,9 +76,9 @@ End Sub
 
 Private Sub setDefaults()
 
+'.CycleDurationMinutes=51.9,
 
-
- VectoInputs = New VectoInputs With {.Cycle="Urban", .VehicleWeightKG=16500, .PowerNetVoltage=26.3, .CycleDurationMinutes=51.9,.FuelMap="testFuelGoodMap.vmap"}
+ VectoInputs = New VectoInputs With {.Cycle="Urban", .VehicleWeightKG=16500, .PowerNetVoltage=26.3, .FuelMap="testFuelGoodMap.vmap"}
  
  'Pneumatics
  PneumaticUserInputsConfig  = New PneumaticUserInputsConfig(true) 
