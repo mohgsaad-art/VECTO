@@ -16,36 +16,16 @@ End Sub
 'Configure
 Private Sub btnLaunchAux_Click(sender As Object, e As EventArgs) Handles btnLaunchAux.Click
 
-
-
   If Not advancedAuxiliaries.Configure(txtAdvancedAuxiliaries.Text, "C:\Users\tb28\Source\Workspaces\VECTO\vecto-sim-ricardoaeaTB\AuxillaryTestHarness\bin\Debug\vectopath.vecto") then
 
-  MessageBox.Show("Unable to configure Advanced Auxilliaries")
+       MessageBox.Show("Unable to configure Advanced Auxilliaries")
+
+
 
   End If
 
-
-
-
-
+  
 End Sub
-
-
-'Run
-
-
-'Stop
-
-
-'Set Statics
-
-
-
-'Invoke Messages
-
-
-'Information
-
 
 
 Private Sub txtAdvancedAuxiliaries_Validating( sender As Object,  e As System.ComponentModel.CancelEventArgs) Handles txtAdvancedAuxiliaries.Validating
@@ -54,14 +34,20 @@ Private Sub txtAdvancedAuxiliaries_Validating( sender As Object,  e As System.Co
 'Check for correct extension
 Dim message As String = String.Empty
 
+'Formatted correctely
 If VectoAuxiliaries.FilePathUtils.ValidateFilePath( txtAdvancedAuxiliaries.Text,".aaux", message)=False
-
   messageBox.Show(message)
   e.Cancel=true
-  
-
 End If
 
+
+'Can load the file.
+If Not advancedAuxiliaries.ValidateAAUXFile(txtAdvancedAuxiliaries.Text, message)
+
+  MessageBox.Show(message &  " : Please reenter and try again.")
+  e.Cancel=true
+
+End If
 
 
 End Sub
@@ -72,14 +58,11 @@ Private sub setup()
 
 Dim message As String = String.Empty
 
-
-
 'Set Statics
 advancedAuxiliaries.VectoInputs.Cycle="Urban"
 advancedAuxiliaries.VectoInputs.VehicleWeightKG=16500
 advancedAuxiliaries.VectoInputs.FuelMap= "testFuelGoodMap.vmap"
 advancedAuxiliaries.VectoInputs.PowerNetVoltage=26.3
-'advancedAuxiliaries.VectoInputs.CycleDurationMinutes=51.9
 
 
 'set Signals
@@ -92,11 +75,9 @@ End Sub
 
 Private Sub btnRun_Click( sender As Object,  e As EventArgs) Handles btnRun.Click
 
-
   setup()
 
   timer1.Start
-
 
 End Sub
 
@@ -105,31 +86,21 @@ End Sub
 Private Sub AuxLauncher_Load( sender As Object,  e As EventArgs) Handles MyBase.Load
 
 cboWarningLevel.DataSource = System.Enum.GetValues(GetType(AdvancedAuxiliaryMessageType))
-'cboWarningLevel.SelectedIndex=1
+cboWarningLevel.SelectedIndex= AdvancedAuxiliaryMessageType.Critical
 
  Dim obj As System.Runtime.Remoting.ObjectHandle
 
 
 Try
-  obj = Activator.CreateInstance("VectoAuxiliaries", "VectoAuxiliaries.AdvancedAuxiliaries")
+  obj = Activator.CreateInstance("BusAuxiliaries", "VectoAuxiliaries.AdvancedAuxiliaries")
 
 
-  advancedAuxiliaries = DirectCast(obj.Unwrap, IAdvancedAuxiliaries)
-
-  advancedAuxiliaries.Signals.AuxiliaryEventReportingLevel=CType(cboWarningLevel.SelectedValue, AdvancedAuxiliaryMessageType)
-
-  lblAuxiliaryName.Text= advancedAuxiliaries.AuxiliaryName
-  lblAuxiliaryVersion.Text = advancedAuxiliaries.AuxiliaryVersion
-
-
+      advancedAuxiliaries = DirectCast(obj.Unwrap, IAdvancedAuxiliaries)
+      advancedAuxiliaries.Signals.AuxiliaryEventReportingLevel=CType(cboWarningLevel.SelectedValue, AdvancedAuxiliaryMessageType)
+      lblAuxiliaryName.Text= advancedAuxiliaries.AuxiliaryName
+      lblAuxiliaryVersion.Text = advancedAuxiliaries.AuxiliaryVersion
 
   Catch ex As Exception
-
-
-    Dim a As String= "tdgfdgfdg"
-
-  
-  
 
   Finally
 
@@ -177,14 +148,13 @@ Timer1.Stop
 
 End Sub
 
-Private Sub cboWarningLevel_SelectedIndexChanged( sender As Object,  e As EventArgs) Handles cboWarningLevel.SelectedIndexChanged
 
+
+Private Sub cboWarningLevel_SelectionChangeCommitted( sender As Object,  e As EventArgs) Handles cboWarningLevel.SelectionChangeCommitted
 
 advancedAuxiliaries.Signals.AuxiliaryEventReportingLevel=CType(cboWarningLevel.SelectedValue, AdvancedAuxiliaryMessageType)
 
-
 End Sub
-
 
 
 End Class
