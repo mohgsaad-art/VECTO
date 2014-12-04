@@ -9,13 +9,13 @@ Public Class frmAuxiliaryConfig
 
 #Region "Fields"
 
-Public auxConfig As AuxiliaryConfig
+Public  auxConfig      As AuxiliaryConfig
+Public  originalConfig As AuxiliaryConfig ' required to test if the form is dirty
 Private TabColors As Dictionary(Of TabPage, Color) = New Dictionary(Of TabPage, Color)()
 Private processing As Boolean = False
 Private SecondsIntoCycle As Integer = 0
 
 Private vectoFile As String = ""
-'C:\Users\tb28\Source\Workspaces\VECTO\vecto-sim\AuxillaryTestHarness\bin\Debug\vectopath.vecto
 Private auxFile As string
 
 
@@ -24,12 +24,13 @@ Private auxFile As string
 
 Private Function ValidateAuxFileName( filename As String ) As Boolean
 
-        If( fileName.Length=0) then
-           MessageBox.Show("Sorry you need to supply a filename for the aux file you want to configure")
-           Return False
-        End If
+       Dim message As String = String.Empty
 
-        Return true
+       If Not FilePathUtils.ValidateFilePath(filename,".aaux", message) then
+         MessageBox.Show ( message )
+       End If
+
+       Return true
 
 End Function
 
@@ -41,10 +42,10 @@ Public Sub new( byval fileName As String, byval vectoFileName As String )
         If  Not ValidateAuxFileName( fileName ) then
           Me.DialogResult=Windows.Forms.DialogResult.Abort
           Me.Close
-        End If
-        'TODO:Better validate this
-        If vectoFileName.Length>0 then vectoFile= vectoFileName  
-              
+        End If          
+
+
+    Me.vectoFile = vectoFileName
 
     ' This call is required by the designer.
     InitializeComponent()
@@ -55,6 +56,7 @@ Public Sub new( byval fileName As String, byval vectoFileName As String )
     Try
 
      auxConfig = New AuxiliaryConfig( auxFile )
+     originalConfig = New AuxiliaryConfig( auxFile)
 
     Catch ex As Exception
 
@@ -167,8 +169,8 @@ Private Sub CreateBindings()
 
      'auxConfig.Vecto Bindings
      txtPowernetVoltage.DataBindings.Add("Text", auxConfig.ElectricalUserInputsConfig, "PowerNetVoltage")
-     txtVehicleWeightKG.DataBindings.Add("Text", auxConfig.VectoInputs, "VehicleWeightKG")
-     cboCycle.DataBindings.Add("Text", auxConfig.VectoInputs, "Cycle")
+     'txtVehicleWeightKG.DataBindings.Add("Text", auxConfig.VectoInputs, "VehicleWeightKG")
+     'cboCycle.DataBindings.Add("Text", auxConfig.VectoInputs, "Cycle")
      txtFuelMap.DataBindings.Add("Text", auxConfig.VectoInputs, "FuelMap")
 
      'Electricals General
@@ -937,33 +939,48 @@ End Sub
 Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
 
 
-  If Not auxConfig.Save(auxFile)
+   If  SaveFile() then
 
-   MessageBox.Show(String.Format("Unable to Save the file '{0}'",auxFile) )
 
-  End If
-  
+
+   End If
 
 
 
 End Sub
-Private Sub btnLoad_Click(sender As Object, e As EventArgs) Handles btnLoad.Click
+
+
+Private function SaveFile() As Boolean
+
+   Dim result As Boolean
+
+   result = auxConfig.Save(auxFile)
+
+   If Not result then  MessageBox.Show(String.Format("Unable to Save the file '{0}'",auxFile) )
+
+   Return result
+
+End Function
+
+Private Function  LoadFile() As boolean
 
   'JSON METHOD
+   Dim result As boolean
+
   'Release existing databindings
   UnbindAllControls(Me)
 
+  result = auxConfig.Load(auxFile)
 
-  If Not auxConfig.Load(auxFile)
-
-   MessageBox.Show(String.Format("Unable to load the file '{0}'",auxFile) )
-
+  If Not result then     
+     MessageBox.Show(String.Format("Unable to load the file '{0}'",auxFile) )
+   Else  
+    CreateBindings()
   End If
 
-  CreateBindings()
+  Return result
 
-End Sub
-
+End function
 
 
 Private Sub btnFuelMap_Click(sender As Object, e As EventArgs) Handles btnFuelMap.Click
@@ -985,6 +1002,7 @@ Private Sub btnFuelMap_Click(sender As Object, e As EventArgs) Handles btnFuelMa
 
 
 End Sub
+
 Private Sub btnAlternatorMapPath_Click(sender As Object, e As EventArgs) Handles btnAlternatorMapPath.Click
 
 
@@ -1009,6 +1027,7 @@ Private Sub btnAlternatorMapPath_Click(sender As Object, e As EventArgs) Handles
                txtAlternatorMapPath.Focus()
 
 End Sub
+
 Private Sub btnCompressorMap_Click(sender As Object, e As EventArgs) Handles btnCompressorMap.Click
 
 
@@ -1033,6 +1052,7 @@ Private Sub btnCompressorMap_Click(sender As Object, e As EventArgs) Handles btn
 
 
 End Sub
+
 Private Sub btnActuationsMap_Click(sender As Object, e As EventArgs) Handles btnActuationsMap.Click
 
                Dim fbAux As New cFileBrowser(True, False)
@@ -1053,7 +1073,6 @@ Private Sub btnActuationsMap_Click(sender As Object, e As EventArgs) Handles btn
                 txtActuationsMap.Focus()
 
 End Sub
-
 
 
 #End Region
@@ -1098,6 +1117,59 @@ Public Sub UnbindAllControls(ByRef container As Control)
   Next
 
 End Sub
+
+
+Private Sub btnCancel_Click( sender As Object,  e As EventArgs) Handles btnCancel.Click
+
+
+  Me.DialogResult = Windows.Forms.DialogResult.Cancel
+  Me.Close()
+
+
+End Sub
+
+
+
+Private Sub frmAuxiliaryConfig_FormClosing( sender As Object,  e As FormClosingEventArgs) Handles MyBase.FormClosing
+
+
+  If Me.DialogResult=Windows.Forms.DialogResult.Cancel then return
+
+  Dim result As DialogResult
+
+  If  Not auxConfig.ConfigValuesAreTheSameAs( originalConfig )
+
+             result = (MessageBox.Show("Would you like to save changes before closing?","Save Changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question))
+
+            Select Case  result
+            
+                case DialogResult.Yes:
+                    'save 
+                    If NOT SaveFile()    then
+                      e.Cancel=true
+                    End If
+
+                case DialogResult.No:
+                    'just allow the form to close
+                    'without saving
+                    Me.DialogResult=Windows.Forms.DialogResult.Cancel
+
+
+                case DialogResult.Cancel:
+                    'cancel the close
+                    e.Cancel = true
+                    Me.DialogResult=Windows.Forms.DialogResult.Cancel
+
+
+            end select
+
+
+  End If
+ 
+
+End Sub
+
+
 
 
 End Class

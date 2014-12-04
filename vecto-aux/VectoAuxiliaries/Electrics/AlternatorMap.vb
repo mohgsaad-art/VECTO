@@ -154,7 +154,7 @@ Implements IAlternatorMap
     Public Function GetValue(x As Single, y As Single) As Single
 
 
-       '  If x < minX  OrElse  x > maxX OrElse  y < minY   OrElse  y > maxY  then
+         If x < minX  OrElse  x > maxX OrElse  y < minY   OrElse  y > maxY  then
 
            'OnAuxiliaryEvent(String.Format("Alternator Map Limiting : RPM{0}, AMPS{1}",x,y),AdvancedAuxiliaryMessageType.Warning)
 
@@ -165,7 +165,7 @@ Implements IAlternatorMap
             If y < minY Then y = minY
             If y > maxY Then y = maxY
 
-       '  End If
+         End If
 
 
         'Satisfies both data points - non interpolated value

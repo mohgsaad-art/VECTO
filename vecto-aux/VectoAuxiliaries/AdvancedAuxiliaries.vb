@@ -8,6 +8,7 @@ Imports System.Windows.Forms
 Public Class AdvancedAuxiliaries
  Implements IAdvancedAuxiliaries
 
+
     Private  auxConfig As AuxiliaryConfig
 
     'Supporting classes which may generate event messages
@@ -156,6 +157,17 @@ End Sub
 
              frmAuxiliaryConfig.Show()
 
+             If frmAuxiliaryConfig.DialogResult<>DialogResult.OK then
+
+               Return true
+
+               Else
+               
+               Return False
+
+             End If
+
+
     Catch ex As Exception
 
      Return False
@@ -256,5 +268,30 @@ End Sub
    End Function
 
   
+    Public Function ValidateAAUXFile(filePath As String, ByRef message As String) As Boolean Implements IAdvancedAuxiliaries.ValidateAAUXFile
+
+     Try
+
+       Dim AConfig As New AuxiliaryConfig( filePath )
+
+       If Not AConfig is Nothing then 
+
+         message="OK"
+         Return true
+       End If
+
+       Return True
+         
+     Catch ex As Exception
+
+       message= "AAUX File not found, or Invalid "
+       Return false
+         
+     End Try
+
+
+    End Function
+
+
 
 End Class

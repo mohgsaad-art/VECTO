@@ -314,7 +314,7 @@ Public Function Load(  auxFile As String  ) As Boolean  Implements IAuxiliaryCon
 End Function
 
 'Persistance Helpers
-Private sub AssumeValuesOfOther( other As AuxiliaryConfig )
+Public sub AssumeValuesOfOther( other As AuxiliaryConfig )
 
    CloneElectricaConfiguration( other )
    ClonePneumaticsAuxiliariesConfig( other )

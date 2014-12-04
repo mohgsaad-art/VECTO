@@ -27,7 +27,6 @@ Partial Class AuxLauncher
         Me.btnLaunchAux = New System.Windows.Forms.Button()
         Me.btnRun = New System.Windows.Forms.Button()
         Me.btnStop = New System.Windows.Forms.Button()
-        Me.btnInformation = New System.Windows.Forms.Button()
         Me.txtTotalFCGrams = New System.Windows.Forms.TextBox()
         Me.txtTotalFCLitres = New System.Windows.Forms.TextBox()
         Me.lblTotalFCGRAMS = New System.Windows.Forms.Label()
@@ -75,15 +74,6 @@ Partial Class AuxLauncher
         Me.btnStop.Text = "Stop"
         Me.btnStop.UseVisualStyleBackColor = true
         '
-        'btnInformation
-        '
-        Me.btnInformation.Location = New System.Drawing.Point(414, 269)
-        Me.btnInformation.Name = "btnInformation"
-        Me.btnInformation.Size = New System.Drawing.Size(75, 23)
-        Me.btnInformation.TabIndex = 4
-        Me.btnInformation.Text = "Info"
-        Me.btnInformation.UseVisualStyleBackColor = true
-        '
         'txtTotalFCGrams
         '
         Me.txtTotalFCGrams.Location = New System.Drawing.Point(30, 152)
@@ -121,18 +111,18 @@ Partial Class AuxLauncher
         Me.lblAuxiliaryName.AutoSize = true
         Me.lblAuxiliaryName.Location = New System.Drawing.Point(30, 9)
         Me.lblAuxiliaryName.Name = "lblAuxiliaryName"
-        Me.lblAuxiliaryName.Size = New System.Drawing.Size(39, 13)
+        Me.lblAuxiliaryName.Size = New System.Drawing.Size(130, 13)
         Me.lblAuxiliaryName.TabIndex = 9
-        Me.lblAuxiliaryName.Text = "Label2"
+        Me.lblAuxiliaryName.Text = "Auxiliary Name Goes Here"
         '
         'lblAuxiliaryVersion
         '
         Me.lblAuxiliaryVersion.AutoSize = true
         Me.lblAuxiliaryVersion.Location = New System.Drawing.Point(30, 37)
         Me.lblAuxiliaryVersion.Name = "lblAuxiliaryVersion"
-        Me.lblAuxiliaryVersion.Size = New System.Drawing.Size(39, 13)
+        Me.lblAuxiliaryVersion.Size = New System.Drawing.Size(137, 13)
         Me.lblAuxiliaryVersion.TabIndex = 10
-        Me.lblAuxiliaryVersion.Text = "Label3"
+        Me.lblAuxiliaryVersion.Text = "Auxiliary Version Goes Here"
         '
         'Timer1
         '
@@ -177,7 +167,6 @@ Partial Class AuxLauncher
         Me.Controls.Add(Me.lblTotalFCGRAMS)
         Me.Controls.Add(Me.txtTotalFCLitres)
         Me.Controls.Add(Me.txtTotalFCGrams)
-        Me.Controls.Add(Me.btnInformation)
         Me.Controls.Add(Me.btnStop)
         Me.Controls.Add(Me.btnRun)
         Me.Controls.Add(Me.btnLaunchAux)
@@ -192,7 +181,6 @@ End Sub
     Friend WithEvents btnLaunchAux As System.Windows.Forms.Button
     Friend WithEvents btnRun As System.Windows.Forms.Button
     Friend WithEvents btnStop As System.Windows.Forms.Button
-    Friend WithEvents btnInformation As System.Windows.Forms.Button
     Friend WithEvents txtTotalFCGrams As System.Windows.Forms.TextBox
     Friend WithEvents txtTotalFCLitres As System.Windows.Forms.TextBox
     Friend WithEvents lblTotalFCGRAMS As System.Windows.Forms.Label
