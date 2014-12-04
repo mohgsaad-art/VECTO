@@ -20,6 +20,7 @@ property Signals as ISignals
 
 'Configuration
 Function Configure( filePath As String, vectoFilePath As string ) As Boolean
+Function ValidateAAUXFile( ByVal filePath As String , byref message As String ) As Boolean
 
 'Command
 Function  CycleStep( seconds As Integer, ByRef message As string ) As boolean
