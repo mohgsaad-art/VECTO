@@ -196,6 +196,9 @@ Private Sub CreateBindings()
         txtHVACFuellingLitresPerHour.DataBindings.Add("Text", auxEnvironment.HvacUserInputsConfig.SteadyStateModel,"HVACFuellingLitresPerHour")
         txtHVACMechanicalLoadPowerWatts.DataBindings.Add("Text", auxEnvironment.HvacUserInputsConfig.SteadyStateModel,"HVACMechanicalLoadPowerWatts")
 
+        txtSSMFilePath.DataBindings.Add("Text", auxEnvironment.HvacUserInputsConfig,"SSMFilePath")
+
+
         'Signals
         chkInNeutral.DataBindings.Add("Checked",auxEnvironment.Signals,"InNeutral",False,DataSourceUpdateMode.OnPropertyChanged)
         chkIdle.DataBindings.Add("Checked",auxEnvironment.Signals,"Idle",False,DataSourceUpdateMode.OnPropertyChanged)

@@ -8,6 +8,10 @@ Public Class M11
  Implements IM11
  
 
+ Private Const RPM_to_RadiansPerSecond as single= 9.55 
+
+
+
   #Region "Private Aggregates"
  'Private Aggregations
   Private AG1 As Single
@@ -29,6 +33,17 @@ Public Class M11
   #End Region
 
   'Staging Calculations
+
+  Private Function Sum0( rpm As Single ) As Single
+
+   If rpm= 0 then 
+     Return 0
+   End If
+
+   Return rpm/RPM_to_RadiansPerSecond
+
+
+  End Function
   Private ReadOnly Property Sum1 As single
       Get
        Return m6.OverrunFlag * m8.SmartElectricalAlternatorPowerGenAtCrank
@@ -41,12 +56,12 @@ Public Class M11
   End Property
   Private ReadOnly Property Sum3 As Single
       Get
-       Return m8.SmartElectricalAlternatorPowerGenAtCrank / signals.EngineSpeed
+       Return m8.SmartElectricalAlternatorPowerGenAtCrank / Sum0(signals.EngineSpeed)
       End Get
   End Property
   Private ReadOnly Property Sum4 As Single
       Get
-        Return Sum2 / signals.EngineSpeed
+        Return Sum2 / Sum0(signals.EngineSpeed)
       End Get
   End Property
   Private ReadOnly Property Sum5 As Single

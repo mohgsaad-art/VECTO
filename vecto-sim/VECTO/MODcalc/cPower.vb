@@ -219,7 +219,13 @@ Public Class cPower
                 PaMot = fPaMot(nU, LastnU)
             End If
 
+            'TODO:CHECK THIS FOR AAUX M8
             'Aux Demand
+
+            '
+
+
+
             Paux = fPaux(i, nU)
 
             'Engine Power (at Clutch)
@@ -758,7 +764,7 @@ lbGschw:
             ' Important checks
 lbCheck:
 
-            'Falls vor Gangwahl festgestellt wurde, dass nicht KupplSchleif, dann bei zu niedriger Drehzahl runterschalten: |@@| If before?(vor) Gear-shift is detected that Clutch does not Lock, then Downshift at too low Revolutions:
+            'Reduce : |@@| If before?(vor) Gear-shift is detected that Clutch does not Lock, then Downshift at too low Revolutions:
             If Not GBX.TCon Then
                 If Clutch = tEngClutch.Closed Then
                     If fnn(Vact, Gear, False) < ClutchNorm And Not VehState0 = tVehState.Dec And Gear > 1 Then Gear -= 1

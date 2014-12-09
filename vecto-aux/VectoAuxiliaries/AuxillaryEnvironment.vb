@@ -186,7 +186,7 @@ If auxConfigFile="EMPTY" then
     ElectricalUserInputsConfig.ResultCardTraction= new ResultCard( New List(Of SmartResult ))
     PneumaticAuxillariesConfig= New PneumaticsAuxilliariesConfig(False)
     PneumaticUserInputsConfig= New PneumaticUserInputsConfig(False)
-    HvacUserInputsConfig = New HVACUserInputsConfig(New HVACSteadyStateModel())
+    HvacUserInputsConfig      = New HVACUserInputsConfig(New HVACSteadyStateModel(), String.Empty)
 Exit sub
 
 End If
@@ -230,7 +230,7 @@ Private Sub setDefaults()
                                                                      .AlternatorMap="testAlternatorMap.aalt"
                                                                      }
 
- HvacUserInputsConfig = New HVACUserInputsConfig( New HVACSteadyStateModel(100,100,100))
+ HvacUserInputsConfig = New HVACUserInputsConfig( New HVACSteadyStateModel(100,100,100), String.Empty)
 
 
  Signals = New Signals With { .EngineSpeed=2000, .TotalCycleTimeSeconds=3114, .ClutchEngaged=False}
@@ -372,6 +372,8 @@ Private Function CompareHVACConfig( other As AuxillaryEnvironment) As Boolean
   If Me.HvacUserInputsConfig.SteadyStateModel.HVACElectricalLoadPowerWatts <> other.HvacUserInputsConfig.SteadyStateModel.HVACElectricalLoadPowerWatts then Return false
   If Me.HvacUserInputsConfig.SteadyStateModel.HVACFuellingLitresPerHour <> other.HvacUserInputsConfig.SteadyStateModel.HVACFuellingLitresPerHour then Return false
   If Me.HvacUserInputsConfig.SteadyStateModel.HVACMechanicalLoadPowerWatts <> other.HvacUserInputsConfig.SteadyStateModel.HVACMechanicalLoadPowerWatts then Return false
+
+  If Me.HvacUserInputsConfig.SSMFilePath <> other.HvacUserInputsConfig.SSMFilePath then Return false
 
   Return true
 
@@ -542,10 +544,10 @@ Private Sub CloneHVAC( other As AuxillaryEnvironment)
   Me.HvacUserInputsConfig.SteadyStateModel.HVACFuellingLitresPerHour    = other.HvacUserInputsConfig.SteadyStateModel.HVACFuellingLitresPerHour 
   Me.HvacUserInputsConfig.SteadyStateModel.HVACMechanicalLoadPowerWatts = other.HvacUserInputsConfig.SteadyStateModel.HVACMechanicalLoadPowerWatts 
 
+  Me.HvacUserInputsConfig.SSMFilePath = other.HvacUserInputsConfig.SSMFilePath
+
 
 End Sub
-
-
 
 
 #End Region

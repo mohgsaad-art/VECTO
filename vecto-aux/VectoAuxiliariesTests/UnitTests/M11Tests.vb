@@ -11,8 +11,8 @@ Namespace UnitTests
 Public Class M11Tests
 
 <Test()> _
-<TestCase(0,50,60,70,80,90,1500,  0,50,60,0.2180759f,0.2180713f)> _
-<TestCase(1,50,60,70,80,90,1500, 50,50,60,0.2180759f,0.2180713f)> _
+<TestCase(0,50,60,70,80,90,1500,  0,50,60,0.2182501f,0.2182059f)> _
+<TestCase(1,50,60,70,80,90,1500, 50,50,60,0.2182501f,0.2182059f)> _
 Public Sub InputOutputValues( IP1  As single, 
                               IP2  As single, 
                               IP3  As single,

@@ -127,6 +127,8 @@ Partial Class Dashboard
         Me.lblHVACElectricalLoadPowerWatts = New System.Windows.Forms.Label()
         Me.tabPlayground = New System.Windows.Forms.TabPage()
         Me.pnlM13 = New System.Windows.Forms.Panel()
+        Me.txtM13_out_TotalCycleFuelCalculationGramsLITRES = New System.Windows.Forms.TextBox()
+        Me.lblM13TotalFuelConsumptionTotalCycleLitres = New System.Windows.Forms.Label()
         Me.lblM13_FinalFCOverTheCycle = New System.Windows.Forms.Label()
         Me.txtM13_out_TotalCycleFuelCalculationGramsGRAMS = New System.Windows.Forms.TextBox()
         Me.lblM13_Title = New System.Windows.Forms.Label()
@@ -284,8 +286,9 @@ Partial Class Dashboard
         Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
-        Me.lblM13TotalFuelConsumptionTotalCycleLitres = New System.Windows.Forms.Label()
-        Me.txtM13_out_TotalCycleFuelCalculationGramsLITRES = New System.Windows.Forms.TextBox()
+        Me.btnSSMBSource = New System.Windows.Forms.Button()
+        Me.lblSSMFilePath = New System.Windows.Forms.Label()
+        Me.txtSSMFilePath = New System.Windows.Forms.TextBox()
         Me.pnlMain.SuspendLayout
         Me.tabMain.SuspendLayout
         Me.tabGeneralConfig.SuspendLayout
@@ -1215,6 +1218,9 @@ Partial Class Dashboard
         '
         'tabHVACConfig
         '
+        Me.tabHVACConfig.Controls.Add(Me.btnSSMBSource)
+        Me.tabHVACConfig.Controls.Add(Me.lblSSMFilePath)
+        Me.tabHVACConfig.Controls.Add(Me.txtSSMFilePath)
         Me.tabHVACConfig.Controls.Add(Me.lblHVACTitle)
         Me.tabHVACConfig.Controls.Add(Me.txtHVACFuellingLitresPerHour)
         Me.tabHVACConfig.Controls.Add(Me.lblHVACFuellingLitresPerHour)
@@ -1242,7 +1248,7 @@ Partial Class Dashboard
         '
         'txtHVACFuellingLitresPerHour
         '
-        Me.txtHVACFuellingLitresPerHour.Location = New System.Drawing.Point(192, 189)
+        Me.txtHVACFuellingLitresPerHour.Location = New System.Drawing.Point(186, 265)
         Me.txtHVACFuellingLitresPerHour.Name = "txtHVACFuellingLitresPerHour"
         Me.txtHVACFuellingLitresPerHour.Size = New System.Drawing.Size(100, 20)
         Me.txtHVACFuellingLitresPerHour.TabIndex = 5
@@ -1250,7 +1256,7 @@ Partial Class Dashboard
         'lblHVACFuellingLitresPerHour
         '
         Me.lblHVACFuellingLitresPerHour.AutoSize = true
-        Me.lblHVACFuellingLitresPerHour.Location = New System.Drawing.Point(31, 193)
+        Me.lblHVACFuellingLitresPerHour.Location = New System.Drawing.Point(25, 269)
         Me.lblHVACFuellingLitresPerHour.Name = "lblHVACFuellingLitresPerHour"
         Me.lblHVACFuellingLitresPerHour.Size = New System.Drawing.Size(116, 13)
         Me.lblHVACFuellingLitresPerHour.TabIndex = 4
@@ -1258,7 +1264,7 @@ Partial Class Dashboard
         '
         'txtHVACMechanicalLoadPowerWatts
         '
-        Me.txtHVACMechanicalLoadPowerWatts.Location = New System.Drawing.Point(192, 137)
+        Me.txtHVACMechanicalLoadPowerWatts.Location = New System.Drawing.Point(186, 213)
         Me.txtHVACMechanicalLoadPowerWatts.Name = "txtHVACMechanicalLoadPowerWatts"
         Me.txtHVACMechanicalLoadPowerWatts.Size = New System.Drawing.Size(100, 20)
         Me.txtHVACMechanicalLoadPowerWatts.TabIndex = 3
@@ -1266,7 +1272,7 @@ Partial Class Dashboard
         'lblHVACMechanicalLoadPowerWatts
         '
         Me.lblHVACMechanicalLoadPowerWatts.AutoSize = true
-        Me.lblHVACMechanicalLoadPowerWatts.Location = New System.Drawing.Point(31, 141)
+        Me.lblHVACMechanicalLoadPowerWatts.Location = New System.Drawing.Point(25, 217)
         Me.lblHVACMechanicalLoadPowerWatts.Name = "lblHVACMechanicalLoadPowerWatts"
         Me.lblHVACMechanicalLoadPowerWatts.Size = New System.Drawing.Size(153, 13)
         Me.lblHVACMechanicalLoadPowerWatts.TabIndex = 2
@@ -1274,7 +1280,7 @@ Partial Class Dashboard
         '
         'txtHVACElectricalLoadPowerWatts
         '
-        Me.txtHVACElectricalLoadPowerWatts.Location = New System.Drawing.Point(192, 85)
+        Me.txtHVACElectricalLoadPowerWatts.Location = New System.Drawing.Point(186, 161)
         Me.txtHVACElectricalLoadPowerWatts.Name = "txtHVACElectricalLoadPowerWatts"
         Me.txtHVACElectricalLoadPowerWatts.Size = New System.Drawing.Size(100, 20)
         Me.txtHVACElectricalLoadPowerWatts.TabIndex = 1
@@ -1282,7 +1288,7 @@ Partial Class Dashboard
         'lblHVACElectricalLoadPowerWatts
         '
         Me.lblHVACElectricalLoadPowerWatts.AutoSize = true
-        Me.lblHVACElectricalLoadPowerWatts.Location = New System.Drawing.Point(31, 89)
+        Me.lblHVACElectricalLoadPowerWatts.Location = New System.Drawing.Point(25, 165)
         Me.lblHVACElectricalLoadPowerWatts.Name = "lblHVACElectricalLoadPowerWatts"
         Me.lblHVACElectricalLoadPowerWatts.Size = New System.Drawing.Size(141, 13)
         Me.lblHVACElectricalLoadPowerWatts.TabIndex = 0
@@ -1359,6 +1365,24 @@ Partial Class Dashboard
         Me.pnlM13.Name = "pnlM13"
         Me.pnlM13.Size = New System.Drawing.Size(308, 120)
         Me.pnlM13.TabIndex = 59
+        '
+        'txtM13_out_TotalCycleFuelCalculationGramsLITRES
+        '
+        Me.txtM13_out_TotalCycleFuelCalculationGramsLITRES.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
+        Me.txtM13_out_TotalCycleFuelCalculationGramsLITRES.Location = New System.Drawing.Point(12, 80)
+        Me.txtM13_out_TotalCycleFuelCalculationGramsLITRES.Name = "txtM13_out_TotalCycleFuelCalculationGramsLITRES"
+        Me.txtM13_out_TotalCycleFuelCalculationGramsLITRES.Size = New System.Drawing.Size(100, 20)
+        Me.txtM13_out_TotalCycleFuelCalculationGramsLITRES.TabIndex = 4
+        '
+        'lblM13TotalFuelConsumptionTotalCycleLitres
+        '
+        Me.lblM13TotalFuelConsumptionTotalCycleLitres.AutoSize = true
+        Me.lblM13TotalFuelConsumptionTotalCycleLitres.Location = New System.Drawing.Point(6, 64)
+        Me.lblM13TotalFuelConsumptionTotalCycleLitres.MaximumSize = New System.Drawing.Size(260, 0)
+        Me.lblM13TotalFuelConsumptionTotalCycleLitres.Name = "lblM13TotalFuelConsumptionTotalCycleLitres"
+        Me.lblM13TotalFuelConsumptionTotalCycleLitres.Size = New System.Drawing.Size(191, 13)
+        Me.lblM13TotalFuelConsumptionTotalCycleLitres.TabIndex = 3
+        Me.lblM13TotalFuelConsumptionTotalCycleLitres.Text = "Total Cycle Fuel Calculation ( LITRES )"
         '
         'lblM13_FinalFCOverTheCycle
         '
@@ -2830,23 +2854,31 @@ Partial Class Dashboard
         '
         Me.Timer1.Interval = 1000
         '
-        'lblM13TotalFuelConsumptionTotalCycleLitres
+        'btnSSMBSource
         '
-        Me.lblM13TotalFuelConsumptionTotalCycleLitres.AutoSize = true
-        Me.lblM13TotalFuelConsumptionTotalCycleLitres.Location = New System.Drawing.Point(6, 64)
-        Me.lblM13TotalFuelConsumptionTotalCycleLitres.MaximumSize = New System.Drawing.Size(260, 0)
-        Me.lblM13TotalFuelConsumptionTotalCycleLitres.Name = "lblM13TotalFuelConsumptionTotalCycleLitres"
-        Me.lblM13TotalFuelConsumptionTotalCycleLitres.Size = New System.Drawing.Size(191, 13)
-        Me.lblM13TotalFuelConsumptionTotalCycleLitres.TabIndex = 3
-        Me.lblM13TotalFuelConsumptionTotalCycleLitres.Text = "Total Cycle Fuel Calculation ( LITRES )"
+        Me.btnSSMBSource.Location = New System.Drawing.Point(706, 93)
+        Me.btnSSMBSource.Name = "btnSSMBSource"
+        Me.btnSSMBSource.Size = New System.Drawing.Size(45, 23)
+        Me.btnSSMBSource.TabIndex = 31
+        Me.btnSSMBSource.Text = ". . ."
+        Me.btnSSMBSource.UseVisualStyleBackColor = true
         '
-        'txtM13_out_TotalCycleFuelCalculationGramsLITRES
+        'lblSSMFilePath
         '
-        Me.txtM13_out_TotalCycleFuelCalculationGramsLITRES.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0,Byte),Integer), CType(CType(192,Byte),Integer), CType(CType(0,Byte),Integer))
-        Me.txtM13_out_TotalCycleFuelCalculationGramsLITRES.Location = New System.Drawing.Point(12, 80)
-        Me.txtM13_out_TotalCycleFuelCalculationGramsLITRES.Name = "txtM13_out_TotalCycleFuelCalculationGramsLITRES"
-        Me.txtM13_out_TotalCycleFuelCalculationGramsLITRES.Size = New System.Drawing.Size(100, 20)
-        Me.txtM13_out_TotalCycleFuelCalculationGramsLITRES.TabIndex = 4
+        Me.lblSSMFilePath.AutoSize = true
+        Me.lblSSMFilePath.Location = New System.Drawing.Point(25, 99)
+        Me.lblSSMFilePath.Name = "lblSSMFilePath"
+        Me.lblSSMFilePath.Size = New System.Drawing.Size(171, 13)
+        Me.lblSSMFilePath.TabIndex = 30
+        Me.lblSSMFilePath.Text = "Steady State Model File ( .AHSM  )"
+        '
+        'txtSSMFilePath
+        '
+        Me.txtSSMFilePath.Location = New System.Drawing.Point(204, 96)
+        Me.txtSSMFilePath.Name = "txtSSMFilePath"
+        Me.txtSSMFilePath.ReadOnly = true
+        Me.txtSSMFilePath.Size = New System.Drawing.Size(485, 20)
+        Me.txtSSMFilePath.TabIndex = 29
         '
         'Dashboard
         '
@@ -3163,5 +3195,8 @@ End Sub
     Friend WithEvents btnSave As System.Windows.Forms.Button
     Friend WithEvents txtM13_out_TotalCycleFuelCalculationGramsLITRES As System.Windows.Forms.TextBox
     Friend WithEvents lblM13TotalFuelConsumptionTotalCycleLitres As System.Windows.Forms.Label
+    Friend WithEvents btnSSMBSource As System.Windows.Forms.Button
+    Friend WithEvents lblSSMFilePath As System.Windows.Forms.Label
+    Friend WithEvents txtSSMFilePath As System.Windows.Forms.TextBox
 
 End Class
