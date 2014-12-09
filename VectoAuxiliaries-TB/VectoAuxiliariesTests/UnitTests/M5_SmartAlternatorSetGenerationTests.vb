@@ -28,12 +28,10 @@ Private sub Initialise()
 _signals.EngineSpeed= 2000
 
 Dim elecConsumers As New ElectricalConsumerList(_powerNetVoltage,0.096,True)
-Dim hvacInputs As New HVACInputs(1,1)
-Dim  hvacMap As New HVACMap(_hvacMap)
-hvacMap.Initialise()
+
 Dim alternatoMap As New AlternatorMap(_altMap)
 alternatoMap.Initialise()
-Dim m0 As New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers,hvacInputs,alternatoMap,_powerNetVoltage,_signals,ssmHVac)
+Dim m0 As New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers,alternatoMap,_powerNetVoltage,_signals,ssmHVac)
 
 'Results Cards
 Dim readings = new List(Of SmartResult)

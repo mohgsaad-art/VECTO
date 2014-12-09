@@ -22,7 +22,7 @@ Private sub Initialise()
 
 Dim ssm As New HVACSteadyStateModel(100,100,100)
 Dim elecConsumers As New ElectricalConsumerList(26.3,0.096,True)
-Dim hvacInputs As New HVACInputs(1,1)
+
 'Dim  hvacMap As New HVACMap("testFiles\TestHvacMap.csv")
 'hvacMap.Initialise()
 Dim alternatoMap As New AlternatorMap("testFiles\testAlternatormap.aalt")
@@ -31,7 +31,7 @@ alternatoMap.Initialise()
 Dim signals = New Signals()
 signals.EngineSpeed=2000
 
-Dim m0 As New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers,hvacInputs,alternatoMap,26.3,signals,ssm)
+Dim m0 As New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers,alternatoMap,26.3,signals,ssm)
 
 'Results Cards
 Dim readings = new List(of SmartResult)

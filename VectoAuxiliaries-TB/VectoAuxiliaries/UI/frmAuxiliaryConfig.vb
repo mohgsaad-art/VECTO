@@ -669,7 +669,7 @@ Dim result As Boolean = True
           ErrorProvider.SetError(txtHVACFuellingLitresPerHour, String.Empty)
        End If
 
-       UpdateTabStatus("tabHVACConfig", result)
+
 
        If txtSSMFilePath.Text.Trim.Length=0 then 
 
@@ -680,7 +680,7 @@ Dim result As Boolean = True
        End If
 
 
-
+       UpdateTabStatus("tabHVACConfig", result)
 
    Return result
 
@@ -1184,6 +1184,24 @@ Private Sub frmAuxiliaryConfig_FormClosing( sender As Object,  e As FormClosingE
 End Sub
 
 
+
+
+Private Sub btnSSMBSource_Click( sender As Object,  e As EventArgs) Handles btnSSMBSource.Click
+
+
+               Dim fbAux As New cFileBrowser(True, False)
+
+
+               fbAux.Extensions = New String() {"ahsm"}
+
+               If fbAux.OpenDialog(fPATH(vectoFile)) Then
+
+                 txtSSMFilePath.Text = fFileWoDir(fbAux.Files(0), fPATH(vectoFile))
+
+               End If
+
+
+End Sub
 
 
 End Class
