@@ -6,6 +6,7 @@ Namespace DownstreamModules
 
 
 Public Interface IM9
+Inherits IAuxiliaryEvent
 
 
  sub ClearAggregates() 

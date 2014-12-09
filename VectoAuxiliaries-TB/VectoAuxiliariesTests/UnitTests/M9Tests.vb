@@ -11,10 +11,10 @@ Namespace UnitTests
 Public Class M9Tests
 
 <Test()> _
-<TestCase(50,50,400,200,100,1200,50,0,0,0.5f,50f,0,  0.180613413f,0.180590272f)> _
-<TestCase(50,50,400,200,100,1200,50,1,0,0.5f,50f,0,  0.180613413f,0.180590272f)> _
-<TestCase(50,50,400,200,100,1200,50,0,1,0.5f,50f,0,  0.180613413f,0.180590272f)> _
-<TestCase(50,50,400,200,100,1200,50,1,1,0.5f,50f,25, 0.180613413f,0.180590272f)> _               
+<TestCase(50,50,400,200,100,1200,50,0,0,0.5f,50f,0,  0.18110822f,0.18088715f)> _
+<TestCase(50,50,400,200,100,1200,50,1,0,0.5f,50f,0,  0.18110822f,0.18088715f)> _
+<TestCase(50,50,400,200,100,1200,50,0,1,0.5f,50f,0,  0.18110822f,0.18088715f)> _
+<TestCase(50,50,400,200,100,1200,50,1,1,0.5f,50f,25, 0.18110822f,0.18088715f)> _               
 Public Sub ValuesInOutTests(IP1  As Single,
                             IP2  As Single,
                             IP3  As Single,
@@ -55,8 +55,8 @@ Public Sub ValuesInOutTests(IP1  As Single,
 
       Assert.AreEqual(target.LitresOfAirCompressorOnContinually                , AG1 )
       Assert.AreEqual(target.LitresOfAirCompressorOnOnlyInOverrun              , AG2 )
-      Assert.AreEqual(target.TotalCycleFuelConsumptionCompressorOnContinuously , AG3 )
-      Assert.AreEqual(target.TotalCycleFuelConsumptionCompressorOffContinuously, AG4 )
+      Assert.AreEqual(target.TotalCycleFuelConsumptionCompressorOnContinuously , CType(Math.round(AG3,7),Single) )
+      Assert.AreEqual(target.TotalCycleFuelConsumptionCompressorOffContinuously, AG4)
 
 
 End Sub
