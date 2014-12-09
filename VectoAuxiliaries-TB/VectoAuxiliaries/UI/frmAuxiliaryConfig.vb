@@ -34,8 +34,6 @@ Private Function ValidateAuxFileName( filename As String ) As Boolean
 
 End Function
 
-
-
 Public Sub new( byval fileName As String, byval vectoFileName As String )
 
 
@@ -246,6 +244,9 @@ Private Sub CreateBindings()
         txtHVACElectricalLoadPowerWatts.DataBindings.Add("Text", auxConfig.HvacUserInputsConfig.SteadyStateModel, "HVACElectricalLoadPowerWatts")
         txtHVACFuellingLitresPerHour.DataBindings.Add("Text", auxConfig.HvacUserInputsConfig.SteadyStateModel, "HVACFuellingLitresPerHour")
         txtHVACMechanicalLoadPowerWatts.DataBindings.Add("Text", auxConfig.HvacUserInputsConfig.SteadyStateModel, "HVACMechanicalLoadPowerWatts")
+
+        txtSSMFilePath.DataBindings.Add( "Text", auxConfig.HvacUserInputsConfig,"SSMFilePath")
+
 
         'Signals
 
@@ -670,6 +671,16 @@ Dim result As Boolean = True
 
        UpdateTabStatus("tabHVACConfig", result)
 
+       If txtSSMFilePath.Text.Trim.Length=0 then 
+
+         ErrorProvider.SetError(txtSSMFilePath, "Please choose a vaid Steady State Model File (*.AHSM")
+         result = False
+       Else
+          ErrorProvider.SetError(txtSSMFilePath, String.Empty)
+       End If
+
+
+
 
    Return result
 
@@ -941,6 +952,8 @@ Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Clic
 
    If  SaveFile() then
 
+      originalConfig.AssumeValuesOfOther( auxConfig)
+      Me.Close
 
 
    End If
@@ -1076,6 +1089,7 @@ End Sub
 
 
 #End Region
+
 
 
 'Form Overrides

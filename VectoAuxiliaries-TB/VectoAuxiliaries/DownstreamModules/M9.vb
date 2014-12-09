@@ -6,7 +6,11 @@ Namespace DownstreamModules
 
 Public Class M9
 Implements  IM9
+
  
+
+Private Const RPM_TO_RADS_PER_SECOND As Single = 9.55f
+
 
 #Region "Aggregates"
 
@@ -61,7 +65,19 @@ Private Signals As ISignals
 
 #End Region
 
+
  'Staging Calculations
+
+Private Function S0( rpm As Single ) As Single
+
+  If rpm=0  then   
+      Return 0
+  End If
+  
+  Return rpm / RPM_TO_RADS_PER_SECOND
+
+End Function
+
  Private readonly Property S1 As single
     Get
      Return M6.AvgPowerDemandAtCrankFromElectricsIncHVAC + M1.AveragePowerDemandAtCrankFromHVACMechanicalsWatts
@@ -69,20 +85,20 @@ Private Signals As ISignals
 End Property
  Private readonly Property S2 As single
     Get
-      If Signals.EngineSpeed=0 then Throw New DivideByZeroException("Engine speed is zero and cannot be used as a divisor.")
-      Return M4.GetPowerCompressorOn/signals.EngineSpeed
+      If S0( Signals.EngineSpeed)=0 then Throw New DivideByZeroException("Engine speed is zero and cannot be used as a divisor.")
+      Return M4.GetPowerCompressorOn/S0( Signals.EngineSpeed)
     End Get
 End Property
  Private readonly Property S3 As single
     Get
-       If Signals.EngineSpeed=0 then Throw New DivideByZeroException("Engine speed is zero and cannot be used as a divisor.")
-       Return M4.GetPowerCompressorOff/ Signals.EngineSpeed
+       If S0( Signals.EngineSpeed)=0 then Throw New DivideByZeroException("Engine speed is zero and cannot be used as a divisor.")
+       Return M4.GetPowerCompressorOff/ S0( Signals.EngineSpeed)
     End Get
 End Property
  Private readonly Property S4 As single
     Get
-    If Signals.EngineSpeed=0 then Throw New DivideByZeroException("Engine speed is zero and cannot be used as a divisor.")
-     Return S1/Signals.EngineSpeed
+    If S0( Signals.EngineSpeed)=0 then Throw New DivideByZeroException("Engine speed is zero and cannot be used as a divisor.")
+     Return S1/S0( Signals.EngineSpeed)
     End Get
 End Property
  Private readonly Property S5 As single
@@ -161,6 +177,7 @@ End Property
         End Sub
 
 
+        Public Event AuxiliaryEvent(ByRef sender As Object, message As String, messageType As AdvancedAuxiliaryMessageType) Implements IAuxiliaryEvent.AuxiliaryEvent
 End Class
 
 End Namespace
