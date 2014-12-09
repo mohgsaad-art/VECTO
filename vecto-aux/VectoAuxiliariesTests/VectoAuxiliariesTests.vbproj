@@ -95,7 +95,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="UnitTests\AuxiliaryEnvironmentComparisonTests.vb" />
-    <Compile Include="Mocks\HVACMapMock.vb" />
     <Compile Include="Mocks\M1_Mock.vb" />
     <Compile Include="Mocks\M2_Mock.vb" />
     <Compile Include="Mocks\M3_Mock.vb" />
@@ -110,7 +109,6 @@
     <Compile Include="UnitTests\M0_NonSmart_AlternatorsSetEfficiencyTests.vb" />
     <Compile Include="UnitTests\AveragePneumaticLoadDemandTests.vb" />
     <Compile Include="UnitTests\ElectricalConsumerListTests.vb" />
-    <Compile Include="UnitTests\HVACMapTests.vb" />
     <Compile Include="UnitTests\M10Tests.vb" />
     <Compile Include="UnitTests\M13Tests.vb" />
     <Compile Include="UnitTests\M12Tests.vb" />

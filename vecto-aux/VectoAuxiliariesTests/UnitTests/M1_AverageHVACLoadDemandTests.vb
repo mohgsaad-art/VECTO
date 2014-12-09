@@ -17,7 +17,6 @@ Private powernetVoltage As Single = 26.3
 Private ssm As IHVACSteadyStateModel = New HVACSteadyStateModel(100,100,100) 
 Private m0 As IM0_NonSmart_AlternatorsSetEfficiency
 Private alternatorMap As IAlternatorMap = New AlternatorMap(_GOODMAP)
-Private hvacMap As IHVACMap = New HVACMap("")
 Private alternatorGearEfficiency As Single = 0.8
 Private compressorGrearEfficiency As Single = 0.8
 
@@ -27,7 +26,7 @@ Public Sub new()
 alternatorMap.Initialise()
 
 
-   m0 = New M0_NonSmart_AlternatorsSetEfficiency(New ElectricalConsumerList(powernetVoltage,0.096,True),New HVACInputs(),alternatorMap,powernetVoltage,signals,ssm )
+   m0 = New M0_NonSmart_AlternatorsSetEfficiency(New ElectricalConsumerList(powernetVoltage,0.096,True),alternatorMap,powernetVoltage,signals,ssm )
 
 
 End Sub
@@ -35,8 +34,6 @@ End Sub
 Private function GETM1Instance()  As IM1_AverageHVACLoadDemand
 
 return  New M1_AverageHVACLoadDemand( m0,
-                                       hvacMap,
-                                       New HVACInputs(),
                                        alternatorGearEfficiency,
                                        compressorGrearEfficiency,
                                        powernetVoltage,

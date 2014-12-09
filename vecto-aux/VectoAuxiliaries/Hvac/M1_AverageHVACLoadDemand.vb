@@ -10,19 +10,17 @@ Namespace Hvac
     Private _m0 As IM0_NonSmart_AlternatorsSetEfficiency
     Private _alternatorGearEfficiency As Single
     Private _compressorGearEfficiency As Single
-    Private _hvacInputs As IHVACInputs
-    Private _hvacMap As IHVACMap
+
     Private _signals As ISignals
     Private _powernetVoltage As Single
     Private _steadyStateModel As IHVACSteadyStateModel
 
 
-    Public Sub New(m0 As IM0_NonSmart_AlternatorsSetEfficiency, hvacMap As IHVACMap, hvacInputs As IHVACInputs, altGearEfficiency As Single, compressorGearEfficiency As Single, powernetVoltage As Single, signals As ISignals, ssm As IHVACSteadyStateModel)
+    Public Sub New(m0 As IM0_NonSmart_AlternatorsSetEfficiency, altGearEfficiency As Single, compressorGearEfficiency As Single, powernetVoltage As Single, signals As ISignals, ssm As IHVACSteadyStateModel)
 
           'Sanity Check - Illegal operations without all params.
           If m0 Is Nothing Then Throw New ArgumentException("Module0 as supplied is null")
-          If hvacMap Is Nothing Then Throw New ArgumentException("hvacMap as supplied is null")
-          If hvacInputs Is Nothing Then Throw New ArgumentException("hvacInputs as supplied is null")
+
           If altGearEfficiency < ElectricConstants.AlternatorPulleyEfficiencyMin OrElse altGearEfficiency > ElectricConstants.AlternatorPulleyEfficiencyMax Then _
               Throw New ArgumentException(String.Format("Gear efficiency must be between {0} and {1}", ElectricConstants.AlternatorPulleyEfficiencyMin, ElectricConstants.AlternatorPulleyEfficiencyMax))
 
@@ -36,8 +34,6 @@ Namespace Hvac
 
           'Assign
           _m0 = m0
-          _hvacMap = hvacMap
-          _hvacInputs = hvacInputs
           _alternatorGearEfficiency = altGearEfficiency
           _signals = signals
           _steadyStateModel = ssm

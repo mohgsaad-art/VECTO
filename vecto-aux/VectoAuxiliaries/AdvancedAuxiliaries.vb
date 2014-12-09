@@ -87,7 +87,6 @@ Public Class AdvancedAuxiliaries
       
       
       M0 = New M0_NonSmart_AlternatorsSetEfficiency( auxConfig.ElectricalUserInputsConfig.ElectricalConsumers,
-                                                     New HVACInputs,
                                                      alternatorMap,
                                                      auxConfig.ElectricalUserInputsConfig.PowerNetVoltage,
                                                      Signals,
@@ -103,8 +102,6 @@ Public Class AdvancedAuxiliaries
       
       
       M1 = New M1_AverageHVACLoadDemand(M0,
-                                        New HVACMap(""),
-                                        New HVACInputs(), 
                                         auxConfig.ElectricalUserInputsConfig.AlternatorGearEfficiency, 
                                         auxConfig.PneumaticUserInputsConfig.CompressorGearEfficiency,
                                         auxConfig.ElectricalUserInputsConfig.PowerNetVoltage,

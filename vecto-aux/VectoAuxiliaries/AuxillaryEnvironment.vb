@@ -102,7 +102,6 @@ ElectricalUserInputsConfig.ElectricalConsumers.DoorDutyCycleFraction = GetDoorAc
 
 
 M0 = New M0_NonSmart_AlternatorsSetEfficiency( ElectricalUserInputsConfig.ElectricalConsumers,
-                                               New HVACInputs,
                                                alternatoMap,
                                                ElectricalUserInputsConfig.PowerNetVoltage,
                                                Signals,
@@ -118,8 +117,6 @@ M05 = New M0_5_SmartAlternatorSetEfficiency(M0,
 
 
 M1 = New M1_AverageHVACLoadDemand(M0,
-                                  New HVACMap(""),
-                                  New HVACInputs(), 
                                   ElectricalUserInputsConfig.AlternatorGearEfficiency, 
                                   PneumaticUserInputsConfig.CompressorGearEfficiency,
                                   ElectricalUserInputsConfig.PowerNetVoltage,
