@@ -222,7 +222,7 @@ Public Class cPower
             'TODO:CHECK THIS FOR AAUX M8
             'Aux Demand
 
-            '
+            'REMAINING SIGNALS NEEDED AT THIS POINT FOR AAUX
 
 
 
@@ -443,6 +443,10 @@ Public Class cPower
             End If
 
         Loop Until i = 0
+
+
+        'CALCULATE ADVANCED AUXILIARIES
+
 
         Return True
 
@@ -2281,6 +2285,8 @@ lb10:
     End Function
 
     '----------------Ancillaries(Nebenaggregate) ----------------
+
+    'TODO: AAUX ANCILIARIES CALCULATIONS
     Public Function fPaux(ByVal t As Integer, ByVal nU As Single) As Single
         Return CSng(MODdata.Vh.Padd(t) + VEC.PauxSum(t, nU))
     End Function

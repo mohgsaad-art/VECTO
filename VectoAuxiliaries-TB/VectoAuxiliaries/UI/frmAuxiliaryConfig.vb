@@ -1190,6 +1190,8 @@ Private Sub btnSSMBSource_Click( sender As Object,  e As EventArgs) Handles btnS
 
 
                Dim fbAux As New cFileBrowser(True, False)
+               Dim ssmMap As New Hvac.HVACSteadyStateModel()
+               Dim message As String = String.Empty
 
 
                fbAux.Extensions = New String() {"ahsm"}
@@ -1198,8 +1200,40 @@ Private Sub btnSSMBSource_Click( sender As Object,  e As EventArgs) Handles btnS
 
                  txtSSMFilePath.Text = fFileWoDir(fbAux.Files(0), fPATH(vectoFile))
 
+                 
+                 Try
+
+                 If Not ssmMap.SetValuesFromMap(txtSSMFilePath.Text, message) then
+
+                 txtHVACElectricalLoadPowerWatts.Text =  string.empty
+                 txtHVACMechanicalLoadPowerWatts.Text =  string.empty
+                 txtHVACFuellingLitresPerHour.Text    =  string.empty
+                 messagebox.Show("Unable to load")
+
+                 else
+
+                 'Populate boxes
+
+                 txtHVACElectricalLoadPowerWatts.Text = ssmMap.HVACElectricalLoadPowerWatts.ToString()
+                 txtHVACMechanicalLoadPowerWatts.Text = ssmMap.HVACMechanicalLoadPowerWatts.ToString()
+                 txtHVACFuellingLitresPerHour.Text    = ssmMap.HVACFuellingLitresPerHour.ToString()
+
+                 End If
+
+                 
+                 Catch ex As Exception
+
+                                messagebox.Show("Unable to load")
+
+                 End Try
+
+                 
+
+
                End If
 
+               'Causes binding to fire
+               txtSSMFilePath.Focus()
 
 End Sub
 

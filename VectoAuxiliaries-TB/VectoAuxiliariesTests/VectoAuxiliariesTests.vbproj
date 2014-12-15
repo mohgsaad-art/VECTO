@@ -105,6 +105,7 @@
     <Compile Include="Mocks\MockFuel50PC.vb" />
     <Compile Include="UnitTests\FilePathUtilityTests.vb" />
     <Compile Include="UnitTests\FuelMapTests.vb" />
+    <Compile Include="UnitTests\HVACSSMMapTests.vb" />
     <Compile Include="UnitTests\M0_5_SmartAlternatorSetEfficiencyTests.vb" />
     <Compile Include="UnitTests\M0_NonSmart_AlternatorsSetEfficiencyTests.vb" />
     <Compile Include="UnitTests\AveragePneumaticLoadDemandTests.vb" />
@@ -226,11 +227,22 @@
     <Content Include="TestFiles\auxiliaryConfigKEEP.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="TestFiles\HVACMap.vaux" />
     <Content Include="TestFiles\TestHvacMap - ExtraBlankLines.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestFiles\TestHvacMap - MissingHeader.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\HVACSteadyStateModelGOODMAP.ahsm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\HVACSteadyStateModelBadHeaders.ahsm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\HVACSteadyStateModelBadValues.ahsm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\HVACSteadyStateModelInsufficientLines.ahsm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="TestFiles\testAlternatorMap.aalt">
