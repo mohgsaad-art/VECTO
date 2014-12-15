@@ -1,0 +1,11 @@
+﻿[Electrical Power (w)],[Mechanical Power (w)],BadHeader
+100,100,0
+[MODELSOURCE]
+Modelname : HVAC MODEL SYSTEM
+Model Version : 1.0
+UserName : Joe Bloggs
+DateTime : 15th Feb 2014
+Comments :This is some descriptive Comments on the production of this model.
+
+[KeyValuePairs]
+AmbientTemperature Deg C : 22

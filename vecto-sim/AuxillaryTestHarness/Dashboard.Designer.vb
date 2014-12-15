@@ -118,6 +118,9 @@ Partial Class Dashboard
         Me.txtPerStopBrakeActuationNIperKG = New System.Windows.Forms.TextBox()
         Me.txtSmartRegenFractionTotalAirDemand = New System.Windows.Forms.TextBox()
         Me.tabHVACConfig = New System.Windows.Forms.TabPage()
+        Me.btnSSMBSource = New System.Windows.Forms.Button()
+        Me.lblSSMFilePath = New System.Windows.Forms.Label()
+        Me.txtSSMFilePath = New System.Windows.Forms.TextBox()
         Me.lblHVACTitle = New System.Windows.Forms.Label()
         Me.txtHVACFuellingLitresPerHour = New System.Windows.Forms.TextBox()
         Me.lblHVACFuellingLitresPerHour = New System.Windows.Forms.Label()
@@ -286,9 +289,6 @@ Partial Class Dashboard
         Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
-        Me.btnSSMBSource = New System.Windows.Forms.Button()
-        Me.lblSSMFilePath = New System.Windows.Forms.Label()
-        Me.txtSSMFilePath = New System.Windows.Forms.TextBox()
         Me.pnlMain.SuspendLayout
         Me.tabMain.SuspendLayout
         Me.tabGeneralConfig.SuspendLayout
@@ -1234,6 +1234,32 @@ Partial Class Dashboard
         Me.tabHVACConfig.TabIndex = 3
         Me.tabHVACConfig.Text = "HVAC"
         Me.tabHVACConfig.UseVisualStyleBackColor = true
+        '
+        'btnSSMBSource
+        '
+        Me.btnSSMBSource.Location = New System.Drawing.Point(706, 93)
+        Me.btnSSMBSource.Name = "btnSSMBSource"
+        Me.btnSSMBSource.Size = New System.Drawing.Size(45, 23)
+        Me.btnSSMBSource.TabIndex = 31
+        Me.btnSSMBSource.Text = ". . ."
+        Me.btnSSMBSource.UseVisualStyleBackColor = true
+        '
+        'lblSSMFilePath
+        '
+        Me.lblSSMFilePath.AutoSize = true
+        Me.lblSSMFilePath.Location = New System.Drawing.Point(25, 99)
+        Me.lblSSMFilePath.Name = "lblSSMFilePath"
+        Me.lblSSMFilePath.Size = New System.Drawing.Size(171, 13)
+        Me.lblSSMFilePath.TabIndex = 30
+        Me.lblSSMFilePath.Text = "Steady State Model File ( .AHSM  )"
+        '
+        'txtSSMFilePath
+        '
+        Me.txtSSMFilePath.Location = New System.Drawing.Point(204, 96)
+        Me.txtSSMFilePath.Name = "txtSSMFilePath"
+        Me.txtSSMFilePath.ReadOnly = true
+        Me.txtSSMFilePath.Size = New System.Drawing.Size(485, 20)
+        Me.txtSSMFilePath.TabIndex = 29
         '
         'lblHVACTitle
         '
@@ -2853,32 +2879,6 @@ Partial Class Dashboard
         'Timer1
         '
         Me.Timer1.Interval = 1000
-        '
-        'btnSSMBSource
-        '
-        Me.btnSSMBSource.Location = New System.Drawing.Point(706, 93)
-        Me.btnSSMBSource.Name = "btnSSMBSource"
-        Me.btnSSMBSource.Size = New System.Drawing.Size(45, 23)
-        Me.btnSSMBSource.TabIndex = 31
-        Me.btnSSMBSource.Text = ". . ."
-        Me.btnSSMBSource.UseVisualStyleBackColor = true
-        '
-        'lblSSMFilePath
-        '
-        Me.lblSSMFilePath.AutoSize = true
-        Me.lblSSMFilePath.Location = New System.Drawing.Point(25, 99)
-        Me.lblSSMFilePath.Name = "lblSSMFilePath"
-        Me.lblSSMFilePath.Size = New System.Drawing.Size(171, 13)
-        Me.lblSSMFilePath.TabIndex = 30
-        Me.lblSSMFilePath.Text = "Steady State Model File ( .AHSM  )"
-        '
-        'txtSSMFilePath
-        '
-        Me.txtSSMFilePath.Location = New System.Drawing.Point(204, 96)
-        Me.txtSSMFilePath.Name = "txtSSMFilePath"
-        Me.txtSSMFilePath.ReadOnly = true
-        Me.txtSSMFilePath.Size = New System.Drawing.Size(485, 20)
-        Me.txtSSMFilePath.TabIndex = 29
         '
         'Dashboard
         '
