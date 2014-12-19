@@ -471,7 +471,7 @@ Public Function Validate_Pneumatics() As Boolean
         Dim comp As CompressorMap
         Try
 
-        comp = New CompressorMap(txtCompressorMap.Text)
+        comp = New CompressorMap(FilePathUtils.ResolveFilePath( vectoPath,txtCompressorMap.Text))
         comp.Initialise()
          ErrorProvider.SetError(txtCompressorMap, String.Empty)
         Catch ex As Exception
@@ -507,7 +507,7 @@ Public Function Validate_Pneumatics() As Boolean
         Dim actuations As PneumaticActuationsMAP
         Try
 
-        actuations = New PneumaticActuationsMAP(txtActuationsMap.Text)
+        actuations = New PneumaticActuationsMAP(FilePathUtils.ResolveFilePath( vectoPath,txtActuationsMap.Text))
          actuations.Initialise()
          ErrorProvider.SetError(txtActuationsMap, String.Empty)
         Catch ex As Exception
@@ -1202,7 +1202,7 @@ Private Sub btnSSMBSource_Click( sender As Object,  e As EventArgs) Handles btnS
                  
                  Try
 
-                 If Not ssmMap.SetValuesFromMap(txtSSMFilePath.Text, message) then
+                 If Not ssmMap.SetValuesFromMap(FilePathUtils.ResolveFilePath(vectoPath,txtSSMFilePath.Text), message) then
 
                  txtHVACElectricalLoadPowerWatts.Text =  string.empty
                  txtHVACMechanicalLoadPowerWatts.Text =  string.empty
