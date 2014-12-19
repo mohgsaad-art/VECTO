@@ -352,24 +352,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="bin\Debug\Generic Vehicles\Declaration Mode\12t Delivery Truck\testAlternatorMap.aalt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="bin\Debug\Generic Vehicles\Declaration Mode\12t Delivery Truck\testCompressorMap.acmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="bin\Debug\Generic Vehicles\Declaration Mode\12t Delivery Truck\testFuelGoodMap.vmap">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="bin\Debug\Generic Vehicles\Declaration Mode\12t Delivery Truck\TAKAWAY.AHSM">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="bin\Debug\bin\Debug\TAKAWAY.AHSM">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="bin\Debug\bin\Debug\Generic Vehicles\Declaration Mode\12t Delivery Truck\TAKAWAY.AHSM">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="bin\Debug\bin\Debug\Generic Vehicles\Declaration Mode\12t Delivery Truck\TAKAWAY.AHSM" />
     <Content Include="bin\Debug\bin\Debug\bin\Debug\Generic Vehicles\Declaration Mode\12t Delivery Truck\TAKAWAY.AHSM">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -464,14 +447,13 @@
     <None Include="Resources\F_VECTO.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\VectoAuxiliaries-TB\VectoAuxiliaries\VectoAuxiliaries.vbproj">
-      <Project>{fdeee460-0b8a-4ef6-8d9e-72f203a50f65}</Project>
-      <Name>VectoAuxiliaries</Name>
-    </ProjectReference>
     <ProjectReference Include="..\AdvancedAuxiliaryInterfaces\AdvancedAuxiliaryInterfaces.vbproj">
       <Project>{b4b9bd2f-fd8f-4bb8-82fa-e2154d2c7fbd}</Project>
       <Name>AdvancedAuxiliaryInterfaces</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\Debug\Generic Vehicles\Declaration Mode\12t Delivery Truck\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

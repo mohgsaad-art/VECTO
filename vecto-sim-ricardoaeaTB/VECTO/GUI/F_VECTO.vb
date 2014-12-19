@@ -1300,7 +1300,7 @@ Private Sub btnBrowseAAUXFile_Click( sender As Object,  e As EventArgs) Handles 
 
 
                Dim fbAux As New cFileBrowser(True, False)
-               Dim ssmMap As New Hvac.HVACSteadyStateModel()
+              ' Dim ssmMap As New Hvac.HVACSteadyStateModel()
                Dim message As String = String.Empty
 
 
