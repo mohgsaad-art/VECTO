@@ -10,6 +10,8 @@
 ' See the LICENSE.txt for the specific language governing permissions and limitations.
 
 Imports System.Collections.Generic
+Imports System.IO
+Imports VectoAuxiliaries
 
 ''' <summary>
 ''' Job Editor. Create/Edit VECTO job files (.vecto)
@@ -28,6 +30,21 @@ Public Class F_VECTO
 
     Private EStechs As New List(Of String)
 
+    'AA-TB
+    'Populate Advanced Auxiliaries
+    Private Sub PopulateAdvancedAuxiliaries()
+
+
+    'Scan the program directory for DLL's which are AdvancedAuxiliaries and display
+    Dim AList As List(Of cAdvancedAuxiliary ) = AAUX_Gobal.DiscoverAdvancedAuxiliaries()
+
+    cboAdvancedAuxiliaries.DataSource=AList
+    cboAdvancedAuxiliaries.DisplayMember= "AuxiliaryName"
+    
+
+    End Sub
+
+  
     'Initialise form
     Private Sub F02_GEN_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Dim x As Int16
@@ -60,6 +77,11 @@ Public Class F_VECTO
         Me.PnEcoRoll.Enabled = Not Cfg.DeclMode
 
         Changed = False
+
+        'AA-TB
+        PopulateAdvancedAuxiliaries()
+
+
 
     End Sub
 
@@ -954,7 +976,7 @@ lbDlog:
 
 #End Region
 
-    Public Sub UpdatePic()
+Public Sub UpdatePic()
         Dim VEH0 As New cVEH
         Dim ENG0 As cENG
         Dim GBX0 As cGBX
@@ -1241,6 +1263,66 @@ lbDlog:
     End Sub
 
 #End Region
+
+
+'AA-TB
+Private Sub picAuxInfo_MouseEnter( sender As Object,  e As EventArgs) Handles picAuxInfo.MouseEnter
+
+
+  If cboAdvancedAuxiliaries.SelectedIndex=-1 then Exit Sub
+  
+  'Get tooltip
+  Dim item As cAdvancedAuxiliary
+
+  item = DirectCast(cboAdvancedAuxiliaries.SelectedItem, cAdvancedAuxiliary)
+
+  If item.AuxiliaryVersion="CLASSIC" then
+
+    ToolTip1.ToolTipTitle="Classic Vecto Auxiliaries"
+    ToolTip1.SetToolTip(picAuxInfo,"Uses original basic auxiliaries calculation")
+
+  Else
+
+    ToolTip1.ToolTipTitle="Advanced Auxiliary Information"
+    ToolTip1.SetToolTip(picAuxInfo, item.AuxiliaryName & " : Version=" & item.AuxiliaryVersion)
+
+  End If
+
+
+
+
+
+
+End Sub
+
+'AA-TB
+Private Sub btnBrowseAAUXFile_Click( sender As Object,  e As EventArgs) Handles btnBrowseAAUXFile.Click
+
+
+               Dim fbAux As New cFileBrowser(True, False)
+               Dim ssmMap As New Hvac.HVACSteadyStateModel()
+               Dim message As String = String.Empty
+
+
+               fbAux.Extensions = New String() {"AAUX"}
+
+               If fbAux.CustomDialog(fPATH(vectoFile),False,True, tFbExtMode.ForceExt,False,"") Then
+
+                 txtAdvancedAuxiliaryFile.Text = fFileWoDir(fbAux.Files(0), fPATH(vectoFile))
+
+                 Dim assembly As cAdvancedAuxiliary = DirectCast( cboAdvancedAuxiliaries.SelectedItem, cAdvancedAuxiliary)
+
+                 AAUX_Gobal.ConfigureAdvancedAuxiliaries(assembly.AssemblyName,assembly.AuxiliaryVersion,txtAdvancedAuxiliaryFile.Text,VECTOfile)
+
+
+              End If
+                 
+
+End Sub
+
+
+
+
 
 
 

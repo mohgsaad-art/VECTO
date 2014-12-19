@@ -16,6 +16,7 @@ Private processing As Boolean = False
 Private SecondsIntoCycle As Integer = 0
 
 Private vectoFile As String = ""
+Private vectoPath As String = ""
 Private auxFile As string
 
 
@@ -44,6 +45,7 @@ Public Sub new( byval fileName As String, byval vectoFileName As String )
 
 
     Me.vectoFile = vectoFileName
+    Me.vectoPath = FilePathUtils.filePathOnly( vectoFileName)
 
     ' This call is required by the designer.
     InitializeComponent()
@@ -598,7 +600,7 @@ Dim result As Boolean = True
         'Test File is valid
         Dim alt As AlternatorMap
         Try
-        alt = New AlternatorMap(txtAlternatorMapPath.Text)
+        alt = New AlternatorMap(FilePathUtils.ResolveFilePath( vectoPath,txtAlternatorMapPath.Text))
         alt.Initialise()
          ErrorProvider.SetError(txtAlternatorMapPath, String.Empty)
         Catch ex As Exception
@@ -1143,7 +1145,6 @@ Private Sub btnCancel_Click( sender As Object,  e As EventArgs) Handles btnCance
 End Sub
 
 
-
 Private Sub frmAuxiliaryConfig_FormClosing( sender As Object,  e As FormClosingEventArgs) Handles MyBase.FormClosing
 
 
@@ -1182,8 +1183,6 @@ Private Sub frmAuxiliaryConfig_FormClosing( sender As Object,  e As FormClosingE
  
 
 End Sub
-
-
 
 
 Private Sub btnSSMBSource_Click( sender As Object,  e As EventArgs) Handles btnSSMBSource.Click

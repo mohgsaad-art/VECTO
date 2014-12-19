@@ -179,6 +179,7 @@
     <Compile Include="GUI\F_VEH_Axle.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Input Files\cAdvancedAuxiliary.vb" />
     <Compile Include="Input Files\cAux.vb" />
     <Compile Include="Input Files\cAuxEntry.vb" />
     <Compile Include="Input Files\cAuxEntryPS.vb" />
@@ -188,6 +189,7 @@
     <Compile Include="cDelaunayMap.vb" />
     <Compile Include="cDEV.vb" />
     <Compile Include="File Browser\cFileBrowser.vb" />
+    <Compile Include="AAUX_Gobal.vb" />
     <Compile Include="MODcalc\cVh.vb" />
     <Compile Include="File Browser\FB_Dialog.designer.vb">
       <DependentUpon>FB_Dialog.vb</DependentUpon>
@@ -350,6 +352,27 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bin\Debug\Generic Vehicles\Declaration Mode\12t Delivery Truck\testAlternatorMap.aalt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\Debug\Generic Vehicles\Declaration Mode\12t Delivery Truck\testCompressorMap.acmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\Debug\Generic Vehicles\Declaration Mode\12t Delivery Truck\testFuelGoodMap.vmap">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\Debug\Generic Vehicles\Declaration Mode\12t Delivery Truck\TAKAWAY.AHSM">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\Debug\bin\Debug\TAKAWAY.AHSM">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\Debug\bin\Debug\Generic Vehicles\Declaration Mode\12t Delivery Truck\TAKAWAY.AHSM">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bin\Debug\bin\Debug\bin\Debug\Generic Vehicles\Declaration Mode\12t Delivery Truck\TAKAWAY.AHSM">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="ClassDiagram1.cd" />
     <None Include="ClassDiagram2.cd" />
     <None Include="My Project\app.manifest">
@@ -444,6 +467,10 @@
     <ProjectReference Include="..\..\VectoAuxiliaries-TB\VectoAuxiliaries\VectoAuxiliaries.vbproj">
       <Project>{fdeee460-0b8a-4ef6-8d9e-72f203a50f65}</Project>
       <Name>VectoAuxiliaries</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AdvancedAuxiliaryInterfaces\AdvancedAuxiliaryInterfaces.vbproj">
+      <Project>{b4b9bd2f-fd8f-4bb8-82fa-e2154d2c7fbd}</Project>
+      <Name>AdvancedAuxiliaryInterfaces</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
