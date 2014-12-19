@@ -68,6 +68,22 @@ Public Shared function fileNameLegal( fileName as string) As Boolean
 
 End Function
 
+     
+  Public shared function ResolveFilePath( vectoPath as String, filename As string) as string
+
+     'No Vecto Path supplied
+     If vectoPath="" then Return filename
+
+     'This is not relative
+     If filename.Contains(":\") then  
+     
+        'Filepath is already absolute
+        Return filename   
+     Else
+        return  vectoPath & filename 
+     End If
+   
+   End Function
 
 
 
