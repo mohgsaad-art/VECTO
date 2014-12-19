@@ -202,6 +202,9 @@
     <Content Include="testPneumaticActuationsMap_GOODMAP.apac">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="TAKAWAY.AHSM">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="testAlternatorMap - Copy.aalt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

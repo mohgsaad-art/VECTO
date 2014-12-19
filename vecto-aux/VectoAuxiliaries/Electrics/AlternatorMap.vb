@@ -296,6 +296,10 @@ Implements IAlternatorMap
 
                     For Each line As String In lines
                         If Not firstline Then
+
+                        'Advanced Alternator Source Check.
+                        If line.contains("[MODELSOURCE") then Exit For
+
                             'split the line
                             Dim elements() As String = line.Split(New Char() {","}, StringSplitOptions.RemoveEmptyEntries)
                             '3 entries per line required

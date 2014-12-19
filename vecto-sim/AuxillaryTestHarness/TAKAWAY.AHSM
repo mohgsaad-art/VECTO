@@ -1,0 +1,198 @@
+[Electrical Power (w)], [Mechanical Power (w)], [Fuelling (L/H)]
+337.25472,2281.38537,0
+[MODELSOURCE]
+
+*********************************************************************************************************
+
+USERNAME : Terry Burns
+SIM DATE : 15/12/2014 18:16:13
+TITLE    : This is a little simulation from Mike Preston
+COMMENTS : Now is thee time for all good men to come to the aid of the party.
+
+*********************************************************************************************************
+
+
+*INPUT & RESULTS SHEET*
+_______________________
+
+*Bus Parameterisation*
+______________________	
+
+                        	Known Bus Model        	Known Bus Model	User Amended Values	   	
+Bus Model               	IVECO - Citelis 12m CNG	               	                   	   	
+Number of Passengers    	89                     	89             	                   	   	
+Bus Type                	low floor              	low floor      	                   	   	
+Bus Floor Surface Area  	27.5145                	27.5145        	                   	m^2	
+Bus Surface Area (m^2)  	127.87912              	127.87912      	                   	m^2	
+Bus Window Surface (m^2)	22.985                 	22.985         	                   	m^2	
+Bus Volume              	70.2614                	70.2614        	                   	m^3	
+Bus Length              	11.99                  	11.99          	                   	m  	
+Bus Width               	2.5                    	2.5            	                   	m  	
+
+*Boundary Conditions:*
+______________________	
+
+G-Factor                                  	1        		         		
+Solar Clouding                            	0.65     		         		
+Heat per Passenger into Cabin             	80       		W        		
+Passenger Boundary Temperature            	13       		oC       		
+Passenger Density: Low Floor              	3        		Pass/m^2 		
+Passenger Density: Semi Low Floor         	2        		Pass/m^2 		
+Passenger Density: Raised Floor           	1.4      		Pass/m^2 		
+Calculated Passenger Number               	82.5435  		         		
+U-Values                                  	4        		W/(K*m^3)		
+Heating Boundary Temperature              	20       		oC       		
+Cooling Boundary Temperature              	24       		oC       		
+High Ventilation                          	25       		l/h      		
+low Ventilation                           	8        		l/h      		
+High                                      	1756.535 		m^3/h    		
+low                                       	562.0912 		m^3/h    		
+High Vent Power                           	1053.921 		W        		
+Low Vent Power                            	337.25472		W        		
+Specific Ventilation Power                	0.6      		Wh/m3    		
+COP                                       	4        		         		
+Aux. Heater Efficiency                    	1        		         		
+GCV (Diesel / Heating oil)                	13       		kwh/kg   		
+Volumic mass (Diesel / Heating oil)       	1        		kg/l     		
+Window Area per Unit Bus Length           	1.5      		m^2/m    		
+Front + Rear Window Area                  	5        		m^2      		
+Max Temperature Delta for low Floor Busses	4        		K        		
+Max Possible Benefit from Technology List 	0.03     		Fraction 		
+
+*Enviromental Conditions*
+_________________________	
+
+Enviromental Temperature	25 		oC  		
+Solar                   	400		W/m²		
+
+*AC-system*
+___________	
+
+In-cabin room AC-System	Yes       		  		
+AC-compressor type     	mechanical		  		
+AC-compressor capacity 	18        		kW		
+
+*Ventilation*
+_____________	
+
+Ventilation during heating                                     	Yes 				
+Ventilation when both Heating and  AC are inactive             	Yes 				
+Ventilation during AC                                          	Yes 				
+Ventilation flow setting when both Heating and  AC are inactive	high				
+Ventilation during Heating                                     	high				
+Ventilation during Cooling                                     	low 				
+
+*Aux. Heater*
+_____________	
+
+Engine Waste Heat (kW)	2 			kW	
+Fuel Fired Heater (kW)	10			kW	
+
+*Insulation*
+____________	
+
+foils (g-value reduction)                                                                                    	No	
+double-glazing (g-value reduction, u-value reduction)                                                        	No	
+heat insulation glazing (u-value reduction)                                                                  	No	
+roof insulation (u-value reduction)                                                                          	No	
+wall insulation (u-value reduction)                                                                          	No	
+floor insulation (u-value reduction)                                                                         	No	
+door insulation (u-value reduction)                                                                          	No	
+clearance between door frame / door leaf  (different solutions bristles / rubberseals)  (reduced leckage air)	No	
+insulation of heating and cooling pipes (increase heating efficiency)                                        	No	
+"changable" glas (g-value)                                                                                   	No	
+reflective paintings                                                                                         	No	
+insulation of engine compartment                                                                             	No	
+
+*ventilation*
+_____________	
+
+                                         	  	active ventilation: Heating	active ventilation: Ventilation	active ventilation: Cooling	
+fan engines (EC, Brush) (efficiency)     	No	No                         	No                             	No                         	
+fan controll strategy (serial / parallel)	No	No                         	No                             	No                         	
+
+air curtain (reduces air exchange between in-cabin room and environment	No	
+partial air recirculation                                              	No	
+variable fresh air rate (influence on heating / cooling demand)        	No	
+
+*heating*
+_________	
+
+engine waste heat recovery (reduces heating demand for auxillary heater) ALREADY IMPLEMENTED                            	No	
+heat storage (increase heating efficiency)                                                                              	No	
+Heatpump systems (increase heating efficiency)                                                                          	No	
+position of heatexchangers in-cabin room (air flow towards walls / windows) [increases heat losses through increased ?T]	No	
+heated surfaces                                                                                                         	No	
+heated seats                                                                                                            	No	
+aux. Heater type (heated medium water, air) (efficiency value)(energy source, fuel ptc)                                 	No	
+
+*cooling*
+_________	
+
+adjustable compressorpower (cooling power variable) ALREADY IMPLEMENTED	No	
+
+driver ac-system	No	electrical	
+
+                                                                                         	  	active ventilation: Heating	active ventilation: Ventilation	active ventilation: Cooling	
+different sizes of air ducts (pressure loss effects power consumption of the fan engines)	No	No                         	No                             	No                         	
+
+low temperature storages / storage vaporizer                                                          	No	
+speed depending air conditioning                                                                      	No	
+ejector                                                                                               	No	
+"downhill" savings (determine diff. between effect for mech. & electr. Comp. regarding fuel consumpt.)	No	
+
+*List of technology Benefits *
+______________________________	
+
+*Insulation*
+____________	
+
+Insulation                                                                                                   	Units   	H    	V	C    	H    	V	C     	H    	V	C     	
+foils (g-value reduction)                                                                                    	fraction	0.01 	 	0.01 	0.01 	 	0.01  	0.01 	 	0.01  	
+double-glazing (g-value reduction, u-value reduction)                                                        	fraction	     	 	     	0.02 	 	0.012 	0.02 	 	0.025 	
+heat insulation glazing (u-value reduction)                                                                  	fraction	0.005	 	0.01 	0.01 	 	0.028 	0.01 	 	0.024 	
+roof insulation (u-value reduction)                                                                          	fraction	0.02 	 	-0.01	-0.01	 	-0.012	-0.01	 	-0.032	
+wall insulation (u-value reduction)                                                                          	fraction	0.01 	 	0.02 	0.02 	 	0.019 	0.02 	 	0.05  	
+floor insulation (u-value reduction)                                                                         	fraction	     	 	     	0.02 	 	0.027 	0.02 	 	0.012 	
+door insulation (u-value reduction)                                                                          	fraction	0.01 	 	0.02 	0.01 	 	0.028 	0.01 	 	0.021 	
+clearance between door frame / door leaf  (different solutions bristles / rubberseals)  (reduced leckage air)	fraction	0.01 	 	0.02 	0.005	 	0.036 	0.008	 	0.041 	
+insulation of heating and cooling pipes (increase heating efficiency)                                        	fraction	0.01 	 	0.02 	0.01 	 	0.024 	0.01 	 	0.029 	
+"changable" glas (g-value)                                                                                   	fraction	0.005	 	0.01 	0.01 	 	0.025 	0.011	 	0.025 	
+reflective paintings                                                                                         	fraction	0.005	 	0.005	0.005	 	0.02  	0.005	 	0.012 	
+insulation of engine compartment                                                                             	fraction	     	 	0.01 	     	 	0.023 	     	 	0.02  	
+
+*Ventilation*
+_____________	
+
+Ventilation                                                            	Units   	H   	V     	C    	H    	V    	C     	H    	V    	C     	
+fan engines (EC, Brush) (efficiency)                                   	fraction	    	0.01  	     	     	0.03 	      	     	0.018	      	
+fan controll strategy (serial / parallel)                              	fraction	    	0.005 	     	     	0.017	      	     	0.02 	      	
+air curtain (reduces air exchange between in-cabin room and environment	fraction	0.01	-0.005	0.01 	     	     	      	     	     	      	
+partial air recirculation                                              	fraction	0.02	      	-0.01	-0.01	     	-0.012	-0.01	     	-0.032	
+variable fresh air rate (influence on heating / cooling demand)        	fraction	    	      	     	-0.01	     	-0.012	-0.01	     	-0.032	
+
+*Heating*
+_________	
+
+Heating                                                                                                                 	Units   	H     	V	C	H     	V	C	H     	V	C	
+engine waste heat recovery (reduces heating demand for auxillary heater) ALREADY IMPLEMENTED                            	fraction	0.0135	 	 	0.024 	 	 	0.01  	 	 	
+heat storage (increase heating efficiency)                                                                              	fraction	0.012 	 	 	0.028 	 	 	0.005 	 	 	
+Heatpump systems (increase heating efficiency)                                                                          	fraction	0.01  	 	 	0.02  	 	 	0.005 	 	 	
+position of heatexchangers in-cabin room (air flow towards walls / windows) [increases heat losses through increased ?T]	fraction	0.02  	 	 	0.019 	 	 	0.03  	 	 	
+heated surfaces                                                                                                         	fraction	-0.01 	 	 	-0.012	 	 	-0.032	 	 	
+heated seats                                                                                                            	fraction	0.01  	 	 	0.01  	 	 	0.01  	 	 	
+aux. Heater type (heated medium water, air) (efficiency value)(energy source, fuel ptc)                                 	fraction	0.02  	 	 	0.015 	 	 	0.02  	 	 	
+
+*Cooling*
+_________	
+
+Cooling                                                                                               	Units   	H	V    	C    	H	V     	C    	H	V     	C    	
+adjustable compressorpower (cooling power variable) ALREADY IMPLEMENTED                               	fraction	 	     	0.01 	 	      	0.01 	 	      	0.02 	
+driver ac-system (mechanical)                                                                         	kW      	 	     	-0.2 	 	      	-0.3 	 	      	-0.4 	
+driver ac-system (electrical)                                                                         	kW      	 	     	-0.1 	 	      	-0.15	 	      	-0.2 	
+different sizes of air ducts (pressure loss effects power consumption of the fan engines)             	fraction	 	-0.01	     	 	-0.012	     	 	-0.032	     	
+low temperature storages / storage vaporizer                                                          	fraction	 	     	0.014	 	      	0.012	 	      	0.012	
+speed depending air conditioning                                                                      	fraction	 	     	0.018	 	      	0.02 	 	      	0.021	
+ejector                                                                                               	fraction	 	     	0.023	 	      	0.024	 	      	0.012	
+"downhill" savings (determine diff. between effect for mech. & electr. Comp. regarding fuel consumpt.)	fraction	 	     	0.01 	 	      	0.028	 	      	0.021	
+
