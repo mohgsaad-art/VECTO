@@ -16,6 +16,13 @@ Public Class cVECTO
     Private Const FormatVersion As Short = 2
     Private FileVersion As Short
 
+    'AA-TB
+    'STORES THE Type and version of the chosen or default Auxiliary Type ( Classic/Original or other )
+    public AuxiliaryAssembly As String
+    public AuxiliaryVersion As String
+    Public AdvancedAuxiliaryFilePath As String
+    
+
     Private sFilePath As String
 
     Private MyPath As String
@@ -191,6 +198,12 @@ Public Class cVECTO
             dic0.Add("Cycles", ls)
         End If
 
+        'AA-TB
+        'ADVANCED AUXILIARIES 
+        dic0.Add("AuxiliaryAssembly",AuxiliaryAssembly)
+        dic0.Add("AuxiliaryVersion",AuxiliaryVersion)
+        dic0.Add("AdvancedAuxiliaryFilePath",AdvancedAuxiliaryFilePath)
+
         'Aux
         If AuxPaths.Count > 0 Then
             ls = New List(Of Object)
@@ -245,6 +258,8 @@ Public Class cVECTO
         dic.Add("UnderSpeed", UnderSpeed)
         dic0.Add("OverSpeedEcoRoll", dic)
 
+        '
+
 
         JSON.Content.Add("Body", dic0)
 
@@ -260,6 +275,10 @@ Public Class cVECTO
         Dim JSON As New cJSON
         Dim str As String
         Dim dic As Object
+
+
+        
+
 
         MsgSrc = "Main/ReadInp/GEN"
 
@@ -290,6 +309,21 @@ Public Class cVECTO
                     CycleFiles.Add(SubPath)
                 Next
             End If
+
+            'AA-TB
+            'ADVANCED AUXILIARIES 
+            If  Not JSON.Content("Body")("AuxiliaryAssembly") is Nothing  AndAlso 
+                NOT JSON.Content("Body")("AuxiliaryVersion") is nothing   
+
+              AuxiliaryAssembly =  JSON.Content("Body")("AuxiliaryAssembly").ToString()
+              AuxiliaryVersion  =  JSON.Content("Body")("AuxiliaryVersion").ToString()
+
+            End If
+            If  NOT JSON.Content("Body")("AdvancedAuxiliaryFilePath") is nothing then 
+               AdvancedAuxiliaryFilePath =   JSON.Content("Body")("AdvancedAuxiliaryFilePath").ToString()
+            end if
+
+
 
             If Not JSON.Content("Body")("Aux") Is Nothing Then
                 For Each dic In JSON.Content("Body")("Aux")
@@ -377,6 +411,10 @@ Public Class cVECTO
                 EcoRollOn = False
             End If
 
+
+
+
+
         Catch ex As Exception
             WorkerMsg(tMsgID.Err, "Failed to read VECTO file! " & ex.Message, MsgSrc)
             Return False
@@ -389,6 +427,12 @@ Public Class cVECTO
     End Function
 
     Private Sub SetDefault()
+
+        AuxiliaryAssembly ="CLASSIC"
+        AuxiliaryVersion ="CLASSIC"
+        AdvancedAuxiliaryFilePath=String.Empty
+
+
         boStartStop = False
         siStStV = 5
         siStStT = 5

@@ -13,8 +13,8 @@ Public shared Function ValidateFilePath( byval filePath As String , byval expect
   Dim  fileNameOnlyNoExtension As String    =  fileNameOnly(filePath,false)
 
   'Is this filePath empty
-  If filePath.trim.Length=0 then
-      message = "A filename cannot be whitespace"
+  If filePath.trim.Length=0 orelse Right( filePath, 1)="\" then
+      message = "A filename cannot be empty"
      Return false
   End If
   
