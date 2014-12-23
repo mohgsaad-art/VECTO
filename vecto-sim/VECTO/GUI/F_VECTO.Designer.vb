@@ -32,8 +32,12 @@ Partial Class F_VECTO
         Me.BtDRIrem = New System.Windows.Forms.Button()
         Me.BtDRIadd = New System.Windows.Forms.Button()
         Me.GrAux = New System.Windows.Forms.GroupBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.btnBrowseAAUXFile = New System.Windows.Forms.Button()
+        Me.txtAdvancedAuxiliaryFile = New System.Windows.Forms.TextBox()
         Me.picAuxInfo = New System.Windows.Forms.PictureBox()
         Me.cboAdvancedAuxiliaries = New System.Windows.Forms.ComboBox()
+        Me.lbAdvancedAuxiliaries = New System.Windows.Forms.Label()
         Me.Label32 = New System.Windows.Forms.Label()
         Me.LvAux = New System.Windows.Forms.ListView()
         Me.ColumnHeader4 = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
@@ -118,11 +122,6 @@ Partial Class F_VECTO
         Me.TbGbxTxt = New System.Windows.Forms.TextBox()
         Me.TbMass = New System.Windows.Forms.TextBox()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.txtAdvancedAuxiliaryFile = New System.Windows.Forms.TextBox()
-        Me.btnBrowseAAUXFile = New System.Windows.Forms.Button()
-        Me.lbAdvancedAuxiliaries = New System.Windows.Forms.Label()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.picCreateNewAAConfig = New System.Windows.Forms.PictureBox()
         Me.TabPgGen.SuspendLayout
         Me.GrCycles.SuspendLayout
         Me.GrAux.SuspendLayout
@@ -142,7 +141,6 @@ Partial Class F_VECTO
         Me.CmOpenFile.SuspendLayout
         CType(Me.PicVehicle,System.ComponentModel.ISupportInitialize).BeginInit
         CType(Me.PicBox,System.ComponentModel.ISupportInitialize).BeginInit
-        CType(Me.picCreateNewAAConfig,System.ComponentModel.ISupportInitialize).BeginInit
         Me.SuspendLayout
         '
         'TabPgGen
@@ -241,7 +239,6 @@ Partial Class F_VECTO
         Me.GrAux.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
             Or System.Windows.Forms.AnchorStyles.Left)  _
             Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.GrAux.Controls.Add(Me.picCreateNewAAConfig)
         Me.GrAux.Controls.Add(Me.Label1)
         Me.GrAux.Controls.Add(Me.btnBrowseAAUXFile)
         Me.GrAux.Controls.Add(Me.txtAdvancedAuxiliaryFile)
@@ -258,6 +255,32 @@ Partial Class F_VECTO
         Me.GrAux.TabIndex = 33
         Me.GrAux.TabStop = false
         Me.GrAux.Text = "Auxiliaries"
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = true
+        Me.Label1.Location = New System.Drawing.Point(7, 52)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(96, 13)
+        Me.Label1.TabIndex = 40
+        Me.Label1.Text = "Advanced Aux File"
+        '
+        'btnBrowseAAUXFile
+        '
+        Me.btnBrowseAAUXFile.Location = New System.Drawing.Point(451, 47)
+        Me.btnBrowseAAUXFile.Name = "btnBrowseAAUXFile"
+        Me.btnBrowseAAUXFile.Size = New System.Drawing.Size(36, 23)
+        Me.btnBrowseAAUXFile.TabIndex = 39
+        Me.btnBrowseAAUXFile.Text = ". . ."
+        Me.ToolTip1.SetToolTip(Me.btnBrowseAAUXFile, "Configure/Browser  Advanced Auxiliary Files")
+        Me.btnBrowseAAUXFile.UseVisualStyleBackColor = true
+        '
+        'txtAdvancedAuxiliaryFile
+        '
+        Me.txtAdvancedAuxiliaryFile.Location = New System.Drawing.Point(119, 47)
+        Me.txtAdvancedAuxiliaryFile.Name = "txtAdvancedAuxiliaryFile"
+        Me.txtAdvancedAuxiliaryFile.Size = New System.Drawing.Size(321, 20)
+        Me.txtAdvancedAuxiliaryFile.TabIndex = 38
         '
         'picAuxInfo
         '
@@ -277,6 +300,15 @@ Partial Class F_VECTO
         Me.cboAdvancedAuxiliaries.Name = "cboAdvancedAuxiliaries"
         Me.cboAdvancedAuxiliaries.Size = New System.Drawing.Size(321, 21)
         Me.cboAdvancedAuxiliaries.TabIndex = 36
+        '
+        'lbAdvancedAuxiliaries
+        '
+        Me.lbAdvancedAuxiliaries.AutoSize = true
+        Me.lbAdvancedAuxiliaries.Location = New System.Drawing.Point(7, 21)
+        Me.lbAdvancedAuxiliaries.Name = "lbAdvancedAuxiliaries"
+        Me.lbAdvancedAuxiliaries.Size = New System.Drawing.Size(72, 13)
+        Me.lbAdvancedAuxiliaries.TabIndex = 35
+        Me.lbAdvancedAuxiliaries.Text = "Auxiliary Type"
         '
         'Label32
         '
@@ -1054,50 +1086,6 @@ Partial Class F_VECTO
         Me.TbMass.Size = New System.Drawing.Size(50, 20)
         Me.TbMass.TabIndex = 37
         '
-        'txtAdvancedAuxiliaryFile
-        '
-        Me.txtAdvancedAuxiliaryFile.Location = New System.Drawing.Point(119, 47)
-        Me.txtAdvancedAuxiliaryFile.Name = "txtAdvancedAuxiliaryFile"
-        Me.txtAdvancedAuxiliaryFile.Size = New System.Drawing.Size(321, 20)
-        Me.txtAdvancedAuxiliaryFile.TabIndex = 38
-        '
-        'btnBrowseAAUXFile
-        '
-        Me.btnBrowseAAUXFile.Location = New System.Drawing.Point(451, 47)
-        Me.btnBrowseAAUXFile.Name = "btnBrowseAAUXFile"
-        Me.btnBrowseAAUXFile.Size = New System.Drawing.Size(36, 23)
-        Me.btnBrowseAAUXFile.TabIndex = 39
-        Me.btnBrowseAAUXFile.Text = ". . ."
-        Me.btnBrowseAAUXFile.UseVisualStyleBackColor = true
-        '
-        'lbAdvancedAuxiliaries
-        '
-        Me.lbAdvancedAuxiliaries.AutoSize = true
-        Me.lbAdvancedAuxiliaries.Location = New System.Drawing.Point(7, 21)
-        Me.lbAdvancedAuxiliaries.Name = "lbAdvancedAuxiliaries"
-        Me.lbAdvancedAuxiliaries.Size = New System.Drawing.Size(72, 13)
-        Me.lbAdvancedAuxiliaries.TabIndex = 35
-        Me.lbAdvancedAuxiliaries.Text = "Auxiliary Type"
-        '
-        'Label1
-        '
-        Me.Label1.AutoSize = true
-        Me.Label1.Location = New System.Drawing.Point(7, 52)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(96, 13)
-        Me.Label1.TabIndex = 40
-        Me.Label1.Text = "Advanced Aux File"
-        '
-        'picCreateNewAAConfig
-        '
-        Me.picCreateNewAAConfig.Image = Global.VECTO.My.Resources.Resources.application_add_icon
-        Me.picCreateNewAAConfig.Location = New System.Drawing.Point(494, 47)
-        Me.picCreateNewAAConfig.Name = "picCreateNewAAConfig"
-        Me.picCreateNewAAConfig.Size = New System.Drawing.Size(16, 16)
-        Me.picCreateNewAAConfig.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
-        Me.picCreateNewAAConfig.TabIndex = 41
-        Me.picCreateNewAAConfig.TabStop = false
-        '
         'F_VECTO
         '
         Me.AcceptButton = Me.ButOK
@@ -1157,7 +1145,6 @@ Partial Class F_VECTO
         Me.CmOpenFile.ResumeLayout(false)
         CType(Me.PicVehicle,System.ComponentModel.ISupportInitialize).EndInit
         CType(Me.PicBox,System.ComponentModel.ISupportInitialize).EndInit
-        CType(Me.picCreateNewAAConfig,System.ComponentModel.ISupportInitialize).EndInit
         Me.ResumeLayout(false)
         Me.PerformLayout
 
@@ -1260,5 +1247,4 @@ End Sub
     Friend WithEvents btnBrowseAAUXFile As System.Windows.Forms.Button
     Friend WithEvents txtAdvancedAuxiliaryFile As System.Windows.Forms.TextBox
     Friend WithEvents lbAdvancedAuxiliaries As System.Windows.Forms.Label
-    Friend WithEvents picCreateNewAAConfig As System.Windows.Forms.PictureBox
 End Class

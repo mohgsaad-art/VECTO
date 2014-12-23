@@ -89,8 +89,9 @@
     <Reference Include="itextsharp">
       <HintPath>..\Third Party Libraries\itextsharp\itextsharp.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\Third Party Libraries\JSON.Net\Bin\Net40\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -352,8 +353,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="bin\Debug\bin\Debug\Generic Vehicles\Declaration Mode\12t Delivery Truck\TAKAWAY.AHSM" />
-    <Content Include="bin\Debug\bin\Debug\bin\Debug\Generic Vehicles\Declaration Mode\12t Delivery Truck\TAKAWAY.AHSM">
+    <Content Include="bin\Debug\Generic Vehicles\Declaration Mode\12t Delivery Truck\testPneumaticActuationsMap_GOODMAP.apac">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="ClassDiagram1.cd" />
@@ -372,6 +372,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="Resources\TUG-About.png" />
     <None Include="Resources\VECTO-About.png" />
     <None Include="Resources\VECTO-VEH.png" />
@@ -447,14 +448,16 @@
     <None Include="Resources\F_VECTO.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\vecto-aux\VectoAuxiliaries\VectoAuxiliaries.vbproj">
+      <Project>{fdeee460-0b8a-4ef6-8d9e-72f203a50f65}</Project>
+      <Name>VectoAuxiliaries</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AdvancedAuxiliaryInterfaces\AdvancedAuxiliaryInterfaces.vbproj">
       <Project>{b4b9bd2f-fd8f-4bb8-82fa-e2154d2c7fbd}</Project>
       <Name>AdvancedAuxiliaryInterfaces</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="bin\Debug\Generic Vehicles\Declaration Mode\12t Delivery Truck\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -42,6 +42,10 @@ Public Class F_VECTO
     cboAdvancedAuxiliaries.DisplayMember= "AuxiliaryName"
     
 
+    'TODO: FIND AND SELECT ANY PRE-EXISTING STORED ADVANCED AUXILIARY TYPE
+
+
+
     End Sub
 
   
@@ -79,8 +83,9 @@ Public Class F_VECTO
         Changed = False
 
         'AA-TB
-        PopulateAdvancedAuxiliaries()
+        PopulateAdvancedAuxiliaries( )
 
+        'Attempt to select that found in Config
 
 
     End Sub
@@ -405,6 +410,27 @@ Public Class F_VECTO
         'VACC
         Me.TbDesMaxFile.Text = VEC0.DesMaxFile(True)
 
+
+        'AA-TB
+        'Try and Select any previously selected Auxiliary Type
+          For Each item as cAdvancedAuxiliary In cboAdvancedAuxiliaries.Items
+
+            Dim aai  As cAdvancedAuxiliary= DirectCast( item , cAdvancedAuxiliary)
+
+            If aai.AssemblyName = VEC0.AuxiliaryAssembly andalso VEC0.AuxiliaryVersion= aai.AuxiliaryVersion then
+
+               cboAdvancedAuxiliaries.SelectedItem= item
+               Exit for 
+
+            End If
+
+          Next
+        'AA-TB
+         'Assign any previously saved Axiliary FilePath
+         txtAdvancedAuxiliaryFile.Text = VEC0.AdvancedAuxiliaryFilePath
+
+
+
         Me.LvAux.Items.Clear()
         For Each AuxEntryKV In VEC0.AuxPaths
             LV0 = New ListViewItem
@@ -476,6 +502,33 @@ Public Class F_VECTO
         Dim AuxEntry As cVECTO.cAuxEntry
         Dim LV0 As ListViewItem
         Dim sb As cSubPath
+        Dim absoluteAAUxFile As String = String.Empty
+        Dim aaAssemblyName As String = String.Empty
+        Dim aaAssemblyVersion As String = String.Empty
+        Dim message As String = String.Empty
+        
+
+
+       'AA-TB
+       'Validation of Auxiliary Types/Advanced Auxiliaries
+       'if not classic, check the file is valid, if not fail the operation and alert user.
+       If cboAdvancedAuxiliaries.SelectedIndex>0 then
+
+         'resolve absolute path for auxiliary file.
+         absoluteAAUxFile = AAUX_Gobal.ResolveAAUXFilePath( fPATH(VECTOfile),txtAdvancedAuxiliaryFile.Text)
+
+         aaAssemblyName    = DirectCast(cboAdvancedAuxiliaries.SelectedItem, cAdvancedAuxiliary).AssemblyName
+         aaAssemblyVersion = DirectCast(cboAdvancedAuxiliaries.SelectedItem, cAdvancedAuxiliary).AuxiliaryVersion
+
+
+         If NOT AAUX_Gobal.ValidateAAUXFile( absoluteAAUxFile,aaAssemblyName,aaAssemblyVersion, message ) then
+          MessageBox.Show (String.Format("You have selected an advanced auxiliary *Auxiliary Type*, but the file specified is invalid :{0}", message))
+          Return false
+         End If
+
+       End If
+
+
 
         VEC0 = New cVECTO
         VEC0.FilePath = file
@@ -502,6 +555,12 @@ Public Class F_VECTO
 
         'a_DesMax
         VEC0.DesMaxFile = Me.TbDesMaxFile.Text
+
+        'AA-TB
+        VEC0.AuxiliaryAssembly = DirectCast(cboAdvancedAuxiliaries.SelectedItem,cAdvancedAuxiliary).AssemblyName
+        VEC0.AuxiliaryVersion  = DirectCast(cboAdvancedAuxiliaries.SelectedItem,cAdvancedAuxiliary).AuxiliaryVersion 
+        VEC0.AdvancedAuxiliaryFilePath = txtAdvancedAuxiliaryFile.Text
+
 
         For Each LV0 In LvAux.Items
             AuxEntry = New cVECTO.cAuxEntry
@@ -1299,31 +1358,87 @@ End Sub
 Private Sub btnBrowseAAUXFile_Click( sender As Object,  e As EventArgs) Handles btnBrowseAAUXFile.Click
 
 
+               Dim aauxFileValidated As Boolean = False
                Dim fbAux As New cFileBrowser(True, False)
-              ' Dim ssmMap As New Hvac.HVACSteadyStateModel()
                Dim message As String = String.Empty
+               Dim absoluteAuxPath  As String 
+               Dim assembly As cAdvancedAuxiliary
+               Dim configResult As Boolean
 
 
-               fbAux.Extensions = New String() {"AAUX"}
+               'If Classic is selected, then bail
+               If cboAdvancedAuxiliaries.SelectedIndex=0 then return
 
-               If fbAux.CustomDialog(fPATH(vectoFile),False,True, tFbExtMode.ForceExt,False,"") Then
-
-                 txtAdvancedAuxiliaryFile.Text = fFileWoDir(fbAux.Files(0), fPATH(vectoFile))
-
-                 Dim assembly As cAdvancedAuxiliary = DirectCast( cboAdvancedAuxiliaries.SelectedItem, cAdvancedAuxiliary)
-
-                 AAUX_Gobal.ConfigureAdvancedAuxiliaries(assembly.AssemblyName,assembly.AuxiliaryVersion,txtAdvancedAuxiliaryFile.Text,VECTOfile)
+               'Get Absolute Path for AAUX FILE.
+               absoluteAuxPath = AAUX_Gobal.ResolveAAUXFilePath(fPATH(VECTOfile),txtAdvancedAuxiliaryFile.Text )
 
 
-              End If
+               try
+
+               assembly =  DirectCast( cboAdvancedAuxiliaries.SelectedItem, cAdvancedAuxiliary)
+
+               'If supplied file valid, straight to config
+               If AAUX_Gobal.ValidateAAUXFile( absoluteAuxPath,assembly.AssemblyName, assembly.AuxiliaryVersion, message )        
+                  
+                  configResult=AAUX_Gobal.ConfigureAdvancedAuxiliaries(assembly.AssemblyName,assembly.AuxiliaryVersion,txtAdvancedAuxiliaryFile.Text,VECTOfile)
+
+                  dim a=2
+
+               else
+
+                'txtAdvancedAuxiliaryFile.Text="INVALIDFILENAME"        
+                absoluteAuxPath=String.Empty    
+                                       
+                fbAux.Extensions = New String() {"AAUX"}
+
+                'Find / Create  file and configure.
+                If fbAux.CustomDialog(absoluteAuxPath,False,False, tFbExtMode.ForceExt,False,"") Then
+                  txtAdvancedAuxiliaryFile.Text = fFileWoDir(fbAux.Files(0), fPATH(vectoFile))
+                   assembly= DirectCast( cboAdvancedAuxiliaries.SelectedItem, cAdvancedAuxiliary)
+                  AAUX_Gobal.ConfigureAdvancedAuxiliaries(assembly.AssemblyName,assembly.AuxiliaryVersion,txtAdvancedAuxiliaryFile.Text,VECTOfile)
+               End If
+
+               End If
+
+
+               Catch ex As Exception
+               
+
+               'Bail
+               MessageBox.Show("There was an error configuring your Advanced Auxiliary File")
+
+
+              end try
+
+
+
+
                  
 
 End Sub
 
+'AA-TB
+Private Sub cboAdvancedAuxiliaries_SelectedIndexChanged( sender As Object,  e As EventArgs) Handles cboAdvancedAuxiliaries.SelectedIndexChanged
+ 
+'Enable or otherwise the text box and browser button associated with Advanced Axuiliaries
+If cboAdvancedAuxiliaries.SelectedIndex=0 then
+
+   btnBrowseAAUXFile.Enabled=false
+   txtAdvancedAuxiliaryFile.Enabled=False
+   txtAdvancedAuxiliaryFile.Text=String.Empty
+
+else
+
+   btnBrowseAAUXFile.Enabled=true
+   txtAdvancedAuxiliaryFile.Enabled=true
+
+End If
 
 
 
 
+
+End Sub
 
 
 End Class

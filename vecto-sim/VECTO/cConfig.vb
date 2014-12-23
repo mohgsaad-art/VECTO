@@ -35,6 +35,7 @@ Public Class cConfig
 
     Public DeclMode As Boolean
 
+
     Public Sub New()
         SetDefault()
     End Sub
@@ -48,6 +49,8 @@ Public Class cConfig
     End Sub
 
     Public Sub SetDefault()
+
+
         GnUfromCycle = True
         BatchMode = False
         ModOut = True

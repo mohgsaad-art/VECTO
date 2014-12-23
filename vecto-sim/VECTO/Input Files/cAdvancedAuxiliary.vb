@@ -32,7 +32,18 @@ Public readonly Property AssemblyName      As String
 End Property
 
 
-'Constructor
+'Constructor(s)
+
+Public Sub new()
+
+   _AuxiliaryName     ="Classic Vecto Auxiliary"
+  _AuxiliaryVersion   =  "CLASSIC"
+  _FileName           =  "CLASSIC"
+  _AssemblyName       =  "CLASSIC"
+
+
+End Sub
+
 Public Sub new ( AuxiliaryName   As String, AuxiliaryVersion  As String, FileName As string, AssemblyName  As string  )
 
     _AuxiliaryName      = AuxiliaryName
