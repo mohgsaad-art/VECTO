@@ -6,10 +6,26 @@ Public Interface IAdvancedAuxiliaries
 
 'Information
 ReadOnly Property Running          As boolean
-Readonly Property TotalFuelGRAMS   As Single
-Readonly Property TotalFuelLITRES  As single
+
 ReadOnly Property AuxiliaryName    As String
 ReadOnly Property AuxiliaryVersion As String
+
+ReadOnly Property AA_NonSmartAlternatorsEfficiency As single?
+Readonly Property AA_SmartIdleCurrent_Amps As single?
+Readonly Property AA_SmartIdleAlternatorsEfficiency As single?
+ReadOnly Property AA_SmartTractionCurrent_Amps As single?
+ReadOnly Property AA_SmartTractionAlternatorEfficiency As single?
+ReadOnly Property AA_SmartOverrunCurrent_Amps As Single?
+Readonly Property AA_SmartOverrunAlternatorEfficiency As Single?
+Readonly Property AA_CompressorFlowRate_LitrePerSec As Single?
+ReadOnly Property AA_OverrunFlag As integer?
+ReadOnly Property AA_EngineIdleFlag As integer?
+ReadOnly Property AA_CompressorFlag As integer?
+Readonly Property AA_TotalCycleFC_BeforeSSandWHTCcorrection_Grams As single?
+ReadOnly Property AA_TotalCycleFC_BeforeSSandWHTCcorrection_Litres As single?
+
+Readonly Property TotalFuelGRAMS   As Single
+Readonly Property TotalFuelLITRES  As single
 
 
 'Static Values

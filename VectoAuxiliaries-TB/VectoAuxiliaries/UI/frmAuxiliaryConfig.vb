@@ -307,7 +307,7 @@ Public Function IsZeroOrPostiveNumber(ByVal test As String) As Boolean
 
 End Function
 
-Public Function IsNumberBetweenZeroandOne(test As String)
+Public Function IsNumberBetweenZeroandOne(test As String) As Boolean
 
      'Is this numeric sanity check.
      If Not IsNumeric(test) Then Return False
@@ -322,7 +322,7 @@ Public Function IsNumberBetweenZeroandOne(test As String)
 
 End Function
 
-Public Function IsIntegerZeroOrPositiveNumber(test As String)
+Public Function IsIntegerZeroOrPositiveNumber(test As String) As Boolean
 
      'Is this numeric sanity check.
      If Not IsNumeric(test) Then Return False
@@ -1247,11 +1247,11 @@ Private Function GetSSMMAP( ByVal filePath As String , byref message As string) 
 
        catch ex As Exception
 
-        Return Nothing
+       'TODO:?
         
       End Try
 
-
+        Return Nothing
 
 End Function
 

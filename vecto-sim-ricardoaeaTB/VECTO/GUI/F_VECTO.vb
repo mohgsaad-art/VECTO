@@ -1382,8 +1382,6 @@ Private Sub btnBrowseAAUXFile_Click( sender As Object,  e As EventArgs) Handles 
                   
                   configResult=AAUX_Gobal.ConfigureAdvancedAuxiliaries(assembly.AssemblyName,assembly.AuxiliaryVersion,txtAdvancedAuxiliaryFile.Text,VECTOfile)
 
-                  dim a=2
-
                else
 
                 'txtAdvancedAuxiliaryFile.Text="INVALIDFILENAME"        
