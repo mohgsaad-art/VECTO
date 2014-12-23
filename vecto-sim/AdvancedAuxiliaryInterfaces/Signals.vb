@@ -36,6 +36,8 @@ Implements ISignals
 
     Public Property TotalCycleTimeSeconds As Integer Implements ISignals.TotalCycleTimeSeconds
 
+    public Property CurrentCycleTimeInSeconds As Integer Implements ISignals.CurrentCycleTimeInSeconds
+
     Public Property PreExistingAuxPower As Single Implements ISignals.PreExistingAuxPower
 
     Public Property Idle As Boolean Implements ISignals.Idle

@@ -182,7 +182,7 @@ Implements IAlternatorMap
     End Function
     Public Function ReturnDefaultMapValueTests() As String
 
-        Dim sb = New StringBuilder()
+        Dim sb  As StringBuilder = New StringBuilder()
         Dim x, y As Single
 
         'All Sector Values

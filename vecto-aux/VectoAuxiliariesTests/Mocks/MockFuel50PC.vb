@@ -23,30 +23,30 @@ Implements IFUELMAP
 
             Public ReadOnly Property FC As List(Of Single) Implements IFUELMAP.FC
                 Get
-
+                 Return New List(Of Single)
                 End Get
             End Property
 
             Public ReadOnly Property MapDim As Integer Implements IFUELMAP.MapDim
                 Get
-
+                 Return 0
                 End Get
             End Property
 
             Public ReadOnly Property nU As List(Of Single) Implements IFUELMAP.nU
                 Get
-
+                 Return New List(Of Single)
                 End Get
             End Property
 
             Public ReadOnly Property Tq As List(Of Single) Implements IFUELMAP.Tq
                 Get
-
+                 Return New List(Of Single)
                 End Get
             End Property
 
             Public Function Triangulate() As Boolean Implements IFUELMAP.Triangulate
-
+             Return true
             End Function
 End Class
 

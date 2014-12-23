@@ -41,7 +41,7 @@ Signals.Setup ( Function(x) x.SmartPneumatics)                                  
 Signals.Setup ( Function(x) x.SmartElectrics)                                                  .Returns( IP5 )
 m1.Setup      ( Function(x) x.HVACFuelingLitresPerHour)                                        .Returns( IP6 )
 Signals.Setup ( Function(x) x.TotalCycleTimeSeconds)                                           .Returns( 3114)
-
+Signals.Setup ( Function(x) x.CurrentCycleTimeInSeconds)                                       .Returns( 3114)
 
 'Act
  Dim target  = New M13( m1.Object, m10.Object, M12.Object, Signals.Object)

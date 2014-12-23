@@ -9,7 +9,10 @@ Public Class AdvancedAuxiliaries
  Implements IAdvancedAuxiliaries
 
 
+
+
     Private  auxConfig As AuxiliaryConfig
+
 
     'Supporting classes which may generate event messages
     Private WithEvents compressorMap As ICompressorMap
@@ -60,6 +63,7 @@ Public Class AdvancedAuxiliaries
     'Initialise Model
     Public Sub Initialise( auxPath  As String )
 
+      Signals.CurrentCycleTimeInSeconds=0
       auxConfig = New AuxiliaryConfig(auxPath)
       
       'Pass some signals from config to Signals. ( These are stored in the configuration but shared in the signal distribution around modules )
@@ -182,7 +186,11 @@ End Sub
          
        M9.CycleStep( seconds )      
        M11.CycleStep( seconds )
+
+       'Used in the fuel aggregated output on M13 ( Sum 5 )
+       Signals.CurrentCycleTimeInSeconds+=1
      
+       Return true
      
     End Function
 
@@ -195,8 +203,10 @@ End Sub
     Public Function RunStart( ByVal auxFilePath As String, ByRef message As String) As Boolean Implements VectoAuxiliaries.IAdvancedAuxiliaries.RunStart
           
 
-       Initialise(auxFilePath)        
-       'CycleStep( Signals.TotalCycleTimeSeconds, message)
+       Initialise(auxFilePath)   
+       
+       'TODO:Modify Initialise to return a Bool.
+       Return true     
 
     End Function
 
@@ -276,6 +286,88 @@ End Sub
      Return true
 
     End Function
+
+    'Diagnostic Signals
+
+    Public ReadOnly Property AA_NonSmartAlternatorsEfficiency As Single? Implements IAdvancedAuxiliaries.AA_NonSmartAlternatorsEfficiency
+        Get
+          Return M0.AlternatorsEfficiency
+        End Get
+    End Property
+
+    Public ReadOnly Property AA_SmartIdleCurrent_Amps As Single? Implements IAdvancedAuxiliaries.AA_SmartIdleCurrent_Amps
+        Get
+         Return M05.SmartIdleCurrent
+        End Get
+    End Property
+
+    Public ReadOnly Property AA_SmartIdleAlternatorsEfficiency As Single? Implements IAdvancedAuxiliaries.AA_SmartIdleAlternatorsEfficiency
+        Get
+         Return M05.AlternatorsEfficiencyIdleResultCard
+        End Get
+    End Property
+
+    Public ReadOnly Property AA_SmartTractionCurrent_Amps As Single? Implements IAdvancedAuxiliaries.AA_SmartTractionCurrent_Amps
+        Get
+         Return M05.SmartTractionCurrent
+        End Get
+    End Property
+
+    Public ReadOnly Property AA_SmartTractionAlternatorEfficiency As Single? Implements IAdvancedAuxiliaries.AA_SmartTractionAlternatorEfficiency
+        Get
+         Return AA_SmartTractionAlternatorEfficiency
+        End Get
+    End Property
+
+    Public ReadOnly Property AA_SmartOverrunCurrent_Amps As Single? Implements IAdvancedAuxiliaries.AA_SmartOverrunCurrent_Amps
+        Get
+         Return M05.SmartOverrunCurrent
+        End Get
+    End Property
+
+    Public ReadOnly Property AA_SmartOverrunAlternatorEfficiency As Single? Implements IAdvancedAuxiliaries.AA_SmartOverrunAlternatorEfficiency
+        Get
+         Return M05.AlternatorsEfficiencyOverrunResultCard
+        End Get
+    End Property
+
+    Public ReadOnly Property AA_CompressorFlowRate_LitrePerSec As Single? Implements IAdvancedAuxiliaries.AA_CompressorFlowRate_LitrePerSec
+        Get
+         Return  M4.GetAveragePowerDemandPerCompressorUnitFlowRate
+        End Get
+    End Property
+
+    Public ReadOnly Property AA_OverrunFlag As Integer? Implements IAdvancedAuxiliaries.AA_OverrunFlag
+        Get
+         Return M6.OverrunFlag
+        End Get
+    End Property
+
+    Public ReadOnly Property AA_EngineIdleFlag As Integer? Implements IAdvancedAuxiliaries.AA_EngineIdleFlag
+        Get
+         Return  Signals.Idle
+        End Get
+    End Property
+
+    Public ReadOnly Property AA_CompressorFlag As Integer? Implements IAdvancedAuxiliaries.AA_CompressorFlag
+        Get
+         Return M8.CompressorFlag
+        End Get
+    End Property
+
+    Public ReadOnly Property AA_TotalCycleFC_BeforeSSandWHTCcorrection_Grams As Single? Implements IAdvancedAuxiliaries.AA_TotalCycleFC_BeforeSSandWHTCcorrection_Grams
+        Get
+         Return M13.TotalCycleFuelConsumptionGrams
+        End Get
+    End Property
+
+    Public ReadOnly Property AA_TotalCycleFC_BeforeSSandWHTCcorrection_Litres As Single? Implements IAdvancedAuxiliaries.AA_TotalCycleFC_BeforeSSandWHTCcorrection_Litres
+        Get
+         Return M13.TotalCycleFuelConsumptionLitres
+        End Get
+    End Property
+
+
 
 
 

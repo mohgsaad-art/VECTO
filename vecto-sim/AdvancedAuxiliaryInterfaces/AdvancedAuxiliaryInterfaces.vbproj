@@ -67,8 +67,10 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Diagnostics.vb" />
     <Compile Include="Enumerations.vb" />
     <Compile Include="IAdvancedAuxiliaries.vb" />
+    <Compile Include="IDiagnostics.vb" />
     <Compile Include="ISignals.vb" />
     <Compile Include="IAuxiliaryEvent.vb" />
     <Compile Include="IVectoInputs.vb" />
