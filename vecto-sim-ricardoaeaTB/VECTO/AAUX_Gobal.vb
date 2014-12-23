@@ -4,6 +4,11 @@ Imports System.IO
 
 Module AAUX_Gobal
 
+
+
+
+
+
   'AA-TB
   ''' <summary>
   ''' Discovers Advanced Auxiliaries Assemblies in 'targetDirectory' Directory
@@ -21,7 +26,7 @@ Module AAUX_Gobal
 
 
      'Create Default
-     returnList.Add(New cAdvancedAuxiliary("Classic Vecto Auxiliary", "CLASSIC", "CLASSIC", "CLASSIC"))
+     returnList.Add(New cAdvancedAuxiliary())
 
 
 
@@ -88,7 +93,7 @@ Module AAUX_Gobal
                o = Activator.CreateInstance(chosenAssembly, "VectoAuxiliaries.AdvancedAuxiliaries")
                iAdvancedAux = DirectCast(o.Unwrap, IAdvancedAuxiliaries)
 
-               iAdvancedAux.Configure(filePath, vectoFilePath)
+               iAdvancedAux.Configure(filePath,  vectoFilePath)
 
       Catch ex As Exception
 
@@ -115,6 +120,57 @@ Public Function GetAAUXSourceDirectory() As String
 
 
   End Function
+
+
+  Public function ResolveAAUXFilePath( vectoPath as String, filename As string) as string
+
+     'No Vecto Path supplied
+     If vectoPath="" then Return filename
+
+     'This is not relative
+     If filename.Contains(":\") then  
+     
+        'Filepath is already absolute
+        Return filename   
+     Else
+        return  vectoPath & filename 
+     End If
+   
+   End Function
+
+
+Public Function ValidateAAUXFile( ByVal absoluteAAuxPath As String, 
+                                  ByVal assemblyName As String, 
+                                  byval version As string, 
+                                  byref message As string) As Boolean
+
+      Dim auxList As List(of cAdvancedAuxiliary ) = DiscoverAdvancedAuxiliaries()
+      Dim chosenAssembly  As String 
+      Dim o As System.Runtime.Remoting.ObjectHandle
+      Dim iAdvancedAux As IAdvancedAuxiliaries
+      Dim result As Boolean
+    
+
+      chosenAssembly = auxList.Find( Function(x) x.AssemblyName= assemblyName ANDalso x.AuxiliaryVersion= version).AssemblyName
+      If String.IsNullOrEmpty( chosenAssembly) then Return False
+
+
+      'Open Assembly and invoke the validation using the paths supplied.
+      Try
+               o = Activator.CreateInstance(chosenAssembly, "VectoAuxiliaries.AdvancedAuxiliaries")
+               iAdvancedAux = DirectCast(o.Unwrap, IAdvancedAuxiliaries)
+
+               result = iAdvancedAux.ValidateAAUXFile(absoluteAAuxPath, message)
+
+      Catch ex As Exception
+
+       result = false
+
+      End Try
+
+      Return result
+
+End Function
 
 
 

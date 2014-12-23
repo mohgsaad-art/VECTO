@@ -55,8 +55,8 @@ Public Sub new( byval fileName As String, byval vectoFileName As String )
 
     Try
 
-     auxConfig = New AuxiliaryConfig( auxFile )
-     originalConfig = New AuxiliaryConfig( auxFile)
+     auxConfig = New AuxiliaryConfig( FilePathUtils.ResolveFilePath(vectoPath,auxFile) )
+     originalConfig = New AuxiliaryConfig(  FilePathUtils.ResolveFilePath(auxFile,vectoPath) )
 
     Catch ex As Exception
 
@@ -189,7 +189,7 @@ Private Sub CreateBindings()
      'ResultCards
 
          'IDLE
-         Dim idleBinding = New BindingList(Of SmartResult)
+         Dim idleBinding as BindingList(Of SmartResult)
          idleBinding = New BindingList(Of SmartResult)(auxConfig.ElectricalUserInputsConfig.ResultCardIdle.Results)
          idleBinding.AllowNew = True
          idleBinding.AllowRemove = True
@@ -636,7 +636,7 @@ Dim result As Boolean = True
 End Function
 
 '****** HVAC VALIDATION
-Public Sub Validating_HVACHandler(sender As Object, e As CancelEventArgs) Handles txtHVACMechanicalLoadPowerWatts.Validating, txtHVACFuellingLitresPerHour.Validating, txtHVACElectricalLoadPowerWatts.Validating
+Public Sub Validating_HVACHandler(sender As Object, e As CancelEventArgs) Handles txtHVACMechanicalLoadPowerWatts.Validating, txtHVACFuellingLitresPerHour.Validating, txtHVACElectricalLoadPowerWatts.Validating, txtSSMFilePath.Validating
 
     e.Cancel = Not Validate_HVAC()
 
@@ -644,6 +644,7 @@ End Sub
 Public Function Validate_HVAC() As Boolean
 
 Dim result As Boolean = True
+Dim message As String =""
 
 
        'HVAC Electrical Load Power Watts : txtHVACElectricalLoadPowerWatts
@@ -672,14 +673,14 @@ Dim result As Boolean = True
        End If
 
 
-
-       If txtSSMFilePath.Text.Trim.Length=0 then 
-
-         ErrorProvider.SetError(txtSSMFilePath, "Please choose a vaid Steady State Model File (*.AHSM")
+       'Check file is valid
+       If GetSSMMAP(FilePathUtils.ResolveFilePath(vectoPath,txtSSMFilePath.Text), message ) is nothing then
+          ErrorProvider.SetError(txtSSMFilePath, "Please choose a vaid Steady State Model File (*.AHSM")
          result = False
-       Else
+       else
           ErrorProvider.SetError(txtSSMFilePath, String.Empty)
        End If
+
 
 
        UpdateTabStatus("tabHVACConfig", result)
@@ -946,9 +947,6 @@ End Sub
 
 #Region "Button Handlers"
 
-
-
-
 Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
 
 
@@ -969,7 +967,11 @@ Private function SaveFile() As Boolean
 
    Dim result As Boolean
 
-   result = auxConfig.Save(auxFile)
+
+   If Not ValidateAll then Return false
+
+
+   result = auxConfig.Save(FilePathUtils.ResolveFilePath(vectoPath,auxFile))
 
    If Not result then  MessageBox.Show(String.Format("Unable to Save the file '{0}'",auxFile) )
 
@@ -985,7 +987,7 @@ Private Function  LoadFile() As boolean
   'Release existing databindings
   UnbindAllControls(Me)
 
-  result = auxConfig.Load(auxFile)
+  result = auxConfig.Load( FilePathUtils.ResolveFilePath( vectoPath,auxFile))
 
   If Not result then     
      MessageBox.Show(String.Format("Unable to load the file '{0}'",auxFile) )
@@ -1089,6 +1091,59 @@ Private Sub btnActuationsMap_Click(sender As Object, e As EventArgs) Handles btn
 
 End Sub
 
+Private Sub btnCancel_Click( sender As Object,  e As EventArgs) Handles btnCancel.Click
+
+
+  Me.DialogResult = Windows.Forms.DialogResult.Cancel
+  Me.Close()
+
+
+End Sub
+
+Private Sub btnSSMBSource_Click( sender As Object,  e As EventArgs) Handles btnSSMBSource.Click
+
+
+               Dim fbAux As New cFileBrowser(True, False)
+               Dim ssmMap As Hvac.HVACSteadyStateModel
+               Dim message As String = String.Empty
+
+
+               fbAux.Extensions = New String() {"ahsm"}
+
+               If fbAux.OpenDialog(fPATH(vectoFile)) Then
+
+                 txtSSMFilePath.Focus()
+                 txtSSMFilePath.Text = fFileWoDir(fbAux.Files(0), fPATH(vectoFile))
+
+                 
+
+                 ssmMap = GetSSMMAP(FilePathUtils.ResolveFilePath(vectoPath,txtSSMFilePath.Text), message ) 
+
+                 If ssmMap is nothing then
+
+                 txtHVACElectricalLoadPowerWatts.Text =  string.empty
+                 txtHVACMechanicalLoadPowerWatts.Text =  string.empty
+                 txtHVACFuellingLitresPerHour.Text    =  string.empty
+                 messagebox.Show("Unable to load")
+
+                 else
+
+                 'Populate boxes
+                 txtHVACElectricalLoadPowerWatts.Text = ssmMap.HVACElectricalLoadPowerWatts.ToString()
+                 txtHVACMechanicalLoadPowerWatts.Text = ssmMap.HVACMechanicalLoadPowerWatts.ToString()
+                 txtHVACFuellingLitresPerHour.Text    = ssmMap.HVACFuellingLitresPerHour.ToString()
+
+
+                 End If
+
+
+               End If
+
+               'Causes binding to fire
+               btnSSMBSource.Focus()
+               txtSSMFilePath.Focus()
+
+End Sub
 
 #End Region
 
@@ -1117,6 +1172,8 @@ Protected Overrides Function ProcessCmdKey(ByRef msg As Message, keyData As Keys
     End Function
 
 
+
+
 Public Sub UnbindAllControls(ByRef container As Control)
   'Clear all of the controls within the container object
   'If "Recurse" is true, then also clear controls within any sub-containers
@@ -1131,16 +1188,6 @@ Public Sub UnbindAllControls(ByRef container As Control)
            End If
 
   Next
-
-End Sub
-
-
-Private Sub btnCancel_Click( sender As Object,  e As EventArgs) Handles btnCancel.Click
-
-
-  Me.DialogResult = Windows.Forms.DialogResult.Cancel
-  Me.Close()
-
 
 End Sub
 
@@ -1185,56 +1232,31 @@ Private Sub frmAuxiliaryConfig_FormClosing( sender As Object,  e As FormClosingE
 End Sub
 
 
-Private Sub btnSSMBSource_Click( sender As Object,  e As EventArgs) Handles btnSSMBSource.Click
+Private Function GetSSMMAP( ByVal filePath As String , byref message As string) As Hvac.IHVACSteadyStateModel
+
+      Dim ssmMap As New Hvac.HVACSteadyStateModel()
 
 
-               Dim fbAux As New cFileBrowser(True, False)
-               Dim ssmMap As New Hvac.HVACSteadyStateModel()
-               Dim message As String = String.Empty
+      Try
+
+       If  ssmMap.SetValuesFromMap(FilePathUtils.ResolveFilePath(vectoPath,txtSSMFilePath.Text), message) then
+
+         Return ssmMap  
+
+       End If
+
+       catch ex As Exception
+
+        Return Nothing
+        
+      End Try
 
 
-               fbAux.Extensions = New String() {"ahsm"}
 
-               If fbAux.OpenDialog(fPATH(vectoFile)) Then
-
-                 txtSSMFilePath.Text = fFileWoDir(fbAux.Files(0), fPATH(vectoFile))
-
-                 
-                 Try
-
-                 If Not ssmMap.SetValuesFromMap(FilePathUtils.ResolveFilePath(vectoPath,txtSSMFilePath.Text), message) then
-
-                 txtHVACElectricalLoadPowerWatts.Text =  string.empty
-                 txtHVACMechanicalLoadPowerWatts.Text =  string.empty
-                 txtHVACFuellingLitresPerHour.Text    =  string.empty
-                 messagebox.Show("Unable to load")
-
-                 else
-
-                 'Populate boxes
-
-                 txtHVACElectricalLoadPowerWatts.Text = ssmMap.HVACElectricalLoadPowerWatts.ToString()
-                 txtHVACMechanicalLoadPowerWatts.Text = ssmMap.HVACMechanicalLoadPowerWatts.ToString()
-                 txtHVACFuellingLitresPerHour.Text    = ssmMap.HVACFuellingLitresPerHour.ToString()
-
-                 End If
-
-                 
-                 Catch ex As Exception
-
-                                messagebox.Show("Unable to load")
-
-                 End Try
-
-                 
+End Function
 
 
-               End If
 
-               'Causes binding to fire
-               txtSSMFilePath.Focus()
-
-End Sub
 
 
 End Class

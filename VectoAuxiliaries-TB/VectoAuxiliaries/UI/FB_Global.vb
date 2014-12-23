@@ -56,10 +56,7 @@ Module FB_Global
     private        Normed As String = "NORM"
    
     private        PauxSply As String = "<AUX_"
-   
-    private        EngDrag As String = "<DRAG>"
-    
-#Region "File path functions"
+ #Region "File path functions"
 
     'When no path is specified, then insert either HomeDir or MainDir   Special-folders
     Public Function fFileRepl(ByVal file As String, Optional ByVal MainDir As String = "") As String

@@ -267,25 +267,13 @@ End Sub
   
     Public Function ValidateAAUXFile(filePath As String, ByRef message As String) As Boolean Implements IAdvancedAuxiliaries.ValidateAAUXFile
 
-     Try
 
-       Dim AConfig As New AuxiliaryConfig( filePath )
+     Dim validResult As Boolean =  FilePathUtils.ValidateFilePath( filePath, ".aaux", message)
 
-       If Not AConfig is Nothing then 
+     If Not validResult then Return False
 
-         message="OK"
-         Return true
-       End If
 
-       Return True
-         
-     Catch ex As Exception
-
-       message= "AAUX File not found, or Invalid "
-       Return false
-         
-     End Try
-
+     Return true
 
     End Function
 
