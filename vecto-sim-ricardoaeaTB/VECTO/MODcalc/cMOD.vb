@@ -40,6 +40,23 @@ Public Class cMOD
     Public Pclutch As List(Of Single)
     Public Grad As List(Of Single)
 
+    'AA-TB
+    public AA_NonSmartAlternatorsEfficiency                       as List(Of single? )
+    public AA_SmartIdleCurrent_Amps                               as List(Of single? )
+    public AA_SmartIdleAlternatorsEfficiency                      as List(Of single? )
+    public AA_SmartTractionCurrent_Amps                           as List(Of single? )
+    public AA_SmartTractionAlternatorEfficiency                   as List(Of single? )
+    public AA_SmartOverrunCurrent_Amps                            as List(Of single? )
+    public AA_SmartOverrunAlternatorEfficiency                    as List(Of single? )
+    public AA_CompressorFlowRate_LitrePerSec                      as List(Of single? )
+    public AA_OverrunFlag                                         as List(Of integer?)
+    public AA_EngineIdleFlag                                      as List(Of integer?)
+    public AA_CompressorFlag                                      as List(Of integer?)
+    public AA_TotalCycleFC_BeforeSSandWHTCcorrection_Grams        as List(Of single? )
+    public AA_TotalCycleFC_BeforeSSandWHTCcorrection_Litres       as List(Of single? )
+
+
+
     Public EngState As List(Of tEngState)
 
     'Vehicle
@@ -75,6 +92,23 @@ Public Class cMOD
         Px = New cPower
         Vh = New cVh
         CylceKin = New cCycleKin
+
+
+        'AA-TB
+        AA_NonSmartAlternatorsEfficiency                    = new  List(Of single? )
+        AA_SmartIdleCurrent_Amps                            = new  List(Of single? )
+        AA_SmartIdleAlternatorsEfficiency                   = new  List(Of single? )
+        AA_SmartTractionCurrent_Amps                        = new  List(Of single? )
+        AA_SmartTractionAlternatorEfficiency                = new  List(Of single? )
+        AA_SmartOverrunCurrent_Amps                         = new  List(Of single? )
+        AA_SmartOverrunAlternatorEfficiency                 = new  List(Of single? )
+        AA_CompressorFlowRate_LitrePerSec                   = new  List(Of single? )
+        AA_OverrunFlag                                      = new  List(Of integer?)
+        AA_EngineIdleFlag                                   = new  List(Of integer?)
+        AA_CompressorFlag                                   = new  List(Of integer?)
+        AA_TotalCycleFC_BeforeSSandWHTCcorrection_Grams     = new  List(Of single? )
+        AA_TotalCycleFC_BeforeSSandWHTCcorrection_Litres    = new  List(Of single? )
+
 
         Proll = New List(Of Single)
         Psum = New List(Of Single)

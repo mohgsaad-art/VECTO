@@ -55,17 +55,8 @@ Namespace Pneumatics
             End Set
         End Property
 
-        ''' <summary>
-        ''' Creates a new instance of the AirCompressor Class
-        ''' </summary>
-        ''' <param name="map">map of compressor values against compressor rpm</param>
-        ''' <remarks></remarks>
-        'Public Sub New(ByVal map As ICompressorMap, signals As ISignals)
-        '    _map = map
-        '    _signals = signals
-        'End Sub
 
-        ''' <summary>
+        '''<summary>
         ''' Creates a new instance of the AirCompressor Class
         ''' </summary>
         ''' <param name="map">map of compressor values against compressor rpm</param>

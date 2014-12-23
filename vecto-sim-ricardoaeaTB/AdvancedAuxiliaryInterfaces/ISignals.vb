@@ -8,6 +8,7 @@ Property ClutchEngaged As Boolean
 Property EngineSpeed as integer
 Property SmartPneumatics As Boolean
 Property TotalCycleTimeSeconds As Integer
+Property CurrentCycleTimeInSeconds As Integer
 property EngineDrivelineTorque as single
 Property Idle As Boolean
 Property InNeutral As Boolean
