@@ -26,6 +26,8 @@ ReadOnly Property AA_TotalCycleFC_BeforeSSandWHTCcorrection_Litres As single?
 
 Readonly Property TotalFuelGRAMS   As Single
 Readonly Property TotalFuelLITRES  As single
+ReadOnly Property AuxiliaryPowerAtCrankWatts As single
+
 
 
 'Static Values
@@ -40,7 +42,7 @@ Function ValidateAAUXFile( ByVal filePath As String , byref message As String ) 
 
 'Command
 Function  CycleStep( seconds As Integer, ByRef message As string ) As boolean
-Function  RunStart( ByVal auxFilePath As String, ByRef message As string ) As boolean
+Function  RunStart( ByVal auxFilePath As String,byval vectoFilePath as string ,ByRef message As string ) As boolean
 Function  RunStop( ByRef message As string ) As boolean
 
 
