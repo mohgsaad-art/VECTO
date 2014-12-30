@@ -69,7 +69,7 @@ advancedAuxiliaries.VectoInputs.PowerNetVoltage=26.3
 advancedAuxiliaries.Signals.EngineSpeed=1500
 advancedAuxiliaries.Signals.TotalCycleTimeSeconds=3114
 
-advancedAuxiliaries.RunStart(txtAdvancedAuxiliaries.Text,message)
+advancedAuxiliaries.RunStart(txtAdvancedAuxiliaries.Text,"",message)
 
 End Sub
 
