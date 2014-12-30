@@ -1440,7 +1440,23 @@ lb_nOK:
         'Aggregate Fuel On Last Known Signals.  
         If Not AAUX_Gobal.advancedAuxModel is nothing
          advancedAuxModel.CycleStep(1,message)
-         End if
+
+         'Add Mod Data
+         ModData.AA_NonSmartAlternatorsEfficiency                  .Add( advancedAuxModel.AA_NonSmartAlternatorsEfficiency)
+         ModData.AA_SmartIdleCurrent_Amps                          .Add( advancedAuxModel.AA_SmartIdleCurrent_Amps)
+         ModData.AA_SmartIdleAlternatorsEfficiency                 .Add( advancedAuxModel.AA_SmartIdleAlternatorsEfficiency)
+         ModData.AA_SmartTractionCurrent_Amps                      .Add( advancedAuxModel.AA_SmartTractionCurrent_Amps)
+         ModData.AA_SmartTractionAlternatorEfficiency              .Add( advancedAuxModel.AA_SmartTractionAlternatorEfficiency)
+         ModData.AA_SmartOverrunCurrent_Amps                       .Add( advancedAuxModel.AA_SmartOverrunCurrent_Amps)
+         ModData.AA_SmartOverrunAlternatorEfficiency               .Add( advancedAuxModel.AA_SmartOverrunAlternatorEfficiency)
+         ModData.AA_CompressorFlowRate_LitrePerSec                 .Add( advancedAuxModel.AA_CompressorFlowRate_LitrePerSec)
+         ModData.AA_OverrunFlag                                    .Add( advancedAuxModel.AA_OverrunFlag)
+         ModData.AA_EngineIdleFlag                                 .Add( advancedAuxModel.AA_EngineIdleFlag)
+         ModData.AA_CompressorFlag                                 .Add( advancedAuxModel.AA_CompressorFlag)
+         ModData.AA_TotalCycleFC_BeforeSSandWHTCcorrection_Grams   .Add( advancedAuxModel.AA_TotalCycleFC_BeforeSSandWHTCcorrection_Grams)
+         ModData.AA_TotalCycleFC_BeforeSSandWHTCcorrection_Litres  .Add( advancedAuxModel.AA_TotalCycleFC_BeforeSSandWHTCcorrection_Litres)
+
+        End if
 
         Loop Until jz >= MODdata.tDim
 
@@ -2503,7 +2519,7 @@ lb10:
 
         Catch ex As Exception
 
-               'TODO: DO SOMETHING ELSE POSSIBLY
+               'EXIT THIS IS A FAILURE
                 WorkerMsg(tMsgID.Err,"Error in Advanced Power Calc :" & ex.Message,"paux")
                 Return false
 

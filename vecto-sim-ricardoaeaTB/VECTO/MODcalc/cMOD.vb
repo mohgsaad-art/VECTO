@@ -564,6 +564,24 @@ Public Class cMOD
                 s.Append(",Paux_" & StrKey & " [kW]")
             Next
 
+            'AA-TB
+            'Advanced Auxiliaries
+            s.Append(",AA_NonSmartAlternatorsEfficiency [Fraction]")             
+            s.Append(",AA_SmartIdleCurrent_Amps [Amps]   ")              
+            s.Append(",AA_SmartIdleAlternatorsEfficiency  [Fraction]")                  
+            s.Append(",AA_SmartTractionCurrent_Amps  [Amps]")                     
+            s.Append(",AA_SmartTractionAlternatorEfficiency [Fraction]")               
+            s.Append(",AA_SmartOverrunCurrent_Amps [Amps]")                      
+            s.Append(",AA_SmartOverrunAlternatorEfficiency  [Fraction]")               
+            s.Append(",AA_CompressorFlowRate_LitrePerSec [Ni L/S]")                  
+            s.Append(",AA_OverrunFlag [Integer 0/1]")                                   
+            s.Append(",AA_EngineIdleFlag [Integer 0/1]")                                     
+            s.Append(",AA_CompressorFlag [Integer 0/1]")                                    
+            s.Append(",AA_TotalCycleFC_BeforeSSandWHTCcorrection_Grams")  
+            s.Append(",AA_TotalCycleFC_BeforeSSandWHTCcorrection_Litres")   
+
+
+
         End If
 
 
@@ -721,6 +739,22 @@ Public Class cMOD
                     For Each StrKey In AuxList
                         s.Append(Sepp & .Paux(StrKey)(t))
                     Next
+
+                    'AA-TB
+                    'Advanced Auxiliaries
+                      s.Append(Sepp & AA_NonSmartAlternatorsEfficiency(t).ToString())             
+                      s.Append(Sepp & AA_SmartIdleCurrent_Amps(t).ToString())              
+                      s.Append(Sepp & AA_SmartIdleAlternatorsEfficiency(t).ToString())                  
+                      s.Append(Sepp & AA_SmartTractionCurrent_Amps(t).ToString())                     
+                      s.Append(Sepp & AA_SmartTractionAlternatorEfficiency(t).ToString())               
+                      s.Append(Sepp & AA_SmartOverrunCurrent_Amps(t).ToString())                      
+                      s.Append(Sepp & AA_SmartOverrunAlternatorEfficiency(t).ToString())               
+                      s.Append(Sepp & AA_CompressorFlowRate_LitrePerSec(t).ToString())                  
+                      s.Append(Sepp & AA_OverrunFlag(t).ToString())                                   
+                      s.Append(Sepp & AA_EngineIdleFlag(t).ToString())                                     
+                      s.Append(Sepp & AA_CompressorFlag(t).ToString())                                    
+                      s.Append(Sepp & AA_TotalCycleFC_BeforeSSandWHTCcorrection_Grams(t).ToString())  
+                      s.Append(Sepp & AA_TotalCycleFC_BeforeSSandWHTCcorrection_Litres(t).ToString())
 
                 End If
 

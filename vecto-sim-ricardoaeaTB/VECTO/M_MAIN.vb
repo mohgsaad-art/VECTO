@@ -200,7 +200,7 @@ lbSkip0:
                     JobAbortedByErr = True
                     GoTo lbNextJob
                 End If
-
+                'TODO:FUEL CALC FOR AAUX
                 MODdata.FCcalc(False)
                 If MODdata.FCerror Then
                     WorkerMsg(tMsgID.Err, "WHTC FC calculcation failed!", MsgSrc)
