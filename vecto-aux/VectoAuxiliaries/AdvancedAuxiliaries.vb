@@ -11,6 +11,7 @@ Public Class AdvancedAuxiliaries
 
 
 
+
     Private  auxConfig As AuxiliaryConfig
 
 
@@ -36,7 +37,7 @@ Public Class AdvancedAuxiliaries
     private WithEvents M11 As IM11
     private WithEvents M12 As IM12
     private WithEvents M13 As IM13
-
+    private vectoDirectory As String 
 
     'Event Handler top level bubble.
     Public Sub VectoEventHandler( byref sender As Object, message As String, messageType As AdvancedAuxiliaryMessageType) handles compressorMap.AuxiliaryEvent, alternatorMap.AuxiliaryEvent
@@ -61,7 +62,13 @@ Public Class AdvancedAuxiliaries
     End Sub
 
     'Initialise Model
-    Public Sub Initialise( auxPath  As String )
+    Public Sub Initialise( IAuxPath  As String , vectoFilePath As string)
+
+      Dim auxPath As string
+      vectoDirectory  =fPATH(vectoFilePath)
+
+      auxPath = FilePathUtils.ResolveFilePath(vectoDirectory,IAuxPath)
+
 
       Signals.CurrentCycleTimeInSeconds=0
       auxConfig = New AuxiliaryConfig(auxPath)
@@ -70,16 +77,16 @@ Public Class AdvancedAuxiliaries
       Signals.SmartElectrics  = auxConfig.ElectricalUserInputsConfig.SmartElectrical
       Signals.SmartPneumatics = auxConfig.PneumaticUserInputsConfig.SmartAirCompression
       
-      alternatorMap  = New AlternatorMap(auxConfig.ElectricalUserInputsConfig.AlternatorMap)
+      alternatorMap  = New AlternatorMap(FilePathUtils.ResolveFilePath(vectoDirectory,auxConfig.ElectricalUserInputsConfig.AlternatorMap))
       alternatorMap.Initialise()
       
-      actuationsMap = New PneumaticActuationsMAP( auxConfig.PneumaticUserInputsConfig.ActuationsMap)
+      actuationsMap = New PneumaticActuationsMAP( FilePathUtils.ResolveFilePath(vectoDirectory,auxConfig.PneumaticUserInputsConfig.ActuationsMap))
       
-      compressorMap  = New CompressorMap( auxConfig.PneumaticUserInputsConfig.CompressorMap)
+      compressorMap  = New CompressorMap(FilePathUtils.ResolveFilePath(vectoDirectory, auxConfig.PneumaticUserInputsConfig.CompressorMap))
       compressorMap.Initialise()
       
       fuelMap  = New cMAP()
-      fuelMap.FilePath= VectoInputs.FuelMap
+      fuelMap.FilePath= FilePathUtils.ResolveFilePath(vectoDirectory,VectoInputs.FuelMap)
       If Not fuelMap.ReadFile() then 
       MessageBox.Show("Unable to read fuel map, aborting.")
       return
@@ -87,7 +94,7 @@ Public Class AdvancedAuxiliaries
       fuelMap.Triangulate()
       
       
-      auxConfig.ElectricalUserInputsConfig.ElectricalConsumers.DoorDutyCycleFraction = GetDoorActuationTimeFraction()
+      auxConfig.ElectricalUserInputsConfig.ElectricalConsumers.DoorDutyCycleFraction = GetDoorActuationTimeFraction( )
       
       
       M0 = New M0_NonSmart_AlternatorsSetEfficiency( auxConfig.ElectricalUserInputsConfig.ElectricalConsumers,
@@ -200,10 +207,10 @@ End Sub
         End Get
     End Property
 
-    Public Function RunStart( ByVal auxFilePath As String, ByRef message As String) As Boolean Implements VectoAuxiliaries.IAdvancedAuxiliaries.RunStart
+    Public Function RunStart( ByVal auxFilePath As String,byval vectoFilePath as string , ByRef message As String) As Boolean Implements VectoAuxiliaries.IAdvancedAuxiliaries.RunStart
           
 
-       Initialise(auxFilePath)   
+       Initialise(auxFilePath, vectoFilePath)   
        
        'TODO:Modify Initialise to return a Bool.
        Return true     
@@ -262,7 +269,7 @@ End Sub
     'Helpers
     Private Function GetDoorActuationTimeFraction()As Single
    
-    Dim actuationsMap as PneumaticActuationsMAP = New PneumaticActuationsMAP( auxConfig.PneumaticUserInputsConfig.ActuationsMap )
+    Dim actuationsMap as PneumaticActuationsMAP = New PneumaticActuationsMAP( FilePathUtils.ResolveFilePath(  vectoDirectory, auxConfig.PneumaticUserInputsConfig.ActuationsMap ))
     Dim actuationsKey As ActuationsKey = New ActuationsKey( "Park brake + 2 doors",VectoInputs.Cycle)
    
     Dim numActuations       as single = actuationsMap.GetNumActuations( actuationsKey)
@@ -371,4 +378,9 @@ End Sub
 
 
 
+    Public ReadOnly Property AuxiliaryPowerAtCrankWatts As Single Implements IAdvancedAuxiliaries.AuxiliaryPowerAtCrankWatts
+        Get
+          Return M8.AuxPowerAtCrankFromElectricalHVACAndPneumaticsAncillaries
+        End Get
+    End Property
 End Class
