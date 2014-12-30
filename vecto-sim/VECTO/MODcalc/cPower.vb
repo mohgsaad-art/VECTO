@@ -79,11 +79,27 @@ Public Class cPower
         Dim dist As New List(Of Double)
         Dim LastnU As Single = 0
 
+        'AA-TB
+        'Informs Power Calculation to aggregate fuel or not if in Advanced mode.
+        AAUX_Gobal.RunningCalc=False
+
 
         Dim MsgSrc As String
+         MsgSrc = "Power/PreRun"
 
 
-        MsgSrc = "Power/PreRun"
+        'AA-TB
+        'Try and Initialise the Advanced Aux Model if selected.
+        If VEC.AuxiliaryAssembly<>"CLASSIC" then  
+           WorkerMsg(tMsgID.Normal,"Initialising Advanced Auxiliaries Model", MsgSrc)
+           If AAUX_Gobal.InitialiseAdvancedAuxModel(VEC.AdvancedAuxiliaryFilePath) then
+             WorkerMsg(tMsgID.Normal,"Successfully Initialised Advanced Auxiliaries", MsgSrc)
+           else
+             WorkerMsg(tMsgID.Err,"FAILED to Initialised Advanced Auxiliaries", MsgSrc)
+             return false
+           End If
+        End If
+   
 
         'Check Input
         If VEC.LookAheadOn AndAlso VEC.a_lookahead >= 0 Then
@@ -219,14 +235,69 @@ Public Class cPower
                 PaMot = fPaMot(nU, LastnU)
             End If
 
-            'TODO:CHECK THIS FOR AAUX M8
-            'Aux Demand
+           'AA-TB - ( RAFAEL )
+            '********************* ADVANCED AUXILIARIES  START  *****************************
 
-            'REMAINING SIGNALS NEEDED AT THIS POINT FOR AAUX
+            'Dim ClutchEngaged As Boolean
+            'Dim EngineDrivelinePower As Single
+            'Dim EngineDrivelineTorque As Single
+            'Dim EngineMotoringPower As Single
+            'Dim EngineSpeed As Integer
+            'Dim PreExistingAuxPower As Single
+            'Dim Idle As Boolean
+            'Dim InNeutral As Boolean
 
 
+            'Calculate powertrain losses => power at clutch
+            If Pplus Or Pminus Then
+                PlossGB = fPlossGB(Pwheel, Vact, Gear, True)
+                PlossDiff = fPlossDiff(Pwheel, Vact, True)
+                PlossRt = fPlossRt(Vact, Gear)
+                PaGetr = fPaG(Vact, aact)
+                Pkup = Pwheel + PlossGB + PlossDiff + PaGetr + PlossRt
+            Else
+                Pkup = 0
+            End If
 
-            Paux = fPaux(i, nU)
+            'Clutch closed/engaged = True
+            AAUX_Gobal.ClutchEngaged = (Gear > 0)
+
+            AAUX_Gobal.Idle = (Gear = 0 And Not Pplus And Not Pminus)
+
+            AAUX_Gobal.InNeutral = (Gear = 0)
+
+            'Driveline Power = required power at clutch = power at wheels plus powertrain losses
+            '[kW]
+            AAUX_Gobal.EngineDrivelinePower = Pkup
+
+            '[1/min]
+            AAUX_Gobal.EngineSpeed = nU
+
+            '[Nm] (using Power => Torque conversion)
+            AAUX_Gobal.EngineDrivelineTorque = nPeToM(EngineSpeed, EngineDrivelinePower)
+
+            'Motoring power (< 0 !!!)
+            '[kW]
+            '*** NOTE THIS IS MULTIPLIED BY - to get a positive value
+            AAUX_Gobal.EngineMotoringPower =  - FLD(Gear).Pdrag(EngineSpeed)
+
+            'Additional aux power from driving cycle (optional user input)
+            '[kW]
+            AAUX_Gobal.PreExistingAuxPower = MODdata.Vh.Padd(t)
+
+
+            'TODO: HOW TO ALTER HERE FOR CLASSIC or ADVANCED
+            'Total aux power
+            '[kW]
+            Paux = PreExistingAuxPower + fPaux(t, EngineSpeed)
+
+            'Internal Engine Power (Pclutch plus Aux plus Inertia)
+            P = Pkup + Paux + PaMot
+
+            'AA-TB/RL**************    ADVANCED AUXILIARIES  END   ***************************
+
+            'AA-TB REMOVED
+           ' Paux = fPaux(i, nU)
 
             'Engine Power (at Clutch)
             If Pplus Or Pminus Then
@@ -445,7 +516,6 @@ Public Class cPower
         Loop Until i = 0
 
 
-        'CALCULATE ADVANCED AUXILIARIES
 
 
         Return True
@@ -453,6 +523,8 @@ Public Class cPower
     End Function
 
     Public Function Calc() As Boolean
+
+        Dim message As String = String.Empty
 
         Dim i As Integer
         Dim M As Single
@@ -503,6 +575,12 @@ Public Class cPower
         Dim MsgSrc As String
 
         MsgSrc = "Power/Calc"
+
+
+        'AA-TB
+        'Informs Power Calculation to aggregate fuel or not if in Advanced mode.
+        AAUX_Gobal.RunningCalc=true
+
 
         'Abort if no speed given
         If Not DRI.Vvorg Then
@@ -937,8 +1015,48 @@ lb_nOK:
             '************************************ Determine Engine-state ************************************
             ' nU is final here!
 
-            'Determine Aux power demand (from VEH and DRI)
-            Paux = fPaux(jz, Math.Max(nU, ENG.Nidle))
+            ''Determine Aux power demand (from VEH and DRI)
+            'Paux = fPaux(jz, Math.Max(nU, ENG.Nidle))
+
+
+            'AA-TB -  ( RAFAEL )
+            '************************  ADVANCED AUXILIARIES STARTS **********************************************
+            'Clutch closed/engaged = True
+            'Note: Slipping clutch is also considered enganged.
+            AAUX_Gobal.ClutchEngaged = (Clutch <> tEngClutch.Opened)
+
+            'Note: Vehicles with Start/Stop will stop engine at vehicle stop => EngState0 = tEngState.Stopped
+            AAUX_Gobal.Idle = (EngState0 = tEngState.Idle)
+
+            AAUX_Gobal.InNeutral = (Gear = 0)
+
+            'Driveline Power = required power at clutch = power at wheels plus powertrain losses
+            '[kW]
+            AAUX_Gobal.EngineDrivelinePower = Pclutch
+
+            '[1/min]
+            AAUX_Gobal.EngineSpeed = nU
+
+            '[Nm] (using Power => Torque conversion)
+            AAUX_Gobal.EngineDrivelineTorque = nPeToM(EngineSpeed, EngineDrivelinePower)
+
+            'Motoring power (< 0 !!!)
+            '[kW]
+            '** NOTE THIS IS MULTIPLIED BY - to get a positive value.
+            AAUX_Gobal.EngineMotoringPower =  - FLD(Gear).Pdrag(EngineSpeed)
+
+            'Additional aux power from driving cycle (optional user input)
+            '[kW]
+            AAUX_Gobal.PreExistingAuxPower = MODdata.Vh.Padd(jz)
+
+
+            'TODO: HOW TO ALTER HERE FOR CLASSIC or ADVANCED
+            'Total aux power
+            '[kW]
+            Paux = PreExistingAuxPower + fPaux(jz, EngineSpeed)
+            '*****************     ADVANCED AUXILIARIES END   ********************************************************
+
+
 
             'ICE-inertia
             If jz = 0 Then
@@ -1318,7 +1436,23 @@ lb_nOK:
 
             LastPmax = Pmax
 
+        'AA-TB    
+        'Aggregate Fuel On Last Known Signals.  
+        If Not AAUX_Gobal.advancedAuxModel is nothing
+         advancedAuxModel.CycleStep(1,message)
+         End if
+
         Loop Until jz >= MODdata.tDim
+
+
+    
+        'AA-TB
+        'Say Fuel Consumption at end of current cycle.
+        Dim fcLitres As single
+        If Not AAUX_Gobal.advancedAuxModel is nothing
+          fcLitres  = AAUX_Gobal.advancedAuxModel.TotalFuelLITRES
+          WorkerMsg(tMsgID.Warn,"Aux Fuel In Litres=" & fcLitres,"Calc")
+        End If
 
         '***********************************************************************************************
         '***********************************    Time loop END ***********************************
@@ -1582,6 +1716,7 @@ lb_nOK:
 
     Private Function fCoastingSpeed(ByVal t As Integer, ByVal s As Double, ByVal Gear As Integer, ByVal v As Single, ByVal a As Single, Optional ByVal v0 As Single? = Nothing) As Single
 
+
         Dim vstep As Double
         Dim vSign As Integer
         Dim Pe As Single
@@ -1591,7 +1726,6 @@ lb_nOK:
         Dim nU As Single
         Dim Pdrag As Single
         Dim Grad As Single
-
 
         vstep = 5
         nU = fnU(v, Gear, False)
@@ -1614,13 +1748,13 @@ lb_nOK:
 
         LastDiff = Diff + 10 * 0.0001
 
-        Do While Diff > 0.0001 'And Math.Abs(LastDiff - Diff) > eps
+        Do While Diff > 0.00001 'And Math.Abs(LastDiff - Diff) > eps
 
             If LastDiff < Diff Or v + vSign * vstep <= 0.0001 Then
                 vSign *= -1
                 vstep *= 0.5
 
-                If vstep < 0.00001 Then Exit Do
+                If vstep < 0.001 Then Exit Do
 
             End If
 
@@ -1638,6 +1772,36 @@ lb_nOK:
             LastDiff = Diff
 
             Pwheel = fPwheel(t, v, a, Grad)
+
+            'AA-TB
+            'Recalculate for Advanced Auxiliaries.
+
+            AAUX_Gobal.ClutchEngaged = (Gear > 0)
+
+            AAUX_Gobal.Idle = (Gear = 0 And Not Pplus And Not Pminus)
+
+            AAUX_Gobal.InNeutral = (Gear = 0)
+
+            'Driveline Power = required power at clutch = power at wheels plus powertrain losses
+            '[kW]
+            '**** THIS IS NOT CORRECT< BUT NO PKU Variable is available at this point ****
+            AAUX_Gobal.EngineDrivelinePower = 0
+
+            '[1/min]
+            AAUX_Gobal.EngineSpeed = nU
+
+            '[Nm] (using Power => Torque conversion)
+            AAUX_Gobal.EngineDrivelineTorque = nPeToM(EngineSpeed, EngineDrivelinePower)
+
+            'Motoring power (< 0 !!!)
+            '[kW]
+            '** MULTIPLIED BY - TO GET POSITIVE VALUE
+            AAUX_Gobal.EngineMotoringPower = - FLD(Gear).Pdrag(EngineSpeed)
+
+            'Additional aux power from driving cycle (optional user input)
+            '[kW]
+            AAUX_Gobal.PreExistingAuxPower = MODdata.Vh.Padd(t)
+
             Pe = Pwheel + fPlossGB(Pwheel, v, Gear, True) + fPlossDiff(Pwheel, v, True) + fPaG(v, a) + fPlossRt(v, Gear) + fPaux(t, nU) + fPaMotSimple(t, Gear, v, a)
 
             Diff = Math.Abs(Pdrag - Pe)
@@ -2286,9 +2450,70 @@ lb10:
 
     '----------------Ancillaries(Nebenaggregate) ----------------
 
+    'NOTES TO SELF FOR MONDAY
+
+    'IF WE HANDLE THE MODEL HERE, THEN WE NEED TO DISCRIMINATE IF TO SINGLE STEP OR NOT BECAUSE WE DONT NEED IT IN PREP
+    
+    'ALSO NEED TO GET VEHICLE MASS AND OTHER THINGS WHEN WE GENERATE THE auxModel in AAUX GLOBAL, DONT HAVE THEM YET
+
+    'ENSURE WE ARE ALSO CREATING THIS MODEL IN CYCLE OR AT LEAST CHECK TO SEE IF WE NEED TO, PERHAPS NOT AS POWER
+    'CALCS ARE DONE DURING PRE AND ONLY STEPPED IN CYCLE SO IT MAY BE OK.
+
+
+
+    'AA-TB-IMPLEMENT
     'TODO: AAUX ANCILIARIES CALCULATIONS
     Public Function fPaux(ByVal t As Integer, ByVal nU As Single) As Single
-        Return CSng(MODdata.Vh.Padd(t) + VEC.PauxSum(t, nU))
+
+
+   ' Return CSng(MODdata.Vh.Padd(t) + VEC.PauxSum(t, nU))
+
+    'AA-TB ( RAFAEL )
+    'This function descriminates between Advanced and Auxiliaries and if in Advanced only calculate the
+    'Fuel during Calc as we conly create the AdvancedAuxiliaries object at the beginning of Pre-Run and do
+    'Not Re-Create it again for Calc, simply turn on Aggregation using Cycle step.
+    '
+    'If not in Advanced mode ( CLASSIC ), then use the original formulae.
+     Dim message As String = String.Empty
+     Dim power As single
+
+      If VECTO_Global.VEC.AuxiliaryAssembly="CLASSIC" then
+
+          Return CSng(MODdata.Vh.Padd(t) + VEC.PauxSum(t, nU))
+
+      Else
+
+      try
+          
+             AAUX_Gobal.advancedAuxModel.Signals.ClutchEngaged = AAUX_Gobal.ClutchEngaged 
+             AAUX_Gobal.advancedAuxModel.Signals.EngineDrivelinePower  = AAUX_Gobal.EngineDrivelinePower
+             AAUX_Gobal.advancedAuxModel.Signals.EngineDrivelineTorque =AAUX_Gobal.EngineDrivelineTorque
+             AAUX_Gobal.advancedAuxModel.Signals.EngineMotoringPower = AAUX_Gobal.EngineMotoringPower
+             AAUX_Gobal.advancedAuxModel.Signals.EngineSpeed = AAUX_Gobal.EngineSpeed
+             AAUX_Gobal.advancedAuxModel.Signals.PreExistingAuxPower  = AAUX_Gobal.PreExistingAuxPower
+             AAUX_Gobal.advancedAuxModel.Signals.Idle = AAUX_Gobal.Idle
+             AAUX_Gobal.advancedAuxModel.Signals.InNeutral = AAUX_Gobal.InNeutral
+
+             'Only Aggregate the fuel calculations if in Calc Cycle.
+             'If AAUX_Gobal.RunningCalc then
+             '   advancedAuxModel.CycleStep(1, message)
+             'end if
+
+             power = (advancedAuxModel.AuxiliaryPowerAtCrankWatts /1000)
+
+        Catch ex As Exception
+
+               'TODO: DO SOMETHING ELSE POSSIBLY
+                WorkerMsg(tMsgID.Err,"Error in Advanced Power Calc :" & ex.Message,"paux")
+                Return false
+
+        end try
+
+          Return power
+    
+      End If
+
+
     End Function
 
     '-------------------Transmission(Getriebe)-------------------

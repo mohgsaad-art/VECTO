@@ -5,8 +5,74 @@ Imports System.IO
 Module AAUX_Gobal
 
 
+  public ClutchEngaged As Boolean
+  public EngineDrivelinePower As Single
+  public EngineDrivelineTorque As Single
+  public EngineMotoringPower As Single
+  public EngineSpeed As Integer
+  public PreExistingAuxPower As Single
+  public Idle As Boolean
+  public InNeutral As Boolean
+  Public advancedAuxModel As IAdvancedAuxiliaries
+
+  Public RunningCalc As Boolean=false
 
 
+
+'AA-TB
+Public Function InitialiseAdvancedAuxModel(  aauxFile As string) As Boolean
+
+     Dim o As System.Runtime.Remoting.ObjectHandle
+     Dim result As Boolean  = true
+
+    If VECTO_Global.VEC.AuxiliaryAssembly<>"CLASSIC"  then
+
+    Try
+
+
+      'Open Assembly and invoke the validation using the paths supplied.
+      Try
+               o = Activator.CreateInstance(VEC.AuxiliaryAssembly, "VectoAuxiliaries.AdvancedAuxiliaries")
+               advancedAuxModel = DirectCast(o.Unwrap, IAdvancedAuxiliaries)
+
+               Dim message As String = String.Empty
+
+               'Set Statics
+               advancedAuxModel.VectoInputs.Cycle="Urban"
+               advancedAuxModel.VectoInputs.VehicleWeightKG=16500
+               advancedAuxModel.VectoInputs.FuelMap= "testFuelGoodMap.vmap"
+               advancedAuxModel.VectoInputs.PowerNetVoltage=26.3
+               
+               
+               'set Signals
+               advancedAuxModel.Signals.EngineSpeed=1500
+               advancedAuxModel.Signals.TotalCycleTimeSeconds=3114
+
+               advancedAuxModel.RunStart( aauxFile, VEC.FilePath, message)
+
+               advancedAuxModel.VectoInputs.VehicleWeightKG= VEH.Mass
+            
+            Catch Ex As Exception
+    
+       result = false
+
+      End Try
+
+      Return result
+
+
+    Catch ex As Exception
+
+
+
+    End Try
+
+
+    End If
+
+    Return False
+
+End Function
 
 
   'AA-TB
