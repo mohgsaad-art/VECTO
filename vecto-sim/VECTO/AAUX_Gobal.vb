@@ -17,6 +17,15 @@ Module AAUX_Gobal
 
   Public RunningCalc As Boolean=false
 
+  'This must be set in the main loop and will be used to determin
+  'the name of the file which would be offered to the model which is used
+  'by it internally. In Bus Auxiliaries, it is used for Actuations of the
+  'Doors during particular cycle types.
+  Public CurrentCycleFile As string = String.Empty
+
+  'This is a default setting of 3114, but should be removed once coded in.
+  Public CycleTimeInSeconds As integer = 3114
+
 
 
 'AA-TB
@@ -38,19 +47,14 @@ Public Function InitialiseAdvancedAuxModel(  aauxFile As string) As Boolean
                Dim message As String = String.Empty
 
                'Set Statics
-               advancedAuxModel.VectoInputs.Cycle="Urban"
-               advancedAuxModel.VectoInputs.VehicleWeightKG=16500
-               advancedAuxModel.VectoInputs.FuelMap= "testFuelGoodMap.vmap"
-               advancedAuxModel.VectoInputs.PowerNetVoltage=26.3
-               
+               advancedAuxModel.VectoInputs.Cycle=DetermineCycleNameFromCurrentFile()
+               advancedAuxModel.VectoInputs.VehicleWeightKG= VEH.Mass
+               advancedAuxModel.VectoInputs.FuelMap= ENG.FuelMapFullPath' "testFuelGoodMap.vmap"      
                
                'set Signals
-               advancedAuxModel.Signals.EngineSpeed=1500
-               advancedAuxModel.Signals.TotalCycleTimeSeconds=3114
-
+               advancedAuxModel.Signals.TotalCycleTimeSeconds=CycleTimeInSeconds
                advancedAuxModel.RunStart( aauxFile, VEC.FilePath, message)
 
-               advancedAuxModel.VectoInputs.VehicleWeightKG= VEH.Mass
             
             Catch Ex As Exception
     
@@ -188,7 +192,7 @@ Public Function GetAAUXSourceDirectory() As String
   End Function
 
 
-  Public function ResolveAAUXFilePath( vectoPath as String, filename As string) as string
+ Public function ResolveAAUXFilePath( vectoPath as String, filename As string) as string
 
      'No Vecto Path supplied
      If vectoPath="" then Return filename
@@ -238,6 +242,47 @@ Public Function ValidateAAUXFile( ByVal absoluteAAuxPath As String,
 
 End Function
 
+
+''' <summary>
+''' Will Apply an algorithm to the DRI cycle file being used and attempt to return a consitant name
+''' </summary>
+''' <returns>String : Cylename IE, Bus_Interurban, Bus_Urban,etc</returns>
+''' <remarks></remarks>
+Public Function DetermineCycleNameFromCurrentFile() As String
+
+      'Get DriveFile without path and without extension
+      Dim driveFile  As String  =  fFILE(CurrentCycleFile,False)
+
+      'TODO: HERE WE NEED TO UNDERSTAND HOW TO EXTRACT A CORRECT NAME FOR A CYCLE IN RESPECT OF SOMETHING WHICH CAN BE USED
+      'BY ADVANCED UTITITIES AND WHAT TO DO WHEN SUCH A NAME CANNOT BE DETERMINED
+      'AD A DEFAULT Urban will be returned.
+      Select Case(driveFile)
+      
+      
+       Case  driveFile.contains("Heavy_Urban") ANdalso driveFile.Contains("Bus")
+             Return "Heavy urban"
+
+       Case  driveFile.contains("Suburban") ANdalso driveFile.Contains("Bus")
+             Return "Suburban"
+
+       case  driveFile.contains("Urban") ANdalso driveFile.Contains("Bus")
+             Return "Urban"
+
+       case  driveFile.contains("Interurban") ANdalso driveFile.Contains("Bus")
+             Return "Interurban"
+
+       case  Else
+
+             Return "Urban"
+      
+      End Select
+
+
+
+
+      return "Urban"
+
+End Function
 
 
 

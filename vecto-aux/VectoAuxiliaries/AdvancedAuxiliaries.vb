@@ -137,7 +137,7 @@ Public Class AdvancedAuxiliaries
       
       
       M4 = New M4_AirCompressor(compressorMap,auxConfig.PneumaticUserInputsConfig.CompressorGearRatio,auxConfig.PneumaticUserInputsConfig.CompressorGearEfficiency,Signals)
-      M5 = New M5__SmartAlternatorSetGeneration( M05, VectoInputs.PowerNetVoltage,auxConfig.ElectricalUserInputsConfig.AlternatorGearEfficiency)
+      M5 = New M5__SmartAlternatorSetGeneration( M05, auxConfig.ElectricalUserInputsConfig.PowerNetVoltage,auxConfig.ElectricalUserInputsConfig.AlternatorGearEfficiency)
       M6 = New M6(M1,M2,M3,M4,M5,Signals)
       M7 = New M7(M5,M6,Signals)
       M8 = New M8(M1,M6,M7,Signals)
@@ -322,7 +322,7 @@ End Sub
 
     Public ReadOnly Property AA_SmartTractionAlternatorEfficiency As Single? Implements IAdvancedAuxiliaries.AA_SmartTractionAlternatorEfficiency
         Get
-         Return AA_SmartTractionAlternatorEfficiency
+         Return M05.AlternatorsEfficiencyTractionOnResultCard
         End Get
     End Property
 
