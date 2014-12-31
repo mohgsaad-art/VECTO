@@ -80,9 +80,12 @@ Public Class cPower
         Dim LastnU As Single = 0
 
         'AA-TB
+        '*************************************************************************
         'Informs Power Calculation to aggregate fuel or not if in Advanced mode.
         AAUX_Gobal.RunningCalc=False
-
+        'Cycle Time in Seconds, set this in AAUX_GLOBAL.
+        AAUX_Gobal.CycleTimeInSeconds= MODdata.tDim
+        '*************************************************************************
 
         Dim MsgSrc As String
          MsgSrc = "Power/PreRun"
@@ -1441,6 +1444,7 @@ lb_nOK:
         If Not AAUX_Gobal.advancedAuxModel is nothing
          advancedAuxModel.CycleStep(1,message)
 
+
          'Add Mod Data
          ModData.AA_NonSmartAlternatorsEfficiency                  .Add( advancedAuxModel.AA_NonSmartAlternatorsEfficiency)
          ModData.AA_SmartIdleCurrent_Amps                          .Add( advancedAuxModel.AA_SmartIdleCurrent_Amps)
@@ -2510,11 +2514,7 @@ lb10:
              AAUX_Gobal.advancedAuxModel.Signals.Idle = AAUX_Gobal.Idle
              AAUX_Gobal.advancedAuxModel.Signals.InNeutral = AAUX_Gobal.InNeutral
 
-             'Only Aggregate the fuel calculations if in Calc Cycle.
-             'If AAUX_Gobal.RunningCalc then
-             '   advancedAuxModel.CycleStep(1, message)
-             'end if
-
+             'Power coming out of Advanced Model is in Watts.
              power = (advancedAuxModel.AuxiliaryPowerAtCrankWatts /1000)
 
         Catch ex As Exception

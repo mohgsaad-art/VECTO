@@ -290,6 +290,12 @@ lbSkip0:
 
                 jsubcycle = -1
                 For Each CurrentCycleFile In CycleFiles
+
+
+                   'AA-TB
+                   'SET CURRENT CYCLE FILE BEING USED IN AAUX
+                    AAUX_Gobal.CurrentCycleFile= CurrentCycleFile
+
                     jsubcycle += 1
 
                     ProgBarCtrl.ProgJobInt = 0

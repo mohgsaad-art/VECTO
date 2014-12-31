@@ -120,6 +120,17 @@ Public Class cENG
 
     Public SavedInDeclMode As Boolean
 
+    'AA-TB
+    'Added in order to expose readonly the full path of the fuel map being used by vecto
+    Public  ReadOnly property FuelMapFullPath  as string
+    Get
+
+         Return fMAP.FullPath
+
+    End Get
+End Property
+
+
 
     ''' <summary>
     ''' Generates list of all sub input files (e.g. FC map). Sets MyFileList.
