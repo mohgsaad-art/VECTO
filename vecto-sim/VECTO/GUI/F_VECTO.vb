@@ -1438,5 +1438,13 @@ End If
 
 End Sub
 
+'AA-TB
+Private Sub btnAAUXOpen_Click( sender As Object,  e As EventArgs) Handles btnAAUXOpen.Click
+
+    OpenFiles(fFileRepl(Me.txtAdvancedAuxiliaryFile.Text, fPATH(VECTOfile)))
+
+End Sub
+
+
 
 End Class

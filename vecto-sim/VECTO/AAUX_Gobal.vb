@@ -49,9 +49,9 @@ Public Function InitialiseAdvancedAuxModel(  aauxFile As string) As Boolean
                'Set Statics
                advancedAuxModel.VectoInputs.Cycle=DetermineCycleNameFromCurrentFile()
                advancedAuxModel.VectoInputs.VehicleWeightKG= VEH.Mass
-               advancedAuxModel.VectoInputs.FuelMap= ENG.FuelMapFullPath' "testFuelGoodMap.vmap"      
+               advancedAuxModel.VectoInputs.FuelMap= ENG.FuelMapFullPath 
                
-               'set Signals
+               'Set Signals
                advancedAuxModel.Signals.TotalCycleTimeSeconds=CycleTimeInSeconds
                advancedAuxModel.RunStart( aauxFile, VEC.FilePath, message)
 
@@ -271,9 +271,12 @@ Public Function DetermineCycleNameFromCurrentFile() As String
        case  driveFile.contains("Interurban") ANdalso driveFile.Contains("Bus")
              Return "Interurban"
 
-       case  Else
+       case driveFile.Contains("Coach")
+             Return "Coach"
 
-             Return "Urban"
+       case  Else
+              WorkerMsg(tMsgID.Warn,String.Format("UnServiced Cycle Name '{0}' in Pneumatics Actuations Map 0 Actuations returned",driveFile),"Advanced Auxiliaries")
+              Return "UnknownCycleName"
       
       End Select
 

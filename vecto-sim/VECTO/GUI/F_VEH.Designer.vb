@@ -85,13 +85,13 @@ Partial Class F_VEH
         Me.Label6 = New System.Windows.Forms.Label()
         Me.ButAxlRem = New System.Windows.Forms.Button()
         Me.LvRRC = New System.Windows.Forms.ListView()
-        Me.ColumnHeader7 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader8 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader9 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader4 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader7 = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader8 = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader9 = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader4 = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
         Me.ButAxlAdd = New System.Windows.Forms.Button()
         Me.CbAxleConfig = New System.Windows.Forms.ComboBox()
         Me.CbCat = New System.Windows.Forms.ComboBox()
@@ -120,27 +120,27 @@ Partial Class F_VEH
         Me.PnAll = New System.Windows.Forms.Panel()
         Me.PicVehicle = New System.Windows.Forms.PictureBox()
         Me.Label8 = New System.Windows.Forms.Label()
-        Me.GroupBox6.SuspendLayout()
-        Me.ToolStrip1.SuspendLayout()
-        Me.GroupBox7.SuspendLayout()
-        Me.PnRt.SuspendLayout()
-        Me.GroupBox8.SuspendLayout()
-        Me.PnWheelDiam.SuspendLayout()
-        Me.StatusStrip1.SuspendLayout()
-        Me.GroupBox1.SuspendLayout()
-        Me.PnLoad.SuspendLayout()
-        Me.GrAirRes.SuspendLayout()
-        Me.PnCdATrTr.SuspendLayout()
-        Me.PnCdARig.SuspendLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.CmOpenFile.SuspendLayout()
-        Me.PnAll.SuspendLayout()
-        CType(Me.PicVehicle, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.SuspendLayout()
+        Me.GroupBox6.SuspendLayout
+        Me.ToolStrip1.SuspendLayout
+        Me.GroupBox7.SuspendLayout
+        Me.PnRt.SuspendLayout
+        Me.GroupBox8.SuspendLayout
+        Me.PnWheelDiam.SuspendLayout
+        Me.StatusStrip1.SuspendLayout
+        Me.GroupBox1.SuspendLayout
+        Me.PnLoad.SuspendLayout
+        Me.GrAirRes.SuspendLayout
+        Me.PnCdATrTr.SuspendLayout
+        Me.PnCdARig.SuspendLayout
+        CType(Me.PictureBox1,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.CmOpenFile.SuspendLayout
+        Me.PnAll.SuspendLayout
+        CType(Me.PicVehicle,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.SuspendLayout
         '
         'Label1
         '
-        Me.Label1.AutoSize = True
+        Me.Label1.AutoSize = true
         Me.Label1.Location = New System.Drawing.Point(62, 22)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(104, 13)
@@ -156,7 +156,7 @@ Partial Class F_VEH
         '
         'Label2
         '
-        Me.Label2.AutoSize = True
+        Me.Label2.AutoSize = true
         Me.Label2.Location = New System.Drawing.Point(115, 31)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(45, 13)
@@ -172,7 +172,7 @@ Partial Class F_VEH
         '
         'Label3
         '
-        Me.Label3.AutoSize = True
+        Me.Label3.AutoSize = true
         Me.Label3.Location = New System.Drawing.Point(37, 55)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(58, 13)
@@ -181,8 +181,8 @@ Partial Class F_VEH
         '
         'TBcdTrTr
         '
-        Me.TBcdTrTr.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.TBcdTrTr.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.TBcdTrTr.Location = New System.Drawing.Point(2, 24)
         Me.TBcdTrTr.Name = "TBcdTrTr"
         Me.TBcdTrTr.Size = New System.Drawing.Size(57, 20)
@@ -190,7 +190,7 @@ Partial Class F_VEH
         '
         'Label4
         '
-        Me.Label4.AutoSize = True
+        Me.Label4.AutoSize = true
         Me.Label4.Location = New System.Drawing.Point(12, 81)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(83, 13)
@@ -199,8 +199,8 @@ Partial Class F_VEH
         '
         'TBAquersTrTr
         '
-        Me.TBAquersTrTr.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.TBAquersTrTr.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.TBAquersTrTr.Location = New System.Drawing.Point(2, 50)
         Me.TBAquersTrTr.Name = "TBAquersTrTr"
         Me.TBAquersTrTr.Size = New System.Drawing.Size(57, 20)
@@ -208,7 +208,7 @@ Partial Class F_VEH
         '
         'Label13
         '
-        Me.Label13.AutoSize = True
+        Me.Label13.AutoSize = true
         Me.Label13.Location = New System.Drawing.Point(7, 7)
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(96, 13)
@@ -224,28 +224,28 @@ Partial Class F_VEH
         '
         'ButOK
         '
-        Me.ButOK.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ButOK.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.ButOK.Location = New System.Drawing.Point(394, 693)
         Me.ButOK.Name = "ButOK"
         Me.ButOK.Size = New System.Drawing.Size(75, 23)
         Me.ButOK.TabIndex = 9
         Me.ButOK.Text = "Save"
-        Me.ButOK.UseVisualStyleBackColor = True
+        Me.ButOK.UseVisualStyleBackColor = true
         '
         'ButCancel
         '
-        Me.ButCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ButCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.ButCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.ButCancel.Location = New System.Drawing.Point(475, 693)
         Me.ButCancel.Name = "ButCancel"
         Me.ButCancel.Size = New System.Drawing.Size(75, 23)
         Me.ButCancel.TabIndex = 10
         Me.ButCancel.Text = "Cancel"
-        Me.ButCancel.UseVisualStyleBackColor = True
+        Me.ButCancel.UseVisualStyleBackColor = true
         '
         'Label14
         '
-        Me.Label14.AutoSize = True
+        Me.Label14.AutoSize = true
         Me.Label14.Location = New System.Drawing.Point(235, 22)
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(25, 13)
@@ -254,7 +254,7 @@ Partial Class F_VEH
         '
         'Label31
         '
-        Me.Label31.AutoSize = True
+        Me.Label31.AutoSize = true
         Me.Label31.Location = New System.Drawing.Point(229, 31)
         Me.Label31.Name = "Label31"
         Me.Label31.Size = New System.Drawing.Size(25, 13)
@@ -263,7 +263,7 @@ Partial Class F_VEH
         '
         'Label35
         '
-        Me.Label35.AutoSize = True
+        Me.Label35.AutoSize = true
         Me.Label35.Location = New System.Drawing.Point(172, 7)
         Me.Label35.Name = "Label35"
         Me.Label35.Size = New System.Drawing.Size(29, 13)
@@ -272,7 +272,7 @@ Partial Class F_VEH
         '
         'Label37
         '
-        Me.Label37.AutoSize = True
+        Me.Label37.AutoSize = true
         Me.Label37.Location = New System.Drawing.Point(230, 53)
         Me.Label37.Name = "Label37"
         Me.Label37.Size = New System.Drawing.Size(16, 13)
@@ -281,7 +281,7 @@ Partial Class F_VEH
         '
         'Label38
         '
-        Me.Label38.AutoSize = True
+        Me.Label38.AutoSize = true
         Me.Label38.Location = New System.Drawing.Point(230, 79)
         Me.Label38.Name = "Label38"
         Me.Label38.Size = New System.Drawing.Size(24, 13)
@@ -291,7 +291,7 @@ Partial Class F_VEH
         'CbCdMode
         '
         Me.CbCdMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.CbCdMode.FormattingEnabled = True
+        Me.CbCdMode.FormattingEnabled = true
         Me.CbCdMode.Items.AddRange(New Object() {"No Correction", "Speed dependent", "Vair & Beta Input"})
         Me.CbCdMode.Location = New System.Drawing.Point(6, 19)
         Me.CbCdMode.Name = "CbCdMode"
@@ -300,7 +300,7 @@ Partial Class F_VEH
         '
         'TbCdFile
         '
-        Me.TbCdFile.Enabled = False
+        Me.TbCdFile.Enabled = false
         Me.TbCdFile.Location = New System.Drawing.Point(6, 46)
         Me.TbCdFile.Name = "TbCdFile"
         Me.TbCdFile.Size = New System.Drawing.Size(459, 20)
@@ -308,13 +308,13 @@ Partial Class F_VEH
         '
         'BtCdFileBrowse
         '
-        Me.BtCdFileBrowse.Enabled = False
+        Me.BtCdFileBrowse.Enabled = false
         Me.BtCdFileBrowse.Location = New System.Drawing.Point(471, 44)
         Me.BtCdFileBrowse.Name = "BtCdFileBrowse"
         Me.BtCdFileBrowse.Size = New System.Drawing.Size(32, 23)
         Me.BtCdFileBrowse.TabIndex = 2
         Me.BtCdFileBrowse.Text = "..."
-        Me.BtCdFileBrowse.UseVisualStyleBackColor = True
+        Me.BtCdFileBrowse.UseVisualStyleBackColor = true
         '
         'GroupBox6
         '
@@ -327,23 +327,23 @@ Partial Class F_VEH
         Me.GroupBox6.Name = "GroupBox6"
         Me.GroupBox6.Size = New System.Drawing.Size(538, 74)
         Me.GroupBox6.TabIndex = 5
-        Me.GroupBox6.TabStop = False
+        Me.GroupBox6.TabStop = false
         Me.GroupBox6.Text = "Cross Wind Correction"
         '
         'BtCdFileOpen
         '
-        Me.BtCdFileOpen.Enabled = False
+        Me.BtCdFileOpen.Enabled = false
         Me.BtCdFileOpen.Image = Global.VECTO.My.Resources.Resources.application_export_icon_small
         Me.BtCdFileOpen.Location = New System.Drawing.Point(509, 44)
         Me.BtCdFileOpen.Name = "BtCdFileOpen"
         Me.BtCdFileOpen.Size = New System.Drawing.Size(23, 23)
         Me.BtCdFileOpen.TabIndex = 41
-        Me.BtCdFileOpen.TabStop = False
-        Me.BtCdFileOpen.UseVisualStyleBackColor = True
+        Me.BtCdFileOpen.TabStop = false
+        Me.BtCdFileOpen.UseVisualStyleBackColor = true
         '
         'LbCdMode
         '
-        Me.LbCdMode.AutoSize = True
+        Me.LbCdMode.AutoSize = true
         Me.LbCdMode.Location = New System.Drawing.Point(124, 22)
         Me.LbCdMode.Name = "LbCdMode"
         Me.LbCdMode.Size = New System.Drawing.Size(59, 13)
@@ -440,7 +440,7 @@ Partial Class F_VEH
         Me.GroupBox7.Name = "GroupBox7"
         Me.GroupBox7.Size = New System.Drawing.Size(538, 81)
         Me.GroupBox7.TabIndex = 7
-        Me.GroupBox7.TabStop = False
+        Me.GroupBox7.TabStop = false
         Me.GroupBox7.Text = "Retarder Losses"
         '
         'PnRt
@@ -455,8 +455,8 @@ Partial Class F_VEH
         '
         'Label45
         '
-        Me.Label45.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label45.AutoSize = True
+        Me.Label45.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.Label45.AutoSize = true
         Me.Label45.Location = New System.Drawing.Point(330, 10)
         Me.Label45.Name = "Label45"
         Me.Label45.Size = New System.Drawing.Size(16, 13)
@@ -474,7 +474,7 @@ Partial Class F_VEH
         '
         'TbRtRatio
         '
-        Me.TbRtRatio.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.TbRtRatio.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.TbRtRatio.Location = New System.Drawing.Point(268, 7)
         Me.TbRtRatio.Name = "TbRtRatio"
         Me.TbRtRatio.Size = New System.Drawing.Size(56, 20)
@@ -482,18 +482,18 @@ Partial Class F_VEH
         '
         'BtRtBrowse
         '
-        Me.BtRtBrowse.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.BtRtBrowse.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
         Me.BtRtBrowse.Location = New System.Drawing.Point(500, 52)
         Me.BtRtBrowse.Name = "BtRtBrowse"
         Me.BtRtBrowse.Size = New System.Drawing.Size(32, 23)
         Me.BtRtBrowse.TabIndex = 2
         Me.BtRtBrowse.Text = "..."
-        Me.BtRtBrowse.UseVisualStyleBackColor = True
+        Me.BtRtBrowse.UseVisualStyleBackColor = true
         '
         'TbRtPath
         '
-        Me.TbRtPath.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.TbRtPath.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.TbRtPath.Location = New System.Drawing.Point(5, 54)
         Me.TbRtPath.Name = "TbRtPath"
         Me.TbRtPath.Size = New System.Drawing.Size(489, 20)
@@ -502,7 +502,7 @@ Partial Class F_VEH
         'CbRtType
         '
         Me.CbRtType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.CbRtType.FormattingEnabled = True
+        Me.CbRtType.FormattingEnabled = true
         Me.CbRtType.Items.AddRange(New Object() {"None", "Primary", "Secondary"})
         Me.CbRtType.Location = New System.Drawing.Point(40, 19)
         Me.CbRtType.Name = "CbRtType"
@@ -511,7 +511,7 @@ Partial Class F_VEH
         '
         'Label12
         '
-        Me.Label12.AutoSize = True
+        Me.Label12.AutoSize = true
         Me.Label12.Location = New System.Drawing.Point(6, 22)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(31, 13)
@@ -520,7 +520,7 @@ Partial Class F_VEH
         '
         'Label46
         '
-        Me.Label46.AutoSize = True
+        Me.Label46.AutoSize = true
         Me.Label46.Location = New System.Drawing.Point(6, 5)
         Me.Label46.Name = "Label46"
         Me.Label46.Size = New System.Drawing.Size(154, 13)
@@ -529,7 +529,7 @@ Partial Class F_VEH
         '
         'Label50
         '
-        Me.Label50.AutoSize = True
+        Me.Label50.AutoSize = true
         Me.Label50.Location = New System.Drawing.Point(229, 5)
         Me.Label50.Name = "Label50"
         Me.Label50.Size = New System.Drawing.Size(25, 13)
@@ -556,7 +556,7 @@ Partial Class F_VEH
         Me.GroupBox8.Name = "GroupBox8"
         Me.GroupBox8.Size = New System.Drawing.Size(538, 206)
         Me.GroupBox8.TabIndex = 4
-        Me.GroupBox8.TabStop = False
+        Me.GroupBox8.TabStop = false
         Me.GroupBox8.Text = "Axles / Wheels"
         '
         'PnWheelDiam
@@ -572,7 +572,7 @@ Partial Class F_VEH
         'CbRim
         '
         Me.CbRim.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.CbRim.FormattingEnabled = True
+        Me.CbRim.FormattingEnabled = true
         Me.CbRim.Location = New System.Drawing.Point(131, 167)
         Me.CbRim.Name = "CbRim"
         Me.CbRim.Size = New System.Drawing.Size(184, 21)
@@ -580,7 +580,7 @@ Partial Class F_VEH
         '
         'Label7
         '
-        Me.Label7.AutoSize = True
+        Me.Label7.AutoSize = true
         Me.Label7.Location = New System.Drawing.Point(6, 170)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(119, 13)
@@ -589,7 +589,7 @@ Partial Class F_VEH
         '
         'Label6
         '
-        Me.Label6.AutoSize = True
+        Me.Label6.AutoSize = true
         Me.Label6.Location = New System.Drawing.Point(405, 132)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(121, 13)
@@ -603,23 +603,23 @@ Partial Class F_VEH
         Me.ButAxlRem.Name = "ButAxlRem"
         Me.ButAxlRem.Size = New System.Drawing.Size(29, 23)
         Me.ButAxlRem.TabIndex = 2
-        Me.ButAxlRem.UseVisualStyleBackColor = True
+        Me.ButAxlRem.UseVisualStyleBackColor = true
         '
         'LvRRC
         '
-        Me.LvRRC.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.LvRRC.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
+            Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.LvRRC.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader7, Me.ColumnHeader8, Me.ColumnHeader2, Me.ColumnHeader9, Me.ColumnHeader1, Me.ColumnHeader3, Me.ColumnHeader4})
-        Me.LvRRC.FullRowSelect = True
-        Me.LvRRC.GridLines = True
-        Me.LvRRC.HideSelection = False
+        Me.LvRRC.FullRowSelect = true
+        Me.LvRRC.GridLines = true
+        Me.LvRRC.HideSelection = false
         Me.LvRRC.Location = New System.Drawing.Point(6, 19)
-        Me.LvRRC.MultiSelect = False
+        Me.LvRRC.MultiSelect = false
         Me.LvRRC.Name = "LvRRC"
         Me.LvRRC.Size = New System.Drawing.Size(526, 102)
         Me.LvRRC.TabIndex = 0
-        Me.LvRRC.TabStop = False
-        Me.LvRRC.UseCompatibleStateImageBehavior = False
+        Me.LvRRC.TabStop = false
+        Me.LvRRC.UseCompatibleStateImageBehavior = false
         Me.LvRRC.View = System.Windows.Forms.View.Details
         '
         'ColumnHeader7
@@ -663,12 +663,12 @@ Partial Class F_VEH
         Me.ButAxlAdd.Name = "ButAxlAdd"
         Me.ButAxlAdd.Size = New System.Drawing.Size(29, 23)
         Me.ButAxlAdd.TabIndex = 1
-        Me.ButAxlAdd.UseVisualStyleBackColor = True
+        Me.ButAxlAdd.UseVisualStyleBackColor = true
         '
         'CbAxleConfig
         '
         Me.CbAxleConfig.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.CbAxleConfig.FormattingEnabled = True
+        Me.CbAxleConfig.FormattingEnabled = true
         Me.CbAxleConfig.Items.AddRange(New Object() {"-", "4x2", "4x4", "6x2", "6x4", "6x6", "8x2", "8x4", "8x6", "8x8"})
         Me.CbAxleConfig.Location = New System.Drawing.Point(136, 80)
         Me.CbAxleConfig.Name = "CbAxleConfig"
@@ -678,7 +678,7 @@ Partial Class F_VEH
         'CbCat
         '
         Me.CbCat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.CbCat.FormattingEnabled = True
+        Me.CbCat.FormattingEnabled = true
         Me.CbCat.Items.AddRange(New Object() {"-", "Rigid Truck", "Tractor", "City Bus", "Interurban Bus", "Coach"})
         Me.CbCat.Location = New System.Drawing.Point(12, 80)
         Me.CbCat.Name = "CbCat"
@@ -687,7 +687,7 @@ Partial Class F_VEH
         '
         'Label5
         '
-        Me.Label5.AutoSize = True
+        Me.Label5.AutoSize = true
         Me.Label5.Location = New System.Drawing.Point(13, 117)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(134, 13)
@@ -696,7 +696,7 @@ Partial Class F_VEH
         '
         'Label9
         '
-        Me.Label9.AutoSize = True
+        Me.Label9.AutoSize = true
         Me.Label9.Location = New System.Drawing.Point(201, 117)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(16, 13)
@@ -716,7 +716,7 @@ Partial Class F_VEH
         Me.StatusStrip1.Location = New System.Drawing.Point(0, 719)
         Me.StatusStrip1.Name = "StatusStrip1"
         Me.StatusStrip1.Size = New System.Drawing.Size(562, 22)
-        Me.StatusStrip1.SizingGrip = False
+        Me.StatusStrip1.SizingGrip = false
         Me.StatusStrip1.TabIndex = 36
         Me.StatusStrip1.Text = "StatusStrip1"
         '
@@ -730,14 +730,14 @@ Partial Class F_VEH
         '
         Me.TbHDVclass.Location = New System.Drawing.Point(153, 142)
         Me.TbHDVclass.Name = "TbHDVclass"
-        Me.TbHDVclass.ReadOnly = True
+        Me.TbHDVclass.ReadOnly = true
         Me.TbHDVclass.Size = New System.Drawing.Size(25, 20)
         Me.TbHDVclass.TabIndex = 1
-        Me.TbHDVclass.TabStop = False
+        Me.TbHDVclass.TabStop = false
         '
         'Label11
         '
-        Me.Label11.AutoSize = True
+        Me.Label11.AutoSize = true
         Me.Label11.Location = New System.Drawing.Point(89, 57)
         Me.Label11.Name = "Label11"
         Me.Label11.Size = New System.Drawing.Size(71, 13)
@@ -748,14 +748,14 @@ Partial Class F_VEH
         '
         Me.TbLoadingMax.Location = New System.Drawing.Point(166, 54)
         Me.TbLoadingMax.Name = "TbLoadingMax"
-        Me.TbLoadingMax.ReadOnly = True
+        Me.TbLoadingMax.ReadOnly = true
         Me.TbLoadingMax.Size = New System.Drawing.Size(57, 20)
         Me.TbLoadingMax.TabIndex = 3
-        Me.TbLoadingMax.TabStop = False
+        Me.TbLoadingMax.TabStop = false
         '
         'Label22
         '
-        Me.Label22.AutoSize = True
+        Me.Label22.AutoSize = true
         Me.Label22.Location = New System.Drawing.Point(229, 57)
         Me.Label22.Name = "Label22"
         Me.Label22.Size = New System.Drawing.Size(25, 13)
@@ -772,7 +772,7 @@ Partial Class F_VEH
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(266, 124)
         Me.GroupBox1.TabIndex = 2
-        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.TabStop = false
         Me.GroupBox1.Text = "Weight / Loading"
         '
         'PnLoad
@@ -803,7 +803,7 @@ Partial Class F_VEH
         Me.GrAirRes.Name = "GrAirRes"
         Me.GrAirRes.Size = New System.Drawing.Size(266, 124)
         Me.GrAirRes.TabIndex = 3
-        Me.GrAirRes.TabStop = False
+        Me.GrAirRes.TabStop = false
         Me.GrAirRes.Text = "Air Resistance"
         '
         'PnCdATrTr
@@ -818,7 +818,7 @@ Partial Class F_VEH
         '
         'LbCdATr
         '
-        Me.LbCdATr.AutoSize = True
+        Me.LbCdATr.AutoSize = true
         Me.LbCdATr.Location = New System.Drawing.Point(3, 3)
         Me.LbCdATr.Name = "LbCdATr"
         Me.LbCdATr.Size = New System.Drawing.Size(58, 13)
@@ -837,7 +837,7 @@ Partial Class F_VEH
         '
         'LbCdARig
         '
-        Me.LbCdARig.AutoSize = True
+        Me.LbCdARig.AutoSize = true
         Me.LbCdARig.Location = New System.Drawing.Point(10, 3)
         Me.LbCdARig.Name = "LbCdARig"
         Me.LbCdARig.Size = New System.Drawing.Size(31, 13)
@@ -866,7 +866,7 @@ Partial Class F_VEH
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.Size = New System.Drawing.Size(538, 40)
         Me.PictureBox1.TabIndex = 37
-        Me.PictureBox1.TabStop = False
+        Me.PictureBox1.TabStop = false
         '
         'CmOpenFile
         '
@@ -906,11 +906,11 @@ Partial Class F_VEH
         Me.PicVehicle.Size = New System.Drawing.Size(300, 88)
         Me.PicVehicle.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PicVehicle.TabIndex = 39
-        Me.PicVehicle.TabStop = False
+        Me.PicVehicle.TabStop = false
         '
         'Label8
         '
-        Me.Label8.AutoSize = True
+        Me.Label8.AutoSize = true
         Me.Label8.Location = New System.Drawing.Point(89, 145)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(58, 13)
@@ -920,7 +920,7 @@ Partial Class F_VEH
         'F_VEH
         '
         Me.AcceptButton = Me.ButOK
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.ButCancel
         Me.ClientSize = New System.Drawing.Size(562, 741)
@@ -939,43 +939,43 @@ Partial Class F_VEH
         Me.Controls.Add(Me.ButCancel)
         Me.Controls.Add(Me.ButOK)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.MaximizeBox = False
+        Me.Icon = CType(resources.GetObject("$this.Icon"),System.Drawing.Icon)
+        Me.MaximizeBox = false
         Me.Name = "F_VEH"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "F05_VEH"
-        Me.GroupBox6.ResumeLayout(False)
-        Me.GroupBox6.PerformLayout()
-        Me.ToolStrip1.ResumeLayout(False)
-        Me.ToolStrip1.PerformLayout()
-        Me.GroupBox7.ResumeLayout(False)
-        Me.GroupBox7.PerformLayout()
-        Me.PnRt.ResumeLayout(False)
-        Me.PnRt.PerformLayout()
-        Me.GroupBox8.ResumeLayout(False)
-        Me.GroupBox8.PerformLayout()
-        Me.PnWheelDiam.ResumeLayout(False)
-        Me.PnWheelDiam.PerformLayout()
-        Me.StatusStrip1.ResumeLayout(False)
-        Me.StatusStrip1.PerformLayout()
-        Me.GroupBox1.ResumeLayout(False)
-        Me.GroupBox1.PerformLayout()
-        Me.PnLoad.ResumeLayout(False)
-        Me.PnLoad.PerformLayout()
-        Me.GrAirRes.ResumeLayout(False)
-        Me.GrAirRes.PerformLayout()
-        Me.PnCdATrTr.ResumeLayout(False)
-        Me.PnCdATrTr.PerformLayout()
-        Me.PnCdARig.ResumeLayout(False)
-        Me.PnCdARig.PerformLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.CmOpenFile.ResumeLayout(False)
-        Me.PnAll.ResumeLayout(False)
-        CType(Me.PicVehicle, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.ResumeLayout(False)
-        Me.PerformLayout()
+        Me.GroupBox6.ResumeLayout(false)
+        Me.GroupBox6.PerformLayout
+        Me.ToolStrip1.ResumeLayout(false)
+        Me.ToolStrip1.PerformLayout
+        Me.GroupBox7.ResumeLayout(false)
+        Me.GroupBox7.PerformLayout
+        Me.PnRt.ResumeLayout(false)
+        Me.PnRt.PerformLayout
+        Me.GroupBox8.ResumeLayout(false)
+        Me.GroupBox8.PerformLayout
+        Me.PnWheelDiam.ResumeLayout(false)
+        Me.PnWheelDiam.PerformLayout
+        Me.StatusStrip1.ResumeLayout(false)
+        Me.StatusStrip1.PerformLayout
+        Me.GroupBox1.ResumeLayout(false)
+        Me.GroupBox1.PerformLayout
+        Me.PnLoad.ResumeLayout(false)
+        Me.PnLoad.PerformLayout
+        Me.GrAirRes.ResumeLayout(false)
+        Me.GrAirRes.PerformLayout
+        Me.PnCdATrTr.ResumeLayout(false)
+        Me.PnCdATrTr.PerformLayout
+        Me.PnCdARig.ResumeLayout(false)
+        Me.PnCdARig.PerformLayout
+        CType(Me.PictureBox1,System.ComponentModel.ISupportInitialize).EndInit
+        Me.CmOpenFile.ResumeLayout(false)
+        Me.PnAll.ResumeLayout(false)
+        CType(Me.PicVehicle,System.ComponentModel.ISupportInitialize).EndInit
+        Me.ResumeLayout(false)
+        Me.PerformLayout
 
-    End Sub
+End Sub
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents TbMass As System.Windows.Forms.TextBox
     Friend WithEvents Label2 As System.Windows.Forms.Label
