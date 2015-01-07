@@ -19,6 +19,8 @@ Private vectoFile As String = ""
 Private vectoPath As String = ""
 Private auxFile As string
 
+Private cmFilesList As String()
+
 
 #End Region
 
@@ -1172,8 +1174,6 @@ Protected Overrides Function ProcessCmdKey(ByRef msg As Message, keyData As Keys
     End Function
 
 
-
-
 Public Sub UnbindAllControls(ByRef container As Control)
   'Clear all of the controls within the container object
   'If "Recurse" is true, then also clear controls within any sub-containers
@@ -1256,6 +1256,82 @@ Private Function GetSSMMAP( ByVal filePath As String , byref message As string) 
 End Function
 
 
+'Anciliary helpers
+Private Sub OpenFiles(ParamArray files() As String)
+
+        If files.Length = 0 Then Exit Sub
+
+        CmFilesList = files
+
+        OpenWithToolStripMenuItem.Text = "Open with notepad"
+
+        CmFiles.Show(Cursor.Position)
+
+End Sub
+
+Private Sub OpenWithToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles OpenWithToolStripMenuItem.Click
+    If Not FileOpenAlt(CmFilesList(0)) Then MsgBox("Failed to open file!")
+End Sub
+
+Private Sub ShowInFolderToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles ShowInFolderToolStripMenuItem.Click
+    If IO.File.Exists(CmFilesList(0)) Then
+        Try
+            System.Diagnostics.Process.Start("explorer", "/select,""" & CmFilesList(0) & "")
+        Catch ex As Exception
+            MsgBox("Failed to open file!")
+        End Try
+    Else
+        MsgBox("File not found!")
+    End If
+End Sub
+
+    'Open File with software defined in Config
+    Public Function FileOpenAlt(ByVal file As String) As Boolean
+        Dim PSI As New ProcessStartInfo
+
+        If Not IO.File.Exists(file) Then Return False
+
+        PSI.FileName = "notepad.exe"
+        PSI.Arguments = ChrW(34) & file & ChrW(34)
+        Try
+            Process.Start(PSI)
+            Return True
+        Catch ex As Exception
+            Return False
+        End Try
+
+    End Function
+
+
+'TODO: Th
+#Region "File Viewer Button Events"
+
+
+Private Sub btnAALTOpen_Click( sender As Object,  e As EventArgs) Handles btnAALTOpen.Click
+
+        OpenFiles(fFileRepl(Me.txtAlternatorMapPath.Text, fPATH(VECTOfile)))    
+    
+End Sub
+Private Sub btnOpenACMP_Click( sender As Object,  e As EventArgs) Handles btnOpenACMP.Click
+
+
+         OpenFiles(fFileRepl(Me.txtCompressorMap.Text, fPATH(VECTOfile)))
+
+End Sub
+Private Sub btnOpenAPAC_Click( sender As Object,  e As EventArgs) Handles btnOpenAPAC.Click
+
+          OpenFiles(fFileRepl(Me.txtActuationsMap.Text, fPATH(VECTOfile)))
+
+End Sub
+Private Sub btnOpenAHSM_Click( sender As Object,  e As EventArgs) Handles btnOpenAHSM.Click
+
+          OpenFiles(fFileRepl(Me.txtSSMFilePath.Text, fPATH(VECTOfile)))
+
+
+End Sub
+
+
+#end region
 
 
 

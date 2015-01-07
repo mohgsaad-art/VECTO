@@ -122,6 +122,7 @@ Partial Class F_VECTO
         Me.TbGbxTxt = New System.Windows.Forms.TextBox()
         Me.TbMass = New System.Windows.Forms.TextBox()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.btnAAUXOpen = New System.Windows.Forms.Button()
         Me.TabPgGen.SuspendLayout
         Me.GrCycles.SuspendLayout
         Me.GrAux.SuspendLayout
@@ -239,6 +240,7 @@ Partial Class F_VECTO
         Me.GrAux.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
             Or System.Windows.Forms.AnchorStyles.Left)  _
             Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.GrAux.Controls.Add(Me.btnAAUXOpen)
         Me.GrAux.Controls.Add(Me.Label1)
         Me.GrAux.Controls.Add(Me.btnBrowseAAUXFile)
         Me.GrAux.Controls.Add(Me.txtAdvancedAuxiliaryFile)
@@ -267,7 +269,7 @@ Partial Class F_VECTO
         '
         'btnBrowseAAUXFile
         '
-        Me.btnBrowseAAUXFile.Location = New System.Drawing.Point(451, 47)
+        Me.btnBrowseAAUXFile.Location = New System.Drawing.Point(447, 45)
         Me.btnBrowseAAUXFile.Name = "btnBrowseAAUXFile"
         Me.btnBrowseAAUXFile.Size = New System.Drawing.Size(36, 23)
         Me.btnBrowseAAUXFile.TabIndex = 39
@@ -1005,7 +1007,7 @@ Partial Class F_VECTO
         '
         Me.CmOpenFile.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.OpenWithToolStripMenuItem, Me.ShowInFolderToolStripMenuItem})
         Me.CmOpenFile.Name = "CmOpenFile"
-        Me.CmOpenFile.Size = New System.Drawing.Size(153, 48)
+        Me.CmOpenFile.Size = New System.Drawing.Size(153, 70)
         '
         'OpenWithToolStripMenuItem
         '
@@ -1085,6 +1087,15 @@ Partial Class F_VECTO
         Me.TbMass.ReadOnly = true
         Me.TbMass.Size = New System.Drawing.Size(50, 20)
         Me.TbMass.TabIndex = 37
+        '
+        'btnAAUXOpen
+        '
+        Me.btnAAUXOpen.Image = Global.VECTO.My.Resources.Resources.application_export_icon_small
+        Me.btnAAUXOpen.Location = New System.Drawing.Point(486, 45)
+        Me.btnAAUXOpen.Name = "btnAAUXOpen"
+        Me.btnAAUXOpen.Size = New System.Drawing.Size(26, 23)
+        Me.btnAAUXOpen.TabIndex = 41
+        Me.btnAAUXOpen.UseVisualStyleBackColor = true
         '
         'F_VECTO
         '
@@ -1247,4 +1258,5 @@ End Sub
     Friend WithEvents btnBrowseAAUXFile As System.Windows.Forms.Button
     Friend WithEvents txtAdvancedAuxiliaryFile As System.Windows.Forms.TextBox
     Friend WithEvents lbAdvancedAuxiliaries As System.Windows.Forms.Label
+    Friend WithEvents btnAAUXOpen As System.Windows.Forms.Button
 End Class
