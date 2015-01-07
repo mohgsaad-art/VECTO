@@ -1636,8 +1636,18 @@ Public Class cReport
                     pdfFormFields.SetField("FCt" & i, .FCtkm.ToString("0.0"))
                     pdfFormFields.SetField("CO2" & i, .CO2km.ToString("0.0"))
                     pdfFormFields.SetField("CO2t" & i, .CO2tkm.ToString("0.0"))
+
+                    ''AA-TB
+                    ''Advanced Auxiliary
+
+                    'If Not pdfFormFields.GetField("AuxiliaryMode") is Nothing 
+                    '  pdfFormFields.SetField("AuxiliaryMode", VEC.AuxiliaryAssembly.ToString())
+                    'End if
+
                 End With
-            Next
+             Next
+
+
 
 
             'Add Images

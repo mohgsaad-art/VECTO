@@ -11,7 +11,14 @@
 
 
 
-<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Job Editor - VECTO User Manual</title></head>
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Job Editor - VECTO User Manual</title>
+    <style type="text/css">
+        .auto-style1 {
+            width: 661px;
+            height: 598px;
+        }
+    </style>
+</head>
 <body>
 
 
@@ -26,7 +33,8 @@
 <div style="margin-left: 40px;"><big><big style="font-weight: bold;">Description</big></big><br><hr style="height: 1px; width: 100%;">The
 job file (.vecto) includes all informations to run a VECTO calculation.
 It defines the&nbsp;vehicle and the driving cycle(s) to be used for
-calculation. In summary it defines:<br><ul><li>Filepath to the <a href="VEH-Editor.html">Vehicle File (.vveh)</a> which defines the not-engine/gearbox-related vehicle parameters</li><li>Filepath to the <a href="ENG-Editor.html">Engine File (.veng)</a> which includes full load curve(s) and the fuel consumption map</li><li>Filepath ot the <a href="GBX-Editor.html">Gearbox File (.vgbx)</a> which defines gear ratios and transmission losses</li><li>Auxiliaries</li><li>Driver Assist parameters</li><li>Driving Cycles (not used in Batch Mode)</li></ul><br>
+calculation. In summary it defines:<br><ul><li>Filepath to the <a href="VEH-Editor.html">Vehicle File (.vveh)</a> which defines the not-engine/gearbox-related vehicle parameters</li><li>Filepath to the <a href="ENG-Editor.html">Engine File (.veng)</a> which includes full load curve(s) and the fuel consumption map</li><li>Filepath ot the <a href="GBX-Editor.html">Gearbox File (.vgbx)</a> which defines gear ratios and transmission losses</li>
+        <li>Filepath to the AdvancedAuxiliaries File (.AAUX) which defines the Advanced Auxiliary configuration for when selected. For example, if CLASSIC is not selected then &#39;Bus Auxiliaries&#39; may be the Advanced Auxiliaries chosen.</li><li>Auxiliaries</li><li>Driver Assist parameters</li><li>Driving Cycles (not used in Batch Mode)</li></ul><br>
 <big><big style="font-weight: bold;">Relatve File Paths</big></big><br>
 <hr style="height: 1px; width: 100%;">It is recommended to define
 relative filepaths. This way the Job File and all input files can be
@@ -55,10 +63,20 @@ saved before browsing for input files.)<br>
 </div>
 <br>
 <span style="font-weight: bold;">Filepath ot the Gearbox File (.vgbx)</span><br>
-<div style="margin-left: 40px;">Files can be created and edited using the <a href="GBX-Editor.html">Gearbox Editor</a>.<br>
+<div style="margin-left: 40px;">Files can be created and edited using the <a href="GBX-Editor.html">Gearbox Editor</a>.<br />
+    <br>
 </div>
-<br>
-<span style="font-weight: bold;">Auxiliaries</span><br>
+    <strong>Auxiliary Type :</strong> Dropdown Box to choose Classic or Available Advanced Auxiliaries
+    <br />
+    <br />
+    <strong>Advanced Aux File ( .aaux )</strong><br />
+    When the Auxiliary Type is set to Advanced Auxiliaries IE (Bus Auxiliaries ), then this text box will be enabled and along with it the browse button to find an existing (<strong>.aaux</strong>) file. When the user click the browse button, if the file already entered in the text box exists, then an Advanced Auxiliaries Configuration screen will be launched, see example picture of the dialog below.<br />
+    <br />
+    <img alt="Advanced Auxiliary Dialog" class="auto-style1" src="pics/AAUXConfigDialog-Small.png" />
+    <br />
+  <br />
+
+<span style="font-weight: bold;">Auxiliaries ( CLASSIC - Original Vecto Basic Auxiliaries )</span><br>
 
 <div style="margin-left: 40px;">This list contains all
 auxiliaries used for calculation. The auxiliaries are configured using the <a href="VECTO-Editor_Aux.html">Auxiliary
@@ -185,7 +203,7 @@ Editor</a></span><br>
 
 
 &nbsp;<span style="font-weight: bold;"><img style="width: 28px; height: 21px;" alt="" src="../pics/misc/browse.png"> Browse for
-vehicle/engine/gearbox files</span><br>
+vehicle/engine/gearbox/advanced auxiliary files</span><br>
 <span style="font-weight: bold;"></span><br>
 <span style="font-weight: bold;">
 </span><img style="width: 75px; height: 23px;" alt="OK" src="../pics/misc/OK.png">

@@ -1754,6 +1754,35 @@ lb_nOK:
         'Do not allow positive road gradients     
         Grad = MODdata.Vh.fGrad(s)
 
+                    'AA-TB
+            'Recalculate for Advanced Auxiliaries.
+
+            AAUX_Gobal.ClutchEngaged = (Gear > 0)
+
+            AAUX_Gobal.Idle = (Gear = 0 And Not Pplus And Not Pminus)
+
+            AAUX_Gobal.InNeutral = (Gear = 0)
+
+            'Driveline Power = required power at clutch = power at wheels plus powertrain losses
+            '[kW]
+            '**** THIS IS NOT CORRECT< BUT NO PKU Variable is available at this point ****
+            AAUX_Gobal.EngineDrivelinePower = 0
+
+            '[1/min]
+            AAUX_Gobal.EngineSpeed = nU
+
+            '[Nm] (using Power => Torque conversion)
+            AAUX_Gobal.EngineDrivelineTorque = nPeToM(EngineSpeed, EngineDrivelinePower)
+
+            'Motoring power (< 0 !!!)
+            '[kW]
+            '** MULTIPLIED BY - TO GET POSITIVE VALUE
+            AAUX_Gobal.EngineMotoringPower = - FLD(Gear).Pdrag(EngineSpeed)
+
+            'Additional aux power from driving cycle (optional user input)
+            '[kW]
+            AAUX_Gobal.PreExistingAuxPower = MODdata.Vh.Padd(t)
+
 
         Pwheel = fPwheel(t, v, a, Grad)
         Pe = Pwheel + fPlossGB(Pwheel, v, Gear, True) + fPlossDiff(Pwheel, v, True) + fPaG(v, a) + fPlossRt(v, Gear) + fPaux(t, nU) + fPaMotSimple(t, Gear, v, a)

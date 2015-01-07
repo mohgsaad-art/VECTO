@@ -23,6 +23,7 @@ Partial Class frmAuxiliaryConfig
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmAuxiliaryConfig))
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
@@ -46,6 +47,7 @@ Partial Class frmAuxiliaryConfig
         Me.cboCycle = New System.Windows.Forms.ComboBox()
         Me.txtVehicleWeightKG = New System.Windows.Forms.TextBox()
         Me.tabElectricalConfig = New System.Windows.Forms.TabPage()
+        Me.btnAALTOpen = New System.Windows.Forms.Button()
         Me.btnAlternatorMapPath = New System.Windows.Forms.Button()
         Me.gvResultsCardOverrun = New System.Windows.Forms.DataGridView()
         Me.gvResultsCardTraction = New System.Windows.Forms.DataGridView()
@@ -129,6 +131,12 @@ Partial Class frmAuxiliaryConfig
         Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+        Me.CmFiles = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.OpenWithToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ShowInFolderToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.btnOpenACMP = New System.Windows.Forms.Button()
+        Me.btnOpenAPAC = New System.Windows.Forms.Button()
+        Me.btnOpenAHSM = New System.Windows.Forms.Button()
         Me.pnlMain.SuspendLayout
         Me.tabMain.SuspendLayout
         Me.tabGeneralConfig.SuspendLayout
@@ -143,6 +151,7 @@ Partial Class frmAuxiliaryConfig
         Me.tabHVACConfig.SuspendLayout
         Me.resultCardContextMenu.SuspendLayout
         CType(Me.ErrorProvider,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.CmFiles.SuspendLayout
         Me.SuspendLayout
         '
         'pnlMain
@@ -249,6 +258,7 @@ Partial Class frmAuxiliaryConfig
         '
         'tabElectricalConfig
         '
+        Me.tabElectricalConfig.Controls.Add(Me.btnAALTOpen)
         Me.tabElectricalConfig.Controls.Add(Me.btnAlternatorMapPath)
         Me.tabElectricalConfig.Controls.Add(Me.gvResultsCardOverrun)
         Me.tabElectricalConfig.Controls.Add(Me.gvResultsCardTraction)
@@ -274,6 +284,15 @@ Partial Class frmAuxiliaryConfig
         Me.tabElectricalConfig.TabIndex = 1
         Me.tabElectricalConfig.Text = "Electrics"
         Me.tabElectricalConfig.UseVisualStyleBackColor = true
+        '
+        'btnAALTOpen
+        '
+        Me.btnAALTOpen.Image = CType(resources.GetObject("btnAALTOpen.Image"),System.Drawing.Image)
+        Me.btnAALTOpen.Location = New System.Drawing.Point(541, 43)
+        Me.btnAALTOpen.Name = "btnAALTOpen"
+        Me.btnAALTOpen.Size = New System.Drawing.Size(28, 20)
+        Me.btnAALTOpen.TabIndex = 20
+        Me.btnAALTOpen.UseVisualStyleBackColor = true
         '
         'btnAlternatorMapPath
         '
@@ -535,6 +554,8 @@ Partial Class frmAuxiliaryConfig
         '
         'pnlPneumaticsUserInput
         '
+        Me.pnlPneumaticsUserInput.Controls.Add(Me.btnOpenAPAC)
+        Me.pnlPneumaticsUserInput.Controls.Add(Me.btnOpenACMP)
         Me.pnlPneumaticsUserInput.Controls.Add(Me.btnActuationsMap)
         Me.pnlPneumaticsUserInput.Controls.Add(Me.btnCompressorMap)
         Me.pnlPneumaticsUserInput.Controls.Add(Me.lblPneumaticsVariablesTitle)
@@ -564,7 +585,7 @@ Partial Class frmAuxiliaryConfig
         '
         'btnActuationsMap
         '
-        Me.btnActuationsMap.Location = New System.Drawing.Point(449, 343)
+        Me.btnActuationsMap.Location = New System.Drawing.Point(412, 343)
         Me.btnActuationsMap.Name = "btnActuationsMap"
         Me.btnActuationsMap.Size = New System.Drawing.Size(35, 23)
         Me.btnActuationsMap.TabIndex = 21
@@ -573,7 +594,7 @@ Partial Class frmAuxiliaryConfig
         '
         'btnCompressorMap
         '
-        Me.btnCompressorMap.Location = New System.Drawing.Point(450, 58)
+        Me.btnCompressorMap.Location = New System.Drawing.Point(412, 58)
         Me.btnCompressorMap.Name = "btnCompressorMap"
         Me.btnCompressorMap.Size = New System.Drawing.Size(35, 23)
         Me.btnCompressorMap.TabIndex = 13
@@ -675,7 +696,7 @@ Partial Class frmAuxiliaryConfig
         '
         Me.txtCompressorMap.Location = New System.Drawing.Point(156, 60)
         Me.txtCompressorMap.Name = "txtCompressorMap"
-        Me.txtCompressorMap.Size = New System.Drawing.Size(275, 20)
+        Me.txtCompressorMap.Size = New System.Drawing.Size(246, 20)
         Me.txtCompressorMap.TabIndex = 12
         '
         'lblCompressorGearEfficiency
@@ -760,7 +781,7 @@ Partial Class frmAuxiliaryConfig
         '
         Me.txtActuationsMap.Location = New System.Drawing.Point(156, 345)
         Me.txtActuationsMap.Name = "txtActuationsMap"
-        Me.txtActuationsMap.Size = New System.Drawing.Size(275, 20)
+        Me.txtActuationsMap.Size = New System.Drawing.Size(246, 20)
         Me.txtActuationsMap.TabIndex = 20
         '
         'pnlPneumaticAuxillaries
@@ -1012,6 +1033,7 @@ Partial Class frmAuxiliaryConfig
         '
         'tabHVACConfig
         '
+        Me.tabHVACConfig.Controls.Add(Me.btnOpenAHSM)
         Me.tabHVACConfig.Controls.Add(Me.btnSSMBSource)
         Me.tabHVACConfig.Controls.Add(Me.lblSSMFilePath)
         Me.tabHVACConfig.Controls.Add(Me.txtSSMFilePath)
@@ -1133,6 +1155,51 @@ Partial Class frmAuxiliaryConfig
         '
         Me.Timer1.Interval = 1000
         '
+        'CmFiles
+        '
+        Me.CmFiles.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.OpenWithToolStripMenuItem, Me.ShowInFolderToolStripMenuItem})
+        Me.CmFiles.Name = "CmOpenFile"
+        Me.CmFiles.Size = New System.Drawing.Size(153, 48)
+        '
+        'OpenWithToolStripMenuItem
+        '
+        Me.OpenWithToolStripMenuItem.Name = "OpenWithToolStripMenuItem"
+        Me.OpenWithToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.OpenWithToolStripMenuItem.Text = "Open with ..."
+        '
+        'ShowInFolderToolStripMenuItem
+        '
+        Me.ShowInFolderToolStripMenuItem.Name = "ShowInFolderToolStripMenuItem"
+        Me.ShowInFolderToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.ShowInFolderToolStripMenuItem.Text = "Open In Folder"
+        '
+        'btnOpenACMP
+        '
+        Me.btnOpenACMP.Image = CType(resources.GetObject("btnOpenACMP.Image"),System.Drawing.Image)
+        Me.btnOpenACMP.Location = New System.Drawing.Point(456, 60)
+        Me.btnOpenACMP.Name = "btnOpenACMP"
+        Me.btnOpenACMP.Size = New System.Drawing.Size(28, 20)
+        Me.btnOpenACMP.TabIndex = 53
+        Me.btnOpenACMP.UseVisualStyleBackColor = true
+        '
+        'btnOpenAPAC
+        '
+        Me.btnOpenAPAC.Image = CType(resources.GetObject("btnOpenAPAC.Image"),System.Drawing.Image)
+        Me.btnOpenAPAC.Location = New System.Drawing.Point(456, 345)
+        Me.btnOpenAPAC.Name = "btnOpenAPAC"
+        Me.btnOpenAPAC.Size = New System.Drawing.Size(28, 20)
+        Me.btnOpenAPAC.TabIndex = 54
+        Me.btnOpenAPAC.UseVisualStyleBackColor = true
+        '
+        'btnOpenAHSM
+        '
+        Me.btnOpenAHSM.Image = CType(resources.GetObject("btnOpenAHSM.Image"),System.Drawing.Image)
+        Me.btnOpenAHSM.Location = New System.Drawing.Point(777, 83)
+        Me.btnOpenAHSM.Name = "btnOpenAHSM"
+        Me.btnOpenAHSM.Size = New System.Drawing.Size(28, 20)
+        Me.btnOpenAHSM.TabIndex = 55
+        Me.btnOpenAHSM.UseVisualStyleBackColor = true
+        '
         'frmAuxiliaryConfig
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
@@ -1161,6 +1228,7 @@ Partial Class frmAuxiliaryConfig
         Me.tabHVACConfig.PerformLayout
         Me.resultCardContextMenu.ResumeLayout(false)
         CType(Me.ErrorProvider,System.ComponentModel.ISupportInitialize).EndInit
+        Me.CmFiles.ResumeLayout(false)
         Me.ResumeLayout(false)
 
 End Sub
@@ -1258,5 +1326,12 @@ End Sub
     Friend WithEvents btnSSMBSource As System.Windows.Forms.Button
     Friend WithEvents lblSSMFilePath As System.Windows.Forms.Label
     Friend WithEvents txtSSMFilePath As System.Windows.Forms.TextBox
+    Friend WithEvents btnAALTOpen As System.Windows.Forms.Button
+    Friend WithEvents CmFiles As System.Windows.Forms.ContextMenuStrip
+    Friend WithEvents OpenWithToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ShowInFolderToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents btnOpenACMP As System.Windows.Forms.Button
+    Friend WithEvents btnOpenAPAC As System.Windows.Forms.Button
+    Friend WithEvents btnOpenAHSM As System.Windows.Forms.Button
 
 End Class
