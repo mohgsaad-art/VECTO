@@ -13,5 +13,6 @@ property EngineDrivelineTorque as single
 Property Idle As Boolean
 Property InNeutral As Boolean
 Property AuxiliaryEventReportingLevel As AdvancedAuxiliaryMessageType
+Property EngineStopped As Boolean
 
 End Interface

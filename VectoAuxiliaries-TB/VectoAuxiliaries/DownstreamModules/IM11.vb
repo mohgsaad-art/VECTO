@@ -12,6 +12,8 @@ ReadOnly Property SmartElectricalTotalCycleEletricalEnergyGenerated As single
 ReadOnly Property TotalCycleElectricalDemand As single
 ReadOnly Property TotalCycleFuelConsumptionSmartElectricalLoad As single
 ReadOnly Property TotalCycleFuelConsumptionZeroElectricalLoad As single
+ReadOnly Property StopStartSensitiveTotalCycleElectricalDemand As Single
+
 
 
  Sub ClearAggregates()  
