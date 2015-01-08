@@ -159,7 +159,7 @@ M10 = New M10(M3,M9,Signals)
 
 M11 = New M11(M1,M3,M6,M8,fuelMap,Signals)
 
-M12 = New M12( M11, Signals )
+M12 = New M12( M10,M11, Signals )
 
 M13 = New M13(M1,M10,M12,Signals)
 

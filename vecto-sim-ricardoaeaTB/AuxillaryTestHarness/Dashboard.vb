@@ -1140,7 +1140,7 @@ Private sub RefreshDisplays()
 
 
       'M10
-      txtM10_out_BaseFCWithAvgAuxLoads.Text = auxEnvironment.M10.BaseFuelConsumptionWithAverageAuxiliaryLoads
+      txtM10_out_BaseFCWithAvgAuxLoads.Text = auxEnvironment.M10.AverageLoadsFuelConsumptionInterpolatedForPneumatics
       txtM10_out_FCWithSmartPSAndAvgElecPowerDemand.Text = auxEnvironment.M10.FuelConsumptionSmartPneumaticsAndAverageElectricalPowerDemand
 
 
