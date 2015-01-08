@@ -6,6 +6,7 @@ Namespace DownstreamModules
 
 Public Class M11
  Implements IM11
+
  
 
  Private Const RPM_to_RadiansPerSecond as single= 9.55 
@@ -19,6 +20,7 @@ Public Class M11
   Private AG3 As Single
   Private AG4 As single
   Private AG5 As single
+  Private AG6 As single
   #End Region
 
  #Region "Private Fields Assigned by Constructor."
@@ -115,6 +117,19 @@ End Property
              Return AG5
             End Get
         End Property
+'OUT6
+        Public ReadOnly Property StopStartSensitiveTotalCycleElectricalDemand As Single Implements IM11.StopStartSensitiveTotalCycleElectricalDemand
+            Get
+            Return AG6
+            End Get
+        End Property
+
+Private ReadOnly Property SW1 As single
+    Get
+     Return If( signals.EngineStopped,0, 1)
+    End Get
+End Property
+
 
  'Clear at the beginning of cycle
  Sub ClearAggregates() Implements IM11.ClearAggregates
@@ -124,20 +139,21 @@ End Property
    AG3=0
    AG4=0
    AG5=0
-
+   ag6=0
 
  End Sub
 
  'Add to Aggregates dependent on cycle step time.
  Sub CycleStep(Optional stepTimeInSeconds As Single = 0.0) Implements IM11.CycleStep
 
-   AG1  =    AG1   +  (  stepTimeInSeconds *   sum1                                           )
-   AG2  =    AG2   +  (  stepTimeInSeconds *   M8.SmartElectricalAlternatorPowerGenAtCrank    )
-   AG3  =    AG3   +  (  stepTimeInSeconds *   m6.AvgPowerDemandAtCrankFromElectricsIncHVAC   )
+   AG1  =    AG1   +  (  stepTimeInSeconds *   sum1                                           * SW1 )
+   AG2  =    AG2   +  (  stepTimeInSeconds *   M8.SmartElectricalAlternatorPowerGenAtCrank    * SW1 )
+   AG3  =    AG3   +  (  stepTimeInSeconds *   m6.AvgPowerDemandAtCrankFromElectricsIncHVAC         )
+   AG6  =    AG6   +  (  stepTimeInSeconds *   m6.AvgPowerDemandAtCrankFromElectricsIncHVAC   * SW1 )
 
    'These need to be divided by 3600 as the Fuel Map output is in Grams/Second.
-   AG4  =    AG4   +  (  stepTimeInSeconds *   sum7 / 3600                                    )
-   AG5  =    AG5   +  (  stepTimeInSeconds *   Sum8 / 3600                                    )
+   AG4  =    AG4   +  (  stepTimeInSeconds *   sum7 / 3600                                    * SW1 )
+   AG5  =    AG5   +  (  stepTimeInSeconds *   Sum8 / 3600                                    * SW1 )
 
  End Sub
 

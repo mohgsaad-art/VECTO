@@ -60,7 +60,7 @@ End Function
  'Public 
  #Region "Public Properties"
 
- Public ReadOnly Property BaseFuelConsumptionWithAverageAuxiliaryLoads As Single Implements IM10.BaseFuelConsumptionWithAverageAuxiliaryLoads
+ Public ReadOnly Property BaseFuelConsumptionWithAverageAuxiliaryLoads As Single Implements IM10.AverageLoadsFuelConsumptionInterpolatedForPneumatics
             Get
              Return Interpolate(InterpolationType.NonSmartPneumtaics)
             End Get

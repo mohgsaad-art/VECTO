@@ -5,6 +5,7 @@ Implements ISignals
 
 
 
+
   Private _smartElectrics As Boolean
 
     Public Property ClutchEngaged As Boolean Implements ISignals.ClutchEngaged
@@ -46,6 +47,7 @@ Implements ISignals
 
     Public Property AuxiliaryEventReportingLevel As AdvancedAuxiliaryMessageType Implements ISignals.AuxiliaryEventReportingLevel
 
+    Public Property EngineStopped As Boolean Implements ISignals.EngineStopped
 
 
 End Class

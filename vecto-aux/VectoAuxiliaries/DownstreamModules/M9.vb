@@ -144,6 +144,13 @@ End Property
       End Get
   End Property
 
+
+ Private ReadOnly Property SW1 As Integer
+     Get
+       Return If( Signals.EngineStopped,0,1)
+     End Get
+ End Property
+
  'Public Utility Methods.
  Public Sub ClearAggregates() Implements IM9.ClearAggregates
 
@@ -157,10 +164,10 @@ End Property
  'Clear down at the beginning of a cycle.      
  Public Sub CycleStep(Optional stepTimeInSeconds As Single = 0.0) Implements IM9.CycleStep
 
-          _LitresOfAirCompressorOnContinuallyAggregate +=stepTimeInSeconds* M4.GetFlowRate 
-          _LitresOfAirCompressorOnOnlyInOverrunAggregate +=stepTimeInSeconds * s10
-          _TotalCycleFuelConsumptionCompressorOnContinuouslyAggregate+= stepTimeInSeconds * s11
-          _TotalCycleFuelConsumptionCompressorOffContinuouslyAggregate +=stepTimeInSeconds * s12
+          _LitresOfAirCompressorOnContinuallyAggregate +=stepTimeInSeconds* M4.GetFlowRate * sw1
+          _LitresOfAirCompressorOnOnlyInOverrunAggregate +=stepTimeInSeconds * s10 * sw1
+          _TotalCycleFuelConsumptionCompressorOnContinuouslyAggregate+= stepTimeInSeconds * s11 * sw1
+          _TotalCycleFuelConsumptionCompressorOffContinuouslyAggregate +=stepTimeInSeconds * s12 * sw1
 
   End Sub
 

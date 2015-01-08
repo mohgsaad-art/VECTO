@@ -17,17 +17,17 @@ Private signals As ISignals
 
 Private readonly Property Sum1 As Single
     Get
-     return  - m12.FuelconsumptionwithsmartElectricsandAveragePneumaticPowerDemand + m10.BaseFuelConsumptionWithAverageAuxiliaryLoads
+     return  - m12.FuelconsumptionwithsmartElectricsandAveragePneumaticPowerDemand + m12.BaseFuelConsumptionWithAverageAuxiliaryLoads
     End Get
 End Property
 Private readonly Property Sum2 As Single
     Get
-     Return m10.BaseFuelConsumptionWithAverageAuxiliaryLoads - m10.FuelConsumptionSmartPneumaticsAndAverageElectricalPowerDemand
+     Return m12.BaseFuelConsumptionWithAverageAuxiliaryLoads - m10.FuelConsumptionSmartPneumaticsAndAverageElectricalPowerDemand
     End Get
 End Property
 Private readonly Property Sum3 As Single
     Get
-     Return m10.BaseFuelConsumptionWithAverageAuxiliaryLoads-Sum2
+     Return m12.BaseFuelConsumptionWithAverageAuxiliaryLoads-Sum2
     End Get
 End Property
 Private readonly Property Sum4 As Single
@@ -59,7 +59,7 @@ Private readonly Property SW1 As Single
 End Property
 private readonly Property SW2 as Single
     Get
-     Return  If( signals.SmartPneumatics,m10.FuelConsumptionSmartPneumaticsAndAverageElectricalPowerDemand, m10.BaseFuelConsumptionWithAverageAuxiliaryLoads)
+     Return  If( signals.SmartPneumatics,m10.FuelConsumptionSmartPneumaticsAndAverageElectricalPowerDemand, m12.BaseFuelConsumptionWithAverageAuxiliaryLoads)
     End Get
 End Property
 Private readonly Property SW3 As Single

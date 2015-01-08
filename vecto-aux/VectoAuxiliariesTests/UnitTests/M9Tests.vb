@@ -11,10 +11,11 @@ Namespace UnitTests
 Public Class M9Tests
 
 <Test()> _
-<TestCase(50,50,400,200,100,1200,50,0,0,0.5f,50f,0,  0.18110822f,0.18088715f)> _
-<TestCase(50,50,400,200,100,1200,50,1,0,0.5f,50f,0,  0.18110822f,0.18088715f)> _
-<TestCase(50,50,400,200,100,1200,50,0,1,0.5f,50f,0,  0.18110822f,0.18088715f)> _
-<TestCase(50,50,400,200,100,1200,50,1,1,0.5f,50f,25, 0.18110822f,0.18088715f)> _               
+<TestCase(50,50,400,200,100,1200,50,0,0,0.5f,false,50f,0,  0.18110822f,0.18088715f)> _
+<TestCase(50,50,400,200,100,1200,50,1,0,0.5f,false,50f,0,  0.18110822f,0.18088715f)> _
+<TestCase(50,50,400,200,100,1200,50,0,1,0.5f,false,50f,0,  0.18110822f,0.18088715f)> _
+<TestCase(50,50,400,200,100,1200,50,1,1,0.5f,false,50f,25, 0.18110822f,0.18088715f)> _               
+<TestCase(50,50,400,200,100,1200,50,1,1,0.5f,true,   0, 0, 0          ,0          )> _
 Public Sub ValuesInOutTests(IP1  As Single,
                             IP2  As Single,
                             IP3  As Single,
@@ -25,6 +26,7 @@ Public Sub ValuesInOutTests(IP1  As Single,
                             IP8  As Single,
                             IP9  As Single,
                             IP10 As Single, 
+                            IP11 As Boolean,
                             AG1  As Single,
                             AG2  As Single,
                             AG3  As Single,
@@ -48,6 +50,7 @@ Public Sub ValuesInOutTests(IP1  As Single,
       m6Mock.Setup   ( Function(x) x.OverrunFlag)                                       .Returns(IP8)
       m8Mock.Setup   ( Function(x) x.CompressorFlag)                                    .Returns(IP9)
       psac.Setup     ( Function(x) x.OverrunUtilisationForCompressionFraction)          .Returns(IP10)
+      sgnlsMock.Setup( Function(x) x.EngineStopped)                                     .Returns(IP11)
 
       Dim target As New M9( m1Mock.Object, m4Mock.Object, m6Mock.Object,m8Mock.Object,fMapMock,psac.Object,sgnlsMock.Object)
 

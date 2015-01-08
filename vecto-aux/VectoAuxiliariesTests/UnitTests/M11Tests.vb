@@ -11,8 +11,9 @@ Namespace UnitTests
 Public Class M11Tests
 
 <Test()> _
-<TestCase(0,50,60,70,80,90,1500,  0,50,60,0.2182501f,0.2182059f)> _
-<TestCase(1,50,60,70,80,90,1500, 50,50,60,0.2182501f,0.2182059f)> _
+<TestCase(0,50,60,70,80,90,1500,False , 0,50,60,0.2182501f,0.2182059f,60)> _
+<TestCase(1,50,60,70,80,90,1500,False ,50,50,60,0.2182501f,0.2182059f,60)> _
+<TestCase(1,50,60,70,80,90,1500,True  , 0, 0,60,0          ,0         ,0)> _
 Public Sub InputOutputValues( IP1  As single, 
                               IP2  As single, 
                               IP3  As single,
@@ -20,11 +21,13 @@ Public Sub InputOutputValues( IP1  As single,
                               IP5  As single, 
                               IP6  As single,
                               IP7  As single, 
+                              IP8  As Boolean,
                               OUT1 As single, 
                               OUT2 As single, 
                               OUT3 As single, 
                               OUT4 As single, 
-                              OUT5 As single)
+                              OUT5 As single,
+                              OUT6 As single)
 
 'Arrange
 
@@ -47,6 +50,7 @@ Public Sub InputOutputValues( IP1  As single,
  m3Mock   .Setup( Function(x)  x.GetAveragePowerDemandAtCrankFromPneumatics)        .Returns( IP5 )
  m1Mock   .Setup( Function(x)  x.AveragePowerDemandAtCrankFromHVACMechanicalsWatts) .Returns( IP6 )
  sgnlsMock.Setup( Function(x)  x.EngineSpeed)                                       .Returns( IP7 )
+ sgnlsMock.Setup( Function(x)  x.EngineStopped)                                     .Returns( IP8 )
 
 
  'Act
@@ -62,7 +66,7 @@ Public Sub InputOutputValues( IP1  As single,
  Assert.AreEqual( target.TotalCycleElectricalDemand,OUT3)
  Assert.AreEqual( Math.Round(CType(target.TotalCycleFuelConsumptionSmartElectricalLoad,Decimal),7),OUT4)
  Assert.AreEqual( Math.Round(CType(target.TotalCycleFuelConsumptionZeroElectricalLoad,Decimal),7),OUT5)
-
+ Assert.AreEqual( Math.Round(CType(target.StopStartSensitiveTotalCycleElectricalDemand,Decimal),7),OUT6)
 
 
 
