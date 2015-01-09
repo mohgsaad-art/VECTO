@@ -71,7 +71,7 @@ Private Signals As ISignals
 Private Function S0( rpm As Single ) As Single
 
   If rpm=0  then   
-      Return 0
+      Return 0.00001
   End If
   
   Return rpm / RPM_TO_RADS_PER_SECOND

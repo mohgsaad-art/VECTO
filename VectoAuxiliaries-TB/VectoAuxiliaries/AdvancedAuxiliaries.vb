@@ -195,7 +195,20 @@ End Sub
        M11.CycleStep( seconds )
 
        'Used in the fuel aggregated output on M13 ( Sum 5 )
+
+       try
+
        Signals.CurrentCycleTimeInSeconds+=1
+
+
+       Catch ex As Exception
+
+          MessageBox.Show("Im an exception")
+          Return false
+
+       end try
+
+
      
        Return true
      
@@ -209,8 +222,15 @@ End Sub
 
     Public Function RunStart( ByVal auxFilePath As String,byval vectoFilePath as string , ByRef message As String) As Boolean Implements VectoAuxiliaries.IAdvancedAuxiliaries.RunStart
           
+          Try
+          Initialise(auxFilePath, vectoFilePath)  
 
-       Initialise(auxFilePath, vectoFilePath)   
+          Catch ex As Exception
+
+          Return false
+
+          End Try
+ 
        
        'TODO:Modify Initialise to return a Bool.
        Return true     
