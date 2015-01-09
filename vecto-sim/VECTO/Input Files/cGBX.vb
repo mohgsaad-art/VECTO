@@ -495,14 +495,14 @@ Public Class cGBX
 
             AAUX_Gobal.ClutchEngaged = (Gear > 0)
 
-            AAUX_Gobal.Idle =  False' (Gear = 0 And Not Pplus And Not Pminus)
+            AAUX_Gobal.Idle = False'(Gear = 0 And Not Pplus And Not Pminus)
 
             AAUX_Gobal.InNeutral = (Gear = 0)
 
             'Driveline Power = required power at clutch = power at wheels plus powertrain losses
             '[kW]
-            '**** THIS IS NOT CORRECT< BUT NO PKU Variable is available at this point ****
-            AAUX_Gobal.EngineDrivelinePower = 0
+            '**** RL 7-7-15 ****
+            AAUX_Gobal.EngineDrivelinePower = PeOut
 
             '[1/min]
             AAUX_Gobal.EngineSpeed = nU

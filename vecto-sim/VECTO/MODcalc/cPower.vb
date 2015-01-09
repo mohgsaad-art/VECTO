@@ -1442,8 +1442,23 @@ lb_nOK:
         'AA-TB    
         'Aggregate Fuel On Last Known Signals.  
         If Not AAUX_Gobal.advancedAuxModel is nothing
+
+         'EngineState ( used for start stop fueling adjustment )
+
+         If EngState0 = tEngState.Stopped then
+          advancedAuxModel.Signals.EngineStopped =true
+         else
+          advancedAuxModel.Signals.EngineStopped = false
+         End If
+
+
+
+
          advancedAuxModel.CycleStep(1,message)
 
+
+
+         try
 
          'Add Mod Data
          ModData.AA_NonSmartAlternatorsEfficiency                  .Add( advancedAuxModel.AA_NonSmartAlternatorsEfficiency)
@@ -1459,6 +1474,15 @@ lb_nOK:
          ModData.AA_CompressorFlag                                 .Add( advancedAuxModel.AA_CompressorFlag)
          ModData.AA_TotalCycleFC_BeforeSSandWHTCcorrection_Grams   .Add( advancedAuxModel.AA_TotalCycleFC_BeforeSSandWHTCcorrection_Grams)
          ModData.AA_TotalCycleFC_BeforeSSandWHTCcorrection_Litres  .Add( advancedAuxModel.AA_TotalCycleFC_BeforeSSandWHTCcorrection_Litres)
+
+         Catch ex   as Exception
+
+         Dim dummy = 0
+
+
+         End try
+
+
 
         End if
 
@@ -1754,38 +1778,41 @@ lb_nOK:
         'Do not allow positive road gradients     
         Grad = MODdata.Vh.fGrad(s)
 
-                    'AA-TB
-            'Recalculate for Advanced Auxiliaries.
-
-            AAUX_Gobal.ClutchEngaged = (Gear > 0)
-
-            AAUX_Gobal.Idle = (Gear = 0 And Not Pplus And Not Pminus)
-
-            AAUX_Gobal.InNeutral = (Gear = 0)
-
-            'Driveline Power = required power at clutch = power at wheels plus powertrain losses
-            '[kW]
-            '**** THIS IS NOT CORRECT< BUT NO PKU Variable is available at this point ****
-            AAUX_Gobal.EngineDrivelinePower = 0
-
-            '[1/min]
-            AAUX_Gobal.EngineSpeed = nU
-
-            '[Nm] (using Power => Torque conversion)
-            AAUX_Gobal.EngineDrivelineTorque = nPeToM(EngineSpeed, EngineDrivelinePower)
-
-            'Motoring power (< 0 !!!)
-            '[kW]
-            '** MULTIPLIED BY - TO GET POSITIVE VALUE
-            AAUX_Gobal.EngineMotoringPower = - FLD(Gear).Pdrag(EngineSpeed)
-
-            'Additional aux power from driving cycle (optional user input)
-            '[kW]
-            AAUX_Gobal.PreExistingAuxPower = MODdata.Vh.Padd(t)
-
-
+        
         Pwheel = fPwheel(t, v, a, Grad)
         Pe = Pwheel + fPlossGB(Pwheel, v, Gear, True) + fPlossDiff(Pwheel, v, True) + fPaG(v, a) + fPlossRt(v, Gear) + fPaux(t, nU) + fPaMotSimple(t, Gear, v, a)
+
+
+        'AA-TB
+       'Recalculate for Advanced Auxiliaries.
+
+       AAUX_Gobal.ClutchEngaged = (Gear > 0)
+
+       AAUX_Gobal.Idle = (Gear = 0 And Not Pplus And Not Pminus)
+
+       AAUX_Gobal.InNeutral = (Gear = 0)
+
+       'Driveline Power = required power at clutch = power at wheels plus powertrain losses
+       '[kW]
+       '**** THIS IS NOT CORRECT< BUT NO PKU Variable is available at this point ****
+       AAUX_Gobal.EngineDrivelinePower = Pwheel + fPlossGB(Pwheel, v, Gear, True) + fPlossDiff(Pwheel, v, True) + fPaG(v, a) + fPlossRt(v, Gear)
+
+       '[1/min]
+       AAUX_Gobal.EngineSpeed = nU
+
+       '[Nm] (using Power => Torque conversion)
+       AAUX_Gobal.EngineDrivelineTorque = nPeToM(EngineSpeed, EngineDrivelinePower)
+
+       'Motoring power (< 0 !!!)
+       '[kW]
+       '** MULTIPLIED BY - TO GET POSITIVE VALUE
+       AAUX_Gobal.EngineMotoringPower = - FLD(Gear).Pdrag(EngineSpeed)
+
+       'Additional aux power from driving cycle (optional user input)
+       '[kW]
+       AAUX_Gobal.PreExistingAuxPower = MODdata.Vh.Padd(t)
+
+
 
         Diff = Math.Abs(Pdrag - Pe)
 
@@ -1833,8 +1860,8 @@ lb_nOK:
 
             'Driveline Power = required power at clutch = power at wheels plus powertrain losses
             '[kW]
-            '**** THIS IS NOT CORRECT< BUT NO PKU Variable is available at this point ****
-            AAUX_Gobal.EngineDrivelinePower = 0
+            '**** RL-7/1/15 ****
+            AAUX_Gobal.EngineDrivelinePower = Pwheel + fPlossGB(Pwheel, v, Gear, True) + fPlossDiff(Pwheel, v, True) + fPaG(v, a) + fPlossRt(v, Gear)
 
             '[1/min]
             AAUX_Gobal.EngineSpeed = nU
@@ -2542,6 +2569,7 @@ lb10:
              AAUX_Gobal.advancedAuxModel.Signals.PreExistingAuxPower  = AAUX_Gobal.PreExistingAuxPower
              AAUX_Gobal.advancedAuxModel.Signals.Idle = AAUX_Gobal.Idle
              AAUX_Gobal.advancedAuxModel.Signals.InNeutral = AAUX_Gobal.InNeutral
+
 
              'Power coming out of Advanced Model is in Watts.
              power = (advancedAuxModel.AuxiliaryPowerAtCrankWatts /1000)

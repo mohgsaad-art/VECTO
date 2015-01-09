@@ -742,19 +742,19 @@ Public Class cMOD
 
                     'AA-TB
                     'Advanced Auxiliaries
-                      s.Append(Sepp & AA_NonSmartAlternatorsEfficiency(t).ToString())             
-                      s.Append(Sepp & AA_SmartIdleCurrent_Amps(t).ToString())              
-                      s.Append(Sepp & AA_SmartIdleAlternatorsEfficiency(t).ToString())                  
-                      s.Append(Sepp & AA_SmartTractionCurrent_Amps(t).ToString())                     
-                      s.Append(Sepp & AA_SmartTractionAlternatorEfficiency(t).ToString())               
-                      s.Append(Sepp & AA_SmartOverrunCurrent_Amps(t).ToString())                      
-                      s.Append(Sepp & AA_SmartOverrunAlternatorEfficiency(t).ToString())               
-                      s.Append(Sepp & AA_CompressorFlowRate_LitrePerSec(t).ToString())                  
-                      s.Append(Sepp & AA_OverrunFlag(t).ToString())                                   
-                      s.Append(Sepp & AA_EngineIdleFlag(t).ToString())                                     
-                      s.Append(Sepp & AA_CompressorFlag(t).ToString())                                    
-                      s.Append(Sepp & AA_TotalCycleFC_BeforeSSandWHTCcorrection_Grams(t).ToString())  
-                      s.Append(Sepp & AA_TotalCycleFC_BeforeSSandWHTCcorrection_Litres(t).ToString())
+                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC",AA_NonSmartAlternatorsEfficiency(t).ToString(),""))           
+                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC",AA_SmartIdleCurrent_Amps(t).ToString(),""))              
+                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC",AA_SmartIdleAlternatorsEfficiency(t).ToString(),""))                  
+                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC",AA_SmartTractionCurrent_Amps(t).ToString(),""))                     
+                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC",AA_SmartTractionAlternatorEfficiency(t).ToString(),""))               
+                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC",AA_SmartOverrunCurrent_Amps(t).ToString(),""))                      
+                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC",AA_SmartOverrunAlternatorEfficiency(t).ToString(),""))               
+                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC",AA_CompressorFlowRate_LitrePerSec(t).ToString(),""))                  
+                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC",AA_OverrunFlag(t).ToString(),""))                                   
+                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC",AA_EngineIdleFlag(t).ToString(),""))                                     
+                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC",AA_CompressorFlag(t).ToString(),""))                                    
+                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC",AA_TotalCycleFC_BeforeSSandWHTCcorrection_Grams(t).ToString(),""))  
+                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC",AA_TotalCycleFC_BeforeSSandWHTCcorrection_Litres(t).ToString(),""))
 
                 End If
 
