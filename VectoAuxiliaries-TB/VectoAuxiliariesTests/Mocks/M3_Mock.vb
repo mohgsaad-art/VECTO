@@ -14,7 +14,7 @@ Public Class M3_Mock
      Return _GetAveragePowerDemandAtCrankFromPneumatics
     End Function
 
-    Public Function TotalAirConsumedPerCycle() As Single Implements IM3_AveragePneumaticLoadDemand.TotalAirConsumedPerCycle
+    Public Function TotalAirConsumedPerCycle() As Single Implements IM3_AveragePneumaticLoadDemand.AverageAirConsumedPerSecondLitre
      Return _TotalAirConsumedPerCycle
     End Function
 
