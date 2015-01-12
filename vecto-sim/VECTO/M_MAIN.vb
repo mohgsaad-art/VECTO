@@ -294,7 +294,7 @@ lbSkip0:
 
                    'AA-TB
                    'SET CURRENT CYCLE FILE BEING USED IN AAUX
-                    AAUX_Gobal.CurrentCycleFile= CurrentCycleFile
+                    mAAUX_Global.CurrentCycleFile= CurrentCycleFile
 
                     jsubcycle += 1
 

@@ -45,6 +45,10 @@ M10Mock.Setup( Function(x) x.AverageLoadsFuelConsumptionInterpolatedForPneumatic
 
 End Sub
 
+
+
+
+
 End Class
 
 

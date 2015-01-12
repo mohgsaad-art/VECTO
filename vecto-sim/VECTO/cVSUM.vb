@@ -656,6 +656,15 @@ Class cVSUM
 
         End If
 
+        If( Not VEC is Nothing AndAlso VEC.AuxiliaryAssembly<>"CLASSIC") then
+        'Advanced Auxiliaries I.E. Bus Auxiliaries.
+        AddToVSUM("\\AA_FC_LHR","AA FC L/H","L/R",false)
+        AddToVSUM("\\AA_FC_GHR","AA FC G/H","G/R",false)
+
+
+
+        End if
+
         'Sort
         iDim = VSUMentryList.Count - 1
 

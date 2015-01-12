@@ -182,7 +182,7 @@ Private Sub CreateBindings()
          
         'TODO:NOT NEEDED IN NORMAL OPS ONLY FOR TEST HARNESS     
         chkSignalsSmartAirCompression.DataBindings.Add("Checked",auxEnvironment.Signals,"SmartPneumatics",False,DataSourceUpdateMode.OnPropertyChanged)
-
+        Me.chkEngineStopped.DataBindings.Add("Checked",auxEnvironment.Signals,"EngineStopped",False,DataSourceUpdateMode.OnPropertyChanged)
 
         chkSmartRegeneration.DataBindings.Add("Checked",auxEnvironment.PneumaticUserInputsConfig,"SmartRegeneration",False,DataSourceUpdateMode.OnPropertyChanged)         
         chkRetarderBrake.DataBindings.Add("Checked",auxEnvironment.PneumaticUserInputsConfig,"RetarderBrake")          

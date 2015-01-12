@@ -68,11 +68,9 @@ Private Signals As ISignals
 
  'Staging Calculations
 
-Private Function S0( rpm As Single ) As Single
+Private Function S0( byval rpm As Single ) As Single
 
-  If rpm=0  then   
-      Return 0.00001
-  End If
+  If rpm<1 then rpm=1
   
   Return rpm / RPM_TO_RADS_PER_SECOND
 
@@ -163,6 +161,8 @@ End Property
 
  'Clear down at the beginning of a cycle.      
  Public Sub CycleStep(Optional stepTimeInSeconds As Single = 0.0) Implements IM9.CycleStep
+
+          If Signals.EngineStopped then return
 
           _LitresOfAirCompressorOnContinuallyAggregate +=stepTimeInSeconds* M4.GetFlowRate * sw1
           _LitresOfAirCompressorOnOnlyInOverrunAggregate +=stepTimeInSeconds * s10 * sw1

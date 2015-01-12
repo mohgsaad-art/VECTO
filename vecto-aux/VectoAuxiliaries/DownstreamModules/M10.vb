@@ -62,12 +62,12 @@ End Function
 
  Public ReadOnly Property BaseFuelConsumptionWithAverageAuxiliaryLoads As Single Implements IM10.AverageLoadsFuelConsumptionInterpolatedForPneumatics
             Get
-             Return Interpolate(InterpolationType.NonSmartPneumtaics)
+             Return  If( Single.IsNaN( Interpolate(InterpolationType.NonSmartPneumtaics)),0,Interpolate(InterpolationType.NonSmartPneumtaics))
             End Get
         End Property
  Public ReadOnly Property FuelConsumptionSmartPneumaticsAndAverageElectricalPowerDemand As Single Implements IM10.FuelConsumptionSmartPneumaticsAndAverageElectricalPowerDemand
             Get
-             Return Interpolate( InterpolationType.SmartPneumtaics)
+             Return If( Single.IsNaN(Interpolate( InterpolationType.SmartPneumtaics)),0,Interpolate(InterpolationType.SmartPneumtaics))
             End Get
         End Property
  

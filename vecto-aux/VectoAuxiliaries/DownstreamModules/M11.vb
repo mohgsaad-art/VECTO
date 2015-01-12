@@ -36,11 +36,9 @@ Public Class M11
 
   'Staging Calculations
 
-  Private Function Sum0( rpm As Single ) As Single
+  Private Function Sum0( byval rpm As Single ) As Single
 
-   If rpm= 0 then 
-     Return 0
-   End If
+   If rpm<1 then rpm=1
 
    Return rpm/RPM_to_RadiansPerSecond
 
@@ -146,15 +144,22 @@ End Property
  'Add to Aggregates dependent on cycle step time.
  Sub CycleStep(Optional stepTimeInSeconds As Single = 0.0) Implements IM11.CycleStep
 
-   AG1  =    AG1   +  (  stepTimeInSeconds *   sum1                                           * SW1 )
-   AG2  =    AG2   +  (  stepTimeInSeconds *   M8.SmartElectricalAlternatorPowerGenAtCrank    * SW1 )
-   AG3  =    AG3   +  (  stepTimeInSeconds *   m6.AvgPowerDemandAtCrankFromElectricsIncHVAC         )
-   AG6  =    AG6   +  (  stepTimeInSeconds *   m6.AvgPowerDemandAtCrankFromElectricsIncHVAC   * SW1 )
+  'S/S Insensitive
+   AG3+=  (  stepTimeInSeconds *   m6.AvgPowerDemandAtCrankFromElectricsIncHVAC         )
+
+
+   If Signals.EngineStopped then return
+
+   'S/S Sensitive
+   AG1+=  (  stepTimeInSeconds *   sum1                                           * SW1 )
+   AG2+=  (  stepTimeInSeconds *   M8.SmartElectricalAlternatorPowerGenAtCrank    * SW1 )
+
+   AG6+=  (  stepTimeInSeconds *   m6.AvgPowerDemandAtCrankFromElectricsIncHVAC   * SW1 )
 
    'These need to be divided by 3600 as the Fuel Map output is in Grams/Second.
-   AG4  =    AG4   +  (  stepTimeInSeconds *   sum7 / 3600                                    * SW1 )
-   AG5  =    AG5   +  (  stepTimeInSeconds *   Sum8 / 3600                                    * SW1 )
-
+   AG4+=  (  stepTimeInSeconds *   sum7 / 3600                                    * SW1 )
+   AG5+=  (  stepTimeInSeconds *   Sum8 / 3600                                    * SW1 )
+       
  End Sub
 
  'Constructor

@@ -36,7 +36,7 @@ Public Class F_VECTO
 
 
     'Scan the program directory for DLL's which are AdvancedAuxiliaries and display
-    Dim AList As List(Of cAdvancedAuxiliary ) = AAUX_Gobal.DiscoverAdvancedAuxiliaries()
+    Dim AList As List(Of cAdvancedAuxiliary ) = mAAUX_Global.DiscoverAdvancedAuxiliaries()
 
     cboAdvancedAuxiliaries.DataSource=AList
     cboAdvancedAuxiliaries.DisplayMember= "AuxiliaryName"
@@ -515,13 +515,13 @@ Public Class F_VECTO
        If cboAdvancedAuxiliaries.SelectedIndex>0 then
 
          'resolve absolute path for auxiliary file.
-         absoluteAAUxFile = AAUX_Gobal.ResolveAAUXFilePath( fPATH(VECTOfile),txtAdvancedAuxiliaryFile.Text)
+         absoluteAAUxFile = mAAUX_Global.ResolveAAUXFilePath( fPATH(VECTOfile),txtAdvancedAuxiliaryFile.Text)
 
          aaAssemblyName    = DirectCast(cboAdvancedAuxiliaries.SelectedItem, cAdvancedAuxiliary).AssemblyName
          aaAssemblyVersion = DirectCast(cboAdvancedAuxiliaries.SelectedItem, cAdvancedAuxiliary).AuxiliaryVersion
 
 
-         If NOT AAUX_Gobal.ValidateAAUXFile( absoluteAAUxFile,aaAssemblyName,aaAssemblyVersion, message ) then
+         If NOT mAAUX_Global.ValidateAAUXFile( absoluteAAUxFile,aaAssemblyName,aaAssemblyVersion, message ) then
           MessageBox.Show (String.Format("You have selected an advanced auxiliary *Auxiliary Type*, but the file specified is invalid :{0}", message))
           Return false
          End If
@@ -1370,7 +1370,7 @@ Private Sub btnBrowseAAUXFile_Click( sender As Object,  e As EventArgs) Handles 
                If cboAdvancedAuxiliaries.SelectedIndex=0 then return
 
                'Get Absolute Path for AAUX FILE.
-               absoluteAuxPath = AAUX_Gobal.ResolveAAUXFilePath(fPATH(VECTOfile),txtAdvancedAuxiliaryFile.Text )
+               absoluteAuxPath = mAAUX_Global.ResolveAAUXFilePath(fPATH(VECTOfile),txtAdvancedAuxiliaryFile.Text )
 
 
                try
@@ -1378,9 +1378,9 @@ Private Sub btnBrowseAAUXFile_Click( sender As Object,  e As EventArgs) Handles 
                assembly =  DirectCast( cboAdvancedAuxiliaries.SelectedItem, cAdvancedAuxiliary)
 
                'If supplied file valid, straight to config
-               If AAUX_Gobal.ValidateAAUXFile( absoluteAuxPath,assembly.AssemblyName, assembly.AuxiliaryVersion, message )        
+               If mAAUX_Global.ValidateAAUXFile( absoluteAuxPath,assembly.AssemblyName, assembly.AuxiliaryVersion, message )        
                   
-                  configResult=AAUX_Gobal.ConfigureAdvancedAuxiliaries(assembly.AssemblyName,assembly.AuxiliaryVersion,txtAdvancedAuxiliaryFile.Text,VECTOfile)
+                  configResult=mAAUX_Global.ConfigureAdvancedAuxiliaries(assembly.AssemblyName,assembly.AuxiliaryVersion,txtAdvancedAuxiliaryFile.Text,VECTOfile)
 
                else
 
@@ -1393,7 +1393,7 @@ Private Sub btnBrowseAAUXFile_Click( sender As Object,  e As EventArgs) Handles 
                 If fbAux.CustomDialog(absoluteAuxPath,False,False, tFbExtMode.ForceExt,False,"") Then
                   txtAdvancedAuxiliaryFile.Text = fFileWoDir(fbAux.Files(0), fPATH(vectoFile))
                    assembly= DirectCast( cboAdvancedAuxiliaries.SelectedItem, cAdvancedAuxiliary)
-                  AAUX_Gobal.ConfigureAdvancedAuxiliaries(assembly.AssemblyName,assembly.AuxiliaryVersion,txtAdvancedAuxiliaryFile.Text,VECTOfile)
+                  mAAUX_Global.ConfigureAdvancedAuxiliaries(assembly.AssemblyName,assembly.AuxiliaryVersion,txtAdvancedAuxiliaryFile.Text,VECTOfile)
                End If
 
                End If
