@@ -493,31 +493,31 @@ Public Class cGBX
             'AA-TB
             'Recalculate for Advanced Auxiliaries.
 
-            AAUX_Gobal.ClutchEngaged = (Gear > 0)
+            mAAUX_Global.ClutchEngaged = (Gear > 0)
 
-            AAUX_Gobal.Idle = False'(Gear = 0 And Not Pplus And Not Pminus)
+            mAAUX_Global.Idle = False'(Gear = 0 And Not Pplus And Not Pminus)
 
-            AAUX_Gobal.InNeutral = (Gear = 0)
+            mAAUX_Global.InNeutral = (Gear = 0)
 
             'Driveline Power = required power at clutch = power at wheels plus powertrain losses
             '[kW]
             '**** RL 7-7-15 ****
-            AAUX_Gobal.EngineDrivelinePower = PeOut
+            mAAUX_Global.EngineDrivelinePower = PeOut
 
             '[1/min]
-            AAUX_Gobal.EngineSpeed = nU
+            mAAUX_Global.EngineSpeed = nU
 
             '[Nm] (using Power => Torque conversion)
-            AAUX_Gobal.EngineDrivelineTorque = nPeToM(EngineSpeed, EngineDrivelinePower)
+            mAAUX_Global.EngineDrivelineTorque = nPeToM(EngineSpeed, EngineDrivelinePower)
 
             'Motoring power (< 0 !!!)
             '[kW]
             '** MULTIPLIED BY - TO GET POSITIVE VALUE
-            AAUX_Gobal.EngineMotoringPower = - FLD(Gear).Pdrag(EngineSpeed)
+            mAAUX_Global.EngineMotoringPower = - FLD(Gear).Pdrag(EngineSpeed)
 
             'Additional aux power from driving cycle (optional user input)
             '[kW]
-            AAUX_Gobal.PreExistingAuxPower = MODdata.Vh.Padd(t)
+            mAAUX_Global.PreExistingAuxPower = MODdata.Vh.Padd(t)
 
 
 

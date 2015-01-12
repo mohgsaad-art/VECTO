@@ -41,8 +41,7 @@ Public Class M0_NonSmart_AlternatorsSetEfficiency
     Public ReadOnly Property  AlternatorsEfficiency As Single Implements IM0_NonSmart_AlternatorsSetEfficiency.AlternatorsEfficiency
 
     Get
-          'Sanity Check.
-          If _signals.EngineSpeed < 1 Then Return 0
+
 
           Dim baseCurrentDemandAmps As Single = _electricalConsumersList.GetTotalAverageDemandAmps(True)
 
