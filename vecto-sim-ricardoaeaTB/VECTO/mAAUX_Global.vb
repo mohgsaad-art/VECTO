@@ -2,7 +2,7 @@
 Imports VectoAuxiliaries
 Imports System.IO
 
-Module AAUX_Gobal
+Module mAAUX_Global
 
 
   public ClutchEngaged As Boolean

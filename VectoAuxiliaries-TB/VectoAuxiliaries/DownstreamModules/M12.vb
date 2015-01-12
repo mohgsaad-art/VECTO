@@ -34,7 +34,7 @@ Dim TanTeta as Single = (P2.Y-P1.Y)/(P2.X-P1.X)
 
 IP5y = P1.Y + ( TanTeta * IP5x )
 
-Return IP5Y
+Return  If( Single.IsNaN(IP5Y),0, IP5y)
 
 End Function
 
@@ -51,7 +51,7 @@ Dim TanTeta as Single = (P3.Y-P1.Y)/(P3.X-P1.X)
 
 IP5y = P1.Y + ( TanTeta * IP5x )
 
-Return IP5Y
+Return  If( Single.IsNaN(IP5Y),0, IP5y)
 
 End Function
 

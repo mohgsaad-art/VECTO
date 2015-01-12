@@ -289,6 +289,7 @@ Partial Class Dashboard
         Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+        Me.chkEngineStopped = New System.Windows.Forms.CheckBox()
         Me.pnlMain.SuspendLayout
         Me.tabMain.SuspendLayout
         Me.tabGeneralConfig.SuspendLayout
@@ -1323,6 +1324,7 @@ Partial Class Dashboard
         'tabPlayground
         '
         Me.tabPlayground.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.tabPlayground.Controls.Add(Me.chkEngineStopped)
         Me.tabPlayground.Controls.Add(Me.pnlM13)
         Me.tabPlayground.Controls.Add(Me.lblM13_Title)
         Me.tabPlayground.Controls.Add(Me.pnlM12)
@@ -2138,7 +2140,7 @@ Partial Class Dashboard
         'lblPreExistingAuxPower
         '
         Me.lblPreExistingAuxPower.AutoSize = true
-        Me.lblPreExistingAuxPower.Location = New System.Drawing.Point(9, 147)
+        Me.lblPreExistingAuxPower.Location = New System.Drawing.Point(9, 164)
         Me.lblPreExistingAuxPower.Name = "lblPreExistingAuxPower"
         Me.lblPreExistingAuxPower.Size = New System.Drawing.Size(116, 13)
         Me.lblPreExistingAuxPower.TabIndex = 42
@@ -2146,7 +2148,7 @@ Partial Class Dashboard
         '
         'txtPreExistingAuxPower
         '
-        Me.txtPreExistingAuxPower.Location = New System.Drawing.Point(10, 166)
+        Me.txtPreExistingAuxPower.Location = New System.Drawing.Point(10, 183)
         Me.txtPreExistingAuxPower.Name = "txtPreExistingAuxPower"
         Me.txtPreExistingAuxPower.Size = New System.Drawing.Size(100, 20)
         Me.txtPreExistingAuxPower.TabIndex = 41
@@ -2249,7 +2251,7 @@ Partial Class Dashboard
         '
         'PictureBox1
         '
-        Me.PictureBox1.Location = New System.Drawing.Point(13, 412)
+        Me.PictureBox1.Location = New System.Drawing.Point(13, 429)
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.Size = New System.Drawing.Size(100, 94)
         Me.PictureBox1.TabIndex = 34
@@ -2783,7 +2785,7 @@ Partial Class Dashboard
         'lblTotalCycleTimeSeconds
         '
         Me.lblTotalCycleTimeSeconds.AutoSize = true
-        Me.lblTotalCycleTimeSeconds.Location = New System.Drawing.Point(10, 369)
+        Me.lblTotalCycleTimeSeconds.Location = New System.Drawing.Point(10, 386)
         Me.lblTotalCycleTimeSeconds.Name = "lblTotalCycleTimeSeconds"
         Me.lblTotalCycleTimeSeconds.Size = New System.Drawing.Size(134, 13)
         Me.lblTotalCycleTimeSeconds.TabIndex = 14
@@ -2792,7 +2794,7 @@ Partial Class Dashboard
         'lblEngineSpeed
         '
         Me.lblEngineSpeed.AutoSize = true
-        Me.lblEngineSpeed.Location = New System.Drawing.Point(8, 324)
+        Me.lblEngineSpeed.Location = New System.Drawing.Point(8, 341)
         Me.lblEngineSpeed.Name = "lblEngineSpeed"
         Me.lblEngineSpeed.Size = New System.Drawing.Size(107, 13)
         Me.lblEngineSpeed.TabIndex = 13
@@ -2801,7 +2803,7 @@ Partial Class Dashboard
         'lblEngineMotoringPower
         '
         Me.lblEngineMotoringPower.AutoSize = true
-        Me.lblEngineMotoringPower.Location = New System.Drawing.Point(9, 280)
+        Me.lblEngineMotoringPower.Location = New System.Drawing.Point(9, 297)
         Me.lblEngineMotoringPower.Name = "lblEngineMotoringPower"
         Me.lblEngineMotoringPower.Size = New System.Drawing.Size(117, 13)
         Me.lblEngineMotoringPower.TabIndex = 12
@@ -2810,7 +2812,7 @@ Partial Class Dashboard
         'lblEngineDrivelineTorque
         '
         Me.lblEngineDrivelineTorque.AutoSize = true
-        Me.lblEngineDrivelineTorque.Location = New System.Drawing.Point(9, 235)
+        Me.lblEngineDrivelineTorque.Location = New System.Drawing.Point(9, 252)
         Me.lblEngineDrivelineTorque.Name = "lblEngineDrivelineTorque"
         Me.lblEngineDrivelineTorque.Size = New System.Drawing.Size(121, 13)
         Me.lblEngineDrivelineTorque.TabIndex = 11
@@ -2819,7 +2821,7 @@ Partial Class Dashboard
         'lblEngineDrivelinePower
         '
         Me.lblEngineDrivelinePower.AutoSize = true
-        Me.lblEngineDrivelinePower.Location = New System.Drawing.Point(7, 193)
+        Me.lblEngineDrivelinePower.Location = New System.Drawing.Point(7, 210)
         Me.lblEngineDrivelinePower.Name = "lblEngineDrivelinePower"
         Me.lblEngineDrivelinePower.Size = New System.Drawing.Size(120, 13)
         Me.lblEngineDrivelinePower.TabIndex = 10
@@ -2827,35 +2829,35 @@ Partial Class Dashboard
         '
         'txtTotalCycleTimeSeconds
         '
-        Me.txtTotalCycleTimeSeconds.Location = New System.Drawing.Point(10, 386)
+        Me.txtTotalCycleTimeSeconds.Location = New System.Drawing.Point(10, 403)
         Me.txtTotalCycleTimeSeconds.Name = "txtTotalCycleTimeSeconds"
         Me.txtTotalCycleTimeSeconds.Size = New System.Drawing.Size(100, 20)
         Me.txtTotalCycleTimeSeconds.TabIndex = 5
         '
         'txtEngineSpeed
         '
-        Me.txtEngineSpeed.Location = New System.Drawing.Point(10, 337)
+        Me.txtEngineSpeed.Location = New System.Drawing.Point(10, 354)
         Me.txtEngineSpeed.Name = "txtEngineSpeed"
         Me.txtEngineSpeed.Size = New System.Drawing.Size(100, 20)
         Me.txtEngineSpeed.TabIndex = 4
         '
         'txtEngineMotoringPower
         '
-        Me.txtEngineMotoringPower.Location = New System.Drawing.Point(10, 297)
+        Me.txtEngineMotoringPower.Location = New System.Drawing.Point(10, 314)
         Me.txtEngineMotoringPower.Name = "txtEngineMotoringPower"
         Me.txtEngineMotoringPower.Size = New System.Drawing.Size(100, 20)
         Me.txtEngineMotoringPower.TabIndex = 3
         '
         'txtEngineDrivelineTorque
         '
-        Me.txtEngineDrivelineTorque.Location = New System.Drawing.Point(10, 252)
+        Me.txtEngineDrivelineTorque.Location = New System.Drawing.Point(10, 269)
         Me.txtEngineDrivelineTorque.Name = "txtEngineDrivelineTorque"
         Me.txtEngineDrivelineTorque.Size = New System.Drawing.Size(100, 20)
         Me.txtEngineDrivelineTorque.TabIndex = 2
         '
         'txtEngineDrivelinePower
         '
-        Me.txtEngineDrivelinePower.Location = New System.Drawing.Point(10, 208)
+        Me.txtEngineDrivelinePower.Location = New System.Drawing.Point(10, 225)
         Me.txtEngineDrivelinePower.Name = "txtEngineDrivelinePower"
         Me.txtEngineDrivelinePower.Size = New System.Drawing.Size(100, 20)
         Me.txtEngineDrivelinePower.TabIndex = 1
@@ -2879,6 +2881,16 @@ Partial Class Dashboard
         'Timer1
         '
         Me.Timer1.Interval = 1000
+        '
+        'chkEngineStopped
+        '
+        Me.chkEngineStopped.AutoSize = true
+        Me.chkEngineStopped.Location = New System.Drawing.Point(10, 144)
+        Me.chkEngineStopped.Name = "chkEngineStopped"
+        Me.chkEngineStopped.Size = New System.Drawing.Size(102, 17)
+        Me.chkEngineStopped.TabIndex = 60
+        Me.chkEngineStopped.Text = "Engine Stopped"
+        Me.chkEngineStopped.UseVisualStyleBackColor = true
         '
         'Dashboard
         '
@@ -3198,5 +3210,6 @@ End Sub
     Friend WithEvents btnSSMBSource As System.Windows.Forms.Button
     Friend WithEvents lblSSMFilePath As System.Windows.Forms.Label
     Friend WithEvents txtSSMFilePath As System.Windows.Forms.TextBox
+    Friend WithEvents chkEngineStopped As System.Windows.Forms.CheckBox
 
 End Class

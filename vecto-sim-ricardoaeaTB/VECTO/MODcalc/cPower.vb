@@ -82,9 +82,9 @@ Public Class cPower
         'AA-TB
         '*************************************************************************
         'Informs Power Calculation to aggregate fuel or not if in Advanced mode.
-        AAUX_Gobal.RunningCalc=False
+        mAAUX_Global.RunningCalc=False
         'Cycle Time in Seconds, set this in AAUX_GLOBAL.
-        AAUX_Gobal.CycleTimeInSeconds= MODdata.tDim
+        mAAUX_Global.CycleTimeInSeconds= MODdata.tDim
         '*************************************************************************
 
         Dim MsgSrc As String
@@ -95,7 +95,7 @@ Public Class cPower
         'Try and Initialise the Advanced Aux Model if selected.
         If VEC.AuxiliaryAssembly<>"CLASSIC" then  
            WorkerMsg(tMsgID.Normal,"Initialising Advanced Auxiliaries Model", MsgSrc)
-           If AAUX_Gobal.InitialiseAdvancedAuxModel(VEC.AdvancedAuxiliaryFilePath) then
+           If mAAUX_Global.InitialiseAdvancedAuxModel(VEC.AdvancedAuxiliaryFilePath) then
              WorkerMsg(tMsgID.Normal,"Successfully Initialised Advanced Auxiliaries", MsgSrc)
            else
              WorkerMsg(tMsgID.Err,"FAILED to Initialised Advanced Auxiliaries", MsgSrc)
@@ -263,30 +263,30 @@ Public Class cPower
             End If
 
             'Clutch closed/engaged = True
-            AAUX_Gobal.ClutchEngaged = (Gear > 0)
+            mAAUX_Global.ClutchEngaged = (Gear > 0)
 
-            AAUX_Gobal.Idle = (Gear = 0 And Not Pplus And Not Pminus)
+            mAAUX_Global.Idle = (Gear = 0 And Not Pplus And Not Pminus)
 
-            AAUX_Gobal.InNeutral = (Gear = 0)
+            mAAUX_Global.InNeutral = (Gear = 0)
 
             'Driveline Power = required power at clutch = power at wheels plus powertrain losses
             '[kW]
-            AAUX_Gobal.EngineDrivelinePower = Pkup
+            mAAUX_Global.EngineDrivelinePower = Pkup
 
             '[1/min]
-            AAUX_Gobal.EngineSpeed = nU
+            mAAUX_Global.EngineSpeed = nU
 
             '[Nm] (using Power => Torque conversion)
-            AAUX_Gobal.EngineDrivelineTorque = nPeToM(EngineSpeed, EngineDrivelinePower)
+            mAAUX_Global.EngineDrivelineTorque = nPeToM(EngineSpeed, EngineDrivelinePower)
 
             'Motoring power (< 0 !!!)
             '[kW]
             '*** NOTE THIS IS MULTIPLIED BY - to get a positive value
-            AAUX_Gobal.EngineMotoringPower =  - FLD(Gear).Pdrag(EngineSpeed)
+            mAAUX_Global.EngineMotoringPower =  - FLD(Gear).Pdrag(EngineSpeed)
 
             'Additional aux power from driving cycle (optional user input)
             '[kW]
-            AAUX_Gobal.PreExistingAuxPower = MODdata.Vh.Padd(t)
+            mAAUX_Global.PreExistingAuxPower = MODdata.Vh.Padd(t)
 
 
             'TODO: HOW TO ALTER HERE FOR CLASSIC or ADVANCED
@@ -582,7 +582,7 @@ Public Class cPower
 
         'AA-TB
         'Informs Power Calculation to aggregate fuel or not if in Advanced mode.
-        AAUX_Gobal.RunningCalc=true
+        mAAUX_Global.RunningCalc=true
 
 
         'Abort if no speed given
@@ -1026,31 +1026,31 @@ lb_nOK:
             '************************  ADVANCED AUXILIARIES STARTS **********************************************
             'Clutch closed/engaged = True
             'Note: Slipping clutch is also considered enganged.
-            AAUX_Gobal.ClutchEngaged = (Clutch <> tEngClutch.Opened)
+            mAAUX_Global.ClutchEngaged = (Clutch <> tEngClutch.Opened)
 
             'Note: Vehicles with Start/Stop will stop engine at vehicle stop => EngState0 = tEngState.Stopped
-            AAUX_Gobal.Idle = (EngState0 = tEngState.Idle)
+            mAAUX_Global.Idle = (EngState0 = tEngState.Idle)
 
-            AAUX_Gobal.InNeutral = (Gear = 0)
+            mAAUX_Global.InNeutral = (Gear = 0)
 
             'Driveline Power = required power at clutch = power at wheels plus powertrain losses
             '[kW]
-            AAUX_Gobal.EngineDrivelinePower = Pclutch
+            mAAUX_Global.EngineDrivelinePower = Pclutch
 
             '[1/min]
-            AAUX_Gobal.EngineSpeed = nU
+            mAAUX_Global.EngineSpeed = nU
 
             '[Nm] (using Power => Torque conversion)
-            AAUX_Gobal.EngineDrivelineTorque = nPeToM(EngineSpeed, EngineDrivelinePower)
+            mAAUX_Global.EngineDrivelineTorque = nPeToM(EngineSpeed, EngineDrivelinePower)
 
             'Motoring power (< 0 !!!)
             '[kW]
             '** NOTE THIS IS MULTIPLIED BY - to get a positive value.
-            AAUX_Gobal.EngineMotoringPower =  - FLD(Gear).Pdrag(EngineSpeed)
+            mAAUX_Global.EngineMotoringPower =  - FLD(Gear).Pdrag(EngineSpeed)
 
             'Additional aux power from driving cycle (optional user input)
             '[kW]
-            AAUX_Gobal.PreExistingAuxPower = MODdata.Vh.Padd(jz)
+            mAAUX_Global.PreExistingAuxPower = MODdata.Vh.Padd(jz)
 
 
             'TODO: HOW TO ALTER HERE FOR CLASSIC or ADVANCED
@@ -1441,7 +1441,7 @@ lb_nOK:
 
         'AA-TB    
         'Aggregate Fuel On Last Known Signals.  
-        If Not AAUX_Gobal.advancedAuxModel is nothing
+        If Not mAAUX_Global.advancedAuxModel is nothing
 
          'EngineState ( used for start stop fueling adjustment )
 
@@ -1493,8 +1493,8 @@ lb_nOK:
         'AA-TB
         'Say Fuel Consumption at end of current cycle.
         Dim fcLitres As single
-        If Not AAUX_Gobal.advancedAuxModel is nothing
-          fcLitres  = AAUX_Gobal.advancedAuxModel.TotalFuelLITRES
+        If Not mAAUX_Global.advancedAuxModel is nothing
+          fcLitres  = mAAUX_Global.advancedAuxModel.TotalFuelLITRES
           WorkerMsg(tMsgID.Warn,"Aux Fuel In Litres=" & fcLitres,"Calc")
         End If
 
@@ -1786,31 +1786,31 @@ lb_nOK:
         'AA-TB
        'Recalculate for Advanced Auxiliaries.
 
-       AAUX_Gobal.ClutchEngaged = (Gear > 0)
+       mAAUX_Global.ClutchEngaged = (Gear > 0)
 
-       AAUX_Gobal.Idle = (Gear = 0 And Not Pplus And Not Pminus)
+       mAAUX_Global.Idle = (Gear = 0 And Not Pplus And Not Pminus)
 
-       AAUX_Gobal.InNeutral = (Gear = 0)
+       mAAUX_Global.InNeutral = (Gear = 0)
 
        'Driveline Power = required power at clutch = power at wheels plus powertrain losses
        '[kW]
        '**** THIS IS NOT CORRECT< BUT NO PKU Variable is available at this point ****
-       AAUX_Gobal.EngineDrivelinePower = Pwheel + fPlossGB(Pwheel, v, Gear, True) + fPlossDiff(Pwheel, v, True) + fPaG(v, a) + fPlossRt(v, Gear)
+       mAAUX_Global.EngineDrivelinePower = Pwheel + fPlossGB(Pwheel, v, Gear, True) + fPlossDiff(Pwheel, v, True) + fPaG(v, a) + fPlossRt(v, Gear)
 
        '[1/min]
-       AAUX_Gobal.EngineSpeed = nU
+       mAAUX_Global.EngineSpeed = nU
 
        '[Nm] (using Power => Torque conversion)
-       AAUX_Gobal.EngineDrivelineTorque = nPeToM(EngineSpeed, EngineDrivelinePower)
+       mAAUX_Global.EngineDrivelineTorque = nPeToM(EngineSpeed, EngineDrivelinePower)
 
        'Motoring power (< 0 !!!)
        '[kW]
        '** MULTIPLIED BY - TO GET POSITIVE VALUE
-       AAUX_Gobal.EngineMotoringPower = - FLD(Gear).Pdrag(EngineSpeed)
+       mAAUX_Global.EngineMotoringPower = - FLD(Gear).Pdrag(EngineSpeed)
 
        'Additional aux power from driving cycle (optional user input)
        '[kW]
-       AAUX_Gobal.PreExistingAuxPower = MODdata.Vh.Padd(t)
+       mAAUX_Global.PreExistingAuxPower = MODdata.Vh.Padd(t)
 
 
 
@@ -1852,31 +1852,31 @@ lb_nOK:
             'AA-TB
             'Recalculate for Advanced Auxiliaries.
 
-            AAUX_Gobal.ClutchEngaged = (Gear > 0)
+            mAAUX_Global.ClutchEngaged = (Gear > 0)
 
-            AAUX_Gobal.Idle = (Gear = 0 And Not Pplus And Not Pminus)
+            mAAUX_Global.Idle = (Gear = 0 And Not Pplus And Not Pminus)
 
-            AAUX_Gobal.InNeutral = (Gear = 0)
+            mAAUX_Global.InNeutral = (Gear = 0)
 
             'Driveline Power = required power at clutch = power at wheels plus powertrain losses
             '[kW]
             '**** RL-7/1/15 ****
-            AAUX_Gobal.EngineDrivelinePower = Pwheel + fPlossGB(Pwheel, v, Gear, True) + fPlossDiff(Pwheel, v, True) + fPaG(v, a) + fPlossRt(v, Gear)
+            mAAUX_Global.EngineDrivelinePower = Pwheel + fPlossGB(Pwheel, v, Gear, True) + fPlossDiff(Pwheel, v, True) + fPaG(v, a) + fPlossRt(v, Gear)
 
             '[1/min]
-            AAUX_Gobal.EngineSpeed = nU
+            mAAUX_Global.EngineSpeed = nU
 
             '[Nm] (using Power => Torque conversion)
-            AAUX_Gobal.EngineDrivelineTorque = nPeToM(EngineSpeed, EngineDrivelinePower)
+            mAAUX_Global.EngineDrivelineTorque = nPeToM(EngineSpeed, EngineDrivelinePower)
 
             'Motoring power (< 0 !!!)
             '[kW]
             '** MULTIPLIED BY - TO GET POSITIVE VALUE
-            AAUX_Gobal.EngineMotoringPower = - FLD(Gear).Pdrag(EngineSpeed)
+            mAAUX_Global.EngineMotoringPower = - FLD(Gear).Pdrag(EngineSpeed)
 
             'Additional aux power from driving cycle (optional user input)
             '[kW]
-            AAUX_Gobal.PreExistingAuxPower = MODdata.Vh.Padd(t)
+            mAAUX_Global.PreExistingAuxPower = MODdata.Vh.Padd(t)
 
             Pe = Pwheel + fPlossGB(Pwheel, v, Gear, True) + fPlossDiff(Pwheel, v, True) + fPaG(v, a) + fPlossRt(v, Gear) + fPaux(t, nU) + fPaMotSimple(t, Gear, v, a)
 
@@ -2561,14 +2561,14 @@ lb10:
 
       try
           
-             AAUX_Gobal.advancedAuxModel.Signals.ClutchEngaged = AAUX_Gobal.ClutchEngaged 
-             AAUX_Gobal.advancedAuxModel.Signals.EngineDrivelinePower  = AAUX_Gobal.EngineDrivelinePower
-             AAUX_Gobal.advancedAuxModel.Signals.EngineDrivelineTorque =AAUX_Gobal.EngineDrivelineTorque
-             AAUX_Gobal.advancedAuxModel.Signals.EngineMotoringPower = AAUX_Gobal.EngineMotoringPower
-             AAUX_Gobal.advancedAuxModel.Signals.EngineSpeed = AAUX_Gobal.EngineSpeed
-             AAUX_Gobal.advancedAuxModel.Signals.PreExistingAuxPower  = AAUX_Gobal.PreExistingAuxPower
-             AAUX_Gobal.advancedAuxModel.Signals.Idle = AAUX_Gobal.Idle
-             AAUX_Gobal.advancedAuxModel.Signals.InNeutral = AAUX_Gobal.InNeutral
+             mAAUX_Global.advancedAuxModel.Signals.ClutchEngaged = mAAUX_Global.ClutchEngaged 
+             mAAUX_Global.advancedAuxModel.Signals.EngineDrivelinePower  = mAAUX_Global.EngineDrivelinePower
+             mAAUX_Global.advancedAuxModel.Signals.EngineDrivelineTorque =mAAUX_Global.EngineDrivelineTorque
+             mAAUX_Global.advancedAuxModel.Signals.EngineMotoringPower = mAAUX_Global.EngineMotoringPower
+             mAAUX_Global.advancedAuxModel.Signals.EngineSpeed = mAAUX_Global.EngineSpeed
+             mAAUX_Global.advancedAuxModel.Signals.PreExistingAuxPower  = mAAUX_Global.PreExistingAuxPower
+             mAAUX_Global.advancedAuxModel.Signals.Idle = mAAUX_Global.Idle
+             mAAUX_Global.advancedAuxModel.Signals.InNeutral = mAAUX_Global.InNeutral
 
 
              'Power coming out of Advanced Model is in Watts.
