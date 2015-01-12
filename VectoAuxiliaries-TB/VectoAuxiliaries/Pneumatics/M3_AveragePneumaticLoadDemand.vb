@@ -138,7 +138,7 @@ Namespace Pneumatics
         End Function
 
         'Get Total Required Air Delivery Rate
-        Public Function TotalAirConsumedPerCycle() As Single Implements IM3_AveragePneumaticLoadDemand.TotalAirConsumedPerCycle
+        Public Function TotalAirConsumedPerCycle() As Single Implements IM3_AveragePneumaticLoadDemand.AverageAirConsumedPerSecondLitre
 
             Return TotalAirDemand
 

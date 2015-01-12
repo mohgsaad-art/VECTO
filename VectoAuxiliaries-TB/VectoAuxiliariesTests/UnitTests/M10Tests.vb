@@ -21,7 +21,7 @@ Dim m3 As new Mock( Of IM3_AveragePneumaticLoadDemand)
 Dim m9 As new Mock( Of IM9)
 Dim signals As New Signals() ' Not required , here for expansion only.
 
-m3.Setup( Function(x) x.TotalAirConsumedPerCycle).Returns( xTAir )
+m3.Setup( Function(x) x.AverageAirConsumedPerSecondLitre).Returns( xTAir )
 m9.Setup( Function(x) x.LitresOfAirCompressorOnContinually).Returns(x1)
 m9.Setup( Function(x) x.TotalCycleFuelConsumptionCompressorOnContinuously).Returns(y1)
 'x2 is not an output of m9, an is allways zero, but to keep in line with schematic, is represented anyway although it is a constant.

@@ -16,6 +16,8 @@ Private m9 As IM9
 'Not Currently used but there for ease of refactoring in future.
 Private signals As ISignals
 
+
+
 #End Region
  Private Enum InterpolationType
  NonSmartPneumtaics
@@ -33,7 +35,7 @@ End Enum
   x3=m9.LitresOfAirCompressorOnOnlyInOverrun
   y3=m9.TotalCycleFuelConsumptionCompressorOffContinuously
 
-  xTA   = m3.TotalAirConsumedPerCycle
+  xTA   = m3.AverageAirConsumedPerSecondLitre
 
 
   
