@@ -1096,7 +1096,7 @@ Private sub RefreshDisplays()
 
      'M3
      txtM3_out_AveragePowerAtCrankFromPneumatics.Text=auxEnvironment.M3.GetAveragePowerDemandAtCrankFromPneumatics
-     txtM3_out_TotalAirConsumedPerCycleInLitres.Text=auxEnvironment.M3.TotalAirConsumedPerCycle
+     txtM3_out_TotalAirConsumedPerCycleInLitres.Text=auxEnvironment.M3.AverageAirConsumedPerSecondLitre
 
      'M4
       txtM4_out_CompressorFlowRate.Text = auxEnvironment.M4.GetFlowRate
