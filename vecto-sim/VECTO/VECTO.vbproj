@@ -379,9 +379,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="bin\Debug\Generic Vehicles\Declaration Mode\12t Delivery Truck\testPneumaticActuationsMap_GOODMAP.apac">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <None Include="ClassDiagram1.cd" />
     <None Include="ClassDiagram2.cd" />
     <None Include="My Project\app.manifest">
@@ -480,6 +477,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="bin\Debug\Generic Vehicles\Declaration Mode\12t Delivery Truck\" />
     <Folder Include="bin\Debug\User Manual\GUI\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
