@@ -56,6 +56,18 @@ Public Class cMOD
     public AA_TotalCycleFC_BeforeSSandWHTCcorrection_Grams        As List(Of single? )
     public AA_TotalCycleFC_BeforeSSandWHTCcorrection_Litres       As List(Of single? )
 
+    public  AA_D_M10_P1X                            as list( of single  )
+    public  AA_D_M10_P1Y                            as list( of single  )
+    public  AA_D_M10_P2X                            as list( of single  )
+    public  AA_D_M10_P2Y                            as list( of single  )
+    public  AA_D_M10_P3X                            as list( of single  )
+    public  AA_D_M10_P3Y                            as list( of single  )
+    public  AA_D_M10_XTAIN                          as list( of single  )
+    public  AA_D_M10_INTERP1                        as list( of single  )
+    public  AA_D_M10_INTERP2                        as list( of single  )
+
+
+    '***********************************************************
 
 
     Public EngState As List(Of tEngState)
@@ -110,6 +122,17 @@ Public Class cMOD
         AA_TotalCycleFC_BeforeSSandWHTCcorrection_Grams     = new  List(Of  single? )
         AA_TotalCycleFC_BeforeSSandWHTCcorrection_Litres    = new  List(Of  single? )
 
+        AA_D_M10_P1X                                         = new List(Of single )
+        AA_D_M10_P1Y                                         = new List(Of single )
+        AA_D_M10_P2X                                         = new List(Of single )
+        AA_D_M10_P2Y                                         = new List(Of single )
+        AA_D_M10_P3X                                         = new List(Of single )
+        AA_D_M10_P3Y                                         = new List(Of single )
+        AA_D_M10_XTAIN                                       = new List(Of single )
+        AA_D_M10_INTERP1                                     = new List(Of single )
+        AA_D_M10_INTERP2                                     = new List(Of single )
+
+        '*************************************************************************
 
         Proll = New List(Of Single)
         Psum = New List(Of Single)
@@ -579,6 +602,15 @@ Public Class cMOD
             s.Append(",AA_CompressorFlag [Integer 0/1]")                                    
             s.Append(",AA_TotalCycleFC_BeforeSSandWHTCcorrection_Grams")  
             s.Append(",AA_TotalCycleFC_BeforeSSandWHTCcorrection_Litres")   
+            s.Append(",AA_D_M10_P1X      [Single]")
+            s.Append(",AA_D_M10_P1Y      [Single]")
+            s.Append(",AA_D_M10_P2X      [Single]")
+            s.Append(",AA_D_M10_P2Y      [Single]")
+            s.Append(",AA_D_M10_P3X      [Single]")
+            s.Append(",AA_D_M10_P3Y      [Single]")
+            s.Append(",AA_D_M10_XTAIN    [Single]")
+            s.Append(",AA_D_M10_INTERP1  [Single]")
+            s.Append(",AA_D_M10_INTERP2  [Single]")
 
 
 
@@ -756,8 +788,20 @@ Public Class cMOD
                       s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC",AA_TotalCycleFC_BeforeSSandWHTCcorrection_Grams(t).ToString(),""))  
                       s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC",AA_TotalCycleFC_BeforeSSandWHTCcorrection_Litres(t).ToString(),""))
 
-                End If
+                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M10_P1X      (t).toString(),""))
+                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M10_P1Y      (t).toString(),""))
+                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M10_P2X      (t).toString(),""))
+                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M10_P2Y      (t).toString(),""))
+                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M10_P3X      (t).toString(),""))
+                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M10_P3Y      (t).toString(),""))
+                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M10_XTAIN    (t).toString(),""))
+                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M10_INTERP1  (t).toString(),""))
+                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M10_INTERP2  (t).toString(),""))
 
+
+
+                 end if
+                                                                                 
                 'FC
                 If .lFC(t) > -0.0001 Then
                     s.Append(Sepp & .lFC(t))

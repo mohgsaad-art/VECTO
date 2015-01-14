@@ -906,12 +906,29 @@ Exit sub
 
 End If
 
+If processing then 
+
+auxEnvironment.M9.CycleStep(1)
+auxEnvironment.M10.CycleStep(1)
+auxEnvironment.M11.CycleStep(1)
+
+
+
+RefreshDisplays()
+SecondsIntoCycle+=1
+
+return
+
+End If
+
+
+
 try
    SecondsIntoCycle=0
     auxEnvironment.Initialise()
     processing=true
     SetProcessingStatus
-    Timer1.Start
+    'Timer1.Start
 
     Catch ex As Exception
 

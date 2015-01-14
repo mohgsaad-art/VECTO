@@ -6,6 +6,7 @@ Namespace Pneumatics
     Implements IM3_AveragePneumaticLoadDemand
 
 
+
         Private _pneumaticUserInputsConfig As IPneumaticUserInputsConfig
         Private _pneumaticAuxillariesConfig As IPneumaticsAuxilliariesConfig
         Private _pneumaticsActuationsMap As IPneumaticActuationsMAP
@@ -138,9 +139,9 @@ Namespace Pneumatics
         End Function
 
         'Get Total Required Air Delivery Rate
-        Public Function TotalAirConsumedPerCycle() As Single Implements IM3_AveragePneumaticLoadDemand.AverageAirConsumedPerSecondLitre
+        Public Function AverageAirConsumedPerSecondLitre() As Single Implements IM3_AveragePneumaticLoadDemand.AverageAirConsumedPerSecondLitre
 
-            Return TotalAirDemand
+            Return TotalAirDemand / ( _cycleDurationMinutes * 60 )
 
         End Function
 
