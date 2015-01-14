@@ -21,6 +21,28 @@ ReadOnly Property AverageLoadsFuelConsumptionInterpolatedForPneumatics As Single
 'Interpolated FC between points 2-3-1 Representing smart Pneumatics = Fuel consumption with smart Pneumatics and average electrical  power demand
 ReadOnly Property FuelConsumptionSmartPneumaticsAndAverageElectricalPowerDemand As Single
 
+ Sub CycleStep( Optional stepTimeInSeconds As Single = nothing)
+
+
+ReadOnly Property P1X as single
+
+ReadOnly Property P1Y as single
+
+ReadOnly Property P2X as single
+
+ReadOnly Property P2Y  as single
+
+ReadOnly Property P3X as single
+
+ReadOnly Property P3Y as single
+
+ReadOnly Property XTAIN  as single
+
+ReadOnly Property INTRP1  as single
+
+ReadOnly Property INTRP2   as single
+  
+
 
 
 

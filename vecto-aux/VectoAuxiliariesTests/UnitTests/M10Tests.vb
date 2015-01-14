@@ -32,6 +32,7 @@ m9.Setup( Function(x) x.TotalCycleFuelConsumptionCompressorOffContinuously).Retu
 
 Dim target As IM10 = New M10(m3.Object,m9.Object,Signals)
 
+target.CycleStep(1)
 
 Assert.AreEqual(out1, target.AverageLoadsFuelConsumptionInterpolatedForPneumatics )
 Assert.AreEqual(out2, target.FuelConsumptionSmartPneumaticsAndAverageElectricalPowerDemand )

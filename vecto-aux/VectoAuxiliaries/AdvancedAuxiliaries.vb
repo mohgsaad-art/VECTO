@@ -12,6 +12,7 @@ Public Class AdvancedAuxiliaries
 
 
 
+
     Private  auxConfig As AuxiliaryConfig
 
 
@@ -191,18 +192,18 @@ End Sub
 
     Public Function CycleStep(seconds As Integer, ByRef message As String) As Boolean Implements VectoAuxiliaries.IAdvancedAuxiliaries.CycleStep
          
-       M9.CycleStep( seconds )      
-       M11.CycleStep( seconds )
-
-       'Used in the fuel aggregated output on M13 ( Sum 5 )
-
+      
        try
+
+       M9.CycleStep( seconds ) 
+       M10.CycleStep( seconds )     
+       M11.CycleStep( seconds )
 
        Signals.CurrentCycleTimeInSeconds+=1
 
 
        Catch ex As Exception
-
+          'TODO: Should this raise an event ?
           MessageBox.Show("Im an exception")
           Return false
 
@@ -396,11 +397,63 @@ End Sub
 
 
 
-
-
     Public ReadOnly Property AuxiliaryPowerAtCrankWatts As Single Implements IAdvancedAuxiliaries.AuxiliaryPowerAtCrankWatts
         Get
           Return M8.AuxPowerAtCrankFromElectricalHVACAndPneumaticsAncillaries
         End Get
     End Property
+
+
+
+
+    'PURE DIAGNOSTICS SHOULD ONLY BE USED IN  MOD FOR ENGINEERING TESTS
+
+    Public ReadOnly Property AA_D_M10_INTERP1 As Single Implements IAdvancedAuxiliaries.AA_D_M10_INTERP1
+        Get
+         Return M10.INTRP1
+        End Get
+    End Property
+    Public ReadOnly Property AA_D_M10_INTERP2 As Single Implements IAdvancedAuxiliaries.AA_D_M10_INTERP2
+        Get
+         Return M10.INTRP2
+        End Get
+    End Property
+    Public ReadOnly Property AA_D_M10_P1X As Single Implements IAdvancedAuxiliaries.AA_D_M10_P1X
+        Get
+          Return M10.P1X
+        End Get
+    End Property
+    Public ReadOnly Property AA_D_M10_P1Y As Single Implements IAdvancedAuxiliaries.AA_D_M10_P1Y
+        Get
+         Return M10.P1Y
+        End Get
+    End Property
+    Public ReadOnly Property AA_D_M10_P2X As Single Implements IAdvancedAuxiliaries.AA_D_M10_P2X
+        Get
+         Return M10.P2X
+        End Get
+    End Property
+    Public ReadOnly Property AA_D_M10_P2Y As Single Implements IAdvancedAuxiliaries.AA_D_M10_P2Y
+        Get
+          Return M10.P2Y
+        End Get
+    End Property
+    Public ReadOnly Property AA_D_M10_P3X As Single Implements IAdvancedAuxiliaries.AA_D_M10_P3X
+        Get
+          Return M10.P3X
+        End Get
+    End Property
+    Public ReadOnly Property AA_D_M10_P3Y As Single Implements IAdvancedAuxiliaries.AA_D_M10_P3Y
+        Get
+         Return M10.P3Y
+        End Get
+    End Property
+    Public ReadOnly Property AA_D_M10_XTAIN As Single Implements IAdvancedAuxiliaries.AA_D_M10_XTAIN
+        Get
+          Return M10.XTAIN
+        End Get
+    End Property
+
+
+
 End Class

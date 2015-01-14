@@ -10,6 +10,18 @@ ReadOnly Property Running          As boolean
 ReadOnly Property AuxiliaryName    As String
 ReadOnly Property AuxiliaryVersion As String
 
+readonly property AA_D_M10_P1X as single
+readonly property AA_D_M10_P1Y as single
+readonly property AA_D_M10_P2X as single
+readonly property AA_D_M10_P2Y as single
+readonly property AA_D_M10_P3X as single
+readonly property AA_D_M10_P3Y as single
+readonly property AA_D_M10_XTAIN as single
+readonly property AA_D_M10_INTERP1 as single
+readonly property AA_D_M10_INTERP2 as single
+
+
+
 ReadOnly Property AA_NonSmartAlternatorsEfficiency As single?
 Readonly Property AA_SmartIdleCurrent_Amps As single?
 Readonly Property AA_SmartIdleAlternatorsEfficiency As single?
@@ -23,6 +35,7 @@ ReadOnly Property AA_EngineIdleFlag As integer?
 ReadOnly Property AA_CompressorFlag As integer?
 Readonly Property AA_TotalCycleFC_BeforeSSandWHTCcorrection_Grams As single?
 ReadOnly Property AA_TotalCycleFC_BeforeSSandWHTCcorrection_Litres As single?
+
 
 Readonly Property TotalFuelGRAMS   As Single
 Readonly Property TotalFuelLITRES  As single

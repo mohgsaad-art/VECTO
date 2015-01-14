@@ -21,7 +21,45 @@ Implements IM6
  Public ReadOnly Property OverrunFlag As Integer Implements IM6.OverrunFlag
         
         Get
-           Return  VC0
+        
+        'TODO : Diagnostic stuff to be removed once mike is happy.
+         'If ovrCount<10 andalso  VC0=1 then 
+
+         ' ovrCount+=1
+
+         '   Console.WriteLine((String.Format("OVERRUN : EMP {0}, EDLP {1}, PRAUXP {2}, M1.AvPcrankMech {3},M1.AvPCrnkElec {4}, M2.AvPCrnPneu{5},M3.AvPPneum{6},M5.MaxAltP_tract{7}, ",       
+         '   _signals.EngineMotoringPower,
+         '   _signals.EngineDrivelinePower,
+         '   _signals.PreExistingAuxPower,
+         '   _m1.AveragePowerDemandAtCrankFromHVACMechanicalsWatts,
+         '   _m1.AveragePowerDemandAtAlternatorFromHVACElectricsWatts,
+         '   _m2.GetAveragePowerAtCrankFromElectrics,
+         '   _m3.GetAveragePowerDemandAtCrankFromPneumatics,
+         '   _m5.AlternatorsGenerationPowerAtCrankTractionOnWatts )))
+
+         '   Else
+
+         '   If( urnCount<10 ) then
+
+         '   urnCount+=1
+            
+         '   Console.WriteLine((String.Format("OVERRUN-OFF : EMP {0}, EDLP {1}, PRAUXP {2}, M1.AvPcrankMech {3},M1.AvPCrnkElec {4}, M2.AvPCrnPneu{5},M3.AvPPneum{6},M5.MaxAltP_tract{7}, ",       
+         '   _signals.EngineMotoringPower,
+         '   _signals.EngineDrivelinePower,
+         '   _signals.PreExistingAuxPower,
+         '   _m1.AveragePowerDemandAtCrankFromHVACMechanicalsWatts,
+         '   _m1.AveragePowerDemandAtAlternatorFromHVACElectricsWatts,
+         '   _m2.GetAveragePowerAtCrankFromElectrics,
+         '   _m3.GetAveragePowerDemandAtCrankFromPneumatics,
+         '   _m5.AlternatorsGenerationPowerAtCrankTractionOnWatts )))
+
+         '   end if
+
+         'End If
+
+          
+          Return  VC0
+
         End Get
     End Property
  'OUT2
