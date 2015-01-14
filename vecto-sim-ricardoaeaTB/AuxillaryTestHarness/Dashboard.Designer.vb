@@ -129,6 +129,7 @@ Partial Class Dashboard
         Me.txtHVACElectricalLoadPowerWatts = New System.Windows.Forms.TextBox()
         Me.lblHVACElectricalLoadPowerWatts = New System.Windows.Forms.Label()
         Me.tabPlayground = New System.Windows.Forms.TabPage()
+        Me.chkEngineStopped = New System.Windows.Forms.CheckBox()
         Me.pnlM13 = New System.Windows.Forms.Panel()
         Me.txtM13_out_TotalCycleFuelCalculationGramsLITRES = New System.Windows.Forms.TextBox()
         Me.lblM13TotalFuelConsumptionTotalCycleLitres = New System.Windows.Forms.Label()
@@ -289,7 +290,6 @@ Partial Class Dashboard
         Me.DeleteToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ErrorProvider = New System.Windows.Forms.ErrorProvider(Me.components)
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
-        Me.chkEngineStopped = New System.Windows.Forms.CheckBox()
         Me.pnlMain.SuspendLayout
         Me.tabMain.SuspendLayout
         Me.tabGeneralConfig.SuspendLayout
@@ -1381,6 +1381,16 @@ Partial Class Dashboard
         Me.tabPlayground.TabIndex = 4
         Me.tabPlayground.Text = "Playground"
         Me.tabPlayground.UseVisualStyleBackColor = true
+        '
+        'chkEngineStopped
+        '
+        Me.chkEngineStopped.AutoSize = true
+        Me.chkEngineStopped.Location = New System.Drawing.Point(10, 144)
+        Me.chkEngineStopped.Name = "chkEngineStopped"
+        Me.chkEngineStopped.Size = New System.Drawing.Size(102, 17)
+        Me.chkEngineStopped.TabIndex = 60
+        Me.chkEngineStopped.Text = "Engine Stopped"
+        Me.chkEngineStopped.UseVisualStyleBackColor = true
         '
         'pnlM13
         '
@@ -2881,16 +2891,6 @@ Partial Class Dashboard
         'Timer1
         '
         Me.Timer1.Interval = 1000
-        '
-        'chkEngineStopped
-        '
-        Me.chkEngineStopped.AutoSize = true
-        Me.chkEngineStopped.Location = New System.Drawing.Point(10, 144)
-        Me.chkEngineStopped.Name = "chkEngineStopped"
-        Me.chkEngineStopped.Size = New System.Drawing.Size(102, 17)
-        Me.chkEngineStopped.TabIndex = 60
-        Me.chkEngineStopped.Text = "Engine Stopped"
-        Me.chkEngineStopped.UseVisualStyleBackColor = true
         '
         'Dashboard
         '

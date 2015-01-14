@@ -132,7 +132,16 @@ End Property
  private ReadOnly Property S11 As Single
      Get
        'Divide by 3600 to get grams per second.
-       Return FMAP.fFCdelaunay_Intp(Signals.EngineSpeed,s7) / 3600
+
+       Dim int1 As Single = FMAP.fFCdelaunay_Intp(Signals.EngineSpeed,s7) /3600
+       
+       int1 = If( int1 >0 Andalso Not Single.IsNaN(int1), int1,0)
+       
+
+      Return FMAP.fFCdelaunay_Intp(Signals.EngineSpeed,s7) / 3600
+
+      'Return int1
+
      End Get
  End Property
  private ReadOnly Property S12 As Single
