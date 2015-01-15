@@ -15,15 +15,12 @@ Imports VectoAuxiliaries.Hvac
 
 Namespace DownstreamModules
 
-Public Class M9
-Implements  IM9
+  Public Class M9
+    Implements  IM9
 
+  Private Const RPM_TO_RADS_PER_SECOND As Single = 9.55f
  
-
-Private Const RPM_TO_RADS_PER_SECOND As Single = 9.55f
-
-
-#Region "Aggregates"
+  #Region "Aggregates"
 
 'AG1
 Private _LitresOfAirCompressorOnContinuallyAggregate As Single
@@ -35,8 +32,7 @@ Private _TotalCycleFuelConsumptionCompressorOffContinuouslyAggregate As Single
 Private _TotalCycleFuelConsumptionCompressorOnContinuouslyAggregate As Single
 
 #End Region
- 
-#Region "Constructor Requirements"
+  #Region "Constructor Requirements"
 
 Private M1 As IM1_AverageHVACLoadDemand
 Private M4 As IM4_AirCompressor
@@ -47,28 +43,29 @@ Private PSAC As IPneumaticsAuxilliariesConfig
 Private Signals As ISignals
 
 #end region
- 
- #Region "Public Readonly Properties"
- 'OUT 1
- Public ReadOnly Property LitresOfAirCompressorOnContinually As Single Implements IM9.LitresOfAirCompressorOnContinually
+
+
+  #Region "Class Outputs"
+  'OUT 1
+  Public ReadOnly Property LitresOfAirCompressorOnContinually As Single Implements IM9.LitresOfAirCompressorOnContinually
             Get
               Return _LitresOfAirCompressorOnContinuallyAggregate
             End Get
         End Property
- 'OUT 2
- Public ReadOnly Property LitresOfAirCompressorOnOnlyInOverrun As Single Implements IM9.LitresOfAirCompressorOnOnlyInOverrun
+  'OUT 2
+  Public ReadOnly Property LitresOfAirCompressorOnOnlyInOverrun As Single Implements IM9.LitresOfAirCompressorOnOnlyInOverrun
             Get
              Return  _LitresOfAirCompressorOnOnlyInOverrunAggregate
             End Get
         End Property
- 'OUT 3
- Public ReadOnly Property TotalCycleFuelConsumptionCompressorOffContinuously As Single Implements IM9.TotalCycleFuelConsumptionCompressorOffContinuously
+  'OUT 3
+  Public ReadOnly Property TotalCycleFuelConsumptionCompressorOffContinuously As Single Implements IM9.TotalCycleFuelConsumptionCompressorOffContinuously
             Get
              Return _TotalCycleFuelConsumptionCompressorOffContinuouslyAggregate
             End Get
         End Property
- 'OUT 4
- Public ReadOnly Property TotalCycleFuelConsumptionCompressorOnContinuously As Single Implements IM9.TotalCycleFuelConsumptionCompressorOnContinuously
+  'OUT 4
+  Public ReadOnly Property TotalCycleFuelConsumptionCompressorOnContinuously As Single Implements IM9.TotalCycleFuelConsumptionCompressorOnContinuously
             Get
             Return _TotalCycleFuelConsumptionCompressorOnContinuouslyAggregate
             End Get
@@ -76,71 +73,69 @@ Private Signals As ISignals
 
 #End Region
 
-
- 'Staging Calculations
-
-Private Function S0( byval rpm As Single ) As Single
+  'Staging Calculations
+  Private Function S0( byval rpm As Single ) As Single
 
   If rpm<1 then rpm=1
   
   Return rpm / RPM_TO_RADS_PER_SECOND
 
 End Function
-
- Private readonly Property S1 As single
+  
+  Private readonly Property S1 As single
     Get
      Return M6.AvgPowerDemandAtCrankFromElectricsIncHVAC + M1.AveragePowerDemandAtCrankFromHVACMechanicalsWatts
     End Get
 End Property
- Private readonly Property S2 As single
+  Private readonly Property S2 As single
     Get
       If S0( Signals.EngineSpeed)=0 then Throw New DivideByZeroException("Engine speed is zero and cannot be used as a divisor.")
       Return M4.GetPowerCompressorOn/S0( Signals.EngineSpeed)
     End Get
 End Property
- Private readonly Property S3 As single
+  Private readonly Property S3 As single
     Get
        If S0( Signals.EngineSpeed)=0 then Throw New DivideByZeroException("Engine speed is zero and cannot be used as a divisor.")
        Return M4.GetPowerCompressorOff/ S0( Signals.EngineSpeed)
     End Get
 End Property
- Private readonly Property S4 As single
+  Private readonly Property S4 As single
     Get
     If S0( Signals.EngineSpeed)=0 then Throw New DivideByZeroException("Engine speed is zero and cannot be used as a divisor.")
      Return S1/S0( Signals.EngineSpeed)
     End Get
 End Property
- Private readonly Property S5 As single
+  Private readonly Property S5 As single
     Get
       Return S2 + Signals.EngineDrivelineTorque
     End Get
 End Property
- Private readonly Property S6 As single 
+  Private readonly Property S6 As single 
     Get
      Return Signals.EngineDrivelineTorque + s3
     End Get
 End Property
- Private readonly Property S7 As single
+  Private readonly Property S7 As single
     Get
       Return S4 + S5
     End Get
 End Property
- Private readonly Property S8 As single
+  Private readonly Property S8 As single
     Get
      Return S4 + S6
     End Get
 End Property
- Private readonly Property S9 As single
+  Private readonly Property S9 As single
     Get
      Return M4.GetFlowRate * M6.OverrunFlag * M8.CompressorFlag
     End Get
 End Property
- Private ReadOnly Property S10 As Single
+  Private ReadOnly Property S10 As Single
      Get
      Return S9 * PSAC.OverrunUtilisationForCompressionFraction
      End Get
  End Property
- private ReadOnly Property S11 As Single
+  private ReadOnly Property S11 As Single
      Get
       'SCHM 3_02
        Dim int1 As Single = FMAP.fFCdelaunay_Intp(Signals.EngineSpeed,s7)   
@@ -153,7 +148,7 @@ End Property
 
      End Get
  End Property
- private ReadOnly Property S12 As Single
+  private ReadOnly Property S12 As Single
       Get
          'Divide by 3600 to get grams per second.
          'SCHM 3_02
@@ -167,16 +162,15 @@ End Property
 
       End Get
   End Property
-
-
- Private ReadOnly Property SW1 As Integer
+  
+  Private ReadOnly Property SW1 As Integer
      Get
        Return If( Signals.EngineStopped,0,1)
      End Get
  End Property
 
- 'Public Utility Methods.
- Public Sub ClearAggregates() Implements IM9.ClearAggregates
+  'Utility Methods
+  Public Sub ClearAggregates() Implements IM9.ClearAggregates
 
           _LitresOfAirCompressorOnContinuallyAggregate =0
           _LitresOfAirCompressorOnOnlyInOverrunAggregate =0
@@ -184,9 +178,7 @@ End Property
           _TotalCycleFuelConsumptionCompressorOnContinuouslyAggregate=0
 
         End Sub
-
- 'Clear down at the beginning of a cycle.      
- Public Sub CycleStep(Optional stepTimeInSeconds As Single = 0.0) Implements IM9.CycleStep
+  Public Sub CycleStep(Optional stepTimeInSeconds As Single = 0.0) Implements IM9.CycleStep
 
           If Signals.EngineStopped then return
 
@@ -198,7 +190,7 @@ End Property
   End Sub
 
  'Constructor
- Public Sub new ( m1 As IM1_AverageHVACLoadDemand, m4 As IM4_AirCompressor, m6 As IM6, m8 As IM8, fmap As IFUELMAP, psac As IPneumaticsAuxilliariesConfig, signals As ISignals)
+  Public Sub new ( m1 As IM1_AverageHVACLoadDemand, m4 As IM4_AirCompressor, m6 As IM6, m8 As IM8, fmap As IFUELMAP, psac As IPneumaticsAuxilliariesConfig, signals As ISignals)
                 Me.M1=m1
                 Me.M4=m4
                 Me.M6=m6
@@ -209,9 +201,11 @@ End Property
 
         End Sub
 
+ 'Auxiliary Event
+  Public Event AuxiliaryEvent(ByRef sender As Object, message As String, messageType As AdvancedAuxiliaryMessageType) Implements IAuxiliaryEvent.AuxiliaryEvent
 
-        Public Event AuxiliaryEvent(ByRef sender As Object, message As String, messageType As AdvancedAuxiliaryMessageType) Implements IAuxiliaryEvent.AuxiliaryEvent
-End Class
+
+  End Class
 
 End Namespace
 

@@ -20,10 +20,28 @@ Public Interface IM8
 
 
 'OUT1
+''' <summary>
+''' Aux Power At Crank From Electrical HVAC And Pneumatics Ancilaries (W)
+''' </summary>
+''' <value></value>
+''' <returns></returns>
+''' <remarks></remarks>
 ReadOnly Property AuxPowerAtCrankFromElectricalHVACAndPneumaticsAncillaries As Single
 'OUT2
+''' <summary>
+''' Smart Electrical Alternator Power Gen At Crank (W)
+''' </summary>
+''' <value></value>
+''' <returns></returns>
+''' <remarks></remarks>
 ReadOnly Property SmartElectricalAlternatorPowerGenAtCrank As Single
 'OUT3
+''' <summary>
+''' Compressor Flag
+''' </summary>
+''' <value></value>
+''' <returns></returns>
+''' <remarks></remarks>
 ReadOnly Property CompressorFlag As Integer
 
 

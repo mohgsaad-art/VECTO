@@ -11,35 +11,37 @@
 
 Namespace DownstreamModules
 
+  Public Interface IM12
+
+   ''' <summary>
+   ''' Fuel consumption with smart Electrics and Average Pneumatic Power Demand
+   ''' </summary>
+   ''' <value></value>
+   ''' <returns></returns>
+   ''' <remarks></remarks>
+   ReadOnly Property FuelconsumptionwithsmartElectricsandAveragePneumaticPowerDemand As Single
+   
+   ''' <summary>
+   ''' Base Fuel Consumption With Average Auxiliary Loads
+   ''' </summary>
+   ''' <value></value>
+   ''' <returns></returns>
+   ''' <remarks></remarks>
+   ReadOnly Property BaseFuelConsumptionWithAverageAuxiliaryLoads As Single
+   
+   'Diagnostic Signals Only For Testing - No Material interference with operation of class.
+   ReadOnly Property P1X      As single
+   ReadOnly Property P1Y      As single
+   ReadOnly Property P2X      As single
+   ReadOnly Property P2Y      As single
+   ReadOnly Property P3X      As single
+   ReadOnly Property P3Y      As single
+   ReadOnly Property XTAIN    As single
+   ReadOnly Property INTRP1   As single
+   ReadOnly Property INTRP2   As single
 
 
-Public Interface IM12
-
-
-ReadOnly Property FuelconsumptionwithsmartElectricsandAveragePneumaticPowerDemand As Single
-
-ReadOnly Property BaseFuelConsumptionWithAverageAuxiliaryLoads As Single
-
-ReadOnly Property P1X as single
-
-ReadOnly Property P1Y as single
-
-ReadOnly Property P2X as single
-
-ReadOnly Property P2Y  as single
-
-ReadOnly Property P3X as single
-
-ReadOnly Property P3Y as single
-
-ReadOnly Property XTAIN  as single
-
-ReadOnly Property INTRP1  as single
-
-ReadOnly Property INTRP2   as single
-
-
-End Interface
+ End Interface
 
 
 End Namespace
