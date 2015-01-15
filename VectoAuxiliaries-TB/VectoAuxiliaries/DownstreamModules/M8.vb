@@ -86,7 +86,6 @@ End Property
 #End Region
 
    'Class Outputs
-   '
    'OUT1
    Public ReadOnly Property AuxPowerAtCrankFromElectricalHVACAndPneumaticsAncillaries As Single Implements IM8.AuxPowerAtCrankFromElectricalHVACAndPneumaticsAncillaries
             Get
