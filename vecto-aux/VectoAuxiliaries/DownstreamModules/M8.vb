@@ -16,19 +16,19 @@ Imports VectoAuxiliaries.Hvac
 
 Namespace DownstreamModules
 
-Public Class M8
-Implements IM8
+  Public Class M8
+    Implements IM8
 
-   #Region "Fields"
+     #Region "Private Fields"
 
    private _m1 As IM1_AverageHVACLoadDemand
    private _m6 As IM6
    private _m7 As IM7
    private _signals As ISignals
 
-#End Region
- 
-   #Region "Internal Sums and Switches"   
+   #End Region
+    
+     #Region "Internal Sums and Switches"   
 
    'Internal Staged Sums and Switches
    private ReadOnly Property Sum1 As Single
@@ -56,7 +56,6 @@ End Property
     Return _m1.AveragePowerDemandAtCrankFromHVACMechanicalsWatts + SW5
     End Get
 End Property
-   
    Private ReadOnly Property SW1 As Single 
        Get
        Return If( _signals.SmartPneumatics, Sum1, Sum2)
@@ -84,32 +83,28 @@ End Property
    End Property
 
 #End Region
-
-   'Class Outputs
-   'OUT1
-   Public ReadOnly Property AuxPowerAtCrankFromElectricalHVACAndPneumaticsAncillaries As Single Implements IM8.AuxPowerAtCrankFromElectricalHVACAndPneumaticsAncillaries
+    
+     'OUT1
+     Public ReadOnly Property AuxPowerAtCrankFromElectricalHVACAndPneumaticsAncillaries As Single Implements IM8.AuxPowerAtCrankFromElectricalHVACAndPneumaticsAncillaries
             Get
             Return Sum5
             End Get
         End Property
-
-   'OUT2
-   Public ReadOnly Property SmartElectricalAlternatorPowerGenAtCrank As Single Implements IM8.SmartElectricalAlternatorPowerGenAtCrank
+     'OUT2
+     Public ReadOnly Property SmartElectricalAlternatorPowerGenAtCrank As Single Implements IM8.SmartElectricalAlternatorPowerGenAtCrank
             Get
             Return SW3
             End Get
         End Property
-
-   'OUT3
-   Public ReadOnly Property CompressorFlag As Integer Implements IM8.CompressorFlag
+     'OUT3
+     Public ReadOnly Property CompressorFlag As Integer Implements IM8.CompressorFlag
             Get
             Return SW4
             End Get
         End Property
-
-
-   'Constructor
-   Public Sub new( m1 As IM1_AverageHVACLoadDemand, m6 As IM6, m7 As IM7, signals As ISignals)
+    
+     'Constructor
+     Public Sub new( m1 As IM1_AverageHVACLoadDemand, m6 As IM6, m7 As IM7, signals As ISignals)
 
              _m1=m1
              _m6=m6
@@ -117,7 +112,7 @@ End Property
              _signals=signals
 
         End Sub
-
+    
 
 End Class
 

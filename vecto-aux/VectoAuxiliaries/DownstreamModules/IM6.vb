@@ -11,25 +11,83 @@
 
 Namespace DownstreamModules
 
+  Public Interface IM6
 
-Public Interface IM6
 
-'Watts
- Readonly Property  OverrunFlag As Integer
- Readonly Property  SmartElecAndPneumaticsCompressorFlag As integer
- ReadOnly Property  SmartElecAndPneumaticAltPowerGenAtCrank As Single
- ReadOnly Property  SmartElecAndPneumaticAirCompPowerGenAtCrank As Single
- ReadOnly Property  SmartElecOnlyAltPowerGenAtCrank As Single
- ReadOnly Property  AveragePowerDemandAtCrankFromPneumatics As Single
- ReadOnly Property  SmartPneumaticOnlyAirCompPowerGenAtCrank As Single
-                   
- ReadOnly Property  AvgPowerDemandAtCrankFromElectricsIncHVAC As Single
- ReadOnly Property  SmartPneumaticsOnlyCompressorFlag As Integer
+    ''' <summary>
+ ''' OverrunFlag
+ ''' </summary>
+ ''' <value></value>
+ ''' <returns>0 = Not in overrun, 1 = In Overrun</returns>
+ ''' <remarks></remarks>
+    Readonly Property  OverrunFlag                                 As Integer
+   
+    ''' <summary>
+ ''' Smart Elec And Pneumatics Compressor Flag
+ ''' </summary>
+ ''' <value></value>
+ ''' <returns></returns>
+ ''' <remarks></remarks>
+    Readonly Property  SmartElecAndPneumaticsCompressorFlag        As Integer
+   
+    ''' <summary>
+ ''' Smart Elec And Pneumatic: Alternator Power Gen At Crank (W)
+ ''' </summary>
+ ''' <value></value>
+ ''' <returns></returns>
+ ''' <remarks></remarks>
+    ReadOnly Property  SmartElecAndPneumaticAltPowerGenAtCrank     As Single
+   
+    ''' <summary>
+ ''' Smart Elec And Pneumatic: Air Compressor Power Gen At Crank (W)
+ ''' </summary>
+ ''' <value></value>
+ ''' <returns></returns>
+ ''' <remarks></remarks>
+    ReadOnly Property  SmartElecAndPneumaticAirCompPowerGenAtCrank As Single
+   
+    ''' <summary>
+ ''' Smart Electrics Only :  Alternator Power Gen At Crank (W)
+ ''' </summary>
+ ''' <value></value>
+ ''' <returns></returns>
+ ''' <remarks></remarks>
+    ReadOnly Property  SmartElecOnlyAltPowerGenAtCrank             As Single
+   
+    ''' <summary>
+''' Average Power Demand At Crank From Pneumatics (W)
+''' </summary>
+''' <value></value>
+''' <returns></returns>
+''' <remarks></remarks>
+    ReadOnly Property  AveragePowerDemandAtCrankFromPneumatics     As Single
+   
+    ''' <summary>
+ ''' Smart Pneumatic Only Air Comp Power Gen At Crank (W)
+ ''' </summary>
+ ''' <value></value>
+ ''' <returns></returns>
+ ''' <remarks></remarks>
+    ReadOnly Property  SmartPneumaticOnlyAirCompPowerGenAtCrank    As Single
+                      
+    ''' <summary>
+ ''' Avgerage Power Demand At Crank From Electrics Including HVAC electrics (W)
+ ''' </summary>
+ ''' <value></value>
+ ''' <returns></returns>
+ ''' <remarks></remarks>
+    ReadOnly Property  AvgPowerDemandAtCrankFromElectricsIncHVAC   As Single
+   
+    ''' <summary>
+ ''' Smart Pneumatics Only CompressorFlag
+ ''' </summary>
+ ''' <value></value>
+ ''' <returns>Less than Zero = No, Greater then Zero = Yes </returns>
+ ''' <remarks></remarks>
+    ReadOnly Property  SmartPneumaticsOnlyCompressorFlag          As Integer
+
  
-
-
 End Interface
-
 
 End Namespace
 

@@ -9,24 +9,47 @@
 '
 ' See the LICENSE.txt for the specific language governing permissions and limitations.
 
-
 Imports VectoAuxiliaries.Electrics
 Imports VectoAuxiliaries.Pneumatics
 Imports VectoAuxiliaries.Hvac
 
 Namespace DownstreamModules
 
+  Public Interface IM7
+  
+     ''' <summary>
+     ''' Smart Electrical And Pneumatic Aux: Alternator Power Gen At Crank (W)
+     ''' </summary>
+     ''' <value></value>
+     ''' <returns></returns>
+     ''' <remarks></remarks>
+     ReadOnly Property SmartElectricalAndPneumaticAuxAltPowerGenAtCrank As Single
 
-Public Interface IM7
+     ''' <summary>
+     ''' Smart Electrical And Pneumatic Aux : Air Compressor Power Gen At Crank (W)
+     ''' </summary>
+     ''' <value></value>
+     ''' <returns></returns>
+     ''' <remarks></remarks>
+     ReadOnly Property SmartElectricalAndPneumaticAuxAirCompPowerGenAtCrank As Single
 
+     ''' <summary>
+     ''' Smart Electrical Only Aux : Alternator Power Gen At Crank (W)
+     ''' </summary>
+     ''' <value></value>
+     ''' <returns></returns>
+     ''' <remarks></remarks>
+     ReadOnly property SmartElectricalOnlyAuxAltPowerGenAtCrank as single
 
-   ReadOnly Property SmartElectricalAndPneumaticAuxAltPowerGenAtCrank As Single
-   ReadOnly Property SmartElectricalAndPneumaticAuxAirCompPowerGenAtCrank As Single
-   ReadOnly property SmartElectricalOnlyAuxAltPowerGenAtCrank as single
-   ReadOnly Property SmartPneumaticOnlyAuxAirCompPowerGenAtCrank As Single
-   
-End Interface
-
+     ''' <summary>
+     ''' Smart Pneumatic Only Aux : Air Comppressor Power Gen At Crank (W)
+     ''' </summary>
+     ''' <value></value>
+     ''' <returns></returns>
+     ''' <remarks></remarks>
+     ReadOnly Property SmartPneumaticOnlyAuxAirCompPowerGenAtCrank As Single
+     
+  End Interface
 
 End Namespace
 

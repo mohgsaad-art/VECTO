@@ -18,70 +18,68 @@ Namespace DownstreamModules
 Public Class M7
      implements IM7
 
-       Private _m5 As IM5_SmartAlternatorSetGeneration
-       Private _m6 As IM6
-       Private _signals As ISignals
+      Private _m5 As IM5_SmartAlternatorSetGeneration
+      Private _m6 As IM6
+      Private _signals As ISignals
 
-        'Boolan  Conditions
-        Private readonly property C1 As Boolean
-
+      'Boolean  Conditions
+      Private Readonly Property C1 As Boolean
            Get
              Return If(_m6.OverrunFlag=1,True,False) Andalso _signals.ClutchEngaged Andalso _signals.InNeutral=false
            End Get
-
        End Property
 
-
-        'Internal Switched Outputs 
-        Private readonly Property SW1 As Single
+      'Internal Switched Outputs 
+      Private Readonly Property SW1 As Single
            Get
-           Return If ( _signals.Idle, _m5.AlternatorsGenerationPowerAtCrankIdleWatts, _m5.AlternatorsGenerationPowerAtCrankTractionOnWatts)
+              Return If ( _signals.Idle, _m5.AlternatorsGenerationPowerAtCrankIdleWatts, _m5.AlternatorsGenerationPowerAtCrankTractionOnWatts)
            End Get
        End Property
-        Private readonly Property SW2 As Single
+      Private Readonly Property SW2 As Single
            Get
              Return  If( C1, _m6.SmartElecAndPneumaticAltPowerGenAtCrank, SW1)
            End Get
        End Property
-        Private readonly Property SW3 As Single
+      Private Readonly Property SW3 As Single
            Get
-            Return If( C1,_m6.SmartElecAndPneumaticAirCompPowerGenAtCrank,_m6.AveragePowerDemandAtCrankFromPneumatics)
+              Return If( C1,_m6.SmartElecAndPneumaticAirCompPowerGenAtCrank,_m6.AveragePowerDemandAtCrankFromPneumatics)
            End Get
        End Property
-        Private readonly Property SW4 As Single
+      Private Readonly Property SW4 As Single
            Get
-            Return If( C1,_m6.SmartElecOnlyAltPowerGenAtCrank,SW1)
+             Return If( C1,_m6.SmartElecOnlyAltPowerGenAtCrank,SW1)
            End Get
        End Property
-        Private readonly Property SW5 As Single
+      Private Readonly Property SW5 As Single
            Get
-           Return If( C1, _m6.SmartPneumaticOnlyAirCompPowerGenAtCrank,_m6.AveragePowerDemandAtCrankFromPneumatics)
+             Return If( C1, _m6.SmartPneumaticOnlyAirCompPowerGenAtCrank,_m6.AveragePowerDemandAtCrankFromPneumatics)
            End Get
        End Property
-       
-        'Public readonly properties  ( Outputs )
-        Public ReadOnly Property SmartElectricalAndPneumaticAuxAltPowerGenAtCrank As Single Implements IM7.SmartElectricalAndPneumaticAuxAltPowerGenAtCrank
+      
+      'Public readonly properties  ( Outputs )
+      Public ReadOnly Property SmartElectricalAndPneumaticAuxAltPowerGenAtCrank As Single Implements IM7.SmartElectricalAndPneumaticAuxAltPowerGenAtCrank
             Get
                Return SW2
             End Get
         End Property
-        Public ReadOnly Property SmartElectricalAndPneumaticAuxAirCompPowerGenAtCrank As Single Implements IM7.SmartElectricalAndPneumaticAuxAirCompPowerGenAtCrank
+      Public ReadOnly Property SmartElectricalAndPneumaticAuxAirCompPowerGenAtCrank As Single Implements IM7.SmartElectricalAndPneumaticAuxAirCompPowerGenAtCrank
             Get
-            Return SW3
+              Return SW3
             End Get
         End Property
-        Public ReadOnly Property SmartElectricalOnlyAuxAltPowerGenAtCrank As Single Implements IM7.SmartElectricalOnlyAuxAltPowerGenAtCrank
+      Public ReadOnly Property SmartElectricalOnlyAuxAltPowerGenAtCrank As Single Implements IM7.SmartElectricalOnlyAuxAltPowerGenAtCrank
             Get
-            Return SW4
+              Return SW4
             End Get
         End Property
-        Public ReadOnly Property SmartPneumaticOnlyAuxAirCompPowerGenAtCrank As Single Implements IM7.SmartPneumaticOnlyAuxAirCompPowerGenAtCrank
+      Public ReadOnly Property SmartPneumaticOnlyAuxAirCompPowerGenAtCrank As Single Implements IM7.SmartPneumaticOnlyAuxAirCompPowerGenAtCrank
             Get
-            Return SW5
+              Return SW5
             End Get
         End Property
 
-        Public sub new ( m5 as IM5_SmartAlternatorSetGeneration, _
+      'Constructor
+      Public sub new ( m5 as IM5_SmartAlternatorSetGeneration, _
                          m6 As IM6, _
                          signals As ISignals)
             

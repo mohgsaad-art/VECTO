@@ -9,14 +9,13 @@
 '
 ' See the LICENSE.txt for the specific language governing permissions and limitations.
 
+'This interface exctracted from the original VECTO Concrete FUELMAP classin order to 
+'to facilitate unit testing. No changes made to the concrete class code.
+
 Public Interface IFUELMAP
 
-
    Function ReadFile(Optional ByVal ShowMsg As Boolean = True) As Boolean
-
-
    Function fFCdelaunay_Intp(ByVal nU As Single, ByVal Tq As Single) As Single
-
    Function Triangulate() As Boolean
 
    Property FilePath As String
@@ -24,7 +23,5 @@ Public Interface IFUELMAP
    ReadOnly Property Tq As List(Of Single)
    ReadOnly Property FC As List(Of Single)
    ReadOnly Property nU As List(Of Single)
-
-
 
 End Interface

@@ -15,22 +15,57 @@ Imports VectoAuxiliaries.Hvac
 
 Namespace DownstreamModules
 
-
-Public Interface IM9
+  Public Interface IM9
 Inherits IAuxiliaryEvent
 
 
- sub ClearAggregates() 
- Sub CycleStep( Optional stepTimeInSeconds As Single = nothing)
+   ''' <summary>
+  ''' Clears aggregated values ( Sets them to zero )
+  ''' </summary>
+  ''' <remarks></remarks>
+   Sub ClearAggregates() 
 
- ReadOnly Property LitresOfAirCompressorOnContinually As Single
- ReadOnly Property LitresOfAirCompressorOnOnlyInOverrun As Single 
- readonly property TotalCycleFuelConsumptionCompressorOnContinuously as single
- readonly property TotalCycleFuelConsumptionCompressorOffContinuously as single
+   ''' <summary>
+  ''' Increments all aggregated outputs
+  ''' </summary>
+  ''' <param name="stepTimeInSeconds">Single : Mutiplies the values to be aggregated by number of seconds</param>
+  ''' <remarks></remarks>
+   Sub CycleStep( Optional stepTimeInSeconds As Single = nothing)
+
+   ''' <summary>
+ ''' Litres Of Air: Compressor On Continually (L)
+ ''' </summary>
+ ''' <value></value>
+ ''' <returns></returns>
+ ''' <remarks>Start/Stop Sensitive</remarks>
+   ReadOnly Property LitresOfAirCompressorOnContinually                 As Single
+
+   ''' <summary>
+ ''' Litres Of Air Compressor On Only In Overrun (L)
+ ''' </summary>
+ ''' <value></value>
+ ''' <returns></returns>
+ ''' <remarks></remarks>
+   ReadOnly Property LitresOfAirCompressorOnOnlyInOverrun               As Single 
+
+   ''' <summary>
+ ''' Total Cycle Fuel Consumption Compressor *On* Continuously (G)
+ ''' </summary>
+ ''' <value></value>
+ ''' <returns></returns>
+ ''' <remarks></remarks>
+   Readonly property TotalCycleFuelConsumptionCompressorOnContinuously  As single
+
+   ''' <summary>
+ ''' Total Cycle Fuel Consumption Compressor *OFF* Continuously (G)
+ ''' </summary>
+ ''' <value></value>
+ ''' <returns></returns>
+ ''' <remarks></remarks>
+   Readonly property TotalCycleFuelConsumptionCompressorOffContinuously As single
 
 
 End Interface
-
 
 End Namespace
 

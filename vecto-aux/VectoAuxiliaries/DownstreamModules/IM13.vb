@@ -16,15 +16,25 @@ Imports VectoAuxiliaries.Hvac
 
 Namespace DownstreamModules
 
-Public Interface IM13
+  Public Interface IM13
+  
+    ''' <summary>
+    ''' Total Cycle Fuel Consumption Grams
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks>WHTC and Start Stop Adjusted</remarks>
+    ReadOnly Property TotalCycleFuelConsumptionGrams As Single
 
-
-ReadOnly Property TotalCycleFuelConsumptionGrams As Single
-ReadOnly Property TotalCycleFuelConsumptionLitres As Single 
-
-
-
-End Interface
+    ''' <summary>
+    ''' Total Cycle Fuel Consumption Litres
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks>WHTC and Start Stop Adjusted</remarks>
+    ReadOnly Property TotalCycleFuelConsumptionLitres As Single 
+  
+  End Interface
 
 
 End Namespace
