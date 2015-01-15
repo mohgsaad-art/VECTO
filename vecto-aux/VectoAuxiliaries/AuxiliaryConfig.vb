@@ -25,9 +25,6 @@ imports VectoAuxiliaries
 Public Class AuxiliaryConfig
  Implements IAuxiliaryConfig
 
-
-
-
  'Vecto
  Public Property VectoInputs As IVectoInputs  implements IAuxiliaryConfig.VectoInputs
   
