@@ -1,6 +1,4 @@
-Imports System.Windows.Forms
-
-' Copyright 2014 European Union.
+' Copyright 2015 European Union.
 ' Licensed under the EUPL (the 'Licence');
 '
 ' * You may not use this work except in compliance with the Licence.
@@ -10,6 +8,9 @@ Imports System.Windows.Forms
 '   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 '
 ' See the LICENSE.txt for the specific language governing permissions and limitations.
+
+Imports System.Windows.Forms
+
 
 ''' <summary>
 ''' File Browser dialog. Entirely controlled by cFilebrowser class.
