@@ -35,8 +35,6 @@ Implements ISignals
 
     _smartElectrics=value
 
-    Debug.WriteLine(String.Format("SmartElectrics {0}", _smartElectrics))
-
     End Set
 
      end property

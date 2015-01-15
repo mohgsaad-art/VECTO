@@ -42,9 +42,9 @@ Module FB_Global
     Public fbVMOD As cFileBrowser
 
                 'Paths
-    private        MyAppPath  = My.Application.Info.DirectoryPath & "\"
-    private        MyConfPath  = MyAppPath & "Config\"
-    private        MyDeclPath = MyAppPath & "Declaration\"
+    private        MyAppPath  As String  = My.Application.Info.DirectoryPath & "\"
+    private        MyConfPath As String  = MyAppPath & "Config\"
+    private        MyDeclPath As String  = MyAppPath & "Declaration\"
     'private        FB_FilHisDir = MyConfPath & "FileHistory\"
     private        HomePath As String = "<HOME>"
     private        JobPath As String = "<JOBPATH>"
