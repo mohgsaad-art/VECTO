@@ -33,8 +33,8 @@ Readonly Property AA_CompressorFlowRate_LitrePerSec As Single?
 ReadOnly Property AA_OverrunFlag As integer?
 ReadOnly Property AA_EngineIdleFlag As integer?
 ReadOnly Property AA_CompressorFlag As integer?
-Readonly Property AA_TotalCycleFC_BeforeSSandWHTCcorrection_Grams As single?
-ReadOnly Property AA_TotalCycleFC_BeforeSSandWHTCcorrection_Litres As single?
+Readonly Property AA_TotalCycleFC_Grams As single?
+ReadOnly Property AA_TotalCycleFC_Litres As single?
 
 
 Readonly Property TotalFuelGRAMS   As Single

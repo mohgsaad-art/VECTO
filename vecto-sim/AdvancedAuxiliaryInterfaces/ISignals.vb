@@ -14,5 +14,8 @@ Property Idle As Boolean
 Property InNeutral As Boolean
 Property AuxiliaryEventReportingLevel As AdvancedAuxiliaryMessageType
 Property EngineStopped As Boolean
+Property WHTC As Single
+Property DeclarationMode As Boolean
+
 
 End Interface

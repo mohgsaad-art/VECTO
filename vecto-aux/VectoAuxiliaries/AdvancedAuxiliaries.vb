@@ -301,8 +301,7 @@ End Sub
     Return doorDutyCycleFraction
    
    End Function
-
-  
+ 
     Public Function ValidateAAUXFile(filePath As String, ByRef message As String) As Boolean Implements IAdvancedAuxiliaries.ValidateAAUXFile
 
 
@@ -315,8 +314,7 @@ End Sub
 
     End Function
 
-    'Diagnostic Signals
-
+    'MOD
     Public ReadOnly Property AA_NonSmartAlternatorsEfficiency As Single? Implements IAdvancedAuxiliaries.AA_NonSmartAlternatorsEfficiency
         Get
           Return M0.AlternatorsEfficiency
@@ -383,13 +381,13 @@ End Sub
         End Get
     End Property
 
-    Public ReadOnly Property AA_TotalCycleFC_BeforeSSandWHTCcorrection_Grams As Single? Implements IAdvancedAuxiliaries.AA_TotalCycleFC_BeforeSSandWHTCcorrection_Grams
+    Public ReadOnly Property AA_TotalCycleFC_Grams As Single? Implements IAdvancedAuxiliaries.AA_TotalCycleFC_Grams
         Get
          Return M13.TotalCycleFuelConsumptionGrams
         End Get
     End Property
 
-    Public ReadOnly Property AA_TotalCycleFC_BeforeSSandWHTCcorrection_Litres As Single? Implements IAdvancedAuxiliaries.AA_TotalCycleFC_BeforeSSandWHTCcorrection_Litres
+    Public ReadOnly Property AA_TotalCycleFC_Litres As Single? Implements IAdvancedAuxiliaries.AA_TotalCycleFC_Litres
         Get
          Return M13.TotalCycleFuelConsumptionLitres
         End Get
@@ -405,7 +403,7 @@ End Sub
 
 
 
-
+    'TODO:REMOVE WHEN TESTING IS COMPLETE
     'PURE DIAGNOSTICS SHOULD ONLY BE USED IN  MOD FOR ENGINEERING TESTS
 
     Public ReadOnly Property AA_D_M10_INTERP1 As Single Implements IAdvancedAuxiliaries.AA_D_M12_INTERP1
