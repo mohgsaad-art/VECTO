@@ -1475,15 +1475,15 @@ lb_nOK:
          ModData.AA_TotalCycleFC_BeforeSSandWHTCcorrection_Grams   .Add( advancedAuxModel.AA_TotalCycleFC_BeforeSSandWHTCcorrection_Grams)
          ModData.AA_TotalCycleFC_BeforeSSandWHTCcorrection_Litres  .Add( advancedAuxModel.AA_TotalCycleFC_BeforeSSandWHTCcorrection_Litres)
 
-         ModData.AA_D_M10_P1X                                      .Add( advancedAuxModel.AA_D_M10_P1X)
-         ModData.AA_D_M10_P1Y                                      .Add( advancedAuxModel.AA_D_M10_P1Y)
-         ModData.AA_D_M10_P2X                                      .Add( advancedAuxModel.AA_D_M10_P2X)
-         ModData.AA_D_M10_P2Y                                      .Add( advancedAuxModel.AA_D_M10_P2Y)
-         ModData.AA_D_M10_P3X                                      .Add( advancedAuxModel.AA_D_M10_P3X)
-         ModData.AA_D_M10_P3Y                                      .Add( advancedAuxModel.AA_D_M10_P3Y)
-         ModData.AA_D_M10_XTAIN                                    .Add( advancedAuxModel.AA_D_M10_XTAIN)
-         ModData.AA_D_M10_INTERP1                                  .Add( advancedAuxModel.AA_D_M10_INTERP1)
-         ModData.AA_D_M10_INTERP2                                  .Add( advancedAuxModel.AA_D_M10_INTERP2)
+         ModData.AA_D_M12_P1X                                      .Add( advancedAuxModel.AA_D_M12_P1X)
+         ModData.AA_D_M12_P1Y                                      .Add( advancedAuxModel.AA_D_M12_P1Y)
+         ModData.AA_D_M12_P2X                                      .Add( advancedAuxModel.AA_D_M12_P2X)
+         ModData.AA_D_M12_P2Y                                      .Add( advancedAuxModel.AA_D_M12_P2Y)
+         ModData.AA_D_M12_P3X                                      .Add( advancedAuxModel.AA_D_M12_P3X)
+         ModData.AA_D_M12_P3Y                                      .Add( advancedAuxModel.AA_D_M12_P3Y)
+         ModData.AA_D_M12_XTAIN                                    .Add( advancedAuxModel.AA_D_M12_XTAIN)
+         ModData.AA_D_M12_INTERP1                                  .Add( advancedAuxModel.AA_D_M12_INTERP1)
+         ModData.AA_D_M12_INTERP2                                  .Add( advancedAuxModel.AA_D_M12_INTERP2)
 
 
          Catch ex   as Exception
