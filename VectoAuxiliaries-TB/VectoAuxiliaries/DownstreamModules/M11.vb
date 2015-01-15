@@ -15,14 +15,10 @@ Imports VectoAuxiliaries.Hvac
 
 Namespace DownstreamModules
 
-Public Class M11
- Implements IM11
+  Public Class M11
+    Implements IM11
 
- 
-
- Private Const RPM_to_RadiansPerSecond as single= 9.55 
-
-
+  Private Const RPM_to_RadiansPerSecond as single= 9.55 
 
   #Region "Private Aggregates"
  'Private Aggregations
@@ -34,7 +30,7 @@ Public Class M11
   Private AG6 As single
   #End Region
 
- #Region "Private Fields Assigned by Constructor."
+  #Region "Private Fields Assigned by Constructor."
 
   Private M1      As IM1_AverageHVACLoadDemand
   Private M3      As IM3_AveragePneumaticLoadDemand
@@ -46,7 +42,6 @@ Public Class M11
   #End Region
 
   'Staging Calculations
-
   Private Function Sum0( byval rpm As Single ) As Single
 
    If rpm<1 then rpm=1
@@ -143,22 +138,21 @@ End Property
              Return AG5
             End Get
         End Property
-'OUT6
-        Public ReadOnly Property StopStartSensitiveTotalCycleElectricalDemand As Single Implements IM11.StopStartSensitiveTotalCycleElectricalDemand
+  'OUT6
+  Public ReadOnly Property StopStartSensitiveTotalCycleElectricalDemand As Single Implements IM11.StopStartSensitiveTotalCycleElectricalDemand
             Get
             Return AG6
             End Get
         End Property
 
-Private ReadOnly Property SW1 As single
+  Private ReadOnly Property SW1 As single
     Get
      Return If( signals.EngineStopped,0, 1)
     End Get
 End Property
 
-
  'Clear at the beginning of cycle
- Sub ClearAggregates() Implements IM11.ClearAggregates
+  Sub ClearAggregates() Implements IM11.ClearAggregates
    
    AG1=0
    AG2=0
@@ -168,9 +162,9 @@ End Property
    ag6=0
 
  End Sub
-
- 'Add to Aggregates dependent on cycle step time.
- Sub CycleStep(Optional stepTimeInSeconds As Single = 0.0) Implements IM11.CycleStep
+ 
+  'Add to Aggregates dependent on cycle step time.
+  Sub CycleStep(Optional stepTimeInSeconds As Single = 0.0) Implements IM11.CycleStep
 
   'S/S Insensitive
    AG3+=  (  stepTimeInSeconds *   m6.AvgPowerDemandAtCrankFromElectricsIncHVAC         )
@@ -189,9 +183,9 @@ End Property
    AG5+=  (  stepTimeInSeconds *   Sum8 / 3600                                    * SW1 )
        
  End Sub
-
- 'Constructor
- Public Sub new ( m1 As IM1_AverageHVACLoadDemand, m3 As IM3_AveragePneumaticLoadDemand, m6 As IM6, m8 As IM8, fmap As IFUELMAP, signals As ISignals)
+ 
+  'Constructor
+  Public Sub new ( m1 As IM1_AverageHVACLoadDemand, m3 As IM3_AveragePneumaticLoadDemand, m6 As IM6, m8 As IM8, fmap As IFUELMAP, signals As ISignals)
 
       me.M1      = m1
       me.M3      = m3

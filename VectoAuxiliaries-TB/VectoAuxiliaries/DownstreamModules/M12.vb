@@ -15,43 +15,39 @@ Imports VectoAuxiliaries.Hvac
 
 Namespace DownstreamModules
 
-Public Class M12
-Implements IM12
+  Public Class M12
+    Implements IM12
 
 
-
-Private Class Point
+     Private Class Point
 
 Public X As Single
 Public Y As Single 
 
 End Class
 
-
-Private M11 As IM11
-Private M10 As IM10
-
-Private Signals As ISignals
-
-private _P1X,_P1Y,_P2X,_P2Y,_P3X,_P3Y,_XT, _INTERP1, _INTERP2 As single
-
-Private Sub setPoints()
-
-_P1X=0
-_P1Y=M11.TotalCycleFuelConsumptionZeroElectricalLoad 
-_P2X=M11.SmartElectricalTotalCycleEletricalEnergyGenerated
-_P2Y=M11.TotalCycleFuelConsumptionSmartElectricalLoad
-_P3X=M11.StopStartSensitiveTotalCycleElectricalDemand
-_P3Y=M10.AverageLoadsFuelConsumptionInterpolatedForPneumatics
-_XT=M11.TotalCycleElectricalDemand
+     Private M11 As IM11
+     Private M10 As IM10   
+     Private Signals As ISignals   
+     private _P1X,_P1Y,_P2X,_P2Y,_P3X,_P3Y,_XT, _INTERP1, _INTERP2 As single
+     
+     Private Sub setPoints()
+     
+     _P1X=0
+     _P1Y=M11.TotalCycleFuelConsumptionZeroElectricalLoad 
+     _P2X=M11.SmartElectricalTotalCycleEletricalEnergyGenerated
+     _P2Y=M11.TotalCycleFuelConsumptionSmartElectricalLoad
+     _P3X=M11.StopStartSensitiveTotalCycleElectricalDemand
+     _P3Y=M10.AverageLoadsFuelConsumptionInterpolatedForPneumatics
+     _XT=M11.TotalCycleElectricalDemand
 
 
 
 
-End Sub
+      End Sub
 
-'Interpolation 
-Private function Sum1()As single
+    'Interpolation 
+     Private function Sum1()As single
 
 Dim  P1 as Point  = New Point with {.X=0, .Y=M11.TotalCycleFuelConsumptionZeroElectricalLoad }
 Dim  P2 As Point  = New Point With {.X=M11.SmartElectricalTotalCycleEletricalEnergyGenerated, .Y=M11.TotalCycleFuelConsumptionSmartElectricalLoad}
@@ -70,9 +66,7 @@ setPoints
 Return if( Single.IsNaN(IP5Y),0, IP5y)
 
 End Function
-
-
-Private function Sum2()As single
+     Private function Sum2()As single
 
 Dim  P1 as Point  = New Point with {.X=0, .Y=M11.TotalCycleFuelConsumptionZeroElectricalLoad }
 Dim  P3 As Point  = New Point With {.X=M11.StopStartSensitiveTotalCycleElectricalDemand, .Y=M10.AverageLoadsFuelConsumptionInterpolatedForPneumatics}
@@ -90,9 +84,8 @@ Return  If( Single.IsNaN(IP5Y),0, IP5y)
 
 End Function
 
-
-
-Public Sub new ( m10 As IM10, m11 As IM11, signals As ISignals)
+     'Constructor
+     Public Sub new ( m10 As IM10, m11 As IM11, signals As ISignals)
 
    Me.M10 = m10
    Me.M11=m11
@@ -100,7 +93,8 @@ Public Sub new ( m10 As IM10, m11 As IM11, signals As ISignals)
 
 End Sub
 
-Public ReadOnly Property FuelconsumptionwithsmartElectricsandAveragePneumaticPowerDemand As Single Implements IM12.FuelconsumptionwithsmartElectricsandAveragePneumaticPowerDemand
+     'Main Class Outputs
+     Public ReadOnly Property FuelconsumptionwithsmartElectricsandAveragePneumaticPowerDemand As Single Implements IM12.FuelconsumptionwithsmartElectricsandAveragePneumaticPowerDemand
   Get
 
      'SCHM 3_2
@@ -115,9 +109,7 @@ Public ReadOnly Property FuelconsumptionwithsmartElectricsandAveragePneumaticPow
   End Get
 
 End Property
-
-
-Public ReadOnly Property BaseFuelConsumptionWithAverageAuxiliaryLoads As Single Implements IM12.BaseFuelConsumptionWithAverageAuxiliaryLoads
+     Public ReadOnly Property BaseFuelConsumptionWithAverageAuxiliaryLoads As Single Implements IM12.BaseFuelConsumptionWithAverageAuxiliaryLoads
     Get
        
       'SCM 3_02
@@ -133,59 +125,54 @@ Public ReadOnly Property BaseFuelConsumptionWithAverageAuxiliaryLoads As Single 
 End Property
 
 
-        Public ReadOnly Property INTRP1 As Single Implements IM12.INTRP1
+     'Diagnostics Signal Exposure only. Does not materially affect class operation.
+     Public ReadOnly Property INTRP1 As Single Implements IM12.INTRP1
             Get
              Return _INTERP1
             End Get
         End Property
-
-        Public ReadOnly Property INTRP2 As Single Implements IM12.INTRP2
+     Public ReadOnly Property INTRP2 As Single Implements IM12.INTRP2
             Get
              Return _INTERP2
             End Get
         End Property
-
-        Public ReadOnly Property P1X As Single Implements IM12.P1X
+     Public ReadOnly Property P1X As Single Implements IM12.P1X
             Get
              Return _P1X
             End Get
         End Property
-
-        Public ReadOnly Property P1Y As Single Implements IM12.P1Y
+     Public ReadOnly Property P1Y As Single Implements IM12.P1Y
             Get
              Return _p1Y
             End Get
         End Property
-
-        Public ReadOnly Property P2X As Single Implements IM12.P2X
+     Public ReadOnly Property P2X As Single Implements IM12.P2X
             Get
              Return _P2X
             End Get
         End Property
-
-        Public ReadOnly Property P2Y As Single Implements IM12.P2Y
+     Public ReadOnly Property P2Y As Single Implements IM12.P2Y
             Get
              Return _P2Y
             End Get
         End Property
-
-        Public ReadOnly Property P3X As Single Implements IM12.P3X
+     Public ReadOnly Property P3X As Single Implements IM12.P3X
             Get
               Return _P3X
             End Get
         End Property
-
-        Public ReadOnly Property P3Y As Single Implements IM12.P3Y
+     Public ReadOnly Property P3Y As Single Implements IM12.P3Y
             Get
               Return _P3Y
             End Get
         End Property
-
-        Public ReadOnly Property XTAIN As Single Implements IM12.XTAIN
+     Public ReadOnly Property XTAIN As Single Implements IM12.XTAIN
             Get
               Return _XT
             End Get
         End Property
+
+
 End Class
 
 End Namespace
