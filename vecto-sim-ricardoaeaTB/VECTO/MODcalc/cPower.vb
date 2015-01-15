@@ -96,6 +96,9 @@ Public Class cPower
         If VEC.AuxiliaryAssembly<>"CLASSIC" then  
            WorkerMsg(tMsgID.Normal,"Initialising Advanced Auxiliaries Model", MsgSrc)
            If mAAUX_Global.InitialiseAdvancedAuxModel(VEC.AdvancedAuxiliaryFilePath) then
+             'Setting Mode / WHTC  for fueling in model.
+             mAAUX_Global.advancedAuxModel.Signals.DeclarationMode= Cfg.DeclMode
+             mAAUX_Global.advancedAuxModel.Signals.WHTC = Declaration.WHTCcorrFactor
              WorkerMsg(tMsgID.Normal,"Successfully Initialised Advanced Auxiliaries", MsgSrc)
            else
              WorkerMsg(tMsgID.Err,"FAILED to Initialised Advanced Auxiliaries", MsgSrc)
@@ -1472,23 +1475,25 @@ lb_nOK:
          ModData.AA_OverrunFlag                                    .Add( advancedAuxModel.AA_OverrunFlag)
          ModData.AA_EngineIdleFlag                                 .Add( advancedAuxModel.AA_EngineIdleFlag)
          ModData.AA_CompressorFlag                                 .Add( advancedAuxModel.AA_CompressorFlag)
-         ModData.AA_TotalCycleFC_BeforeSSandWHTCcorrection_Grams   .Add( advancedAuxModel.AA_TotalCycleFC_BeforeSSandWHTCcorrection_Grams)
-         ModData.AA_TotalCycleFC_BeforeSSandWHTCcorrection_Litres  .Add( advancedAuxModel.AA_TotalCycleFC_BeforeSSandWHTCcorrection_Litres)
+         ModData.AA_TotalCycleFC_Grams                             .Add( advancedAuxModel.AA_TotalCycleFC_Grams)
+         ModData.AA_TotalCycleFC_Litres                            .Add( advancedAuxModel.AA_TotalCycleFC_Litres)
+                                                                  
 
-         ModData.AA_D_M12_P1X                                      .Add( advancedAuxModel.AA_D_M12_P1X)
-         ModData.AA_D_M12_P1Y                                      .Add( advancedAuxModel.AA_D_M12_P1Y)
-         ModData.AA_D_M12_P2X                                      .Add( advancedAuxModel.AA_D_M12_P2X)
-         ModData.AA_D_M12_P2Y                                      .Add( advancedAuxModel.AA_D_M12_P2Y)
-         ModData.AA_D_M12_P3X                                      .Add( advancedAuxModel.AA_D_M12_P3X)
-         ModData.AA_D_M12_P3Y                                      .Add( advancedAuxModel.AA_D_M12_P3Y)
-         ModData.AA_D_M12_XTAIN                                    .Add( advancedAuxModel.AA_D_M12_XTAIN)
-         ModData.AA_D_M12_INTERP1                                  .Add( advancedAuxModel.AA_D_M12_INTERP1)
-         ModData.AA_D_M12_INTERP2                                  .Add( advancedAuxModel.AA_D_M12_INTERP2)
+         'TODO:DIAGNOSTICS - REMOVE WHEN TESTED
+         'ModData.AA_D_M12_P1X                                      .Add( advancedAuxModel.AA_D_M12_P1X)
+         'ModData.AA_D_M12_P1Y                                      .Add( advancedAuxModel.AA_D_M12_P1Y)
+         'ModData.AA_D_M12_P2X                                      .Add( advancedAuxModel.AA_D_M12_P2X)
+         'ModData.AA_D_M12_P2Y                                      .Add( advancedAuxModel.AA_D_M12_P2Y)
+         'ModData.AA_D_M12_P3X                                      .Add( advancedAuxModel.AA_D_M12_P3X)
+         'ModData.AA_D_M12_P3Y                                      .Add( advancedAuxModel.AA_D_M12_P3Y)
+         'ModData.AA_D_M12_XTAIN                                    .Add( advancedAuxModel.AA_D_M12_XTAIN)
+         'ModData.AA_D_M12_INTERP1                                  .Add( advancedAuxModel.AA_D_M12_INTERP1)
+         'ModData.AA_D_M12_INTERP2                                  .Add( advancedAuxModel.AA_D_M12_INTERP2)
 
 
          Catch ex   as Exception
 
-         Dim dummy = 0
+            'TODO:SOMETHING MEANINGFUL
 
 
          End try

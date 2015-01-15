@@ -15,16 +15,19 @@ Private Const FUEL_DENSITY_percm3 As Single = 0.835
 
 
 <Test()> _
-<TestCase(50,	60,	70,	FALSE,	FALSE,	100, 72287.5f , 86.57185629f )> _
-<TestCase(50,	60,	70,	FALSE,	TRUE,	100, 72277.5f , 86.55988024f )> _
-<TestCase(50,	60,	70,	TRUE,	FALSE,	100, 72297.5f , 86.58383234f )> _
-<TestCase(50,	60,	70,	TRUE,	TRUE,	100, 72287.5f , 86.57185629f )> _
+<TestCase(50,	60,	70,	FALSE,	FALSE,100, 1,False,	 72287.5f , 86.57185629f )> _
+<TestCase(50,	60,	70,	FALSE,	TRUE ,100, 1,False,	 72277.5f , 86.55988024f )> _
+<TestCase(50,	60,	70,	TRUE,	FALSE,100, 1,False,	 72297.5f , 86.58383234f )> _
+<TestCase(50,	60,	70,	TRUE,	TRUE ,100, 1,False,	 72287.5f , 86.57185629f )> _
+<TestCase(50,	60,	70,	TRUE,	TRUE ,100, 2,True,	 144575.0f ,173.14371258f )> _
 Public Sub InputOutputValues( IP1  As single,
                               IP2  As single, 
                               IP3  As single,
                               IP4  As Boolean, 
                               IP5  As Boolean, 
                               IP6  As single,
+                              IP7  As Single,
+                              IP8  As Boolean,
                               OUT1 As single,
                               OUT2 As single)
 
@@ -40,6 +43,8 @@ m10.Setup     ( Function(x) x.FuelConsumptionSmartPneumaticsAndAverageElectrical
 Signals.Setup ( Function(x) x.SmartPneumatics)                                                 .Returns( IP4 )
 Signals.Setup ( Function(x) x.SmartElectrics)                                                  .Returns( IP5 )
 m1.Setup      ( Function(x) x.HVACFuelingLitresPerHour)                                        .Returns( IP6 )
+Signals.Setup ( Function(x) x.WHTC)                                                            .Returns( IP7 )
+Signals.Setup ( Function(x) x.DeclarationMode)                                                 .Returns( IP8 )
 Signals.Setup ( Function(x) x.TotalCycleTimeSeconds)                                           .Returns( 3114)
 Signals.Setup ( Function(x) x.CurrentCycleTimeInSeconds)                                       .Returns( 3114)
 

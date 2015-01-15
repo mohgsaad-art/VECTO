@@ -53,9 +53,11 @@ Public Class cMOD
     public AA_OverrunFlag                                         As List(Of integer?)
     public AA_EngineIdleFlag                                      As List(Of integer?)
     public AA_CompressorFlag                                      As List(Of integer?)
-    public AA_TotalCycleFC_BeforeSSandWHTCcorrection_Grams        As List(Of single? )
-    public AA_TotalCycleFC_BeforeSSandWHTCcorrection_Litres       As List(Of single? )
+    public AA_TotalCycleFC_Grams        As List(Of single? )
+    public AA_TotalCycleFC_Litres       As List(Of single? )
 
+    'TODO:DIAGNOSTICS (D) REMOVE WHEN TESTED
+    '
     public  AA_D_M12_P1X                            as list( of single  )
     public  AA_D_M12_P1Y                            as list( of single  )
     public  AA_D_M12_P2X                            as list( of single  )
@@ -119,8 +121,8 @@ Public Class cMOD
         AA_OverrunFlag                                      = new  List(Of integer? )
         AA_EngineIdleFlag                                   = new  List(Of integer? )
         AA_CompressorFlag                                   = new  List(Of integer? )
-        AA_TotalCycleFC_BeforeSSandWHTCcorrection_Grams     = new  List(Of  single? )
-        AA_TotalCycleFC_BeforeSSandWHTCcorrection_Litres    = new  List(Of  single? )
+        AA_TotalCycleFC_Grams                               = new  List(Of  single? )
+        AA_TotalCycleFC_Litres                              = new  List(Of  single? )
 
         AA_D_M12_P1X                                         = new List(Of single )
         AA_D_M12_P1Y                                         = new List(Of single )
@@ -600,17 +602,20 @@ Public Class cMOD
             s.Append(",AA_OverrunFlag [Integer 0/1]")                                   
             s.Append(",AA_EngineIdleFlag [Integer 0/1]")                                     
             s.Append(",AA_CompressorFlag [Integer 0/1]")                                    
-            s.Append(",AA_TotalCycleFC_BeforeSSandWHTCcorrection_Grams")  
-            s.Append(",AA_TotalCycleFC_BeforeSSandWHTCcorrection_Litres")   
-            s.Append(",AA_D_M12_P1X      [Single]")
-            s.Append(",AA_D_M12_P1Y      [Single]")
-            s.Append(",AA_D_M12_P2X      [Single]")
-            s.Append(",AA_D_M12_P2Y      [Single]")
-            s.Append(",AA_D_M12_P3X      [Single]")
-            s.Append(",AA_D_M12_P3Y      [Single]")
-            s.Append(",AA_D_M12_XTAIN    [Single]")
-            s.Append(",AA_D_M12_INTERP1  [Single]")
-            s.Append(",AA_D_M12_INTERP2  [Single]")
+            s.Append(",AA_TotalCycleFC_Grams")  
+            s.Append(",AA_TotalCycleFC_Litres")   
+
+            'TODO:
+            'DIAGNOSTICS REMOVE WHEN TESTED
+            's.Append(",AA_D_M12_P1X      [Single]")
+            's.Append(",AA_D_M12_P1Y      [Single]")
+            's.Append(",AA_D_M12_P2X      [Single]")
+            's.Append(",AA_D_M12_P2Y      [Single]")
+            's.Append(",AA_D_M12_P3X      [Single]")
+            's.Append(",AA_D_M12_P3Y      [Single]")
+            's.Append(",AA_D_M12_XTAIN    [Single]")
+            's.Append(",AA_D_M12_INTERP1  [Single]")
+            's.Append(",AA_D_M12_INTERP2  [Single]")
 
 
 
@@ -785,18 +790,21 @@ Public Class cMOD
                       s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC",AA_OverrunFlag(t).ToString(),""))                                   
                       s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC",AA_EngineIdleFlag(t).ToString(),""))                                     
                       s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC",AA_CompressorFlag(t).ToString(),""))                                    
-                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC",AA_TotalCycleFC_BeforeSSandWHTCcorrection_Grams(t).ToString(),""))  
-                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC",AA_TotalCycleFC_BeforeSSandWHTCcorrection_Litres(t).ToString(),""))
+                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC",AA_TotalCycleFC_Grams(t).ToString(),""))  
+                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC",AA_TotalCycleFC_Litres(t).ToString(),""))
 
-                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M12_P1X      (t).toString(),""))
-                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M12_P1Y      (t).toString(),""))
-                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M12_P2X      (t).toString(),""))
-                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M12_P2Y      (t).toString(),""))
-                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M12_P3X      (t).toString(),""))
-                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M12_P3Y      (t).toString(),""))
-                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M12_XTAIN    (t).toString(),""))
-                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M12_INTERP1  (t).toString(),""))
-                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M12_INTERP2  (t).toString(),""))
+
+                      'TODO:REMOVE WHEN TESTED
+                      'DIAGNOSTICS
+                      's.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M12_P1X      (t).toString(),""))
+                      's.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M12_P1Y      (t).toString(),""))
+                      's.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M12_P2X      (t).toString(),""))
+                      's.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M12_P2Y      (t).toString(),""))
+                      's.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M12_P3X      (t).toString(),""))
+                      's.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M12_P3Y      (t).toString(),""))
+                      's.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M12_XTAIN    (t).toString(),""))
+                      's.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M12_INTERP1  (t).toString(),""))
+                      's.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M12_INTERP2  (t).toString(),""))
 
 
 

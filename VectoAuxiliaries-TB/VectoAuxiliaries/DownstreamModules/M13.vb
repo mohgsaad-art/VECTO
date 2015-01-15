@@ -47,7 +47,12 @@ Private ReadOnly Property Sum6 As Single
 End Property
 Private ReadOnly Property Sum7 As Single
     Get
-      Return  Sum6/ FUEL_DENSITY_L3
+      Return  Sum8/ FUEL_DENSITY_L3
+    End Get
+End Property
+Private ReadOnly Property Sum8 As Single
+    Get
+      Return SW4 * sum6
     End Get
 End Property
 
@@ -67,6 +72,13 @@ Private readonly Property SW3 As Single
      Return If( signals.SmartElectrics, SW1, SW2)
     End Get
 End Property
+Private ReadOnly Property SW4 As single
+    Get
+      Return If( signals.DeclarationMode, signals.WHTC,1)
+    End Get
+End Property
+
+
 
 Public Sub new ( m1 As IM1_AverageHVACLoadDemand, m10 As IM10, m12 As IM12 , signals As ISignals)
 
@@ -78,17 +90,19 @@ Public Sub new ( m1 As IM1_AverageHVACLoadDemand, m10 As IM10, m12 As IM12 , sig
 End Sub
 
 
-        Public ReadOnly Property TotalCycleFuelConsumptionGrams As Single Implements IM13.TotalCycleFuelConsumptionGrams
+Public ReadOnly Property TotalCycleFuelConsumptionGrams As Single Implements IM13.TotalCycleFuelConsumptionGrams
             Get
-          Return Sum6
+          Return Sum8
             End Get
         End Property
 
-        Public ReadOnly Property TotalCycleFuelConsumptionLitres As Single Implements IM13.TotalCycleFuelConsumptionLitres
+Public ReadOnly Property TotalCycleFuelConsumptionLitres As Single Implements IM13.TotalCycleFuelConsumptionLitres
             Get
              Return  Sum7
             End Get
         End Property
+
+
 End Class
 
 

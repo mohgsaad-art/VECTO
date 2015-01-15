@@ -2,11 +2,9 @@
 Public Class Signals
 Implements ISignals
 
-
-
-
-
-  Private _smartElectrics As Boolean
+    'Backing variables
+    Private _WHTCCorretion As Single =1
+    Private _smartElectrics As Boolean
 
     Public Property ClutchEngaged As Boolean Implements ISignals.ClutchEngaged
 
@@ -32,7 +30,6 @@ Implements ISignals
 
      end property
 
-
     Public Property SmartPneumatics As Boolean Implements ISignals.SmartPneumatics
 
     Public Property TotalCycleTimeSeconds As Integer Implements ISignals.TotalCycleTimeSeconds
@@ -48,6 +45,21 @@ Implements ISignals
     Public Property AuxiliaryEventReportingLevel As AdvancedAuxiliaryMessageType Implements ISignals.AuxiliaryEventReportingLevel
 
     Public Property EngineStopped As Boolean Implements ISignals.EngineStopped
+
+    Public Property DeclarationMode As Boolean Implements ISignals.DeclarationMode
+
+    Public Property WHTC As Single Implements ISignals.WHTC
+
+    Set
+      _WHTCCorretion=value
+    End Set
+    Get
+      Return _WHTCCorretion
+    End Get
+
+
+    end property
+
 
 
 End Class
