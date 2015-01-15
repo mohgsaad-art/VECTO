@@ -123,12 +123,29 @@ End Function
 
  Public ReadOnly Property AverageLoadsFuelConsumptionInterpolatedForPneumatics As Single Implements IM10.AverageLoadsFuelConsumptionInterpolatedForPneumatics
             Get
-             Return  If( Single.IsNaN( Interpolate(InterpolationType.NonSmartPneumtaics)),0,Interpolate(InterpolationType.NonSmartPneumtaics))
+
+            'SCHM 3_02
+            Dim intrp1 As Single=Interpolate(InterpolationType.NonSmartPneumtaics)
+            intrp1 = If( Not Single.IsNaN( intrp1)  andalso m9.LitresOfAirCompressorOnContinually>0, intrp1,0)            
+            Return  intrp1
+
+
+            'TODO: Remove when tested.
+             'Return  If( Single.IsNaN( Interpolate(InterpolationType.NonSmartPneumtaics)),0,Interpolate(InterpolationType.NonSmartPneumtaics))
+
             End Get
         End Property
  Public ReadOnly Property FuelConsumptionSmartPneumaticsAndAverageElectricalPowerDemand As Single Implements IM10.FuelConsumptionSmartPneumaticsAndAverageElectricalPowerDemand
             Get
-             Return If( Single.IsNaN(Interpolate( InterpolationType.SmartPneumtaics)),0,Interpolate(InterpolationType.SmartPneumtaics))
+
+            'SCHM 3_02
+            Dim intrp2 As Single=Interpolate(InterpolationType.SmartPneumtaics)
+            intrp2 = If( Not Single.IsNaN( intrp2)  andalso m9.LitresOfAirCompressorOnContinually>0, intrp2,0)            
+            Return  intrp2
+
+            'TODO: Remove when tested.          
+            'Return If( Single.IsNaN(Interpolate( InterpolationType.SmartPneumtaics)),0,Interpolate(InterpolationType.SmartPneumtaics))
+
             End Get
         End Property
  

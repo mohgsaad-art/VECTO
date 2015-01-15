@@ -10,15 +10,15 @@ ReadOnly Property Running          As boolean
 ReadOnly Property AuxiliaryName    As String
 ReadOnly Property AuxiliaryVersion As String
 
-readonly property AA_D_M10_P1X as single
-readonly property AA_D_M10_P1Y as single
-readonly property AA_D_M10_P2X as single
-readonly property AA_D_M10_P2Y as single
-readonly property AA_D_M10_P3X as single
-readonly property AA_D_M10_P3Y as single
-readonly property AA_D_M10_XTAIN as single
-readonly property AA_D_M10_INTERP1 as single
-readonly property AA_D_M10_INTERP2 as single
+readonly property AA_D_M12_P1X as single
+readonly property AA_D_M12_P1Y as single
+readonly property AA_D_M12_P2X as single
+readonly property AA_D_M12_P2Y as single
+readonly property AA_D_M12_P3X as single
+readonly property AA_D_M12_P3Y as single
+readonly property AA_D_M12_XTAIN as single
+readonly property AA_D_M12_INTERP1 as single
+readonly property AA_D_M12_INTERP2 as single
 
 
 

@@ -408,49 +408,49 @@ End Sub
 
     'PURE DIAGNOSTICS SHOULD ONLY BE USED IN  MOD FOR ENGINEERING TESTS
 
-    Public ReadOnly Property AA_D_M10_INTERP1 As Single Implements IAdvancedAuxiliaries.AA_D_M10_INTERP1
+    Public ReadOnly Property AA_D_M10_INTERP1 As Single Implements IAdvancedAuxiliaries.AA_D_M12_INTERP1
         Get
-         Return M10.INTRP1
+         Return M12.INTRP1
         End Get
     End Property
-    Public ReadOnly Property AA_D_M10_INTERP2 As Single Implements IAdvancedAuxiliaries.AA_D_M10_INTERP2
+    Public ReadOnly Property AA_D_M10_INTERP2 As Single Implements IAdvancedAuxiliaries.AA_D_M12_INTERP2
         Get
-         Return M10.INTRP2
+         Return M12.INTRP2
         End Get
     End Property
-    Public ReadOnly Property AA_D_M10_P1X As Single Implements IAdvancedAuxiliaries.AA_D_M10_P1X
+    Public ReadOnly Property AA_D_M12_P1X As Single Implements IAdvancedAuxiliaries.AA_D_M12_P1X
         Get
-          Return M10.P1X
+          Return M12.P1X
         End Get
     End Property
-    Public ReadOnly Property AA_D_M10_P1Y As Single Implements IAdvancedAuxiliaries.AA_D_M10_P1Y
+    Public ReadOnly Property AA_D_M12_P1Y As Single Implements IAdvancedAuxiliaries.AA_D_M12_P1Y
         Get
-         Return M10.P1Y
+         Return M12.P1Y
         End Get
     End Property
-    Public ReadOnly Property AA_D_M10_P2X As Single Implements IAdvancedAuxiliaries.AA_D_M10_P2X
+    Public ReadOnly Property AA_D_M12_P2X As Single Implements IAdvancedAuxiliaries.AA_D_M12_P2X
         Get
-         Return M10.P2X
+         Return M12.P2X
         End Get
     End Property
-    Public ReadOnly Property AA_D_M10_P2Y As Single Implements IAdvancedAuxiliaries.AA_D_M10_P2Y
+    Public ReadOnly Property AA_D_M12_P2Y As Single Implements IAdvancedAuxiliaries.AA_D_M12_P2Y
         Get
-          Return M10.P2Y
+          Return M12.P2Y
         End Get
     End Property
-    Public ReadOnly Property AA_D_M10_P3X As Single Implements IAdvancedAuxiliaries.AA_D_M10_P3X
+    Public ReadOnly Property AA_D_M12_P3X As Single Implements IAdvancedAuxiliaries.AA_D_M12_P3X
         Get
-          Return M10.P3X
+          Return M12.P3X
         End Get
     End Property
-    Public ReadOnly Property AA_D_M10_P3Y As Single Implements IAdvancedAuxiliaries.AA_D_M10_P3Y
+    Public ReadOnly Property AA_D_M12_P3Y As Single Implements IAdvancedAuxiliaries.AA_D_M12_P3Y
         Get
-         Return M10.P3Y
+         Return M12.P3Y
         End Get
     End Property
-    Public ReadOnly Property AA_D_M10_XTAIN As Single Implements IAdvancedAuxiliaries.AA_D_M10_XTAIN
+    Public ReadOnly Property AA_D_M12_XTAIN As Single Implements IAdvancedAuxiliaries.AA_D_M12_XTAIN
         Get
-          Return M10.XTAIN
+          Return M12.XTAIN
         End Get
     End Property
 

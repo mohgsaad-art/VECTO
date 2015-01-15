@@ -76,12 +76,29 @@ End Property
 End Property
   Private readonly Property Sum7 As Single
     Get
-      Return fmap.fFCdelaunay_Intp(signals.EngineSpeed, sum6)
+
+      'SCM 3_02
+      Dim intrp1 As Single = fmap.fFCdelaunay_Intp(signals.EngineSpeed, sum6)
+      intrp1 = If( Not Single.IsNaN( intrp1) andAlso intrp1>0,intrp1,0)
+      Return intrp1
+
+
+      'TODO: Remove after testing
+      'Return fmap.fFCdelaunay_Intp(signals.EngineSpeed, sum6)
+
+
     End Get
 End Property
   Private ReadOnly Property Sum8 As Single
     Get
-     Return fmap.fFCdelaunay_Intp( signals.EngineSpeed, Sum5)
+
+    'SCHM 3_2
+      Dim intrp2 As Single = fmap.fFCdelaunay_Intp(signals.EngineSpeed, sum5)
+      intrp2 = If( Not Single.IsNaN( intrp2) andAlso intrp2>0,intrp2,0)
+      Return intrp2
+
+     'TODO:Remove after testing Return fmap.fFCdelaunay_Intp( signals.EngineSpeed, Sum5)
+
     End Get
   End Property
 
