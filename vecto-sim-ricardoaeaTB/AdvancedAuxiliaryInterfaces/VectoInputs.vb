@@ -13,15 +13,34 @@
 Public Class VectoInputs
 
 Implements IVectoInputs
-
+   
+    ''' <summary>
+    ''' Name of the Cycle ( Urban, Interurban etc )
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public Property Cycle As String Implements IVectoInputs.Cycle
-
+    ''' <summary>
+    ''' Vehicle Mass (KG)
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public Property VehicleWeightKG As Single Implements IVectoInputs.VehicleWeightKG
-
-     Public Property PowerNetVoltage As Single Implements IVectoInputs.PowerNetVoltage
-
-    'Public Property CycleDurationMinutes As Single Implements IVectoInputs.CycleDurationMinutes
-
+    ''' <summary>
+    ''' Powernet Voltage (V)
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks>This is the power voltage available in the bus - usually 26.3 Volts</remarks>
+    Public Property PowerNetVoltage As Single Implements IVectoInputs.PowerNetVoltage
+    ''' <summary>
+    ''' Fuel Map Same One as used in Vecto.
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public Property FuelMap As String Implements IVectoInputs.FuelMap
 
 End Class
