@@ -13,31 +13,29 @@ Imports System.IO
 
 Namespace Hvac
 
-Public Class HVACSteadyStateModel
+  Public Class HVACSteadyStateModel
 Implements IHVACSteadyStateModel
 
 
-Public Property HVACElectricalLoadPowerWatts As Single Implements IHVACSteadyStateModel.HVACElectricalLoadPowerWatts
-Public Property HVACFuellingLitresPerHour As Single Implements IHVACSteadyStateModel.HVACFuellingLitresPerHour
-Public Property HVACMechanicalLoadPowerWatts As Single Implements IHVACSteadyStateModel.HVACMechanicalLoadPowerWatts
+  Public Property HVACElectricalLoadPowerWatts As Single Implements IHVACSteadyStateModel.HVACElectricalLoadPowerWatts
+  Public Property HVACFuellingLitresPerHour    As Single Implements IHVACSteadyStateModel.HVACFuellingLitresPerHour
+  Public Property HVACMechanicalLoadPowerWatts As Single Implements IHVACSteadyStateModel.HVACMechanicalLoadPowerWatts
 
-
-Public Sub New()
+  'Constructors
+  Public Sub New()
 
 
 End Sub
-
-
-Public Sub New(elecPowerW As Single, mechPowerW As Single, fuellingLPH As Single)
+  Public Sub New(elecPowerW As Single, mechPowerW As Single, fuellingLPH As Single)
 
      HVACElectricalLoadPowerWatts = elecPowerW
-     HVACFuellingLitresPerHour = mechPowerW
+     HVACFuellingLitresPerHour    = mechPowerW
      HVACMechanicalLoadPowerWatts = fuellingLPH
 
 End Sub
-
-
-Public Function SetValuesFromMap( ByVal filePath As String, byref message As String ) As Boolean Implements IHVACSteadyStateModel.SetValuesFromMap
+  
+  'Implementation
+  Public Function SetValuesFromMap( ByVal filePath As String, byref message As String ) As Boolean Implements IHVACSteadyStateModel.SetValuesFromMap
 
 
             Dim myData As String
@@ -113,9 +111,8 @@ Public Function SetValuesFromMap( ByVal filePath As String, byref message As Str
 
 
 End Function
-
-
-
+  
+  
 End Class
 
 

@@ -119,7 +119,6 @@
     <Compile Include="Electrics\IElectricalConsumerList.vb" />
     <Compile Include="Hvac\HVACSteadyStateModel.vb" />
     <Compile Include="Hvac\HVACUserInputsConfig.vb" />
-    <Compile Include="Hvac\HVACMapParameter.vb" />
     <Compile Include="Hvac\IHVACSteadyStateModel.vb" />
     <Compile Include="Hvac\IHVACUserInputsConfig.vb" />
     <Compile Include="Hvac\IM1_AverageHVACLoadDemand.vb" />

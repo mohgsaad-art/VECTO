@@ -11,16 +11,32 @@
 
 Namespace Hvac
 
+  Public Interface IM1_AverageHVACLoadDemand
 
-Public Interface IM1_AverageHVACLoadDemand
-
-Function AveragePowerDemandAtCrankFromHVACMechanicalsWatts() As Single
-
-Function AveragePowerDemandAtAlternatorFromHVACElectricsWatts() As Single
-
-Function AveragePowerDemandAtCrankFromHVACElectricsWatts() As Single
-
-Function HVACFuelingLitresPerHour() As Single
+   ''' <summary>
+   ''' Average Power Demand At Crank From HVAC Mechanicals (W)
+   ''' </summary>
+   ''' <returns></returns>
+   ''' <remarks></remarks>
+   Function AveragePowerDemandAtCrankFromHVACMechanicalsWatts() As Single
+   ''' <summary>
+   ''' Average Power Demand At Alternator From HVAC Electrics (W)
+   ''' </summary>
+   ''' <returns></returns>
+   ''' <remarks></remarks>
+   Function AveragePowerDemandAtAlternatorFromHVACElectricsWatts() As Single
+   ''' <summary>
+   ''' Average Power Demand At Crank From HVAC Electrics  (W)
+   ''' </summary>
+   ''' <returns></returns>
+   ''' <remarks></remarks>
+   Function AveragePowerDemandAtCrankFromHVACElectricsWatts() As Single
+   ''' <summary>
+   ''' HVAC Fueling   (L/H)
+   ''' </summary>
+   ''' <returns>Litres Per Hour</returns>
+   ''' <remarks></remarks>
+   Function HVACFuelingLitresPerHour() As Single
 
 End Interface
 
