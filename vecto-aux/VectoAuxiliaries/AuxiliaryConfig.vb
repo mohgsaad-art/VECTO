@@ -18,71 +18,68 @@ Imports System.Windows.Forms
 Imports Newtonsoft.Json
 imports VectoAuxiliaries
 
-
-
-
 <Serializable()>
 Public Class AuxiliaryConfig
  Implements IAuxiliaryConfig
 
- 'Vecto
- Public Property VectoInputs As IVectoInputs  implements IAuxiliaryConfig.VectoInputs
-  
- 'Electrical
- Public property ElectricalUserInputsConfig As IElectricsUserInputsConfig  Implements IAuxiliaryConfig.ElectricalUserInputsConfig
-
-
- 'Pneumatics
- public Property PneumaticUserInputsConfig As IPneumaticUserInputsConfig Implements IAuxiliaryConfig.PneumaticUserInputsConfig
- public Property PneumaticAuxillariesConfig As IPneumaticsAuxilliariesConfig  Implements IAuxiliaryConfig.PneumaticAuxillariesConfig
-
- 'Hvac
- Public Property  HvacUserInputsConfig As IHVACUserInputsConfig Implements IAuxiliaryConfig.HvacUserInputsConfig
-
- 'Vecto Signals
- public Property Signals As ISignals
-
-
- 
- Sub new()
+   'Vecto
+   Public Property VectoInputs As IVectoInputs  implements IAuxiliaryConfig.VectoInputs
+    
+   'Electrical
+   Public property ElectricalUserInputsConfig As IElectricsUserInputsConfig  Implements IAuxiliaryConfig.ElectricalUserInputsConfig
+   
+   
+   'Pneumatics
+   public Property PneumaticUserInputsConfig As IPneumaticUserInputsConfig Implements IAuxiliaryConfig.PneumaticUserInputsConfig
+   public Property PneumaticAuxillariesConfig As IPneumaticsAuxilliariesConfig  Implements IAuxiliaryConfig.PneumaticAuxillariesConfig
+   
+   'Hvac
+   Public Property  HvacUserInputsConfig As IHVACUserInputsConfig Implements IAuxiliaryConfig.HvacUserInputsConfig
+   
+   'Vecto Signals
+   public Property Signals As ISignals
+   
+   
+   'Constructors
+   Sub new()
 
    Call Me.New("EMPTY")
 
  End Sub
+   Public Sub new(auxConfigFile As String)
 
-Public Sub new(auxConfigFile As String)
-
-'Special Condid
-If auxConfigFile="EMPTY" then 
-    ElectricalUserInputsConfig = New  ElectricsUserInputsConfig() With { .PowerNetVoltage= 26.3}
-    ElectricalUserInputsConfig.ElectricalConsumers= New ElectricalConsumerList(26.3,0.096,false)
-    ElectricalUserInputsConfig.ResultCardIdle = new ResultCard( New List(Of SmartResult ))
-    ElectricalUserInputsConfig.ResultCardOverrun= new ResultCard( New List(Of SmartResult ))
-    ElectricalUserInputsConfig.ResultCardTraction= new ResultCard( New List(Of SmartResult ))
-    PneumaticAuxillariesConfig= New PneumaticsAuxilliariesConfig(False)
-    PneumaticUserInputsConfig= New PneumaticUserInputsConfig(False)
-    HvacUserInputsConfig = New HVACUserInputsConfig(New HVACSteadyStateModel(), String.Empty)
-Exit sub
-
-End If
-
-If auxConfigFile is Nothing orelse auxConfigFile.Trim().Length=0 orelse Not FILE.Exists(auxConfigFile)  then
-
-    setdefaults()
-
-    Else
-    
-    setDefaults()
-    'ElectricalUserInputsConfig.ElectricalConsumers.Items.Clear
-    If Not Load(auxConfigFile)
-      MessageBox.Show(String.Format("Unable to load file  {0}", auxConfigFile))
-    End If
-
-End If
+  'Special Condition
+  If auxConfigFile="EMPTY" then 
+      ElectricalUserInputsConfig = New  ElectricsUserInputsConfig() With { .PowerNetVoltage= 26.3}
+      ElectricalUserInputsConfig.ElectricalConsumers= New ElectricalConsumerList(26.3,0.096,false)
+      ElectricalUserInputsConfig.ResultCardIdle = new ResultCard( New List(Of SmartResult ))
+      ElectricalUserInputsConfig.ResultCardOverrun= new ResultCard( New List(Of SmartResult ))
+      ElectricalUserInputsConfig.ResultCardTraction= new ResultCard( New List(Of SmartResult ))
+      PneumaticAuxillariesConfig= New PneumaticsAuxilliariesConfig(False)
+      PneumaticUserInputsConfig= New PneumaticUserInputsConfig(False)
+      HvacUserInputsConfig = New HVACUserInputsConfig(New HVACSteadyStateModel(), String.Empty)
+  Exit sub
+  
+  End If
+  
+  If auxConfigFile is Nothing orelse auxConfigFile.Trim().Length=0 orelse Not FILE.Exists(auxConfigFile)  then
+  
+      setdefaults()
+  
+      Else
+      
+      setDefaults()
+      'ElectricalUserInputsConfig.ElectricalConsumers.Items.Clear
+      If Not Load(auxConfigFile)
+        MessageBox.Show(String.Format("Unable to load file  {0}", auxConfigFile))
+      End If
+  
+  End If
 
 End Sub
-
-Private Sub setDefaults()
+   
+   'Set Default Values
+   Private Sub setDefaults()
 
 '.CycleDurationMinutes=51.9,
 
@@ -117,9 +114,8 @@ Private Sub setDefaults()
 
 
 End Sub
-
-
-Private Function GetDoorActuationTimeFraction()As Single
+   
+   Private Function GetDoorActuationTimeFraction()As Single
 
  Dim actuationsMap as PneumaticActuationsMAP = New PneumaticActuationsMAP( PneumaticUserInputsConfig.ActuationsMap )
  Dim actuationsKey As ActuationsKey = New ActuationsKey( "Park brake + 2 doors",VectoInputs.Cycle)
@@ -132,9 +128,8 @@ Private Function GetDoorActuationTimeFraction()As Single
  Return doorDutyCycleFraction
 
 End Function
-
-
-#Region "Comparison"
+   
+   #Region "Comparison"
 
 Private function CompareElectricalConfiguration( other as AuxiliaryConfig) as boolean
 
@@ -262,33 +257,30 @@ End Function
 
 
 #End Region
-
-#Region "Persistance"
+   
+   #Region "Persistance"
 
 
 'Persistance Functions
 Public Function Save(  auxFile As String ) As Boolean  Implements IAuxiliaryConfig.Save
 
-
-
   Dim returnValue As Boolean = true
   Dim settings As JsonSerializerSettings = new JsonSerializerSettings()
   settings.TypeNameHandling = TypeNameHandling.Objects
 
- 'JSON METHOD
- try
-
-  Dim  output As string = JsonConvert.SerializeObject(me, Formatting.Indented, settings)
-
-  File.WriteAllText(auxFile , output)
-
-  Catch ex as Exception
-  
-    'TODO:Do something meaningfull here perhaps logging
-
-  
-     returnValue= False
-  End Try
+   'JSON METHOD
+   try
+   
+      Dim  output As string = JsonConvert.SerializeObject(me, Formatting.Indented, settings)
+     
+      File.WriteAllText(auxFile , output)
+     
+      Catch ex as Exception
+      
+        'TODO:Do something meaningfull here perhaps logging
+         returnValue= False
+     
+    End Try
   
   Return returnValue
 
@@ -301,23 +293,22 @@ Public Function Load(  auxFile As String  ) As Boolean  Implements IAuxiliaryCon
 
   settings.TypeNameHandling = TypeNameHandling.Objects
 
- 'JSON METHOD
- try
-
-
-   Dim output As String  = File.ReadAllText(auxFile)
-
-   tmpAux =  JsonConvert.DeserializeObject( Of AuxiliaryConfig)(output,settings)
-
-   'This is where we Assume values of loaded( Deserialized ) object.
-   AssumeValuesOfOther( tmpAux ) 
-
-  Catch ex as Exception
-  
-    'TODO:Do something meaningfull here perhaps logging
-  
-     returnValue= False
-  End Try
+   'JSON METHOD
+   try
+      
+     Dim output As String  = File.ReadAllText(auxFile)
+   
+     tmpAux =  JsonConvert.DeserializeObject( Of AuxiliaryConfig)(output,settings)
+   
+     'This is where we Assume values of loaded( Deserialized ) object.
+     AssumeValuesOfOther( tmpAux ) 
+   
+    Catch ex as Exception
+    
+      'TODO:Do something meaningfull here perhaps logging
+    
+       returnValue= False
+    End Try
   
   Return returnValue
 

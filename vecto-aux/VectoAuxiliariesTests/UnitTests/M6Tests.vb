@@ -49,7 +49,7 @@ Assert.IsNotNull( target)
 End Sub
 
 
-'Mikes Test Cases and Results
+'Test Cases Supplied by Mike Preston.
 <Test()> _
 <TestCase(100,100,100,100,20,20,40,100,100,100,100,-550,false,   0,0,   0, 20,   0,100,20,200,0)> _
 <TestCase(100,100,100,100,20,20,40,100,100,100,100,-550,true ,   1,1,  100,40, 100,100,40,200,1)> _
@@ -120,79 +120,6 @@ Public Sub MikesConditionsTest( M1_1 As Single, _
 
 
 End Sub
-
-''TB. Supplimental test cases to those supplied by engineering
-''                                            AUX EMP  EDP SM
-'<TestCase(100,100,100,100,20,20,40,100,100  ,100,100, 100,false,   0,0,   0, 20,   0,100,20,200,0 ,TestName:="OverrunFlag-Off")> _
-'<TestCase(  0,  0,  0,  0,20,20,40,100,100  ,  0,  0,   0,false,   0,0,   0, 20,   0,100,20,200,0 ,TestName:="OverrunFlag-On")> _
-'<Test()> _
-'Public Sub SupplimentalDeveloperTests( M1_1 As Single, _
-'                                       M1_2 As Single, _
-'                                       M2_1 As Single, _
-'                                       M3_1 As Single, _
-'                                       M4_1 As Single, _
-'                                       M4_2 As Single, _
-'                                       M4_3 As Single, _
-'                                       M5_1 As Single, _
-'                                       M5_2 As Single, _
-'                                       AUX As Single, _
-'                                       EMP As Single, _
-'                                       EDP As Single, _
-'                                       SM As Boolean, _
-'                                       OUT1 As Single, _
-'                                       OUT2 As single, _
-'                                       OUT3 As Single, _
-'                                       OUT4 As Single, _
-'                                       OUT5 As Single, _
-'                                       OUT6 As Single, _
-'                                       OUT7 As Single, _
-'                                       OUT8 As Single, _
-'                                       OUT9 As Single)
-
-
-'                 dim  M1 = New M1_Mock()
-'                 dim  M2 = New M2_Mock()
-'                 dim  M3 = New M3_Mock()
-'                 dim  M4 = New M4_Mock()
-'                 dim  M5 = New M5_Mock()
-
-'                 Dim signals As New Signals()
-
-
-'                 M1._AveragePowerDemandAtCrankFromHVACMechanicalsWatts= M1_1
-'                 M1._AveragePowerDemandAtCrankFromHVACElectricsWatts=M1_2
-'                 M2._GetAveragePowerAtCrankFromElectrics=M2_1
-'                 M3._GetAveragePowerDemandAtCrankFromPneumatics= M3_1     
-'                 M4._PowerCompressorOff=M4_1
-'                 M4._PowerDifference=M4_2
-'                 M4._PowerCompressorOn=M4_3
-'                 M5._AlternatorsGenerationPowerAtCrankTractionOnWatts=M5_1
-'                 M5._AlternatorsGenerationPowerAtCrankOverrunWatts=M5_2
-                 
-                 
-
-'                 signals.EngineMotoringPower= EMP
-'                 signals.PreExistingAuxPower=AUX
-'                 signals.EngineDrivelinePower=EDP
-'                 signals.SmartElectrics=SM
-
-
-'                 Dim target As New M6(M1,M2,M3,M4,M5,Signals)
-
-'                 Assert.AreEqual(OUT1,target.OverrunFlag)
-'                 Assert.AreEqual(OUT2,target.SmartElecAndPneumaticsCompressorFlag)
-'                 Assert.AreEqual(OUT3,target.SmartElecAndPneumaticAltPowerGenAtCrank)
-'                 Assert.AreEqual(OUT4,target.SmartElecAndPneumaticAirCompPowerGenAtCrank)
-'                 Assert.AreEqual(OUT5,target.SmartElecOnlyAltPowerGenAtCrank)
-'                 Assert.AreEqual(OUT6,target.AveragePowerDemandAtCrankFromPneumatics)
-'                 Assert.AreEqual(OUT7,target.SmartElecAndPneumaticAirCompPowerGenAtCrank)
-'                 Assert.AreEqual(OUT8,target.AvgPowerDemandAtCrankFromElectricsIncHVAC)
-'                 Assert.AreEqual(OUT9,target.SmartPneumaticsOnlyCompressorFlag)
-
-'      End Sub
-                 
-
-
 
 
 End Class

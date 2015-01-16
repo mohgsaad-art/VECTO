@@ -159,9 +159,13 @@ End Property
    Public ReadOnly Property Sum3 As Single
     Get
 
-    Return _signals.EngineMotoringPower  + _
-           _signals.EngineDrivelinePower + _
-           Sum2 
+    'Return (_signals.EngineMotoringPower  * 1000)  + _
+    '       (_signals.EngineDrivelinePower * 1000) + _
+    '       Sum2 
+
+     Return (_signals.EngineMotoringPower  )  + _
+        (_signals.EngineDrivelinePower ) + _
+        Sum2 
 
     End Get
 End Property

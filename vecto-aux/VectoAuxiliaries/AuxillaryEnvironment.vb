@@ -57,17 +57,47 @@ Public Class AuxillaryEnvironment
   Public M13 As IM13
 
   Protected WithEvents compressorMap As ICompressorMap
+  
+  'Constructors
+  Sub new()
 
-  Public Sub VectoEventHandler( byref sender As Object, message As String, messageType As AdvancedAuxiliaryMessageType) handles compressorMap.AuxiliaryEvent
+   Call Me.New("EMPTY")
 
-
-    
-
+ End Sub
+  Public Sub new(auxConfigFile As String)
+     
+     'Special Condid
+     If auxConfigFile="EMPTY" then 
+         ElectricalUserInputsConfig = New  ElectricsUserInputsConfig() With { .PowerNetVoltage= 26.3}
+         ElectricalUserInputsConfig.ElectricalConsumers= New ElectricalConsumerList(26.3,0.096,false)
+         ElectricalUserInputsConfig.ResultCardIdle = new ResultCard( New List(Of SmartResult ))
+         ElectricalUserInputsConfig.ResultCardOverrun= new ResultCard( New List(Of SmartResult ))
+         ElectricalUserInputsConfig.ResultCardTraction= new ResultCard( New List(Of SmartResult ))
+         PneumaticAuxillariesConfig= New PneumaticsAuxilliariesConfig(False)
+         PneumaticUserInputsConfig= New PneumaticUserInputsConfig(False)
+         HvacUserInputsConfig      = New HVACUserInputsConfig(New HVACSteadyStateModel(), String.Empty)
+     Exit sub
+     
+     End If
+     
+     If auxConfigFile is Nothing orelse auxConfigFile.Trim().Length=0 orelse Not FILE.Exists(auxConfigFile)  then
+     
+         setdefaults()
+     
+         Else
+         
+         setDefaults()
+         'ElectricalUserInputsConfig.ElectricalConsumers.Items.Clear
+         If Not Load(auxConfigFile)
+           MessageBox.Show(String.Format("Unable to load file  {0}", auxConfigFile))
+         End If
+     
+     End If
 
   End Sub
-  
-  
-Public Sub ClearDown()
+
+  'Setup
+  Public Sub ClearDown()
 
      M0  = Nothing
      M05 = Nothing
@@ -85,196 +115,143 @@ Public Sub ClearDown()
      M12 = Nothing
      M13 = Nothing
 
-End Sub
+End Sub 
+  Public Sub Initialise()
 
-Public Sub Initialise()
-
-
-Dim alternatoMap As IAlternatorMap = New AlternatorMap(ElectricalUserInputsConfig.AlternatorMap)
-alternatoMap.Initialise()
-
-Dim actuationsMap As  IPneumaticActuationsMAP = New PneumaticActuationsMAP( PneumaticUserInputsConfig.ActuationsMap)
-
-
-compressorMap = New CompressorMap( PneumaticUserInputsConfig.CompressorMap)
-compressorMap.Initialise()
-
-
-Dim fuelMap As IFUELMAP = New cMAP()
-fuelMap.FilePath= VectoInputs.FuelMap
-If Not fuelMap.ReadFile() then 
-MessageBox.Show("Unable to read fuel map, aborting.")
-return
-End If
-fuelMap.Triangulate()
-
-
-ElectricalUserInputsConfig.ElectricalConsumers.DoorDutyCycleFraction = GetDoorActuationTimeFraction()
-
-
-M0 = New M0_NonSmart_AlternatorsSetEfficiency( ElectricalUserInputsConfig.ElectricalConsumers,
+   
+   Dim alternatoMap As IAlternatorMap = New AlternatorMap(ElectricalUserInputsConfig.AlternatorMap)
+   alternatoMap.Initialise()
+   
+   Dim actuationsMap As  IPneumaticActuationsMAP = New PneumaticActuationsMAP( PneumaticUserInputsConfig.ActuationsMap)
+   
+   
+   compressorMap = New CompressorMap( PneumaticUserInputsConfig.CompressorMap)
+   compressorMap.Initialise()
+   
+   
+   Dim fuelMap As IFUELMAP = New cMAP()
+   fuelMap.FilePath= VectoInputs.FuelMap
+   If Not fuelMap.ReadFile() then 
+   MessageBox.Show("Unable to read fuel map, aborting.")
+   return
+   End If
+   fuelMap.Triangulate()
+   
+   
+   ElectricalUserInputsConfig.ElectricalConsumers.DoorDutyCycleFraction = GetDoorActuationTimeFraction()
+   
+   
+   M0 = New M0_NonSmart_AlternatorsSetEfficiency( ElectricalUserInputsConfig.ElectricalConsumers,
+                                                  alternatoMap,
+                                                  ElectricalUserInputsConfig.PowerNetVoltage,
+                                                  Signals,
+                                                  HvacUserInputsConfig.SteadyStateModel)
+   
+   
+   M05 = New M0_5_SmartAlternatorSetEfficiency(M0, 
+                                               ElectricalUserInputsConfig.ElectricalConsumers, 
                                                alternatoMap,
-                                               ElectricalUserInputsConfig.PowerNetVoltage,
-                                               Signals,
-                                               HvacUserInputsConfig.SteadyStateModel)
-
-
-M05 = New M0_5_SmartAlternatorSetEfficiency(M0, 
-                                            ElectricalUserInputsConfig.ElectricalConsumers, 
-                                            alternatoMap,
-                                            ElectricalUserInputsConfig.ResultCardIdle,
-                                            ElectricalUserInputsConfig.ResultCardTraction,
-                                            ElectricalUserInputsConfig.ResultCardOverrun,Signals)
-
-
-M1 = New M1_AverageHVACLoadDemand(M0,
-                                  ElectricalUserInputsConfig.AlternatorGearEfficiency, 
-                                  PneumaticUserInputsConfig.CompressorGearEfficiency,
-                                  ElectricalUserInputsConfig.PowerNetVoltage,
-                                  Signals,
-                                  HvacUserInputsConfig.SteadyStateModel)
-
-
-M2 = New M2_AverageElectricalLoadDemand(ElectricalUserInputsConfig.ElectricalConsumers,
-                                        M0,
-                                        ElectricalUserInputsConfig.AlternatorGearEfficiency, 
-                                        ElectricalUserInputsConfig.PowerNetVoltage,Signals )
-
-
-
-M3 = New M3_AveragePneumaticLoadDemand(PneumaticUserInputsConfig,
-         PneumaticAuxillariesConfig,
-         actuationsMap,
-         compressorMap, 
-         VectoInputs.VehicleWeightKG,
-         VectoInputs.Cycle,
-         Signals)
-
-
-M4 = New M4_AirCompressor(compressorMap,PneumaticUserInputsConfig.CompressorGearRatio,PneumaticUserInputsConfig.CompressorGearEfficiency,Signals)
-
-
-M5 = New M5__SmartAlternatorSetGeneration( M05, VectoInputs.PowerNetVoltage,ElectricalUserInputsConfig.AlternatorGearEfficiency)
-
-
-M6 = New M6(M1,M2,M3,M4,M5,Signals)
-
-
-M7 = New M7(M5,M6,Signals)
-
-M8 = New M8(M1,M6,M7,Signals)
-
-M9 = New M9(M1,M4,M6,M8,fuelMap,PneumaticAuxillariesConfig,Signals)
-
-M10 = New M10(M3,M9,Signals)
-
-M11 = New M11(M1,M3,M6,M8,fuelMap,Signals)
-
-M12 = New M12( M10,M11, Signals )
-
-M13 = New M13(M1,M10,M12,Signals)
-
-
+                                               ElectricalUserInputsConfig.ResultCardIdle,
+                                               ElectricalUserInputsConfig.ResultCardTraction,
+                                               ElectricalUserInputsConfig.ResultCardOverrun,Signals)
+   
+   
+   M1 = New M1_AverageHVACLoadDemand(M0,
+                                     ElectricalUserInputsConfig.AlternatorGearEfficiency, 
+                                     PneumaticUserInputsConfig.CompressorGearEfficiency,
+                                     ElectricalUserInputsConfig.PowerNetVoltage,
+                                     Signals,
+                                     HvacUserInputsConfig.SteadyStateModel)
+   
+   
+   M2 = New M2_AverageElectricalLoadDemand(ElectricalUserInputsConfig.ElectricalConsumers,
+                                           M0,
+                                           ElectricalUserInputsConfig.AlternatorGearEfficiency, 
+                                           ElectricalUserInputsConfig.PowerNetVoltage,Signals )
+   
+   
+   
+   M3 = New M3_AveragePneumaticLoadDemand(PneumaticUserInputsConfig,
+            PneumaticAuxillariesConfig,
+            actuationsMap,
+            compressorMap, 
+            VectoInputs.VehicleWeightKG,
+            VectoInputs.Cycle,
+            Signals)
+   
+   
+   M4 = New M4_AirCompressor(compressorMap,PneumaticUserInputsConfig.CompressorGearRatio,PneumaticUserInputsConfig.CompressorGearEfficiency,Signals)
+   
+   
+   M5 = New M5__SmartAlternatorSetGeneration( M05, VectoInputs.PowerNetVoltage,ElectricalUserInputsConfig.AlternatorGearEfficiency)
+   
+   
+   M6 = New M6(M1,M2,M3,M4,M5,Signals)
+   
+   
+   M7 = New M7(M5,M6,Signals)
+   
+   M8 = New M8(M1,M6,M7,Signals)
+   
+   M9 = New M9(M1,M4,M6,M8,fuelMap,PneumaticAuxillariesConfig,Signals)
+   
+   M10 = New M10(M3,M9,Signals)
+   
+   M11 = New M11(M1,M3,M6,M8,fuelMap,Signals)
+   
+   M12 = New M12( M10,M11, Signals )
+   
+   M13 = New M13(M1,M10,M12,Signals)
+   
+   
 End Sub
- 
- Sub new()
+   
+  'Default Values
+  Private Sub setDefaults()
 
-   Call Me.New("EMPTY")
 
- End Sub
-
-Public Sub new(auxConfigFile As String)
-
-'Special Condid
-If auxConfigFile="EMPTY" then 
-    ElectricalUserInputsConfig = New  ElectricsUserInputsConfig() With { .PowerNetVoltage= 26.3}
-    ElectricalUserInputsConfig.ElectricalConsumers= New ElectricalConsumerList(26.3,0.096,false)
-    ElectricalUserInputsConfig.ResultCardIdle = new ResultCard( New List(Of SmartResult ))
-    ElectricalUserInputsConfig.ResultCardOverrun= new ResultCard( New List(Of SmartResult ))
-    ElectricalUserInputsConfig.ResultCardTraction= new ResultCard( New List(Of SmartResult ))
-    PneumaticAuxillariesConfig= New PneumaticsAuxilliariesConfig(False)
-    PneumaticUserInputsConfig= New PneumaticUserInputsConfig(False)
-    HvacUserInputsConfig      = New HVACUserInputsConfig(New HVACSteadyStateModel(), String.Empty)
-Exit sub
-
-End If
-
-If auxConfigFile is Nothing orelse auxConfigFile.Trim().Length=0 orelse Not FILE.Exists(auxConfigFile)  then
-
-    setdefaults()
-
-    Else
+    VectoInputs = New VectoInputs With {.Cycle="Urban", .VehicleWeightKG=16500, .PowerNetVoltage=26.3,.FuelMap="testFuelGoodMap.vmap"}
     
-    setDefaults()
-    'ElectricalUserInputsConfig.ElectricalConsumers.Items.Clear
-    If Not Load(auxConfigFile)
-      MessageBox.Show(String.Format("Unable to load file  {0}", auxConfigFile))
-    End If
-
-End If
-
+    'Pneumatics
+    PneumaticUserInputsConfig  = New PneumaticUserInputsConfig(true) 
+    PneumaticAuxillariesConfig = New PneumaticsAuxilliariesConfig(true)
+   
+    ElectricalUserInputsConfig = New  ElectricsUserInputsConfig() With {.DoorActuationTimeSecond=4, 
+                                                                        .AlternatorGearEfficiency=0.8,
+                                                                        .PowerNetVoltage= VectoInputs.PowerNetVoltage,
+                                                                        .ResultCardIdle= New  ResultCard( New List(Of SmartResult)),
+                                                                        .ResultCardOverrun= New ResultCard(New List(Of SmartResult)),
+                                                                        .ResultCardTraction=New  ResultCard(New List(Of SmartResult)),
+                                                                        .SmartElectrical=True,
+                                                                        .AlternatorMap="testAlternatorMap.aalt"
+                                                                        }
+   
+    HvacUserInputsConfig = New HVACUserInputsConfig( New HVACSteadyStateModel(100,100,100), String.Empty)
+   
+    Signals = New Signals With { .EngineSpeed=2000, .TotalCycleTimeSeconds=3114, .ClutchEngaged=False}
+   
+   
+    ElectricalUserInputsConfig.ElectricalConsumers= New ElectricalConsumerList(26.3,0.096,true)
+   
 End Sub
+   
+  Private Function GetDoorActuationTimeFraction()As Single
 
-Private Sub setDefaults()
-
-', .CycleDurationMinutes=51.9
-
- VectoInputs = New VectoInputs With {.Cycle="Urban", .VehicleWeightKG=16500, .PowerNetVoltage=26.3,.FuelMap="testFuelGoodMap.vmap"}
- 
- 'Pneumatics
- PneumaticUserInputsConfig  = New PneumaticUserInputsConfig(true) 
- PneumaticAuxillariesConfig = New PneumaticsAuxilliariesConfig(true)
-
-
-
-
- ElectricalUserInputsConfig = New  ElectricsUserInputsConfig() With {.DoorActuationTimeSecond=4, 
-                                                                     .AlternatorGearEfficiency=0.8,
-                                                                     .PowerNetVoltage= VectoInputs.PowerNetVoltage,
-                                                                     .ResultCardIdle= New  ResultCard( New List(Of SmartResult)),
-                                                                     .ResultCardOverrun= New ResultCard(New List(Of SmartResult)),
-                                                                     .ResultCardTraction=New  ResultCard(New List(Of SmartResult)),
-                                                                     .SmartElectrical=True,
-                                                                     .AlternatorMap="testAlternatorMap.aalt"
-                                                                     }
-
- HvacUserInputsConfig = New HVACUserInputsConfig( New HVACSteadyStateModel(100,100,100), String.Empty)
-
-
- Signals = New Signals With { .EngineSpeed=2000, .TotalCycleTimeSeconds=3114, .ClutchEngaged=False}
-
-
- 'Set Electricals.
-
-
-' Dim doorDutyCycleFraction as Single = GetDoorActuationTimeFraction
-
- ElectricalUserInputsConfig.ElectricalConsumers= New ElectricalConsumerList(26.3,0.096,true)
-
-
-
-
-End Sub
-
-
-Private Function GetDoorActuationTimeFraction()As Single
-
- Dim actuationsMap as PneumaticActuationsMAP = New PneumaticActuationsMAP( PneumaticUserInputsConfig.ActuationsMap )
- Dim actuationsKey As ActuationsKey = New ActuationsKey( "Park brake + 2 doors",VectoInputs.Cycle)
-
- Dim numActuations       as single = actuationsMap.GetNumActuations( actuationsKey)
- Dim secondsPerActuation As single = ElectricalUserInputsConfig.DoorActuationTimeSecond
-
- Dim doorDutyCycleFraction as Single = (numActuations * secondsPerActuation)/Signals.TotalCycleTimeSeconds
-
- Return doorDutyCycleFraction
+    Dim actuationsMap as PneumaticActuationsMAP = New PneumaticActuationsMAP( PneumaticUserInputsConfig.ActuationsMap )
+    Dim actuationsKey As ActuationsKey = New ActuationsKey( "Park brake + 2 doors",VectoInputs.Cycle)
+   
+    Dim numActuations       as single = actuationsMap.GetNumActuations( actuationsKey)
+    Dim secondsPerActuation As single = ElectricalUserInputsConfig.DoorActuationTimeSecond
+   
+    Dim doorDutyCycleFraction as Single = (numActuations * secondsPerActuation)/Signals.TotalCycleTimeSeconds
+   
+    Return doorDutyCycleFraction
 
 End Function
-
-
-#Region "Comparison"
-
-Private function CompareElectricalConfiguration( other as AuxillaryEnvironment) as boolean
+  
+  #Region "Comparison - Compares Configuration Values Are Same"
+    
+    Private function CompareElectricalConfiguration( other as AuxillaryEnvironment) as boolean
 
 'AlternatorGearEfficiency
 If Me.ElectricalUserInputsConfig.AlternatorGearEfficiency<> other.ElectricalUserInputsConfig.AlternatorGearEfficiency  then return false
@@ -339,7 +316,7 @@ Return true
 
 
 End Function
-Private Function ComparePneumaticAuxiliariesConfig( other As AuxillaryEnvironment ) As Boolean
+    Private Function ComparePneumaticAuxiliariesConfig( other As AuxillaryEnvironment ) As Boolean
 
  If Me.PneumaticAuxillariesConfig.AdBlueNIperMinute <> other.PneumaticAuxillariesConfig.AdBlueNIperMinute then Return False
  If Me.PneumaticAuxillariesConfig.AirControlledSuspensionNIperMinute <> other.PneumaticAuxillariesConfig.AirControlledSuspensionNIperMinute then Return False 
@@ -357,7 +334,7 @@ Private Function ComparePneumaticAuxiliariesConfig( other As AuxillaryEnvironmen
  Return true
 
 End Function
-Private Function ComparePneumaticUserConfig( other As AuxillaryEnvironment ) As Boolean
+    Private Function ComparePneumaticUserConfig( other As AuxillaryEnvironment ) As Boolean
 
  If Me.PneumaticUserInputsConfig.ActuationsMap <> other.PneumaticUserInputsConfig.ActuationsMap then Return False
  If Me.PneumaticUserInputsConfig.AdBlueDosing <> other.PneumaticUserInputsConfig.AdBlueDosing then Return False 
@@ -375,7 +352,7 @@ Private Function ComparePneumaticUserConfig( other As AuxillaryEnvironment ) As 
  Return true
 
 End Function
-Private Function CompareHVACConfig( other As AuxillaryEnvironment) As Boolean
+    Private Function CompareHVACConfig( other As AuxillaryEnvironment) As Boolean
 
   If Me.HvacUserInputsConfig.SteadyStateModel.HVACElectricalLoadPowerWatts <> other.HvacUserInputsConfig.SteadyStateModel.HVACElectricalLoadPowerWatts then Return false
   If Me.HvacUserInputsConfig.SteadyStateModel.HVACFuellingLitresPerHour <> other.HvacUserInputsConfig.SteadyStateModel.HVACFuellingLitresPerHour then Return false
@@ -386,8 +363,8 @@ Private Function CompareHVACConfig( other As AuxillaryEnvironment) As Boolean
   Return true
 
 End Function
-
-Public Function ConfigValuesAreTheSameAs( other As AuxillaryEnvironment) As Boolean
+    
+    Public Function ConfigValuesAreTheSameAs( other As AuxillaryEnvironment) As Boolean
 
    If Not CompareElectricalConfiguration     ( other ) then Return False
    If Not ComparePneumaticAuxiliariesConfig ( other ) then Return False
@@ -397,11 +374,11 @@ Public Function ConfigValuesAreTheSameAs( other As AuxillaryEnvironment) As Bool
    Return true
 
 End Function
-
+    
 
 #End Region
-
-#Region "Persistance"
+  
+  #Region "Persistance - Storage and Retreival of configuration files (.AAUX)"
 
 
 'Persistance Functions
@@ -559,9 +536,15 @@ End Sub
 
 
 #End Region
+  
+  Public Sub VectoEventHandler( byref sender As Object, message As String, messageType As AdvancedAuxiliaryMessageType) handles compressorMap.AuxiliaryEvent
 
 
+    
 
+
+  End Sub
+    
 
 End Class
 
