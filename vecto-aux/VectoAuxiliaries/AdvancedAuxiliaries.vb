@@ -20,10 +20,6 @@ Public Class AdvancedAuxiliaries
  Implements IAdvancedAuxiliaries
 
 
-
-
-
-
     Private  auxConfig As AuxiliaryConfig
 
 

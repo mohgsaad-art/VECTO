@@ -11,15 +11,10 @@
 
 Namespace Hvac
 
-Public Class HVACConstants
-
-
-
+   Public Class HVACConstants
 
 
 End Class
-
-
 
 End Namespace
 
