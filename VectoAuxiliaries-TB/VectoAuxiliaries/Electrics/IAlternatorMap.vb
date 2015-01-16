@@ -10,7 +10,7 @@
 ' See the LICENSE.txt for the specific language governing permissions and limitations.
 
 Namespace Electrics
-
+ 
 
     Public Interface IAlternatorMap
      Inherits IAuxiliaryEvent

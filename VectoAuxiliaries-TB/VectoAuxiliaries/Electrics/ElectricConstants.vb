@@ -31,8 +31,6 @@ Public Class ElectricConstants
     public const  AlternatorPulleyEfficiencyMax as single =1
 
 
-
-
 End Class
 
 

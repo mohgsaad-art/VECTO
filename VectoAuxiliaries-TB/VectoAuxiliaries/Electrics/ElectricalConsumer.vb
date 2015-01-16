@@ -18,19 +18,21 @@ Namespace Electrics
     Public Class ElectricalConsumer
         Implements IElectricalConsumer
 
-        'Calculated
-        Private Property AvgConsumptionAmps As Single Implements IElectricalConsumer.AvgConsumptionAmps
+       'Calculated
+       Private Property AvgConsumptionAmps As Single Implements IElectricalConsumer.AvgConsumptionAmps
 
-        'User Input
-        Public Property BaseVehicle As Boolean Implements IElectricalConsumer.BaseVehicle
-        Public Property Category As String Implements IElectricalConsumer.Category
-        Public Property ConsumerName As String Implements IElectricalConsumer.ConsumerName
-        Public Property NominalConsumptionAmps As Single Implements IElectricalConsumer.NominalConsumptionAmps
-        Public Property NumberInActualVehicle As Integer Implements IElectricalConsumer.NumberInActualVehicle
-        Public Property PhaseIdle_TractionOn As Single Implements IElectricalConsumer.PhaseIdle_TractionOn
-        Public Property PowerNetVoltage As Single Implements IElectricalConsumer.PowerNetVoltage
+       'Properties
+       Public Property BaseVehicle As Boolean Implements IElectricalConsumer.BaseVehicle
+       Public Property Category As String Implements IElectricalConsumer.Category
+       Public Property ConsumerName As String Implements IElectricalConsumer.ConsumerName
+       Public Property NominalConsumptionAmps As Single Implements IElectricalConsumer.NominalConsumptionAmps
+       Public Property NumberInActualVehicle As Integer Implements IElectricalConsumer.NumberInActualVehicle
+       Public Property PhaseIdle_TractionOn As Single Implements IElectricalConsumer.PhaseIdle_TractionOn
+       Public Property PowerNetVoltage As Single Implements IElectricalConsumer.PowerNetVoltage
 
-        Public Function TotalAvgConumptionAmps(Optional PhaseIdle_TractionOnBasedOnCycle As Single = 0.0) As Single Implements IElectricalConsumer.TotalAvgConumptionAmps
+
+       'Public class outputs
+       Public Function TotalAvgConumptionAmps(Optional PhaseIdle_TractionOnBasedOnCycle As Single = 0.0) As Single Implements IElectricalConsumer.TotalAvgConumptionAmps
 
            If ConsumerName = "Doors per Door" Then
                Return PhaseIdle_TractionOnBasedOnCycle * NominalConsumptionAmps * NumberInActualVehicle
@@ -40,13 +42,11 @@ Namespace Electrics
 
 
         End Function
-
-        <System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage>
-        Public Function TotalAvgConsumptionInWatts(Optional PhaseIdle_TractionOnBasedOnCycle As Single = 0.0) As Single Implements Electrics.IElectricalConsumer.TotalAvgConsumptionInWatts
+       Public Function TotalAvgConsumptionInWatts(Optional PhaseIdle_TractionOnBasedOnCycle As Single = 0.0) As Single Implements Electrics.IElectricalConsumer.TotalAvgConsumptionInWatts
             Return TotalAvgConumptionAmps(PhaseIdle_TractionOnBasedOnCycle) * PowerNetVoltage
         End Function 
 
-
+       'Constructor
        Public Sub New(BaseVehicle As Boolean, Category As String, ConsumerName As String, NominalConsumptionAmps As Single, PhaseIdle_TractionOn As Single, PowerNetVoltage As Single, numberInVehicle As Integer)
 
             'Illegal Value Check.
@@ -68,10 +68,8 @@ Namespace Electrics
 
        End Sub
 
-
-
-
-        Public Overrides Function Equals(obj As Object) As Boolean
+       'Comparison Overrides
+       Public Overrides Function Equals(obj As Object) As Boolean
 
          Dim other As IElectricalConsumer = CType(obj, IElectricalConsumer)
           
@@ -80,8 +78,7 @@ Namespace Electrics
 
 
         End Function
-
-        <System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage>
+       <System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage>
         Public Overrides Function GetHashCode() As Integer
             Return 0
         End Function
@@ -89,4 +86,5 @@ Namespace Electrics
 
 
     End Class
+
 End Namespace

@@ -19,32 +19,32 @@ Implements IAlternatorMap
 
     Private ReadOnly filePath As String
 
-    Public map As New List(Of MapPoint)
-    Public yRange As List(Of Single)
-    Public xRange As List(Of Single)
-    Private minX, minY, maxX, maxY As Single
+    Private  _map    As New List(Of MapPoint)
+    Private  _yRange As List(Of Single)
+    Private  _xRange As List(Of Single)
+    Private  _minX, _minY, _maxX, _maxY As Single
 
     'Required Action Test or Interpolation Type
     Public Function OnBoundaryYInterpolatedX(x As Single, y As Single) As Boolean
-        Return yRange.Contains(y) AndAlso Not xRange.Contains(x)
+        Return _yRange.Contains(y) AndAlso Not _xRange.Contains(x)
     End Function
     Public Function OnBoundaryXInterpolatedY(x As Single, y As Single) As Boolean
-        Return Not yRange.Contains(y) AndAlso xRange.Contains(x)
+        Return Not _yRange.Contains(y) AndAlso _xRange.Contains(x)
     End Function
     Public Function ONBoundaryXY(x As Single, y As Single) As Boolean
-        Return (From sector In map Where sector.Y = y AndAlso sector.x = x).Count = 1
+        Return (From sector In _map Where sector.Y = y AndAlso sector.x = x).Count = 1
     End Function
 
     'Determine Value Methods
     Private Function GetOnBoundaryXY(x As Single, y As Single) As Single
-        Return (From sector In map Where sector.Y = y AndAlso sector.x = x).First().v
+        Return (From sector In _map Where sector.Y = y AndAlso sector.x = x).First().v
     End Function
     Private Function GetOnBoundaryYInterpolatedX(x As Single, y As Single) As Single
 
         Dim x0, x1, v0, v1, slope, dx As Single
 
-        x0 = (From p In xRange Order By p Where p < x).Last()
-        x1 = (From p In xRange Order By p Where p > x).First()
+        x0 = (From p In _xRange Order By p Where p < x).Last()
+        x1 = (From p In _xRange Order By p Where p > x).First()
         dx = x1 - x0
 
         v0 = GetOnBoundaryXY(x0, y)
@@ -59,8 +59,8 @@ Implements IAlternatorMap
 
         Dim y0, y1, v0, v1, dy, v, slope As Single
 
-        y0 = (From p In yRange Order By p Where p < y).Last()
-        y1 = (From p In yRange Order By p Where p > y).First()
+        y0 = (From p In _yRange Order By p Where p < y).Last()
+        y1 = (From p In _yRange Order By p Where p > y).First()
         dy = y1 - y0
 
         v0 = GetOnBoundaryXY(x, y0)
@@ -77,11 +77,11 @@ Implements IAlternatorMap
 
         Dim q11, q12, q21, q22, x1, x2, y1, y2, r1, r2, p As Single
 
-        y1 = (From mapSector As MapPoint In map Where mapSector.Y < y).Last().Y
-        y2 = (From mapSector As MapPoint In map Where mapSector.Y > y).First().Y
+        y1 = (From mapSector As MapPoint In _map Where mapSector.Y < y).Last().Y
+        y2 = (From mapSector As MapPoint In _map Where mapSector.Y > y).First().Y
 
-        x1 = (From mapSector As MapPoint In map Where mapSector.x < x).Last().x
-        x2 = (From mapSector As MapPoint In map Where mapSector.x > x).First().x
+        x1 = (From mapSector As MapPoint In _map Where mapSector.x < x).Last().x
+        x2 = (From mapSector As MapPoint In _map Where mapSector.x > x).First().x
 
         q11 = GetOnBoundaryXY(x1, y1)
         q12 = GetOnBoundaryXY(x1, y2)
@@ -106,41 +106,41 @@ Implements IAlternatorMap
 
 
 
-        map.Add(New MapPoint(10, 1500, 0.615))
-        map.Add(New MapPoint(27, 1500, 0.7))
-        map.Add(New MapPoint(53, 1500, 0.1947))
-        map.Add(New MapPoint(63, 1500, 0.0))
-        map.Add(New MapPoint(68, 1500, 0.0))
-        map.Add(New MapPoint(125, 1500, 0.0))
-        map.Add(New MapPoint(136, 1500, 0.0))
-        map.Add(New MapPoint(10, 2000, 0.62))
-        map.Add(New MapPoint(27, 2000, 0.7))
-        map.Add(New MapPoint(53, 2000, 0.3))
-        map.Add(New MapPoint(63, 2000, 0.1462))
-        map.Add(New MapPoint(68, 2000, 0.692))
-        map.Add(New MapPoint(125, 2000, 0.0))
-        map.Add(New MapPoint(136, 2000, 0.0))
-        map.Add(New MapPoint(10, 4000, 0.64))
-        map.Add(New MapPoint(27, 4000, 0.6721))
-        map.Add(New MapPoint(53, 4000, 0.7211))
-        map.Add(New MapPoint(63, 4000, 0.74))
-        map.Add(New MapPoint(68, 4000, 0.7352))
-        map.Add(New MapPoint(125, 4000, 0.68))
-        map.Add(New MapPoint(136, 4000, 0.6694))
-        map.Add(New MapPoint(10, 6000, 0.53))
-        map.Add(New MapPoint(27, 6000, 0.5798))
-        map.Add(New MapPoint(53, 6000, 0.656))
-        map.Add(New MapPoint(63, 6000, 0.6853))
-        map.Add(New MapPoint(68, 6000, 0.7))
-        map.Add(New MapPoint(125, 6000, 0.6329))
-        map.Add(New MapPoint(136, 6000, 0.62))
-        map.Add(New MapPoint(10, 7000, 0.475))
-        map.Add(New MapPoint(27, 7000, 0.5337))
-        map.Add(New MapPoint(53, 7000, 0.6235))
-        map.Add(New MapPoint(63, 7000, 0.658))
-        map.Add(New MapPoint(68, 7000, 0.6824))
-        map.Add(New MapPoint(125, 7000, 0.6094))
-        map.Add(New MapPoint(136, 7000, 0.5953))
+        _map.Add(New MapPoint(10, 1500, 0.615))
+        _map.Add(New MapPoint(27, 1500, 0.7))
+        _map.Add(New MapPoint(53, 1500, 0.1947))
+        _map.Add(New MapPoint(63, 1500, 0.0))
+        _map.Add(New MapPoint(68, 1500, 0.0))
+        _map.Add(New MapPoint(125, 1500, 0.0))
+        _map.Add(New MapPoint(136, 1500, 0.0))
+        _map.Add(New MapPoint(10, 2000, 0.62))
+        _map.Add(New MapPoint(27, 2000, 0.7))
+        _map.Add(New MapPoint(53, 2000, 0.3))
+        _map.Add(New MapPoint(63, 2000, 0.1462))
+        _map.Add(New MapPoint(68, 2000, 0.692))
+        _map.Add(New MapPoint(125, 2000, 0.0))
+        _map.Add(New MapPoint(136, 2000, 0.0))
+        _map.Add(New MapPoint(10, 4000, 0.64))
+        _map.Add(New MapPoint(27, 4000, 0.6721))
+        _map.Add(New MapPoint(53, 4000, 0.7211))
+        _map.Add(New MapPoint(63, 4000, 0.74))
+        _map.Add(New MapPoint(68, 4000, 0.7352))
+        _map.Add(New MapPoint(125, 4000, 0.68))
+        _map.Add(New MapPoint(136, 4000, 0.6694))
+        _map.Add(New MapPoint(10, 6000, 0.53))
+        _map.Add(New MapPoint(27, 6000, 0.5798))
+        _map.Add(New MapPoint(53, 6000, 0.656))
+        _map.Add(New MapPoint(63, 6000, 0.6853))
+        _map.Add(New MapPoint(68, 6000, 0.7))
+        _map.Add(New MapPoint(125, 6000, 0.6329))
+        _map.Add(New MapPoint(136, 6000, 0.62))
+        _map.Add(New MapPoint(10, 7000, 0.475))
+        _map.Add(New MapPoint(27, 7000, 0.5337))
+        _map.Add(New MapPoint(53, 7000, 0.6235))
+        _map.Add(New MapPoint(63, 7000, 0.658))
+        _map.Add(New MapPoint(68, 7000, 0.6824))
+        _map.Add(New MapPoint(125, 7000, 0.6094))
+        _map.Add(New MapPoint(136, 7000, 0.5953))
 
 
 
@@ -148,13 +148,13 @@ Implements IAlternatorMap
     End Sub
     Private Sub getMapRanges()
 
-        yRange = (From coords As MapPoint In map Order By coords.Y Select coords.Y Distinct).ToList()
-        xRange = (From coords As MapPoint In map Order By coords.x Select coords.x Distinct).ToList()
+        _yRange = (From coords As MapPoint In _map Order By coords.Y Select coords.Y Distinct).ToList()
+        _xRange = (From coords As MapPoint In _map Order By coords.x Select coords.x Distinct).ToList()
 
-        minX = xRange.First
-        maxX = xRange.Last
-        minY = yRange.First
-        maxY = yRange.Last
+        _minX = _xRange.First
+        _maxX = _xRange.Last
+        _minY = _yRange.First
+        _maxY = _yRange.Last
 
 
     End Sub
@@ -163,16 +163,16 @@ Implements IAlternatorMap
     Public Function GetValue(x As Single, y As Single) As Single
 
 
-         If x < minX  OrElse  x > maxX OrElse  y < minY   OrElse  y > maxY  then
+         If x < _minX  OrElse  x > _maxX OrElse  y < _minY   OrElse  y > _maxY  then
 
            'OnAuxiliaryEvent(String.Format("Alternator Map Limiting : RPM{0}, AMPS{1}",x,y),AdvancedAuxiliaryMessageType.Warning)
 
 
             'Limiting
-            If x < minX Then x = minX
-            If x > maxX Then x = maxX
-            If y < minY Then y = minY
-            If y > maxY Then y = maxY
+            If x < _minX Then x = _minX
+            If x > _maxX Then x = _maxX
+            If y < _minY Then y = _minY
+            If y > _maxY Then y = _maxY
 
          End If
 
@@ -197,9 +197,9 @@ Implements IAlternatorMap
         'All Sector Values
         sb.AppendLine("All Values From Map")
         sb.AppendLine("-------------------")
-        For Each x In xRange
+        For Each x In _xRange
 
-            For Each y In yRange
+            For Each y In _yRange
                 sb.AppendLine(String.Format("X:{0}, Y:{1}, V:{2}", x, y, GetValue(x, y)))
             Next
 
@@ -222,12 +222,12 @@ Implements IAlternatorMap
         sb.AppendLine("-------------------")
 
         Dim mx, my As Single
-        For x = 0 To xRange.Count - 2
+        For x = 0 To _xRange.Count - 2
 
-            For y = 0 To yRange.Count - 2
+            For y = 0 To _yRange.Count - 2
 
-                mx = xRange(x) + (xRange(x + 1) - xRange(x)) / 2
-                my = yRange(y) + (yRange(y + 1) - yRange(y)) / 2
+                mx = _xRange(x) + (_xRange(x + 1) - _xRange(x)) / 2
+                my = _yRange(y) + (_yRange(y + 1) - _yRange(y)) / 2
 
                 sb.AppendLine(String.Format("X:{0}, Y:{1}, V:{2}", mx, my, GetValue(mx, my)))
 
@@ -259,14 +259,8 @@ Implements IAlternatorMap
         getMapRanges()
 
     End Sub
-    Public Sub New(values As List(Of MapPoint))
 
-        map = values
-        getMapRanges()
-
-    End Sub
-
-    Public Class MapPoint
+    Private Class MapPoint
 
         Public Y As Single
         Public x As Single
@@ -282,14 +276,15 @@ Implements IAlternatorMap
 
     End Class
 
-
-        Public Function GetEfficiency(rpm As single, amps As single) As AlternatorMapValues Implements IAlternatorMap.GetEfficiency
+    'Get Alternator Efficiency
+    Public Function GetEfficiency(rpm As single, amps As single) As AlternatorMapValues Implements IAlternatorMap.GetEfficiency
 
            Return New AlternatorMapValues( GetValue(rpm,amps))
 
         End Function
 
-        Public Function Initialise() As Boolean Implements IAlternatorMap.Initialise
+    'Initialises the map.
+    Public Function Initialise() As Boolean Implements IAlternatorMap.Initialise
                     If File.Exists(filePath) Then
                 Using sr As StreamReader = New StreamReader(filePath)
                     'get array og lines fron csv
@@ -300,7 +295,7 @@ Implements IAlternatorMap
                         Throw New ArgumentException("Insufficient rows in csv to build a usable map")
                     End If
 
-                    map = New List(Of MapPoint)
+                    _map = New List(Of MapPoint)
                     Dim firstline As Boolean = True
 
                     For Each line As String In lines
@@ -320,7 +315,7 @@ Implements IAlternatorMap
                             'Create AlternatorKey
                             Dim newPoint as MapPoint = New  MapPoint(elements(0),elements(1),elements(2))
 
-                            map.Add(newPoint)
+                            _map.Add(newPoint)
 
                         Else
                             firstline = False
@@ -334,9 +329,10 @@ Implements IAlternatorMap
         End Function
 
 
-        Public Event AuxiliaryEvent(ByRef sender As Object, message As String, messageType As AdvancedAuxiliaryMessageType) Implements IAuxiliaryEvent.AuxiliaryEvent
+    'Public Events
+    Public Event AuxiliaryEvent(ByRef sender As Object, message As String, messageType As AdvancedAuxiliaryMessageType) Implements IAuxiliaryEvent.AuxiliaryEvent
 
-        Protected sub OnAuxiliaryEvent(message As String, messageType As AdvancedAuxiliaryMessageType)
+    Protected sub OnAuxiliaryEvent(message As String, messageType As AdvancedAuxiliaryMessageType)
 
           RaiseEvent  AuxiliaryEvent(Me, message, messageType)
 
