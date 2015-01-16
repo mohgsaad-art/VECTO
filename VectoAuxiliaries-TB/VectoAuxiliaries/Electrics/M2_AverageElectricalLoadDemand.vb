@@ -21,7 +21,7 @@ Namespace Electrics
         Private _signals As Signals
 
 
-
+        'Constructor
         Public Sub New(ByVal electricalConsumers As IElectricalConsumerList, m0 As IM0_NonSmart_AlternatorsSetEfficiency, altPulleyEfficiency As Single, powerNetVoltage As Single, signals as ISignals )
 
         If electricalConsumers Is Nothing Then Throw New ArgumentException("Electrical Consumer List must be supplied")
@@ -40,15 +40,12 @@ Namespace Electrics
 
         End Sub
 
-
-
+        'Public class outputs (Properties)
         Public Function GetAveragePowerDemandAtAlternator() As Single Implements IM2_AverageElectricalLoadDemand.GetAveragePowerDemandAtAlternator
 
              Return _electricalConsumers.GetTotalAverageDemandAmps(False) * _powerNetVoltage
 
         End Function
-
-
         Public Function GetAveragePowerAtCrankFromElectrics() As Single Implements IM2_AverageElectricalLoadDemand.GetAveragePowerAtCrankFromElectrics
 
             Dim ElectricalPowerDemandsWatts As Single = GetAveragePowerDemandAtAlternator()
@@ -65,4 +62,5 @@ Namespace Electrics
 
 
     End Class
+
 End Namespace

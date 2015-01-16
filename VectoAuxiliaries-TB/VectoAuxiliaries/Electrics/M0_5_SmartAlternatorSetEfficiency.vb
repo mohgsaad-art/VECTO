@@ -13,74 +13,20 @@ Imports System.Diagnostics.CodeAnalysis
 
 Namespace Electrics
 
+  Public Class M0_5_SmartAlternatorSetEfficiency
+     Implements IM0_5_SmartAlternatorSetEfficiency
 
-Public Class M0_5_SmartAlternatorSetEfficiency
-Implements IM0_5_SmartAlternatorSetEfficiency
-
-
-private _m0 As IM0_NonSmart_AlternatorsSetEfficiency
-Private _electricalConsumables As IElectricalConsumerList
-Private _alternatorMap As IAlternatorMap
-Private _resultCardIdle As IResultCard
-Private _resultCardTraction As IResultCard
-Private _resultCardOverrun As IResultCard
-Private _signals As ISignals
-
-
-
-Public ReadOnly property SmartIdleCurrent() As single Implements  IM0_5_SmartAlternatorSetEfficiency.SmartIdleCurrent
-    Get
-       Dim hvac_Plus_None_Base  As Single = HvacPlusNonBaseCurrents()
-       Dim smart_idle_current As Single = _resultCardIdle.GetSmartCurrentResult(hvac_Plus_None_Base)
-       
-        Return  smart_idle_current
-    End Get
-End Property
-
-
-Public ReadOnly property AlternatorsEfficiencyIdleResultCard( ) As single Implements IM0_5_SmartAlternatorSetEfficiency.AlternatorsEfficiencyIdleResultCard
-    Get
-    Return _alternatorMap.GetEfficiency(_signals.EngineSpeed, SmartIdleCurrent()).Efficiency
-    End Get
-End Property
-
-
-Public ReadOnly property SmartTractionCurrent As Single Implements IM0_5_SmartAlternatorSetEfficiency.SmartTractionCurrent
-    Get
- Return _resultCardTraction.GetSmartCurrentResult(HvacPlusNonBaseCurrents())
-    End Get
-End Property
-
-
-Public ReadOnly Property  AlternatorsEfficiencyTractionOnResultCard() As Single Implements IM0_5_SmartAlternatorSetEfficiency.AlternatorsEfficiencyTractionOnResultCard
-    Get
-    Return _alternatorMap.GetEfficiency(_signals.EngineSpeed, SmartTractionCurrent()).Efficiency
-    End Get
-End Property
-
-
-Public ReadOnly property SmartOverrunCurrent As Single Implements IM0_5_SmartAlternatorSetEfficiency.SmartOverrunCurrent
-    Get
-       Return _resultCardOverrun.GetSmartCurrentResult(HvacPlusNonBaseCurrents())
-    End Get
-End Property
-
-
-Public readonly property  AlternatorsEfficiencyOverrunResultCard() As single Implements IM0_5_SmartAlternatorSetEfficiency.AlternatorsEfficiencyOverrunResultCard
-    Get
-    Return _alternatorMap.GetEfficiency(_signals.EngineSpeed, SmartOverrunCurrent()).Efficiency
-    End Get
-End Property
-
-
-<ExcludeFromCodeCoverage>
-Private function HvacPlusNonBaseCurrents() As Single
-
-   Return _m0.GetHVACElectricalPowerDemandAmps() + _electricalConsumables.GetTotalAverageDemandAmps(true)
-
-End Function
-
-Public Sub new ( m0 As IM0_NonSmart_AlternatorsSetEfficiency, _
+      'Fields
+      private _m0 As IM0_NonSmart_AlternatorsSetEfficiency
+      Private _electricalConsumables As IElectricalConsumerList
+      Private _alternatorMap As IAlternatorMap
+      Private _resultCardIdle As IResultCard
+      Private _resultCardTraction As IResultCard
+      Private _resultCardOverrun As IResultCard
+      Private _signals As ISignals
+            
+      'Constructor
+      Public Sub new ( m0 As IM0_NonSmart_AlternatorsSetEfficiency, _
                  electricalConsumables as IElectricalConsumerList, _ 
                  alternatorMap As IAlternatorMap, _
                  resultCardIdle As IResultCard, _
@@ -108,8 +54,58 @@ Public Sub new ( m0 As IM0_NonSmart_AlternatorsSetEfficiency, _
 
                                                                                                                              
 End Sub                                      
+      
+      
+      'Public Class Outputs (Properties)
+      Public ReadOnly property SmartIdleCurrent() As single Implements  IM0_5_SmartAlternatorSetEfficiency.SmartIdleCurrent
+    Get
+       Dim hvac_Plus_None_Base  As Single = HvacPlusNonBaseCurrents()
+       Dim smart_idle_current As Single = _resultCardIdle.GetSmartCurrentResult(hvac_Plus_None_Base)
+       
+        Return  smart_idle_current
+    End Get
+End Property
+      Public ReadOnly property AlternatorsEfficiencyIdleResultCard( ) As single Implements IM0_5_SmartAlternatorSetEfficiency.AlternatorsEfficiencyIdleResultCard
+    Get
+    Return _alternatorMap.GetEfficiency(_signals.EngineSpeed, SmartIdleCurrent()).Efficiency
+    End Get
+End Property
+      Public ReadOnly property SmartTractionCurrent As Single Implements IM0_5_SmartAlternatorSetEfficiency.SmartTractionCurrent
+    Get
+ Return _resultCardTraction.GetSmartCurrentResult(HvacPlusNonBaseCurrents())
+    End Get
+End Property
+      Public ReadOnly Property  AlternatorsEfficiencyTractionOnResultCard() As Single Implements IM0_5_SmartAlternatorSetEfficiency.AlternatorsEfficiencyTractionOnResultCard
+    Get
+    Return _alternatorMap.GetEfficiency(_signals.EngineSpeed, SmartTractionCurrent()).Efficiency
+    End Get
+End Property
+      Public ReadOnly property SmartOverrunCurrent As Single Implements IM0_5_SmartAlternatorSetEfficiency.SmartOverrunCurrent
+    Get
+       Return _resultCardOverrun.GetSmartCurrentResult(HvacPlusNonBaseCurrents())
+    End Get
+End Property
+      Public readonly property  AlternatorsEfficiencyOverrunResultCard() As single Implements IM0_5_SmartAlternatorSetEfficiency.AlternatorsEfficiencyOverrunResultCard
+    Get
+    Return _alternatorMap.GetEfficiency(_signals.EngineSpeed, SmartOverrunCurrent()).Efficiency
+    End Get
+End Property
+      
+      'Helpers
+      ''' <summary>
+''' Returns Non Base Currents (A)
+''' </summary>
+''' <returns></returns>
+''' <remarks></remarks>
+      <ExcludeFromCodeCoverage>
+Private function HvacPlusNonBaseCurrents() As Single
 
-End Class
+   Return _m0.GetHVACElectricalPowerDemandAmps() + _electricalConsumables.GetTotalAverageDemandAmps(true)
+
+End Function
+       
+
+   End Class
 
 End Namespace
 
