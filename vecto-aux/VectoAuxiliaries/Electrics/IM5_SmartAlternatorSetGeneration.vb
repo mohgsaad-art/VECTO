@@ -12,18 +12,28 @@
 
 Namespace Electrics
 
-Public Interface IM5_SmartAlternatorSetGeneration
+  Public Interface IM5_SmartAlternatorSetGeneration
 
-
-
-function AlternatorsGenerationPowerAtCrankIdleWatts() As Single
-function  AlternatorsGenerationPowerAtCrankTractionOnWatts() As Single
-function  AlternatorsGenerationPowerAtCrankOverrunWatts() As Single 
-
+    ''' <summary>
+  ''' Alternators Generation Power At Crank Idle (W)
+  ''' </summary>
+  ''' <returns></returns>
+  ''' <remarks></remarks>
+    Function  AlternatorsGenerationPowerAtCrankIdleWatts() As Single
+    ''' <summary>
+  ''' Alternators Generation Power At Crank Traction On  (W)
+  ''' </summary>
+  ''' <returns></returns>
+  ''' <remarks></remarks>
+    Function  AlternatorsGenerationPowerAtCrankTractionOnWatts() As Single
+    ''' <summary>
+  ''' Alternators Generation Power At Crank Overrun  (W)
+  ''' </summary>
+  ''' <returns></returns>
+  ''' <remarks></remarks>
+    Function  AlternatorsGenerationPowerAtCrankOverrunWatts() As Single 
 
 End Interface
-
-
 
 End Namespace
 

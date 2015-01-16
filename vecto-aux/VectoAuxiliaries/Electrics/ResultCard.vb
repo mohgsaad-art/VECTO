@@ -13,32 +13,28 @@ Imports VectoAuxiliaries.Electrics
 
 Namespace Electrics
 
-
-Public Class ResultCard
+  Public Class ResultCard
 Implements IResultCard
 
-
-Private _results As List(Of SmartResult)
-
-Public  ReadOnly Property Results As List(Of SmartResult) Implements IResultCard.Results
-    Get
-    Return _results
-    End Get
-End Property
-
-
-Public Sub New(results As List( of SmartResult))
+  Private _results As List(Of SmartResult)
+  
+  'Constructor
+  Public Sub New(results As List( of SmartResult))
 
    If results Is Nothing Then Throw New ArgumentException("A list of smart results must be supplied.")
 
   _results = results
 
 End Sub
-
-
-
-
-Public Function GetSmartCurrentResult(amps As Single) As Single Implements IResultCard.GetSmartCurrentResult
+  
+  
+  'Public class outputs
+  Public  ReadOnly Property Results As List(Of SmartResult) Implements IResultCard.Results
+    Get
+    Return _results
+    End Get
+End Property
+  Public Function GetSmartCurrentResult(amps As Single) As Single Implements IResultCard.GetSmartCurrentResult
 
 
   If _results.Count<2 then Return 10
@@ -47,9 +43,16 @@ Public Function GetSmartCurrentResult(amps As Single) As Single Implements IResu
 
 
 End Function
-
-
-Private Function GetOrInterpolate(amps As Single) As Single
+  
+  
+  'Helpers
+  ''' <summary>
+''' Gets or interpolates value (A)
+''' </summary>
+''' <param name="amps"></param>
+''' <returns></returns>
+''' <remarks></remarks>
+  Private Function GetOrInterpolate(amps As Single) As Single
 
 Dim pre As Single
 Dim post As Single
@@ -132,10 +135,7 @@ Dim minKey As Single
 End Function
 
 
-
-
 End Class
-
 
 End Namespace
 

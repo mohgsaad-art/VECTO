@@ -9,11 +9,29 @@
 '
 ' See the LICENSE.txt for the specific language governing permissions and limitations.
 
-Public Interface IM0_NonSmart_AlternatorsSetEfficiency
+Namespace Electrics
 
+  Public Interface IM0_NonSmart_AlternatorsSetEfficiency
 
-     readonly property  GetHVACElectricalPowerDemandAmps() As Single
-     readonly property  AlternatorsEfficiency() As Single
+     ''' <summary>
+     ''' Gets HVAC Electrical Power Demand (A)
+     ''' </summary>
+     ''' <value></value>
+     ''' <returns></returns>
+     ''' <remarks></remarks>
+     Readonly Property  GetHVACElectricalPowerDemandAmps() As Single
+     ''' <summary>
+     ''' Gets Alternator Efficiency (0-1)
+     ''' </summary>
+     ''' <value></value>
+     ''' <returns></returns>
+     ''' <remarks></remarks>
+     Readonly Property  AlternatorsEfficiency() As Single
 
 
 End Interface
+
+End Namespace
+
+
+

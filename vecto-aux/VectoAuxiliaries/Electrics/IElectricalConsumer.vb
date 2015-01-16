@@ -10,8 +10,8 @@
 ' See the LICENSE.txt for the specific language governing permissions and limitations.
 
 Namespace Electrics
-    Public Interface IElectricalConsumer
 
+    Public Interface IElectricalConsumer
 
          Property Category As String
          Property ConsumerName As String
@@ -20,12 +20,10 @@ Namespace Electrics
          Property PhaseIdle_TractionOn As Single
          Property NumberInActualVehicle As Integer
          Property PowerNetVoltage As Single
-
          Property AvgConsumptionAmps As Single
-
          Function TotalAvgConumptionAmps(Optional PhaseIdle_TractionOnBasedOnCycle As Single = Nothing) As Single
-
          Function TotalAvgConsumptionInWatts(Optional PhaseIdle_TractionOnBasedOnCycle As Single = 0.0) As Single
 
     End Interface
+
 End Namespace

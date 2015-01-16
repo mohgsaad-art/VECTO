@@ -12,19 +12,16 @@
 
 Namespace Electrics
 
+   'Originally was going to hold more than one value type.
+   Public Structure AlternatorMapValues
 
-      Public Structure AlternatorMapValues
+         Public ReadOnly Efficiency As Single
 
+         Public Sub New(ByVal efficiency As Single)
+             Me.Efficiency = efficiency
+         End Sub
 
-            Public ReadOnly Efficiency As Single
-
-
-
-            Public Sub New(ByVal efficiency As Single)
-                Me.Efficiency = efficiency
-            End Sub
-
-        End Structure
+   End Structure
 
 
 End Namespace

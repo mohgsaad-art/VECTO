@@ -15,16 +15,69 @@ Namespace Electrics
 
 Public Interface IElectricsUserInputsConfig
 
-Property PowerNetVoltage As Single
-Property AlternatorMap As String
-Property AlternatorGearEfficiency As Single
-Property ElectricalConsumers As IElectricalConsumerList
-Property DoorActuationTimeSecond As Integer
-
-Property ResultCardIdle As IResultCard
-Property ResultCardTraction As IResultCard
-Property ResultCardOverrun As IResultCard
-Property SmartElectrical As Boolean
+    ''' <summary>
+    ''' Power Net Voltage - The supply voltage used on the vehilce.
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Property PowerNetVoltage As Single
+    ''' <summary>
+    ''' The Path for the Alternator map
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Property AlternatorMap As String
+    ''' <summary>
+    ''' Alternator Gear Efficiency
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Property AlternatorGearEfficiency As Single
+    ''' <summary>
+    ''' List of Electrical Consumers
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Property ElectricalConsumers As IElectricalConsumerList
+    ''' <summary>
+    ''' Door Actuation Time In Seconds ( Time Taken to Open/Close the door )
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Property DoorActuationTimeSecond As Integer
+    ''' <summary>
+    ''' Result Card Taken During Idle.
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Property ResultCardIdle As IResultCard
+    ''' <summary>
+    ''' Result Card Taken During Traction
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Property ResultCardTraction As IResultCard
+    ''' <summary>
+    ''' Result Card Taken During Overrun
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Property ResultCardOverrun As IResultCard
+    ''' <summary>
+    ''' Smart Electrical System
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns>True For Smart Electrical Systems/ False For non Smart.</returns>
+    ''' <remarks></remarks>
+    Property SmartElectrical As Boolean
 
 End Interface
 

@@ -14,10 +14,42 @@ Namespace Electrics
 
 Public Interface IElectricalConsumerList
 
+    ''' <summary>
+    ''' List of Electrical Consumers
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     ReadOnly Property Items As List(Of  IElectricalConsumer)
+
+    ''' <summary>
+    ''' Add New Electrical Consumer
+    ''' </summary>
+    ''' <param name="consumer"></param>
+    ''' <remarks></remarks>
     Sub AddConsumer(consumer As IElectricalConsumer)
+
+    ''' <summary>
+    ''' Remove Electrical Consumer
+    ''' </summary>
+    ''' <param name="consumer"></param>
+    ''' <remarks></remarks>
     Sub RemoveConsumer(consumer As IElectricalConsumer)
+
+    ''' <summary>
+    ''' Get Total Average Demand In Amps 
+    ''' </summary>
+    ''' <param name="excludeOnBase">Exclude those on base vehicle</param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Function GetTotalAverageDemandAmps(excludeOnBase As Boolean) As Single
+
+    ''' <summary>
+    ''' Door Actuation Time Fraction ( Total Time Spent Operational during cycle )
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Property DoorDutyCycleFraction As single
 
 End Interface
