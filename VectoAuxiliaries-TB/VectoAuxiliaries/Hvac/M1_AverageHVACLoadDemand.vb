@@ -15,19 +15,18 @@ Imports VectoAuxiliaries.Pneumatics
 Namespace Hvac
 
     Public Class M1_AverageHVACLoadDemand
-    Implements IM1_AverageHVACLoadDemand
+      Implements IM1_AverageHVACLoadDemand
 
-
-    Private _m0 As IM0_NonSmart_AlternatorsSetEfficiency
-    Private _alternatorGearEfficiency As Single
-    Private _compressorGearEfficiency As Single
-
-    Private _signals As ISignals
-    Private _powernetVoltage As Single
-    Private _steadyStateModel As IHVACSteadyStateModel
-
-
-    Public Sub New(m0 As IM0_NonSmart_AlternatorsSetEfficiency, altGearEfficiency As Single, compressorGearEfficiency As Single, powernetVoltage As Single, signals As ISignals, ssm As IHVACSteadyStateModel)
+      
+       Private _m0 As IM0_NonSmart_AlternatorsSetEfficiency
+       Private _alternatorGearEfficiency As Single
+       Private _compressorGearEfficiency As Single    
+       Private _signals As ISignals
+       Private _powernetVoltage As Single
+       Private _steadyStateModel As IHVACSteadyStateModel
+      
+       'Constructor
+       Public Sub New(m0 As IM0_NonSmart_AlternatorsSetEfficiency, altGearEfficiency As Single, compressorGearEfficiency As Single, powernetVoltage As Single, signals As ISignals, ssm As IHVACSteadyStateModel)
 
           'Sanity Check - Illegal operations without all params.
           If m0 Is Nothing Then Throw New ArgumentException("Module0 as supplied is null")
@@ -53,43 +52,31 @@ Namespace Hvac
 
 
 
-    End Sub
-
-
-        Public Function AveragePowerDemandAtCrankFromHVACMechanicalsWatts() As Single Implements IM1_AverageHVACLoadDemand.AveragePowerDemandAtCrankFromHVACMechanicalsWatts
+    End Sub  
+       
+       'Public Methods - Implementation
+       Public Function AveragePowerDemandAtCrankFromHVACMechanicalsWatts() As Single Implements IM1_AverageHVACLoadDemand.AveragePowerDemandAtCrankFromHVACMechanicalsWatts
 
             Return _steadyStateModel.HVACMechanicalLoadPowerWatts / _compressorGearEfficiency
 
-
-        End Function
-
+        End Function      
        Public Function AveragePowerDemandAtAlternatorFromHVACElectricsWatts() As Single Implements IM1_AverageHVACLoadDemand.AveragePowerDemandAtAlternatorFromHVACElectricsWatts
 
-       Return _steadyStateModel.HVACElectricalLoadPowerWatts
+             Return _steadyStateModel.HVACElectricalLoadPowerWatts
 
-       End Function
+       End Function     
+       Public Function AveragePowerDemandAtCrankFromHVACElectricsWatts() As Single Implements IM1_AverageHVACLoadDemand.AveragePowerDemandAtCrankFromHVACElectricsWatts
 
-        Public Function AveragePowerDemandAtCrankFromHVACElectricsWatts() As Single Implements IM1_AverageHVACLoadDemand.AveragePowerDemandAtCrankFromHVACElectricsWatts
+            Return _steadyStateModel.HVACElectricalLoadPowerWatts / _m0.AlternatorsEfficiency() / _alternatorGearEfficiency
 
-
-       Return _steadyStateModel.HVACElectricalLoadPowerWatts / _m0.AlternatorsEfficiency() / _alternatorGearEfficiency
-
-        End Function
-
-
-        Public Function HVACFuelingLitresPerHour() As Single Implements IM1_AverageHVACLoadDemand.HVACFuelingLitresPerHour
-
+        End Function  
+       Public Function HVACFuelingLitresPerHour() As Single Implements IM1_AverageHVACLoadDemand.HVACFuelingLitresPerHour
 
             Return _steadyStateModel.HVACFuellingLitresPerHour
 
-
         End Function
-
+      
 
     End Class
-
-
-
-
 
 End Namespace
