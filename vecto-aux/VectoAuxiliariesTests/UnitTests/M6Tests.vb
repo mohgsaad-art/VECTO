@@ -51,7 +51,7 @@ End Sub
 
 'Test Cases Supplied by Mike Preston.
 <Test()> _
-<TestCase(100,100,100,100,20,20,40,100,100,100,100,-550,false,   0,0,   0, 20,   0,100,20,200,0)> _
+<TestCase(100,100,100,100,20,20,40,100,100,100,.100f,-.550f,false,   0,0,   0, 20,   0,100,20,200,0)> _
 <TestCase(100,100,100,100,20,20,40,100,100,100,100,-550,true ,   1,1,  100,40, 100,100,40,200,1)> _
 Public Sub MikesConditionsTest( M1_1 As Single, _
                                 M1_2 As Single, _

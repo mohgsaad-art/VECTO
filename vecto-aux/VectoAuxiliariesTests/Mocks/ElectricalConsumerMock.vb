@@ -24,7 +24,7 @@ Namespace Mocks
 
         Public Function TotalAvgConumptionAmps(Optional PhaseIdle_TractionOnBasedOnCycle As Single = 0.0) As Single Implements IElectricalConsumer.TotalAvgConumptionAmps
          Return 9
-         'TODO: Check
+
         End Function
 
 

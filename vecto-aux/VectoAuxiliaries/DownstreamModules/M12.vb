@@ -103,9 +103,6 @@ End Sub
      interp1 = If( Not Single.IsNaN(interp1) AndAlso M11.StopStartSensitiveTotalCycleElectricalDemand>0, interp1,0)
      Return interp1
 
-     'TODO:REMOVE AFTER TESTING
-     'Return Sum1()
-
   End Get
 
 End Property
@@ -117,9 +114,6 @@ End Property
      
      interp2 = If( Not Single.IsNaN(interp2) AndAlso M11.StopStartSensitiveTotalCycleElectricalDemand>0, interp2,0)
      Return interp2
-
-      'TODO:REMOVE AFTER TESTING
-      'Return Sum2()
 
     End Get
 End Property

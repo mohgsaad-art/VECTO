@@ -140,9 +140,6 @@ End Property
       'SCHM 3_02
        Dim int1 As Single = FMAP.fFCdelaunay_Intp(Signals.EngineSpeed,s7)   
        int1 = If( int1 >0 Andalso Not Single.IsNaN(int1), int1,0)
-       
-      'TODO:REMOVE ONCE TESTED OK
-      'Return FMAP.fFCdelaunay_Intp(Signals.EngineSpeed,s7) / 3600
 
        Return int1/3600 
 
@@ -150,13 +147,10 @@ End Property
  End Property
   private ReadOnly Property S12 As Single
       Get
-         'Divide by 3600 to get grams per second.
+
          'SCHM 3_02
          Dim int2 As Single = FMAP.fFCdelaunay_Intp(Signals.EngineSpeed,s8)
          int2 = If( int2 >0 Andalso Not Single.IsNaN(int2), int2,0)
-
-         'TODO:REMOVE ONCE TESTED OK
-         'return   FMAP.fFCdelaunay_Intp(Signals.EngineSpeed,s8) /3600
 
          Return  int2 /3600
 

@@ -291,8 +291,6 @@ Public Class cPower
             '[kW]
             mAAUX_Global.PreExistingAuxPower = MODdata.Vh.Padd(t)
 
-
-            'TODO: HOW TO ALTER HERE FOR CLASSIC or ADVANCED
             'Total aux power
             '[kW]
             Paux = PreExistingAuxPower + fPaux(t, EngineSpeed)
@@ -1055,8 +1053,6 @@ lb_nOK:
             '[kW]
             mAAUX_Global.PreExistingAuxPower = MODdata.Vh.Padd(jz)
 
-
-            'TODO: HOW TO ALTER HERE FOR CLASSIC or ADVANCED
             'Total aux power
             '[kW]
             Paux = PreExistingAuxPower + fPaux(jz, EngineSpeed)
@@ -2554,11 +2550,8 @@ lb10:
 
 
     'AA-TB-IMPLEMENT
-    'TODO: AAUX ANCILIARIES CALCULATIONS
+
     Public Function fPaux(ByVal t As Integer, ByVal nU As Single) As Single
-
-
-   ' Return CSng(MODdata.Vh.Padd(t) + VEC.PauxSum(t, nU))
 
     'AA-TB ( RAFAEL )
     'This function descriminates between Advanced and Auxiliaries and if in Advanced only calculate the

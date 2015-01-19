@@ -156,6 +156,7 @@ Public Class cDelaunayMap
             Next
 
             'Try approx. solution (fixes rounding errors when points lies exactly on an edge of a triangle)
+            j = -1
             For Each tr In lDTXZ
                 j += 1
                 If IsInside(tr, x, z, False) Then

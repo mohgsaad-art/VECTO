@@ -34,18 +34,12 @@ Public Class F_VECTO
     'Populate Advanced Auxiliaries
     Private Sub PopulateAdvancedAuxiliaries()
 
-
-    'Scan the program directory for DLL's which are AdvancedAuxiliaries and display
-    Dim AList As List(Of cAdvancedAuxiliary ) = mAAUX_Global.DiscoverAdvancedAuxiliaries()
-
-    cboAdvancedAuxiliaries.DataSource=AList
-    cboAdvancedAuxiliaries.DisplayMember= "AuxiliaryName"
+      'Scan the program directory for DLL's which are AdvancedAuxiliaries and display
+      Dim AList As List(Of cAdvancedAuxiliary ) = mAAUX_Global.DiscoverAdvancedAuxiliaries()
     
-
-    'TODO: FIND AND SELECT ANY PRE-EXISTING STORED ADVANCED AUXILIARY TYPE
-
-
-
+      cboAdvancedAuxiliaries.DataSource=AList
+      cboAdvancedAuxiliaries.DisplayMember= "AuxiliaryName"
+    
     End Sub
 
   
