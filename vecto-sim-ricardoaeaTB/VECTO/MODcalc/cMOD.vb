@@ -57,7 +57,6 @@ Public Class cMOD
     public AA_TotalCycleFC_Litres       As List(Of single? )
 
     'TODO:DIAGNOSTICS (D) REMOVE WHEN TESTED
-    '
     public  AA_D_M12_P1X                            as list( of single  )
     public  AA_D_M12_P1Y                            as list( of single  )
     public  AA_D_M12_P2X                            as list( of single  )
