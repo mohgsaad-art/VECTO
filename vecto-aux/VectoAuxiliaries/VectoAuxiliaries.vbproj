@@ -78,7 +78,6 @@
   <ItemGroup>
     <Compile Include="AdvancedAuxiliaries.vb" />
     <Compile Include="AuxiliaryConfig.vb" />
-    <Compile Include="AuxillaryEnvironment.vb" />
     <Compile Include="DownstreamModules\cDelaunayMap.vb" />
     <Compile Include="DownstreamModules\cFile V3.vb" />
     <Compile Include="DownstreamModules\cMAP.vb" />
