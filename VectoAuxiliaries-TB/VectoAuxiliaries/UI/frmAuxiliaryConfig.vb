@@ -1161,7 +1161,6 @@ End Sub
 #End Region
 
 
-
 'Form Overrides
 Protected Overrides Function ProcessCmdKey(ByRef msg As Message, keyData As Keys) As Boolean
 
@@ -1184,7 +1183,6 @@ Protected Overrides Function ProcessCmdKey(ByRef msg As Message, keyData As Keys
 
     End Function
 
-
 Public Sub UnbindAllControls(ByRef container As Control)
   'Clear all of the controls within the container object
   'If "Recurse" is true, then also clear controls within any sub-containers
@@ -1201,7 +1199,6 @@ Public Sub UnbindAllControls(ByRef container As Control)
   Next
 
 End Sub
-
 
 Private Sub frmAuxiliaryConfig_FormClosing( sender As Object,  e As FormClosingEventArgs) Handles MyBase.FormClosing
 
@@ -1241,7 +1238,6 @@ Private Sub frmAuxiliaryConfig_FormClosing( sender As Object,  e As FormClosingE
  
 
 End Sub
-
 
 Private Function GetSSMMAP( ByVal filePath As String , byref message As string) As Hvac.IHVACSteadyStateModel
 
@@ -1296,8 +1292,8 @@ Private Sub ShowInFolderToolStripMenuItem_Click(sender As System.Object, e As Sy
     End If
 End Sub
 
-    'Open File with software defined in Config
-    Public Function FileOpenAlt(ByVal file As String) As Boolean
+'Open File with software defined in Config
+Public Function FileOpenAlt(ByVal file As String) As Boolean
         Dim PSI As New ProcessStartInfo
 
         If Not IO.File.Exists(file) Then Return False
@@ -1313,8 +1309,6 @@ End Sub
 
     End Function
 
-
-'TODO: Th
 #Region "File Viewer Button Events"
 
 

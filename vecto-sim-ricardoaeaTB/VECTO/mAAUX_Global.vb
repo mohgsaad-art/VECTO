@@ -253,9 +253,6 @@ Public Function DetermineCycleNameFromCurrentFile() As String
       'Get DriveFile without path and without extension
       Dim driveFile  As String  =  fFILE(CurrentCycleFile,False)
 
-      'TODO: HERE WE NEED TO UNDERSTAND HOW TO EXTRACT A CORRECT NAME FOR A CYCLE IN RESPECT OF SOMETHING WHICH CAN BE USED
-      'BY ADVANCED UTITITIES AND WHAT TO DO WHEN SUCH A NAME CANNOT BE DETERMINED
-      'AD A DEFAULT Urban will be returned.
       Select Case(driveFile)
       
       
