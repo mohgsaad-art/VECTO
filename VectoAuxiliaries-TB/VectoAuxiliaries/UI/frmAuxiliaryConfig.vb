@@ -69,7 +69,7 @@ Public Sub new( byval fileName As String, byval vectoFileName As String )
     Try
 
      auxConfig = New AuxiliaryConfig( FilePathUtils.ResolveFilePath(vectoPath,auxFile) )
-     originalConfig = New AuxiliaryConfig(  FilePathUtils.ResolveFilePath(auxFile,vectoPath) )
+     originalConfig = New AuxiliaryConfig(  FilePathUtils.ResolveFilePath(vectoPath,auxFile) )
 
     Catch ex As Exception
 
