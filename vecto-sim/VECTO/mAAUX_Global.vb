@@ -253,7 +253,7 @@ Public Function DetermineCycleNameFromCurrentFile() As String
       'Get DriveFile without path and without extension
       Dim driveFile  As String  =  fFILE(CurrentCycleFile,False)
 
-      Select Case(driveFile)
+      Select Case(true)
       
       
        Case  driveFile.contains("Heavy_Urban") ANdalso driveFile.Contains("Bus")
