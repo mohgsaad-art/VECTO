@@ -356,10 +356,12 @@ For each result As SmartResult In other.ElectricalUserInputsConfig.ResultCardIdl
        Me.ElectricalUserInputsConfig.ResultCardIdle.Results.Add( New SmartResult(result.Amps,result.SmartAmps))    
 Next
 'ResultCardOverrun
+Me.ElectricalUserInputsConfig.ResultCardOverrun.Results.Clear
 For each result As SmartResult In other.ElectricalUserInputsConfig.ResultCardOverrun.Results
         Me.ElectricalUserInputsConfig.ResultCardOverrun.Results.Add( New SmartResult(result.Amps,result.SmartAmps))       
 Next
 'ResultCardTraction
+Me.ElectricalUserInputsConfig.ResultCardTraction.Results.Clear
 For each result As SmartResult In other.ElectricalUserInputsConfig.ResultCardTraction.Results
         Me.ElectricalUserInputsConfig.ResultCardTraction.Results.Add( New SmartResult(result.Amps,result.SmartAmps))          
 Next
