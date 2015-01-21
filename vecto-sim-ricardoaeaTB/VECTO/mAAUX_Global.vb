@@ -255,21 +255,21 @@ Public Function DetermineCycleNameFromCurrentFile() As String
 
       Select Case(true)
       
-      
-       Case  driveFile.contains("Heavy_Urban") ANdalso driveFile.Contains("Bus")
-             Return "Heavy urban"
+            'DJN - update to make contains test case insensitive
+            Case driveFile.ToLower().Contains("heavy_urban") AndAlso driveFile.ToLower().Contains("bus")
+                Return "Heavy urban"
 
-       Case  driveFile.contains("Suburban") ANdalso driveFile.Contains("Bus")
-             Return "Suburban"
+            Case driveFile.ToLower().Contains("suburban") AndAlso driveFile.ToLower().Contains("bus")
+                Return "Suburban"
 
-       case  driveFile.contains("Urban") ANdalso driveFile.Contains("Bus")
-             Return "Urban"
+            Case driveFile.ToLower().Contains("urban") AndAlso driveFile.ToLower().Contains("bus")
+                Return "Urban"
 
-       case  driveFile.contains("Interurban") ANdalso driveFile.Contains("Bus")
-             Return "Interurban"
+            Case driveFile.ToLower().Contains("interurban") AndAlso driveFile.ToLower().Contains("bus")
+                Return "Interurban"
 
-       case driveFile.Contains("Coach")
-             Return "Coach"
+            Case driveFile.ToLower().Contains("coach")
+                Return "Coach"
 
        case  Else
               WorkerMsg(tMsgID.Warn,String.Format("UnServiced Cycle Name '{0}' in Pneumatics Actuations Map 0 Actuations returned",driveFile),"Advanced Auxiliaries")
