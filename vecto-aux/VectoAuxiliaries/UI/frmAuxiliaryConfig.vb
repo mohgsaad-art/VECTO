@@ -256,9 +256,9 @@ Private Sub CreateBindings()
         cboDoors.DataBindings.Add("Text", auxConfig.PneumaticUserInputsConfig, "Doors")
 
         'HVAC Bindings     
-        txtHVACElectricalLoadPowerWatts.DataBindings.Add("Text", auxConfig.HvacUserInputsConfig.SteadyStateModel, "HVACElectricalLoadPowerWatts")
-        txtHVACFuellingLitresPerHour.DataBindings.Add("Text", auxConfig.HvacUserInputsConfig.SteadyStateModel, "HVACFuellingLitresPerHour")
-        txtHVACMechanicalLoadPowerWatts.DataBindings.Add("Text", auxConfig.HvacUserInputsConfig.SteadyStateModel, "HVACMechanicalLoadPowerWatts")
+        txtHVACElectricalLoadPowerWatts.DataBindings.Add("Text", auxConfig.HvacUserInputsConfig.SteadyStateModel, "HVACElectricalLoadPowerWatts",False,DataSourceUpdateMode.OnPropertyChanged)
+        txtHVACFuellingLitresPerHour.DataBindings.Add("Text", auxConfig.HvacUserInputsConfig.SteadyStateModel, "HVACFuellingLitresPerHour",False,DataSourceUpdateMode.OnPropertyChanged)
+        txtHVACMechanicalLoadPowerWatts.DataBindings.Add("Text", auxConfig.HvacUserInputsConfig.SteadyStateModel, "HVACMechanicalLoadPowerWatts",False,DataSourceUpdateMode.OnPropertyChanged)
 
         txtSSMFilePath.DataBindings.Add( "Text", auxConfig.HvacUserInputsConfig,"SSMFilePath")
 
@@ -1155,6 +1155,8 @@ Private Sub btnSSMBSource_Click( sender As Object,  e As EventArgs) Handles btnS
                'Causes binding to fire
                btnSSMBSource.Focus()
                txtSSMFilePath.Focus()
+
+
 
 End Sub
 
