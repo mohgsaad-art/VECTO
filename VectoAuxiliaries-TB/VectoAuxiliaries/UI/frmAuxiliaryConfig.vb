@@ -33,6 +33,8 @@ Private auxFile As string
 Private cmFilesList As String()
 
 
+Private SaveClicked As Boolean
+
 #End Region
 
 
