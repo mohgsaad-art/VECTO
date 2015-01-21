@@ -1502,14 +1502,6 @@ lb_nOK:
 
 
     
-        'AA-TB
-        'Say Fuel Consumption at end of current cycle.
-        Dim fcLitres As single
-        If Not mAAUX_Global.advancedAuxModel is nothing
-          fcLitres  = mAAUX_Global.advancedAuxModel.TotalFuelLITRES
-          WorkerMsg(tMsgID.Warn,"Aux Fuel In Litres=" & fcLitres,"Calc")
-        End If
-
         '***********************************************************************************************
         '***********************************    Time loop END ***********************************
         '***********************************************************************************************
