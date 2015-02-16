@@ -20,6 +20,7 @@ Class cVSUM
 
     Private VSUMentries As Dictionary(Of String, cVSUMentry)
     Private VSUMentryList As List(Of String)     'Wird benötigt weil Dictionary nicht sortiert ist
+                                                 'Needed because Dictionary is not sorted
 
     Private vsumJSON As cJSON
     Private ResList As List(Of Dictionary(Of String, Object))

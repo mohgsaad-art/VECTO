@@ -2,16 +2,26 @@
 Imports NUnit.Framework
 Imports VectoAuxiliaries
 
+
 Namespace UnitTests
 
     <TestFixture()>
     Public Class AlternatorMapTests
 
         Private Const _GOODMAP As String = "TestFiles\testAlternatorMap.aalt"
+        Private Const _GOODMAPORIGINALSINGLEMAP As String = "TestFiles\testAlternatorMapOriginalSingleMap.aalt"
         Private Const _INVALIDRPMMAP As String = "TestFiles\testAlternatorMapWithInvalidRpm.aalt"
         Private Const _INVALIDAMPSMAP As String = "TestFiles\testAlternatorMapWithInvalidAmps.aalt"
         Private Const _IVALIDEFFICIENCYMAP As String = "TestFiles\testAlternatorMapWithInvalidEfficiency.aalt"
         Private Const _INVALIDPOWERMAP As String = "TestFiles\testAlternatorMapWithInvalidPower.aalt"
+        Private Const _GOODCOMBINEDMAP As String = "TestFiles\testAlternatorMapCombined.aalt"
+        Private Const _ASYMETRICALCOMBINEDROWSMAP As String = "TestFiles\testAlternatorMapAsymetricalRowsCombined.aalt"
+        Private Const _ASYMETRICALCOMBINEDXYPAIRSMAP As String = "TestFiles\testAlternatorMapAsymetricalXYPairsCombined.aalt"
+
+
+
+
+
 
 <Test()>
 <TestCase(10,1500,0.6150f)> _
@@ -118,6 +128,12 @@ End Sub
             Dim target As AlternatorMap = New AlternatorMap(path)
             Return target
         End Function
+
+        Private Function GetMap( path As String ) As AlternatorMap
+            Dim target As AlternatorMap = New AlternatorMap(path)
+            Return target
+        End Function     
+
 
 #End Region
 
