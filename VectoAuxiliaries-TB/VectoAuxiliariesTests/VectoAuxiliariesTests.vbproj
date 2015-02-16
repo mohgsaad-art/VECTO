@@ -103,6 +103,7 @@
     <Compile Include="Mocks\M6_Mock.vb" />
     <Compile Include="Mocks\M7_Mock.vb" />
     <Compile Include="Mocks\MockFuel50PC.vb" />
+    <Compile Include="UnitTests\CombinedAlternatorTests.vb" />
     <Compile Include="UnitTests\FilePathUtilityTests.vb" />
     <Compile Include="UnitTests\FuelMapTests.vb" />
     <Compile Include="UnitTests\HVACSSMMapTests.vb" />
@@ -245,6 +246,18 @@
     <Content Include="TestFiles\HVACSteadyStateModelInsufficientLines.ahsm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="TestFiles\testAlternatorMapAsymetricalXYPairsCombined.aalt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\testAlternatorMapOriginalSingleMap.aalt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\testAlternatorMapAsymetricalRowsCombined.aalt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\testAlternatorMapCombined.aalt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="TestFiles\testAlternatorMap.aalt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
