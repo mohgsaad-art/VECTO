@@ -54,13 +54,13 @@ Try
 
   fs = New FileStream(excelPath, FileMode.Open) 
 
-  msFirstPass = New MemoryStream()
-  combinedSheet = New SLDocument(fs,  combinedAlternatorETAMAPSheetName)
-  powerCalculation = New SLDocument(fs, powerCalculationSheetName)
-  Alt1 = New SLDocument(fs, alt1SheetName)
-  Alt2 = New SLDocument(fs, alt2SheetName)
-  Alt3 = New SLDocument(fs, alt3SheetName)
-  Alt4 = New SLDocument(fs, alt4SheetName)
+ ' msFirstPass = New MemoryStream()
+  combinedSheet = New SLDocument(excelPath,  combinedAlternatorETAMAPSheetName)
+  powerCalculation = New SLDocument(excelPath, powerCalculationSheetName)
+  Alt1 = New SLDocument(excelPath, alt1SheetName)
+  Alt2 = New SLDocument(excelPath, alt2SheetName)
+  Alt3 = New SLDocument(excelPath, alt3SheetName)
+  Alt4 = New SLDocument(excelPath, alt4SheetName)
 
   ValuesAlt1()
 
