@@ -8,13 +8,10 @@ imports DocumentFormat.OpenXml
 imports DocumentFormat.OpenXml.Spreadsheet
 imports SpreadsheetLight
 
-
 Namespace Electrics
 
-
-
 Public Class CombinedAlternator
-Implements IDisposable
+
 
 
 'Simulation Spreadsheet constants.
@@ -24,32 +21,41 @@ Private const alt1SheetName                      As string = "Alt 1"
 Private const aLt2SheetName                      As string = "Alt 2"
 Private const alt3SheetName                      As string = "Alt 3"
 Private const aLt4SheetName                      As string = "Alt 4"
+Private const alternator1Name                    As string = "Alternator#1"
+Private const alternator2Name                    As string = "Alternotor#2"
+Private const alternator3Name                    As string = "Alternator#3"
+Private const alternator4Name                    As string = "Alternator#4"
+
 
 'Simulation Spreadsheet variables
 Private excelPath As String  = "alt.xlsx"
 
-
 'SSLight Declarations
-private combinedSheet    As SLDocument
+Private combinedSheet    As SLDocument
 Private powerCalculation As SLDocument
 Private Alt1             As SLDocument
 Private ALt2             As SLDocument
 Private Alt3             As SLDocument
 Private ALt4             As SLDocument
-Private fs               As   FileStream
-Private memoryStream     As  MemoryStream
+Private alternator1      As SLDocument
+Private alternator2      As SLDocument
+Private alternator3      As SLDocument
+Private alternator4      As SLDocument
 
 
+'User Inputs
 Private Property NumAlternators As Integer
 Private Property Alt1PulleyRatio As Single 
 Private Property Alt2PulleyRatio As Single 
 Private Property Alt3PulleyRatio As Single 
 Private Property Alt4PulleyRatio As Single 
 
-
-
 'Constructor
 Public Sub new( simulationExcelBookPath As string, alt1PulleyRatio As Single, alt2PulleyRatio As Single, alt3PulleyRatio As Single, alt4PulleyRatio As single, numAlternators As Integer)
+
+
+
+
 
    'Sanity Checks
    If( alt1PulleyRatio <0.1 orElse alt1PulleyRatio >10)  then throw new ArgumentException("Please enter a sensible Alternator Pulley Ratio")
@@ -72,78 +78,68 @@ Public Sub new( simulationExcelBookPath As string, alt1PulleyRatio As Single, al
     me.Alt3PulleyRatio  = alt3PulleyRatio
     me.Alt4PulleyRatio  = alt4PulleyRatio
 
-
-   Initialise
-
-
+   SetUserConfigurables()
 
 End sub
 
+Public Sub SetUserConfigurables()
 
-Private Sub Initialise()
 
 
-   Try
-   
-        fs = New FileStream(excelPath, FileMode.Open) 
-      
-        memoryStream  = New MemoryStream()
-        combinedSheet = New SLDocument(fs,  combinedAlternatorETAMAPSheetName)
-        powerCalculation = New SLDocument(fs, powerCalculationSheetName)
-        Alt1 = New SLDocument(fs, alt1SheetName)
-        Alt2 = New SLDocument(fs, alt2SheetName)
-        Alt3 = New SLDocument(fs, alt3SheetName)
-        Alt4 = New SLDocument(fs, alt4SheetName)
+        powerCalculation = New SLDocument(excelPath, powerCalculationSheetName)
 
         'Set Number of Alternators
         powerCalculation.SetCellValue(4,2, NumAlternators)
-
-
+      
         'Set Pulley Efficiencies
         powerCalculation.SetCellValue(5,2, Alt1PulleyRatio)
         powerCalculation.SetCellValue(6,2, Alt2PulleyRatio)
         powerCalculation.SetCellValue(7,2, Alt3PulleyRatio)
-        powerCalculation.SetCellValue(8,2, Alt4PulleyRatio)
+        powerCalculation.SetCellValue(8,2, Alt4PulleyRatio)       
+        powerCalculation.Save()
+
+        powerCalculation = New SLDocument(excelPath, powerCalculationSheetName)
+        Alt1 = New SLDocument(excelPath, alt1SheetName)
+        Calculate(Alt1,39,2)
+        Alt1.Save()
+
+        Alt2 = New SLDocument(excelPath, alt2SheetName)
+        Calculate(Alt2,39,7)
+        ALt2.Save()
+
+        Alt3 = New SLDocument(excelPath, alt3SheetName)
+        Calculate(Alt3,52,2)
+        Alt3.Save()
+
+        Alt4 = New SLDocument(excelPath, alt4SheetName)
+        Calculate(Alt4,52,7)
+        ALt4.Save()
+
+        powerCalculation.Save()
 
 
+        'Try an make it calculate
 
-        'Calculate
-        Calculate()
+        'powerCalculation.SelectWorksheet(combinedAlternatorETAMAPSheetName)
+        'powerCalculation.SelectWorksheet(alt1SheetName)
+        'powerCalculation.SelectWorksheet(alt2SheetName)
+        'powerCalculation.SelectWorksheet(alt3SheetName)
+        'powerCalculation.SelectWorksheet(alt4SheetName) 
 
-
-
-        'Spit Values
-        SpitValues( GetCombinedMap)
-         
-      
-      Catch ex As Exception
-      
-        Throw New Exception( "Unable to initialise Alternator Spreadhsheet Objects : " + ex.Message )
-      
-      Finally
-   
-    
-   
-     End Try
-
+        ' powerCalculation.SelectWorksheet(alternator1Name)
+        ' powerCalculation.SelectWorksheet(alternator2Name)
+        ' powerCalculation.SelectWorksheet(alternator3Name)
+        ' powerCalculation.SelectWorksheet(alternator4Name)      
+                     
+     
 
 
 End Sub
 
-Private sub SpitValues( resultMap as List( of CombinedAltEntry))
 
 
-   Debug.WriteLine("[AMPS],[Engine Speed],[Efficiency]")
-   For Each v As CombinedAltEntry In resultMap 
-      Debug.WriteLine( String.Format("{0},{1},{2}", v.Amps,v.EngineSpeed,v.Efficiency))
-
-   Next
-
-
-End Sub
-
-
-Sub Calculate()
+'Runs Code on the sheets to allow resulting map to be recalculated.
+Private Sub Calculate( alt As SLDocument, startRow As Integer, startColumn As integer)
 
 'This macro builds the base for the calculation of the "Output Matrix" in sheet "Power Calculation". Therefore it collects the values
 'out of the user inteface in sheet "Power Calculation" (Input Alt 1) and writes it into the table P4:U19 in sheet "Alt 1". This program
@@ -167,44 +163,46 @@ Sub Calculate()
 'Calculation for 2000 rpm
     j = 5       'Start-values
     k = 0
-    a = 39
+    a = startRow'39
     n = 1
         
     'Increasing values
-    For i = 39 To 45     'Loop over the rows 5 to 11 in sheet "Power Calculation"
-        If powerCalculation.GetCells(New SLCellPoint(i, 2)).NumericValue <> 0 Then 'Query whether column B, row i in sheet "Power Calculation" contains a value
-            If powerCalculation.GetCells(New SLCellPoint(i, 2)).NumericValue > k Then           'Query if the value of row i is greater than the value of row i-1
-                alt1.SetCellValue(j, 17,powerCalculation.GetCells(New SLCellPoint(i, 2)).NumericValue)        'Write the value of row i into the table P4:U19 row j in sheet "Alt 1"
+    For i = startRow To  (startRow + 6 )'45     'Loop over the rows 5 to 11 in sheet "Power Calculation"
+        If powerCalculation.GetCells(New SLCellPoint(i, startColumn)).NumericValue <> 0 Then 'Query whether column B, row i in sheet "Power Calculation" contains a value
+            If powerCalculation.GetCells(New SLCellPoint(i, startColumn)).NumericValue > k Then           'Query if the value of row i is greater than the value of row i-1
+                alt.SetCellValue(j, 17,powerCalculation.GetCells(New SLCellPoint(i, startColumn)).NumericValue)        'Write the value of row i into the table P4:U19 row j in sheet "Alt 1"
                 j = j + 1           'Counter for row j in table P4:U19 (sheet "Alt 1")
-                k = powerCalculation.GetCells(New SLCellPoint(i, 2) ).NumericValue         'Compare value for the next iteration cycle
+                k = powerCalculation.GetCells(New SLCellPoint(i, startColumn) ).NumericValue         'Compare value for the next iteration cycle
             Else: a = j - 1 + a - 5    'Saving row-number with the greatest value of degree of efficiency
             End If
         Else
             For l = j To 11         'Loop to fill empty cells in Q6 to Q8 with the existing values
-                alt1.SetCellValue(l, 17,Alt1.GetCells(New SLCellPoint(l - j + 5, 17)).NumericValue)
+                alt.SetCellValue(l, 17,alt.GetCells(New SLCellPoint(l - j + 5, 17)).NumericValue)
             Next
-            alt1.SetCellValue(13, 17, k  )     'Write last value in the first row of the decreasing valus
+            alt.SetCellValue(13, 17, k  )     'Write last value in the first row of the decreasing valus
         End If
     Next
     
+
+
     'Decreasing values
-    If a < 46 Then          'Query: if a>=11: no decreasing values exist
-        For j = a To 46
-            If powerCalculation.GetCells(New SLCellPoint(j + 1, 2)).NumericValue < k And powerCalculation.GetCells(New SLCellPoint(j + 1, 2)).NumericValue <> 0 Then
-                alt1.SetCellValue(13 + n, 17, powerCalculation.GetCells(New SLCellPoint(j + 1, 2)).NumericValue) 'Write decreasing values into row 13+n
-                k = powerCalculation.GetCells(New SLCellPoint(j + 1, 2)).NumericValue      'Compare value for the next iteration cycle
+    If a < (startRow+7) Then          'Query: if a>=11: no decreasing values exist
+        For j = a To (startRow+7)
+            If powerCalculation.GetCells(New SLCellPoint(j + 1, startColumn)).NumericValue < k And powerCalculation.GetCells(New SLCellPoint(j + 1, startColumn)).NumericValue <> 0 Then
+                alt.SetCellValue(13 + n, 17, powerCalculation.GetCells(New SLCellPoint(j + 1, startColumn)).NumericValue) 'Write decreasing values into row 13+n
+                k = powerCalculation.GetCells(New SLCellPoint(j + 1, startColumn)).NumericValue      'Compare value for the next iteration cycle
                 n = n + 1           'Counter for row number
                 a = a + 1           'Counter
             End If
         Next
-        If a < 46 Then
+        If a < (startRow+7) Then
             For m = 13 + n To 19            'Loop to fill empty cells in Q13 to Q19 with the existing values
-                alt1.SetCellValue(m, 17,Alt1.GetCells(New SLCellPoint(m - n, 17)).NumericValue)
+                alt.SetCellValue(m, 17,alt.GetCells(New SLCellPoint(m - n, 17)).NumericValue)
             Next
         End If
     Else
         For m = 13 To 19
-             alt1.SetCellValue(m, 17, 0 )    'If decreasing values do not exist, fill Q13 to Q19 (sheet "Alt 1") with 0
+             alt.SetCellValue(m, 17, 0 )    'If decreasing values do not exist, fill Q13 to Q19 (sheet "Alt 1") with 0
         Next
     End If
     
@@ -212,42 +210,42 @@ Sub Calculate()
 'Calculation for 4000 rpm
     j = 5
     k = 0
-    a = 39
+    a = startRow '39
     n = 1
     
-    For i = 39 To 45
-        If powerCalculation.GetCells(New SLCellPoint(i, 3)).NumericValue <> 0 Then
-            If powerCalculation.GetCells(New SLCellPoint(i, 3)).NumericValue > k Then
-                alt1.SetCellValue(j, 19, powerCalculation.GetCells(New SLCellPoint(i, 3)).NumericValue)
+    For i = startRow To (startRow + 6 ) '45
+        If powerCalculation.GetCells(New SLCellPoint(i, startColumn+1)).NumericValue <> 0 Then
+            If powerCalculation.GetCells(New SLCellPoint(i, startColumn+1)).NumericValue > k Then
+                alt.SetCellValue(j, 19, powerCalculation.GetCells(New SLCellPoint(i, startColumn+1)).NumericValue)
                 j = j + 1
-                k = powerCalculation.GetCells(New SLCellPoint(i, 3)).NumericValue
+                k = powerCalculation.GetCells(New SLCellPoint(i, startColumn+1)).NumericValue
             Else: a = j - 1 + a - 5
             End If
         Else
             For l = j To 11
-                alt1.SetCellValue(l, 19,  alt1.GetCells( New SLCellPoint(l - j + 5, 19)).NumericValue)
+                alt.SetCellValue(l, 19,  alt.GetCells( New SLCellPoint(l - j + 5, 19)).NumericValue)
             Next
-             alt1.SetCellValue(13, 19, k)
+             alt.SetCellValue(13, 19, k)
         End If
     Next
         
-    If a < 46 Then
-        For j = a To 46
-            If powerCalculation.GetCells(New SLCellPoint(j + 1, 3)).NumericValue < k And powerCalculation.GetCells(New SLCellPoint(j + 1, 3)).NumericValue <> 0 Then
-                alt1.SetCellValue(13 + n, 19, powerCalculation.GetCells(New SLCellPoint(j + 1, 3)).NumericValue)
-                k = powerCalculation.GetCells(New SLCellPoint(j + 1, 3)).NumericValue
+    If a < (startRow + 7) Then
+        For j = startRow To startRow+7
+            If powerCalculation.GetCells(New SLCellPoint(j + 1, startColumn+1)).NumericValue < k And powerCalculation.GetCells(New SLCellPoint(j + 1, startColumn+1)).NumericValue <> 0 Then
+                alt.SetCellValue(13 + n, 19, powerCalculation.GetCells(New SLCellPoint(j + 1, startColumn+1)).NumericValue)
+                k = powerCalculation.GetCells(New SLCellPoint(j + 1, startColumn+1)).NumericValue
                 n = n + 1
                 a = a + 1
             End If
         Next
-        If a < 46 Then
+        If a < (startRow + 7 ) Then
             For m = 13 + n To 19
-                alt1.SetCellValue(m, 19,  alt1.GetCells( New SLCellPoint(m - n, 19)).NumericValue)
+                alt.SetCellValue(m, 19,  alt.GetCells( New SLCellPoint(m - n, 19)).NumericValue)
             Next
         End If
     Else
         For m = 13 To 19
-            alt1.SetCellValue(m, 19, 0)
+            alt.SetCellValue(m, 19, 0)
         Next
     End If
     
@@ -255,50 +253,50 @@ Sub Calculate()
 'Calculation for 6000 rpm
     j = 5
     k = 0
-    a = 39
+    a = startRow
     n = 1
 
-    For i = 39 To 45
-        If powerCalculation.GetCells(New SLCellPoint(i, 4)).NumericValue <> 0 Then
-            If powerCalculation.GetCells(New SLCellPoint(i, 4)).NumericValue > k Then
-                alt1.SetCellValue(j, 21,  powerCalculation.GetCells(New SLCellPoint(i, 4)).NumericValue)
+    For i = startRow To ( startRow + 6 )
+        If powerCalculation.GetCells(New SLCellPoint(i, startColumn+2)).NumericValue <> 0 Then
+            If powerCalculation.GetCells(New SLCellPoint(i, startColumn+2)).NumericValue > k Then
+                alt.SetCellValue(j, 21,  powerCalculation.GetCells(New SLCellPoint(i, startColumn+2)).NumericValue)
                 j = j + 1
-                k = powerCalculation.GetCells(New SLCellPoint(i, 4)).NumericValue
+                k = powerCalculation.GetCells(New SLCellPoint(i, startColumn+2)).NumericValue
             Else: a = j - 1 + a - 5
             End If
         Else
             For l = j To 11
-                alt1.SetCellValue(l, 21,  alt1.GetCells( New SLCellPoint(l - j + 5, 21)).NumericValue)
+                alt.SetCellValue(l, 21,  alt.GetCells( New SLCellPoint(l - j + 5, 21)).NumericValue)
             Next
-            alt1.SetCellValue(13, 21, k )
+            alt.SetCellValue(13, 21, k )
         End If
     Next
     
-    If a < 46 Then
-        For j = a To 46
-            If powerCalculation.GetCells(New SLCellPoint(j + 1, 4)).NumericValue < k And powerCalculation.GetCells(New SLCellPoint(j + 1, 4)).NumericValue <> 0 Then
-                alt1.SetCellValue(13 + n, 21, powerCalculation.GetCells(New SLCellPoint(j + 1, 4)).NumericValue)
-                k = powerCalculation.GetCells(New SLCellPoint(j + 1, 4)).NumericValue
+    If a < (startRow + 7 ) Then
+        For j = a To startRow+7
+            If powerCalculation.GetCells(New SLCellPoint(j + 1, startColumn+2)).NumericValue < k And powerCalculation.GetCells(New SLCellPoint(j + 1, startColumn+2)).NumericValue <> 0 Then
+                alt.SetCellValue(13 + n, 21, powerCalculation.GetCells(New SLCellPoint(j + 1, startColumn+2)).NumericValue)
+                k = powerCalculation.GetCells(New SLCellPoint(j + 1, startColumn+2)).NumericValue
                 n = n + 1
                 a = a + 1
             End If
         Next
-        If a < 46 Then
+        If a < (startRow + 7 ) Then
             For m = 13 + n To 19
-                alt1.SetCellValue(m, 21, alt1.GetCells( New SLCellPoint(m - n, 21)).NumericValue)
+                alt.SetCellValue(m, 21, alt.GetCells( New SLCellPoint(m - n, 21)).NumericValue)
             Next
         End If
     Else
         For m = 13 To 19
-            alt1.SetCellValue(m, 21, 0)
+            alt.SetCellValue(m, 21, 0)
         Next
     End If
     
     
 End Sub
 
-
-public function GetCombinedMap() As List(Of CombinedAltEntry)
+'Gives the Resulting Map to the caller.
+Public function GetCombinedMap() As List(Of CombinedAltEntry)
 
   Dim  firstColumn As integer = 10
   Dim  firstRow    As Integer = 4
@@ -309,16 +307,22 @@ public function GetCombinedMap() As List(Of CombinedAltEntry)
   Dim valueEfficiency As Single
   Dim currentColumn As integer
 
+ 
+   
+  combinedSheet = New SLDocument(excelPath,  combinedAlternatorETAMAPSheetName)
+
+      
+
 
   For currentRow As Integer = firstRow to lastRow
 
-      currentColumn =firstColumn
+      currentColumn = firstColumn
 
-      valueAmps        = Math.Round(combinedSheet.GetCells( New SLCellPoint(currentRow,currentColumn)).NumericValue,2)
-      currentColumn+=1
-      valueEngineSpeed = Math.Round(combinedSheet.GetCells( New SLCellPoint(currentRow,currentColumn)).NumericValue,0)
-      currentColumn+=1
-      valueEfficiency  = Math.Round(combinedSheet.GetCells( New SLCellPoint(currentRow,currentColumn)).NumericValue,2)
+      valueAmps        = Math.Round(combinedSheet.GetCells( New SLCellPoint(currentRow,currentColumn+0)).NumericValue,2)
+
+      valueEngineSpeed = Math.Round(combinedSheet.GetCells( New SLCellPoint(currentRow,currentColumn+1)).NumericValue,0)
+
+      valueEfficiency  = Math.Round(combinedSheet.GetCells( New SLCellPoint(currentRow,currentColumn+2)).NumericValue,2)
 
 
       resultMap.Add( New CombinedAltEntry With {.Amps=valueAmps, .EngineSpeed=valueEngineSpeed, .Efficiency=valueEfficiency })
@@ -326,6 +330,7 @@ public function GetCombinedMap() As List(Of CombinedAltEntry)
 
   next
 
+  combinedSheet.CloseWithoutSaving()
 
   Return resultMap
 
@@ -333,47 +338,11 @@ public function GetCombinedMap() As List(Of CombinedAltEntry)
 End function
 
 
-#Region "IDisposable Support"
-        Private disposedValue As Boolean' To detect redundant calls
 
-        ' IDisposable
-        Protected         Overridable         Sub Dispose(disposing As Boolean)
-            If Not Me.disposedValue Then
-                If disposing Then
-
-                   'Close connections and allocated resources to excel spreadsheet
-                    memoryStream.Close
-                    fs.Close()
-
-                End If
-
-                ' TODO: free unmanaged resources (unmanaged objects) and override Finalize() below.
-                ' TODO: set large fields to null.
-            End If
-            Me.disposedValue = True
-        End Sub
-
-        ' TODO: override Finalize() only if Dispose(ByVal disposing As Boolean) above has code to free unmanaged resources.
-        'Protected Overrides Sub Finalize()
-        '    ' Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
-        '    Dispose(False)
-        '    MyBase.Finalize()
-        'End Sub
-
-        ' This code added by Visual Basic to correctly implement the disposable pattern.
-        Public Sub Dispose() Implements IDisposable.Dispose
-            ' Do not change this code.  Put cleanup code in Dispose(disposing As Boolean) above.
-            Dispose(True)
-            GC.SuppressFinalize(Me)
-        End Sub
-#End Region
 
 
 
 End Class
-
-
-
 
 
 End Namespace
