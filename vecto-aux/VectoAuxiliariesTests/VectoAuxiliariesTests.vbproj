@@ -53,6 +53,7 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.5.5631.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Moq">
       <HintPath>..\..\vecto-sim\packages\Moq.4.2.1409.1722\lib\net40\Moq.dll</HintPath>
@@ -64,6 +65,10 @@
     <Reference Include="nunit.framework, Version=2.6.2.12296, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="SpreadsheetLight, Version=3.4.4.0, Culture=neutral, PublicKeyToken=32fbb46dc1730c57, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>3rdParty\SpreadsheetLight.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -103,7 +108,7 @@
     <Compile Include="Mocks\M6_Mock.vb" />
     <Compile Include="Mocks\M7_Mock.vb" />
     <Compile Include="Mocks\MockFuel50PC.vb" />
-    <Compile Include="UnitTests\CombinedAlternatorTests.vb" />
+    <Compile Include="UnitTests\BusDatabaseTests.vb" />
     <Compile Include="UnitTests\FilePathUtilityTests.vb" />
     <Compile Include="UnitTests\FuelMapTests.vb" />
     <Compile Include="UnitTests\HVACSSMMapTests.vb" />
@@ -168,6 +173,10 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="packages.config" />
+    <Content Include="3rdParty\DocumentFormat.OpenXml.dll" />
+    <Content Include="3rdParty\DocumentFormat.OpenXml.xml" />
+    <Content Include="3rdParty\SpreadsheetLight.dll" />
+    <Content Include="3rdParty\SpreadsheetLight.xml" />
     <Content Include="TestFiles\testPneumaticActuationsMap_GOODMAP.apac">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -244,6 +253,27 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestFiles\HVACSteadyStateModelInsufficientLines.ahsm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\BusDatabase.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\BusDatabase InsufficientRows.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\BusDatabaseInvalidLength.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\BusDatabaseInvalidWidth.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\BusDatabaseInvalidHeight.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\BusDatabaseInvalidPassengers.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\BusDatabaseDuplicates.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="TestFiles\testAlternatorMapAsymetricalXYPairsCombined.aalt">
