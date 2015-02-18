@@ -201,6 +201,12 @@
     <Compile Include="UI\frmCombinedAlternators.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="UI\frmHVACTool.Designer.vb">
+      <DependentUpon>frmHVACTool.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmHVACTool.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="UI\VECTO_Types.vb" />
   </ItemGroup>
   <ItemGroup>
@@ -222,6 +228,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmCombinedAlternators.resx">
       <DependentUpon>frmCombinedAlternators.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmHVACTool.resx">
+      <DependentUpon>frmHVACTool.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
