@@ -7,11 +7,24 @@ Public Class BusDatabase
   Implements IBusDatabase
 
   Private buses As New Dictionary(Of String, IBus)
+  Private selectListBuses As New List(Of IBus)
 
 
-        Public Function GetBuses(busModel As String) As List(Of IBus) Implements IBusDatabase.GetBuses
+        Public Function GetBuses(busModel As String, optional AsSelectList As Boolean=false) As List(Of IBus) Implements IBusDatabase.GetBuses
 
+           If AsSelectList then
+            selectListBuses = New List(Of IBus)
+            selectListBuses = buses.Select( Function(x) x.Value).Where( Function(v) v.Model="" OrElse v.Model.ToLower.Contains( busModel.ToLower)).ToList()
+            selectListBuses.Insert(0, New Bus("<Select>","low floor","gas",1,1,1,2))
+            Return selectListBuses
+
+           Else
+           
             Return buses.Select( Function(x) x.Value).Where( Function(v) v.Model="" OrElse v.Model.ToLower.Contains( busModel.ToLower)).ToList()
+
+           End If
+
+            
 
         End Function
 
