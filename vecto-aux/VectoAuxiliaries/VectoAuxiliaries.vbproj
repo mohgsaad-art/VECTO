@@ -128,7 +128,10 @@
     <Compile Include="Hvac\Bus.vb" />
     <Compile Include="Hvac\BusDatabase.vb" />
     <Compile Include="Hvac\BusEngineType.vb" />
-    <Compile Include="Hvac\BusKey.vb" />
+    <Compile Include="Hvac\BusFloorBase.vb" />
+    <Compile Include="Hvac\BusFloorLow.vb" />
+    <Compile Include="Hvac\BusFloorRaisedFloor.vb" />
+    <Compile Include="Hvac\BusFloorSemiLow.vb" />
     <Compile Include="Hvac\HVACConstants.vb" />
     <Compile Include="Electrics\IElectricalConsumerList.vb" />
     <Compile Include="Hvac\HVACSteadyStateModel.vb" />
@@ -138,7 +141,12 @@
     <Compile Include="Hvac\IHVACSteadyStateModel.vb" />
     <Compile Include="Hvac\IHVACUserInputsConfig.vb" />
     <Compile Include="Hvac\IM1_AverageHVACLoadDemand.vb" />
+    <Compile Include="Hvac\ISSMGenInputs.vb" />
+    <Compile Include="Hvac\ISSMTechList.vb" />
     <Compile Include="Hvac\ISSMTOOL.vb" />
+    <Compile Include="Hvac\ITechSectionLine.vb" />
+    <Compile Include="Hvac\SSMGenInputs.vb" />
+    <Compile Include="Hvac\SSMTechList.vb" />
     <Compile Include="Hvac\SSMTOOL.vb" />
     <Compile Include="IAuxiliaryConfig.vb" />
     <Compile Include="DownstreamModules\M6.vb" />
