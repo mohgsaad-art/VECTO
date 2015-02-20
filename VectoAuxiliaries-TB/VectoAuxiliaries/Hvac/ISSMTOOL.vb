@@ -11,4 +11,8 @@ ReadOnly Property FuelLPerHBaseAdjusted   As Single
 
 
 
+
+
+
+
 End Interface

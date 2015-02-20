@@ -153,6 +153,7 @@
     </Compile>
     <Compile Include="UnitTests\ResultCardTests.vb" />
     <Compile Include="UnitTests\AuxiliaryEnvironmentPersistanceTests.vb" />
+    <Compile Include="UnitTests\SSMTOOLTests.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
