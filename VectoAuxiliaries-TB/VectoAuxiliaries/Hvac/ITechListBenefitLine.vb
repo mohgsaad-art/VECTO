@@ -6,9 +6,18 @@ Public Interface ITechListBenefitLine
  Property  Units  As string
  Property  Category As String
  Property  BenefitName As String
- Property  LowFloor As BusFloorLow
- Property  SemiLowFloor As BusFloorSemiLow
- Property  RaisedFloor  As BusFloorRaised
+
+ Property  LowFloorH As double
+ Property  LowFloorV As double
+ Property  LowFloorC As double
+
+ Property  SemiLowFloorH As double
+ Property  SemiLowFloorV As double
+ Property  SemiLowFloorC As double
+
+ Property  RaisedFloorH  As double
+ Property  RaisedFloorV  As double
+ Property  RaisedFloorC  As double
 
  Property  OnVehicle As Boolean
  Property  ActiveVH As Boolean
@@ -23,6 +32,9 @@ Public Interface ITechListBenefitLine
  ReadOnly Property C  As Single
 
  Sub CloneFrom( source As ITechListBenefitLine)
+ 
+ Function IsEqualTo(source As ITechListBenefitLine ) As Boolean
+ 
 
 
 End Interface

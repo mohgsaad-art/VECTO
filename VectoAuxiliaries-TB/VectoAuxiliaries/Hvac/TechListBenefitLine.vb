@@ -22,15 +22,25 @@ Public Class TechListBenefitLine
 
 
 
+
 Private _h,_vh,_vv,_vc,_c As Single
 Private inputSheet As ISSMGenInputs
 
 Public Property  Units  As string Implements ITechListBenefitLine.Units
 Public Property  Category As String Implements ITechListBenefitLine.Category
 Public Property  BenefitName As String Implements ITechListBenefitLine.BenefitName
-Public Property  LowFloor As new BusFloorLow Implements ITechListBenefitLine.LowFloor
-Public Property  SemiLowFloor As New BusFloorSemiLow Implements ITechListBenefitLine.SemiLowFloor
-Public Property  RaisedFloor As New BusFloorRaised Implements ITechListBenefitLine.RaisedFloor
+Public Property  LowFloorH As new Double Implements ITechListBenefitLine.LowFloorH
+Public Property  LowFloorV As new Double Implements ITechListBenefitLine.LowFloorV
+Public Property  LowFloorC As new Double Implements ITechListBenefitLine.LowFloorC
+
+Public Property  SemiLowFloorH As New Double Implements ITechListBenefitLine.SemiLowFloorH
+Public Property  SemiLowFloorV As New Double Implements ITechListBenefitLine.SemiLowFloorV
+Public Property  SemiLowFloorC As New Double Implements ITechListBenefitLine.SemiLowFloorC
+
+Public Property  RaisedFloorH As New Double Implements ITechListBenefitLine.RaisedFloorH
+Public Property  RaisedFloorV As New Double Implements ITechListBenefitLine.RaisedFloorV
+Public Property  RaisedFloorC As New Double Implements ITechListBenefitLine.RaisedFloorC
+
 
 Public Property  OnVehicle As Boolean Implements ITechListBenefitLine.OnVehicle
 Public Property  ActiveVH As Boolean Implements ITechListBenefitLine.ActiveVH
@@ -49,11 +59,11 @@ Public ReadOnly Property  H As Single Implements ITechListBenefitLine.H
 
         Select Case inputSheet.BP_BusFloorType
             Case "low floor"
-                 returnValue = LowFloor.H
+                 returnValue = LowFloorH
             Case "semi low floor"
-                 returnValue= SemiLowFloor.H
+                 returnValue= SemiLowFloorH
             Case "raised floor"
-                 returnValue= RaisedFloor.H
+                 returnValue= RaisedFloorH
         End Select
 
         Return returnValue
@@ -70,11 +80,11 @@ Public ReadOnly Property VH As Single Implements ITechListBenefitLine.VH
        'Get floor value
        Select Case inputSheet.BP_BusFloorType
          Case "low floor"
-              floorValue = LowFloor.V
+              floorValue = LowFloorV
          Case "semi low floor"
-              floorValue= SemiLowFloor.V
+              floorValue= SemiLowFloorV
          Case "raised floor"
-              floorValue= RaisedFloor.V
+              floorValue= RaisedFloorV
        End Select
 
 
@@ -99,11 +109,11 @@ Public ReadOnly Property VV As Single Implements ITechListBenefitLine.VV
        'Get floor value
        Select Case inputSheet.BP_BusFloorType
          Case "low floor"
-              floorValue = LowFloor.V
+              floorValue = LowFloorV
          Case "semi low floor"
-              floorValue= SemiLowFloor.V
+              floorValue= SemiLowFloorV
          Case "raised floor"
-              floorValue= RaisedFloor.V
+              floorValue= RaisedFloorV
        End Select
 
 
@@ -126,11 +136,11 @@ Public ReadOnly Property VC As Single Implements ITechListBenefitLine.VC
        'Get floor value
        Select Case inputSheet.BP_BusFloorType
          Case "low floor"
-              floorValue = LowFloor.V
+              floorValue = LowFloorV
          Case "semi low floor"
-              floorValue= SemiLowFloor.V
+              floorValue= SemiLowFloorV
          Case "raised floor"
-              floorValue= RaisedFloor.V
+              floorValue= RaisedFloorV
        End Select
 
 
@@ -148,16 +158,17 @@ Public ReadOnly Property C As Single Implements ITechListBenefitLine.C
 
       Dim returnValue As Single =0
 
+
  
         If Not OnVehicle then return returnValue
 
         Select Case inputSheet.BP_BusFloorType
             Case "low floor"
-                 returnValue = LowFloor.C
+                 returnValue = LowFloorC
             Case "semi low floor"
-                 returnValue= SemiLowFloor.C
+                 returnValue= SemiLowFloorC
             Case "raised floor"
-                 returnValue= RaisedFloor.C
+                 returnValue= RaisedFloorC
         End Select
 
         Return returnValue
@@ -165,14 +176,25 @@ Public ReadOnly Property C As Single Implements ITechListBenefitLine.C
     End Get
 End Property
 
+Sub new ( geninputs As ISSMGenInputs )
+
+   Me.inputSheet     =   geninputs  
+
+End Sub
 
 Sub new ( geninputs As ISSMGenInputs, 
            units As string,
            category As String, 
            benefitName As String, 
-           lowFloor As BusFloorLow, 
-           semiLowFloor As BusFloorSemiLow, 
-           raisedFloor As BusFloorRaised, 
+           lowFloorH As double, 
+           lowFloorV As double, 
+           lowFloorC As double, 
+           semiLowFloorH As Double, 
+           semiLowFloorV As Double, 
+           semiLowFloorC As Double, 
+           raisedFloorH As Double, 
+           raisedFloorV As Double, 
+           raisedFloorC As Double, 
            onVehicle As Boolean,
            lineType As TechLineType,
            activeVH As Boolean,
@@ -180,13 +202,19 @@ Sub new ( geninputs As ISSMGenInputs,
            activeVC As Boolean
           )
 
-   Me.inputSheet     = geninputs 
-   Me.Units          = units
-   Me.category       = category    
-   Me.benefitName    = benefitName 
-   Me.lowFloor       = lowFloor    
-   Me.semiLowFloor   = semiLowFloor
-   Me.raisedFloor    = raisedFloor 
+   Me.inputSheet     =   geninputs  
+   Me.Units          =   Units       
+   Me.category       =   category    
+   Me.benefitName    =   benefitName 
+   Me.lowFloorH      =   lowFloorH   
+   Me.lowFloorV      =   lowFloorV   
+   Me.lowFloorC      =   lowFloorC   
+   Me.semiLowFloorH  =   semiLowFloorH
+   Me.semiLowFloorV  =   semiLowFloorV
+   Me.semiLowFloorC  =   semiLowFloorC
+   Me.raisedFloorH   =   raisedFloorH
+   Me.raisedFloorV   =   raisedFloorV
+   Me.raisedFloorC   =   raisedFloorC
    Me.OnVehicle      = onVehicle
    Me.lineType       = lineType    
    Me.ActiveVH       = activeVH 
@@ -206,13 +234,13 @@ End Sub
              op1.ActiveVV        = op2.ActiveVV        AndAlso _
              op1.H               = op2.H               AndAlso _
              op1.LineType        = op2.LineType        AndAlso _
-             op1.LowFloor.V      = op2.LowFloor.V      AndAlso _
-             op1.SemiLowFloor.C  = op2.SemiLowFloor.C  AndAlso _
-             op1.SemiLowFloor.H  = op2.SemiLowFloor.H  AndAlso _
-             op1.SemiLowFloor.V  = op2.SemiLowFloor.V  AndAlso _
-             op1.RaisedFloor.C   = op2.RaisedFloor.C   AndAlso _
-             op1.RaisedFloor.H   = op2.RaisedFloor.H   AndAlso _
-             op1.RaisedFloor.V   = op2.RaisedFloor.V   AndAlso _
+             op1.LowFloorV       = op2.LowFloorV       AndAlso _
+             op1.SemiLowFloorC   = op2.SemiLowFloorC   AndAlso _
+             op1.SemiLowFloorH   = op2.SemiLowFloorH   AndAlso _
+             op1.SemiLowFloorV   = op2.SemiLowFloorV   AndAlso _
+             op1.RaisedFloorC    = op2.RaisedFloorC    AndAlso _
+             op1.RaisedFloorH    = op2.RaisedFloorH    AndAlso _
+             op1.RaisedFloorV    = op2.RaisedFloorV    AndAlso _
              op1.Units           = op2.Units ) then
 
           Return True
@@ -235,13 +263,13 @@ End Operator
              op1.ActiveVV        <> op2.ActiveVV        OrElse _
              op1.H               <> op2.H               OrElse _
              op1.LineType        <> op2.LineType        OrElse _
-             op1.LowFloor.V      <> op2.LowFloor.V      OrElse _
-             op1.SemiLowFloor.C  <> op2.SemiLowFloor.C  OrElse _
-             op1.SemiLowFloor.H  <> op2.SemiLowFloor.H  OrElse _
-             op1.SemiLowFloor.V  <> op2.SemiLowFloor.V  OrElse _
-             op1.RaisedFloor.C   <> op2.RaisedFloor.C   OrElse _
-             op1.RaisedFloor.H   <> op2.RaisedFloor.H   OrElse _
-             op1.RaisedFloor.V   <> op2.RaisedFloor.V   OrElse _
+             op1.LowFloorV       <> op2.LowFloorV       OrElse _
+             op1.SemiLowFloorC   <> op2.SemiLowFloorC   OrElse _
+             op1.SemiLowFloorH   <> op2.SemiLowFloorH   OrElse _
+             op1.SemiLowFloorV   <> op2.SemiLowFloorV   OrElse _
+             op1.RaisedFloorC    <> op2.RaisedFloorC    OrElse _
+             op1.RaisedFloorH    <> op2.RaisedFloorH    OrElse _
+             op1.RaisedFloorV    <> op2.RaisedFloorV    OrElse _
              op1.Units           <> op2.Units ) then
 
           Return True
@@ -262,9 +290,18 @@ End Operator
      Me.Units         = source.Units        
      Me.Category      = source.Category     
      Me.BenefitName   = source.BenefitName  
-     Me.LowFloor      = source.LowFloor     
-     Me.SemiLowFloor  = source.SemiLowFloor 
-     Me.RaisedFloor   = source.RaisedFloor  
+     Me.LowFloorH      = source.LowFloorH 
+     Me.LowFloorV      = source.LowFloorV
+     Me.LowFloorC      = source.LowFloorC      
+         
+     Me.SemiLowFloorH  = source.SemiLowFloorH 
+     Me.SemiLowFloorV  = source.SemiLowFloorV 
+     Me.SemiLowFloorC  = source.SemiLowFloorC 
+
+     Me.RaisedFloorH   = source.RaisedFloorH  
+     Me.RaisedFloorV   = source.RaisedFloorV  
+     Me.RaisedFloorC   = source.RaisedFloorC  
+
      Me.OnVehicle     = source.OnVehicle    
      Me.ActiveVH      = source.ActiveVH     
      Me.ActiveVV      = source.ActiveVV     
@@ -273,6 +310,15 @@ End Operator
 
 
  End Sub
+
+
+
+        Public Function IsEqualTo(source As ITechListBenefitLine) As boolean Implements ITechListBenefitLine.IsEqualTo
+
+          Return Me=source
+          
+
+        End Function
 
 
 

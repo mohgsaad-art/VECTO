@@ -6,11 +6,11 @@ Namespace UnitTests
 
     <TestFixture()> Public Class HVACSSMMapTests
 #Region "Test Values"
-        const goodMap As String = "TestFiles\HVACSteadyStateModelGOODMAP.ahsm"
-        Const badHeaders As String = "TESTFILES\HVACSteadyStateModelBADHEADERS.ahsm"
-        Const badValues As String = "TestFiles\HVACSteadyStateModelBADVALUES.ahsm"
-        Const insufficientLines As String = "TestFiles\HVACSteadyStateModelInsufficientLines.ahsm"
-        Const badMapFileNotExist As String = "TestFiles\fileNotExist.csv"
+        const goodMap As String            = "TestFiles\testHVACSteadyStateModelGOODMAP.ahsm"
+        Const badHeaders As String         = "TESTFILES\testHVACSteadyStateModelBADHEADERS.ahsm"
+        Const badValues As String          = "TestFiles\testHVACSteadyStateModelBADVALUES.ahsm"
+        Const insufficientLines As String  = "TestFiles\testHVACSteadyStateModelInsufficientLines.ahsm"
+        Const badMapFileNotExist As String = "TestFiles\testfileNotExist.csv"
 
         Private Function GetMap() As  HVACSteadyStateModel
 
