@@ -1,7 +1,7 @@
 ﻿
 Namespace Hvac
 
-  Public Class BusFloorRaisedFloor
+  Public Class BusFloorRaised
    inherits BusFloorBase
   
   

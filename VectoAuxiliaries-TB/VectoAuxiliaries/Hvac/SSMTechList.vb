@@ -1,12 +1,317 @@
-﻿
-Namespace Hvac
+﻿Imports System.IO
 
+Namespace Hvac
 
 
 Public Class SSMTechList
  Implements ISSMTechList
 
- Public BusFloor As BusFloorBase = New BusFloorLow()
+
+  Private filePath As String
+  Private _ssmInputs As ISSMGenInputs
+  Private _dirty As Boolean
+  
+  
+  public property  TechLines As List(Of ITechListBenefitLine)  Implements ISSMTechList.TechLines
+  
+  
+  Public Sub New(filepath As String, genInputs As ISSMGenInputs)
+  
+     Me.TechLines = New List(Of ITechListBenefitLine)
+
+     Me.filePath= Filepath
+  
+     Me._ssmInputs = genInputs
+
+
+  
+  End Sub
+
+  Public Function Initialise() As Boolean Implements ISSMTechList.Initialise
+
+
+
+            Dim returnStatus As Boolean = True
+
+                If File.Exists(filePath) Then
+                Using sr As StreamReader = New StreamReader(filePath)
+                    'get array og lines fron csv
+                    Dim lines() As String = sr.ReadToEnd().Split(CType(Environment.NewLine, Char()), StringSplitOptions.RemoveEmptyEntries)
+
+                    'Must have at least 2 entries in map to make it usable [dont forget the header row]
+                    If (lines.Count() < 2) Then
+                         Return False
+                    End If
+
+                    Dim firstline As Boolean = True
+
+                    For Each line As String In lines
+                        If Not firstline Then
+
+                            'split the line
+                            Dim elements() As String = line.Split(New Char() {","}, StringSplitOptions.RemoveEmptyEntries)
+                            '3 entries per line required
+                            If (elements.Length <> 17) Then
+                                Throw New ArgumentException("Incorrect number of values in csv file")
+                            End If
+                            'add values to map
+
+                            ' 00. Category,
+                            ' 01. BenefitName,
+                            ' 02. Units,
+                            ' 03. LowH,
+                            ' 04. LowV,
+                            ' 05. LowC,
+                            ' 06. SemiLowH,
+                            ' 07. SemiLowV,
+                            ' 08. SemiLowC,
+                            ' 09. RaisedH,
+                            ' 10. RaisedV,
+                            ' 11. RaisedC,
+                            ' 12. OnVehicle,
+                            ' 13. LineType,
+                            ' 14. AvtiveVH,
+                            ' 15. ActiveVV,
+                            ' 16. ActiveVC
+
+
+                            'Bus
+                            Try
+
+                               Dim busFloorLow As New BusFloorLow( elements(3),elements(4), elements(5))
+                               Dim busFloorSemi As New BusFloorSemiLow( elements(6),elements(7),elements(8))
+                               dim busFloorRaised as new BusFloorRaised( elements(9),elements(10), elements(11))
+
+
+                               Dim tbline As New TechListBenefitLine(_ssmInputs,
+                                 elements(2),
+                                 elements(0),
+                                 elements(1),
+                                 busFloorLow,
+                                 busFloorSemi,
+                                 busFloorRaised,
+                                 elements(12),
+                                 elements(13),
+                                 elements(14),
+                                 elements(15),
+                                 elements(16))
+
+                                TechLines.Add(tbline)
+
+                            Catch ex As Exception
+
+                               'Indicate problems
+                               returnStatus = False
+
+                            End Try
+
+
+
+
+
+                        Else
+                            firstline = False
+                        End If
+                    Next line
+                End Using
+
+            Else
+               returnStatus = False
+            End If
+
+           Return returnStatus
+
+
+End Function
+
+   
+  Public ReadOnly Property CValueVariation As Double Implements ISSMTechList.CValueVariation
+            Get
+                 Dim a As double
+
+                 a= TechLines.Where( Function(x) x.Units="fraction").Sum( Function(s) s.C) 
+                 Return a
+                 
+            End Get
+        End Property
+  Public ReadOnly Property CValueVariationKW As Double Implements ISSMTechList.CValueVariationKW
+            Get
+
+                  Dim a As double
+
+                 a= TechLines.Where( Function(x) x.Units="KW").Sum( Function(s) s.C) 
+
+                 Return a
+
+            End Get
+        End Property
+  Public ReadOnly Property HValueVariation As Double Implements ISSMTechList.HValueVariation
+            Get
+
+               Dim a,b As double
+               a =  TechLines.Where( Function(x) x.Units="fraction").Sum( Function(s) s.H) 
+               b =  HValueVariationKW
+               Return a-b
+            End Get
+        End Property
+  Public ReadOnly Property HValueVariationKW As Double Implements ISSMTechList.HValueVariationKW
+            Get
+             Return TechLines.Where( Function(x) x.Units="KW").Sum( Function(s) s.H)
+            End Get
+        End Property
+  Public ReadOnly Property VCValueVariation As Double Implements ISSMTechList.VCValueVariation
+            Get
+                 Return TechLines.Where( Function(x) x.Units="fraction").Sum( Function(s) s.VC) -  VCValueVariationKW
+            End Get
+        End Property
+  Public ReadOnly Property VCValueVariationKW As Double Implements ISSMTechList.VCValueVariationKW
+            Get
+               Return TechLines.Where( Function(x) x.Units="KW").Sum( Function(s) s.VC)
+            End Get
+        End Property
+  Public ReadOnly Property VHValueVariation As Double Implements ISSMTechList.VHValueVariation
+            Get
+               Dim a,b As double
+
+               a=TechLines.Where( Function(x) x.Units="fraction").Sum( Function(s) s.VH)
+               b=VHValueVariationKW
+                Return  a-b
+            End Get
+        End Property
+  Public ReadOnly Property VHValueVariationKW As Double Implements ISSMTechList.VHValueVariationKW
+            Get
+              Return TechLines.Where( Function(x) x.Units="KW").Sum( Function(s) s.VH)
+            End Get
+        End Property
+  Public ReadOnly Property VVValueVariation As Double Implements ISSMTechList.VVValueVariation
+            Get
+               Return TechLines.Where( Function(x) x.Units="fraction").Sum( Function(s) s.VV)
+            End Get
+        End Property
+  Public ReadOnly Property VVValueVariationKW As Double Implements ISSMTechList.VVValueVariationKW
+            Get
+                Return TechLines.Where( Function(x) x.Units="KW").Sum( Function(s) s.VV) - VVValueVariationKW
+            End Get
+        End Property
+
+
+  Public Function Add(item As ITechListBenefitLine, ByRef feedback As String) As Boolean Implements ISSMTechList.Add
+
+           Dim initialCount As Integer = TechLines.Count
+           
+           Try
+
+             TechLines.Add( item )
+
+             If TechLines.Count = initialCount +1 then
+
+              'Success
+              feedback="OK"
+              _dirty=true
+              Return false
+
+              Else
+              
+              'Failure
+             feedback="The system was unable to add the new tech benefit list item."
+              Return false
+
+             End If
+
+           Catch ex As Exception
+
+              feedback="The system threw an exception and was unable to add the new tech benefit list item."
+              Return false
+
+           End Try
+
+
+        End Function
+
+  Public Sub Clear() Implements ISSMTechList.Clear
+           
+           If TechLines.Count>0 then _dirty=true
+
+           TechLines.Clear()
+
+        End Sub
+
+  Public Function Delete(item As ITechListBenefitLine, ByRef feedback As String) As Boolean Implements ISSMTechList.Delete
+
+          Dim currentCount As Integer = TechLines.Count
+
+           If( TechLines.Where( Function(c) c.Category= item.Category AndAlso c.BenefitName= item.BenefitName).Count=1) then
+
+           try
+               TechLines.RemoveAt(  TechLines.FindIndex( Function(c) c.Category= item.Category AndAlso c.BenefitName= item.BenefitName))
+               
+               If TechLines.Count = currentCount-1 then
+                  'This succeeded
+                  _dirty=true
+                  return True              
+               Else
+                  'No Exception, but this failed for some reason.
+                  feedback="The system was unable to remove the item from the list."
+                  Return false
+
+               End If
+
+             Catch ex As Exception
+            
+                 feedback="An exception occured, the removal failed."
+                 Return false
+
+             end try
+
+
+           else
+           
+             feedback="the item was not found in the list."
+             Return false    
+
+           End If
+
+        End Function
+
+  Public Function Modify(item As ITechListBenefitLine, ByRef feedback As String) As Boolean Implements ISSMTechList.Modify
+
+           Dim fi As TechListBenefitLine = TechLines.Find( Function(f) f.Category= item.Category AndAlso item.BenefitName )
+
+           If( Not fi is Nothing ) then
+
+           try
+
+               fi.CloneFrom( item )
+                        
+               If item = fi then
+                  'This succeeded
+                  _dirty=true
+                  return True              
+               Else
+                  'No Exception, but this failed for some reason.
+                  feedback="The system was unable to remove the item from the list."
+                  Return false
+
+               End If
+
+             Catch ex As Exception
+            
+                 feedback="An exception occured, the update failed."
+                 Return false
+
+             end try
+
+
+           else
+           
+             feedback="the item was not found so cannot be modified."
+             Return false    
+
+           End If
+
+
+        End Function
+
 
 
 End Class
@@ -14,7 +319,6 @@ End Class
 
 
 End Namespace
-
 
 
 
