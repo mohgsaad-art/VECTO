@@ -22,17 +22,30 @@ Partial Class Form1
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.gvTechBenefits = New System.Windows.Forms.DataGridView()
+        CType(Me.gvTechBenefits,System.ComponentModel.ISupportInitialize).BeginInit
         Me.SuspendLayout
+        '
+        'gvTechBenefits
+        '
+        Me.gvTechBenefits.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.gvTechBenefits.Location = New System.Drawing.Point(203, 139)
+        Me.gvTechBenefits.Name = "gvTechBenefits"
+        Me.gvTechBenefits.Size = New System.Drawing.Size(355, 137)
+        Me.gvTechBenefits.TabIndex = 0
         '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(284, 262)
+        Me.ClientSize = New System.Drawing.Size(747, 447)
+        Me.Controls.Add(Me.gvTechBenefits)
         Me.Name = "Form1"
         Me.Text = "Form1"
+        CType(Me.gvTechBenefits,System.ComponentModel.ISupportInitialize).EndInit
         Me.ResumeLayout(false)
 
 End Sub
+    Friend WithEvents gvTechBenefits As System.Windows.Forms.DataGridView
 
 End Class

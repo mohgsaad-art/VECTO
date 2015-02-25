@@ -144,10 +144,11 @@
     <Compile Include="Hvac\ISSMGenInputs.vb" />
     <Compile Include="Hvac\ISSMTechList.vb" />
     <Compile Include="Hvac\ISSMTOOL.vb" />
-    <Compile Include="Hvac\ITechSectionLine.vb" />
+    <Compile Include="Hvac\ITechListBenefitLine.vb" />
     <Compile Include="Hvac\SSMGenInputs.vb" />
     <Compile Include="Hvac\SSMTechList.vb" />
     <Compile Include="Hvac\SSMTOOL.vb" />
+    <Compile Include="Hvac\TechListBenefitLine.vb" />
     <Compile Include="IAuxiliaryConfig.vb" />
     <Compile Include="DownstreamModules\M6.vb" />
     <Compile Include="Pneumatics\ActuationsKey.vb" />

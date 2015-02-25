@@ -1,0 +1,33 @@
+Category,BenefitName,Units,LowH,LowV,LowC,SemiLowH,SemiLowV,SemiLowC,RaisedH,RaisedV,RaisedC,OnVehicle,LineType,ActiveVH,ActiveVV,ActiveVC
+Insulation,Foils (g-value reduction),fraction,0.01,0,0.01,0.01,0,0.01,0.01,0,0.01,FALSE,0,FALSE,FALSE,FALSE
+Insulation,Double-glazing (g-value reduction- u-value reduction),fraction,0,0,0,0.02,0,0.012,0.02,0,0.025,FALSE,0,FALSE,FALSE,FALSE
+Insulation,Heat insulation glazing (u-value reduction),fraction,0.005,0,0.01,0.01,0,0.028,0.01,0,0.024,FALSE,0,FALSE,FALSE,FALSE
+Insulation,Roof insulation (u-value reduction),fraction,0.02,0,-0.01,-0.01,0,-0.012,-0.01,0,-0.032,FALSE,0,FALSE,FALSE,FALSE
+Insulation,Wall insulation (u-value reduction),fraction,0.01,0,0.02,0.02,0,0.019,0.02,0,0.05,FALSE,0,FALSE,FALSE,FALSE
+Insulation,Floor insulation (u-value reduction),fraction,0,0,0,0.02,0,0.027,0.02,0,0.012,FALSE,0,FALSE,FALSE,FALSE
+Insulation,Door insulation (u-value reduction),fraction,0.01,0,0.02,0.01,0,0.028,0.01,0,0.021,FALSE,0,FALSE,FALSE,FALSE
+Insulation,Clearance between door frame / door leaf  (different solutions bristles / rubberseals)  (reduced leckage air),fraction,0.01,0,0.02,0.005,0,0.036,0.008,0,0.041,FALSE,0,FALSE,FALSE,FALSE
+Insulation,Insulation of heating and cooling pipes (increase heating efficiency),fraction,0.01,0,0.02,0.01,0,0.024,0.01,0,0.029,FALSE,0,FALSE,FALSE,FALSE
+Insulation,"""Changeable"" glas (g-value)",fraction,0.005,0,0.01,0.01,0,0.025,0.011,0,0.025,FALSE,0,FALSE,FALSE,FALSE
+Insulation,Reflective paintings,fraction,0.005,0,0.005,0.005,0,0.02,0.005,0,0.012,FALSE,0,FALSE,FALSE,FALSE
+Insulation,Insulation of engine compartment,fraction,0,0,0.01,0,0,0.023,0,0,0.02,FALSE,0,FALSE,FALSE,FALSE
+Ventilation,Fan engines (EC- Brush) (efficiency),fraction,0,0.01,0,0,0.03,0,0,0.018,0,FALSE,3,FALSE,FALSE,FALSE
+Ventilation,Fan controll strategy (serial / parallel),fraction,0,0.005,0,0,0.017,0,0,0.02,0,FALSE,3,FALSE,FALSE,FALSE
+Ventilation,Air curtain (reduces air exchange between in-cabin room and environment,fraction,0.01,-0.005,0.01,0,0,0,0,0,0,FALSE,0,FALSE,FALSE,FALSE
+Ventilation,Partial air recirculation,fraction,0.02,0,-0.01,-0.01,0,-0.012,-0.01,0,-0.032,FALSE,0,FALSE,FALSE,FALSE
+Ventilation,Variable fresh air rate (influence on heating / cooling demand),fraction,0,0,0,-0.01,0,-0.012,-0.01,0,-0.032,FALSE,0,FALSE,FALSE,FALSE
+Heating,Engine waste heat recovery (reduces heating demand for auxillary heater) ALREADY IMPLEMENTED,fraction,0.014,0,0,0.024,0,0,0.01,0,0,FALSE,0,FALSE,FALSE,FALSE
+Heating,Heat storage (increase heating efficiency),fraction,0.012,0,0,0.028,0,0,0.005,0,0,FALSE,0,FALSE,FALSE,FALSE
+Heating,Heat pump systems (increase heating efficiency),fraction,0.01,0,0,0.02,0,0,0.005,0,0,FALSE,0,FALSE,FALSE,FALSE
+Heating,Position of heatexchangers in-cabin room (air flow towards walls / windows) [increases heat losses through increased ?T],fraction,0.02,0,0,0.019,0,0,0.03,0,0,FALSE,0,FALSE,FALSE,FALSE
+Heating,Heated surfaces,fraction,-0.01,0,0,-0.012,0,0,-0.032,0,0,FALSE,0,FALSE,FALSE,FALSE
+Heating,Heated seats,fraction,0.01,0,0,0.01,0,0,0.01,0,0,FALSE,0,FALSE,FALSE,FALSE
+Heating,Aux. heater type (heated medium water- air) (efficiency value)(energy source- fuel ptc),fraction,0.02,0,0,0.015,0,0,0.02,0,0,FALSE,0,FALSE,FALSE,FALSE
+Cooling,Adjustable compressorpower (cooling power variable) ALREADY IMPLEMENTED,fraction,0,0,0.01,0,0,0.01,0,0,0.02,FALSE,0,FALSE,FALSE,FALSE
+Cooling,Driver ac-system (mechanical),KW,0,0,-0.2,0,0,-0.3,0,0,-0.4,FALSE,1,FALSE,FALSE,FALSE
+Cooling,Driver ac-system (electrical),KW,0,0,-0.1,0,0,-0.15,0,0,-0.2,FALSE,2,FALSE,FALSE,FALSE
+Cooling,Different sizes of air ducts (pressure loss effects power consumption of the fan engines),fraction,0,-0.01,0,0,-0.012,0,0,-0.032,0,FALSE,3,FALSE,FALSE,FALSE
+Cooling,Low temperature storages / storage vaporizer,fraction,0,0,0.014,0,0,0.012,0,0,0.012,FALSE,0,FALSE,FALSE,FALSE
+Cooling,Speed depending air conditioning,fraction,0,0,0.018,0,0,0.02,0,0,0.021,FALSE,0,FALSE,FALSE,FALSE
+Cooling,Ejector,fraction,0,0,0.023,0,0,0.024,0,0,0.012,FALSE,0,FALSE,FALSE,FALSE
+Cooling,"""Downhill"" savings (determine diff. between effect for mech. & electr. Comp. regarding fuel consumpt.)",fraction,0,0,0.01,0,0,0.028,0,0,0.021,FALSE,0,FALSE,FALSE,FALSE
