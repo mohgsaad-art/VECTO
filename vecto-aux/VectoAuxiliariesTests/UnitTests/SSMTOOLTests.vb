@@ -4,14 +4,19 @@ Imports VectoAuxiliariesTests.Mocks
 Imports VectoAuxiliaries
 Imports VectoAuxiliaries.Hvac
 
-
 Namespace UnitTests
 
-
-<TestFixture()>
-Public Class _SSMTOOLTests
-
-  <Test()> _
+ <TestFixture()>
+ Public Class _SSMTOOLTests
+   
+   'TechBenefitsList - FilePath Constants
+   Private Const GOODTechList As String          = "TestFiles\testSSMTechBenefits.csv"
+   Private Const GOODTechListALLON As String     = "TestFiles\testSSMTechBenefitsALLON.csv"
+   Private Const GOODTechListALLOFF As String    = "TestFiles\testSSMTechBenefitsALLOFF.csv"
+   Private Const GOODTechListEMPTYLIST As String = "TestFiles\testSSMTechBenefitsEMPTYLIST.csv"
+ 
+   'SSMGenInputTests
+   <Test()> _
   <TestCase("BusParameterisation")> _
   <TestCase("BoundaryConditions")> _
   <TestCase("EnvironmentalConditions")> _
@@ -117,13 +122,9 @@ Public Class _SSMTOOLTests
      End If
 
   End Sub
-
-
-Private Const GOODTechList As String = "TestFiles\SSMTechBenefits.csv"
-Private Const GOODTechListALLON As String = "TestFiles\SSMTechBenefitsALLON.csv"
-Private Const GOODTechListALLOFF As String = "TestFiles\SSMTechBenefitsALLOFF.csv"
-
-<Test()>
+   
+   'Basic TechListTests
+   <Test()>
 Public Sub Instantiate_TechListTest()
 
 
@@ -136,9 +137,8 @@ Public Sub Instantiate_TechListTest()
 
 
 
-End Sub
-
-<Test()>
+End Sub 
+   <Test()>
 Public Sub Instantiate_TechListTestALLON()
 
 
@@ -147,7 +147,6 @@ Public Sub Instantiate_TechListTestALLON()
      Dim target As ISSMTechList = New SSMTechList( GOODTechListALLON , gen)
 
        Assert.IsTrue(target.Initialise())
-
        Assert.AreEqual(0.142	  ,Math.Round(target.HValueVariation,3))
        Assert.AreEqual(0.006	  ,Math.Round(target.VHValueVariation,3))
        Assert.AreEqual(0.006	  ,Math.Round(target.VVValueVariation,3))
@@ -165,37 +164,269 @@ Public Sub Instantiate_TechListTestALLON()
 
 
 End Sub
-
-<Test()>
-Public Sub Instantiate_TechListTestALLOFF()
+    
+   'List Management Methods
+   <Test()>
+   Public Sub Instantiate_TechListTestEMPTYList()
 
 
      Dim gen As ISSMGenInputs = New SSMGenInputs(true)
 
-     Dim target As ISSMTechList = New SSMTechList( GOODTechListALLOFF , gen)
+     Dim target As ISSMTechList = New SSMTechList( GOODTechListEMPTYLIST , gen)
 
-       Assert.IsTrue(target.Initialise())
+      Assert.IsTrue(target.Initialise())
 
-       Assert.AreEqual(0	  ,Math.Round(target.HValueVariation,3))
-       Assert.AreEqual(0	  ,Math.Round(target.VHValueVariation,3))
-       Assert.AreEqual(0	  ,Math.Round(target.VVValueVariation,3))
-       Assert.AreEqual(0	  ,Math.Round(target.VCValueVariation,3))
-       Assert.AreEqual(0	  ,Math.Round(target.CValueVariation,3))
-                       
-       Assert.AreEqual(0	  ,Math.Round(target.VHValueVariationKW,3))
-       Assert.AreEqual(0	  ,Math.Round(target.VVValueVariationKW,3))
-       Assert.AreEqual(0	  ,Math.Round(target.VCValueVariationKW,3))
-       Assert.AreEqual(0	  ,Math.Round(target.VCValueVariationKW,3))
-       Assert.AreEqual(0      ,Math.Round(target.CValueVariationKW,3))
+      Assert.IsTrue( target.TechLines.Count=0)
 
 
-End Sub
+  End Sub
+   <Test()>
+  Public Sub Instantiate_TechListTestEMPTYListADD1()
 
 
-End Class
+     Dim gen As ISSMGenInputs = New SSMGenInputs(true)
+
+     Dim target As ISSMTechList = New SSMTechList( GOODTechListEMPTYLIST , gen)
+
+     Dim newItem As ITechListBenefitLine = New TechListBenefitLine( gen)
+   
+     newItem.Units = "fraction"
+     newItem.Category = "Insulation"
+     newItem.BenefitName= "Benefit1"
+
+     newItem.LowFloorH           =0.1
+     newItem.LowFloorV           =0.1
+     newItem.LowFloorC           =0.1
+                                 
+     newItem.SemiLowFloorH       =0.1
+     newItem.SemiLowFloorV       =0.1
+     newItem.SemiLowFloorC       =0.1
+                                 
+     newItem.RaisedFloorH        =0.1
+     newItem.RaisedFloorV        =0.1
+     newItem.RaisedFloorC        =0.1
+
+     newItem.OnVehicle    = true
+     newItem.ActiveVH     = true
+     newItem.ActiveVV     = true
+     newItem.ActiveVC     = true
+     newItem.LineType     = TechLineType.Normal
+
+      Dim feedback As String = String.Empty
+
+      Assert.istrue(target.Add( newItem, feedback))
+
+
+      Assert.IsTrue( target.TechLines.Count=1)
+
+
+  End Sub
+   <Test()>
+   Public Sub Instantiate_TechListTestEMPTYListADD1Duplicate()
+
+
+     Dim gen As ISSMGenInputs = New SSMGenInputs(true)
+
+     Dim target As ISSMTechList = New SSMTechList( GOODTechListEMPTYLIST , gen)
+
+     Dim newItem As ITechListBenefitLine = New TechListBenefitLine( gen)
+   
+     newItem.Units = "fraction"
+     newItem.Category = "Insulation"
+     newItem.BenefitName= "Benefit1"
+
+     newItem.LowFloorH           =0.1
+     newItem.LowFloorV           =0.1
+     newItem.LowFloorC           =0.1
+                                 
+     newItem.SemiLowFloorH       =0.1
+     newItem.SemiLowFloorV       =0.1
+     newItem.SemiLowFloorC       =0.1
+                                 
+     newItem.RaisedFloorH        =0.1
+     newItem.RaisedFloorV        =0.1
+     newItem.RaisedFloorC        =0.1
+
+     newItem.OnVehicle           = true
+     newItem.ActiveVH            = true
+     newItem.ActiveVV            = true
+     newItem.ActiveVC            = true
+     newItem.LineType            = TechLineType.Normal
+
+     Dim feedback As String = String.Empty
+
+     Assert.istrue(target.Add( newItem, feedback))
+     Assert.isFalse(target.Add( newItem, feedback))
+
+     Assert.IsTrue( target.TechLines.Count=1)
+
+
+  End Sub
+   <Test()>
+  Public Sub Instantiate_TechListTestEMPTYListADD1AndClear()
+
+
+     Dim gen As ISSMGenInputs = New SSMGenInputs(true)
+
+     Dim target As ISSMTechList = New SSMTechList( GOODTechListEMPTYLIST , gen)
+
+     Dim newItem As ITechListBenefitLine = New TechListBenefitLine( gen)
+   
+     newItem.Units = "fraction"
+     newItem.Category = "Insulation"
+     newItem.BenefitName= "Benefit1"
+
+     newItem.LowFloorH           =0.1
+     newItem.LowFloorV           =0.1
+     newItem.LowFloorC           =0.1
+                                 
+     newItem.SemiLowFloorH       =0.1
+     newItem.SemiLowFloorV       =0.1
+     newItem.SemiLowFloorC       =0.1
+                                 
+     newItem.RaisedFloorH        =0.1
+     newItem.RaisedFloorV        =0.1
+     newItem.RaisedFloorC        =0.1
+
+     newItem.OnVehicle           = true
+     newItem.ActiveVH            = true
+     newItem.ActiveVV            = true
+     newItem.ActiveVC            = true
+     newItem.LineType            = TechLineType.Normal
+
+     Dim feedback As String = String.Empty
+
+     Assert.IsTrue(target.Add(newItem, feedback))
+     Assert.IsTrue( target.TechLines.Count=1)
+     target.Clear()
+     Assert.IsTrue( target.TechLines.Count=0)
+
+
+  End Sub
+   <Test()>
+  Public Sub Instantiate_TechListTestEMPTYListADD1AndModify()
+
+
+     Dim gen As ISSMGenInputs = New SSMGenInputs(true)
+
+     Dim target As ISSMTechList = New SSMTechList( GOODTechListEMPTYLIST , gen)
+
+     Dim newItem As ITechListBenefitLine = New TechListBenefitLine( gen)
+   
+     newItem.Units = "fraction"
+     newItem.Category = "Insulation"
+     newItem.BenefitName= "Benefit1"
+
+     newItem.LowFloorH           =0.1
+     newItem.LowFloorV           =0.1
+     newItem.LowFloorC           =0.1
+                                 
+     newItem.SemiLowFloorH       =0.1
+     newItem.SemiLowFloorV       =0.1
+     newItem.SemiLowFloorC       =0.1
+                                 
+     newItem.RaisedFloorH        =0.1
+     newItem.RaisedFloorV        =0.1
+     newItem.RaisedFloorC        =0.1
+
+     newItem.OnVehicle           = true
+     newItem.ActiveVH            = true
+     newItem.ActiveVV            = true
+     newItem.ActiveVC            = true
+     newItem.LineType            = TechLineType.Normal
+
+     Dim feedback As String = String.Empty
+
+     'Add
+     Assert.IsTrue(target.Add(newItem, feedback))
+
+     'Modify
+     newItem.LowFloorC=.99
+     Assert.IsTrue( target.TechLines(0).IsEqualTo(newItem))
 
 
 
+  End Sub
+   <Test()>
+  Public Sub Instantiate_TechListTestEMPTYListADD1andDeleteIt()
+
+
+     Dim gen As ISSMGenInputs = New SSMGenInputs(true)
+
+     Dim target As ISSMTechList = New SSMTechList( GOODTechListEMPTYLIST , gen)
+
+     Dim newItem As ITechListBenefitLine = New TechListBenefitLine( gen)
+   
+     newItem.Units = "fraction"
+     newItem.Category = "Insulation"
+     newItem.BenefitName= "Benefit1"
+
+     newItem.LowFloorH           =0.1
+     newItem.LowFloorV           =0.1
+     newItem.LowFloorC           =0.1
+                                 
+     newItem.SemiLowFloorH       =0.1
+     newItem.SemiLowFloorV       =0.1
+     newItem.SemiLowFloorC       =0.1
+                                 
+     newItem.RaisedFloorH        =0.1
+     newItem.RaisedFloorV        =0.1
+     newItem.RaisedFloorC        =0.1
+
+     newItem.OnVehicle    = true
+     newItem.ActiveVH     = true
+     newItem.ActiveVV     = true
+     newItem.ActiveVC     = true
+     newItem.LineType     = TechLineType.Normal
+
+     Dim feedback As String = String.Empty
+
+     Assert.IsTrue( target.Add( newItem , feedback))
+     Assert.IsTrue( target.TechLines.Count=1)
+     Assert.IsTrue( target.Delete( newItem,feedback))
+     Assert.IsTrue( target.TechLines.Count=0)
+
+
+  End Sub
+   <Test()>
+  Public Sub Instantiate_TechListTestEMPTYListandDeleteNonExistantItem()
+
+
+     Dim gen As ISSMGenInputs = New SSMGenInputs(true)
+
+     Dim target As ISSMTechList = New SSMTechList( GOODTechListEMPTYLIST , gen)
+
+     Dim newItem As ITechListBenefitLine = New TechListBenefitLine( gen)
+   
+     newItem.Units = "fraction"
+     newItem.Category = "Insulation"
+     newItem.BenefitName= "Benefit1"
+
+     newItem.LowFloorH           =0.1
+     newItem.LowFloorV           =0.1
+     newItem.LowFloorC           =0.1
+                                 
+     newItem.SemiLowFloorH       =0.1
+     newItem.SemiLowFloorV       =0.1
+     newItem.SemiLowFloorC       =0.1
+                                 
+     newItem.RaisedFloorH        =0.1
+     newItem.RaisedFloorV        =0.1
+     newItem.RaisedFloorC        =0.1
+
+     newItem.OnVehicle    = true
+     newItem.ActiveVH     = true
+     newItem.ActiveVV     = true
+     newItem.ActiveVC     = true
+     newItem.LineType     = TechLineType.Normal
+
+      Dim feedback As String = String.Empty
+
+      Assert.IsFalse( target.Delete( newItem,feedback))
+
+  End Sub
+ 
+ End Class
 
 End Namespace
 

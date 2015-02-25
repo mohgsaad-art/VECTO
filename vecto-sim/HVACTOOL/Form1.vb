@@ -37,15 +37,15 @@ Public Sub SetUpControls()
      cIndex = gvTechBenefits.Columns.Add("BenefitName", "BenefitName")
      gvTechBenefits.Columns(cIndex).DataPropertyName = "BenefitName"
      gvTechBenefits.Columns(cIndex).MinimumWidth = 150
-     gvTechBenefits.Columns(cIndex).ReadOnly = True
+     gvTechBenefits.Columns(cIndex).ReadOnly = false
      gvTechBenefits.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
      gvTechBenefits.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
 
      cIndex = gvTechBenefits.Columns.Add("LowFloorV" ,"LowFloorV")
 
-     gvTechBenefits.Columns(cIndex).DataPropertyName = "LowFloor.V"
+     gvTechBenefits.Columns(cIndex).DataPropertyName = "LowFloorV"
      gvTechBenefits.Columns(cIndex).MinimumWidth = 70
-     gvTechBenefits.Columns(cIndex).ReadOnly = True
+     gvTechBenefits.Columns(cIndex).ReadOnly = false
      gvTechBenefits.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
      gvTechBenefits.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
 

@@ -226,16 +226,7 @@
     <Content Include="TestFiles\testHvacMapWrongColumns.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\CombinedAlternatorEfficiencyMap.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestFiles\CombinedAlternatorPowerMap.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="TestFiles\testFuelGoodMap.vmap">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestFiles\auxiliaryConfigKEEP.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestFiles\TestHvacMap - ExtraBlankLines.csv">
@@ -244,46 +235,49 @@
     <Content Include="TestFiles\TestHvacMap - MissingHeader.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\HVACSteadyStateModelGOODMAP.ahsm">
+    <Content Include="TestFiles\testHVACSteadyStateModelGOODMAP.ahsm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\HVACSteadyStateModelBadHeaders.ahsm">
+    <Content Include="TestFiles\testHVACSteadyStateModelBadHeaders.ahsm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\HVACSteadyStateModelBadValues.ahsm">
+    <Content Include="TestFiles\testHVACSteadyStateModelBadValues.ahsm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\HVACSteadyStateModelInsufficientLines.ahsm">
+    <Content Include="TestFiles\testHVACSteadyStateModelInsufficientLines.ahsm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\BusDatabase.csv">
+    <Content Include="TestFiles\testBusDatabase.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\BusDatabase InsufficientRows.csv">
+    <Content Include="TestFiles\testBusDatabase InsufficientRows.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\BusDatabaseInvalidLength.csv">
+    <Content Include="TestFiles\testBusDatabaseInvalidLength.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\BusDatabaseInvalidWidth.csv">
+    <Content Include="TestFiles\testBusDatabaseInvalidWidth.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\BusDatabaseInvalidHeight.csv">
+    <Content Include="TestFiles\testBusDatabaseInvalidHeight.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\BusDatabaseInvalidPassengers.csv">
+    <Content Include="TestFiles\testBusDatabaseInvalidPassengers.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\BusDatabaseDuplicates.csv">
+    <Content Include="TestFiles\testBusDatabaseDuplicates.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\SSMTechBenefits.csv">
+    <Content Include="TestFiles\testSSMTechBenefits.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\SSMTechBenefitsALLON.csv">
+    <Content Include="TestFiles\testSSMTechBenefitsALLON.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\SSMTechBenefitsALLOFF.csv">
+    <Content Include="TestFiles\testSSMTechBenefitsALLOFF.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\testSSMTechBenefitsEmptyList.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="TestFiles\testAlternatorMapAsymetricalXYPairsCombined.aalt">
@@ -301,9 +295,6 @@
     <None Include="TestFiles\testAlternatorMap.aalt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Content Include="TestFiles\cstrPneumaticActuationsMapPath_INCORRECTCOLUMNS.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="TestFiles\testPneumaticActuationsMap_DUPLICATEKEY.apac">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -314,9 +305,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestFiles\testPneumaticActuationsMap_GOODMAP - Copy.apac">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestFiles\testCompressorMap - Copy.acmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

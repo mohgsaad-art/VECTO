@@ -128,10 +128,6 @@
     <Compile Include="Hvac\Bus.vb" />
     <Compile Include="Hvac\BusDatabase.vb" />
     <Compile Include="Hvac\BusEngineType.vb" />
-    <Compile Include="Hvac\BusFloorBase.vb" />
-    <Compile Include="Hvac\BusFloorLow.vb" />
-    <Compile Include="Hvac\BusFloorRaisedFloor.vb" />
-    <Compile Include="Hvac\BusFloorSemiLow.vb" />
     <Compile Include="Hvac\HVACConstants.vb" />
     <Compile Include="Electrics\IElectricalConsumerList.vb" />
     <Compile Include="Hvac\HVACSteadyStateModel.vb" />
