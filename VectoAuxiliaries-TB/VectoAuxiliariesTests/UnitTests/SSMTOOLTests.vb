@@ -119,7 +119,77 @@ Public Class _SSMTOOLTests
   End Sub
 
 
+Private Const GOODTechList As String = "TestFiles\SSMTechBenefits.csv"
+Private Const GOODTechListALLON As String = "TestFiles\SSMTechBenefitsALLON.csv"
+Private Const GOODTechListALLOFF As String = "TestFiles\SSMTechBenefitsALLOFF.csv"
 
+<Test()>
+Public Sub Instantiate_TechListTest()
+
+
+     Dim gen As ISSMGenInputs = New SSMGenInputs(true)
+
+     Dim target As ISSMTechList = New SSMTechList( GOODTechList , gen)
+
+     
+     Assert.IsTrue( target.Initialise())
+
+
+
+End Sub
+
+<Test()>
+Public Sub Instantiate_TechListTestALLON()
+
+
+     Dim gen As ISSMGenInputs = New SSMGenInputs(true)
+
+     Dim target As ISSMTechList = New SSMTechList( GOODTechListALLON , gen)
+
+       Assert.IsTrue(target.Initialise())
+
+       Assert.AreEqual(0.142	  ,Math.Round(target.HValueVariation,3))
+       Assert.AreEqual(0.006	  ,Math.Round(target.VHValueVariation,3))
+       Assert.AreEqual(0.006	  ,Math.Round(target.VVValueVariation,3))
+       Assert.AreEqual(0.006	  ,Math.Round(target.VCValueVariation,3))
+       Assert.AreEqual(0.259	  ,Math.Round(target.CValueVariation,3))
+
+       Assert.AreEqual(0.000	  ,Math.Round(target.VHValueVariationKW,3))
+       Assert.AreEqual(0.000	  ,Math.Round(target.VVValueVariationKW,3))
+       Assert.AreEqual(0.000	  ,Math.Round(target.VCValueVariationKW,3))
+       Assert.AreEqual(0.000	  ,Math.Round(target.VCValueVariationKW,3))
+       Assert.AreEqual(-0.200     ,Math.Round(target.CValueVariationKW,3))
+
+
+
+
+
+End Sub
+
+<Test()>
+Public Sub Instantiate_TechListTestALLOFF()
+
+
+     Dim gen As ISSMGenInputs = New SSMGenInputs(true)
+
+     Dim target As ISSMTechList = New SSMTechList( GOODTechListALLOFF , gen)
+
+       Assert.IsTrue(target.Initialise())
+
+       Assert.AreEqual(0	  ,Math.Round(target.HValueVariation,3))
+       Assert.AreEqual(0	  ,Math.Round(target.VHValueVariation,3))
+       Assert.AreEqual(0	  ,Math.Round(target.VVValueVariation,3))
+       Assert.AreEqual(0	  ,Math.Round(target.VCValueVariation,3))
+       Assert.AreEqual(0	  ,Math.Round(target.CValueVariation,3))
+                       
+       Assert.AreEqual(0	  ,Math.Round(target.VHValueVariationKW,3))
+       Assert.AreEqual(0	  ,Math.Round(target.VVValueVariationKW,3))
+       Assert.AreEqual(0	  ,Math.Round(target.VCValueVariationKW,3))
+       Assert.AreEqual(0	  ,Math.Round(target.VCValueVariationKW,3))
+       Assert.AreEqual(0      ,Math.Round(target.CValueVariationKW,3))
+
+
+End Sub
 
 
 End Class

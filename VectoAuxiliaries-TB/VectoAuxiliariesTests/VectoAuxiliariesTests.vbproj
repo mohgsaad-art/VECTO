@@ -277,6 +277,15 @@
     <Content Include="TestFiles\BusDatabaseDuplicates.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="TestFiles\SSMTechBenefits.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\SSMTechBenefitsALLON.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\SSMTechBenefitsALLOFF.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="TestFiles\testAlternatorMapAsymetricalXYPairsCombined.aalt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
