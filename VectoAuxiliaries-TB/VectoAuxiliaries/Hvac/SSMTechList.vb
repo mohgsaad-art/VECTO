@@ -27,6 +27,8 @@ Public Class SSMTechList
   
   End Sub
 
+
+
   Public Function Initialise() As Boolean Implements ISSMTechList.Initialise
 
 
@@ -39,7 +41,7 @@ Public Class SSMTechList
                     Dim lines() As String = sr.ReadToEnd().Split(CType(Environment.NewLine, Char()), StringSplitOptions.RemoveEmptyEntries)
 
                     'Must have at least 2 entries in map to make it usable [dont forget the header row]
-                    If (lines.Count() < 2) Then
+                    If (lines.Count() < 1) Then
                          Return False
                     End If
 
@@ -78,18 +80,21 @@ Public Class SSMTechList
                             'Bus
                             Try
 
-                               Dim busFloorLow As New BusFloorLow( elements(3),elements(4), elements(5))
-                               Dim busFloorSemi As New BusFloorSemiLow( elements(6),elements(7),elements(8))
-                               dim busFloorRaised as new BusFloorRaised( elements(9),elements(10), elements(11))
 
 
                                Dim tbline As New TechListBenefitLine(_ssmInputs,
                                  elements(2),
                                  elements(0),
                                  elements(1),
-                                 busFloorLow,
-                                 busFloorSemi,
-                                 busFloorRaised,
+                                 elements(3),
+                                 elements(4), 
+                                 elements(5),
+                                 elements(6),
+                                 elements(7),
+                                 elements(8),
+                                 elements(9),
+                                 elements(10), 
+                                 elements(11),
                                  elements(12),
                                  elements(13),
                                  elements(14),
@@ -198,19 +203,26 @@ End Function
   Public Function Add(item As ITechListBenefitLine, ByRef feedback As String) As Boolean Implements ISSMTechList.Add
 
            Dim initialCount As Integer = TechLines.Count
+
+           If TechLines.Where( Function(w) w.Category=item.Category AndAlso w.BenefitName= item.BenefitName).count()>0 then
+              'Failure
+              feedback="Item already exists."
+              Return false
+           End If
+
            
            Try
 
              TechLines.Add( item )
 
-             If TechLines.Count = initialCount +1 then
+             If TechLines.Count = initialCount + 1 then
 
               'Success
               feedback="OK"
               _dirty=true
-              Return false
+              Return true
 
-              Else
+            Else
               
               'Failure
              feedback="The system was unable to add the new tech benefit list item."
@@ -234,7 +246,9 @@ End Function
 
            TechLines.Clear()
 
-        End Sub
+
+
+   End Sub
 
   Public Function Delete(item As ITechListBenefitLine, ByRef feedback As String) As Boolean Implements ISSMTechList.Delete
 

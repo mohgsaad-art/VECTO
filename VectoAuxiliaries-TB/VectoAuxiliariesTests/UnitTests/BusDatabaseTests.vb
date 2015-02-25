@@ -11,13 +11,13 @@ Namespace UnitTests
 Public Class BusDatabaseTests
 
 
-Private Const GOODMAP              = "TestFiles\BusDatabase.csv"
-Private Const DUPLICATES           = "TestFiles\BusDatabaseDuplicates.csv"
-Private Const INSUFFICIENTROWSMAP  = "TestFiles\BusDatabaseInsufficientRows.csv"
-Private Const INVALIDLENGTHMAP     = "TestFiles\BusDatabaseInvalidLenght.csv"
-Private Const INVALIDWIDTHMAP      = "TestFiles\BusDatabaseInvalidWidth.csv"
-Private Const INVALIDHEIGHTMAP     = "TestFiles\BusDatabaseInvalidHeight.csv"
-Private Const INVALIDPASSEMGERSMAP = "TestFiles\BusDatabaseInvalidPassengers.csv"
+Private Const GOODMAP              = "TestFiles\testBusDatabase.csv"
+Private Const DUPLICATES           = "TestFiles\testBusDatabaseDuplicates.csv"
+Private Const INSUFFICIENTROWSMAP  = "TestFiles\testBusDatabaseInsufficientRows.csv"
+Private Const INVALIDLENGTHMAP     = "TestFiles\testBusDatabaseInvalidLenght.csv"
+Private Const INVALIDWIDTHMAP      = "TestFiles\testBusDatabaseInvalidWidth.csv"
+Private Const INVALIDHEIGHTMAP     = "TestFiles\testBusDatabaseInvalidHeight.csv"
+Private Const INVALIDPASSEMGERSMAP = "TestFiles\testBusDatabaseInvalidPassengers.csv"
 
 
 <Test()>
