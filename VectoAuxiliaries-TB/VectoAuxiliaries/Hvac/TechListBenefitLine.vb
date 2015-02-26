@@ -232,15 +232,17 @@ End Sub
              op1.ActiveVC        = op2.ActiveVC        AndAlso _
              op1.ActiveVH        = op2.ActiveVH        AndAlso _
              op1.ActiveVV        = op2.ActiveVV        AndAlso _
-             op1.H               = op2.H               AndAlso _
              op1.LineType        = op2.LineType        AndAlso _
+             op1.LowFloorC       = op2.LowFloorC       AndAlso _
              op1.LowFloorV       = op2.LowFloorV       AndAlso _
+             op1.LowFloorH       = op2.LowFloorH       AndAlso _
              op1.SemiLowFloorC   = op2.SemiLowFloorC   AndAlso _
              op1.SemiLowFloorH   = op2.SemiLowFloorH   AndAlso _
              op1.SemiLowFloorV   = op2.SemiLowFloorV   AndAlso _
              op1.RaisedFloorC    = op2.RaisedFloorC    AndAlso _
              op1.RaisedFloorH    = op2.RaisedFloorH    AndAlso _
              op1.RaisedFloorV    = op2.RaisedFloorV    AndAlso _
+             op1.OnVehicle       = op2.OnVehicle       AndAlso _
              op1.Units           = op2.Units ) then
 
           Return True
@@ -253,23 +255,24 @@ End Sub
 
 
 End Operator
-
  Public Shared Operator <> (ByVal op1 as TechListBenefitLine, ByVal op2 as TechListBenefitLine) As Boolean
 
         If ( op1.Category        <> op2.Category        OrElse _
              op1.BenefitName     <> op2.BenefitName     OrElse _
              op1.ActiveVC        <> op2.ActiveVC        OrElse _
              op1.ActiveVH        <> op2.ActiveVH        OrElse _
-             op1.ActiveVV        <> op2.ActiveVV        OrElse _
-             op1.H               <> op2.H               OrElse _
+             op1.ActiveVV        <> op2.ActiveVV        OrElse _           
              op1.LineType        <> op2.LineType        OrElse _
+             op1.LowFloorC       <> op2.LowFloorC       OrElse _
              op1.LowFloorV       <> op2.LowFloorV       OrElse _
+             op1.LowFloorH       <> op2.LowFloorH       OrElse _
              op1.SemiLowFloorC   <> op2.SemiLowFloorC   OrElse _
              op1.SemiLowFloorH   <> op2.SemiLowFloorH   OrElse _
              op1.SemiLowFloorV   <> op2.SemiLowFloorV   OrElse _
              op1.RaisedFloorC    <> op2.RaisedFloorC    OrElse _
              op1.RaisedFloorH    <> op2.RaisedFloorH    OrElse _
              op1.RaisedFloorV    <> op2.RaisedFloorV    OrElse _
+             op1.OnVehicle       <> op2.OnVehicle       OrElse _
              op1.Units           <> op2.Units ) then
 
           Return True
@@ -283,13 +286,13 @@ End Operator
 
 End Operator
 
-
+ 
  Public Sub CloneFrom(source As ITechListBenefitLine) Implements ITechListBenefitLine.CloneFrom
 
 
-     Me.Units         = source.Units        
-     Me.Category      = source.Category     
-     Me.BenefitName   = source.BenefitName  
+     Me.Units          = source.Units        
+     Me.Category       = source.Category     
+     Me.BenefitName    = source.BenefitName  
      Me.LowFloorH      = source.LowFloorH 
      Me.LowFloorV      = source.LowFloorV
      Me.LowFloorC      = source.LowFloorC      
@@ -302,23 +305,20 @@ End Operator
      Me.RaisedFloorV   = source.RaisedFloorV  
      Me.RaisedFloorC   = source.RaisedFloorC  
 
-     Me.OnVehicle     = source.OnVehicle    
-     Me.ActiveVH      = source.ActiveVH     
-     Me.ActiveVV      = source.ActiveVV     
-     Me.ActiveVC      = source.ActiveVC     
-     Me.LineType      = source.LineType     
+     Me.OnVehicle      = source.OnVehicle    
+     Me.ActiveVH       = source.ActiveVH     
+     Me.ActiveVV       = source.ActiveVV     
+     Me.ActiveVC       = source.ActiveVC     
+     Me.LineType       = source.LineType     
 
 
  End Sub
+ Public Function IsEqualTo(source As ITechListBenefitLine) As boolean Implements ITechListBenefitLine.IsEqualTo
 
+      Return If(Me=source,True,False)
+      
 
-
-        Public Function IsEqualTo(source As ITechListBenefitLine) As boolean Implements ITechListBenefitLine.IsEqualTo
-
-          Return Me=source
-          
-
-        End Function
+    End Function
 
 
 

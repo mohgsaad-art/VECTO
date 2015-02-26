@@ -10,8 +10,12 @@ ReadOnly Property MechanicalWBaseAdjusted As Single
 ReadOnly Property FuelLPerHBaseAdjusted   As Single
 
 
+Sub Clone( from As ISSMTOOL )
 
 
+Function Load(filePath As String)  As Boolean
+
+Function Save(filePath As String) As Boolean  
 
 
 
