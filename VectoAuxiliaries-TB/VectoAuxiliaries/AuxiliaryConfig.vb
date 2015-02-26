@@ -298,10 +298,11 @@ Public Function Load(  auxFile As String  ) As Boolean  Implements IAuxiliaryCon
       
      Dim output As String  = File.ReadAllText(auxFile)
    
+
      tmpAux =  JsonConvert.DeserializeObject( Of AuxiliaryConfig)(output,settings)
    
      'This is where we Assume values of loaded( Deserialized ) object.
-     AssumeValuesOfOther( tmpAux ) 
+      AssumeValuesOfOther( tmpAux ) 
    
     Catch ex as Exception
     
