@@ -426,6 +426,132 @@ End Sub
 
   End Sub
  
+   'TechListLineTests
+   <Test()>
+   Public Sub Instantiate_NewTechListLine()
+
+    Dim gen As ISSMGenInputs = New SSMGenInputs(true)
+
+    Dim ttl As ITechListBenefitLine = New TechListBenefitLine( gen)
+
+    Assert.IsNotNull( ttl )
+
+
+   End Sub
+   <Test()>
+   Public Sub TechBenefitLineCompareAsEqual()
+
+    Dim gen As ISSMGenInputs = New SSMGenInputs(true)
+
+    Dim ttl1 As ITechListBenefitLine = New TechListBenefitLine( gen)
+    Dim ttl2 As ITechListBenefitLine = New TechListBenefitLine( gen)
+
+    Assert.IsTrue( ttl1.IsEqualTo(ttl2) )
+
+
+   End Sub
+   <Test()> _
+    <TestCase("Category"         )> _
+    <TestCase("BenefitName"      )> _
+    <TestCase("ActiveVC"         )> _
+    <TestCase("ActiveVH"         )> _
+    <TestCase("ActiveVV"         )> _
+    <TestCase("LineType"         )> _
+    <TestCase("LowFloorC"        )> _
+    <TestCase("LowFloorV"        )> _
+    <TestCase("LowFloorH"        )> _
+    <TestCase("SemiLowFloorC"    )> _
+    <TestCase("SemiLowFloorH"    )> _
+    <TestCase("SemiLowFloorV"    )> _
+    <TestCase("RaisedFloorC"     )> _
+    <TestCase("RaisedFloorH"     )> _
+    <TestCase("RaisedFloorV"     )> _
+    <TestCase("Units"            )> _
+    <TestCase("OnVehicle"        )> _
+   Public Sub TechBenefitLineCompareAsUnequal( prop As string)
+
+    Dim gen As ISSMGenInputs = New SSMGenInputs(true)
+
+    Dim ttl1 As ITechListBenefitLine = New TechListBenefitLine( gen)
+    Dim ttl2 As ITechListBenefitLine = New TechListBenefitLine( gen)
+
+    Select Case prop
+
+
+           Case "Category"     
+                ttl2.Category="NOT"
+           Case "BenefitName"  
+                ttl2.BenefitName="NOT"
+           Case "ActiveVC"    
+                ttl2.ActiveVC=True
+           Case "ActiveVH"    
+                ttl2.ActiveVH=True
+           Case "ActiveVV"    
+                ttl2.ActiveVV=True
+           Case "LineType"    
+                ttl2.LineType = TechLineType.HVCActiveSelection
+           Case "LowFloorC"   
+                ttl2.LowFloorC=1
+           Case "LowFloorV"  
+                ttl2.LowFloorV=1
+           Case "LowFloorH"   
+                ttl2.LowFloorH=1
+           Case "SemiLowFloorC" 
+                ttl2.SemiLowFloorC=1
+           Case "SemiLowFloorH" 
+                ttl2.SemiLowFloorH=1
+           Case "SemiLowFloorV" 
+                ttl2.SemiLowFloorH=1
+           Case "RaisedFloorC" 
+                 ttl2.RaisedFloorC=1
+           Case "RaisedFloorH"  
+                 ttl2.RaisedFloorH=1
+           Case "RaisedFloorV" 
+                 ttl2.RaisedFloorV=1
+           Case "Units"
+                 ttl2.Units ="NONE"
+           Case "OnVehicle"
+                 ttl2.OnVehicle =True
+
+    End Select
+
+ 
+    Assert.IsFalse(ttl1.IsEqualTo(ttl2) )
+
+
+   End Sub
+
+
+  'SSMTOOL Persistance
+  <Test()>
+  Public Sub SaveAndRetreiveTest()
+
+         const  filePath as string  = "SSMTOOLTestSaveRetreive.json"
+
+         Dim gen As ISSMGenInputs = New SSMGenInputs(true)
+
+         Dim saved As new SSMTOOL
+ 
+
+
+         Dim target As SSMTOOL = New SSMTOOL(filePath )
+
+         target.Save(filePath)
+
+         'change something
+         target.genInputs.BP_BusLength=202.202
+
+         Assert.AreEqual(  target.genInputs.BP_BusLength,202.202)
+
+         'Retreive
+         target.Load( filePath )
+        
+         Assert.AreEqual(  target.genInputs.BP_BusLength,10.655)         
+
+
+  End Sub
+
+
  End Class
 
 End Namespace
