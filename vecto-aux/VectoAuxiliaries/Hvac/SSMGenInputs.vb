@@ -3,11 +3,14 @@ Namespace Hvac
 
   Public Class SSMGenInputs
   Implements ISSMGenInputs
+
   
   
       'BUS Parameterisation
     '********************
-    'D5/C5
+     'C4/D4
+     Public Property BP_BusModel As String Implements ISSMGenInputs.BP_BusModel
+     'D5/C5
       Public Property BP_NumberOfPassengers As Double Implements ISSMGenInputs.BP_NumberOfPassengers
       'D6/C6
       Public Property BP_BusFloorType As String Implements ISSMGenInputs.BP_BusFloorType
@@ -206,6 +209,7 @@ Namespace Hvac
 
     'BUS Parameterisation
     '********************
+     BP_BusModel = "DummyBus"
      BP_NumberOfPassengers =47R
      BP_BusFloorType ="raised floor"
     'BP_BusFloorSurfaceArea  : Calculated
@@ -279,6 +283,7 @@ Namespace Hvac
     End Sub
   
   
+     
   End Class
 
 End Namespace

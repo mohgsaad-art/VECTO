@@ -15,6 +15,42 @@ Namespace UnitTests
    Private Const GOODTechListALLOFF As String    = "TestFiles\testSSMTechBenefitsALLOFF.csv"
    Private Const GOODTechListEMPTYLIST As String = "TestFiles\testSSMTechBenefitsEMPTYLIST.csv"
  
+   'Helpers
+   Private Function AddDefaultTechLine( source As ISSMTOOL ) As ITechListBenefitLine
+
+     
+      Dim src As SSMTOOL = DirectCast( source, SSMTOOL)
+     
+      Dim newItem As ITechListBenefitLine = New TechListBenefitLine( src.genInputs)
+   
+     newItem.Units = "fraction"
+     newItem.Category = "Insulation"
+     newItem.BenefitName= "Benefit1"
+
+     newItem.LowFloorH           =0.1
+     newItem.LowFloorV           =0.1
+     newItem.LowFloorC           =0.1
+                                 
+     newItem.SemiLowFloorH       =0.1
+     newItem.SemiLowFloorV       =0.1
+     newItem.SemiLowFloorC       =0.1
+                                 
+     newItem.RaisedFloorH        =0.1
+     newItem.RaisedFloorV        =0.1
+     newItem.RaisedFloorC        =0.1
+
+     newItem.OnVehicle    = true
+     newItem.ActiveVH     = true
+     newItem.ActiveVV     = true
+     newItem.ActiveVC     = true
+     newItem.LineType     = TechLineType.Normal
+
+      Dim feedback As String = String.Empty
+
+      Assert.istrue(src.techList.Add( newItem, feedback))
+
+  End Function
+
    'SSMGenInputTests
    <Test()> _
   <TestCase("BusParameterisation")> _
@@ -521,9 +557,8 @@ End Sub
 
    End Sub
 
-
   'SSMTOOL Persistance
-  <Test()>
+   <Test()>
   Public Sub SaveAndRetreiveTest()
 
          const  filePath as string  = "SSMTOOLTestSaveRetreive.json"
@@ -550,8 +585,126 @@ End Sub
 
 
   End Sub
+   
+   'GenInputs Comparison
+   <Test()>
+  Public Sub SSMTOOL_COMPARISON_GENINPUTS_EQUAL()
+
+         const  filePath as string  = "SSMTOOLTestSaveRetreive.json"
 
 
+         Dim ssmTool1 As SSMTOOL = New SSMTOOL(filePath )
+         Dim ssmTool2 As SSMTOOL = New SSMTOOL(filePath )  
+
+
+         Assert.IsTrue ( ssmTool1.IsEqualTo( ssmTool2))
+
+
+  End Sub
+   <Test()>
+  Public Sub SSMTOOL_COMPARISON_GENINPUTS_UNEQUAL()
+
+         const  filePath as string  = "SSMTOOLTestSaveRetreive.json"
+
+
+         Dim ssmTool1 As SSMTOOL = New SSMTOOL(filePath )
+
+         'Alter somthing
+         ssmTool1.genInputs.BP_BusLength=11
+
+         Dim ssmTool2 As SSMTOOL = New SSMTOOL(filePath )  
+
+
+         Assert.IsFalse ( ssmTool1.IsEqualTo( ssmTool2))
+
+
+  End Sub
+     
+   'TechListBenefitLine Comparison
+   <Test()>
+   Public Sub SSMTOOL_COMPARISON_TECHLIST_EQUAL()
+
+         const  filePath as string  = "SSMTOOLTestSaveRetreive.json"
+
+
+         Dim ssmTool1 As SSMTOOL = New SSMTOOL(filePath )
+         Dim ssmTool2 As SSMTOOL = New SSMTOOL(filePath )  
+
+
+         Assert.IsTrue ( ssmTool1.IsEqualTo( ssmTool2))
+
+
+   End Sub
+   <Test()>
+   Public Sub SSMTOOL_COMPARISON_TECHLIST_EMPTYLISTS_UNEQUALCOUNT()
+
+         const  filePath as string  = "SSMTOOLTestSaveRetreive.json"
+
+
+         Dim ssmTool1 As SSMTOOL = New SSMTOOL(filePath )
+         Dim ssmTool2 As SSMTOOL = New SSMTOOL(filePath )  
+
+         'Change something on techlist
+         AddDefaultTechLine( ssmTool1)
+
+         Assert.IsFalse ( ssmTool1.IsEqualTo( ssmTool2))
+
+   End Sub
+   <Test()>
+   Public Sub SSMTOOL_COMPARISON_TECHLIST_IDENTICAL_EQUAL()
+
+         const  filePath as string  = "SSMTOOLTestSaveRetreive.json"
+
+
+         Dim ssmTool1 As SSMTOOL = New SSMTOOL(filePath )
+         Dim ssmTool2 As SSMTOOL = New SSMTOOL(filePath )  
+
+         'Change something on techlist
+         AddDefaultTechLine( ssmTool1)
+         AddDefaultTechLine( ssmTool2)
+
+         Assert.IsTrue ( ssmTool1.IsEqualTo( ssmTool2))
+
+   End Sub
+   <Test()>
+   Public Sub SSMTOOL_COMPARISON_TECHLIST_IDENTICAL_SINGLEKeyValueDifference()
+
+         const  filePath as string  = "SSMTOOLTestSaveRetreive.json"
+
+
+         Dim ssmTool1 As SSMTOOL = New SSMTOOL(filePath )
+         Dim ssmTool2 As SSMTOOL = New SSMTOOL(filePath )  
+
+         'Change something on techlist
+         AddDefaultTechLine( ssmTool1)
+         AddDefaultTechLine( ssmTool2)
+
+         'Make Unequal
+         ssmTool2.techList.TechLines(0).BenefitName="Doobie"
+
+         Assert.IsFalse ( ssmTool1.IsEqualTo( ssmTool2))
+
+   End Sub
+   <Test()>
+   Public Sub SSMTOOL_COMPARISON_TECHLIST_IDENTICAL_SINGLEValueDifference()
+
+         const  filePath as string  = "SSMTOOLTestSaveRetreive.json"
+
+
+         Dim ssmTool1 As SSMTOOL = New SSMTOOL(filePath )
+         Dim ssmTool2 As SSMTOOL = New SSMTOOL(filePath )  
+
+         'Change something on techlist
+         AddDefaultTechLine( ssmTool1)
+         AddDefaultTechLine( ssmTool2)
+
+         'Make Unequal
+         ssmTool2.techList.TechLines(0).ActiveVV=False
+
+         Assert.IsFalse ( ssmTool1.IsEqualTo( ssmTool2))
+
+   End Sub
+   
  End Class
 
 End Namespace
