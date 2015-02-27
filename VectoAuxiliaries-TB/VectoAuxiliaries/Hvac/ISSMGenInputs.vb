@@ -4,6 +4,7 @@ Namespace Hvac
   Public Interface ISSMGenInputs
   
     'Bus Parameterisation	
+    Property BP_BusModel 	                                     As String	
     Property BP_NumberOfPassengers		                         As Double	
     Property BP_BusFloorType	                                 As string
     Readonly Property BP_BusFloorSurfaceArea                     As Double
