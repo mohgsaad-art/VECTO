@@ -17,6 +17,11 @@ Function Load(filePath As String)  As Boolean
 
 Function Save(filePath As String) As Boolean  
 
+Function IsEqualTo( source As ISSMTOOL) As Boolean
+
+
+
+
 
 
 End Interface
