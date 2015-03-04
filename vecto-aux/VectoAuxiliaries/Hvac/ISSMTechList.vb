@@ -8,7 +8,9 @@ Public Interface ISSMTechList
  Sub Clear()
  Function    Add( item As ITechListBenefitLine, byref feedback as String) As Boolean
  Function Delete( item As ITechListBenefitLine, byref feedback as String) As Boolean
- Function Modify( item As ITechListBenefitLine, byref feedback as String) As Boolean
+ Function Modify( originalItem As ITechListBenefitLine, modifiedItem As ITechListBenefitLine, byref feedback as String) As Boolean
+
+  Sub SetSSMGeneralInputs( genInputs As ISSMGenInputs)
 
  ReadOnly Property HValueVariation  As Double
  ReadOnly Property VHValueVariation As Double
@@ -24,6 +26,7 @@ Public Interface ISSMTechList
 
 
  Function Initialise() As Boolean
+ Function Initialise( filePath As String ) As Boolean
 
 
 

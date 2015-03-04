@@ -24,7 +24,7 @@ Public Class TechListBenefitLine
 
 
 Private _h,_vh,_vv,_vc,_c As Single
-Private inputSheet As ISSMGenInputs
+Public  inputSheet As ISSMGenInputs
 
 Public Property  Units  As string Implements ITechListBenefitLine.Units
 Public Property  Category As String Implements ITechListBenefitLine.Category
@@ -175,6 +175,11 @@ Public ReadOnly Property C As Single Implements ITechListBenefitLine.C
 
     End Get
 End Property
+
+
+Sub new()
+
+End Sub
 
 Sub new ( geninputs As ISSMGenInputs )
 

@@ -11,6 +11,46 @@ Public Class frmHVACTool
   Private buses As IBusDatabase
   Private ssmTOOL As SSMTOOL
   Private TabColors As Dictionary(Of TabPage, Color) = New Dictionary(Of TabPage, Color)()
+  Private editTechLine As ITechListBenefitLine = New TechListBenefitLine(Nothing)
+  Private gvTechListBinding As BindingList(Of ITechListBenefitLine)
+  Private DefaultCategories As String() = {"Cooling","Heating","Insulation","Ventiliation"}
+
+
+  Private sub BindGrid(  )
+
+      Dim gvTechListBinding As New BindingList(Of ITechListBenefitLine)(ssmTOOL.techList.TechLines.OrderBy( Function(o) o.Category).ThenBy( Function(t) t.BenefitName).ToList())
+      Me.gvTechBenefitLines.DataSource = gvTechListBinding
+
+
+  End Sub
+
+  Private function GetCategories( ) As List(Of String)
+
+     If Not ssmTOOL is Nothing AndAlso Not ssmTOOL.techList is Nothing AndAlso ssmTOOL.techList.TechLines.Count>0
+
+        'Fuse Lists          
+        Dim fusedList As new List(Of String )
+        
+        For Each s As String In ssmTOOL.techList.TechLines.Select( Function(sel) sel.Category)
+
+          If Not fusedList.Contains(s) then
+           fusedList.Add(s)
+          End If
+
+        Next
+          
+          Return fusedList.OrderBy( Function(o) o.ToString()).ToList()
+
+      Else
+
+          Return New List(Of String)(DefaultCategories)
+
+     End If
+
+
+  End Function
+
+
 
 
 
@@ -24,6 +64,10 @@ Public Class frmHVACTool
     Me.ahsmFilePath = ahsmFilePath
 
     ssmTOOL = New SSMTOOL(ahsmFilePath)
+    ssmTOOL.Load(ahsmFilePath)
+
+
+   ' ssmTOOL.techList.in("SSMTechBenefitsALLON.csv")
 
     setupBuses()
     setupControls()
@@ -46,9 +90,110 @@ End Sub
 End Sub
   Private Sub setupControls()
 
+     'gvTechBenefitLines
+     gvTechBenefitLines.AutoGenerateColumns=false
 
-End Sub
+     Dim cIndex As Integer
+
+     'Column - Category
+     cIndex = gvTechBenefitLines.Columns.Add("Category", "Category")
+     gvTechBenefitLines.Columns(cIndex).DataPropertyName = "Category"
+     gvTechBenefitLines.Columns(cIndex).Width = 70
+     gvTechBenefitLines.Columns(cIndex).ReadOnly = True
+     gvTechBenefitLines.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
+     gvTechBenefitLines.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
+
+     'Column - BenefitName
+     cIndex = gvTechBenefitLines.Columns.Add("BenefitName", "BenefitName")
+     gvTechBenefitLines.Columns(cIndex).DataPropertyName = "BenefitName"
+     gvTechBenefitLines.Columns(cIndex).Width = 330
+     gvTechBenefitLines.Columns(cIndex).ReadOnly = True
+     gvTechBenefitLines.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
+     gvTechBenefitLines.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
+
+     'Column - H
+     cIndex = gvTechBenefitLines.Columns.Add("H", "H")
+     gvTechBenefitLines.Columns(cIndex).DataPropertyName = "H"
+     gvTechBenefitLines.Columns(cIndex).Width = 60
+     gvTechBenefitLines.Columns(cIndex).ReadOnly = True
+     gvTechBenefitLines.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
+     gvTechBenefitLines.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
+
+     'Column - VH
+     cIndex = gvTechBenefitLines.Columns.Add("VH", "VH")
+     gvTechBenefitLines.Columns(cIndex).DataPropertyName = "VH"
+     gvTechBenefitLines.Columns(cIndex).Width = 60
+     gvTechBenefitLines.Columns(cIndex).ReadOnly = True
+     gvTechBenefitLines.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
+     gvTechBenefitLines.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
+
+
+     'Column - VV
+     cIndex = gvTechBenefitLines.Columns.Add("VV", "VV")
+     gvTechBenefitLines.Columns(cIndex).DataPropertyName = "VV"
+     gvTechBenefitLines.Columns(cIndex).Width = 60
+     gvTechBenefitLines.Columns(cIndex).ReadOnly = True
+     gvTechBenefitLines.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
+     gvTechBenefitLines.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
+
+     'Column - VC
+     cIndex = gvTechBenefitLines.Columns.Add("VC", "VC")
+     gvTechBenefitLines.Columns(cIndex).DataPropertyName = "VC"
+     gvTechBenefitLines.Columns(cIndex).Width = 60
+     gvTechBenefitLines.Columns(cIndex).ReadOnly = True
+     gvTechBenefitLines.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
+     gvTechBenefitLines.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
+
+     'Column - C
+     cIndex = gvTechBenefitLines.Columns.Add("C", "C")
+     gvTechBenefitLines.Columns(cIndex).DataPropertyName = "C"
+     gvTechBenefitLines.Columns(cIndex).Width = 60
+     gvTechBenefitLines.Columns(cIndex).ReadOnly = True
+     gvTechBenefitLines.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
+     gvTechBenefitLines.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
+
+     'Column - OnVehicle
+     cIndex = gvTechBenefitLines.Columns.Add("OnVehicle", "OnVehicle")
+     gvTechBenefitLines.Columns(cIndex).DataPropertyName = "OnVehicle"
+     gvTechBenefitLines.Columns(cIndex).Width = 60
+     gvTechBenefitLines.Columns(cIndex).ReadOnly = True
+     gvTechBenefitLines.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
+     gvTechBenefitLines.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
+
+
+     Dim deleteColumn As New DataGridViewButtonColumn()
+
+     With deleteColumn
+
+       .HeaderText=""
+       .ToolTipText="Delete this row"
+       .Name="Delete"
+       .Text="Del"
+       .UseColumnTextForButtonValue=true
+       .Width=55
+       .DefaultCellStyle.Padding= New Padding(5,1,5,1)
+       .DefaultCellStyle.Alignment= DataGridViewContentAlignment.MiddleCenter
+       .DefaultCellStyle.ForeColor= Color.Red
+       .AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
+       .FlatStyle = FlatStyle.Standard
+       .CellTemplate.Style.BackColor = Color.Honeydew
+        '.DisplayIndex = 0
+
+     end with
+     gvTechBenefitLines.Columns.Add(deleteColumn)
+
+     'Techlist Edit Panel
+     cboCategory.DataSource= GetCategories()
+     cboUnits.DataSource= {"Fraction"}
+     cboLineType.DataSource={"Normal","ActiveVentilation"}
+
+
+  End Sub
   Private Sub setupBindings()
+
+  'TechBenefitLines
+   BindGrid()
+
 
   'Bus Parameterisation
   txtBusModel.DataBindings.Add("Text", ssmTOOL.genInputs, "BP_BusModel", False, DataSourceUpdateMode.OnPropertyChanged)
@@ -139,20 +284,22 @@ End Sub
 
 End Sub
 
-
   'Validators
   Public Sub Validating_GeneralInputsBP(sender As Object, e As CancelEventArgs) Handles txtRegisteredPassengers.Validating, txtBusWidth.Validating, txtBusVolume.Validating, txtBusSurfaceArea.Validating, txtBusModel.Validating, txtBusLength.Validating, txtBusFloorSurfaceArea.Validating, txtBC_PassengerBoundaryTemperature.Validated
 
     e.Cancel = Not Validate_GeneralInputsBP()
 
   End Sub
-
   Public Sub Validating_GeneralInputsBC(sender As Object, e As CancelEventArgs) Handles  txtBC_GFactor.Validating, txtBC_VolumicMassDieselOrHeatingOil.Validating, txtBC_SpecificVentilationPower.Validating, txtBC_PassengerDensitySemiLowFloor.Validating, txtBC_PassengerDensityRaisedFloor.Validating, txtBC_PassengerDensityLowFloor.Validating, txtBC_MaxTemperatureDeltaForLowFloorBusses.Validating, txtBC_MaxPossibleBenefitFromTechnologyList.Validating, txtBC_lowVentilation.Validating, txtBC_HighVentilation.Validating, txtBC_HeatingBoundaryTemperature.Validating, txtBC_GCVDieselOrHeatingOil.Validating, txtBC_COP.Validating, txtBC_CoolingBoundaryTemperature.Validating, txtBC_AuxHeaterEfficiency.Validating
 
     e.Cancel = Not Validate_GeneralInputsBC()
 
-  End Sub
+  End Sub   
+  Public Sub Validating_GeneralInputsOther(sender As Object, e As CancelEventArgs) Handles txtEC_Solar.Validating, txtEC_EnviromentalTemperature.Validating, txtAH_FuelFiredHeaterkW.Validating, txtAH_EngineWasteHeatkW.Validating, txtAC_CompressorCapacitykW.Validating 
 
+    e.Cancel = Not Validate_GeneralInputsOther()
+
+  End Sub
   Public Function Validate_GeneralInputsBP() As Boolean
 
        Dim result As Boolean = True
@@ -231,91 +378,28 @@ End Function
         'BOUNDARY CONDITIONS
         '*******************
 
-        'txtBC_GFactor		
-        If Not IsNumeric(txtBC_GFactor.Text) Then
-         ErrorProvider1.SetError(txtBC_GFactor, "Please enter a number ( GFactor )")
-         result = False
-        Else
-         ErrorProvider1.SetError(txtBC_GFactor, String.Empty)
-        End If  
-          		              
+         'txtBC_GFactor		
+         IsTextBoxNumber(txtBC_GFactor,"Please enter a number ( GFactor )",result) 
         'BC_SolarClouding				      : Calculated    
-        'BC_HeatPerPassengerIntoCabinW	      : Calculated
-             
+        'BC_HeatPerPassengerIntoCabinW	      : Calculated             
         'txtBC_PassengerBoundaryTemperature    
-        If Not IsNumeric(txtBC_PassengerBoundaryTemperature.Text) Then
-         ErrorProvider1.SetError(txtBC_PassengerBoundaryTemperature, "Please enter a number ( Passenger Boundary Temperature )")
-         result = False
-        Else
-         ErrorProvider1.SetError(txtBC_PassengerBoundaryTemperature, String.Empty)
-        End If  
-               
+         IsTextBoxNumber(txtBC_PassengerBoundaryTemperature,"Please enter a number ( Passenger Boundary Temperature )",result)
         'txtBC_PassengerDensityLowFloor   
-        If Not IsNumeric(txtBC_PassengerDensityLowFloor.Text) Then
-         ErrorProvider1.SetError(txtBC_PassengerDensityLowFloor, "Please enter a number ( Passenger Density Low Floor )")
-         result = False
-        Else
-         ErrorProvider1.SetError(txtBC_PassengerDensityLowFloor, String.Empty)
-        End If
-        
-                         
+         IsTextBoxNumber(txtBC_PassengerDensityLowFloor,"Please enter a number ( Passenger Density Low Floor )",result)
         'txtBC_PassengerDensitySemiLowFloor	 
-        If Not IsNumeric(txtBC_PassengerDensitySemiLowFloor.Text) Then
-         ErrorProvider1.SetError(txtBC_PassengerDensitySemiLowFloor, "Please enter a number ( Passenger Density Semi Low Floor )")
-         result = False
-        Else
-         ErrorProvider1.SetError(txtBC_PassengerDensitySemiLowFloor, String.Empty)
-        End If
-
-             
+         IsTextBoxNumber(txtBC_PassengerDensitySemiLowFloor,"Please enter a number ( Passenger Density Semi Low Floor )",result)
         'txtBC_PassengerDensityRaisedFloor	
-        If Not IsNumeric(txtBC_PassengerDensityRaisedFloor.Text) Then
-         ErrorProvider1.SetError(txtBC_PassengerDensityRaisedFloor, "Please enter a number ( Passenger Density Raised Floor )")
-         result = False
-        Else
-         ErrorProvider1.SetError(txtBC_PassengerDensityRaisedFloor, String.Empty)
-        End If
-               
-              
+         IsTextBoxNumber(txtBC_PassengerDensityRaisedFloor,"Please enter a number ( Passenger Density Raised Floor )",result)
         'txtBC_CalculatedPassengerNumber	: Calculated          
-        'txtBC_UValues                      : Calculated
-        
-                                 
+        'txtBC_UValues                      : Calculated                            
         'txtBC_HeatingBoundaryTemperature	
-        If Not IsNumeric(txtBC_HeatingBoundaryTemperature.Text) Then
-         ErrorProvider1.SetError(txtBC_HeatingBoundaryTemperature, "Please enter a number ( Heating Boundary Temperature )")
-         result = False
-        Else
-         ErrorProvider1.SetError(txtBC_HeatingBoundaryTemperature, String.Empty)
-        End If        
-        
-              
+         IsTextBoxNumber(txtBC_HeatingBoundaryTemperature,"Please enter a number ( Heating Boundary Temperature )",result)             
         'txtBC_CoolingBoundaryTemperature 
-        If Not IsNumeric(txtBC_CoolingBoundaryTemperature.Text) Then
-         ErrorProvider1.SetError(txtBC_CoolingBoundaryTemperature, "Please enter a number ( Cooling Boundary Temperature )")
-         result = False
-        Else
-         ErrorProvider1.SetError(txtBC_CoolingBoundaryTemperature, String.Empty)
-        End If          
-        
-                 
+         IsTextBoxNumber(txtBC_CoolingBoundaryTemperature,"Please enter a number ( Cooling Boundary Temperature )",result)                 
         'txtBC_HighVentilation    
-        If Not IsNumeric(txtBC_HighVentilation.Text) Then
-         ErrorProvider1.SetError(txtBC_HighVentilation, "Please enter a number ( High Ventilation )")
-         result = False
-        Else
-         ErrorProvider1.SetError(txtBC_HighVentilation, String.Empty)
-        End If      
-        
-                         
+         IsTextBoxNumber(txtBC_HighVentilation,"Please enter a number ( High Ventilation )",result)                    
         'txtBC_lowVentilation	
-        If Not IsNumeric(txtBC_lowVentilation.Text) Then
-         ErrorProvider1.SetError(txtBC_lowVentilation, "Please enter a number ( Low Ventilation )")
-         result = False
-        Else
-         ErrorProvider1.SetError(txtBC_lowVentilation, String.Empty)
-        End If         
-                          
+         IsTextBoxNumber(txtBC_lowVentilation,"Please enter a number ( Low Ventilation )",result)                  
         'txtBC_High             : Calculated                                     
         'txtBC_Low	            : Calculated                                
         'txtBC_HighVentPowerW   : Calculated                  
@@ -333,12 +417,11 @@ End Function
         'txtBC_WindowAreaPerUnitBusLength	     : Calculated 
         'txtBC_FrontRearWindowArea               : Calculated                      
         'txtBC_MaxTemperatureDeltaForLowFloorBusses
-         IsTextBoxNumber(txtBC_MaxTemperatureDeltaForLowFloorBusses,"Please enter a number ( tMax Temp Delta For Low Floor Busses )",result)   
+         IsTextBoxNumber(txtBC_MaxTemperatureDeltaForLowFloorBusses,"Please enter a number ( Max Temp Delta For Low Floor Busses )",result)   
         'txtBC_MaxPossibleBenefitFromTechnologyList
          IsTextBoxNumber(txtBC_MaxPossibleBenefitFromTechnologyList,"Please enter a number ( Max Benefit From Technology List )",result)   
 
         'Set Tab Color
-
         UpdateTabStatus("tabGeneralInputsBC", result)
 
         Return result
@@ -348,34 +431,66 @@ End Function
 
       Dim result As Boolean = true
 
-    ' 'EnviromentalConditions				
-    'txtEC_EnviromentalTemperature                      
+    'EnviromentalConditions				
+     IsTextBoxNumber(txtEC_EnviromentalTemperature,"Please enter a number (Environmental Temperature)",result)                  
     'txtEC_Solar   	                                  
-    					                                         
+     IsTextBoxNumber(txtEC_Solar,"Please enter a number (Solar)",result) 
+         					                                         
     ''AC-system				                                     
-    'chkAC_InCabinRoomAC_System	                       
-    'txtAC_CompressorType			                   
-    'cboAC_CompressorCapacitykW	                       
+    'chkAC_InCabinRoomAC_System	     : Selection                  
+    'cboAC_CompressorType			 : Selection                
+    'txtAC_CompressorCapacitykW	 
+     IsTextBoxNumber(txtAC_CompressorCapacitykW,"Please enter a number ( Compressor Capacity )",result)                      
     					
     ''Ventilation				
-    'chkVEN_VentilationOnDuringHeating	
-			          
-    'chkVEN_VentilationWhenBothHeatingAndACInactive		 
-    'chkVEN_VentilationDuringAC			                 
-    'cboVEN_VentilationFlowSettingWhenHeatingAndACInactive
-    'cboVEN_VentilationDuringHeating			          
-    'cboVEN_VentilationDuringCooling				      
+    'chkVEN_VentilationOnDuringHeating				          : Selection
+    'chkVEN_VentilationWhenBothHeatingAndACInactive		      : Selection
+    'chkVEN_VentilationDuringAC			                      : Selection
+    'cboVEN_VentilationFlowSettingWhenHeatingAndACInactive    : Selection
+    'cboVEN_VentilationDuringHeating			              : Selection
+    'cboVEN_VentilationDuringCooling				          : Selection
     					
     ''Aux. Heater				
-    'txtAH_EngineWasteHeatkW	                            
+    ' txtAH_EngineWasteHeatkW	
+     IsTextBoxNumber(txtAH_EngineWasteHeatkW,"Please enter a number ( Engine waste heat )",result)                                                          
     'txtAH_FuelFiredHeaterkW  
+     IsTextBoxNumber(txtAH_FuelFiredHeaterkW,"Please enter a number ( Fuel fired heater )",result)
     
-    
+     'Set Tab Color
+     UpdateTabStatus("tabGeneralInputsOther", result)
+
      Return result                             
 
   End Function
 
+  Public Sub Validating_TechLineEdit(sender As Object, e As CancelEventArgs) 'Handles txtSemiLowFloorV.Validating, txtSemiLowFloorH.Validating, txtSemiLowFloorC.Validating, txtRaisedFloorV.Validating, txtRaisedFloorH.Validating, txtRaisedFloorC.Validating, txtLowFloorV.Validating, txtLowFloorH.Validating, txtLowFloorC.Validating, txtBenefitName.Validating, chkOnVehicle.Validating, chkActiveVV.Validating, chkActiveVH.Validating, chkActiveVC.Validating, cboUnits.Validating, cboLineType.Validating, cboCategory.Validating
 
+    e.Cancel = Not Validate_TechLineEdit()
+
+  End Sub
+
+  Public Function Validate_TechLineEdit() As Boolean
+
+     Dim result As Boolean = True
+     
+      IsEmptyString(cboCategory.Text      ,cboCategory     ,"Please enter a valid category"                       ,result)
+      IsEmptyString(txtBenefitName.Text   ,txtBenefitName  ,"Please enter a valid Benefit Name"                   ,result)
+      IsEmptyString(cboUnits.Text         ,cboUnits        ,"Please enter valid units"                            ,result)
+      IsEmptyString(cboLineType.Text      , cboLineType    ,"Please enter a valid line type"                      ,result)
+      IsTextBoxNumber(txtLowFloorH                         ,"Please enter a valid number for this floor variable" ,result)
+      IsTextBoxNumber(txtLowFloorV                         ,"Please enter a valid number for this floor variable" ,result)
+      IsTextBoxNumber(txtLowFloorC                         ,"Please enter a valid number for this floor variable" ,result)
+      IsTextBoxNumber(txtSemiLowFloorH                     ,"Please enter a valid number for this floor variable" ,result)
+      IsTextBoxNumber(txtSemiLowFloorV                     ,"Please enter a valid number for this floor variable" ,result)
+      IsTextBoxNumber(txtSemiLowFloorC                     ,"Please enter a valid number for this floor variable" ,result)
+      IsTextBoxNumber(txtRaisedFloorH                      ,"Please enter a valid number for this floor variable" ,result)
+      IsTextBoxNumber(txtRaisedFloorV                      ,"Please enter a valid number for this floor variable" ,result)
+      IsTextBoxNumber(txtRaisedFloorC                      ,"Please enter a valid number for this floor variable" ,result)
+
+       
+     Return result
+  
+  End Function
 
   'Validation Helpers
   Private Sub IsTextBoxNumber( control As TextBox, errorProviderMessage As String , ByRef result As Boolean) 
@@ -389,6 +504,18 @@ End Function
         End If 
 
   End sub
+  Private Sub IsEmptyString( text as  String, control As control, errorProviderMessage As String , ByRef result As Boolean) 
+
+      If String.IsNullOrEmpty( text ) Then
+         ErrorProvider1.SetError(control, errorProviderMessage)
+         result =  False
+        Else
+         ErrorProvider1.SetError(control, String.Empty)
+
+        End If 
+
+  End sub
+
 
   Private Function IsPostiveInteger(ByVal test As String) As Boolean
 
@@ -539,16 +666,187 @@ End Function
     'For Tab Coloring, this is the place where the background will get filled on the tab when attention is required.
     AddHandler tabMain.DrawItem, New System.Windows.Forms.DrawItemEventHandler(AddressOf tabMain_DrawItem)
 
-
+    gvTechBenefitLines.ClearSelection()
  
   End Sub
 
+  
+  
+  
+  Private Sub FillTechLineEditPanel( index As Integer)
 
-Private Sub Validating_GeneralInputs( sender As Object,  e As EventArgs)
+     Dim techline As ITechListBenefitLine
+     Dim benefitName , category As String
+     benefitName = gvTechBenefitLines.Rows(index).Cells("BenefitName").Value
+     category = gvTechBenefitLines.Rows(index).Cells("Category").Value
+
+     techline = ssmTOOL.techList.TechLines.First( Function(f) f.BenefitName=benefitName AndAlso f.Category=category)
+
+     txtIndex.Text=index
+     cboCategory.Text= techline.Category
+     txtBenefitName.Text=techline.BenefitName
+     cboUnits.Text = techline.Units
+     cboLineType.Text = If( techline.LineType=0, "Normal","ActiveVentilation")
+     txtLowFloorH    .Text = techline.LowFloorH
+     txtLowFloorV    .Text = techline.LowFloorV    
+     txtLowFloorC    .Text = techline.LowFloorC    
+     txtSemiLowFloorH.Text = techline.SemiLowFloorH
+     txtSemiLowFloorV.Text = techline.SemiLowFloorV
+     txtSemiLowFloorC.Text = techline.SemiLowFloorC
+     txtRaisedFloorH .Text = techline.RaisedFloorH 
+     txtRaisedFloorV .Text = techline.RaisedFloorV 
+     txtRaisedFloorC .Text = techline.RaisedFloorC 
+     chkActiveVH.Checked   = techline.ActiveVH
+     chkActiveVV.Checked   = techline.ActiveVV
+     chkActiveVC.Checked   = techline.ActiveVC
+     chkOnVehicle.Checked  = techline.OnVehicle
+
+                        
+
+  End Sub
+
+
+Private Sub gvTechBenefitLines_DoubleClick( sender As Object,  e As EventArgs) Handles gvTechBenefitLines.DoubleClick
+
+     Dim row As Integer = gvTechBenefitLines.SelectedCells(0).OwningRow.Index
+
+     Dim benefitName , category As String
+     benefitName = gvTechBenefitLines.Rows(row).Cells("BenefitName").Value
+     category = gvTechBenefitLines.Rows(row).Cells("Category").Value
+
+     editTechLine = ssmTOOL.techList.TechLines.First( Function(f) f.BenefitName=benefitName AndAlso f.Category=category)
+
+     FillTechLineEditPanel( row )
+
+
 
 End Sub
 
-Private Sub Validating_GeneralInputsBP( sender As Object,  e As EventArgs)
+
+private function GetTechLineFromPanel() as ITechListBenefitLine
+
+  Dim tl As ITechListBenefitLine  = New TechListBenefitLine( ssmTOOL.genInputs)
+   
+
+  tl.Category      = cboCategory.Text
+  tl.BenefitName   = txtBenefitName.Text
+  tl.Units         = cboUnits.Text
+  tl.LineType      = If( cboLineType.Text= "Normal",0,3)
+  tl.LowFloorH     = txtLowFloorH      .Text
+  tl.LowFloorV     = txtLowFloorV      .Text
+  tl.LowFloorC     = txtLowFloorC      .Text
+  tl.SemiLowFloorH = txtSemiLowFloorH  .Text
+  tl.SemiLowFloorV = txtSemiLowFloorV  .Text
+  tl.SemiLowFloorC = txtSemiLowFloorC  .Text
+  tl.RaisedFloorH  = txtRaisedFloorH   .Text
+  tl.RaisedFloorV  = txtRaisedFloorV   .Text
+  tl.RaisedFloorC  = txtRaisedFloorC   .Text
+  tl.ActiveVH      = chkActiveVH       .Checked
+  tl.ActiveVV      = chkActiveVV       .Checked
+  tl.ActiveVC      = chkActiveVC       .Checked
+  tl.OnVehicle     = chkOnVehicle      .Checked
+
+
+  Return tl
+
+End Function
+
+Private Sub ClearEditPanel()
+
+  txtIndex.Text                     = String.Empty
+  cboCategory.Text                  = String.Empty
+  txtBenefitName.Text               = String.Empty
+  cboUnits.Text                     = String.Empty
+  cboLineType.Text                  = String.Empty
+  txtLowFloorH      .Text           = String.Empty
+  txtLowFloorV      .Text           = String.Empty
+  txtLowFloorC      .Text           = String.Empty
+  txtSemiLowFloorH  .Text           = String.Empty
+  txtSemiLowFloorV  .Text           = String.Empty
+  txtSemiLowFloorC  .Text           = String.Empty
+  txtRaisedFloorH   .Text           = String.Empty
+  txtRaisedFloorV   .Text           = String.Empty
+  txtRaisedFloorC   .Text           = String.Empty
+  chkActiveVH       .Checked        = False
+  chkActiveVV       .Checked        = False
+  chkActiveVC       .Checked        = False
+  chkOnVehicle      .Checked        = False
 
 End Sub
+
+
+Private Sub btnUpdate_Click( sender As Object,  e As EventArgs) Handles btnUpdate.Click
+ 
+  Dim feedback As String = String.Empty
+
+  If NOT Validate_TechLineEdit() then Return
+  
+  If txtIndex.Text.Trim.Length=0 then 
+  'This is an Add
+   If Not ssmTOOL.techList.Add( GetTechLineFromPanel(), feedback) then
+     MessageBox.Show( feedback )
+     Else
+      BindGrid()
+
+      cboCategory.DataSource= GetCategories()
+
+   End if
+
+  Else
+  'This is an update
+    If Not ssmTOOL.techList.Modify( editTechLine, GetTechLineFromPanel() , feedback) then
+        MessageBox.Show( feedback )
+     Else
+       gvTechBenefitLines.Refresh()
+       ClearEditPanel()
+      
+    End If
+
+  End If
+
+End Sub
+
+
+
+
+Private Sub btnSave_Click( sender As Object,  e As EventArgs) Handles btnSave.Click
+
+
+     ssmTOOL.Save( ahsmFilePath )
+
+
+End Sub
+
+
+
+Private Sub gvTechBenefitLines_CellClick( sender As Object,  e As DataGridViewCellEventArgs) Handles gvTechBenefitLines.CellClick
+
+
+   If gvTechBenefitLines.Columns( e.ColumnIndex).Name="Delete" then
+
+      Dim benefit As String = gvTechBenefitLines.Rows( e.RowIndex).Cells(1).Value
+      Dim category As String = gvTechBenefitLines.Rows( e.RowIndex).Cells(0).Value
+      Dim feedback As String = String.Empty
+
+      Dim dr As DialogResult = MessageBox.Show(String.Format("Do you want to delete benefit '{0}' ?", benefit),"", MessageBoxButtons.YesNo)
+
+      If dr= Windows.Forms.DialogResult.Yes then
+      
+       If  ssmTOOL.techList.Delete( New TechListBenefitLine With {.BenefitName= benefit, .Category=category}, feedback) then
+
+         BindGrid
+
+       End If
+
+
+
+      End If
+
+
+   End If
+
+End Sub
+
+
+
 End Class

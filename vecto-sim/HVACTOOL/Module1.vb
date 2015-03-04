@@ -4,7 +4,7 @@ module Main
 
 Sub main()
 
-   Dim frm As New frmHVACTool("BusDatabase.csv", "ssm.Ahsm")
+   Dim frm As New frmHVACTool("BusDatabase.csv", "ssmDelete.ahsm")
 
    frm.ShowDialog
 

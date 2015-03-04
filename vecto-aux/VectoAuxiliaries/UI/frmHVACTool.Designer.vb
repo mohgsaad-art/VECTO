@@ -127,25 +127,12 @@ Partial Class frmHVACTool
         Me.lblPassengerBoundaryTemp = New System.Windows.Forms.Label()
         Me.txtBC_SolarClouding = New System.Windows.Forms.TextBox()
         Me.lblSolarClouding = New System.Windows.Forms.Label()
-        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.ErrorProvider1 = New System.Windows.Forms.ErrorProvider(Me.components)
         Me.tabGeneralInputsOther = New System.Windows.Forms.TabPage()
-        Me.tabTechBenefits = New System.Windows.Forms.TabPage()
-        Me.grpEnvironmentConditions = New System.Windows.Forms.GroupBox()
-        Me.txtEC_EnviromentalTemperature = New System.Windows.Forms.TextBox()
-        Me.lbltxtEC_EnviromentalTemperature = New System.Windows.Forms.Label()
-        Me.txtEC_Solar = New System.Windows.Forms.TextBox()
-        Me.lbltxtEC_Solar = New System.Windows.Forms.Label()
-        Me.lblUnitstxtEC_EnviromentalTemperature = New System.Windows.Forms.Label()
-        Me.lblUnitstxtEC_Solar = New System.Windows.Forms.Label()
-        Me.grpACSystem = New System.Windows.Forms.GroupBox()
-        Me.cboAC_CompressorType = New System.Windows.Forms.ComboBox()
-        Me.chkAC_InCabinRoomAC_System = New System.Windows.Forms.CheckBox()
-        Me.lblChkAC_InCabinRoomAC_System = New System.Windows.Forms.Label()
-        Me.txtAC_CompressorCapacitykW = New System.Windows.Forms.TextBox()
-        Me.lbltxtAC_CompressorCapacitykW = New System.Windows.Forms.Label()
-        Me.lblUnitstxtAC_CompressorCapacitykW = New System.Windows.Forms.Label()
-        Me.lblcboAC_CompressorType = New System.Windows.Forms.Label()
+        Me.grpAuxHeater = New System.Windows.Forms.GroupBox()
+        Me.txtAH_EngineWasteHeatkW = New System.Windows.Forms.TextBox()
+        Me.lbltxtAH_EngineWasteHeatkW = New System.Windows.Forms.Label()
+        Me.txtAH_FuelFiredHeaterkW = New System.Windows.Forms.TextBox()
+        Me.lbltxtAH_FuelFiredHeaterkW = New System.Windows.Forms.Label()
         Me.grpVentilation = New System.Windows.Forms.GroupBox()
         Me.cboVEN_VentilationDuringCooling = New System.Windows.Forms.ComboBox()
         Me.cboVEN_VentilationDuringHeating = New System.Windows.Forms.ComboBox()
@@ -159,22 +146,76 @@ Partial Class frmHVACTool
         Me.lblchkVEN_VentilationOnDuringHeating = New System.Windows.Forms.Label()
         Me.lblchkVEN_VentilationDuringAC = New System.Windows.Forms.Label()
         Me.lblchkVEN_VentilationWhenBothHeatingAndACInactive = New System.Windows.Forms.Label()
-        Me.grpAuxHeater = New System.Windows.Forms.GroupBox()
-        Me.txtAH_EngineWasteHeatkW = New System.Windows.Forms.TextBox()
-        Me.lbltxtAH_EngineWasteHeatkW = New System.Windows.Forms.Label()
-        Me.txtAH_FuelFiredHeaterkW = New System.Windows.Forms.TextBox()
-        Me.lbltxtAH_FuelFiredHeaterkW = New System.Windows.Forms.Label()
+        Me.grpACSystem = New System.Windows.Forms.GroupBox()
+        Me.cboAC_CompressorType = New System.Windows.Forms.ComboBox()
+        Me.chkAC_InCabinRoomAC_System = New System.Windows.Forms.CheckBox()
+        Me.lblChkAC_InCabinRoomAC_System = New System.Windows.Forms.Label()
+        Me.txtAC_CompressorCapacitykW = New System.Windows.Forms.TextBox()
+        Me.lbltxtAC_CompressorCapacitykW = New System.Windows.Forms.Label()
+        Me.lblUnitstxtAC_CompressorCapacitykW = New System.Windows.Forms.Label()
+        Me.lblcboAC_CompressorType = New System.Windows.Forms.Label()
+        Me.grpEnvironmentConditions = New System.Windows.Forms.GroupBox()
+        Me.txtEC_EnviromentalTemperature = New System.Windows.Forms.TextBox()
+        Me.lbltxtEC_EnviromentalTemperature = New System.Windows.Forms.Label()
+        Me.txtEC_Solar = New System.Windows.Forms.TextBox()
+        Me.lbltxtEC_Solar = New System.Windows.Forms.Label()
+        Me.lblUnitstxtEC_EnviromentalTemperature = New System.Windows.Forms.Label()
+        Me.lblUnitstxtEC_Solar = New System.Windows.Forms.Label()
+        Me.tabTechBenefits = New System.Windows.Forms.TabPage()
+        Me.btnUpdate = New System.Windows.Forms.Button()
+        Me.lblLineType = New System.Windows.Forms.Label()
+        Me.chkActiveVC = New System.Windows.Forms.CheckBox()
+        Me.lblCoolingColumn = New System.Windows.Forms.Label()
+        Me.chkActiveVV = New System.Windows.Forms.CheckBox()
+        Me.txtBenefitName = New System.Windows.Forms.TextBox()
+        Me.chkActiveVH = New System.Windows.Forms.CheckBox()
+        Me.lblBenefitName = New System.Windows.Forms.Label()
+        Me.chkOnVehicle = New System.Windows.Forms.CheckBox()
+        Me.lblVentelationColumn = New System.Windows.Forms.Label()
+        Me.lblHeatingColumn = New System.Windows.Forms.Label()
+        Me.cboLineType = New System.Windows.Forms.ComboBox()
+        Me.pnlRaisedFloorRow = New System.Windows.Forms.Panel()
+        Me.txtRaisedFloorH = New System.Windows.Forms.TextBox()
+        Me.txtRaisedFloorC = New System.Windows.Forms.TextBox()
+        Me.txtRaisedFloorV = New System.Windows.Forms.TextBox()
+        Me.lblRaisedFloorRow = New System.Windows.Forms.Label()
+        Me.pnlSemiLowFloorRow = New System.Windows.Forms.Panel()
+        Me.txtSemiLowFloorH = New System.Windows.Forms.TextBox()
+        Me.txtSemiLowFloorC = New System.Windows.Forms.TextBox()
+        Me.txtSemiLowFloorV = New System.Windows.Forms.TextBox()
+        Me.lblSemiLowFloorRow = New System.Windows.Forms.Label()
+        Me.pnlLowFloorRow = New System.Windows.Forms.Panel()
+        Me.txtLowFloorH = New System.Windows.Forms.TextBox()
+        Me.txtLowFloorC = New System.Windows.Forms.TextBox()
+        Me.txtLowFloorV = New System.Windows.Forms.TextBox()
+        Me.lblLowFloorRow = New System.Windows.Forms.Label()
+        Me.lblCategory = New System.Windows.Forms.Label()
+        Me.cboCategory = New System.Windows.Forms.ComboBox()
+        Me.gvTechBenefitLines = New System.Windows.Forms.DataGridView()
+        Me.lblUnits = New System.Windows.Forms.Label()
+        Me.cboUnits = New System.Windows.Forms.ComboBox()
+        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.ErrorProvider1 = New System.Windows.Forms.ErrorProvider(Me.components)
+        Me.txtIndex = New System.Windows.Forms.TextBox()
+        Me.lblIndex = New System.Windows.Forms.Label()
+        Me.btnSave = New System.Windows.Forms.Button()
+        Me.btnCancel = New System.Windows.Forms.Button()
         Me.tabMain.SuspendLayout
         Me.tabGeneralInputsBP.SuspendLayout
         Me.GroupBox1.SuspendLayout
         Me.tabGeneralInputsBC.SuspendLayout
         Me.GroupBox2.SuspendLayout
-        CType(Me.ErrorProvider1,System.ComponentModel.ISupportInitialize).BeginInit
         Me.tabGeneralInputsOther.SuspendLayout
-        Me.grpEnvironmentConditions.SuspendLayout
-        Me.grpACSystem.SuspendLayout
-        Me.grpVentilation.SuspendLayout
         Me.grpAuxHeater.SuspendLayout
+        Me.grpVentilation.SuspendLayout
+        Me.grpACSystem.SuspendLayout
+        Me.grpEnvironmentConditions.SuspendLayout
+        Me.tabTechBenefits.SuspendLayout
+        Me.pnlRaisedFloorRow.SuspendLayout
+        Me.pnlSemiLowFloorRow.SuspendLayout
+        Me.pnlLowFloorRow.SuspendLayout
+        CType(Me.gvTechBenefitLines,System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.ErrorProvider1,System.ComponentModel.ISupportInitialize).BeginInit
         Me.SuspendLayout
         '
         'tabMain
@@ -232,7 +273,7 @@ Partial Class frmHVACTool
         Me.GroupBox1.Controls.Add(Me.lblRegisteredPassengers)
         Me.GroupBox1.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.GroupBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 10!)
-        Me.GroupBox1.ForeColor = System.Drawing.Color.Green
+        Me.GroupBox1.ForeColor = System.Drawing.SystemColors.MenuHighlight
         Me.GroupBox1.Location = New System.Drawing.Point(34, 47)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(416, 294)
@@ -576,7 +617,7 @@ Partial Class frmHVACTool
         Me.GroupBox2.Controls.Add(Me.lblSolarClouding)
         Me.GroupBox2.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.GroupBox2.Font = New System.Drawing.Font("Microsoft Sans Serif", 10!)
-        Me.GroupBox2.ForeColor = System.Drawing.Color.Green
+        Me.GroupBox2.ForeColor = System.Drawing.SystemColors.MenuHighlight
         Me.GroupBox2.Location = New System.Drawing.Point(34, 47)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(890, 534)
@@ -1328,10 +1369,6 @@ Partial Class frmHVACTool
         Me.lblSolarClouding.TabIndex = 0
         Me.lblSolarClouding.Text = "Solar Clouding"
         '
-        'ErrorProvider1
-        '
-        Me.ErrorProvider1.ContainerControl = Me
-        '
         'tabGeneralInputsOther
         '
         Me.tabGeneralInputsOther.Controls.Add(Me.grpAuxHeater)
@@ -1345,185 +1382,61 @@ Partial Class frmHVACTool
         Me.tabGeneralInputsOther.Text = " INP - Other "
         Me.tabGeneralInputsOther.UseVisualStyleBackColor = true
         '
-        'tabTechBenefits
+        'grpAuxHeater
         '
-        Me.tabTechBenefits.Location = New System.Drawing.Point(4, 22)
-        Me.tabTechBenefits.Name = "tabTechBenefits"
-        Me.tabTechBenefits.Padding = New System.Windows.Forms.Padding(3)
-        Me.tabTechBenefits.Size = New System.Drawing.Size(937, 617)
-        Me.tabTechBenefits.TabIndex = 5
-        Me.tabTechBenefits.Text = " Tech List Input "
-        Me.tabTechBenefits.UseVisualStyleBackColor = true
+        Me.grpAuxHeater.BackColor = System.Drawing.Color.Transparent
+        Me.grpAuxHeater.Controls.Add(Me.txtAH_EngineWasteHeatkW)
+        Me.grpAuxHeater.Controls.Add(Me.lbltxtAH_EngineWasteHeatkW)
+        Me.grpAuxHeater.Controls.Add(Me.txtAH_FuelFiredHeaterkW)
+        Me.grpAuxHeater.Controls.Add(Me.lbltxtAH_FuelFiredHeaterkW)
+        Me.grpAuxHeater.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.grpAuxHeater.Font = New System.Drawing.Font("Microsoft Sans Serif", 10!)
+        Me.grpAuxHeater.ForeColor = System.Drawing.SystemColors.MenuHighlight
+        Me.grpAuxHeater.Location = New System.Drawing.Point(34, 512)
+        Me.grpAuxHeater.Name = "grpAuxHeater"
+        Me.grpAuxHeater.Size = New System.Drawing.Size(409, 96)
+        Me.grpAuxHeater.TabIndex = 32
+        Me.grpAuxHeater.TabStop = false
+        Me.grpAuxHeater.Text = "Aux Heater"
         '
-        'grpEnvironmentConditions
+        'txtAH_EngineWasteHeatkW
         '
-        Me.grpEnvironmentConditions.BackColor = System.Drawing.Color.Transparent
-        Me.grpEnvironmentConditions.Controls.Add(Me.txtEC_EnviromentalTemperature)
-        Me.grpEnvironmentConditions.Controls.Add(Me.lbltxtEC_EnviromentalTemperature)
-        Me.grpEnvironmentConditions.Controls.Add(Me.txtEC_Solar)
-        Me.grpEnvironmentConditions.Controls.Add(Me.lbltxtEC_Solar)
-        Me.grpEnvironmentConditions.Controls.Add(Me.lblUnitstxtEC_EnviromentalTemperature)
-        Me.grpEnvironmentConditions.Controls.Add(Me.lblUnitstxtEC_Solar)
-        Me.grpEnvironmentConditions.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.grpEnvironmentConditions.Font = New System.Drawing.Font("Microsoft Sans Serif", 10!)
-        Me.grpEnvironmentConditions.ForeColor = System.Drawing.Color.Green
-        Me.grpEnvironmentConditions.Location = New System.Drawing.Point(34, 47)
-        Me.grpEnvironmentConditions.Name = "grpEnvironmentConditions"
-        Me.grpEnvironmentConditions.Size = New System.Drawing.Size(409, 96)
-        Me.grpEnvironmentConditions.TabIndex = 29
-        Me.grpEnvironmentConditions.TabStop = false
-        Me.grpEnvironmentConditions.Text = "Environmental Conditions"
+        Me.txtAH_EngineWasteHeatkW.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!)
+        Me.txtAH_EngineWasteHeatkW.Location = New System.Drawing.Point(220, 30)
+        Me.txtAH_EngineWasteHeatkW.Name = "txtAH_EngineWasteHeatkW"
+        Me.txtAH_EngineWasteHeatkW.Size = New System.Drawing.Size(97, 21)
+        Me.txtAH_EngineWasteHeatkW.TabIndex = 25
         '
-        'txtEC_EnviromentalTemperature
+        'lbltxtAH_EngineWasteHeatkW
         '
-        Me.txtEC_EnviromentalTemperature.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!)
-        Me.txtEC_EnviromentalTemperature.Location = New System.Drawing.Point(220, 30)
-        Me.txtEC_EnviromentalTemperature.Name = "txtEC_EnviromentalTemperature"
-        Me.txtEC_EnviromentalTemperature.Size = New System.Drawing.Size(97, 21)
-        Me.txtEC_EnviromentalTemperature.TabIndex = 25
+        Me.lbltxtAH_EngineWasteHeatkW.AutoSize = true
+        Me.lbltxtAH_EngineWasteHeatkW.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!)
+        Me.lbltxtAH_EngineWasteHeatkW.ForeColor = System.Drawing.Color.Black
+        Me.lbltxtAH_EngineWasteHeatkW.Location = New System.Drawing.Point(14, 33)
+        Me.lbltxtAH_EngineWasteHeatkW.Name = "lbltxtAH_EngineWasteHeatkW"
+        Me.lbltxtAH_EngineWasteHeatkW.Size = New System.Drawing.Size(112, 15)
+        Me.lbltxtAH_EngineWasteHeatkW.TabIndex = 24
+        Me.lbltxtAH_EngineWasteHeatkW.Text = "Engine Waste Heat"
         '
-        'lbltxtEC_EnviromentalTemperature
+        'txtAH_FuelFiredHeaterkW
         '
-        Me.lbltxtEC_EnviromentalTemperature.AutoSize = true
-        Me.lbltxtEC_EnviromentalTemperature.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!)
-        Me.lbltxtEC_EnviromentalTemperature.ForeColor = System.Drawing.Color.Black
-        Me.lbltxtEC_EnviromentalTemperature.Location = New System.Drawing.Point(14, 33)
-        Me.lbltxtEC_EnviromentalTemperature.Name = "lbltxtEC_EnviromentalTemperature"
-        Me.lbltxtEC_EnviromentalTemperature.Size = New System.Drawing.Size(153, 15)
-        Me.lbltxtEC_EnviromentalTemperature.TabIndex = 24
-        Me.lbltxtEC_EnviromentalTemperature.Text = "Enviromental Temperature"
+        Me.txtAH_FuelFiredHeaterkW.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!)
+        Me.txtAH_FuelFiredHeaterkW.Location = New System.Drawing.Point(218, 59)
+        Me.txtAH_FuelFiredHeaterkW.Name = "txtAH_FuelFiredHeaterkW"
+        Me.txtAH_FuelFiredHeaterkW.ReadOnly = true
+        Me.txtAH_FuelFiredHeaterkW.Size = New System.Drawing.Size(97, 21)
+        Me.txtAH_FuelFiredHeaterkW.TabIndex = 1
         '
-        'txtEC_Solar
+        'lbltxtAH_FuelFiredHeaterkW
         '
-        Me.txtEC_Solar.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!)
-        Me.txtEC_Solar.Location = New System.Drawing.Point(218, 59)
-        Me.txtEC_Solar.Name = "txtEC_Solar"
-        Me.txtEC_Solar.Size = New System.Drawing.Size(97, 21)
-        Me.txtEC_Solar.TabIndex = 1
-        '
-        'lbltxtEC_Solar
-        '
-        Me.lbltxtEC_Solar.AutoSize = true
-        Me.lbltxtEC_Solar.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!)
-        Me.lbltxtEC_Solar.ForeColor = System.Drawing.Color.Black
-        Me.lbltxtEC_Solar.Location = New System.Drawing.Point(14, 62)
-        Me.lbltxtEC_Solar.Name = "lbltxtEC_Solar"
-        Me.lbltxtEC_Solar.Size = New System.Drawing.Size(36, 15)
-        Me.lbltxtEC_Solar.TabIndex = 0
-        Me.lbltxtEC_Solar.Text = "Solar"
-        '
-        'lblUnitstxtEC_EnviromentalTemperature
-        '
-        Me.lblUnitstxtEC_EnviromentalTemperature.AutoSize = true
-        Me.lblUnitstxtEC_EnviromentalTemperature.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblUnitstxtEC_EnviromentalTemperature.Location = New System.Drawing.Point(348, 33)
-        Me.lblUnitstxtEC_EnviromentalTemperature.Name = "lblUnitstxtEC_EnviromentalTemperature"
-        Me.lblUnitstxtEC_EnviromentalTemperature.Size = New System.Drawing.Size(22, 15)
-        Me.lblUnitstxtEC_EnviromentalTemperature.TabIndex = 16
-        Me.lblUnitstxtEC_EnviromentalTemperature.Text = "oC"
-        Me.ToolTip1.SetToolTip(Me.lblUnitstxtEC_EnviromentalTemperature, "Degrees Centigrade")
-        '
-        'lblUnitstxtEC_Solar
-        '
-        Me.lblUnitstxtEC_Solar.AutoSize = true
-        Me.lblUnitstxtEC_Solar.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblUnitstxtEC_Solar.Location = New System.Drawing.Point(348, 59)
-        Me.lblUnitstxtEC_Solar.Name = "lblUnitstxtEC_Solar"
-        Me.lblUnitstxtEC_Solar.Size = New System.Drawing.Size(45, 15)
-        Me.lblUnitstxtEC_Solar.TabIndex = 26
-        Me.lblUnitstxtEC_Solar.Text = "W/m^3"
-        Me.ToolTip1.SetToolTip(Me.lblUnitstxtEC_Solar, "Watts/Metre Cubed")
-        '
-        'grpACSystem
-        '
-        Me.grpACSystem.BackColor = System.Drawing.Color.Transparent
-        Me.grpACSystem.Controls.Add(Me.cboAC_CompressorType)
-        Me.grpACSystem.Controls.Add(Me.chkAC_InCabinRoomAC_System)
-        Me.grpACSystem.Controls.Add(Me.lblChkAC_InCabinRoomAC_System)
-        Me.grpACSystem.Controls.Add(Me.txtAC_CompressorCapacitykW)
-        Me.grpACSystem.Controls.Add(Me.lbltxtAC_CompressorCapacitykW)
-        Me.grpACSystem.Controls.Add(Me.lblUnitstxtAC_CompressorCapacitykW)
-        Me.grpACSystem.Controls.Add(Me.lblcboAC_CompressorType)
-        Me.grpACSystem.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.grpACSystem.Font = New System.Drawing.Font("Microsoft Sans Serif", 10!)
-        Me.grpACSystem.ForeColor = System.Drawing.Color.Green
-        Me.grpACSystem.Location = New System.Drawing.Point(34, 149)
-        Me.grpACSystem.Name = "grpACSystem"
-        Me.grpACSystem.Size = New System.Drawing.Size(409, 135)
-        Me.grpACSystem.TabIndex = 30
-        Me.grpACSystem.TabStop = false
-        Me.grpACSystem.Text = "AC-System"
-        '
-        'cboAC_CompressorType
-        '
-        Me.cboAC_CompressorType.FormattingEnabled = true
-        Me.cboAC_CompressorType.Items.AddRange(New Object() {"Mechanical", "Electrical"})
-        Me.cboAC_CompressorType.Location = New System.Drawing.Point(217, 62)
-        Me.cboAC_CompressorType.Name = "cboAC_CompressorType"
-        Me.cboAC_CompressorType.Size = New System.Drawing.Size(100, 24)
-        Me.cboAC_CompressorType.TabIndex = 26
-        '
-        'chkAC_InCabinRoomAC_System
-        '
-        Me.chkAC_InCabinRoomAC_System.AutoSize = true
-        Me.chkAC_InCabinRoomAC_System.Location = New System.Drawing.Point(220, 33)
-        Me.chkAC_InCabinRoomAC_System.Name = "chkAC_InCabinRoomAC_System"
-        Me.chkAC_InCabinRoomAC_System.Size = New System.Drawing.Size(31, 21)
-        Me.chkAC_InCabinRoomAC_System.TabIndex = 25
-        Me.chkAC_InCabinRoomAC_System.Text = " "
-        Me.chkAC_InCabinRoomAC_System.UseVisualStyleBackColor = true
-        '
-        'lblChkAC_InCabinRoomAC_System
-        '
-        Me.lblChkAC_InCabinRoomAC_System.AutoSize = true
-        Me.lblChkAC_InCabinRoomAC_System.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!)
-        Me.lblChkAC_InCabinRoomAC_System.ForeColor = System.Drawing.Color.Black
-        Me.lblChkAC_InCabinRoomAC_System.Location = New System.Drawing.Point(14, 33)
-        Me.lblChkAC_InCabinRoomAC_System.Name = "lblChkAC_InCabinRoomAC_System"
-        Me.lblChkAC_InCabinRoomAC_System.Size = New System.Drawing.Size(154, 15)
-        Me.lblChkAC_InCabinRoomAC_System.TabIndex = 24
-        Me.lblChkAC_InCabinRoomAC_System.Text = "In Cabin Room AC_System"
-        '
-        'txtAC_CompressorCapacitykW
-        '
-        Me.txtAC_CompressorCapacitykW.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!)
-        Me.txtAC_CompressorCapacitykW.Location = New System.Drawing.Point(218, 92)
-        Me.txtAC_CompressorCapacitykW.Name = "txtAC_CompressorCapacitykW"
-        Me.txtAC_CompressorCapacitykW.Size = New System.Drawing.Size(99, 21)
-        Me.txtAC_CompressorCapacitykW.TabIndex = 23
-        '
-        'lbltxtAC_CompressorCapacitykW
-        '
-        Me.lbltxtAC_CompressorCapacitykW.AutoSize = true
-        Me.lbltxtAC_CompressorCapacitykW.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!)
-        Me.lbltxtAC_CompressorCapacitykW.ForeColor = System.Drawing.Color.Black
-        Me.lbltxtAC_CompressorCapacitykW.Location = New System.Drawing.Point(14, 91)
-        Me.lbltxtAC_CompressorCapacitykW.Name = "lbltxtAC_CompressorCapacitykW"
-        Me.lbltxtAC_CompressorCapacitykW.Size = New System.Drawing.Size(140, 15)
-        Me.lbltxtAC_CompressorCapacitykW.TabIndex = 22
-        Me.lbltxtAC_CompressorCapacitykW.Text = "AC-Compressor capacity"
-        '
-        'lblUnitstxtAC_CompressorCapacitykW
-        '
-        Me.lblUnitstxtAC_CompressorCapacitykW.AutoSize = true
-        Me.lblUnitstxtAC_CompressorCapacitykW.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
-        Me.lblUnitstxtAC_CompressorCapacitykW.Location = New System.Drawing.Point(352, 99)
-        Me.lblUnitstxtAC_CompressorCapacitykW.Name = "lblUnitstxtAC_CompressorCapacitykW"
-        Me.lblUnitstxtAC_CompressorCapacitykW.Size = New System.Drawing.Size(24, 15)
-        Me.lblUnitstxtAC_CompressorCapacitykW.TabIndex = 16
-        Me.lblUnitstxtAC_CompressorCapacitykW.Text = "Kw"
-        Me.ToolTip1.SetToolTip(Me.lblUnitstxtAC_CompressorCapacitykW, "Kilo Watts")
-        '
-        'lblcboAC_CompressorType
-        '
-        Me.lblcboAC_CompressorType.AutoSize = true
-        Me.lblcboAC_CompressorType.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!)
-        Me.lblcboAC_CompressorType.ForeColor = System.Drawing.Color.Black
-        Me.lblcboAC_CompressorType.Location = New System.Drawing.Point(14, 62)
-        Me.lblcboAC_CompressorType.Name = "lblcboAC_CompressorType"
-        Me.lblcboAC_CompressorType.Size = New System.Drawing.Size(122, 15)
-        Me.lblcboAC_CompressorType.TabIndex = 0
-        Me.lblcboAC_CompressorType.Text = "AC-Compressor Type"
+        Me.lbltxtAH_FuelFiredHeaterkW.AutoSize = true
+        Me.lbltxtAH_FuelFiredHeaterkW.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!)
+        Me.lbltxtAH_FuelFiredHeaterkW.ForeColor = System.Drawing.Color.Black
+        Me.lbltxtAH_FuelFiredHeaterkW.Location = New System.Drawing.Point(14, 62)
+        Me.lbltxtAH_FuelFiredHeaterkW.Name = "lbltxtAH_FuelFiredHeaterkW"
+        Me.lbltxtAH_FuelFiredHeaterkW.Size = New System.Drawing.Size(102, 15)
+        Me.lbltxtAH_FuelFiredHeaterkW.TabIndex = 0
+        Me.lbltxtAH_FuelFiredHeaterkW.Text = "Fuel Fired Heater"
         '
         'grpVentilation
         '
@@ -1542,7 +1455,7 @@ Partial Class frmHVACTool
         Me.grpVentilation.Controls.Add(Me.lblchkVEN_VentilationWhenBothHeatingAndACInactive)
         Me.grpVentilation.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.grpVentilation.Font = New System.Drawing.Font("Microsoft Sans Serif", 10!)
-        Me.grpVentilation.ForeColor = System.Drawing.Color.Green
+        Me.grpVentilation.ForeColor = System.Drawing.SystemColors.MenuHighlight
         Me.grpVentilation.Location = New System.Drawing.Point(34, 290)
         Me.grpVentilation.Name = "grpVentilation"
         Me.grpVentilation.Size = New System.Drawing.Size(409, 216)
@@ -1673,67 +1586,545 @@ Partial Class frmHVACTool
         Me.lblchkVEN_VentilationWhenBothHeatingAndACInactive.TabIndex = 0
         Me.lblchkVEN_VentilationWhenBothHeatingAndACInactive.Text = "Ventilation When Both Heating And ACInactive"
         '
-        'grpAuxHeater
+        'grpACSystem
         '
-        Me.grpAuxHeater.BackColor = System.Drawing.Color.Transparent
-        Me.grpAuxHeater.Controls.Add(Me.txtAH_EngineWasteHeatkW)
-        Me.grpAuxHeater.Controls.Add(Me.lbltxtAH_EngineWasteHeatkW)
-        Me.grpAuxHeater.Controls.Add(Me.txtAH_FuelFiredHeaterkW)
-        Me.grpAuxHeater.Controls.Add(Me.lbltxtAH_FuelFiredHeaterkW)
-        Me.grpAuxHeater.FlatStyle = System.Windows.Forms.FlatStyle.Popup
-        Me.grpAuxHeater.Font = New System.Drawing.Font("Microsoft Sans Serif", 10!)
-        Me.grpAuxHeater.ForeColor = System.Drawing.Color.Green
-        Me.grpAuxHeater.Location = New System.Drawing.Point(34, 512)
-        Me.grpAuxHeater.Name = "grpAuxHeater"
-        Me.grpAuxHeater.Size = New System.Drawing.Size(409, 96)
-        Me.grpAuxHeater.TabIndex = 32
-        Me.grpAuxHeater.TabStop = false
-        Me.grpAuxHeater.Text = "Aux Heater"
+        Me.grpACSystem.BackColor = System.Drawing.Color.Transparent
+        Me.grpACSystem.Controls.Add(Me.cboAC_CompressorType)
+        Me.grpACSystem.Controls.Add(Me.chkAC_InCabinRoomAC_System)
+        Me.grpACSystem.Controls.Add(Me.lblChkAC_InCabinRoomAC_System)
+        Me.grpACSystem.Controls.Add(Me.txtAC_CompressorCapacitykW)
+        Me.grpACSystem.Controls.Add(Me.lbltxtAC_CompressorCapacitykW)
+        Me.grpACSystem.Controls.Add(Me.lblUnitstxtAC_CompressorCapacitykW)
+        Me.grpACSystem.Controls.Add(Me.lblcboAC_CompressorType)
+        Me.grpACSystem.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.grpACSystem.Font = New System.Drawing.Font("Microsoft Sans Serif", 10!)
+        Me.grpACSystem.ForeColor = System.Drawing.SystemColors.MenuHighlight
+        Me.grpACSystem.Location = New System.Drawing.Point(34, 149)
+        Me.grpACSystem.Name = "grpACSystem"
+        Me.grpACSystem.Size = New System.Drawing.Size(409, 135)
+        Me.grpACSystem.TabIndex = 30
+        Me.grpACSystem.TabStop = false
+        Me.grpACSystem.Text = "AC-System"
         '
-        'txtAH_EngineWasteHeatkW
+        'cboAC_CompressorType
         '
-        Me.txtAH_EngineWasteHeatkW.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!)
-        Me.txtAH_EngineWasteHeatkW.Location = New System.Drawing.Point(220, 30)
-        Me.txtAH_EngineWasteHeatkW.Name = "txtAH_EngineWasteHeatkW"
-        Me.txtAH_EngineWasteHeatkW.Size = New System.Drawing.Size(97, 21)
-        Me.txtAH_EngineWasteHeatkW.TabIndex = 25
+        Me.cboAC_CompressorType.FormattingEnabled = true
+        Me.cboAC_CompressorType.Items.AddRange(New Object() {"Mechanical", "Electrical"})
+        Me.cboAC_CompressorType.Location = New System.Drawing.Point(217, 62)
+        Me.cboAC_CompressorType.Name = "cboAC_CompressorType"
+        Me.cboAC_CompressorType.Size = New System.Drawing.Size(100, 24)
+        Me.cboAC_CompressorType.TabIndex = 26
         '
-        'lbltxtAH_EngineWasteHeatkW
+        'chkAC_InCabinRoomAC_System
         '
-        Me.lbltxtAH_EngineWasteHeatkW.AutoSize = true
-        Me.lbltxtAH_EngineWasteHeatkW.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!)
-        Me.lbltxtAH_EngineWasteHeatkW.ForeColor = System.Drawing.Color.Black
-        Me.lbltxtAH_EngineWasteHeatkW.Location = New System.Drawing.Point(14, 33)
-        Me.lbltxtAH_EngineWasteHeatkW.Name = "lbltxtAH_EngineWasteHeatkW"
-        Me.lbltxtAH_EngineWasteHeatkW.Size = New System.Drawing.Size(112, 15)
-        Me.lbltxtAH_EngineWasteHeatkW.TabIndex = 24
-        Me.lbltxtAH_EngineWasteHeatkW.Text = "Engine Waste Heat"
+        Me.chkAC_InCabinRoomAC_System.AutoSize = true
+        Me.chkAC_InCabinRoomAC_System.Location = New System.Drawing.Point(220, 33)
+        Me.chkAC_InCabinRoomAC_System.Name = "chkAC_InCabinRoomAC_System"
+        Me.chkAC_InCabinRoomAC_System.Size = New System.Drawing.Size(31, 21)
+        Me.chkAC_InCabinRoomAC_System.TabIndex = 25
+        Me.chkAC_InCabinRoomAC_System.Text = " "
+        Me.chkAC_InCabinRoomAC_System.UseVisualStyleBackColor = true
         '
-        'txtAH_FuelFiredHeaterkW
+        'lblChkAC_InCabinRoomAC_System
         '
-        Me.txtAH_FuelFiredHeaterkW.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!)
-        Me.txtAH_FuelFiredHeaterkW.Location = New System.Drawing.Point(218, 59)
-        Me.txtAH_FuelFiredHeaterkW.Name = "txtAH_FuelFiredHeaterkW"
-        Me.txtAH_FuelFiredHeaterkW.ReadOnly = true
-        Me.txtAH_FuelFiredHeaterkW.Size = New System.Drawing.Size(97, 21)
-        Me.txtAH_FuelFiredHeaterkW.TabIndex = 1
+        Me.lblChkAC_InCabinRoomAC_System.AutoSize = true
+        Me.lblChkAC_InCabinRoomAC_System.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!)
+        Me.lblChkAC_InCabinRoomAC_System.ForeColor = System.Drawing.Color.Black
+        Me.lblChkAC_InCabinRoomAC_System.Location = New System.Drawing.Point(14, 33)
+        Me.lblChkAC_InCabinRoomAC_System.Name = "lblChkAC_InCabinRoomAC_System"
+        Me.lblChkAC_InCabinRoomAC_System.Size = New System.Drawing.Size(154, 15)
+        Me.lblChkAC_InCabinRoomAC_System.TabIndex = 24
+        Me.lblChkAC_InCabinRoomAC_System.Text = "In Cabin Room AC_System"
         '
-        'lbltxtAH_FuelFiredHeaterkW
+        'txtAC_CompressorCapacitykW
         '
-        Me.lbltxtAH_FuelFiredHeaterkW.AutoSize = true
-        Me.lbltxtAH_FuelFiredHeaterkW.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!)
-        Me.lbltxtAH_FuelFiredHeaterkW.ForeColor = System.Drawing.Color.Black
-        Me.lbltxtAH_FuelFiredHeaterkW.Location = New System.Drawing.Point(14, 62)
-        Me.lbltxtAH_FuelFiredHeaterkW.Name = "lbltxtAH_FuelFiredHeaterkW"
-        Me.lbltxtAH_FuelFiredHeaterkW.Size = New System.Drawing.Size(102, 15)
-        Me.lbltxtAH_FuelFiredHeaterkW.TabIndex = 0
-        Me.lbltxtAH_FuelFiredHeaterkW.Text = "Fuel Fired Heater"
+        Me.txtAC_CompressorCapacitykW.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!)
+        Me.txtAC_CompressorCapacitykW.Location = New System.Drawing.Point(218, 92)
+        Me.txtAC_CompressorCapacitykW.Name = "txtAC_CompressorCapacitykW"
+        Me.txtAC_CompressorCapacitykW.Size = New System.Drawing.Size(99, 21)
+        Me.txtAC_CompressorCapacitykW.TabIndex = 23
+        '
+        'lbltxtAC_CompressorCapacitykW
+        '
+        Me.lbltxtAC_CompressorCapacitykW.AutoSize = true
+        Me.lbltxtAC_CompressorCapacitykW.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!)
+        Me.lbltxtAC_CompressorCapacitykW.ForeColor = System.Drawing.Color.Black
+        Me.lbltxtAC_CompressorCapacitykW.Location = New System.Drawing.Point(14, 91)
+        Me.lbltxtAC_CompressorCapacitykW.Name = "lbltxtAC_CompressorCapacitykW"
+        Me.lbltxtAC_CompressorCapacitykW.Size = New System.Drawing.Size(140, 15)
+        Me.lbltxtAC_CompressorCapacitykW.TabIndex = 22
+        Me.lbltxtAC_CompressorCapacitykW.Text = "AC-Compressor capacity"
+        '
+        'lblUnitstxtAC_CompressorCapacitykW
+        '
+        Me.lblUnitstxtAC_CompressorCapacitykW.AutoSize = true
+        Me.lblUnitstxtAC_CompressorCapacitykW.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblUnitstxtAC_CompressorCapacitykW.Location = New System.Drawing.Point(352, 99)
+        Me.lblUnitstxtAC_CompressorCapacitykW.Name = "lblUnitstxtAC_CompressorCapacitykW"
+        Me.lblUnitstxtAC_CompressorCapacitykW.Size = New System.Drawing.Size(24, 15)
+        Me.lblUnitstxtAC_CompressorCapacitykW.TabIndex = 16
+        Me.lblUnitstxtAC_CompressorCapacitykW.Text = "Kw"
+        Me.ToolTip1.SetToolTip(Me.lblUnitstxtAC_CompressorCapacitykW, "Kilo Watts")
+        '
+        'lblcboAC_CompressorType
+        '
+        Me.lblcboAC_CompressorType.AutoSize = true
+        Me.lblcboAC_CompressorType.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!)
+        Me.lblcboAC_CompressorType.ForeColor = System.Drawing.Color.Black
+        Me.lblcboAC_CompressorType.Location = New System.Drawing.Point(14, 62)
+        Me.lblcboAC_CompressorType.Name = "lblcboAC_CompressorType"
+        Me.lblcboAC_CompressorType.Size = New System.Drawing.Size(122, 15)
+        Me.lblcboAC_CompressorType.TabIndex = 0
+        Me.lblcboAC_CompressorType.Text = "AC-Compressor Type"
+        '
+        'grpEnvironmentConditions
+        '
+        Me.grpEnvironmentConditions.BackColor = System.Drawing.Color.Transparent
+        Me.grpEnvironmentConditions.Controls.Add(Me.txtEC_EnviromentalTemperature)
+        Me.grpEnvironmentConditions.Controls.Add(Me.lbltxtEC_EnviromentalTemperature)
+        Me.grpEnvironmentConditions.Controls.Add(Me.txtEC_Solar)
+        Me.grpEnvironmentConditions.Controls.Add(Me.lbltxtEC_Solar)
+        Me.grpEnvironmentConditions.Controls.Add(Me.lblUnitstxtEC_EnviromentalTemperature)
+        Me.grpEnvironmentConditions.Controls.Add(Me.lblUnitstxtEC_Solar)
+        Me.grpEnvironmentConditions.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.grpEnvironmentConditions.Font = New System.Drawing.Font("Microsoft Sans Serif", 10!)
+        Me.grpEnvironmentConditions.ForeColor = System.Drawing.SystemColors.MenuHighlight
+        Me.grpEnvironmentConditions.Location = New System.Drawing.Point(34, 47)
+        Me.grpEnvironmentConditions.Name = "grpEnvironmentConditions"
+        Me.grpEnvironmentConditions.Size = New System.Drawing.Size(409, 96)
+        Me.grpEnvironmentConditions.TabIndex = 29
+        Me.grpEnvironmentConditions.TabStop = false
+        Me.grpEnvironmentConditions.Text = "Environmental Conditions"
+        '
+        'txtEC_EnviromentalTemperature
+        '
+        Me.txtEC_EnviromentalTemperature.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!)
+        Me.txtEC_EnviromentalTemperature.Location = New System.Drawing.Point(220, 30)
+        Me.txtEC_EnviromentalTemperature.Name = "txtEC_EnviromentalTemperature"
+        Me.txtEC_EnviromentalTemperature.Size = New System.Drawing.Size(97, 21)
+        Me.txtEC_EnviromentalTemperature.TabIndex = 25
+        '
+        'lbltxtEC_EnviromentalTemperature
+        '
+        Me.lbltxtEC_EnviromentalTemperature.AutoSize = true
+        Me.lbltxtEC_EnviromentalTemperature.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!)
+        Me.lbltxtEC_EnviromentalTemperature.ForeColor = System.Drawing.Color.Black
+        Me.lbltxtEC_EnviromentalTemperature.Location = New System.Drawing.Point(14, 33)
+        Me.lbltxtEC_EnviromentalTemperature.Name = "lbltxtEC_EnviromentalTemperature"
+        Me.lbltxtEC_EnviromentalTemperature.Size = New System.Drawing.Size(153, 15)
+        Me.lbltxtEC_EnviromentalTemperature.TabIndex = 24
+        Me.lbltxtEC_EnviromentalTemperature.Text = "Enviromental Temperature"
+        '
+        'txtEC_Solar
+        '
+        Me.txtEC_Solar.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!)
+        Me.txtEC_Solar.Location = New System.Drawing.Point(218, 59)
+        Me.txtEC_Solar.Name = "txtEC_Solar"
+        Me.txtEC_Solar.Size = New System.Drawing.Size(97, 21)
+        Me.txtEC_Solar.TabIndex = 1
+        '
+        'lbltxtEC_Solar
+        '
+        Me.lbltxtEC_Solar.AutoSize = true
+        Me.lbltxtEC_Solar.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!)
+        Me.lbltxtEC_Solar.ForeColor = System.Drawing.Color.Black
+        Me.lbltxtEC_Solar.Location = New System.Drawing.Point(14, 62)
+        Me.lbltxtEC_Solar.Name = "lbltxtEC_Solar"
+        Me.lbltxtEC_Solar.Size = New System.Drawing.Size(36, 15)
+        Me.lbltxtEC_Solar.TabIndex = 0
+        Me.lbltxtEC_Solar.Text = "Solar"
+        '
+        'lblUnitstxtEC_EnviromentalTemperature
+        '
+        Me.lblUnitstxtEC_EnviromentalTemperature.AutoSize = true
+        Me.lblUnitstxtEC_EnviromentalTemperature.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblUnitstxtEC_EnviromentalTemperature.Location = New System.Drawing.Point(348, 33)
+        Me.lblUnitstxtEC_EnviromentalTemperature.Name = "lblUnitstxtEC_EnviromentalTemperature"
+        Me.lblUnitstxtEC_EnviromentalTemperature.Size = New System.Drawing.Size(22, 15)
+        Me.lblUnitstxtEC_EnviromentalTemperature.TabIndex = 16
+        Me.lblUnitstxtEC_EnviromentalTemperature.Text = "oC"
+        Me.ToolTip1.SetToolTip(Me.lblUnitstxtEC_EnviromentalTemperature, "Degrees Centigrade")
+        '
+        'lblUnitstxtEC_Solar
+        '
+        Me.lblUnitstxtEC_Solar.AutoSize = true
+        Me.lblUnitstxtEC_Solar.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblUnitstxtEC_Solar.Location = New System.Drawing.Point(348, 59)
+        Me.lblUnitstxtEC_Solar.Name = "lblUnitstxtEC_Solar"
+        Me.lblUnitstxtEC_Solar.Size = New System.Drawing.Size(45, 15)
+        Me.lblUnitstxtEC_Solar.TabIndex = 26
+        Me.lblUnitstxtEC_Solar.Text = "W/m^3"
+        Me.ToolTip1.SetToolTip(Me.lblUnitstxtEC_Solar, "Watts/Metre Cubed")
+        '
+        'tabTechBenefits
+        '
+        Me.tabTechBenefits.CausesValidation = false
+        Me.tabTechBenefits.Controls.Add(Me.lblIndex)
+        Me.tabTechBenefits.Controls.Add(Me.txtIndex)
+        Me.tabTechBenefits.Controls.Add(Me.btnUpdate)
+        Me.tabTechBenefits.Controls.Add(Me.lblLineType)
+        Me.tabTechBenefits.Controls.Add(Me.chkActiveVC)
+        Me.tabTechBenefits.Controls.Add(Me.lblCoolingColumn)
+        Me.tabTechBenefits.Controls.Add(Me.chkActiveVV)
+        Me.tabTechBenefits.Controls.Add(Me.txtBenefitName)
+        Me.tabTechBenefits.Controls.Add(Me.chkActiveVH)
+        Me.tabTechBenefits.Controls.Add(Me.lblBenefitName)
+        Me.tabTechBenefits.Controls.Add(Me.chkOnVehicle)
+        Me.tabTechBenefits.Controls.Add(Me.lblVentelationColumn)
+        Me.tabTechBenefits.Controls.Add(Me.lblHeatingColumn)
+        Me.tabTechBenefits.Controls.Add(Me.cboLineType)
+        Me.tabTechBenefits.Controls.Add(Me.pnlRaisedFloorRow)
+        Me.tabTechBenefits.Controls.Add(Me.pnlSemiLowFloorRow)
+        Me.tabTechBenefits.Controls.Add(Me.pnlLowFloorRow)
+        Me.tabTechBenefits.Controls.Add(Me.lblCategory)
+        Me.tabTechBenefits.Controls.Add(Me.cboCategory)
+        Me.tabTechBenefits.Controls.Add(Me.gvTechBenefitLines)
+        Me.tabTechBenefits.Controls.Add(Me.lblUnits)
+        Me.tabTechBenefits.Controls.Add(Me.cboUnits)
+        Me.tabTechBenefits.Location = New System.Drawing.Point(4, 22)
+        Me.tabTechBenefits.Name = "tabTechBenefits"
+        Me.tabTechBenefits.Padding = New System.Windows.Forms.Padding(3)
+        Me.tabTechBenefits.Size = New System.Drawing.Size(937, 617)
+        Me.tabTechBenefits.TabIndex = 5
+        Me.tabTechBenefits.Text = " Tech List Input "
+        Me.tabTechBenefits.UseVisualStyleBackColor = true
+        '
+        'btnUpdate
+        '
+        Me.btnUpdate.Location = New System.Drawing.Point(814, 18)
+        Me.btnUpdate.Name = "btnUpdate"
+        Me.btnUpdate.Size = New System.Drawing.Size(75, 23)
+        Me.btnUpdate.TabIndex = 25
+        Me.btnUpdate.Text = "Update/Add"
+        Me.btnUpdate.UseVisualStyleBackColor = true
+        '
+        'lblLineType
+        '
+        Me.lblLineType.AutoSize = true
+        Me.lblLineType.Location = New System.Drawing.Point(415, 74)
+        Me.lblLineType.Name = "lblLineType"
+        Me.lblLineType.Size = New System.Drawing.Size(51, 13)
+        Me.lblLineType.TabIndex = 31
+        Me.lblLineType.Text = "LineType"
+        '
+        'chkActiveVC
+        '
+        Me.chkActiveVC.AutoSize = true
+        Me.chkActiveVC.Location = New System.Drawing.Point(490, 173)
+        Me.chkActiveVC.Name = "chkActiveVC"
+        Me.chkActiveVC.Size = New System.Drawing.Size(73, 17)
+        Me.chkActiveVC.TabIndex = 16
+        Me.chkActiveVC.Text = "Active VC"
+        Me.chkActiveVC.UseVisualStyleBackColor = true
+        '
+        'lblCoolingColumn
+        '
+        Me.lblCoolingColumn.AutoSize = true
+        Me.lblCoolingColumn.Location = New System.Drawing.Point(316, 100)
+        Me.lblCoolingColumn.Name = "lblCoolingColumn"
+        Me.lblCoolingColumn.Size = New System.Drawing.Size(42, 13)
+        Me.lblCoolingColumn.TabIndex = 30
+        Me.lblCoolingColumn.Text = "Cooling"
+        '
+        'chkActiveVV
+        '
+        Me.chkActiveVV.AutoSize = true
+        Me.chkActiveVV.Location = New System.Drawing.Point(490, 145)
+        Me.chkActiveVV.Name = "chkActiveVV"
+        Me.chkActiveVV.Size = New System.Drawing.Size(73, 17)
+        Me.chkActiveVV.TabIndex = 15
+        Me.chkActiveVV.Text = "Active VV"
+        Me.chkActiveVV.UseVisualStyleBackColor = true
+        '
+        'txtBenefitName
+        '
+        Me.txtBenefitName.Location = New System.Drawing.Point(488, 41)
+        Me.txtBenefitName.Name = "txtBenefitName"
+        Me.txtBenefitName.Size = New System.Drawing.Size(270, 20)
+        Me.txtBenefitName.TabIndex = 2
+        '
+        'chkActiveVH
+        '
+        Me.chkActiveVH.AutoSize = true
+        Me.chkActiveVH.Location = New System.Drawing.Point(490, 117)
+        Me.chkActiveVH.Name = "chkActiveVH"
+        Me.chkActiveVH.Size = New System.Drawing.Size(74, 17)
+        Me.chkActiveVH.TabIndex = 14
+        Me.chkActiveVH.Text = "Active VH"
+        Me.chkActiveVH.UseVisualStyleBackColor = true
+        '
+        'lblBenefitName
+        '
+        Me.lblBenefitName.AutoSize = true
+        Me.lblBenefitName.Location = New System.Drawing.Point(411, 44)
+        Me.lblBenefitName.Name = "lblBenefitName"
+        Me.lblBenefitName.Size = New System.Drawing.Size(71, 13)
+        Me.lblBenefitName.TabIndex = 18
+        Me.lblBenefitName.Text = "Benefit Name"
+        '
+        'chkOnVehicle
+        '
+        Me.chkOnVehicle.AutoSize = true
+        Me.chkOnVehicle.Location = New System.Drawing.Point(490, 202)
+        Me.chkOnVehicle.Name = "chkOnVehicle"
+        Me.chkOnVehicle.Size = New System.Drawing.Size(78, 17)
+        Me.chkOnVehicle.TabIndex = 17
+        Me.chkOnVehicle.Text = "On Vehicle"
+        Me.chkOnVehicle.UseVisualStyleBackColor = true
+        '
+        'lblVentelationColumn
+        '
+        Me.lblVentelationColumn.AutoSize = true
+        Me.lblVentelationColumn.Location = New System.Drawing.Point(215, 100)
+        Me.lblVentelationColumn.Name = "lblVentelationColumn"
+        Me.lblVentelationColumn.Size = New System.Drawing.Size(56, 13)
+        Me.lblVentelationColumn.TabIndex = 29
+        Me.lblVentelationColumn.Text = "Ventilation"
+        '
+        'lblHeatingColumn
+        '
+        Me.lblHeatingColumn.AutoSize = true
+        Me.lblHeatingColumn.Location = New System.Drawing.Point(122, 100)
+        Me.lblHeatingColumn.Name = "lblHeatingColumn"
+        Me.lblHeatingColumn.Size = New System.Drawing.Size(44, 13)
+        Me.lblHeatingColumn.TabIndex = 28
+        Me.lblHeatingColumn.Text = "Heating"
+        '
+        'cboLineType
+        '
+        Me.cboLineType.AutoCompleteCustomSource.AddRange(New String() {"Normal", "Active Ventelation"})
+        Me.cboLineType.FormattingEnabled = true
+        Me.cboLineType.Items.AddRange(New Object() {"Normal", "ActiveVentilation"})
+        Me.cboLineType.Location = New System.Drawing.Point(488, 71)
+        Me.cboLineType.Name = "cboLineType"
+        Me.cboLineType.Size = New System.Drawing.Size(270, 21)
+        Me.cboLineType.TabIndex = 4
+        '
+        'pnlRaisedFloorRow
+        '
+        Me.pnlRaisedFloorRow.BackColor = System.Drawing.Color.Lavender
+        Me.pnlRaisedFloorRow.Controls.Add(Me.txtRaisedFloorH)
+        Me.pnlRaisedFloorRow.Controls.Add(Me.txtRaisedFloorC)
+        Me.pnlRaisedFloorRow.Controls.Add(Me.txtRaisedFloorV)
+        Me.pnlRaisedFloorRow.Controls.Add(Me.lblRaisedFloorRow)
+        Me.pnlRaisedFloorRow.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
+        Me.pnlRaisedFloorRow.ForeColor = System.Drawing.Color.Black
+        Me.pnlRaisedFloorRow.Location = New System.Drawing.Point(26, 193)
+        Me.pnlRaisedFloorRow.Name = "pnlRaisedFloorRow"
+        Me.pnlRaisedFloorRow.Size = New System.Drawing.Size(379, 33)
+        Me.pnlRaisedFloorRow.TabIndex = 9
+        '
+        'txtRaisedFloorH
+        '
+        Me.txtRaisedFloorH.Location = New System.Drawing.Point(84, 6)
+        Me.txtRaisedFloorH.Name = "txtRaisedFloorH"
+        Me.txtRaisedFloorH.Size = New System.Drawing.Size(70, 20)
+        Me.txtRaisedFloorH.TabIndex = 11
+        '
+        'txtRaisedFloorC
+        '
+        Me.txtRaisedFloorC.Location = New System.Drawing.Point(281, 6)
+        Me.txtRaisedFloorC.Name = "txtRaisedFloorC"
+        Me.txtRaisedFloorC.Size = New System.Drawing.Size(70, 20)
+        Me.txtRaisedFloorC.TabIndex = 13
+        '
+        'txtRaisedFloorV
+        '
+        Me.txtRaisedFloorV.Location = New System.Drawing.Point(184, 6)
+        Me.txtRaisedFloorV.Name = "txtRaisedFloorV"
+        Me.txtRaisedFloorV.Size = New System.Drawing.Size(70, 20)
+        Me.txtRaisedFloorV.TabIndex = 12
+        '
+        'lblRaisedFloorRow
+        '
+        Me.lblRaisedFloorRow.AutoSize = true
+        Me.lblRaisedFloorRow.Location = New System.Drawing.Point(3, 9)
+        Me.lblRaisedFloorRow.Name = "lblRaisedFloorRow"
+        Me.lblRaisedFloorRow.Size = New System.Drawing.Size(66, 13)
+        Me.lblRaisedFloorRow.TabIndex = 23
+        Me.lblRaisedFloorRow.Text = "Raised Floor"
+        '
+        'pnlSemiLowFloorRow
+        '
+        Me.pnlSemiLowFloorRow.BackColor = System.Drawing.Color.Lavender
+        Me.pnlSemiLowFloorRow.Controls.Add(Me.txtSemiLowFloorH)
+        Me.pnlSemiLowFloorRow.Controls.Add(Me.txtSemiLowFloorC)
+        Me.pnlSemiLowFloorRow.Controls.Add(Me.txtSemiLowFloorV)
+        Me.pnlSemiLowFloorRow.Controls.Add(Me.lblSemiLowFloorRow)
+        Me.pnlSemiLowFloorRow.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
+        Me.pnlSemiLowFloorRow.ForeColor = System.Drawing.Color.Black
+        Me.pnlSemiLowFloorRow.Location = New System.Drawing.Point(26, 155)
+        Me.pnlSemiLowFloorRow.Name = "pnlSemiLowFloorRow"
+        Me.pnlSemiLowFloorRow.Size = New System.Drawing.Size(379, 33)
+        Me.pnlSemiLowFloorRow.TabIndex = 8
+        '
+        'txtSemiLowFloorH
+        '
+        Me.txtSemiLowFloorH.Location = New System.Drawing.Point(84, 6)
+        Me.txtSemiLowFloorH.Name = "txtSemiLowFloorH"
+        Me.txtSemiLowFloorH.Size = New System.Drawing.Size(70, 20)
+        Me.txtSemiLowFloorH.TabIndex = 8
+        '
+        'txtSemiLowFloorC
+        '
+        Me.txtSemiLowFloorC.Location = New System.Drawing.Point(281, 6)
+        Me.txtSemiLowFloorC.Name = "txtSemiLowFloorC"
+        Me.txtSemiLowFloorC.Size = New System.Drawing.Size(70, 20)
+        Me.txtSemiLowFloorC.TabIndex = 10
+        '
+        'txtSemiLowFloorV
+        '
+        Me.txtSemiLowFloorV.Location = New System.Drawing.Point(184, 6)
+        Me.txtSemiLowFloorV.Name = "txtSemiLowFloorV"
+        Me.txtSemiLowFloorV.Size = New System.Drawing.Size(70, 20)
+        Me.txtSemiLowFloorV.TabIndex = 9
+        '
+        'lblSemiLowFloorRow
+        '
+        Me.lblSemiLowFloorRow.AutoSize = true
+        Me.lblSemiLowFloorRow.Location = New System.Drawing.Point(3, 9)
+        Me.lblSemiLowFloorRow.Name = "lblSemiLowFloorRow"
+        Me.lblSemiLowFloorRow.Size = New System.Drawing.Size(79, 13)
+        Me.lblSemiLowFloorRow.TabIndex = 22
+        Me.lblSemiLowFloorRow.Text = "Semi Low Floor"
+        '
+        'pnlLowFloorRow
+        '
+        Me.pnlLowFloorRow.BackColor = System.Drawing.Color.Lavender
+        Me.pnlLowFloorRow.Controls.Add(Me.txtLowFloorH)
+        Me.pnlLowFloorRow.Controls.Add(Me.txtLowFloorC)
+        Me.pnlLowFloorRow.Controls.Add(Me.txtLowFloorV)
+        Me.pnlLowFloorRow.Controls.Add(Me.lblLowFloorRow)
+        Me.pnlLowFloorRow.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!)
+        Me.pnlLowFloorRow.ForeColor = System.Drawing.Color.Black
+        Me.pnlLowFloorRow.Location = New System.Drawing.Point(26, 116)
+        Me.pnlLowFloorRow.Name = "pnlLowFloorRow"
+        Me.pnlLowFloorRow.Size = New System.Drawing.Size(379, 33)
+        Me.pnlLowFloorRow.TabIndex = 5
+        '
+        'txtLowFloorH
+        '
+        Me.txtLowFloorH.Location = New System.Drawing.Point(84, 6)
+        Me.txtLowFloorH.Name = "txtLowFloorH"
+        Me.txtLowFloorH.Size = New System.Drawing.Size(70, 20)
+        Me.txtLowFloorH.TabIndex = 5
+        '
+        'txtLowFloorC
+        '
+        Me.txtLowFloorC.Location = New System.Drawing.Point(280, 6)
+        Me.txtLowFloorC.Name = "txtLowFloorC"
+        Me.txtLowFloorC.Size = New System.Drawing.Size(70, 20)
+        Me.txtLowFloorC.TabIndex = 7
+        '
+        'txtLowFloorV
+        '
+        Me.txtLowFloorV.Location = New System.Drawing.Point(184, 6)
+        Me.txtLowFloorV.Name = "txtLowFloorV"
+        Me.txtLowFloorV.Size = New System.Drawing.Size(70, 20)
+        Me.txtLowFloorV.TabIndex = 6
+        '
+        'lblLowFloorRow
+        '
+        Me.lblLowFloorRow.AutoSize = true
+        Me.lblLowFloorRow.Location = New System.Drawing.Point(7, 9)
+        Me.lblLowFloorRow.Name = "lblLowFloorRow"
+        Me.lblLowFloorRow.Size = New System.Drawing.Size(53, 13)
+        Me.lblLowFloorRow.TabIndex = 21
+        Me.lblLowFloorRow.Text = "Low Floor"
+        '
+        'lblCategory
+        '
+        Me.lblCategory.AutoSize = true
+        Me.lblCategory.Location = New System.Drawing.Point(26, 71)
+        Me.lblCategory.Name = "lblCategory"
+        Me.lblCategory.Size = New System.Drawing.Size(49, 13)
+        Me.lblCategory.TabIndex = 19
+        Me.lblCategory.Text = "Category"
+        '
+        'cboCategory
+        '
+        Me.cboCategory.FormattingEnabled = true
+        Me.cboCategory.Location = New System.Drawing.Point(81, 71)
+        Me.cboCategory.Name = "cboCategory"
+        Me.cboCategory.Size = New System.Drawing.Size(324, 21)
+        Me.cboCategory.TabIndex = 3
+        '
+        'gvTechBenefitLines
+        '
+        Me.gvTechBenefitLines.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.gvTechBenefitLines.Location = New System.Drawing.Point(21, 238)
+        Me.gvTechBenefitLines.Name = "gvTechBenefitLines"
+        Me.gvTechBenefitLines.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect
+        Me.gvTechBenefitLines.Size = New System.Drawing.Size(885, 356)
+        Me.gvTechBenefitLines.TabIndex = 30
+        '
+        'lblUnits
+        '
+        Me.lblUnits.AutoSize = true
+        Me.lblUnits.Location = New System.Drawing.Point(26, 44)
+        Me.lblUnits.Name = "lblUnits"
+        Me.lblUnits.Size = New System.Drawing.Size(31, 13)
+        Me.lblUnits.TabIndex = 20
+        Me.lblUnits.Text = "Units"
+        '
+        'cboUnits
+        '
+        Me.cboUnits.AutoCompleteCustomSource.AddRange(New String() {"Fraction"})
+        Me.cboUnits.FormattingEnabled = true
+        Me.cboUnits.Items.AddRange(New Object() {"Fraction"})
+        Me.cboUnits.Location = New System.Drawing.Point(81, 44)
+        Me.cboUnits.Name = "cboUnits"
+        Me.cboUnits.Size = New System.Drawing.Size(324, 21)
+        Me.cboUnits.TabIndex = 1
+        '
+        'ErrorProvider1
+        '
+        Me.ErrorProvider1.ContainerControl = Me
+        '
+        'txtIndex
+        '
+        Me.txtIndex.Location = New System.Drawing.Point(81, 15)
+        Me.txtIndex.Name = "txtIndex"
+        Me.txtIndex.ReadOnly = true
+        Me.txtIndex.Size = New System.Drawing.Size(58, 20)
+        Me.txtIndex.TabIndex = 32
+        '
+        'lblIndex
+        '
+        Me.lblIndex.AutoSize = true
+        Me.lblIndex.Location = New System.Drawing.Point(29, 18)
+        Me.lblIndex.Name = "lblIndex"
+        Me.lblIndex.Size = New System.Drawing.Size(33, 13)
+        Me.lblIndex.TabIndex = 33
+        Me.lblIndex.Text = "Index"
+        '
+        'btnSave
+        '
+        Me.btnSave.Location = New System.Drawing.Point(721, 694)
+        Me.btnSave.Name = "btnSave"
+        Me.btnSave.Size = New System.Drawing.Size(75, 23)
+        Me.btnSave.TabIndex = 1
+        Me.btnSave.Text = "Save"
+        Me.btnSave.UseVisualStyleBackColor = true
+        '
+        'btnCancel
+        '
+        Me.btnCancel.Location = New System.Drawing.Point(826, 694)
+        Me.btnCancel.Name = "btnCancel"
+        Me.btnCancel.Size = New System.Drawing.Size(75, 23)
+        Me.btnCancel.TabIndex = 2
+        Me.btnCancel.Text = "Cancel"
+        Me.btnCancel.UseVisualStyleBackColor = true
         '
         'frmHVACTool
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange
+        Me.CausesValidation = false
         Me.ClientSize = New System.Drawing.Size(965, 729)
+        Me.Controls.Add(Me.btnCancel)
+        Me.Controls.Add(Me.btnSave)
         Me.Controls.Add(Me.tabMain)
         Me.Name = "frmHVACTool"
         Me.Text = "frmHVACTool"
@@ -1744,16 +2135,25 @@ Partial Class frmHVACTool
         Me.tabGeneralInputsBC.ResumeLayout(false)
         Me.GroupBox2.ResumeLayout(false)
         Me.GroupBox2.PerformLayout
-        CType(Me.ErrorProvider1,System.ComponentModel.ISupportInitialize).EndInit
         Me.tabGeneralInputsOther.ResumeLayout(false)
-        Me.grpEnvironmentConditions.ResumeLayout(false)
-        Me.grpEnvironmentConditions.PerformLayout
-        Me.grpACSystem.ResumeLayout(false)
-        Me.grpACSystem.PerformLayout
-        Me.grpVentilation.ResumeLayout(false)
-        Me.grpVentilation.PerformLayout
         Me.grpAuxHeater.ResumeLayout(false)
         Me.grpAuxHeater.PerformLayout
+        Me.grpVentilation.ResumeLayout(false)
+        Me.grpVentilation.PerformLayout
+        Me.grpACSystem.ResumeLayout(false)
+        Me.grpACSystem.PerformLayout
+        Me.grpEnvironmentConditions.ResumeLayout(false)
+        Me.grpEnvironmentConditions.PerformLayout
+        Me.tabTechBenefits.ResumeLayout(false)
+        Me.tabTechBenefits.PerformLayout
+        Me.pnlRaisedFloorRow.ResumeLayout(false)
+        Me.pnlRaisedFloorRow.PerformLayout
+        Me.pnlSemiLowFloorRow.ResumeLayout(false)
+        Me.pnlSemiLowFloorRow.PerformLayout
+        Me.pnlLowFloorRow.ResumeLayout(false)
+        Me.pnlLowFloorRow.PerformLayout
+        CType(Me.gvTechBenefitLines,System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.ErrorProvider1,System.ComponentModel.ISupportInitialize).EndInit
         Me.ResumeLayout(false)
 
 End Sub
@@ -1898,4 +2298,40 @@ End Sub
     Friend WithEvents lblUnitstxtEC_EnviromentalTemperature As System.Windows.Forms.Label
     Friend WithEvents lblUnitstxtEC_Solar As System.Windows.Forms.Label
     Friend WithEvents tabTechBenefits As System.Windows.Forms.TabPage
+    Friend WithEvents gvTechBenefitLines As System.Windows.Forms.DataGridView
+    Friend WithEvents lblCategory As System.Windows.Forms.Label
+    Friend WithEvents lblRaisedFloorRow As System.Windows.Forms.Label
+    Friend WithEvents chkActiveVC As System.Windows.Forms.CheckBox
+    Friend WithEvents cboCategory As System.Windows.Forms.ComboBox
+    Friend WithEvents chkActiveVV As System.Windows.Forms.CheckBox
+    Friend WithEvents lblSemiLowFloorRow As System.Windows.Forms.Label
+    Friend WithEvents chkActiveVH As System.Windows.Forms.CheckBox
+    Friend WithEvents lblUnits As System.Windows.Forms.Label
+    Friend WithEvents chkOnVehicle As System.Windows.Forms.CheckBox
+    Friend WithEvents lblLowFloorRow As System.Windows.Forms.Label
+    Friend WithEvents cboUnits As System.Windows.Forms.ComboBox
+    Friend WithEvents txtRaisedFloorC As System.Windows.Forms.TextBox
+    Friend WithEvents cboLineType As System.Windows.Forms.ComboBox
+    Friend WithEvents txtLowFloorH As System.Windows.Forms.TextBox
+    Friend WithEvents txtRaisedFloorV As System.Windows.Forms.TextBox
+    Friend WithEvents txtLowFloorV As System.Windows.Forms.TextBox
+    Friend WithEvents txtRaisedFloorH As System.Windows.Forms.TextBox
+    Friend WithEvents txtLowFloorC As System.Windows.Forms.TextBox
+    Friend WithEvents txtSemiLowFloorC As System.Windows.Forms.TextBox
+    Friend WithEvents txtSemiLowFloorH As System.Windows.Forms.TextBox
+    Friend WithEvents txtSemiLowFloorV As System.Windows.Forms.TextBox
+    Friend WithEvents lblBenefitName As System.Windows.Forms.Label
+    Friend WithEvents txtBenefitName As System.Windows.Forms.TextBox
+    Friend WithEvents lblCoolingColumn As System.Windows.Forms.Label
+    Friend WithEvents lblVentelationColumn As System.Windows.Forms.Label
+    Friend WithEvents lblHeatingColumn As System.Windows.Forms.Label
+    Friend WithEvents pnlRaisedFloorRow As System.Windows.Forms.Panel
+    Friend WithEvents pnlSemiLowFloorRow As System.Windows.Forms.Panel
+    Friend WithEvents pnlLowFloorRow As System.Windows.Forms.Panel
+    Friend WithEvents btnUpdate As System.Windows.Forms.Button
+    Friend WithEvents lblLineType As System.Windows.Forms.Label
+    Friend WithEvents lblIndex As System.Windows.Forms.Label
+    Friend WithEvents txtIndex As System.Windows.Forms.TextBox
+    Friend WithEvents btnCancel As System.Windows.Forms.Button
+    Friend WithEvents btnSave As System.Windows.Forms.Button
 End Class
