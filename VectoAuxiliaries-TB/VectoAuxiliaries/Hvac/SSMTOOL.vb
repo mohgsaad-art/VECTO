@@ -15,6 +15,7 @@ Implements ISSMTOOL
  Public genInputs As ISSMGenInputs
  Public techList As ISSMTechList
 
+
  'Public facing properties, final results from calculations.
  Public ReadOnly Property ElectricalWAdjusted As Single Implements ISSMTOOL.ElectricalWAdjusted
    Get
@@ -51,16 +52,14 @@ Implements ISSMTOOL
 
  'Constructors
  Sub New()
-
+  
 
  End Sub
  Sub New(filePath As String)
 
    Me.filePath = filePath
-
-   genInputs = New SSMGenInputs(True)
-   techList = New SSMTechList(filePath, genInputs)
-
+   genInputs = New SSMGenInputs()
+   techList  = New SSMTechList(filePath,genInputs)
 
  End Sub
 
@@ -71,14 +70,11 @@ Implements ISSMTOOL
 
      genInputs.InjectFrom(DirectCast(from, SSMTOOL).genInputs)
 
-     techList.InjectFrom(DirectCast(from, SSMTOOL).techList)
      techList.Clear()
 
      For Each line As TechListBenefitLine In DirectCast(from, SSMTOOL).techList.TechLines
 
-         Dim newLine As ITechListBenefitLine = New TechListBenefitLine(Me.genInputs)
-         newLine.InjectFrom(line)
-         techList.Add(newLine, feedback)
+         techList.Add(line, feedback)
 
     Next
 
@@ -112,7 +108,7 @@ End Function
 
     Dim returnValue As Boolean = True
     Dim settings As JsonSerializerSettings = New JsonSerializerSettings()
-    Dim tmpAux As SSMTOOL = New SSMTOOL()
+    Dim tmpAux As SSMTOOL = New SSMTOOL(filePath)
 
     settings.TypeNameHandling = TypeNameHandling.Objects
 
@@ -123,6 +119,16 @@ End Function
 
 
        tmpAux = JsonConvert.DeserializeObject(Of SSMTOOL)(output, settings)
+
+       tmpAux.techList.SetSSMGeneralInputs( tmpAux.genInputs)
+
+       For Each tll As TechListBenefitLine In tmpAux.techList.TechLines
+
+         tll.inputSheet= tmpAux.genInputs
+
+       Next
+
+   
 
        'This is where we Assume values of loaded( Deserialized ) object.
        Clone(tmpAux)

@@ -25,18 +25,13 @@ Public  originalConfig As AuxiliaryConfig ' required to test if the form is dirt
 Private TabColors As Dictionary(Of TabPage, Color) = New Dictionary(Of TabPage, Color)()
 Private processing As Boolean = False
 Private SecondsIntoCycle As Integer = 0
-
 Private vectoFile As String = ""
 Private vectoPath As String = ""
 Private auxFile As string
-
 Private cmFilesList As String()
-
-
 Private SaveClicked As Boolean
 
 #End Region
-
 
 Private Function ValidateAuxFileName( filename As String ) As Boolean
 
@@ -50,6 +45,7 @@ Private Function ValidateAuxFileName( filename As String ) As Boolean
 
 End Function
 
+'Constructor
 Public Sub new( byval fileName As String, byval vectoFileName As String )
 
 
@@ -75,7 +71,7 @@ Public Sub new( byval fileName As String, byval vectoFileName As String )
 
     Catch ex As Exception
 
-       MessageBox.Show( "The filename you supplied {0} was invalid or could not be found ", fileName )
+     MessageBox.Show( "The filename you supplied {0} was invalid or could not be found ", fileName )
      Me.DialogResult=Windows.Forms.DialogResult.Abort
      Me.Close
 
@@ -84,207 +80,6 @@ Public Sub new( byval fileName As String, byval vectoFileName As String )
 
     
 End Sub
-
-
-Private Sub SetupControls()
-
-
-      Dim cIndex As Integer = 0
-
-      gvElectricalConsumables.AutoGenerateColumns = False
-
-     'ElectricalConsumerGrid 
-     'Columns
-     cIndex = gvElectricalConsumables.Columns.Add("Category", "Category")
-     gvElectricalConsumables.Columns(cIndex).DataPropertyName = "Category"
-     gvElectricalConsumables.Columns(cIndex).MinimumWidth = 150
-     gvElectricalConsumables.Columns(cIndex).ReadOnly = True
-     gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
-     gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
-
-     cIndex = gvElectricalConsumables.Columns.Add("ConsumerName", "Name")
-
-     gvElectricalConsumables.Columns(cIndex).DataPropertyName = "ConsumerName"
-     gvElectricalConsumables.Columns(cIndex).MinimumWidth = 308
-     gvElectricalConsumables.Columns(cIndex).ReadOnly = True
-     gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
-     gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
-
-     Dim baseVehicle As New DataGridViewCheckBoxColumn(False)
-     baseVehicle.HeaderText = "Base Vehicle"
-     cIndex = gvElectricalConsumables.Columns.Add(baseVehicle)
-     gvElectricalConsumables.Columns(cIndex).DataPropertyName = "BaseVehicle"
-     gvElectricalConsumables.Columns(cIndex).Width = 75
-     gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
-     gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
-     gvElectricalConsumables.Columns(cIndex).HeaderCell.ToolTipText = "Energy included in the calculations of base vehicle"
-
-     cIndex = gvElectricalConsumables.Columns.Add("NominalConsumptionAmps", "Nominal Amps")
-     gvElectricalConsumables.Columns(cIndex).DataPropertyName = "NominalConsumptionAmps"
-     gvElectricalConsumables.Columns(cIndex).Width = 70
-     gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
-     gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
-     gvElectricalConsumables.Columns(cIndex).HeaderCell.ToolTipText = "Nominal consumption in AMPS"
-
-     cIndex = gvElectricalConsumables.Columns.Add("PhaseIdle_TractionOn", "PhaseIdle/ TractionOn")
-     gvElectricalConsumables.Columns(cIndex).DataPropertyName = "PhaseIdle_TractionOn"
-     gvElectricalConsumables.Columns(cIndex).Width = 70
-     gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
-     gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
-     gvElectricalConsumables.Columns(cIndex).HeaderCell.ToolTipText = "Represents the amount of time (during engine fueling) as " & vbCrLf & "percentage that the consumer is active during the cycle."
-
-     cIndex = gvElectricalConsumables.Columns.Add("NumberInActualVehicle", "Num in Vehicle")
-     gvElectricalConsumables.Columns(cIndex).DataPropertyName = "NumberInActualVehicle"
-     gvElectricalConsumables.Columns(cIndex).Width = 70
-     gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
-     gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
-     gvElectricalConsumables.Columns(cIndex).HeaderCell.ToolTipText = "Number of consumables of this" & vbCrLf & "type installed on the vehicle."
-
-     'ResultCard Grids
-
-     'Handler for deleting rows.
-
-
-     'IDLE
-
-     cIndex = gvResultsCardIdle.Columns.Add("Amps", "Amps")
-     gvResultsCardIdle.Columns(cIndex).DataPropertyName = "Amps"
-     gvResultsCardIdle.Columns(cIndex).Width = 65
-
-     cIndex = gvResultsCardIdle.Columns.Add("SmartAmps", "SmartAmps")
-     gvResultsCardIdle.Columns(cIndex).DataPropertyName = "SmartAmps"
-     gvResultsCardIdle.Columns(cIndex).Width = 65
-
-     'TRACTION
-     cIndex = gvResultsCardTraction.Columns.Add("Amps", "Amps")
-     gvResultsCardTraction.Columns(cIndex).DataPropertyName = "Amps"
-     gvResultsCardTraction.Columns(cIndex).Width = 65
-
-     cIndex = gvResultsCardTraction.Columns.Add("SmartAmps", "SmartAmps")
-     gvResultsCardTraction.Columns(cIndex).DataPropertyName = "SmartAmps"
-     gvResultsCardTraction.Columns(cIndex).Width = 65
-
-     'OVERRUN
-     cIndex = gvResultsCardOverrun.Columns.Add("Amps", "Amps")
-     gvResultsCardOverrun.Columns(cIndex).DataPropertyName = "Amps"
-     gvResultsCardOverrun.Columns(cIndex).Width = 65
-
-     cIndex = gvResultsCardOverrun.Columns.Add("SmartAmps", "SmartAmps")
-     gvResultsCardOverrun.Columns(cIndex).DataPropertyName = "SmartAmps"
-     gvResultsCardOverrun.Columns(cIndex).Width = 65
-
-
-
-
-End Sub
-#Region "Binding Control"
-
-
-Private Sub CreateBindings()
-
-     'auxConfig.Vecto Bindings
-     txtPowernetVoltage.DataBindings.Add("Text", auxConfig.ElectricalUserInputsConfig, "PowerNetVoltage")
-     'txtVehicleWeightKG.DataBindings.Add("Text", auxConfig.VectoInputs, "VehicleWeightKG")
-     'cboCycle.DataBindings.Add("Text", auxConfig.VectoInputs, "Cycle")
-     txtFuelMap.DataBindings.Add("Text", auxConfig.VectoInputs, "FuelMap")
-
-     'Electricals General
-     txtAlternatorMapPath.DataBindings.Add("Text", auxConfig.ElectricalUserInputsConfig, "AlternatorMap")
-     txtAlternatorGearEfficiency.DataBindings.Add("Text", auxConfig.ElectricalUserInputsConfig, "AlternatorGearEfficiency")
-     txtDoorActuationTimeSeconds.DataBindings.Add("Text", auxConfig.ElectricalUserInputsConfig, "DoorActuationTimeSecond")
-     chkSmartElectricals.DataBindings.Add("Checked", auxConfig.ElectricalUserInputsConfig, "SmartElectrical", False, DataSourceUpdateMode.OnPropertyChanged)
-
-
-     'Electrical ConsumablesGrid
-     Dim electricalConsumerBinding As New BindingList(Of IElectricalConsumer)(auxConfig.ElectricalUserInputsConfig.ElectricalConsumers.Items)
-     gvElectricalConsumables.DataSource = electricalConsumerBinding
-
-
-
-     'ResultCards
-
-         'IDLE
-         Dim idleBinding as BindingList(Of SmartResult)
-         idleBinding = New BindingList(Of SmartResult)(auxConfig.ElectricalUserInputsConfig.ResultCardIdle.Results)
-         idleBinding.AllowNew = True
-         idleBinding.AllowRemove = True
-         gvResultsCardIdle.DataSource = idleBinding
-
-         'TRACTION
-         Dim tractionBinding As BindingList(Of SmartResult)
-         tractionBinding = New BindingList(Of SmartResult)(auxConfig.ElectricalUserInputsConfig.ResultCardTraction.Results)
-         tractionBinding.AllowNew = True
-         tractionBinding.AllowRemove = True
-         gvResultsCardTraction.DataSource = tractionBinding
-
-         'OVERRUN
-         Dim overrunBinding As BindingList(Of SmartResult)
-         overrunBinding = New BindingList(Of SmartResult)(auxConfig.ElectricalUserInputsConfig.ResultCardOverrun.Results)
-         overrunBinding.AllowNew = True
-         overrunBinding.AllowRemove = True
-         gvResultsCardOverrun.DataSource = overrunBinding
-
-
-        'Pneumatic Auxillaries Binding
-        txtAdBlueNIperMinute.DataBindings.Add("Text", auxConfig.PneumaticAuxillariesConfig, "AdBlueNIperMinute")
-
-        txtOverrunUtilisationForCompressionFraction.DataBindings.Add("Text", auxConfig.PneumaticAuxillariesConfig, "OverrunUtilisationForCompressionFraction")
-        txtBrakingWithRetarderNIperKG.DataBindings.Add("Text", auxConfig.PneumaticAuxillariesConfig, "BrakingWithRetarderNIperKG")
-        txtBrakingNoRetarderNIperKG.DataBindings.Add("Text", auxConfig.PneumaticAuxillariesConfig, "BrakingNoRetarderNIperKG")
-        txtBreakingPerKneelingNIperKGinMM.DataBindings.Add("Text", auxConfig.PneumaticAuxillariesConfig, "BreakingPerKneelingNIperKGinMM", True, DataSourceUpdateMode.OnPropertyChanged, Nothing, "0.########")
-        txtPerDoorOpeningNI.DataBindings.Add("Text", auxConfig.PneumaticAuxillariesConfig, "PerDoorOpeningNI")
-        txtPerStopBrakeActuationNIperKG.DataBindings.Add("Text", auxConfig.PneumaticAuxillariesConfig, "PerStopBrakeActuationNIperKG")
-        txtAirControlledSuspensionNIperMinute.DataBindings.Add("Text", auxConfig.PneumaticAuxillariesConfig, "AirControlledSuspensionNIperMinute")
-        txtNonSmartRegenFractionTotalAirDemand.DataBindings.Add("Text", auxConfig.PneumaticAuxillariesConfig, "NonSmartRegenFractionTotalAirDemand")
-        txtSmartRegenFractionTotalAirDemand.DataBindings.Add("Text", auxConfig.PneumaticAuxillariesConfig, "SmartRegenFractionTotalAirDemand")
-        txtDeadVolumeLitres.DataBindings.Add("Text", auxConfig.PneumaticAuxillariesConfig, "DeadVolumeLitres")
-        txtDeadVolBlowOutsPerLitresperHour.DataBindings.Add("Text", auxConfig.PneumaticAuxillariesConfig, "DeadVolBlowOutsPerLitresperHour")
-
-        'Pneumatic UserInputsConfig Binding    
-        txtCompressorMap.DataBindings.Add("Text", auxConfig.PneumaticUserInputsConfig, "CompressorMap")
-        txtCompressorGearEfficiency.DataBindings.Add("Text", auxConfig.PneumaticUserInputsConfig, "CompressorGearEfficiency")
-        txtCompressorGearRatio.DataBindings.Add("Text", auxConfig.PneumaticUserInputsConfig, "CompressorGearRatio")
-        txtActuationsMap.DataBindings.Add("Text", auxConfig.PneumaticUserInputsConfig, "ActuationsMap")
-        chkSmartAirCompression.DataBindings.Add("Checked", auxConfig.PneumaticUserInputsConfig, "SmartAirCompression", False, DataSourceUpdateMode.OnPropertyChanged)
-
-
-
-
-        chkSmartRegeneration.DataBindings.Add("Checked", auxConfig.PneumaticUserInputsConfig, "SmartRegeneration", False, DataSourceUpdateMode.OnPropertyChanged)
-        chkRetarderBrake.DataBindings.Add("Checked", auxConfig.PneumaticUserInputsConfig, "RetarderBrake")
-        txtKneelingHeightMillimeters.DataBindings.Add("Text", auxConfig.PneumaticUserInputsConfig, "KneelingHeightMillimeters")
-        cboAirSuspensionControl.DataBindings.Add("Text", auxConfig.PneumaticUserInputsConfig, "AirSuspensionControl", False)
-        cboAdBlueDosing.DataBindings.Add("Text", auxConfig.PneumaticUserInputsConfig, "AdBlueDosing")
-        cboDoors.DataBindings.Add("Text", auxConfig.PneumaticUserInputsConfig, "Doors")
-
-        'HVAC Bindings     
-        txtHVACElectricalLoadPowerWatts.DataBindings.Add("Text", auxConfig.HvacUserInputsConfig.SteadyStateModel, "HVACElectricalLoadPowerWatts",False,DataSourceUpdateMode.OnPropertyChanged)
-        txtHVACFuellingLitresPerHour.DataBindings.Add("Text", auxConfig.HvacUserInputsConfig.SteadyStateModel, "HVACFuellingLitresPerHour",False,DataSourceUpdateMode.OnPropertyChanged)
-        txtHVACMechanicalLoadPowerWatts.DataBindings.Add("Text", auxConfig.HvacUserInputsConfig.SteadyStateModel, "HVACMechanicalLoadPowerWatts",False,DataSourceUpdateMode.OnPropertyChanged)
-
-        txtSSMFilePath.DataBindings.Add( "Text", auxConfig.HvacUserInputsConfig,"SSMFilePath")
-
-
-        'Signals
-
-
-
-End Sub
-
-Private Sub EnsureBinding()
-        With tabMain
-            Dim lastSelectedTabIndex As Integer = .SelectedIndex
-            If lastSelectedTabIndex < 0 OrElse lastSelectedTabIndex > .TabCount Then lastSelectedTabIndex = 0
-            For currentTab As Integer = 0 To .TabCount - 1
-                .SelectedIndex = currentTab
-            Next
-            .SelectedIndex = 0
-        End With
-    End Sub
-
-
-#End Region
-
 
 'Validation
 #Region "Validation Helpers"
@@ -722,7 +517,6 @@ End Function
 
 #End Region
 
-
 'Form Controls & Events
 Private Sub Dashboard_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
@@ -756,62 +550,44 @@ Private Sub Dashboard_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
 
 End Sub
-
-#Region "Tab Header Color Change"
-
-Private Sub UpdateTabStatus(pageName As String, resultGood As Boolean)
+Private Sub frmAuxiliaryConfig_FormClosing( sender As Object,  e As FormClosingEventArgs) Handles MyBase.FormClosing
 
 
-       Dim page As TabPage = tabMain.TabPages(pageName)
+  If Me.DialogResult=Windows.Forms.DialogResult.Cancel then return
 
-           If Not resultGood Then
+  Dim result As DialogResult
 
-       SetTabHeader(page, Color.Red)
+  If  Not auxConfig.ConfigValuesAreTheSameAs( originalConfig )
 
-       Else
-              SetTabHeader(page, Control.DefaultBackColor)
+             result = (MessageBox.Show("Would you like to save changes before closing?","Save Changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question))
 
-       End If
+            Select Case  result
+            
+                case DialogResult.Yes:
+                    'save 
+                    If NOT SaveFile()    then
+                      e.Cancel=true
+                    End If
 
-
-
-
-End Sub
-
-Private Sub SetTabHeader(page As TabPage, color As Color)
-
-    TabColors(page) = color
-    tabMain.Invalidate()
-
-End Sub
-
-Private Sub tabMain_DrawItem(sender As Object, e As DrawItemEventArgs)
-
-    Dim br As Brush = New SolidBrush(TabColors(tabMain.TabPages(e.Index)))
+                case DialogResult.No:
+                    'just allow the form to close
+                    'without saving
+                    Me.DialogResult=Windows.Forms.DialogResult.Cancel
 
 
-    Using (br)
-
-        e.Graphics.FillRectangle(br, e.Bounds)
-        Dim sz As SizeF = e.Graphics.MeasureString(tabMain.TabPages(e.Index).Text, e.Font)
-        e.Graphics.DrawString(tabMain.TabPages(e.Index).Text, e.Font, Brushes.Black, e.Bounds.Left + (e.Bounds.Width - sz.Width) / 2, e.Bounds.Top + (e.Bounds.Height - sz.Height) / 2 + 1)
-
-        Dim rect As Rectangle = e.Bounds
-        rect.Offset(-1, -1)
-        rect.Inflate(1, 1)
-       ' e.Graphics.DrawRectangle(Pens.DarkGray, rect)
-        'e.DrawFocusRectangle()
-
-    End Using
+                case DialogResult.Cancel:
+                    'cancel the close
+                    e.Cancel = true
+                    Me.DialogResult=Windows.Forms.DialogResult.Cancel
 
 
+            end select
 
+
+  End If
+ 
 
 End Sub
-
-
-#End Region
-
 #Region "GridHandlers"
 
 Private Sub gvElectricalConsumables_CellValidating(sender As Object, e As DataGridViewCellValidatingEventArgs) Handles gvElectricalConsumables.CellValidating
@@ -959,7 +735,6 @@ Private Sub gvElectricalConsumables_CellBeginEdit(sender As Object, e As DataGri
 End Sub
 
 #End Region
-
 #Region "Button Handlers"
 
 Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
@@ -976,8 +751,6 @@ Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Clic
 
 
 End Sub
-
-
 Private function SaveFile() As Boolean
 
    Dim result As Boolean
@@ -993,7 +766,6 @@ Private function SaveFile() As Boolean
    Return result
 
 End Function
-
 Private Function  LoadFile() As boolean
 
   'JSON METHOD
@@ -1013,8 +785,6 @@ Private Function  LoadFile() As boolean
   Return result
 
 End function
-
-
 Private Sub btnFuelMap_Click(sender As Object, e As EventArgs) Handles btnFuelMap.Click
 
                Dim fbAux As New cFileBrowser(True, False)
@@ -1034,7 +804,6 @@ Private Sub btnFuelMap_Click(sender As Object, e As EventArgs) Handles btnFuelMa
 
 
 End Sub
-
 Private Sub btnAlternatorMapPath_Click(sender As Object, e As EventArgs) Handles btnAlternatorMapPath.Click
 
 
@@ -1059,7 +828,6 @@ Private Sub btnAlternatorMapPath_Click(sender As Object, e As EventArgs) Handles
                txtAlternatorMapPath.Focus()
 
 End Sub
-
 Private Sub btnCompressorMap_Click(sender As Object, e As EventArgs) Handles btnCompressorMap.Click
 
 
@@ -1084,7 +852,6 @@ Private Sub btnCompressorMap_Click(sender As Object, e As EventArgs) Handles btn
 
 
 End Sub
-
 Private Sub btnActuationsMap_Click(sender As Object, e As EventArgs) Handles btnActuationsMap.Click
 
                Dim fbAux As New cFileBrowser(True, False)
@@ -1105,7 +872,6 @@ Private Sub btnActuationsMap_Click(sender As Object, e As EventArgs) Handles btn
                 txtActuationsMap.Focus()
 
 End Sub
-
 Private Sub btnCancel_Click( sender As Object,  e As EventArgs) Handles btnCancel.Click
 
 
@@ -1114,7 +880,6 @@ Private Sub btnCancel_Click( sender As Object,  e As EventArgs) Handles btnCance
 
 
 End Sub
-
 Private Sub btnSSMBSource_Click( sender As Object,  e As EventArgs) Handles btnSSMBSource.Click
 
 
@@ -1163,158 +928,7 @@ Private Sub btnSSMBSource_Click( sender As Object,  e As EventArgs) Handles btnS
 End Sub
 
 #End Region
-
-
-'Form Overrides
-Protected Overrides Function ProcessCmdKey(ByRef msg As Message, keyData As Keys) As Boolean
-
-        If keyData = Keys.Enter AndAlso Me.AcceptButton Is Nothing Then
-        Dim box As TextBoxBase = CType(Me.ActiveControl, TextBoxBase)
-
-        If box Is Nothing OrElse Not box.Multiline Then
-
-          Me.SelectNextControl(Me.ActiveControl, True, True, True, True)
-          Return True
-
-       End If
-
-       End If
-
-
-       Return MyBase.ProcessCmdKey(msg, keyData)
-
-
-
-    End Function
-
-Public Sub UnbindAllControls(ByRef container As Control)
-  'Clear all of the controls within the container object
-  'If "Recurse" is true, then also clear controls within any sub-containers
-  Dim ctrl As Control = Nothing
-
-  For Each ctrl In container.Controls
-
-           ctrl.DataBindings.Clear()
-
-           If ctrl.HasChildren Then
-              UnbindAllControls(ctrl)
-           End If
-
-  Next
-
-End Sub
-
-Private Sub frmAuxiliaryConfig_FormClosing( sender As Object,  e As FormClosingEventArgs) Handles MyBase.FormClosing
-
-
-  If Me.DialogResult=Windows.Forms.DialogResult.Cancel then return
-
-  Dim result As DialogResult
-
-  If  Not auxConfig.ConfigValuesAreTheSameAs( originalConfig )
-
-             result = (MessageBox.Show("Would you like to save changes before closing?","Save Changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question))
-
-            Select Case  result
-            
-                case DialogResult.Yes:
-                    'save 
-                    If NOT SaveFile()    then
-                      e.Cancel=true
-                    End If
-
-                case DialogResult.No:
-                    'just allow the form to close
-                    'without saving
-                    Me.DialogResult=Windows.Forms.DialogResult.Cancel
-
-
-                case DialogResult.Cancel:
-                    'cancel the close
-                    e.Cancel = true
-                    Me.DialogResult=Windows.Forms.DialogResult.Cancel
-
-
-            end select
-
-
-  End If
- 
-
-End Sub
-
-Private Function GetSSMMAP( ByVal filePath As String , byref message As string) As Hvac.IHVACSteadyStateModel
-
-      Dim ssmMap As New Hvac.HVACSteadyStateModel()
-
-
-      Try
-
-       If  ssmMap.SetValuesFromMap(FilePathUtils.ResolveFilePath(vectoPath,txtSSMFilePath.Text), message) then
-
-         Return ssmMap  
-
-       End If
-
-       catch ex As Exception
-
-       'TODO:?
-        
-      End Try
-
-        Return Nothing
-
-End Function
-
-
-'Anciliary helpers
-Private Sub OpenFiles(ParamArray files() As String)
-
-        If files.Length = 0 Then Exit Sub
-
-        CmFilesList = files
-
-        OpenWithToolStripMenuItem.Text = "Open with notepad"
-
-        CmFiles.Show(Cursor.Position)
-
-End Sub
-
-Private Sub OpenWithToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles OpenWithToolStripMenuItem.Click
-    If Not FileOpenAlt(CmFilesList(0)) Then MsgBox("Failed to open file!")
-End Sub
-
-Private Sub ShowInFolderToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles ShowInFolderToolStripMenuItem.Click
-    If IO.File.Exists(CmFilesList(0)) Then
-        Try
-            System.Diagnostics.Process.Start("explorer", "/select,""" & CmFilesList(0) & "")
-        Catch ex As Exception
-            MsgBox("Failed to open file!")
-        End Try
-    Else
-        MsgBox("File not found!")
-    End If
-End Sub
-
-'Open File with software defined in Config
-Public Function FileOpenAlt(ByVal file As String) As Boolean
-        Dim PSI As New ProcessStartInfo
-
-        If Not IO.File.Exists(file) Then Return False
-
-        PSI.FileName = "notepad.exe"
-        PSI.Arguments = ChrW(34) & file & ChrW(34)
-        Try
-            Process.Start(PSI)
-            Return True
-        Catch ex As Exception
-            Return False
-        End Try
-
-    End Function
-
 #Region "File Viewer Button Events"
-
 
 Private Sub btnAALTOpen_Click( sender As Object,  e As EventArgs) Handles btnAALTOpen.Click
 
@@ -1339,9 +953,362 @@ Private Sub btnOpenAHSM_Click( sender As Object,  e As EventArgs) Handles btnOpe
 
 End Sub
 
-
 #end region
 
+'Overrides
+Protected Overrides Function ProcessCmdKey(ByRef msg As Message, keyData As Keys) As Boolean
+
+        If keyData = Keys.Enter AndAlso Me.AcceptButton Is Nothing Then
+        Dim box As TextBoxBase = CType(Me.ActiveControl, TextBoxBase)
+
+        If box Is Nothing OrElse Not box.Multiline Then
+
+          Me.SelectNextControl(Me.ActiveControl, True, True, True, True)
+          Return True
+
+       End If
+
+       End If
+
+
+       Return MyBase.ProcessCmdKey(msg, keyData)
+
+
+
+    End Function
+
+'Helpers
+Private Sub OpenFiles(ParamArray files() As String)
+
+        If files.Length = 0 Then Exit Sub
+
+        CmFilesList = files
+
+        OpenWithToolStripMenuItem.Text = "Open with notepad"
+
+        CmFiles.Show(Cursor.Position)
+
+End Sub
+Private Sub OpenWithToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles OpenWithToolStripMenuItem.Click
+    If Not FileOpenAlt(CmFilesList(0)) Then MsgBox("Failed to open file!")
+End Sub
+Private Sub ShowInFolderToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles ShowInFolderToolStripMenuItem.Click
+    If IO.File.Exists(CmFilesList(0)) Then
+        Try
+            System.Diagnostics.Process.Start("explorer", "/select,""" & CmFilesList(0) & "")
+        Catch ex As Exception
+            MsgBox("Failed to open file!")
+        End Try
+    Else
+        MsgBox("File not found!")
+    End If
+End Sub
+#Region "Tab Header Color Change"
+
+Private Sub UpdateTabStatus(pageName As String, resultGood As Boolean)
+
+
+       Dim page As TabPage = tabMain.TabPages(pageName)
+
+           If Not resultGood Then
+
+       SetTabHeader(page, Color.Red)
+
+       Else
+              SetTabHeader(page, Control.DefaultBackColor)
+
+       End If
+
+
+
+
+End Sub
+Private Sub SetTabHeader(page As TabPage, color As Color)
+
+    TabColors(page) = color
+    tabMain.Invalidate()
+
+End Sub
+Private Sub tabMain_DrawItem(sender As Object, e As DrawItemEventArgs)
+
+    Dim br As Brush = New SolidBrush(TabColors(tabMain.TabPages(e.Index)))
+
+
+    Using (br)
+
+        e.Graphics.FillRectangle(br, e.Bounds)
+        Dim sz As SizeF = e.Graphics.MeasureString(tabMain.TabPages(e.Index).Text, e.Font)
+        e.Graphics.DrawString(tabMain.TabPages(e.Index).Text, e.Font, Brushes.Black, e.Bounds.Left + (e.Bounds.Width - sz.Width) / 2, e.Bounds.Top + (e.Bounds.Height - sz.Height) / 2 + 1)
+
+        Dim rect As Rectangle = e.Bounds
+        rect.Offset(-1, -1)
+        rect.Inflate(1, 1)
+       ' e.Graphics.DrawRectangle(Pens.DarkGray, rect)
+        'e.DrawFocusRectangle()
+
+    End Using
+
+
+
+
+End Sub
+
+
+#End Region
+Public Sub UnbindAllControls(ByRef container As Control)
+  'Clear all of the controls within the container object
+  'If "Recurse" is true, then also clear controls within any sub-containers
+  Dim ctrl As Control = Nothing
+
+  For Each ctrl In container.Controls
+
+           ctrl.DataBindings.Clear()
+
+           If ctrl.HasChildren Then
+              UnbindAllControls(ctrl)
+           End If
+
+  Next
+
+End Sub
+Private Function GetSSMMAP( ByVal filePath As String , byref message As string) As Hvac.IHVACSteadyStateModel
+
+      Dim ssmMap As New Hvac.HVACSteadyStateModel()
+
+
+      Try
+
+       If  ssmMap.SetValuesFromMap(FilePathUtils.ResolveFilePath(vectoPath,txtSSMFilePath.Text), message) then
+
+         Return ssmMap  
+
+       End If
+
+       catch ex As Exception
+
+       MessageBox.Show("Unable to retreive values from map")
+        
+      End Try
+
+        Return Nothing
+
+End Function
+Private Sub SetupControls()
+
+
+      Dim cIndex As Integer = 0
+
+      gvElectricalConsumables.AutoGenerateColumns = False
+
+     'ElectricalConsumerGrid 
+     'Columns
+     cIndex = gvElectricalConsumables.Columns.Add("Category", "Category")
+     gvElectricalConsumables.Columns(cIndex).DataPropertyName = "Category"
+     gvElectricalConsumables.Columns(cIndex).MinimumWidth = 150
+     gvElectricalConsumables.Columns(cIndex).ReadOnly = True
+     gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
+     gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
+
+     cIndex = gvElectricalConsumables.Columns.Add("ConsumerName", "Name")
+
+     gvElectricalConsumables.Columns(cIndex).DataPropertyName = "ConsumerName"
+     gvElectricalConsumables.Columns(cIndex).MinimumWidth = 308
+     gvElectricalConsumables.Columns(cIndex).ReadOnly = True
+     gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
+     gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
+
+     Dim baseVehicle As New DataGridViewCheckBoxColumn(False)
+     baseVehicle.HeaderText = "Base Vehicle"
+     cIndex = gvElectricalConsumables.Columns.Add(baseVehicle)
+     gvElectricalConsumables.Columns(cIndex).DataPropertyName = "BaseVehicle"
+     gvElectricalConsumables.Columns(cIndex).Width = 75
+     gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
+     gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
+     gvElectricalConsumables.Columns(cIndex).HeaderCell.ToolTipText = "Energy included in the calculations of base vehicle"
+
+     cIndex = gvElectricalConsumables.Columns.Add("NominalConsumptionAmps", "Nominal Amps")
+     gvElectricalConsumables.Columns(cIndex).DataPropertyName = "NominalConsumptionAmps"
+     gvElectricalConsumables.Columns(cIndex).Width = 70
+     gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
+     gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
+     gvElectricalConsumables.Columns(cIndex).HeaderCell.ToolTipText = "Nominal consumption in AMPS"
+
+     cIndex = gvElectricalConsumables.Columns.Add("PhaseIdle_TractionOn", "PhaseIdle/ TractionOn")
+     gvElectricalConsumables.Columns(cIndex).DataPropertyName = "PhaseIdle_TractionOn"
+     gvElectricalConsumables.Columns(cIndex).Width = 70
+     gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
+     gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
+     gvElectricalConsumables.Columns(cIndex).HeaderCell.ToolTipText = "Represents the amount of time (during engine fueling) as " & vbCrLf & "percentage that the consumer is active during the cycle."
+
+     cIndex = gvElectricalConsumables.Columns.Add("NumberInActualVehicle", "Num in Vehicle")
+     gvElectricalConsumables.Columns(cIndex).DataPropertyName = "NumberInActualVehicle"
+     gvElectricalConsumables.Columns(cIndex).Width = 70
+     gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
+     gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
+     gvElectricalConsumables.Columns(cIndex).HeaderCell.ToolTipText = "Number of consumables of this" & vbCrLf & "type installed on the vehicle."
+
+     'ResultCard Grids
+
+     'Handler for deleting rows.
+
+
+     'IDLE
+
+     cIndex = gvResultsCardIdle.Columns.Add("Amps", "Amps")
+     gvResultsCardIdle.Columns(cIndex).DataPropertyName = "Amps"
+     gvResultsCardIdle.Columns(cIndex).Width = 65
+
+     cIndex = gvResultsCardIdle.Columns.Add("SmartAmps", "SmartAmps")
+     gvResultsCardIdle.Columns(cIndex).DataPropertyName = "SmartAmps"
+     gvResultsCardIdle.Columns(cIndex).Width = 65
+
+     'TRACTION
+     cIndex = gvResultsCardTraction.Columns.Add("Amps", "Amps")
+     gvResultsCardTraction.Columns(cIndex).DataPropertyName = "Amps"
+     gvResultsCardTraction.Columns(cIndex).Width = 65
+
+     cIndex = gvResultsCardTraction.Columns.Add("SmartAmps", "SmartAmps")
+     gvResultsCardTraction.Columns(cIndex).DataPropertyName = "SmartAmps"
+     gvResultsCardTraction.Columns(cIndex).Width = 65
+
+     'OVERRUN
+     cIndex = gvResultsCardOverrun.Columns.Add("Amps", "Amps")
+     gvResultsCardOverrun.Columns(cIndex).DataPropertyName = "Amps"
+     gvResultsCardOverrun.Columns(cIndex).Width = 65
+
+     cIndex = gvResultsCardOverrun.Columns.Add("SmartAmps", "SmartAmps")
+     gvResultsCardOverrun.Columns(cIndex).DataPropertyName = "SmartAmps"
+     gvResultsCardOverrun.Columns(cIndex).Width = 65
+
+
+
+
+End Sub
+#Region "Binding Control"
+
+
+Private Sub CreateBindings()
+
+     'auxConfig.Vecto Bindings
+     txtPowernetVoltage.DataBindings.Add("Text", auxConfig.ElectricalUserInputsConfig, "PowerNetVoltage")
+     'txtVehicleWeightKG.DataBindings.Add("Text", auxConfig.VectoInputs, "VehicleWeightKG")
+     'cboCycle.DataBindings.Add("Text", auxConfig.VectoInputs, "Cycle")
+     txtFuelMap.DataBindings.Add("Text", auxConfig.VectoInputs, "FuelMap")
+
+     'Electricals General
+     txtAlternatorMapPath.DataBindings.Add("Text", auxConfig.ElectricalUserInputsConfig, "AlternatorMap")
+     txtAlternatorGearEfficiency.DataBindings.Add("Text", auxConfig.ElectricalUserInputsConfig, "AlternatorGearEfficiency")
+     txtDoorActuationTimeSeconds.DataBindings.Add("Text", auxConfig.ElectricalUserInputsConfig, "DoorActuationTimeSecond")
+     chkSmartElectricals.DataBindings.Add("Checked", auxConfig.ElectricalUserInputsConfig, "SmartElectrical", False, DataSourceUpdateMode.OnPropertyChanged)
+
+
+     'Electrical ConsumablesGrid
+     Dim electricalConsumerBinding As New BindingList(Of IElectricalConsumer)(auxConfig.ElectricalUserInputsConfig.ElectricalConsumers.Items)
+     gvElectricalConsumables.DataSource = electricalConsumerBinding
+
+
+
+     'ResultCards
+
+         'IDLE
+         Dim idleBinding as BindingList(Of SmartResult)
+         idleBinding = New BindingList(Of SmartResult)(auxConfig.ElectricalUserInputsConfig.ResultCardIdle.Results)
+         idleBinding.AllowNew = True
+         idleBinding.AllowRemove = True
+         gvResultsCardIdle.DataSource = idleBinding
+
+         'TRACTION
+         Dim tractionBinding As BindingList(Of SmartResult)
+         tractionBinding = New BindingList(Of SmartResult)(auxConfig.ElectricalUserInputsConfig.ResultCardTraction.Results)
+         tractionBinding.AllowNew = True
+         tractionBinding.AllowRemove = True
+         gvResultsCardTraction.DataSource = tractionBinding
+
+         'OVERRUN
+         Dim overrunBinding As BindingList(Of SmartResult)
+         overrunBinding = New BindingList(Of SmartResult)(auxConfig.ElectricalUserInputsConfig.ResultCardOverrun.Results)
+         overrunBinding.AllowNew = True
+         overrunBinding.AllowRemove = True
+         gvResultsCardOverrun.DataSource = overrunBinding
+
+
+        'Pneumatic Auxillaries Binding
+        txtAdBlueNIperMinute.DataBindings.Add("Text", auxConfig.PneumaticAuxillariesConfig, "AdBlueNIperMinute")
+
+        txtOverrunUtilisationForCompressionFraction.DataBindings.Add("Text", auxConfig.PneumaticAuxillariesConfig, "OverrunUtilisationForCompressionFraction")
+        txtBrakingWithRetarderNIperKG.DataBindings.Add("Text", auxConfig.PneumaticAuxillariesConfig, "BrakingWithRetarderNIperKG")
+        txtBrakingNoRetarderNIperKG.DataBindings.Add("Text", auxConfig.PneumaticAuxillariesConfig, "BrakingNoRetarderNIperKG")
+        txtBreakingPerKneelingNIperKGinMM.DataBindings.Add("Text", auxConfig.PneumaticAuxillariesConfig, "BreakingPerKneelingNIperKGinMM", True, DataSourceUpdateMode.OnPropertyChanged, Nothing, "0.########")
+        txtPerDoorOpeningNI.DataBindings.Add("Text", auxConfig.PneumaticAuxillariesConfig, "PerDoorOpeningNI")
+        txtPerStopBrakeActuationNIperKG.DataBindings.Add("Text", auxConfig.PneumaticAuxillariesConfig, "PerStopBrakeActuationNIperKG")
+        txtAirControlledSuspensionNIperMinute.DataBindings.Add("Text", auxConfig.PneumaticAuxillariesConfig, "AirControlledSuspensionNIperMinute")
+        txtNonSmartRegenFractionTotalAirDemand.DataBindings.Add("Text", auxConfig.PneumaticAuxillariesConfig, "NonSmartRegenFractionTotalAirDemand")
+        txtSmartRegenFractionTotalAirDemand.DataBindings.Add("Text", auxConfig.PneumaticAuxillariesConfig, "SmartRegenFractionTotalAirDemand")
+        txtDeadVolumeLitres.DataBindings.Add("Text", auxConfig.PneumaticAuxillariesConfig, "DeadVolumeLitres")
+        txtDeadVolBlowOutsPerLitresperHour.DataBindings.Add("Text", auxConfig.PneumaticAuxillariesConfig, "DeadVolBlowOutsPerLitresperHour")
+
+        'Pneumatic UserInputsConfig Binding    
+        txtCompressorMap.DataBindings.Add("Text", auxConfig.PneumaticUserInputsConfig, "CompressorMap")
+        txtCompressorGearEfficiency.DataBindings.Add("Text", auxConfig.PneumaticUserInputsConfig, "CompressorGearEfficiency")
+        txtCompressorGearRatio.DataBindings.Add("Text", auxConfig.PneumaticUserInputsConfig, "CompressorGearRatio")
+        txtActuationsMap.DataBindings.Add("Text", auxConfig.PneumaticUserInputsConfig, "ActuationsMap")
+        chkSmartAirCompression.DataBindings.Add("Checked", auxConfig.PneumaticUserInputsConfig, "SmartAirCompression", False, DataSourceUpdateMode.OnPropertyChanged)
+
+
+
+
+        chkSmartRegeneration.DataBindings.Add("Checked", auxConfig.PneumaticUserInputsConfig, "SmartRegeneration", False, DataSourceUpdateMode.OnPropertyChanged)
+        chkRetarderBrake.DataBindings.Add("Checked", auxConfig.PneumaticUserInputsConfig, "RetarderBrake")
+        txtKneelingHeightMillimeters.DataBindings.Add("Text", auxConfig.PneumaticUserInputsConfig, "KneelingHeightMillimeters")
+        cboAirSuspensionControl.DataBindings.Add("Text", auxConfig.PneumaticUserInputsConfig, "AirSuspensionControl", False)
+        cboAdBlueDosing.DataBindings.Add("Text", auxConfig.PneumaticUserInputsConfig, "AdBlueDosing")
+        cboDoors.DataBindings.Add("Text", auxConfig.PneumaticUserInputsConfig, "Doors")
+
+        'HVAC Bindings     
+        txtHVACElectricalLoadPowerWatts.DataBindings.Add("Text", auxConfig.HvacUserInputsConfig.SteadyStateModel, "HVACElectricalLoadPowerWatts",False,DataSourceUpdateMode.OnPropertyChanged)
+        txtHVACFuellingLitresPerHour.DataBindings.Add("Text", auxConfig.HvacUserInputsConfig.SteadyStateModel, "HVACFuellingLitresPerHour",False,DataSourceUpdateMode.OnPropertyChanged)
+        txtHVACMechanicalLoadPowerWatts.DataBindings.Add("Text", auxConfig.HvacUserInputsConfig.SteadyStateModel, "HVACMechanicalLoadPowerWatts",False,DataSourceUpdateMode.OnPropertyChanged)
+
+        txtSSMFilePath.DataBindings.Add( "Text", auxConfig.HvacUserInputsConfig,"SSMFilePath")
+
+
+        'Signals
+
+
+
+End Sub
+
+Private Sub EnsureBinding()
+        With tabMain
+            Dim lastSelectedTabIndex As Integer = .SelectedIndex
+            If lastSelectedTabIndex < 0 OrElse lastSelectedTabIndex > .TabCount Then lastSelectedTabIndex = 0
+            For currentTab As Integer = 0 To .TabCount - 1
+                .SelectedIndex = currentTab
+            Next
+            .SelectedIndex = 0
+        End With
+    End Sub
+
+
+#End Region
+
+
+'Open File with software defined in Config
+Public Function FileOpenAlt(ByVal file As String) As Boolean
+        Dim PSI As New ProcessStartInfo
+
+        If Not IO.File.Exists(file) Then Return False
+
+        PSI.FileName = "notepad.exe"
+        PSI.Arguments = ChrW(34) & file & ChrW(34)
+        Try
+            Process.Start(PSI)
+            Return True
+        Catch ex As Exception
+            Return False
+        End Try
+
+    End Function
 
 
 End Class

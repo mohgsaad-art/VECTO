@@ -6,16 +6,15 @@ Namespace Hvac
 Public Class SSMTechList
  Implements ISSMTechList
 
-
+  'Private Fields
   Private filePath As String
   Private _ssmInputs As ISSMGenInputs
   Private _dirty As Boolean
-  
-  
+
   public property  TechLines As List(Of ITechListBenefitLine)  Implements ISSMTechList.TechLines
   
-  
-  Public Sub New(filepath As String, genInputs As ISSMGenInputs)
+  'Constructors
+  Public Sub New(filepath As String, genInputs As ISSMGenInputs) 
   
      Me.TechLines = New List(Of ITechListBenefitLine)
 
@@ -28,8 +27,21 @@ Public Class SSMTechList
   End Sub
 
 
+  Public Sub SetSSMGeneralInputs( genInputs As ISSMGenInputs) Implements ISSMTechList.SetSSMGeneralInputs
 
-  Public Function Initialise() As Boolean Implements ISSMTechList.Initialise
+     _ssmInputs = genInputs
+
+  End Sub
+
+  'Initialisation Methods
+  Public Function Initialise( filePath As String ) As Boolean Implements ISSMTechList.Initialise
+
+     Me.filePath=filePath
+
+     Return Initialise()
+
+  End Function
+  Public Function Initialise( ) As Boolean Implements ISSMTechList.Initialise
 
 
 
@@ -129,7 +141,7 @@ Public Class SSMTechList
 
 End Function
 
-   
+  'Public Properties - Outputs Of Class
   Public ReadOnly Property CValueVariation As Double Implements ISSMTechList.CValueVariation
             Get
                  Dim a As double
@@ -200,6 +212,7 @@ End Function
         End Property
 
 
+  'Member Management
   Public Function Add(item As ITechListBenefitLine, ByRef feedback As String) As Boolean Implements ISSMTechList.Add
 
            Dim initialCount As Integer = TechLines.Count
@@ -239,7 +252,6 @@ End Function
 
 
         End Function
-
   Public Sub Clear() Implements ISSMTechList.Clear
            
            If TechLines.Count>0 then _dirty=true
@@ -249,7 +261,6 @@ End Function
 
 
    End Sub
-
   Public Function Delete(item As ITechListBenefitLine, ByRef feedback As String) As Boolean Implements ISSMTechList.Delete
 
           Dim currentCount As Integer = TechLines.Count
@@ -286,18 +297,17 @@ End Function
            End If
 
         End Function
+  Public Function Modify( originalItem As ITechListBenefitLine, newItem As ITechListBenefitLine, ByRef feedback As String) As Boolean Implements ISSMTechList.Modify
 
-  Public Function Modify(item As ITechListBenefitLine, ByRef feedback As String) As Boolean Implements ISSMTechList.Modify
-
-           Dim fi As TechListBenefitLine = TechLines.Find( Function(f) f.Category= item.Category AndAlso item.BenefitName )
+           Dim fi As TechListBenefitLine = TechLines.Find( Function(f) (f.Category= originalitem.Category) AndAlso f.BenefitName= originalitem.BenefitName )
 
            If( Not fi is Nothing ) then
 
            try
 
-               fi.CloneFrom( item )
+               fi.CloneFrom( newItem )
                         
-               If item = fi then
+               If newItem = fi then
                   'This succeeded
                   _dirty=true
                   return True              

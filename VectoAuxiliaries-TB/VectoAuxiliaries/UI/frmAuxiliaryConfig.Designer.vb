@@ -210,7 +210,7 @@ Partial Class frmAuxiliaryConfig
         Me.tabGeneralConfig.Location = New System.Drawing.Point(4, 22)
         Me.tabGeneralConfig.Name = "tabGeneralConfig"
         Me.tabGeneralConfig.Padding = New System.Windows.Forms.Padding(3)
-        Me.tabGeneralConfig.Size = New System.Drawing.Size(901, 704)
+        Me.tabGeneralConfig.Size = New System.Drawing.Size(901, 587)
         Me.tabGeneralConfig.TabIndex = 0
         Me.tabGeneralConfig.Text = "General"
         Me.tabGeneralConfig.UseVisualStyleBackColor = true
@@ -274,6 +274,7 @@ Partial Class frmAuxiliaryConfig
         '
         'tabElectricalConfig
         '
+        Me.tabElectricalConfig.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center
         Me.tabElectricalConfig.Controls.Add(Me.btnAALTOpen)
         Me.tabElectricalConfig.Controls.Add(Me.btnAlternatorMapPath)
         Me.tabElectricalConfig.Controls.Add(Me.gvResultsCardOverrun)
@@ -563,7 +564,7 @@ Partial Class frmAuxiliaryConfig
         Me.tabPneumaticConfig.Controls.Add(Me.pnlPneumaticAuxillaries)
         Me.tabPneumaticConfig.Location = New System.Drawing.Point(4, 22)
         Me.tabPneumaticConfig.Name = "tabPneumaticConfig"
-        Me.tabPneumaticConfig.Size = New System.Drawing.Size(901, 704)
+        Me.tabPneumaticConfig.Size = New System.Drawing.Size(901, 587)
         Me.tabPneumaticConfig.TabIndex = 2
         Me.tabPneumaticConfig.Text = "Pneumatics"
         Me.tabPneumaticConfig.UseVisualStyleBackColor = true
@@ -1080,7 +1081,7 @@ Partial Class frmAuxiliaryConfig
         Me.tabHVACConfig.Controls.Add(Me.lblHVACElectricalLoadPowerWatts)
         Me.tabHVACConfig.Location = New System.Drawing.Point(4, 22)
         Me.tabHVACConfig.Name = "tabHVACConfig"
-        Me.tabHVACConfig.Size = New System.Drawing.Size(901, 704)
+        Me.tabHVACConfig.Size = New System.Drawing.Size(901, 587)
         Me.tabHVACConfig.TabIndex = 3
         Me.tabHVACConfig.Text = "HVAC"
         Me.tabHVACConfig.UseVisualStyleBackColor = true
