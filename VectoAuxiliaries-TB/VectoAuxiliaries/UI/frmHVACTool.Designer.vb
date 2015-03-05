@@ -200,6 +200,7 @@ Partial Class frmHVACTool
         Me.lblIndex = New System.Windows.Forms.Label()
         Me.btnSave = New System.Windows.Forms.Button()
         Me.btnCancel = New System.Windows.Forms.Button()
+        Me.btnClearForm = New System.Windows.Forms.Button()
         Me.tabMain.SuspendLayout
         Me.tabGeneralInputsBP.SuspendLayout
         Me.GroupBox1.SuspendLayout
@@ -1759,6 +1760,7 @@ Partial Class frmHVACTool
         'tabTechBenefits
         '
         Me.tabTechBenefits.CausesValidation = false
+        Me.tabTechBenefits.Controls.Add(Me.btnClearForm)
         Me.tabTechBenefits.Controls.Add(Me.lblIndex)
         Me.tabTechBenefits.Controls.Add(Me.txtIndex)
         Me.tabTechBenefits.Controls.Add(Me.btnUpdate)
@@ -1893,6 +1895,7 @@ Partial Class frmHVACTool
         'cboLineType
         '
         Me.cboLineType.AutoCompleteCustomSource.AddRange(New String() {"Normal", "Active Ventelation"})
+        Me.cboLineType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboLineType.FormattingEnabled = true
         Me.cboLineType.Items.AddRange(New Object() {"Normal", "ActiveVentilation"})
         Me.cboLineType.Location = New System.Drawing.Point(488, 71)
@@ -2070,6 +2073,7 @@ Partial Class frmHVACTool
         'cboUnits
         '
         Me.cboUnits.AutoCompleteCustomSource.AddRange(New String() {"Fraction"})
+        Me.cboUnits.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboUnits.FormattingEnabled = true
         Me.cboUnits.Items.AddRange(New Object() {"Fraction"})
         Me.cboUnits.Location = New System.Drawing.Point(81, 44)
@@ -2115,6 +2119,15 @@ Partial Class frmHVACTool
         Me.btnCancel.TabIndex = 2
         Me.btnCancel.Text = "Cancel"
         Me.btnCancel.UseVisualStyleBackColor = true
+        '
+        'btnClearForm
+        '
+        Me.btnClearForm.Location = New System.Drawing.Point(814, 100)
+        Me.btnClearForm.Name = "btnClearForm"
+        Me.btnClearForm.Size = New System.Drawing.Size(75, 23)
+        Me.btnClearForm.TabIndex = 34
+        Me.btnClearForm.Text = "Clear Form"
+        Me.btnClearForm.UseVisualStyleBackColor = true
         '
         'frmHVACTool
         '
@@ -2334,4 +2347,5 @@ End Sub
     Friend WithEvents txtIndex As System.Windows.Forms.TextBox
     Friend WithEvents btnCancel As System.Windows.Forms.Button
     Friend WithEvents btnSave As System.Windows.Forms.Button
+    Friend WithEvents btnClearForm As System.Windows.Forms.Button
 End Class

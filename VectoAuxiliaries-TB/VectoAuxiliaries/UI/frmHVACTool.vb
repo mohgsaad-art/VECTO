@@ -15,6 +15,25 @@ Public Class frmHVACTool
   Private gvTechListBinding As BindingList(Of ITechListBenefitLine)
   Private DefaultCategories As String() = {"Cooling","Heating","Insulation","Ventiliation"}
 
+  Public UD As String = "Hello"
+
+  public  Sub  UpdateButtonText()
+
+
+    If txtIndex.Text=String.Empty then
+
+      btnUpdate.Text = "Add"
+
+      Else
+      
+            btnUpdate.Text = "Update"
+
+      end if
+
+
+  end sub
+
+  
 
   Private sub BindGrid(  )
 
@@ -49,10 +68,6 @@ Public Class frmHVACTool
 
 
   End Function
-
-
-
-
 
   Public Sub New(busDatabasePath As String, ahsmFilePath As String)
 
@@ -191,12 +206,13 @@ End Sub
   End Sub
   Private Sub setupBindings()
 
+  UpdateButtonText()
+
   'TechBenefitLines
    BindGrid()
 
-
   'Bus Parameterisation
-  txtBusModel.DataBindings.Add("Text", ssmTOOL.genInputs, "BP_BusModel", False, DataSourceUpdateMode.OnPropertyChanged)
+  'txtBusModel.DataBindings.Add("Text", ssmTOOL.genInputs, "BP_BusModel", False, DataSourceUpdateMode.OnPropertyChanged)
   txtRegisteredPassengers.DataBindings.Add("Text", ssmTOOL.genInputs, "BP_NumberOfPassengers", False, DataSourceUpdateMode.OnPropertyChanged)
   txtBusFloorType.DataBindings.Add("Text", ssmTOOL.genInputs, "BP_BusFloorType", False, DataSourceUpdateMode.OnPropertyChanged)
   txtBusFloorSurfaceArea.DataBindings.Add("Text", ssmTOOL.genInputs, "BP_BusFloorSurfaceArea", False, DataSourceUpdateMode.OnPropertyChanged)
@@ -667,6 +683,9 @@ End Function
     AddHandler tabMain.DrawItem, New System.Windows.Forms.DrawItemEventHandler(AddressOf tabMain_DrawItem)
 
     gvTechBenefitLines.ClearSelection()
+
+
+
  
   End Sub
 
@@ -708,6 +727,9 @@ End Function
 
 Private Sub gvTechBenefitLines_DoubleClick( sender As Object,  e As EventArgs) Handles gvTechBenefitLines.DoubleClick
 
+    If  gvTechBenefitLines.SelectedCells.Count<1 then Return
+    
+
      Dim row As Integer = gvTechBenefitLines.SelectedCells(0).OwningRow.Index
 
      Dim benefitName , category As String
@@ -717,6 +739,8 @@ Private Sub gvTechBenefitLines_DoubleClick( sender As Object,  e As EventArgs) H
      editTechLine = ssmTOOL.techList.TechLines.First( Function(f) f.BenefitName=benefitName AndAlso f.Category=category)
 
      FillTechLineEditPanel( row )
+
+     UpdateButtonText()
 
 
 
@@ -728,7 +752,7 @@ private function GetTechLineFromPanel() as ITechListBenefitLine
   Dim tl As ITechListBenefitLine  = New TechListBenefitLine( ssmTOOL.genInputs)
    
 
-  tl.Category      = cboCategory.Text
+  tl.Category      = StrConv(cboCategory.Text, vbProperCase)
   tl.BenefitName   = txtBenefitName.Text
   tl.Units         = cboUnits.Text
   tl.LineType      = If( cboLineType.Text= "Normal",0,3)
@@ -754,10 +778,10 @@ End Function
 Private Sub ClearEditPanel()
 
   txtIndex.Text                     = String.Empty
-  cboCategory.Text                  = String.Empty
+  cboCategory.SelectedIndex=0
   txtBenefitName.Text               = String.Empty
-  cboUnits.Text                     = String.Empty
-  cboLineType.Text                  = String.Empty
+  cboUnits.SelectedIndex=0                
+  cboLineType.SelectedIndex=0
   txtLowFloorH      .Text           = String.Empty
   txtLowFloorV      .Text           = String.Empty
   txtLowFloorC      .Text           = String.Empty
@@ -790,6 +814,8 @@ Private Sub btnUpdate_Click( sender As Object,  e As EventArgs) Handles btnUpdat
 
       cboCategory.DataSource= GetCategories()
 
+      UpdateButtonText()
+
    End if
 
   Else
@@ -799,6 +825,7 @@ Private Sub btnUpdate_Click( sender As Object,  e As EventArgs) Handles btnUpdat
      Else
        gvTechBenefitLines.Refresh()
        ClearEditPanel()
+       UpdateButtonText()
       
     End If
 
@@ -820,6 +847,8 @@ End Sub
 
 
 Private Sub gvTechBenefitLines_CellClick( sender As Object,  e As DataGridViewCellEventArgs) Handles gvTechBenefitLines.CellClick
+
+   If e.ColumnIndex<0 OrElse e.RowIndex<0 then Return
 
 
    If gvTechBenefitLines.Columns( e.ColumnIndex).Name="Delete" then
@@ -844,6 +873,16 @@ Private Sub gvTechBenefitLines_CellClick( sender As Object,  e As DataGridViewCe
 
 
    End If
+
+End Sub
+
+
+
+Private Sub btnClearForm_Click( sender As Object,  e As EventArgs) Handles btnClearForm.Click
+
+  ClearEditPanel()
+  UpdateButtonText()
+
 
 End Sub
 
