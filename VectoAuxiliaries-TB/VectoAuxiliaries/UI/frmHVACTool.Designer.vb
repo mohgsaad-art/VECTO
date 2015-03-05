@@ -162,6 +162,9 @@ Partial Class frmHVACTool
         Me.lblUnitstxtEC_EnviromentalTemperature = New System.Windows.Forms.Label()
         Me.lblUnitstxtEC_Solar = New System.Windows.Forms.Label()
         Me.tabTechBenefits = New System.Windows.Forms.TabPage()
+        Me.btnClearForm = New System.Windows.Forms.Button()
+        Me.lblIndex = New System.Windows.Forms.Label()
+        Me.txtIndex = New System.Windows.Forms.TextBox()
         Me.btnUpdate = New System.Windows.Forms.Button()
         Me.lblLineType = New System.Windows.Forms.Label()
         Me.chkActiveVC = New System.Windows.Forms.CheckBox()
@@ -196,11 +199,8 @@ Partial Class frmHVACTool
         Me.cboUnits = New System.Windows.Forms.ComboBox()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.ErrorProvider1 = New System.Windows.Forms.ErrorProvider(Me.components)
-        Me.txtIndex = New System.Windows.Forms.TextBox()
-        Me.lblIndex = New System.Windows.Forms.Label()
         Me.btnSave = New System.Windows.Forms.Button()
         Me.btnCancel = New System.Windows.Forms.Button()
-        Me.btnClearForm = New System.Windows.Forms.Button()
         Me.tabMain.SuspendLayout
         Me.tabGeneralInputsBP.SuspendLayout
         Me.GroupBox1.SuspendLayout
@@ -1791,6 +1791,32 @@ Partial Class frmHVACTool
         Me.tabTechBenefits.Text = " Tech List Input "
         Me.tabTechBenefits.UseVisualStyleBackColor = true
         '
+        'btnClearForm
+        '
+        Me.btnClearForm.Location = New System.Drawing.Point(814, 100)
+        Me.btnClearForm.Name = "btnClearForm"
+        Me.btnClearForm.Size = New System.Drawing.Size(75, 23)
+        Me.btnClearForm.TabIndex = 34
+        Me.btnClearForm.Text = "Clear Form"
+        Me.btnClearForm.UseVisualStyleBackColor = true
+        '
+        'lblIndex
+        '
+        Me.lblIndex.AutoSize = true
+        Me.lblIndex.Location = New System.Drawing.Point(29, 18)
+        Me.lblIndex.Name = "lblIndex"
+        Me.lblIndex.Size = New System.Drawing.Size(33, 13)
+        Me.lblIndex.TabIndex = 33
+        Me.lblIndex.Text = "Index"
+        '
+        'txtIndex
+        '
+        Me.txtIndex.Location = New System.Drawing.Point(81, 15)
+        Me.txtIndex.Name = "txtIndex"
+        Me.txtIndex.ReadOnly = true
+        Me.txtIndex.Size = New System.Drawing.Size(58, 20)
+        Me.txtIndex.TabIndex = 32
+        '
         'btnUpdate
         '
         Me.btnUpdate.Location = New System.Drawing.Point(814, 18)
@@ -2085,23 +2111,6 @@ Partial Class frmHVACTool
         '
         Me.ErrorProvider1.ContainerControl = Me
         '
-        'txtIndex
-        '
-        Me.txtIndex.Location = New System.Drawing.Point(81, 15)
-        Me.txtIndex.Name = "txtIndex"
-        Me.txtIndex.ReadOnly = true
-        Me.txtIndex.Size = New System.Drawing.Size(58, 20)
-        Me.txtIndex.TabIndex = 32
-        '
-        'lblIndex
-        '
-        Me.lblIndex.AutoSize = true
-        Me.lblIndex.Location = New System.Drawing.Point(29, 18)
-        Me.lblIndex.Name = "lblIndex"
-        Me.lblIndex.Size = New System.Drawing.Size(33, 13)
-        Me.lblIndex.TabIndex = 33
-        Me.lblIndex.Text = "Index"
-        '
         'btnSave
         '
         Me.btnSave.Location = New System.Drawing.Point(721, 694)
@@ -2120,21 +2129,11 @@ Partial Class frmHVACTool
         Me.btnCancel.Text = "Cancel"
         Me.btnCancel.UseVisualStyleBackColor = true
         '
-        'btnClearForm
-        '
-        Me.btnClearForm.Location = New System.Drawing.Point(814, 100)
-        Me.btnClearForm.Name = "btnClearForm"
-        Me.btnClearForm.Size = New System.Drawing.Size(75, 23)
-        Me.btnClearForm.TabIndex = 34
-        Me.btnClearForm.Text = "Clear Form"
-        Me.btnClearForm.UseVisualStyleBackColor = true
-        '
         'frmHVACTool
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange
-        Me.CausesValidation = false
         Me.ClientSize = New System.Drawing.Size(965, 729)
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnSave)
