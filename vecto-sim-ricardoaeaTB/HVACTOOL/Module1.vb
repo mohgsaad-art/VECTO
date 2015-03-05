@@ -6,7 +6,7 @@ Sub main()
 
    Dim frm As New frmHVACTool("BusDatabase.csv", "ssmDelete.ahsm")
 
-   frm.ShowDialog
+   frm.ShowDialog()
 
 End Sub
 
