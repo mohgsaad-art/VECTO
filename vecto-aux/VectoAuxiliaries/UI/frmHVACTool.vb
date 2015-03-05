@@ -10,12 +10,15 @@ Public Class frmHVACTool
   Private ahsmFilePath As String
   Private buses As IBusDatabase
   Private ssmTOOL As SSMTOOL
+  Private originalssmTOOL As SSMTOOL
   Private TabColors As Dictionary(Of TabPage, Color) = New Dictionary(Of TabPage, Color)()
   Private editTechLine As ITechListBenefitLine = New TechListBenefitLine(Nothing)
   Private gvTechListBinding As BindingList(Of ITechListBenefitLine)
   Private DefaultCategories As String() = {"Cooling","Heating","Insulation","Ventiliation"}
+  Private vectoFile As String = String.Empty
+  Private vectoPath As String = String.Empty
+  Private UserHitCancel As Boolean = false
 
-  Public UD As String = "Hello"
 
   public  Sub  UpdateButtonText()
 
@@ -33,7 +36,17 @@ Public Class frmHVACTool
 
   end sub
 
-  
+  Private Function ValidateSSMTOOLFileName( filename As String ) As Boolean
+
+       Dim message As String = String.Empty
+
+       If Not FilePathUtils.ValidateFilePath(filename,".ahsm", message) then
+         MessageBox.Show ( message )
+       End If
+
+       Return true
+
+End Function
 
   Private sub BindGrid(  )
 
@@ -69,18 +82,27 @@ Public Class frmHVACTool
 
   End Function
 
-  Public Sub New(busDatabasePath As String, ahsmFilePath As String)
+  Public Sub New(busDatabasePath As String, ahsmFilePath As String )
 
     ' This call is required by the designer.
     InitializeComponent()
 
     ' Add any initialization after the InitializeComponent() call.
+
+    'Validate ashm FILENAME
+     If  Not ValidateSSMTOOLFileName( ahsmFilePath ) then
+          Me.DialogResult=Windows.Forms.DialogResult.Abort
+          Me.Close
+     End If     
+
+
     Me.busDatabasePath = busDatabasePath
     Me.ahsmFilePath = ahsmFilePath
 
     ssmTOOL = New SSMTOOL(ahsmFilePath)
+    originalssmTOOL = New SSMTOOL( ahsmFilePath)
     ssmTOOL.Load(ahsmFilePath)
-
+    originalssmTOOL.Clone( ssmTOOL)
 
    ' ssmTOOL.techList.in("SSMTechBenefitsALLON.csv")
 
@@ -212,7 +234,7 @@ End Sub
    BindGrid()
 
   'Bus Parameterisation
-  'txtBusModel.DataBindings.Add("Text", ssmTOOL.genInputs, "BP_BusModel", False, DataSourceUpdateMode.OnPropertyChanged)
+  txtBusModel.DataBindings.Add("Text", ssmTOOL.genInputs, "BP_BusModel", False, DataSourceUpdateMode.OnPropertyChanged)
   txtRegisteredPassengers.DataBindings.Add("Text", ssmTOOL.genInputs, "BP_NumberOfPassengers", False, DataSourceUpdateMode.OnPropertyChanged)
   txtBusFloorType.DataBindings.Add("Text", ssmTOOL.genInputs, "BP_BusFloorType", False, DataSourceUpdateMode.OnPropertyChanged)
   txtBusFloorSurfaceArea.DataBindings.Add("Text", ssmTOOL.genInputs, "BP_BusFloorSurfaceArea", False, DataSourceUpdateMode.OnPropertyChanged)
@@ -478,13 +500,11 @@ End Function
      Return result                             
 
   End Function
-
   Public Sub Validating_TechLineEdit(sender As Object, e As CancelEventArgs) 'Handles txtSemiLowFloorV.Validating, txtSemiLowFloorH.Validating, txtSemiLowFloorC.Validating, txtRaisedFloorV.Validating, txtRaisedFloorH.Validating, txtRaisedFloorC.Validating, txtLowFloorV.Validating, txtLowFloorH.Validating, txtLowFloorC.Validating, txtBenefitName.Validating, chkOnVehicle.Validating, chkActiveVV.Validating, chkActiveVH.Validating, chkActiveVC.Validating, cboUnits.Validating, cboLineType.Validating, cboCategory.Validating
 
     e.Cancel = Not Validate_TechLineEdit()
 
   End Sub
-
   Public Function Validate_TechLineEdit() As Boolean
 
      Dim result As Boolean = True
@@ -531,8 +551,6 @@ End Function
         End If 
 
   End sub
-
-
   Private Function IsPostiveInteger(ByVal test As String) As Boolean
 
      'Is this numeric sanity check.
@@ -654,7 +672,6 @@ End Function
       End Using
   
   End Sub
-
   Private Sub EnsureBinding()
         With tabMain
             Dim lastSelectedTabIndex As Integer = .SelectedIndex
@@ -666,7 +683,7 @@ End Function
         End With
     End Sub
 
-
+  'Form/Control Events
   Private Sub frmHVACTool_Load( sender As Object,  e As EventArgs) Handles MyBase.Load
 
     'Required for OwnerDraw, this is required in order to color the tabs when a validation error occurs to draw
@@ -685,13 +702,156 @@ End Function
     gvTechBenefitLines.ClearSelection()
 
 
-
+    Dim r As DialogResult = Me.DialogResult
  
   End Sub
+  Private Sub frmHVACTool_FormClosing( sender As Object,  e As FormClosingEventArgs) Handles MyBase.FormClosing
+  
+     If UserHitCancel then return
+
+     Dim result As DialogResult
+  
+    If  Not ssmTOOL.IsEqualTo( originalssmTOOL )
+  
+              result = (MessageBox.Show("Would you like to save changes before closing?","Save Changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question))
+  
+              Select Case  result
+              
+                  case DialogResult.Yes:
+                      'save 
+                      If NOT ssmTOOL.Save(ahsmFilePath)   then
+                        e.Cancel=true
+                      End If
+  
+                  case DialogResult.No:
+                      'just allow the form to close
+                      'without saving
+                      Me.DialogResult=Windows.Forms.DialogResult.Cancel
+  
+  
+                  case DialogResult.Cancel:
+                      'cancel the close
+                      e.Cancel = true
+                      Me.DialogResult=Windows.Forms.DialogResult.Cancel
+  
+  
+              end select
+  
+  
+    End If
+  
+    UserHitCancel=false
+  
+  End Sub
+
+  'Grid Events
+  Private Sub gvTechBenefitLines_DoubleClick( sender As Object,  e As EventArgs) Handles gvTechBenefitLines.DoubleClick
+  
+      If  gvTechBenefitLines.SelectedCells.Count<1 then Return
+      
+  
+       Dim row As Integer = gvTechBenefitLines.SelectedCells(0).OwningRow.Index
+  
+       Dim benefitName , category As String
+       benefitName = gvTechBenefitLines.Rows(row).Cells("BenefitName").Value
+       category = gvTechBenefitLines.Rows(row).Cells("Category").Value
+  
+       editTechLine = ssmTOOL.techList.TechLines.First( Function(f) f.BenefitName=benefitName AndAlso f.Category=category)
+  
+       FillTechLineEditPanel( row )
+  
+       UpdateButtonText()
+  
+  
+  
+  End Sub  
+  Private Sub gvTechBenefitLines_CellClick( sender As Object,  e As DataGridViewCellEventArgs) Handles gvTechBenefitLines.CellClick
+  
+     If e.ColumnIndex<0 OrElse e.RowIndex<0 then Return
+  
+  
+     If gvTechBenefitLines.Columns( e.ColumnIndex).Name="Delete" then
+  
+        Dim benefit As String = gvTechBenefitLines.Rows( e.RowIndex).Cells(1).Value
+        Dim category As String = gvTechBenefitLines.Rows( e.RowIndex).Cells(0).Value
+        Dim feedback As String = String.Empty
+  
+        Dim dr As DialogResult = MessageBox.Show(String.Format("Do you want to delete benefit '{0}' ?", benefit),"", MessageBoxButtons.YesNo)
+  
+        If dr= Windows.Forms.DialogResult.Yes then
+        
+         If  ssmTOOL.techList.Delete( New TechListBenefitLine With {.BenefitName= benefit, .Category=category}, feedback) then
+  
+           BindGrid
+  
+         End If
+  
+  
+  
+        End If
+  
+  
+     End If
+  
+End Sub
 
   
+  'Button Event Handlers
+  Private Sub btnUpdate_Click( sender As Object,  e As EventArgs) Handles btnUpdate.Click
+   
+    Dim feedback As String = String.Empty
+  
+    If NOT Validate_TechLineEdit() then Return
+    
+    If txtIndex.Text.Trim.Length=0 then 
+    'This is an Add
+     If Not ssmTOOL.techList.Add( GetTechLineFromPanel(), feedback) then
+       MessageBox.Show( feedback )
+       Else
+        BindGrid()
+  
+        cboCategory.DataSource= GetCategories()
+  
+        UpdateButtonText()
+  
+     End if
+  
+    Else
+    'This is an update
+      If Not ssmTOOL.techList.Modify( editTechLine, GetTechLineFromPanel() , feedback) then
+          MessageBox.Show( feedback )
+       Else
+         gvTechBenefitLines.Refresh()
+         ClearEditPanel()
+         UpdateButtonText()
+        
+      End If
+  
+    End If
+  
+  End Sub
+  Private Sub btnSave_Click( sender As Object,  e As EventArgs) Handles btnSave.Click
   
   
+      If( ssmTOOL.Save( ahsmFilePath )) then
+
+        Me.Close
+
+      End If
+  
+  
+  End Sub
+  Private Sub btnClearForm_Click( sender As Object,  e As EventArgs) Handles btnClearForm.Click
+  
+    ClearEditPanel()
+    UpdateButtonText()
+  
+  
+  End Sub
+
+
+
+  'TechList Helpers
   Private Sub FillTechLineEditPanel( index As Integer)
 
      Dim techline As ITechListBenefitLine
@@ -723,168 +883,64 @@ End Function
                         
 
   End Sub
-
-
-Private Sub gvTechBenefitLines_DoubleClick( sender As Object,  e As EventArgs) Handles gvTechBenefitLines.DoubleClick
-
-    If  gvTechBenefitLines.SelectedCells.Count<1 then Return
-    
-
-     Dim row As Integer = gvTechBenefitLines.SelectedCells(0).OwningRow.Index
-
-     Dim benefitName , category As String
-     benefitName = gvTechBenefitLines.Rows(row).Cells("BenefitName").Value
-     category = gvTechBenefitLines.Rows(row).Cells("Category").Value
-
-     editTechLine = ssmTOOL.techList.TechLines.First( Function(f) f.BenefitName=benefitName AndAlso f.Category=category)
-
-     FillTechLineEditPanel( row )
-
-     UpdateButtonText()
-
-
-
-End Sub
-
-
-private function GetTechLineFromPanel() as ITechListBenefitLine
-
-  Dim tl As ITechListBenefitLine  = New TechListBenefitLine( ssmTOOL.genInputs)
-   
-
-  tl.Category      = StrConv(cboCategory.Text, vbProperCase)
-  tl.BenefitName   = txtBenefitName.Text
-  tl.Units         = cboUnits.Text
-  tl.LineType      = If( cboLineType.Text= "Normal",0,3)
-  tl.LowFloorH     = txtLowFloorH      .Text
-  tl.LowFloorV     = txtLowFloorV      .Text
-  tl.LowFloorC     = txtLowFloorC      .Text
-  tl.SemiLowFloorH = txtSemiLowFloorH  .Text
-  tl.SemiLowFloorV = txtSemiLowFloorV  .Text
-  tl.SemiLowFloorC = txtSemiLowFloorC  .Text
-  tl.RaisedFloorH  = txtRaisedFloorH   .Text
-  tl.RaisedFloorV  = txtRaisedFloorV   .Text
-  tl.RaisedFloorC  = txtRaisedFloorC   .Text
-  tl.ActiveVH      = chkActiveVH       .Checked
-  tl.ActiveVV      = chkActiveVV       .Checked
-  tl.ActiveVC      = chkActiveVC       .Checked
-  tl.OnVehicle     = chkOnVehicle      .Checked
-
-
-  Return tl
-
-End Function
-
-Private Sub ClearEditPanel()
-
-  txtIndex.Text                     = String.Empty
-  cboCategory.SelectedIndex=0
-  txtBenefitName.Text               = String.Empty
-  cboUnits.SelectedIndex=0                
-  cboLineType.SelectedIndex=0
-  txtLowFloorH      .Text           = String.Empty
-  txtLowFloorV      .Text           = String.Empty
-  txtLowFloorC      .Text           = String.Empty
-  txtSemiLowFloorH  .Text           = String.Empty
-  txtSemiLowFloorV  .Text           = String.Empty
-  txtSemiLowFloorC  .Text           = String.Empty
-  txtRaisedFloorH   .Text           = String.Empty
-  txtRaisedFloorV   .Text           = String.Empty
-  txtRaisedFloorC   .Text           = String.Empty
-  chkActiveVH       .Checked        = False
-  chkActiveVV       .Checked        = False
-  chkActiveVC       .Checked        = False
-  chkOnVehicle      .Checked        = False
-
-End Sub
-
-
-Private Sub btnUpdate_Click( sender As Object,  e As EventArgs) Handles btnUpdate.Click
- 
-  Dim feedback As String = String.Empty
-
-  If NOT Validate_TechLineEdit() then Return
+  private function GetTechLineFromPanel() as ITechListBenefitLine
   
-  If txtIndex.Text.Trim.Length=0 then 
-  'This is an Add
-   If Not ssmTOOL.techList.Add( GetTechLineFromPanel(), feedback) then
-     MessageBox.Show( feedback )
-     Else
-      BindGrid()
-
-      cboCategory.DataSource= GetCategories()
-
-      UpdateButtonText()
-
-   End if
-
-  Else
-  'This is an update
-    If Not ssmTOOL.techList.Modify( editTechLine, GetTechLineFromPanel() , feedback) then
-        MessageBox.Show( feedback )
-     Else
-       gvTechBenefitLines.Refresh()
-       ClearEditPanel()
-       UpdateButtonText()
-      
-    End If
-
-  End If
-
-End Sub
-
-
-
-
-Private Sub btnSave_Click( sender As Object,  e As EventArgs) Handles btnSave.Click
-
-
-     ssmTOOL.Save( ahsmFilePath )
-
-
-End Sub
-
-
-
-Private Sub gvTechBenefitLines_CellClick( sender As Object,  e As DataGridViewCellEventArgs) Handles gvTechBenefitLines.CellClick
-
-   If e.ColumnIndex<0 OrElse e.RowIndex<0 then Return
-
-
-   If gvTechBenefitLines.Columns( e.ColumnIndex).Name="Delete" then
-
-      Dim benefit As String = gvTechBenefitLines.Rows( e.RowIndex).Cells(1).Value
-      Dim category As String = gvTechBenefitLines.Rows( e.RowIndex).Cells(0).Value
-      Dim feedback As String = String.Empty
-
-      Dim dr As DialogResult = MessageBox.Show(String.Format("Do you want to delete benefit '{0}' ?", benefit),"", MessageBoxButtons.YesNo)
-
-      If dr= Windows.Forms.DialogResult.Yes then
-      
-       If  ssmTOOL.techList.Delete( New TechListBenefitLine With {.BenefitName= benefit, .Category=category}, feedback) then
-
-         BindGrid
-
-       End If
+    Dim tl As ITechListBenefitLine  = New TechListBenefitLine( ssmTOOL.genInputs)
+     
+  
+    tl.Category      = StrConv(cboCategory.Text, vbProperCase)
+    tl.BenefitName   = txtBenefitName.Text
+    tl.Units         = cboUnits.Text
+    tl.LineType      = If( cboLineType.Text= "Normal",0,3)
+    tl.LowFloorH     = txtLowFloorH      .Text
+    tl.LowFloorV     = txtLowFloorV      .Text
+    tl.LowFloorC     = txtLowFloorC      .Text
+    tl.SemiLowFloorH = txtSemiLowFloorH  .Text
+    tl.SemiLowFloorV = txtSemiLowFloorV  .Text
+    tl.SemiLowFloorC = txtSemiLowFloorC  .Text
+    tl.RaisedFloorH  = txtRaisedFloorH   .Text
+    tl.RaisedFloorV  = txtRaisedFloorV   .Text
+    tl.RaisedFloorC  = txtRaisedFloorC   .Text
+    tl.ActiveVH      = chkActiveVH       .Checked
+    tl.ActiveVV      = chkActiveVV       .Checked
+    tl.ActiveVC      = chkActiveVC       .Checked
+    tl.OnVehicle     = chkOnVehicle      .Checked
+  
+  
+    Return tl
+  
+  End Function
+  Private Sub ClearEditPanel()
+  
+    txtIndex.Text                     = String.Empty
+    cboCategory.SelectedIndex=0
+    txtBenefitName.Text               = String.Empty
+    cboUnits.SelectedIndex=0                
+    cboLineType.SelectedIndex=0
+    txtLowFloorH      .Text           = String.Empty
+    txtLowFloorV      .Text           = String.Empty
+    txtLowFloorC      .Text           = String.Empty
+    txtSemiLowFloorH  .Text           = String.Empty
+    txtSemiLowFloorV  .Text           = String.Empty
+    txtSemiLowFloorC  .Text           = String.Empty
+    txtRaisedFloorH   .Text           = String.Empty
+    txtRaisedFloorV   .Text           = String.Empty
+    txtRaisedFloorC   .Text           = String.Empty
+    chkActiveVH       .Checked        = False
+    chkActiveVV       .Checked        = False
+    chkActiveVC       .Checked        = False
+    chkOnVehicle      .Checked        = False
+  
+  End Sub
 
 
-
-      End If
-
-
-   End If
-
-End Sub
+   Private Sub btnCancel_Click( sender As Object,  e As EventArgs) Handles btnCancel.Click
+   
+      UserHitCancel=True
+      Me.Close
 
 
-
-Private Sub btnClearForm_Click( sender As Object,  e As EventArgs) Handles btnClearForm.Click
-
-  ClearEditPanel()
-  UpdateButtonText()
-
-
-End Sub
+   End Sub
 
 
 

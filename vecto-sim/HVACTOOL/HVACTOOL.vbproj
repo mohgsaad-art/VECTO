@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{C34CFD60-2081-4EA3-AC18-6769291FBDBD}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <StartupObject>Sub Main</StartupObject>
+    <StartupObject>VectoAuxiliaries.Main</StartupObject>
     <RootNamespace>VectoAuxiliaries</RootNamespace>
     <AssemblyName>HVACTOOL</AssemblyName>
     <FileAlignment>512</FileAlignment>

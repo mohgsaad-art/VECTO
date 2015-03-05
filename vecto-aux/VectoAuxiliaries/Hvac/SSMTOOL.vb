@@ -54,10 +54,10 @@ Implements ISSMTOOL
 
 
  End Sub
- Sub New(filePath As String)
+ Sub New(filePath As String, Optional useTestValues As Boolean = false)
 
    Me.filePath = filePath
-   genInputs = New SSMGenInputs()
+   genInputs = New SSMGenInputs(useTestValues)
    techList = New SSMTechList(filePath, genInputs)
 
  End Sub

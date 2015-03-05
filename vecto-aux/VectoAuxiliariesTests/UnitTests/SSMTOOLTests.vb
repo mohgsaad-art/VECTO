@@ -563,13 +563,7 @@ End Sub
 
          const  filePath as string  = "SSMTOOLTestSaveRetreive.json"
 
-         Dim gen As ISSMGenInputs = New SSMGenInputs(true)
-
-         Dim saved As new SSMTOOL
- 
-
-
-         Dim target As SSMTOOL = New SSMTOOL(filePath )
+         Dim target As SSMTOOL = New SSMTOOL(filePath, True )
 
          target.Save(filePath)
 
