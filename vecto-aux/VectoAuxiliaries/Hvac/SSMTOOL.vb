@@ -3,13 +3,12 @@ Imports VectoAuxiliaries.Hvac
 Imports Newtonsoft.Json
 Imports System.IO
 Imports System.Reflection
+Imports System.Text
 
 Namespace Hvac
 
 Public Class SSMTOOL
 Implements ISSMTOOL
-
-
 
  Private filePath As String
  Public genInputs As ISSMGenInputs
@@ -52,14 +51,14 @@ Implements ISSMTOOL
 
  'Constructors
  Sub New()
-  
+
 
  End Sub
  Sub New(filePath As String)
 
    Me.filePath = filePath
    genInputs = New SSMGenInputs()
-   techList  = New SSMTechList(filePath,genInputs)
+   techList = New SSMTechList(filePath, genInputs)
 
  End Sub
 
@@ -120,15 +119,15 @@ End Function
 
        tmpAux = JsonConvert.DeserializeObject(Of SSMTOOL)(output, settings)
 
-       tmpAux.techList.SetSSMGeneralInputs( tmpAux.genInputs)
+       tmpAux.techList.SetSSMGeneralInputs(tmpAux.genInputs)
 
        For Each tll As TechListBenefitLine In tmpAux.techList.TechLines
 
-         tll.inputSheet= tmpAux.genInputs
+         tll.inputSheet = tmpAux.genInputs
 
        Next
 
-   
+
 
        'This is where we Assume values of loaded( Deserialized ) object.
        Clone(tmpAux)
@@ -144,7 +143,6 @@ End Function
 
 End Function
 
-
  'Comparison
  Public Function IsEqualTo(source As ISSMTOOL) As Boolean Implements ISSMTOOL.IsEqualTo
 
@@ -155,7 +153,6 @@ End Function
 
 
  End Function
-
  Private Function compareGenUserInputs(source As ISSMTOOL) As Boolean
 
    Dim src As SSMTOOL = DirectCast(source, SSMTOOL)
@@ -164,54 +161,52 @@ End Function
 
    Dim properties As PropertyInfo() = Me.genInputs.GetType.GetProperties
 
-     For Each prop As propertyinfo In properties
-     
-        If Not prop.GetAccessors.IsReadOnly
-        
-             if  prop.GetValue(Me.genInputs,nothing)<> prop.GetValue(src.genInputs,nothing) then
-                    returnValue=False
+     For Each prop As PropertyInfo In properties
+
+        If Not prop.GetAccessors.IsReadOnly Then
+
+             If prop.GetValue(Me.genInputs, Nothing) <> prop.GetValue(src.genInputs, Nothing) Then
+                    returnValue = False
              End If
-               
+
         End If
-     
+
      Next
 
    Return returnValue
 
  End Function
-
  Private Function compareTechListBenefitLines(source As ISSMTOOL) As Boolean
 
 
-   Dim src As SSMTOOL = DirectCast( source, SSMTOOL)
+   Dim src As SSMTOOL = DirectCast(source, SSMTOOL)
 
    'Equal numbers of lines check
-   If Me.techList.TechLines.Count<> src.techList.TechLines.Count  then return false 
+   If Me.techList.TechLines.Count <> src.techList.TechLines.Count Then Return False
 
-     For Each  tl As ITechListBenefitLine In Me.techList.TechLines.OrderBy(  Function(o) o.Category).ThenBy( Function(n) n.BenefitName)
+     For Each tl As ITechListBenefitLine In Me.techList.TechLines.OrderBy(Function(o) o.Category).ThenBy(Function(n) n.BenefitName)
 
         'First Check line exists in other
-        If src.techList.TechLines.Where( Function(w) w.BenefitName= tl.BenefitName AndAlso w.Category=tl.Category).Count<>1 then
+        If src.techList.TechLines.Where(Function(w) w.BenefitName = tl.BenefitName AndAlso w.Category = tl.Category).Count <> 1 Then
 
          Return False
         Else
-        
+
          'check are equal
 
-           If Not src.techList.TechLines.first( Function(w) w.BenefitName= tl.BenefitName AndAlso w.Category=tl.Category).IsEqualTo( tl ) then
+           If Not src.techList.TechLines.First(Function(w) w.BenefitName = tl.BenefitName AndAlso w.Category = tl.Category).IsEqualTo(tl) Then
              Return False
            End If
 
         End If
-        
+
 
      Next
 
      'All Looks OK
-     Return true
+     Return True
 
  End Function
-
 
 
 End Class
