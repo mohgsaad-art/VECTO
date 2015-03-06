@@ -140,11 +140,15 @@
     <Compile Include="Hvac\IHVACSteadyStateModel.vb" />
     <Compile Include="Hvac\IHVACUserInputsConfig.vb" />
     <Compile Include="Hvac\IM1_AverageHVACLoadDemand.vb" />
+    <Compile Include="Hvac\ISSMCalculate.vb" />
     <Compile Include="Hvac\ISSMGenInputs.vb" />
+    <Compile Include="Hvac\ISSMRun.vb" />
     <Compile Include="Hvac\ISSMTechList.vb" />
     <Compile Include="Hvac\ISSMTOOL.vb" />
     <Compile Include="Hvac\ITechListBenefitLine.vb" />
+    <Compile Include="Hvac\SSMCalculate.vb" />
     <Compile Include="Hvac\SSMGenInputs.vb" />
+    <Compile Include="Hvac\SSMRun.vb" />
     <Compile Include="Hvac\SSMTechList.vb" />
     <Compile Include="Hvac\SSMTOOL.vb" />
     <Compile Include="Hvac\TechListBenefitLine.vb" />
