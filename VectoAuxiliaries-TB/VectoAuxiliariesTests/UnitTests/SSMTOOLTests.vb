@@ -47,7 +47,7 @@ Namespace UnitTests
 
       Dim feedback As String = String.Empty
 
-      Assert.istrue(src.techList.Add( newItem, feedback))
+      Assert.istrue(src.TechList.Add( newItem, feedback))
 
   End Function
 
@@ -674,7 +674,7 @@ End Sub
          AddDefaultTechLine( ssmTool2)
 
          'Make Unequal
-         ssmTool2.techList.TechLines(0).BenefitName="Doobie"
+         ssmTool2.TechList.TechLines(0).BenefitName="Doobie"
 
          Assert.IsFalse ( ssmTool1.IsEqualTo( ssmTool2))
 
@@ -693,7 +693,7 @@ End Sub
          AddDefaultTechLine( ssmTool2)
 
          'Make Unequal
-         ssmTool2.techList.TechLines(0).ActiveVV=False
+         ssmTool2.TechList.TechLines(0).ActiveVV=False
 
          Assert.IsFalse ( ssmTool1.IsEqualTo( ssmTool2))
 

@@ -50,7 +50,7 @@ End Function
 
   Private sub BindGrid(  )
 
-      Dim gvTechListBinding As New BindingList(Of ITechListBenefitLine)(ssmTOOL.techList.TechLines.OrderBy( Function(o) o.Category).ThenBy( Function(t) t.BenefitName).ToList())
+      Dim gvTechListBinding As New BindingList(Of ITechListBenefitLine)(ssmTOOL.TechList.TechLines.OrderBy( Function(o) o.Category).ThenBy( Function(t) t.BenefitName).ToList())
       Me.gvTechBenefitLines.DataSource = gvTechListBinding
 
 
@@ -58,12 +58,12 @@ End Function
 
   Private function GetCategories( ) As List(Of String)
 
-     If Not ssmTOOL is Nothing AndAlso Not ssmTOOL.techList is Nothing AndAlso ssmTOOL.techList.TechLines.Count>0
+     If Not ssmTOOL is Nothing AndAlso Not ssmTOOL.TechList is Nothing AndAlso ssmTOOL.TechList.TechLines.Count>0
 
         'Fuse Lists          
         Dim fusedList As new List(Of String )
         
-        For Each s As String In ssmTOOL.techList.TechLines.Select( Function(sel) sel.Category)
+        For Each s As String In ssmTOOL.TechList.TechLines.Select( Function(sel) sel.Category)
 
           If Not fusedList.Contains(s) then
            fusedList.Add(s)
@@ -756,7 +756,7 @@ End Function
        benefitName = gvTechBenefitLines.Rows(row).Cells("BenefitName").Value
        category = gvTechBenefitLines.Rows(row).Cells("Category").Value
   
-       editTechLine = ssmTOOL.techList.TechLines.First( Function(f) f.BenefitName=benefitName AndAlso f.Category=category)
+       editTechLine = ssmTOOL.TechList.TechLines.First( Function(f) f.BenefitName=benefitName AndAlso f.Category=category)
   
        FillTechLineEditPanel( row )
   
@@ -780,7 +780,7 @@ End Function
   
         If dr= Windows.Forms.DialogResult.Yes then
         
-         If  ssmTOOL.techList.Delete( New TechListBenefitLine With {.BenefitName= benefit, .Category=category}, feedback) then
+         If  ssmTOOL.TechList.Delete( New TechListBenefitLine With {.BenefitName= benefit, .Category=category}, feedback) then
   
            BindGrid
   
@@ -805,7 +805,7 @@ End Sub
     
     If txtIndex.Text.Trim.Length=0 then 
     'This is an Add
-     If Not ssmTOOL.techList.Add( GetTechLineFromPanel(), feedback) then
+     If Not ssmTOOL.TechList.Add( GetTechLineFromPanel(), feedback) then
        MessageBox.Show( feedback )
        Else
         BindGrid()
@@ -818,7 +818,7 @@ End Sub
   
     Else
     'This is an update
-      If Not ssmTOOL.techList.Modify( editTechLine, GetTechLineFromPanel() , feedback) then
+      If Not ssmTOOL.TechList.Modify( editTechLine, GetTechLineFromPanel() , feedback) then
           MessageBox.Show( feedback )
        Else
          gvTechBenefitLines.Refresh()
@@ -859,7 +859,7 @@ End Sub
      benefitName = gvTechBenefitLines.Rows(index).Cells("BenefitName").Value
      category = gvTechBenefitLines.Rows(index).Cells("Category").Value
 
-     techline = ssmTOOL.techList.TechLines.First( Function(f) f.BenefitName=benefitName AndAlso f.Category=category)
+     techline = ssmTOOL.TechList.TechLines.First( Function(f) f.BenefitName=benefitName AndAlso f.Category=category)
 
      txtIndex.Text=index
      cboCategory.Text= techline.Category
