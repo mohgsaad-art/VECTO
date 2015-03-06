@@ -10,10 +10,17 @@ Namespace Hvac
 Public Class SSMTOOL
 Implements ISSMTOOL
 
- Private filePath As String
- Public genInputs As ISSMGenInputs
- Public techList As ISSMTechList
 
+
+
+
+
+
+
+ Private filePath As String
+ Public Property GenInputs As ISSMGenInputs Implements ISSMTOOL.GenInputs
+ Public Property TechList As ISSMTechList Implements ISSMTOOL.TechList
+ Public Property Calculate As ISSMCalculate Implements ISSMTOOL.Calculate
 
  'Public facing properties, final results from calculations.
  Public ReadOnly Property ElectricalWAdjusted As Single Implements ISSMTOOL.ElectricalWAdjusted
@@ -58,7 +65,9 @@ Implements ISSMTOOL
 
    Me.filePath = filePath
    genInputs = New SSMGenInputs(useTestValues)
-   techList = New SSMTechList(filePath, genInputs)
+   TechList = New SSMTechList(filePath, genInputs)
+
+   Calculate = New SSMCalculate( Me )
 
  End Sub
 
@@ -69,11 +78,11 @@ Implements ISSMTOOL
 
      genInputs.InjectFrom(DirectCast(from, SSMTOOL).genInputs)
 
-     techList.Clear()
+     TechList.Clear()
 
-     For Each line As TechListBenefitLine In DirectCast(from, SSMTOOL).techList.TechLines
+     For Each line As TechListBenefitLine In DirectCast(from, SSMTOOL).TechList.TechLines
 
-         techList.Add(line, feedback)
+         TechList.Add(line, feedback)
 
     Next
 
@@ -119,9 +128,9 @@ End Function
 
        tmpAux = JsonConvert.DeserializeObject(Of SSMTOOL)(output, settings)
 
-       tmpAux.techList.SetSSMGeneralInputs(tmpAux.genInputs)
+       tmpAux.TechList.SetSSMGeneralInputs(tmpAux.genInputs)
 
-       For Each tll As TechListBenefitLine In tmpAux.techList.TechLines
+       For Each tll As TechListBenefitLine In tmpAux.TechList.TechLines
 
          tll.inputSheet = tmpAux.genInputs
 
@@ -182,19 +191,19 @@ End Function
    Dim src As SSMTOOL = DirectCast(source, SSMTOOL)
 
    'Equal numbers of lines check
-   If Me.techList.TechLines.Count <> src.techList.TechLines.Count Then Return False
+   If Me.TechList.TechLines.Count <> src.TechList.TechLines.Count Then Return False
 
-     For Each tl As ITechListBenefitLine In Me.techList.TechLines.OrderBy(Function(o) o.Category).ThenBy(Function(n) n.BenefitName)
+     For Each tl As ITechListBenefitLine In Me.TechList.TechLines.OrderBy(Function(o) o.Category).ThenBy(Function(n) n.BenefitName)
 
         'First Check line exists in other
-        If src.techList.TechLines.Where(Function(w) w.BenefitName = tl.BenefitName AndAlso w.Category = tl.Category).Count <> 1 Then
+        If src.TechList.TechLines.Where(Function(w) w.BenefitName = tl.BenefitName AndAlso w.Category = tl.Category).Count <> 1 Then
 
          Return False
         Else
 
          'check are equal
 
-           If Not src.techList.TechLines.First(Function(w) w.BenefitName = tl.BenefitName AndAlso w.Category = tl.Category).IsEqualTo(tl) Then
+           If Not src.TechList.TechLines.First(Function(w) w.BenefitName = tl.BenefitName AndAlso w.Category = tl.Category).IsEqualTo(tl) Then
              Return False
            End If
 
@@ -207,6 +216,11 @@ End Function
      Return True
 
  End Function
+
+
+
+
+
 
 
 End Class
