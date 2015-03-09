@@ -201,6 +201,13 @@ Partial Class frmHVACTool
         Me.ErrorProvider1 = New System.Windows.Forms.ErrorProvider(Me.components)
         Me.btnSave = New System.Windows.Forms.Button()
         Me.btnCancel = New System.Windows.Forms.Button()
+        Me.txtBasElectrical = New System.Windows.Forms.TextBox()
+        Me.txtBaseMechanical = New System.Windows.Forms.TextBox()
+        Me.txtBaseFuel = New System.Windows.Forms.TextBox()
+        Me.txtAdjFuel = New System.Windows.Forms.TextBox()
+        Me.txtAdjMechanical = New System.Windows.Forms.TextBox()
+        Me.txtAdjElectrical = New System.Windows.Forms.TextBox()
+        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.tabMain.SuspendLayout
         Me.tabGeneralInputsBP.SuspendLayout
         Me.GroupBox1.SuspendLayout
@@ -226,10 +233,10 @@ Partial Class frmHVACTool
         Me.tabMain.Controls.Add(Me.tabGeneralInputsOther)
         Me.tabMain.Controls.Add(Me.tabTechBenefits)
         Me.tabMain.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed
-        Me.tabMain.Location = New System.Drawing.Point(8, 33)
+        Me.tabMain.Location = New System.Drawing.Point(8, 81)
         Me.tabMain.Name = "tabMain"
         Me.tabMain.SelectedIndex = 0
-        Me.tabMain.Size = New System.Drawing.Size(945, 643)
+        Me.tabMain.Size = New System.Drawing.Size(945, 644)
         Me.tabMain.TabIndex = 0
         '
         'tabGeneralInputsBP
@@ -240,7 +247,7 @@ Partial Class frmHVACTool
         Me.tabGeneralInputsBP.Location = New System.Drawing.Point(4, 22)
         Me.tabGeneralInputsBP.Name = "tabGeneralInputsBP"
         Me.tabGeneralInputsBP.Padding = New System.Windows.Forms.Padding(3)
-        Me.tabGeneralInputsBP.Size = New System.Drawing.Size(937, 617)
+        Me.tabGeneralInputsBP.Size = New System.Drawing.Size(937, 618)
         Me.tabGeneralInputsBP.TabIndex = 0
         Me.tabGeneralInputsBP.Text = " INP - BusParameters "
         Me.tabGeneralInputsBP.UseVisualStyleBackColor = true
@@ -534,7 +541,7 @@ Partial Class frmHVACTool
         Me.tabGeneralInputsBC.Controls.Add(Me.GroupBox2)
         Me.tabGeneralInputsBC.Location = New System.Drawing.Point(4, 22)
         Me.tabGeneralInputsBC.Name = "tabGeneralInputsBC"
-        Me.tabGeneralInputsBC.Size = New System.Drawing.Size(937, 617)
+        Me.tabGeneralInputsBC.Size = New System.Drawing.Size(937, 618)
         Me.tabGeneralInputsBC.TabIndex = 2
         Me.tabGeneralInputsBC.Text = " INP - Boundary Conditions "
         Me.tabGeneralInputsBC.UseVisualStyleBackColor = true
@@ -1378,7 +1385,7 @@ Partial Class frmHVACTool
         Me.tabGeneralInputsOther.Controls.Add(Me.grpEnvironmentConditions)
         Me.tabGeneralInputsOther.Location = New System.Drawing.Point(4, 22)
         Me.tabGeneralInputsOther.Name = "tabGeneralInputsOther"
-        Me.tabGeneralInputsOther.Size = New System.Drawing.Size(937, 617)
+        Me.tabGeneralInputsOther.Size = New System.Drawing.Size(937, 618)
         Me.tabGeneralInputsOther.TabIndex = 3
         Me.tabGeneralInputsOther.Text = " INP - Other "
         Me.tabGeneralInputsOther.UseVisualStyleBackColor = true
@@ -1786,7 +1793,7 @@ Partial Class frmHVACTool
         Me.tabTechBenefits.Location = New System.Drawing.Point(4, 22)
         Me.tabTechBenefits.Name = "tabTechBenefits"
         Me.tabTechBenefits.Padding = New System.Windows.Forms.Padding(3)
-        Me.tabTechBenefits.Size = New System.Drawing.Size(937, 617)
+        Me.tabTechBenefits.Size = New System.Drawing.Size(937, 618)
         Me.tabTechBenefits.TabIndex = 5
         Me.tabTechBenefits.Text = " Tech List Input "
         Me.tabTechBenefits.UseVisualStyleBackColor = true
@@ -2113,7 +2120,7 @@ Partial Class frmHVACTool
         '
         'btnSave
         '
-        Me.btnSave.Location = New System.Drawing.Point(721, 694)
+        Me.btnSave.Location = New System.Drawing.Point(767, 734)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(75, 23)
         Me.btnSave.TabIndex = 1
@@ -2122,19 +2129,71 @@ Partial Class frmHVACTool
         '
         'btnCancel
         '
-        Me.btnCancel.Location = New System.Drawing.Point(826, 694)
+        Me.btnCancel.Location = New System.Drawing.Point(872, 734)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(75, 23)
         Me.btnCancel.TabIndex = 2
         Me.btnCancel.Text = "Cancel"
         Me.btnCancel.UseVisualStyleBackColor = true
         '
+        'txtBasElectrical
+        '
+        Me.txtBasElectrical.Location = New System.Drawing.Point(520, 4)
+        Me.txtBasElectrical.Name = "txtBasElectrical"
+        Me.txtBasElectrical.Size = New System.Drawing.Size(100, 20)
+        Me.txtBasElectrical.TabIndex = 3
+        '
+        'txtBaseMechanical
+        '
+        Me.txtBaseMechanical.Location = New System.Drawing.Point(520, 31)
+        Me.txtBaseMechanical.Name = "txtBaseMechanical"
+        Me.txtBaseMechanical.Size = New System.Drawing.Size(100, 20)
+        Me.txtBaseMechanical.TabIndex = 4
+        '
+        'txtBaseFuel
+        '
+        Me.txtBaseFuel.Location = New System.Drawing.Point(521, 58)
+        Me.txtBaseFuel.Name = "txtBaseFuel"
+        Me.txtBaseFuel.Size = New System.Drawing.Size(98, 20)
+        Me.txtBaseFuel.TabIndex = 5
+        '
+        'txtAdjFuel
+        '
+        Me.txtAdjFuel.Location = New System.Drawing.Point(734, 58)
+        Me.txtAdjFuel.Name = "txtAdjFuel"
+        Me.txtAdjFuel.Size = New System.Drawing.Size(98, 20)
+        Me.txtAdjFuel.TabIndex = 8
+        '
+        'txtAdjMechanical
+        '
+        Me.txtAdjMechanical.Location = New System.Drawing.Point(733, 31)
+        Me.txtAdjMechanical.Name = "txtAdjMechanical"
+        Me.txtAdjMechanical.Size = New System.Drawing.Size(100, 20)
+        Me.txtAdjMechanical.TabIndex = 7
+        '
+        'txtAdjElectrical
+        '
+        Me.txtAdjElectrical.Location = New System.Drawing.Point(733, 4)
+        Me.txtAdjElectrical.Name = "txtAdjElectrical"
+        Me.txtAdjElectrical.Size = New System.Drawing.Size(100, 20)
+        Me.txtAdjElectrical.TabIndex = 6
+        '
+        'Timer1
+        '
+        Me.Timer1.Enabled = true
+        '
         'frmHVACTool
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange
-        Me.ClientSize = New System.Drawing.Size(965, 729)
+        Me.ClientSize = New System.Drawing.Size(965, 766)
+        Me.Controls.Add(Me.txtAdjFuel)
+        Me.Controls.Add(Me.txtAdjMechanical)
+        Me.Controls.Add(Me.txtAdjElectrical)
+        Me.Controls.Add(Me.txtBaseFuel)
+        Me.Controls.Add(Me.txtBaseMechanical)
+        Me.Controls.Add(Me.txtBasElectrical)
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnSave)
         Me.Controls.Add(Me.tabMain)
@@ -2167,6 +2226,7 @@ Partial Class frmHVACTool
         CType(Me.gvTechBenefitLines,System.ComponentModel.ISupportInitialize).EndInit
         CType(Me.ErrorProvider1,System.ComponentModel.ISupportInitialize).EndInit
         Me.ResumeLayout(false)
+        Me.PerformLayout
 
 End Sub
     Friend WithEvents tabMain As System.Windows.Forms.TabControl
@@ -2347,4 +2407,11 @@ End Sub
     Friend WithEvents btnCancel As System.Windows.Forms.Button
     Friend WithEvents btnSave As System.Windows.Forms.Button
     Friend WithEvents btnClearForm As System.Windows.Forms.Button
+    Friend WithEvents txtAdjFuel As System.Windows.Forms.TextBox
+    Friend WithEvents txtAdjMechanical As System.Windows.Forms.TextBox
+    Friend WithEvents txtAdjElectrical As System.Windows.Forms.TextBox
+    Friend WithEvents txtBaseFuel As System.Windows.Forms.TextBox
+    Friend WithEvents txtBaseMechanical As System.Windows.Forms.TextBox
+    Friend WithEvents txtBasElectrical As System.Windows.Forms.TextBox
+    Friend WithEvents Timer1 As System.Windows.Forms.Timer
 End Class
