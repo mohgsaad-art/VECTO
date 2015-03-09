@@ -11,50 +11,43 @@ Public Class SSMTOOL
 Implements ISSMTOOL
 
 
-
-
-
-
-
-
  Private filePath As String
  Public Property GenInputs As ISSMGenInputs Implements ISSMTOOL.GenInputs
- Public Property TechList As ISSMTechList Implements ISSMTOOL.TechList
+ Public Property TechList  As ISSMTechList  Implements ISSMTOOL.TechList
  Public Property Calculate As ISSMCalculate Implements ISSMTOOL.Calculate
 
- 'Public facing properties, final results from calculations.
- Public ReadOnly Property ElectricalWAdjusted As Single Implements ISSMTOOL.ElectricalWAdjusted
-   Get
-
-   End Get
- End Property
+ 'Base Values
  Public ReadOnly Property ElectricalWBase As Single Implements ISSMTOOL.ElectricalWBase
     Get
-
-            End Get
- End Property
- Public ReadOnly Property FuelLPerHBase As Single Implements ISSMTOOL.FuelLPerHBase
-    Get
-
-            End Get
- End Property
-
- Public ReadOnly Property FuelLPerHBaseAdjusted As Single Implements ISSMTOOL.FuelLPerHBaseAdjusted
-    Get
-
-            End Get
+      Return  Calculate.ElectricalWBase
+    End Get
  End Property
  Public ReadOnly Property MechanicalWBase As Single Implements ISSMTOOL.MechanicalWBase
     Get
-
-            End Get
+     Return  Calculate.MechanicalWBase
+    End Get
+ End Property
+ Public ReadOnly Property FuelLPerHBase As Single Implements ISSMTOOL.FuelLPerHBase
+    Get
+      Return Calculate.FuelLPerHBase
+    End Get
+ End Property
+ 'Adjusted Values
+ Public ReadOnly Property ElectricalWAdjusted As Single Implements ISSMTOOL.ElectricalWAdjusted
+   Get
+     Return Calculate.ElectricalWAdjusted
+   End Get
  End Property
  Public ReadOnly Property MechanicalWBaseAdjusted As Single Implements ISSMTOOL.MechanicalWBaseAdjusted
     Get
-
-            End Get
+      Return Calculate.MechanicalWBaseAdjusted
+     End Get
  End Property
-
+ Public ReadOnly Property FuelLPerHBaseAdjusted As Single Implements ISSMTOOL.FuelLPerHBaseAdjusted
+    Get
+     Return Calculate.FuelLPerHBaseAdjusted
+    End Get
+ End Property
 
  'Constructors
  Sub New()
@@ -216,11 +209,6 @@ End Function
      Return True
 
  End Function
-
-
-
-
-
 
 
 End Class

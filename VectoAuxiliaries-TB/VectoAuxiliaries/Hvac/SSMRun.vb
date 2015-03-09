@@ -14,6 +14,8 @@ Public Class SSMRun
 
     If runNumber<>1 AndAlso runNumber<>2 then Throw New ArgumentException("Run number must be either 1 or 2")
 
+    ssmTOOL=ssm
+
  End Sub
 
 

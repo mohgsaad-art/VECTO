@@ -77,8 +77,9 @@ Public Class SSMCalculate
                Dim gen As ISSMGenInputs = ssmTOOL.GenInputs
                Dim tl As ISSMTechList = ssmTOOL.TechList
 
+               Dim cnt As Integer = tl.TechLines.Where( Function(f) f.LineType= TechLineType.DriverACElectrical).Count()
                Dim DACElectrical As Boolean = tl.TechLines.Where( Function(f) f.LineType= TechLineType.DriverACElectrical).Count()=1
-               Dim AdjustedAddition As Double =  If( Not DACElectrical,0, tl.CValueVariationKW*1000)
+               Dim AdjustedAddition As Double =  If( Not DACElectrical,0,- tl.CValueVariationKW*1000)
 
               'Dim H84  As Double = BaseHeatingW_ElectricalCoolingHeating
               'Dim H90  As Double = TechListAdjustedCoolingW_ElectricalCoolingHeating
@@ -112,11 +113,11 @@ Public Class SSMCalculate
                Dim DACMechanical As Boolean = tl.TechLines.Where( Function(f) f.LineType= TechLineType.DriverACMechanical).Count()=1
                Dim AdjustedAddition As Double =  If( Not DACMechanical,0, tl.CValueVariationKW*1000)
 
-               Dim F84 As Double  = BaseCoolingW_Mechanical
-               Dim F90 As Double  = TechListAdjustedCoolingW_Mechanical
-               Dim C33 As Double  = gen.BC_COP
+               'Dim F84 As Double  = BaseCoolingW_Mechanical
+               'Dim F90 As Double  = TechListAdjustedCoolingW_Mechanical
+               'Dim C33 As Double  = gen.BC_COP
 
-               Return (F84*(1-F90)/C33) + AdjustedAddition
+               Return (BaseCoolingW_Mechanical*(1-TechListAdjustedCoolingW_Mechanical)/gen.BC_COP) + AdjustedAddition
 
             End Get
 
@@ -359,14 +360,16 @@ Public Class SSMCalculate
 
               Dim gen As ISSMGenInputs = ssmTOOL.GenInputs
               Dim tl As ISSMTechList   = ssmTOOL.TechList
-
+              Dim result As Double
               'Dim TLR92 As Double =  tl.CValueVariation 'TECH LIST INPUT'!R92
               'Dim C40 As Double   =  gen.BC_MaxPossibleBenefitFromTechnologyList
               'Dim C48 As string   =  gen.AC_CompressorType
 
-              Return IF(   IF(gen.AC_CompressorType.ToLower="mechanical",tl.CValueVariation,0)>0, _
+              result= IF(   IF(gen.AC_CompressorType.ToLower="mechanical",tl.CValueVariation,0)>0, _
                               Math.MIN(IF(gen.AC_CompressorType="mechanical",tl.CValueVariation,0),gen.BC_MaxPossibleBenefitFromTechnologyList), _
                               Math.MAX(IF(gen.AC_CompressorType="mechanical",tl.CValueVariation,0),-gen.BC_MaxPossibleBenefitFromTechnologyList))
+
+              Return result
 
             End Get
         End Property
@@ -377,15 +380,17 @@ Public Class SSMCalculate
             
               Dim gen As ISSMGenInputs = ssmTOOL.GenInputs
               Dim tl As ISSMTechList   = ssmTOOL.TechList
+              Dim result As Double
 
               'Dim TLR92 As Double =  tl.CValueVariation 'TECH LIST INPUT'!R92
               'Dim C40 As Double   =  gen.BC_MaxPossibleBenefitFromTechnologyList
               'Dim C48 As string   =  gen.AC_CompressorType
 
-              Return IF(IF(gen.AC_CompressorType.ToLower="mechanical",0,tl.CValueVariation)>0, _
+              result = IF(IF(gen.AC_CompressorType.ToLower="mechanical",0,tl.CValueVariation)>0, _
                             Math.MIN(IF(gen.AC_CompressorType.ToLower="mechanical",0,tl.CValueVariation),gen.BC_MaxPossibleBenefitFromTechnologyList), _
                             Math.MAX(IF(gen.AC_CompressorType.ToLower="mechanical",0,tl.CValueVariation),-gen.BC_MaxPossibleBenefitFromTechnologyList))
 
+              Return result
 
             End Get
         End Property
