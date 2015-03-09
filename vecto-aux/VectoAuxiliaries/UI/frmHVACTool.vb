@@ -944,4 +944,30 @@ End Sub
 
 
 
+Private Sub Timer1_Tick( sender As Object,  e As EventArgs) Handles Timer1.Tick
+
+    If Not ssmTOOL is nothing then
+
+    txtBasElectrical.Text = ssmTOOL.ElectricalWBase
+    txtBaseMechanical.Text = ssmTOOL.MechanicalWBase
+    txtBaseFuel.Text = ssmTOOL.FuelLPerHBase
+
+    txtAdjElectrical.Text = ssmTOOL.ElectricalWAdjusted
+    txtAdjMechanical.Text = ssmTOOL.MechanicalWBaseAdjusted
+    txtAdjFuel.Text = ssmTOOL.FuelLPerHBaseAdjusted
+
+
+
+    End If
+
+
+
+End Sub
+
+
+
+
+Private Sub Validating_GeneralInputsBP( sender As Object,  e As EventArgs)
+
+End Sub
 End Class
