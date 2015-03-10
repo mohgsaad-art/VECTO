@@ -197,6 +197,8 @@ Partial Class frmHVACTool
         Me.gvTechBenefitLines = New System.Windows.Forms.DataGridView()
         Me.lblUnits = New System.Windows.Forms.Label()
         Me.cboUnits = New System.Windows.Forms.ComboBox()
+        Me.tabDiagnostics = New System.Windows.Forms.TabPage()
+        Me.txtDiagnostics = New System.Windows.Forms.TextBox()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.ErrorProvider1 = New System.Windows.Forms.ErrorProvider(Me.components)
         Me.btnSave = New System.Windows.Forms.Button()
@@ -223,6 +225,7 @@ Partial Class frmHVACTool
         Me.pnlSemiLowFloorRow.SuspendLayout
         Me.pnlLowFloorRow.SuspendLayout
         CType(Me.gvTechBenefitLines,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.tabDiagnostics.SuspendLayout
         CType(Me.ErrorProvider1,System.ComponentModel.ISupportInitialize).BeginInit
         Me.SuspendLayout
         '
@@ -232,6 +235,7 @@ Partial Class frmHVACTool
         Me.tabMain.Controls.Add(Me.tabGeneralInputsBC)
         Me.tabMain.Controls.Add(Me.tabGeneralInputsOther)
         Me.tabMain.Controls.Add(Me.tabTechBenefits)
+        Me.tabMain.Controls.Add(Me.tabDiagnostics)
         Me.tabMain.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed
         Me.tabMain.Location = New System.Drawing.Point(8, 81)
         Me.tabMain.Name = "tabMain"
@@ -2114,6 +2118,24 @@ Partial Class frmHVACTool
         Me.cboUnits.Size = New System.Drawing.Size(324, 21)
         Me.cboUnits.TabIndex = 1
         '
+        'tabDiagnostics
+        '
+        Me.tabDiagnostics.Controls.Add(Me.txtDiagnostics)
+        Me.tabDiagnostics.Location = New System.Drawing.Point(4, 22)
+        Me.tabDiagnostics.Name = "tabDiagnostics"
+        Me.tabDiagnostics.Size = New System.Drawing.Size(937, 618)
+        Me.tabDiagnostics.TabIndex = 6
+        Me.tabDiagnostics.Text = "Diagnostics"
+        Me.tabDiagnostics.UseVisualStyleBackColor = true
+        '
+        'txtDiagnostics
+        '
+        Me.txtDiagnostics.Location = New System.Drawing.Point(77, 41)
+        Me.txtDiagnostics.Multiline = true
+        Me.txtDiagnostics.Name = "txtDiagnostics"
+        Me.txtDiagnostics.Size = New System.Drawing.Size(744, 501)
+        Me.txtDiagnostics.TabIndex = 0
+        '
         'ErrorProvider1
         '
         Me.ErrorProvider1.ContainerControl = Me
@@ -2224,6 +2246,8 @@ Partial Class frmHVACTool
         Me.pnlLowFloorRow.ResumeLayout(false)
         Me.pnlLowFloorRow.PerformLayout
         CType(Me.gvTechBenefitLines,System.ComponentModel.ISupportInitialize).EndInit
+        Me.tabDiagnostics.ResumeLayout(false)
+        Me.tabDiagnostics.PerformLayout
         CType(Me.ErrorProvider1,System.ComponentModel.ISupportInitialize).EndInit
         Me.ResumeLayout(false)
         Me.PerformLayout
@@ -2414,4 +2438,6 @@ End Sub
     Friend WithEvents txtBaseMechanical As System.Windows.Forms.TextBox
     Friend WithEvents txtBasElectrical As System.Windows.Forms.TextBox
     Friend WithEvents Timer1 As System.Windows.Forms.Timer
+    Friend WithEvents tabDiagnostics As System.Windows.Forms.TabPage
+    Friend WithEvents txtDiagnostics As System.Windows.Forms.TextBox
 End Class

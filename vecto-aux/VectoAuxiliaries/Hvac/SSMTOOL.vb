@@ -211,6 +211,19 @@ End Function
  End Function
 
 
+        Public Overrides Function ToString() As String
+          
+
+            Dim sb As new StringBuilder 
+
+            sb.AppendLine( Calculate.ToString())
+
+
+            Return sb.ToString()
+
+        End Function
+
+
 End Class
 
 
