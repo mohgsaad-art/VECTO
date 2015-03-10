@@ -1,5 +1,7 @@
-﻿
-Namespace Hvac 
+﻿Imports System.Text
+Imports Microsoft.VisualBasic
+
+Namespace Hvac
 
 
 Public Class SSMRun
@@ -7,14 +9,15 @@ Public Class SSMRun
 
 
   Private ssmTOOL As ISSMTOOL
-  Private runNumber As Integer
+  private runNumber As Integer
 
 
- Sub new ( ssm As ISSMTOOL, runNumber As Integer )
+ Sub New(ssm As ISSMTOOL, runNumber As Integer)
 
-    If runNumber<>1 AndAlso runNumber<>2 then Throw New ArgumentException("Run number must be either 1 or 2")
+    If runNumber <> 1 AndAlso runNumber <> 2 Then Throw New ArgumentException("Run number must be either 1 or 2")
 
-    ssmTOOL=ssm
+    Me.runNumber = runNumber
+    ssmTOOL = ssm
 
  End Sub
 
@@ -27,8 +30,8 @@ Public Class SSMRun
             'C24 = BC_HeatingBoundaryTemperature
 
             Dim gen As ISSMGenInputs = ssmTOOL.GenInputs
-                       
-            Return If( gen.EC_EnviromentalTemperature> gen.BC_CoolingBoundaryTemperature,3,If( gen.EC_EnviromentalTemperature<gen.BC_HeatingBoundaryTemperature,1,2 ))
+
+            Return If(gen.EC_EnviromentalTemperature > gen.BC_CoolingBoundaryTemperature, 3, If(gen.EC_EnviromentalTemperature < gen.BC_HeatingBoundaryTemperature, 1, 2))
 
             End Get
 
@@ -43,15 +46,15 @@ Public Class SSMRun
             'C39 = BC_FontAndRearWindowArea
 
             Dim gen As ISSMGenInputs = ssmTOOL.GenInputs
-            Dim returnVal As double
+            Dim returnVal As Double
 
-             If runNumber=1  then '=C24
+             If runNumber = 1 Then '=C24
 
                returnVal = gen.BC_HeatingBoundaryTemperature
 
-             else   '=IF(C6="low floor",IF((C43-C25)<C39,C25,C43-3),C25)
+             Else   '=IF(C6="low floor",IF((C43-C25)<C39,C25,C43-3),C25)
 
-                returnVal =IF(gen.BP_BusFloorType="low floor",IF((gen.EC_EnviromentalTemperature-gen.BC_CoolingBoundaryTemperature)<gen.BC_FrontRearWindowArea,gen.BC_CoolingBoundaryTemperature,gen.EC_EnviromentalTemperature-3),gen.BC_CoolingBoundaryTemperature)
+                returnVal = If(gen.BP_BusFloorType = "low floor", If((gen.EC_EnviromentalTemperature - gen.BC_CoolingBoundaryTemperature) < gen.BC_FrontRearWindowArea, gen.BC_CoolingBoundaryTemperature, gen.EC_EnviromentalTemperature - 3), gen.BC_CoolingBoundaryTemperature)
 
              End If
 
@@ -67,7 +70,7 @@ Public Class SSMRun
              'F79/80 = Me.TCalc
 
               Dim gen As ISSMGenInputs = ssmTOOL.GenInputs
-              Return  gen.EC_EnviromentalTemperature - TCalc
+              Return gen.EC_EnviromentalTemperature - TCalc
 
             End Get
         End Property
@@ -83,7 +86,7 @@ Public Class SSMRun
 
              Dim gen As ISSMGenInputs = ssmTOOL.GenInputs
 
-             Return TemperatureDelta * gen.BP_BusSurfaceAreaM2 *  gen.BC_UValues
+             Return TemperatureDelta * gen.BP_BusSurfaceAreaM2 * gen.BC_UValues
 
             End Get
         End Property
@@ -100,10 +103,10 @@ Public Class SSMRun
               'C22  = BC_Calculated Passenger Number
               'C17  = BC_Heat Per Passenger into cabin
 
-               
+
               Dim gen As ISSMGenInputs = ssmTOOL.GenInputs
 
-              Return  Math.Max( gen.BP_NumberOfPassengers, gen.BC_CalculatedPassengerNumber) *  gen.BC_HeatPerPassengerIntoCabinW
+              Return Math.Min(gen.BP_NumberOfPassengers, gen.BC_CalculatedPassengerNumber) * gen.BC_HeatPerPassengerIntoCabinW
 
 
             End Get
@@ -122,7 +125,7 @@ Public Class SSMRun
               Dim gen As ISSMGenInputs = ssmTOOL.GenInputs
 
 
-              Return gen.EC_Solar * gen.BP_BusSurfaceAreaM2 * gen.BC_GFactor * gen.BC_SolarClouding
+              Return gen.EC_Solar * gen.BP_BusWindowSurface * gen.BC_GFactor * gen.BC_SolarClouding * 0.25
 
 
             End Get
@@ -133,7 +136,7 @@ Public Class SSMRun
               '=SUM(J79:L79) or =SUM(J80:L80)             
                  'Tanslated to 
               '=Sum ( Me.Qwall	,Me.WattsPerPass,Me.Solar )
-              
+
               Return Me.QWall + Me.WattsPerPass + Me.Solar
 
             End Get
@@ -150,49 +153,59 @@ Public Class SSMRun
             Get
               '=IF(AND(N79<0,N79<(C60*-1)),N79-(C60*-1),0)*1000
 
-              'N79 =  TotalKW
-              'C60 = Aux_EngineWasteHeat
+               Dim gen As ISSMGenInputs = ssmTOOL.GenInputs
 
-              Dim gen As ISSMGenInputs = ssmTOOL.GenInputs
+              'Dim N79  as Double =  TotalKW
+              'Dim C60  As Double = gen.AH_EngineWasteHeatkW
 
-              Return If( Me.TotalW<0 AndAlso TotalKW<( gen.AH_EngineWasteHeatkW-1), TotalKW-(gen.AH_EngineWasteHeatkW-1),0 ) * 1000
+              Return IF((TotalKW<0 AndAlso TotalKW<(gen.AH_EngineWasteHeatkW *-1)), _
+                              TotalKW-(gen.AH_EngineWasteHeatkW*-1), _
+                              0)  _
+                              *1000
 
             End Get
         End Property
         Public ReadOnly Property TechListAmendedFuelW As Double Implements ISSMRun.TechListAmendedFuelW
             Get
-            '=IF(IF(AND((N79*(1-$J$89))<0, 
-                           '(N79*(1-$J$89))<(C60*-1)),
-                           '(N79*(1-$J$89))-(C60*-1),0)*1000<0,
-                                   'IF(AND((N79*(1-$J$89))<0,
-                                       '(N79*(1-$J$89))<(C60*-1)),
-                                       '(N79*(1-$J$89))-(C60*-1),0)*1000,
-                                       '0)
+            '=IF(IF(AND((N79*(1-$J$89))<0,(N79*(1-$J$89))<(C60*-1)),(N79*(1-$J$89))-(C60*-1),0)*1000<0,IF(AND((N79*(1-$J$89))<0,(N79*(1-$J$89))<(C60*-1)),(N79*(1-$J$89))-(C60*-1),0)*1000,0)
 
-            'N79  = Me.TotalKW
-            'C40  = BC_MaxPOssibleBenefitFromTechList
-            'C60  = AH_FuelFiredHeaterKW
-            '$J$89 = Calculate.TechListAdjustedHeatingW_FuelFiredHeating ( TLFFH )
-            'Translated to 
+             Dim gen As ISSMGenInputs = ssmTOOL.GenInputs
+             Dim TLFFH As Double = ssmTOOL.Calculate.TechListAdjustedHeatingW_FuelFiredHeating            
+            'Dim C60 As Double = gen.AH_EngineWasteHeatkW
+            'Dim N79 As Double = Me.TotalKW
 
-
-            Dim TLFFH As Double =  ssmTOOL.Calculate.TechListAdjustedVentilationW_FuelFiredHeating
-            Dim gen As ISSMGenInputs = ssmTOOL.GenInputs
-            Dim C40 As Double = gen.BC_MaxPossibleBenefitFromTechnologyList
-            Dim C60 As Double = gen.AH_FuelFiredHeaterkW
-            Dim N79 As Double = Me.TotalKW
-
-
-            Return IF( _
-                       IF( (N79*(1-TLFFH))<0 AndAlso (N79*(1-TLFFH))<(C60*-1),(N79*(1-TLFFH))-(C60*-1),0)*1000<0, _
-                                   IF((N79*(1-TLFFH))<0 AndAlso (N79*(1-TLFFH))<(C60*-1),(N79*(1-TLFFH))-(C60*-1),0)*1000,0)
-
+            Return IF( IF(((TotalKW*(1-TLFFH))<0 AndAlso (TotalKW*(1-TLFFH))<(gen.AH_EngineWasteHeatkW*-1)), _
+                     (TotalKW*(1-TLFFH))-(gen.AH_EngineWasteHeatkW*-1),0)*1000<0, _ 
+                     IF(((TotalKW*(1-TLFFH))<0 AndAlso (TotalKW*(1-TLFFH))<(gen.AH_EngineWasteHeatkW*-1)),(TotalKW*(1-TLFFH))-(gen.AH_EngineWasteHeatkW*-1),0)*1000,0)
 
             End Get
 
         End Property
 
 
+
+        Public Overrides Function ToString() As String
+
+           Dim sb As New StringBuilder()
+
+           sb.AppendLine(String.Format("Run : {0}", runNumber))
+           sb.AppendLine(String.Format("************************************"))
+           sb.AppendLine(String.Format("HVAC OP         " + vbTab + ": {0}", HVACOperation))
+           sb.AppendLine(String.Format("TCALC           " + vbTab + ": {0}", TCalc))
+           sb.AppendLine(String.Format("Tempurature D   " + vbTab + ": {0}", TemperatureDelta))
+           sb.AppendLine(String.Format("QWall           " + vbTab + ": {0}", QWall))
+           sb.AppendLine(String.Format("WattsPerPass    " + vbTab + ": {0}", WattsPerPass))
+           sb.AppendLine(String.Format("Solar           " + vbTab + ": {0}", Solar))
+           sb.AppendLine(String.Format("TotalW          " + vbTab + ": {0}", TotalW))
+           sb.AppendLine(String.Format("TotalKW         " + vbTab + ": {0}", TotalKW))
+           sb.AppendLine(String.Format("Fuel W          " + vbTab + ": {0}", FuelW))
+           sb.AppendLine(String.Format("Fuel Tech Adj   " + vbTab + ": {0}", TechListAmendedFuelW))
+
+      
+           Return sb.ToString()
+
+
+        End Function
 
 End Class
 

@@ -6,6 +6,7 @@ Imports System.Drawing
 Public Class frmHVACTool
 
   'Fields
+  Private captureDiagnostics As Boolean 
   Private busDatabasePath As String
   Private ahsmFilePath As String
   Private buses As IBusDatabase
@@ -101,7 +102,7 @@ End Function
 
     ssmTOOL = New SSMTOOL(ahsmFilePath)
     originalssmTOOL = New SSMTOOL( ahsmFilePath)
-    ssmTOOL.Load(ahsmFilePath)
+    Dim result1 As Boolean = ssmTOOL.Load(ahsmFilePath)
     originalssmTOOL.Clone( ssmTOOL)
 
    ' ssmTOOL.techList.in("SSMTechBenefitsALLON.csv")
@@ -355,8 +356,8 @@ End Sub
 
 
        'txtRegisteredPassengers
-       If Not IsPostiveInteger(txtRegisteredPassengers.Text) Then
-         ErrorProvider1.SetError(txtRegisteredPassengers, "Please enter a positive integer ( Bus : Number of Passengers )")
+       If Not IsZeroOrPostiveNumber(txtRegisteredPassengers.Text) Then
+         ErrorProvider1.SetError(txtRegisteredPassengers, "Please enter an integer of zero or higher ( Bus : Number of Passengers )")
          result = False
        Else
         ErrorProvider1.SetError(txtRegisteredPassengers, String.Empty)
@@ -692,7 +693,8 @@ End Function
     TabColors.Add(tabGeneralInputsBC, Control.DefaultBackColor)
     TabColors.Add(tabGeneralInputsOther, Control.DefaultBackColor)
     TabColors.Add(tabTechBenefits, Control.DefaultBackColor)
-  
+    TabColors.Add(tabDiagnostics, Control.DefaultBackColor)
+
     EnsureBinding()
 
     'Additional atatched events
@@ -957,6 +959,15 @@ Private Sub Timer1_Tick( sender As Object,  e As EventArgs) Handles Timer1.Tick
     txtAdjFuel.Text = ssmTOOL.FuelLPerHBaseAdjusted
 
 
+      If captureDiagnostics then
+    
+        txtDiagnostics.Text = ssmTOOL.ToString()
+
+        captureDiagnostics=false
+    
+    
+      End If
+
 
     End If
 
@@ -970,4 +981,23 @@ End Sub
 Private Sub Validating_GeneralInputsBP( sender As Object,  e As EventArgs)
 
 End Sub
+
+Private Sub tabMain_TabIndexChanged( sender As Object,  e As EventArgs) Handles tabMain.TabIndexChanged
+
+
+End Sub
+
+
+Private Sub tabMain_SelectedIndexChanged( sender As Object,  e As EventArgs) Handles tabMain.SelectedIndexChanged
+
+
+  If tabMain.SelectedIndex=4 then
+
+   captureDiagnostics = true
+
+  End If
+
+End Sub
+
+
 End Class
