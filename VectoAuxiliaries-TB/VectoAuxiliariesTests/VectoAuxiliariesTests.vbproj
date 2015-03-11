@@ -280,6 +280,9 @@
     <Content Include="TestFiles\testSSMTechBenefitsEmptyList.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="TestFiles\testSSMTechBenefitsALLON_LIVE.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="TestFiles\testAlternatorMapAsymetricalXYPairsCombined.aalt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

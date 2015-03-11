@@ -182,6 +182,9 @@ Public Sub Instantiate_TechListTestALLON()
 
      Dim target As ISSMTechList = New SSMTechList( GOODTechListALLON , gen)
 
+     Dim v As Double = target.CValueVariation
+
+
        Assert.IsTrue(target.Initialise())
        Assert.AreEqual(0.142	  ,Math.Round(target.HValueVariation,3))
        Assert.AreEqual(0.006	  ,Math.Round(target.VHValueVariation,3))

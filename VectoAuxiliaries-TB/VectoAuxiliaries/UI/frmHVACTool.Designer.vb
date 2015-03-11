@@ -129,6 +129,8 @@ Partial Class frmHVACTool
         Me.lblSolarClouding = New System.Windows.Forms.Label()
         Me.tabGeneralInputsOther = New System.Windows.Forms.TabPage()
         Me.grpAuxHeater = New System.Windows.Forms.GroupBox()
+        Me.lblUnitsAH_FuelFiredHeater = New System.Windows.Forms.Label()
+        Me.lblUnitstxtAHEngineWasteHeat = New System.Windows.Forms.Label()
         Me.txtAH_EngineWasteHeatkW = New System.Windows.Forms.TextBox()
         Me.lbltxtAH_EngineWasteHeatkW = New System.Windows.Forms.Label()
         Me.txtAH_FuelFiredHeaterkW = New System.Windows.Forms.TextBox()
@@ -1397,6 +1399,8 @@ Partial Class frmHVACTool
         'grpAuxHeater
         '
         Me.grpAuxHeater.BackColor = System.Drawing.Color.Transparent
+        Me.grpAuxHeater.Controls.Add(Me.lblUnitsAH_FuelFiredHeater)
+        Me.grpAuxHeater.Controls.Add(Me.lblUnitstxtAHEngineWasteHeat)
         Me.grpAuxHeater.Controls.Add(Me.txtAH_EngineWasteHeatkW)
         Me.grpAuxHeater.Controls.Add(Me.lbltxtAH_EngineWasteHeatkW)
         Me.grpAuxHeater.Controls.Add(Me.txtAH_FuelFiredHeaterkW)
@@ -1410,6 +1414,28 @@ Partial Class frmHVACTool
         Me.grpAuxHeater.TabIndex = 32
         Me.grpAuxHeater.TabStop = false
         Me.grpAuxHeater.Text = "Aux Heater"
+        '
+        'lblUnitsAH_FuelFiredHeater
+        '
+        Me.lblUnitsAH_FuelFiredHeater.AutoSize = true
+        Me.lblUnitsAH_FuelFiredHeater.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblUnitsAH_FuelFiredHeater.Location = New System.Drawing.Point(352, 62)
+        Me.lblUnitsAH_FuelFiredHeater.Name = "lblUnitsAH_FuelFiredHeater"
+        Me.lblUnitsAH_FuelFiredHeater.Size = New System.Drawing.Size(24, 15)
+        Me.lblUnitsAH_FuelFiredHeater.TabIndex = 27
+        Me.lblUnitsAH_FuelFiredHeater.Text = "Kw"
+        Me.ToolTip1.SetToolTip(Me.lblUnitsAH_FuelFiredHeater, "Kilo Watts")
+        '
+        'lblUnitstxtAHEngineWasteHeat
+        '
+        Me.lblUnitstxtAHEngineWasteHeat.AutoSize = true
+        Me.lblUnitstxtAHEngineWasteHeat.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblUnitstxtAHEngineWasteHeat.Location = New System.Drawing.Point(352, 33)
+        Me.lblUnitstxtAHEngineWasteHeat.Name = "lblUnitstxtAHEngineWasteHeat"
+        Me.lblUnitstxtAHEngineWasteHeat.Size = New System.Drawing.Size(24, 15)
+        Me.lblUnitstxtAHEngineWasteHeat.TabIndex = 26
+        Me.lblUnitstxtAHEngineWasteHeat.Text = "Kw"
+        Me.ToolTip1.SetToolTip(Me.lblUnitstxtAHEngineWasteHeat, "Kilo Watts")
         '
         'txtAH_EngineWasteHeatkW
         '
@@ -1435,7 +1461,6 @@ Partial Class frmHVACTool
         Me.txtAH_FuelFiredHeaterkW.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!)
         Me.txtAH_FuelFiredHeaterkW.Location = New System.Drawing.Point(218, 59)
         Me.txtAH_FuelFiredHeaterkW.Name = "txtAH_FuelFiredHeaterkW"
-        Me.txtAH_FuelFiredHeaterkW.ReadOnly = true
         Me.txtAH_FuelFiredHeaterkW.Size = New System.Drawing.Size(97, 21)
         Me.txtAH_FuelFiredHeaterkW.TabIndex = 1
         '
@@ -1487,6 +1512,7 @@ Partial Class frmHVACTool
         'cboVEN_VentilationDuringHeating
         '
         Me.cboVEN_VentilationDuringHeating.FormattingEnabled = true
+        Me.cboVEN_VentilationDuringHeating.Items.AddRange(New Object() {"High", "Low"})
         Me.cboVEN_VentilationDuringHeating.Location = New System.Drawing.Point(216, 150)
         Me.cboVEN_VentilationDuringHeating.Name = "cboVEN_VentilationDuringHeating"
         Me.cboVEN_VentilationDuringHeating.Size = New System.Drawing.Size(75, 24)
@@ -2130,10 +2156,11 @@ Partial Class frmHVACTool
         '
         'txtDiagnostics
         '
-        Me.txtDiagnostics.Location = New System.Drawing.Point(77, 41)
+        Me.txtDiagnostics.Location = New System.Drawing.Point(77, 17)
         Me.txtDiagnostics.Multiline = true
         Me.txtDiagnostics.Name = "txtDiagnostics"
-        Me.txtDiagnostics.Size = New System.Drawing.Size(744, 501)
+        Me.txtDiagnostics.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.txtDiagnostics.Size = New System.Drawing.Size(744, 584)
         Me.txtDiagnostics.TabIndex = 0
         '
         'ErrorProvider1
@@ -2220,7 +2247,7 @@ Partial Class frmHVACTool
         Me.Controls.Add(Me.btnSave)
         Me.Controls.Add(Me.tabMain)
         Me.Name = "frmHVACTool"
-        Me.Text = "frmHVACTool"
+        Me.Text = "SSM HVAC Model ( Excel Model V04 )"
         Me.tabMain.ResumeLayout(false)
         Me.tabGeneralInputsBP.ResumeLayout(false)
         Me.GroupBox1.ResumeLayout(false)
@@ -2440,4 +2467,6 @@ End Sub
     Friend WithEvents Timer1 As System.Windows.Forms.Timer
     Friend WithEvents tabDiagnostics As System.Windows.Forms.TabPage
     Friend WithEvents txtDiagnostics As System.Windows.Forms.TextBox
+    Friend WithEvents lblUnitsAH_FuelFiredHeater As System.Windows.Forms.Label
+    Friend WithEvents lblUnitstxtAHEngineWasteHeat As System.Windows.Forms.Label
 End Class
