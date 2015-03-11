@@ -127,6 +127,9 @@
     <Content Include="testSSMTechBenefits.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="SSMTechBenefitsALLON_LIVE.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\vecto-aux\VectoAuxiliaries\VectoAuxiliaries.vbproj">

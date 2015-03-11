@@ -1,5 +1,6 @@
 ﻿Imports System.Text
 Imports Microsoft.VisualBasic
+Imports VectoAuxiliaries.Hvac
 
 Namespace Hvac
 
@@ -440,11 +441,50 @@ Public Class SSMCalculate
             End Get
           End Property
 
- #End Region
+         #End Region
        
-        Public Overrides Function ToString() As String
+  Public Overrides Function ToString() As String
 
     Dim sb As New StringBuilder()
+
+    
+
+    sb.AppendLine("")
+    sb.AppendLine("TechList Detail")
+    sb.AppendLine("***********************")
+
+    For Each  line As ITechListBenefitLine In ssmTOOL.TechList.TechLines
+
+    With line
+
+    Dim nameLength  As integer =15
+    Dim catLength   As Integer = 18
+    Dim extraNameSpaces, extraCatSpaces As Integer
+
+    extraNameSpaces =  nameLength -.BenefitName.Length
+    extraCatSpaces  = catLength    - .Category.Length
+
+    Dim catDesc As String = line.Category.Substring(0,Math.Min(line.Category.Length-1,catLength)) + Space( If(extraCatSpaces<0,0,extraCatSpaces)) + vbTab + line.BenefitName.Substring(0,Math.Min(line.BenefitName.Length-1,nameLength))  + Space(If(extraNameSpaces<0,0,extraCatSpaces))
+
+     sb.AppendLine(String.Format( catDesc + " {0}{1}{0}{2}{0}{3}{0}{4}{0}{5}", vbtab + vbtab, .H.ToString("0.000") , .VH.ToString("0.000"), .VV.ToString("0.000"), .VC.ToString("0.000"), .C.ToString("0.000")))
+  
+    End With
+
+    Next
+
+    sb.AppendLine("")
+    sb.AppendLine("TechList Totals")
+    sb.AppendLine("***********************")
+
+    With ssmTOOL.TechList
+
+     sb.AppendLine( vbTab + vbTab + "H" +vbTab +   "VH" + vbTab  + "VV" + vbTab   + "VC" + vbTab   + "C")
+     sb.AppendLine(String.Format("Base Var %   {0}{1}{0}{2}{0}{3}{0}{4}{0}{5}", vbtab, .HValueVariation.ToString("0.000") , .VHValueVariation.ToString("0.000"), .VVValueVariation.ToString("0.000"), .VCValueVariation.ToString("0.000"), .CValueVariation.ToString("0.000")))
+     sb.AppendLine(String.Format("Base Var KW  {0}{1}{0}{2}{0}{3}{0}{4}{0}{5}", vbtab, .HValueVariationKW.ToString("0.000") , .VHValueVariationKW.ToString("0.000"), .VVValueVariationKW.ToString("0.000"), .VCValueVariationKW.ToString("0.000"), .CValueVariationKW.ToString("0.000")))
+
+    End With
+
+
 
     'Runs
     sb.AppendLine( Run1.ToString())
@@ -458,7 +498,8 @@ Public Class SSMCalculate
     sb.AppendLine(String.Format("Heating   {0}{1}{0}{2}{0}{3}{0}{4}",vbTab + vbtab, BaseHeatingW_Mechanical.ToString("0.000"), BaseHeatingW_ElectricalCoolingHeating.ToString("0.000"), BaseHeatingW_ElectricalVentilation.ToString("0.000"), BaseHeatingW_FuelFiredHeating.ToString("0.000") ))
     sb.AppendLine(String.Format("Cooling   {0}{1}{0}{2}{0}{3}{0}{4}",vbTab + vbtab, BaseCoolingW_Mechanical.ToString("0.000"), BaseCoolingW_ElectricalCoolingHeating.ToString("0.000"), BaseCoolingW_ElectricalVentilation.ToString("0.000"), BaseCoolingW_FuelFiredHeating.ToString("0.000") ))
     sb.AppendLine(String.Format("Ventilate {0}{1}{0}{2}{0}{3}{0}{4}",vbTab + vbtab, BaseVentilationW_Mechanical.ToString("0.000"), BaseVentilationW_ElectricalCoolingHeating.ToString("0.000"), BaseVentilationW_ElectricalVentilation.ToString("0.000"), BaseVentilationW_FuelFiredHeating.ToString("0.000") ))
-
+ 
+    sb.AppendLine("")
     sb.AppendLine("Staging Adjusted Values")
     sb.AppendLine("***********************")
 

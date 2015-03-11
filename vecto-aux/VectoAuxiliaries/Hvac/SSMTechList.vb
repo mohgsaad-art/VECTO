@@ -144,9 +144,11 @@ End Function
   'Public Properties - Outputs Of Class
   Public ReadOnly Property CValueVariation As Double Implements ISSMTechList.CValueVariation
             Get
-                 Dim a As double
+                 Dim a,b As double
 
-                 a= TechLines.Where( Function(x) x.Units="fraction").Sum( Function(s) s.C) 
+                 a= TechLines.Where( Function(x) x.Units.ToLower="fraction").Sum( Function(s) s.C)
+                 b= TechLines.Where( Function(x) x.Units.ToLower="kw").Sum( Function(s) s.C) 
+                 
                  Return a
                  
             End Get
@@ -156,7 +158,7 @@ End Function
 
                   Dim a As double
 
-                 a= TechLines.Where( Function(x) x.Units="KW").Sum( Function(s) s.C) 
+                 a= TechLines.Where( Function(x) x.Units.ToLower="kw").Sum( Function(s) s.C) 
 
                  Return a
 
@@ -165,49 +167,51 @@ End Function
   Public ReadOnly Property HValueVariation As Double Implements ISSMTechList.HValueVariation
             Get
 
-               Dim a,b As double
-               a =  TechLines.Where( Function(x) x.Units="fraction").Sum( Function(s) s.H) 
-               b =  HValueVariationKW
-               Return a-b
+               'Dim a,b As double
+               Return TechLines.Where( Function(x) x.Units="fraction").Sum( Function(s) s.H) 
+              ' a =  
+             '  b =  HValueVariationKW
+             '  Return a-b
             End Get
         End Property
   Public ReadOnly Property HValueVariationKW As Double Implements ISSMTechList.HValueVariationKW
             Get
-             Return TechLines.Where( Function(x) x.Units="KW").Sum( Function(s) s.H)
+             Return TechLines.Where( Function(x) x.Units.ToLower="kw").Sum( Function(s) s.H)
             End Get
         End Property
   Public ReadOnly Property VCValueVariation As Double Implements ISSMTechList.VCValueVariation
             Get
-                 Return TechLines.Where( Function(x) x.Units="fraction").Sum( Function(s) s.VC) -  VCValueVariationKW
+                 Return TechLines.Where( Function(x) x.Units.ToLower="fraction").Sum( Function(s) s.VC) '-  VCValueVariationKW
             End Get
         End Property
   Public ReadOnly Property VCValueVariationKW As Double Implements ISSMTechList.VCValueVariationKW
             Get
-               Return TechLines.Where( Function(x) x.Units="KW").Sum( Function(s) s.VC)
+               Return TechLines.Where( Function(x) x.Units.ToLower="kw").Sum( Function(s) s.VC)
             End Get
         End Property
   Public ReadOnly Property VHValueVariation As Double Implements ISSMTechList.VHValueVariation
             Get
-               Dim a,b As double
+               'Dim a,b As double
 
-               a=TechLines.Where( Function(x) x.Units="fraction").Sum( Function(s) s.VH)
-               b=VHValueVariationKW
-                Return  a-b
+               Return TechLines.Where( Function(x) x.Units.ToLower="fraction").Sum( Function(s) s.VH)
+               'a=TechLines.Where( Function(x) x.Units="fraction").Sum( Function(s) s.VH)
+               'b=VHValueVariationKW
+               ' Return  a-b
             End Get
         End Property
   Public ReadOnly Property VHValueVariationKW As Double Implements ISSMTechList.VHValueVariationKW
             Get
-              Return TechLines.Where( Function(x) x.Units="KW").Sum( Function(s) s.VH)
+              Return TechLines.Where( Function(x) x.Units.ToLower="kw").Sum( Function(s) s.VH)
             End Get
         End Property
   Public ReadOnly Property VVValueVariation As Double Implements ISSMTechList.VVValueVariation
             Get
-               Return TechLines.Where( Function(x) x.Units="fraction").Sum( Function(s) s.VV)
+               Return TechLines.Where( Function(x) x.Units.ToLower="fraction").Sum( Function(s) s.VV)
             End Get
         End Property
   Public ReadOnly Property VVValueVariationKW As Double Implements ISSMTechList.VVValueVariationKW
             Get
-                Return TechLines.Where( Function(x) x.Units="KW").Sum( Function(s) s.VV) - VVValueVariationKW
+                Return TechLines.Where( Function(x) x.Units.ToLower="kw").Sum( Function(s) s.VV)' - VVValueVariationKW
             End Get
         End Property
 
@@ -300,13 +304,23 @@ End Function
   Public Function Modify( originalItem As ITechListBenefitLine, newItem As ITechListBenefitLine, ByRef feedback As String) As Boolean Implements ISSMTechList.Modify
 
            Dim fi As TechListBenefitLine = TechLines.Find( Function(f) (f.Category= originalitem.Category) AndAlso f.BenefitName= originalitem.BenefitName )
+           Dim originalUnits As String =fi.Units
 
            If( Not fi is Nothing ) then
 
            try
 
                fi.CloneFrom( newItem )
-                        
+
+               'The lines below are to assist in testing. The KW units are being excluded, but for benchmarking against the spreadsheet model
+               'Two KW entries are left in. There is no provision for adding KW units in so we check if the original entry was KW and 
+               'force it back to KW if it was already so. There shoud be no need to remove this as newly created lists will not match this
+               'Phenomenon.
+               If( originalUnits.ToLower= "kw") then  
+                  fi.Units=originalUnits   
+                  newItem.Units=originalUnits          
+               End If
+                     
                If newItem = fi then
                   'This succeeded
                   _dirty=true
