@@ -104,7 +104,7 @@ Namespace Hvac
       Public Readonly    Property BC_Low As Double Implements ISSMGenInputs.BC_Low
         Get
           '=C27*D10
-          Return BC_lowVentilation*BP_BusVolume
+          Return BP_BusVolume * BC_lowVentilation
         End Get
     End Property
       'C30  -             Watts

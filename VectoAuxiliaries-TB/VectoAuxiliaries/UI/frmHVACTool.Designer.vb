@@ -2156,12 +2156,14 @@ Partial Class frmHVACTool
         '
         'txtDiagnostics
         '
-        Me.txtDiagnostics.Location = New System.Drawing.Point(77, 17)
+        Me.txtDiagnostics.Font = New System.Drawing.Font("Courier New", 8!)
+        Me.txtDiagnostics.Location = New System.Drawing.Point(22, 17)
         Me.txtDiagnostics.Multiline = true
         Me.txtDiagnostics.Name = "txtDiagnostics"
-        Me.txtDiagnostics.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txtDiagnostics.Size = New System.Drawing.Size(744, 584)
+        Me.txtDiagnostics.ScrollBars = System.Windows.Forms.ScrollBars.Both
+        Me.txtDiagnostics.Size = New System.Drawing.Size(877, 584)
         Me.txtDiagnostics.TabIndex = 0
+        Me.txtDiagnostics.WordWrap = false
         '
         'ErrorProvider1
         '
