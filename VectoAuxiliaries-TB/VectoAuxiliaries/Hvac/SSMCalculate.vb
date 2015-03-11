@@ -457,16 +457,16 @@ Public Class SSMCalculate
 
     With line
 
-    Dim nameLength  As integer =15
-    Dim catLength   As Integer = 18
+    Dim nameLength  As integer =13
+    Dim catLength   As Integer = 15
     Dim extraNameSpaces, extraCatSpaces As Integer
 
     extraNameSpaces =  nameLength -.BenefitName.Length
     extraCatSpaces  = catLength    - .Category.Length
 
-    Dim catDesc As String = line.Category.Substring(0,Math.Min(line.Category.Length-1,catLength)) + Space( If(extraCatSpaces<0,0,extraCatSpaces)) + vbTab + line.BenefitName.Substring(0,Math.Min(line.BenefitName.Length-1,nameLength))  + Space(If(extraNameSpaces<0,0,extraCatSpaces))
+    Dim catDesc As String = line.Category.Substring(0,Math.Min(line.Category.Length,catLength)) + Space( If(extraCatSpaces<0,0,extraCatSpaces)).Replace(" ",".") + vbTab + line.BenefitName.Substring(0,Math.Min(line.BenefitName.Length,nameLength))  + Space(If(extraNameSpaces<0,0,extraNameSpaces)).Replace(" ",".")
 
-     sb.AppendLine(String.Format( catDesc + " {0}{1}{0}{2}{0}{3}{0}{4}{0}{5}", vbtab + vbtab, .H.ToString("0.000") , .VH.ToString("0.000"), .VV.ToString("0.000"), .VC.ToString("0.000"), .C.ToString("0.000")))
+     sb.AppendLine(String.Format( line.Units + vbTab + catDesc + " {0}{1}{0}{2}{0}{3}{0}{4}{0}{5}", vbtab , .H.ToString("0.000") , .VH.ToString("0.000"), .VV.ToString("0.000"), .VC.ToString("0.000"), .C.ToString("0.000")))
   
     End With
 
