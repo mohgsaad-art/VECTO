@@ -18,6 +18,7 @@ Namespace Hvac
 Public Class HVACUserInputsConfig
 Implements IHVACUserInputsConfig
 
+
     'Constructor
     Public Sub new (ssm As IHVACSteadyStateModel, ssmFilePath As string)
 
@@ -28,7 +29,10 @@ Implements IHVACUserInputsConfig
 
     'Implementation
     Public Property SteadyStateModel As IHVACSteadyStateModel Implements IHVACUserInputsConfig.SteadyStateModel
+
     Public Property SSMFilePath As String Implements IHVACUserInputsConfig.SSMFilePath
+
+    Public Property BusDatabasePath As String Implements IHVACUserInputsConfig.BusDatabasePath
 
 End Class
 
