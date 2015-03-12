@@ -523,7 +523,7 @@ Public Class SSMCalculate
     sb.AppendLine(String.Format("Cooling   {0}{1}{0}{2}{0}{3}{0}{4}",vbTab + vbtab, TechListAdjustedCoolingW_Mechanical.ToString("0.00"), TechListAdjustedCoolingW_ElectricalCoolingHeating.ToString("0.00"), TechListAdjustedCoolingW_ElectricalVentilation.ToString("0.00"), TechListAdjustedCoolingW_FuelFiredHeating.ToString("0.00") ))
     sb.AppendLine(String.Format("Ventilate {0}{1}{0}{2}{0}{3}{0}{4}",vbTab + vbtab, TechListAdjustedVentilationW_Mechanical.ToString("0.00"), TechListAdjustedVentilationW_ElectricalCoolingHeating.ToString("0.00"), TechListAdjustedVentilationW_ElectricalVentilation.ToString("0.00"), TechListAdjustedVentilationW_FuelFiredHeating.ToString("0.00") ))
 
-
+     
 
     Return sb.ToString()
 
