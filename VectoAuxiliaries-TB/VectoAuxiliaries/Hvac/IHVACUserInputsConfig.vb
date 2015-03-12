@@ -31,6 +31,7 @@ Namespace Hvac
   ''' <returns></returns>
   ''' <remarks></remarks>
   Property  SSMFilePath  As string
+  Property  BusDatabasePath As String
 
 End Interface
 

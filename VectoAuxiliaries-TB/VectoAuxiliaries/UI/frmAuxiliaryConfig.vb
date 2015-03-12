@@ -15,6 +15,7 @@ Imports VectoAuxiliaries.Pneumatics
 Imports System.ComponentModel
 Imports System.Windows.Forms
 Imports System.Drawing
+Imports VectoAuxiliaries.Hvac
 
 Public Class frmAuxiliaryConfig
 
@@ -446,7 +447,7 @@ Dim result As Boolean = True
 End Function
 
 '****** HVAC VALIDATION
-Public Sub Validating_HVACHandler(sender As Object, e As CancelEventArgs) Handles txtHVACMechanicalLoadPowerWatts.Validating, txtHVACFuellingLitresPerHour.Validating, txtHVACElectricalLoadPowerWatts.Validating, txtSSMFilePath.Validating
+Public Sub Validating_HVACHandler(sender As Object, e As CancelEventArgs) Handles    txtSSMFilePath.Validating, txtBusDatabaseFilePath.Validating
 
     e.Cancel = Not Validate_HVAC()
 
@@ -457,40 +458,63 @@ Dim result As Boolean = True
 Dim message As String =""
 
 
-       'HVAC Electrical Load Power Watts : txtHVACElectricalLoadPowerWatts
-       If Not IsZeroOrPostiveNumber(txtHVACElectricalLoadPowerWatts.Text) Then
-         ErrorProvider.SetError(txtHVACElectricalLoadPowerWatts, "Please provide a non negative number.")
-         result = False
-       Else
-          ErrorProvider.SetError(txtHVACElectricalLoadPowerWatts, String.Empty)
-       End If
+       ''HVAC Electrical Load Power Watts : txtHVACElectricalLoadPowerWatts
+       'If Not IsZeroOrPostiveNumber(txtHVACElectricalLoadPowerWatts.Text) Then
+       '  ErrorProvider.SetError(txtHVACElectricalLoadPowerWatts, "Please provide a non negative number.")
+       '  result = False
+       'Else
+       '   ErrorProvider.SetError(txtHVACElectricalLoadPowerWatts, String.Empty)
+       'End If
 
        'HVAC Mechanical Load Power Watts : txtHVACMechanicalLoadPowerWatts
-       If Not IsZeroOrPostiveNumber(txtHVACMechanicalLoadPowerWatts.Text) Then
-         ErrorProvider.SetError(txtHVACMechanicalLoadPowerWatts, "Please provide a non negative number.")
-         result = False
-       Else
-          ErrorProvider.SetError(txtHVACMechanicalLoadPowerWatts, String.Empty)
-       End If
+       'If Not IsZeroOrPostiveNumber(txtHVACMechanicalLoadPowerWatts.Text) Then
+       '  ErrorProvider.SetError(txtHVACMechanicalLoadPowerWatts, "Please provide a non negative number.")
+       '  result = False
+       'Else
+       '   ErrorProvider.SetError(txtHVACMechanicalLoadPowerWatts, String.Empty)
+       'End If
 
 
        'HVAC Fuelling Litres Per Hour : txtHVACFuellingLitresPerHour
-       If Not IsZeroOrPostiveNumber(txtHVACFuellingLitresPerHour.Text) Then
-         ErrorProvider.SetError(txtHVACFuellingLitresPerHour, "Please provide a non negative number.")
-         result = False
-       Else
-          ErrorProvider.SetError(txtHVACFuellingLitresPerHour, String.Empty)
-       End If
+       'If Not IsZeroOrPostiveNumber(txtHVACFuellingLitresPerHour.Text) Then
+       '  ErrorProvider.SetError(txtHVACFuellingLitresPerHour, "Please provide a non negative number.")
+       '  result = False
+       'Else
+       '   ErrorProvider.SetError(txtHVACFuellingLitresPerHour, String.Empty)
+       'End If
 
 
-       'Check file is valid
-       If GetSSMMAP(FilePathUtils.ResolveFilePath(vectoPath,txtSSMFilePath.Text), message ) is nothing then
-          ErrorProvider.SetError(txtSSMFilePath, "Please choose a vaid Steady State Model File (*.AHSM")
-         result = False
-       else
-          ErrorProvider.SetError(txtSSMFilePath, String.Empty)
-       End If
 
+         'Validate abdb -  Bus Database 
+          Dim abdbFile As String  = FilePathUtils.ResolveFilePath(vectoPath,txtBusDatabaseFilePath.Text)
+          Dim bdb As New BusDatabase()
+          If   bdb.Initialise(abdbFile ) then
+               ErrorProvider.SetError(txtBusDatabaseFilePath, String.Empty)
+          Else
+              result=false
+              ErrorProvider.SetError(Me.txtBusDatabaseFilePath, "Please choose a vaid Steady State Model File (*.ABDB")
+         End If
+
+
+       'Try ahsm - HVac Steady State Model
+       Try 
+
+          Dim ahsmFile As String = FilePathUtils.ResolveFilePath(vectoPath,txtSSMFilePath.Text)
+          Dim ssmTool As SSMTOOL = New SSMTOOL( ahsmFile,False)
+          
+          If ssmTool.Load( ahsmFile ) then 
+                ErrorProvider.SetError(txtSSMFilePath, String.Empty)
+          Else
+                result=false
+                ErrorProvider.SetError(txtSSMFilePath, "Please choose a vaid Steady State Model File (*.AHSM")
+          End If
+           
+       Catch ex As Exception
+           'Just in case
+           ErrorProvider.SetError(txtSSMFilePath, "Please choose a vaid Steady State Model File (*.AHSM")
+           result = false
+
+       End Try
 
 
        UpdateTabStatus("tabHVACConfig", result)
@@ -880,11 +904,40 @@ Private Sub btnCancel_Click( sender As Object,  e As EventArgs) Handles btnCance
 
 
 End Sub
+
+Private Sub btnBusDatabaseSource_Click( sender As Object,  e As EventArgs) Handles btnBusDatabaseSource.Click
+
+               Dim fbAux As New cFileBrowser(True, False)
+               Dim ssmMap As Hvac.HVACSteadyStateModel
+               Dim message As String = String.Empty
+
+
+               fbAux.Extensions = New String() {"abdb"}
+
+               If fbAux.OpenDialog(fPATH(vectoFile)) Then
+
+                 txtBusDatabaseFilePath.Focus()
+                 txtBusDatabaseFilePath.Text = fFileWoDir(fbAux.Files(0), fPATH(vectoFile))
+
+                 Dim busDB As New BusDatabase( )
+                 
+                 If  Not busDB.Initialise( FilePathUtils.ResolveFilePath(vectoPath,txtBusDatabaseFilePath.Text) )
+
+                      messagebox.Show("Unable to load")
+
+
+                 End If
+
+
+               End If
+
+
+End Sub
 Private Sub btnSSMBSource_Click( sender As Object,  e As EventArgs) Handles btnSSMBSource.Click
 
 
                Dim fbAux As New cFileBrowser(True, False)
-               Dim ssmMap As Hvac.HVACSteadyStateModel
+               Dim ssmMap As ISSMTool
                Dim message As String = String.Empty
 
 
@@ -897,31 +950,20 @@ Private Sub btnSSMBSource_Click( sender As Object,  e As EventArgs) Handles btnS
 
                  
 
-                 ssmMap = GetSSMMAP(FilePathUtils.ResolveFilePath(vectoPath,txtSSMFilePath.Text), message ) 
+                 ssmMap = New SSMTOOL(txtSSMFilePath.Text,false)
 
                  If ssmMap is nothing then
 
-                 txtHVACElectricalLoadPowerWatts.Text =  string.empty
-                 txtHVACMechanicalLoadPowerWatts.Text =  string.empty
-                 txtHVACFuellingLitresPerHour.Text    =  string.empty
                  messagebox.Show("Unable to load")
-
-                 else
-
-                 'Populate boxes
-                 txtHVACElectricalLoadPowerWatts.Text = ssmMap.HVACElectricalLoadPowerWatts.ToString()
-                 txtHVACMechanicalLoadPowerWatts.Text = ssmMap.HVACMechanicalLoadPowerWatts.ToString()
-                 txtHVACFuellingLitresPerHour.Text    = ssmMap.HVACFuellingLitresPerHour.ToString()
-
 
                  End If
 
 
                End If
 
-               'Causes binding to fire
-               btnSSMBSource.Focus()
-               txtSSMFilePath.Focus()
+               ''Causes binding to fire
+               'btnSSMBSource.Focus()
+               'txtSSMFilePath.Focus()
 
 
 
@@ -952,6 +994,13 @@ Private Sub btnOpenAHSM_Click( sender As Object,  e As EventArgs) Handles btnOpe
 
 
 End Sub
+Private Sub btnOpenABDB_Click( sender As Object,  e As EventArgs) Handles btnOpenABDB.Click
+
+
+          OpenFiles(fFileRepl(Me.txtBusDatabaseFilePath.Text, fPATH(VECTOfile)))
+
+End Sub
+
 
 #end region
 
@@ -1265,9 +1314,9 @@ Private Sub CreateBindings()
         cboDoors.DataBindings.Add("Text", auxConfig.PneumaticUserInputsConfig, "Doors")
 
         'HVAC Bindings     
-        txtHVACElectricalLoadPowerWatts.DataBindings.Add("Text", auxConfig.HvacUserInputsConfig.SteadyStateModel, "HVACElectricalLoadPowerWatts",False,DataSourceUpdateMode.OnPropertyChanged)
-        txtHVACFuellingLitresPerHour.DataBindings.Add("Text", auxConfig.HvacUserInputsConfig.SteadyStateModel, "HVACFuellingLitresPerHour",False,DataSourceUpdateMode.OnPropertyChanged)
-        txtHVACMechanicalLoadPowerWatts.DataBindings.Add("Text", auxConfig.HvacUserInputsConfig.SteadyStateModel, "HVACMechanicalLoadPowerWatts",False,DataSourceUpdateMode.OnPropertyChanged)
+        'txtHVACElectricalLoadPowerWatts.DataBindings.Add("Text", auxConfig.HvacUserInputsConfig.SteadyStateModel, "HVACElectricalLoadPowerWatts",False,DataSourceUpdateMode.OnPropertyChanged)
+        'txtHVACFuellingLitresPerHour.DataBindings.Add("Text", auxConfig.HvacUserInputsConfig.SteadyStateModel, "HVACFuellingLitresPerHour",False,DataSourceUpdateMode.OnPropertyChanged)
+        'txtHVACMechanicalLoadPowerWatts.DataBindings.Add("Text", auxConfig.HvacUserInputsConfig.SteadyStateModel, "HVACMechanicalLoadPowerWatts",False,DataSourceUpdateMode.OnPropertyChanged)
 
         txtSSMFilePath.DataBindings.Add( "Text", auxConfig.HvacUserInputsConfig,"SSMFilePath")
 
@@ -1309,6 +1358,7 @@ Public Function FileOpenAlt(ByVal file As String) As Boolean
         End Try
 
     End Function
+
 
 
 End Class
