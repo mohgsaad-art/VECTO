@@ -21,22 +21,16 @@ Public Class frmHVACTool
   Private UserHitCancel As Boolean = false
 
 
+  'Helpers
   public  Sub  UpdateButtonText()
 
-
     If txtIndex.Text=String.Empty then
-
-      btnUpdate.Text = "Add"
-
-      Else
-      
-            btnUpdate.Text = "Update"
-
-      end if
-
+          btnUpdate.Text = "Add"
+      Else     
+          btnUpdate.Text = "Update"
+      End if
 
   end sub
-
   Private Function ValidateSSMTOOLFileName( filename As String ) As Boolean
 
        Dim message As String = String.Empty
@@ -48,15 +42,12 @@ Public Class frmHVACTool
        Return true
 
 End Function
-
   Private sub BindGrid(  )
 
       Dim gvTechListBinding As New BindingList(Of ITechListBenefitLine)(ssmTOOL.TechList.TechLines.OrderBy( Function(o) o.Category).ThenBy( Function(t) t.BenefitName).ToList())
       Me.gvTechBenefitLines.DataSource = gvTechListBinding
 
-
   End Sub
-
   Private function GetCategories( ) As List(Of String)
 
      If Not ssmTOOL is Nothing AndAlso Not ssmTOOL.TechList is Nothing AndAlso ssmTOOL.TechList.TechLines.Count>0
@@ -74,7 +65,7 @@ End Function
           
           Return fusedList.OrderBy( Function(o) o.ToString()).ToList()
 
-      Else
+     Else
 
           Return New List(Of String)(DefaultCategories)
 
@@ -83,12 +74,13 @@ End Function
 
   End Function
 
+  'Constructors
   Public Sub New(busDatabasePath As String, ahsmFilePath As String )
 
     ' This call is required by the designer.
     InitializeComponent()
 
-    ' Add any initialization after the InitializeComponent() call.
+    'Add any initialization after the InitializeComponent() call.
 
     'Validate ashm FILENAME
      If  Not ValidateSSMTOOLFileName( ahsmFilePath ) then
@@ -104,8 +96,6 @@ End Function
     originalssmTOOL = New SSMTOOL( ahsmFilePath)
     Dim result1 As Boolean = ssmTOOL.Load(ahsmFilePath)
     originalssmTOOL.Clone( ssmTOOL)
-
-   ' ssmTOOL.techList.in("SSMTechBenefitsALLON.csv")
 
     setupBuses()
     setupControls()
@@ -313,10 +303,10 @@ End Sub
       txtBusSurfaceArea.Text = bus.AreaInMetresSquared
       'ssmTOOL.genInputs.BP_BusWindowSurface Calculated
       txtBusVolume.Text = bus.VolumneInMetresQubed
-     txtBusLength.Text = bus.LengthInMetres
-     txtBusWidth.Text = bus.WidthInMetres
+      txtBusLength.Text = bus.LengthInMetres
+      txtBusWidth.Text = bus.WidthInMetres
 
-     txtRegisteredPassengers.Focus()
+       txtRegisteredPassengers.Focus()
 
   End If
 
@@ -632,21 +622,16 @@ End Function
   'Tab Colors
   Private Sub UpdateTabStatus(pageName As String, resultGood As Boolean)
   
-  
          Dim page As TabPage = tabMain.TabPages(pageName)
   
              If Not resultGood Then
   
                 SetTabHeader(page, Color.Red)
-            
-     
+              
          Else
                 SetTabHeader(page, Control.DefaultBackColor)
   
          End If
-  
-  
-  
   
   End Sub
   Private Sub SetTabHeader(page As TabPage, color As Color)
@@ -703,7 +688,6 @@ End Function
 
     gvTechBenefitLines.ClearSelection()
 
-
     Dim r As DialogResult = Me.DialogResult
  
   End Sub
@@ -736,9 +720,7 @@ End Function
                       e.Cancel = true
                       Me.DialogResult=Windows.Forms.DialogResult.Cancel
   
-  
               end select
-  
   
     End If
   
@@ -754,12 +736,22 @@ End Function
   
        Dim row As Integer = gvTechBenefitLines.SelectedCells(0).OwningRow.Index
   
-       Dim benefitName , category As String
+       Dim benefitName , category , units As String
        benefitName = gvTechBenefitLines.Rows(row).Cells("BenefitName").Value
        category = gvTechBenefitLines.Rows(row).Cells("Category").Value
-  
+
+      
        editTechLine = ssmTOOL.TechList.TechLines.First( Function(f) f.BenefitName=benefitName AndAlso f.Category=category)
   
+      If editTechLine.Units.ToLower = "kw" then
+
+       ClearEditPanel
+       MessageBox.Show("KW Unit types not supported, any KW Units in list are for test purposes only")
+       return
+
+      End If
+
+
        FillTechLineEditPanel( row )
   
        UpdateButtonText()
@@ -797,7 +789,6 @@ End Function
   
 End Sub
 
-  
   'Button Event Handlers
   Private Sub btnUpdate_Click( sender As Object,  e As EventArgs) Handles btnUpdate.Click
    
@@ -833,14 +824,12 @@ End Sub
   
   End Sub
   Private Sub btnSave_Click( sender As Object,  e As EventArgs) Handles btnSave.Click
-  
-  
+    
       If( ssmTOOL.Save( ahsmFilePath )) then
 
         Me.Close
 
       End If
-  
   
   End Sub
   Private Sub btnClearForm_Click( sender As Object,  e As EventArgs) Handles btnClearForm.Click
@@ -850,8 +839,13 @@ End Sub
   
   
   End Sub
+  Private Sub btnCancel_Click( sender As Object,  e As EventArgs) Handles btnCancel.Click
+  
+     UserHitCancel=True
+     Me.Close
 
 
+  End Sub
 
   'TechList Helpers
   Private Sub FillTechLineEditPanel( index As Integer)
@@ -935,69 +929,39 @@ End Sub
   
   End Sub
 
-
-   Private Sub btnCancel_Click( sender As Object,  e As EventArgs) Handles btnCancel.Click
-   
-      UserHitCancel=True
-      Me.Close
-
-
-   End Sub
-
-
-
-Private Sub Timer1_Tick( sender As Object,  e As EventArgs) Handles Timer1.Tick
-
-    If Not ssmTOOL is nothing then
-
-    txtBasElectrical.Text = ssmTOOL.ElectricalWBase
-    txtBaseMechanical.Text = ssmTOOL.MechanicalWBase
-    txtBaseFuel.Text = ssmTOOL.FuelLPerHBase
-
-    txtAdjElectrical.Text = ssmTOOL.ElectricalWAdjusted
-    txtAdjMechanical.Text = ssmTOOL.MechanicalWBaseAdjusted
-    txtAdjFuel.Text = ssmTOOL.FuelLPerHBaseAdjusted
-
-
-      If captureDiagnostics then
-    
-        txtDiagnostics.Text = ssmTOOL.ToString()
-
-        captureDiagnostics=false
-    
-    
-      End If
-
-
+  'Tab Events
+  Private Sub tabMain_SelectedIndexChanged( sender As Object,  e As EventArgs) Handles tabMain.SelectedIndexChanged
+  
+    If tabMain.SelectedIndex=4 then
+     captureDiagnostics = true  
     End If
+  
+  End Sub
 
-
-
-End Sub
-
-
-
-
-Private Sub Validating_GeneralInputsBP( sender As Object,  e As EventArgs)
-
-End Sub
-
-Private Sub tabMain_TabIndexChanged( sender As Object,  e As EventArgs) Handles tabMain.TabIndexChanged
-
-
-End Sub
-
-
-Private Sub tabMain_SelectedIndexChanged( sender As Object,  e As EventArgs) Handles tabMain.SelectedIndexChanged
-
-
-  If tabMain.SelectedIndex=4 then
-
-   captureDiagnostics = true
-
-  End If
-
-End Sub
+  'Timer Events
+  Private Sub Timer1_Tick( sender As Object,  e As EventArgs) Handles Timer1.Tick
+  
+      If Not ssmTOOL is nothing then
+  
+      txtBasElectrical.Text = ssmTOOL.ElectricalWBase
+      txtBaseMechanical.Text = ssmTOOL.MechanicalWBase
+      txtBaseFuel.Text = ssmTOOL.FuelLPerHBase
+  
+      txtAdjElectrical.Text = ssmTOOL.ElectricalWAdjusted
+      txtAdjMechanical.Text = ssmTOOL.MechanicalWBaseAdjusted
+      txtAdjFuel.Text = ssmTOOL.FuelLPerHBaseAdjusted
+    
+        If captureDiagnostics then
+      
+          txtDiagnostics.Text = ssmTOOL.ToString()
+  
+          captureDiagnostics=false
+          
+        End If
+ 
+      End If  
+  
+  End Sub
 
 
 End Class

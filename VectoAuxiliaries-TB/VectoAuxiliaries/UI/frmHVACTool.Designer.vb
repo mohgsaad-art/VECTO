@@ -2249,7 +2249,7 @@ Partial Class frmHVACTool
         Me.Controls.Add(Me.btnSave)
         Me.Controls.Add(Me.tabMain)
         Me.Name = "frmHVACTool"
-        Me.Text = "SSM HVAC Model ( Excel Model V04 )"
+        Me.Text = "SSM HVAC Model V01 ( Excel Model V04 )"
         Me.tabMain.ResumeLayout(false)
         Me.tabGeneralInputsBP.ResumeLayout(false)
         Me.GroupBox1.ResumeLayout(false)
