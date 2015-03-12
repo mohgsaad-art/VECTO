@@ -137,7 +137,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="BusDatabase.csv">
+    <Content Include="BusDatabase.abdb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="HVACTOOL_TemporaryKey.pfx" />
