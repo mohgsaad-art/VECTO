@@ -228,13 +228,11 @@ Public Class SSMCalculate
 
                Dim gen As ISSMGenInputs = ssmTOOL.GenInputs
 
-               Dim C48 = gen.AC_CompressorType 
-               Dim M79 = Me.Run1.TotalW
-               Dim M80 = Me.Run2.TotalW
-
+               'Dim C48 = gen.AC_CompressorType 
+               'Dim M79 = Me.Run1.TotalW
+               'Dim M80 = Me.Run2.TotalW
 
                Return If(gen.AC_CompressorType.ToLower = "mechanical", 0, If((Run1.TotalW > 0 AndAlso Run2.TotalW > 0), Math.Min(Run1.TotalW, Run2.TotalW), 0))
-
 
             End Get
           End Property
@@ -453,20 +451,38 @@ Public Class SSMCalculate
     sb.AppendLine("TechList Detail")
     sb.AppendLine("***********************")
 
+    Dim nameLength  As integer = 40
+    Dim catLength   As Integer = 15
+    Dim unitLength  As Integer = 15
+    Dim firstValuePos As Integer = nameLength + catLength + unitLength + 2
+    Dim cat As String
+    Dim name As String
+    Dim units As String
+
+    sb.AppendLine(String.Format( Space( firstValuePos) +  "H{0}VH{0}VV{0}VC{0}C{0}",vbtab ))
+
+
     For Each  line As ITechListBenefitLine In ssmTOOL.TechList.TechLines
+
+
 
     With line
 
-    Dim nameLength  As integer =13
-    Dim catLength   As Integer = 15
-    Dim extraNameSpaces, extraCatSpaces As Integer
+
+    Dim extraNameSpaces, extraCatSpaces , extraUnitSpaces As Integer
+
+    
 
     extraNameSpaces =  nameLength -.BenefitName.Length
     extraCatSpaces  = catLength    - .Category.Length
+    extraUnitSpaces = unitLength - .Units.Length
 
-    Dim catDesc As String = line.Category.Substring(0,Math.Min(line.Category.Length,catLength)) + Space( If(extraCatSpaces<0,0,extraCatSpaces)).Replace(" ",".") + vbTab + line.BenefitName.Substring(0,Math.Min(line.BenefitName.Length,nameLength))  + Space(If(extraNameSpaces<0,0,extraNameSpaces)).Replace(" ",".")
+    cat=line.Category.Substring(0,Math.Min(line.Category.Length,catLength)) + Space( If(extraCatSpaces<0,0,extraCatSpaces)).Replace(" ",".")
+    name=line.BenefitName.Substring(0,Math.Min(line.BenefitName.Length,nameLength))  + Space(If(extraNameSpaces<0,0,extraNameSpaces)).Replace(" ",".")
+    units=line.Units.Substring(0,Math.Min(line.Units.Length,unitLength))  + Space(If(extraUnitSpaces<0,0,extraUnitSpaces)).Replace(" ",".")
+ 
 
-     sb.AppendLine(String.Format( line.Units + vbTab + catDesc + " {0}{1}{0}{2}{0}{3}{0}{4}{0}{5}", vbtab , .H.ToString("0.000") , .VH.ToString("0.000"), .VV.ToString("0.000"), .VC.ToString("0.000"), .C.ToString("0.000")))
+     sb.AppendLine(String.Format( Units  + cat + name + " {0}{1}{0}{2}{0}{3}{0}{4}{0}{5}", vbtab , .H.ToString("0.000") , .VH.ToString("0.000"), .VV.ToString("0.000"), .VC.ToString("0.000"), .C.ToString("0.000")))
   
     End With
 
@@ -493,19 +509,19 @@ Public Class SSMCalculate
     'Staging Calcs
     sb.AppendLine("Staging Base Values")
     sb.AppendLine("*******************")
-    sb.AppendLine( vbTab + vbTab + "Mechanical" +vbTab +   "Elec Cool/Heat" + vbTab  + "Elec Vent" + vbTab + vbTab   + "Fuel Fired Heating")
+    sb.AppendLine( vbTab + vbTab + vbTab + "Mechanical" +vbTab +   "Elec Cool/Heat" + vbTab  + "Elec Vent" + vbTab    + "Fuel Fired Heating")
 
-    sb.AppendLine(String.Format("Heating   {0}{1}{0}{2}{0}{3}{0}{4}",vbTab + vbtab, BaseHeatingW_Mechanical.ToString("0.000"), BaseHeatingW_ElectricalCoolingHeating.ToString("0.000"), BaseHeatingW_ElectricalVentilation.ToString("0.000"), BaseHeatingW_FuelFiredHeating.ToString("0.000") ))
-    sb.AppendLine(String.Format("Cooling   {0}{1}{0}{2}{0}{3}{0}{4}",vbTab + vbtab, BaseCoolingW_Mechanical.ToString("0.000"), BaseCoolingW_ElectricalCoolingHeating.ToString("0.000"), BaseCoolingW_ElectricalVentilation.ToString("0.000"), BaseCoolingW_FuelFiredHeating.ToString("0.000") ))
-    sb.AppendLine(String.Format("Ventilate {0}{1}{0}{2}{0}{3}{0}{4}",vbTab + vbtab, BaseVentilationW_Mechanical.ToString("0.000"), BaseVentilationW_ElectricalCoolingHeating.ToString("0.000"), BaseVentilationW_ElectricalVentilation.ToString("0.000"), BaseVentilationW_FuelFiredHeating.ToString("0.000") ))
+    sb.AppendLine(String.Format("Heating   {0}{1}{0}{2}{0}{3}{0}{4}",vbTab + vbtab, BaseHeatingW_Mechanical.ToString("0.00"), BaseHeatingW_ElectricalCoolingHeating.ToString("0.00"), BaseHeatingW_ElectricalVentilation.ToString("0.00"), BaseHeatingW_FuelFiredHeating.ToString("0.00") ))
+    sb.AppendLine(String.Format("Cooling   {0}{1}{0}{2}{0}{3}{0}{4}",vbTab + vbtab, BaseCoolingW_Mechanical.ToString("0.00"), BaseCoolingW_ElectricalCoolingHeating.ToString("0.00"), BaseCoolingW_ElectricalVentilation.ToString("0.00"), BaseCoolingW_FuelFiredHeating.ToString("0.00") ))
+    sb.AppendLine(String.Format("Ventilate {0}{1}{0}{2}{0}{3}{0}{4}",vbTab + vbtab, BaseVentilationW_Mechanical.ToString("0.00"), BaseVentilationW_ElectricalCoolingHeating.ToString("0.00"), BaseVentilationW_ElectricalVentilation.ToString("0.00"), BaseVentilationW_FuelFiredHeating.ToString("0.00") ))
  
     sb.AppendLine("")
     sb.AppendLine("Staging Adjusted Values")
     sb.AppendLine("***********************")
 
-    sb.AppendLine(String.Format("Heating   {0}{1}{0}{2}{0}{3}{0}{4}",vbTab + vbtab, TechListAdjustedHeatingW_Mechanical.ToString("0.000"), TechListAdjustedHeatingW_ElectricalCoolingHeating.ToString("0.000"), TechListAdjustedHeatingW_ElectricalVentilation.ToString("0.000"), TechListAdjustedHeatingW_FuelFiredHeating.ToString("0.000") ))
-    sb.AppendLine(String.Format("Cooling   {0}{1}{0}{2}{0}{3}{0}{4}",vbTab + vbtab, TechListAdjustedCoolingW_Mechanical.ToString("0.000"), TechListAdjustedCoolingW_ElectricalCoolingHeating.ToString("0.000"), TechListAdjustedCoolingW_ElectricalVentilation.ToString("0.000"), TechListAdjustedCoolingW_FuelFiredHeating.ToString("0.000") ))
-    sb.AppendLine(String.Format("Ventilate {0}{1}{0}{2}{0}{3}{0}{4}",vbTab + vbtab, TechListAdjustedVentilationW_Mechanical.ToString("0.000"), TechListAdjustedVentilationW_ElectricalCoolingHeating.ToString("0.000"), TechListAdjustedVentilationW_ElectricalVentilation.ToString("0.000"), TechListAdjustedVentilationW_FuelFiredHeating.ToString("0.000") ))
+    sb.AppendLine(String.Format("Heating   {0}{1}{0}{2}{0}{3}{0}{4}",vbTab + vbtab, TechListAdjustedHeatingW_Mechanical.ToString("0.00"), TechListAdjustedHeatingW_ElectricalCoolingHeating.ToString("0.00"), TechListAdjustedHeatingW_ElectricalVentilation.ToString("0.00"), TechListAdjustedHeatingW_FuelFiredHeating.ToString("0.00") ))
+    sb.AppendLine(String.Format("Cooling   {0}{1}{0}{2}{0}{3}{0}{4}",vbTab + vbtab, TechListAdjustedCoolingW_Mechanical.ToString("0.00"), TechListAdjustedCoolingW_ElectricalCoolingHeating.ToString("0.00"), TechListAdjustedCoolingW_ElectricalVentilation.ToString("0.00"), TechListAdjustedCoolingW_FuelFiredHeating.ToString("0.00") ))
+    sb.AppendLine(String.Format("Ventilate {0}{1}{0}{2}{0}{3}{0}{4}",vbTab + vbtab, TechListAdjustedVentilationW_Mechanical.ToString("0.00"), TechListAdjustedVentilationW_ElectricalCoolingHeating.ToString("0.00"), TechListAdjustedVentilationW_ElectricalVentilation.ToString("0.00"), TechListAdjustedVentilationW_FuelFiredHeating.ToString("0.00") ))
 
 
 
