@@ -20,10 +20,12 @@ Implements IHVACUserInputsConfig
 
 
     'Constructor
-    Public Sub new (ssm As IHVACSteadyStateModel, ssmFilePath As string)
+    Public Sub new (ssm As IHVACSteadyStateModel, ssmFilePath As string, busDatabasePath As string)
 
            SteadyStateModel           = ssm
            Me.SSMFilePath             = ssmFilePath
+           Me.BusDatabasePath         = busDatabasePath
+
 
         End Sub
 

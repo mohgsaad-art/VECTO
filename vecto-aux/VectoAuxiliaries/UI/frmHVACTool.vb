@@ -75,25 +75,22 @@ End Function
   End Function
 
   'Constructors
-  Public Sub New(busDatabasePath As String, ahsmFilePath As String )
+  Public Sub New(busDatabasePath As String, ahsmFilePath As String , optional useDefaults As Boolean = false)
 
     ' This call is required by the designer.
     InitializeComponent()
 
     'Add any initialization after the InitializeComponent() call.
 
-    'Validate ashm FILENAME
-     If  Not ValidateSSMTOOLFileName( ahsmFilePath ) then
-          Me.DialogResult=Windows.Forms.DialogResult.Abort
-          Me.Close
-     End If     
-
 
     Me.busDatabasePath = busDatabasePath
     Me.ahsmFilePath = ahsmFilePath
 
-    ssmTOOL = New SSMTOOL(ahsmFilePath)
-    originalssmTOOL = New SSMTOOL( ahsmFilePath)
+    
+
+    ssmTOOL = New SSMTOOL(ahsmFilePath,useDefaults)
+    originalssmTOOL = New SSMTOOL( ahsmFilePath, useDefaults)
+
     Dim result1 As Boolean = ssmTOOL.Load(ahsmFilePath)
     originalssmTOOL.Clone( ssmTOOL)
 
@@ -827,7 +824,9 @@ End Sub
     
       If( ssmTOOL.Save( ahsmFilePath )) then
 
+        Me.DialogResult=Windows.Forms.DialogResult.OK
         Me.Close
+       
 
       End If
   
