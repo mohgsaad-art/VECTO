@@ -970,7 +970,7 @@ Private Sub btnSSMBSource_Click( sender As Object,  e As EventArgs) Handles btnS
                       Else        
                            'No file given in text box, not given in browser, so bail         
                            return
-                      End If
+                      End If 
                
                Else                 
                      suppliedSSMPath = txtSSMFilePath.Text

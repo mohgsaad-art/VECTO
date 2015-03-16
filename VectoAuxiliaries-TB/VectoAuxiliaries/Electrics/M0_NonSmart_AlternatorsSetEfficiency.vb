@@ -20,10 +20,10 @@ Namespace Electrics
    Private _alternatorEfficiencyMap As IAlternatorMap
    Private _powernetVoltage As Single
    Private _signals As ISignals
-   Private _steadyStateModelHVAC As IHVACSteadyStateModel
+   Private _steadyStateModelHVAC As ISSMTOOL
 
    'Constructor
-   Public Sub New(electricalConsumers As IElectricalConsumerList,  alternatorEfficiencyMap As IAlternatorMap, powernetVoltage As Single, signals As ISignals, ssmHvac As IHVACSteadyStateModel)
+   Public Sub New(electricalConsumers As IElectricalConsumerList,  alternatorEfficiencyMap As IAlternatorMap, powernetVoltage As Single, signals As ISignals, ssmHvac As ISSMTOOL)
 
        If electricalConsumers Is Nothing Then Throw New ArgumentException("No ElectricalConsumersList Supplied")
        If alternatorEfficiencyMap Is Nothing Then Throw New ArgumentException("No Alternator Efficiency Map Supplied")
@@ -51,7 +51,7 @@ Namespace Electrics
     End property
    Public readonly property GetHVACElectricalPowerDemandAmps As Single Implements IM0_NonSmart_AlternatorsSetEfficiency.GetHVACElectricalPowerDemandAmps
         Get
-          Return _steadyStateModelHVAC.HVACElectricalLoadPowerWatts / _powernetVoltage
+          Return _steadyStateModelHVAC.ElectricalWAdjusted / _powernetVoltage
         End Get
     End Property
 
