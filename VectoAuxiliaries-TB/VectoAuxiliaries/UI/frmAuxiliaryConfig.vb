@@ -16,6 +16,8 @@ Imports System.ComponentModel
 Imports System.Windows.Forms
 Imports System.Drawing
 Imports VectoAuxiliaries.Hvac
+Imports System.IO
+
 
 Public Class frmAuxiliaryConfig
 
@@ -571,6 +573,8 @@ Private Sub Dashboard_Load(sender As Object, e As EventArgs) Handles MyBase.Load
   'For Tab Coloring, this is the place where the background will get filled on the tab when attention is required.
   AddHandler tabMain.DrawItem, New System.Windows.Forms.DrawItemEventHandler(AddressOf tabMain_DrawItem)
 
+  'Select Electric Tab
+  tabMain.SelectTab(tabMain.TabPages("tabElectricalConfig"))
 
 
 End Sub
@@ -936,40 +940,132 @@ End Sub
 Private Sub btnSSMBSource_Click( sender As Object,  e As EventArgs) Handles btnSSMBSource.Click
 
 
+               Dim aauxFileValidated As Boolean = False
                Dim fbAux As New cFileBrowser(True, False)
-               Dim ssmMap As ISSMTool
+              fbAux.Extensions = New String() {"AHSM"}
+               Dim frm As frmHVACTool  
+
+               Dim suppliedSSMPath  As string = String.Empty
+               Dim absoluteSSMPath  As String = String.Empty
+               Dim absoluteBusDatabasePath As string = String.Empty
                Dim message As String = String.Empty
+               Dim newFile As Boolean = false
+
+              
+               'Trim ssmPath
+               txtSSMFilePath.Text.Trim
 
 
-               fbAux.Extensions = New String() {"ahsm"}
+                'Is Filename NOT supplied, try and obtain  it, still not supplied, then bail.
+                 If( txtSSMFilePath.Text.Length=0) then
+               
+                      newFile = true
+               
+                      If fbAux.CustomDialog(vectoPath,False,False, tFbExtMode.ForceExt,False,"") then
+                         If fbAux.Files.Count=0 then
+                               Return
+                          Else                     
+                               suppliedSSMPath = fbAux.Files(0)
+                         End If
+                      Else        
+                           'No file given in text box, not given in browser, so bail         
+                           return
+                      End If
+               
+               Else                 
+                     suppliedSSMPath = txtSSMFilePath.Text
+               
+               End If
 
-               If fbAux.OpenDialog(fPATH(vectoFile)) Then
+               'Set Absolutes.
+               absoluteSSMPath = FilePathUtils.ResolveFilePath(fPATH(VECTOfile), suppliedSSMPath )
+               absoluteBusDatabasePath = FilePathUtils.ResolveFilePath(fPATH(VECTOfile),Me.txtBusDatabaseFilePath.Text )
 
-                 txtSSMFilePath.Focus()
-                 txtSSMFilePath.Text = fFileWoDir(fbAux.Files(0), fPATH(vectoFile))
 
-                 
+               'Is supplied filename NOT valid. bail
+               if Not FilePathUtils.ValidateFilePath(absoluteSSMPath,".ahsm",Message)  then                 
+                  MessageBox.Show( message)
+                  return
+               end if
 
-                 ssmMap = New SSMTOOL(txtSSMFilePath.Text,false)
 
-                 If ssmMap is nothing then
+               'If file Exists, Check validity, else fire up a default SSM Config.
+               If  File.Exists( absoluteSSMPath ) then
+                     'is file valid Try ahsm - HVac Steady State Model
+                      try
+                          Dim ahsmFile As String = FilePathUtils.ResolveFilePath(vectoPath, absoluteBusDatabasePath)
+                          Dim ssmTool As SSMTOOL = New SSMTOOL( ahsmFile,False)                        
+                          ssmTool.Load( ahsmFile )                   
+                       Catch ex As Exception         
+                            MessageBox.Show("The supplied AHSM File was invalid, aborting.")
+                            return
+                       End Try
+                Else              
+                 newFile=true
 
-                 messagebox.Show("Unable to load")
+                End If
+
+
+                'If newFile then use Defaults
+                If newFile then
+                   frm   = New frmHVACTool(absoluteBusDatabasePath, absoluteSSMPath,True )
+                               
+                Else               
+                   frm   = New frmHVACTool(absoluteBusDatabasePath, absoluteSSMPath )
+
+                End If
+
+
+
+
+               'If Dialog result is OK, then take action else bail
+               If frm.ShowDialog()   = Windows.Forms.DialogResult.OK then
+
+                 If suppliedSSMPath.Contains(":\")  then
+
+                    txtSSMFilePath.Text= suppliedSSMPath   
+
+                 else
+                    
+                    txtSSMFilePath.Text = fFileWoDir( suppliedSSMPath )
 
                  End If
 
-
+               Else          
+                   return
                End If
 
-               ''Causes binding to fire
-               'btnSSMBSource.Focus()
-               'txtSSMFilePath.Focus()
+
+
+
+
+
 
 
 
 End Sub
 
+
+Private function launchSSMConfig( absoluteBusPath as String, absoluteSSMPath As String )  As DialogResult
+
+
+
+    
+
+
+End Function
+
+
 #End Region
+
+Private Function ValidateSSMFile( filepath As String ) As Boolean
+
+   Dim ssmTool As ISSMTOOL = New SSMTOOL(filepath,False)
+
+   Return  ssmTool.Load( filepath)
+
+End Function
+
 #Region "File Viewer Button Events"
 
 Private Sub btnAALTOpen_Click( sender As Object,  e As EventArgs) Handles btnAALTOpen.Click
@@ -1319,7 +1415,7 @@ Private Sub CreateBindings()
         'txtHVACMechanicalLoadPowerWatts.DataBindings.Add("Text", auxConfig.HvacUserInputsConfig.SteadyStateModel, "HVACMechanicalLoadPowerWatts",False,DataSourceUpdateMode.OnPropertyChanged)
 
         txtSSMFilePath.DataBindings.Add( "Text", auxConfig.HvacUserInputsConfig,"SSMFilePath")
-
+        txtBusDatabaseFilePath.DataBindings.Add("Text",auxConfig.HvacUserInputsConfig,"BusDatabasePath")
 
         'Signals
 
