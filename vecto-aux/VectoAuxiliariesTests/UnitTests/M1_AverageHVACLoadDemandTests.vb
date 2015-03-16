@@ -11,10 +11,14 @@ Namespace UnitTests
 Public Class M1_AverageHVACLoadDemandTests
 
   Private Const _GOODMAP As String = "TestFiles\testAlternatorMap.aalt"
+  Private Const _SSMMAP As String = "TestFiles\ssm.Ahsm
+  Private Const _BusDatabase As String ="TestFiles\BusDatabase.abdb
 
 Private signals As ISignals = New Signals With {.EngineSpeed=2000}
 Private powernetVoltage As Single = 26.3
-Private ssm As IHVACSteadyStateModel = New HVACSteadyStateModel(100,100,100) 
+Private ssm As ISSMTOOL = New SSMTOOL(_SSMMAP)
+
+
 Private m0 As IM0_NonSmart_AlternatorsSetEfficiency
 Private alternatorMap As IAlternatorMap = New AlternatorMap(_GOODMAP)
 Private alternatorGearEfficiency As Single = 0.8
@@ -25,6 +29,7 @@ Public Sub new()
 
 alternatorMap.Initialise()
 
+   ssm.Load( _SSMMAP )
 
    m0 = New M0_NonSmart_AlternatorsSetEfficiency(New ElectricalConsumerList(powernetVoltage,0.096,True),alternatorMap,powernetVoltage,signals,ssm )
 
@@ -32,6 +37,8 @@ alternatorMap.Initialise()
 End Sub
 
 Private function GETM1Instance()  As IM1_AverageHVACLoadDemand
+
+ssm.Load( _SSMMAP )
 
 return  New M1_AverageHVACLoadDemand( m0,
                                        alternatorGearEfficiency,
@@ -59,7 +66,7 @@ Public Sub GetAveragePowerDemandAtCrankFromHVACMechanicsWattsTest()
 
 
    Dim target As IM1_AverageHVACLoadDemand = GETM1Instance()
-   Dim expected As Single = 125
+   Dim expected As Single = 1431.42224
    dim actual as Single = target.AveragePowerDemandAtCrankFromHVACMechanicalsWatts
 
    Assert.AreEqual( expected , actual)
@@ -71,7 +78,7 @@ Public Sub AveragePowerDemandAtCrankFromHVACElectricsWattsTest()
 
 
    Dim target As IM1_AverageHVACLoadDemand = GETM1Instance()
-   Dim expected As Single = 245.7211
+   Dim expected As Single = 2227.76563
    dim actual as Single = target.AveragePowerDemandAtCrankFromHVACElectricsWatts
 
    Assert.AreEqual( expected , actual)
@@ -83,7 +90,7 @@ Public Sub AveragePowerDemandAtAlternatorFromHVACElectricsWattsTest()
 
 
    Dim target As IM1_AverageHVACLoadDemand = GETM1Instance()
-   Dim expected As Single = 100
+   Dim expected As Single = 494.918945
    dim actual as Single = target.AveragePowerDemandAtAlternatorFromHVACElectricsWatts
 
    Assert.AreEqual( expected , actual)
@@ -95,7 +102,7 @@ Public Sub HVACFuelingLitresPerHourTest()
 
 
    Dim target As IM1_AverageHVACLoadDemand = GETM1Instance()
-   Dim expected As Single = 100
+   Dim expected As Single = 0
    dim actual as Single = target.HVACFuelingLitresPerHour
 
    Assert.AreEqual( expected , actual)

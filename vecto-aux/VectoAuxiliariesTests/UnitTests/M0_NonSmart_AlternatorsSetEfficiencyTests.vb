@@ -23,7 +23,22 @@ Private signals As Signals = New Signals
 Private powernetVoltage As Single = 26.3
 Private ssm As IHVACSteadyStateModel = New HVACSteadyStateModel(100,100,100)
 
+Private Function GetSSM() As ISSMTOOL
 
+
+  Const _SSMMAP As String = "TestFiles\ssm.Ahsm
+  Const _BusDatabase As String ="TestFiles\BusDatabase.abdb
+
+  Dim ssm As ISSMTOOL = New SSMTOOL( _SSMMAP )
+
+
+  ssm.Load( _SSMMAP)
+
+
+   Return ssm
+
+
+End Function
 
 
 Public Sub New()
@@ -46,14 +61,14 @@ End Sub
 
 <Test()>
 Public Sub CreateNewTest()
-       Dim target As M0_NonSmart_AlternatorsSetEfficiency = New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers,  alternatorMap, powernetVoltage,signals,ssm)
+       Dim target As M0_NonSmart_AlternatorsSetEfficiency = New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers,  alternatorMap, powernetVoltage,signals,GetSSM())
        Assert.IsNotNull(target)
 End Sub
 
 <Test()>
 <ExpectedException("System.ArgumentException")>
 Public Sub CreateNew_MissingElecConsumers_ThrowArgumentExceptionTest()
-       Dim target As M0_NonSmart_AlternatorsSetEfficiency = New M0_NonSmart_AlternatorsSetEfficiency(Nothing, alternatorMap, powernetVoltage,signals,ssm)
+       Dim target As M0_NonSmart_AlternatorsSetEfficiency = New M0_NonSmart_AlternatorsSetEfficiency(Nothing, alternatorMap, powernetVoltage,signals,GetSSM())
 End Sub
 
 
@@ -64,18 +79,18 @@ End Sub
 <Test()>
 <ExpectedException("System.ArgumentException")>
 Public Sub CreateNew_MissingAlternatorMap_ThrowArgumentExceptionTest()
-       Dim target As M0_NonSmart_AlternatorsSetEfficiency = New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers,  Nothing, powernetVoltage,signals,ssm)
+       Dim target As M0_NonSmart_AlternatorsSetEfficiency = New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers,  Nothing, powernetVoltage,signals,GetSSM())
 End Sub
 
 
 
 <Test()>
 Public Sub EfficiencyValueTest()
-       Dim target As M0_NonSmart_AlternatorsSetEfficiency = New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers, alternatorMap, powernetVoltage,signals,ssm)
+       Dim target As M0_NonSmart_AlternatorsSetEfficiency = New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers, alternatorMap, powernetVoltage,signals,GetSSM())
 
        Dim actual As Single = target.AlternatorsEfficiency
 
-       Dim expected As Single = 0.6378931
+       Dim expected As Single = 0.6720275
 
        Assert.AreEqual(expected, actual)
 
@@ -86,10 +101,10 @@ End Sub
 <Test()>
 Public Sub HVAC_PowerDemandAmpsTest()
 
-      Dim target As M0_NonSmart_AlternatorsSetEfficiency = New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers, alternatorMap, powernetVoltage,signals,ssm)
+      Dim target As M0_NonSmart_AlternatorsSetEfficiency = New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers, alternatorMap, powernetVoltage,signals,GetSSM())
 
       Dim actual As Single
-      Dim expected As Single = 3.80228149  
+      Dim expected As Single = 18.81821 
 
       actual = target.GetHVACElectricalPowerDemandAmps() 
 

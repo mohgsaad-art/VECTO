@@ -15,7 +15,22 @@ Namespace UnitTests
     Private Const csngPowernetVoltage As Single = 26.3
     Private ssmHVac As IHVACSteadyStateModel = New HVACSteadyStateModel(100,100,100)
 
+Private Function GetSSM() As ISSMTOOL
 
+
+  Const _SSMMAP As String = "TestFiles\ssm.Ahsm
+  Const _BusDatabase As String ="TestFiles\BusDatabase.abdb
+
+  Dim ssm As ISSMTOOL = New SSMTOOL( _SSMMAP )
+
+
+  ssm.Load( _SSMMAP)
+
+
+   Return ssm
+
+
+End Function
 
 #Region "Helpers"
         Private Function GetAverageElectricalDemandInstance() As M2_AverageElectricalLoadDemand
@@ -27,7 +42,7 @@ Namespace UnitTests
 
             Dim altMap As IAlternatorMap = CType(New AlternatorMap("testfiles\testAlternatorMap.aalt"), IAlternatorMap)
             altMap.Initialise()
-            Dim m0 As New M0_NonSmart_AlternatorsSetEfficiency(consumers, altMap, 26.3,signals,ssmHVac)
+            Dim m0 As New M0_NonSmart_AlternatorsSetEfficiency(consumers, altMap, 26.3,signals,GetSSM())
 
             'Get Consumers.
 
@@ -62,7 +77,7 @@ Namespace UnitTests
         <Test()>
         Public Sub GetAveragePowerAtCrankTest()
             Dim target As M2_AverageElectricalLoadDemand = GetAverageElectricalDemandInstance()
-            Dim expected As Single = 2302.69116
+            Dim expected As Single = 4218.21436
             Dim actual As Single = target.GetAveragePowerAtCrankFromElectrics()
             Assert.AreEqual(expected, actual)
         End Sub

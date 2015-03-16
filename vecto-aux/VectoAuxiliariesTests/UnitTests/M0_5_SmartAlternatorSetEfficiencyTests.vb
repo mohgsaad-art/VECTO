@@ -17,10 +17,28 @@ Initialise()
 
 End Sub
 
+
+Private Function GetSSM() As ISSMTOOL
+
+
+  Const _SSMMAP As String = "TestFiles\ssm.Ahsm
+  Const _BusDatabase As String ="TestFiles\BusDatabase.abdb
+
+  Dim ssm As ISSMTOOL = New SSMTOOL( _SSMMAP )
+
+
+  ssm.Load( _SSMMAP)
+
+
+   Return ssm
+
+
+End Function
+
 Private sub Initialise()
 
 
-Dim ssm As New HVACSteadyStateModel(100,100,100)
+Dim ssm As ISSMTOOL = GetSSM()
 Dim elecConsumers As New ElectricalConsumerList(26.3,0.096,True)
 
 'Dim  hvacMap As New HVACMap("testFiles\TestHvacMap.csv")
@@ -76,7 +94,7 @@ End Sub
 Public Sub AlternatorsEfficiencyIdle2000rpmTest()
    Initialise()
 
-   Dim expected As Single = 0.577212
+   Dim expected As Single = 0.3654489
    Dim actual As Single = target.AlternatorsEfficiencyIdleResultCard()
 
    Assert.AreEqual(expected, actual)
@@ -89,7 +107,7 @@ End Sub
 Public Sub AlternatorsEfficiencyTraction2000rpmTest()
    Initialise()
 
-   Dim expected As Single = 0.577212
+   Dim expected As Single = 0.3654489
    Dim actual As Single = target.AlternatorsEfficiencyTractionOnResultCard()
 
    Assert.AreEqual(expected, actual)
@@ -101,7 +119,7 @@ End Sub
 Public Sub AlternatorsEfficiencyOverrun2000rpmTest()
    Initialise()
 
-   Dim expected As Single = 0.577212
+   Dim expected As Single = 0.3654489
    Dim actual As Single = target.AlternatorsEfficiencyOverrunResultCard()
 
    Assert.AreEqual(expected, actual)
