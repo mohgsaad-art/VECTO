@@ -283,6 +283,12 @@
     <Content Include="TestFiles\testSSMTechBenefitsALLON_LIVE.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="TestFiles\ssm.Ahsm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\BusDatabase.abdb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="TestFiles\testAlternatorMapAsymetricalXYPairsCombined.aalt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
