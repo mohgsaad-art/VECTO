@@ -104,12 +104,21 @@ Public Class AdvancedAuxiliaries
       
       auxConfig.ElectricalUserInputsConfig.ElectricalConsumers.DoorDutyCycleFraction = GetDoorActuationTimeFraction( )
       
+      'SSM HVAC
+      Dim ssmPath as string = FilePathUtils.ResolveFilePath(vectoDirectory,auxConfig.HvacUserInputsConfig.SSMFilePath)
+      Dim BusDatabase as String = FilePathUtils.ResolveFilePath(vectoDirectory,auxConfig.HvacUserInputsConfig.BusDatabasePath)     
+      Dim ssmTool As New SSMTOOL( ssmPath)
+      If( ssmTool.Load(ssmPath)=False )
+
+       Throw New Exception(String.Format("Unable to load the ssmTOOL with file {0}", ssmPath))
+
+      End If     
       
       M0 = New M0_NonSmart_AlternatorsSetEfficiency( auxConfig.ElectricalUserInputsConfig.ElectricalConsumers,
                                                      alternatorMap,
                                                      auxConfig.ElectricalUserInputsConfig.PowerNetVoltage,
                                                      Signals,
-                                                     auxConfig.HvacUserInputsConfig.SteadyStateModel)
+                                                     ssmTool)
       
       
       M05 = New M0_5_SmartAlternatorSetEfficiency(M0, 
@@ -118,15 +127,7 @@ Public Class AdvancedAuxiliaries
                                                   auxConfig.ElectricalUserInputsConfig.ResultCardIdle,
                                                   auxConfig.ElectricalUserInputsConfig.ResultCardTraction,
                                                   auxConfig.ElectricalUserInputsConfig.ResultCardOverrun,Signals)
-      
-      Dim ssmPath as string = FilePathUtils.ResolveFilePath(vectoDirectory,auxConfig.HvacUserInputsConfig.SSMFilePath)
-      Dim BusDatabase as String = FilePathUtils.ResolveFilePath(vectoDirectory,auxConfig.HvacUserInputsConfig.BusDatabasePath)
-      Dim ssmTool As New SSMTOOL( ssmPath)
-      If( ssmTool.Load(ssmPath)=False )
 
-       Throw New Exception(String.Format("Unable to load the ssmTOOL with file {0}", ssmPath))
-
-      End If
       
       M1 = New M1_AverageHVACLoadDemand(M0,
                                         auxConfig.ElectricalUserInputsConfig.AlternatorGearEfficiency, 

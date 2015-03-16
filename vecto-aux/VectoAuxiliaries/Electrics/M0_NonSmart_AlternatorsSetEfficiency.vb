@@ -22,6 +22,11 @@ Namespace Electrics
    Private _signals As ISignals
    Private _steadyStateModelHVAC As ISSMTOOL
 
+   
+   Private _ElectricalPowerW As Single
+   Private _MechanicalPowerW As Single
+   Private _FuelingLPerH As Single
+
    'Constructor
    Public Sub New(electricalConsumers As IElectricalConsumerList,  alternatorEfficiencyMap As IAlternatorMap, powernetVoltage As Single, signals As ISignals, ssmHvac As ISSMTOOL)
 
@@ -35,6 +40,11 @@ Namespace Electrics
        Me._powernetVoltage = powernetVoltage
        Me._signals = signals
        Me._steadyStateModelHVAC = ssmHvac
+
+       _ElectricalPowerW= ssmHvac.ElectricalWAdjusted
+       _MechanicalPowerW= ssmHvac.MechanicalWBaseAdjusted
+       _FuelingLPerH    = ssmHvac.FuelLPerHBaseAdjusted
+       
 
 
     End Sub
@@ -51,7 +61,7 @@ Namespace Electrics
     End property
    Public readonly property GetHVACElectricalPowerDemandAmps As Single Implements IM0_NonSmart_AlternatorsSetEfficiency.GetHVACElectricalPowerDemandAmps
         Get
-          Return _steadyStateModelHVAC.ElectricalWAdjusted / _powernetVoltage
+          Return _ElectricalPowerW / _powernetVoltage
         End Get
     End Property
 
