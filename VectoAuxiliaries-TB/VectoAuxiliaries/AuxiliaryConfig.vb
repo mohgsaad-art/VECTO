@@ -57,7 +57,7 @@ Public Class AuxiliaryConfig
       ElectricalUserInputsConfig.ResultCardTraction= new ResultCard( New List(Of SmartResult ))
       PneumaticAuxillariesConfig= New PneumaticsAuxilliariesConfig(False)
       PneumaticUserInputsConfig= New PneumaticUserInputsConfig(False)
-      HvacUserInputsConfig = New HVACUserInputsConfig(New HVACSteadyStateModel(), String.Empty)
+      HvacUserInputsConfig = New HVACUserInputsConfig(New HVACSteadyStateModel(), String.Empty, String.Empty)
   Exit sub
   
   End If
@@ -102,7 +102,7 @@ End Sub
                                                                      .AlternatorMap=String.Empty
                                                                      }
 
- HvacUserInputsConfig = New HVACUserInputsConfig( New HVACSteadyStateModel(100,100,100), String.Empty)
+ HvacUserInputsConfig = New HVACUserInputsConfig( New HVACSteadyStateModel(100,100,100), String.Empty, String.Empty)
 
 
  Signals = New Signals With { .EngineSpeed=2000, .TotalCycleTimeSeconds=3114, .ClutchEngaged=False}
@@ -238,7 +238,7 @@ Private Function CompareHVACConfig( other As AuxiliaryConfig) As Boolean Impleme
   If Me.HvacUserInputsConfig.SteadyStateModel.HVACFuellingLitresPerHour <> other.HvacUserInputsConfig.SteadyStateModel.HVACFuellingLitresPerHour then Return false
   If Me.HvacUserInputsConfig.SteadyStateModel.HVACMechanicalLoadPowerWatts <> other.HvacUserInputsConfig.SteadyStateModel.HVACMechanicalLoadPowerWatts then Return false
   If Me.HvacUserInputsConfig.SSMFilePath <> other.HvacUserInputsConfig.SSMFilePath then Return false
-
+  If Me.HvacUserInputsConfig.BusDatabasePath <> other.HvacUserInputsConfig.BusDatabasePath then Return false
 
   Return true
 
@@ -409,6 +409,7 @@ Private Sub CloneHVAC( other As AuxiliaryConfig)
   Me.HvacUserInputsConfig.SteadyStateModel.HVACMechanicalLoadPowerWatts = other.HvacUserInputsConfig.SteadyStateModel.HVACMechanicalLoadPowerWatts 
 
   Me.HvacUserInputsConfig.SSMFilePath = other.HvacUserInputsConfig.SSMFilePath
+  Me.HvacUserInputsConfig.BusDatabasePath = other.HvacUserInputsConfig.BusDatabasePath
 
 End Sub
 
