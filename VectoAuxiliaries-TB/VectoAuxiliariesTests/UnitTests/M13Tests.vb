@@ -14,6 +14,8 @@ Public Class M13Tests
 Private Const FUEL_DENSITY_percm3 As Single = 0.835
 
 
+'<TestCase(50,	60,	70,	TRUE,	TRUE ,100, 1,False,	 72287.5f , 86.57185629f )> _
+
 <Test()> _
 <TestCase(50,	60,	70,	FALSE,	FALSE,100, 1,False,	 72287.5f , 86.57185629f )> _
 <TestCase(50,	60,	70,	FALSE,	TRUE ,100, 1,False,	 72277.5f , 86.55988024f )> _
