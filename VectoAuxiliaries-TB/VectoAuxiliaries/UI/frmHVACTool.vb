@@ -202,7 +202,8 @@ End Sub
        .AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
        .FlatStyle = FlatStyle.Standard
        .CellTemplate.Style.BackColor = Color.Honeydew
-        '.DisplayIndex = 0
+
+    
 
      end with
      gvTechBenefitLines.Columns.Add(deleteColumn)
@@ -940,26 +941,33 @@ End Sub
   'Timer Events
   Private Sub Timer1_Tick( sender As Object,  e As EventArgs) Handles Timer1.Tick
   
+      'Enables the user to instantly see the results of the configuration changes
+      'on the top right hand side of the form where it displays the main outputs.
+      'The same information is also displayed in the Diagnostics tab where staging
+      'results are also available, this is mainly used for testing but could also
+      'be used as supporting documentation.
+
       If Not ssmTOOL is nothing then
   
-      txtBasElectrical.Text = ssmTOOL.ElectricalWBase
-      txtBaseMechanical.Text = ssmTOOL.MechanicalWBase
-      txtBaseFuel.Text = ssmTOOL.FuelLPerHBase
-  
-      txtAdjElectrical.Text = ssmTOOL.ElectricalWAdjusted
-      txtAdjMechanical.Text = ssmTOOL.MechanicalWBaseAdjusted
-      txtAdjFuel.Text = ssmTOOL.FuelLPerHBaseAdjusted
-    
-        If captureDiagnostics then
-      
-          txtDiagnostics.Text = ssmTOOL.ToString()
-  
-          captureDiagnostics=false
+          txtBasElectrical.Text = ssmTOOL.ElectricalWBase
+          txtBaseMechanical.Text = ssmTOOL.MechanicalWBase
+          txtBaseFuel.Text = ssmTOOL.FuelLPerHBase
           
-        End If
+          txtAdjElectrical.Text = ssmTOOL.ElectricalWAdjusted
+          txtAdjMechanical.Text = ssmTOOL.MechanicalWBaseAdjusted
+          txtAdjFuel.Text = ssmTOOL.FuelLPerHBaseAdjusted
+          
+            If captureDiagnostics then
+          
+              txtDiagnostics.Text = ssmTOOL.ToString()
+          
+              captureDiagnostics=false
+              
+            End If
  
-      End If  
-  
+      End If 
+
+ 
   End Sub
 
 

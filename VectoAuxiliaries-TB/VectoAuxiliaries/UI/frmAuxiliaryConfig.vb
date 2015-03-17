@@ -993,7 +993,7 @@ Private Sub btnSSMBSource_Click( sender As Object,  e As EventArgs) Handles btnS
                If  File.Exists( absoluteSSMPath ) then
                      'is file valid Try ahsm - HVac Steady State Model
                       try
-                          Dim ahsmFile As String = FilePathUtils.ResolveFilePath(vectoPath, absoluteBusDatabasePath)
+                          Dim ahsmFile As String = FilePathUtils.ResolveFilePath(vectoPath, absoluteSSMPath)
                           Dim ssmTool As SSMTOOL = New SSMTOOL( ahsmFile,False)                        
                           ssmTool.Load( ahsmFile )                   
                        Catch ex As Exception         
@@ -1046,14 +1046,6 @@ Private Sub btnSSMBSource_Click( sender As Object,  e As EventArgs) Handles btnS
 End Sub
 
 
-Private function launchSSMConfig( absoluteBusPath as String, absoluteSSMPath As String )  As DialogResult
-
-
-
-    
-
-
-End Function
 
 
 #End Region
@@ -1454,6 +1446,7 @@ Public Function FileOpenAlt(ByVal file As String) As Boolean
         End Try
 
     End Function
+
 
 
 
