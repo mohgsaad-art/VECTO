@@ -202,6 +202,9 @@ Partial Class frmHVACTool
         Me.tabDiagnostics = New System.Windows.Forms.TabPage()
         Me.txtDiagnostics = New System.Windows.Forms.TextBox()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.Label6 = New System.Windows.Forms.Label()
         Me.ErrorProvider1 = New System.Windows.Forms.ErrorProvider(Me.components)
         Me.btnSave = New System.Windows.Forms.Button()
         Me.btnCancel = New System.Windows.Forms.Button()
@@ -213,11 +216,8 @@ Partial Class frmHVACTool
         Me.txtAdjElectrical = New System.Windows.Forms.TextBox()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.lblElectricalBaseW = New System.Windows.Forms.Label()
-        Me.Label1 = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
-        Me.Label4 = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
-        Me.Label6 = New System.Windows.Forms.Label()
         Me.tabMain.SuspendLayout
         Me.tabGeneralInputsBP.SuspendLayout
         Me.GroupBox1.SuspendLayout
@@ -1397,7 +1397,7 @@ Partial Class frmHVACTool
         Me.tabGeneralInputsOther.Controls.Add(Me.grpEnvironmentConditions)
         Me.tabGeneralInputsOther.Location = New System.Drawing.Point(4, 22)
         Me.tabGeneralInputsOther.Name = "tabGeneralInputsOther"
-        Me.tabGeneralInputsOther.Size = New System.Drawing.Size(937, 618)
+        Me.tabGeneralInputsOther.Size = New System.Drawing.Size(937, 611)
         Me.tabGeneralInputsOther.TabIndex = 3
         Me.tabGeneralInputsOther.Text = " INP - Other "
         Me.tabGeneralInputsOther.UseVisualStyleBackColor = true
@@ -2171,6 +2171,39 @@ Partial Class frmHVACTool
         Me.txtDiagnostics.TabIndex = 0
         Me.txtDiagnostics.WordWrap = false
         '
+        'Label1
+        '
+        Me.Label1.AutoSize = true
+        Me.Label1.ForeColor = System.Drawing.SystemColors.MenuHighlight
+        Me.Label1.Location = New System.Drawing.Point(748, 11)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(82, 13)
+        Me.Label1.TabIndex = 10
+        Me.Label1.Text = "Electrical Adj W"
+        Me.ToolTip1.SetToolTip(Me.Label1, "Electrical W - Tech List Adjusted")
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = true
+        Me.Label4.ForeColor = System.Drawing.SystemColors.MenuHighlight
+        Me.Label4.Location = New System.Drawing.Point(748, 38)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(94, 13)
+        Me.Label4.TabIndex = 12
+        Me.Label4.Text = "Mechanical Adj W"
+        Me.ToolTip1.SetToolTip(Me.Label4, "Mechanical W - Tech List Adjusted")
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = true
+        Me.Label6.ForeColor = System.Drawing.SystemColors.MenuHighlight
+        Me.Label6.Location = New System.Drawing.Point(748, 62)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(61, 13)
+        Me.Label6.TabIndex = 14
+        Me.Label6.Text = "Fuel l/h Adj"
+        Me.ToolTip1.SetToolTip(Me.Label6, "Fuel l/h Tech List Adjusted")
+        '
         'ErrorProvider1
         '
         Me.ErrorProvider1.ContainerControl = Me
@@ -2249,17 +2282,6 @@ Partial Class frmHVACTool
         Me.lblElectricalBaseW.TabIndex = 9
         Me.lblElectricalBaseW.Text = "Electrical Base W"
         '
-        'Label1
-        '
-        Me.Label1.AutoSize = true
-        Me.Label1.ForeColor = System.Drawing.SystemColors.MenuHighlight
-        Me.Label1.Location = New System.Drawing.Point(748, 11)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(82, 13)
-        Me.Label1.TabIndex = 10
-        Me.Label1.Text = "Electrical Adj W"
-        Me.ToolTip1.SetToolTip(Me.Label1, "Electrical W - Tech List Adjusted")
-        '
         'Label3
         '
         Me.Label3.AutoSize = true
@@ -2269,17 +2291,6 @@ Partial Class frmHVACTool
         Me.Label3.Size = New System.Drawing.Size(103, 13)
         Me.Label3.TabIndex = 11
         Me.Label3.Text = "Mechanical Base W"
-        '
-        'Label4
-        '
-        Me.Label4.AutoSize = true
-        Me.Label4.ForeColor = System.Drawing.SystemColors.MenuHighlight
-        Me.Label4.Location = New System.Drawing.Point(748, 38)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(94, 13)
-        Me.Label4.TabIndex = 12
-        Me.Label4.Text = "Mechanical Adj W"
-        Me.ToolTip1.SetToolTip(Me.Label4, "Mechanical W - Tech List Adjusted")
         '
         'Label5
         '
@@ -2291,22 +2302,12 @@ Partial Class frmHVACTool
         Me.Label5.TabIndex = 13
         Me.Label5.Text = "Fuel l/h Base"
         '
-        'Label6
-        '
-        Me.Label6.AutoSize = true
-        Me.Label6.ForeColor = System.Drawing.SystemColors.MenuHighlight
-        Me.Label6.Location = New System.Drawing.Point(748, 62)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(61, 13)
-        Me.Label6.TabIndex = 14
-        Me.Label6.Text = "Fuel l/h Adj"
-        Me.ToolTip1.SetToolTip(Me.Label6, "Fuel l/h Tech List Adjusted")
-        '
         'frmHVACTool
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange
+        Me.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
         Me.ClientSize = New System.Drawing.Size(965, 766)
         Me.Controls.Add(Me.Label6)
         Me.Controls.Add(Me.Label5)
@@ -2323,7 +2324,10 @@ Partial Class frmHVACTool
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnSave)
         Me.Controls.Add(Me.tabMain)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        Me.MaximizeBox = false
         Me.Name = "frmHVACTool"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "SSM HVAC Model V01 ( Excel Model V04 )"
         Me.tabMain.ResumeLayout(false)
         Me.tabGeneralInputsBP.ResumeLayout(false)
