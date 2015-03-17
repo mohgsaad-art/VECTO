@@ -178,7 +178,11 @@ End Sub
      gvTechBenefitLines.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
 
      'Column - OnVehicle
-     cIndex = gvTechBenefitLines.Columns.Add("OnVehicle", "OnVehicle")
+
+     Dim onV As New DataGridViewCheckBoxColumn()
+
+     cIndex = gvTechBenefitLines.Columns.Add(onV)
+     gvTechBenefitLines.Columns(cIndex).Name ="OnVehicle"
      gvTechBenefitLines.Columns(cIndex).DataPropertyName = "OnVehicle"
      gvTechBenefitLines.Columns(cIndex).Width = 60
      gvTechBenefitLines.Columns(cIndex).ReadOnly = True
@@ -186,25 +190,13 @@ End Sub
      gvTechBenefitLines.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
 
 
-     Dim deleteColumn As New DataGridViewButtonColumn()
-
+     Dim deleteColumn As New DeleteColumn
      With deleteColumn
-
        .HeaderText=""
        .ToolTipText="Delete this row"
        .Name="Delete"
-       .Text="Del"
-       .UseColumnTextForButtonValue=true
-       .Width=55
-       .DefaultCellStyle.Padding= New Padding(5,1,5,1)
+       .Width=20
        .DefaultCellStyle.Alignment= DataGridViewContentAlignment.MiddleCenter
-       .DefaultCellStyle.ForeColor= Color.Red
-       .AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
-       .FlatStyle = FlatStyle.Standard
-       .CellTemplate.Style.BackColor = Color.Honeydew
-
-    
-
      end with
      gvTechBenefitLines.Columns.Add(deleteColumn)
 
@@ -223,65 +215,65 @@ End Sub
    BindGrid()
 
   'Bus Parameterisation
-  txtBusModel.DataBindings.Add("Text", ssmTOOL.genInputs, "BP_BusModel", False, DataSourceUpdateMode.OnPropertyChanged)
-  txtRegisteredPassengers.DataBindings.Add("Text", ssmTOOL.genInputs, "BP_NumberOfPassengers", False, DataSourceUpdateMode.OnPropertyChanged)
-  txtBusFloorType.DataBindings.Add("Text", ssmTOOL.genInputs, "BP_BusFloorType", False, DataSourceUpdateMode.OnPropertyChanged)
-  txtBusFloorSurfaceArea.DataBindings.Add("Text", ssmTOOL.genInputs, "BP_BusFloorSurfaceArea", False, DataSourceUpdateMode.OnPropertyChanged)
-  txtBusSurfaceArea.DataBindings.Add("Text", ssmTOOL.genInputs, "BP_BusSurfaceAreaM2", False, DataSourceUpdateMode.OnPropertyChanged)
-  txtBusWindowSurfaceArea.DataBindings.Add("Text", ssmTOOL.genInputs, "BP_BusWindowSurface", False, DataSourceUpdateMode.OnPropertyChanged)
-  txtBusVolume.DataBindings.Add("Text", ssmTOOL.genInputs, "BP_BusVolume", False, DataSourceUpdateMode.OnPropertyChanged)
-  txtBusLength.DataBindings.Add("Text", ssmTOOL.genInputs, "BP_BusLength", False, DataSourceUpdateMode.OnPropertyChanged)
-  txtBusWidth.DataBindings.Add("Text", ssmTOOL.genInputs, "BP_BusWidth", False, DataSourceUpdateMode.OnPropertyChanged)
+  txtBusModel.DataBindings.Add("Text", ssmTOOL.genInputs, "BP_BusModel")
+  txtRegisteredPassengers.DataBindings.Add("Text", ssmTOOL.genInputs, "BP_NumberOfPassengers")
+  txtBusFloorType.DataBindings.Add("Text", ssmTOOL.genInputs, "BP_BusFloorType")
+  txtBusFloorSurfaceArea.DataBindings.Add("Text", ssmTOOL.genInputs, "BP_BusFloorSurfaceArea")
+  txtBusSurfaceArea.DataBindings.Add("Text", ssmTOOL.genInputs, "BP_BusSurfaceAreaM2")
+  txtBusWindowSurfaceArea.DataBindings.Add("Text", ssmTOOL.genInputs, "BP_BusWindowSurface")
+  txtBusVolume.DataBindings.Add("Text", ssmTOOL.genInputs, "BP_BusVolume")
+  txtBusLength.DataBindings.Add("Text", ssmTOOL.genInputs, "BP_BusLength")
+  txtBusWidth.DataBindings.Add("Text", ssmTOOL.genInputs, "BP_BusWidth")
 
   'Boundary Conditions
-  txtBC_GFactor				                .DataBindings.Add("Text",ssmTool.genInputs,"BC_GFactor"				                 ,False,DataSourceUpdateMode.OnPropertyChanged)   
-  txtBC_SolarClouding				        .DataBindings.Add("Text",ssmTool.genInputs,"BC_SolarClouding"				         ,False,DataSourceUpdateMode.OnPropertyChanged) 
-  txtBC_HeatPerPassengerIntoCabinW	        .DataBindings.Add("Text",ssmTool.genInputs,"BC_HeatPerPassengerIntoCabinW"	         ,False,DataSourceUpdateMode.OnPropertyChanged)
-  txtBC_PassengerBoundaryTemperature        .DataBindings.Add("Text",ssmTool.genInputs,"BC_PassengerBoundaryTemperature"         ,False,DataSourceUpdateMode.OnPropertyChanged)
-  txtBC_PassengerDensityLowFloor            .DataBindings.Add("Text",ssmTool.genInputs,"BC_PassengerDensityLowFloor"             ,False,DataSourceUpdateMode.OnPropertyChanged)
-  txtBC_PassengerDensitySemiLowFloor	    .DataBindings.Add("Text",ssmTool.genInputs,"BC_PassengerDensitySemiLowFloor"	     ,False,DataSourceUpdateMode.OnPropertyChanged) 
-  txtBC_PassengerDensityRaisedFloor	        .DataBindings.Add("Text",ssmTool.genInputs,"BC_PassengerDensityRaisedFloor"	         ,False,DataSourceUpdateMode.OnPropertyChanged)   
-  txtBC_CalculatedPassengerNumber	        .DataBindings.Add("Text",ssmTool.genInputs,"BC_CalculatedPassengerNumber"	         ,False,DataSourceUpdateMode.OnPropertyChanged) 
-  txtBC_UValues                             .DataBindings.Add("Text",ssmTool.genInputs,"BC_UValues"                              ,False,DataSourceUpdateMode.OnPropertyChanged)
-  txtBC_HeatingBoundaryTemperature	        .DataBindings.Add("Text",ssmTool.genInputs,"BC_HeatingBoundaryTemperature"	         ,False,DataSourceUpdateMode.OnPropertyChanged)
-  txtBC_CoolingBoundaryTemperature          .DataBindings.Add("Text",ssmTool.genInputs,"BC_CoolingBoundaryTemperature"           ,False,DataSourceUpdateMode.OnPropertyChanged)
-  txtBC_HighVentilation                     .DataBindings.Add("Text",ssmTool.genInputs,"BC_HighVentilation"                      ,False,DataSourceUpdateMode.OnPropertyChanged)
-  txtBC_lowVentilation	                    .DataBindings.Add("Text",ssmTool.genInputs,"BC_lowVentilation"	                     ,False,DataSourceUpdateMode.OnPropertyChanged)
-  txtBC_High                                .DataBindings.Add("Text",ssmTool.genInputs,"BC_High"                                 ,False,DataSourceUpdateMode.OnPropertyChanged)
-  txtBC_Low	                                .DataBindings.Add("Text",ssmTool.genInputs,"BC_Low"	                                 ,False,DataSourceUpdateMode.OnPropertyChanged)   
-  txtBC_HighVentPowerW                      .DataBindings.Add("Text",ssmTool.genInputs,"BC_HighVentPowerW"                       ,False,DataSourceUpdateMode.OnPropertyChanged)
-  txtBC_LowVentPowerW                       .DataBindings.Add("Text",ssmTool.genInputs,"BC_LowVentPowerW"                        ,False,DataSourceUpdateMode.OnPropertyChanged)
-  txtBC_SpecificVentilationPower            .DataBindings.Add("Text",ssmTool.genInputs,"BC_SpecificVentilationPower"             ,False,DataSourceUpdateMode.OnPropertyChanged)
-  txtBC_COP			                        .DataBindings.Add("Text",ssmTool.genInputs,"BC_COP"			                         ,False,DataSourceUpdateMode.OnPropertyChanged)   
-  txtBC_AuxHeaterEfficiency		            .DataBindings.Add("Text",ssmTool.genInputs,"BC_AuxHeaterEfficiency"		             ,False,DataSourceUpdateMode.OnPropertyChanged)   
-  txtBC_GCVDieselOrHeatingOil               .DataBindings.Add("Text",ssmTool.genInputs,"BC_GCVDieselOrHeatingOil"                ,False,DataSourceUpdateMode.OnPropertyChanged)
-  txtBC_VolumicMassDieselOrHeatingOil	    .DataBindings.Add("Text",ssmTool.genInputs,"BC_VolumicMassDieselOrHeatingOil"	     ,False,DataSourceUpdateMode.OnPropertyChanged) 
-  txtBC_WindowAreaPerUnitBusLength	        .DataBindings.Add("Text",ssmTool.genInputs,"BC_WindowAreaPerUnitBusLength"	         ,False,DataSourceUpdateMode.OnPropertyChanged)
-  txtBC_FrontRearWindowArea                 .DataBindings.Add("Text",ssmTool.genInputs,"BC_FrontRearWindowArea"                  ,False,DataSourceUpdateMode.OnPropertyChanged)
-  txtBC_MaxTemperatureDeltaForLowFloorBusses.DataBindings.Add("Text",ssmTool.genInputs,"BC_MaxTemperatureDeltaForLowFloorBusses" ,False,DataSourceUpdateMode.OnPropertyChanged)
-  txtBC_MaxPossibleBenefitFromTechnologyList.DataBindings.Add("Text",ssmTool.genInputs,"BC_MaxPossibleBenefitFromTechnologyList" ,False,DataSourceUpdateMode.OnPropertyChanged)
+  txtBC_GFactor				                .DataBindings.Add("Text",ssmTool.genInputs,"BC_GFactor"				                 )   
+  txtBC_SolarClouding				        .DataBindings.Add("Text",ssmTool.genInputs,"BC_SolarClouding"				         ) 
+  txtBC_HeatPerPassengerIntoCabinW	        .DataBindings.Add("Text",ssmTool.genInputs,"BC_HeatPerPassengerIntoCabinW"	         )
+  txtBC_PassengerBoundaryTemperature        .DataBindings.Add("Text",ssmTool.genInputs,"BC_PassengerBoundaryTemperature"         )
+  txtBC_PassengerDensityLowFloor            .DataBindings.Add("Text",ssmTool.genInputs,"BC_PassengerDensityLowFloor"             )
+  txtBC_PassengerDensitySemiLowFloor	    .DataBindings.Add("Text",ssmTool.genInputs,"BC_PassengerDensitySemiLowFloor"	     ) 
+  txtBC_PassengerDensityRaisedFloor	        .DataBindings.Add("Text",ssmTool.genInputs,"BC_PassengerDensityRaisedFloor"	         )   
+  txtBC_CalculatedPassengerNumber	        .DataBindings.Add("Text",ssmTool.genInputs,"BC_CalculatedPassengerNumber"	         ) 
+  txtBC_UValues                             .DataBindings.Add("Text",ssmTool.genInputs,"BC_UValues"                              )
+  txtBC_HeatingBoundaryTemperature	        .DataBindings.Add("Text",ssmTool.genInputs,"BC_HeatingBoundaryTemperature"	         )
+  txtBC_CoolingBoundaryTemperature          .DataBindings.Add("Text",ssmTool.genInputs,"BC_CoolingBoundaryTemperature"           )
+  txtBC_HighVentilation                     .DataBindings.Add("Text",ssmTool.genInputs,"BC_HighVentilation"                      )
+  txtBC_lowVentilation	                    .DataBindings.Add("Text",ssmTool.genInputs,"BC_lowVentilation"	                     )
+  txtBC_High                                .DataBindings.Add("Text",ssmTool.genInputs,"BC_High"                                 )
+  txtBC_Low	                                .DataBindings.Add("Text",ssmTool.genInputs,"BC_Low"	                                 )   
+  txtBC_HighVentPowerW                      .DataBindings.Add("Text",ssmTool.genInputs,"BC_HighVentPowerW"                       )
+  txtBC_LowVentPowerW                       .DataBindings.Add("Text",ssmTool.genInputs,"BC_LowVentPowerW"                        )
+  txtBC_SpecificVentilationPower            .DataBindings.Add("Text",ssmTool.genInputs,"BC_SpecificVentilationPower"             )
+  txtBC_COP			                        .DataBindings.Add("Text",ssmTool.genInputs,"BC_COP"			                         )   
+  txtBC_AuxHeaterEfficiency		            .DataBindings.Add("Text",ssmTool.genInputs,"BC_AuxHeaterEfficiency"		             )   
+  txtBC_GCVDieselOrHeatingOil               .DataBindings.Add("Text",ssmTool.genInputs,"BC_GCVDieselOrHeatingOil"                )
+  txtBC_VolumicMassDieselOrHeatingOil	    .DataBindings.Add("Text",ssmTool.genInputs,"BC_VolumicMassDieselOrHeatingOil"	     ) 
+  txtBC_WindowAreaPerUnitBusLength	        .DataBindings.Add("Text",ssmTool.genInputs,"BC_WindowAreaPerUnitBusLength"	         )
+  txtBC_FrontRearWindowArea                 .DataBindings.Add("Text",ssmTool.genInputs,"BC_FrontRearWindowArea"                  )
+  txtBC_MaxTemperatureDeltaForLowFloorBusses.DataBindings.Add("Text",ssmTool.genInputs,"BC_MaxTemperatureDeltaForLowFloorBusses" )
+  txtBC_MaxPossibleBenefitFromTechnologyList.DataBindings.Add("Text",ssmTool.genInputs,"BC_MaxPossibleBenefitFromTechnologyList" )
 
   'General Inputs Other   
   'EnviromentalConditions	        		
-  txtEC_EnviromentalTemperature                         .DataBindings.Add("Text",ssmTool.genInputs,"EC_EnviromentalTemperature"                         ,False,DataSourceUpdateMode.OnPropertyChanged)
-  txtEC_Solar   	                                    .DataBindings.Add("Text",ssmTool.genInputs,"EC_Solar"                                           ,False,DataSourceUpdateMode.OnPropertyChanged) 	                                         			                                     
+  txtEC_EnviromentalTemperature                         .DataBindings.Add("Text",ssmTool.genInputs,"EC_EnviromentalTemperature"                         )
+  txtEC_Solar   	                                    .DataBindings.Add("Text",ssmTool.genInputs,"EC_Solar"                                           ) 	                                         			                                     
 
   'AC-system	
   chkAC_InCabinRoomAC_System	                        .DataBindings.Add("Checked",ssmTool.genInputs,"AC_InCabinRoomAC_System"	                        ,False,DataSourceUpdateMode.OnPropertyChanged)
   cboAC_CompressorType			                        .DataBindings.Add("Text",ssmTool.genInputs,"AC_CompressorType"		                            ,False,DataSourceUpdateMode.OnPropertyChanged)
-  txtAC_CompressorCapacitykW                            .DataBindings.Add("Text",ssmTool.genInputs,"AC_CompressorCapacitykW"	                        ,False,DataSourceUpdateMode.OnPropertyChanged) 				
+  txtAC_CompressorCapacitykW                            .DataBindings.Add("Text",ssmTool.genInputs,"AC_CompressorCapacitykW"	                        ) 				
 
   'Ventilation	
   chkVEN_VentilationOnDuringHeating				        .DataBindings.Add("Checked",ssmTool.genInputs,"VEN_VentilationOnDuringHeating"				    ,False,DataSourceUpdateMode.OnPropertyChanged) 
   chkVEN_VentilationWhenBothHeatingAndACInactive		.DataBindings.Add("Checked",ssmTool.genInputs,"VEN_VentilationWhenBothHeatingAndACInactive"	    ,False,DataSourceUpdateMode.OnPropertyChanged) 
   chkVEN_VentilationDuringAC			                .DataBindings.Add("Checked",ssmTool.genInputs,"VEN_VentilationDuringAC"			                ,False,DataSourceUpdateMode.OnPropertyChanged) 
-  cboVEN_VentilationFlowSettingWhenHeatingAndACInactive .DataBindings.Add("Text",ssmTool.genInputs,"VEN_VentilationFlowSettingWhenHeatingAndACInactive" ,False,DataSourceUpdateMode.OnPropertyChanged)
-  cboVEN_VentilationDuringHeating			            .DataBindings.Add("Text",ssmTool.genInputs,"VEN_VentilationDuringHeating"			            ,False,DataSourceUpdateMode.OnPropertyChanged)
-  cboVEN_VentilationDuringCooling				        .DataBindings.Add("Text",ssmTool.genInputs,"VEN_VentilationDuringCooling"				        ,False,DataSourceUpdateMode.OnPropertyChanged) 					
+  cboVEN_VentilationFlowSettingWhenHeatingAndACInactive .DataBindings.Add("Text",ssmTool.genInputs,"VEN_VentilationFlowSettingWhenHeatingAndACInactive" )
+  cboVEN_VentilationDuringHeating			            .DataBindings.Add("Text",ssmTool.genInputs,"VEN_VentilationDuringHeating"			            )
+  cboVEN_VentilationDuringCooling				        .DataBindings.Add("Text",ssmTool.genInputs,"VEN_VentilationDuringCooling"				        ) 					
 
   'Aux. Heater  
-  txtAH_EngineWasteHeatkW	                            .DataBindings.Add("Text",ssmTool.genInputs,"AH_EngineWasteHeatkW"	                            ,False,DataSourceUpdateMode.OnPropertyChanged)
-  txtAH_FuelFiredHeaterkW                               .DataBindings.Add("Text",ssmTool.genInputs,"AH_FuelFiredHeaterkW"                               ,False,DataSourceUpdateMode.OnPropertyChanged)
+  txtAH_EngineWasteHeatkW	                            .DataBindings.Add("Text",ssmTool.genInputs,"AH_EngineWasteHeatkW"	                            )
+  txtAH_FuelFiredHeaterkW                               .DataBindings.Add("Text",ssmTool.genInputs,"AH_FuelFiredHeaterkW"                               )
 
 
 End Sub
@@ -762,27 +754,36 @@ End Function
      If e.ColumnIndex<0 OrElse e.RowIndex<0 then Return
   
   
-     If gvTechBenefitLines.Columns( e.ColumnIndex).Name="Delete" then
+     If gvTechBenefitLines.Columns( e.ColumnIndex).Name="Delete" OrElse gvTechBenefitLines.Columns( e.ColumnIndex).Name="OnVehicle" then
   
         Dim benefit As String = gvTechBenefitLines.Rows( e.RowIndex).Cells(1).Value
         Dim category As String = gvTechBenefitLines.Rows( e.RowIndex).Cells(0).Value
         Dim feedback As String = String.Empty
   
-        Dim dr As DialogResult = MessageBox.Show(String.Format("Do you want to delete benefit '{0}' ?", benefit),"", MessageBoxButtons.YesNo)
-  
-        If dr= Windows.Forms.DialogResult.Yes then
-        
-         If  ssmTOOL.TechList.Delete( New TechListBenefitLine With {.BenefitName= benefit, .Category=category}, feedback) then
-  
-           BindGrid
-  
-         End If
-  
-  
-  
-        End If
-  
-  
+
+        Select gvTechBenefitLines.Columns( e.ColumnIndex).Name
+
+
+        Case "Delete"
+           Dim dr As DialogResult = MessageBox.Show(String.Format("Do you want to delete benefit '{0}' ?", benefit),"", MessageBoxButtons.YesNo)
+           If dr= Windows.Forms.DialogResult.Yes then       
+            If  ssmTOOL.TechList.Delete( New TechListBenefitLine With {.BenefitName= benefit, .Category=category}, feedback) then 
+              BindGrid 
+            End If 
+           End If
+
+        Case "OnVehicle"
+           Dim onVehicle as Boolean = NOT gvTechBenefitLines.Rows( e.RowIndex).Cells( e.ColumnIndex).Value
+           ssmTOOL.TechList.TechLines.First( Function(x)  x.BenefitName= benefit AndAlso x.Category=category).OnVehicle=onVehicle  
+           BindGrid 
+           gvTechBenefitLines.Refresh
+          
+
+
+        End Select
+
+
+   
      End If
   
 End Sub
@@ -969,6 +970,47 @@ End Sub
 
  
   End Sub
+
+
+Private Sub gvTechBenefitLines_CurrentCellDirtyStateChanged( sender As Object,  e As EventArgs) Handles gvTechBenefitLines.CurrentCellDirtyStateChanged
+
+
+        'If gvTechBenefitLines.SelectedRows.Count<>1 then Return
+        
+
+     If gvTechBenefitLines.IsCurrentCellDirty Then
+            gvTechBenefitLines.CommitEdit(DataGridViewDataErrorContexts.Commit)
+        End If
+        
+End Sub
+
+
+
+Private Sub gvTechBenefitLines_CellValueChanged( sender As Object,  e As DataGridViewCellEventArgs) Handles gvTechBenefitLines.CellValueChanged
+
+
+        If gvTechBenefitLines.SelectedRows.Count<>1 then Return
+        
+
+        Dim benefit As String = gvTechBenefitLines.SelectedRows(0).Cells(1).Value
+        Dim category As String = gvTechBenefitLines.SelectedRows(0).Cells(0).Value
+        Dim feedback As String = String.Empty
+  
+
+        Select "kkk"
+
+        Case "OnVehicle"
+           'Dim onVehicle as Boolean = DirectCast(gvTechBenefitLines.Rows( e.RowIndex).Cells( e.ColumnIndex).Value, DataGridViewCheckBoxCell).Value
+           'If  ssmTOOL.TechList.TechLines.First( Function(x)  x.BenefitName= benefit AndAlso x.Category=category).OnVehicle=onVehicle then 
+           '   BindGrid 
+           'End If 
+
+
+        end Select
+
+
+End Sub
+
 
 
 End Class
