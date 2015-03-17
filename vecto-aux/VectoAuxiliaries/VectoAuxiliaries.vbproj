@@ -274,6 +274,7 @@
     <Content Include="3rdPartyLibraries\DocumentFormat.OpenXml.xml" />
     <Content Include="3rdPartyLibraries\SpreadsheetLight.dll" />
     <Content Include="3rdPartyLibraries\SpreadsheetLight.xml" />
+    <EmbeddedResource Include="Images\Delete-32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
