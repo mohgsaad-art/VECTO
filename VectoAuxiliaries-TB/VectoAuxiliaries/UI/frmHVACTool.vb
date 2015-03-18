@@ -19,6 +19,8 @@ Public Class frmHVACTool
   Private vectoFile As String = String.Empty
   Private vectoPath As String = String.Empty
   Private UserHitCancel As Boolean = false
+  Private UserHitSave As Boolean = false
+
 
 
   'Helpers
@@ -91,8 +93,8 @@ End Function
     ssmTOOL = New SSMTOOL(ahsmFilePath,useDefaults)
     originalssmTOOL = New SSMTOOL( ahsmFilePath, useDefaults)
 
-    Dim result1 As Boolean = ssmTOOL.Load(ahsmFilePath)
-    originalssmTOOL.Clone( ssmTOOL)
+    ssmTOOL.Load(ahsmFilePath)
+    originalssmTOOL.Load( ahsmFilePath)
 
     setupBuses()
     setupControls()
@@ -608,6 +610,14 @@ End Function
 
 
 End Function
+  Private Function ValidateAll() as boolean
+
+     Return Validate_GeneralInputsBC AndAlso 
+            Validate_GeneralInputsBP  AndAlso 
+            Validate_GeneralInputsOther
+
+
+  End Function
 
   'Tab Colors
   Private Sub UpdateTabStatus(pageName As String, resultGood As Boolean)
@@ -683,18 +693,39 @@ End Function
   End Sub
   Private Sub frmHVACTool_FormClosing( sender As Object,  e As FormClosingEventArgs) Handles MyBase.FormClosing
   
-     If UserHitCancel then return
 
      Dim result As DialogResult
+
+     'If UserHitCancel then bail
+     If UserHitCancel then 
+        DialogResult= Windows.Forms.DialogResult.Cancel
+        UserHitCancel=false
+        return
+     End If
+
+     'UserHitSave
+     If UserHitSave then 
+        DialogResult= Windows.Forms.DialogResult.Cancel
+        If NOT ssmTOOL.Save(ahsmFilePath)   then
+              MessageBox.Show("Unable to save file, aborting.")
+              e.Cancel=true
+         End If
+        UserHitSave=false
+        return
+     End If
+
+
+    'This must be a close box event. If nothing changed, then bail, otherwise ask user if they wanna save
+    If  Not ssmTOOL.IsEqualTo( originalssmTOOL ) 
   
-    If  Not ssmTOOL.IsEqualTo( originalssmTOOL )
-  
-              result = (MessageBox.Show("Would you like to save changes before closing?","Save Changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question))
-  
+         result = (MessageBox.Show("Would you like to save changes before closing?","Save Changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question))
+
+
               Select Case  result
               
                   case DialogResult.Yes:
                       'save 
+
                       If NOT ssmTOOL.Save(ahsmFilePath)   then
                         e.Cancel=true
                       End If
@@ -703,18 +734,21 @@ End Function
                       'just allow the form to close
                       'without saving
                       Me.DialogResult=Windows.Forms.DialogResult.Cancel
+
   
   
                   case DialogResult.Cancel:
                       'cancel the close
                       e.Cancel = true
                       Me.DialogResult=Windows.Forms.DialogResult.Cancel
+
   
               end select
   
     End If
   
     UserHitCancel=false
+    UserHitSave=false
   
   End Sub
 
@@ -774,7 +808,10 @@ End Function
 
         Case "OnVehicle"
            Dim onVehicle as Boolean = NOT gvTechBenefitLines.Rows( e.RowIndex).Cells( e.ColumnIndex).Value
-           ssmTOOL.TechList.TechLines.First( Function(x)  x.BenefitName= benefit AndAlso x.Category=category).OnVehicle=onVehicle  
+           
+           Dim fi As TechListBenefitLine = ssmTOOL.TechList.TechLines.Find( Function(f) (f.Category= Category) AndAlso f.BenefitName= Benefit )
+           fi.OnVehicle= onVehicle
+          ' ssmTOOL.TechList.TechLines.First( Function(x)  x.BenefitName= benefit AndAlso x.Category=category).OnVehicle=onVehicle  
            BindGrid 
            gvTechBenefitLines.Refresh
           
@@ -787,6 +824,17 @@ End Function
      End If
   
 End Sub
+  Private Sub gvTechBenefitLines_CurrentCellDirtyStateChanged( sender As Object,  e As EventArgs) Handles gvTechBenefitLines.CurrentCellDirtyStateChanged
+  
+ 
+  
+       If gvTechBenefitLines.IsCurrentCellDirty Then
+              gvTechBenefitLines.CommitEdit(DataGridViewDataErrorContexts.Commit)
+          End If
+
+
+          
+  End Sub
 
   'Button Event Handlers
   Private Sub btnUpdate_Click( sender As Object,  e As EventArgs) Handles btnUpdate.Click
@@ -824,13 +872,17 @@ End Sub
   End Sub
   Private Sub btnSave_Click( sender As Object,  e As EventArgs) Handles btnSave.Click
     
-      If( ssmTOOL.Save( ahsmFilePath )) then
+    If Not ValidateAll then Return 
+
+
+
+        UserHitSave=true
 
         Me.DialogResult=Windows.Forms.DialogResult.OK
         Me.Close
        
 
-      End If
+    '  End If
   
   End Sub
   Private Sub btnClearForm_Click( sender As Object,  e As EventArgs) Handles btnClearForm.Click
@@ -948,6 +1000,8 @@ End Sub
       'results are also available, this is mainly used for testing but could also
       'be used as supporting documentation.
 
+      try
+
       If Not ssmTOOL is nothing then
   
           txtBasElectrical.Text = ssmTOOL.ElectricalWBase
@@ -968,49 +1022,21 @@ End Sub
  
       End If 
 
+      Catch Ex As SystemException
+
+        MessageBox.Show( "An unexpected error occured during the timer click recalculation.")
+
+      End Try
+
+
+
+
+
  
   End Sub
 
 
-Private Sub gvTechBenefitLines_CurrentCellDirtyStateChanged( sender As Object,  e As EventArgs) Handles gvTechBenefitLines.CurrentCellDirtyStateChanged
-
-
-        'If gvTechBenefitLines.SelectedRows.Count<>1 then Return
-        
-
-     If gvTechBenefitLines.IsCurrentCellDirty Then
-            gvTechBenefitLines.CommitEdit(DataGridViewDataErrorContexts.Commit)
-        End If
-        
-End Sub
-
-
-
-Private Sub gvTechBenefitLines_CellValueChanged( sender As Object,  e As DataGridViewCellEventArgs) Handles gvTechBenefitLines.CellValueChanged
-
-
-        If gvTechBenefitLines.SelectedRows.Count<>1 then Return
-        
-
-        Dim benefit As String = gvTechBenefitLines.SelectedRows(0).Cells(1).Value
-        Dim category As String = gvTechBenefitLines.SelectedRows(0).Cells(0).Value
-        Dim feedback As String = String.Empty
   
-
-        Select "kkk"
-
-        Case "OnVehicle"
-           'Dim onVehicle as Boolean = DirectCast(gvTechBenefitLines.Rows( e.RowIndex).Cells( e.ColumnIndex).Value, DataGridViewCheckBoxCell).Value
-           'If  ssmTOOL.TechList.TechLines.First( Function(x)  x.BenefitName= benefit AndAlso x.Category=category).OnVehicle=onVehicle then 
-           '   BindGrid 
-           'End If 
-
-
-        end Select
-
-
-End Sub
-
 
 
 End Class

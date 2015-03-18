@@ -2271,6 +2271,7 @@ Partial Class frmHVACTool
         'Timer1
         '
         Me.Timer1.Enabled = true
+        Me.Timer1.Interval = 1000
         '
         'lblElectricalBaseW
         '
