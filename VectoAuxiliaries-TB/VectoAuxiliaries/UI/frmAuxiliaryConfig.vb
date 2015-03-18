@@ -1036,10 +1036,7 @@ Private Sub btnSSMBSource_Click( sender As Object,  e As EventArgs) Handles btnS
                End If
 
 
-
-
-
-
+               frm.Dispose()
 
 
 
