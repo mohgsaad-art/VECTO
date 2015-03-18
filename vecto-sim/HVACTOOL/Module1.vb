@@ -8,6 +8,8 @@ Sub main()
 
    frm.ShowDialog()
 
+   frm.Dispose
+
 End Sub
 
 

@@ -75,14 +75,20 @@ Implements ISSMTOOL
 
      For Each line As TechListBenefitLine In DirectCast(from, SSMTOOL).TechList.TechLines
 
-         TechList.Add(line, feedback)
+         Dim newLine As New TechListBenefitLine(Me.GenInputs)
+         newLine.InjectFrom()
+         newLine.InjectFrom( line )
+         TechList.Add( newLine , feedback)
 
     Next
 
   End Sub
 
+
+
  'Persistance Functions
  Public Function Save(filePath As String) As Boolean Implements ISSMTOOL.Save
+
 
    Dim returnValue As Boolean = True
    Dim settings As JsonSerializerSettings = New JsonSerializerSettings()
@@ -196,7 +202,9 @@ End Function
 
          'check are equal
 
-           If Not src.TechList.TechLines.First(Function(w) w.BenefitName = tl.BenefitName AndAlso w.Category = tl.Category).IsEqualTo(tl) Then
+          Dim testLine As ITechListBenefitLine = src.TechList.TechLines.First(Function(w) w.BenefitName = tl.BenefitName AndAlso w.Category = tl.Category)
+
+           If Not testLine.IsEqualTo(tl) Then
              Return False
            End If
 
