@@ -108,11 +108,15 @@
     <Compile Include="DownstreamModules\M7.vb" />
     <Compile Include="DownstreamModules\M8.vb" />
     <Compile Include="DownstreamModules\M9.vb" />
+    <Compile Include="Electrics\Alternator.vb" />
     <Compile Include="Electrics\AlternatorMapValues.vb" />
     <Compile Include="Electrics\AlternatorMap.vb" />
     <Compile Include="Electrics\CombinedAltEntry.vb" />
     <Compile Include="Electrics\CombinedAlternator.vb" />
+    <Compile Include="Electrics\CombinedAlternatorSignals.vb" />
     <Compile Include="Electrics\ElectricsUserInputsConfig.vb" />
+    <Compile Include="Electrics\IAlternator.vb" />
+    <Compile Include="Electrics\ICombinedAlternatorSignals.vb" />
     <Compile Include="Electrics\IElectricsUserInputsConfig.vb" />
     <Compile Include="Electrics\IM0_5_SmartAlternatorSetEfficiency.vb" />
     <Compile Include="Electrics\IM2_AverageElectricalLoadDemand.vb" />

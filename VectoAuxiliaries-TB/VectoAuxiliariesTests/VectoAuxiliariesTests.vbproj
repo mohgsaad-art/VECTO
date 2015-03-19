@@ -109,6 +109,7 @@
     <Compile Include="Mocks\M7_Mock.vb" />
     <Compile Include="Mocks\MockFuel50PC.vb" />
     <Compile Include="UnitTests\BusDatabaseTests.vb" />
+    <Compile Include="UnitTests\CombinedAlternatorTests.vb" />
     <Compile Include="UnitTests\FilePathUtilityTests.vb" />
     <Compile Include="UnitTests\FuelMapTests.vb" />
     <Compile Include="UnitTests\HVACSSMMapTests.vb" />
