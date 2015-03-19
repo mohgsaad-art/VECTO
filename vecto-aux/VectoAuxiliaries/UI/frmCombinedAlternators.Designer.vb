@@ -28,7 +28,7 @@ Partial Class frmCombinedAlternators
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(729, 490)
+        Me.ClientSize = New System.Drawing.Size(935, 579)
         Me.Name = "frmCombinedAlternators"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "frmCombinedAlternators"
