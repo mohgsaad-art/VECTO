@@ -1,243 +1,257 @@
-﻿Imports VectoAuxiliaries.Electrics
-Imports VectoAuxiliaries.Pneumatics
-Imports VectoAuxiliaries.Hvac
-Imports VectoAuxiliaries.DownstreamModules
-Imports NUnit.Framework
+﻿Imports NUnit.Framework
+Imports VectoAuxiliaries.Electrics
+Imports VectoAuxiliariesTests.Mocks
 Imports VectoAuxiliaries
-Imports Moq
+Imports VectoAuxiliaries.Hvac
 
 Namespace UnitTests
 
+ <TestFixture()>
+ Public Class CombinedAlternatorTests
 
-<TestFixture()>
-Public Class CombinedAlternatorTests
-
-   <Test()>
-   public sub One_AlternatorTestSet()
-
-     Dim target  As New CombinedAlternator("c:\alt.xlsx",3,4,5,6,1)
-
-
-     Assert.IsTrue( ValueSetsEqual( target.GetCombinedMap, OneAltValues))
-
-
-   End Sub
-
-
-
-Public   function OneAltValues() As List( OF CombinedAltEntry)
-
-Dim results As New List( of CombinedAltEntry)
-
-
-    results.Add( new CombinedAltEntry with { .Amps=10.00	,.EngineSpeed=500	,.Efficiency=0.60   })
-    results.Add( new CombinedAltEntry with { .Amps=25.00	,.EngineSpeed=500	,.Efficiency=0.60   })
-    results.Add( new CombinedAltEntry with { .Amps=50.00	,.EngineSpeed=500	,.Efficiency=0.60   })
-    results.Add( new CombinedAltEntry with { .Amps=75.00	,.EngineSpeed=500	,.Efficiency=0.60   })
-    results.Add( new CombinedAltEntry with { .Amps=100.00	,.EngineSpeed=500	,.Efficiency=0.60   })
-    results.Add( new CombinedAltEntry with { .Amps=150.00	,.EngineSpeed=500	,.Efficiency=0.60   })
-    results.Add( new CombinedAltEntry with { .Amps=200.00	,.EngineSpeed=500	,.Efficiency=0.60   })
-    results.Add( new CombinedAltEntry with { .Amps=10.00	,.EngineSpeed=667	,.Efficiency=0.60   })
-    results.Add( new CombinedAltEntry with { .Amps=25.00	,.EngineSpeed=667	,.Efficiency=0.60   })
-    results.Add( new CombinedAltEntry with { .Amps=50.00	,.EngineSpeed=667	,.Efficiency=0.60   })
-    results.Add( new CombinedAltEntry with { .Amps=75.00	,.EngineSpeed=667	,.Efficiency=0.60   })
-    results.Add( new CombinedAltEntry with { .Amps=100.00	,.EngineSpeed=667	,.Efficiency=0.60   })
-    results.Add( new CombinedAltEntry with { .Amps=150.00	,.EngineSpeed=667	,.Efficiency=0.60   })
-    results.Add( new CombinedAltEntry with { .Amps=200.00	,.EngineSpeed=667	,.Efficiency=0.60   })
-    results.Add( new CombinedAltEntry with { .Amps=10.00	,.EngineSpeed=1333	,.Efficiency=0.60   })
-    results.Add( new CombinedAltEntry with { .Amps=25.00	,.EngineSpeed=1333	,.Efficiency=0.60   })
-    results.Add( new CombinedAltEntry with { .Amps=50.00	,.EngineSpeed=1333	,.Efficiency=0.60   })
-    results.Add( new CombinedAltEntry with { .Amps=75.00	,.EngineSpeed=1333	,.Efficiency=0.60   })
-    results.Add( new CombinedAltEntry with { .Amps=100.00	,.EngineSpeed=1333	,.Efficiency=0.60   })
-    results.Add( new CombinedAltEntry with { .Amps=150.00	,.EngineSpeed=1333	,.Efficiency=0.60   })
-    results.Add( new CombinedAltEntry with { .Amps=200.00	,.EngineSpeed=1333	,.Efficiency=0.60   })
-    results.Add( new CombinedAltEntry with { .Amps=10.00	,.EngineSpeed=2000	,.Efficiency=0.70   })
-    results.Add( new CombinedAltEntry with { .Amps=25.00	,.EngineSpeed=2000	,.Efficiency=0.67   })
-    results.Add( new CombinedAltEntry with { .Amps=50.00	,.EngineSpeed=2000	,.Efficiency=0.63   })
-    results.Add( new CombinedAltEntry with { .Amps=75.00	,.EngineSpeed=2000	,.Efficiency=0.59   })
-    results.Add( new CombinedAltEntry with { .Amps=100.00	,.EngineSpeed=2000	,.Efficiency=0.54   })
-    results.Add( new CombinedAltEntry with { .Amps=150.00	,.EngineSpeed=2000	,.Efficiency=0.46   })
-    results.Add( new CombinedAltEntry with { .Amps=200.00	,.EngineSpeed=2000	,.Efficiency=0.37   })
-    results.Add( new CombinedAltEntry with { .Amps=10.00	,.EngineSpeed=2333	,.Efficiency=0.70   })
-    results.Add( new CombinedAltEntry with { .Amps=25.00	,.EngineSpeed=2333	,.Efficiency=0.67   })
-    results.Add( new CombinedAltEntry with { .Amps=50.00	,.EngineSpeed=2333	,.Efficiency=0.63   })
-    results.Add( new CombinedAltEntry with { .Amps=75.00	,.EngineSpeed=2333	,.Efficiency=0.58   })
-    results.Add( new CombinedAltEntry with { .Amps=100.00	,.EngineSpeed=2333	,.Efficiency=0.52   })
-    results.Add( new CombinedAltEntry with { .Amps=150.00	,.EngineSpeed=2333	,.Efficiency=0.39   })
-    results.Add( new CombinedAltEntry with { .Amps=200.00	,.EngineSpeed=2333	,.Efficiency=0.26   })
-
-
-Return results
-
-
-End Function
-Public  Function TwoAltValues() As List( of CombinedAltEntry)
-
-  Dim results As New List( Of CombinedAltEntry)
-
-   Results.Add( new CombinedAltEntry With { .AMPS=20.00	    ,.EngineSpeed=500	,.Efficiency=0.75   })
-   Results.Add( new CombinedAltEntry With { .AMPS=50.00	    ,.EngineSpeed=500	,.Efficiency=0.75   })
-   Results.Add( new CombinedAltEntry With { .AMPS=100.00	,.EngineSpeed=500	,.Efficiency=0.75   })
-   Results.Add( new CombinedAltEntry With { .AMPS=150.00	,.EngineSpeed=500	,.Efficiency=0.75   })
-   Results.Add( new CombinedAltEntry With { .AMPS=200.00	,.EngineSpeed=500	,.Efficiency=0.75   })
-   Results.Add( new CombinedAltEntry With { .AMPS=300.00	,.EngineSpeed=500	,.Efficiency=0.75   })
-   Results.Add( new CombinedAltEntry With { .AMPS=400.00	,.EngineSpeed=500	,.Efficiency=0.75   })
-   Results.Add( new CombinedAltEntry With { .AMPS=20.00	    ,.EngineSpeed=667	,.Efficiency=0.72   })
-   Results.Add( new CombinedAltEntry With { .AMPS=50.00	    ,.EngineSpeed=667	,.Efficiency=0.72   })
-   Results.Add( new CombinedAltEntry With { .AMPS=100.00	,.EngineSpeed=667	,.Efficiency=0.72   })
-   Results.Add( new CombinedAltEntry With { .AMPS=150.00	,.EngineSpeed=667	,.Efficiency=0.72   })
-   Results.Add( new CombinedAltEntry With { .AMPS=200.00	,.EngineSpeed=667	,.Efficiency=0.72   })
-   Results.Add( new CombinedAltEntry With { .AMPS=300.00	,.EngineSpeed=667	,.Efficiency=0.72   })
-   Results.Add( new CombinedAltEntry With { .AMPS=400.00	,.EngineSpeed=667	,.Efficiency=0.72   })
-   Results.Add( new CombinedAltEntry With { .AMPS=20.00	    ,.EngineSpeed=1333	,.Efficiency=0.72   })
-   Results.Add( new CombinedAltEntry With { .AMPS=50.00	    ,.EngineSpeed=1333	,.Efficiency=0.72   })
-   Results.Add( new CombinedAltEntry With { .AMPS=100.00	,.EngineSpeed=1333	,.Efficiency=0.72   })
-   Results.Add( new CombinedAltEntry With { .AMPS=150.00	,.EngineSpeed=1333	,.Efficiency=0.72   })
-   Results.Add( new CombinedAltEntry With { .AMPS=200.00	,.EngineSpeed=1333	,.Efficiency=0.72   })
-   Results.Add( new CombinedAltEntry With { .AMPS=300.00	,.EngineSpeed=1333	,.Efficiency=0.72   })
-   Results.Add( new CombinedAltEntry With { .AMPS=400.00	,.EngineSpeed=1333	,.Efficiency=0.72   })
-   Results.Add( new CombinedAltEntry With { .AMPS=20.00	    ,.EngineSpeed=2000	,.Efficiency=0.90   })
-   Results.Add( new CombinedAltEntry With { .AMPS=50.00	    ,.EngineSpeed=2000	,.Efficiency=0.89   })
-   Results.Add( new CombinedAltEntry With { .AMPS=100.00	,.EngineSpeed=2000	,.Efficiency=0.87   })
-   Results.Add( new CombinedAltEntry With { .AMPS=150.00	,.EngineSpeed=2000	,.Efficiency=0.84   })
-   Results.Add( new CombinedAltEntry With { .AMPS=200.00	,.EngineSpeed=2000	,.Efficiency=0.82   })
-   Results.Add( new CombinedAltEntry With { .AMPS=300.00	,.EngineSpeed=2000	,.Efficiency=0.78   })
-   Results.Add( new CombinedAltEntry With { .AMPS=400.00	,.EngineSpeed=2000	,.Efficiency=0.74   })
-   Results.Add( new CombinedAltEntry With { .AMPS=20.00	    ,.EngineSpeed=2333	,.Efficiency=0.80   })
-   Results.Add( new CombinedAltEntry With { .AMPS=50.00	    ,.EngineSpeed=2333	,.Efficiency=0.79   })
-   Results.Add( new CombinedAltEntry With { .AMPS=100.00	,.EngineSpeed=2333	,.Efficiency=0.77   })
-   Results.Add( new CombinedAltEntry With { .AMPS=150.00	,.EngineSpeed=2333	,.Efficiency=0.74   })
-   Results.Add( new CombinedAltEntry With { .AMPS=200.00	,.EngineSpeed=2333	,.Efficiency=0.71   })
-   Results.Add( new CombinedAltEntry With { .AMPS=300.00	,.EngineSpeed=2333	,.Efficiency=0.64   })
-   Results.Add( new CombinedAltEntry With { .AMPS=400.00	,.EngineSpeed=2333	,.Efficiency=0.58   })
-   
-
-  Return results
-
-
-End Function
-Public  Function ThreeAltValues()    As List( of CombinedAltEntry)
-
-  Dim results As New List( Of CombinedAltEntry)
-
-  results.Add( new CombinedAltEntry With { .AMPS=30	    ,.EngineSpeed = 500	    ,.Efficiency = 0.71    })
-  results.Add( new CombinedAltEntry With { .AMPS=75	    ,.EngineSpeed = 500	    ,.Efficiency = 0.73    })
-  results.Add( new CombinedAltEntry With { .AMPS=150	,.EngineSpeed = 500	    ,.Efficiency = 0.77    })
-  results.Add( new CombinedAltEntry With { .AMPS=225	,.EngineSpeed = 500	    ,.Efficiency = 0.00    })
-  results.Add( new CombinedAltEntry With { .AMPS=300	,.EngineSpeed = 500	    ,.Efficiency = 0.00    })
-  results.Add( new CombinedAltEntry With { .AMPS=450	,.EngineSpeed = 500	    ,.Efficiency = 0.00    })
-  results.Add( new CombinedAltEntry With { .AMPS=600	,.EngineSpeed = 500	    ,.Efficiency = 0.00    })
-  results.Add( new CombinedAltEntry With { .AMPS=30	    ,.EngineSpeed = 667	    ,.Efficiency = 0.69    })
-  results.Add( new CombinedAltEntry With { .AMPS=75	    ,.EngineSpeed = 667	    ,.Efficiency = 0.70    })
-  results.Add( new CombinedAltEntry With { .AMPS=150	,.EngineSpeed = 667	    ,.Efficiency = 0.73    })
-  results.Add( new CombinedAltEntry With { .AMPS=225	,.EngineSpeed = 667	    ,.Efficiency = 0.22    })
-  results.Add( new CombinedAltEntry With { .AMPS=300	,.EngineSpeed = 667	    ,.Efficiency = 0.00    })
-  results.Add( new CombinedAltEntry With { .AMPS=450	,.EngineSpeed = 667	    ,.Efficiency = 0.00    })
-  results.Add( new CombinedAltEntry With { .AMPS=600	,.EngineSpeed = 667	    ,.Efficiency = 0.00    })
-  results.Add( new CombinedAltEntry With { .AMPS=30	    ,.EngineSpeed = 1333	,.Efficiency = 0.64    })
-  results.Add( new CombinedAltEntry With { .AMPS=75	    ,.EngineSpeed = 1333	,.Efficiency = 0.66    })
-  results.Add( new CombinedAltEntry With { .AMPS=150	,.EngineSpeed = 1333	,.Efficiency = 0.69    })
-  results.Add( new CombinedAltEntry With { .AMPS=225	,.EngineSpeed = 1333	,.Efficiency = 0.70    })
-  results.Add( new CombinedAltEntry With { .AMPS=300	,.EngineSpeed = 1333	,.Efficiency = 0.69    })
-  results.Add( new CombinedAltEntry With { .AMPS=450	,.EngineSpeed = 1333	,.Efficiency = 0.67    })
-  results.Add( new CombinedAltEntry With { .AMPS=600	,.EngineSpeed = 1333	,.Efficiency = 0.65    })
-  results.Add( new CombinedAltEntry With { .AMPS=30	    ,.EngineSpeed = 2000	,.Efficiency = 0.70    })
-  results.Add( new CombinedAltEntry With { .AMPS=75	    ,.EngineSpeed = 2000	,.Efficiency = 0.72    })
-  results.Add( new CombinedAltEntry With { .AMPS=150	,.EngineSpeed = 2000	,.Efficiency = 0.75    })
-  results.Add( new CombinedAltEntry With { .AMPS=225	,.EngineSpeed = 2000	,.Efficiency = 0.77    })
-  results.Add( new CombinedAltEntry With { .AMPS=300	,.EngineSpeed = 2000	,.Efficiency = 0.74    })
-  results.Add( new CombinedAltEntry With { .AMPS=450	,.EngineSpeed = 2000	,.Efficiency = 0.69    })
-  results.Add( new CombinedAltEntry With { .AMPS=600	,.EngineSpeed = 2000	,.Efficiency = 0.63    })
-  results.Add( new CombinedAltEntry With { .AMPS=30	    ,.EngineSpeed = 2333	,.Efficiency = 0.61    })
-  results.Add( new CombinedAltEntry With { .AMPS=75	    ,.EngineSpeed = 2333	,.Efficiency = 0.63    })
-  results.Add( new CombinedAltEntry With { .AMPS=150	,.EngineSpeed = 2333	,.Efficiency = 0.66    })
-  results.Add( new CombinedAltEntry With { .AMPS=225	,.EngineSpeed = 2333	,.Efficiency = 0.69    })
-  results.Add( new CombinedAltEntry With { .AMPS=300	,.EngineSpeed = 2333	,.Efficiency = 0.65    })
-  results.Add( new CombinedAltEntry With { .AMPS=450	,.EngineSpeed = 2333	,.Efficiency = 0.58    })
-  results.Add( new CombinedAltEntry With { .AMPS=600	,.EngineSpeed = 2333	,.Efficiency = 0.51    })
+  private Alt1ExpectedTable2000 As new List(Of AltUserInput)
+  private Alt1ExpectedTable4000 As new List(Of AltUserInput)
+  private Alt1ExpectedTable6000 As new List(Of AltUserInput)
+  private Alt2ExpectedTable2000 As new List(Of AltUserInput)
+  private Alt2ExpectedTable4000 As new List(Of AltUserInput)
+  private Alt2ExpectedTable6000 As new List(Of AltUserInput)
+  private Alt3ExpectedTable2000 As new List(Of AltUserInput)
+  private Alt3ExpectedTable4000 As new List(Of AltUserInput)
+  private Alt3ExpectedTable6000 As new List(Of AltUserInput)
+  private Alt4ExpectedTable2000 As new List(Of AltUserInput)
+  private Alt4ExpectedTable4000 As new List(Of AltUserInput)
+  private Alt4ExpectedTable6000 As new List(Of AltUserInput)
 
 
 
-  Return results
-  
+  Sub new ()
 
-End Function
-Public  Function FourAltValues()  As List( of CombinedAltEntry)
+  Alt1ExpectedTable2000 = New List(Of AltUserInput)() from  {  New AltUserInput(  0,50), _
+                                                               New AltUserInput( 10,50), _
+                                                               New AltUserInput( 40,50), _
+                                                               New AltUserInput( 60,50), _
+                                                               New AltUserInput( 61,50), _
+                                                               New AltUserInput(200,50) }
 
-  Dim results As New List( Of CombinedAltEntry)
-
-
-   results.Add( new CombinedAltEntry With {.AMPS=40	    ,.EngineSpeed=500	    ,.Efficiency=0.61    })
-   results.Add( new CombinedAltEntry With {.AMPS=100.00	,.EngineSpeed=500	    ,.Efficiency=0.68    })
-   results.Add( new CombinedAltEntry With {.AMPS=200.00	,.EngineSpeed=500	    ,.Efficiency=0.78    })
-   results.Add( new CombinedAltEntry With {.AMPS=300.00	,.EngineSpeed=500	    ,.Efficiency=0.00    })
-   results.Add( new CombinedAltEntry With {.AMPS=400.00	,.EngineSpeed=500	    ,.Efficiency=0.00    })
-   results.Add( new CombinedAltEntry With {.AMPS=600.00	,.EngineSpeed=500	    ,.Efficiency=0.00    })
-   results.Add( new CombinedAltEntry With {.AMPS=800.00	,.EngineSpeed=500	    ,.Efficiency=0.00    })
-   results.Add( new CombinedAltEntry With {.AMPS=40.00	,.EngineSpeed=667	    ,.Efficiency=0.68    })
-   results.Add( new CombinedAltEntry With {.AMPS=100.00	,.EngineSpeed=667	    ,.Efficiency=0.70    })
-   results.Add( new CombinedAltEntry With {.AMPS=200.00	,.EngineSpeed=667	    ,.Efficiency=0.73    })
-   results.Add( new CombinedAltEntry With {.AMPS=300.00	,.EngineSpeed=667	    ,.Efficiency=0.35    })
-   results.Add( new CombinedAltEntry With {.AMPS=400.00	,.EngineSpeed=667	    ,.Efficiency=0.00    })
-   results.Add( new CombinedAltEntry With {.AMPS=600.00	,.EngineSpeed=667	    ,.Efficiency=0.00    })
-   results.Add( new CombinedAltEntry With {.AMPS=800.00	,.EngineSpeed=667	    ,.Efficiency=0.00    })
-   results.Add( new CombinedAltEntry With {.AMPS=40.00	,.EngineSpeed=1333	    ,.Efficiency=0.59    })
-   results.Add( new CombinedAltEntry With {.AMPS=100.00	,.EngineSpeed=1333	    ,.Efficiency=0.61    })
-   results.Add( new CombinedAltEntry With {.AMPS=200.00	,.EngineSpeed=1333	    ,.Efficiency=0.66    })
-   results.Add( new CombinedAltEntry With {.AMPS=300.00	,.EngineSpeed=1333	    ,.Efficiency=0.69    })
-   results.Add( new CombinedAltEntry With {.AMPS=400.00	,.EngineSpeed=1333	    ,.Efficiency=0.68    })
-   results.Add( new CombinedAltEntry With {.AMPS=600.00	,.EngineSpeed=1333	    ,.Efficiency=0.64    })
-   results.Add( new CombinedAltEntry With {.AMPS=800.00	,.EngineSpeed=1333	    ,.Efficiency=0.61    })
-   results.Add( new CombinedAltEntry With {.AMPS=40.00	,.EngineSpeed=2000	    ,.Efficiency=0.58    })
-   results.Add( new CombinedAltEntry With {.AMPS=100.00	,.EngineSpeed=2000	    ,.Efficiency=0.61    })
-   results.Add( new CombinedAltEntry With {.AMPS=200.00	,.EngineSpeed=2000	    ,.Efficiency=0.67    })
-   results.Add( new CombinedAltEntry With {.AMPS=300.00	,.EngineSpeed=2000	    ,.Efficiency=0.72    })
-   results.Add( new CombinedAltEntry With {.AMPS=400.00	,.EngineSpeed=2000	    ,.Efficiency=0.69    })
-   results.Add( new CombinedAltEntry With {.AMPS=600.00	,.EngineSpeed=2000	    ,.Efficiency=0.63    })
-   results.Add( new CombinedAltEntry With {.AMPS=800.00	,.EngineSpeed=2000	    ,.Efficiency=0.56    })
-   results.Add( new CombinedAltEntry With {.AMPS=40.00	,.EngineSpeed=2333	    ,.Efficiency=0.48    })
-   results.Add( new CombinedAltEntry With {.AMPS=100.00	,.EngineSpeed=2333	    ,.Efficiency=0.52    })
-   results.Add( new CombinedAltEntry With {.AMPS=200.00	,.EngineSpeed=2333	    ,.Efficiency=0.59    })
-   results.Add( new CombinedAltEntry With {.AMPS=300.00	,.EngineSpeed=2333	    ,.Efficiency=0.65    })
-   results.Add( new CombinedAltEntry With {.AMPS=400.00	,.EngineSpeed=2333	    ,.Efficiency=0.61    })
-   results.Add( new CombinedAltEntry With {.AMPS=600.00	,.EngineSpeed=2333	    ,.Efficiency=0.53    })
-   results.Add( new CombinedAltEntry With {.AMPS=800.00	,.EngineSpeed=2333	    ,.Efficiency=0.45    })
+  Alt1ExpectedTable4000 = New List(Of AltUserInput)() from  {  New AltUserInput(  0,70), _
+                                                               New AltUserInput( 10,70), _
+                                                               New AltUserInput( 40,70), _
+                                                               New AltUserInput( 60,70), _
+                                                               New AltUserInput( 61,70), _
+                                                               New AltUserInput(200,70) }
 
 
-  Return results
+  Alt1ExpectedTable6000 = New List(Of AltUserInput)() from  {  New AltUserInput(  0,60), _
+                                                               New AltUserInput( 10,60), _
+                                                               New AltUserInput( 40,60), _
+                                                               New AltUserInput( 60,60), _
+                                                               New AltUserInput( 61,60), _
+                                                               New AltUserInput(200,60) }
 
-End Function
+  'ALT 2
+  Alt2ExpectedTable2000 = New List(Of AltUserInput)() from  {  New AltUserInput(  0,80), _
+                                                               New AltUserInput( 10,80), _
+                                                               New AltUserInput( 40,80), _
+                                                               New AltUserInput( 60,80), _
+                                                               New AltUserInput( 61,80), _
+                                                               New AltUserInput(200,80) }
+
+  Alt2ExpectedTable4000 = New List(Of AltUserInput)() from  {  New AltUserInput(  0,40), _
+                                                               New AltUserInput( 10,40), _
+                                                               New AltUserInput( 40,40), _
+                                                               New AltUserInput( 60,40), _
+                                                               New AltUserInput( 61,40), _
+                                                               New AltUserInput(200,40) }
 
 
-Public Function ValueSetsEqual( set1 As List(Of CombinedAltEntry),set2 As List(Of CombinedAltEntry)) As Boolean
+  Alt2ExpectedTable6000 = New List(Of AltUserInput)() from  {  New AltUserInput(  0,60), _
+                                                               New AltUserInput( 10,60), _
+                                                               New AltUserInput( 40,60), _
+                                                               New AltUserInput( 60,60), _
+                                                               New AltUserInput( 61,60), _
+                                                               New AltUserInput(200,60) }
 
-   'Bsic Count Check
-   If set1.Count<> set2.Count then Return False
-   
-   'Values Check, position for position
-   For i As Integer = 0 to set1.Count-1
 
-     If set1(i).Amps<> set2(i).Amps OrElse set1(i).EngineSpeed<> set2(i).EngineSpeed OrElse set1(i).Efficiency <> set2(i).Efficiency then
-       Return False    
-     End If
+  'ALT 3
+  Alt3ExpectedTable2000 = New List(Of AltUserInput)() from  {  New AltUserInput(  0,95), _
+                                                               New AltUserInput( 10,95), _
+                                                               New AltUserInput( 40,50), _
+                                                               New AltUserInput( 60,90), _
+                                                               New AltUserInput(62.5,95), _
+                                                               New AltUserInput(200, 95) }
 
+  Alt3ExpectedTable4000 = New List(Of AltUserInput)() from  {  New AltUserInput(  0,99), _
+                                                               New AltUserInput( 10,99), _
+                                                               New AltUserInput( 40, 1), _
+                                                               New AltUserInput( 60,55), _
+                                                               New AltUserInput( 76.2962963,99), _
+                                                               New AltUserInput(200,99) }
+
+
+  Alt3ExpectedTable6000 = New List(Of AltUserInput)() from  {  New AltUserInput(  0,94), _
+                                                               New AltUserInput( 10,94), _
+                                                               New AltUserInput( 40, 86), _
+                                                               New AltUserInput( 60,13), _
+                                                               New AltUserInput( 63.5616438,0), _
+                                                               New AltUserInput(200,0) }
+
+
+  'ALT 4
+  Alt4ExpectedTable2000 = New List(Of AltUserInput)() from  {  New AltUserInput(  0,55), _
+                                                               New AltUserInput( 10,55), _
+                                                               New AltUserInput( 40,45), _
+                                                               New AltUserInput( 60,67), _
+                                                               New AltUserInput( 60,67), _
+                                                               New AltUserInput(200,67) }
+
+  Alt4ExpectedTable4000 = New List(Of AltUserInput)() from  {  New AltUserInput(  0,77), _
+                                                               New AltUserInput( 10,77), _
+                                                               New AltUserInput( 40,39), _
+                                                               New AltUserInput( 60,23), _
+                                                               New AltUserInput( 88.75,0), _
+                                                               New AltUserInput(200,0) }
+
+
+  Alt4ExpectedTable6000 = New List(Of AltUserInput)() from  {  New AltUserInput(  0,34), _
+                                                               New AltUserInput( 10,34), _
+                                                               New AltUserInput( 40, 67), _
+                                                               New AltUserInput( 60,35), _
+                                                               New AltUserInput( 81.875,0), _
+                                                               New AltUserInput(200,0) }
+
+
+
+  End Sub
+
+
+  <Test()>
+  Public Sub Alt1TableConstructTest()
+
+  Dim inputs2000 As New Dictionary(Of single,single)() From {{10,50}, {40,50}, {60,50}}
+  Dim inputs4000 As New Dictionary(Of single,single)() From {{10,70}, {40,70}, {60,70}}
+  Dim inputs6000 As New Dictionary(Of single,single)() From {{10,60}, {40,60}, {60,60}}
+
+  Dim Alt As New Alternator( New CombinedAlternatorSignals(), 3)
+
+
+   Alt.BuildInputTable( inputs2000, Alt.InputTable2000)
+   Alt.BuildInputTable( inputs4000, Alt.InputTable4000)
+   Alt.BuildInputTable( inputs6000, Alt.InputTable6000)
+
+   Dim idx As integer
+
+   For idx = 0 to Alt.InputTable2000.Count-1
+      Assert.IsTrue( Alt.InputTable2000(idx).IsEqual( Alt1ExpectedTable2000(idx)))
    Next
 
-   Return true
+   For idx = 0 to Alt.InputTable4000.Count-1
+      Assert.IsTrue( Alt.InputTable4000(idx).IsEqual( Alt1ExpectedTable4000(idx)))
+   Next
 
-End Function
-
-
-
-
-
-End Class
+   For idx = 0 to Alt.InputTable6000.Count-1
+      Assert.IsTrue( Alt.InputTable6000(idx).IsEqual( Alt1ExpectedTable6000(idx)))
+   Next
 
 
+  End Sub
+  <Test()>
+  Public Sub Alt2TableConstructTest()
 
+  Dim inputs2000 As New Dictionary(Of single,single)() From {{10,80}, {40,80}, {60,80}}
+  Dim inputs4000 As New Dictionary(Of single,single)() From {{10,40}, {40,40}, {60,40}}
+  Dim inputs6000 As New Dictionary(Of single,single)() From {{10,60}, {40,60}, {60,60}}
+
+  Dim Alt As New Alternator( New CombinedAlternatorSignals(), 2.5)
+
+
+   Alt.BuildInputTable( inputs2000, Alt.InputTable2000)
+   Alt.BuildInputTable( inputs4000, Alt.InputTable4000)
+   Alt.BuildInputTable( inputs6000, Alt.InputTable6000)
+
+   Dim idx As integer
+
+   For idx = 0 to Alt.InputTable2000.Count-1
+      Assert.IsTrue( Alt.InputTable2000(idx).IsEqual( Alt2ExpectedTable2000(idx)))
+   Next
+
+   For idx = 0 to Alt.InputTable4000.Count-1
+      Assert.IsTrue( Alt.InputTable4000(idx).IsEqual( Alt2ExpectedTable4000(idx)))
+   Next
+
+   For idx = 0 to Alt.InputTable6000.Count-1
+      Assert.IsTrue( Alt.InputTable6000(idx).IsEqual( Alt2ExpectedTable6000(idx)))
+   Next
+                              
+
+  End Sub
+  <Test()>
+  Public Sub Alt3TableConstructTest()
+
+  Dim inputs2000 As New Dictionary(Of single,single)() From {{10,95}, {40,50}, {60,90}}
+  Dim inputs4000 As New Dictionary(Of single,single)() From {{10,99}, {40, 1}, {60,55}}
+  Dim inputs6000 As New Dictionary(Of single,single)() From {{10,94}, {40,86}, {60,13}}
+
+  Dim Alt As New Alternator( New CombinedAlternatorSignals(), 3.5)
+
+
+   Alt.BuildInputTable( inputs2000, Alt.InputTable2000)
+   Alt.BuildInputTable( inputs4000, Alt.InputTable4000)
+   Alt.BuildInputTable( inputs6000, Alt.InputTable6000)
+
+   Dim idx As integer
+
+   For idx = 0 to Alt.InputTable2000.Count-1
+      Assert.IsTrue( Alt.InputTable2000(idx).IsEqual( Alt3ExpectedTable2000(idx)))
+   Next
+
+   For idx = 0 to Alt.InputTable4000.Count-1
+      Assert.IsTrue( Alt.InputTable4000(idx).IsEqual( Alt3ExpectedTable4000(idx),3))
+   Next
+
+   For idx = 0 to Alt.InputTable6000.Count-1
+      Assert.IsTrue( Alt.InputTable6000(idx).IsEqual( Alt3ExpectedTable6000(idx),3))
+   Next
+                              
+
+  End Sub
+  <Test()>
+  Public Sub Alt4TableConstructTest()
+
+  Dim inputs2000 As New Dictionary(Of single,single)() From {{10,55}, {40,45}, {60,67}}
+  Dim inputs4000 As New Dictionary(Of single,single)() From {{10,77}, {40,39}, {60,23}}
+  Dim inputs6000 As New Dictionary(Of single,single)() From {{10,34}, {40,67}, {60,35}}
+
+  Dim Alt As New Alternator( New CombinedAlternatorSignals(), 3.5)
+
+
+   Alt.BuildInputTable( inputs2000, Alt.InputTable2000)
+   Alt.BuildInputTable( inputs4000, Alt.InputTable4000)
+   Alt.BuildInputTable( inputs6000, Alt.InputTable6000)
+
+   Dim idx As integer
+
+   For idx = 0 to Alt.InputTable2000.Count-1
+      Assert.IsTrue( Alt.InputTable2000(idx).IsEqual( Alt4ExpectedTable2000(idx)))
+   Next
+
+   For idx = 0 to Alt.InputTable4000.Count-1
+      Assert.IsTrue( Alt.InputTable4000(idx).IsEqual( Alt4ExpectedTable4000(idx),3))
+   Next
+
+   For idx = 0 to Alt.InputTable6000.Count-1
+      Assert.IsTrue( Alt.InputTable6000(idx).IsEqual( Alt4ExpectedTable6000(idx),3))
+   Next
+                              
+
+  End Sub
+
+
+ End Class
 
 
 End Namespace
 
 
+
+    
 
