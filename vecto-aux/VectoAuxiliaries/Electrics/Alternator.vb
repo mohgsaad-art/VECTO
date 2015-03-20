@@ -1,69 +1,78 @@
 ﻿
 Namespace Electrics
 
-Public class AltUserInput
-
-  Public Amps As Single
-  Public Eff As Single 
-
-  Sub new( amps As Single , eff As single)
-
-   Me.Amps=amps
-   Me.Eff = eff
-
-  End Sub
-
-
- Public Function IsEqual(  other As AltUserInput, Optional rounding As Integer=7) As Boolean
-
-    Return Math.round(Me.Amps,rounding)= Math.Round(other.Amps,rounding) AndAlso _
-        Math.Round(Me.Eff,rounding) = Math.Round(other.eff,rounding)
-
- End Function
-
-
-End class
-
 
 Public Class Alternator
  Implements IAlternator
 
+ Public Property AlternatorName As String Implements IAlternator.AlternatorName
+ Public Property  PulleyRatio As Single Implements IAlternator.PulleyRatio
 
- Public InputTable2000 As  New List(Of AltUserInput)
- Public InputTable4000 As  New List(Of AltUserInput)
- Public InputTable6000 As  New List(Of AltUserInput)
+ Public Property InputTable2000 As  New List(Of AltUserInput) Implements IAlternator.InputTable2000  
+ Public Property InputTable4000 As  New List(Of AltUserInput) Implements IAlternator.InputTable4000
+ Public Property InputTable6000 As  New List(Of AltUserInput) Implements IAlternator.InputTable6000
+ Public Property RangeTable     As  New List(Of AltUserInput) Implements IAlternator.RangeTable
+
+ Private signals As ICombinedAlternatorSignals 
 
 
- Private signals As ICombinedAlternatorSignals
- Private pulleyRation As Single
- 
+ Public  Sub  Clone( other As IAlternator) Implements IAlternator.Clone
 
+    Me.PulleyRatio = other.PulleyRatio
+    Me.AlternatorName= other.AlternatorName
+
+    InputTable2000.Clear() 
+    InputTable4000.Clear() 
+    InputTable6000.Clear() 
+    RangeTable    .Clear() 
+    
+    For Each entry As AltUserInput In other.InputTable2000
+      InputTable2000.Add(New AltUserInput( entry.Amps, entry.Eff))
+    Next
+
+    For Each entry As AltUserInput In other.InputTable4000
+      InputTable4000.Add(New AltUserInput( entry.Amps, entry.Eff))
+    Next
+
+    For Each entry As AltUserInput In other.InputTable6000
+      InputTable6000.Add(New AltUserInput( entry.Amps, entry.Eff))
+    Next
+
+    For Each entry As AltUserInput In other.RangeTable
+      RangeTable.Add(New AltUserInput( entry.Amps, entry.Eff))
+    Next
+
+   
+ End Sub
  Public ReadOnly Property Efficiency As Double Implements IAlternator.Efficiency
             Get
 
             End Get
         End Property
-
  Public ReadOnly Property SpindleSpeed As Double Implements IAlternator.SpindleSpeed
             Get
 
             End Get
         End Property
 
- Sub new( isignals As ICombinedAlternatorSignals, pulleyRatio As single)
+         
+ 'Constructors
+ Sub new()
+   
+ End Sub
+ Sub new( isignals As ICombinedAlternatorSignals, pulleyRatio As single,  altName As string )
 
 
      If isignals is Nothing then Throw New ArgumentException("Alternator - ISignals supplied is nothing")
      signals = isignals
 
-  
+     Me.AlternatorName= altName
 
 
  End Sub
 
 
-
-  public Sub BuildInputTable(  inputs As Dictionary(of Single, single), targetTable As List (Of AltUserInput ))
+ public Sub BuildInputTable(  inputs As Dictionary(of Single, single), targetTable As List (Of AltUserInput ))
 
 
        Dim C11,C12,C13,C14,D11,D12,D13,D14 As single
@@ -107,9 +116,8 @@ Public Class Alternator
   End Sub
 
 
-
+   
 End Class
-
 
 
 
