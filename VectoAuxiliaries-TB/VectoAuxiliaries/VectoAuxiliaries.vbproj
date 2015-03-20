@@ -111,6 +111,7 @@
     <Compile Include="Electrics\Alternator.vb" />
     <Compile Include="Electrics\AlternatorMapValues.vb" />
     <Compile Include="Electrics\AlternatorMap.vb" />
+    <Compile Include="Electrics\AltUserInput.vb" />
     <Compile Include="Electrics\CombinedAltEntry.vb" />
     <Compile Include="Electrics\CombinedAlternator.vb" />
     <Compile Include="Electrics\CombinedAlternatorSignals.vb" />
