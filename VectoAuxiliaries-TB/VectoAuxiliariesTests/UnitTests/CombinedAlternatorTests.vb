@@ -21,6 +21,7 @@ Namespace UnitTests
   private Alt4ExpectedTable2000 As new List(Of AltUserInput)
   private Alt4ExpectedTable4000 As new List(Of AltUserInput)
   private Alt4ExpectedTable6000 As new List(Of AltUserInput)
+  Private RangeTableExpected    As New List(Of AltUserInput)
 
 
 
@@ -121,6 +122,23 @@ Namespace UnitTests
 
 
 
+  'RangeTable
+  RangeTableExpected = New List(Of AltUserInput)()   from {   New AltUserInput(-3001 , 0), _
+                                                              New AltUserInput(-3000 , 0), _
+                                                              New AltUserInput(2000  ,50), _
+                                                              New AltUserInput(4000  ,70), _
+                                                              New AltUserInput(6000  ,60), _
+                                                              New AltUserInput(18000 , 0), _
+                                                              New AltUserInput(18001 , 0) }
+
+    
+
+
+
+
+
+
+
   End Sub
 
 
@@ -131,7 +149,7 @@ Namespace UnitTests
   Dim inputs4000 As New Dictionary(Of single,single)() From {{10,70}, {40,70}, {60,70}}
   Dim inputs6000 As New Dictionary(Of single,single)() From {{10,60}, {40,60}, {60,60}}
 
-  Dim Alt As New Alternator( New CombinedAlternatorSignals(), 3)
+  Dim Alt As New Alternator( New CombinedAlternatorSignals(), 3,"Alt1")
 
 
    Alt.BuildInputTable( inputs2000, Alt.InputTable2000)
@@ -161,7 +179,7 @@ Namespace UnitTests
   Dim inputs4000 As New Dictionary(Of single,single)() From {{10,40}, {40,40}, {60,40}}
   Dim inputs6000 As New Dictionary(Of single,single)() From {{10,60}, {40,60}, {60,60}}
 
-  Dim Alt As New Alternator( New CombinedAlternatorSignals(), 2.5)
+  Dim Alt As New Alternator( New CombinedAlternatorSignals(), 2.5,"Alt2")
 
 
    Alt.BuildInputTable( inputs2000, Alt.InputTable2000)
@@ -191,7 +209,7 @@ Namespace UnitTests
   Dim inputs4000 As New Dictionary(Of single,single)() From {{10,99}, {40, 1}, {60,55}}
   Dim inputs6000 As New Dictionary(Of single,single)() From {{10,94}, {40,86}, {60,13}}
 
-  Dim Alt As New Alternator( New CombinedAlternatorSignals(), 3.5)
+  Dim Alt As New Alternator( New CombinedAlternatorSignals(), 3.5,"Alt3")
 
 
    Alt.BuildInputTable( inputs2000, Alt.InputTable2000)
@@ -221,7 +239,7 @@ Namespace UnitTests
   Dim inputs4000 As New Dictionary(Of single,single)() From {{10,77}, {40,39}, {60,23}}
   Dim inputs6000 As New Dictionary(Of single,single)() From {{10,34}, {40,67}, {60,35}}
 
-  Dim Alt As New Alternator( New CombinedAlternatorSignals(), 3.5)
+  Dim Alt As New Alternator( New CombinedAlternatorSignals(), 3.5,"Alt4")
 
 
    Alt.BuildInputTable( inputs2000, Alt.InputTable2000)
