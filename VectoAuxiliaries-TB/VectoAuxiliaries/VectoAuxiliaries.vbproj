@@ -114,9 +114,11 @@
     <Compile Include="Electrics\AltUserInput.vb" />
     <Compile Include="Electrics\CombinedAltEntry.vb" />
     <Compile Include="Electrics\CombinedAlternator.vb" />
+    <Compile Include="Electrics\CombinedAlternatorMapRow.vb" />
     <Compile Include="Electrics\CombinedAlternatorSignals.vb" />
     <Compile Include="Electrics\ElectricsUserInputsConfig.vb" />
     <Compile Include="Electrics\IAlternator.vb" />
+    <Compile Include="Electrics\ICombinedAlternatorMapRow.vb" />
     <Compile Include="Electrics\ICombinedAlternatorSignals.vb" />
     <Compile Include="Electrics\IElectricsUserInputsConfig.vb" />
     <Compile Include="Electrics\IM0_5_SmartAlternatorSetEfficiency.vb" />

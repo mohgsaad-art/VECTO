@@ -398,7 +398,7 @@ Partial Class frmCombinedAlternators
         'gvAlternators
         '
         Me.gvAlternators.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.gvAlternators.Location = New System.Drawing.Point(38, 277)
+        Me.gvAlternators.Location = New System.Drawing.Point(38, 276)
         Me.gvAlternators.Name = "gvAlternators"
         Me.gvAlternators.Size = New System.Drawing.Size(417, 140)
         Me.gvAlternators.TabIndex = 38

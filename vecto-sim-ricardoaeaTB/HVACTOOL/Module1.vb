@@ -9,8 +9,8 @@ Sub main()
 
 
 
-   'frm.ShowDialog()
-   frmAlt.ShowDialog()
+   frm.ShowDialog()
+   'frmAlt.ShowDialog()
 
    frm.Dispose
 
