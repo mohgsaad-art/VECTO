@@ -69,14 +69,14 @@ Public Class Alternator
      Me.AlternatorName= inputs.First().AlternatorName
      Me.PulleyRatio = inputs.First().PulleyRatio
 
-     'Dim values2k As Dictionary(Of single,single) = (From x In inputs where x.RPM=2000 Select new KeyValuePair(of single,single)(x.Amps,x.Efficiency)
-     'Dim values4k As Dictionary(Of single,single) = From x In inputs where x.RPM=2000 Select new KeyValuePair(of single,single)(x.Amps,x.Efficiency)
-     'Dim values6k As Dictionary(Of single,single) = From x In inputs where x.RPM=2000 Select new KeyValuePair(of single,single)(x.Amps,x.Efficiency)
+     Dim values2k As  Dictionary(Of single,single) =  inputs.where( function(x) x.RPM=2000).Select( function(x) new KeyValuePair(of single,single)(x.Amps,x.Efficiency)).ToDictionary( Function(x) x.Key, Function(x) x.Value)
+     Dim values4k As  Dictionary(Of single,single) =  inputs.where( function(x) x.RPM=2000).Select( function(x) new KeyValuePair(of single,single)(x.Amps,x.Efficiency)).ToDictionary( Function(x) x.Key, Function(x) x.Value)
+     Dim values6k As  Dictionary(Of single,single) =  inputs.where( function(x) x.RPM=2000).Select( function(x) new KeyValuePair(of single,single)(x.Amps,x.Efficiency)).ToDictionary( Function(x) x.Key, Function(x) x.Value)
 
     
-     'BuildInputTable( values2k, InputTable2000)
-     'BuildInputTable( values4k, InputTable2000)
-     'BuildInputTable( values6k, InputTable2000)
+     BuildInputTable( values2k, InputTable2000)
+     BuildInputTable( values4k, InputTable2000)
+     BuildInputTable( values6k, InputTable2000)
 
 
  End Sub

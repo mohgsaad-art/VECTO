@@ -148,47 +148,28 @@ Namespace UnitTests
   <Test()>
   Public Sub Alt1TableConstructTest()
 
-  'Dim inputs2000 As New Dictionary(Of single,single)() From {{10,50}, {40,50}, {60,50}}
-  'Dim inputs4000 As New Dictionary(Of single,single)() From {{10,70}, {40,70}, {60,70}}
-  'Dim inputs6000 As New Dictionary(Of single,single)() From {{10,60}, {40,60}, {60,60}}
+
+  'Arrange
+  Dim signals As ICombinedAlternatorSignals = New CombinedAlternatorSignals
 
 
-  Dim inputs   As New List(Of ICombinedAlternatorMapRow)
-  Dim pulleyRatio As Single =3
+  'Act
+  Dim alt  As new CombinedAlternator(COMBINEDALT_GOODMAP, signals)
 
 
-  inputs.Add( New CombinedAlternatorMapRow("alt1",2000,10,50,pulleyRatio))
-  inputs.Add( New CombinedAlternatorMapRow("alt1",2000,40,50,pulleyRatio))
-  inputs.Add( New CombinedAlternatorMapRow("alt1",2000,60,50,pulleyRatio))
-    
-  inputs.Add( New CombinedAlternatorMapRow("alt1",4000,10,70,pulleyRatio))
-  inputs.Add( New CombinedAlternatorMapRow("alt1",4000,40,70,pulleyRatio))
-  inputs.Add( New CombinedAlternatorMapRow("alt1",4000,60,70,pulleyRatio))
-
-  inputs.Add( New CombinedAlternatorMapRow("alt1",6000,10,60,pulleyRatio))
-  inputs.Add( New CombinedAlternatorMapRow("alt1",6000,40,60,pulleyRatio))
-  inputs.Add( New CombinedAlternatorMapRow("alt1",6000,60,60,pulleyRatio))
-
-
-  Dim Alt As New Alternator( New CombinedAlternatorSignals(),inputs)
-
-
-   'Alt.BuildInputTable( inputs2000, Alt.InputTable2000)
-   'Alt.BuildInputTable( inputs4000, Alt.InputTable4000)
-   'Alt.BuildInputTable( inputs6000, Alt.InputTable6000)
 
    Dim idx As integer
 
-   For idx = 0 to Alt.InputTable2000.Count-1
-      Assert.IsTrue( Alt.InputTable2000(idx).IsEqual( Alt1ExpectedTable2000(idx)))
+   For idx = 0 to alt.Alternators(0).InputTable2000.Count-1
+      Assert.IsTrue( alt.Alternators(0).InputTable2000(idx).IsEqual( Alt1ExpectedTable2000(idx)))
    Next
 
-   For idx = 0 to Alt.InputTable4000.Count-1
-      Assert.IsTrue( Alt.InputTable4000(idx).IsEqual( Alt1ExpectedTable4000(idx)))
+   For idx = 0 to alt.Alternators(0).InputTable4000.Count-1
+      Assert.IsTrue( alt.Alternators(0).InputTable4000(idx).IsEqual( Alt1ExpectedTable4000(idx)))
    Next
 
-   For idx = 0 to Alt.InputTable6000.Count-1
-      Assert.IsTrue( Alt.InputTable6000(idx).IsEqual( Alt1ExpectedTable6000(idx)))
+   For idx = 0 to alt.Alternators(0).InputTable6000.Count-1
+      Assert.IsTrue( alt.Alternators(0).InputTable6000(idx).IsEqual( Alt1ExpectedTable6000(idx)))
    Next
 
 
@@ -197,30 +178,28 @@ Namespace UnitTests
     <Test()>
   Public Sub Alt2TableConstructTest()
 
-  Dim inputs     As New Dictionary(Of single,single)() From {{10,80}, {40,80}, {60,80}, _
-                                                             {10,40}, {40,40}, {60,40}, _
-                                                             {10,60}, {40,60}, {60,60}}
 
 
-   Dim Alt= Nothing ' As New Alternator( New CombinedAlternatorSignals(), 2.5,"Alt2", inputs)
+  'Arrange
+  Dim signals As ICombinedAlternatorSignals = New CombinedAlternatorSignals
+
+
+  'Act
+  Dim alt  As new CombinedAlternator(COMBINEDALT_GOODMAP, signals)
     
-
-   'Alt.BuildInputTable( inputs2000, Alt.InputTable2000)
-   'Alt.BuildInputTable( inputs4000, Alt.InputTable4000)
-   'Alt.BuildInputTable( inputs6000, Alt.InputTable6000)
 
    Dim idx As integer
 
-   For idx = 0 to Alt.InputTable2000.Count-1
-      Assert.IsTrue( Alt.InputTable2000(idx).IsEqual( Alt2ExpectedTable2000(idx)))
+   For idx = 0 to alt.Alternators(1).InputTable2000.Count-1
+      Assert.IsTrue( alt.Alternators(1).InputTable2000(idx).IsEqual( Alt2ExpectedTable2000(idx)))
    Next
 
-   For idx = 0 to Alt.InputTable4000.Count-1
-      Assert.IsTrue( Alt.InputTable4000(idx).IsEqual( Alt2ExpectedTable4000(idx)))
+   For idx = 0 to alt.Alternators(1).InputTable4000.Count-1
+      Assert.IsTrue( alt.Alternators(1).InputTable4000(idx).IsEqual( Alt2ExpectedTable4000(idx)))
    Next
 
-   For idx = 0 to Alt.InputTable6000.Count-1
-      Assert.IsTrue( Alt.InputTable6000(idx).IsEqual( Alt2ExpectedTable6000(idx)))
+   For idx = 0 to alt.Alternators(1).InputTable6000.Count-1
+      Assert.IsTrue( alt.Alternators(1).InputTable6000(idx).IsEqual( Alt2ExpectedTable6000(idx)))
    Next
                               
 
@@ -228,29 +207,27 @@ Namespace UnitTests
   <Test()>
   Public Sub Alt3TableConstructTest()
 
-  Dim inputs     As New Dictionary(Of single,single)() From {{10,95}, {40,50}, {60,90}, _
-                                                             {10,99}, {40, 1}, {60,55}, _
-                                                             {10,94}, {40,86}, {60,13}}
 
-   Dim Alt = Nothing' As New Alternator( New CombinedAlternatorSignals(), 3.5,"Alt3",inputs)
+  'Arrange
+  Dim signals As ICombinedAlternatorSignals = New CombinedAlternatorSignals
 
 
-   'Alt.BuildInputTable( inputs2000, Alt.InputTable2000)
-   'Alt.BuildInputTable( inputs4000, Alt.InputTable4000)
-   'Alt.BuildInputTable( inputs6000, Alt.InputTable6000)
+  'Act
+  Dim alt  As new CombinedAlternator(COMBINEDALT_GOODMAP, signals)
+    
 
    Dim idx As integer
 
-   For idx = 0 to Alt.InputTable2000.Count-1
-      Assert.IsTrue( Alt.InputTable2000(idx).IsEqual( Alt3ExpectedTable2000(idx)))
+   For idx = 0 to alt.Alternators(2).InputTable2000.Count-1
+      Assert.IsTrue( alt.Alternators(2).InputTable2000(idx).IsEqual( Alt3ExpectedTable2000(idx)))
    Next
 
-   For idx = 0 to Alt.InputTable4000.Count-1
-      Assert.IsTrue( Alt.InputTable4000(idx).IsEqual( Alt3ExpectedTable4000(idx),3))
+   For idx = 0 to alt.Alternators(2).InputTable4000.Count-1
+      Assert.IsTrue( alt.Alternators(2).InputTable4000(idx).IsEqual( Alt3ExpectedTable4000(idx),3))
    Next
 
-   For idx = 0 to Alt.InputTable6000.Count-1
-      Assert.IsTrue( Alt.InputTable6000(idx).IsEqual( Alt3ExpectedTable6000(idx),3))
+   For idx = 0 to alt.Alternators(2).InputTable6000.Count-1
+      Assert.IsTrue( alt.Alternators(2).InputTable6000(idx).IsEqual( Alt3ExpectedTable6000(idx),3))
    Next
                               
 
@@ -258,29 +235,26 @@ Namespace UnitTests
   <Test()>
   Public Sub Alt4TableConstructTest()
 
-  Dim inputs     As New Dictionary(Of single,single)() From {{10,55}, {40,45}, {60,67}, _
-                                                             {10,77}, {40,39}, {60,23}, _
-                                                             {10,34}, {40,67}, {60,35}}
-
-   Dim Alt = Nothing 'As New Alternator( New CombinedAlternatorSignals(), 3.5,"Alt4", inputs)
+  'Arrange
+  Dim signals As ICombinedAlternatorSignals = New CombinedAlternatorSignals
 
 
-   'Alt.BuildInputTable( inputs2000, Alt.InputTable2000)
-   'Alt.BuildInputTable( inputs4000, Alt.InputTable4000)
-   'Alt.BuildInputTable( inputs6000, Alt.InputTable6000)
+  'Act
+  Dim alt  As new CombinedAlternator(COMBINEDALT_GOODMAP, signals)
+    
 
    Dim idx As integer
 
-   For idx = 0 to Alt.InputTable2000.Count-1
-      Assert.IsTrue( Alt.InputTable2000(idx).IsEqual( Alt4ExpectedTable2000(idx)))
+   For idx = 0 to alt.Alternators(3).InputTable2000.Count-1
+      Assert.IsTrue( alt.Alternators(3).InputTable2000(idx).IsEqual( Alt4ExpectedTable2000(idx)))
    Next
 
-   For idx = 0 to Alt.InputTable4000.Count-1
-      Assert.IsTrue( Alt.InputTable4000(idx).IsEqual( Alt4ExpectedTable4000(idx),3))
+   For idx = 0 to alt.Alternators(3).InputTable4000.Count-1
+      Assert.IsTrue( alt.Alternators(3).InputTable4000(idx).IsEqual( Alt4ExpectedTable4000(idx),3))
    Next
 
-   For idx = 0 to Alt.InputTable6000.Count-1
-      Assert.IsTrue( Alt.InputTable6000(idx).IsEqual( Alt4ExpectedTable6000(idx),3))
+   For idx = 0 to alt.Alternators(3).InputTable6000.Count-1
+      Assert.IsTrue( alt.Alternators(3).InputTable6000(idx).IsEqual( Alt4ExpectedTable6000(idx),3))
    Next
                               
 
@@ -289,11 +263,8 @@ Namespace UnitTests
 
  'testCombinedAlternatorMap
    <Test()>
-  Public Sub InitialiseCombinedAlternatorMap()
+  Public Sub InitialiseCombinedAlternatorMapFromFile()
 
-  Dim inputs2000 As New Dictionary(Of single,single)() From {{10,55}, {40,45}, {60,67}}
-  Dim inputs4000 As New Dictionary(Of single,single)() From {{10,77}, {40,39}, {60,23}}
-  Dim inputs6000 As New Dictionary(Of single,single)() From {{10,34}, {40,67}, {60,35}}
 
   'Arrange
   Dim signals As ICombinedAlternatorSignals = New CombinedAlternatorSignals
@@ -306,11 +277,33 @@ Namespace UnitTests
 
   'Assert
 
-
+  Assert.AreEqual( target.Alternators.Count,4)
 
               
 
   End Sub
+
+   <Test()>
+  Public Sub InitialiseCombinedAlternatorMapFromDefault()
+
+
+  'Arrange
+  Dim signals As ICombinedAlternatorSignals = New CombinedAlternatorSignals
+
+
+  'Act
+  Dim target  As new CombinedAlternator("123.aalt", signals)
+
+
+
+  'Assert
+
+  Assert.AreEqual( target.Alternators.Count,4)
+
+              
+
+  End Sub
+
 
 
  End Class

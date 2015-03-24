@@ -22,6 +22,7 @@ Partial Class frmCombinedAlternators
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Me.TextBox2 = New System.Windows.Forms.TextBox()
         Me.TextBox5 = New System.Windows.Forms.TextBox()
         Me.TextBox8 = New System.Windows.Forms.TextBox()
@@ -61,12 +62,14 @@ Partial Class frmCombinedAlternators
         Me.tabDiagnostics = New System.Windows.Forms.TabPage()
         Me.btnSave = New System.Windows.Forms.Button()
         Me.btnCancel = New System.Windows.Forms.Button()
+        Me.ErrorProvider1 = New System.Windows.Forms.ErrorProvider(Me.components)
         Me.grpTable2000PRM.SuspendLayout
         Me.grpTable4000PRM.SuspendLayout
         Me.grpTable6000PRM.SuspendLayout
         Me.TabControl1.SuspendLayout
         Me.tabInputs.SuspendLayout
         CType(Me.gvAlternators,System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.ErrorProvider1,System.ComponentModel.ISupportInitialize).BeginInit
         Me.SuspendLayout
         '
         'TextBox2
@@ -400,7 +403,7 @@ Partial Class frmCombinedAlternators
         Me.gvAlternators.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.gvAlternators.Location = New System.Drawing.Point(38, 276)
         Me.gvAlternators.Name = "gvAlternators"
-        Me.gvAlternators.Size = New System.Drawing.Size(417, 140)
+        Me.gvAlternators.Size = New System.Drawing.Size(419, 140)
         Me.gvAlternators.TabIndex = 38
         '
         'Label18
@@ -467,6 +470,10 @@ Partial Class frmCombinedAlternators
         Me.btnCancel.Text = "Cancel"
         Me.btnCancel.UseVisualStyleBackColor = true
         '
+        'ErrorProvider1
+        '
+        Me.ErrorProvider1.ContainerControl = Me
+        '
         'frmCombinedAlternators
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
@@ -489,6 +496,7 @@ Partial Class frmCombinedAlternators
         Me.tabInputs.ResumeLayout(false)
         Me.tabInputs.PerformLayout
         CType(Me.gvAlternators,System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.ErrorProvider1,System.ComponentModel.ISupportInitialize).EndInit
         Me.ResumeLayout(false)
 
 End Sub
@@ -531,4 +539,5 @@ End Sub
     Friend WithEvents tabDiagnostics As System.Windows.Forms.TabPage
     Friend WithEvents btnSave As System.Windows.Forms.Button
     Friend WithEvents btnCancel As System.Windows.Forms.Button
+    Friend WithEvents ErrorProvider1 As System.Windows.Forms.ErrorProvider
 End Class
