@@ -1,18 +1,27 @@
 ﻿
+Imports VectoAuxiliaries.Electrics
+
 module Main
+
+
+
 
 
 Sub main()
 
-   Dim frm As New frmHVACTool("BusDatabase.abdb", "ssm.ahsm")
-   Dim frmAlt As New frmCombinedAlternators()
+
+
+   Dim altSignals As New CombinedAlternatorSignals()
+
+   'Dim frm As New frmHVACTool("BusDatabase.abdb", "ssm.ahsm")
+   Dim frm As New frmCombinedAlternators("testCombinedAlternatorMap.aalt",altSignals)
 
 
 
-   frm.ShowDialog()
-   'frmAlt.ShowDialog()
 
-   frm.Dispose
+    frm.ShowDialog()
+
+
 
 End Sub
 
