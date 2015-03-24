@@ -290,6 +290,9 @@
     <Content Include="TestFiles\BusDatabase.abdb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="TestFiles\testCombinedAlternatorMap.aalt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="TestFiles\testAlternatorMapAsymetricalXYPairsCombined.aalt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

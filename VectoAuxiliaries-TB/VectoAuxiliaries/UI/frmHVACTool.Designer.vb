@@ -507,6 +507,7 @@ Partial Class frmHVACTool
         Me.txtBusFloorSurfaceArea.Font = New System.Drawing.Font("Microsoft Sans Serif", 9!)
         Me.txtBusFloorSurfaceArea.Location = New System.Drawing.Point(179, 117)
         Me.txtBusFloorSurfaceArea.Name = "txtBusFloorSurfaceArea"
+        Me.txtBusFloorSurfaceArea.ReadOnly = true
         Me.txtBusFloorSurfaceArea.Size = New System.Drawing.Size(97, 21)
         Me.txtBusFloorSurfaceArea.TabIndex = 5
         '

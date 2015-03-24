@@ -60,16 +60,27 @@ Public Class Alternator
  Sub new()
    
  End Sub
- Sub new( isignals As ICombinedAlternatorSignals, pulleyRatio As single,  altName As string )
+ Sub new( isignals As ICombinedAlternatorSignals, inputs as List(Of ICombinedAlternatorMapRow))
 
 
      If isignals is Nothing then Throw New ArgumentException("Alternator - ISignals supplied is nothing")
      signals = isignals
 
-     Me.AlternatorName= altName
+     Me.AlternatorName= inputs.First().AlternatorName
+     Me.PulleyRatio = inputs.First().PulleyRatio
+
+     'Dim values2k As Dictionary(Of single,single) = (From x In inputs where x.RPM=2000 Select new KeyValuePair(of single,single)(x.Amps,x.Efficiency)
+     'Dim values4k As Dictionary(Of single,single) = From x In inputs where x.RPM=2000 Select new KeyValuePair(of single,single)(x.Amps,x.Efficiency)
+     'Dim values6k As Dictionary(Of single,single) = From x In inputs where x.RPM=2000 Select new KeyValuePair(of single,single)(x.Amps,x.Efficiency)
+
+    
+     'BuildInputTable( values2k, InputTable2000)
+     'BuildInputTable( values4k, InputTable2000)
+     'BuildInputTable( values6k, InputTable2000)
 
 
  End Sub
+
 
 
  public Sub BuildInputTable(  inputs As Dictionary(of Single, single), targetTable As List (Of AltUserInput ))
