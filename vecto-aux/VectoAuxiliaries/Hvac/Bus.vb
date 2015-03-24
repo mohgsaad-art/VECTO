@@ -29,17 +29,17 @@
         Return _engineType
        End Get
    End Property
-      Public Readonly Property LengthInMetres         As Single Implements IBus.LengthInMetres
+      Public Readonly Property LengthInMetres         As Double Implements IBus.LengthInMetres
        Get
         Return _lengthInMetres
        End Get
    End Property
-      Public Readonly Property WidthInMetres          As Single Implements IBus.WidthInMetres
+      Public Readonly Property WidthInMetres          As Double Implements IBus.WidthInMetres
        Get
         Return _widthInMetres
        End Get
    End Property
-      Public Readonly Property HeightInMetres         As Single Implements IBus.HeightInMetres
+      Public Readonly Property HeightInMetres         As Double Implements IBus.HeightInMetres
        Get
         Return _heightInMetres
        End Get
@@ -51,12 +51,12 @@
    End Property
      
       'Caculated Property
-      Public Readonly Property AreaInMetresSquared As Single Implements IBus.AreaInMetresSquared
+      Public Readonly Property AreaInMetresSquared As Double Implements IBus.AreaInMetresSquared
        Get
           Return Math.Round( 2*(LengthInMetres * WidthInMetres + WidthInMetres * HeightInMetres + LengthInMetres * HeightInMetres),1)
        End Get
       End Property
-      Public Readonly Property VolumneInMetresQubed As Single Implements IBus.VolumneInMetresQubed
+      Public Readonly Property VolumneInMetresQubed As Double Implements IBus.VolumneInMetresQubed
        Get
           Return Math.Round(LengthInMetres * WidthInMetres * HeightInMetres  ,1)
        End Get
@@ -127,7 +127,7 @@
       Return true
 
    End Function
-      Private Function DimensionOK( byval dimension as Single ) as boolean
+      Private Function DimensionOK( byval dimension as Double ) as boolean
 
       Return dimension> 0.5
 

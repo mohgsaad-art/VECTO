@@ -10,18 +10,23 @@ Imports SpreadsheetLight
 Imports Newtonsoft.Json
 Imports VectoAuxiliaries
 
+
 Namespace Electrics
 
 Public Class CombinedAlternator
+
+ Private map As new List(Of ICombinedAlternatorMapRow)
 
 
   Private Alternators As New List(Of IAlternator)
   Private OriginalAlternators As New List(Of IAlternator)
 
   Private FilePath As String
+  Private altSignals As ICombinedAlternatorSignals
 
 
- public sub new( filePath as String)
+
+ public sub new( filePath as String, altSignals As ICombinedAlternatorSignals)
 
       Dim feedback As String = String.Empty
 
@@ -30,24 +35,63 @@ Public Class CombinedAlternator
         Else
           me.filePath = filePath
       End If
-      
+
+
+      Me.altSignals= altSignals
+
+
+      'IF file exists then read it otherwise create a default.
+
+      If File.Exists( filePath )  andAlso InitialiseMap( filePath) then
+
+        Initialise()
+
+        
+
+      else
+
+
+
+      End If
 
  End Sub
 
 
- Public Sub Clone( other As CombinedAlternator) 
+ private Function Initialise() As Boolean
 
+   'From the map we construct this CombinedAlternator object and original CombinedAlternator Object
+
+   Alternators.Clear
+   OriginalAlternators.Clear
+
+   'Set Number of alternators in AltSignals.
+   altSignals.NumberOfAlternators= map.Count/9
+
+
+
+   For Each alt As IEnumerable(Of ICombinedAlternatorMapRow)  In map.GroupBy( Function(g) g.AlternatorName)
+
+     Dim altName As String = alt.First().AlternatorName
+     Dim pulleyRatio As Single = alt.First().PulleyRatio
+
+
+     Dim alternator  As IAlternator = New Alternator(altSignals, alt.ToList())
+
+     Alternators.Add( alternator )
+
+
+   Next
+
+
+ End Function
+
+ Public Sub Clone( other As CombinedAlternator) 
 
     For Each Alternator As IAlternator In Alternators
 
      Alternator.Clone( other )
 
-
-
     Next
-
-
-
 
  End Sub
 
@@ -78,38 +122,64 @@ Public Class CombinedAlternator
    Return returnValue
 
 End Function
- Public Function Load(filePath As String) As Boolean 
+ private Function Load() As Boolean 
 
-    Dim returnValue As Boolean = True
-    Dim settings As JsonSerializerSettings = New JsonSerializerSettings()
-    Dim tmpAux As CombinedAlternator = New CombinedAlternator(filePath)
+      If Not InitialiseMap(filePath) then Return False
+      
 
-    settings.TypeNameHandling = TypeNameHandling.Objects
+      Return true
 
-     'JSON METHOD
-     Try
+ End Function
 
-       Dim output As String = File.ReadAllText(filePath)
+    'Initialises the map.
+    Public Function InitialiseMap(filePath As string) As Boolean 
 
+       Dim returnValue As Boolean = false
 
-       tmpAux = JsonConvert.DeserializeObject(Of CombinedAlternator)(output, settings)
+       If File.Exists(filePath) Then
+                Using sr As StreamReader = New StreamReader(filePath)
+                    'get array og lines fron csv
+                    Dim lines() As String = sr.ReadToEnd().Split(CType(Environment.NewLine, Char()), StringSplitOptions.RemoveEmptyEntries)
 
+                    'Must have at least 2 entries in map to make it usable [dont forget the header row]
+                    If (lines.Count() < 10) Then
+                        Throw New ArgumentException("Insufficient rows in csv to build a usable map")
+                    End If
 
+                    map = new  List(Of ICombinedAlternatorMapRow)
 
+                    Dim firstline As Boolean = True
 
-       'This is where we Assume values of loaded( Deserialized ) object.
-       Clone(tmpAux)
+                    For Each line As String In lines
+                        If Not firstline Then
 
-      Catch ex As Exception
+                        'Advanced Alternator Source Check.
+                        If line.contains("[MODELSOURCE") then Exit For
 
-        'TODO:Do something meaningfull here perhaps logging
+                            'split the line
+                            Dim elements() As String = line.Split(New Char() {","}, StringSplitOptions.RemoveEmptyEntries)
+                            '3 entries per line required
+                            If (elements.Length <> 5) Then
+                                Throw New ArgumentException("Incorrect number of values in csv file")
+                            End If
+                            'add values to map
 
-         returnValue = False
-      End Try
+                             map.Add( New CombinedAlternatorMapRow(elements(0),elements(1),elements(2),elements(3),elements(4)))
+
+                        Else
+                            firstline = False
+                        End If
+                    Next line
+                End Using
+                Return True
+            Else
+                Throw New ArgumentException("Supplied input file does not exist")
+            End If
 
     Return returnValue
 
-End Function
+
+  End Function
 
 
 

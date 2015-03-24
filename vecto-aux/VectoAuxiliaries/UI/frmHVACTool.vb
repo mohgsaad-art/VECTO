@@ -298,7 +298,33 @@ End Sub
       txtBusLength.Text = bus.LengthInMetres
       txtBusWidth.Text = bus.WidthInMetres
 
-       txtRegisteredPassengers.Focus()
+      ssmTOOL.GenInputs.BP_BusModel = bus.Model
+      ssmTOOL.GenInputs.BP_NumberOfPassengers= bus.RegisteredPassengers
+      ssmTOOL.GenInputs.BP_BusFloorType = bus.FloorType
+      ssmTOOL.GenInputs.BP_BusSurfaceAreaM2= bus.AreaInMetresSquared
+      ssmTOOL.GenInputs.BP_BusVolume = bus.VolumneInMetresQubed
+      ssmTOOL.GenInputs.BP_BusLength = bus.LengthInMetres
+      ssmTOOL.GenInputs.BP_BusWidth = bus.WidthInMetres
+
+
+      txtBusFloorSurfaceArea.Text= ssmTOOL.GenInputs.BP_BusFloorSurfaceArea
+      txtBusWindowSurfaceArea.text  = ssmTOOL.GenInputs.BP_BusWindowSurface
+
+     ' txtBusWidth.Refresh
+
+
+      'txtRegisteredPassengers.Focus()
+      'txtBusModel.focus()
+      'txtRegisteredPassengers.Focus()
+      'txtBusFloorType.focus()
+      'txtBusSurfaceArea.focus()
+      'txtBusVolume.focus()
+      'txtBusLength.focus()
+      'txtBusWidth.Focus()
+      'txtRegisteredPassengers.Focus()
+
+
+
 
   End If
 
