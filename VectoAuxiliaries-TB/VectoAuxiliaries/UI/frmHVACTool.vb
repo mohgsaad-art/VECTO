@@ -838,7 +838,7 @@ End Function
            Dim fi As TechListBenefitLine = ssmTOOL.TechList.TechLines.Find( Function(f) (f.Category= Category) AndAlso f.BenefitName= Benefit )
            fi.OnVehicle= onVehicle
           ' ssmTOOL.TechList.TechLines.First( Function(x)  x.BenefitName= benefit AndAlso x.Category=category).OnVehicle=onVehicle  
-           BindGrid 
+          ' BindGrid 
            gvTechBenefitLines.Refresh
           
 
@@ -874,8 +874,17 @@ End Sub
      If Not ssmTOOL.TechList.Add( GetTechLineFromPanel(), feedback) then
        MessageBox.Show( feedback )
        Else
+     
+
         BindGrid()
-  
+
+        'find new row
+        Dim ol As List(Of ITechListBenefitLine) =  ssmTOOL.TechList.TechLines.OrderBy( Function(x) x.Category ).ThenBy( Function(tb) tb.BenefitName).ToList()
+        Dim item As ITechListBenefitLine = ol.First( Function(x) x.Category=GetTechLineFromPanel().Category AndAlso  x.BenefitName= GetTechLineFromPanel().BenefitName)
+        Dim idx As integer = ol.IndexOf( item )
+ 
+        gvTechBenefitLines.FirstDisplayedScrollingRowIndex = idx
+
         cboCategory.DataSource= GetCategories()
   
         UpdateButtonText()
