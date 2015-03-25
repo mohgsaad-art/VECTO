@@ -23,30 +23,30 @@ Partial Class frmCombinedAlternators
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Me.TextBox2 = New System.Windows.Forms.TextBox()
-        Me.TextBox5 = New System.Windows.Forms.TextBox()
-        Me.TextBox8 = New System.Windows.Forms.TextBox()
+        Me.txt2K10Efficiency = New System.Windows.Forms.TextBox()
+        Me.txt2K60Efficiency = New System.Windows.Forms.TextBox()
+        Me.txt2K40Efficiency = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
-        Me.TextBox19 = New System.Windows.Forms.TextBox()
+        Me.txtPulleyRatio = New System.Windows.Forms.TextBox()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.grpTable2000PRM = New System.Windows.Forms.GroupBox()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.Label10 = New System.Windows.Forms.Label()
         Me.Label9 = New System.Windows.Forms.Label()
         Me.grpTable4000PRM = New System.Windows.Forms.GroupBox()
-        Me.TextBox1 = New System.Windows.Forms.TextBox()
-        Me.TextBox3 = New System.Windows.Forms.TextBox()
-        Me.TextBox4 = New System.Windows.Forms.TextBox()
+        Me.txt4K60Efficiency = New System.Windows.Forms.TextBox()
+        Me.txt4K10Efficiency = New System.Windows.Forms.TextBox()
+        Me.txt4K40Efficiency = New System.Windows.Forms.TextBox()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.Label11 = New System.Windows.Forms.Label()
         Me.grpTable6000PRM = New System.Windows.Forms.GroupBox()
-        Me.TextBox6 = New System.Windows.Forms.TextBox()
-        Me.TextBox7 = New System.Windows.Forms.TextBox()
-        Me.TextBox9 = New System.Windows.Forms.TextBox()
+        Me.txt6K60Efficiency = New System.Windows.Forms.TextBox()
+        Me.txt6K10Efficiency = New System.Windows.Forms.TextBox()
+        Me.txt6K40Efficiency = New System.Windows.Forms.TextBox()
         Me.Label12 = New System.Windows.Forms.Label()
         Me.Label13 = New System.Windows.Forms.Label()
         Me.Label14 = New System.Windows.Forms.Label()
@@ -54,6 +54,7 @@ Partial Class frmCombinedAlternators
         Me.Label16 = New System.Windows.Forms.Label()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.tabInputs = New System.Windows.Forms.TabPage()
+        Me.btnClearForm = New System.Windows.Forms.Button()
         Me.gvAlternators = New System.Windows.Forms.DataGridView()
         Me.Label18 = New System.Windows.Forms.Label()
         Me.btnUpdate = New System.Windows.Forms.Button()
@@ -63,6 +64,8 @@ Partial Class frmCombinedAlternators
         Me.btnSave = New System.Windows.Forms.Button()
         Me.btnCancel = New System.Windows.Forms.Button()
         Me.ErrorProvider1 = New System.Windows.Forms.ErrorProvider(Me.components)
+        Me.lblAlternatorName = New System.Windows.Forms.Label()
+        Me.txtAlternatorName = New System.Windows.Forms.TextBox()
         Me.grpTable2000PRM.SuspendLayout
         Me.grpTable4000PRM.SuspendLayout
         Me.grpTable6000PRM.SuspendLayout
@@ -72,29 +75,29 @@ Partial Class frmCombinedAlternators
         CType(Me.ErrorProvider1,System.ComponentModel.ISupportInitialize).BeginInit
         Me.SuspendLayout
         '
-        'TextBox2
+        'txt2K10Efficiency
         '
-        Me.TextBox2.ForeColor = System.Drawing.Color.Black
-        Me.TextBox2.Location = New System.Drawing.Point(78, 57)
-        Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.Size = New System.Drawing.Size(50, 20)
-        Me.TextBox2.TabIndex = 1
+        Me.txt2K10Efficiency.ForeColor = System.Drawing.Color.Black
+        Me.txt2K10Efficiency.Location = New System.Drawing.Point(78, 57)
+        Me.txt2K10Efficiency.Name = "txt2K10Efficiency"
+        Me.txt2K10Efficiency.Size = New System.Drawing.Size(50, 20)
+        Me.txt2K10Efficiency.TabIndex = 1
         '
-        'TextBox5
+        'txt2K60Efficiency
         '
-        Me.TextBox5.ForeColor = System.Drawing.Color.Black
-        Me.TextBox5.Location = New System.Drawing.Point(78, 117)
-        Me.TextBox5.Name = "TextBox5"
-        Me.TextBox5.Size = New System.Drawing.Size(50, 20)
-        Me.TextBox5.TabIndex = 4
+        Me.txt2K60Efficiency.ForeColor = System.Drawing.Color.Black
+        Me.txt2K60Efficiency.Location = New System.Drawing.Point(78, 117)
+        Me.txt2K60Efficiency.Name = "txt2K60Efficiency"
+        Me.txt2K60Efficiency.Size = New System.Drawing.Size(50, 20)
+        Me.txt2K60Efficiency.TabIndex = 4
         '
-        'TextBox8
+        'txt2K40Efficiency
         '
-        Me.TextBox8.ForeColor = System.Drawing.Color.Black
-        Me.TextBox8.Location = New System.Drawing.Point(78, 85)
-        Me.TextBox8.Name = "TextBox8"
-        Me.TextBox8.Size = New System.Drawing.Size(50, 20)
-        Me.TextBox8.TabIndex = 7
+        Me.txt2K40Efficiency.ForeColor = System.Drawing.Color.Black
+        Me.txt2K40Efficiency.Location = New System.Drawing.Point(78, 85)
+        Me.txt2K40Efficiency.Name = "txt2K40Efficiency"
+        Me.txt2K40Efficiency.Size = New System.Drawing.Size(50, 20)
+        Me.txt2K40Efficiency.TabIndex = 7
         '
         'Label1
         '
@@ -116,17 +119,17 @@ Partial Class frmCombinedAlternators
         Me.Label2.TabIndex = 9
         Me.Label2.Text = "Efficiency"
         '
-        'TextBox19
+        'txtPulleyRatio
         '
-        Me.TextBox19.Location = New System.Drawing.Point(642, 97)
-        Me.TextBox19.Name = "TextBox19"
-        Me.TextBox19.Size = New System.Drawing.Size(68, 20)
-        Me.TextBox19.TabIndex = 26
+        Me.txtPulleyRatio.Location = New System.Drawing.Point(504, 25)
+        Me.txtPulleyRatio.Name = "txtPulleyRatio"
+        Me.txtPulleyRatio.Size = New System.Drawing.Size(68, 20)
+        Me.txtPulleyRatio.TabIndex = 26
         '
         'Label7
         '
         Me.Label7.AutoSize = true
-        Me.Label7.Location = New System.Drawing.Point(570, 97)
+        Me.Label7.Location = New System.Drawing.Point(432, 25)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(57, 13)
         Me.Label7.TabIndex = 27
@@ -135,9 +138,9 @@ Partial Class frmCombinedAlternators
         '
         'grpTable2000PRM
         '
-        Me.grpTable2000PRM.Controls.Add(Me.TextBox5)
-        Me.grpTable2000PRM.Controls.Add(Me.TextBox2)
-        Me.grpTable2000PRM.Controls.Add(Me.TextBox8)
+        Me.grpTable2000PRM.Controls.Add(Me.txt2K60Efficiency)
+        Me.grpTable2000PRM.Controls.Add(Me.txt2K10Efficiency)
+        Me.grpTable2000PRM.Controls.Add(Me.txt2K40Efficiency)
         Me.grpTable2000PRM.Controls.Add(Me.Label1)
         Me.grpTable2000PRM.Controls.Add(Me.Label2)
         Me.grpTable2000PRM.Controls.Add(Me.Label8)
@@ -184,9 +187,9 @@ Partial Class frmCombinedAlternators
         '
         'grpTable4000PRM
         '
-        Me.grpTable4000PRM.Controls.Add(Me.TextBox1)
-        Me.grpTable4000PRM.Controls.Add(Me.TextBox3)
-        Me.grpTable4000PRM.Controls.Add(Me.TextBox4)
+        Me.grpTable4000PRM.Controls.Add(Me.txt4K60Efficiency)
+        Me.grpTable4000PRM.Controls.Add(Me.txt4K10Efficiency)
+        Me.grpTable4000PRM.Controls.Add(Me.txt4K40Efficiency)
         Me.grpTable4000PRM.Controls.Add(Me.Label3)
         Me.grpTable4000PRM.Controls.Add(Me.Label4)
         Me.grpTable4000PRM.Controls.Add(Me.Label5)
@@ -201,29 +204,29 @@ Partial Class frmCombinedAlternators
         Me.grpTable4000PRM.TabStop = false
         Me.grpTable4000PRM.Text = " [  4000 RPM  ]"
         '
-        'TextBox1
+        'txt4K60Efficiency
         '
-        Me.TextBox1.ForeColor = System.Drawing.Color.Black
-        Me.TextBox1.Location = New System.Drawing.Point(78, 117)
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(50, 20)
-        Me.TextBox1.TabIndex = 4
+        Me.txt4K60Efficiency.ForeColor = System.Drawing.Color.Black
+        Me.txt4K60Efficiency.Location = New System.Drawing.Point(78, 117)
+        Me.txt4K60Efficiency.Name = "txt4K60Efficiency"
+        Me.txt4K60Efficiency.Size = New System.Drawing.Size(50, 20)
+        Me.txt4K60Efficiency.TabIndex = 4
         '
-        'TextBox3
+        'txt4K10Efficiency
         '
-        Me.TextBox3.ForeColor = System.Drawing.Color.Black
-        Me.TextBox3.Location = New System.Drawing.Point(78, 57)
-        Me.TextBox3.Name = "TextBox3"
-        Me.TextBox3.Size = New System.Drawing.Size(50, 20)
-        Me.TextBox3.TabIndex = 1
+        Me.txt4K10Efficiency.ForeColor = System.Drawing.Color.Black
+        Me.txt4K10Efficiency.Location = New System.Drawing.Point(78, 57)
+        Me.txt4K10Efficiency.Name = "txt4K10Efficiency"
+        Me.txt4K10Efficiency.Size = New System.Drawing.Size(50, 20)
+        Me.txt4K10Efficiency.TabIndex = 1
         '
-        'TextBox4
+        'txt4K40Efficiency
         '
-        Me.TextBox4.ForeColor = System.Drawing.Color.Black
-        Me.TextBox4.Location = New System.Drawing.Point(78, 85)
-        Me.TextBox4.Name = "TextBox4"
-        Me.TextBox4.Size = New System.Drawing.Size(50, 20)
-        Me.TextBox4.TabIndex = 7
+        Me.txt4K40Efficiency.ForeColor = System.Drawing.Color.Black
+        Me.txt4K40Efficiency.Location = New System.Drawing.Point(78, 85)
+        Me.txt4K40Efficiency.Name = "txt4K40Efficiency"
+        Me.txt4K40Efficiency.Size = New System.Drawing.Size(50, 20)
+        Me.txt4K40Efficiency.TabIndex = 7
         '
         'Label3
         '
@@ -277,9 +280,9 @@ Partial Class frmCombinedAlternators
         '
         'grpTable6000PRM
         '
-        Me.grpTable6000PRM.Controls.Add(Me.TextBox6)
-        Me.grpTable6000PRM.Controls.Add(Me.TextBox7)
-        Me.grpTable6000PRM.Controls.Add(Me.TextBox9)
+        Me.grpTable6000PRM.Controls.Add(Me.txt6K60Efficiency)
+        Me.grpTable6000PRM.Controls.Add(Me.txt6K10Efficiency)
+        Me.grpTable6000PRM.Controls.Add(Me.txt6K40Efficiency)
         Me.grpTable6000PRM.Controls.Add(Me.Label12)
         Me.grpTable6000PRM.Controls.Add(Me.Label13)
         Me.grpTable6000PRM.Controls.Add(Me.Label14)
@@ -294,29 +297,29 @@ Partial Class frmCombinedAlternators
         Me.grpTable6000PRM.TabStop = false
         Me.grpTable6000PRM.Text = " [  6000 RPM  ]"
         '
-        'TextBox6
+        'txt6K60Efficiency
         '
-        Me.TextBox6.ForeColor = System.Drawing.Color.Black
-        Me.TextBox6.Location = New System.Drawing.Point(78, 117)
-        Me.TextBox6.Name = "TextBox6"
-        Me.TextBox6.Size = New System.Drawing.Size(50, 20)
-        Me.TextBox6.TabIndex = 4
+        Me.txt6K60Efficiency.ForeColor = System.Drawing.Color.Black
+        Me.txt6K60Efficiency.Location = New System.Drawing.Point(78, 117)
+        Me.txt6K60Efficiency.Name = "txt6K60Efficiency"
+        Me.txt6K60Efficiency.Size = New System.Drawing.Size(50, 20)
+        Me.txt6K60Efficiency.TabIndex = 4
         '
-        'TextBox7
+        'txt6K10Efficiency
         '
-        Me.TextBox7.ForeColor = System.Drawing.Color.Black
-        Me.TextBox7.Location = New System.Drawing.Point(78, 57)
-        Me.TextBox7.Name = "TextBox7"
-        Me.TextBox7.Size = New System.Drawing.Size(50, 20)
-        Me.TextBox7.TabIndex = 1
+        Me.txt6K10Efficiency.ForeColor = System.Drawing.Color.Black
+        Me.txt6K10Efficiency.Location = New System.Drawing.Point(78, 57)
+        Me.txt6K10Efficiency.Name = "txt6K10Efficiency"
+        Me.txt6K10Efficiency.Size = New System.Drawing.Size(50, 20)
+        Me.txt6K10Efficiency.TabIndex = 1
         '
-        'TextBox9
+        'txt6K40Efficiency
         '
-        Me.TextBox9.ForeColor = System.Drawing.Color.Black
-        Me.TextBox9.Location = New System.Drawing.Point(78, 85)
-        Me.TextBox9.Name = "TextBox9"
-        Me.TextBox9.Size = New System.Drawing.Size(50, 20)
-        Me.TextBox9.TabIndex = 7
+        Me.txt6K40Efficiency.ForeColor = System.Drawing.Color.Black
+        Me.txt6K40Efficiency.Location = New System.Drawing.Point(78, 85)
+        Me.txt6K40Efficiency.Name = "txt6K40Efficiency"
+        Me.txt6K40Efficiency.Size = New System.Drawing.Size(50, 20)
+        Me.txt6K40Efficiency.TabIndex = 7
         '
         'Label12
         '
@@ -375,11 +378,14 @@ Partial Class frmCombinedAlternators
         Me.TabControl1.Location = New System.Drawing.Point(42, 29)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(821, 477)
+        Me.TabControl1.Size = New System.Drawing.Size(700, 477)
         Me.TabControl1.TabIndex = 33
         '
         'tabInputs
         '
+        Me.tabInputs.Controls.Add(Me.txtAlternatorName)
+        Me.tabInputs.Controls.Add(Me.lblAlternatorName)
+        Me.tabInputs.Controls.Add(Me.btnClearForm)
         Me.tabInputs.Controls.Add(Me.gvAlternators)
         Me.tabInputs.Controls.Add(Me.Label18)
         Me.tabInputs.Controls.Add(Me.btnUpdate)
@@ -387,16 +393,25 @@ Partial Class frmCombinedAlternators
         Me.tabInputs.Controls.Add(Me.txtIndex)
         Me.tabInputs.Controls.Add(Me.grpTable2000PRM)
         Me.tabInputs.Controls.Add(Me.grpTable6000PRM)
-        Me.tabInputs.Controls.Add(Me.TextBox19)
+        Me.tabInputs.Controls.Add(Me.txtPulleyRatio)
         Me.tabInputs.Controls.Add(Me.grpTable4000PRM)
         Me.tabInputs.Controls.Add(Me.Label7)
         Me.tabInputs.Location = New System.Drawing.Point(4, 22)
         Me.tabInputs.Name = "tabInputs"
         Me.tabInputs.Padding = New System.Windows.Forms.Padding(3)
-        Me.tabInputs.Size = New System.Drawing.Size(813, 451)
+        Me.tabInputs.Size = New System.Drawing.Size(692, 451)
         Me.tabInputs.TabIndex = 0
         Me.tabInputs.Text = " Inputs "
         Me.tabInputs.UseVisualStyleBackColor = true
+        '
+        'btnClearForm
+        '
+        Me.btnClearForm.Location = New System.Drawing.Point(589, 140)
+        Me.btnClearForm.Name = "btnClearForm"
+        Me.btnClearForm.Size = New System.Drawing.Size(75, 23)
+        Me.btnClearForm.TabIndex = 39
+        Me.btnClearForm.Text = "Clear Form"
+        Me.btnClearForm.UseVisualStyleBackColor = true
         '
         'gvAlternators
         '
@@ -418,7 +433,7 @@ Partial Class frmCombinedAlternators
         '
         'btnUpdate
         '
-        Me.btnUpdate.Location = New System.Drawing.Point(642, 136)
+        Me.btnUpdate.Location = New System.Drawing.Point(589, 73)
         Me.btnUpdate.Name = "btnUpdate"
         Me.btnUpdate.Size = New System.Drawing.Size(75, 23)
         Me.btnUpdate.TabIndex = 35
@@ -428,7 +443,7 @@ Partial Class frmCombinedAlternators
         'Label17
         '
         Me.Label17.AutoSize = true
-        Me.Label17.Location = New System.Drawing.Point(43, 25)
+        Me.Label17.Location = New System.Drawing.Point(38, 25)
         Me.Label17.Name = "Label17"
         Me.Label17.Size = New System.Drawing.Size(33, 13)
         Me.Label17.TabIndex = 34
@@ -436,7 +451,7 @@ Partial Class frmCombinedAlternators
         '
         'txtIndex
         '
-        Me.txtIndex.Location = New System.Drawing.Point(82, 22)
+        Me.txtIndex.Location = New System.Drawing.Point(77, 22)
         Me.txtIndex.Name = "txtIndex"
         Me.txtIndex.ReadOnly = true
         Me.txtIndex.Size = New System.Drawing.Size(47, 20)
@@ -454,7 +469,7 @@ Partial Class frmCombinedAlternators
         '
         'btnSave
         '
-        Me.btnSave.Location = New System.Drawing.Point(667, 523)
+        Me.btnSave.Location = New System.Drawing.Point(550, 523)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(75, 23)
         Me.btnSave.TabIndex = 34
@@ -463,7 +478,7 @@ Partial Class frmCombinedAlternators
         '
         'btnCancel
         '
-        Me.btnCancel.Location = New System.Drawing.Point(776, 523)
+        Me.btnCancel.Location = New System.Drawing.Point(663, 523)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(75, 23)
         Me.btnCancel.TabIndex = 35
@@ -474,11 +489,27 @@ Partial Class frmCombinedAlternators
         '
         Me.ErrorProvider1.ContainerControl = Me
         '
+        'lblAlternatorName
+        '
+        Me.lblAlternatorName.AutoSize = true
+        Me.lblAlternatorName.Location = New System.Drawing.Point(156, 25)
+        Me.lblAlternatorName.Name = "lblAlternatorName"
+        Me.lblAlternatorName.Size = New System.Drawing.Size(80, 13)
+        Me.lblAlternatorName.TabIndex = 40
+        Me.lblAlternatorName.Text = "AlternatorName"
+        '
+        'txtAlternatorName
+        '
+        Me.txtAlternatorName.Location = New System.Drawing.Point(242, 22)
+        Me.txtAlternatorName.Name = "txtAlternatorName"
+        Me.txtAlternatorName.Size = New System.Drawing.Size(160, 20)
+        Me.txtAlternatorName.TabIndex = 41
+        '
         'frmCombinedAlternators
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(935, 579)
+        Me.ClientSize = New System.Drawing.Size(774, 579)
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnSave)
         Me.Controls.Add(Me.TabControl1)
@@ -500,30 +531,30 @@ Partial Class frmCombinedAlternators
         Me.ResumeLayout(false)
 
 End Sub
-    Friend WithEvents TextBox2 As System.Windows.Forms.TextBox
-    Friend WithEvents TextBox5 As System.Windows.Forms.TextBox
-    Friend WithEvents TextBox8 As System.Windows.Forms.TextBox
+    Friend WithEvents txt2K10Efficiency As System.Windows.Forms.TextBox
+    Friend WithEvents txt2K60Efficiency As System.Windows.Forms.TextBox
+    Friend WithEvents txt2K40Efficiency As System.Windows.Forms.TextBox
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents Label2 As System.Windows.Forms.Label
-    Friend WithEvents TextBox19 As System.Windows.Forms.TextBox
+    Friend WithEvents txtPulleyRatio As System.Windows.Forms.TextBox
     Friend WithEvents Label7 As System.Windows.Forms.Label
     Friend WithEvents grpTable2000PRM As System.Windows.Forms.GroupBox
     Friend WithEvents Label10 As System.Windows.Forms.Label
     Friend WithEvents Label9 As System.Windows.Forms.Label
     Friend WithEvents Label8 As System.Windows.Forms.Label
     Friend WithEvents grpTable4000PRM As System.Windows.Forms.GroupBox
-    Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
-    Friend WithEvents TextBox3 As System.Windows.Forms.TextBox
-    Friend WithEvents TextBox4 As System.Windows.Forms.TextBox
+    Friend WithEvents txt4K60Efficiency As System.Windows.Forms.TextBox
+    Friend WithEvents txt4K10Efficiency As System.Windows.Forms.TextBox
+    Friend WithEvents txt4K40Efficiency As System.Windows.Forms.TextBox
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents Label5 As System.Windows.Forms.Label
     Friend WithEvents Label6 As System.Windows.Forms.Label
     Friend WithEvents Label11 As System.Windows.Forms.Label
     Friend WithEvents grpTable6000PRM As System.Windows.Forms.GroupBox
-    Friend WithEvents TextBox6 As System.Windows.Forms.TextBox
-    Friend WithEvents TextBox7 As System.Windows.Forms.TextBox
-    Friend WithEvents TextBox9 As System.Windows.Forms.TextBox
+    Friend WithEvents txt6K60Efficiency As System.Windows.Forms.TextBox
+    Friend WithEvents txt6K10Efficiency As System.Windows.Forms.TextBox
+    Friend WithEvents txt6K40Efficiency As System.Windows.Forms.TextBox
     Friend WithEvents Label12 As System.Windows.Forms.Label
     Friend WithEvents Label13 As System.Windows.Forms.Label
     Friend WithEvents Label14 As System.Windows.Forms.Label
@@ -540,4 +571,7 @@ End Sub
     Friend WithEvents btnSave As System.Windows.Forms.Button
     Friend WithEvents btnCancel As System.Windows.Forms.Button
     Friend WithEvents ErrorProvider1 As System.Windows.Forms.ErrorProvider
+    Friend WithEvents btnClearForm As System.Windows.Forms.Button
+    Friend WithEvents txtAlternatorName As System.Windows.Forms.TextBox
+    Friend WithEvents lblAlternatorName As System.Windows.Forms.Label
 End Class

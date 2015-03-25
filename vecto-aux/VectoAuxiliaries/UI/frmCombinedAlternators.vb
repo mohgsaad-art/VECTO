@@ -2,6 +2,7 @@
 Imports System.Windows.Forms
 Imports VectoAuxiliaries.Electrics
 Imports System.ComponentModel
+Imports VectoAuxiliaries.Hvac
 
 
 
@@ -12,9 +13,7 @@ Public Class frmCombinedAlternators
   Private altSignals As ICombinedAlternatorSignals
   Protected gbColor As System.Drawing.Color = Color.LightGreen
 
-
-
-
+  'Constructor
   Public Sub New(aaltPath As String, altSignals As ICombinedAlternatorSignals)
 
      ' This call is required by the designer.
@@ -30,17 +29,13 @@ Public Class frmCombinedAlternators
 
   End Sub
 
+
+  'General Helpders
   Private Sub BindGrid()
 
- ' New BindingList(Of ITechListBenefitLine)(ssmTOOL.TechList.TechLines.OrderBy( Function(o) o.Category).ThenBy( Function(t) t.BenefitName).ToList())
-     'gvAlternators.DataSource = New BindingList(Of combinedAlternator)( combinedAlt.Alternators)
-
-
-    ' gvAlternators.Refresh()
-
+     gvAlternators.DataSource = New BindingList(Of IAlternator)( combinedAlt.Alternators )
 
   End Sub
-
   Private Sub SetupControls()
 
      'gvAlternators
@@ -149,6 +144,7 @@ End Function
      Return True
 
 End Function
+
   Private Function IsNumberBetweenZeroandOne(test As String) As Boolean
 
      'Is this numeric sanity check.
@@ -159,6 +155,43 @@ End Function
      If Not Double.TryParse(test, number) Then Return False
 
      If number < 0 OrElse number > 1 Then Return False
+
+     Return True
+
+End Function
+  Private Function IsNumberBetweenOverZeroAndLessThan100(txtBox As TextBox ) As Boolean
+
+     'Is this numeric sanity check.
+     If Not IsNumeric(txtBox.Text) Then 
+          ErrorProvider1.SetError(txtBox,"Please enter a number")
+          return false
+       else
+
+     End If
+
+
+     Return False
+
+     Dim number As Single = 0
+
+     If Not Double.TryParse(txtBox.Text, number) Then 
+          ErrorProvider1.SetError(txtBox,"Please enter a number >0 and <100")
+          Return False
+
+        Else
+          ErrorProvider1.SetError(txtBox,String.Empty)        
+     End If
+
+     If number <= 0 OrElse number >=100 Then 
+
+        ErrorProvider1.SetError(txtBox,"Please enter a number >0 and <100")
+        Return False
+        Else 
+         ErrorProvider1.SetError(txtBox,String.Empty)
+        Return true
+
+     End If
+
 
      Return True
 
@@ -188,9 +221,10 @@ End Function
   End Function
 
 
+  'Form Events
 
-
-
+  
+  'Form Non Button Events
   Private Sub groupBoxUserInput_Paint(sender As Object, e As Windows.Forms.PaintEventArgs) Handles grpTable2000PRM.Paint, grpTable6000PRM.Paint, grpTable4000PRM.Paint
 
 
@@ -228,7 +262,7 @@ End Function
 
 
 
-
+  'Grid Events
   Private Sub gvAlternators_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles gvAlternators.CellClick
 
      If e.ColumnIndex < 0 OrElse e.RowIndex < 0 Then Return
@@ -269,6 +303,187 @@ End Function
 End Sub
 
 
+
+  Private sub FillEditPanel( index  as integer )
+
+     Dim alt As IAlternator
+     Dim alternatorName  As String = gvAlternators.Rows(index).Cells("AlternatorName").Value
+
+     alt = combinedAlt.Alternators.First( Function(f) f.AlternatorName=alternatorName )
+
+     txtIndex.Text          = index
+     txtAlternatorName.Text = alt.AlternatorName
+     txt2K10Efficiency.Text = alt.InputTable2000.First( Function(x) x.Amps=10).Eff
+     txt2K40Efficiency.Text = alt.InputTable2000.First( Function(x) x.Amps=40).Eff
+     txt2K60Efficiency.Text = alt.InputTable2000.First( Function(x) x.Amps=60).Eff
+                      
+     txt4K10Efficiency.Text = alt.InputTable4000.First( Function(x) x.Amps=10).Eff
+     txt4K40Efficiency.Text = alt.InputTable4000.First( Function(x) x.Amps=40).Eff
+     txt4K60Efficiency.Text = alt.InputTable4000.First( Function(x) x.Amps=60).Eff
+              
+     txt6K10Efficiency.Text = alt.InputTable6000.First( Function(x) x.Amps=10).Eff
+     txt6K40Efficiency.Text = alt.InputTable6000.First( Function(x) x.Amps=40).Eff
+     txt6K60Efficiency.Text = alt.InputTable6000.First( Function(x) x.Amps=60).Eff
+          
+     txtPulleyRatio   .Text = alt.PulleyRatio
+
+
+ End Sub
+
+
+  public  Sub  UpdateButtonText()
+
+    If txtIndex.Text=String.Empty then
+          btnUpdate.Text = "Add"
+      Else     
+          btnUpdate.Text = "Update"
+      End if
+
+  End sub
+
+
+  Private Sub gvAlternators_CellDoubleClick( sender As Object,  e As DataGridViewCellEventArgs) Handles gvAlternators.CellDoubleClick
+ 
+       If  gvAlternators.SelectedCells.Count<1 then Return
+       
+   
+        Dim row As Integer = gvAlternators.SelectedCells(0).OwningRow.Index
+   
+        Dim alternatorName  As String
+ 
+        alternatorName = gvAlternators.Rows(row).Cells("AlternatorName").Value
+    
+        Dim alt as IAlternator = combinedAlt.Alternators.First( Function(w) w.AlternatorName= alternatorName)
+  
+ 
+        FillEditPanel( row )
+   
+        UpdateButtonText()
+ 
+ 
+ End Sub
+
+ 'Button Events
+  Private Sub btnClearForm_Click( sender As Object,  e As EventArgs) Handles btnClearForm.Click
+ 
+     ClearEditPanel()
+     UpdateButtonText()
+ 
+ End Sub
+
+  'List Management
+  Private Sub ClearEditPanel()
+  
+     txtIndex.Text          = String.Empty
+     txt2K10Efficiency.Text = string.Empty
+     txt2K40Efficiency.Text = string.Empty
+     txt2K60Efficiency.Text = string.Empty
+                             
+     txt4K10Efficiency.Text = string.Empty
+     txt4K40Efficiency.Text = string.Empty
+     txt4K60Efficiency.Text = string.Empty
+                             
+     txt6K10Efficiency.Text = string.Empty
+     txt6K40Efficiency.Text = string.Empty
+     txt6K60Efficiency.Text = string.Empty
+                             
+     txtPulleyRatio   .Text = string.Empty
+
+  
+  End Sub
+
+
+public Function Validate_UpdatePanel() As Boolean
+
+  Dim returnResult As Boolean = True
+
+   IsEmptyString(txtAlternatorName.Text, txtAlternatorName,"Please enter a name for the alternator, names must be unique", returnResult)
+
+   If Not IsNumberBetweenOverZeroAndLessThan100(txt2K10Efficiency) then   returnResult = False
+   If Not IsNumberBetweenOverZeroAndLessThan100(txt2K40Efficiency) then   returnResult = False
+   If Not IsNumberBetweenOverZeroAndLessThan100(txt2K60Efficiency) then   returnResult = False
+
+   If Not IsNumberBetweenOverZeroAndLessThan100(txt4K10Efficiency) then   returnResult = False
+   If Not IsNumberBetweenOverZeroAndLessThan100(txt4K40Efficiency) then   returnResult = False
+   If Not IsNumberBetweenOverZeroAndLessThan100(txt4K60Efficiency) then   returnResult = False
+
+   If Not IsNumberBetweenOverZeroAndLessThan100(txt6K10Efficiency) then   returnResult = False
+   If Not IsNumberBetweenOverZeroAndLessThan100(txt6K40Efficiency) then   returnResult = False
+   If Not IsNumberBetweenOverZeroAndLessThan100(txt6K60Efficiency) then   returnResult = False  
+  
+   If Not IsPostiveNumber(txtPulleyRatio.text) then
+      ErrorProvider1.SetError(txtPulleyRatio,"Please enter a sensible positive number")
+      returnResult=False
+    Else
+      ErrorProvider1.SetError(txtPulleyRatio,String.Empty)
+   End If
+
+  Return returnResult
+
+End Function
+
+public function GetAlternatorFromPanel() As List(Of ICombinedAlternatorMapRow )
+
+
+
+  Dim newAlt As New List(Of ICombinedAlternatorMapRow)
+
+  newAlt.Add( New CombinedAlternatorMapRow(txtAlternatorName.Text, 2000,10,txt2K10Efficiency.Text,txtPulleyRatio.Text))
+  newAlt.Add( New CombinedAlternatorMapRow(txtAlternatorName.Text, 2000,40,txt2K40Efficiency.Text,txtPulleyRatio.Text))
+  newAlt.Add( New CombinedAlternatorMapRow(txtAlternatorName.Text, 2000,60,txt2K60Efficiency.Text,txtPulleyRatio.Text))
+
+  newAlt.Add( New CombinedAlternatorMapRow(txtAlternatorName.Text, 4000,10,txt4K10Efficiency.Text,txtPulleyRatio.Text))
+  newAlt.Add( New CombinedAlternatorMapRow(txtAlternatorName.Text, 4000,40,txt4K40Efficiency.Text,txtPulleyRatio.Text))
+  newAlt.Add( New CombinedAlternatorMapRow(txtAlternatorName.Text, 4000,60,txt4K60Efficiency.Text,txtPulleyRatio.Text))
+
+
+  newAlt.Add( New CombinedAlternatorMapRow(txtAlternatorName.Text, 6000,10,txt6K10Efficiency.Text,txtPulleyRatio.Text))
+  newAlt.Add( New CombinedAlternatorMapRow(txtAlternatorName.Text, 6000,40,txt6K40Efficiency.Text,txtPulleyRatio.Text))
+  newAlt.Add( New CombinedAlternatorMapRow(txtAlternatorName.Text, 6000,60,txt6K60Efficiency.Text,txtPulleyRatio.Text))
+
+
+
+  Return newAlt
+
+
+End Function
+
+Private Sub btnUpdate_Click( sender As Object,  e As EventArgs) Handles btnUpdate.Click
+
+   
+    Dim feedback As String = String.Empty
+  
+    If NOT Validate_UpdatePanel() then Return
+    
+    If txtIndex.Text.Trim.Length=0 then 
+    'This is an Add
+       If Not combinedAlt.AddAlternator( GetAlternatorFromPanel(), feedback) then
+          MessageBox.Show( feedback )
+       Else
+     
+
+        BindGrid()
+  
+        UpdateButtonText()
+  
+     End if
+  
+    Else
+    'This is an update
+      If Not combinedAlt.UpdateAlternator(  GetAlternatorFromPanel() , feedback) then
+          MessageBox.Show( feedback )
+       Else
+         BindGrid()
+         ClearEditPanel()
+         UpdateButtonText()
+        
+      End If
+  
+    End If
+
+
+
+End Sub
 
 
 

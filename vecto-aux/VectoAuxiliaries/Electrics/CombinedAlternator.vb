@@ -1,4 +1,4 @@
-﻿
+﻿Imports VectoAuxiliaries.Electrics
 Imports System
 Imports System.Collections.Generic
 Imports System.Linq
@@ -98,16 +98,13 @@ Public Class CombinedAlternator
 
 
  End Sub
+
  private Function Initialise() As Boolean
 
    'From the map we construct this CombinedAlternator object and original CombinedAlternator Object
 
    Alternators.Clear
    OriginalAlternators.Clear
-
-   'Set Number of alternators in AltSignals.
-   altSignals.NumberOfAlternators= map.Count/9
-
 
 
    For Each alt As IEnumerable(Of ICombinedAlternatorMapRow)  In map.GroupBy( Function(g) g.AlternatorName)
@@ -123,8 +120,32 @@ Public Class CombinedAlternator
 
    Next
 
+   Return true
 
  End Function
+
+ private Function AddNewAlternator( list As List(Of ICombinedAlternatorMapRow), ByRef feeback As string) As Boolean
+
+     Dim returnValue As Boolean = true
+    
+     Dim altName As String = list.First().AlternatorName
+     Dim pulleyRatio As Single = list.First().PulleyRatio
+
+     'Check alt does not already exist in list
+     If Alternators.where( Function(w) w.AlternatorName=altName).Count>0 then
+       feeback="This alternator already exists in in the list, operation not completed."
+       Return False
+     End If
+
+     Dim alternator  As IAlternator = New Alternator(altSignals, list.ToList())
+
+     Alternators.Add( alternator )
+
+
+   Return returnValue
+
+ End Function
+
  Public Sub Clone( other As CombinedAlternator) 
 
     For Each Alternator As IAlternator In Alternators
@@ -158,13 +179,21 @@ Public Class CombinedAlternator
 
  End Function
 
- Public Function AddAlternator( item As IAlternator, byref feedback as string) As Boolean
+ Public Function AddAlternator( rows As List( Of ICombinedAlternatorMapRow)  , byref feedback as string) As Boolean
 
-    
+       If Not   AddNewAlternator( rows, feedback )
+         feedback=String.Format("Unable to add new alternator : {0}", feedback)
+         Return false
+       End If
+
+       Return true
 
  End Function
 
- Public Function UpdateAlternator( item As IAlternator , byref feedback as string ) As Boolean
+ Public Function UpdateAlternator(  rows As List( Of ICombinedAlternatorMapRow) , byref feedback as string ) As Boolean
+
+
+    
 
 
 
