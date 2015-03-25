@@ -33,7 +33,7 @@ Public Class frmCombinedAlternators
   Private Sub BindGrid()
 
  ' New BindingList(Of ITechListBenefitLine)(ssmTOOL.TechList.TechLines.OrderBy( Function(o) o.Category).ThenBy( Function(t) t.BenefitName).ToList())
-     gvAlternators.DataSource = New BindingList(Of combinedAlternator)( combinedAlt.Alternators)
+     'gvAlternators.DataSource = New BindingList(Of combinedAlternator)( combinedAlt.Alternators)
 
 
     ' gvAlternators.Refresh()
