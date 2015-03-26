@@ -144,6 +144,86 @@ Namespace UnitTests
 
   End Sub
 
+  <Test()> _
+  <TestCase(1,2,50f)> _
+  <TestCase(1,4,70)> _
+  <TestCase(1,6,60)> _
+  <TestCase(2,2,80)> _
+  <TestCase(2,4,40)> _
+  <TestCase(2,6,60)> _
+  <TestCase(3,2,55)> _
+  <TestCase(3,4,7.75f)> _
+  <TestCase(3,6,76.875f)> _
+  <TestCase(4,2,47.75f)> _
+  <TestCase(4,4,37)> _
+  <TestCase(4,6,63)> 
+  Public Sub Interpolate4Table4( alt As Integer, rpmK As integer, expected As single)
+
+   Dim interpValue As Single
+
+   Select Case alt
+
+    Case 1
+      
+       Select Case rpmK
+          
+         Case 2
+              interpValue= InterpAltUserInputs.Iterpolate( Alt1ExpectedTable2000,42.5)
+         Case 4
+              interpValue= InterpAltUserInputs.Iterpolate( Alt1ExpectedTable4000,42.5)
+         Case 6
+              interpValue= InterpAltUserInputs.Iterpolate( Alt1ExpectedTable6000,42.5)
+
+       End Select
+
+
+    Case 2
+
+       Select Case rpmK
+          
+         Case 2
+              interpValue= InterpAltUserInputs.Iterpolate( Alt2ExpectedTable2000,42.5)
+         Case 4                                               
+              interpValue= InterpAltUserInputs.Iterpolate( Alt2ExpectedTable4000,42.5)
+         Case 6                                               
+              interpValue= InterpAltUserInputs.Iterpolate( Alt2ExpectedTable6000,42.5)
+
+       End Select
+
+    Case 3
+
+       Select Case rpmK
+          
+         Case 2
+              interpValue= InterpAltUserInputs.Iterpolate( Alt3ExpectedTable2000,42.5)
+         Case 4                                               
+              interpValue= InterpAltUserInputs.Iterpolate( Alt3ExpectedTable4000,42.5)
+         Case 6                                               
+              interpValue= InterpAltUserInputs.Iterpolate( Alt3ExpectedTable6000,42.5)
+
+       End Select
+
+    Case 4
+
+       Select Case rpmK
+          
+         Case 2
+              interpValue= InterpAltUserInputs.Iterpolate( Alt4ExpectedTable2000,42.5)
+         Case 4                                               
+              interpValue= InterpAltUserInputs.Iterpolate( Alt4ExpectedTable4000,42.5)
+         Case 6                                               
+              interpValue= InterpAltUserInputs.Iterpolate( Alt4ExpectedTable6000,42.5)
+
+       End Select
+
+   End Select
+
+
+       Assert.AreEqual( interpValue, expected)
+
+
+  End Sub
+
 
   <Test()>
   Public Sub Alt1TableConstructTest()
