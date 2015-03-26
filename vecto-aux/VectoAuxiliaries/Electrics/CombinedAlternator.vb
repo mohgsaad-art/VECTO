@@ -25,6 +25,16 @@ Public Class CombinedAlternator
   Private altSignals As ICombinedAlternatorSignals
 
 
+
+ Public Function GetEfficiency( CrankRPM As Single , AmpsDemand  As Single ) As Single
+
+    altSignals.CrankRPM = CrankRPM
+    altSignals.CurrentDemandAmps = AmpsDemand
+
+    Return  Alternators.Average( Function(a) a.Efficiency)
+
+ End Function
+
  'Constructors
  public sub new( filePath as String, altSignals As ICombinedAlternatorSignals)
 
@@ -192,28 +202,31 @@ Public Class CombinedAlternator
 
  Public Function UpdateAlternator(  rows As List( Of ICombinedAlternatorMapRow) , byref feedback as string ) As Boolean
 
+       Dim altName As String = rows.First.AlternatorName
+       Dim altToUpd As IAlternator = Alternators.First( Function(w) w.AlternatorName = altName)
 
-    
+       If Not DeleteAlternator(altName, feedback) then
+          feedback= feedback
+          Return false
 
+       End If
+
+       'Re.create alternator.
+
+       Dim replacementAlt As New Alternator( altSignals, rows )
+       Alternators.Add( replacementAlt)
+
+       Return true
 
 
  End Function
 
  'Validation Helpers
-  Function PanelisValid( forAdd As Boolean, ByRef feedback As string ) As Boolean
 
-    Dim returnValue As Boolean = true
-
-
-
-    Return returnValue
-
-
-  End Function
 
 
    'Persistance Functions
- Public Function Save(filePath As String) As Boolean
+  Public Function Save(filePath As String) As Boolean
 
 
    Dim returnValue As Boolean = True
@@ -237,14 +250,14 @@ Public Class CombinedAlternator
    Return returnValue
 
 End Function
- private Function Load() As Boolean 
+  private Function Load() As Boolean 
 
       If Not InitialiseMap(filePath) then Return False
       
 
       Return true
 
- End Function
+  End Function
 
   'Initialises the map.
   Public Function InitialiseMap(filePath As string) As Boolean 
@@ -299,7 +312,7 @@ End Function
 
 
 
-End Class
+  End Class
 
 
 End Namespace

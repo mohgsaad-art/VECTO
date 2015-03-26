@@ -33,7 +33,7 @@ Public Class frmCombinedAlternators
   'General Helpders
   Private Sub BindGrid()
 
-     gvAlternators.DataSource = New BindingList(Of IAlternator)( combinedAlt.Alternators )
+     gvAlternators.DataSource = New BindingList(Of IAlternator)( combinedAlt.Alternators.OrderBy( Function(o) o.AlternatorName ).ToList())
 
   End Sub
   Private Sub SetupControls()
@@ -166,11 +166,11 @@ End Function
           ErrorProvider1.SetError(txtBox,"Please enter a number")
           return false
        else
-
+        ErrorProvider1.SetError(txtBox,"")
      End If
 
 
-     Return False
+
 
      Dim number As Single = 0
 
@@ -259,7 +259,6 @@ End Function
             gfx.DrawLine(p, e.ClipRectangle.Width - 2, e.ClipRectangle.Height - 2, 0, e.ClipRectangle.Height - 2)
 
   End Sub
-
 
 
   'Grid Events
@@ -389,6 +388,19 @@ End Sub
                              
      txtPulleyRatio   .Text = string.Empty
 
+     ErrorProvider1.SetError(txtAlternatorName    , String.empty)
+     ErrorProvider1.SetError(txt2K10Efficiency    , String.empty)
+     ErrorProvider1.SetError(txt2K40Efficiency    , String.empty)
+     ErrorProvider1.SetError(txt2K60Efficiency    , String.empty)
+     ErrorProvider1.SetError(txt4K10Efficiency    , String.empty)
+     ErrorProvider1.SetError(txt4K40Efficiency    , String.empty)
+     ErrorProvider1.SetError(txt4K60Efficiency    , String.empty)
+     ErrorProvider1.SetError(txt6K10Efficiency    , String.empty)
+     ErrorProvider1.SetError(txt6K40Efficiency    , String.empty)
+     ErrorProvider1.SetError(txt6K60Efficiency    , String.empty)
+
+     ErrorProvider1.SetError(txtPulleyRatio       , String.empty)
+
   
   End Sub
 
@@ -486,6 +498,17 @@ Private Sub btnUpdate_Click( sender As Object,  e As EventArgs) Handles btnUpdat
 End Sub
 
 
+
+
+Private Sub Validating( sender As Object,  e As CancelEventArgs) Handles txtAlternatorName.Validating, txtPulleyRatio.Validating, txt6K60Efficiency.Validating, txt6K40Efficiency.Validating, txt6K10Efficiency.Validating, txt4K60Efficiency.Validating, txt4K40Efficiency.Validating, txt4K10Efficiency.Validating, txt2K60Efficiency.Validating, txt2K40Efficiency.Validating, txt2K10Efficiency.Validating
+
+  If Not Validate_UpdatePanel then
+     
+    e.Cancel=true
+
+  End If
+
+End Sub
 
 
 End Class

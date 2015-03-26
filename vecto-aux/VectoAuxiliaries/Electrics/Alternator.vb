@@ -2,6 +2,23 @@
 Namespace Electrics
 
 
+Public Class Table4Row
+
+  Public RPM As Single
+  Public Efficiency As Single
+
+  Public Sub new ( rpm As single, eff  As single)
+
+   Me.rpm= rpm
+   Me.Efficiency = eff
+
+
+  End Sub
+
+
+End Class
+
+
 Public Class Alternator
  Implements IAlternator
 
@@ -11,47 +28,37 @@ Public Class Alternator
  Public Property InputTable2000 As  New List(Of AltUserInput) Implements IAlternator.InputTable2000  
  Public Property InputTable4000 As  New List(Of AltUserInput) Implements IAlternator.InputTable4000
  Public Property InputTable6000 As  New List(Of AltUserInput) Implements IAlternator.InputTable6000
- Public Property RangeTable     As  New List(Of AltUserInput) Implements IAlternator.RangeTable
+ Public Property RangeTable     As  New List(Of Table4Row) Implements IAlternator.RangeTable
 
  Private signals As ICombinedAlternatorSignals 
 
 
  Public  Sub  Clone( other As IAlternator) Implements IAlternator.Clone
 
-    Me.PulleyRatio = other.PulleyRatio
-    Me.AlternatorName= other.AlternatorName
-
-    InputTable2000.Clear() 
-    InputTable4000.Clear() 
-    InputTable6000.Clear() 
-    RangeTable    .Clear() 
-    
-    For Each entry As AltUserInput In other.InputTable2000
-      InputTable2000.Add(New AltUserInput( entry.Amps, entry.Eff))
-    Next
-
-    For Each entry As AltUserInput In other.InputTable4000
-      InputTable4000.Add(New AltUserInput( entry.Amps, entry.Eff))
-    Next
-
-    For Each entry As AltUserInput In other.InputTable6000
-      InputTable6000.Add(New AltUserInput( entry.Amps, entry.Eff))
-    Next
-
-    For Each entry As AltUserInput In other.RangeTable
-      RangeTable.Add(New AltUserInput( entry.Amps, entry.Eff))
-    Next
 
    
  End Sub
  Public ReadOnly Property Efficiency As Double Implements IAlternator.Efficiency
+
+
             Get
+               'First build RangeTable, table 4
+
+               InitialiseRangeTable()
+               CalculateRangeTable()
+
+               'TODO: Calculate Efficiency
+               'Calculate ( Interpolate ) Efficiency
+
 
             End Get
+
+
+
         End Property
  Public ReadOnly Property SpindleSpeed As Double Implements IAlternator.SpindleSpeed
             Get
-
+               Return signals.CrankRPM * PulleyRatio
             End Get
         End Property
 
@@ -79,9 +86,83 @@ Public Class Alternator
      BuildInputTable( values6k, InputTable6000)
 
 
+     CreateRangeTable()
+     InitialiseRangeTable()
+
+
+ End Sub
+
+ Private Function Iterpolate( values As List(Of AltUserInput), x As single) As Single
+
+    Dim lowestX As single = values.Min( Function(m) m.Amps)
+    Dim highestX As Single = values.Max( Function(m) m.Amps)
+    Dim lastX, nextX ,lastEff,NextEff As single
+    Dim deltaX As single 
+    Dim slope As single
+
+    'Out of range, returns efficiency for lowest
+    If x< lowestX then Return values.First( Function(f) f.Amps= lowestX).Eff
+
+    'Out of range, efficiency for highest
+    If x> highestX then Return values.First( Function(f) f.Amps= highestX).Eff
+
+    'On Bounds check
+    If  values.Where( Function(w) w.Amps=x).Count=1 then Return values.First( Function(w) w.Amps=x).Eff
+
+
+    'OK, we need to interpolate.
+    lastX   = values.Last(  Function(l)  l.Amps < x).Amps
+    nextX   = values.First( Function(l)  l.Amps > x).Amps
+    lastEff = values.First( Function(f)  f.Amps=lastX).Eff
+    nextEff = values.First( Function(f)  f.Amps=nextX).Eff
+
+
+    deltaX = nextX-lastX
+    slope  = NextEff/lastEff
+
+    Return lastEff + ( NextEff * slope)
+
+
+
+ End Function
+
+
+ Private Sub CalculateRangeTable()
+
+ 'TODO: CALCULATE RANGE TABLE
+
+
  End Sub
 
 
+ Private sub InitialiseRangeTable()
+
+  RangeTable(0).RPM=0:RangeTable(0).Efficiency=0
+  RangeTable(1).RPM=0:RangeTable(0).Efficiency=0
+  RangeTable(2).RPM=2000:RangeTable(0).Efficiency=0
+  RangeTable(3).RPM=4000:RangeTable(0).Efficiency=0
+  RangeTable(4).RPM=6000:RangeTable(0).Efficiency=0
+  RangeTable(5).RPM=0:RangeTable(0).Efficiency=0
+  RangeTable(6).RPM=0:RangeTable(0).Efficiency=0
+
+ End Sub
+
+
+ Private Sub CreateRangeTable()
+
+
+     RangeTable.Clear()
+
+     RangeTable.Add( New Table4Row(0,0))
+     RangeTable.Add( New Table4Row(0,0))
+     RangeTable.Add( New Table4Row(0,0))
+     RangeTable.Add( New Table4Row(0,0))
+     RangeTable.Add( New Table4Row(0,0))
+     RangeTable.Add( New Table4Row(0,0))
+     RangeTable.Add( New Table4Row(0,0))
+
+
+ End Sub
 
  public Sub BuildInputTable(  inputs As Dictionary(of Single, single), targetTable As List (Of AltUserInput ))
 

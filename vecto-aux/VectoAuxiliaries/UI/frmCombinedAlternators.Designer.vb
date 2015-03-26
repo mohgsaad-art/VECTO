@@ -54,6 +54,8 @@ Partial Class frmCombinedAlternators
         Me.Label16 = New System.Windows.Forms.Label()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.tabInputs = New System.Windows.Forms.TabPage()
+        Me.txtAlternatorName = New System.Windows.Forms.TextBox()
+        Me.lblAlternatorName = New System.Windows.Forms.Label()
         Me.btnClearForm = New System.Windows.Forms.Button()
         Me.gvAlternators = New System.Windows.Forms.DataGridView()
         Me.Label18 = New System.Windows.Forms.Label()
@@ -64,8 +66,6 @@ Partial Class frmCombinedAlternators
         Me.btnSave = New System.Windows.Forms.Button()
         Me.btnCancel = New System.Windows.Forms.Button()
         Me.ErrorProvider1 = New System.Windows.Forms.ErrorProvider(Me.components)
-        Me.lblAlternatorName = New System.Windows.Forms.Label()
-        Me.txtAlternatorName = New System.Windows.Forms.TextBox()
         Me.grpTable2000PRM.SuspendLayout
         Me.grpTable4000PRM.SuspendLayout
         Me.grpTable6000PRM.SuspendLayout
@@ -383,6 +383,7 @@ Partial Class frmCombinedAlternators
         '
         'tabInputs
         '
+        Me.tabInputs.CausesValidation = false
         Me.tabInputs.Controls.Add(Me.txtAlternatorName)
         Me.tabInputs.Controls.Add(Me.lblAlternatorName)
         Me.tabInputs.Controls.Add(Me.btnClearForm)
@@ -403,6 +404,22 @@ Partial Class frmCombinedAlternators
         Me.tabInputs.TabIndex = 0
         Me.tabInputs.Text = " Inputs "
         Me.tabInputs.UseVisualStyleBackColor = true
+        '
+        'txtAlternatorName
+        '
+        Me.txtAlternatorName.Location = New System.Drawing.Point(242, 22)
+        Me.txtAlternatorName.Name = "txtAlternatorName"
+        Me.txtAlternatorName.Size = New System.Drawing.Size(160, 20)
+        Me.txtAlternatorName.TabIndex = 41
+        '
+        'lblAlternatorName
+        '
+        Me.lblAlternatorName.AutoSize = true
+        Me.lblAlternatorName.Location = New System.Drawing.Point(156, 25)
+        Me.lblAlternatorName.Name = "lblAlternatorName"
+        Me.lblAlternatorName.Size = New System.Drawing.Size(80, 13)
+        Me.lblAlternatorName.TabIndex = 40
+        Me.lblAlternatorName.Text = "AlternatorName"
         '
         'btnClearForm
         '
@@ -462,7 +479,7 @@ Partial Class frmCombinedAlternators
         Me.tabDiagnostics.Location = New System.Drawing.Point(4, 22)
         Me.tabDiagnostics.Name = "tabDiagnostics"
         Me.tabDiagnostics.Padding = New System.Windows.Forms.Padding(3)
-        Me.tabDiagnostics.Size = New System.Drawing.Size(813, 451)
+        Me.tabDiagnostics.Size = New System.Drawing.Size(692, 451)
         Me.tabDiagnostics.TabIndex = 1
         Me.tabDiagnostics.Text = " Diagnostics"
         Me.tabDiagnostics.UseVisualStyleBackColor = true
@@ -488,22 +505,6 @@ Partial Class frmCombinedAlternators
         'ErrorProvider1
         '
         Me.ErrorProvider1.ContainerControl = Me
-        '
-        'lblAlternatorName
-        '
-        Me.lblAlternatorName.AutoSize = true
-        Me.lblAlternatorName.Location = New System.Drawing.Point(156, 25)
-        Me.lblAlternatorName.Name = "lblAlternatorName"
-        Me.lblAlternatorName.Size = New System.Drawing.Size(80, 13)
-        Me.lblAlternatorName.TabIndex = 40
-        Me.lblAlternatorName.Text = "AlternatorName"
-        '
-        'txtAlternatorName
-        '
-        Me.txtAlternatorName.Location = New System.Drawing.Point(242, 22)
-        Me.txtAlternatorName.Name = "txtAlternatorName"
-        Me.txtAlternatorName.Size = New System.Drawing.Size(160, 20)
-        Me.txtAlternatorName.TabIndex = 41
         '
         'frmCombinedAlternators
         '

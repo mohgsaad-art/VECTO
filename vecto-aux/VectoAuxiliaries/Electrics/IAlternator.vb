@@ -16,7 +16,7 @@ Namespace Electrics
          Property InputTable2000  AS List(Of AltUserInput)
          Property InputTable4000  AS List(Of AltUserInput)
          Property InputTable6000  AS List(Of AltUserInput)
-         Property RangeTable      AS List(Of AltUserInput)
+         Property RangeTable      AS List(Of Table4Row) 
 
 
 
