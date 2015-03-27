@@ -168,11 +168,11 @@ Namespace UnitTests
        Select Case rpmK
           
          Case 2
-              interpValue= InterpAltUserInputs.Iterpolate( Alt1ExpectedTable2000,42.5)
+              interpValue= Alternator.Iterpolate( Alt1ExpectedTable2000,42.5)
          Case 4
-              interpValue= InterpAltUserInputs.Iterpolate( Alt1ExpectedTable4000,42.5)
+              interpValue= Alternator.Iterpolate( Alt1ExpectedTable4000,42.5)
          Case 6
-              interpValue= InterpAltUserInputs.Iterpolate( Alt1ExpectedTable6000,42.5)
+              interpValue= Alternator.Iterpolate( Alt1ExpectedTable6000,42.5)
 
        End Select
 
@@ -182,11 +182,11 @@ Namespace UnitTests
        Select Case rpmK
           
          Case 2
-              interpValue= InterpAltUserInputs.Iterpolate( Alt2ExpectedTable2000,42.5)
+              interpValue= Alternator.Iterpolate( Alt2ExpectedTable2000,42.5)
          Case 4                                               
-              interpValue= InterpAltUserInputs.Iterpolate( Alt2ExpectedTable4000,42.5)
+              interpValue= Alternator.Iterpolate( Alt2ExpectedTable4000,42.5)
          Case 6                                               
-              interpValue= InterpAltUserInputs.Iterpolate( Alt2ExpectedTable6000,42.5)
+              interpValue= Alternator.Iterpolate( Alt2ExpectedTable6000,42.5)
 
        End Select
 
@@ -195,11 +195,11 @@ Namespace UnitTests
        Select Case rpmK
           
          Case 2
-              interpValue= InterpAltUserInputs.Iterpolate( Alt3ExpectedTable2000,42.5)
+              interpValue= Alternator.Iterpolate( Alt3ExpectedTable2000,42.5)
          Case 4                                               
-              interpValue= InterpAltUserInputs.Iterpolate( Alt3ExpectedTable4000,42.5)
+              interpValue= Alternator.Iterpolate( Alt3ExpectedTable4000,42.5)
          Case 6                                               
-              interpValue= InterpAltUserInputs.Iterpolate( Alt3ExpectedTable6000,42.5)
+              interpValue= Alternator.Iterpolate( Alt3ExpectedTable6000,42.5)
 
        End Select
 
@@ -208,11 +208,11 @@ Namespace UnitTests
        Select Case rpmK
           
          Case 2
-              interpValue= InterpAltUserInputs.Iterpolate( Alt4ExpectedTable2000,42.5)
+              interpValue= Alternator.Iterpolate( Alt4ExpectedTable2000,42.5)
          Case 4                                               
-              interpValue= InterpAltUserInputs.Iterpolate( Alt4ExpectedTable4000,42.5)
+              interpValue= Alternator.Iterpolate( Alt4ExpectedTable4000,42.5)
          Case 6                                               
-              interpValue= InterpAltUserInputs.Iterpolate( Alt4ExpectedTable6000,42.5)
+              interpValue= Alternator.Iterpolate( Alt4ExpectedTable6000,42.5)
 
        End Select
 
@@ -384,6 +384,21 @@ Namespace UnitTests
 
   End Sub
 
+
+   <Test()>
+  Public Sub AveragedEfficiency( )
+
+
+ '  Dim signals As ICombinedAlternatorSignals = New CombinedAlternatorSignals() With {.CrankRPM=1750, .CurrentDemandAmps=170}
+
+   Dim ca As new CombinedAlternator("abc.aalt", New CombinedAlternatorSignals() )
+
+   Dim actual As Single = ca.GetEfficiency(1750,170)
+
+   Assert.AreEqual(56.015625,actual)
+
+
+  End Sub
 
 
  End Class

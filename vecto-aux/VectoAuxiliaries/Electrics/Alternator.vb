@@ -50,6 +50,11 @@ Public Class Alternator
                'TODO: Calculate Efficiency
                'Calculate ( Interpolate ) Efficiency
 
+               Dim range as List(Of AltUserInput) = RangeTable.Select( Function(s) New AltUserInput(s.RPM,s.Efficiency)).ToList()
+
+               Dim v As Single =  Alternator.Iterpolate( range, SpindleSpeed)
+
+               Return v
 
             End Get
 
@@ -87,18 +92,18 @@ Public Class Alternator
 
 
      CreateRangeTable()
-     InitialiseRangeTable()
+     'InitialiseRangeTable()
 
 
  End Sub
 
- Private Function Iterpolate( values As List(Of AltUserInput), x As single) As Single
+
+ Public  shared Function Iterpolate( values As List(Of AltUserInput), x As single) As Single
 
     Dim lowestX As single = values.Min( Function(m) m.Amps)
     Dim highestX As Single = values.Max( Function(m) m.Amps)
-    Dim lastX, nextX ,lastEff,NextEff As single
-    Dim deltaX As single 
-    Dim slope As single
+    Dim preKey, postKey ,preEff,postEff, EffSlope As single
+    Dim deltaX , deltaEff As single 
 
     'Out of range, returns efficiency for lowest
     If x< lowestX then Return values.First( Function(f) f.Amps= lowestX).Eff
@@ -111,17 +116,22 @@ Public Class Alternator
 
 
     'OK, we need to interpolate.
-    lastX   = values.Last(  Function(l)  l.Amps < x).Amps
-    nextX   = values.First( Function(l)  l.Amps > x).Amps
-    lastEff = values.First( Function(f)  f.Amps=lastX).Eff
-    nextEff = values.First( Function(f)  f.Amps=nextX).Eff
+    preKey   = values.Last(  Function(l)  l.Amps < x).Amps
+    postKey   = values.First( Function(l)  l.Amps > x).Amps
+    preEff = values.First( Function(f)  f.Amps=preKey).Eff
+    postEff = values.First( Function(f)  f.Amps=postKey).Eff
 
 
-    deltaX = nextX-lastX
-    slope  = NextEff/lastEff
+    deltaX = postKey-preKey
+    deltaEff  = postEff-preEff
 
-    Return lastEff + ( NextEff * slope)
+    'slopes
+    effSlope = deltaEff/deltaX
 
+
+    Dim retVal As Single =   ((x - preKey) * effSlope) + preEff
+
+    Return retVal
 
 
  End Function
@@ -129,8 +139,73 @@ Public Class Alternator
 
  Private Sub CalculateRangeTable()
 
- 'TODO: CALCULATE RANGE TABLE
+    'M10=Row0-Rpm - N10=Row0-Eff
+    'M11=Row1-Rpm - N11=Row1-Eff
+    'M12=Row2-Rpm - N12=Row2-Eff - 2000
+    'M13=Row3-Rpm - N13=Row3-Eff - 4000
+    'M14=Row4-Rpm - N14=Row4-Eff - 6000
+    'M15=Row5-Rpm - N15=Row5-Eff
+    'M16=Row6-Rpm - N16=Row6-Eff
 
+     Dim N10,N11,N12,N13,N14,N15,N16 As single
+     Dim M10,M11,M12,M13,M14,M15,M16 As single
+
+     'EFFICIENCY
+  
+    '2000
+     N12= Alternator.Iterpolate(InputTable2000,signals.CurrentDemandAmps)
+     RangeTable(2).Efficiency= N12
+    '4000
+     N13 = Alternator.Iterpolate(InputTable4000,signals.CurrentDemandAmps)
+     RangeTable(3).Efficiency= N13
+    '6000
+     N14 =Alternator.Iterpolate(InputTable6000,signals.CurrentDemandAmps)
+     RangeTable(4).Efficiency= N14
+
+    'Row0 & Row1 Efficiency  =IF(N13>N12,0,MAX(N12:N14)) - Example Alt 1 N13=
+     N11=IF(N13>N12,0,Math.Max(Math.MAX(N12,N13),N14))
+     RangeTable(1).Efficiency = N11
+     N10=N11
+     RangeTable(0).Efficiency = N10
+
+
+    'Row 5 Efficiency
+     N15 =IF(N13>N14,0,Math.Max(Math.MAX(N12,N13),N14))
+     RangeTable(5).Efficiency = N15
+    'Row 6 - Efficiency
+     N16 = N15
+     RangeTable(6).Efficiency = N16
+
+     'RPM
+
+     '2000 Row 2 - RPM
+      M12 =  2000
+      RangeTable(2).RPM = M12
+
+     '4000 Row 3 - RPM
+      M13 = 4000
+      RangeTable(3).RPM =  M13
+
+     '6000 Row 4 - RPM
+      M14 = 6000
+      RangeTable(4).RPM =  M14
+
+      'Row 1 - RPM
+      M11 = IF(M12=IF(N12>N13,M12-((M12-M13)/(N12-N13))*(N12-N11),M12-((M12-M13)/(N12-N13))*(N12-N11)), M12-0.01, IF(N12>N13,M12-((M12-M13)/(N12-N13))*(N12-N11),M12-((M12-M13)/(N12-N13))*(N12-N11)))
+      RangeTable(1).RPM =M11
+
+      'Row 0 - RPM
+      M10 = IF(M11<1500,M11-1,1500)
+      RangeTable(0).RPM  = M10
+
+      'Row 5 - RPM
+      M15 = IF(M14=IF((N14=0 OrElse N14=N13),M14+1,IF(N13>N14,((((M14-M13)/(N13-N14))*N14)+M14),((((M14-M13)/(N13-N14))*(N14-N15))+M14))),M14+0.01,IF((N14=0 OrElse N14=N13),M14+1,IF(N13>N14,((((M14-M13)/(N13-N14))*N14)+M14),((((M14-M13)/(N13-N14))*(N14-N15))+M14))))
+      RangeTable(5).RPM = M15
+
+
+      'Row 6 - RPM
+      M16 =  IF(M15>10000,M15+1,10000)
+      RangeTable(6).RPM =  M16
 
  End Sub
 
