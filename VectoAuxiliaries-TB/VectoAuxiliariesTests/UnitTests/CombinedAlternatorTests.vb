@@ -234,7 +234,7 @@ Namespace UnitTests
 
 
   'Act
-  Dim alt  As new CombinedAlternator(COMBINEDALT_GOODMAP, signals)
+  Dim alt  As new CombinedAlternator(COMBINEDALT_GOODMAP)
 
 
 
@@ -261,11 +261,9 @@ Namespace UnitTests
 
 
   'Arrange
-  Dim signals As ICombinedAlternatorSignals = New CombinedAlternatorSignals
-
 
   'Act
-  Dim alt  As new CombinedAlternator(COMBINEDALT_GOODMAP, signals)
+  Dim alt  As new CombinedAlternator(COMBINEDALT_GOODMAP)
     
 
    Dim idx As integer
@@ -293,7 +291,7 @@ Namespace UnitTests
 
 
   'Act
-  Dim alt  As new CombinedAlternator(COMBINEDALT_GOODMAP, signals)
+  Dim alt  As new CombinedAlternator(COMBINEDALT_GOODMAP)
     
 
    Dim idx As integer
@@ -320,7 +318,7 @@ Namespace UnitTests
 
 
   'Act
-  Dim alt  As new CombinedAlternator(COMBINEDALT_GOODMAP, signals)
+  Dim alt  As new CombinedAlternator(COMBINEDALT_GOODMAP)
     
 
    Dim idx As integer
@@ -351,7 +349,7 @@ Namespace UnitTests
 
 
   'Act
-  Dim target  As new CombinedAlternator(COMBINEDALT_GOODMAP, signals)
+  Dim target  As new CombinedAlternator(COMBINEDALT_GOODMAP)
 
 
 
@@ -372,7 +370,7 @@ Namespace UnitTests
 
 
   'Act
-  Dim target  As new CombinedAlternator("123.aalt", signals)
+  Dim target  As new CombinedAlternator("123.aalt")
 
 
 
@@ -391,11 +389,14 @@ Namespace UnitTests
 
  '  Dim signals As ICombinedAlternatorSignals = New CombinedAlternatorSignals() With {.CrankRPM=1750, .CurrentDemandAmps=170}
 
-   Dim ca As new CombinedAlternator("abc.aalt", New CombinedAlternatorSignals() )
+   Dim ca As new CombinedAlternator("abc.aalt")
 
-   Dim actual As Single = ca.GetEfficiency(1750,170)
+   ca.Initialise()
+   
 
-   Assert.AreEqual(56.015625,actual)
+   Dim actual As AlternatorMapValues = ca.GetEfficiency(1750,170)
+
+   Assert.AreEqual(0.56015625f,actual.Efficiency)
 
 
   End Sub
