@@ -301,41 +301,53 @@ End Function
  Public Overrides Function ToString() As String
 
   Dim sb As New StringBuilder()
+  Dim a1,a2,a3,e1,e2,e3 As String
 
 
   For Each alt As Alternator In Alternators
     sb.AppendLine("")
-    sb.AppendFormat("ALTERNATOR {0}, PulleyRatio {1}",alt.AlternatorName,alt.PulleyRatio)
+    sb.AppendFormat("** {0} ** , PulleyRatio {1}",alt.AlternatorName,alt.PulleyRatio)
     sb.AppendLine("")
     sb.AppendLine  ("******************************************************************")
     sb.AppendLine("")
 
-
-    sb.AppendLine("TABLE 1 (2000rpm)")
+    Dim i As Integer=1
+    sb.AppendLine("Table 1 (2000)" + vbTab + "Table 2 (4000)" + vbTab + "Table 3 (6000)")
+    sb.AppendLine("Amps" + vbTab + "Eff" + vbTab + "Amps" + vbTab + "Eff" + vbTab + "Amps" + vbTab + "Eff" + vbTab )
     sb.AppendLine("")
-    sb.AppendLine("RPM" + vbTab + "Efficiency")
-    For Each Row as AltUserInput In alt.InputTable2000  
-       sb.AppendLine(Row.Amps.ToString() + vbTab + Row.Eff.ToString())
+    For  i = 0 to 5 
+
+    a1= alt.InputTable2000(i).Amps.ToString("0.###")
+    e1 =alt.InputTable2000(i).Eff .ToString("0.###")
+    a2= alt.InputTable4000(i).Amps.ToString("0.###")
+    e2 =alt.InputTable4000(i).Eff .ToString("0.###")
+    a3= alt.InputTable6000(i).Amps.ToString("0.###")
+    e3 =alt.InputTable6000(i).Eff .ToString("0.###")
+    sb.AppendLine(a1 + vbTab + e1 + vbTab + a2 + vbTab + e2 + vbTab + a3 + vbTab + e3 + vbTab )
+
     Next
-     sb.AppendLine("")
 
-    sb.AppendLine("TABLE 2 (4000rpm)")
-    sb.AppendLine("")
-    sb.AppendLine("RPM" + vbTab + "Efficiency")
-    For Each Row as AltUserInput In alt.InputTable4000  
-       sb.AppendLine(Row.Amps.ToString() + vbTab + Row.Eff.ToString())
-    Next        
-    sb.AppendLine("")
-
-    sb.AppendLine("TABLE 2 (6000rpm)")
-    sb.AppendLine("")
-    sb.AppendLine("RPM" + vbTab + "Efficiency")
-    For Each Row as AltUserInput In alt.InputTable6000  
-       sb.AppendLine(Row.Amps.ToString() + vbTab + Row.Eff.ToString())
-    Next 
-    sb.AppendLine("")
 
   Next
+
+    sb.AppendLine("")
+    sb.AppendLine("********* COMBINED EFFICIENCY VALUES **************")
+    sb.AppendLine("")
+    sb.AppendLine( vbTab +"RPM VALUES")
+    sb.AppendLine("AMPS" + vbTab + "500" + vbTab + "1500" + vbtab + "2500" + vbtab + "3500" + vbtab + "4500" + vbtab + "5500" + vbtab + "6500" + vbTab  + "7500")
+    For a As Single = 1 to alternators.Count * 50
+
+       sb.Append(a.ToString("0") + vbTab)
+       For Each  r As Single in {500,1500,2500,3500,4500,5500,6500,7500}
+        
+          Dim eff as Single = GetEfficiency( r ,a).Efficiency
+          
+          sb.Append( eff.ToString("0.###") + vbTab)
+          
+       Next
+       sb.AppendLine("")
+
+    Next
 
 
 

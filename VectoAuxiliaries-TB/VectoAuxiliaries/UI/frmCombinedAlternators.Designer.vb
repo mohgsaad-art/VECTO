@@ -63,10 +63,10 @@ Partial Class frmCombinedAlternators
         Me.Label17 = New System.Windows.Forms.Label()
         Me.txtIndex = New System.Windows.Forms.TextBox()
         Me.tabDiagnostics = New System.Windows.Forms.TabPage()
+        Me.txtDiagnostics = New System.Windows.Forms.TextBox()
         Me.btnSave = New System.Windows.Forms.Button()
         Me.btnCancel = New System.Windows.Forms.Button()
         Me.ErrorProvider1 = New System.Windows.Forms.ErrorProvider(Me.components)
-        Me.txtDiagnostics = New System.Windows.Forms.TextBox()
         Me.grpTable2000PRM.SuspendLayout
         Me.grpTable4000PRM.SuspendLayout
         Me.grpTable6000PRM.SuspendLayout
@@ -377,10 +377,10 @@ Partial Class frmCombinedAlternators
         '
         Me.TabControl1.Controls.Add(Me.tabInputs)
         Me.TabControl1.Controls.Add(Me.tabDiagnostics)
-        Me.TabControl1.Location = New System.Drawing.Point(42, 29)
+        Me.TabControl1.Location = New System.Drawing.Point(42, 12)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(700, 477)
+        Me.TabControl1.Size = New System.Drawing.Size(700, 494)
         Me.TabControl1.TabIndex = 33
         '
         'tabInputs
@@ -482,10 +482,21 @@ Partial Class frmCombinedAlternators
         Me.tabDiagnostics.Location = New System.Drawing.Point(4, 22)
         Me.tabDiagnostics.Name = "tabDiagnostics"
         Me.tabDiagnostics.Padding = New System.Windows.Forms.Padding(3)
-        Me.tabDiagnostics.Size = New System.Drawing.Size(692, 451)
+        Me.tabDiagnostics.Size = New System.Drawing.Size(692, 468)
         Me.tabDiagnostics.TabIndex = 1
         Me.tabDiagnostics.Text = " Diagnostics"
         Me.tabDiagnostics.UseVisualStyleBackColor = true
+        '
+        'txtDiagnostics
+        '
+        Me.txtDiagnostics.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.txtDiagnostics.Location = New System.Drawing.Point(23, 16)
+        Me.txtDiagnostics.Margin = New System.Windows.Forms.Padding(0, 0, 0, 0)
+        Me.txtDiagnostics.Multiline = true
+        Me.txtDiagnostics.Name = "txtDiagnostics"
+        Me.txtDiagnostics.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.txtDiagnostics.Size = New System.Drawing.Size(648, 429)
+        Me.txtDiagnostics.TabIndex = 0
         '
         'btnSave
         '
@@ -508,15 +519,6 @@ Partial Class frmCombinedAlternators
         'ErrorProvider1
         '
         Me.ErrorProvider1.ContainerControl = Me
-        '
-        'txtDiagnostics
-        '
-        Me.txtDiagnostics.Location = New System.Drawing.Point(23, 16)
-        Me.txtDiagnostics.Multiline = true
-        Me.txtDiagnostics.Name = "txtDiagnostics"
-        Me.txtDiagnostics.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
-        Me.txtDiagnostics.Size = New System.Drawing.Size(648, 429)
-        Me.txtDiagnostics.TabIndex = 0
         '
         'frmCombinedAlternators
         '
