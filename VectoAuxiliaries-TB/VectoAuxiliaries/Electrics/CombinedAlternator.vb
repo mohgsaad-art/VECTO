@@ -29,7 +29,16 @@ Public Class CombinedAlternator
  Public Function GetEfficiency( CrankRPM As Single , AmpsDemand  As Single ) As Single
 
     altSignals.CrankRPM = CrankRPM
-    altSignals.CurrentDemandAmps = AmpsDemand
+    altSignals.CurrentDemandAmps = AmpsDemand / Alternators.Count
+
+    Dim Alt0Eff As Single = Alternators(0).Efficiency
+              
+    Dim Alt1Eff As Single = Alternators(1).Efficiency
+              
+    Dim Alt2Eff As Single  = Alternators(2).Efficiency
+             
+    Dim Alt3Eff As Single = Alternators(3).Efficiency
+
 
     Return  Alternators.Average( Function(a) a.Efficiency)
 
@@ -47,7 +56,7 @@ Public Class CombinedAlternator
       End If
 
 
-      Me.altSignals= altSignals
+      Me.altSignals= New CombinedAlternatorSignals()
 
 
       'IF file exists then read it otherwise create a default.
