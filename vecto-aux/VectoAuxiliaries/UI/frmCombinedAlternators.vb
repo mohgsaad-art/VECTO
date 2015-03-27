@@ -20,8 +20,8 @@ Public Class frmCombinedAlternators
      InitializeComponent()
 
      ' Add any initialization after the InitializeComponent() call.
-       combinedAlt = New CombinedAlternator(aaltPath, altSignals)
-       originalAlt = New CombinedAlternator(aaltPath, altSignals)
+       combinedAlt = New CombinedAlternator(aaltPath)
+       originalAlt = New CombinedAlternator(aaltPath)
 
        SetupControls()
        BindGrid()
@@ -510,6 +510,27 @@ Private Sub Validating( sender As Object,  e As CancelEventArgs) Handles txtAlte
 
 End Sub
 
+
+
+
+Private Sub CreateDiagnostics()
+
+   txtDiagnostics.Text = combinedAlt.ToString()
+
+End Sub
+
+
+
+Private Sub TabControl1_SelectedIndexChanged( sender As Object,  e As EventArgs) Handles TabControl1.SelectedIndexChanged
+
+  If  TabControl1.SelectedIndex = 1
+
+
+     CreateDiagnostics()
+
+
+  End If
+End Sub
 
 End Class
 

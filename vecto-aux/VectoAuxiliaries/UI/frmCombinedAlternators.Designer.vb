@@ -66,12 +66,14 @@ Partial Class frmCombinedAlternators
         Me.btnSave = New System.Windows.Forms.Button()
         Me.btnCancel = New System.Windows.Forms.Button()
         Me.ErrorProvider1 = New System.Windows.Forms.ErrorProvider(Me.components)
+        Me.txtDiagnostics = New System.Windows.Forms.TextBox()
         Me.grpTable2000PRM.SuspendLayout
         Me.grpTable4000PRM.SuspendLayout
         Me.grpTable6000PRM.SuspendLayout
         Me.TabControl1.SuspendLayout
         Me.tabInputs.SuspendLayout
         CType(Me.gvAlternators,System.ComponentModel.ISupportInitialize).BeginInit
+        Me.tabDiagnostics.SuspendLayout
         CType(Me.ErrorProvider1,System.ComponentModel.ISupportInitialize).BeginInit
         Me.SuspendLayout
         '
@@ -476,6 +478,7 @@ Partial Class frmCombinedAlternators
         '
         'tabDiagnostics
         '
+        Me.tabDiagnostics.Controls.Add(Me.txtDiagnostics)
         Me.tabDiagnostics.Location = New System.Drawing.Point(4, 22)
         Me.tabDiagnostics.Name = "tabDiagnostics"
         Me.tabDiagnostics.Padding = New System.Windows.Forms.Padding(3)
@@ -506,6 +509,15 @@ Partial Class frmCombinedAlternators
         '
         Me.ErrorProvider1.ContainerControl = Me
         '
+        'txtDiagnostics
+        '
+        Me.txtDiagnostics.Location = New System.Drawing.Point(23, 16)
+        Me.txtDiagnostics.Multiline = true
+        Me.txtDiagnostics.Name = "txtDiagnostics"
+        Me.txtDiagnostics.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.txtDiagnostics.Size = New System.Drawing.Size(648, 429)
+        Me.txtDiagnostics.TabIndex = 0
+        '
         'frmCombinedAlternators
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
@@ -528,6 +540,8 @@ Partial Class frmCombinedAlternators
         Me.tabInputs.ResumeLayout(false)
         Me.tabInputs.PerformLayout
         CType(Me.gvAlternators,System.ComponentModel.ISupportInitialize).EndInit
+        Me.tabDiagnostics.ResumeLayout(false)
+        Me.tabDiagnostics.PerformLayout
         CType(Me.ErrorProvider1,System.ComponentModel.ISupportInitialize).EndInit
         Me.ResumeLayout(false)
 
@@ -575,4 +589,5 @@ End Sub
     Friend WithEvents btnClearForm As System.Windows.Forms.Button
     Friend WithEvents txtAlternatorName As System.Windows.Forms.TextBox
     Friend WithEvents lblAlternatorName As System.Windows.Forms.Label
+    Friend WithEvents txtDiagnostics As System.Windows.Forms.TextBox
 End Class

@@ -14,8 +14,10 @@ Imports VectoAuxiliaries
 Namespace Electrics
 
 Public Class CombinedAlternator
+   Implements IAlternatorMap
 
- Private map As new List(Of ICombinedAlternatorMapRow)
+
+  Private map As new List(Of ICombinedAlternatorMapRow)
 
 
   Public Property Alternators As New List(Of IAlternator)
@@ -25,27 +27,43 @@ Public Class CombinedAlternator
   Private altSignals As ICombinedAlternatorSignals
 
 
-
- Public Function GetEfficiency( CrankRPM As Single , AmpsDemand  As Single ) As Single
+ 'Interface Implementation
+ Public Function GetEfficiency( ByVal CrankRPM As Single , ByVal  Amps  As Single ) As AlternatorMapValues Implements IAlternatorMap.GetEfficiency
 
     altSignals.CrankRPM = CrankRPM
-    altSignals.CurrentDemandAmps = AmpsDemand / Alternators.Count
+    altSignals.CurrentDemandAmps = Amps / Alternators.Count
 
-    Dim Alt0Eff As Single = Alternators(0).Efficiency
-              
-    Dim Alt1Eff As Single = Alternators(1).Efficiency
-              
-    Dim Alt2Eff As Single  = Alternators(2).Efficiency
-             
-    Dim Alt3Eff As Single = Alternators(3).Efficiency
+    Return  New AlternatorMapValues( Alternators.Average( Function(a) a.Efficiency)/100)
 
 
-    Return  Alternators.Average( Function(a) a.Efficiency)
+ End Function
+ public Function Initialise() As Boolean Implements IAlternatorMap.Initialise
+
+   'From the map we construct this CombinedAlternator object and original CombinedAlternator Object
+
+   Alternators.Clear
+   OriginalAlternators.Clear
+
+
+   For Each alt As IEnumerable(Of ICombinedAlternatorMapRow)  In map.GroupBy( Function(g) g.AlternatorName)
+
+     Dim altName As String = alt.First().AlternatorName
+     Dim pulleyRatio As Single = alt.First().PulleyRatio
+
+
+     Dim alternator  As IAlternator = New Alternator(altSignals, alt.ToList())
+
+     Alternators.Add( alternator )
+
+
+   Next
+
+   Return true
 
  End Function
 
  'Constructors
- public sub new( filePath as String, altSignals As ICombinedAlternatorSignals)
+ public sub new( filePath as String)
 
       Dim feedback As String = String.Empty
 
@@ -118,31 +136,7 @@ Public Class CombinedAlternator
 
  End Sub
 
- private Function Initialise() As Boolean
-
-   'From the map we construct this CombinedAlternator object and original CombinedAlternator Object
-
-   Alternators.Clear
-   OriginalAlternators.Clear
-
-
-   For Each alt As IEnumerable(Of ICombinedAlternatorMapRow)  In map.GroupBy( Function(g) g.AlternatorName)
-
-     Dim altName As String = alt.First().AlternatorName
-     Dim pulleyRatio As Single = alt.First().PulleyRatio
-
-
-     Dim alternator  As IAlternator = New Alternator(altSignals, alt.ToList())
-
-     Alternators.Add( alternator )
-
-
-   Next
-
-   Return true
-
- End Function
-
+ 'Grid Management
  private Function AddNewAlternator( list As List(Of ICombinedAlternatorMapRow), ByRef feeback As string) As Boolean
 
      Dim returnValue As Boolean = true
@@ -164,18 +158,16 @@ Public Class CombinedAlternator
    Return returnValue
 
  End Function
+ Public Function AddAlternator( rows As List( Of ICombinedAlternatorMapRow)  , byref feedback as string) As Boolean
 
- Public Sub Clone( other As CombinedAlternator) 
+       If Not   AddNewAlternator( rows, feedback )
+         feedback=String.Format("Unable to add new alternator : {0}", feedback)
+         Return false
+       End If
 
-    For Each Alternator As IAlternator In Alternators
+       Return true
 
-     Alternator.Clone( other )
-
-    Next
-
- End Sub
-
- 'Grid Management
+ End Function
  Public Function DeleteAlternator( alternatorName As string, byref feedback as string ) As Boolean
 
      If Alternators.Where( Function(w) w.AlternatorName = alternatorName).Count=0 then
@@ -197,18 +189,6 @@ Public Class CombinedAlternator
      End If
 
  End Function
-
- Public Function AddAlternator( rows As List( Of ICombinedAlternatorMapRow)  , byref feedback as string) As Boolean
-
-       If Not   AddNewAlternator( rows, feedback )
-         feedback=String.Format("Unable to add new alternator : {0}", feedback)
-         Return false
-       End If
-
-       Return true
-
- End Function
-
  Public Function UpdateAlternator(  rows As List( Of ICombinedAlternatorMapRow) , byref feedback as string ) As Boolean
 
        Dim altName As String = rows.First.AlternatorName
@@ -230,12 +210,8 @@ Public Class CombinedAlternator
 
  End Function
 
- 'Validation Helpers
-
-
-
-   'Persistance Functions
-  Public Function Save(filePath As String) As Boolean
+ 'Persistance Functions
+ Public Function Save(filePath As String) As Boolean
 
 
    Dim returnValue As Boolean = True
@@ -259,7 +235,7 @@ Public Class CombinedAlternator
    Return returnValue
 
 End Function
-  private Function Load() As Boolean 
+ private Function Load() As Boolean 
 
       If Not InitialiseMap(filePath) then Return False
       
@@ -268,8 +244,8 @@ End Function
 
   End Function
 
-  'Initialises the map.
-  Public Function InitialiseMap(filePath As string) As Boolean 
+ 'Initialises the map, only valid when loadingUI for first time in edit mode or always in operational mode.
+ Private Function InitialiseMap(filePath As string) As Boolean 
 
       Dim returnValue As Boolean = false
 
@@ -318,10 +294,59 @@ End Function
 
  End Function
 
+ 'Can be used to send messages to Vecto.
+ Public Event AuxiliaryEvent(ByRef sender As Object, message As String, messageType As AdvancedAuxiliaryMessageType) Implements IAuxiliaryEvent.AuxiliaryEvent
+
+
+ Public Overrides Function ToString() As String
+
+  Dim sb As New StringBuilder()
+
+
+  For Each alt As Alternator In Alternators
+    sb.AppendLine("")
+    sb.AppendFormat("ALTERNATOR {0}, PulleyRatio {1}",alt.AlternatorName,alt.PulleyRatio)
+    sb.AppendLine("")
+    sb.AppendLine  ("******************************************************************")
+    sb.AppendLine("")
+
+
+    sb.AppendLine("TABLE 1 (2000rpm)")
+    sb.AppendLine("")
+    sb.AppendLine("RPM" + vbTab + "Efficiency")
+    For Each Row as AltUserInput In alt.InputTable2000  
+       sb.AppendLine(Row.Amps.ToString() + vbTab + Row.Eff.ToString())
+    Next
+     sb.AppendLine("")
+
+    sb.AppendLine("TABLE 2 (4000rpm)")
+    sb.AppendLine("")
+    sb.AppendLine("RPM" + vbTab + "Efficiency")
+    For Each Row as AltUserInput In alt.InputTable4000  
+       sb.AppendLine(Row.Amps.ToString() + vbTab + Row.Eff.ToString())
+    Next        
+    sb.AppendLine("")
+
+    sb.AppendLine("TABLE 2 (6000rpm)")
+    sb.AppendLine("")
+    sb.AppendLine("RPM" + vbTab + "Efficiency")
+    For Each Row as AltUserInput In alt.InputTable6000  
+       sb.AppendLine(Row.Amps.ToString() + vbTab + Row.Eff.ToString())
+    Next 
+    sb.AppendLine("")
+
+  Next
 
 
 
-  End Class
+
+  Return sb.ToString()
+
+ End Function
+
+
+
+ End Class
 
 
 End Namespace
