@@ -125,7 +125,6 @@
     <Compile Include="Electrics\IM2_AverageElectricalLoadDemand.vb" />
     <Compile Include="Electrics\IM5_SmartAlternatorSetGeneration.vb" />
     <Compile Include="Electrics\IncDecValuePair.vb" />
-    <Compile Include="Electrics\InterpAltUserInputs.vb" />
     <Compile Include="Electrics\IResultCard.vb" />
     <Compile Include="Electrics\M0_5_SmartAlternatorSetEfficiency.vb" />
     <Compile Include="Electrics\M0_NonSmart_AlternatorsSetEfficiency.vb" />
