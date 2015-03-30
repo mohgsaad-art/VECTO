@@ -83,7 +83,7 @@ Partial Class frmCombinedAlternators
         Me.txt2K10Efficiency.Location = New System.Drawing.Point(78, 57)
         Me.txt2K10Efficiency.Name = "txt2K10Efficiency"
         Me.txt2K10Efficiency.Size = New System.Drawing.Size(50, 20)
-        Me.txt2K10Efficiency.TabIndex = 1
+        Me.txt2K10Efficiency.TabIndex = 40
         '
         'txt2K60Efficiency
         '
@@ -91,7 +91,7 @@ Partial Class frmCombinedAlternators
         Me.txt2K60Efficiency.Location = New System.Drawing.Point(78, 117)
         Me.txt2K60Efficiency.Name = "txt2K60Efficiency"
         Me.txt2K60Efficiency.Size = New System.Drawing.Size(50, 20)
-        Me.txt2K60Efficiency.TabIndex = 4
+        Me.txt2K60Efficiency.TabIndex = 60
         '
         'txt2K40Efficiency
         '
@@ -99,7 +99,7 @@ Partial Class frmCombinedAlternators
         Me.txt2K40Efficiency.Location = New System.Drawing.Point(78, 85)
         Me.txt2K40Efficiency.Name = "txt2K40Efficiency"
         Me.txt2K40Efficiency.Size = New System.Drawing.Size(50, 20)
-        Me.txt2K40Efficiency.TabIndex = 7
+        Me.txt2K40Efficiency.TabIndex = 50
         '
         'Label1
         '
@@ -126,7 +126,7 @@ Partial Class frmCombinedAlternators
         Me.txtPulleyRatio.Location = New System.Drawing.Point(504, 25)
         Me.txtPulleyRatio.Name = "txtPulleyRatio"
         Me.txtPulleyRatio.Size = New System.Drawing.Size(68, 20)
-        Me.txtPulleyRatio.TabIndex = 26
+        Me.txtPulleyRatio.TabIndex = 30
         '
         'Label7
         '
@@ -212,7 +212,7 @@ Partial Class frmCombinedAlternators
         Me.txt4K60Efficiency.Location = New System.Drawing.Point(78, 117)
         Me.txt4K60Efficiency.Name = "txt4K60Efficiency"
         Me.txt4K60Efficiency.Size = New System.Drawing.Size(50, 20)
-        Me.txt4K60Efficiency.TabIndex = 4
+        Me.txt4K60Efficiency.TabIndex = 90
         '
         'txt4K10Efficiency
         '
@@ -220,7 +220,7 @@ Partial Class frmCombinedAlternators
         Me.txt4K10Efficiency.Location = New System.Drawing.Point(78, 57)
         Me.txt4K10Efficiency.Name = "txt4K10Efficiency"
         Me.txt4K10Efficiency.Size = New System.Drawing.Size(50, 20)
-        Me.txt4K10Efficiency.TabIndex = 1
+        Me.txt4K10Efficiency.TabIndex = 70
         '
         'txt4K40Efficiency
         '
@@ -228,7 +228,7 @@ Partial Class frmCombinedAlternators
         Me.txt4K40Efficiency.Location = New System.Drawing.Point(78, 85)
         Me.txt4K40Efficiency.Name = "txt4K40Efficiency"
         Me.txt4K40Efficiency.Size = New System.Drawing.Size(50, 20)
-        Me.txt4K40Efficiency.TabIndex = 7
+        Me.txt4K40Efficiency.TabIndex = 80
         '
         'Label3
         '
@@ -305,7 +305,7 @@ Partial Class frmCombinedAlternators
         Me.txt6K60Efficiency.Location = New System.Drawing.Point(78, 117)
         Me.txt6K60Efficiency.Name = "txt6K60Efficiency"
         Me.txt6K60Efficiency.Size = New System.Drawing.Size(50, 20)
-        Me.txt6K60Efficiency.TabIndex = 4
+        Me.txt6K60Efficiency.TabIndex = 120
         '
         'txt6K10Efficiency
         '
@@ -313,7 +313,7 @@ Partial Class frmCombinedAlternators
         Me.txt6K10Efficiency.Location = New System.Drawing.Point(78, 57)
         Me.txt6K10Efficiency.Name = "txt6K10Efficiency"
         Me.txt6K10Efficiency.Size = New System.Drawing.Size(50, 20)
-        Me.txt6K10Efficiency.TabIndex = 1
+        Me.txt6K10Efficiency.TabIndex = 100
         '
         'txt6K40Efficiency
         '
@@ -321,7 +321,7 @@ Partial Class frmCombinedAlternators
         Me.txt6K40Efficiency.Location = New System.Drawing.Point(78, 85)
         Me.txt6K40Efficiency.Name = "txt6K40Efficiency"
         Me.txt6K40Efficiency.Size = New System.Drawing.Size(50, 20)
-        Me.txt6K40Efficiency.TabIndex = 7
+        Me.txt6K40Efficiency.TabIndex = 110
         '
         'Label12
         '
@@ -402,7 +402,7 @@ Partial Class frmCombinedAlternators
         Me.tabInputs.Location = New System.Drawing.Point(4, 22)
         Me.tabInputs.Name = "tabInputs"
         Me.tabInputs.Padding = New System.Windows.Forms.Padding(3)
-        Me.tabInputs.Size = New System.Drawing.Size(692, 451)
+        Me.tabInputs.Size = New System.Drawing.Size(692, 468)
         Me.tabInputs.TabIndex = 0
         Me.tabInputs.Text = " Inputs "
         Me.tabInputs.UseVisualStyleBackColor = true
@@ -412,7 +412,7 @@ Partial Class frmCombinedAlternators
         Me.txtAlternatorName.Location = New System.Drawing.Point(242, 22)
         Me.txtAlternatorName.Name = "txtAlternatorName"
         Me.txtAlternatorName.Size = New System.Drawing.Size(160, 20)
-        Me.txtAlternatorName.TabIndex = 41
+        Me.txtAlternatorName.TabIndex = 20
         '
         'lblAlternatorName
         '
@@ -491,7 +491,7 @@ Partial Class frmCombinedAlternators
         '
         Me.txtDiagnostics.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
         Me.txtDiagnostics.Location = New System.Drawing.Point(23, 16)
-        Me.txtDiagnostics.Margin = New System.Windows.Forms.Padding(0, 0, 0, 0)
+        Me.txtDiagnostics.Margin = New System.Windows.Forms.Padding(0)
         Me.txtDiagnostics.Multiline = true
         Me.txtDiagnostics.Name = "txtDiagnostics"
         Me.txtDiagnostics.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
@@ -524,6 +524,8 @@ Partial Class frmCombinedAlternators
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange
+        Me.CausesValidation = false
         Me.ClientSize = New System.Drawing.Size(774, 579)
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnSave)
