@@ -211,26 +211,50 @@ Public Class CombinedAlternator
  End Function
 
  'Persistance Functions
- Public Function Save(filePath As String) As Boolean
+ Public Function Save(aaltPath As String) As Boolean
 
 
    Dim returnValue As Boolean = True
-   Dim settings As JsonSerializerSettings = New JsonSerializerSettings()
-   settings.TypeNameHandling = TypeNameHandling.Objects
+   Dim sb As New StringBuilder()
+   Dim row As Integer=0
+   Dim amps, eff As single
 
-    'JSON METHOD
-    Try
+   'write headers  
+    sb.AppendLine("[AlternatorName],[RPM],[Amps],[Efficiency],[PulleyRatio]")
 
-       Dim output As String = JsonConvert.SerializeObject(Me, Formatting.Indented, settings)
+   'write details
+   For Each alt As IAlternator In Alternators
 
-       File.WriteAllText(filePath, output)
 
-       Catch ex As Exception
+     '2000 - IE Alt1,2000,10,50,3
+     For  row = 1 to 3
+       amps = alt.InputTable2000(row).Amps : eff = alt.InputTable2000(row).eff
+       sb.Append(alt.AlternatorName + ",2000," + Amps.ToString() + "," + Eff.ToString() + "," + alt.PulleyRatio.ToString())
+       sb.AppendLine("")
+     Next
 
-         'TODO:Do something meaningfull here perhaps logging
-          returnValue = False
+     '4000 - IE Alt1,2000,10,50,3
+     For  row = 1 to 3
+        amps = alt.InputTable4000(row).Amps : eff  = alt.InputTable4000(row).eff
+       sb.Append(alt.AlternatorName + ",4000," + amps.ToString() + "," + Eff.ToString() + "," + alt.PulleyRatio.ToString())
+       sb.AppendLine("")
+     Next
 
-     End Try
+     '4000 - IE Alt1,2000,10,50,3
+      For  row = 1 to 3
+       amps = alt.InputTable4000(row).Amps : eff  = alt.InputTable6000(row).eff
+       sb.Append(alt.AlternatorName + ",6000," + amps.ToString() + "," + eff.ToString() + "," + alt.PulleyRatio.ToString())
+       sb.AppendLine("")
+     Next
+      
+
+   Next
+
+
+   ' Write the stream cotnents to a new file named "AllTxtFiles.txt" 
+   Using outfile As New StreamWriter(aaltPath)
+       outfile.Write(sb.ToString())
+   End Using 
 
    Return returnValue
 
