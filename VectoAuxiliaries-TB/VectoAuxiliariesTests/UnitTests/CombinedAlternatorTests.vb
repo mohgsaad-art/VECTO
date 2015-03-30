@@ -401,6 +401,39 @@ Namespace UnitTests
 
   End Sub
 
+ ' <Test()>
+  Public Sub Performance()
+
+
+   Dim ca As new CombinedAlternator("abc.aalt")
+
+   ca.Initialise()
+   
+   Dim startDT As DateTime =  DateTime.Now
+   Dim endDateDT As DateTime 
+   Dim crank As Single
+   Dim demand As single
+   Dim rand As New Random(50)
+
+    For x = 1 to 500000
+
+     crank = rand.Next(500,3000)
+     demand = rand.Next(1,200)
+
+     Dim actual As AlternatorMapValues = ca.GetEfficiency(crank,demand)
+
+
+
+    Next 
+
+    endDateDT = DateTime.Now
+    
+    Dim secs As Single = (endDateDT-startDT).Seconds
+
+
+  End Sub
+
+
 
  End Class
 
