@@ -1,5 +1,5 @@
 ﻿[Electrical Power (w)],[Mechanical Power (w)], [Fuelling (L/H)]
-100,d,0
+100,50,0
 [MODELSOURCE]
 Modelname : HVAC MODEL SYSTEM
 Model Version : 1.0
