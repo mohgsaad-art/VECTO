@@ -55,7 +55,7 @@ End Function
      If Not ssmTOOL is Nothing AndAlso Not ssmTOOL.TechList is Nothing AndAlso ssmTOOL.TechList.TechLines.Count>0
 
         'Fuse Lists          
-        Dim fusedList As new List(Of String )
+        Dim fusedList As  List(Of String ) = DefaultCategories.ToList()
         
         For Each s As String In ssmTOOL.TechList.TechLines.Select( Function(sel) sel.Category)
 
@@ -93,12 +93,19 @@ End Function
     ssmTOOL = New SSMTOOL(ahsmFilePath,useDefaults)
     originalssmTOOL = New SSMTOOL( ahsmFilePath, useDefaults)
 
-    ssmTOOL.Load(ahsmFilePath)
-    originalssmTOOL.Load( ahsmFilePath)
+    If  ssmTOOL.Load(ahsmFilePath) ANdAlso  originalssmTOOL.Load( ahsmFilePath) then
+      Timer1.Enabled=true
+    Else
+    
+      MessageBox.Show("The file format for the Steady State Model (.AHSM) was corrupted or is an alpha version. Please refer to the documentation or help to discover more.")
+      Timer1.Enabled=false
 
-    setupBuses()
-    setupControls()
-    setupBindings()
+    end if
+
+     setupBuses()
+     setupControls()
+     setupBindings()  
+
 
 End Sub
 

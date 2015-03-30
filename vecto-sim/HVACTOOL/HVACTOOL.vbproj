@@ -143,6 +143,7 @@
     <Content Include="bin\Debug\ssm.Ahsm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="bin\Debug\SSMOLD.ahsm" />
     <None Include="HVACTOOL_TemporaryKey.pfx" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
@@ -165,6 +166,7 @@
     <Content Include="ssm.Ahsm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="SSMOLD.ashm" />
     <None Include="testCombinedAlternatorMap.aalt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
