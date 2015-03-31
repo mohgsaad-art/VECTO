@@ -22,13 +22,15 @@ End Class
 Public Class Alternator
  Implements IAlternator
 
+
+
  Public Property AlternatorName As String Implements IAlternator.AlternatorName
  Public Property  PulleyRatio As Single Implements IAlternator.PulleyRatio
 
  Public Property InputTable2000 As  New List(Of AltUserInput) Implements IAlternator.InputTable2000  
  Public Property InputTable4000 As  New List(Of AltUserInput) Implements IAlternator.InputTable4000
  Public Property InputTable6000 As  New List(Of AltUserInput) Implements IAlternator.InputTable6000
- Public Property RangeTable     As  New List(Of Table4Row) Implements IAlternator.RangeTable
+ Public Property RangeTable     As  New List(Of Table4Row)    Implements IAlternator.RangeTable
 
  Private signals As ICombinedAlternatorSignals 
 
@@ -283,7 +285,29 @@ Public Class Alternator
   End Sub
 
 
-   
+
+  Public Function IsEqualTo(other As IAlternator) As Boolean Implements IAlternator.IsEqualTo
+
+     If Me.AlternatorName <> other.AlternatorName then Return False
+     If Me.PulleyRatio <> other.PulleyRatio then Return false
+     
+     Dim i As Integer =1
+
+     For i= 1 to 3
+
+       If Me.InputTable2000(i).Eff <> other.InputTable2000(i).Eff then Return False
+       If Me.InputTable4000(i).Eff <> other.InputTable4000(i).Eff then Return False
+       If Me.InputTable6000(i).Eff <> other.InputTable6000(i).Eff then Return False
+
+
+     Next
+
+    Return True
+    
+  End Function
+
+
+
 End Class
 
 

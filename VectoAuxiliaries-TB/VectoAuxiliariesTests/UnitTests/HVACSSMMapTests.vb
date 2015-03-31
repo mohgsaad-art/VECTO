@@ -51,18 +51,19 @@ Namespace UnitTests
 
         End Sub
 
-        <Test()>
-        Public Sub BadValuesTest()
-            Dim message As String = String.Empty
-            Dim expected As boolean = false
-            Dim actual As Boolean
-            Dim target = GetMap
+        'Redundant, this format is superceeded.
+        '<Test()>
+        'Public Sub BadValuesTest()
+        '    Dim message As String = String.Empty
+        '    Dim expected As boolean = false
+        '    Dim actual As Boolean
+        '    Dim target = GetMap
 
-            actual = target.SetValuesFromMap( badValues, message)
-            Assert.AreEqual(expected, actual)
+        '    actual = target.SetValuesFromMap( badValues, message)
+        '    Assert.AreEqual(expected, actual)
 
 
-        End Sub
+        'End Sub
 
 
         <Test()>

@@ -406,6 +406,25 @@ End Sub
   
   
   End Sub
+  Private Sub btnCancel_Click( sender As Object,  e As EventArgs) Handles btnCancel.Click
+  
+     UserHitCancel=true
+     Me.close
+  
+  End Sub
+  Private Sub btnSave_Click( sender As Object,  e As EventArgs) Handles btnSave.Click
+
+    '  If Not ValidateAll then Return 
+
+        UserHitSave=true
+
+        Me.DialogResult=Windows.Forms.DialogResult.OK
+        Me.Close
+       
+
+
+  End Sub
+
 
   'Form / Tab Events
   Private Sub TabControl1_SelectedIndexChanged( sender As Object,  e As EventArgs) Handles TabControl1.SelectedIndexChanged
@@ -417,6 +436,68 @@ End Sub
   
   
     End If
+  End Sub
+  Private Sub frmCombinedAlternators_FormClosing( sender As Object,  e As FormClosingEventArgs) Handles MyBase.FormClosing
+
+
+       Dim result As DialogResult
+      
+       'If UserHitCancel then bail
+       If UserHitCancel then 
+          DialogResult= Windows.Forms.DialogResult.Cancel
+          UserHitCancel=false
+          return
+       End If
+      
+       'UserHitSave
+       If UserHitSave then 
+          DialogResult= Windows.Forms.DialogResult.Cancel
+          If NOT combinedAlt.Save(aaltPath )   then
+                MessageBox.Show("Unable to save file, aborting.")
+                e.Cancel=true
+           End If
+          UserHitSave=false
+          return
+       End If
+      
+      
+      ''This must be a close box event. If nothing changed, then bail, otherwise ask user if they wanna save
+      If  Not combinedAlt.IsEqualTo( originalAlt ) 
+      
+           result = (MessageBox.Show("Would you like to save changes before closing?","Save Changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question))
+      
+      
+                Select Case  result
+                
+                    case DialogResult.Yes:
+                        'save 
+      
+                        If NOT combinedAlt.Save(aaltPath)   then
+                          e.Cancel=true
+                        End If
+      
+                    case DialogResult.No:
+                        'just allow the form to close
+                        'without saving
+                        Me.DialogResult=Windows.Forms.DialogResult.Cancel
+      
+      
+      
+                    case DialogResult.Cancel:
+                        'cancel the close
+                        e.Cancel = true
+                        Me.DialogResult=Windows.Forms.DialogResult.Cancel
+      
+      
+                end select
+      
+      End If
+      
+      UserHitCancel=false
+      UserHitSave=false
+
+
+
   End Sub
 
 
@@ -514,83 +595,7 @@ End Sub
 
 
 
-Private Sub btnSave_Click( sender As Object,  e As EventArgs) Handles btnSave.Click
 
-     ' If Not ValidateAll then Return 
-
-        UserHitSave=true
-
-        Me.DialogResult=Windows.Forms.DialogResult.OK
-        Me.Close
-       
-
-
-End Sub
-
-
-
-Private Sub frmCombinedAlternators_FormClosing( sender As Object,  e As FormClosingEventArgs) Handles MyBase.FormClosing
-
-
-     Dim result As DialogResult
-
-     'If UserHitCancel then bail
-     If UserHitCancel then 
-        DialogResult= Windows.Forms.DialogResult.Cancel
-        UserHitCancel=false
-        return
-     End If
-
-     'UserHitSave
-     If UserHitSave then 
-        DialogResult= Windows.Forms.DialogResult.Cancel
-        If NOT combinedAlt.Save(aaltPath )   then
-              MessageBox.Show("Unable to save file, aborting.")
-              e.Cancel=true
-         End If
-        UserHitSave=false
-        return
-     End If
-
-
-    ''This must be a close box event. If nothing changed, then bail, otherwise ask user if they wanna save
-    'If  Not ssmTOOL.IsEqualTo( originalssmTOOL ) 
-  
-    '     result = (MessageBox.Show("Would you like to save changes before closing?","Save Changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question))
-
-
-    '          Select Case  result
-              
-    '              case DialogResult.Yes:
-    '                  'save 
-
-    '                  If NOT ssmTOOL.Save(ahsmFilePath)   then
-    '                    e.Cancel=true
-    '                  End If
-  
-    '              case DialogResult.No:
-    '                  'just allow the form to close
-    '                  'without saving
-    '                  Me.DialogResult=Windows.Forms.DialogResult.Cancel
-
-  
-  
-    '              case DialogResult.Cancel:
-    '                  'cancel the close
-    '                  e.Cancel = true
-    '                  Me.DialogResult=Windows.Forms.DialogResult.Cancel
-
-  
-    '          end select
-  
-    'End If
-  
-    UserHitCancel=false
-    UserHitSave=false
-
-
-
-End Sub
 
 
 
