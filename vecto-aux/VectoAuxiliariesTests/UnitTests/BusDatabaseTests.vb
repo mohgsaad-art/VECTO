@@ -32,8 +32,8 @@ Public Sub BusCreateTest()
   Assert.AreEqual("raised floor", target.FloorType)
   Assert.AreEqual("diesel", target.EngineType)
 
-  Assert.AreEqual(114.4f, target.AreaInMetresSquared)
-  Assert.AreEqual(61.8f, target.VolumneInMetresQubed)
+  Assert.AreEqual(114.4r, target.AreaInMetresSquared)
+  Assert.AreEqual(61.8r, target.VolumneInMetresQubed)
 
 End Sub
 

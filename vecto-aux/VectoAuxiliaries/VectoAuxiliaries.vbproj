@@ -118,6 +118,7 @@
     <Compile Include="Electrics\CombinedAlternatorSignals.vb" />
     <Compile Include="Electrics\ElectricsUserInputsConfig.vb" />
     <Compile Include="Electrics\IAlternator.vb" />
+    <Compile Include="Electrics\ICombinedAlternator.vb" />
     <Compile Include="Electrics\ICombinedAlternatorMapRow.vb" />
     <Compile Include="Electrics\ICombinedAlternatorSignals.vb" />
     <Compile Include="Electrics\IElectricsUserInputsConfig.vb" />

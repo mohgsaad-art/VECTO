@@ -533,7 +533,7 @@ Partial Class frmCombinedAlternators
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Name = "frmCombinedAlternators"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "frmCombinedAlternators"
+        Me.Text = "Combined Alternators - ( Excel V03 )"
         Me.grpTable2000PRM.ResumeLayout(false)
         Me.grpTable2000PRM.PerformLayout
         Me.grpTable4000PRM.ResumeLayout(false)

@@ -1,4 +1,6 @@
-﻿Imports NUnit.Framework
+﻿Option Strict On
+
+Imports NUnit.Framework
 Imports VectoAuxiliaries.Electrics
 Imports VectoAuxiliariesTests.Mocks
 Imports VectoAuxiliaries
@@ -433,6 +435,57 @@ Namespace UnitTests
 
   End Sub
 
+
+ <Test()>
+  Public Sub AlternatorsAreEqual()
+
+
+   Dim ca As ICombinedAlternator=  new CombinedAlternator("abc.aalt")
+   Dim original as  ICombinedAlternator = new CombinedAlternator("abc.aalt")
+ 
+   Assert.IsTrue( ca.IsEqualTo( original))
+
+  End Sub
+
+ <Test()>
+  Public Sub AlternatorsUnequalName()
+
+
+   Dim ca As new CombinedAlternator("abc.aalt")
+   Dim original As new CombinedAlternator("abc.aalt")
+
+   ca.Alternators(0).AlternatorName="ZCZZCZCZCZCXXXYYY"
+ 
+   Assert.IsFalse(ca.IsEqualTo( original))
+
+  End Sub
+
+ <Test()>
+  Public Sub AlternatorsUnequalPulley()
+
+
+   Dim ca As new CombinedAlternator("abc.aalt")
+   Dim original As new CombinedAlternator("abc.aalt")
+
+   ca.Alternators(0).PulleyRatio=9
+ 
+   Assert.IsFalse(ca.IsEqualTo( original))
+
+  End Sub
+
+ <Test()>
+  Public Sub AlternatorsUnequalEfficiency()
+
+
+   Dim ca As new CombinedAlternator("abc.aalt")
+   Dim original As new CombinedAlternator("abc.aalt")
+
+   ca.Alternators(0).InputTable2000(1).Eff=0.99999
+ 
+   'Only tests efficiency values table row 1-3
+   Assert.IsFalse(ca.IsEqualTo( original))
+
+  End Sub
 
 
  End Class
