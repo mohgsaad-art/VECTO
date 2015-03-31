@@ -21,9 +21,11 @@ Namespace Electrics
 
 
          Sub  Clone( other As IAlternator)
-     
-     
-     End Interface
+
+         Function IsEqualTo(other As IAlternator) As Boolean 
+
+
+   end  interface
 
 
 End Namespace
