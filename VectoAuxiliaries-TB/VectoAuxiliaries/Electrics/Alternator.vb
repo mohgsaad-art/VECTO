@@ -1,4 +1,6 @@
-﻿
+﻿Option Strict On
+
+
 Namespace Electrics
 
 
@@ -54,7 +56,7 @@ Public Class Alternator
 
                Dim range as List(Of AltUserInput) = RangeTable.Select( Function(s) New AltUserInput(s.RPM,s.Efficiency)).ToList()
 
-               Dim v As Single =  Alternator.Iterpolate( range, SpindleSpeed)
+               Dim v As Single =  Alternator.Iterpolate( range,Convert.ToSingle( SpindleSpeed))
 
                Return v
 
@@ -193,7 +195,7 @@ Public Class Alternator
       RangeTable(4).RPM =  M14
 
       'Row 1 - RPM
-      M11 = IF(M12=IF(N12>N13,M12-((M12-M13)/(N12-N13))*(N12-N11),M12-((M12-M13)/(N12-N13))*(N12-N11)), M12-0.01, IF(N12>N13,M12-((M12-M13)/(N12-N13))*(N12-N11),M12-((M12-M13)/(N12-N13))*(N12-N11)))
+      M11 = Convert.ToSingle(IF(M12=IF(N12>N13,M12-((M12-M13)/(N12-N13))*(N12-N11),M12-((M12-M13)/(N12-N13))*(N12-N11)), M12-0.01, IF(N12>N13,M12-((M12-M13)/(N12-N13))*(N12-N11),M12-((M12-M13)/(N12-N13))*(N12-N11))))
       RangeTable(1).RPM =M11
 
       'Row 0 - RPM
@@ -201,7 +203,7 @@ Public Class Alternator
       RangeTable(0).RPM  = M10
 
       'Row 5 - RPM
-      M15 = IF(M14=IF((N14=0 OrElse N14=N13),M14+1,IF(N13>N14,((((M14-M13)/(N13-N14))*N14)+M14),((((M14-M13)/(N13-N14))*(N14-N15))+M14))),M14+0.01,IF((N14=0 OrElse N14=N13),M14+1,IF(N13>N14,((((M14-M13)/(N13-N14))*N14)+M14),((((M14-M13)/(N13-N14))*(N14-N15))+M14))))
+      M15 =  Convert.ToSingle(IF(M14=IF((N14=0 OrElse N14=N13),M14+1,IF(N13>N14,((((M14-M13)/(N13-N14))*N14)+M14),((((M14-M13)/(N13-N14))*(N14-N15))+M14))),M14+0.01,IF((N14=0 OrElse N14=N13),M14+1,IF(N13>N14,((((M14-M13)/(N13-N14))*N14)+M14),((((M14-M13)/(N13-N14))*(N14-N15))+M14)))))
       RangeTable(5).RPM = M15
 
 

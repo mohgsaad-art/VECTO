@@ -1,4 +1,4 @@
-﻿
+﻿Option Strict On
 
 Imports VectoAuxiliaries.Electrics
 Imports System
@@ -38,7 +38,7 @@ Public Class CombinedAlternator
     altSignals.CrankRPM = CrankRPM
     altSignals.CurrentDemandAmps = Amps / Alternators.Count
 
-    Return New AlternatorMapValues(Alternators.Average(Function(a) a.Efficiency) / 100)
+    Return  New AlternatorMapValues( Convert.ToSingle(Alternators.Average(Function(a) a.Efficiency) / 100))
 
 
  End Function
@@ -175,11 +175,16 @@ Public Class CombinedAlternator
  End Function
  Public Function DeleteAlternator(alternatorName As String, ByRef feedback As String) As Boolean
 
+     'Is this the last alternator, if so deny the user the right to remove it.
+     If Alternators.Count<2 then
+         feedback="There must be at least one alternator remaining, operation aborted."
+         Return false
+     End If
+
      If Alternators.Where(Function(w) w.AlternatorName = alternatorName).Count = 0 Then
        feedback = "This alternator does not exist"
        Return False
      End If
-
 
      Dim altToRemove As IAlternator = Alternators.First(Function(w) w.AlternatorName = alternatorName)
      Dim numAlternators As Integer = Alternators.Count
@@ -228,33 +233,36 @@ Public Class CombinedAlternator
     sb.AppendLine("[AlternatorName],[RPM],[Amps],[Efficiency],[PulleyRatio]")
 
    'write details
-   For Each alt As IAlternator In Alternators
+   For Each alt As IAlternator In Alternators.OrderBy( Function(o) o.AlternatorName)
 
 
      '2000 - IE Alt1,2000,10,50,3
      For row = 1 To 3
        amps = alt.InputTable2000(row).Amps : eff = alt.InputTable2000(row).Eff
-       sb.Append(alt.AlternatorName + ",2000," + amps.ToString() + "," + eff.ToString() + "," + alt.PulleyRatio.ToString())
+       sb.Append(alt.AlternatorName + ",2000," + amps.ToString("0.000") + "," + eff.ToString("0.000") + "," + alt.PulleyRatio.ToString("0.000"))
        sb.AppendLine("")
      Next
 
      '4000 - IE Alt1,2000,10,50,3
      For row = 1 To 3
         amps = alt.InputTable4000(row).Amps : eff = alt.InputTable4000(row).Eff
-       sb.Append(alt.AlternatorName + ",4000," + amps.ToString() + "," + eff.ToString() + "," + alt.PulleyRatio.ToString())
+       sb.Append(alt.AlternatorName + ",4000," + amps.ToString("0.000") + "," + eff.ToString("0.000") + "," + alt.PulleyRatio.ToString("0.000"))
        sb.AppendLine("")
      Next
 
      '4000 - IE Alt1,2000,10,50,3
       For row = 1 To 3
        amps = alt.InputTable4000(row).Amps : eff = alt.InputTable6000(row).Eff
-       sb.Append(alt.AlternatorName + ",6000," + amps.ToString() + "," + eff.ToString() + "," + alt.PulleyRatio.ToString())
+       sb.Append(alt.AlternatorName + ",6000," + amps.ToString("0.000") + "," + eff.ToString("0.000") + "," + alt.PulleyRatio.ToString("0.000"))
        sb.AppendLine("")
      Next
 
 
    Next
 
+   'Add Model Source
+   sb.AppendLine("[MODELSOURCE]")
+   sb.Append( Me.ToString())
 
    ' Write the stream cotnents to a new file named "AllTxtFiles.txt" 
    Using outfile As New StreamWriter(aaltPath)
@@ -347,13 +355,13 @@ End Function
     sb.AppendLine("")
     For i = 0 To 5
 
-    a1 = alt.InputTable2000(i).Amps.ToString("0.###")
-    e1 = alt.InputTable2000(i).Eff.ToString("0.###")
-    a2 = alt.InputTable4000(i).Amps.ToString("0.###")
-    e2 = alt.InputTable4000(i).Eff.ToString("0.###")
-    a3 = alt.InputTable6000(i).Amps.ToString("0.###")
-    e3 = alt.InputTable6000(i).Eff.ToString("0.###")
-    sb.AppendLine(a1 + vbTab + e1 + vbTab + a2 + vbTab + e2 + vbTab + a3 + vbTab + e3 + vbTab)
+    a1 = alt.InputTable2000(i).Amps.ToString("0")
+    e1 = alt.InputTable2000(i).Eff.ToString("0.000")
+    a2 = alt.InputTable4000(i).Amps.ToString("0")
+    e2 = alt.InputTable4000(i).Eff.ToString("0.000")
+    a3 = alt.InputTable6000(i).Amps.ToString("0")
+    e3 = alt.InputTable6000(i).Eff.ToString("0.000")
+    sb.AppendLine(a1 + vbTab  + e1 + vbTab + a2 + vbTab  + e2 + vbTab + a3  + vbTab + e3 + vbTab)
 
     Next
 
@@ -372,7 +380,7 @@ End Function
 
           Dim eff As Single = GetEfficiency(r, a).Efficiency
 
-          sb.Append(eff.ToString("0.###") + vbTab)
+          sb.Append(eff.ToString("0.000") + vbTab)
 
        Next
        sb.AppendLine("")
