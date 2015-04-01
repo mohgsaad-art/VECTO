@@ -1,4 +1,5 @@
-﻿
+﻿Option Strict On
+
 
 Namespace Electrics
 

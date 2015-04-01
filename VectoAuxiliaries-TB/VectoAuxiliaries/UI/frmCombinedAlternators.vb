@@ -69,14 +69,16 @@ Public Class frmCombinedAlternators
      gvAlternators.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
 
 
-     Dim deleteColumn As New DeleteColumn
-     With deleteColumn
+     Dim deleteColumn As New DeleteAlternatorColumn()
+     With deleteColumn     
        .HeaderText = ""
        .ToolTipText = "Delete this row"
        .Name = "Delete"
        .Width = 25
        .DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
      End With
+
+   '  deleteColumn.CellTemplate.ToolTipText="Delete this alternator"
      gvAlternators.Columns.Add(deleteColumn)
 
 
@@ -588,14 +590,6 @@ End Sub
 
 
  End Sub
-
-
-
-
-
-
-
-
 
 
 
