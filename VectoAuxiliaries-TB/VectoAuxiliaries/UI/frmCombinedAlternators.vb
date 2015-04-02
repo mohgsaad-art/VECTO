@@ -393,14 +393,26 @@ End Sub
        End if
     
       Else
-      'This is an update
-        If Not combinedAlt.UpdateAlternator(  GetAlternatorFromPanel() , feedback) then
-            MessageBox.Show( feedback )
-         Else
+
+      'Get Existing row name.
+       Dim altName As String = gvAlternators.Rows( Convert.ToInt32(txtIndex.Text)).Cells("AlternatorName").Value.ToString()
+
+       'Does name used in update exist in other alternators excluding the original being edited ?, if so abort.
+       If combinedAlt.Alternators.Where( Function(f) f.AlternatorName<> altName AndAlso f.AlternatorName=txtAlternatorName.Text).Count>0 then
+         MessageBox.Show( String.Format("The lternator '{0}' name you are using to update the alternator '{1}' already exists, operation aborted",txtAlternatorName.Text,altName))
+         return
+       End If
+
+      'This is an update so delete the one being updated
+
+      If  combinedAlt.DeleteAlternator(altName, feedback) AndAlso combinedAlt.AddAlternator(GetAlternatorFromPanel(),feedback )  then
+
            BindGrid()
            ClearEditPanel()
            UpdateButtonText()
-          
+             
+         Else
+           MessageBox.Show( feedback )
         End If
     
       End If
