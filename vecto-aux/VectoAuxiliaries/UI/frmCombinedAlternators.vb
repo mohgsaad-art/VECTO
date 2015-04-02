@@ -471,6 +471,7 @@ End Sub
                 e.Cancel=true
            End If
           UserHitSave=false
+          DialogResult=Windows.Forms.DialogResult.OK
           return
        End If
       
