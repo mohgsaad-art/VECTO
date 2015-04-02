@@ -199,26 +199,26 @@ Public Class CombinedAlternator
      End If
 
  End Function
- Public Function UpdateAlternator(rows As List(Of ICombinedAlternatorMapRow), ByRef feedback As String) As Boolean
+ 'Public Function UpdateAlternator( gridIndex As Integer, rows As List(Of ICombinedAlternatorMapRow),  ByRef feedback As String) As Boolean
 
-       Dim altName As String = rows.First.AlternatorName
-       Dim altToUpd As IAlternator = Alternators.First(Function(w) w.AlternatorName = altName)
+ '      Dim altName As String = rows.First.AlternatorName
+ '      Dim altToUpd As IAlternator = Alternators.First(Function(w) w.AlternatorName = altName)
 
-       If Not DeleteAlternator(altName, feedback) Then
-          feedback = feedback
-          Return False
+ '      If Not DeleteAlternator(altName, feedback) Then
+ '         feedback = feedback
+ '         Return False
 
-       End If
+ '      End If
 
-       'Re.create alternator.
+ '      'Re.create alternator.
 
-       Dim replacementAlt As New Alternator(altSignals, rows)
-       Alternators.Add(replacementAlt)
+ '      Dim replacementAlt As New Alternator(altSignals, rows)
+ '      Alternators.Add(replacementAlt)
 
-       Return True
+ '      Return True
 
 
- End Function
+ 'End Function
 
  'Persistance Functions
  Public Function Save(aaltPath As String) As Boolean
