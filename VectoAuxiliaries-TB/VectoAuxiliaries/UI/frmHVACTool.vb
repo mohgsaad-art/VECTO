@@ -743,6 +743,7 @@ End Function
               MessageBox.Show("Unable to save file, aborting.")
               e.Cancel=true
          End If
+        DialogResult= Windows.Forms.DialogResult.OK
         UserHitSave=false
         return
      End If
