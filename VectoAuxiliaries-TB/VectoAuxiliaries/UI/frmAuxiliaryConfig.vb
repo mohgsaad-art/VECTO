@@ -411,10 +411,9 @@ Dim result As Boolean = True
         End If
 
         'Test File is valid
-        Dim alt As AlternatorMap
+        Dim alt As ICombinedAlternator
         Try
-        alt = New AlternatorMap(FilePathUtils.ResolveFilePath( vectoPath,txtAlternatorMapPath.Text))
-        alt.Initialise()
+        alt = New CombinedAlternator(FilePathUtils.ResolveFilePath( vectoPath,txtAlternatorMapPath.Text))
          ErrorProvider.SetError(txtAlternatorMapPath, String.Empty)
         Catch ex As Exception
          ErrorProvider.SetError(txtAlternatorMapPath, "Error : map is invalid or cannot be found, please select a valid alternator map")
@@ -836,24 +835,113 @@ Private Sub btnAlternatorMapPath_Click(sender As Object, e As EventArgs) Handles
 
 
 
+              ' Dim fbAux As New cFileBrowser(True, False)
+
+
+
+              '' Dim vectoFile As String = "C:\Users\tb28\Source\Workspaces\VECTO\vecto-sim-ricardoaeaTB\AuxillaryTestHarness\bin\Debug\vectopath.vecto"
+              ' Dim fname As String = fFILE(vectoFile, True)
+
+              '  fbAux.Extensions = New String() {"AALT"}
+              '  If fbAux.OpenDialog(fPATH(vectoFile)) Then
+
+              '   txtAlternatorMapPath.Text = fFileWoDir(fbAux.Files(0), fPATH(vectoFile))
+
+              ' End If
+
+              ' Validate_Electrics()
+
+              ' 'Causes Binding to fire
+              ' txtAlternatorMapPath.Focus()
+
+              
+               Dim aauxFileValidated As Boolean = False
                Dim fbAux As New cFileBrowser(True, False)
+               fbAux.Extensions = New String() {"AALT"}
+               Dim frm As frmCombinedAlternators  
+
+               Dim suppliedAALTPath  As string = String.Empty
+               Dim absoluteAALTPath  As String = String.Empty
+               Dim message As String = String.Empty
+               Dim newFile As Boolean = false
+
+              
+               'Trim ssmPath
+               'suppliedAALTPath = txtAlternatorMapPath.Text.Trim
 
 
-
-              ' Dim vectoFile As String = "C:\Users\tb28\Source\Workspaces\VECTO\vecto-sim-ricardoaeaTB\AuxillaryTestHarness\bin\Debug\vectopath.vecto"
-               Dim fname As String = fFILE(vectoFile, True)
-
-                fbAux.Extensions = New String() {"AALT"}
-                If fbAux.OpenDialog(fPATH(vectoFile)) Then
-
-                 txtAlternatorMapPath.Text = fFileWoDir(fbAux.Files(0), fPATH(vectoFile))
-
+                'Is Filename NOT supplied, try and obtain  it, still not supplied, then bail.
+                 If( txtAlternatorMapPath.Text.Length=0) then
+               
+                      newFile = true
+               
+                      If fbAux.CustomDialog(vectoPath,False,False, tFbExtMode.ForceExt,False,"") then
+                         If fbAux.Files.Count=0 then
+                               Return
+                          Else                     
+                               suppliedAALTPath = fbAux.Files(0)
+                         End If
+                      Else        
+                           'No file given in text box, not given in browser, so bail         
+                           return
+                      End If 
+               
+               Else                 
+                     suppliedAALTPath = txtAlternatorMapPath.Text
+               
                End If
 
-               Validate_Electrics()
+               'Set Absolutes.
+               absoluteAALTPath = FilePathUtils.ResolveFilePath(fPATH(VECTOfile), suppliedAALTPath )
 
-               'Causes Binding to fire
-               txtAlternatorMapPath.Focus()
+               'Is supplied filename NOT valid. bail
+               if Not FilePathUtils.ValidateFilePath(absoluteAALTPath,".aalt",Message)  then                 
+                  MessageBox.Show( message)
+                  return
+               end if
+
+
+               'If file Exists, Check validity, else fire up a default SSM Config.
+               If  File.Exists( absoluteAALTPath ) then
+                     'is file valid Try ahsm - HVac Steady State Model
+                      try
+                          Dim aaltFile As String = FilePathUtils.ResolveFilePath(vectoPath, absoluteAALTPath)
+                          Dim combinedAlt As ICombinedAlternator = New CombinedAlternator(aaltFile)                                       
+                       Catch ex As Exception         
+                            MessageBox.Show("The supplied .AALT File was invalid, aborting.")
+                            return
+                       End Try
+                Else              
+                 newFile=true
+
+                End If
+
+
+
+             frm   = New frmCombinedAlternators( absoluteAALTPath, New COmbinedAlternatorSignals)
+                               
+
+               'If Dialog result is OK, then take action else bail
+               If frm.ShowDialog()   = Windows.Forms.DialogResult.OK then
+
+                 If suppliedAALTPath.Contains(":\")  then
+
+                    txtAlternatorMapPath.Text= If( suppliedAALTPath.Contains(vectoPath),suppliedAALTPath.replace(vectoPath,""), suppliedAALTPath)  
+
+                 else
+                    
+                    txtAlternatorMapPath.Text = fFileWoDir( suppliedAALTPath )
+
+                 End If
+
+               Else          
+                   return
+               End If
+
+
+               frm.Dispose()
+
+
 
 End Sub
 Private Sub btnCompressorMap_Click(sender As Object, e As EventArgs) Handles btnCompressorMap.Click
@@ -1023,7 +1111,7 @@ Private Sub btnSSMBSource_Click( sender As Object,  e As EventArgs) Handles btnS
 
                  If suppliedSSMPath.Contains(":\")  then
 
-                    txtSSMFilePath.Text= suppliedSSMPath   
+                    txtSSMFilePath.Text=  If( suppliedSSMPath.Contains( vectoPath), suppliedSSMPath.Replace( vectoPath,""), suppliedSSMPath)
 
                  else
                     
