@@ -25,7 +25,9 @@ Public Class AdvancedAuxiliaries
 
     'Supporting classes which may generate event messages
     Private WithEvents compressorMap As ICompressorMap
-    Private Withevents alternatorMap  As IAlternatorMap 
+   ' Private Withevents alternatorMap  As IAlternatorMap 
+
+    Private Withevents alternatorMap  As IAlternatorMap
     Private WithEvents actuationsMap As IPneumaticActuationsMAP
     Private WithEvents fuelMap       As IFUELMAP 
 
@@ -85,8 +87,12 @@ Public Class AdvancedAuxiliaries
       Signals.SmartElectrics  = auxConfig.ElectricalUserInputsConfig.SmartElectrical
       Signals.SmartPneumatics = auxConfig.PneumaticUserInputsConfig.SmartAirCompression
       
-      alternatorMap  = New AlternatorMap(FilePathUtils.ResolveFilePath(vectoDirectory,auxConfig.ElectricalUserInputsConfig.AlternatorMap))
-      alternatorMap.Initialise()
+      'alternatorMap  = New AlternatorMap(FilePathUtils.ResolveFilePath(vectoDirectory,auxConfig.ElectricalUserInputsConfig.AlternatorMap))
+     ' alternatorMap.Initialise()
+
+     ' alternatorMap  = New AlternatorMap(FilePathUtils.ResolveFilePath(vectoDirectory,auxConfig.ElectricalUserInputsConfig.AlternatorMap))
+       alternatorMap  = New CombinedAlternator(FilePathUtils.ResolveFilePath(vectoDirectory,auxConfig.ElectricalUserInputsConfig.AlternatorMap))
+
       
       actuationsMap = New PneumaticActuationsMAP( FilePathUtils.ResolveFilePath(vectoDirectory,auxConfig.PneumaticUserInputsConfig.ActuationsMap))
       
