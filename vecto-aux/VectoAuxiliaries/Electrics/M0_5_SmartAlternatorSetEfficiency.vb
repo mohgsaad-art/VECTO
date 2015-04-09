@@ -100,7 +100,7 @@ End Property
       <ExcludeFromCodeCoverage>
 Private function HvacPlusNonBaseCurrents() As Single
 
-   Return _m0.GetHVACElectricalPowerDemandAmps() + _electricalConsumables.GetTotalAverageDemandAmps(true)
+   Return _m0.GetHVACElectricalPowerDemandAmps() + (_electricalConsumables.GetTotalAverageDemandAmps(true) /ElectricConstants.BatteryEfficiency)
 
 End Function
        
