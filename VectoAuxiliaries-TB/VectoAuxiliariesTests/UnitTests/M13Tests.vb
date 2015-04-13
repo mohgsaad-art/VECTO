@@ -17,11 +17,11 @@ Private Const FUEL_DENSITY_percm3 As Single = 0.835
 '<TestCase(50,	60,	70,	TRUE,	TRUE ,100, 1,False,	 72287.5f , 86.57185629f )> _
 
 <Test()> _
-<TestCase(50,	60,	70,	FALSE,	FALSE,100, 1,False,	 72287.5f , 86.57185629f )> _
-<TestCase(50,	60,	70,	FALSE,	TRUE ,100, 1,False,	 72277.5f , 86.55988024f )> _
-<TestCase(50,	60,	70,	TRUE,	FALSE,100, 1,False,	 72297.5f , 86.58383234f )> _
-<TestCase(50,	60,	70,	TRUE,	TRUE ,100, 1,False,	 72287.5f , 86.57185629f )> _
-<TestCase(50,	60,	70,	TRUE,	TRUE ,100, 2,True,	 144575.0f ,173.14371258f )> _
+<TestCase(50,	60,	70,	FALSE,	FALSE,100, 1,False,	 60f , 86.57185629f )> _
+<TestCase(50,	60,	70,	FALSE,	TRUE ,100, 1,False,	 50f , 86.55988024f )> _
+<TestCase(50,	60,	70,	TRUE,	FALSE,100, 1,False,	 70f , 86.58383234f )> _
+<TestCase(50,	60,	70,	TRUE,	TRUE ,100, 1,False,	 60f , 86.57185629f )> _
+<TestCase(50,	60,	70,	TRUE,	TRUE ,100, 2,True,	 120f ,173.14371258f )> _
 Public Sub InputOutputValues( IP1  As single,
                               IP2  As single, 
                               IP3  As single,
@@ -53,9 +53,9 @@ Signals.Setup ( Function(x) x.CurrentCycleTimeInSeconds)                        
 'Act
  Dim target  = New M13( m1.Object, m10.Object, M12.Object, Signals.Object)
        
-'Assert
-Assert.AreEqual( OUT1, target.TotalCycleFuelConsumptionGrams )
-Assert.AreEqual( OUT2, target.TotalCycleFuelConsumptionLitres )
+ 'Assert
+  Assert.AreEqual( OUT1, target.WHTCTotalCycleFuelConsumptionGrams )
+
 End Sub
 
 End Class
