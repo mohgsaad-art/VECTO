@@ -51,7 +51,7 @@ Public Class SSMCalculate
              
               End Get
           End Property
-          Public ReadOnly Property FuelLPerHBase As Single Implements ISSMCalculate.FuelLPerHBase
+          Public ReadOnly Property FuelLPerHBase As Single Implements ISSMCalculate.FuelPerHBase
             Get
 
                '=ABS((J83/1000)*(1/(C36*C35))/C34)
@@ -116,7 +116,7 @@ Public Class SSMCalculate
             End Get
 
         End Property
-          Public ReadOnly Property FuelLPerHBaseAdjusted As Single Implements ISSMCalculate.FuelLPerHBaseAdjusted
+          Public ReadOnly Property FuelLPerHBaseAdjusted As Single Implements ISSMCalculate.FuelPerHBaseAdjusted
             Get
             '=ABS((IF(AND(M79<0,M80<0),VLOOKUP(MAX(M79:M80),M79:P80,4),0)/1000)*(1/(C36*C35))/C34)
 

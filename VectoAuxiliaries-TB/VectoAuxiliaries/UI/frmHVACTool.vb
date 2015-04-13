@@ -1049,11 +1049,11 @@ End Sub
   
           txtBasElectrical.Text = ssmTOOL.ElectricalWBase
           txtBaseMechanical.Text = ssmTOOL.MechanicalWBase
-          txtBaseFuel.Text = ssmTOOL.FuelLPerHBase
+          txtBaseFuel.Text = ssmTOOL.FuelPerHBase
           
           txtAdjElectrical.Text = ssmTOOL.ElectricalWAdjusted
           txtAdjMechanical.Text = ssmTOOL.MechanicalWBaseAdjusted
-          txtAdjFuel.Text = ssmTOOL.FuelLPerHBaseAdjusted
+          txtAdjFuel.Text = ssmTOOL.FuelPerHBaseAdjusted
           
             If captureDiagnostics then
           

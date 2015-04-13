@@ -121,6 +121,7 @@
     <Compile Include="UnitTests\M13Tests.vb" />
     <Compile Include="UnitTests\M12Tests.vb" />
     <Compile Include="UnitTests\M11Tests.vb" />
+    <Compile Include="UnitTests\M14Tests.vb" />
     <Compile Include="UnitTests\M1_AverageHVACLoadDemandTests.vb" />
     <Compile Include="UnitTests\M1_HVACAverageLoadDemandTests.vb" />
     <Compile Include="UnitTests\M5_SmartAlternatorSetGenerationTests.vb" />

@@ -61,7 +61,7 @@ Namespace Hvac
 
           _ElectricalPowerW = ssm.ElectricalWAdjusted
           _MechanicalPowerW = ssm.MechanicalWBaseAdjusted
-          _FuelingLPerH     = ssm.FuelLPerHBaseAdjusted
+          _FuelingLPerH     = ssm.FuelPerHBaseAdjusted
 
     End Sub  
        

@@ -24,15 +24,8 @@ Namespace DownstreamModules
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks>WHTC and Start Stop Adjusted</remarks>
-    ReadOnly Property TotalCycleFuelConsumptionGrams As Single
+    ReadOnly Property WHTCTotalCycleFuelConsumptionGrams As Single
 
-    ''' <summary>
-    ''' Total Cycle Fuel Consumption Litres
-    ''' </summary>
-    ''' <value></value>
-    ''' <returns></returns>
-    ''' <remarks>WHTC and Start Stop Adjusted</remarks>
-    ReadOnly Property TotalCycleFuelConsumptionLitres As Single 
   
   End Interface
 
