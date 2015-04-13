@@ -11,6 +11,7 @@ Public Class SSMTOOL
 Implements ISSMTOOL
 
 
+
  Private filePath As String
  Public Property GenInputs As ISSMGenInputs Implements ISSMTOOL.GenInputs
  Public Property TechList  As ISSMTechList  Implements ISSMTOOL.TechList
@@ -27,9 +28,9 @@ Implements ISSMTOOL
      Return  Calculate.MechanicalWBase
     End Get
  End Property
- Public ReadOnly Property FuelLPerHBase As Single Implements ISSMTOOL.FuelLPerHBase
+ Public ReadOnly Property FuelPerHBase As Single Implements ISSMTOOL.FuelPerHBase
     Get
-      Return Calculate.FuelLPerHBase
+      Return Calculate.FuelPerHBase
     End Get
  End Property
  'Adjusted Values
@@ -43,9 +44,9 @@ Implements ISSMTOOL
       Return Calculate.MechanicalWBaseAdjusted
      End Get
  End Property
- Public ReadOnly Property FuelLPerHBaseAdjusted As Single Implements ISSMTOOL.FuelLPerHBaseAdjusted
+ Public ReadOnly Property FuelPerHBaseAdjusted As Single Implements ISSMTOOL.FuelPerHBaseAdjusted
     Get
-     Return Calculate.FuelLPerHBaseAdjusted
+     Return Calculate.FuelPerHBaseAdjusted
     End Get
  End Property
 
@@ -230,6 +231,16 @@ End Function
             Return sb.ToString()
 
         End Function
+
+
+        Public Function FuelPerHBaseAsjusted(AverageUseableEngineWasteHeatKW As Single) As Single Implements ISSMTOOL.FuelPerHBaseAsjusted
+
+           'Set Engine Waste Heat
+            GenInputs.AH_EngineWasteHeatkW= AverageUseableEngineWasteHeatKW
+            Return FuelPerHBaseAdjusted
+
+        End Function
+
 
 
 End Class

@@ -47,6 +47,8 @@ Public Class AdvancedAuxiliaries
     private WithEvents M11 As IM11
     private WithEvents M12 As IM12
     private WithEvents M13 As IM13
+    Private WithEvents M14 As IM14
+
     private vectoDirectory As String 
 
     'Event Handler top level bubble.
@@ -114,11 +116,18 @@ Public Class AdvancedAuxiliaries
       Dim ssmPath as string = FilePathUtils.ResolveFilePath(vectoDirectory,auxConfig.HvacUserInputsConfig.SSMFilePath)
       Dim BusDatabase as String = FilePathUtils.ResolveFilePath(vectoDirectory,auxConfig.HvacUserInputsConfig.BusDatabasePath)     
       Dim ssmTool As New SSMTOOL( ssmPath)
-      If( ssmTool.Load(ssmPath)=False )
+
+      'This duplicate SSM is being created for use in M14 as its properties will be dynamically changed at that point
+      'to honour EngineWaste Heat Usage in Fueling calculations.
+      Dim ssmToolModule14 As New SSMTOOL( ssmPath)
+
+
+      If( ssmTool.Load(ssmPath)=False OrElse ssmToolModule14.Load(ssmPath)=False)
 
        Throw New Exception(String.Format("Unable to load the ssmTOOL with file {0}", ssmPath))
 
       End If     
+
       
       M0 = New M0_NonSmart_AlternatorsSetEfficiency( auxConfig.ElectricalUserInputsConfig.ElectricalConsumers,
                                                      alternatorMap,
@@ -169,6 +178,7 @@ Public Class AdvancedAuxiliaries
       M11 = New M11(M1,M3,M6,M8,fuelMap,Signals)
       M12 = New M12(M10, M11, Signals )
       M13 = New M13(M1,M10,M12,Signals)
+      M14 = New M14(M13,ssmToolModule14, New HVACConstants(), Signals)
     
     
 End Sub
@@ -267,10 +277,10 @@ End Sub
         Get
              If Not M13 is Nothing then
 
-               Return M13.TotalCycleFuelConsumptionGrams
+               Return M14.TotalCycleFCGrams
 
                Else
-               'TODO:Issue a message            
+          
                Return 0
 
              End If
@@ -281,12 +291,12 @@ End Sub
 
     Public ReadOnly Property TotalFuelLITRES As Single Implements VectoAuxiliaries.IAdvancedAuxiliaries.TotalFuelLITRES
         Get
-             If Not M13 is Nothing then
+             If Not M14 is Nothing then
 
-               Return M13.TotalCycleFuelConsumptionLitres
+               Return M14.TotalCycleFCLitres
 
                Else
-               'TODO:Issue a message
+
                Return 0
 
              End If
@@ -335,7 +345,8 @@ End Sub
 
     End Function
 
-    'MOD
+    'Dialgnostics outputs for testing purposes in Vecto.
+    'Eventually this can be removed or rendered non effective to reduce calculation load on the model.
     Public ReadOnly Property AA_NonSmartAlternatorsEfficiency As Single? Implements IAdvancedAuxiliaries.AA_NonSmartAlternatorsEfficiency
         Get
           Return M0.AlternatorsEfficiency
@@ -404,24 +415,21 @@ End Sub
 
     Public ReadOnly Property AA_TotalCycleFC_Grams As Single? Implements IAdvancedAuxiliaries.AA_TotalCycleFC_Grams
         Get
-         Return M13.TotalCycleFuelConsumptionGrams
+         Return M14.TotalCycleFCGrams
         End Get
     End Property
 
     Public ReadOnly Property AA_TotalCycleFC_Litres As Single? Implements IAdvancedAuxiliaries.AA_TotalCycleFC_Litres
         Get
-         Return M13.TotalCycleFuelConsumptionLitres
+         Return M14.TotalCycleFCLitres
         End Get
     End Property
-
-
 
     Public ReadOnly Property AuxiliaryPowerAtCrankWatts As Single Implements IAdvancedAuxiliaries.AuxiliaryPowerAtCrankWatts
         Get
           Return M8.AuxPowerAtCrankFromElectricalHVACAndPneumaticsAncillaries
         End Get
     End Property
-
 
 
     'TODO:REMOVE WHEN TESTING IS COMPLETE

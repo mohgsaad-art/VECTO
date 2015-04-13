@@ -46,26 +46,13 @@ End Property
      Return -Sum1+Sum3
     End Get
 End Property
-     Private readonly Property Sum5 As Single
-    Get
-     Return  ( m1.HVACFuelingLitresPerHour * ( signals.CurrentCycleTimeInSeconds/3600)) * FUEL_DENSITY_L3
-    End Get
-End Property
-     Private ReadOnly Property Sum6 As Single
-    Get
-     Return SW3 + Sum5
-    End Get
-End Property
-     Private ReadOnly Property Sum7 As Single
-    Get
-      Return  Sum8/ FUEL_DENSITY_L3
-    End Get
-End Property
+
+    'Sums 5, 6 and 7 removed during V06 implementation of the model
      Private ReadOnly Property Sum8 As Single
-    Get
-      Return SW4 * sum6
-    End Get
-End Property
+      Get
+      Return SW4 * SW3
+       End Get
+     End Property
 
      'Internal Staging Switches
      Private readonly Property SW1 As Single
@@ -100,14 +87,9 @@ End Property
 End Sub
 
      'Public class outputs
-     Public ReadOnly Property TotalCycleFuelConsumptionGrams As Single Implements IM13.TotalCycleFuelConsumptionGrams
+     Public ReadOnly Property WHTCTotalCycleFuelConsumptionGrams As Single Implements IM13.WHTCTotalCycleFuelConsumptionGrams
             Get
           Return Sum8
-            End Get
-        End Property
-     Public ReadOnly Property TotalCycleFuelConsumptionLitres As Single Implements IM13.TotalCycleFuelConsumptionLitres
-            Get
-             Return  Sum7
             End Get
         End Property
 

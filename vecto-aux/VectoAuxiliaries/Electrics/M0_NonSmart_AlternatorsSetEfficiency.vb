@@ -43,7 +43,7 @@ Namespace Electrics
 
        _ElectricalPowerW= ssmHvac.ElectricalWAdjusted
        _MechanicalPowerW= ssmHvac.MechanicalWBaseAdjusted
-       _FuelingLPerH    = ssmHvac.FuelLPerHBaseAdjusted
+       _FuelingLPerH    = ssmHvac.FuelPerHBaseAdjusted
        
 
 
