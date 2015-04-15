@@ -395,7 +395,7 @@ End Sub
 
     Public ReadOnly Property AA_CompressorFlowRate_LitrePerSec As Single? Implements IAdvancedAuxiliaries.AA_CompressorFlowRate_LitrePerSec
         Get
-         Return  M4.GetAveragePowerDemandPerCompressorUnitFlowRate
+         Return  M4.GetFlowRate
         End Get
     End Property
 
