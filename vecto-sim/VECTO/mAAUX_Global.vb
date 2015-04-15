@@ -13,7 +13,7 @@ Module mAAUX_Global
   public PreExistingAuxPower As Single
   public Idle As Boolean
   public InNeutral As Boolean
-  Public advancedAuxModel As IAdvancedAuxiliaries
+  Public WithEvents advancedAuxModel As IAdvancedAuxiliaries
 
   Public RunningCalc As Boolean=false
 
@@ -23,61 +23,67 @@ Module mAAUX_Global
   'Doors during particular cycle types.
   Public CurrentCycleFile As string = String.Empty
 
-  'This is a default setting of 3114, but should be removed once coded in.
+  'This is a default setting of 3114 this will be set when the cycle begins.
   Public CycleTimeInSeconds As integer = 3114
 
+  Public Sub AAEventAuxiliaryEvent( ByRef sender As Object, byval message As String, ByVal messageType As AdvancedAuxiliaryMessageType ) Handles advancedAuxModel.AuxiliaryEvent
 
 
-'AA-TB
-Public Function InitialiseAdvancedAuxModel(  aauxFile As string) As Boolean
-
-     Dim o As System.Runtime.Remoting.ObjectHandle
-     Dim result As Boolean  = true
-
-    If VECTO_Global.VEC.AuxiliaryAssembly<>"CLASSIC"  then
-
-    Try
+     WorkerMsg(messageType,message, "Advanced Auxiliaries")
 
 
-      'Open Assembly and invoke the validation using the paths supplied.
+  End Sub
+
+ 'AA-TB
+  Public Function InitialiseAdvancedAuxModel(  aauxFile As string) As Boolean
+  
+       Dim o As System.Runtime.Remoting.ObjectHandle
+       Dim result As Boolean  = true
+  
+      If VECTO_Global.VEC.AuxiliaryAssembly<>"CLASSIC"  then
+  
       Try
-               o = Activator.CreateInstance(VEC.AuxiliaryAssembly, "VectoAuxiliaries.AdvancedAuxiliaries")
-               advancedAuxModel = DirectCast(o.Unwrap, IAdvancedAuxiliaries)
-
-               Dim message As String = String.Empty
-
-               'Set Statics
-               advancedAuxModel.VectoInputs.Cycle=DetermineCycleNameFromCurrentFile()
-               advancedAuxModel.VectoInputs.VehicleWeightKG= VEH.Mass
-               advancedAuxModel.VectoInputs.FuelMap= ENG.FuelMapFullPath 
-               
-               'Set Signals
-               advancedAuxModel.Signals.TotalCycleTimeSeconds=CycleTimeInSeconds
-               advancedAuxModel.RunStart( aauxFile, VEC.FilePath, message)
-
-            
-            Catch Ex As Exception
-    
-       result = false
-
+  
+  
+        'Open Assembly and invoke the validation using the paths supplied.
+        Try
+                 o = Activator.CreateInstance(VEC.AuxiliaryAssembly, "VectoAuxiliaries.AdvancedAuxiliaries")
+                 advancedAuxModel = DirectCast(o.Unwrap, IAdvancedAuxiliaries)
+  
+                 Dim message As String = String.Empty
+  
+                 'Set Statics
+                 advancedAuxModel.VectoInputs.Cycle=DetermineCycleNameFromCurrentFile()
+                 advancedAuxModel.VectoInputs.VehicleWeightKG= VEH.Mass
+                 advancedAuxModel.VectoInputs.FuelMap= ENG.FuelMapFullPath 
+                 
+                 'Set Signals
+                 advancedAuxModel.Signals.TotalCycleTimeSeconds=CycleTimeInSeconds
+                 advancedAuxModel.RunStart( aauxFile, VEC.FilePath, message)
+  
+  
+  
+              Catch Ex As Exception
+      
+         result = false
+  
+        End Try
+  
+        Return result
+  
+  
+      Catch ex As Exception
+  
+  
+  
       End Try
-
-      Return result
-
-
-    Catch ex As Exception
-
-
-
-    End Try
-
-
-    End If
-
-    Return False
-
-End Function
-
+  
+  
+      End If
+  
+      Return False
+  
+  End Function
 
   'AA-TB
   ''' <summary>
@@ -177,22 +183,22 @@ End Function
 
   End Function
 
-
-''' <summary>
+  
+  ''' <summary>
 ''' Gets location of Advanced Auxiliaries Directory which contains all the assemblies available.
 ''' </summary>
 ''' <returns>Path where Auxiliaries can be found : String</returns>
 ''' <remarks></remarks>
-Public Function GetAAUXSourceDirectory() As String
+  Public Function GetAAUXSourceDirectory() As String
 
 
      Return Path.GetDirectoryName(Application.ExecutablePath)
 
 
   End Function
-
-
- Public function ResolveAAUXFilePath( vectoPath as String, filename As string) as string
+  
+ 
+  Public function ResolveAAUXFilePath( vectoPath as String, filename As string) as string
 
      'No Vecto Path supplied
      If vectoPath="" then Return filename
@@ -207,9 +213,9 @@ Public Function GetAAUXSourceDirectory() As String
      End If
    
    End Function
-
-
-Public Function ValidateAAUXFile( ByVal absoluteAAuxPath As String, 
+  
+  
+  Public Function ValidateAAUXFile( ByVal absoluteAAuxPath As String, 
                                   ByVal assemblyName As String, 
                                   byval version As string, 
                                   byref message As string) As Boolean
@@ -241,14 +247,14 @@ Public Function ValidateAAUXFile( ByVal absoluteAAuxPath As String,
       Return result
 
 End Function
-
-
-''' <summary>
+  
+  
+  ''' <summary>
 ''' Will Apply an algorithm to the DRI cycle file being used and attempt to return a consitant name
 ''' </summary>
 ''' <returns>String : Cylename IE, Bus_Interurban, Bus_Urban,etc</returns>
 ''' <remarks></remarks>
-Public Function DetermineCycleNameFromCurrentFile() As String
+  Public Function DetermineCycleNameFromCurrentFile() As String
 
       'Get DriveFile without path and without extension
       Dim driveFile  As String  =  fFILE(CurrentCycleFile,False)

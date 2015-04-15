@@ -36,6 +36,7 @@ Function IsEqualTo(source As ISSMTOOL) As Boolean
 Function FuelPerHBaseAsjusted( AverageUseableEngineWasteHeatKW As Single ) As Single
 
 
+Event Message(ByRef sender As Object, message As String, messageType As AdvancedAuxiliaryMessageType)
 
 
 

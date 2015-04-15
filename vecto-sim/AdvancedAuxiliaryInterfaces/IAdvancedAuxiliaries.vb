@@ -10,7 +10,11 @@
 ' See the LICENSE.txt for the specific language governing permissions and limitations.
 
 Public Interface IAdvancedAuxiliaries
- Inherits IAuxiliaryEvent
+' Inherits IAuxiliaryEvent
+
+
+
+  Event AuxiliaryEvent( ByRef sender As Object, byval message As String, ByVal messageType As AdvancedAuxiliaryMessageType )
 
 
   'Information

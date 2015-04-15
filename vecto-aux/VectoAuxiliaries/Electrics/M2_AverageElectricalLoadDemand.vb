@@ -43,7 +43,7 @@ Namespace Electrics
         'Public class outputs (Properties)
         Public Function GetAveragePowerDemandAtAlternator() As Single Implements IM2_AverageElectricalLoadDemand.GetAveragePowerDemandAtAlternator
 
-             Return ( _electricalConsumers.GetTotalAverageDemandAmps(False)/ElectricConstants.BatteryEfficiency) * _powerNetVoltage
+             Return ( _electricalConsumers.GetTotalAverageDemandAmps(False)/ElectricConstants.StoredEnergyEfficiency) * _powerNetVoltage
 
         End Function
         Public Function GetAveragePowerAtCrankFromElectrics() As Single Implements IM2_AverageElectricalLoadDemand.GetAveragePowerAtCrankFromElectrics

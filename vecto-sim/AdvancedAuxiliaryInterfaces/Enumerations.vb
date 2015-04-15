@@ -13,9 +13,9 @@
 
 Public Enum AdvancedAuxiliaryMessageType 
 
-   Information
-   Warning
-   Critical
+   Information=1
+   Warning=2
+   Critical=3
 
 
 End Enum

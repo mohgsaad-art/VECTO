@@ -10,12 +10,16 @@ Namespace Hvac
 Public Class SSMTOOL
 Implements ISSMTOOL
 
-
-
+ 
  Private filePath As String
  Public Property GenInputs As ISSMGenInputs Implements ISSMTOOL.GenInputs
  Public Property TechList  As ISSMTechList  Implements ISSMTOOL.TechList
  Public Property Calculate As ISSMCalculate Implements ISSMTOOL.Calculate
+
+ 'Repeat Warning Flags
+ Private CompressorCapacityInsufficientWarned As Boolean 
+ Private FuelFiredHeaterInsufficientWarned As Boolean
+ 
 
  'Base Values
  Public ReadOnly Property ElectricalWBase As Single Implements ISSMTOOL.ElectricalWBase
@@ -25,12 +29,12 @@ Implements ISSMTOOL
  End Property
  Public ReadOnly Property MechanicalWBase As Single Implements ISSMTOOL.MechanicalWBase
     Get
-     Return  Calculate.MechanicalWBase
+        Return  Calculate.MechanicalWBase
     End Get
  End Property
  Public ReadOnly Property FuelPerHBase As Single Implements ISSMTOOL.FuelPerHBase
     Get
-      Return Calculate.FuelPerHBase
+        Return Calculate.FuelPerHBase
     End Get
  End Property
  'Adjusted Values
@@ -41,7 +45,19 @@ Implements ISSMTOOL
  End Property
  Public ReadOnly Property MechanicalWBaseAdjusted As Single Implements ISSMTOOL.MechanicalWBaseAdjusted
     Get
-      Return Calculate.MechanicalWBaseAdjusted
+        Dim mechAdjusted As Single  = Calculate.MechanicalWBaseAdjusted
+
+
+        If CompressorCapacityInsufficientWarned=False AndAlso (mechAdjusted)/(1000 * GenInputs.BC_COP)  > GenInputs.AC_CompressorCapacitykW then
+
+         OnMessage( Me, "HVAC SSM :AC-Compressor Capacity unable to service cooling, run continues as if capacity was sufficient.",AdvancedAuxiliaryMessageType.Warning)
+         CompressorCapacityInsufficientWarned=true
+
+        End If
+
+
+        Return mechAdjusted
+
      End Get
  End Property
  Public ReadOnly Property FuelPerHBaseAdjusted As Single Implements ISSMTOOL.FuelPerHBaseAdjusted
@@ -85,8 +101,6 @@ Implements ISSMTOOL
 
   End Sub
 
-
-
  'Persistance Functions
  Public Function Save(filePath As String) As Boolean Implements ISSMTOOL.Save
 
@@ -104,7 +118,7 @@ Implements ISSMTOOL
 
        Catch ex As Exception
 
-         'TODO:Do something meaningfull here perhaps logging
+         'Nothing to do except return false.
           returnValue = False
 
      End Try
@@ -143,7 +157,7 @@ End Function
 
       Catch ex As Exception
 
-        'TODO:Do something meaningfull here perhaps logging
+        'Nothing to do except return false.
 
          returnValue = False
       End Try
@@ -219,27 +233,58 @@ End Function
 
  End Function
 
+ 'Overrides
+ Public Overrides Function ToString() As String
+   
 
-        Public Overrides Function ToString() As String
-          
+     Dim sb As new StringBuilder 
 
-            Dim sb As new StringBuilder 
-
-            sb.AppendLine( Calculate.ToString())
-
-
-            Return sb.ToString()
-
-        End Function
+     sb.AppendLine( Calculate.ToString())
 
 
-        Public Function FuelPerHBaseAsjusted(AverageUseableEngineWasteHeatKW As Single) As Single Implements ISSMTOOL.FuelPerHBaseAsjusted
+     Return sb.ToString()
 
-           'Set Engine Waste Heat
-            GenInputs.AH_EngineWasteHeatkW= AverageUseableEngineWasteHeatKW
-            Return FuelPerHBaseAdjusted
+ End Function
 
-        End Function
+ 'Dynamicly Get Fuel having re-adjusted Engine Heat Waste, this was originally supposed to be Solid State. Late adjustment request 24/3/2015
+ Public Function FuelPerHBaseAsjusted(AverageUseableEngineWasteHeatKW As Single) As Single Implements ISSMTOOL.FuelPerHBaseAsjusted
+
+    'Set Engine Waste Heat
+     GenInputs.AH_EngineWasteHeatkW= AverageUseableEngineWasteHeatKW
+     Dim fba As Single = FuelPerHBaseAdjusted
+     
+     Dim FuelFiredWarning As Boolean = fba * GenInputs.BC_AuxHeaterEfficiency * GenInputs.BC_VolumicMassDieselOrHeatingOil *  GenInputs.BC_GCVDieselOrHeatingOil*1000 > _
+                    ( AverageUseableEngineWasteHeatKW +  GenInputs.AH_FuelFiredHeaterkW ) 
+
+
+     If Not FuelFiredHeaterInsufficientWarned AndAlso FuelFiredWarning then
+
+        FuelFiredHeaterInsufficientWarned=true
+
+        OnMessage(Me,“ HVAC SSM : Fuel fired heater insufficient for heating requirements, run continues assuming it was sufficient.” ,AdvancedAuxiliaryMessageType.Warning )
+
+     End If
+
+
+
+     Return fba
+
+ End Function
+
+ 'Events
+ Public Event Message(ByRef sender As Object, message As String, messageType As AdvancedAuxiliaryMessageType) Implements ISSMTOOL.Message 
+
+ 'Raise Message Event.
+ private Sub OnMessage(sender As Object, message As String, messageType As AdvancedAuxiliaryMessageType) 
+  
+  
+    If Not message is Nothing then
+  
+    RaiseEvent Message( Me, message, messageType)
+  
+    End If
+  
+  End Sub
 
 
 

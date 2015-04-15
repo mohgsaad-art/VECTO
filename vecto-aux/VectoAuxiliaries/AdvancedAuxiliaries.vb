@@ -20,12 +20,16 @@ Public Class AdvancedAuxiliaries
  Implements IAdvancedAuxiliaries
 
 
+
     Private  auxConfig As AuxiliaryConfig
 
 
     'Supporting classes which may generate event messages
     Private WithEvents compressorMap As ICompressorMap
    ' Private Withevents alternatorMap  As IAlternatorMap 
+
+     private WithEvents ssmTool As New SSMTOOL
+     Private WithEvents ssmToolModule14 As New SSMTOOL
 
     Private Withevents alternatorMap  As IAlternatorMap
     Private WithEvents actuationsMap As IPneumaticActuationsMAP
@@ -52,7 +56,7 @@ Public Class AdvancedAuxiliaries
     private vectoDirectory As String 
 
     'Event Handler top level bubble.
-    Public Sub VectoEventHandler( byref sender As Object, message As String, messageType As AdvancedAuxiliaryMessageType) handles compressorMap.AuxiliaryEvent, alternatorMap.AuxiliaryEvent
+    Public Sub VectoEventHandler( byref sender As Object, message As String, messageType As AdvancedAuxiliaryMessageType) handles compressorMap.AuxiliaryEvent, alternatorMap.AuxiliaryEvent, ssmTool.Message, ssmToolModule14.Message
 
 
     If Signals.AuxiliaryEventReportingLevel <= messageType then
@@ -115,11 +119,11 @@ Public Class AdvancedAuxiliaries
       'SSM HVAC
       Dim ssmPath as string = FilePathUtils.ResolveFilePath(vectoDirectory,auxConfig.HvacUserInputsConfig.SSMFilePath)
       Dim BusDatabase as String = FilePathUtils.ResolveFilePath(vectoDirectory,auxConfig.HvacUserInputsConfig.BusDatabasePath)     
-      Dim ssmTool As New SSMTOOL( ssmPath)
+      ssmTool = New SSMTOOL( ssmPath)
 
       'This duplicate SSM is being created for use in M14 as its properties will be dynamically changed at that point
       'to honour EngineWaste Heat Usage in Fueling calculations.
-      Dim ssmToolModule14 As New SSMTOOL( ssmPath)
+      ssmToolModule14 = New SSMTOOL( ssmPath)
 
 
       If( ssmTool.Load(ssmPath)=False OrElse ssmToolModule14.Load(ssmPath)=False)
@@ -188,7 +192,7 @@ End Sub
     Public Property Signals As ISignals Implements IAdvancedAuxiliaries.Signals
     Public Property VectoInputs As IVectoInputs Implements IAdvancedAuxiliaries.VectoInputs
 
-    Public Event AuxiliaryEvent(ByRef sender As Object, message As String, messageType As AdvancedAuxiliaryMessageType) Implements IAuxiliaryEvent.AuxiliaryEvent
+    Public Event AuxiliaryEvent(ByRef sender As Object, message As String, messageType As AdvancedAuxiliaryMessageType) Implements IAdvancedAuxiliaries.AuxiliaryEvent
 
     Public Function Configure(filePath As String, vectoFilePath As String ) As Boolean Implements VectoAuxiliaries.IAdvancedAuxiliaries.Configure
     

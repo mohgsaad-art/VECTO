@@ -31,7 +31,7 @@ Public Class ElectricConstants
     public const  AlternatorPulleyEfficiencyMax as single =1
 
     'Battery
-    Public Const BatteryEfficiency As Single = 0.9025
+    Public Const StoredEnergyEfficiency As Single = 0.9025
 
 
 End Class

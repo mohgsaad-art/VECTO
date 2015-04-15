@@ -22,14 +22,9 @@ Namespace Pneumatics
         Implements ICompressorMap, 
         IAuxiliaryEvent
 
-
-
         Private ReadOnly filePath As String
-
         Private _averagePowerDemandPerCompressorUnitFlowRate As Single
-
-
-
+        Private _MapBoundariesExceeded As Boolean
 
         ''' <summary>
         ''' Dictionary of values keyed by the rpm valaues in the csv file
@@ -40,7 +35,6 @@ Namespace Pneumatics
         ''' </summary>
         ''' <remarks></remarks>
         Private map As Dictionary(Of Integer, CompressorMapValues)
-
 
         'Returns the AveragePowerDemand ( Power On ) per unit flow rate
         Public Function AveragePowerDemandPerCompressorUnitFlowRate() As Single Implements ICompressorMap.GetAveragePowerDemandPerCompressorUnitFlowRate
@@ -153,7 +147,11 @@ Namespace Pneumatics
             Dim max As Integer = map.Keys.Max()
 
             If rpm < min OrElse rpm > max Then
-                OnMessage(Me,String.Format("Compresser has limited RPM of '{2}' to extent of map - rpm should be in the range {0} to {1}", min, max ,rpm), AdvancedAuxiliaryMessageType.Warning)    
+             If Not _MapBoundariesExceeded then
+                OnMessage(Me,String.Format("Compresser : limited RPM of '{2}' to extent of map - map range is {0} to {1}", min, max ,rpm), AdvancedAuxiliaryMessageType.Warning)    
+                _MapBoundariesExceeded=true
+            end if
+            
                'Limiting as agreed.
                If rpm > max then rpm=max
                If rpm < min then rpm=min
@@ -198,38 +196,39 @@ Namespace Pneumatics
         ''' </summary>
         ''' <remarks></remarks>
         ''' 
+
         Private Structure CompressorMapValues
 
-            ''' <summary>
+        ''' <summary>
             ''' Compressor flowrate
             ''' </summary>
             ''' <remarks></remarks>
-            Public ReadOnly FlowRate As Single
+        Public ReadOnly FlowRate As Single
 
-            ''' <summary>
+        ''' <summary>
             ''' Power, compressor on
             ''' </summary>
             ''' <remarks></remarks>
-            Public ReadOnly PowerCompressorOn As Single
+        Public ReadOnly PowerCompressorOn As Single
 
-            ''' <summary>
+        ''' <summary>
             ''' Power compressor off
             ''' </summary>
             ''' <remarks></remarks>
-            Public ReadOnly PowerCompressorOff As Single
+        Public ReadOnly PowerCompressorOff As Single
 
-            ''' <summary>
+        ''' <summary>
             ''' Creates a new instance of CompressorMapValues
             ''' </summary>
             ''' <param name="flowRate">flow rate</param>
             ''' <param name="powerCompressorOn">power - compressor on</param>
             ''' <param name="powerCompressorOff">power - compressor off</param>
             ''' <remarks></remarks>
-            Public Sub New(ByVal flowRate As Single, ByVal powerCompressorOn As Single, ByVal powerCompressorOff As Single)
+        Public Sub New(ByVal flowRate As Single, ByVal powerCompressorOn As Single, ByVal powerCompressorOff As Single)
                 Me.FlowRate = flowRate
                 Me.PowerCompressorOn = powerCompressorOn
                 Me.PowerCompressorOff = powerCompressorOff
-            End Sub
+        End Sub
 
         End Structure
 
@@ -237,7 +236,7 @@ Namespace Pneumatics
 
         Public Event Message(ByRef sender As Object, message As String, messageType As AdvancedAuxiliaryMessageType) Implements IAuxiliaryEvent.AuxiliaryEvent 
 
-        Public Sub OnMessage(sender As Object, message As String, messageType As AdvancedAuxiliaryMessageType) 
+        private Sub OnMessage(sender As Object, message As String, messageType As AdvancedAuxiliaryMessageType) 
 
 
           If Not message is Nothing then
@@ -247,11 +246,7 @@ Namespace Pneumatics
           End If
 
         End Sub
+
     End Class
-
-
-
-
-
 
 End Namespace
