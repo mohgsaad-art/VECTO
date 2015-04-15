@@ -224,7 +224,7 @@ End Property
 End Property
    Public ReadOnly Property Sum15 As Single
     Get
-    Return VC2 * _m4.GetPowerCompressorOn
+      Return VC2 * ( _m4.GetPowerCompressorOn * 0.97 )
     End Get
 End Property
    Public ReadOnly property Sum16 as single
@@ -239,7 +239,7 @@ End Property
 End Property
    Public ReadOnly Property Sum18 As Single
     Get
-    Return VC4 * _m4.GetPowerCompressorOn
+    Return VC4 *  ( _m4.GetPowerCompressorOn * 0.97 )
     End Get
 End Property
    Public ReadOnly Property Sum19 As Single

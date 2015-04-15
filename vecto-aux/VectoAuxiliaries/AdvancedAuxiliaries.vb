@@ -407,7 +407,10 @@ End Sub
 
     Public ReadOnly Property AA_EngineIdleFlag As Integer? Implements IAdvancedAuxiliaries.AA_EngineIdleFlag
         Get
-         Return  Signals.Idle
+       '  Return  Signals.Idle
+
+       Return signals.EngineSpeed <=600 ANDAlso  ( NOT signals.ClutchEngaged OrElse signals.InNeutral)
+
         End Get
     End Property
 

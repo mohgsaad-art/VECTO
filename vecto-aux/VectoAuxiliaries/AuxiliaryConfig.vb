@@ -50,8 +50,8 @@ Public Class AuxiliaryConfig
 
   'Special Condition
   If auxConfigFile="EMPTY" then 
-      ElectricalUserInputsConfig = New  ElectricsUserInputsConfig() With { .PowerNetVoltage= 26.3}
-      ElectricalUserInputsConfig.ElectricalConsumers= New ElectricalConsumerList(26.3,0.096,false)
+      ElectricalUserInputsConfig = New  ElectricsUserInputsConfig() With { .PowerNetVoltage= 28.3}
+      ElectricalUserInputsConfig.ElectricalConsumers= New ElectricalConsumerList(28.3,0.096,false)
       ElectricalUserInputsConfig.ResultCardIdle = new ResultCard( New List(Of SmartResult ))
       ElectricalUserInputsConfig.ResultCardOverrun= new ResultCard( New List(Of SmartResult ))
       ElectricalUserInputsConfig.ResultCardTraction= new ResultCard( New List(Of SmartResult ))
@@ -83,7 +83,7 @@ End Sub
 
 '.CycleDurationMinutes=51.9,
 
- VectoInputs = New VectoInputs With {.Cycle="Urban", .VehicleWeightKG=16500, .PowerNetVoltage=26.3, .FuelMap="testFuelGoodMap.vmap"}
+ VectoInputs = New VectoInputs With {.Cycle="Urban", .VehicleWeightKG=16500, .PowerNetVoltage=28.3, .FuelMap="testFuelGoodMap.vmap"}
  
  'Pneumatics
  PneumaticUserInputsConfig  = New PneumaticUserInputsConfig(true) 
@@ -93,7 +93,7 @@ End Sub
 
 'testAlternatorMap.aalt
  ElectricalUserInputsConfig = New  ElectricsUserInputsConfig() With {.DoorActuationTimeSecond=4, 
-                                                                     .AlternatorGearEfficiency=0.8,
+                                                                     .AlternatorGearEfficiency=0.92,
                                                                      .PowerNetVoltage= VectoInputs.PowerNetVoltage,
                                                                      .ResultCardIdle= New  ResultCard( New List(Of SmartResult)),
                                                                      .ResultCardOverrun= New ResultCard(New List(Of SmartResult)),
@@ -108,7 +108,7 @@ End Sub
  Signals = New Signals With { .EngineSpeed=2000, .TotalCycleTimeSeconds=3114, .ClutchEngaged=False}
 
 
- ElectricalUserInputsConfig.ElectricalConsumers= New ElectricalConsumerList(26.3,0.096,true)
+ ElectricalUserInputsConfig.ElectricalConsumers= New ElectricalConsumerList(28.3,0.096,true)
 
 
 

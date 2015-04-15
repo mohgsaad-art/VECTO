@@ -80,6 +80,9 @@ public class SSMToolMock
         End Function
 
         Public Property TechList As ISSMTechList Implements ISSMTOOL.TechList
+
+        public Event Message(ByRef sender As Object, message As String, messageType As AdvancedAuxiliaryMessageType) Implements ISSMTOOL.Message
+
 End Class
 
 
