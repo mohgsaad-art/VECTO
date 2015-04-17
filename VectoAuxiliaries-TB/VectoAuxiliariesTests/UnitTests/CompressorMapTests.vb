@@ -135,7 +135,17 @@ Namespace UnitTests
 
 
 
+        <Test()>
+        Public Sub InterpMiddle()
 
+            Dim target As CompressorMap = New CompressorMap(GOODMAP)
+            Assert.IsTrue(target.Initialise())
+
+            Dim actual = target.GetFlowRate(1750)
+
+            Assert.AreEqual( actual,300)
+
+        End Sub
 
 
     End Class
