@@ -22,13 +22,73 @@ Namespace Pneumatics
         Private _pneumaticAuxillariesConfig As IPneumaticsAuxilliariesConfig
         Private _pneumaticsActuationsMap As IPneumaticActuationsMAP
         Private _pneumaticsCompressorFlowRateMap As ICompressorMap
-        Private _averagePowerDemandPerCompressorUnitFlowRateInKWPerLitresPerSecond As Single
+        Private _averagePowerDemandPerCompressorUnitFlowRateInWPerLitresPerSecond As Single
         Private _vehicleMassKG As Single
         Private _cycleName As String
         Private _cycleDurationMinutes As Single
         Private _totalAirDemand As Single
+        Private _signals As Signals
+
+        
+        Private ReadOnly Property Sum1 As Single
+            Get
+              Return _totalAirDemand / _signals.TotalCycleTimeSeconds
+            End Get
+        End Property
+        Private ReadOnly Property Sum2 As Single
+            Get
+              Return Sum8 * Sum1
+            End Get
+        End Property
+        Private ReadOnly Property Sum3 As Single
+            Get
+             Return Sum2 + _pneumaticsCompressorFlowRateMap.GetPowerCompressorOff( _signals.EngineSpeed * _pneumaticUserInputsConfig.CompressorGearRatio)
+            End Get
+        End Property
+
+        Private ReadOnly Property Sum4 As Single
+            Get
+                Return  Sum3 / _pneumaticUserInputsConfig.CompressorGearEfficiency
+            End Get
+        End Property
+
+        'Private ReadOnly Property Sum5 As Single
+        '    Get
+        '        'NOT USED.
+        '    End Get
+        'End Property
+
+        Private ReadOnly Property Sum6 As Single
+            Get
+               Return _pneumaticsCompressorFlowRateMap.GetFlowRate(_signals.EngineSpeed * _pneumaticUserInputsConfig.CompressorGearRatio )/60
+            End Get
+        End Property
+
+       Private ReadOnly Property Sum7 As Single
+            Get
+             
+                Dim pon  As Single = _pneumaticsCompressorFlowRateMap.GetPowerCompressorOn( _signals.EngineSpeed * _pneumaticUserInputsConfig.CompressorGearRatio)
+                Dim poff As Single = _pneumaticsCompressorFlowRateMap.GetPowerCompressorOff( _signals.EngineSpeed * _pneumaticUserInputsConfig.CompressorGearRatio)
+                Dim diff As Single = pon-poff
+                Return diff
+
+            End Get
+        End Property
 
 
+        Private ReadOnly Property Sum8 As Single
+            Get
+                Return Sum7 / Sum6
+            End Get
+        End Property
+
+
+
+        Private ReadOnly Property Sum5 As Single
+            Get
+
+            End Get
+        End Property
 
         Public ReadOnly Property TotalAirDemand As Single
             Get
@@ -55,11 +115,11 @@ Namespace Pneumatics
             _pneumaticsCompressorFlowRateMap = pneumaticsCompressorFlowRateMap
             _vehicleMassKG = vehicleMassKG
             _cycleName = cycleName
-            _cycleDurationMinutes = signals.TotalCycleTimeSeconds /60
+            _signals=signals
 
 
             'Total up the blow demands from compressor map
-            _averagePowerDemandPerCompressorUnitFlowRateInKWPerLitresPerSecond = _pneumaticsCompressorFlowRateMap.GetAveragePowerDemandPerCompressorUnitFlowRate() /60
+            _averagePowerDemandPerCompressorUnitFlowRateInWPerLitresPerSecond = _pneumaticsCompressorFlowRateMap.GetAveragePowerDemandPerCompressorUnitFlowRate() /60
 
             'Calculate the Total Required Air Delivery Rate L / S
             _totalAirDemand = TotalAirDemandCalculation()
@@ -107,7 +167,7 @@ Namespace Pneumatics
 
            '** AdBlue **
            '=IF(K13="electric",0,G39*F54)- Supplied Spreadsheet
-           AdBlue = If(_pneumaticUserInputsConfig.AdBlueDosing = "Electric", 0, _pneumaticAuxillariesConfig.AdBlueNIperMinute * _cycleDurationMinutes)
+           AdBlue = If(_pneumaticUserInputsConfig.AdBlueDosing = "Electric", 0, _pneumaticAuxillariesConfig.AdBlueNIperMinute * ( _signals.TotalCycleTimeSeconds/60))
 
            '** Regeneration **   
            '=SUM(R6:R9)*IF(K9="yes",IF(COUNTBLANK(F41),G41,F41),IF(COUNTBLANK(F40),G40,F40)) - Supplied SpreadSheet
@@ -118,7 +178,7 @@ Namespace Pneumatics
 
            '** DeadVolBlowOuts **
            '=IF(COUNTBLANK(F43),G43,F43)/(F54/60) - Supplied SpreadSheet
-           numActuationsPerCycle = _pneumaticAuxillariesConfig.DeadVolBlowOutsPerLitresperHour / (60 / _cycleDurationMinutes)
+           numActuationsPerCycle = _pneumaticAuxillariesConfig.DeadVolBlowOutsPerLitresperHour / (60 /( _signals.TotalCycleTimeSeconds/60))
            airConsumptionPerActuationNI = _pneumaticAuxillariesConfig.DeadVolumeLitres
            DeadVolBlowOuts = numActuationsPerCycle * airConsumptionPerActuationNI
 
@@ -138,21 +198,14 @@ Namespace Pneumatics
         'Get Average Power Demand @ Crank From Pneumatics
         Public Function GetAveragePowerDemandAtCrankFromPneumatics() As Single Implements IM3_AveragePneumaticLoadDemand.GetAveragePowerDemandAtCrankFromPneumatics
 
-            Dim averagePowerDemandAtCrankFromPneumatics As Single = (_pneumaticsCompressorFlowRateMap.GetAveragePowerDemandPerCompressorUnitFlowRate * 60) _
-                                                                                  * (TotalAirDemand / (_cycleDurationMinutes * 60))
-
-            averagePowerDemandAtCrankFromPneumatics  =  averagePowerDemandAtCrankFromPneumatics / _pneumaticUserInputsConfig.CompressorGearEfficiency
-
-
-            Return averagePowerDemandAtCrankFromPneumatics
-
+           Return Sum4
 
         End Function
 
         'Get Total Required Air Delivery Rate
         Public Function AverageAirConsumedPerSecondLitre() As Single Implements IM3_AveragePneumaticLoadDemand.AverageAirConsumedPerSecondLitre
 
-            Return TotalAirDemand / ( _cycleDurationMinutes * 60 )
+            Return Sum1
 
         End Function
 

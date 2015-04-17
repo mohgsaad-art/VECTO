@@ -59,6 +59,7 @@ Module mAAUX_Global
                  
                  'Set Signals
                  advancedAuxModel.Signals.TotalCycleTimeSeconds=CycleTimeInSeconds
+                 advancedAuxModel.Signals.EngineIdleSpeed = ENG.Nidle
                  advancedAuxModel.RunStart( aauxFile, VEC.FilePath, message)
   
   

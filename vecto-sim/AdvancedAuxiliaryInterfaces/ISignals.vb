@@ -123,6 +123,8 @@ Public Interface ISignals
    ''' <returns></returns>
    ''' <remarks>Vecto Input - Used to decide if to apply WHTC/Possiblye other things in future</remarks>
    Property DeclarationMode As Boolean
+   'Engine Idle Speed ( Associated with the vehicle bein tested )
+   Property EngineIdleSpeed As Single
 
 
 End Interface

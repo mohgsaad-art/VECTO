@@ -13,6 +13,7 @@
 Public Class Signals
 Implements ISignals
 
+
     'Backing variables
     Private _WHTCCorretion  As Single =1
     Private _smartElectrics As Boolean
@@ -53,7 +54,7 @@ Implements ISignals
 
 
     end property
-
+    Public Property EngineIdleSpeed As Single Implements ISignals.EngineIdleSpeed
 
 End Class
 

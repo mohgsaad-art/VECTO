@@ -23,7 +23,7 @@ Namespace Pneumatics
         IAuxiliaryEvent
 
         Private ReadOnly filePath As String
-        Private _averagePowerDemandPerCompressorUnitFlowRate As Single
+        Private _averagePowerDemandPerCompressorUnitFlowRateLitresperSec As Single
         Private _MapBoundariesExceeded As Boolean
 
         ''' <summary>
@@ -36,11 +36,10 @@ Namespace Pneumatics
         ''' <remarks></remarks>
         Private map As Dictionary(Of Integer, CompressorMapValues)
 
-        'Returns the AveragePowerDemand ( Power On ) per unit flow rate
+        'Returns the AveragePowerDemand  per unit flow rate in seconds.
         Public Function AveragePowerDemandPerCompressorUnitFlowRate() As Single Implements ICompressorMap.GetAveragePowerDemandPerCompressorUnitFlowRate
 
-
-            Return _averagePowerDemandPerCompressorUnitFlowRate
+            Return _averagePowerDemandPerCompressorUnitFlowRateLitresperSec 
 
 
         End Function
@@ -86,12 +85,16 @@ Namespace Pneumatics
                     Next
                 End Using
 
-                'Calculate the Average Power Demand Per Compressor Unit FlowRate
+                '*********************************************************************
+                'Calculate the Average Power Demand Per Compressor Unit FlowRate / per second.
                 Dim powerDividedByFlowRateSum As Single = 0
                 For Each speed As KeyValuePair(Of Integer, CompressorMapValues) In map
-                    powerDividedByFlowRateSum += speed.Value.PowerCompressorOn / speed.Value.FlowRate
+                    powerDividedByFlowRateSum += (speed.Value.PowerCompressorOn- speed.Value.PowerCompressorOff) / speed.Value.FlowRate
                 Next
-                _averagePowerDemandPerCompressorUnitFlowRate = powerDividedByFlowRateSum / map.Count
+
+                'Map in Litres Per Minute, so * 60 to get per second, calculated only once at initialisation.
+                _averagePowerDemandPerCompressorUnitFlowRateLitresperSec = (powerDividedByFlowRateSum / map.Count) *60
+                '**********************************************************************
 
             Else
                 Throw New ArgumentException("supplied input file does not exist")

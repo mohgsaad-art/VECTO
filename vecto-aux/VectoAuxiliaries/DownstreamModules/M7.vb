@@ -33,7 +33,7 @@ Public Class M7
       Private Readonly Property SW1 As Single
            Get
              
-              Dim idle As Boolean = _signals.EngineSpeed <=600 ANDAlso  ( NOT _signals.ClutchEngaged OrElse _signals.InNeutral)
+              Dim idle As Boolean = _signals.EngineSpeed <=_signals.EngineIdleSpeed ANDAlso  ( NOT _signals.ClutchEngaged OrElse _signals.InNeutral)
 
               Return If ( _signals.Idle, _m5.AlternatorsGenerationPowerAtCrankIdleWatts, _m5.AlternatorsGenerationPowerAtCrankTractionOnWatts)
            End Get
