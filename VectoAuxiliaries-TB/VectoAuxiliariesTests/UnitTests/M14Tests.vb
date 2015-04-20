@@ -95,10 +95,10 @@ Public Class M14Tests
         'Arrange
         Dim ip1 As Single = 1000f
         Dim ip5 As Single = 3114
-        Dim ip6 As Single = 1500
+        Dim ip6 As Single = 3114
 
-        Dim  expectedOut1 As Single=1375.40137
-        Dim  expectedOut2 As Single=1.64718723
+        Dim  expectedOut1 As Single=1779.33337f
+        Dim  expectedOut2 As Single=2.13093829f
 
         Dim m13       As New Mock(Of IM13)
         Dim hvacSSM   As New Mock(Of ISSMTOOL)
@@ -108,8 +108,8 @@ Public Class M14Tests
 
         'Moq' Arrangements
         m13.Setup    ( Function(x) x.WHTCTotalCycleFuelConsumptionGrams).Returns(ip1)
-        signals.Setup( Function(x) x.TotalCycleTimeSeconds)             .Returns(ip5)
-        signals.Setup( Function(x) x.CurrentCycleTimeInSeconds)         .Returns(1500)
+        signals.Setup( Function(x) x.CurrentCycleTimeInSeconds)         .Returns(ip5)
+
 
         'Act
         Dim m14 As New M14(m13.Object,ssmMock,constants,signals.Object)
