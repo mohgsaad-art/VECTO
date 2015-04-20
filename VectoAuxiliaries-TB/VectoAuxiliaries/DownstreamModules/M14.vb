@@ -48,7 +48,7 @@ Public Class M14
   End Property
   Private ReadOnly Property S4 As Single
       Get
-        Return (S3 / signals.TotalCycleTimeSeconds )/1000
+        Return (S3 / signals.CurrentCycleTimeInSeconds )/1000
       End Get
   End Property
 
