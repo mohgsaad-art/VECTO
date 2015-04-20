@@ -56,6 +56,11 @@ End Property
     Return _m1.AveragePowerDemandAtCrankFromHVACMechanicalsWatts + SW5
     End Get
 End Property
+   Private ReadOnly Property Sum6 As Single
+       Get
+       Return Sum5 * SW6
+       End Get
+   End Property
    Private ReadOnly Property SW1 As Single 
        Get
        Return If( _signals.SmartPneumatics, Sum1, Sum2)
@@ -81,13 +86,18 @@ End Property
        Return If( _signals.SmartElectrics,SW1,SW2)
        End Get
    End Property
+   Private ReadOnly Property SW6 As Single
+       Get
+        Return  If(_signals.EngineStopped, 0 , 1)
+       End Get
+   End Property
 
 #End Region
     
      'OUT1
      Public ReadOnly Property AuxPowerAtCrankFromElectricalHVACAndPneumaticsAncillaries As Single Implements IM8.AuxPowerAtCrankFromElectricalHVACAndPneumaticsAncillaries
             Get
-            Return Sum5
+            Return Sum6
             End Get
         End Property
      'OUT2
