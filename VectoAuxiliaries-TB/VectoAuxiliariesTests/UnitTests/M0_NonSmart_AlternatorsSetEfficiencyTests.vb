@@ -90,7 +90,7 @@ Public Sub EfficiencyValueTest()
 
        Dim actual As Single = target.AlternatorsEfficiency
 
-       Dim expected As Single = 0.655407
+       Dim expected As Single  = 0.6720275
 
        Assert.AreEqual(expected, actual)
 

@@ -11,7 +11,7 @@ Namespace UnitTests
 Public Class M12Tests
 
 <Test()> _
-<TestCase(2,8,6,5,8,6,4.5f,4.5f)> _
+<TestCase(2,8,6,5,8,6,4.67379665f,4.5f)> _
 Public Sub InputOutputValues( IP2  As single, 
                               IP3  As single,
                               IP4  As single, 

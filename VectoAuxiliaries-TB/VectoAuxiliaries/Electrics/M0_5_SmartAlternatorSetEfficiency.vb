@@ -99,8 +99,8 @@ End Property
 ''' <remarks></remarks>
       <ExcludeFromCodeCoverage>
 Private function HvacPlusNonBaseCurrents() As Single
-
-   Return _m0.GetHVACElectricalPowerDemandAmps() + (_electricalConsumables.GetTotalAverageDemandAmps(true) /ElectricConstants.StoredEnergyEfficiency)
+    'Stored Energy Efficience removed from V8.0 21/4/15 by Mike Preston  //tb
+   Return _m0.GetHVACElectricalPowerDemandAmps() + _electricalConsumables.GetTotalAverageDemandAmps(true)  '/ElectricConstants.StoredEnergyEfficiency)
 
 End Function
        
