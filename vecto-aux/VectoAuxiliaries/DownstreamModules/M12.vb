@@ -49,40 +49,40 @@ End Class
     'Interpolation 
      Private function Sum1()As single
 
-Dim  P1 as Point  = New Point with {.X=0, .Y=M11.TotalCycleFuelConsumptionZeroElectricalLoad }
-Dim  P2 As Point  = New Point With {.X=M11.SmartElectricalTotalCycleEletricalEnergyGenerated, .Y=M11.TotalCycleFuelConsumptionSmartElectricalLoad}
+        Dim  P1 as Point  = New Point with {.X=0, .Y=M11.TotalCycleFuelConsumptionZeroElectricalLoad }
+        Dim  P2 As Point  = New Point With {.X=M11.SmartElectricalTotalCycleEletricalEnergyGenerated * ElectricConstants.StoredEnergyEfficiency, .Y=M11.TotalCycleFuelConsumptionSmartElectricalLoad}
 
-Dim IP5x As Single = M11.TotalCycleElectricalDemand
-Dim IP5y As Single = 0
+        Dim IP5x As Single = M11.TotalCycleElectricalDemand
+        Dim IP5y As Single = 0
 
-Dim TanTeta as Single = (P2.Y-P1.Y)/(P2.X-P1.X)
+        Dim TanTeta as Single = (P2.Y-P1.Y)/(P2.X-P1.X)
 
-IP5y = P1.Y + ( TanTeta * IP5x )
+        IP5y = P1.Y + ( TanTeta * IP5x )
 
-_INTERP1= IP5Y
+        _INTERP1= IP5Y
 
-setPoints
+        setPoints
 
-Return if( Single.IsNaN(IP5Y),0, IP5y)
+        Return if( Single.IsNaN(IP5Y),0, IP5y)
 
-End Function
+     End Function
      Private function Sum2()As single
 
-Dim  P1 as Point  = New Point with {.X=0, .Y=M11.TotalCycleFuelConsumptionZeroElectricalLoad }
-Dim  P3 As Point  = New Point With {.X=M11.StopStartSensitiveTotalCycleElectricalDemand, .Y=M10.AverageLoadsFuelConsumptionInterpolatedForPneumatics}
+        Dim  P1 as Point  = New Point with {.X=0, .Y=M11.TotalCycleFuelConsumptionZeroElectricalLoad }
+        Dim  P3 As Point  = New Point With {.X=M11.StopStartSensitiveTotalCycleElectricalDemand, .Y=M10.AverageLoadsFuelConsumptionInterpolatedForPneumatics}
 
-Dim IP5x As Single = M11.TotalCycleElectricalDemand
-Dim IP5y As Single = 0
+        Dim IP5x As Single = M11.TotalCycleElectricalDemand
+        Dim IP5y As Single = 0
 
-Dim TanTeta as Single = (P3.Y-P1.Y)/(P3.X-P1.X)
+        Dim TanTeta as Single = (P3.Y-P1.Y)/(P3.X-P1.X)
 
-IP5y = P1.Y + ( TanTeta * IP5x )
+        IP5y = P1.Y + ( TanTeta * IP5x )
 
-_INTERP2  = IP5y
+        _INTERP2  = IP5y
 
-Return  If( Single.IsNaN(IP5Y),0, IP5y)
+        Return  If( Single.IsNaN(IP5Y),0, IP5y)
 
-End Function
+        End Function
 
      'Constructor
      Public Sub new ( m10 As IM10, m11 As IM11, signals As ISignals)

@@ -53,7 +53,8 @@ Namespace Electrics
    Public ReadOnly Property  AlternatorsEfficiency As Single Implements IM0_NonSmart_AlternatorsSetEfficiency.AlternatorsEfficiency
 
      Get
-          Dim baseCurrentDemandAmps As Single = ( _electricalConsumersList.GetTotalAverageDemandAmps(false) /ElectricConstants.StoredEnergyEfficiency)
+          'Stored Energy Efficience removed from V8.0 21/4/15 by Mike Preston  //tb
+          Dim baseCurrentDemandAmps As Single =  _electricalConsumersList.GetTotalAverageDemandAmps(false)' ElectricConstants.StoredEnergyEfficiency
           Dim totalDemandAmps As Single = baseCurrentDemandAmps + GetHVACElectricalPowerDemandAmps
           Return _alternatorEfficiencyMap.GetEfficiency(_signals.EngineSpeed, totalDemandAmps).Efficiency
     End Get

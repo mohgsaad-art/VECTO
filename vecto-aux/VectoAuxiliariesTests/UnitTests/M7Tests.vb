@@ -44,7 +44,7 @@ End Sub
 'OP3  OP3     :Smart Electrical Aux : Alternator             Power Gen @ Crank
 'OP4  OP4     :Smart Electrical Aux : Ait Compressor         Power Gen @ Crank 
 <Test()> _
-<TestCase(100,200,false,0,false,true,300,400,500,600,700,100,600,100,600)> _
+<TestCase(100,200,false,0,false,true,300,400,500,600,700,200,600,200,600)> _
 <TestCase(100,200,true,0,false,true,300,400,500,600,700,200,600,200,600)> _
 <TestCase(100,200,false,1,true,false,300,400,500,600,700,300,400,500,700)> _
 Public Sub InputOutputTests(byval IP1 As Single,  _

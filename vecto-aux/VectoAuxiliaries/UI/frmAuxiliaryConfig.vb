@@ -1344,6 +1344,7 @@ Private Sub SetupControls()
      cIndex = gvElectricalConsumables.Columns.Add(baseVehicle)
      gvElectricalConsumables.Columns(cIndex).DataPropertyName = "BaseVehicle"
      gvElectricalConsumables.Columns(cIndex).Width = 75
+     gvElectricalConsumables.Columns(cIndex).Visible=false
      gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
      gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
      gvElectricalConsumables.Columns(cIndex).HeaderCell.ToolTipText = "Energy included in the calculations of base vehicle"
@@ -1351,6 +1352,7 @@ Private Sub SetupControls()
      cIndex = gvElectricalConsumables.Columns.Add("NominalConsumptionAmps", "Nominal Amps")
      gvElectricalConsumables.Columns(cIndex).DataPropertyName = "NominalConsumptionAmps"
      gvElectricalConsumables.Columns(cIndex).Width = 70
+     gvElectricalConsumables.Columns(cIndex).ReadOnly=true
      gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
      gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
      gvElectricalConsumables.Columns(cIndex).HeaderCell.ToolTipText = "Nominal consumption in AMPS"
@@ -1358,6 +1360,7 @@ Private Sub SetupControls()
      cIndex = gvElectricalConsumables.Columns.Add("PhaseIdle_TractionOn", "PhaseIdle/ TractionOn")
      gvElectricalConsumables.Columns(cIndex).DataPropertyName = "PhaseIdle_TractionOn"
      gvElectricalConsumables.Columns(cIndex).Width = 70
+     gvElectricalConsumables.Columns(cIndex).ReadOnly=true
      gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
      gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
      gvElectricalConsumables.Columns(cIndex).HeaderCell.ToolTipText = "Represents the amount of time (during engine fueling) as " & vbCrLf & "percentage that the consumer is active during the cycle."

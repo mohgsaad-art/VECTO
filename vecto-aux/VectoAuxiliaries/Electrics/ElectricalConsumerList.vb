@@ -44,7 +44,7 @@ End Sub
      Dim c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20 As IElectricalConsumer
     
      c1 = CType(New ElectricalConsumer(False, "Doors", "Doors per Door",                                                                        3.00, 0.096339, _powernetVoltage, 3), IElectricalConsumer)
-     c2 = CType(New ElectricalConsumer(True, "Veh Electronics &Engine", "Controllers,Valves etc",                                               25.00, 1.00, _powernetVoltage, 0), IElectricalConsumer)
+     c2 = CType(New ElectricalConsumer(True, "Veh Electronics &Engine", "Controllers,Valves etc",                                               25.00, 1.00, _powernetVoltage, 1), IElectricalConsumer)
      c3 = CType(New ElectricalConsumer(False, "Vehicle basic equipment", "Radio City",                                                           2.00, 0.80, _powernetVoltage, 1), IElectricalConsumer)
      c4 = CType(New ElectricalConsumer(False, "Vehicle basic equipment", "Radio Intercity",                                                      5.00, 0.80, _powernetVoltage, 0), IElectricalConsumer)
      c5 = CType(New ElectricalConsumer(False, "Vehicle basic equipment", "Radio/Audio Tourism",                                                  9.00, 0.80, _powernetVoltage, 0), IElectricalConsumer)
