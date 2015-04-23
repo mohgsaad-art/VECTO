@@ -54,14 +54,10 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Newtonsoft.Json.dll</HintPath>
+      <HintPath>3rdPartyLibraries\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Omu.ValueInjecter">
       <HintPath>..\..\vecto-sim\packages\valueinjecter.2.3.3\lib\net35\Omu.ValueInjecter.dll</HintPath>
-    </Reference>
-    <Reference Include="SpreadsheetLight, Version=3.4.4.0, Culture=neutral, PublicKeyToken=32fbb46dc1730c57, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>3rdPartyLibraries\SpreadsheetLight.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -279,16 +275,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="3rdPartyLibraries\" />
     <Folder Include="ExternalAssemblies\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Images\application-export-icon-small.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="3rdPartyLibraries\DocumentFormat.OpenXml.dll" />
-    <Content Include="3rdPartyLibraries\DocumentFormat.OpenXml.xml" />
-    <Content Include="3rdPartyLibraries\SpreadsheetLight.dll" />
-    <Content Include="3rdPartyLibraries\SpreadsheetLight.xml" />
     <None Include="Resources\Blank.bmp" />
     <None Include="Images\Delete1.png" />
     <None Include="Resources\Info.bmp" />
