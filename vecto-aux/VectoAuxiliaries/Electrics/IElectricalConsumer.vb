@@ -21,6 +21,7 @@ Namespace Electrics
          Property NumberInActualVehicle As Integer
          Property PowerNetVoltage As Single
          Property AvgConsumptionAmps As Single
+         Property Info As string
          Function TotalAvgConumptionAmps(Optional PhaseIdle_TractionOnBasedOnCycle As Single = Nothing) As Single
          Function TotalAvgConsumptionInWatts(Optional PhaseIdle_TractionOnBasedOnCycle As Single = 0.0) As Single
 

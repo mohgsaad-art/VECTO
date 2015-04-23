@@ -48,7 +48,7 @@ Public Sub New()
 
    'Setup consumers and HVAC ( 1 Consumer in Test Category )
     elecConsumers = CType(New ElectricalConsumerList(0.096,26.3), IElectricalConsumerList)
-    elecConsumers.AddConsumer(New ElectricalConsumer(False, "TEST", "CONSUMER1", 20, 0.5, 26.3, 1))
+    elecConsumers.AddConsumer(New ElectricalConsumer(False, "TEST", "CONSUMER1", 20, 0.5, 26.3, 1,""))
 
 
     'Alternator Map

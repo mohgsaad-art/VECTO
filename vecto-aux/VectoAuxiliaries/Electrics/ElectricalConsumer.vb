@@ -18,6 +18,7 @@ Namespace Electrics
     Public Class ElectricalConsumer
         Implements IElectricalConsumer
 
+
        'Calculated
        Private Property AvgConsumptionAmps As Single Implements IElectricalConsumer.AvgConsumptionAmps
 
@@ -29,7 +30,7 @@ Namespace Electrics
        Public Property NumberInActualVehicle As Integer Implements IElectricalConsumer.NumberInActualVehicle
        Public Property PhaseIdle_TractionOn As Single Implements IElectricalConsumer.PhaseIdle_TractionOn
        Public Property PowerNetVoltage As Single Implements IElectricalConsumer.PowerNetVoltage
-
+       Public Property Info As String Implements IElectricalConsumer.Info
 
        'Public class outputs
        Public Function TotalAvgConumptionAmps(Optional PhaseIdle_TractionOnBasedOnCycle As Single = 0.0) As Single Implements IElectricalConsumer.TotalAvgConumptionAmps
@@ -47,7 +48,7 @@ Namespace Electrics
         End Function 
 
        'Constructor
-       Public Sub New(BaseVehicle As Boolean, Category As String, ConsumerName As String, NominalConsumptionAmps As Single, PhaseIdle_TractionOn As Single, PowerNetVoltage As Single, numberInVehicle As Integer)
+       Public Sub New(BaseVehicle As Boolean, Category As String, ConsumerName As String, NominalConsumptionAmps As Single, PhaseIdle_TractionOn As Single, PowerNetVoltage As Single, numberInVehicle As Integer,info As string)
 
             'Illegal Value Check.
             If Category.Trim.Length = 0 Then Throw New ArgumentException("Category Name cannot be empty")
@@ -65,6 +66,7 @@ Namespace Electrics
             Me.PhaseIdle_TractionOn = PhaseIdle_TractionOn
             Me.PowerNetVoltage = PowerNetVoltage
             Me.NumberInActualVehicle = numberInVehicle
+            Me.Info = info
 
        End Sub
 
@@ -83,6 +85,7 @@ Namespace Electrics
             Return 0
         End Function
       
+
 
 
     End Class
