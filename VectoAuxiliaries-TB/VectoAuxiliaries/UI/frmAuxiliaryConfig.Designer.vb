@@ -337,7 +337,7 @@ Partial Class frmAuxiliaryConfig
         DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
         DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
         Me.gvResultsCardOverrun.DefaultCellStyle = DataGridViewCellStyle2
-        Me.gvResultsCardOverrun.Location = New System.Drawing.Point(590, 451)
+        Me.gvResultsCardOverrun.Location = New System.Drawing.Point(613, 451)
         Me.gvResultsCardOverrun.Name = "gvResultsCardOverrun"
         DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control
@@ -369,7 +369,7 @@ Partial Class frmAuxiliaryConfig
         DataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText
         DataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
         Me.gvResultsCardTraction.DefaultCellStyle = DataGridViewCellStyle5
-        Me.gvResultsCardTraction.Location = New System.Drawing.Point(311, 451)
+        Me.gvResultsCardTraction.Location = New System.Drawing.Point(325, 451)
         Me.gvResultsCardTraction.Name = "gvResultsCardTraction"
         DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control
@@ -417,7 +417,7 @@ Partial Class frmAuxiliaryConfig
         'lblResultsOverrun
         '
         Me.lblResultsOverrun.AutoSize = true
-        Me.lblResultsOverrun.Location = New System.Drawing.Point(587, 435)
+        Me.lblResultsOverrun.Location = New System.Drawing.Point(610, 435)
         Me.lblResultsOverrun.Name = "lblResultsOverrun"
         Me.lblResultsOverrun.Size = New System.Drawing.Size(109, 13)
         Me.lblResultsOverrun.TabIndex = 15
@@ -426,7 +426,7 @@ Partial Class frmAuxiliaryConfig
         'lblResultsTractionOn
         '
         Me.lblResultsTractionOn.AutoSize = true
-        Me.lblResultsTractionOn.Location = New System.Drawing.Point(308, 435)
+        Me.lblResultsTractionOn.Location = New System.Drawing.Point(322, 435)
         Me.lblResultsTractionOn.Name = "lblResultsTractionOn"
         Me.lblResultsTractionOn.Size = New System.Drawing.Size(124, 13)
         Me.lblResultsTractionOn.TabIndex = 14
@@ -489,7 +489,7 @@ Partial Class frmAuxiliaryConfig
         DataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText
         DataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
         Me.gvElectricalConsumables.RowHeadersDefaultCellStyle = DataGridViewCellStyle12
-        Me.gvElectricalConsumables.Size = New System.Drawing.Size(803, 250)
+        Me.gvElectricalConsumables.Size = New System.Drawing.Size(830, 250)
         Me.gvElectricalConsumables.TabIndex = 10
         '
         'txtDoorActuationTimeSeconds
