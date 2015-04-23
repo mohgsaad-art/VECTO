@@ -1,8 +1,8 @@
 ﻿
 Namespace Electrics
 
-
-     Public Interface IAlternator
+    'Used By Combined Alternator.
+    Public Interface IAlternator
             
      
          Property AlternatorName As String 
@@ -19,9 +19,10 @@ Namespace Electrics
          Property RangeTable      AS List(Of Table4Row) 
 
 
-
+         'Clone values
          Sub  Clone( other As IAlternator)
 
+         'Test Equality
          Function IsEqualTo(other As IAlternator) As Boolean 
 
 

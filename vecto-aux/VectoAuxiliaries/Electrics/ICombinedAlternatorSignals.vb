@@ -1,7 +1,7 @@
 ﻿
 Namespace Electrics
 
-
+'Used by CombinedAlternator
 Public Interface ICombinedAlternatorSignals
 
 

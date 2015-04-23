@@ -1,15 +1,18 @@
 ﻿Namespace Electrics
 
+'This class is reflective of the stored entries for the combined alternator
+'And is used by the Combined Alternator Form and any related classes.
 
     Public Class CombinedAlternatorMapRow
         Implements ICombinedAlternatorMapRow
 
-      public property AlternatorName  As String  implements ICombinedAlternatorMapRow.AlternatorName
-      public property RPM             As Single  implements ICombinedAlternatorMapRow.RPM
-      public property Amps            As Single  implements ICombinedAlternatorMapRow.Amps
-      public property Efficiency      As Single  implements ICombinedAlternatorMapRow.Efficiency
-      public property PulleyRatio     As Single  implements ICombinedAlternatorMapRow.PulleyRatio
+      Public Property AlternatorName  As String  implements ICombinedAlternatorMapRow.AlternatorName
+      Public Property RPM             As Single  implements ICombinedAlternatorMapRow.RPM
+      Public Property Amps            As Single  implements ICombinedAlternatorMapRow.Amps
+      Public Property Efficiency      As Single  implements ICombinedAlternatorMapRow.Efficiency
+      Public Property PulleyRatio     As Single  implements ICombinedAlternatorMapRow.PulleyRatio
 
+    'Constructors
     Sub new ()
 
 

@@ -3,7 +3,7 @@ Imports Microsoft.VisualBasic
 
 Namespace Hvac
 
-
+'Used By SSMHVAC Class
 Public Class SSMRun
   Implements ISSMRun
 
@@ -182,8 +182,8 @@ Public Class SSMRun
 
         End Property
 
-
-
+        'Provides Diagnostic Information
+        'To be utilised by the User.
         Public Overrides Function ToString() As String
 
            Dim sb As New StringBuilder()

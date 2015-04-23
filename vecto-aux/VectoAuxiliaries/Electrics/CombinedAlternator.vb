@@ -8,7 +8,7 @@ Imports System.Text
 Imports System.IO
 Imports DocumentFormat.OpenXml
 Imports DocumentFormat.OpenXml.Spreadsheet
-Imports SpreadsheetLight
+
 Imports Newtonsoft.Json
 Imports VectoAuxiliaries
 Imports System.Globalization
@@ -20,14 +20,9 @@ Public Class CombinedAlternator
    Implements IAlternatorMap, ICombinedAlternator
 
 
-
-
   Private map As New List(Of ICombinedAlternatorMapRow)
-
-
   Public Property Alternators As New List(Of IAlternator)  Implements ICombinedAlternator.Alternators
   Private OriginalAlternators As New List(Of IAlternator)
-
   Private FilePath As String
   Private altSignals As ICombinedAlternatorSignals
 
@@ -335,7 +330,9 @@ End Function
  'Can be used to send messages to Vecto.
  Public Event AuxiliaryEvent(ByRef sender As Object, message As String, messageType As AdvancedAuxiliaryMessageType) Implements IAuxiliaryEvent.AuxiliaryEvent
 
-
+ 'This is used to generate a diagnostics output which enables the user to 
+ 'Determine if they beleive the resulting map is what is expected
+ 'Basically it is a check against the model/Spreadsheet
  Public Overrides Function ToString() As String
 
   Dim sb As New StringBuilder()
@@ -395,8 +392,8 @@ End Function
  End Function
 
  
-
-  Public Function IsEqualTo(other As ICombinedAlternator) As Boolean Implements ICombinedAlternator.IsEqualTo
+ 'Equality
+ Public Function IsEqualTo(other As ICombinedAlternator) As Boolean Implements ICombinedAlternator.IsEqualTo
   
       'Count Check.
       If Me.Alternators.Count <> other.Alternators.Count then Return False

@@ -74,7 +74,7 @@ Public Class M14
         Return S7 / constants.FuelDensity835GramsPerLitre
       End Get
   End Property
- Public ReadOnly Property TotalCycleFCGrams As Single Implements IM14.TotalCycleFCGrams
+  Public ReadOnly Property TotalCycleFCGrams As Single Implements IM14.TotalCycleFCGrams
      Get
        Return S7
      End Get

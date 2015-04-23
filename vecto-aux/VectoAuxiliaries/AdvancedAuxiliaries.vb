@@ -239,7 +239,6 @@ End Sub
 
 
        Catch ex As Exception
-          'TODO: Should this raise an event ?
           MessageBox.Show("Im an exception")
           Return false
 

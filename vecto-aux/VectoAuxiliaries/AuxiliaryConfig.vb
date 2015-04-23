@@ -276,8 +276,7 @@ Public Function Save(  auxFile As String ) As Boolean  Implements IAuxiliaryConf
       File.WriteAllText(auxFile , output)
      
       Catch ex as Exception
-      
-        'TODO:Do something meaningfull here perhaps logging
+
          returnValue= False
      
     End Try
@@ -305,9 +304,7 @@ Public Function Load(  auxFile As String  ) As Boolean  Implements IAuxiliaryCon
       AssumeValuesOfOther( tmpAux ) 
    
     Catch ex as Exception
-    
-      'TODO:Do something meaningfull here perhaps logging
-    
+
        returnValue= False
     End Try
   
