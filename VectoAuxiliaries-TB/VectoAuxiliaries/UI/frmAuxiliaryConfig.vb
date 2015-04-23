@@ -34,6 +34,9 @@ Private auxFile As string
 Private cmFilesList As String()
 Private SaveClicked As Boolean
 
+
+
+
 #End Region
 
 Private Function ValidateAuxFileName( filename As String ) As Boolean
@@ -87,6 +90,13 @@ End Sub
 'Validation
 #Region "Validation Helpers"
 
+Private Function ValidateSSMFile( filepath As String ) As Boolean
+
+   Dim ssmTool As ISSMTOOL = New SSMTOOL(filepath,False)
+
+   Return  ssmTool.Load( filepath)
+
+End Function
 
 Public Function IsPostiveNumber(ByVal test As String) As Boolean
 
@@ -576,6 +586,9 @@ Private Sub Dashboard_Load(sender As Object, e As EventArgs) Handles MyBase.Load
   tabMain.SelectTab(tabMain.TabPages("tabElectricalConfig"))
 
 
+
+  SetSmartCardEmabledStatus()
+
 End Sub
 Private Sub frmAuxiliaryConfig_FormClosing( sender As Object,  e As FormClosingEventArgs) Handles MyBase.FormClosing
 
@@ -657,6 +670,32 @@ Private Sub gvElectricalConsumables_CellValidating(sender As Object, e As DataGr
              e.Cancel = True
            End If
 
+           'SBrake Lights and Exterior Bulb
+            if e.RowIndex =14 OrElse e.RowIndex=19  then
+                If Not IsNumeric(e.FormattedValue) Then
+                  MessageBox.Show("This value must be numeric")
+                  e.Cancel = True
+                End If
+                If  s <> 1 Then
+                   MessageBox.Show("This must be set 1")
+                   e.Cancel = True
+                End If
+            End If
+           
+           'Bonus Bulbs
+           if e.RowIndex >=15 AndAlso e.RowIndex<=18  then
+                 
+           If Not IsNumeric(e.FormattedValue) Then
+             MessageBox.Show("This value must be numeric")
+             e.Cancel = True
+           End If
+           If s <> 0 AndAlso s <> 1 Then
+              MessageBox.Show("This must be set to 0 or 1")
+              e.Cancel = True
+           End If
+
+           End If
+
 
      Case "PhaseIdle_TractionOn"
            If Not IsNumeric(e.FormattedValue) Then
@@ -669,6 +708,8 @@ Private Sub gvElectricalConsumables_CellValidating(sender As Object, e As DataGr
               MessageBox.Show("This must be a value between 0 and 1 ")
               e.Cancel = True
            End If
+
+  
 
 
     End Select
@@ -735,17 +776,6 @@ Private Sub resultCardContextMenu_ItemClicked(sender As Object, e As ToolStripIt
 End Sub
 Private Sub gvElectricalConsumables_CellFormatting(sender As Object, e As DataGridViewCellFormattingEventArgs) Handles gvElectricalConsumables.CellFormatting
 
-
-    If e.ColumnIndex = 4 AndAlso e.RowIndex = 0 Then
-
-       e.CellStyle.BackColor = Color.LightGray
-       e.CellStyle.ForeColor = Color.LightGray
-
-
-    End If
-
-
-
 End Sub
 Private Sub gvElectricalConsumables_CellBeginEdit(sender As Object, e As DataGridViewCellCancelEventArgs) Handles gvElectricalConsumables.CellBeginEdit
 
@@ -755,8 +785,6 @@ Private Sub gvElectricalConsumables_CellBeginEdit(sender As Object, e As DataGri
      e.Cancel = True
 
     End If
-
-
 
 
 End Sub
@@ -1134,15 +1162,11 @@ End Sub
 
 
 #End Region
+Private Sub chkSmartElectricals_CheckedChanged( sender As Object,  e As EventArgs) Handles   chkSmartElectricals.CheckedChanged
 
-Private Function ValidateSSMFile( filepath As String ) As Boolean
+   SetSmartCardEmabledStatus()
 
-   Dim ssmTool As ISSMTOOL = New SSMTOOL(filepath,False)
-
-   Return  ssmTool.Load( filepath)
-
-End Function
-
+End Sub
 #Region "File Viewer Button Events"
 
 Private Sub btnAALTOpen_Click( sender As Object,  e As EventArgs) Handles btnAALTOpen.Click
@@ -1351,31 +1375,41 @@ Private Sub SetupControls()
 
      cIndex = gvElectricalConsumables.Columns.Add("NominalConsumptionAmps", "Nominal Amps")
      gvElectricalConsumables.Columns(cIndex).DataPropertyName = "NominalConsumptionAmps"
-     gvElectricalConsumables.Columns(cIndex).Width = 70
+     gvElectricalConsumables.Columns(cIndex).Width = 60
      gvElectricalConsumables.Columns(cIndex).ReadOnly=true
+     gvElectricalConsumables.Columns(cIndex).DefaultCellStyle= New DataGridViewCellStyle() with {.BackColor= Color.LightGray}
      gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
      gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
      gvElectricalConsumables.Columns(cIndex).HeaderCell.ToolTipText = "Nominal consumption in AMPS"
 
      cIndex = gvElectricalConsumables.Columns.Add("PhaseIdle_TractionOn", "PhaseIdle/ TractionOn")
      gvElectricalConsumables.Columns(cIndex).DataPropertyName = "PhaseIdle_TractionOn"
-     gvElectricalConsumables.Columns(cIndex).Width = 70
+     gvElectricalConsumables.Columns(cIndex).Width = 60
      gvElectricalConsumables.Columns(cIndex).ReadOnly=true
+     gvElectricalConsumables.Columns(cIndex).DefaultCellStyle= New DataGridViewCellStyle() with {.BackColor= Color.LightGray}
      gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
      gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
      gvElectricalConsumables.Columns(cIndex).HeaderCell.ToolTipText = "Represents the amount of time (during engine fueling) as " & vbCrLf & "percentage that the consumer is active during the cycle."
 
      cIndex = gvElectricalConsumables.Columns.Add("NumberInActualVehicle", "Num in Vehicle")
      gvElectricalConsumables.Columns(cIndex).DataPropertyName = "NumberInActualVehicle"
-     gvElectricalConsumables.Columns(cIndex).Width = 70
+     gvElectricalConsumables.Columns(cIndex).Width = 55
      gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
      gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
      gvElectricalConsumables.Columns(cIndex).HeaderCell.ToolTipText = "Number of consumables of this" & vbCrLf & "type installed on the vehicle."
 
+
+    ' 'INFO COLUMN
+    '' cIndex = gvElectricalConsumables.Columns.Add("info","Info")
+    '  cIndex = gvElectricalConsumables.Columns.Add( New ImageColumn())
+
+    ' gvElectricalConsumables.Columns(cIndex).DataPropertyName = "Info"
+    ' gvElectricalConsumables.Columns(cIndex).Width = 120
+    ' gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
+    ' gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
+    ' gvElectricalConsumables.Columns(cIndex).HeaderCell.ToolTipText = "Further Information"
+
      'ResultCard Grids
-
-     'Handler for deleting rows.
-
 
      'IDLE
 
@@ -1479,9 +1513,6 @@ Private Sub CreateBindings()
         txtActuationsMap.DataBindings.Add("Text", auxConfig.PneumaticUserInputsConfig, "ActuationsMap")
         chkSmartAirCompression.DataBindings.Add("Checked", auxConfig.PneumaticUserInputsConfig, "SmartAirCompression", False, DataSourceUpdateMode.OnPropertyChanged)
 
-
-
-
         chkSmartRegeneration.DataBindings.Add("Checked", auxConfig.PneumaticUserInputsConfig, "SmartRegeneration", False, DataSourceUpdateMode.OnPropertyChanged)
         chkRetarderBrake.DataBindings.Add("Checked", auxConfig.PneumaticUserInputsConfig, "RetarderBrake")
         txtKneelingHeightMillimeters.DataBindings.Add("Text", auxConfig.PneumaticUserInputsConfig, "KneelingHeightMillimeters")
@@ -1489,17 +1520,11 @@ Private Sub CreateBindings()
         cboAdBlueDosing.DataBindings.Add("Text", auxConfig.PneumaticUserInputsConfig, "AdBlueDosing")
         cboDoors.DataBindings.Add("Text", auxConfig.PneumaticUserInputsConfig, "Doors")
 
-        'HVAC Bindings     
-        'txtHVACElectricalLoadPowerWatts.DataBindings.Add("Text", auxConfig.HvacUserInputsConfig.SteadyStateModel, "HVACElectricalLoadPowerWatts",False,DataSourceUpdateMode.OnPropertyChanged)
-        'txtHVACFuellingLitresPerHour.DataBindings.Add("Text", auxConfig.HvacUserInputsConfig.SteadyStateModel, "HVACFuellingLitresPerHour",False,DataSourceUpdateMode.OnPropertyChanged)
-        'txtHVACMechanicalLoadPowerWatts.DataBindings.Add("Text", auxConfig.HvacUserInputsConfig.SteadyStateModel, "HVACMechanicalLoadPowerWatts",False,DataSourceUpdateMode.OnPropertyChanged)
-
         txtSSMFilePath.DataBindings.Add( "Text", auxConfig.HvacUserInputsConfig,"SSMFilePath")
         txtBusDatabaseFilePath.DataBindings.Add("Text",auxConfig.HvacUserInputsConfig,"BusDatabasePath")
 
-        'Signals
 
-
+        SetSmartCardEmabledStatus()
 
 End Sub
 
@@ -1510,15 +1535,50 @@ Private Sub EnsureBinding()
             For currentTab As Integer = 0 To .TabCount - 1
                 .SelectedIndex = currentTab
             Next
-            .SelectedIndex = 0
+                .SelectedIndex = 0
         End With
-    End Sub
 
+   SetSmartCardEmabledStatus()
+
+ End Sub
+
+    
 
 #End Region
+Protected sub SetSmartCardEmabledStatus( )
+
+    If chkSmartElectricals.Checked then 
+
+       gvResultsCardIdle.Enabled=True
+       gvResultsCardTraction.Enabled=True
+       gvResultsCardOverrun.Enabled=true
 
 
-'Open File with software defined in Config
+
+
+       gvResultsCardIdle.BackgroundColor=Color.Gray
+       gvResultsCardTraction.BackgroundColor=Color.Gray
+       gvResultsCardOverrun.BackgroundColor=Color.Gray
+
+
+    else
+
+       gvResultsCardIdle.Enabled=false
+       gvResultsCardTraction.Enabled=false
+       gvResultsCardOverrun.Enabled=false
+
+
+       gvResultsCardIdle.BackgroundColor=    Color.White
+       gvResultsCardTraction.BackgroundColor=Color.White
+       gvResultsCardOverrun.BackgroundColor= Color.White
+
+
+
+    End If
+
+
+
+ End Sub
 Public Function FileOpenAlt(ByVal file As String) As Boolean
         Dim PSI As New ProcessStartInfo
 
@@ -1536,6 +1596,12 @@ Public Function FileOpenAlt(ByVal file As String) As Boolean
     End Function
 
 
+
+'Private Sub gvElectricalConsumables_RowsAdded( sender As Object,  e As DataGridViewRowsAddedEventArgs) Handles gvElectricalConsumables.RowsAdded
+
+
+
+'End Sub
 
 
 End Class

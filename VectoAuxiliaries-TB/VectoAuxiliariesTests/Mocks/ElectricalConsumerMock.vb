@@ -6,6 +6,7 @@ Namespace Mocks
         Implements IElectricalConsumer
 
 
+
         Public Property AvgConsumptionAmps As Single Implements IElectricalConsumer.AvgConsumptionAmps
 
         Public Property BaseVehicle As Boolean Implements IElectricalConsumer.BaseVehicle
@@ -35,6 +36,7 @@ Namespace Mocks
         End Function
 
 
+                Public Property Info As String Implements IElectricalConsumer.Info
         End Class
 
 End Namespace
