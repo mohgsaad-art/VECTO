@@ -343,7 +343,8 @@ For  Each otherConsumer As IElectricalConsumer In other.ElectricalUserInputsConf
                                                                         otherConsumer.NominalConsumptionAmps, _
                                                                         otherConsumer.PhaseIdle_TractionOn,   _
                                                                         otherConsumer.PowerNetVoltage,        _
-                                                                        otherConsumer.NumberInActualVehicle   )
+                                                                        otherConsumer.NumberInActualVehicle ,
+                                                                        otherConsumer.info  )
        
       Me.ElectricalUserInputsConfig.ElectricalConsumers.Items.Add( newConsumer )
 
