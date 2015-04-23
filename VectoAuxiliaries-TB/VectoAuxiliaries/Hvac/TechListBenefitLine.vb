@@ -17,10 +17,11 @@ Public Enum PowerType
 
 End Enum
 
+'Used by SSMTOOL Class, refer to original spreadsheet model
+'Or PDF Model Document which articulates the same spreadsheet functionality
+'But within the context of the Vecto interpretation of the same.
 Public Class TechListBenefitLine
   Implements ITechListBenefitLine
-
-
 
 
 Private _h,_vh,_vv,_vc,_c As Single

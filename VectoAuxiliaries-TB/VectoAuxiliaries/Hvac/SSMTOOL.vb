@@ -7,6 +7,9 @@ Imports System.Text
 
 Namespace Hvac
 
+'Used by frmHVACTool
+'Replaces Spreadsheet model which does the same calculation
+'Version of which appears on the form title.
 Public Class SSMTOOL
 Implements ISSMTOOL
 

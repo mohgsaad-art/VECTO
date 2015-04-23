@@ -1,12 +1,13 @@
 ﻿
 Namespace Hvac
-
+  
+  'Used by SSMHVAC Class
   Public Class SSMGenInputs
-  Implements ISSMGenInputs
+    Implements ISSMGenInputs
 
   
   
-      'BUS Parameterisation
+    'BUS Parameterisation
     '********************
      'C4/D4
      Public Property BP_BusModel As String Implements ISSMGenInputs.BP_BusModel
@@ -44,7 +45,7 @@ Namespace Hvac
       'D12/C12 - ( M )
       Public Property BP_BusWidth As Double Implements ISSMGenInputs.BP_BusWidth
   
-      'BOUNDRY CONDITIONS
+    'BOUNDRY CONDITIONS
     '******************
     'C15
       Public             Property BC_GFactor As Double Implements ISSMGenInputs.BC_GFactor

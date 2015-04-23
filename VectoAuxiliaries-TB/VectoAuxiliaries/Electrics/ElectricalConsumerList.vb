@@ -38,7 +38,8 @@ Namespace Electrics
 
 End Sub
  
-   
+   'Transfers the Info comments from a default set of consumables to a live set.
+   'This way makes the comments not dependent on saved data.
    Public Sub MergeInfoData() Implements IElectricalConsumerList.MergeInfoData
 
      If _items.Count <> GetDefaultConsumerList().Count then return

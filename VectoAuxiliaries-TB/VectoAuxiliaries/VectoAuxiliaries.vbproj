@@ -110,12 +110,9 @@
     <Compile Include="Electrics\AlternatorMapValues.vb" />
     <Compile Include="Electrics\AlternatorMap.vb" />
     <Compile Include="Electrics\AltUserInput.vb" />
-    <Compile Include="Electrics\CombinedAltEntry.vb" />
     <Compile Include="Electrics\CombinedAlternator.vb" />
     <Compile Include="Electrics\CombinedAlternatorMapRow.vb" />
     <Compile Include="Electrics\CombinedAlternatorSignals.vb" />
-    <Compile Include="Electrics\ImageCell.vb" />
-    <Compile Include="Electrics\ImageColumn.vb" />
     <Compile Include="Electrics\ElectricsUserInputsConfig.vb" />
     <Compile Include="Electrics\IAlternator.vb" />
     <Compile Include="Electrics\ICombinedAlternator.vb" />
@@ -125,7 +122,6 @@
     <Compile Include="Electrics\IM0_5_SmartAlternatorSetEfficiency.vb" />
     <Compile Include="Electrics\IM2_AverageElectricalLoadDemand.vb" />
     <Compile Include="Electrics\IM5_SmartAlternatorSetGeneration.vb" />
-    <Compile Include="Electrics\IncDecValuePair.vb" />
     <Compile Include="Electrics\IResultCard.vb" />
     <Compile Include="Electrics\M0_5_SmartAlternatorSetEfficiency.vb" />
     <Compile Include="Electrics\M0_NonSmart_AlternatorsSetEfficiency.vb" />
@@ -276,7 +272,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="3rdPartyLibraries\" />
-    <Folder Include="ExternalAssemblies\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Images\application-export-icon-small.png" />

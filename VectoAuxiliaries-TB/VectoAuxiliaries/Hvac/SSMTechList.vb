@@ -2,7 +2,7 @@
 
 Namespace Hvac
 
-
+'Used By SSMTOOL Class.
 Public Class SSMTechList
  Implements ISSMTechList
 
