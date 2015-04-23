@@ -51,7 +51,6 @@ Public Class Alternator
                InitialiseRangeTable()
                CalculateRangeTable()
 
-               'TODO: Calculate Efficiency
                'Calculate ( Interpolate ) Efficiency
 
                Dim range as List(Of AltUserInput) = RangeTable.Select( Function(s) New AltUserInput(s.RPM,s.Efficiency)).ToList()
@@ -288,7 +287,7 @@ Public Class Alternator
 
 
 
-  Public Function IsEqualTo(other As IAlternator) As Boolean Implements IAlternator.IsEqualTo
+ Public Function IsEqualTo(other As IAlternator) As Boolean Implements IAlternator.IsEqualTo
 
      If Me.AlternatorName <> other.AlternatorName then Return False
      If Me.PulleyRatio <> other.PulleyRatio then Return false

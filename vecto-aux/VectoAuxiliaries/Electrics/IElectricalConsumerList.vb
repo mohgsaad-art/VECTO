@@ -52,6 +52,10 @@ Public Interface IElectricalConsumerList
     ''' <remarks></remarks>
     Property DoorDutyCycleFraction As single
 
+     'Merge Info data from ElectricalConsumer in a Default set into live set
+     'This is required because the info is stored in the AAUX file and we do not want to use a persistance stored version.
+     Sub MergeInfoData()
+
 End Interface
 
 

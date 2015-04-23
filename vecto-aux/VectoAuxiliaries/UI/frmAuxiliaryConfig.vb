@@ -586,8 +586,13 @@ Private Sub Dashboard_Load(sender As Object, e As EventArgs) Handles MyBase.Load
   tabMain.SelectTab(tabMain.TabPages("tabElectricalConfig"))
 
 
-
+  'Enabled  / Disables Smart Cards based on chkSmartElectrical
   SetSmartCardEmabledStatus()
+
+  'Merge Info data from ElectricalConsumer in a Default set into live set
+  'This is required because the info is stored in the AAUX file and we do not want to use a persistance stored version.
+  auxConfig.ElectricalUserInputsConfig.ElectricalConsumers.MergeInfoData()
+
 
 End Sub
 Private Sub frmAuxiliaryConfig_FormClosing( sender As Object,  e As FormClosingEventArgs) Handles MyBase.FormClosing
@@ -1399,17 +1404,17 @@ Private Sub SetupControls()
      gvElectricalConsumables.Columns(cIndex).HeaderCell.ToolTipText = "Number of consumables of this" & vbCrLf & "type installed on the vehicle."
 
 
-    ' 'INFO COLUMN
-    '' cIndex = gvElectricalConsumables.Columns.Add("info","Info")
+     'INFO COLUMN
+     cIndex = gvElectricalConsumables.Columns.Add("info","Info")
     '  cIndex = gvElectricalConsumables.Columns.Add( New ImageColumn())
 
-    ' gvElectricalConsumables.Columns(cIndex).DataPropertyName = "Info"
-    ' gvElectricalConsumables.Columns(cIndex).Width = 120
-    ' gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
-    ' gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
-    ' gvElectricalConsumables.Columns(cIndex).HeaderCell.ToolTipText = "Further Information"
+     gvElectricalConsumables.Columns(cIndex).DataPropertyName = "Info"
+     gvElectricalConsumables.Columns(cIndex).Width = 120
+     gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
+     gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
+     gvElectricalConsumables.Columns(cIndex).HeaderCell.ToolTipText = "Further Information"
 
-     'ResultCard Grids
+    ' ResultCard Grids
 
      'IDLE
 
@@ -1444,7 +1449,6 @@ Private Sub SetupControls()
 
 End Sub
 #Region "Binding Control"
-
 
 Private Sub CreateBindings()
 
@@ -1542,8 +1546,6 @@ Private Sub EnsureBinding()
 
  End Sub
 
-    
-
 #End Region
 Protected sub SetSmartCardEmabledStatus( )
 
@@ -1595,13 +1597,6 @@ Public Function FileOpenAlt(ByVal file As String) As Boolean
 
     End Function
 
-
-
-'Private Sub gvElectricalConsumables_RowsAdded( sender As Object,  e As DataGridViewRowsAddedEventArgs) Handles gvElectricalConsumables.RowsAdded
-
-
-
-'End Sub
 
 
 End Class

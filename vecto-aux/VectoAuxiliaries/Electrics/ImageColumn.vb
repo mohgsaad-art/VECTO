@@ -11,8 +11,8 @@ Public Class ImageColumn
 
    Public  Sub new()
 
-     MyBase.New()
-     Me.CellTemplate = New ImageCell()
+    ' MyBase.New()
+    ' Me.CellTemplate = New ImageCell()
 
    End Sub
 
