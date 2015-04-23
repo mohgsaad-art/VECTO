@@ -27,19 +27,42 @@ Namespace Electrics
 
    _powernetVoltage = powernetVoltage
    
-   If createDefaultList Then SetDefaultConsumerList()
+   If createDefaultList Then 
+
+    _items = GetDefaultConsumerList()
+
+   End If
+   
    
    _doorDutyCycleZeroToOne = doorDutyCycle_ZeroToOne
 
 End Sub
+ 
+   
+   Public Sub MergeInfoData() Implements IElectricalConsumerList.MergeInfoData
+
+     If _items.Count <> GetDefaultConsumerList().Count then return
+
+     Dim dflt As List(Of IElectricalConsumer) = GetDefaultConsumerList()
+
+     For idx As Integer=0 to _items.Count-1
+
+         _items(idx).Info= dflt(idx).Info
+
+     Next
+
+     
+
+   End Sub
+ 
    'Initialise default set of consumers
-   Public Sub SetDefaultConsumerList()
+   Public function GetDefaultConsumerList() As List(Of IElectricalConsumer)
 
      'This populates the default settings as per engineering spreadsheet.
      'Vehicle Basic Equipment' category can be added or remove by customers.
      'At some time in the future, this may be removed and replace with file based consumer lists.
     
-     _items.Clear()
+     Dim items As New List(Of IElectricalConsumer)
     
      Dim c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20 As IElectricalConsumer
     
@@ -64,28 +87,30 @@ End Sub
      c19 = CType(New ElectricalConsumer(False, "Lights", "Direction lights LED bonus",                                                          -0.30, 1.00, _powernetVoltage,             1,""), IElectricalConsumer)
      c20 = CType(New ElectricalConsumer(False, "Lights", "Brake Lights",                                                                        -1.20, 1.00, _powernetVoltage,             1,""), IElectricalConsumer)
     
-    _items.Add(c1)
-    _items.Add(c2)
-    _items.Add(c3)
-    _items.Add(c4)
-    _items.Add(c5)
-    _items.Add(c6)
-    _items.Add(c7)
-    _items.Add(c8)
-    _items.Add(c9)
-    _items.Add(c10)
-    _items.Add(c11)
-    _items.Add(c12)
-    _items.Add(c13)
-    _items.Add(c14)
-    _items.Add(c15)
-    _items.Add(c16)
-    _items.Add(c17)
-    _items.Add(c18)
-    _items.Add(c19)
-    _items.Add(c20)
+     items.Add(c1)
+     items.Add(c2)
+     items.Add(c3)
+     items.Add(c4)
+     items.Add(c5)
+     items.Add(c6)
+     items.Add(c7)
+     items.Add(c8)
+     items.Add(c9)
+     items.Add(c10)
+     items.Add(c11)
+     items.Add(c12)
+     items.Add(c13)
+     items.Add(c14)
+     items.Add(c15)
+     items.Add(c16)
+     items.Add(c17)
+     items.Add(c18)
+     items.Add(c19)
+     items.Add(c20)
     
-End Sub    
+    Return items
+
+End Function    
   
 
    'Interface implementation
