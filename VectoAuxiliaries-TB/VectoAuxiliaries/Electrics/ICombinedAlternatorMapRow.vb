@@ -1,11 +1,19 @@
-﻿Public Interface ICombinedAlternatorMapRow
+﻿
+Namespace Electrics
+
+'Reflects stored data in pesisted CombinedAlternator Map .AALT
+Public Interface ICombinedAlternatorMapRow
 
 
-    property AlternatorName  As String
-    property RPM             As Single
-    property Amps            As Single
-    property Efficiency      As Single
-    property PulleyRatio     As Single
+    Property AlternatorName  As String
+    Property RPM             As Single
+    Property Amps            As Single
+    Property Efficiency      As Single
+    Property PulleyRatio     As Single
 
 
 End Interface
+
+
+End Namespace
+
