@@ -403,7 +403,7 @@ Namespace UnitTests
 
   End Sub
 
- ' <Test()>
+  '<Test()>
   Public Sub Performance()
 
 
@@ -417,14 +417,22 @@ Namespace UnitTests
    Dim demand As single
    Dim rand As New Random(50)
 
+    Dim min As Single = 0.1
+    Dim max As single = 0.1
+
     For x = 1 to 500000
 
-     crank = rand.Next(500,3000)
-     demand = rand.Next(1,200)
+     'crank = rand.Next(500,3000)
+     'demand = rand.Next(1,200)
+
+     crank = rand.Next(0,0)
+     demand = rand.Next(0,0)
 
      Dim actual As AlternatorMapValues = ca.GetEfficiency(crank,demand)
 
+     If actual.Efficiency < min then min=actual.Efficiency
 
+     If actual.Efficiency > max then max = actual.Efficiency
 
     Next 
 
@@ -473,7 +481,22 @@ Namespace UnitTests
 
   End Sub
 
- <Test()>
+ '<Test()>
+ ' Public Sub AlternatorsUnequalEfficiency()
+
+
+ '  Dim ca As new CombinedAlternator("abc.aalt")
+ '  Dim original As new CombinedAlternator("abc.aalt")
+
+ '  ca.Alternators(0).InputTable2000(1).Eff=0.99999
+ 
+ '  'Only tests efficiency values table row 1-3
+ '  Assert.IsFalse(ca.IsEqualTo( original))
+
+ ' End Sub
+
+
+  <Test()>
   Public Sub AlternatorsUnequalEfficiency()
 
 
@@ -486,6 +509,10 @@ Namespace UnitTests
    Assert.IsFalse(ca.IsEqualTo( original))
 
   End Sub
+
+
+
+
 
 
  End Class

@@ -57,15 +57,15 @@ Public Class cMOD
     public AA_TotalCycleFC_Litres       As List(Of single? )
 
     'TODO:DIAGNOSTICS (D) REMOVE WHEN TESTED
-    public  AA_D_M12_P1X                            as list( of single  )
-    public  AA_D_M12_P1Y                            as list( of single  )
-    public  AA_D_M12_P2X                            as list( of single  )
-    public  AA_D_M12_P2Y                            as list( of single  )
-    public  AA_D_M12_P3X                            as list( of single  )
-    public  AA_D_M12_P3Y                            as list( of single  )
-    public  AA_D_M12_XTAIN                          as list( of single  )
-    public  AA_D_M12_INTERP1                        as list( of single  )
-    public  AA_D_M12_INTERP2                        as list( of single  )
+    'public  AA_D_M12_P1X                            as list( of single  )
+    'public  AA_D_M12_P1Y                            as list( of single  )
+    'public  AA_D_M12_P2X                            as list( of single  )
+    'public  AA_D_M12_P2Y                            as list( of single  )
+    'public  AA_D_M12_P3X                            as list( of single  )
+    'public  AA_D_M12_P3Y                            as list( of single  )
+    'public  AA_D_M12_XTAIN                          as list( of single  )
+    'public  AA_D_M12_INTERP1                        as list( of single  )
+    'public  AA_D_M12_INTERP2                        as list( of single  )
 
 
     '***********************************************************
@@ -123,15 +123,16 @@ Public Class cMOD
         AA_TotalCycleFC_Grams                               = new  List(Of  single? )
         AA_TotalCycleFC_Litres                              = new  List(Of  single? )
 
-        AA_D_M12_P1X                                         = new List(Of single )
-        AA_D_M12_P1Y                                         = new List(Of single )
-        AA_D_M12_P2X                                         = new List(Of single )
-        AA_D_M12_P2Y                                         = new List(Of single )
-        AA_D_M12_P3X                                         = new List(Of single )
-        AA_D_M12_P3Y                                         = new List(Of single )
-        AA_D_M12_XTAIN                                       = new List(Of single )
-        AA_D_M12_INTERP1                                     = new List(Of single )
-        AA_D_M12_INTERP2                                     = new List(Of single )
+        'TODO REMOVE WHEN TESTING COMPLETE
+        'AA_D_M12_P1X                                         = new List(Of single )
+        'AA_D_M12_P1Y                                         = new List(Of single )
+        'AA_D_M12_P2X                                         = new List(Of single )
+        'AA_D_M12_P2Y                                         = new List(Of single )
+        'AA_D_M12_P3X                                         = new List(Of single )
+        'AA_D_M12_P3Y                                         = new List(Of single )
+        'AA_D_M12_XTAIN                                       = new List(Of single )
+        'AA_D_M12_INTERP1                                     = new List(Of single )
+        'AA_D_M12_INTERP2                                     = new List(Of single )
 
         '*************************************************************************
 
@@ -590,31 +591,31 @@ Public Class cMOD
 
             'AA-TB
             'Advanced Auxiliaries
-            s.Append(",AA_NonSmartAlternatorsEfficiency [Fraction]")             
-            s.Append(",AA_SmartIdleCurrent_Amps [Amps]   ")              
-            s.Append(",AA_SmartIdleAlternatorsEfficiency  [Fraction]")                  
-            s.Append(",AA_SmartTractionCurrent_Amps  [Amps]")                     
-            s.Append(",AA_SmartTractionAlternatorEfficiency [Fraction]")               
-            s.Append(",AA_SmartOverrunCurrent_Amps [Amps]")                      
-            s.Append(",AA_SmartOverrunAlternatorEfficiency  [Fraction]")               
-            s.Append(",AA_CompressorFlowRate_LitrePerSec [Ni L/S]")                  
-            s.Append(",AA_OverrunFlag [Integer 0/1]")                                   
-            s.Append(",AA_EngineIdleFlag [Integer 0/1]")                                     
-            s.Append(",AA_CompressorFlag [Integer 0/1]")                                    
-            s.Append(",AA_TotalCycleFC_Grams")  
-            s.Append(",AA_TotalCycleFC_Litres")   
+            's.Append(",AA_NonSmartAlternatorsEfficiency [Fraction]")             
+            's.Append(",AA_SmartIdleCurrent_Amps [Amps]   ")              
+            's.Append(",AA_SmartIdleAlternatorsEfficiency  [Fraction]")                  
+            's.Append(",AA_SmartTractionCurrent_Amps  [Amps]")                     
+            's.Append(",AA_SmartTractionAlternatorEfficiency [Fraction]")               
+            's.Append(",AA_SmartOverrunCurrent_Amps [Amps]")                      
+            's.Append(",AA_SmartOverrunAlternatorEfficiency  [Fraction]")               
+            's.Append(",AA_CompressorFlowRate_LitrePerSec [Ni L/S]")                  
+            's.Append(",AA_OverrunFlag [Integer 0/1]")                                   
+            's.Append(",AA_EngineIdleFlag [Integer 0/1]")                                     
+            's.Append(",AA_CompressorFlag [Integer 0/1]")                                    
+            's.Append(",AA_TotalCycleFC_Grams")  
+            's.Append(",AA_TotalCycleFC_Litres")   
 
             'TODO:
             'DIAGNOSTICS REMOVE WHEN TESTED
-            s.Append(",AA_D_M12_P1X      [Single]")
-            s.Append(",AA_D_M12_P1Y      [Single]")
-            s.Append(",AA_D_M12_P2X      [Single]")
-            s.Append(",AA_D_M12_P2Y      [Single]")
-            s.Append(",AA_D_M12_P3X      [Single]")
-            s.Append(",AA_D_M12_P3Y      [Single]")
-            s.Append(",AA_D_M12_XTAIN    [Single]")
-            s.Append(",AA_D_M12_INTERP1  [Single]")
-            s.Append(",AA_D_M12_INTERP2  [Single]")
+            's.Append(",AA_D_M12_P1X      [Single]")
+            's.Append(",AA_D_M12_P1Y      [Single]")
+            's.Append(",AA_D_M12_P2X      [Single]")
+            's.Append(",AA_D_M12_P2Y      [Single]")
+            's.Append(",AA_D_M12_P3X      [Single]")
+            's.Append(",AA_D_M12_P3Y      [Single]")
+            's.Append(",AA_D_M12_XTAIN    [Single]")
+            's.Append(",AA_D_M12_INTERP1  [Single]")
+            's.Append(",AA_D_M12_INTERP2  [Single]")
 
 
 
@@ -795,15 +796,15 @@ Public Class cMOD
 
                       'TODO:REMOVE WHEN TESTED
                       'DIAGNOSTICS
-                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M12_P1X      (t).toString(),""))
-                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M12_P1Y      (t).toString(),""))
-                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M12_P2X      (t).toString(),""))
-                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M12_P2Y      (t).toString(),""))
-                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M12_P3X      (t).toString(),""))
-                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M12_P3Y      (t).toString(),""))
-                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M12_XTAIN    (t).toString(),""))
-                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M12_INTERP1  (t).toString(),""))
-                      s.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M12_INTERP2  (t).toString(),""))
+                      's.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M12_P1X      (t).toString(),""))
+                      's.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M12_P1Y      (t).toString(),""))
+                      's.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M12_P2X      (t).toString(),""))
+                      's.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M12_P2Y      (t).toString(),""))
+                      's.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M12_P3X      (t).toString(),""))
+                      's.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M12_P3Y      (t).toString(),""))
+                      's.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M12_XTAIN    (t).toString(),""))
+                      's.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M12_INTERP1  (t).toString(),""))
+                      's.Append(Sepp & if(vecto_global.VEC.AuxiliaryAssembly<>"CLASSIC", AA_D_M12_INTERP2  (t).toString(),""))
 
 
 
