@@ -591,19 +591,19 @@ Public Class cMOD
 
             'AA-TB
             'Advanced Auxiliaries
-            's.Append(",AA_NonSmartAlternatorsEfficiency [Fraction]")             
-            's.Append(",AA_SmartIdleCurrent_Amps [Amps]   ")              
-            's.Append(",AA_SmartIdleAlternatorsEfficiency  [Fraction]")                  
-            's.Append(",AA_SmartTractionCurrent_Amps  [Amps]")                     
-            's.Append(",AA_SmartTractionAlternatorEfficiency [Fraction]")               
-            's.Append(",AA_SmartOverrunCurrent_Amps [Amps]")                      
-            's.Append(",AA_SmartOverrunAlternatorEfficiency  [Fraction]")               
-            's.Append(",AA_CompressorFlowRate_LitrePerSec [Ni L/S]")                  
-            's.Append(",AA_OverrunFlag [Integer 0/1]")                                   
-            's.Append(",AA_EngineIdleFlag [Integer 0/1]")                                     
-            's.Append(",AA_CompressorFlag [Integer 0/1]")                                    
-            's.Append(",AA_TotalCycleFC_Grams")  
-            's.Append(",AA_TotalCycleFC_Litres")   
+            s.Append(",AA_NonSmartAlternatorsEfficiency [Fraction]")             
+            s.Append(",AA_SmartIdleCurrent_Amps [Amps]   ")              
+            s.Append(",AA_SmartIdleAlternatorsEfficiency  [Fraction]")                  
+            s.Append(",AA_SmartTractionCurrent_Amps  [Amps]")                     
+            s.Append(",AA_SmartTractionAlternatorEfficiency [Fraction]")               
+            s.Append(",AA_SmartOverrunCurrent_Amps [Amps]")                      
+            s.Append(",AA_SmartOverrunAlternatorEfficiency  [Fraction]")               
+            s.Append(",AA_CompressorFlowRate_LitrePerSec [Ni L/S]")                  
+            s.Append(",AA_OverrunFlag [Integer 0/1]")                                   
+            s.Append(",AA_EngineIdleFlag [Integer 0/1]")                                     
+            s.Append(",AA_CompressorFlag [Integer 0/1]")                                    
+            s.Append(",AA_TotalCycleFC_Grams")  
+            s.Append(",AA_TotalCycleFC_Litres")   
 
             'TODO:
             'DIAGNOSTICS REMOVE WHEN TESTED
