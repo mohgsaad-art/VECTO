@@ -193,8 +193,10 @@ Public Class Alternator
       M14 = 6000
       RangeTable(4).RPM =  M14
 
-      'Row 1 - RPM
-      M11 = Convert.ToSingle(IF(M12=IF(N12>N13,M12-((M12-M13)/(N12-N13))*(N12-N11),M12-((M12-M13)/(N12-N13))*(N12-N11)), M12-0.01, IF(N12>N13,M12-((M12-M13)/(N12-N13))*(N12-N11),M12-((M12-M13)/(N12-N13))*(N12-N11))))
+            'Row 1 - RPM
+            'NOTE: Update to reflect CombineALternatorSchematicV02 20150429
+            'IF(M12=IF(N12>N13,M12-((M12-M13)/(N12-N13))*(N12-N11),M12-((M12-M13)/(N12-N13))*(N12-N11)), M12-0.01, IF(N12>N13,M12-((M12-M13)/(N12-N13))*(N12-N11),M12-((M12-M13)/(N12-N13))*(N12-N11)))
+            M11 = Convert.ToSingle(If(N12 - N13 = 0, 0, If(M12 = If(N12 > N13, M12 - ((M12 - M13) / (N12 - N13)) * (N12 - N11), M12 - ((M12 - M13) / (N12 - N13)) * (N12 - N11)), M12 - 0.01, If(N12 > N13, M12 - ((M12 - M13) / (N12 - N13)) * (N12 - N11), M12 - ((M12 - M13) / (N12 - N13)) * (N12 - N11)))))
       RangeTable(1).RPM =M11
 
       'Row 0 - RPM
