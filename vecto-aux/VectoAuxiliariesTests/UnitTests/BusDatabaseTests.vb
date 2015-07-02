@@ -23,207 +23,204 @@ Private Const INVALIDPASSEMGERSMAP = "TestFiles\testBusDatabaseInvalidPassengers
 <Test()>
 Public Sub BusCreateTest()
 
-  Dim target As IBus = New Bus("IVECO - Arway Intercity 10.6m","raised floor","diesel",10.655,2.550,2.275,47)
+            Dim target As IBus = New Bus(1, "IVECO - Arway Intercity 10.6m", "raised floor", "diesel", 10.655, 2.55, 2.275, 47, False)
 
 
-  Assert.IsNotNull( target )
+            Assert.IsNotNull(target)
 
-  Assert.AreEqual("IVECO - Arway Intercity 10.6m", target.Model)
-  Assert.AreEqual("raised floor", target.FloorType)
-  Assert.AreEqual("diesel", target.EngineType)
+            Assert.AreEqual("IVECO - Arway Intercity 10.6m", target.Model)
+            Assert.AreEqual("raised floor", target.FloorType)
+            Assert.AreEqual("diesel", target.EngineType)
 
-  Assert.AreEqual(114.4r, target.AreaInMetresSquared)
-  Assert.AreEqual(61.8r, target.VolumneInMetresQubed)
+        End Sub
 
-End Sub
+        <Test()> _
+        <ExpectedException("System.ArgumentException")>
+        Public Sub IllegalFloorTypeTest()
 
-<Test()> _
-<ExpectedException("System.ArgumentException")>
-Public Sub IllegalFloorTypeTest()
+            Dim target As IBus = New Bus(2, "", "raised floor", "diesel", 10.655, 2.55, 2.275, 47, False)
 
-  Dim target As IBus = New Bus("","raised floor","diesel",10.655,2.550,2.275,47)
+        End Sub
 
-End Sub
+        <Test()> _
+        <ExpectedException("System.ArgumentException")>
+        Public Sub IllegalModelTest()
 
-<Test()> _
-<ExpectedException("System.ArgumentException")>
-Public Sub IllegalModelTest()
+            Dim target As IBus = New Bus(3, "ABC", "raised", "diesel", 10.655, 2.55, 2.275, 47, False)
 
-  Dim target As IBus = New Bus("ABC","raised","diesel",10.655,2.550,2.275,47)
+        End Sub
 
-End Sub
+        <Test()> _
+        <ExpectedException("System.ArgumentException")>
+        Public Sub IllegalEngineTypeTest()
 
-<Test()> _
-<ExpectedException("System.ArgumentException")>
-Public Sub IllegalEngineTypeTest()
+            Dim target As IBus = New Bus(4, "ABC", "raised floor", "vapour", 10.655, 2.55, 2.275, 47, False)
 
-  Dim target As IBus = New Bus("ABC","raised floor","vapour",10.655,2.550,2.275,47)
+        End Sub
 
-End Sub
+        <Test()> _
+        <ExpectedException("System.ArgumentException")>
+        Public Sub IllegalWidthTest()
 
-<Test()> _
-<ExpectedException("System.ArgumentException")>
-Public Sub IllegalWidthTest()
+            Dim target As IBus = New Bus(5, "IVECO - Arway Intercity 10.6m", "raised floor", "diesel", 10.655, 0, 2.275, 47, False)
 
-  Dim target As IBus = New Bus("IVECO - Arway Intercity 10.6m","raised floor","diesel",10.655,0,2.275,47)
+        End Sub
 
-End Sub
+        <Test()> _
+        <ExpectedException("System.ArgumentException")>
+        Public Sub IllegalHeightTest()
 
-<Test()> _
-<ExpectedException("System.ArgumentException")>
-Public Sub IllegalHeightTest()
+            Dim target As IBus = New Bus(6, "IVECO - Arway Intercity 10.6m", "raised floor", "diesel", 10.655, 2.55, 0, 47, False)
 
-  Dim target As IBus = New Bus("IVECO - Arway Intercity 10.6m","raised floor","diesel",10.655,2.550,0,47)
+        End Sub
 
-End Sub
+        <Test()> _
+        <ExpectedException("System.ArgumentException")>
+        Public Sub IllegalLengthTest()
 
-<Test()> _
-<ExpectedException("System.ArgumentException")>
-Public Sub IllegalLengthTest()
+            Dim target As IBus = New Bus(7, "IVECO - Arway Intercity 10.6m", "raised floor", "diesel", 0, 2.55, 2.275, 47, False)
 
-  Dim target As IBus = New Bus("IVECO - Arway Intercity 10.6m","raised floor","diesel",0,2.550,2.275,47)
+        End Sub
 
-End Sub
+        <Test()> _
+        <ExpectedException("System.ArgumentException")>
+        Public Sub IllegalPassengersTest()
 
-<Test()> _
-<ExpectedException("System.ArgumentException")>
-Public Sub IllegalPassengersTest()
+            Dim target As IBus = New Bus(8, "IVECO - Arway Intercity 10.6m", "raised floor", "diesel", 10.655, 2.55, 2.275, 1, False)
 
-  Dim target As IBus = New Bus("IVECO - Arway Intercity 10.6m","raised floor","diesel",10.655,2.550,2.275,1)
+        End Sub
 
-End Sub
+        <Test()>
+        Public Sub InitialiseFromCSVGoodDataTest()
 
-<Test()>
-Public Sub InitialiseFromCSVGoodDataTest()
+            Dim target As IBusDatabase = New BusDatabase()
 
-   Dim target As  IBusDatabase = new BusDatabase()
+            Dim result As Boolean = target.Initialise(GOODMAP)
 
-   Dim result As Boolean = target.Initialise( GOODMAP )
+            Assert.IsTrue(result)
 
-    Assert.IsTrue(result)
+        End Sub
 
-End Sub
+        <Test()>
+        Public Sub InitialiseFromCSVNotEnoughRowsTest()
 
-<Test()>
-Public Sub InitialiseFromCSVNotEnoughRowsTest()
 
+            Dim target As IBusDatabase = New BusDatabase()
 
-   Dim target As  IBusDatabase = new BusDatabase()
+            Dim result As Boolean = target.Initialise(INSUFFICIENTROWSMAP)
 
-   Dim result As Boolean = target.Initialise( INSUFFICIENTROWSMAP )
+            Assert.IsFalse(result)
 
-    Assert.IsFalse(result)
 
+        End Sub
 
-End Sub
+        <Test()>
+        Public Sub InitialiseFromCSVInvalidLengthTest()
 
-<Test()>
-Public Sub InitialiseFromCSVInvalidLengthTest()
+            Dim target As IBusDatabase = New BusDatabase()
 
-     Dim target As  IBusDatabase = new BusDatabase()
+            Dim result As Boolean = target.Initialise(INVALIDLENGTHMAP)
 
-   Dim result As Boolean = target.Initialise( INVALIDLENGTHMAP )
+            Assert.IsFalse(result)
 
-    Assert.IsFalse(result)
+        End Sub
 
-End Sub
+        <Test()>
+        Public Sub InitialiseFromCSVInvalidWidthTest()
 
-<Test()>
-Public Sub InitialiseFromCSVInvalidWidthTest()
+            Dim target As IBusDatabase = New BusDatabase()
 
-   Dim target As  IBusDatabase = new BusDatabase()
+            Dim result As Boolean = target.Initialise(INVALIDWIDTHMAP)
 
-   Dim result As Boolean = target.Initialise( INVALIDWIDTHMAP )
+            Assert.IsFalse(result)
 
-    Assert.IsFalse(result)
+        End Sub
 
-End Sub
+        <Test()>
+        Public Sub InitialiseFromCSVInvalidHeightTest()
 
-<Test()>
-Public Sub InitialiseFromCSVInvalidHeightTest()
+            Dim target As IBusDatabase = New BusDatabase()
 
-     Dim target As  IBusDatabase = new BusDatabase()
+            Dim result As Boolean = target.Initialise(INVALIDHEIGHTMAP)
 
-   Dim result As Boolean = target.Initialise( INVALIDHEIGHTMAP )
+            Assert.IsFalse(result)
 
-    Assert.IsFalse(result)
+        End Sub
 
-End Sub
+        <Test()>
+        Public Sub InitialiseFromCSVInvalidPassengersTest()
 
-<Test()>
-Public Sub InitialiseFromCSVInvalidPassengersTest()
+            Dim target As IBusDatabase = New BusDatabase()
 
-     Dim target As  IBusDatabase = new BusDatabase()
+            Dim result As Boolean = target.Initialise(INVALIDPASSEMGERSMAP)
 
-     Dim result As Boolean = target.Initialise( INVALIDPASSEMGERSMAP )
+            Assert.IsFalse(result)
 
-    Assert.IsFalse(result)
+        End Sub
 
-End Sub
+        <Test()>
+        Public Sub InitialiseFromCSVDuplicatesTest()
 
-<Test()>
-Public Sub InitialiseFromCSVDuplicatesTest()
+            Dim target As IBusDatabase = New BusDatabase()
 
-     Dim target As  IBusDatabase = new BusDatabase()
+            Dim result As Boolean = target.Initialise(DUPLICATES)
 
-     Dim result As Boolean = target.Initialise( DUPLICATES )
+            Assert.IsFalse(result)
 
-    Assert.IsFalse(result)
+        End Sub
 
-End Sub
+        <Test()>
+        Public Sub FindBusTest()
 
-<Test()>
-Public Sub FindBusTest()
+            Dim target As IBusDatabase = New BusDatabase()
+            Dim result As Boolean = target.Initialise(GOODMAP)
+            Assert.IsTrue(result)
 
-   Dim target As  IBusDatabase = new BusDatabase()
-   Dim result As Boolean = target.Initialise( GOODMAP )
-   Assert.IsTrue(result)
+            Dim busList = target.GetBuses("IVECO - Crossway Intercity 10.6m")
 
-   Dim busList  = target.GetBuses("IVECO - Crossway Intercity 10.6m")
+            Assert.AreEqual(1, busList.Count())
 
-   Assert.AreEqual(1, busList.Count())
+        End Sub
 
-End Sub
+        <Test()>
+        Public Sub FindMultipleBusesTest()
 
-<Test()>
-Public Sub FindMultipleBusesTest()
+            Dim target As IBusDatabase = New BusDatabase()
+            Dim result As Boolean = target.Initialise(GOODMAP)
+            Assert.IsTrue(result)
 
-   Dim target As  IBusDatabase = new BusDatabase()
-   Dim result As Boolean = target.Initialise( GOODMAP )
-   Assert.IsTrue(result)
+            Dim busList = target.GetBuses("IVECO")
 
-   Dim busList  = target.GetBuses("IVECO")
+            Assert.AreEqual(28, busList.Count())
 
-   Assert.AreEqual(28, busList.Count())
+        End Sub
 
-End Sub
+        <Test()>
+        Public Sub FindAllBusesTest()
 
-<Test()>
-Public Sub FindAllBusesTest()
+            Dim target As IBusDatabase = New BusDatabase()
+            Dim result As Boolean = target.Initialise(GOODMAP)
+            Assert.IsTrue(result)
 
-   Dim target As  IBusDatabase = new BusDatabase()
-   Dim result As Boolean = target.Initialise( GOODMAP )
-   Assert.IsTrue(result)
+            Dim busList = target.GetBuses("")
 
-   Dim busList  = target.GetBuses("")
+            Assert.AreEqual(158, busList.Count())
 
-   Assert.AreEqual(158, busList.Count())
 
+        End Sub
 
-End Sub
+        <Test()>
+        Public Sub FindNonExistantBus()
 
-<Test()>
-Public Sub FindNonExistantBus()
+            Dim target As IBusDatabase = New BusDatabase()
+            Dim result As Boolean = target.Initialise(GOODMAP)
+            Assert.IsTrue(result)
 
-   Dim target As  IBusDatabase = new BusDatabase()
-   Dim result As Boolean = target.Initialise( GOODMAP )
-   Assert.IsTrue(result)
+            Dim busList = target.GetBuses("ZQZQZQ111ZQZQZQ")
 
-   Dim busList  = target.GetBuses("ZQZQZQ111ZQZQZQ")
+            Assert.AreEqual(0, busList.Count())
 
-   Assert.AreEqual(0, busList.Count())
-
-End Sub
+        End Sub
 
 
 

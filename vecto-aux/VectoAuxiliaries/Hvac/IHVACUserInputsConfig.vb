@@ -15,25 +15,22 @@ Imports VectoAuxiliaries.Hvac
 
 Namespace Hvac
 
-  Public Interface IHVACUserInputsConfig
+    Public Interface IHVACUserInputsConfig
 
-  ''' <summary>
-  ''' Contains HVACSteadyStateModel
-  ''' </summary>
-  ''' <value></value>
-  ''' <returns></returns>
-  ''' <remarks></remarks>
-  Property  SteadyStateModel As IHVACSteadyStateModel
-  ''' <summary>
-  ''' PathName of the Steady State Model File
-  ''' </summary>
-  ''' <value></value>
-  ''' <returns></returns>
-  ''' <remarks></remarks>
-  Property  SSMFilePath  As string
-  Property  BusDatabasePath As String
+        ' Property  SteadyStateModel As IHVACSteadyStateModel
+        ''' <summary>
+        ''' PathName of the Steady State Model File
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Property SSMFilePath As String
 
-End Interface
+        Property BusDatabasePath As String
+
+        Property SSMDisabled As Boolean
+
+    End Interface
 
 End Namespace
 

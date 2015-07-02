@@ -1,17 +1,17 @@
 ﻿Namespace Hvac
 
-Public Interface IBusDatabase
+    Public Interface IBusDatabase
 
+        Function AddBus(bus As IBus) As Boolean
 
-     Function  GetBuses( busModel as string, Optional AsSelectList As Boolean=false ) As List(of IBus )
+        Function GetBuses(busModel As String, Optional AsSelectList As Boolean = False) As List(Of IBus)
 
-     Function Initialise( busFileCSV As String ) As Boolean
+        Function Initialise(busFileCSV As String) As Boolean
 
-     
-End Interface
+        Function UpdateBus(id As Integer, bus As IBus) As Boolean
 
+        Function Save(filepath As String) As Boolean
+
+    End Interface
 
 End Namespace
-
-
-

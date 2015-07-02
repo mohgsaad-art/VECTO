@@ -3,41 +3,35 @@
 Public Interface ISSMTOOL
 
 
- Property GenInputs As ISSMGenInputs
- Property TechList As ISSMTechList
- Property Calculate As ISSMCalculate
+    Property GenInputs As ISSMGenInputs
+    Property TechList As ISSMTechList
+    Property Calculate As ISSMCalculate
+    Property SSMDisabled As Boolean
 
+    ReadOnly Property ElectricalWBase As Single
+    ReadOnly Property MechanicalWBase As Single
+    ReadOnly Property FuelPerHBase As Single
 
+    ReadOnly Property ElectricalWAdjusted As Single
+    ReadOnly Property MechanicalWBaseAdjusted As Single
+    ReadOnly Property FuelPerHBaseAdjusted As Single
 
-ReadOnly Property ElectricalWBase As Single
-ReadOnly Property MechanicalWBase As Single
-ReadOnly Property FuelPerHBase As Single
+    Sub Clone(from As ISSMTOOL)
 
-ReadOnly Property ElectricalWAdjusted As Single
-ReadOnly Property MechanicalWBaseAdjusted As Single
-ReadOnly Property FuelPerHBaseAdjusted As Single
+    Function Load(filePath As String) As Boolean
 
+    Function Save(filePath As String) As Boolean
 
-Sub Clone(from As ISSMTOOL)
+    Function IsEqualTo(source As ISSMTOOL) As Boolean
 
+    ''' <summary>
+    ''' This alters the waste heat and returns an adjusted fueling value
+    ''' </summary>
+    ''' <param name="AverageUseableEngineWasteHeatKW"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Function FuelPerHBaseAsjusted(AverageUseableEngineWasteHeatKW As Single) As Single
 
-Function Load(filePath As String) As Boolean
-
-Function Save(filePath As String) As Boolean
-
-Function IsEqualTo(source As ISSMTOOL) As Boolean
-
-''' <summary>
-''' This alters the waste heat and returns an adjusted fueling value
-''' </summary>
-''' <param name="AverageUseableEngineWasteHeatKW"></param>
-''' <returns></returns>
-''' <remarks></remarks>
-Function FuelPerHBaseAsjusted( AverageUseableEngineWasteHeatKW As Single ) As Single
-
-
-Event Message(ByRef sender As Object, message As String, messageType As AdvancedAuxiliaryMessageType)
-
-
+    Event Message(ByRef sender As Object, message As String, messageType As AdvancedAuxiliaryMessageType)
 
 End Interface

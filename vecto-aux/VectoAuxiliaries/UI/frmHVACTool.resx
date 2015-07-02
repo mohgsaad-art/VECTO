@@ -120,6 +120,23 @@
   <metadata name="ToolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="btnOpenAenv.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
+        DAAACwwBP0AiyAAAAAd0SU1FB90DDwobMP/PsTcAAAIsSURBVDhPY6AKCAwMZDKyDmfXNw9mN7AMZTe0
+        CmMH8Y1tYBjED2V3dXVmgWpBBf7hRU75dWsXFTRs3ZBbt2l9VvWG9RkV69anl69dn16xHsjetD6/dv3K
+        vJLubHd3V16oNgTwimhtSqx/8N+n4MV/z7xn/91znvx3zXr03yXj4X+n9AdA/PB/YMHN/3G5i04x8FrK
+        Q7UhQFp2ZcWlOz//H7347d/RC1//g/CR81/A+PC5z/93Hf/yf97m7/8rJjy4zSxfq8dg858RqhUCcnNz
+        i//9+///16/fGPjnz9//r9z98z+25tH/ouZdVxT0YpSg2hAgIyOj9O/fv/+/ffuGgj99+vT/1as3/w+d
+        efU/quLm/70n3tz2DwgNNzU1RQ2HpKSkip8/f/7/+PEjHH/48OH/oyev/+8/8ez/iq0P/y/Y+Ozfoxf/
+        /h8/9+Kps0dkJlQrBERHR1d/+fLl/+vXr/+/efMGjF++fPX/4In7/5MaHv53zrj/P7Tk9v8Nh/79T6y9
+        fk/JJC8VqhUCQkJCat+///D/yZOn/58+fQbHd+49+3/w1Mv/O4+++l9Uv/p/26y79xkkMoo59NfwQbVC
+        gBswHk9d/vh/x+EX/3ceAWpAwjsOAzGQbuxe9z8mpeYap4ipMlQbAqgYRPUFFd1+Y5X06J1VIhYMFA8s
+        uvOysHr2XgZGdsxYYOI1MmCQLg5jkGuOxYlB8pwalry8vNxQbWhArp6JIB6EgIEBAIzMdLQyo6hyAAAA
+        AElFTkSuQmCC
+</value>
+  </data>
   <metadata name="ErrorProvider1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>116, 17</value>
   </metadata>
@@ -128,5 +145,8 @@
   </metadata>
   <metadata name="Timer1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>246, 17</value>
+  </metadata>
+  <metadata name="CMFiles.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>429, 17</value>
   </metadata>
 </root>
