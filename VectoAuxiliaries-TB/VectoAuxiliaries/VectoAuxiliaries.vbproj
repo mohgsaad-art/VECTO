@@ -137,12 +137,16 @@
     <Compile Include="Hvac\BusEngineType.vb" />
     <Compile Include="Hvac\DeleteCell.vb" />
     <Compile Include="Hvac\DeleteColumn.vb" />
+    <Compile Include="Hvac\EnvironmentalCondition.vb" />
+    <Compile Include="Hvac\EnvironmentalConditionsMap.vb" />
     <Compile Include="Hvac\HVACConstants.vb" />
     <Compile Include="Electrics\IElectricalConsumerList.vb" />
     <Compile Include="Hvac\HVACSteadyStateModel.vb" />
     <Compile Include="Hvac\HVACUserInputsConfig.vb" />
     <Compile Include="Hvac\IBus.vb" />
     <Compile Include="Hvac\IBusDatabase.vb" />
+    <Compile Include="Hvac\IEnvironmentalCondition.vb" />
+    <Compile Include="Hvac\IEnvironmentalConditionsMap.vb" />
     <Compile Include="Hvac\IHVACConstants.vb" />
     <Compile Include="Hvac\IHVACSteadyStateModel.vb" />
     <Compile Include="Hvac\IHVACUserInputsConfig.vb" />

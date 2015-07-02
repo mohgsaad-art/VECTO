@@ -1,11 +1,10 @@
 ﻿Imports VectoAuxiliaries.Electrics
+Imports System.ComponentModel
 
 Namespace Mocks
 
     Public Class ElectricalConsumerMock
         Implements IElectricalConsumer
-
-
 
         Public Property AvgConsumptionAmps As Single Implements IElectricalConsumer.AvgConsumptionAmps
 
@@ -24,8 +23,7 @@ Namespace Mocks
         Public Property PowerNetVoltage As Single Implements IElectricalConsumer.PowerNetVoltage
 
         Public Function TotalAvgConumptionAmps(Optional PhaseIdle_TractionOnBasedOnCycle As Single = 0.0) As Single Implements IElectricalConsumer.TotalAvgConumptionAmps
-         Return 9
-
+            Return 9
         End Function
 
 
@@ -36,7 +34,15 @@ Namespace Mocks
         End Function
 
 
-                Public Property Info As String Implements IElectricalConsumer.Info
-        End Class
+        Public Property Info As String Implements IElectricalConsumer.Info
+
+        Public Event PropertyChanged As PropertyChangedEventHandler _
+            Implements INotifyPropertyChanged.PropertyChanged
+
+        Private Sub NotifyPropertyChanged(p As String)
+            RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(p))
+        End Sub
+
+    End Class
 
 End Namespace

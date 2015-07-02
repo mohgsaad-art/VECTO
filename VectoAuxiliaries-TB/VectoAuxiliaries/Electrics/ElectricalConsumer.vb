@@ -1,4 +1,6 @@
-﻿' Copyright 2015 European Union.
+﻿Imports System.ComponentModel
+
+' Copyright 2015 European Union.
 ' Licensed under the EUPL (the 'Licence');
 '
 ' * You may not use this work except in compliance with the Licence.
@@ -18,37 +20,118 @@ Namespace Electrics
     Public Class ElectricalConsumer
         Implements IElectricalConsumer
 
+        'Fields
+        Private _BaseVehicle As Boolean
+        Private _Category As String
+        Private _ConsumerName As String
+        Private _NominalConsumptionAmps As Single
+        Private _NumberInActualVehicle As Integer
+        Private _PhaseIdle_TractionOn As Single
+        Private _PowerNetVoltage As Single
+        Private _Info As String
 
-       'Calculated
-       Private Property AvgConsumptionAmps As Single Implements IElectricalConsumer.AvgConsumptionAmps
+        'Calculated
+        Private Property AvgConsumptionAmps As Single Implements IElectricalConsumer.AvgConsumptionAmps
 
-       'Properties
-       Public Property BaseVehicle As Boolean Implements IElectricalConsumer.BaseVehicle
-       Public Property Category As String Implements IElectricalConsumer.Category
-       Public Property ConsumerName As String Implements IElectricalConsumer.ConsumerName
-       Public Property NominalConsumptionAmps As Single Implements IElectricalConsumer.NominalConsumptionAmps
-       Public Property NumberInActualVehicle As Integer Implements IElectricalConsumer.NumberInActualVehicle
-       Public Property PhaseIdle_TractionOn As Single Implements IElectricalConsumer.PhaseIdle_TractionOn
-       Public Property PowerNetVoltage As Single Implements IElectricalConsumer.PowerNetVoltage
-       Public Property Info As String Implements IElectricalConsumer.Info
+        'Properties
+        Public Property BaseVehicle As Boolean Implements IElectricalConsumer.BaseVehicle
+            Get
+                Return _BaseVehicle
+            End Get
+            Set(value As Boolean)
+                _BaseVehicle = value
+                NotifyPropertyChanged("BaseVehicle")
+            End Set
+        End Property
 
-       'Public class outputs
-       Public Function TotalAvgConumptionAmps(Optional PhaseIdle_TractionOnBasedOnCycle As Single = 0.0) As Single Implements IElectricalConsumer.TotalAvgConumptionAmps
+        Public Property Category As String Implements IElectricalConsumer.Category
+            Get
+                Return _Category
+            End Get
+            Set(value As String)
+                _Category = value
+                NotifyPropertyChanged("Category")
+            End Set
+        End Property
 
-           If ConsumerName = "Doors per Door" Then
-               Return PhaseIdle_TractionOnBasedOnCycle * NominalConsumptionAmps * NumberInActualVehicle
-           Else
-               Return PhaseIdle_TractionOn * NominalConsumptionAmps * NumberInActualVehicle
-           End If
+        Public Property ConsumerName As String Implements IElectricalConsumer.ConsumerName
+            Get
+                Return _ConsumerName
+            End Get
+            Set(value As String)
+                _ConsumerName = value
+                NotifyPropertyChanged("ConsumerName")
+            End Set
+        End Property
+
+        Public Property NominalConsumptionAmps As Single Implements IElectricalConsumer.NominalConsumptionAmps
+            Get
+                Return _NominalConsumptionAmps
+            End Get
+            Set(value As Single)
+                _NominalConsumptionAmps = value
+                NotifyPropertyChanged("NominalConsumptionAmps")
+            End Set
+        End Property
+
+        Public Property NumberInActualVehicle As Integer Implements IElectricalConsumer.NumberInActualVehicle
+            Get
+                Return _NumberInActualVehicle
+            End Get
+            Set(value As Integer)
+                _NumberInActualVehicle = value
+                NotifyPropertyChanged("NumberInActualVehicle")
+            End Set
+        End Property
+
+        Public Property PhaseIdle_TractionOn As Single Implements IElectricalConsumer.PhaseIdle_TractionOn
+            Get
+                Return _PhaseIdle_TractionOn
+            End Get
+            Set(value As Single)
+                _PhaseIdle_TractionOn = value
+                NotifyPropertyChanged("PhaseIdle_TractionOn")
+            End Set
+        End Property
+
+        Public Property PowerNetVoltage As Single Implements IElectricalConsumer.PowerNetVoltage
+            Get
+                Return _PowerNetVoltage
+            End Get
+            Set(value As Single)
+                _PowerNetVoltage = value
+                NotifyPropertyChanged("PowerNetVoltage")
+            End Set
+        End Property
+
+        Public Property Info As String Implements IElectricalConsumer.Info
+            Get
+                Return _Info
+            End Get
+            Set(value As String)
+                _Info = value
+                NotifyPropertyChanged("Info")
+            End Set
+        End Property
+
+
+        'Public class outputs
+        Public Function TotalAvgConumptionAmps(Optional PhaseIdle_TractionOnBasedOnCycle As Single = 0.0) As Single Implements IElectricalConsumer.TotalAvgConumptionAmps
+
+            If ConsumerName = "Doors per Door" Then
+                Return PhaseIdle_TractionOnBasedOnCycle * NominalConsumptionAmps * NumberInActualVehicle
+            Else
+                Return PhaseIdle_TractionOn * NominalConsumptionAmps * NumberInActualVehicle
+            End If
 
 
         End Function
-       Public Function TotalAvgConsumptionInWatts(Optional PhaseIdle_TractionOnBasedOnCycle As Single = 0.0) As Single Implements Electrics.IElectricalConsumer.TotalAvgConsumptionInWatts
+        Public Function TotalAvgConsumptionInWatts(Optional PhaseIdle_TractionOnBasedOnCycle As Single = 0.0) As Single Implements Electrics.IElectricalConsumer.TotalAvgConsumptionInWatts
             Return TotalAvgConumptionAmps(PhaseIdle_TractionOnBasedOnCycle) * PowerNetVoltage
-        End Function 
+        End Function
 
-       'Constructor
-       Public Sub New(BaseVehicle As Boolean, Category As String, ConsumerName As String, NominalConsumptionAmps As Single, PhaseIdle_TractionOn As Single, PowerNetVoltage As Single, numberInVehicle As Integer,info As string)
+        'Constructor
+        Public Sub New(BaseVehicle As Boolean, Category As String, ConsumerName As String, NominalConsumptionAmps As Single, PhaseIdle_TractionOn As Single, PowerNetVoltage As Single, numberInVehicle As Integer, info As String)
 
             'Illegal Value Check.
             If Category.Trim.Length = 0 Then Throw New ArgumentException("Category Name cannot be empty")
@@ -68,24 +151,30 @@ Namespace Electrics
             Me.NumberInActualVehicle = numberInVehicle
             Me.Info = info
 
-       End Sub
+        End Sub
 
-       'Comparison Overrides
-       Public Overrides Function Equals(obj As Object) As Boolean
+        'Comparison Overrides
+        Public Overrides Function Equals(obj As Object) As Boolean
 
-         Dim other As IElectricalConsumer = CType(obj, IElectricalConsumer)
-          
+            Dim other As IElectricalConsumer = CType(obj, IElectricalConsumer)
 
-             Return Me.ConsumerName=other.ConsumerName
+
+            Return Me.ConsumerName = other.ConsumerName
 
 
         End Function
-       <System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage>
+        <System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage>
         Public Overrides Function GetHashCode() As Integer
             Return 0
         End Function
-      
 
+
+        Public Event PropertyChanged As PropertyChangedEventHandler _
+            Implements INotifyPropertyChanged.PropertyChanged
+
+        Private Sub NotifyPropertyChanged(p As String)
+            RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(p))
+        End Sub
 
 
     End Class

@@ -7,294 +7,292 @@ Imports System.Text
 
 Namespace Hvac
 
-'Used by frmHVACTool
-'Replaces Spreadsheet model which does the same calculation
-'Version of which appears on the form title.
-Public Class SSMTOOL
-Implements ISSMTOOL
+    'Used by frmHVACTool
+    'Replaces Spreadsheet model which does the same calculation
+    'Version of which appears on the form title.
+    Public Class SSMTOOL
+        Implements ISSMTOOL
 
- 
- Private filePath As String
- Public Property GenInputs As ISSMGenInputs Implements ISSMTOOL.GenInputs
- Public Property TechList  As ISSMTechList  Implements ISSMTOOL.TechList
- Public Property Calculate As ISSMCalculate Implements ISSMTOOL.Calculate
+        Private filePath As String
+        Public Property GenInputs As ISSMGenInputs Implements ISSMTOOL.GenInputs
+        Public Property TechList As ISSMTechList Implements ISSMTOOL.TechList
+        Public Property Calculate As ISSMCalculate Implements ISSMTOOL.Calculate
+        Public Property SSMDisabled As Boolean Implements ISSMTOOL.SSMDisabled
 
- 'Repeat Warning Flags
- Private CompressorCapacityInsufficientWarned As Boolean 
- Private FuelFiredHeaterInsufficientWarned As Boolean
- 
+        'Repeat Warning Flags
+        Private CompressorCapacityInsufficientWarned As Boolean
+        Private FuelFiredHeaterInsufficientWarned As Boolean
 
- 'Base Values
- Public ReadOnly Property ElectricalWBase As Single Implements ISSMTOOL.ElectricalWBase
-    Get
-      Return  Calculate.ElectricalWBase
-    End Get
- End Property
- Public ReadOnly Property MechanicalWBase As Single Implements ISSMTOOL.MechanicalWBase
-    Get
-        Return  Calculate.MechanicalWBase
-    End Get
- End Property
- Public ReadOnly Property FuelPerHBase As Single Implements ISSMTOOL.FuelPerHBase
-    Get
-        Return Calculate.FuelPerHBase
-    End Get
- End Property
- 'Adjusted Values
- Public ReadOnly Property ElectricalWAdjusted As Single Implements ISSMTOOL.ElectricalWAdjusted
-   Get
-     Return Calculate.ElectricalWAdjusted
-   End Get
- End Property
- Public ReadOnly Property MechanicalWBaseAdjusted As Single Implements ISSMTOOL.MechanicalWBaseAdjusted
-    Get
-        Dim mechAdjusted As Single  = Calculate.MechanicalWBaseAdjusted
+        'Base Values
+        Public ReadOnly Property ElectricalWBase As Single Implements ISSMTOOL.ElectricalWBase
+            Get
+                Return If(SSMDisabled, 0, Calculate.ElectricalWBase)
+            End Get
+        End Property
+        Public ReadOnly Property MechanicalWBase As Single Implements ISSMTOOL.MechanicalWBase
+            Get
+                Return If(SSMDisabled, 0, Calculate.MechanicalWBase)
+            End Get
+        End Property
+        Public ReadOnly Property FuelPerHBase As Single Implements ISSMTOOL.FuelPerHBase
+            Get
+                Return If(SSMDisabled, 0, Calculate.FuelPerHBase)
+            End Get
+        End Property
+        'Adjusted Values
+        Public ReadOnly Property ElectricalWAdjusted As Single Implements ISSMTOOL.ElectricalWAdjusted
+            Get
+                Return If(SSMDisabled, 0, Calculate.ElectricalWAdjusted)
+            End Get
+        End Property
+        Public ReadOnly Property MechanicalWBaseAdjusted As Single Implements ISSMTOOL.MechanicalWBaseAdjusted
+            Get
+                Dim mechAdjusted As Single = If(SSMDisabled, 0, Calculate.MechanicalWBaseAdjusted)
 
+                If CompressorCapacityInsufficientWarned = False AndAlso (mechAdjusted) / (1000 * GenInputs.BC_COP) > GenInputs.AC_CompressorCapacitykW Then
 
-        If CompressorCapacityInsufficientWarned=False AndAlso (mechAdjusted)/(1000 * GenInputs.BC_COP)  > GenInputs.AC_CompressorCapacitykW then
+                    OnMessage(Me, "HVAC SSM :AC-Compressor Capacity unable to service cooling, run continues as if capacity was sufficient.", AdvancedAuxiliaryMessageType.Warning)
+                    CompressorCapacityInsufficientWarned = True
 
-         OnMessage( Me, "HVAC SSM :AC-Compressor Capacity unable to service cooling, run continues as if capacity was sufficient.",AdvancedAuxiliaryMessageType.Warning)
-         CompressorCapacityInsufficientWarned=true
+                End If
 
-        End If
 
+                Return mechAdjusted
 
-        Return mechAdjusted
+            End Get
+        End Property
+        Public ReadOnly Property FuelPerHBaseAdjusted As Single Implements ISSMTOOL.FuelPerHBaseAdjusted
+            Get
+                Return If(SSMDisabled, 0, Calculate.FuelPerHBaseAdjusted)
+            End Get
+        End Property
 
-     End Get
- End Property
- Public ReadOnly Property FuelPerHBaseAdjusted As Single Implements ISSMTOOL.FuelPerHBaseAdjusted
-    Get
-     Return Calculate.FuelPerHBaseAdjusted
-    End Get
- End Property
+        'Constructors
+        Sub New(filePath As String, Optional isDisabled As Boolean = False, Optional useTestValues As Boolean = False)
 
- 'Constructors
- Sub New()
+            Me.filePath = filePath
+            Me.SSMDisabled = isDisabled
 
+            GenInputs = New SSMGenInputs(useTestValues)
+            TechList = New SSMTechList(filePath, GenInputs)
 
- End Sub
- Sub New(filePath As String, Optional useTestValues As Boolean = false)
+            Calculate = New SSMCalculate(Me)
 
-   Me.filePath = filePath
-   genInputs = New SSMGenInputs(useTestValues)
-   TechList = New SSMTechList(filePath, genInputs)
+        End Sub
 
-   Calculate = New SSMCalculate( Me )
+        'Clone values from another object of same type
+        Public Sub Clone(from As ISSMTOOL) Implements ISSMTOOL.Clone
 
- End Sub
+            Dim feedback As String = String.Empty
 
- 'Clone values from another object of same type
- Public Sub Clone(from As ISSMTOOL) Implements ISSMTOOL.Clone
+            genInputs.InjectFrom(DirectCast(from, SSMTOOL).genInputs)
 
-     Dim feedback As String = String.Empty
+            TechList.Clear()
 
-     genInputs.InjectFrom(DirectCast(from, SSMTOOL).genInputs)
+            For Each line As TechListBenefitLine In DirectCast(from, SSMTOOL).TechList.TechLines
 
-     TechList.Clear()
+                Dim newLine As New TechListBenefitLine(Me.GenInputs)
+                newLine.InjectFrom()
+                newLine.InjectFrom(line)
+                TechList.Add(newLine, feedback)
 
-     For Each line As TechListBenefitLine In DirectCast(from, SSMTOOL).TechList.TechLines
+            Next
 
-         Dim newLine As New TechListBenefitLine(Me.GenInputs)
-         newLine.InjectFrom()
-         newLine.InjectFrom( line )
-         TechList.Add( newLine , feedback)
+        End Sub
 
-    Next
+        'Persistance Functions
+        Public Function Save(filePath As String) As Boolean Implements ISSMTOOL.Save
 
-  End Sub
 
- 'Persistance Functions
- Public Function Save(filePath As String) As Boolean Implements ISSMTOOL.Save
+            Dim returnValue As Boolean = True
+            Dim settings As JsonSerializerSettings = New JsonSerializerSettings()
+            settings.TypeNameHandling = TypeNameHandling.Objects
 
+            'JSON METHOD
+            Try
 
-   Dim returnValue As Boolean = True
-   Dim settings As JsonSerializerSettings = New JsonSerializerSettings()
-   settings.TypeNameHandling = TypeNameHandling.Objects
+                Dim output As String = JsonConvert.SerializeObject(Me, Formatting.Indented, settings)
 
-    'JSON METHOD
-    Try
+                File.WriteAllText(filePath, output)
 
-       Dim output As String = JsonConvert.SerializeObject(Me, Formatting.Indented, settings)
+            Catch ex As Exception
 
-       File.WriteAllText(filePath, output)
+                'Nothing to do except return false.
+                returnValue = False
 
-       Catch ex As Exception
+            End Try
 
-         'Nothing to do except return false.
-          returnValue = False
+            Return returnValue
 
-     End Try
+        End Function
+        Public Function Load(filePath As String) As Boolean Implements ISSMTOOL.Load
 
-   Return returnValue
+            Dim returnValue As Boolean = True
+            Dim settings As JsonSerializerSettings = New JsonSerializerSettings()
+            Dim tmpAux As SSMTOOL = New SSMTOOL(filePath)
 
-End Function
- Public Function Load(filePath As String) As Boolean Implements ISSMTOOL.Load
+            settings.TypeNameHandling = TypeNameHandling.Objects
 
-    Dim returnValue As Boolean = True
-    Dim settings As JsonSerializerSettings = New JsonSerializerSettings()
-    Dim tmpAux As SSMTOOL = New SSMTOOL(filePath)
+            'JSON METHOD
+            Try
 
-    settings.TypeNameHandling = TypeNameHandling.Objects
+                Dim output As String = File.ReadAllText(filePath)
 
-     'JSON METHOD
-     Try
 
-       Dim output As String = File.ReadAllText(filePath)
+                tmpAux = JsonConvert.DeserializeObject(Of SSMTOOL)(output, settings)
 
+                tmpAux.TechList.SetSSMGeneralInputs(tmpAux.genInputs)
 
-       tmpAux = JsonConvert.DeserializeObject(Of SSMTOOL)(output, settings)
+                For Each tll As TechListBenefitLine In tmpAux.TechList.TechLines
 
-       tmpAux.TechList.SetSSMGeneralInputs(tmpAux.genInputs)
+                    tll.inputSheet = tmpAux.genInputs
 
-       For Each tll As TechListBenefitLine In tmpAux.TechList.TechLines
+                Next
 
-         tll.inputSheet = tmpAux.genInputs
 
-       Next
+                'This is where we Assume values of loaded( Deserialized ) object.
+                Clone(tmpAux)
 
+            Catch ex As Exception
 
+                'Nothing to do except return false.
 
-       'This is where we Assume values of loaded( Deserialized ) object.
-       Clone(tmpAux)
+                returnValue = False
+            End Try
 
-      Catch ex As Exception
+            Return returnValue
 
-        'Nothing to do except return false.
+        End Function
 
-         returnValue = False
-      End Try
+        'Comparison
+        Public Function IsEqualTo(source As ISSMTOOL) As Boolean Implements ISSMTOOL.IsEqualTo
 
-    Return returnValue
+            'In this methods we only want to compare the non Static , non readonly public properties of 
+            'The class's General, User Inputs and  Tech Benefit members.
 
-End Function
+            Return compareGenUserInputs(source) AndAlso compareTechListBenefitLines(source)
 
- 'Comparison
- Public Function IsEqualTo(source As ISSMTOOL) As Boolean Implements ISSMTOOL.IsEqualTo
 
-  'In this methods we only want to compare the non Static , non readonly public properties of 
-  'The class's General, User Inputs and  Tech Benefit members.
+        End Function
+        Private Function compareGenUserInputs(source As ISSMTOOL) As Boolean
 
-   Return compareGenUserInputs(source) AndAlso compareTechListBenefitLines(source)
+            Dim src As SSMTOOL = DirectCast(source, SSMTOOL)
 
+            Dim returnValue As Boolean = True
 
- End Function
- Private Function compareGenUserInputs(source As ISSMTOOL) As Boolean
+            Dim properties As PropertyInfo() = Me.genInputs.GetType.GetProperties
 
-   Dim src As SSMTOOL = DirectCast(source, SSMTOOL)
+            For Each prop As PropertyInfo In properties
 
-   Dim returnValue As Boolean = True
+                'If Not prop.GetAccessors.IsReadOnly Then
+                If prop.CanWrite Then
+                    If prop.GetValue(Me.GenInputs, Nothing) <> prop.GetValue(src.GenInputs, Nothing) Then
+                        returnValue = False
+                    End If
 
-   Dim properties As PropertyInfo() = Me.genInputs.GetType.GetProperties
+                End If
 
-     For Each prop As PropertyInfo In properties
+            Next
 
-        If Not prop.GetAccessors.IsReadOnly Then
+            Return returnValue
 
-             If prop.GetValue(Me.genInputs, Nothing) <> prop.GetValue(src.genInputs, Nothing) Then
-                    returnValue = False
-             End If
+        End Function
+        Private Function compareTechListBenefitLines(source As ISSMTOOL) As Boolean
 
-        End If
 
-     Next
+            Dim src As SSMTOOL = DirectCast(source, SSMTOOL)
 
-   Return returnValue
+            'Equal numbers of lines check
+            If Me.TechList.TechLines.Count <> src.TechList.TechLines.Count Then Return False
 
- End Function
- Private Function compareTechListBenefitLines(source As ISSMTOOL) As Boolean
+            For Each tl As ITechListBenefitLine In Me.TechList.TechLines.OrderBy(Function(o) o.Category).ThenBy(Function(n) n.BenefitName)
 
+                'First Check line exists in other
+                If src.TechList.TechLines.Where(Function(w) w.BenefitName = tl.BenefitName AndAlso w.Category = tl.Category).Count <> 1 Then
 
-   Dim src As SSMTOOL = DirectCast(source, SSMTOOL)
+                    Return False
+                Else
 
-   'Equal numbers of lines check
-   If Me.TechList.TechLines.Count <> src.TechList.TechLines.Count Then Return False
+                    'check are equal
 
-     For Each tl As ITechListBenefitLine In Me.TechList.TechLines.OrderBy(Function(o) o.Category).ThenBy(Function(n) n.BenefitName)
+                    Dim testLine As ITechListBenefitLine = src.TechList.TechLines.First(Function(w) w.BenefitName = tl.BenefitName AndAlso w.Category = tl.Category)
 
-        'First Check line exists in other
-        If src.TechList.TechLines.Where(Function(w) w.BenefitName = tl.BenefitName AndAlso w.Category = tl.Category).Count <> 1 Then
+                    If Not testLine.IsEqualTo(tl) Then
+                        Return False
+                    End If
 
-         Return False
-        Else
+                End If
 
-         'check are equal
 
-          Dim testLine As ITechListBenefitLine = src.TechList.TechLines.First(Function(w) w.BenefitName = tl.BenefitName AndAlso w.Category = tl.Category)
+            Next
 
-           If Not testLine.IsEqualTo(tl) Then
-             Return False
-           End If
+            'All Looks OK
+            Return True
 
-        End If
+        End Function
 
+        'Overrides
+        Public Overrides Function ToString() As String
 
-     Next
 
-     'All Looks OK
-     Return True
+            Dim sb As New StringBuilder
 
- End Function
+            sb.AppendLine(Calculate.ToString())
 
- 'Overrides
- Public Overrides Function ToString() As String
-   
 
-     Dim sb As new StringBuilder 
+            Return sb.ToString()
 
-     sb.AppendLine( Calculate.ToString())
+        End Function
 
+        'Dynamicly Get Fuel having re-adjusted Engine Heat Waste, this was originally supposed to be Solid State. Late adjustment request 24/3/2015
+        Public Function FuelPerHBaseAsjusted(AverageUseableEngineWasteHeatKW As Single) As Single Implements ISSMTOOL.FuelPerHBaseAsjusted
 
-     Return sb.ToString()
+            If SSMDisabled Then
 
- End Function
+                Return 0
 
- 'Dynamicly Get Fuel having re-adjusted Engine Heat Waste, this was originally supposed to be Solid State. Late adjustment request 24/3/2015
- Public Function FuelPerHBaseAsjusted(AverageUseableEngineWasteHeatKW As Single) As Single Implements ISSMTOOL.FuelPerHBaseAsjusted
+            Else
 
-    'Set Engine Waste Heat
-     GenInputs.AH_EngineWasteHeatkW= AverageUseableEngineWasteHeatKW
-     Dim fba As Single = FuelPerHBaseAdjusted
-     
-     Dim FuelFiredWarning As Boolean = fba * GenInputs.BC_AuxHeaterEfficiency * GenInputs.BC_VolumicMassDieselOrHeatingOil *  GenInputs.BC_GCVDieselOrHeatingOil*1000 > _
-                    ( AverageUseableEngineWasteHeatKW +  GenInputs.AH_FuelFiredHeaterkW ) 
+                'Set Engine Waste Heat
+                GenInputs.AH_EngineWasteHeatkW = AverageUseableEngineWasteHeatKW
+                Dim fba As Single = FuelPerHBaseAdjusted
 
+                Dim FuelFiredWarning As Boolean = fba * GenInputs.BC_AuxHeaterEfficiency * GenInputs.BC_VolumicMassDieselOrHeatingOil * GenInputs.BC_GCVDieselOrHeatingOil * 1000 > _
+                            (AverageUseableEngineWasteHeatKW + GenInputs.AH_FuelFiredHeaterkW)
 
-     If Not FuelFiredHeaterInsufficientWarned AndAlso FuelFiredWarning then
 
-        FuelFiredHeaterInsufficientWarned=true
+                If Not FuelFiredHeaterInsufficientWarned AndAlso FuelFiredWarning Then
 
-        OnMessage(Me,“ HVAC SSM : Fuel fired heater insufficient for heating requirements, run continues assuming it was sufficient.” ,AdvancedAuxiliaryMessageType.Warning )
+                    FuelFiredHeaterInsufficientWarned = True
 
-     End If
+                    OnMessage(Me, " HVAC SSM : Fuel fired heater insufficient for heating requirements, run continues assuming it was sufficient.", AdvancedAuxiliaryMessageType.Warning)
 
+                End If
 
 
-     Return fba
 
- End Function
+                Return fba
 
- 'Events
- Public Event Message(ByRef sender As Object, message As String, messageType As AdvancedAuxiliaryMessageType) Implements ISSMTOOL.Message 
+            End If
 
- 'Raise Message Event.
- private Sub OnMessage(sender As Object, message As String, messageType As AdvancedAuxiliaryMessageType) 
-  
-  
-    If Not message is Nothing then
-  
-    RaiseEvent Message( Me, message, messageType)
-  
-    End If
-  
-  End Sub
+        End Function
 
+        'Events
+        Public Event Message(ByRef sender As Object, message As String, messageType As AdvancedAuxiliaryMessageType) Implements ISSMTOOL.Message
 
+        'Raise Message Event.
+        Private Sub OnMessage(sender As Object, message As String, messageType As AdvancedAuxiliaryMessageType)
 
-End Class
+
+            If Not message Is Nothing Then
+
+                RaiseEvent Message(Me, message, messageType)
+
+            End If
+
+        End Sub
+
+    End Class
 
 
 End Namespace
-
-
-
