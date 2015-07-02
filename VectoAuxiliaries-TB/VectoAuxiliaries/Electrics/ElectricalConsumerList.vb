@@ -86,7 +86,7 @@ End Sub
      c17 = CType(New ElectricalConsumer(False, "Lights", "Antifog rear lights LED bonus",                                                       -0.17, 1.00, _powernetVoltage,             1,""), IElectricalConsumer)
      c18 = CType(New ElectricalConsumer(False, "Lights", "Position lights LED bonus",                                                           -1.20, 1.00, _powernetVoltage,             1,""), IElectricalConsumer)
      c19 = CType(New ElectricalConsumer(False, "Lights", "Direction lights LED bonus",                                                          -0.30, 1.00, _powernetVoltage,             1,""), IElectricalConsumer)
-     c20 = CType(New ElectricalConsumer(False, "Lights", "Brake Lights",                                                                        -1.20, 1.00, _powernetVoltage,             1,""), IElectricalConsumer)
+            c20 = CType(New ElectricalConsumer(False, "Lights", "Brake Lights LED bonus", -1.2, 1.0, _powernetVoltage, 1, ""), IElectricalConsumer)
     
      items.Add(c1)
      items.Add(c2)

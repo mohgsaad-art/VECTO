@@ -1,21 +1,20 @@
 ﻿
 Namespace Hvac
 
-  Public Interface IBus
-   
-        Readonly Property Model                  As String
-        Readonly Property FloorType              As String
-        Readonly Property EngineType             As String 
-        Readonly Property LengthInMetres         As Double
-        Readonly Property WidthInMetres          As Double
-        Readonly Property HeightInMetres         As Double
-        Readonly Property RegisteredPassengers   As integer
-  
-        Readonly Property AreaInMetresSquared    As Double
-        Readonly Property VolumneInMetresQubed   As Double
-     
-  
-  End Interface
+    Public Interface IBus
+
+        ReadOnly Property Id As Integer
+
+        Property Model As String
+        Property FloorType As String
+        Property EngineType As String
+        Property LengthInMetres As Double
+        Property WidthInMetres As Double
+        Property HeightInMetres As Double
+        Property RegisteredPassengers As Integer
+        Property IsDoubleDecker As Boolean
+
+    End Interface
 
 End Namespace
 

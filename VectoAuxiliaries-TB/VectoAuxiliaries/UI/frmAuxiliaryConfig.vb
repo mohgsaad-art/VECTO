@@ -23,319 +23,310 @@ Public Class frmAuxiliaryConfig
 
 #Region "Fields"
 
-Public  auxConfig      As AuxiliaryConfig
-Public  originalConfig As AuxiliaryConfig ' required to test if the form is dirty
-Private TabColors As Dictionary(Of TabPage, Color) = New Dictionary(Of TabPage, Color)()
-Private processing As Boolean = False
-Private SecondsIntoCycle As Integer = 0
-Private vectoFile As String = ""
-Private vectoPath As String = ""
-Private auxFile As string
-Private cmFilesList As String()
-Private SaveClicked As Boolean
-
-
+    Public auxConfig As AuxiliaryConfig
+    Public originalConfig As AuxiliaryConfig ' required to test if the form is dirty
+    Private TabColors As Dictionary(Of TabPage, Color) = New Dictionary(Of TabPage, Color)()
+    Private processing As Boolean = False
+    Private SecondsIntoCycle As Integer = 0
+    Private vectoFile As String = ""
+    Private vectoPath As String = ""
+    Private auxFile As String
+    Private cmFilesList As String()
+    Private SaveClicked As Boolean
+    Private electricalConsumerBinding As New BindingList(Of IElectricalConsumer)
 
 
 #End Region
 
-Private Function ValidateAuxFileName( filename As String ) As Boolean
+    Private Function ValidateAuxFileName(filename As String) As Boolean
 
-       Dim message As String = String.Empty
+        Dim message As String = String.Empty
 
-       If Not FilePathUtils.ValidateFilePath(filename,".aaux", message) then
-         MessageBox.Show ( message )
-       End If
+        If Not FilePathUtils.ValidateFilePath(filename, ".aaux", message) Then
+            MessageBox.Show(message)
+        End If
 
-       Return true
+        Return True
 
-End Function
+    End Function
 
-'Constructor
-Public Sub new( byval fileName As String, byval vectoFileName As String )
-
-
-        If  Not ValidateAuxFileName( fileName ) then
-          Me.DialogResult=Windows.Forms.DialogResult.Abort
-          Me.Close
-        End If          
+    'Constructor
+    Public Sub New(ByVal fileName As String, ByVal vectoFileName As String)
 
 
-    Me.vectoFile = vectoFileName
-    Me.vectoPath = FilePathUtils.filePathOnly( vectoFileName)
-
-    ' This call is required by the designer.
-    InitializeComponent()
-    
-    ' Add any initialization after the InitializeComponent() call.
-    auxFile = fileName
-
-    Try
-
-     auxConfig = New AuxiliaryConfig( FilePathUtils.ResolveFilePath(vectoPath,auxFile) )
-     originalConfig = New AuxiliaryConfig(  FilePathUtils.ResolveFilePath(vectoPath,auxFile) )
-
-    Catch ex As Exception
-
-     MessageBox.Show( "The filename you supplied {0} was invalid or could not be found ", fileName )
-     Me.DialogResult=Windows.Forms.DialogResult.Abort
-     Me.Close
-
-    End Try
+        If Not ValidateAuxFileName(fileName) Then
+            Me.DialogResult = Windows.Forms.DialogResult.Abort
+            Me.Close()
+        End If
 
 
-    
-End Sub
+        Me.vectoFile = vectoFileName
+        Me.vectoPath = FilePathUtils.filePathOnly(vectoFileName)
 
-'Validation
+        ' This call is required by the designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
+        auxFile = fileName
+
+        Try
+
+            auxConfig = New AuxiliaryConfig(FilePathUtils.ResolveFilePath(vectoPath, auxFile))
+            originalConfig = New AuxiliaryConfig(FilePathUtils.ResolveFilePath(vectoPath, auxFile))
+
+        Catch ex As Exception
+
+            MessageBox.Show("The filename you supplied {0} was invalid or could not be found ", fileName)
+            Me.DialogResult = Windows.Forms.DialogResult.Abort
+            Me.Close()
+
+        End Try
+
+
+
+    End Sub
+
+    'Validation
 #Region "Validation Helpers"
 
-Private Function ValidateSSMFile( filepath As String ) As Boolean
+    Public Function IsPostiveNumber(ByVal test As String) As Boolean
 
-   Dim ssmTool As ISSMTOOL = New SSMTOOL(filepath,False)
+        'Is this numeric sanity check.
+        If Not IsNumeric(test) Then Return False
 
-   Return  ssmTool.Load( filepath)
+        Dim number As Single
 
-End Function
+        If Not Single.TryParse(test, number) Then Return False
 
-Public Function IsPostiveNumber(ByVal test As String) As Boolean
-
-     'Is this numeric sanity check.
-     If Not IsNumeric(test) Then Return False
-
-     Dim number As Single
-
-     If Not Single.TryParse(test, number) Then Return False
-
-     If number <= 0 Then Return False
+        If number <= 0 Then Return False
 
 
-     Return True
+        Return True
 
-End Function
+    End Function
 
-Public Function IsZeroOrPostiveNumber(ByVal test As String) As Boolean
+    Public Function IsZeroOrPostiveNumber(ByVal test As String) As Boolean
 
-     'Is this numeric sanity check.
-     If Not IsNumeric(test) Then Return False
+        'Is this numeric sanity check.
+        If Not IsNumeric(test) Then Return False
 
-     Dim number As Single
+        Dim number As Single
 
-     If Not Single.TryParse(test, number) Then Return False
+        If Not Single.TryParse(test, number) Then Return False
 
-     If number < 0 Then Return False
-
-
-     Return True
-
-End Function
-
-Public Function IsNumberBetweenZeroandOne(test As String) As Boolean
-
-     'Is this numeric sanity check.
-     If Not IsNumeric(test) Then Return False
-
-     Dim number As Single
-
-     If Not Single.TryParse(test, number) Then Return False
-
-     If number < 0 OrElse number > 1 Then Return False
-
-     Return True
-
-End Function
-
-Public Function IsIntegerZeroOrPositiveNumber(test As String) As Boolean
-
-     'Is this numeric sanity check.
-     If Not IsNumeric(test) Then Return False
-
-     'if not integer then return false
-
-     Dim number As Integer
-
-     If Not Integer.TryParse(test, number) Then Return False
-
-     If number < 0 Then Return False
-
-     Return True
+        If number < 0 Then Return False
 
 
-End Function
+        Return True
+
+    End Function
+
+    Public Function IsNumberBetweenZeroandOne(test As String) As Boolean
+
+        'Is this numeric sanity check.
+        If Not IsNumeric(test) Then Return False
+
+        Dim number As Single
+
+        If Not Single.TryParse(test, number) Then Return False
+
+        If number < 0 OrElse number > 1 Then Return False
+
+        Return True
+
+    End Function
+
+    Public Function IsIntegerZeroOrPositiveNumber(test As String) As Boolean
+
+        'Is this numeric sanity check.
+        If Not IsNumeric(test) Then Return False
+
+        'if not integer then return false
+
+        Dim number As Integer
+
+        If Not Integer.TryParse(test, number) Then Return False
+
+        If number < 0 Then Return False
+
+        Return True
+
+
+    End Function
 
 #End Region
 #Region "Validation Control"
 
 
-'****** PNEUMATIC VALIDATION
-Public Sub Validating_PneumaticHandler(sender As Object, e As CancelEventArgs) Handles txtAdBlueNIperMinute.Validating, txtBrakingWithRetarderNIperKG.Validating, txtBrakingNoRetarderNIperKG.Validating, txtAirControlledSuspensionNIperMinute.Validating, txtBreakingPerKneelingNIperKGinMM.Validating, txtSmartRegenFractionTotalAirDemand.Validating, txtPerStopBrakeActuationNIperKG.Validating, txtPerDoorOpeningNI.Validating, txtOverrunUtilisationForCompressionFraction.Validating, txtNonSmartRegenFractionTotalAirDemand.Validating, txtDeadVolumeLitres.Validating, txtDeadVolBlowOutsPerLitresperHour.Validating, txtKneelingHeightMillimeters.Validating, txtCompressorMap.Validating, txtCompressorGearRatio.Validating, txtCompressorGearEfficiency.Validating, txtActuationsMap.Validating, cboDoors.Validating, cboAirSuspensionControl.Validating, cboAdBlueDosing.Validating
+    '****** PNEUMATIC VALIDATION
+    Public Sub Validating_PneumaticHandler(sender As Object, e As CancelEventArgs) Handles txtAdBlueNIperMinute.Validating, txtBrakingWithRetarderNIperKG.Validating, txtBrakingNoRetarderNIperKG.Validating, txtAirControlledSuspensionNIperMinute.Validating, txtBreakingPerKneelingNIperKGinMM.Validating, txtSmartRegenFractionTotalAirDemand.Validating, txtPerStopBrakeActuationNIperKG.Validating, txtPerDoorOpeningNI.Validating, txtOverrunUtilisationForCompressionFraction.Validating, txtNonSmartRegenFractionTotalAirDemand.Validating, txtDeadVolumeLitres.Validating, txtDeadVolBlowOutsPerLitresperHour.Validating, txtKneelingHeightMillimeters.Validating, txtCompressorMap.Validating, txtCompressorGearRatio.Validating, txtCompressorGearEfficiency.Validating, txtActuationsMap.Validating, cboDoors.Validating, cboAirSuspensionControl.Validating, cboAdBlueDosing.Validating
 
-    e.Cancel = Not Validate_Pneumatics()
+        e.Cancel = Not Validate_Pneumatics()
 
-End Sub
-Public Function Validate_Pneumatics() As Boolean
+    End Sub
+    Public Function Validate_Pneumatics() As Boolean
 
-       Dim result As Boolean = True
+        Dim result As Boolean = True
 
-       'PNEUMATIC AUXILLARIES PART
-       '***************************
+        'PNEUMATIC AUXILLARIES PART
+        '***************************
 
 
-       'AdBlue NI per Minute : txtAdBlueNIperMinute
-       If Not IsZeroOrPostiveNumber(txtAdBlueNIperMinute.Text) Then
-         ErrorProvider.SetError(txtAdBlueNIperMinute, "Please provide a non negative number.")
-         result = False
-       Else
-          ErrorProvider.SetError(txtAdBlueNIperMinute, String.Empty)
-       End If
-
-       'Overrun Utilisation For Compression Fraction : txtOverrunUtilisationForCompressionFraction
-       If Not IsNumberBetweenZeroandOne(txtOverrunUtilisationForCompressionFraction.Text) Then
-         ErrorProvider.SetError(txtOverrunUtilisationForCompressionFraction, "Please provide a non negative between 0 and 1.")
-         result = False
-         Else
-         ErrorProvider.SetError(txtOverrunUtilisationForCompressionFraction, String.Empty)
-       End If
-
-       'Braking With Retarder NI per KG : txtBrakingWithRetarderNIperKG
-       If Not IsZeroOrPostiveNumber(txtBrakingWithRetarderNIperKG.Text) Then
-         ErrorProvider.SetError(txtBrakingWithRetarderNIperKG, "Please provide a non negative number.")
-         result = False
+        'AdBlue NI per Minute : txtAdBlueNIperMinute
+        If Not IsZeroOrPostiveNumber(txtAdBlueNIperMinute.Text) Then
+            ErrorProvider.SetError(txtAdBlueNIperMinute, "Please provide a non negative number.")
+            result = False
         Else
-         ErrorProvider.SetError(txtBrakingWithRetarderNIperKG, String.Empty)
-       End If
+            ErrorProvider.SetError(txtAdBlueNIperMinute, String.Empty)
+        End If
 
-       'Braking No Retarder NI per KG : txtBrakingNoRetarderNIperKG
-       If Not IsZeroOrPostiveNumber(txtBrakingNoRetarderNIperKG.Text) Then
-         ErrorProvider.SetError(txtBrakingNoRetarderNIperKG, "Please provide a non negative number.")
-         result = False
-       Else
-         ErrorProvider.SetError(txtBrakingNoRetarderNIperKG, String.Empty)
-       End If
-
-       'Breaking Per Kneeling NI per KG in MM : txtBreakingPerKneelingNIperKGinMM
-       If Not IsZeroOrPostiveNumber(txtBreakingPerKneelingNIperKGinMM.Text) Then
-         ErrorProvider.SetError(txtBreakingPerKneelingNIperKGinMM, "Please provide a non negative number.")
-         result = False
-       Else
-         ErrorProvider.SetError(txtBreakingPerKneelingNIperKGinMM, String.Empty)
-       End If
-
-       'Per Door Opening NI : txtPerDoorOpeningNI
-       If Not IsZeroOrPostiveNumber(txtPerDoorOpeningNI.Text) Then
-         ErrorProvider.SetError(txtPerDoorOpeningNI, "Please provide a non negative number.")
-         result = False
-       Else
-         ErrorProvider.SetError(txtPerDoorOpeningNI, String.Empty)
-       End If
-
-       'Per Stop Brake Actuation NI per KG : txtPerStopBrakeActuationNIperKG
-       If Not IsZeroOrPostiveNumber(txtPerStopBrakeActuationNIperKG.Text) Then
-         ErrorProvider.SetError(txtPerStopBrakeActuationNIperKG, "Please provide a non negative number.")
-         result = False
-       Else
-         ErrorProvider.SetError(txtPerStopBrakeActuationNIperKG, String.Empty)
-       End If
-
-       'Air Controlled Suspension NI per Minute : txtAirControlledSuspensionNIperMinute
-       If Not IsZeroOrPostiveNumber(txtAirControlledSuspensionNIperMinute.Text) Then
-         ErrorProvider.SetError(txtAirControlledSuspensionNIperMinute, "Please provide a non negative number.")
-         result = False
-       Else
-         ErrorProvider.SetError(txtAirControlledSuspensionNIperMinute, String.Empty)
-       End If
-
-       'Non Smart Regen Fraction Total Air Demand : txtNonSmartRegenFractionTotalAirDemand
-       If Not IsZeroOrPostiveNumber(txtNonSmartRegenFractionTotalAirDemand.Text) Then
-         ErrorProvider.SetError(txtNonSmartRegenFractionTotalAirDemand, "Please provide a non negative number.")
-         result = False
-       Else
-         ErrorProvider.SetError(txtNonSmartRegenFractionTotalAirDemand, String.Empty)
-       End If
-
-       'Smart Regen Fraction Total Air Demand : txtSmartRegenFractionTotalAirDemand
-       If Not IsNumberBetweenZeroandOne(txtSmartRegenFractionTotalAirDemand.Text) Then
-         ErrorProvider.SetError(txtSmartRegenFractionTotalAirDemand, "Please provide a non negative between 0 and 1.")
-         result = False
-       Else
-         ErrorProvider.SetError(txtSmartRegenFractionTotalAirDemand, String.Empty)
-       End If
-
-
-       'Dead Volume Litres : txtDeadVolumeLitres
-       If Not IsZeroOrPostiveNumber(txtDeadVolumeLitres.Text) Then
-         ErrorProvider.SetError(txtDeadVolumeLitres, "Please provide a non negative number.")
-         result = False
-       Else
-         ErrorProvider.SetError(txtDeadVolumeLitres, String.Empty)
-       End If
-
-
-       'Dead Vol BlowOuts Per Litresper Hour : txtDeadVolBlowOutsPerLitresperHour
-       If Not IsZeroOrPostiveNumber(txtDeadVolBlowOutsPerLitresperHour.Text) Then
-         ErrorProvider.SetError(txtDeadVolBlowOutsPerLitresperHour, "Please provide a non negative number.")
-         result = False
+        'Overrun Utilisation For Compression Fraction : txtOverrunUtilisationForCompressionFraction
+        If Not IsNumberBetweenZeroandOne(txtOverrunUtilisationForCompressionFraction.Text) Then
+            ErrorProvider.SetError(txtOverrunUtilisationForCompressionFraction, "Please provide a non negative between 0 and 1.")
+            result = False
         Else
-         ErrorProvider.SetError(txtDeadVolBlowOutsPerLitresperHour, String.Empty)
-       End If
+            ErrorProvider.SetError(txtOverrunUtilisationForCompressionFraction, String.Empty)
+        End If
+
+        'Braking With Retarder NI per KG : txtBrakingWithRetarderNIperKG
+        If Not IsZeroOrPostiveNumber(txtBrakingWithRetarderNIperKG.Text) Then
+            ErrorProvider.SetError(txtBrakingWithRetarderNIperKG, "Please provide a non negative number.")
+            result = False
+        Else
+            ErrorProvider.SetError(txtBrakingWithRetarderNIperKG, String.Empty)
+        End If
+
+        'Braking No Retarder NI per KG : txtBrakingNoRetarderNIperKG
+        If Not IsZeroOrPostiveNumber(txtBrakingNoRetarderNIperKG.Text) Then
+            ErrorProvider.SetError(txtBrakingNoRetarderNIperKG, "Please provide a non negative number.")
+            result = False
+        Else
+            ErrorProvider.SetError(txtBrakingNoRetarderNIperKG, String.Empty)
+        End If
+
+        'Breaking Per Kneeling NI per KG in MM : txtBreakingPerKneelingNIperKGinMM
+        If Not IsZeroOrPostiveNumber(txtBreakingPerKneelingNIperKGinMM.Text) Then
+            ErrorProvider.SetError(txtBreakingPerKneelingNIperKGinMM, "Please provide a non negative number.")
+            result = False
+        Else
+            ErrorProvider.SetError(txtBreakingPerKneelingNIperKGinMM, String.Empty)
+        End If
+
+        'Per Door Opening NI : txtPerDoorOpeningNI
+        If Not IsZeroOrPostiveNumber(txtPerDoorOpeningNI.Text) Then
+            ErrorProvider.SetError(txtPerDoorOpeningNI, "Please provide a non negative number.")
+            result = False
+        Else
+            ErrorProvider.SetError(txtPerDoorOpeningNI, String.Empty)
+        End If
+
+        'Per Stop Brake Actuation NI per KG : txtPerStopBrakeActuationNIperKG
+        If Not IsZeroOrPostiveNumber(txtPerStopBrakeActuationNIperKG.Text) Then
+            ErrorProvider.SetError(txtPerStopBrakeActuationNIperKG, "Please provide a non negative number.")
+            result = False
+        Else
+            ErrorProvider.SetError(txtPerStopBrakeActuationNIperKG, String.Empty)
+        End If
+
+        'Air Controlled Suspension NI per Minute : txtAirControlledSuspensionNIperMinute
+        If Not IsZeroOrPostiveNumber(txtAirControlledSuspensionNIperMinute.Text) Then
+            ErrorProvider.SetError(txtAirControlledSuspensionNIperMinute, "Please provide a non negative number.")
+            result = False
+        Else
+            ErrorProvider.SetError(txtAirControlledSuspensionNIperMinute, String.Empty)
+        End If
+
+        'Non Smart Regen Fraction Total Air Demand : txtNonSmartRegenFractionTotalAirDemand
+        If Not IsZeroOrPostiveNumber(txtNonSmartRegenFractionTotalAirDemand.Text) Then
+            ErrorProvider.SetError(txtNonSmartRegenFractionTotalAirDemand, "Please provide a non negative number.")
+            result = False
+        Else
+            ErrorProvider.SetError(txtNonSmartRegenFractionTotalAirDemand, String.Empty)
+        End If
+
+        'Smart Regen Fraction Total Air Demand : txtSmartRegenFractionTotalAirDemand
+        If Not IsNumberBetweenZeroandOne(txtSmartRegenFractionTotalAirDemand.Text) Then
+            ErrorProvider.SetError(txtSmartRegenFractionTotalAirDemand, "Please provide a non negative between 0 and 1.")
+            result = False
+        Else
+            ErrorProvider.SetError(txtSmartRegenFractionTotalAirDemand, String.Empty)
+        End If
 
 
-       'USER CONFIG PART 
-       '*****************************************************************************************
+        'Dead Volume Litres : txtDeadVolumeLitres
+        If Not IsZeroOrPostiveNumber(txtDeadVolumeLitres.Text) Then
+            ErrorProvider.SetError(txtDeadVolumeLitres, "Please provide a non negative number.")
+            result = False
+        Else
+            ErrorProvider.SetError(txtDeadVolumeLitres, String.Empty)
+        End If
+
+
+        'Dead Vol BlowOuts Per Litresper Hour : txtDeadVolBlowOutsPerLitresperHour
+        If Not IsZeroOrPostiveNumber(txtDeadVolBlowOutsPerLitresperHour.Text) Then
+            ErrorProvider.SetError(txtDeadVolBlowOutsPerLitresperHour, "Please provide a non negative number.")
+            result = False
+        Else
+            ErrorProvider.SetError(txtDeadVolBlowOutsPerLitresperHour, String.Empty)
+        End If
+
+
+        'USER CONFIG PART 
+        '*****************************************************************************************
         'Compressor Map path : txtCompressorMap
         'Test for empty after trim
         If txtCompressorMap.Text.Trim.Length = 0 Then
-         ErrorProvider.SetError(txtCompressorMap, "Please enter the localtion of a valid compressor map.")
-         result = False
+            ErrorProvider.SetError(txtCompressorMap, "Please enter the localtion of a valid compressor map.")
+            result = False
         Else
-         ErrorProvider.SetError(txtCompressorMap, String.Empty)
+            ErrorProvider.SetError(txtCompressorMap, String.Empty)
         End If
         'Test File is valid
         Dim comp As CompressorMap
         Try
 
-        comp = New CompressorMap(FilePathUtils.ResolveFilePath( vectoPath,txtCompressorMap.Text))
-        comp.Initialise()
-         ErrorProvider.SetError(txtCompressorMap, String.Empty)
+            comp = New CompressorMap(FilePathUtils.ResolveFilePath(vectoPath, txtCompressorMap.Text))
+            comp.Initialise()
+            ErrorProvider.SetError(txtCompressorMap, String.Empty)
         Catch ex As Exception
-         ErrorProvider.SetError(txtCompressorMap, "Error : map is invalid or cannot be found, please select a Cvalid compressor map")
-         result = False
+            ErrorProvider.SetError(txtCompressorMap, "Error : map is invalid or cannot be found, please select a Cvalid compressor map")
+            result = False
         End Try
 
         'Compressor Gear Efficiency : txtCompressorGearEfficiency"
         If Not IsNumberBetweenZeroandOne(txtCompressorGearEfficiency.Text) Then
-          ErrorProvider.SetError(txtCompressorGearEfficiency, "Please enter a number between 0 and 1")
-          result = False
+            ErrorProvider.SetError(txtCompressorGearEfficiency, "Please enter a number between 0 and 1")
+            result = False
         Else
-          ErrorProvider.SetError(txtCompressorGearEfficiency, String.Empty)
+            ErrorProvider.SetError(txtCompressorGearEfficiency, String.Empty)
         End If
 
         'Compressor Gear Ratio : txtCompressorGearRatio
         If Not IsPostiveNumber(txtCompressorGearRatio.Text) Then
-          ErrorProvider.SetError(txtCompressorGearRatio, "Please enter a number greater than 0.")
-          result = False
+            ErrorProvider.SetError(txtCompressorGearRatio, "Please enter a number greater than 0.")
+            result = False
         Else
-          ErrorProvider.SetError(txtCompressorGearRatio, String.Empty)
+            ErrorProvider.SetError(txtCompressorGearRatio, String.Empty)
         End If
 
 
         'Actuations Map : txtActuationsMap
         If txtActuationsMap.Text.Trim.Length = 0 Then
-         ErrorProvider.SetError(txtActuationsMap, "Please enter the localtion of a valid Pneumatic Actuations map.")
-         result = False
+            ErrorProvider.SetError(txtActuationsMap, "Please enter the localtion of a valid Pneumatic Actuations map.")
+            result = False
         Else
-         ErrorProvider.SetError(txtActuationsMap, String.Empty)
+            ErrorProvider.SetError(txtActuationsMap, String.Empty)
         End If
         'Test File is valid
         Dim actuations As PneumaticActuationsMAP
         Try
 
-        actuations = New PneumaticActuationsMAP(FilePathUtils.ResolveFilePath( vectoPath,txtActuationsMap.Text))
-         actuations.Initialise()
-         ErrorProvider.SetError(txtActuationsMap, String.Empty)
+            actuations = New PneumaticActuationsMAP(FilePathUtils.ResolveFilePath(vectoPath, txtActuationsMap.Text))
+            actuations.Initialise()
+            ErrorProvider.SetError(txtActuationsMap, String.Empty)
         Catch ex As Exception
-         ErrorProvider.SetError(txtActuationsMap, "Error : Pneumatic Actuations map is invalid or cannot be found, please select a valid map")
-         result = False
+            ErrorProvider.SetError(txtActuationsMap, "Error : Pneumatic Actuations map is invalid or cannot be found, please select a valid map")
+            result = False
         End Try
 
 
@@ -348,34 +339,34 @@ Public Function Validate_Pneumatics() As Boolean
 
         'txtKneelingHeightMillimeters : txtKneelingHeightMillimeters
         If Not IsPostiveNumber(txtKneelingHeightMillimeters.Text) Then
-          ErrorProvider.SetError(txtKneelingHeightMillimeters, "Please enter a number greater than 0.")
-          result = False
+            ErrorProvider.SetError(txtKneelingHeightMillimeters, "Please enter a number greater than 0.")
+            result = False
         Else
-          ErrorProvider.SetError(txtKneelingHeightMillimeters, String.Empty)
+            ErrorProvider.SetError(txtKneelingHeightMillimeters, String.Empty)
         End If
 
         'cboAirSuspensionControl : cboAirSuspensionControl
         If cboAirSuspensionControl.SelectedIndex < 1 Then
-          ErrorProvider.SetError(cboAirSuspensionControl, "Please make a selection.")
-          result = False
+            ErrorProvider.SetError(cboAirSuspensionControl, "Please make a selection.")
+            result = False
         Else
-          ErrorProvider.SetError(cboAirSuspensionControl, String.Empty)
+            ErrorProvider.SetError(cboAirSuspensionControl, String.Empty)
         End If
 
         'cboAdBlueDosing : cboAdBlueDosing
         If cboAdBlueDosing.SelectedIndex < 1 Then
-          ErrorProvider.SetError(cboAdBlueDosing, "Please make a selection.")
-          result = False
+            ErrorProvider.SetError(cboAdBlueDosing, "Please make a selection.")
+            result = False
         Else
-          ErrorProvider.SetError(cboAdBlueDosing, String.Empty)
+            ErrorProvider.SetError(cboAdBlueDosing, String.Empty)
         End If
 
         'cboDoors : cboDoors
         If cboDoors.SelectedIndex < 1 Then
-          ErrorProvider.SetError(cboDoors, "Please make a selection.")
-          result = False
+            ErrorProvider.SetError(cboDoors, "Please make a selection.")
+            result = False
         Else
-          ErrorProvider.SetError(cboDoors, String.Empty)
+            ErrorProvider.SetError(cboDoors, String.Empty)
         End If
 
 
@@ -386,353 +377,342 @@ Public Function Validate_Pneumatics() As Boolean
 
 
 
-Return result
+        Return result
 
 
-End Function
+    End Function
 
-'*****  ELECTRICAL VALIDATION
-Public Sub Validating_ElectricsHandler(sender As Object, e As CancelEventArgs) Handles txtPowernetVoltage.Validating, txtAlternatorMapPath.Validating, txtAlternatorGearEfficiency.Validating, txtDoorActuationTimeSeconds.Validating
+    '*****  ELECTRICAL VALIDATION
+    Public Sub Validating_ElectricsHandler(sender As Object, e As CancelEventArgs) Handles txtPowernetVoltage.Validating, txtAlternatorMapPath.Validating, txtAlternatorGearEfficiency.Validating, txtDoorActuationTimeSeconds.Validating
 
-    e.Cancel = Not Validate_Electrics()
+        e.Cancel = Not Validate_Electrics()
 
-End Sub
-Public Function Validate_Electrics() As Boolean
+    End Sub
+    Public Function Validate_Electrics() As Boolean
 
-Dim result As Boolean = True
+        Dim result As Boolean = True
 
 
-       'Powernet Voltage : txtPowernetVoltage
-       If Not IsPostiveNumber(txtPowernetVoltage.Text) Then
-         ErrorProvider.SetError(txtPowernetVoltage, "Please provide a non negative number.")
-         result = False
-       Else
-          ErrorProvider.SetError(txtPowernetVoltage, String.Empty)
-       End If
+        'Powernet Voltage : txtPowernetVoltage
+        If Not IsPostiveNumber(txtPowernetVoltage.Text) Then
+            ErrorProvider.SetError(txtPowernetVoltage, "Please provide a non negative number.")
+            result = False
+        Else
+            ErrorProvider.SetError(txtPowernetVoltage, String.Empty)
+        End If
 
 
         'Alternator Map  path : txtAlternatorMapPath
         'Test for empty after trim
         If txtAlternatorMapPath.Text.Trim.Length = 0 Then
-         ErrorProvider.SetError(txtAlternatorMapPath, "Please enter the localtion of a valid alternator map.")
-         result = False
+            ErrorProvider.SetError(txtAlternatorMapPath, "Please enter the localtion of a valid alternator map.")
+            result = False
         Else
-         ErrorProvider.SetError(txtAlternatorMapPath, String.Empty)
+            ErrorProvider.SetError(txtAlternatorMapPath, String.Empty)
         End If
 
         'Test File is valid
         Dim alt As ICombinedAlternator
         Try
-        alt = New CombinedAlternator(FilePathUtils.ResolveFilePath( vectoPath,txtAlternatorMapPath.Text))
-         ErrorProvider.SetError(txtAlternatorMapPath, String.Empty)
+            alt = New CombinedAlternator(FilePathUtils.ResolveFilePath(vectoPath, txtAlternatorMapPath.Text))
+            ErrorProvider.SetError(txtAlternatorMapPath, String.Empty)
         Catch ex As Exception
-         ErrorProvider.SetError(txtAlternatorMapPath, "Error : map is invalid or cannot be found, please select a valid alternator map")
-         result = False
+            ErrorProvider.SetError(txtAlternatorMapPath, "Error : map is invalid or cannot be found, please select a valid alternator map")
+            result = False
         End Try
 
 
         'Alternator Gear Efficiency : txtAlternatorGearEfficiency
         If Not IsNumberBetweenZeroandOne(txtAlternatorGearEfficiency.Text) Then
-         ErrorProvider.SetError(txtAlternatorGearEfficiency, "Please enter a number between 0 an 1")
-         result = False
+            ErrorProvider.SetError(txtAlternatorGearEfficiency, "Please enter a number between 0 an 1")
+            result = False
         Else
-         ErrorProvider.SetError(txtAlternatorGearEfficiency, String.Empty)
+            ErrorProvider.SetError(txtAlternatorGearEfficiency, String.Empty)
         End If
 
 
-       'Door Action Time : txtDoorActuationTimeSeconds
-       If Not IsPostiveNumber(txtDoorActuationTimeSeconds.Text) Then
-         ErrorProvider.SetError(txtDoorActuationTimeSeconds, "Please provide a non negative number.")
-         result = False
-       Else
-          ErrorProvider.SetError(txtDoorActuationTimeSeconds, String.Empty)
-       End If
+        'Door Action Time : txtDoorActuationTimeSeconds
+        If Not IsPostiveNumber(txtDoorActuationTimeSeconds.Text) Then
+            ErrorProvider.SetError(txtDoorActuationTimeSeconds, "Please provide a non negative number.")
+            result = False
+        Else
+            ErrorProvider.SetError(txtDoorActuationTimeSeconds, String.Empty)
+        End If
 
 
-               UpdateTabStatus("tabElectricalConfig", result)
+        UpdateTabStatus("tabElectricalConfig", result)
 
 
-       Return result
+        Return result
 
 
-End Function
+    End Function
 
-'****** HVAC VALIDATION
-Public Sub Validating_HVACHandler(sender As Object, e As CancelEventArgs) Handles    txtSSMFilePath.Validating, txtBusDatabaseFilePath.Validating
+    '****** HVAC VALIDATION
+    Public Sub Validating_HVACHandler(sender As Object, e As CancelEventArgs) Handles txtSSMFilePath.Validating, txtBusDatabaseFilePath.Validating
 
-    e.Cancel = Not Validate_HVAC()
+        e.Cancel = Not Validate_HVAC()
 
-End Sub
-Public Function Validate_HVAC() As Boolean
+    End Sub
+    Public Function Validate_HVAC() As Boolean
 
-Dim result As Boolean = True
-Dim message As String =""
-
-
-       ''HVAC Electrical Load Power Watts : txtHVACElectricalLoadPowerWatts
-       'If Not IsZeroOrPostiveNumber(txtHVACElectricalLoadPowerWatts.Text) Then
-       '  ErrorProvider.SetError(txtHVACElectricalLoadPowerWatts, "Please provide a non negative number.")
-       '  result = False
-       'Else
-       '   ErrorProvider.SetError(txtHVACElectricalLoadPowerWatts, String.Empty)
-       'End If
-
-       'HVAC Mechanical Load Power Watts : txtHVACMechanicalLoadPowerWatts
-       'If Not IsZeroOrPostiveNumber(txtHVACMechanicalLoadPowerWatts.Text) Then
-       '  ErrorProvider.SetError(txtHVACMechanicalLoadPowerWatts, "Please provide a non negative number.")
-       '  result = False
-       'Else
-       '   ErrorProvider.SetError(txtHVACMechanicalLoadPowerWatts, String.Empty)
-       'End If
+        Dim result As Boolean = True
+        Dim message As String = ""
 
 
-       'HVAC Fuelling Litres Per Hour : txtHVACFuellingLitresPerHour
-       'If Not IsZeroOrPostiveNumber(txtHVACFuellingLitresPerHour.Text) Then
-       '  ErrorProvider.SetError(txtHVACFuellingLitresPerHour, "Please provide a non negative number.")
-       '  result = False
-       'Else
-       '   ErrorProvider.SetError(txtHVACFuellingLitresPerHour, String.Empty)
-       'End If
+        'Validate abdb -  Bus Database 
+        Dim abdbFile As String = FilePathUtils.ResolveFilePath(vectoPath, txtBusDatabaseFilePath.Text)
+        Dim bdb As New BusDatabase()
+        If bdb.Initialise(abdbFile) Then
+            ErrorProvider.SetError(txtBusDatabaseFilePath, String.Empty)
+        Else
+            result = False
+            ErrorProvider.SetError(Me.txtBusDatabaseFilePath, "Please choose a valid Steady State Model File (*.ABDB")
+        End If
 
 
+        'Try ahsm - HVac Steady State Model
+        Try
 
-         'Validate abdb -  Bus Database 
-          Dim abdbFile As String  = FilePathUtils.ResolveFilePath(vectoPath,txtBusDatabaseFilePath.Text)
-          Dim bdb As New BusDatabase()
-          If   bdb.Initialise(abdbFile ) then
-               ErrorProvider.SetError(txtBusDatabaseFilePath, String.Empty)
-          Else
-              result=false
-              ErrorProvider.SetError(Me.txtBusDatabaseFilePath, "Please choose a vaid Steady State Model File (*.ABDB")
-         End If
+            Dim ahsmFile As String = FilePathUtils.ResolveFilePath(vectoPath, txtSSMFilePath.Text)
+            Dim ssmTool As SSMTOOL = New SSMTOOL(ahsmFile, False)
 
-
-       'Try ahsm - HVac Steady State Model
-       Try 
-
-          Dim ahsmFile As String = FilePathUtils.ResolveFilePath(vectoPath,txtSSMFilePath.Text)
-          Dim ssmTool As SSMTOOL = New SSMTOOL( ahsmFile,False)
-          
-          If ssmTool.Load( ahsmFile ) then 
+            If ssmTool.Load(ahsmFile) Then
                 ErrorProvider.SetError(txtSSMFilePath, String.Empty)
-          Else
-                result=false
-                ErrorProvider.SetError(txtSSMFilePath, "Please choose a vaid Steady State Model File (*.AHSM")
-          End If
-           
-       Catch ex As Exception
-           'Just in case
-           ErrorProvider.SetError(txtSSMFilePath, "Please choose a vaid Steady State Model File (*.AHSM")
-           result = false
+            Else
+                result = False
+                ErrorProvider.SetError(txtSSMFilePath, "Please choose a valid Steady State Model File (*.AHSM")
+            End If
 
-       End Try
+        Catch ex As Exception
+            'Just in case
+            ErrorProvider.SetError(txtSSMFilePath, "Please choose a valid Steady State Model File (*.AHSM")
+            result = False
 
-
-       UpdateTabStatus("tabHVACConfig", result)
-
-   Return result
+        End Try
 
 
-End Function
+        UpdateTabStatus("tabHVACConfig", result)
+
+        Return result
 
 
-Public Function ValidateAll() As Boolean
+    End Function
 
-  If Validate_Pneumatics() = False OrElse Validate_Electrics() = False OrElse Validate_Pneumatics() = False Then
 
-  Return False
+    Public Function ValidateAll() As Boolean
 
-  End If
+        If Validate_Pneumatics() = False OrElse Validate_Electrics() = False OrElse Validate_Pneumatics() = False Then
 
-  Return True
+            Return False
 
-End Function
+        End If
 
-'*****  IMPUTS VALIDATION
+        Return True
+
+    End Function
+
+    '*****  IMPUTS VALIDATION
 
 #End Region
 
-'Form Controls & Events
-Private Sub Dashboard_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    'Form Controls & Events
+    Private Sub Dashboard_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-  'Required for OwnerDraw, this is required in order to color the tabs when a validation error occurs to draw
-  'The attention of the user to the fact that attention is required on a particlar tab.
-  TabColors.Add(tabGeneralConfig, Control.DefaultBackColor)
-  TabColors.Add(tabElectricalConfig, Control.DefaultBackColor)
-  TabColors.Add(tabPneumaticConfig, Control.DefaultBackColor)
-  TabColors.Add(tabHVACConfig, Control.DefaultBackColor)
-
-
-  'This is here only for testing purposes, the actual cycle will be a result of Vecto input.
-  cboCycle.SelectedIndex = 0
-
-  'General Setup of all controls 
-  SetupControls()
-
-  'Binding Values in Aux environment to the input controls on relevent tabs in the form.
-  CreateBindings()
-
-  'This function is neccesary because binding does not occur when the page is invisible, so a track across all of them
-  'Is required in order to set the binding. This only needs to be done once at at setup time. after values are set in the
-  'Aux environment either by setting defaults of reading and setting from the Auxillaries persistance file.
-  EnsureBinding()
+        'Required for OwnerDraw, this is required in order to color the tabs when a validation error occurs to draw
+        'The attention of the user to the fact that attention is required on a particlar tab.
+        TabColors.Add(tabGeneralConfig, Control.DefaultBackColor)
+        TabColors.Add(tabElectricalConfig, Control.DefaultBackColor)
+        TabColors.Add(tabPneumaticConfig, Control.DefaultBackColor)
+        TabColors.Add(tabHVACConfig, Control.DefaultBackColor)
 
 
-  'Additional atatched events
-  'For Tab Coloring, this is the place where the background will get filled on the tab when attention is required.
-  AddHandler tabMain.DrawItem, New System.Windows.Forms.DrawItemEventHandler(AddressOf tabMain_DrawItem)
+        'This is here only for testing purposes, the actual cycle will be a result of Vecto input.
+        cboCycle.SelectedIndex = 0
 
-  'Select Electric Tab
-  tabMain.SelectTab(tabMain.TabPages("tabElectricalConfig"))
+        'General Setup of all controls 
+        SetupControls()
 
+        'Binding Values in Aux environment to the input controls on relevent tabs in the form.
+        CreateBindings()
 
-  'Enabled  / Disables Smart Cards based on chkSmartElectrical
-  SetSmartCardEmabledStatus()
-
-  'Merge Info data from ElectricalConsumer in a Default set into live set
-  'This is required because the info is stored in the AAUX file and we do not want to use a persistance stored version.
-  auxConfig.ElectricalUserInputsConfig.ElectricalConsumers.MergeInfoData()
-
-
-End Sub
-Private Sub frmAuxiliaryConfig_FormClosing( sender As Object,  e As FormClosingEventArgs) Handles MyBase.FormClosing
+        'This function is neccesary because binding does not occur when the page is invisible, so a track across all of them
+        'Is required in order to set the binding. This only needs to be done once at at setup time. after values are set in the
+        'Aux environment either by setting defaults of reading and setting from the Auxillaries persistance file.
+        EnsureBinding()
 
 
-  If Me.DialogResult=Windows.Forms.DialogResult.Cancel then return
+        'Additional atatched events
+        'For Tab Coloring, this is the place where the background will get filled on the tab when attention is required.
+        AddHandler tabMain.DrawItem, New System.Windows.Forms.DrawItemEventHandler(AddressOf tabMain_DrawItem)
 
-  Dim result As DialogResult
+        'Select Electric Tab
+        tabMain.SelectTab(tabMain.TabPages("tabElectricalConfig"))
 
-  If  Not auxConfig.ConfigValuesAreTheSameAs( originalConfig )
 
-             result = (MessageBox.Show("Would you like to save changes before closing?","Save Changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question))
+        'Enabled  / Disables Smart Cards based on chkSmartElectrical
+        SetSmartCardEmabledStatus()
 
-            Select Case  result
-            
-                case DialogResult.Yes:
+        'Merge Info data from ElectricalConsumer in a Default set into live set
+        'This is required because the info is stored in the AAUX file and we do not want to use a persistance stored version.
+        auxConfig.ElectricalUserInputsConfig.ElectricalConsumers.MergeInfoData()
+
+
+    End Sub
+    Private Sub frmAuxiliaryConfig_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+
+
+        If Me.DialogResult = Windows.Forms.DialogResult.Cancel Then Return
+
+        Dim result As DialogResult
+
+        If Not auxConfig.ConfigValuesAreTheSameAs(originalConfig) Then
+
+            result = (MessageBox.Show("Would you like to save changes before closing?", "Save Changes", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question))
+
+            Select Case result
+
+                Case DialogResult.Yes
                     'save 
-                    If NOT SaveFile()    then
-                      e.Cancel=true
+                    If Not SaveFile() Then
+                        e.Cancel = True
                     End If
 
-                case DialogResult.No:
+                Case DialogResult.No
                     'just allow the form to close
                     'without saving
-                    Me.DialogResult=Windows.Forms.DialogResult.Cancel
+                    Me.DialogResult = Windows.Forms.DialogResult.Cancel
 
 
-                case DialogResult.Cancel:
+                Case DialogResult.Cancel
                     'cancel the close
-                    e.Cancel = true
-                    Me.DialogResult=Windows.Forms.DialogResult.Cancel
+                    e.Cancel = True
+                    Me.DialogResult = Windows.Forms.DialogResult.Cancel
 
 
-            end select
+            End Select
 
 
-  End If
- 
+        End If
 
-End Sub
+
+    End Sub
 #Region "GridHandlers"
 
-Private Sub gvElectricalConsumables_CellValidating(sender As Object, e As DataGridViewCellValidatingEventArgs) Handles gvElectricalConsumables.CellValidating
+    Private Sub gvElectricalConsumables_CellValidating(sender As Object, e As DataGridViewCellValidatingEventArgs) Handles gvElectricalConsumables.CellValidating
 
-   Dim column As DataGridViewColumn = gvElectricalConsumables.Columns(e.ColumnIndex)
-   Dim s As Single
-
-
-   If e.ColumnIndex = -1 Then
-
-   e.Cancel = True
-   Exit Sub
-
-   End If
+        Dim column As DataGridViewColumn = gvElectricalConsumables.Columns(e.ColumnIndex)
+        Dim s As Single
 
 
+        If e.ColumnIndex = -1 Then
 
-   If column.ReadOnly Then Return
-
-
-
-
-    Select Case column.Name
-
-     Case "NominalConsumptionAmps"
-           If Not IsNumeric(e.FormattedValue) Then
-             MessageBox.Show("This value must be numeric")
-             e.Cancel = True
-          End If
-
-     Case "NumberInActualVehicle"
-           If Not IsNumeric(e.FormattedValue) Then
-             MessageBox.Show("This value must be numeric")
             e.Cancel = True
-          Else
-            s = Single.Parse(e.FormattedValue)
-           End If
-           If s Mod 1 > 0 OrElse s < 0 Then
-              MessageBox.Show("This value must be a positive whole number ( Integer ) ")
-             e.Cancel = True
-           End If
+            Exit Sub
 
-           'SBrake Lights and Exterior Bulb
-            if e.RowIndex =14 OrElse e.RowIndex=19  then
+        End If
+
+
+
+        If column.ReadOnly Then Return
+
+
+
+
+        Select Case column.Name
+
+            Case "NominalConsumptionAmps"
                 If Not IsNumeric(e.FormattedValue) Then
-                  MessageBox.Show("This value must be numeric")
-                  e.Cancel = True
+                    MessageBox.Show("This value must be numeric")
+                    e.Cancel = True
                 End If
-                If  s <> 1 Then
-                   MessageBox.Show("This must be set 1")
-                   e.Cancel = True
+
+            Case "NumberInActualVehicle"
+                If Not IsNumeric(e.FormattedValue) Then
+                    MessageBox.Show("This value must be numeric")
+                    e.Cancel = True
+                Else
+                    s = Single.Parse(e.FormattedValue)
                 End If
-            End If
-           
-           'Bonus Bulbs
-           if e.RowIndex >=15 AndAlso e.RowIndex<=18  then
-                 
-           If Not IsNumeric(e.FormattedValue) Then
-             MessageBox.Show("This value must be numeric")
-             e.Cancel = True
-           End If
-           If s <> 0 AndAlso s <> 1 Then
-              MessageBox.Show("This must be set to 0 or 1")
-              e.Cancel = True
-           End If
+                If s Mod 1 > 0 OrElse s < 0 Then
+                    MessageBox.Show("This value must be a positive whole number ( Integer ) ")
+                    e.Cancel = True
+                End If
 
-           End If
+                'Veh Electronics &Engine
+                If e.RowIndex = 1 Then
+                    If Not IsNumeric(e.FormattedValue) Then
+                        MessageBox.Show("This value must be numeric")
+                        e.Cancel = True
+                    End If
+
+                    If chkSmartElectricals.Checked AndAlso s <> 0 Then
+                        MessageBox.Show("This must be set to 0 in smart mode")
+                        e.Cancel = True
+                    ElseIf Not chkSmartElectricals.Checked AndAlso s <> 1 Then
+                        MessageBox.Show("This must be set to 1 in classic mode")
+                        e.Cancel = True
+                    End If
+                End If
+
+                'Exterior Bulb
+                If e.RowIndex = 14 Then
+                    If Not IsNumeric(e.FormattedValue) Then
+                        MessageBox.Show("This value must be numeric")
+                        e.Cancel = True
+                    End If
+                    If s <> 1 Then
+                        MessageBox.Show("This must be set 1")
+                        e.Cancel = True
+                    End If
+                End If
+
+                'Bonus Bulbs
+                If e.RowIndex >= 15 AndAlso e.RowIndex <= 19 Then
+
+                    If Not IsNumeric(e.FormattedValue) Then
+                        MessageBox.Show("This value must be numeric")
+                        e.Cancel = True
+                    End If
+                    If s <> 0 AndAlso s <> 1 Then
+                        MessageBox.Show("This must be set to 0 or 1")
+                        e.Cancel = True
+                    End If
+
+                End If
 
 
-     Case "PhaseIdle_TractionOn"
-           If Not IsNumeric(e.FormattedValue) Then
-             MessageBox.Show("This value must be numeric")
-             e.Cancel = True
-           Else
-            s = Single.Parse(e.FormattedValue)
-           End If
-           If s < 0 OrElse s > 1 Then
-              MessageBox.Show("This must be a value between 0 and 1 ")
-              e.Cancel = True
-           End If
-
-  
+            Case "PhaseIdle_TractionOn"
+                If Not IsNumeric(e.FormattedValue) Then
+                    MessageBox.Show("This value must be numeric")
+                    e.Cancel = True
+                Else
+                    s = Single.Parse(e.FormattedValue)
+                End If
+                If s < 0 OrElse s > 1 Then
+                    MessageBox.Show("This must be a value between 0 and 1 ")
+                    e.Cancel = True
+                End If
 
 
-    End Select
 
-End Sub
-Private Sub SmartResult_CellValidating(sender As Object, e As DataGridViewCellValidatingEventArgs) Handles gvResultsCardIdle.CellValidating, gvResultsCardTraction.CellValidating, gvResultsCardOverrun.CellValidating
 
-   Dim column As DataGridViewColumn = gvElectricalConsumables.Columns(e.ColumnIndex)
+        End Select
 
-   If Not IsNumeric(e.FormattedValue) Then
-       MessageBox.Show("This value must be numeric")
-       e.Cancel = True
-   End If
+    End Sub
+    Private Sub SmartResult_CellValidating(sender As Object, e As DataGridViewCellValidatingEventArgs) Handles gvResultsCardIdle.CellValidating, gvResultsCardTraction.CellValidating, gvResultsCardOverrun.CellValidating
 
-End Sub
-Private Sub resultCard_CellMouseUp(sender As Object, e As DataGridViewCellMouseEventArgs) Handles gvResultsCardIdle.CellMouseUp, gvResultsCardTraction.CellMouseUp, gvResultsCardOverrun.CellMouseUp
+        Dim column As DataGridViewColumn = gvElectricalConsumables.Columns(e.ColumnIndex)
 
-      Dim dgv As DataGridView = CType(sender, DataGridView)
+        If Not IsNumeric(e.FormattedValue) Then
+            MessageBox.Show("This value must be numeric")
+            e.Cancel = True
+        End If
+
+    End Sub
+    Private Sub resultCard_CellMouseUp(sender As Object, e As DataGridViewCellMouseEventArgs) Handles gvResultsCardIdle.CellMouseUp, gvResultsCardTraction.CellMouseUp, gvResultsCardOverrun.CellMouseUp
+
+        Dim dgv As DataGridView = CType(sender, DataGridView)
 
 
         If e.Button = MouseButtons.Right Then
@@ -744,33 +724,31 @@ Private Sub resultCard_CellMouseUp(sender As Object, e As DataGridViewCellMouseE
 
 
     End Sub
-Private Sub resultCardContextMenu_ItemClicked(sender As Object, e As ToolStripItemClickedEventArgs) Handles resultCardContextMenu.ItemClicked
+    Private Sub resultCardContextMenu_ItemClicked(sender As Object, e As ToolStripItemClickedEventArgs) Handles resultCardContextMenu.ItemClicked
 
-      Dim menu As ContextMenuStrip = CType(sender, ContextMenuStrip)
+        Dim menu As ContextMenuStrip = CType(sender, ContextMenuStrip)
 
-      Dim grid As DataGridView = DirectCast(menu.SourceControl, DataGridView)
+        Dim grid As DataGridView = DirectCast(menu.SourceControl, DataGridView)
 
-      Select Case e.ClickedItem.Text
-
-
-      Case "Delete"
-
-         For Each selectedRow As DataGridViewRow In grid.SelectedRows
-
-            If Not selectedRow.IsNewRow Then
-
-                grid.Rows.RemoveAt(selectedRow.Index)
-
-            End If
-
-         Next
-
-      Case "Insert"
+        Select Case e.ClickedItem.Text
 
 
-      End Select
+            Case "Delete"
+
+                For Each selectedRow As DataGridViewRow In grid.SelectedRows
+
+                    If Not selectedRow.IsNewRow Then
+
+                        grid.Rows.RemoveAt(selectedRow.Index)
+
+                    End If
+
+                Next
+
+            Case "Insert"
 
 
+        End Select
 
 
 
@@ -778,458 +756,460 @@ Private Sub resultCardContextMenu_ItemClicked(sender As Object, e As ToolStripIt
 
 
 
-End Sub
-Private Sub gvElectricalConsumables_CellFormatting(sender As Object, e As DataGridViewCellFormattingEventArgs) Handles gvElectricalConsumables.CellFormatting
-
-End Sub
-Private Sub gvElectricalConsumables_CellBeginEdit(sender As Object, e As DataGridViewCellCancelEventArgs) Handles gvElectricalConsumables.CellBeginEdit
-
-    If e.ColumnIndex = 4 AndAlso e.RowIndex = 0 Then
-
-     MessageBox.Show("This cell is calculated and cannot be edited")
-     e.Cancel = True
-
-    End If
 
 
-End Sub
+    End Sub
+    Private Sub gvElectricalConsumables_CellFormatting(sender As Object, e As DataGridViewCellFormattingEventArgs) Handles gvElectricalConsumables.CellFormatting
+
+    End Sub
+    Private Sub gvElectricalConsumables_CellBeginEdit(sender As Object, e As DataGridViewCellCancelEventArgs) Handles gvElectricalConsumables.CellBeginEdit
+
+        If e.ColumnIndex = 4 AndAlso e.RowIndex = 0 Then
+
+            MessageBox.Show("This cell is calculated and cannot be edited")
+            e.Cancel = True
+
+        End If
+
+
+    End Sub
 
 #End Region
 #Region "Button Handlers"
 
-Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
+    Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
 
 
-   If  SaveFile() then
+        If SaveFile() Then
 
-      originalConfig.AssumeValuesOfOther( auxConfig)
-      Me.Close
-
-
-   End If
+            originalConfig.AssumeValuesOfOther(auxConfig)
+            Me.Close()
 
 
-
-End Sub
-Private function SaveFile() As Boolean
-
-   Dim result As Boolean
-
-
-   If Not ValidateAll then Return false
-
-
-   result = auxConfig.Save(FilePathUtils.ResolveFilePath(vectoPath,auxFile))
-
-   If Not result then  MessageBox.Show(String.Format("Unable to Save the file '{0}'",auxFile) )
-
-   Return result
-
-End Function
-Private Function  LoadFile() As boolean
-
-  'JSON METHOD
-   Dim result As boolean
-
-  'Release existing databindings
-  UnbindAllControls(Me)
-
-  result = auxConfig.Load( FilePathUtils.ResolveFilePath( vectoPath,auxFile))
-
-  If Not result then     
-     MessageBox.Show(String.Format("Unable to load the file '{0}'",auxFile) )
-   Else  
-    CreateBindings()
-  End If
-
-  Return result
-
-End function
-Private Sub btnFuelMap_Click(sender As Object, e As EventArgs) Handles btnFuelMap.Click
-
-               Dim fbAux As New cFileBrowser(True, False)
+        End If
 
 
 
-              ' Dim vectoFile As String = "C:\Users\tb28\Source\Workspaces\VECTO\vecto-sim-ricardoaeaTB\AuxillaryTestHarness\bin\Debug\vectopath.vecto"
-               Dim fname As String = fFILE(vectoFile, True)
+    End Sub
+    Private Function SaveFile() As Boolean
 
-                fbAux.Extensions = New String() {"vmap"}
-              '  If fbAux.OpenDialog(fFileRepl(fname, fPATH(VECTOfile))) Then 
-               If fbAux.OpenDialog(fPATH(vectoFile)) Then
+        Dim result As Boolean
 
-                 txtFuelMap.Text = fFileWoDir(fbAux.Files(0), fPATH(vectoFile))
 
+        If Not ValidateAll Then Return False
+
+
+        result = auxConfig.Save(FilePathUtils.ResolveFilePath(vectoPath, auxFile))
+
+        If Not result Then MessageBox.Show(String.Format("Unable to Save the file '{0}'", auxFile))
+
+        Return result
+
+    End Function
+    Private Function LoadFile() As Boolean
+
+        'JSON METHOD
+        Dim result As Boolean
+
+        'Release existing databindings
+        UnbindAllControls(Me)
+
+        result = auxConfig.Load(FilePathUtils.ResolveFilePath(vectoPath, auxFile))
+
+        If Not result Then
+            MessageBox.Show(String.Format("Unable to load the file '{0}'", auxFile))
+        Else
+            CreateBindings()
+        End If
+
+        Return result
+
+    End Function
+    Private Sub btnFuelMap_Click(sender As Object, e As EventArgs) Handles btnFuelMap.Click
+
+        Dim fbAux As New cFileBrowser(True, False)
+
+
+
+        ' Dim vectoFile As String = "C:\Users\tb28\Source\Workspaces\VECTO\vecto-sim-ricardoaeaTB\AuxillaryTestHarness\bin\Debug\vectopath.vecto"
+        Dim fname As String = fFILE(vectoFile, True)
+
+        fbAux.Extensions = New String() {"vmap"}
+        '  If fbAux.OpenDialog(fFileRepl(fname, fPATH(VECTOfile))) Then 
+        If fbAux.OpenDialog(fPATH(vectoFile)) Then
+
+            txtFuelMap.Text = fFileWoDir(fbAux.Files(0), fPATH(vectoFile))
+
+        End If
+
+
+    End Sub
+    Private Sub btnAlternatorMapPath_Click(sender As Object, e As EventArgs) Handles btnAlternatorMapPath.Click
+
+
+
+        ' Dim fbAux As New cFileBrowser(True, False)
+
+
+
+        '' Dim vectoFile As String = "C:\Users\tb28\Source\Workspaces\VECTO\vecto-sim-ricardoaeaTB\AuxillaryTestHarness\bin\Debug\vectopath.vecto"
+        ' Dim fname As String = fFILE(vectoFile, True)
+
+        '  fbAux.Extensions = New String() {"AALT"}
+        '  If fbAux.OpenDialog(fPATH(vectoFile)) Then
+
+        '   txtAlternatorMapPath.Text = fFileWoDir(fbAux.Files(0), fPATH(vectoFile))
+
+        ' End If
+
+        ' Validate_Electrics()
+
+        ' 'Causes Binding to fire
+        ' txtAlternatorMapPath.Focus()
+
+
+        Dim aauxFileValidated As Boolean = False
+        Dim fbAux As New cFileBrowser(True, False)
+        fbAux.Extensions = New String() {"AALT"}
+        Dim frm As frmCombinedAlternators
+
+        Dim suppliedAALTPath As String = String.Empty
+        Dim absoluteAALTPath As String = String.Empty
+        Dim message As String = String.Empty
+        Dim newFile As Boolean = False
+
+
+        'Trim ssmPath
+        'suppliedAALTPath = txtAlternatorMapPath.Text.Trim
+
+
+        'Is Filename NOT supplied, try and obtain  it, still not supplied, then bail.
+        If (txtAlternatorMapPath.Text.Length = 0) Then
+
+            newFile = True
+
+            If fbAux.CustomDialog(vectoPath, False, False, tFbExtMode.ForceExt, False, "") Then
+                If fbAux.Files.Count = 0 Then
+                    Return
+                Else
+                    suppliedAALTPath = fbAux.Files(0)
                 End If
+            Else
+                'No file given in text box, not given in browser, so bail         
+                Return
+            End If
+
+        Else
+            suppliedAALTPath = txtAlternatorMapPath.Text
+
+        End If
+
+        'Set Absolutes.
+        absoluteAALTPath = FilePathUtils.ResolveFilePath(fPATH(VECTOfile), suppliedAALTPath)
+
+        'Is supplied filename NOT valid. bail
+        If Not FilePathUtils.ValidateFilePath(absoluteAALTPath, ".aalt", Message) Then
+            MessageBox.Show(message)
+            Return
+        End If
 
 
-End Sub
-Private Sub btnAlternatorMapPath_Click(sender As Object, e As EventArgs) Handles btnAlternatorMapPath.Click
+        'If file Exists, Check validity, else fire up a default SSM Config.
+        If File.Exists(absoluteAALTPath) Then
+            'is file valid Try ahsm - HVac Steady State Model
+            Try
+                Dim aaltFile As String = FilePathUtils.ResolveFilePath(vectoPath, absoluteAALTPath)
+                Dim combinedAlt As ICombinedAlternator = New CombinedAlternator(aaltFile)
+            Catch ex As Exception
+                MessageBox.Show("The supplied .AALT File was invalid, aborting.")
+                Return
+            End Try
+        Else
+            newFile = True
+
+        End If
 
 
 
-              ' Dim fbAux As New cFileBrowser(True, False)
+        frm = New frmCombinedAlternators(absoluteAALTPath, New COmbinedAlternatorSignals)
+
+
+        'If Dialog result is OK, then take action else bail
+        If frm.ShowDialog() = Windows.Forms.DialogResult.OK Then
+
+            If suppliedAALTPath.Contains(":\") Then
+
+                txtAlternatorMapPath.Text = If(suppliedAALTPath.Contains(vectoPath), suppliedAALTPath.replace(vectoPath, ""), suppliedAALTPath)
+
+            Else
+
+                txtAlternatorMapPath.Text = fFileWoDir(suppliedAALTPath)
+
+            End If
+
+        Else
+            Return
+        End If
+
+
+        frm.Dispose()
 
 
 
-              '' Dim vectoFile As String = "C:\Users\tb28\Source\Workspaces\VECTO\vecto-sim-ricardoaeaTB\AuxillaryTestHarness\bin\Debug\vectopath.vecto"
-              ' Dim fname As String = fFILE(vectoFile, True)
-
-              '  fbAux.Extensions = New String() {"AALT"}
-              '  If fbAux.OpenDialog(fPATH(vectoFile)) Then
-
-              '   txtAlternatorMapPath.Text = fFileWoDir(fbAux.Files(0), fPATH(vectoFile))
-
-              ' End If
-
-              ' Validate_Electrics()
-
-              ' 'Causes Binding to fire
-              ' txtAlternatorMapPath.Focus()
-
-              
-               Dim aauxFileValidated As Boolean = False
-               Dim fbAux As New cFileBrowser(True, False)
-               fbAux.Extensions = New String() {"AALT"}
-               Dim frm As frmCombinedAlternators  
-
-               Dim suppliedAALTPath  As string = String.Empty
-               Dim absoluteAALTPath  As String = String.Empty
-               Dim message As String = String.Empty
-               Dim newFile As Boolean = false
-
-              
-               'Trim ssmPath
-               'suppliedAALTPath = txtAlternatorMapPath.Text.Trim
+    End Sub
+    Private Sub btnCompressorMap_Click(sender As Object, e As EventArgs) Handles btnCompressorMap.Click
 
 
-                'Is Filename NOT supplied, try and obtain  it, still not supplied, then bail.
-                 If( txtAlternatorMapPath.Text.Length=0) then
-               
-                      newFile = true
-               
-                      If fbAux.CustomDialog(vectoPath,False,False, tFbExtMode.ForceExt,False,"") then
-                         If fbAux.Files.Count=0 then
-                               Return
-                          Else                     
-                               suppliedAALTPath = fbAux.Files(0)
-                         End If
-                      Else        
-                           'No file given in text box, not given in browser, so bail         
-                           return
-                      End If 
-               
-               Else                 
-                     suppliedAALTPath = txtAlternatorMapPath.Text
-               
-               End If
-
-               'Set Absolutes.
-               absoluteAALTPath = FilePathUtils.ResolveFilePath(fPATH(VECTOfile), suppliedAALTPath )
-
-               'Is supplied filename NOT valid. bail
-               if Not FilePathUtils.ValidateFilePath(absoluteAALTPath,".aalt",Message)  then                 
-                  MessageBox.Show( message)
-                  return
-               end if
+        Dim fbAux As New cFileBrowser(True, False)
 
 
-               'If file Exists, Check validity, else fire up a default SSM Config.
-               If  File.Exists( absoluteAALTPath ) then
-                     'is file valid Try ahsm - HVac Steady State Model
-                      try
-                          Dim aaltFile As String = FilePathUtils.ResolveFilePath(vectoPath, absoluteAALTPath)
-                          Dim combinedAlt As ICombinedAlternator = New CombinedAlternator(aaltFile)                                       
-                       Catch ex As Exception         
-                            MessageBox.Show("The supplied .AALT File was invalid, aborting.")
-                            return
-                       End Try
-                Else              
-                 newFile=true
 
+        ' Dim vectoFile As String = "C:\Users\tb28\Source\Workspaces\VECTO\vecto-sim-ricardoaeaTB\AuxillaryTestHarness\bin\Debug\vectopath.vecto"
+        Dim fname As String = fFILE(vectoFile, True)
+
+        fbAux.Extensions = New String() {"ACMP"}
+        If fbAux.OpenDialog(fPATH(vectoFile)) Then
+
+            txtCompressorMap.Text = fFileWoDir(fbAux.Files(0), fPATH(vectoFile))
+
+        End If
+
+        Validate_Pneumatics()
+
+        'Causes binding to fire
+        txtCompressorMap.Focus()
+
+
+    End Sub
+    Private Sub btnActuationsMap_Click(sender As Object, e As EventArgs) Handles btnActuationsMap.Click
+
+        Dim fbAux As New cFileBrowser(True, False)
+
+        ' Dim vectoFile As String = "C:\Users\tb28\Source\Workspaces\VECTO\vecto-sim-ricardoaeaTB\AuxillaryTestHarness\bin\Debug\vectopath.vecto"
+        Dim fname As String = fFILE(vectoFile, True)
+
+        fbAux.Extensions = New String() {"APAC"}
+        If fbAux.OpenDialog(fPATH(vectoFile)) Then
+
+            txtActuationsMap.Text = fFileWoDir(fbAux.Files(0), fPATH(vectoFile))
+
+        End If
+
+        Validate_Pneumatics()
+
+        'Causes Binding to fire.
+        txtActuationsMap.Focus()
+
+    End Sub
+    Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
+
+
+        Me.DialogResult = Windows.Forms.DialogResult.Cancel
+        Me.Close()
+
+
+    End Sub
+
+    Private Sub btnBusDatabaseSource_Click(sender As Object, e As EventArgs) Handles btnBusDatabaseSource.Click
+
+        Dim fbAux As New cFileBrowser(True, False)
+        Dim ssmMap As Hvac.HVACSteadyStateModel
+        Dim message As String = String.Empty
+
+
+        fbAux.Extensions = New String() {"abdb"}
+
+        If fbAux.OpenDialog(fPATH(vectoFile)) Then
+
+            txtBusDatabaseFilePath.Focus()
+            txtBusDatabaseFilePath.Text = fFileWoDir(fbAux.Files(0), fPATH(vectoFile))
+
+            Dim busDB As New BusDatabase()
+
+            If Not busDB.Initialise(FilePathUtils.ResolveFilePath(vectoPath, txtBusDatabaseFilePath.Text)) Then
+
+                messagebox.Show("Unable to load")
+
+
+            End If
+
+
+        End If
+
+
+    End Sub
+    Private Sub btnSSMBSource_Click(sender As Object, e As EventArgs) Handles btnSSMBSource.Click
+
+
+        Dim aauxFileValidated As Boolean = False
+        Dim fbAux As New cFileBrowser(True, False)
+        fbAux.Extensions = New String() {"AHSM"}
+        Dim frm As frmHVACTool
+
+        Dim suppliedSSMPath As String = String.Empty
+        Dim absoluteSSMPath As String = String.Empty
+        Dim absoluteBusDatabasePath As String = String.Empty
+        Dim message As String = String.Empty
+        Dim newFile As Boolean = False
+
+
+        'Trim ssmPath
+        txtSSMFilePath.Text.Trim()
+
+
+        'Is Filename NOT supplied, try and obtain  it, still not supplied, then bail.
+        If (txtSSMFilePath.Text.Length = 0) Then
+
+            newFile = True
+
+            If fbAux.CustomDialog(vectoPath, False, False, tFbExtMode.ForceExt, False, "") Then
+                If fbAux.Files.Count = 0 Then
+                    Return
+                Else
+                    suppliedSSMPath = fbAux.Files(0)
                 End If
+            Else
+                'No file given in text box, not given in browser, so bail         
+                Return
+            End If
 
+        Else
+            suppliedSSMPath = txtSSMFilePath.Text
 
+        End If
 
-             frm   = New frmCombinedAlternators( absoluteAALTPath, New COmbinedAlternatorSignals)
-                               
+        'Set Absolutes.
+        absoluteSSMPath = FilePathUtils.ResolveFilePath(fPATH(VECTOfile), suppliedSSMPath)
+        absoluteBusDatabasePath = FilePathUtils.ResolveFilePath(fPATH(VECTOfile), Me.txtBusDatabaseFilePath.Text)
 
-               'If Dialog result is OK, then take action else bail
-               If frm.ShowDialog()   = Windows.Forms.DialogResult.OK then
 
-                 If suppliedAALTPath.Contains(":\")  then
+        'Is supplied filename NOT valid. bail
+        If Not FilePathUtils.ValidateFilePath(absoluteSSMPath, ".ahsm", Message) Then
+            MessageBox.Show(message)
+            Return
+        End If
 
-                    txtAlternatorMapPath.Text= If( suppliedAALTPath.Contains(vectoPath),suppliedAALTPath.replace(vectoPath,""), suppliedAALTPath)  
 
-                 else
-                    
-                    txtAlternatorMapPath.Text = fFileWoDir( suppliedAALTPath )
+        'If file Exists, Check validity, else fire up a default SSM Config.
+        If File.Exists(absoluteSSMPath) Then
+            'is file valid Try ahsm - HVac Steady State Model
+            Try
+                Dim ahsmFile As String = FilePathUtils.ResolveFilePath(vectoPath, absoluteSSMPath)
+                Dim ssmTool As SSMTOOL = New SSMTOOL(ahsmFile, False)
+                ssmTool.Load(ahsmFile)
+            Catch ex As Exception
+                MessageBox.Show("The supplied AHSM File was invalid, aborting.")
+                Return
+            End Try
+        Else
+            newFile = True
 
-                 End If
+        End If
 
-               Else          
-                   return
-               End If
 
+        'If newFile then use Defaults
+        If newFile Then
+            frm = New frmHVACTool(absoluteBusDatabasePath, absoluteSSMPath, vectoFile, True)
 
-               frm.Dispose()
+        Else
+            frm = New frmHVACTool(absoluteBusDatabasePath, absoluteSSMPath, vectoFile)
 
+        End If
 
 
-End Sub
-Private Sub btnCompressorMap_Click(sender As Object, e As EventArgs) Handles btnCompressorMap.Click
 
 
-               Dim fbAux As New cFileBrowser(True, False)
+        'If Dialog result is OK, then take action else bail
+        If frm.ShowDialog() = Windows.Forms.DialogResult.OK Then
 
+            If suppliedSSMPath.Contains(":\") Then
 
+                txtSSMFilePath.Text = If(suppliedSSMPath.Contains(vectoPath), suppliedSSMPath.Replace(vectoPath, ""), suppliedSSMPath)
 
-              ' Dim vectoFile As String = "C:\Users\tb28\Source\Workspaces\VECTO\vecto-sim-ricardoaeaTB\AuxillaryTestHarness\bin\Debug\vectopath.vecto"
-               Dim fname As String = fFILE(vectoFile, True)
+            Else
 
-                fbAux.Extensions = New String() {"ACMP"}
-                If fbAux.OpenDialog(fPATH(vectoFile)) Then
+                txtSSMFilePath.Text = fFileWoDir(suppliedSSMPath)
 
-                 txtCompressorMap.Text = fFileWoDir(fbAux.Files(0), fPATH(vectoFile))
+            End If
 
-               End If
+        Else
+            Return
+        End If
 
-               Validate_Pneumatics()
 
-               'Causes binding to fire
-               txtCompressorMap.Focus()
+        frm.Dispose()
 
 
-End Sub
-Private Sub btnActuationsMap_Click(sender As Object, e As EventArgs) Handles btnActuationsMap.Click
 
-               Dim fbAux As New cFileBrowser(True, False)
-
-              ' Dim vectoFile As String = "C:\Users\tb28\Source\Workspaces\VECTO\vecto-sim-ricardoaeaTB\AuxillaryTestHarness\bin\Debug\vectopath.vecto"
-               Dim fname As String = fFILE(vectoFile, True)
-
-                fbAux.Extensions = New String() {"APAC"}
-                If fbAux.OpenDialog(fPATH(vectoFile)) Then
-
-                 txtActuationsMap.Text = fFileWoDir(fbAux.Files(0), fPATH(vectoFile))
-
-                End If
-
-                Validate_Pneumatics()
-
-                'Causes Binding to fire.
-                txtActuationsMap.Focus()
-
-End Sub
-Private Sub btnCancel_Click( sender As Object,  e As EventArgs) Handles btnCancel.Click
-
-
-  Me.DialogResult = Windows.Forms.DialogResult.Cancel
-  Me.Close()
-
-
-End Sub
-
-Private Sub btnBusDatabaseSource_Click( sender As Object,  e As EventArgs) Handles btnBusDatabaseSource.Click
-
-               Dim fbAux As New cFileBrowser(True, False)
-               Dim ssmMap As Hvac.HVACSteadyStateModel
-               Dim message As String = String.Empty
-
-
-               fbAux.Extensions = New String() {"abdb"}
-
-               If fbAux.OpenDialog(fPATH(vectoFile)) Then
-
-                 txtBusDatabaseFilePath.Focus()
-                 txtBusDatabaseFilePath.Text = fFileWoDir(fbAux.Files(0), fPATH(vectoFile))
-
-                 Dim busDB As New BusDatabase( )
-                 
-                 If  Not busDB.Initialise( FilePathUtils.ResolveFilePath(vectoPath,txtBusDatabaseFilePath.Text) )
-
-                      messagebox.Show("Unable to load")
-
-
-                 End If
-
-
-               End If
-
-
-End Sub
-Private Sub btnSSMBSource_Click( sender As Object,  e As EventArgs) Handles btnSSMBSource.Click
-
-
-               Dim aauxFileValidated As Boolean = False
-               Dim fbAux As New cFileBrowser(True, False)
-              fbAux.Extensions = New String() {"AHSM"}
-               Dim frm As frmHVACTool  
-
-               Dim suppliedSSMPath  As string = String.Empty
-               Dim absoluteSSMPath  As String = String.Empty
-               Dim absoluteBusDatabasePath As string = String.Empty
-               Dim message As String = String.Empty
-               Dim newFile As Boolean = false
-
-              
-               'Trim ssmPath
-               txtSSMFilePath.Text.Trim
-
-
-                'Is Filename NOT supplied, try and obtain  it, still not supplied, then bail.
-                 If( txtSSMFilePath.Text.Length=0) then
-               
-                      newFile = true
-               
-                      If fbAux.CustomDialog(vectoPath,False,False, tFbExtMode.ForceExt,False,"") then
-                         If fbAux.Files.Count=0 then
-                               Return
-                          Else                     
-                               suppliedSSMPath = fbAux.Files(0)
-                         End If
-                      Else        
-                           'No file given in text box, not given in browser, so bail         
-                           return
-                      End If 
-               
-               Else                 
-                     suppliedSSMPath = txtSSMFilePath.Text
-               
-               End If
-
-               'Set Absolutes.
-               absoluteSSMPath = FilePathUtils.ResolveFilePath(fPATH(VECTOfile), suppliedSSMPath )
-               absoluteBusDatabasePath = FilePathUtils.ResolveFilePath(fPATH(VECTOfile),Me.txtBusDatabaseFilePath.Text )
-
-
-               'Is supplied filename NOT valid. bail
-               if Not FilePathUtils.ValidateFilePath(absoluteSSMPath,".ahsm",Message)  then                 
-                  MessageBox.Show( message)
-                  return
-               end if
-
-
-               'If file Exists, Check validity, else fire up a default SSM Config.
-               If  File.Exists( absoluteSSMPath ) then
-                     'is file valid Try ahsm - HVac Steady State Model
-                      try
-                          Dim ahsmFile As String = FilePathUtils.ResolveFilePath(vectoPath, absoluteSSMPath)
-                          Dim ssmTool As SSMTOOL = New SSMTOOL( ahsmFile,False)                        
-                          ssmTool.Load( ahsmFile )                   
-                       Catch ex As Exception         
-                            MessageBox.Show("The supplied AHSM File was invalid, aborting.")
-                            return
-                       End Try
-                Else              
-                 newFile=true
-
-                End If
-
-
-                'If newFile then use Defaults
-                If newFile then
-                   frm   = New frmHVACTool(absoluteBusDatabasePath, absoluteSSMPath,True )
-                               
-                Else               
-                   frm   = New frmHVACTool(absoluteBusDatabasePath, absoluteSSMPath )
-
-                End If
-
-
-
-
-               'If Dialog result is OK, then take action else bail
-               If frm.ShowDialog()   = Windows.Forms.DialogResult.OK then
-
-                 If suppliedSSMPath.Contains(":\")  then
-
-                    txtSSMFilePath.Text=  If( suppliedSSMPath.Contains( vectoPath), suppliedSSMPath.Replace( vectoPath,""), suppliedSSMPath)
-
-                 else
-                    
-                    txtSSMFilePath.Text = fFileWoDir( suppliedSSMPath )
-
-                 End If
-
-               Else          
-                   return
-               End If
-
-
-               frm.Dispose()
-
-
-
-End Sub
+    End Sub
 
 
 
 
 #End Region
-Private Sub chkSmartElectricals_CheckedChanged( sender As Object,  e As EventArgs) Handles   chkSmartElectricals.CheckedChanged
+    Private Sub chkSmartElectricals_CheckedChanged(sender As Object, e As EventArgs) Handles chkSmartElectricals.CheckedChanged
 
-   SetSmartCardEmabledStatus()
+        SetSmartCardEmabledStatus()
 
-End Sub
+    End Sub
 #Region "File Viewer Button Events"
 
-Private Sub btnAALTOpen_Click( sender As Object,  e As EventArgs) Handles btnAALTOpen.Click
+    Private Sub btnAALTOpen_Click(sender As Object, e As EventArgs) Handles btnAALTOpen.Click
 
-        OpenFiles(fFileRepl(Me.txtAlternatorMapPath.Text, fPATH(VECTOfile)))    
-    
-End Sub
-Private Sub btnOpenACMP_Click( sender As Object,  e As EventArgs) Handles btnOpenACMP.Click
+        OpenFiles(fFileRepl(Me.txtAlternatorMapPath.Text, fPATH(VECTOfile)))
 
-
-         OpenFiles(fFileRepl(Me.txtCompressorMap.Text, fPATH(VECTOfile)))
-
-End Sub
-Private Sub btnOpenAPAC_Click( sender As Object,  e As EventArgs) Handles btnOpenAPAC.Click
-
-          OpenFiles(fFileRepl(Me.txtActuationsMap.Text, fPATH(VECTOfile)))
-
-End Sub
-Private Sub btnOpenAHSM_Click( sender As Object,  e As EventArgs) Handles btnOpenAHSM.Click
-
-          OpenFiles(fFileRepl(Me.txtSSMFilePath.Text, fPATH(VECTOfile)))
+    End Sub
+    Private Sub btnOpenACMP_Click(sender As Object, e As EventArgs) Handles btnOpenACMP.Click
 
 
-End Sub
-Private Sub btnOpenABDB_Click( sender As Object,  e As EventArgs) Handles btnOpenABDB.Click
+        OpenFiles(fFileRepl(Me.txtCompressorMap.Text, fPATH(VECTOfile)))
+
+    End Sub
+    Private Sub btnOpenAPAC_Click(sender As Object, e As EventArgs) Handles btnOpenAPAC.Click
+
+        OpenFiles(fFileRepl(Me.txtActuationsMap.Text, fPATH(VECTOfile)))
+
+    End Sub
+    Private Sub btnOpenAHSM_Click(sender As Object, e As EventArgs) Handles btnOpenAHSM.Click
+
+        OpenFiles(fFileRepl(Me.txtSSMFilePath.Text, fPATH(VECTOfile)))
 
 
-          OpenFiles(fFileRepl(Me.txtBusDatabaseFilePath.Text, fPATH(VECTOfile)))
+    End Sub
+    Private Sub btnOpenABDB_Click(sender As Object, e As EventArgs) Handles btnOpenABDB.Click
 
-End Sub
+
+        OpenFiles(fFileRepl(Me.txtBusDatabaseFilePath.Text, fPATH(VECTOfile)))
+
+    End Sub
 
 
-#end region
+#End Region
 
-'Overrides
-Protected Overrides Function ProcessCmdKey(ByRef msg As Message, keyData As Keys) As Boolean
+    'Overrides
+    Protected Overrides Function ProcessCmdKey(ByRef msg As Message, keyData As Keys) As Boolean
 
         If keyData = Keys.Enter AndAlso Me.AcceptButton Is Nothing Then
-        Dim box As TextBoxBase = CType(Me.ActiveControl, TextBoxBase)
 
-        If box Is Nothing OrElse Not box.Multiline Then
+            If TypeOf (Me.ActiveControl) Is TextBoxBase Then
+                Dim box As TextBoxBase = CType(Me.ActiveControl, TextBoxBase)
 
-          Me.SelectNextControl(Me.ActiveControl, True, True, True, True)
-          Return True
+                If box Is Nothing OrElse Not box.Multiline Then
 
-       End If
+                    Me.SelectNextControl(Me.ActiveControl, True, True, True, True)
+                    Return True
 
-       End If
+                End If
+            End If
 
+        End If
 
-       Return MyBase.ProcessCmdKey(msg, keyData)
-
-
+        Return MyBase.ProcessCmdKey(msg, keyData)
 
     End Function
 
-'Helpers
-Private Sub OpenFiles(ParamArray files() As String)
+    'Helpers
+    Private Sub OpenFiles(ParamArray files() As String)
 
         If files.Length = 0 Then Exit Sub
 
@@ -1239,260 +1219,260 @@ Private Sub OpenFiles(ParamArray files() As String)
 
         CmFiles.Show(Cursor.Position)
 
-End Sub
-Private Sub OpenWithToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles OpenWithToolStripMenuItem.Click
-    If Not FileOpenAlt(CmFilesList(0)) Then MsgBox("Failed to open file!")
-End Sub
-Private Sub ShowInFolderToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles ShowInFolderToolStripMenuItem.Click
-    If IO.File.Exists(CmFilesList(0)) Then
-        Try
-            System.Diagnostics.Process.Start("explorer", "/select,""" & CmFilesList(0) & "")
-        Catch ex As Exception
-            MsgBox("Failed to open file!")
-        End Try
-    Else
-        MsgBox("File not found!")
-    End If
-End Sub
+    End Sub
+    Private Sub OpenWithToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles OpenWithToolStripMenuItem.Click
+        If Not FileOpenAlt(CmFilesList(0)) Then MsgBox("Failed to open file!")
+    End Sub
+    Private Sub ShowInFolderToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles ShowInFolderToolStripMenuItem.Click
+        If IO.File.Exists(CmFilesList(0)) Then
+            Try
+                System.Diagnostics.Process.Start("explorer", "/select,""" & CmFilesList(0) & "")
+            Catch ex As Exception
+                MsgBox("Failed to open file!")
+            End Try
+        Else
+            MsgBox("File not found!")
+        End If
+    End Sub
 #Region "Tab Header Color Change"
 
-Private Sub UpdateTabStatus(pageName As String, resultGood As Boolean)
+    Private Sub UpdateTabStatus(pageName As String, resultGood As Boolean)
 
 
-       Dim page As TabPage = tabMain.TabPages(pageName)
+        Dim page As TabPage = tabMain.TabPages(pageName)
 
-           If Not resultGood Then
+        If Not resultGood Then
 
-       SetTabHeader(page, Color.Red)
+            SetTabHeader(page, Color.Red)
 
-       Else
-              SetTabHeader(page, Control.DefaultBackColor)
+        Else
+            SetTabHeader(page, Control.DefaultBackColor)
 
-       End If
-
-
-
-
-End Sub
-Private Sub SetTabHeader(page As TabPage, color As Color)
-
-    TabColors(page) = color
-    tabMain.Invalidate()
-
-End Sub
-Private Sub tabMain_DrawItem(sender As Object, e As DrawItemEventArgs)
-
-    Dim br As Brush = New SolidBrush(TabColors(tabMain.TabPages(e.Index)))
-
-
-    Using (br)
-
-        e.Graphics.FillRectangle(br, e.Bounds)
-        Dim sz As SizeF = e.Graphics.MeasureString(tabMain.TabPages(e.Index).Text, e.Font)
-        e.Graphics.DrawString(tabMain.TabPages(e.Index).Text, e.Font, Brushes.Black, e.Bounds.Left + (e.Bounds.Width - sz.Width) / 2, e.Bounds.Top + (e.Bounds.Height - sz.Height) / 2 + 1)
-
-        Dim rect As Rectangle = e.Bounds
-        rect.Offset(-1, -1)
-        rect.Inflate(1, 1)
-       ' e.Graphics.DrawRectangle(Pens.DarkGray, rect)
-        'e.DrawFocusRectangle()
-
-    End Using
+        End If
 
 
 
 
-End Sub
+    End Sub
+    Private Sub SetTabHeader(page As TabPage, color As Color)
+
+        TabColors(page) = color
+        tabMain.Invalidate()
+
+    End Sub
+    Private Sub tabMain_DrawItem(sender As Object, e As DrawItemEventArgs)
+
+        Dim br As Brush = New SolidBrush(TabColors(tabMain.TabPages(e.Index)))
+
+
+        Using (br)
+
+            e.Graphics.FillRectangle(br, e.Bounds)
+            Dim sz As SizeF = e.Graphics.MeasureString(tabMain.TabPages(e.Index).Text, e.Font)
+            e.Graphics.DrawString(tabMain.TabPages(e.Index).Text, e.Font, Brushes.Black, e.Bounds.Left + (e.Bounds.Width - sz.Width) / 2, e.Bounds.Top + (e.Bounds.Height - sz.Height) / 2 + 1)
+
+            Dim rect As Rectangle = e.Bounds
+            rect.Offset(-1, -1)
+            rect.Inflate(1, 1)
+            ' e.Graphics.DrawRectangle(Pens.DarkGray, rect)
+            'e.DrawFocusRectangle()
+
+        End Using
+
+
+
+
+    End Sub
 
 
 #End Region
-Public Sub UnbindAllControls(ByRef container As Control)
-  'Clear all of the controls within the container object
-  'If "Recurse" is true, then also clear controls within any sub-containers
-  Dim ctrl As Control = Nothing
+    Public Sub UnbindAllControls(ByRef container As Control)
+        'Clear all of the controls within the container object
+        'If "Recurse" is true, then also clear controls within any sub-containers
+        Dim ctrl As Control = Nothing
 
-  For Each ctrl In container.Controls
+        For Each ctrl In container.Controls
 
-           ctrl.DataBindings.Clear()
+            ctrl.DataBindings.Clear()
 
-           If ctrl.HasChildren Then
-              UnbindAllControls(ctrl)
-           End If
+            If ctrl.HasChildren Then
+                UnbindAllControls(ctrl)
+            End If
 
-  Next
+        Next
 
-End Sub
-Private Function GetSSMMAP( ByVal filePath As String , byref message As string) As Hvac.IHVACSteadyStateModel
+    End Sub
+    Private Function GetSSMMAP(ByVal filePath As String, ByRef message As String) As Hvac.IHVACSteadyStateModel
 
-      Dim ssmMap As New Hvac.HVACSteadyStateModel()
+        Dim ssmMap As New Hvac.HVACSteadyStateModel()
 
 
-      Try
+        Try
 
-       If  ssmMap.SetValuesFromMap(FilePathUtils.ResolveFilePath(vectoPath,txtSSMFilePath.Text), message) then
+            If ssmMap.SetValuesFromMap(FilePathUtils.ResolveFilePath(vectoPath, txtSSMFilePath.Text), message) Then
 
-         Return ssmMap  
+                Return ssmMap
 
-       End If
+            End If
 
-       catch ex As Exception
+        Catch ex As Exception
 
-       MessageBox.Show("Unable to retreive values from map")
-        
-      End Try
+            MessageBox.Show("Unable to retreive values from map")
+
+        End Try
 
         Return Nothing
 
-End Function
-Private Sub SetupControls()
+    End Function
+    Private Sub SetupControls()
 
 
-      Dim cIndex As Integer = 0
+        Dim cIndex As Integer = 0
 
-      gvElectricalConsumables.AutoGenerateColumns = False
+        gvElectricalConsumables.AutoGenerateColumns = False
 
-     'ElectricalConsumerGrid 
-     'Columns
-     cIndex = gvElectricalConsumables.Columns.Add("Category", "Category")
-     gvElectricalConsumables.Columns(cIndex).DataPropertyName = "Category"
-     gvElectricalConsumables.Columns(cIndex).MinimumWidth = 150
-     gvElectricalConsumables.Columns(cIndex).ReadOnly = True
-     gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
-     gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
+        'ElectricalConsumerGrid 
+        'Columns
+        cIndex = gvElectricalConsumables.Columns.Add("Category", "Category")
+        gvElectricalConsumables.Columns(cIndex).DataPropertyName = "Category"
+        gvElectricalConsumables.Columns(cIndex).MinimumWidth = 150
+        gvElectricalConsumables.Columns(cIndex).ReadOnly = True
+        gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
+        gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
 
-     cIndex = gvElectricalConsumables.Columns.Add("ConsumerName", "Name")
+        cIndex = gvElectricalConsumables.Columns.Add("ConsumerName", "Name")
 
-     gvElectricalConsumables.Columns(cIndex).DataPropertyName = "ConsumerName"
-     gvElectricalConsumables.Columns(cIndex).MinimumWidth = 308
-     gvElectricalConsumables.Columns(cIndex).ReadOnly = True
-     gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
-     gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
+        gvElectricalConsumables.Columns(cIndex).DataPropertyName = "ConsumerName"
+        gvElectricalConsumables.Columns(cIndex).MinimumWidth = 308
+        gvElectricalConsumables.Columns(cIndex).ReadOnly = True
+        gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
+        gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
 
-     Dim baseVehicle As New DataGridViewCheckBoxColumn(False)
-     baseVehicle.HeaderText = "Base Vehicle"
-     cIndex = gvElectricalConsumables.Columns.Add(baseVehicle)
-     gvElectricalConsumables.Columns(cIndex).DataPropertyName = "BaseVehicle"
-     gvElectricalConsumables.Columns(cIndex).Width = 75
-     gvElectricalConsumables.Columns(cIndex).Visible=false
-     gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
-     gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
-     gvElectricalConsumables.Columns(cIndex).HeaderCell.ToolTipText = "Energy included in the calculations of base vehicle"
+        Dim baseVehicle As New DataGridViewCheckBoxColumn(False)
+        baseVehicle.HeaderText = "Base Vehicle"
+        cIndex = gvElectricalConsumables.Columns.Add(baseVehicle)
+        gvElectricalConsumables.Columns(cIndex).DataPropertyName = "BaseVehicle"
+        gvElectricalConsumables.Columns(cIndex).Width = 75
+        gvElectricalConsumables.Columns(cIndex).Visible = False
+        gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
+        gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
+        gvElectricalConsumables.Columns(cIndex).HeaderCell.ToolTipText = "Energy included in the calculations of base vehicle"
 
-     cIndex = gvElectricalConsumables.Columns.Add("NominalConsumptionAmps", "Nominal Amps")
-     gvElectricalConsumables.Columns(cIndex).DataPropertyName = "NominalConsumptionAmps"
-     gvElectricalConsumables.Columns(cIndex).Width = 60
-     gvElectricalConsumables.Columns(cIndex).ReadOnly=true
-     gvElectricalConsumables.Columns(cIndex).DefaultCellStyle= New DataGridViewCellStyle() with {.BackColor= Color.LightGray}
-     gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
-     gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
-     gvElectricalConsumables.Columns(cIndex).HeaderCell.ToolTipText = "Nominal consumption in AMPS"
+        cIndex = gvElectricalConsumables.Columns.Add("NominalConsumptionAmps", "Nominal Amps")
+        gvElectricalConsumables.Columns(cIndex).DataPropertyName = "NominalConsumptionAmps"
+        gvElectricalConsumables.Columns(cIndex).Width = 60
+        gvElectricalConsumables.Columns(cIndex).ReadOnly = True
+        gvElectricalConsumables.Columns(cIndex).DefaultCellStyle = New DataGridViewCellStyle() With {.BackColor = Color.LightGray}
+        gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
+        gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
+        gvElectricalConsumables.Columns(cIndex).HeaderCell.ToolTipText = "Nominal consumption in AMPS"
 
-     cIndex = gvElectricalConsumables.Columns.Add("PhaseIdle_TractionOn", "PhaseIdle/ TractionOn")
-     gvElectricalConsumables.Columns(cIndex).DataPropertyName = "PhaseIdle_TractionOn"
-     gvElectricalConsumables.Columns(cIndex).Width = 60
-     gvElectricalConsumables.Columns(cIndex).ReadOnly=true
-     gvElectricalConsumables.Columns(cIndex).DefaultCellStyle= New DataGridViewCellStyle() with {.BackColor= Color.LightGray}
-     gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
-     gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
-     gvElectricalConsumables.Columns(cIndex).HeaderCell.ToolTipText = "Represents the amount of time (during engine fueling) as " & vbCrLf & "percentage that the consumer is active during the cycle."
+        cIndex = gvElectricalConsumables.Columns.Add("PhaseIdle_TractionOn", "PhaseIdle/ TractionOn")
+        gvElectricalConsumables.Columns(cIndex).DataPropertyName = "PhaseIdle_TractionOn"
+        gvElectricalConsumables.Columns(cIndex).Width = 60
+        gvElectricalConsumables.Columns(cIndex).ReadOnly = True
+        gvElectricalConsumables.Columns(cIndex).DefaultCellStyle = New DataGridViewCellStyle() With {.BackColor = Color.LightGray}
+        gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
+        gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
+        gvElectricalConsumables.Columns(cIndex).HeaderCell.ToolTipText = "Represents the amount of time (during engine fueling) as " & vbCrLf & "percentage that the consumer is active during the cycle."
 
-     cIndex = gvElectricalConsumables.Columns.Add("NumberInActualVehicle", "Num in Vehicle")
-     gvElectricalConsumables.Columns(cIndex).DataPropertyName = "NumberInActualVehicle"
-     gvElectricalConsumables.Columns(cIndex).Width = 55
-     gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
-     gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
-     gvElectricalConsumables.Columns(cIndex).HeaderCell.ToolTipText = "Number of consumables of this" & vbCrLf & "type installed on the vehicle."
-
-
-     'INFO COLUMN
-     cIndex = gvElectricalConsumables.Columns.Add("info","Info")
-    '  cIndex = gvElectricalConsumables.Columns.Add( New ImageColumn())
-
-     gvElectricalConsumables.Columns(cIndex).DataPropertyName = "Info"
-     gvElectricalConsumables.Columns(cIndex).Width = 120
-     gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
-     gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
-     gvElectricalConsumables.Columns(cIndex).HeaderCell.ToolTipText = "Further Information"
-
-    ' ResultCard Grids
-
-     'IDLE
-
-     cIndex = gvResultsCardIdle.Columns.Add("Amps", "Amps")
-     gvResultsCardIdle.Columns(cIndex).DataPropertyName = "Amps"
-     gvResultsCardIdle.Columns(cIndex).Width = 65
-
-     cIndex = gvResultsCardIdle.Columns.Add("SmartAmps", "SmartAmps")
-     gvResultsCardIdle.Columns(cIndex).DataPropertyName = "SmartAmps"
-     gvResultsCardIdle.Columns(cIndex).Width = 65
-
-     'TRACTION
-     cIndex = gvResultsCardTraction.Columns.Add("Amps", "Amps")
-     gvResultsCardTraction.Columns(cIndex).DataPropertyName = "Amps"
-     gvResultsCardTraction.Columns(cIndex).Width = 65
-
-     cIndex = gvResultsCardTraction.Columns.Add("SmartAmps", "SmartAmps")
-     gvResultsCardTraction.Columns(cIndex).DataPropertyName = "SmartAmps"
-     gvResultsCardTraction.Columns(cIndex).Width = 65
-
-     'OVERRUN
-     cIndex = gvResultsCardOverrun.Columns.Add("Amps", "Amps")
-     gvResultsCardOverrun.Columns(cIndex).DataPropertyName = "Amps"
-     gvResultsCardOverrun.Columns(cIndex).Width = 65
-
-     cIndex = gvResultsCardOverrun.Columns.Add("SmartAmps", "SmartAmps")
-     gvResultsCardOverrun.Columns(cIndex).DataPropertyName = "SmartAmps"
-     gvResultsCardOverrun.Columns(cIndex).Width = 65
+        cIndex = gvElectricalConsumables.Columns.Add("NumberInActualVehicle", "Num in Vehicle")
+        gvElectricalConsumables.Columns(cIndex).DataPropertyName = "NumberInActualVehicle"
+        gvElectricalConsumables.Columns(cIndex).Width = 55
+        gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
+        gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
+        gvElectricalConsumables.Columns(cIndex).HeaderCell.ToolTipText = "Number of consumables of this" & vbCrLf & "type installed on the vehicle."
 
 
+        'INFO COLUMN
+        cIndex = gvElectricalConsumables.Columns.Add("info", "Info")
+        '  cIndex = gvElectricalConsumables.Columns.Add( New ImageColumn())
+
+        gvElectricalConsumables.Columns(cIndex).DataPropertyName = "Info"
+        gvElectricalConsumables.Columns(cIndex).Width = 120
+        gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Alignment = DataGridViewContentAlignment.TopCenter
+        gvElectricalConsumables.Columns(cIndex).HeaderCell.Style.Padding = New Padding(1, 2, 1, 1)
+        gvElectricalConsumables.Columns(cIndex).HeaderCell.ToolTipText = "Further Information"
+
+        ' ResultCard Grids
+
+        'IDLE
+
+        cIndex = gvResultsCardIdle.Columns.Add("Amps", "Amps")
+        gvResultsCardIdle.Columns(cIndex).DataPropertyName = "Amps"
+        gvResultsCardIdle.Columns(cIndex).Width = 65
+
+        cIndex = gvResultsCardIdle.Columns.Add("SmartAmps", "SmartAmps")
+        gvResultsCardIdle.Columns(cIndex).DataPropertyName = "SmartAmps"
+        gvResultsCardIdle.Columns(cIndex).Width = 65
+
+        'TRACTION
+        cIndex = gvResultsCardTraction.Columns.Add("Amps", "Amps")
+        gvResultsCardTraction.Columns(cIndex).DataPropertyName = "Amps"
+        gvResultsCardTraction.Columns(cIndex).Width = 65
+
+        cIndex = gvResultsCardTraction.Columns.Add("SmartAmps", "SmartAmps")
+        gvResultsCardTraction.Columns(cIndex).DataPropertyName = "SmartAmps"
+        gvResultsCardTraction.Columns(cIndex).Width = 65
+
+        'OVERRUN
+        cIndex = gvResultsCardOverrun.Columns.Add("Amps", "Amps")
+        gvResultsCardOverrun.Columns(cIndex).DataPropertyName = "Amps"
+        gvResultsCardOverrun.Columns(cIndex).Width = 65
+
+        cIndex = gvResultsCardOverrun.Columns.Add("SmartAmps", "SmartAmps")
+        gvResultsCardOverrun.Columns(cIndex).DataPropertyName = "SmartAmps"
+        gvResultsCardOverrun.Columns(cIndex).Width = 65
 
 
-End Sub
+
+
+    End Sub
 #Region "Binding Control"
 
-Private Sub CreateBindings()
+    Private Sub CreateBindings()
 
-     'auxConfig.Vecto Bindings
-     txtPowernetVoltage.DataBindings.Add("Text", auxConfig.ElectricalUserInputsConfig, "PowerNetVoltage")
-     'txtVehicleWeightKG.DataBindings.Add("Text", auxConfig.VectoInputs, "VehicleWeightKG")
-     'cboCycle.DataBindings.Add("Text", auxConfig.VectoInputs, "Cycle")
-     txtFuelMap.DataBindings.Add("Text", auxConfig.VectoInputs, "FuelMap")
+        'auxConfig.Vecto Bindings
+        txtPowernetVoltage.DataBindings.Add("Text", auxConfig.ElectricalUserInputsConfig, "PowerNetVoltage")
+        'txtVehicleWeightKG.DataBindings.Add("Text", auxConfig.VectoInputs, "VehicleWeightKG")
+        'cboCycle.DataBindings.Add("Text", auxConfig.VectoInputs, "Cycle")
+        txtFuelMap.DataBindings.Add("Text", auxConfig.VectoInputs, "FuelMap")
 
-     'Electricals General
-     txtAlternatorMapPath.DataBindings.Add("Text", auxConfig.ElectricalUserInputsConfig, "AlternatorMap")
-     txtAlternatorGearEfficiency.DataBindings.Add("Text", auxConfig.ElectricalUserInputsConfig, "AlternatorGearEfficiency")
-     txtDoorActuationTimeSeconds.DataBindings.Add("Text", auxConfig.ElectricalUserInputsConfig, "DoorActuationTimeSecond")
-     chkSmartElectricals.DataBindings.Add("Checked", auxConfig.ElectricalUserInputsConfig, "SmartElectrical", False, DataSourceUpdateMode.OnPropertyChanged)
-
-
-     'Electrical ConsumablesGrid
-     Dim electricalConsumerBinding As New BindingList(Of IElectricalConsumer)(auxConfig.ElectricalUserInputsConfig.ElectricalConsumers.Items)
-     gvElectricalConsumables.DataSource = electricalConsumerBinding
+        'Electricals General
+        txtAlternatorMapPath.DataBindings.Add("Text", auxConfig.ElectricalUserInputsConfig, "AlternatorMap")
+        txtAlternatorGearEfficiency.DataBindings.Add("Text", auxConfig.ElectricalUserInputsConfig, "AlternatorGearEfficiency")
+        txtDoorActuationTimeSeconds.DataBindings.Add("Text", auxConfig.ElectricalUserInputsConfig, "DoorActuationTimeSecond")
+        chkSmartElectricals.DataBindings.Add("Checked", auxConfig.ElectricalUserInputsConfig, "SmartElectrical", False, DataSourceUpdateMode.OnPropertyChanged)
 
 
+        'Electrical ConsumablesGrid
+        electricalConsumerBinding = New BindingList(Of IElectricalConsumer)(auxConfig.ElectricalUserInputsConfig.ElectricalConsumers.Items)
+        gvElectricalConsumables.DataSource = electricalConsumerBinding
 
-     'ResultCards
 
-         'IDLE
-         Dim idleBinding as BindingList(Of SmartResult)
-         idleBinding = New BindingList(Of SmartResult)(auxConfig.ElectricalUserInputsConfig.ResultCardIdle.Results)
-         idleBinding.AllowNew = True
-         idleBinding.AllowRemove = True
-         gvResultsCardIdle.DataSource = idleBinding
 
-         'TRACTION
-         Dim tractionBinding As BindingList(Of SmartResult)
-         tractionBinding = New BindingList(Of SmartResult)(auxConfig.ElectricalUserInputsConfig.ResultCardTraction.Results)
-         tractionBinding.AllowNew = True
-         tractionBinding.AllowRemove = True
-         gvResultsCardTraction.DataSource = tractionBinding
+        'ResultCards
 
-         'OVERRUN
-         Dim overrunBinding As BindingList(Of SmartResult)
-         overrunBinding = New BindingList(Of SmartResult)(auxConfig.ElectricalUserInputsConfig.ResultCardOverrun.Results)
-         overrunBinding.AllowNew = True
-         overrunBinding.AllowRemove = True
-         gvResultsCardOverrun.DataSource = overrunBinding
+        'IDLE
+        Dim idleBinding As BindingList(Of SmartResult)
+        idleBinding = New BindingList(Of SmartResult)(auxConfig.ElectricalUserInputsConfig.ResultCardIdle.Results)
+        idleBinding.AllowNew = True
+        idleBinding.AllowRemove = True
+        gvResultsCardIdle.DataSource = idleBinding
+
+        'TRACTION
+        Dim tractionBinding As BindingList(Of SmartResult)
+        tractionBinding = New BindingList(Of SmartResult)(auxConfig.ElectricalUserInputsConfig.ResultCardTraction.Results)
+        tractionBinding.AllowNew = True
+        tractionBinding.AllowRemove = True
+        gvResultsCardTraction.DataSource = tractionBinding
+
+        'OVERRUN
+        Dim overrunBinding As BindingList(Of SmartResult)
+        overrunBinding = New BindingList(Of SmartResult)(auxConfig.ElectricalUserInputsConfig.ResultCardOverrun.Results)
+        overrunBinding.AllowNew = True
+        overrunBinding.AllowRemove = True
+        gvResultsCardOverrun.DataSource = overrunBinding
 
 
         'Pneumatic Auxillaries Binding
@@ -1524,64 +1504,61 @@ Private Sub CreateBindings()
         cboAdBlueDosing.DataBindings.Add("Text", auxConfig.PneumaticUserInputsConfig, "AdBlueDosing")
         cboDoors.DataBindings.Add("Text", auxConfig.PneumaticUserInputsConfig, "Doors")
 
-        txtSSMFilePath.DataBindings.Add( "Text", auxConfig.HvacUserInputsConfig,"SSMFilePath")
-        txtBusDatabaseFilePath.DataBindings.Add("Text",auxConfig.HvacUserInputsConfig,"BusDatabasePath")
-
+        txtSSMFilePath.DataBindings.Add("Text", auxConfig.HvacUserInputsConfig, "SSMFilePath")
+        txtBusDatabaseFilePath.DataBindings.Add("Text", auxConfig.HvacUserInputsConfig, "BusDatabasePath")
+        chkDisableHVAC.DataBindings.Add("Checked", auxConfig.HvacUserInputsConfig, "SSMDisabled", False, DataSourceUpdateMode.OnPropertyChanged)
 
         SetSmartCardEmabledStatus()
 
-End Sub
+    End Sub
 
-Private Sub EnsureBinding()
+    Private Sub EnsureBinding()
         With tabMain
             Dim lastSelectedTabIndex As Integer = .SelectedIndex
             If lastSelectedTabIndex < 0 OrElse lastSelectedTabIndex > .TabCount Then lastSelectedTabIndex = 0
             For currentTab As Integer = 0 To .TabCount - 1
                 .SelectedIndex = currentTab
             Next
-                .SelectedIndex = 0
+            .SelectedIndex = 0
         End With
 
-   SetSmartCardEmabledStatus()
+        SetSmartCardEmabledStatus()
 
- End Sub
+    End Sub
 
 #End Region
-Protected sub SetSmartCardEmabledStatus( )
 
-    If chkSmartElectricals.Checked then 
+    Protected Sub SetSmartCardEmabledStatus()
 
-       gvResultsCardIdle.Enabled=True
-       gvResultsCardTraction.Enabled=True
-       gvResultsCardOverrun.Enabled=true
+        If chkSmartElectricals.Checked Then
 
+            gvResultsCardIdle.Enabled = True
+            gvResultsCardTraction.Enabled = True
+            gvResultsCardOverrun.Enabled = True
 
+            gvResultsCardIdle.BackgroundColor = Color.Gray
+            gvResultsCardTraction.BackgroundColor = Color.Gray
+            gvResultsCardOverrun.BackgroundColor = Color.Gray
 
+            electricalConsumerBinding.Single(Function(c) c.Category = "Veh Electronics &Engine").NumberInActualVehicle = 0
+        Else
 
-       gvResultsCardIdle.BackgroundColor=Color.Gray
-       gvResultsCardTraction.BackgroundColor=Color.Gray
-       gvResultsCardOverrun.BackgroundColor=Color.Gray
-
-
-    else
-
-       gvResultsCardIdle.Enabled=false
-       gvResultsCardTraction.Enabled=false
-       gvResultsCardOverrun.Enabled=false
+            gvResultsCardIdle.Enabled = False
+            gvResultsCardTraction.Enabled = False
+            gvResultsCardOverrun.Enabled = False
 
 
-       gvResultsCardIdle.BackgroundColor=    Color.White
-       gvResultsCardTraction.BackgroundColor=Color.White
-       gvResultsCardOverrun.BackgroundColor= Color.White
+            gvResultsCardIdle.BackgroundColor = Color.White
+            gvResultsCardTraction.BackgroundColor = Color.White
+            gvResultsCardOverrun.BackgroundColor = Color.White
 
-
-
-    End If
+            electricalConsumerBinding.Single(Function(c) c.Category = "Veh Electronics &Engine").NumberInActualVehicle = 1
+        End If
 
 
 
- End Sub
-Public Function FileOpenAlt(ByVal file As String) As Boolean
+    End Sub
+    Public Function FileOpenAlt(ByVal file As String) As Boolean
         Dim PSI As New ProcessStartInfo
 
         If Not IO.File.Exists(file) Then Return False
@@ -1597,6 +1574,29 @@ Public Function FileOpenAlt(ByVal file As String) As Boolean
 
     End Function
 
+    Private Sub chkDisableHVAC_CheckedChanged(sender As Object, e As EventArgs) Handles chkDisableHVAC.CheckedChanged
 
+        If chkDisableHVAC.Checked Then
+
+            txtSSMFilePath.ReadOnly = True
+            txtBusDatabaseFilePath.ReadOnly = True
+            btnSSMBSource.Enabled = False
+            btnBusDatabaseSource.Enabled = False
+            btnOpenAHSM.Enabled = False
+            btnOpenABDB.Enabled = False
+
+        Else
+
+            txtSSMFilePath.ReadOnly = False
+            txtBusDatabaseFilePath.ReadOnly = False
+            btnSSMBSource.Enabled = True
+            btnBusDatabaseSource.Enabled = True
+            btnOpenAHSM.Enabled = True
+            btnOpenABDB.Enabled = True
+
+        End If
+
+
+    End Sub
 
 End Class
