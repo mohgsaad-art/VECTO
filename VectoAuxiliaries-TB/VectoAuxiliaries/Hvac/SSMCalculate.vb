@@ -239,7 +239,7 @@ Namespace Hvac
                 'Dim M89 = Run1.TotalW
                 'Dim M90 = Run2.TotalW
 
-                Return If(gen.EC_EnviromentalTemperature < gen.BC_TemperatureCoolingTurnsOff, 0, If(gen.AC_CompressorTypeDerived = "electrical", 0, If(Run1.TotalW > 0 AndAlso Run2.TotalW > 0, Math.Min(Run1.TotalW, Run2.TotalW), 0)))
+                Return If(gen.EC_EnviromentalTemperature < gen.BC_TemperatureCoolingTurnsOff, 0, If(gen.AC_CompressorTypeDerived.ToLower() = "electrical", 0, If(Run1.TotalW > 0 AndAlso Run2.TotalW > 0, Math.Min(Run1.TotalW, Run2.TotalW), 0)))
 
            End Get
         End Property
@@ -255,7 +255,7 @@ Namespace Hvac
                 'Dim M89 = Run1.TotalW
                 'Dim M90 = Run2.TotalW
 
-                Return If(gen.EC_EnviromentalTemperature < gen.BC_TemperatureCoolingTurnsOff, 0, If(gen.AC_CompressorTypeDerived = "electrical", If(Run1.TotalW > 0 AndAlso Run2.TotalW > 0, Math.Min(Run1.TotalW, Run2.TotalW), 0), 0))
+                Return If(gen.EC_EnviromentalTemperature < gen.BC_TemperatureCoolingTurnsOff, 0, If(gen.AC_CompressorTypeDerived.ToLower() = "electrical", If(Run1.TotalW > 0 AndAlso Run2.TotalW > 0, Math.Min(Run1.TotalW, Run2.TotalW), 0), 0))
 
             End Get
         End Property
@@ -381,9 +381,9 @@ Namespace Hvac
                 'Dim C40 As Double   =  gen.BC_MaxPossibleBenefitFromTechnologyList
                 'Dim C48 As string   =  gen.AC_CompressorType
 
-                result = If(If(gen.AC_CompressorType.ToLower = "mechanical", tl.CValueVariation, 0) > 0, _
-                                Math.Min(If(gen.AC_CompressorType = "mechanical", tl.CValueVariation, 0), gen.BC_MaxPossibleBenefitFromTechnologyList), _
-                                Math.Max(If(gen.AC_CompressorType = "mechanical", tl.CValueVariation, 0), -gen.BC_MaxPossibleBenefitFromTechnologyList))
+                result = If(If(gen.AC_CompressorType.ToLower() = "mechanical", tl.CValueVariation, 0) > 0, _
+                                Math.Min(If(gen.AC_CompressorType.ToLower() = "mechanical", tl.CValueVariation, 0), gen.BC_MaxPossibleBenefitFromTechnologyList), _
+                                Math.Max(If(gen.AC_CompressorType.ToLower() = "mechanical", tl.CValueVariation, 0), -gen.BC_MaxPossibleBenefitFromTechnologyList))
 
                 Return result
 
@@ -402,9 +402,9 @@ Namespace Hvac
                 'Dim C40 As Double   =  gen.BC_MaxPossibleBenefitFromTechnologyList
                 'Dim C48 As string   =  gen.AC_CompressorType
 
-                result = If(If(gen.AC_CompressorType.ToLower = "mechanical", 0, tl.CValueVariation) > 0, _
-                            Math.Min(If(gen.AC_CompressorType.ToLower = "mechanical", 0, tl.CValueVariation), gen.BC_MaxPossibleBenefitFromTechnologyList), _
-                            Math.Max(If(gen.AC_CompressorType.ToLower = "mechanical", 0, tl.CValueVariation), -gen.BC_MaxPossibleBenefitFromTechnologyList))
+                result = If(If(gen.AC_CompressorType.ToLower() = "mechanical", 0, tl.CValueVariation) > 0, _
+                            Math.Min(If(gen.AC_CompressorType.ToLower() = "mechanical", 0, tl.CValueVariation), gen.BC_MaxPossibleBenefitFromTechnologyList), _
+                            Math.Max(If(gen.AC_CompressorType.ToLower() = "mechanical", 0, tl.CValueVariation), -gen.BC_MaxPossibleBenefitFromTechnologyList))
 
                 Return result
 

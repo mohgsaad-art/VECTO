@@ -77,7 +77,7 @@ Namespace Hvac
             Me.HVACConstants = hvacConstants
 
             GenInputs = New SSMGenInputs(useTestValues)
-            TechList = New SSMTechList(filePath, GenInputs)
+            TechList = New SSMTechList(filePath, GenInputs, useTestValues)
 
             Calculate = New SSMCalculate(Me)
 
