@@ -22,13 +22,14 @@ Namespace Hvac
         ReadOnly Property BC_SolarClouding As Double
         ReadOnly Property BC_HeatPerPassengerIntoCabinW As Double
         Property BC_PassengerBoundaryTemperature As Double
-        Property BC_PassengerDensityLowFloor As Double
-        Property BC_PassengerDensitySemiLowFloor As Double
-        Property BC_PassengerDensityRaisedFloor As Double
+        ReadOnly Property BC_PassengerDensityLowFloor As Double
+        ReadOnly Property BC_PassengerDensitySemiLowFloor As Double
+        ReadOnly Property BC_PassengerDensityRaisedFloor As Double
         ReadOnly Property BC_CalculatedPassengerNumber As Double
         ReadOnly Property BC_UValues As Double
         Property BC_HeatingBoundaryTemperature As Double
         Property BC_CoolingBoundaryTemperature As Double
+        ReadOnly Property BC_TemperatureCoolingTurnsOff As Double
         Property BC_HighVentilation As Double
         Property BC_lowVentilation As Double
         ReadOnly Property BC_High As Double
@@ -36,10 +37,8 @@ Namespace Hvac
         ReadOnly Property BC_HighVentPowerW As Double
         ReadOnly Property BC_LowVentPowerW As Double
         Property BC_SpecificVentilationPower As Double
-        Property BC_COP As Double
         Property BC_AuxHeaterEfficiency As Double
         Property BC_GCVDieselOrHeatingOil As Double
-        Property BC_VolumicMassDieselOrHeatingOil As Double
         ReadOnly Property BC_WindowAreaPerUnitBusLength As Double
         ReadOnly Property BC_FrontRearWindowArea As Double
         Property BC_MaxTemperatureDeltaForLowFloorBusses As Double
@@ -52,10 +51,11 @@ Namespace Hvac
         Property EC_EnviromentalConditions_BatchFile As String
         Property EC_EnviromentalConditions_BatchEnabled As Boolean
 
-        'AC-system				                                     
-        Property AC_InCabinRoomAC_System As Boolean
+        'AC-system				            
         Property AC_CompressorType As String
+        ReadOnly Property AC_CompressorTypeDerived As String
         Property AC_CompressorCapacitykW As Double
+        ReadOnly Property AC_COP As Double
 
         'Ventilation				
         Property VEN_VentilationOnDuringHeating As Boolean

@@ -102,10 +102,8 @@ Namespace UnitTests
          Assert.AreEqual(927.18478125   ,target.BC_HighVentPowerW                        )
          Assert.AreEqual(296.69913000R  ,target.BC_LowVentPowerW                         )
          Assert.AreEqual(0.6R           ,target.BC_SpecificVentilationPower              )
-         Assert.AreEqual(4              ,target.BC_COP                                   )
          Assert.AreEqual(1              ,target.BC_AuxHeaterEfficiency                   )
          Assert.AreEqual(13             ,target.BC_GCVDieselOrHeatingOil                 )
-         Assert.AreEqual(1              ,target.BC_VolumicMassDieselOrHeatingOil         )
          Assert.AreEqual(1.5R           ,target.BC_WindowAreaPerUnitBusLength            )
          Assert.AreEqual(5              ,target.BC_FrontRearWindowArea                   )
          Assert.AreEqual(4              ,target.BC_MaxTemperatureDeltaForLowFloorBusses  )
@@ -127,10 +125,9 @@ Namespace UnitTests
 
         'AC-SYSTEM
         '*********
-        Assert.AreEqual( True         , target.AC_InCabinRoomAC_System             )            
         Assert.AreEqual( "mechanical" , target.AC_CompressorType                   )            
         Assert.AreEqual( 18           , target.AC_CompressorCapacitykW             )            
-
+                Assert.AreEqual(4, target.AC_COP)
      End If
 
      If section = "Ventilation" Then 
@@ -566,7 +563,7 @@ End Sub
 
          const  filePath as string  = "SSMTOOLTestSaveRetreive.json"
 
-         Dim target As SSMTOOL = New SSMTOOL(filePath, True )
+            Dim target As SSMTOOL = New SSMTOOL(filePath, New HVACConstants(), True)
 
          target.Save(filePath)
 
@@ -590,8 +587,8 @@ End Sub
          const  filePath as string  = "SSMTOOLTestSaveRetreive.json"
 
 
-         Dim ssmTool1 As SSMTOOL = New SSMTOOL(filePath )
-         Dim ssmTool2 As SSMTOOL = New SSMTOOL(filePath )  
+            Dim ssmTool1 As SSMTOOL = New SSMTOOL(filePath, New HVACConstants())
+            Dim ssmTool2 As SSMTOOL = New SSMTOOL(filePath, New HVACConstants())
 
 
          Assert.IsTrue ( ssmTool1.IsEqualTo( ssmTool2))
@@ -604,12 +601,12 @@ End Sub
          const  filePath as string  = "SSMTOOLTestSaveRetreive.json"
 
 
-         Dim ssmTool1 As SSMTOOL = New SSMTOOL(filePath )
+            Dim ssmTool1 As SSMTOOL = New SSMTOOL(filePath, New HVACConstants())
 
          'Alter somthing
          ssmTool1.genInputs.BP_BusLength=11
 
-         Dim ssmTool2 As SSMTOOL = New SSMTOOL(filePath )  
+            Dim ssmTool2 As SSMTOOL = New SSMTOOL(filePath, New HVACConstants())
 
 
          Assert.IsFalse ( ssmTool1.IsEqualTo( ssmTool2))
@@ -624,8 +621,8 @@ End Sub
          const  filePath as string  = "SSMTOOLTestSaveRetreive.json"
 
 
-         Dim ssmTool1 As SSMTOOL = New SSMTOOL(filePath )
-         Dim ssmTool2 As SSMTOOL = New SSMTOOL(filePath )  
+            Dim ssmTool1 As SSMTOOL = New SSMTOOL(filePath, New HVACConstants())
+            Dim ssmTool2 As SSMTOOL = New SSMTOOL(filePath, New HVACConstants())
 
 
          Assert.IsTrue ( ssmTool1.IsEqualTo( ssmTool2))
@@ -638,8 +635,8 @@ End Sub
          const  filePath as string  = "SSMTOOLTestSaveRetreive.json"
 
 
-         Dim ssmTool1 As SSMTOOL = New SSMTOOL(filePath )
-         Dim ssmTool2 As SSMTOOL = New SSMTOOL(filePath )  
+            Dim ssmTool1 As SSMTOOL = New SSMTOOL(filePath, New HVACConstants())
+            Dim ssmTool2 As SSMTOOL = New SSMTOOL(filePath, New HVACConstants())
 
          'Change something on techlist
          AddDefaultTechLine( ssmTool1)
@@ -653,8 +650,8 @@ End Sub
          const  filePath as string  = "SSMTOOLTestSaveRetreive.json"
 
 
-         Dim ssmTool1 As SSMTOOL = New SSMTOOL(filePath )
-         Dim ssmTool2 As SSMTOOL = New SSMTOOL(filePath )  
+            Dim ssmTool1 As SSMTOOL = New SSMTOOL(filePath, New HVACConstants())
+            Dim ssmTool2 As SSMTOOL = New SSMTOOL(filePath, New HVACConstants())
 
          'Change something on techlist
          AddDefaultTechLine( ssmTool1)
@@ -669,8 +666,8 @@ End Sub
          const  filePath as string  = "SSMTOOLTestSaveRetreive.json"
 
 
-         Dim ssmTool1 As SSMTOOL = New SSMTOOL(filePath )
-         Dim ssmTool2 As SSMTOOL = New SSMTOOL(filePath )  
+            Dim ssmTool1 As SSMTOOL = New SSMTOOL(filePath, New HVACConstants())
+            Dim ssmTool2 As SSMTOOL = New SSMTOOL(filePath, New HVACConstants())
 
          'Change something on techlist
          AddDefaultTechLine( ssmTool1)
@@ -688,8 +685,8 @@ End Sub
          const  filePath as string  = "SSMTOOLTestSaveRetreive.json"
 
 
-         Dim ssmTool1 As SSMTOOL = New SSMTOOL(filePath )
-         Dim ssmTool2 As SSMTOOL = New SSMTOOL(filePath )  
+            Dim ssmTool1 As SSMTOOL = New SSMTOOL(filePath, New HVACConstants())
+            Dim ssmTool2 As SSMTOOL = New SSMTOOL(filePath, New HVACConstants())
 
          'Change something on techlist
          AddDefaultTechLine( ssmTool1)

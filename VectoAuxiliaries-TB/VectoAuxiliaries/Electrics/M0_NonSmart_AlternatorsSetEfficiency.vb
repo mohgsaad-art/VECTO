@@ -25,7 +25,7 @@ Namespace Electrics
    
    Private _ElectricalPowerW As Single
    Private _MechanicalPowerW As Single
-   Private _FuelingLPerH As Single
+        Private _FuelingLPerH As Single
 
    'Constructor
    Public Sub New(electricalConsumers As IElectricalConsumerList,  alternatorEfficiencyMap As IAlternatorMap, powernetVoltage As Single, signals As ISignals, ssmHvac As ISSMTOOL)
@@ -43,7 +43,7 @@ Namespace Electrics
 
        _ElectricalPowerW= ssmHvac.ElectricalWAdjusted
        _MechanicalPowerW= ssmHvac.MechanicalWBaseAdjusted
-       _FuelingLPerH    = ssmHvac.FuelPerHBaseAdjusted
+            _FuelingLPerH = ssmHvac.FuelPerHBaseAdjusted
        
 
 

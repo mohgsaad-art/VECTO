@@ -18,6 +18,7 @@ Namespace Hvac
         Public Property TechList As ISSMTechList Implements ISSMTOOL.TechList
         Public Property Calculate As ISSMCalculate Implements ISSMTOOL.Calculate
         Public Property SSMDisabled As Boolean Implements ISSMTOOL.SSMDisabled
+        Public Property HVACConstants As IHVACConstants Implements ISSMTOOL.HVACConstants
 
         'Repeat Warning Flags
         Private CompressorCapacityInsufficientWarned As Boolean
@@ -39,6 +40,7 @@ Namespace Hvac
                 Return If(SSMDisabled, 0, Calculate.FuelPerHBase)
             End Get
         End Property
+
         'Adjusted Values
         Public ReadOnly Property ElectricalWAdjusted As Single Implements ISSMTOOL.ElectricalWAdjusted
             Get
@@ -49,7 +51,7 @@ Namespace Hvac
             Get
                 Dim mechAdjusted As Single = If(SSMDisabled, 0, Calculate.MechanicalWBaseAdjusted)
 
-                If CompressorCapacityInsufficientWarned = False AndAlso (mechAdjusted) / (1000 * GenInputs.BC_COP) > GenInputs.AC_CompressorCapacitykW Then
+                If CompressorCapacityInsufficientWarned = False AndAlso (mechAdjusted) / (1000 * GenInputs.AC_COP) > GenInputs.AC_CompressorCapacitykW Then
 
                     OnMessage(Me, "HVAC SSM :AC-Compressor Capacity unable to service cooling, run continues as if capacity was sufficient.", AdvancedAuxiliaryMessageType.Warning)
                     CompressorCapacityInsufficientWarned = True
@@ -68,10 +70,11 @@ Namespace Hvac
         End Property
 
         'Constructors
-        Sub New(filePath As String, Optional isDisabled As Boolean = False, Optional useTestValues As Boolean = False)
+        Sub New(filePath As String, hvacConstants As HVACConstants, Optional isDisabled As Boolean = False, Optional useTestValues As Boolean = False)
 
             Me.filePath = filePath
             Me.SSMDisabled = isDisabled
+            Me.HVACConstants = hvacConstants
 
             GenInputs = New SSMGenInputs(useTestValues)
             TechList = New SSMTechList(filePath, GenInputs)
@@ -129,7 +132,7 @@ Namespace Hvac
 
             Dim returnValue As Boolean = True
             Dim settings As JsonSerializerSettings = New JsonSerializerSettings()
-            Dim tmpAux As SSMTOOL = New SSMTOOL(filePath)
+            Dim tmpAux As SSMTOOL = New SSMTOOL(filePath, HVACConstants)
 
             settings.TypeNameHandling = TypeNameHandling.Objects
 
@@ -248,32 +251,24 @@ Namespace Hvac
         Public Function FuelPerHBaseAsjusted(AverageUseableEngineWasteHeatKW As Single) As Single Implements ISSMTOOL.FuelPerHBaseAsjusted
 
             If SSMDisabled Then
-
                 Return 0
+            End If
 
-            Else
+            'Set Engine Waste Heat
+            GenInputs.AH_EngineWasteHeatkW = AverageUseableEngineWasteHeatKW
+            Dim fba As Single = FuelPerHBaseAdjusted
 
-                'Set Engine Waste Heat
-                GenInputs.AH_EngineWasteHeatkW = AverageUseableEngineWasteHeatKW
-                Dim fba As Single = FuelPerHBaseAdjusted
+            Dim FuelFiredWarning As Boolean = fba * GenInputs.BC_AuxHeaterEfficiency * HVACConstants.FuelDensity * GenInputs.BC_GCVDieselOrHeatingOil * 1000 > (AverageUseableEngineWasteHeatKW + GenInputs.AH_FuelFiredHeaterkW)
 
-                Dim FuelFiredWarning As Boolean = fba * GenInputs.BC_AuxHeaterEfficiency * GenInputs.BC_VolumicMassDieselOrHeatingOil * GenInputs.BC_GCVDieselOrHeatingOil * 1000 > _
-                            (AverageUseableEngineWasteHeatKW + GenInputs.AH_FuelFiredHeaterkW)
+            If Not FuelFiredHeaterInsufficientWarned AndAlso FuelFiredWarning Then
 
+                FuelFiredHeaterInsufficientWarned = True
 
-                If Not FuelFiredHeaterInsufficientWarned AndAlso FuelFiredWarning Then
-
-                    FuelFiredHeaterInsufficientWarned = True
-
-                    OnMessage(Me, " HVAC SSM : Fuel fired heater insufficient for heating requirements, run continues assuming it was sufficient.", AdvancedAuxiliaryMessageType.Warning)
-
-                End If
-
-
-
-                Return fba
+                OnMessage(Me, " HVAC SSM : Fuel fired heater insufficient for heating requirements, run continues assuming it was sufficient.", AdvancedAuxiliaryMessageType.Warning)
 
             End If
+
+            Return fba
 
         End Function
 
