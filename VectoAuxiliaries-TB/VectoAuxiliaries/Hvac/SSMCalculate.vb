@@ -193,9 +193,9 @@ Namespace Hvac
                 Dim res As Double
 
                 res = If(Run1.TotalW < 0 AndAlso Run2.TotalW < 0, _
-                        If(gen.VEN_VentilationOnDuringHeating AndAlso gen.VEN_VentilationDuringHeating = "high", _
+                        If(gen.VEN_VentilationOnDuringHeating AndAlso gen.VEN_VentilationDuringHeating.ToLower() = "high", _
                                         gen.BC_HighVentPowerW, _
-                                        If(gen.VEN_VentilationOnDuringHeating AndAlso gen.VEN_VentilationDuringHeating = "low", gen.BC_LowVentPowerW, 0)), 0)
+                                        If(gen.VEN_VentilationOnDuringHeating AndAlso gen.VEN_VentilationDuringHeating.ToLower() = "low", gen.BC_LowVentPowerW, 0)), 0)
 
 
                 Return res
@@ -227,55 +227,56 @@ Namespace Hvac
             End Get
 
         End Property
-
         Public ReadOnly Property BaseCoolingW_Mechanical As Double Implements ISSMCalculate.BaseCoolingW_Mechanical
             Get
-                '=IF(C48="mechanical", IF(AND(M79>0,M80>0),MIN(M79:M80),0),0)
+                '=IF(C46<C28,0,IF(C53="electrical", 0, IF(AND(M89>0,M90>0),MIN(M89:M90),0)))
 
                 Dim gen As ISSMGenInputs = ssmTOOL.GenInputs
 
-                'Dim C48 = gen.AC_CompressorType 
-                'Dim M79 = Me.Run1.TotalW
-                'Dim M80 = Me.Run2.TotalW
+                'Dim C46 = gen.EC_EnviromentalTemperature
+                'Dim C28 = gen.BC_TemperatureCoolingTurnsOff
+                'Dim C53 = gen.AC_CompressorTypeDerived
+                'Dim M89 = Run1.TotalW
+                'Dim M90 = Run2.TotalW
 
+                Return If(gen.EC_EnviromentalTemperature < gen.BC_TemperatureCoolingTurnsOff, 0, If(gen.AC_CompressorTypeDerived = "electrical", 0, If(Run1.TotalW > 0 AndAlso Run2.TotalW > 0, Math.Min(Run1.TotalW, Run2.TotalW), 0)))
 
-                Return If(gen.AC_CompressorType.ToLower = "mechanical", If((Run1.TotalW > 0 AndAlso Run2.TotalW > 0), Math.Min(Run1.TotalW, Run2.TotalW), 0), 0)
-
-
-
-            End Get
+           End Get
         End Property
         Public ReadOnly Property BaseCoolingW_ElectricalCoolingHeating As Double Implements ISSMCalculate.BaseCoolingW_ElectricalCoolingHeating
             Get
-                '=IF(C48="mechanical",0,IF(AND(M79>0,M80>0),MIN(M79:M80),0))
+                '=IF(C46<C28,0,IF(C53="electrical",IF(AND(M89>0,M90>0),MIN(M89:M90),0),0))
 
                 Dim gen As ISSMGenInputs = ssmTOOL.GenInputs
 
-                'Dim C48 = gen.AC_CompressorType 
-                'Dim M79 = Me.Run1.TotalW
-                'Dim M80 = Me.Run2.TotalW
+                'Dim C46 = gen.EC_EnviromentalTemperature
+                'Dim C28 = gen.BC_TemperatureCoolingTurnsOff
+                'Dim C53 = gen.AC_CompressorTypeDerived
+                'Dim M89 = Run1.TotalW
+                'Dim M90 = Run2.TotalW
 
-                Return If(gen.AC_CompressorType.ToLower = "mechanical", 0, If((Run1.TotalW > 0 AndAlso Run2.TotalW > 0), Math.Min(Run1.TotalW, Run2.TotalW), 0))
+                Return If(gen.EC_EnviromentalTemperature < gen.BC_TemperatureCoolingTurnsOff, 0, If(gen.AC_CompressorTypeDerived = "electrical", If(Run1.TotalW > 0 AndAlso Run2.TotalW > 0, Math.Min(Run1.TotalW, Run2.TotalW), 0), 0))
 
             End Get
         End Property
         Public ReadOnly Property BaseCoolingW_ElectricalVentilation As Double Implements ISSMCalculate.BaseCoolingW_ElectricalVentilation
             Get
-                '=IF(AND(M79>0,M80>0),IF(AND(C54="yes",C57="high"),C30,IF(AND(C54="yes",C57="low"),C31,0)),0)
+                '=IF(AND(C46>=C28,M89>0,M90>0),IF(AND(C64="yes",C67="high"),C33,IF(AND(C64="yes",C67="low"),C34,0)),0)
 
                 Dim gen As ISSMGenInputs = ssmTOOL.GenInputs
 
-                'Dim C30 = gen.BC_HighVentPowerW
-                'Dim C31 = gen.BC_LowVentPowerW
-                'Dim C54 = gen.VEN_VentilationDuringAC
-                'Dim C57 = gen.VEN_VentilationDuringCooling
-                'Dim M79 = Me.Run1.TotalW
-                'Dim M80 = Me.Run2.TotalW
+                'Dim C46 = gen.EC_EnviromentalTemperature
+                'Dim C28 = gen.BC_TemperatureCoolingTurnsOff
+                'Dim M89 = Run1.TotalW
+                'Dim M90 = Run2.TotalW
+                'Dim C64 = gen.VEN_VentilationDuringAC
+                'Dim C67 = gen.VEN_VentilationDuringCooling
+                'Dim C33 = gen.BC_HighVentPowerW
+                'Dim C34 = gen.BC_LowVentPowerW
 
-
-                Return If(Run1.TotalW > 0 AndAlso Run2.TotalW > 0, _
-                            If(gen.VEN_VentilationDuringAC AndAlso gen.VEN_VentilationDuringCooling.ToLower = "high", gen.BC_HighVentPowerW, _
-                                    If(gen.VEN_VentilationDuringAC AndAlso gen.VEN_VentilationDuringCooling.ToLower = "low", gen.BC_LowVentPowerW, 0)), 0)
+                Return If(gen.EC_EnviromentalTemperature >= gen.BC_TemperatureCoolingTurnsOff AndAlso Run1.TotalW > 0 AndAlso Run2.TotalW > 0, _
+                          If(gen.VEN_VentilationDuringAC AndAlso gen.VEN_VentilationDuringCooling.ToLower() = "high", gen.BC_HighVentPowerW, If(gen.VEN_VentilationDuringAC AndAlso gen.VEN_VentilationDuringCooling.ToLower() = "low", gen.BC_LowVentPowerW, 0)) _
+                          , 0)
 
 
             End Get
@@ -298,20 +299,21 @@ Namespace Hvac
         End Property
         Public ReadOnly Property BaseVentilationW_ElectricalVentilation As Double Implements ISSMCalculate.BaseVentilationW_ElectricalVentilation
             Get
-                '=IF(AND(M79>0,M80<0),IF(AND(C53="yes",C55="high"),C30,IF(AND(C53="yes",C55="low"),C31,0)),0)
+                '=IF(OR(AND(C46<C28,M89>0,M90>0),AND(M89>0,M90<0)),IF(AND(C63="yes",C65="high"),C33,IF(AND(C63="yes",C65="low"),C34,0)),0)
 
                 Dim gen As ISSMGenInputs = ssmTOOL.GenInputs
 
-                'Dim C30 = gen.BC_HighVentPowerW
-                'Dim C31 = gen.BC_LowVentPowerW
-                'Dim C53 = gen.VEN_VentilationWhenBothHeatingAndACInactive
-                'Dim C55 = gen.VEN_VentilationFlowSettingWhenHeatingAndACInactive
-                'Dim M79 = Me.Run1.TotalW
-                'Dim M80 = Me.Run2.TotalW
+                'Dim C46 = gen.EC_EnviromentalTemperature
+                'Dim C28 = gen.BC_TemperatureCoolingTurnsOff
+                'Dim M89 = Run1.TotalW
+                'Dim M90 = Run2.TotalW
+                'Dim C63 = gen.VEN_VentilationWhenBothHeatingAndACInactive
+                'Dim C65 = gen.VEN_VentilationFlowSettingWhenHeatingAndACInactive
+                'Dim C33 = gen.BC_HighVentPowerW
+                'Dim C34 = gen.BC_LowVentPowerW
 
-
-                Return If((Run1.TotalW > 0 AndAlso Run2.TotalW < 0), If(gen.VEN_VentilationWhenBothHeatingAndACInactive AndAlso gen.VEN_VentilationFlowSettingWhenHeatingAndACInactive.ToLower = "high", gen.BC_HighVentPowerW, _
-                                If(gen.VEN_VentilationWhenBothHeatingAndACInactive AndAlso gen.VEN_VentilationFlowSettingWhenHeatingAndACInactive.ToLower = "low", gen.BC_LowVentPowerW, 0)), 0)
+                Return If((gen.EC_EnviromentalTemperature < gen.BC_TemperatureCoolingTurnsOff AndAlso Run1.TotalW > 0 AndAlso Run2.TotalW > 0) OrElse (Run1.TotalW > 0 AndAlso Run2.TotalW < 0), _
+                          If(gen.VEN_VentilationWhenBothHeatingAndACInactive AndAlso gen.VEN_VentilationFlowSettingWhenHeatingAndACInactive.ToLower() = "high", gen.BC_HighVentPowerW, If(gen.VEN_VentilationWhenBothHeatingAndACInactive AndAlso gen.VEN_VentilationFlowSettingWhenHeatingAndACInactive.ToLower() = "low", gen.BC_LowVentPowerW, 0)), 0)
 
             End Get
         End Property
@@ -549,15 +551,19 @@ Namespace Hvac
 
         Private Function CalculateElectricalWBase(genInputs As ISSMGenInputs, EnviromentalTemperature As Double, Solar As Double, Weight As Single) As Single
 
-            '=(SUM(H84)/C33)+SUM(I83:I85)
+            'MIN(SUM(H94),C54*1000)/C59+SUM(I93:I95)
 
             genInputs.EC_EnviromentalTemperature = EnviromentalTemperature
             genInputs.EC_Solar = Solar
 
-            'Dim H84  As Double = BaseCoolingW_ElectricalCoolingHeating
-            'Dim C33  As Double = gen.BC_COP   
-            Dim BaseVentilation As Double = BaseHeatingW_ElectricalVentilation + BaseCoolingW_ElectricalVentilation + BaseVentilationW_ElectricalVentilation   ' SUM(I83:I85)  
-            Dim ElectricalWBaseCurrentResult As Double = (BaseCoolingW_ElectricalCoolingHeating / genInputs.BC_COP) + BaseVentilation
+            'Dim H94 = BaseCoolingW_ElectricalCoolingHeating
+            'Dim C54 = genInputs.AC_CompressorCapacitykW
+            'Dim C59 = genInputs.AC_COP
+            'Dim I93 = BaseHeatingW_ElectricalVentilation
+            'Dim I94 = BaseCoolingW_ElectricalVentilation
+            'Dim I95 = BaseVentilationW_ElectricalVentilation
+
+            Dim ElectricalWBaseCurrentResult As Double = Math.Min(BaseCoolingW_ElectricalCoolingHeating, genInputs.AC_CompressorCapacitykW * 1000) / genInputs.AC_COP + BaseHeatingW_ElectricalVentilation + BaseCoolingW_ElectricalVentilation + BaseVentilationW_ElectricalVentilation
 
             Return ElectricalWBaseCurrentResult * Weight
 
@@ -565,58 +571,63 @@ Namespace Hvac
 
         Private Function CalculateMechanicalWBase(genInputs As ISSMGenInputs, EnviromentalTemperature As Double, Solar As Double, Weight As Single) As Single
 
-            '=F84/C33
+            '=MIN(F94,C54*1000)/C59
 
             genInputs.EC_EnviromentalTemperature = EnviromentalTemperature
             genInputs.EC_Solar = Solar
 
-            'Dim F84 As Double = BaseCoolingW_Mechanical
-            'Dim C33  As Double = gen.BC_COP 
+            'Dim F94 = BaseCoolingW_Mechanical
+            'Dim C54 = genInputs.AC_CompressorCapacitykW
+            'Dim C59 = genInputs.AC_COP 
 
-            Return (BaseCoolingW_Mechanical / genInputs.BC_COP) * Weight
+            Dim MechanicalWBaseCurrentResult As Double = Math.Min(BaseCoolingW_Mechanical, genInputs.AC_CompressorCapacitykW * 1000) / genInputs.AC_COP
+
+            Return MechanicalWBaseCurrentResult * Weight
 
         End Function
 
         Private Function CalculateFuelLPerHBase(genInputs As ISSMGenInputs, EnviromentalTemperature As Double, Solar As Double, Weight As Single) As Single
 
-            '=ABS((J83/1000)*(1/(C36*C35))/C34)
+            '=(MIN(ABS(J93/1000),C71)/C37)*(1/(C39*C38))
 
             genInputs.EC_EnviromentalTemperature = EnviromentalTemperature
             genInputs.EC_Solar = Solar
 
-            'Dim J83 As Double = BaseHeatingW_FuelFiredHeating
-            'Dim C34 As Double = genInputs.BC_AuxHeaterEfficiency
-            'Dim C35 As Double = genInputs.BC_GCVDieselOrHeatingOil
-            'Dim C36 As Double = genInputs.BC_VolumicMassDieselOrHeatingOil
+            'Dim J93 = BaseHeatingW_FuelFiredHeating
+            'Dim C71 = genInputs.AH_FuelFiredHeaterkW
+            'Dim C37 = genInputs.BC_AuxHeaterEfficiency
+            'Dim C39 = ssmTOOL.HVACConstants.FuelDensity
+            'Dim C38 = genInputs.BC_GCVDieselOrHeatingOil
 
-            Return (Math.Abs((BaseHeatingW_FuelFiredHeating / 1000) * (1 / (genInputs.BC_VolumicMassDieselOrHeatingOil * genInputs.BC_GCVDieselOrHeatingOil)) / genInputs.BC_AuxHeaterEfficiency)) * Weight
+            Dim FuelLPerHBaseCurrentResult As Double = (Math.Min(Math.Abs(BaseHeatingW_FuelFiredHeating / 1000), genInputs.AH_FuelFiredHeaterkW) / genInputs.BC_AuxHeaterEfficiency) * (1 / (genInputs.BC_GCVDieselOrHeatingOil * ssmTOOL.HVACConstants.FuelDensity))
+
+            Return FuelLPerHBaseCurrentResult * Weight
 
         End Function
 
         Private Function CalculateElectricalWAdjusted(genInputs As ISSMGenInputs, tecList As ISSMTechList, EnviromentalTemperature As Double, Solar As Double, Weight As Single) As Single
 
-            '=((H84*(1-H90))/C33)+(I83*(1-I89))+(I84*(1-I90))+(I85*(1-I91)) + IF('TECH LIST INPUT'!D36="electrical",-'TECH LIST INPUT'!R93*1000,0)
-
+            '=(MIN((H94*(1-H100)),C54*1000)/C59)+(I93*(1-I99))+(I94*(1-I100))+(I95*(1-I101)) + IF('TECH LIST INPUT'!D36="electrical",-'TECH LIST INPUT'!R93*1000,0)
+            
             genInputs.EC_EnviromentalTemperature = EnviromentalTemperature
             genInputs.EC_Solar = Solar
 
-            Dim cnt As Integer = tecList.TechLines.Where(Function(f) f.LineType = TechLineType.DriverACElectrical).Count()
             Dim DACElectrical As Boolean = tecList.TechLines.Where(Function(f) f.LineType = TechLineType.DriverACElectrical AndAlso f.OnVehicle).Count() = 1
             Dim AdjustedAddition As Double = If(Not DACElectrical, 0, -tecList.CValueVariationKW * 1000)
 
-            Dim H84 As Double = BaseCoolingW_ElectricalCoolingHeating
-            Dim H90 As Double = TechListAdjustedCoolingW_ElectricalCoolingHeating
-            Dim C33 As Double = genInputs.BC_COP
+            Dim H94 As Double = BaseCoolingW_ElectricalCoolingHeating
+            Dim H100 As Double = TechListAdjustedCoolingW_ElectricalCoolingHeating
+            Dim C54 As Double = genInputs.AC_CompressorCapacitykW
+            Dim C59 As Double = genInputs.AC_COP
 
-            Dim I83 As Double = BaseHeatingW_ElectricalVentilation
-            Dim I84 As Double = BaseCoolingW_ElectricalVentilation
-            Dim I85 As Double = BaseVentilationW_ElectricalVentilation
-            Dim I89 As Double = TechListAdjustedHeatingW_ElectricalVentilation
-            Dim I90 As Double = TechListAdjustedCoolingW_ElectricalVentilation
-            Dim I91 As Double = TechListAdjustedVentilationW_ElectricalVentilation
+            Dim I93 As Double = BaseHeatingW_ElectricalVentilation
+            Dim I94 As Double = BaseCoolingW_ElectricalVentilation
+            Dim I95 As Double = BaseVentilationW_ElectricalVentilation
+            Dim I99 As Double = TechListAdjustedHeatingW_ElectricalVentilation
+            Dim I100 As Double = TechListAdjustedCoolingW_ElectricalVentilation
+            Dim I101 As Double = TechListAdjustedVentilationW_ElectricalVentilation
 
-
-            Dim ElectricalWAdjusted As Single = ((H84 * (1 - H90)) / C33) + (I83 * (1 - I89)) + (I84 * (1 - I90)) + (I85 * (1 - I91)) + AdjustedAddition
+            Dim ElectricalWAdjusted As Single = (Math.Min((H94 * (1 - H100)), C54 * 1000) / C59) + (I93 * (1 - I99)) + (I94 * (1 - I100)) + (I95 * (1 - I101)) + AdjustedAddition
 
             Return ElectricalWAdjusted * Weight
 
@@ -624,19 +635,20 @@ Namespace Hvac
 
         Private Function CalculateMechanicalWBaseAdjusted(genInputs As ISSMGenInputs, tecList As ISSMTechList, EnviromentalTemperature As Double, Solar As Double, Weight As Single) As Single
 
-            '=(F84*(1-F90)/C33) + IF('TECH LIST INPUT'!D36="mechanical",-'TECH LIST INPUT'!R93*1000,0)
-
+            '=(MIN((F94*(1-F100)),C54*1000)/C59) + IF('TECH LIST INPUT'!D36="mechanical",-'TECH LIST INPUT'!R93*1000,0)
+            
             genInputs.EC_EnviromentalTemperature = EnviromentalTemperature
             genInputs.EC_Solar = Solar
 
             Dim DACMechanical As Boolean = tecList.TechLines.Where(Function(f) f.LineType = TechLineType.DriverACMechanical AndAlso f.OnVehicle).Count() = 1
             Dim AdjustedAddition As Double = If(Not DACMechanical, 0, tecList.CValueVariationKW * 1000)
 
-            'Dim F84 As Double  = BaseCoolingW_Mechanical
-            'Dim F90 As Double  = TechListAdjustedCoolingW_Mechanical
-            'Dim C33 As Double  = gen.BC_COP
+            Dim F94 As Double = BaseCoolingW_Mechanical
+            Dim F100 As Double = TechListAdjustedCoolingW_Mechanical
+            Dim C54 As Double = genInputs.AC_CompressorCapacitykW
+            Dim C59 As Double = genInputs.AC_COP
 
-            Dim MechanicalWBaseAdjusted As Single = (BaseCoolingW_Mechanical * (1 - TechListAdjustedCoolingW_Mechanical) / genInputs.BC_COP) + AdjustedAddition
+            Dim MechanicalWBaseAdjusted As Single = (Math.Min((F94 * (1 - F100)), C54 * 1000) / C59) + AdjustedAddition
 
             Return MechanicalWBaseAdjusted * Weight
 
@@ -644,25 +656,27 @@ Namespace Hvac
 
         Private Function CalculateFuelLPerHBaseAdjusted(genInputs As ISSMGenInputs, tecList As ISSMTechList, EnviromentalTemperature As Double, Solar As Double, Weight As Single) As Single
 
-            '=ABS((IF(AND(M79<0,M80<0),VLOOKUP(MAX(M79:M80),M79:P80,4),0)/1000)*(1/(C36*C35))/C34)
+            '=MIN(ABS(IF(AND(M89<0,M90<0),VLOOKUP(MAX(M89:M90),M89:P90,4),0)/1000),C71)/C37*(1/(C39*C38))
 
             genInputs.EC_EnviromentalTemperature = EnviromentalTemperature
             genInputs.EC_Solar = Solar
 
-            Dim C34 As Double = genInputs.BC_AuxHeaterEfficiency
-            Dim C35 As Double = genInputs.BC_GCVDieselOrHeatingOil
-            Dim C36 As Double = genInputs.BC_VolumicMassDieselOrHeatingOil
-            Dim result As Double
+            'Dim M89 = Run1.TotalW
+            'Dim M90 = genInputs.BC_GCVDieselOrHeatingOil
+            'Dim C71 = genInputs.AH_FuelFiredHeaterkW
+            'Dim C37 = genInputs.BC_AuxHeaterEfficiency
+            'Dim C38 = genInputs.BC_GCVDieselOrHeatingOil
+            'Dim C39 = ssmTOOL.HVACConstants.FuelDensity
 
-            If Run1.TotalW < 0 AndAlso Run1.TotalW < 0 Then
-                result = If(Run1.TotalW > Run2.TotalW, Run1.TechListAmendedFuelW, Run2.TechListAmendedFuelW) / 1000
-            Else
-                result = 0
+            Dim result As Double = 0
+
+            If Run1.TotalW < 0 AndAlso Run2.TotalW < 0 Then
+                result = Math.Abs(If(Run1.TotalW > Run2.TotalW, Run1.TechListAmendedFuelW, Run2.TechListAmendedFuelW) / 1000)
             End If
 
-            Dim FuelLPerHBaseAdjusted As Single = (Math.Abs(result * (1 / (genInputs.BC_VolumicMassDieselOrHeatingOil * genInputs.BC_GCVDieselOrHeatingOil)) / genInputs.BC_AuxHeaterEfficiency)) * Weight
+            Dim FuelLPerHBaseAdjusted As Single = Math.Min(result, genInputs.AH_FuelFiredHeaterkW) / genInputs.BC_AuxHeaterEfficiency * (1 / (genInputs.BC_GCVDieselOrHeatingOil * ssmTOOL.HVACConstants.FuelDensity))
 
-            Return FuelLPerHBaseAdjusted
+            Return FuelLPerHBaseAdjusted * Weight
 
         End Function
     End Class

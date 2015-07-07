@@ -475,7 +475,7 @@ Public Class frmAuxiliaryConfig
         Try
 
             Dim ahsmFile As String = FilePathUtils.ResolveFilePath(vectoPath, txtSSMFilePath.Text)
-            Dim ssmTool As SSMTOOL = New SSMTOOL(ahsmFile, False)
+            Dim ssmTool As SSMTOOL = New SSMTOOL(ahsmFile, New HVACConstants, False)
 
             If ssmTool.Load(ahsmFile) Then
                 ErrorProvider.SetError(txtSSMFilePath, String.Empty)
@@ -1095,7 +1095,7 @@ Public Class frmAuxiliaryConfig
             'is file valid Try ahsm - HVac Steady State Model
             Try
                 Dim ahsmFile As String = FilePathUtils.ResolveFilePath(vectoPath, absoluteSSMPath)
-                Dim ssmTool As SSMTOOL = New SSMTOOL(ahsmFile, False)
+                Dim ssmTool As SSMTOOL = New SSMTOOL(ahsmFile, New HVACConstants, False)
                 ssmTool.Load(ahsmFile)
             Catch ex As Exception
                 MessageBox.Show("The supplied AHSM File was invalid, aborting.")

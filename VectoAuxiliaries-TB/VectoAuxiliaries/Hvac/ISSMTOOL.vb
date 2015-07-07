@@ -7,6 +7,7 @@ Public Interface ISSMTOOL
     Property TechList As ISSMTechList
     Property Calculate As ISSMCalculate
     Property SSMDisabled As Boolean
+    Property HVACConstants As IHVACConstants
 
     ReadOnly Property ElectricalWBase As Single
     ReadOnly Property MechanicalWBase As Single

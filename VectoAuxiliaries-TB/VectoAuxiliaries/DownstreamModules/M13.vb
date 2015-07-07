@@ -18,8 +18,6 @@ Namespace DownstreamModules
    Public Class M13
       Implements IM13
 
-     Private Const FUEL_DENSITY_L3 As Single = 835
-      
      Private m1  As IM1_AverageHVACLoadDemand
      Private m10 As IM10
      Private m12 As IM12

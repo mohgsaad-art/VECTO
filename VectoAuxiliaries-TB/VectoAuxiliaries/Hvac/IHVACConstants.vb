@@ -1,16 +1,13 @@
-﻿
-Namespace  Hvac
+﻿Namespace Hvac
 
 
-Public Interface IHVACConstants
+    Public Interface IHVACConstants
 
- readonly property FuelEnergyToHeatToCoolant                  as single 
- readonly property CoolantHeatTransferredToAirCabinHeater     as single 
- readonly property DieselGCVJperGram                          as single 
- readonly property FuelDensity835GramsPerLitre                as single 
-                                           
-
-End Interface
+        ReadOnly Property FuelEnergyToHeatToCoolant As Single
+        ReadOnly Property CoolantHeatTransferredToAirCabinHeater As Single
+        ReadOnly Property DieselGCVJperGram As Single
+        ReadOnly Property FuelDensity As Single
+    End Interface
 
 
 End Namespace
