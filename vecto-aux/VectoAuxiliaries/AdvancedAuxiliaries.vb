@@ -51,6 +51,8 @@ Public Class AdvancedAuxiliaries
 
     Private vectoDirectory As String
 
+    Private hvacConstants As HVACConstants
+
     'Event Handler top level bubble.
     Public Sub VectoEventHandler(ByRef sender As Object, message As String, messageType As AdvancedAuxiliaryMessageType) Handles compressorMap.AuxiliaryEvent, alternatorMap.AuxiliaryEvent, ssmTool.Message, ssmToolModule14.Message
 
@@ -78,6 +80,7 @@ Public Class AdvancedAuxiliaries
 
         auxPath = FilePathUtils.ResolveFilePath(vectoDirectory, IAuxPath)
 
+        hvacConstants = New HVACConstants(VectoInputs.FuelDensity)
 
         Signals.CurrentCycleTimeInSeconds = 0
         auxConfig = New AuxiliaryConfig(auxPath)
@@ -107,11 +110,11 @@ Public Class AdvancedAuxiliaries
         'SSM HVAC
         Dim ssmPath As String = FilePathUtils.ResolveFilePath(vectoDirectory, auxConfig.HvacUserInputsConfig.SSMFilePath)
         Dim BusDatabase As String = FilePathUtils.ResolveFilePath(vectoDirectory, auxConfig.HvacUserInputsConfig.BusDatabasePath)
-        ssmTool = New SSMTOOL(ssmPath, auxConfig.HvacUserInputsConfig.SSMDisabled)
+        ssmTool = New SSMTOOL(ssmPath, hvacConstants, auxConfig.HvacUserInputsConfig.SSMDisabled)
 
         'This duplicate SSM is being created for use in M14 as its properties will be dynamically changed at that point
         'to honour EngineWaste Heat Usage in Fueling calculations.
-        ssmToolModule14 = New SSMTOOL(ssmPath, auxConfig.HvacUserInputsConfig.SSMDisabled)
+        ssmToolModule14 = New SSMTOOL(ssmPath, hvacConstants, auxConfig.HvacUserInputsConfig.SSMDisabled)
 
 
         If (ssmTool.Load(ssmPath) = False OrElse ssmToolModule14.Load(ssmPath) = False) Then
@@ -170,7 +173,7 @@ Public Class AdvancedAuxiliaries
         M11 = New M11(M1, M3, M6, M8, fuelMap, Signals)
         M12 = New M12(M10, M11, Signals)
         M13 = New M13(M1, M10, M12, Signals)
-        M14 = New M14(M13, ssmToolModule14, New HVACConstants(), Signals)
+        M14 = New M14(M13, ssmToolModule14, hvacConstants, Signals)
 
 
     End Sub

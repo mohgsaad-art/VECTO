@@ -38,6 +38,13 @@ Public Interface IVectoInputs
    ''' <value></value>
    ''' <returns></returns>
    ''' <remarks></remarks>
-   Property FuelMap         As string
+    Property FuelMap As String
+    ''' <summary>
+    ''' Fuel density used in Vecto.
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Property FuelDensity As String
 
 End Interface

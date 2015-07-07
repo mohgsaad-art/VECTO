@@ -85,23 +85,21 @@ Public Class frmHVACTool
         vectoFile = vectoFilePath
 
         'Add any initialization after the InitializeComponent() call.
-
-
         Me.busDatabasePath = busDatabasePath
         Me.ahsmFilePath = ahsmFilePath
 
+        ssmTOOL = New SSMTOOL(ahsmFilePath, New HVACConstants, False, useDefaults)
+        originalssmTOOL = New SSMTOOL(ahsmFilePath, New HVACConstants, False, useDefaults)
 
-
-        ssmTOOL = New SSMTOOL(ahsmFilePath, useDefaults)
-        originalssmTOOL = New SSMTOOL(ahsmFilePath, useDefaults)
-
-        If ssmTOOL.Load(ahsmFilePath) AndAlso originalssmTOOL.Load(ahsmFilePath) Then
-            Timer1.Enabled = True
+        If IO.File.Exists(ahsmFilePath) Then
+            If ssmTOOL.Load(ahsmFilePath) AndAlso originalssmTOOL.Load(ahsmFilePath) Then
+                Timer1.Enabled = True
+            Else
+                MessageBox.Show("The file format for the Steady State Model (.AHSM) was corrupted or is an alpha version. Please refer to the documentation or help to discover more.")
+                Timer1.Enabled = False
+            End If
         Else
-
-            MessageBox.Show("The file format for the Steady State Model (.AHSM) was corrupted or is an alpha version. Please refer to the documentation or help to discover more.")
-            Timer1.Enabled = False
-
+            Timer1.Enabled = True
         End If
 
         setupBuses()
@@ -261,32 +259,31 @@ Public Class frmHVACTool
         txtBC_UValues.DataBindings.Add("Text", ssmTool.genInputs, "BC_UValues")
         txtBC_HeatingBoundaryTemperature.DataBindings.Add("Text", ssmTool.genInputs, "BC_HeatingBoundaryTemperature")
         txtBC_CoolingBoundaryTemperature.DataBindings.Add("Text", ssmTool.genInputs, "BC_CoolingBoundaryTemperature")
-        txtBC_HighVentilation.DataBindings.Add("Text", ssmTool.genInputs, "BC_HighVentilation")
+        txtBC_TemperatureCoolingOff.DataBindings.Add("Text", ssmTOOL.GenInputs, "BC_TemperatureCoolingTurnsOff")
+        txtBC_HighVentilation.DataBindings.Add("Text", ssmTOOL.GenInputs, "BC_HighVentilation")
         txtBC_lowVentilation.DataBindings.Add("Text", ssmTool.genInputs, "BC_lowVentilation")
         txtBC_High.DataBindings.Add("Text", ssmTool.genInputs, "BC_High")
         txtBC_Low.DataBindings.Add("Text", ssmTool.genInputs, "BC_Low")
         txtBC_HighVentPowerW.DataBindings.Add("Text", ssmTool.genInputs, "BC_HighVentPowerW")
         txtBC_LowVentPowerW.DataBindings.Add("Text", ssmTool.genInputs, "BC_LowVentPowerW")
         txtBC_SpecificVentilationPower.DataBindings.Add("Text", ssmTool.genInputs, "BC_SpecificVentilationPower")
-        txtBC_COP.DataBindings.Add("Text", ssmTool.genInputs, "BC_COP")
         txtBC_AuxHeaterEfficiency.DataBindings.Add("Text", ssmTool.genInputs, "BC_AuxHeaterEfficiency")
         txtBC_GCVDieselOrHeatingOil.DataBindings.Add("Text", ssmTool.genInputs, "BC_GCVDieselOrHeatingOil")
-        txtBC_VolumicMassDieselOrHeatingOil.DataBindings.Add("Text", ssmTool.genInputs, "BC_VolumicMassDieselOrHeatingOil")
         txtBC_WindowAreaPerUnitBusLength.DataBindings.Add("Text", ssmTool.genInputs, "BC_WindowAreaPerUnitBusLength")
         txtBC_FrontRearWindowArea.DataBindings.Add("Text", ssmTool.genInputs, "BC_FrontRearWindowArea")
         txtBC_MaxTemperatureDeltaForLowFloorBusses.DataBindings.Add("Text", ssmTool.genInputs, "BC_MaxTemperatureDeltaForLowFloorBusses")
         txtBC_MaxPossibleBenefitFromTechnologyList.DataBindings.Add("Text", ssmTOOL.GenInputs, "BC_MaxPossibleBenefitFromTechnologyList")
 
-        'General Inputs Other   
         'EnviromentalConditions	        		
         txtEC_EnviromentalTemperature.DataBindings.Add("Text", ssmTool.genInputs, "EC_EnviromentalTemperature")
         txtEC_Solar.DataBindings.Add("Text", ssmTOOL.GenInputs, "EC_Solar")
         chkEC_BatchMode.DataBindings.Add("Checked", ssmTOOL.GenInputs, "EC_EnviromentalConditions_BatchEnabled", False, DataSourceUpdateMode.OnPropertyChanged)
 
         'AC-system	
-        chkAC_InCabinRoomAC_System.DataBindings.Add("Checked", ssmTool.genInputs, "AC_InCabinRoomAC_System", False, DataSourceUpdateMode.OnPropertyChanged)
-        cboAC_CompressorType.DataBindings.Add("Text", ssmTool.genInputs, "AC_CompressorType", False, DataSourceUpdateMode.OnPropertyChanged)
+        cboAC_CompressorType.DataBindings.Add("Text", ssmTOOL.GenInputs, "AC_CompressorType", False, DataSourceUpdateMode.OnPropertyChanged)
+        txtAC_CompressorType.DataBindings.Add("Text", ssmTOOL.GenInputs, "AC_CompressorTypeDerived")
         txtAC_CompressorCapacitykW.DataBindings.Add("Text", ssmTool.genInputs, "AC_CompressorCapacitykW")
+        txtAC_COP.DataBindings.Add("Text", ssmTOOL.GenInputs, "AC_COP")
 
         'Ventilation	
         chkVEN_VentilationOnDuringHeating.DataBindings.Add("Checked", ssmTool.genInputs, "VEN_VentilationOnDuringHeating", False, DataSourceUpdateMode.OnPropertyChanged)
@@ -345,7 +342,7 @@ Public Class frmHVACTool
         e.Cancel = Not Validate_GeneralInputsBP()
 
     End Sub
-    Public Sub Validating_GeneralInputsBC(sender As Object, e As CancelEventArgs) Handles txtBC_GFactor.Validating, txtBC_VolumicMassDieselOrHeatingOil.Validating, txtBC_SpecificVentilationPower.Validating, txtBC_PassengerDensitySemiLowFloor.Validating, txtBC_PassengerDensityRaisedFloor.Validating, txtBC_PassengerDensityLowFloor.Validating, txtBC_MaxTemperatureDeltaForLowFloorBusses.Validating, txtBC_MaxPossibleBenefitFromTechnologyList.Validating, txtBC_lowVentilation.Validating, txtBC_HighVentilation.Validating, txtBC_HeatingBoundaryTemperature.Validating, txtBC_GCVDieselOrHeatingOil.Validating, txtBC_COP.Validating, txtBC_CoolingBoundaryTemperature.Validating, txtBC_AuxHeaterEfficiency.Validating, txtBC_PassengerBoundaryTemperature.Validating
+    Public Sub Validating_GeneralInputsBC(sender As Object, e As CancelEventArgs) Handles txtBC_GFactor.Validating, txtBC_SpecificVentilationPower.Validating, txtBC_MaxTemperatureDeltaForLowFloorBusses.Validating, txtBC_MaxPossibleBenefitFromTechnologyList.Validating, txtBC_lowVentilation.Validating, txtBC_HighVentilation.Validating, txtBC_HeatingBoundaryTemperature.Validating, txtBC_GCVDieselOrHeatingOil.Validating, txtBC_CoolingBoundaryTemperature.Validating, txtBC_AuxHeaterEfficiency.Validating, txtBC_PassengerBoundaryTemperature.Validating
 
         e.Cancel = Not Validate_GeneralInputsBC()
 
@@ -487,18 +484,15 @@ Public Class frmHVACTool
 
         'txtBC_GFactor		
         IsTextBoxNumber(txtBC_GFactor, "Please enter a number ( GFactor )", result)
-        'BC_SolarClouding				      : Calculated    
-        'BC_HeatPerPassengerIntoCabinW	      : Calculated             
+        'BC_SolarClouding				        : Calculated    
+        'BC_HeatPerPassengerIntoCabinW	        : Calculated             
         'txtBC_PassengerBoundaryTemperature    
         IsTextBoxNumber(txtBC_PassengerBoundaryTemperature, "Please enter a number ( Passenger Boundary Temperature )", result)
-        'txtBC_PassengerDensityLowFloor   
-        IsTextBoxNumber(txtBC_PassengerDensityLowFloor, "Please enter a number ( Passenger Density Low Floor )", result)
-        'txtBC_PassengerDensitySemiLowFloor	 
-        IsTextBoxNumber(txtBC_PassengerDensitySemiLowFloor, "Please enter a number ( Passenger Density Semi Low Floor )", result)
-        'txtBC_PassengerDensityRaisedFloor	
-        IsTextBoxNumber(txtBC_PassengerDensityRaisedFloor, "Please enter a number ( Passenger Density Raised Floor )", result)
-        'txtBC_CalculatedPassengerNumber	: Calculated          
-        'txtBC_UValues                      : Calculated                            
+        'txtBC_PassengerDensityLowFloor         : Calculated  
+        'txtBC_PassengerDensitySemiLowFloor	    : Calculated 
+        'txtBC_PassengerDensityRaisedFloor	    : Calculated 
+        'txtBC_CalculatedPassengerNumber	    : Calculated          
+        'txtBC_UValues                          : Calculated                            
         'txtBC_HeatingBoundaryTemperature	
         IsTextBoxNumber(txtBC_HeatingBoundaryTemperature, "Please enter a number ( Heating Boundary Temperature )", result)
         'txtBC_CoolingBoundaryTemperature 
@@ -514,13 +508,11 @@ Public Class frmHVACTool
         'txtBC_SpecificVentilationPower 
         IsTextBoxNumber(txtBC_SpecificVentilationPower, "Please enter a number ( Specific Ventilation Power )", result)
         'txtBC_COP	
-        IsTextBoxNumber(txtBC_COP, "Please enter a number ( COP )", result)
+        IsTextBoxNumber(txtAC_COP, "Please enter a number ( COP )", result)
         'txtBC_AuxHeaterEfficiency		
         IsTextBoxNumber(txtBC_AuxHeaterEfficiency, "Please enter a number ( Aux Heater Efficiency )", result)
         'txtBC_GCVDieselOrHeatingOil   
         IsTextBoxNumber(txtBC_GCVDieselOrHeatingOil, "Please enter a number ( GCV Diesel Or Heating Oil )", result)
-        'txtBC_VolumicMassDieselOrHeatingOil	
-        IsTextBoxNumber(txtBC_VolumicMassDieselOrHeatingOil, "Please enter a number ( Volumic Mass Diesel Or Heating Oil )", result)
         'txtBC_WindowAreaPerUnitBusLength	     : Calculated 
         'txtBC_FrontRearWindowArea               : Calculated                      
         'txtBC_MaxTemperatureDeltaForLowFloorBusses
@@ -1389,4 +1381,5 @@ Public Class frmHVACTool
             MsgBox("File not found!")
         End If
     End Sub
+
 End Class

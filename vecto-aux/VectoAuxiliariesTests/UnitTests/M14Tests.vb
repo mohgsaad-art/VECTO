@@ -19,6 +19,7 @@ public class SSMToolMock
 
         Public Property Calculate As ISSMCalculate Implements ISSMTOOL.Calculate
         Public Property SSMDisabled As Boolean Implements ISSMTOOL.SSMDisabled
+        Public Property HVACConstants As IHVACConstants Implements ISSMTOOL.HVACConstants
 
         Public Sub Clone(from As ISSMTOOL) Implements ISSMTOOL.Clone
 
@@ -105,7 +106,7 @@ Public Class M14Tests
         Dim hvacSSM   As New Mock(Of ISSMTOOL)
         Dim signals   As new Mock( Of ISignals)
         Dim ssmMock   As ISSMTOOL = New SSMToolMock()
-        Dim constants As IHVACConstants = New HVACConstants()
+            Dim constants As IHVACConstants = New HVACConstants(835)
 
         'Moq' Arrangements
         m13.Setup    ( Function(x) x.WHTCTotalCycleFuelConsumptionGrams).Returns(ip1)

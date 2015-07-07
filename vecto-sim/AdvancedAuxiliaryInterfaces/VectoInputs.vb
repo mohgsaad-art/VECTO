@@ -42,6 +42,13 @@ Implements IVectoInputs
     ''' <returns></returns>
     ''' <remarks></remarks>
     Public Property FuelMap As String Implements IVectoInputs.FuelMap
+    ''' <summary>
+    ''' Fuel Density as used in Vecto.
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Property FuelDensity As String Implements IVectoInputs.FuelDensity
 
 End Class
 

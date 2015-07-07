@@ -30,7 +30,7 @@ Private Function GetSSM() As ISSMTOOL
   Const _SSMMAP As String = "TestFiles\ssm.Ahsm
   Const _BusDatabase As String ="TestFiles\BusDatabase.abdb
 
-  Dim ssm As ISSMTOOL = New SSMTOOL( _SSMMAP )
+            Dim ssm As ISSMTOOL = New SSMTOOL(_SSMMAP, New HVACConstants())
 
 
   ssm.Load( _SSMMAP)

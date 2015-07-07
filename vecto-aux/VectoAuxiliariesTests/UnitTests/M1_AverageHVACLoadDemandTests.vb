@@ -16,7 +16,7 @@ Public Class M1_AverageHVACLoadDemandTests
 
 Private signals As ISignals = New Signals With {.EngineSpeed=2000}
 Private powernetVoltage As Single = 26.3
-Private ssm As ISSMTOOL = New SSMTOOL(_SSMMAP)
+        Private ssm As ISSMTOOL = New SSMTOOL(_SSMMAP, New HVACConstants())
 
 
 Private m0 As IM0_NonSmart_AlternatorsSetEfficiency

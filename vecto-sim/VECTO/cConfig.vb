@@ -62,7 +62,7 @@ Public Class cConfig
         OpenCmd = "notepad"
         OpenCmdName = "Notepad"
 
-        FuelDens = 0.835
+        FuelDens = 0.832
         CO2perFC = 3.153
 
         FirstRun = True
