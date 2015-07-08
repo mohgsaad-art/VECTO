@@ -498,18 +498,19 @@ Public Class SSMTechList
                 .BenefitName = "Fan control strategy (serial/parallel)"
                 .LowFloorH = 0
                 .LowFloorC = 0
-                .LowFloorV = 0
+                .LowFloorV = 0.02
                 .SemiLowFloorH = 0
                 .SemiLowFloorC = 0
-                .SemiLowFloorV = 0
+                .SemiLowFloorV = 0.02
                 .RaisedFloorH = 0
                 .RaisedFloorC = 0
-                .RaisedFloorV = 0
+                .RaisedFloorV = 0.02
                 .ActiveVH = 0.02
                 .ActiveVV = 0.02
                 .ActiveVC = 0.02
                 .OnVehicle = False
                 .Units = "fraction"
+                .LineType = TechLineType.HVCActiveSelection
             End With
 
             Dim feedback As String = String.Empty

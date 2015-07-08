@@ -557,7 +557,7 @@ Public Class frmHVACTool
         IsTextBoxNumber(txtAH_FuelFiredHeaterkW, "Please enter a number ( Fuel fired heater )", result)
 
         Try
-            Dim environmentalConditionsMap As IEnvironmentalConditionsMap = New EnvironmentalConditionsMap(txtEC_EnvironmentConditionsFilePath.Tag)
+            Dim environmentalConditionsMap As IEnvironmentalConditionsMap = New EnvironmentalConditionsMap(txtEC_EnvironmentConditionsFilePath.Tag, fPATH(vectoFile))
             ErrorProvider1.SetError(txtEC_EnvironmentConditionsFilePath, String.Empty)
             ssmTOOL.GenInputs.EC_EnviromentalConditions_BatchFile = txtEC_EnvironmentConditionsFilePath.Tag
         Catch ex As Exception
@@ -1204,7 +1204,7 @@ Public Class frmHVACTool
         tl.Category = StrConv(cboCategory.Text, vbProperCase)
         tl.BenefitName = txtBenefitName.Text
         tl.Units = cboUnits.Text
-        tl.LineType = If(cboLineType.Text = "Normal", 0, 3)
+        tl.LineType = If(cboLineType.Text = "Normal", 0, 1)
         tl.LowFloorH = txtLowFloorH.Text
         tl.LowFloorV = txtLowFloorV.Text
         tl.LowFloorC = txtLowFloorC.Text
