@@ -76,7 +76,7 @@ Namespace Hvac
             Me.SSMDisabled = isDisabled
             Me.HVACConstants = hvacConstants
 
-            GenInputs = New SSMGenInputs(useTestValues)
+            GenInputs = New SSMGenInputs(useTestValues, fPATH(filePath))
             TechList = New SSMTechList(filePath, GenInputs, useTestValues)
 
             Calculate = New SSMCalculate(Me)

@@ -8,11 +8,13 @@ Namespace Hvac
 
         Private _EC_EnviromentalConditions_BatchFile As String
         Private _EC_EnvironmentalConditionsMap As IEnvironmentalConditionsMap
+        Private _vectoDir As String
 
 #Region "Constructors"
 
-        Sub New(Optional initialiseDefaults As Boolean = False)
+        Sub New(Optional initialiseDefaults As Boolean = False, Optional vectoDir As String = "")
 
+            _vectoDir = vectoDir
             If initialiseDefaults Then SetDefaults()
 
         End Sub
@@ -251,7 +253,7 @@ Namespace Hvac
                 Return _EC_EnviromentalConditions_BatchFile
             End Get
             Set(value As String)
-                _EC_EnvironmentalConditionsMap = New EnvironmentalConditionsMap(value)
+                _EC_EnvironmentalConditionsMap = New EnvironmentalConditionsMap(value, _vectoDir)
                 _EC_EnviromentalConditions_BatchFile = value
             End Set
         End Property
@@ -376,7 +378,8 @@ Namespace Hvac
             '************************
             EC_EnviromentalTemperature = 25.0R
             EC_Solar = 400.0R
-            EC_EnviromentalConditions_BatchEnabled = False
+            EC_EnviromentalConditions_BatchEnabled = True
+            EC_EnviromentalConditions_BatchFile = "DefaultClimatic.aenv"
 
             'AC SYSTEM
             '*********

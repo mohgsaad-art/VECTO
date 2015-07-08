@@ -607,13 +607,10 @@ Namespace Hvac
 
         Private Function CalculateElectricalWAdjusted(genInputs As ISSMGenInputs, tecList As ISSMTechList, EnviromentalTemperature As Double, Solar As Double, Weight As Single) As Single
 
-            '=(MIN((H94*(1-H100)),C54*1000)/C59)+(I93*(1-I99))+(I94*(1-I100))+(I95*(1-I101)) + IF('TECH LIST INPUT'!D36="electrical",-'TECH LIST INPUT'!R93*1000,0)
+            '=(MIN((H94*(1-H100)),C54*1000)/C59)+(I93*(1-I99))+(I94*(1-I100))+(I95*(1-I101))
             
             genInputs.EC_EnviromentalTemperature = EnviromentalTemperature
             genInputs.EC_Solar = Solar
-
-            Dim DACElectrical As Boolean = tecList.TechLines.Where(Function(f) f.LineType = TechLineType.DriverACElectrical AndAlso f.OnVehicle).Count() = 1
-            Dim AdjustedAddition As Double = If(Not DACElectrical, 0, -tecList.CValueVariationKW * 1000)
 
             Dim H94 As Double = BaseCoolingW_ElectricalCoolingHeating
             Dim H100 As Double = TechListAdjustedCoolingW_ElectricalCoolingHeating
@@ -627,7 +624,7 @@ Namespace Hvac
             Dim I100 As Double = TechListAdjustedCoolingW_ElectricalVentilation
             Dim I101 As Double = TechListAdjustedVentilationW_ElectricalVentilation
 
-            Dim ElectricalWAdjusted As Single = (Math.Min((H94 * (1 - H100)), C54 * 1000) / C59) + (I93 * (1 - I99)) + (I94 * (1 - I100)) + (I95 * (1 - I101)) + AdjustedAddition
+            Dim ElectricalWAdjusted As Single = (Math.Min((H94 * (1 - H100)), C54 * 1000) / C59) + (I93 * (1 - I99)) + (I94 * (1 - I100)) + (I95 * (1 - I101))
 
             Return ElectricalWAdjusted * Weight
 
@@ -635,20 +632,17 @@ Namespace Hvac
 
         Private Function CalculateMechanicalWBaseAdjusted(genInputs As ISSMGenInputs, tecList As ISSMTechList, EnviromentalTemperature As Double, Solar As Double, Weight As Single) As Single
 
-            '=(MIN((F94*(1-F100)),C54*1000)/C59) + IF('TECH LIST INPUT'!D36="mechanical",-'TECH LIST INPUT'!R93*1000,0)
+            '=(MIN((F94*(1-F100)),C54*1000)/C59)
             
             genInputs.EC_EnviromentalTemperature = EnviromentalTemperature
             genInputs.EC_Solar = Solar
-
-            Dim DACMechanical As Boolean = tecList.TechLines.Where(Function(f) f.LineType = TechLineType.DriverACMechanical AndAlso f.OnVehicle).Count() = 1
-            Dim AdjustedAddition As Double = If(Not DACMechanical, 0, tecList.CValueVariationKW * 1000)
 
             Dim F94 As Double = BaseCoolingW_Mechanical
             Dim F100 As Double = TechListAdjustedCoolingW_Mechanical
             Dim C54 As Double = genInputs.AC_CompressorCapacitykW
             Dim C59 As Double = genInputs.AC_COP
 
-            Dim MechanicalWBaseAdjusted As Single = (Math.Min((F94 * (1 - F100)), C54 * 1000) / C59) + AdjustedAddition
+            Dim MechanicalWBaseAdjusted As Single = (Math.Min((F94 * (1 - F100)), C54 * 1000) / C59)
 
             Return MechanicalWBaseAdjusted * Weight
 

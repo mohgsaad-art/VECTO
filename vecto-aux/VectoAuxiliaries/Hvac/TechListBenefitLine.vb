@@ -4,8 +4,6 @@ Namespace Hvac
     Public Enum TechLineType
 
         Normal
-        DriverACMechanical
-        DriverACElectrical
         HVCActiveSelection
 
     End Enum

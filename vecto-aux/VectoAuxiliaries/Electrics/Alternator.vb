@@ -70,11 +70,11 @@ Namespace Electrics
             End Get
         End Property
 
-
         'Constructors
         Sub New()
 
         End Sub
+
         Sub New(isignals As ICombinedAlternatorSignals, inputs As List(Of ICombinedAlternatorMapRow))
 
 

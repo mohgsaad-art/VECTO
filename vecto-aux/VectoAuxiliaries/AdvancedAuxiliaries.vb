@@ -162,7 +162,6 @@ Public Class AdvancedAuxiliaries
                 VectoInputs.Cycle,
                 Signals)
 
-
         M4 = New M4_AirCompressor(compressorMap, auxConfig.PneumaticUserInputsConfig.CompressorGearRatio, auxConfig.PneumaticUserInputsConfig.CompressorGearEfficiency, Signals)
         M5 = New M5__SmartAlternatorSetGeneration(M05, auxConfig.ElectricalUserInputsConfig.PowerNetVoltage, auxConfig.ElectricalUserInputsConfig.AlternatorGearEfficiency)
         M6 = New M6(M1, M2, M3, M4, M5, Signals)
