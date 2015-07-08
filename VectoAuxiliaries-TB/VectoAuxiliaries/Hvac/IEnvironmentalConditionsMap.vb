@@ -2,7 +2,7 @@
 
     Public Interface IEnvironmentalConditionsMap
 
-        Sub Initialise()
+        Function Initialise() As Boolean
 
         Function GetEnvironmentalConditions() As List(Of IEnvironmentalCondition)
 

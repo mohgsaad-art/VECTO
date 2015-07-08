@@ -5,21 +5,26 @@ Namespace Hvac
     Public Class EnvironmentalConditionsMap
         Implements IEnvironmentalConditionsMap
 
-        Private ReadOnly filePath As String
+        Private filePath As String
+        Private vectoDirectory As String
 
         Private _map As New List(Of IEnvironmentalCondition)
 
-        Public Sub New(filepath As String)
+        Public Sub New(filepath As String, vectoDirectory As String)
 
             Me.filePath = filepath
+            Me.vectoDirectory = vectoDirectory
 
             Initialise()
 
         End Sub
 
-        Public Sub Initialise() Implements IEnvironmentalConditionsMap.Initialise
+        Public Function Initialise() As Boolean Implements IEnvironmentalConditionsMap.Initialise
 
             If (Not String.IsNullOrWhiteSpace(filePath)) Then
+
+                filePath = FilePathUtils.ResolveFilePath(vectoDirectory, filePath)
+
                 If File.Exists(filePath) Then
                     Using sr As StreamReader = New StreamReader(filePath)
 
@@ -28,7 +33,7 @@ Namespace Hvac
 
                         'Must have at least 1 entries to make it usable [dont forget the header row]
                         If (lines.Count() < 2) Then
-                            Throw New ArgumentException("Insufficient rows to build conditions")
+                            Return False
                         End If
 
                         Dim firstline As Boolean = True
@@ -41,7 +46,7 @@ Namespace Hvac
 
                                 '3 entries per line required
                                 If (elements.Length <> 4) Then
-                                    Throw New ArgumentException("Incorrect number of values in file")
+                                    Return False
                                 End If
 
                                 'Add environment condition
@@ -56,11 +61,13 @@ Namespace Hvac
                     End Using
 
                 Else
-                    Throw New ArgumentException("File not found")
+                    Return False
                 End If
             End If
 
-        End Sub
+            Return True
+
+        End Function
 
         Public Function GetEnvironmentalConditions() As List(Of IEnvironmentalCondition) Implements IEnvironmentalConditionsMap.GetEnvironmentalConditions
 

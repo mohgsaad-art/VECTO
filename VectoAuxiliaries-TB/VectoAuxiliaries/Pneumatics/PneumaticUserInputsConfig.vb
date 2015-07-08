@@ -11,64 +11,54 @@
 
 Namespace Pneumatics
 
-Public Class PneumaticUserInputsConfig
-Implements IPneumaticUserInputsConfig
+    Public Class PneumaticUserInputsConfig
+        Implements IPneumaticUserInputsConfig
+
+        Public Property CompressorMap As String Implements IPneumaticUserInputsConfig.CompressorMap
+        Public Property CompressorGearRatio As Single Implements IPneumaticUserInputsConfig.CompressorGearRatio
+        Public Property CompressorGearEfficiency As Single Implements IPneumaticUserInputsConfig.CompressorGearEfficiency
+
+        'pnmeumatic or electric
+        Public Property AdBlueDosing As String Implements IPneumaticUserInputsConfig.AdBlueDosing
+
+        'mechanical or electrical
+        Public Property AirSuspensionControl As String Implements IPneumaticUserInputsConfig.AirSuspensionControl
+
+        'pneumatic or electric
+        Public Property Doors As String Implements IPneumaticUserInputsConfig.Doors
+        Public Property KneelingHeightMillimeters As Single Implements IPneumaticUserInputsConfig.KneelingHeightMillimeters
+
+        'PneumaticActuationsMap
+        Public Property ActuationsMap As String Implements IPneumaticUserInputsConfig.ActuationsMap
+
+        Public Property RetarderBrake As Boolean Implements IPneumaticUserInputsConfig.RetarderBrake
+        Public Property SmartAirCompression As Boolean Implements IPneumaticUserInputsConfig.SmartAirCompression
+        Public Property SmartRegeneration As Boolean Implements IPneumaticUserInputsConfig.SmartRegeneration
 
 
+        Public Sub New(Optional setToDefaults As Boolean = False)
 
+            If setToDefaults Then SetPropertiesToDefaults()
 
+        End Sub
 
-'pnmeumatic or electric
-Public Property AdBlueDosing As String Implements IPneumaticUserInputsConfig.AdBlueDosing
-'mechanical or electrical
-Public Property AirSuspensionControl As String Implements IPneumaticUserInputsConfig.AirSuspensionControl
+        Public Sub SetPropertiesToDefaults()
 
-Public Property CompressorMap As String Implements IPneumaticUserInputsConfig.CompressorMap
-Public Property CompressorGearEfficiency As Single Implements IPneumaticUserInputsConfig.CompressorGearEfficiency
-Public Property CompressorGearRatio As Single Implements IPneumaticUserInputsConfig.CompressorGearRatio
+            CompressorMap = String.Empty
+            CompressorGearRatio = 1.0
+            CompressorGearEfficiency = 0.97
+            AdBlueDosing = "Pneumatic"
+            AirSuspensionControl = "Mechanically"
+            Doors = "Pneumatic"
+            KneelingHeightMillimeters = 70
+            ActuationsMap = "testPneumaticActuationsMap.apac"
+            RetarderBrake = True
+            SmartAirCompression = False
+            SmartRegeneration = False
 
-'PneumaticActuationsMap
-Public Property ActuationsMap As String Implements IPneumaticUserInputsConfig.ActuationsMap
+        End Sub
 
-'pneumatic or electric
-Public Property Doors As String Implements IPneumaticUserInputsConfig.Doors
-Public Property KneelingHeightMillimeters As Single Implements IPneumaticUserInputsConfig.KneelingHeightMillimeters
-Public Property RetarderBrake As Boolean Implements IPneumaticUserInputsConfig.RetarderBrake
-Public Property SmartAirCompression As Boolean Implements IPneumaticUserInputsConfig.SmartAirCompression
-Public Property SmartRegeneration As Boolean Implements IPneumaticUserInputsConfig.SmartRegeneration
-
-
-Public Sub New( optional setToDefaults As Boolean = False)
-
-
-If setToDefaults then SetPropertiesToDefaults()
-
-End Sub
-
-Public sub SetPropertiesToDefaults()
-
-
-            ActuationsMap="testPneumaticActuationsMap_GOODMAP.apac"
-            AdBlueDosing="Pneumatic"
-            AirSuspensionControl="Electrically"
-            CompressorGearEfficiency=0.8
-            CompressorGearRatio=1.0
-            CompressorMap="testCompressorMap.acmp"
-            Doors="Pneumatic"
-            KneelingHeightMillimeters=80
-            RetarderBrake=True
-            SmartAirCompression=True
-            SmartRegeneration=True  
-
-End Sub
-
-
-
-End Class
-
-
-
-
+    End Class
 
 End Namespace
 
