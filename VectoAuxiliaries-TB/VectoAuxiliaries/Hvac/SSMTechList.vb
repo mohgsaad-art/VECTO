@@ -352,7 +352,7 @@ Public Class SSMTechList
 
         Private Sub SetDefaults()
 
-            Dim techLine1 As ITechListBenefitLine = New TechListBenefitLine()
+            Dim techLine1 As ITechListBenefitLine = New TechListBenefitLine(_ssmInputs)
             With techLine1
                 .Category = "Cooling"
                 .BenefitName = "Separate air distribution ducts"
@@ -372,7 +372,7 @@ Public Class SSMTechList
                 .Units = "fraction"
             End With
 
-            Dim techLine2 As ITechListBenefitLine = New TechListBenefitLine()
+            Dim techLine2 As ITechListBenefitLine = New TechListBenefitLine(_ssmInputs)
             With techLine2
                 .Category = "Heating"
                 .BenefitName = "Adjustable auxiliary heater"
@@ -392,7 +392,7 @@ Public Class SSMTechList
                 .Units = "fraction"
             End With
 
-            Dim techLine3 As ITechListBenefitLine = New TechListBenefitLine()
+            Dim techLine3 As ITechListBenefitLine = New TechListBenefitLine(_ssmInputs)
             With techLine3
                 .Category = "Heating"
                 .BenefitName = "Adjustable coolant thermostat"
@@ -412,7 +412,7 @@ Public Class SSMTechList
                 .Units = "fraction"
             End With
 
-            Dim techLine4 As ITechListBenefitLine = New TechListBenefitLine()
+            Dim techLine4 As ITechListBenefitLine = New TechListBenefitLine(_ssmInputs)
             With techLine4
                 .Category = "Heating"
                 .BenefitName = "Engine waste gas heat exchanger"
@@ -432,7 +432,7 @@ Public Class SSMTechList
                 .Units = "fraction"
             End With
 
-            Dim techLine5 As ITechListBenefitLine = New TechListBenefitLine()
+            Dim techLine5 As ITechListBenefitLine = New TechListBenefitLine(_ssmInputs)
             With techLine5
                 .Category = "Heating"
                 .BenefitName = "Heat pump systems"
@@ -452,7 +452,7 @@ Public Class SSMTechList
                 .Units = "fraction"
             End With
 
-            Dim techLine6 As ITechListBenefitLine = New TechListBenefitLine()
+            Dim techLine6 As ITechListBenefitLine = New TechListBenefitLine(_ssmInputs)
             With techLine6
                 .Category = "Insulation"
                 .BenefitName = "Double-glazing"
@@ -472,7 +472,7 @@ Public Class SSMTechList
                 .Units = "fraction"
             End With
 
-            Dim techLine7 As ITechListBenefitLine = New TechListBenefitLine()
+            Dim techLine7 As ITechListBenefitLine = New TechListBenefitLine(_ssmInputs)
             With techLine7
                 .Category = "Insulation"
                 .BenefitName = "Tinted windows"
@@ -492,7 +492,7 @@ Public Class SSMTechList
                 .Units = "fraction"
             End With
 
-            Dim techLine8 As ITechListBenefitLine = New TechListBenefitLine()
+            Dim techLine8 As ITechListBenefitLine = New TechListBenefitLine(_ssmInputs)
             With techLine8
                 .Category = "Ventilation"
                 .BenefitName = "Fan control strategy (serial/parallel)"

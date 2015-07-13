@@ -14,45 +14,43 @@ Namespace Electrics
             Me.rpm = rpm
             Me.Efficiency = eff
 
-
         End Sub
-
 
     End Class
 
-
+    'Model based on CombinedALTS_V02_Editable.xlsx
     Public Class Alternator
         Implements IAlternator
 
-
-
-        Public Property AlternatorName As String Implements IAlternator.AlternatorName
-        Public Property PulleyRatio As Single Implements IAlternator.PulleyRatio
-
-        Public Property InputTable2000 As New List(Of AltUserInput) Implements IAlternator.InputTable2000
-        Public Property InputTable4000 As New List(Of AltUserInput) Implements IAlternator.InputTable4000
-        Public Property InputTable6000 As New List(Of AltUserInput) Implements IAlternator.InputTable6000
-        Public Property RangeTable As New List(Of Table4Row) Implements IAlternator.RangeTable
-
         Private signals As ICombinedAlternatorSignals
 
-
-        Public Sub Clone(other As IAlternator) Implements IAlternator.Clone
-
-
-
-        End Sub
+        'D6
+        Public Property AlternatorName As String Implements IAlternator.AlternatorName
+        'G6
+        Public Property PulleyRatio As Single Implements IAlternator.PulleyRatio
+        'C10-D15
+        Public Property InputTable2000 As New List(Of AltUserInput) Implements IAlternator.InputTable2000
+        'F10-G15
+        Public Property InputTable4000 As New List(Of AltUserInput) Implements IAlternator.InputTable4000
+        'I10-J15
+        Public Property InputTable6000 As New List(Of AltUserInput) Implements IAlternator.InputTable6000
+        'M10-N15
+        Public Property RangeTable As New List(Of Table4Row) Implements IAlternator.RangeTable
+        'S9
+        Public ReadOnly Property SpindleSpeed As Double Implements IAlternator.SpindleSpeed
+            Get
+                Return signals.CrankRPM * PulleyRatio
+            End Get
+        End Property
+        'S10
         Public ReadOnly Property Efficiency As Double Implements IAlternator.Efficiency
-
 
             Get
                 'First build RangeTable, table 4
-
                 InitialiseRangeTable()
                 CalculateRangeTable()
 
                 'Calculate ( Interpolate ) Efficiency
-
                 Dim range As List(Of AltUserInput) = RangeTable.Select(Function(s) New AltUserInput(s.RPM, s.Efficiency)).ToList()
 
                 Dim v As Single = Alternator.Iterpolate(range, Convert.ToSingle(SpindleSpeed))
@@ -61,15 +59,9 @@ Namespace Electrics
 
             End Get
 
-
-
-        End Property
-        Public ReadOnly Property SpindleSpeed As Double Implements IAlternator.SpindleSpeed
-            Get
-                Return signals.CrankRPM * PulleyRatio
-            End Get
         End Property
 
+        
         'Constructors
         Sub New()
 
@@ -95,11 +87,9 @@ Namespace Electrics
 
 
             CreateRangeTable()
-            'InitialiseRangeTable()
 
 
         End Sub
-
 
         Public Shared Function Iterpolate(values As List(Of AltUserInput), x As Single) As Single
 
@@ -138,7 +128,6 @@ Namespace Electrics
 
 
         End Function
-
 
         Private Sub CalculateRangeTable()
 
@@ -214,7 +203,6 @@ Namespace Electrics
 
         End Sub
 
-
         Private Sub InitialiseRangeTable()
 
             RangeTable(0).RPM = 0 : RangeTable(0).Efficiency = 0
@@ -226,7 +214,6 @@ Namespace Electrics
             RangeTable(6).RPM = 0 : RangeTable(0).Efficiency = 0
 
         End Sub
-
 
         Private Sub CreateRangeTable()
 
@@ -256,13 +243,13 @@ Namespace Electrics
             targetTable.Add(New AltUserInput(0, D14))
 
             'Row1
-            targetTable.Add(New AltUserInput(10, inputs(10)))
+            targetTable.Add(New AltUserInput(inputs.OrderBy(Function(x) x.Key).First.Key, inputs.OrderBy(Function(x) x.Key).First.Value))
 
             'Row2
-            targetTable.Add(New AltUserInput(40, inputs(40)))
+            targetTable.Add(New AltUserInput(inputs.OrderBy(Function(x) x.Key).Skip(1).First.Key, inputs.OrderBy(Function(x) x.Key).Skip(1).First.Value))
 
             'Row3
-            targetTable.Add(New AltUserInput(60, inputs(60)))
+            targetTable.Add(New AltUserInput(inputs.OrderBy(Function(x) x.Key).Skip(2).First.Key, inputs.OrderBy(Function(x) x.Key).Skip(2).First.Value))
 
             C11 = targetTable(1).Amps : C12 = targetTable(2).Amps : C13 = targetTable(3).Amps
             D11 = targetTable(1).Eff : D12 = targetTable(2).Eff : D13 = targetTable(3).Eff
@@ -291,8 +278,6 @@ Namespace Electrics
 
         End Sub
 
-
-
         Public Function IsEqualTo(other As IAlternator) As Boolean Implements IAlternator.IsEqualTo
 
             If Me.AlternatorName <> other.AlternatorName Then Return False
@@ -313,11 +298,7 @@ Namespace Electrics
 
         End Function
 
-
-
     End Class
-
-
 
 End Namespace
 
