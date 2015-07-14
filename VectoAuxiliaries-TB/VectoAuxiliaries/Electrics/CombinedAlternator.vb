@@ -94,42 +94,17 @@ Public Class CombinedAlternator
 
             map.Clear()
 
-            map.Add(New CombinedAlternatorMapRow("Alt1", 2000, 10, 50, 3))
-            map.Add(New CombinedAlternatorMapRow("Alt1", 2000, 40, 50, 3))
-            map.Add(New CombinedAlternatorMapRow("Alt1", 2000, 60, 50, 3))
-            map.Add(New CombinedAlternatorMapRow("Alt1", 4000, 10, 70, 3))
-            map.Add(New CombinedAlternatorMapRow("Alt1", 4000, 40, 70, 3))
-            map.Add(New CombinedAlternatorMapRow("Alt1", 4000, 60, 70, 3))
-            map.Add(New CombinedAlternatorMapRow("Alt1", 6000, 10, 60, 3))
-            map.Add(New CombinedAlternatorMapRow("Alt1", 6000, 40, 60, 3))
-            map.Add(New CombinedAlternatorMapRow("Alt1", 6000, 60, 60, 3))
-            map.Add(New CombinedAlternatorMapRow("Alt2", 2000, 10, 80, 2.5))
-            map.Add(New CombinedAlternatorMapRow("Alt2", 2000, 40, 80, 2.5))
-            map.Add(New CombinedAlternatorMapRow("Alt2", 2000, 60, 80, 2.5))
-            map.Add(New CombinedAlternatorMapRow("Alt2", 4000, 10, 40, 2.5))
-            map.Add(New CombinedAlternatorMapRow("Alt2", 4000, 40, 40, 2.5))
-            map.Add(New CombinedAlternatorMapRow("Alt2", 4000, 60, 40, 2.5))
-            map.Add(New CombinedAlternatorMapRow("Alt2", 6000, 10, 60, 2.5))
-            map.Add(New CombinedAlternatorMapRow("Alt2", 6000, 40, 60, 2.5))
-            map.Add(New CombinedAlternatorMapRow("Alt2", 6000, 60, 60, 2.5))
-            map.Add(New CombinedAlternatorMapRow("Alt3", 2000, 10, 95, 3.5))
-            map.Add(New CombinedAlternatorMapRow("Alt3", 2000, 40, 50, 3.5))
-            map.Add(New CombinedAlternatorMapRow("Alt3", 2000, 60, 90, 3.5))
-            map.Add(New CombinedAlternatorMapRow("Alt3", 4000, 10, 99, 3.5))
-            map.Add(New CombinedAlternatorMapRow("Alt3", 4000, 40, 1, 3.5))
-            map.Add(New CombinedAlternatorMapRow("Alt3", 4000, 60, 55, 3.5))
-            map.Add(New CombinedAlternatorMapRow("Alt3", 6000, 10, 94, 3.5))
-            map.Add(New CombinedAlternatorMapRow("Alt3", 6000, 40, 86, 3.5))
-            map.Add(New CombinedAlternatorMapRow("Alt3", 6000, 60, 13, 3.5))
-            map.Add(New CombinedAlternatorMapRow("Alt4", 2000, 10, 55, 2))
-            map.Add(New CombinedAlternatorMapRow("Alt4", 2000, 40, 45, 2))
-            map.Add(New CombinedAlternatorMapRow("Alt4", 2000, 60, 67, 2))
-            map.Add(New CombinedAlternatorMapRow("Alt4", 4000, 10, 77, 2))
-            map.Add(New CombinedAlternatorMapRow("Alt4", 4000, 40, 39, 2))
-            map.Add(New CombinedAlternatorMapRow("Alt4", 4000, 60, 23, 2))
-            map.Add(New CombinedAlternatorMapRow("Alt4", 6000, 10, 34, 2))
-            map.Add(New CombinedAlternatorMapRow("Alt4", 6000, 40, 67, 2))
-            map.Add(New CombinedAlternatorMapRow("Alt4", 6000, 60, 35, 2))
+            map.Add(New CombinedAlternatorMapRow("Alt1", 2000, 10, 62, 3.6))
+            map.Add(New CombinedAlternatorMapRow("Alt1", 2000, 27, 70, 3.6))
+            map.Add(New CombinedAlternatorMapRow("Alt1", 2000, 53, 30, 3.6))
+
+            map.Add(New CombinedAlternatorMapRow("Alt1", 4000, 10, 64, 3.6))
+            map.Add(New CombinedAlternatorMapRow("Alt1", 4000, 63, 74, 3.6))
+            map.Add(New CombinedAlternatorMapRow("Alt1", 4000, 125, 68, 3.6))
+
+            map.Add(New CombinedAlternatorMapRow("Alt1", 6000, 10, 53, 3.6))
+            map.Add(New CombinedAlternatorMapRow("Alt1", 6000, 68, 70, 3.6))
+            map.Add(New CombinedAlternatorMapRow("Alt1", 6000, 136, 62, 3.6))
 
 
         End Sub
@@ -166,10 +141,10 @@ Public Class CombinedAlternator
             Return True
 
         End Function
-        Public Function DeleteAlternator(alternatorName As String, ByRef feedback As String) As Boolean
+        Public Function DeleteAlternator(alternatorName As String, ByRef feedback As String, CountValidation As Boolean) As Boolean
 
             'Is this the last alternator, if so deny the user the right to remove it.
-            If Alternators.Count < 2 Then
+            If CountValidation AndAlso Alternators.Count < 2 Then
                 feedback = "There must be at least one alternator remaining, operation aborted."
                 Return False
             End If
