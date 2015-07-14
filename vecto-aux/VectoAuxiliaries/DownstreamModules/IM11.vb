@@ -18,66 +18,74 @@ Namespace DownstreamModules
 
 Public Interface IM11
   
-  ''' <summary>
-  ''' Smart Electrical Total Cycle Electrical Energy Generated During Overrun Only(J)
-  ''' </summary>
-  ''' <value></value>
-  ''' <returns></returns>
-  ''' <remarks></remarks>
-  ReadOnly Property SmartElectricalTotalCycleElectricalEnergyGeneratedDuringOverrunOnly As Single
+        ''' <summary>
+        ''' Smart Electrical Total Cycle Electrical Energy Generated During Overrun Only(J)
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        ReadOnly Property SmartElectricalTotalCycleElectricalEnergyGeneratedDuringOverrunOnly As Single
 
-  ''' <summary>
-  ''' Smart Electrical Total Cycle Eletrical EnergyGenerated (J)
-  ''' </summary>
-  ''' <value></value>
-  ''' <returns></returns>
-  ''' <remarks></remarks>
-  ReadOnly Property SmartElectricalTotalCycleEletricalEnergyGenerated As single
+        ''' <summary>
+        ''' Smart Electrical Total Cycle Eletrical EnergyGenerated (J)
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        ReadOnly Property SmartElectricalTotalCycleEletricalEnergyGenerated As Single
 
-  ''' <summary>
-  ''' Total Cycle Electrical Demand (J)
-  ''' </summary>
-  ''' <value></value>
-  ''' <returns></returns>
-  ''' <remarks></remarks>
-  ReadOnly Property TotalCycleElectricalDemand As single
+        ''' <summary>
+        ''' Total Cycle Electrical Demand (J)
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        ReadOnly Property TotalCycleElectricalDemand As Single
 
-  ''' <summary>
-  ''' Total Cycle Fuel Consumption: Smart Electrical Load (g)
-  ''' </summary>
-  ''' <value></value>
-  ''' <returns></returns>
-  ''' <remarks></remarks>
-  ReadOnly Property TotalCycleFuelConsumptionSmartElectricalLoad As single
+        ''' <summary>
+        ''' Total Cycle Fuel Consumption: Smart Electrical Load (g)
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        ReadOnly Property TotalCycleFuelConsumptionSmartElectricalLoad As Single
 
-  ''' <summary>
-  ''' Total Cycle Fuel Consumption: Zero Electrical Load (g)
-  ''' </summary>
-  ''' <value></value>
-  ''' <returns></returns>
-  ''' <remarks></remarks>
-  ReadOnly Property TotalCycleFuelConsumptionZeroElectricalLoad As single
+        ''' <summary>
+        ''' Total Cycle Fuel Consumption: Zero Electrical Load (g)
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        ReadOnly Property TotalCycleFuelConsumptionZeroElectricalLoad As Single
 
-  ''' <summary>
-  ''' Stop Start Sensitive: Total Cycle Electrical Demand (J)
-  ''' </summary>
-  ''' <value></value>
-  ''' <returns></returns>
-  ''' <remarks></remarks>
-  ReadOnly Property StopStartSensitiveTotalCycleElectricalDemand As Single
+        ''' <summary>
+        ''' Stop Start Sensitive: Total Cycle Electrical Demand (J)
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        ReadOnly Property StopStartSensitiveTotalCycleElectricalDemand As Single
 
-  ''' <summary>
-  ''' Clears aggregated values ( Sets them to zero ).
-  ''' </summary>
-  ''' <remarks></remarks>
-  Sub ClearAggregates()  
-  
-  ''' <summary>
-  ''' Increments all aggregated outputs
-  ''' </summary>
-  ''' <param name="stepTimeInSeconds">Single : Mutiplies the values to be aggregated by number of seconds</param>
-  ''' <remarks></remarks>
-  Sub CycleStep(Optional stepTimeInSeconds As Single = 0.0) 
+        ''' <summary>
+        ''' Total Cycle Fuel Consuption : Average Loads (g)
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        ReadOnly Property TotalCycleFuelConsuptionAverageLoads As Single
+
+        ''' <summary>
+        ''' Clears aggregated values ( Sets them to zero ).
+        ''' </summary>
+        ''' <remarks></remarks>
+        Sub ClearAggregates()
+
+        ''' <summary>
+        ''' Increments all aggregated outputs
+        ''' </summary>
+        ''' <param name="stepTimeInSeconds">Single : Mutiplies the values to be aggregated by number of seconds</param>
+        ''' <remarks></remarks>
+        Sub CycleStep(Optional stepTimeInSeconds As Single = 0.0)
 
 
 End Interface
