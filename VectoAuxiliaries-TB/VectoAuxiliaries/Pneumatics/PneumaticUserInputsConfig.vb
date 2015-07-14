@@ -35,7 +35,6 @@ Namespace Pneumatics
         Public Property SmartAirCompression As Boolean Implements IPneumaticUserInputsConfig.SmartAirCompression
         Public Property SmartRegeneration As Boolean Implements IPneumaticUserInputsConfig.SmartRegeneration
 
-
         Public Sub New(Optional setToDefaults As Boolean = False)
 
             If setToDefaults Then SetPropertiesToDefaults()

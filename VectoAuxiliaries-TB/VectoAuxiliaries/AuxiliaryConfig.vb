@@ -220,8 +220,7 @@ Public Class AuxiliaryConfig
         If Me.PneumaticUserInputsConfig.RetarderBrake <> other.PneumaticUserInputsConfig.RetarderBrake Then Return False
         If Me.PneumaticUserInputsConfig.SmartAirCompression <> other.PneumaticUserInputsConfig.SmartAirCompression Then Return False
         If Me.PneumaticUserInputsConfig.SmartRegeneration <> other.PneumaticUserInputsConfig.SmartRegeneration Then Return False
-
-
+       
         Return True
 
     End Function
@@ -387,8 +386,7 @@ Public Class AuxiliaryConfig
         Me.PneumaticUserInputsConfig.RetarderBrake = other.PneumaticUserInputsConfig.RetarderBrake
         Me.PneumaticUserInputsConfig.SmartAirCompression = other.PneumaticUserInputsConfig.SmartAirCompression
         Me.PneumaticUserInputsConfig.SmartRegeneration = other.PneumaticUserInputsConfig.SmartRegeneration
-
-
+      
     End Sub
     Private Sub CloneHVAC(other As AuxiliaryConfig)
 

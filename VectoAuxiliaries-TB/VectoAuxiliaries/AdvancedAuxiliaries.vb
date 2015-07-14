@@ -88,6 +88,7 @@ Public Class AdvancedAuxiliaries
         'Pass some signals from config to Signals. ( These are stored in the configuration but shared in the signal distribution around modules )
         Signals.SmartElectrics = auxConfig.ElectricalUserInputsConfig.SmartElectrical
         Signals.SmartPneumatics = auxConfig.PneumaticUserInputsConfig.SmartAirCompression
+        Signals.PneumaticOverrunUtilisation = auxConfig.PneumaticAuxillariesConfig.OverrunUtilisationForCompressionFraction
 
         alternatorMap = New CombinedAlternator(FilePathUtils.ResolveFilePath(vectoDirectory, auxConfig.ElectricalUserInputsConfig.AlternatorMap))
 
