@@ -224,7 +224,7 @@ Namespace DownstreamModules
         End Property
         Public ReadOnly Property Sum15 As Single
             Get
-                Return VC2 * (_m4.GetPowerCompressorOn * 0.97)
+                Return VC2 * (_m4.GetPowerCompressorOn * _signals.PneumaticOverrunUtilisation)
             End Get
         End Property
         Public ReadOnly Property Sum16 As Single
@@ -239,7 +239,7 @@ Namespace DownstreamModules
         End Property
         Public ReadOnly Property Sum18 As Single
             Get
-                Return VC4 * (_m4.GetPowerCompressorOn * 0.97)
+                Return VC4 * (_m4.GetPowerCompressorOn * _signals.PneumaticOverrunUtilisation)
             End Get
         End Property
         Public ReadOnly Property Sum19 As Single
