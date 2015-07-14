@@ -218,6 +218,39 @@ Public Class frmCombinedAlternators
         Return True
 
     End Function
+    Private Function IsNumberGreaterThan10(txtBox As TextBox) As Boolean
+
+        'Is this numeric sanity check.
+        If Not IsNumeric(txtBox.Text) Then
+            ErrorProvider1.SetError(txtBox, "Please enter a number")
+            Return False
+        Else
+            ErrorProvider1.SetError(txtBox, "")
+        End If
+
+        Dim number As Double = 0
+
+        If Not Double.TryParse(txtBox.Text, number) Then
+            ErrorProvider1.SetError(txtBox, "Please enter a number >10")
+            Return False
+
+        Else
+            ErrorProvider1.SetError(txtBox, String.Empty)
+        End If
+
+        If number <= 10 Then
+
+            ErrorProvider1.SetError(txtBox, "Please enter a number > 10")
+            Return False
+        Else
+            ErrorProvider1.SetError(txtBox, String.Empty)
+            Return True
+        End If
+
+
+        Return True
+
+    End Function
     Private Function IsIntegerZeroOrPositiveNumber(test As String) As Boolean
 
         'Is this numeric sanity check.
@@ -291,7 +324,7 @@ Public Class frmCombinedAlternators
                 Case "Delete"
                     Dim dr As DialogResult = MessageBox.Show(String.Format("Do you want to delete  '{0}' ?", alternatorName), "", MessageBoxButtons.YesNo)
                     If dr = Windows.Forms.DialogResult.Yes Then
-                        If combinedAlt.DeleteAlternator(alternatorName, feedback) Then
+                        If combinedAlt.DeleteAlternator(alternatorName, feedback, True) Then
                             BindGrid()
                         Else
                             MessageBox.Show(feedback)
@@ -384,7 +417,7 @@ Public Class frmCombinedAlternators
 
             'This is an update so delete the one being updated
 
-            If combinedAlt.DeleteAlternator(altName, feedback) AndAlso combinedAlt.AddAlternator(GetAlternatorFromPanel(), feedback) Then
+            If combinedAlt.DeleteAlternator(altName, feedback, False) AndAlso combinedAlt.AddAlternator(GetAlternatorFromPanel(), feedback) Then
 
                 BindGrid()
                 ClearEditPanel()
@@ -550,17 +583,14 @@ Public Class frmCombinedAlternators
         If Not IsNumberBetweenOverZeroAndLessThan100(txt6KMax2Efficiency) Then returnResult = False
         If Not IsNumberBetweenOverZeroAndLessThan100(txt6KMaxEfficiency) Then returnResult = False
 
-        If Not IsNumberBetweenOverZeroAndLessThan100(txt2K10Amps) Then returnResult = False
-        If Not IsNumberBetweenOverZeroAndLessThan100(txt2KMax2Amps) Then returnResult = False
-        If Not IsNumberBetweenOverZeroAndLessThan100(txt2KMaxAmps) Then returnResult = False
+        If Not IsNumberGreaterThan10(txt2KMax2Amps) Then returnResult = False
+        If Not IsNumberGreaterThan10(txt2KMaxAmps) Then returnResult = False
 
-        If Not IsNumberBetweenOverZeroAndLessThan100(txt4K10Amps) Then returnResult = False
-        If Not IsNumberBetweenOverZeroAndLessThan100(txt4KMax2Amps) Then returnResult = False
-        If Not IsNumberBetweenOverZeroAndLessThan100(txt4KMaxAmps) Then returnResult = False
+        If Not IsNumberGreaterThan10(txt4KMax2Amps) Then returnResult = False
+        If Not IsNumberGreaterThan10(txt4KMaxAmps) Then returnResult = False
 
-        If Not IsNumberBetweenOverZeroAndLessThan100(txt6K10Amps) Then returnResult = False
-        If Not IsNumberBetweenOverZeroAndLessThan100(txt6KMax2Amps) Then returnResult = False
-        If Not IsNumberBetweenOverZeroAndLessThan100(txt6KMaxAmps) Then returnResult = False
+        If Not IsNumberGreaterThan10(txt6KMax2Amps) Then returnResult = False
+        If Not IsNumberGreaterThan10(txt6KMaxAmps) Then returnResult = False
 
         If Not IsPostiveNumber(txtPulleyRatio.text) Then
             ErrorProvider1.SetError(txtPulleyRatio, "Please enter a sensible positive number")
