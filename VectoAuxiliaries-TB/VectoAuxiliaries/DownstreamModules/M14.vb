@@ -37,12 +37,12 @@ Public Class M14
         End Property
         Private ReadOnly Property S2 As Single
             Get
-                Return constants.FuelEnergyToHeatToCoolant * s1
+                Return ssm.GenInputs.AH_FuelEnergyToHeatToCoolant * S1
             End Get
         End Property
         Private ReadOnly Property S3 As Single
             Get
-                Return S2 * constants.CoolantHeatTransferredToAirCabinHeater
+                Return S2 * ssm.GenInputs.AH_CoolantHeatTransferredToAirCabinHeater
             End Get
         End Property
         Private ReadOnly Property S4 As Single
@@ -50,8 +50,6 @@ Public Class M14
                 Return (S3 / signals.CurrentCycleTimeInSeconds) / 1000
             End Get
         End Property
-
-
         Private ReadOnly Property S5 As Single
             Get
                 Return signals.CurrentCycleTimeInSeconds / 3600
