@@ -120,6 +120,7 @@ Partial Class frmAuxiliaryConfig
         Me.txtPerStopBrakeActuationNIperKG = New System.Windows.Forms.TextBox()
         Me.txtSmartRegenFractionTotalAirDemand = New System.Windows.Forms.TextBox()
         Me.tabHVACConfig = New System.Windows.Forms.TabPage()
+        Me.chkDisableHVAC = New System.Windows.Forms.CheckBox()
         Me.btnOpenABDB = New System.Windows.Forms.Button()
         Me.btnBusDatabaseSource = New System.Windows.Forms.Button()
         Me.txtBusDatabaseFilePath = New System.Windows.Forms.TextBox()
@@ -136,7 +137,8 @@ Partial Class frmAuxiliaryConfig
         Me.CmFiles = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.OpenWithToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ShowInFolderToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.chkDisableHVAC = New System.Windows.Forms.CheckBox()
+        Me.txtStoredEnergyEfficiency = New System.Windows.Forms.TextBox()
+        Me.Label2 = New System.Windows.Forms.Label()
         Me.pnlMain.SuspendLayout()
         Me.tabMain.SuspendLayout()
         Me.tabGeneralConfig.SuspendLayout()
@@ -274,6 +276,8 @@ Partial Class frmAuxiliaryConfig
         'tabElectricalConfig
         '
         Me.tabElectricalConfig.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center
+        Me.tabElectricalConfig.Controls.Add(Me.txtStoredEnergyEfficiency)
+        Me.tabElectricalConfig.Controls.Add(Me.Label2)
         Me.tabElectricalConfig.Controls.Add(Me.btnAALTOpen)
         Me.tabElectricalConfig.Controls.Add(Me.btnAlternatorMapPath)
         Me.tabElectricalConfig.Controls.Add(Me.gvResultsCardOverrun)
@@ -445,7 +449,7 @@ Partial Class frmAuxiliaryConfig
         'chkSmartElectricals
         '
         Me.chkSmartElectricals.AutoSize = True
-        Me.chkSmartElectricals.Location = New System.Drawing.Point(162, 132)
+        Me.chkSmartElectricals.Location = New System.Drawing.Point(162, 162)
         Me.chkSmartElectricals.Name = "chkSmartElectricals"
         Me.chkSmartElectricals.Size = New System.Drawing.Size(96, 17)
         Me.chkSmartElectricals.TabIndex = 12
@@ -455,7 +459,7 @@ Partial Class frmAuxiliaryConfig
         'lblElectricalConsumables
         '
         Me.lblElectricalConsumables.AutoSize = True
-        Me.lblElectricalConsumables.Location = New System.Drawing.Point(34, 154)
+        Me.lblElectricalConsumables.Location = New System.Drawing.Point(34, 184)
         Me.lblElectricalConsumables.Name = "lblElectricalConsumables"
         Me.lblElectricalConsumables.Size = New System.Drawing.Size(116, 13)
         Me.lblElectricalConsumables.TabIndex = 11
@@ -480,7 +484,7 @@ Partial Class frmAuxiliaryConfig
         DataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText
         DataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
         Me.gvElectricalConsumables.DefaultCellStyle = DataGridViewCellStyle11
-        Me.gvElectricalConsumables.Location = New System.Drawing.Point(33, 170)
+        Me.gvElectricalConsumables.Location = New System.Drawing.Point(33, 200)
         Me.gvElectricalConsumables.Name = "gvElectricalConsumables"
         DataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Control
@@ -490,7 +494,7 @@ Partial Class frmAuxiliaryConfig
         DataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText
         DataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
         Me.gvElectricalConsumables.RowHeadersDefaultCellStyle = DataGridViewCellStyle12
-        Me.gvElectricalConsumables.Size = New System.Drawing.Size(830, 250)
+        Me.gvElectricalConsumables.Size = New System.Drawing.Size(830, 220)
         Me.gvElectricalConsumables.TabIndex = 10
         '
         'txtDoorActuationTimeSeconds
@@ -1087,6 +1091,16 @@ Partial Class frmAuxiliaryConfig
         Me.tabHVACConfig.Text = "HVAC"
         Me.tabHVACConfig.UseVisualStyleBackColor = True
         '
+        'chkDisableHVAC
+        '
+        Me.chkDisableHVAC.AutoSize = True
+        Me.chkDisableHVAC.Location = New System.Drawing.Point(34, 73)
+        Me.chkDisableHVAC.Name = "chkDisableHVAC"
+        Me.chkDisableHVAC.Size = New System.Drawing.Size(131, 17)
+        Me.chkDisableHVAC.TabIndex = 61
+        Me.chkDisableHVAC.Text = "Disable HVAC Module"
+        Me.chkDisableHVAC.UseVisualStyleBackColor = True
+        '
         'btnOpenABDB
         '
         Me.btnOpenABDB.Image = CType(resources.GetObject("btnOpenABDB.Image"), System.Drawing.Image)
@@ -1204,15 +1218,22 @@ Partial Class frmAuxiliaryConfig
         Me.ShowInFolderToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.ShowInFolderToolStripMenuItem.Text = "Open In Folder"
         '
-        'chkDisableHVAC
+        'txtStoredEnergyEfficiency
         '
-        Me.chkDisableHVAC.AutoSize = True
-        Me.chkDisableHVAC.Location = New System.Drawing.Point(34, 73)
-        Me.chkDisableHVAC.Name = "chkDisableHVAC"
-        Me.chkDisableHVAC.Size = New System.Drawing.Size(131, 17)
-        Me.chkDisableHVAC.TabIndex = 61
-        Me.chkDisableHVAC.Text = "Disable HVAC Module"
-        Me.chkDisableHVAC.UseVisualStyleBackColor = True
+        Me.txtStoredEnergyEfficiency.Location = New System.Drawing.Point(162, 133)
+        Me.txtStoredEnergyEfficiency.Name = "txtStoredEnergyEfficiency"
+        Me.txtStoredEnergyEfficiency.ReadOnly = True
+        Me.txtStoredEnergyEfficiency.Size = New System.Drawing.Size(100, 20)
+        Me.txtStoredEnergyEfficiency.TabIndex = 22
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(30, 137)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(123, 13)
+        Me.Label2.TabIndex = 21
+        Me.Label2.Text = "Stored Energy Efficiency"
         '
         'frmAuxiliaryConfig
         '
@@ -1351,5 +1372,7 @@ End Sub
     Friend WithEvents txtBusDatabaseFilePath As System.Windows.Forms.TextBox
     Friend WithEvents lblBusDatabaseFilePath As System.Windows.Forms.Label
     Friend WithEvents chkDisableHVAC As System.Windows.Forms.CheckBox
+    Friend WithEvents txtStoredEnergyEfficiency As System.Windows.Forms.TextBox
+    Friend WithEvents Label2 As System.Windows.Forms.Label
 
 End Class

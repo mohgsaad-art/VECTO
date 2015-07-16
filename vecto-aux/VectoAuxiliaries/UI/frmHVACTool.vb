@@ -295,6 +295,8 @@ Public Class frmHVACTool
 
         'Aux. Heater  
         txtAH_FuelFiredHeaterkW.DataBindings.Add("Text", ssmTOOL.GenInputs, "AH_FuelFiredHeaterkW")
+        txtAH_FuelEnergyHeatToCoolant.DataBindings.Add("Text", ssmTOOL.GenInputs, "AH_FuelEnergyToHeatToCoolant")
+        txtAH_CoolantHeatToAirCabinHeater.DataBindings.Add("Text", ssmTOOL.GenInputs, "AH_CoolantHeatTransferredToAirCabinHeater")
 
 
     End Sub
@@ -347,7 +349,7 @@ Public Class frmHVACTool
         e.Cancel = Not Validate_GeneralInputsBC()
 
     End Sub
-    Public Sub Validating_GeneralInputsOther(sender As Object, e As CancelEventArgs) Handles txtEC_Solar.Validating, txtEC_EnviromentalTemperature.Validating, txtAH_FuelFiredHeaterkW.Validating, txtAC_CompressorCapacitykW.Validating, txtEC_EnvironmentConditionsFilePath.Validating
+    Public Sub Validating_GeneralInputsOther(sender As Object, e As CancelEventArgs) Handles txtEC_Solar.Validating, txtEC_EnviromentalTemperature.Validating, txtAH_FuelFiredHeaterkW.Validating, txtAC_CompressorCapacitykW.Validating, txtEC_EnvironmentConditionsFilePath.Validating, txtAH_FuelEnergyHeatToCoolant.Validating, txtAH_CoolantHeatToAirCabinHeater.Validating
 
         e.Cancel = Not Validate_GeneralInputsOther()
 
@@ -555,6 +557,8 @@ Public Class frmHVACTool
         ''Aux. Heater				
         'txtAH_FuelFiredHeaterkW  
         IsTextBoxNumber(txtAH_FuelFiredHeaterkW, "Please enter a number ( Fuel fired heater )", result)
+        IsTextBoxNumber(txtAH_FuelEnergyHeatToCoolant, "Please enter a number ( Fuel Energy Heat To Coolant )", result)
+        IsTextBoxNumber(txtAH_CoolantHeatToAirCabinHeater, "Please enter a number ( Coolant Heat Transfered To Air CabinHeater )", result)
 
         Try
             Dim environmentalConditionsMap As IEnvironmentalConditionsMap = New EnvironmentalConditionsMap(txtEC_EnvironmentConditionsFilePath.Tag, fPATH(vectoFile))
@@ -1382,4 +1386,5 @@ Public Class frmHVACTool
         End If
     End Sub
 
+    
 End Class

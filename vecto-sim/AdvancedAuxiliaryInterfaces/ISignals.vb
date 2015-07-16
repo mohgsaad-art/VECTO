@@ -123,9 +123,26 @@ Public Interface ISignals
     ''' <returns></returns>
     ''' <remarks>Vecto Input - Used to decide if to apply WHTC/Possiblye other things in future</remarks>
     Property DeclarationMode As Boolean
-    'Engine Idle Speed ( Associated with the vehicle bein tested )
+    ''' <summary>
+    ''' Engine Idle Speed ( Associated with the vehicle bein tested )
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Property EngineIdleSpeed As Single
-    'Pneumatic Overrun Utilisation
+    ''' <summary>
+    ''' Pneumatic Overrun Utilisation
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Property PneumaticOverrunUtilisation As Single
+    ''' <summary>
+    ''' Stored Energy Efficiency
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Property StoredEnergyEfficiency As Single
 
 End Interface

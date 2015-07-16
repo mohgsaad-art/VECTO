@@ -324,6 +324,8 @@ Namespace Hvac
         'C71 - ( KW )
         Public Property AH_FuelFiredHeaterkW As Double Implements ISSMGenInputs.AH_FuelFiredHeaterkW
 
+        Public Property AH_FuelEnergyToHeatToCoolant As Double Implements ISSMGenInputs.AH_FuelEnergyToHeatToCoolant
+        Public Property AH_CoolantHeatTransferredToAirCabinHeater As Double Implements ISSMGenInputs.AH_CoolantHeatTransferredToAirCabinHeater
 #End Region
 
 #Region "Default Values"
@@ -400,7 +402,8 @@ Namespace Hvac
             'AUX HEATER
             '**********
             AH_FuelFiredHeaterkW = 30.0R
-
+            AH_FuelEnergyToHeatToCoolant = 0.2
+            AH_CoolantHeatTransferredToAirCabinHeater = 0.75
         End Sub
 
 #End Region

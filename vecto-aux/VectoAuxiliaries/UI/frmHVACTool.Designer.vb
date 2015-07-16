@@ -83,6 +83,7 @@ Partial Class frmHVACTool
         Me.cboBuses = New System.Windows.Forms.ComboBox()
         Me.tabGeneralInputsBC = New System.Windows.Forms.TabPage()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.Label24 = New System.Windows.Forms.Label()
         Me.txtBC_TemperatureCoolingOff = New System.Windows.Forms.TextBox()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.lblUnitsBC_MaxPossibleBenefitFromTechnologyList = New System.Windows.Forms.Label()
@@ -169,6 +170,10 @@ Partial Class frmHVACTool
         Me.lblUnitstxtEC_EnviromentalTemperature = New System.Windows.Forms.Label()
         Me.lblUnitstxtEC_Solar = New System.Windows.Forms.Label()
         Me.grpAuxHeater = New System.Windows.Forms.GroupBox()
+        Me.txtAH_CoolantHeatToAirCabinHeater = New System.Windows.Forms.TextBox()
+        Me.txtAH_FuelEnergyHeatToCoolant = New System.Windows.Forms.TextBox()
+        Me.Label26 = New System.Windows.Forms.Label()
+        Me.Label25 = New System.Windows.Forms.Label()
         Me.lblUnitsAH_FuelFiredHeater = New System.Windows.Forms.Label()
         Me.txtAH_FuelFiredHeaterkW = New System.Windows.Forms.TextBox()
         Me.lbltxtAH_FuelFiredHeaterkW = New System.Windows.Forms.Label()
@@ -186,6 +191,8 @@ Partial Class frmHVACTool
         Me.lblchkVEN_VentilationDuringAC = New System.Windows.Forms.Label()
         Me.lblchkVEN_VentilationWhenBothHeatingAndACInactive = New System.Windows.Forms.Label()
         Me.grpACSystem = New System.Windows.Forms.GroupBox()
+        Me.txtAC_CompressorType = New System.Windows.Forms.TextBox()
+        Me.Label6 = New System.Windows.Forms.Label()
         Me.txtAC_COP = New System.Windows.Forms.TextBox()
         Me.lblBC_COP = New System.Windows.Forms.Label()
         Me.cboAC_CompressorType = New System.Windows.Forms.ComboBox()
@@ -247,9 +254,6 @@ Partial Class frmHVACTool
         Me.CMFiles = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.OpenWithToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ShowInFolderToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.Label6 = New System.Windows.Forms.Label()
-        Me.txtAC_CompressorType = New System.Windows.Forms.TextBox()
-        Me.Label24 = New System.Windows.Forms.Label()
         Me.tabMain.SuspendLayout()
         Me.tabGeneralInputsBP.SuspendLayout()
         Me.BusParamGroupEdit.SuspendLayout()
@@ -1002,6 +1006,17 @@ Partial Class frmHVACTool
         Me.GroupBox2.TabIndex = 27
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Boundary Conditions"
+        '
+        'Label24
+        '
+        Me.Label24.AutoSize = True
+        Me.Label24.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label24.Location = New System.Drawing.Point(349, 349)
+        Me.Label24.Name = "Label24"
+        Me.Label24.Size = New System.Drawing.Size(22, 15)
+        Me.Label24.TabIndex = 78
+        Me.Label24.Text = "oC"
+        Me.ToolTip1.SetToolTip(Me.Label24, "Degrees Centigrade")
         '
         'txtBC_TemperatureCoolingOff
         '
@@ -1879,6 +1894,10 @@ Partial Class frmHVACTool
         'grpAuxHeater
         '
         Me.grpAuxHeater.BackColor = System.Drawing.Color.Transparent
+        Me.grpAuxHeater.Controls.Add(Me.txtAH_CoolantHeatToAirCabinHeater)
+        Me.grpAuxHeater.Controls.Add(Me.txtAH_FuelEnergyHeatToCoolant)
+        Me.grpAuxHeater.Controls.Add(Me.Label26)
+        Me.grpAuxHeater.Controls.Add(Me.Label25)
         Me.grpAuxHeater.Controls.Add(Me.lblUnitsAH_FuelFiredHeater)
         Me.grpAuxHeater.Controls.Add(Me.txtAH_FuelFiredHeaterkW)
         Me.grpAuxHeater.Controls.Add(Me.lbltxtAH_FuelFiredHeaterkW)
@@ -1887,16 +1906,56 @@ Partial Class frmHVACTool
         Me.grpAuxHeater.ForeColor = System.Drawing.SystemColors.MenuHighlight
         Me.grpAuxHeater.Location = New System.Drawing.Point(474, 209)
         Me.grpAuxHeater.Name = "grpAuxHeater"
-        Me.grpAuxHeater.Size = New System.Drawing.Size(409, 77)
+        Me.grpAuxHeater.Size = New System.Drawing.Size(428, 121)
         Me.grpAuxHeater.TabIndex = 32
         Me.grpAuxHeater.TabStop = False
         Me.grpAuxHeater.Text = "Aux Heater"
+        '
+        'txtAH_CoolantHeatToAirCabinHeater
+        '
+        Me.txtAH_CoolantHeatToAirCabinHeater.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!)
+        Me.txtAH_CoolantHeatToAirCabinHeater.Location = New System.Drawing.Point(282, 88)
+        Me.txtAH_CoolantHeatToAirCabinHeater.Name = "txtAH_CoolantHeatToAirCabinHeater"
+        Me.txtAH_CoolantHeatToAirCabinHeater.ReadOnly = True
+        Me.txtAH_CoolantHeatToAirCabinHeater.Size = New System.Drawing.Size(97, 21)
+        Me.txtAH_CoolantHeatToAirCabinHeater.TabIndex = 31
+        '
+        'txtAH_FuelEnergyHeatToCoolant
+        '
+        Me.txtAH_FuelEnergyHeatToCoolant.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!)
+        Me.txtAH_FuelEnergyHeatToCoolant.Location = New System.Drawing.Point(282, 56)
+        Me.txtAH_FuelEnergyHeatToCoolant.Name = "txtAH_FuelEnergyHeatToCoolant"
+        Me.txtAH_FuelEnergyHeatToCoolant.ReadOnly = True
+        Me.txtAH_FuelEnergyHeatToCoolant.Size = New System.Drawing.Size(97, 21)
+        Me.txtAH_FuelEnergyHeatToCoolant.TabIndex = 30
+        '
+        'Label26
+        '
+        Me.Label26.AutoSize = True
+        Me.Label26.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!)
+        Me.Label26.ForeColor = System.Drawing.Color.Black
+        Me.Label26.Location = New System.Drawing.Point(22, 62)
+        Me.Label26.Name = "Label26"
+        Me.Label26.Size = New System.Drawing.Size(172, 15)
+        Me.Label26.TabIndex = 29
+        Me.Label26.Text = "Fuel Energy to Heat to Coolant"
+        '
+        'Label25
+        '
+        Me.Label25.AutoSize = True
+        Me.Label25.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!)
+        Me.Label25.ForeColor = System.Drawing.Color.Black
+        Me.Label25.Location = New System.Drawing.Point(22, 91)
+        Me.Label25.Name = "Label25"
+        Me.Label25.Size = New System.Drawing.Size(249, 15)
+        Me.Label25.TabIndex = 28
+        Me.Label25.Text = "Coolant Heat Transferred to Air Cabin Heater"
         '
         'lblUnitsAH_FuelFiredHeater
         '
         Me.lblUnitsAH_FuelFiredHeater.AutoSize = True
         Me.lblUnitsAH_FuelFiredHeater.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblUnitsAH_FuelFiredHeater.Location = New System.Drawing.Point(360, 36)
+        Me.lblUnitsAH_FuelFiredHeater.Location = New System.Drawing.Point(398, 30)
         Me.lblUnitsAH_FuelFiredHeater.Name = "lblUnitsAH_FuelFiredHeater"
         Me.lblUnitsAH_FuelFiredHeater.Size = New System.Drawing.Size(24, 15)
         Me.lblUnitsAH_FuelFiredHeater.TabIndex = 27
@@ -1906,7 +1965,7 @@ Partial Class frmHVACTool
         'txtAH_FuelFiredHeaterkW
         '
         Me.txtAH_FuelFiredHeaterkW.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!)
-        Me.txtAH_FuelFiredHeaterkW.Location = New System.Drawing.Point(226, 33)
+        Me.txtAH_FuelFiredHeaterkW.Location = New System.Drawing.Point(282, 27)
         Me.txtAH_FuelFiredHeaterkW.Name = "txtAH_FuelFiredHeaterkW"
         Me.txtAH_FuelFiredHeaterkW.Size = New System.Drawing.Size(97, 21)
         Me.txtAH_FuelFiredHeaterkW.TabIndex = 1
@@ -2092,6 +2151,26 @@ Partial Class frmHVACTool
         Me.grpACSystem.TabIndex = 30
         Me.grpACSystem.TabStop = False
         Me.grpACSystem.Text = "AC-System"
+        '
+        'txtAC_CompressorType
+        '
+        Me.txtAC_CompressorType.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!)
+        Me.txtAC_CompressorType.Location = New System.Drawing.Point(214, 59)
+        Me.txtAC_CompressorType.Name = "txtAC_CompressorType"
+        Me.txtAC_CompressorType.ReadOnly = True
+        Me.txtAC_CompressorType.Size = New System.Drawing.Size(101, 21)
+        Me.txtAC_CompressorType.TabIndex = 58
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!)
+        Me.Label6.ForeColor = System.Drawing.Color.Black
+        Me.Label6.Location = New System.Drawing.Point(13, 30)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(122, 15)
+        Me.Label6.TabIndex = 57
+        Me.Label6.Text = "AC-Compressor Type"
         '
         'txtAC_COP
         '
@@ -2649,37 +2728,6 @@ Partial Class frmHVACTool
         Me.ShowInFolderToolStripMenuItem.Size = New System.Drawing.Size(176, 22)
         Me.ShowInFolderToolStripMenuItem.Text = "Open in Folder"
         '
-        'Label6
-        '
-        Me.Label6.AutoSize = True
-        Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!)
-        Me.Label6.ForeColor = System.Drawing.Color.Black
-        Me.Label6.Location = New System.Drawing.Point(13, 30)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(122, 15)
-        Me.Label6.TabIndex = 57
-        Me.Label6.Text = "AC-Compressor Type"
-        '
-        'txtAC_CompressorType
-        '
-        Me.txtAC_CompressorType.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!)
-        Me.txtAC_CompressorType.Location = New System.Drawing.Point(214, 59)
-        Me.txtAC_CompressorType.Name = "txtAC_CompressorType"
-        Me.txtAC_CompressorType.ReadOnly = True
-        Me.txtAC_CompressorType.Size = New System.Drawing.Size(101, 21)
-        Me.txtAC_CompressorType.TabIndex = 58
-        '
-        'Label24
-        '
-        Me.Label24.AutoSize = True
-        Me.Label24.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label24.Location = New System.Drawing.Point(349, 349)
-        Me.Label24.Name = "Label24"
-        Me.Label24.Size = New System.Drawing.Size(22, 15)
-        Me.Label24.TabIndex = 78
-        Me.Label24.Text = "oC"
-        Me.ToolTip1.SetToolTip(Me.Label24, "Degrees Centigrade")
-        '
         'frmHVACTool
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2964,4 +3012,8 @@ Partial Class frmHVACTool
     Friend WithEvents txtAC_CompressorType As System.Windows.Forms.TextBox
     Friend WithEvents Label6 As System.Windows.Forms.Label
     Friend WithEvents Label24 As System.Windows.Forms.Label
+    Friend WithEvents txtAH_CoolantHeatToAirCabinHeater As System.Windows.Forms.TextBox
+    Friend WithEvents txtAH_FuelEnergyHeatToCoolant As System.Windows.Forms.TextBox
+    Friend WithEvents Label26 As System.Windows.Forms.Label
+    Friend WithEvents Label25 As System.Windows.Forms.Label
 End Class

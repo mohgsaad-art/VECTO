@@ -90,13 +90,14 @@ Public Class AuxiliaryConfig
 
         'testAlternatorMap.aalt
         ElectricalUserInputsConfig = New ElectricsUserInputsConfig() With {.DoorActuationTimeSecond = 4,
+                                                                            .StoredEnergyEfficiency = 0.935,
                                                                             .AlternatorGearEfficiency = 0.92,
                                                                             .PowerNetVoltage = VectoInputs.PowerNetVoltage,
                                                                             .ResultCardIdle = New ResultCard(New List(Of SmartResult)),
                                                                             .ResultCardOverrun = New ResultCard(New List(Of SmartResult)),
                                                                             .ResultCardTraction = New ResultCard(New List(Of SmartResult)),
                                                                             .SmartElectrical = True,
-                                                                            .AlternatorMap = String.Empty
+        .AlternatorMap = String.Empty
                                                                             }
 
         HvacUserInputsConfig = New HVACUserInputsConfig(String.Empty, String.Empty, False)

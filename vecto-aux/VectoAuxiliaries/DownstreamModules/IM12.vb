@@ -11,37 +11,45 @@
 
 Namespace DownstreamModules
 
-  Public Interface IM12
+    Public Interface IM12
 
-   ''' <summary>
-   ''' Fuel consumption with smart Electrics and Average Pneumatic Power Demand
-   ''' </summary>
-   ''' <value></value>
-   ''' <returns></returns>
-   ''' <remarks></remarks>
-   ReadOnly Property FuelconsumptionwithsmartElectricsandAveragePneumaticPowerDemand As Single
-   
-   ''' <summary>
-   ''' Base Fuel Consumption With Average Auxiliary Loads
-   ''' </summary>
-   ''' <value></value>
-   ''' <returns></returns>
-   ''' <remarks></remarks>
-   ReadOnly Property BaseFuelConsumptionWithAverageAuxiliaryLoads As Single
-   
-   'Diagnostic Signals Only For Testing - No Material interference with operation of class.
-   ReadOnly Property P1X      As single
-   ReadOnly Property P1Y      As single
-   ReadOnly Property P2X      As single
-   ReadOnly Property P2Y      As single
-   ReadOnly Property P3X      As single
-   ReadOnly Property P3Y      As single
-   ReadOnly Property XTAIN    As single
-   ReadOnly Property INTRP1   As single
-   ReadOnly Property INTRP2   As single
+        ''' <summary>
+        ''' Fuel consumption with smart Electrics and Average Pneumatic Power Demand
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        ReadOnly Property FuelconsumptionwithsmartElectricsandAveragePneumaticPowerDemand As Single
+
+        ''' <summary>
+        ''' Base Fuel Consumption With Average Auxiliary Loads
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        ReadOnly Property BaseFuelConsumptionWithTrueAuxiliaryLoads As Single
+        ''' <summary>
+        ''' Stop Start Correction
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        ReadOnly Property StopStartCorrection As Single
 
 
- End Interface
+        'Diagnostic Signals Only For Testing - No Material interference with operation of class.
+        ReadOnly Property P1X As Single
+        ReadOnly Property P1Y As Single
+        ReadOnly Property P2X As Single
+        ReadOnly Property P2Y As Single
+        ReadOnly Property P3X As Single
+        ReadOnly Property P3Y As Single
+        ReadOnly Property XTAIN As Single
+        ReadOnly Property INTRP1 As Single
+        ReadOnly Property INTRP2 As Single
+
+
+    End Interface
 
 
 End Namespace

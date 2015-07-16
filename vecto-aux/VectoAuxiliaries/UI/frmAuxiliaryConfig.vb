@@ -383,7 +383,7 @@ Public Class frmAuxiliaryConfig
     End Function
 
     '*****  ELECTRICAL VALIDATION
-    Public Sub Validating_ElectricsHandler(sender As Object, e As CancelEventArgs) Handles txtPowernetVoltage.Validating, txtAlternatorMapPath.Validating, txtAlternatorGearEfficiency.Validating, txtDoorActuationTimeSeconds.Validating
+    Public Sub Validating_ElectricsHandler(sender As Object, e As CancelEventArgs) Handles txtPowernetVoltage.Validating, txtAlternatorMapPath.Validating, txtAlternatorGearEfficiency.Validating, txtDoorActuationTimeSeconds.Validating, txtStoredEnergyEfficiency.Validating
 
         e.Cancel = Not Validate_Electrics()
 
@@ -437,6 +437,14 @@ Public Class frmAuxiliaryConfig
             result = False
         Else
             ErrorProvider.SetError(txtDoorActuationTimeSeconds, String.Empty)
+        End If
+
+        'Stored Energy Efficiency : txtStoredEnergyEfficiency
+        If Not IsPostiveNumber(txtStoredEnergyEfficiency.Text) Then
+            ErrorProvider.SetError(txtStoredEnergyEfficiency, "Please provide a non negative number.")
+            result = False
+        Else
+            ErrorProvider.SetError(txtStoredEnergyEfficiency, String.Empty)
         End If
 
 
@@ -1442,6 +1450,7 @@ Public Class frmAuxiliaryConfig
         txtAlternatorMapPath.DataBindings.Add("Text", auxConfig.ElectricalUserInputsConfig, "AlternatorMap")
         txtAlternatorGearEfficiency.DataBindings.Add("Text", auxConfig.ElectricalUserInputsConfig, "AlternatorGearEfficiency")
         txtDoorActuationTimeSeconds.DataBindings.Add("Text", auxConfig.ElectricalUserInputsConfig, "DoorActuationTimeSecond")
+        txtStoredEnergyEfficiency.DataBindings.Add("Text", auxConfig.ElectricalUserInputsConfig, "StoredEnergyEfficiency")
         chkSmartElectricals.DataBindings.Add("Checked", auxConfig.ElectricalUserInputsConfig, "SmartElectrical", False, DataSourceUpdateMode.OnPropertyChanged)
 
 

@@ -68,7 +68,8 @@ Namespace Hvac
         'Aux. Heater				
         Property AH_EngineWasteHeatkW As Double
         Property AH_FuelFiredHeaterkW As Double
-
+        Property AH_FuelEnergyToHeatToCoolant As Double
+        Property AH_CoolantHeatTransferredToAirCabinHeater As Double
     End Interface
 
 End Namespace
