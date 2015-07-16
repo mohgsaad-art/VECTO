@@ -24,21 +24,9 @@ Namespace Hvac
             _fuelDensity = fuelDensitySingle
         End Sub
 
-        Public ReadOnly Property CoolantHeatTransferredToAirCabinHeater As Single Implements IHVACConstants.CoolantHeatTransferredToAirCabinHeater
-            Get
-                Return 0.75
-            End Get
-        End Property
-
         Public ReadOnly Property DieselGCVJperGram As Single Implements IHVACConstants.DieselGCVJperGram
             Get
                 Return 44800
-            End Get
-        End Property
-
-        Public ReadOnly Property FuelEnergyToHeatToCoolant As Single Implements IHVACConstants.FuelEnergyToHeatToCoolant
-            Get
-                Return 0.2
             End Get
         End Property
 
