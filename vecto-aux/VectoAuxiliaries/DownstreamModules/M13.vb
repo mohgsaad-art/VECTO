@@ -15,84 +15,103 @@ Imports VectoAuxiliaries.Hvac
 
 Namespace DownstreamModules
 
-   Public Class M13
-      Implements IM13
+    Public Class M13
+        Implements IM13
 
-     Private m1  As IM1_AverageHVACLoadDemand
-     Private m10 As IM10
-     Private m12 As IM12
-     Private signals As ISignals
-     
-     'Internal Staging Calculations
-     Private readonly Property Sum1 As Single
-    Get
-                Return -m12.FuelconsumptionwithsmartElectricsandAveragePneumaticPowerDemand + m12.BaseFuelConsumptionWithTrueAuxiliaryLoads
-    End Get
-End Property
-     Private readonly Property Sum2 As Single
-    Get
-                Return m12.BaseFuelConsumptionWithTrueAuxiliaryLoads - m10.FuelConsumptionSmartPneumaticsAndAverageElectricalPowerDemand
-    End Get
-End Property
-     Private readonly Property Sum3 As Single
-    Get
-                Return m12.BaseFuelConsumptionWithTrueAuxiliaryLoads - Sum2
-    End Get
-End Property
-     Private readonly Property Sum4 As Single
-    Get
-     Return -Sum1+Sum3
-    End Get
-End Property
+        Private m10 As IM10
+        Private m11 As IM11
+        Private m12 As IM12
+        Private signals As ISignals
 
-    'Sums 5, 6 and 7 removed during V06 implementation of the model
-     Private ReadOnly Property Sum8 As Single
-      Get
-      Return SW4 * SW3
-       End Get
-     End Property
+        'Internal Staging Calculations
 
-     'Internal Staging Switches
-     Private readonly Property SW1 As Single
-    Get
-      Return If( signals.SmartPneumatics,Sum4,m12.FuelconsumptionwithsmartElectricsandAveragePneumaticPowerDemand)
-    End Get
-End Property
-     private readonly Property SW2 as Single
-    Get
-                Return If(signals.SmartPneumatics, m10.FuelConsumptionSmartPneumaticsAndAverageElectricalPowerDemand, m12.BaseFuelConsumptionWithTrueAuxiliaryLoads)
-    End Get
-End Property
-     Private readonly Property SW3 As Single
-    Get
-     Return If( signals.SmartElectrics, SW1, SW2)
-    End Get
-End Property
-     Private ReadOnly Property SW4 As single
-    Get
-      Return If( signals.DeclarationMode, signals.WHTC,1)
-    End Get
-End Property
-
-     'Constructor
-     Public Sub new ( m1 As IM1_AverageHVACLoadDemand, m10 As IM10, m12 As IM12 , signals As ISignals)
-
-      Me.m1      =  m1
-      Me.m10     =  m10
-      Me.m12     =  m12 
-      Me.signals =  signals
-                          
-End Sub
-
-     'Public class outputs
-     Public ReadOnly Property WHTCTotalCycleFuelConsumptionGrams As Single Implements IM13.WHTCTotalCycleFuelConsumptionGrams
+        Private ReadOnly Property Sum1 As Single
             Get
-          Return Sum8
+                Return m11.TotalCycleFuelConsuptionAverageLoads * m12.StopStartCorrection
+            End Get
+        End Property
+        Private ReadOnly Property Sum2 As Single
+            Get
+                Return m10.AverageLoadsFuelConsumptionInterpolatedForPneumatics * m12.StopStartCorrection
+            End Get
+        End Property
+        Private ReadOnly Property Sum3 As Single
+            Get
+                Return m10.FuelConsumptionSmartPneumaticsAndAverageElectricalPowerDemand * m12.StopStartCorrection
+            End Get
+        End Property
+        Private ReadOnly Property Sum4 As Single
+            Get
+                Return -m12.FuelconsumptionwithsmartElectricsandAveragePneumaticPowerDemand + Sum1
+            End Get
+        End Property
+        Private ReadOnly Property Sum5 As Single
+            Get
+                Return Sum2 - Sum3
+            End Get
+        End Property
+        Private ReadOnly Property Sum6 As Single
+            Get
+                Return m12.BaseFuelConsumptionWithTrueAuxiliaryLoads - Sum4
+            End Get
+        End Property
+        Private ReadOnly Property Sum7 As Single
+            Get
+                Return m12.BaseFuelConsumptionWithTrueAuxiliaryLoads - Sum5
+            End Get
+        End Property
+        Private ReadOnly Property Sum8 As Single
+            Get
+                Return -Sum4 + Sum7
+            End Get
+        End Property
+        Private ReadOnly Property Sum9 As Single
+            Get
+                Return SW4 * SW3
+            End Get
+        End Property
+
+        'Internal Staging Switches
+        Private ReadOnly Property SW1 As Single
+            Get
+                Return If(signals.SmartPneumatics, Sum8, Sum6)
+            End Get
+        End Property
+        Private ReadOnly Property SW2 As Single
+            Get
+                Return If(signals.SmartPneumatics, Sum3, m12.BaseFuelConsumptionWithTrueAuxiliaryLoads)
+            End Get
+        End Property
+        Private ReadOnly Property SW3 As Single
+            Get
+                Return If(signals.SmartElectrics, SW1, SW2)
+            End Get
+        End Property
+        Private ReadOnly Property SW4 As Single
+            Get
+                Return If(signals.DeclarationMode, signals.WHTC, 1)
+            End Get
+        End Property
+
+        'Constructor
+        Public Sub New(m10 As IM10, m11 As IM11, m12 As IM12, signals As ISignals)
+
+            Me.m10 = m10
+            Me.m11 = m11
+            Me.m12 = m12
+            Me.signals = signals
+
+        End Sub
+
+        'Public class outputs
+        Public ReadOnly Property WHTCTotalCycleFuelConsumptionGrams As Single Implements IM13.WHTCTotalCycleFuelConsumptionGrams
+            Get
+                Return Sum9
             End Get
         End Property
 
 
-   End Class
+    End Class
 
 End Namespace
 
