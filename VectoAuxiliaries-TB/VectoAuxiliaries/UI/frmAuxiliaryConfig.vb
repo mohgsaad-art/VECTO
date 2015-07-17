@@ -510,7 +510,7 @@ Public Class frmAuxiliaryConfig
 
     Public Function ValidateAll() As Boolean
 
-        If Validate_Pneumatics() = False OrElse Validate_Electrics() = False OrElse Validate_Pneumatics() = False Then
+        If Validate_Pneumatics() = False OrElse Validate_Electrics() = False OrElse Validate_HVAC() = False Then
 
             Return False
 
