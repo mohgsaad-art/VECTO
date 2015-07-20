@@ -41,7 +41,7 @@ M10Mock.Setup( Function(x) x.AverageLoadsFuelConsumptionInterpolatedForPneumatic
         
  'Assert
  Assert.AreEqual( target.FuelconsumptionwithsmartElectricsandAveragePneumaticPowerDemand, OUT1 )
- Assert.AreEqual( target.BaseFuelConsumptionWithAverageAuxiliaryLoads,                    OUT2 )
+ Assert.AreEqual( target.BaseFuelConsumptionWithTrueAuxiliaryLoads,                    OUT2 )
 
 End Sub
 

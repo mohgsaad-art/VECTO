@@ -1,0 +1,20 @@
+ Volume in drive C has no label.
+ Volume Serial Number is 742F-DD50
+
+ Directory of C:\Users\tb28\Source\Workspaces\VECTO\vecto-sim\VECTO\bin\Debug\Declaration\MissionCycles
+
+05/01/2015  11:25    <DIR>          .
+05/01/2015  11:25    <DIR>          ..
+20/06/2014  13:56           540,751 Citybus_Heavy_Urban.vdri
+20/06/2014  13:56           411,271 Citybus_Suburban.vdri
+20/06/2014  13:56           706,067 Citybus_Urban.vdri
+20/06/2014  13:56         8,585,112 Coach.vdri
+20/06/2014  13:56           378,587 Construction.vdri
+20/06/2014  13:56         2,332,261 Interurban_Bus.vdri
+20/06/2014  13:56         3,238,451 Long_Haul.vdri
+05/01/2015  11:25                 0 lst.txt
+20/06/2014  13:56           167,266 Municipal_Utility.vdri
+20/06/2014  13:56           767,429 Regional_Delivery.vdri
+20/06/2014  13:56           828,985 Urban_Delivery.vdri
+              11 File(s)     17,956,180 bytes
+               2 Dir(s)  234,794,237,952 bytes free

@@ -40,7 +40,7 @@ Dim M12 As New Mock(Of IM12)
 Dim Signals As New Mock(Of ISignals)
 
 m12.Setup     ( Function(x) x.FuelconsumptionwithsmartElectricsandAveragePneumaticPowerDemand) .Returns( IP1 )
-m12.Setup     ( Function(x) x.BaseFuelConsumptionWithAverageAuxiliaryLoads)                    .Returns( IP2 )
+m12.Setup     ( Function(x) x.BaseFuelConsumptionWithTrueAuxiliaryLoads)                    .Returns( IP2 )
 m10.Setup     ( Function(x) x.FuelConsumptionSmartPneumaticsAndAverageElectricalPowerDemand)   .Returns( IP3 )
 Signals.Setup ( Function(x) x.SmartPneumatics)                                                 .Returns( IP4 )
 Signals.Setup ( Function(x) x.SmartElectrics)                                                  .Returns( IP5 )
