@@ -321,8 +321,6 @@ Public Class cDeclaration
         'Aux
         AuxTechs = New Dictionary(Of tAux, List(Of String))
 
-
-
         'Aux - Fan
         AuxFanPower = New Dictionary(Of String, Dictionary(Of tMission, Single))
 

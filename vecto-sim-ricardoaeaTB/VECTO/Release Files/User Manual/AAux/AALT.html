@@ -1,0 +1,162 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>Auxiliary Input File</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Tahoma;
+	panose-1:2 11 6 4 3 5 4 4 2 4;}
+@font-face
+	{font-family:Verdana;
+	panose-1:2 11 6 4 3 5 4 4 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+p.MsoAcetate, li.MsoAcetate, div.MsoAcetate
+	{mso-style-link:"Balloon Text Char";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Tahoma",sans-serif;}
+span.BalloonTextChar
+	{mso-style-name:"Balloon Text Char";
+	mso-style-link:"Balloon Text";
+	font-family:"Tahoma",sans-serif;}
+p.msochpdefault, li.msochpdefault, div.msochpdefault
+	{mso-style-name:msochpdefault;
+	margin-right:0cm;
+	margin-left:0cm;
+	font-size:10.0pt;
+	font-family:"Times New Roman",serif;}
+.MsoChpDefault
+	{font-size:10.0pt;}
+@page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:72.0pt 72.0pt 72.0pt 72.0pt;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-GB link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal><b><span style='font-size:24.0pt;font-family:"Verdana",sans-serif'>Combined
+Alternator Map File (.aalt)</span></b></p>
+
+<div class=MsoNormal align=center style='text-align:center'>
+
+<hr size=1 width="100%" align=center>
+
+</div>
+
+<p class=MsoNormal>The Combined Alternator Map (.AALT) file contains data
+relating to the efficiency of the alternator at various engine speeds and
+current demand. The .AALT file is a CSV file containing three fields: “Amp”,
+“RPM” (engine speed), and “Efficiency”. It can be created via the select file
+button, or an existing map directly imported into VECTO via the File Browser.<br>
+<br>
+<img width=425 height=227 src="Pics/AA_Open-Create%20AALT.jpg"><br>
+<br>
+A new combined alternator map can be created or an existing one edited using
+the Combined Alternators editor module (see below).&nbsp; This module creates a
+combined average alternator efficiency map using input data for one or more
+alternators (Pully Ratio, Efficiency at different RPM/AMP combinations):<br>
+<br>
+<img width=677 height=529 src="Pics/AALT-Editor.jpg"><br>
+<br>
+Alternators may be added/deleted from the list. Data for existing alternators can
+be loaded into the form by double-clicking on the relevant alternator, and the
+data may then be updated and saved back down.<br>
+<br>
+The ‘Diagnostics’ tab provides a summary of the input data and the resulting
+combined alternator map:<br>
+<br>
+<img width=484 height=378 src="Pics/AALT-Editor_Diagnostics.png"><br>
+<br>
+The methodology for calculating the combined efficiency map is summarised
+below:<br>
+<br>
+<img width=867 height=529 src="Pics/CombAlt_Method1.png"><br>
+<img width=974 height=529 src="Pics/CombAlt_Method2.png"><br>
+<br>
+<br>
+<b><span style='font-size:18.0pt'>File Format</span></b></p>
+
+<div class=MsoNormal align=center style='text-align:center'>
+
+<hr size=1 width="100%" align=center>
+
+</div>
+
+<p class=MsoNormal>The file uses the VECTO CSV format.<br>
+<br>
+<b>Example Configuration for Advanced Alternator Map<br>
+</b><img width=577 height=511 src="Pics/ExampleAltMap.png"></p>
+
+<p class=MsoNormal><br>
+<br>
+<b><span style='font-size:18.0pt'>Controls</span></b></p>
+
+<div class=MsoNormal align=center style='text-align:center'>
+
+<hr size=1 width="100%" align=center>
+
+</div>
+
+<p class=MsoNormal><br>
+<img width=28 height=21 src="../pics/misc/browse.png"><b>&nbsp;Open file browser
+if file not listed, open the Combined Alternator Map file (.aalt) if file is
+present</b><br>
+<br>
+<img width=22 height=22 src="../pics/misc/OpenFile.PNG">&nbsp;<b><span
+style='color:black'>View file contents or navigate to folder</span></b><br>
+<br>
+<b><span style='color:black'><img width=75 height=23 src="Pics/Add-icon.png"></span></b><b><span
+style='color:black'>&nbsp;Add button to add a newly defined alternator to the
+list<br>
+<br>
+</span></b><b><span style='color:black'><img width=75 height=23
+src="Pics/Update-icon.png"></span></b><b><span style='color:black'>&nbsp;Update
+button, to update data for selected alternator in the list<br>
+<br>
+</span></b><b><span style='color:black'><img width=19 height=20
+src="Pics/Delete-icon.png"></span></b><b><span style='color:black'>&nbsp;Delete
+button to remove alternator from the list<br>
+<br>
+</span></b><img width=75 height=23 src="Pics/Clear-icon.png">&nbsp;<b><span
+style='color:black'>Clear Form button</span></b></p>
+
+<p class=MsoNormal><br>
+<img width=75 height=23 src="Pics/save.png">&nbsp;<b>Save and close file</b></p>
+
+<p class=MsoNormal style='margin-bottom:12.0pt'><br>
+<img width=75 height=23 src="../pics/misc/Cancel.png" alt=Cancel><b>&nbsp;Cancel
+without saving</b></p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

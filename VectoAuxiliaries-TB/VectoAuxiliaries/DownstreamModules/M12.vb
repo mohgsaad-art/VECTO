@@ -120,7 +120,9 @@ Namespace DownstreamModules
         Public ReadOnly Property StopStartCorrection As Single Implements IM12.StopStartCorrection
             Get
 
-                Return BaseFuelConsumptionWithTrueAuxiliaryLoads \ M10.AverageLoadsFuelConsumptionInterpolatedForPneumatics
+                Dim _stopStartCorrection As Single = BaseFuelConsumptionWithTrueAuxiliaryLoads / If(M10.AverageLoadsFuelConsumptionInterpolatedForPneumatics > 0, M10.AverageLoadsFuelConsumptionInterpolatedForPneumatics, 1)
+
+                Return If(_stopStartCorrection > 0, _stopStartCorrection, 1)
 
             End Get
         End Property

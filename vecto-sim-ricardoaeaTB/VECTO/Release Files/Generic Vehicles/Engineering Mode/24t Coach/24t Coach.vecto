@@ -1,0 +1,59 @@
+﻿{
+  "Header": {
+    "CreatedBy": "John.Norris@ricardo-aea.com, Rasa.Narkeviciute@ricardo-aea.com, Scott.Hanchett@ricardo-aea.com, Dana.Nurse@ricardo-aea.com, pascal.revereault@ricardo.com, james.baxter@ricardo.com (51e9f02e-c88f-4c25-9798-3f807530e154)",
+    "Date": "20/07/2015 11:48:25",
+    "AppVersion": "2.0.4-beta",
+    "FileVersion": 2
+  },
+  "Body": {
+    "SavedInDeclMode": false,
+    "VehicleFile": "24t Coach.vveh",
+    "EngineFile": "24t Coach.veng",
+    "GearboxFile": "24t Coach.vgbx",
+    "Cycles": [
+      "Coach.vdri"
+    ],
+    "AuxiliaryAssembly": "CLASSIC",
+    "AuxiliaryVersion": "CLASSIC",
+    "AdvancedAuxiliaryFilePath": "",
+    "Aux": [
+      {
+        "ID": "ALT1",
+        "Type": "Alternator",
+        "Path": "24t_Coach_ALT.vaux",
+        "Technology": ""
+      },
+      {
+        "ID": "ALT2",
+        "Type": "Alternator",
+        "Path": "24t_Coach_ALT.vaux",
+        "Technology": ""
+      },
+      {
+        "ID": "ALT3",
+        "Type": "Alternator",
+        "Path": "24t_Coach_ALT.vaux",
+        "Technology": ""
+      }
+    ],
+    "VACC": "Coach.vacc",
+    "EngineOnlyMode": false,
+    "StartStop": {
+      "Enabled": false,
+      "MaxSpeed": 5.0,
+      "MinTime": 0.0,
+      "Delay": 0
+    },
+    "LAC": {
+      "Enabled": true,
+      "Dec": -0.5,
+      "MinSpeed": 50.0
+    },
+    "OverSpeedEcoRoll": {
+      "Mode": "OverSpeed",
+      "MinSpeed": 70.0,
+      "OverSpeed": 5.0,
+      "UnderSpeed": 5.0
+    }
+  }
+}
