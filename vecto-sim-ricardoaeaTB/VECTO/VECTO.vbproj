@@ -393,6 +393,39 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
+    <None Include="Release Files\Declaration\DefaultTC.vtcc" />
+    <None Include="Release Files\Declaration\MissionCycles\Citybus_Heavy_Urban.vdri" />
+    <None Include="Release Files\Declaration\MissionCycles\Citybus_Suburban.vdri" />
+    <None Include="Release Files\Declaration\MissionCycles\Citybus_Urban.vdri" />
+    <None Include="Release Files\Declaration\MissionCycles\Coach.vdri" />
+    <None Include="Release Files\Declaration\MissionCycles\Construction.vdri" />
+    <None Include="Release Files\Declaration\MissionCycles\Interurban_Bus.vdri" />
+    <None Include="Release Files\Declaration\MissionCycles\Long_Haul.vdri" />
+    <None Include="Release Files\Declaration\MissionCycles\Municipal_Utility.vdri" />
+    <None Include="Release Files\Declaration\MissionCycles\Regional_Delivery.vdri" />
+    <None Include="Release Files\Declaration\MissionCycles\Urban_Delivery.vdri" />
+    <None Include="Release Files\Declaration\PT1.csv" />
+    <None Include="Release Files\Declaration\Reports\rep2C.pdf" />
+    <None Include="Release Files\Declaration\Reports\rep3C.pdf" />
+    <None Include="Release Files\Declaration\Reports\repAAUX.pdf" />
+    <None Include="Release Files\Declaration\Reports\repMR.pdf" />
+    <None Include="Release Files\Declaration\Rims.csv" />
+    <None Include="Release Files\Declaration\SegmentTable.csv" />
+    <None Include="Release Files\Declaration\SegmentTable_bad.csv" />
+    <None Include="Release Files\Declaration\VACC\Truck.vacc" />
+    <None Include="Release Files\Declaration\VAUX\ES-Tech.csv" />
+    <None Include="Release Files\Declaration\VAUX\Fan-Tech.csv" />
+    <None Include="Release Files\Declaration\VAUX\HVAC-Table.csv" />
+    <None Include="Release Files\Declaration\VAUX\PS-Table.csv" />
+    <None Include="Release Files\Declaration\VAUX\SP-Table.csv" />
+    <None Include="Release Files\Declaration\VAUX\SP-Tech.csv" />
+    <None Include="Release Files\Declaration\VCDV\CoachBus.vcdv" />
+    <None Include="Release Files\Declaration\VCDV\RigidSolo.vcdv" />
+    <None Include="Release Files\Declaration\VCDV\RigidTrailer.vcdv" />
+    <None Include="Release Files\Declaration\VCDV\TractorSemitrailer.vcdv" />
+    <None Include="Release Files\Declaration\VCDV\Truck.vcdv" />
+    <None Include="Release Files\Declaration\Wheels.csv" />
+    <None Include="Release Files\Declaration\WHTC.csv" />
     <None Include="Release Files\Generic Vehicles\Declaration Mode\12t Delivery Truck\12t Delivery Truck.vecto" />
     <None Include="Release Files\Generic Vehicles\Declaration Mode\12t Delivery Truck\12t Delivery Truck.veng" />
     <None Include="Release Files\Generic Vehicles\Declaration Mode\12t Delivery Truck\12t Delivery Truck.vfld" />
@@ -584,6 +617,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Libraries\vectolic.dll" />
+    <Content Include="Release Files\Declaration\MissionCycles\lst.txt" />
+    <Content Include="Release Files\Declaration\Reports\4x2r.png" />
+    <Content Include="Release Files\Declaration\Reports\4x2rt.png" />
+    <Content Include="Release Files\Declaration\Reports\4x2tt.png" />
+    <Content Include="Release Files\Declaration\Reports\6x2r.png" />
+    <Content Include="Release Files\Declaration\Reports\6x2rt.png" />
+    <Content Include="Release Files\Declaration\Reports\6x2tt.png" />
+    <Content Include="Release Files\Declaration\Reports\Undef.png" />
     <Content Include="Release Files\User Manual\AAux\AALT.html" />
     <Content Include="Release Files\User Manual\AAux\AAux-Editor.html" />
     <Content Include="Release Files\User Manual\AAux\AA_Electrical.html" />
