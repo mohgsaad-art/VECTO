@@ -1,0 +1,333 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>Auxiliaries</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Wingdings;
+	panose-1:5 0 0 0 0 0 0 0 0 0;}
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Tahoma;
+	panose-1:2 11 6 4 3 5 4 4 2 4;}
+@font-face
+	{font-family:Verdana;
+	panose-1:2 11 6 4 3 5 4 4 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+p.MsoAcetate, li.MsoAcetate, div.MsoAcetate
+	{mso-style-link:"Balloon Text Char";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Tahoma",sans-serif;}
+p.MsoListParagraph, li.MsoListParagraph, div.MsoListParagraph
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:36.0pt;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;}
+p.MsoListParagraphCxSpFirst, li.MsoListParagraphCxSpFirst, div.MsoListParagraphCxSpFirst
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:36.0pt;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;}
+p.MsoListParagraphCxSpMiddle, li.MsoListParagraphCxSpMiddle, div.MsoListParagraphCxSpMiddle
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:36.0pt;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;}
+p.MsoListParagraphCxSpLast, li.MsoListParagraphCxSpLast, div.MsoListParagraphCxSpLast
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:36.0pt;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;}
+span.BalloonTextChar
+	{mso-style-name:"Balloon Text Char";
+	mso-style-link:"Balloon Text";
+	font-family:"Tahoma",sans-serif;}
+p.msochpdefault, li.msochpdefault, div.msochpdefault
+	{mso-style-name:msochpdefault;
+	margin-right:0cm;
+	margin-left:0cm;
+	font-size:10.0pt;
+	font-family:"Times New Roman",serif;}
+.MsoChpDefault
+	{font-size:10.0pt;}
+@page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:72.0pt 72.0pt 72.0pt 72.0pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-GB link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal><b><span style='font-size:24.0pt;font-family:"Verdana",sans-serif'>Auxiliaries</span></b></p>
+
+<div class=MsoNormal align=center style='text-align:center'>
+
+<hr size=1 width="100%" align=center>
+
+</div>
+
+<div style='margin-left:30.0pt'>
+
+<p class=MsoNormal>In VECTO, there are two options presented for modelling auxiliaries,
+which are summarised below:</p>
+
+<p class=MsoListParagraphCxSpFirst style='margin-left:60.0pt;text-indent:-18.0pt'><span
+style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><b>Classic Vecto Auxiliary</b>: this uses a simple generic
+approach to consider all types of auxiliaries (as originally implemented in
+VECTO)</p>
+
+<p class=MsoListParagraphCxSpLast style='margin-left:60.0pt;text-indent:-18.0pt'><span
+style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><b>Bus (Advanced) Auxiliaries</b>: this uses a more detailed and
+sophisticated approach to model auxiliaries for buses and coaches</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal><b><span style='font-size:18.0pt'>Classic Auxiliaries</span></b></p>
+
+<div class=MsoNormal align=center style='text-align:center'>
+
+<hr size=1 width="100%" align=center>
+
+</div>
+
+<p class=MsoNormal>In VECTO for ‘Classic Vecto Auxiliaries’ a generic map-based
+approach was implemented to consider all types of auxiliaries. The supply power
+demand for each single auxiliary is defined in the driving cycle. Hence a
+time/distance-dependent power demand can be defined. Based on the supply power
+and a pre-defined efficiency map the auxiliary input power is calculated. A
+constant efficiency determines the losses between auxiliary and engine.<br>
+<br>
+For each auxiliary the power demand is calculated using the following steps:<br>
+<br>
+<img width=421 height=349 src="pics/AuxModel.png"></p>
+
+<ol style='margin-top:0cm' start=1 type=1>
+ <li class=MsoNormal>Auxiliary speed: <b>n<sub>aux</sub></b> = <b>n<sub>Eng</sub></b>
+     * <b>TransRatio</b></li>
+ <li class=MsoNormal>Auxiliary output power: <b>P<sub>auxOut</sub></b> = <b>P<sub>supply</sub></b>
+     / <b>EffToSply</b></li>
+ <li class=MsoNormal>Auxiliary input power: <b>P<sub>auxIn</sub></b> = <b>EffMap(</b>n<sub>Aux</sub>,
+     P<sub>AuxOut</sub><b>)</b></li>
+ <li class=MsoNormal>Auxiliary power consumption: <b>P<sub>aux</sub></b> = <b>P<sub>auxIn</sub></b>
+     / <b>EffToEng</b></li>
+ <li class=MsoNormal><b>P<sub>aux</sub> is&nbsp;added to the engine's power
+     demand</b></li>
+</ol>
+
+<div style='margin-left:30.0pt'>
+
+<table class=MsoNormalTable border=0 cellpadding=0 width="100%"
+ style='width:100.0%'>
+ <tr>
+  <td width=168 valign=top style='width:126.0pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>n<sub>Eng</sub></p>
+  </td>
+  <td width=626 valign=top style='width:469.5pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>= Calculated engine speed.</p>
+  </td>
+  <td width=707 valign=top style='width:530.25pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>[1/min]</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=168 valign=top style='width:126.0pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>TransRatio</p>
+  </td>
+  <td width=626 valign=top style='width:469.5pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>= Speed ratio between auxiliary and engine. <a
+  href="../fileformat/VAUX.html">Defined in the Auxiliary File</a>.</p>
+  </td>
+  <td width=707 valign=top style='width:530.25pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>[-]</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=168 valign=top style='width:126.0pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>n<sub>aux</sub></p>
+  </td>
+  <td width=626 valign=top style='width:469.5pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>= Auxiliary speed</p>
+  </td>
+  <td width=707 valign=top style='width:530.25pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>[1/min]</p>
+  </td>
+ </tr>
+ <tr>
+  <td valign=top style='padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>P<sub>supply</sub></p>
+  </td>
+  <td width=626 valign=top style='width:469.5pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>= Effective supply power demand. <a
+  href="../fileformat/VDRI.html">Defined in the driving cycle</a>.</p>
+  </td>
+  <td width=707 valign=top style='width:530.25pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>[kW]</p>
+  </td>
+ </tr>
+ <tr>
+  <td valign=top style='padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>EffToSply</p>
+  </td>
+  <td width=626 valign=top style='width:469.5pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>= Consumer efficiency. <a href="../fileformat/VAUX.html">Defined
+  in the Auxiliary File</a>.</p>
+  </td>
+  <td width=707 valign=top style='width:530.25pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>[-]</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=168 valign=top style='width:126.0pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>P<sub>auxOut</sub> </p>
+  </td>
+  <td width=626 valign=top style='width:469.5pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>= Auxiliary output power</p>
+  </td>
+  <td width=707 valign=top style='width:530.25pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>[kW]</p>
+  </td>
+ </tr>
+ <tr>
+  <td valign=top style='padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>EffMap</p>
+  </td>
+  <td width=626 valign=top style='width:469.5pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>= Auxiliary efficiency map. <a
+  href="../fileformat/VAUX.html">Defined in the Auxiliary File</a>.</p>
+  </td>
+  <td width=707 valign=top style='width:530.25pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>[kW] = f( [1/min], [kW] )</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=168 valign=top style='width:126.0pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>P<sub>auxIn</sub></p>
+  </td>
+  <td width=626 valign=top style='width:469.5pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>= Auxiliary input power</p>
+  </td>
+  <td width=707 valign=top style='width:530.25pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>[kW]</p>
+  </td>
+ </tr>
+ <tr>
+  <td valign=top style='padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>EffToEng</p>
+  </td>
+  <td width=626 valign=top style='width:469.5pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>= Efficiency of auxiliary (belt/gear) drive. <a
+  href="../fileformat/VAUX.html">Defined in the Auxiliary File</a>.</p>
+  </td>
+  <td width=707 valign=top style='width:530.25pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>[-]</p>
+  </td>
+ </tr>
+ <tr>
+  <td valign=top style='padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>P<sub>aux</sub></p>
+  </td>
+  <td width=626 valign=top style='width:469.5pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>= Mechanical auxiliary power demand at the crank shaft</p>
+  </td>
+  <td width=707 valign=top style='width:530.25pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>[kW]</p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+<p class=MsoNormal><br>
+Each auxiliary must be defined in the <a href="../GUI/VECTO-Editor.html">Job
+File</a> and each <a href="../fileformat/VDRI.html">driving cycle</a> used with
+this vehicle must include supply power for each auxiliary.<br>
+To link the supply power in the driving cycle to the correct auxiliary in the
+Job File an ID is used. The corresponding supply power is then named <i>&quot;&lt;Aux_ID&gt;&quot;</i>.</p>
+
+<div style='margin-left:30.0pt'>
+
+<p class=MsoNormal><b><i><br>
+Example</i></b><i>: The Auxiliary with the ID &quot;ALT&quot; (in the Job File)
+is linked to the supply power in the column &quot;&lt;AUX_ALT&gt;&quot; in the
+driving cylce.</i></p>
+
+</div>
+
+<p class=MsoNormal style='margin-bottom:12.0pt'>&nbsp;</p>
+
+<p class=MsoNormal><b><span style='font-size:18.0pt'>Advanced Auxiliaries</span></b></p>
+
+<div class=MsoNormal align=center style='text-align:center'>
+
+<hr size=1 width="100%" align=center>
+
+</div>
+
+<p class=MsoNormal>In the new ‘Bus Auxiliaries’ module, <a
+href="../AAux/AA_Electrical.html">Electrical</a>, <a
+href="../AAux/AA_Pneumatic.html">Pneumatic</a> and <a
+href="../AAux/AA_HVAC.html">HVAC</a> auxiliaries can be simulated in a more
+detailed way.</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>More information on the definition of these advanced
+auxiliaries is provided on the relevant pages for the different auxiliary types/categories. 
+The advanced auxiliaries set-up is managed using the <a
+href="../AAux/AAux-Editor.html">Advanced Auxiliaries Editor</a>.</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal style='margin-bottom:12.0pt'>&nbsp;</p>
+
+</div>
+
+</div>
+
+</body>
+
+</html>

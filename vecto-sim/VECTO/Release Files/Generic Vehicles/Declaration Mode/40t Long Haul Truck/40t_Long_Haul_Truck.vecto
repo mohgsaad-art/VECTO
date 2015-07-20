@@ -1,0 +1,73 @@
+﻿{
+  "Header": {
+    "CreatedBy": "John.Norris@ricardo-aea.com, Rasa.Narkeviciute@ricardo-aea.com, Scott.Hanchett@ricardo-aea.com, Dana.Nurse@ricardo-aea.com, pascal.revereault@ricardo.com, james.baxter@ricardo.com (51e9f02e-c88f-4c25-9798-3f807530e154)",
+    "Date": "20/07/2015 12:22:34",
+    "AppVersion": "2.0.4-beta",
+    "FileVersion": 2
+  },
+  "Body": {
+    "SavedInDeclMode": true,
+    "VehicleFile": "40t_Long_Haul_Truck.vveh",
+    "EngineFile": "40t_Long_Haul_Truck.veng",
+    "GearboxFile": "40t_Long_Haul_Truck.vgbx",
+    "Cycles": [
+      "Long Haul",
+      "Regional Delivery"
+    ],
+    "AuxiliaryAssembly": "CLASSIC",
+    "AuxiliaryVersion": "CLASSIC",
+    "AdvancedAuxiliaryFilePath": "",
+    "Aux": [
+      {
+        "ID": "FAN",
+        "Type": "Fan",
+        "Path": "<NOFILE>",
+        "Technology": "Hydraulic driven - Constant displacement pump"
+      },
+      {
+        "ID": "STP",
+        "Type": "Steering pump",
+        "Path": "<NOFILE>",
+        "Technology": "Variable displacement"
+      },
+      {
+        "ID": "AC",
+        "Type": "HVAC",
+        "Path": "<NOFILE>",
+        "Technology": "Default"
+      },
+      {
+        "ID": "ES",
+        "Type": "Electric System",
+        "Path": "<NOFILE>",
+        "Technology": "Custom Technology List",
+        "TechList": []
+      },
+      {
+        "ID": "PS",
+        "Type": "Pneumatic System",
+        "Path": "<NOFILE>",
+        "Technology": "Default"
+      }
+    ],
+    "VACC": "<NOFILE>",
+    "EngineOnlyMode": false,
+    "StartStop": {
+      "Enabled": false,
+      "MaxSpeed": 5.0,
+      "MinTime": 5.0,
+      "Delay": 5
+    },
+    "LAC": {
+      "Enabled": true,
+      "Dec": -0.5,
+      "MinSpeed": 50.0
+    },
+    "OverSpeedEcoRoll": {
+      "Mode": "OverSpeed",
+      "MinSpeed": 50.0,
+      "OverSpeed": 5.0,
+      "UnderSpeed": 5.0
+    }
+  }
+}

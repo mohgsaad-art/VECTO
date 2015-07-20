@@ -1,0 +1,292 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>Advanced Auxiliaries Input File</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Verdana;
+	panose-1:2 11 6 4 3 5 4 4 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+p.msochpdefault, li.msochpdefault, div.msochpdefault
+	{mso-style-name:msochpdefault;
+	margin-right:0cm;
+	margin-left:0cm;
+	font-size:10.0pt;
+	font-family:"Times New Roman",serif;}
+.MsoChpDefault
+	{font-size:10.0pt;}
+@page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:72.0pt 72.0pt 72.0pt 72.0pt;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-GB link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal><b><span style='font-size:24.0pt;font-family:"Verdana",sans-serif'>Advanced
+Compressor Map (.acmp)</span></b></p>
+
+<div class=MsoNormal align=center style='text-align:center'>
+
+<hr size=1 width="100%" align=center>
+
+</div>
+
+<div style='margin-left:30.0pt'>
+
+<p class=MsoNormal>This file is used to configure the compressor map for
+pneumatic auxiliaries, and contains data relating to the compressor performance
+at various engine speeds. <br>
+<br>
+<b><span style='font-size:18.0pt'>File Format</span></b></p>
+
+<div class=MsoNormal align=center style='text-align:center'>
+
+<hr size=1 width="100%" align=center>
+
+</div>
+
+<p class=MsoNormal>The file uses the VECTO CSV format, with an example provided
+below.<br>
+<br>
+<b>Format</b><br>
+<br>
+<b>Example Configuration for Advanced Compressor Map:<br>
+<br>
+</b></p>
+
+<table class=MsoTableGridLight border=1 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=56 valign=top style='width:42.3pt;border:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>RPM</p>
+  </td>
+  <td width=131 valign=top style='width:98.55pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>FlowRate [l/min]</p>
+  </td>
+  <td width=122 valign=top style='width:91.8pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>Power [on] [W]</p>
+  </td>
+  <td width=126 valign=top style='width:94.8pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>Power [off] [W]</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=top style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>1500</p>
+  </td>
+  <td width=131 valign=top style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>200</p>
+  </td>
+  <td width=122 valign=top style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>2000</p>
+  </td>
+  <td width=126 valign=top style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>1000</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=top style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>2000</p>
+  </td>
+  <td width=131 valign=top style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>400</p>
+  </td>
+  <td width=122 valign=top style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>4000</p>
+  </td>
+  <td width=126 valign=top style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>2000</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=top style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>3000</p>
+  </td>
+  <td width=131 valign=top style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>600</p>
+  </td>
+  <td width=122 valign=top style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>6000</p>
+  </td>
+  <td width=126 valign=top style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>3000</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=top style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>4000</p>
+  </td>
+  <td width=131 valign=top style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>800</p>
+  </td>
+  <td width=122 valign=top style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>8000</p>
+  </td>
+  <td width=126 valign=top style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>4000</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=top style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>5000</p>
+  </td>
+  <td width=131 valign=top style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>1000</p>
+  </td>
+  <td width=122 valign=top style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>10000</p>
+  </td>
+  <td width=126 valign=top style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>5000</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=top style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>6000</p>
+  </td>
+  <td width=131 valign=top style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>1200</p>
+  </td>
+  <td width=122 valign=top style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>12000</p>
+  </td>
+  <td width=126 valign=top style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>6000</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=top style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>7000</p>
+  </td>
+  <td width=131 valign=top style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>1400</p>
+  </td>
+  <td width=122 valign=top style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>14000</p>
+  </td>
+  <td width=126 valign=top style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>7000</p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><br>
+&nbsp;</p>
+
+</div>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,548 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>Advanced Auxiliaries Input File</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Wingdings;
+	panose-1:5 0 0 0 0 0 0 0 0 0;}
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Verdana;
+	panose-1:2 11 6 4 3 5 4 4 2 4;}
+@font-face
+	{font-family:Corbel;
+	panose-1:2 11 5 3 2 2 4 2 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+p.MsoListParagraph, li.MsoListParagraph, div.MsoListParagraph
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:36.0pt;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;}
+p.MsoListParagraphCxSpFirst, li.MsoListParagraphCxSpFirst, div.MsoListParagraphCxSpFirst
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:36.0pt;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;}
+p.MsoListParagraphCxSpMiddle, li.MsoListParagraphCxSpMiddle, div.MsoListParagraphCxSpMiddle
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:36.0pt;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;}
+p.MsoListParagraphCxSpLast, li.MsoListParagraphCxSpLast, div.MsoListParagraphCxSpLast
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:36.0pt;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;}
+p.msochpdefault, li.msochpdefault, div.msochpdefault
+	{mso-style-name:msochpdefault;
+	margin-right:0cm;
+	margin-left:0cm;
+	font-size:10.0pt;
+	font-family:"Times New Roman",serif;}
+p.Default, li.Default, div.Default
+	{mso-style-name:Default;
+	margin:0cm;
+	margin-bottom:.0001pt;
+	text-autospace:none;
+	font-size:12.0pt;
+	font-family:"Corbel",sans-serif;
+	color:black;}
+.MsoChpDefault
+	{font-size:10.0pt;}
+@page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:72.0pt 72.0pt 72.0pt 72.0pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-GB link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal><b><span style='font-size:24.0pt;font-family:"Verdana",sans-serif'>Pneumatic
+Actuations Map (.apac)</span></b></p>
+
+<div class=MsoNormal align=center style='text-align:center'>
+
+<hr size=1 width="100%" align=center>
+
+</div>
+
+<div style='margin-left:30.0pt'>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>This file contains data on number of different kinds of
+pneumatic actuations on different duty cycles. <br>
+<br>
+<b><span style='font-size:18.0pt'>Important notes</span></b></p>
+
+<div class=MsoNormal align=center style='text-align:center'>
+
+<hr size=1 width="100%" align=center>
+
+</div>
+
+<p class=MsoNormal>Note that the cycle file name used must respect this syntax
+to be correctly associated with the actuation map (.apac), otherwise the number
+of actuations will be set at 0 by default: </p>
+
+<p class=MsoListParagraphCxSpFirst style='text-indent:-18.0pt'><span
+style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span>“AnyOtherText _<span style='color:red'>X</span>_Bus.vdri”, with “<span
+style='color:red'>X</span>” = “Urban”, “Heavy urban”, “Suburban”, or “Interurban”</p>
+
+<p class=MsoListParagraphCxSpLast style='text-indent:-18.0pt'><span
+style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span> “AnyOtherText_Coach.vdri” </p>
+
+<p class=MsoNormal><br>
+<b><span style='font-size:18.0pt'>File Format</span></b></p>
+
+<div class=MsoNormal align=center style='text-align:center'>
+
+<hr size=1 width="100%" align=center>
+
+</div>
+
+<p class=MsoNormal>The file uses the VECTO CSV format, with an example provided
+below, with the default values based on the methodology agreed with the
+European Commission and the project Steering Group.<br>
+<br>
+<b>Format</b><br>
+<br>
+<b>Default Configuration for Pneumatic Actuations Map:<br>
+<br>
+</b></p>
+
+<table class=MsoTableGridLight border=1 cellspacing=0 cellpadding=0 width=398
+ style='width:298.45pt;border-collapse:collapse;border:none'>
+ <tr style='height:12.75pt'>
+  <td width=155 nowrap valign=top style='width:116.55pt;border:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm;page-break-after:avoid'><b>ConsumerName</b></p>
+  </td>
+  <td width=155 nowrap valign=top style='width:116.0pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm;page-break-after:avoid'><b>CycleName</b></p>
+  </td>
+  <td width=88 nowrap valign=top style='width:65.9pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm;page-break-after:avoid'><b>Actuations</b></p>
+  </td>
+ </tr>
+ <tr style='height:12.75pt'>
+  <td width=155 nowrap valign=top style='width:116.55pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><span style='color:black'>Brakes</span></p>
+  </td>
+  <td width=155 nowrap valign=top style='width:116.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><span style='color:black'>Heavy Urban</span></p>
+  </td>
+  <td width=88 nowrap valign=top style='width:65.9pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal align=right style='margin-top:1.0pt;margin-right:0cm;
+  margin-bottom:3.0pt;margin-left:0cm;text-align:right'><span style='color:
+  black'>191</span></p>
+  </td>
+ </tr>
+ <tr style='height:12.75pt'>
+  <td width=155 nowrap valign=top style='width:116.55pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><span style='color:black'>Brakes</span></p>
+  </td>
+  <td width=155 nowrap valign=top style='width:116.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><span style='color:black'>Urban</span></p>
+  </td>
+  <td width=88 nowrap valign=top style='width:65.9pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal align=right style='margin-top:1.0pt;margin-right:0cm;
+  margin-bottom:3.0pt;margin-left:0cm;text-align:right'><span style='color:
+  black'>153</span></p>
+  </td>
+ </tr>
+ <tr style='height:12.75pt'>
+  <td width=155 nowrap valign=top style='width:116.55pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><span style='color:black'>Brakes</span></p>
+  </td>
+  <td width=155 nowrap valign=top style='width:116.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><span style='color:black'>Suburban</span></p>
+  </td>
+  <td width=88 nowrap valign=top style='width:65.9pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal align=right style='margin-top:1.0pt;margin-right:0cm;
+  margin-bottom:3.0pt;margin-left:0cm;text-align:right'><span style='color:
+  black'>49</span></p>
+  </td>
+ </tr>
+ <tr style='height:12.75pt'>
+  <td width=155 nowrap valign=top style='width:116.55pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><span style='color:black'>Brakes</span></p>
+  </td>
+  <td width=155 nowrap valign=top style='width:116.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><span style='color:black'>Interurban</span></p>
+  </td>
+  <td width=88 nowrap valign=top style='width:65.9pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal align=right style='margin-top:1.0pt;margin-right:0cm;
+  margin-bottom:3.0pt;margin-left:0cm;text-align:right'><span style='color:
+  black'>190</span></p>
+  </td>
+ </tr>
+ <tr style='height:12.75pt'>
+  <td width=155 nowrap valign=top style='width:116.55pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><span style='color:black'>Brakes</span></p>
+  </td>
+  <td width=155 nowrap valign=top style='width:116.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><span style='color:black'>Coach</span></p>
+  </td>
+  <td width=88 nowrap valign=top style='width:65.9pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal align=right style='margin-top:1.0pt;margin-right:0cm;
+  margin-bottom:3.0pt;margin-left:0cm;text-align:right'><span style='color:
+  black'>27</span></p>
+  </td>
+ </tr>
+ <tr style='height:12.75pt'>
+  <td width=155 nowrap valign=top style='width:116.55pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><span style='color:black'>Brakes</span></p>
+  </td>
+  <td width=155 nowrap valign=top style='width:116.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><span style='color:black'>UnknownCycleName</span></p>
+  </td>
+  <td width=88 nowrap valign=top style='width:65.9pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal align=right style='margin-top:1.0pt;margin-right:0cm;
+  margin-bottom:3.0pt;margin-left:0cm;text-align:right'><span style='color:
+  black'>0</span></p>
+  </td>
+ </tr>
+ <tr style='height:12.75pt'>
+  <td width=155 nowrap valign=top style='width:116.55pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><span style='color:black'>Park brake + 2 doors</span></p>
+  </td>
+  <td width=155 nowrap valign=top style='width:116.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><span style='color:black'>Heavy Urban</span></p>
+  </td>
+  <td width=88 nowrap valign=top style='width:65.9pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal align=right style='margin-top:1.0pt;margin-right:0cm;
+  margin-bottom:3.0pt;margin-left:0cm;text-align:right'><span style='color:
+  black'>82</span></p>
+  </td>
+ </tr>
+ <tr style='height:12.75pt'>
+  <td width=155 nowrap valign=top style='width:116.55pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><span style='color:black'>Park brake + 2 doors</span></p>
+  </td>
+  <td width=155 nowrap valign=top style='width:116.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><span style='color:black'>Urban</span></p>
+  </td>
+  <td width=88 nowrap valign=top style='width:65.9pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal align=right style='margin-top:1.0pt;margin-right:0cm;
+  margin-bottom:3.0pt;margin-left:0cm;text-align:right'><span style='color:
+  black'>75</span></p>
+  </td>
+ </tr>
+ <tr style='height:12.75pt'>
+  <td width=155 nowrap valign=top style='width:116.55pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><span style='color:black'>Park brake + 2 doors</span></p>
+  </td>
+  <td width=155 nowrap valign=top style='width:116.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><span style='color:black'>Suburban</span></p>
+  </td>
+  <td width=88 nowrap valign=top style='width:65.9pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal align=right style='margin-top:1.0pt;margin-right:0cm;
+  margin-bottom:3.0pt;margin-left:0cm;text-align:right'><span style='color:
+  black'>25</span></p>
+  </td>
+ </tr>
+ <tr style='height:12.75pt'>
+  <td width=155 nowrap valign=top style='width:116.55pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><span style='color:black'>Park brake + 2 doors</span></p>
+  </td>
+  <td width=155 nowrap valign=top style='width:116.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><span style='color:black'>Interurban</span></p>
+  </td>
+  <td width=88 nowrap valign=top style='width:65.9pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal align=right style='margin-top:1.0pt;margin-right:0cm;
+  margin-bottom:3.0pt;margin-left:0cm;text-align:right'><span style='color:
+  black'>9</span></p>
+  </td>
+ </tr>
+ <tr style='height:12.75pt'>
+  <td width=155 nowrap valign=top style='width:116.55pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><span style='color:black'>Park brake + 2 doors</span></p>
+  </td>
+  <td width=155 nowrap valign=top style='width:116.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><span style='color:black'>Coach</span></p>
+  </td>
+  <td width=88 nowrap valign=top style='width:65.9pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal align=right style='margin-top:1.0pt;margin-right:0cm;
+  margin-bottom:3.0pt;margin-left:0cm;text-align:right'><span style='color:
+  black'>6</span></p>
+  </td>
+ </tr>
+ <tr style='height:12.75pt'>
+  <td width=155 nowrap valign=top style='width:116.55pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><span style='color:black'>Park brake + 2 doors</span></p>
+  </td>
+  <td width=155 nowrap valign=top style='width:116.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><span style='color:black'>UnknownCycleName</span></p>
+  </td>
+  <td width=88 nowrap valign=top style='width:65.9pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal align=right style='margin-top:1.0pt;margin-right:0cm;
+  margin-bottom:3.0pt;margin-left:0cm;text-align:right'><span style='color:
+  black'>0</span></p>
+  </td>
+ </tr>
+ <tr style='height:12.75pt'>
+  <td width=155 nowrap valign=top style='width:116.55pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><span style='color:black'>Kneeling</span></p>
+  </td>
+  <td width=155 nowrap valign=top style='width:116.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><span style='color:black'>Heavy Urban</span></p>
+  </td>
+  <td width=88 nowrap valign=top style='width:65.9pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal align=right style='margin-top:1.0pt;margin-right:0cm;
+  margin-bottom:3.0pt;margin-left:0cm;text-align:right'><span style='color:
+  black'>27</span></p>
+  </td>
+ </tr>
+ <tr style='height:12.75pt'>
+  <td width=155 nowrap valign=top style='width:116.55pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><span style='color:black'>Kneeling</span></p>
+  </td>
+  <td width=155 nowrap valign=top style='width:116.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><span style='color:black'>Urban</span></p>
+  </td>
+  <td width=88 nowrap valign=top style='width:65.9pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal align=right style='margin-top:1.0pt;margin-right:0cm;
+  margin-bottom:3.0pt;margin-left:0cm;text-align:right'><span style='color:
+  black'>25</span></p>
+  </td>
+ </tr>
+ <tr style='height:12.75pt'>
+  <td width=155 nowrap valign=top style='width:116.55pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><span style='color:black'>Kneeling</span></p>
+  </td>
+  <td width=155 nowrap valign=top style='width:116.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><span style='color:black'>Suburban</span></p>
+  </td>
+  <td width=88 nowrap valign=top style='width:65.9pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal align=right style='margin-top:1.0pt;margin-right:0cm;
+  margin-bottom:3.0pt;margin-left:0cm;text-align:right'><span style='color:
+  black'>6</span></p>
+  </td>
+ </tr>
+ <tr style='height:12.75pt'>
+  <td width=155 nowrap valign=top style='width:116.55pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><span style='color:black'>Kneeling</span></p>
+  </td>
+  <td width=155 nowrap valign=top style='width:116.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><span style='color:black'>Interurban</span></p>
+  </td>
+  <td width=88 nowrap valign=top style='width:65.9pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal align=right style='margin-top:1.0pt;margin-right:0cm;
+  margin-bottom:3.0pt;margin-left:0cm;text-align:right'><span style='color:
+  black'>0</span></p>
+  </td>
+ </tr>
+ <tr style='height:12.75pt'>
+  <td width=155 nowrap valign=top style='width:116.55pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><span style='color:black'>Kneeling</span></p>
+  </td>
+  <td width=155 nowrap valign=top style='width:116.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><span style='color:black'>Coach</span></p>
+  </td>
+  <td width=88 nowrap valign=top style='width:65.9pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal align=right style='margin-top:1.0pt;margin-right:0cm;
+  margin-bottom:3.0pt;margin-left:0cm;text-align:right'><span style='color:
+  black'>0</span></p>
+  </td>
+ </tr>
+ <tr style='height:12.75pt'>
+  <td width=155 nowrap valign=top style='width:116.55pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><span style='color:black'>Kneeling</span></p>
+  </td>
+  <td width=155 nowrap valign=top style='width:116.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><span style='color:black'>UnknownCycleName</span></p>
+  </td>
+  <td width=88 nowrap valign=top style='width:65.9pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal align=right style='margin-top:1.0pt;margin-right:0cm;
+  margin-bottom:3.0pt;margin-left:0cm;text-align:right'><span style='color:
+  black'>0</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><br>
+<br>
+</p>
+
+</div>
+
+</div>
+
+</body>
+
+</html>

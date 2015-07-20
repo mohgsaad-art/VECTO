@@ -1,0 +1,25 @@
+﻿{
+  "Header": {
+    "CreatedBy": "Terry Burns (cdfbee63-58c9-44d5-a649-9903ea7eb6b5)",
+    "Date": "13/01/2015 08:55:15",
+    "AppVersion": "2.0.4-beta",
+    "FileVersion": 2
+  },
+  "Body": {
+    "SavedInDeclMode": false,
+    "ModelName": "Generic 12t Delivery Truck",
+    "Displacement": 7700.0,
+    "IdlingSpeed": 600.0,
+    "Inertia": 3.789,
+    "FullLoadCurves": [
+      {
+        "Path": "12t Delivery Truck.vfld",
+        "Gears": "0 - 99"
+      }
+    ],
+    "FuelMap": "12t Delivery Truck.vmap",
+    "WHTC-Urban": 215.0,
+    "WHTC-Rural": 202.0,
+    "WHTC-Motorway": 204.0
+  }
+}

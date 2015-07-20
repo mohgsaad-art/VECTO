@@ -1,0 +1,757 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>Modal Results - VECTO User Manual</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Verdana;
+	panose-1:2 11 6 4 3 5 4 4 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+p.msochpdefault, li.msochpdefault, div.msochpdefault
+	{mso-style-name:msochpdefault;
+	margin-right:0cm;
+	margin-left:0cm;
+	font-size:10.0pt;
+	font-family:"Times New Roman",serif;}
+.MsoChpDefault
+	{font-size:10.0pt;}
+@page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:72.0pt 72.0pt 72.0pt 72.0pt;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-GB link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal><b><span style='font-size:24.0pt;font-family:"Verdana",sans-serif'>Modal
+Results (.vmod)</span></b></p>
+
+<div class=MsoNormal align=center style='text-align:center'>
+
+<hr size=1 width="100%" align=center>
+
+</div>
+
+<div style='margin-left:30.0pt'>
+
+<p class=MsoNormal>Modal results are only created if enabled in the <a
+href="../GUI/mainform.html">Options</a> tab. One file is created for
+each&nbsp;calculation and stored in the&nbsp;same directory as the .vecto file.<br>
+<br>
+&nbsp;<b>Quantities:</b></p>
+
+<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width="100%"
+ style='width:100.0%'>
+ <col span="2" style="width: 60pt;" width="80">
+ <tr>
+  <td width=262 style='width:196.85pt;padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><b>Name</b></p>
+  </td>
+  <td width=85 style='width:63.55pt;padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><b>Unit</b></p>
+  </td>
+  <td width=656 style='width:491.95pt;padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><b>Description</b></p>
+  </td>
+ </tr>
+ <tr style='height:15.0pt'>
+  <td width=262 style='width:196.85pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>time</p>
+  </td>
+  <td width=85 style='width:63.55pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>[s]</p>
+  </td>
+  <td width=656 style='width:491.95pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Time step.</p>
+  </td>
+ </tr>
+ <tr style='height:15.0pt'>
+  <td width=262 style='width:196.85pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>dist</p>
+  </td>
+  <td width=85 style='width:63.55pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>[km]</p>
+  </td>
+  <td width=656 style='width:491.95pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Travelled distance.</p>
+  </td>
+ </tr>
+ <tr style='height:15.0pt'>
+  <td width=262 style='width:196.85pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>v_act</p>
+  </td>
+  <td width=85 style='width:63.55pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>[km/h]</p>
+  </td>
+  <td width=656 style='width:491.95pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Actual vehicle speed.</p>
+  </td>
+ </tr>
+ <tr style='height:15.0pt'>
+  <td width=262 style='width:196.85pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>v_targ</p>
+  </td>
+  <td width=85 style='width:63.55pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>[km/h]</p>
+  </td>
+  <td width=656 style='width:491.95pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Target vehicle speed.</p>
+  </td>
+ </tr>
+ <tr style='height:15.0pt'>
+  <td width=262 style='width:196.85pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>acc</p>
+  </td>
+  <td width=85 style='width:63.55pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>[m/s<sup>2</sup>]</p>
+  </td>
+  <td width=656 style='width:491.95pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Vehicle acceleration.</p>
+  </td>
+ </tr>
+ <tr style='height:15.0pt'>
+  <td width=262 style='width:196.85pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>grad</p>
+  </td>
+  <td width=85 style='width:63.55pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>[%]</p>
+  </td>
+  <td width=656 style='width:491.95pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Road gradient.</p>
+  </td>
+ </tr>
+ <tr style='height:15.0pt'>
+  <td width=262 style='width:196.85pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>n</p>
+  </td>
+  <td width=85 style='width:63.55pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>[1/min]</p>
+  </td>
+  <td width=656 style='width:491.95pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Engine speed.</p>
+  </td>
+ </tr>
+ <tr>
+  <td style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal>Tq_eng</p>
+  </td>
+  <td style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal>[Nm]</p>
+  </td>
+  <td style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal>Engine torque.</p>
+  </td>
+ </tr>
+ <tr>
+  <td style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal>Tq_clutch</p>
+  </td>
+  <td style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal>[Nm]</p>
+  </td>
+  <td style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal>Torque at clutch (before clutch, engine-side)</p>
+  </td>
+ </tr>
+ <tr>
+  <td style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal>Tq_full</p>
+  </td>
+  <td style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal>[Nm]</p>
+  </td>
+  <td style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal>Full load torque</p>
+  </td>
+ </tr>
+ <tr>
+  <td style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal>Tq_drag</p>
+  </td>
+  <td style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal>[Nm]</p>
+  </td>
+  <td style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal>Motoring torque</p>
+  </td>
+ </tr>
+ <tr style='height:15.0pt'>
+  <td width=262 style='width:196.85pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Pe_eng</p>
+  </td>
+  <td width=85 style='width:63.55pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>[kW]</p>
+  </td>
+  <td width=656 style='width:491.95pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Engine power.</p>
+  </td>
+ </tr>
+ <tr style='height:15.0pt'>
+  <td width=262 style='width:196.85pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Pe_full</p>
+  </td>
+  <td width=85 style='width:63.55pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>[kW]</p>
+  </td>
+  <td width=656 style='width:491.95pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Engine full load power.</p>
+  </td>
+ </tr>
+ <tr style='height:15.0pt'>
+  <td width=262 style='width:196.85pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Pe_drag</p>
+  </td>
+  <td width=85 style='width:63.55pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>[kW]</p>
+  </td>
+  <td width=656 style='width:491.95pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Engine drag power.</p>
+  </td>
+ </tr>
+ <tr style='height:15.0pt'>
+  <td width=262 style='width:196.85pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Pe_clutch</p>
+  </td>
+  <td width=85 style='width:63.55pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>[kW]</p>
+  </td>
+  <td width=656 style='width:491.95pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Engine power at clutch (equals <b>Pe</b> minus loss due to
+  rotational inertia <b>Pa Eng</b>).</p>
+  </td>
+ </tr>
+ <tr style='height:15.0pt'>
+  <td width=262 style='width:196.85pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Gear</p>
+  </td>
+  <td width=85 style='width:63.55pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>[-]</p>
+  </td>
+  <td width=656 style='width:491.95pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Gear. &quot;0&quot; = clutch opened / neutral.
+  &quot;0.5&quot; =&nbsp;lock-up clutch is open (AT with torque converter only,
+  see <a href="../GUI/GBX-Editor.html">Gearbox</a>)</p>
+  </td>
+ </tr>
+ <tr style='height:15.0pt'>
+  <td width=262 style='width:196.85pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Ploss GB</p>
+  </td>
+  <td width=85 style='width:63.55pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>[kW]</p>
+  </td>
+  <td width=656 style='width:491.95pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Gearbox losses.</p>
+  </td>
+ </tr>
+ <tr style='height:15.0pt'>
+  <td width=262 style='width:196.85pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Ploss Diff</p>
+  </td>
+  <td width=85 style='width:63.55pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>[kW]</p>
+  </td>
+  <td width=656 style='width:491.95pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Losses in differential / axle transmission.</p>
+  </td>
+ </tr>
+ <tr style='height:15.0pt'>
+  <td width=262 style='width:196.85pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Ploss Retarder</p>
+  </td>
+  <td width=85 style='width:63.55pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>[kW]</p>
+  </td>
+  <td width=656 style='width:491.95pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Retarder losses.</p>
+  </td>
+ </tr>
+ <tr style='height:15.0pt'>
+  <td width=262 style='width:196.85pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Pa Eng</p>
+  </td>
+  <td width=85 style='width:63.55pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>[kW]</p>
+  </td>
+  <td width=656 style='width:491.95pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Rotational acceleration power: Engine.</p>
+  </td>
+ </tr>
+ <tr style='height:15.0pt'>
+  <td width=262 style='width:196.85pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Pa GB</p>
+  </td>
+  <td width=85 style='width:63.55pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>[kW]</p>
+  </td>
+  <td width=656 style='width:491.95pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Rotational acceleration power: Gearbox.</p>
+  </td>
+ </tr>
+ <tr style='height:15.0pt'>
+  <td width=262 style='width:196.85pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Pa Veh</p>
+  </td>
+  <td width=85 style='width:63.55pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>[kW]</p>
+  </td>
+  <td width=656 style='width:491.95pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Vehicle acceleration power.</p>
+  </td>
+ </tr>
+ <tr style='height:15.0pt'>
+  <td width=262 style='width:196.85pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Proll</p>
+  </td>
+  <td width=85 style='width:63.55pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>[kW]</p>
+  </td>
+  <td width=656 style='width:491.95pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Rolling resistance power demand.</p>
+  </td>
+ </tr>
+ <tr style='height:15.0pt'>
+  <td width=262 style='width:196.85pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Pair</p>
+  </td>
+  <td width=85 style='width:63.55pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>[kW]</p>
+  </td>
+  <td width=656 style='width:491.95pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Air resistance power demand.</p>
+  </td>
+ </tr>
+ <tr style='height:15.0pt'>
+  <td width=262 style='width:196.85pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Pgrad</p>
+  </td>
+  <td width=85 style='width:63.55pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>[kW]</p>
+  </td>
+  <td width=656 style='width:491.95pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Power demand due to road gradient.</p>
+  </td>
+ </tr>
+ <tr style='height:15.0pt'>
+  <td width=262 style='width:196.85pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Paux</p>
+  </td>
+  <td width=85 style='width:63.55pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>[kW]</p>
+  </td>
+  <td width=656 style='width:491.95pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Total auxiliary power demand.</p>
+  </td>
+ </tr>
+ <tr style='height:15.0pt'>
+  <td width=262 style='width:196.85pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Pwheel</p>
+  </td>
+  <td width=85 style='width:63.55pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>[kW]</p>
+  </td>
+  <td width=656 style='width:491.95pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Total power demand at wheel = sum of rolling, air,
+  acceleration and road gradient resistance.</p>
+  </td>
+ </tr>
+ <tr style='height:15.0pt'>
+  <td width=262 style='width:196.85pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Pbrake</p>
+  </td>
+  <td width=85 style='width:63.55pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>[kW]</p>
+  </td>
+  <td width=656 style='width:491.95pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Brake power. Drag power is included in <b>Pe</b>.</p>
+  </td>
+ </tr>
+ <tr style='height:15.0pt'>
+  <td width=262 style='width:196.85pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Paux_xxx</p>
+  </td>
+  <td width=85 style='width:63.55pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>[kW]</p>
+  </td>
+  <td width=656 style='width:491.95pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Power demand of Auxiliary with ID <b><i>xxx</i></b>. See
+  also <a href="../GUI/VECTO-Editor_Aux.html">Aux Dialog</a> and <a
+  href="VDRI.html">Driving Cycle</a>.</p>
+  </td>
+ </tr>
+ <tr style='height:15.0pt'>
+  <td width=262 style='width:196.85pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>FC</p>
+  </td>
+  <td width=85 style='width:63.55pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>[g/h]</p>
+  </td>
+  <td width=656 style='width:491.95pt;padding:3.75pt 3.75pt 3.75pt 3.75pt;
+  height:15.0pt'>
+  <p class=MsoNormal>Fuel consumption from FC map.<span style='color:red'> </span>[Superseded
+  by <span style='font-size:11.0pt;color:black'>Total Cycle Fuel Consumption in
+  grams</span> when Advanced Auxiliaries are active].</p>
+  </td>
+ </tr>
+ <tr>
+  <td style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal>FC-AUXc</p>
+  </td>
+  <td style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal>[g/h]</p>
+  </td>
+  <td style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal>Fuel consumption after <a href="../general/FC.html">Auxiliary-Start/Stop
+  Correction</a>. (Based on FC.)<span style='color:red'> </span>[Superseded by <span
+  style='font-size:11.0pt;color:black'>Total Cycle Fuel Consumption in grams</span>
+  when Advanced Auxiliaries are active].</p>
+  </td>
+ </tr>
+ <tr>
+  <td style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal>FC-WHTCc</p>
+  </td>
+  <td style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal>[g/h]</p>
+  </td>
+  <td style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal>Fuel consumption after <a href="../general/FC.html">WHTC
+  Correction</a>. (Based on FC-AUXc.)<span style='color:red'> </span>[Superseded
+  by <span style='font-size:11.0pt;color:black'>Total Cycle Fuel Consumption in
+  grams</span> when Advanced Auxiliaries are active].</p>
+  </td>
+ </tr>
+ <tr>
+  <td style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal>TC&#957;</p>
+  </td>
+  <td style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal>[-]</p>
+  </td>
+  <td style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal>Torque converter speed ratio</p>
+  </td>
+ </tr>
+ <tr>
+  <td style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal>TC&#956;</p>
+  </td>
+  <td style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal>[-]</p>
+  </td>
+  <td style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal>Torque converter torque ratio</p>
+  </td>
+ </tr>
+ <tr>
+  <td style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal>TC_M_Out</p>
+  </td>
+  <td style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal>[Nm]</p>
+  </td>
+  <td style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal>Torque converter output torque</p>
+  </td>
+ </tr>
+ <tr>
+  <td style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal>TC_n_Out</p>
+  </td>
+  <td style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal>[1/min]</p>
+  </td>
+  <td style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal>Torque converter output speed</p>
+  </td>
+ </tr>
+ <tr>
+  <td valign=bottom style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><span style='font-size:11.0pt;color:black'>AA_NonSmartAlternatorsEfficiency
+  </span></p>
+  </td>
+  <td valign=bottom style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><span style='font-size:11.0pt;color:black'>[Fraction]</span></p>
+  </td>
+  <td valign=bottom style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><span style='font-size:11.0pt;color:black'>Non-Smart
+  Alternators Efficiency, Advance Auxiliaries Module</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td valign=bottom style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><span style='font-size:11.0pt;color:black'>AA_SmartIdleCurrent_Amps
+  </span></p>
+  </td>
+  <td valign=bottom style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><span style='font-size:11.0pt;color:black'>[Amps]&nbsp;&nbsp;
+  </span></p>
+  </td>
+  <td valign=bottom style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><span style='font-size:11.0pt;color:black'>Smart Idle
+  Current in Amps, Advance Auxiliaries Module</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td valign=bottom style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><span style='font-size:11.0pt;color:black'>AA_SmartIdleAlternatorsEfficiency&nbsp;
+  </span></p>
+  </td>
+  <td valign=bottom style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><span style='font-size:11.0pt;color:black'>[Fraction]</span></p>
+  </td>
+  <td valign=bottom style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><span style='font-size:11.0pt;color:black'>Smart Idle
+  Alternators Efficiency, Advance Auxiliaries Module&nbsp; </span></p>
+  </td>
+ </tr>
+ <tr>
+  <td valign=bottom style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><span style='font-size:11.0pt;color:black'>AA_SmartTractionCurrent_Amps&nbsp;
+  </span></p>
+  </td>
+  <td valign=bottom style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><span style='font-size:11.0pt;color:black'>[Amps]</span></p>
+  </td>
+  <td valign=bottom style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><span style='font-size:11.0pt;color:black'>Smart Traction
+  Current in Amps, Advance Auxiliaries Module&nbsp; </span></p>
+  </td>
+ </tr>
+ <tr>
+  <td valign=bottom style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><span style='font-size:11.0pt;color:black'>AA_SmartTractionAlternatorEfficiency
+  </span></p>
+  </td>
+  <td valign=bottom style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><span style='font-size:11.0pt;color:black'>[Fraction]</span></p>
+  </td>
+  <td valign=bottom style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><span style='font-size:11.0pt;color:black'>Smart Traction
+  Alternator Efficiency, Advance Auxiliaries Module </span></p>
+  </td>
+ </tr>
+ <tr>
+  <td valign=bottom style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><span style='font-size:11.0pt;color:black'>AA_SmartOverrunCurrent_Amps
+  </span></p>
+  </td>
+  <td valign=bottom style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><span style='font-size:11.0pt;color:black'>[Amps]</span></p>
+  </td>
+  <td valign=bottom style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><span style='font-size:11.0pt;color:black'>Smart Overrun
+  Current in Amps, Advance Auxiliaries Module </span></p>
+  </td>
+ </tr>
+ <tr>
+  <td valign=bottom style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><span style='font-size:11.0pt;color:black'>AA_SmartOverrunAlternatorEfficiency&nbsp;
+  </span></p>
+  </td>
+  <td valign=bottom style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><span style='font-size:11.0pt;color:black'>[Fraction]</span></p>
+  </td>
+  <td valign=bottom style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><span style='font-size:11.0pt;color:black'>Smart Overrun
+  Alternator Efficiency, Advance Auxiliaries Module&nbsp; </span></p>
+  </td>
+ </tr>
+ <tr>
+  <td valign=bottom style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><span style='font-size:11.0pt;color:black'>AA_CompressorFlowRate_LitrePerSec</span></p>
+  </td>
+  <td valign=bottom style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><span style='font-size:11.0pt;color:black'>[Ni L/S]</span></p>
+  </td>
+  <td valign=bottom style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><span style='font-size:11.0pt;color:black'>Compressor Flow
+  Rate in litres per second, Advance Auxiliaries Module</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td valign=bottom style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><span style='font-size:11.0pt;color:black'>AA_OverrunFlag </span></p>
+  </td>
+  <td valign=bottom style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><span style='font-size:11.0pt;color:black'>[Integer 0/1]</span></p>
+  </td>
+  <td valign=bottom style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><span style='font-size:11.0pt;color:black'>Overrun Flag
+  (yes/no), Advance Auxiliaries Module</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td valign=bottom style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><span style='font-size:11.0pt;color:black'>AA_EngineIdleFlag
+  </span></p>
+  </td>
+  <td valign=bottom style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><span style='font-size:11.0pt;color:black'>[Integer 0/1]</span></p>
+  </td>
+  <td valign=bottom style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><span style='font-size:11.0pt;color:black'>Engine Idle
+  Flag (yes/no), Advance Auxiliaries Module</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td valign=bottom style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><span style='font-size:11.0pt;color:black'>AA_CompressorFlag
+  </span></p>
+  </td>
+  <td valign=bottom style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><span style='font-size:11.0pt;color:black'>[Integer 0/1]</span></p>
+  </td>
+  <td valign=bottom style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><span style='font-size:11.0pt;color:black'>Compressor Flag
+  (off/on), Advance Auxiliaries Module</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td valign=bottom style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><span style='font-size:11.0pt;color:black'>AA_TotalCycleFC_Grams</span></p>
+  </td>
+  <td valign=bottom style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><span style='font-size:11.0pt;color:black'>[Grams]</span></p>
+  </td>
+  <td valign=bottom style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><span style='font-size:11.0pt;color:black'>Total Cycle
+  Fuel Consumption in grams, Advance Auxiliaries Module</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td valign=bottom style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><span style='font-size:11.0pt;color:black'>AA_TotalCycleFC_Litres</span></p>
+  </td>
+  <td valign=bottom style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><span style='font-size:11.0pt;color:black'>[Litres]</span></p>
+  </td>
+  <td valign=bottom style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><span style='font-size:11.0pt;color:black'>Total Cycle Fuel
+  Consumption in litres, Advance Auxiliaries Module</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td valign=bottom style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><span style='font-size:11.0pt;color:black'>AA_D_xxx</span></p>
+  </td>
+  <td valign=bottom style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><span style='font-size:11.0pt;color:black'>[Single]</span></p>
+  </td>
+  <td valign=bottom style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>
+  <p class=MsoNormal><span style='font-size:11.0pt'>Diagnostic outputs for
+  Advance Auxiliaries Module development</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</div>
+
+</body>
+
+</html>

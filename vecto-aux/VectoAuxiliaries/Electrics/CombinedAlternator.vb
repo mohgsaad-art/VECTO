@@ -31,8 +31,13 @@ Public Class CombinedAlternator
             altSignals.CrankRPM = CrankRPM
             altSignals.CurrentDemandAmps = Amps / Alternators.Count
 
-            Return New AlternatorMapValues(Convert.ToSingle(Alternators.Average(Function(a) a.Efficiency) / 100))
+            Dim alternatorMapValues As New AlternatorMapValues(Convert.ToSingle(Alternators.Average(Function(a) a.Efficiency) / 100))
 
+            If alternatorMapValues.Efficiency <= 0 Then
+                alternatorMapValues = New AlternatorMapValues(0.01)
+            End If
+
+            Return alternatorMapValues
 
         End Function
         Public Function Initialise() As Boolean Implements IAlternatorMap.Initialise

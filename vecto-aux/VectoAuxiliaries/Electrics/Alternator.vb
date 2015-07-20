@@ -53,9 +53,7 @@ Namespace Electrics
                 'Calculate ( Interpolate ) Efficiency
                 Dim range As List(Of AltUserInput) = RangeTable.Select(Function(s) New AltUserInput(s.RPM, s.Efficiency)).ToList()
 
-                Dim v As Single = Alternator.Iterpolate(range, Convert.ToSingle(SpindleSpeed))
-
-                Return v
+                Return Alternator.Iterpolate(range, Convert.ToSingle(SpindleSpeed))
 
             End Get
 

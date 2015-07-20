@@ -1,0 +1,160 @@
+Bus Model,Type,engine Type,length in m,wide in m,height in m,registered passengers,double decker
+IVECO - Arway Intercity 10.6m,raised floor,diesel,10.655,2.55,2.275,47,False
+IVECO - Arway Intercity 12.8m,raised floor,diesel,12.756,2.55,2.275,59,False
+IVECO - Arway Intercity 12m,raised floor,diesel,11.991,2.55,2.275,55,False
+IVECO - Bus GX 127,low floor,diesel,9.495,2.33,2.395,60,False
+IVECO - Citelis 10.5m,low floor,diesel,10.46,2.5,2.344,91,False
+IVECO - Citelis 10.5m CNG,low floor,gas,10.46,2.5,2.344,91,False
+IVECO - Citelis 12m,low floor,diesel,11.99,2.5,2.344,97,False
+IVECO - Citelis 12m CNG,low floor,gas,11.99,2.5,2.344,89,False
+IVECO - Citelis 12m Hybrid,low floor,hybrid,11.99,2.5,2.344,83,False
+IVECO - Citelis 18m  ,low floor,diesel,17.9,2.5,2.344,155,False
+IVECO - Citelis 18m CNG,low floor,gas,17.9,2.5,2.344,149,False
+IVECO - Citelis 18m Hybrid,low floor,hybrid,17.9,2.5,2.344,140,False
+IVECO - Crossway Intercity 10.6m,raised floor,diesel,10.655,2.55,2.275,47,False
+IVECO - Crossway Intercity 12.8m,raised floor,diesel,12.76,2.55,2.275,59,False
+IVECO - Crossway Intercity 12m,raised floor,diesel,11.995,2.55,2.275,55,False
+IVECO - Crossway LE City 10.8m,semi low floor,diesel,10.79,2.55,2.3,90,False
+IVECO - Crossway LE City 12.8m,semi low floor,diesel,12.76,2.55,2.3,105,False
+IVECO - Crossway LE City 12m,semi low floor,diesel,11.995,2.55,2.3,108,False
+IVECO - Crossway LE Intercity 10.8m,semi low floor,diesel,10.79,2.55,2.3,76,False
+IVECO - Crossway LE Intercity 12.8m,semi low floor,diesel,12.76,2.55,2.3,91,False
+IVECO - Crossway LE Intercity 12m,semi low floor,diesel,11.995,2.55,2.3,89,False
+IVECO - Evasys HD 12.8m,raised floor,diesel,12.76,2.55,2.036,59,False
+IVECO - Evasys HD 12m,raised floor,diesel,11.995,2.55,2.036,55,False
+IVECO - Magelys HD 12.2m,raised floor,diesel,12.2,2.55,2.1,48,False
+IVECO - Magelys HD 12.8m,raised floor,diesel,12.765,2.55,2.1,52,False
+IVECO - Magelys HDH 13.8m,raised floor,diesel,13.8,2.55,2.1,61,False
+IVECO - Magelys Pro 12.2m,raised floor,diesel,12.2,2.55,2.1,53,False
+IVECO - Magelys Pro 12.8m,raised floor,diesel,12.765,2.55,2.1,57,False
+MAN - Lion's City,low floor,diesel,11.98,2.5,2.3,95,False
+MAN - Lion's City C ,low floor,diesel,13.68,2.5,2.3,98,False
+MAN - Lion's City C CNG,low floor,gas,13.68,2.5,2.3,98,False
+MAN - Lion's City CNG,low floor,gas,11.98,2.5,2.3,95,False
+MAN - Lion's City G,low floor,diesel,17.98,2.5,2.3,150,False
+MAN - Lion's City G CNG,low floor,gas,17.98,2.5,2.3,144,False
+MAN - Lion's City GL,low floor,diesel,18.75,2.5,2.3,165,False
+MAN - Lion's City GL CNG,low floor,gas,18.75,2.5,2.3,158,False
+MAN - Lion's City L,low floor,diesel,14.705,2.5,2.3,120,False
+MAN - Lion's City L CNG,low floor,gas,14.705,2.5,2.3,114,False
+MAN - Lion's City LE,low floor,diesel,11.857,2.55,2.3,36,False
+MAN - Lion's City LE �,low floor,diesel,11.857,2.55,2.3,40,False
+MAN - Lion's City �,low floor,diesel,11.98,2.5,2.3,95,False
+MAN - Lion's City � CNG,low floor,gas,11.98,2.5,2.3,95,False
+MAN - Lion's Coach,raised floor,diesel,12,2.55,2.1,49,False
+MAN - Lion's Coach C,raised floor,diesel,13.26,2.55,2.1,55,False
+MAN - Lion's Coach L,raised floor,diesel,13.8,2.55,2.1,57,False
+MAN - Lion's Regio,raised floor,diesel,12.25,2.55,2.2,56,False
+MAN - Lion's Regio C,raised floor,diesel,13.01,2.55,2.2,60,False
+MAN - Lion's Regio L,raised floor,diesel,13.9,2.55,2.2,64,False
+Mercedes-Benz - Citaro,low floor,diesel,11.95,2.55,2.313,106,False
+Mercedes-Benz - Citaro CNG,low floor,gas,11.95,2.55,2.313,98,False
+Mercedes-Benz - Citaro D,low floor,diesel,12.105,2.55,2.313,106,False
+Mercedes-Benz - Citaro G,low floor,diesel,17.94,2.55,2.313,159,False
+Mercedes-Benz - Citaro G CNG,low floor,gas,17.94,2.55,2.313,153,False
+Mercedes-Benz - Citaro G�,semi low floor,diesel,17.94,2.55,2.313,130,False
+Mercedes-Benz - Citaro K,low floor,diesel,10.503,2.55,2.313,87,False
+Mercedes-Benz - Citaro LE,low floor,diesel,12.04,2.55,2.318,101,False
+Mercedes-Benz - Citaro LE M�,low floor,diesel,13.057,2.55,2.318,83,False
+Mercedes-Benz - Citaro LE �,low floor,diesel,12.04,2.55,2.318,83,False
+Mercedes-Benz - Citaro L�,semi low floor,diesel,14.995,2.55,2.313,110,False
+Mercedes-Benz - Citaro M�,semi low floor,diesel,13.008,2.55,2.313,89,False
+Mercedes-Benz - Citaro �,semi low floor,diesel,11.95,2.55,2.313,83,False
+Mercedes-Benz - Integro,raised floor,diesel,12.14,2.55,2.17,53,False
+Mercedes-Benz - Integro L,raised floor,diesel,14.92,2.55,2.17,69,False
+Mercedes-Benz - Integro M,raised floor,diesel,12.98,2.55,2.17,57,False
+Mercedes-Benz - Tourino,raised floor,diesel,9.35,2.4,2,34,False
+Mercedes-Benz - Tourismo,raised floor,diesel,12.14,2.55,2.01,51,False
+Mercedes-Benz - Tourismo L,raised floor,diesel,13.99,2.55,2.01,59,False
+Mercedes-Benz - Tourismo M,raised floor,diesel,12.96,2.55,2.01,55,False
+Mercedes-Benz - Tourismo M/2,raised floor,diesel,12.96,2.55,2.01,55,False
+Mercedes-Benz - Travego,raised floor,diesel,12.18,2.55,2.1,51,False
+Mercedes-Benz - Travego L,raised floor,diesel,14.03,2.55,2.1,59,False
+Mercedes-Benz - Travego M,raised floor,diesel,13,2.55,2.1,55,False
+Neoplan - Cityliner,raised floor,diesel,12.24,2.55,2.066,49,False
+Neoplan - Cityliner C 13m,raised floor,diesel,12.99,2.55,2.066,53,False
+Neoplan - Cityliner C 14m,raised floor,diesel,13.99,2.55,2.066,53,False
+Neoplan - Cityliner L,raised floor,diesel,12.99,2.55,2.066,57,False
+Neoplan - Starliner C,raised floor,diesel,12.99,2.55,2.005,53,False
+Neoplan - Starliner L,raised floor,diesel,13.99,2.55,2.005,57,False
+Neoplan - Tourliner,raised floor,diesel,12,2.55,2.153,49,False
+Neoplan - Tourliner C,raised floor,diesel,13.26,2.55,2.153,57,False
+Neoplan - Tourliner L,raised floor,diesel,13.8,2.55,2.153,57,False
+Scania - Irizar Century 12.9m,raised floor,diesel,12.85,2.55,2.1,57,False
+Scania - Irizar Century 12m,raised floor,diesel,12,2.55,2.1,53,False
+Scania - Irizar Century 13.8m,raised floor,diesel,13.72,2.55,2.1,61,False
+Scania - Irizar Century 15m,raised floor,diesel,15,2.55,2.1,65,False
+Scania - Irizar i4 10.7m,raised floor,diesel,10.7,2.55,2.1,47,False
+Scania - Irizar i4 11.48m,raised floor,diesel,11.48,2.55,2.1,51,False
+Scania - Irizar i4 12.2m,raised floor,diesel,12.2,2.55,2.1,55,False
+Scania - Irizar i4 12.9m,raised floor,diesel,12.9,2.55,2.1,53,False
+Scania - Irizar i4 13.64m,raised floor,diesel,13.64,2.55,2.1,63,False
+Scania - Irizar i4 14.36m,raised floor,diesel,14.36,2.55,2.1,67,False
+Scania - Irizar i4 15m,raised floor,diesel,15,2.55,2.1,71,False
+Scania - Irizar PB 12.9m,raised floor,diesel,12.92,2.55,2.1,53,False
+Scania - Irizar PB 12m,raised floor,diesel,12,2.55,2.1,49,False
+Scania - Irizar PB 13.9m,raised floor,diesel,13.87,2.55,2.1,57,False
+Scania - Irizar PB 15m,raised floor,diesel,14.98,2.55,2.1,61,False
+Scania - Omnicity 12m,low floor,diesel,12,2.55,2.3,106,False
+Scania - Omnicity 18m,low floor,diesel,18,2.55,2.3,159,False
+Scania - Omniexpress 12.4m,raised floor,diesel,12.4,2.55,2.2,49,False
+Scania - Omnilink 12.7m,low floor,diesel,12.7,2.55,2.3,112,False
+Scania - Omnilink 12m,low floor,diesel,12,2.55,2.3,106,False
+Scania - Omnilink 13.7m,low floor,diesel,13.7,2.55,2.3,120,False
+Scania - Omnilink 14.6m,low floor,diesel,14.6,2.55,2.3,130,False
+Scania - Omnilink 18.1m,low floor,diesel,18.1,2.55,2.3,159,False
+Scania - Touring 12m,raised floor,diesel,12.09,2.55,2.1,51,False
+Scania - Touring 13.7m,raised floor,diesel,13.7,2.55,2.1,59,False
+Setra - S 411 HD,raised floor,diesel,10.16,2.55,2.1,37,False
+Setra - S 412 UL,raised floor,diesel,10.805,2.55,2.17,45,False
+Setra - S 415 GT,raised floor,diesel,12.2,2.55,2.01,51,False
+Setra - S 415 GT-HD,raised floor,diesel,12.2,2.55,2.01,51,False
+Setra - S 415 H,raised floor,diesel,12.2,2.55,2.01,53,False
+Setra - S 415 HD,raised floor,diesel,12.2,2.55,2.1,49,False
+Setra - S 415 HDH,raised floor,diesel,12.3,2.55,2.1,51,False
+Setra - S 415 NF,low floor,diesel,11.95,2.55,2.313,42,False
+Setra - S 415 UL,raised floor,diesel,12.2,2.55,2.17,53,False
+Setra - S 416 GT,raised floor,diesel,13.04,2.55,2.01,55,False
+Setra - S 416 GT-HD ,raised floor,diesel,13.04,2.55,2.01,55,False
+Setra - S 416 GT-HD/2,raised floor,diesel,13.04,2.55,2.01,55,False
+Setra - S 416 H,raised floor,diesel,13.04,2.55,2.01,57,False
+Setra - S 416 HDH,raised floor,diesel,13.19,2.55,2.1,55,False
+Setra - S 416 NF,low floor,diesel,13.008,2.55,2.313,48,False
+Setra - S 416 UL,raised floor,diesel,13.04,2.55,2.17,57,False
+Setra - S 417 GT-HD,raised floor,diesel,14.05,2.55,2.01,59,False
+Setra - S 417 HDH,raised floor,diesel,14.05,2.55,2.1,59,False
+Setra - S 417 UL,raised floor,diesel,14.05,2.55,2.17,61,False
+Setra - S 419 GT-HD,raised floor,diesel,14.96,2.55,2.01,67,False
+Setra - S 419 UL,raised floor,diesel,14.98,2.55,2.17,69,False
+Solaris - Alpino,low floor,diesel,8.6,2.4,2.37,73,False
+Solaris - Alpino 8.9m LE,semi low floor,diesel,8.95,2.4,2.3,65,False
+Solaris - InterUrbino 12,raised floor,diesel,11.995,2.55,2.1,56,False
+Solaris - Urbino 10,low floor,diesel,9.94,2.55,2.37,78,False
+Solaris - Urbino 12,low floor,diesel,12,2.55,2.37,95,False
+Solaris - Urbino 12 CNG,low floor,gas,12,2.55,2.37,87,False
+Solaris - Urbino 12 Hybrid,low floor,hybrid,12,2.55,2.37,81,False
+Solaris - Urbino 12 LE,semi low floor,diesel,12,2.55,2.3,75,False
+Solaris - Urbino 12 LE CNG,semi low floor,gas,12,2.55,2.3,70,False
+Solaris - Urbino 15,low floor,diesel,14.59,2.55,2.37,123,False
+Solaris - Urbino 15 CNG,low floor,gas,14.59,2.55,2.37,115,False
+Solaris - Urbino 15 LE,semi low floor,diesel,14.59,2.55,2.3,120,False
+Solaris - Urbino 15 LE CNG,semi low floor,gas,14.59,2.55,2.3,114,False
+Solaris - Urbino 18,low floor,diesel,18,2.55,2.37,156,False
+Solaris - Urbino 18 CNG,low floor,gas,18,2.55,2.37,150,False
+Solaris - Urbino 18 Hybrid,low floor,hybrid,18,2.55,2.37,142,False
+Solaris - Urbino 18 LE CNG,semi low floor,gas,18,2.55,2.3,150,False
+Solaris - Vacanza 12,raised floor,diesel,12,2.55,2.1,49,False
+Solaris - Vacanza 13,raised floor,diesel,12.9,2.55,2.1,53,False
+Volvo - 7900 Articulated CNG,low floor,gas,18.084,2.55,2.3,153,False
+Volvo - 7900 Articulated Diesel,low floor,diesel,18.084,2.55,2.3,159,False
+Volvo - 7900 CNG,low floor,gas,12.084,2.55,2.3,98,False
+Volvo - 7900 Diesel,low floor,diesel,12.084,2.55,2.3,101,False
+Volvo - 7900 Hybrid,low floor,hybrid,12.084,2.55,2.3,92,False
+Volvo - 8900 Diesel 12.2m,raised floor,diesel,12.202,2.55,2.1,53,False
+Volvo - 8900 Diesel 12m LE,semi low floor,diesel,12.066,2.55,2.3,83,False
+Volvo - 8900 Diesel 13.7m LE Boogy,semi low floor,diesel,13.7,2.55,2.3,98,False
+Volvo - 8900 Diesel 13m,raised floor,diesel,13,2.55,2.1,57,False
+Volvo - 8900 Diesel 13m LE,semi low floor,diesel,13,2.55,2.3,89,False
+Volvo - 8900 Diesel 14.7m LE Boogy,semi low floor,diesel,14.766,2.55,2.3,110,False
+Volvo - 9700 Diesel 12.3m,raised floor,diesel,12.29,2.55,2.1,50,False
+SuperDuper,low floor,diesel,5,2.5,3.5,80,True
