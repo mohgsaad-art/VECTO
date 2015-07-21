@@ -2568,10 +2568,10 @@ lb10:
              mAAUX_Global.advancedAuxModel.Signals.EngineDrivelineTorque =mAAUX_Global.EngineDrivelineTorque
              mAAUX_Global.advancedAuxModel.Signals.EngineMotoringPower = mAAUX_Global.EngineMotoringPower
              mAAUX_Global.advancedAuxModel.Signals.EngineSpeed = mAAUX_Global.EngineSpeed
-             mAAUX_Global.advancedAuxModel.Signals.PreExistingAuxPower  = mAAUX_Global.PreExistingAuxPower
+                mAAUX_Global.advancedAuxModel.Signals.PreExistingAuxPower = mAAUX_Global.PreExistingAuxPower
              mAAUX_Global.advancedAuxModel.Signals.Idle = mAAUX_Global.Idle
              mAAUX_Global.advancedAuxModel.Signals.InNeutral = mAAUX_Global.InNeutral
-
+                mAAUX_Global.advancedAuxModel.Signals.RunningCalc = mAAUX_Global.RunningCalc
 
              'Power coming out of Advanced Model is in Watts.
              power = (advancedAuxModel.AuxiliaryPowerAtCrankWatts /1000)

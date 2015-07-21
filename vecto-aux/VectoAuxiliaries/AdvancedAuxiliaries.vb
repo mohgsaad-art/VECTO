@@ -91,7 +91,7 @@ Public Class AdvancedAuxiliaries
         Signals.SmartPneumatics = auxConfig.PneumaticUserInputsConfig.SmartAirCompression
         Signals.PneumaticOverrunUtilisation = auxConfig.PneumaticAuxillariesConfig.OverrunUtilisationForCompressionFraction
 
-        alternatorMap = New CombinedAlternator(FilePathUtils.ResolveFilePath(vectoDirectory, auxConfig.ElectricalUserInputsConfig.AlternatorMap))
+        alternatorMap = New CombinedAlternator(FilePathUtils.ResolveFilePath(vectoDirectory, auxConfig.ElectricalUserInputsConfig.AlternatorMap), Signals)
 
         actuationsMap = New PneumaticActuationsMAP(FilePathUtils.ResolveFilePath(vectoDirectory, auxConfig.PneumaticUserInputsConfig.ActuationsMap))
 
