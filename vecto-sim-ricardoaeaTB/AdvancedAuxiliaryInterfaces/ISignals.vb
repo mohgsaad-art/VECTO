@@ -144,5 +144,11 @@ Public Interface ISignals
     ''' <returns></returns>
     ''' <remarks></remarks>
     Property StoredEnergyEfficiency As Single
-
+    ''' <summary>
+    ''' Running Calc
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Property RunningCalc As Boolean
 End Interface

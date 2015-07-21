@@ -51,6 +51,7 @@ Implements ISignals
     Public Property EngineIdleSpeed As Single Implements ISignals.EngineIdleSpeed
     Public Property PneumaticOverrunUtilisation As Single Implements ISignals.PneumaticOverrunUtilisation
     Public Property StoredEnergyEfficiency As Single Implements ISignals.StoredEnergyEfficiency
+    Public Property RunningCalc As Boolean Implements ISignals.RunningCalc
 End Class
 
 

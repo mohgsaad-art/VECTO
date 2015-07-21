@@ -23,7 +23,8 @@ Public Class CombinedAlternator
         Private OriginalAlternators As New List(Of IAlternator)
         Private FilePath As String
         Private altSignals As ICombinedAlternatorSignals
-
+        Private Signals As ISignals
+        Private AverageAlternatorsEfficiency As AlternatorMapValues
 
         'Interface Implementation
         Public Function GetEfficiency(ByVal CrankRPM As Single, ByVal Amps As Single) As AlternatorMapValues Implements IAlternatorMap.GetEfficiency
@@ -31,7 +32,15 @@ Public Class CombinedAlternator
             altSignals.CrankRPM = CrankRPM
             altSignals.CurrentDemandAmps = Amps / Alternators.Count
 
-            Dim alternatorMapValues As New AlternatorMapValues(Convert.ToSingle(Alternators.Average(Function(a) a.Efficiency) / 100))
+            Dim alternatorMapValues As AlternatorMapValues = Nothing
+
+            If Signals Is Nothing OrElse Signals.RunningCalc Then
+                'If running calc cycle get efficiency from interpolation function
+                alternatorMapValues = New AlternatorMapValues(Convert.ToSingle(Alternators.Average(Function(a) a.Efficiency) / 100))
+            Else
+                'If running Pre calc cycle get an average of inputs
+                alternatorMapValues = AverageAlternatorsEfficiency
+            End If
 
             If alternatorMapValues.Efficiency <= 0 Then
                 alternatorMapValues = New AlternatorMapValues(0.01)
@@ -66,9 +75,10 @@ Public Class CombinedAlternator
         End Function
 
         'Constructors
-        Public Sub New(filePath As String)
+        Public Sub New(filePath As String, Optional signals As ISignals = Nothing)
 
             Dim feedback As String = String.Empty
+            Me.Signals = signals
 
             If Not FilePathUtils.ValidateFilePath(filePath, ".aalt", feedback) Then
                 Throw New ArgumentException(String.Format("Combined Alternator requires a valid .AALT filename. : {0}", feedback))
@@ -85,12 +95,31 @@ Public Class CombinedAlternator
             If File.Exists(filePath) AndAlso InitialiseMap(filePath) Then
                 Initialise()
             Else
-
                 'Create Default Map
                 CreateDefaultMap()
                 Initialise()
-
             End If
+
+            ' Calculate alternators average which is used only in the pre-run
+            Dim efficiencySum As Single
+            Dim efficiencyAverage As Single
+
+            For Each alt As IAlternator In Alternators
+                efficiencySum += alt.InputTable2000.ElementAt(1).Eff
+                efficiencySum += alt.InputTable2000.ElementAt(2).Eff
+                efficiencySum += alt.InputTable2000.ElementAt(3).Eff
+
+                efficiencySum += alt.InputTable4000.ElementAt(1).Eff
+                efficiencySum += alt.InputTable4000.ElementAt(2).Eff
+                efficiencySum += alt.InputTable4000.ElementAt(3).Eff
+
+                efficiencySum += alt.InputTable6000.ElementAt(1).Eff
+                efficiencySum += alt.InputTable6000.ElementAt(2).Eff
+                efficiencySum += alt.InputTable6000.ElementAt(3).Eff
+            Next
+
+            efficiencyAverage = efficiencySum / (Alternators.Count * 9)
+            AverageAlternatorsEfficiency = New AlternatorMapValues(efficiencyAverage / 100)
 
         End Sub
 
