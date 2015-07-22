@@ -96,8 +96,8 @@ Public Class AuxiliaryConfig
                                                                             .ResultCardIdle = New ResultCard(New List(Of SmartResult)),
                                                                             .ResultCardOverrun = New ResultCard(New List(Of SmartResult)),
                                                                             .ResultCardTraction = New ResultCard(New List(Of SmartResult)),
-                                                                            .SmartElectrical = True,
-        .AlternatorMap = String.Empty
+                                                                            .SmartElectrical = False,
+                                                                            .AlternatorMap = String.Empty
                                                                             }
 
         HvacUserInputsConfig = New HVACUserInputsConfig(String.Empty, String.Empty, False)
@@ -221,7 +221,7 @@ Public Class AuxiliaryConfig
         If Me.PneumaticUserInputsConfig.RetarderBrake <> other.PneumaticUserInputsConfig.RetarderBrake Then Return False
         If Me.PneumaticUserInputsConfig.SmartAirCompression <> other.PneumaticUserInputsConfig.SmartAirCompression Then Return False
         If Me.PneumaticUserInputsConfig.SmartRegeneration <> other.PneumaticUserInputsConfig.SmartRegeneration Then Return False
-       
+
         Return True
 
     End Function
@@ -387,7 +387,7 @@ Public Class AuxiliaryConfig
         Me.PneumaticUserInputsConfig.RetarderBrake = other.PneumaticUserInputsConfig.RetarderBrake
         Me.PneumaticUserInputsConfig.SmartAirCompression = other.PneumaticUserInputsConfig.SmartAirCompression
         Me.PneumaticUserInputsConfig.SmartRegeneration = other.PneumaticUserInputsConfig.SmartRegeneration
-      
+
     End Sub
     Private Sub CloneHVAC(other As AuxiliaryConfig)
 

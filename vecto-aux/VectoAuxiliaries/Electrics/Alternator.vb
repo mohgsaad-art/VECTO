@@ -59,7 +59,7 @@ Namespace Electrics
 
         End Property
 
-        
+
         'Constructors
         Sub New()
 
@@ -232,9 +232,7 @@ Namespace Electrics
         Public Sub BuildInputTable(inputs As Dictionary(Of Single, Single), targetTable As List(Of AltUserInput))
 
 
-            Dim C11, C12, C13, C14, D11, D12, D13, D14 As Single
-            Dim tmpAmp As Single
-
+            Dim C11, C12, C13, C14, C15, D11, D12, D13, D14, D15 As Single
             targetTable.Clear()
 
             'Row0
@@ -249,8 +247,14 @@ Namespace Electrics
             'Row3
             targetTable.Add(New AltUserInput(inputs.OrderBy(Function(x) x.Key).Skip(2).First.Key, inputs.OrderBy(Function(x) x.Key).Skip(2).First.Value))
 
-            C11 = targetTable(1).Amps : C12 = targetTable(2).Amps : C13 = targetTable(3).Amps
-            D11 = targetTable(1).Eff : D12 = targetTable(2).Eff : D13 = targetTable(3).Eff
+            C11 = targetTable(1).Amps
+            C12 = targetTable(2).Amps
+            C13 = targetTable(3).Amps
+
+            D11 = targetTable(1).Eff
+            D12 = targetTable(2).Eff
+            D13 = targetTable(3).Eff
+
             D14 = If(D12 > D13, 0, Math.Max(Math.MAX(D11, D12), D13))
 
 
@@ -263,12 +267,14 @@ Namespace Electrics
             Dim numarray As Single() = {D11, D12, D13}
             Dim maxD11_D13 As Single = numarray.Max()
 
-            tmpAmp = If((D13 = 0 OrElse D13 = D12 OrElse D13 = maxD11_D13), C13 + 1, If(D12 > D13, ((((C13 - C12) / (D12 - D13)) * D13) + C13), ((((C13 - C12) / (D12 - D13)) * (D13 - D14)) + C13)))
-            targetTable(4).Amps = tmpAmp
+            '=IF(OR(D13=0,D13=D12),C13+1,IF(D12>D13,((((C13-C12)/(D12-D13))*D13)+C13),((((C13-C12)/(D12-D13))*(D13-D14))+C13)))
+            C14 = If((D13 = 0 OrElse D13 = D12 OrElse D13 = maxD11_D13), C13 + 1, If(D12 > D13, ((((C13 - C12) / (D12 - D13)) * D13) + C13), ((((C13 - C12) / (D12 - D13)) * (D13 - D14)) + C13)))
+            targetTable(4).Amps = C14
 
             'Row5 
-            tmpAmp = If(C14 > 200, C14 + 1, 200)
-            targetTable.Add(New AltUserInput(tmpAmp, D14))
+            C15 = If(C14 > 200, C14 + 1, 200)
+            D15 = D14
+            targetTable.Add(New AltUserInput(C15, D15))
 
             'Row0
             targetTable(0).Eff = D11
