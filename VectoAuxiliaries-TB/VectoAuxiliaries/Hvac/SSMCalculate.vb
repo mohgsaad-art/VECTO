@@ -4,7 +4,7 @@ Imports VectoAuxiliaries.Hvac
 
 Namespace Hvac
 
-
+    'Modeling SSHVAC V07
     Public Class SSMCalculate
         Implements ISSMCalculate
 
@@ -32,6 +32,8 @@ Namespace Hvac
                 Dim EC_EnviromentalTemperatureBefore As Double = gen.EC_EnviromentalTemperature
                 Dim EC_SolarBefore As Double = gen.EC_Solar
 
+                'If batch mode is disabled use the EC_EnviromentalTemperature and EC_Solar variables. 
+                'Else if batch is enable calculate the ElectricalWBase for each input in the AENV file and then calculate the weighted average
                 If Not gen.EC_EnviromentalConditions_BatchEnabled Then
                     ElectricalWBaseWeightedAverage = CalculateElectricalWBase(gen, gen.EC_EnviromentalTemperature, gen.EC_Solar, 1)
                 Else
@@ -54,6 +56,8 @@ Namespace Hvac
                 Dim EC_EnviromentalTemperatureBefore As Double = gen.EC_EnviromentalTemperature
                 Dim EC_SolarBefore As Double = gen.EC_Solar
 
+                'If batch mode is disabled use the EC_EnviromentalTemperature and EC_Solar variables. 
+                'Else if batch is enable calculate the MechanicalWBase for each input in the AENV file and then calculate the weighted average
                 If Not gen.EC_EnviromentalConditions_BatchEnabled Then
                     MechanicalWBaseWeightedAverage = CalculateMechanicalWBase(gen, gen.EC_EnviromentalTemperature, gen.EC_Solar, 1)
                 Else
@@ -76,6 +80,8 @@ Namespace Hvac
                 Dim EC_EnviromentalTemperatureBefore As Double = gen.EC_EnviromentalTemperature
                 Dim EC_SolarBefore As Double = gen.EC_Solar
 
+                'If batch mode is disabled use the EC_EnviromentalTemperature and EC_Solar variables. 
+                'Else if batch is enable calculate the FuelLPerHBase for each input in the AENV file and then calculate the weighted average
                 If Not gen.EC_EnviromentalConditions_BatchEnabled Then
                     FuelLPerHBaseWeightedAverage = CalculateFuelLPerHBase(gen, gen.EC_EnviromentalTemperature, gen.EC_Solar, 1)
                 Else
@@ -100,6 +106,8 @@ Namespace Hvac
                 Dim EC_EnviromentalTemperatureBefore As Double = gen.EC_EnviromentalTemperature
                 Dim EC_SolarBefore As Double = gen.EC_Solar
 
+                'If batch mode is disabled use the EC_EnviromentalTemperature and EC_Solar variables. 
+                'Else if batch is enable calculate the ElectricalWAdjusted for each input in the AENV file and then calculate the weighted average
                 If Not gen.EC_EnviromentalConditions_BatchEnabled Then
                     ElectricalWAdjustedAverage = CalculateElectricalWAdjusted(gen, tl, gen.EC_EnviromentalTemperature, gen.EC_Solar, 1)
                 Else
@@ -123,6 +131,8 @@ Namespace Hvac
                 Dim EC_EnviromentalTemperatureBefore As Double = gen.EC_EnviromentalTemperature
                 Dim EC_SolarBefore As Double = gen.EC_Solar
 
+                'If batch mode is disabled use the EC_EnviromentalTemperature and EC_Solar variables. 
+                'Else if batch is enable calculate the MechanicalWBaseAdjusted for each input in the AENV file and then calculate the weighted average
                 If Not gen.EC_EnviromentalConditions_BatchEnabled Then
                     MechanicalWBaseAdjustedAverage = CalculateMechanicalWBaseAdjusted(gen, tl, gen.EC_EnviromentalTemperature, gen.EC_Solar, 1)
                 Else
@@ -146,6 +156,8 @@ Namespace Hvac
                 Dim EC_EnviromentalTemperatureBefore As Double = gen.EC_EnviromentalTemperature
                 Dim EC_SolarBefore As Double = gen.EC_Solar
 
+                'If batch mode is disabled use the EC_EnviromentalTemperature and EC_Solar variables. 
+                'Else if batch is enable calculate the FuelLPerHBaseAdjusted for each input in the AENV file and then calculate the weighted average
                 If Not gen.EC_EnviromentalConditions_BatchEnabled Then
                     FuelLPerHBaseAdjustedAverage = CalculateFuelLPerHBaseAdjusted(gen, tl, gen.EC_EnviromentalTemperature, gen.EC_Solar, 1)
                 Else
@@ -179,16 +191,16 @@ Namespace Hvac
         End Property
         Public ReadOnly Property BaseHeatingW_ElectricalVentilation As Double Implements ISSMCalculate.BaseHeatingW_ElectricalVentilation
             Get
-                '=IF(AND(M79<0,M80<0),IF(AND(C52="yes",C56="high"),C30,IF(AND(C52="yes",C56="low"),C31,0)),0)
+                '=IF(AND(M89<0,M90<0),IF(AND(C62="yes",C66="high"),C33,IF(AND(C62="yes",C66="low"),C34,0)),0)
 
                 Dim gen As ISSMGenInputs = ssmTOOL.GenInputs
 
-                'Dim C30 = gen.BC_HighVentPowerW
-                'Dim C31 = gen.BC_LowVentPowerW
-                'Dim C52 = gen.VEN_VentilationONDuringHeating
-                'Dim C56 = gen.VEN_VentilationDuringHeating
-                'Dim M79 = Me.Run1.TotalW
-                'Dim M80 = Me.Run2.TotalW
+                'Dim C33 = gen.BC_HighVentPowerW
+                'Dim C34 = gen.BC_LowVentPowerW
+                'Dim C62 = gen.VEN_VentilationONDuringHeating
+                'Dim C66 = gen.VEN_VentilationDuringHeating
+                'Dim M89 = Me.Run1.TotalW
+                'Dim M90 = Me.Run2.TotalW
 
                 Dim res As Double
 
@@ -206,12 +218,11 @@ Namespace Hvac
         Public ReadOnly Property BaseHeatingW_FuelFiredHeating As Double Implements ISSMCalculate.BaseHeatingW_FuelFiredHeating
 
             Get
-
-                '=IF(AND(M79<0,M80<0),VLOOKUP(MAX(M79:M80),M79:O80,3),0)
-
-                'Dim M79 = Me.Run1.TotalW
-                'Dim M80 = Me.Run2.TotalW
-                'VLOOKUP(MAX(M79:M80),M79:O80  => VLOOKUP ( lookupValue, tableArray, colIndex, rangeLookup )
+                '=IF(AND(M89<0,M90<0),VLOOKUP(MAX(M89:M90),M89:O90,3),0)
+                
+                'Dim M89 = Me.Run1.TotalW
+                'Dim M90 = Me.Run2.TotalW
+                'VLOOKUP(MAX(M89:M90),M89:O90  => VLOOKUP ( lookupValue, tableArray, colIndex, rangeLookup )
 
                 'If both Run TotalW values are >=0 then return FuelW from Run with largest TotalW value, else return 0
                 If (Run1.TotalW < 0 AndAlso Run2.TotalW < 0) Then
@@ -241,7 +252,7 @@ Namespace Hvac
 
                 Return If(gen.EC_EnviromentalTemperature < gen.BC_TemperatureCoolingTurnsOff, 0, If(gen.AC_CompressorTypeDerived.ToLower() = "electrical", 0, If(Run1.TotalW > 0 AndAlso Run2.TotalW > 0, Math.Min(Run1.TotalW, Run2.TotalW), 0)))
 
-           End Get
+            End Get
         End Property
         Public ReadOnly Property BaseCoolingW_ElectricalCoolingHeating As Double Implements ISSMCalculate.BaseCoolingW_ElectricalCoolingHeating
             Get
@@ -336,12 +347,12 @@ Namespace Hvac
         End Property
         Public ReadOnly Property TechListAdjustedHeatingW_ElectricalVentilation As Double Implements ISSMCalculate.TechListAdjustedHeatingW_ElectricalVentilation
             Get
-                '=IF('TECH LIST INPUT'!O92>0,MIN('TECH LIST INPUT'!O92,C40),MAX('TECH LIST INPUT'!O92,-C40))
+                '=IF('TECH LIST INPUT'!O92>0,MIN('TECH LIST INPUT'!O92,C43),MAX('TECH LIST INPUT'!O92,-C43))
                 Dim gen As ISSMGenInputs = ssmTOOL.GenInputs
                 Dim tl As ISSMTechList = ssmTOOL.TechList
 
                 'TECH LIST INPUT'!O92
-                'Dim C40 As Double   =  gen.BC_MaxPossibleBenefitFromTechnologyList
+                'Dim C43 As Double   =  gen.BC_MaxPossibleBenefitFromTechnologyList
                 'Dim TLO92 As Double = tl.VHValueVariation
 
 
@@ -352,14 +363,13 @@ Namespace Hvac
         End Property
         Public ReadOnly Property TechListAdjustedHeatingW_FuelFiredHeating As Double Implements ISSMCalculate.TechListAdjustedHeatingW_FuelFiredHeating
             Get
-                '=IF('TECH LIST INPUT'!N92>0,MIN('TECH LIST INPUT'!N92,C40),MAX('TECH LIST INPUT'!N92,-C40))
-
-
+                '=IF('TECH LIST INPUT'!N92>0,MIN('TECH LIST INPUT'!N92,C43),MAX('TECH LIST INPUT'!N92,-C43))
+                
                 Dim gen As ISSMGenInputs = ssmTOOL.GenInputs
                 Dim tl As ISSMTechList = ssmTOOL.TechList
 
                 'TECH LIST INPUT'!N92
-                'Dim C40 As Double   =  gen.BC_MaxPossibleBenefitFromTechnologyList
+                'Dim C43 As Double   =  gen.BC_MaxPossibleBenefitFromTechnologyList
                 'Dim TLN92 As Double =  tl.HValueVariation
 
 
@@ -372,14 +382,14 @@ Namespace Hvac
 
         Public ReadOnly Property TechListAdjustedCoolingW_Mechanical As Double Implements ISSMCalculate.TechListAdjustedCoolingW_Mechanical
             Get
-                '=IF(IF(C48="mechanical",'TECH LIST INPUT'!R92,0)>0,MIN(IF(C48="mechanical",'TECH LIST INPUT'!R92,0),C40),MAX(IF(C48="mechanical",'TECH LIST INPUT'!R92,0),-C40))
+                '=IF(IF(C53="mechanical",'TECH LIST INPUT'!R92,0)>0,MIN(IF(C53="mechanical",'TECH LIST INPUT'!R92,0),C43),MAX(IF(C53="mechanical",'TECH LIST INPUT'!R92,0),-C43))
 
                 Dim gen As ISSMGenInputs = ssmTOOL.GenInputs
                 Dim tl As ISSMTechList = ssmTOOL.TechList
                 Dim result As Double
                 'Dim TLR92 As Double =  tl.CValueVariation 'TECH LIST INPUT'!R92
-                'Dim C40 As Double   =  gen.BC_MaxPossibleBenefitFromTechnologyList
-                'Dim C48 As string   =  gen.AC_CompressorType
+                'Dim C43 As Double   =  gen.BC_MaxPossibleBenefitFromTechnologyList
+                'Dim C53 As string   =  gen.AC_CompressorType
 
                 result = If(If(gen.AC_CompressorType.ToLower() = "mechanical", tl.CValueVariation, 0) > 0, _
                                 Math.Min(If(gen.AC_CompressorType.ToLower() = "mechanical", tl.CValueVariation, 0), gen.BC_MaxPossibleBenefitFromTechnologyList), _
@@ -391,16 +401,15 @@ Namespace Hvac
         End Property
         Public ReadOnly Property TechListAdjustedCoolingW_ElectricalCoolingHeating As Double Implements ISSMCalculate.TechListAdjustedCoolingW_ElectricalCoolingHeating
             Get
-                '=IF(IF(C48="mechanical",0,'TECH LIST INPUT'!R92)>0,MIN(IF(C48="mechanical",0,'TECH LIST INPUT'!R92),C40),MAX(IF(C48="mechanical",0,'TECH LIST INPUT'!R92),-C40))
-
+                '=IF(IF(C53="mechanical",0,'TECH LIST INPUT'!R92)>0,MIN(IF(C53="mechanical",0,'TECH LIST INPUT'!R92),C43),MAX(IF(C53="mechanical",0,'TECH LIST INPUT'!R92),-C43))
 
                 Dim gen As ISSMGenInputs = ssmTOOL.GenInputs
                 Dim tl As ISSMTechList = ssmTOOL.TechList
                 Dim result As Double
 
                 'Dim TLR92 As Double =  tl.CValueVariation 'TECH LIST INPUT'!R92
-                'Dim C40 As Double   =  gen.BC_MaxPossibleBenefitFromTechnologyList
-                'Dim C48 As string   =  gen.AC_CompressorType
+                'Dim C43 As Double   =  gen.BC_MaxPossibleBenefitFromTechnologyList
+                'Dim C53 As string   =  gen.AC_CompressorType
 
                 result = If(If(gen.AC_CompressorType.ToLower() = "mechanical", 0, tl.CValueVariation) > 0, _
                             Math.Min(If(gen.AC_CompressorType.ToLower() = "mechanical", 0, tl.CValueVariation), gen.BC_MaxPossibleBenefitFromTechnologyList), _
@@ -412,14 +421,13 @@ Namespace Hvac
         End Property
         Public ReadOnly Property TechListAdjustedCoolingW_ElectricalVentilation As Double Implements ISSMCalculate.TechListAdjustedCoolingW_ElectricalVentilation
             Get
-
-                '=IF('TECH LIST INPUT'!Q92>0,MIN('TECH LIST INPUT'!Q92,C40),MAX('TECH LIST INPUT'!Q92,-C40))
-
+                '=IF('TECH LIST INPUT'!Q92>0,MIN('TECH LIST INPUT'!Q92,C43),MAX('TECH LIST INPUT'!Q92,-C43))
+                
                 Dim gen As ISSMGenInputs = ssmTOOL.GenInputs
                 Dim tl As ISSMTechList = ssmTOOL.TechList
 
                 'Dim TLQ92 As Double =  tl.VCValueVariation'TECH LIST INPUT'!Q92
-                'Dim C40 As Double   =  gen.BC_MaxPossibleBenefitFromTechnologyList
+                'Dim C43 As Double   =  gen.BC_MaxPossibleBenefitFromTechnologyList
 
                 Return If(tl.VCValueVariation > 0, _
                         Math.Min(tl.VCValueVariation, gen.BC_MaxPossibleBenefitFromTechnologyList), _
@@ -445,13 +453,13 @@ Namespace Hvac
         End Property
         Public ReadOnly Property TechListAdjustedVentilationW_ElectricalVentilation As Double Implements ISSMCalculate.TechListAdjustedVentilationW_ElectricalVentilation
             Get
-                '=IF('TECH LIST INPUT'!P92>0,MIN('TECH LIST INPUT'!P92,C40),MAX('TECH LIST INPUT'!P92,-C40))
-
+                '=IF('TECH LIST INPUT'!P92>0,MIN('TECH LIST INPUT'!P92,C43),MAX('TECH LIST INPUT'!P92,-C43))
+                
                 Dim gen As ISSMGenInputs = ssmTOOL.GenInputs
                 Dim tl As ISSMTechList = ssmTOOL.TechList
 
                 'Dim TLP92 As Double =  tl.VVValueVariation  'TECH LIST INPUT'!P92
-                'Dim C40 As Double   =  gen.BC_MaxPossibleBenefitFromTechnologyList
+                'Dim C43 As Double   =  gen.BC_MaxPossibleBenefitFromTechnologyList
 
 
                 Return If(tl.VVValueVariation > 0, Math.Min(tl.VVValueVariation, gen.BC_MaxPossibleBenefitFromTechnologyList), Math.Max(tl.VVValueVariation, -gen.BC_MaxPossibleBenefitFromTechnologyList))
