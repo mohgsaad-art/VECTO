@@ -16,6 +16,12 @@ Imports VectoAuxiliaries.Hvac
 Imports VectoAuxiliaries.DownstreamModules
 Imports System.Windows.Forms
 
+
+''' <summary>
+''' Main entry point for the advanced auxiliary module. 
+''' This class represents slide number 17 titled Calculations of Cycle FC accounting for Smart Auxiliaries.
+''' </summary>
+''' <remarks></remarks>
 Public Class AdvancedAuxiliaries
     Implements IAdvancedAuxiliaries
 
@@ -340,7 +346,7 @@ Public Class AdvancedAuxiliaries
 
     End Function
 
-    'Dialgnostics outputs for testing purposes in Vecto.
+    'Diagnostics outputs for testing purposes in Vecto.
     'Eventually this can be removed or rendered non effective to reduce calculation load on the model.
     Public ReadOnly Property AA_NonSmartAlternatorsEfficiency As Single? Implements IAdvancedAuxiliaries.AA_NonSmartAlternatorsEfficiency
         Get
