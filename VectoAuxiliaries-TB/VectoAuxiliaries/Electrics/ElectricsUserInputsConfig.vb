@@ -15,7 +15,6 @@ Namespace Electrics
 Public Class ElectricsUserInputsConfig
 Implements IElectricsUserInputsConfig
 
-
         Public Property PowerNetVoltage As Single Implements IElectricsUserInputsConfig.PowerNetVoltage
         Public Property AlternatorMap As String Implements IElectricsUserInputsConfig.AlternatorMap
         Public Property AlternatorGearEfficiency As Single Implements IElectricsUserInputsConfig.AlternatorGearEfficiency
@@ -29,7 +28,25 @@ Implements IElectricsUserInputsConfig
 
         Public Property SmartElectrical As Boolean Implements IElectricsUserInputsConfig.SmartElectrical
 
+        Public Sub New(Optional setToDefaults As Boolean = False, Optional vectoInputs As VectoInputs = Nothing)
 
+            If setToDefaults Then SetPropertiesToDefaults(vectoInputs)
+
+        End Sub
+
+        Public Sub SetPropertiesToDefaults(vectoInputs As VectoInputs)
+
+            DoorActuationTimeSecond = 4
+            StoredEnergyEfficiency = 0.935
+            AlternatorGearEfficiency = 0.92
+            PowerNetVoltage = vectoInputs.PowerNetVoltage
+            ResultCardIdle = New ResultCard(New List(Of SmartResult))
+            ResultCardOverrun = New ResultCard(New List(Of SmartResult))
+            ResultCardTraction = New ResultCard(New List(Of SmartResult))
+            SmartElectrical = False
+            AlternatorMap = String.Empty
+
+        End Sub
 End Class
 
 End Namespace

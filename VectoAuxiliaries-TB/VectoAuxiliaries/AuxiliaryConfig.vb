@@ -80,32 +80,19 @@ Public Class AuxiliaryConfig
     'Set Default Values
     Private Sub setDefaults()
 
-        '.CycleDurationMinutes=51.9,
-
         VectoInputs = New VectoInputs With {.Cycle = "Urban", .VehicleWeightKG = 16500, .PowerNetVoltage = 28.3, .FuelMap = "testFuelGoodMap.vmap"}
+        Signals = New Signals With {.EngineSpeed = 2000, .TotalCycleTimeSeconds = 3114, .ClutchEngaged = False}
 
-        'Pneumatics
+        'Pneumatics set deault values
         PneumaticUserInputsConfig = New PneumaticUserInputsConfig(True)
         PneumaticAuxillariesConfig = New PneumaticsAuxilliariesConfig(True)
 
-        'testAlternatorMap.aalt
-        ElectricalUserInputsConfig = New ElectricsUserInputsConfig() With {.DoorActuationTimeSecond = 4,
-                                                                            .StoredEnergyEfficiency = 0.935,
-                                                                            .AlternatorGearEfficiency = 0.92,
-                                                                            .PowerNetVoltage = VectoInputs.PowerNetVoltage,
-                                                                            .ResultCardIdle = New ResultCard(New List(Of SmartResult)),
-                                                                            .ResultCardOverrun = New ResultCard(New List(Of SmartResult)),
-                                                                            .ResultCardTraction = New ResultCard(New List(Of SmartResult)),
-                                                                            .SmartElectrical = False,
-                                                                            .AlternatorMap = String.Empty
-                                                                            }
-
-        HvacUserInputsConfig = New HVACUserInputsConfig(String.Empty, String.Empty, False)
-
-
-        Signals = New Signals With {.EngineSpeed = 2000, .TotalCycleTimeSeconds = 3114, .ClutchEngaged = False}
-
+        'Electrical set deault values
+        ElectricalUserInputsConfig = New ElectricsUserInputsConfig(True, VectoInputs)
         ElectricalUserInputsConfig.ElectricalConsumers = New ElectricalConsumerList(28.3, 0.096, True)
+
+        'HVAC set deault values
+        HvacUserInputsConfig = New HVACUserInputsConfig(String.Empty, String.Empty, False)
 
     End Sub
 
