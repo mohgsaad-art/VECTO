@@ -2573,8 +2573,11 @@ lb10:
              mAAUX_Global.advancedAuxModel.Signals.InNeutral = mAAUX_Global.InNeutral
                 mAAUX_Global.advancedAuxModel.Signals.RunningCalc = mAAUX_Global.RunningCalc
 
-             'Power coming out of Advanced Model is in Watts.
-             power = (advancedAuxModel.AuxiliaryPowerAtCrankWatts /1000)
+                'Power coming out of Advanced Model is in Watts.
+                power = (advancedAuxModel.AuxiliaryPowerAtCrankWatts / 1000)
+
+                'Glenn: Comment the previous line and uncomment the next line to include the classic auxilaries power togeher with the advanced auxiliary power.
+                'power = VEC.PauxSum(t, nU) + (advancedAuxModel.AuxiliaryPowerAtCrankWatts / 1000)
 
         Catch ex As Exception
 
