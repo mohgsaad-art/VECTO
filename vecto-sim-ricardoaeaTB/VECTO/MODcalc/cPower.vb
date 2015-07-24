@@ -2557,7 +2557,7 @@ lb10:
 
       If VECTO_Global.VEC.AuxiliaryAssembly="CLASSIC" then
 
-          Return CSng(MODdata.Vh.Padd(t) + VEC.PauxSum(t, nU))
+            Return CSng(VEC.PauxSum(t, nU))
 
       Else
 
