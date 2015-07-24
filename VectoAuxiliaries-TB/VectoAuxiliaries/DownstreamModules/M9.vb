@@ -166,7 +166,7 @@ Namespace DownstreamModules
         Private ReadOnly Property S14 As Single
             Get
 
-                Return Signals.EngineDrivelineTorque + Signals.PreExistingAuxPower
+                Return Signals.EngineDrivelineTorque + ((Signals.PreExistingAuxPower * 1000) / S0(Signals.EngineSpeed))
 
             End Get
         End Property
