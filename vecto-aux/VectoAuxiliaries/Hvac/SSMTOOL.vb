@@ -258,15 +258,15 @@ Namespace Hvac
             GenInputs.AH_EngineWasteHeatkW = AverageUseableEngineWasteHeatKW
             Dim fba As Single = FuelPerHBaseAdjusted
 
-            Dim FuelFiredWarning As Boolean = fba * GenInputs.BC_AuxHeaterEfficiency * HVACConstants.FuelDensity * GenInputs.BC_GCVDieselOrHeatingOil * 1000 > (AverageUseableEngineWasteHeatKW + GenInputs.AH_FuelFiredHeaterkW)
+            'Dim FuelFiredWarning As Boolean = fba * GenInputs.BC_AuxHeaterEfficiency * HVACConstants.FuelDensity * GenInputs.BC_GCVDieselOrHeatingOil * 1000 > (AverageUseableEngineWasteHeatKW + GenInputs.AH_FuelFiredHeaterkW)
 
-            If Not FuelFiredHeaterInsufficientWarned AndAlso FuelFiredWarning Then
+            'If Not FuelFiredHeaterInsufficientWarned AndAlso FuelFiredWarning Then
 
-                FuelFiredHeaterInsufficientWarned = True
+            '    FuelFiredHeaterInsufficientWarned = True
 
-                OnMessage(Me, " HVAC SSM : Fuel fired heater insufficient for heating requirements, run continues assuming it was sufficient.", AdvancedAuxiliaryMessageType.Warning)
+            '    OnMessage(Me, " HVAC SSM : Fuel fired heater insufficient for heating requirements, run continues assuming it was sufficient.", AdvancedAuxiliaryMessageType.Warning)
 
-            End If
+            'End If
 
             Return fba
 

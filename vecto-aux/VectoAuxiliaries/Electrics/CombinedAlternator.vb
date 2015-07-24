@@ -252,9 +252,9 @@ Public Class CombinedAlternator
                     sb.AppendLine("")
                 Next
 
-                '4000 - IE Alt1,2000,10,50,3
+                '6000 - IE Alt1,2000,10,50,3
                 For row = 1 To 3
-                    amps = alt.InputTable4000(row).Amps : eff = alt.InputTable6000(row).Eff
+                    amps = alt.InputTable6000(row).Amps : eff = alt.InputTable6000(row).Eff
                     sb.Append(alt.AlternatorName + ",6000," + amps.ToString("0.000") + "," + eff.ToString("0.000") + "," + alt.PulleyRatio.ToString("0.000"))
                     sb.AppendLine("")
                 Next
