@@ -357,7 +357,7 @@ Public Class CombinedAlternator
                 sb.AppendLine("Table 1 (2000)" + vbTab + "Table 2 (4000)" + vbTab + "Table 3 (6000)")
                 sb.AppendLine("Amps" + vbTab + "Eff" + vbTab + "Amps" + vbTab + "Eff" + vbTab + "Amps" + vbTab + "Eff" + vbTab)
                 sb.AppendLine("")
-                For i = 0 To 5
+                For i = 1 To 3
 
                     a1 = alt.InputTable2000(i).Amps.ToString("0")
                     e1 = alt.InputTable2000(i).Eff.ToString("0.000")
@@ -372,24 +372,24 @@ Public Class CombinedAlternator
 
             Next
 
-            sb.AppendLine("")
-            sb.AppendLine("********* COMBINED EFFICIENCY VALUES **************")
-            sb.AppendLine("")
-            sb.AppendLine(vbTab + "RPM VALUES")
-            sb.AppendLine("AMPS" + vbTab + "500" + vbTab + "1500" + vbTab + "2500" + vbTab + "3500" + vbTab + "4500" + vbTab + "5500" + vbTab + "6500" + vbTab + "7500")
-            For a As Single = 1 To Alternators.Count * 50
+            'sb.AppendLine("")
+            'sb.AppendLine("********* COMBINED EFFICIENCY VALUES **************")
+            'sb.AppendLine("")
+            'sb.AppendLine(vbTab + "RPM VALUES")
+            'sb.AppendLine("AMPS" + vbTab + "500" + vbTab + "1500" + vbTab + "2500" + vbTab + "3500" + vbTab + "4500" + vbTab + "5500" + vbTab + "6500" + vbTab + "7500")
+            'For a As Single = 1 To Alternators.Count * 50
 
-                sb.Append(a.ToString("0") + vbTab)
-                For Each r As Single In {500, 1500, 2500, 3500, 4500, 5500, 6500, 7500}
+            '    sb.Append(a.ToString("0") + vbTab)
+            '    For Each r As Single In {500, 1500, 2500, 3500, 4500, 5500, 6500, 7500}
 
-                    Dim eff As Single = GetEfficiency(r, a).Efficiency
+            '        Dim eff As Single = GetEfficiency(r, a).Efficiency
 
-                    sb.Append(eff.ToString("0.000") + vbTab)
+            '        sb.Append(eff.ToString("0.000") + vbTab)
 
-                Next
-                sb.AppendLine("")
+            '    Next
+            '    sb.AppendLine("")
 
-            Next
+            'Next
 
 
 
