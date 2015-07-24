@@ -147,12 +147,9 @@ Namespace DownstreamModules
         Public ReadOnly Property Sum2 As Single
             Get
 
-
-                Dim returnValue As Single = _signals.PreExistingAuxPower + _m1.AveragePowerDemandAtCrankFromHVACMechanicalsWatts + SW1 + _m3.GetAveragePowerDemandAtCrankFromPneumatics
+                Dim returnValue As Single = (_signals.PreExistingAuxPower * 1000) + _m1.AveragePowerDemandAtCrankFromHVACMechanicalsWatts + SW1 + _m3.GetAveragePowerDemandAtCrankFromPneumatics
 
                 Return returnValue
-
-
 
             End Get
         End Property

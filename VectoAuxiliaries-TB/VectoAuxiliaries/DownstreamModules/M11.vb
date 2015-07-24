@@ -104,7 +104,7 @@ Namespace DownstreamModules
         Private ReadOnly Property Sum9 As Single
             Get
 
-                Return signals.EngineDrivelineTorque + signals.PreExistingAuxPower
+                Return signals.EngineDrivelineTorque + ((signals.PreExistingAuxPower * 1000) / Sum0(signals.EngineSpeed))
 
             End Get
         End Property
