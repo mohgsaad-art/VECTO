@@ -140,6 +140,18 @@ Public Class CombinedAlternator
             map.Add(New CombinedAlternatorMapRow("Alt1", 6000, 68, 70, 3.6))
             map.Add(New CombinedAlternatorMapRow("Alt1", 6000, 136, 62, 3.6))
 
+            map.Add(New CombinedAlternatorMapRow("Alt2", 2000, 10, 62, 3))
+            map.Add(New CombinedAlternatorMapRow("Alt2", 2000, 27, 70, 3))
+            map.Add(New CombinedAlternatorMapRow("Alt2", 2000, 53, 30, 3))
+
+            map.Add(New CombinedAlternatorMapRow("Alt2", 4000, 10, 64, 3))
+            map.Add(New CombinedAlternatorMapRow("Alt2", 4000, 63, 74, 3))
+            map.Add(New CombinedAlternatorMapRow("Alt2", 4000, 125, 68, 3))
+
+            map.Add(New CombinedAlternatorMapRow("Alt2", 6000, 10, 53, 3))
+            map.Add(New CombinedAlternatorMapRow("Alt2", 6000, 68, 70, 3))
+            map.Add(New CombinedAlternatorMapRow("Alt2", 6000, 136, 62, 3))
+
 
         End Sub
 
