@@ -16,7 +16,7 @@ Module mAAUX_Global
     Public WithEvents advancedAuxModel As IAdvancedAuxiliaries
 
     Public RunningCalc As Boolean = False
-
+    Public Internal_Engine_Power As Single
     'This must be set in the main loop and will be used to determin
     'the name of the file which would be offered to the model which is used
     'by it internally. In Bus Auxiliaries, it is used for Actuations of the

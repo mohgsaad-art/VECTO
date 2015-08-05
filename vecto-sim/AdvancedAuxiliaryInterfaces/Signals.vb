@@ -52,7 +52,9 @@ Implements ISignals
     Public Property PneumaticOverrunUtilisation As Single Implements ISignals.PneumaticOverrunUtilisation
     Public Property StoredEnergyEfficiency As Single Implements ISignals.StoredEnergyEfficiency
     Public Property RunningCalc As Boolean Implements ISignals.RunningCalc
+    Public Property Internal_Engine_Power As Single Implements ISignals.Internal_Engine_Power
 End Class
+
 
 
 

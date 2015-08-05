@@ -151,4 +151,12 @@ Public Interface ISignals
     ''' <returns></returns>
     ''' <remarks></remarks>
     Property RunningCalc As Boolean
+    ''' <summary>
+    ''' Running Calc
+    ''' </summary>
+    ''' <value></value>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Property Internal_Engine_Power As Single
+
 End Interface
