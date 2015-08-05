@@ -1047,7 +1047,7 @@ lb_nOK:
             'Motoring power (< 0 !!!)
             '[kW]
             '** NOTE THIS IS MULTIPLIED BY - to get a positive value.
-            mAAUX_Global.EngineMotoringPower =  - FLD(Gear).Pdrag(EngineSpeed)
+            mAAUX_Global.EngineMotoringPower = -FLD(Gear).Pdrag(EngineSpeed)
 
             'Additional aux power from driving cycle (optional user input)
             '[kW]
@@ -1189,7 +1189,12 @@ lb_nOK:
 
                 If P < Pmin Then P = Pmin
 
+                mAAUX_Global.Internal_Engine_Power = P
+
             Else
+
+                mAAUX_Global.Internal_Engine_Power = P
+
                 If EngState0 = tEngState.Load Then
                     Pbrake = 0
                     If GBX.TCon And GBX.IsTCgear(Gear) Then Pbrake = GBX.TC_PeBrake
@@ -2572,6 +2577,7 @@ lb10:
              mAAUX_Global.advancedAuxModel.Signals.Idle = mAAUX_Global.Idle
              mAAUX_Global.advancedAuxModel.Signals.InNeutral = mAAUX_Global.InNeutral
                 mAAUX_Global.advancedAuxModel.Signals.RunningCalc = mAAUX_Global.RunningCalc
+                mAAUX_Global.advancedAuxModel.Signals.Internal_Engine_Power = mAAUX_Global.Internal_Engine_Power
 
                 'Power coming out of Advanced Model is in Watts.
                 power = (advancedAuxModel.AuxiliaryPowerAtCrankWatts / 1000)
@@ -2579,13 +2585,13 @@ lb10:
                 'Glenn: Comment the previous line and uncomment the next line to include the classic auxilaries power togeher with the advanced auxiliary power.
                 'power = VEC.PauxSum(t, nU) + (advancedAuxModel.AuxiliaryPowerAtCrankWatts / 1000)
 
-        Catch ex As Exception
+            Catch ex As Exception
 
-               'EXIT THIS IS A FAILURE
-                WorkerMsg(tMsgID.Err,"Error in Advanced Power Calc :" & ex.Message,"paux")
-                Return false
+                'EXIT THIS IS A FAILURE
+                WorkerMsg(tMsgID.Err, "Error in Advanced Power Calc :" & ex.Message, "paux")
+                Return False
 
-        end try
+            End Try
 
           Return power
     
