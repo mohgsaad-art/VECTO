@@ -1189,10 +1189,12 @@ lb_nOK:
 
                 If P < Pmin Then P = Pmin
 
+                'AA-TB 
                 mAAUX_Global.Internal_Engine_Power = P
 
             Else
 
+                'AA-TB 
                 mAAUX_Global.Internal_Engine_Power = P
 
                 If EngState0 = tEngState.Load Then
