@@ -7,7 +7,7 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Persistance", "Persistance\
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "PersistanceUnitTesting", "PersistanceUnitTesting\PersistanceUnitTesting.vbproj", "{DDDCCADB-C5BF-4F4C-89C1-5DAABF7D815D}"
 EndProject
-Global
+Global	
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
