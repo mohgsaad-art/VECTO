@@ -9,22 +9,7 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "VectoAuxiliariesTests", "Ve
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AUXUITEST", "AUXUITEST\AUXUITEST.vbproj", "{D72E93A7-3EF3-44BD-9859-70BFA89BF5E1}"
 EndProject
-Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 4
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://tfs00.element.root.com:8080/tfs/tfscollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = VectoAuxiliaries\\VectoAuxiliaries.vbproj
-		SccProjectName1 = VectoAuxiliaries
-		SccLocalPath1 = VectoAuxiliaries
-		SccProjectUniqueName2 = VectoAuxiliariesTests\\VectoAuxiliariesTests.vbproj
-		SccProjectName2 = VectoAuxiliariesTests
-		SccLocalPath2 = VectoAuxiliariesTests
-		SccProjectUniqueName3 = AUXUITEST\\AUXUITEST.vbproj
-		SccProjectName3 = AUXUITEST
-		SccLocalPath3 = AUXUITEST
-	EndGlobalSection
+Global	
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86
