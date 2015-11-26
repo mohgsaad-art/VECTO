@@ -1,127 +1,210 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html><head>
+<html>
 
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Generator content="Microsoft Word 14 (filtered)">
+<title>Auxiliary Input File</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Wingdings;
+	panose-1:5 0 0 0 0 0 0 0 0 0;}
+@font-face
+	{font-family:Wingdings;
+	panose-1:5 0 0 0 0 0 0 0 0 0;}
+@font-face
+	{font-family:Verdana;
+	panose-1:2 11 6 4 3 5 4 4 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman","serif";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+.MsoChpDefault
+	{font-size:10.0pt;}
+@page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:72.0pt 72.0pt 72.0pt 72.0pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
 
+</head>
 
+<body lang=EN-GB link=blue vlink=purple>
 
+<div class=WordSection1>
 
+<p class=MsoNormal><b><span style='font-size:24.0pt;font-family:"Verdana","sans-serif"'>Auxiliary
+Input File (.vaux)</span></b></p>
 
+<div class=MsoNormal align=center style='text-align:center'>
 
-<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Auxiliary Input File</title></head>
-<body>
-<big><big><big><span style="font-family: Verdana; font-weight: bold;">Auxiliary Input File (.vaux)</span></big></big></big><br>
-<hr style="width: 100%; height: 0px;">
+<hr size=0 width="100%" align=center>
 
-<div style="margin-left: 40px;">This file is used to configure a single auxiliary. Multiple .vaux files can be defined in the <a href="../GUI/VECTO-Editor.html">Job File</a> via the <a href="../GUI/VECTO-Editor_Aux.html">Auxiliary Dialog</a>.<br>
+</div>
+
+<div style='margin-left:30.0pt'>
+
+<p class=MsoNormal>This file is used to configure a single auxiliary when ‘Classic
+Vecto Auxiliary’ is selected in the <a href="../GUI/VECTO-Editor.html">Job
+Editor</a>, advanced bus auxiliaries may be configured in more detail - see <a
+href="../AAux/AAUX.html">Advanced Auxiliaries Input file (.aaux)</a>. Multiple
+.vaux files can be defined in the <a href="../GUI/VECTO-Editor.html">Job File</a>
+via the <a href="../GUI/VECTO-Editor_Aux.html">Auxiliary Dialog</a>.<br>
 <br>
-See <a href="../general/Auxiliaries.html">Auxiliaries</a> for details on how the power demand for each auxiliary is calculated.<br><br>
-<big><big style="font-weight: bold;">File Format</big></big><br>
-<hr style="height: 1px; width: 100%;">The file uses the VECTO CSV format with three additional parameters on top of the efficiency map.<br>
+See <a href="../general/Auxiliaries.html">Auxiliaries</a> for details on how
+the power demand for each auxiliary is calculated.<br>
 <br>
-<span style="font-weight: bold;">Format:</span><br>
-<ul>
-  <li>Lines 1,3,5 and 7 are reserved for headers. Theses lines are skipped during file read.</li><li>Line 2: <a href="../general/Auxiliaries.html">TransRatio</a> = Speed ratio between auxiliary and engine. [-]<br>
-</li>
-  <li>Line 4: <a href="../general/Auxiliaries.html">EffToEng</a> = Efficiency of auxiliary (belt/gear) drive [-]</li>
-  <li>Line 6: <a href="../general/Auxiliaries.html">EffToSply</a> = Consumer efficiency [-]<br>
-  </li>
+<b><span style='font-size:18.0pt'>File Format</span></b></p>
 
-  <li>Line 8 and following (at least four): <a href="../general/Auxiliaries.html">EffMap</a> = Auxiliary efficiency map.<br>
-  </li>
+<div class=MsoNormal align=center style='text-align:center'>
+
+<hr size=1 width="100%" align=center>
+
+</div>
+
+<p class=MsoNormal>The file uses the VECTO CSV format with three additional
+parameters on top of the efficiency map.<br>
+<br>
+<b>Format:</b></p>
+
+<ul type=disc>
+ <li class=MsoNormal>Lines 1,3,5 and 7 are reserved for headers. Theses lines
+     are skipped during file read.</li>
+ <li class=MsoNormal>Line 2: <a href="../general/Auxiliaries.html">TransRatio</a>
+     = Speed ratio between auxiliary and engine. [-]</li>
+ <li class=MsoNormal>Line 4: <a href="../general/Auxiliaries.html">EffToEng</a>
+     = Efficiency of auxiliary (belt/gear) drive [-]</li>
+ <li class=MsoNormal>Line 6: <a href="../general/Auxiliaries.html">EffToSply</a>
+     = Consumer efficiency [-]</li>
+ <li class=MsoNormal>Line 8 and following (at least four): <a
+     href="../general/Auxiliaries.html">EffMap</a> = Auxiliary efficiency map.</li>
 </ul>
-<span style="font-weight: bold;">Format:</span><br>
 
+<p class=MsoNormal><b>Format:</b></p>
 
-<table style="text-align: left; height: 247px; margin-left: 0px; width: 670px;" border="1" cellpadding="2" cellspacing="1">
+<table class=MsoNormalTable border=1 cellspacing=1 cellpadding=0 width=670
+ style='width:502.5pt'>
+ <tr>
+  <td width=300 style='width:225.0pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal><b>TransRatio</b> [-]</p>
+  </td>
+  <td width=200 style='width:150.0pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'></td>
+  <td width=146 style='width:109.5pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'></td>
+ </tr>
+ <tr>
+  <td valign=top style='padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>...</p>
+  </td>
+  <td width=200 valign=top style='width:150.0pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'></td>
+  <td width=146 valign=top style='width:109.5pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'></td>
+ </tr>
+ <tr>
+  <td width=300 style='width:225.0pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal><b>EffToEng [-]</b></p>
+  </td>
+  <td width=200 style='width:150.0pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'></td>
+  <td width=146 style='width:109.5pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'></td>
+ </tr>
+ <tr>
+  <td valign=top style='padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>...</p>
+  </td>
+  <td width=200 valign=top style='width:150.0pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'></td>
+  <td width=146 valign=top style='width:109.5pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'></td>
+ </tr>
+ <tr>
+  <td width=300 style='width:225.0pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal><b>EffToSply [-]</b></p>
+  </td>
+  <td width=200 style='width:150.0pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'></td>
+  <td width=146 style='width:109.5pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'></td>
+ </tr>
+ <tr>
+  <td width=300 style='width:225.0pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>...</p>
+  </td>
+  <td width=200 style='width:150.0pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'></td>
+  <td width=146 style='width:109.5pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'></td>
+ </tr>
+ <tr>
+  <td width=300 style='width:225.0pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b>Auxiliary speed
+  [1/min]</b></p>
+  </td>
+  <td width=200 style='width:150.0pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b>Mechanical power
+  [kW]</b></p>
+  </td>
+  <td width=146 style='width:109.5pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b>Supply power
+  [kW]</b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=300 style='width:225.0pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>...</p>
+  </td>
+  <td width=200 style='width:150.0pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>...</p>
+  </td>
+  <td width=146 style='width:109.5pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>...</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=300 style='width:225.0pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>...</p>
+  </td>
+  <td width=200 style='width:150.0pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>...</p>
+  </td>
+  <td width=146 style='width:109.5pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>...</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=300 style='width:225.0pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>...</p>
+  </td>
+  <td width=200 style='width:150.0pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>...</p>
+  </td>
+  <td width=146 style='width:109.5pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>...</p>
+  </td>
+ </tr>
+ <tr>
+  <td style='padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>...</p>
+  </td>
+  <td style='padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>...</p>
+  </td>
+  <td style='padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+  <p class=MsoNormal>...</p>
+  </td>
+ </tr>
+</table>
 
-<tbody>
+<p class=MsoNormal style='margin-bottom:12.0pt'>&nbsp;</p>
 
-<tr>
-<td style="width: 300px;"><span style="font-weight: bold;">TransRatio</span> [-]<br>
-</td>
-<td style="width: 200px;"><br>
-</td>
-<td style="width: 146px;"><br>
-</td>
-</tr>
-    <tr>
-      <td style="vertical-align: top;">...<br>
-      </td>
-      <td style="vertical-align: top; width: 200px;"><br>
-      </td>
-      <td style="vertical-align: top; width: 146px;"><br>
-      </td>
-    </tr>
-<tr>
-<td style="width: 300px;"><span style="color: rgb(51, 102, 255); font-weight: bold;"></span><span style="font-weight: bold;">EffToEng </span><span style="font-weight: bold;">[-]</span></td>
-<td style="width: 200px;"><br>
-</td>
-<td style="width: 146px;"><br>
-</td>
-</tr>
+</div>
 
-    <tr>
-      <td style="vertical-align: top;">...<br>
-      </td>
-      <td style="vertical-align: top; width: 200px;"><br>
-      </td>
-      <td style="vertical-align: top; width: 146px;"><br>
-      </td>
-    </tr>
-<tr>
-<td style="width: 300px;"><span style="color: rgb(51, 102, 255); font-weight: bold;"></span><span style="font-weight: bold;">EffToSply [-]</span></td>
-<td style="width: 200px;"><br>
-</td>
-<td style="width: 146px;"><br>
-</td>
-</tr>
-<tr>
-<td style="width: 300px;">...</td>
-<td style="width: 200px;"><br>
-</td>
-<td style="width: 146px;"><br>
-</td>
-</tr>
-<tr>
-<td style="text-align: center; font-weight: bold; width: 300px;">Auxiliary
-speed [1/min]<br>
-</td>
-<td style="text-align: center; font-weight: bold; width: 200px;">Mechanical
-power [kW]<br>
-</td>
-<td style="text-align: center; font-weight: bold; width: 146px;">Supply
-power [kW]<br>
- </td>
-</tr>
-<tr>
-<td style="width: 300px; text-align: left;">...<br>
-</td>
-<td style="width: 200px; text-align: left;">...<br>
-</td>
-<td style="width: 146px; text-align: left;">...<br>
-</td>
-</tr>
-<tr>
-<td style="width: 300px;">...</td>
-<td style="width: 200px;">...</td>
-<td style="width: 146px;">...</td>
-</tr>
-<tr>
-<td style="width: 300px;">...</td>
-<td style="width: 200px;">...</td>
-<td style="width: 146px;">...</td>
-</tr><tr><td>...</td><td>...</td><td>...</td></tr>
-</tbody>
-</table><br>
-<br></div><span style="font-family: Calibri;"></span>
+</div>
 
+</body>
 
-
-
-
-
-
-
-
-
-</body></html>
+</html>

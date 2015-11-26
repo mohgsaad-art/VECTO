@@ -1,0 +1,1360 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>Advanced Compressor Map File</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Verdana;
+	panose-1:2 11 6 4 3 5 4 4 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+p.MsoListParagraph, li.MsoListParagraph, div.MsoListParagraph
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:36.0pt;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;}
+p.msolistparagraphcxspfirst, li.msolistparagraphcxspfirst, div.msolistparagraphcxspfirst
+	{mso-style-name:msolistparagraphcxspfirst;
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:36.0pt;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;}
+p.msolistparagraphcxspmiddle, li.msolistparagraphcxspmiddle, div.msolistparagraphcxspmiddle
+	{mso-style-name:msolistparagraphcxspmiddle;
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:36.0pt;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;}
+p.msolistparagraphcxsplast, li.msolistparagraphcxsplast, div.msolistparagraphcxsplast
+	{mso-style-name:msolistparagraphcxsplast;
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:36.0pt;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;}
+p.msochpdefault, li.msochpdefault, div.msochpdefault
+	{mso-style-name:msochpdefault;
+	margin-right:0cm;
+	margin-left:0cm;
+	font-size:10.0pt;
+	font-family:"Times New Roman",serif;}
+.MsoChpDefault
+	{font-size:10.0pt;}
+@page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:72.0pt 72.0pt 72.0pt 72.0pt;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-GB link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal><b><span style='font-size:24.0pt;font-family:"Verdana",sans-serif'>Advanced
+Compressor Map (.acmp)</span></b></p>
+
+<div class=MsoNormal align=center style='text-align:center'>
+
+<hr size=1 width="100%" align=center>
+
+</div>
+
+<div style='margin-left:30.0pt'>
+
+<p class=MsoNormal>This file is used to configure the compressor map for
+pneumatic auxiliaries, and contains data relating to the compressor performance
+at various engine speeds. <br>
+<br>
+<b><span style='font-size:18.0pt'>File Format</span></b></p>
+
+<div class=MsoNormal align=center style='text-align:center'>
+
+<hr size=1 width="100%" align=center>
+
+</div>
+
+<p class=MsoNormal style='margin-bottom:12.0pt'>The file uses the VECTO CSV
+format, with an example provided below.<br>
+<br>
+<b>Format</b><br>
+<br>
+<b>Example Configuration for Advanced Compressor Map:</b></p>
+
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse'>
+ <tr>
+  <td width=56 valign=top style='width:42.3pt;border:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>RPM</p>
+  </td>
+  <td width=131 valign=top style='width:98.55pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>FlowRate [l/min]</p>
+  </td>
+  <td width=122 valign=top style='width:91.8pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>Power [on] [W]</p>
+  </td>
+  <td width=126 valign=top style='width:94.8pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>Power [off] [W]</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=top style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>1500</p>
+  </td>
+  <td width=131 valign=top style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>200</p>
+  </td>
+  <td width=122 valign=top style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>2000</p>
+  </td>
+  <td width=126 valign=top style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>1000</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=top style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>2000</p>
+  </td>
+  <td width=131 valign=top style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>400</p>
+  </td>
+  <td width=122 valign=top style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>4000</p>
+  </td>
+  <td width=126 valign=top style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>2000</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=top style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>3000</p>
+  </td>
+  <td width=131 valign=top style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>600</p>
+  </td>
+  <td width=122 valign=top style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>6000</p>
+  </td>
+  <td width=126 valign=top style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>3000</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=top style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>4000</p>
+  </td>
+  <td width=131 valign=top style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>800</p>
+  </td>
+  <td width=122 valign=top style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>8000</p>
+  </td>
+  <td width=126 valign=top style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>4000</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=top style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>5000</p>
+  </td>
+  <td width=131 valign=top style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>1000</p>
+  </td>
+  <td width=122 valign=top style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>10000</p>
+  </td>
+  <td width=126 valign=top style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>5000</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=top style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>6000</p>
+  </td>
+  <td width=131 valign=top style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>1200</p>
+  </td>
+  <td width=122 valign=top style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>12000</p>
+  </td>
+  <td width=126 valign=top style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>6000</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=top style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>7000</p>
+  </td>
+  <td width=131 valign=top style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>1400</p>
+  </td>
+  <td width=122 valign=top style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>14000</p>
+  </td>
+  <td width=126 valign=top style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>7000</p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><br>
+&nbsp;</p>
+
+<p class=MsoNormal>The following four Default maps have been provided for use
+until a certified test procedure is established:</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal style='margin-bottom:12.0pt'><b>1.
+DEFAULT_1-Cylinder_1-Stage_393ccm</b></p>
+
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse'>
+ <tr>
+  <td width=56 valign=top style='width:42.3pt;border:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>RPM</p>
+  </td>
+  <td width=131 valign=top style='width:98.55pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>FlowRate [l/min]</p>
+  </td>
+  <td width=122 valign=top style='width:91.8pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>Power [on] [W]</p>
+  </td>
+  <td width=126 valign=top style='width:94.8pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>Power [off] [W]</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=bottom style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>500</p>
+  </td>
+  <td width=131 valign=bottom style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>83.42357</p>
+  </td>
+  <td width=122 valign=bottom style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>1428</p>
+  </td>
+  <td width=126 valign=bottom style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>181.9</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=bottom style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>750</p>
+  </td>
+  <td width=131 valign=bottom style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>141.6565</p>
+  </td>
+  <td width=122 valign=bottom style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>1890</p>
+  </td>
+  <td width=126 valign=bottom style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>342.4</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=bottom style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>1000</p>
+  </td>
+  <td width=131 valign=bottom style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>198.5613</p>
+  </td>
+  <td width=122 valign=bottom style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>2467.5</p>
+  </td>
+  <td width=126 valign=bottom style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>513.6</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=bottom style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>1250</p>
+  </td>
+  <td width=131 valign=bottom style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>241.9966</p>
+  </td>
+  <td width=122 valign=bottom style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>3097.5</p>
+  </td>
+  <td width=126 valign=bottom style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>716.9</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=bottom style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>1500</p>
+  </td>
+  <td width=131 valign=bottom style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>293.5665</p>
+  </td>
+  <td width=122 valign=bottom style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>3759</p>
+  </td>
+  <td width=126 valign=bottom style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>866.7</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=bottom style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>1750</p>
+  </td>
+  <td width=131 valign=bottom style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>335.5358</p>
+  </td>
+  <td width=122 valign=bottom style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>4294.5</p>
+  </td>
+  <td width=126 valign=bottom style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>1080.7</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=bottom style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>2000</p>
+  </td>
+  <td width=131 valign=bottom style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>398.4884</p>
+  </td>
+  <td width=122 valign=bottom style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>5166</p>
+  </td>
+  <td width=126 valign=bottom style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>1273.3</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=bottom style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>2250</p>
+  </td>
+  <td width=131 valign=bottom style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>425.0945</p>
+  </td>
+  <td width=122 valign=bottom style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>6006</p>
+  </td>
+  <td width=126 valign=bottom style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>1433.8</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=bottom style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>2500</p>
+  </td>
+  <td width=131 valign=bottom style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>458.3226</p>
+  </td>
+  <td width=122 valign=bottom style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>6541.5</p>
+  </td>
+  <td width=126 valign=bottom style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>1540.8</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=bottom style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>2750</p>
+  </td>
+  <td width=131 valign=bottom style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>478.2313</p>
+  </td>
+  <td width=122 valign=bottom style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>7066.5</p>
+  </td>
+  <td width=126 valign=bottom style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>1712</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=bottom style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>3000</p>
+  </td>
+  <td width=131 valign=bottom style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>511.8544</p>
+  </td>
+  <td width=122 valign=bottom style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>7665</p>
+  </td>
+  <td width=126 valign=bottom style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>1958.1</p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal style='margin-bottom:12.0pt'><b>2.
+DEFAULT_2-Cylinder_1-Stage_650ccm</b></p>
+
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse'>
+ <tr>
+  <td width=56 valign=top style='width:42.3pt;border:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>RPM</p>
+  </td>
+  <td width=131 valign=top style='width:98.55pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>FlowRate [l/min]</p>
+  </td>
+  <td width=122 valign=top style='width:91.8pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>Power [on] [W]</p>
+  </td>
+  <td width=126 valign=top style='width:94.8pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>Power [off] [W]</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=bottom style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>800</p>
+  </td>
+  <td width=131 valign=bottom style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>250.5366</p>
+  </td>
+  <td width=122 valign=bottom style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>3139.5</p>
+  </td>
+  <td width=126 valign=bottom style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>524.3</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=bottom style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>1200</p>
+  </td>
+  <td width=131 valign=bottom style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>374.3534</p>
+  </td>
+  <td width=122 valign=bottom style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>4609.5</p>
+  </td>
+  <td width=126 valign=bottom style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>1027.2</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=bottom style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>1600</p>
+  </td>
+  <td width=131 valign=bottom style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>508.4124</p>
+  </td>
+  <td width=122 valign=bottom style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>6205.5</p>
+  </td>
+  <td width=126 valign=bottom style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>1572.9</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=bottom style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>2000</p>
+  </td>
+  <td width=131 valign=bottom style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>619.1263</p>
+  </td>
+  <td width=122 valign=bottom style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>7770</p>
+  </td>
+  <td width=126 valign=bottom style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>2065.1</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=bottom style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>2400</p>
+  </td>
+  <td width=131 valign=bottom style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>762.6186</p>
+  </td>
+  <td width=122 valign=bottom style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>9723</p>
+  </td>
+  <td width=126 valign=bottom style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>2696.4</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=bottom style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>2550</p>
+  </td>
+  <td width=131 valign=bottom style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>819.2371</p>
+  </td>
+  <td width=122 valign=bottom style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>10363.5</p>
+  </td>
+  <td width=126 valign=bottom style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>2856.9</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=bottom style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>2800</p>
+  </td>
+  <td width=131 valign=bottom style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>898.7502</p>
+  </td>
+  <td width=122 valign=bottom style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>11613</p>
+  </td>
+  <td width=126 valign=bottom style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>3349.1</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=bottom style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>3200</p>
+  </td>
+  <td width=131 valign=bottom style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>979.4828</p>
+  </td>
+  <td width=122 valign=bottom style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>13282.5</p>
+  </td>
+  <td width=126 valign=bottom style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>4012.5</p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal style='margin-bottom:12.0pt'><b>3.
+DEFAULT_2-Cylinder_2-Stage_398ccm</b></p>
+
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse'>
+ <tr>
+  <td width=56 valign=top style='width:42.3pt;border:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>RPM</p>
+  </td>
+  <td width=131 valign=top style='width:98.55pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>FlowRate [l/min]</p>
+  </td>
+  <td width=122 valign=top style='width:91.8pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>Power [on] [W]</p>
+  </td>
+  <td width=126 valign=top style='width:94.8pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>Power [off] [W]</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=bottom style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>800</p>
+  </td>
+  <td width=131 valign=bottom style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>209.713</p>
+  </td>
+  <td width=122 valign=bottom style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>2079</p>
+  </td>
+  <td width=126 valign=bottom style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>160.5</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=bottom style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>1200</p>
+  </td>
+  <td width=131 valign=bottom style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>348.3682</p>
+  </td>
+  <td width=122 valign=bottom style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>3160.5</p>
+  </td>
+  <td width=126 valign=bottom style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>342.4</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=bottom style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>1600</p>
+  </td>
+  <td width=131 valign=bottom style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>411.2604</p>
+  </td>
+  <td width=122 valign=bottom style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>4315.5</p>
+  </td>
+  <td width=126 valign=bottom style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>604.55</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=bottom style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>2000</p>
+  </td>
+  <td width=131 valign=bottom style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>520.8333</p>
+  </td>
+  <td width=122 valign=bottom style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>5901</p>
+  </td>
+  <td width=126 valign=bottom style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>963</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=bottom style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>2400</p>
+  </td>
+  <td width=131 valign=bottom style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>598.4043</p>
+  </td>
+  <td width=122 valign=bottom style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>6961.5</p>
+  </td>
+  <td width=126 valign=bottom style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>1433.8</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=bottom style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>2550</p>
+  </td>
+  <td width=131 valign=bottom style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>618.1319</p>
+  </td>
+  <td width=122 valign=bottom style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>7360.5</p>
+  </td>
+  <td width=126 valign=bottom style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>1637.1</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=bottom style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>2800</p>
+  </td>
+  <td width=131 valign=bottom style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>655.1473</p>
+  </td>
+  <td width=122 valign=bottom style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>8127</p>
+  </td>
+  <td width=126 valign=bottom style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>1968.8</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=bottom style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>3200</p>
+  </td>
+  <td width=131 valign=bottom style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>806.2235</p>
+  </td>
+  <td width=122 valign=bottom style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>10043.25</p>
+  </td>
+  <td width=126 valign=bottom style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>2755.25</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=bottom style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>3600</p>
+  </td>
+  <td width=131 valign=bottom style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>857.9169</p>
+  </td>
+  <td width=122 valign=bottom style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>11571</p>
+  </td>
+  <td width=126 valign=bottom style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>3702.2</p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal style='margin-bottom:12.0pt'><b>4.
+DEFAULT_3-Cylinder_2-Stage_598ccm</b></p>
+
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse'>
+ <tr>
+  <td width=56 valign=top style='width:42.3pt;border:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>RPM</p>
+  </td>
+  <td width=131 valign=top style='width:98.55pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>FlowRate [l/min]</p>
+  </td>
+  <td width=122 valign=top style='width:91.8pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>Power [on] [W]</p>
+  </td>
+  <td width=126 valign=top style='width:94.8pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>Power [off] [W]</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=bottom style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>700</p>
+  </td>
+  <td width=131 valign=bottom style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>268.8679</p>
+  </td>
+  <td width=122 valign=bottom style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>2698.5</p>
+  </td>
+  <td width=126 valign=bottom style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>149.8</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=bottom style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>1200</p>
+  </td>
+  <td width=131 valign=bottom style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>455.1708</p>
+  </td>
+  <td width=122 valign=bottom style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>4641</p>
+  </td>
+  <td width=126 valign=bottom style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>363.8</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=bottom style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>1700</p>
+  </td>
+  <td width=131 valign=bottom style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>619.9878</p>
+  </td>
+  <td width=122 valign=bottom style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>6772.5</p>
+  </td>
+  <td width=126 valign=bottom style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>823.9</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=bottom style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>2200</p>
+  </td>
+  <td width=131 valign=bottom style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>723.0141</p>
+  </td>
+  <td width=122 valign=bottom style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>8778</p>
+  </td>
+  <td width=126 valign=bottom style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>1508.7</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=bottom style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>2550</p>
+  </td>
+  <td width=131 valign=bottom style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>800.547</p>
+  </td>
+  <td width=122 valign=bottom style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>10468.5</p>
+  </td>
+  <td width=126 valign=bottom style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>2075.8</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=bottom style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>2800</p>
+  </td>
+  <td width=131 valign=bottom style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>913.4229</p>
+  </td>
+  <td width=122 valign=bottom style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>12253.5</p>
+  </td>
+  <td width=126 valign=bottom style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>2461</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=bottom style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>3300</p>
+  </td>
+  <td width=131 valign=bottom style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>996.538</p>
+  </td>
+  <td width=122 valign=bottom style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>14070</p>
+  </td>
+  <td width=126 valign=bottom style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>3145.8</p>
+  </td>
+ </tr>
+ <tr>
+  <td width=56 valign=bottom style='width:42.3pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>3550</p>
+  </td>
+  <td width=131 valign=bottom style='width:98.55pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>1048.443</p>
+  </td>
+  <td width=122 valign=bottom style='width:91.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>15078</p>
+  </td>
+  <td width=126 valign=bottom style='width:94.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'>3755.7</p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</div>
+
+</body>
+
+</html>

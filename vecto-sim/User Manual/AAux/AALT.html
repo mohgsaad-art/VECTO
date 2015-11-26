@@ -1,0 +1,431 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>Combined Alternator Map File</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Tahoma;
+	panose-1:2 11 6 4 3 5 4 4 2 4;}
+@font-face
+	{font-family:Verdana;
+	panose-1:2 11 6 4 3 5 4 4 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+p.MsoAcetate, li.MsoAcetate, div.MsoAcetate
+	{mso-style-link:"Balloon Text Char";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Tahoma",sans-serif;}
+span.BalloonTextChar
+	{mso-style-name:"Balloon Text Char";
+	mso-style-link:"Balloon Text";
+	font-family:"Tahoma",sans-serif;}
+p.msochpdefault, li.msochpdefault, div.msochpdefault
+	{mso-style-name:msochpdefault;
+	margin-right:0cm;
+	margin-left:0cm;
+	font-size:10.0pt;
+	font-family:"Times New Roman",serif;}
+.MsoChpDefault
+	{font-size:10.0pt;}
+@page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:72.0pt 72.0pt 72.0pt 72.0pt;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-GB link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal><b><span style='font-size:24.0pt;font-family:"Verdana",sans-serif'>Combined
+Alternator Map File (.aalt)</span></b></p>
+
+<div class=MsoNormal align=center style='text-align:center'>
+
+<hr size=1 width="100%" align=center>
+
+</div>
+
+<p class=MsoNormal>The Combined Alternator Map (.AALT) file contains data
+relating to the efficiency of the alternator at various engine speeds and
+current demand. The .AALT file is a CSV file containing three fields: “Amp”,
+“RPM” (engine speed), and “Efficiency”. It can be created via the select file
+button, or an existing map directly imported into VECTO via the File Browser.<br>
+<br>
+<img width=425 height=227 src="Pics/AA_Open-Create%20AALT.jpg"><br>
+<br>
+A new combined alternator map can be created or an existing one edited using
+the Combined Alternators editor module (see below).&nbsp; This module enables
+the creation of a combined average alternator efficiency map by the advanced
+auxiliaries module, using input data for one or more alternators (Pully Ratio,
+Efficiency at different RPM/AMP combinations):<br>
+<br>
+<img width=677 height=529 src="Pics/AALT-Editor.jpg"><br>
+<br>
+Alternators may be added/deleted from the list. Data for existing alternators
+can be loaded into the form by double-clicking on the relevant alternator, and
+the data may then be updated and saved back down.<br>
+<br>
+The ‘Diagnostics’ tab provides a summary of the input data that is fed into
+combined alternator map calculations:<br>
+<br>
+<img width=484 height=378 src="Pics/AALT-Editor_Diagnostics.png"><br>
+<br>
+The methodology for calculating the combined efficiency map is summarised below
+(and also included in the full schematics file included with the User Manual).
+Note: A simplified calculation is performed using the average of the user input
+efficiency values in the model pre-run only, to keep total run-time to a
+minimum (with negligible impact on the final result).&nbsp; :<br>
+<br>
+<img width=867 height=489 src="Pics/CombAltSchem.png"><br>
+<br>
+<br>
+<b><span style='font-size:18.0pt'>File Format</span></b></p>
+
+<div class=MsoNormal align=center style='text-align:center'>
+
+<hr size=1 width="100%" align=center>
+
+</div>
+
+<p class=MsoNormal style='margin-bottom:12.0pt'>The file uses the VECTO CSV
+format.<br>
+<br>
+Several example default alternator maps are provided for use until a finalised
+certification procedure is in place for OEM-specific data.<br>
+<br>
+<b>Example Default Alternator Configuration for Advanced Alternator Map</b></p>
+
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=590
+ style='width:442.15pt;margin-left:-.4pt;border-collapse:collapse'>
+ <tr style='height:12.75pt'>
+  <td width=109 nowrap valign=bottom style='width:82.05pt;border:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><b><span style='color:black'>Pulley Ratio: </span></b></p>
+  </td>
+  <td width=76 nowrap valign=bottom style='width:57.0pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><span style='color:black'>3.6</span></p>
+  </td>
+  <td width=83 nowrap valign=bottom style='width:62.0pt;padding:0cm 5.4pt 0cm 5.4pt;
+  height:12.75pt'></td>
+  <td width=83 nowrap valign=bottom style='width:62.0pt;padding:0cm 5.4pt 0cm 5.4pt;
+  height:12.75pt'></td>
+  <td width=81 nowrap valign=bottom style='width:61.05pt;padding:0cm 5.4pt 0cm 5.4pt;
+  height:12.75pt'></td>
+  <td width=76 nowrap valign=bottom style='width:57.0pt;padding:0cm 5.4pt 0cm 5.4pt;
+  height:12.75pt'></td>
+  <td width=81 nowrap valign=bottom style='width:61.05pt;padding:0cm 5.4pt 0cm 5.4pt;
+  height:12.75pt'></td>
+ </tr>
+ <tr style='height:12.75pt'>
+  <td width=109 nowrap valign=bottom style='width:82.05pt;padding:0cm 5.4pt 0cm 5.4pt;
+  height:12.75pt'></td>
+  <td width=76 nowrap valign=bottom style='width:57.0pt;padding:0cm 5.4pt 0cm 5.4pt;
+  height:12.75pt'></td>
+  <td width=83 nowrap valign=bottom style='width:62.0pt;padding:0cm 5.4pt 0cm 5.4pt;
+  height:12.75pt'></td>
+  <td width=83 nowrap valign=bottom style='width:62.0pt;padding:0cm 5.4pt 0cm 5.4pt;
+  height:12.75pt'></td>
+  <td width=81 nowrap valign=bottom style='width:61.05pt;padding:0cm 5.4pt 0cm 5.4pt;
+  height:12.75pt'></td>
+  <td width=76 nowrap valign=bottom style='width:57.0pt;padding:0cm 5.4pt 0cm 5.4pt;
+  height:12.75pt'></td>
+  <td width=81 nowrap valign=bottom style='width:61.05pt;padding:0cm 5.4pt 0cm 5.4pt;
+  height:12.75pt'></td>
+ </tr>
+ <tr style='height:12.75pt'>
+  <td width=109 nowrap valign=bottom style='width:82.05pt;border:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><b><span style='color:black'>RPM</span></b></p>
+  </td>
+  <td width=159 nowrap colspan=2 valign=bottom style='width:119.0pt;border:
+  solid windowtext 1.0pt;border-left:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;
+  height:12.75pt'>
+  <p class=MsoNormal align=center style='margin-top:1.0pt;margin-right:0cm;
+  margin-bottom:3.0pt;margin-left:0cm;text-align:center'><b><span
+  style='color:black'>2000</span></b></p>
+  </td>
+  <td width=164 nowrap colspan=2 valign=bottom style='width:123.05pt;
+  border:solid windowtext 1.0pt;border-left:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;
+  height:12.75pt'>
+  <p class=MsoNormal align=center style='margin-top:1.0pt;margin-right:0cm;
+  margin-bottom:3.0pt;margin-left:0cm;text-align:center'><b><span
+  style='color:black'>4000</span></b></p>
+  </td>
+  <td width=157 nowrap colspan=2 valign=bottom style='width:118.05pt;
+  border:solid windowtext 1.0pt;border-left:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;
+  height:12.75pt'>
+  <p class=MsoNormal align=center style='margin-top:1.0pt;margin-right:0cm;
+  margin-bottom:3.0pt;margin-left:0cm;text-align:center'><b><span
+  style='color:black'>6000</span></b></p>
+  </td>
+ </tr>
+ <tr style='height:12.75pt'>
+  <td width=109 nowrap valign=bottom style='width:82.05pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><b><span style='color:black'>&nbsp;</span></b></p>
+  </td>
+  <td width=76 nowrap valign=bottom style='width:57.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><b><span style='color:black'>Amps</span></b></p>
+  </td>
+  <td width=83 nowrap valign=bottom style='width:62.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><b><span style='color:black'>Efficiency</span></b></p>
+  </td>
+  <td width=83 nowrap valign=bottom style='width:62.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><b><span style='color:black'>Amps</span></b></p>
+  </td>
+  <td width=81 nowrap valign=bottom style='width:61.05pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><b><span style='color:black'>Efficiency</span></b></p>
+  </td>
+  <td width=76 nowrap valign=bottom style='width:57.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><b><span style='color:black'>Amps</span></b></p>
+  </td>
+  <td width=81 nowrap valign=bottom style='width:61.05pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><b><span style='color:black'>Efficiency</span></b></p>
+  </td>
+ </tr>
+ <tr style='height:12.75pt'>
+  <td width=109 nowrap valign=bottom style='width:82.05pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><span style='color:black'>&nbsp;</span></p>
+  </td>
+  <td width=76 nowrap valign=bottom style='width:57.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:#D9D9D9;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal align=right style='margin-top:1.0pt;margin-right:0cm;
+  margin-bottom:3.0pt;margin-left:0cm;text-align:right'><span style='color:
+  black'>10.00</span></p>
+  </td>
+  <td width=83 nowrap valign=bottom style='width:62.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal align=right style='margin-top:1.0pt;margin-right:0cm;
+  margin-bottom:3.0pt;margin-left:0cm;text-align:right'><span style='color:
+  black'>62.00</span></p>
+  </td>
+  <td width=83 nowrap valign=bottom style='width:62.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:#D9D9D9;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal align=right style='margin-top:1.0pt;margin-right:0cm;
+  margin-bottom:3.0pt;margin-left:0cm;text-align:right'><span style='color:
+  black'>10.00</span></p>
+  </td>
+  <td width=81 nowrap valign=bottom style='width:61.05pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal align=right style='margin-top:1.0pt;margin-right:0cm;
+  margin-bottom:3.0pt;margin-left:0cm;text-align:right'><span style='color:
+  black'>64.00</span></p>
+  </td>
+  <td width=76 nowrap valign=bottom style='width:57.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:#D9D9D9;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal align=right style='margin-top:1.0pt;margin-right:0cm;
+  margin-bottom:3.0pt;margin-left:0cm;text-align:right'><span style='color:
+  black'>10.00</span></p>
+  </td>
+  <td width=81 nowrap valign=bottom style='width:61.05pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal align=right style='margin-top:1.0pt;margin-right:0cm;
+  margin-bottom:3.0pt;margin-left:0cm;text-align:right'><span style='color:
+  black'>53.00</span></p>
+  </td>
+ </tr>
+ <tr style='height:12.75pt'>
+  <td width=109 nowrap valign=bottom style='width:82.05pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><b><span style='color:black'>I_max/2</span></b></p>
+  </td>
+  <td width=76 nowrap valign=bottom style='width:57.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal align=right style='margin-top:1.0pt;margin-right:0cm;
+  margin-bottom:3.0pt;margin-left:0cm;text-align:right'><span style='color:
+  black'>27.00</span></p>
+  </td>
+  <td width=83 nowrap valign=bottom style='width:62.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal align=right style='margin-top:1.0pt;margin-right:0cm;
+  margin-bottom:3.0pt;margin-left:0cm;text-align:right'><span style='color:
+  black'>70.00</span></p>
+  </td>
+  <td width=83 nowrap valign=bottom style='width:62.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal align=right style='margin-top:1.0pt;margin-right:0cm;
+  margin-bottom:3.0pt;margin-left:0cm;text-align:right'><span style='color:
+  black'>63.00</span></p>
+  </td>
+  <td width=81 nowrap valign=bottom style='width:61.05pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal align=right style='margin-top:1.0pt;margin-right:0cm;
+  margin-bottom:3.0pt;margin-left:0cm;text-align:right'><span style='color:
+  black'>74.00</span></p>
+  </td>
+  <td width=76 nowrap valign=bottom style='width:57.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal align=right style='margin-top:1.0pt;margin-right:0cm;
+  margin-bottom:3.0pt;margin-left:0cm;text-align:right'><span style='color:
+  black'>68.00</span></p>
+  </td>
+  <td width=81 nowrap valign=bottom style='width:61.05pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal align=right style='margin-top:1.0pt;margin-right:0cm;
+  margin-bottom:3.0pt;margin-left:0cm;text-align:right'><span style='color:
+  black'>70.00</span></p>
+  </td>
+ </tr>
+ <tr style='height:12.75pt'>
+  <td width=109 nowrap valign=bottom style='width:82.05pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal style='margin-top:1.0pt;margin-right:0cm;margin-bottom:
+  3.0pt;margin-left:0cm'><b><span style='color:black'>I_max</span></b></p>
+  </td>
+  <td width=76 nowrap valign=bottom style='width:57.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal align=right style='margin-top:1.0pt;margin-right:0cm;
+  margin-bottom:3.0pt;margin-left:0cm;text-align:right'><span style='color:
+  black'>53.00</span></p>
+  </td>
+  <td width=83 nowrap valign=bottom style='width:62.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal align=right style='margin-top:1.0pt;margin-right:0cm;
+  margin-bottom:3.0pt;margin-left:0cm;text-align:right'><span style='color:
+  black'>30.00</span></p>
+  </td>
+  <td width=83 nowrap valign=bottom style='width:62.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal align=right style='margin-top:1.0pt;margin-right:0cm;
+  margin-bottom:3.0pt;margin-left:0cm;text-align:right'><span style='color:
+  black'>125.00</span></p>
+  </td>
+  <td width=81 nowrap valign=bottom style='width:61.05pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal align=right style='margin-top:1.0pt;margin-right:0cm;
+  margin-bottom:3.0pt;margin-left:0cm;text-align:right'><span style='color:
+  black'>68.00</span></p>
+  </td>
+  <td width=76 nowrap valign=bottom style='width:57.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal align=right style='margin-top:1.0pt;margin-right:0cm;
+  margin-bottom:3.0pt;margin-left:0cm;text-align:right'><span style='color:
+  black'>136.00</span></p>
+  </td>
+  <td width=81 nowrap valign=bottom style='width:61.05pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:12.75pt'>
+  <p class=MsoNormal align=right style='margin-top:1.0pt;margin-right:0cm;
+  margin-bottom:3.0pt;margin-left:0cm;text-align:right'><span style='color:
+  black'>62.00</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><span style='font-size:11.0pt'><br>
+Notes: Grey cells are locked/fixed values; I_max = the maximum current in Amps.</span></p>
+
+<p class=MsoNormal><br>
+<br>
+<b><span style='font-size:18.0pt'>Controls</span></b></p>
+
+<div class=MsoNormal align=center style='text-align:center'>
+
+<hr size=1 width="100%" align=center>
+
+</div>
+
+<p class=MsoNormal><br>
+<img width=28 height=21 src="../pics/misc/browse.png"><b>&nbsp;Open file
+browser if file not listed, open the Combined Alternator Map file (.aalt) if
+file is present</b><br>
+<br>
+<img width=22 height=22 src="../pics/misc/OpenFile.PNG">&nbsp;<b><span
+style='color:black'>View file contents or navigate to folder</span></b><br>
+<br>
+<b><span style='color:black'><img width=75 height=23 src="Pics/Add-icon.png"></span></b><b><span
+style='color:black'>&nbsp;Add button to add a newly defined alternator to the
+list<br>
+<br>
+</span></b><b><span style='color:black'><img width=75 height=23
+src="Pics/Update-icon.png"></span></b><b><span style='color:black'>&nbsp;Update
+button, to update data for selected alternator in the list<br>
+<br>
+</span></b><b><span style='color:black'><img width=19 height=20
+src="Pics/Delete-icon.png"></span></b><b><span style='color:black'>&nbsp;Delete
+button to remove alternator from the list<br>
+<br>
+</span></b><img width=75 height=23 src="Pics/Clear-icon.png">&nbsp;<b><span
+style='color:black'>Clear Form button</span></b></p>
+
+<p class=MsoNormal><br>
+<img width=75 height=23 src="Pics/save.png">&nbsp;<b>Save and close file</b></p>
+
+<p class=MsoNormal style='margin-bottom:12.0pt'><br>
+<img width=75 height=23 src="../pics/misc/Cancel.png" alt=Cancel><b>&nbsp;Cancel
+without saving</b></p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>
