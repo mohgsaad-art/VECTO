@@ -1,0 +1,2640 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>HVAC Auxiliaries Editor - VECTO User Manual</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Tahoma;
+	panose-1:2 11 6 4 3 5 4 4 2 4;}
+@font-face
+	{font-family:Verdana;
+	panose-1:2 11 6 4 3 5 4 4 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+p.MsoAcetate, li.MsoAcetate, div.MsoAcetate
+	{mso-style-link:"Balloon Text Char";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:8.0pt;
+	font-family:"Tahoma",sans-serif;}
+p.MsoListParagraph, li.MsoListParagraph, div.MsoListParagraph
+	{margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:3.0pt;
+	margin-left:36.0pt;
+	text-align:justify;
+	text-indent:-18.0pt;
+	font-size:10.0pt;
+	font-family:"Arial",sans-serif;}
+span.BalloonTextChar
+	{mso-style-name:"Balloon Text Char";
+	mso-style-link:"Balloon Text";
+	font-family:"Tahoma",sans-serif;}
+p.msochpdefault, li.msochpdefault, div.msochpdefault
+	{mso-style-name:msochpdefault;
+	margin-right:0cm;
+	margin-left:0cm;
+	font-size:10.0pt;
+	font-family:"Times New Roman",serif;}
+.MsoChpDefault
+	{font-size:10.0pt;}
+@page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:72.0pt 72.0pt 72.0pt 72.0pt;}
+div.WordSection1
+	{page:WordSection1;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-GB link=blue vlink=purple>
+
+<div class=WordSection1>
+
+<p class=MsoNormal><b><span style='font-size:24.0pt;font-family:"Verdana",sans-serif'>HVAC
+Auxiliaries Editor</span></b></p>
+
+<div class=MsoNormal align=center style='text-align:center'>
+
+<hr size=1 width="100%" align=center>
+
+</div>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal align=center style='text-align:center'><img width=696
+height=529 src="Pics/AA_HVAC.jpg"></p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<div style='margin-left:30.0pt'>
+
+<p class=MsoNormal><b><span style='font-size:18.0pt'>Description</span></b></p>
+
+<div class=MsoNormal align=center style='text-align:center'>
+
+<hr size=1 width="100%" align=center>
+
+</div>
+
+<p class=MsoNormal>The “HVAC” tab defines various parameters for heating,
+ventilation and air conditioning (HVAC) auxiliaries used on the vehicle,
+calculated from the HVAC Steady State Model (HVAC SSM):</p>
+
+<p class=MsoListParagraph style='margin-left:17.85pt;text-indent:-17.85pt;
+page-break-after:avoid'><span style='font-size:12.0pt;font-family:Symbol'>·</span><span
+style='font-size:7.0pt;font-family:"Times New Roman",serif'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><b><i><span style='font-size:12.0pt;font-family:"Times New Roman",serif'>Disable
+HVAC Module [tickbox]</span></i></b></p>
+
+<p class=MsoListParagraph style='margin-left:17.85pt;text-indent:-17.85pt;
+page-break-after:avoid'><span style='font-size:12.0pt;font-family:Symbol'>·</span><span
+style='font-size:7.0pt;font-family:"Times New Roman",serif'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><b><i><span style='font-size:12.0pt;font-family:"Times New Roman",serif'>Filepath
+to the Steady State Model File (.AHSM)</span></i></b></p>
+
+<p class=MsoNormal style='margin-left:21.3pt'>Files can be imported by clicking
+the browse button adjacent to the HVAC “Steady State Model File (.AHSM)” text
+box. </p>
+
+<p class=MsoListParagraph style='margin-left:17.85pt;text-indent:-17.85pt;
+page-break-after:avoid'><span style='font-size:12.0pt;font-family:Symbol'>·</span><span
+style='font-size:7.0pt;font-family:"Times New Roman",serif'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><b><i><span style='font-size:12.0pt;font-family:"Times New Roman",serif'>Filepath
+to the Bus Parameter Database (.ABDB)</span></i></b></p>
+
+<p class=MsoNormal style='margin-left:21.3pt'>Files can be imported by clicking
+the browse button adjacent to the HVAC SSM bus parameters database file (.ABDB)
+text box. &nbsp;The bus parameter database contains a list of default
+parameters for a number of pre-existing/defined buses that can be quickly
+switched between within the HVAC SSM Editor module.</p>
+
+<p class=MsoNormal><br>
+Outputs from the HVAC SSM include:</p>
+
+<p class=MsoListParagraph style='margin-left:18.0pt'><span style='font-size:
+12.0pt;font-family:Symbol'>·</span><span style='font-size:7.0pt;font-family:
+"Times New Roman",serif'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+style='font-size:12.0pt;font-family:"Times New Roman",serif'>Electrical Load
+Power Watts</span></p>
+
+<p class=MsoListParagraph style='margin-left:18.0pt'><span style='font-size:
+12.0pt;font-family:Symbol'>·</span><span style='font-size:7.0pt;font-family:
+"Times New Roman",serif'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+style='font-size:12.0pt;font-family:"Times New Roman",serif'>Mechanical Load
+Power Watts</span></p>
+
+<p class=MsoListParagraph style='margin-left:18.0pt'><span style='font-size:
+12.0pt;font-family:Symbol'>·</span><span style='font-size:7.0pt;font-family:
+"Times New Roman",serif'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span
+style='font-size:12.0pt;font-family:"Times New Roman",serif'>Fuelling Litres
+Per Hour</span></p>
+
+<p class=MsoNormal><br>
+<br>
+<b><span style='font-size:18.0pt'>HVAC Steady-State Model Editor</span></b></p>
+
+<div class=MsoNormal align=center style='text-align:center'>
+
+<hr size=1 width="100%" align=center>
+
+</div>
+
+<p class=MsoNormal>The HVAC Steady-State Model (HVAC SSM) Editor defines
+various data and parameters for calculation of HVAC auxiliary demands
+(electrical, mechanical and fuelling) from the vehicle, replicating the key
+inputs/functionality from the HVAC CO2SIM model developed for ACEA:</p>
+
+<p class=MsoListParagraph><span style='font-size:12.0pt;font-family:Symbol'>·</span><span
+style='font-size:7.0pt;font-family:"Times New Roman",serif'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style='font-size:12.0pt;font-family:"Times New Roman",serif'>Bus
+Parameters</span></p>
+
+<p class=MsoListParagraph><span style='font-size:12.0pt;font-family:Symbol'>·</span><span
+style='font-size:7.0pt;font-family:"Times New Roman",serif'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style='font-size:12.0pt;font-family:"Times New Roman",serif'>Boundary
+Conditions</span></p>
+
+<p class=MsoListParagraph><span style='font-size:12.0pt;font-family:Symbol'>·</span><span
+style='font-size:7.0pt;font-family:"Times New Roman",serif'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style='font-size:12.0pt;font-family:"Times New Roman",serif'>Other</span></p>
+
+<p class=MsoListParagraph><span style='font-size:12.0pt;font-family:Symbol'>·</span><span
+style='font-size:7.0pt;font-family:"Times New Roman",serif'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style='font-size:12.0pt;font-family:"Times New Roman",serif'>Tech
+List Input</span></p>
+
+<p class=MsoListParagraph><span style='font-size:12.0pt;font-family:Symbol'>·</span><span
+style='font-size:7.0pt;font-family:"Times New Roman",serif'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style='font-size:12.0pt;font-family:"Times New Roman",serif'>Diagnostics</span></p>
+
+<p class=MsoListParagraph style='margin-left:0cm;text-indent:0cm'><br>
+<span style='font-size:12.0pt;font-family:"Times New Roman",serif'>At the top
+of the window, two sets of outputs are presented for electrical, mechanical and
+fuelling demand:</span></p>
+
+<p class=MsoListParagraph><span style='font-size:12.0pt;font-family:Symbol'>·</span><span
+style='font-size:7.0pt;font-family:"Times New Roman",serif'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><i><span style='font-size:12.0pt;font-family:"Times New Roman",serif'>‘Base’
+values:</span></i><span style='font-size:12.0pt;font-family:"Times New Roman",serif'>
+These are the calculated resulting demands from the inputs on the ‘Bus
+Parameters’, ‘Boundary Conditions’ and ‘Other’ tabs.</span></p>
+
+<p class=MsoListParagraph><span style='font-size:12.0pt;font-family:Symbol'>·</span><span
+style='font-size:7.0pt;font-family:"Times New Roman",serif'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><i><span style='font-size:12.0pt;font-family:"Times New Roman",serif'>‘Adjusted’
+values:</span></i><span style='font-size:12.0pt;font-family:"Times New Roman",serif'>
+these are the final values output from the model, which additionally factor in
+the HVAC technologies included in the ‘Tech List Input’ tab.</span></p>
+
+<p class=MsoListParagraph style='margin-left:0cm;text-indent:0cm'><br>
+<b><span style='font-size:12.0pt;font-family:"Times New Roman",serif'>Bus
+Parameters</span></b></p>
+
+<p class=MsoListParagraph align=center style='margin-left:18.0pt;text-align:
+center'><span style='font-size:12.0pt;font-family:"Times New Roman",serif'><img
+width=553 height=454 src="Pics/HVAC_BusParameters.jpg"></span></p>
+
+<p class=MsoListParagraph style='margin-left:0cm;text-indent:0cm'><span
+style='font-size:12.0pt;font-family:"Times New Roman",serif'><br>
+Input bus parameters can be edited directly or imported/calculated from the Bus
+Parameter Database (.abdb) file via the ‘&lt;Select&gt;’ drop-down box at the
+top of the page. Parameters in the accompanying database file (.abdb) include: </span></p>
+
+<p class=MsoListParagraph><span style='font-size:12.0pt;font-family:Symbol'>·</span><span
+style='font-size:7.0pt;font-family:"Times New Roman",serif'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style='font-size:12.0pt;font-family:"Times New Roman",serif'>Bus
+Model Name (free text)</span></p>
+
+<p class=MsoListParagraph><span style='font-size:12.0pt;font-family:Symbol'>·</span><span
+style='font-size:7.0pt;font-family:"Times New Roman",serif'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style='font-size:12.0pt;font-family:"Times New Roman",serif'>Registered
+passengers</span></p>
+
+<p class=MsoListParagraph><span style='font-size:12.0pt;font-family:Symbol'>·</span><span
+style='font-size:7.0pt;font-family:"Times New Roman",serif'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style='font-size:12.0pt;font-family:"Times New Roman",serif'>Type
+(i.e. ‘raised floor’ = Class III, ‘semi low floor’ = Class II, or ‘low floor’ =
+Class I)</span></p>
+
+<p class=MsoListParagraph><span style='font-size:12.0pt;font-family:Symbol'>·</span><span
+style='font-size:7.0pt;font-family:"Times New Roman",serif'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style='font-size:12.0pt;font-family:"Times New Roman",serif'>Is
+Double Decker [tick box]</span></p>
+
+<p class=MsoListParagraph><span style='font-size:12.0pt;font-family:Symbol'>·</span><span
+style='font-size:7.0pt;font-family:"Times New Roman",serif'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style='font-size:12.0pt;font-family:"Times New Roman",serif'>Length
+in m,</span></p>
+
+<p class=MsoListParagraph><span style='font-size:12.0pt;font-family:Symbol'>·</span><span
+style='font-size:7.0pt;font-family:"Times New Roman",serif'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style='font-size:12.0pt;font-family:"Times New Roman",serif'>Wide
+in m,</span></p>
+
+<p class=MsoListParagraph><span style='font-size:12.0pt;font-family:Symbol'>·</span><span
+style='font-size:7.0pt;font-family:"Times New Roman",serif'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style='font-size:12.0pt;font-family:"Times New Roman",serif'>Height
+in m,</span></p>
+
+<p class=MsoListParagraph><span style='font-size:12.0pt;font-family:Symbol'>·</span><span
+style='font-size:7.0pt;font-family:"Times New Roman",serif'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style='font-size:12.0pt;font-family:"Times New Roman",serif'>[Engine
+Type (only ‘diesel’ is currently supported), only when creating a ‘New’ entry]</span></p>
+
+<p class=MsoListParagraph><span style='font-size:12.0pt;font-family:Symbol'>·</span><span
+style='font-size:7.0pt;font-family:"Times New Roman",serif'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><span style='font-size:12.0pt;font-family:"Times New Roman",serif'>Other
+fields, that are greyed out, are locked and not editable, containing fixed
+default values or calculations.</span></p>
+
+<p class=MsoListParagraph style='margin-left:0cm;text-indent:0cm'><span
+style='font-size:12.0pt;font-family:"Times New Roman",serif'>&nbsp;</span></p>
+
+<p class=MsoListParagraph style='margin-left:0cm;text-indent:0cm'><br>
+<b><span style='font-size:12.0pt;font-family:"Times New Roman",serif'>Boundary
+Conditions</span></b></p>
+
+<p class=MsoListParagraph align=center style='margin-left:18.0pt;text-align:
+center'><span style='font-size:12.0pt;font-family:"Times New Roman",serif'><img
+width=553 height=454 src="Pics/HVAC_BoundaryConditions.jpg"></span></p>
+
+<p class=MsoListParagraph style='margin-left:0cm;text-indent:0cm'><span
+style='font-size:12.0pt;font-family:"Times New Roman",serif'><br>
+On this tab the various boundary conditions for the HVAC SSM calculations can
+be set. Certain fields (greyed out) are locked and not editable, containing fixed
+default values or calculations.</span></p>
+
+<p class=MsoListParagraph style='margin-left:0cm;text-indent:0cm'><br>
+<b><span style='font-size:12.0pt;font-family:"Times New Roman",serif'>Other</span></b></p>
+
+<p class=MsoListParagraph align=center style='margin-left:18.0pt;text-align:
+center'><span style='font-size:12.0pt;font-family:"Times New Roman",serif'><img
+width=553 height=454 src="Pics/HVAC_Other.jpg"></span></p>
+
+<p class=MsoListParagraph style='margin-left:0cm;text-indent:0cm'><span
+style='font-size:12.0pt;font-family:"Times New Roman",serif'><br>
+On this tab a number of other parameters for the HVAC SSM calculations can be
+set:</span></p>
+
+<p class=MsoListParagraph><span style='font-size:12.0pt;font-family:Symbol'>·</span><span
+style='font-size:7.0pt;font-family:"Times New Roman",serif'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><i><span style='font-size:12.0pt;font-family:"Times New Roman",serif'>Environmental
+conditions:</span></i><span style='font-size:12.0pt;font-family:"Times New Roman",serif'>
+when in ‘Batch Mode’ a climatic conditions dataset (.aenv) file must be used
+containing a series of environmental conditions. Otherwise single values for
+temperature and solar load may be input (these fields are locked/not used when
+in batch mode).</span></p>
+
+<p class=MsoListParagraph><span style='font-size:12.0pt;font-family:Symbol'>·</span><span
+style='font-size:7.0pt;font-family:"Times New Roman",serif'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><i><span style='font-size:12.0pt;font-family:"Times New Roman",serif'>AC
+System specifications/type:</span></i><span style='font-size:12.0pt;font-family:
+"Times New Roman",serif'> the AC-Compressor Type selection determines the COP
+value used, according to the specification of the project steering group.</span></p>
+
+<p class=MsoListParagraph><span style='font-size:12.0pt;font-family:Symbol'>·</span><span
+style='font-size:7.0pt;font-family:"Times New Roman",serif'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><i><span style='font-size:12.0pt;font-family:"Times New Roman",serif'>Ventilation
+settings</span></i></p>
+
+<p class=MsoListParagraph><span style='font-size:12.0pt;font-family:Symbol'>·</span><span
+style='font-size:7.0pt;font-family:"Times New Roman",serif'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span><i><span style='font-size:12.0pt;font-family:"Times New Roman",serif'>Auxiliary
+Heater parameters:</span></i><span style='font-size:12.0pt;font-family:"Times New Roman",serif'>
+the power of the fuel fired heater may be included, other fields are provided
+for information only and are locked. The ‘Engine Waste Heat’ values are
+calculated during the actual model runs, which are determined via a pre-run of
+the model over the selected drive-cycle.</span></p>
+
+<p class=MsoListParagraph style='margin-left:0cm;text-indent:0cm'><br>
+<b><span style='font-size:12.0pt;font-family:"Times New Roman",serif'>Tech List
+Input</span></b></p>
+
+<p class=MsoListParagraph align=center style='margin-left:18.0pt;text-align:
+center'><span style='font-size:12.0pt;font-family:"Times New Roman",serif'><img
+width=553 height=454 src="Pics/HVAC_TechList.jpg"></span></p>
+
+<p class=MsoNormal style='text-autospace:none'><br>
+To determine energy consumption of a certain bus-HVAC system combination, a
+customisable list of technologies may be added/edited on this tab to allow to take
+special features into account which have a reducing or increasing influence.
+Because several technologies are only available for certain bus types, the list
+has to be bus type-specific. The technologies list and the default values has
+been populated according to the steering group recommendations, however these
+may be deleted, edited or added to as required on this tab in Engineering mode.<br>
+<br>
+<b>Diagnostics</b></p>
+
+<p class=MsoListParagraph style='margin-left:0cm;text-indent:0cm'><span
+style='font-size:12.0pt;font-family:"Times New Roman",serif'>The final
+‘Diagnostics’ tab provides a summary of the resulting outputs from the HVAC
+Tech List tab.</span></p>
+
+<p class=MsoNormal><br>
+<br>
+<b><span style='font-size:18.0pt'>Default Values</span></b></p>
+
+<div style='margin-bottom:6.0pt'>
+
+<div class=MsoNormal align=center style='text-align:center'>
+
+<hr size=1 width="100%" align=center>
+
+</div>
+
+</div>
+
+<p class=MsoNormal style='margin-bottom:6.0pt'><br>
+The following table provides a summary of the default values that are populated
+whenever a new advanced auxiliaries (.AAUX) file is created from scratch.&nbsp;
+The table also indicates the editable/default status of the relevant parameters
+in the VECTO UI in Engineering mode, and the recommended status in Declaration
+mode (not currently implemented).&nbsp; The default values / parameter status
+has been agreed with the project steering group.<br>
+<br>
+<b>Default parameter values and editable status for the HVAC module</b></p>
+
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=669
+ style='width:501.6pt;margin-left:-.4pt;border-collapse:collapse'>
+ <tr style='height:1.0pt'>
+  <td width=299 rowspan=2 valign=bottom style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-bottom:solid black 1.0pt;background:white;padding:0cm 5.4pt 0cm 5.4pt;
+  height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><b><span style='font-size:
+  10.0pt;font-family:"Arial",sans-serif'>Category/Input</span></b></p>
+  </td>
+  <td width=129 rowspan=2 valign=bottom style='width:97.0pt;border-top:solid windowtext 1.0pt;
+  border-left:none;border-bottom:solid black 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><b><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>Default value</span></b></p>
+  </td>
+  <td width=241 nowrap colspan=2 valign=bottom style='width:180.6pt;border-top:
+  solid windowtext 1.0pt;border-left:none;border-bottom:solid windowtext 1.0pt;
+  border-right:solid black 1.0pt;background:white;padding:0cm 5.4pt 0cm 5.4pt;
+  height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><b><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>Editable Status by
+  Mode</span></b></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=110 valign=bottom style='width:82.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><b><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>Engineering</span></b></p>
+  </td>
+  <td width=130 valign=bottom style='width:97.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><b><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>Declaration</span></b></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:#F2F2F2;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><b><i><span style='font-size:
+  10.0pt;font-family:"Arial",sans-serif'>INP - BusParameters tab</span></i></b></p>
+  </td>
+  <td width=129 valign=top style='width:97.0pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:#F2F2F2;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><b><i><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>&nbsp;</span></i></b></p>
+  </td>
+  <td width=110 valign=top style='width:82.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:#F2F2F2;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><b><i><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>&nbsp;</span></i></b></p>
+  </td>
+  <td width=130 valign=top style='width:97.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:#F2F2F2;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><b><i><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>&nbsp;</span></i></b></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 nowrap valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><b><span style='font-size:
+  10.0pt;font-family:"Arial",sans-serif'>Bus Parameterisation</span></b></p>
+  </td>
+  <td width=129 valign=top style='width:97.0pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><b><i><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>&nbsp;</span></i></b></p>
+  </td>
+  <td width=110 valign=top style='width:82.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><b><i><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>&nbsp;</span></i></b></p>
+  </td>
+  <td width=130 valign=top style='width:97.8pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><b><i><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>&nbsp;</span></i></b></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Select</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>&lt;Select&gt;</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>&nbsp;</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>&nbsp;</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Bus Model</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>&lt;ABDB or input&gt;</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/editable</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  default</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Number of Passengers</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>&lt;ABDB or input&gt;</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/editable</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  default</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Bus Type</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>&lt;ABDB or input&gt;</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/editable</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  default</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Double Decker?</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>No</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/editable</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/OEM
+  data</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Bus Length (m)</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>&lt;ABDB or input&gt;</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/editable</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  default</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Bus Width (m)</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>&lt;ABDB or input&gt;</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/editable</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  default</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Bus Height (m)</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>&lt;ABDB or input&gt;</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/editable</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  Calc</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Bus Floor Surface Area (m^2)</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>Calculation</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  Calc</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  Calc</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Bus Window Surface (m^2)</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>Calculation</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  Calc</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  Calc</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Bus Surface Area (m^2)</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>Calculation</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  Calc</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  Calc</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Bus Volume (m^3)</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>Calculation</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  Calc</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  Calc</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:#F2F2F2;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><b><i><span style='font-size:
+  10.0pt;font-family:"Arial",sans-serif'>INP - BusParameters tab</span></i></b></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:#F2F2F2;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>&nbsp;</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:#F2F2F2;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>&nbsp;</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:#F2F2F2;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>&nbsp;</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 nowrap valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><b><span style='font-size:
+  10.0pt;font-family:"Arial",sans-serif'>Boundary Conditions:</span></b></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>&nbsp;</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>&nbsp;</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>&nbsp;</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>G-Factor **</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>0.95</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/editable</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/editable</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Solar Clouding</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>0.8</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  Calc</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  Calc</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Heat per Passenger into Cabin (W)</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>80</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  Calc</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  Calc</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Passenger Boundary Temperature (oC)</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>12</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/editable</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked default</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Passenger Density: Low Floor (Pass/m^2)</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>3</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  Calc</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  default</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Passenger Density: Semi Low Floor (Pass/m^2)</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>2.2</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  Calc</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  default</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Passenger Density: Raised Floor (Pass/m^2)</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>1.4</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  Calc</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  default</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Calculated Passenger Number</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>Calculation</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  Calc</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  Calc</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>U-Values W/(K*m^3)</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>Calculation</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  Calc</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  Calc</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Heating Boundary Temperature (oC)</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>18</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/editable</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  default</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Cooling Boundary Temperature (oC)</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>23</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/editable</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  default</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Temperature at which cooling turns OFF</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>17</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  default</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>&nbsp;</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>High Ventilation (l/h) </span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>20</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/editable</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  default</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>How Ventilation (l/h)</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>7</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/editable</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  default</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>High (m^3/h)</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>Calculation</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  Calc</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  Calc</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>low (m^3/h)</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>Calculation</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  Calc</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  Calc</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>High Vent Power (W)</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>Calculation</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  Calc</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  Calc</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Low Vent Power (W)</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>Calculation</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  Calc</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  Calc</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Specific Ventilation Power (Wh/m3)</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>0.56</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/editable</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  default</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Aux. Heater Efficiency</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>0.84</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/editable</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  default</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>GCV (Diesel / Heating oil) (kwh/kg)</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>11.8</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/editable</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  default</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Window Area per Unit Bus Length (m^2/m)</span></p>
+  </td>
+  <td width=129 valign=top style='width:97.0pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>Calculation</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  Calc</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  Calc</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Front + Rear Window Area (m^2)</span></p>
+  </td>
+  <td width=129 valign=top style='width:97.0pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>Calculation</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  Calc</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  Calc</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Max Temperature Delta for low Floor Busses
+  (K)</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>3</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/editable</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  default</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Max Possible Benefit from Technology List
+  (Fraction)</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>0.5</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/editable</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  default</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:#F2F2F2;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><b><i><span style='font-size:
+  10.0pt;font-family:"Arial",sans-serif'>INP - Other</span></i></b></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:#F2F2F2;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>&nbsp;</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:#F2F2F2;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>&nbsp;</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:#F2F2F2;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>&nbsp;</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 nowrap valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><b><span style='font-size:
+  10.0pt;font-family:"Arial",sans-serif'>Enviromental Conditions</span></b></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>&nbsp;</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>&nbsp;</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>&nbsp;</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Enviromental Temperature (oC)</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>25</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/editable</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  default</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Solar (W/m²)</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>400</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/editable</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  default</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Batch-mode</span></p>
+  </td>
+  <td width=129 valign=top style='width:97.0pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>ON</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/editable</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  default</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Environmental Conditions Database</span></p>
+  </td>
+  <td width=129 valign=top style='width:97.0pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>TBC Default</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/editable</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  default</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 nowrap valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><b><span style='font-size:
+  10.0pt;font-family:"Arial",sans-serif'>AC-system</span></b></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>&nbsp;</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>&nbsp;</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>&nbsp;</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>AC-compressor type</span></p>
+  </td>
+  <td width=129 valign=top style='width:97.0pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>2-stage (0/100)</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/editable</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/OEM
+  data</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>AC-compressor type (Mechanical / Electrical)</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>Calculation</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  Calc</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  Calc</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>AC-compressor capacity (kW)</span></p>
+  </td>
+  <td width=129 valign=top style='width:97.0pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>18</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/editable</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  default</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>COP<sub>Cool</sub></span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>3.50</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  Calc</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  Calc</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 nowrap valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><b><span style='font-size:
+  10.0pt;font-family:"Arial",sans-serif'>Ventilation</span></b></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>&nbsp;</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>&nbsp;</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>&nbsp;</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Ventilation during heating</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>Yes</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/editable</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  default</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Ventilation when both Heating and&nbsp; AC
+  are inactive</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>Yes</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/editable</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  default</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Ventilation during AC</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>Yes</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/editable</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  default</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 nowrap valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Ventilation flow setting when both Heating
+  and&nbsp; AC are inactive</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>High</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/editable</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  default***</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Ventilation during Heating</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>High</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/editable</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  default***</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Ventilation during Cooling</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>High</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/editable</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Locked
+  default***</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 nowrap valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><b><span style='font-size:
+  10.0pt;font-family:"Arial",sans-serif'>Aux. Heater</span></b></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>&nbsp;</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>&nbsp;</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>&nbsp;</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Fuel Fired Heater (kW)</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>30</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/editable</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/OEM
+  data</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:#F2F2F2;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><b><i><span style='font-size:
+  10.0pt;font-family:"Arial",sans-serif'>Input List of Technologies </span></i></b></p>
+  </td>
+  <td width=129 valign=top style='width:97.0pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:#F2F2F2;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><b><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>&nbsp;</span></b></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border:none;border-bottom:
+  solid windowtext 1.0pt;background:#F2F2F2;padding:0cm 5.4pt 0cm 5.4pt;
+  height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><b><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>&nbsp;</span></b></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border:none;border-bottom:
+  solid windowtext 1.0pt;background:#F2F2F2;padding:0cm 5.4pt 0cm 5.4pt;
+  height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><b><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>&nbsp;</span></b></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 nowrap valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><b><span style='font-size:
+  10.0pt;font-family:"Arial",sans-serif'>Insulation</span></b></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>&nbsp;</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>&nbsp;</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>&nbsp;</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Double-glazing</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>TF5 table*</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/editable</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Tick box
+  only</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Tinted windows</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>TF5 table*</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/editable</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Tick box
+  only</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 nowrap valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><b><span style='font-size:
+  10.0pt;font-family:"Arial",sans-serif'>Ventilation</span></b></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>&nbsp;</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>&nbsp;</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>&nbsp;</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Fan controll strategy</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>TF5 table*</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/editable</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Tick box
+  only</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 nowrap valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><b><span style='font-size:
+  10.0pt;font-family:"Arial",sans-serif'>Heating</span></b></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>&nbsp;</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>&nbsp;</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>&nbsp;</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Heat pump systems</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>TF5 table*</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/editable</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Tick box
+  only</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Adjustable coolant thermostat</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>TF5 table*</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/editable</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Tick box
+  only</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Adjustable auxiliary heater</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>TF5 table*</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/editable</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Tick box
+  only</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Engine waste-gas heat exchanger</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>TF5 table*</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/editable</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Tick box
+  only</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 nowrap valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><b><span style='font-size:
+  10.0pt;font-family:"Arial",sans-serif'>Cooling</span></b></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>&nbsp;</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>&nbsp;</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>&nbsp;</span></p>
+  </td>
+ </tr>
+ <tr style='height:1.0pt'>
+  <td width=299 valign=top style='width:224.0pt;border:solid windowtext 1.0pt;
+  border-top:none;background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal style='margin-bottom:2.0pt'><span style='font-size:10.0pt;
+  font-family:"Arial",sans-serif'>Separate air distribution ducts</span></p>
+  </td>
+  <td width=129 nowrap valign=top style='width:97.0pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:white;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif'>TF5 table*</span></p>
+  </td>
+  <td width=110 nowrap valign=top style='width:82.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:black'>Open/editable</span></p>
+  </td>
+  <td width=130 nowrap valign=top style='width:97.8pt;border-top:none;
+  border-left:none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  background:gray;padding:0cm 5.4pt 0cm 5.4pt;height:1.0pt'>
+  <p class=MsoNormal align=center style='margin-bottom:2.0pt;text-align:center'><span
+  style='font-size:10.0pt;font-family:"Arial",sans-serif;color:white'>Tick box
+  only</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal style='margin-bottom:3.0pt'><b><i>Notes</i>: * Default
+parameter values for Technology List from ACEA TF5 proposal</b></p>
+
+<p class=MsoNormal><img width=747 height=377
+src="Pics/TechnologyListDefaults.jpg"><br>
+<br>
+<br>
+</p>
+
+<p class=MsoNormal>** <i>Tinted Window</i>: G-Factor/g-value (= “solar factor”
+= “total solar energy transmittance”) according ISO 9050</p>
+
+<p class=MsoNormal>     ISO 9050 defines wind speed at the outside surface of
+14 km/h.</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal style='margin-bottom:6.0pt'>Definition of bins for
+transmission rates according to ACEA TF5 recommendation:</p>
+
+<table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=436
+ style='width:327.0pt;border-collapse:collapse'>
+ <tr style='height:12.45pt'>
+  <td width=145 valign=top style='width:109.0pt;border:solid black 1.0pt;
+  padding:3.6pt 7.2pt 3.6pt 7.2pt;height:12.45pt'>
+  <p class=MsoNormal style='margin-left:30.0pt'><b><span lang=DE>g-value</span></b></p>
+  </td>
+  <td width=291 valign=top style='width:218.0pt;border:solid black 1.0pt;
+  border-left:none;padding:3.6pt 7.2pt 3.6pt 7.2pt;height:12.45pt'>
+  <p class=MsoNormal style='margin-left:30.0pt'><b><span lang=DE>bonus</span></b></p>
+  </td>
+ </tr>
+ <tr style='height:12.45pt'>
+  <td width=145 valign=top style='width:109.0pt;border:solid black 1.0pt;
+  border-top:none;padding:3.6pt 7.2pt 3.6pt 7.2pt;height:12.45pt'>
+  <p class=MsoNormal style='margin-left:30.0pt'><span lang=DE>&lt; 0,1</span></p>
+  </td>
+  <td width=291 valign=top style='width:218.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:3.6pt 7.2pt 3.6pt 7.2pt;height:12.45pt'>
+  <p class=MsoNormal style='margin-left:30.0pt'><span lang=DE>To be simulated
+  with g = 0,05</span></p>
+  </td>
+ </tr>
+ <tr style='height:12.45pt'>
+  <td width=145 valign=top style='width:109.0pt;border:solid black 1.0pt;
+  border-top:none;padding:3.6pt 7.2pt 3.6pt 7.2pt;height:12.45pt'>
+  <p class=MsoNormal style='margin-left:30.0pt'><span lang=DE>0,11 – 0,20</span></p>
+  </td>
+  <td width=291 valign=top style='width:218.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:3.6pt 7.2pt 3.6pt 7.2pt;height:12.45pt'>
+  <p class=MsoNormal style='margin-left:30.0pt'><span lang=DE>To be simulated
+  with g = 0,15</span></p>
+  </td>
+ </tr>
+ <tr style='height:12.45pt'>
+  <td width=145 valign=top style='width:109.0pt;border:solid black 1.0pt;
+  border-top:none;padding:3.6pt 7.2pt 3.6pt 7.2pt;height:12.45pt'>
+  <p class=MsoNormal style='margin-left:30.0pt'><span lang=DE>0,21 – 0,30</span></p>
+  </td>
+  <td width=291 valign=top style='width:218.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:3.6pt 7.2pt 3.6pt 7.2pt;height:12.45pt'>
+  <p class=MsoNormal style='margin-left:30.0pt'><span lang=DE>To be simulated
+  with g = 0,25</span></p>
+  </td>
+ </tr>
+ <tr style='height:12.45pt'>
+  <td width=145 valign=top style='width:109.0pt;border:solid black 1.0pt;
+  border-top:none;padding:3.6pt 7.2pt 3.6pt 7.2pt;height:12.45pt'>
+  <p class=MsoNormal style='margin-left:30.0pt'><span lang=DE>0,31 – 0,40</span></p>
+  </td>
+  <td width=291 valign=top style='width:218.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:3.6pt 7.2pt 3.6pt 7.2pt;height:12.45pt'>
+  <p class=MsoNormal style='margin-left:30.0pt'><span lang=DE>To be simulated
+  with g = 0,35</span></p>
+  </td>
+ </tr>
+ <tr style='height:12.45pt'>
+  <td width=145 valign=top style='width:109.0pt;border:solid black 1.0pt;
+  border-top:none;padding:3.6pt 7.2pt 3.6pt 7.2pt;height:12.45pt'>
+  <p class=MsoNormal style='margin-left:30.0pt'><span lang=DE>0,41 – 0,50</span></p>
+  </td>
+  <td width=291 valign=top style='width:218.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:3.6pt 7.2pt 3.6pt 7.2pt;height:12.45pt'>
+  <p class=MsoNormal style='margin-left:30.0pt'><span lang=DE>To be simulated
+  with g = 0,45</span></p>
+  </td>
+ </tr>
+ <tr style='height:12.45pt'>
+  <td width=145 valign=top style='width:109.0pt;border:solid black 1.0pt;
+  border-top:none;padding:3.6pt 7.2pt 3.6pt 7.2pt;height:12.45pt'>
+  <p class=MsoNormal style='margin-left:30.0pt'><span lang=DE>0,51 – 0,60</span></p>
+  </td>
+  <td width=291 valign=top style='width:218.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:3.6pt 7.2pt 3.6pt 7.2pt;height:12.45pt'>
+  <p class=MsoNormal style='margin-left:30.0pt'><span lang=DE>To be simulated
+  with g = 0,55</span></p>
+  </td>
+ </tr>
+ <tr style='height:12.45pt'>
+  <td width=145 valign=top style='width:109.0pt;border:solid black 1.0pt;
+  border-top:none;padding:3.6pt 7.2pt 3.6pt 7.2pt;height:12.45pt'>
+  <p class=MsoNormal style='margin-left:30.0pt'><span lang=DE>0,61 – 0,70</span></p>
+  </td>
+  <td width=291 valign=top style='width:218.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:3.6pt 7.2pt 3.6pt 7.2pt;height:12.45pt'>
+  <p class=MsoNormal style='margin-left:30.0pt'><span lang=DE>To be simulated
+  with g = 0,65</span></p>
+  </td>
+ </tr>
+ <tr style='height:12.45pt'>
+  <td width=145 valign=top style='width:109.0pt;border:solid black 1.0pt;
+  border-top:none;padding:3.6pt 7.2pt 3.6pt 7.2pt;height:12.45pt'>
+  <p class=MsoNormal style='margin-left:30.0pt'><span lang=DE>0,71 – 0,80 </span></p>
+  </td>
+  <td width=291 valign=top style='width:218.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:3.6pt 7.2pt 3.6pt 7.2pt;height:12.45pt'>
+  <p class=MsoNormal style='margin-left:30.0pt'><span lang=DE>To be simulated
+  with g = 0,75</span></p>
+  </td>
+ </tr>
+ <tr style='height:12.45pt'>
+  <td width=145 valign=top style='width:109.0pt;border:solid black 1.0pt;
+  border-top:none;padding:3.6pt 7.2pt 3.6pt 7.2pt;height:12.45pt'>
+  <p class=MsoNormal style='margin-left:30.0pt'><span lang=DE>0,81 – 0,90</span></p>
+  </td>
+  <td width=291 valign=top style='width:218.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:3.6pt 7.2pt 3.6pt 7.2pt;height:12.45pt'>
+  <p class=MsoNormal style='margin-left:30.0pt'><span lang=DE>To be simulated
+  with g = 0,85</span></p>
+  </td>
+ </tr>
+ <tr style='height:12.45pt'>
+  <td width=145 valign=top style='width:109.0pt;border:solid black 1.0pt;
+  border-top:none;padding:3.6pt 7.2pt 3.6pt 7.2pt;height:12.45pt'>
+  <p class=MsoNormal style='margin-left:30.0pt'><span lang=DE>0,91 - 1</span></p>
+  </td>
+  <td width=291 valign=top style='width:218.0pt;border-top:none;border-left:
+  none;border-bottom:solid black 1.0pt;border-right:solid black 1.0pt;
+  padding:3.6pt 7.2pt 3.6pt 7.2pt;height:12.45pt'>
+  <p class=MsoNormal style='margin-left:30.0pt'><span lang=DE>To be simulated
+  with g = 0,95</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<p class=MsoNormal style='margin-bottom:6.0pt'>*** <i>Air Flow Rate</i>: recommended
+for future implementation in Declaration mode by ACEA TF5:</p>
+
+<table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=555
+ style='width:416.15pt;border-collapse:collapse;border:none'>
+ <tr style='height:19.3pt'>
+  <td width=131 style='width:98.4pt;border:solid windowtext 1.0pt;padding:3.6pt 7.2pt 3.6pt 7.2pt;
+  height:19.3pt'>
+  <p class=MsoNormal><b><span lang=DE>Phase</span></b></p>
+  </td>
+  <td width=214 style='width:160.15pt;border:solid windowtext 1.0pt;border-left:
+  none;padding:3.6pt 7.2pt 3.6pt 7.2pt;height:19.3pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b><span lang=DE>With
+  thermal comfort roof mounted system</span></b></p>
+  </td>
+  <td width=210 style='width:157.6pt;border:solid windowtext 1.0pt;border-left:
+  none;padding:3.6pt 7.2pt 3.6pt 7.2pt;height:19.3pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b><span lang=DE>Without
+  thermal comfort roof mounted system</span></b></p>
+  </td>
+ </tr>
+ <tr style='height:11.9pt'>
+  <td width=131 style='width:98.4pt;border:solid windowtext 1.0pt;border-top:
+  none;padding:3.6pt 7.2pt 3.6pt 7.2pt;height:11.9pt'>
+  <p class=MsoNormal><b><span lang=DE>Cooling</span></b></p>
+  </td>
+  <td width=214 style='width:160.15pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:3.6pt 7.2pt 3.6pt 7.2pt;height:11.9pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span lang=DE>High
+  (20x internal volume / h)</span></p>
+  </td>
+  <td width=210 style='width:157.6pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:3.6pt 7.2pt 3.6pt 7.2pt;height:11.9pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span lang=DE>Low
+  (7x internal volume / h)</span></p>
+  </td>
+ </tr>
+ <tr style='height:11.9pt'>
+  <td width=131 style='width:98.4pt;border:solid windowtext 1.0pt;border-top:
+  none;padding:3.6pt 7.2pt 3.6pt 7.2pt;height:11.9pt'>
+  <p class=MsoNormal><b><span lang=DE>Ventilation</span></b></p>
+  </td>
+  <td width=214 style='width:160.15pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:3.6pt 7.2pt 3.6pt 7.2pt;height:11.9pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span lang=DE>High
+  (20x internal volume / h)</span></p>
+  </td>
+  <td width=210 style='width:157.6pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:3.6pt 7.2pt 3.6pt 7.2pt;height:11.9pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span lang=DE>Low
+  (7x internal volume / h)</span></p>
+  </td>
+ </tr>
+ <tr style='height:19.3pt'>
+  <td width=131 style='width:98.4pt;border:solid windowtext 1.0pt;border-top:
+  none;padding:3.6pt 7.2pt 3.6pt 7.2pt;height:19.3pt'>
+  <p class=MsoNormal><b><span lang=DE>Heating</span></b></p>
+  </td>
+  <td width=214 style='width:160.15pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:3.6pt 7.2pt 3.6pt 7.2pt;height:19.3pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span lang=DE>High
+  (10x internal volume / h)</span></p>
+  </td>
+  <td width=210 style='width:157.6pt;border-top:none;border-left:none;
+  border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:3.6pt 7.2pt 3.6pt 7.2pt;height:19.3pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span lang=DE>Low
+  (7x internal volume / h)</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNormal><br>
+<br>
+<b><span style='font-size:18.0pt'>File Format</span></b></p>
+
+<div class=MsoNormal align=center style='text-align:center'>
+
+<hr size=1 width="100%" align=center>
+
+</div>
+
+<p class=MsoNormal>The HVAC SSM (.ahsm) and Bus Parameter Database (.abdb)
+files use the VECTO CSV format.<br>
+<br>
+<br>
+<b><span style='font-size:18.0pt'>Controls</span></b></p>
+
+<div class=MsoNormal align=center style='text-align:center'>
+
+<hr size=1 width="100%" align=center>
+
+</div>
+
+<p class=MsoNormal><br>
+<img width=28 height=21 src="../pics/misc/browse.png"><b>&nbsp;Open file browser
+for the HVAC SSM file (.ahsm) or Bus Parameter Database (.abdb) files</b><br>
+<br>
+<img width=22 height=22 src="../pics/misc/OpenFile.PNG">&nbsp;<b><span
+style='color:black'>View file contents or navigate to folder</span></b><br>
+<br>
+<b><span style='color:black'><img width=20 height=20 src="Pics/checkbox.png"></span></b><b><span
+style='color:black'>&nbsp;Tick box to activate/deactivate certain options from
+the list<br>
+<br>
+</span></b><b><span style='color:black'><img width=75 height=23
+src="Pics/Add-icon.png"></span></b><b><span style='color:black'>&nbsp;Add
+button to add a newly defined technology option to the list<br>
+<br>
+</span></b><b><span style='color:black'><img width=19 height=20
+src="Pics/Delete-icon.png"></span></b><b><span style='color:black'>&nbsp;Delete
+button to remove technology options from the list<br>
+<br>
+</span></b><img width=75 height=23 src="Pics/Clear-icon.png">&nbsp;<b><span
+style='color:black'>Clear Form button</span></b></p>
+
+<p class=MsoNormal><br>
+<img width=75 height=23 src="Pics/save.png">&nbsp;<b>Save and close file</b></p>
+
+<p class=MsoNormal style='margin-bottom:12.0pt'><br>
+<img width=75 height=23 src="../pics/misc/Cancel.png" alt=Cancel><b>&nbsp;Cancel
+without saving</b></p>
+
+<p class=MsoNormal>&nbsp;</p>
+
+</div>
+
+</div>
+
+</body>
+
+</html>
