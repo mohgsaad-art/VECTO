@@ -1,0 +1,164 @@
+./vecto-aux
+./vecto-aux/AUXUITEST
+./vecto-aux/AUXUITEST/My Project
+./vecto-aux/Launch
+./vecto-aux/Launch/My Project
+./vecto-aux/packages
+./vecto-aux/packages/NUnit.2.6.2
+./vecto-aux/packages/NUnit.2.6.2/lib
+./vecto-aux/VectoAuxiliaries
+./vecto-aux/VectoAuxiliaries/3rdPartyLibraries
+./vecto-aux/VectoAuxiliaries/bin
+./vecto-aux/VectoAuxiliaries/bin/Debug
+./vecto-aux/VectoAuxiliaries/DownstreamModules
+./vecto-aux/VectoAuxiliaries/Electrics
+./vecto-aux/VectoAuxiliaries/Hvac
+./vecto-aux/VectoAuxiliaries/Images
+./vecto-aux/VectoAuxiliaries/My Project
+./vecto-aux/VectoAuxiliaries/obj
+./vecto-aux/VectoAuxiliaries/obj/Debug
+./vecto-aux/VectoAuxiliaries/obj/Debug/TempPE
+./vecto-aux/VectoAuxiliaries/Pneumatics
+./vecto-aux/VectoAuxiliaries/Resources
+./vecto-aux/VectoAuxiliaries/UI
+./vecto-aux/VectoAuxiliariesTests
+./vecto-aux/VectoAuxiliariesTests/3rdParty
+./vecto-aux/VectoAuxiliariesTests/bin
+./vecto-aux/VectoAuxiliariesTests/bin/Debug
+./vecto-aux/VectoAuxiliariesTests/IntegrationTests
+./vecto-aux/VectoAuxiliariesTests/Mocks
+./vecto-aux/VectoAuxiliariesTests/My Project
+./vecto-aux/VectoAuxiliariesTests/obj
+./vecto-aux/VectoAuxiliariesTests/obj/Debug
+./vecto-aux/VectoAuxiliariesTests/obj/Debug/TempPE
+./vecto-aux/VectoAuxiliariesTests/TestFiles
+./vecto-aux/VectoAuxiliariesTests/UnitTests
+./vecto-sim
+./vecto-sim/AdvancedAuxiliaryInterfaces
+./vecto-sim/AdvancedAuxiliaryInterfaces/bin
+./vecto-sim/AdvancedAuxiliaryInterfaces/bin/Debug
+./vecto-sim/AdvancedAuxiliaryInterfaces/My Project
+./vecto-sim/AdvancedAuxiliaryInterfaces/obj
+./vecto-sim/AdvancedAuxiliaryInterfaces/obj/Debug
+./vecto-sim/AdvancedAuxiliaryInterfaces/obj/Debug/TempPE
+./vecto-sim/AuxillaryTestHarness
+./vecto-sim/AuxillaryTestHarness/Images
+./vecto-sim/AuxillaryTestHarness/My Project
+./vecto-sim/AuxillaryTestHarness/My Project/DataSources
+./vecto-sim/AuxillaryTestHarness/UI
+./vecto-sim/Developer Guide
+./vecto-sim/HVACTOOL
+./vecto-sim/HVACTOOL/My Project
+./vecto-sim/packages
+./vecto-sim/packages/Moq.4.2.1409.1722
+./vecto-sim/packages/Moq.4.2.1409.1722/lib
+./vecto-sim/packages/Moq.4.2.1409.1722/lib/net35
+./vecto-sim/packages/Moq.4.2.1409.1722/lib/net40
+./vecto-sim/packages/Moq.4.2.1409.1722/lib/sl4
+./vecto-sim/packages/Newtonsoft.Json.6.0.6
+./vecto-sim/packages/Newtonsoft.Json.6.0.6/lib
+./vecto-sim/packages/Newtonsoft.Json.6.0.6/lib/net20
+./vecto-sim/packages/Newtonsoft.Json.6.0.6/lib/net35
+./vecto-sim/packages/Newtonsoft.Json.6.0.6/lib/net40
+./vecto-sim/packages/Newtonsoft.Json.6.0.6/lib/net45
+./vecto-sim/packages/Newtonsoft.Json.6.0.6/lib/netcore45
+./vecto-sim/packages/Newtonsoft.Json.6.0.6/lib/portable-net40+sl5+wp80+win8+wpa81
+./vecto-sim/packages/Newtonsoft.Json.6.0.6/lib/portable-net45+wp80+win8+wpa81+aspnetcore50
+./vecto-sim/packages/Newtonsoft.Json.6.0.6/tools
+./vecto-sim/packages/NUnit.2.6.2
+./vecto-sim/packages/NUnit.2.6.2/lib
+./vecto-sim/packages/NUnit.2.6.3
+./vecto-sim/packages/NUnit.2.6.3/lib
+./vecto-sim/packages/NUnitTestAdapter.1.2
+./vecto-sim/packages/NUnitTestAdapter.1.2/lib
+./vecto-sim/packages/NUnitTestAdapter.1.2/tools
+./vecto-sim/packages/ValueInjecter.2.3.3
+./vecto-sim/packages/ValueInjecter.2.3.3/lib
+./vecto-sim/packages/ValueInjecter.2.3.3/lib/net35
+./vecto-sim/packages/ValueInjecter.2.3.3/lib/sl3
+./vecto-sim/Third Party Libraries
+./vecto-sim/Third Party Libraries/itextsharp
+./vecto-sim/Tools
+./vecto-sim/Tools/Ricardo
+./vecto-sim/Tools/Ricardo/BuildProcessTemplates
+./vecto-sim/Tools/Ricardo/PersistanceTB
+./vecto-sim/Tools/Ricardo/PersistanceTB/packages
+./vecto-sim/Tools/Ricardo/PersistanceTB/packages/Newtonsoft.Json.6.0.6
+./vecto-sim/Tools/Ricardo/PersistanceTB/packages/Newtonsoft.Json.6.0.6/lib
+./vecto-sim/Tools/Ricardo/PersistanceTB/packages/Newtonsoft.Json.6.0.6/lib/net20
+./vecto-sim/Tools/Ricardo/PersistanceTB/packages/Newtonsoft.Json.6.0.6/lib/net35
+./vecto-sim/Tools/Ricardo/PersistanceTB/packages/Newtonsoft.Json.6.0.6/lib/net40
+./vecto-sim/Tools/Ricardo/PersistanceTB/packages/Newtonsoft.Json.6.0.6/lib/net45
+./vecto-sim/Tools/Ricardo/PersistanceTB/packages/Newtonsoft.Json.6.0.6/lib/netcore45
+./vecto-sim/Tools/Ricardo/PersistanceTB/packages/Newtonsoft.Json.6.0.6/lib/portable-net40+sl5+wp80+win8+wpa81
+./vecto-sim/Tools/Ricardo/PersistanceTB/packages/Newtonsoft.Json.6.0.6/lib/portable-net45+wp80+win8+wpa81+aspnetcore50
+./vecto-sim/Tools/Ricardo/PersistanceTB/packages/Newtonsoft.Json.6.0.6/tools
+./vecto-sim/Tools/Ricardo/PersistanceTB/packages/NUnit.2.6.3
+./vecto-sim/Tools/Ricardo/PersistanceTB/packages/NUnit.2.6.3/lib
+./vecto-sim/Tools/Ricardo/PersistanceTB/packages/NUnitTestAdapter.1.2
+./vecto-sim/Tools/Ricardo/PersistanceTB/packages/NUnitTestAdapter.1.2/lib
+./vecto-sim/Tools/Ricardo/PersistanceTB/packages/NUnitTestAdapter.1.2/tools
+./vecto-sim/Tools/Ricardo/PersistanceTB/Persistance
+./vecto-sim/Tools/Ricardo/PersistanceTB/Persistance/Images
+./vecto-sim/Tools/Ricardo/PersistanceTB/Persistance/My Project
+./vecto-sim/Tools/Ricardo/PersistanceTB/PersistanceUnitTesting
+./vecto-sim/Tools/Ricardo/PersistanceTB/PersistanceUnitTesting/My Project
+./vecto-sim/User Manual
+./vecto-sim/User Manual/AAux
+./vecto-sim/User Manual/AAux/Pics
+./vecto-sim/User Manual/fileformat
+./vecto-sim/User Manual/fileformat/pics
+./vecto-sim/User Manual/general
+./vecto-sim/User Manual/general/pics
+./vecto-sim/User Manual/GUI
+./vecto-sim/User Manual/GUI/GUI_Calls
+./vecto-sim/User Manual/GUI/pics
+./vecto-sim/User Manual/GUI/pics/VECTO
+./vecto-sim/User Manual/GUI/VECTO-Editor_files
+./vecto-sim/User Manual/main
+./vecto-sim/User Manual/pics
+./vecto-sim/User Manual/pics/icons
+./vecto-sim/User Manual/pics/misc
+./vecto-sim/VECTO
+./vecto-sim/VECTO/bin
+./vecto-sim/VECTO/bin/Debug
+./vecto-sim/VECTO/File Browser
+./vecto-sim/VECTO/GUI
+./vecto-sim/VECTO/Input Files
+./vecto-sim/VECTO/Libraries
+./vecto-sim/VECTO/MODcalc
+./vecto-sim/VECTO/My Project
+./vecto-sim/VECTO/obj
+./vecto-sim/VECTO/obj/Debug
+./vecto-sim/VECTO/obj/Debug/TempPE
+./vecto-sim/VECTO/Release Files
+./vecto-sim/VECTO/Release Files/Declaration
+./vecto-sim/VECTO/Release Files/Declaration/MissionCycles
+./vecto-sim/VECTO/Release Files/Declaration/Reports
+./vecto-sim/VECTO/Release Files/Declaration/VACC
+./vecto-sim/VECTO/Release Files/Declaration/VAUX
+./vecto-sim/VECTO/Release Files/Declaration/VCDV
+./vecto-sim/VECTO/Release Files/Generic Vehicles
+./vecto-sim/VECTO/Release Files/Generic Vehicles/Declaration Mode
+./vecto-sim/VECTO/Release Files/Generic Vehicles/Declaration Mode/12t Delivery Truck
+./vecto-sim/VECTO/Release Files/Generic Vehicles/Declaration Mode/40t Long Haul Truck
+./vecto-sim/VECTO/Release Files/Generic Vehicles/Engineering Mode
+./vecto-sim/VECTO/Release Files/Generic Vehicles/Engineering Mode/12t Delivery Truck
+./vecto-sim/VECTO/Release Files/Generic Vehicles/Engineering Mode/24t Coach
+./vecto-sim/VECTO/Release Files/User Manual
+./vecto-sim/VECTO/Release Files/User Manual/AAux
+./vecto-sim/VECTO/Release Files/User Manual/AAux/Pics
+./vecto-sim/VECTO/Release Files/User Manual/fileformat
+./vecto-sim/VECTO/Release Files/User Manual/fileformat/pics
+./vecto-sim/VECTO/Release Files/User Manual/general
+./vecto-sim/VECTO/Release Files/User Manual/general/pics
+./vecto-sim/VECTO/Release Files/User Manual/GUI
+./vecto-sim/VECTO/Release Files/User Manual/GUI/GUI_Calls
+./vecto-sim/VECTO/Release Files/User Manual/GUI/pics
+./vecto-sim/VECTO/Release Files/User Manual/GUI/pics/VECTO
+./vecto-sim/VECTO/Release Files/User Manual/GUI/VECTO-Editor_files
+./vecto-sim/VECTO/Release Files/User Manual/main
+./vecto-sim/VECTO/Release Files/User Manual/pics
+./vecto-sim/VECTO/Release Files/User Manual/pics/icons
+./vecto-sim/VECTO/Release Files/User Manual/pics/misc
+./vecto-sim/VECTO/Resources
