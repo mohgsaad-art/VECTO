@@ -144,9 +144,8 @@ Public Class cDelaunayMap
 
         If DualMode Then
 
-            j = -1
-
             'Try exact solution for IsInside()
+            j = -1
             For Each tr In lDTXZ
                 j += 1
                 If IsInside(tr, x, z, True) Then
