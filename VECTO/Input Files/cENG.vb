@@ -387,7 +387,7 @@ End Property
                 Return False
             End Try
 
-            FLD(i).Init(Nidle)
+            If Not FLD(i).Init(Nidle) Then Return False
 
         Next
 
