@@ -28,7 +28,7 @@ Partial Class F_MAINForm
     Private components As System.ComponentModel.IContainer
 
     'Hinweis: Die folgende Prozedur ist fÃ¼r den Windows Form-Designer erforderlich.
-    'Das Bearbeiten ist mit dem Windows Form-Designer mÃ¶glich.  
+    'Das Bearbeiten ist mit dem Windows Form-Designer mÃ¶glich.
     'Das Bearbeiten mit dem Code-Editor ist nicht mÃ¶glich.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
@@ -82,6 +82,7 @@ Partial Class F_MAINForm
         Me.ChBoxCyclDistCor = New System.Windows.Forms.CheckBox()
         Me.ChBoxUseGears = New System.Windows.Forms.CheckBox()
         Me.TabPageDEV = New System.Windows.Forms.TabPage()
+		Me.Label1 = New System.Windows.Forms.Label()
         Me.LvDEVoptions = New System.Windows.Forms.ListView()
         Me.ColumnHeader4 = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader7 = CType(New System.Windows.Forms.ColumnHeader(),System.Windows.Forms.ColumnHeader)
@@ -667,15 +668,26 @@ Partial Class F_MAINForm
         '
         'TabPageDEV
         '
+		Me.TabPageDEV.Controls.Add(Me.Label1)
         Me.TabPageDEV.Controls.Add(Me.LvDEVoptions)
         Me.TabPageDEV.Location = New System.Drawing.Point(4, 22)
         Me.TabPageDEV.Name = "TabPageDEV"
         Me.TabPageDEV.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPageDEV.Size = New System.Drawing.Size(1118, 346)
         Me.TabPageDEV.TabIndex = 3
-        Me.TabPageDEV.Text = "DEV"
-        Me.TabPageDEV.UseVisualStyleBackColor = true
+		Me.TabPageDEV.Text = "Test"
+		Me.TabPageDEV.UseVisualStyleBackColor = True
         '
+		'Label1
+		'
+		Me.Label1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+		Me.Label1.AutoSize = True
+		Me.Label1.Location = New System.Drawing.Point(6, 330)
+		Me.Label1.Name = "Label1"
+		Me.Label1.Size = New System.Drawing.Size(125, 13)
+		Me.Label1.TabIndex = 1
+		Me.Label1.Text = "Double-Click entry to edit"
+		'
         'LvDEVoptions
         '
         Me.LvDEVoptions.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
@@ -687,7 +699,7 @@ Partial Class F_MAINForm
         Me.LvDEVoptions.Location = New System.Drawing.Point(6, 6)
         Me.LvDEVoptions.MultiSelect = false
         Me.LvDEVoptions.Name = "LvDEVoptions"
-        Me.LvDEVoptions.Size = New System.Drawing.Size(1106, 334)
+		Me.LvDEVoptions.Size = New System.Drawing.Size(1106, 321)
         Me.LvDEVoptions.TabIndex = 0
         Me.LvDEVoptions.UseCompatibleStateImageBehavior = false
         Me.LvDEVoptions.View = System.Windows.Forms.View.Details
@@ -1021,6 +1033,7 @@ Partial Class F_MAINForm
         Me.PnDeclOpt.ResumeLayout(false)
         Me.PnDeclOpt.PerformLayout
         Me.TabPageDEV.ResumeLayout(false)
+		Me.TabPageDEV.PerformLayout
         Me.ConMenFilelist.ResumeLayout(false)
         Me.SplitContainer1.Panel1.ResumeLayout(false)
         Me.SplitContainer1.Panel2.ResumeLayout(false)
@@ -1126,5 +1139,6 @@ End Sub
     Friend WithEvents RbDev As System.Windows.Forms.RadioButton
     Friend WithEvents RbDecl As System.Windows.Forms.RadioButton
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
+    Friend WithEvents Label1 As System.Windows.Forms.Label
 
 End Class

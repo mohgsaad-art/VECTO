@@ -11,7 +11,6 @@
 Imports System.Collections.Generic
 
 Public Class cVh
-
     'From DRI file
     Private lV As List(Of Single)       'Actual speed. intermediate in seconds
     Private lV0ogl As List(Of Single)   'Original DRI - speed . Is not changed
@@ -20,6 +19,7 @@ Public Class cVh
     Private lPadd As List(Of Single)
     Private lVairVres As List(Of Single)
     Private lVairBeta As List(Of Single)
+	Public Pwheel As List(Of Single)
     Public EcoRoll As List(Of Boolean)
 
     'Calculated
@@ -50,6 +50,7 @@ Public Class cVh
         Weg = New List(Of Double)
         lVairVres = New List(Of Single)
         lVairBeta = New List(Of Single)
+		Pwheel = New List(Of Single)
         EcoRoll = New List(Of Boolean)
         NoDistCorr = New List(Of Boolean)
         iAlt = 1
@@ -69,6 +70,7 @@ Public Class cVh
         lVairVres = Nothing
         lVairBeta = Nothing
         EcoRoll = Nothing
+		Pwheel = Nothing
         NoDistCorr = Nothing
     End Sub
 
@@ -111,7 +113,7 @@ Public Class cVh
         End If
 
         'Altitude / distance
-        If Not DRI.Scycle Then
+		If Not DRI.Scycle And DRI.Vvorg Then
             L = DRI.Values(tDriComp.Alt)
             lAlt0.Add(0)
             ls0.Add(lV0(0))
@@ -125,7 +127,6 @@ Public Class cVh
             Next
             iAltDim = ls0.Count - 1
         End If
-
 
 
         'Gear - but not Averaged, rather Gang(t) = DRI.Gear(t)
@@ -178,12 +179,17 @@ Public Class cVh
 
         End If
 
+		If DRI.PwheelVorg Then
+			L = DRI.Values(tDriComp.Pwheel)
+			For s = 0 To MODdata.tDim
+				Pwheel.Add(L(s))
+			Next
+		End If
+
         For s = 0 To MODdata.tDim
             EcoRoll.Add(False)
             NoDistCorr.Add(False)
         Next
-
-
     End Sub
 
     Public Sub EngCylceInit()
@@ -244,7 +250,6 @@ Public Class cVh
             Next
             la.Add(DRI.Values(tDriComp.V)(MODdata.tDim) - DRI.Values(tDriComp.V)(MODdata.tDim - 1))
         End If
-
     End Sub
 
     Public Sub SetSpeed0(ByVal t As Integer, ByVal v0 As Single)
@@ -283,7 +288,6 @@ Public Class cVh
         End If
 
         Return True
-
     End Function
 
 
@@ -356,8 +360,16 @@ Public Class cVh
         End If
     End Sub
 
-    Public Sub DistCorrInit()
+	Public Function DistCorrInit() As Boolean
         Dim i As Int16
+
+		If Not Cfg.DistCorr Then Return True
+
+		If Not DRI.Vvorg Then
+			WorkerMsg(tMsgID.Err, "Distance Correction not possible without speed input!", "DistCorrInit")
+			Return False
+		End If
+
 
         WegX = 0
         dWegIst = 0
@@ -368,10 +380,13 @@ Public Class cVh
             WegV.Add(lV0(i))
         Next
 
-    End Sub
+		Return True
+	End Function
 
     Public Function DistCorrection(ByVal t As Integer, ByVal VehState As tVehState) As Boolean
         Dim v As Single
+
+		If Not DRI.Vvorg Then Return False
 
         v = lV(t)
         dWegIst += v
@@ -384,7 +399,8 @@ Public Class cVh
         If WegX + 2 < MODdata.tDimOgl Then
 
             'If repeating of current time-step is closer to the target distance => Repeat time-step
-            If Not NoDistCorr(t) AndAlso (Math.Abs(dWegIst + Vsoll(t) - Weg(WegX)) < Math.Abs(dWegIst - Weg(WegX))) And v > 1 Then
+			If Not NoDistCorr(t) AndAlso (Math.Abs(dWegIst + Vsoll(t) - Weg(WegX)) < Math.Abs(dWegIst - Weg(WegX))) And v > 1 _
+				Then
 
                 Duplicate(t + 1)
                 MODdata.tDim += 1
@@ -393,7 +409,9 @@ Public Class cVh
                 Return True
 
                 'If deleting the next time-step is closer to target distance => Delete Next Time-step
-            ElseIf Not NoDistCorr(t) AndAlso WegX < MODdata.tDimOgl - 1 AndAlso t < MODdata.tDim - 1 AndAlso Math.Abs(dWegIst - Weg(WegX + 1)) <= Math.Abs(dWegIst - Weg(WegX)) AndAlso v > 1 Then
+			ElseIf _
+				Not NoDistCorr(t) AndAlso WegX < MODdata.tDimOgl - 1 AndAlso t < MODdata.tDim - 1 AndAlso
+				Math.Abs(dWegIst - Weg(WegX + 1)) <= Math.Abs(dWegIst - Weg(WegX)) AndAlso v > 1 Then
 
                 Cut(t + 1)
                 MODdata.tDim -= 1
@@ -413,7 +431,6 @@ Public Class cVh
         End If
 
         Return False
-
     End Function
 
     Private Sub Duplicate(ByVal t As Integer)
@@ -441,6 +458,7 @@ Public Class cVh
         lGears.Insert(t, lGears(t))
         lPadd.Insert(t, lPadd(t))
         EcoRoll.Insert(t, EcoRoll(t))
+		If DRI.PwheelVorg Then Pwheel.Insert(t, Pwheel(t))
         NoDistCorr.Insert(t, NoDistCorr(t))
 
         If DRI.VairVorg Then
@@ -451,8 +469,6 @@ Public Class cVh
         MODdata.Px.Positions.Insert(t, MODdata.Px.Positions(t))
 
         MODdata.Duplicate(t)
-
-
     End Sub
 
     Public Sub DuplicatePreRun(ByVal t As Integer)
@@ -471,6 +487,7 @@ Public Class cVh
         lGears.Insert(t, lGears(t))
         lPadd.Insert(t, lPadd(t))
         EcoRoll.Insert(t, EcoRoll(t))
+		If DRI.PwheelVorg Then Pwheel.Insert(t, Pwheel(t))
         NoDistCorr.Insert(t, NoDistCorr(t))
 
         If DRI.VairVorg Then
@@ -479,7 +496,6 @@ Public Class cVh
         End If
 
         MODdata.Duplicate(t)
-
     End Sub
 
     Private Sub Cut(ByVal t As Integer)
@@ -503,6 +519,7 @@ Public Class cVh
         lGears.RemoveAt(t)
         lPadd.RemoveAt(t)
         EcoRoll.RemoveAt(t)
+		If DRI.PwheelVorg Then Pwheel.RemoveAt(t)
         NoDistCorr.RemoveAt(t)
 
         If DRI.VairVorg Then
@@ -514,7 +531,6 @@ Public Class cVh
 
 
         MODdata.Cut(t)
-
     End Sub
 
     Public ReadOnly Property Vsoll(ByVal t As Integer) As Single
@@ -564,13 +580,14 @@ Public Class cVh
             End If
         Next
         iAltDim = ls0.Count - 1
-
     End Sub
 
     Public Function fGrad(ByVal s As Double) As Single
         Dim i As Int32
         Dim dh As Single
         Dim ds As Single
+
+		If Not DRI.Vvorg Then Return 0
 
         If ls0(0) >= s Then
             i = 1
@@ -600,7 +617,6 @@ lbInt:
         ds = ls0(i) - ls0(i - 1)
         dh = lAlt0(i) - lAlt0(i - 1)
         Return (dh / ds) * 100
-
     End Function
 
     'IndexInit = 0    ...Set iAlt to 1
@@ -636,9 +652,8 @@ lbInt:
         iAlt = i
 
         Return (s - ls0(i - 1)) * (lAlt0(i) - lAlt0(i - 1)) / (ls0(i) - ls0(i - 1)) + lAlt0(i - 1)
-
     End Function
-        
+
 
     Public ReadOnly Property Padd(ByVal t As Integer) As Single
         Get
@@ -675,6 +690,4 @@ lbInt:
             Return Weg(WegX)
         End Get
     End Property
-
-
 End Class

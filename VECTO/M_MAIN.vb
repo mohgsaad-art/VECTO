@@ -445,9 +445,11 @@ lbSkip0:
 
                        
                             If MsgOut Then WorkerMsg(tMsgID.Normal, "Driving Cycle Preprocessing", MsgSrc)
+                            If DRI.Vvorg Then
                             If Not MODdata.Px.PreRun Then
                                 CyclAbrtedByErr = True
                                 GoTo lbAusg
+                            End If
                             End If
 
                             If VECTOworker.CancellationPending Then GoTo lbAbort
@@ -456,7 +458,10 @@ lbSkip0:
 
                             If MsgOut Then WorkerMsg(tMsgID.Normal, "Vehicle Calc", MsgSrc)
 
-                            MODdata.Vh.DistCorrInit()
+                            If Not MODdata.Vh.DistCorrInit() Then
+                                CyclAbrtedByErr = True
+                                GoTo lbAusg
+                            End If
 
                             If Not MODdata.Px.Calc() Then
                                 CyclAbrtedByErr = True
@@ -467,7 +472,7 @@ lbSkip0:
                             If VECTOworker.CancellationPending Then GoTo lbAbort
 
                             'Calculate CycleKin (for erg/sum, etc.)
-                            MODdata.CylceKin.Calc()
+                            If DRI.Vvorg Then MODdata.CylceKin.Calc()
 
                         End If
                         '----------------------------------------------------------------------------

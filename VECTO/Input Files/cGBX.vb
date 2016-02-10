@@ -11,7 +11,6 @@
 Imports System.Collections.Generic
 
 Public Class cGBX
-
     Private Const FormatVersion As Short = 4
     Private FileVersion As Short
 
@@ -97,7 +96,6 @@ Public Class cGBX
         If Me.TCon Then MyFileList.Add(TCfile)
 
         Return True
-
     End Function
 
 
@@ -140,7 +138,6 @@ Public Class cGBX
         TCinertia = 0
 
         SavedInDeclMode = False
-
     End Sub
 
     Public Function SaveFile() As Boolean
@@ -208,7 +205,6 @@ Public Class cGBX
         JSON.Content.Add("Body", dic)
 
         Return JSON.WriteFile(sFilePath)
-
     End Function
 
     Public Function ReadFile(Optional ByVal ShowMsg As Boolean = True) As Boolean
@@ -237,7 +233,7 @@ Public Class cGBX
             GbxInertia = JSON.Content("Body")("Inertia")
             TracIntrSi = JSON.Content("Body")("TracInt")
 
-            i = -1
+			i = - 1
             For Each dic In JSON.Content("Body")("Gears")
                 i += 1
 
@@ -292,8 +288,6 @@ Public Class cGBX
         End Try
 
         Return True
-
-
     End Function
 
     Public Function DeclInit() As Boolean
@@ -325,7 +319,6 @@ Public Class cGBX
 
 
         Return True
-
     End Function
 
     Public Function TCinit() As Boolean
@@ -351,7 +344,7 @@ Public Class cGBX
         TCnu.Clear()
         TCmu.Clear()
         TCtorque.Clear()
-        TCdim = -1
+		TCdim = - 1
 
         Try
             Do While Not file.EndOfFile
@@ -404,10 +397,10 @@ Public Class cGBX
         file.Close()
 
         Return True
-
     End Function
 
-    Public Function TCiteration(ByVal Gear As Integer, ByVal nUout As Single, ByVal PeOut As Single, ByVal t As Integer, Optional ByVal LastnU As Single? = Nothing, Optional ByVal LastPe As Single? = Nothing) As Boolean
+	Public Function TCiteration(ByVal Gear As Integer, ByVal nUout As Single, ByVal PeOut As Single, ByVal t As Integer,
+								Optional ByVal LastnU As Single? = Nothing, Optional ByVal LastPe As Single? = Nothing) As Boolean
 
         Dim i As Integer
         Dim iDim As Integer
@@ -415,6 +408,7 @@ Public Class cGBX
         Dim Mout As Single
         Dim Min As Single
         Dim MinMax As Single
+		Dim MinCalc As Single
         Dim nuStep As Single
         Dim nuMin As Single
         Dim nuMax As Single
@@ -439,6 +433,8 @@ Public Class cGBX
         Dim Brake As Boolean
         Dim FirstDone As Boolean
 
+		Dim rpmLimit As Single
+
         Dim MsgSrc As String
 
         MsgSrc = "GBX/TCiteration/t= " & t + 1
@@ -449,6 +445,16 @@ Public Class cGBX
         Brake = False
         TCNeutral = False
 
+		'TC rpm limit
+		If DEV.TClimitOn Then
+			If MODdata.Vh.a(t) >= DEV.TCaccmin Then
+				rpmLimit = DEV.TClimit
+			Else
+				rpmLimit = ENG.Nrated
+			End If
+		Else
+			rpmLimit = ENG.Nrated
+		End If
 
         'Power to torque
         Mout = nPeToM(nUout, PeOut)
@@ -464,11 +470,11 @@ Public Class cGBX
             End If
 
             nuMin = 1
-            nuMax = Math.Min(TCnu(TCdim), nUout / ENG.Nidle)
+			nuMax = Math.Min(TCnu(TCdim), nUout/ENG.Nidle)
 
         Else
-            nuMin = Math.Max(nUout / FLD(Gear).N95h, TCnu(0))
-            nuMax = Math.Min(TCnuMax, nUout / ENG.Nidle)
+			nuMin = Math.Max(nUout / rpmLimit, TCnu(0))
+			nuMax = Math.Min(TCnuMax, nUout/ENG.Nidle)
         End If
 
         If nuMax <= nuMin Then
@@ -477,13 +483,13 @@ Public Class cGBX
         End If
 
         'Reduce step size if nu-range is too low
-        Do While (nuMax - nuMin) / nuStep < 10
+		Do While (nuMax - nuMin)/nuStep < 10 And nuStep > 0.0001
             nuStep *= 0.1
         Loop
 
         FirstDone = False
         nu = nuMin - nuStep
-        iDim = -1
+		iDim = - 1
         Do While nu + nuStep <= nuMax
 
             'nu
@@ -499,7 +505,7 @@ Public Class cGBX
             If mu <= 0 Then Continue Do
 
             'nIn
-            nUin = nUout / nu
+			nUin = nUout/nu
 
 
             'AA-TB
@@ -545,21 +551,22 @@ Public Class cGBX
             Else
                 Pfull = FLD(Gear).Pfull(nUin, LastPe)
             End If
-            PinMax = 0.999 * (Pfull - Paux - PaMot)
+			PinMax = 0.999*(Pfull - Paux - PaMot)
             MinMax = nPeToM(nUin, PinMax)
 
             'Min
-            Min = Mout / mu
+			Min = Mout/mu
 
             'Check if Min is too high
             If Min > MinMax Then Continue Do
 
-            'Calculated output torque for given mu
-            MoutCalc = fTCtorque(nu, nUin) * mu
+			'Calculated input and output torque for given mu
+			MinCalc = fTCtorque(nu, nUin)
+			MoutCalc = MinCalc*mu
 
             'Add to lists
             nuList.Add(nu)
-            McalcRatio.Add(MoutCalc / Mout)
+			McalcRatio.Add(MoutCalc/Mout)
             iDim += 1
 
             'Calc smallest error for each mu value
@@ -581,7 +588,7 @@ Public Class cGBX
 
         Loop
 
-        If iDim = -1 Then
+		If iDim = - 1 Then
             TCReduce = True
             Return True
         End If
@@ -624,9 +631,9 @@ Public Class cGBX
 
         nu = nuList(iMin)
         mu = fTCmu(nu)
-        TCnUin = nUout / nu
-        TCMout = fTCtorque(nu, TCnUin) * mu
-        TCMin = TCMout / mu
+		TCnUin = nUout/nu
+		TCMout = fTCtorque(nu, TCnUin)*mu
+		TCMin = TCMout/mu
         TCnUout = nUout
 
         TC_mu = mu
@@ -636,7 +643,6 @@ Public Class cGBX
 
 
         Return True
-
     End Function
 
 
@@ -660,10 +666,9 @@ Public Class cGBX
             MODdata.ModErrors.TCextrapol = "nu= " & nu & " [n_out/n_in]"
         End If
 
-lbInt:
+		lbInt:
         'Interpolation
-        Return (nu - TCnu(i - 1)) * (TCmu(i) - TCmu(i - 1)) / (TCnu(i) - TCnu(i - 1)) + TCmu(i - 1)
-
+		Return (nu - TCnu(i - 1))*(TCmu(i) - TCmu(i - 1))/(TCnu(i) - TCnu(i - 1)) + TCmu(i - 1)
     End Function
 
     Private Function fTCtorque(ByVal nu As Single, ByVal nUin As Single) As Single
@@ -687,12 +692,11 @@ lbInt:
             MODdata.ModErrors.TCextrapol = "nu= " & nu & " [n_out/n_in]"
         End If
 
-lbInt:
+		lbInt:
         'Interpolation
-        M0 = (nu - TCnu(i - 1)) * (TCtorque(i) - TCtorque(i - 1)) / (TCnu(i) - TCnu(i - 1)) + TCtorque(i - 1)
+		M0 = (nu - TCnu(i - 1))*(TCtorque(i) - TCtorque(i - 1))/(TCnu(i) - TCnu(i - 1)) + TCtorque(i - 1)
 
-        Return M0 * (nUin / TCrefrpm) ^ 2
-
+		Return M0*(nUin/TCrefrpm)^2
     End Function
 
     Public Function GSinit() As Boolean
@@ -717,7 +721,6 @@ lbInt:
         Next
 
         Return True
-
     End Function
 
     Public Function GearCount() As Integer
@@ -831,20 +834,20 @@ lbInt:
 
                     If GBX.IsTCgear(i) Then
 
-                        GetrEff(i) = -1
+						GetrEff(i) = - 1
 
                     Else
 
                         EffSum = 0
                         Anz = 0
 
-                        dnU = (2 / 3) * (ENG.Nrated - ENG.Nidle) / 10
+						dnU = (2/3)*(ENG.Nrated - ENG.Nidle)/10
                         nU = ENG.Nidle + dnU
 
                         Do While nU <= ENG.Nrated
 
-                            dM = nPeToM(nU, (2 / 3) * FLD(i).Pfull(nU) / 10)
-                            M_in = nPeToM(nU, (1 / 3) * FLD(i).Pfull(nU))
+							dM = nPeToM(nU, (2/3)*FLD(i).Pfull(nU)/10)
+							M_in = nPeToM(nU, (1/3)*FLD(i).Pfull(nU))
 
                             Do While M_in <= nPeToM(nU, FLD(i).Pfull(nU))
 
@@ -852,7 +855,7 @@ lbInt:
 
                                 P_Loss = IntpolPeLossFwd(i, nU, P_In, False)
 
-                                EffSum += (P_In - P_Loss) / P_In
+								EffSum += (P_In - P_Loss)/P_In
                                 Anz += 1
 
 
@@ -862,8 +865,8 @@ lbInt:
 
                                 'Axle
                                 P_In -= P_Loss
-                                P_Loss = IntpolPeLossFwd(0, nU / GBX.Igetr(i), P_In, False)
-                                EffDiffSum += (P_In - P_Loss) / P_In
+								P_Loss = IntpolPeLossFwd(0, nU/GBX.Igetr(i), P_In, False)
+								EffDiffSum += (P_In - P_Loss)/P_In
                                 AnzDiff += 1
 
                                 If MODdata.ModErrors.TrLossMapExtr <> "" Then
@@ -872,8 +875,8 @@ lbInt:
                                     WorkerMsg(tMsgID.Err, "nU_In(GB)=" & nU & " [1/min]", MsgSrc)
                                     WorkerMsg(tMsgID.Err, "M_In(GB)=" & MinG & " [Nm]", MsgSrc)
                                     WorkerMsg(tMsgID.Err, "P_Loss(GB)=" & plossG & " [kW]", MsgSrc)
-                                    WorkerMsg(tMsgID.Err, "nU_In(axle)=" & CStr(nU / Igetr(i)) & " [1/min]", MsgSrc)
-                                    WorkerMsg(tMsgID.Err, "M_In(axle)=" & CStr(nPeToM(nU / Igetr(i), P_In)) & " [Nm]", MsgSrc)
+									WorkerMsg(tMsgID.Err, "nU_In(axle)=" & CStr(nU/Igetr(i)) & " [1/min]", MsgSrc)
+									WorkerMsg(tMsgID.Err, "M_In(axle)=" & CStr(nPeToM(nU/Igetr(i), P_In)) & " [Nm]", MsgSrc)
                                     WorkerMsg(tMsgID.Err, "P_Loss(axle)=" & P_Loss & " [kW]", MsgSrc)
                                     Return False
                                 End If
@@ -890,7 +893,7 @@ lbInt:
                             Return False
                         End If
 
-                        GetrEff(i) = EffSum / Anz
+						GetrEff(i) = EffSum/Anz
 
                     End If
 
@@ -902,15 +905,15 @@ lbInt:
         Next
 
         If Not GetrEffDef(0) Then
-            GetrEff(0) = EffDiffSum / AnzDiff
+			GetrEff(0) = EffDiffSum/AnzDiff
         End If
 
 
         Return True
-
     End Function
 
-    Public Function IntpolPeLoss(ByVal Gear As Integer, ByVal nU As Double, ByVal PeOut As Double, ByVal Approx As Boolean) As Double
+	Public Function IntpolPeLoss(ByVal Gear As Integer, ByVal nU As Double, ByVal PeOut As Double, ByVal Approx As Boolean) _
+		As Double
 
         Dim PeIn As Double
         Dim WG As Double
@@ -936,9 +939,9 @@ lbInt:
         If GetrEffDef(Gear) Or (Approx AndAlso GetrEff(Gear) > 0) Then
 
             If PeOut > 0 Then
-                PeIn = PeOut / GetrEff(Gear)
+				PeIn = PeOut/GetrEff(Gear)
             Else
-                PeIn = PeOut * GetrEff(Gear)
+				PeIn = PeOut*GetrEff(Gear)
             End If
             Ploss = PeIn - PeOut
 
@@ -955,10 +958,10 @@ lbInt:
                 'If error: try extrapolation
 
                 'Search for the nearest Map point
-                AbMin = ((GBmap.ptList(0).X - nU) ^ 2 + (GBmap.ptList(0).Y - nPeToM(nU, PeOut)) ^ 2) ^ 0.5
+				AbMin = ((GBmap.ptList(0).X - nU)^2 + (GBmap.ptList(0).Y - nPeToM(nU, PeOut))^2)^0.5
                 iMin = 0
                 For i = 1 To GBmap.ptDim
-                    Ab = ((GBmap.ptList(i).X - nU) ^ 2 + (GBmap.ptList(i).Y - nPeToM(nU, PeOut)) ^ 2) ^ 0.5
+					Ab = ((GBmap.ptList(i).X - nU)^2 + (GBmap.ptList(i).Y - nPeToM(nU, PeOut))^2)^0.5
                     If Ab < AbMin Then
                         AbMin = Ab
                         iMin = i
@@ -972,14 +975,16 @@ lbInt:
                 If PeOutX > 0 Then
                     If PeIn > 0 Then
 
-                        WG = PeOutX / PeIn
-                        PeIn = PeOut / WG
+						WG = PeOutX/PeIn
+						PeIn = PeOut/WG
                         Ploss = PeIn - PeOut
 
                     Else
 
                         'Drag => Drive: ERROR!
-                        WorkerMsg(tMsgID.Err, "Transmission Loss Map invalid! Gear= " & GrTxt & ", nU= " & nU.ToString("0.00") & " [1/min], PeIn=" & PeIn.ToString("0.0") & " [kW], PeOut=" & PeOutX.ToString("0.0") & " [kW]", MsgSrc)
+						WorkerMsg(tMsgID.Err,
+								"Transmission Loss Map invalid! Gear= " & GrTxt & ", nU= " & nU.ToString("0.00") & " [1/min], PeIn=" &
+								PeIn.ToString("0.0") & " [kW], PeOut=" & PeOutX.ToString("0.0") & " [kW]", MsgSrc)
                         WorkerAbort()
                         Return 0
 
@@ -989,14 +994,14 @@ lbInt:
 
                     If PeIn > 0 Then
 
-                        WG = (PeIn - (PeIn - PeOutX)) / PeIn
-                        PeIn = PeOut / WG
+						WG = (PeIn - (PeIn - PeOutX))/PeIn
+						PeIn = PeOut/WG
                         Ploss = PeIn - PeOut
 
                     ElseIf PeIn < 0 Then
 
-                        WG = PeIn / PeOutX
-                        PeIn = PeOut * WG
+						WG = PeIn/PeOutX
+						PeIn = PeOut*WG
                         Ploss = PeIn - PeOut
 
                     Else
@@ -1015,7 +1020,9 @@ lbInt:
                     ElseIf PeIn < 0 Then
 
                         'Drag => Zero: ERROR!
-                        WorkerMsg(tMsgID.Err, "Transmission Loss Map invalid! Gear= " & GrTxt & ", nU= " & nU.ToString("0.00") & " [1/min], PeIn=" & PeIn.ToString("0.0") & " [kW], PeOut=" & PeOutX.ToString("0.0") & " [kW]", MsgSrc)
+						WorkerMsg(tMsgID.Err,
+								"Transmission Loss Map invalid! Gear= " & GrTxt & ", nU= " & nU.ToString("0.00") & " [1/min], PeIn=" &
+								PeIn.ToString("0.0") & " [kW], PeOut=" & PeOutX.ToString("0.0") & " [kW]", MsgSrc)
                         WorkerAbort()
                         Return 0
                     Else
@@ -1026,7 +1033,8 @@ lbInt:
 
                 End If
 
-                MODdata.ModErrors.TrLossMapExtr = "Gear= " & GrTxt & ", nU= " & nU.ToString("0.00") & " [1/min], MeOut=" & nPeToM(nU, PeOut).ToString("0.00") & " [Nm]"
+				MODdata.ModErrors.TrLossMapExtr = "Gear= " & GrTxt & ", nU= " & nU.ToString("0.00") & " [1/min], MeOut=" &
+												nPeToM(nU, PeOut).ToString("0.00") & " [Nm]"
 
             Else
 
@@ -1038,11 +1046,10 @@ lbInt:
         End If
 
         Return Math.Max(Ploss, 0)
-
-
     End Function
 
-    Public Function IntpolPeLossFwd(ByVal Gear As Integer, ByVal nU As Double, ByVal PeIn As Double, ByVal Approx As Boolean) As Double
+	Public Function IntpolPeLossFwd(ByVal Gear As Integer, ByVal nU As Double, ByVal PeIn As Double,
+									ByVal Approx As Boolean) As Double
 
         Dim PeOut As Double
         Dim WG As Double
@@ -1067,9 +1074,9 @@ lbInt:
         If GetrEffDef(Gear) Or (Approx AndAlso GetrEff(Gear) > 0) Then
 
             If PeIn > 0 Then
-                PeOut = PeIn * GetrEff(Gear)
+				PeOut = PeIn*GetrEff(Gear)
             Else
-                PeOut = PeIn / GetrEff(Gear)
+				PeOut = PeIn/GetrEff(Gear)
             End If
 
         Else
@@ -1085,10 +1092,10 @@ lbInt:
                 'If error: try extrapolation
 
                 'Search for the nearest Map-point
-                AbMin = ((GBmap.ptList(0).X - nU) ^ 2 + (GBmap.ptList(0).Z - nPeToM(nU, PeIn)) ^ 2) ^ 0.5
+				AbMin = ((GBmap.ptList(0).X - nU)^2 + (GBmap.ptList(0).Z - nPeToM(nU, PeIn))^2)^0.5
                 iMin = 0
                 For i = 1 To GBmap.ptDim
-                    Ab = ((GBmap.ptList(i).X - nU) ^ 2 + (GBmap.ptList(i).Z - nPeToM(nU, PeIn)) ^ 2) ^ 0.5
+					Ab = ((GBmap.ptList(i).X - nU)^2 + (GBmap.ptList(i).Z - nPeToM(nU, PeIn))^2)^0.5
                     If Ab < AbMin Then
                         AbMin = Ab
                         iMin = i
@@ -1103,12 +1110,14 @@ lbInt:
                     If PeInX > 0 Then
 
                         'Drivetrain => Drivetrain
-                        WG = PeOut / PeInX
+						WG = PeOut/PeInX
 
                     Else
 
                         'Drag => Drivetrain: ERROR!
-                        WorkerMsg(tMsgID.Err, "Transmission Loss Map invalid! Gear= " & GrTxt & ", nU= " & nU.ToString("0.00") & " [1/min], PeIn=" & PeInX.ToString("0.00") & " [kW], PeOut=" & PeOut.ToString("0.00") & " [kW] (fwd)", MsgSrc)
+						WorkerMsg(tMsgID.Err,
+								"Transmission Loss Map invalid! Gear= " & GrTxt & ", nU= " & nU.ToString("0.00") & " [1/min], PeIn=" &
+								PeInX.ToString("0.00") & " [kW], PeOut=" & PeOut.ToString("0.00") & " [kW] (fwd)", MsgSrc)
                         WorkerAbort()
                         Return 0
 
@@ -1117,32 +1126,34 @@ lbInt:
                 Else
                     If PeInX > 0 Then
 
-                        WorkerMsg(tMsgID.Warn, "Change of sign in Transmission Loss Map! Set efficiency to 10%. Gear= " & GrTxt & ", nU= " & nU.ToString("0.00") & " [1/min], PeIn=" & PeInX.ToString("0.00") & " [kW], PeOut=" & PeOut.ToString("0.00") & " [kW] (fwd)", MsgSrc)
+						WorkerMsg(tMsgID.Warn,
+								"Change of sign in Transmission Loss Map! Set efficiency to 10%. Gear= " & GrTxt & ", nU= " &
+								nU.ToString("0.00") & " [1/min], PeIn=" & PeInX.ToString("0.00") & " [kW], PeOut=" & PeOut.ToString("0.00") &
+								" [kW] (fwd)", MsgSrc)
                         'WorkerAbort()
                         WG = 0.1
 
                     Else
 
                         'Drag => Drag
-                        WG = PeInX / PeOut
+						WG = PeInX/PeOut
 
 
                     End If
                 End If
 
                 'Calculate efficiency with PeIn for original PeOut
-                PeOut = PeIn * WG
+				PeOut = PeIn*WG
 
-                MODdata.ModErrors.TrLossMapExtr = "Gear= " & GrTxt & ", nU= " & nU.ToString("0.00") & " [1/min], MeIn=" & nPeToM(nU, PeIn).ToString("0.00") & " [Nm] (fwd)"
+				MODdata.ModErrors.TrLossMapExtr = "Gear= " & GrTxt & ", nU= " & nU.ToString("0.00") & " [1/min], MeIn=" &
+												nPeToM(nU, PeIn).ToString("0.00") & " [Nm] (fwd)"
 
             End If
 
         End If
 
         Return Math.Max(PeIn - PeOut, 0)
-
     End Function
-
 
 
 #End Region
@@ -1194,7 +1205,6 @@ lbInt:
     End Property
 
    
-
     Public Property TCfile(Optional ByVal Original As Boolean = False) As String
         Get
             If Original Then
@@ -1210,7 +1220,6 @@ lbInt:
 
 
     Public Class cShiftPolygon
-
         Private Filepath As String
         Public MyGear As Integer
 
@@ -1218,8 +1227,8 @@ lbInt:
         Public gs_TqDown As New List(Of Single)
         Public gs_nUup As New List(Of Single)
         Public gs_nUdown As New List(Of Single)
-        Private gs_Dup As Integer = -1
-        Private gs_Ddown As Integer = -1
+		Private gs_Dup As Integer = - 1
+		Private gs_Ddown As Integer = - 1
 
         Public Sub New(ByVal Path As String, ByVal Gear As Integer)
             Filepath = Path
@@ -1257,7 +1266,7 @@ lbInt:
             gs_TqDown.Clear()
             gs_nUdown.Clear()
             gs_nUup.Clear()
-            gs_Dup = -1
+			gs_Dup = - 1
 
             'Read file
             Try
@@ -1283,11 +1292,10 @@ lbInt:
             gs_Ddown = gs_Dup
 
             Return True
-
         End Function
 
 
-        Public Sub SetGenericShiftPoly(Optional ByRef fld0 As cFLD = Nothing, Optional ByVal nidle As Single = -1)
+		Public Sub SetGenericShiftPoly(Optional ByRef fld0 As cFLD = Nothing, Optional ByVal nidle As Single = - 1)
             Dim Tmax As Single
 
             'Clear lists
@@ -1303,10 +1311,10 @@ lbInt:
 
             gs_nUdown.Add(nidle)
             gs_nUdown.Add(nidle)
-            gs_nUdown.Add((fld0.Npref + fld0.Nlo) / 2)
+			gs_nUdown.Add((fld0.Npref + fld0.Nlo)/2)
 
             gs_TqDown.Add(0)
-            gs_TqDown.Add(Tmax * nidle / (fld0.Npref + fld0.Nlo - nidle))
+			gs_TqDown.Add(Tmax*nidle/(fld0.Npref + fld0.Nlo - nidle))
             gs_TqDown.Add(Tmax)
 
             gs_nUup.Add(fld0.Npref)
@@ -1314,12 +1322,11 @@ lbInt:
             gs_nUup.Add(fld0.N95h)
 
             gs_TqUp.Add(0)
-            gs_TqUp.Add(Tmax * (fld0.Npref - nidle) / (fld0.N95h - nidle))
+			gs_TqUp.Add(Tmax*(fld0.Npref - nidle)/(fld0.N95h - nidle))
             gs_TqUp.Add(Tmax)
 
             gs_Ddown = 2
             gs_Dup = 2
-
         End Sub
 
         Public Function fGSnUdown(ByVal Tq As Single) As Single
@@ -1337,10 +1344,9 @@ lbInt:
             Loop
 
 
-lbInt:
+			lbInt:
             'Interpolation
-            Return (Tq - gs_TqDown(i - 1)) * (gs_nUdown(i) - gs_nUdown(i - 1)) / (gs_TqDown(i) - gs_TqDown(i - 1)) + gs_nUdown(i - 1)
-
+			Return (Tq - gs_TqDown(i - 1))*(gs_nUdown(i) - gs_nUdown(i - 1))/(gs_TqDown(i) - gs_TqDown(i - 1)) + gs_nUdown(i - 1)
         End Function
 
         Public Function fGSnUup(ByVal Tq As Single) As Single
@@ -1358,16 +1364,9 @@ lbInt:
             Loop
 
 
-lbInt:
+			lbInt:
             'Interpolation
-            Return (Tq - gs_TqUp(i - 1)) * (gs_nUup(i) - gs_nUup(i - 1)) / (gs_TqUp(i) - gs_TqUp(i - 1)) + gs_nUup(i - 1)
-
+			Return (Tq - gs_TqUp(i - 1))*(gs_nUup(i) - gs_nUup(i - 1))/(gs_TqUp(i) - gs_TqUp(i - 1)) + gs_nUup(i - 1)
         End Function
-
-
-    
     End Class
-
-
-
 End Class

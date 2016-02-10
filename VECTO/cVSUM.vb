@@ -20,7 +20,7 @@ Class cVSUM
 
     Private VSUMentries As Dictionary(Of String, cVSUMentry)
     Private VSUMentryList As List(Of String)     'Wird benötigt weil Dictionary nicht sortiert ist
-                                                 'Needed because Dictionary is not sorted
+    'Needed because Dictionary is not sorted
 
     Private vsumJSON As cJSON
     Private ResList As List(Of Dictionary(Of String, Object))
@@ -42,7 +42,7 @@ Class cVSUM
             If DEV.AdvFormat Then
                 s.Append(VSUMentries(key).Head)
             Else
-            s.Append(VSUMentries(key).Head & " " & VSUMentries(key).Unit)
+                s.Append(VSUMentries(key).Head & " " & VSUMentries(key).Unit)
             End If
             First = False
         Next
@@ -91,18 +91,21 @@ Class cVSUM
         If Not VEC.EngOnly Then
 
             'Average-Speed. calculation
-            sum = 0
-            For t = 0 To t1
-                sum += MODdata.Vh.V(t)
-            Next
-            Vquer = 3.6 * sum / (t1 + 1)
-            Squer = (Vquer * (t1 + 1) / 3600)
+            If DRI.Vvorg Then
+                sum = 0
+                For t = 0 To t1
+                    sum += MODdata.Vh.V(t)
+                Next
+                Vquer = 3.6 * sum / (t1 + 1)
+                Squer = (Vquer * (t1 + 1) / 3600)
 
-            VSUMentries("\\S").ValueString = Squer
-            VSUMentries("\\V").ValueString = Vquer
+                VSUMentries("\\S").ValueString = Squer
+                VSUMentries("\\V").ValueString = Vquer
 
-            'altitude change
-            VSUMentries("\\G").ValueString = MODdata.Vh.AltIntp(Vquer * (t1 + 1) / 3.6, False) - MODdata.Vh.AltIntp(0, False)
+                'altitude change
+                VSUMentries("\\G").ValueString = MODdata.Vh.AltIntp(Vquer * (t1 + 1) / 3.6, False) - MODdata.Vh.AltIntp(0, False)
+
+            End If
 
             'Auxiliary energy consumption
             If VEC.AuxDef Then
@@ -121,89 +124,66 @@ Class cVSUM
         'FC
         If MODdata.FCerror Then
 
-            If VEC.EngOnly Then
-                VSUMentries("FC_h").ValueString = "ERROR"
-            Else
-                VSUMentries("FC_km").ValueString = "ERROR"
-            End If
+            VSUMentries("FC_h").ValueString = "ERROR"
+
+            If Not VEC.EngOnly Then VSUMentries("FC_km").ValueString = "ERROR"
 
             If MODdata.FCAUXcSet Then
-                If VEC.EngOnly Then
-                    VSUMentries("FC-AUXc_h").ValueString = "ERROR"
-                Else
-                    VSUMentries("FC-AUXc_km").ValueString = "ERROR"
-                End If
+                VSUMentries("FC-AUXc_h").ValueString = "ERROR"
+                If Not VEC.EngOnly Then VSUMentries("FC-AUXc_km").ValueString = "ERROR"
             End If
 
             If Cfg.DeclMode Then
-                If VEC.EngOnly Then
-                    VSUMentries("FC-WHTCc_h").ValueString = "ERROR"
-                Else
-                    VSUMentries("FC-WHTCc_km").ValueString = "ERROR"
-                End If
+                VSUMentries("FC-WHTCc_h").ValueString = "ERROR"
+                If Not VEC.EngOnly Then VSUMentries("FC-WHTCc_km").ValueString = "ERROR"
             End If
 
         Else
 
-            If VEC.EngOnly Then
-                VSUMentries("FC_h").ValueString = MODdata.FCavg
+            VSUMentries("FC_h").ValueString = MODdata.FCavg
+
+            'AA - Output Bus Auxiliary values to text files
+            If (Not VEC Is Nothing AndAlso VEC.AuxiliaryAssembly <> "CLASSIC") Then
+                Dim FCgKm As Single = MODdata.AA_TotalCycleFC_Grams(MODdata.AA_TotalCycleFC_Grams.Count - 1) / Squer '[g/km]
+                VSUMentries("FC_km").ValueString = FCgKm
+                VSUMentries("FC-Final_km").ValueString = FCgKm
+
+                Dim FCFinallKm As Single = ((MODdata.AA_TotalCycleFC_Litres(MODdata.AA_TotalCycleFC_Litres.Count - 1) * 100) / Squer) '[l/100km]
+                VSUMentries("FCl_km").ValueString = FCFinallKm
+
+                Dim CO2km As Single = Cfg.CO2perFC * FCgKm   '[g/km]
+                VSUMentries("CO2_km").ValueString = CO2km
+
+                If VEH.Loading > 0 Then
+                    VSUMentries("CO2_tkm").ValueString = CO2km / (VEH.Loading / 1000) '[g/tkm]
+                    VSUMentries("FCl_tkm").ValueString = FCFinallKm / (VEH.Loading / 1000) '[l/100tkm]
+                End If
+
             Else
 
-                'AA - Output Bus Auxiliary values to text files
-                If (Not VEC Is Nothing AndAlso VEC.AuxiliaryAssembly <> "CLASSIC") Then
-                    Dim FCgKm As Single = MODdata.AA_TotalCycleFC_Grams(MODdata.AA_TotalCycleFC_Grams.Count - 1) / Squer '[g/km]
-                    VSUMentries("FC_km").ValueString = FCgKm
-                    VSUMentries("FC-Final_km").ValueString = FCgKm
-                    
-                    Dim FCFinallKm As Single = ((MODdata.AA_TotalCycleFC_Litres(MODdata.AA_TotalCycleFC_Litres.Count - 1) * 100) / Squer) '[l/100km]
-                    VSUMentries("FCl_km").ValueString = FCFinallKm
-                    
-                    Dim CO2km As Single = Cfg.CO2perFC * FCgKm   '[g/km]
-                    VSUMentries("CO2_km").ValueString = CO2km
-                    
-                    If VEH.Loading > 0 Then
-                        VSUMentries("CO2_tkm").ValueString = CO2km / (VEH.Loading / 1000) '[g/tkm]
-                        VSUMentries("FCl_tkm").ValueString = FCFinallKm / (VEH.Loading / 1000) '[l/100tkm]
-                    End If
+                VSUMentries("FC_km").ValueString = (MODdata.FCavg / Vquer)
 
-                Else
+                VSUMentries("FCl_km").ValueString = (100 * MODdata.FCavgFinal / Vquer) / (Cfg.FuelDens * 1000)  '[l/100km]
+                VSUMentries("CO2_km").ValueString = Cfg.CO2perFC * (MODdata.FCavgFinal / Vquer)   '[g/km]
 
-                    VSUMentries("FC_km").ValueString = (MODdata.FCavg / Vquer)
-
-                    VSUMentries("FCl_km").ValueString = (100 * MODdata.FCavgFinal / Vquer) / (Cfg.FuelDens * 1000)  '[l/100km]
-                    VSUMentries("CO2_km").ValueString = Cfg.CO2perFC * (MODdata.FCavgFinal / Vquer)   '[g/km]
-
-                    If VEH.Loading > 0 Then
-                        VSUMentries("CO2_tkm").ValueString = (Cfg.CO2perFC * (MODdata.FCavgFinal / Vquer)) / (VEH.Loading / 1000) '[g/tkm]
-                        VSUMentries("FCl_tkm").ValueString = ((100 * MODdata.FCavgFinal / Vquer) / (Cfg.FuelDens * 1000)) / (VEH.Loading / 1000)  '[l/100tkm]
-                    End If
-
-                    VSUMentries("FC-Final_km").ValueString = (MODdata.FCavgFinal / Vquer)
-
+                If VEH.Loading > 0 Then
+                    VSUMentries("CO2_tkm").ValueString = (Cfg.CO2perFC * (MODdata.FCavgFinal / Vquer)) / (VEH.Loading / 1000) '[g/tkm]
+                    VSUMentries("FCl_tkm").ValueString = ((100 * MODdata.FCavgFinal / Vquer) / (Cfg.FuelDens * 1000)) / (VEH.Loading / 1000)  '[l/100tkm]
                 End If
+
+                VSUMentries("FC-Final_km").ValueString = (MODdata.FCavgFinal / Vquer)
 
             End If
 
             If MODdata.FCAUXcSet Then
-                If VEC.EngOnly Then
-                    VSUMentries("FC-AUXc_h").ValueString = MODdata.FCavgAUXc
-                Else
-                    VSUMentries("FC-AUXc_km").ValueString = (MODdata.FCavgAUXc / Vquer)
-                End If
+                VSUMentries("FC-AUXc_h").ValueString = MODdata.FCavgAUXc
+                If Not VEC.EngOnly Then VSUMentries("FC-AUXc_km").ValueString = (MODdata.FCavgAUXc / Vquer)
             End If
 
             If Cfg.DeclMode Then
-                If VEC.EngOnly Then
-                    VSUMentries("FC-WHTCc_h").ValueString = MODdata.FCavgWHTCc
-                Else
-                    VSUMentries("FC-WHTCc_km").ValueString = (MODdata.FCavgWHTCc / Vquer)
-                End If
+                VSUMentries("FC-WHTCc_h").ValueString = MODdata.FCavgWHTCc
+                If Not VEC.EngOnly Then VSUMentries("FC-WHTCc_km").ValueString = (MODdata.FCavgWHTCc / Vquer)
             End If
-
-
-
-
-
 
         End If
 
@@ -357,7 +337,7 @@ Class cVSUM
             Fvsum.WriteLine("Job,Input File,Cycle," & VSUMhead())
             Fvsum.WriteLine("[-],[-],[-]," & VSUMunit())
         Else
-        Fvsum.WriteLine("Job [-],Input File [-],Cycle [-]," & VSUMhead())
+            Fvsum.WriteLine("Job [-],Input File [-],Cycle [-]," & VSUMhead())
         End If
 
         'Close file (will open after each job)
@@ -477,11 +457,7 @@ Class cVSUM
         End If
     End Sub
 
-    ''' <summary>
-    ''' Initializes the specified job file.
-    ''' </summary>
-    ''' <param name="JobFile">The job file.</param>
-    ''' <returns></returns>
+
     Public Function Init(ByVal JobFile As String) As Boolean
         Dim JobFiles As New List(Of String)
         Dim str As String
@@ -665,11 +641,12 @@ Class cVSUM
                 Return False
             End Try
 
-            If VEC0.EngOnly Then
-                AddToVSUM("FC_h", "FC", "[g/h]")
-                AddToVSUM("FC-AUXc_h", "FC-AUXc", "[g/h]")
-                AddToVSUM("FC-WHTCc_h", "FC-WHTCc", "[g/h]")
-            Else
+            AddToVSUM("FC_h", "FCh", "[g/h]")
+            AddToVSUM("FC-AUXc_h", "FCh-AUXc", "[g/h]")
+            AddToVSUM("FC-WHTCc_h", "FCh-WHTCc", "[g/h]")
+
+            If Not VEC0.EngOnly Then
+
                 AddToVSUM("FC_km", "FC", "[g/km]")
                 AddToVSUM("FC-AUXc_km", "FC-AUXc", "[g/km]")
                 AddToVSUM("FC-WHTCc_km", "FC-WHTCc", "[g/km]")
@@ -718,14 +695,14 @@ Class cVSUM
 
         End If
 
-        If( Not VEC is Nothing AndAlso VEC.AuxiliaryAssembly<>"CLASSIC") then
-        'Advanced Auxiliaries I.E. Bus Auxiliaries.
-        AddToVSUM("\\AA_FC_LHR","AA FC L/H","L/R",false)
-        AddToVSUM("\\AA_FC_GHR","AA FC G/H","G/R",false)
+        If (Not VEC Is Nothing AndAlso VEC.AuxiliaryAssembly <> "CLASSIC") Then
+            'Advanced Auxiliaries I.E. Bus Auxiliaries.
+            AddToVSUM("\\AA_FC_LHR", "AA FC L/H", "L/R", False)
+            AddToVSUM("\\AA_FC_GHR", "AA FC G/H", "G/R", False)
 
 
 
-        End if
+        End If
 
         'Sort
         iDim = VSUMentryList.Count - 1
