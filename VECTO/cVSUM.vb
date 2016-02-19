@@ -91,6 +91,7 @@ Class cVSUM
         If Not VEC.EngOnly Then
 
             'Average-Speed. calculation
+            If DRI.Vvorg Then
             sum = 0
             For t = 0 To t1
                 sum += MODdata.Vh.V(t)
@@ -103,6 +104,8 @@ Class cVSUM
 
             'altitude change
             VSUMentries("\\G").ValueString = MODdata.Vh.AltIntp(Vquer * (t1 + 1) / 3.6, False) - MODdata.Vh.AltIntp(0, False)
+
+            End If
 
             'Auxiliary energy consumption
             If VEC.AuxDef Then
@@ -121,52 +124,43 @@ Class cVSUM
         'FC
         If MODdata.FCerror Then
 
-            If VEC.EngOnly Then
                 VSUMentries("FC_h").ValueString = "ERROR"
-            Else
-                VSUMentries("FC_km").ValueString = "ERROR"
-            End If
+
+            If Not VEC.EngOnly Then VSUMentries("FC_km").ValueString = "ERROR"
 
             If MODdata.FCAUXcSet Then
-                If VEC.EngOnly Then
                     VSUMentries("FC-AUXc_h").ValueString = "ERROR"
-                Else
-                    VSUMentries("FC-AUXc_km").ValueString = "ERROR"
-                End If
+                If Not VEC.EngOnly Then VSUMentries("FC-AUXc_km").ValueString = "ERROR"
             End If
 
             If Cfg.DeclMode Then
-                If VEC.EngOnly Then
                     VSUMentries("FC-WHTCc_h").ValueString = "ERROR"
-                Else
-                    VSUMentries("FC-WHTCc_km").ValueString = "ERROR"
-                End If
+                If Not VEC.EngOnly Then VSUMentries("FC-WHTCc_km").ValueString = "ERROR"
             End If
 
         Else
 
-            If VEC.EngOnly Then
-                VSUMentries("FC_h").ValueString = MODdata.FCavg
-            Else
-
+            VSUMentries("FC_h").ValueString = MODdata.FCavg
+            If not VEC.EngOnly Then
                 'AA - Output Bus Auxiliary values to text files
                 If (Not VEC Is Nothing AndAlso VEC.AuxiliaryAssembly <> "CLASSIC") Then
                     Dim FCgKm As Single = MODdata.AA_TotalCycleFC_Grams(MODdata.AA_TotalCycleFC_Grams.Count - 1) / Squer '[g/km]
                     VSUMentries("FC_km").ValueString = FCgKm
                     VSUMentries("FC-Final_km").ValueString = FCgKm
-                    
+
                     Dim FCFinallKm As Single = ((MODdata.AA_TotalCycleFC_Litres(MODdata.AA_TotalCycleFC_Litres.Count - 1) * 100) / Squer) '[l/100km]
                     VSUMentries("FCl_km").ValueString = FCFinallKm
-                    
+
                     Dim CO2km As Single = Cfg.CO2perFC * FCgKm   '[g/km]
                     VSUMentries("CO2_km").ValueString = CO2km
-                    
+
                     If VEH.Loading > 0 Then
                         VSUMentries("CO2_tkm").ValueString = CO2km / (VEH.Loading / 1000) '[g/tkm]
                         VSUMentries("FCl_tkm").ValueString = FCFinallKm / (VEH.Loading / 1000) '[l/100tkm]
                     End If
+            End If
 
-                Else
+            If Not VEC.EngOnly And DRI.Vvorg Then
 
                     VSUMentries("FC_km").ValueString = (MODdata.FCavg / Vquer)
 
@@ -185,25 +179,14 @@ Class cVSUM
             End If
 
             If MODdata.FCAUXcSet Then
-                If VEC.EngOnly Then
                     VSUMentries("FC-AUXc_h").ValueString = MODdata.FCavgAUXc
-                Else
-                    VSUMentries("FC-AUXc_km").ValueString = (MODdata.FCavgAUXc / Vquer)
-                End If
+                If Not VEC.EngOnly Then VSUMentries("FC-AUXc_km").ValueString = (MODdata.FCavgAUXc / Vquer)
             End If
 
             If Cfg.DeclMode Then
-                If VEC.EngOnly Then
                     VSUMentries("FC-WHTCc_h").ValueString = MODdata.FCavgWHTCc
-                Else
-                    VSUMentries("FC-WHTCc_km").ValueString = (MODdata.FCavgWHTCc / Vquer)
+                If Not VEC.EngOnly Then VSUMentries("FC-WHTCc_km").ValueString = (MODdata.FCavgWHTCc / Vquer)
                 End If
-            End If
-
-
-
-
-
 
         End If
 
@@ -477,11 +460,7 @@ Class cVSUM
         End If
     End Sub
 
-    ''' <summary>
-    ''' Initializes the specified job file.
-    ''' </summary>
-    ''' <param name="JobFile">The job file.</param>
-    ''' <returns></returns>
+
     Public Function Init(ByVal JobFile As String) As Boolean
         Dim JobFiles As New List(Of String)
         Dim str As String
@@ -665,11 +644,12 @@ Class cVSUM
                 Return False
             End Try
 
-            If VEC0.EngOnly Then
-                AddToVSUM("FC_h", "FC", "[g/h]")
-                AddToVSUM("FC-AUXc_h", "FC-AUXc", "[g/h]")
-                AddToVSUM("FC-WHTCc_h", "FC-WHTCc", "[g/h]")
-            Else
+            AddToVSUM("FC_h", "FCh", "[g/h]")
+            AddToVSUM("FC-AUXc_h", "FCh-AUXc", "[g/h]")
+            AddToVSUM("FC-WHTCc_h", "FCh-WHTCc", "[g/h]")
+
+            If Not VEC0.EngOnly Then
+
                 AddToVSUM("FC_km", "FC", "[g/km]")
                 AddToVSUM("FC-AUXc_km", "FC-AUXc", "[g/km]")
                 AddToVSUM("FC-WHTCc_km", "FC-WHTCc", "[g/km]")

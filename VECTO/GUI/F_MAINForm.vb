@@ -17,7 +17,6 @@ Imports System.Collections.Generic
 ''' <remarks></remarks>
 
 Public Class F_MAINForm
-
     Private JobListView As cFileListView
     Private CycleListView As cFileListView
 
@@ -77,6 +76,7 @@ Public Class F_MAINForm
 #End Region
 
 #Region "FileBrowser Init/Close"
+
     Private Sub FB_Initialize()
         FB_Init = False
         fbFolder = New cFileBrowser("WorkDir", True)
@@ -117,9 +117,8 @@ Public Class F_MAINForm
         fbCDx.Extensions = New String() {"vcdv", "vcdb"}
 
         fbVMOD.Extensions = New String() {"vmod"}
-
-
     End Sub
+
     Private Sub FB_Close()
         fbFolder.Close()
         fbFileLists.Close()
@@ -159,8 +158,12 @@ Public Class F_MAINForm
         Me.LvGEN.SelectedItems.Clear()
 
         'If more than 100 calculations, ask whether to write by-second results
-        If Cfg.BatchMode And ((Me.LvGEN.CheckedItems.Count) * (Me.LvDRI.CheckedItems.Count) > 100) And Me.ChBoxModOut.Checked Then
-            Select Case MsgBox("You are about to run Batch Mode with " & (Me.LvGEN.CheckedItems.Count) * (Me.LvDRI.CheckedItems.Count) & " calculations!" & ChrW(10) & "Do you still want to write modal results?", MsgBoxStyle.YesNoCancel)
+        If Cfg.BatchMode And ((Me.LvGEN.CheckedItems.Count) * (Me.LvDRI.CheckedItems.Count) > 100) And Me.ChBoxModOut.Checked _
+            Then
+            Select Case _
+                MsgBox(
+                    "You are about to run Batch Mode with " & (Me.LvGEN.CheckedItems.Count) * (Me.LvDRI.CheckedItems.Count) &
+                    " calculations!" & ChrW(10) & "Do you still want to write modal results?", MsgBoxStyle.YesNoCancel)
                 Case MsgBoxResult.No
                     Me.ChBoxModOut.Checked = False
                 Case MsgBoxResult.Cancel
@@ -201,7 +204,6 @@ Public Class F_MAINForm
 
         'Launch through Job_Launcher
         Job_Launcher(ProgOverall)
-
     End Sub
 
     'Lock certain GUI elements while VECTO is running
@@ -229,7 +231,6 @@ Public Class F_MAINForm
         If DEV.Enabled Then
             Me.LvDEVoptions.Enabled = Not Lock
         End If
-
     End Sub
 
     'Define job file list
@@ -248,7 +249,6 @@ Public Class F_MAINForm
             SetCheckedItemColor(x, tJobStatus.Queued)
             JobFileList.Add(fFileRepl(LV0.SubItems(0).Text))
         Next
-
     End Sub
 
     'Define cycle list (BATCH mode only)
@@ -262,7 +262,6 @@ Public Class F_MAINForm
                 JobCycleList.Add(fFileRepl(LV0.SubItems(0).Text))
             Next
         End If
-
     End Sub
 
     'Job Launcher
@@ -300,7 +299,6 @@ Public Class F_MAINForm
 
         'BG-Worker start
         VECTOworker.RunWorkerAsync()
-
     End Sub
 
     'Abort Job
@@ -315,7 +313,8 @@ Public Class F_MAINForm
 #Region "BackgroundWorker Events"
 
     'DoWork - Start Calculations
-    Private Sub BackgroundWorker1_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BackgroundWorker1.DoWork
+    Private Sub BackgroundWorker1_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) _
+        Handles BackgroundWorker1.DoWork
 
         'Prevent SLEEP
         AllowSleepOFF()
@@ -329,12 +328,11 @@ Public Class F_MAINForm
         End If
 
         e.Result = VECTO()
-
-
     End Sub
 
     'Progress Report - Progressbar, Messages, etc.
-    Private Sub BackgroundWorker1_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles BackgroundWorker1.ProgressChanged
+    Private Sub BackgroundWorker1_ProgressChanged(ByVal sender As Object,
+                                                ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles BackgroundWorker1.ProgressChanged
         Dim x As cWorkProg
         x = e.UserState
 
@@ -369,7 +367,8 @@ Public Class F_MAINForm
     End Sub
 
     'Work completed
-    Private Sub BackgroundWorker1_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles BackgroundWorker1.RunWorkerCompleted
+    Private Sub BackgroundWorker1_RunWorkerCompleted(ByVal sender As Object,
+                                                    ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles BackgroundWorker1.RunWorkerCompleted
 
         Dim Result As tCalcResult
 
@@ -386,7 +385,7 @@ Public Class F_MAINForm
 
         'ShutDown when Unexpected Error
         If e.Error IsNot Nothing Then
-            MsgBox("An Unexpected Error occurred!" & ChrW(10) & ChrW(10) & _
+            MsgBox("An Unexpected Error occurred!" & ChrW(10) & ChrW(10) &
                      e.Error.Message.ToString, MsgBoxStyle.Critical, "Unexpected Error")
             LogFile.WriteToLog(tMsgID.Err, ">>>Unexpected Error:" & e.Error.ToString())
             Me.Close()
@@ -415,7 +414,6 @@ Public Class F_MAINForm
 
         'SLEEP reactivate
         AllowSleepON()
-
     End Sub
 
 #End Region
@@ -503,7 +501,6 @@ Public Class F_MAINForm
         End If
 
         DeclOnOff()
-
     End Sub
 
     'Declaration mode GUI settings
@@ -534,7 +531,6 @@ Public Class F_MAINForm
         Me.LbDecl.Visible = Cfg.DeclMode
 
         Me.PnDeclOpt.Enabled = Not Cfg.DeclMode
-
     End Sub
 
     'Shown Event (Form-Load finished) ... here StartUp Forms are loaded (DEV, GEN/ADV- Editor ..)
@@ -559,7 +555,6 @@ Public Class F_MAINForm
                 fwelcome.ShowDialog()
             End If
         End If
-
     End Sub
 
     'Open file
@@ -627,11 +622,11 @@ Public Class F_MAINForm
         Else
             If ComFile <> sKey.NoFile Then OpenVectoFile(ComFile)
         End If
-
     End Sub
 
     'Close
-    Private Sub F01_MAINForm_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
+    Private Sub F01_MAINForm_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) _
+        Handles Me.FormClosing
 
         'Save File-Lists
         SaveFileLists()
@@ -646,7 +641,6 @@ Public Class F_MAINForm
 
         'File browser instances close
         FB_Close()
-
     End Sub
 
 #End Region
@@ -698,14 +692,14 @@ Public Class F_MAINForm
             End Select
 
         End If
-
     End Sub
 
 #Region "Job file list"
 
 #Region "Events"
 
-    Private Sub ButtonGENremove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonGENremove.Click
+    Private Sub ButtonGENremove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles ButtonGENremove.Click
         RemoveJobFile()
     End Sub
 
@@ -713,7 +707,8 @@ Public Class F_MAINForm
         AddJobFile()
     End Sub
 
-    Private Sub ButtonGENoptions_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonGENopt.Click
+    Private Sub ButtonGENoptions_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles ButtonGENopt.Click
         ConMenTarget = Me.LvGEN
         ConMenTarJob = True
 
@@ -725,7 +720,8 @@ Public Class F_MAINForm
         Me.ConMenFilelist.Show(Control.MousePosition)
     End Sub
 
-    Private Sub ListViewGEN_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles LvGEN.KeyDown
+    Private Sub ListViewGEN_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) _
+        Handles LvGEN.KeyDown
         Select Case e.KeyCode
             Case Keys.Delete, Keys.Back
                 If Not GUIlocked Then RemoveJobFile()
@@ -741,7 +737,8 @@ Public Class F_MAINForm
         End If
     End Sub
 
-    Private Sub LvGEN_ItemChecked(sender As Object, e As System.Windows.Forms.ItemCheckedEventArgs) Handles LvGEN.ItemChecked
+    Private Sub LvGEN_ItemChecked(sender As Object, e As System.Windows.Forms.ItemCheckedEventArgs) _
+        Handles LvGEN.ItemChecked
 
         If e.Item.Checked Then
             GENchecked += 1
@@ -751,15 +748,16 @@ Public Class F_MAINForm
 
         If CheckLock Then Exit Sub
         UpdateJobTabText()
-
     End Sub
 
-    Private Sub ChBoxAllGEN_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ChBoxAllGEN.CheckedChanged
+    Private Sub ChBoxAllGEN_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles ChBoxAllGEN.CheckedChanged
 
         If GENcheckAllLock And Me.ChBoxAllGEN.CheckState = CheckState.Indeterminate Then Exit Sub
 
         CheckAllGEN(Me.ChBoxAllGEN.Checked)
     End Sub
+
     Private Sub CheckAllGEN(ByVal Check As Boolean)
         Dim x As ListViewItem
 
@@ -777,12 +775,15 @@ Public Class F_MAINForm
         UpdateJobTabText()
     End Sub
 
-    Private Sub ListGEN_DragEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) Handles LvGEN.DragEnter
+    Private Sub ListGEN_DragEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) _
+        Handles LvGEN.DragEnter
         If (e.Data.GetDataPresent(DataFormats.FileDrop)) Then
             e.Effect = DragDropEffects.Copy
         End If
     End Sub
-    Private Sub ListGEN_DragDrop(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) Handles LvGEN.DragDrop
+
+    Private Sub ListGEN_DragDrop(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) _
+        Handles LvGEN.DragDrop
         Dim f As String()
         f = CType(e.Data.GetData(DataFormats.FileDrop), Array)
         AddToJobListView(f)
@@ -851,7 +852,6 @@ Public Class F_MAINForm
         End If
 
         If Chck Then AddToJobListView(x)
-
     End Sub
 
     'Open file in list
@@ -946,8 +946,6 @@ lbFound:
         'Number update
         GENchecked = Me.LvGEN.CheckedItems.Count
         UpdateJobTabText()
-
-
     End Sub
 
     'Add File to job listview (single file)
@@ -976,7 +974,6 @@ lbFound:
         End If
 
         GENcheckAllLock = False
-
     End Sub
 
 #End Region
@@ -990,17 +987,20 @@ lbFound:
         AddCycle()
     End Sub
 
-    Private Sub ButtonDRIremove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonDRIremove.Click
+    Private Sub ButtonDRIremove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles ButtonDRIremove.Click
         RemoveCycle()
     End Sub
 
-    Private Sub ButtonDRIoptions_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonDRIedit.Click
+    Private Sub ButtonDRIoptions_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles ButtonDRIedit.Click
         ConMenTarget = Me.LvDRI
         ConMenTarJob = False
         Me.ConMenFilelist.Show(Control.MousePosition)
     End Sub
 
-    Private Sub LvDRI_ItemChecked(sender As Object, e As System.Windows.Forms.ItemCheckedEventArgs) Handles LvDRI.ItemChecked
+    Private Sub LvDRI_ItemChecked(sender As Object, e As System.Windows.Forms.ItemCheckedEventArgs) _
+        Handles LvDRI.ItemChecked
 
         If e.Item.Checked Then
             DRIchecked += 1
@@ -1010,10 +1010,10 @@ lbFound:
 
         If CheckLock Then Exit Sub
         UpdateCycleTabText()
-
     End Sub
 
-    Private Sub ChBoxAllDRI_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ChBoxAllDRI.CheckedChanged
+    Private Sub ChBoxAllDRI_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles ChBoxAllDRI.CheckedChanged
         Dim Check As Boolean
         Dim x As ListViewItem
 
@@ -1033,7 +1033,6 @@ lbFound:
 
         DRIchecked = Me.LvDRI.CheckedItems.Count
         UpdateCycleTabText()
-
     End Sub
 
     Private Sub ListViewDRI_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles LvDRI.DoubleClick
@@ -1045,7 +1044,8 @@ lbFound:
         End If
     End Sub
 
-    Private Sub ListViewDRI_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles LvDRI.KeyDown
+    Private Sub ListViewDRI_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) _
+        Handles LvDRI.KeyDown
         Select Case e.KeyCode
             Case Keys.Delete, Keys.Back
                 If Not GUIlocked Then RemoveCycle()
@@ -1055,10 +1055,13 @@ lbFound:
     End Sub
 
     'Drag n' Drop
-    Private Sub ListDRI_DragEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) Handles LvDRI.DragEnter
+    Private Sub ListDRI_DragEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) _
+        Handles LvDRI.DragEnter
         If (e.Data.GetDataPresent(DataFormats.FileDrop)) Then e.Effect = DragDropEffects.Copy
     End Sub
-    Private Sub ListDRI_DragDrop(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) Handles LvDRI.DragDrop
+
+    Private Sub ListDRI_DragDrop(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) _
+        Handles LvDRI.DragDrop
         Dim f As String()
         f = CType(e.Data.GetData(DataFormats.FileDrop), Array)
         AddToCycleListView(f)
@@ -1164,7 +1167,6 @@ lbFound:
         'Number update
         DRIchecked = Me.LvDRI.CheckedItems.Count
         UpdateCycleTabText()
-
     End Sub
 
     'Add File to cycle listview (single file)
@@ -1193,7 +1195,6 @@ lbFound:
         End If
 
         DRIcheckAllLock = False
-
     End Sub
 
 #End Region
@@ -1211,14 +1212,15 @@ lbFound:
         If fbVECTO.OpenDialog("", False, "vecto,vveh,vgbx,veng,vsig") Then
             OpenVectoFile(fbVECTO.Files(0))
         End If
-
     End Sub
 
-    Private Sub GENEditorToolStripMenuItem1_Click(sender As System.Object, e As System.EventArgs) Handles GENEditorToolStripMenuItem1.Click
+    Private Sub GENEditorToolStripMenuItem1_Click(sender As System.Object, e As System.EventArgs) _
+        Handles GENEditorToolStripMenuItem1.Click
         OpenVECTOeditor("<New>")
     End Sub
 
-    Private Sub VEHEditorToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles VEHEditorToolStripMenuItem.Click
+    Private Sub VEHEditorToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) _
+        Handles VEHEditorToolStripMenuItem.Click
         If Not F_VEH.Visible Then
             F_VEH.Show()
         Else
@@ -1227,7 +1229,8 @@ lbFound:
         End If
     End Sub
 
-    Private Sub EngineEditorToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles EngineEditorToolStripMenuItem.Click
+    Private Sub EngineEditorToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) _
+        Handles EngineEditorToolStripMenuItem.Click
         If Not F_ENG.Visible Then
             F_ENG.Show()
         Else
@@ -1236,7 +1239,8 @@ lbFound:
         End If
     End Sub
 
-    Private Sub GearboxEditorToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles GearboxEditorToolStripMenuItem.Click
+    Private Sub GearboxEditorToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) _
+        Handles GearboxEditorToolStripMenuItem.Click
         If Not F_GBX.Visible Then
             F_GBX.Show()
         Else
@@ -1245,12 +1249,14 @@ lbFound:
         End If
     End Sub
 
-    Private Sub GraphToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles GraphToolStripMenuItem.Click
+    Private Sub GraphToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) _
+        Handles GraphToolStripMenuItem.Click
         Dim FGraph As New F_Graph
         FGraph.Show()
     End Sub
 
-    Private Sub SignOrVerifyFilesToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles SignOrVerifyFilesToolStripMenuItem.Click
+    Private Sub SignOrVerifyFilesToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) _
+        Handles SignOrVerifyFilesToolStripMenuItem.Click
         If Not F_FileSign.Visible Then
             F_FileSign.Show()
         Else
@@ -1259,15 +1265,18 @@ lbFound:
         End If
     End Sub
 
-    Private Sub OpenLogToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles OpenLogToolStripMenuItem.Click
+    Private Sub OpenLogToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) _
+        Handles OpenLogToolStripMenuItem.Click
         System.Diagnostics.Process.Start(MyAppPath & "log.txt")
     End Sub
 
-    Private Sub SettingsToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles SettingsToolStripMenuItem.Click
+    Private Sub SettingsToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) _
+        Handles SettingsToolStripMenuItem.Click
         F_Settings.ShowDialog()
     End Sub
 
-    Private Sub UserManualToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles UserManualToolStripMenuItem.Click
+    Private Sub UserManualToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) _
+        Handles UserManualToolStripMenuItem.Click
         If IO.File.Exists(MyAppPath & "User Manual\usermanual.html") Then
             System.Diagnostics.Process.Start(MyAppPath & "User Manual\usermanual.html")
         Else
@@ -1275,7 +1284,8 @@ lbFound:
         End If
     End Sub
 
-    Private Sub UpdateNotesToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles UpdateNotesToolStripMenuItem.Click
+    Private Sub UpdateNotesToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) _
+        Handles UpdateNotesToolStripMenuItem.Click
         If IO.File.Exists(MyAppPath & "User Manual\Release Notes.pdf") Then
             System.Diagnostics.Process.Start(MyAppPath & "User Manual\Release Notes.pdf")
         Else
@@ -1283,7 +1293,8 @@ lbFound:
         End If
     End Sub
 
-    Private Sub CreateActivationFileToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles CreateActivationFileToolStripMenuItem.Click
+    Private Sub CreateActivationFileToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) _
+        Handles CreateActivationFileToolStripMenuItem.Click
         If MsgBox("Create Activation File ?", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
             If Lic.CreateActFile(MyAppPath & "ActivationCode.dat") Then
                 GUImsg(tMsgID.Normal, "Activation File created.")
@@ -1294,11 +1305,10 @@ lbFound:
         End If
     End Sub
 
-    Private Sub AboutVECTOToolStripMenuItem1_Click(sender As System.Object, e As System.EventArgs) Handles AboutVECTOToolStripMenuItem1.Click
+    Private Sub AboutVECTOToolStripMenuItem1_Click(sender As System.Object, e As System.EventArgs) _
+        Handles AboutVECTOToolStripMenuItem1.Click
         F_AboutBox.ShowDialog()
     End Sub
-
-
 
 
 #End Region
@@ -1352,14 +1362,14 @@ lbFound:
         Next
 
         ListV.EndUpdate()
-
     End Sub
 
 
 #Region "job/cycle file List - Context Menu"
 
     'Save List
-    Private Sub SaveListToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles SaveListToolStripMenuItem.Click
+    Private Sub SaveListToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles SaveListToolStripMenuItem.Click
         If fbFileLists.SaveDialog("") Then
             If ConMenTarJob Then
                 JobListView.SaveList(fbFileLists.Files(0))
@@ -1370,7 +1380,8 @@ lbFound:
     End Sub
 
     'Load List
-    Private Sub LoadListToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles LoadListToolStripMenuItem.Click
+    Private Sub LoadListToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles LoadListToolStripMenuItem.Click
 
         If GUIlocked Then Exit Sub
 
@@ -1381,7 +1392,7 @@ lbFound:
                 GENchecked = Me.LvGEN.CheckedItems.Count
                 UpdateJobTabText()
             Else                    'DRI
-                'Mode toggle 
+                'Mode toggle
                 If Not Me.CbBatch.Checked Then Me.CbBatch.Checked = True
                 CycleListView.LoadList(fbFileLists.Files(0))
                 DRIchecked = Me.LvDRI.CheckedItems.Count
@@ -1389,11 +1400,11 @@ lbFound:
             End If
 
         End If
-
     End Sub
 
     'Load Default List
-    Private Sub LoadDefaultListToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles LoadDefaultListToolStripMenuItem.Click
+    Private Sub LoadDefaultListToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles LoadDefaultListToolStripMenuItem.Click
 
         If GUIlocked Then Exit Sub
 
@@ -1411,7 +1422,8 @@ lbFound:
     End Sub
 
     'Clear List
-    Private Sub ClearListToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ClearListToolStripMenuItem.Click
+    Private Sub ClearListToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles ClearListToolStripMenuItem.Click
         'Dim ListViewItem0 As ListViewItem
         'For Each ListViewItem0 In ConMenTarget.SelectedItems
         '    ListViewItem0.Remove()
@@ -1451,7 +1463,6 @@ lbFound:
             VECTO_Launcher()
 
         End If
-
     End Sub
 
     'Mode Change (STANDARD/BATCH)
@@ -1517,12 +1528,10 @@ lbFound:
 
         'Status label
         Status(LastModeName & " Mode")
-
     End Sub
 
     'Class for ListView control - Job and cycle lists
     Private Class cFileListView
-
         Private FilePath As String
         Private LoadedDefault As Boolean
         Public LVbox As ListView
@@ -1602,9 +1611,7 @@ lbFound:
             F_MAINForm.CheckLock = False
 
             If LVbox.Items.Count > 0 Then LVbox.Items(LVbox.Items.Count - 1).EnsureVisible()
-
         End Sub
-
     End Class
 
     'Set color of job files in list (Error, Warnings, Currently running, etc.)
@@ -1633,7 +1640,6 @@ lbFound:
                 lv0.BackColor = Color.FromKnownColor(KnownColor.Window)
                 lv0.ForeColor = Color.FromKnownColor(KnownColor.WindowText)
         End Select
-
     End Sub
 
     'Open Job Editor and open file (or new file)
@@ -1653,7 +1659,6 @@ lbFound:
         End If
 
         F_VECTO.Activate()
-
     End Sub
 
     'Open signature file (.vsig)
@@ -1720,11 +1725,11 @@ lbFound:
             Me.ToolStripProgBarJob.Value = .ProgJobInt
 
             If .ProgOverallStartInt > -1 Then
-                Me.ToolStripProgBarOverall.Value = CInt(.ProgOverallStartInt + (.PgroOverallEndInt - .ProgOverallStartInt) * .ProgJobInt / 100)
+                Me.ToolStripProgBarOverall.Value =
+                    CInt(.ProgOverallStartInt + (.PgroOverallEndInt - .ProgOverallStartInt) * .ProgJobInt / 100)
             End If
 
         End With
-
     End Sub
 
 
@@ -1751,10 +1756,9 @@ lbFound:
         If Not Cfg.DeclMode Then Me.CbBatch.Checked = Cfg.BatchMode
 
         Me.RbDecl.Checked = Cfg.DeclMode
-
     End Sub
 
-    'Update config class from options in GUI, e.g. before running calculations 
+    'Update config class from options in GUI, e.g. before running calculations
     Private Sub SetOptions()
 
         'General(Allgemein)
@@ -1773,17 +1777,17 @@ lbFound:
         Cfg.BATCHoutSubD = Me.ChBoxBatchSubD.Checked
 
         DEV.SetOptions()
-
-
     End Sub
 
 #Region "Events"
 
-    Private Sub ChBoxAutoSD_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ChBoxAutoSD.CheckedChanged
+    Private Sub ChBoxAutoSD_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles ChBoxAutoSD.CheckedChanged
         Me.LbAutoShDown.Visible = Me.ChBoxAutoSD.Checked
     End Sub
 
-    Private Sub CbBOmode_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CbBOmode.SelectedIndexChanged
+    Private Sub CbBOmode_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles CbBOmode.SelectedIndexChanged
         Me.TbBOpath.Visible = (Me.CbBOmode.SelectedIndex = 2)
         Me.ButBObrowse.Visible = (Me.CbBOmode.SelectedIndex = 2)
     End Sub
@@ -1794,7 +1798,8 @@ lbFound:
         End If
     End Sub
 
-    Private Sub ChBoxBatchOut_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ChBoxModOut.CheckedChanged
+    Private Sub ChBoxBatchOut_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) _
+        Handles ChBoxModOut.CheckedChanged
         Me.ChBoxBatchSubD.Enabled = Me.ChBoxModOut.Checked
     End Sub
 
@@ -1835,7 +1840,6 @@ lbFound:
             End If
 
 
-
             LV0.Tag = Config0.Key
 
             If Not Config0.Value.Enabled Then
@@ -1847,12 +1851,11 @@ lbFound:
             UpdateDEVconfigs(LV0)
 
         Next
-
     End Sub
 
     'Update value of specific DEV option
     Private Sub UpdateDEVconfigs(ByRef LV0 As ListViewItem)
-        LV0.SubItems(3).Text = DEV.Options(LV0.Tag).ValText
+        DEV.UpdateDevConfigs()
     End Sub
 
     'Change value of DEV option or execute action-type DEV options
@@ -1905,11 +1908,11 @@ lbFound:
         End Select
 
         UpdateDEVconfigs(Me.LvDEVoptions.SelectedItems(0))
-
     End Sub
 
     'Context menu for selection-type DEV options
-    Private Sub CmDEV_ItemClicked(sender As Object, e As System.Windows.Forms.ToolStripItemClickedEventArgs) Handles CmDEV.ItemClicked
+    Private Sub CmDEV_ItemClicked(sender As Object, e As System.Windows.Forms.ToolStripItemClickedEventArgs) _
+        Handles CmDEV.ItemClicked
         Dim i As Integer
 
         i = e.ClickedItem.Tag
@@ -1917,10 +1920,7 @@ lbFound:
         DEV.Options(CmDEVitem.Tag).ModeIndex = i
 
         UpdateDEVconfigs(CmDEVitem)
-
     End Sub
-
-
 
 
 #End Region
@@ -1970,10 +1970,7 @@ lbFound:
         LvMsg.Items.Add(lv0)
 
         lv0.EnsureVisible()
-
     End Sub
-
-
 
 
     'Open link in message list
@@ -1981,7 +1978,9 @@ lbFound:
         Dim txt As String
         If Me.LvMsg.SelectedIndices.Count > 0 Then
             If Not Me.LvMsg.SelectedItems(0).Tag Is Nothing Then
-                If Len(CStr(Me.LvMsg.SelectedItems(0).Tag)) > 4 AndAlso Microsoft.VisualBasic.Left(CStr(Me.LvMsg.SelectedItems(0).Tag), 4) = "<UM>" Then
+                If _
+                    Len(CStr(Me.LvMsg.SelectedItems(0).Tag)) > 4 AndAlso
+                    Microsoft.VisualBasic.Left(CStr(Me.LvMsg.SelectedItems(0).Tag), 4) = "<UM>" Then
                     txt = CStr(Me.LvMsg.SelectedItems(0).Tag).Replace("<UM>", MyAppPath & "User Manual")
                     txt = txt.Replace(" ", "%20")
                     txt = txt.Replace("\", "/")
@@ -1991,10 +1990,14 @@ lbFound:
                     Catch ex As Exception
                         MsgBox("Cannot open link! (-_-;)")
                     End Try
-                ElseIf Len(CStr(Me.LvMsg.SelectedItems(0).Tag)) > 5 AndAlso Microsoft.VisualBasic.Left(CStr(Me.LvMsg.SelectedItems(0).Tag), 5) = "<GUI>" Then
+                ElseIf _
+                    Len(CStr(Me.LvMsg.SelectedItems(0).Tag)) > 5 AndAlso
+                    Microsoft.VisualBasic.Left(CStr(Me.LvMsg.SelectedItems(0).Tag), 5) = "<GUI>" Then
                     txt = CStr(Me.LvMsg.SelectedItems(0).Tag).Replace("<GUI>", "")
                     OpenVectoFile(txt)
-                ElseIf Len(CStr(Me.LvMsg.SelectedItems(0).Tag)) > 5 AndAlso Microsoft.VisualBasic.Left(CStr(Me.LvMsg.SelectedItems(0).Tag), 5) = "<RUN>" Then
+                ElseIf _
+                    Len(CStr(Me.LvMsg.SelectedItems(0).Tag)) > 5 AndAlso
+                    Microsoft.VisualBasic.Left(CStr(Me.LvMsg.SelectedItems(0).Tag), 5) = "<RUN>" Then
                     txt = CStr(Me.LvMsg.SelectedItems(0).Tag).Replace("<RUN>", "")
                     Try
                         Process.Start(txt)
@@ -2036,22 +2039,24 @@ lbFound:
         OpenWithToolStripMenuItem.Text = "Open with " & Cfg.OpenCmdName
 
         CmOpenFile.Show(Cursor.Position)
-
     End Sub
 
     'Open with tool defined in Settings
-    Private Sub OpenWithToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles OpenWithToolStripMenuItem.Click
+    Private Sub OpenWithToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) _
+        Handles OpenWithToolStripMenuItem.Click
         If Not FileOpenAlt(CmFiles(0)) Then MsgBox("Failed to open file!")
     End Sub
 
-    Private Sub OpenInGraphWindowToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles OpenInGraphWindowToolStripMenuItem.Click
+    Private Sub OpenInGraphWindowToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) _
+        Handles OpenInGraphWindowToolStripMenuItem.Click
         Dim FGraph As New F_Graph
         FGraph.Show()
         FGraph.LoadNewFile(CmFiles(0))
     End Sub
 
     'Show in folder
-    Private Sub ShowInFolderToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles ShowInFolderToolStripMenuItem.Click
+    Private Sub ShowInFolderToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) _
+        Handles ShowInFolderToolStripMenuItem.Click
         If IO.File.Exists(CmFiles(0)) Then
             Try
                 System.Diagnostics.Process.Start("explorer", "/select,""" & CmFiles(0) & "")
@@ -2079,11 +2084,7 @@ lbFound:
             Me.RbDev.Checked = Not Me.RbDecl.Checked
             DeclOnOff()
         End If
-
     End Sub
-
-
-
 
 
 #Region "GUI Tests"
@@ -2167,8 +2168,6 @@ lbFound:
             MyForm.LvMsg.Focus()
 
             MyForm.TmProgSec.Start()
-
-
         End Sub
 
         Public Sub TestStop()
@@ -2259,7 +2258,6 @@ LbRace:
                         PnDirRnd = 3
                 End Select
             End If
-
         End Sub
 
         Public Sub TestKey(ByVal Key0 As Integer)
@@ -2319,8 +2317,6 @@ LbRace:
             TestActive = False
 
             MyForm.ToolStripLbStatus.Text = MyForm.LastModeName & " Mode"
-
-
         End Sub
 
         Private Sub sSetCtrl()
@@ -2429,7 +2425,6 @@ Lb1:
             KeyCode.Add(Keys.A)
             CtrlC = 0
         End Sub
-
     End Class
 
     Private Sub LvMsg_KeyDown(sender As Object, e As System.Windows.Forms.KeyEventArgs) Handles LvMsg.KeyDown
@@ -2442,6 +2437,4 @@ Lb1:
     End Sub
 
 #End Region
-
-
 End Class

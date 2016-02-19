@@ -11,7 +11,6 @@
 Imports System.Collections.Generic
 
 Public Class cMOD
-
     Public Pe As List(Of Single)
     Public nU As List(Of Single)
     Public nUvorg As List(Of Single)
@@ -236,7 +235,6 @@ Public Class cMOD
                 AuxKV.Value.Insert(t, AuxKV.Value(t))
             Next
         End If
-
     End Sub
 
     Public Sub Cut(ByVal t As Integer)
@@ -251,9 +249,7 @@ Public Class cMOD
                 AuxKV.Value.RemoveAt(t)
             Next
         End If
-
     End Sub
-
 
 
     Public Sub CycleInit()
@@ -265,7 +261,6 @@ Public Class cMOD
         End If
 
         tDimOgl = tDim
-
     End Sub
 
     Private Sub VehCycleInit()
@@ -316,10 +311,6 @@ Public Class cMOD
             End If
 
         End If
-
-
-
-
     End Sub
 
     Private Sub EngCycleInit()
@@ -344,9 +335,7 @@ Public Class cMOD
             Next
 
         End If
-
     End Sub
-
 
 
     Public Sub FCcalc(ByVal WHTCcorrection As Boolean)
@@ -497,9 +486,7 @@ Public Class cMOD
         End If
 
         If Not Result Then FCerror = True
-
     End Sub
-
 
 
     Public Function Output() As Boolean
@@ -594,7 +581,7 @@ Public Class cMOD
         HeaderList.Add(New String() {"Pe_full", "kW"})
         HeaderList.Add(New String() {"Pe_drag", "kW"})
         HeaderList.Add(New String() {"Pe_clutch", "kW"})
-        HeaderList.Add(New String() {"Pa", "Eng", "kW"})
+		HeaderList.Add(New String() {"Pa Eng", "kW"})
         HeaderList.Add(New String() {"Paux", "kW"})
 
         If Not VEC.EngOnly Then
@@ -680,10 +667,6 @@ Public Class cMOD
         End If
       
 
-
-
-
-
         '***********************************************************************************************
         '***********************************************************************************************
         '***********************************************************************************************
@@ -708,6 +691,8 @@ Public Class cMOD
 
                 If Not VEC.EngOnly Then
 
+					If DRI.Vvorg Then
+
                     'distance
                     dist += .Vh.V(t)
                     s.Append(Sepp & dist)
@@ -720,6 +705,23 @@ Public Class cMOD
 
                     'Acc.
                     s.Append(Sepp & .Vh.a(t))
+
+					Else
+
+						'distance
+						s.Append(Sepp & "-")
+
+						'Actual-speed.
+						s.Append(Sepp & "-")
+
+						'Target-speed
+						s.Append(Sepp & "-")
+
+						'Acc.
+						s.Append(Sepp & "-")
+
+					End If
+
 
                     'Slope
                     s.Append(Sepp & .Grad(t))
@@ -746,7 +748,8 @@ Public Class cMOD
                         If t = 0 Then
                             s.Append(Sepp & nPeToM(.nU(t), FLD(Gear).Pfull(.nU(t))) & Sepp & nPeToM(.nU(t), FLD(Gear).Pdrag(.nU(t))))
                         Else
-                            s.Append(Sepp & nPeToM(.nU(t), FLD(Gear).Pfull(.nU(t), .Pe(t - 1))) & Sepp & nPeToM(.nU(t), FLD(Gear).Pdrag(.nU(t))))
+							s.Append(
+								Sepp & nPeToM(.nU(t), FLD(Gear).Pfull(.nU(t), .Pe(t - 1))) & Sepp & nPeToM(.nU(t), FLD(Gear).Pdrag(.nU(t))))
                         End If
                     End If
 
@@ -780,7 +783,6 @@ Public Class cMOD
 
                 'Aux..
                 s.Append(Sepp & .PauxSum(t))
-
 
 
                 If Not VEC.EngOnly Then
@@ -900,7 +902,6 @@ Public Class cMOD
         Lic.FileSigning.AddFile(path)
 
         Return True
-
     End Function
 
     'Errors/Warnings die sekündlich auftreten können |@@| Errors/Warnings occuring every second
@@ -971,7 +972,8 @@ Public Class cMOD
             End If
 
             If AuxNegative <> "" Then
-                WorkerMsg(tMsgID.Err, "Aux power < 0 (" & AuxNegative & ") Check cycle and aux efficiency map!", MsgSrc & "/t= " & Second)
+				WorkerMsg(tMsgID.Err, "Aux power < 0 (" & AuxNegative & ") Check cycle and aux efficiency map!",
+						MsgSrc & "/t= " & Second)
                 Abort = True
             End If
 
@@ -996,22 +998,8 @@ Public Class cMOD
             End If
 
             Return Abort
-
         End Function
-
     End Class
-
-
-
-
-
-
-
-
-
-
 End Class
-
-
 
 
