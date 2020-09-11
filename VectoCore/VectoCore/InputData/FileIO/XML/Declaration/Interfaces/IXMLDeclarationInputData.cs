@@ -8,7 +8,10 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Interfaces
 		IXMLDeclarationInputDataReader Reader { set; }
 	}
 
-
+	public interface IXMLDeclarationTrailerInputData : IDeclarationTrailerInputDataProvider, IXMLResource
+	{
+		IXMLDeclarationTrailerInputDataReader Reader { set; }
+	}
 
 	public interface IXMLPrimaryVehicleBusInputData : IPrimaryVehicleInformationInputDataProvider, IXMLResource
 	{

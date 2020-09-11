@@ -6,4 +6,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader
 	{
 		IVehicleDeclarationInputData CreateVehicle { get; }
 	}
+
+	public interface IXMLJobTrailerDataReader
+	{
+		ITrailerDeclarationInputData CreateVehicle { get; }
+	}
 }

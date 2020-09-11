@@ -17,11 +17,16 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Factory
 
 		IXMLDeclarationInputData CreateInputProvider(string version, XmlDocument xmlDoc, string fileName);
 
+		IXMLDeclarationTrailerInputData CreateInputProviderTrailer(string version, XmlDocument xmlDoc, string fileName);
+
 		IXMLPrimaryVehicleBusInputData CreatePrimaryVehicleBusInputProvider(string version, XmlDocument xmlDoc, string fileName);
 
 
 		IXMLDeclarationJobInputData CreateJobData(
 			string version, XmlNode node, IXMLDeclarationInputData inputProvider, string fileName);
+
+		IXMLDeclarationTrailerJobInputData CreateJobDataTrailer(
+			string version, XmlNode node, IXMLDeclarationTrailerInputData inputProvider, string fileName);
 
 		IXMLPrimaryVehicleBusJobInputData CreatePrimaryVehicleJobData(
 			string version, XmlNode node, IXMLPrimaryVehicleBusInputData inputProvider, string fileName);
@@ -30,7 +35,10 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Factory
 
 		IXMLDeclarationVehicleData CreateVehicleData(
 			string version, IXMLDeclarationJobInputData jobData, XmlNode xmlNode, string sourceFile);
-		
+
+		IXMLTrailerDeclarationVehicleData CreateTrailerVehicleData(
+			string version, IXMLDeclarationTrailerJobInputData jobData, XmlNode xmlNode, string sourceFile);
+
 		IXMLDeclarationVehicleData CreatePrimaryVehicleData(
 			string version, IXMLPrimaryVehicleBusJobInputData busJobData, XmlNode xmlNode, string sourceFile);
 
@@ -88,6 +96,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Factory
 		IXMLDeclarationInputDataReader CreateInputReader(
 			string version, IXMLDeclarationInputData inputData, XmlNode baseNode);
 
+		IXMLDeclarationTrailerInputDataReader CreateInputReaderTrailer(
+			string version, IXMLDeclarationTrailerInputData inputData, XmlNode baseNode);
+
 		IXMLDeclarationPrimaryVehicleBusInputDataReader CreatePrimaryVehicleBusInputReader(
 			string version, IXMLPrimaryVehicleBusInputData inputData, XmlNode baseNode);
 
@@ -95,12 +106,18 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Factory
 		IXMLJobDataReader CreateJobReader(
 			string version, IXMLDeclarationJobInputData jobData, XmlNode jobNode);
 
+		IXMLJobTrailerDataReader CreateJobTrailerReaderTrailer(
+			string version, IXMLDeclarationTrailerJobInputData jobData, XmlNode jobNode);
+
 		IXMLJobDataReader CreatePrimaryVehicleJobReader(
 			string version, IXMLPrimaryVehicleBusJobInputData busJobData, XmlNode jobNode);
 
 		
 		IXMLComponentReader CreateComponentReader(
 			string version, IXMLDeclarationVehicleData vehicle, XmlNode componentsNode);
+
+		IXMLComponentReader CreateTrailerComponentReader(
+			string version, IXMLTrailerDeclarationVehicleData vehicle, XmlNode componentsNode);
 
 		IXMLADASReader CreateADASReader(
 			string version, IXMLDeclarationVehicleData vehicle, XmlNode vehicleNode);

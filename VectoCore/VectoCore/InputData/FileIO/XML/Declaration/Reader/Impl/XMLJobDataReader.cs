@@ -106,6 +106,31 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 		}
 	}
 
+	// ---------------------------------------------------------------------------------------
+
+	public class XMLJobDataReaderV27 : AbstractComponentReader, IXMLJobTrailerDataReader
+	{
+		protected IXMLDeclarationTrailerJobInputData JobData;
+		protected XmlNode JobNode;
+		protected ITrailerDeclarationInputData _vehicle;
+
+		[Inject]
+		public IDeclarationInjectFactory Factory { protected get; set; }
+
+		public XMLJobDataReaderV27(IXMLDeclarationTrailerJobInputData jobData, XmlNode jobNode) : base(
+			jobData, jobNode) { }
+
+		public ITrailerDeclarationInputData CreateVehicle { get { return _vehicle ?? (_vehicle = CreateComponent(XMLNames.Component_Vehicle, TrailerVehicleCreator)); } }
+
+		protected virtual ITrailerDeclarationInputData TrailerVehicleCreator(string version, XmlNode vehicleNode, string sourceFile)
+		{
+			var vehicle = Factory.CreateTrailerVehicleData(version, JobData, vehicleNode, sourceFile);
+
+			vehicle.ComponentReader = GetReaderTrailer(vehicle, vehicle.ComponentNode, Factory.CreateTrailerComponentReader);  	
+
+			return vehicle;
+		}
+	}
 
 	// ---------------------------------------------------------------------------------------
 

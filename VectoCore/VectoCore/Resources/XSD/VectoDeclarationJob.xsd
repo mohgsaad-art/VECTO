@@ -9,4 +9,5 @@
 	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationInput:v1.0" schemaLocation="VectoInput.1.0.xsd"/>
 	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationInput:v2.0" schemaLocation="VectoInput.2.0.xsd"/>
 	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions" schemaLocation="VectoDeclarationDefinitions.xsd"/>
+
 </xs:schema>

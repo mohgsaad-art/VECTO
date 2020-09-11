@@ -54,6 +54,17 @@ namespace TUGraz.VectoCommon.InputData
 		string ShiftStrategy { get; }
 	}
 
+	public interface IDeclarationTrailerJobInputData
+	{
+		bool SavedInDeclarationMode { get; }
+
+		ITrailerDeclarationInputData Vehicle { get; }
+
+		string JobName { get; }
+
+		string ShiftStrategy { get; }
+	}
+
 	public interface IComponentInputData
 	{
 		DataSource DataSource { get; }
@@ -192,6 +203,60 @@ namespace TUGraz.VectoCommon.InputData
 
 		IVehicleComponentsDeclaration Components { get; }
 		XmlNode XMLSource { get; }
+	}
+
+	public interface ITrailerDeclarationInputData : IComponentInputData
+	{
+		string Identifier { get; }
+
+		string ManufacturerAddress { get; }
+
+		string VIN { get; }
+
+		string LegislativeCategory { get; }
+
+		int NumberOfAxles { get; }
+
+		TypeTrailer TrailerType { get; }
+
+		string BodyworkCode { get; }
+
+		Kilogram CurbeMass { get; }
+
+		Kilogram TPMLMTotalTrailer { get; }
+
+		Kilogram TPMLMAxleAssembly { get; }
+		
+		Meter ExternalBodyLength { get; }
+
+		Meter ExternalBodyWidth { get; }
+
+		Meter ExternalBodyHeight { get; }
+
+		Meter TotalTrailerHeight { get; }
+
+		Meter LengthTrailerFrontToFirstAxleCenter { get; }
+
+		Meter LengthTrailerFrontToLastAxleCenter { get; }
+		
+		Meter InternalBodyHeight { get; }
+
+		CubicMeter CargoVolume { get; }
+
+		//AeroFeatureTechnologies StandradAeroFeatureTechnologies { get; }
+
+		SquareMeter CertifiedAeroFeatureTechnologies { get; }
+
+
+		// ---------------------------------------------------------------------
+
+		AxleConfiguration AxleConfiguration { get; }
+
+		bool ExemptedVehicle { get; }
+
+		IVehicleComponentsDeclaration Components { get; }
+		XmlNode XMLSource { get; }
+
 	}
 
 	public interface IVehicleComponentsDeclaration

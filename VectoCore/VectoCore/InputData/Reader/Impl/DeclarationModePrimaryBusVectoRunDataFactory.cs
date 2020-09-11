@@ -26,7 +26,6 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 		{
 			get { return _dao; }
 		}
-
 		#endregion
 
 		protected override IEnumerable<VectoRunData> GetNextRun()

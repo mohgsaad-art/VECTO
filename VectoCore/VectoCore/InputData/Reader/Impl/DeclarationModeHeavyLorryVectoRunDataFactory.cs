@@ -57,7 +57,6 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 		#region Overrides of AbstractDeclarationVectoRunDataFactory
 
 		protected override IDeclarationDataAdapter DataAdapter { get { return _dao; } }
-
 		#endregion
 
 		protected override Segment GetSegment(IVehicleDeclarationInputData vehicle)
@@ -178,7 +177,5 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			simulationRunData.VehicleData.VehicleClass = _segment.VehicleClass;
 			return simulationRunData;
 		}
-
-
 	}
 }

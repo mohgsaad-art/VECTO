@@ -49,6 +49,15 @@ namespace TUGraz.VectoCommon.InputData
 		XElement XMLHash { get; }
 	}
 
+	public interface IDeclarationTrailerInputDataProvider : IInputDataProvider
+	{
+		IDeclarationTrailerJobInputData JobInputData { get; }
+
+		ITrailerInformationInputDataProvider PrimaryVehicleData { get; }
+
+		XElement XMLHash { get; }
+	}
+
 
 	public interface IEngineeringInputDataProvider : IInputDataProvider
 	{
@@ -61,6 +70,25 @@ namespace TUGraz.VectoCommon.InputData
 	public interface IPrimaryVehicleInformationInputDataProvider : IInputDataProvider
 	{
 		IVehicleDeclarationInputData Vehicle { get; }
+
+		DigestData ManufacturerRecordHash { get; }
+
+		DigestData PrimaryVehicleInputDataHash { get; }
+
+		IResultsInputData ResultsInputData { get; }
+
+		IApplicationInformation ApplicationInformation { get; }
+
+		//DigestData ManufacturerHash { get; }
+
+		IResult GetResult(VehicleClass vehicleClass, MissionType mission, string fuelMode, Kilogram payload);
+
+		XElement XMLHash { get; }
+	}
+
+	public interface ITrailerInformationInputDataProvider : IInputDataProvider
+	{
+		ITrailerDeclarationInputData Vehicle { get; }
 
 		DigestData ManufacturerRecordHash { get; }
 

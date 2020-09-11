@@ -113,6 +113,15 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				DataReader = new DeclarationModeSingleBusVectoRunDataFactory(singleBus, report);
 				return;
 			}
+
+			if (dataProvider is IDeclarationTrailerInputDataProvider) {
+				var declDataProvider = dataProvider as IDeclarationTrailerInputDataProvider;
+
+				var report = declarationReport ?? new XMLDeclarationReport(ModWriter);
+				DataReader = new DeclarationModeTrailerVectoRunDataFactory(declDataProvider, report);
+				return;
+			}
+
 			if (dataProvider is IDeclarationInputDataProvider) {
 				var declDataProvider = dataProvider as IDeclarationInputDataProvider;
 				if (declDataProvider.JobInputData.Vehicle.VehicleCategory.IsLorry()) {

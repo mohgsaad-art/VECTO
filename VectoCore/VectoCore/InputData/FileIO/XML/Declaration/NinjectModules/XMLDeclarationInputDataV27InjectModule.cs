@@ -1,0 +1,35 @@
+﻿using Ninject.Modules;
+using TUGraz.VectoCommon.InputData;
+using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider;
+using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Interfaces;
+using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader;
+using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl;
+
+namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.NinjectModules {
+	public class XMLDeclarationInputDataV27InjectModule : NinjectModule
+	{
+		#region Overrides of NinjectModule
+
+		public override void Load()
+		{
+			Bind<IXMLDeclarationTrailerInputData>().To<XMLDeclarationInputDataProviderV27>().Named(
+				XMLDeclarationInputDataProviderV27.QUALIFIED_XSD_TYPE);
+
+			Bind<IDeclarationTrailerJobInputData>().To<XMLDeclarationJobInputDataProviderV27>().Named(
+				XMLDeclarationJobInputDataProviderV27.QUALIFIED_XSD_TYPE);
+
+			Bind<IXMLTrailerDeclarationVehicleData>().To<XMLDeclarationVehicleDataProviderV27>().Named(
+				XMLDeclarationVehicleDataProviderV27.QUALIFIED_XSD_TYPE);
+
+
+			//Bind TrailerAxleWheelsDataDeclarationType
+
+			// ---------------------------------------------------------------------------------------
+
+			Bind<IXMLDeclarationTrailerInputDataReader>().To<XMLDeclarationInputReaderV27>()
+				.Named(XMLDeclarationInputReaderV27.QUALIFIED_XSD_TYPE);
+		}
+
+		#endregion
+	}
+}

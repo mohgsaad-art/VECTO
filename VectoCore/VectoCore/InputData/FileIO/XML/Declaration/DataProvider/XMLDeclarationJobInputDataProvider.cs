@@ -88,6 +88,61 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 	// ---------------------------------------------------------------------------------------
 
+	public class XMLDeclarationJobInputDataProviderV27 : AbstractXMLResource, IXMLDeclarationTrailerJobInputData
+	{
+		public static readonly XNamespace NAMESPACE_URI = XMLDefinitions.DECLARATION_DEFINITIONS_NAMESPACE_URI_V27;
+
+		public const string XSD_TYPE = "VectoDeclarationTrailerJobType";
+
+		public static readonly string QUALIFIED_XSD_TYPE = XMLHelper.CombineNamespace(NAMESPACE_URI.NamespaceName, XSD_TYPE);
+
+		protected ITrailerDeclarationInputData _vehicle;
+
+		public XMLDeclarationJobInputDataProviderV27(XmlNode node, IXMLDeclarationTrailerInputData inputProvider, string source) : base(node, source)
+		{
+			InputData = inputProvider;
+		}
+
+		#region Overrides of AbstractXMLResource
+
+		protected override XNamespace SchemaNamespace
+		{
+			get { return NAMESPACE_URI; }
+		}
+
+		protected override DataSourceType SourceType
+		{
+			get { return DataSourceType.XMLFile; }
+		}
+
+		#endregion
+		#region Implementation of IDeclarationJobInputData
+
+		public virtual bool SavedInDeclarationMode
+		{
+			get { return true; }
+		}
+
+		public virtual ITrailerDeclarationInputData Vehicle
+		{
+			get { return _vehicle ?? (_vehicle = Reader.CreateVehicle); }
+		}
+
+		public virtual string JobName
+		{
+			get { return Vehicle.Identifier; }
+		}
+
+		public virtual string ShiftStrategy { get { return null; } }
+
+		#endregion
+
+		public virtual IXMLJobTrailerDataReader Reader { protected get; set; }
+		public virtual IXMLDeclarationTrailerInputData InputData { get; }
+	}
+
+	// ---------------------------------------------------------------------------------------
+
 	public class XMLDeclarationPrimaryVehicleBusJobInputDataProviderV01 : AbstractXMLResource, IXMLPrimaryVehicleBusJobInputData
 	{
 

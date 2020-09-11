@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Xml;
 using Ninject;
 using TUGraz.VectoCommon.Exceptions;
@@ -71,6 +72,18 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML
 			return DoCreateDeclaration(inputData, null);
 		}
 
+		public IDeclarationTrailerInputDataProvider CreateDeclarationTrailer(string filename)
+		{
+			using (var reader = XmlReader.Create(filename)) {
+				return DoCreateDeclarationTrailer(reader, filename);
+			}
+		}
+
+		public IDeclarationTrailerInputDataProvider CreateDeclarationTrailer(XmlReader inputData)
+		{
+			return DoCreateDeclarationTrailer(inputData, null);
+		}
+
 
 		private IDeclarationInputDataProvider DoCreateDeclaration(XmlReader inputData, string source)
 		{
@@ -81,6 +94,17 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML
 
 			return retVal;
 		}
+
+		private IDeclarationTrailerInputDataProvider DoCreateDeclarationTrailer(XmlReader inputData, string source)
+		{
+			var retVal = ReadXmlDoc(inputData, source) as IDeclarationTrailerInputDataProvider;
+			if (retVal == null) {
+				throw new VectoException("Input data is not in declaration mode!");
+			}
+
+			return retVal;
+		}
+
 
 		private IEngineeringInputDataProvider DoCreateEngineering(XmlReader inputData, string source)
 		{
@@ -111,7 +135,10 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML
 
 			switch (documentType.Value)
 			{
-				case XmlDocumentType.DeclarationJobData: return ReadDeclarationJob(xmlDoc, source);
+				case XmlDocumentType.DeclarationJobData:
+					if (xmlDoc.ChildNodes[1]?.ChildNodes[0]?.ChildNodes.Cast<XmlNode>().Count(x=> x.Name.Contains("TrailerType")) > 0)
+						return ReadDeclarationTrailerJob(xmlDoc, source);
+					return ReadDeclarationJob(xmlDoc, source); 
 				case XmlDocumentType.EngineeringJobData: return ReadEngineeringJob(xmlDoc, source);
 				case XmlDocumentType.PrimaryVehicleBusOutputData: return ReadPrimaryVehicleDeclarationJob(xmlDoc, source);
 				case XmlDocumentType.EngineeringComponentData:
@@ -138,6 +165,18 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML
 			try {
 				var input = DeclarationFactory.CreateInputProvider(versionNumber, xmlDoc, source);
 				input.Reader = DeclarationFactory.CreateInputReader(versionNumber, input, xmlDoc.DocumentElement);
+				return input;
+			} catch (Exception e) {
+				throw new VectoException("Failed to read Declaration job version {0}", e, versionNumber);
+			}
+		}
+
+		private IDeclarationTrailerInputDataProvider ReadDeclarationTrailerJob(XmlDocument xmlDoc, string source)
+		{
+			var versionNumber = XMLHelper.GetXsdType(xmlDoc.DocumentElement?.SchemaInfo.SchemaType);
+			try {
+				var input = DeclarationFactory.CreateInputProviderTrailer(versionNumber, xmlDoc, source);
+				input.Reader = DeclarationFactory.CreateInputReaderTrailer(versionNumber, input, xmlDoc.DocumentElement);
 				return input;
 			} catch (Exception e) {
 				throw new VectoException("Failed to read Declaration job version {0}", e, versionNumber);

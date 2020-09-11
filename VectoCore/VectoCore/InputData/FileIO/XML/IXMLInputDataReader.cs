@@ -21,5 +21,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML
 		IDeclarationInputDataProvider CreateDeclaration(string filename);
 
 		IDeclarationInputDataProvider CreateDeclaration(XmlReader inputData);
+
+		IDeclarationTrailerInputDataProvider CreateDeclarationTrailer(string filename);
+
+		IDeclarationTrailerInputDataProvider CreateDeclarationTrailer(XmlReader inputData);
 	}
 }

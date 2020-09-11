@@ -10,6 +10,13 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Interfaces
 		IXMLDeclarationInputData InputData { get; }
 	}
 
+	public interface IXMLDeclarationTrailerJobInputData : IDeclarationTrailerJobInputData, IXMLResource
+	{
+		IXMLJobTrailerDataReader Reader { set; }
+
+		IXMLDeclarationTrailerInputData InputData { get; }
+	}
+
 	public interface IXMLPrimaryVehicleBusJobInputData : IDeclarationJobInputData, IXMLResource
 	{
 		IXMLJobDataReader Reader { set; }

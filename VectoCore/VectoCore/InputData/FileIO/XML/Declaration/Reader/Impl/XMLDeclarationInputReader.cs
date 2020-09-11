@@ -66,6 +66,38 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 		}
 	}
 
+	public class XMLDeclarationInputReaderV27 : AbstractComponentReader, IXMLDeclarationTrailerInputDataReader
+	{
+		public static readonly XNamespace NAMESPACE_URI = XMLDefinitions.DECLARATION_DEFINITIONS_NAMESPACE_URI_V20;
+
+		public const string XSD_TYPE = "VectoDeclarationJobType";
+
+		public static readonly string QUALIFIED_XSD_TYPE = XMLHelper.CombineNamespace(NAMESPACE_URI.NamespaceName, XSD_TYPE);
+
+		protected XmlNode JobNode;
+		protected IXMLDeclarationTrailerInputData InputData;
+		protected IDeclarationTrailerJobInputData _jobData;
+
+		[Inject]
+		public IDeclarationInjectFactory Factory { protected get; set; }
+
+		protected virtual IDeclarationTrailerJobInputData JobCreatorTrailer(string version, XmlNode node, string arg3)
+		{
+			var job = Factory.CreateJobDataTrailer(version, BaseNode, InputData, (InputData as IXMLResource).DataSource.SourceFile);
+			job.Reader = Factory.CreateJobTrailerReaderTrailer(version, job, JobNode);
+			return job;
+		}
+
+		public XMLDeclarationInputReaderV27(IXMLDeclarationTrailerInputData inputData, XmlNode baseNode) : base(
+			inputData, baseNode)
+		{
+			JobNode = baseNode;
+			InputData = inputData;
+		}
+		
+		public IDeclarationTrailerJobInputData JobData { get { return _jobData ?? (_jobData = CreateComponent(XMLNames.VectoInputDeclaration, JobCreatorTrailer)); } }
+	}
+
 
 	// ---------------------------------------------------------------------------------------
 

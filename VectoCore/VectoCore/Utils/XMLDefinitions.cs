@@ -15,7 +15,8 @@ namespace TUGraz.VectoCore.Utils
 		ManufacturerReport = 1 << 6,
 		CustomerReport = 1 << 7,
 		MonitoringReport = 1 << 8,
-		VTPReport = 1 << 9
+		VTPReport = 1 << 9,
+		DeclarationTrailerJobData = 1 << 10,
 	}
 
 	
@@ -54,6 +55,8 @@ namespace TUGraz.VectoCore.Utils
 		public const string DECLARATION_DEFINITIONS_NAMESPACE_URI_V23 = DECLARATION_NAMESPACE + ":DEV:v2.3";
 
 		public const string DECLARATION_DEFINITIONS_NAMESPACE_URI_V26 = DECLARATION_NAMESPACE + ":DEV:v2.6";
+
+		public const string DECLARATION_DEFINITIONS_NAMESPACE_URI_V27 = DECLARATION_NAMESPACE + ":DEV:v2.7";
 
 		public const string DECLARATION_INPUT_NAMESPACE = "urn:tugraz:ivt:VectoAPI:DeclarationInput";
 

@@ -101,6 +101,7 @@
     <Compile Include="Models\CertificationMethod.cs" />
     <Compile Include="Models\CrossWindCorrectionMode.cs" />
     <Compile Include="Models\ExecutionMode.cs" />
+    <Compile Include="Models\TypeTrailer.cs" />
     <Compile Include="Models\FuelType.cs" />
     <Compile Include="Models\GearboxType.cs" />
     <Compile Include="Models\IResponse.cs" />

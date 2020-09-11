@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2016 rel. 2 sp1 (x64) (http://www.altova.com) by Helmut Eichlseder (TU Graz/Inst. f. VKM und THD) -->
+<xs:schema xmlns:v2.7="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:vectoParam="urn:tugraz:ivt:VectoAPI:ParameterDocumentation" xmlns:di="http://www.w3.org/2000/09/xmldsig#" xmlns:v1.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:v2.1="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1" targetNamespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7" elementFormDefault="qualified" attributeFormDefault="unqualified" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:ParameterDocumentation ParameterDocumentation.xsd">
+	<xs:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="xmldsig-core-schema.xsd"/>
+	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" schemaLocation="VectoDeclarationDefinitions.1.0.xsd"/>
+	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" schemaLocation="VectoDeclarationDefinitions.2.0.xsd"/>
+	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1" schemaLocation="VectoDeclarationDefinitions.2.1.xsd"/>
+	<xs:complexType name="AbstractTrailerAxleDataType" abstract="true"/>
+	<xs:complexType name="AbstractTrailerAxleWheelsDataDeclarationType" abstract="true"/>
+	<xs:complexType name="TrailerAxleType">
+		<xs:complexContent>
+			<xs:extension base="v2.7:AbstractTrailerAxleDataType">
+				<xs:sequence>
+					<xs:element name="TwinTyres" type="xs:boolean"/>
+					<xs:element name="Steered" type="xs:boolean" minOccurs="0"/>
+					<xs:element name="WheelBearings" minOccurs="0"/>
+					<xs:element name="Tyre">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Data" type="v1.0:AbstractTyreDataDeclarationType"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="axleNumber" use="required">
+					<xs:simpleType>
+						<xs:restriction base="xs:int">
+							<xs:minInclusive value="1"/>
+							<xs:maxInclusive value="4"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="TrailerAxleWheelsComponentType">
+		<xs:sequence>
+			<xs:element name="Data" type="v2.7:AbstractTrailerAxleWheelsDataDeclarationType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TrailerAxleWheelsDataDeclarationType">
+		<xs:complexContent>
+			<xs:extension base="v2.7:AbstractTrailerAxleWheelsDataDeclarationType">
+				<xs:sequence>
+					<xs:element name="Axles">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Axle" type="v2.7:AbstractTrailerAxleDataType" maxOccurs="4"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="TrailerDeclarationType">
+		<xs:complexContent>
+			<xs:extension base="v2.0:AbstractVehicleDeclarationType">
+				<xs:sequence>
+					<xs:element name="Manufacturer" type="v1.0:ManufacturerType"/>
+					<xs:element name="ManufacturerAddress" type="v1.0:ManufacturerAddressType"/>
+					<xs:element name="CommercialName" type="v1.0:ModelType"/>
+					<xs:element name="VIN" type="v1.0:VINType"/>
+					<xs:element name="Date" type="v1.0:DateTimeWithTimezone"/>
+					<xs:element name="LegislativeCategory" type="v2.7:TrailerLegislativeCategoryType"/>
+					<xs:element name="AxleCount" type="v2.7:TrailerAxleCountType"/>
+					<xs:element name="TrailerType" type="v2.7:TrailerTypeType"/>
+					<xs:element name="BodyCode" type="v2.7:BodyWorkCodeType"/>
+					<xs:element name="Masses">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="CurbMass" type="v2.7:TrailerMassType"/>
+								<xs:element name="TPMLMTotalTrailer" type="v2.7:TrailerMassType"/>
+								<xs:element name="TPMLMAxleAssembly" type="v2.7:TrailerMassType" minOccurs="0"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Dimensions">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="ExternalLenghtBody" type="v2.7:TrailerLengthType"/>
+								<xs:element name="ExternalWidthBody" type="v2.7:TrailerLengthType"/>
+								<xs:element name="ExternalHeightBody" type="v2.7:TrailerLengthType"/>
+								<xs:element name="TotalHeightTrailer" type="v2.7:TrailerLengthType"/>
+								<xs:element name="PositionXFirstAxle" type="v2.7:TrailerLengthType"/>
+								<xs:element name="PositionXLastAxle" type="v2.7:TrailerLengthType"/>
+								<xs:element name="InternalHeightBody" type="v2.7:TrailerLengthType"/>
+								<xs:element name="CargoVolume" type="v2.7:TrailerCargoVolumeType"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="AeroFeatures">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Technology" type="v2.7:TrailerAeroFeatureTechnologyType" minOccurs="0" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="AxleWheels" type="v2.7:TrailerAxleWheelsComponentType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:simpleType name="BodyWorkCodeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="03"/>
+			<xs:enumeration value="04"/>
+			<xs:enumeration value="05"/>
+			<xs:enumeration value="06"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TrailerAeroFeatureTechnologyType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="side skirts short"/>
+			<xs:enumeration value="side skirts long"/>
+			<xs:enumeration value="boat tail short"/>
+			<xs:enumeration value="boat tail long"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TrailerAxleCountType">
+		<xs:restriction base="xs:int">
+			<xs:minInclusive value="1"/>
+			<xs:maxInclusive value="4"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TrailerCargoVolumeType">
+		<xs:restriction base="v1.0:Double3">
+			<xs:minInclusive value="0.000"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TrailerLegislativeCategoryType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="O4"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TrailerLengthType">
+		<xs:restriction base="v1.0:Double3">
+			<xs:minExclusive value="0.000"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TrailerMassType">
+		<xs:restriction base="xs:int">
+			<xs:minExclusive value="0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TrailerTypeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="DA"/>
+			<xs:enumeration value="DB"/>
+			<xs:enumeration value="DC"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

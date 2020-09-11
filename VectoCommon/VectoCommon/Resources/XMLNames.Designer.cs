@@ -3839,5 +3839,142 @@ namespace TUGraz.VectoCommon.Resources {
                 return ResourceManager.GetString("XMLManufacturerReport_torqueLimitPercent", resourceCulture);
             }
         }
+
+		/// <summary>
+		///   Trailer commertial Name
+		/// </summary>
+		public static string CommercialName {
+			get {
+				return ResourceManager.GetString("CommercialName", resourceCulture);
+			}
+		}
+
+		/// <summary>
+		///   Trailer Legislative Category
+		/// </summary>
+		public static string LegislativeCategory {
+			get {
+				return ResourceManager.GetString("LegislativeCategory", resourceCulture);
+			}
+		}
+
+		/// <summary>
+		///   Trailer Axle Count
+		/// </summary>
+		public static string AxleCount {
+			get {
+				return ResourceManager.GetString("AxleCount", resourceCulture);
+			}
+		}
+
+		/// <summary>
+		///   Trailer Type
+		/// </summary>
+		public static string TrailerType {
+			get {
+				return ResourceManager.GetString("TrailerType", resourceCulture);
+			}
+		}
+		
+
+		/// <summary>
+		///   Trailer Body Code
+		/// </summary>
+		public static string BodyCode {
+			get {
+				return ResourceManager.GetString("BodyCode", resourceCulture);
+			}
+		}
+		
+		
+		/// <summary>
+		///   Trailer Curb Mass
+		/// </summary>
+		public static string CurbMass {
+			get {
+				return ResourceManager.GetString("CurbMass", resourceCulture);
+			}
+		}
+
+		/// <summary>
+		///   Trailer TPMLM Total
+		/// </summary>
+		public static string TPMLMTotalTrailer {
+			get {
+				return ResourceManager.GetString("TPMLMTotalTrailer", resourceCulture);
+			}
+		}
+
+		/// <summary>
+		///   Trailer External Lenght of the Body
+		/// </summary>
+		public static string ExternalLenghtBody {
+			get {
+				return ResourceManager.GetString("ExternalLenghtBody", resourceCulture);
+			}
+		}
+
+		/// <summary>
+		///   Trailer External Width of the Body
+		/// </summary>
+		public static string ExternalWidthBody {
+			get {
+				return ResourceManager.GetString("ExternalWidthBody", resourceCulture);
+			}
+		}
+
+		/// <summary>
+		///   Trailer External Height of the Body
+		/// </summary>
+		public static string ExternalHeightBody {
+			get {
+				return ResourceManager.GetString("ExternalHeightBody", resourceCulture);
+			}
+		}
+
+		/// <summary>
+		///   Trailer Total Height
+		/// </summary>
+		public static string TotalHeightTrailer {
+			get {
+				return ResourceManager.GetString("TotalHeightTrailer", resourceCulture);
+			}
+		}
+
+		/// <summary>
+		///   Trailer PositionX First Axle
+		/// </summary>
+		public static string PositionXFirstAxle {
+			get {
+				return ResourceManager.GetString("PositionXFirstAxle", resourceCulture);
+			}
+		}
+
+		/// <summary>
+		///   Trailer PositionX Last Axle
+		/// </summary>
+		public static string PositionXLastAxle {
+			get {
+				return ResourceManager.GetString("PositionXLastAxle", resourceCulture);
+			}
+		}
+
+		/// <summary>
+		///   Trailer Internal Height of the Body
+		/// </summary>
+		public static string InternalHeightBody {
+			get {
+				return ResourceManager.GetString("InternalHeightBody", resourceCulture);
+			}
+		}
+		
+		/// <summary>
+		///   Trailer Cargo Volume
+		/// </summary>
+		public static string CargoVolume {
+			get {
+				return ResourceManager.GetString("CargoVolume", resourceCulture);
+			}
+		}
     }
 }

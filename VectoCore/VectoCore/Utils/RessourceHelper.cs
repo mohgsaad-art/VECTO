@@ -41,6 +41,9 @@ namespace TUGraz.VectoCore.Utils
 		public static Stream ReadStream(string resourceName)
 		{
 			var assembly = Assembly.GetExecutingAssembly();
+			
+			string[] names = assembly.GetManifestResourceNames();
+
 			var resource = assembly.GetManifestResourceStream(resourceName);
 			if (resource == null) {
 				throw new VectoException("Resource file not found: " + resourceName);

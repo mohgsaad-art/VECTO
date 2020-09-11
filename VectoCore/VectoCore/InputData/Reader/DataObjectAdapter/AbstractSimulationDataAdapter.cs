@@ -68,6 +68,25 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			return retVal;
 		}
 
+		internal VehicleData SetCommonVehicleData(ITrailerDeclarationInputData data)
+		{
+			var retVal = new VehicleData {
+				InputDataTrailer = data,
+				SavedInDeclarationMode = data.SavedInDeclarationMode,
+				Manufacturer = data.Manufacturer,
+				ModelName = data.Model,
+				Date = data.Date,
+				//CertificationNumber = data.CertificationNumber,
+				DigestValueInput = data.DigestValue != null ? data.DigestValue.DigestValue : "",
+				//VehicleCategory = data.VehicleCategory,
+				//CurbMass = data.CurbMassChassis,
+				//GrossVehicleMass = data.GrossVehicleMassRating,
+				AirDensity = Physics.AirDensity,
+			};
+
+			return retVal;
+		}
+
 		protected VehicleData.ADASData CreateADAS(IAdvancedDriverAssistantSystemDeclarationInputData adas)
 		{
 			return new VehicleData.ADASData {
