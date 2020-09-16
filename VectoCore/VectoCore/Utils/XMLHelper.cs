@@ -47,10 +47,12 @@ namespace TUGraz.VectoCore.Utils
 {
 	public static class XMLHelper
 	{
-		public static XmlDocumentType? GetDocumentType(string rootElement)
+		public static XmlDocumentType? GetDocumentType(XmlDocument xmlDoc)
 		{
-			switch (rootElement) {
-				case "VectoInputDeclaration": return XmlDocumentType.DeclarationJobData;
+			switch (xmlDoc.DocumentElement.LocalName) {
+				case "VectoInputDeclaration":
+					return xmlDoc.ChildNodes[1]?.ChildNodes[0]?.ChildNodes.Cast<XmlNode>()
+						.Count(x => x.Name.Contains("TrailerType")) > 0 ? XmlDocumentType.DeclarationTrailerJobData : XmlDocumentType.DeclarationJobData;
 				case "VectoInputEngineering": return XmlDocumentType.EngineeringJobData;
 				case "VectoComponentEngineering": return XmlDocumentType.EngineeringComponentData;
 				case "VectoOutputPrimaryVehicle": return XmlDocumentType.PrimaryVehicleBusOutputData;

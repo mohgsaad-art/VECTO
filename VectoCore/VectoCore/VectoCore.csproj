@@ -281,7 +281,6 @@
     <Compile Include="InputData\Reader\DataObjectAdapter\DeclarationDataAdapterPrimaryBus.cs" />
     <Compile Include="InputData\Reader\DataObjectAdapter\DeclarationDataAdapterSingleBus.cs" />
     <Compile Include="InputData\Reader\DataObjectAdapter\IDeclarationTrailerDataAdapter.cs" />
-    <Compile Include="InputData\Reader\Impl\AbstractDeclarationTrailerVectoRunDataFactory.cs" />
     <Compile Include="InputData\Reader\Impl\AbstractVTPModeVectoRunDataFactory.cs" />
     <Compile Include="InputData\Reader\Impl\CombinedBusAuxiliaries.cs" />
     <Compile Include="InputData\Reader\DataObjectAdapter\DeclarationDataAdapterCompletedBusSpecific.cs" />

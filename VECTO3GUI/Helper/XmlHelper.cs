@@ -46,7 +46,7 @@ namespace VECTO3GUI.Helper
 			if (xmlDocument == null)
 				return false;
 
-			var documentType = XMLHelper.GetDocumentType(xmlDocument.DocumentElement.LocalName);
+			var documentType = XMLHelper.GetDocumentType(xmlDocument);
 			if (documentType == null)
 			{
 				throw new VectoException("unknown xml file! {0}", xmlDocument.DocumentElement.LocalName);

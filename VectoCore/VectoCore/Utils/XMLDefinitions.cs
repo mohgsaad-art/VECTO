@@ -87,6 +87,7 @@ namespace TUGraz.VectoCore.Utils
 
 		private static Dictionary<XmlDocumentType, string> schemaFilenames = new Dictionary<XmlDocumentType, string>() {
 			{XmlDocumentType.DeclarationJobData, "VectoDeclarationJob.xsd"},
+			{XmlDocumentType.DeclarationTrailerJobData, "VectoDeclarationJob.xsd"},
 			{XmlDocumentType.PrimaryVehicleBusOutputData, "VectoOutputPrimaryVehicleInformation.xsd"},
 			{XmlDocumentType.DeclarationComponentData, "VectoDeclarationComponent.xsd"},
 			{XmlDocumentType.EngineeringJobData, "VectoEngineeringJob.xsd" },

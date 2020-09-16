@@ -124,21 +124,18 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML
 				throw new VectoException("empty xml document!");
 			}
 
-			var documentType = XMLHelper.GetDocumentType(xmlDoc.DocumentElement.LocalName);
+			var documentType = XMLHelper.GetDocumentType(xmlDoc);
 			if (documentType == null) {
 				throw new VectoException("unknown xml file! {0}", xmlDoc.DocumentElement.LocalName);
 			}
-
 
 
 			new XMLValidator(xmlDoc, null, XMLValidator.CallBackExceptionOnError).ValidateXML(documentType.Value);
 
 			switch (documentType.Value)
 			{
-				case XmlDocumentType.DeclarationJobData:
-					if (xmlDoc.ChildNodes[1]?.ChildNodes[0]?.ChildNodes.Cast<XmlNode>().Count(x=> x.Name.Contains("TrailerType")) > 0)
-						return ReadDeclarationTrailerJob(xmlDoc, source);
-					return ReadDeclarationJob(xmlDoc, source); 
+				case XmlDocumentType.DeclarationJobData: return ReadDeclarationJob(xmlDoc, source); 
+				case XmlDocumentType.DeclarationTrailerJobData: return ReadDeclarationTrailerJob(xmlDoc, source);
 				case XmlDocumentType.EngineeringJobData: return ReadEngineeringJob(xmlDoc, source);
 				case XmlDocumentType.PrimaryVehicleBusOutputData: return ReadPrimaryVehicleDeclarationJob(xmlDoc, source);
 				case XmlDocumentType.EngineeringComponentData:
