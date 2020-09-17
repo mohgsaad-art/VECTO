@@ -53,7 +53,7 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="TrailerDeclarationType">
+	<xs:complexType name="VehicleDeclarationType">
 		<xs:complexContent>
 			<xs:extension base="v2.0:AbstractVehicleDeclarationType">
 				<xs:sequence>
