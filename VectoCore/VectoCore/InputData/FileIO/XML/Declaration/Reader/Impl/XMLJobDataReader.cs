@@ -110,6 +110,12 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 
 	public class XMLJobDataReaderV27 : AbstractComponentReader, IXMLJobTrailerDataReader
 	{
+		public static readonly XNamespace NAMESPACE_URI = XMLDefinitions.DECLARATION_DEFINITIONS_NAMESPACE_URI_V20;
+
+		public const string XSD_TYPE = "VectoDeclarationJobType";
+
+		public static readonly string QUALIFIED_XSD_TYPE = XMLHelper.CombineNamespace(NAMESPACE_URI.NamespaceName, XSD_TYPE);
+
 		protected IXMLDeclarationTrailerJobInputData JobData;
 		protected XmlNode JobNode;
 		protected ITrailerDeclarationInputData _vehicle;
@@ -126,7 +132,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 		{
 			var vehicle = Factory.CreateTrailerVehicleData(version, JobData, vehicleNode, sourceFile);
 
-			vehicle.ComponentReader = GetReaderTrailer(vehicle, vehicle.ComponentNode, Factory.CreateTrailerComponentReader);  	
+			//vehicle.ComponentReader = GetReaderTrailer(vehicle, vehicle.ComponentNode, Factory.CreateTrailerComponentReader);  	
 
 			return vehicle;
 		}

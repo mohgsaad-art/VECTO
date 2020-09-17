@@ -29,11 +29,11 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Interfaces
 
 	public interface IXMLTrailerDeclarationVehicleData : ITrailerDeclarationInputData, IXMLResource
 	{
-		XmlElement ComponentNode { get; }
+		//XmlElement ComponentNode { get; }
 
-		IXMLComponentReader ComponentReader { set; }
+		//IXMLComponentReader ComponentReader { set; }
 
-		XmlElement PTONode { get; }
+		//XmlElement PTONode { get; }
 
 		//IXMLPTOReader PTOReader { set; }
 

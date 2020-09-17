@@ -134,7 +134,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration
 			var h = VectoHash.Load(xmlDoc);
 			XMLHash = h.ComputeXmlHash();
 		}
-		protected override XNamespace SchemaNamespace { get; }
+		protected override XNamespace SchemaNamespace { get { return NAMESPACE_URI; } }
 		protected override DataSourceType SourceType { get; }
 		public IDeclarationTrailerJobInputData JobInputData
 		{

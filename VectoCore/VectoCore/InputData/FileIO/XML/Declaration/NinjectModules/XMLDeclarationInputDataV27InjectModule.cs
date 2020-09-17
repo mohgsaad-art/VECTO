@@ -15,7 +15,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.NinjectModules {
 			Bind<IXMLDeclarationTrailerInputData>().To<XMLDeclarationInputDataProviderV27>().Named(
 				XMLDeclarationInputDataProviderV27.QUALIFIED_XSD_TYPE);
 
-			Bind<IDeclarationTrailerJobInputData>().To<XMLDeclarationJobInputDataProviderV27>().Named(
+			Bind<IXMLDeclarationTrailerJobInputData>().To<XMLDeclarationJobInputDataProviderV27>().Named(
 				XMLDeclarationJobInputDataProviderV27.QUALIFIED_XSD_TYPE);
 
 			Bind<IXMLTrailerDeclarationVehicleData>().To<XMLDeclarationVehicleDataProviderV27>().Named(
@@ -28,6 +28,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.NinjectModules {
 
 			Bind<IXMLDeclarationTrailerInputDataReader>().To<XMLDeclarationInputReaderV27>()
 				.Named(XMLDeclarationInputReaderV27.QUALIFIED_XSD_TYPE);
+
+			Bind<IXMLJobTrailerDataReader>().To<XMLJobDataReaderV27>()
+				.Named(XMLJobDataReaderV27.QUALIFIED_XSD_TYPE);
 		}
 
 		#endregion

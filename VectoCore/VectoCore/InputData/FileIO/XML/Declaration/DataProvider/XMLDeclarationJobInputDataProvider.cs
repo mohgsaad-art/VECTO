@@ -90,15 +90,15 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 	public class XMLDeclarationJobInputDataProviderV27 : AbstractXMLResource, IXMLDeclarationTrailerJobInputData
 	{
-		public static readonly XNamespace NAMESPACE_URI = XMLDefinitions.DECLARATION_DEFINITIONS_NAMESPACE_URI_V27;
+		public static readonly XNamespace NAMESPACE_URI = XMLDefinitions.DECLARATION_DEFINITIONS_NAMESPACE_URI_V20;
 
-		public const string XSD_TYPE = "VectoDeclarationTrailerJobType";
+		public const string XSD_TYPE = "VectoDeclarationJobType";
 
 		public static readonly string QUALIFIED_XSD_TYPE = XMLHelper.CombineNamespace(NAMESPACE_URI.NamespaceName, XSD_TYPE);
 
 		protected ITrailerDeclarationInputData _vehicle;
 
-		public XMLDeclarationJobInputDataProviderV27(XmlNode node, IXMLDeclarationTrailerInputData inputProvider, string source) : base(node, source)
+		public XMLDeclarationJobInputDataProviderV27(XmlNode node, IXMLDeclarationTrailerInputData inputProvider, string fileName) : base(node, fileName)
 		{
 			InputData = inputProvider;
 		}
