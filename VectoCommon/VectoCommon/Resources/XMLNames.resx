@@ -1377,4 +1377,49 @@
   <data name="Report_Result_PassengerCount" xml:space="preserve">
     <value>PassengerCount</value>
   </data>
+  <data name="Trailer_CommercialName" xml:space="preserve">
+    <value>CommercialName</value>
+  </data>
+  <data name="Trailer_LegislativeCategory" xml:space="preserve">
+    <value>LegislativeCategory</value>
+  </data>
+  <data name="Trailer_AxleCount" xml:space="preserve">
+    <value>AxleCount</value>
+  </data>
+  <data name="Trailer_TrailerType" xml:space="preserve">
+    <value>TrailerType</value>
+  </data>
+  <data name="Trailer_BodyCode" xml:space="preserve">
+    <value>BodyCode</value>
+  </data>
+  <data name="Trailer_CurbMass" xml:space="preserve">
+    <value>CurbMass</value>
+  </data>
+  <data name="Trailer_TPMLMTotalTrailer" xml:space="preserve">
+    <value>TPMLMTotalTrailer</value>
+  </data>
+  <data name="Trailer_ExternalLenghtBody" xml:space="preserve">
+    <value>ExternalLenghtBody</value>
+  </data>
+  <data name="Trailer_ExternalWidthBody" xml:space="preserve">
+    <value>ExternalWidthBody</value>
+  </data>
+  <data name="Trailer_ExternalHeightBody" xml:space="preserve">
+    <value>ExternalHeightBody</value>
+  </data>
+  <data name="Trailer_TotalHeightTrailer" xml:space="preserve">
+    <value>TotalHeightTrailer</value>
+  </data>
+  <data name="Trailer_PositionXFirstAxle" xml:space="preserve">
+    <value>PositionXFirstAxle</value>
+  </data>
+  <data name="Trailer_PositionXLastAxle" xml:space="preserve">
+    <value>PositionXLastAxle</value>
+  </data>
+  <data name="Trailer_InternalHeightBody" xml:space="preserve">
+    <value>InternalHeightBody</value>
+  </data>
+  <data name="Trailer_CargoVolume" xml:space="preserve">
+    <value>CargoVolume</value>
+  </data>
 </root>

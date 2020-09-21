@@ -29,21 +29,6 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Interfaces
 
 	public interface IXMLTrailerDeclarationVehicleData : ITrailerDeclarationInputData, IXMLResource
 	{
-		//XmlElement ComponentNode { get; }
-
-		//IXMLComponentReader ComponentReader { set; }
-
-		//XmlElement PTONode { get; }
-
-		//IXMLPTOReader PTOReader { set; }
-
-		//XmlElement ADASNode { get; }
-
-		//IXMLADASReader ADASReader { set; }
-
-		//AngledriveType AngledriveType { get; }
-
-		//double RetarderRatio { get; }
-		//IPTOTransmissionInputData PTOTransmissionInputData { get; }
+		IXMLAxleReader AxleReader { get; }
 	}
 }

@@ -253,7 +253,6 @@ namespace TUGraz.VectoCommon.InputData
 		AxleConfiguration AxleConfiguration { get; }
 
 		bool ExemptedVehicle { get; }
-
 		IVehicleComponentsDeclaration Components { get; }
 		XmlNode XMLSource { get; }
 

@@ -76,6 +76,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 
 		DeclarationTrailerDataAdapter _dao = new DeclarationTrailerDataAdapter();
 
+
 		internal DeclarationModeTrailerVectoRunDataFactory(
 			IDeclarationTrailerInputDataProvider dataProvider, IDeclarationReport report)
 		{

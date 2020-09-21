@@ -76,11 +76,8 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				Manufacturer = data.Manufacturer,
 				ModelName = data.Model,
 				Date = data.Date,
-				//CertificationNumber = data.CertificationNumber,
 				DigestValueInput = data.DigestValue != null ? data.DigestValue.DigestValue : "",
-				//VehicleCategory = data.VehicleCategory,
-				//CurbMass = data.CurbMassChassis,
-				//GrossVehicleMass = data.GrossVehicleMassRating,
+				CurbMass = data.CurbeMass,
 				AirDensity = Physics.AirDensity,
 			};
 

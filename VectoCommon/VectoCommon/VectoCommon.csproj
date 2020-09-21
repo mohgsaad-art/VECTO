@@ -101,7 +101,6 @@
     <Compile Include="Models\CertificationMethod.cs" />
     <Compile Include="Models\CrossWindCorrectionMode.cs" />
     <Compile Include="Models\ExecutionMode.cs" />
-    <Compile Include="Models\TypeTrailer.cs" />
     <Compile Include="Models\FuelType.cs" />
     <Compile Include="Models\GearboxType.cs" />
     <Compile Include="Models\IResponse.cs" />
@@ -112,6 +111,7 @@
     <Compile Include="Models\RegistrationClass.cs" />
     <Compile Include="Models\RetarderType.cs" />
     <Compile Include="Models\SimulationType.cs" />
+    <Compile Include="Models\TypeTrailer.cs" />
     <Compile Include="Models\VehicleCategory.cs" />
     <Compile Include="Models\VehicleClass.cs" />
     <Compile Include="Models\VehicleCode.cs" />

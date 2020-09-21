@@ -1,0 +1,61 @@
+﻿Number of axles				, Trailer type					, Bodywork code							, Volume orientation			, Vehicle group
+1							, DA							, 03 - Box body (Drybody)				, No							, 111
+1							, DA							, 04 - Refrigerated						, No							, 112
+1							, DA							, 05 - Conditioned						, No							, 113
+1							, DA							, 06 - Curtain-sided					, Yes							, 114
+1							, DC							, 03 - Box body (Drybody)				, No							, 121
+1							, DC							, 06 - Curtain-sided					, Yes							, 124
+2							, DA							, 03 - Box body (Drybody)				, No							, 211
+2							, DA							, 04 - Refrigerated						, No							, 212
+2							, DA							, 05 - Conditioned						, No							, 213
+2							, DA							, 06 - Curtain-sided					, Yes							, 214
+2							, DA							,										, No							, 215
+2							, DA-BDU						, 03 - Box body (Drybody)				, No							, 221
+2							, DA-BDU						, 04 - Refrigerated						, No							, 222
+2							, DA-BDU						, 05 - Conditioned						, No							, 223
+2							, DA-BDU						, 06 - Curtain-sided					, No							, 225
+2							, DB							, 03 - Box body (Drybody)				, No							, 231
+2							, DB							, 04 - Refrigerated						, No							, 232
+2							, DB							, 05 - Conditioned						, No							, 233
+2							, DB							, 06 - Curtain-sided					, Yes							, 234
+2							, DB							,										, No							, 235
+2							, DC							, 03 - Box body (Drybody)				, No							, 251
+2							, DC							, 04 - Refrigerated						, No							, 252
+2							, DC							, 05 - Conditioned						, No							, 253
+2							, DC							, 06 - Curtain-sided					, Yes							, 254
+2							, DC							,										, No							, 255
+2							, Dolly							, Fifth-wheel							, ---							, 266
+3							, DA							, 03 - Box body (Drybody)				, No							, 311
+3							, DA							, 04 - Refrigerated						, No							, 312
+3							, DA							, 05 - Conditioned						, No							, 313
+3							, DA							, 06 - Curtain-sided					, Yes							, 314
+3							, DA							,										, No							, 315
+3							, DA-BDU						, 03 - Box body (Drybody)				, No							, 321
+3							, DA-BDU						, 04 - Refrigerated						, No							, 322
+3							, DA-BDU						, 05 - Conditioned						, No							, 323
+3							, DA-BDU						, 06 - Curtain-sided					, No							, 325
+3							, DB							, 03 - Box body (Drybody)				, No							, 331
+3							, DB							, 04 - Refrigerated						, No							, 332
+3							, DB							, 05 - Conditioned						, No							, 333
+3							, DB							, 06 - Curtain-sided					, Yes							, 334
+3							, DB							,										, No							, 335
+3							, DC							, 03 - Box body (Drybody)				, No							, 351
+3							, DC							, 04 - Refrigerated						, No							, 352
+3							, DC							, 05 - Conditioned						, No							, 353
+3							, DC							, 06 - Curtain-sided					, Yes							, 354
+3							, DC							,										, No							, 355
+3							, Dolly							, Fifth-wheel							, ---							, 366
+4							, DA							, 03 - Box body (Drybody)				, No							, 411
+4							, DA							, 04 - Refrigerated						, No							, 412
+4							, DA							, 05 - Conditioned						, No							, 413
+4							, DA							, 06 - Curtain-sided					, Yes							, 414
+4							, DA							,										, No							, 415
+4							, DB							, 03 - Box body (Drybody)				, No							, 431
+4							, DB							, 04 - Refrigerated						, No							, 432
+4							, DB							, 05 - Conditioned						, No							, 433
+4							, DB							, 06 - Curtain-sided					, Yes							, 434
+4							, DB							,										, No							, 435
+4							, DB-BDU						, 03 - Box body (Drybody)				, No							, 441
+4							, DB-BDU						, 04 - Refrigerated						, No							, 442
+4							, DB-BDU						, 05 - Conditioned						, No							, 443
+4							, DB-BDU						, 06 - Curtain-sided					, No							, 445

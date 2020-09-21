@@ -980,7 +980,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		}
 		public string CommercialName
 		{
-			get { return GetString(XMLNames.CommercialName); }
+			get { return GetString(XMLNames.Trailer_CommercialName); }
 		}
 
 		public string Identifier
@@ -1000,31 +1000,31 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		public string LegislativeCategory
 		{
-			get { return GetString(XMLNames.LegislativeCategory); }
+			get { return GetString(XMLNames.Trailer_LegislativeCategory); }
 		}
 
 		public int NumberOfAxles {
 			get
 			{
-				var node = GetNode(XMLNames.AxleCount);
+				var node = GetNode(XMLNames.Trailer_AxleCount);
 				return XmlConvert.ToInt32(node.InnerText);
 			}
 		}
 
 		public TypeTrailer TrailerType
 		{
-			get { return TrailerTypeHelper.Parse(GetString(XMLNames.TrailerType)); }
+			get { return TrailerTypeHelper.Parse(GetString(XMLNames.Trailer_TrailerType)); }
 		}
 
 		public string BodyworkCode
 		{
-			get { return GetString(XMLNames.BodyCode); }
+			get { return GetString(XMLNames.Trailer_BodyCode); }
 		}
 
 		public Kilogram CurbeMass {
 			get 
 			{
-				return GetDouble(XMLNames.CurbMass).SI<Kilogram>();
+				return GetDouble(XMLNames.Trailer_CurbMass).SI<Kilogram>();
 			}
 		}
 
@@ -1036,48 +1036,48 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		public Kilogram TPMLMTotalTrailer
 		{
-			get { return GetDouble(XMLNames.TPMLMTotalTrailer).SI<Kilogram>(); }
+			get { return GetDouble(XMLNames.Trailer_TPMLMTotalTrailer).SI<Kilogram>(); }
 
 		}
 
 		public Meter ExternalBodyLength
 		{
-			get { return GetDouble(XMLNames.ExternalLenghtBody).SI<Meter>(); }
+			get { return GetDouble(XMLNames.Trailer_ExternalLenghtBody).SI<Meter>(); }
 		}
 
 		public Meter ExternalBodyWidth
 		{
-			get { return GetDouble(XMLNames.ExternalWidthBody).SI<Meter>(); }
+			get { return GetDouble(XMLNames.Trailer_ExternalWidthBody).SI<Meter>(); }
 		}
 
 		public Meter ExternalBodyHeight
 		{
-			get { return GetDouble(XMLNames.ExternalHeightBody).SI<Meter>(); }
+			get { return GetDouble(XMLNames.Trailer_ExternalHeightBody).SI<Meter>(); }
 		}
 
 		public Meter TotalTrailerHeight
 		{
-			get { return GetDouble(XMLNames.TotalHeightTrailer).SI<Meter>(); }
+			get { return GetDouble(XMLNames.Trailer_TotalHeightTrailer).SI<Meter>(); }
 		}
 
 		public Meter LengthTrailerFrontToFirstAxleCenter
 		{
-			get { return GetDouble(XMLNames.PositionXFirstAxle).SI<Meter>(); }
+			get { return GetDouble(XMLNames.Trailer_PositionXFirstAxle).SI<Meter>(); }
 		}
 
 		public Meter LengthTrailerFrontToLastAxleCenter
 		{
-			get { return GetDouble(XMLNames.PositionXLastAxle).SI<Meter>(); }
+			get { return GetDouble(XMLNames.Trailer_PositionXLastAxle).SI<Meter>(); }
 		}
 
 		public Meter InternalBodyHeight
 		{
-			get { return GetDouble(XMLNames.InternalHeightBody).SI<Meter>(); }
+			get { return GetDouble(XMLNames.Trailer_InternalHeightBody).SI<Meter>(); }
 		}
 
 		public CubicMeter CargoVolume
 		{
-			get { return GetDouble(XMLNames.CargoVolume).SI<CubicMeter>(); }
+			get { return GetDouble(XMLNames.Trailer_CargoVolume).SI<CubicMeter>(); }
 		}
 		public SquareMeter CertifiedAeroFeatureTechnologies { get; }
 		public IVehicleComponentsDeclaration Components { get; }
@@ -1093,6 +1093,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		}
 
 		protected override DataSourceType SourceType { get; }
+		public IXMLAxleReader AxleReader { get; }
 	}
 
 	// ---------------------------------------------------------------------------------------

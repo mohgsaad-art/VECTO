@@ -918,6 +918,7 @@
     <EmbeddedResource Include="Resources\XSD\VectoDeclarationDefinitions.2.7_BT.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Declaration\trailer_segmentation_table.csv" />
     <None Include="Utils\VectoVersionCore.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>VectoVersionCore.cs</LastGenOutput>
