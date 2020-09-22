@@ -328,6 +328,7 @@
     <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\HVAC\SSMRun.cs" />
     <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\HVAC\SSMTOOL.cs" />
     <Compile Include="Models\Declaration\CompletedBusSegments.cs" />
+    <Compile Include="Models\Declaration\VehicleGroup.cs" />
     <Compile Include="Models\GenericModelData\GenericTorqueConverterData.cs" />
     <Compile Include="Models\GenericModelData\GenericTransmissionComponentData.cs" />
     <Compile Include="Models\GenericModelData\GenericBusEngineData.cs" />
@@ -918,7 +919,7 @@
     <EmbeddedResource Include="Resources\XSD\VectoDeclarationDefinitions.2.7_BT.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Declaration\trailer_segmentation_table.csv" />
+    <EmbeddedResource Include="Resources\Declaration\trailerSegmentationTable.csv" />
     <None Include="Utils\VectoVersionCore.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>VectoVersionCore.cs</LastGenOutput>

@@ -242,6 +242,9 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 				return;
 			}
 
+			//Test Lookup method
+			var vehicleGroup = DeclarationData.VehicleGroup.Lookup(vehicle.NumberOfAxles, vehicle.TrailerType, vehicle.BodyworkCode, "No");
+
 			_segment = GetSegment(vehicle);
 			_driverdata = DataAdapter.CreateDriverData();
 			_driverdata.AccelerationCurve = AccelerationCurveReader.ReadFromStream(_segment.AccelerationFile);

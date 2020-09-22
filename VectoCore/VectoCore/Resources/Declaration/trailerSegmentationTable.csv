@@ -1,4 +1,4 @@
-﻿Number of axles				, Trailer type					, Bodywork code							, Volume orientation			, Vehicle group
+﻿Number_of_axles				, Trailer_type					, Bodywork_code							, Volume_orientation			, Vehicle_group
 1							, DA							, 03 - Box body (Drybody)				, No							, 111
 1							, DA							, 04 - Refrigerated						, No							, 112
 1							, DA							, 05 - Conditioned						, No							, 113
