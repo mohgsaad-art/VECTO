@@ -328,7 +328,7 @@
     <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\HVAC\SSMRun.cs" />
     <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\HVAC\SSMTOOL.cs" />
     <Compile Include="Models\Declaration\CompletedBusSegments.cs" />
-    <Compile Include="Models\Declaration\VehicleGroup.cs" />
+    <Compile Include="Models\Declaration\TrailerSegments.cs" />
     <Compile Include="Models\GenericModelData\GenericTorqueConverterData.cs" />
     <Compile Include="Models\GenericModelData\GenericTransmissionComponentData.cs" />
     <Compile Include="Models\GenericModelData\GenericBusEngineData.cs" />

@@ -1016,12 +1016,12 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 			get { return TrailerTypeHelper.Parse(GetString(XMLNames.Trailer_TrailerType)); }
 		}
 
-		public string BodyworkCode
+		public BodyWorkCode BodyworkCode
 		{
-			get { return GetString(XMLNames.Trailer_BodyCode); }
+			get { return BodyWorkCodeHelper.Parse(GetString(XMLNames.Trailer_BodyCode)); }
 		}
 
-		public Kilogram CurbeMass {
+		public Kilogram CurbMass {
 			get 
 			{
 				return GetDouble(XMLNames.Trailer_CurbMass).SI<Kilogram>();

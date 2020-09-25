@@ -219,9 +219,9 @@ namespace TUGraz.VectoCommon.InputData
 
 		TypeTrailer TrailerType { get; }
 
-		string BodyworkCode { get; }
+		BodyWorkCode BodyworkCode { get; }
 
-		Kilogram CurbeMass { get; }
+		Kilogram CurbMass { get; }
 
 		Kilogram TPMLMTotalTrailer { get; }
 

@@ -140,7 +140,6 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration
 		{
 			get { return JobData ?? (JobData = Reader.JobData); }
 		}
-		public virtual ITrailerInformationInputDataProvider PrimaryVehicleData { get { return null; } }
 		public XElement XMLHash { get; private set; }
 		public IXMLDeclarationTrailerInputDataReader Reader { protected get; set; }
 

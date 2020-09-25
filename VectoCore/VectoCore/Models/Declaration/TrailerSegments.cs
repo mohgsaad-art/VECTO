@@ -27,6 +27,7 @@
 *   Raphael Luz, luz@ivt.tugraz.at, IVT, Graz University of Technology
 *   Markus Quaritsch, markus.quaritsch@tugraz.at, IVT, Graz University of Technology
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
+*	Vasileios Kouliaridis, vasilis.k@emisia.com, EMISIA
 */
 
 using System;
@@ -42,7 +43,7 @@ using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.Declaration
 {
-	public sealed class VehicleGroup : LookupData<int, TypeTrailer, string, string, int>
+	public sealed class TrailerSegments : LookupData<int, TypeTrailer, BodyWorkCode, bool, int>
 	{
 		private DataTable _segmentTable;
 
@@ -64,10 +65,10 @@ namespace TUGraz.VectoCore.Models.Declaration
 			_segmentTable = table.Copy();
 		}
 
-		public override int Lookup(int NumberOfAxles, TypeTrailer typeTrailer, string BodyWorkCode, string VolumeOrientation)
+		public override int Lookup(int numberOfAxles, TypeTrailer typeTrailer, BodyWorkCode bodyWorkCode, bool volumeOrientation)
 		{
 
-			var row = GetTrailerDataRow(NumberOfAxles, typeTrailer, BodyWorkCode, VolumeOrientation);
+			var row = GetTrailerDataRow(numberOfAxles, typeTrailer, bodyWorkCode, volumeOrientation);
 			if (row == null) {
 				return 100;
 			}
@@ -77,24 +78,25 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 
 		private DataRow GetTrailerDataRow(
-			int NumberOfAxles, TypeTrailer typeTrailer, string BodyWorkCode, string VolumeOrientation)
+			int numberOfAxles, TypeTrailer typeTrailer, BodyWorkCode bodyWorkCode, bool volumeOrientation)
 		{
 			DataRow row;
 			try {
 				row = _segmentTable.AsEnumerable().First(
 					r => {
-						var NumberOfAxlesRow = r.ParseDouble("Number_of_axles");
+						var numberOfAxlesRow = r.ParseDouble("Number_of_axles");
 						var typeTrailerRow = r.Field<string>("Trailer_type");
-						var BodyWorkCodeRow = r.Field<string>("Bodywork_code");
-						var VolumeOrientationRow = r.Field<string>("Volume_orientation");
-						return (int)NumberOfAxlesRow == NumberOfAxles 
+						var bodyWorkCodeRow = r.Field<string>("Bodywork_code");
+						var volumeOrientationRow = r.Field<string>("Volume_orientation");
+						return (int)numberOfAxlesRow == numberOfAxles 
 								&& typeTrailerRow == typeTrailer.ToString()
-								&& BodyWorkCodeRow.Contains(BodyWorkCode)
-								&& VolumeOrientationRow == VolumeOrientation;
+								&& bodyWorkCodeRow.Contains(bodyWorkCode.GetLabel())
+								&& (volumeOrientationRow == "Yes" && volumeOrientation 
+									|| volumeOrientationRow == "No" && !volumeOrientation);
 					});
 			} catch (InvalidOperationException e) {
 				var errorMessage = string.Format(
-					ErrorMessage, NumberOfAxles, typeTrailer, BodyWorkCode, VolumeOrientation);
+					ErrorMessage, numberOfAxles, typeTrailer, bodyWorkCode, volumeOrientation);
 				Log.Fatal(errorMessage);
 				throw new VectoException(errorMessage, e);
 			}

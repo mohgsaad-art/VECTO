@@ -242,8 +242,8 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 				return;
 			}
 
-			//Test Lookup method
-			var vehicleGroup = DeclarationData.VehicleGroup.Lookup(vehicle.NumberOfAxles, vehicle.TrailerType, vehicle.BodyworkCode, "No");
+			//Test Lookup method - Gets vehicle group from CSV when given NumberOfAxles, TrailerType, BodyworkCode and Volume orientation
+			var vehicleGroup = DeclarationData.TrailerSegments.Lookup(vehicle.NumberOfAxles, vehicle.TrailerType, vehicle.BodyworkCode, false);
 
 			_segment = GetSegment(vehicle);
 			_driverdata = DataAdapter.CreateDriverData();
