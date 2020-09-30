@@ -184,7 +184,9 @@ namespace TUGraz.VectoCore.Models.Declaration
 					case "Large Supply 2-stage":
 						resource = "DEFAULT_3-Cylinder_2-Stage_598ccm.acmp";
 						break;
+#pragma warning disable IDE0043 // Invalid format string
 					default: throw new ArgumentException(string.Format("unkown compressor size {0}"), compressorSize);
+#pragma warning restore IDE0043 // Invalid format string
 				}
 
 				var dragCurveFactorClutch = 1.0;
