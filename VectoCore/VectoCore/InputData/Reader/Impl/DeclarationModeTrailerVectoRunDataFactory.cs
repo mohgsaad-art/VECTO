@@ -46,6 +46,11 @@ using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Utils;
 using System.Linq;
+using System.Xml;
+using TUGraz.VectoCore.InputData.FileIO.XML.Declaration;
+using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider;
+using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Interfaces;
+using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl;
 
 
 namespace TUGraz.VectoCore.InputData.Reader.Impl
@@ -182,7 +187,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 				Aux = DataAdapter.CreateAuxiliaryData(
 					vehicle.Components.AuxiliaryInputData,
 					vehicle.Components.BusAuxiliaries, mission.MissionType,
-					_segment.VehicleClass, vehicle.ExternalBodyLength), //TODO: Bill
+					_segment.VehicleClass, vehicle.ExternalBodyLength), 
 				Cycle = new DrivingCycleProxy(cycle, mission.MissionType.ToString()),
 				Retarder = _retarderData,
 				DriverData = _driverdata,
@@ -242,8 +247,31 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 				return;
 			}
 
-			//Test Lookup method - Gets vehicle group from CSV when given NumberOfAxles, TrailerType, BodyworkCode and Volume orientation
+			// *************************************** DEBUG START *********************************************
+
+			//1. Get trailer specific information from embedded resources using the lookup method
 			var vehicleGroup = DeclarationData.TrailerSegments.Lookup(vehicle.NumberOfAxles, vehicle.TrailerType, vehicle.BodyworkCode, false);
+
+			//2. get generic vehicle data from predefined XML sources into a local input data provider
+			string filePath =
+				"F:\\Vecto\\vecto-dev_bt\\Documentation\\VehiclesReleaseComparisonDeclarationMode\\Tractor_4x2_vehicle-class-5_EURO6_2018.xml";
+			XmlDocument xmlDoc = new XmlDocument();
+			xmlDoc.Load(filePath);
+
+			XMLDeclarationInputDataProviderV10 genericInputDataProvider = new XMLDeclarationInputDataProviderV10(xmlDoc, filePath);
+			genericInputDataProvider.Reader = new XMLDeclarationInputReaderV10(genericInputDataProvider, xmlDoc.ChildNodes[1]);
+
+			XMLDeclarationJobInputDataProviderV10 genericJobInputData = new XMLDeclarationJobInputDataProviderV10(xmlDoc.ChildNodes[1], genericInputDataProvider, filePath);
+			genericJobInputData.Reader = new XMLJobDataReaderV10(genericJobInputData, xmlDoc.ChildNodes[1]);
+
+			XMLDeclarationVehicleDataProviderV10 genericVehicleDataProvider = new XMLDeclarationVehicleDataProviderV10(genericJobInputData, xmlDoc.ChildNodes[1], filePath);
+			XMLDeclarationComponentsDataProviderV10 genericVehicleComponents = new XMLDeclarationComponentsDataProviderV10(genericVehicleDataProvider, xmlDoc.ChildNodes[1].ChildNodes[0].ChildNodes[19], filePath);
+			genericVehicleComponents.ComponentReader = new XMLComponentReaderV10(genericVehicleDataProvider,xmlDoc.ChildNodes[1].ChildNodes[0].ChildNodes[19]);
+			XMLDeclarationEngineDataProviderV10 genericEngineDataProvider = new XMLDeclarationEngineDataProviderV10(genericVehicleDataProvider, xmlDoc.ChildNodes[1].ChildNodes[0].ChildNodes[19], filePath);
+
+			var genericDisplacement = genericEngineDataProvider.Displacement;
+
+			// *************************************** DEBUG END *********************************************
 
 			_segment = GetSegment(vehicle);
 			_driverdata = DataAdapter.CreateDriverData();

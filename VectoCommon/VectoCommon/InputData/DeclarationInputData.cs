@@ -243,9 +243,7 @@ namespace TUGraz.VectoCommon.InputData
 
 		CubicMeter CargoVolume { get; }
 
-		//AeroFeatureTechnologies StandradAeroFeatureTechnologies { get; }
-
-		SquareMeter CertifiedAeroFeatureTechnologies { get; }
+		AeroFeatureTechnologies AeroFeatureTechnologies { get; }
 
 
 		// ---------------------------------------------------------------------

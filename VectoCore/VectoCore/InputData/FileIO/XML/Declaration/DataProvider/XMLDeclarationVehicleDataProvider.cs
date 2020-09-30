@@ -1079,7 +1079,11 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		{
 			get { return GetDouble(XMLNames.Trailer_CargoVolume).SI<CubicMeter>(); }
 		}
-		public SquareMeter CertifiedAeroFeatureTechnologies { get; }
+
+		public AeroFeatureTechnologies AeroFeatureTechnologies
+		{
+			get { return AeroFeatureTechnologiesHelper.Parse(GetString(XMLNames.Trailer_AeroFeatureTechnologies)); }
+		}
 		public IVehicleComponentsDeclaration Components { get; }
 
 		public virtual IPTOTransmissionInputData PTOTransmissionInputData

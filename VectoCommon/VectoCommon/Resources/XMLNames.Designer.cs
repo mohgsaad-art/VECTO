@@ -2977,6 +2977,15 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Technology.
+        /// </summary>
+        public static string Trailer_AeroFeatureTechnologies {
+            get {
+                return ResourceManager.GetString("Trailer_AeroFeatureTechnologies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to AxleCount.
         /// </summary>
         public static string Trailer_AxleCount {

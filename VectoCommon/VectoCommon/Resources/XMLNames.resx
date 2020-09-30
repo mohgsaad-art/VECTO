@@ -1389,6 +1389,9 @@
   <data name="Trailer_TrailerType" xml:space="preserve">
     <value>TrailerType</value>
   </data>
+  <data name="Trailer_AeroFeatureTechnologies" xml:space="preserve">
+    <value>Technology</value>
+  </data>
   <data name="Trailer_BodyCode" xml:space="preserve">
     <value>BodyCode</value>
   </data>
