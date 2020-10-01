@@ -21,9 +21,9 @@ namespace VECTOTrailer.ViewModel.Impl
 
 	public enum JobFileType
 	{
-		CompletedBusFile,
-		PrimaryBusFile,
-		PIFBusFile,
+		CompletedTrailerFile,
+		PrimaryTrailerFile,
+		PIFTrailerFile,
 	}
 
 	public static class JobFileTypeHelper
@@ -32,12 +32,12 @@ namespace VECTOTrailer.ViewModel.Impl
 		{
 			switch (fileType)
 			{
-				case JobFileType.CompletedBusFile:
-					return "Completed Bus File";
-				case JobFileType.PrimaryBusFile:
-					return "Primary Bus File";
-				case JobFileType.PIFBusFile:
-					return "PIF Bus File";
+				case JobFileType.CompletedTrailerFile:
+					return "Completed Trailer File";
+				case JobFileType.PrimaryTrailerFile:
+					return "Primary Trailer File";
+				case JobFileType.PIFTrailerFile:
+					return "PIF Trailer File";
 				default:
 					return string.Empty;
 			}
@@ -47,7 +47,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 
 
-	public abstract class AbstractBusJobViewModel : ViewModelBase, IBusJobViewModel
+	public abstract class AbstractTrailerJobViewModel : ViewModelBase, ITrailerJobViewModel
 	{
 		#region Members
 
@@ -113,13 +113,13 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		#endregion
 
-		protected AbstractBusJobViewModel(IKernel kernel, JobType jobType)
+		protected AbstractTrailerJobViewModel(IKernel kernel, JobType jobType)
 		{
 			Init(kernel, jobType);
 			_editJob = false;
 		}
 
-		protected AbstractBusJobViewModel(IKernel kernel, JobEntry jobEntry)
+		protected AbstractTrailerJobViewModel(IKernel kernel, JobEntry jobEntry)
 		{
 			Init(kernel, jobEntry.Header.JobType);
 			SetJobEntryData(jobEntry);
@@ -129,7 +129,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		private void Init(IKernel kernel, JobType jobType)
 		{
-			SecondLabelText = $"Select {JobFileType.CompletedBusFile.GetLable()}";
+			SecondLabelText = $"Select {JobFileType.CompletedTrailerFile.GetLable()}";
 			Settings = new SettingsModel();
 			SetFileTypes(jobType);
 			Kernel = kernel;
@@ -139,18 +139,18 @@ namespace VECTOTrailer.ViewModel.Impl
 		{
 			JobType = jobType;
 
-			_firstFileType = jobType == JobType.SingleBusJob
-				? JobFileType.PrimaryBusFile
-				: JobFileType.PIFBusFile;
+			_firstFileType = jobType == JobType.SingleTrailerJob
+				? JobFileType.PrimaryTrailerFile
+				: JobFileType.PIFTrailerFile;
 
-			_secondFileType = JobFileType.CompletedBusFile;
+			_secondFileType = JobFileType.CompletedTrailerFile;
 		}
 
 		private void SetJobEntryData(JobEntry jobEntry)
 		{
 			JobEntry = jobEntry;
 
-			FirstFilePath = jobEntry.Header.JobType == JobType.SingleBusJob
+			FirstFilePath = jobEntry.Header.JobType == JobType.SingleTrailerJob
 				? jobEntry.Body.PrimaryVehicle
 				: jobEntry.Body.PrimaryVehicleResults;
 			SecondFilePath = jobEntry.Body.CompletedVehicle;
@@ -242,8 +242,8 @@ namespace VECTOTrailer.ViewModel.Impl
 			var jobBody = new JobBody {
 				CompletedVehicle = SecondFilePath
 			};
-			jobBody.PrimaryVehicle = JobType.SingleBusJob == JobType ? FirstFilePath : null; 
-			jobBody.PrimaryVehicleResults = JobType.CompletedBusJob == JobType ? FirstFilePath : null;
+			jobBody.PrimaryVehicle = JobType.SingleTrailerJob == JobType ? FirstFilePath : null; 
+			jobBody.PrimaryVehicleResults = JobType.CompletedTrailerJob == JobType ? FirstFilePath : null;
 
 			job.Body = jobBody;
 
@@ -256,8 +256,8 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		private void UpdateJobData()
 		{
-			SavedJobEntry.Body.PrimaryVehicle = JobType.SingleBusJob == JobType ? FirstFilePath : null; ;
-			SavedJobEntry.Body.PrimaryVehicleResults = JobType.CompletedBusJob == JobType ? FirstFilePath : null;
+			SavedJobEntry.Body.PrimaryVehicle = JobType.SingleTrailerJob == JobType ? FirstFilePath : null; ;
+			SavedJobEntry.Body.PrimaryVehicleResults = JobType.CompletedTrailerJob == JobType ? FirstFilePath : null;
 			SavedJobEntry.Body.CompletedVehicle = SecondFilePath;
 		}
 
@@ -313,27 +313,15 @@ namespace VECTOTrailer.ViewModel.Impl
 			{
 
 				var readerResult = xmlInputReader.Create(reader);
-				if (readerResult is IDeclarationInputDataProvider)
+				if (readerResult is IDeclarationTrailerInputDataProvider)
 				{
 
-					var inputData = readerResult as IDeclarationInputDataProvider;
-					if (jobFileType == JobFileType.CompletedBusFile &&
-						inputData.JobInputData.Vehicle is XMLDeclarationCompletedBusDataProviderV26)
+					var inputData = readerResult as IDeclarationTrailerInputDataProvider;
+					if (jobFileType == JobFileType.CompletedTrailerFile &&
+						inputData.JobInputData.Vehicle is XMLDeclarationVehicleDataProviderV27)
 					{
 						return true;
 					}
-					if (jobFileType == JobFileType.PrimaryBusFile &&
-						inputData.JobInputData.Vehicle is XMLDeclarationPrimaryBusVehicleDataProviderV26)
-					{
-						return true;
-					}
-				}
-				else if (readerResult is IPrimaryVehicleInformationInputDataProvider)
-				{
-					var inputData = readerResult as IPrimaryVehicleInformationInputDataProvider;
-					if (jobFileType == JobFileType.PIFBusFile &&
-						inputData.Vehicle is XMLDeclarationPrimaryVehicleBusDataProviderV01)
-						return true;
 				}
 				return false;
 			}

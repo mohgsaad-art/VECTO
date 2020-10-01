@@ -10,7 +10,7 @@ using TUGraz.VectoCommon.Utils;
 
 namespace VECTOTrailer.ViewModel.Interfaces
 {
-	public interface ICompleteVehicleBus
+	public interface ICompleteTrailer
 	{
 		string Manufacturer { get; set; }
 		string ManufacturerAddress { get; set; }
@@ -18,7 +18,7 @@ namespace VECTOTrailer.ViewModel.Interfaces
 		string VIN { get; set; }
 		DateTime Date { get; set; }
 		LegislativeClass LegislativeClass { get; set; }
-		RegistrationClass RegisteredClass { get; set; }
+		/*RegistrationClass RegisteredClass { get; set; }
 		VehicleCode VehicleCode { get; set; }
 		Kilogram CurbMassChassis { get; set; }
 		Kilogram TechnicalPermissibleMaximumLadenMass { get; set; }
@@ -35,6 +35,26 @@ namespace VECTOTrailer.ViewModel.Interfaces
 
 		ConsumerTechnology DoorDriveTechnology { get; set; }
 		
+		#endregion*/
+
+		#region CompleteBusDataProviderV27
+
+		Meter ExternalLengthOfTheBody { get; set; }
+		Meter ExternalWidthOfTheBody { get; set; }
+		Meter ExternalHeightOfTheBody { get; set; }
+		Meter TotalHeightOfTheTrailer { get; set; }
+		Meter PositionXFirstAxle { get; set; }
+		Meter PositionXLastAxle { get; set; }
+		Meter InternalHeightOfTheBody { get; set; }
+		CubicMeter CargoVolume { get; set; }
+		int NumberOfAxles { get; set; }
+		TypeTrailer TrailerType { get; set; }
+		BodyWorkCode BodyCode { get; set; }
+		AeroFeatureTechnologies Technologies { get; set; }
+		Kilogram CurbMassTrailer { get; set; }
+		Kilogram TPLMTotalTrailer { get; set; }
+		Kilogram TPLMAxleAssembly { get; set; }
+
 		#endregion
 
 		Dictionary<string,string> XmlNamesToPropertyMapping { get; }

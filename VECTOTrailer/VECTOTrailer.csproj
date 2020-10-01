@@ -201,7 +201,7 @@
     <Compile Include="Model\TempDataObject\AirdragComponentData.cs" />
     <Compile Include="Model\TempDataObject\AuxiliariesBusComponentData.cs" />
     <Compile Include="Model\TempDataObject\ITempDataObject.cs" />
-    <Compile Include="Model\TempDataObject\VehicleBusComponentData.cs" />
+    <Compile Include="Model\TempDataObject\TrailerComponentData.cs" />
     <Compile Include="Properties\Version.cs">
       <DependentUpon>Version.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -230,7 +230,7 @@
     <Compile Include="ViewModel\Adapter\Declaration\VehicleDeclarationAdapter.cs" />
     <Compile Include="ViewModel\Adapter\IAdapterFactory.cs" />
     <Compile Include="ViewModel\Impl\AboutViewModel.cs" />
-    <Compile Include="ViewModel\Impl\AbstractBusJobViewModel.cs" />
+    <Compile Include="ViewModel\Impl\AbstractTrailerJobViewModel.cs" />
     <Compile Include="ViewModel\Impl\AbstractComponentViewModel.cs" />
     <Compile Include="ViewModel\Impl\AbstractJobViewModel.cs" />
     <Compile Include="ViewModel\Impl\AbstractViewModel.cs" />
@@ -240,9 +240,9 @@
     <Compile Include="ViewModel\Impl\AxlegearViewModel.cs" />
     <Compile Include="ViewModel\Impl\AxlesViewModel.cs" />
     <Compile Include="ViewModel\Impl\AxleViewModel.cs" />
-    <Compile Include="ViewModel\Impl\CompletedBusJobViewModel.cs" />
+    <Compile Include="ViewModel\Impl\CompletedTrailerJobViewModel.cs" />
     <Compile Include="ViewModel\Impl\CompleteVehicleBusJobViewModel.cs" />
-    <Compile Include="ViewModel\Impl\CompleteVehicleBusViewModel.cs" />
+    <Compile Include="ViewModel\Impl\CompleteTrailerViewModel.cs" />
     <Compile Include="ViewModel\Impl\CyclesViewModel.cs" />
     <Compile Include="ViewModel\Impl\DeclarationJobViewModel.cs" />
     <Compile Include="ViewModel\Impl\EngineOnlyJobViewModel.cs" />
@@ -255,11 +255,9 @@
     <Compile Include="ViewModel\Impl\NoneViewModel.cs" />
     <Compile Include="ViewModel\Impl\ObservableObject.cs" />
     <Compile Include="ViewModel\Impl\OutputWindowViewModel.cs" />
-    <Compile Include="ViewModel\Impl\PrimaryVehicleBusJobViewModel.cs" />
-    <Compile Include="ViewModel\Impl\PrimaryVehicleBusViewModel.cs" />
     <Compile Include="ViewModel\Impl\RetarderViewModel.cs" />
     <Compile Include="ViewModel\Impl\SettingsViewModel.cs" />
-    <Compile Include="ViewModel\Impl\SingleBusJobViewModel.cs" />
+    <Compile Include="ViewModel\Impl\SingleTrailerJobViewModel.cs" />
     <Compile Include="ViewModel\Impl\TorqueConverterViewModel.cs" />
     <Compile Include="ViewModel\Impl\TyreViewModel.cs" />
     <Compile Include="ViewModel\Impl\ValidatingViewModel.cs" />
@@ -277,10 +275,10 @@
     <Compile Include="ViewModel\Interfaces\IAxlegearViewModel.cs" />
     <Compile Include="ViewModel\Interfaces\IAxlesViewModel.cs" />
     <Compile Include="ViewModel\Interfaces\IAxleViewModel.cs" />
-    <Compile Include="ViewModel\Interfaces\IBusJobViewModel.cs" />
+    <Compile Include="ViewModel\Interfaces\ITrailerJobViewModel.cs" />
     <Compile Include="ViewModel\Interfaces\ICommonComponentParameters.cs" />
-    <Compile Include="ViewModel\Interfaces\ICompleteVehicleBus.cs" />
-    <Compile Include="ViewModel\Interfaces\ICompleteVehicleBusViewModel.cs" />
+    <Compile Include="ViewModel\Interfaces\ICompleteTrailer.cs" />
+    <Compile Include="ViewModel\Interfaces\ICompleteTrailerViewModel.cs" />
     <Compile Include="ViewModel\Interfaces\IComponentViewModel.cs" />
     <Compile Include="ViewModel\Interfaces\ICyclesViewModel.cs" />
     <Compile Include="ViewModel\Interfaces\IEngineViewModel.cs" />
@@ -290,7 +288,6 @@
     <Compile Include="ViewModel\Interfaces\IMainView.cs" />
     <Compile Include="ViewModel\Interfaces\IMainWindowViewModel.cs" />
     <Compile Include="ViewModel\Interfaces\INoneViewModel.cs" />
-    <Compile Include="ViewModel\Interfaces\IPrimaryVehicleBusViewModel.cs" />
     <Compile Include="ViewModel\Interfaces\IRetarderViewModel.cs" />
     <Compile Include="ViewModel\Interfaces\ITorqueConverterViewModel.cs" />
     <Compile Include="ViewModel\Interfaces\ITyreViewModel.cs" />
@@ -323,8 +320,8 @@
     <Compile Include="Views\ComponentViews\Declaration\AxlesDeclarationView.xaml.cs">
       <DependentUpon>AxlesDeclarationView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ComponentViews\Declaration\CompleteVehicleBusView.xaml.cs">
-      <DependentUpon>CompleteVehicleBusView.xaml</DependentUpon>
+    <Compile Include="Views\ComponentViews\Declaration\CompleteTrailerView.xaml.cs">
+      <DependentUpon>CompleteTrailerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ComponentViews\Declaration\CyclesDeclarationView.xaml.cs">
       <DependentUpon>CyclesDeclarationView.xaml</DependentUpon>
@@ -334,9 +331,6 @@
     </Compile>
     <Compile Include="Views\ComponentViews\Declaration\GearboxDeclarationView.xaml.cs">
       <DependentUpon>GearboxDeclarationView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ComponentViews\Declaration\PrimaryVehicleBusView.xaml.cs">
-      <DependentUpon>PrimaryVehicleBusView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ComponentViews\Declaration\RetarderDeclarationView.xaml.cs">
       <DependentUpon>RetarderDeclarationView.xaml</DependentUpon>
@@ -492,7 +486,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\ComponentViews\Declaration\CompleteVehicleBusView.xaml">
+    <Page Include="Views\ComponentViews\Declaration\CompleteTrailerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -507,10 +501,6 @@
     <Page Include="Views\ComponentViews\Declaration\GearboxDeclarationView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\ComponentViews\Declaration\PrimaryVehicleBusView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ComponentViews\Declaration\RetarderDeclarationView.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -3103,6 +3103,15 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Trailer_TPLMAxleAssembly.
+        /// </summary>
+        public static string Trailer_TPLMAxleAssembly {
+            get {
+                return ResourceManager.GetString("Trailer_TPLMAxleAssembly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to TPMLMTotalTrailer.
         /// </summary>
         public static string Trailer_TPMLMTotalTrailer {

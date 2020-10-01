@@ -40,12 +40,10 @@ namespace VECTOTrailer
             container.Bind<IMainWindowViewModel>().To<MainWindowViewModel>();
             container.Bind<IJoblistViewModel>().To<JoblistViewModel>();
             container.Bind<IJobEditViewModel>().To<DeclarationJobViewModel>();
-            container.Bind<IJobEditViewModel>().To<PrimaryVehicleBusJobViewModel>();
-            container.Bind<IJobEditViewModel>().To<CompleteVehicleBusJobViewModel>();
+            container.Bind<IJobEditViewModel>().To<CompleteTrailerJobViewModel>();
             container.Bind<INoneViewModel>().To<NoneViewModel>();
             container.Bind<IVehicleViewModel>().To<VehicleViewModel>();
-            container.Bind<IPrimaryVehicleBusViewModel>().To<PrimaryVehicleBusViewModel>();
-            container.Bind<ICompleteVehicleBusViewModel>().To<CompleteVehicleBusViewModel>();
+            container.Bind<ICompleteTrailerViewModel>().To<CompleteTrailerViewModel>();
 
             container.Bind<IAirdragViewModel>().To<AirdragViewModel>();
             container.Bind<IAngledriveViewModel>().To<AngledriveViewModel>();

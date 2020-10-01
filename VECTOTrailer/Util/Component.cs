@@ -4,7 +4,6 @@ namespace VECTOTrailer.Util {
 	public enum Component
 	{
 		Vehicle = 1,
-		PrimaryBusVehicle,
 		Engine,
 		Gearbox,
 		TorqueConverter,
@@ -17,7 +16,7 @@ namespace VECTOTrailer.Util {
 		Auxiliaries,
 		BusAuxiliaries,
 		Cycle,
-		CompleteBusVehicle
+		CompleteTrailer
 	}
 
 	public static class ComponentHelper
@@ -27,8 +26,7 @@ namespace VECTOTrailer.Util {
 			switch (component)
 			{
 				case Component.Vehicle:
-				case Component.PrimaryBusVehicle:
-				case Component.CompleteBusVehicle:
+				case Component.CompleteTrailer:
 					return XMLNames.Component_Vehicle;
 				case Component.Engine:
 					return XMLNames.Component_Engine;

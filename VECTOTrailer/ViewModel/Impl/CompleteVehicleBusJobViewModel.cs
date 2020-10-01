@@ -22,11 +22,11 @@ using Component = VECTOTrailer.Util.Component;
 
 namespace VECTOTrailer.ViewModel.Impl
 {
-	public class CompleteVehicleBusJobViewModel : AbstractJobViewModel, IJobEditViewModel
+	public class CompleteTrailerJobViewModel : AbstractJobViewModel, IJobEditViewModel
 	{
 		#region Members
 
-		private readonly XMLCompletedBus _xmlCompletedBus;
+		private readonly XMLCompletedTrailer _xmlCompletedBus;
 		private readonly XMLCompletedBusWriter _xmlCompletedBusWriter;
 
 		private ICommand _resetComponentCommand;
@@ -61,20 +61,20 @@ namespace VECTOTrailer.ViewModel.Impl
 		}
 		#endregion
 
-		public CompleteVehicleBusJobViewModel(IKernel kernel, IDeclarationInputDataProvider inputData)
+		public CompleteTrailerJobViewModel(IKernel kernel, IDeclarationInputDataProvider inputData)
 		{
 			Kernel = kernel;
 			InputDataProvider = inputData;
 			IsNewJob = inputData == null;
 			JobViewModel = this;
-			CreateComponentModel(Component.CompleteBusVehicle);
+			CreateComponentModel(Component.CompleteTrailer);
 			//CreateComponentModel(Component.Airdrag);
 			//CreateComponentModel(Component.Auxiliaries);
-			CurrentComponent = GetComponentViewModel(Component.CompleteBusVehicle);
+			CurrentComponent = GetComponentViewModel(Component.CompleteTrailer);
 
 			SetXmlFilePath(inputData?.JobInputData.Vehicle.XMLSource.BaseURI);
 
-			_xmlCompletedBus = new XMLCompletedBus();
+			_xmlCompletedBus = new XMLCompletedTrailer();
 			_xmlCompletedBusWriter = new XMLCompletedBusWriter();
 
 			SetVisibilityOfSaveButtons();
@@ -167,15 +167,15 @@ namespace VECTOTrailer.ViewModel.Impl
 		{
 			switch (component)
 			{
-				case Component.CompleteBusVehicle:
-					_subModels[Component.CompleteBusVehicle].CommitComponentData();
+				case Component.CompleteTrailer:
+					_subModels[Component.CompleteTrailer].CommitComponentData();
 					break;
-				case Component.Airdrag:
+				/*case Component.Airdrag:
 					_subModels[Component.Airdrag].CommitComponentData();
 					break;
 				case Component.Auxiliaries:
 					_subModels[Component.Auxiliaries].CommitComponentData();
-					break;
+					break;*/
 			}
 		}
 
@@ -195,15 +195,15 @@ namespace VECTOTrailer.ViewModel.Impl
 		{
 			switch (component)
 			{
-				case Component.CompleteBusVehicle:
-					_subModels[Component.CompleteBusVehicle].ResetComponentData();
+				case Component.CompleteTrailer:
+					_subModels[Component.CompleteTrailer].ResetComponentData();
 					break;
-				case Component.Airdrag:
+				/*case Component.Airdrag:
 					_subModels[Component.Airdrag].ResetComponentData();
 					break;
 				case Component.Auxiliaries:
 					_subModels[Component.Auxiliaries].ResetComponentData();
-					break;
+					break;*/
 			}
 		}
 
@@ -229,9 +229,9 @@ namespace VECTOTrailer.ViewModel.Impl
 		private void SetCurrentDataToSave()
 		{
 			CompleteVehicleBusData = new Dictionary<Component, object> {
-				{ Component.CompleteBusVehicle, _subModels[Component.CompleteBusVehicle].CommitComponentData()},
-				{ Component.Airdrag, _subModels[Component.Airdrag].CommitComponentData()},
-				{ Component.Auxiliaries, _subModels[Component.Auxiliaries].CommitComponentData()}
+				{ Component.CompleteTrailer, _subModels[Component.CompleteTrailer].CommitComponentData()},
+				//{ Component.Airdrag, _subModels[Component.Airdrag].CommitComponentData()},
+				//{ Component.Auxiliaries, _subModels[Component.Auxiliaries].CommitComponentData()}
 			};
 		}
 
@@ -239,12 +239,12 @@ namespace VECTOTrailer.ViewModel.Impl
 		{
 			switch (component)
 			{
-				case Component.CompleteBusVehicle:
-					return _subModels[Component.CompleteBusVehicle].IsComponentDataChanged();
-				case Component.Airdrag:
+				case Component.CompleteTrailer:
+					return _subModels[Component.CompleteTrailer].IsComponentDataChanged();
+				/*case Component.Airdrag:
 					return _subModels[Component.Airdrag].IsComponentDataChanged();
 				case Component.Auxiliaries:
-					return _subModels[Component.Auxiliaries].IsComponentDataChanged();
+					return _subModels[Component.Auxiliaries].IsComponentDataChanged();*/
 				default:
 					return false;
 			}
@@ -292,11 +292,11 @@ namespace VECTOTrailer.ViewModel.Impl
 		{
 			ClearValidationErrors();
 
-			var completedBusViewModel = _subModels[Component.CompleteBusVehicle] as CompleteVehicleBusViewModel;
-			var auxiliaryViewModel = _subModels[Component.Auxiliaries] as AuxiliariesViewModel;
+			var completedBusViewModel = _subModels[Component.CompleteTrailer] as CompleteTrailerViewModel;
+			//var auxiliaryViewModel = _subModels[Component.Auxiliaries] as AuxiliariesViewModel;
 
 			completedBusViewModel?.ShowValidationErrors(_errors);
-			auxiliaryViewModel?.ShowValidationErrors(_errors);
+			//auxiliaryViewModel?.ShowValidationErrors(_errors);
 
 			_validationErrorsDisplayed = true;
 		}
@@ -322,11 +322,11 @@ namespace VECTOTrailer.ViewModel.Impl
 				return;
 
 
-			var completedBusViewModel = _subModels[Component.CompleteBusVehicle] as CompleteVehicleBusViewModel;
-			var auxiliaryViewModel = _subModels[Component.Auxiliaries] as AuxiliariesViewModel;
+			var completedBusViewModel = _subModels[Component.CompleteTrailer] as CompleteTrailerViewModel;
+			//var auxiliaryViewModel = _subModels[Component.Auxiliaries] as AuxiliariesViewModel;
 
 			completedBusViewModel?.RemoveValidationErrors(_errors);
-			auxiliaryViewModel?.RemoveValidationErrors(_errors);
+			//auxiliaryViewModel?.RemoveValidationErrors(_errors);
 
 			_validationErrorsDisplayed = false;
 		}

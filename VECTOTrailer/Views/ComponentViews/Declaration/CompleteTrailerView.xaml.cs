@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace VECTOTrailer.Views.ComponentViews.Declaration
 {
 	/// <summary>
-	/// Interaction logic for CompleteVehicleBusView.xaml
+	/// Interaction logic for CompleteTrailerView.xaml
 	/// </summary>
-	public partial class CompleteVehicleBusView : UserControl
+	public partial class CompleteTrailerView : UserControl
 	{
-		public CompleteVehicleBusView()
+		public CompleteTrailerView()
 		{
 			InitializeComponent();
 		}

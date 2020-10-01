@@ -8,7 +8,7 @@ using VECTOTrailer.ViewModel.Impl;
 
 namespace VECTOTrailer.ViewModel.Interfaces
 {
-	public interface IBusJobViewModel
+	public interface ITrailerJobViewModel
 	{
 		JobFileType FirstFileType { get; }
 		JobFileType SecondFileType { get; }

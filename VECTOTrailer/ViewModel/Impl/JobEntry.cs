@@ -7,26 +7,26 @@ namespace VECTOTrailer.ViewModel.Impl
 {
 	public enum JobType
 	{
-		SingleBusJob,
-		CompletedBusJob,
+		SingleTrailerJob,
+		CompletedTrailerJob,
 		CompletedXml,
 		Unknown
 	}
 
 	public static class JobTypeHelper
 	{
-		private const string SingleBusJobLabel = "Single Bus Job";
-		private const string CompletedBusJobLabel = "Completed Bus Job";
-		private const string CompletedXmlLabel = "Completed Bus XML";
+		private const string SingleTrailerJobLabel = "Single Trailer Job";
+		private const string CompletedTrailerJobLabel = "Completed Trailer Job";
+		private const string CompletedXmlLabel = "Completed Trailer XML";
 
 		public static string GetLabel(this JobType jobType)
 		{
 			switch (jobType)
 			{
-				case JobType.SingleBusJob:
-					return SingleBusJobLabel;
-				case JobType.CompletedBusJob:
-					return CompletedBusJobLabel;
+				case JobType.SingleTrailerJob:
+					return SingleTrailerJobLabel;
+				case JobType.CompletedTrailerJob:
+					return CompletedTrailerJobLabel;
 				case JobType.CompletedXml:
 					return CompletedXmlLabel;
 				default:
@@ -36,10 +36,10 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		public static JobType Parse(this string jobTypeName)
 		{
-			if (SingleBusJobLabel == jobTypeName)
-				return JobType.SingleBusJob;
-			if (CompletedBusJobLabel == jobTypeName)
-				return JobType.CompletedBusJob;
+			if (SingleTrailerJobLabel == jobTypeName)
+				return JobType.SingleTrailerJob;
+			if (CompletedTrailerJobLabel == jobTypeName)
+				return JobType.CompletedTrailerJob;
 			if (CompletedXmlLabel == jobTypeName)
 				return JobType.CompletedXml;
 
@@ -48,19 +48,19 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		public static JobType GetJobTypeByFileVersion(int fileVersion)
 		{
-			if (fileVersion == JobHeader.SingleBusFileVersion)
-				return JobType.SingleBusJob;
-			if (fileVersion == JobHeader.CompletedBusFileVersion)
-				return JobType.CompletedBusJob;
+			if (fileVersion == JobHeader.SingleTrailerFileVersion)
+				return JobType.SingleTrailerJob;
+			if (fileVersion == JobHeader.CompletedTrailerFileVersion)
+				return JobType.CompletedTrailerJob;
 			return JobType.Unknown;
 		}
 
 		public static int GetJobTypeNumberByJobType(this JobType jobType)
 		{
-			if (jobType == JobType.CompletedBusJob)
-				return JobHeader.CompletedBusFileVersion;
-			if (jobType == JobType.SingleBusJob)
-				return JobHeader.SingleBusFileVersion;
+			if (jobType == JobType.CompletedTrailerJob)
+				return JobHeader.CompletedTrailerFileVersion;
+			if (jobType == JobType.SingleTrailerJob)
+				return JobHeader.SingleTrailerFileVersion;
 			return 0;
 		}
 	}
@@ -124,8 +124,8 @@ namespace VECTOTrailer.ViewModel.Impl
 
 	public class JobHeader : ObservableObject
 	{
-		public const int SingleBusFileVersion = 6;
-		public const int CompletedBusFileVersion = 7;
+		public const int SingleTrailerFileVersion = 6;
+		public const int CompletedTrailerFileVersion = 7;
 
 		private JobType _jobType;
 		private string _createdBy;

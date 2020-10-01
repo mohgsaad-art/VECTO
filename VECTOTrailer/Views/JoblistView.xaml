@@ -93,12 +93,12 @@
                                 <ContextMenu x:Key="RowMenu">
                                     <MenuItem Header="{Binding DataContext.FirstContextMenu, RelativeSource={RelativeSource AncestorType=views:JoblistView}}" 
                                               Command="{Binding DataContext.OpenJob, RelativeSource={RelativeSource AncestorType=views:JoblistView}}"
-                                              CommandParameter="{Binding Source={x:Static impl:JobFileType.PrimaryBusFile}}" 
+                                              CommandParameter="{Binding Source={x:Static impl:JobFileType.PrimaryTrailerFile}}" 
                                               Visibility="{Binding DataContext.VisibilityFirstView, Converter={converter:BoolVisibilityConverter},
                                               RelativeSource={RelativeSource AncestorType=views:JoblistView}}"/>
-                                    <MenuItem Header="View Completed Bus File" 
+                                    <MenuItem Header="View Completed Trailer File" 
                                               Command="{Binding DataContext.OpenJob, RelativeSource={RelativeSource AncestorType=views:JoblistView}}"
-                                              CommandParameter="{Binding Source={x:Static impl:JobFileType.CompletedBusFile}}"
+                                              CommandParameter="{Binding Source={x:Static impl:JobFileType.CompletedTrailerFile}}"
                                               Visibility="{Binding DataContext.VisibilitySecView, Converter={converter:BoolVisibilityConverter}, 
                                               RelativeSource={RelativeSource AncestorType=views:JoblistView}}"/>
 
@@ -129,10 +129,10 @@
                                 <ContextMenu>
                                     <MenuItem Header="Add Job" Command="{Binding AddJob}"/>
                                     <Separator HorizontalAlignment="Stretch" Background="Gray"/>
-                                    <MenuItem Header="Create Single Bus Job"
-                                              Command="{Binding AddBusJob}" CommandParameter="{Binding Source={x:Static impl:JobType.SingleBusJob}}"/>
-                                    <MenuItem Header="Create Completed Bus Job"
-                                              Command="{Binding AddBusJob}" CommandParameter="{Binding Source={x:Static impl:JobType.CompletedBusJob}}"/>
+                                    <MenuItem Header="Create Single Trailer Job"
+                                              Command="{Binding AddTrailerJob}" CommandParameter="{Binding Source={x:Static impl:JobType.SingleTrailerJob}}"/>
+                                    <MenuItem Header="Create Completed Trailer Job"
+                                              Command="{Binding AddTrailerJob}" CommandParameter="{Binding Source={x:Static impl:JobType.CompletedTrailerJob}}"/>
                                     <MenuItem Header="Create Completed XML"
                                               Command="{Binding CreateNewJob}"/>
                                     <Separator HorizontalAlignment="Stretch" Background="Gray"/>

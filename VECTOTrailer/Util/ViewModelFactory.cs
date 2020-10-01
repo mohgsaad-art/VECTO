@@ -11,8 +11,7 @@ namespace VECTOTrailer.Util
 		public static Dictionary<Component, Type> ComponentViewModelMapping = new Dictionary<Component, Type>()
 		{
 			{ Component.Vehicle, typeof(IVehicleViewModel)},
-			{ Component.CompleteBusVehicle, typeof(ICompleteVehicleBusViewModel)},
-			{ Component.PrimaryBusVehicle, typeof(IPrimaryVehicleBusViewModel) },
+			{ Component.CompleteTrailer, typeof(ICompleteTrailerViewModel)},
 			{ Component.Engine ,typeof(IEngineViewModel) },
 			{ Component.Gearbox ,typeof(IGearboxViewModel) },
 			{ Component.TorqueConverter ,typeof(ITorqueConverterViewModel) },

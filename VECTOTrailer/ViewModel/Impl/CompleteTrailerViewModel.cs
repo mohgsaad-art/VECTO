@@ -12,12 +12,12 @@ using VECTOTrailer.ViewModel.Interfaces;
 
 namespace VECTOTrailer.ViewModel.Impl
 {
-	public class CompleteVehicleBusViewModel : AbstractComponentViewModel, ICompleteVehicleBusViewModel
+	public class CompleteTrailerViewModel : AbstractComponentViewModel, ICompleteTrailerViewModel
 	{
 		#region Members
 
 		private IVehicleDeclarationInputData _vehicle;
-		private VehicleBusComponentData _componentData;
+		private TrailerComponentData _componentData;
 
 		private string _manufacturer;
 		private string _manufacturerAddress;
@@ -38,11 +38,26 @@ namespace VECTOTrailer.ViewModel.Impl
 		private Meter _vehicleWidth;
 		private Meter _entranceHeight;
 		private ConsumerTechnology _doorDriveTechnology;
+		private Meter _externalLengthOfTheBody;
+		private Meter _externalWidthOfTheBody;
+		private Meter _externalHeightOfTheBody;
+		private Meter _totalHeightOfTheTrailer;
+		private Meter _positionXFirstAxle;
+		private Meter _positionXLastAxle;
+		private Meter _internalHeightOfTheBody;
+		private CubicMeter _cargoVolume;
+		private int _numberOfAxles;
+		private TypeTrailer _trailerType;
+		private BodyWorkCode _bodyCode;
+		private AeroFeatureTechnologies _technologies;
+		private Kilogram _curbMassTrailer;
+		private Kilogram _tPLMTotalTrailer;
+		private Kilogram _tPLMAxleAssembly;
 
 
 		#endregion
 
-		#region ICompleteVehicleBusViewModel
+		#region ICompleteTrailerViewModel
 
 		public string Manufacturer
 		{
@@ -238,13 +253,174 @@ namespace VECTOTrailer.ViewModel.Impl
 			}
 		}
 
+		public Meter ExternalLengthOfTheBody
+		{
+			get { return _externalLengthOfTheBody; }
+			set
+			{
+				if (!SetProperty(ref _externalLengthOfTheBody, value))
+					return;
+				IsDataChanged(_externalLengthOfTheBody, _componentData);
+			}
+		}
+
+		public Meter ExternalWidthOfTheBody
+		{
+			get { return _externalWidthOfTheBody; }
+			set
+			{
+				if (!SetProperty(ref _externalWidthOfTheBody, value))
+					return;
+				IsDataChanged(_externalWidthOfTheBody, _componentData);
+			}
+		}
+
+		public Meter ExternalHeightOfTheBody
+		{
+			get { return _externalHeightOfTheBody; }
+			set
+			{
+				if (!SetProperty(ref _externalHeightOfTheBody, value))
+					return;
+				IsDataChanged(_externalHeightOfTheBody, _componentData);
+			}
+		}
+
+		public Meter TotalHeightOfTheTrailer
+		{
+			get { return _totalHeightOfTheTrailer; }
+			set
+			{
+				if (!SetProperty(ref _totalHeightOfTheTrailer, value))
+					return;
+				IsDataChanged(_totalHeightOfTheTrailer, _componentData);
+			}
+		}
+
+		public Meter PositionXFirstAxle
+		{
+			get { return _positionXFirstAxle; }
+			set
+			{
+				if (!SetProperty(ref _positionXFirstAxle, value))
+					return;
+				IsDataChanged(_positionXFirstAxle, _componentData);
+			}
+		}
+
+		public Meter PositionXLastAxle
+		{
+			get { return _positionXLastAxle; }
+			set
+			{
+				if (!SetProperty(ref _positionXLastAxle, value))
+					return;
+				IsDataChanged(_positionXLastAxle, _componentData);
+			}
+		}
+
+		public Meter InternalHeightOfTheBody
+		{
+			get { return _internalHeightOfTheBody; }
+			set
+			{
+				if (!SetProperty(ref _internalHeightOfTheBody, value))
+					return;
+				IsDataChanged(_internalHeightOfTheBody, _componentData);
+			}
+		}
+
+		public CubicMeter CargoVolume
+		{
+			get { return _cargoVolume; }
+			set
+			{
+				if (!SetProperty(ref _cargoVolume, value))
+					return;
+				IsDataChanged(_cargoVolume, _componentData);
+			}
+		}
+
+		public int NumberOfAxles
+		{
+			get { return _numberOfAxles; }
+			set
+			{
+				if (!SetProperty(ref _numberOfAxles, value))
+					return;
+				IsDataChanged(_numberOfAxles, _componentData);
+			}
+		}
+
+		public TypeTrailer TrailerType
+		{
+			get { return _trailerType; }
+			set
+			{
+				if (!SetProperty(ref _trailerType, value))
+					return;
+				IsDataChanged(_trailerType, _componentData);
+			}
+		}
+
+		public BodyWorkCode BodyCode
+		{
+			get { return _bodyCode; }
+			set
+			{
+				if (!SetProperty(ref _bodyCode, value))
+					return;
+				IsDataChanged(_bodyCode, _componentData);
+			}
+		}
+		public AeroFeatureTechnologies Technologies
+		{
+			get { return _technologies; }
+			set
+			{
+				if (!SetProperty(ref _technologies, value))
+					return;
+				IsDataChanged(_technologies, _componentData);
+			}
+		}
+
+		public Kilogram CurbMassTrailer
+		{
+			get { return _curbMassTrailer; }
+			set
+			{
+				if (!SetProperty(ref _curbMassTrailer, value))
+					return;
+				IsDataChanged(_curbMassTrailer, _componentData);
+			}
+		}
+		public Kilogram TPLMTotalTrailer
+		{
+			get { return _tPLMTotalTrailer; }
+			set
+			{
+				if (!SetProperty(ref _tPLMTotalTrailer, value))
+					return;
+				IsDataChanged(_tPLMTotalTrailer, _componentData);
+			}
+		}
+		public Kilogram TPLMAxleAssembly
+		{
+			get { return _tPLMAxleAssembly; }
+			set
+			{
+				if (!SetProperty(ref _tPLMAxleAssembly, value))
+					return;
+				IsDataChanged(_tPLMAxleAssembly, _componentData);
+			}
+		}
+
 		public Dictionary<string, string> XmlNamesToPropertyMapping { get; private set; }
 
 		public AllowedEntry<LegislativeClass>[] AllowedLegislativeClasses { get; private set; }
-		public AllowedEntry<VehicleCode>[] AllowedVehicleCodes { get; private set; }
-		public AllowedEntry<ConsumerTechnology>[] AllowedDoorDriveTechnologies { get; private set; }
-		public AllowedEntry<RegistrationClass>[] AllowedRegisteredClasses { get; private set; }
-		public AllowedEntry<TankSystem?>[] AllowedTankSystems { get; private set; }
+		public AllowedEntry<TypeTrailer>[] AllowedTrailerTypes { get; private set; }
+		public AllowedEntry<BodyWorkCode>[] AllowedBodyCodes { get; private set; }
+		public AllowedEntry<AeroFeatureTechnologies>[] AllowedTechnologies { get; private set; }
 
 		#endregion
 
@@ -265,7 +441,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		{
 			if (vehicle == null)
 			{
-				_componentData = new VehicleBusComponentData(this, true);
+				_componentData = new TrailerComponentData(this, true);
 			}
 			else
 			{
@@ -288,7 +464,7 @@ namespace VECTOTrailer.ViewModel.Impl
 				VehicleWidth = vehicle.Width;
 				EntranceHeight = vehicle.EntranceHeight;
 				DoorDriveTechnology = vehicle.DoorDriveTechnology;
-				_componentData = new VehicleBusComponentData(this);
+				_componentData = new TrailerComponentData(this);
 			}
 
 			ClearChangedProperties();
@@ -300,17 +476,14 @@ namespace VECTOTrailer.ViewModel.Impl
 			AllowedLegislativeClasses = new[] { LegislativeClass.M3 }
 				.Select(lc => AllowedEntry.Create(lc, lc.GetLabel())).ToArray();
 
-			AllowedVehicleCodes = EnumHelper.GetValues<VehicleCode>().Where(x => x != VehicleCode.NOT_APPLICABLE)
+			AllowedTrailerTypes = EnumHelper.GetValues<TypeTrailer>().Where(x => x != TypeTrailer.Unknown)
 				.Select(vc => AllowedEntry.Create(vc, vc.GetLabel())).ToArray();
 
-			AllowedDoorDriveTechnologies = new[] { ConsumerTechnology.Pneumatically, ConsumerTechnology.Electrically }
-				.Select(sc => AllowedEntry.Create(sc, sc.GetLabel())).ToArray();
-
-			AllowedRegisteredClasses = EnumHelper.GetValues<RegistrationClass>().Where(x => x != RegistrationClass.unknown)
+			AllowedBodyCodes = EnumHelper.GetValues<BodyWorkCode>().Where(x => x != BodyWorkCode.Unknown)
 				.Select(vc => AllowedEntry.Create(vc, vc.GetLabel())).ToArray();
 
-			AllowedTankSystems = new[] { AllowedEntry.Create((TankSystem?)null, "Not applicable") }
-				.Concat(EnumHelper.GetValues<TankSystem>().Select(x => AllowedEntry.Create((TankSystem?)x, x.ToString()))).ToArray();
+			AllowedTechnologies = EnumHelper.GetValues<AeroFeatureTechnologies>().Where(x => x != AeroFeatureTechnologies.Unknown)
+				.Select(vc => AllowedEntry.Create(vc, vc.GetLabel())).ToArray();
 		}
 
 		#endregion

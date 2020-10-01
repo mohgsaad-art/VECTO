@@ -23,7 +23,7 @@
         <views:SettingsView/>
     </DataTemplate>
    
-    <DataTemplate DataType="{x:Type impl:AbstractBusJobViewModel}">
+    <DataTemplate DataType="{x:Type impl:AbstractTrailerJobViewModel}">
         <views:BusJobView/>
     </DataTemplate>
 
@@ -34,11 +34,6 @@
 
     <DataTemplate DataType="{x:Type impl:NoneViewModel}">
         <views:EditComponentNoneView/>
-    </DataTemplate>
-
-    <!--New defined DataTemplates-->
-    <DataTemplate DataType="{x:Type impl:PrimaryVehicleBusJobViewModel}">
-        <views:JobEditView/>
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type impl:AboutViewModel}">
@@ -53,7 +48,7 @@
 <!--some test-->
 
 
-    <DataTemplate DataType="{x:Type impl:CompleteVehicleBusJobViewModel}">
+    <DataTemplate DataType="{x:Type impl:CompleteTrailerJobViewModel}">
         <views:JoblistTabView/>
     </DataTemplate>
 
@@ -62,13 +57,8 @@
 
 
 
-
-    <DataTemplate DataType="{x:Type impl:PrimaryVehicleBusViewModel}">
-        <declaration:PrimaryVehicleBusView/>
-    </DataTemplate>
-
-    <DataTemplate DataType="{x:Type impl:CompleteVehicleBusViewModel}">
-        <declaration:CompleteVehicleBusView/>
+    <DataTemplate DataType="{x:Type impl:CompleteTrailerViewModel}">
+        <declaration:CompleteTrailerView/>
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type impl:AirdragViewModel}">

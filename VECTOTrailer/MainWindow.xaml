@@ -44,10 +44,10 @@
                         <!--<MenuItem.Icon>
                             <iconPacks:PackIconModern Width="15" Height="15" Kind="Tools" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Green" />
                         </MenuItem.Icon>-->
-                        <!--<MenuItem Header="Create Single Bus Job"
-                                  Command="{Binding CurrentViewModel.AddBusJob}" CommandParameter="{Binding Source={x:Static impl:JobType.SingleBusJob}}"/>
-                        <MenuItem Header="Create Completed Bus Job"
-                                  Command="{Binding CurrentViewModel.AddBusJob}" CommandParameter="{Binding Source={x:Static impl:JobType.CompletedBusJob}}"/>-->
+                        <MenuItem Header="Create Single Trailer Job"
+                                  Command="{Binding CurrentViewModel.AddBusJob}" CommandParameter="{Binding Source={x:Static impl:JobType.SingleTrailerJob}}"/>
+                        <MenuItem Header="Create Completed Trailer Job"
+                                  Command="{Binding CurrentViewModel.AddBusJob}" CommandParameter="{Binding Source={x:Static impl:JobType.CompletedTrailerJob}}"/>
                         <MenuItem Header="Create Completed XML"
                                   Command="{Binding CurrentViewModel.CreateNewJob}"/>
                         <Separator HorizontalAlignment="Stretch" Background="Gray"/>

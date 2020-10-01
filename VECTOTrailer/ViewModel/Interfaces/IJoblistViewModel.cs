@@ -9,7 +9,7 @@ namespace VECTOTrailer.ViewModel.Interfaces
 	{
 		ObservableCollectionEx<JobEntry> Jobs { get; }
 		ObservableCollection<MessageEntry> Messages { get; }
-		ICommand AddBusJob { get; }
+		ICommand AddTrailerJob { get; }
 		ICommand AddJob { get; }
 		void HandleFileOpen(string filename);
 		ICommand RemoveJob { get; }

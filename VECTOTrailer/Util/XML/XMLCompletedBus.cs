@@ -18,7 +18,7 @@ using VECTOTrailer.ViewModel.Interfaces;
 
 namespace VECTOTrailer.Util.XML
 {
-	public class XMLCompletedBus
+	public class XMLCompletedTrailer
 	{
 		private string _declarationDefinition;
 		private string _schemaVersion;
@@ -31,7 +31,7 @@ namespace VECTOTrailer.Util.XML
 		private XNamespace _rootNamespace;
 
 
-		public XMLCompletedBus()
+		public XMLCompletedTrailer()
 		{
 			Init();
 		}
@@ -73,7 +73,7 @@ namespace VECTOTrailer.Util.XML
 		
 		private XElement GetVehicle(Dictionary<Component, object> inputData)
 		{
-			var vehicleData = (ICompleteVehicleBus)inputData[Component.CompleteBusVehicle];
+			var vehicleData = (ICompleteTrailer)inputData[Component.CompleteTrailer];
 
 
 			var id = "CB-" + Guid.NewGuid().ToString("n").Substring(0, 20);
@@ -88,7 +88,7 @@ namespace VECTOTrailer.Util.XML
 					new XElement(_v26 + XMLNames.Vehicle_VIN, vehicleData?.VIN),
 					new XElement(_v26 + XMLNames.Component_Date, XmlConvert.ToString(DateTime.Now, XmlDateTimeSerializationMode.Utc)),
 					new XElement(_v26 + XMLNames.Vehicle_LegislativeClass, vehicleData?.LegislativeClass.GetLabel()),
-					new XElement(_v26 + XMLNames.Vehicle_RegisteredClass, vehicleData?.RegisteredClass.GetLabel()),
+					/*new XElement(_v26 + XMLNames.Vehicle_RegisteredClass, vehicleData?.RegisteredClass.GetLabel()),
 					new XElement(_v26 + XMLNames.Vehicle_VehicleCode, vehicleData?.VehicleCode.GetLabel()),
 					new XElement(_v26 + XMLNames.Vehicle_CurbMassChassis, vehicleData?.CurbMassChassis?.ToXMLFormat(0)),
 					new XElement(_v26 + XMLNames.TPMLM, vehicleData?.TechnicalPermissibleMaximumLadenMass?.ToXMLFormat(0)),
@@ -102,7 +102,7 @@ namespace VECTOTrailer.Util.XML
 					new XElement(_v26 + XMLNames.Bus_VehicleLength, vehicleData?.VehicleLength?.ToXMLFormat(3)),
 					new XElement(_v26 + XMLNames.Bus_VehicleWidth, vehicleData?.VehicleWidth?.ToXMLFormat(3)),
 					new XElement(_v26 + XMLNames.Bus_EntranceHeight, vehicleData?.EntranceHeight?.ToXMLFormat(3)),
-					new XElement(_v26 + XMLNames.BusAux_PneumaticSystem_DoorDriveTechnology, vehicleData?.DoorDriveTechnology.GetLabel()?.ToLower()),
+					new XElement(_v26 + XMLNames.BusAux_PneumaticSystem_DoorDriveTechnology, vehicleData?.DoorDriveTechnology.GetLabel()?.ToLower()),*/
 
 			new XElement(_v26 + XMLNames.Vehicle_Components,
 					new XAttribute(_xsi + "type", XMLDeclarationCompleteBusComponentsDataProviderV26.XSD_TYPE),//"CompletedVehicleComponentsDeclarationType"
