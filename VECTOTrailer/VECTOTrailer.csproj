@@ -214,7 +214,7 @@
     <Compile Include="Util\TableDataConverter.cs" />
     <Compile Include="Util\VectoParameterAttribute.cs" />
     <Compile Include="Util\ViewModelFactory.cs" />
-    <Compile Include="Util\XML\XMLCompletedBus.cs" />
+    <Compile Include="Util\XML\XMLCompletedTrailer.cs" />
     <Compile Include="ViewModel\Adapter\Declaration\AbstractDeclarationAdapter.cs" />
     <Compile Include="ViewModel\Adapter\Declaration\AirdragDeclarationAdapter.cs" />
     <Compile Include="ViewModel\Adapter\Declaration\AngledriveDeclarationAdapter.cs" />
@@ -241,7 +241,7 @@
     <Compile Include="ViewModel\Impl\AxlesViewModel.cs" />
     <Compile Include="ViewModel\Impl\AxleViewModel.cs" />
     <Compile Include="ViewModel\Impl\CompletedTrailerJobViewModel.cs" />
-    <Compile Include="ViewModel\Impl\CompleteVehicleBusJobViewModel.cs" />
+    <Compile Include="ViewModel\Impl\CompleteTrailerJobViewModel.cs" />
     <Compile Include="ViewModel\Impl\CompleteTrailerViewModel.cs" />
     <Compile Include="ViewModel\Impl\CyclesViewModel.cs" />
     <Compile Include="ViewModel\Impl\DeclarationJobViewModel.cs" />
@@ -299,8 +299,8 @@
     <Compile Include="Views\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\BusJobView.xaml.cs">
-      <DependentUpon>BusJobView.xaml</DependentUpon>
+    <Compile Include="Views\TrailerJobView.xaml.cs">
+      <DependentUpon>TrailerJobView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ComponentViews\Declaration\AirdragDeclarationView.xaml.cs">
       <DependentUpon>AirdragDeclarationView.xaml</DependentUpon>
@@ -458,7 +458,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\BusJobView.xaml">
+    <Page Include="Views\TrailerJobView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

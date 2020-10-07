@@ -7,10 +7,10 @@
              xmlns:interfaces="clr-namespace:VECTOTrailer.ViewModel.Interfaces"
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="440"             
-             d:DataContext="{d:DesignInstance Type=impl:AbstractBusJobViewModel, IsDesignTimeCreatable=False}">
+             d:DataContext="{d:DesignInstance Type=impl:AbstractTrailerJobViewModel, IsDesignTimeCreatable=False}">
 
     <d:JoblistView.DataContext>
-        <x:Type Type="interfaces:IBusJobViewModel"/>
+        <x:Type Type="interfaces:ITrailerJobViewModel"/>
     </d:JoblistView.DataContext>
 
     <Grid>

@@ -11,15 +11,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0" Background="Gray">
-            <Button Margin="0,20,0,0" Background="Gray" BorderBrush="Gray" Foreground="White" HorizontalAlignment="Left" Padding="10,0,0,0">Vehicle</Button>
-            <Button Margin="0,5,0,0" Background="Gray" BorderBrush="Gray" Foreground="White" HorizontalAlignment="Left" Padding="10,0,0,0">Airdrag</Button>
-            <Button Margin="0,5,0,0" Background="Gray" BorderBrush="Gray" Foreground="White" HorizontalAlignment="Left" Padding="10,0,0,0">Engine</Button>
-            <Button Margin="0,5,0,0" Background="Gray" BorderBrush="Gray" Foreground="White" HorizontalAlignment="Left" Padding="10,0,0,0">Transmission</Button>
-            <Button Margin="0,5,0,0" Background="Gray" BorderBrush="Gray" Foreground="White" HorizontalAlignment="Left" Padding="10,0,0,0">Retarder</Button>
-            <Button Margin="0,5,0,0" Background="Gray" BorderBrush="Gray" Foreground="White" HorizontalAlignment="Left" Padding="10,0,0,0">Axlegear</Button>
-            <Button Margin="0,5,0,0" Background="Gray" BorderBrush="Gray" Foreground="White" HorizontalAlignment="Left" Padding="10,0,0,0">Tyres</Button>
-            <Button Margin="0,5,0,0" Background="Gray" BorderBrush="Gray" Foreground="White" HorizontalAlignment="Left" Padding="10,0,0,0">Auxiliaries</Button>
-            <Button Margin="0,5,0,0" Background="Gray" BorderBrush="Gray" Foreground="White" HorizontalAlignment="Left" Padding="10,0,0,0">Cycles</Button>
+            <Button Margin="0,20,0,0" Background="Gray" BorderBrush="Gray" Foreground="White" HorizontalAlignment="Left" Padding="10,0,0,0">Trailer</Button>
         </StackPanel>
     </Grid>
 </UserControl>

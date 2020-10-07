@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using VECTOTrailer.ViewModel.Impl;
 
 namespace VECTOTrailer.ViewModel.Interfaces
 {
@@ -17,28 +19,7 @@ namespace VECTOTrailer.ViewModel.Interfaces
 		string Model { get; set; }
 		string VIN { get; set; }
 		DateTime Date { get; set; }
-		LegislativeClass LegislativeClass { get; set; }
-		/*RegistrationClass RegisteredClass { get; set; }
-		VehicleCode VehicleCode { get; set; }
-		Kilogram CurbMassChassis { get; set; }
-		Kilogram TechnicalPermissibleMaximumLadenMass { get; set; }
-		TankSystem? NgTankSystem { get; set; }
-		int NumberOfPassengersLowerDeck { get; set; }
-		int NumberOfPassengersUpperDeck { get; set; }
-		bool LowEntry { get; set; }
-		Meter HeightIntegratedBody { get; set; }
-		Meter VehicleLength { get; set; }
-		Meter VehicleWidth { get; set; }
-		Meter EntranceHeight { get; set; }
-
-		#region CompleteBusDataProviderV26
-
-		ConsumerTechnology DoorDriveTechnology { get; set; }
-		
-		#endregion*/
-
-		#region CompleteBusDataProviderV27
-
+		string LegislativeCategory { get; set; }
 		Meter ExternalLengthOfTheBody { get; set; }
 		Meter ExternalWidthOfTheBody { get; set; }
 		Meter ExternalHeightOfTheBody { get; set; }
@@ -47,15 +28,24 @@ namespace VECTOTrailer.ViewModel.Interfaces
 		Meter PositionXLastAxle { get; set; }
 		Meter InternalHeightOfTheBody { get; set; }
 		CubicMeter CargoVolume { get; set; }
-		int NumberOfAxles { get; set; }
+		NumberOfTrailerAxles NumberOfAxles { get; set; }
 		TypeTrailer TrailerType { get; set; }
 		BodyWorkCode BodyCode { get; set; }
 		AeroFeatureTechnologies Technologies { get; set; }
 		Kilogram CurbMassTrailer { get; set; }
 		Kilogram TPLMTotalTrailer { get; set; }
 		Kilogram TPLMAxleAssembly { get; set; }
-
-		#endregion
+		string Axle1FilePath { get; set; }
+		string Axle2FilePath { get; set; }
+		string Axle3FilePath { get; set; }
+		string Axle1Xml{ get; set; }
+		string Axle2Xml { get; set; }
+		string Axle3Xml { get; set; }
+		bool Axle1IsTwin { get; set; }
+		bool Axle2IsTwin { get; set; }
+		bool Axle3IsTwin { get; set; }
+		ICommand SelectFirstFileCommand { get; }
+		JobFileType FirstFileType { get; }
 
 		Dictionary<string,string> XmlNamesToPropertyMapping { get; }
 	}

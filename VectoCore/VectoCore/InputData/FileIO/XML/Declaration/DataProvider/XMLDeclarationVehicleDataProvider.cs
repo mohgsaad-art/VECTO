@@ -1004,11 +1004,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		}
 
 		public int NumberOfAxles {
-			get
-			{
-				var node = GetNode(XMLNames.Trailer_AxleCount);
-				return XmlConvert.ToInt32(node.InnerText);
-			}
+			get { return int.Parse(NumberOfTrailerAxlesHelper.Parse(GetString(XMLNames.Trailer_AxleCount)).GetLabel()); }
 		}
 
 		public TypeTrailer TrailerType

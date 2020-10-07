@@ -113,6 +113,7 @@
     <Compile Include="Models\SimulationType.cs" />
     <Compile Include="Models\BodyWorkCode.cs" />
     <Compile Include="Models\AeroFeatureTechnologies.cs" />
+    <Compile Include="Models\NumberOfTrailerAxles.cs" />
     <Compile Include="Models\TypeTrailer.cs" />
     <Compile Include="Models\VehicleCategory.cs" />
     <Compile Include="Models\VehicleClass.cs" />

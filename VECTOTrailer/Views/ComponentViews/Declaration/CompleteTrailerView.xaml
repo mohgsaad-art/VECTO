@@ -20,9 +20,9 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10" />
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
 
@@ -32,8 +32,8 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <GroupBox Header="Documentation" Grid.Row="1" Grid.Column="1" Width="350" Height="300" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
-            <StackPanel Orientation="Vertical" Width="300" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
+        <GroupBox Header="Documentation" Grid.Row="1" Grid.Column="1" Width="350" Height="280" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
+            <StackPanel Orientation="Vertical" Width="330" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
                 <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
 
                     <Grid Margin="5">
@@ -102,16 +102,9 @@
                             <ColumnDefinition />
                             <ColumnDefinition SharedSizeGroup="unitWidth"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Legislative Class" Margin="0,0,10,0"/>
-                        <ComboBox Grid.Column="1" 
-                                  Margin="20,0,0,0"
-                                  ItemsSource="{Binding AllowedLegislativeClasses}"
-                                  SelectedValue="{Binding LegislativeClass, Mode=TwoWay ,ValidatesOnDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"
-                                  SelectedValuePath="Value"
-                                  DisplayMemberPath="Label"
-                                  IsEditable="True"
-                                  IsReadOnly="True"
-                                  Text="Select..."/>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Legislative Category" Margin="0,0,10,0"/>
+                        <TextBox Grid.Column="1" Margin="20,0,0,0" 
+                                 Text="{Binding LegislativeCategory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
                     </Grid>
 
                 </StackPanel>
@@ -119,114 +112,74 @@
         </GroupBox>
 
         <GroupBox Header="Dimensions" Grid.Row="2" Grid.Column="1" Width="350" Height="330" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
-            <StackPanel Orientation="Vertical" Width="300" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
+            <StackPanel Orientation="Vertical" Width="330" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
                 <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
 
-                    <Grid Margin="5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition SharedSizeGroup="vehicleLbl"/>
-                            <ColumnDefinition />
-                            <ColumnDefinition SharedSizeGroup="unitWidth"/>
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock Grid.Column="0" Text="External length of the body" Margin="0,0,10,0"/>
-                        <TextBox Grid.Column="1" Margin="20,0,0,0" 
-                                 Text="{Binding ExternalLengthOfTheBody, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+                    <Grid>
+                        <customControls:VectoParameterControl
+                            Caption="External length of the body"
+                            Value="{Binding ExternalLengthOfTheBody}" ValueAlign="right"
+                            Unit="m" UnitWidthGroup="unitWidth"/>
                     </Grid>
 
-                    <Grid Margin="5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition SharedSizeGroup="vehicleLbl"/>
-                            <ColumnDefinition />
-                            <ColumnDefinition SharedSizeGroup="unitWidth"/>
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock Grid.Column="0" Text="External width of the body" Margin="0,0,10,0"/>
-                        <TextBox Grid.Column="1" Margin="20,0,0,0" 
-                                 Text="{Binding ExternalWidthOfTheBody, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+                    <Grid>
+                        <customControls:VectoParameterControl
+                            Caption="External width of the body" CaptionWidthGroup="lblGWidth"
+                            Value="{Binding ExternalWidthOfTheBody}" ValueAlign="right"
+                            Unit="m" UnitWidthGroup="unitWidth"/>
                     </Grid>
 
-                    <Grid Margin="5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition SharedSizeGroup="vehicleLbl"/>
-                            <ColumnDefinition />
-                            <ColumnDefinition SharedSizeGroup="unitWidth"/>
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock Grid.Column="0" Text="External height of the body" Margin="0,0,10,0"/>
-                        <TextBox Grid.Column="1" Margin="20,0,0,0" 
-                                 Text="{Binding ExternalHeightOfTheBody, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+                    <Grid>
+                        <customControls:VectoParameterControl
+                            Caption="External height of the body" CaptionWidthGroup="lblGWidth"
+                            Value="{Binding ExternalHeightOfTheBody}" ValueAlign="right"
+                            Unit="m" UnitWidthGroup="unitWidth"/>
                     </Grid>
 
-                    <Grid Margin="5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition SharedSizeGroup="vehicleLbl"/>
-                            <ColumnDefinition />
-                            <ColumnDefinition SharedSizeGroup="unitWidth"/>
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock Grid.Column="0" Text="Total height of the trailer" Margin="0,0,10,0"/>
-                        <TextBox Grid.Column="1" Margin="20,0,0,0" 
-                                 Text="{Binding TotalHeightOfTheTrailer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+                    <Grid>
+                        <customControls:VectoParameterControl
+                            Caption="Total height of the trailer" CaptionWidthGroup="lblGWidth"
+                            Value="{Binding TotalHeightOfTheTrailer}" ValueAlign="right"
+                            Unit="m" UnitWidthGroup="unitWidth"/>
                     </Grid>
 
-                    <Grid Margin="5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition SharedSizeGroup="vehicleLbl"/>
-                            <ColumnDefinition />
-                            <ColumnDefinition SharedSizeGroup="unitWidth"/>
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock Grid.Column="0" Text="PositionXFirstAxle" Margin="0,0,10,0"/>
-                        <TextBox Grid.Column="1" Margin="20,0,0,0" 
-                                 Text="{Binding PositionXFirstAxle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+                    <Grid>
+                        <customControls:VectoParameterControl
+                            Caption="PositionXFirstAxle" CaptionWidthGroup="lblGWidth"
+                            Value="{Binding PositionXFirstAxle}" ValueAlign="right"
+                            Unit="m" UnitWidthGroup="unitWidth"/>
                     </Grid>
 
                     
-                    <Grid Margin="5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition SharedSizeGroup="vehicleLbl"/>
-                            <ColumnDefinition />
-                            <ColumnDefinition SharedSizeGroup="unitWidth"/>
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock Grid.Column="0" Text="PositionXLastAxle" Margin="0,0,10,0"/>
-                        <TextBox Grid.Column="1" Margin="20,0,0,0" 
-                                 Text="{Binding PositionXLastAxle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+                    <Grid>
+                        <customControls:VectoParameterControl
+                            Caption="PositionXLastAxle" CaptionWidthGroup="lblGWidth"
+                            Value="{Binding PositionXLastAxle}" ValueAlign="right"
+                            Unit="m" UnitWidthGroup="unitWidth"/>
                     </Grid>
 
                     
-                    <Grid Margin="5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition SharedSizeGroup="vehicleLbl"/>
-                            <ColumnDefinition />
-                            <ColumnDefinition SharedSizeGroup="unitWidth"/>
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock Grid.Column="0" Text="Internal height of the body" Margin="0,0,10,0"/>
-                        <TextBox Grid.Column="1" Margin="20,0,0,0" 
-                                 Text="{Binding InternalHeightOfTheBody, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+                    <Grid>
+                        <customControls:VectoParameterControl
+                            Caption="Internal height of the body" CaptionWidthGroup="lblGWidth"
+                            Value="{Binding InternalHeightOfTheBody}" ValueAlign="right"
+                            Unit="m" UnitWidthGroup="unitWidth"/>
                     </Grid>
 
                     
-                    <Grid Margin="5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition SharedSizeGroup="vehicleLbl"/>
-                            <ColumnDefinition />
-                            <ColumnDefinition SharedSizeGroup="unitWidth"/>
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock Grid.Column="0" Text="Cargo Volume" Margin="0,0,10,0"/>
-                        <TextBox Grid.Column="1" Margin="20,0,0,0" 
-                                 Text="{Binding CargoVolume, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+                    <Grid>
+                        <customControls:VectoParameterControl
+                            Caption="Cargo volume" CaptionWidthGroup="lblGWidth"
+                            Value="{Binding CargoVolume}" ValueAlign="right"
+                            Unit="m3" UnitWidthGroup="unitWidth"/>
                     </Grid>
 
                 </StackPanel>
             </StackPanel>
         </GroupBox>
 
-        <GroupBox Header="Classification" Grid.Row="1" Grid.Column="2" Width="350" Height="300" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
-            <StackPanel Orientation="Vertical" Width="300" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
+        <GroupBox Header="Classification" Grid.Row="1" Grid.Column="2" Width="350" Height="280" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
+            <StackPanel Orientation="Vertical" Width="330" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
                 <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
                 
                     <Grid Margin="5">
@@ -237,8 +190,15 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Grid.Column="0" Text="Number of Axles" Margin="0,0,10,0"/>
-                        <TextBox Grid.Column="1" Margin="20,0,0,0" 
-                                 Text="{Binding NumberOfAxles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+                        <ComboBox Name="NumberOfAxles"  Grid.Column="1" 
+                                  Margin="20,0,0,0"
+                                  ItemsSource="{Binding AllowedNumberOfAxles}"
+                                  SelectedValue="{Binding NumberOfAxles, Mode=TwoWay ,ValidatesOnDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"
+                                  SelectedValuePath="Value"
+                                  DisplayMemberPath="Label"
+                                  IsEditable="True"
+                                  IsReadOnly="True"
+                                  Text="Select..."/>
                     </Grid>
 
                     <Grid Margin="5">
@@ -284,26 +244,37 @@
         </GroupBox>
 
         <GroupBox Header="Standard aero feature technologies" Grid.Row="2" Grid.Column="2" Width="350" Height="330" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
-            <StackPanel Orientation="Vertical" Width="300" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
+            <StackPanel Orientation="Vertical" Width="330" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
                 <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
                 
                     <Grid Margin="5">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition SharedSizeGroup="vehicleLbl"/>
-                            <ColumnDefinition />
-                            <ColumnDefinition SharedSizeGroup="unitWidth"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Column="0" Text="Selection 1" Margin="0,0,10,0"/>
-                        <ComboBox Grid.Column="1" 
-                                  Margin="20,0,0,0"
-                                  ItemsSource="{Binding AllowedTechnologies}"
-                                  SelectedValue="{Binding Technologies, Mode=TwoWay ,ValidatesOnDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"
-                                  SelectedValuePath="Value"
-                                  DisplayMemberPath="Label"
-                                  IsEditable="True"
-                                  IsReadOnly="True"
-                                  Text="Select..."/>
+                        <TextBlock Grid.Column="0" Text="Side skirts short"/>
+                        <CheckBox Grid.Column="1" IsChecked="{Binding Technologies}"/>
+
+                        <TextBlock Grid.Column="3" Text="Boat tail short" />
+                        <CheckBox Grid.Column="4" IsChecked="{Binding Technologies}"/>
+                    </Grid>
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Text="Side skirts long"/>
+                        <CheckBox Grid.Column="1" IsChecked="{Binding Technologies}"/>
+                        <TextBlock Grid.Column="3" Text="Boat tail long"/>
+                        <CheckBox Grid.Column="4" IsChecked="{Binding Technologies}"/>
                     </Grid>
 
 
@@ -311,44 +282,29 @@
             </StackPanel>
         </GroupBox>
 
-        <GroupBox Header="Masses" Grid.Row="1" Grid.Column="3" Width="350" Height="300" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
-            <StackPanel Orientation="Vertical" Width="300" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
+        <GroupBox Header="Masses" Grid.Row="1" Grid.Column="3" Width="350" Height="280" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
+            <StackPanel Orientation="Vertical" Width="330" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
                 <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
                 
-                    <Grid Margin="5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition SharedSizeGroup="vehicleLbl"/>
-                            <ColumnDefinition />
-                            <ColumnDefinition SharedSizeGroup="unitWidth"/>
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock Grid.Column="0" Text="Curb Mass Trailer" Margin="0,0,10,0"/>
-                        <TextBox Grid.Column="1" Margin="20,0,0,0" 
-                                 Text="{Binding CurbMassTrailer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+                    <Grid>
+                        <customControls:VectoParameterControl
+                            Caption="Curb Mass Trailer" CaptionWidthGroup="lblGWidth"
+                            Value="{Binding CurbMassTrailer}" ValueAlign="right"
+                            Unit="kg" UnitWidthGroup="unitWidth"/>
                     </Grid>
 
-                    <Grid Margin="5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition SharedSizeGroup="vehicleLbl"/>
-                            <ColumnDefinition />
-                            <ColumnDefinition SharedSizeGroup="unitWidth"/>
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock Grid.Column="0" Text="TPLM Total Trailer" Margin="0,0,10,0"/>
-                        <TextBox Grid.Column="1" Margin="20,0,0,0" 
-                                 Text="{Binding TPLMTotalTrailer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+                    <Grid>
+                        <customControls:VectoParameterControl
+                            Caption="TPLM Total Trailer" CaptionWidthGroup="lblGWidth"
+                            Value="{Binding TPLMTotalTrailer}" ValueAlign="right"
+                            Unit="kg" UnitWidthGroup="unitWidth"/>
                     </Grid>
 
-                    <Grid Margin="5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition SharedSizeGroup="vehicleLbl"/>
-                            <ColumnDefinition />
-                            <ColumnDefinition SharedSizeGroup="unitWidth"/>
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock Grid.Column="0" Text="TPLM Axle Assembly" Margin="0,0,10,0"/>
-                        <TextBox Grid.Column="1" Margin="20,0,0,0" 
-                                 Text="{Binding TPLMAxleAssembly, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+                    <Grid>
+                        <customControls:VectoParameterControl
+                            Caption="TPLM Axle Assembly" CaptionWidthGroup="lblGWidth"
+                            Value="{Binding TPLMAxleAssembly}" ValueAlign="right"
+                            Unit="kg" UnitWidthGroup="unitWidth"/>
                     </Grid>
 
 
@@ -357,20 +313,171 @@
         </GroupBox>
 
         <GroupBox Header="Axle and Tyre Features" Grid.Row="2" Grid.Column="3" Width="350" Height="330" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
-            <StackPanel Orientation="Vertical" Width="300" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
+            <StackPanel Orientation="Vertical" Width="330" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
                 <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
                 
                     <Grid Margin="5">
+                        <Grid.Style>
+                            <Style>
+                            <Setter Property="Grid.Visibility" Value="Collapsed"></Setter>
+                                <Style.Triggers>
+                                    <DataTrigger  
+                                        Binding="{Binding ElementName=NumberOfAxles, Path=SelectedItem.Value}" Value="1">
+                                        <Setter Property="Grid.Visibility" Value="Visible"></Setter>
+                                    </DataTrigger>
+                                    <DataTrigger  
+                                        Binding="{Binding ElementName=NumberOfAxles, Path=SelectedItem.Value}" Value="2">
+                                        <Setter Property="Grid.Visibility" Value="Visible"></Setter>
+                                    </DataTrigger>
+                                    <DataTrigger  
+                                        Binding="{Binding ElementName=NumberOfAxles, Path=SelectedItem.Value}" Value="3">
+                                        <Setter Property="Grid.Visibility" Value="Visible"></Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition SharedSizeGroup="vehicleLbl"/>
-                            <ColumnDefinition />
-                            <ColumnDefinition SharedSizeGroup="unitWidth"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="70"/>
+                            <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Column="0" Text="Tyre XML 1" Margin="0,0,10,0"/>
-                        <TextBox Grid.Column="1" Margin="20,0,0,0" 
-                                 Text="{Binding Manufacturer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+                        <TextBlock Grid.Column="0" Text="Axle 1" Width="50" />
+                        <TextBox Grid.Column="1" Width="80" IsReadOnly="True" IsReadOnlyCaretVisible="True" 
+                                 Text="{Binding Axle1FilePath}">
+                            <Validation.ErrorTemplate>
+                                <ControlTemplate>
+                                    <DockPanel>
+                                        <TextBlock Foreground="Red" DockPanel.Dock="Top" Text="{Binding ErrorContent}" />
+                                        <AdornedElementPlaceholder/>
+                                    </DockPanel>
+                                </ControlTemplate>
+                            </Validation.ErrorTemplate>
+                            <TextBox.Style>
+                                <Style>
+                                    <Style.Triggers>
+                                        <Trigger Property="Validation.HasError" Value="true">
+                                            <Setter Property="Border.BorderBrush" Value="Red"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
+                        <Button Grid.Column="2" Content="..." Width="30" Margin="5,0,0,0"
+                                Command="{Binding SelectFirstFileCommand}"
+                                CommandParameter="{Binding FirstFileType}"/>
+                        <TextBlock Grid.Column="4" Text="Twin tyres" />
+                        <CheckBox Grid.Column="5" IsChecked="{Binding Axle1IsTwin}"/>
                     </Grid>
+
+                    <Grid Margin="5">
+                        <Grid.Style>
+                            <Style>
+                            <Setter Property="Grid.Visibility" Value="Collapsed"></Setter>
+                                <Style.Triggers>
+                                    <DataTrigger  
+                                        Binding="{Binding ElementName=NumberOfAxles, Path=SelectedItem.Value}" Value="2">
+                                        <Setter Property="Grid.Visibility" Value="Visible"></Setter>
+                                    </DataTrigger>
+                                    <DataTrigger  
+                                        Binding="{Binding ElementName=NumberOfAxles, Path=SelectedItem.Value}" Value="3">
+                                        <Setter Property="Grid.Visibility" Value="Visible"></Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="70"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Text="Axle 2" Width="50" /> 
+                        <TextBox Grid.Column="1" Width="80" IsReadOnly="True" IsReadOnlyCaretVisible="True" 
+                                 Text="{Binding Axle1FilePath}">
+                            <Validation.ErrorTemplate>
+                                <ControlTemplate>
+                                    <DockPanel>
+                                        <TextBlock Foreground="Red" DockPanel.Dock="Top" Text="{Binding ErrorContent}" />
+                                        <AdornedElementPlaceholder/>
+                                    </DockPanel>
+                                </ControlTemplate>
+                            </Validation.ErrorTemplate>
+                            <TextBox.Style>
+                                <Style>
+                                    <Style.Triggers>
+                                        <Trigger Property="Validation.HasError" Value="true">
+                                            <Setter Property="Border.BorderBrush" Value="Red"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
+                        <Button Grid.Column="2" Content="..." Width="30" Margin="5,0,0,0"
+                                Command="{Binding SelectFirstFileCommand}"
+                                CommandParameter="{Binding FirstFileType}"/>
+                        <TextBlock Grid.Column="4" Text="Twin tyres" />
+                        <CheckBox Grid.Column="5" IsChecked="{Binding Axle2IsTwin}"/>
+                    </Grid>
+
+                    <Grid Margin="5">
+                        <Grid.Style>
+                            <Style>
+                            <Setter Property="Grid.Visibility" Value="Collapsed"></Setter>
+                                <Style.Triggers>
+                                    <DataTrigger  
+                                        Binding="{Binding ElementName=NumberOfAxles, Path=SelectedItem.Value}" Value="3">
+                                        <Setter Property="Grid.Visibility" Value="Visible"></Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="70"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Text="Axle 3" Width="50" />
+                        <TextBox Grid.Column="1" Width="80" IsReadOnly="True" IsReadOnlyCaretVisible="True" 
+                                 Text="{Binding Axle1FilePath}">
+                            <Validation.ErrorTemplate>
+                                <ControlTemplate>
+                                    <DockPanel>
+                                        <TextBlock Foreground="Red" DockPanel.Dock="Top" Text="{Binding ErrorContent}" />
+                                        <AdornedElementPlaceholder/>
+                                    </DockPanel>
+                                </ControlTemplate>
+                            </Validation.ErrorTemplate>
+                            <TextBox.Style>
+                                <Style>
+                                    <Style.Triggers>
+                                        <Trigger Property="Validation.HasError" Value="true">
+                                            <Setter Property="Border.BorderBrush" Value="Red"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
+                        <Button Grid.Column="2" Content="..." Width="30" Margin="5,0,0,0"
+                                Command="{Binding SelectFirstFileCommand}"
+                                CommandParameter="{Binding FirstFileType}"/> 
+                        <TextBlock Grid.Column="4" Text="Twin tyres" />
+                        <CheckBox Grid.Column="5" IsChecked="{Binding Axle3IsTwin}"/>
+                    </Grid>
+
 
 
                 </StackPanel>

@@ -1,12 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Windows.Input;
+using System.Xml;
 using Castle.Core.Internal;
+using Ninject;
 using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.InputData.FileIO.XML;
+using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider;
+using VECTOTrailer.Helper;
+using VECTOTrailer.Model;
 using VECTOTrailer.Model.TempDataObject;
+using VECTOTrailer.Properties;
 using VECTOTrailer.Util;
 using VECTOTrailer.ViewModel.Interfaces;
 
@@ -16,7 +25,7 @@ namespace VECTOTrailer.ViewModel.Impl
 	{
 		#region Members
 
-		private IVehicleDeclarationInputData _vehicle;
+		private ITrailerDeclarationInputData _vehicle;
 		private TrailerComponentData _componentData;
 
 		private string _manufacturer;
@@ -24,20 +33,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		private string _model;
 		private string _vin;
 		private DateTime _date;
-		private LegislativeClass _legislativeClass;
-		private RegistrationClass _registeredClass;
-		private VehicleCode _vehicleCode;
-		private Kilogram _curbMassChassis;
-		private Kilogram _technicalPermissibleMaximumLadenMass;
-		private TankSystem? _ngTankSystem;
-		private int _numberOfPassengersLowerDeck;
-		private int _numberOfPassengersUpperDeck;
-		private bool _lowEntry;
-		private Meter _heightIntegratedBody;
-		private Meter _vehicleLength;
-		private Meter _vehicleWidth;
-		private Meter _entranceHeight;
-		private ConsumerTechnology _doorDriveTechnology;
+		private string _legislativeCategory;
 		private Meter _externalLengthOfTheBody;
 		private Meter _externalWidthOfTheBody;
 		private Meter _externalHeightOfTheBody;
@@ -46,14 +42,29 @@ namespace VECTOTrailer.ViewModel.Impl
 		private Meter _positionXLastAxle;
 		private Meter _internalHeightOfTheBody;
 		private CubicMeter _cargoVolume;
-		private int _numberOfAxles;
+		private NumberOfTrailerAxles _numberOfAxles;
 		private TypeTrailer _trailerType;
 		private BodyWorkCode _bodyCode;
 		private AeroFeatureTechnologies _technologies;
 		private Kilogram _curbMassTrailer;
 		private Kilogram _tPLMTotalTrailer;
 		private Kilogram _tPLMAxleAssembly;
+		private string _axle1FilePath;
+		private string _axle2FilePath;
+		private string _axle3FilePath;
+		private string _axle1Xml;
+		private string _axle2Xml;
+		private string _axle3Xml;
+		private bool _axle1IsTwin;
+		private bool _axle2IsTwin;
+		private bool _axle3IsTwin;
+		private ICommand _selectFirstFileCommand;
+		private JobFileType _firstFileType;
 
+		private string _firstFilePath;
+		private readonly bool _editJob;
+		protected SettingsModel Settings = new SettingsModel();
+		protected JobEntry JobEntry;
 
 		#endregion
 
@@ -110,146 +121,14 @@ namespace VECTOTrailer.ViewModel.Impl
 				IsDataChanged(_date, _componentData);
 			}
 		}
-		public LegislativeClass LegislativeClass
+		public string LegislativeCategory
 		{
-			get { return _legislativeClass; }
+			get { return _legislativeCategory; }
 			set
 			{
-				if (!SetProperty(ref _legislativeClass, value))
+				if (!SetProperty(ref _legislativeCategory, value))
 					return;
-				IsDataChanged(_legislativeClass, _componentData);
-			}
-		}
-		public RegistrationClass RegisteredClass
-		{
-			get { return _registeredClass; }
-			set
-			{
-				if (!SetProperty(ref _registeredClass, value))
-					return;
-				IsDataChanged(_registeredClass, _componentData);
-			}
-		}
-		public VehicleCode VehicleCode
-		{
-			get { return _vehicleCode; }
-			set
-			{
-				if (!SetProperty(ref _vehicleCode, value))
-					return;
-				IsDataChanged(_vehicleCode, _componentData);
-			}
-		}
-		public Kilogram CurbMassChassis
-		{
-			get { return _curbMassChassis; }
-			set
-			{
-				if (!SetProperty(ref _curbMassChassis, value))
-					return;
-				IsDataChanged(_curbMassChassis, _componentData);
-			}
-		}
-		public Kilogram TechnicalPermissibleMaximumLadenMass
-		{
-			get { return _technicalPermissibleMaximumLadenMass; }
-			set
-			{
-				if (!SetProperty(ref _technicalPermissibleMaximumLadenMass, value))
-					return;
-				IsDataChanged(_technicalPermissibleMaximumLadenMass, _componentData);
-			}
-		}
-		public TankSystem? NgTankSystem
-		{
-			get { return _ngTankSystem; }
-			set
-			{
-				if (!SetProperty(ref _ngTankSystem, value))
-					return;
-				IsDataChanged(_ngTankSystem, _componentData);
-			}
-		}
-		public int NumberOfPassengersLowerDeck
-		{
-			get { return _numberOfPassengersLowerDeck; }
-			set
-			{
-				if (!SetProperty(ref _numberOfPassengersLowerDeck, value))
-					return;
-				IsDataChanged(_numberOfPassengersLowerDeck, _componentData);
-			}
-		}
-		public int NumberOfPassengersUpperDeck
-		{
-			get { return _numberOfPassengersUpperDeck; }
-			set
-			{
-				if (!SetProperty(ref _numberOfPassengersUpperDeck, value))
-					return;
-				IsDataChanged(_numberOfPassengersUpperDeck, _componentData);
-			}
-		}
-
-		public bool LowEntry
-		{
-			get { return _lowEntry; }
-			set
-			{
-				if (!SetProperty(ref _lowEntry, value))
-					return;
-				IsDataChanged(_lowEntry, _componentData);
-			}
-		}
-
-		public Meter HeightIntegratedBody
-		{
-			get { return _heightIntegratedBody; }
-			set
-			{
-				if (!SetProperty(ref _heightIntegratedBody, value))
-					return;
-				IsDataChanged(_heightIntegratedBody, _componentData);
-			}
-		}
-		public Meter VehicleLength
-		{
-			get { return _vehicleLength; }
-			set
-			{
-				if (!SetProperty(ref _vehicleLength, value))
-					return;
-				IsDataChanged(_vehicleLength, _componentData);
-			}
-		}
-		public Meter VehicleWidth
-		{
-			get { return _vehicleWidth; }
-			set
-			{
-				if (!SetProperty(ref _vehicleWidth, value))
-					return;
-				IsDataChanged(_vehicleWidth, _componentData);
-			}
-		}
-		public Meter EntranceHeight
-		{
-			get { return _entranceHeight; }
-			set
-			{
-				if (!SetProperty(ref _entranceHeight, value))
-					return;
-				IsDataChanged(_entranceHeight, _componentData);
-			}
-		}
-		public ConsumerTechnology DoorDriveTechnology
-		{
-			get { return _doorDriveTechnology; }
-			set
-			{
-				if (!SetProperty(ref _doorDriveTechnology, value))
-					return;
-				IsDataChanged(_doorDriveTechnology, _componentData);
+				IsDataChanged(_legislativeCategory, _componentData);
 			}
 		}
 
@@ -341,7 +220,7 @@ namespace VECTOTrailer.ViewModel.Impl
 			}
 		}
 
-		public int NumberOfAxles
+		public NumberOfTrailerAxles NumberOfAxles
 		{
 			get { return _numberOfAxles; }
 			set
@@ -415,12 +294,107 @@ namespace VECTOTrailer.ViewModel.Impl
 			}
 		}
 
+		public string Axle1FilePath
+		{
+			get { return _axle1FilePath; }
+			set
+			{
+				if (!SetProperty(ref _axle1FilePath, value))
+					return;
+				IsDataChanged(_axle1FilePath, _componentData);
+			}
+		}
+
+		public string Axle2FilePath
+		{
+			get { return _axle2FilePath; }
+			set
+			{
+				if (!SetProperty(ref _axle2FilePath, value))
+					return;
+				IsDataChanged(_axle2FilePath, _componentData);
+			}
+		}
+
+
+		public string Axle3FilePath
+		{
+			get { return _axle3FilePath; }
+			set
+			{
+				if (!SetProperty(ref _axle3FilePath, value))
+					return;
+				IsDataChanged(_axle3FilePath, _componentData);
+			}
+		}
+		public string Axle1Xml
+		{
+			get { return _axle1Xml; }
+			set
+			{
+				if (!SetProperty(ref _axle1Xml, value))
+					return;
+				IsDataChanged(_axle1Xml, _componentData);
+			}
+		}
+		public string Axle2Xml
+		{
+			get { return _axle2Xml; }
+			set
+			{
+				if (!SetProperty(ref _axle2Xml, value))
+					return;
+				IsDataChanged(_axle2Xml, _componentData);
+			}
+		}
+		public string Axle3Xml
+		{
+			get { return _axle3Xml; }
+			set
+			{
+				if (!SetProperty(ref _axle3Xml, value))
+					return;
+				IsDataChanged(_axle3Xml, _componentData);
+			}
+		}
+		public bool Axle1IsTwin
+		{
+			get { return _axle1IsTwin; }
+			set
+			{
+				if (!SetProperty(ref _axle1IsTwin, value))
+					return;
+				IsDataChanged(_axle1IsTwin, _componentData);
+			}
+		}
+		public bool Axle2IsTwin
+		{
+			get { return _axle2IsTwin; }
+			set
+			{
+				if (!SetProperty(ref _axle2IsTwin, value))
+					return;
+				IsDataChanged(_axle2IsTwin, _componentData);
+			}
+		}
+		public bool Axle3IsTwin
+		{
+			get { return _axle3IsTwin; }
+			set
+			{
+				if (!SetProperty(ref _axle3IsTwin, value))
+					return;
+				IsDataChanged(_axle3IsTwin, _componentData);
+			}
+		}
+		
 		public Dictionary<string, string> XmlNamesToPropertyMapping { get; private set; }
 
 		public AllowedEntry<LegislativeClass>[] AllowedLegislativeClasses { get; private set; }
 		public AllowedEntry<TypeTrailer>[] AllowedTrailerTypes { get; private set; }
 		public AllowedEntry<BodyWorkCode>[] AllowedBodyCodes { get; private set; }
-		public AllowedEntry<AeroFeatureTechnologies>[] AllowedTechnologies { get; private set; }
+		public  AllowedEntry<AeroFeatureTechnologies>[] AllowedTechnologies { get; private set; }
+		public AllowedEntry<NumberOfTrailerAxles>[] AllowedNumberOfAxles { get; private set; }
 
 		#endregion
 
@@ -429,7 +403,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		protected override void InputDataChanged()
 		{
-			var inputData = JobViewModel.InputDataProvider as IDeclarationInputDataProvider;
+			var inputData = JobViewModel.InputDataProvider as IDeclarationTrailerInputDataProvider;
 			_vehicle = inputData?.JobInputData.Vehicle;
 			SetVehicleValues(_vehicle);
 			SetAllowedEntries();
@@ -437,7 +411,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		}
 
-		private void SetVehicleValues(IVehicleDeclarationInputData vehicle)
+		private void SetVehicleValues(ITrailerDeclarationInputData vehicle)
 		{
 			if (vehicle == null)
 			{
@@ -450,20 +424,7 @@ namespace VECTOTrailer.ViewModel.Impl
 				Model = vehicle.Model;
 				VIN = vehicle.VIN;
 				Date = vehicle.Date;
-				LegislativeClass = vehicle.LegislativeClass;
-				RegisteredClass = vehicle.RegisteredClass;
-				VehicleCode = vehicle.VehicleCode;
-				CurbMassChassis = vehicle.CurbMassChassis;
-				TechnicalPermissibleMaximumLadenMass = vehicle.GrossVehicleMassRating;
-				NgTankSystem = vehicle.TankSystem;
-				NumberOfPassengersLowerDeck = vehicle.NumberOfPassengersLowerDeck;
-				NumberOfPassengersUpperDeck = vehicle.NumberOfPassengersUpperDeck;
-				LowEntry = vehicle.LowEntry;
-				HeightIntegratedBody = vehicle.Height;
-				VehicleLength = vehicle.Length;
-				VehicleWidth = vehicle.Width;
-				EntranceHeight = vehicle.EntranceHeight;
-				DoorDriveTechnology = vehicle.DoorDriveTechnology;
+				LegislativeCategory = vehicle.LegislativeCategory;
 				_componentData = new TrailerComponentData(this);
 			}
 
@@ -473,9 +434,6 @@ namespace VECTOTrailer.ViewModel.Impl
 		private void SetAllowedEntries()
 		{
 
-			AllowedLegislativeClasses = new[] { LegislativeClass.M3 }
-				.Select(lc => AllowedEntry.Create(lc, lc.GetLabel())).ToArray();
-
 			AllowedTrailerTypes = EnumHelper.GetValues<TypeTrailer>().Where(x => x != TypeTrailer.Unknown)
 				.Select(vc => AllowedEntry.Create(vc, vc.GetLabel())).ToArray();
 
@@ -483,6 +441,9 @@ namespace VECTOTrailer.ViewModel.Impl
 				.Select(vc => AllowedEntry.Create(vc, vc.GetLabel())).ToArray();
 
 			AllowedTechnologies = EnumHelper.GetValues<AeroFeatureTechnologies>().Where(x => x != AeroFeatureTechnologies.Unknown)
+				.Select(vc => AllowedEntry.Create(vc, vc.GetLabel())).ToArray();
+
+			AllowedNumberOfAxles = EnumHelper.GetValues<NumberOfTrailerAxles>().Where(x => x != NumberOfTrailerAxles.Unknown)
 				.Select(vc => AllowedEntry.Create(vc, vc.GetLabel())).ToArray();
 		}
 
@@ -523,6 +484,94 @@ namespace VECTOTrailer.ViewModel.Impl
 				string propertyName;
 				if (XmlNamesToPropertyMapping.TryGetValue(error.Key, out propertyName))
 					RemovePropertyError(propertyName);
+			}
+		}
+
+		public JobFileType FirstFileType
+		{
+			get { return _firstFileType; }
+			set { SetProperty(ref _firstFileType, value); }
+		}
+
+		public string FirstFilePath
+		{
+			get { return _firstFilePath; }
+			set { SetProperty(ref _firstFilePath, value); }
+		}
+		public ICommand SelectFirstFileCommand
+		{
+			get
+			{
+				return _selectFirstFileCommand ??
+						(_selectFirstFileCommand = new RelayCommand<JobFileType>(DoSelectFirstFileCommand));
+			}
+		}
+		private void DoSelectFirstFileCommand(JobFileType jobFileType)
+		{
+			FirstFilePath = OpenFileSelector(jobFileType, nameof(FirstFilePath), FirstFilePath);
+		}
+		private string OpenFileSelector(JobFileType jobFileType, string textPropertyName, string filePath)
+		{
+			var folderPath = GetFolderPath(filePath);
+
+			var dialogResult = FileDialogHelper.ShowSelectFilesDialog(false, FileDialogHelper.XMLFilter, folderPath);
+			if (dialogResult != null) {
+
+				filePath = dialogResult.FirstOrDefault();
+				var validationResult = IsValideXml(jobFileType, filePath);
+
+				if (!validationResult)
+					AddPropertyError(textPropertyName, $"Selected XML-File is not a valid {jobFileType.GetLable()}!");
+				else
+					RemovePropertyError(textPropertyName);
+
+				return !validationResult ? null : filePath;
+			}
+			
+			return filePath;
+		}
+
+		private string GetFolderPath(string filePath)
+		{
+			if (!_editJob || filePath.IsNullOrEmpty())
+				return Settings.XmlFilePathFolder;
+			
+			if (IsFileName(filePath)) {
+				return !JobEntry.JobEntryFilePath.IsNullOrEmpty()
+					? Path.GetDirectoryName(JobEntry.JobEntryFilePath)
+					: Path.GetDirectoryName(Settings.XmlFilePathFolder);
+			}
+
+			return filePath;
+		}
+		
+		private bool IsFileName( string filePath)
+		{
+			return !Directory.Exists(filePath);
+		}
+		
+		private bool IsValideXml(JobFileType jobFileType, string filePath)
+		{
+			if (filePath.IsNullOrEmpty())
+				return false;
+
+			var xmlInputReader = Kernel.Get<IXMLInputDataReader>();
+
+			using (var reader = XmlReader.Create(filePath))
+			{
+
+				var readerResult = xmlInputReader.Create(reader);
+				if (readerResult is IDeclarationTrailerInputDataProvider)
+				{
+
+					var inputData = readerResult as IDeclarationTrailerInputDataProvider;
+					if (jobFileType == JobFileType.CompletedTrailerFile &&
+						inputData.JobInputData.Vehicle is XMLDeclarationVehicleDataProviderV27)
+					{
+						return true;
+					}
+				}
+				return false;
 			}
 		}
 

@@ -51,8 +51,9 @@ namespace TUGraz.VectoCore.Utils
 		{
 			switch (xmlDoc.DocumentElement.LocalName) {
 				case "VectoInputDeclaration":
-					return xmlDoc.ChildNodes[1]?.ChildNodes[0]?.ChildNodes.Cast<XmlNode>()
-						.Count(x => x.Name.Contains("TrailerType")) > 0 ? XmlDocumentType.DeclarationTrailerJobData : XmlDocumentType.DeclarationJobData;
+					return (xmlDoc.ChildNodes[1]?.ChildNodes[0]?.ChildNodes.Cast<XmlNode>()
+						.Count(x => x.Name.Contains("TrailerType")) > 0 || xmlDoc.ChildNodes[0]?.ChildNodes[0]?.ChildNodes.Cast<XmlNode>()
+						.Count(x => x.Name.Contains("TrailerType")) > 0) ? XmlDocumentType.DeclarationTrailerJobData : XmlDocumentType.DeclarationJobData;
 				case "VectoInputEngineering": return XmlDocumentType.EngineeringJobData;
 				case "VectoComponentEngineering": return XmlDocumentType.EngineeringComponentData;
 				case "VectoOutputPrimaryVehicle": return XmlDocumentType.PrimaryVehicleBusOutputData;

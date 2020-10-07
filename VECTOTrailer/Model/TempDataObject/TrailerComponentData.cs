@@ -4,11 +4,13 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCommon.Utils;
+using VECTOTrailer.ViewModel.Impl;
 using VECTOTrailer.ViewModel.Interfaces;
 
 namespace VECTOTrailer.Model.TempDataObject
@@ -24,20 +26,7 @@ namespace VECTOTrailer.Model.TempDataObject
 		public string Model { get; set; }
 		public string VIN { get; set; }
 		public DateTime Date { get; set; }
-		public LegislativeClass LegislativeClass { get; set; }
-		/*public RegistrationClass RegisteredClass { get; set; }
-		public VehicleCode VehicleCode { get; set; }
-		public Kilogram CurbMassChassis { get; set; }
-		public Kilogram TechnicalPermissibleMaximumLadenMass { get; set; }
-		public TankSystem? NgTankSystem { get; set; }
-		public int NumberOfPassengersLowerDeck { get; set; }
-		public int NumberOfPassengersUpperDeck { get; set; }
-		public bool LowEntry { get; set; }
-		public Meter HeightIntegratedBody { get; set; }
-		public Meter VehicleLength { get; set; }
-		public Meter VehicleWidth { get; set; }
-		public Meter EntranceHeight { get; set; }
-		public ConsumerTechnology DoorDriveTechnology { get; set; }*/
+		public string LegislativeCategory { get; set; }
 		public Meter ExternalLengthOfTheBody { get; set; }
 		public Meter ExternalWidthOfTheBody { get; set; }
 		public Meter ExternalHeightOfTheBody { get; set; }
@@ -46,13 +35,25 @@ namespace VECTOTrailer.Model.TempDataObject
 		public Meter PositionXLastAxle { get; set; }
 		public Meter InternalHeightOfTheBody { get; set; }
 		public CubicMeter CargoVolume { get; set; }
-		public int NumberOfAxles { get; set; }
+		public NumberOfTrailerAxles NumberOfAxles { get; set; }
 		public TypeTrailer TrailerType { get; set; }
 		public BodyWorkCode BodyCode { get; set; }
 		public AeroFeatureTechnologies Technologies { get; set; }
 		public Kilogram CurbMassTrailer { get; set; }
 		public Kilogram TPLMTotalTrailer { get; set; }
 		public Kilogram TPLMAxleAssembly { get; set; }
+		public string Axle1FilePath { get; set; }
+		public string Axle2FilePath { get; set; }
+		public string Axle3FilePath { get; set; }
+		public string Axle1Xml{ get; set; }
+		public string Axle2Xml { get; set; }
+		public string Axle3Xml { get; set; }
+		public bool Axle1IsTwin { get; set; }
+		public bool Axle2IsTwin { get; set; }
+		public bool Axle3IsTwin { get; set; }
+		public ICommand SelectFirstFileCommand { get; set;  }
+		public JobFileType FirstFileType { get; set;  }
+
 		public Dictionary<string, string> XmlNamesToPropertyMapping { get;  private set; }
 
 		#endregion
@@ -82,21 +83,7 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.Model = Model;
 			viewModel.VIN = VIN;
 			viewModel.Date = Date;
-			viewModel.LegislativeClass = LegislativeClass;
-			/*viewModel.RegisteredClass = RegisteredClass;
-			viewModel.VehicleCode = VehicleCode;
-			viewModel.CurbMassChassis = CurbMassChassis;
-			viewModel.TechnicalPermissibleMaximumLadenMass = TechnicalPermissibleMaximumLadenMass;
-			viewModel.NgTankSystem = NgTankSystem;
-			viewModel.NumberOfPassengersLowerDeck = NumberOfPassengersLowerDeck;
-			viewModel.NumberOfPassengersUpperDeck = NumberOfPassengersUpperDeck;
-			viewModel.LowEntry = LowEntry;
-			viewModel.HeightIntegratedBody = HeightIntegratedBody;
-			viewModel.VehicleLength = VehicleLength;
-			viewModel.VehicleWidth = VehicleWidth;
-			viewModel.EntranceHeight = EntranceHeight;
-			viewModel.DoorDriveTechnology = DoorDriveTechnology;*/
-
+			viewModel.LegislativeCategory = LegislativeCategory;
 			viewModel.ExternalHeightOfTheBody = ExternalHeightOfTheBody;
 			viewModel.ExternalLengthOfTheBody = ExternalLengthOfTheBody;
 			viewModel.ExternalWidthOfTheBody = ExternalWidthOfTheBody;
@@ -121,21 +108,7 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.Model = default(string);
 			viewModel.VIN = default(string);
 			viewModel.Date = default(DateTime);
-			viewModel.LegislativeClass = (LegislativeClass)NotSelected;
-			/*viewModel.RegisteredClass = (RegistrationClass)NotSelected;
-			viewModel.VehicleCode = (VehicleCode)NotSelected;
-			viewModel.CurbMassChassis = default(Kilogram);
-			viewModel.TechnicalPermissibleMaximumLadenMass = default(Kilogram);
-			viewModel.NgTankSystem = (TankSystem)NotSelected;
-			viewModel.NumberOfPassengersLowerDeck = default(int);
-			viewModel.NumberOfPassengersUpperDeck = default(int);
-			viewModel.LowEntry = LowEntry;
-			viewModel.HeightIntegratedBody = default(Meter);
-			viewModel.VehicleLength = default(Meter);
-			viewModel.VehicleWidth = default(Meter);
-			viewModel.EntranceHeight = default(Meter);
-			viewModel.DoorDriveTechnology = (ConsumerTechnology)NotSelected;*/
-
+			viewModel.LegislativeCategory = default(string);
 			viewModel.ExternalHeightOfTheBody = default(Meter);
 			viewModel.ExternalLengthOfTheBody = default(Meter);
 			viewModel.ExternalWidthOfTheBody = default(Meter);
@@ -161,21 +134,7 @@ namespace VECTOTrailer.Model.TempDataObject
 			Model = trailer.Model;
 			VIN = trailer.VIN;
 			Date = DateTime.UtcNow;//Set DateTime UTC of current save
-			LegislativeClass = trailer.LegislativeClass;
-			/*RegisteredClass = trailer.RegisteredClass;
-			VehicleCode = trailer.VehicleCode;
-			CurbMassChassis = trailer.CurbMassChassis;
-			TechnicalPermissibleMaximumLadenMass = trailer.TechnicalPermissibleMaximumLadenMass;
-			NgTankSystem = trailer.NgTankSystem ;
-			NumberOfPassengersLowerDeck = trailer.NumberOfPassengersLowerDeck;
-			NumberOfPassengersUpperDeck = trailer.NumberOfPassengersUpperDeck;
-			LowEntry = trailer.LowEntry;
-			HeightIntegratedBody = trailer.HeightIntegratedBody;
-			VehicleLength = trailer.VehicleLength;
-			VehicleWidth = trailer.VehicleWidth;
-			EntranceHeight = vehicleBus.EntranceHeight;
-			DoorDriveTechnology = vehicleBus.DoorDriveTechnology;*/
-
+			LegislativeCategory = trailer.LegislativeCategory;
 			ExternalHeightOfTheBody = trailer.ExternalHeightOfTheBody;
 			ExternalLengthOfTheBody = trailer.ExternalLengthOfTheBody;
 			ExternalWidthOfTheBody = trailer.ExternalWidthOfTheBody;
@@ -201,21 +160,7 @@ namespace VECTOTrailer.Model.TempDataObject
 				{XMLNames.Component_Model, nameof(Model)},
 				{XMLNames.Vehicle_VIN, nameof(VIN)},
 				{XMLNames.Component_Date, nameof(Date)},
-				{XMLNames.Vehicle_LegislativeClass, nameof(LegislativeClass)},
-				/*{XMLNames.Vehicle_RegisteredClass, nameof(RegisteredClass)},
-				{XMLNames.Vehicle_VehicleCode, nameof(VehicleCode)},
-				{XMLNames.Vehicle_CurbMassChassis, nameof(CurbMassChassis)},
-				{XMLNames.TPMLM, nameof(TechnicalPermissibleMaximumLadenMass)},
-				{XMLNames.Vehicle_NgTankSystem, nameof(NgTankSystem)},
-				{XMLNames.Bus_LowerDeck, nameof(NumberOfPassengersLowerDeck)},
-				{XMLNames.Bus_UpperDeck, nameof(NumberOfPassengersUpperDeck)},
-				{XMLNames.Bus_LowEntry, nameof(LowEntry)},
-				{XMLNames.Bus_HeighIntegratedBody, nameof(HeightIntegratedBody)},
-				{XMLNames.Bus_VehicleLength, nameof(VehicleLength)},
-				{XMLNames.Bus_VehicleWidth, nameof(VehicleWidth)},
-				{XMLNames.Bus_EntranceHeight, nameof(EntranceHeight)},
-				{XMLNames.BusAux_PneumaticSystem_DoorDriveTechnology, nameof(DoorDriveTechnology)}*/
-
+				{XMLNames.Vehicle_LegislativeClass, nameof(LegislativeCategory)},
 				{XMLNames.Trailer_ExternalHeightBody, nameof(ExternalHeightOfTheBody)},
 				{XMLNames.Trailer_ExternalLenghtBody, nameof(ExternalLengthOfTheBody)},
 				{XMLNames.Trailer_ExternalWidthBody, nameof(ExternalWidthOfTheBody)},

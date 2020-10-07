@@ -396,6 +396,7 @@
     <Compile Include="OutputData\FileIO\JSONFileWriter.cs" />
     <Compile Include="OutputData\XML\AbstractXMLManufacturerReport.cs" />
     <Compile Include="OutputData\XML\DeclarationJobs\XMLCompletedBusWriter.cs" />
+    <Compile Include="OutputData\XML\DeclarationJobs\XMLCompletedTrailerWriter.cs" />
     <Compile Include="OutputData\XML\Engineering\Factory\EngineeringWriterFactory.cs" />
     <Compile Include="OutputData\XML\Engineering\Factory\IEngineeringWriterInjectFactory.cs" />
     <Compile Include="OutputData\XML\Engineering\Interfaces\IXMLEngineeringComponentWriter.cs" />

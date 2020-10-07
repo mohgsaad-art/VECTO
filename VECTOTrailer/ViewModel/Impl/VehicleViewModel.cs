@@ -214,7 +214,7 @@ namespace VECTOTrailer.ViewModel.Impl
 				//ToDo
 				//var allowed = DeclarationMode ? 
 				//	DeclarationData.Segments.GetLegislativeClasses()
-				//	: Enum.GetValues(typeof(LegislativeClass)).Cast<LegislativeClass>();
+				//	: Enum.GetValues(typeof(LegislativeCategory)).Cast<LegislativeCategory>();
 
 				//return allowed.Select(vc => AllowedEntry.Create(vc, vc.GetLabel())).ToArray();
 			}

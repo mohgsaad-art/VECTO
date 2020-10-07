@@ -65,9 +65,9 @@ namespace TUGraz.VectoCommon.Models
 			return ttype.GetLabel();
 		}
 
-		public static TypeTrailer Parse(string vehicleCategory)
+		public static TypeTrailer Parse(string trailerType)
 		{
-			switch (vehicleCategory) {
+			switch (trailerType) {
 				case "DA":
 					return TypeTrailer.DA;
 				case "DB":
