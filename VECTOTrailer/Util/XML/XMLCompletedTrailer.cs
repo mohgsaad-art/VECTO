@@ -50,10 +50,10 @@ namespace VECTOTrailer.Util.XML
 			_rootNamespace = "urn:tugraz:ivt:VectoAPI:DeclarationJob";
 		}
 
-		public XDocument GenerateCompletedBusDocument(Dictionary<Component, object> inputData)
+		public XDocument GenerateCompletedTrailerDocument(Dictionary<Component, object> inputData)
 		{
 			var doc = new XDocument(
-				new XDeclaration("1.0", "utf-8", "yes"),
+				new XDeclaration("1.0", "utf-8", "no"),
 				new XElement(_tns + XMLNames.VectoInputDeclaration,
 					new XAttribute("schemaVersion", _schemaVersion),
 					new XAttribute(XNamespace.Xmlns + "xsi", _xsi.NamespaceName),
@@ -83,15 +83,28 @@ namespace VECTOTrailer.Util.XML
 					new XAttribute(XMLNames.Component_ID_Attr, id),
 					new XAttribute(_xsi + "type", XMLDeclarationVehicleDataProviderV27.XSD_TYPE),// "VehicleTrailerType"
 
-					new XElement(XMLNames.Component_Manufacturer, vehicleData?.Manufacturer),
-					new XElement(XMLNames.Component_ManufacturerAddress, vehicleData?.ManufacturerAddress),
-					new XElement(XMLNames.Trailer_CommercialName, vehicleData?.Model),
-					new XElement(XMLNames.Vehicle_VIN, vehicleData?.VIN),
-					new XElement(XMLNames.Component_Date, XmlConvert.ToString(DateTime.Now, XmlDateTimeSerializationMode.Utc)),
-					new XElement(XMLNames.Vehicle_LegislativeClass, vehicleData?.LegislativeCategory),
-					new XElement(XMLNames.Trailer_AxleCount, vehicleData?.NumberOfAxles.GetLabel()),
-					new XElement(XMLNames.Trailer_TrailerType, vehicleData?.TrailerType),
-					new XElement(XMLNames.Trailer_BodyCode, vehicleData?.BodyCode.GetLabel())
+					new XElement(_v27 + XMLNames.Component_Manufacturer, vehicleData?.Manufacturer),
+					new XElement(_v27 + XMLNames.Component_ManufacturerAddress, vehicleData?.ManufacturerAddress),
+					new XElement(_v27 + XMLNames.Trailer_CommercialName, vehicleData?.Model),
+					new XElement(_v27 + XMLNames.Vehicle_VIN, vehicleData?.VIN),
+					new XElement(_v27 + XMLNames.Component_Date, XmlConvert.ToString(DateTime.Now, XmlDateTimeSerializationMode.Utc)),
+					new XElement(_v27 + XMLNames.Trailer_LegislativeCategory, vehicleData?.LegislativeCategory),
+					new XElement(_v27 + XMLNames.Trailer_AxleCount, vehicleData?.NumberOfAxles.GetLabel()),
+					new XElement(_v27 + XMLNames.Trailer_TrailerType, vehicleData?.TrailerType),
+					new XElement(_v27 + XMLNames.Trailer_BodyCode, vehicleData?.BodyCode.GetLabel()),
+					new XElement(_v27 + "Masses", 
+						new XElement(_v27 + XMLNames.Trailer_CurbMass, vehicleData?.CurbMassTrailer), 
+						new XElement(_v27 + XMLNames.Trailer_TPMLMTotalTrailer, vehicleData?.TPLMTotalTrailer)),
+					new XElement(_v27 + "Dimensions", 
+						new XElement(_v27 + XMLNames.Trailer_ExternalLenghtBody, vehicleData?.ExternalLengthOfTheBody),
+						new XElement(_v27 + XMLNames.Trailer_ExternalWidthBody, vehicleData?.ExternalWidthOfTheBody),
+						new XElement(_v27 + XMLNames.Trailer_ExternalHeightBody, vehicleData?.ExternalHeightOfTheBody),
+						new XElement(_v27 + XMLNames.Trailer_TotalHeightTrailer, vehicleData?.TotalHeightOfTheTrailer),
+						new XElement(_v27 + XMLNames.Trailer_PositionXFirstAxle, vehicleData?.PositionXFirstAxle),
+						new XElement(_v27 + XMLNames.Trailer_PositionXLastAxle, vehicleData?.PositionXLastAxle),
+						new XElement(_v27 + XMLNames.Trailer_InternalHeightBody, vehicleData?.InternalHeightOfTheBody),
+						new XElement(_v27 + XMLNames.Trailer_CargoVolume, vehicleData?.CargoVolume)
+						)
 			);
 		}
 	}

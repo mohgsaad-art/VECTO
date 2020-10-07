@@ -13,9 +13,6 @@ namespace VECTOTrailer.Helper.Converter
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			if (value is AirdragConfig) {
-				return ((AirdragConfig)value).GetLabel();
-			}
 			return value;
 		}
 

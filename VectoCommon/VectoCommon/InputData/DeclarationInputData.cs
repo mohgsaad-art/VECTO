@@ -215,7 +215,7 @@ namespace TUGraz.VectoCommon.InputData
 
 		string LegislativeCategory { get; }
 
-		int NumberOfAxles { get; }
+		NumberOfTrailerAxles NumberOfAxles { get; }
 
 		TypeTrailer TrailerType { get; }
 

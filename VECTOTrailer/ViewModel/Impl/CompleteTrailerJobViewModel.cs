@@ -61,7 +61,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		}
 		#endregion
 
-		public CompleteTrailerJobViewModel(IKernel kernel, IDeclarationInputDataProvider inputData)
+		public CompleteTrailerJobViewModel(IKernel kernel, IDeclarationTrailerInputDataProvider inputData)
 		{
 			Kernel = kernel;
 			InputDataProvider = inputData;
@@ -111,7 +111,7 @@ namespace VECTOTrailer.ViewModel.Impl
 			if (dialogResult == MessageDialogResult.Affirmative)
 			{
 				SetCurrentDataToSave();
-				var xDoc = _xmlCompletedTrailer.GenerateCompletedBusDocument(CompleteVehicleTrailerData);
+				var xDoc = _xmlCompletedTrailer.GenerateCompletedTrailerDocument(CompleteVehicleTrailerData);
 
 				if (XmlHelper.ValidateXDocument(xDoc, null, ValidationErrorAction)) {
 					_xmlCompletedTrailerWriter.WriteCompletedBusXml(XmlFilePath, xDoc);
@@ -138,7 +138,7 @@ namespace VECTOTrailer.ViewModel.Impl
 				return;
 
 			SetCurrentDataToSave();
-			var xDocument = _xmlCompletedTrailer.GenerateCompletedBusDocument(CompleteVehicleTrailerData);
+			var xDocument = _xmlCompletedTrailer.GenerateCompletedTrailerDocument(CompleteVehicleTrailerData);
 
 			if (XmlHelper.ValidateXDocument(xDocument, null, ValidationErrorAction)) {
 				_xmlCompletedTrailerWriter.WriteCompletedBusXml(filePath, xDocument);
@@ -267,7 +267,7 @@ namespace VECTOTrailer.ViewModel.Impl
 			_errors = new Dictionary<string, string>();
 
 			SetCurrentDataToSave();
-			var xDoc = _xmlCompletedTrailer.GenerateCompletedBusDocument(CompleteVehicleTrailerData);
+			var xDoc = _xmlCompletedTrailer.GenerateCompletedTrailerDocument(CompleteVehicleTrailerData);
 
 			if (XmlHelper.ValidateXDocument(xDoc, null, ValidationErrorAction)) {
 				ValidationResultDialogWindow(true);

@@ -42,37 +42,9 @@ namespace VECTOTrailer
             container.Bind<IJobEditViewModel>().To<DeclarationJobViewModel>();
             container.Bind<IJobEditViewModel>().To<CompleteTrailerJobViewModel>();
             container.Bind<INoneViewModel>().To<NoneViewModel>();
-            container.Bind<IVehicleViewModel>().To<VehicleViewModel>();
-            container.Bind<ICompleteTrailerViewModel>().To<CompleteTrailerViewModel>();
+			container.Bind<ICompleteTrailerViewModel>().To<CompleteTrailerViewModel>();
 
-            container.Bind<IAirdragViewModel>().To<AirdragViewModel>();
-            container.Bind<IAngledriveViewModel>().To<AngledriveViewModel>();
-            container.Bind<IAxlegearViewModel>().To<AxlegearViewModel>();
-            container.Bind<IEngineViewModel>().To<EngineViewModel>();
-            container.Bind<IGearboxViewModel>().To<GearboxViewModel>();
-            container.Bind<IRetarderViewModel>().To<RetarderViewModel>();
-            container.Bind<ITorqueConverterViewModel>().To<TorqueConverterViewModel>();
-            container.Bind<ICyclesViewModel>().To<CyclesViewModel>();
-            container.Bind<IAuxiliariesViewModel>().To<AuxiliariesViewModel>();
-
-            container.Bind<IAxlesViewModel>().To<AxlesViewModel>();
-            container.Bind<IAxleViewModel>().To<AxleViewModel>();
-            container.Bind<ITyreViewModel>().To<TyreViewModel>();
-
-
-            container.Bind<IAirdragDeclarationInputData>().To<AirdragDeclarationAdapter>();
-            container.Bind<IAngledriveInputData>().To<AngledriveDeclarationAdapter>();
-            container.Bind<IAuxiliariesDeclarationInputData>().To<AuxiliariesDeclarationAdapter>();
-            container.Bind<IAxleDeclarationInputData>().To<AxleDeclarationAdapter>();
-            container.Bind<IAxleGearInputData>().To<AxlegearDeclarationAdapter>();
-            container.Bind<IEngineDeclarationInputData>().To<EngineDeclarationAdapter>();
-            container.Bind<IGearboxDeclarationInputData>().To<GearboxDeclarationAdapter>();
-            container.Bind<IRetarderInputData>().To<RetarderDeclarationAdapter>();
-            container.Bind<ITorqueConverterDeclarationInputData>().To<TorqueConverterDeclarationAdapter>();
-            container.Bind<ITyreDeclarationInputData>().To<TyreDeclarationAdapter>();
-            container.Bind<IVehicleDeclarationInputData>().To<VehicleDeclarationAdapter>();
-
-            var mainWindow = container.Get<MainWindow>();
+			var mainWindow = container.Get<MainWindow>();
             mainWindow.Show();
         }
 

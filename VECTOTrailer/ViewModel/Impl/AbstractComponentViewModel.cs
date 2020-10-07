@@ -10,9 +10,6 @@ namespace VECTOTrailer.ViewModel.Impl
 	{
 		private HashSet<string> _changedInput = new HashSet<string>();
 		protected bool UnsavedChanges ;
-
-		[Inject] public IAdapterFactory AdapterFactory { set; protected get; }
-
 		protected void SetChangedProperty(bool changed, [CallerMemberName] string propertyName = "")
 		{
 			if (!changed) {

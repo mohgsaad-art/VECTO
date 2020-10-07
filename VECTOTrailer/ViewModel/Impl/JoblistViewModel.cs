@@ -705,10 +705,10 @@ namespace VECTOTrailer.ViewModel.Impl
 			{
 
 				var readerResult = xmlInputReader.Create(reader);
-				if (readerResult is IDeclarationInputDataProvider)
+				if (readerResult is IDeclarationTrailerInputDataProvider)
 				{
 
-					var inputData = readerResult as IDeclarationInputDataProvider;
+					var inputData = readerResult as IDeclarationTrailerInputDataProvider;
 					if (inputData.JobInputData.Vehicle is XMLDeclarationVehicleDataProviderV27)
 					{
 						return true;
@@ -760,12 +760,12 @@ namespace VECTOTrailer.ViewModel.Impl
 			var xmlInputReader = Kernel.Get<IXMLInputDataReader>();
 			using (var reader = XmlReader.Create(jobEntry.GetAbsoluteFilePath(jobEntry.Body.CompletedVehicle)))
 			{
-				var readerResult = xmlInputReader.Create(reader) as IDeclarationInputDataProvider;
+				var readerResult = xmlInputReader.Create(reader) as IDeclarationTrailerInputDataProvider;
 				return CreateCompleteTrailerVehicleViewModel(readerResult);
 			}
 		}
 
-		private IJobEditViewModel CreateCompleteTrailerVehicleViewModel(IDeclarationInputDataProvider dataProvider)
+		private IJobEditViewModel CreateCompleteTrailerVehicleViewModel(IDeclarationTrailerInputDataProvider dataProvider)
 		{
 			return dataProvider == null ? null : new CompleteTrailerJobViewModel(Kernel, dataProvider);
 		}
@@ -905,7 +905,7 @@ namespace VECTOTrailer.ViewModel.Impl
 					switch (extension) {
 						case Constants.FileExtensions.VectoJobFile:
 							input = JSONInputDataFactory.ReadJsonJob(fullFileName);
-							var tmp = input as IDeclarationInputDataProvider;
+							var tmp = input as IDeclarationTrailerInputDataProvider;
 							mode = tmp?.JobInputData.SavedInDeclarationMode ?? false ? ExecutionMode.Declaration : ExecutionMode.Engineering;
 							break;
 						case ".xml":

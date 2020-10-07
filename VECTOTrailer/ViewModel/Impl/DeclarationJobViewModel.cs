@@ -30,17 +30,16 @@ namespace VECTOTrailer.ViewModel.Impl
 {
 	public class DeclarationJobViewModel : AbstractJobViewModel, IJobEditViewModel
 	{
-		private IDeclarationInputDataProvider _inputData;
+		private IDeclarationTrailerInputDataProvider _inputData;
 
 		
-		public DeclarationJobViewModel(IKernel kernel, IDeclarationInputDataProvider inputData)
+		public DeclarationJobViewModel(IKernel kernel, IDeclarationTrailerInputDataProvider inputData)
 		{
 			Kernel = kernel;
 			InputDataProvider = inputData;
 			JobViewModel = this;
-			CreateComponentModel(Component.Vehicle);
-			CreateComponentModel(Component.Cycle);
-			CurrentComponent = GetComponentViewModel(Component.Vehicle);
+			CreateComponentModel(Component.CompleteTrailer);
+			CurrentComponent = GetComponentViewModel(Component.CompleteTrailer);
 		}
 
 		#region Implementation of IJobEditViewModel
@@ -53,7 +52,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		
 		#endregion
 
-		public IDeclarationInputDataProvider ModelData
+		public IDeclarationTrailerInputDataProvider ModelData
 		{
 			get { return new DeclarationJobAdapter(this); }
 		}
@@ -62,7 +61,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		protected override void DoSaveJob(Window window)
 		{
 			var writer = new XMLDeclarationWriter("TEST");
-			var tmp = writer.GenerateVectoJob(ModelData);
+			//var tmp = writer.GenerateVectoJob(ModelData); //TODO
 		}
 
 		protected override void DoCloseJob(Window window)
@@ -81,7 +80,7 @@ namespace VECTOTrailer.ViewModel.Impl
 			get { return _inputData; }
 			set {
 				value.Switch()
-					.If<IDeclarationInputDataProvider>(
+					.If<IDeclarationTrailerInputDataProvider>(
 						d => {
 							SetProperty(ref IsDeclarationMode, true);
 							SetProperty(ref _inputData, d);

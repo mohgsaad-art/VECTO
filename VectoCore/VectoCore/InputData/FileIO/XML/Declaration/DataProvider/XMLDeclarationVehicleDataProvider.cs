@@ -1003,8 +1003,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 			get { return GetString(XMLNames.Trailer_LegislativeCategory); }
 		}
 
-		public int NumberOfAxles {
-			get { return int.Parse(NumberOfTrailerAxlesHelper.Parse(GetString(XMLNames.Trailer_AxleCount)).GetLabel()); }
+		public NumberOfTrailerAxles NumberOfAxles {
+			get { return NumberOfTrailerAxlesHelper.Parse(GetString(XMLNames.Trailer_AxleCount)); }
 		}
 
 		public TypeTrailer TrailerType

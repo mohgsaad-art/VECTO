@@ -17,6 +17,7 @@ using VECTOTrailer.Model;
 using VECTOTrailer.Model.TempDataObject;
 using VECTOTrailer.Properties;
 using VECTOTrailer.Util;
+using VECTOTrailer.ViewModel.Adapter;
 using VECTOTrailer.ViewModel.Interfaces;
 
 namespace VECTOTrailer.ViewModel.Impl
@@ -69,6 +70,13 @@ namespace VECTOTrailer.ViewModel.Impl
 		#endregion
 
 		#region ICompleteTrailerViewModel
+
+		[Inject] public IAdapterFactory AdapterFactory { set; protected get; }
+
+		public ITrailerDeclarationInputData ModelData
+		{
+			get { return AdapterFactory.TrailerDeclarationAdapter(this); }
+		}
 
 		public string Manufacturer
 		{
@@ -389,8 +397,6 @@ namespace VECTOTrailer.ViewModel.Impl
 		}
 		
 		public Dictionary<string, string> XmlNamesToPropertyMapping { get; private set; }
-
-		public AllowedEntry<LegislativeClass>[] AllowedLegislativeClasses { get; private set; }
 		public AllowedEntry<TypeTrailer>[] AllowedTrailerTypes { get; private set; }
 		public AllowedEntry<BodyWorkCode>[] AllowedBodyCodes { get; private set; }
 		public  AllowedEntry<AeroFeatureTechnologies>[] AllowedTechnologies { get; private set; }
@@ -425,6 +431,20 @@ namespace VECTOTrailer.ViewModel.Impl
 				VIN = vehicle.VIN;
 				Date = vehicle.Date;
 				LegislativeCategory = vehicle.LegislativeCategory;
+				NumberOfAxles = vehicle.NumberOfAxles;
+				TrailerType = vehicle.TrailerType;
+				BodyCode = vehicle.BodyworkCode;
+				CurbMassTrailer = vehicle.CurbMass;
+				TPLMTotalTrailer = vehicle.TPMLMTotalTrailer;
+				ExternalLengthOfTheBody = vehicle.ExternalBodyLength;
+				ExternalWidthOfTheBody = vehicle.ExternalBodyWidth;
+				ExternalHeightOfTheBody = vehicle.ExternalBodyHeight;
+				TotalHeightOfTheTrailer = vehicle.TotalTrailerHeight;
+				PositionXFirstAxle = vehicle.LengthTrailerFrontToFirstAxleCenter;
+				PositionXLastAxle = vehicle.LengthTrailerFrontToLastAxleCenter;
+				InternalHeightOfTheBody = vehicle.InternalBodyHeight;
+				CargoVolume = vehicle.CargoVolume;
+
 				_componentData = new TrailerComponentData(this);
 			}
 
@@ -560,7 +580,7 @@ namespace VECTOTrailer.ViewModel.Impl
 			using (var reader = XmlReader.Create(filePath))
 			{
 
-				var readerResult = xmlInputReader.Create(reader);
+				var readerResult = xmlInputReader.Create(reader); // Create -> CreateDeclarationTrailer
 				if (readerResult is IDeclarationTrailerInputDataProvider)
 				{
 

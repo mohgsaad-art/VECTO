@@ -99,16 +99,6 @@ namespace VECTOTrailer.ViewModel.Impl
 		{
 			var nextView = GetComponentViewModel(component);
 
-			if (CurrentComponent is AuxiliariesViewModel) {
-				var convert = CurrentComponent as AuxiliariesViewModel;
-				convert?.CacheAlternatorTechnologies();
-			}
-
-			if (nextView is AuxiliariesViewModel) {
-				var convert = nextView as AuxiliariesViewModel;
-				convert.LoadCachedAlternatorTechnologies();
-			}
-
 			CurrentComponent = nextView ?? Kernel.Get<INoneViewModel>();
 		}
 

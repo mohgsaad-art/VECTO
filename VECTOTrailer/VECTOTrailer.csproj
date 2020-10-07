@@ -198,8 +198,6 @@
     <Compile Include="Model\AlternatorTechnologyModel.cs" />
     <Compile Include="Model\JobListModel.cs" />
     <Compile Include="Model\SettingsModel.cs" />
-    <Compile Include="Model\TempDataObject\AirdragComponentData.cs" />
-    <Compile Include="Model\TempDataObject\AuxiliariesBusComponentData.cs" />
     <Compile Include="Model\TempDataObject\ITempDataObject.cs" />
     <Compile Include="Model\TempDataObject\TrailerComponentData.cs" />
     <Compile Include="Properties\Version.cs">
@@ -211,43 +209,21 @@
     <Compile Include="Util\Component.cs" />
     <Compile Include="Util\RelayCommand.cs" />
     <Compile Include="Util\SIUtils.cs" />
-    <Compile Include="Util\TableDataConverter.cs" />
     <Compile Include="Util\VectoParameterAttribute.cs" />
     <Compile Include="Util\ViewModelFactory.cs" />
     <Compile Include="Util\XML\XMLCompletedTrailer.cs" />
     <Compile Include="ViewModel\Adapter\Declaration\AbstractDeclarationAdapter.cs" />
-    <Compile Include="ViewModel\Adapter\Declaration\AirdragDeclarationAdapter.cs" />
-    <Compile Include="ViewModel\Adapter\Declaration\AngledriveDeclarationAdapter.cs" />
-    <Compile Include="ViewModel\Adapter\Declaration\AuxiliariesDeclarationAdapter.cs" />
-    <Compile Include="ViewModel\Adapter\Declaration\AxleDeclarationAdapter.cs" />
-    <Compile Include="ViewModel\Adapter\Declaration\AxlegearDeclarationAdapter.cs" />
     <Compile Include="ViewModel\Adapter\Declaration\DeclarationJobAdapter.cs" />
-    <Compile Include="ViewModel\Adapter\Declaration\EngineDeclarationAdapter.cs" />
-    <Compile Include="ViewModel\Adapter\Declaration\GearboxDeclarationAdapter.cs" />
-    <Compile Include="ViewModel\Adapter\Declaration\RetarderDeclarationAdapter.cs" />
-    <Compile Include="ViewModel\Adapter\Declaration\TorqueConverterDeclarationAdapter.cs" />
-    <Compile Include="ViewModel\Adapter\Declaration\TyreDeclarationAdapter.cs" />
-    <Compile Include="ViewModel\Adapter\Declaration\VehicleDeclarationAdapter.cs" />
     <Compile Include="ViewModel\Adapter\IAdapterFactory.cs" />
     <Compile Include="ViewModel\Impl\AboutViewModel.cs" />
     <Compile Include="ViewModel\Impl\AbstractTrailerJobViewModel.cs" />
     <Compile Include="ViewModel\Impl\AbstractComponentViewModel.cs" />
     <Compile Include="ViewModel\Impl\AbstractJobViewModel.cs" />
     <Compile Include="ViewModel\Impl\AbstractViewModel.cs" />
-    <Compile Include="ViewModel\Impl\AirdragViewModel.cs" />
-    <Compile Include="ViewModel\Impl\AngledriveViewModel.cs" />
-    <Compile Include="ViewModel\Impl\AuxiliariesViewModel.cs" />
-    <Compile Include="ViewModel\Impl\AxlegearViewModel.cs" />
-    <Compile Include="ViewModel\Impl\AxlesViewModel.cs" />
-    <Compile Include="ViewModel\Impl\AxleViewModel.cs" />
     <Compile Include="ViewModel\Impl\CompletedTrailerJobViewModel.cs" />
     <Compile Include="ViewModel\Impl\CompleteTrailerJobViewModel.cs" />
     <Compile Include="ViewModel\Impl\CompleteTrailerViewModel.cs" />
-    <Compile Include="ViewModel\Impl\CyclesViewModel.cs" />
     <Compile Include="ViewModel\Impl\DeclarationJobViewModel.cs" />
-    <Compile Include="ViewModel\Impl\EngineOnlyJobViewModel.cs" />
-    <Compile Include="ViewModel\Impl\EngineViewModel.cs" />
-    <Compile Include="ViewModel\Impl\GearboxViewModel.cs" />
     <Compile Include="ViewModel\Impl\JobEntry.cs" />
     <Compile Include="ViewModel\Impl\JoblistViewModel.cs" />
     <Compile Include="ViewModel\Impl\MainWindowViewModel.cs" />
@@ -255,136 +231,34 @@
     <Compile Include="ViewModel\Impl\NoneViewModel.cs" />
     <Compile Include="ViewModel\Impl\ObservableObject.cs" />
     <Compile Include="ViewModel\Impl\OutputWindowViewModel.cs" />
-    <Compile Include="ViewModel\Impl\RetarderViewModel.cs" />
     <Compile Include="ViewModel\Impl\SettingsViewModel.cs" />
     <Compile Include="ViewModel\Impl\SingleTrailerJobViewModel.cs" />
-    <Compile Include="ViewModel\Impl\TorqueConverterViewModel.cs" />
-    <Compile Include="ViewModel\Impl\TyreViewModel.cs" />
     <Compile Include="ViewModel\Impl\ValidatingViewModel.cs" />
-    <Compile Include="ViewModel\Impl\VehicleViewModel.cs" />
     <Compile Include="ViewModel\Impl\XMLViewModel.cs" />
     <Compile Include="ViewModel\Interfaces\FuelConsumptionEntry.cs" />
     <Compile Include="ViewModel\Interfaces\FullLoadEntry.cs" />
-    <Compile Include="ViewModel\Interfaces\Gear.cs" />
-    <Compile Include="ViewModel\Interfaces\GearLossMapEntry.cs" />
-    <Compile Include="ViewModel\Interfaces\IAirdrag.cs" />
-    <Compile Include="ViewModel\Interfaces\IAirdragViewModel.cs" />
-    <Compile Include="ViewModel\Interfaces\IAngledriveViewModel.cs" />
-    <Compile Include="ViewModel\Interfaces\IAuxiliariesBus.cs" />
-    <Compile Include="ViewModel\Interfaces\IAuxiliariesViewModel.cs" />
-    <Compile Include="ViewModel\Interfaces\IAxlegearViewModel.cs" />
-    <Compile Include="ViewModel\Interfaces\IAxlesViewModel.cs" />
-    <Compile Include="ViewModel\Interfaces\IAxleViewModel.cs" />
     <Compile Include="ViewModel\Interfaces\ITrailerJobViewModel.cs" />
     <Compile Include="ViewModel\Interfaces\ICommonComponentParameters.cs" />
     <Compile Include="ViewModel\Interfaces\ICompleteTrailer.cs" />
     <Compile Include="ViewModel\Interfaces\ICompleteTrailerViewModel.cs" />
     <Compile Include="ViewModel\Interfaces\IComponentViewModel.cs" />
     <Compile Include="ViewModel\Interfaces\ICyclesViewModel.cs" />
-    <Compile Include="ViewModel\Interfaces\IEngineViewModel.cs" />
-    <Compile Include="ViewModel\Interfaces\IGearboxViewModel.cs" />
     <Compile Include="ViewModel\Interfaces\IJobEditViewModel.cs" />
     <Compile Include="ViewModel\Interfaces\IJoblistViewModel.cs" />
     <Compile Include="ViewModel\Interfaces\IMainView.cs" />
     <Compile Include="ViewModel\Interfaces\IMainWindowViewModel.cs" />
     <Compile Include="ViewModel\Interfaces\INoneViewModel.cs" />
-    <Compile Include="ViewModel\Interfaces\IRetarderViewModel.cs" />
-    <Compile Include="ViewModel\Interfaces\ITorqueConverterViewModel.cs" />
-    <Compile Include="ViewModel\Interfaces\ITyreViewModel.cs" />
-    <Compile Include="ViewModel\Interfaces\IVehicleViewModel.cs" />
-    <Compile Include="ViewModel\Interfaces\RetarderLossMapEntry.cs" />
-    <Compile Include="ViewModel\Interfaces\SteeringPumpEntry.cs" />
-    <Compile Include="ViewModel\Interfaces\TorqueConverterCharacteristics.cs" />
-    <Compile Include="ViewModel\Interfaces\TorqueEntry.cs" />
     <Compile Include="Views\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TrailerJobView.xaml.cs">
       <DependentUpon>TrailerJobView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ComponentViews\Declaration\AirdragDeclarationView.xaml.cs">
-      <DependentUpon>AirdragDeclarationView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ComponentViews\Declaration\AngledriveDeclarationView.xaml.cs">
-      <DependentUpon>AngledriveDeclarationView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ComponentViews\Declaration\AuxiliariesDeclarationView.xaml.cs">
-      <DependentUpon>AuxiliariesDeclarationView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ComponentViews\Declaration\AxleDeclarationView.xaml.cs">
-      <DependentUpon>AxleDeclarationView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ComponentViews\Declaration\AxlegearDeclarationView.xaml.cs">
-      <DependentUpon>AxlegearDeclarationView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ComponentViews\Declaration\AxlesDeclarationView.xaml.cs">
-      <DependentUpon>AxlesDeclarationView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\ComponentViews\Declaration\CompleteTrailerView.xaml.cs">
       <DependentUpon>CompleteTrailerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ComponentViews\Declaration\CyclesDeclarationView.xaml.cs">
-      <DependentUpon>CyclesDeclarationView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ComponentViews\Declaration\EngineDeclarationView.xaml.cs">
-      <DependentUpon>EngineDeclarationView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ComponentViews\Declaration\GearboxDeclarationView.xaml.cs">
-      <DependentUpon>GearboxDeclarationView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ComponentViews\Declaration\RetarderDeclarationView.xaml.cs">
-      <DependentUpon>RetarderDeclarationView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ComponentViews\Declaration\TorqueConverterDeclarationView.xaml.cs">
-      <DependentUpon>TorqueConverterDeclarationView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ComponentViews\Declaration\TyreDeclarationView.xaml.cs">
-      <DependentUpon>TyreDeclarationView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ComponentViews\Declaration\VehicleDeclarationView.xaml.cs">
-      <DependentUpon>VehicleDeclarationView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\ComponentViews\EditComponentNoneView.xaml.cs">
       <DependentUpon>EditComponentNoneView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ComponentViews\Engineering\AirdragEngineeringView.xaml.cs">
-      <DependentUpon>AirdragEngineeringView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ComponentViews\Engineering\AngledriveEngineeringView.xaml.cs">
-      <DependentUpon>AngledriveEngineeringView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ComponentViews\Engineering\AuxiliariesEngineerngView.xaml.cs">
-      <DependentUpon>AuxiliariesEngineerngView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ComponentViews\Engineering\AxleEngineeringView.xaml.cs">
-      <DependentUpon>AxleEngineeringView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ComponentViews\Engineering\AxlegearEngineeringView.xaml.cs">
-      <DependentUpon>AxlegearEngineeringView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ComponentViews\Engineering\AxlesEngineeringView.xaml.cs">
-      <DependentUpon>AxlesEngineeringView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ComponentViews\Engineering\CyclesEngineeringView.xaml.cs">
-      <DependentUpon>CyclesEngineeringView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ComponentViews\Engineering\EngineEngineeringView.xaml.cs">
-      <DependentUpon>EngineEngineeringView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ComponentViews\Engineering\GearboxEngineeringView.xaml.cs">
-      <DependentUpon>GearboxEngineeringView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ComponentViews\Engineering\RetarderEngineeringView.xaml.cs">
-      <DependentUpon>RetarderEngineeringView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ComponentViews\Engineering\TorqueConverterEngineeringView.xaml.cs">
-      <DependentUpon>TorqueConverterEngineeringView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ComponentViews\Engineering\TyreEngineeringView.xaml.cs">
-      <DependentUpon>TyreEngineeringView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ComponentViews\Engineering\VehicleEngineeringView.xaml.cs">
-      <DependentUpon>VehicleEngineeringView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CustomControls\CheckboxParameter.xaml.cs">
       <DependentUpon>CheckboxParameter.xaml</DependentUpon>
@@ -462,115 +336,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ComponentViews\Declaration\AirdragDeclarationView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\ComponentViews\Declaration\AngledriveDeclarationView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\ComponentViews\Declaration\AuxiliariesDeclarationView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\ComponentViews\Declaration\AxleDeclarationView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\ComponentViews\Declaration\AxlegearDeclarationView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\ComponentViews\Declaration\AxlesDeclarationView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Views\ComponentViews\Declaration\CompleteTrailerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ComponentViews\Declaration\CyclesDeclarationView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\ComponentViews\Declaration\EngineDeclarationView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\ComponentViews\Declaration\GearboxDeclarationView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\ComponentViews\Declaration\RetarderDeclarationView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\ComponentViews\Declaration\TorqueConverterDeclarationView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\ComponentViews\Declaration\TyreDeclarationView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\ComponentViews\Declaration\VehicleDeclarationView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Views\ComponentViews\EditComponentNoneView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\ComponentViews\Engineering\AirdragEngineeringView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\ComponentViews\Engineering\AngledriveEngineeringView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\ComponentViews\Engineering\AuxiliariesEngineerngView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\ComponentViews\Engineering\AxleEngineeringView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\ComponentViews\Engineering\AxlegearEngineeringView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\ComponentViews\Engineering\AxlesEngineeringView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\ComponentViews\Engineering\CyclesEngineeringView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\ComponentViews\Engineering\EngineEngineeringView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\ComponentViews\Engineering\GearboxEngineeringView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\ComponentViews\Engineering\RetarderEngineeringView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\ComponentViews\Engineering\TorqueConverterEngineeringView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\ComponentViews\Engineering\TyreEngineeringView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\ComponentViews\Engineering\VehicleEngineeringView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -657,11 +427,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\AirdragLoadTestFile.xml">
-      <SubType>Designer</SubType>
-    </Resource>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\Icon2.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -678,6 +443,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\JRC-About.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\ComponentViews\Engineering\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

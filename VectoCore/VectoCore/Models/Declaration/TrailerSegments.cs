@@ -43,7 +43,7 @@ using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.Declaration
 {
-	public sealed class TrailerSegments : LookupData<int, TypeTrailer, BodyWorkCode, bool, int>
+	public sealed class TrailerSegments : LookupData<NumberOfTrailerAxles, TypeTrailer, BodyWorkCode, bool, int>
 	{
 		private DataTable _segmentTable;
 
@@ -65,7 +65,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 			_segmentTable = table.Copy();
 		}
 
-		public override int Lookup(int numberOfAxles, TypeTrailer typeTrailer, BodyWorkCode bodyWorkCode, bool volumeOrientation)
+		public override int Lookup(NumberOfTrailerAxles numberOfAxles, TypeTrailer typeTrailer, BodyWorkCode bodyWorkCode, bool volumeOrientation)
 		{
 
 			var row = GetTrailerDataRow(numberOfAxles, typeTrailer, bodyWorkCode, volumeOrientation);
@@ -78,17 +78,17 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 
 		private DataRow GetTrailerDataRow(
-			int numberOfAxles, TypeTrailer typeTrailer, BodyWorkCode bodyWorkCode, bool volumeOrientation)
+			NumberOfTrailerAxles numberOfAxles, TypeTrailer typeTrailer, BodyWorkCode bodyWorkCode, bool volumeOrientation)
 		{
 			DataRow row;
 			try {
 				row = _segmentTable.AsEnumerable().First(
 					r => {
-						var numberOfAxlesRow = r.ParseDouble("Number_of_axles");
+						var numberOfAxlesRow = r.Field<string>("Number_of_axles");
 						var typeTrailerRow = r.Field<string>("Trailer_type");
 						var bodyWorkCodeRow = r.Field<string>("Bodywork_code");
 						var volumeOrientationRow = r.Field<string>("Volume_orientation");
-						return (int)numberOfAxlesRow == numberOfAxles 
+						return numberOfAxlesRow == numberOfAxles.GetLabel()
 								&& typeTrailerRow == typeTrailer.ToString()
 								&& bodyWorkCodeRow.Contains(bodyWorkCode.GetLabel())
 								&& (volumeOrientationRow == "Yes" && volumeOrientation 

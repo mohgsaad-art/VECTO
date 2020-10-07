@@ -5,7 +5,7 @@ using VECTOTrailer.Util;
 using VECTOTrailer.ViewModel.Interfaces;
 
 namespace VECTOTrailer.ViewModel.Adapter.Declaration {
-	public class DeclarationJobAdapter : IDeclarationInputDataProvider, IDeclarationJobInputData
+	public class DeclarationJobAdapter : IDeclarationTrailerInputDataProvider, IDeclarationTrailerJobInputData
 	{
 		protected readonly DeclarationJobViewModel Model;
 		public DeclarationJobAdapter(DeclarationJobViewModel declarationJobViewModel)
@@ -13,14 +13,12 @@ namespace VECTOTrailer.ViewModel.Adapter.Declaration {
 			Model = declarationJobViewModel;
 		}
 
-		#region Implementation of IDeclarationInputDataProvider
+		#region Implementation of IDeclarationTrailerInputDataProvider
 
-		public IDeclarationJobInputData JobInputData
+		public IDeclarationTrailerJobInputData JobInputData
 		{
 			get { return this; }
 		}
-
-		public IPrimaryVehicleInformationInputDataProvider PrimaryVehicleData { get; }
 
 		public XElement XMLHash { get { return null; } }
 
@@ -30,10 +28,10 @@ namespace VECTOTrailer.ViewModel.Adapter.Declaration {
 
 		public bool SavedInDeclarationMode { get { return Model.DeclarationMode; } }
 
-		public IVehicleDeclarationInputData Vehicle
+		public ITrailerDeclarationInputData Vehicle
 		{
 			get {
-				var vehiclevm = Model.GetComponentViewModel(Component.Vehicle) as IVehicleViewModel;
+				var vehiclevm = Model.GetComponentViewModel(Component.CompleteTrailer) as CompleteTrailerViewModel;
 				return vehiclevm?.ModelData;
 			}
 		}

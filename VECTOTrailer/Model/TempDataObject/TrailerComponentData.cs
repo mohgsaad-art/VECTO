@@ -107,7 +107,7 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.ManufacturerAddress = default(string);
 			viewModel.Model = default(string);
 			viewModel.VIN = default(string);
-			viewModel.Date = default(DateTime);
+			viewModel.Date = DateTime.Now;
 			viewModel.LegislativeCategory = default(string);
 			viewModel.ExternalHeightOfTheBody = default(Meter);
 			viewModel.ExternalLengthOfTheBody = default(Meter);
@@ -117,9 +117,9 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.PositionXLastAxle = default(Meter);
 			viewModel.InternalHeightOfTheBody = default(Meter);
 			viewModel.CargoVolume = default(CubicMeter);
-			viewModel.NumberOfAxles = default(int);
-			viewModel.TrailerType = default(TypeTrailer);
-			viewModel.BodyCode = default(BodyWorkCode);
+			viewModel.NumberOfAxles = NumberOfTrailerAxles.One;
+			viewModel.TrailerType = TypeTrailer.DA;
+			viewModel.BodyCode = BodyWorkCode.Drybody;
 			viewModel.Technologies = default(AeroFeatureTechnologies);
 			viewModel.CurbMassTrailer = default(Kilogram);
 			viewModel.TPLMTotalTrailer = default(Kilogram);
