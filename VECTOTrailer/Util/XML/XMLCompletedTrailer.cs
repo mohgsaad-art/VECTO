@@ -143,13 +143,8 @@ namespace VECTOTrailer.Util.XML
 				
 
 				if (int.Parse(trailerData.NumberOfAxles.GetLabel()) > 1) {
-					/*vehicle.Element("AxleWheels")?.Element("Data")?.Element("Axles")?.Add(
-						new XElement("Axle", new XAttribute(_xsi + "type", "TrailerAxleType"),
-							new XAttribute("axleNumber", "2"),
-							new XElement("TwinTyres", trailerData.Axle2IsTwin.ToString())));*/
-
 					try { //TODO VALIDATE FIRST
-						var tyre = XDocument.Parse(trailerData.Axle2Xml)?.Elements()?.FirstOrDefault()?.Element("Axle");
+						var tyre = XDocument.Parse(trailerData.Axle2Xml)?.Elements()?.FirstOrDefault()?.Elements()?.FirstOrDefault();
 						vehicle.Element("AxleWheels")?.Element("Data")?.Element("Axles")?.Add(tyre);
 					} catch {
 						// ignored
@@ -157,13 +152,8 @@ namespace VECTOTrailer.Util.XML
 				}
 
 				if (int.Parse(trailerData.NumberOfAxles.GetLabel()) > 2) {
-					/*vehicle.Element("AxleWheels")?.Element("Data")?.Element("Axles")?.Add(
-						new XElement("Axle", new XAttribute(_xsi + "type", "TrailerAxleType"),
-							new XAttribute("axleNumber", "3"),
-							new XElement("TwinTyres", trailerData.Axle3IsTwin.ToString())));*/
-
 					try { //TODO VALIDATE FIRST
-						var tyre = XDocument.Parse(trailerData.Axle3Xml)?.Elements()?.FirstOrDefault()?.Element("Axle");
+						var tyre = XDocument.Parse(trailerData.Axle3Xml)?.Elements()?.FirstOrDefault()?.Elements()?.FirstOrDefault();
 						vehicle.Element("AxleWheels")?.Element("Data")?.Element("Axles")?.Add(tyre);
 					} catch {
 						// ignored
