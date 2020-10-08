@@ -475,10 +475,6 @@ namespace VECTOTrailer.ViewModel.Impl
 					{
 						xmlViewModel = new XMLViewModel(SelectedJobEntry.JobEntryFilePath);
 					}
-					else if (IsJobFile(_selectedJobEntry.JobEntryFilePath)) {
-						var filePath = SelectedJobEntry.Body.PrimaryVehicle ?? SelectedJobEntry.Body.PrimaryVehicleResults;
-						xmlViewModel = new XMLViewModel(SelectedJobEntry.GetAbsoluteFilePath(filePath));
-					}
 					break;
 				case JobFileType.CompletedTrailerFile:
 					xmlViewModel = new XMLViewModel(

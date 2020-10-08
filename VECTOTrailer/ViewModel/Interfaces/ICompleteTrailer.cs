@@ -47,8 +47,11 @@ namespace VECTOTrailer.ViewModel.Interfaces
 		bool Axle2IsTwin { get; set; }
 		bool Axle3IsTwin { get; set; }
 		ICommand SelectFirstFileCommand { get; }
+		ICommand SelectSecondFileCommand { get; }
+		ICommand SelectThirdFileCommand { get; }
 		JobFileType FirstFileType { get; }
-
+		JobFileType SecondFileType { get; }
+		JobFileType ThirdFileType { get; }
 		Dictionary<string,string> XmlNamesToPropertyMapping { get; }
 	}
 }

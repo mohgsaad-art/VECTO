@@ -54,7 +54,11 @@ namespace VECTOTrailer.Model.TempDataObject
 		public bool Axle2IsTwin { get; set; }
 		public bool Axle3IsTwin { get; set; }
 		public ICommand SelectFirstFileCommand { get; set;  }
+		public ICommand SelectSecondFileCommand { get; set;  }
+		public ICommand SelectThirdFileCommand { get; set;  }
 		public JobFileType FirstFileType { get; set;  }
+		public JobFileType SecondFileType { get; set;  }
+		public JobFileType ThirdFileType { get; set;  }
 
 		public Dictionary<string, string> XmlNamesToPropertyMapping { get;  private set; }
 
@@ -104,6 +108,9 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.CurbMassTrailer = CurbMassTrailer;
 			viewModel.TPLMTotalTrailer = TPLMTotalTrailer;
 			viewModel.TPLMAxleAssembly = TPLMAxleAssembly;
+			viewModel.Axle1IsTwin = Axle1IsTwin;
+			viewModel.Axle2IsTwin = Axle2IsTwin;
+			viewModel.Axle3IsTwin = Axle3IsTwin;
 		}
 
 		public void ClearValues(ICompleteTrailerViewModel viewModel)
@@ -132,6 +139,9 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.CurbMassTrailer = default;
 			viewModel.TPLMTotalTrailer = default;
 			viewModel.TPLMAxleAssembly = default;
+			Axle1IsTwin = default;
+			Axle2IsTwin = default;
+			Axle3IsTwin = default;
 		}
 
 		
@@ -161,6 +171,12 @@ namespace VECTOTrailer.Model.TempDataObject
 			CurbMassTrailer = trailer.CurbMassTrailer;
 			TPLMTotalTrailer = trailer.TPLMTotalTrailer;
 			TPLMAxleAssembly = trailer.TPLMAxleAssembly;
+			Axle1IsTwin = trailer.Axle1IsTwin;
+			Axle2IsTwin = trailer.Axle2IsTwin;
+			Axle3IsTwin = trailer.Axle3IsTwin;
+			Axle1Xml = trailer.Axle1Xml;
+			Axle2Xml = trailer.Axle2Xml;
+			Axle3Xml = trailer.Axle3Xml;
 		}
 
 		private void SetXmlNamesToPropertyMapping()

@@ -402,7 +402,7 @@
 
                         <TextBlock Grid.Column="0" Text="Axle 2" Width="50" /> 
                         <TextBox Grid.Column="1" Width="80" IsReadOnly="True" IsReadOnlyCaretVisible="True" 
-                                 Text="{Binding Axle1FilePath}">
+                                 Text="{Binding Axle2FilePath}">
                             <Validation.ErrorTemplate>
                                 <ControlTemplate>
                                     <DockPanel>
@@ -422,8 +422,8 @@
                             </TextBox.Style>
                         </TextBox>
                         <Button Grid.Column="2" Content="..." Width="30" Margin="5,0,0,0"
-                                Command="{Binding SelectFirstFileCommand}"
-                                CommandParameter="{Binding FirstFileType}"/>
+                                Command="{Binding SelectSecondFileCommand}"
+                                CommandParameter="{Binding SecondFileType}"/>
                         <TextBlock Grid.Column="4" Text="Twin tyres" />
                         <CheckBox Grid.Column="5" IsChecked="{Binding Axle2IsTwin}"/>
                     </Grid>
@@ -452,7 +452,7 @@
 
                         <TextBlock Grid.Column="0" Text="Axle 3" Width="50" />
                         <TextBox Grid.Column="1" Width="80" IsReadOnly="True" IsReadOnlyCaretVisible="True" 
-                                 Text="{Binding Axle1FilePath}">
+                                 Text="{Binding Axle3FilePath}">
                             <Validation.ErrorTemplate>
                                 <ControlTemplate>
                                     <DockPanel>
@@ -472,8 +472,8 @@
                             </TextBox.Style>
                         </TextBox>
                         <Button Grid.Column="2" Content="..." Width="30" Margin="5,0,0,0"
-                                Command="{Binding SelectFirstFileCommand}"
-                                CommandParameter="{Binding FirstFileType}"/> 
+                                Command="{Binding SelectThirdFileCommand}"
+                                CommandParameter="{Binding ThirdFileType}"/> 
                         <TextBlock Grid.Column="4" Text="Twin tyres" />
                         <CheckBox Grid.Column="5" IsChecked="{Binding Axle3IsTwin}"/>
                     </Grid>

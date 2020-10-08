@@ -173,25 +173,11 @@ namespace VECTOTrailer.ViewModel.Impl
 	public class JobBody : ObservableObject
 	{
 		private string _completedVehicle;
-		private string _primaryVehicle;
-		private string _primaryVehicleResults;
 
 		public string CompletedVehicle
 		{
 			get { return _completedVehicle; }
 			set { SetProperty(ref _completedVehicle, value); }
-		}
-
-		public string PrimaryVehicle
-		{
-			get { return _primaryVehicle; }
-			set { SetProperty(ref _primaryVehicle, value); }
-		}
-
-		public string PrimaryVehicleResults
-		{
-			get { return _primaryVehicleResults; }
-			set { SetProperty(ref _primaryVehicleResults, value); }
 		}
 	}
 }

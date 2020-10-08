@@ -53,14 +53,20 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		private JobFileType _firstFileType;
 		private JobFileType _secondFileType;
+		private JobFileType _thirdFileType;
 
 		private string _firstLabelText;
 		private string _secondLabelText;
+		private string _thirdLabelText;
+
 		private string _firstFilePath;
 		private string _secondFilePath;
+		private string _thirdFilePath;
 
 		private ICommand _selectFirstFileCommand;
 		private ICommand _selectSecondFileCommand;
+		private ICommand _selectThirdFileCommand;
+
 		private ICommand _cancelCommand;
 		private ICommand _saveCommand;
 
@@ -88,6 +94,12 @@ namespace VECTOTrailer.ViewModel.Impl
 			set { SetProperty(ref _secondFilePath, value); }
 		}
 
+		public string ThirdFilePath
+		{
+			get { return _thirdFilePath; }
+			set { SetProperty(ref _thirdFilePath, value); }
+		}
+
 		public string FirstLabelText
 		{
 			get { return _firstLabelText; }
@@ -100,6 +112,12 @@ namespace VECTOTrailer.ViewModel.Impl
 			set { SetProperty(ref _secondLabelText, value); }
 		}
 
+		public string ThirdLabelText
+		{
+			get { return _thirdLabelText; }
+			set { SetProperty(ref _thirdLabelText, value); }
+		}
+
 		public JobFileType FirstFileType
 		{
 			get { return _firstFileType; }
@@ -109,6 +127,11 @@ namespace VECTOTrailer.ViewModel.Impl
 		{
 			get { return _secondFileType; }
 			set { SetProperty(ref _secondFileType, value); }
+		}
+		public JobFileType ThirdFileType
+		{
+			get { return _thirdFileType; }
+			set { SetProperty(ref _thirdFileType, value); }
 		}
 
 		#endregion
@@ -139,20 +162,16 @@ namespace VECTOTrailer.ViewModel.Impl
 		{
 			JobType = jobType;
 
-			_firstFileType = jobType == JobType.SingleTrailerJob
-				? JobFileType.PrimaryTrailerFile
-				: JobFileType.PIFTrailerFile;
-
+			_firstFileType = JobFileType.CompletedTrailerFile;
 			_secondFileType = JobFileType.CompletedTrailerFile;
+			_thirdFileType = JobFileType.CompletedTrailerFile;
 		}
 
 		private void SetJobEntryData(JobEntry jobEntry)
 		{
 			JobEntry = jobEntry;
 
-			FirstFilePath = jobEntry.Header.JobType == JobType.SingleTrailerJob
-				? jobEntry.Body.PrimaryVehicle
-				: jobEntry.Body.PrimaryVehicleResults;
+			FirstFilePath = jobEntry.Body.CompletedVehicle;
 			SecondFilePath = jobEntry.Body.CompletedVehicle;
 		}
 
@@ -242,8 +261,6 @@ namespace VECTOTrailer.ViewModel.Impl
 			var jobBody = new JobBody {
 				CompletedVehicle = SecondFilePath
 			};
-			jobBody.PrimaryVehicle = JobType.SingleTrailerJob == JobType ? FirstFilePath : null; 
-			jobBody.PrimaryVehicleResults = JobType.CompletedTrailerJob == JobType ? FirstFilePath : null;
 
 			job.Body = jobBody;
 
@@ -256,8 +273,6 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		private void UpdateJobData()
 		{
-			SavedJobEntry.Body.PrimaryVehicle = JobType.SingleTrailerJob == JobType ? FirstFilePath : null; ;
-			SavedJobEntry.Body.PrimaryVehicleResults = JobType.CompletedTrailerJob == JobType ? FirstFilePath : null;
 			SavedJobEntry.Body.CompletedVehicle = SecondFilePath;
 		}
 

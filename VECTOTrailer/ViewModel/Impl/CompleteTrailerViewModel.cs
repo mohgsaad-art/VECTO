@@ -61,10 +61,19 @@ namespace VECTOTrailer.ViewModel.Impl
 		private bool _axle1IsTwin;
 		private bool _axle2IsTwin;
 		private bool _axle3IsTwin;
+		
 		private ICommand _selectFirstFileCommand;
+		private ICommand _selectSecondFileCommand;
+		private ICommand _selectThirdFileCommand;
+
 		private JobFileType _firstFileType;
+		private JobFileType _secondFileType;
+		private JobFileType _thirdFileType;
 
 		private string _firstFilePath;
+		private string _secondFilePath;
+		private string _thirdFilePath;
+
 		private readonly bool _editJob;
 		protected SettingsModel Settings = new SettingsModel();
 		protected JobEntry JobEntry;
@@ -75,14 +84,11 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		[Inject] public IAdapterFactory AdapterFactory { set; protected get; }
 
-		public ITrailerDeclarationInputData ModelData
-		{
-			get { return AdapterFactory.TrailerDeclarationAdapter(this); }
-		}
+		public ITrailerDeclarationInputData ModelData => AdapterFactory.TrailerDeclarationAdapter(this);
 
 		public string Manufacturer
 		{
-			get { return _manufacturer; }
+			get => _manufacturer;
 			set
 			{
 				if (!SetProperty(ref _manufacturer, value))
@@ -92,7 +98,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		}
 		public string ManufacturerAddress
 		{
-			get { return _manufacturerAddress; }
+			get => _manufacturerAddress;
 			set
 			{
 				if (!SetProperty(ref _manufacturerAddress, value))
@@ -102,7 +108,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		}
 		public string Model
 		{
-			get { return _model; }
+			get => _model;
 			set
 			{
 				if (!SetProperty(ref _model, value))
@@ -113,7 +119,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		}
 		public string VIN
 		{
-			get { return _vin; }
+			get => _vin;
 			set
 			{
 				if (!SetProperty(ref _vin, value))
@@ -123,7 +129,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		}
 		public DateTime Date
 		{
-			get { return _date; }
+			get => _date;
 			set
 			{
 				if (!SetProperty(ref _date, value))
@@ -133,7 +139,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		}
 		public string LegislativeCategory
 		{
-			get { return _legislativeCategory; }
+			get => _legislativeCategory;
 			set
 			{
 				if (!SetProperty(ref _legislativeCategory, value))
@@ -144,7 +150,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		public Meter ExternalLengthOfTheBody
 		{
-			get { return _externalLengthOfTheBody; }
+			get => _externalLengthOfTheBody;
 			set
 			{
 				if (!SetProperty(ref _externalLengthOfTheBody, value))
@@ -155,7 +161,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		public Meter ExternalWidthOfTheBody
 		{
-			get { return _externalWidthOfTheBody; }
+			get => _externalWidthOfTheBody;
 			set
 			{
 				if (!SetProperty(ref _externalWidthOfTheBody, value))
@@ -166,7 +172,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		public Meter ExternalHeightOfTheBody
 		{
-			get { return _externalHeightOfTheBody; }
+			get => _externalHeightOfTheBody;
 			set
 			{
 				if (!SetProperty(ref _externalHeightOfTheBody, value))
@@ -177,7 +183,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		public Meter TotalHeightOfTheTrailer
 		{
-			get { return _totalHeightOfTheTrailer; }
+			get => _totalHeightOfTheTrailer;
 			set
 			{
 				if (!SetProperty(ref _totalHeightOfTheTrailer, value))
@@ -188,7 +194,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		public Meter PositionXFirstAxle
 		{
-			get { return _positionXFirstAxle; }
+			get => _positionXFirstAxle;
 			set
 			{
 				if (!SetProperty(ref _positionXFirstAxle, value))
@@ -199,7 +205,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		public Meter PositionXLastAxle
 		{
-			get { return _positionXLastAxle; }
+			get => _positionXLastAxle;
 			set
 			{
 				if (!SetProperty(ref _positionXLastAxle, value))
@@ -210,7 +216,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		public Meter InternalHeightOfTheBody
 		{
-			get { return _internalHeightOfTheBody; }
+			get => _internalHeightOfTheBody;
 			set
 			{
 				if (!SetProperty(ref _internalHeightOfTheBody, value))
@@ -221,7 +227,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		public CubicMeter CargoVolume
 		{
-			get { return _cargoVolume; }
+			get => _cargoVolume;
 			set
 			{
 				if (!SetProperty(ref _cargoVolume, value))
@@ -232,7 +238,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		public NumberOfTrailerAxles NumberOfAxles
 		{
-			get { return _numberOfAxles; }
+			get => _numberOfAxles;
 			set
 			{
 				if (!SetProperty(ref _numberOfAxles, value))
@@ -243,7 +249,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		public TypeTrailer TrailerType
 		{
-			get { return _trailerType; }
+			get => _trailerType;
 			set
 			{
 				if (!SetProperty(ref _trailerType, value))
@@ -254,7 +260,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		public BodyWorkCode BodyCode
 		{
-			get { return _bodyCode; }
+			get => _bodyCode;
 			set
 			{
 				if (!SetProperty(ref _bodyCode, value))
@@ -264,28 +270,28 @@ namespace VECTOTrailer.ViewModel.Impl
 		}
 		public bool SideSkirtsShort
 		{
-			get { return _sideSkirtsShort; }
-			set { SetProperty(ref _sideSkirtsShort, value); }
+			get => _sideSkirtsShort;
+			set => SetProperty(ref _sideSkirtsShort, value);
 		}
 		public bool SideSkirtsLong
 		{
-			get { return _sideSkirtsLong; }
-			set { SetProperty(ref _sideSkirtsLong, value); }
+			get => _sideSkirtsLong;
+			set => SetProperty(ref _sideSkirtsLong, value);
 		}
 		public bool BoatTailShort
 		{
-			get { return _boatTailShort; }
-			set { SetProperty(ref _boatTailShort, value); }
+			get => _boatTailShort;
+			set => SetProperty(ref _boatTailShort, value);
 		}
 		public bool BoatTailLong
 		{
-			get { return _boatTailLong; }
-			set { SetProperty(ref _boatTailLong, value); }
+			get => _boatTailLong;
+			set => SetProperty(ref _boatTailLong, value);
 		}
 
 		public Kilogram CurbMassTrailer
 		{
-			get { return _curbMassTrailer; }
+			get => _curbMassTrailer;
 			set
 			{
 				if (!SetProperty(ref _curbMassTrailer, value))
@@ -295,7 +301,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		}
 		public Kilogram TPLMTotalTrailer
 		{
-			get { return _tPLMTotalTrailer; }
+			get => _tPLMTotalTrailer;
 			set
 			{
 				if (!SetProperty(ref _tPLMTotalTrailer, value))
@@ -305,7 +311,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		}
 		public Kilogram TPLMAxleAssembly
 		{
-			get { return _tPLMAxleAssembly; }
+			get => _tPLMAxleAssembly;
 			set
 			{
 				if (!SetProperty(ref _tPLMAxleAssembly, value))
@@ -316,7 +322,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		public string Axle1FilePath
 		{
-			get { return _axle1FilePath; }
+			get => _axle1FilePath;
 			set
 			{
 				if (!SetProperty(ref _axle1FilePath, value))
@@ -327,7 +333,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		public string Axle2FilePath
 		{
-			get { return _axle2FilePath; }
+			get => _axle2FilePath;
 			set
 			{
 				if (!SetProperty(ref _axle2FilePath, value))
@@ -339,7 +345,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		public string Axle3FilePath
 		{
-			get { return _axle3FilePath; }
+			get => _axle3FilePath;
 			set
 			{
 				if (!SetProperty(ref _axle3FilePath, value))
@@ -349,63 +355,51 @@ namespace VECTOTrailer.ViewModel.Impl
 		}
 		public string Axle1Xml
 		{
-			get { return _axle1Xml; }
-			set
+			get
 			{
-				if (!SetProperty(ref _axle1Xml, value))
-					return;
-				IsDataChanged(_axle1Xml, _componentData);
+				if (string.IsNullOrEmpty(_firstFilePath))
+					return string.Empty;
+
+				return File.ReadAllText(_firstFilePath);
 			}
+			set { }
 		}
 		public string Axle2Xml
 		{
-			get { return _axle2Xml; }
-			set
+			get
 			{
-				if (!SetProperty(ref _axle2Xml, value))
-					return;
-				IsDataChanged(_axle2Xml, _componentData);
+				if (string.IsNullOrEmpty(_secondFilePath))
+					return string.Empty;
+
+				return File.ReadAllText(_secondFilePath);
 			}
+			set { }
 		}
 		public string Axle3Xml
 		{
-			get { return _axle3Xml; }
-			set
+			get
 			{
-				if (!SetProperty(ref _axle3Xml, value))
-					return;
-				IsDataChanged(_axle3Xml, _componentData);
+				if (string.IsNullOrEmpty(_thirdFilePath))
+					return string.Empty;
+
+				return File.ReadAllText(_thirdFilePath);
 			}
+			set { }
 		}
 		public bool Axle1IsTwin
 		{
-			get { return _axle1IsTwin; }
-			set
-			{
-				if (!SetProperty(ref _axle1IsTwin, value))
-					return;
-				IsDataChanged(_axle1IsTwin, _componentData);
-			}
+			get => _axle1IsTwin;
+			set => SetProperty(ref _axle1IsTwin, value);
 		}
 		public bool Axle2IsTwin
 		{
-			get { return _axle2IsTwin; }
-			set
-			{
-				if (!SetProperty(ref _axle2IsTwin, value))
-					return;
-				IsDataChanged(_axle2IsTwin, _componentData);
-			}
+			get => _axle2IsTwin;
+			set => SetProperty(ref _axle2IsTwin, value);
 		}
 		public bool Axle3IsTwin
 		{
-			get { return _axle3IsTwin; }
-			set
-			{
-				if (!SetProperty(ref _axle3IsTwin, value))
-					return;
-				IsDataChanged(_axle3IsTwin, _componentData);
-			}
+			get => _axle3IsTwin;
+			set => SetProperty(ref _axle3IsTwin, value);
 		}
 		
 		public Dictionary<string, string> XmlNamesToPropertyMapping { get; private set; }
@@ -521,27 +515,65 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		public JobFileType FirstFileType
 		{
-			get { return _firstFileType; }
-			set { SetProperty(ref _firstFileType, value); }
+			get => _firstFileType;
+			set => SetProperty(ref _firstFileType, value);
+		}
+
+		public JobFileType SecondFileType
+		{
+			get => _secondFileType;
+			set => SetProperty(ref _secondFileType, value);
+		}
+
+		public JobFileType ThirdFileType
+		{
+			get => _thirdFileType;
+			set => SetProperty(ref _thirdFileType, value);
 		}
 
 		public string FirstFilePath
 		{
-			get { return _firstFilePath; }
-			set { SetProperty(ref _firstFilePath, value); }
+			get => _firstFilePath;
+			set => SetProperty(ref _firstFilePath, value);
 		}
-		public ICommand SelectFirstFileCommand
+
+		public string SecondFilePath
 		{
-			get
-			{
-				return _selectFirstFileCommand ??
-						(_selectFirstFileCommand = new RelayCommand<JobFileType>(DoSelectFirstFileCommand));
-			}
+			get => _secondFilePath;
+			set => SetProperty(ref _secondFilePath, value);
 		}
+
+		public string ThirdFilePath
+		{
+			get => _thirdFilePath;
+			set => SetProperty(ref _thirdFilePath, value);
+		}
+
+		public ICommand SelectFirstFileCommand =>
+			_selectFirstFileCommand ??
+			(_selectFirstFileCommand = new RelayCommand<JobFileType>(DoSelectFirstFileCommand));
+
+		public ICommand SelectSecondFileCommand =>
+			_selectSecondFileCommand ??
+			(_selectSecondFileCommand = new RelayCommand<JobFileType>(DoSelectSecondFileCommand));
+
+		public ICommand SelectThirdFileCommand =>
+			_selectThirdFileCommand ??
+			(_selectThirdFileCommand = new RelayCommand<JobFileType>(DoSelectThirdFileCommand));
+
 		private void DoSelectFirstFileCommand(JobFileType jobFileType)
 		{
 			FirstFilePath = OpenFileSelector(jobFileType, nameof(FirstFilePath), FirstFilePath);
 		}
+		private void DoSelectSecondFileCommand(JobFileType jobFileType)
+		{
+			SecondFilePath = OpenFileSelector(jobFileType, nameof(SecondFilePath), SecondFilePath);
+		}
+		private void DoSelectThirdFileCommand(JobFileType jobFileType)
+		{
+			ThirdFilePath = OpenFileSelector(jobFileType, nameof(ThirdFilePath), ThirdFilePath);
+		}
+
 		private string OpenFileSelector(JobFileType jobFileType, string textPropertyName, string filePath)
 		{
 			var folderPath = GetFolderPath(filePath);
@@ -550,14 +582,17 @@ namespace VECTOTrailer.ViewModel.Impl
 			if (dialogResult != null) {
 
 				filePath = dialogResult.FirstOrDefault();
-				var validationResult = IsValideXml(jobFileType, filePath);
+
+				return filePath;
+				//TODO
+				/*var validationResult = IsValideXml(jobFileType, filePath);
 
 				if (!validationResult)
 					AddPropertyError(textPropertyName, $"Selected XML-File is not a valid {jobFileType.GetLable()}!");
 				else
 					RemovePropertyError(textPropertyName);
 
-				return !validationResult ? null : filePath;
+				return !validationResult ? null : filePath;*/
 			}
 			
 			return filePath;
