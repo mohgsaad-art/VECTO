@@ -30,7 +30,10 @@ namespace VECTOTrailer.ViewModel.Interfaces
 		NumberOfTrailerAxles NumberOfAxles { get; set; }
 		TypeTrailer TrailerType { get; set; }
 		BodyWorkCode BodyCode { get; set; }
-		AeroFeatureTechnologies Technologies { get; set; }
+		bool SideSkirtsShort { get; set; }
+		bool SideSkirtsLong { get; set; }
+		bool BoatTailShort { get; set; }
+		bool BoatTailLong { get; set; }
 		Kilogram CurbMassTrailer { get; set; }
 		Kilogram TPLMTotalTrailer { get; set; }
 		Kilogram TPLMAxleAssembly { get; set; }

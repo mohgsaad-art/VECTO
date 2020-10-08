@@ -37,7 +37,10 @@ namespace VECTOTrailer.Model.TempDataObject
 		public NumberOfTrailerAxles NumberOfAxles { get; set; }
 		public TypeTrailer TrailerType { get; set; }
 		public BodyWorkCode BodyCode { get; set; }
-		public AeroFeatureTechnologies Technologies { get; set; }
+		public bool SideSkirtsShort { get; set; }
+		public bool SideSkirtsLong { get; set; }
+		public bool BoatTailShort { get; set; }
+		public bool BoatTailLong { get; set; }
 		public Kilogram CurbMassTrailer { get; set; }
 		public Kilogram TPLMTotalTrailer { get; set; }
 		public Kilogram TPLMAxleAssembly { get; set; }
@@ -94,7 +97,10 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.NumberOfAxles = NumberOfAxles;
 			viewModel.TrailerType = TrailerType;
 			viewModel.BodyCode = BodyCode;
-			viewModel.Technologies = Technologies;
+			viewModel.SideSkirtsShort = SideSkirtsShort;
+			viewModel.SideSkirtsLong = SideSkirtsLong;
+			viewModel.BoatTailShort = BoatTailShort;
+			viewModel.BoatTailLong = BoatTailLong;
 			viewModel.CurbMassTrailer = CurbMassTrailer;
 			viewModel.TPLMTotalTrailer = TPLMTotalTrailer;
 			viewModel.TPLMAxleAssembly = TPLMAxleAssembly;
@@ -119,7 +125,10 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.NumberOfAxles = NumberOfTrailerAxles.One;
 			viewModel.TrailerType = TypeTrailer.DA;
 			viewModel.BodyCode = BodyWorkCode.Drybody;
-			viewModel.Technologies = default;
+			viewModel.SideSkirtsShort = default;
+			viewModel.SideSkirtsLong = default;
+			viewModel.BoatTailShort = default;
+			viewModel.BoatTailLong = default;
 			viewModel.CurbMassTrailer = default;
 			viewModel.TPLMTotalTrailer = default;
 			viewModel.TPLMAxleAssembly = default;
@@ -145,7 +154,10 @@ namespace VECTOTrailer.Model.TempDataObject
 			NumberOfAxles = trailer.NumberOfAxles;
 			TrailerType = trailer.TrailerType;
 			BodyCode = trailer.BodyCode;
-			Technologies = trailer.Technologies;
+			SideSkirtsShort = trailer.SideSkirtsShort;
+			SideSkirtsLong = trailer.SideSkirtsLong;
+			BoatTailShort = trailer.BoatTailShort;
+			BoatTailLong = trailer.BoatTailLong;
 			CurbMassTrailer = trailer.CurbMassTrailer;
 			TPLMTotalTrailer = trailer.TPLMTotalTrailer;
 			TPLMAxleAssembly = trailer.TPLMAxleAssembly;
@@ -171,7 +183,7 @@ namespace VECTOTrailer.Model.TempDataObject
 				{XMLNames.Trailer_AxleCount, nameof(NumberOfAxles)},
 				{XMLNames.Trailer_TrailerType, nameof(TrailerType)},
 				{XMLNames.Trailer_BodyCode, nameof(BodyCode)},
-				{XMLNames.Trailer_AeroFeatureTechnologies, nameof(Technologies)},
+				{XMLNames.Trailer_AeroFeatureTechnologies, nameof(SideSkirtsShort)},
 				{XMLNames.Trailer_CurbMass, nameof(CurbMassTrailer)},
 				{XMLNames.Trailer_TPMLMTotalTrailer, nameof(TPLMTotalTrailer)},
 				{XMLNames.Trailer_TPLMAxleAssembly, nameof(TPLMAxleAssembly)},

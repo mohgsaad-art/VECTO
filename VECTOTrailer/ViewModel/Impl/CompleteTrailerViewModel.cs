@@ -45,7 +45,10 @@ namespace VECTOTrailer.ViewModel.Impl
 		private NumberOfTrailerAxles _numberOfAxles;
 		private TypeTrailer _trailerType;
 		private BodyWorkCode _bodyCode;
-		private AeroFeatureTechnologies _technologies;
+		private bool _sideSkirtsShort;
+		private bool _sideSkirtsLong;
+		private bool _boatTailShort;
+		private bool _boatTailLong;
 		private Kilogram _curbMassTrailer;
 		private Kilogram _tPLMTotalTrailer;
 		private Kilogram _tPLMAxleAssembly;
@@ -259,15 +262,25 @@ namespace VECTOTrailer.ViewModel.Impl
 				IsDataChanged(_bodyCode, _componentData);
 			}
 		}
-		public AeroFeatureTechnologies Technologies
+		public bool SideSkirtsShort
 		{
-			get { return _technologies; }
-			set
-			{
-				if (!SetProperty(ref _technologies, value))
-					return;
-				IsDataChanged(_technologies, _componentData);
-			}
+			get { return _sideSkirtsShort; }
+			set { SetProperty(ref _sideSkirtsShort, value); }
+		}
+		public bool SideSkirtsLong
+		{
+			get { return _sideSkirtsLong; }
+			set { SetProperty(ref _sideSkirtsLong, value); }
+		}
+		public bool BoatTailShort
+		{
+			get { return _boatTailShort; }
+			set { SetProperty(ref _boatTailShort, value); }
+		}
+		public bool BoatTailLong
+		{
+			get { return _boatTailLong; }
+			set { SetProperty(ref _boatTailLong, value); }
 		}
 
 		public Kilogram CurbMassTrailer

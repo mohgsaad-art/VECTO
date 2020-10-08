@@ -78,9 +78,9 @@ namespace VECTOTrailer.Util.XML
 
 
 			var id = "CB-" + Guid.NewGuid().ToString("n").Substring(0, 20);
-			return new XElement(_v20 + XMLNames.Component_Vehicle,
+			var vehicle = new XElement(_v20 + XMLNames.Component_Vehicle,
 					new XAttribute(XMLNames.Component_ID_Attr, id),
-					new XAttribute(_xsi + "type", XMLDeclarationVehicleDataProviderV27.XSD_TYPE),// "VehicleTrailerType"
+					new XAttribute(_xsi + "type", XMLDeclarationVehicleDataProviderV27.XSD_TYPE),
 
 					new XElement(_v27 + XMLNames.Component_Manufacturer, trailerData?.Manufacturer),
 					new XElement(_v27 + XMLNames.Component_ManufacturerAddress, trailerData?.ManufacturerAddress),
@@ -92,22 +92,46 @@ namespace VECTOTrailer.Util.XML
 					new XElement(_v27 + XMLNames.Trailer_TrailerType, trailerData?.TrailerType),
 					new XElement(_v27 + XMLNames.Trailer_BodyCode, trailerData?.BodyCode.GetLabel()),
 					new XElement(_v27 + "Masses", 
-						new XElement(_v27 + XMLNames.Trailer_CurbMass, trailerData?.CurbMassTrailer), 
-						new XElement(_v27 + XMLNames.Trailer_TPMLMTotalTrailer, trailerData?.TPLMTotalTrailer)),
+						new XElement(_v27 + XMLNames.Trailer_CurbMass, trailerData?.CurbMassTrailer?.ToXMLFormat()), 
+						new XElement(_v27 + XMLNames.Trailer_TPMLMTotalTrailer, trailerData?.TPLMTotalTrailer?.ToXMLFormat())),
 					new XElement(_v27 + "Dimensions", 
-						new XElement(_v27 + XMLNames.Trailer_ExternalLenghtBody, trailerData?.ExternalLengthOfTheBody),
-						new XElement(_v27 + XMLNames.Trailer_ExternalWidthBody, trailerData?.ExternalWidthOfTheBody),
-						new XElement(_v27 + XMLNames.Trailer_ExternalHeightBody, trailerData?.ExternalHeightOfTheBody),
-						new XElement(_v27 + XMLNames.Trailer_TotalHeightTrailer, trailerData?.TotalHeightOfTheTrailer),
-						new XElement(_v27 + XMLNames.Trailer_PositionXFirstAxle, trailerData?.PositionXFirstAxle),
-						new XElement(_v27 + XMLNames.Trailer_PositionXLastAxle, trailerData?.PositionXLastAxle),
-						new XElement(_v27 + XMLNames.Trailer_InternalHeightBody, trailerData?.InternalHeightOfTheBody),
-						new XElement(_v27 + XMLNames.Trailer_CargoVolume, trailerData?.CargoVolume)
-						),
-					new XElement(_v27 + "AeroFeatures", new XElement(_v27 + XMLNames.Trailer_AeroFeatureTechnologies, trailerData?.Technologies)
-					),
-					new XElement(_v27 + "AxleWheels")
+						new XElement(_v27 + XMLNames.Trailer_ExternalLenghtBody, trailerData?.ExternalLengthOfTheBody?.ToXMLFormat()),
+						new XElement(_v27 + XMLNames.Trailer_ExternalWidthBody, trailerData?.ExternalWidthOfTheBody?.ToXMLFormat()),
+						new XElement(_v27 + XMLNames.Trailer_ExternalHeightBody, trailerData?.ExternalHeightOfTheBody?.ToXMLFormat()),
+						new XElement(_v27 + XMLNames.Trailer_TotalHeightTrailer, trailerData?.TotalHeightOfTheTrailer?.ToXMLFormat()),
+						new XElement(_v27 + XMLNames.Trailer_PositionXFirstAxle, trailerData?.PositionXFirstAxle?.ToXMLFormat()),
+						new XElement(_v27 + XMLNames.Trailer_PositionXLastAxle, trailerData?.PositionXLastAxle?.ToXMLFormat()),
+						new XElement(_v27 + XMLNames.Trailer_InternalHeightBody, trailerData?.InternalHeightOfTheBody?.ToXMLFormat()),
+						new XElement(_v27 + XMLNames.Trailer_CargoVolume, trailerData?.CargoVolume?.ToXMLFormat())
+						)
 			);
+
+			if (trailerData != null && (trailerData.SideSkirtsShort || trailerData.SideSkirtsLong ||
+										trailerData.BoatTailShort || trailerData.BoatTailLong)) {
+				vehicle.Add(new XElement(_v27 + "AeroFeatures"));
+
+				if (trailerData.SideSkirtsShort)
+					vehicle.Element(_v27 + "AeroFeatures")?.Add(new XElement(_v27 + XMLNames.Trailer_AeroFeatureTechnologies, "Side skirt short"));
+				if (trailerData.SideSkirtsLong)
+					vehicle.Element(_v27 + "AeroFeatures")?.Add(new XElement(_v27 + XMLNames.Trailer_AeroFeatureTechnologies, "Side skirt long"));
+				if (trailerData.BoatTailShort)
+					vehicle.Element(_v27 + "AeroFeatures")?.Add(new XElement(_v27 + XMLNames.Trailer_AeroFeatureTechnologies, "Boat tail short"));
+				if (trailerData.BoatTailLong)
+					vehicle.Element(_v27 + "AeroFeatures")?.Add(new XElement(_v27 + XMLNames.Trailer_AeroFeatureTechnologies, "Boat tail long"));
+			}
+
+			if (trailerData != null && (int.Parse(trailerData.NumberOfAxles.GetLabel()) > 0)) {
+				vehicle.Add(new XElement(_v27 + "AxleWheels", new XElement(_v27 + "Data", new XAttribute(_xsi + "type", "TrailerAxleWheelsDataDeclarationType"), new XElement(_v27 + "Axles"))));
+
+				if (int.Parse(trailerData.NumberOfAxles.GetLabel()) > 0)
+					vehicle.Element(_v27 + "Axles")?.Add(new XElement(_v27 + "Axle", new XAttribute(_xsi + "type", "TrailerAxleType"), new XAttribute("axleNumber", "1"), new XElement(_v27 + "TwinTyres", trailerData.Axle1IsTwin.ToString())));
+				if (int.Parse(trailerData.NumberOfAxles.GetLabel()) > 1)
+					vehicle.Element(_v27 + "Axles")?.Add(new XElement(_v27 + "Axle", new XAttribute(_xsi + "type", "TrailerAxleType"), new XAttribute("axleNumber", "2"), new XElement(_v27 + "TwinTyres", trailerData.Axle2IsTwin.ToString())));
+				if (int.Parse(trailerData.NumberOfAxles.GetLabel()) > 2)
+					vehicle.Element(_v27 + "Axles")?.Add(new XElement(_v27 + "Axle", new XAttribute(_xsi + "type", "TrailerAxleType"), new XAttribute("axleNumber", "3"), new XElement(_v27 + "TwinTyres", trailerData.Axle3IsTwin.ToString())));
+			}
+
+			return vehicle;
 		}
 	}
 }

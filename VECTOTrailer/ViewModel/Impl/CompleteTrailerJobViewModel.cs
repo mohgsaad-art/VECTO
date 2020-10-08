@@ -114,7 +114,7 @@ namespace VECTOTrailer.ViewModel.Impl
 				var xDoc = _xmlCompletedTrailer.GenerateCompletedTrailerDocument(CompleteVehicleTrailerData);
 
 				if (XmlHelper.ValidateXDocument(xDoc, null, ValidationErrorAction)) {
-					_xmlCompletedTrailerWriter.WriteCompletedBusXml(XmlFilePath, xDoc);
+					_xmlCompletedTrailerWriter.WriteCompletedTrailerXml(XmlFilePath, xDoc);
 					CloseWindow(window);
 				} else {
 					ValidationResultDialogWindow(false);
@@ -140,12 +140,14 @@ namespace VECTOTrailer.ViewModel.Impl
 			SetCurrentDataToSave();
 			var xDocument = _xmlCompletedTrailer.GenerateCompletedTrailerDocument(CompleteVehicleTrailerData);
 
+			_xmlCompletedTrailerWriter.WriteCompletedTrailerXml(filePath, xDocument);
+			/*
 			if (XmlHelper.ValidateXDocument(xDocument, null, ValidationErrorAction)) {
-				_xmlCompletedTrailerWriter.WriteCompletedBusXml(filePath, xDocument);
+				_xmlCompletedTrailerWriter.WriteCompletedTrailerXml(filePath, xDocument);
 				CloseWindow(window);
 			} else {
 				ValidationResultDialogWindow(false);
-			}
+			}*/
 		}
 
 		public ICommand CommitComponent
@@ -269,11 +271,13 @@ namespace VECTOTrailer.ViewModel.Impl
 			SetCurrentDataToSave();
 			var xDoc = _xmlCompletedTrailer.GenerateCompletedTrailerDocument(CompleteVehicleTrailerData);
 
+			ValidationResultDialogWindow(true); //TODO
+			/*
 			if (XmlHelper.ValidateXDocument(xDoc, null, ValidationErrorAction)) {
 				ValidationResultDialogWindow(true);
 			} else {
 				ValidationResultDialogWindow(false);
-			}
+			}*/
 		}
 
 		public ICommand ShowValidationErrors

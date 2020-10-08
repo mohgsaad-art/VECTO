@@ -21,7 +21,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationJobs
 			_stringBuilder = new StringBuilder();
 		}
 		
-		public bool WriteCompletedBusXml(string filePath, XDocument xmlDocument)
+		public bool WriteCompletedTrailerXml(string filePath, XDocument xmlDocument)
 		{
 			if (filePath.IsNullOrEmpty())
 				return false;
