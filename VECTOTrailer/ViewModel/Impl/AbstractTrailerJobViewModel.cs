@@ -309,16 +309,16 @@ namespace VECTOTrailer.ViewModel.Impl
 
 			var xmlInputReader = Kernel.Get<IXMLInputDataReader>();
 
-			using (var reader = XmlReader.Create(filePath))
+			using (var reader = XmlReader.Create(filePath)) 
 			{
 
-				var readerResult = xmlInputReader.Create(reader);
+				var readerResult = xmlInputReader.CreateDeclarationTrailer(reader); //Create
 				if (readerResult is IDeclarationTrailerInputDataProvider)
 				{
 
-					var inputData = readerResult as IDeclarationTrailerInputDataProvider;
+					var inputData = readerResult;; //as IDeclarationTrailerInputDataProvider;
 					if (jobFileType == JobFileType.CompletedTrailerFile &&
-						inputData.JobInputData.Vehicle is XMLDeclarationVehicleDataProviderV27)
+						inputData.JobInputData.Trailer is XMLDeclarationVehicleDataProviderV27)
 					{
 						return true;
 					}

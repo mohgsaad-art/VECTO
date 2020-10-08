@@ -123,14 +123,14 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 			get { return true; }
 		}
 
-		public virtual ITrailerDeclarationInputData Vehicle
+		public virtual ITrailerDeclarationInputData Trailer
 		{
 			get { return _vehicle ?? (_vehicle = Reader.CreateVehicle); }
 		}
 
 		public virtual string JobName
 		{
-			get { return Vehicle.Identifier; }
+			get { return Trailer.Identifier; }
 		}
 
 		public virtual string ShiftStrategy { get { return null; } }

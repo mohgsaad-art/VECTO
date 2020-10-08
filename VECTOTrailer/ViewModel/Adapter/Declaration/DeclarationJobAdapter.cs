@@ -28,7 +28,7 @@ namespace VECTOTrailer.ViewModel.Adapter.Declaration {
 
 		public bool SavedInDeclarationMode { get { return Model.DeclarationMode; } }
 
-		public ITrailerDeclarationInputData Vehicle
+		public ITrailerDeclarationInputData Trailer
 		{
 			get {
 				var vehiclevm = Model.GetComponentViewModel(Component.CompleteTrailer) as CompleteTrailerViewModel;

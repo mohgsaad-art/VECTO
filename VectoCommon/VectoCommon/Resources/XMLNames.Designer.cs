@@ -1022,8 +1022,8 @@ namespace TUGraz.VectoCommon.Resources {
                 return ResourceManager.GetString("Component_Model", resourceCulture);
             }
         }
-        
-        /// <summary>
+
+		/// <summary>
         ///   Looks up a localized string similar to Retarder.
         /// </summary>
         public static string Component_Retarder {

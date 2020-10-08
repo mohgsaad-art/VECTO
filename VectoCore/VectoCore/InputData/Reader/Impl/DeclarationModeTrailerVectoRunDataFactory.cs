@@ -130,9 +130,9 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 
 		private IEnumerable<VectoRunData> VectoRunDataTruckNonExempted()
 		{
-			var vehicle = InputDataProvider.JobInputData.Vehicle;
+			var vehicle = InputDataProvider.JobInputData.Trailer;
 
-			var engine = InputDataProvider.JobInputData.Vehicle.Components.EngineInputData;
+			var engine = InputDataProvider.JobInputData.Trailer.Components.EngineInputData;
 			var engineModes = engine.EngineModes;
 
 			for(var modeIdx = 0; modeIdx < engineModes.Count; modeIdx++) {
@@ -163,7 +163,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 				};
 			}*/
 
-			var engine = InputDataProvider.JobInputData.Vehicle.Components.EngineInputData;
+			var engine = InputDataProvider.JobInputData.Trailer.Components.EngineInputData;
 			var engineModes = engine.EngineModes;
 			var engineMode = engineModes[modeIdx];
 			DrivingCycleData cycle;
@@ -180,7 +180,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 				VehicleData = DataAdapter.CreateVehicleData(vehicle, _segment, mission, loading),
 				VehicleDesignSpeed = _segment.DesignSpeed,
 				AirdragData = DataAdapter.CreateAirdragData(vehicle.Components.AirdragInputData, mission, _segment),
-				EngineData = DataAdapter.CreateEngineData(InputDataProvider.JobInputData.Vehicle, engineMode, mission), // _engineData.Copy(), // a copy is necessary because every run has a different correction factor!
+				EngineData = DataAdapter.CreateEngineData(InputDataProvider.JobInputData.Trailer, engineMode, mission), // _engineData.Copy(), // a copy is necessary because every run has a different correction factor!
 				GearboxData = _gearboxData,
 				AxleGearData = _axlegearData,
 				AngledriveData = _angledriveData,
@@ -225,7 +225,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 		{
 			VectoRunData powertrainConfig;
 			List<List<FuelData.Entry>> fuels;
-			var vehicle = InputDataProvider.JobInputData.Vehicle;
+			var vehicle = InputDataProvider.JobInputData.Trailer;
 			if (vehicle.ExemptedVehicle) {
 				powertrainConfig = CreateVectoRunData(vehicle, 0, null, new KeyValuePair<LoadingType, Tuple<Kilogram, double?>>());
 				fuels = new List<List<FuelData.Entry>>();
@@ -242,7 +242,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 
 		protected virtual void Initialize()
 		{
-			var vehicle = InputDataProvider.JobInputData.Vehicle;
+			var vehicle = InputDataProvider.JobInputData.Trailer;
 			if (vehicle.ExemptedVehicle) {
 				return;
 			}
@@ -280,12 +280,12 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 													_segment.Missions.First().Loadings.First());
 			_airdragData = DataAdapter.CreateAirdragData(vehicle.Components.AirdragInputData,
 												_segment.Missions.First(), _segment);
-			if (InputDataProvider.JobInputData.Vehicle.AxleConfiguration.AxlegearIncludedInGearbox()) {
-				_axlegearData = DataAdapter.CreateDummyAxleGearData(InputDataProvider.JobInputData.Vehicle.Components.GearboxInputData);
+			if (InputDataProvider.JobInputData.Trailer.AxleConfiguration.AxlegearIncludedInGearbox()) {
+				_axlegearData = DataAdapter.CreateDummyAxleGearData(InputDataProvider.JobInputData.Trailer.Components.GearboxInputData);
 			} else { 
-				_axlegearData = DataAdapter.CreateAxleGearData(InputDataProvider.JobInputData.Vehicle.Components.AxleGearInputData);
+				_axlegearData = DataAdapter.CreateAxleGearData(InputDataProvider.JobInputData.Trailer.Components.AxleGearInputData);
 			} 
-			_angledriveData = DataAdapter.CreateAngledriveData(InputDataProvider.JobInputData.Vehicle.Components.AngledriveInputData);
+			_angledriveData = DataAdapter.CreateAngledriveData(InputDataProvider.JobInputData.Trailer.Components.AngledriveInputData);
 			var tmpRunData = new VectoRunData() {
 				ShiftStrategy = InputDataProvider.JobInputData.ShiftStrategy,
 				GearboxData =  new GearboxData() {

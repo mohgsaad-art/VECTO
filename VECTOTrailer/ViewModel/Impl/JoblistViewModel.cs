@@ -709,7 +709,7 @@ namespace VECTOTrailer.ViewModel.Impl
 				{
 
 					var inputData = readerResult as IDeclarationTrailerInputDataProvider;
-					if (inputData.JobInputData.Vehicle is XMLDeclarationVehicleDataProviderV27)
+					if (inputData.JobInputData.Trailer is XMLDeclarationVehicleDataProviderV27)
 					{
 						return true;
 					}
@@ -1033,7 +1033,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 			foreach (var jobEntry in jobs) {
 				var w = new FileOutputWriter(GetOutputDirectory(jobEntry.JobEntryFilePath));
-				foreach (var entry in new Dictionary<string, string>() { {w.XMLFullReportName,  "XML ManufacturereReport"}, {w.XMLCustomerReportName, "XML Customer Report"}, { w.XMLVTPReportName, "VTP Report"}, {w.XMLPrimaryVehicleReportName, "Primary Vehicle Information File"}  }) {
+				foreach (var entry in new Dictionary<string, string>() { {w.XMLFullReportName,  "XML ManufacturereReport"}, {w.XMLCustomerReportName, "XML Customer Report"}, { w.XMLVTPReportName, "VTP Report"}, {w.XMLPrimaryVehicleReportName, "Primary Trailer Information File"}  }) {
 					if (File.Exists(entry.Key)) {
 						sender.ReportProgress(
 							100,

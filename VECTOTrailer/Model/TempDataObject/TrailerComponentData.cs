@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Resources;
@@ -19,7 +18,7 @@ namespace VECTOTrailer.Model.TempDataObject
 	{
 		protected const int NotSelected = -1;
 
-		#region ICompleteVehicleBus Interface
+		#region ICompleteVehicleTrailer Interface
 
 		public string Manufacturer { get; set; }
 		public string ManufacturerAddress { get; set; }
@@ -103,27 +102,27 @@ namespace VECTOTrailer.Model.TempDataObject
 
 		public void ClearValues(ICompleteTrailerViewModel viewModel)
 		{
-			viewModel.Manufacturer = default(string);
-			viewModel.ManufacturerAddress = default(string);
-			viewModel.Model = default(string);
-			viewModel.VIN = default(string);
+			viewModel.Manufacturer = default;
+			viewModel.ManufacturerAddress = default;
+			viewModel.Model = default;
+			viewModel.VIN = default;
 			viewModel.Date = DateTime.Now;
-			viewModel.LegislativeCategory = default(string);
-			viewModel.ExternalHeightOfTheBody = default(Meter);
-			viewModel.ExternalLengthOfTheBody = default(Meter);
-			viewModel.ExternalWidthOfTheBody = default(Meter);
-			viewModel.TotalHeightOfTheTrailer = default(Meter);
-			viewModel.PositionXFirstAxle = default(Meter);
-			viewModel.PositionXLastAxle = default(Meter);
-			viewModel.InternalHeightOfTheBody = default(Meter);
-			viewModel.CargoVolume = default(CubicMeter);
+			viewModel.LegislativeCategory = default;
+			viewModel.ExternalHeightOfTheBody = default;
+			viewModel.ExternalLengthOfTheBody = default;
+			viewModel.ExternalWidthOfTheBody = default;
+			viewModel.TotalHeightOfTheTrailer = default;
+			viewModel.PositionXFirstAxle = default;
+			viewModel.PositionXLastAxle = default;
+			viewModel.InternalHeightOfTheBody = default;
+			viewModel.CargoVolume = default;
 			viewModel.NumberOfAxles = NumberOfTrailerAxles.One;
 			viewModel.TrailerType = TypeTrailer.DA;
 			viewModel.BodyCode = BodyWorkCode.Drybody;
-			viewModel.Technologies = default(AeroFeatureTechnologies);
-			viewModel.CurbMassTrailer = default(Kilogram);
-			viewModel.TPLMTotalTrailer = default(Kilogram);
-			viewModel.TPLMAxleAssembly = default(Kilogram);
+			viewModel.Technologies = default;
+			viewModel.CurbMassTrailer = default;
+			viewModel.TPLMTotalTrailer = default;
+			viewModel.TPLMAxleAssembly = default;
 		}
 
 		

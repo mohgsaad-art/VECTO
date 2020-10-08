@@ -58,7 +58,7 @@ namespace TUGraz.VectoCommon.InputData
 	{
 		bool SavedInDeclarationMode { get; }
 
-		ITrailerDeclarationInputData Vehicle { get; }
+		ITrailerDeclarationInputData Trailer { get; }
 
 		string JobName { get; }
 

@@ -72,7 +72,7 @@ namespace VECTOTrailer.ViewModel.Impl
 			//CreateComponentModel(Component.Auxiliaries);
 			CurrentComponent = GetComponentViewModel(Component.CompleteTrailer);
 
-			SetXmlFilePath(inputData?.JobInputData.Vehicle.XMLSource.BaseURI);
+			SetXmlFilePath(inputData?.JobInputData.Trailer.XMLSource.BaseURI);
 
 			_xmlCompletedTrailer = new XMLCompletedTrailer();
 			_xmlCompletedTrailerWriter = new XMLCompletedTrailerWriter();

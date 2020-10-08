@@ -6,7 +6,6 @@ using System.Windows.Input;
 using System.Xml;
 using Castle.Core.Internal;
 using Ninject;
-using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
@@ -26,7 +25,7 @@ namespace VECTOTrailer.ViewModel.Impl
 	{
 		#region Members
 
-		private ITrailerDeclarationInputData _vehicle;
+		private ITrailerDeclarationInputData _trailer;
 		private TrailerComponentData _componentData;
 
 		private string _manufacturer;
@@ -410,8 +409,8 @@ namespace VECTOTrailer.ViewModel.Impl
 		protected override void InputDataChanged()
 		{
 			var inputData = JobViewModel.InputDataProvider as IDeclarationTrailerInputDataProvider;
-			_vehicle = inputData?.JobInputData.Vehicle;
-			SetVehicleValues(_vehicle);
+			_trailer = inputData?.JobInputData.Trailer;
+			SetVehicleValues(_trailer);
 			SetAllowedEntries();
 			XmlNamesToPropertyMapping = _componentData.XmlNamesToPropertyMapping;
 
@@ -586,7 +585,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 					var inputData = readerResult as IDeclarationTrailerInputDataProvider;
 					if (jobFileType == JobFileType.CompletedTrailerFile &&
-						inputData.JobInputData.Vehicle is XMLDeclarationVehicleDataProviderV27)
+						inputData.JobInputData.Trailer is XMLDeclarationVehicleDataProviderV27)
 					{
 						return true;
 					}

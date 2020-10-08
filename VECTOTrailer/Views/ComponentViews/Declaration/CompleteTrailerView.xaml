@@ -13,9 +13,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="500">
 
-    <d:PrimaryVehicleBusView.DataContext>
+    <d:CompleteTrailerViewModel.DataContext>
         <x:Type Type="interfaces:ICompleteTrailerViewModel" />
-    </d:PrimaryVehicleBusView.DataContext>
+    </d:CompleteTrailerViewModel.DataContext>
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -118,35 +118,35 @@
                     <Grid>
                         <customControls:VectoParameterControl
                             Caption="External length of the body"
-                            Value="{Binding ExternalLengthOfTheBody}" ValueAlign="right"
+                            Value="{Binding ExternalLengthOfTheBody, Converter={converter:SIValueConverter}, ConverterParameter=AsMeter|double}" ValueAlign="right"
                             Unit="m" UnitWidthGroup="unitWidth"/>
                     </Grid>
 
                     <Grid>
                         <customControls:VectoParameterControl
                             Caption="External width of the body" CaptionWidthGroup="lblGWidth"
-                            Value="{Binding ExternalWidthOfTheBody}" ValueAlign="right"
+                            Value="{Binding ExternalWidthOfTheBody, Converter={converter:SIValueConverter}, ConverterParameter=AsMeter|double}" ValueAlign="right"
                             Unit="m" UnitWidthGroup="unitWidth"/>
                     </Grid>
 
                     <Grid>
                         <customControls:VectoParameterControl
                             Caption="External height of the body" CaptionWidthGroup="lblGWidth"
-                            Value="{Binding ExternalHeightOfTheBody}" ValueAlign="right"
+                            Value="{Binding ExternalHeightOfTheBody, Converter={converter:SIValueConverter}, ConverterParameter=AsMeter|double}" ValueAlign="right"
                             Unit="m" UnitWidthGroup="unitWidth"/>
                     </Grid>
 
                     <Grid>
                         <customControls:VectoParameterControl
                             Caption="Total height of the trailer" CaptionWidthGroup="lblGWidth"
-                            Value="{Binding TotalHeightOfTheTrailer}" ValueAlign="right"
+                            Value="{Binding TotalHeightOfTheTrailer, Converter={converter:SIValueConverter}, ConverterParameter=AsMeter|double}" ValueAlign="right"
                             Unit="m" UnitWidthGroup="unitWidth"/>
                     </Grid>
 
                     <Grid>
                         <customControls:VectoParameterControl
                             Caption="PositionXFirstAxle" CaptionWidthGroup="lblGWidth"
-                            Value="{Binding PositionXFirstAxle}" ValueAlign="right"
+                            Value="{Binding PositionXFirstAxle, Converter={converter:SIValueConverter}, ConverterParameter=AsMeter|double}" ValueAlign="right"
                             Unit="m" UnitWidthGroup="unitWidth"/>
                     </Grid>
 
@@ -154,7 +154,7 @@
                     <Grid>
                         <customControls:VectoParameterControl
                             Caption="PositionXLastAxle" CaptionWidthGroup="lblGWidth"
-                            Value="{Binding PositionXLastAxle}" ValueAlign="right"
+                            Value="{Binding PositionXLastAxle, Converter={converter:SIValueConverter}, ConverterParameter=AsMeter|double}" ValueAlign="right"
                             Unit="m" UnitWidthGroup="unitWidth"/>
                     </Grid>
 
@@ -162,7 +162,7 @@
                     <Grid>
                         <customControls:VectoParameterControl
                             Caption="Internal height of the body" CaptionWidthGroup="lblGWidth"
-                            Value="{Binding InternalHeightOfTheBody}" ValueAlign="right"
+                            Value="{Binding InternalHeightOfTheBody, Converter={converter:SIValueConverter}, ConverterParameter=AsMeter|double}" ValueAlign="right"
                             Unit="m" UnitWidthGroup="unitWidth"/>
                     </Grid>
 
@@ -170,7 +170,7 @@
                     <Grid>
                         <customControls:VectoParameterControl
                             Caption="Cargo volume" CaptionWidthGroup="lblGWidth"
-                            Value="{Binding CargoVolume}" ValueAlign="right"
+                            Value="{Binding CargoVolume, Converter={converter:SIValueConverter}, ConverterParameter=AsCubicMeter|double}" ValueAlign="right"
                             Unit="m3" UnitWidthGroup="unitWidth"/>
                     </Grid>
 
@@ -289,21 +289,21 @@
                     <Grid>
                         <customControls:VectoParameterControl
                             Caption="Curb Mass Trailer" CaptionWidthGroup="lblGWidth"
-                            Value="{Binding CurbMassTrailer}" ValueAlign="right"
+                            Value="{Binding CurbMassTrailer, Converter={converter:SIValueConverter}, ConverterParameter=AsKilos|double}" ValueAlign="right"
                             Unit="kg" UnitWidthGroup="unitWidth"/>
                     </Grid>
 
                     <Grid>
                         <customControls:VectoParameterControl
                             Caption="TPLM Total Trailer" CaptionWidthGroup="lblGWidth"
-                            Value="{Binding TPLMTotalTrailer}" ValueAlign="right"
+                            Value="{Binding TPLMTotalTrailer, Converter={converter:SIValueConverter}, ConverterParameter=AsKilos|double}" ValueAlign="right"
                             Unit="kg" UnitWidthGroup="unitWidth"/>
                     </Grid>
 
                     <Grid>
                         <customControls:VectoParameterControl
                             Caption="TPLM Axle Assembly" CaptionWidthGroup="lblGWidth"
-                            Value="{Binding TPLMAxleAssembly}" ValueAlign="right"
+                            Value="{Binding TPLMAxleAssembly, Converter={converter:SIValueConverter}, ConverterParameter=AsKilos|double}" ValueAlign="right"
                             Unit="kg" UnitWidthGroup="unitWidth"/>
                     </Grid>
 
