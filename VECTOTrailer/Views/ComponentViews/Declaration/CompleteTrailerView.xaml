@@ -295,14 +295,14 @@
 
                     <Grid>
                         <customControls:VectoParameterControl
-                            Caption="TPLM Total Trailer" CaptionWidthGroup="lblGWidth"
+                            Caption="TPMLM Total Trailer" CaptionWidthGroup="lblGWidth"
                             Value="{Binding TPLMTotalTrailer, Converter={converter:SIValueConverter}, ConverterParameter=AsKilos|int}" ValueAlign="right"
                             Unit="kg" UnitWidthGroup="unitWidth"/>
                     </Grid>
 
                     <Grid>
                         <customControls:VectoParameterControl
-                            Caption="TPLM Axle Assembly" CaptionWidthGroup="lblGWidth"
+                            Caption="TPMLM Axle Assembly" CaptionWidthGroup="lblGWidth"
                             Value="{Binding TPLMAxleAssembly, Converter={converter:SIValueConverter}, ConverterParameter=AsKilos|int}" ValueAlign="right"
                             Unit="kg" UnitWidthGroup="unitWidth"/>
                     </Grid>
@@ -347,8 +347,8 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Grid.Column="0" Text="Axle 1" Width="50" />
-                        <TextBox Grid.Column="1" Width="80" IsReadOnly="True" IsReadOnlyCaretVisible="True" 
-                                 Text="{Binding Axle1FilePath}">
+                        <TextBox Grid.Column="1" Width="120" IsReadOnly="True" IsReadOnlyCaretVisible="True" 
+                                 Text="{Binding Axle1FilePath}" Name="FilePath1">
                             <Validation.ErrorTemplate>
                                 <ControlTemplate>
                                     <DockPanel>
@@ -401,7 +401,7 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Grid.Column="0" Text="Axle 2" Width="50" /> 
-                        <TextBox Grid.Column="1" Width="80" IsReadOnly="True" IsReadOnlyCaretVisible="True" 
+                        <TextBox Grid.Column="1" Width="120" IsReadOnly="True" IsReadOnlyCaretVisible="True" 
                                  Text="{Binding Axle2FilePath}">
                             <Validation.ErrorTemplate>
                                 <ControlTemplate>
@@ -451,7 +451,7 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Grid.Column="0" Text="Axle 3" Width="50" />
-                        <TextBox Grid.Column="1" Width="80" IsReadOnly="True" IsReadOnlyCaretVisible="True" 
+                        <TextBox Grid.Column="1" Width="120" IsReadOnly="True" IsReadOnlyCaretVisible="True" 
                                  Text="{Binding Axle3FilePath}">
                             <Validation.ErrorTemplate>
                                 <ControlTemplate>

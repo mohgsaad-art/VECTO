@@ -323,35 +323,20 @@ namespace VECTOTrailer.ViewModel.Impl
 		public string Axle1FilePath
 		{
 			get => _axle1FilePath;
-			set
-			{
-				if (!SetProperty(ref _axle1FilePath, value))
-					return;
-				IsDataChanged(_axle1FilePath, _componentData);
-			}
+			set => SetProperty(ref _axle1FilePath, value);
 		}
 
 		public string Axle2FilePath
 		{
 			get => _axle2FilePath;
-			set
-			{
-				if (!SetProperty(ref _axle2FilePath, value))
-					return;
-				IsDataChanged(_axle2FilePath, _componentData);
-			}
+			set => SetProperty(ref _axle2FilePath, value);
 		}
 
 
 		public string Axle3FilePath
 		{
 			get => _axle3FilePath;
-			set
-			{
-				if (!SetProperty(ref _axle3FilePath, value))
-					return;
-				IsDataChanged(_axle3FilePath, _componentData);
-			}
+			set => SetProperty(ref _axle3FilePath, value);
 		}
 		public string Axle1Xml
 		{
@@ -564,14 +549,17 @@ namespace VECTOTrailer.ViewModel.Impl
 		private void DoSelectFirstFileCommand(JobFileType jobFileType)
 		{
 			FirstFilePath = OpenFileSelector(jobFileType, nameof(FirstFilePath), FirstFilePath);
+			this.Axle1FilePath = FirstFilePath;
 		}
 		private void DoSelectSecondFileCommand(JobFileType jobFileType)
 		{
 			SecondFilePath = OpenFileSelector(jobFileType, nameof(SecondFilePath), SecondFilePath);
+			this.Axle2FilePath = SecondFilePath;
 		}
 		private void DoSelectThirdFileCommand(JobFileType jobFileType)
 		{
 			ThirdFilePath = OpenFileSelector(jobFileType, nameof(ThirdFilePath), ThirdFilePath);
+			this.Axle3FilePath = ThirdFilePath;
 		}
 
 		private string OpenFileSelector(JobFileType jobFileType, string textPropertyName, string filePath)
@@ -582,8 +570,10 @@ namespace VECTOTrailer.ViewModel.Impl
 			if (dialogResult != null) {
 
 				filePath = dialogResult.FirstOrDefault();
-
+				
+				RemovePropertyError(textPropertyName);
 				return filePath;
+
 				//TODO
 				/*var validationResult = IsValidXml(jobFileType, filePath);
 
@@ -615,31 +605,6 @@ namespace VECTOTrailer.ViewModel.Impl
 		private bool IsFileName( string filePath)
 		{
 			return !Directory.Exists(filePath);
-		}
-		
-		private bool IsValidXml(JobFileType jobFileType, string filePath)
-		{
-			if (filePath.IsNullOrEmpty())
-				return false;
-
-			var xmlInputReader = Kernel.Get<IXMLInputDataReader>();
-
-			using (var reader = XmlReader.Create(filePath))
-			{
-
-				var readerResult = xmlInputReader.Create(reader); // Create -> CreateDeclarationTrailer
-				if (readerResult is IDeclarationTrailerInputDataProvider)
-				{
-
-					var inputData = readerResult as IDeclarationTrailerInputDataProvider;
-					if (jobFileType == JobFileType.CompletedTrailerFile &&
-						inputData.JobInputData.Trailer is XMLDeclarationVehicleDataProviderV27)
-					{
-						return true;
-					}
-				}
-				return false;
-			}
 		}
 
 	}

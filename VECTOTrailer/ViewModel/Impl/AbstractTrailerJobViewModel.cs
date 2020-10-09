@@ -192,6 +192,20 @@ namespace VECTOTrailer.ViewModel.Impl
 			SecondFilePath = OpenFileSelector(jobFileType, nameof(SecondFilePath), SecondFilePath);
 		}
 
+		public ICommand SelectThirdFileCommand
+		{
+			get
+			{
+				return _selectThirdFileCommand ??
+						(_selectThirdFileCommand = new RelayCommand<JobFileType>(DoSelectThirdFileCommand));
+			}
+		}
+		private void DoSelectThirdFileCommand(JobFileType jobFileType)
+		{
+			ThirdFilePath = OpenFileSelector(jobFileType, nameof(ThirdFilePath), ThirdFilePath);
+		}
+
+
 		public ICommand CancelCommand
 		{
 			get { return _cancelCommand ?? (_cancelCommand = new RelayCommand<Window>(DoCancelCommand)); }

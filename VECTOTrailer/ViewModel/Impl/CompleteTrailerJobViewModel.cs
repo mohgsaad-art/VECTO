@@ -68,8 +68,7 @@ namespace VECTOTrailer.ViewModel.Impl
 			IsNewJob = inputData == null;
 			JobViewModel = this;
 			CreateComponentModel(Component.CompleteTrailer);
-			//CreateComponentModel(Component.Airdrag);
-			//CreateComponentModel(Component.Auxiliaries);
+
 			CurrentComponent = GetComponentViewModel(Component.CompleteTrailer);
 
 			SetXmlFilePath(inputData?.JobInputData.Trailer.XMLSource.BaseURI);
