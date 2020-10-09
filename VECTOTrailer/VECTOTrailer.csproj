@@ -232,7 +232,6 @@
     <Compile Include="ViewModel\Impl\ObservableObject.cs" />
     <Compile Include="ViewModel\Impl\OutputWindowViewModel.cs" />
     <Compile Include="ViewModel\Impl\SettingsViewModel.cs" />
-    <Compile Include="ViewModel\Impl\SingleTrailerJobViewModel.cs" />
     <Compile Include="ViewModel\Impl\ValidatingViewModel.cs" />
     <Compile Include="ViewModel\Impl\XMLViewModel.cs" />
     <Compile Include="ViewModel\Interfaces\ITrailerJobViewModel.cs" />

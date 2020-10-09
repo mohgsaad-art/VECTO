@@ -289,21 +289,21 @@
                     <Grid>
                         <customControls:VectoParameterControl
                             Caption="Curb Mass Trailer" CaptionWidthGroup="lblGWidth"
-                            Value="{Binding CurbMassTrailer, Converter={converter:SIValueConverter}, ConverterParameter=AsKilos|double}" ValueAlign="right"
+                            Value="{Binding CurbMassTrailer, Converter={converter:SIValueConverter}, ConverterParameter=AsKilos|int}" ValueAlign="right"
                             Unit="kg" UnitWidthGroup="unitWidth"/>
                     </Grid>
 
                     <Grid>
                         <customControls:VectoParameterControl
                             Caption="TPLM Total Trailer" CaptionWidthGroup="lblGWidth"
-                            Value="{Binding TPLMTotalTrailer, Converter={converter:SIValueConverter}, ConverterParameter=AsKilos|double}" ValueAlign="right"
+                            Value="{Binding TPLMTotalTrailer, Converter={converter:SIValueConverter}, ConverterParameter=AsKilos|int}" ValueAlign="right"
                             Unit="kg" UnitWidthGroup="unitWidth"/>
                     </Grid>
 
                     <Grid>
                         <customControls:VectoParameterControl
                             Caption="TPLM Axle Assembly" CaptionWidthGroup="lblGWidth"
-                            Value="{Binding TPLMAxleAssembly, Converter={converter:SIValueConverter}, ConverterParameter=AsKilos|double}" ValueAlign="right"
+                            Value="{Binding TPLMAxleAssembly, Converter={converter:SIValueConverter}, ConverterParameter=AsKilos|int}" ValueAlign="right"
                             Unit="kg" UnitWidthGroup="unitWidth"/>
                     </Grid>
 

@@ -177,6 +177,9 @@ namespace VECTOTrailer.Model.TempDataObject
 			Axle1Xml = trailer.Axle1Xml;
 			Axle2Xml = trailer.Axle2Xml;
 			Axle3Xml = trailer.Axle3Xml;
+			Axle1FilePath = trailer.Axle1FilePath;
+			Axle2FilePath = trailer.Axle2FilePath;
+			Axle3FilePath = trailer.Axle3FilePath;
 		}
 
 		private void SetXmlNamesToPropertyMapping()

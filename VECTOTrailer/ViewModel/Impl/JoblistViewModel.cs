@@ -463,24 +463,8 @@ namespace VECTOTrailer.ViewModel.Impl
 			if (SelectedJobEntry == null)
 				return;
 
-			XMLViewModel xmlViewModel = null;
-			var jobType = _selectedJobEntry.Header.JobType;
-
-			switch (jobFileType)
-			{
-				case JobFileType.PIFTrailerFile:
-				case JobFileType.PrimaryTrailerFile:
-					if (jobType == JobType.CompletedXml || jobType == JobType.Unknown &&
-						IsXmlFile(_selectedJobEntry.JobEntryFilePath))
-					{
-						xmlViewModel = new XMLViewModel(SelectedJobEntry.JobEntryFilePath);
-					}
-					break;
-				case JobFileType.CompletedTrailerFile:
-					xmlViewModel = new XMLViewModel(
-						SelectedJobEntry.GetAbsoluteFilePath(SelectedJobEntry.Body.CompletedVehicle));
-					break;
-			}
+			XMLViewModel xmlViewModel = new XMLViewModel(
+				SelectedJobEntry.GetAbsoluteFilePath(SelectedJobEntry.Body.CompletedVehicle));
 
 			if (xmlViewModel != null)
 			{
@@ -650,23 +634,9 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		private object GetTrailerJobViewModel(JobType jobType, JobEntry jobEntry = null)
 		{
-			var currentJobType = jobEntry?.Header.JobType ?? jobType;
-
-			object viewModel = null;
-
-			switch (currentJobType)
-			{
-				case JobType.SingleTrailerJob:
-					viewModel = jobEntry == null
-						? new SingleTrailerJobViewModel(Kernel, jobType)
-						: new SingleTrailerJobViewModel(Kernel, jobEntry);
-					break;
-				case JobType.CompletedTrailerJob:
-					viewModel = jobEntry == null
-						? new CompletedTrailerJobViewModel(Kernel, jobType)
-						: new CompletedTrailerJobViewModel(Kernel, jobEntry);
-					break;
-			}
+			object viewModel = jobEntry == null
+				? new CompletedTrailerJobViewModel(Kernel, jobType)
+				: new CompletedTrailerJobViewModel(Kernel, jobEntry);
 
 			return viewModel;
 		}
@@ -782,8 +752,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		private bool IsJobEntry(JobEntry jobEntry)
 		{
-			return !jobEntry.Missing && (jobEntry.Header.JobType == JobType.CompletedTrailerJob ||
-					jobEntry.Header.JobType == JobType.SingleTrailerJob);
+			return !jobEntry.Missing && (jobEntry.Header.JobType == JobType.CompletedTrailerJob);
 		}
 
 		private bool IsXmlFile(string filePath)
@@ -797,25 +766,16 @@ namespace VECTOTrailer.ViewModel.Impl
 		private void SetXmlViewBehavior()
 		{
 			var isJobEntry = IsJobEntry(_selectedJobEntry);
-			var contextMenuText = string.Empty;
 
 			VisibilityFirstView = true;
 
 			if (isJobEntry)
-			{
 				VisibilitySecView = true;
-
-				contextMenuText = _selectedJobEntry.Header.JobType == JobType.SingleTrailerJob
-					? JobFileType.PrimaryTrailerFile.GetLable()
-					: JobFileType.PIFTrailerFile.GetLable();
-			}
 			else if (IsXmlFile(_selectedJobEntry.JobEntryFilePath))
-			{
-
 				VisibilitySecView = false;
-				contextMenuText = _selectedJobEntry.Header.JobType == JobType.CompletedXml
-					? JobType.CompletedXml.GetLabel() : "XML-File";
-			}
+
+			var contextMenuText = _selectedJobEntry.Header.JobType == JobType.CompletedXml
+				? JobType.CompletedXml.GetLabel() : "XML-File";
 			
 			FirstContextMenu = $"View {contextMenuText}";
 		}

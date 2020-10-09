@@ -93,7 +93,7 @@
                                 <ContextMenu x:Key="RowMenu">
                                     <MenuItem Header="{Binding DataContext.FirstContextMenu, RelativeSource={RelativeSource AncestorType=views:JoblistView}}" 
                                               Command="{Binding DataContext.OpenJob, RelativeSource={RelativeSource AncestorType=views:JoblistView}}"
-                                              CommandParameter="{Binding Source={x:Static impl:JobFileType.PrimaryTrailerFile}}" 
+                                              CommandParameter="{Binding Source={x:Static impl:JobFileType.CompletedTrailerFile}}" 
                                               Visibility="{Binding DataContext.VisibilityFirstView, Converter={converter:BoolVisibilityConverter},
                                               RelativeSource={RelativeSource AncestorType=views:JoblistView}}"/>
                                     <MenuItem Header="View Completed Trailer File" 
@@ -128,12 +128,7 @@
                             <DataGrid.ContextMenu>
                                 <ContextMenu>
                                     <MenuItem Header="Add Job" Command="{Binding AddJob}"/>
-                                    <Separator HorizontalAlignment="Stretch" Background="Gray"/>
-                                    <MenuItem Header="Create Single Trailer Job"
-                                              Command="{Binding AddTrailerJob}" CommandParameter="{Binding Source={x:Static impl:JobType.SingleTrailerJob}}"/>
-                                    <MenuItem Header="Create Completed Trailer Job"
-                                              Command="{Binding AddTrailerJob}" CommandParameter="{Binding Source={x:Static impl:JobType.CompletedTrailerJob}}"/>
-                                    <MenuItem Header="Create Completed XML"
+                                    <MenuItem Header="Create Trailer Job"
                                               Command="{Binding CreateNewJob}"/>
                                     <Separator HorizontalAlignment="Stretch" Background="Gray"/>
                                     <MenuItem Header="Remove All" Command="{Binding RemoveAllJobs}"/>

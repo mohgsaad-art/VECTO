@@ -41,7 +41,6 @@ namespace VECTOTrailer.Model
 			{
 				var location = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 				var defaultPath = location; //+
-					//@"\..\..\..\VectoCore\VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.6_Buses";
 				XmlFilePathFolder = Path.GetFullPath(new Uri(defaultPath).LocalPath);
 			}
 

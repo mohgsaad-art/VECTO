@@ -585,10 +585,10 @@ namespace VECTOTrailer.ViewModel.Impl
 
 				return filePath;
 				//TODO
-				/*var validationResult = IsValideXml(jobFileType, filePath);
+				/*var validationResult = IsValidXml(jobFileType, filePath);
 
 				if (!validationResult)
-					AddPropertyError(textPropertyName, $"Selected XML-File is not a valid {jobFileType.GetLable()}!");
+					AddPropertyError(textPropertyName, $"Selected XML-File is not a valid {jobFileType.GetLabel()}!");
 				else
 					RemovePropertyError(textPropertyName);
 
@@ -617,7 +617,7 @@ namespace VECTOTrailer.ViewModel.Impl
 			return !Directory.Exists(filePath);
 		}
 		
-		private bool IsValideXml(JobFileType jobFileType, string filePath)
+		private bool IsValidXml(JobFileType jobFileType, string filePath)
 		{
 			if (filePath.IsNullOrEmpty())
 				return false;

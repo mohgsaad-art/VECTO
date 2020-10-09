@@ -23,7 +23,7 @@
     </DataTemplate>
    
     <DataTemplate DataType="{x:Type impl:AbstractTrailerJobViewModel}">
-        <views:BusJobView/>
+        <views:TrailerJobView/>
     </DataTemplate>
 
 
@@ -34,13 +34,8 @@
     <DataTemplate DataType="{x:Type impl:AboutViewModel}">
         <views:AboutView/>
     </DataTemplate>
-
-
-    <!--<DataTemplate DataType="{x:Type impl:CompleteVehicleBusJobViewModel}">
-        <views:JobEditView/>
-    </DataTemplate>-->
     
-<!--some test-->
+    <!--some test-->
 
 
     <DataTemplate DataType="{x:Type impl:CompleteTrailerJobViewModel}">
@@ -51,29 +46,8 @@
 <!--end test-->
 
 
-
     <DataTemplate DataType="{x:Type impl:CompleteTrailerViewModel}">
         <declaration:CompleteTrailerView/>
     </DataTemplate>
-
-    <!--***************************************************-->
-
-    <!--<DataTemplate x:Key="EditAirdragDeclaration">
-        <declaration:AirdragDeclarationView/>
-    </DataTemplate>
-    <DataTemplate x:Key="EditAirdragEngineering">
-        <engineering:AirdragEngineeringView/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type impl:AirdragViewModel}">
-        <ContentPresenter x:Name="EditAirdrag"></ContentPresenter>
-        <DataTemplate.Triggers>
-            <DataTrigger Binding="{Binding DeclarationMode}" Value="true">
-                <Setter TargetName="EditAirdrag" Property="ContentTemplate" Value="{StaticResource EditAirdragDeclaration}"></Setter>
-            </DataTrigger>
-            <DataTrigger Binding="{Binding DeclarationMode}" Value="false">
-                <Setter TargetName="EditAirdrag" Property="ContentTemplate" Value="{StaticResource EditAirdragEngineering}"></Setter>
-            </DataTrigger>
-        </DataTemplate.Triggers>
-    </DataTemplate>-->
 
 </ResourceDictionary>

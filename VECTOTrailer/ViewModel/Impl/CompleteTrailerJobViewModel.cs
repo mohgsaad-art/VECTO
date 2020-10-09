@@ -166,18 +166,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		private void DoCommitComponent(Component component)
 		{
-			switch (component)
-			{
-				case Component.CompleteTrailer:
-					_subModels[Component.CompleteTrailer].CommitComponentData();
-					break;
-				/*case Component.Airdrag:
-					_subModels[Component.Airdrag].CommitComponentData();
-					break;
-				case Component.Auxiliaries:
-					_subModels[Component.Auxiliaries].CommitComponentData();
-					break;*/
-			}
+			_subModels[Component.CompleteTrailer].CommitComponentData();
 		}
 
 		public ICommand ResetComponent
@@ -194,18 +183,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		}
 		private void DoResetComponent(Component component)
 		{
-			switch (component)
-			{
-				case Component.CompleteTrailer:
-					_subModels[Component.CompleteTrailer].ResetComponentData();
-					break;
-				/*case Component.Airdrag:
-					_subModels[Component.Airdrag].ResetComponentData();
-					break;
-				case Component.Auxiliaries:
-					_subModels[Component.Auxiliaries].ResetComponentData();
-					break;*/
-			}
+			_subModels[Component.CompleteTrailer].ResetComponentData();
 		}
 
 		public ICommand RemoveValidationErrors
@@ -231,24 +209,12 @@ namespace VECTOTrailer.ViewModel.Impl
 		{
 			CompleteVehicleTrailerData = new Dictionary<Component, object> {
 				{ Component.CompleteTrailer, _subModels[Component.CompleteTrailer].CommitComponentData()},
-				//{ Component.Airdrag, _subModels[Component.Airdrag].CommitComponentData()},
-				//{ Component.Auxiliaries, _subModels[Component.Auxiliaries].CommitComponentData()}
 			};
 		}
 
 		private bool ComponentsChanged(Component component)
 		{
-			switch (component)
-			{
-				case Component.CompleteTrailer:
-					return _subModels[Component.CompleteTrailer].IsComponentDataChanged();
-				/*case Component.Airdrag:
-					return _subModels[Component.Airdrag].IsComponentDataChanged();
-				case Component.Auxiliaries:
-					return _subModels[Component.Auxiliaries].IsComponentDataChanged();*/
-				default:
-					return false;
-			}
+			return _subModels[Component.CompleteTrailer].IsComponentDataChanged();
 		}
 
 		private void CloseWindow(Window window)
@@ -271,13 +237,12 @@ namespace VECTOTrailer.ViewModel.Impl
 			SetCurrentDataToSave();
 			var xDoc = _xmlCompletedTrailer.GenerateCompletedTrailerDocument(CompleteVehicleTrailerData);
 
-			ValidationResultDialogWindow(true); //TODO
-			/*
+			//ValidationResultDialogWindow(true);
 			if (XmlHelper.ValidateXDocument(xDoc, null, ValidationErrorAction)) {
 				ValidationResultDialogWindow(true);
 			} else {
 				ValidationResultDialogWindow(false);
-			}*/
+			}
 		}
 
 		public ICommand ShowValidationErrors
@@ -295,11 +260,9 @@ namespace VECTOTrailer.ViewModel.Impl
 		{
 			ClearValidationErrors();
 
-			var completedBusViewModel = _subModels[Component.CompleteTrailer] as CompleteTrailerViewModel;
-			//var auxiliaryViewModel = _subModels[Component.Auxiliaries] as AuxiliariesViewModel;
+			var completedTrailerViewModel = _subModels[Component.CompleteTrailer] as CompleteTrailerViewModel;
 
-			completedBusViewModel?.ShowValidationErrors(_errors);
-			//auxiliaryViewModel?.ShowValidationErrors(_errors);
+			completedTrailerViewModel?.ShowValidationErrors(_errors);
 
 			_validationErrorsDisplayed = true;
 		}
@@ -324,12 +287,9 @@ namespace VECTOTrailer.ViewModel.Impl
 			if (_errors.IsNullOrEmpty())
 				return;
 
+			var completedTrailerViewModel = _subModels[Component.CompleteTrailer] as CompleteTrailerViewModel;
 
-			var completedBusViewModel = _subModels[Component.CompleteTrailer] as CompleteTrailerViewModel;
-			//var auxiliaryViewModel = _subModels[Component.Auxiliaries] as AuxiliariesViewModel;
-
-			completedBusViewModel?.RemoveValidationErrors(_errors);
-			//auxiliaryViewModel?.RemoveValidationErrors(_errors);
+			completedTrailerViewModel?.RemoveValidationErrors(_errors);
 
 			_validationErrorsDisplayed = false;
 		}

@@ -10,13 +10,7 @@ namespace VECTOTrailer.Util {
 	{
 		public static string GetLabel(this Component component)
 		{
-			switch (component)
-			{
-				case Component.CompleteTrailer:
-					return XMLNames.Component_Vehicle;
-			}
-
-			return string.Empty;
+			return XMLNames.Component_Vehicle;
 		}
 	}
 }

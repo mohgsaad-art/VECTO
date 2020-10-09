@@ -95,7 +95,7 @@ namespace VECTOTrailer.Model
 				var jobType = JobTypeHelper.Parse(JobList[i].JobTypeName);
 				JobEntry jobEntry;
 
-				if (jobType == JobType.CompletedTrailerJob || jobType == JobType.SingleTrailerJob)
+				if (jobType == JobType.CompletedTrailerJob)
 				{
 					jobEntry = SerializeHelper.DeserializeToObject<JobEntry>(JobList[i].JobFilePath);
 				}

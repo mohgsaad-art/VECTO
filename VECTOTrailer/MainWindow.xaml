@@ -41,14 +41,7 @@
 
 
                     <MenuItem Header="Tools" VerticalAlignment="Center">
-                        <!--<MenuItem.Icon>
-                            <iconPacks:PackIconModern Width="15" Height="15" Kind="Tools" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Green" />
-                        </MenuItem.Icon>-->
-                        <MenuItem Header="Create Single Trailer Job"
-                                  Command="{Binding CurrentViewModel.AddBusJob}" CommandParameter="{Binding Source={x:Static impl:JobType.SingleTrailerJob}}"/>
-                        <MenuItem Header="Create Completed Trailer Job"
-                                  Command="{Binding CurrentViewModel.AddBusJob}" CommandParameter="{Binding Source={x:Static impl:JobType.CompletedTrailerJob}}"/>
-                        <MenuItem Header="Create Completed XML"
+                        <MenuItem Header="Create Trailer Job"
                                   Command="{Binding CurrentViewModel.CreateNewJob}"/>
                         <Separator HorizontalAlignment="Stretch" Background="Gray"/>
                         <MenuItem Header="Settings"

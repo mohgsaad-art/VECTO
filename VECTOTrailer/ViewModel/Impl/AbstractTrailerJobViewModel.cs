@@ -22,26 +22,13 @@ namespace VECTOTrailer.ViewModel.Impl
 	public enum JobFileType
 	{
 		CompletedTrailerFile,
-		PrimaryTrailerFile,
-		PIFTrailerFile,
 	}
 
 	public static class JobFileTypeHelper
 	{
-		public static string GetLable(this JobFileType fileType)
+		public static string GetLabel(this JobFileType fileType)
 		{
-			switch (fileType)
-			{
-				case JobFileType.CompletedTrailerFile:
-					return "Completed Trailer File";
-				case JobFileType.PrimaryTrailerFile:
-					return "Primary Trailer File";
-				case JobFileType.PIFTrailerFile:
-					return "PIF Trailer File";
-				default:
-					return string.Empty;
-			}
-
+			return "Completed Trailer File";
 		}
 	}
 
@@ -152,7 +139,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		private void Init(IKernel kernel, JobType jobType)
 		{
-			SecondLabelText = $"Select {JobFileType.CompletedTrailerFile.GetLable()}";
+			SecondLabelText = $"Select {JobFileType.CompletedTrailerFile.GetLabel()}";
 			Settings = new SettingsModel();
 			SetFileTypes(jobType);
 			Kernel = kernel;
@@ -288,7 +275,7 @@ namespace VECTOTrailer.ViewModel.Impl
 				var validationResult = IsValideXml(jobFileType, filePath);
 
 				if (!validationResult)
-					AddPropertyError(textPropertyName, $"Selected XML-File is not a valid {jobFileType.GetLable()}!");
+					AddPropertyError(textPropertyName, $"Selected XML-File is not a valid {jobFileType.GetLabel()}!");
 				else
 					RemovePropertyError(textPropertyName);
 

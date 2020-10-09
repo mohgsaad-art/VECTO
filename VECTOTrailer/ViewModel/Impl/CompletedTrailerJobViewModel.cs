@@ -21,7 +21,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		
 		protected sealed override void SetFirstFileLabel()
 		{
-			FirstLabelText = $"Select {JobFileType.PIFTrailerFile.GetLable()}";
+			FirstLabelText = $"Select {JobFileType.CompletedTrailerFile.GetLabel()}";
 		}
 	}
 }

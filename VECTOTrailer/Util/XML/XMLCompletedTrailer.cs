@@ -21,13 +21,16 @@ namespace VECTOTrailer.Util.XML
 	public class XMLCompletedTrailer
 	{
 		private string _declarationDefinition;
+		private string _declarationComponent;
 		private string _schemaVersion;
 		private XNamespace _xsi;
 		private XNamespace _tns;
 		private XNamespace _v27;
 		private XNamespace _v22;
+		private XNamespace _v21;
 		private XNamespace _v20;
 		private XNamespace _di;
+		private XNamespace _tyre;
 		private XNamespace _rootNamespace;
 
 
@@ -39,12 +42,14 @@ namespace VECTOTrailer.Util.XML
 		private void Init()
 		{
 			_declarationDefinition = "urn:tugraz:ivt:VectoAPI:DeclarationDefinitions";
+
 			_schemaVersion = "2.7";
 			_xsi = XNamespace.Get("http://www.w3.org/2001/XMLSchema-instance");
 
 			_tns = "urn:tugraz:ivt:VectoAPI:DeclarationInput:v2.0";
 			_v27 = _declarationDefinition + ":DEV:v2.7";
 			_v22 = _declarationDefinition + ":v2.2";
+			_v21 = _declarationDefinition + ":v2.1";
 			_v20 = _declarationDefinition + ":v2.0";
 			_di = "http://www.w3.org/2000/09/xmldsig#";
 			_rootNamespace = "urn:tugraz:ivt:VectoAPI:DeclarationJob";
@@ -61,10 +66,11 @@ namespace VECTOTrailer.Util.XML
 					new XAttribute(XNamespace.Xmlns + "tns", _tns),
 					new XAttribute(XNamespace.Xmlns + "v2.7", _v27),
 					new XAttribute(XNamespace.Xmlns + "v2.2", _v22),
+					new XAttribute(XNamespace.Xmlns + "v2.1", _v21),
 					new XAttribute(XNamespace.Xmlns + "v2.0", _v20),
-					//new XAttribute(XNamespace.Xmlns +"di", _di),
+					new XAttribute(XNamespace.Xmlns +"di", _di),
 					new XAttribute(_xsi + "schemaLocation",
-						@"urn:tugraz:ivt:VectoAPI:DeclarationJob  F:\Vecto\vecto-dev_bt\VectoCore\VectoCore\Resources\XSD/VectoDeclarationJob.xsd"
+						@"urn:tugraz:ivt:VectoAPI:DeclarationJob F:\Vecto\vecto-dev_bt\VectoCore\VectoCore\Resources\XSD/VectoDeclarationJob.xsd"
 						//$"{_rootNamespace} {AbstractXMLWriter.SchemaLocationBaseUrl}VectoDeclarationJob.xsd"
 					),
 					GetTrailer(inputData)
@@ -83,77 +89,86 @@ namespace VECTOTrailer.Util.XML
 				new XAttribute(XMLNames.Component_ID_Attr, id),
 				new XAttribute(_xsi + "type", XMLDeclarationVehicleDataProviderV27.XSD_TYPE),
 
-				new XElement(XMLNames.Component_Manufacturer, trailerData.Manufacturer),
-				new XElement(XMLNames.Component_ManufacturerAddress, trailerData.ManufacturerAddress),
-				new XElement(XMLNames.Trailer_CommercialName, trailerData.Model),
-				new XElement(XMLNames.Vehicle_VIN, trailerData.VIN),
-				new XElement(XMLNames.Component_Date,
+				new XElement(_v27 + XMLNames.Component_Manufacturer, trailerData.Manufacturer),
+				new XElement(_v27 + XMLNames.Component_ManufacturerAddress, trailerData.ManufacturerAddress),
+				new XElement(_v27 + XMLNames.Trailer_CommercialName, trailerData.Model),
+				new XElement(_v27 + XMLNames.Vehicle_VIN, trailerData.VIN),
+				new XElement(_v27 + XMLNames.Component_Date,
 					XmlConvert.ToString(DateTime.Now, XmlDateTimeSerializationMode.Utc)),
-				new XElement(XMLNames.Trailer_LegislativeCategory, trailerData.LegislativeCategory),
-				new XElement(XMLNames.Trailer_AxleCount, trailerData.NumberOfAxles.GetLabel()),
-				new XElement(XMLNames.Trailer_TrailerType, trailerData.TrailerType),
-				new XElement(XMLNames.Trailer_BodyCode, trailerData.BodyCode.GetLabel()),
-				new XElement("Masses",
-					new XElement(XMLNames.Trailer_CurbMass, trailerData.CurbMassTrailer?.ToXMLFormat()),
-					new XElement(XMLNames.Trailer_TPMLMTotalTrailer, trailerData.TPLMTotalTrailer?.ToXMLFormat())),
-				new XElement("Dimensions",
-					new XElement(XMLNames.Trailer_ExternalLenghtBody,
-						trailerData.ExternalLengthOfTheBody?.ToXMLFormat()),
-					new XElement(XMLNames.Trailer_ExternalWidthBody, trailerData.ExternalWidthOfTheBody?.ToXMLFormat()),
-					new XElement(XMLNames.Trailer_ExternalHeightBody,
-						trailerData.ExternalHeightOfTheBody?.ToXMLFormat()),
-					new XElement(XMLNames.Trailer_TotalHeightTrailer,
-						trailerData.TotalHeightOfTheTrailer?.ToXMLFormat()),
-					new XElement(XMLNames.Trailer_PositionXFirstAxle, trailerData.PositionXFirstAxle?.ToXMLFormat()),
-					new XElement(XMLNames.Trailer_PositionXLastAxle, trailerData.PositionXLastAxle?.ToXMLFormat()),
-					new XElement(XMLNames.Trailer_InternalHeightBody,
-						trailerData.InternalHeightOfTheBody?.ToXMLFormat()),
-					new XElement(XMLNames.Trailer_CargoVolume, trailerData.CargoVolume?.ToXMLFormat()))
+				new XElement(_v27 + XMLNames.Trailer_LegislativeCategory, trailerData.LegislativeCategory),
+				new XElement(_v27 + XMLNames.Trailer_AxleCount, trailerData.NumberOfAxles.GetLabel()),
+				new XElement(_v27 + XMLNames.Trailer_TrailerType, trailerData.TrailerType),
+				new XElement(_v27 + XMLNames.Trailer_BodyCode, trailerData.BodyCode.GetLabel()),
+				new XElement(_v27 + "Masses",
+					new XElement(_v27 + XMLNames.Trailer_CurbMass, trailerData.CurbMassTrailer.ToXMLFormat(0)),
+					new XElement(_v27 + XMLNames.Trailer_TPMLMTotalTrailer, trailerData.TPLMTotalTrailer.ToXMLFormat(0))),
+				new XElement(_v27 + "Dimensions",
+					new XElement(_v27 + XMLNames.Trailer_ExternalLenghtBody,
+						trailerData.ExternalLengthOfTheBody?.ToXMLFormat(3)),
+					new XElement(_v27 + XMLNames.Trailer_ExternalWidthBody, trailerData.ExternalWidthOfTheBody?.ToXMLFormat(3)),
+					new XElement(_v27 + XMLNames.Trailer_ExternalHeightBody,
+						trailerData.ExternalHeightOfTheBody?.ToXMLFormat(3)),
+					new XElement(_v27 + XMLNames.Trailer_TotalHeightTrailer,
+						trailerData.TotalHeightOfTheTrailer?.ToXMLFormat(3)),
+					new XElement(_v27 + XMLNames.Trailer_PositionXFirstAxle, trailerData.PositionXFirstAxle?.ToXMLFormat(3)),
+					new XElement(_v27 + XMLNames.Trailer_PositionXLastAxle, trailerData.PositionXLastAxle?.ToXMLFormat(3)),
+					new XElement(_v27 + XMLNames.Trailer_InternalHeightBody,
+						trailerData.InternalHeightOfTheBody?.ToXMLFormat(3)),
+					new XElement(_v27 + XMLNames.Trailer_CargoVolume, trailerData.CargoVolume?.ToXMLFormat(3)))
 			);
 
 			if (trailerData.SideSkirtsShort || trailerData.SideSkirtsLong || trailerData.BoatTailShort || trailerData.BoatTailLong) {
-				vehicle.Add(new XElement("AeroFeatures"));
+				vehicle.Add(new XElement(_v27 + "AeroFeatures"));
 
 				if (trailerData.SideSkirtsShort)
-					vehicle.Element("AeroFeatures")
-						?.Add(new XElement(XMLNames.Trailer_AeroFeatureTechnologies, "Side skirt short"));
+					vehicle.Element(_v27 + "AeroFeatures")
+						?.Add(new XElement(_v27 + XMLNames.Trailer_AeroFeatureTechnologies, "side skirts short"));
 				if (trailerData.SideSkirtsLong)
-					vehicle.Element("AeroFeatures")
-						?.Add(new XElement(XMLNames.Trailer_AeroFeatureTechnologies, "Side skirt long"));
+					vehicle.Element(_v27 + "AeroFeatures")
+						?.Add(new XElement(_v27 + XMLNames.Trailer_AeroFeatureTechnologies, "side skirts long"));
 				if (trailerData.BoatTailShort)
-					vehicle.Element("AeroFeatures")
-						?.Add(new XElement(XMLNames.Trailer_AeroFeatureTechnologies, "Boat tail short"));
+					vehicle.Element(_v27 + "AeroFeatures")
+						?.Add(new XElement(_v27 + XMLNames.Trailer_AeroFeatureTechnologies, "boat tail short"));
 				if (trailerData.BoatTailLong)
-					vehicle.Element("AeroFeatures")
-						?.Add(new XElement(XMLNames.Trailer_AeroFeatureTechnologies, "Boat tail long"));
+					vehicle.Element(_v27 + "AeroFeatures")
+						?.Add(new XElement(_v27 + XMLNames.Trailer_AeroFeatureTechnologies, "boat tail long"));
 			}
 
 			if (int.Parse(trailerData.NumberOfAxles.GetLabel()) <= 0)
 				return vehicle;
 
-			vehicle.Add(new XElement("AxleWheels",
-				new XElement("Data", new XAttribute(_xsi + "type", "TrailerAxleWheelsDataDeclarationType"),
-					new XElement("Axles"))));
+			vehicle.Add(new XElement(_v27 + "AxleWheels",
+				new XElement(_v27 + "Data", new XAttribute(_xsi + "type", "v2.7:TrailerAxleWheelsDataDeclarationType"),
+					new XElement(_v27 + "Axles"))));
 
-			/*vehicle.Element("AxleWheels")?.Element("Data")?.Element("Axles")?.Add(new XElement("Axle", new XAttribute(_xsi + "type", "TrailerAxleType"), new XAttribute("axleNumber", "1"), new XElement("TwinTyres", trailerData.Axle1IsTwin.ToString())));*/
 			try {
 				var tyre = XDocument.Parse(trailerData.Axle1Xml).Elements().FirstOrDefault()?.Elements()
 					.FirstOrDefault();
-				vehicle.Element("AxleWheels")?.Element("Data")?.Element("Axles")?.Add(tyre);
+				vehicle.Element(_v27 + "AxleWheels")?.Element(_v27 + "Data")?.Element(_v27 + "Axles")?.Add(
+					new XElement(_v27 + "Axle", new XAttribute(_xsi + "type", "v2.7:TrailerAxleType"), new XAttribute("axleNumber", "1"), 
+					new XElement(_v27 + "TwinTyres", trailerData.Axle1IsTwin.ToString().ToLower()), 
+					tyre));
 
 				if (int.Parse(trailerData.NumberOfAxles.GetLabel()) <= 1)
 					return vehicle;
 
 				tyre = XDocument.Parse(trailerData.Axle2Xml).Elements().FirstOrDefault()?.Elements()
 					.FirstOrDefault();
-				vehicle.Element("AxleWheels")?.Element("Data")?.Element("Axles")?.Add(tyre);
 
+				vehicle.Element(_v27 + "AxleWheels")?.Element(_v27 + "Data")?.Element(_v27 + "Axles")?.Add(
+					new XElement(_v27 + "Axle", new XAttribute(_xsi + "type", "v2.7:TrailerAxleType"), new XAttribute("axleNumber", "2"), 
+					new XElement(_v27 + "TwinTyres", trailerData.Axle1IsTwin.ToString().ToLower()), 
+					tyre));
 				if (int.Parse(trailerData.NumberOfAxles.GetLabel()) <= 2)
 					return vehicle;
 
 				tyre = XDocument.Parse(trailerData.Axle3Xml).Elements().FirstOrDefault()?.Elements()
 					.FirstOrDefault();
-				vehicle.Element("AxleWheels")?.Element("Data")?.Element("Axles")?.Add(tyre);
+
+				vehicle.Element(_v27 + "AxleWheels")?.Element(_v27 + "Data")?.Element(_v27 + "Axles")?.Add(
+					new XElement(_v27 + "Axle", new XAttribute(_xsi + "type", "v2.7:TrailerAxleType"), new XAttribute("axleNumber", "3"), 
+					new XElement(_v27 + "TwinTyres", trailerData.Axle1IsTwin.ToString().ToLower()), 
+					tyre));
 
 			} catch { }
 
