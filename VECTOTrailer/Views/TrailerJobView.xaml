@@ -28,7 +28,7 @@
         <Grid Grid.Row="0" Grid.Column="1" >
             <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
 
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                     <TextBlock Text="{Binding FirstLabelText}" Width="150" Margin="5,0,0,0"/>
                     <TextBox Width="200" Margin="0,0,5,0" IsReadOnly="True" IsReadOnlyCaretVisible="True" 
                              Text="{Binding FirstFilePath}">
@@ -55,7 +55,7 @@
                     <Button Content="..." Width="30" Margin="5,0,0,0"
                             Command="{Binding SelectFirstFileCommand}"
                             CommandParameter="{Binding FirstFileType}"/>
-                </StackPanel>
+                </StackPanel>-->
 
                 <StackPanel Orientation="Horizontal" Margin="0,16,0,0">
                     <TextBlock Text="{Binding SecondLabelText}" Width="150" Margin="5,0,0,0"/>
