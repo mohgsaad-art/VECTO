@@ -1,30 +1,17 @@
-﻿<mah:MetroWindow x:Class="VECTOTrailer.Views.OutputWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:VECTOTrailer.Views"
-        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-        xmlns:impl="clr-namespace:VECTOTrailer.ViewModel.Impl"
-        xmlns:interfaces="clr-namespace:VECTOTrailer.ViewModel.Interfaces"
-        xmlns:converters="http://metro.mahapps.com/winfx/xaml/shared"
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        xmlns:helper="clr-namespace:VECTOTrailer.Helper"
-        mc:Ignorable="d"
-        Title="{Binding WindowTitle}" Icon="../Resources/Icon2.ico" Height="450" Width="800" WindowStartupLocation="CenterScreen" TitleCharacterCasing="Normal" 
-        d:DataContext="{d:DesignInstance Type=impl:OutputWindowViewModel, IsDesignTimeCreatable=False}">
-
-    <mah:MetroWindow.TitleTemplate>
-        <DataTemplate>
-            <TextBlock Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"
-                       VerticalAlignment="Center"
-                       HorizontalAlignment="Left"
-                       Margin="12,0,0,0"
-                       FontWeight="Bold" 
-                       FontSize="12"
-                       FontFamily="{DynamicResource HeaderFontFamily}"/>
-        </DataTemplate>
-    </mah:MetroWindow.TitleTemplate>
+﻿<Window x:Class="VECTOTrailer.Views.OutputWindow"
+         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+         xmlns:local="clr-namespace:VECTOTrailer.Views"
+         xmlns:impl="clr-namespace:VECTOTrailer.ViewModel.Impl"
+         xmlns:interfaces="clr-namespace:VECTOTrailer.ViewModel.Interfaces"
+         xmlns:converters="http://metro.mahapps.com/winfx/xaml/shared"
+         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+         xmlns:helper="clr-namespace:VECTOTrailer.Helper"
+         mc:Ignorable="d"
+         Title="{Binding WindowTitle}" Icon="../Resources/Icon2.ico" Height="450" Width="800" WindowStartupLocation="CenterScreen" 
+         d:DataContext="{d:DesignInstance Type=impl:OutputWindowViewModel, IsDesignTimeCreatable=False}">
 
 
     <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
@@ -48,4 +35,4 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
-</mah:MetroWindow>
+</Window>

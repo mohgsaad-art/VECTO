@@ -103,11 +103,11 @@ namespace VECTOTrailer.ViewModel.Impl
 				AnimateHide = true
 			};
 
-			var dialogResult = MetroDialogHelper.GetModalDialogBox(this, "Save",
-				"The existing file will be overwritten, do you want to continue?",
-				MessageDialogStyle.AffirmativeAndNegative, dialogSettings);
+			var dialogResult = MessageBox.Show(
+				"The existing file will be overwritten, do you want to continue?", "Save",
+				MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
-			if (dialogResult == MessageDialogResult.Affirmative)
+			if (dialogResult == MessageBoxResult.Yes)
 			{
 				SetCurrentDataToSave();
 				var xDoc = _xmlCompletedTrailer.GenerateCompletedTrailerDocument(CompleteVehicleTrailerData);
@@ -295,12 +295,11 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		private void ValidationResultDialogWindow(bool validationResult)
 		{
-			if (validationResult) { 
-				MetroDialogHelper.GetModalDialogBox(this, "Input Validation",
-					"No validation errors were found, the entered data is valid!", MessageDialogStyle.Affirmative);
+			if (validationResult) {
+				MessageBox.Show("No validation errors were found, the entered data is valid!", "Input Validation", MessageBoxButton.OK);
+
 			} else {
-				MetroDialogHelper.GetModalDialogBox(this, "Input Validation",
-					"There are some input validation errors, the data must be valid for saving!", MessageDialogStyle.Affirmative);
+				MessageBox.Show("There are some input validation errors, the data must be valid for saving!", "Input Validation", MessageBoxButton.OK);
 			}
 		}
 

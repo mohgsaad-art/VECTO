@@ -138,12 +138,12 @@
                             <DataGrid.Columns>
                                 <DataGridCheckBoxColumn Binding="{Binding Selected, UpdateSourceTrigger=PropertyChanged}" />
                                 <DataGridTextColumn Header="File Path" Binding="{Binding JobEntryFilePath}" IsReadOnly="True">
-                                    <DataGridTextColumn.CellStyle>
+                                    <!-- <DataGridTextColumn.CellStyle>
                                         <Style TargetType= "{x:Type DataGridCell}" BasedOn="{StaticResource MetroDataGridCell}" >
                                             <Setter Property="ContextMenu" Value="{StaticResource RowMenu}"/>
                                             <Setter Property="HorizontalAlignment" Value="Stretch"/>
                                         </Style>
-                                    </DataGridTextColumn.CellStyle>
+                                    </DataGridTextColumn.CellStyle>-->
                                 </DataGridTextColumn>
                             </DataGrid.Columns>
 
@@ -161,7 +161,7 @@
                     </Grid>
 
                     <Grid Grid.Row="0" Grid.Column="2" Margin="0,0,10,0">
-                        <StackPanel Orientation="Vertical" Margin="0,30,0,0" Width="105">
+                        <StackPanel Orientation="Vertical" Margin="0,30,0,0" Width="120">
                             <Button Margin="0,5,0,0" Content="Add File" 
                         Command="{Binding AddJob}"/>
 

@@ -19,23 +19,18 @@
         </Setter>
     </Style>
 
-
-    <Style TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource MetroDataGridColumnHeader}">
-        <Setter Property="mah:ControlsHelper.ContentCharacterCasing" Value="Normal"/>
-    </Style>
-
-    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MetroButton}">
+    <Style TargetType="{x:Type Button}">
         <Setter Property="mah:ControlsHelper.ContentCharacterCasing" Value="Normal"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
 
-    <Style TargetType="TabControl" BasedOn="{StaticResource MetroTabControl}">
+    <Style TargetType="TabControl">
         <!-- <Setter Property="BorderThickness" Value="0,1,0,0"/> -->
         <!-- <Setter Property="BorderBrush" Value="Black"/> -->
         <!-- <Setter Property="ClipToBounds" Value="True"></Setter> -->
     </Style>
 
-    <Style TargetType="TabItem" BasedOn="{StaticResource MetroTabItem}" >
+    <Style TargetType="TabItem" >
         <Setter Property="ClipToBounds" Value="True"/>
         <Setter Property="BorderThickness" Value="0,0,0,4"/>
         <Setter Property="BorderBrush" Value="Gray"/>
@@ -49,11 +44,11 @@
     </Style>
 
 
-    <Style TargetType="TextBlock" BasedOn="{StaticResource MetroTextBlock}">
+    <Style TargetType="TextBlock">
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
 
-    <Style TargetType="TextBox" BasedOn="{StaticResource MetroTextBox}">
+    <Style TargetType="TextBox">
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
 

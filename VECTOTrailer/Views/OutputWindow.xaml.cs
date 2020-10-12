@@ -18,7 +18,7 @@ namespace VECTOTrailer.Views
 	/// <summary>
 	/// Interaction logic for OutputWindow.xaml
 	/// </summary>
-	public partial class OutputWindow : MetroWindow
+	public partial class OutputWindow : Window
 	{
 		public OutputWindow()
 		{

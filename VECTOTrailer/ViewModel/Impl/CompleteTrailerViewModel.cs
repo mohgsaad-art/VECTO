@@ -408,33 +408,33 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		}
 
-		private void SetVehicleValues(ITrailerDeclarationInputData vehicle)
+		private void SetVehicleValues(ITrailerDeclarationInputData trailer)
 		{
-			if (vehicle == null)
+			if (trailer == null)
 			{
 				_componentData = new TrailerComponentData(this, true);
 			}
 			else
 			{
-				Manufacturer = vehicle.Manufacturer;
-				ManufacturerAddress = vehicle.ManufacturerAddress;
-				Model = vehicle.Model;
-				VIN = vehicle.VIN;
-				Date = vehicle.Date;
-				LegislativeCategory = vehicle.LegislativeCategory;
-				NumberOfAxles = vehicle.NumberOfAxles;
-				TrailerType = vehicle.TrailerType;
-				BodyCode = vehicle.BodyworkCode;
-				CurbMassTrailer = vehicle.CurbMass;
-				TPLMTotalTrailer = vehicle.TPMLMTotalTrailer;
-				ExternalLengthOfTheBody = vehicle.ExternalBodyLength;
-				ExternalWidthOfTheBody = vehicle.ExternalBodyWidth;
-				ExternalHeightOfTheBody = vehicle.ExternalBodyHeight;
-				TotalHeightOfTheTrailer = vehicle.TotalTrailerHeight;
-				PositionXFirstAxle = vehicle.LengthTrailerFrontToFirstAxleCenter;
-				PositionXLastAxle = vehicle.LengthTrailerFrontToLastAxleCenter;
-				InternalHeightOfTheBody = vehicle.InternalBodyHeight;
-				CargoVolume = vehicle.CargoVolume;
+				Manufacturer = trailer.Manufacturer;
+				ManufacturerAddress = trailer.ManufacturerAddress;
+				Model = trailer.Model;
+				VIN = trailer.VIN;
+				Date = trailer.Date;
+				LegislativeCategory = trailer.LegislativeCategory;
+				NumberOfAxles = trailer.NumberOfAxles;
+				TrailerType = trailer.TrailerType;
+				BodyCode = trailer.BodyworkCode;
+				CurbMassTrailer = trailer.CurbMass;
+				TPLMTotalTrailer = trailer.TPMLMTotalTrailer;
+				ExternalLengthOfTheBody = trailer.ExternalBodyLength;
+				ExternalWidthOfTheBody = trailer.ExternalBodyWidth;
+				ExternalHeightOfTheBody = trailer.ExternalBodyHeight;
+				TotalHeightOfTheTrailer = trailer.TotalTrailerHeight;
+				PositionXFirstAxle = trailer.LengthTrailerFrontToFirstAxleCenter;
+				PositionXLastAxle = trailer.LengthTrailerFrontToLastAxleCenter;
+				InternalHeightOfTheBody = trailer.InternalBodyHeight;
+				CargoVolume = trailer.CargoVolume;
 
 				_componentData = new TrailerComponentData(this);
 			}

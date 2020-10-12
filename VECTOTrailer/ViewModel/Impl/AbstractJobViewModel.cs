@@ -146,10 +146,9 @@ namespace VECTOTrailer.ViewModel.Impl
 				AnimateHide = true
 			};
 
-			var res = MetroDialogHelper.GetModalDialogBox(this,
-				"", "Do you really want to close ?", dialogSettings);
+			var res = MessageBox.Show("","Do you really want to close ?", MessageBoxButton.OK);
 
-			return res == MessageDialogResult.Affirmative;
+			return res == MessageBoxResult.OK;
 		}
 	}
 }
