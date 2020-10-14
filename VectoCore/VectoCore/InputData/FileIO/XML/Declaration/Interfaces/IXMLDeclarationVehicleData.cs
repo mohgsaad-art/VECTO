@@ -29,6 +29,6 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Interfaces
 
 	public interface IXMLTrailerDeclarationVehicleData : ITrailerDeclarationInputData, IXMLResource
 	{
-		IXMLAxleReader AxleReader { get; }
+		IXMLAxlesReader AxlesReader { get; }
 	}
 }

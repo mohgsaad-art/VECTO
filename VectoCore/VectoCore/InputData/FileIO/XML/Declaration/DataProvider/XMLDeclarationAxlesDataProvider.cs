@@ -107,4 +107,85 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 			get { return NAMESPACE_URI; }
 		}
 	}
+
+	public class XMLDeclarationAxlesDataProviderV27 : AbstractXMLType, IXMLAxlesDeclarationInputData
+	{
+		public static readonly XNamespace NAMESPACE_URI = XMLDefinitions.DECLARATION_DEFINITIONS_NAMESPACE_URI_V27;
+
+		public const string XSD_TYPE = "AxleWheelsDataDeclarationType";
+
+		public static readonly string QUALIFIED_XSD_TYPE = XMLHelper.CombineNamespace(NAMESPACE_URI.NamespaceName, XSD_TYPE);
+
+		protected IAxleDeclarationInputData[] _axles;
+
+
+		public XMLDeclarationAxlesDataProviderV27(
+			IXMLTrailerDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile) : base(componentNode)
+		{
+			DataSource = new DataSource()
+			{
+				SourceType = DataSourceType.XMLFile,
+				SourceFile = sourceFile,
+				SourceVersion = XMLHelper.GetVersionFromNamespaceUri(SchemaNamespace)
+			};
+		}
+
+		#region Implementation of IAxlesDeclarationInputData
+
+		public virtual IList<IAxleDeclarationInputData> AxlesDeclaration
+		{
+			get
+			{
+				if (_axles != null)
+				{
+					return _axles;
+				}
+
+				var axleNodes = GetNodes(new[] { XMLNames.AxleWheels_Axles, XMLNames.AxleWheels_Axles_Axle });
+				if (axleNodes == null)
+				{
+					return new List<IAxleDeclarationInputData>();
+				}
+
+				_axles = new IAxleDeclarationInputData[axleNodes.Count];
+				foreach (XmlNode axlenode in axleNodes)
+				{
+					var axleNumber = GetAttribute(axlenode, XMLNames.AxleWheels_Axles_Axle_AxleNumber_Attr).ToInt();
+					if (axleNumber < 1 || axleNumber > _axles.Length)
+					{
+						throw new VectoException("Axle #{0} exceeds axle count", axleNumber);
+					}
+					if (_axles[axleNumber - 1] != null)
+					{
+						throw new VectoException("Axle #{0} defined multiple times!", axleNumber);
+					}
+
+					_axles[axleNumber - 1] = Reader.CreateAxle(axlenode);
+				}
+
+				return _axles;
+			}
+		}
+
+		public XmlNode XMLSource { get { return BaseNode; } }
+
+		#endregion
+
+		#region Implementation of IXMLResource
+
+		public virtual DataSource DataSource { get; }
+
+		#endregion
+
+		#region Implementation of IXMLAxlesDeclarationInputData
+
+		public virtual IXMLAxlesReader Reader { protected get; set; }
+
+		#endregion
+
+		protected virtual XNamespace SchemaNamespace
+		{
+			get { return NAMESPACE_URI; }
+		}
+	}
 }

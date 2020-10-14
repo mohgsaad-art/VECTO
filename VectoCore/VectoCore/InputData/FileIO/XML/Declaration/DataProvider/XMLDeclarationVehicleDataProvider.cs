@@ -45,6 +45,7 @@ using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.XML.Common;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Interfaces;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader;
+using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl;
 using TUGraz.VectoCore.InputData.Impl;
 using TUGraz.VectoCore.Utils;
 
@@ -925,9 +926,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		protected IVehicleComponentsDeclaration _components;
 		protected IPTOTransmissionInputData _ptoData;
-		protected XmlElement _componentNode;
-		protected XmlElement _ptoNode;
-		protected XmlElement _adasNode;
+		protected IAxlesDeclarationInputData _axles;
 
 		public XMLDeclarationVehicleDataProviderV27(IXMLDeclarationTrailerJobInputData jobData, XmlNode xmlNode,
 			string sourceFile): base(xmlNode, sourceFile)
@@ -936,43 +935,27 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 			SourceType = DataSourceType.XMLEmbedded;
 		}
 
-		public virtual XmlElement ComponentNode
-		{
-			get {
-				if (ExemptedVehicle) {
-					return null;
-				}
-
-				return _componentNode ?? (_componentNode = GetNode(XMLNames.Vehicle_Components) as XmlElement);
-			}
-		}
-
-		public virtual XmlElement PTONode
-		{
-			get {
-				if (ExemptedVehicle) {
-					return null;
-				}
-
-				return _ptoNode ?? (_ptoNode = GetNode(XMLNames.Vehicle_PTO) as XmlElement);
-			}
-		}
-
 		public virtual IXMLComponentReader ComponentReader { protected get; set; }
 
-		public virtual IXMLPTOReader PTOReader { protected get; set; }
-
-		public virtual XmlElement ADASNode
-		{
-			get { return _adasNode ?? (_adasNode = GetNode(XMLNames.Vehicle_ADAS, required: false) as XmlElement); }
-		}
-
-		public virtual IXMLADASReader ADASReader { protected get; set; }
+		public virtual IXMLAxlesReader AxlesReader { get; set; }
 
 		public virtual IXMLDeclarationTrailerJobInputData Job { get; }
 
 
-		public AxleConfiguration AxleConfiguration { get; }
+		public IAxlesDeclarationInputData Axles
+		{
+			get
+			{
+				//DEBUG TODO CHANGE THIS
+				_axles = new XMLDeclarationAxlesDataProviderV27(this, GetNode(XMLNames.AxleWheels_Axles), SourceFile);
+				AxlesReader = new XMLComponentReaderV27(this, GetNode(XMLNames.AxleWheels_Axles));
+
+				foreach (XmlNode _axle in GetNodes(XMLNames.AxleWheels_Axles_Axle))
+					_axles.AxlesDeclaration.Add(AxlesReader.CreateAxle(_axle));
+				return _axles;
+			}
+		}
+
 
 		public virtual bool ExemptedVehicle
 		{
@@ -1080,12 +1063,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		{
 			get { return AeroFeatureTechnologiesHelper.Parse(GetString(XMLNames.Trailer_AeroFeatureTechnologies)); }
 		}
+
 		public IVehicleComponentsDeclaration Components { get; }
 
-		public virtual IPTOTransmissionInputData PTOTransmissionInputData
-		{
-			get { return _ptoData ?? (_ptoData = PTOReader.PTOInputData); }
-		}
 
 		protected override XNamespace SchemaNamespace
 		{
@@ -1093,7 +1073,6 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		}
 
 		protected override DataSourceType SourceType { get; }
-		public IXMLAxleReader AxleReader { get; }
 	}
 
 	// ---------------------------------------------------------------------------------------

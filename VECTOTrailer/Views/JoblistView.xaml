@@ -104,9 +104,9 @@
 
                                     <Separator HorizontalAlignment="Stretch" Background="Gray"/>
 
-                                    <MenuItem Header="Edit Job" 
+                                    <!--<MenuItem Header="Edit Job" 
                                               Command="{Binding DataContext.EditJob, RelativeSource={RelativeSource AncestorType=views:JoblistView}}"
-                                              CommandParameter="{Binding DataContext.SelectedJobEntry, RelativeSource={RelativeSource AncestorType=views:JoblistView}}"/>
+                                              CommandParameter="{Binding DataContext.SelectedJobEntry, RelativeSource={RelativeSource AncestorType=views:JoblistView}}"/>-->
                                     <MenuItem Header="Edit Completed File" 
                                               Command="{Binding DataContext.EditCompletedFile, RelativeSource={RelativeSource AncestorType=views:JoblistView}}"
                                               CommandParameter="{Binding DataContext.SelectedJobEntry, RelativeSource={RelativeSource AncestorType=views:JoblistView}}"/>
@@ -162,20 +162,20 @@
 
                     <Grid Grid.Row="0" Grid.Column="2" Margin="0,0,10,0">
                         <StackPanel Orientation="Vertical" Margin="0,30,0,0" Width="120">
-                            <Button Margin="0,5,0,0" Content="Add File" 
+                            <Button Margin="0,5,0,0" Content="Add Job" 
                         Command="{Binding AddJob}"/>
 
-                            <Button Margin="0,5,0,0" Content="Edit Job"
+                            <!--<Button Margin="0,5,0,0" Content="Edit Job"
                         Command="{Binding EditJob}"
+                        CommandParameter="{Binding ElementName=JobList, Path=SelectedItem}"/>-->
+
+                            <Button Margin="0,5,0,0" Content="Edit Job" 
+                        Command="{Binding EditCompletedFile}"
                         CommandParameter="{Binding ElementName=JobList, Path=SelectedItem}"/>
 
                             <Button Margin="0,5,0,0"  Content="Remove Job"  
-                        Command="{Binding RemoveJob}" 
-                        CommandParameter="{Binding ElementName=JobList, Path=SelectedItem}"/>
-
-                            <Button Margin="0,5,0,0" Content="Edit Completed File" 
-                        Command="{Binding EditCompletedFile}"
-                        CommandParameter="{Binding ElementName=JobList, Path=SelectedItem}"/>
+                                    Command="{Binding RemoveJob}" 
+                                    CommandParameter="{Binding ElementName=JobList, Path=SelectedItem}"/>
                         </StackPanel>
                     </Grid>
                 </Grid>

@@ -76,6 +76,8 @@ namespace VECTOTrailer.ViewModel.Impl
 			_xmlCompletedTrailer = new XMLCompletedTrailer();
 			_xmlCompletedTrailerWriter = new XMLCompletedTrailerWriter();
 
+			var test = inputData.JobInputData.Trailer.Axles;
+
 			SetVisibilityOfSaveButtons();
 
 			_errors = new Dictionary<string, string>();

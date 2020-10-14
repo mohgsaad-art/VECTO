@@ -206,6 +206,7 @@ namespace VECTOTrailer.Model.TempDataObject
 				{XMLNames.Trailer_CurbMass, nameof(CurbMassTrailer)},
 				{XMLNames.Trailer_TPMLMTotalTrailer, nameof(TPLMTotalTrailer)},
 				{XMLNames.Trailer_TPLMAxleAssembly, nameof(TPLMAxleAssembly)},
+				{XMLNames.AxleWheels_Axles, nameof(Axle1FilePath)},
 			};
 		}
 

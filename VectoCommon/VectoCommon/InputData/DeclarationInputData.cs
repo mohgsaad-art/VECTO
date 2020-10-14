@@ -245,13 +245,12 @@ namespace TUGraz.VectoCommon.InputData
 
 		AeroFeatureTechnologies AeroFeatureTechnologies { get; }
 
-
 		// ---------------------------------------------------------------------
 
-		AxleConfiguration AxleConfiguration { get; }
-
 		bool ExemptedVehicle { get; }
-		IVehicleComponentsDeclaration Components { get; }
+
+		IAxlesDeclarationInputData Axles { get; }
+		IVehicleComponentsDeclaration Components { get; } //TEMP TODO: REMOVE THIS
 		XmlNode XMLSource { get; }
 
 	}

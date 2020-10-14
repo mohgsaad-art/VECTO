@@ -27,7 +27,7 @@
 
                         <MenuItem Header="Add File" Command="{Binding CurrentViewModel.AddJob}"/>
                         <MenuItem Header="Edit Job" 
-                                  Command="{Binding CurrentViewModel.EditJob}"
+                                  Command="{Binding CurrentViewModel.EditCompletedFile}"
                                   CommandParameter="{Binding CurrentViewModel.SelectedJobEntry}"/>
                         <MenuItem Header="Remove Job" 
                                   Command="{Binding CurrentViewModel.RemoveJob}"

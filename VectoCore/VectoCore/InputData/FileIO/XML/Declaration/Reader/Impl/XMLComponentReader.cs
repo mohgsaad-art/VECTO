@@ -296,6 +296,85 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 
 	// ---------------------------------------------------------------------------------------
 
+
+	public class XMLComponentReaderV27: AbstractComponentReader, IXMLAxlesReader, IXMLAxleReader
+	{
+		public static readonly XNamespace NAMESPACE_URI = XMLDefinitions.DECLARATION_DEFINITIONS_NAMESPACE_URI_V27;
+
+		public const string XSD_TYPE = "VehicleComponentsType";
+		public const string AXLES_READER_TYPE = "AxleWheelsDataDeclarationType";
+		public const string AXLE_READER_TYPE = "AxleDeclarationType";
+
+		public static readonly string QUALIFIED_XSD_TYPE =
+			XMLHelper.CombineNamespace(NAMESPACE_URI.NamespaceName, XSD_TYPE);
+
+		public static readonly string AXLES_READER_QUALIFIED_XSD_TYPE =
+			XMLHelper.CombineNamespace(NAMESPACE_URI, AXLES_READER_TYPE);
+
+		public static readonly string AXLE_READER_QUALIFIED_XSD_TYPE =
+			XMLHelper.CombineNamespace(NAMESPACE_URI, AXLE_READER_TYPE);
+
+		protected IXMLTrailerDeclarationVehicleData Vehicle;
+		protected IAxlesDeclarationInputData _axlesInputData;
+
+
+		[Inject] public IDeclarationInjectFactory Factory { protected get; set; }
+
+		public XMLComponentReaderV27(IXMLTrailerDeclarationVehicleData vehicle, XmlNode componentsNode) : base(
+			vehicle, componentsNode)
+		{
+			if (componentsNode == null) {
+				throw new VectoException("component node must not be null!");
+			}
+
+			Vehicle = vehicle;
+		}
+
+		public virtual IAxlesDeclarationInputData AxlesDeclarationInputData
+		{
+			get
+			{
+				return _axlesInputData ?? (_axlesInputData = CreateComponent(XMLNames.Component_AxleWheels, AxleWheelsCreator));
+			}
+		}
+
+		public virtual ITyreDeclarationInputData Tyre
+		{
+			get { return CreateComponent(XMLNames.AxleWheels_Axles_Axle_Tyre, TyreCreator); }
+		}
+
+		public virtual IAxleDeclarationInputData CreateAxle(XmlNode axleNode)
+		{
+			var version = XMLHelper.GetXsdType(axleNode.SchemaInfo.SchemaType);
+			try
+			{
+				var axle = Factory.CreateAxleData(version, Vehicle, axleNode, (Vehicle as IXMLResource).DataSource.SourceFile);
+				axle.Reader = Factory.CreateAxleReader(version, Vehicle, axleNode);
+				return axle;
+			}
+			catch (Exception e)
+			{
+				var axleNumber = axleNode.Attributes?.GetNamedItem(XMLNames.AxleWheels_Axles_Axle_AxleNumber_Attr).InnerText;
+				throw new VectoException(
+					"Unsupported XML Version! Node: {0} Axle: {1} Version: {2}", e, axleNode.LocalName, axleNumber, version);
+			}
+		}
+		protected virtual IAxlesDeclarationInputData AxleWheelsCreator(
+			string version, XmlNode componentNode, string sourceFile)
+		{
+			var axles = Factory.CreateAxleWheels(version, Vehicle, componentNode, sourceFile);
+			axles.Reader = Factory.CreateAxlesReader(version, Vehicle, componentNode);
+			return axles;
+		}
+
+
+		protected virtual ITyreDeclarationInputData TyreCreator(string version, XmlNode componentNode, string sourceFile)
+		{
+			return Factory.CreateTyre(version, Vehicle, componentNode, sourceFile);
+		}
+	}
+	// ---------------------------------------------------------------------------------------
+
 	public class XMLComponentReaderV20 : XMLComponentReaderV10
 	{
 		public new static readonly XNamespace NAMESPACE_URI = XMLDefinitions.DECLARATION_DEFINITIONS_NAMESPACE_URI_V20;
