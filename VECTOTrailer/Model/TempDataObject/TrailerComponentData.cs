@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Xml;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Resources;
@@ -37,6 +38,7 @@ namespace VECTOTrailer.Model.TempDataObject
 		public NumberOfTrailerAxles NumberOfAxles { get; set; }
 		public TypeTrailer TrailerType { get; set; }
 		public BodyWorkCode BodyCode { get; set; }
+		public AeroFeatureTechnologies Technology { get; set; }
 		public bool SideSkirtsShort { get; set; }
 		public bool SideSkirtsLong { get; set; }
 		public bool BoatTailShort { get; set; }
@@ -56,9 +58,23 @@ namespace VECTOTrailer.Model.TempDataObject
 		public ICommand SelectFirstFileCommand { get; set;  }
 		public ICommand SelectSecondFileCommand { get; set;  }
 		public ICommand SelectThirdFileCommand { get; set;  }
+		public ICommand DownloadFirstAxle { get; set; }
+		public ICommand DeleteFirstAxle { get; set; }
+		public ICommand DownloadSecondAxle { get; set; }
+		public ICommand DeleteSecondAxle { get; set; }
+		public ICommand DownloadThirdAxle { get; set; }
+		public ICommand DeleteThirdAxle { get; set; }
 		public JobFileType FirstFileType { get; set;  }
 		public JobFileType SecondFileType { get; set;  }
 		public JobFileType ThirdFileType { get; set;  }
+		public ITrailerDeclarationInputData Trailer { get; set; }
+
+		public bool Axle1ButtonsVisibility { get; set; }
+		public bool Axle1NewVisibility { get; set; }
+		public bool Axle2ButtonsVisibility { get; set; }
+		public bool Axle2NewVisibility { get; set; }
+		public bool Axle3ButtonsVisibility { get; set; }
+		public bool Axle3NewVisibility { get; set; }
 
 		public Dictionary<string, string> XmlNamesToPropertyMapping { get;  private set; }
 
@@ -101,16 +117,29 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.NumberOfAxles = NumberOfAxles;
 			viewModel.TrailerType = TrailerType;
 			viewModel.BodyCode = BodyCode;
-			viewModel.SideSkirtsShort = SideSkirtsShort;
-			viewModel.SideSkirtsLong = SideSkirtsLong;
-			viewModel.BoatTailShort = BoatTailShort;
-			viewModel.BoatTailLong = BoatTailLong;
 			viewModel.CurbMassTrailer = CurbMassTrailer;
 			viewModel.TPLMTotalTrailer = TPLMTotalTrailer;
 			viewModel.TPLMAxleAssembly = TPLMAxleAssembly;
 			viewModel.Axle1IsTwin = Axle1IsTwin;
 			viewModel.Axle2IsTwin = Axle2IsTwin;
 			viewModel.Axle3IsTwin = Axle3IsTwin;
+
+			viewModel.Axle1Xml = Axle1Xml;
+			viewModel.Axle2Xml = Axle2Xml;
+			viewModel.Axle3Xml = Axle3Xml;
+
+			viewModel.Technology = Technology;
+			viewModel.SideSkirtsShort = Technology == AeroFeatureTechnologies.SideSkirtsShort;
+			viewModel.SideSkirtsLong = Technology == AeroFeatureTechnologies.SideSkirtsLong;
+			viewModel.BoatTailShort = Technology == AeroFeatureTechnologies.BoatTailShort;
+			viewModel.BoatTailLong = Technology == AeroFeatureTechnologies.BoatTailLong;
+
+			viewModel.Axle1ButtonsVisibility = Axle1ButtonsVisibility;
+			viewModel.Axle1NewVisibility = Axle1NewVisibility;
+			viewModel.Axle2ButtonsVisibility = Axle2ButtonsVisibility;
+			viewModel.Axle2NewVisibility = Axle2NewVisibility;
+			viewModel.Axle3ButtonsVisibility = Axle3ButtonsVisibility;
+			viewModel.Axle3NewVisibility = Axle3NewVisibility;
 		}
 
 		public void ClearValues(ICompleteTrailerViewModel viewModel)
@@ -132,16 +161,23 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.NumberOfAxles = NumberOfTrailerAxles.One;
 			viewModel.TrailerType = TypeTrailer.DA;
 			viewModel.BodyCode = BodyWorkCode.Drybody;
-			viewModel.SideSkirtsShort = default;
-			viewModel.SideSkirtsLong = default;
-			viewModel.BoatTailShort = default;
-			viewModel.BoatTailLong = default;
+			viewModel.SideSkirtsShort = false;
+			viewModel.SideSkirtsLong = false;
+			viewModel.BoatTailShort = false;
+			viewModel.BoatTailLong = false;
 			viewModel.CurbMassTrailer = default;
 			viewModel.TPLMTotalTrailer = default;
 			viewModel.TPLMAxleAssembly = default;
-			Axle1IsTwin = default;
-			Axle2IsTwin = default;
-			Axle3IsTwin = default;
+			viewModel.Axle1IsTwin = default;
+			viewModel.Axle2IsTwin = default;
+			viewModel.Axle3IsTwin = default;
+
+			viewModel.Axle1ButtonsVisibility = false;
+			viewModel.Axle1NewVisibility = true;
+			viewModel.Axle2ButtonsVisibility = false;
+			viewModel.Axle2NewVisibility = true;
+			viewModel.Axle3ButtonsVisibility = false;
+			viewModel.Axle3NewVisibility = true;
 		}
 
 		
@@ -164,10 +200,6 @@ namespace VECTOTrailer.Model.TempDataObject
 			NumberOfAxles = trailer.NumberOfAxles;
 			TrailerType = trailer.TrailerType;
 			BodyCode = trailer.BodyCode;
-			SideSkirtsShort = trailer.SideSkirtsShort;
-			SideSkirtsLong = trailer.SideSkirtsLong;
-			BoatTailShort = trailer.BoatTailShort;
-			BoatTailLong = trailer.BoatTailLong;
 			CurbMassTrailer = trailer.CurbMassTrailer;
 			TPLMTotalTrailer = trailer.TPLMTotalTrailer;
 			TPLMAxleAssembly = trailer.TPLMAxleAssembly;
@@ -177,9 +209,23 @@ namespace VECTOTrailer.Model.TempDataObject
 			Axle1Xml = trailer.Axle1Xml;
 			Axle2Xml = trailer.Axle2Xml;
 			Axle3Xml = trailer.Axle3Xml;
+			
+			Technology = trailer.Technology;
+			SideSkirtsShort = Technology == AeroFeatureTechnologies.SideSkirtsShort;
+			SideSkirtsLong = Technology == AeroFeatureTechnologies.SideSkirtsLong;
+			BoatTailShort = Technology == AeroFeatureTechnologies.BoatTailShort;
+			BoatTailLong = Technology == AeroFeatureTechnologies.BoatTailLong;
+
 			Axle1FilePath = trailer.Axle1FilePath;
 			Axle2FilePath = trailer.Axle2FilePath;
 			Axle3FilePath = trailer.Axle3FilePath;
+
+			Axle1ButtonsVisibility = trailer.Axle1ButtonsVisibility;
+			Axle1NewVisibility = trailer.Axle1NewVisibility;
+			Axle2ButtonsVisibility = trailer.Axle2ButtonsVisibility;
+			Axle2NewVisibility = trailer.Axle2NewVisibility;
+			Axle3ButtonsVisibility = trailer.Axle3ButtonsVisibility;
+			Axle3NewVisibility = trailer.Axle3NewVisibility;
 		}
 
 		private void SetXmlNamesToPropertyMapping()
@@ -202,7 +248,7 @@ namespace VECTOTrailer.Model.TempDataObject
 				{XMLNames.Trailer_AxleCount, nameof(NumberOfAxles)},
 				{XMLNames.Trailer_TrailerType, nameof(TrailerType)},
 				{XMLNames.Trailer_BodyCode, nameof(BodyCode)},
-				{XMLNames.Trailer_AeroFeatureTechnologies, nameof(SideSkirtsShort)},
+				{XMLNames.Trailer_AeroFeatureTechnologies, nameof(Technology)},
 				{XMLNames.Trailer_CurbMass, nameof(CurbMassTrailer)},
 				{XMLNames.Trailer_TPMLMTotalTrailer, nameof(TPLMTotalTrailer)},
 				{XMLNames.Trailer_TPLMAxleAssembly, nameof(TPLMAxleAssembly)},

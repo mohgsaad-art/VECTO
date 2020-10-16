@@ -726,7 +726,7 @@ namespace VECTOTrailer.ViewModel.Impl
 			var xmlInputReader = Kernel.Get<IXMLInputDataReader>();
 			using (var reader = XmlReader.Create(jobEntry.GetAbsoluteFilePath(jobEntry.Body.CompletedVehicle)))
 			{
-				var readerResult = xmlInputReader.Create(reader) as IDeclarationTrailerInputDataProvider;
+				var readerResult = xmlInputReader.CreateDeclarationTrailer(reader) as IDeclarationTrailerInputDataProvider;
 				return CreateCompleteTrailerVehicleViewModel(readerResult);
 			}
 		}

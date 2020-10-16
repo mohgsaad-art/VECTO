@@ -75,7 +75,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		}
 
 
-		public IInputDataProvider InputDataProvider
+		public IDeclarationTrailerInputDataProvider InputDataProvider
 		{
 			get { return _inputData; }
 			set {

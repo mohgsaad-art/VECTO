@@ -10,7 +10,7 @@ namespace VECTOTrailer.ViewModel.Interfaces
 
 		string JobFile { get; }
 
-		IInputDataProvider InputDataProvider { get; set; }
+		IDeclarationTrailerInputDataProvider InputDataProvider { get; set; }
 
 		bool DeclarationMode { get; }
 		ObservableCollection<Component> Components { get; }

@@ -4,7 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Windows.Input;
 using System.Xml;
+using Castle.Core;
 using Castle.Core.Internal;
+using Microsoft.Win32;
 using Ninject;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
@@ -26,6 +28,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		#region Members
 
 		private ITrailerDeclarationInputData _trailer;
+		private ITrailerDeclarationInputData _trailerObject;
 		private TrailerComponentData _componentData;
 
 		private string _manufacturer;
@@ -45,6 +48,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		private NumberOfTrailerAxles _numberOfAxles;
 		private TypeTrailer _trailerType;
 		private BodyWorkCode _bodyCode;
+		private AeroFeatureTechnologies _technology;
 		private bool _sideSkirtsShort;
 		private bool _sideSkirtsLong;
 		private bool _boatTailShort;
@@ -66,6 +70,13 @@ namespace VECTOTrailer.ViewModel.Impl
 		private ICommand _selectSecondFileCommand;
 		private ICommand _selectThirdFileCommand;
 
+		private ICommand _downloadFirstAxle;
+		private ICommand _deleteFirstAxle;
+		private ICommand _downloadSecondAxle;
+		private ICommand _deleteSecondAxle;
+		private ICommand _downloadThirdAxle;
+		private ICommand _deleteThirdAxle;
+
 		private JobFileType _firstFileType;
 		private JobFileType _secondFileType;
 		private JobFileType _thirdFileType;
@@ -73,6 +84,13 @@ namespace VECTOTrailer.ViewModel.Impl
 		private string _firstFilePath;
 		private string _secondFilePath;
 		private string _thirdFilePath;
+
+		private bool _axle1ButtonsVisibilty;
+		private bool _axle1NewVisibility;
+		private bool _axle2ButtonsVisibilty;
+		private bool _axle2NewVisibility;
+		private bool _axle3ButtonsVisibilty;
+		private bool _axle3NewVisibility;
 
 		private readonly bool _editJob;
 		protected SettingsModel Settings = new SettingsModel();
@@ -85,6 +103,8 @@ namespace VECTOTrailer.ViewModel.Impl
 		[Inject] public IAdapterFactory AdapterFactory { set; protected get; }
 
 		public ITrailerDeclarationInputData ModelData => AdapterFactory.TrailerDeclarationAdapter(this);
+
+		public ITrailerDeclarationInputData Trailer { get => _trailerObject; set => SetProperty(ref _trailerObject, value); }
 
 		public string Manufacturer
 		{
@@ -343,33 +363,33 @@ namespace VECTOTrailer.ViewModel.Impl
 			get
 			{
 				if (string.IsNullOrEmpty(_firstFilePath))
-					return string.Empty;
+					return _axle1Xml;
 
 				return File.ReadAllText(_firstFilePath);
 			}
-			set { }
+			set => SetProperty(ref _axle1Xml, value);
 		}
 		public string Axle2Xml
 		{
 			get
 			{
 				if (string.IsNullOrEmpty(_secondFilePath))
-					return string.Empty;
+					return _axle2Xml;
 
 				return File.ReadAllText(_secondFilePath);
 			}
-			set { }
+			set => SetProperty(ref _axle2Xml, value);
 		}
 		public string Axle3Xml
 		{
 			get
 			{
 				if (string.IsNullOrEmpty(_thirdFilePath))
-					return string.Empty;
+					return _axle3Xml;
 
 				return File.ReadAllText(_thirdFilePath);
 			}
-			set { }
+			set => SetProperty(ref _axle3Xml, value);
 		}
 		public bool Axle1IsTwin
 		{
@@ -386,7 +406,48 @@ namespace VECTOTrailer.ViewModel.Impl
 			get => _axle3IsTwin;
 			set => SetProperty(ref _axle3IsTwin, value);
 		}
-		
+
+		public AeroFeatureTechnologies Technology
+		{
+			get => _technology;
+			set
+			{
+				if (!SetProperty(ref _technology, value))
+					return;
+				IsDataChanged(_technology, _componentData);
+			}
+		}
+		public bool Axle1ButtonsVisibility
+		{
+			get => _axle1ButtonsVisibilty;
+			set => SetProperty(ref _axle1ButtonsVisibilty, value);
+		}
+		public bool Axle1NewVisibility
+		{
+			get => _axle1NewVisibility;
+			set => SetProperty(ref _axle1NewVisibility, value);
+		}
+		public bool Axle2ButtonsVisibility
+		{
+			get => _axle2ButtonsVisibilty;
+			set => SetProperty(ref _axle2ButtonsVisibilty, value);
+		}
+		public bool Axle2NewVisibility
+		{
+			get => _axle2NewVisibility;
+			set => SetProperty(ref _axle2NewVisibility, value);
+		}
+		public bool Axle3ButtonsVisibility
+		{
+			get => _axle3ButtonsVisibilty;
+			set => SetProperty(ref _axle3ButtonsVisibilty, value);
+		}
+		public bool Axle3NewVisibility
+		{
+			get => _axle3NewVisibility;
+			set => SetProperty(ref _axle3NewVisibility, value);
+		}
+
 		public Dictionary<string, string> XmlNamesToPropertyMapping { get; private set; }
 		public AllowedEntry<TypeTrailer>[] AllowedTrailerTypes { get; private set; }
 		public AllowedEntry<BodyWorkCode>[] AllowedBodyCodes { get; private set; }
@@ -435,11 +496,63 @@ namespace VECTOTrailer.ViewModel.Impl
 				PositionXLastAxle = trailer.LengthTrailerFrontToLastAxleCenter;
 				InternalHeightOfTheBody = trailer.InternalBodyHeight;
 				CargoVolume = trailer.CargoVolume;
+				Technology = trailer.AeroFeatureTechnologies;
+				SideSkirtsShort = trailer.AeroFeatureTechnologies == AeroFeatureTechnologies.SideSkirtsShort;
+				SideSkirtsLong = trailer.AeroFeatureTechnologies == AeroFeatureTechnologies.SideSkirtsLong;
+				BoatTailShort = trailer.AeroFeatureTechnologies == AeroFeatureTechnologies.BoatTailShort;
+				BoatTailLong = trailer.AeroFeatureTechnologies == AeroFeatureTechnologies.BoatTailLong;
+				this.Trailer = _trailer;
+
+				//TODO: AXLES
+				XmlDocument xmlDoc = new XmlDocument();
+				xmlDoc.LoadXml(_trailer.XMLSource.OuterXml);
+
+				List<XmlNode> _axles = new List<XmlNode>();
+
+				foreach (XmlNode _axle in xmlDoc.ChildNodes[0].ChildNodes[12].ChildNodes[0].ChildNodes[0])
+					_axles.Add(_axle);
+
+				switch (_axles.Count) {
+					case 0: break;
+					case 1:
+						EnableFirstAxle(_axles[0]);
+						break;
+					case 2:
+						EnableFirstAxle(_axles[0]);
+						EnableSecondAxle(_axles[1]);
+						break;
+					case 3:
+						EnableFirstAxle(_axles[0]);
+						EnableSecondAxle(_axles[1]);
+						EnableThirdAxle(_axles[2]);
+						break;
+					default: break;
+				}
 
 				_componentData = new TrailerComponentData(this);
 			}
 
 			ClearChangedProperties();
+		}
+
+		private void EnableFirstAxle(XmlNode axle)
+		{
+			Axle1Xml = axle.OuterXml;
+			Axle1IsTwin = axle.ChildNodes[0].InnerText == "true";
+			Axle1ButtonsVisibility = true;
+			Axle1NewVisibility = false;
+		}
+
+		private void EnableSecondAxle(XmlNode axle)
+		{
+			Axle2Xml = axle.OuterXml;
+			Axle2IsTwin = axle.ChildNodes[0].InnerText == "true";
+		}
+
+		private void EnableThirdAxle(XmlNode axle)
+		{
+			Axle3Xml = axle.OuterXml;
+			Axle3IsTwin = axle.ChildNodes[0].InnerText == "true";
 		}
 
 		private void SetAllowedEntries()
@@ -546,6 +659,30 @@ namespace VECTOTrailer.ViewModel.Impl
 			_selectThirdFileCommand ??
 			(_selectThirdFileCommand = new RelayCommand<JobFileType>(DoSelectThirdFileCommand));
 
+		public ICommand DownloadFirstAxle =>
+			_downloadFirstAxle ??
+			(_downloadFirstAxle = new RelayCommand(DoDownloadFirstAxle));
+
+		public ICommand DeleteFirstAxle =>
+			_deleteFirstAxle ??
+			(_deleteFirstAxle = new RelayCommand(DoDeleteFirstAxle));
+
+		public ICommand DownloadSecondAxle =>
+			_downloadSecondAxle ??
+			(_downloadSecondAxle = new RelayCommand(DoDownloadSecondAxle));
+
+		public ICommand DeleteSecondAxle =>
+			_deleteSecondAxle ??
+			(_deleteSecondAxle = new RelayCommand(DoDeleteSecondAxle));
+
+		public ICommand DownloadThirdAxle =>
+			_downloadThirdAxle ??
+			(_downloadThirdAxle = new RelayCommand(DoDownloadThirdAxle));
+
+		public ICommand DeleteThirdAxle =>
+			_deleteThirdAxle ??
+			(_deleteThirdAxle = new RelayCommand(DoDeleteThirdAxle));
+
 		private void DoSelectFirstFileCommand(JobFileType jobFileType)
 		{
 			FirstFilePath = OpenFileSelector(jobFileType, nameof(FirstFilePath), FirstFilePath);
@@ -560,6 +697,46 @@ namespace VECTOTrailer.ViewModel.Impl
 		{
 			ThirdFilePath = OpenFileSelector(jobFileType, nameof(ThirdFilePath), ThirdFilePath);
 			this.Axle3FilePath = ThirdFilePath;
+		}
+
+		private void DoDownloadFirstAxle()
+		{
+			SaveFileDialog saveFileDialog = new SaveFileDialog();
+			if (saveFileDialog.ShowDialog() == true)
+				File.WriteAllText(saveFileDialog.FileName, Axle1Xml);
+		}
+
+		private void DoDeleteFirstAxle()
+		{
+			this.Axle1ButtonsVisibility = false;
+			this.Axle1NewVisibility = true;
+			this.Axle1IsTwin = false;
+		}
+		private void DoDownloadSecondAxle()
+		{
+			SaveFileDialog saveFileDialog = new SaveFileDialog();
+			if (saveFileDialog.ShowDialog() == true)
+				File.WriteAllText(saveFileDialog.FileName, Axle2Xml);
+		}
+
+		private void DoDeleteSecondAxle()
+		{
+			this.Axle2ButtonsVisibility = false;
+			this.Axle2NewVisibility = true;
+			this.Axle2IsTwin = false;
+		}
+		private void DoDownloadThirdAxle()
+		{
+			SaveFileDialog saveFileDialog = new SaveFileDialog();
+			if (saveFileDialog.ShowDialog() == true)
+				File.WriteAllText(saveFileDialog.FileName, Axle3Xml);
+		}
+
+		private void DoDeleteThirdAxle()
+		{
+			this.Axle3ButtonsVisibility = false;
+			this.Axle3NewVisibility = true;
+			this.Axle3IsTwin = false;
 		}
 
 		private string OpenFileSelector(JobFileType jobFileType, string textPropertyName, string filePath)

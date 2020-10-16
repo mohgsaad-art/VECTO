@@ -11,6 +11,7 @@ using Castle.Core.Internal;
 using MahApps.Metro.Controls.Dialogs;
 using Ninject;
 using TUGraz.VectoCommon.InputData;
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCore.OutputData.XML.DeclarationJobs;
 using TUGraz.VectoCore.Utils;
 using VECTOTrailer.Helper;
@@ -75,8 +76,6 @@ namespace VECTOTrailer.ViewModel.Impl
 
 			_xmlCompletedTrailer = new XMLCompletedTrailer();
 			_xmlCompletedTrailerWriter = new XMLCompletedTrailerWriter();
-
-			var test = inputData.JobInputData.Trailer.Axles;
 
 			SetVisibilityOfSaveButtons();
 
@@ -307,7 +306,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 
 		public string JobFile { get; }
-		public IInputDataProvider InputDataProvider { get; set; }
+		public IDeclarationTrailerInputDataProvider InputDataProvider { get; set; }
 
 
 	}

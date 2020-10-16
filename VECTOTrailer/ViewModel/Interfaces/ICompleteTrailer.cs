@@ -26,6 +26,7 @@ namespace VECTOTrailer.ViewModel.Interfaces
 		NumberOfTrailerAxles NumberOfAxles { get; set; }
 		TypeTrailer TrailerType { get; set; }
 		BodyWorkCode BodyCode { get; set; }
+		AeroFeatureTechnologies Technology { get; set; }
 		bool SideSkirtsShort { get; set; }
 		bool SideSkirtsLong { get; set; }
 		bool BoatTailShort { get; set; }
@@ -45,9 +46,22 @@ namespace VECTOTrailer.ViewModel.Interfaces
 		ICommand SelectFirstFileCommand { get; }
 		ICommand SelectSecondFileCommand { get; }
 		ICommand SelectThirdFileCommand { get; }
+		ICommand DownloadFirstAxle { get; }
+		ICommand DeleteFirstAxle { get; }
+		ICommand DownloadSecondAxle { get; }
+		ICommand DeleteSecondAxle { get; }
+		ICommand DownloadThirdAxle { get; }
+		ICommand DeleteThirdAxle { get; }
 		JobFileType FirstFileType { get; }
 		JobFileType SecondFileType { get; }
 		JobFileType ThirdFileType { get; }
 		Dictionary<string,string> XmlNamesToPropertyMapping { get; }
+
+		bool Axle1ButtonsVisibility { get; set; }
+		bool Axle1NewVisibility { get; set; }
+		bool Axle2ButtonsVisibility { get; set; }
+		bool Axle2NewVisibility { get; set; }
+		bool Axle3ButtonsVisibility { get; set; }
+		bool Axle3NewVisibility { get; set; }
 	}
 }

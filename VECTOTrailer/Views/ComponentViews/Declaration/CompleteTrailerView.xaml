@@ -17,6 +17,10 @@
         <x:Type Type="interfaces:ICompleteTrailerViewModel" />
     </d:CompleteTrailerViewModel.DataContext>
 
+    <UserControl.Resources >
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </UserControl.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10" />
@@ -348,7 +352,7 @@
 
                         <TextBlock Grid.Column="0" Text="Axle 1" Width="50" />
                         <TextBox Grid.Column="1" Width="120" IsReadOnly="True" IsReadOnlyCaretVisible="True" 
-                                 Text="{Binding Axle1FilePath}" Name="FilePath1">
+                                 Text="{Binding Axle1FilePath}" Name="FilePath1" Visibility="{Binding Axle1NewVisibility, Converter={StaticResource BoolToVisibilityConverter}}">
                             <Validation.ErrorTemplate>
                                 <ControlTemplate>
                                     <DockPanel>
@@ -367,9 +371,11 @@
                                 </Style>
                             </TextBox.Style>
                         </TextBox>
-                        <Button Grid.Column="2" Content="..." Width="30" Margin="5,0,0,0"
+                        <Button Name="UploadFirstAxleButton" Grid.Column="2" Content="..." Width="30" Margin="5,0,0,0"
                                 Command="{Binding SelectFirstFileCommand}"
-                                CommandParameter="{Binding FirstFileType}"/>
+                                CommandParameter="{Binding FirstFileType}" Visibility="{Binding Axle1NewVisibility, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        <Button Name="DownloadFirstAxleButton" Grid.Column="1" Content="Download" Width="60" Margin="5,0,0,0" Command="{Binding DownloadFirstAxle}" Visibility="{Binding Axle1ButtonsVisibility, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        <Button Name="DeleteFirstAxleButton" Grid.Column="2" Content="Delete" Width="60" Margin="5,0,0,0" Command="{Binding DeleteFirstAxle}" Visibility="{Binding Axle1ButtonsVisibility, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         <TextBlock Grid.Column="4" Text="Twin tyres" />
                         <CheckBox Grid.Column="5" IsChecked="{Binding Axle1IsTwin}"/>
                     </Grid>
@@ -400,9 +406,9 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Column="0" Text="Axle 2" Width="50" /> 
+                        <TextBlock Grid.Column="0" Text="Axle 2" Width="50" />
                         <TextBox Grid.Column="1" Width="120" IsReadOnly="True" IsReadOnlyCaretVisible="True" 
-                                 Text="{Binding Axle2FilePath}">
+                                 Text="{Binding Axle2FilePath}" Visibility="{Binding Axle2NewVisibility, Converter={StaticResource BoolToVisibilityConverter}}">
                             <Validation.ErrorTemplate>
                                 <ControlTemplate>
                                     <DockPanel>
@@ -423,7 +429,9 @@
                         </TextBox>
                         <Button Grid.Column="2" Content="..." Width="30" Margin="5,0,0,0"
                                 Command="{Binding SelectSecondFileCommand}"
-                                CommandParameter="{Binding SecondFileType}"/>
+                                CommandParameter="{Binding SecondFileType}" Visibility="{Binding Axle2NewVisibility, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        <Button Name="DownloadSecondAxleButton" Grid.Column="1" Content="Download" Width="60" Margin="5,0,0,0" Command="{Binding DownloadSecondAxle}" Visibility="{Binding Axle2ButtonsVisibility, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        <Button Name="DeleteSecondAxleButton" Grid.Column="2" Content="Delete" Width="60" Margin="5,0,0,0" Command="{Binding DeleteSecondAxle}" Visibility="{Binding Axle2ButtonsVisibility, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         <TextBlock Grid.Column="4" Text="Twin tyres" />
                         <CheckBox Grid.Column="5" IsChecked="{Binding Axle2IsTwin}"/>
                     </Grid>
@@ -452,7 +460,7 @@
 
                         <TextBlock Grid.Column="0" Text="Axle 3" Width="50" />
                         <TextBox Grid.Column="1" Width="120" IsReadOnly="True" IsReadOnlyCaretVisible="True" 
-                                 Text="{Binding Axle3FilePath}">
+                                 Text="{Binding Axle3FilePath}" Visibility="{Binding Axle3NewVisibility, Converter={StaticResource BoolToVisibilityConverter}}">
                             <Validation.ErrorTemplate>
                                 <ControlTemplate>
                                     <DockPanel>
@@ -473,7 +481,9 @@
                         </TextBox>
                         <Button Grid.Column="2" Content="..." Width="30" Margin="5,0,0,0"
                                 Command="{Binding SelectThirdFileCommand}"
-                                CommandParameter="{Binding ThirdFileType}"/> 
+                                CommandParameter="{Binding ThirdFileType}" Visibility="{Binding Axle3NewVisibility, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        <Button Name="DownloadThirdAxleButton" Grid.Column="1" Content="Download" Width="60" Margin="5,0,0,0" Command="{Binding DownloadThirdAxle}" Visibility="{Binding Axle3ButtonsVisibility, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        <Button Name="DeleteThirdAxleButton" Grid.Column="2" Content="Delete" Width="60" Margin="5,0,0,0" Command="{Binding DownloadThirdAxle}" Visibility="{Binding Axle3ButtonsVisibility, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         <TextBlock Grid.Column="4" Text="Twin tyres" />
                         <CheckBox Grid.Column="5" IsChecked="{Binding Axle3IsTwin}"/>
                     </Grid>

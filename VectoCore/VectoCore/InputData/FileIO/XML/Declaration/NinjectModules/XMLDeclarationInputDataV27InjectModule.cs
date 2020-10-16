@@ -21,8 +21,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.NinjectModules {
 			Bind<IXMLTrailerDeclarationVehicleData>().To<XMLDeclarationVehicleDataProviderV27>().Named(
 				XMLDeclarationVehicleDataProviderV27.QUALIFIED_XSD_TYPE);
 
-
-			//Bind TrailerAxleWheelsDataDeclarationType
+			Bind<IXMLAxlesDeclarationInputData>().To<XMLDeclarationAxlesDataProviderV27>().Named(
+				XMLDeclarationAxlesDataProviderV27.QUALIFIED_XSD_TYPE);
 
 			// ---------------------------------------------------------------------------------------
 
@@ -31,6 +31,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.NinjectModules {
 
 			Bind<IXMLJobTrailerDataReader>().To<XMLJobDataReaderV27>()
 				.Named(XMLJobDataReaderV27.QUALIFIED_XSD_TYPE);
+
+			Bind<IXMLAxlesReader>().To<XMLComponentReaderV27>()
+				.Named(XMLComponentReaderV27.QUALIFIED_XSD_TYPE);
 		}
 
 		#endregion
