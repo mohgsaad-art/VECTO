@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Interfaces;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.SimulationComponent;
@@ -16,11 +17,10 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter {
 		AirdragData CreateAirdragData(IAirdragDeclarationInputData airdragData, Mission mission, Segment segment);
 		AxleGearData CreateAxleGearData(IAxleGearInputData axlegearData);
 		AngledriveData CreateAngledriveData(IAngledriveInputData angledriveData);
-		CombustionEngineData CreateEngineData(ITrailerDeclarationInputData vehicle, IEngineModeDeclarationInputData engineMode, Mission mission);
+		CombustionEngineData CreateEngineData(IXMLEngineDeclarationInputData engine, IXMLGearboxDeclarationInputData gearbox,
+			IEngineModeDeclarationInputData mode, Mission mission);
 
-		GearboxData CreateGearboxData(
-			ITrailerDeclarationInputData inputData, VectoRunData runData,
-			IShiftPolygonCalculator shiftPolygonCalc);
+		GearboxData CreateGearboxData(IXMLGearboxDeclarationInputData gearbox, IXMLVehicleComponentsDeclaration components, VectoRunData runData, IShiftPolygonCalculator shiftPolygonCalc);
 
 		ShiftStrategyParameters CreateGearshiftData(GearboxData gbx, double axleRatio, PerSecond engineIdlingSpeed);
 

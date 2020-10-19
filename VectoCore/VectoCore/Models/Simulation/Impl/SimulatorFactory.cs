@@ -117,7 +117,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			if (dataProvider is IDeclarationTrailerInputDataProvider) {
 				var declDataProvider = dataProvider as IDeclarationTrailerInputDataProvider;
 
-				var report = declarationReport ?? new XMLDeclarationReport(ModWriter);
+				var report = declarationReport ?? new XMLDeclarationTrailerReport(ModWriter);
 				DataReader = new DeclarationModeTrailerVectoRunDataFactory(declDataProvider, report);
 				return;
 			}
@@ -252,11 +252,11 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 			var run = GetVectoRun(data, builder);
 
-			if (Validate) {
+			/*if (Validate) {
 				ValidateVectoRunData(
 					run, data.GearboxData == null ? (GearboxType?)null : data.GearboxData.Type,
 					data.Mission != null && data.Mission.MissionType.IsEMS());
-			}
+			}*/
 			return run;
 		}
 

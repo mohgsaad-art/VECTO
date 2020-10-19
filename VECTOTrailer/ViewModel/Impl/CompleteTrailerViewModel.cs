@@ -701,7 +701,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		private void DoDownloadFirstAxle()
 		{
-			SaveFileDialog saveFileDialog = new SaveFileDialog();
+			var saveFileDialog = new SaveFileDialog();
 			if (saveFileDialog.ShowDialog() == true)
 				File.WriteAllText(saveFileDialog.FileName, Axle1Xml);
 		}
@@ -714,7 +714,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		}
 		private void DoDownloadSecondAxle()
 		{
-			SaveFileDialog saveFileDialog = new SaveFileDialog();
+			var saveFileDialog = new SaveFileDialog();
 			if (saveFileDialog.ShowDialog() == true)
 				File.WriteAllText(saveFileDialog.FileName, Axle2Xml);
 		}
@@ -727,7 +727,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		}
 		private void DoDownloadThirdAxle()
 		{
-			SaveFileDialog saveFileDialog = new SaveFileDialog();
+			var saveFileDialog = new SaveFileDialog();
 			if (saveFileDialog.ShowDialog() == true)
 				File.WriteAllText(saveFileDialog.FileName, Axle3Xml);
 		}

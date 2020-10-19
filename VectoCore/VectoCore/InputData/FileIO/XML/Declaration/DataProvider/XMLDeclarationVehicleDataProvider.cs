@@ -925,7 +925,6 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 			XMLHelper.CombineNamespace(NAMESPACE_URI.NamespaceName, XSD_TYPE);
 
 		protected IVehicleComponentsDeclaration _components;
-		protected IPTOTransmissionInputData _ptoData;
 		protected IAxlesDeclarationInputData _axles;
 
 		public XMLDeclarationVehicleDataProviderV27(IXMLDeclarationTrailerJobInputData jobData, XmlNode xmlNode,
@@ -947,9 +946,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 			get
 			{
 				//DEBUG TODO CHANGE THIS
-				_axles = new XMLDeclarationAxlesDataProviderV27(this, GetNode(XMLNames.AxleWheels_Axles), SourceFile);
+				_axles = new XMLDeclarationAxlesDataProviderV27(this, GetNode(XMLNames.AxleWheels_Axles), "F:\\Vecto\\vecto_input_sample-trailer.xml"); //SourceFile
 				AxlesReader = new XMLComponentReaderV27(this, GetNode(XMLNames.AxleWheels_Axles));
-
+				
 				foreach (XmlNode _axle in GetNodes(XMLNames.AxleWheels_Axles_Axle))
 					_axles.AxlesDeclaration.Add(AxlesReader.CreateAxle(_axle));
 				return _axles;

@@ -348,7 +348,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 			var version = XMLHelper.GetXsdType(axleNode.SchemaInfo.SchemaType);
 			try
 			{
-				var axle = Factory.CreateAxleData(version, Vehicle, axleNode, (Vehicle as IXMLResource).DataSource.SourceFile);
+				var axle = Factory.CreateAxleData(version, Vehicle, axleNode, "F:\\Vecto\\vecto_input_sample-trailer.xml"); //(Vehicle as IXMLResource).DataSource.SourceFile
 				axle.Reader = Factory.CreateAxleReader(version, Vehicle, axleNode);
 				return axle;
 			}

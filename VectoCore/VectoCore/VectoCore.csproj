@@ -431,9 +431,12 @@
     <Compile Include="OutputData\XML\Engineering\XMLEngineeringWriter.cs" />
     <Compile Include="OutputData\XML\Engineering\XMLEngineeringWriterInjectModule.cs" />
     <Compile Include="OutputData\XML\Engineering\XMLWriterMapping.cs" />
+    <Compile Include="OutputData\XML\XMLCustomerReportTrailer.cs" />
     <Compile Include="OutputData\XML\XMLCustomerReportCompletedBus.cs" />
+    <Compile Include="OutputData\XML\XMLDeclarationtTrailerReport.cs" />
     <Compile Include="OutputData\XML\XMLDeclarationReportCompletedVehicle.cs" />
     <Compile Include="OutputData\XML\XMLDeclarationReportPrimaryVehicle.cs" />
+    <Compile Include="OutputData\XML\XMLManufacturerReportTrailer.cs" />
     <Compile Include="OutputData\XML\XMLManufacturerReportCompletedBus.cs" />
     <Compile Include="OutputData\XML\XMLManufacturerReportExemptedTruck.cs" />
     <Compile Include="OutputData\XML\XMLManufacturerReportPrimaryBus.cs" />

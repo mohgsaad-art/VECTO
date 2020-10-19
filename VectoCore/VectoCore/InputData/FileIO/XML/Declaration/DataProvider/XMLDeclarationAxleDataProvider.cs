@@ -94,4 +94,68 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		}
 
 	}
+
+	// -----------------------------------------------------------------------------------
+
+	public class XMLDeclarationAxleDataProviderV27 : AbstractCommonComponentType, IXMLAxleDeclarationInputData
+	{
+		public static XNamespace NAMESPACE_URI = XMLDefinitions.DECLARATION_DEFINITIONS_NAMESPACE_URI_V27;
+
+		public const string XSD_TYPE = "AxleDeclarationType";
+
+		public static readonly string QUALIFIED_XSD_TYPE = XMLHelper.CombineNamespace(NAMESPACE_URI.NamespaceName, XSD_TYPE);
+
+		protected ITyreDeclarationInputData _tyre;
+		protected bool? _twinTyre;
+		protected AxleType? _axleType;
+
+		public XMLDeclarationAxleDataProviderV27(IXMLTrailerDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile)
+			: base(componentNode, sourceFile)
+		{
+			SourceType = DataSourceType.XMLFile;
+		}
+
+		#region Implementation of IAxleDeclarationInputData
+
+		public virtual bool TwinTyres
+		{
+			get
+			{
+				return _twinTyre ?? (_twinTyre = XmlConvert.ToBoolean(GetString(XMLNames.AxleWheels_Axles_Axle_TwinTyres))).Value;
+			}
+		}
+
+		public virtual AxleType AxleType
+		{
+			get
+			{
+				return _axleType ?? (_axleType = GetString(XMLNames.AxleWheels_Axles_Axle_AxleType).ParseEnum<AxleType>()).Value;
+			}
+		}
+
+		public virtual ITyreDeclarationInputData Tyre
+		{
+			get { return _tyre ?? (_tyre = Reader.Tyre); }
+		}
+
+		#endregion
+
+
+		#region Implementation of IXMLAxleDeclarationInputData
+
+		public virtual IXMLAxleReader Reader { protected get; set; }
+
+		#endregion
+
+		#region Overrides of AbstractXMLResource
+
+		protected override XNamespace SchemaNamespace
+		{
+			get { return NAMESPACE_URI; }
+		}
+
+		protected override DataSourceType SourceType { get; }
+
+		#endregion
+	}
 }
