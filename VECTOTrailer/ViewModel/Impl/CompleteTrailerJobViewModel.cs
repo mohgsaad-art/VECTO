@@ -11,6 +11,8 @@ using Castle.Core.Internal;
 using MahApps.Metro.Controls.Dialogs;
 using Ninject;
 using TUGraz.VectoCommon.InputData;
+using TUGraz.VectoCommon.Models;
+using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.OutputData.XML.DeclarationJobs;
 using TUGraz.VectoCore.Utils;
 using VECTOTrailer.Helper;
@@ -236,9 +238,19 @@ namespace VECTOTrailer.ViewModel.Impl
 			SetCurrentDataToSave();
 			var xDoc = _xmlCompletedTrailer.GenerateCompletedTrailerDocument(CompleteVehicleTrailerData);
 
-			//ValidationResultDialogWindow(true);
+			// Aero features combination validation -----------------------------
+			var aeroFeatures = new List<AeroFeatureTechnologies>();
+			if (((Model.TempDataObject.TrailerComponentData)CompleteVehicleTrailerData.Values.FirstOrDefault()).SideSkirtsShort) aeroFeatures.Add(AeroFeatureTechnologies.SideSkirtsShort);
+			if (((Model.TempDataObject.TrailerComponentData)CompleteVehicleTrailerData.Values.FirstOrDefault()).SideSkirtsLong) aeroFeatures.Add(AeroFeatureTechnologies.SideSkirtsLong);
+			if (((Model.TempDataObject.TrailerComponentData)CompleteVehicleTrailerData.Values.FirstOrDefault()).BoatTailShort) aeroFeatures.Add(AeroFeatureTechnologies.BoatTailShort);
+			if (((Model.TempDataObject.TrailerComponentData)CompleteVehicleTrailerData.Values.FirstOrDefault()).BoatTailLong) aeroFeatures.Add(AeroFeatureTechnologies.BoatTailLong);
 
-			if (XmlHelper.ValidateXDocument(xDoc, null, ValidationErrorAction)) {
+			var vehicleGroup = DeclarationData.AeroFeatures.Lookup(aeroFeatures);
+			if (vehicleGroup < 0)
+				ValidationResultDialogWindow(false);
+			// -----------------------------------------------------------------
+
+			else if (XmlHelper.ValidateXDocument(xDoc, null, ValidationErrorAction)) {
 				ValidationResultDialogWindow(true);
 			} else {
 				ValidationResultDialogWindow(false);

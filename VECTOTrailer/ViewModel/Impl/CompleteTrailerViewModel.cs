@@ -588,19 +588,6 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		public override void ShowValidationErrors(Dictionary<string, string> errors)
 		{
-			// Aero features combination validation -----------------------------
-			var aeroFeatures = new List<AeroFeatureTechnologies>();
-			if (SideSkirtsShort) aeroFeatures.Add(AeroFeatureTechnologies.SideSkirtsShort);
-			if (SideSkirtsLong) aeroFeatures.Add(AeroFeatureTechnologies.SideSkirtsLong);
-			if (BoatTailShort) aeroFeatures.Add(AeroFeatureTechnologies.BoatTailShort);
-			if (BoatTailLong) aeroFeatures.Add(AeroFeatureTechnologies.BoatTailLong);
-
-			var vehicleGroup = DeclarationData.AeroFeatures.Lookup(aeroFeatures);
-			if (vehicleGroup < 0)
-				errors.Add("AeroFeatures","Aero feature combinations is invalid!");
-			
-			// -----------------------------------------------------------------
-
 			if (errors.IsNullOrEmpty())
 				return;
 
