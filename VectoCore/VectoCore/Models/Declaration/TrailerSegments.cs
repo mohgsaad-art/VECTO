@@ -49,7 +49,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		protected override string ResourceId
 		{
-			get { return DeclarationData.DeclarationDataResourcePrefix + ".trailerSegmentationTable.csv"; }
+			get { return DeclarationData.DeclarationDataResourcePrefix + ".TrailerSegmentationTable.csv"; }
 		}
 
 		protected override string ErrorMessage

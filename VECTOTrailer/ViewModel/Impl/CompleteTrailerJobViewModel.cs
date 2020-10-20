@@ -11,7 +11,6 @@ using Castle.Core.Internal;
 using MahApps.Metro.Controls.Dialogs;
 using Ninject;
 using TUGraz.VectoCommon.InputData;
-using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCore.OutputData.XML.DeclarationJobs;
 using TUGraz.VectoCore.Utils;
 using VECTOTrailer.Helper;
@@ -238,6 +237,7 @@ namespace VECTOTrailer.ViewModel.Impl
 			var xDoc = _xmlCompletedTrailer.GenerateCompletedTrailerDocument(CompleteVehicleTrailerData);
 
 			//ValidationResultDialogWindow(true);
+
 			if (XmlHelper.ValidateXDocument(xDoc, null, ValidationErrorAction)) {
 				ValidationResultDialogWindow(true);
 			} else {

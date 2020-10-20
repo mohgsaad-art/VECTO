@@ -143,7 +143,7 @@ namespace VECTOTrailer.Util.XML
 
 			try {
 				var tyre = XDocument.Parse(trailerData.Axle1Xml).Elements().FirstOrDefault()?.Elements()
-					.FirstOrDefault();
+					.FirstOrDefault(x => !x.Name.ToString().Contains("TwinTyres"));
 				vehicle.Element(_v27 + "AxleWheels")?.Element(_v27 + "Data")?.Element(_v27 + "Axles")?.Add(
 					new XElement(_v27 + "Axle", new XAttribute(_xsi + "type", "v2.7:TrailerAxleType"), new XAttribute("axleNumber", "1"), 
 					new XElement(_v27 + "TwinTyres", trailerData.Axle1IsTwin.ToString().ToLower()), 

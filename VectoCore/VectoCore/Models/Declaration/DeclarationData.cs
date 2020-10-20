@@ -74,6 +74,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 		public static readonly Watt MinEnginePowerForEMS = 300e3.SI<Watt>();
 
 		public static readonly TrailerSegments TrailerSegments = new TrailerSegments();
+		public static readonly AeroFeatures AeroFeatures = new AeroFeatures();
 
 		public static readonly TruckSegments TruckSegments = new TruckSegments();
 		public static readonly PrimaryBusSegments PrimaryBusSegments = new PrimaryBusSegments();

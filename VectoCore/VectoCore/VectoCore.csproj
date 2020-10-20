@@ -93,6 +93,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -328,6 +329,7 @@
     <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\HVAC\SSMRun.cs" />
     <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\HVAC\SSMTOOL.cs" />
     <Compile Include="Models\Declaration\CompletedBusSegments.cs" />
+    <Compile Include="Models\Declaration\AeroFeatures.cs" />
     <Compile Include="Models\Declaration\TrailerSegments.cs" />
     <Compile Include="Models\GenericModelData\GenericTorqueConverterData.cs" />
     <Compile Include="Models\GenericModelData\GenericTransmissionComponentData.cs" />
@@ -923,7 +925,8 @@
     <EmbeddedResource Include="Resources\XSD\VectoDeclarationDefinitions.2.7_BT.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Declaration\trailerSegmentationTable.csv" />
+    <EmbeddedResource Include="Resources\Declaration\TrailerSegmentationTable.csv" />
+    <EmbeddedResource Include="Resources\Declaration\TrailerAeroFeatures.csv" />
     <None Include="Utils\VectoVersionCore.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>VectoVersionCore.cs</LastGenOutput>

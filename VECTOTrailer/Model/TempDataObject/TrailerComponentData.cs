@@ -211,10 +211,10 @@ namespace VECTOTrailer.Model.TempDataObject
 			Axle3Xml = trailer.Axle3Xml;
 			
 			Technology = trailer.Technology;
-			SideSkirtsShort = Technology == AeroFeatureTechnologies.SideSkirtsShort;
-			SideSkirtsLong = Technology == AeroFeatureTechnologies.SideSkirtsLong;
-			BoatTailShort = Technology == AeroFeatureTechnologies.BoatTailShort;
-			BoatTailLong = Technology == AeroFeatureTechnologies.BoatTailLong;
+			SideSkirtsShort = trailer.SideSkirtsShort;
+			SideSkirtsLong = trailer.SideSkirtsLong;
+			BoatTailShort = trailer.BoatTailShort;
+			BoatTailLong = trailer.BoatTailLong;
 
 			Axle1FilePath = trailer.Axle1FilePath;
 			Axle2FilePath = trailer.Axle2FilePath;

@@ -13,6 +13,7 @@ using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.XML;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider;
+using TUGraz.VectoCore.Models.Declaration;
 using VECTOTrailer.Helper;
 using VECTOTrailer.Model;
 using VECTOTrailer.Model.TempDataObject;
@@ -587,6 +588,19 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		public override void ShowValidationErrors(Dictionary<string, string> errors)
 		{
+			// Aero features combination validation -----------------------------
+			var aeroFeatures = new List<AeroFeatureTechnologies>();
+			if (SideSkirtsShort) aeroFeatures.Add(AeroFeatureTechnologies.SideSkirtsShort);
+			if (SideSkirtsLong) aeroFeatures.Add(AeroFeatureTechnologies.SideSkirtsLong);
+			if (BoatTailShort) aeroFeatures.Add(AeroFeatureTechnologies.BoatTailShort);
+			if (BoatTailLong) aeroFeatures.Add(AeroFeatureTechnologies.BoatTailLong);
+
+			var vehicleGroup = DeclarationData.AeroFeatures.Lookup(aeroFeatures);
+			if (vehicleGroup < 0)
+				errors.Add("AeroFeatures","Aero feature combinations is invalid!");
+			
+			// -----------------------------------------------------------------
+
 			if (errors.IsNullOrEmpty())
 				return;
 
