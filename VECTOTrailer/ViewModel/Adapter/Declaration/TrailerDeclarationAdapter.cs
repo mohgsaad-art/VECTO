@@ -71,7 +71,7 @@ namespace VECTOTrailer.ViewModel.Adapter.Declaration
 		public string Identifier { get; }
 		public AxleConfiguration AxleConfiguration { get; }
 		public bool ExemptedVehicle { get; }
-		public IAxlesDeclarationInputData Axles { get; }
+		public IList<IAxleDeclarationInputData> Axles { get; }
 		public IVehicleComponentsDeclaration Components { get; }
 		public string ManufacturerAddress { get { return ViewModel.ManufacturerAddress; } }
 		public string VIN { get; }
@@ -90,7 +90,7 @@ namespace VECTOTrailer.ViewModel.Adapter.Declaration
 		public Meter LengthTrailerFrontToLastAxleCenter { get; }
 		public Meter InternalBodyHeight { get; }
 		public CubicMeter CargoVolume { get; }
-		public AeroFeatureTechnologies AeroFeatureTechnologies { get; }
+		public IList<AeroFeatureTechnology> AeroFeatureTechnologies { get; }
 
 		public XmlNode XMLSource { get; }
 

@@ -38,7 +38,7 @@ namespace VECTOTrailer.Model.TempDataObject
 		public NumberOfTrailerAxles NumberOfAxles { get; set; }
 		public TypeTrailer TrailerType { get; set; }
 		public BodyWorkCode BodyCode { get; set; }
-		public AeroFeatureTechnologies Technology { get; set; }
+		public IList<AeroFeatureTechnology> Technologies { get; set; }
 		public bool SideSkirtsShort { get; set; }
 		public bool SideSkirtsLong { get; set; }
 		public bool BoatTailShort { get; set; }
@@ -128,11 +128,11 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.Axle2Xml = Axle2Xml;
 			viewModel.Axle3Xml = Axle3Xml;
 
-			viewModel.Technology = Technology;
-			viewModel.SideSkirtsShort = Technology == AeroFeatureTechnologies.SideSkirtsShort;
-			viewModel.SideSkirtsLong = Technology == AeroFeatureTechnologies.SideSkirtsLong;
-			viewModel.BoatTailShort = Technology == AeroFeatureTechnologies.BoatTailShort;
-			viewModel.BoatTailLong = Technology == AeroFeatureTechnologies.BoatTailLong;
+			viewModel.Technologies = Technologies;
+			viewModel.SideSkirtsShort = Technologies.Contains(AeroFeatureTechnology.SideSkirtsShort);
+			viewModel.SideSkirtsLong = Technologies.Contains(AeroFeatureTechnology.SideSkirtsLong);
+			viewModel.BoatTailShort = Technologies.Contains(AeroFeatureTechnology.BoatTailShort);
+			viewModel.BoatTailLong = Technologies.Contains(AeroFeatureTechnology.BoatTailLong);
 
 			viewModel.Axle1ButtonsVisibility = Axle1ButtonsVisibility;
 			viewModel.Axle1NewVisibility = Axle1NewVisibility;
@@ -210,7 +210,7 @@ namespace VECTOTrailer.Model.TempDataObject
 			Axle2Xml = trailer.Axle2Xml;
 			Axle3Xml = trailer.Axle3Xml;
 			
-			Technology = trailer.Technology;
+			Technologies = trailer.Technologies;
 			SideSkirtsShort = trailer.SideSkirtsShort;
 			SideSkirtsLong = trailer.SideSkirtsLong;
 			BoatTailShort = trailer.BoatTailShort;
@@ -248,7 +248,7 @@ namespace VECTOTrailer.Model.TempDataObject
 				{XMLNames.Trailer_AxleCount, nameof(NumberOfAxles)},
 				{XMLNames.Trailer_TrailerType, nameof(TrailerType)},
 				{XMLNames.Trailer_BodyCode, nameof(BodyCode)},
-				{XMLNames.Trailer_AeroFeatureTechnologies, nameof(Technology)},
+				{XMLNames.Trailer_AeroFeatureTechnologies, nameof(Technologies)},
 				{XMLNames.Trailer_CurbMass, nameof(CurbMassTrailer)},
 				{XMLNames.Trailer_TPMLMTotalTrailer, nameof(TPLMTotalTrailer)},
 				{XMLNames.Trailer_TPLMAxleAssembly, nameof(TPLMAxleAssembly)},

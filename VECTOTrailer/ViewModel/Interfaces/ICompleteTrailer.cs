@@ -26,7 +26,7 @@ namespace VECTOTrailer.ViewModel.Interfaces
 		NumberOfTrailerAxles NumberOfAxles { get; set; }
 		TypeTrailer TrailerType { get; set; }
 		BodyWorkCode BodyCode { get; set; }
-		AeroFeatureTechnologies Technology { get; set; }
+		IList<AeroFeatureTechnology> Technologies { get; set; }
 		bool SideSkirtsShort { get; set; }
 		bool SideSkirtsLong { get; set; }
 		bool BoatTailShort { get; set; }

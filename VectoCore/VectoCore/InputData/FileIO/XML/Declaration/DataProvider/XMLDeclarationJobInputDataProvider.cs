@@ -105,35 +105,20 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		#region Overrides of AbstractXMLResource
 
-		protected override XNamespace SchemaNamespace
-		{
-			get { return NAMESPACE_URI; }
-		}
+		protected override XNamespace SchemaNamespace => NAMESPACE_URI;
 
-		protected override DataSourceType SourceType
-		{
-			get { return DataSourceType.XMLFile; }
-		}
+		protected override DataSourceType SourceType => DataSourceType.XMLFile;
 
 		#endregion
 		#region Implementation of IDeclarationJobInputData
 
-		public virtual bool SavedInDeclarationMode
-		{
-			get { return true; }
-		}
+		public virtual bool SavedInDeclarationMode => true;
 
-		public virtual ITrailerDeclarationInputData Trailer
-		{
-			get { return _vehicle ?? (_vehicle = Reader.CreateVehicle); }
-		}
+		public virtual ITrailerDeclarationInputData Trailer => _vehicle ?? (_vehicle = Reader.CreateVehicle);
 
-		public virtual string JobName
-		{
-			get { return Trailer.Identifier; }
-		}
+		public virtual string JobName => Trailer.Identifier;
 
-		public virtual string ShiftStrategy { get { return null; } }
+		public virtual string ShiftStrategy => null;
 
 		#endregion
 

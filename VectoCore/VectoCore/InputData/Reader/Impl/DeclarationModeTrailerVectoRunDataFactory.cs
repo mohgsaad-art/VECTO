@@ -46,6 +46,7 @@ using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Utils;
 using System.Linq;
+using System.Net;
 using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Bson;
@@ -56,6 +57,7 @@ using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl;
 using TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider;
 using TUGraz.VectoCore.InputData.FileIO.XML.Engineering.Interfaces;
 using IXMLGearData = TUGraz.VectoCore.InputData.FileIO.XML.Engineering.Interfaces.IXMLGearData;
+using Wheels = TUGraz.VectoCore.Models.Declaration.Wheels;
 
 
 namespace TUGraz.VectoCore.InputData.Reader.Impl
@@ -64,45 +66,44 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 	public class DeclarationModeTrailerVectoRunDataFactory : LoggingObject, IVectoRunDataFactory
 	{
 		protected static readonly object CyclesCacheLock = new object();
-
-		protected static readonly Dictionary<MissionType, DrivingCycleData> CyclesCache =
-			new Dictionary<MissionType, DrivingCycleData>();
-
+		protected static readonly Dictionary<MissionType, DrivingCycleData> CyclesCache = new Dictionary<MissionType, DrivingCycleData>();
 		protected readonly IDeclarationTrailerInputDataProvider TrailerInputDataProvider;
 		protected readonly IDeclarationInputDataProvider InputDataProvider;
-		protected IXMLDeclarationVehicleData GenericVehicle;
-		protected IXMLEngineDeclarationInputData genericEngineDataProvider;
-		protected IXMLAirdragDeclarationInputData genericAirdragData;
-		protected IXMLGearboxDeclarationInputData genericGearboxInputData;
-
-		protected IDeclarationReport Report;
-
-		protected Segment _segment;
-		protected DriverData _driverdata;
-		protected AirdragData _airdragData;
-		protected AxleGearData _axlegearData;
-		protected AngledriveData _angledriveData;
-		protected GearboxData _gearboxData;
-		protected RetarderData _retarderData;
-		protected PTOData _ptoTransmissionData;
-		protected PTOData _municipalPtoTransmissionData;
-		//protected Exception InitException;
-		protected ShiftStrategyParameters _gearshiftData;
+		protected IDeclarationReport Report; 
+		protected IDeclarationDataAdapter DataAdapter => _da;
+		protected DeclarationTrailerDataAdapter TrailerDataAdapter = new DeclarationTrailerDataAdapter();
 
 		private readonly DeclarationDataAdapterCompletedBusGeneric _da = new DeclarationDataAdapterCompletedBusGeneric();
+
+		private Segment _segment;
+		private DriverData _driverdata;
+		private AirdragData _airdragData;
+		private AxleGearData _axlegearData;
+		private AngledriveData _angledriveData;
+		private GearboxData _gearboxData;
+		private RetarderData _retarderData;
+		private PTOData _ptoTransmissionData;
+		private PTOData _municipalPtoTransmissionData;
+		private ShiftStrategyParameters _gearshiftData;
+
+		private IXMLDeclarationVehicleData _genericVehicle;
+		private IXMLEngineDeclarationInputData _genericEngineDataProvider;
+		private IXMLAirdragDeclarationInputData _genericAirdragData;
+		private IXMLGearboxDeclarationInputData _genericGearboxInputData;
+		private XMLDeclarationInputDataProviderV10 _genericInputDataProvider;
+		private XMLDeclarationJobInputDataProviderV10 _genericJobInputData;
+		private XMLDeclarationComponentsDataProviderV10 _genericVehicleComponents;
+		private XMLDeclarationAxlegearDataProviderV10 _genericAxleGearInputData;
+		private XMLDeclarationAngledriveDataProviderV10 _genericAngleInputData;
+		private XMLDeclarationRetarderDataProviderV10 _genericRetarderInputData;
+		private XMLDeclarationPTODataProviderV10 _genericPTOInputData;
+
 		internal DeclarationModeTrailerVectoRunDataFactory(
 			IDeclarationTrailerInputDataProvider dataProvider, IDeclarationReport report)
 		{
 			TrailerInputDataProvider = dataProvider;
 			Report = report;
 		}
-
-		#region Overrides of AbstractDeclarationVectoRunDataFactory
-
-		protected IDeclarationDataAdapter DataAdapter => _da;
-		protected DeclarationTrailerDataAdapter TrailerDataAdapter = new DeclarationTrailerDataAdapter();
-
-		#endregion
 
 		protected Segment GetSegment(IVehicleDeclarationInputData vehicle)
 		{
@@ -120,8 +121,8 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 
 		private IEnumerable<VectoRunData> VectoRunDataNonExempted()
 		{
-			var vehicle = GenericVehicle;
-			var engine = genericEngineDataProvider;
+			var vehicle = _genericVehicle;
+			var engine = _genericEngineDataProvider;
 			var engineModes = engine.EngineModes;
 			var trailer = TrailerInputDataProvider.JobInputData.Trailer;
 
@@ -158,15 +159,15 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			List<List<FuelData.Entry>> fuels;
 			var trailer = TrailerInputDataProvider.JobInputData.Trailer;
 
-			if (GenericVehicle.ExemptedVehicle) {
-				powertrainConfig = CreateVectoRunData(GenericVehicle, trailer, 0, null, new KeyValuePair<LoadingType, Tuple<Kilogram, double?>>());
+			if (_genericVehicle.ExemptedVehicle) {
+				powertrainConfig = CreateVectoRunData(_genericVehicle, trailer, 0, null, new KeyValuePair<LoadingType, Tuple<Kilogram, double?>>());
 				fuels = new List<List<FuelData.Entry>>();
 			} else {
 				powertrainConfig = _segment.Missions.Select(
 						mission => CreateVectoRunData(
-							GenericVehicle, trailer, 0, mission, mission.Loadings.First()))
+							_genericVehicle, trailer, 0, mission, mission.Loadings.First()))
 					.FirstOrDefault(x => x != null);
-				fuels = genericEngineDataProvider.EngineModes.Select(x => x.Fuels.Select(f => DeclarationData.FuelData.Lookup(f.FuelType, null)).ToList())
+				fuels = _genericEngineDataProvider.EngineModes.Select(x => x.Fuels.Select(f => DeclarationData.FuelData.Lookup(f.FuelType, null)).ToList())
 					.ToList();
 			}
 			Report.InitializeReport(powertrainConfig, fuels);
@@ -178,80 +179,189 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			var trailer = TrailerInputDataProvider.JobInputData.Trailer;
 			Assert.IsNotNull(trailer);
 
-			var vehicleGroup = DeclarationData.TrailerSegments.Lookup(trailer.NumberOfAxles, trailer.TrailerType, trailer.BodyworkCode, false);
-			Assert.AreEqual(211, vehicleGroup);
+			var trailerSegment = DeclarationData.TrailerSegments.Lookup(trailer.NumberOfAxles, trailer.TrailerType, trailer.BodyworkCode, false);
+			Assert.AreEqual(211, trailerSegment.VehicleGroup);
+
+			var aeroFeatures = new List<AeroFeatureTechnology> { AeroFeatureTechnology.SideSkirtsShort };
+
+			var combination = DeclarationData.AeroFeatures.Lookup(aeroFeatures);
+			Assert.AreEqual(1, combination);
+		}
+
+		private void ValidateTrailerInput()
+		{
+			#region Aero features combination validation
+
+			var aeroFeatures = new List<AeroFeatureTechnology>();
+			if (TrailerInputDataProvider.JobInputData.Trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.SideSkirtsShort)) aeroFeatures.Add(AeroFeatureTechnology.SideSkirtsShort);
+			if (TrailerInputDataProvider.JobInputData.Trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.SideSkirtsLong)) aeroFeatures.Add(AeroFeatureTechnology.SideSkirtsLong);
+			if (TrailerInputDataProvider.JobInputData.Trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.BoatTailShort)) aeroFeatures.Add(AeroFeatureTechnology.BoatTailShort);
+			if (TrailerInputDataProvider.JobInputData.Trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.BoatTailLong)) aeroFeatures.Add(AeroFeatureTechnology.BoatTailLong);
+
+			var combination = DeclarationData.AeroFeatures.Lookup(aeroFeatures);
+			if (combination < 0)
+				throw new Exception("invalid aero feature combination");
+
+			#endregion
+
+			#region Tyre dimension validation
+
+			if (TrailerInputDataProvider.JobInputData.Trailer.Axles != null) return; //TODO fix issue with Ninject first
+
+			var trailerAxles = TrailerInputDataProvider.JobInputData.Trailer.Axles;
+			if (trailerAxles.Any(x => x.Tyre.Dimension != trailerAxles.FirstOrDefault()?.Tyre.Dimension))
+				throw new Exception("invalid trailer configurations - different tyre dimensions specified");
+
+			#endregion
+		}
+
+		private void GetSpecificTrailerData()
+		{
+			var trailer = TrailerInputDataProvider.JobInputData.Trailer;
+
+			var volumeOrientation = (trailer.InternalBodyHeight >= 2.9 && trailer.TotalTrailerHeight <= 4);
+			var trailerSegment = DeclarationData.TrailerSegments.Lookup(trailer.NumberOfAxles, trailer.TrailerType, trailer.BodyworkCode, false);
+			var vehicleGroup = trailerSegment.VehicleGroup;
+			var vehicleGroupActive = trailerSegment.VehicleGroupActive;
+			var genericVehicleCode = trailerSegment.GenericCode;
+			var crossSectionAreaCorrection = trailerSegment.CrossSectionAreaCorrection;
+			
+			double CdxA0 = 0;
+
+			if (crossSectionAreaCorrection) {
+				var acrMin = trailerSegment.AcrMin;
+				var acrBase = trailerSegment.AcrBase;
+				var acr = trailer.TotalTrailerHeight.ToBasicUnits().Value() * trailer.ExternalBodyWidth.ToBasicUnits().Value() > acrMin ? 
+					trailer.TotalTrailerHeight.ToBasicUnits().Value() * trailer.ExternalBodyWidth.ToBasicUnits().Value() : acrMin;
+				CdxA0 = acrBase * acr / acrBase;
+			}
+
+			var lengthcorrection = trailerSegment.LengthCorrection;
+
+			GetGetGenericVehicleData(genericVehicleCode);
+
+			if (lengthcorrection)
+			{
+				var wheels = new Wheels();
+				var axleWheelDimension = _genericVehicleComponents.AxleWheels.XMLSource.ChildNodes[0].ChildNodes[0].FirstChild.ChildNodes[3].FirstChild.ChildNodes[5].InnerText;
+				var wheelRadius = wheels.Lookup(axleWheelDimension).WheelsDiameter / 2;
+			}
+
+			var aeroFeatures = new List<AeroFeatureTechnology>();
+			if (TrailerInputDataProvider.JobInputData.Trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.SideSkirtsShort)) aeroFeatures.Add(AeroFeatureTechnology.SideSkirtsShort);
+			if (TrailerInputDataProvider.JobInputData.Trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.SideSkirtsLong)) aeroFeatures.Add(AeroFeatureTechnology.SideSkirtsLong);
+			if (TrailerInputDataProvider.JobInputData.Trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.BoatTailShort)) aeroFeatures.Add(AeroFeatureTechnology.BoatTailShort);
+			if (TrailerInputDataProvider.JobInputData.Trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.BoatTailLong)) aeroFeatures.Add(AeroFeatureTechnology.BoatTailLong);
+
+			var combination = DeclarationData.AeroFeatures.Lookup(aeroFeatures);
+
+			var aeroFeatureCorrection = 0.0;
+
+			switch (combination) {
+				case 0:
+					aeroFeatureCorrection = trailerSegment.Aero0;
+					break;
+				case 1:
+					aeroFeatureCorrection = trailerSegment.Aero1;
+					break;
+				case 2:
+					aeroFeatureCorrection = trailerSegment.Aero2;
+					break;
+				case 3:
+					aeroFeatureCorrection = trailerSegment.Aero3;
+					break;
+				case 4:
+					aeroFeatureCorrection = trailerSegment.Aero4;
+					break;
+				case 5:
+					aeroFeatureCorrection = trailerSegment.Aero5;
+					break;
+				case 6:
+					aeroFeatureCorrection = trailerSegment.Aero6;
+					break;
+				case 7:
+					aeroFeatureCorrection = trailerSegment.Aero7;
+					break;
+				case 8:
+					aeroFeatureCorrection = trailerSegment.Aero8;
+					break;
+			}
+				
+		}
+
+		private void GetGetGenericVehicleData(string vehicleCode)
+		{
+			//TODO Get generic vehicle according to vehicleCode
+			var filePath = @"F:\Vecto\vecto-dev_bt\VectoCore\VectoCore\Resources\Declaration\GenericVehicles\" + vehicleCode + ".xml";
+			var xmlDoc = new XmlDocument();
+			xmlDoc.Load(filePath);
+
+			_genericInputDataProvider = new XMLDeclarationInputDataProviderV10(xmlDoc, filePath);
+			_genericInputDataProvider.Reader = new XMLDeclarationInputReaderV10(_genericInputDataProvider, xmlDoc.ChildNodes[1]);
+
+			_genericJobInputData = new XMLDeclarationJobInputDataProviderV10(xmlDoc.ChildNodes[1], _genericInputDataProvider, filePath);
+			_genericJobInputData.Reader = new XMLJobDataReaderV10(_genericJobInputData, xmlDoc.ChildNodes[1]);
+
+			_genericVehicle = new XMLDeclarationVehicleDataProviderV10(_genericJobInputData, xmlDoc.ChildNodes[1], filePath);
+			_genericVehicleComponents = new XMLDeclarationComponentsDataProviderV10(_genericVehicle,
+				xmlDoc.ChildNodes[1].ChildNodes[0].ChildNodes[19], filePath) {
+				ComponentReader = new XMLComponentReaderV10(_genericVehicle, xmlDoc.ChildNodes[1].ChildNodes[0].ChildNodes[19])
+			};
+
+			_genericEngineDataProvider = new XMLDeclarationEngineDataProviderV10(_genericVehicle, xmlDoc.ChildNodes[1].ChildNodes[0].ChildNodes[19], filePath);
+			_genericAxleGearInputData = new XMLDeclarationAxlegearDataProviderV10(_genericVehicle, xmlDoc.ChildNodes[1].ChildNodes[0].ChildNodes[19], filePath);
+			_genericGearboxInputData = new XMLDeclarationGearboxDataProviderV10(_genericVehicle, xmlDoc.ChildNodes[1].ChildNodes[0].ChildNodes[19], filePath);
+			_genericAngleInputData = new XMLDeclarationAngledriveDataProviderV10(_genericVehicle, xmlDoc.ChildNodes[1].ChildNodes[0].ChildNodes[19], filePath);
+			_genericRetarderInputData = new XMLDeclarationRetarderDataProviderV10(_genericVehicle, xmlDoc.ChildNodes[1].ChildNodes[0].ChildNodes[19], filePath);
+			_genericPTOInputData = new XMLDeclarationPTODataProviderV10(_genericVehicle, xmlDoc.ChildNodes[1].ChildNodes[0].ChildNodes[19], filePath);
+			_genericAirdragData = new XMLDeclarationAirdragDataProviderV10(_genericVehicle, xmlDoc.ChildNodes[1].ChildNodes[0].ChildNodes[19], filePath);
 		}
 
 		protected virtual void Initialize()
 		{
 			DoTests();
+			ValidateTrailerInput();
+			GetSpecificTrailerData();
 
-			#region Generic vehicle data
-			//Generic vehicle data from predefined XML sources into a local input data provider
-			var filePath = "F:\\Vecto\\vecto-dev_bt\\Documentation\\VehiclesReleaseComparisonDeclarationMode\\Tractor_4x2_vehicle-class-5_EURO6_2018.xml";
-			var xmlDoc = new XmlDocument();
-			xmlDoc.Load(filePath);
-
-			var genericInputDataProvider = new XMLDeclarationInputDataProviderV10(xmlDoc, filePath);
-			genericInputDataProvider.Reader = new XMLDeclarationInputReaderV10(genericInputDataProvider, xmlDoc.ChildNodes[1]);
-
-			var genericJobInputData = new XMLDeclarationJobInputDataProviderV10(xmlDoc.ChildNodes[1], genericInputDataProvider, filePath);
-			genericJobInputData.Reader = new XMLJobDataReaderV10(genericJobInputData, xmlDoc.ChildNodes[1]);
-
-			GenericVehicle = new XMLDeclarationVehicleDataProviderV10(genericJobInputData, xmlDoc.ChildNodes[1], filePath);
-			var genericVehicleComponents = new XMLDeclarationComponentsDataProviderV10(GenericVehicle, xmlDoc.ChildNodes[1].ChildNodes[0].ChildNodes[19], filePath);
-			genericVehicleComponents.ComponentReader = new XMLComponentReaderV10(GenericVehicle, xmlDoc.ChildNodes[1].ChildNodes[0].ChildNodes[19]);
-
-			genericEngineDataProvider = new XMLDeclarationEngineDataProviderV10(GenericVehicle, xmlDoc.ChildNodes[1].ChildNodes[0].ChildNodes[19], filePath);
-			var genericAxleGearInputData = new XMLDeclarationAxlegearDataProviderV10(GenericVehicle, xmlDoc.ChildNodes[1].ChildNodes[0].ChildNodes[19], filePath);
-			genericGearboxInputData = new XMLDeclarationGearboxDataProviderV10(GenericVehicle, xmlDoc.ChildNodes[1].ChildNodes[0].ChildNodes[19], filePath);
-			var genericAngleInputData = new XMLDeclarationAngledriveDataProviderV10(GenericVehicle, xmlDoc.ChildNodes[1].ChildNodes[0].ChildNodes[19], filePath);
-			var genericRetarderInputData = new XMLDeclarationRetarderDataProviderV10(GenericVehicle, xmlDoc.ChildNodes[1].ChildNodes[0].ChildNodes[19], filePath);
-			var genericPTOInputData = new XMLDeclarationPTODataProviderV10(GenericVehicle, xmlDoc.ChildNodes[1].ChildNodes[0].ChildNodes[19], filePath);
-			genericAirdragData = new XMLDeclarationAirdragDataProviderV10(GenericVehicle, xmlDoc.ChildNodes[1].ChildNodes[0].ChildNodes[19], filePath);
-			#endregion
-
-			var trailer = TrailerInputDataProvider.JobInputData.Trailer;
-
-			_segment = GetSegment(GenericVehicle);
+			_segment = GetSegment(_genericVehicle);
 			_driverdata = DataAdapter.CreateDriverData();
 			_driverdata.AccelerationCurve = AccelerationCurveReader.ReadFromStream(_segment.AccelerationFile);
 
-			var tempVehicle = TrailerDataAdapter.CreateVehicleData(trailer, _segment, _segment.Missions.First(), _segment.Missions.First().Loadings.First());
+			var tempVehicle = DataAdapter.CreateVehicleData(_genericVehicle, _segment, _segment.Missions.First(), _segment.Missions.First().Loadings.First());
 
-			//  _airdragData = DataAdapter.CreateAirdragData(vehicle.Components.AirdragInputData,_segment.Missions.First(), _segment);
+			_airdragData = DataAdapter.CreateAirdragData(_genericAirdragData,_segment.Missions.First(), _segment);
 
-			_axlegearData = GenericVehicle.AxleConfiguration.AxlegearIncludedInGearbox() ? 
-				DataAdapter.CreateDummyAxleGearData(genericVehicleComponents.GearboxInputData) : DataAdapter.CreateAxleGearData(genericAxleGearInputData);
+			_axlegearData = _genericVehicle.AxleConfiguration.AxlegearIncludedInGearbox() ? 
+				DataAdapter.CreateDummyAxleGearData(_genericVehicleComponents.GearboxInputData) : DataAdapter.CreateAxleGearData(_genericAxleGearInputData);
 			
-			_angledriveData = DataAdapter.CreateAngledriveData(genericAngleInputData);
+			_angledriveData = DataAdapter.CreateAngledriveData(_genericAngleInputData);
 
 			var tmpRunData = new VectoRunData {
-				ShiftStrategy = genericJobInputData.ShiftStrategy,
+				ShiftStrategy = _genericJobInputData.ShiftStrategy,
 				GearboxData =  new GearboxData {
-					Type = genericGearboxInputData.Type,
+					Type = _genericGearboxInputData.Type,
 				}
 			};
 			var tmpStrategy = PowertrainBuilder.GetShiftStrategy(tmpRunData, new SimplePowertrainContainer(tmpRunData));
-			var tmpEngine = TrailerDataAdapter.CreateEngineData(genericEngineDataProvider, genericGearboxInputData, genericEngineDataProvider.EngineModes[0], _segment.Missions.First());
+			var tmpEngine = TrailerDataAdapter.CreateEngineData(_genericEngineDataProvider, _genericGearboxInputData, _genericEngineDataProvider.EngineModes[0], _segment.Missions.First());
 
-			//_gearboxData = TrailerDataAdapter.CreateGearboxData(
-			// genericGearboxInputData, genericVehicleComponents, new VectoRunData() { EngineData = tmpEngine, AxleGearData = _axlegearData, VehicleData = tempVehicle },
-			//	tmpStrategy);
+			_gearboxData = TrailerDataAdapter.CreateGearboxData(
+				_genericGearboxInputData, _genericVehicleComponents, new VectoRunData() { EngineData = tmpEngine, AxleGearData = _axlegearData, VehicleData = tempVehicle },
+				tmpStrategy);
 				
-			_retarderData = DataAdapter.CreateRetarderData(genericRetarderInputData);
+			_retarderData = DataAdapter.CreateRetarderData(_genericRetarderInputData);
 
-			_ptoTransmissionData = DataAdapter.CreatePTOTransmissionData(genericPTOInputData);
+			_ptoTransmissionData = DataAdapter.CreatePTOTransmissionData(_genericPTOInputData);
 
 			_municipalPtoTransmissionData = CreateDefaultPTOData();
 
-			//_gearshiftData = DataAdapter.CreateGearshiftData(_gearboxData, _axlegearData.AxleGear.Ratio * (_angledriveData?.Angledrive.Ratio ?? 1.0), tmpEngine.IdleSpeed);
+			_gearshiftData = DataAdapter.CreateGearshiftData(_gearboxData, _axlegearData.AxleGear.Ratio * (_angledriveData?.Angledrive.Ratio ?? 1.0), tmpEngine.IdleSpeed);
 		}
 
 		protected VectoRunData CreateVectoRunData(
 			IVehicleDeclarationInputData vehicle, ITrailerDeclarationInputData trailer, int modeIdx, Mission mission, KeyValuePair<LoadingType, Tuple<Kilogram, double?>> loading)
 		{
-			var engine = genericEngineDataProvider;
+			var engine = _genericEngineDataProvider;
 			var engineModes = engine.EngineModes;
 			var engineMode = engineModes[modeIdx];
 			DrivingCycleData cycle;
@@ -270,9 +380,9 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 				Loading = loading.Key,
 				VehicleData = DataAdapter.CreateVehicleData(vehicle, _segment, mission, loading),
 				VehicleDesignSpeed = _segment.DesignSpeed,
-				AirdragData = DataAdapter.CreateAirdragData(genericAirdragData, mission, _segment),
+				AirdragData = DataAdapter.CreateAirdragData(_genericAirdragData, mission, _segment),
 				EngineData = TrailerDataAdapter.CreateEngineData(
-					genericEngineDataProvider, genericGearboxInputData, genericEngineDataProvider.EngineModes[0], _segment.Missions.First()), 
+					_genericEngineDataProvider, _genericGearboxInputData, _genericEngineDataProvider.EngineModes[0], _segment.Missions.First()), 
 				GearboxData = new GearboxData(),
 				AxleGearData = _axlegearData,
 				AngledriveData = new AngledriveData(),

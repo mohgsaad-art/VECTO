@@ -43,7 +43,7 @@ using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.Declaration
 {
-	public sealed class AeroFeatures : LookupData<List<AeroFeatureTechnologies>, int>
+	public sealed class AeroFeatures : LookupData<List<AeroFeatureTechnology>, int>
 	{
 		private DataTable _aeroFeaturesTable;
 
@@ -65,7 +65,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 			_aeroFeaturesTable = table.Copy();
 		}
 
-		public override int Lookup(List<AeroFeatureTechnologies> aeroFeatures)
+		public override int Lookup(List<AeroFeatureTechnology> aeroFeatures)
 		{
 
 			var row = GetTrailerDataRow(aeroFeatures);
@@ -77,7 +77,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 		}
 
 
-		private DataRow GetTrailerDataRow(List<AeroFeatureTechnologies> aeroFeatures)
+		private DataRow GetTrailerDataRow(List<AeroFeatureTechnology> aeroFeatures)
 		{
 			DataRow row;
 			try {
@@ -87,10 +87,10 @@ namespace TUGraz.VectoCore.Models.Declaration
 						var sideSkirtsLong = int.Parse(r.Field<string>("sideSkirtsLong"));
 						var boatTailShort = int.Parse(r.Field<string>("boatTailShort"));
 						var boatTailLong = int.Parse(r.Field<string>("boatTailLong"));
-						return aeroFeatures.Contains(AeroFeatureTechnologies.SideSkirtsShort) == (sideSkirtShort == 1) &&
-								aeroFeatures.Contains(AeroFeatureTechnologies.SideSkirtsLong) == (sideSkirtsLong == 1) &&
-								aeroFeatures.Contains(AeroFeatureTechnologies.BoatTailShort) == (boatTailShort == 1) &&
-								aeroFeatures.Contains(AeroFeatureTechnologies.BoatTailLong) == (boatTailLong == 1);
+						return aeroFeatures.Contains(AeroFeatureTechnology.SideSkirtsShort) == (sideSkirtShort == 1) &&
+								aeroFeatures.Contains(AeroFeatureTechnology.SideSkirtsLong) == (sideSkirtsLong == 1) &&
+								aeroFeatures.Contains(AeroFeatureTechnology.BoatTailShort) == (boatTailShort == 1) &&
+								aeroFeatures.Contains(AeroFeatureTechnology.BoatTailLong) == (boatTailLong == 1);
 					});
 			} catch (InvalidOperationException e) {
 				var errorMessage = string.Format(ErrorMessage);

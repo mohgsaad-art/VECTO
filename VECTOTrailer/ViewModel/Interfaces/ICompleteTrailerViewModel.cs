@@ -12,7 +12,7 @@ namespace VECTOTrailer.ViewModel.Interfaces
 	{
 		AllowedEntry<TypeTrailer>[] AllowedTrailerTypes { get; }
 		AllowedEntry<BodyWorkCode>[] AllowedBodyCodes { get; }
-		AllowedEntry<AeroFeatureTechnologies>[] AllowedTechnologies { get; }
+		AllowedEntry<AeroFeatureTechnology>[] AllowedTechnologies { get; }
 		AllowedEntry<NumberOfTrailerAxles>[] AllowedNumberOfAxles { get; }
 	}
 }

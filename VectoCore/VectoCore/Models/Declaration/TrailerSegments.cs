@@ -43,7 +43,7 @@ using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.Declaration
 {
-	public sealed class TrailerSegments : LookupData<NumberOfTrailerAxles, TypeTrailer, BodyWorkCode, bool, int>
+	public sealed class TrailerSegments : LookupData<NumberOfTrailerAxles, TypeTrailer, BodyWorkCode, bool, TrailerSegment>
 	{
 		private DataTable _segmentTable;
 
@@ -65,15 +65,32 @@ namespace TUGraz.VectoCore.Models.Declaration
 			_segmentTable = table.Copy();
 		}
 
-		public override int Lookup(NumberOfTrailerAxles numberOfAxles, TypeTrailer typeTrailer, BodyWorkCode bodyWorkCode, bool volumeOrientation)
+		public override TrailerSegment Lookup(NumberOfTrailerAxles numberOfAxles, TypeTrailer typeTrailer, BodyWorkCode bodyWorkCode, bool volumeOrientation)
 		{
 
 			var row = GetTrailerDataRow(numberOfAxles, typeTrailer, bodyWorkCode, volumeOrientation);
 			if (row == null) {
-				return 100;
+				return new TrailerSegment { VehicleGroup = -1 };
 			}
 
-			return (int)row.ParseDouble("Vehicle_group");
+			return new TrailerSegment {
+				VehicleGroup = (int)row.ParseDouble("Vehicle_group"),
+				VehicleGroupActive = row.ParseBoolean("Active"),
+				GenericCode = row.Field<string>("Generic_code"),
+				CrossSectionAreaCorrection = row.ParseBoolean("CS_correction"),
+				AcrMin = row.ParseDouble("AcrMin"),
+				AcrBase = row.ParseDouble("AcrBase"),
+				LengthCorrection = false, //row.ParseBoolean("LC_correction"),
+				Aero0 = row.ParseDouble("aero_0"),
+				Aero1 = row.ParseDouble("aero_1"),
+				Aero2 = row.ParseDouble("aero_2"),
+				Aero3 = row.ParseDouble("aero_3"),
+				Aero4 = row.ParseDouble("aero_4"),
+				Aero5 = row.ParseDouble("aero_5"),
+				Aero6 = row.ParseDouble("aero_6"),
+				Aero7 = row.ParseDouble("aero_7"),
+				Aero8 = row.ParseDouble("aero_8"),
+			};
 		}
 
 

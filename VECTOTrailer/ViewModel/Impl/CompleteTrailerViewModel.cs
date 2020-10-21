@@ -49,7 +49,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		private NumberOfTrailerAxles _numberOfAxles;
 		private TypeTrailer _trailerType;
 		private BodyWorkCode _bodyCode;
-		private AeroFeatureTechnologies _technology;
+		private IList<AeroFeatureTechnology> _technologies;
 		private bool _sideSkirtsShort;
 		private bool _sideSkirtsLong;
 		private bool _boatTailShort;
@@ -408,14 +408,14 @@ namespace VECTOTrailer.ViewModel.Impl
 			set => SetProperty(ref _axle3IsTwin, value);
 		}
 
-		public AeroFeatureTechnologies Technology
+		public IList<AeroFeatureTechnology> Technologies
 		{
-			get => _technology;
+			get => _technologies;
 			set
 			{
-				if (!SetProperty(ref _technology, value))
+				if (!SetProperty(ref _technologies, value))
 					return;
-				IsDataChanged(_technology, _componentData);
+				IsDataChanged(_technologies, _componentData);
 			}
 		}
 		public bool Axle1ButtonsVisibility
@@ -452,7 +452,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		public Dictionary<string, string> XmlNamesToPropertyMapping { get; private set; }
 		public AllowedEntry<TypeTrailer>[] AllowedTrailerTypes { get; private set; }
 		public AllowedEntry<BodyWorkCode>[] AllowedBodyCodes { get; private set; }
-		public  AllowedEntry<AeroFeatureTechnologies>[] AllowedTechnologies { get; private set; }
+		public  AllowedEntry<AeroFeatureTechnology>[] AllowedTechnologies { get; private set; }
 		public AllowedEntry<NumberOfTrailerAxles>[] AllowedNumberOfAxles { get; private set; }
 
 		#endregion
@@ -497,11 +497,11 @@ namespace VECTOTrailer.ViewModel.Impl
 				PositionXLastAxle = trailer.LengthTrailerFrontToLastAxleCenter;
 				InternalHeightOfTheBody = trailer.InternalBodyHeight;
 				CargoVolume = trailer.CargoVolume;
-				Technology = trailer.AeroFeatureTechnologies;
-				SideSkirtsShort = trailer.AeroFeatureTechnologies == AeroFeatureTechnologies.SideSkirtsShort;
-				SideSkirtsLong = trailer.AeroFeatureTechnologies == AeroFeatureTechnologies.SideSkirtsLong;
-				BoatTailShort = trailer.AeroFeatureTechnologies == AeroFeatureTechnologies.BoatTailShort;
-				BoatTailLong = trailer.AeroFeatureTechnologies == AeroFeatureTechnologies.BoatTailLong;
+				Technologies = trailer.AeroFeatureTechnologies;
+				SideSkirtsShort = trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.SideSkirtsShort);
+				SideSkirtsLong = trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.SideSkirtsLong);
+				BoatTailShort = trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.BoatTailShort);
+				BoatTailLong = trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.BoatTailLong);
 				this.Trailer = _trailer;
 
 				//TODO: AXLES
@@ -565,7 +565,7 @@ namespace VECTOTrailer.ViewModel.Impl
 			AllowedBodyCodes = EnumHelper.GetValues<BodyWorkCode>().Where(x => x != BodyWorkCode.Unknown)
 				.Select(vc => AllowedEntry.Create(vc, vc.GetLabel())).ToArray();
 
-			AllowedTechnologies = EnumHelper.GetValues<AeroFeatureTechnologies>().Where(x => x != AeroFeatureTechnologies.Unknown)
+			AllowedTechnologies = EnumHelper.GetValues<AeroFeatureTechnology>().Where(x => x != AeroFeatureTechnology.Unknown)
 				.Select(vc => AllowedEntry.Create(vc, vc.GetLabel())).ToArray();
 
 			AllowedNumberOfAxles = EnumHelper.GetValues<NumberOfTrailerAxles>().Where(x => x != NumberOfTrailerAxles.Unknown)

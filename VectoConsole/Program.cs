@@ -214,8 +214,11 @@ Examples:
 								case "VectoInputEngineering":
 									dataProvider = inputReader.Create(file);
 									break;
-								case "VectoInputDeclaration":
+								/*case "VectoInputDeclaration":
 									dataProvider = inputReader.Create(XmlReader.Create(file));
+									break;*/
+								case "VectoInputDeclaration":
+									dataProvider = inputReader.Create(file);
 									break;
 							}
 							break;

@@ -136,10 +136,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration
 		}
 		protected override XNamespace SchemaNamespace { get { return NAMESPACE_URI; } }
 		protected override DataSourceType SourceType { get; }
-		public IDeclarationTrailerJobInputData JobInputData
-		{
-			get { return JobData ?? (JobData = Reader.JobData); }
-		}
+		public IDeclarationTrailerJobInputData JobInputData => JobData ?? (JobData = Reader.JobData);
 		public XElement XMLHash { get; private set; }
 		public IXMLDeclarationTrailerInputDataReader Reader { protected get; set; }
 

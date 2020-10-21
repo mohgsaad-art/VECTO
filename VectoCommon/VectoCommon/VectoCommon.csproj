@@ -112,7 +112,7 @@
     <Compile Include="Models\RetarderType.cs" />
     <Compile Include="Models\SimulationType.cs" />
     <Compile Include="Models\BodyWorkCode.cs" />
-    <Compile Include="Models\AeroFeatureTechnologies.cs" />
+    <Compile Include="Models\AeroFeatureTechnology.cs" />
     <Compile Include="Models\NumberOfTrailerAxles.cs" />
     <Compile Include="Models\TypeTrailer.cs" />
     <Compile Include="Models\VehicleCategory.cs" />

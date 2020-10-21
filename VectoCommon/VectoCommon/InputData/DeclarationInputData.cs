@@ -243,13 +243,9 @@ namespace TUGraz.VectoCommon.InputData
 
 		CubicMeter CargoVolume { get; }
 
-		AeroFeatureTechnologies AeroFeatureTechnologies { get; }
+		IList<AeroFeatureTechnology> AeroFeatureTechnologies { get; }
 
-		// ---------------------------------------------------------------------
-
-		bool ExemptedVehicle { get; }
-
-		IAxlesDeclarationInputData Axles { get; }
+		IList<IAxleDeclarationInputData> Axles { get; }
 		IVehicleComponentsDeclaration Components { get; } //TEMP TODO: REMOVE THIS
 		XmlNode XMLSource { get; }
 
@@ -279,6 +275,7 @@ namespace TUGraz.VectoCommon.InputData
 
 		IBusAuxiliariesDeclarationData BusAuxiliaries { get; }
 	}
+
 
 	public interface IAxlesDeclarationInputData
 	{

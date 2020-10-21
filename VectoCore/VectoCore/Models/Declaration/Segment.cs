@@ -60,4 +60,24 @@ namespace TUGraz.VectoCore.Models.Declaration
 		public MeterPerSecond DesignSpeed { get; internal set; }
 
 	}
+
+	public struct TrailerSegment
+	{
+		public bool VehicleGroupActive;
+		public int VehicleGroup { get; set; }
+		public string GenericCode { get; set; }
+		public bool CrossSectionAreaCorrection { get; set; }
+		public double AcrMin { get; set; }
+		public double AcrBase { get; set; }
+		public bool LengthCorrection { get; set; }
+		public double Aero0 { get; set; }
+		public double Aero1 { get; set; }
+		public double Aero2 { get; set; }
+		public double Aero3 { get; set; }
+		public double Aero4 { get; set; }
+		public double Aero5 { get; set; }
+		public double Aero6 { get; set; }
+		public double Aero7 { get; set; }
+		public double Aero8 { get; set; }
+	}
 }

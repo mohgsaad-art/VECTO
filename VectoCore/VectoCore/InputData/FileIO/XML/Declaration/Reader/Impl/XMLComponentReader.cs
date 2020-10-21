@@ -301,9 +301,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 	{
 		public static readonly XNamespace NAMESPACE_URI = XMLDefinitions.DECLARATION_DEFINITIONS_NAMESPACE_URI_V27;
 
-		public const string XSD_TYPE = "VehicleComponentsType";
-		public const string AXLES_READER_TYPE = "AxleWheelsDataDeclarationType";
-		public const string AXLE_READER_TYPE = "AxleDeclarationType";
+		public const string XSD_TYPE = "VehicleDeclarationType";
+		public const string AXLES_READER_TYPE = "";
+		public const string AXLE_READER_TYPE = "TrailerAxleType";
 
 		public static readonly string QUALIFIED_XSD_TYPE =
 			XMLHelper.CombineNamespace(NAMESPACE_URI.NamespaceName, XSD_TYPE);
@@ -317,7 +317,6 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 		protected IXMLTrailerDeclarationVehicleData Vehicle;
 		protected IAxlesDeclarationInputData _axlesInputData;
 
-
 		[Inject] public IDeclarationInjectFactory Factory { protected get; set; }
 
 		public XMLComponentReaderV27(IXMLTrailerDeclarationVehicleData vehicle, XmlNode componentsNode) : base(
@@ -330,25 +329,16 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 			Vehicle = vehicle;
 		}
 
-		public virtual IAxlesDeclarationInputData AxlesDeclarationInputData
-		{
-			get
-			{
-				return _axlesInputData ?? (_axlesInputData = CreateComponent(XMLNames.Component_AxleWheels, AxleWheelsCreator));
-			}
-		}
+		public virtual IAxlesDeclarationInputData AxlesDeclarationInputData => _axlesInputData ?? (_axlesInputData = CreateComponent(XMLNames.Component_AxleWheels, AxleWheelsCreator));
 
-		public virtual ITyreDeclarationInputData Tyre
-		{
-			get { return CreateComponent(XMLNames.AxleWheels_Axles_Axle_Tyre, TyreCreator); }
-		}
+		public virtual ITyreDeclarationInputData Tyre => CreateComponent(XMLNames.AxleWheels_Axles_Axle_Tyre, TyreCreator);
 
 		public virtual IAxleDeclarationInputData CreateAxle(XmlNode axleNode)
 		{
 			var version = XMLHelper.GetXsdType(axleNode.SchemaInfo.SchemaType);
 			try
 			{
-				var axle = Factory.CreateAxleData(version, Vehicle, axleNode, "F:\\Vecto\\vecto_input_sample-trailer.xml"); //(Vehicle as IXMLResource).DataSource.SourceFile
+				var axle = Factory.CreateAxleData(version, Vehicle, axleNode, ""); //(Vehicle as IXMLResource).DataSource.SourceFile
 				axle.Reader = Factory.CreateAxleReader(version, Vehicle, axleNode);
 				return axle;
 			}
@@ -363,7 +353,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 			string version, XmlNode componentNode, string sourceFile)
 		{
 			var axles = Factory.CreateAxleWheels(version, Vehicle, componentNode, sourceFile);
-			axles.Reader = Factory.CreateAxlesReader(version, Vehicle, componentNode);
+			axles.Reader = Factory.CreateTrailerAxlesReader(version, Vehicle, componentNode);
 			return axles;
 		}
 

@@ -239,14 +239,14 @@ namespace VECTOTrailer.ViewModel.Impl
 			var xDoc = _xmlCompletedTrailer.GenerateCompletedTrailerDocument(CompleteVehicleTrailerData);
 
 			// Aero features combination validation -----------------------------
-			var aeroFeatures = new List<AeroFeatureTechnologies>();
-			if (((Model.TempDataObject.TrailerComponentData)CompleteVehicleTrailerData.Values.FirstOrDefault()).SideSkirtsShort) aeroFeatures.Add(AeroFeatureTechnologies.SideSkirtsShort);
-			if (((Model.TempDataObject.TrailerComponentData)CompleteVehicleTrailerData.Values.FirstOrDefault()).SideSkirtsLong) aeroFeatures.Add(AeroFeatureTechnologies.SideSkirtsLong);
-			if (((Model.TempDataObject.TrailerComponentData)CompleteVehicleTrailerData.Values.FirstOrDefault()).BoatTailShort) aeroFeatures.Add(AeroFeatureTechnologies.BoatTailShort);
-			if (((Model.TempDataObject.TrailerComponentData)CompleteVehicleTrailerData.Values.FirstOrDefault()).BoatTailLong) aeroFeatures.Add(AeroFeatureTechnologies.BoatTailLong);
+			var aeroFeatures = new List<AeroFeatureTechnology>();
+			if (((Model.TempDataObject.TrailerComponentData)CompleteVehicleTrailerData.Values.FirstOrDefault()).SideSkirtsShort) aeroFeatures.Add(AeroFeatureTechnology.SideSkirtsShort);
+			if (((Model.TempDataObject.TrailerComponentData)CompleteVehicleTrailerData.Values.FirstOrDefault()).SideSkirtsLong) aeroFeatures.Add(AeroFeatureTechnology.SideSkirtsLong);
+			if (((Model.TempDataObject.TrailerComponentData)CompleteVehicleTrailerData.Values.FirstOrDefault()).BoatTailShort) aeroFeatures.Add(AeroFeatureTechnology.BoatTailShort);
+			if (((Model.TempDataObject.TrailerComponentData)CompleteVehicleTrailerData.Values.FirstOrDefault()).BoatTailLong) aeroFeatures.Add(AeroFeatureTechnology.BoatTailLong);
 
-			var vehicleGroup = DeclarationData.AeroFeatures.Lookup(aeroFeatures);
-			if (vehicleGroup < 0)
+			var combination = DeclarationData.AeroFeatures.Lookup(aeroFeatures);
+			if (combination < 0)
 				ValidationResultDialogWindow(false);
 			// -----------------------------------------------------------------
 

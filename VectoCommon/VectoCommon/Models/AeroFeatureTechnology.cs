@@ -34,7 +34,7 @@ using System;
 
 namespace TUGraz.VectoCommon.Models
 {
-	public enum AeroFeatureTechnologies
+	public enum AeroFeatureTechnology
 	{
 		// ReSharper disable InconsistentNaming
 		Unknown,
@@ -47,40 +47,40 @@ namespace TUGraz.VectoCommon.Models
 
 	public static class AeroFeatureTechnologiesHelper
 	{
-		public static string GetLabel(this AeroFeatureTechnologies ttype)
+		public static string GetLabel(this AeroFeatureTechnology ttype)
 		{
 			switch (ttype) {
-				case AeroFeatureTechnologies.SideSkirtsShort:
+				case AeroFeatureTechnology.SideSkirtsShort:
 					return "side skirts short";
-				case AeroFeatureTechnologies.SideSkirtsLong:
+				case AeroFeatureTechnology.SideSkirtsLong:
 					return "side skirts long";
-				case AeroFeatureTechnologies.BoatTailShort:
+				case AeroFeatureTechnology.BoatTailShort:
 					return "boat tail short";
-				case AeroFeatureTechnologies.BoatTailLong:
+				case AeroFeatureTechnology.BoatTailLong:
 					return "boat tail long";
 				default:
-					throw new ArgumentOutOfRangeException("AeroFeatureTechnologies type", ttype, null);
+					throw new ArgumentOutOfRangeException("AeroFeatureTechnology type", ttype, null);
 			}
 		}
 
-		public static string ToXMLFormat(this AeroFeatureTechnologies ttype)
+		public static string ToXMLFormat(this AeroFeatureTechnology ttype)
 		{
 			return ttype.GetLabel();
 		}
 
-		public static AeroFeatureTechnologies Parse(string vehicleCategory)
+		public static AeroFeatureTechnology Parse(string vehicleCategory)
 		{
 			switch (vehicleCategory) {
 				case "side skirts short":
-					return AeroFeatureTechnologies.SideSkirtsShort;
+					return AeroFeatureTechnology.SideSkirtsShort;
 				case "side skirts long":
-					return AeroFeatureTechnologies.SideSkirtsLong;
+					return AeroFeatureTechnology.SideSkirtsLong;
 				case "boat tail short":
-					return AeroFeatureTechnologies.BoatTailShort;
+					return AeroFeatureTechnology.BoatTailShort;
 				case "boat tail long":
-					return AeroFeatureTechnologies.BoatTailLong;
+					return AeroFeatureTechnology.BoatTailLong;
 				default:
-					return AeroFeatureTechnologies.Unknown;
+					return AeroFeatureTechnology.Unknown;
 			}
 		}
 	}

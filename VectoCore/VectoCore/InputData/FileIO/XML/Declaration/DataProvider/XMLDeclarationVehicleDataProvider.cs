@@ -43,11 +43,14 @@ using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.XML.Common;
+using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Factory;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Interfaces;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl;
 using TUGraz.VectoCore.InputData.Impl;
+using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Utils;
+using TrailerTypeHelper = TUGraz.VectoCommon.Models.TrailerTypeHelper;
 
 namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 {
@@ -926,152 +929,113 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		protected IVehicleComponentsDeclaration _components;
 		protected IAxlesDeclarationInputData _axles;
+		protected XmlElement _axlesNode;
 
 		public XMLDeclarationVehicleDataProviderV27(IXMLDeclarationTrailerJobInputData jobData, XmlNode xmlNode,
 			string sourceFile): base(xmlNode, sourceFile)
 		{
+			SourceFile = sourceFile;
 			Job = jobData;
 			SourceType = DataSourceType.XMLEmbedded;
 		}
 
+		public virtual XmlElement AxlesNode => _axlesNode ?? (_axlesNode = GetNode(XMLNames.AxleWheels_Axles, required: false) as XmlElement);
+
 		public virtual IXMLComponentReader ComponentReader { protected get; set; }
 
-		public virtual IXMLAxlesReader AxlesReader { get; set; }
+		public IXMLAxlesReader AxlesReader { get; set; }
 
 		public virtual IXMLDeclarationTrailerJobInputData Job { get; }
 
+		public IList<IAxleDeclarationInputData> Axles => ReadAxles();
 
-		public IAxlesDeclarationInputData Axles
-		{
-			get
-			{
-				//DEBUG TODO CHANGE THIS
-				_axles = new XMLDeclarationAxlesDataProviderV27(this, GetNode(XMLNames.AxleWheels_Axles), "F:\\Vecto\\vecto_input_sample-trailer.xml"); //SourceFile
-				AxlesReader = new XMLComponentReaderV27(this, GetNode(XMLNames.AxleWheels_Axles));
-				
-				foreach (XmlNode _axle in GetNodes(XMLNames.AxleWheels_Axles_Axle))
-					_axles.AxlesDeclaration.Add(AxlesReader.CreateAxle(_axle));
-				return _axles;
-			}
-		}
+		public string CommercialName => GetString(XMLNames.Trailer_CommercialName);
 
+		public string Identifier => GetAttribute(BaseNode, XMLNames.Component_ID_Attr);
 
-		public virtual bool ExemptedVehicle
-		{
-			get { return ElementExists(XMLNames.Vehicle_HybridElectricHDV) && ElementExists(XMLNames.Vehicle_DualFuelVehicle); }
-		}
-		public string CommercialName
-		{
-			get { return GetString(XMLNames.Trailer_CommercialName); }
-		}
+		public string ManufacturerAddress => GetString(XMLNames.Component_ManufacturerAddress);
 
-		public string Identifier
-		{
-			get { return GetAttribute(BaseNode, XMLNames.Component_ID_Attr); }
-		}
+		public string VIN => GetString(XMLNames.Vehicle_VIN);
 
-		public string ManufacturerAddress
-		{
-			get { return GetString(XMLNames.Component_ManufacturerAddress); }
-		}
+		public string LegislativeCategory => GetString(XMLNames.Trailer_LegislativeCategory);
 
-		public string VIN
-		{
-			get { return GetString(XMLNames.Vehicle_VIN); }
-		}
+		public NumberOfTrailerAxles NumberOfAxles => NumberOfTrailerAxlesHelper.Parse(GetString(XMLNames.Trailer_AxleCount));
 
-		public string LegislativeCategory
-		{
-			get { return GetString(XMLNames.Trailer_LegislativeCategory); }
-		}
+		public TypeTrailer TrailerType => TrailerTypeHelper.Parse(GetString(XMLNames.Trailer_TrailerType));
 
-		public NumberOfTrailerAxles NumberOfAxles {
-			get { return NumberOfTrailerAxlesHelper.Parse(GetString(XMLNames.Trailer_AxleCount)); }
-		}
+		public BodyWorkCode BodyworkCode => BodyWorkCodeHelper.Parse(GetString(XMLNames.Trailer_BodyCode));
 
-		public TypeTrailer TrailerType
-		{
-			get { return TrailerTypeHelper.Parse(GetString(XMLNames.Trailer_TrailerType)); }
-		}
+		public Kilogram CurbMass => GetDouble(XMLNames.Trailer_CurbMass).SI<Kilogram>();
 
-		public BodyWorkCode BodyworkCode
-		{
-			get { return BodyWorkCodeHelper.Parse(GetString(XMLNames.Trailer_BodyCode)); }
-		}
+		public Kilogram TPMLMAxleAssembly => GetDouble(XMLNames.Vehicle_TPMLM).SI<Kilogram>();
 
-		public Kilogram CurbMass {
-			get 
-			{
-				return GetDouble(XMLNames.Trailer_CurbMass).SI<Kilogram>();
-			}
-		}
+		public Kilogram TPMLMTotalTrailer => GetDouble(XMLNames.Trailer_TPMLMTotalTrailer).SI<Kilogram>();
 
+		public Meter ExternalBodyLength => GetDouble(XMLNames.Trailer_ExternalLenghtBody).SI<Meter>();
 
-		public Kilogram TPMLMAxleAssembly
-		{
-			get { return GetDouble(XMLNames.Vehicle_TPMLM).SI<Kilogram>(); }
-		}
+		public Meter ExternalBodyWidth => GetDouble(XMLNames.Trailer_ExternalWidthBody).SI<Meter>();
 
-		public Kilogram TPMLMTotalTrailer
-		{
-			get { return GetDouble(XMLNames.Trailer_TPMLMTotalTrailer).SI<Kilogram>(); }
+		public Meter ExternalBodyHeight => GetDouble(XMLNames.Trailer_ExternalHeightBody).SI<Meter>();
 
-		}
+		public Meter TotalTrailerHeight => GetDouble(XMLNames.Trailer_TotalHeightTrailer).SI<Meter>();
 
-		public Meter ExternalBodyLength
-		{
-			get { return GetDouble(XMLNames.Trailer_ExternalLenghtBody).SI<Meter>(); }
-		}
+		public Meter LengthTrailerFrontToFirstAxleCenter => GetDouble(XMLNames.Trailer_PositionXFirstAxle).SI<Meter>();
 
-		public Meter ExternalBodyWidth
-		{
-			get { return GetDouble(XMLNames.Trailer_ExternalWidthBody).SI<Meter>(); }
-		}
+		public Meter LengthTrailerFrontToLastAxleCenter => GetDouble(XMLNames.Trailer_PositionXLastAxle).SI<Meter>();
 
-		public Meter ExternalBodyHeight
-		{
-			get { return GetDouble(XMLNames.Trailer_ExternalHeightBody).SI<Meter>(); }
-		}
+		public Meter InternalBodyHeight => GetDouble(XMLNames.Trailer_InternalHeightBody).SI<Meter>();
 
-		public Meter TotalTrailerHeight
-		{
-			get { return GetDouble(XMLNames.Trailer_TotalHeightTrailer).SI<Meter>(); }
-		}
+		public CubicMeter CargoVolume => GetDouble(XMLNames.Trailer_CargoVolume).SI<CubicMeter>();
 
-		public Meter LengthTrailerFrontToFirstAxleCenter
-		{
-			get { return GetDouble(XMLNames.Trailer_PositionXFirstAxle).SI<Meter>(); }
-		}
-
-		public Meter LengthTrailerFrontToLastAxleCenter
-		{
-			get { return GetDouble(XMLNames.Trailer_PositionXLastAxle).SI<Meter>(); }
-		}
-
-		public Meter InternalBodyHeight
-		{
-			get { return GetDouble(XMLNames.Trailer_InternalHeightBody).SI<Meter>(); }
-		}
-
-		public CubicMeter CargoVolume
-		{
-			get { return GetDouble(XMLNames.Trailer_CargoVolume).SI<CubicMeter>(); }
-		}
-
-		public AeroFeatureTechnologies AeroFeatureTechnologies
-		{
-			get { return AeroFeatureTechnologiesHelper.Parse(GetString(XMLNames.Trailer_AeroFeatureTechnologies)); }
-		}
+		public IList<AeroFeatureTechnology> AeroFeatureTechnologies => ReadAeroFeatures();
 
 		public IVehicleComponentsDeclaration Components { get; }
 
-
-		protected override XNamespace SchemaNamespace
-		{
-			get { return NAMESPACE_URI; }
-		}
+		protected override XNamespace SchemaNamespace => NAMESPACE_URI;
 
 		protected override DataSourceType SourceType { get; }
+
+		protected IList<IAxleDeclarationInputData> ReadAxles()
+		{
+			var axles = new List<IAxleDeclarationInputData>();
+
+			var trailerAxles = GetNodes(new[] { XMLNames.AxleWheels_Axles_Axle });
+
+			foreach (XmlNode current in trailerAxles)
+			{
+				if (current != null) {
+					var axle = new XMLDeclarationAxleDataProviderV27(this, AxlesNode, SourceFile) {
+						Reader = new XMLComponentReaderV27(this, AxlesNode)
+					};
+
+					axles.Add(axle);
+				}
+			}
+
+			return axles;
+		}
+
+		protected IList<AeroFeatureTechnology> ReadAeroFeatures()
+		{
+			var aeroFeatureTechnologies = new List<AeroFeatureTechnology>();
+			var technologies = GetNodes(new[] { XMLNames.Trailer_AeroFeatureTechnologies });
+			foreach (XmlNode current in technologies) {
+
+				if (current == null)
+					continue;
+
+				if (current.InnerText == AeroFeatureTechnology.SideSkirtsShort.GetLabel())
+					aeroFeatureTechnologies.Add(AeroFeatureTechnology.SideSkirtsShort);
+				else if (current.InnerText == AeroFeatureTechnology.SideSkirtsLong.GetLabel())
+					aeroFeatureTechnologies.Add(AeroFeatureTechnology.SideSkirtsLong);
+				else if (current.InnerText == AeroFeatureTechnology.BoatTailShort.GetLabel())
+					aeroFeatureTechnologies.Add(AeroFeatureTechnology.BoatTailShort);
+				else if (current.InnerText == AeroFeatureTechnology.BoatTailLong.GetLabel())
+					aeroFeatureTechnologies.Add(AeroFeatureTechnology.BoatTailLong);
+			}
+
+			return aeroFeatureTechnologies;
+		}
 	}
 
 	// ---------------------------------------------------------------------------------------

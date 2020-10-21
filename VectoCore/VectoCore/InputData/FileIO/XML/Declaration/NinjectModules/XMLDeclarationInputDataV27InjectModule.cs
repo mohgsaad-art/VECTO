@@ -27,9 +27,6 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.NinjectModules {
 			Bind<IXMLAxleDeclarationInputData>().To<XMLDeclarationAxleDataProviderV27>().Named(
 				XMLDeclarationAxleDataProviderV27.QUALIFIED_XSD_TYPE);
 
-			Bind<IXMLAxleDeclarationInputData>().To<XMLDeclarationAxleDataProviderV27>().Named(
-				XMLDeclarationAxleDataProviderV27.QUALIFIED_XSD_TYPE);
-
 			Bind<IXMLTyreDeclarationInputData>().To<XMLDeclarationTyreDataProviderV27>().Named(
 				XMLDeclarationTyreDataProviderV27.QUALIFIED_XSD_TYPE);
 
