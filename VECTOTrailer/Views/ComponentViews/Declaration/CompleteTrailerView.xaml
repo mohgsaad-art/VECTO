@@ -36,7 +36,7 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <GroupBox Header="Documentation" Grid.Row="1" Grid.Column="1" Width="350" Height="280" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
+        <GroupBox Header="Documentation" Grid.Row="1" Grid.Column="1" Width="350" Height="200" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
             <StackPanel Orientation="Vertical" Width="330" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
                 <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
 
@@ -88,7 +88,7 @@
                                  Text="{Binding VIN, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
                     </Grid>
 
-                    <Grid Margin="5">
+                    <!--<Grid Margin="5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition SharedSizeGroup="vehicleLbl"/>
                             <ColumnDefinition />
@@ -97,7 +97,7 @@
                         <TextBlock Grid.Column="0" Text="Date" Margin="0,0,10,0"/>
                         <TextBox Grid.Column="1" Margin="20,0,0,0" 
                                  Text="{Binding Date, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
-                    </Grid>
+                    </Grid>-->
 
 
                     <Grid Margin="5">
@@ -115,7 +115,7 @@
             </StackPanel>
         </GroupBox>
 
-        <GroupBox Header="Dimensions" Grid.Row="2" Grid.Column="1" Width="350" Height="330" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
+        <GroupBox Header="Dimensions" Grid.Row="2" Grid.Column="1" Width="350" Height="300" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
             <StackPanel Orientation="Vertical" Width="330" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
                 <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
 
@@ -182,7 +182,7 @@
             </StackPanel>
         </GroupBox>
 
-        <GroupBox Header="Classification" Grid.Row="1" Grid.Column="2" Width="350" Height="280" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
+        <GroupBox Header="Classification" Grid.Row="1" Grid.Column="2" Width="350" Height="200" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
             <StackPanel Orientation="Vertical" Width="330" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
                 <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
                 
@@ -247,7 +247,7 @@
             </StackPanel>
         </GroupBox>
 
-        <GroupBox Header="Standard aero feature technologies" Grid.Row="2" Grid.Column="2" Width="350" Height="330" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
+        <GroupBox Header="Standard aero feature technologies" Grid.Row="2" Grid.Column="2" Width="350" Height="300" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
             <StackPanel Orientation="Vertical" Width="330" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
                 <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
                 
@@ -286,7 +286,7 @@
             </StackPanel>
         </GroupBox>
 
-        <GroupBox Header="Masses" Grid.Row="1" Grid.Column="3" Width="350" Height="280" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
+        <GroupBox Header="Masses" Grid.Row="1" Grid.Column="3" Width="350" Height="200" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
             <StackPanel Orientation="Vertical" Width="330" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
                 <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
                 
@@ -316,7 +316,7 @@
             </StackPanel>
         </GroupBox>
 
-        <GroupBox Header="Axle and Tyre Features" Grid.Row="2" Grid.Column="3" Width="350" Height="330" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
+        <GroupBox Header="Axle and Tyre Features" Grid.Row="2" Grid.Column="3" Width="350" Height="300" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
             <StackPanel Orientation="Vertical" Width="330" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
                 <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
                 

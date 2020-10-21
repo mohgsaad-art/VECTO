@@ -150,7 +150,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		}
 		public DateTime Date
 		{
-			get => _date;
+			get => DateTime.Now;
 			set
 			{
 				if (!SetProperty(ref _date, value))
