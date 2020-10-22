@@ -99,6 +99,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 		public virtual ITransmissionInputData CreateGear(XmlNode gearNode)
 		{
 			var version = XMLHelper.GetXsdType(gearNode.SchemaInfo.SchemaType);
+
 			try
 			{
 				return Factory.CreateGearData(version, gearNode, ParentComponent.DataSource.SourceFile);

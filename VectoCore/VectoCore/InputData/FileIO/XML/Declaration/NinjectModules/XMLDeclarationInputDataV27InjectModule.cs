@@ -30,6 +30,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.NinjectModules {
 			Bind<IXMLTyreDeclarationInputData>().To<XMLDeclarationTyreDataProviderV27>().Named(
 				XMLDeclarationTyreDataProviderV27.QUALIFIED_XSD_TYPE);
 
+			Bind<ITransmissionInputData>().To<XMLGearDataV10>().Named(
+				XMLGearDataV10.QUALIFIED_XSD_TYPE); 
+
 
 			// ---------------------------------------------------------------------------------------
 

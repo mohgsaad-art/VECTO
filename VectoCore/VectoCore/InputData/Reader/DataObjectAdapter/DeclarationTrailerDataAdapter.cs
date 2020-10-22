@@ -208,7 +208,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 		}
 
 		public CombustionEngineData CreateEngineData(
-			IXMLEngineDeclarationInputData engine, IXMLGearboxDeclarationInputData gearbox,
+			IEngineDeclarationInputData engine, IGearboxDeclarationInputData gearbox,
 			IEngineModeDeclarationInputData mode, Mission mission)
 		{
 			if (!engine.SavedInDeclarationMode) {
@@ -325,7 +325,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 		}
 
 
-		public virtual GearboxData CreateGearboxData(IXMLGearboxDeclarationInputData gearbox, IXMLVehicleComponentsDeclaration components, VectoRunData runData, IShiftPolygonCalculator shiftPolygonCalc)
+		public virtual GearboxData CreateGearboxData(IGearboxDeclarationInputData gearbox, IVehicleComponentsDeclaration components, VectoRunData runData, IShiftPolygonCalculator shiftPolygonCalc)
 		{
 			//var adas = inputData.ADAS;
 			var torqueConverter = components.TorqueConverterInputData;
