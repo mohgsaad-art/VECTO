@@ -779,7 +779,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			#endregion
 		}
 
-		private int GetAeroFeatureCombination(ITrailerDeclarationInputData trailer)
+		private static int GetAeroFeatureCombination(ITrailerDeclarationInputData trailer)
 		{
 			var aeroFeatures = new List<AeroFeatureTechnology>();
 			if (trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.SideSkirtsShort)) aeroFeatures.Add(AeroFeatureTechnology.SideSkirtsShort);
@@ -790,7 +790,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			return DeclarationData.AeroFeatures.Lookup(aeroFeatures);
 		}
 
-		private double CalcAreaCorrection(TrailerSegment trailerSegment, ITrailerDeclarationInputData trailer)
+		private static double CalcAreaCorrection(TrailerSegment trailerSegment, ITrailerDeclarationInputData trailer)
 		{
 			var acrMin = trailerSegment.AcrMin;
 			var acrBase = trailerSegment.AcrBase;
@@ -812,7 +812,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			return 0;
 		}
 
-		private double GetTrailerCorrection(TrailerSegment trailerSegment, ITrailerDeclarationInputData trailer, IVehicleDeclarationInputData genericVehicle)
+		private static double GetTrailerCorrection(TrailerSegment trailerSegment, ITrailerDeclarationInputData trailer, IVehicleDeclarationInputData genericVehicle)
 		{
 			var cCorrection = 0.0;
 			var lCorrection = 0.0;

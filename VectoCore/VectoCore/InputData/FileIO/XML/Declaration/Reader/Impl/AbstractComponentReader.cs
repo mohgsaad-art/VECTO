@@ -59,7 +59,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 			return creator(version, vehicle, node);
 		}
 
-		protected virtual T GetReaderTrailer<T>(IXMLTrailerDeclarationVehicleData vehicle, XmlNode node, Func<string, IXMLTrailerDeclarationVehicleData, XmlNode, T> creator) where T : class 
+		protected virtual T GetReader<T>(IXMLTrailerDeclarationVehicleData vehicle, XmlNode node, Func<string, IXMLTrailerDeclarationVehicleData, XmlNode, T> creator) where T : class 
 		{
 			if (node == null) {
 				return null;

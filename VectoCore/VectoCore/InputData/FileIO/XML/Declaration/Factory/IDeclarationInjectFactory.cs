@@ -129,7 +129,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Factory
 
 		IXMLAxlesReader CreateAxlesReader(string version, IXMLDeclarationVehicleData vehicle, XmlNode componentsNode);
 
-		IXMLAxlesReader CreateTrailerAxlesReader(string version, IXMLTrailerDeclarationVehicleData vehicle, XmlNode axlesNode);
+		IXMLAxlesReader CreateAxlesReader(string version, IXMLTrailerDeclarationVehicleData vehicle, XmlNode axlesNode);
 
 		IXMLAxleReader CreateAxleReader(string version, IXMLDeclarationVehicleData vehicle, XmlNode componentsNode);
 		IXMLAxleReader CreateAxleReader(string version, IXMLTrailerDeclarationVehicleData vehicle, XmlNode componentsNode);

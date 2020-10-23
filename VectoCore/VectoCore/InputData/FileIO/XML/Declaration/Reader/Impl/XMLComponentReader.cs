@@ -303,17 +303,13 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 		public static readonly XNamespace NAMESPACE_URI = XMLDefinitions.DECLARATION_DEFINITIONS_NAMESPACE_URI_V27;
 
 		public const string XSD_TYPE = "VehicleDeclarationType";
-		public const string AXLES_READER_TYPE = "";
+		public const string AXLES_READER_TYPE = "TrailerAxleWheelsDataDeclarationType";
 		public const string AXLE_READER_TYPE = "TrailerAxleType";
+		//public const string AXLE_READER_TYPE = "AxleDeclarationType";
 
-		public static readonly string QUALIFIED_XSD_TYPE =
-			XMLHelper.CombineNamespace(NAMESPACE_URI.NamespaceName, XSD_TYPE);
-
-		public static readonly string AXLES_READER_QUALIFIED_XSD_TYPE =
-			XMLHelper.CombineNamespace(NAMESPACE_URI, AXLES_READER_TYPE);
-
-		public static readonly string AXLE_READER_QUALIFIED_XSD_TYPE =
-			XMLHelper.CombineNamespace(NAMESPACE_URI, AXLE_READER_TYPE);
+		public static readonly string QUALIFIED_XSD_TYPE = XMLHelper.CombineNamespace(NAMESPACE_URI.NamespaceName, XSD_TYPE);
+		public static readonly string AXLES_READER_QUALIFIED_XSD_TYPE = XMLHelper.CombineNamespace(NAMESPACE_URI, AXLES_READER_TYPE);
+		public static readonly string AXLE_READER_QUALIFIED_XSD_TYPE = XMLHelper.CombineNamespace(NAMESPACE_URI, AXLE_READER_TYPE);
 
 		protected IXMLTrailerDeclarationVehicleData Vehicle;
 		protected IAxlesDeclarationInputData _axlesInputData;
@@ -354,7 +350,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 			string version, XmlNode componentNode, string sourceFile)
 		{
 			var axles = Factory.CreateAxleWheels(version, Vehicle, componentNode, sourceFile);
-			axles.Reader = Factory.CreateTrailerAxlesReader(version, Vehicle, componentNode);
+			axles.Reader = Factory.CreateAxlesReader(version, Vehicle, componentNode);
 			return axles;
 		}
 

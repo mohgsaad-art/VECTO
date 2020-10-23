@@ -43,10 +43,11 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.NinjectModules {
 				.Named(XMLJobDataReaderV27.QUALIFIED_XSD_TYPE);
 
 			Bind<IXMLAxlesReader>().To<XMLComponentReaderV27>()
-				.Named(XMLComponentReaderV27.QUALIFIED_XSD_TYPE);
+				.Named(XMLComponentReaderV27.AXLES_READER_QUALIFIED_XSD_TYPE);
 
 			Bind<IXMLAxleReader>().To<XMLComponentReaderV27>()
-				.Named(XMLComponentReaderV27.QUALIFIED_XSD_TYPE);
+				.Named(XMLComponentReaderV27.AXLE_READER_QUALIFIED_XSD_TYPE);
+
 		}
 
 		#endregion

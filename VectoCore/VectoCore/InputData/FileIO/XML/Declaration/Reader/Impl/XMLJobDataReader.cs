@@ -136,8 +136,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 		{
 			var trailer = Factory.CreateTrailerVehicleData(version, JobData, vehicleNode, sourceFile);
 
-			//trailer.AxlesReader = GetReaderTrailer(trailer, trailer.AxlesNode, Factory.CreateTrailerAxlesReader);
-			trailer.AxlesReader = new XMLComponentReaderV27(trailer, vehicleNode.ChildNodes[12]?.ChildNodes[0]?.FirstChild);
+			trailer.AxlesReader = GetReader(trailer, trailer.AxlesNode, Factory.CreateAxlesReader);
+			//trailer.AxlesReader = new XMLComponentReaderV27(trailer, vehicleNode.ChildNodes[12]?.ChildNodes[0]?.FirstChild);
 
 			return trailer;
 		}
