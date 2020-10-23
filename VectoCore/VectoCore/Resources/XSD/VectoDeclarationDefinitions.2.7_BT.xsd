@@ -39,7 +39,7 @@
 			<xs:element name="Data" type="v2.7:AbstractTrailerAxleWheelsDataDeclarationType"/>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:complexType name="AxleDeclarationType">
+	<xs:complexType name="TrailerAxleWheelsDataDeclarationType">
 		<xs:complexContent>
 			<xs:extension base="v2.7:AbstractTrailerAxleWheelsDataDeclarationType">
 				<xs:sequence>

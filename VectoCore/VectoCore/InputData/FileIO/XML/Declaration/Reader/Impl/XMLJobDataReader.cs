@@ -46,9 +46,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 		{
 			var vehicle = Factory.CreateVehicleData(version, JobData, vehicleNode, sourceFile);
 
-			vehicle.ComponentReader = GetReader(vehicle, vehicle.ComponentNode, Factory.CreateComponentReader);  	
-			vehicle.ADASReader =  GetReader(vehicle, vehicle.ADASNode, Factory.CreateADASReader);
-			vehicle.PTOReader = GetReader(vehicle, vehicle.PTONode, Factory.CreatePTOReader); 
+			vehicle.ComponentReader = GetReader(vehicle, vehicle.ComponentNode, Factory.CreateComponentReader);
+			vehicle.ADASReader = GetReader(vehicle, vehicle.ADASNode, Factory.CreateADASReader);
+			vehicle.PTOReader = GetReader(vehicle, vehicle.PTONode, Factory.CreatePTOReader);
 
 			return vehicle;
 		}
@@ -66,7 +66,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 		public new static readonly string QUALIFIED_XSD_TYPE = XMLHelper.CombineNamespace(NAMESPACE_URI.NamespaceName, XSD_TYPE);
 
 		public XMLJobDataReaderV20(IXMLDeclarationJobInputData jobData, XmlNode jobNode) : base(
-			jobData, jobNode) { }
+			jobData, jobNode)
+		{ }
 
 		protected override IVehicleDeclarationInputData VehicleCreator(string version, XmlNode vehicleNode, string sourceFile)
 		{
@@ -99,7 +100,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 			var vehicle = Factory.CreateVehicleData(version, JobData, vehicleNode, sourceFile);
 
 			vehicle.ComponentReader = GetReader(vehicle, vehicle.ComponentNode, Factory.CreateComponentReader);
-			vehicle.ADASReader = GetReader(vehicle, vehicle.ADASNode, Factory.CreateADASReader); 
+			vehicle.ADASReader = GetReader(vehicle, vehicle.ADASNode, Factory.CreateADASReader);
 			vehicle.PTOReader = GetReader(vehicle, vehicle.PTONode, Factory.CreatePTOReader);
 
 			return vehicle;
@@ -136,7 +137,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 		{
 			var trailer = Factory.CreateTrailerVehicleData(version, JobData, vehicleNode, sourceFile);
 
-			trailer.AxlesReader = GetReader(trailer, trailer.AxlesNode, Factory.CreateAxlesReader);
+			trailer.AxlesReader = GetReader(trailer, trailer.AxleWheelsNode, Factory.CreateTrailerAxlesReader);
 			//trailer.AxlesReader = new XMLComponentReaderV27(trailer, vehicleNode.ChildNodes[12]?.ChildNodes[0]?.FirstChild);
 
 			return trailer;
@@ -161,13 +162,13 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 		protected IVehicleDeclarationInputData _vehicle;
 
 		private readonly IXMLPrimaryVehicleBusJobInputData _primaryBusJobData;
-		
-		public XMLJobDataPrimaryVehicleReaderV01(IXMLPrimaryVehicleBusJobInputData busJobData, XmlNode jobNode) 
+
+		public XMLJobDataPrimaryVehicleReaderV01(IXMLPrimaryVehicleBusJobInputData busJobData, XmlNode jobNode)
 			: base(busJobData, jobNode)
 		{
 			_primaryBusJobData = busJobData;
 		}
-		
+
 		public IVehicleDeclarationInputData CreateVehicle
 		{
 			get { return _vehicle ?? (_vehicle = CreateComponent(XMLNames.Component_Vehicle, VehicleCreator)); }
@@ -178,7 +179,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 			var vehicle = Factory.CreatePrimaryVehicleData(version, _primaryBusJobData, vehicleNode, sourceFile);
 			vehicle.ComponentReader = GetReader(vehicle, vehicle.ComponentNode, Factory.CreateComponentReader);
 			vehicle.ADASReader = GetReader(vehicle, vehicle.ADASNode, Factory.CreateADASReader);
-			
+
 			return vehicle;
 		}
 	}

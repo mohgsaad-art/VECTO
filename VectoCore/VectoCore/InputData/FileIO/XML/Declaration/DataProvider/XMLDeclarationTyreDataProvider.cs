@@ -21,8 +21,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		protected double? _rrc;
 		protected Newton _fzIso;
 
-		public XMLDeclarationTyreDataProviderV10(
-			IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile) :
+		public XMLDeclarationTyreDataProviderV10(XmlNode componentNode, string sourceFile) :
 			base(componentNode, sourceFile)
 		{
 			SourceType = DataSourceType.XMLFile;
@@ -71,8 +70,10 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		public new static readonly string QUALIFIED_XSD_TYPE = XMLHelper.CombineNamespace(NAMESPACE_URI.NamespaceName, XSD_TYPE);
 
-		public XMLDeclarationTyreDataProviderV20(IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile)
-			: base(vehicle, componentNode, sourceFile) { }
+		public XMLDeclarationTyreDataProviderV20(XmlNode componentNode, string sourceFile)
+			: base(componentNode, sourceFile) { }
+
+
 
 		protected override XNamespace SchemaNamespace
 		{
@@ -90,8 +91,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		public new static readonly string QUALIFIED_XSD_TYPE = XMLHelper.CombineNamespace(NAMESPACE_URI.NamespaceName, XSD_TYPE);
 
-		public XMLDeclarationTyreDataProviderV22(IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile)
-			: base(vehicle, componentNode, sourceFile) { }
+		public XMLDeclarationTyreDataProviderV22(XmlNode componentNode, string sourceFile)
+			: base(componentNode, sourceFile) { }
 
 		protected override XNamespace SchemaNamespace
 		{
@@ -109,8 +110,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		public new static readonly string QUALIFIED_XSD_TYPE = XMLHelper.CombineNamespace(NAMESPACE_URI.NamespaceName, XSD_TYPE);
 
-		public XMLDeclarationTyreDataProviderV23(IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile)
-			: base(vehicle, componentNode, sourceFile) { }
+		public XMLDeclarationTyreDataProviderV23(XmlNode componentNode, string sourceFile)
+			: base(componentNode, sourceFile) { }
+
 
 		protected override XNamespace SchemaNamespace
 		{
@@ -120,48 +122,4 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		public override string FuelEfficiencyClass { get { return GetString("FuelEfficiencyClass"); } }
 	}
 
-	// ---------------------------------------------------------------------------------------
-
-	public class XMLDeclarationTyreDataProviderV27 : AbstractCommonComponentType, IXMLTyreDeclarationInputData
-	{
-		public static readonly XNamespace NAMESPACE_URI = XMLDefinitions.DECLARATION_DEFINITIONS_NAMESPACE_URI_V10;
-
-		public const string XSD_TYPE = "TyreDataDeclarationType";
-
-		public static readonly string QUALIFIED_XSD_TYPE = XMLHelper.CombineNamespace(NAMESPACE_URI.NamespaceName, XSD_TYPE);
-
-		protected string _dimension;
-		protected double? _rrc;
-		protected Newton _fzIso;
-
-		public XMLDeclarationTyreDataProviderV27(
-			IXMLTrailerDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile) :
-			base(componentNode, sourceFile)
-		{
-			SourceType = DataSourceType.XMLFile;
-		}
-
-		#region Overrides of AbstractXMLResource
-
-		protected override XNamespace SchemaNamespace
-		{
-			get { return NAMESPACE_URI; }
-		}
-
-		protected override DataSourceType SourceType { get; }
-
-		#endregion
-
-		#region Implementation of ITyreDeclarationInputData
-
-		public virtual string Dimension => _dimension ?? (_dimension = GetString(XMLNames.AxleWheels_Axles_Axle_Dimension));
-
-		public virtual double RollResistanceCoefficient => _rrc ?? (_rrc = GetDouble(XMLNames.AxleWheels_Axles_Axle_RRCDeclared)).Value;
-
-		public virtual Newton TyreTestLoad => _fzIso ?? (_fzIso = GetDouble(XMLNames.AxleWheels_Axles_Axle_FzISO).SI<Newton>());
-
-		public virtual string FuelEfficiencyClass { get { return DeclarationData.Wheels.TyreClass.Lookup(RollResistanceCoefficient); } }
-
-		#endregion
-	}
 }

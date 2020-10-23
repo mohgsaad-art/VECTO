@@ -273,7 +273,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 
 		protected virtual ITyreDeclarationInputData TyreCreator(string version, XmlNode componentNode, string sourceFile)
 		{
-			return Factory.CreateTyre(version, Vehicle, componentNode, sourceFile);
+			return Factory.CreateTyre(version, componentNode, sourceFile);
 		}
 
 
@@ -298,7 +298,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 	// ---------------------------------------------------------------------------------------
 
 
-	public class XMLComponentReaderV27: AbstractComponentReader, IXMLAxlesReader, IXMLAxleReader
+	public class XMLComponentReaderV27 : AbstractComponentReader, IXMLAxlesReader, IXMLAxleReader
 	{
 		public static readonly XNamespace NAMESPACE_URI = XMLDefinitions.DECLARATION_DEFINITIONS_NAMESPACE_URI_V27;
 
@@ -319,8 +319,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 		public XMLComponentReaderV27(IXMLTrailerDeclarationVehicleData vehicle, XmlNode componentsNode) : base(
 			vehicle, componentsNode)
 		{
-			if (componentsNode == null) {
-				throw new VectoException("component node must not be null!");
+			if (componentsNode == null)
+			{
+				throw new VectoException("axlewheels node must not be null!");
 			}
 
 			Vehicle = vehicle;
@@ -335,8 +336,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 			var version = XMLHelper.GetXsdType(axleNode.SchemaInfo.SchemaType);
 			try
 			{
-				var axle = Factory.CreateAxleData(version, Vehicle, axleNode, ""); //(Vehicle as IXMLResource).DataSource.SourceFile
-				axle.Reader = Factory.CreateAxleReader(version, Vehicle, axleNode);
+				var axle = Factory.CreateTrailerAxleData(version, Vehicle, axleNode, ""); //(Vehicle as IXMLResource).DataSource.SourceFile
+				axle.Reader = Factory.CreateTrailerAxleReader(version, Vehicle, axleNode);
 				return axle;
 			}
 			catch (Exception e)
@@ -349,15 +350,15 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 		protected virtual IAxlesDeclarationInputData AxleWheelsCreator(
 			string version, XmlNode componentNode, string sourceFile)
 		{
-			var axles = Factory.CreateAxleWheels(version, Vehicle, componentNode, sourceFile);
-			axles.Reader = Factory.CreateAxlesReader(version, Vehicle, componentNode);
+			var axles = Factory.CreateTrailerAxleWheels(version, Vehicle, componentNode, sourceFile);
+			axles.Reader = Factory.CreateTrailerAxlesReader(version, Vehicle, componentNode);
 			return axles;
 		}
 
 
 		protected virtual ITyreDeclarationInputData TyreCreator(string version, XmlNode componentNode, string sourceFile)
 		{
-			return Factory.CreateTyre(version, Vehicle, componentNode, sourceFile);
+			return Factory.CreateTrailerTyre(version, componentNode, sourceFile);
 		}
 	}
 	// ---------------------------------------------------------------------------------------
@@ -391,7 +392,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 		public new const string AUX_READER_TYPE = "AuxiliariesDataDeclarationType";
 
 		public new static readonly string QUALIFIED_XSD_TYPE = XMLHelper.CombineNamespace(NAMESPACE_URI.NamespaceName, AUX_READER_TYPE);
-		
+
 
 		public XMLAuxiliaryReaderV23(IXMLDeclarationVehicleData vehicle, XmlNode componentsNode) : base(
 			vehicle, componentsNode)
@@ -451,22 +452,22 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 				return _gearboxInputData ?? (_gearboxInputData = CreateComponent(XMLNames.Component_Transmission, GearboxCreator));
 			}
 		}
-		
+
 		public override IRetarderInputData RetarderInputData
 		{
 			get { return null; }
 		}
-		
+
 		public override IAirdragDeclarationInputData AirdragInputData
 		{
 			get { return null; }
 		}
-		
+
 		public override IAuxiliariesDeclarationInputData AuxiliaryData
 		{
 			get { return null; }
 		}
-		
+
 		public override IBusAuxiliariesDeclarationData BusAuxiliariesInputData
 		{
 			get { return _busAuxInputData ?? (_busAuxInputData = CreateComponent(XMLNames.Component_Auxiliaries, BusAuxCreator)); }
@@ -515,7 +516,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 			vehicle, componentsNode)
 		{ }
 
-		
+
 	}
 
 }

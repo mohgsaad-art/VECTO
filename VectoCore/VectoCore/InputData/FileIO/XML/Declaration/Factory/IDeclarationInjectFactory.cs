@@ -79,12 +79,13 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Factory
 			string version, IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile);
 
 		IXMLAxlesDeclarationInputData CreateAxleWheels(string version, IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile);
-		IXMLAxlesDeclarationInputData CreateAxleWheels(string version, IXMLTrailerDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile);
-		IXMLAxleDeclarationInputData CreateAxleData(string version, IXMLDeclarationVehicleData vehicle, XmlNode componentNode,  string sourceFile);
-		IXMLAxleDeclarationInputData CreateAxleData(string version, IXMLTrailerDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile);
+		IXMLAxlesDeclarationInputData CreateTrailerAxleWheels(string version, IXMLTrailerDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile);
+		IXMLAxleDeclarationInputData CreateAxleData(string version, IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile);
+		IXMLAxleDeclarationInputData CreateTrailerAxleData(string version, IXMLTrailerDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile);
 
-		IXMLTyreDeclarationInputData CreateTyre(string version, IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile);
-		IXMLTyreDeclarationInputData CreateTyre(string version, IXMLTrailerDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile);
+		IXMLTyreDeclarationInputData CreateTyre(string version, XmlNode componentNode, string sourceFile);
+
+		IXMLTyreDeclarationInputData CreateTrailerTyre(string version, XmlNode componentNode, string sourceFile);
 
 		IXMLAuxiliaryDeclarationInputData CreateAuxiliaryData(string version, XmlNode auxNode, IXMLDeclarationVehicleData vehicle);
 
@@ -114,7 +115,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Factory
 		IXMLJobDataReader CreatePrimaryVehicleJobReader(
 			string version, IXMLPrimaryVehicleBusJobInputData busJobData, XmlNode jobNode);
 
-		
+
 		IXMLComponentReader CreateComponentReader(
 			string version, IXMLDeclarationVehicleData vehicle, XmlNode componentsNode);
 
@@ -129,13 +130,14 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Factory
 
 		IXMLAxlesReader CreateAxlesReader(string version, IXMLDeclarationVehicleData vehicle, XmlNode componentsNode);
 
-		IXMLAxlesReader CreateAxlesReader(string version, IXMLTrailerDeclarationVehicleData vehicle, XmlNode axlesNode);
+		IXMLAxlesReader CreateTrailerAxlesReader(string version, IXMLTrailerDeclarationVehicleData vehicle, XmlNode componentsNode);
 
 		IXMLAxleReader CreateAxleReader(string version, IXMLDeclarationVehicleData vehicle, XmlNode componentsNode);
-		IXMLAxleReader CreateAxleReader(string version, IXMLTrailerDeclarationVehicleData vehicle, XmlNode componentsNode);
+
+		IXMLAxleReader CreateTrailerAxleReader(string version, IXMLTrailerDeclarationVehicleData vehicle, XmlNode componentsNode);
 		IXMLGearboxReader CreateGearboxReader(string version, IXMLDeclarationVehicleData vehicle, XmlNode componentsNode);
 		IXMLAuxiliaryReader CreateAuxiliariesReader(string version, IXMLDeclarationVehicleData vehicle, XmlNode componentsNode);
-		
+
 		IXMLApplicationInformationData CreateApplicationInformationReader(string version, XmlNode applicationNode);
 
 		IXMLResultsInputData CreateResultsInputDataReader(string version, XmlNode resultsNode);

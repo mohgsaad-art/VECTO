@@ -770,10 +770,8 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 			#region Tyre dimension validation
 
-			if (trailer.Axles != null) return; //TODO fix issue with Ninject first
-
 			var trailerAxles = trailer.Axles;
-			if (trailerAxles.Any(x => x.Tyre.Dimension != trailerAxles.FirstOrDefault()?.Tyre.Dimension))
+			if ((trailerAxles ?? throw new InvalidOperationException()).Any(x => x.Tyre.Dimension != trailerAxles.FirstOrDefault()?.Tyre.Dimension))
 				throw new Exception("invalid trailer configurations - different tyre dimensions specified");
 
 			#endregion

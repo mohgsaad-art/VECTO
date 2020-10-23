@@ -5,7 +5,8 @@ using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Interfaces;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl;
 
-namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.NinjectModules {
+namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.NinjectModules
+{
 	public class XMLDeclarationInputDataV27InjectModule : NinjectModule
 	{
 		#region Overrides of NinjectModule
@@ -27,11 +28,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.NinjectModules {
 			Bind<IXMLAxleDeclarationInputData>().To<XMLDeclarationAxleDataProviderV27>().Named(
 				XMLDeclarationAxleDataProviderV27.QUALIFIED_XSD_TYPE);
 
-			Bind<IXMLTyreDeclarationInputData>().To<XMLDeclarationTyreDataProviderV27>().Named(
-				XMLDeclarationTyreDataProviderV27.QUALIFIED_XSD_TYPE);
-
 			Bind<ITransmissionInputData>().To<XMLGearDataV10>().Named(
-				XMLGearDataV10.QUALIFIED_XSD_TYPE); 
+				XMLGearDataV10.QUALIFIED_XSD_TYPE);
 
 
 			// ---------------------------------------------------------------------------------------

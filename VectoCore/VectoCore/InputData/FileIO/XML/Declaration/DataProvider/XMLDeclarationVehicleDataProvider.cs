@@ -79,8 +79,10 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		public virtual XmlElement ComponentNode
 		{
-			get {
-				if (ExemptedVehicle) {
+			get
+			{
+				if (ExemptedVehicle)
+				{
 					return null;
 				}
 
@@ -92,8 +94,10 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		public virtual XmlElement PTONode
 		{
-			get {
-				if (ExemptedVehicle) {
+			get
+			{
+				if (ExemptedVehicle)
+				{
 					return null;
 				}
 
@@ -134,9 +138,11 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		public virtual VehicleCategory VehicleCategory
 		{
-			get {
+			get
+			{
 				var val = GetString(XMLNames.Vehicle_VehicleCategory);
-				if ("Rigid Lorry".Equals(val, StringComparison.InvariantCultureIgnoreCase)) {
+				if ("Rigid Lorry".Equals(val, StringComparison.InvariantCultureIgnoreCase))
+				{
 					return VehicleCategory.RigidTruck;
 				}
 
@@ -157,13 +163,17 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		public virtual IList<ITorqueLimitInputData> TorqueLimits
 		{
-			get {
+			get
+			{
 				var retVal = new List<ITorqueLimitInputData>();
 				var limits = GetNodes(new[] { XMLNames.Vehicle_TorqueLimits, XMLNames.Vehicle_TorqueLimits_Entry });
-				foreach (XmlNode current in limits) {
-					if (current.Attributes != null) {
+				foreach (XmlNode current in limits)
+				{
+					if (current.Attributes != null)
+					{
 						retVal.Add(
-							new TorqueLimitInputData() {
+							new TorqueLimitInputData()
+							{
 								Gear = GetAttribute(current, XMLNames.Vehicle_TorqueLimits_Entry_Gear_Attr).ToInt(),
 								MaxTorque = GetAttribute(current, XMLNames.Vehicle_TorqueLimits_Entry_MaxTorque_Attr)
 									.ToDouble().SI<NewtonMeter>()
@@ -202,9 +212,11 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		public virtual RetarderType RetarderType
 		{
-			get {
+			get
+			{
 				var value = GetString(XMLNames.Vehicle_RetarderType); //.ParseEnum<RetarderType>(); 
-				switch (value) {
+				switch (value)
+				{
 					case "None": return RetarderType.None;
 					case "Losses included in Gearbox": return RetarderType.LossesIncludedInTransmission;
 					case "Engine Retarder": return RetarderType.EngineRetarder;
@@ -233,7 +245,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		public virtual TankSystem? TankSystem
 		{
-			get {
+			get
+			{
 				return ElementExists(XMLNames.Vehicle_NgTankSystem)
 					? EnumHelper.ParseEnum<TankSystem>(GetString(XMLNames.Vehicle_NgTankSystem))
 					: (TankSystem?)null;
@@ -262,7 +275,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		public virtual Watt MaxNetPower1
 		{
-			get {
+			get
+			{
 				return ElementExists(XMLNames.Vehicle_MaxNetPower1)
 					? GetDouble(XMLNames.Vehicle_MaxNetPower1).SI<Watt>()
 					: null;
@@ -271,7 +285,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		public virtual Watt MaxNetPower2
 		{
-			get {
+			get
+			{
 				return ElementExists(XMLNames.Vehicle_MaxNetPower2)
 					? GetDouble(XMLNames.Vehicle_MaxNetPower2).SI<Watt>()
 					: null;
@@ -372,7 +387,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 			XMLHelper.CombineNamespace(NAMESPACE_URI.NamespaceName, XSD_TYPE);
 
 		public XMLDeclarationVehicleDataProviderV20(IXMLDeclarationJobInputData jobData, XmlNode xmlNode, string sourceFile) :
-			base(jobData, xmlNode, sourceFile) { }
+			base(jobData, xmlNode, sourceFile)
+		{ }
 
 		protected override XNamespace SchemaNamespace
 		{
@@ -474,7 +490,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 
 		public XMLDeclarationVehicleDataProviderV21(IXMLDeclarationJobInputData jobData, XmlNode xmlNode, string sourceFile) :
-			base(jobData, xmlNode, sourceFile) { }
+			base(jobData, xmlNode, sourceFile)
+		{ }
 
 		#region Overrides of XMLDeclarationVehicleDataProviderV10
 
@@ -482,9 +499,11 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		public override VehicleCategory VehicleCategory
 		{
-			get {
+			get
+			{
 				var val = GetString(XMLNames.Vehicle_VehicleCategory);
-				if ("Rigid Lorry".Equals(val, StringComparison.InvariantCultureIgnoreCase)) {
+				if ("Rigid Lorry".Equals(val, StringComparison.InvariantCultureIgnoreCase))
+				{
 					return VehicleCategory.RigidTruck;
 				}
 
@@ -656,7 +675,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 			IXMLDeclarationJobInputData jobData, XmlNode xmlNode, string sourceFile) : base(jobData, xmlNode, sourceFile)
 		{
 			SourceType = DataSourceType.XMLEmbedded;
-			
+
 		}
 
 
@@ -774,7 +793,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		{
 			get
 			{
-				if (VehicleCategory == VehicleCategory.Van && !ElementExists(XMLNames.Vehicle_CargoVolume)) {
+				if (VehicleCategory == VehicleCategory.Van && !ElementExists(XMLNames.Vehicle_CargoVolume))
+				{
 					throw new VectoException("Medium lorries with type Van require the input parameter cargo volume!");
 				}
 				return ElementExists(XMLNames.Vehicle_CargoVolume) ? GetDouble(XMLNames.Vehicle_CargoVolume).SI<CubicMeter>()
@@ -795,7 +815,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		#endregion
 	}
-	
+
 	public class XMLDeclarationCompletedBusDataProviderV26 : XMLDeclarationVehicleDataProviderV20
 	{
 		public new static readonly XNamespace NAMESPACE_URI = XMLDefinitions.DECLARATION_DEFINITIONS_NAMESPACE_URI_V26;
@@ -847,7 +867,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		public override int NumberOfPassengersLowerDeck
 		{
-			get {
+			get
+			{
 				var node = GetNode(XMLNames.Bus_LowerDeck);
 				return XmlConvert.ToInt32(node.InnerText);
 			}
@@ -855,7 +876,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		public override int NumberOfPassengersUpperDeck
 		{
-			get {
+			get
+			{
 				var node = GetNode(XMLNames.Bus_UpperDeck);
 				return XmlConvert.ToInt32(node.InnerText);
 			}
@@ -886,7 +908,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		#endregion
 
-		
+
 		public override bool LowEntry
 		{
 			get { return GetBool(XMLNames.Bus_LowEntry); }
@@ -901,7 +923,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		{
 			get { return ConsumerTechnologyHelper.Parse(GetString(XMLNames.BusAux_PneumaticSystem_DoorDriveTechnology)); }
 		}
-		
+
 
 		#region Overrides of AbstractXMLResource
 
@@ -929,18 +951,18 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		protected IVehicleComponentsDeclaration _components;
 		protected IAxlesDeclarationInputData _axles;
-		protected XmlElement _axlesNode;
+		protected XmlNode _axlesNode;
 		protected XmlElement _componentNode;
 
 		public XMLDeclarationVehicleDataProviderV27(IXMLDeclarationTrailerJobInputData jobData, XmlNode xmlNode,
-			string sourceFile): base(xmlNode, sourceFile)
+			string sourceFile) : base(xmlNode, sourceFile)
 		{
 			SourceFile = sourceFile;
 			Job = jobData;
 			SourceType = DataSourceType.XMLEmbedded;
 		}
 
-		public virtual XmlElement AxlesNode => _axlesNode ?? (_axlesNode = GetNode(XMLNames.AxleWheels_Axles, required: false) as XmlElement);
+		public virtual XmlNode AxleWheelsNode => _axlesNode ?? (_axlesNode = GetNode(new[] { XMLNames.Component_AxleWheels, XMLNames.ComponentDataWrapper }, required: false));
 
 		public XmlElement ComponentNode => _componentNode ?? (_componentNode = GetNode(XMLNames.Vehicle_Components) as XmlElement);
 
@@ -1006,10 +1028,13 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 			foreach (XmlNode current in trailerAxles)
 			{
-				if (current != null) {
-					var axle = new XMLDeclarationAxleDataProviderV27(this, AxlesNode, SourceFile) {
-						Reader = new XMLComponentReaderV27(this, AxlesNode)
-					};
+				if (current != null)
+				{
+					// MQ: 2020-10-23 Never invoke a constructor directly when working with dependency injection. In such cases all injected members (in this case the Factory) are not set!
+					//var axle = new XMLDeclarationAxleDataProviderV27(this, AxleWheelsNode, SourceFile) {
+					//Reader = new XMLComponentReaderV27(this, AxleWheelsNode)
+					//};
+					var axle = AxlesReader.CreateAxle(current);
 
 					axles.Add(axle);
 				}
@@ -1022,7 +1047,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		{
 			var aeroFeatureTechnologies = new List<AeroFeatureTechnology>();
 			var technologies = GetNodes(new[] { XMLNames.Trailer_AeroFeatureTechnologies });
-			foreach (XmlNode current in technologies) {
+			foreach (XmlNode current in technologies)
+			{
 
 				if (current == null)
 					continue;
@@ -1149,8 +1175,10 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		public XmlElement ComponentNode
 		{
-			get {
-				if (ExemptedVehicle) {
+			get
+			{
+				if (ExemptedVehicle)
+				{
 					return null;
 				}
 
@@ -1228,10 +1256,13 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		{
 			var torqueLimits = new List<ITorqueLimitInputData>();
 			var limits = GetNodes(new[] { XMLNames.Vehicle_TorqueLimits, XMLNames.Vehicle_TorqueLimits_Entry });
-			foreach (XmlNode current in limits) {
-				if (current.Attributes != null) {
+			foreach (XmlNode current in limits)
+			{
+				if (current.Attributes != null)
+				{
 					torqueLimits.Add(
-						new TorqueLimitInputData() {
+						new TorqueLimitInputData()
+						{
 							Gear = GetAttribute(current, XMLNames.Vehicle_TorqueLimits_Entry_Gear_Attr).ToInt(),
 							MaxTorque = GetAttribute(current, XMLNames.Vehicle_TorqueLimits_Entry_MaxTorque_Attr)
 								.ToDouble().SI<NewtonMeter>()
