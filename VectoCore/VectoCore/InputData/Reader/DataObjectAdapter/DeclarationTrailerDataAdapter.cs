@@ -33,12 +33,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
+using Ninject;
 using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
+using TUGraz.VectoCore.InputData.FileIO.XML;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Interfaces;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl.HVAC;
@@ -749,6 +752,152 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			return retVal;
 		}
 
+		public void ValidateTrailerInput(ITrailerDeclarationInputData trailer)
+		{
+			#region Aero features combination validation
+
+			var aeroFeatures = new List<AeroFeatureTechnology>();
+			if (trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.SideSkirtsShort)) aeroFeatures.Add(AeroFeatureTechnology.SideSkirtsShort);
+			if (trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.SideSkirtsLong)) aeroFeatures.Add(AeroFeatureTechnology.SideSkirtsLong);
+			if (trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.BoatTailShort)) aeroFeatures.Add(AeroFeatureTechnology.BoatTailShort);
+			if (trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.BoatTailLong)) aeroFeatures.Add(AeroFeatureTechnology.BoatTailLong);
+
+			var combination = DeclarationData.AeroFeatures.Lookup(aeroFeatures);
+			if (combination < 0)
+				throw new Exception("invalid aero feature combination");
+
+			#endregion
+
+			#region Tyre dimension validation
+
+			if (trailer.Axles != null) return; //TODO fix issue with Ninject first
+
+			var trailerAxles = trailer.Axles;
+			if (trailerAxles.Any(x => x.Tyre.Dimension != trailerAxles.FirstOrDefault()?.Tyre.Dimension))
+				throw new Exception("invalid trailer configurations - different tyre dimensions specified");
+
+			#endregion
+		}
+
+		private int GetAeroFeatureCombination(ITrailerDeclarationInputData trailer)
+		{
+			var aeroFeatures = new List<AeroFeatureTechnology>();
+			if (trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.SideSkirtsShort)) aeroFeatures.Add(AeroFeatureTechnology.SideSkirtsShort);
+			if (trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.SideSkirtsLong)) aeroFeatures.Add(AeroFeatureTechnology.SideSkirtsLong);
+			if (trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.BoatTailShort)) aeroFeatures.Add(AeroFeatureTechnology.BoatTailShort);
+			if (trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.BoatTailLong)) aeroFeatures.Add(AeroFeatureTechnology.BoatTailLong);
+
+			return DeclarationData.AeroFeatures.Lookup(aeroFeatures);
+		}
+
+		private double CalcAreaCorrection(TrailerSegment trailerSegment, ITrailerDeclarationInputData trailer)
+		{
+			var acrMin = trailerSegment.AcrMin;
+			var acrBase = trailerSegment.AcrBase;
+			var acr = trailer.TotalTrailerHeight.ToBasicUnits().Value() * trailer.ExternalBodyWidth.ToBasicUnits().Value() > acrMin ?
+				trailer.TotalTrailerHeight.ToBasicUnits().Value() * trailer.ExternalBodyWidth.ToBasicUnits().Value() : acrMin;
+			return acrBase * acr / acrBase;
+		}
+
+		private static string GetAxleWheelDimension(IVehicleDeclarationInputData genericVehicle)
+		{
+			return genericVehicle.Components.AxleWheels.XMLSource.ChildNodes[0].ChildNodes[0].FirstChild.ChildNodes[3].FirstChild.ChildNodes[5].InnerText;
+		}
+
+		private static double CalcLengthCorrection(IVehicleDeclarationInputData genericVehicle)
+		{
+			var wheels = new Wheels();
+			var wheelRadius = wheels.Lookup(GetAxleWheelDimension(genericVehicle)).WheelsDiameter / 2;
+			//TODO
+			return 0;
+		}
+
+		private double GetTrailerCorrection(TrailerSegment trailerSegment, ITrailerDeclarationInputData trailer, IVehicleDeclarationInputData genericVehicle)
+		{
+			var cCorrection = 0.0;
+			var lCorrection = 0.0;
+			var aCorrection = 0.0;
+
+			#region Cross Section Correction
+			var doCrossSectionAreaCorrection = trailerSegment.CrossSectionAreaCorrection;
+			if (doCrossSectionAreaCorrection)
+				cCorrection = CalcAreaCorrection(trailerSegment, trailer);
+			#endregion
+
+			#region Length Correction
+			var doLengthcorrection = false; //_trailerSegment.LengthCorrection;
+			if (doLengthcorrection)
+				lCorrection = CalcLengthCorrection(genericVehicle);
+			#endregion
+
+			#region Aero feature Correction
+			var combination = GetAeroFeatureCombination(trailer);
+
+			switch (combination)
+			{
+				case 0:
+					aCorrection = trailerSegment.Aero0;
+					break;
+				case 1:
+					aCorrection = trailerSegment.Aero1;
+					break;
+				case 2:
+					aCorrection = trailerSegment.Aero2;
+					break;
+				case 3:
+					aCorrection = trailerSegment.Aero3;
+					break;
+				case 4:
+					aCorrection = trailerSegment.Aero4;
+					break;
+				case 5:
+					aCorrection = trailerSegment.Aero5;
+					break;
+				case 6:
+					aCorrection = trailerSegment.Aero6;
+					break;
+				case 7:
+					aCorrection = trailerSegment.Aero7;
+					break;
+				case 8:
+					aCorrection = trailerSegment.Aero8;
+					break;
+			}
+			#endregion
+
+			return cCorrection + aCorrection;
+		}
+
+		public IDeclarationInputDataProvider GetGetGenericVehicleData(string vehicleCode)
+		{
+			//TODO clean code
+			var filePath = @"F:\Vecto\vecto-dev_bt\VectoCore\VectoCore\Resources\Declaration\GenericVehicles\" + vehicleCode + ".xml";
+			var xmlDoc = new XmlDocument();
+			xmlDoc.Load(filePath);
+
+			IKernel kernel = new StandardKernel(new VectoNinjectModule());
+			var inputReader = kernel.Get<IXMLInputDataReader>();
+			inputReader.CreateDeclaration(filePath);
+
+			return inputReader.CreateDeclaration(filePath);
+		}
+
+		public Dictionary<string, object> GetSpecificTrailerData(TrailerSegment trailerSegment, ITrailerDeclarationInputData trailer, IVehicleDeclarationInputData genericVehicle)
+		{
+			var wheels = new Wheels();
+
+			var specificTrailerData = new Dictionary<string, object> {
+				{ "volumeOrientation", (trailer.InternalBodyHeight >= 2.9 && trailer.TotalTrailerHeight <= 4) },
+				{ "vehicleGroup", trailerSegment.VehicleGroup },
+				{ "vehicleGroupActive", trailerSegment.VehicleGroupActive },
+				{ "genericVehicleCode", trailerSegment.GenericCode },
+				{ "curbMassTrailer", trailer.CurbMass },
+				{ "inertia", wheels.Lookup(GetAxleWheelDimension(genericVehicle)).Inertia },
+				{ "TotalCorrection", GetTrailerCorrection(trailerSegment, trailer, genericVehicle) }
+			};
+
+			return specificTrailerData;
+		}
 
 	}
 }

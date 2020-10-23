@@ -930,6 +930,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		protected IVehicleComponentsDeclaration _components;
 		protected IAxlesDeclarationInputData _axles;
 		protected XmlElement _axlesNode;
+		protected XmlElement _componentNode;
 
 		public XMLDeclarationVehicleDataProviderV27(IXMLDeclarationTrailerJobInputData jobData, XmlNode xmlNode,
 			string sourceFile): base(xmlNode, sourceFile)
@@ -940,6 +941,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		}
 
 		public virtual XmlElement AxlesNode => _axlesNode ?? (_axlesNode = GetNode(XMLNames.AxleWheels_Axles, required: false) as XmlElement);
+
+		public XmlElement ComponentNode => _componentNode ?? (_componentNode = GetNode(XMLNames.Vehicle_Components) as XmlElement);
 
 		public virtual IXMLComponentReader ComponentReader { protected get; set; }
 
@@ -989,7 +992,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		public IList<AeroFeatureTechnology> AeroFeatureTechnologies => ReadAeroFeatures();
 
-		public IVehicleComponentsDeclaration Components { get; }
+		public IVehicleComponentsDeclaration Components => _components ?? (_components = ComponentReader.ComponentInputData);
 
 		protected override XNamespace SchemaNamespace => NAMESPACE_URI;
 

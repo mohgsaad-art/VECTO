@@ -154,20 +154,11 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		#region Implementation of ITyreDeclarationInputData
 
-		public virtual string Dimension
-		{
-			get { return _dimension ?? (_dimension = GetString(XMLNames.AxleWheels_Axles_Axle_Dimension)); }
-		}
+		public virtual string Dimension => _dimension ?? (_dimension = GetString(XMLNames.AxleWheels_Axles_Axle_Dimension));
 
-		public virtual double RollResistanceCoefficient
-		{
-			get { return _rrc ?? (_rrc = GetDouble(XMLNames.AxleWheels_Axles_Axle_RRCDeclared)).Value; }
-		}
+		public virtual double RollResistanceCoefficient => _rrc ?? (_rrc = GetDouble(XMLNames.AxleWheels_Axles_Axle_RRCDeclared)).Value;
 
-		public virtual Newton TyreTestLoad
-		{
-			get { return _fzIso ?? (_fzIso = GetDouble(XMLNames.AxleWheels_Axles_Axle_FzISO).SI<Newton>()); }
-		}
+		public virtual Newton TyreTestLoad => _fzIso ?? (_fzIso = GetDouble(XMLNames.AxleWheels_Axles_Axle_FzISO).SI<Newton>());
 
 		public virtual string FuelEfficiencyClass { get { return DeclarationData.Wheels.TyreClass.Lookup(RollResistanceCoefficient); } }
 

@@ -32,5 +32,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Interfaces
 		IXMLAxlesReader AxlesReader { set; }
 
 		XmlElement AxlesNode { get; }
+
+		IXMLComponentReader ComponentReader { set; }
+
+		XmlElement ComponentNode { get; }
 	}
 }
