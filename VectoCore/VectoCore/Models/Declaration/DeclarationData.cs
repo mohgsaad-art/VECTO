@@ -75,6 +75,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		public static readonly TrailerSegments TrailerSegments = new TrailerSegments();
 		public static readonly AeroFeatures AeroFeatures = new AeroFeatures();
+		public static readonly GenericTowingVehicles GenericTowingVehicles = new GenericTowingVehicles();
 
 		public static readonly TruckSegments TruckSegments = new TruckSegments();
 		public static readonly PrimaryBusSegments PrimaryBusSegments = new PrimaryBusSegments();

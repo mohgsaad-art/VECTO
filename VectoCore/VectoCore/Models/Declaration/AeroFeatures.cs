@@ -47,18 +47,9 @@ namespace TUGraz.VectoCore.Models.Declaration
 	{
 		private DataTable _aeroFeaturesTable;
 
-		protected override string ResourceId
-		{
-			get { return DeclarationData.DeclarationDataResourcePrefix + ".TrailerAeroFeatures.csv"; }
-		}
+		protected override string ResourceId => DeclarationData.DeclarationDataResourcePrefix + ".TrailerAeroFeatures.csv";
 
-		protected override string ErrorMessage
-		{
-			get {
-				return
-					"ERROR: Could not find the aero feature combination for trailer.";
-			}
-		}
+		protected override string ErrorMessage => "ERROR: Could not find the aero feature combination for trailer.";
 
 		protected override void ParseData(DataTable table)
 		{

@@ -1,0 +1,7 @@
+﻿Code      ,   Vehicle group ,        Body      ,        LH          ,        LH (EMS)        ,        RD           ,        RD(EMS)         ,        UD           ,        MU      ,        CO
+A1        ,        5        ,        ---       ,        T+ST1       ,        T+ST2+T2        ,        T+ST1        ,        T+ST2+T2        ,        T+ST1        ,                ,        
+A2        ,        5        ,        ---       ,        T+ST1       ,        T+ST2+T2        ,        T+ST1        ,        T+ST2+T2        ,        T+ST1        ,                ,        
+A3        ,        10       ,        ---       ,        T+ST1       ,        T+ST2+T2        ,        T+ST1        ,        T+ST2+T2        ,                     ,                ,        
+R1        ,        2        ,        B2        ,        R+T1        ,						 ,        R			   ,						,        R            ,                ,        
+R2        ,        9        ,        B5        ,        R+T2        ,        R+D+ST1         ,        R			   ,        R+D+ST1         ,                     ,        (R)     ,        
+R3        ,        4        ,        B4        ,        R+T2        ,						 ,        R			   ,						,        R            ,        (R)     ,        

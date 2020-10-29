@@ -47,18 +47,9 @@ namespace TUGraz.VectoCore.Models.Declaration
 	{
 		private DataTable _segmentTable;
 
-		protected override string ResourceId
-		{
-			get { return DeclarationData.DeclarationDataResourcePrefix + ".TrailerSegmentationTable.csv"; }
-		}
+		protected override string ResourceId => DeclarationData.DeclarationDataResourcePrefix + ".TrailerSegmentationTable.csv";
 
-		protected override string ErrorMessage
-		{
-			get {
-				return
-					"ERROR: Could not find the vehicle group for trailer. NumberOfAxles: {0}, TrailerType: {1}, BodyWorkCode: {2}, VolumeOrientation: {3}";
-			}
-		}
+		protected override string ErrorMessage => "ERROR: Could not find the vehicle group for trailer. NumberOfAxles: {0}, TrailerType: {1}, BodyWorkCode: {2}, VolumeOrientation: {3}";
 
 		protected override void ParseData(DataTable table)
 		{

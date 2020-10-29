@@ -106,7 +106,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			return retVal;
 		}
 
-		public virtual VehicleData CreateVehicleData(ITrailerDeclarationInputData data, Segment segment,
+		public virtual VehicleData CreateVehicleData(IVehicleDeclarationInputData data, Segment segment,
 			Mission mission, KeyValuePair<LoadingType, Tuple<Kilogram, double?>> loading)
 		{
 			if (!data.SavedInDeclarationMode) {
@@ -116,12 +116,12 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			return CreateNonExemptedVehicleData(data, segment, mission, loading.Value.Item1, loading.Value.Item2);
 		}
 
-		protected virtual VehicleData CreateNonExemptedVehicleData(ITrailerDeclarationInputData data, Segment segment,
+		protected virtual VehicleData CreateNonExemptedVehicleData(IVehicleDeclarationInputData data, Segment segment,
 			Mission mission, Kilogram loading, double? passengerCount)
 		{
 			var retVal = SetCommonVehicleData(data);
-			//retVal.LegislativeClass = data.LegislativeClass;
-			//retVal.AxleConfiguration = data.AxleConfiguration;
+			retVal.LegislativeClass = data.LegislativeClass;
+			retVal.AxleConfiguration = data.AxleConfiguration;
 			retVal.AirDensity = DeclarationData.AirDensity;
 			retVal.VIN = data.VIN;
 			retVal.ManufacturerAddress = data.ManufacturerAddress;
@@ -136,10 +136,10 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 			retVal.Loading = loading;
 			retVal.PassengerCount = passengerCount;
-			//retVal.DynamicTyreRadius =
-			//	data.Components.AxleWheels.AxlesDeclaration.Where(axle => axle.AxleType == AxleType.VehicleDriven)
-			//		.Select(da => DeclarationData.Wheels.Lookup(da.Tyre.Dimension).DynamicTyreRadius)
-			//		.Average();
+			retVal.DynamicTyreRadius =
+				data.Components.AxleWheels.AxlesDeclaration.Where(axle => axle.AxleType == AxleType.VehicleDriven)
+					.Select(da => DeclarationData.Wheels.Lookup(da.Tyre.Dimension).DynamicTyreRadius)
+					.Average();
 			if (segment.VehicleClass.IsMediumLorry() && segment.VehicleClass.IsVan()) {
 				retVal.CargoVolume = data.CargoVolume;
 			} else {
@@ -151,7 +151,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			//retVal.VocationalVehicle = data.VocationalVehicle;
 			//retVal.ADAS = CreateADAS(data.ADAS);
 
-			/*var axles = data.Components.AxleWheels.AxlesDeclaration;
+			var axles = data.Components.AxleWheels.AxlesDeclaration;
 			if (axles.Count < mission.AxleWeightDistribution.Length) {
 				throw new VectoException(
 					"Vehicle does not contain sufficient axles. {0} axles defined, {1} axles required",
@@ -191,7 +191,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 						}));
 			}
 
-			retVal.AxleData = axleData;*/
+			retVal.AxleData = axleData;
 			return retVal;
 		}
 
@@ -219,7 +219,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			}
 
 			var retVal = SetCommonCombustionEngineData(engine, null);
-			//retVal.IdleSpeed = VectoMath.Max(mode.IdleSpeed, vehicle.EngineIdleSpeed);
+			retVal.IdleSpeed = mode.IdleSpeed;
 
 			retVal.Fuels = new List<CombustionEngineFuelData>();
 			foreach (var fuel in mode.Fuels) {
@@ -379,10 +379,10 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 				var shiftPolygon = shiftPolygonCalc != null
 					? shiftPolygonCalc.ComputeDeclarationShiftPolygon(
-						gearbox.Type, (int)i, engine.FullLoadCurves[i + 1], gearbox.Gears, engine, axlegearRatio,
+						gearbox.Type, (int)i, engine.FullLoadCurves[0], gearbox.Gears, engine, axlegearRatio,
 						dynamicTyreRadius)
 					: DeclarationData.Gearbox.ComputeShiftPolygon(
-						gearbox.Type, (int)i, engine.FullLoadCurves[i + 1],
+						gearbox.Type, (int)i, engine.FullLoadCurves[0],
 						gearsInput, engine,
 						axlegearRatio, dynamicTyreRadius);
 

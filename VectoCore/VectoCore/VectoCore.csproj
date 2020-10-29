@@ -328,6 +328,7 @@
     <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\HVAC\SSMInputs.cs" />
     <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\HVAC\SSMRun.cs" />
     <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\HVAC\SSMTOOL.cs" />
+    <Compile Include="Models\Declaration\GenericTowingVehicles.cs" />
     <Compile Include="Models\Declaration\CompletedBusSegments.cs" />
     <Compile Include="Models\Declaration\AeroFeatures.cs" />
     <Compile Include="Models\Declaration\TrailerSegments.cs" />
@@ -927,6 +928,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Declaration\TrailerSegmentationTable.csv" />
     <EmbeddedResource Include="Resources\Declaration\TrailerAeroFeatures.csv" />
+    <EmbeddedResource Include="Resources\Declaration\GenericTowingVehicles.csv" />
     <None Include="Utils\VectoVersionCore.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>VectoVersionCore.cs</LastGenOutput>
