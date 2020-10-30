@@ -17,8 +17,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter {
 		AirdragData CreateAirdragData(IAirdragDeclarationInputData airdragData, Mission mission, Segment segment);
 		AxleGearData CreateAxleGearData(IAxleGearInputData axlegearData);
 		AngledriveData CreateAngledriveData(IAngledriveInputData angledriveData);
-		CombustionEngineData CreateEngineData(IEngineDeclarationInputData engine, IGearboxDeclarationInputData gearbox,
-			IEngineModeDeclarationInputData mode, Mission mission);
+		CombustionEngineData CreateEngineData(IVehicleDeclarationInputData vehicle, IEngineModeDeclarationInputData mode, Mission mission);
 
 		GearboxData CreateGearboxData(IGearboxDeclarationInputData gearbox, IVehicleComponentsDeclaration components, VectoRunData runData, IShiftPolygonCalculator shiftPolygonCalc);
 

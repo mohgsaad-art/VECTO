@@ -210,59 +210,63 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			return exempted;
 		}
 
-		public CombustionEngineData CreateEngineData(
-			IEngineDeclarationInputData engine, IGearboxDeclarationInputData gearbox,
-			IEngineModeDeclarationInputData mode, Mission mission)
+		public CombustionEngineData CreateEngineData(IVehicleDeclarationInputData vehicle, IEngineModeDeclarationInputData mode, Mission mission)
 		{
-			if (!engine.SavedInDeclarationMode) {
+			var engine = vehicle.Components.EngineInputData;
+			var gearbox = vehicle.Components.GearboxInputData;
+
+			if (!engine.SavedInDeclarationMode)
+			{
 				WarnDeclarationMode("EngineData");
 			}
 
-			var retVal = SetCommonCombustionEngineData(engine, null);
-			retVal.IdleSpeed = mode.IdleSpeed;
+			var retVal = SetCommonCombustionEngineData(engine, vehicle.TankSystem);
+			retVal.IdleSpeed = VectoMath.Max(mode.IdleSpeed, vehicle.EngineIdleSpeed);
 
 			retVal.Fuels = new List<CombustionEngineFuelData>();
-			foreach (var fuel in mode.Fuels) {
+			foreach (var fuel in mode.Fuels)
+			{
 				retVal.Fuels.Add(
-					new CombustionEngineFuelData() {
+					new CombustionEngineFuelData()
+					{
 						WHTCUrban = fuel.WHTCUrban,
 						WHTCRural = fuel.WHTCRural,
 						WHTCMotorway = fuel.WHTCMotorway,
 						ColdHotCorrectionFactor = fuel.ColdHotBalancingFactor,
 						CorrectionFactorRegPer = fuel.CorrectionFactorRegPer,
-						FuelData = DeclarationData.FuelData.Lookup(fuel.FuelType, null),
+						FuelData = DeclarationData.FuelData.Lookup(fuel.FuelType, vehicle.TankSystem),
 						ConsumptionMap = FuelConsumptionMapReader.Create(fuel.FuelConsumptionMap),
 						FuelConsumptionCorrectionFactor = DeclarationData.WHTCCorrection.Lookup(
-															mission.MissionType.GetNonEMSMissionType(), fuel.WHTCRural,
-															fuel.WHTCUrban,
-															fuel.WHTCMotorway) * fuel.ColdHotBalancingFactor *
-														fuel.CorrectionFactorRegPer,
+															mission.MissionType.GetNonEMSMissionType(), fuel.WHTCRural, fuel.WHTCUrban,
+															fuel.WHTCMotorway) * fuel.ColdHotBalancingFactor * fuel.CorrectionFactorRegPer,
 					});
 			}
 
 			retVal.Inertia = DeclarationData.Engine.EngineInertia(retVal.Displacement, gearbox.Type);
 			retVal.EngineStartTime = DeclarationData.Engine.DefaultEngineStartTime;
-			//var limits = vehicle.TorqueLimits.ToDictionary(e => e.Gear);
-			var numGears = 5; //gearbox.Gears.Count;
+			var limits = vehicle.TorqueLimits.ToDictionary(e => e.Gear);
+			var numGears = gearbox.Gears.Count;
 			var fullLoadCurves = new Dictionary<uint, EngineFullLoadCurve>(numGears + 1);
 			fullLoadCurves[0] = FullLoadCurveReader.Create(mode.FullLoadCurve, true);
 			fullLoadCurves[0].EngineData = retVal;
-			/*foreach (var gear in gearbox.Gears) {
+			foreach (var gear in gearbox.Gears)
+			{
 				var maxTorque = VectoMath.Min(
 					GbxMaxTorque(gear, numGears, fullLoadCurves[0].MaxTorque),
 					VehMaxTorque(gear, numGears, limits, fullLoadCurves[0].MaxTorque));
 				fullLoadCurves[(uint)gear.Gear] = IntersectFullLoadCurves(fullLoadCurves[0], maxTorque);
-			}*/
+			}
 
 			retVal.FullLoadCurves = fullLoadCurves;
 
 			retVal.WHRType = engine.WHRType;
-			if ((retVal.WHRType & WHRType.ElectricalOutput) != 0) {
+			if ((retVal.WHRType & WHRType.ElectricalOutput) != 0)
+			{
 				retVal.ElectricalWHR = CreateWHRData(
 					mode.WasteHeatRecoveryDataElectrical, mission.MissionType, WHRType.ElectricalOutput);
 			}
-
-			if ((retVal.WHRType & WHRType.MechanicalOutputDrivetrain) != 0) {
+			if ((retVal.WHRType & WHRType.MechanicalOutputDrivetrain) != 0)
+			{
 				retVal.MechanicalWHR = CreateWHRData(
 					mode.WasteHeatRecoveryDataMechanical, mission.MissionType, WHRType.MechanicalOutputDrivetrain);
 			}
@@ -271,7 +275,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 		}
 
 
-		private static WHRData CreateWHRData(IWHRData whrInputData, MissionType missionType, WHRType type)
+			private static WHRData CreateWHRData(IWHRData whrInputData, MissionType missionType, WHRType type)
 		{
 			if (whrInputData == null || whrInputData.GeneratedPower == null) {
 				throw new VectoException("Missing WHR Data");

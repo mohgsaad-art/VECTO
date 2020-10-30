@@ -97,18 +97,18 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		public Watt EngineStationaryFullPower(PerSecond angularSpeed)
 		{
-			return ModelData.FullLoadCurves[DataBus.Gear].FullLoadStationaryTorque(angularSpeed) * angularSpeed;
+			return ModelData.FullLoadCurves[ModelData.FullLoadCurves.Count > 1 ? DataBus.Gear : 0].FullLoadStationaryTorque(angularSpeed) * angularSpeed;
 		}
 
 		public Watt EngineDynamicFullLoadPower(PerSecond avgEngineSpeed, Second dt)
 		{
 			return ComputeFullLoadPower(
-				avgEngineSpeed, ModelData.FullLoadCurves[DataBus.Gear].FullLoadStationaryTorque(avgEngineSpeed), dt, true);
+				avgEngineSpeed, ModelData.FullLoadCurves[ModelData.FullLoadCurves.Count > 1 ? DataBus.Gear : 0].FullLoadStationaryTorque(avgEngineSpeed), dt, true);
 		}
 
 		public Watt EngineDragPower(PerSecond angularSpeed)
 		{
-			return ModelData.FullLoadCurves[DataBus.Gear].DragLoadStationaryPower(angularSpeed);
+			return ModelData.FullLoadCurves[ModelData.FullLoadCurves.Count > 1 ? DataBus.Gear : 0].DragLoadStationaryPower(angularSpeed);
 		}
 
 		public Watt EngineAuxDemand(PerSecond avgEngineSpeed, Second dt)
@@ -197,8 +197,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				};
 			}
 
-			var fullDragTorque = ModelData.FullLoadCurves[DataBus.Gear].DragLoadStationaryTorque(avgEngineSpeed);
-			var stationaryFullLoadTorque = ModelData.FullLoadCurves[DataBus.Gear].FullLoadStationaryTorque(avgEngineSpeed);
+			var fullDragTorque = ModelData.FullLoadCurves[ModelData.FullLoadCurves.Count > 1 ? DataBus.Gear : 0].DragLoadStationaryTorque(avgEngineSpeed); //DataBus.Gear
+			var stationaryFullLoadTorque = ModelData.FullLoadCurves[ModelData.FullLoadCurves.Count > 1 ? DataBus.Gear : 0].FullLoadStationaryTorque(avgEngineSpeed); //DataBus.Gear
 			var dynamicFullLoadPower = ComputeFullLoadPower(avgEngineSpeed, stationaryFullLoadTorque, dt, dryRun);
 
 			var dynamicFullLoadTorque = dynamicFullLoadPower / avgEngineSpeed;
@@ -349,8 +349,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				EngineSpeed = outAngularVelocity,
 				dt = 1.SI<Second>(),
 				InertiaTorqueLoss = 0.SI<NewtonMeter>(),
-				StationaryFullLoadTorque = ModelData.FullLoadCurves[DataBus.Gear].FullLoadStationaryTorque(outAngularVelocity),
-				FullDragTorque = ModelData.FullLoadCurves[DataBus.Gear].DragLoadStationaryTorque(outAngularVelocity),
+				StationaryFullLoadTorque = ModelData.FullLoadCurves[ModelData.FullLoadCurves.Count > 1 ? DataBus.Gear : 0].FullLoadStationaryTorque(outAngularVelocity), //DataBus.Gear
+				FullDragTorque = ModelData.FullLoadCurves[ModelData.FullLoadCurves.Count > 1 ? DataBus.Gear : 0].DragLoadStationaryTorque(outAngularVelocity), //DataBus.Gear
 				EngineTorque = outTorque + auxDemand,
 				EnginePower = (outTorque + auxDemand) * outAngularVelocity,
 			};
@@ -424,7 +424,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 						"FuelConsumptionMap for fuel {2} was extrapolated: range for FC-Map is not sufficient: n: {0}, torque: {1}",
 						avgEngineSpeed.Value(), CurrentState.EngineTorque.Value(), fuelData.FuelType.GetLabel());
 				}
-				var pt1 = ModelData.FullLoadCurves[DataBus.Gear].PT1(avgEngineSpeed);
+				var pt1 = ModelData.FullLoadCurves[ModelData.FullLoadCurves.Count > 1 ? DataBus.Gear : 0].PT1(avgEngineSpeed);
 				if (DataBus.ExecutionMode == ExecutionMode.Declaration && pt1.Extrapolated) {
 					Log.Error(
 						"requested rpm below minimum rpm in pt1 - extrapolating. n_eng_avg: {0}",
@@ -524,7 +524,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				dynFullPowerCalculated = stationaryFullLoadPower;
 			} else {
 				try {
-					var pt1 = ModelData.FullLoadCurves[DataBus.Gear].PT1(avgAngularVelocity).Value.Value();
+					var pt1 = ModelData.FullLoadCurves[ModelData.FullLoadCurves.Count > 1 ? DataBus.Gear : 0].PT1(avgAngularVelocity).Value.Value(); //DataBus.Gear
 					var powerRatio = (PreviousState.EnginePower / stationaryFullLoadPower).Value();
 					var tStarPrev = pt1 * Math.Log(1.0 / (1 - powerRatio), Math.E).SI<Second>();
 					var tStar = tStarPrev + PreviousState.dt;

@@ -240,7 +240,7 @@
         
         <Grid Grid.Row="2" Grid.Column="0" Margin="10,10,10,10">
             <DataGrid ItemsSource="{Binding Messages}" BorderThickness="1" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" 
-                      IsReadOnly="True" HeadersVisibility="All"  RowHeaderWidth="5" RowHeight="5" Name="MessageList">
+                      IsReadOnly="True" HeadersVisibility="All"  RowHeaderWidth="5" RowHeight="20" Name="MessageList">
                 
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Message" Binding="{Binding Message}" Width="*" />
@@ -252,15 +252,19 @@
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding Type}" Value="{x:Static impl:MessageType.StatusMessage}">
                                 <Setter Property="Background" Value="AliceBlue"/>
+                                <Setter Property="Height" Value="30"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding Type}" Value="{x:Static impl:MessageType.InfoMessage}">
                                 <Setter Property="Background" Value="LemonChiffon"/>
+                                <Setter Property="Height" Value="30"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding Type}" Value="{x:Static impl:MessageType.ErrorMessage}">
                                 <Setter Property="Background" Value="Red"/>
+                                <Setter Property="Height" Value="30"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding Type}" Value="{x:Static impl:MessageType.WarningMessage}">
                                 <Setter Property="Background" Value="Gold"/>
+                                <Setter Property="Height" Value="30"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -271,17 +275,21 @@
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding Type}" Value="{x:Static impl:MessageType.StatusMessage}">
                                 <Setter Property="Foreground" Value="Black"/>
+                                <Setter Property="Height" Value="30"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding Type}" Value="{x:Static impl:MessageType.InfoMessage}">
                                 <Setter Property="Foreground" Value="DimGray"/>
+                                <Setter Property="Height" Value="30"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding Type}" Value="{x:Static impl:MessageType.ErrorMessage}">
                                 <Setter Property="Foreground" Value="White"/>
                                 <Setter Property="FontWeight" Value="Bold"/>
+                                <Setter Property="Height" Value="30"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding Type}" Value="{x:Static impl:MessageType.WarningMessage}">
                                 <Setter Property="Foreground" Value="Black"/>
                                 <Setter Property="FontWeight" Value="Bold"/>
+                                <Setter Property="Height" Value="30"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
