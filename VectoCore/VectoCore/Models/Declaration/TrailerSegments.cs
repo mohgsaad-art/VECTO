@@ -81,6 +81,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 				Aero6 = row.ParseDouble("aero_6"),
 				Aero7 = row.ParseDouble("aero_7"),
 				Aero8 = row.ParseDouble("aero_8"),
+				MaxGcm = row.ParseDouble("max_gcm")
 			};
 		}
 

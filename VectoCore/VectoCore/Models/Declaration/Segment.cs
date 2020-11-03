@@ -79,5 +79,6 @@ namespace TUGraz.VectoCore.Models.Declaration
 		public double Aero6 { get; set; }
 		public double Aero7 { get; set; }
 		public double Aero8 { get; set; }
+		public double MaxGcm { get; set; }
 	}
 }

@@ -76,7 +76,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 		protected IDeclarationDataAdapter DataAdapter => _da;
 		protected DeclarationTrailerDataAdapter TrailerDataAdapter = new DeclarationTrailerDataAdapter();
 
-		private readonly DeclarationDataAdapterCompletedBusGeneric _da = new DeclarationDataAdapterCompletedBusGeneric();
+		private readonly DeclarationDataAdapterHeavyLorry _da = new DeclarationDataAdapterHeavyLorry();
 
 		private Segment _segment;
 		private DriverData _driverdata;
@@ -92,7 +92,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 		private IDeclarationInputDataProvider _genericInputDataProvider;
 		private ITrailerDeclarationInputData _trailer;
 		private TrailerSegment _trailerSegment;
-		private Dictionary<string, object> _specificTrailerData;
+		private TrailerData _specificTrailerData;
 
 		[Inject]
 		public IDeclarationInjectFactory DeclarationFactory { protected get; set; }
@@ -201,7 +201,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			_driverdata = TrailerDataAdapter.CreateDriverData();
 			_driverdata.AccelerationCurve = AccelerationCurveReader.ReadFromStream(_segment.AccelerationFile);
 
-			var tempVehicle = TrailerDataAdapter.CreateVehicleData(_genericInputDataProvider.JobInputData.Vehicle, _segment, _segment.Missions.First(), _segment.Missions.First().Loadings.First());
+			var tempVehicle = TrailerDataAdapter.CreateVehicleData(_genericInputDataProvider.JobInputData.Vehicle, _trailer, _segment, _segment.Missions.First(), _segment.Missions.First().Loadings.First(), _specificTrailerData);
 
 			_airdragData = TrailerDataAdapter.CreateAirdragData(_genericInputDataProvider.JobInputData.Vehicle.Components.AirdragInputData, _segment.Missions.First(), _segment);
 
@@ -253,7 +253,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			var simulationRunData = new VectoRunData
 			{
 				Loading = loading.Key,
-				VehicleData = TrailerDataAdapter.CreateVehicleData(vehicle, _segment, mission, loading),
+				VehicleData = TrailerDataAdapter.CreateVehicleData(vehicle, _trailer, _segment, mission, loading, _specificTrailerData),
 				VehicleDesignSpeed = _segment.DesignSpeed,
 				AirdragData = TrailerDataAdapter.CreateAirdragData(_genericInputDataProvider.JobInputData.Vehicle.Components.AirdragInputData, mission, _segment),
 				EngineData = TrailerDataAdapter.CreateEngineData(_genericInputDataProvider.JobInputData.Vehicle, engineMode, mission), 
@@ -282,7 +282,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			};
 			simulationRunData.EngineData.FuelMode = modeIdx;
 			simulationRunData.VehicleData.VehicleClass = _segment.VehicleClass;
-			simulationRunData.VehicleData.WheelsInertia = (KilogramSquareMeter)_specificTrailerData["inertia"];
+			//simulationRunData.VehicleData.WheelsInertia = (KilogramSquareMeter)_specificTrailerData.Inertia;
 
 			return simulationRunData;
 		}
