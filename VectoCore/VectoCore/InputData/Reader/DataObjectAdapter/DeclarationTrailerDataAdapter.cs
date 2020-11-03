@@ -133,8 +133,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			//TODO: calc CurbMassTV
 			var CurbMassTV = 0;
 			//TODO: rename this to payload(?)
-			retVal.BodyAndTrailerMass =
-				mission.CurbMass + Kilogram.Create(specificTrailerData.VolumeOrientation ? mission.TotalCargoVolume.Value() * 88 : Math.Min(loading.Value(), (specificTrailerData.MaxGcm-CurbMassTV-trailerData.CurbMass.Value()))); 
+			retVal.BodyAndTrailerMass = Kilogram.Create(specificTrailerData.VolumeOrientation ? mission.TotalCargoVolume.Value() * 88 : Math.Min(loading.Value(), (specificTrailerData.MaxGcm-CurbMassTV-trailerData.CurbMass.Value()))); 
 
 			retVal.Loading = loading;
 			retVal.PassengerCount = passengerCount;

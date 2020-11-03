@@ -51,7 +51,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(tns + XMLNames.Component_Manufacturer, modelData.VehicleData.Manufacturer),
 				new XElement(tns + XMLNames.Component_ManufacturerAddress, modelData.VehicleData.ManufacturerAddress),
 				new XElement(tns + XMLNames.Vehicle_VIN, modelData.VehicleData.VIN),
-				new XElement(tns + XMLNames.Trailer_LegislativeCategory, modelData.VehicleData.InputDataTrailer.LegislativeCategory),
+				/*new XElement(tns + XMLNames.Trailer_LegislativeCategory, modelData.VehicleData.InputDataTrailer.LegislativeCategory),
 				new XElement(tns + XMLNames.Trailer_AxleCount, modelData.VehicleData.InputDataTrailer.NumberOfAxles),
 				new XElement(tns + XMLNames.Trailer_TrailerType, modelData.VehicleData.InputDataTrailer.TrailerType),
 				new XElement(tns + XMLNames.Trailer_BodyCode, modelData.VehicleData.InputDataTrailer.BodyworkCode),
@@ -67,7 +67,20 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(tns + XMLNames.Trailer_InternalHeightBody, modelData.VehicleData.InputDataTrailer.InternalBodyHeight),
 				new XElement(tns + XMLNames.Trailer_CargoVolume, modelData.VehicleData.InputDataTrailer.CargoVolume),
 				new XElement(tns + XMLNames.Trailer_AeroFeatureTechnologies, modelData.VehicleData.InputDataTrailer.AeroFeatureTechnologies),
-
+				*/
+				new XElement(tns + XMLNames.Vehicle_LegislativeClass, modelData.VehicleData.LegislativeClass.ToXMLFormat()),
+				new XElement(
+					tns + XMLNames.Vehicle_GrossVehicleMass,
+					XMLHelper.ValueAsUnit(modelData.VehicleData.GrossVehicleMass, XMLNames.Unit_t, 1)),
+				//new XElement(tns + XMLNames.Vehicle_CurbMassChassis, XMLHelper.ValueAsUnit(modelData.VehicleData.CurbMass, XMLNames.Unit_kg)),
+				new XElement(tns + XMLNames.Vehicle_ZeroEmissionVehicle, modelData.VehicleData.ZeroEmissionVehicle),
+				new XElement(tns + XMLNames.Vehicle_HybridElectricHDV, modelData.VehicleData.HybridElectricHDV),
+				new XElement(tns + XMLNames.Vehicle_DualFuelVehicle, modelData.VehicleData.DualFuelVehicle),
+				new XElement(tns + XMLNames.Vehicle_AxleConfiguration, modelData.VehicleData.AxleConfiguration.GetName()),
+				new XElement(tns + XMLNames.Report_Vehicle_VehicleGroup, modelData.VehicleData.VehicleClass.GetClassNumber()),
+				new XElement(tns + XMLNames.Vehicle_VocationalVehicle, modelData.VehicleData.VocationalVehicle),
+				new XElement(tns + XMLNames.Vehicle_SleeperCab, modelData.VehicleData.SleeperCab),
+				new XElement(tns + XMLNames.Vehicle_PTO, modelData.PTO != null),
 				//GetADAS(modelData.VehicleData.ADAS),
 				GetTorqueLimits(modelData.EngineData)
 				//VehicleComponents(modelData, fuelModes)
