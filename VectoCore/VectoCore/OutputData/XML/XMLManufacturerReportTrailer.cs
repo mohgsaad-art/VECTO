@@ -27,6 +27,7 @@
 *   Raphael Luz, luz@ivt.tugraz.at, IVT, Graz University of Technology
 *   Markus Quaritsch, markus.quaritsch@tugraz.at, IVT, Graz University of Technology
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
+*   Vasileios Kouliaridis, vasilis.k@emisia.com, EMISIA 
 */
 
 using System.Collections.Generic;
@@ -42,16 +43,24 @@ namespace TUGraz.VectoCore.OutputData.XML
 {
 	public class XMLManufacturerReportTrailer : AbstractXMLManufacturerReport
 	{
-		
+
+		public XMLManufacturerReportTrailer()
+		{
+			tns = "urn:tugraz:ivt:VectoAPI:DeclarationOutput:v0.9";
+			VehiclePart = new XElement(tns + XMLNames.Component_Vehicle);
+			Results = new XElement(tns + XMLNames.Report_Results);
+		}
+
 		public override void Initialize(VectoRunData modelData, List<List<FuelData.Entry>> fuelModes)
 		{
 			VehiclePart.Add(
-				new XAttribute(xsi + "type", "VehicleTruckType"),
+				new XAttribute(xsi + "type", "VehicleTrailerType"),
 				new XElement(tns + XMLNames.Component_Model, modelData.VehicleData.ModelName),
 				new XElement(tns + XMLNames.Component_Manufacturer, modelData.VehicleData.Manufacturer),
 				new XElement(tns + XMLNames.Component_ManufacturerAddress, modelData.VehicleData.ManufacturerAddress),
 				new XElement(tns + XMLNames.Vehicle_VIN, modelData.VehicleData.VIN),
-				/*new XElement(tns + XMLNames.Trailer_LegislativeCategory, modelData.VehicleData.InputDataTrailer.LegislativeCategory),
+				
+				new XElement(tns + XMLNames.Trailer_LegislativeCategory, modelData.VehicleData.InputDataTrailer.LegislativeCategory),
 				new XElement(tns + XMLNames.Trailer_AxleCount, modelData.VehicleData.InputDataTrailer.NumberOfAxles),
 				new XElement(tns + XMLNames.Trailer_TrailerType, modelData.VehicleData.InputDataTrailer.TrailerType),
 				new XElement(tns + XMLNames.Trailer_BodyCode, modelData.VehicleData.InputDataTrailer.BodyworkCode),
@@ -67,12 +76,12 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(tns + XMLNames.Trailer_InternalHeightBody, modelData.VehicleData.InputDataTrailer.InternalBodyHeight),
 				new XElement(tns + XMLNames.Trailer_CargoVolume, modelData.VehicleData.InputDataTrailer.CargoVolume),
 				new XElement(tns + XMLNames.Trailer_AeroFeatureTechnologies, modelData.VehicleData.InputDataTrailer.AeroFeatureTechnologies),
-				*/
-				new XElement(tns + XMLNames.Vehicle_LegislativeClass, modelData.VehicleData.LegislativeClass.ToXMLFormat()),
+				
+				/*new XElement(tns + XMLNames.Vehicle_LegislativeClass, modelData.VehicleData.LegislativeClass.ToXMLFormat()),
 				new XElement(
 					tns + XMLNames.Vehicle_GrossVehicleMass,
 					XMLHelper.ValueAsUnit(modelData.VehicleData.GrossVehicleMass, XMLNames.Unit_t, 1)),
-				//new XElement(tns + XMLNames.Vehicle_CurbMassChassis, XMLHelper.ValueAsUnit(modelData.VehicleData.CurbMass, XMLNames.Unit_kg)),
+				new XElement(tns + XMLNames.Vehicle_CurbMassChassis, XMLHelper.ValueAsUnit(modelData.VehicleData.CurbMass, XMLNames.Unit_kg)),
 				new XElement(tns + XMLNames.Vehicle_ZeroEmissionVehicle, modelData.VehicleData.ZeroEmissionVehicle),
 				new XElement(tns + XMLNames.Vehicle_HybridElectricHDV, modelData.VehicleData.HybridElectricHDV),
 				new XElement(tns + XMLNames.Vehicle_DualFuelVehicle, modelData.VehicleData.DualFuelVehicle),
@@ -80,7 +89,8 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(tns + XMLNames.Report_Vehicle_VehicleGroup, modelData.VehicleData.VehicleClass.GetClassNumber()),
 				new XElement(tns + XMLNames.Vehicle_VocationalVehicle, modelData.VehicleData.VocationalVehicle),
 				new XElement(tns + XMLNames.Vehicle_SleeperCab, modelData.VehicleData.SleeperCab),
-				new XElement(tns + XMLNames.Vehicle_PTO, modelData.PTO != null),
+				new XElement(tns + XMLNames.Vehicle_PTO, modelData.PTO != null),*/
+
 				//GetADAS(modelData.VehicleData.ADAS),
 				GetTorqueLimits(modelData.EngineData)
 				//VehicleComponents(modelData, fuelModes)

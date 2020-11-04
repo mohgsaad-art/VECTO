@@ -27,6 +27,7 @@
 *   Raphael Luz, luz@ivt.tugraz.at, IVT, Graz University of Technology
 *   Markus Quaritsch, markus.quaritsch@tugraz.at, IVT, Graz University of Technology
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
+*   Vasileios Kouliaridis, vasilis.k@emisia.com, EMISIA
 */
 
 using System;
@@ -49,9 +50,9 @@ using TUGraz.VectoHashing;
 
 namespace TUGraz.VectoCore.OutputData.XML
 {
-	public class XMLCustomerReportTrailer
+	public class XMLCustomerReportTrailer : AbstractXMLCustomerReport
 	{
-		public const string CURRENT_SCHEMA_VERSION = "0.8";
+		public const string CURRENT_SCHEMA_VERSION = "0.9";
 
 		protected readonly XElement VehiclePart;
 
@@ -78,7 +79,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 			Results = new XElement(tns + XMLNames.Report_Results);
 		}
 
-		public virtual void Initialize(VectoRunData modelData, List<List<FuelData.Entry>> fuelModes)
+		public override void Initialize(VectoRunData modelData, List<List<FuelData.Entry>> fuelModes)
 		{
 			var exempted = modelData.Exempted;
 			VehiclePart.Add(
@@ -86,7 +87,8 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(tns + XMLNames.Component_Manufacturer, modelData.VehicleData.Manufacturer),
 				new XElement(tns + XMLNames.Component_ManufacturerAddress, modelData.VehicleData.ManufacturerAddress),
 				new XElement(tns + XMLNames.Vehicle_VIN, modelData.VehicleData.VIN),
-				/*new XElement(tns + XMLNames.Trailer_LegislativeCategory, modelData.VehicleData.InputDataTrailer.LegislativeCategory),
+
+				new XElement(tns + XMLNames.Trailer_LegislativeCategory, modelData.VehicleData.InputDataTrailer.LegislativeCategory),
 				new XElement(tns + XMLNames.Trailer_AxleCount, modelData.VehicleData.InputDataTrailer.NumberOfAxles),
 				new XElement(tns + XMLNames.Trailer_TrailerType, modelData.VehicleData.InputDataTrailer.TrailerType),
 				new XElement(tns + XMLNames.Trailer_BodyCode, modelData.VehicleData.InputDataTrailer.BodyworkCode),
@@ -101,15 +103,15 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(tns + XMLNames.Trailer_PositionXLastAxle, modelData.VehicleData.InputDataTrailer.LengthTrailerFrontToLastAxleCenter),
 				new XElement(tns + XMLNames.Trailer_InternalHeightBody, modelData.VehicleData.InputDataTrailer.InternalBodyHeight),
 				new XElement(tns + XMLNames.Trailer_CargoVolume, modelData.VehicleData.InputDataTrailer.CargoVolume),
-				new XElement(tns + XMLNames.Trailer_AeroFeatureTechnologies, modelData.VehicleData.InputDataTrailer.AeroFeatureTechnologies),
-				*/
-				new XElement(tns + XMLNames.Vehicle_LegislativeClass, modelData.VehicleData.LegislativeClass.ToXMLFormat()),
+				new XElement(tns + XMLNames.Trailer_AeroFeatureTechnologies, modelData.VehicleData.InputDataTrailer.AeroFeatureTechnologies)
+				
+				/*new XElement(tns + XMLNames.Vehicle_LegislativeClass, modelData.VehicleData.LegislativeClass.ToXMLFormat()),
 				new XElement(tns + XMLNames.Vehicle_GrossVehicleMass,
 					XMLHelper.ValueAsUnit(modelData.VehicleData.GrossVehicleMass, XMLNames.Unit_t, 1)),
 				//new XElement(tns + XMLNames.Vehicle_CurbMassChassis, XMLHelper.ValueAsUnit(modelData.VehicleData.CurbMass, XMLNames.Unit_kg)),
 				new XElement(tns + XMLNames.Vehicle_ZeroEmissionVehicle, modelData.VehicleData.ZeroEmissionVehicle),
 				new XElement(tns + XMLNames.Vehicle_HybridElectricHDV, modelData.VehicleData.HybridElectricHDV),
-				new XElement(tns + XMLNames.Vehicle_DualFuelVehicle, modelData.VehicleData.DualFuelVehicle)
+				new XElement(tns + XMLNames.Vehicle_DualFuelVehicle, modelData.VehicleData.DualFuelVehicle)*/
 			);
 
 			if (exempted) {
@@ -186,7 +188,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 
 		
 
-		public virtual void WriteResult(XMLDeclarationReport.ResultEntry resultEntry)
+		public override void WriteResult(XMLDeclarationReport.ResultEntry resultEntry)
 		{
 			//foreach (var resultEntry in entry.ResultEntry) {
 			_allSuccess &= resultEntry.Status == VectoRun.Status.Success;
@@ -257,7 +259,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 					XmlConvert.ToString(DateTime.Now, XmlDateTimeSerializationMode.Utc)));
 		}
 
-		public virtual void GenerateReport(XElement resultSignature)
+		public override void GenerateReport(XElement resultSignature)
 		{
 			
 			var retVal = new XDocument();
@@ -304,7 +306,5 @@ namespace TUGraz.VectoCore.OutputData.XML
 			var h = VectoHash.Load(stream);
 			Report = h.AddHash();
 		}
-
-		public XDocument Report { get; protected set; }
 	}
 }

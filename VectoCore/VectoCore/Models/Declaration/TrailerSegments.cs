@@ -81,8 +81,46 @@ namespace TUGraz.VectoCore.Models.Declaration
 				Aero6 = row.ParseDouble("aero_6"),
 				Aero7 = row.ParseDouble("aero_7"),
 				Aero8 = row.ParseDouble("aero_8"),
-				MaxGcm = row.ParseDouble("max_gcm")
+				MaxGcm = row.ParseDouble("max_gcm"),
+				Missions = CreateMissions(row)
 			};
+		}
+
+		private static Mission[] CreateMissions(DataRow row)
+		{
+			//TODO: get only the missions for the specific trailer, i think they are 4
+			var missionTypes = Enum.GetValues(typeof(MissionType)).Cast<MissionType>();
+			var missions = new List<Mission>();
+			foreach (var missionType in missionTypes) {
+
+				//double maxPayload = 0;
+				double minLoad = 0;
+				double maxLoad = 0;
+
+				//TODO: get payloads dynamicly from row based on mission
+				switch (missionType) {
+					case MissionType.LongHaul:
+						minLoad = row.ParseDouble("LH_payload_low");
+						maxLoad = row.ParseDouble("LH_payload_rep");
+						break;
+					default:
+						minLoad = row.ParseDouble("OM_payload_low");
+						maxLoad = row.ParseDouble("OM_payload_rep");
+						break;
+				}
+
+				var mission = new Mission
+				{
+					MissionType = missionType,
+					//MaxPayload = Kilogram.Create(maxPayload),
+					MinLoad = Kilogram.Create(minLoad),
+					MaxLoad = Kilogram.Create(maxLoad),
+					//DefaultCDxA = (SquareMeter)row[""]
+				};
+				missions.Add(mission);
+			}
+
+			return missions.ToArray();
 		}
 
 

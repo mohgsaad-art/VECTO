@@ -49,7 +49,7 @@ using TUGraz.VectoHashing;
 
 namespace TUGraz.VectoCore.OutputData.XML
 {
-	public class XMLCustomerReport
+	public class XMLCustomerReport : AbstractXMLCustomerReport
 	{
 		public const string CURRENT_SCHEMA_VERSION = "0.8";
 
@@ -79,7 +79,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 			Results = new XElement(tns + XMLNames.Report_Results);
 		}
 
-		public virtual void Initialize(VectoRunData modelData, List<List<FuelData.Entry>> fuelModes)
+		public override void Initialize(VectoRunData modelData, List<List<FuelData.Entry>> fuelModes)
 		{
 			var exempted = modelData.Exempted;
 			VehiclePart.Add(
@@ -172,7 +172,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 
 		
 
-		public virtual void WriteResult(XMLDeclarationReport.ResultEntry resultEntry)
+		public override void WriteResult(XMLDeclarationReport.ResultEntry resultEntry)
 		{
 			//foreach (var resultEntry in entry.ResultEntry) {
 			_allSuccess &= resultEntry.Status == VectoRun.Status.Success;
@@ -243,7 +243,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 					XmlConvert.ToString(DateTime.Now, XmlDateTimeSerializationMode.Utc)));
 		}
 
-		public virtual void GenerateReport(XElement resultSignature)
+		public override void GenerateReport(XElement resultSignature)
 		{
 			
 			var retVal = new XDocument();
@@ -290,7 +290,5 @@ namespace TUGraz.VectoCore.OutputData.XML
 			var h = VectoHash.Load(stream);
 			Report = h.AddHash();
 		}
-
-		public XDocument Report { get; protected set; }
 	}
 }

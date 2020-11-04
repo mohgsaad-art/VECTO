@@ -170,6 +170,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 		public double TrailerAxleWeightShare { get; internal set; }
 		public SquareMeter DeltaCdA { get; internal set; }
 		public CubicMeter CargoVolume { get; internal set; }
+
 	}
 
 	public enum TrailerType

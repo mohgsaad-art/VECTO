@@ -52,7 +52,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 	{
 		protected IXMLManufacturerReport ManufacturerRpt;
 
-		protected XMLCustomerReport CustomerRpt;
+		protected AbstractXMLCustomerReport CustomerRpt;
 
 
 		protected IDictionary<Tuple<MissionType, LoadingType>, double> _weightingFactors;
@@ -316,10 +316,14 @@ namespace TUGraz.VectoCore.OutputData.XML
 		{
 			if (modelData.Exempted) {
 				ManufacturerRpt = new XMLManufacturerReportExemptedTruck();
+				CustomerRpt = new XMLCustomerReport();
+			} else if(modelData.VehicleData.InputDataTrailer != null) {
+					ManufacturerRpt = new XMLManufacturerReportTrailer();
+					CustomerRpt = new XMLCustomerReportTrailer();
 			} else {
 				ManufacturerRpt = new XMLManufacturerReportTruck();
+				CustomerRpt = new XMLCustomerReport();
 			}
-			CustomerRpt = new XMLCustomerReport();
 		}
 
 		private static IDictionary<Tuple<MissionType, LoadingType>, double> ZeroWeighting
