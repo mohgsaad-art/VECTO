@@ -191,17 +191,17 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 		}
 
 		public virtual VehicleData CreateTrailerData(IVehicleDeclarationInputData data, ITrailerDeclarationInputData trailer, Segment segment,
-			Mission mission, Kilogram loading, TrailerData specificTrailerData)
+			Mission mission, KeyValuePair<LoadingType, Tuple<Kilogram, double?>> loading, TrailerData specificTrailerData)
 		{
 			if (!data.SavedInDeclarationMode)
 			{
 				WarnDeclarationMode("VehicleData");
 			}
 
-			return GetTrailerData(data, trailer, segment, mission, loading, specificTrailerData);
+			return GetTrailerData(data, trailer, segment, mission, loading.Value.Item1, loading.Value.Item2, specificTrailerData);
 		}
 		protected virtual VehicleData GetTrailerData(IVehicleDeclarationInputData data, ITrailerDeclarationInputData trailerData, Segment segment,
-			Mission mission, Kilogram loading, TrailerData specificTrailerData)
+			Mission mission, Kilogram loading, double? passengerCount, TrailerData specificTrailerData)
 		{
 			var retVal = SetCommonVehicleData(data);
 			retVal.LegislativeClass = data.LegislativeClass;
@@ -210,17 +210,17 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			retVal.VIN = data.VIN;
 			retVal.ManufacturerAddress = data.ManufacturerAddress;
 			retVal.VehicleClass = segment.VehicleClass;
-			retVal.TrailerGrossVehicleMass = mission.Trailer.Sum(t => t.TrailerGrossVehicleWeight).DefaultIfNull(0);
+			retVal.TrailerGrossVehicleMass = trailerData.CurbMass;
 
 			retVal.InputDataTrailer = trailerData;
 
 			//TODO: calc CurbMassTV
 			var CurbMassTV = 0;
 			//TODO: rename this to payload(?)
-			retVal.BodyAndTrailerMass = Kilogram.Create(specificTrailerData.VolumeOrientation ? mission.TotalCargoVolume.Value() * 88 : Math.Min(loading.Value(), (specificTrailerData.MaxGcm - CurbMassTV - trailerData.CurbMass.Value())));
+			retVal.BodyAndTrailerMass = Kilogram.Create(specificTrailerData.VolumeOrientation ? trailerData.CargoVolume.Value() * 88 : Math.Min(loading.Value(), (specificTrailerData.MaxGcm - CurbMassTV - trailerData.CurbMass.Value())));
 
 			retVal.Loading = loading;
-			retVal.PassengerCount = 1; //TODO: do i need this for trailers?
+			retVal.PassengerCount = passengerCount; //TODO: do i need this for trailers?
 			retVal.DynamicTyreRadius =
 				data.Components.AxleWheels.AxlesDeclaration.Where(axle => axle.AxleType == AxleType.VehicleDriven)
 					.Select(da => DeclarationData.Wheels.Lookup(da.Tyre.Dimension).DynamicTyreRadius)
@@ -232,7 +232,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			else
 			{
 				retVal.CargoVolume = mission.MissionType != MissionType.Construction
-					? mission.TotalCargoVolume
+					? trailerData.CargoVolume //mission.TotalCargoVolume
 					: 0.SI<CubicMeter>();
 			}
 
@@ -987,16 +987,15 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 		public IDeclarationInputDataProvider GetGenericVehicleData(string vehicleCode)
 		{
-			//TODO clean code
-			var filePath = @"F:\Vecto\vecto-dev_bt\VectoCore\VectoCore\Resources\Declaration\GenericVehicles\" + vehicleCode + ".xml";
+			var genericXml = RessourceHelper.ReadStream(DeclarationData.DeclarationDataResourcePrefix + ".GenericVehicles." + vehicleCode + ".xml");
 			var xmlDoc = new XmlDocument();
-			xmlDoc.Load(filePath);
+			xmlDoc.Load(genericXml);
 
 			IKernel kernel = new StandardKernel(new VectoNinjectModule());
 			var inputReader = kernel.Get<IXMLInputDataReader>();
-			inputReader.CreateDeclaration(filePath);
-
-			return inputReader.CreateDeclaration(filePath);
+			
+			XmlReader xmlReader = new XmlNodeReader(xmlDoc);
+			return inputReader.CreateDeclaration(xmlReader);
 		}
 
 		public TrailerData GetSpecificTrailerData(TrailerSegment trailerSegment, ITrailerDeclarationInputData trailer, IVehicleDeclarationInputData genericVehicle)

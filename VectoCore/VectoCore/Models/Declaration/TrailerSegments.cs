@@ -88,8 +88,12 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		private static Mission[] CreateMissions(DataRow row)
 		{
-			//TODO: get only the missions for the specific trailer, i think they are 4
-			var missionTypes = Enum.GetValues(typeof(MissionType)).Cast<MissionType>();
+			//TODO: need to re-write this once i uderstand it
+			var missionTypes = new[] {
+				MissionType.LongHaul, MissionType.LongHaulEMS, MissionType.RegionalDelivery,
+				MissionType.RegionalDeliveryEMS
+			}.ToList();
+
 			var missions = new List<Mission>();
 			foreach (var missionType in missionTypes) {
 
@@ -112,10 +116,14 @@ namespace TUGraz.VectoCore.Models.Declaration
 				var mission = new Mission
 				{
 					MissionType = missionType,
+					//CycleFile = RessourceHelper.ReadStream(DeclarationData.DeclarationDataResourcePrefix + ".MissionCycles." +
+					//										missionType.ToString().Replace("EMS", "") +
+					//										Constants.FileExtensions.CycleFile),
 					//MaxPayload = Kilogram.Create(maxPayload),
 					MinLoad = Kilogram.Create(minLoad),
 					MaxLoad = Kilogram.Create(maxLoad),
-					//DefaultCDxA = (SquareMeter)row[""]
+					AxleWeightDistribution = new[] {20.0, 25.0} //TODO: Read this from mastertable(?)
+					//DefaultCDxA =
 				};
 				missions.Add(mission);
 			}

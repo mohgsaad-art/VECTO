@@ -14,7 +14,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter {
 	{
 		DriverData CreateDriverData();
 		VehicleData CreateVehicleData(IVehicleDeclarationInputData vehicle, ITrailerDeclarationInputData trailer, Segment segment, Mission mission, KeyValuePair<LoadingType, Tuple<Kilogram, double?>> loading);
-		VehicleData CreateTrailerData(IVehicleDeclarationInputData vehicle, ITrailerDeclarationInputData trailer, Segment segment, Mission mission, Kilogram loading, TrailerData specificTrailerData);
+		VehicleData CreateTrailerData(IVehicleDeclarationInputData vehicle, ITrailerDeclarationInputData trailer, Segment segment, Mission mission, KeyValuePair<LoadingType, Tuple<Kilogram, double?>> loading, TrailerData specificTrailerData);
 		AirdragData CreateAirdragData(IAirdragDeclarationInputData airdragData, Mission mission, Segment segment);
 		AirdragData CreateTrailerAirdragData(IAirdragDeclarationInputData airdragData, Mission mission, Segment segment);
 		AxleGearData CreateAxleGearData(IAxleGearInputData axlegearData);

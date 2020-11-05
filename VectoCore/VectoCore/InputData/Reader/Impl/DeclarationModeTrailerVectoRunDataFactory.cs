@@ -125,19 +125,18 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			var engineModes = engine.EngineModes;
 			var trailer = TrailerInputDataProvider.JobInputData.Trailer;
 
-			for (var modeIdx = 0; modeIdx < engineModes.Count; modeIdx++) { //WHY?
-				
+			for (var modeIdx = 0; modeIdx < engineModes.Count; modeIdx++) {
+
+				//TODO: Nick aletras want the vsum of the 10(5*2 loadings) generic missions + the 8(4*2 loadings) specific trailer
+
 				foreach (var mission in _segment.Missions) {
 					foreach (var loading in mission.Loadings) {
+						if (_trailerSegment.Missions.Any(x => x.MissionType == mission.MissionType)) {
+							yield return CreateTrailerVectoRunData(vehicle, trailer, modeIdx, mission, loading); ;
+						}
+						
 						yield return CreateVectoRunData(vehicle, modeIdx, mission, loading);
 					}
-				}
-				//TODO: Nick aletras want the vsum of the 10(5*2 loadings) generic missions + the 8(4*2 loadings) specific trailer
-				//This needs to be re-written
-				foreach (var mission in _trailerSegment.Missions)
-				{
-					yield return CreateTrailerVectoRunData(vehicle, trailer, modeIdx, mission, mission.MinLoad, LoadingType.LowLoading);
-					yield return CreateTrailerVectoRunData(vehicle, trailer, modeIdx, mission, mission.MaxLoad, LoadingType.FullLoading);
 				}
 			}
 		}
@@ -159,19 +158,13 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			VectoRunData powertrainConfig;
 			List<List<FuelData.Entry>> fuels;
 
-			//I dont think i need this
-			/*if (_genericInputDataProvider.JobInputData.Vehicle.ExemptedVehicle) {
-				powertrainConfig = CreateVectoRunData(_genericInputDataProvider.JobInputData.Vehicle, 0, null, new KeyValuePair<LoadingType, Tuple<Kilogram, double?>>());
-				fuels = new List<List<FuelData.Entry>>();
-			} else {*/
 			//TODO: i must get both low and full loadings
-				powertrainConfig = _segment.Missions.Select(
-						mission => CreateTrailerVectoRunData(_genericInputDataProvider.JobInputData.Vehicle, _trailer, 0, mission, mission.LowLoad, LoadingType.LowLoading)
-						).FirstOrDefault(x => x != null);
-				fuels = _genericInputDataProvider.JobInputData.Vehicle.Components.EngineInputData.EngineModes.Select(x => x.Fuels.Select(f => DeclarationData.FuelData.Lookup(f.FuelType, null)).ToList())
-						.ToList();
-			//}
-			//TODO : Fix error in 0.9 report template
+			powertrainConfig = _segment.Missions.Select(
+					mission => CreateTrailerVectoRunData(_genericInputDataProvider.JobInputData.Vehicle, _trailer, 0, mission, mission.Loadings.FirstOrDefault())
+					).FirstOrDefault(x => x != null);
+			fuels = _genericInputDataProvider.JobInputData.Vehicle.Components.EngineInputData.EngineModes.Select(x => x.Fuels.Select(f => DeclarationData.FuelData.Lookup(f.FuelType, null)).ToList())
+					.ToList();
+		
 			Report.InitializeReport(powertrainConfig, fuels);
 		}
 
@@ -291,7 +284,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 		}
 
 		protected VectoRunData CreateTrailerVectoRunData(
-			IVehicleDeclarationInputData vehicle, ITrailerDeclarationInputData trailer, int modeIdx, Mission mission, Kilogram loading, LoadingType ltype)
+			IVehicleDeclarationInputData vehicle, ITrailerDeclarationInputData trailer, int modeIdx, Mission mission, KeyValuePair<LoadingType, Tuple<Kilogram, double?>> loading)
 		{
 			var engine = _genericInputDataProvider.JobInputData.Vehicle.Components.EngineInputData;
 			var engineModes = engine.EngineModes;
@@ -309,7 +302,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			}
 			var simulationRunData = new VectoRunData
 			{
-				Loading = ltype,
+				Loading = loading.Key,
 				VehicleData = TrailerDataAdapter.CreateTrailerData(vehicle, _trailer, _segment, mission, loading, _specificTrailerData),
 				VehicleDesignSpeed = _segment.DesignSpeed,
 				AirdragData = TrailerDataAdapter.CreateTrailerAirdragData(_genericInputDataProvider.JobInputData.Vehicle.Components.AirdragInputData, mission, _segment),
@@ -326,7 +319,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 				DriverData = _driverdata,
 				ExecutionMode = ExecutionMode.Declaration,
 				JobName = TrailerInputDataProvider.JobInputData.JobName,
-				ModFileSuffix = (engineModes.Count > 1 ? $"_EngineMode{modeIdx}_" : "") + ltype,
+				ModFileSuffix = (engineModes.Count > 1 ? $"_EngineMode{modeIdx}_" : "") + loading.Key,
 				Report = Report,
 				Mission = mission,
 				PTO = mission.MissionType == MissionType.MunicipalUtility

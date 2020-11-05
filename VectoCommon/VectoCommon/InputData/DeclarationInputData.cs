@@ -225,8 +225,6 @@ namespace TUGraz.VectoCommon.InputData
 
 		Kilogram TPMLMTotalTrailer { get; }
 
-		Kilogram TPMLMAxleAssembly { get; }
-		
 		Meter ExternalBodyLength { get; }
 
 		Meter ExternalBodyWidth { get; }
