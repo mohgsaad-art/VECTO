@@ -930,10 +930,10 @@
     <EmbeddedResource Include="Resources\Declaration\TrailerSegmentationTable.csv" />
     <EmbeddedResource Include="Resources\Declaration\TrailerAeroFeatures.csv" />
     <EmbeddedResource Include="Resources\Declaration\GenericTowingVehicles.csv" />
-    <EmbeddedResource Include="Resources\XSD\VectoOutputManufacturer.1.0.xsd">
+    <EmbeddedResource Include="Resources\XSD\VectoOutputManufacturer.0.9.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\XSD\VectoOutputCustomer.1.0.xsd">
+    <EmbeddedResource Include="Resources\XSD\VectoOutputCustomer.0.9.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="Utils\VectoVersionCore.tt">
