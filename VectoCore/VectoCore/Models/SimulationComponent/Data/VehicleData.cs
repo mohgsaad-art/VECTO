@@ -187,7 +187,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 			protected internal set { _rollResistanceCoefficientWithoutTrailer = value; }
 		}
 
-		public Kilogram TotalVehicleMass
+		public Kilogram TotalVehicleMass //TODO: Total vehicle mass [kg] = Corrected Actual Curb Mass [kg] (από το XML του vehicle) + Loading [kg] + CurbMass [kg[ (από XML Trailer)
 		{
 			get {
 				var retVal = 0.0.SI<Kilogram>();

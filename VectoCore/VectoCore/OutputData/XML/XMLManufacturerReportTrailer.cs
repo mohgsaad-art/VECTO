@@ -46,7 +46,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 
 		public XMLManufacturerReportTrailer()
 		{
-			tns = "urn:tugraz:ivt:VectoAPI:DeclarationOutput:v0.9";
+			tns = "urn:tugraz:ivt:VectoAPI:DeclarationOutput:v1.0";
 			VehiclePart = new XElement(tns + XMLNames.Component_Vehicle);
 			Results = new XElement(tns + XMLNames.Report_Results);
 		}

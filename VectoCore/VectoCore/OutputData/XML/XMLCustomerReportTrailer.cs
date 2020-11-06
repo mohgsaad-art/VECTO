@@ -52,7 +52,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 {
 	public class XMLCustomerReportTrailer : AbstractXMLCustomerReport
 	{
-		public const string CURRENT_SCHEMA_VERSION = "0.9";
+		public const string CURRENT_SCHEMA_VERSION = "1.0";
 
 		protected readonly XElement VehiclePart;
 
