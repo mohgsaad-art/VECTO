@@ -122,8 +122,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 					//MaxPayload = Kilogram.Create(maxPayload),
 					MinLoad = Kilogram.Create(minLoad),
 					MaxLoad = Kilogram.Create(maxLoad),
-					AxleWeightDistribution = new[] {20.0, 25.0} //TODO: Read this from mastertable(?)
-					//DefaultCDxA =
+					AxleWeightDistribution = new[] {20.0, 25.0}, //TODO: Read this from mastertable(?)
+					CurbMass = Kilogram.Create(missionType == MissionType.LongHaul ? row.ParseDouble("curb_long_haul") : row.ParseDouble("curb_other"))
 				};
 				missions.Add(mission);
 			}

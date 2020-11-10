@@ -195,53 +195,12 @@
 			</xs:extension>
 		</xs:simpleContent>
 	</xs:complexType>
-	<xs:complexType name="CompletedVehiclePrimaryVehicleInformationType">
-		<xs:sequence>
-			<xs:element name="Manufacturer" type="vdecdef:ManufacturerType"/>
-			<xs:element name="ManufacturerAddress" type="vdecdef:ManufacturerAddressType"/>
-			<xs:element name="AxleConfiguration" type="xs:string"/>
-			<xs:element name="InputDataSignature" type="vdecdef:SignatureType"/>
-			<xs:element name="ManufacturerRecordSignature" type="vdecdef:SignatureType"/>
-			<xs:element name="VehicleInformationSignature" type="vdecdef:SignatureType"/>
-		</xs:sequence>
-	</xs:complexType>
 	<xs:complexType name="ComponentDescriptionType">
 		<xs:sequence>
 			<xs:element name="Model" type="vdecdef:ModelType"/>
 			<xs:element name="CertificationNumber" type="vdecdef:CertificationNumberType"/>
 			<xs:element name="DigestValue" type="xs:token"/>
 		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="ComponentsTruckFWDType">
-		<xs:complexContent>
-			<xs:extension base="AbstractComponentsType">
-				<xs:sequence>
-					<xs:element name="Engine" type="EngineType"/>
-					<xs:element name="Gearbox" type="GearboxFWDType"/>
-					<xs:element name="TorqueConverter" type="TorqueconverterType" minOccurs="0"/>
-					<xs:element name="Retarder" type="RetarderType"/>
-					<xs:element name="Angledrive" type="AngledriveType" minOccurs="0"/>
-					<xs:element name="AirDrag" type="AirdragType"/>
-					<xs:element name="AxleWheels" type="AxleWheelsType"/>
-				</xs:sequence>
-			</xs:extension>
-		</xs:complexContent>
-	</xs:complexType>
-	<xs:complexType name="ComponentsTruckType">
-		<xs:complexContent>
-			<xs:extension base="AbstractComponentsType">
-				<xs:sequence>
-					<xs:element name="Engine" type="EngineType"/>
-					<xs:element name="Gearbox" type="GearboxType"/>
-					<xs:element name="TorqueConverter" type="TorqueconverterType" minOccurs="0"/>
-					<xs:element name="Retarder" type="RetarderType"/>
-					<xs:element name="Angledrive" type="AngledriveType" minOccurs="0"/>
-					<xs:element name="Axlegear" type="AxlegearType"/>
-					<xs:element name="AirDrag" type="AirdragType"/>
-					<xs:element name="AxleWheels" type="AxleWheelsType"/>
-				</xs:sequence>
-			</xs:extension>
-		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="EngineSpeedDrivingType">
 		<xs:sequence>

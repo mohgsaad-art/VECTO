@@ -210,17 +210,14 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			retVal.VIN = data.VIN;
 			retVal.ManufacturerAddress = data.ManufacturerAddress;
 			retVal.VehicleClass = segment.VehicleClass;
-			retVal.TrailerGrossVehicleMass = trailerData.CurbMass;
+			retVal.TrailerGrossVehicleMass = mission.CurbMass;
 
 			retVal.InputDataTrailer = trailerData;
+			retVal.BodyAndTrailerMass = trailerData.CurbMass;
 
-			//TODO: calc CurbMassTV
-			var CurbMassTV = 0;
-			//TODO: rename this to payload(?)
-			retVal.BodyAndTrailerMass = Kilogram.Create(specificTrailerData.VolumeOrientation ? trailerData.CargoVolume.Value() * 88 : Math.Min(loading.Value(), (specificTrailerData.MaxGcm - CurbMassTV - trailerData.CurbMass.Value())));
-
-			retVal.Loading = loading;
-			retVal.PassengerCount = passengerCount; //TODO: do i need this for trailers?
+			
+			retVal.Loading = Kilogram.Create(specificTrailerData.VolumeOrientation ? trailerData.CargoVolume.Value() * 88 : Math.Min(loading.Value(), (specificTrailerData.MaxGcm - data.CurbMassChassis.Value() - trailerData.CurbMass.Value())));
+			retVal.PassengerCount = passengerCount; //TODO: check this.
 			retVal.DynamicTyreRadius =
 				data.Components.AxleWheels.AxlesDeclaration.Where(axle => axle.AxleType == AxleType.VehicleDriven)
 					.Select(da => DeclarationData.Wheels.Lookup(da.Tyre.Dimension).DynamicTyreRadius)
@@ -276,7 +273,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 							RollResistanceCoefficient = DeclarationData.Trailer.RollResistanceCoefficient,
 							TyreTestLoad = DeclarationData.Trailer.TyreTestLoad.SI<Newton>(),
 							FuelEfficiencyClass = DeclarationData.Trailer.FuelEfficiencyClass,
-							Inertia = trailerWheel.Inertia,
+							Inertia = specificTrailerData.Inertia, //TODO: CHECK
 							WheelsDimension = trailerWheel.WheelType
 						}));
 			}

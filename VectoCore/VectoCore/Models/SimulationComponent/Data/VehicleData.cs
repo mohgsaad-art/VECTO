@@ -198,6 +198,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 			}
 		}
 
+
 		public Kilogram TotalCurbMass
 		{
 			get { return (CurbMass ?? 0.SI<Kilogram>()) + (BodyAndTrailerMass ?? 0.SI<Kilogram>()); }
