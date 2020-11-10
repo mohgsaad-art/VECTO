@@ -765,7 +765,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 		public virtual AirdragData CreateTrailerAirdragData(
 			IAirdragDeclarationInputData airdragInputData, Mission mission,
-			Segment segment)
+			Segment segment, TrailerData specificTrailerData)
 		{
 			if (airdragInputData == null || airdragInputData.AirDragArea == null)
 			{
@@ -777,7 +777,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			retVal.CrossWindCorrectionMode = CrossWindCorrectionMode.DeclarationModeCorrection;
 			retVal.DeclaredAirdragArea = mission.MissionType == MissionType.Construction
 				? mission.DefaultCDxA
-				: airdragInputData.AirDragArea;
+				: SquareMeter.Create(specificTrailerData.TotalCorrection); //airdragInputData.AirDragArea;
 
 			var aerodynamicDragArea = retVal.DeclaredAirdragArea + mission.Trailer.Sum(t => t.DeltaCdA).DefaultIfNull(0);
 

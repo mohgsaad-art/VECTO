@@ -305,7 +305,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 				Loading = loading.Key,
 				VehicleData = TrailerDataAdapter.CreateTrailerData(vehicle, _trailer, _segment, mission, loading, _specificTrailerData),
 				VehicleDesignSpeed = _segment.DesignSpeed,
-				AirdragData = TrailerDataAdapter.CreateTrailerAirdragData(_genericInputDataProvider.JobInputData.Vehicle.Components.AirdragInputData, mission, _segment),
+				AirdragData = TrailerDataAdapter.CreateTrailerAirdragData(_genericInputDataProvider.JobInputData.Vehicle.Components.AirdragInputData, mission, _segment, _specificTrailerData),
 				EngineData = TrailerDataAdapter.CreateEngineData(_genericInputDataProvider.JobInputData.Vehicle, engineMode, mission),
 				GearboxData = _gearboxData,
 				AxleGearData = _axlegearData,

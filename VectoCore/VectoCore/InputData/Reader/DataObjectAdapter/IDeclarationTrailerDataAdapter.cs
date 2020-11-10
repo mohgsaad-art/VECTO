@@ -12,22 +12,7 @@ using TUGraz.VectoCore.Models.SimulationComponent.Data;
 namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter {
 	public interface IDeclarationTrailerDataAdapter
 	{
-		DriverData CreateDriverData();
-		VehicleData CreateVehicleData(IVehicleDeclarationInputData vehicle, ITrailerDeclarationInputData trailer, Segment segment, Mission mission, KeyValuePair<LoadingType, Tuple<Kilogram, double?>> loading);
 		VehicleData CreateTrailerData(IVehicleDeclarationInputData vehicle, ITrailerDeclarationInputData trailer, Segment segment, Mission mission, KeyValuePair<LoadingType, Tuple<Kilogram, double?>> loading, TrailerData specificTrailerData);
-		AirdragData CreateAirdragData(IAirdragDeclarationInputData airdragData, Mission mission, Segment segment);
-		AirdragData CreateTrailerAirdragData(IAirdragDeclarationInputData airdragData, Mission mission, Segment segment);
-		AxleGearData CreateAxleGearData(IAxleGearInputData axlegearData);
-		AngledriveData CreateAngledriveData(IAngledriveInputData angledriveData);
-		CombustionEngineData CreateEngineData(IVehicleDeclarationInputData vehicle, IEngineModeDeclarationInputData mode, Mission mission);
-
-		GearboxData CreateGearboxData(IGearboxDeclarationInputData gearbox, IVehicleComponentsDeclaration components, VectoRunData runData, IShiftPolygonCalculator shiftPolygonCalc);
-
-		ShiftStrategyParameters CreateGearshiftData(GearboxData gbx, double axleRatio, PerSecond engineIdlingSpeed);
-
-		RetarderData CreateRetarderData(IRetarderInputData retarderData);
-		PTOData CreatePTOTransmissionData(IPTOTransmissionInputData ptoData);
-		IList<VectoRunData.AuxData> CreateAuxiliaryData(IAuxiliariesDeclarationInputData auxData, IBusAuxiliariesDeclarationData busAuxData, MissionType missionType, VehicleClass vehicleClass, Meter vehicleLength);
-		AxleGearData CreateDummyAxleGearData(IGearboxDeclarationInputData gbxData);
+		AirdragData CreateTrailerAirdragData(IAirdragDeclarationInputData airdragData, Mission mission, Segment segment, TrailerData specificTrailerData);
 	}
 }
