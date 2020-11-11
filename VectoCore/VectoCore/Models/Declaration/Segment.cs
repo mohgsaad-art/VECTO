@@ -69,6 +69,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 		public bool CrossSectionAreaCorrection { get; set; }
 		public double AcrMin { get; set; }
 		public double AcrBase { get; set; }
+		public double CdxABase { get; set; }
 		public bool LengthCorrection { get; set; }
 		public double Aero0 { get; set; }
 		public double Aero1 { get; set; }

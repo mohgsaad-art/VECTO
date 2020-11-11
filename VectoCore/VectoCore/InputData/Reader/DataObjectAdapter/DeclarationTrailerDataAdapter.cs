@@ -908,9 +908,11 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 		{
 			var acrMin = trailerSegment.AcrMin;
 			var acrBase = trailerSegment.AcrBase;
-			var acr = trailer.TotalTrailerHeight.ToBasicUnits().Value() * trailer.ExternalBodyWidth.ToBasicUnits().Value() > acrMin ?
-				trailer.TotalTrailerHeight.ToBasicUnits().Value() * trailer.ExternalBodyWidth.ToBasicUnits().Value() : acrMin;
-			return acrBase * acr / acrBase;
+			var cdxaBase = trailerSegment.CdxABase;
+
+			var acr = trailer.TotalTrailerHeight.Value() * trailer.ExternalBodyWidth.Value() > acrMin ?
+				trailer.TotalTrailerHeight.Value() * trailer.ExternalBodyWidth.Value() : acrMin;
+			return cdxaBase * acr / acrBase;
 		}
 
 		private static string GetAxleWheelDimension(IVehicleDeclarationInputData genericVehicle)
