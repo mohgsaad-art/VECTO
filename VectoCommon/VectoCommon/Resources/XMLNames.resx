@@ -804,6 +804,9 @@
   <data name="Report_AirDrag_CdxA" xml:space="preserve">
     <value>CdxA</value>
   </data>
+<data name="Efficiency_Ratio" xml:space="preserve">
+    <value>EfficiencyRatio</value>
+  </data>
   <data name="Report_Tyre_TyreDimension" xml:space="preserve">
     <value>TyreDimension</value>
   </data>

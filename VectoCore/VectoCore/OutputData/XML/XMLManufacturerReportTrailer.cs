@@ -35,14 +35,17 @@ using System.Linq;
 using System.Xml.Linq;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Resources;
+using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Data;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.OutputData.XML
 {
 	public class XMLManufacturerReportTrailer : AbstractXMLManufacturerReport
 	{
+		public Dictionary<XMLDeclarationReport.ResultEntry, XMLDeclarationReport.ResultEntry> Mappings = new Dictionary<XMLDeclarationReport.ResultEntry, XMLDeclarationReport.ResultEntry>();
 
 		public XMLManufacturerReportTrailer()
 		{
@@ -64,8 +67,8 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(tns + XMLNames.Trailer_AxleCount, modelData.VehicleData.InputDataTrailer.NumberOfAxles),
 				new XElement(tns + XMLNames.Trailer_TrailerType, modelData.VehicleData.InputDataTrailer.TrailerType),
 				new XElement(tns + XMLNames.Trailer_BodyCode, modelData.VehicleData.InputDataTrailer.BodyworkCode),
-				new XElement(tns + XMLNames.Trailer_CurbMass, modelData.VehicleData.InputDataTrailer.CurbMass.ToXMLFormat(3)),
-				new XElement(tns + XMLNames.Trailer_TPMLMTotalTrailer, modelData.VehicleData.InputDataTrailer.TPMLMTotalTrailer.ToXMLFormat(3)),
+				new XElement(tns + XMLNames.Trailer_CurbMass, modelData.VehicleData.InputDataTrailer.CurbMass.ToXMLFormat(3), XMLHelper.ValueAsUnit(modelData.VehicleData.CurbMass, XMLNames.Unit_kg)),
+				new XElement(tns + XMLNames.Trailer_TPMLMTotalTrailer, modelData.VehicleData.InputDataTrailer.TPMLMTotalTrailer.ToXMLFormat(3), XMLHelper.ValueAsUnit(modelData.VehicleData.CurbMass, XMLNames.Unit_kg)),
 				new XElement(tns + XMLNames.Trailer_ExternalLenghtBody, modelData.VehicleData.InputDataTrailer.ExternalBodyLength.ToXMLFormat(3)),
 				new XElement(tns + XMLNames.Trailer_ExternalWidthBody, modelData.VehicleData.InputDataTrailer.ExternalBodyWidth.ToXMLFormat(3)),
 				new XElement(tns + XMLNames.Trailer_ExternalHeightBody, modelData.VehicleData.InputDataTrailer.ExternalBodyHeight.ToXMLFormat(3)),
@@ -83,6 +86,37 @@ namespace TUGraz.VectoCore.OutputData.XML
 			);
 			
 			InputDataIntegrity = GetInputDataSignature(modelData);
+		}
+
+		public double CalculateFactor(XMLDeclarationReport.ResultEntry result1, XMLDeclarationReport.ResultEntry result2)
+		{
+			return result2.CO2Total / result1.CO2Total;
+		}
+
+		protected override XElement GetSimulationParameters(XMLDeclarationReport.ResultEntry result)
+		{
+			var ratio = 0.0;
+			if (Mappings.Count(x => x.Key.Mission == result.Mission && x.Key.Payload == result.Payload) > 0)
+				ratio = CalculateFactor(
+					Mappings.FirstOrDefault(x => x.Key.Mission == result.Mission && x.Key.Payload == result.Payload)
+						.Key,
+					Mappings.FirstOrDefault(x => x.Key.Mission == result.Mission && x.Key.Payload == result.Payload)
+						.Value);
+
+
+			return new XElement(
+				tns + XMLNames.Report_ResultEntry_SimulationParameters,
+				new XElement(
+					tns + XMLNames.Report_ResultEntry_TotalVehicleMass,
+					XMLHelper.ValueAsUnit(result.TotalVehicleMass, XMLNames.Unit_kg)),
+				new XElement(tns + XMLNames.Report_ResultEntry_Payload, XMLHelper.ValueAsUnit(result.Payload, XMLNames.Unit_kg)),
+				new XElement(tns + XMLNames.Report_AirDrag_CdxA, result.CdxA.ToXMLFormat(3)),
+				ratio > 0 ? new XElement(tns + XMLNames.Efficiency_Ratio, ratio) : null,
+				result.PassengerCount.HasValue && result.PassengerCount.Value > 0 ? new XElement(tns + "PassengerCount", result.PassengerCount.Value.ToMinSignificantDigits(3, 1)) : null,
+				new XElement(
+					tns + XMLNames.Report_Result_FuelMode,
+					result.FuelData.Count > 1 ? XMLNames.Report_Result_FuelMode_Val_Dual : XMLNames.Report_Result_FuelMode_Val_Single)
+			);
 		}
 
 		protected override XElement VehicleComponents(VectoRunData modelData, List<List<FuelData.Entry>> fuelModes)
@@ -141,20 +175,5 @@ namespace TUGraz.VectoCore.OutputData.XML
 		{
 			return auxId.ToString() + "Technology";
 		}
-
-		
-
-		
-
-		
-
-		
-
-		
-
-		
-		
-
-		
 	}
 }

@@ -1022,8 +1022,8 @@ namespace TUGraz.VectoCommon.Resources {
                 return ResourceManager.GetString("Component_Model", resourceCulture);
             }
         }
-
-		/// <summary>
+        
+        /// <summary>
         ///   Looks up a localized string similar to Retarder.
         /// </summary>
         public static string Component_Retarder {
@@ -1443,6 +1443,15 @@ namespace TUGraz.VectoCommon.Resources {
         public static string DriverModel_ShiftStrategyParameters_UpshiftMinAcceleration {
             get {
                 return ResourceManager.GetString("DriverModel_ShiftStrategyParameters_UpshiftMinAcceleration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EfficiencyRatio.
+        /// </summary>
+        public static string Efficiency_Ratio {
+            get {
+                return ResourceManager.GetString("Efficiency_Ratio", resourceCulture);
             }
         }
         

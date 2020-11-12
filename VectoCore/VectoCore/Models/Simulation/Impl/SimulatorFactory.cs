@@ -117,7 +117,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			if (dataProvider is IDeclarationTrailerInputDataProvider) {
 				var declDataProvider = dataProvider as IDeclarationTrailerInputDataProvider;
 
-				var report = declarationReport ?? new XMLDeclarationReport(ModWriter);
+				var report = declarationReport ?? new XMLDeclarationReportTrailer(ModWriter);
 				DataReader = new DeclarationModeTrailerVectoRunDataFactory(declDataProvider, report);
 				return;
 			}

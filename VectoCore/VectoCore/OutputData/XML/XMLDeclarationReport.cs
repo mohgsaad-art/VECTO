@@ -73,9 +73,8 @@ namespace TUGraz.VectoCore.OutputData.XML
 			public LoadingType LoadingType { get; set; }
 			public int FuelMode { get; set; }
 			public IList<IFuelProperties> FuelData { get; set; }
-
-
 			public Kilogram Payload { get; set; }
+			public SquareMeter CdxA { get; set; }
 
 			public Kilogram TotalVehicleMass { get; set; }
 
@@ -278,6 +277,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 		{
 			ManufacturerRpt.GenerateReport();
 			var fullReportHash = GetSignature(ManufacturerRpt.Report);
+
 			CustomerRpt.GenerateReport(fullReportHash);
 		}
 
@@ -317,9 +317,6 @@ namespace TUGraz.VectoCore.OutputData.XML
 			if (modelData.Exempted) {
 				ManufacturerRpt = new XMLManufacturerReportExemptedTruck();
 				CustomerRpt = new XMLCustomerReport();
-			} else if(modelData.VehicleData.InputDataTrailer != null) {
-					ManufacturerRpt = new XMLManufacturerReportTrailer();
-					CustomerRpt = new XMLCustomerReportTrailer();
 			} else {
 				ManufacturerRpt = new XMLManufacturerReportTruck();
 				CustomerRpt = new XMLCustomerReport();

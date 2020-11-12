@@ -71,6 +71,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 		protected Kilogram _weightedPayload = 0.SI<Kilogram>();
 		protected double _passengerCount = 0;
 
+		public Dictionary<XMLDeclarationReport.ResultEntry, XMLDeclarationReport.ResultEntry> Mappings = new Dictionary<XMLDeclarationReport.ResultEntry, XMLDeclarationReport.ResultEntry>();
 
 		public XMLCustomerReportTrailer()
 		{
@@ -92,8 +93,8 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(tns + XMLNames.Trailer_AxleCount, modelData.VehicleData.InputDataTrailer.NumberOfAxles),
 				new XElement(tns + XMLNames.Trailer_TrailerType, modelData.VehicleData.InputDataTrailer.TrailerType),
 				new XElement(tns + XMLNames.Trailer_BodyCode, modelData.VehicleData.InputDataTrailer.BodyworkCode),
-				new XElement(tns + XMLNames.Trailer_CurbMass, modelData.VehicleData.InputDataTrailer.CurbMass.ToXMLFormat(3)),
-				new XElement(tns + XMLNames.Trailer_TPMLMTotalTrailer, modelData.VehicleData.InputDataTrailer.TPMLMTotalTrailer.ToXMLFormat(3)),
+				new XElement(tns + XMLNames.Trailer_CurbMass, modelData.VehicleData.InputDataTrailer.CurbMass.ToXMLFormat(3), XMLHelper.ValueAsUnit(modelData.VehicleData.CurbMass, XMLNames.Unit_kg)),
+				new XElement(tns + XMLNames.Trailer_TPMLMTotalTrailer, modelData.VehicleData.InputDataTrailer.TPMLMTotalTrailer.ToXMLFormat(3), XMLHelper.ValueAsUnit(modelData.VehicleData.CurbMass, XMLNames.Unit_kg)),
 				new XElement(tns + XMLNames.Trailer_ExternalLenghtBody, modelData.VehicleData.InputDataTrailer.ExternalBodyLength.ToXMLFormat(3)),
 				new XElement(tns + XMLNames.Trailer_ExternalWidthBody, modelData.VehicleData.InputDataTrailer.ExternalBodyWidth.ToXMLFormat(3)),
 				new XElement(tns + XMLNames.Trailer_ExternalHeightBody, modelData.VehicleData.InputDataTrailer.ExternalBodyHeight.ToXMLFormat(3)),
@@ -219,6 +220,14 @@ namespace TUGraz.VectoCore.OutputData.XML
 
 		private XElement GetSuccessResult(XMLDeclarationReport.ResultEntry result)
 		{
+			var ratio = 0.0;
+			if (Mappings.Count(x => x.Key.Mission == result.Mission && x.Key.Payload == result.Payload) > 0)
+				ratio = new XMLManufacturerReportTrailer().CalculateFactor(
+					Mappings.FirstOrDefault(x => x.Key.Mission == result.Mission && x.Key.Payload == result.Payload)
+						.Key,
+					Mappings.FirstOrDefault(x => x.Key.Mission == result.Mission && x.Key.Payload == result.Payload)
+						.Value);
+
 			return new XElement(
 				tns + XMLNames.Report_Result_Result,
 				new XAttribute(XMLNames.Report_Result_Status_Attr, "success"),
@@ -227,6 +236,8 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(tns + XMLNames.Report_ResultEntry_TotalVehicleMass,
 					XMLHelper.ValueAsUnit(result.TotalVehicleMass, XMLNames.Unit_kg)),
 				new XElement(tns + XMLNames.Report_ResultEntry_Payload, XMLHelper.ValueAsUnit(result.Payload, XMLNames.Unit_kg)),
+				new XElement(tns + XMLNames.Report_AirDrag_CdxA, result.CdxA.ToXMLFormat(3)),
+				ratio > 0 ? new XElement(tns + XMLNames.Efficiency_Ratio, ratio) : null,
 				result.PassengerCount.HasValue && result.PassengerCount.Value > 0
 					? new XElement(tns + "PassengerCount", result.PassengerCount.Value.ToMinSignificantDigits(3, 1))
 					: null,
@@ -267,7 +278,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 						new XAttribute(XMLNames.Report_Results_Unit_Attr, XMLNames.Unit_t),
 						_weightedPayload.ConvertToTon().ToXMLFormat(3)
 					),
-					_passengerCount > 0 ? new XElement(tns + "AveragePAssengerCount", _passengerCount.ToMinSignificantDigits(2)) : null
+					_passengerCount > 0 ? new XElement(tns + "AveragePassengerCount", _passengerCount.ToMinSignificantDigits(2)) : null
 				)
 				: null;
 			results.Add(summary);

@@ -110,6 +110,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 		public virtual void WriteResult(XMLDeclarationReport.ResultEntry resultEntry)
 		{
 			_allSuccess &= resultEntry.Status == VectoRun.Status.Success;
+
 			Results.Add(
 				resultEntry.Status == VectoRun.Status.Success ? GetSuccessResult(resultEntry) : GetErrorResult(resultEntry));
 		}
