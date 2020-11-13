@@ -126,9 +126,6 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			var trailer = TrailerInputDataProvider.JobInputData.Trailer;
 
 			for (var modeIdx = 0; modeIdx < engineModes.Count; modeIdx++) {
-
-				//TODO: Nick aletras want the vsum of the 10(5*2 loadings) generic missions + the 8(4*2 loadings) specific trailer
-
 				foreach (var mission in _segment.Missions) {
 					foreach (var loading in mission.Loadings) {
 						if (_trailerSegment.Missions.Any(x => x.MissionType == mission.MissionType)) {
@@ -158,7 +155,6 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			VectoRunData powertrainConfig;
 			List<List<FuelData.Entry>> fuels;
 
-			//TODO: i must get both low and full loadings
 			powertrainConfig = _segment.Missions.Select(
 					mission => CreateTrailerVectoRunData(_genericInputDataProvider.JobInputData.Vehicle, _trailer, 0, mission, mission.Loadings.FirstOrDefault())
 					).FirstOrDefault(x => x != null);
@@ -305,7 +301,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 				Loading = loading.Key,
 				VehicleData = TrailerDataAdapter.CreateTrailerData(vehicle, _trailer, _segment, mission, loading, _specificTrailerData),
 				VehicleDesignSpeed = _segment.DesignSpeed,
-				AirdragData = TrailerDataAdapter.CreateTrailerAirdragData(_genericInputDataProvider.JobInputData.Vehicle.Components.AirdragInputData, mission, _segment, _specificTrailerData),
+				AirdragData = TrailerDataAdapter.CreateTrailerAirdragData(_genericInputDataProvider.JobInputData.Vehicle.Components.AirdragInputData, mission, _trailerSegment, _specificTrailerData),
 				EngineData = TrailerDataAdapter.CreateEngineData(_genericInputDataProvider.JobInputData.Vehicle, engineMode, mission),
 				GearboxData = _gearboxData,
 				AxleGearData = _axlegearData,

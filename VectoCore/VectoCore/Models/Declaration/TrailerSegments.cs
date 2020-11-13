@@ -83,7 +83,10 @@ namespace TUGraz.VectoCore.Models.Declaration
 				Aero7 = row.ParseDouble("aero_7"),
 				Aero8 = row.ParseDouble("aero_8"),
 				MaxGcm = row.ParseDouble("max_gcm"),
-				Missions = CreateMissions(row)
+				Missions = CreateMissions(row),
+				A1 = SquareMeter.Create(row.ParseDouble("a1")),
+				A2 = SquareMeter.Create(row.ParseDouble("a2")),
+				A3 = SquareMeter.Create(row.ParseDouble("a3"))
 			};
 		}
 

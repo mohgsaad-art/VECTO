@@ -30,9 +30,13 @@
 *   Vasileios Kouliaridis, vasilis.k@emisia.com, EMISIA 
 */
 
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Xml;
 using System.Xml.Linq;
+using TUGraz.IVT.VectoXML.Writer;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCommon.Utils;
@@ -40,12 +44,17 @@ using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Utils;
+using TUGraz.VectoHashing;
 
 namespace TUGraz.VectoCore.OutputData.XML
 {
 	public class XMLManufacturerReportTrailer : AbstractXMLManufacturerReport
 	{
 		public Dictionary<XMLDeclarationReport.ResultEntry, XMLDeclarationReport.ResultEntry> Mappings = new Dictionary<XMLDeclarationReport.ResultEntry, XMLDeclarationReport.ResultEntry>();
+
+		protected KilogramPerMeter _weightedCo2 = 0.SI<KilogramPerMeter>();
+		protected Kilogram _weightedPayload = 0.SI<Kilogram>();
+		protected double _weightedEfficiencyRatio = 0;
 
 		public XMLManufacturerReportTrailer()
 		{
@@ -175,5 +184,102 @@ namespace TUGraz.VectoCore.OutputData.XML
 		{
 			return auxId.ToString() + "Technology";
 		}
+
+		public override void WriteResult(XMLDeclarationReport.ResultEntry resultEntry)
+		{
+			_allSuccess &= resultEntry.Status == VectoRun.Status.Success;
+			if (resultEntry.Status == VectoRun.Status.Success)
+			{
+				_weightedPayload += resultEntry.Payload * resultEntry.WeightingFactor;
+				_weightedCo2 += resultEntry.CO2Total / resultEntry.Distance * resultEntry.WeightingFactor;
+
+				var ratio = 0.0;
+				if (Mappings.Count(x => x.Key.Mission == resultEntry.Mission && x.Key.Payload == resultEntry.Payload) > 0)
+				{
+					var currentWeightedCo2 = resultEntry.CO2Total / resultEntry.Distance * resultEntry.WeightingFactor;
+					var genericResultentry = Mappings.FirstOrDefault(x =>
+						x.Key.Mission == resultEntry.Mission && x.Key.Payload == resultEntry.Payload).Key;
+
+					var currentGenericWeightedCo2 = genericResultentry.CO2Total / genericResultentry.Distance * resultEntry.WeightingFactor;
+
+					ratio = currentWeightedCo2 / currentGenericWeightedCo2;
+				}
+				_weightedEfficiencyRatio += ratio;
+			}
+
+			Results.Add(
+				resultEntry.Status == VectoRun.Status.Success ? GetSuccessResult(resultEntry) : GetErrorResult(resultEntry));
+		}
+
+		public override void GenerateReport()
+		{
+			var mrf = XNamespace.Get("urn:tugraz:ivt:VectoAPI:DeclarationOutput");
+			var retVal = new XDocument();
+			var results = new XElement(Results);
+			results.AddFirst(new XElement(tns + XMLNames.Report_Result_Status, _allSuccess ? "success" : "error"));
+			var summary = _allSuccess && _weightedPayload > 0
+				? new XElement(tns + XMLNames.Report_Results_Summary,
+					new XElement(tns + "WeightedCO2Emissions",
+						new XAttribute(XMLNames.Report_Results_Unit_Attr, XMLNames.Unit_gCO2Pertkm),
+						(_weightedCo2 / _weightedPayload).ConvertToGrammPerTonKilometer().ToXMLFormat(1)
+					),
+					new XElement(tns + "WeightedPayload",
+						new XAttribute(XMLNames.Report_Results_Unit_Attr, XMLNames.Unit_t),
+						_weightedPayload.ConvertToTon().ToXMLFormat(3)
+					),
+					_weightedEfficiencyRatio > 0 ? new XElement(tns + "WeightedEfficiencyRatio", _weightedEfficiencyRatio.ToMinSignificantDigits(2)) : null
+				)
+				: null;
+			results.Add(summary);
+			var vehicle = new XElement(VehiclePart);
+			vehicle.Add(InputDataIntegrity);
+			retVal.Add(
+				new XProcessingInstruction(
+					"xml-stylesheet", "href=\"https://webgate.ec.europa.eu/CITnet/svn/VECTO/trunk/Share/XML/CSS/VectoReports.css\""));
+			retVal.Add(
+				new XElement(
+					mrf + XMLNames.VectoManufacturerReport,
+
+					//new XAttribute("schemaVersion", CURRENT_SCHEMA_VERSION),
+					new XAttribute(XNamespace.Xmlns + "xsi", xsi.NamespaceName),
+					new XAttribute("xmlns", tns),
+					new XAttribute(XNamespace.Xmlns + "di", di),
+					//new XAttribute(XNamespace.Xmlns + "tns", tns),
+					new XAttribute(XNamespace.Xmlns + "mrf", mrf),
+					new XAttribute(
+						xsi + "schemaLocation",
+						string.Format("{0} {1}/DEV/VectoOutputManufacturer.xsd", mrf, AbstractXMLWriter.SchemaLocationBaseUrl)),
+					new XElement(
+						mrf + XMLNames.Report_DataWrap,
+						new XAttribute(xsi + "type", "VectoOutputDataType"),
+						vehicle,
+						results,
+						GetApplicationInfo())
+				)
+			);
+			var stream = new MemoryStream();
+			var writer = new StreamWriter(stream);
+			writer.Write(retVal);
+			writer.Flush();
+			stream.Seek(0, SeekOrigin.Begin);
+			var h = VectoHash.Load(stream);
+			Report = h.AddHash();
+		}
+
+		private XElement GetApplicationInfo()
+		{
+			var versionNumber = VectoSimulationCore.VersionNumber;
+#if CERTIFICATION_RELEASE // add nothing to version number
+#else
+			versionNumber += " !!NOT FOR CERTIFICATION!!";
+#endif
+			return new XElement(
+				tns + XMLNames.Report_ApplicationInfo_ApplicationInformation,
+				new XElement(tns + XMLNames.Report_ApplicationInfo_SimulationToolVersion, versionNumber),
+				new XElement(
+					tns + XMLNames.Report_ApplicationInfo_Date,
+					XmlConvert.ToString(DateTime.Now, XmlDateTimeSerializationMode.Utc)));
+		}
+
 	}
 }

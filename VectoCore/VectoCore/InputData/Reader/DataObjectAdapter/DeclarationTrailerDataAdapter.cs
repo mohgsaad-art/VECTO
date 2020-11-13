@@ -713,6 +713,73 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			return points;
 		}
 
+		public static List<CrossWindCorrectionCurveReader.CrossWindCorrectionEntry> GetTrailerDeclarationAirResistanceCurve(
+			string crosswindCorrectionParameters, SquareMeter aerodynamicDragAera, Meter vehicleHeight, TrailerSegment segment)
+		{
+			var startSpeed = Constants.SimulationSettings.CrosswindCorrection.MinVehicleSpeed;
+			var maxSpeed = Constants.SimulationSettings.CrosswindCorrection.MaxVehicleSpeed;
+			var speedStep = Constants.SimulationSettings.CrosswindCorrection.VehicleSpeedStep;
+
+			var maxAlpha = Constants.SimulationSettings.CrosswindCorrection.MaxAlpha;
+			var alphaStep = Constants.SimulationSettings.CrosswindCorrection.AlphaStep;
+
+			var startHeightPercent = Constants.SimulationSettings.CrosswindCorrection.MinHeight;
+			var maxHeightPercent = Constants.SimulationSettings.CrosswindCorrection.MaxHeight;
+			var heightPercentStep = Constants.SimulationSettings.CrosswindCorrection.HeightStep;
+			var heightShare = (double)heightPercentStep / maxHeightPercent;
+
+			// first entry (0m/s) will get CdxA of second entry.
+			var points = new List<CrossWindCorrectionCurveReader.CrossWindCorrectionEntry> {
+				new CrossWindCorrectionCurveReader.CrossWindCorrectionEntry {
+					Velocity = 0.SI<MeterPerSecond>(),
+					EffectiveCrossSectionArea = 0.SI<SquareMeter>()
+				}
+			};
+
+			for (var speed = startSpeed; speed <= maxSpeed; speed += speedStep)
+			{
+				var vVeh = speed.KMPHtoMeterPerSecond();
+
+				var cdASum = 0.SI<SquareMeter>();
+
+				for (var heightPercent = startHeightPercent; heightPercent < maxHeightPercent; heightPercent += heightPercentStep)
+				{
+					var height = heightPercent / 100.0 * vehicleHeight;
+					var vWind = Physics.BaseWindSpeed * Math.Pow(height / Physics.BaseWindHeight, Physics.HellmannExponent);
+
+					for (var alpha = 0; alpha <= maxAlpha; alpha += alphaStep)
+					{
+						var vAirX = vVeh + vWind * Math.Cos(alpha.ToRadian());
+						var vAirY = vWind * Math.Sin(alpha.ToRadian());
+
+						var beta = Math.Atan(vAirY / vAirX).ToDegree();
+
+						// ΔCdxA = A1β + A2β² + A3β³
+						var deltaCdA = segment.A1 * beta + segment.A2 * beta * beta + segment.A3 * beta * beta * beta;
+
+						// CdxA(β) = CdxA(0) + ΔCdxA(β)
+						var cdA = aerodynamicDragAera + deltaCdA;
+
+						var share = (alpha == 0 || alpha == maxAlpha ? alphaStep / 2.0 : alphaStep) / maxAlpha;
+
+						// v_air = sqrt(v_airX²+vAirY²)
+						// cdASum = CdxA(β) * v_air²/v_veh²
+						cdASum += heightShare * share * cdA * (vAirX * vAirX + vAirY * vAirY) / (vVeh * vVeh);
+					}
+				}
+
+				points.Add(
+					new CrossWindCorrectionCurveReader.CrossWindCorrectionEntry
+					{
+						Velocity = vVeh,
+						EffectiveCrossSectionArea = cdASum
+					});
+			}
+
+			points[0].EffectiveCrossSectionArea = points[1].EffectiveCrossSectionArea;
+			return points;
+		}
+
 		public virtual PTOData CreatePTOTransmissionData(IPTOTransmissionInputData pto)
 		{
 			if (pto != null && pto.PTOTransmissionType != "None") {
@@ -752,7 +819,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 		public virtual AirdragData CreateTrailerAirdragData(
 			IAirdragDeclarationInputData airdragInputData, Mission mission,
-			Segment segment, TrailerData specificTrailerData)
+			TrailerSegment segment, TrailerData specificTrailerData)
 		{
 			if (airdragInputData == null || airdragInputData.AirDragArea == null)
 			{
@@ -771,8 +838,8 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			retVal.CrossWindCorrectionCurve =
 				new CrosswindCorrectionCdxALookup(
 					aerodynamicDragArea,
-					GetDeclarationAirResistanceCurve(
-						mission.CrossWindCorrectionParameters, aerodynamicDragArea, mission.VehicleHeight),
+					GetTrailerDeclarationAirResistanceCurve(
+						mission.CrossWindCorrectionParameters, aerodynamicDragArea, mission.VehicleHeight, segment),
 					CrossWindCorrectionMode.DeclarationModeCorrection);
 			return retVal;
 		}
