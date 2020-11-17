@@ -949,7 +949,7 @@ namespace VECTOTrailer.ViewModel.Impl
 					Convert.ToInt32(sumProgress * 100.0 / progress.Count), new VectoSimulationProgress() {
 						Type = VectoSimulationProgress.MsgType.Progress,
 						Message = string.Format(
-							"Duration: {0:F1}s, Curernt Progress: {1:P} ({2})", duration, sumProgress / progress.Count,
+							"Duration: {0:F1}s, Current Progress: {1:P} ({2})", duration, sumProgress / progress.Count,
 							string.Join(", ", progress.Select(x => string.Format("{0,4:P}", x.Value.Progress))))
 					});
 				var justFinished = progress.Where(x => x.Value.Done & !finishedRuns.Contains(x.Key))

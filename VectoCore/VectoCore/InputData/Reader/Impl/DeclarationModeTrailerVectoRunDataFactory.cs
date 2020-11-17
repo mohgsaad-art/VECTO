@@ -123,13 +123,12 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			var vehicle = _genericInputDataProvider.JobInputData.Vehicle;
 			var engine = vehicle.Components.EngineInputData;
 			var engineModes = engine.EngineModes;
-			var trailer = TrailerInputDataProvider.JobInputData.Trailer;
 
 			for (var modeIdx = 0; modeIdx < engineModes.Count; modeIdx++) {
 				foreach (var mission in _segment.Missions) {
 					foreach (var loading in mission.Loadings) {
 						if (_trailerSegment.Missions.Any(x => x.MissionType == mission.MissionType)) {
-							yield return CreateTrailerVectoRunData(vehicle, trailer, modeIdx, mission, loading); ;
+							yield return CreateTrailerVectoRunData(vehicle, modeIdx, mission, loading); ;
 						}
 						
 						yield return CreateVectoRunData(vehicle, modeIdx, mission, loading);
@@ -156,7 +155,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			List<List<FuelData.Entry>> fuels;
 
 			powertrainConfig = _segment.Missions.Select(
-					mission => CreateTrailerVectoRunData(_genericInputDataProvider.JobInputData.Vehicle, _trailer, 0, mission, mission.Loadings.FirstOrDefault())
+					mission => CreateTrailerVectoRunData(_genericInputDataProvider.JobInputData.Vehicle, 0, mission, mission.Loadings.FirstOrDefault())
 					).FirstOrDefault(x => x != null);
 			fuels = _genericInputDataProvider.JobInputData.Vehicle.Components.EngineInputData.EngineModes.Select(x => x.Fuels.Select(f => DeclarationData.FuelData.Lookup(f.FuelType, null)).ToList())
 					.ToList();
@@ -232,6 +231,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			var engine = _genericInputDataProvider.JobInputData.Vehicle.Components.EngineInputData;
 			var engineModes = engine.EngineModes;
 			var engineMode = engineModes[modeIdx];
+
 			DrivingCycleData cycle;
 			lock (CyclesCacheLock)
 			{
@@ -280,11 +280,14 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 		}
 
 		protected VectoRunData CreateTrailerVectoRunData(
-			IVehicleDeclarationInputData vehicle, ITrailerDeclarationInputData trailer, int modeIdx, Mission mission, KeyValuePair<LoadingType, Tuple<Kilogram, double?>> loading)
+			IVehicleDeclarationInputData vehicle, int modeIdx, Mission mission, KeyValuePair<LoadingType, Tuple<Kilogram, double?>> loading)
 		{
 			var engine = _genericInputDataProvider.JobInputData.Vehicle.Components.EngineInputData;
 			var engineModes = engine.EngineModes;
 			var engineMode = engineModes[modeIdx];
+			var trailerMission = mission;
+			trailerMission.IsTrailer = true;
+
 			DrivingCycleData cycle;
 			lock (CyclesCacheLock)
 			{
@@ -317,7 +320,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 				JobName = TrailerInputDataProvider.JobInputData.JobName,
 				ModFileSuffix = (engineModes.Count > 1 ? $"_EngineMode{modeIdx}_" : "") + loading.Key + "_trailer",
 				Report = Report,
-				Mission = mission,
+				Mission = trailerMission,
 				PTO = mission.MissionType == MissionType.MunicipalUtility
 					? _municipalPtoTransmissionData
 					: _ptoTransmissionData,

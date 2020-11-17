@@ -30,6 +30,7 @@
 */
 
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using TUGraz.VectoCommon.BusAuxiliaries;
@@ -159,13 +160,15 @@ namespace TUGraz.VectoCore.OutputData
 					FuelMode = fuelMode,
 					FuelData = runData.EngineData.Fuels.Select(x => x.FuelData).ToList(),
 					Payload = runData.VehicleData.Loading,
-					CdxA = runData.AirdragData.DeclaredAirdragArea,
 					TotalVehicleMass = runData.VehicleData.TotalVehicleMass,
 					CargoVolume = runData.VehicleData.CargoVolume,
 					VehicleClass = runData.Mission?.BusParameter?.BusGroup ?? runData.VehicleData.VehicleClass,
 					//runData.VehicleData.VehicleClass,
 					PassengerCount = runData.VehicleData.PassengerCount
 				};
+
+				if (mission.IsTrailer)
+					entry.CdxA = runData.AirdragData.DeclaredAirdragArea;
 
 				Results.Add(entry);
 				DoStoreResult(entry, runData, modData);

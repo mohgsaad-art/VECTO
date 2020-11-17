@@ -106,7 +106,8 @@
 							</xs:simpleContent>
 						</xs:complexType>
 					</xs:element>
-					<xs:element name="PassengerCount" type="xs:double" minOccurs="0"/>
+					<xs:element name="CdxA" type="xs:double"/>
+					<xs:element name="EfficiencyRatio" type="xs:double"/>
 					<xs:element name="FuelMode">
 						<xs:simpleType>
 							<xs:restriction base="xs:string">

@@ -127,7 +127,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			retVal.ManufacturerAddress = data.ManufacturerAddress;
 			retVal.VehicleClass = segment.VehicleClass;
 			retVal.TrailerGrossVehicleMass = mission.Trailer.Sum(t => t.TrailerGrossVehicleWeight).DefaultIfNull(0);
-
+			retVal.SleeperCab = data.SleeperCab;
 			retVal.InputDataTrailer = trailerData;
 
 			retVal.BodyAndTrailerMass = mission.BodyCurbWeight + mission.Trailer.Sum(t => t.TrailerCurbWeight).DefaultIfNull(0);
@@ -138,13 +138,8 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				data.Components.AxleWheels.AxlesDeclaration.Where(axle => axle.AxleType == AxleType.VehicleDriven)
 					.Select(da => DeclarationData.Wheels.Lookup(da.Tyre.Dimension).DynamicTyreRadius)
 					.Average();
-			if (segment.VehicleClass.IsMediumLorry() && segment.VehicleClass.IsVan()) {
-				retVal.CargoVolume = data.CargoVolume;
-			} else {
-				retVal.CargoVolume = mission.MissionType != MissionType.Construction
-					? mission.TotalCargoVolume
-					: 0.SI<CubicMeter>();
-			}
+
+			retVal.CargoVolume = mission.TotalCargoVolume;
 
 			var axles = data.Components.AxleWheels.AxlesDeclaration;
 			if (axles.Count < mission.AxleWeightDistribution.Length) {
@@ -211,27 +206,20 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			retVal.ManufacturerAddress = data.ManufacturerAddress;
 			retVal.VehicleClass = segment.VehicleClass;
 			retVal.TrailerGrossVehicleMass = mission.CurbMass;
-
+			retVal.SleeperCab = data.SleeperCab;
 			retVal.InputDataTrailer = trailerData;
 			retVal.BodyAndTrailerMass = trailerData.CurbMass;
 
 			
 			retVal.Loading = Kilogram.Create(specificTrailerData.VolumeOrientation ? trailerData.CargoVolume.Value() * 88 : Math.Min(loading.Value(), (specificTrailerData.MaxGcm - data.CurbMassChassis.Value() - trailerData.CurbMass.Value())));
-			retVal.PassengerCount = passengerCount; //TODO: check this.
+			retVal.PassengerCount = 1; //TODO: check this.
 			retVal.DynamicTyreRadius =
 				data.Components.AxleWheels.AxlesDeclaration.Where(axle => axle.AxleType == AxleType.VehicleDriven)
 					.Select(da => DeclarationData.Wheels.Lookup(da.Tyre.Dimension).DynamicTyreRadius)
 					.Average();
-			if (segment.VehicleClass.IsMediumLorry() && segment.VehicleClass.IsVan())
-			{
-				retVal.CargoVolume = data.CargoVolume;
-			}
-			else
-			{
-				retVal.CargoVolume = mission.MissionType != MissionType.Construction
-					? trailerData.CargoVolume //mission.TotalCargoVolume
-					: 0.SI<CubicMeter>();
-			}
+			
+			retVal.CargoVolume = trailerData.CargoVolume;
+			
 
 			var axles = data.Components.AxleWheels.AxlesDeclaration;
 			if (axles.Count < mission.AxleWeightDistribution.Length)
