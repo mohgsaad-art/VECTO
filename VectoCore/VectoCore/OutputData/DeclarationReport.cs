@@ -164,11 +164,9 @@ namespace TUGraz.VectoCore.OutputData
 					CargoVolume = runData.VehicleData.CargoVolume,
 					VehicleClass = runData.Mission?.BusParameter?.BusGroup ?? runData.VehicleData.VehicleClass,
 					//runData.VehicleData.VehicleClass,
-					PassengerCount = runData.VehicleData.PassengerCount
+					PassengerCount = runData.VehicleData.PassengerCount,
+					CdxA = runData.AirdragData.DeclaredAirdragArea
 				};
-
-				if (mission.IsTrailer)
-					entry.CdxA = runData.AirdragData.DeclaredAirdragArea;
 
 				Results.Add(entry);
 				DoStoreResult(entry, runData, modData);

@@ -93,10 +93,10 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(tns + XMLNames.Trailer_PositionXLastAxle, modelData.VehicleData.InputDataTrailer.LengthTrailerFrontToLastAxleCenter.ToXMLFormat(3)),
 				new XElement(tns + XMLNames.Trailer_InternalHeightBody, modelData.VehicleData.InputDataTrailer.InternalBodyHeight.ToXMLFormat(3)),
 				new XElement(tns + XMLNames.Trailer_CargoVolume, modelData.VehicleData.InputDataTrailer.CargoVolume.ToXMLFormat(3)),
-				new XElement(tns + XMLNames.Trailer_AeroFeatureTechnologies, modelData.VehicleData.InputDataTrailer.AeroFeatureTechnologies),
+				new XElement(tns + XMLNames.Trailer_AeroFeatureTechnologies, modelData.VehicleData.InputDataTrailer.AeroFeatureTechnologies)
 
 				//GetADAS(modelData.VehicleData.ADAS),
-				GetTorqueLimits(modelData.EngineData)
+				//GetTorqueLimits(modelData.EngineData)
 				//VehicleComponents(modelData, fuelModes)
 					
 			);
@@ -216,6 +216,24 @@ namespace TUGraz.VectoCore.OutputData.XML
 
 			Results.Add(
 				resultEntry.Status == VectoRun.Status.Success ? GetSuccessResult(resultEntry) : GetErrorResult(resultEntry));
+		}
+
+		protected override XElement GetSuccessResult(XMLDeclarationReport.ResultEntry result)
+		{
+			return new XElement(
+				tns + XMLNames.Report_Result_Result,
+				new XAttribute(
+					XMLNames.Report_Result_Status_Attr, "success"),
+				new XAttribute(xsi + "type", "ResultSuccessType"),
+				new XElement(tns + XMLNames.Report_Result_Mission, result.Mission.ToXMLFormat()),
+				new XElement(
+					tns + XMLNames.Report_ResultEntry_Distance, new XAttribute(XMLNames.Report_Results_Unit_Attr, XMLNames.Unit_km),
+					result.Distance.ConvertToKiloMeter().ToXMLFormat(3)),
+				GetSimulationParameters(result),
+				//GetVehiclePerformance(result),
+				//FC
+				XMLDeclarationReport.GetResults(result, tns, true).Cast<object>().ToArray()
+			);
 		}
 
 		public override void GenerateReport()

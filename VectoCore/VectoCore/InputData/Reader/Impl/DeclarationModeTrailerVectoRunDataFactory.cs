@@ -286,7 +286,6 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			var engineModes = engine.EngineModes;
 			var engineMode = engineModes[modeIdx];
 			var trailerMission = mission;
-			trailerMission.IsTrailer = true;
 
 			DrivingCycleData cycle;
 			lock (CyclesCacheLock)
