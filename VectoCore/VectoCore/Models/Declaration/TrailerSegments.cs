@@ -92,11 +92,15 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		private static Mission[] CreateMissions(DataRow row)
 		{
-			//TODO: need to re-write this once i uderstand it
-			var missionTypes = new[] {
-				MissionType.LongHaul, MissionType.LongHaulEMS, MissionType.RegionalDelivery,
-				MissionType.RegionalDeliveryEMS
-			}.ToList();
+			//TODO: i need to get this from the mastertable
+			var missionTypes = new List<MissionType>();
+
+			if (row["Mission_long_haul"].ToString().Contains("X"))
+				missionTypes.Add(MissionType.LongHaul);
+			if (row["Mission_regional_delivery"].ToString().Contains("X"))
+				missionTypes.Add(MissionType.RegionalDelivery);
+			if (row["Mission_urban_delivery"].ToString().Contains("X"))
+				missionTypes.Add(MissionType.UrbanDelivery);
 
 			var missions = new List<Mission>();
 			foreach (var missionType in missionTypes) {

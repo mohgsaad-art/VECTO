@@ -82,7 +82,7 @@ namespace VECTOTrailer.ViewModel.Adapter.Declaration
 		public Kilogram CurbMass { get; }
 		public Kilogram TPMLMTotalTrailer { get; }
 		public Kilogram TPMLMAxleAssembly { get; }
-		public Meter ExternalBodyLength { get { return ViewModel.ExternalLengthOfTheBody; } }
+		public Meter ExternalBodyLength { get; }
 		public Meter ExternalBodyWidth { get; }
 		public Meter ExternalBodyHeight { get; }
 		public Meter TotalTrailerHeight { get; }

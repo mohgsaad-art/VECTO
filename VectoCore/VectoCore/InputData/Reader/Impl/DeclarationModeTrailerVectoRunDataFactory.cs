@@ -125,12 +125,9 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			var engineModes = engine.EngineModes;
 
 			for (var modeIdx = 0; modeIdx < engineModes.Count; modeIdx++) {
-				foreach (var mission in _segment.Missions) {
+				foreach (var mission in _segment.Missions.Where(genericMission => _trailerSegment.Missions.Count(trailerMission => trailerMission.MissionType == genericMission.MissionType) > 0)) {
 					foreach (var loading in mission.Loadings) {
-						if (_trailerSegment.Missions.Any(x => x.MissionType == mission.MissionType)) {
-							yield return CreateTrailerVectoRunData(vehicle, modeIdx, mission, loading); ;
-						}
-						
+						yield return CreateTrailerVectoRunData(vehicle, modeIdx, mission, loading);
 						yield return CreateVectoRunData(vehicle, modeIdx, mission, loading);
 					}
 				}

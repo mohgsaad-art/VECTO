@@ -804,6 +804,9 @@
   <data name="Report_AirDrag_CdxA" xml:space="preserve">
     <value>CdxA</value>
   </data>
+	<data name="Report_PolarCurve" xml:space="preserve">
+    <value>PolarCurveInformation</value>
+  </data>
 <data name="Efficiency_Ratio" xml:space="preserve">
     <value>EfficiencyRatio</value>
   </data>
@@ -1395,6 +1398,24 @@
   <data name="Trailer_AeroFeatureTechnologies" xml:space="preserve">
     <value>Technology</value>
   </data>
+<data name="Trailer_AeroFeatures" xml:space="preserve">
+    <value>AeroFeatures</value>
+  </data>
+<data name="Trailer_Masses" xml:space="preserve">
+    <value>Masses</value>
+  </data>
+<data name="Trailer_Dimensions" xml:space="preserve">
+    <value>Dimensions</value>
+  </data>
+<data name="Report_WeightedPayload" xml:space="preserve">
+    <value>WeightedPayload</value>
+  </data>
+<data name="Report_WeightedPayloadTrailer" xml:space="preserve">
+    <value>WeightedPayloadTrailer</value>
+  </data>
+<data name="Report_WeightedEfficiencyRatio" xml:space="preserve">
+    <value>WeightedEfficiencyRatio</value>
+  </data>
   <data name="Trailer_BodyCode" xml:space="preserve">
     <value>BodyCode</value>
   </data>
@@ -1405,7 +1426,7 @@
     <value>TPMLMTotalTrailer</value>
   </data>
   <data name="Trailer_TPLMAxleAssembly" xml:space="preserve">
-    <value>Trailer_TPLMAxleAssembly</value>
+    <value>TPMLMAxleAssembly</value>
   </data>
   <data name="Trailer_ExternalLenghtBody" xml:space="preserve">
     <value>ExternalLenghtBody</value>

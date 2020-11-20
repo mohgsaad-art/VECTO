@@ -102,6 +102,7 @@ namespace VECTOTrailer.Util.XML
 				new XElement(_v27 + "Masses",
 					new XElement(_v27 + XMLNames.Trailer_CurbMass, trailerData.CurbMassTrailer.ToXMLFormat(0)),
 					new XElement(_v27 + XMLNames.Trailer_TPMLMTotalTrailer, trailerData.TPLMTotalTrailer.ToXMLFormat(0))),
+				//TODO: TPMLMAxleAssembly
 				new XElement(_v27 + "Dimensions",
 					new XElement(_v27 + XMLNames.Trailer_ExternalLenghtBody,
 						trailerData.ExternalLengthOfTheBody?.ToXMLFormat(3)),

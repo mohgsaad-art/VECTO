@@ -489,6 +489,7 @@ namespace VECTOTrailer.ViewModel.Impl
 				BodyCode = trailer.BodyworkCode;
 				CurbMassTrailer = trailer.CurbMass;
 				TPLMTotalTrailer = trailer.TPMLMTotalTrailer;
+				TPLMAxleAssembly = trailer.TPMLMAxleAssembly;
 				ExternalLengthOfTheBody = trailer.ExternalBodyLength;
 				ExternalWidthOfTheBody = trailer.ExternalBodyWidth;
 				ExternalHeightOfTheBody = trailer.ExternalBodyHeight;

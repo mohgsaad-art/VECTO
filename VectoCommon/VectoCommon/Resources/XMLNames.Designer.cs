@@ -2266,6 +2266,15 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PolarCurveInformation.
+        /// </summary>
+        public static string Report_PolarCurve {
+            get {
+                return ResourceManager.GetString("Report_PolarCurve", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to EnergyConsumption.
         /// </summary>
         public static string Report_Result_EnergyConsumption {
@@ -2779,6 +2788,33 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to WeightedEfficiencyRatio.
+        /// </summary>
+        public static string Report_WeightedEfficiencyRatio {
+            get {
+                return ResourceManager.GetString("Report_WeightedEfficiencyRatio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WeightedPayload.
+        /// </summary>
+        public static string Report_WeightedPayload {
+            get {
+                return ResourceManager.GetString("Report_WeightedPayload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WeightedPayloadTrailer.
+        /// </summary>
+        public static string Report_WeightedPayloadTrailer {
+            get {
+                return ResourceManager.GetString("Report_WeightedPayloadTrailer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to status.
         /// </summary>
         public static string Result_Status {
@@ -2986,6 +3022,15 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AeroFeatures.
+        /// </summary>
+        public static string Trailer_AeroFeatures {
+            get {
+                return ResourceManager.GetString("Trailer_AeroFeatures", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Technology.
         /// </summary>
         public static string Trailer_AeroFeatureTechnologies {
@@ -3040,6 +3085,15 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dimensions.
+        /// </summary>
+        public static string Trailer_Dimensions {
+            get {
+                return ResourceManager.GetString("Trailer_Dimensions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ExternalHeightBody.
         /// </summary>
         public static string Trailer_ExternalHeightBody {
@@ -3085,6 +3139,15 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Masses.
+        /// </summary>
+        public static string Trailer_Masses {
+            get {
+                return ResourceManager.GetString("Trailer_Masses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to PositionXFirstAxle.
         /// </summary>
         public static string Trailer_PositionXFirstAxle {
@@ -3112,7 +3175,7 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Trailer_TPLMAxleAssembly.
+        ///   Looks up a localized string similar to TPMLMAxleAssembly.
         /// </summary>
         public static string Trailer_TPLMAxleAssembly {
             get {
