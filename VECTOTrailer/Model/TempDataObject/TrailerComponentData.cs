@@ -75,7 +75,7 @@ namespace VECTOTrailer.Model.TempDataObject
 		public bool Axle2NewVisibility { get; set; }
 		public bool Axle3ButtonsVisibility { get; set; }
 		public bool Axle3NewVisibility { get; set; }
-
+		public bool TPMLMAxleAssemblyVisibility { get; set; }
 		public Dictionary<string, string> XmlNamesToPropertyMapping { get;  private set; }
 
 		#endregion
@@ -129,10 +129,10 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.Axle3Xml = Axle3Xml;
 
 			viewModel.Technologies = Technologies;
-			viewModel.SideSkirtsShort = Technologies.Contains(AeroFeatureTechnology.SideSkirtsShort);
-			viewModel.SideSkirtsLong = Technologies.Contains(AeroFeatureTechnology.SideSkirtsLong);
-			viewModel.BoatTailShort = Technologies.Contains(AeroFeatureTechnology.BoatTailShort);
-			viewModel.BoatTailLong = Technologies.Contains(AeroFeatureTechnology.BoatTailLong);
+			viewModel.SideSkirtsShort = Technologies != null && Technologies.Contains(AeroFeatureTechnology.SideSkirtsShort);
+			viewModel.SideSkirtsLong = Technologies != null && Technologies.Contains(AeroFeatureTechnology.SideSkirtsLong);
+			viewModel.BoatTailShort = Technologies != null && Technologies.Contains(AeroFeatureTechnology.BoatTailShort);
+			viewModel.BoatTailLong = Technologies != null && Technologies.Contains(AeroFeatureTechnology.BoatTailLong);
 
 			viewModel.Axle1ButtonsVisibility = Axle1ButtonsVisibility;
 			viewModel.Axle1NewVisibility = Axle1NewVisibility;
@@ -140,6 +140,8 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.Axle2NewVisibility = Axle2NewVisibility;
 			viewModel.Axle3ButtonsVisibility = Axle3ButtonsVisibility;
 			viewModel.Axle3NewVisibility = Axle3NewVisibility;
+
+			viewModel.TPMLMAxleAssemblyVisibility = TPMLMAxleAssemblyVisibility;
 		}
 
 		public void ClearValues(ICompleteTrailerViewModel viewModel)
@@ -168,9 +170,9 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.CurbMassTrailer = default;
 			viewModel.TPLMTotalTrailer = default;
 			viewModel.TPLMAxleAssembly = default;
-			viewModel.Axle1IsTwin = default;
-			viewModel.Axle2IsTwin = default;
-			viewModel.Axle3IsTwin = default;
+			viewModel.Axle1IsTwin = false;
+			viewModel.Axle2IsTwin = false;
+			viewModel.Axle3IsTwin = false;
 
 			viewModel.Axle1ButtonsVisibility = false;
 			viewModel.Axle1NewVisibility = true;
@@ -178,6 +180,8 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.Axle2NewVisibility = true;
 			viewModel.Axle3ButtonsVisibility = false;
 			viewModel.Axle3NewVisibility = true;
+
+			TPMLMAxleAssemblyVisibility = true;
 		}
 
 		

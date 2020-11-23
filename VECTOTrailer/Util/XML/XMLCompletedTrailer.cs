@@ -154,21 +154,21 @@ namespace VECTOTrailer.Util.XML
 					return vehicle;
 
 				tyre = XDocument.Parse(trailerData.Axle2Xml).Elements().FirstOrDefault()?.Elements()
-					.FirstOrDefault();
+					.FirstOrDefault(x => !x.Name.ToString().Contains("TwinTyres"));
 
 				vehicle.Element(_v27 + "AxleWheels")?.Element(_v27 + "Data")?.Element(_v27 + "Axles")?.Add(
 					new XElement(_v27 + "Axle", new XAttribute(_xsi + "type", "v2.7:TrailerAxleType"), new XAttribute("axleNumber", "2"), 
-					new XElement(_v27 + "TwinTyres", trailerData.Axle1IsTwin.ToString().ToLower()), 
+					new XElement(_v27 + "TwinTyres", trailerData.Axle2IsTwin.ToString().ToLower()), 
 					tyre));
 				if (int.Parse(trailerData.NumberOfAxles.GetLabel()) <= 2)
 					return vehicle;
 
 				tyre = XDocument.Parse(trailerData.Axle3Xml).Elements().FirstOrDefault()?.Elements()
-					.FirstOrDefault();
+					.FirstOrDefault(x => !x.Name.ToString().Contains("TwinTyres"));
 
 				vehicle.Element(_v27 + "AxleWheels")?.Element(_v27 + "Data")?.Element(_v27 + "Axles")?.Add(
 					new XElement(_v27 + "Axle", new XAttribute(_xsi + "type", "v2.7:TrailerAxleType"), new XAttribute("axleNumber", "3"), 
-					new XElement(_v27 + "TwinTyres", trailerData.Axle1IsTwin.ToString().ToLower()), 
+					new XElement(_v27 + "TwinTyres", trailerData.Axle3IsTwin.ToString().ToLower()), 
 					tyre));
 
 			} catch { }

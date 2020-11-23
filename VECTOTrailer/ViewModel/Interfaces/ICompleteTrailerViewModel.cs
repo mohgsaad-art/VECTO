@@ -14,5 +14,7 @@ namespace VECTOTrailer.ViewModel.Interfaces
 		AllowedEntry<BodyWorkCode>[] AllowedBodyCodes { get; }
 		AllowedEntry<AeroFeatureTechnology>[] AllowedTechnologies { get; }
 		AllowedEntry<NumberOfTrailerAxles>[] AllowedNumberOfAxles { get; }
+
+		AllowedEntry<string>[] AllowedLegislativeCategory { get; }
 	}
 }

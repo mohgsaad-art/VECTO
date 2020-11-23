@@ -92,6 +92,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		private bool _axle2NewVisibility;
 		private bool _axle3ButtonsVisibilty;
 		private bool _axle3NewVisibility;
+		private bool _tPMLMAxleAssemblyVisibility;
 
 		private readonly bool _editJob;
 		protected SettingsModel Settings = new SettingsModel();
@@ -275,6 +276,12 @@ namespace VECTOTrailer.ViewModel.Impl
 			{
 				if (!SetProperty(ref _trailerType, value))
 					return;
+
+				if (!(TrailerType is TypeTrailer.DA))
+					TPMLMAxleAssemblyVisibility = false;
+				else 
+					TPMLMAxleAssemblyVisibility = true;
+
 				IsDataChanged(_trailerType, _componentData);
 			}
 		}
@@ -449,11 +456,18 @@ namespace VECTOTrailer.ViewModel.Impl
 			set => SetProperty(ref _axle3NewVisibility, value);
 		}
 
+		public bool TPMLMAxleAssemblyVisibility {
+			get => _tPMLMAxleAssemblyVisibility;
+			set => SetProperty(ref _tPMLMAxleAssemblyVisibility, value);
+		}
+
+
 		public Dictionary<string, string> XmlNamesToPropertyMapping { get; private set; }
 		public AllowedEntry<TypeTrailer>[] AllowedTrailerTypes { get; private set; }
 		public AllowedEntry<BodyWorkCode>[] AllowedBodyCodes { get; private set; }
 		public  AllowedEntry<AeroFeatureTechnology>[] AllowedTechnologies { get; private set; }
 		public AllowedEntry<NumberOfTrailerAxles>[] AllowedNumberOfAxles { get; private set; }
+		public AllowedEntry<string>[] AllowedLegislativeCategory { get; private set; }
 
 		#endregion
 
@@ -540,6 +554,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		private void EnableFirstAxle(XmlNode axle)
 		{
 			Axle1Xml = axle.OuterXml;
+			Axle1FilePath = axle.ChildNodes[1].ChildNodes[0].ChildNodes[0].InnerText;
 			Axle1IsTwin = axle.ChildNodes[0].InnerText == "true";
 			Axle1ButtonsVisibility = true;
 			Axle1NewVisibility = false;
@@ -548,13 +563,19 @@ namespace VECTOTrailer.ViewModel.Impl
 		private void EnableSecondAxle(XmlNode axle)
 		{
 			Axle2Xml = axle.OuterXml;
+			Axle2FilePath = axle.ChildNodes[1].ChildNodes[0].ChildNodes[0].InnerText;
 			Axle2IsTwin = axle.ChildNodes[0].InnerText == "true";
+			Axle2ButtonsVisibility = true;
+			Axle2NewVisibility = false;
 		}
 
 		private void EnableThirdAxle(XmlNode axle)
 		{
 			Axle3Xml = axle.OuterXml;
+			Axle3FilePath = axle.ChildNodes[1].ChildNodes[0].ChildNodes[0].InnerText;
 			Axle3IsTwin = axle.ChildNodes[0].InnerText == "true";
+			Axle3ButtonsVisibility = true;
+			Axle3NewVisibility = false;
 		}
 
 		private void SetAllowedEntries()
@@ -571,6 +592,8 @@ namespace VECTOTrailer.ViewModel.Impl
 
 			AllowedNumberOfAxles = EnumHelper.GetValues<NumberOfTrailerAxles>().Where(x => x != NumberOfTrailerAxles.Unknown)
 				.Select(vc => AllowedEntry.Create(vc, vc.GetLabel())).ToArray();
+
+			AllowedLegislativeCategory = new[] { AllowedEntry.Create("O4", "O4") };
 		}
 
 		#endregion
@@ -712,6 +735,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		{
 			this.Axle1ButtonsVisibility = false;
 			this.Axle1NewVisibility = true;
+			this.Axle1FilePath = string.Empty;
 			this.Axle1IsTwin = false;
 		}
 		private void DoDownloadSecondAxle()
@@ -725,6 +749,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		{
 			this.Axle2ButtonsVisibility = false;
 			this.Axle2NewVisibility = true;
+			this.Axle2FilePath = null;
 			this.Axle2IsTwin = false;
 		}
 		private void DoDownloadThirdAxle()
@@ -738,6 +763,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		{
 			this.Axle3ButtonsVisibility = false;
 			this.Axle3NewVisibility = true;
+			this.Axle3FilePath = null;
 			this.Axle3IsTwin = false;
 		}
 

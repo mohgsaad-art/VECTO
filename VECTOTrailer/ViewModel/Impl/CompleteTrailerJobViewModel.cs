@@ -12,6 +12,7 @@ using MahApps.Metro.Controls.Dialogs;
 using Ninject;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
+using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.OutputData.XML.DeclarationJobs;
 using TUGraz.VectoCore.Utils;
@@ -249,6 +250,22 @@ namespace VECTOTrailer.ViewModel.Impl
 			if (combination < 0)
 				ValidationResultDialogWindow(false);
 			// -----------------------------------------------------------------
+
+			// Axles -----------------------------------------------------------
+			if (((Model.TempDataObject.TrailerComponentData)CompleteVehicleTrailerData.Values.FirstOrDefault())?.NumberOfAxles == NumberOfTrailerAxles.Two &&
+				(((Model.TempDataObject.TrailerComponentData)CompleteVehicleTrailerData.Values.FirstOrDefault())?.Axle2FilePath == null))
+				ValidationResultDialogWindow(false);
+
+			else if (((Model.TempDataObject.TrailerComponentData)CompleteVehicleTrailerData.Values.FirstOrDefault())?.NumberOfAxles == NumberOfTrailerAxles.Three &&
+				(((Model.TempDataObject.TrailerComponentData)CompleteVehicleTrailerData.Values.FirstOrDefault())?.Axle2FilePath == null ||
+				((Model.TempDataObject.TrailerComponentData)CompleteVehicleTrailerData.Values.FirstOrDefault())?.Axle3FilePath == null))
+				ValidationResultDialogWindow(false);
+			// -----------------------------------------------------------------
+
+			if (((Model.TempDataObject.TrailerComponentData)CompleteVehicleTrailerData.Values.FirstOrDefault())?.TrailerType == TypeTrailer.DA &&
+			(((Model.TempDataObject.TrailerComponentData)CompleteVehicleTrailerData.Values.FirstOrDefault())?.TPLMAxleAssembly == null ||
+			((Model.TempDataObject.TrailerComponentData)CompleteVehicleTrailerData.Values.FirstOrDefault())?.TPLMAxleAssembly?.Value() == 0))
+			ValidationResultDialogWindow(false);
 
 			else if (XmlHelper.ValidateXDocument(xDoc, null, ValidationErrorAction)) {
 				ValidationResultDialogWindow(true);

@@ -10,71 +10,12 @@
 	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationOutputDefinitions" schemaLocation="VectoOutputDefinitions.xsd"/>
 	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" schemaLocation="VectoDeclarationDefinitions.1.0.xsd"/>
 	<xs:complexType name="AbstractVehicleType" abstract="true"/>
-	<xs:complexType name="ADASType">
-		<xs:sequence>
-			<xs:element name="EngineStopStart" type="xs:boolean">
-				<xs:annotation>
-					<xs:documentation>P271 / II.1.2.11</xs:documentation>
-				</xs:annotation>
-			</xs:element>
-			<xs:element name="EcoRollWithoutEngineStop" type="xs:boolean">
-				<xs:annotation>
-					<xs:documentation>P272 / II.1.2.12</xs:documentation>
-				</xs:annotation>
-			</xs:element>
-			<xs:element name="EcoRollWithEngineStop" type="xs:boolean">
-				<xs:annotation>
-					<xs:documentation>P273 / II.1.2.13</xs:documentation>
-				</xs:annotation>
-			</xs:element>
-			<xs:element name="PredictiveCruiseControl" type="xs:boolean">
-				<xs:annotation>
-					<xs:documentation>P274 / II.1.2.14</xs:documentation>
-				</xs:annotation>
-			</xs:element>
-		</xs:sequence>
-	</xs:complexType>
 	<xs:complexType name="CO2Type">
 		<xs:simpleContent>
 			<xs:extension base="xs:double">
 				<xs:attribute name="unit" type="CO2UnitType" use="required"/>
 			</xs:extension>
 		</xs:simpleContent>
-	</xs:complexType>
-	<xs:complexType name="ExemptedVehicleType">
-		<xs:complexContent>
-			<xs:extension base="AbstractVehicleType">
-				<xs:sequence>
-					<xs:element name="Model" type="vdecdef:ModelType">
-						<xs:annotation>
-							<xs:documentation>P236 / II.1.1.7</xs:documentation>
-						</xs:annotation>
-					</xs:element>
-					<xs:element name="Manufacturer" type="vdecdef:ManufacturerType">
-						<xs:annotation>
-							<xs:documentation>P235 / II.1.1.6</xs:documentation>
-						</xs:annotation>
-					</xs:element>
-					<xs:element name="ManufacturerAddress" type="vdecdef:ManufacturerAddressType">
-						<xs:annotation>
-							<xs:documentation>P252 / II.1.1.6</xs:documentation>
-						</xs:annotation>
-					</xs:element>
-					<xs:element name="VIN" type="vdecdef:VINType">
-						<xs:annotation>
-							<xs:documentation>P238 / II.1.1.1</xs:documentation>
-						</xs:annotation>
-					</xs:element>
-					<xs:element name="LegislativeCategory" type="xs:string">
-						<xs:annotation>
-							<xs:documentation></xs:documentation>
-						</xs:annotation>
-					</xs:element>
-					
-					<xs:element name="InputDataSignature" type="vdecdef:SignatureType"/>
-				</xs:sequence>
-			</xs:extension>
-		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="FuelConsumptionType">
 		<xs:simpleContent>
@@ -297,71 +238,6 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="VehicleCompletedBusType">
-		<xs:complexContent>
-			<xs:extension base="AbstractVehicleType">
-				<xs:sequence>
-					<xs:element name="Model" type="vdecdef:ModelType">
-						<xs:annotation>
-							<xs:documentation>P236 / II.1.1.7</xs:documentation>
-						</xs:annotation>
-					</xs:element>
-					<xs:element name="PrimaryVehicle">
-						<xs:complexType>
-							<xs:sequence>
-								<xs:element name="Manufacturer" type="vdecdef:ManufacturerType">
-									<xs:annotation>
-										<xs:documentation>P235 / II.1.1.6</xs:documentation>
-									</xs:annotation>
-								</xs:element>
-								<xs:element name="ManufacturerAddress" type="vdecdef:ManufacturerAddressType">
-									<xs:annotation>
-										<xs:documentation>P252 / II.1.1.6</xs:documentation>
-									</xs:annotation>
-								</xs:element>
-								<xs:element name="InputDataSignature" type="vdecdef:SignatureType"/>
-								<xs:element name="ManufacturerRecordSignature" type="vdecdef:SignatureType"/>
-							</xs:sequence>
-						</xs:complexType>
-					</xs:element>
-					<xs:element name="CompletedVehicle">
-						<xs:complexType>
-							<xs:sequence>
-								<xs:element name="Manufacturer" type="vdecdef:ManufacturerType">
-									<xs:annotation>
-										<xs:documentation>P235 / II.1.1.6</xs:documentation>
-									</xs:annotation>
-								</xs:element>
-								<xs:element name="ManufacturerAddress" type="vdecdef:ManufacturerAddressType">
-									<xs:annotation>
-										<xs:documentation>P252 / II.1.1.6</xs:documentation>
-									</xs:annotation>
-								</xs:element>
-							</xs:sequence>
-						</xs:complexType>
-					</xs:element>
-					<xs:element name="VIN" type="vdecdef:VINType">
-						<xs:annotation>
-							<xs:documentation>P238 / II.1.1.1</xs:documentation>
-						</xs:annotation>
-					</xs:element>
-					
-					<xs:element name="InputDataSignature" type="vdecdef:SignatureType"/>
-				</xs:sequence>
-			</xs:extension>
-		</xs:complexContent>
-	</xs:complexType>
-	<xs:simpleType name="AccelerationUnitType">
-		<xs:restriction base="xs:token">
-			<xs:enumeration value="m/s²"/>
-		</xs:restriction>
-	</xs:simpleType>
-	<xs:simpleType name="AirdragCertificationOptionType">
-		<xs:restriction base="xs:string">
-			<xs:enumeration value="Measured"/>
-			<xs:enumeration value="Standard values"/>
-		</xs:restriction>
-	</xs:simpleType>
 	<xs:simpleType name="CO2UnitType">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="g/km"/>
@@ -378,19 +254,6 @@
 	<xs:simpleType name="DistanceUnitType">
 		<xs:restriction base="xs:token">
 			<xs:enumeration value="km"/>
-		</xs:restriction>
-	</xs:simpleType>
-	<xs:simpleType name="FuelConsumptionUnitType">
-		<xs:restriction base="xs:string">
-			<xs:enumeration value="g/km"/>
-			<xs:enumeration value="g/t-km"/>
-			<xs:enumeration value="g/p-km"/>
-			<xs:enumeration value="g/m³-km"/>
-			<xs:enumeration value="l/100km"/>
-			<xs:enumeration value="l/t-km"/>
-			<xs:enumeration value="l/p-km"/>
-			<xs:enumeration value="l/m³-km"/>
-			<xs:enumeration value="MJ/km"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="MassUnitType">

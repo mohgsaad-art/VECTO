@@ -86,7 +86,6 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 		private GearboxData _gearboxData;
 		private RetarderData _retarderData;
 		private PTOData _ptoTransmissionData;
-		private PTOData _municipalPtoTransmissionData;
 		private ShiftStrategyParameters _gearshiftData;
 
 		private IDeclarationInputDataProvider _genericInputDataProvider;
@@ -132,18 +131,6 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 					}
 				}
 			}
-		}
-
-
-		protected virtual PTOData CreateDefaultPTOData()
-		{
-			return new PTOData {
-				TransmissionType = DeclarationData.PTO.DefaultPTOTechnology,
-				LossMap = PTOIdleLossMapReader.ReadFromStream(RessourceHelper.ReadStream(DeclarationData.PTO.DefaultPTOIdleLosses)),
-				PTOCycle =
-					DrivingCycleDataReader.ReadFromStream(RessourceHelper.ReadStream(DeclarationData.PTO.DefaultPTOActivationCycle),
-						CycleType.PTO, "PTO", false)
-			};
 		}
 
 		protected virtual void InitializeReport()
@@ -217,8 +204,6 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 
 			_ptoTransmissionData = DataAdapter.CreatePTOTransmissionData(_genericInputDataProvider.JobInputData.Vehicle.Components.PTOTransmissionInputData);
 
-			_municipalPtoTransmissionData = CreateDefaultPTOData();
-			
 			_gearshiftData = DataAdapter.CreateGearshiftData(_gearboxData, _axlegearData.AxleGear.Ratio * (_angledriveData?.Angledrive.Ratio ?? 1.0), tmpEngine.IdleSpeed);
 		}
 
@@ -262,9 +247,6 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 				ModFileSuffix = (engineModes.Count > 1 ? $"_EngineMode{modeIdx}_" : "") + loading.Key,
 				Report = Report,
 				Mission = mission,
-				PTO = mission.MissionType == MissionType.MunicipalUtility
-					? _municipalPtoTransmissionData
-					: _ptoTransmissionData,
 				InputDataHash = TrailerInputDataProvider.XMLHash,
 				SimulationType = SimulationType.DistanceCycle,
 				GearshiftParameters = _gearshiftData,
@@ -317,9 +299,6 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 				ModFileSuffix = (engineModes.Count > 1 ? $"_EngineMode{modeIdx}_" : "") + loading.Key + "_trailer",
 				Report = Report,
 				Mission = trailerMission,
-				PTO = mission.MissionType == MissionType.MunicipalUtility
-					? _municipalPtoTransmissionData
-					: _ptoTransmissionData,
 				InputDataHash = TrailerInputDataProvider.XMLHash,
 				SimulationType = SimulationType.DistanceCycle,
 				GearshiftParameters = _gearshiftData,

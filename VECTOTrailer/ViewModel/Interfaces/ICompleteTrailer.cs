@@ -57,6 +57,7 @@ namespace VECTOTrailer.ViewModel.Interfaces
 		JobFileType ThirdFileType { get; }
 		Dictionary<string,string> XmlNamesToPropertyMapping { get; }
 
+		bool TPMLMAxleAssemblyVisibility { get; set; }
 		bool Axle1ButtonsVisibility { get; set; }
 		bool Axle1NewVisibility { get; set; }
 		bool Axle2ButtonsVisibility { get; set; }
