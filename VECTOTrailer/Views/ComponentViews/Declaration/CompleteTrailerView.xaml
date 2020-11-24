@@ -129,35 +129,35 @@
                     <Grid>
                         <customControls:VectoParameterControl
                             Caption="External length of the body"
-                            Value="{Binding ExternalLengthOfTheBody, Converter={converter:SIValueConverter}, ConverterParameter=AsMeter|double}" ValueAlign="right"
+                            Value="{Binding ExternalLengthOfTheBody, Converter={converter:SIValueConverter}, ConverterParameter=AsMeter|double3}" ValueAlign="right"
                             Unit="m" UnitWidthGroup="unitWidth"/>
                     </Grid>
 
                     <Grid>
                         <customControls:VectoParameterControl
                             Caption="External width of the body" CaptionWidthGroup="lblGWidth"
-                            Value="{Binding ExternalWidthOfTheBody, Converter={converter:SIValueConverter}, ConverterParameter=AsMeter|double}" ValueAlign="right"
+                            Value="{Binding ExternalWidthOfTheBody, Converter={converter:SIValueConverter}, ConverterParameter=AsMeter|double3}" ValueAlign="right"
                             Unit="m" UnitWidthGroup="unitWidth"/>
                     </Grid>
 
                     <Grid>
                         <customControls:VectoParameterControl
                             Caption="External height of the body" CaptionWidthGroup="lblGWidth"
-                            Value="{Binding ExternalHeightOfTheBody, Converter={converter:SIValueConverter}, ConverterParameter=AsMeter|double}" ValueAlign="right"
+                            Value="{Binding ExternalHeightOfTheBody, Converter={converter:SIValueConverter}, ConverterParameter=AsMeter|double3}" ValueAlign="right"
                             Unit="m" UnitWidthGroup="unitWidth"/>
                     </Grid>
 
                     <Grid>
                         <customControls:VectoParameterControl
                             Caption="Total height of the trailer" CaptionWidthGroup="lblGWidth"
-                            Value="{Binding TotalHeightOfTheTrailer, Converter={converter:SIValueConverter}, ConverterParameter=AsMeter|double}" ValueAlign="right"
+                            Value="{Binding TotalHeightOfTheTrailer, Converter={converter:SIValueConverter}, ConverterParameter=AsMeter|double3}" ValueAlign="right"
                             Unit="m" UnitWidthGroup="unitWidth"/>
                     </Grid>
 
                     <Grid>
                         <customControls:VectoParameterControl
                             Caption="PositionXFirstAxle" CaptionWidthGroup="lblGWidth"
-                            Value="{Binding PositionXFirstAxle, Converter={converter:SIValueConverter}, ConverterParameter=AsMeter|double}" ValueAlign="right"
+                            Value="{Binding PositionXFirstAxle, Converter={converter:SIValueConverter}, ConverterParameter=AsMeter|double3}" ValueAlign="right"
                             Unit="m" UnitWidthGroup="unitWidth"/>
                     </Grid>
 
@@ -165,7 +165,7 @@
                     <Grid>
                         <customControls:VectoParameterControl
                             Caption="PositionXLastAxle" CaptionWidthGroup="lblGWidth"
-                            Value="{Binding PositionXLastAxle, Converter={converter:SIValueConverter}, ConverterParameter=AsMeter|double}" ValueAlign="right"
+                            Value="{Binding PositionXLastAxle, Converter={converter:SIValueConverter}, ConverterParameter=AsMeter|double3}" ValueAlign="right"
                             Unit="m" UnitWidthGroup="unitWidth"/>
                     </Grid>
 
@@ -173,7 +173,7 @@
                     <Grid>
                         <customControls:VectoParameterControl
                             Caption="Internal height of the body" CaptionWidthGroup="lblGWidth"
-                            Value="{Binding InternalHeightOfTheBody, Converter={converter:SIValueConverter}, ConverterParameter=AsMeter|double}" ValueAlign="right"
+                            Value="{Binding InternalHeightOfTheBody, Converter={converter:SIValueConverter}, ConverterParameter=AsMeter|double3}" ValueAlign="right"
                             Unit="m" UnitWidthGroup="unitWidth"/>
                     </Grid>
 
@@ -181,7 +181,7 @@
                     <Grid>
                         <customControls:VectoParameterControl
                             Caption="Cargo volume" CaptionWidthGroup="lblGWidth"
-                            Value="{Binding CargoVolume, Converter={converter:SIValueConverter}, ConverterParameter=AsCubicMeter|double}" ValueAlign="right"
+                            Value="{Binding CargoVolume, Converter={converter:SIValueConverter}, ConverterParameter=AsCubicMeter|double3}" ValueAlign="right"
                             Unit="m3" UnitWidthGroup="unitWidth"/>
                     </Grid>
 
