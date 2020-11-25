@@ -147,21 +147,6 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			Report.InitializeReport(powertrainConfig, fuels);
 		}
 
-		[TestMethod]
-		private void DoTests()
-		{
-			var trailer = TrailerInputDataProvider.JobInputData.Trailer;
-			Assert.IsNotNull(trailer);
-
-			var trailerSegment = DeclarationData.TrailerSegments.Lookup(trailer.NumberOfAxles, trailer.TrailerType, trailer.BodyworkCode, false);
-			Assert.AreEqual(211, trailerSegment.VehicleGroup);
-
-			var aeroFeatures = new List<AeroFeatureTechnology> { AeroFeatureTechnology.SideSkirtsShort };
-
-			var combination = DeclarationData.AeroFeatures.Lookup(aeroFeatures);
-			Assert.AreEqual(1, combination);
-		}
-
 		protected virtual void Initialize()
 		{
 			//DoTests();

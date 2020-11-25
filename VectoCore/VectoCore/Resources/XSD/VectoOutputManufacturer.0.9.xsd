@@ -283,16 +283,7 @@
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="g/km"/>
 			<xs:enumeration value="g/t-km"/>
-			<xs:enumeration value="g/p-km"/>
 			<xs:enumeration value="g/m³-km"/>
-			<xs:enumeration value="l/100km"/>
-			<xs:enumeration value="l/t-km"/>
-			<xs:enumeration value="l/p-km"/>
-			<xs:enumeration value="l/m³-km"/>
-			<xs:enumeration value="MJ/km"/>
-			<xs:enumeration value="MJ/t-km"/>
-			<xs:enumeration value="MJ/m³-km"/>
-			<xs:enumeration value="MJ/p-km"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="MassUnitType">

@@ -221,6 +221,8 @@
     <Compile Include="XML\XMLDeclarationReaderVersionsTest.cs" />
     <Compile Include="XML\XMLEngineeringInputRefTest.cs" />
     <Compile Include="XML\XMLEngineeringInputSingleTest.cs" />
+    <Compile Include="XML\XMLReportTrailerTest.cs" />
+    <Compile Include="XML\XMLTrailerInputDataTest.cs" />
     <Compile Include="XML\XMLPrimaryBusInputDataTest.cs" />
     <Compile Include="XML\XMLReportTest.cs" />
     <Compile Include="XML\XMLPrimaryVehicleReportBusReaderTest.cs" />

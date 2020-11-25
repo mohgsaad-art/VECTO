@@ -29,15 +29,6 @@
 			<xs:extension base="AbstractResultType">
 				<xs:sequence>
 					<xs:element name="Mission" type="MissionTypeType"/>
-					<xs:element name="TotalVehicleMass">
-						<xs:complexType>
-							<xs:simpleContent>
-								<xs:extension base="xs:double">
-									<xs:attribute name="unit" type="MassUnitType" use="required"/>
-								</xs:extension>
-							</xs:simpleContent>
-						</xs:complexType>
-					</xs:element>
 					<xs:element name="Payload">
 						<xs:complexType>
 							<xs:simpleContent>
@@ -47,34 +38,7 @@
 							</xs:simpleContent>
 						</xs:complexType>
 					</xs:element>
-					<xs:element name="CdxA" type="xs:double"/>
 					<xs:element name="EfficiencyRatio" type="xs:double"/>
-					<xs:element name="FuelMode">
-						<xs:simpleType>
-							<xs:restriction base="xs:string">
-								<xs:enumeration value="dual fuel mode"/>
-								<xs:enumeration value="single fuel mode"/>
-							</xs:restriction>
-						</xs:simpleType>
-					</xs:element>
-					<xs:element name="AverageSpeed">
-						<xs:complexType>
-							<xs:simpleContent>
-								<xs:extension base="xs:double">
-									<xs:attribute name="unit" type="SpeedUnitType" use="required"/>
-								</xs:extension>
-							</xs:simpleContent>
-						</xs:complexType>
-					</xs:element>
-					<xs:element name="Fuel" maxOccurs="unbounded">
-						<xs:complexType>
-							<xs:sequence>
-								<xs:element name="FuelConsumption" type="FuelConsumptionType" maxOccurs="unbounded"/>
-							</xs:sequence>
-							<xs:attribute name="type" type="xs:string" use="required"/>
-						</xs:complexType>
-					</xs:element>
-					<xs:element name="CO2" type="CO2Type" maxOccurs="unbounded"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -93,43 +57,8 @@
 							</xs:simpleContent>
 						</xs:complexType>
 					</xs:element>
-					<xs:element name="PassengerCount" type="xs:double" minOccurs="0"/>
-					<xs:element name="TotalVehicleMass">
-						<xs:complexType>
-							<xs:simpleContent>
-								<xs:extension base="xs:double">
-									<xs:attribute name="unit" type="MassUnitType" use="required"/>
-								</xs:extension>
-							</xs:simpleContent>
-						</xs:complexType>
-					</xs:element>
-					<xs:element name="FuelMode">
-						<xs:simpleType>
-							<xs:restriction base="xs:string">
-								<xs:enumeration value="dual fuel mode"/>
-								<xs:enumeration value="single fuel mode"/>
-							</xs:restriction>
-						</xs:simpleType>
-					</xs:element>
 					<xs:choice>
 						<xs:sequence>
-							<xs:element name="AverageSpeed">
-								<xs:complexType>
-									<xs:simpleContent>
-										<xs:extension base="xs:double">
-											<xs:attribute name="unit" type="SpeedUnitType" use="required"/>
-										</xs:extension>
-									</xs:simpleContent>
-								</xs:complexType>
-							</xs:element>
-							<xs:element name="Fuel" maxOccurs="unbounded">
-								<xs:complexType>
-									<xs:sequence>
-										<xs:element name="FuelConsumption" type="FuelConsumptionType" maxOccurs="unbounded"/>
-									</xs:sequence>
-									<xs:attribute name="type" type="xs:string" use="required"/>
-								</xs:complexType>
-							</xs:element>
 							<xs:element name="CO2" type="CO2Type" maxOccurs="unbounded"/>
 						</xs:sequence>
 						<xs:element name="Error" type="xs:string"/>
@@ -169,50 +98,46 @@
 										<xs:element name="Summary" minOccurs="0">
 											<xs:complexType>
 												<xs:sequence>
-													<xs:element name="SpecificCO2Emissions">
-														<xs:annotation>
-															<xs:documentation>II.2.3</xs:documentation>
-														</xs:annotation>
+													<xs:element name="WeightedPayload">
 														<xs:complexType>
 															<xs:simpleContent>
 																<xs:extension base="xs:double">
-																	<xs:attribute name="unit" use="required">
-																		<xs:simpleType>
-																			<xs:restriction base="xs:string">
-																				<xs:enumeration value="gCO2/tkm"/>
-																			</xs:restriction>
-																		</xs:simpleType>
-																	</xs:attribute>
+																	<xs:attribute name="unit" use="required"/>
 																</xs:extension>
 															</xs:simpleContent>
 														</xs:complexType>
 													</xs:element>
-													<xs:element name="AveragePayload">
-														<xs:annotation>
-															<xs:documentation>II.2.4</xs:documentation>
-														</xs:annotation>
+													<xs:element name="WeightedPayloadTrailer">
 														<xs:complexType>
 															<xs:simpleContent>
 																<xs:extension base="xs:double">
-																	<xs:attribute name="unit" use="required">
-																		<xs:simpleType>
-																			<xs:restriction base="xs:string">
-																				<xs:enumeration value="t"/>
-																			</xs:restriction>
-																		</xs:simpleType>
-																	</xs:attribute>
+																	<xs:attribute name="unit" use="required"/>
 																</xs:extension>
 															</xs:simpleContent>
 														</xs:complexType>
 													</xs:element>
-													<xs:element name="AveragePassengerCount" type="xs:double" minOccurs="0"/>
+													<xs:element name="WeightedCO2Emissions">
+														<xs:complexType>
+															<xs:simpleContent>
+																<xs:extension base="xs:double">
+																	<xs:attribute name="unit" use="required"/>
+																</xs:extension>
+															</xs:simpleContent>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="WeightedCO2EmissionsTrailer">
+														<xs:complexType>
+															<xs:simpleContent>
+																<xs:extension base="xs:double">
+																	<xs:attribute name="unit" use="required"/>
+																</xs:extension>
+															</xs:simpleContent>
+														</xs:complexType>
+													</xs:element>
 												</xs:sequence>
 											</xs:complexType>
 										</xs:element>
 									</xs:sequence>
-									<xs:element name="ExemptedVehicle">
-										<xs:complexType/>
-									</xs:element>
 								</xs:choice>
 							</xs:sequence>
 						</xs:complexType>
@@ -246,14 +171,11 @@
 			<xs:enumeration value="g/m³-km"/>
 		</xs:restriction>
 	</xs:simpleType>
-	<xs:simpleType name="DisplacementType">
+	<xs:simpleType name="FuelConsumptionUnitType">
 		<xs:restriction base="xs:string">
-			<xs:enumeration value="ltr"/>
-		</xs:restriction>
-	</xs:simpleType>
-	<xs:simpleType name="DistanceUnitType">
-		<xs:restriction base="xs:token">
-			<xs:enumeration value="km"/>
+			<xs:enumeration value="g/km"/>
+			<xs:enumeration value="g/t-km"/>
+			<xs:enumeration value="g/m³-km"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="MassUnitType">
@@ -267,30 +189,11 @@
 			<xs:minLength value="1"/>
 		</xs:restriction>
 	</xs:simpleType>
-	<xs:simpleType name="PowerUnitType">
-		<xs:restriction base="xs:string">
-			<xs:enumeration value="kW"/>
-			<xs:enumeration value="W"/>
-		</xs:restriction>
-	</xs:simpleType>
-	<xs:simpleType name="SpeedUnitType">
-		<xs:restriction base="xs:token">
-			<xs:enumeration value="km/h"/>
-		</xs:restriction>
-	</xs:simpleType>
 	<xs:simpleType name="VehicleGroupType">
 		<xs:restriction base="xs:string">
 			<xs:minLength value="1"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:complexType name="AbstractResultType" abstract="true">
-		<xs:attribute name="status" use="required">
-			<xs:simpleType>
-				<xs:restriction base="xs:string">
-					<xs:enumeration value="success"/>
-					<xs:enumeration value="error"/>
-				</xs:restriction>
-			</xs:simpleType>
-		</xs:attribute>
 	</xs:complexType>
 </xs:schema>
