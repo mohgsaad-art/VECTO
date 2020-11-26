@@ -25,47 +25,39 @@
 		</xs:simpleContent>
 	</xs:complexType>
 	<xs:complexType name="ResultSuccessType">
-		<xs:complexContent>
-			<xs:extension base="AbstractResultType">
-				<xs:sequence>
-					<xs:element name="Mission" type="MissionTypeType"/>
-					<xs:element name="Payload">
-						<xs:complexType>
-							<xs:simpleContent>
-								<xs:extension base="xs:double">
-									<xs:attribute name="unit" type="MassUnitType" use="required"/>
-								</xs:extension>
-							</xs:simpleContent>
-						</xs:complexType>
-					</xs:element>
-					<xs:element name="EfficiencyRatio" type="xs:double"/>
-				</xs:sequence>
-			</xs:extension>
-		</xs:complexContent>
+		<xs:sequence>
+			<xs:element name="Mission" type="MissionTypeType"/>
+			<xs:element name="Payload">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="unit" type="MassUnitType" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="EfficiencyRatio" type="xs:double"/>
+		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="ResultErrorType">
-		<xs:complexContent>
-			<xs:extension base="AbstractResultType">
+		<xs:sequence>
+			<xs:element name="Mission" type="MissionTypeType"/>
+			<xs:element name="Payload">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="unit" type="MassUnitType" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:choice>
 				<xs:sequence>
-					<xs:element name="Mission" type="MissionTypeType"/>
-					<xs:element name="Payload">
-						<xs:complexType>
-							<xs:simpleContent>
-								<xs:extension base="xs:double">
-									<xs:attribute name="unit" type="MassUnitType" use="required"/>
-								</xs:extension>
-							</xs:simpleContent>
-						</xs:complexType>
-					</xs:element>
-					<xs:choice>
-						<xs:sequence>
-							<xs:element name="CO2" type="CO2Type" maxOccurs="unbounded"/>
-						</xs:sequence>
-						<xs:element name="Error" type="xs:string"/>
-					</xs:choice>
+					<xs:element name="CO2" type="CO2Type" maxOccurs="unbounded"/>
 				</xs:sequence>
-			</xs:extension>
-		</xs:complexContent>
+				<xs:element name="Error" type="xs:string"/>
+			</xs:choice>
+		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="VectoOutputDataType">
 		<xs:complexContent>
@@ -90,7 +82,7 @@
 								</xs:element>
 								<xs:choice>
 									<xs:sequence>
-										<xs:element name="Result" type="AbstractResultType" maxOccurs="unbounded">
+										<xs:element name="Result" maxOccurs="unbounded">
 											<xs:annotation>
 												<xs:documentation>II.2.1, II.2.2</xs:documentation>
 											</xs:annotation>
@@ -116,20 +108,29 @@
 															</xs:simpleContent>
 														</xs:complexType>
 													</xs:element>
-													<xs:element name="WeightedCO2Emissions">
+													<xs:element name="WeightedCO2Emissions" maxOccurs="unbounded">
 														<xs:complexType>
 															<xs:simpleContent>
 																<xs:extension base="xs:double">
-																	<xs:attribute name="unit" use="required"/>
+																	<xs:attribute name="unit" type="xs:string" use="required"/>
 																</xs:extension>
 															</xs:simpleContent>
 														</xs:complexType>
 													</xs:element>
-													<xs:element name="WeightedCO2EmissionsTrailer">
+													<xs:element name="WeightedCO2EmissionsTrailer" maxOccurs="unbounded">
 														<xs:complexType>
 															<xs:simpleContent>
 																<xs:extension base="xs:double">
-																	<xs:attribute name="unit" use="required"/>
+																	<xs:attribute name="unit" type="xs:string" use="required"/>
+																</xs:extension>
+															</xs:simpleContent>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="WeightedEfficiencyRatio" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:simpleContent>
+																<xs:extension base="xs:double">
+																	<xs:attribute name="unit" type="xs:string" use="required"/>
 																</xs:extension>
 															</xs:simpleContent>
 														</xs:complexType>
@@ -160,6 +161,84 @@
 					</xs:element>
 				</xs:sequence>
 				<xs:attribute name="id" type="xs:NCName" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="VehicleType">
+		<xs:complexContent>
+			<xs:extension base="AbstractVehicleType">
+				<xs:sequence>
+					<xs:element name="Manufacturer" type="vdecdef:ManufacturerType">
+						<xs:annotation>
+							<xs:documentation>P235 / II.1.1.6</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ManufacturerAddress" type="vdecdef:ManufacturerAddressType">
+						<xs:annotation>
+							<xs:documentation>P252 / II.1.1.6</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="CommercialName" type="xs:string"/>
+					<xs:element name="VIN" type="vdecdef:VINType"/>
+					<xs:element name="LegislativeCategory" type="xs:string"/>
+					<xs:element name="AxleCount" type="xs:string"/>
+					<xs:element name="TrailerType" type="xs:string"/>
+					<xs:element name="BodyCode" type="xs:string"/>
+					<xs:element name="Masses">
+						<xs:complexType>
+							<xs:all>
+								<xs:element name="CurbMass">
+									<xs:complexType>
+										<xs:simpleContent>
+											<xs:extension base="xs:double">
+												<xs:attribute name="unit" use="required"/>
+											</xs:extension>
+										</xs:simpleContent>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="TPMLMTotalTrailer">
+									<xs:complexType>
+										<xs:simpleContent>
+											<xs:extension base="xs:double">
+												<xs:attribute name="unit" use="required"/>
+											</xs:extension>
+										</xs:simpleContent>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="TPMLMAxleAssembly">
+									<xs:complexType>
+										<xs:simpleContent>
+											<xs:extension base="xs:double">
+												<xs:attribute name="unit" use="required"/>
+											</xs:extension>
+										</xs:simpleContent>
+									</xs:complexType>
+								</xs:element>
+							</xs:all>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Dimensions">
+						<xs:complexType>
+							<xs:all>
+								<xs:element name="ExternalLenghtBody" type="xs:double"/>
+								<xs:element name="ExternalWidthBody" type="xs:double"/>
+								<xs:element name="ExternalHeightBody" type="xs:double"/>
+								<xs:element name="TotalHeightTrailer" type="xs:double"/>
+								<xs:element name="PositionXFirstAxle" type="xs:double"/>
+								<xs:element name="PositionXLastAxle" type="xs:double"/>
+								<xs:element name="InternalHeightBody" type="xs:double"/>
+								<xs:element name="CargoVolume" type="xs:double"/>
+							</xs:all>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="AeroFeatures">
+						<xs:complexType>
+							<xs:all>
+								<xs:element name="Technology" type="xs:string"/>
+							</xs:all>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -194,6 +273,4 @@
 			<xs:minLength value="1"/>
 		</xs:restriction>
 	</xs:simpleType>
-	<xs:complexType name="AbstractResultType" abstract="true">
-	</xs:complexType>
 </xs:schema>

@@ -124,8 +124,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 
 
 			VehiclePart.Add(
-				new XAttribute(xsi + "type", "VehicleType"),
-				new XElement(tns + XMLNames.Report_Vehicle_VehicleGroup, modelData.VehicleData.VehicleClass.GetClassNumber())
+				new XAttribute(xsi + "type", "VehicleType")
 			);
 			
 			InputDataIntegrity = new XElement(tns + XMLNames.Report_InputDataSignature,
@@ -251,21 +250,21 @@ namespace TUGraz.VectoCore.OutputData.XML
 						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/km"),
 						GenericWeightedCo2.ToXMLFormat(3)
 					),
-					new XElement(tns + "WeightedCO2EmissionsTrailer",
-						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/km"),
-						WeightedCo2Trailer.ToXMLFormat(3)
-					),
 					new XElement(tns + "WeightedCO2Emissions",
 						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/t-km"),
 						weightedGenericCo2Ton.ToXMLFormat(1)
 					),
-					new XElement(tns + "WeightedCO2EmissionsTrailer",
-						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/t-km"),
-						weightedCo2Ton.ToXMLFormat(1)
-					),
 					new XElement(tns + "WeightedCO2Emissions",
 						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/m³-km"),
 						weightedGenericCo2CubicMeter.ToXMLFormat(3)
+					),
+					new XElement(tns + "WeightedCO2EmissionsTrailer",
+						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/km"),
+						WeightedCo2Trailer.ToXMLFormat(3)
+					),
+					new XElement(tns + "WeightedCO2EmissionsTrailer",
+						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/t-km"),
+						weightedCo2Ton.ToXMLFormat(1)
 					),
 					new XElement(tns + "WeightedCO2EmissionsTrailer",
 						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/m³-km"),

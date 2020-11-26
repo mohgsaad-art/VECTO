@@ -111,18 +111,6 @@
 							<xs:documentation>I.2.1.1 / #56</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="Distance">
-						<xs:annotation>
-							<xs:documentation>I.2.2.8 / #67</xs:documentation>
-						</xs:annotation>
-						<xs:complexType>
-							<xs:simpleContent>
-								<xs:extension base="xs:double">
-									<xs:attribute name="unit" type="DistanceUnitType" use="required"/>
-								</xs:extension>
-							</xs:simpleContent>
-						</xs:complexType>
-					</xs:element>
 					<xs:element name="SimulationParameters" type="SimulationParametersType"/>
 					<xs:element name="Fuel" maxOccurs="unbounded">
 						<xs:complexType>
@@ -141,24 +129,21 @@
 							<xs:documentation>I.2.3.13 - I.2.3.16 / #68</xs:documentation>
 						</xs:annotation>
 					</xs:element>
+					<xs:element name="EfficiencyRatio" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:simpleContent>
+								<xs:extension base="xs:double">
+									<xs:attribute name="unit" use="required"/>
+								</xs:extension>
+							</xs:simpleContent>
+						</xs:complexType>
+					</xs:element>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="SimulationParametersType">
 		<xs:sequence>
-			<xs:element name="TotalVehicleMass">
-				<xs:annotation>
-					<xs:documentation>I.2.1.4 / #59</xs:documentation>
-				</xs:annotation>
-				<xs:complexType>
-					<xs:simpleContent>
-						<xs:extension base="xs:double">
-							<xs:attribute name="unit" type="MassUnitType" use="required"/>
-						</xs:extension>
-					</xs:simpleContent>
-				</xs:complexType>
-			</xs:element>
 			<xs:element name="Payload">
 				<xs:annotation>
 					<xs:documentation>I.2.1.2 / #57</xs:documentation>
@@ -172,15 +157,7 @@
 				</xs:complexType>
 			</xs:element>
 			<xs:element name="CdxA" type="xs:double"/>
-			<xs:element name="EfficiencyRatio" type="xs:double"/>
-			<xs:element name="FuelMode">
-				<xs:simpleType>
-					<xs:restriction base="xs:string">
-						<xs:enumeration value="dual fuel mode"/>
-						<xs:enumeration value="single fuel mode"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:element>
+			<xs:element name="PolarCurveInformation" type="xs:string"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="VectoOutputDataType">
@@ -203,10 +180,58 @@
 									<xs:sequence>
 										<xs:element name="Result" type="AbstractResultType" maxOccurs="unbounded"/>
 									</xs:sequence>
-									<xs:element name="ExemptedVehicle">
-										<xs:complexType/>
-									</xs:element>
 								</xs:choice>
+								<xs:element name="Summary" minOccurs="0">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="WeightedPayload">
+												<xs:complexType>
+													<xs:simpleContent>
+														<xs:extension base="xs:double">
+															<xs:attribute name="unit" use="required"/>
+														</xs:extension>
+													</xs:simpleContent>
+												</xs:complexType>
+											</xs:element>
+											<xs:element name="WeightedPayloadTrailer">
+												<xs:complexType>
+													<xs:simpleContent>
+														<xs:extension base="xs:double">
+															<xs:attribute name="unit" use="required"/>
+														</xs:extension>
+													</xs:simpleContent>
+												</xs:complexType>
+											</xs:element>
+											<xs:element name="WeightedCO2Emissions" maxOccurs="unbounded">
+												<xs:complexType>
+													<xs:simpleContent>
+														<xs:extension base="xs:double">
+															<xs:attribute name="unit" type="xs:string" use="required"/>
+														</xs:extension>
+													</xs:simpleContent>
+												</xs:complexType>
+											</xs:element>
+											<xs:element name="WeightedCO2EmissionsTrailer" maxOccurs="unbounded">
+												<xs:complexType>
+													<xs:simpleContent>
+														<xs:extension base="xs:double">
+															<xs:attribute name="unit" type="xs:string" use="required"/>
+														</xs:extension>
+													</xs:simpleContent>
+												</xs:complexType>
+											</xs:element>
+											<xs:element name="WeightedEfficiencyRatio" maxOccurs="unbounded">
+												<xs:complexType>
+													<xs:simpleContent>
+														<xs:extension base="xs:double">
+															<xs:attribute name="unit" type="xs:string" use="required"/>
+														</xs:extension>
+													</xs:simpleContent>
+												</xs:complexType>
+											</xs:element>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
 							</xs:sequence>
 						</xs:complexType>
 					</xs:element>
@@ -231,39 +256,6 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="VehicleTrailerType">
-		<xs:complexContent>
-			<xs:extension base="AbstractVehicleType">
-				<xs:sequence>
-					<xs:element name="Model" type="vdecdef:ModelType">
-						<xs:annotation>
-							<xs:documentation>P236 / I.1.1.2</xs:documentation>
-						</xs:annotation>
-					</xs:element>
-					<xs:element name="Manufacturer" type="vdecdef:ManufacturerType">
-						<xs:annotation>
-							<xs:documentation>P235 / I.1.1.1 / #14</xs:documentation>
-						</xs:annotation>
-					</xs:element>
-					<xs:element name="ManufacturerAddress" type="vdecdef:ManufacturerAddressType">
-						<xs:annotation>
-							<xs:documentation>P252 / I.1.1.1 / #14</xs:documentation>
-						</xs:annotation>
-					</xs:element>
-					<xs:element name="VIN" type="vdecdef:VINType">
-						<xs:annotation>
-							<xs:documentation>P238 / I.1.1.3 / #1</xs:documentation>
-						</xs:annotation>
-					</xs:element>
-					<xs:element name="InputDataSignature" type="vdecdef:SignatureType">
-						<xs:annotation>
-							<xs:documentation>I.3.1.3</xs:documentation>
-						</xs:annotation>
-					</xs:element>
-				</xs:sequence>
-			</xs:extension>
-		</xs:complexContent>
-	</xs:complexType>
 	<xs:simpleType name="BooleanNotApplicableType">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="true"/>
@@ -271,6 +263,85 @@
 			<xs:enumeration value="not applicable"/>
 		</xs:restriction>
 	</xs:simpleType>
+	<xs:complexType name="VehicleType">
+		<xs:complexContent>
+			<xs:extension base="AbstractVehicleType">
+				<xs:sequence>
+					<xs:element name="Manufacturer" type="vdecdef:ManufacturerType">
+						<xs:annotation>
+							<xs:documentation>P235 / II.1.1.6</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ManufacturerAddress" type="vdecdef:ManufacturerAddressType">
+						<xs:annotation>
+							<xs:documentation>P252 / II.1.1.6</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="CommercialName" type="xs:string"/>
+					<xs:element name="VIN" type="vdecdef:VINType"/>
+					<xs:element name="LegislativeCategory" type="xs:string"/>
+					<xs:element name="AxleCount" type="xs:string"/>
+					<xs:element name="TrailerType" type="xs:string"/>
+					<xs:element name="BodyCode" type="xs:string"/>
+					<xs:element name="Masses">
+						<xs:complexType>
+							<xs:all>
+								<xs:element name="CurbMass">
+									<xs:complexType>
+										<xs:simpleContent>
+											<xs:extension base="xs:double">
+												<xs:attribute name="unit" use="required"/>
+											</xs:extension>
+										</xs:simpleContent>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="TPMLMTotalTrailer">
+									<xs:complexType>
+										<xs:simpleContent>
+											<xs:extension base="xs:double">
+												<xs:attribute name="unit" use="required"/>
+											</xs:extension>
+										</xs:simpleContent>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="TPMLMAxleAssembly">
+									<xs:complexType>
+										<xs:simpleContent>
+											<xs:extension base="xs:double">
+												<xs:attribute name="unit" use="required"/>
+											</xs:extension>
+										</xs:simpleContent>
+									</xs:complexType>
+								</xs:element>
+							</xs:all>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Dimensions">
+						<xs:complexType>
+							<xs:all>
+								<xs:element name="ExternalLenghtBody" type="xs:double"/>
+								<xs:element name="ExternalWidthBody" type="xs:double"/>
+								<xs:element name="ExternalHeightBody" type="xs:double"/>
+								<xs:element name="TotalHeightTrailer" type="xs:double"/>
+								<xs:element name="PositionXFirstAxle" type="xs:double"/>
+								<xs:element name="PositionXLastAxle" type="xs:double"/>
+								<xs:element name="InternalHeightBody" type="xs:double"/>
+								<xs:element name="CargoVolume" type="xs:double"/>
+							</xs:all>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="AeroFeatures">
+						<xs:complexType>
+							<xs:all>
+								<xs:element name="Technology" type="xs:string"/>
+							</xs:all>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="InputDataSignature" type="vdecdef:SignatureType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 	<xs:simpleType name="CO2UnitType">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="g/km"/>
@@ -281,9 +352,9 @@
 	</xs:simpleType>
 	<xs:simpleType name="FuelConsumptionUnitType">
 		<xs:restriction base="xs:string">
-			<xs:enumeration value="g/km"/>
-			<xs:enumeration value="g/t-km"/>
-			<xs:enumeration value="g/m³-km"/>
+			<xs:enumeration value="l/100km"/>
+			<xs:enumeration value="l/t-km"/>
+			<xs:enumeration value="l/m³-km"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="MassUnitType">
@@ -295,22 +366,6 @@
 	<xs:simpleType name="MissionTypeType">
 		<xs:restriction base="xs:token">
 			<xs:minLength value="1"/>
-		</xs:restriction>
-	</xs:simpleType>
-	<xs:simpleType name="PercentType">
-		<xs:restriction base="xs:string">
-			<xs:enumeration value="%"/>
-		</xs:restriction>
-	</xs:simpleType>
-	<xs:simpleType name="PowerUnitType">
-		<xs:restriction base="xs:string">
-			<xs:enumeration value="kW"/>
-			<xs:enumeration value="W"/>
-		</xs:restriction>
-	</xs:simpleType>
-	<xs:simpleType name="SpeedUnitType">
-		<xs:restriction base="xs:token">
-			<xs:enumeration value="km/h"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="VehicleGroupType">
