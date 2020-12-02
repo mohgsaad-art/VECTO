@@ -80,7 +80,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 		public double Aero6 { get; set; }
 		public double Aero7 { get; set; }
 		public double Aero8 { get; set; }
-		public double MaxGcm { get; set; }
+		public string MaxGcm { get; set; }
 		public SquareMeter A1 { get; set; }
 		public SquareMeter A2 { get; set; }
 		public SquareMeter A3 { get; set; }
