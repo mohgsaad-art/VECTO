@@ -555,7 +555,8 @@ namespace VECTOTrailer.ViewModel.Impl
 		private void EnableFirstAxle(XmlNode axle)
 		{
 			Axle1Xml = axle.OuterXml;
-			Axle1FilePath = axle.ChildNodes[1].ChildNodes[0].ChildNodes[0].InnerText;
+			Axle1FilePath = axle.ChildNodes[1].ChildNodes[0].ChildNodes[1].InnerText + 
+				", " + axle.ChildNodes[1].ChildNodes[0].ChildNodes[5].InnerText;
 			Axle1IsTwin = axle.ChildNodes[0].InnerText == "true";
 			Axle1ButtonsVisibility = true;
 			Axle1NewVisibility = false;
@@ -564,7 +565,8 @@ namespace VECTOTrailer.ViewModel.Impl
 		private void EnableSecondAxle(XmlNode axle)
 		{
 			Axle2Xml = axle.OuterXml;
-			Axle2FilePath = axle.ChildNodes[1].ChildNodes[0].ChildNodes[0].InnerText;
+			Axle2FilePath = axle.ChildNodes[1].ChildNodes[0].ChildNodes[1].InnerText +
+							", " + axle.ChildNodes[1].ChildNodes[0].ChildNodes[5].InnerText;
 			Axle2IsTwin = axle.ChildNodes[0].InnerText == "true";
 			Axle2ButtonsVisibility = true;
 			Axle2NewVisibility = false;
@@ -573,7 +575,8 @@ namespace VECTOTrailer.ViewModel.Impl
 		private void EnableThirdAxle(XmlNode axle)
 		{
 			Axle3Xml = axle.OuterXml;
-			Axle3FilePath = axle.ChildNodes[1].ChildNodes[0].ChildNodes[0].InnerText;
+			Axle3FilePath = axle.ChildNodes[1].ChildNodes[0].ChildNodes[1].InnerText +
+							", " + axle.ChildNodes[1].ChildNodes[0].ChildNodes[5].InnerText;
 			Axle3IsTwin = axle.ChildNodes[0].InnerText == "true";
 			Axle3ButtonsVisibility = true;
 			Axle3NewVisibility = false;
