@@ -30,6 +30,11 @@ namespace VECTOTrailer.ViewModel.Adapter.Declaration
 		public DataSource DataSource { get; }
 		public bool SavedInDeclarationMode { get; }
 
+		public string CommercialName
+		{
+			get { return ViewModel.CommercialName; }
+		}
+
 		public string Manufacturer
 		{
 			get { return ViewModel.Manufacturer; }
@@ -37,7 +42,7 @@ namespace VECTOTrailer.ViewModel.Adapter.Declaration
 
 		public string Model
 		{
-			get { return ViewModel.Model; }
+			get { return ViewModel.CommercialName; }
 		}
 
 		DateTime IComponentInputData.Date => _date;

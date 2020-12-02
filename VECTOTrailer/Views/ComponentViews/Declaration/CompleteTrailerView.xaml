@@ -73,7 +73,7 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Text="Commertial Name" Margin="0,0,10,0"/>
                         <TextBox Grid.Column="1" Margin="20,0,0,0" 
-                                 Text="{Binding Model, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+                                 Text="{Binding CommercialName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
                     </Grid>
 
 

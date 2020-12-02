@@ -34,6 +34,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		private string _manufacturer;
 		private string _manufacturerAddress;
+		private string _commercialName;
 		private string _model;
 		private string _vin;
 		private DateTime _date;
@@ -128,17 +129,17 @@ namespace VECTOTrailer.ViewModel.Impl
 				IsDataChanged(_manufacturerAddress, _componentData);
 			}
 		}
-		public string Model
+		public string CommercialName
 		{
-			get => _model;
+			get => _commercialName;
 			set
 			{
-				if (!SetProperty(ref _model, value))
+				if (!SetProperty(ref _commercialName, value))
 					return;
-
-				IsDataChanged(_model, _componentData);
+				IsDataChanged(_commercialName, _componentData);
 			}
 		}
+
 		public string VIN
 		{
 			get => _vin;
@@ -494,7 +495,7 @@ namespace VECTOTrailer.ViewModel.Impl
 			{
 				Manufacturer = trailer.Manufacturer;
 				ManufacturerAddress = trailer.ManufacturerAddress;
-				Model = trailer.Model;
+				CommercialName = trailer.CommercialName;
 				VIN = trailer.VIN;
 				Date = trailer.Date;
 				LegislativeCategory = trailer.LegislativeCategory;

@@ -91,7 +91,7 @@ namespace VECTOTrailer.Util.XML
 
 				new XElement(_v27 + XMLNames.Component_Manufacturer, trailerData.Manufacturer),
 				new XElement(_v27 + XMLNames.Component_ManufacturerAddress, trailerData.ManufacturerAddress),
-				new XElement(_v27 + XMLNames.Trailer_CommercialName, trailerData.Model),
+				new XElement(_v27 + XMLNames.Trailer_CommercialName, trailerData.CommercialName),
 				new XElement(_v27 + XMLNames.Vehicle_VIN, trailerData.VIN),
 				new XElement(_v27 + XMLNames.Component_Date,
 					XmlConvert.ToString(DateTime.Now, XmlDateTimeSerializationMode.Utc)),

@@ -209,6 +209,8 @@ namespace TUGraz.VectoCommon.InputData
 	{
 		string Identifier { get; }
 
+		string CommercialName { get; }
+
 		string ManufacturerAddress { get; }
 
 		string VIN { get; }

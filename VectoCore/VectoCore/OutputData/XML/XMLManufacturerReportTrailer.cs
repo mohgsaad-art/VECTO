@@ -81,7 +81,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XAttribute(xsi + "type", "VehicleType"),
 				new XElement(tns + XMLNames.Component_Manufacturer, modelData.VehicleData.InputDataTrailer.Manufacturer),
 				new XElement(tns + XMLNames.Component_ManufacturerAddress, modelData.VehicleData.InputDataTrailer.ManufacturerAddress),
-				new XElement(tns + XMLNames.Trailer_CommercialName, modelData.VehicleData.InputDataTrailer.Model),
+				new XElement(tns + XMLNames.Trailer_CommercialName, modelData.VehicleData.InputDataTrailer.CommercialName),
 
 				new XElement(tns + XMLNames.Vehicle_VIN, modelData.VehicleData.InputDataTrailer.VIN),
 

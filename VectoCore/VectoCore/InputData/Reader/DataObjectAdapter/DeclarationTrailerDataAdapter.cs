@@ -210,8 +210,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			retVal.InputDataTrailer = trailerData;
 			retVal.BodyAndTrailerMass = trailerData.CurbMass;
 
-			
-			retVal.Loading = Kilogram.Create(specificTrailerData.VolumeOrientation ? trailerData.CargoVolume.Value() * 88 : Math.Min(loading.Value(), (specificTrailerData.MaxGcm - data.CurbMassChassis.Value() - trailerData.CurbMass.Value())));
+			retVal.Loading = Kilogram.Create(specificTrailerData.VolumeOrientation ? trailerData.CargoVolume.Value() * 88 : 
+				Math.Min(loading.Value(), (specificTrailerData.MaxGcm - data.CurbMassChassis.Value() - trailerData.CurbMass.Value())));
+
 			retVal.PassengerCount = 1; //TODO: check this.
 			retVal.DynamicTyreRadius =
 				data.Components.AxleWheels.AxlesDeclaration.Where(axle => axle.AxleType == AxleType.VehicleDriven)
@@ -1051,7 +1052,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				CurbMassTrailer = trailer.CurbMass,
 				Inertia = wheels.Lookup(GetAxleWheelDimension(genericVehicle)).Inertia,
 				TotalCorrection = GetTrailerCorrection(trailerSegment, trailer, genericVehicle),
-				MaxGcm = trailerSegment.MaxGcm
+				MaxGcm = trailerSegment.MaxGcm //TODO read the + tpmlm axle assembly and add accordingly
 			};
 
 			return specificTrailerData;
