@@ -122,6 +122,9 @@ namespace TUGraz.VectoCore.OutputData
 					Tuple.Create(Fields.AIRDRAG_MODEL, typeof(string)),
 					Tuple.Create(Fields.CD_x_A_DECLARED, typeof(ConvertedSI)),
 					Tuple.Create(Fields.CD_x_A, typeof(ConvertedSI)),
+					Tuple.Create(Fields.A1, typeof(double)),
+					Tuple.Create(Fields.A2, typeof(double)),
+					Tuple.Create(Fields.A3, typeof(double)),
 					Tuple.Create(Fields.SLEEPER_CAB, typeof(string)),
 					Tuple.Create(Fields.DECLARED_RRC_AXLE1, typeof(double)),
 					Tuple.Create(Fields.DECLARED_FZISO_AXLE1, typeof(ConvertedSI)),
@@ -748,6 +751,12 @@ namespace TUGraz.VectoCore.OutputData
 
 			row[Fields.SLEEPER_CAB] = data.SleeperCab ? "yes" : "no";
 
+			if (data.InputDataTrailer != null) {
+				row[Fields.A1] = data.TrailerSegment.A1.Value();
+				row[Fields.A2] = data.TrailerSegment.A2.Value();
+				row[Fields.A3] = data.TrailerSegment.A3.Value();
+			}
+
 			row[Fields.ROLLING_RESISTANCE_COEFFICIENT_WO_TRAILER] =
 				data.RollResistanceCoefficientWithoutTrailer;
 			row[Fields.ROLLING_RESISTANCE_COEFFICIENT_W_TRAILER] =
@@ -1143,6 +1152,9 @@ namespace TUGraz.VectoCore.OutputData
 			public const string VEHICLE_FUEL_TYPE = "Vehicle fuel type [-]";
 			public const string AIRDRAG_MODEL = "AirDrag model [-]";
 			public const string SLEEPER_CAB = "Sleeper cab [-]";
+			public const string A1 = "A1 [-]";
+			public const string A2 = "A2 [-]";
+			public const string A3 = "A3 [-]";
 			public const string DECLARED_RRC_AXLE1 = "Declared RRC axle 1 [-]";
 			public const string DECLARED_FZISO_AXLE1 = "Declared FzISO axle 1 [N]";
 			public const string DECLARED_RRC_AXLE2 = "Declared RRC axle 2 [-]";

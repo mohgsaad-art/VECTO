@@ -75,7 +75,6 @@ namespace TUGraz.VectoCore.OutputData.XML
 			public IList<IFuelProperties> FuelData { get; set; }
 			public Kilogram Payload { get; set; }
 			public SquareMeter CdxA { get; set; }
-
 			public Kilogram TotalVehicleMass { get; set; }
 
 			public CubicMeter CargoVolume { get; set; }

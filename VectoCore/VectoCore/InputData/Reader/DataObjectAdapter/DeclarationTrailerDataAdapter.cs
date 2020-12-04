@@ -106,17 +106,17 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			return retVal;
 		}
 
-		public virtual VehicleData CreateVehicleData(IVehicleDeclarationInputData data, ITrailerDeclarationInputData trailer, Segment segment,
+		public virtual VehicleData CreateVehicleData(IVehicleDeclarationInputData data, Segment segment,
 			Mission mission, KeyValuePair<LoadingType, Tuple<Kilogram, double?>> loading)
 		{
 			if (!data.SavedInDeclarationMode) {
 				WarnDeclarationMode("VehicleData");
 			}
 
-			return CreateNonExemptedVehicleData(data, trailer, segment, mission, loading.Value.Item1, loading.Value.Item2);
+			return CreateNonExemptedVehicleData(data, segment, mission, loading.Value.Item1, loading.Value.Item2);
 		}
 
-		protected virtual VehicleData CreateNonExemptedVehicleData(IVehicleDeclarationInputData data, ITrailerDeclarationInputData trailerData, Segment segment,
+		protected virtual VehicleData CreateNonExemptedVehicleData(IVehicleDeclarationInputData data, Segment segment,
 			Mission mission, Kilogram loading, double? passengerCount)
 		{
 			var retVal = SetCommonVehicleData(data);
@@ -128,8 +128,6 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			retVal.VehicleClass = segment.VehicleClass;
 			retVal.TrailerGrossVehicleMass = mission.Trailer.Sum(t => t.TrailerGrossVehicleWeight).DefaultIfNull(0);
 			retVal.SleeperCab = data.SleeperCab;
-			retVal.InputDataTrailer = trailerData;
-
 			retVal.BodyAndTrailerMass = mission.BodyCurbWeight + mission.Trailer.Sum(t => t.TrailerCurbWeight).DefaultIfNull(0);
 
 			retVal.Loading = loading;
@@ -185,7 +183,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			return retVal;
 		}
 
-		public virtual VehicleData CreateTrailerData(IVehicleDeclarationInputData data, ITrailerDeclarationInputData trailer, Segment segment,
+		public virtual VehicleData CreateTrailerData(IVehicleDeclarationInputData data, ITrailerDeclarationInputData trailer, TrailerSegment trailerSegment, Segment segment,
 			Mission mission, KeyValuePair<LoadingType, Tuple<Kilogram, double?>> loading, TrailerData specificTrailerData)
 		{
 			if (!data.SavedInDeclarationMode)
@@ -193,9 +191,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				WarnDeclarationMode("VehicleData");
 			}
 
-			return GetTrailerData(data, trailer, segment, mission, loading.Value.Item1, loading.Value.Item2, specificTrailerData);
+			return GetTrailerData(data, trailer, trailerSegment, segment, mission, loading.Value.Item1, loading.Value.Item2, specificTrailerData);
 		}
-		protected virtual VehicleData GetTrailerData(IVehicleDeclarationInputData data, ITrailerDeclarationInputData trailerData, Segment segment,
+		protected virtual VehicleData GetTrailerData(IVehicleDeclarationInputData data, ITrailerDeclarationInputData trailerData, TrailerSegment trailerSegment, Segment segment,
 			Mission mission, Kilogram loading, double? passengerCount, TrailerData specificTrailerData)
 		{
 			var retVal = SetCommonVehicleData(data);
@@ -207,6 +205,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			retVal.VehicleClass = segment.VehicleClass;
 			retVal.TrailerGrossVehicleMass = mission.CurbMass;
 			retVal.SleeperCab = data.SleeperCab;
+			retVal.TrailerSegment = trailerSegment;
 			retVal.InputDataTrailer = trailerData;
 			retVal.BodyAndTrailerMass = trailerData.CurbMass;
 

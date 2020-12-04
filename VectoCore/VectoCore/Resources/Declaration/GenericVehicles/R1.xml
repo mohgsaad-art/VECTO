@@ -3,7 +3,7 @@
   <Vehicle id="R1">
     <Manufacturer>Generic Vendor</Manufacturer>
     <ManufacturerAddress>N.A.</ManufacturerAddress>
-    <Model>R1_Group_2</Model>
+    <Model>Generic group 2 (4x2 rigid lorry 12ton TPMLM), MY2019/20, 175kW</Model>
     <VIN>standard values</VIN>
     <Date>2017-07-06T15:06:05.4663609Z</Date>
     <LegislativeClass>N2</LegislativeClass>
@@ -415,7 +415,7 @@
                   <Date>2017-07-06T15:06:08.1443609Z</Date>
                   <AppVersion>VectoCore</AppVersion>
                   <Dimension>245/70 R17.5</Dimension>
-                  <RRCDeclared>0.0063</RRCDeclared>
+                  <RRCDeclared>0.0058</RRCDeclared>
                   <FzISO>20850</FzISO>
                 </Data>
                 <Signature>
@@ -442,7 +442,7 @@
                   <Date>2017-07-06T15:06:08.1443609Z</Date>
                   <AppVersion>VectoCore</AppVersion>
                   <Dimension>245/70 R17.5</Dimension>
-                  <RRCDeclared>0.0069</RRCDeclared>
+                  <RRCDeclared>0.0064</RRCDeclared>
                   <FzISO>20850</FzISO>
                 </Data>
                 <Signature>

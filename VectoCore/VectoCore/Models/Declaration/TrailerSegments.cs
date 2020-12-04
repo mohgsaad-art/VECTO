@@ -88,6 +88,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 				A2 = SquareMeter.Create(row.ParseDouble("a2")),
 				A3 = SquareMeter.Create(row.ParseDouble("a3"))
 			};
+
+
 		}
 
 		private static Mission[] CreateMissions(DataRow row)
@@ -112,12 +114,12 @@ namespace TUGraz.VectoCore.Models.Declaration
 				//TODO: get payloads dynamicly from row based on mission
 				switch (missionType) {
 					case MissionType.LongHaul:
-						minLoad = row.ParseDouble("LH_payload_low");
-						maxLoad = row.ParseDouble("LH_payload_rep");
+						minLoad = row.ParseDouble("ref_lh_semi_payload_low");
+						maxLoad = row.ParseDouble("ref_lh_semi_payload_rep");
 						break;
 					default:
-						minLoad = row.ParseDouble("OM_payload_low");
-						maxLoad = row.ParseDouble("OM_payload_rep");
+						minLoad = row.ParseDouble("ref_other_semi_payload_low");
+						maxLoad = row.ParseDouble("ref_other_semi_payload_rep");
 						break;
 				}
 
@@ -131,7 +133,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 					MinLoad = Kilogram.Create(minLoad),
 					MaxLoad = Kilogram.Create(maxLoad),
 					AxleWeightDistribution = new[] {20.0, 25.0}, //TODO: Read this from mastertable(?)
-					CurbMass = Kilogram.Create(missionType == MissionType.LongHaul ? row.ParseDouble("curb_long_haul") : row.ParseDouble("curb_other"))
+					CurbMass = Kilogram.Create(missionType == MissionType.LongHaul ? row.ParseDouble("ref_curb_lh") : row.ParseDouble("ref_curb_other"))
 				};
 				missions.Add(mission);
 			}

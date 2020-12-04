@@ -74,7 +74,9 @@ namespace TUGraz.VectoCore.OutputData.XML
 		protected double WeightedCo2Trailer = 0;
 		protected Kilogram WeightedPayloadTrailer = 0.SI<Kilogram>();
 		protected CubicMeter CargoVolumeTrailer;
-		
+
+		private TrailerSegment _trailerSegment;
+
 
 		public Dictionary<XMLDeclarationReport.ResultEntry, XMLDeclarationReport.ResultEntry> Mappings = new Dictionary<XMLDeclarationReport.ResultEntry, XMLDeclarationReport.ResultEntry>();
 
@@ -89,6 +91,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 		{
 			CargoVolumeTrailer = modelData.VehicleData.InputDataTrailer.CargoVolume;
 			CargoVolumeGeneric = modelData.Mission.TotalCargoVolume;
+			_trailerSegment = modelData.VehicleData.TrailerSegment;
 
 			var aeroFeatures = new XElement(tns + XMLNames.Trailer_AeroFeatures);
 			foreach (var technology in modelData.VehicleData.InputDataTrailer.AeroFeatureTechnologies)
@@ -121,6 +124,29 @@ namespace TUGraz.VectoCore.OutputData.XML
 				),
 				aeroFeatures
 			);
+
+			var axles = new XElement(tns + XMLNames.AxleWheels_Axles);
+
+			foreach (var axleElem in modelData.VehicleData.InputDataTrailer.Axles.Select((axle, index) => new { index, axle }))
+				axles.Add(new XElement(tns + XMLNames.AxleWheels_Axles_Axle,
+					new XAttribute(XMLNames.AxleWheels_Axles_Axle_AxleNumber_Attr, axleElem.index + 1),
+					new XElement(tns + XMLNames.AxleWheels_Axles_Axle_Tyre,
+						new XElement(tns + "Data",
+							new XElement(tns + XMLNames.Component_Model,
+								axleElem.axle.Tyre.Model),
+							new XElement(tns + XMLNames.AxleWheels_Axles_Axle_Dimension,
+								axleElem.axle.Tyre.Dimension),
+							new XElement(tns + XMLNames.AxleWheels_Axles_Axle_RRCDeclared,
+								axleElem.axle.Tyre
+									.RollResistanceCoefficient),
+							new XElement(tns + "FuelEfficiencyClass",
+								axleElem.axle.Tyre
+									.FuelEfficiencyClass)
+						)
+					)
+				));
+
+			VehiclePart.Add(axles);
 
 
 			VehiclePart.Add(
@@ -201,10 +227,30 @@ namespace TUGraz.VectoCore.OutputData.XML
 			var showRatio = result.PassengerCount != null && result.PassengerCount == 1 && result.Mission == MissionType.LongHaul ||
 							result.Mission == MissionType.RegionalDelivery;
 
+			var cdxAYawAngle3 = result.CdxA +
+								_trailerSegment.A1 * 3 +
+								_trailerSegment.A2 * 3 * 3 +
+								_trailerSegment.A3 * 3 * 3 * 3;
+
+			var cdxAYawAngle6 = result.CdxA +
+								_trailerSegment.A1 * 6 +
+								_trailerSegment.A2 * 6 * 6 +
+								_trailerSegment.A3 * 6 * 6 * 6;
+
+			var cdxAYawAngle9 = result.CdxA +
+								_trailerSegment.A1 * 9 +
+								_trailerSegment.A2 * 9 * 9 +
+								_trailerSegment.A3 * 9 * 9 * 9;
+
 			return new XElement(
 				tns + XMLNames.Report_Result_Result,
 				new XElement(tns + XMLNames.Report_Result_Mission, result.Mission.ToXMLFormat()),
 				new XElement(tns + XMLNames.Report_ResultEntry_Payload, XMLHelper.ValueAsUnit(result.Payload, XMLNames.Unit_kg)),
+				result.CdxA != null ? new XElement(tns + XMLNames.Report_AirDrag_CdxA + "yawAngle0", result.CdxA.ToXMLFormat(3)) : null,
+				result.CdxA != null ? new XElement(tns + XMLNames.Report_AirDrag_CdxA + "yawAngle3", cdxAYawAngle3.ToXMLFormat(3)) : null,
+				result.CdxA != null ? new XElement(tns + XMLNames.Report_AirDrag_CdxA + "yawAngle6", cdxAYawAngle6.ToXMLFormat(3)) : null,
+				result.CdxA != null ? new XElement(tns + XMLNames.Report_AirDrag_CdxA + "yawAngle9", cdxAYawAngle9.ToXMLFormat(3)) : null,
+				new XElement(tns + XMLNames.Report_ResultEntry_AverageSpeed, new XAttribute(XMLNames.Report_Results_Unit_Attr, XMLNames.Unit_kmph), result.AverageSpeed.ConvertToKiloMeterPerHour().Value.ToXMLFormat(2)),
 				showRatio ? new XElement(tns + XMLNames.Efficiency_Ratio, new XAttribute("unit", "g/km"), ratio.ToXMLFormat(2)) : null,
 				showRatio ? new XElement(tns + XMLNames.Efficiency_Ratio, new XAttribute("unit", "g/t-km"), ratioTons.ToXMLFormat(2)) : null,
 				showRatio ? new XElement(tns + XMLNames.Efficiency_Ratio, new XAttribute("unit", "g/m³-km"), ratioCubicMeter.ToXMLFormat(2)) : null

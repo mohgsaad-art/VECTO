@@ -3,14 +3,14 @@
   <Vehicle id="R2">
     <Manufacturer>Generic Vendor</Manufacturer>
     <ManufacturerAddress>N.A.</ManufacturerAddress>
-    <Model>R2_Group_9-LH</Model>
+    <Model>Generic group 9 (6x2 rigid lorry 26ton TPMLM), MY2019/20, 325kW</Model>
     <VIN>standard values</VIN>
     <Date>2017-09-28T11:36:43.7317672Z</Date>
     <LegislativeClass>N3</LegislativeClass>
     <VehicleCategory>Rigid Truck</VehicleCategory>
     <AxleConfiguration>6x2</AxleConfiguration>
     <CurbMassChassis>8300</CurbMassChassis>
-    <GrossVehicleMass>40000</GrossVehicleMass>
+    <GrossVehicleMass>26000</GrossVehicleMass>
     <IdlingSpeed>600</IdlingSpeed>
     <RetarderType>Transmission Output Retarder</RetarderType>
     <RetarderRatio>1.000</RetarderRatio>
@@ -544,7 +544,7 @@
                   <Date>2017-09-28T11:36:43.7942746Z</Date>
                   <AppVersion>VectoCore</AppVersion>
                   <Dimension>315/70 R22.5</Dimension>
-                  <RRCDeclared>0.0056</RRCDeclared>
+                  <RRCDeclared>0.0051</RRCDeclared>
                   <FzISO>33350</FzISO>
                 </Data>
                 <Signature>
@@ -571,7 +571,7 @@
                   <Date>2017-09-28T11:36:43.7942746Z</Date>
                   <AppVersion>VectoCore</AppVersion>
                   <Dimension>315/70 R22.5</Dimension>
-                  <RRCDeclared>0.0064</RRCDeclared>
+                  <RRCDeclared>0.0059</RRCDeclared>
                   <FzISO>33350</FzISO>
                 </Data>
                 <Signature>
@@ -598,7 +598,7 @@
                   <Date>2017-09-28T11:36:43.7942746Z</Date>
                   <AppVersion>VectoCore</AppVersion>
                   <Dimension>315/70 R22.5</Dimension>
-                  <RRCDeclared>0.0056</RRCDeclared>
+                  <RRCDeclared>0.0046</RRCDeclared>
                   <FzISO>33350</FzISO>
                 </Data>
                 <Signature>
