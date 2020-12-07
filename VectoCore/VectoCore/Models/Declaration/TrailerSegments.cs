@@ -110,7 +110,6 @@ namespace TUGraz.VectoCore.Models.Declaration
 				double minLoad = 0;
 				double maxLoad = 0;
 
-				//TODO: get payloads dynamicly from row based on mission
 				switch (missionType) {
 					case MissionType.LongHaul:
 						minLoad = row.ParseDouble("specific_lh_semi_payload_low");

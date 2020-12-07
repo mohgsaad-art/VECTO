@@ -212,7 +212,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			retVal.Loading = Kilogram.Create(specificTrailerData.VolumeOrientation ? trailerData.CargoVolume.Value() * 88 : 
 				Math.Min(loading.Value(), (specificTrailerData.MaxGcm - data.CurbMassChassis.Value() - trailerData.CurbMass.Value())));
 
-			retVal.PassengerCount = 1; //TODO: check this.
+			retVal.PassengerCount = 1;
 			retVal.DynamicTyreRadius =
 				data.Components.AxleWheels.AxlesDeclaration.Where(axle => axle.AxleType == AxleType.VehicleDriven)
 					.Select(da => DeclarationData.Wheels.Lookup(da.Tyre.Dimension).DynamicTyreRadius)

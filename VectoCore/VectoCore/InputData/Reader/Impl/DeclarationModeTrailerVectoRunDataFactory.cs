@@ -262,6 +262,18 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 					CyclesCache.Add(mission.MissionType, cycle);
 				}
 			}
+
+			//Switch generic loadings with trailer loadings for this mission from trailerSegment
+			var minLoad = _trailerSegment.Missions.FirstOrDefault(x => x.MissionType == mission.MissionType)?.MinLoad;
+			var refLoad = _trailerSegment.Missions.FirstOrDefault(x => x.MissionType == mission.MissionType)?.MaxLoad;
+
+			if (loading.Key == LoadingType.LowLoading)
+				loading = new KeyValuePair<LoadingType, Tuple<Kilogram, double?>>(LoadingType.LowLoading, new Tuple<Kilogram, double?>(minLoad, loading.Value.Item2));
+
+			if (loading.Key == LoadingType.ReferenceLoad)
+				loading = new KeyValuePair<LoadingType, Tuple<Kilogram, double?>>(LoadingType.ReferenceLoad, new Tuple<Kilogram, double?>(refLoad, loading.Value.Item2));
+
+
 			var simulationRunData = new VectoRunData
 			{
 				Loading = loading.Key,

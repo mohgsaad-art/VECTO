@@ -76,7 +76,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 		protected CubicMeter CargoVolumeTrailer;
 
 		private TrailerSegment _trailerSegment;
-
+		private string _genericTowingVehicle;
 
 		public Dictionary<XMLDeclarationReport.ResultEntry, XMLDeclarationReport.ResultEntry> Mappings = new Dictionary<XMLDeclarationReport.ResultEntry, XMLDeclarationReport.ResultEntry>();
 
@@ -92,6 +92,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 			CargoVolumeTrailer = modelData.VehicleData.InputDataTrailer.CargoVolume;
 			CargoVolumeGeneric = modelData.Mission.TotalCargoVolume;
 			_trailerSegment = modelData.VehicleData.TrailerSegment;
+			_genericTowingVehicle = modelData.VehicleData.ModelName;
 
 			var aeroFeatures = new XElement(tns + XMLNames.Trailer_AeroFeatures);
 			foreach (var technology in modelData.VehicleData.InputDataTrailer.AeroFeatureTechnologies)
@@ -278,7 +279,8 @@ namespace TUGraz.VectoCore.OutputData.XML
 			//var mrf = XNamespace.Get("urn:tugraz:ivt:VectoAPI:DeclarationOutput");
 			var retVal = new XDocument();
 			var results = new XElement(Results);
-			results.AddFirst(new XElement(tns + XMLNames.Report_Result_Status, _allSuccess ? "success" : "error"));
+			results.AddFirst(new XElement(tns + XMLNames.Report_Result_Status, _allSuccess ? "success" : "error"),
+				new XElement(tns + "TowingVehicle", _genericTowingVehicle));
 			var summary = _allSuccess && WeightedPayloadTrailer > 0
 				? new XElement(tns + XMLNames.Report_Results_Summary,
 					new XElement(tns + XMLNames.Report_WeightedPayloadTrailer,
