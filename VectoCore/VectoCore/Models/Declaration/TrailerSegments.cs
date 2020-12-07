@@ -43,7 +43,7 @@ using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.Declaration
 {
-	public sealed class TrailerSegments : LookupData<NumberOfTrailerAxles, TypeTrailer, BodyWorkCode, bool, TrailerSegment>
+	public sealed class TrailerSegments : LookupData<NumberOfTrailerAxles, TypeTrailer, BodyWorkCode, TrailerSegment>
 	{
 		private DataTable _segmentTable;
 
@@ -56,10 +56,10 @@ namespace TUGraz.VectoCore.Models.Declaration
 			_segmentTable = table.Copy();
 		}
 
-		public override TrailerSegment Lookup(NumberOfTrailerAxles numberOfAxles, TypeTrailer typeTrailer, BodyWorkCode bodyWorkCode, bool volumeOrientation)
+		public override TrailerSegment Lookup(NumberOfTrailerAxles numberOfAxles, TypeTrailer typeTrailer, BodyWorkCode bodyWorkCode)
 		{
 
-			var row = GetTrailerDataRow(numberOfAxles, typeTrailer, bodyWorkCode, volumeOrientation);
+			var row = GetTrailerDataRow(numberOfAxles, typeTrailer, bodyWorkCode);
 			if (row == null) {
 				return new TrailerSegment { VehicleGroup = -1 };
 			}
@@ -94,7 +94,6 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		private static Mission[] CreateMissions(DataRow row)
 		{
-			//TODO: i need to get this from the mastertable
 			var missionTypes = new List<MissionType>();
 
 			if (row["Mission_long_haul"].ToString().Contains("X"))
@@ -114,25 +113,30 @@ namespace TUGraz.VectoCore.Models.Declaration
 				//TODO: get payloads dynamicly from row based on mission
 				switch (missionType) {
 					case MissionType.LongHaul:
-						minLoad = row.ParseDouble("ref_lh_semi_payload_low");
-						maxLoad = row.ParseDouble("ref_lh_semi_payload_rep");
+						minLoad = row.ParseDouble("specific_lh_semi_payload_low");
+						maxLoad = row.ParseDouble("specific_lh_semi_payload_rep");
 						break;
 					default:
-						minLoad = row.ParseDouble("ref_other_semi_payload_low");
-						maxLoad = row.ParseDouble("ref_other_semi_payload_rep");
+						minLoad = row.ParseDouble("specific_other_semi_payload_low");
+						maxLoad = row.ParseDouble("specific_other_semi_payload_rep");
 						break;
 				}
+
+				var numberOfAxles = (int)row.ParseDouble("Number_of_axles");
+				var axleDistributionColumn =
+					missionType == MissionType.LongHaul ? "towing_lh_axle" : "towing_other_axle";
+
+				double.TryParse(row.Field<string>(axleDistributionColumn + "1"), out var axle1);
+				double.TryParse(row.Field<string>(axleDistributionColumn + "2"), out var axle2);
+				double.TryParse(row.Field<string>(axleDistributionColumn + "3"), out var axle3);
 
 				var mission = new Mission
 				{
 					MissionType = missionType,
-					//CycleFile = RessourceHelper.ReadStream(DeclarationData.DeclarationDataResourcePrefix + ".MissionCycles." +
-					//										missionType.ToString().Replace("EMS", "") +
-					//										Constants.FileExtensions.CycleFile),
-					//MaxPayload = Kilogram.Create(maxPayload),
 					MinLoad = Kilogram.Create(minLoad),
 					MaxLoad = Kilogram.Create(maxLoad),
-					AxleWeightDistribution = new[] {20.0, 25.0}, //TODO: Read this from mastertable(?)
+					AxleWeightDistribution = (numberOfAxles == 1 ? 
+						new [] { axle1 } : (numberOfAxles == 2 ? new[] { axle1, axle2 } : new[] { axle1, axle2, axle3 })), 
 					CurbMass = Kilogram.Create(missionType == MissionType.LongHaul ? row.ParseDouble("ref_curb_lh") : row.ParseDouble("ref_curb_other"))
 				};
 				missions.Add(mission);
@@ -143,7 +147,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 
 		private DataRow GetTrailerDataRow(
-			NumberOfTrailerAxles numberOfAxles, TypeTrailer typeTrailer, BodyWorkCode bodyWorkCode, bool volumeOrientation)
+			NumberOfTrailerAxles numberOfAxles, TypeTrailer typeTrailer, BodyWorkCode bodyWorkCode)
 		{
 			DataRow row;
 			try {
@@ -155,13 +159,11 @@ namespace TUGraz.VectoCore.Models.Declaration
 						var volumeOrientationRow = r.Field<string>("Volume_orientation");
 						return numberOfAxlesRow == numberOfAxles.GetLabel()
 								&& typeTrailerRow == typeTrailer.ToString()
-								&& bodyWorkCodeRow.Contains(bodyWorkCode.GetLabel())
-								&& (volumeOrientationRow == "Yes" && volumeOrientation 
-									|| volumeOrientationRow == "No" && !volumeOrientation);
+								&& bodyWorkCodeRow.Contains(bodyWorkCode.GetLabel());
 					});
 			} catch (InvalidOperationException e) {
 				var errorMessage = string.Format(
-					ErrorMessage, numberOfAxles, typeTrailer, bodyWorkCode, volumeOrientation);
+					ErrorMessage, numberOfAxles, typeTrailer, bodyWorkCode);
 				Log.Fatal(errorMessage);
 				throw new VectoException(errorMessage, e);
 			}

@@ -153,7 +153,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			#region Get trailer specific data from trailerAdapter
 			_trailer = TrailerInputDataProvider.JobInputData.Trailer;
 			TrailerDataAdapter.ValidateTrailerInput(_trailer);
-			_trailerSegment = DeclarationData.TrailerSegments.Lookup(_trailer.NumberOfAxles, _trailer.TrailerType, _trailer.BodyworkCode, false);
+			_trailerSegment = DeclarationData.TrailerSegments.Lookup(_trailer.NumberOfAxles, _trailer.TrailerType, _trailer.BodyworkCode);
 			_genericInputDataProvider = TrailerDataAdapter.GetGenericVehicleData(_trailerSegment.GenericCode);
 			_specificTrailerData = TrailerDataAdapter.GetSpecificTrailerData(_trailerSegment, _trailer, _genericInputDataProvider.JobInputData.Vehicle);
 			#endregion

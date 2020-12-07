@@ -1152,9 +1152,9 @@ namespace TUGraz.VectoCore.OutputData
 			public const string VEHICLE_FUEL_TYPE = "Vehicle fuel type [-]";
 			public const string AIRDRAG_MODEL = "AirDrag model [-]";
 			public const string SLEEPER_CAB = "Sleeper cab [-]";
-			public const string A1 = "A1 [-]";
-			public const string A2 = "A2 [-]";
-			public const string A3 = "A3 [-]";
+			public const string A1 = "polar curve a1 [-]";
+			public const string A2 = "polar curve a2 [-]";
+			public const string A3 = "polar curve a3 [-]";
 			public const string DECLARED_RRC_AXLE1 = "Declared RRC axle 1 [-]";
 			public const string DECLARED_FZISO_AXLE1 = "Declared FzISO axle 1 [N]";
 			public const string DECLARED_RRC_AXLE2 = "Declared RRC axle 2 [-]";
