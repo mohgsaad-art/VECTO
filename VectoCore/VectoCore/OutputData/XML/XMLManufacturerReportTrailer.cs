@@ -342,8 +342,8 @@ namespace TUGraz.VectoCore.OutputData.XML
 			var mrf = XNamespace.Get("urn:tugraz:ivt:VectoAPI:DeclarationOutput");
 			var retVal = new XDocument();
 			var results = new XElement(Results);
-			results.AddFirst(new XElement(tns + XMLNames.Report_Result_Status, _allSuccess ? "success" : "error"), 
-				new XElement(tns + "TowingVehicle", _genericTowingVehicle));
+			results.AddFirst(new XElement(tns + "TowingVehicle", _genericTowingVehicle),
+				new XElement(tns + XMLNames.Report_Result_Status, _allSuccess ? "success" : "error"));
 			var summary = _allSuccess && WeightedPayloadTrailer > 0
 				? new XElement(tns + XMLNames.Report_Results_Summary,
 					new XElement(tns + XMLNames.Report_WeightedPayloadTrailer,

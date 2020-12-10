@@ -43,9 +43,6 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Button Content="Reset" HorizontalAlignment="Left" Width="80" Margin="10,0,0,0" 
-                    Command="{Binding ResetCommand}"/>
-
             <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right">
                 <Button Content="Save" HorizontalAlignment="Right"  Margin="5,0,0,0" VerticalAlignment="Center" Width="70"
                         Command="{Binding SaveCommand}"/>
