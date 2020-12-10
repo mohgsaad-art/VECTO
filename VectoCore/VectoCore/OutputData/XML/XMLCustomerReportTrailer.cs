@@ -223,8 +223,6 @@ namespace TUGraz.VectoCore.OutputData.XML
 					value.Distance, CargoVolumeGeneric);
 			}
 
-			var showRatio = result.PassengerCount != null && (int)result.PassengerCount == 1;
-
 			var cdxAYawAngle3 = result.CdxA +
 								_trailerSegment.A1 * 3 +
 								_trailerSegment.A2 * 3 * 3 +
@@ -249,9 +247,9 @@ namespace TUGraz.VectoCore.OutputData.XML
 				result.CdxA != null ? new XElement(tns + XMLNames.Report_AirDrag_CdxA + "yawAngle6", cdxAYawAngle6.ToXMLFormat(3)) : null,
 				result.CdxA != null ? new XElement(tns + XMLNames.Report_AirDrag_CdxA + "yawAngle9", cdxAYawAngle9.ToXMLFormat(3)) : null,
 				new XElement(tns + XMLNames.Report_ResultEntry_AverageSpeed, new XAttribute(XMLNames.Report_Results_Unit_Attr, XMLNames.Unit_kmph), result.AverageSpeed.ConvertToKiloMeterPerHour().Value.ToXMLFormat(2)),
-				showRatio ? new XElement(tns + XMLNames.Efficiency_Ratio, new XAttribute("unit", "g/km"), ratio.ToXMLFormat(4)) : null,
-				showRatio ? new XElement(tns + XMLNames.Efficiency_Ratio, new XAttribute("unit", "g/t-km"), ratioTons.ToXMLFormat(4)) : null,
-				showRatio ? new XElement(tns + XMLNames.Efficiency_Ratio, new XAttribute("unit", "g/m³-km"), ratioCubicMeter.ToXMLFormat(4)) : null
+				new XElement(tns + XMLNames.Efficiency_Ratio, new XAttribute("unit", "g/km"), ratio.ToXMLFormat(4)),
+				new XElement(tns + XMLNames.Efficiency_Ratio, new XAttribute("unit", "g/t-km"), ratioTons.ToXMLFormat(4)),
+				new XElement(tns + XMLNames.Efficiency_Ratio, new XAttribute("unit", "g/m³-km"), ratioCubicMeter.ToXMLFormat(4))
 			);
 		}
 
@@ -285,17 +283,17 @@ namespace TUGraz.VectoCore.OutputData.XML
 				? new XElement(tns + XMLNames.Report_Results_Summary,
 					new XElement(tns + XMLNames.Report_WeightedPayloadTrailer,
 						new XAttribute(XMLNames.Report_Results_Unit_Attr, XMLNames.Unit_kg),
-						WeightedPayloadTrailer.ToXMLFormat()
+						WeightedPayloadTrailer.ToXMLFormat(0)
 					),
 					new XElement(tns + XMLNames.Report_WeightedEfficiencyRatio,
 						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/km"),
-						(WeightedCo2Trailer / GenericWeightedCo2).ToXMLFormat(2)),
+						(WeightedCo2Trailer / GenericWeightedCo2).ToXMLFormat(4)),
 					new XElement(tns + XMLNames.Report_WeightedEfficiencyRatio,
 						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/t-km"),
-						(weightedCo2Ton / weightedGenericCo2Ton).ToXMLFormat(2)),
+						(weightedCo2Ton / weightedGenericCo2Ton).ToXMLFormat(4)),
 					new XElement(tns + XMLNames.Report_WeightedEfficiencyRatio,
 						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/m³-km"),
-						(weightedCo2CubicMeter / weightedGenericCo2CubicMeter).ToXMLFormat(2))
+						(weightedCo2CubicMeter / weightedGenericCo2CubicMeter).ToXMLFormat(4))
 				)
 				: null;
 			results.Add(summary);

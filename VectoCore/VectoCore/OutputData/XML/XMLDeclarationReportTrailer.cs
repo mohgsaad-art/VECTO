@@ -67,12 +67,12 @@ namespace TUGraz.VectoCore.OutputData.XML {
 			//TODO: identifies trailer missions with PassengerCount - need to change this probably
 			foreach (var resultEntry in Results.OrderBy(x=> x.Mission.ToString())) {
 				var mappings = new Dictionary<ResultEntry, ResultEntry>();
-				if (Results.Count(x => x.Mission == resultEntry.Mission && x.Payload == resultEntry.Payload && x.PassengerCount != null) > 0
-				&& Results.Count(x => x.Mission == resultEntry.Mission && x.Payload == resultEntry.Payload && x.PassengerCount == null) > 0) {
+				if (Results.Count(x => x.Mission == resultEntry.Mission && x.LoadingType == resultEntry.LoadingType && x.PassengerCount != null) > 0
+				&& Results.Count(x => x.Mission == resultEntry.Mission && x.LoadingType == resultEntry.LoadingType && x.PassengerCount == null) > 0) {
 					//Add map trailer simulations (key) with generic (value)
 					mappings.Add(
-						Results.FirstOrDefault(x => x.Mission == resultEntry.Mission && x.Payload == resultEntry.Payload && x.PassengerCount != null), 
-						Results.FirstOrDefault(x => x.Mission == resultEntry.Mission && x.Payload == resultEntry.Payload && x.PassengerCount == null));
+						Results.FirstOrDefault(x => x.Mission == resultEntry.Mission && x.LoadingType == resultEntry.LoadingType && x.PassengerCount != null), 
+						Results.FirstOrDefault(x => x.Mission == resultEntry.Mission && x.LoadingType == resultEntry.LoadingType && x.PassengerCount == null));
 				}
 
 				((XMLManufacturerReportTrailer)ManufacturerRpt).Mappings = mappings;

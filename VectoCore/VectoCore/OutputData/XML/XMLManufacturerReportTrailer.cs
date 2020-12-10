@@ -205,8 +205,8 @@ namespace TUGraz.VectoCore.OutputData.XML
 		}
 		public double DoCalculateFactor(Kilogram specificCo2, Meter specificDistance, Kilogram specificPayload, Kilogram genericCo2, Meter genericDistance, Kilogram genericPayload)
 		{
-			return (((specificCo2 * 1000) / (specificDistance / 1000)) * specificPayload.Value()) / 
-					(((genericCo2 * 1000) / (genericDistance / 1000)) * genericPayload.Value());
+			return (((specificCo2 * 1000) / (specificDistance / 1000)) / (specificPayload.Value())) /
+				(((genericCo2 * 1000) / (genericDistance / 1000)) / (genericPayload.Value()));
 			//g/t-km
 		}
 		public double DoCalculateFactor(Kilogram specificCo2, Meter specificDistance, CubicMeter specificCargoVolume, Kilogram genericCo2, Meter genericDistance, CubicMeter genericCargoVolume)
@@ -243,13 +243,13 @@ namespace TUGraz.VectoCore.OutputData.XML
 			var ratioTons = 0.0;
 			var ratioCubicMeter = 0.0;
 
-			if (Mappings.Count(x => x.Key.Mission == result.Mission && x.Key.Payload == result.Payload) > 0)
+			if (Mappings.Count(x => x.Key.Mission == result.Mission && x.Key.LoadingType == result.LoadingType) > 0)
 			{
 				var key = Mappings
-					.FirstOrDefault(x => x.Key.Mission == result.Mission && x.Key.Payload == result.Payload)
+					.FirstOrDefault(x => x.Key.Mission == result.Mission && x.Key.LoadingType == result.LoadingType)
 					.Key;
 				var value = Mappings
-					.FirstOrDefault(x => x.Key.Mission == result.Mission && x.Key.Payload == result.Payload)
+					.FirstOrDefault(x => x.Key.Mission == result.Mission && x.Key.LoadingType == result.LoadingType)
 					.Value;
 				ratio = CalculateFactor(key, value);
 				ratioTons = DoCalculateFactor(key.CO2Total, key.Distance, key.Payload, value.CO2Total, value.Distance,
@@ -257,9 +257,6 @@ namespace TUGraz.VectoCore.OutputData.XML
 				ratioCubicMeter = DoCalculateFactor(key.CO2Total, key.Distance, CargoVolumeTrailer, value.CO2Total,
 					value.Distance, CargoVolumeGeneric);
 			}
-
-			var showRatio = result.PassengerCount != null && (int)result.PassengerCount == 1;
-
 
 			return new XElement(
 				tns + XMLNames.Report_Result_Result,
@@ -269,18 +266,12 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(tns + XMLNames.Report_Result_Mission, result.Mission.ToXMLFormat()),
 				GetSimulationParameters(result),
 				//GetResults(result, tns).Cast<object>().ToArray(),
-				showRatio
-					? new XElement(tns + XMLNames.Efficiency_Ratio, new XAttribute("unit", "g/km"),
-						ratio.ToXMLFormat(4))
-					: null,
-				showRatio
-					? new XElement(tns + XMLNames.Efficiency_Ratio, new XAttribute("unit", "g/t-km"),
-						ratioTons.ToXMLFormat(4))
-					: null,
-				showRatio
-					? new XElement(tns + XMLNames.Efficiency_Ratio, new XAttribute("unit", "g/m³-km"),
+				new XElement(tns + XMLNames.Efficiency_Ratio, new XAttribute("unit", "g/km"),
+						ratio.ToXMLFormat(4)),
+				new XElement(tns + XMLNames.Efficiency_Ratio, new XAttribute("unit", "g/t-km"),
+						ratioTons.ToXMLFormat(4)),
+				new XElement(tns + XMLNames.Efficiency_Ratio, new XAttribute("unit", "g/m³-km"),
 						ratioCubicMeter.ToXMLFormat(4))
-					: null
 			);
 		}
 
@@ -357,7 +348,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 				? new XElement(tns + XMLNames.Report_Results_Summary,
 					new XElement(tns + XMLNames.Report_WeightedPayloadTrailer,
 						new XAttribute(XMLNames.Report_Results_Unit_Attr, XMLNames.Unit_kg),
-						WeightedPayloadTrailer.ToXMLFormat()
+						WeightedPayloadTrailer.ToXMLFormat(0)
 					),
 					new XElement(tns + "WeightedCO2Emissions",
 						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/km"),
