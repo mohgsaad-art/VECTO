@@ -43,7 +43,7 @@ using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.Declaration
 {
-	public sealed class TrailerSegments : LookupData<NumberOfTrailerAxles, TypeTrailer, BodyWorkCode, TrailerSegment>
+	public sealed class TrailerSegments : LookupData<NumberOfTrailerAxles, TypeTrailer, BodyWorkCode, bool, TrailerSegment>
 	{
 		private DataTable _segmentTable;
 
@@ -56,10 +56,9 @@ namespace TUGraz.VectoCore.Models.Declaration
 			_segmentTable = table.Copy();
 		}
 
-		public override TrailerSegment Lookup(NumberOfTrailerAxles numberOfAxles, TypeTrailer typeTrailer, BodyWorkCode bodyWorkCode)
+		public override TrailerSegment Lookup(NumberOfTrailerAxles numberOfAxles, TypeTrailer typeTrailer, BodyWorkCode bodyWorkCode, bool volumeOrientation)
 		{
-
-			var row = GetTrailerDataRow(numberOfAxles, typeTrailer, bodyWorkCode);
+			var row = GetTrailerDataRow(numberOfAxles, typeTrailer, bodyWorkCode, volumeOrientation);
 			if (row == null) {
 				return new TrailerSegment { VehicleGroup = -1 };
 			}
@@ -146,7 +145,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 
 		private DataRow GetTrailerDataRow(
-			NumberOfTrailerAxles numberOfAxles, TypeTrailer typeTrailer, BodyWorkCode bodyWorkCode)
+			NumberOfTrailerAxles numberOfAxles, TypeTrailer typeTrailer, BodyWorkCode bodyWorkCode, bool volumeOrientation)
 		{
 			DataRow row;
 			try {
@@ -158,7 +157,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 						var volumeOrientationRow = r.Field<string>("Volume_orientation");
 						return numberOfAxlesRow == numberOfAxles.GetLabel()
 								&& typeTrailerRow == typeTrailer.ToString()
-								&& bodyWorkCodeRow.Contains(bodyWorkCode.GetLabel());
+								&& bodyWorkCodeRow.Contains(bodyWorkCode.GetLabel())
+								&& (volumeOrientationRow == "Yes" && volumeOrientation || volumeOrientationRow == "No" && !volumeOrientation);
 					});
 			} catch (InvalidOperationException e) {
 				var errorMessage = string.Format(
