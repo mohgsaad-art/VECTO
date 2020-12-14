@@ -134,7 +134,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			// fallback: return first gear
 			_nextGear = 1;
 			return 1;
-		}
+		} 
 
 		private uint InitStartGear(NewtonMeter outTorque, PerSecond outAngularVelocity)
 		{
@@ -163,6 +163,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		public override bool ShiftRequired(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity,
 			NewtonMeter inTorque, PerSecond inAngularVelocity, uint gear, Second lastShiftTime)
 		{
+
+			LogShiftData.LogShiftDataToExcel(absTime, dt, outTorque, outAngularVelocity, inTorque, inAngularVelocity, gear, lastShiftTime, DataBus, _gearbox);
+
 			// no shift when vehicle stands
 			if (DataBus.VehicleStopped) {
 				return false;
