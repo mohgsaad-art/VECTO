@@ -56,5 +56,28 @@ namespace TUGraz.VectoCore.Models.Simulation.DataBus
 		PerSecond EngineN95hSpeed { get; }
 
 		PerSecond EngineN80hSpeed { get; }
+
+
+		Watt PreviousStateEnginePower { get; }
+
+		NewtonMeter PreviousStateEngineTorque { get; }
+
+		NewtonMeter PreviousStateEngineTorqueOut { get; }
+
+
+		NewtonMeter PreviousStateFullDragTorque { get; }
+
+
+		NewtonMeter PreviousStateInertiaTorqueLoss { get; }
+
+
+        SimulationComponent.Impl.CombustionEngine.EngineOperationMode PreviousStateOperationMode { get; }
+
+
+		NewtonMeter PreviousStateStationaryFullLoadTorque { get; }
+
+
+		Second PreviousStateDt { get; }
+
 	}
 }
