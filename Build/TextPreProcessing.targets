@@ -5,6 +5,7 @@
 			<VersionTemplates Include="$(ProjectDir)**\*.tt"/>
 		</ItemGroup>
 		<!-- <Exec Condition="'@(VersionTemplates)'!=''" Command="&quot;%CommonProgramFiles(x86)%\Microsoft Shared\TextTemplating\12.0\TextTransform.exe&quot; -I $(SolutionDir) &quot;%(VersionTemplates.Identity)&quot;"/> -->
-		<Exec Condition="'@(VersionTemplates)'!=''" Command="&quot;%CommonProgramFiles(x86)%\Microsoft Shared\TextTemplating\14.0\TextTransform.exe&quot; -I $(SolutionDir) &quot;%(VersionTemplates.Identity)&quot;"/>
+		<!-- <Exec Condition="'@(VersionTemplates)'!=''" Command="&quot;%CommonProgramFiles(x86)%\Microsoft Shared\TextTemplating\14.0\TextTransform.exe&quot; -I $(SolutionDir) &quot;%(VersionTemplates.Identity)&quot;"/> -->
+		<Exec Condition="'@(VersionTemplates)'!=''" Command="&quot;%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Professional\Common7\IDE\TextTransform.exe&quot; -I $(SolutionDir) &quot;%(VersionTemplates.Identity)&quot;"/>
 	</Target>
 </Project>
