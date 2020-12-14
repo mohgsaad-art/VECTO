@@ -208,6 +208,45 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			get { return Engine.EngineN80hSpeed; }
 		}
 
+		public Watt PreviousStateEnginePower
+		{
+			get { return Engine.PreviousStateEnginePower; }
+		}
+
+		public NewtonMeter PreviousStateEngineTorque
+		{
+			get { return Engine.PreviousStateEngineTorque; }
+		}
+		public NewtonMeter PreviousStateEngineTorqueOut
+		{
+			get { return Engine.PreviousStateEngineTorqueOut; }
+		}
+
+		public NewtonMeter PreviousStateFullDragTorque
+		{
+			get { return Engine.PreviousStateFullDragTorque; }
+		}
+
+		public NewtonMeter PreviousStateInertiaTorqueLoss
+		{
+			get { return Engine.PreviousStateInertiaTorqueLoss; }
+		}
+
+		public SimulationComponent.Impl.CombustionEngine.EngineOperationMode PreviousStateOperationMode
+		{
+			get { return Engine.PreviousStateOperationMode; }
+		}
+
+		public NewtonMeter PreviousStateStationaryFullLoadTorque
+		{
+			get { return Engine.PreviousStateStationaryFullLoadTorque; }
+		}
+
+		public Second PreviousStateDt
+		{
+			get { return Engine.PreviousStateDt; }
+		}
+
 		#endregion
 
 		#region IVehicleCockpit
@@ -468,6 +507,11 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		public Kilogram ReducedMassWheels
 		{
 			get { return Wheels.ReducedMassWheels; }
+		}
+
+		public Second EngageTime 
+		{ 
+			get { return Gearbox.EngageTime;  }
 		}
 	}
 }
