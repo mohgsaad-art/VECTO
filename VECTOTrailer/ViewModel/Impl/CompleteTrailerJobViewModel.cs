@@ -143,13 +143,13 @@ namespace VECTOTrailer.ViewModel.Impl
 			var xDocument = _xmlCompletedTrailer.GenerateCompletedTrailerDocument(CompleteVehicleTrailerData);
 
 			_xmlCompletedTrailerWriter.WriteCompletedTrailerXml(filePath, xDocument);
-			/*
+			
 			if (XmlHelper.ValidateXDocument(xDocument, null, ValidationErrorAction)) {
 				_xmlCompletedTrailerWriter.WriteCompletedTrailerXml(filePath, xDocument);
 				CloseWindow(window);
 			} else {
 				ValidationResultDialogWindow(false);
-			}*/
+			}
 		}
 
 		public ICommand CommitComponent
@@ -239,33 +239,49 @@ namespace VECTOTrailer.ViewModel.Impl
 			SetCurrentDataToSave();
 			var xDoc = _xmlCompletedTrailer.GenerateCompletedTrailerDocument(CompleteVehicleTrailerData);
 
-			// Aero features combination validation -----------------------------
+			var trailer = (Model.TempDataObject.TrailerComponentData)CompleteVehicleTrailerData.Values.FirstOrDefault();
+			#region Aero features combination validation
 			var aeroFeatures = new List<AeroFeatureTechnology>();
-			if (((Model.TempDataObject.TrailerComponentData)CompleteVehicleTrailerData.Values.FirstOrDefault()).SideSkirtsShort) aeroFeatures.Add(AeroFeatureTechnology.SideSkirtsShort);
-			if (((Model.TempDataObject.TrailerComponentData)CompleteVehicleTrailerData.Values.FirstOrDefault()).SideSkirtsLong) aeroFeatures.Add(AeroFeatureTechnology.SideSkirtsLong);
-			if (((Model.TempDataObject.TrailerComponentData)CompleteVehicleTrailerData.Values.FirstOrDefault()).BoatTailShort) aeroFeatures.Add(AeroFeatureTechnology.BoatTailShort);
-			if (((Model.TempDataObject.TrailerComponentData)CompleteVehicleTrailerData.Values.FirstOrDefault()).BoatTailLong) aeroFeatures.Add(AeroFeatureTechnology.BoatTailLong);
+			if (trailer.SideSkirtsShort) aeroFeatures.Add(AeroFeatureTechnology.SideSkirtsShort);
+			if (trailer.SideSkirtsLong) aeroFeatures.Add(AeroFeatureTechnology.SideSkirtsLong);
+			if (trailer.BoatTailShort) aeroFeatures.Add(AeroFeatureTechnology.BoatTailShort);
+			if (trailer.BoatTailLong) aeroFeatures.Add(AeroFeatureTechnology.BoatTailLong);
 
 			var combination = DeclarationData.AeroFeatures.Lookup(aeroFeatures);
 			if (combination < 0)
 				ValidationResultDialogWindow(false);
-			// -----------------------------------------------------------------
+			#endregion
 
-			// Axles -----------------------------------------------------------
-			if (((Model.TempDataObject.TrailerComponentData)CompleteVehicleTrailerData.Values.FirstOrDefault())?.NumberOfAxles == NumberOfTrailerAxles.Two &&
-				(((Model.TempDataObject.TrailerComponentData)CompleteVehicleTrailerData.Values.FirstOrDefault())?.Axle2FilePath == null))
+			#region Axles 
+			if (trailer?.NumberOfAxles == NumberOfTrailerAxles.Two &&
+				(trailer?.Axle2FilePath == null))
 				ValidationResultDialogWindow(false);
 
-			else if (((Model.TempDataObject.TrailerComponentData)CompleteVehicleTrailerData.Values.FirstOrDefault())?.NumberOfAxles == NumberOfTrailerAxles.Three &&
-				(((Model.TempDataObject.TrailerComponentData)CompleteVehicleTrailerData.Values.FirstOrDefault())?.Axle2FilePath == null ||
-				((Model.TempDataObject.TrailerComponentData)CompleteVehicleTrailerData.Values.FirstOrDefault())?.Axle3FilePath == null))
+			else if (trailer?.NumberOfAxles == NumberOfTrailerAxles.Three &&
+				(trailer?.Axle2FilePath == null ||
+				trailer?.Axle3FilePath == null))
 				ValidationResultDialogWindow(false);
-			// -----------------------------------------------------------------
+			#endregion
 
-			if (((Model.TempDataObject.TrailerComponentData)CompleteVehicleTrailerData.Values.FirstOrDefault())?.TrailerType == TypeTrailer.DA &&
-			(((Model.TempDataObject.TrailerComponentData)CompleteVehicleTrailerData.Values.FirstOrDefault())?.TPLMAxleAssembly == null ||
-			((Model.TempDataObject.TrailerComponentData)CompleteVehicleTrailerData.Values.FirstOrDefault())?.TPLMAxleAssembly?.Value() == 0))
+			#region Trailer Type
+			if (trailer?.TrailerType == TypeTrailer.DA &&
+			(trailer?.TPLMAxleAssembly == null ||
+			trailer?.TPLMAxleAssembly?.Value() == 0))
 			ValidationResultDialogWindow(false);
+			#endregion
+
+			#region validity checks
+			if (trailer.InternalHeightOfTheBody >= trailer.ExternalHeightOfTheBody ||
+				trailer.ExternalHeightOfTheBody >= trailer.TotalHeightOfTheTrailer ||
+				trailer.InternalHeightOfTheBody >= trailer.TotalHeightOfTheTrailer)
+				ValidationResultDialogWindow(false);
+
+			if (trailer.PositionXFirstAxle >= trailer.PositionXLastAxle)
+				ValidationResultDialogWindow(false);
+
+			if (trailer.TPLMAxleAssembly >= trailer.TPLMTotalTrailer)
+				ValidationResultDialogWindow(false);
+			#endregion
 
 			else if (XmlHelper.ValidateXDocument(xDoc, null, ValidationErrorAction)) {
 				ValidationResultDialogWindow(true);

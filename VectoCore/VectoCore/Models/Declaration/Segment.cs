@@ -63,8 +63,11 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 	public struct TrailerSegment
 	{
-		public bool VehicleGroupActive;
+		public Stream AccelerationFile { get; internal set; }
+
+		public bool VehicleGroupActive { get; set; }
 		public int VehicleGroup { get; set; }
+		public VehicleClass Class { get; set; } 
 		public string GenericCode { get; set; }
 		public bool CrossSectionAreaCorrection { get; set; }
 		public double AcrMin { get; set; }
@@ -85,6 +88,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 		public SquareMeter A2 { get; set; }
 		public SquareMeter A3 { get; set; }
 		public Mission[] Missions { get; internal set; }
+		public MeterPerSecond DesignSpeed { get; set; }
 
 	}
 }

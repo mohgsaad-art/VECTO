@@ -46,6 +46,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 	public sealed class TrailerSegments : LookupData<NumberOfTrailerAxles, TypeTrailer, BodyWorkCode, bool, TrailerSegment>
 	{
 		private DataTable _segmentTable;
+		private static int _numberOfAxles;
 
 		protected override string ResourceId => DeclarationData.DeclarationDataResourcePrefix + ".TrailerSegmentationTable.csv";
 
@@ -58,15 +59,20 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		public override TrailerSegment Lookup(NumberOfTrailerAxles numberOfAxles, TypeTrailer typeTrailer, BodyWorkCode bodyWorkCode, bool volumeOrientation)
 		{
+			_numberOfAxles = int.Parse(numberOfAxles.GetLabel());
 			var row = GetTrailerDataRow(numberOfAxles, typeTrailer, bodyWorkCode, volumeOrientation);
 			if (row == null) {
 				return new TrailerSegment { VehicleGroup = -1 };
 			}
 
 			return new TrailerSegment {
+				AccelerationFile =
+					RessourceHelper.ReadStream(
+						DeclarationData.DeclarationDataResourcePrefix + ".VACC.Truck.vacc"), //row.Field<string>(".vaccfile")), TODO - CHECK THIS
 				VehicleGroup = (int)row.ParseDouble("Vehicle_group"),
 				VehicleGroupActive = row.ParseBoolean("Active"),
 				GenericCode = row.Field<string>("Generic_code"),
+				Class = VehicleClassHelper.Parse(row.Field<string>("Generic_vehicle_group")),
 				CrossSectionAreaCorrection = row.ParseBoolean("CS_correction"),
 				AcrMin = row.ParseDouble("AcrMin"),
 				AcrBase = row.ParseDouble("AcrBase"), 
@@ -85,7 +91,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 				Missions = CreateMissions(row),
 				A1 = SquareMeter.Create(row.ParseDouble("a1")),
 				A2 = SquareMeter.Create(row.ParseDouble("a2")),
-				A3 = SquareMeter.Create(row.ParseDouble("a3"))
+				A3 = SquareMeter.Create(row.ParseDouble("a3")),
+				DesignSpeed = MeterPerSecond.Create(25) //90km/h
 			};
 
 
@@ -106,41 +113,147 @@ namespace TUGraz.VectoCore.Models.Declaration
 			foreach (var missionType in missionTypes) {
 
 				//double maxPayload = 0;
-				double minLoad = 0;
-				double maxLoad = 0;
+				double lowLoad = 0;
+				double refLoad = 0;
 
 				switch (missionType) {
 					case MissionType.LongHaul:
-						minLoad = row.ParseDouble("specific_lh_semi_payload_low");
-						maxLoad = row.ParseDouble("specific_lh_semi_payload_rep");
+						lowLoad = row.ParseDouble("specific_lh_semi_payload_low");
+						refLoad = row.ParseDouble("specific_lh_semi_payload_rep");
 						break;
 					default:
-						minLoad = row.ParseDouble("specific_other_semi_payload_low");
-						maxLoad = row.ParseDouble("specific_other_semi_payload_rep");
+						lowLoad = row.ParseDouble("specific_other_semi_payload_low");
+						refLoad = row.ParseDouble("specific_other_semi_payload_rep");
 						break;
 				}
 
-				var numberOfAxles = (int)row.ParseDouble("Number_of_axles");
-				var axleDistributionColumn =
-					missionType == MissionType.LongHaul ? "towing_lh_axle" : "towing_other_axle";
+				double refLowLoad = 0;
+				double refRefLoad = 0;
 
-				double.TryParse(row.Field<string>(axleDistributionColumn + "1"), out var axle1);
-				double.TryParse(row.Field<string>(axleDistributionColumn + "2"), out var axle2);
-				double.TryParse(row.Field<string>(axleDistributionColumn + "3"), out var axle3);
+				switch (missionType)
+				{
+					case MissionType.LongHaul:
+						refLowLoad = row.ParseDouble("ref_lh_semi_payload_low");
+						refRefLoad = row.ParseDouble("ref_lh_semi_payload_rep");
+						break;
+					default:
+						refLowLoad = row.ParseDouble("ref_other_semi_payload_low");
+						refRefLoad = row.ParseDouble("ref_other_semi_payload_rep");
+						break;
+				}
+
+				var DefaultCDxAColumn =
+					missionType == MissionType.LongHaul ? "gen_default_CdxA_lh" : "gen_default_CdxA_om";
+
+				var body = GetBody(row);
+
+				var trailers = GetTrailers(row, missionType);
 
 				var mission = new Mission
 				{
 					MissionType = missionType,
-					MinLoad = Kilogram.Create(minLoad),
-					MaxLoad = Kilogram.Create(maxLoad),
-					AxleWeightDistribution = (numberOfAxles == 1 ? 
-						new [] { axle1 } : (numberOfAxles == 2 ? new[] { axle1, axle2 } : new[] { axle1, axle2, axle3 })), 
-					CurbMass = Kilogram.Create(missionType == MissionType.LongHaul ? row.ParseDouble("ref_curb_lh") : row.ParseDouble("ref_curb_other"))
+					LowLoad = Kilogram.Create(refLowLoad),
+					RefLoad = Kilogram.Create(refRefLoad),
+					SpecificTrailerLowLoad = Kilogram.Create(lowLoad),
+					SpecificTrailerRefLoad = Kilogram.Create(refLoad),
+					AxleWeightDistribution = GetAxleWeightDistribution(row, missionType), 
+					CurbMass = Kilogram.Create(missionType == MissionType.LongHaul ? row.ParseDouble("ref_curb_lh") : row.ParseDouble("ref_curb_other")),
+					DefaultCDxA = SquareMeter.Create(row.ParseDouble(DefaultCDxAColumn)),
+					VehicleHeight = Meter.Create(4), //TODO - THIS IS NOT GIVEN IN MASTERTABLE
+					MinLoad = null,
+					MaxLoad = null,
+					Trailer = trailers,
+					TotalCargoVolume = body.CargoVolume + trailers.Sum(t => t.CargoVolume).DefaultIfNull(0),
+					CrossWindCorrectionParameters = "TractorSemitrailer", //TODO: Check this
+#if USE_EXTENAL_DECLARATION_DATA
+					CycleFile = File.OpenRead(Path.Combine("DeclarationMissions", missionType.ToString().Replace("EMS", "") + ".vdri")),
+#else
+					CycleFile = RessourceHelper.ReadStream(DeclarationData.DeclarationDataResourcePrefix + ".MissionCycles." +
+															missionType.ToString().Replace("EMS", "") +
+															Constants.FileExtensions.CycleFile),
+#endif
 				};
 				missions.Add(mission);
 			}
 
+
 			return missions.ToArray();
+		}
+
+		private static StandardBody GetBody(DataRow row)
+		{
+			var bodyColumn = "Generic_body";
+			var bodyCode = row.Field<string>(bodyColumn).Replace("-","");
+
+			var body = DeclarationData.StandardBodies.Lookup(bodyCode);
+			return body;
+		}
+
+
+		private static double[] GetAxleWeightDistribution(DataRow row, MissionType missionType)
+		{
+			var axleDistributionColumn =
+				missionType == MissionType.LongHaul ? "semi_lh_axle" : "semi_other_axle";
+
+			var axle1 = row.Field<string>(axleDistributionColumn + "1");
+			var axle2 = row.Field<string>(axleDistributionColumn + "2");
+			var axle3 = row.Field<string>(axleDistributionColumn + "3");
+
+			return (_numberOfAxles == 1 ?
+				axle1 : (_numberOfAxles == 2 ? axle2 : axle3)).Split('/').ToDouble().Select(x => x / 100.0).ToArray();
+
+		}
+
+		private static IList<MissionTrailer> GetTrailers(DataRow row, MissionType missionType)
+		{
+			var trailers = new List<MissionTrailer>();
+
+			var trailerColumn = "ref_code" + GetMissionPrefix(missionType);
+			var trailerValue = row.Field<string>(trailerColumn);
+			if (string.IsNullOrWhiteSpace(trailerValue))
+			{
+				throw new VectoException("Error in segmentation table: trailer weight share is defined but not trailer type!");
+			}
+
+			trailers.Add(CreateTrailer(trailerValue, GetTrailerAxleWeightDistribution(row, missionType), true));
+
+			return trailers;
+		}
+
+		private static MissionTrailer CreateTrailer(string trailerValue, double axleWeightShare, bool firstTrailer)
+		{
+			var trailerType = TrailerTypeHelper.Parse(trailerValue);
+			var trailer = DeclarationData.StandardBodies.Lookup(trailerType.ToString());
+			return new MissionTrailer
+			{
+				TrailerType = trailerType,
+				TrailerWheels = trailer.Wheels,
+				TrailerAxleWeightShare = axleWeightShare,
+				TrailerCurbWeight = trailer.CurbWeight,
+				TrailerGrossVehicleWeight = trailer.GrossVehicleWeight,
+				DeltaCdA = trailer.DeltaCrossWindArea[firstTrailer ? 0 : 1],
+				CargoVolume = trailer.CargoVolume
+			};
+		}
+
+		private static string GetMissionPrefix(MissionType missionType)
+		{
+			return missionType == MissionType.LongHaul ? "_lh" : "_other";
+		}
+
+		private static double GetTrailerAxleWeightDistribution(DataRow row, MissionType missionType)
+		{
+			var axleDistributionColumn =
+				missionType == MissionType.LongHaul ? "towing_lh_axle" : "towing_other_axle";
+
+			var axle1 = row.Field<string>(axleDistributionColumn + "1");
+			var axle2 = row.Field<string>(axleDistributionColumn + "2");
+			var axle3 = row.Field<string>(axleDistributionColumn + "3");
+
+			var axleDistribution = _numberOfAxles == 1 ? axle1 : (_numberOfAxles == 2 ? axle2 : axle3);
+			if (axleDistribution == "---") return 0;
+			return axleDistribution.ToDouble() / 100.0;
+			
 		}
 
 

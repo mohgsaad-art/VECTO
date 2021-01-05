@@ -67,6 +67,9 @@ namespace TUGraz.VectoCore.Models.Declaration
 		public Kilogram LowLoad { get; internal set; }
 		public Kilogram RefLoad { get; internal set; }
 		public Kilogram MaxLoad { get; internal set; }
+		public Kilogram SpecificTrailerLowLoad { get; internal set; }
+		public Kilogram SpecificTrailerRefLoad { get; internal set; }
+
 
 		public double? PassengersMinLoad { get; internal set; }
 
