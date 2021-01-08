@@ -92,6 +92,12 @@ namespace TUGraz.VectoCore.Models.Declaration
 				A1 = SquareMeter.Create(row.ParseDouble("a1")),
 				A2 = SquareMeter.Create(row.ParseDouble("a2")),
 				A3 = SquareMeter.Create(row.ParseDouble("a3")),
+				RefLhA1 = SquareMeter.Create(row.ParseDouble("ref_polar_curve_lh_a1")),
+				RefLhA2 = SquareMeter.Create(row.ParseDouble("ref_polar_curve_lh_a2")),
+				RefLhA3 = SquareMeter.Create(row.ParseDouble("ref_polar_curve_lh_a3")),
+				RefOtherA1 = SquareMeter.Create(row.ParseDouble("ref_polar_curve_lh_a1")),
+				RefOtherA2 = SquareMeter.Create(row.ParseDouble("ref_polar_curve_lh_a2")),
+				RefOtherA3 = SquareMeter.Create(row.ParseDouble("ref_polar_curve_lh_a3")),
 				DesignSpeed = MeterPerSecond.Create(25) //90km/h
 			};
 

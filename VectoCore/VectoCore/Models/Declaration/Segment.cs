@@ -87,6 +87,12 @@ namespace TUGraz.VectoCore.Models.Declaration
 		public SquareMeter A1 { get; set; }
 		public SquareMeter A2 { get; set; }
 		public SquareMeter A3 { get; set; }
+		public SquareMeter RefLhA1 { get; set; }
+		public SquareMeter RefLhA2 { get; set; }
+		public SquareMeter RefLhA3 { get; set; }
+		public SquareMeter RefOtherA1 { get; set; }
+		public SquareMeter RefOtherA2 { get; set; }
+		public SquareMeter RefOtherA3 { get; set; }
 		public Mission[] Missions { get; internal set; }
 		public MeterPerSecond DesignSpeed { get; set; }
 

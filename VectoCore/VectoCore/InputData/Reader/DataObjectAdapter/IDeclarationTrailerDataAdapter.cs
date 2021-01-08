@@ -14,13 +14,13 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter {
 	public interface IDeclarationTrailerDataAdapter
 	{
 		VehicleData CreateVehicleData(IVehicleDeclarationInputData data,
-			Mission mission, KeyValuePair<LoadingType, Tuple<Kilogram, double?>> loading);
+			Mission mission, KeyValuePair<LoadingType, Tuple<Kilogram, double?>> loading, TrailerSegment trailerSegment);
 
 		VehicleData CreateTrailerData(IVehicleDeclarationInputData data, ITrailerDeclarationInputData trailer,
 			TrailerSegment trailerSegment,
 			Mission mission, KeyValuePair<LoadingType, Tuple<Kilogram, double?>> loading,
 			TrailerData specificTrailerData);
-		AirdragData CreateAirdragData(IAirdragDeclarationInputData airdragInputData, Mission mission);
+		AirdragData CreateAirdragData(IAirdragDeclarationInputData airdragInputData, Mission mission, TrailerSegment trailerSegment);
 		AirdragData CreateTrailerAirdragData(IAirdragDeclarationInputData airdragData, Mission mission, TrailerData specificTrailerData, TrailerSegment trailerSegment);
 	}
 }

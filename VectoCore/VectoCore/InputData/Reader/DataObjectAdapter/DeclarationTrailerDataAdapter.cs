@@ -107,17 +107,17 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 		}
 
 		public virtual VehicleData CreateVehicleData(IVehicleDeclarationInputData data,
-			Mission mission, KeyValuePair<LoadingType, Tuple<Kilogram, double?>> loading)
+			Mission mission, KeyValuePair<LoadingType, Tuple<Kilogram, double?>> loading, TrailerSegment trailerSegment)
 		{
 			if (!data.SavedInDeclarationMode) {
 				WarnDeclarationMode("VehicleData");
 			}
 
-			return CreateNonExemptedVehicleData(data, mission, loading.Value.Item1, loading.Value.Item2);
+			return CreateNonExemptedVehicleData(data, mission, loading.Value.Item1, loading.Value.Item2, trailerSegment);
 		}
 
 		protected virtual VehicleData CreateNonExemptedVehicleData(IVehicleDeclarationInputData data,
-			Mission mission, Kilogram loading, double? passengerCount)
+			Mission mission, Kilogram loading, double? passengerCount, TrailerSegment trailerSegment)
 		{
 			var retVal = SetCommonVehicleData(data);
 			retVal.LegislativeClass = data.LegislativeClass;
@@ -130,6 +130,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			retVal.SleeperCab = data.SleeperCab;
 			retVal.BodyAndTrailerMass = mission.CurbMass; //+ mission.Trailer.Sum(t => t.TrailerCurbWeight).DefaultIfNull(0);
 			retVal.Loading = loading;
+			retVal.TrailerSegment = trailerSegment;
 
 			retVal.PassengerCount = null;
 			retVal.DynamicTyreRadius =
@@ -758,7 +759,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 		}
 
 		public static List<CrossWindCorrectionCurveReader.CrossWindCorrectionEntry> GetDeclarationAirResistanceCurve(
-			string crosswindCorrectionParameters, SquareMeter aerodynamicDragAera, Meter vehicleHeight)
+			string crosswindCorrectionParameters, SquareMeter aerodynamicDragAera, Meter vehicleHeight, Mission mission, TrailerSegment trailerSegment)
 		{
 			 var startSpeed = Constants.SimulationSettings.CrosswindCorrection.MinVehicleSpeed;
 			 var maxSpeed = Constants.SimulationSettings.CrosswindCorrection.MaxVehicleSpeed;
@@ -772,7 +773,15 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			 var heightPercentStep = Constants.SimulationSettings.CrosswindCorrection.HeightStep;
 			 var heightShare = (double)heightPercentStep / maxHeightPercent;
 
-			var values = DeclarationData.AirDrag.Lookup(crosswindCorrectionParameters);
+			var a1 = mission.MissionType == MissionType.LongHaul
+				? trailerSegment.RefLhA1
+				: trailerSegment.RefOtherA1;
+			var a2 = mission.MissionType == MissionType.LongHaul
+				? trailerSegment.RefLhA2
+				: trailerSegment.RefOtherA2;
+			var a3 = mission.MissionType == MissionType.LongHaul
+				? trailerSegment.RefLhA3
+				: trailerSegment.RefOtherA3;
 
 			// first entry (0m/s) will get CdxA of second entry.
 			var points = new List<CrossWindCorrectionCurveReader.CrossWindCorrectionEntry> {
@@ -798,7 +807,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 						var beta = Math.Atan(vAirY / vAirX).ToDegree();
 
 						// ΔCdxA = A1β + A2β² + A3β³
-						var deltaCdA = values.A1 * beta + values.A2 * beta * beta + values.A3 * beta * beta * beta;
+						var deltaCdA = a1 * beta + a2 * beta * beta + a3 * beta * beta * beta;
 
 						// CdxA(β) = CdxA(0) + ΔCdxA(β)
 						var cdA = aerodynamicDragAera + deltaCdA;
@@ -890,10 +899,10 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 		}
 
 		public virtual AirdragData CreateAirdragData(
-			IAirdragDeclarationInputData airdragInputData, Mission mission)
+			IAirdragDeclarationInputData airdragInputData, Mission mission, TrailerSegment trailerSegment)
 		{
 			if (airdragInputData == null || airdragInputData.AirDragArea == null) {
-				return DefaultAirdragData(mission);
+				return DefaultAirdragData(mission, trailerSegment);
 			}
 
 			
@@ -908,8 +917,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			retVal.CrossWindCorrectionCurve =
 				new CrosswindCorrectionCdxALookup(
 					aerodynamicDragArea,
-					GetDeclarationAirResistanceCurve(
-						mission.CrossWindCorrectionParameters, aerodynamicDragArea, mission.VehicleHeight),
+					GetDeclarationAirResistanceCurve(mission.CrossWindCorrectionParameters, aerodynamicDragArea, mission.VehicleHeight, mission, trailerSegment),
 					CrossWindCorrectionMode.DeclarationModeCorrection);
 			return retVal;
 		}
@@ -919,7 +927,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 		{
 			if (airdragInputData == null || airdragInputData.AirDragArea == null)
 			{
-				return DefaultAirdragData(mission); 
+				return DefaultAirdragData(mission, trailerSegment); 
 			}
 
 			var retVal = SetCommonAirdragData(airdragInputData);
@@ -939,7 +947,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			return retVal;
 		}
 
-		protected virtual AirdragData DefaultAirdragData(Mission mission)
+		protected virtual AirdragData DefaultAirdragData(Mission mission, TrailerSegment trailerSegment)
 		{
 			var aerodynamicDragArea = mission.DefaultCDxA + mission.Trailer.Sum(t => t.DeltaCdA).DefaultIfNull(0);
 
@@ -950,7 +958,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				CrossWindCorrectionCurve = new CrosswindCorrectionCdxALookup(
 					aerodynamicDragArea,
 					GetDeclarationAirResistanceCurve(
-						mission.CrossWindCorrectionParameters, aerodynamicDragArea, mission.VehicleHeight),
+						mission.CrossWindCorrectionParameters, aerodynamicDragArea, mission.VehicleHeight, mission, trailerSegment),
 					CrossWindCorrectionMode.DeclarationModeCorrection)
 			};
 		}
