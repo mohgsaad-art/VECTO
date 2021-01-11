@@ -242,7 +242,7 @@ namespace VECTOTrailer.Model.TempDataObject
 				{XMLNames.Component_Date, nameof(Date)},
 				{XMLNames.Vehicle_LegislativeClass, nameof(LegislativeCategory)},
 				{XMLNames.Trailer_ExternalHeightBody, nameof(ExternalHeightOfTheBody)},
-				{XMLNames.Trailer_ExternalLenghtBody, nameof(ExternalLengthOfTheBody)},
+				{XMLNames.Trailer_ExternalLengthBody, nameof(ExternalLengthOfTheBody)},
 				{XMLNames.Trailer_ExternalWidthBody, nameof(ExternalWidthOfTheBody)},
 				{XMLNames.Trailer_TotalHeightTrailer, nameof(TotalHeightOfTheTrailer)},
 				{XMLNames.Trailer_PositionXFirstAxle, nameof(PositionXFirstAxle)},

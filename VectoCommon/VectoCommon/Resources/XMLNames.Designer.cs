@@ -3103,11 +3103,11 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ExternalLenghtBody.
+        ///   Looks up a localized string similar to ExternalLengthBody.
         /// </summary>
-        public static string Trailer_ExternalLenghtBody {
+        public static string Trailer_ExternalLengthBody {
             get {
-                return ResourceManager.GetString("Trailer_ExternalLenghtBody", resourceCulture);
+                return ResourceManager.GetString("Trailer_ExternalLengthBody", resourceCulture);
             }
         }
         

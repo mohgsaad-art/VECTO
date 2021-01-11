@@ -110,7 +110,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 							XMLNames.Unit_kg))
 				),
 				new XElement(tns + XMLNames.Trailer_Dimensions,
-					new XElement(tns + XMLNames.Trailer_ExternalLenghtBody,
+					new XElement(tns + XMLNames.Trailer_ExternalLengthBody,
 						modelData.VehicleData.InputDataTrailer.ExternalBodyLength.ToXMLFormat(3)),
 					new XElement(tns + XMLNames.Trailer_ExternalWidthBody,
 						modelData.VehicleData.InputDataTrailer.ExternalBodyWidth.ToXMLFormat(3)),

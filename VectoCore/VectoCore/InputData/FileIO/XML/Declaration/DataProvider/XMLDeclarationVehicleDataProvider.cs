@@ -996,7 +996,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		public Kilogram TPMLMAxleAssembly => GetDouble(XMLNames.Trailer_TPLMAxleAssembly).SI<Kilogram>();
 
-		public Meter ExternalBodyLength => GetDouble(XMLNames.Trailer_ExternalLenghtBody).SI<Meter>();
+		public Meter ExternalBodyLength => GetDouble(XMLNames.Trailer_ExternalLengthBody).SI<Meter>();
 
 		public Meter ExternalBodyWidth => GetDouble(XMLNames.Trailer_ExternalWidthBody).SI<Meter>();
 

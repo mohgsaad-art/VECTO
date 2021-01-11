@@ -1428,8 +1428,8 @@
   <data name="Trailer_TPLMAxleAssembly" xml:space="preserve">
     <value>TPMLMAxleAssembly</value>
   </data>
-  <data name="Trailer_ExternalLenghtBody" xml:space="preserve">
-    <value>ExternalLenghtBody</value>
+  <data name="Trailer_ExternalLengthBody" xml:space="preserve">
+    <value>ExternalLengthBody</value>
   </data>
   <data name="Trailer_ExternalWidthBody" xml:space="preserve">
     <value>ExternalWidthBody</value>

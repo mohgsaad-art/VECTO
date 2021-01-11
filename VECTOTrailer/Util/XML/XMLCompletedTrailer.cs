@@ -104,7 +104,7 @@ namespace VECTOTrailer.Util.XML
 					new XElement(_v27 + XMLNames.Trailer_TPMLMTotalTrailer, trailerData.TPLMTotalTrailer.ToXMLFormat(0)),
 					new XElement(_v27 + XMLNames.Trailer_TPLMAxleAssembly, trailerData.TPLMAxleAssembly.ToXMLFormat(0))), 
 			new XElement(_v27 + "Dimensions",
-					new XElement(_v27 + XMLNames.Trailer_ExternalLenghtBody,
+					new XElement(_v27 + XMLNames.Trailer_ExternalLengthBody,
 						trailerData.ExternalLengthOfTheBody?.ToXMLFormat(3)),
 					new XElement(_v27 + XMLNames.Trailer_ExternalWidthBody, trailerData.ExternalWidthOfTheBody?.ToXMLFormat(3)),
 					new XElement(_v27 + XMLNames.Trailer_ExternalHeightBody,

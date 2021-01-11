@@ -220,7 +220,7 @@
 					<xs:element name="Dimensions">
 						<xs:complexType>
 							<xs:all>
-								<xs:element name="ExternalLenghtBody" type="xs:double"/>
+								<xs:element name="ExternalLengthBody" type="xs:double"/>
 								<xs:element name="ExternalWidthBody" type="xs:double"/>
 								<xs:element name="ExternalHeightBody" type="xs:double"/>
 								<xs:element name="TotalHeightTrailer" type="xs:double"/>

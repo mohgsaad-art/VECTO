@@ -79,7 +79,7 @@
 					<xs:element name="Dimensions">
 						<xs:complexType>
 							<xs:sequence>
-								<xs:element name="ExternalLenghtBody" type="v2.7:TrailerLengthType"/>
+								<xs:element name="ExternalLengthBody" type="v2.7:TrailerLengthType"/>
 								<xs:element name="ExternalWidthBody" type="v2.7:TrailerLengthType"/>
 								<xs:element name="ExternalHeightBody" type="v2.7:TrailerLengthType"/>
 								<xs:element name="TotalHeightTrailer" type="v2.7:TrailerLengthType"/>
