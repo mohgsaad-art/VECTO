@@ -35,6 +35,7 @@ using System.Data;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using TUGraz.VectoCommon.BusAuxiliaries;
+using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
@@ -134,6 +135,12 @@ namespace TUGraz.VectoCore.OutputData
 					Tuple.Create(Fields.DECLARED_FZISO_AXLE3, typeof(ConvertedSI)),
 					Tuple.Create(Fields.DECLARED_RRC_AXLE4, typeof(double)),
 					Tuple.Create(Fields.DECLARED_FZISO_AXLE4, typeof(ConvertedSI)),
+					Tuple.Create(Fields.TRAILER_RRC_AXLE1, typeof(double)),
+					Tuple.Create(Fields.TRAILER_FZISO_AXLE1, typeof(ConvertedSI)),
+					Tuple.Create(Fields.TRAILER_RRC_AXLE2, typeof(double)),
+					Tuple.Create(Fields.TRAILER_FZISO_AXLE2, typeof(ConvertedSI)),
+					Tuple.Create(Fields.TRAILER_RRC_AXLE3, typeof(double)),
+					Tuple.Create(Fields.TRAILER_FZISO_AXLE3, typeof(ConvertedSI)),
 					Tuple.Create(Fields.ROLLING_RESISTANCE_COEFFICIENT_W_TRAILER, typeof(double)),
 					Tuple.Create(Fields.ROLLING_RESISTANCE_COEFFICIENT_WO_TRAILER, typeof(double)),
 					Tuple.Create(Fields.R_DYN, typeof(ConvertedSI)),
@@ -725,7 +732,7 @@ namespace TUGraz.VectoCore.OutputData
 
 			WriteAuxTechnologies(runData.Aux, runData.BusAuxiliaries, row);
 
-			WriteAxleWheelsData(runData.VehicleData.AxleData, row);
+			WriteAxleWheelsData(runData.VehicleData.AxleData, row, runData.VehicleData.InputDataTrailer);
 
 			WriteAirdragData(runData.AirdragData, row);
 
@@ -763,6 +770,8 @@ namespace TUGraz.VectoCore.OutputData
 
 			row[Fields.ROLLING_RESISTANCE_COEFFICIENT_WO_TRAILER] =
 				data.RollResistanceCoefficientWithoutTrailer;
+
+			//TODO - FOR TRAILER
 			row[Fields.ROLLING_RESISTANCE_COEFFICIENT_W_TRAILER] =
 				data.TotalRollResistanceCoefficient;
 
@@ -804,8 +813,29 @@ namespace TUGraz.VectoCore.OutputData
 			row[Fields.ENGINE_ACTUAL_CORRECTION_FACTOR] = string.Join(" / ", data.Fuels.Select(x => x.FuelConsumptionCorrectionFactor));
 		}
 
-		private static void WriteAxleWheelsData(List<Axle> data, DataRow row)
+		private static void WriteAxleWheelsData(List<Axle> data, DataRow row,
+			ITrailerDeclarationInputData inputDataTrailer)
 		{
+			if (inputDataTrailer != null) {
+				var trailerData = data.FindAll(x => x.AxleType == AxleType.Trailer);
+
+				var trailerFields = new[] {
+					Tuple.Create(Fields.TRAILER_RRC_AXLE1, Fields.TRAILER_FZISO_AXLE1),
+					Tuple.Create(Fields.TRAILER_RRC_AXLE2, Fields.TRAILER_FZISO_AXLE2),
+					Tuple.Create(Fields.TRAILER_RRC_AXLE3, Fields.TRAILER_FZISO_AXLE3),
+				};
+				for (var i = 0; i < Math.Min(trailerFields.Length, trailerData.Count()); i++) {
+					/*if (data[i].AxleType == AxleType.Trailer)
+					{
+						continue;
+					}*/
+
+					row[trailerFields[i].Item1] = trailerData[i].RollResistanceCoefficient;
+					row[trailerFields[i].Item2] = (ConvertedSI)trailerData[i].TyreTestLoad;
+				}
+
+			}
+
 			var fields = new[] {
 				Tuple.Create(Fields.DECLARED_RRC_AXLE1, Fields.DECLARED_FZISO_AXLE1),
 				Tuple.Create(Fields.DECLARED_RRC_AXLE2, Fields.DECLARED_FZISO_AXLE2),
@@ -820,6 +850,7 @@ namespace TUGraz.VectoCore.OutputData
 				row[fields[i].Item1] = data[i].RollResistanceCoefficient;
 				row[fields[i].Item2] = (ConvertedSI)data[i].TyreTestLoad;
 			}
+
 
 			row[Fields.NUM_AXLES_DRIVEN] = data.Count(x => x.AxleType == AxleType.VehicleDriven);
 			row[Fields.NUM_AXLES_NON_DRIVEN] = data.Count(x => x.AxleType == AxleType.VehicleNonDriven);
@@ -1167,6 +1198,15 @@ namespace TUGraz.VectoCore.OutputData
 			public const string DECLARED_FZISO_AXLE3 = "Declared FzISO axle 3 [N]";
 			public const string DECLARED_RRC_AXLE4 = "Declared RRC axle 4 [-]";
 			public const string DECLARED_FZISO_AXLE4 = "Declared FzISO axle 4 [N]";
+
+			public const string TRAILER_RRC_AXLE1 = "Trailer RRC axle 1 [-]";
+			public const string TRAILER_FZISO_AXLE1 = "Trailer FzISO axle 1 [N]";
+			public const string TRAILER_RRC_AXLE2 = "Trailer RRC axle 2 [-]";
+			public const string TRAILER_FZISO_AXLE2 = "Trailer FzISO axle 2 [N]";
+			public const string TRAILER_RRC_AXLE3 = "Trailer RRC axle 3 [-]";
+			public const string TRAILER_FZISO_AXLE3 = "Trailer FzISO axle 3 [N]";
+
+
 			public const string ADAS_TECHNOLOGY_COMBINATION = "ADAS technology combination [-]";
 
 			public const string PTO_TECHNOLOGY = "PTOShaftsGearWheels";

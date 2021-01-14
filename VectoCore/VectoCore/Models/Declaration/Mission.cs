@@ -55,6 +55,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 		public MissionType MissionType { get; internal set; }
 		public string CrossWindCorrectionParameters { get; internal set; }
 		public double[] AxleWeightDistribution { get; internal set; }
+		public double[] SpecificAxleWeightDistribution { get; internal set; }
 
 		public Kilogram BodyCurbWeight { get; internal set; }
 
@@ -62,6 +63,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 		public Stream CycleFile { get; internal set; }
 
 		public IList<MissionTrailer> Trailer { get; internal set; }
+		public IList<MissionTrailer> SpecificTrailer { get; internal set; }
 
 		public Kilogram MinLoad { get; internal set; }
 		public Kilogram LowLoad { get; internal set; }

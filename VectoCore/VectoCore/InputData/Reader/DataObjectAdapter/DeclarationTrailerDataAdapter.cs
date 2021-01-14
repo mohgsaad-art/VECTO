@@ -142,14 +142,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 			
 			var axles = data.Components.AxleWheels.AxlesDeclaration;
-			if (axles.Count < mission.AxleWeightDistribution.Length) {
-				throw new VectoException(
-					"Vehicle does not contain sufficient axles. {0} axles defined, {1} axles required",
-					axles.Count, mission.AxleWeightDistribution.Length);
-			}
 
 			var axleData = new List<Axle>();
-			for (var i = 0; i < mission.AxleWeightDistribution.Length; i++) {
+			for (var i = 0; i < axles.Count; i++) {
 				var axleInput = axles[i];
 				var axle = new Axle {
 					WheelsDimension = axleInput.Tyre.Dimension,
@@ -171,7 +166,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 					trailer.TrailerWheels.Select(
 						trailerWheel => new Axle {
 							AxleType = AxleType.Trailer,
-							AxleWeightShare = trailer.TrailerAxleWeightShare / trailer.TrailerWheels.Count,
+							AxleWeightShare = trailer.TrailerAxleWeightShare,
 							TwinTyres = DeclarationData.Trailer.TwinTyres,
 							RollResistanceCoefficient = DeclarationData.Trailer.RollResistanceCoefficient,
 							TyreTestLoad = DeclarationData.Trailer.TyreTestLoad.SI<Newton>(),
@@ -223,22 +218,16 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			
 
 			var axles = data.Components.AxleWheels.AxlesDeclaration;
-			if (axles.Count < mission.AxleWeightDistribution.Length)
-			{
-				throw new VectoException(
-					"Vehicle does not contain sufficient axles. {0} axles defined, {1} axles required",
-					axles.Count, mission.AxleWeightDistribution.Length);
-			}
 
 			var axleData = new List<Axle>();
-			for (var i = 0; i < mission.AxleWeightDistribution.Length; i++)
+			for (var i = 0; i < axles.Count; i++)
 			{
 				var axleInput = axles[i];
 				var axle = new Axle
 				{
 					WheelsDimension = axleInput.Tyre.Dimension,
 					AxleType = axleInput.AxleType,
-					AxleWeightShare = mission.AxleWeightDistribution[i],
+					AxleWeightShare = mission.SpecificAxleWeightDistribution[i],
 					TwinTyres = axleInput.TwinTyres,
 					RollResistanceCoefficient = axleInput.Tyre.RollResistanceCoefficient,
 					TyreTestLoad = axleInput.Tyre.TyreTestLoad,
@@ -250,21 +239,23 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				axleData.Add(axle);
 			}
 
-			foreach (var trailer in mission.Trailer)
+			var trailerAxles = trailerData.Axles;
+
+			for (var i = 0; i < trailerAxles.Count; i++)
 			{
-				axleData.AddRange(
-					trailer.TrailerWheels.Select(
-						trailerWheel => new Axle
-						{
-							AxleType = AxleType.Trailer,
-							AxleWeightShare = trailer.TrailerAxleWeightShare / trailer.TrailerWheels.Count,
-							TwinTyres = DeclarationData.Trailer.TwinTyres,
-							RollResistanceCoefficient = DeclarationData.Trailer.RollResistanceCoefficient,
-							TyreTestLoad = DeclarationData.Trailer.TyreTestLoad.SI<Newton>(),
-							FuelEfficiencyClass = DeclarationData.Trailer.FuelEfficiencyClass,
-							Inertia = specificTrailerData.Inertia, //TODO: CHECK
-							WheelsDimension = trailerWheel.WheelType
-						}));
+				var axleInput = trailerAxles[i];
+				var axle = new Axle
+				{
+					WheelsDimension = axleInput.Tyre.Dimension,
+					AxleType = AxleType.Trailer,
+					AxleWeightShare = mission.SpecificTrailer.FirstOrDefault().TrailerAxleWeightShare,
+					TwinTyres = axleInput.TwinTyres,
+					RollResistanceCoefficient = axleInput.Tyre.RollResistanceCoefficient,
+					TyreTestLoad = axleInput.Tyre.TyreTestLoad,
+					FuelEfficiencyClass = axleInput.Tyre.FuelEfficiencyClass,
+					Inertia = DeclarationData.Wheels.Lookup(axleInput.Tyre.Dimension.RemoveWhitespace()).Inertia, //TODO : check
+				};
+				axleData.Add(axle);
 			}
 
 			retVal.AxleData = axleData;

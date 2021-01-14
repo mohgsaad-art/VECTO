@@ -44,24 +44,9 @@ using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.OutputData;
-using TUGraz.VectoCore.Utils;
 using System.Linq;
-using System.Net;
-using System.ServiceModel.Channels;
-using System.Xml;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json.Bson;
 using Ninject;
-using TUGraz.VectoCore.InputData.FileIO.XML;
-using TUGraz.VectoCore.InputData.FileIO.XML.Declaration;
-using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Factory;
-using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Interfaces;
-using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl;
-using TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider;
-using TUGraz.VectoCore.InputData.FileIO.XML.Engineering.Interfaces;
-using IXMLGearData = TUGraz.VectoCore.InputData.FileIO.XML.Engineering.Interfaces.IXMLGearData;
-using Wheels = TUGraz.VectoCore.Models.Declaration.Wheels;
 
 namespace TUGraz.VectoCore.InputData.Reader.Impl
 {

@@ -35,6 +35,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using Castle.Core.Internal;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
@@ -101,7 +102,6 @@ namespace TUGraz.VectoCore.Models.Declaration
 				DesignSpeed = MeterPerSecond.Create(25) //90km/h
 			};
 
-
 		}
 
 		private static Mission[] CreateMissions(DataRow row)
@@ -153,7 +153,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 				var body = GetBody(row);
 
-				var trailers = GetTrailers(row, missionType);
+				var referenceTrailers = GetTrailers(row, missionType);
+				var specificTrailers = GetTrailers(row, missionType, true);
 
 				var mission = new Mission
 				{
@@ -162,14 +163,16 @@ namespace TUGraz.VectoCore.Models.Declaration
 					RefLoad = Kilogram.Create(refRefLoad),
 					SpecificTrailerLowLoad = Kilogram.Create(lowLoad),
 					SpecificTrailerRefLoad = Kilogram.Create(refLoad),
-					AxleWeightDistribution = GetAxleWeightDistribution(row, missionType), 
+					AxleWeightDistribution = GetTowingAxleWeightDistribution(row, missionType),
+					SpecificAxleWeightDistribution = GetTowingAxleWeightDistribution(row, missionType, true),
 					CurbMass = Kilogram.Create(missionType == MissionType.LongHaul ? row.ParseDouble("ref_curb_lh") : row.ParseDouble("ref_curb_other")),
 					DefaultCDxA = SquareMeter.Create(row.ParseDouble(DefaultCDxAColumn)),
 					VehicleHeight = Meter.Create(4), //TODO - THIS IS NOT GIVEN IN MASTERTABLE
 					MinLoad = null,
 					MaxLoad = null,
-					Trailer = trailers,
-					TotalCargoVolume = body.CargoVolume + trailers.Sum(t => t.CargoVolume).DefaultIfNull(0),
+					Trailer = referenceTrailers,
+					SpecificTrailer = specificTrailers,
+					TotalCargoVolume = body.CargoVolume + referenceTrailers.Sum(t => t.CargoVolume).DefaultIfNull(0),
 					CrossWindCorrectionParameters = "TractorSemitrailer", //TODO: Check this
 #if USE_EXTENAL_DECLARATION_DATA
 					CycleFile = File.OpenRead(Path.Combine("DeclarationMissions", missionType.ToString().Replace("EMS", "") + ".vdri")),
@@ -196,21 +199,25 @@ namespace TUGraz.VectoCore.Models.Declaration
 		}
 
 
-		private static double[] GetAxleWeightDistribution(DataRow row, MissionType missionType)
+		private static double GetTrailerAxleWeightDistribution(DataRow row, MissionType missionType, bool isSpecific = false)
 		{
-			var axleDistributionColumn =
-				missionType == MissionType.LongHaul ? "semi_lh_axle" : "semi_other_axle";
+			var axleDistributionColumn = missionType == MissionType.LongHaul ? "ref_semi_lh_axle" : "ref_semi_other_axle";
+
+			if (isSpecific)
+				axleDistributionColumn = missionType == MissionType.LongHaul ? "semi_lh_axle" : "semi_other_axle";
 
 			var axle1 = row.Field<string>(axleDistributionColumn + "1");
 			var axle2 = row.Field<string>(axleDistributionColumn + "2");
 			var axle3 = row.Field<string>(axleDistributionColumn + "3");
 
-			return (_numberOfAxles == 1 ?
-				axle1 : (_numberOfAxles == 2 ? axle2 : axle3)).Split('/').ToDouble().Select(x => x / 100.0).ToArray();
+			var axlesDistribution = _numberOfAxles == 1 ? axle1 : (_numberOfAxles == 2 ? axle2 : axle3);
+			if (axlesDistribution == "---") return 0;
 
+			double axleDistribution = axlesDistribution.Split('/')[0].ToDouble() / axlesDistribution.Split('/')[1].ToDouble();
+			return axleDistribution / 100.0;
 		}
 
-		private static IList<MissionTrailer> GetTrailers(DataRow row, MissionType missionType)
+		private static IList<MissionTrailer> GetTrailers(DataRow row, MissionType missionType, bool isSpecific = false)
 		{
 			var trailers = new List<MissionTrailer>();
 
@@ -221,7 +228,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 				throw new VectoException("Error in segmentation table: trailer weight share is defined but not trailer type!");
 			}
 
-			trailers.Add(CreateTrailer(trailerValue, GetTrailerAxleWeightDistribution(row, missionType), true));
+			trailers.Add(CreateTrailer(trailerValue, GetTrailerAxleWeightDistribution(row, missionType, isSpecific), true));
 
 			return trailers;
 		}
@@ -247,19 +254,24 @@ namespace TUGraz.VectoCore.Models.Declaration
 			return missionType == MissionType.LongHaul ? "_lh" : "_other";
 		}
 
-		private static double GetTrailerAxleWeightDistribution(DataRow row, MissionType missionType)
+		private static double[] GetTowingAxleWeightDistribution(DataRow row, MissionType missionType, bool isSpecific = false)
 		{
-			var axleDistributionColumn =
-				missionType == MissionType.LongHaul ? "towing_lh_axle" : "towing_other_axle";
+			var axleDistributionColumn = missionType == MissionType.LongHaul ? "ref_Towing_lh_axle" : "ref_Towing_other_axle";
+
+			if (isSpecific)
+				axleDistributionColumn = missionType == MissionType.LongHaul ? "towing_lh_axle" : "towing_other_axle";
 
 			var axle1 = row.Field<string>(axleDistributionColumn + "1");
-			var axle2 = row.Field<string>(axleDistributionColumn + "2");
-			var axle3 = row.Field<string>(axleDistributionColumn + "3");
+			axle1 = axle1.Contains("---") || axle1.IsNullOrEmpty() ? "0" : axle1;
 
-			var axleDistribution = _numberOfAxles == 1 ? axle1 : (_numberOfAxles == 2 ? axle2 : axle3);
-			if (axleDistribution == "---") return 0;
-			return axleDistribution.ToDouble() / 100.0;
-			
+			var axle2 = row.Field<string>(axleDistributionColumn + "2");
+			axle2 = axle2.Contains("---") || axle2.IsNullOrEmpty() ? "0" : axle2;
+
+			var axle3 = row.Field<string>(axleDistributionColumn + "3");
+			axle3 = axle3.Contains("---") || axle3.IsNullOrEmpty() ? "0" : axle3;
+
+			return new [] { axle1.ToDouble() / 100.0, axle2.ToDouble() / 100.0, axle3.ToDouble()};
+
 		}
 
 
