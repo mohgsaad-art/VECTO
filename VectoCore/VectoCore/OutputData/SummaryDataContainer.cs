@@ -816,24 +816,18 @@ namespace TUGraz.VectoCore.OutputData
 		private static void WriteAxleWheelsData(List<Axle> data, DataRow row,
 			ITrailerDeclarationInputData inputDataTrailer)
 		{
-			if (inputDataTrailer != null) {
-				var trailerData = data.FindAll(x => x.AxleType == AxleType.Trailer);
+			var trailerFields = new[] {
+				Tuple.Create(Fields.TRAILER_RRC_AXLE1, Fields.TRAILER_FZISO_AXLE1),
+				Tuple.Create(Fields.TRAILER_RRC_AXLE2, Fields.TRAILER_FZISO_AXLE2),
+				Tuple.Create(Fields.TRAILER_RRC_AXLE3, Fields.TRAILER_FZISO_AXLE3),
+			};
 
-				var trailerFields = new[] {
-					Tuple.Create(Fields.TRAILER_RRC_AXLE1, Fields.TRAILER_FZISO_AXLE1),
-					Tuple.Create(Fields.TRAILER_RRC_AXLE2, Fields.TRAILER_FZISO_AXLE2),
-					Tuple.Create(Fields.TRAILER_RRC_AXLE3, Fields.TRAILER_FZISO_AXLE3),
-				};
-				for (var i = 0; i < Math.Min(trailerFields.Length, trailerData.Count()); i++) {
-					/*if (data[i].AxleType == AxleType.Trailer)
-					{
-						continue;
-					}*/
+			var trailerData = data.FindAll(x => x.AxleType == AxleType.Trailer);
 
-					row[trailerFields[i].Item1] = trailerData[i].RollResistanceCoefficient;
-					row[trailerFields[i].Item2] = (ConvertedSI)trailerData[i].TyreTestLoad;
-				}
-
+			for (var i = 0; i < Math.Min(trailerFields.Length, trailerData.Count()); i++)
+			{
+				row[trailerFields[i].Item1] = trailerData[i].RollResistanceCoefficient;
+				row[trailerFields[i].Item2] = (ConvertedSI)trailerData[i].TyreTestLoad;
 			}
 
 			var fields = new[] {
@@ -843,12 +837,11 @@ namespace TUGraz.VectoCore.OutputData
 				Tuple.Create(Fields.DECLARED_RRC_AXLE4, Fields.DECLARED_FZISO_AXLE4),
 			};
 			for (var i = 0; i < Math.Min(fields.Length, data.Count); i++) {
-				if (data[i].AxleType == AxleType.Trailer) {
+				if (data[i].AxleType == AxleType.Trailer)
 					continue;
-				}
-
 				row[fields[i].Item1] = data[i].RollResistanceCoefficient;
 				row[fields[i].Item2] = (ConvertedSI)data[i].TyreTestLoad;
+
 			}
 
 
