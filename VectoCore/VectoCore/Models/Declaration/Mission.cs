@@ -72,6 +72,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 		public Kilogram SpecificTrailerLowLoad { get; internal set; }
 		public Kilogram SpecificTrailerRefLoad { get; internal set; }
 
+		public IDictionary<Tuple<MissionType, LoadingType>, double> TrailerWeightingFactors { get; internal set; }
 
 		public double? PassengersMinLoad { get; internal set; }
 

@@ -31,6 +31,7 @@
 */
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -108,11 +109,11 @@ namespace TUGraz.VectoCore.Models.Declaration
 		{
 			var missionTypes = new List<MissionType>();
 
-			if (row["Mission_long_haul"].ToString().Contains("X"))
+			if (!row["Mission_long_haul"].ToString().Contains("-"))
 				missionTypes.Add(MissionType.LongHaul);
-			if (row["Mission_regional_delivery"].ToString().Contains("X"))
+			if (!row["Mission_regional_delivery"].ToString().Contains("-"))
 				missionTypes.Add(MissionType.RegionalDelivery);
-			if (row["Mission_urban_delivery"].ToString().Contains("X"))
+			if (!row["Mission_urban_delivery"].ToString().Contains("-"))
 				missionTypes.Add(MissionType.UrbanDelivery);
 
 			var missions = new List<Mission>();
@@ -131,6 +132,23 @@ namespace TUGraz.VectoCore.Models.Declaration
 						lowLoad = row.ParseDouble("specific_other_semi_payload_low");
 						refLoad = row.ParseDouble("specific_other_semi_payload_rep");
 						break;
+				}
+
+				var data = new Dictionary<Tuple<MissionType, LoadingType>, double>();
+				var tuple = new Tuple<MissionType, LoadingType>(MissionType.LongHaul, LoadingType.LowLoading);
+				data.Add(tuple, row["Mission_long_haul"].ToString() == "0" ? 0 : row["Mission_long_haul"].ToString().Split('/')[0].ToDouble());
+				tuple = new Tuple<MissionType, LoadingType>(MissionType.LongHaul, LoadingType.ReferenceLoad);
+				data.Add(tuple, row["Mission_long_haul"].ToString() == "0" ? 0 : row["Mission_long_haul"].ToString().Split('/')[1].ToDouble());
+				tuple = new Tuple<MissionType, LoadingType>(MissionType.RegionalDelivery, LoadingType.LowLoading);
+				data.Add(tuple, row["Mission_regional_delivery"].ToString() == "0" ? 0 : row["Mission_regional_delivery"].ToString().Split('/')[0].ToDouble());
+				tuple = new Tuple<MissionType, LoadingType>(MissionType.RegionalDelivery, LoadingType.ReferenceLoad);
+				data.Add(tuple, row["Mission_regional_delivery"].ToString() == "0" ? 0 : row["Mission_regional_delivery"].ToString().Split('/')[1].ToDouble());
+
+				if (!row["Mission_urban_delivery"].ToString().Contains("-")) {
+					tuple = new Tuple<MissionType, LoadingType>(MissionType.UrbanDelivery, LoadingType.LowLoading);
+					data.Add(tuple, row["Mission_urban_delivery"].ToString() == "0" ? 0 : row["Mission_urban_delivery"].ToString().Split('/')[0].ToDouble());
+					tuple = new Tuple<MissionType, LoadingType>(MissionType.UrbanDelivery, LoadingType.ReferenceLoad);
+					data.Add(tuple, row["Mission_urban_delivery"].ToString() == "0" ? 0 : row["Mission_urban_delivery"].ToString().Split('/')[1].ToDouble());
 				}
 
 				double refLowLoad = 0;
@@ -158,6 +176,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 				var mission = new Mission
 				{
+					TrailerWeightingFactors = data,
 					MissionType = missionType,
 					LowLoad = Kilogram.Create(refLowLoad),
 					RefLoad = Kilogram.Create(refRefLoad),
@@ -167,7 +186,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 					SpecificAxleWeightDistribution = GetTowingAxleWeightDistribution(row, missionType, true),
 					CurbMass = Kilogram.Create(missionType == MissionType.LongHaul ? row.ParseDouble("ref_curb_lh") : row.ParseDouble("ref_curb_other")),
 					DefaultCDxA = SquareMeter.Create(row.ParseDouble(DefaultCDxAColumn)),
-					VehicleHeight = Meter.Create(4), //TODO - THIS IS NOT GIVEN IN MASTERTABLE
+					VehicleHeight = Meter.Create(row.ParseDouble("vehicle_height")),
 					MinLoad = null,
 					MaxLoad = null,
 					Trailer = referenceTrailers,

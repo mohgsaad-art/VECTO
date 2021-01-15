@@ -35,21 +35,15 @@ namespace TUGraz.VectoCore.OutputData.XML {
 
 		public override void InitializeReport(VectoRunData modelData, List<List<FuelData.Entry>> fuelModes)
 		{
-			var weightingGroup = modelData.Exempted
-				? WeightingGroup.Unknown
-				: DeclarationData.WeightingGroup.Lookup(
-					modelData.VehicleData.VehicleClass, modelData.VehicleData.SleeperCab,
-					modelData.EngineData.RatedPowerDeclared);
-			_weightingFactors = weightingGroup == WeightingGroup.Unknown
-				? ZeroWeighting
-				: DeclarationData.WeightingFactors.Lookup(weightingGroup);
+			_weightingFactors = modelData.Mission.TrailerWeightingFactors;
 
 			InstantiateReports(modelData);
 
 			ManufacturerRpt.Initialize(modelData, fuelModes);
 			CustomerRpt.Initialize(modelData, fuelModes);
 		}
-        #endregion
+
+		#endregion
 
         private static IDictionary<Tuple<MissionType, LoadingType>, double> EqualWeighting =>
 			new ReadOnlyDictionary<Tuple<MissionType, LoadingType>, double>(
