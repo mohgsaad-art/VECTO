@@ -16,7 +16,7 @@ namespace TUGraz.VectoCore.Tests.XML
 		protected IXMLInputDataReader XMLInputReader;
 		private IKernel _kernel;
 
-		private const string SampleTrailer = @"C:\Users\babou\Downloads\vecto\import\test4.xml";
+		private const string SampleTrailer = @"F:\Vecto\vecto-dev_bt\VectoCore\VectoCoreTest\TestData\Trailer\test4.xml";
 
 
 		[OneTimeSetUp]

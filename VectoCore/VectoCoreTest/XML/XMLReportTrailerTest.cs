@@ -47,7 +47,7 @@ namespace TUGraz.VectoCore.Tests.XML
 {
 	public class XMLReportTrailerTest
 	{
-		private const string SampleTrailer = @"C:\Users\babou\Downloads\vecto\import\test4.xml";
+		private const string SampleTrailer = @"F:\Vecto\vecto-dev_bt\VectoCore\VectoCoreTest\TestData\Trailer\test4.xml";
 
 		protected IXMLInputDataReader XMLInputReader;
 		private IKernel _kernel;
@@ -83,6 +83,7 @@ namespace TUGraz.VectoCore.Tests.XML
 
 			var validationMsg1 = new List<string> {customerRecord} ;
 
+			//XML Schema validation
 			var validator1 = new XMLValidator(XmlReader.Create(customerRecord), validationErrorAction: (s,e) => {
 				validationMsg1.Add(e?.ValidationEventArgs?.Message ?? "no schema found?");
 			});

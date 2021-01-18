@@ -30,55 +30,6 @@
 		</xs:attribute>
 	</xs:complexType>
 	<xs:complexType name="AbstractVehicleType" abstract="true"/>
-	<xs:complexType name="AxleType">
-		<xs:sequence>
-			<xs:element name="TyreDimension" type="vdecdef:TyreDimensionType">
-				<xs:annotation>
-					<xs:documentation>P108 / I.1.9.1, I.1.9.4, I.1.9.8, I.1.9.12 / #41, #43, #46, #49</xs:documentation>
-				</xs:annotation>
-			</xs:element>
-			<xs:element name="TyreCertificationNumber" type="vdecdef:CertificationNumberType">
-				<xs:annotation>
-					<xs:documentation>P267 / I.1.9.2, I.1.9.6, I.1.9.10, I.1.9.14, #6, #7, #8, #9</xs:documentation>
-				</xs:annotation>
-			</xs:element>
-			<xs:element name="DigestValue" type="xs:token">
-				<xs:annotation>
-					<xs:documentation>? / I.1.9.3a, I.1.9.7a, I.1.9.11a, I.1.9.16</xs:documentation>
-				</xs:annotation>
-			</xs:element>
-			<xs:element name="TyreRRCDeclared" type="vdecdef:TyreRRCISOType">
-				<xs:annotation>
-					<xs:documentation>P046 / I.1.9.3, I.1.9.7, I.1.9.11, I.1.9.15 / #42, #45, #48, #51</xs:documentation>
-				</xs:annotation>
-			</xs:element>
-			<xs:element name="TwinTyres" type="vdecdef:AxleTwinTyresType">
-				<xs:annotation>
-					<xs:documentation>P045 / I.1.9.5, I.1.9.9, I.1.9.13, #44, #47, #50</xs:documentation>
-				</xs:annotation>
-			</xs:element>
-		</xs:sequence>
-		<xs:attribute name="axleNumber" use="required">
-			<xs:simpleType>
-				<xs:restriction base="xs:int">
-					<xs:minInclusive value="1"/>
-					<xs:maxInclusive value="4"/>
-				</xs:restriction>
-			</xs:simpleType>
-		</xs:attribute>
-	</xs:complexType>
-	<xs:complexType name="AxleWheelsType">
-		<xs:sequence minOccurs="2" maxOccurs="4">
-			<xs:element name="Axle" type="AxleType"/>
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="CO2Type">
-		<xs:simpleContent>
-			<xs:extension base="xs:double">
-				<xs:attribute name="unit" type="CO2UnitType" use="required"/>
-			</xs:extension>
-		</xs:simpleContent>
-	</xs:complexType>
 	<xs:complexType name="FuelConsumptionType">
 		<xs:simpleContent>
 			<xs:extension base="xs:double">
@@ -112,23 +63,6 @@
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="SimulationParameters" type="SimulationParametersType"/>
-					<xs:element name="Fuel" maxOccurs="unbounded">
-						<xs:complexType>
-							<xs:sequence>
-								<xs:element name="FuelConsumption" type="FuelConsumptionType" maxOccurs="unbounded">
-									<xs:annotation>
-										<xs:documentation>I.2.3.1 - I.2.3.12 / #69</xs:documentation>
-									</xs:annotation>
-								</xs:element>
-							</xs:sequence>
-							<xs:attribute name="type" type="xs:string" use="required"/>
-						</xs:complexType>
-					</xs:element>
-					<xs:element name="CO2" type="CO2Type" maxOccurs="unbounded">
-						<xs:annotation>
-							<xs:documentation>I.2.3.13 - I.2.3.16 / #68</xs:documentation>
-						</xs:annotation>
-					</xs:element>
 					<xs:element name="EfficiencyRatio" maxOccurs="unbounded">
 						<xs:complexType>
 							<xs:simpleContent>
@@ -156,8 +90,19 @@
 					</xs:simpleContent>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="CdxA" type="xs:double"/>
-			<xs:element name="PolarCurveInformation" type="xs:string"/>
+			<xs:element name="CdxAyawAngle0" type="xs:double"/>
+			<xs:element name="CdxAyawAngle3" type="xs:double"/>
+			<xs:element name="CdxAyawAngle6" type="xs:double"/>
+			<xs:element name="CdxAyawAngle9" type="xs:double"/>
+			<xs:element name="AverageSpeed">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="unit" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="VectoOutputDataType">
@@ -168,6 +113,7 @@
 					<xs:element name="Results">
 						<xs:complexType>
 							<xs:sequence>
+								<xs:element name="TowingVehicle" type="xs:string" />
 								<xs:element name="Status">
 									<xs:simpleType>
 										<xs:restriction base="xs:string">
@@ -184,38 +130,11 @@
 								<xs:element name="Summary" minOccurs="0">
 									<xs:complexType>
 										<xs:sequence>
-											<xs:element name="WeightedPayload">
-												<xs:complexType>
-													<xs:simpleContent>
-														<xs:extension base="xs:double">
-															<xs:attribute name="unit" use="required"/>
-														</xs:extension>
-													</xs:simpleContent>
-												</xs:complexType>
-											</xs:element>
 											<xs:element name="WeightedPayloadTrailer">
 												<xs:complexType>
 													<xs:simpleContent>
 														<xs:extension base="xs:double">
 															<xs:attribute name="unit" use="required"/>
-														</xs:extension>
-													</xs:simpleContent>
-												</xs:complexType>
-											</xs:element>
-											<xs:element name="WeightedCO2Emissions" maxOccurs="unbounded">
-												<xs:complexType>
-													<xs:simpleContent>
-														<xs:extension base="xs:double">
-															<xs:attribute name="unit" type="xs:string" use="required"/>
-														</xs:extension>
-													</xs:simpleContent>
-												</xs:complexType>
-											</xs:element>
-											<xs:element name="WeightedCO2EmissionsTrailer" maxOccurs="unbounded">
-												<xs:complexType>
-													<xs:simpleContent>
-														<xs:extension base="xs:double">
-															<xs:attribute name="unit" type="xs:string" use="required"/>
 														</xs:extension>
 													</xs:simpleContent>
 												</xs:complexType>
@@ -256,13 +175,6 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:simpleType name="BooleanNotApplicableType">
-		<xs:restriction base="xs:string">
-			<xs:enumeration value="true"/>
-			<xs:enumeration value="false"/>
-			<xs:enumeration value="not applicable"/>
-		</xs:restriction>
-	</xs:simpleType>
 	<xs:complexType name="VehicleType">
 		<xs:complexContent>
 			<xs:extension base="AbstractVehicleType">
@@ -279,6 +191,7 @@
 					</xs:element>
 					<xs:element name="CommercialName" type="xs:string"/>
 					<xs:element name="VIN" type="vdecdef:VINType"/>
+					<xs:element name="Date" type="xs:string"/>
 					<xs:element name="LegislativeCategory" type="xs:string"/>
 					<xs:element name="AxleCount" type="xs:string"/>
 					<xs:element name="TrailerType" type="xs:string"/>
@@ -337,19 +250,41 @@
 							</xs:all>
 						</xs:complexType>
 					</xs:element>
+					<xs:element name="AxlesAndTyreFeatures">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Axle" maxOccurs="unbounded">
+									<xs:complexType>
+										<xs:all>
+											<xs:element name="Tyre">
+												<xs:complexType>
+													<xs:all>
+														<xs:element name="Data">
+															<xs:complexType>
+																<xs:all>
+																	<xs:element name="CertificationNumber" type="xs:string"/>
+																	<xs:element name="Dimension" type="xs:string"/>
+																	<xs:element name="RRCDeclared" type="xs:string"/>
+																	<xs:element name="FuelEfficiencyClass" type="xs:string"/>
+																	<xs:element name="Hash" type="xs:string"/>
+																</xs:all>
+															</xs:complexType>
+														</xs:element>
+													</xs:all>
+												</xs:complexType>
+											</xs:element>
+										</xs:all>
+										<xs:attribute name="axleNumber" use="required"/>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
 					<xs:element name="InputDataSignature" type="vdecdef:SignatureType"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:simpleType name="CO2UnitType">
-		<xs:restriction base="xs:string">
-			<xs:enumeration value="g/km"/>
-			<xs:enumeration value="g/t-km"/>
-			<xs:enumeration value="g/p-km"/>
-			<xs:enumeration value="g/m³-km"/>
-		</xs:restriction>
-	</xs:simpleType>
 	<xs:simpleType name="FuelConsumptionUnitType">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="l/100km"/>
