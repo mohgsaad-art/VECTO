@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using MahApps.Metro.Controls.Dialogs;
 using Ninject;
 using VECTOTrailer.Helper;
 using VECTOTrailer.Model;
@@ -138,13 +137,6 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		protected bool CloseWindowDialog()
 		{
-			var dialogSettings = new MetroDialogSettings()
-			{
-				AffirmativeButtonText = "Yes",
-				NegativeButtonText = "No",
-				AnimateShow = true,
-				AnimateHide = true
-			};
 
 			var res = MessageBox.Show("","Do you really want to close ?", MessageBoxButton.OK);
 

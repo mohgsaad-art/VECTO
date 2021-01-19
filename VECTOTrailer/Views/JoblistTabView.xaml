@@ -8,9 +8,7 @@
              xmlns:converter="clr-namespace:VECTOTrailer.Helper.Converter"
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="500"
-             xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
-             xmlns:interfaces="clr-namespace:VECTOTrailer.ViewModel.Interfaces"
-             Dialog:DialogParticipation.Register="{Binding}">
+             xmlns:interfaces="clr-namespace:VECTOTrailer.ViewModel.Interfaces">
 
 
     <d:JoblistTabView.DataContext>

@@ -85,23 +85,12 @@
 		<HashingTool Include="$(SolutionDir)HashingCmd\bin\Release\hashingcmd.exe"/>
 		
 		<VectoConfigurationSample Include="$(SolutionDir)VECTO\install.ini"/>
-		
-		<Vecto3GUI Include="$(SolutionDir)VECTO3GUI\bin\Release\VECTO3.exe*"/>
-		<Vecto3GUI Include="$(SolutionDir)VECTO3GUI\bin\Release\System.Windows.Interactivity.dll"/>
-		<Vecto3GUI Include="$(SolutionDir)VECTO3GUI\bin\Release\Microsoft.WindowsAPICodePack*.dll"/>
-		<Vecto3GUI Include="$(SolutionDir)VECTO3GUI\bin\Release\Microsoft.WindowsAPICodePack*.dll"/>
-		<!-- <Vecto3GUI Include="$(SolutionDir)VECTO3GUI\bin\Release\Microsoft.Expression.Interactions.dll"/> -->
-		<Vecto3GUI Include="$(SolutionDir)VECTO3GUI\bin\Release\MahApps.*.dll"/>
-		<Vecto3GUI Include="$(SolutionDir)VECTO3GUI\bin\Release\ICSharpCode.AvalonEdit.dll"/>
-		<Vecto3GUI Include="$(SolutionDir)VECTO3GUI\bin\Release\ControlzEx.dll"/>
 
-		<Vecto3GUI Include="$(SolutionDir)VECTOTrailer\bin\Release\VECTOTrailer.exe*"/>
 
 	</ItemGroup>
 	
 	<Message Text="@(VectoCommandLine)"/>
 	<Copy SourceFiles="@(VectoCommandLine)" DestinationFolder="$(OutputPath)"/>
-	<Copy SourceFiles="@(Vecto3GUI)" DestinationFolder="$(OutputPath)"/>
 	<Copy SourceFiles="@(HashingTool)" DestinationFolder="$(OutputPath)"/>
 	<Copy SourceFiles="@(GenericVehicles)" DestinationFiles="@(GenericVehicles->'$(OutputPath)\Generic Vehicles\%(RecursiveDir)%(Filename)%(Extension)')" />
 	<Copy SourceFiles="@(DeclarationData)" DestinationFolder="$(OutputPath)\Declaration" />

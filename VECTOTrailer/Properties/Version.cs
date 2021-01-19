@@ -3,7 +3,7 @@
 *
 * Copyright © 2012-2017 European Union
 *
-* Developed by Graz University of Technologies,
+* Developed by Graz University of Technology,
 *              Institute of Internal Combustion Engines and Thermodynamics,
 *              Institute of Technical Informatics
 *
@@ -21,14 +21,14 @@
 * limitations under the Licence.
 *
 * Authors:
-*   Stefan Hausberger, hausberger@ivt.tugraz.at, IVT, Graz University of Technologies
-*   Christian Kreiner, christian.kreiner@tugraz.at, ITI, Graz University of Technologies
-*   Michael Krisper, michael.krisper@tugraz.at, ITI, Graz University of Technologies
-*   Raphael Luz, luz@ivt.tugraz.at, IVT, Graz University of Technologies
-*   Markus Quaritsch, markus.quaritsch@tugraz.at, IVT, Graz University of Technologies
-*   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technologies
+*   Stefan Hausberger, hausberger@ivt.tugraz.at, IVT, Graz University of Technology
+*   Christian Kreiner, christian.kreiner@tugraz.at, ITI, Graz University of Technology
+*   Michael Krisper, michael.krisper@tugraz.at, ITI, Graz University of Technology
+*   Raphael Luz, luz@ivt.tugraz.at, IVT, Graz University of Technology
+*   Markus Quaritsch, markus.quaritsch@tugraz.at, IVT, Graz University of Technology
+*   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
 using System.Reflection;
-[assembly: AssemblyVersion("0.1.0.2099")]
-[assembly: AssemblyFileVersion("0.1.0.2099")]
+[assembly: AssemblyVersion("0.1.0.2210")]
+[assembly: AssemblyFileVersion("0.1.0.2210")]

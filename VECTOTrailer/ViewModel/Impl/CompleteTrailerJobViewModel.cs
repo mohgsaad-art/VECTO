@@ -8,7 +8,6 @@ using System.Windows.Input;
 using System.Xml;
 using System.Xml.Schema;
 using Castle.Core.Internal;
-using MahApps.Metro.Controls.Dialogs;
 using Ninject;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
@@ -98,13 +97,6 @@ namespace VECTOTrailer.ViewModel.Impl
 		}
 		protected override void DoSaveJob(Window window)
 		{
-			var dialogSettings = new MetroDialogSettings
-			{
-				AffirmativeButtonText = "Yes",
-				NegativeButtonText = "Cancel",
-				AnimateShow = true,
-				AnimateHide = true
-			};
 
 			var dialogResult = MessageBox.Show(
 				"The existing file will be overwritten, do you want to continue?", "Save",
