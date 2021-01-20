@@ -6,7 +6,6 @@
          xmlns:local="clr-namespace:VECTOTrailer.Views"
          xmlns:impl="clr-namespace:VECTOTrailer.ViewModel.Impl"
          xmlns:interfaces="clr-namespace:VECTOTrailer.ViewModel.Interfaces"
-         xmlns:converters="http://metro.mahapps.com/winfx/xaml/shared"
          xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
          xmlns:helper="clr-namespace:VECTOTrailer.Helper"
          mc:Ignorable="d"

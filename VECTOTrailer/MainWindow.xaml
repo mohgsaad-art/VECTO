@@ -6,7 +6,6 @@
          xmlns:local="clr-namespace:VECTOTrailer"
          xmlns:interfaces="clr-namespace:VECTOTrailer.ViewModel.Interfaces"
          xmlns:impl="clr-namespace:VECTOTrailer.ViewModel.Impl"
-         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
          xmlns:views="clr-namespace:VECTOTrailer.Views"
          mc:Ignorable="d"
          Title="{Binding Version}" Icon="Resources/Icon2.ico" Height="515.36" Width="972.48" WindowStartupLocation="CenterScreen"
