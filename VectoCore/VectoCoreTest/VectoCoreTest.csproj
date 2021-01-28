@@ -3658,7 +3658,9 @@
     </Content>
     <Content Include="TestData\Trailer\test4.RSLT_CUSTOMER.xml" />
     <Content Include="TestData\Trailer\test4.RSLT_MANUFACTURER.xml" />
-    <Content Include="TestData\Trailer\test4.xml" />
+    <Content Include="TestData\Trailer\test4.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestData\XML\EngineeringJob\SampleJobEngineering1.0.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
