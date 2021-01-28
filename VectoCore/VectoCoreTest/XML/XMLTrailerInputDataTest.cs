@@ -16,7 +16,7 @@ namespace TUGraz.VectoCore.Tests.XML
 		protected IXMLInputDataReader XMLInputReader;
 		private IKernel _kernel;
 
-		private const string SampleTrailer = @"F:\Vecto\vecto-dev_bt\VectoCore\VectoCoreTest\TestData\Trailer\test4.xml";
+		private const string SampleTrailer = @"TestData\Trailer\test4.xml";
 
 
 		[OneTimeSetUp]
@@ -48,7 +48,7 @@ namespace TUGraz.VectoCore.Tests.XML
 			//weights
 			Assert.AreEqual(Kilogram.Create(7000), inputDataProvider.JobInputData.Trailer.CurbMass);
 			Assert.AreEqual(Kilogram.Create(18000), inputDataProvider.JobInputData.Trailer.TPMLMTotalTrailer);
-			Assert.AreEqual(Kilogram.Create(18200), inputDataProvider.JobInputData.Trailer.TPMLMAxleAssembly);
+			Assert.AreEqual(Kilogram.Create(17000), inputDataProvider.JobInputData.Trailer.TPMLMAxleAssembly);
 
 			//lengths
 			Assert.AreEqual(Meter.Create(8.740), inputDataProvider.JobInputData.Trailer.ExternalBodyLength);
@@ -63,7 +63,7 @@ namespace TUGraz.VectoCore.Tests.XML
 
 			//category lookup
 			var trailerSegment = DeclarationData.TrailerSegments.Lookup(inputDataProvider.JobInputData.Trailer.NumberOfAxles, inputDataProvider.JobInputData.Trailer.TrailerType, inputDataProvider.JobInputData.Trailer.BodyworkCode, false);
-			Assert.AreEqual(211, trailerSegment.VehicleGroup);
+			Assert.AreEqual(2111, trailerSegment.VehicleGroup);
 
 			//aerofeature lookup
 			var aeroFeatures = new List<AeroFeatureTechnology> { AeroFeatureTechnology.SideSkirtsShort };
