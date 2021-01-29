@@ -47,7 +47,7 @@ namespace TUGraz.VectoCore.Tests.XML
 {
 	public class XMLReportTrailerTest
 	{
-		private const string SampleTrailer = @"F:\Vecto\vecto-dev_bt\VectoCore\VectoCoreTest\TestData\Trailer\test4.xml";
+		private const string SampleTrailer = @"TestData\Trailer\test4.xml";
 
 		protected IXMLInputDataReader XMLInputReader;
 		private IKernel _kernel;
@@ -62,7 +62,7 @@ namespace TUGraz.VectoCore.Tests.XML
 		}
 
 		[TestCase]
-		public void RunDeclarationJob()
+		public void RunTrailerDeclarationJob()
 		{
 			var fileWriter = new FileOutputWriter(SampleTrailer);
 			var sumWriter = new SummaryDataContainer(fileWriter);
