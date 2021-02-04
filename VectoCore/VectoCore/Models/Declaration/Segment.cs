@@ -30,6 +30,7 @@
 */
 
 using System.IO;
+using Newtonsoft.Json;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 
@@ -63,6 +64,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 	public struct TrailerSegment
 	{
+		[JsonIgnore]
 		public Stream AccelerationFile { get; internal set; }
 
 		public bool VehicleGroupActive { get; set; }
