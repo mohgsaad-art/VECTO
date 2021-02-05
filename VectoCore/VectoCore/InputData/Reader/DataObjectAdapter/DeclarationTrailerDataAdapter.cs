@@ -42,7 +42,10 @@ using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.InputData.FileIO.XML;
+using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Interfaces;
+using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl;
+using TUGraz.VectoCore.InputData.Impl;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl.HVAC;
 using TUGraz.VectoCore.InputData.Reader.ShiftStrategy;
@@ -125,10 +128,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			retVal.AirDensity = DeclarationData.AirDensity;
 			retVal.VIN = data.VIN;
 			retVal.ManufacturerAddress = data.ManufacturerAddress;
-			//retVal.VehicleClass = segment.VehicleClass; 
 			retVal.TrailerGrossVehicleMass = mission.Trailer.Sum(t => t.TrailerGrossVehicleWeight).DefaultIfNull(0); 
 			retVal.SleeperCab = data.SleeperCab;
-			retVal.BodyAndTrailerMass = mission.CurbMass; //+ mission.Trailer.Sum(t => t.TrailerCurbWeight).DefaultIfNull(0);
+			retVal.BodyAndTrailerMass = mission.Trailer.Sum(t => t.TrailerCurbWeight).DefaultIfNull(0);
 			retVal.Loading = loading;
 			retVal.TrailerSegment = trailerSegment;
 
@@ -161,13 +163,15 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				axleData.Add(axle);
 			}
 
+			//TODO get tyre data from corresponding file instead of declaration data
+
 			foreach (var trailer in mission.Trailer) {
 				axleData.AddRange(
 					trailer.TrailerWheels.Select(
 						trailerWheel => new Axle {
 							AxleType = AxleType.Trailer,
 							AxleWeightShare = trailer.TrailerAxleWeightShare,
-							TwinTyres = DeclarationData.Trailer.TwinTyres,
+							TwinTyres = trailer.TwinTyres,
 							RollResistanceCoefficient = DeclarationData.Trailer.RollResistanceCoefficient,
 							TyreTestLoad = DeclarationData.Trailer.TyreTestLoad.SI<Newton>(),
 							FuelEfficiencyClass = DeclarationData.Trailer.FuelEfficiencyClass,
@@ -199,8 +203,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			retVal.AirDensity = DeclarationData.AirDensity;
 			retVal.VIN = data.VIN;
 			retVal.ManufacturerAddress = data.ManufacturerAddress;
-			//retVal.VehicleClass = segment.VehicleClass;
-			retVal.TrailerGrossVehicleMass = mission.CurbMass; // Todo - check if this is needed
+			retVal.TrailerGrossVehicleMass = mission.SpecificTrailer.Sum(t => t.TrailerGrossVehicleWeight).DefaultIfNull(0);
 			retVal.SleeperCab = data.SleeperCab;
 			retVal.TrailerSegment = trailerSegment;
 			retVal.InputDataTrailer = trailerData;
@@ -240,7 +243,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			}
 
 			var trailerAxles = trailerData.Axles;
-
+			
 			for (var i = 0; i < trailerAxles.Count; i++)
 			{
 				var axleInput = trailerAxles[i];
@@ -899,9 +902,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			
 			var retVal = SetCommonAirdragData(airdragInputData);
 			retVal.CrossWindCorrectionMode = CrossWindCorrectionMode.DeclarationModeCorrection;
-			retVal.DeclaredAirdragArea = mission.MissionType == MissionType.Construction
-				? mission.DefaultCDxA 
-				: airdragInputData.AirDragArea;
+			retVal.DeclaredAirdragArea = airdragInputData.AirDragArea;
 
 			var aerodynamicDragArea = retVal.DeclaredAirdragArea + mission.Trailer.Sum(t => t.DeltaCdA).DefaultIfNull(0);
 
@@ -923,17 +924,13 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 			var retVal = SetCommonAirdragData(airdragInputData);
 			retVal.CrossWindCorrectionMode = CrossWindCorrectionMode.DeclarationModeCorrection;
-			retVal.DeclaredAirdragArea = mission.MissionType == MissionType.Construction
-				? mission.DefaultCDxA 
-				: SquareMeter.Create(specificTrailerData.TotalCorrection); //airdragInputData.AirDragArea;
-
-			var aerodynamicDragArea = retVal.DeclaredAirdragArea + mission.Trailer.Sum(t => t.DeltaCdA).DefaultIfNull(0);
+			retVal.DeclaredAirdragArea = SquareMeter.Create(specificTrailerData.TotalCorrection);
 
 			retVal.CrossWindCorrectionCurve =
 				new CrosswindCorrectionCdxALookup(
-					aerodynamicDragArea,
+					retVal.DeclaredAirdragArea,
 					GetTrailerDeclarationAirResistanceCurve(
-						mission.CrossWindCorrectionParameters, aerodynamicDragArea, mission.VehicleHeight, trailerSegment),
+						mission.CrossWindCorrectionParameters, retVal.DeclaredAirdragArea, mission.VehicleHeight, trailerSegment),
 					CrossWindCorrectionMode.DeclarationModeCorrection); 
 			return retVal;
 		}
@@ -1156,19 +1153,6 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			#endregion
 
 			return cCorrection + aCorrection;
-		}
-
-		public IDeclarationInputDataProvider GetGenericVehicleData(string vehicleCode)
-		{
-			var genericXml = RessourceHelper.ReadStream(DeclarationData.DeclarationDataResourcePrefix + ".GenericVehicles." + vehicleCode + ".xml");
-			var xmlDoc = new XmlDocument();
-			xmlDoc.Load(genericXml);
-
-			IKernel kernel = new StandardKernel(new VectoNinjectModule());
-			var inputReader = kernel.Get<IXMLInputDataReader>();
-			
-			XmlReader xmlReader = new XmlNodeReader(xmlDoc);
-			return inputReader.CreateDeclaration(xmlReader);
 		}
 
 		public TrailerData GetSpecificTrailerData(TrailerSegment trailerSegment, ITrailerDeclarationInputData trailer,

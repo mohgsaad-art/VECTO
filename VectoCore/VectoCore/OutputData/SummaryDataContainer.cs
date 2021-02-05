@@ -732,7 +732,7 @@ namespace TUGraz.VectoCore.OutputData
 
 			WriteAuxTechnologies(runData.Aux, runData.BusAuxiliaries, row);
 
-			WriteAxleWheelsData(runData.VehicleData.AxleData, row, runData.VehicleData.InputDataTrailer);
+			WriteAxleWheelsData(runData.VehicleData.AxleData, row);
 
 			WriteAirdragData(runData.AirdragData, row);
 
@@ -763,15 +763,14 @@ namespace TUGraz.VectoCore.OutputData
 				row[Fields.A2] = data.TrailerSegment.A2.Value();
 				row[Fields.A3] = data.TrailerSegment.A3.Value();
 			} else {
-				row[Fields.A1] = runData.Mission.MissionType == MissionType.LongHaul ? data.TrailerSegment.RefLhA1.Value() : data.TrailerSegment.RefOtherA1.Value();
-				row[Fields.A2] = runData.Mission.MissionType == MissionType.LongHaul ? data.TrailerSegment.RefLhA2.Value() : data.TrailerSegment.RefOtherA2.Value();
-				row[Fields.A3] = runData.Mission.MissionType == MissionType.LongHaul ? data.TrailerSegment.RefLhA3.Value() : data.TrailerSegment.RefOtherA3.Value();
+				row[Fields.A1] = runData.Mission?.MissionType == MissionType.LongHaul ? data.TrailerSegment.RefLhA1.Value() : data.TrailerSegment.RefOtherA1.Value();
+				row[Fields.A2] = runData.Mission?.MissionType == MissionType.LongHaul ? data.TrailerSegment.RefLhA2.Value() : data.TrailerSegment.RefOtherA2.Value();
+				row[Fields.A3] = runData.Mission?.MissionType == MissionType.LongHaul ? data.TrailerSegment.RefLhA3.Value() : data.TrailerSegment.RefOtherA3.Value();
 			}
 
 			row[Fields.ROLLING_RESISTANCE_COEFFICIENT_WO_TRAILER] =
 				data.RollResistanceCoefficientWithoutTrailer;
 
-			//TODO - FOR TRAILER
 			row[Fields.ROLLING_RESISTANCE_COEFFICIENT_W_TRAILER] =
 				data.TotalRollResistanceCoefficient;
 
@@ -813,8 +812,7 @@ namespace TUGraz.VectoCore.OutputData
 			row[Fields.ENGINE_ACTUAL_CORRECTION_FACTOR] = string.Join(" / ", data.Fuels.Select(x => x.FuelConsumptionCorrectionFactor));
 		}
 
-		private static void WriteAxleWheelsData(List<Axle> data, DataRow row,
-			ITrailerDeclarationInputData inputDataTrailer)
+		private static void WriteAxleWheelsData(List<Axle> data, DataRow row)
 		{
 			var trailerFields = new[] {
 				Tuple.Create(Fields.TRAILER_RRC_AXLE1, Fields.TRAILER_FZISO_AXLE1),

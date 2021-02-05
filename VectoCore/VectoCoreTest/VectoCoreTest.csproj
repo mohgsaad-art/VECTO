@@ -132,6 +132,7 @@
     <Compile Include="Models\Declaration\DeclarationSegmentComplete2AxleBusesTest.cs" />
     <Compile Include="Models\Declaration\DeclarationSegmentComplete3AxleBusesTest.cs" />
     <Compile Include="Models\Declaration\DeclarationSegmentComplete4AxleBusesTest.cs" />
+    <Compile Include="Models\Declaration\DeclarationSegmentTrailerTest.cs" />
     <Compile Include="Models\Declaration\DeclarationSegmentHeavyBusesTest.cs" />
     <Compile Include="Models\Declaration\ShiftPolygonTest.cs" />
     <Compile Include="Models\Declaration\TestGenericBusPowertrainModelData.cs" />

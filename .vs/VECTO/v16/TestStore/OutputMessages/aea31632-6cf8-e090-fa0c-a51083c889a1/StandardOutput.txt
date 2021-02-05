@@ -1,0 +1,400 @@
+speed_out: 1200,  torque_out: -2000.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1990.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1980.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1970.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1960.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1950.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1940.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1930.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1920.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1910.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1900.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1890.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1880.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1870.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1860.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1850.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1840.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1830.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1820.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1810.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1800.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1790.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1780.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1770.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1760.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1750.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1740.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1730.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1720.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1710.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1700.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1690.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1680.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1670.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1660.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1650.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1640.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1630.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1620.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1610.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1600.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1590.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1580.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1570.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1560.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1550.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1540.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1530.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1520.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1510.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1500.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1490.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1480.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1470.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1460.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1450.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1440.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1430.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1420.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1410.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1400.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1390.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1380.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1370.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1360.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1350.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1340.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1330.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1320.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1310.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1300.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1290.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1280.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1270.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1260.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1250.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1240.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1230.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1220.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1210.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1200.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1190.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1180.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1170.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1160.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1150.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1140.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1130.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1120.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1110.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1100.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1090.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1080.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1070.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1060.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1050.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1040.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1030.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1020.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1010.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -1000.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -990.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -980.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -970.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -960.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -950.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -940.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -930.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -920.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -910.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -900.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -890.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -880.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -870.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -860.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -850.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -840.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -830.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -820.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -810.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -800.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -790.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -780.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -770.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -760.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -750.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -740.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -730.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -720.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -710.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -700.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -690.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -680.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -670.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -660.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -650.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -640.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -630.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -620.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -610.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -600.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -590.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -580.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -570.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -560.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -550.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -540.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -530.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -520.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -510.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -500.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -490.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -480.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -470.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -460.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -450.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -440.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -430.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -420.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -410.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -400.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -390.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -380.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -370.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -360.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -350.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -340.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -330.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -320.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -310.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -300.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -290.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -280.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -270.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -260.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -250.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -240.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -230.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -220.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -210.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -200.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -190.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -180.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -170.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -160.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -150.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -140.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -130.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: -120.0000 [Nm], speed_in: 741.469627142601,  torque_in: -128.4468 [Nm]
+speed_out: 1200,  torque_out: -110.0000 [Nm], speed_in: 821.076772521307,  torque_in: -117.5430 [Nm]
+speed_out: 1200,  torque_out: -100.0000 [Nm], speed_in: 878.298607954778,  torque_in: -106.7473 [Nm]
+speed_out: 1200,  torque_out: -90.0000 [Nm], speed_in: 925.416897146653,  torque_in: -96.0004 [Nm]
+speed_out: 1200,  torque_out: -80.0000 [Nm], speed_in: 966.420588441521,  torque_in: -85.2830 [Nm]
+speed_out: 1200,  torque_out: -70.0000 [Nm], speed_in: 1003.20971175231,  torque_in: -74.5860 [Nm]
+speed_out: 1200,  torque_out: -60.0000 [Nm], speed_in: 1036.86617741318,  torque_in: -63.9041 [Nm]
+speed_out: 1200,  torque_out: -50.0000 [Nm], speed_in: 1068.07559908126,  torque_in: -53.2340 [Nm]
+speed_out: 1200,  torque_out: -40.0000 [Nm], speed_in: 1097.30490440685,  torque_in: -42.5735 [Nm]
+speed_out: 1200,  torque_out: -30.0000 [Nm], speed_in: 1124.88907674588,  torque_in: -31.9209 [Nm]
+speed_out: 1200,  torque_out: -20.0000 [Nm], speed_in: 1151.07811288474,  torque_in: -21.2750 [Nm]
+speed_out: 1200,  torque_out: -10.0000 [Nm], speed_in: 1176.06445683352,  torque_in: -10.6350 [Nm]
+speed_out: 1200,  torque_out: 0.0000 [Nm], speed_in: ,  torque_in: 
+speed_out: 1200,  torque_out: 10.0000 [Nm], speed_in: 1204.67058081956,  torque_in: 10.6285 [Nm]
+speed_out: 1200,  torque_out: 20.0000 [Nm], speed_in: 1209.30180518048,  torque_in: 21.2488 [Nm]
+speed_out: 1200,  torque_out: 30.0000 [Nm], speed_in: 1213.89465153394,  torque_in: 31.8611 [Nm]
+speed_out: 1200,  torque_out: 40.0000 [Nm], speed_in: 1218.45005844826,  torque_in: 42.4656 [Nm]
+speed_out: 1200,  torque_out: 50.0000 [Nm], speed_in: 1222.96892684837,  torque_in: 53.0625 [Nm]
+speed_out: 1200,  torque_out: 60.0000 [Nm], speed_in: 1227.45212209622,  torque_in: 63.6521 [Nm]
+speed_out: 1200,  torque_out: 70.0000 [Nm], speed_in: 1231.9004759256,  torque_in: 74.2343 [Nm]
+speed_out: 1200,  torque_out: 80.0000 [Nm], speed_in: 1236.3147882437,  torque_in: 84.8095 [Nm]
+speed_out: 1200,  torque_out: 90.0000 [Nm], speed_in: 1240.69582881049,  torque_in: 95.3778 [Nm]
+speed_out: 1200,  torque_out: 100.0000 [Nm], speed_in: 1245.04433880577,  torque_in: 105.9393 [Nm]
+speed_out: 1200,  torque_out: 110.0000 [Nm], speed_in: 1249.3610322931,  torque_in: 116.4942 [Nm]
+speed_out: 1200,  torque_out: 120.0000 [Nm], speed_in: 1253.64659758868,  torque_in: 127.0426 [Nm]
+speed_out: 1200,  torque_out: 130.0000 [Nm], speed_in: 1257.90169854264,  torque_in: 137.5846 [Nm]
+speed_out: 1200,  torque_out: 140.0000 [Nm], speed_in: 1262.12697573948,  torque_in: 148.1205 [Nm]
+speed_out: 1200,  torque_out: 150.0000 [Nm], speed_in: 1266.32304762388,  torque_in: 158.6503 [Nm]
+speed_out: 1200,  torque_out: 160.0000 [Nm], speed_in: 1270.49051155737,  torque_in: 169.1742 [Nm]
+speed_out: 1200,  torque_out: 170.0000 [Nm], speed_in: 1274.62994481104,  torque_in: 179.6922 [Nm]
+speed_out: 1200,  torque_out: 180.0000 [Nm], speed_in: 1278.74190549897,  torque_in: 190.2045 [Nm]
+speed_out: 1200,  torque_out: 190.0000 [Nm], speed_in: 1282.82693345663,  torque_in: 200.7112 [Nm]
+speed_out: 1200,  torque_out: 200.0000 [Nm], speed_in: 1286.88555106811,  torque_in: 211.2124 [Nm]
+speed_out: 1200,  torque_out: 210.0000 [Nm], speed_in: 1290.91826404592,  torque_in: 221.7082 [Nm]
+speed_out: 1200,  torque_out: 220.0000 [Nm], speed_in: 1294.92556216646,  torque_in: 232.1988 [Nm]
+speed_out: 1200,  torque_out: 230.0000 [Nm], speed_in: 1298.90791996438,  torque_in: 242.6841 [Nm]
+speed_out: 1200,  torque_out: 240.0000 [Nm], speed_in: 1302.86579738842,  torque_in: 253.1644 [Nm]
+speed_out: 1200,  torque_out: 250.0000 [Nm], speed_in: 1306.79964042152,  torque_in: 263.6397 [Nm]
+speed_out: 1200,  torque_out: 260.0000 [Nm], speed_in: 1310.70988166735,  torque_in: 274.1100 [Nm]
+speed_out: 1200,  torque_out: 270.0000 [Nm], speed_in: 1314.59694090559,  torque_in: 284.5756 [Nm]
+speed_out: 1200,  torque_out: 280.0000 [Nm], speed_in: 1318.46122561789,  torque_in: 295.0364 [Nm]
+speed_out: 1200,  torque_out: 290.0000 [Nm], speed_in: 1322.3031314865,  torque_in: 305.4925 [Nm]
+speed_out: 1200,  torque_out: 300.0000 [Nm], speed_in: 1326.12304286705,  torque_in: 315.9441 [Nm]
+speed_out: 1200,  torque_out: 310.0000 [Nm], speed_in: 1329.92133323743,  torque_in: 326.3912 [Nm]
+speed_out: 1200,  torque_out: 320.0000 [Nm], speed_in: 1334.20302496673,  torque_in: 336.6550 [Nm]
+speed_out: 1200,  torque_out: 330.0000 [Nm], speed_in: 1343.1064911116,  torque_in: 345.2266 [Nm]
+speed_out: 1200,  torque_out: 340.0000 [Nm], speed_in: 1351.88138547783,  torque_in: 353.7564 [Nm]
+speed_out: 1200,  torque_out: 350.0000 [Nm], speed_in: 1360.5331222238,  torque_in: 362.2463 [Nm]
+speed_out: 1200,  torque_out: 360.0000 [Nm], speed_in: 1369.06674586582,  torque_in: 370.6978 [Nm]
+speed_out: 1200,  torque_out: 370.0000 [Nm], speed_in: 1377.48696567328,  torque_in: 379.1125 [Nm]
+speed_out: 1200,  torque_out: 380.0000 [Nm], speed_in: 1385.79818605512,  torque_in: 387.4919 [Nm]
+speed_out: 1200,  torque_out: 390.0000 [Nm], speed_in: 1394.0045334943,  torque_in: 395.8372 [Nm]
+speed_out: 1200,  torque_out: 400.0000 [Nm], speed_in: 1402.10988049781,  torque_in: 404.1497 [Nm]
+speed_out: 1200,  torque_out: 410.0000 [Nm], speed_in: 1410.11786695673,  torque_in: 412.4306 [Nm]
+speed_out: 1200,  torque_out: 420.0000 [Nm], speed_in: 1418.0319192506,  torque_in: 420.6811 [Nm]
+speed_out: 1200,  torque_out: 430.0000 [Nm], speed_in: 1425.85526738061,  torque_in: 428.9021 [Nm]
+speed_out: 1200,  torque_out: 440.0000 [Nm], speed_in: 1433.59096037468,  torque_in: 437.0946 [Nm]
+speed_out: 1200,  torque_out: 450.0000 [Nm], speed_in: 1441.24188017269,  torque_in: 445.2597 [Nm]
+speed_out: 1200,  torque_out: 460.0000 [Nm], speed_in: 1448.81075417138,  torque_in: 453.3981 [Nm]
+speed_out: 1200,  torque_out: 470.0000 [Nm], speed_in: 1456.30016658354,  torque_in: 461.5107 [Nm]
+speed_out: 1200,  torque_out: 480.0000 [Nm], speed_in: 1463.71256874585,  torque_in: 469.5983 [Nm]
+speed_out: 1200,  torque_out: 490.0000 [Nm], speed_in: 1471.05028849178,  torque_in: 477.6617 [Nm]
+speed_out: 1200,  torque_out: 500.0000 [Nm], speed_in: 1478.31553869115,  torque_in: 485.7015 [Nm]
+speed_out: 1200,  torque_out: 510.0000 [Nm], speed_in: 1485.51042504526,  torque_in: 493.7186 [Nm]
+speed_out: 1200,  torque_out: 520.0000 [Nm], speed_in: 1492.63695321533,  torque_in: 501.7134 [Nm]
+speed_out: 1200,  torque_out: 530.0000 [Nm], speed_in: 1499.69703535261,  torque_in: 509.6867 [Nm]
+speed_out: 1200,  torque_out: 540.0000 [Nm], speed_in: 1506.56682326212,  torque_in: 517.4956 [Nm]
+speed_out: 1200,  torque_out: 550.0000 [Nm], speed_in: 1513.36883344202,  torque_in: 525.2768 [Nm]
+speed_out: 1200,  torque_out: 560.0000 [Nm], speed_in: 1520.11040153689,  torque_in: 533.0370 [Nm]
+speed_out: 1200,  torque_out: 570.0000 [Nm], speed_in: 1526.79311072193,  torque_in: 540.7770 [Nm]
+speed_out: 1200,  torque_out: 580.0000 [Nm], speed_in: 1533.41847624181,  torque_in: 548.4972 [Nm]
+speed_out: 1200,  torque_out: 590.0000 [Nm], speed_in: 1539.98794942262,  torque_in: 556.1981 [Nm]
+speed_out: 1200,  torque_out: 600.0000 [Nm], speed_in: 1546.50292138418,  torque_in: 563.8802 [Nm]
+speed_out: 1200,  torque_out: 610.0000 [Nm], speed_in: 1552.96472647972,  torque_in: 571.5440 [Nm]
+speed_out: 1200,  torque_out: 620.0000 [Nm], speed_in: 1559.37464548687,  torque_in: 579.1899 [Nm]
+speed_out: 1200,  torque_out: 630.0000 [Nm], speed_in: 1565.73390857175,  torque_in: 586.8182 [Nm]
+speed_out: 1200,  torque_out: 640.0000 [Nm], speed_in: 1572.04369804545,  torque_in: 594.4296 [Nm]
+speed_out: 1200,  torque_out: 650.0000 [Nm], speed_in: 1578.30515093041,  torque_in: 602.0242 [Nm]
+speed_out: 1200,  torque_out: 660.0000 [Nm], speed_in: 1584.51936135256,  torque_in: 609.6026 [Nm]
+speed_out: 1200,  torque_out: 670.0000 [Nm], speed_in: 1590.68738277341,  torque_in: 617.1650 [Nm]
+speed_out: 1200,  torque_out: 680.0000 [Nm], speed_in: 1596.81023007499,  torque_in: 624.7119 [Nm]
+speed_out: 1200,  torque_out: 690.0000 [Nm], speed_in: 1602.88888150928,  torque_in: 632.2435 [Nm]
+speed_out: 1200,  torque_out: 700.0000 [Nm], speed_in: 1608.9242805229,  torque_in: 639.7602 [Nm]
+speed_out: 1200,  torque_out: 710.0000 [Nm], speed_in: 1614.91733746647,  torque_in: 647.2622 [Nm]
+speed_out: 1200,  torque_out: 720.0000 [Nm], speed_in: 1620.86893119755,  torque_in: 654.7500 [Nm]
+speed_out: 1200,  torque_out: 730.0000 [Nm], speed_in: 1626.77991058517,  torque_in: 662.2238 [Nm]
+speed_out: 1200,  torque_out: 740.0000 [Nm], speed_in: 1632.65109592313,  torque_in: 669.6838 [Nm]
+speed_out: 1200,  torque_out: 750.0000 [Nm], speed_in: 1638.48328025883,  torque_in: 677.1304 [Nm]
+speed_out: 1200,  torque_out: 760.0000 [Nm], speed_in: 1644.27723064368,  torque_in: 684.5638 [Nm]
+speed_out: 1200,  torque_out: 770.0000 [Nm], speed_in: 1650.03368931072,  torque_in: 691.9842 [Nm]
+speed_out: 1200,  torque_out: 780.0000 [Nm], speed_in: 1655.75337478444,  torque_in: 699.3920 [Nm]
+speed_out: 1200,  torque_out: 790.0000 [Nm], speed_in: 1661.4369829277,  torque_in: 706.7873 [Nm]
+speed_out: 1200,  torque_out: 800.0000 [Nm], speed_in: 1667.08518792987,  torque_in: 714.1705 [Nm]
+speed_out: 1200,  torque_out: 810.0000 [Nm], speed_in: 1672.6986432403,  torque_in: 721.5416 [Nm]
+speed_out: 1200,  torque_out: 820.0000 [Nm], speed_in: 1678.2779824507,  torque_in: 728.9010 [Nm]
+speed_out: 1200,  torque_out: 830.0000 [Nm], speed_in: 1683.82382012987,  torque_in: 736.2488 [Nm]
+speed_out: 1200,  torque_out: 840.0000 [Nm], speed_in: 1689.33675261377,  torque_in: 743.5852 [Nm]
+speed_out: 1200,  torque_out: 850.0000 [Nm], speed_in: 1694.81735875402,  torque_in: 750.9105 [Nm]
+speed_out: 1200,  torque_out: 860.0000 [Nm], speed_in: 1700.26620062721,  torque_in: 758.2249 [Nm]
+speed_out: 1200,  torque_out: 870.0000 [Nm], speed_in: 1705.68382420777,  torque_in: 765.5284 [Nm]
+speed_out: 1200,  torque_out: 880.0000 [Nm], speed_in: 1711.07076000639,  torque_in: 772.8214 [Nm]
+speed_out: 1200,  torque_out: 890.0000 [Nm], speed_in: 1716.46455352958,  torque_in: 780.1545 [Nm]
+speed_out: 1200,  torque_out: 900.0000 [Nm], speed_in: 1721.88384085841,  torque_in: 787.5532 [Nm]
+speed_out: 1200,  torque_out: 910.0000 [Nm], speed_in: 1727.27357129902,  torque_in: 794.9423 [Nm]
+speed_out: 1200,  torque_out: 920.0000 [Nm], speed_in: 1732.63422325139,  torque_in: 802.3221 [Nm]
+speed_out: 1200,  torque_out: 930.0000 [Nm], speed_in: 1737.96626234769,  torque_in: 809.6926 [Nm]
+speed_out: 1200,  torque_out: 940.0000 [Nm], speed_in: 1743.27014192424,  torque_in: 817.0541 [Nm]
+speed_out: 1200,  torque_out: 950.0000 [Nm], speed_in: 1748.54630347142,  torque_in: 824.4066 [Nm]
+speed_out: 1200,  torque_out: 960.0000 [Nm], speed_in: 1753.79517706247,  torque_in: 831.7502 [Nm]
+speed_out: 1200,  torque_out: 970.0000 [Nm], speed_in: 1759.01718176264,  torque_in: 839.0853 [Nm]
+speed_out: 1200,  torque_out: 980.0000 [Nm], speed_in: 1764.21272601971,  torque_in: 846.4117 [Nm]
+speed_out: 1200,  torque_out: 990.0000 [Nm], speed_in: 1769.38220803673,  torque_in: 853.7298 [Nm]
+speed_out: 1200,  torque_out: 1000.0000 [Nm], speed_in: 1774.52601612828,  torque_in: 861.0396 [Nm]
+speed_out: 1200,  torque_out: 1010.0000 [Nm], speed_in: 1779.64452906081,  torque_in: 868.3412 [Nm]
+speed_out: 1200,  torque_out: 1020.0000 [Nm], speed_in: 1784.73811637818,  torque_in: 875.6348 [Nm]
+speed_out: 1200,  torque_out: 1030.0000 [Nm], speed_in: 1789.80713871297,  torque_in: 882.9204 [Nm]
+speed_out: 1200,  torque_out: 1040.0000 [Nm], speed_in: 1794.85194808448,  torque_in: 890.1983 [Nm]
+speed_out: 1200,  torque_out: 1050.0000 [Nm], speed_in: 1799.87288818402,  torque_in: 897.4684 [Nm]
+speed_out: 1200,  torque_out: 1060.0000 [Nm], speed_in: 1804.87029464814,  torque_in: 904.7309 [Nm]
+speed_out: 1200,  torque_out: 1070.0000 [Nm], speed_in: 1809.84449532045,  torque_in: 911.9860 [Nm]
+speed_out: 1200,  torque_out: 1080.0000 [Nm], speed_in: 1814.79581050266,  torque_in: 919.2336 [Nm]
+speed_out: 1200,  torque_out: 1090.0000 [Nm], speed_in: 1819.72455319518,  torque_in: 926.4740 [Nm]
+speed_out: 1200,  torque_out: 1100.0000 [Nm], speed_in: 1824.63102932811,  torque_in: 933.7072 [Nm]
+speed_out: 1200,  torque_out: 1110.0000 [Nm], speed_in: 1829.51553798276,  torque_in: 940.9333 [Nm]
+speed_out: 1200,  torque_out: 1120.0000 [Nm], speed_in: 1834.37837160447,  torque_in: 948.1524 [Nm]
+speed_out: 1200,  torque_out: 1130.0000 [Nm], speed_in: 1839.21981620686,  torque_in: 955.3646 [Nm]
+speed_out: 1200,  torque_out: 1140.0000 [Nm], speed_in: 1844.0401515682,  torque_in: 962.5700 [Nm]
+speed_out: 1200,  torque_out: 1150.0000 [Nm], speed_in: 1848.83965142003,  torque_in: 969.7687 [Nm]
+speed_out: 1200,  torque_out: 1160.0000 [Nm], speed_in: 1853.61858362859,  torque_in: 976.9607 [Nm]
+speed_out: 1200,  torque_out: 1170.0000 [Nm], speed_in: 1858.37721036925,  torque_in: 984.1462 [Nm]
+speed_out: 1200,  torque_out: 1180.0000 [Nm], speed_in: 1863.11578829435,  torque_in: 991.3252 [Nm]
+speed_out: 1200,  torque_out: 1190.0000 [Nm], speed_in: 1867.83456869474,  torque_in: 998.4978 [Nm]
+speed_out: 1200,  torque_out: 1200.0000 [Nm], speed_in: 1872.5337976553,  torque_in: 1005.6641 [Nm]
+speed_out: 1200,  torque_out: 1210.0000 [Nm], speed_in: 1877.21371620464,  torque_in: 1012.8242 [Nm]
+speed_out: 1200,  torque_out: 1220.0000 [Nm], speed_in: 1881.87456045943,  torque_in: 1019.9781 [Nm]
+speed_out: 1200,  torque_out: 1230.0000 [Nm], speed_in: 1886.51656176334,  torque_in: 1027.1259 [Nm]
+speed_out: 1200,  torque_out: 1240.0000 [Nm], speed_in: 1891.13994682111,  torque_in: 1034.2677 [Nm]
+speed_out: 1200,  torque_out: 1250.0000 [Nm], speed_in: 1895.74493782767,  torque_in: 1041.4036 [Nm]
+speed_out: 1200,  torque_out: 1260.0000 [Nm], speed_in: 1900.3317525928,  torque_in: 1048.5336 [Nm]
+speed_out: 1200,  torque_out: 1270.0000 [Nm], speed_in: 1904.90060466132,  torque_in: 1055.6579 [Nm]
+speed_out: 1200,  torque_out: 1280.0000 [Nm], speed_in: 1909.4517034291,  torque_in: 1062.7764 [Nm]
+speed_out: 1200,  torque_out: 1290.0000 [Nm], speed_in: 1913.98525425505,  torque_in: 1069.8892 [Nm]
+speed_out: 1200,  torque_out: 1300.0000 [Nm], speed_in: 1918.50145856926,  torque_in: 1076.9964 [Nm]
+speed_out: 1200,  torque_out: 1310.0000 [Nm], speed_in: 1923.0005139774,  torque_in: 1084.0981 [Nm]
+speed_out: 1200,  torque_out: 1320.0000 [Nm], speed_in: 1927.48261436163,  torque_in: 1091.1944 [Nm]
+speed_out: 1200,  torque_out: 1330.0000 [Nm], speed_in: 1931.9479499781,  torque_in: 1098.2852 [Nm]
+speed_out: 1200,  torque_out: 1340.0000 [Nm], speed_in: 1936.39670755118,  torque_in: 1105.3707 [Nm]
+speed_out: 1200,  torque_out: 1350.0000 [Nm], speed_in: 1940.82907036456,  torque_in: 1112.4508 [Nm]
+speed_out: 1200,  torque_out: 1360.0000 [Nm], speed_in: 1945.24521834936,  torque_in: 1119.5258 [Nm]
+speed_out: 1200,  torque_out: 1370.0000 [Nm], speed_in: 1949.6453281694,  torque_in: 1126.5955 [Nm]
+speed_out: 1200,  torque_out: 1380.0000 [Nm], speed_in: 1954.02957330358,  torque_in: 1133.6602 [Nm]
+speed_out: 1200,  torque_out: 1390.0000 [Nm], speed_in: 1958.3981241258,  torque_in: 1140.7198 [Nm]
+speed_out: 1200,  torque_out: 1400.0000 [Nm], speed_in: 1962.75114798213,  torque_in: 1147.7744 [Nm]
+speed_out: 1200,  torque_out: 1410.0000 [Nm], speed_in: 1967.08880926561,  torque_in: 1154.8240 [Nm]
+speed_out: 1200,  torque_out: 1420.0000 [Nm], speed_in: 1971.41126948877,  torque_in: 1161.8687 [Nm]
+speed_out: 1200,  torque_out: 1430.0000 [Nm], speed_in: 1975.71868735372,  torque_in: 1168.9085 [Nm]
+speed_out: 1200,  torque_out: 1440.0000 [Nm], speed_in: 1980.01121882017,  torque_in: 1175.9436 [Nm]
+speed_out: 1200,  torque_out: 1450.0000 [Nm], speed_in: 1984.28901717132,  torque_in: 1182.9739 [Nm]
+speed_out: 1200,  torque_out: 1460.0000 [Nm], speed_in: 1988.55223307776,  torque_in: 1189.9995 [Nm]
+speed_out: 1200,  torque_out: 1470.0000 [Nm], speed_in: 1992.80101465932,  torque_in: 1197.0204 [Nm]
+speed_out: 1200,  torque_out: 1480.0000 [Nm], speed_in: 1997.03550754518,  torque_in: 1204.0367 [Nm]
+speed_out: 1200,  torque_out: 1490.0000 [Nm], speed_in: 2001.46276109698,  torque_in: 1210.9504 [Nm]
+speed_out: 1200,  torque_out: 1500.0000 [Nm], speed_in: 2006.36209143953,  torque_in: 1217.6288 [Nm]
+speed_out: 1200,  torque_out: 1510.0000 [Nm], speed_in: 2011.2452393232,  torque_in: 1224.3031 [Nm]
+speed_out: 1200,  torque_out: 1520.0000 [Nm], speed_in: 2016.11236404821,  torque_in: 1230.9735 [Nm]
+speed_out: 1200,  torque_out: 1530.0000 [Nm], speed_in: 2020.96362231821,  torque_in: 1237.6399 [Nm]
+speed_out: 1200,  torque_out: 1540.0000 [Nm], speed_in: 2025.79916829919,  torque_in: 1244.3025 [Nm]
+speed_out: 1200,  torque_out: 1550.0000 [Nm], speed_in: 2030.61915367658,  torque_in: 1250.9612 [Nm]
+speed_out: 1200,  torque_out: 1560.0000 [Nm], speed_in: 2035.42372771082,  torque_in: 1257.6161 [Nm]
+speed_out: 1200,  torque_out: 1570.0000 [Nm], speed_in: 2040.21303729127,  torque_in: 1264.2672 [Nm]
+speed_out: 1200,  torque_out: 1580.0000 [Nm], speed_in: 2044.98722698861,  torque_in: 1270.9145 [Nm]
+speed_out: 1200,  torque_out: 1590.0000 [Nm], speed_in: 2049.74643910577,  torque_in: 1277.5582 [Nm]
+speed_out: 1200,  torque_out: 1600.0000 [Nm], speed_in: 2054.4908137274,  torque_in: 1284.1981 [Nm]
+speed_out: 1200,  torque_out: 1610.0000 [Nm], speed_in: 2059.22048876802,  torque_in: 1290.8344 [Nm]
+speed_out: 1200,  torque_out: 1620.0000 [Nm], speed_in: 2063.93560001874,  torque_in: 1297.4672 [Nm]
+speed_out: 1200,  torque_out: 1630.0000 [Nm], speed_in: 2068.6362811928,  torque_in: 1304.0963 [Nm]
+speed_out: 1200,  torque_out: 1640.0000 [Nm], speed_in: 2073.32266396981,  torque_in: 1310.7219 [Nm]
+speed_out: 1200,  torque_out: 1650.0000 [Nm], speed_in: 2077.99487803874,  torque_in: 1317.3440 [Nm]
+speed_out: 1200,  torque_out: 1660.0000 [Nm], speed_in: 2082.65305113986,  torque_in: 1323.9626 [Nm]
+speed_out: 1200,  torque_out: 1670.0000 [Nm], speed_in: 2087.29730910545,  torque_in: 1330.5778 [Nm]
+speed_out: 1200,  torque_out: 1680.0000 [Nm], speed_in: 2091.92777589948,  torque_in: 1337.1895 [Nm]
+speed_out: 1200,  torque_out: 1690.0000 [Nm], speed_in: 2096.54457365619,  torque_in: 1343.7979 [Nm]
+speed_out: 1200,  torque_out: 1700.0000 [Nm], speed_in: 2101.14782271771,  torque_in: 1350.4029 [Nm]
+speed_out: 1200,  torque_out: 1710.0000 [Nm], speed_in: 2105.73764167066,  torque_in: 1357.0045 [Nm]
+speed_out: 1200,  torque_out: 1720.0000 [Nm], speed_in: 2110.31414738176,  torque_in: 1363.6029 [Nm]
+speed_out: 1200,  torque_out: 1730.0000 [Nm], speed_in: 2114.87745503258,  torque_in: 1370.1980 [Nm]
+speed_out: 1200,  torque_out: 1740.0000 [Nm], speed_in: 2119.42767815336,  torque_in: 1376.7899 [Nm]
+speed_out: 1200,  torque_out: 1750.0000 [Nm], speed_in: 2123.96492865596,  torque_in: 1383.3785 [Nm]
+speed_out: 1200,  torque_out: 1760.0000 [Nm], speed_in: 2128.48931686596,  torque_in: 1389.9640 [Nm]
+speed_out: 1200,  torque_out: 1770.0000 [Nm], speed_in: 2133.00095155401,  torque_in: 1396.5463 [Nm]
+speed_out: 1200,  torque_out: 1780.0000 [Nm], speed_in: 2137.49993996629,  torque_in: 1403.1254 [Nm]
+speed_out: 1200,  torque_out: 1790.0000 [Nm], speed_in: 2141.98638785426,  torque_in: 1409.7015 [Nm]
+speed_out: 1200,  torque_out: 1800.0000 [Nm], speed_in: 2146.46039950369,  torque_in: 1416.2745 [Nm]
+speed_out: 1200,  torque_out: 1810.0000 [Nm], speed_in: 2150.92207776294,  torque_in: 1422.8444 [Nm]
+speed_out: 1200,  torque_out: 1820.0000 [Nm], speed_in: 2155.37152407051,  torque_in: 1429.4113 [Nm]
+speed_out: 1200,  torque_out: 1830.0000 [Nm], speed_in: 2159.808838482,  torque_in: 1435.9752 [Nm]
+speed_out: 1200,  torque_out: 1840.0000 [Nm], speed_in: 2164.23411969633,  torque_in: 1442.5361 [Nm]
+speed_out: 1200,  torque_out: 1850.0000 [Nm], speed_in: 2168.64746508133,  torque_in: 1449.0940 [Nm]
+speed_out: 1200,  torque_out: 1860.0000 [Nm], speed_in: 2173.04897069882,  torque_in: 1455.6491 [Nm]
+speed_out: 1200,  torque_out: 1870.0000 [Nm], speed_in: 2177.43873132891,  torque_in: 1462.2012 [Nm]
+speed_out: 1200,  torque_out: 1880.0000 [Nm], speed_in: 2181.81684049388,  torque_in: 1468.7504 [Nm]
+speed_out: 1200,  torque_out: 1890.0000 [Nm], speed_in: 2186.18339048139,  torque_in: 1475.2967 [Nm]
+speed_out: 1200,  torque_out: 1900.0000 [Nm], speed_in: 2190.53847236721,  torque_in: 1481.8403 [Nm]
+speed_out: 1200,  torque_out: 1910.0000 [Nm], speed_in: 2194.88217603734,  torque_in: 1488.3809 [Nm]
+speed_out: 1200,  torque_out: 1920.0000 [Nm], speed_in: 2199.2145902097,  torque_in: 1494.9188 [Nm]
+speed_out: 1200,  torque_out: 1930.0000 [Nm], speed_in: 2203.53580245525,  torque_in: 1501.4540 [Nm]
+speed_out: 1200,  torque_out: 1940.0000 [Nm], speed_in: 2207.84589921865,  torque_in: 1507.9863 [Nm]
+speed_out: 1200,  torque_out: 1950.0000 [Nm], speed_in: 2212.14496583842,  torque_in: 1514.5160 [Nm]
+speed_out: 1200,  torque_out: 1960.0000 [Nm], speed_in: 2216.43308656667,  torque_in: 1521.0429 [Nm]
+speed_out: 1200,  torque_out: 1970.0000 [Nm], speed_in: 2220.71034458837,  torque_in: 1527.5671 [Nm]
+speed_out: 1200,  torque_out: 1980.0000 [Nm], speed_in: 2224.97682204017,  torque_in: 1534.0887 [Nm]
+speed_out: 1200,  torque_out: 1990.0000 [Nm], speed_in: 2229.23260002879,  torque_in: 1540.6076 [Nm]
