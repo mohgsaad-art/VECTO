@@ -133,7 +133,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			TrailerDataAdapter.ValidateTrailerInput(_trailer);
 			var volumeOrientation = (_trailer.InternalBodyHeight >= 2.9 && _trailer.TotalTrailerHeight <= 4);
 			_trailerSegment = DeclarationData.TrailerSegments.Lookup(_trailer.NumberOfAxles, _trailer.TrailerType, _trailer.BodyworkCode, volumeOrientation);
-			_genericInputDataProvider = TrailerDataAdapter.GetGenericVehicleData(_trailerSegment.GenericCode);
+			_genericInputDataProvider = DeclarationData.TrailerSegments.GetGenericVehicleData(_trailerSegment.GenericCode);
 			_specificTrailerData = TrailerDataAdapter.GetSpecificTrailerData(_trailerSegment, _trailer, _genericInputDataProvider.JobInputData.Vehicle);
 			#endregion
 

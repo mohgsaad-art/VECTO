@@ -36,11 +36,16 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Xml;
 using Castle.Core.Internal;
+using Ninject;
 using TUGraz.VectoCommon.Exceptions;
+using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
+using TUGraz.VectoCore.InputData.FileIO.XML;
+using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
 using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.Declaration
@@ -97,15 +102,15 @@ namespace TUGraz.VectoCore.Models.Declaration
 				RefLhA1 = SquareMeter.Create(row.ParseDouble("ref_polar_curve_lh_a1")),
 				RefLhA2 = SquareMeter.Create(row.ParseDouble("ref_polar_curve_lh_a2")),
 				RefLhA3 = SquareMeter.Create(row.ParseDouble("ref_polar_curve_lh_a3")),
-				RefOtherA1 = SquareMeter.Create(row.ParseDouble("ref_polar_curve_lh_a1")),
-				RefOtherA2 = SquareMeter.Create(row.ParseDouble("ref_polar_curve_lh_a2")),
-				RefOtherA3 = SquareMeter.Create(row.ParseDouble("ref_polar_curve_lh_a3")),
+				RefOtherA1 = SquareMeter.Create(row.ParseDouble("ref_polar_curve_other_a1")),
+				RefOtherA2 = SquareMeter.Create(row.ParseDouble("ref_polar_curve_other_a2")),
+				RefOtherA3 = SquareMeter.Create(row.ParseDouble("ref_polar_curve_other_a3")),
 				DesignSpeed = MeterPerSecond.Create(25) //90km/h
 			};
 
 		}
 
-		private static Mission[] CreateMissions(DataRow row)
+		private Mission[] CreateMissions(DataRow row)
 		{
 			var missionTypes = new List<MissionType>();
 
@@ -166,11 +171,6 @@ namespace TUGraz.VectoCore.Models.Declaration
 						break;
 				}
 
-				var DefaultCDxAColumn =
-					missionType == MissionType.LongHaul ? "gen_default_CdxA_lh" : "gen_default_CdxA_om";
-
-				var body = GetBody(row);
-
 				var referenceTrailers = GetTrailers(row, missionType);
 				var specificTrailers = GetTrailers(row, missionType, true);
 
@@ -185,13 +185,13 @@ namespace TUGraz.VectoCore.Models.Declaration
 					AxleWeightDistribution = GetTowingAxleWeightDistribution(row, missionType),
 					SpecificAxleWeightDistribution = GetTowingAxleWeightDistribution(row, missionType, true),
 					CurbMass = Kilogram.Create(missionType == MissionType.LongHaul ? row.ParseDouble("ref_curb_lh") : row.ParseDouble("ref_curb_other")),
-					DefaultCDxA = SquareMeter.Create(row.ParseDouble(DefaultCDxAColumn)),
+					DefaultCDxA = SquareMeter.Create(row.ParseDouble(missionType == MissionType.LongHaul ? "gen_default_CdxA_lh" : "gen_default_CdxA_om")),
 					VehicleHeight = Meter.Create(row.ParseDouble("vehicle_height")),
 					MinLoad = null,
 					MaxLoad = null,
 					Trailer = referenceTrailers,
 					SpecificTrailer = specificTrailers,
-					TotalCargoVolume = body.CargoVolume + referenceTrailers.Sum(t => t.CargoVolume).DefaultIfNull(0),
+					TotalCargoVolume = CubicMeter.Create(row.ParseDouble(missionType == MissionType.LongHaul ? "generic_cargo_lh" : "generic_cargo_om")),
 					CrossWindCorrectionParameters = "TractorSemitrailer", //TODO: Check this
 #if USE_EXTENAL_DECLARATION_DATA
 					CycleFile = File.OpenRead(Path.Combine("DeclarationMissions", missionType.ToString().Replace("EMS", "") + ".vdri")),
@@ -206,15 +206,6 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 
 			return missions.ToArray();
-		}
-
-		private static StandardBody GetBody(DataRow row)
-		{
-			var bodyColumn = "Generic_body";
-			var bodyCode = row.Field<string>(bodyColumn).Replace("-","");
-
-			var body = DeclarationData.StandardBodies.Lookup(bodyCode);
-			return body;
 		}
 
 
@@ -236,7 +227,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 			return axleDistribution / 100.0;
 		}
 
-		private static IList<MissionTrailer> GetTrailers(DataRow row, MissionType missionType, bool isSpecific = false)
+		private IList<MissionTrailer> GetTrailers(DataRow row, MissionType missionType, bool isSpecific = false)
 		{
 			var trailers = new List<MissionTrailer>();
 
@@ -247,25 +238,60 @@ namespace TUGraz.VectoCore.Models.Declaration
 				throw new VectoException("Error in segmentation table: trailer weight share is defined but not trailer type!");
 			}
 
-			trailers.Add(CreateTrailer(trailerValue, GetTrailerAxleWeightDistribution(row, missionType, isSpecific), true));
+			trailers.Add(CreateTrailer(trailerValue, GetTrailerAxleWeightDistribution(row, missionType, isSpecific), isSpecific, row, missionType));
 
 			return trailers;
 		}
 
-		private static MissionTrailer CreateTrailer(string trailerValue, double axleWeightShare, bool firstTrailer)
+		private MissionTrailer CreateTrailer(string trailerValue, double axleWeightShare, bool isSpecific, DataRow row, MissionType missionType)
 		{
-			var trailerType = TrailerTypeHelper.Parse(trailerValue);
-			var trailer = DeclarationData.StandardBodies.Lookup(trailerType.ToString());
+
+			Kilogram curbWeight = 0.SI<Kilogram>();
+			Kilogram grossVehicleWeight = GetGenericVehicleData(row.Field<string>("Generic_code")).JobInputData.Vehicle.GrossVehicleMassRating;
+
+			CubicMeter cargoVolume = 0.SI<CubicMeter>();
+			SquareMeter deltaCDxA = 0.SI<SquareMeter>();
+
+			var wheels = new List<Wheels.Entry>();
+
+			if (!isSpecific) { //for specific these are taken from the input xml document
+				curbWeight = Kilogram.Create(missionType == MissionType.LongHaul
+					? row.ParseDouble("ref_curb_lh")
+					: row.ParseDouble("ref_curb_other"));
+
+				cargoVolume = CubicMeter.Create(row.ParseDouble(missionType == MissionType.LongHaul
+					? "generic_cargo_lh"
+					: "generic_cargo_om"));
+
+				deltaCDxA = SquareMeter.Create(row.ParseDouble(missionType == MissionType.LongHaul
+					? "gen_default_CdxA_lh"
+					: "gen_default_CdxA_om"));
+
+				wheels.Add(DeclarationData.Wheels.Lookup(row.Field<string>("ref_TyreXml").Replace("_", "").Replace("Standard", "")));
+				if(row.Field<string>("ref_Axles") == "2")
+					wheels.Add(DeclarationData.Wheels.Lookup(row.Field<string>("ref_TyreXml").Replace("_", "").Replace("Standard", "")));
+				if (row.Field<string>("ref_Axles") == "3") {
+					wheels.Add(DeclarationData.Wheels.Lookup(row.Field<string>("ref_TyreXml").Replace("_", "")
+						.Replace("Standard", "")));
+					wheels.Add(DeclarationData.Wheels.Lookup(row.Field<string>("ref_TyreXml").Replace("_", "")
+						.Replace("Standard", "")));
+
+				}
+			}
+
+				var trailerType = TrailerTypeHelper.Parse(trailerValue);
 			return new MissionTrailer
 			{
 				TrailerType = trailerType,
-				TrailerWheels = trailer.Wheels,
+				TrailerWheels = wheels,
 				TrailerAxleWeightShare = axleWeightShare,
-				TrailerCurbWeight = trailer.CurbWeight,
-				TrailerGrossVehicleWeight = trailer.GrossVehicleWeight,
-				DeltaCdA = trailer.DeltaCrossWindArea[firstTrailer ? 0 : 1],
-				CargoVolume = trailer.CargoVolume
+				TrailerCurbWeight = curbWeight,
+				TrailerGrossVehicleWeight = grossVehicleWeight,
+				DeltaCdA = deltaCDxA,
+				CargoVolume = cargoVolume,
+				TwinTyres = row.Field<string>("ref_TwinTyres") == "TRUE"
 			};
+
 		}
 
 		private static string GetMissionPrefix(MissionType missionType)
@@ -319,5 +345,19 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 			return row;
 		}
+
+		public IDeclarationInputDataProvider GetGenericVehicleData(string vehicleCode)
+		{
+			var genericXml = RessourceHelper.ReadStream(DeclarationData.DeclarationDataResourcePrefix + ".GenericVehicles." + vehicleCode + ".xml");
+			var xmlDoc = new XmlDocument();
+			xmlDoc.Load(genericXml);
+
+			IKernel kernel = new StandardKernel(new VectoNinjectModule());
+			var inputReader = kernel.Get<IXMLInputDataReader>();
+
+			XmlReader xmlReader = new XmlNodeReader(xmlDoc);
+			return inputReader.CreateDeclaration(xmlReader);
+		}
+
 	}
 }

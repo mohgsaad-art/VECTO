@@ -1,12 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml;
 using Ninject;
 using NUnit.Framework;
+using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.XML;
 using TUGraz.VectoCore.Models.Declaration;
+using TUGraz.VectoCore.Tests.Models.Declaration;
+using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
 
 namespace TUGraz.VectoCore.Tests.XML
 {
@@ -18,6 +22,7 @@ namespace TUGraz.VectoCore.Tests.XML
 
 		private const string SampleTrailer = @"TestData\Trailer\test4.xml";
 
+		private IDeclarationTrailerInputDataProvider inputDataProvider;
 
 		[OneTimeSetUp]
 		public void RunBeforeAnyTests()
@@ -26,15 +31,39 @@ namespace TUGraz.VectoCore.Tests.XML
 
 			_kernel = new StandardKernel(new VectoNinjectModule());
 			XMLInputReader = _kernel.Get<IXMLInputDataReader>();
+
+			var reader = XmlReader.Create(SampleTrailer);
+			inputDataProvider = XMLInputReader.CreateDeclarationTrailer(reader);
 		}
 
 		[TestCase]
-		public void TestXMLInputDeclTrailer()
+		public void TrailerFullTest()
 		{
-			var reader = XmlReader.Create(SampleTrailer);
+			//InputData
+			TestXMLInputDeclTrailer(inputDataProvider);
 
-			var inputDataProvider = XMLInputReader.CreateDeclarationTrailer(reader);
+			//Trailer Segment lookup
+			DeclarationSegmentTrailerTest declarationSegmentTrailerTest = new DeclarationSegmentTrailerTest();
+			declarationSegmentTrailerTest.TrailerSegmentLookupTest(inputDataProvider);
 
+			//Aerofeature lookup
+			declarationSegmentTrailerTest.TrailerAeroFeaturesTest();
+
+			//Specific Trailer Data
+			SpecificTrailerDataTest();
+
+			//Missions Test
+			TrailerMissionsTest();
+
+			//Report XML schema
+			XMLReportTrailerTest xmlReportTrailerTest = new XMLReportTrailerTest();
+			xmlReportTrailerTest.RunBeforeAnyTests();
+			xmlReportTrailerTest.RunTrailerDeclarationJob();
+		}
+
+		[TestCase]
+		public void TestXMLInputDeclTrailer(IDeclarationTrailerInputDataProvider inputDataProvider)
+		{
 			//general info
 			Assert.AreEqual("testing123", inputDataProvider.JobInputData.Trailer.Manufacturer);
 			Assert.AreEqual("testing123", inputDataProvider.JobInputData.Trailer.ManufacturerAddress);
@@ -60,16 +89,47 @@ namespace TUGraz.VectoCore.Tests.XML
 			Assert.AreEqual(Meter.Create(4.000), inputDataProvider.JobInputData.Trailer.InternalBodyHeight);
 
 			Assert.AreEqual(CubicMeter.Create(86.700), inputDataProvider.JobInputData.Trailer.CargoVolume);
+		}
 
-			//category lookup
+		[TestCase]
+		public void SpecificTrailerDataTest()
+		{
 			var trailerSegment = DeclarationData.TrailerSegments.Lookup(inputDataProvider.JobInputData.Trailer.NumberOfAxles, inputDataProvider.JobInputData.Trailer.TrailerType, inputDataProvider.JobInputData.Trailer.BodyworkCode, false);
-			Assert.AreEqual(2111, trailerSegment.VehicleGroup);
 
-			//aerofeature lookup
-			var aeroFeatures = new List<AeroFeatureTechnology> { AeroFeatureTechnology.SideSkirtsShort };
+			var trailerDataAdapter = new DeclarationTrailerDataAdapter();
 
-			var combination = DeclarationData.AeroFeatures.Lookup(aeroFeatures);
-			Assert.AreEqual(1, combination);
+			var genericInputDataProvider = trailerDataAdapter.GetGenericVehicleData(trailerSegment.GenericCode);
+
+			var specificTrailerData = trailerDataAdapter.GetSpecificTrailerData(trailerSegment, inputDataProvider.JobInputData.Trailer, genericInputDataProvider.JobInputData.Vehicle);
+
+			Assert.AreEqual(Kilogram.Create(7000), specificTrailerData.CurbMassTrailer);
+			Assert.AreEqual(35000, specificTrailerData.MaxGcm);
+			Assert.AreEqual(KilogramSquareMeter.Create(14.9), specificTrailerData.Inertia);
+			Assert.AreEqual(6.84625, specificTrailerData.TotalCorrection);
+		}
+
+		[TestCase]
+		public void TrailerMissionsTest()
+		{
+			var trailerSegment = DeclarationData.TrailerSegments.Lookup(
+				inputDataProvider.JobInputData.Trailer.NumberOfAxles,
+				inputDataProvider.JobInputData.Trailer.TrailerType, inputDataProvider.JobInputData.Trailer.BodyworkCode,
+				false);
+
+			Assert.AreEqual(3, trailerSegment.Missions.Count());
+			Assert.AreEqual(1, trailerSegment.Missions.Count(x=> x.MissionType == MissionType.LongHaul));
+			Assert.AreEqual(1, trailerSegment.Missions.Count(x => x.MissionType == MissionType.RegionalDelivery));
+			Assert.AreEqual(1, trailerSegment.Missions.Count(x => x.MissionType == MissionType.UrbanDelivery));
+
+			Assert.AreEqual(Kilogram.Create(2300), trailerSegment.Missions.FirstOrDefault(x => x.MissionType == MissionType.LongHaul).SpecificTrailerLowLoad);
+			Assert.AreEqual(Kilogram.Create(17400), trailerSegment.Missions.FirstOrDefault(x => x.MissionType == MissionType.LongHaul).SpecificTrailerRefLoad);
+			
+			Assert.AreEqual(Kilogram.Create(2300), trailerSegment.Missions.FirstOrDefault(x => x.MissionType == MissionType.RegionalDelivery).SpecificTrailerLowLoad);
+			Assert.AreEqual(Kilogram.Create(11600), trailerSegment.Missions.FirstOrDefault(x => x.MissionType == MissionType.RegionalDelivery).SpecificTrailerRefLoad);
+			
+			Assert.AreEqual(Kilogram.Create(2300), trailerSegment.Missions.FirstOrDefault(x => x.MissionType == MissionType.UrbanDelivery).SpecificTrailerLowLoad);
+			Assert.AreEqual(Kilogram.Create(11600), trailerSegment.Missions.FirstOrDefault(x => x.MissionType == MissionType.UrbanDelivery).SpecificTrailerRefLoad);
+
 		}
 	}
 }
