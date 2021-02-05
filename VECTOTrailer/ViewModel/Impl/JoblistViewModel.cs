@@ -872,7 +872,7 @@ namespace VECTOTrailer.ViewModel.Impl
 								mode = ExecutionMode.Engineering;
 							} else if (XMLNames.VectoInputDeclaration.Equals(rootNode, StringComparison.InvariantCultureIgnoreCase)) {
 								using (var reader = XmlReader.Create(fullFileName)) {
-									input = xmlReader.CreateDeclarationTrailer(reader);
+									input = xmlReader.Create(reader);
 								}
 								mode = ExecutionMode.Declaration;
 							}

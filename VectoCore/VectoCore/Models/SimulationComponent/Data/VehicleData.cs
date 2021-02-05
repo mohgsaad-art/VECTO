@@ -252,6 +252,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 		[JsonIgnore]
 		public IVehicleDeclarationInputData InputData { get; internal set; }
 
+		[JsonIgnore]
 		public ITrailerDeclarationInputData InputDataTrailer { get; internal set; }
 		public TrailerSegment TrailerSegment { get; internal set; }
 		public RegistrationClass RegisteredClass { get; internal set; }

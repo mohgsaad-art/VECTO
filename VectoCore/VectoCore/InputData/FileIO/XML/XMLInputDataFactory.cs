@@ -124,13 +124,13 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML
 				throw new VectoException("empty xml document!");
 			}
 
+			new XMLValidator(xmlDoc, null, XMLValidator.CallBackExceptionOnError).ValidateXML(
+				XmlDocumentType.DeclarationJobData | XmlDocumentType.EngineeringJobData);
+
 			var documentType = XMLHelper.GetDocumentType(xmlDoc);
 			if (documentType == null) {
 				throw new VectoException("unknown xml file! {0}", xmlDoc.DocumentElement.LocalName);
 			}
-
-
-			new XMLValidator(xmlDoc, null, XMLValidator.CallBackExceptionOnError).ValidateXML(documentType.Value);
 
 			switch (documentType.Value)
 			{

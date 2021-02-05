@@ -36,6 +36,7 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Schema;
+using System.Xml.XPath;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
@@ -49,16 +50,35 @@ namespace TUGraz.VectoCore.Utils
 	{
 		public static XmlDocumentType? GetDocumentType(XmlDocument xmlDoc)
 		{
-			switch (xmlDoc.DocumentElement.LocalName) {
-				case "VectoInputDeclaration":
-					return (xmlDoc.ChildNodes[1]?.ChildNodes[0]?.ChildNodes.Cast<XmlNode>()
-						.Count(x => x.Name.Contains("TrailerType")) > 0 || xmlDoc.ChildNodes[0]?.ChildNodes[0]?.ChildNodes.Cast<XmlNode>()
-						.Count(x => x.Name.Contains("TrailerType")) > 0) ? XmlDocumentType.DeclarationTrailerJobData : XmlDocumentType.DeclarationJobData;
-				case "VectoInputEngineering": return XmlDocumentType.EngineeringJobData;
-				case "VectoComponentEngineering": return XmlDocumentType.EngineeringComponentData;
-				case "VectoOutputPrimaryVehicle": return XmlDocumentType.PrimaryVehicleBusOutputData;
-
+			if (xmlDoc.DocumentElement == null) {
+				return null;
 			}
+
+			var vehicleNode = xmlDoc.DocumentElement.SelectSingleNode("/*/*");
+			return GetDocumentType(xmlDoc.DocumentElement.LocalName, vehicleNode?.LocalName ?? "",
+				vehicleNode?.SchemaInfo.SchemaType?.QualifiedName.Namespace ?? "");
+		}
+		
+		private static XmlDocumentType? GetDocumentType(string rootElementName, string vehicleElementType, string vehicleElementNamespace)
+		{
+			var trailerJobNamespaces = new[] { XMLDefinitions.DECLARATION_DEFINITIONS_NAMESPACE_URI_V27 };
+			
+			if (XMLNames.VectoInputDeclaration.Equals(rootElementName, StringComparison.InvariantCulture))
+					//; "VectoInputDeclaration":
+					return trailerJobNamespaces.Contains(vehicleElementNamespace)
+						? XmlDocumentType.DeclarationTrailerJobData
+						: XmlDocumentType.DeclarationJobData;
+			if (XMLNames.VectoInputEngineering.Equals(rootElementName, StringComparison.InvariantCulture))
+					//"VectoInputEngineering":
+					return XmlDocumentType.EngineeringJobData;
+
+			if (XMLNames.VectoComponentEngineering.Equals(rootElementName, StringComparison.InvariantCulture))
+					//"VectoComponentEngineering":
+					return XmlDocumentType.EngineeringComponentData;
+
+			if (XMLNames.VectoPrimaryVehicleReport.Equals(rootElementName, StringComparison.InvariantCulture))
+					//"VectoOutputPrimaryVehicle":
+					return XmlDocumentType.PrimaryVehicleBusOutputData;
 
 			return null;
 		}
