@@ -149,6 +149,7 @@
     <Compile Include="InputData\FileIO\XML\Common\AbstractXMLResource.cs" />
     <Compile Include="InputData\FileIO\XML\Common\AbstractXMLType.cs" />
     <Compile Include="InputData\FileIO\XML\Declaration\DataProvider\XMLAuxiliaryDeclarationDataProvider.cs" />
+    <Compile Include="InputData\FileIO\XML\Declaration\DataProvider\XMLDeclarationComponentInputDataProvider.cs" />
     <Compile Include="InputData\FileIO\XML\Declaration\DataProvider\XMLDeclarationPrimaryVehicleBusApplicationInformationDataProviderV01.cs" />
     <Compile Include="InputData\FileIO\XML\Declaration\DataProvider\XMLDeclarationBusAuxiliariesDataProvider.cs" />
     <Compile Include="InputData\FileIO\XML\Declaration\DataProvider\XMLDeclarationADASDataProvider.cs" />
@@ -959,10 +960,6 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\VectoCommon\AdvancedAuxiliaryInterfaces\AdvancedAuxiliaryInterfaces.vbproj">
-      <Project>{b4b9bd2f-fd8f-4bb8-82fa-e2154d2c7fbd}</Project>
-      <Name>AdvancedAuxiliaryInterfaces</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\VectoCommon\VectoCommon\VectoCommon.csproj">
       <Project>{79a066ad-69a9-4223-90f6-6ed5d2d084f4}</Project>
       <Name>VectoCommon</Name>

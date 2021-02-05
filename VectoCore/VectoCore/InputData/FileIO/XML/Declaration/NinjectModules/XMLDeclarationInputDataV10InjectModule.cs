@@ -69,9 +69,12 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.NinjectModules
 				.To<XMLDeclarationADASDataProviderV10>().Named(
 					XMLDeclarationADASDataProviderV10.QUALIFIED_XSD_TYPE);
 
-			// ---------------------------------------------------------------------------------------
+            Bind<IXMLComponentInputData>().To<XMLDeclarationComponentInputDataProviderV10>().Named(
+                XMLDeclarationComponentInputDataProviderV10.QUALIFIED_XSD_TYPE);
 
-			Bind<IXMLDeclarationInputDataReader>().To<XMLDeclarationInputReaderV10>()
+            // ---------------------------------------------------------------------------------------
+
+            Bind<IXMLDeclarationInputDataReader>().To<XMLDeclarationInputReaderV10>()
 												.Named(XMLDeclarationInputReaderV10.QUALIFIED_XSD_TYPE);
 
 			Bind<IXMLJobDataReader>().To<XMLJobDataReaderV10>()

@@ -72,6 +72,25 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML
 			return DoCreateDeclaration(inputData, null);
 		}
 
+		public IComponentInputData CreateComponent(string filename)
+		{
+			using (var reader = XmlReader.Create(filename)) {
+				return ReadXmlComponentDoc(reader, filename);
+			}
+		}
+
+		public IComponentInputData CreateComponent(Stream inputData)
+		{
+			using (var reader = XmlReader.Create(inputData)) {
+				return ReadXmlComponentDoc(reader, null);
+			}
+		}
+
+		public IComponentInputData CreateComponent(XmlReader inputData)
+		{
+			return ReadXmlComponentDoc(inputData, null);
+		}
+
 		public IDeclarationTrailerInputDataProvider CreateDeclarationTrailer(string filename)
 		{
 			using (var reader = XmlReader.Create(filename)) {
@@ -167,6 +186,55 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML
 				throw new VectoException("Failed to read Declaration job version {0}", e, versionNumber);
 			}
 		}
+
+
+		private IComponentInputData ReadXmlComponentDoc(XmlReader inputData, string source)
+		{
+			var xmlDoc = new XmlDocument();
+			xmlDoc.Load(inputData);
+			if (xmlDoc.DocumentElement == null) {
+				throw new VectoException("empty xml document!");
+			}
+
+			new XMLValidator(xmlDoc, null, XMLValidator.CallBackExceptionOnError).ValidateXML(
+				XmlDocumentType.DeclarationComponentData | XmlDocumentType.EngineeringComponentData);
+
+			var documentType = XMLHelper.GetDocumentType(xmlDoc);
+			if (documentType == null) {
+				throw new VectoException("unknown xml file! {0}", xmlDoc.DocumentElement.LocalName);
+			}
+
+			switch (documentType.Value) {
+				case XmlDocumentType.DeclarationComponentData:
+					return ReadDeclarationComponent(xmlDoc, source);
+				case XmlDocumentType.DeclarationJobData:
+				case XmlDocumentType.DeclarationTrailerJobData:
+				case XmlDocumentType.EngineeringJobData:
+				case XmlDocumentType.PrimaryVehicleBusOutputData:
+				case XmlDocumentType.EngineeringComponentData:
+				case XmlDocumentType.ManufacturerReport:
+				case XmlDocumentType.CustomerReport:
+					throw new VectoException("XML Document {0} not supported as component!", documentType.Value);
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
+		}
+
+		public IComponentInputData ReadDeclarationComponent(XmlDocument xmlDoc, string source)
+		{
+			var versionNumber = XMLHelper.GetXsdType(xmlDoc.DocumentElement?.SchemaInfo.SchemaType);
+			if (versionNumber.Equals(":")) {
+				versionNumber = xmlDoc.DocumentElement?.NamespaceURI;
+			}
+			try {
+				var input = DeclarationFactory.CreateComponentInputProvider(versionNumber, xmlDoc, source);
+				//input.Reader = DeclarationFactory.CreateInputReader(versionNumber, input, xmlDoc.DocumentElement);
+				return input.Component;
+			} catch (Exception e) {
+				throw new VectoException("Failed to read Declaration job version {0}", e, versionNumber);
+			}
+		}
+
 
 		private IDeclarationTrailerInputDataProvider ReadDeclarationTrailerJob(XmlDocument xmlDoc, string source)
 		{

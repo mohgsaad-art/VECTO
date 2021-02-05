@@ -1,8 +1,12 @@
-﻿using System.IO;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Xml;
 using Ninject;
 using NUnit.Framework;
+using NUnit.Framework.Internal;
+using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
 using TUGraz.VectoCore.InputData.FileIO.XML;
@@ -86,6 +90,15 @@ namespace TUGraz.VectoCore.Tests.XML
 
 		}
 
+
+		[TestCase(@"TestData\XML\XMLReaderDeclaration\SchemaVersion2.2\vecto_tyre-sample.xml", typeof(ITyreDeclarationInputData), TestName = "TestReadingXmlComponent Tyre 2.2"),
+		TestCase(@"TestData\XML\XMLReaderDeclaration\SchemaVersion1.0\vecto_engine-sample.xml",typeof(IEngineDeclarationInputData), TestName = "TestReadingXmlComponent Engine 1.0")]
+		public void TestReadingXMLComponent(string filename, Type expectedType)
+		{
+			var component = xmlInputReader.CreateComponent(XmlReader.Create(filename));
+
+			Assert.IsTrue(expectedType.IsInstanceOfType(component));
+		}
 		
 		[TestCase(@"TestData\Integration\MediumLorries\vecto_vehicle-medium_lorry-Van.xml", TestName = "Medium Lorry Van"),
 		TestCase(@"TestData\Integration\MediumLorries\vecto_vehicle-medium_lorry.xml", TestName = "Medium Lorry"),
