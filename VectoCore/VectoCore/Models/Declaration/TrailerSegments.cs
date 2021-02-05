@@ -279,7 +279,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 				}
 			}
 
-				var trailerType = TrailerTypeHelper.Parse(trailerValue);
+			var trailerType = TrailerTypeHelper.Parse(trailerValue);
+
 			return new MissionTrailer
 			{
 				TrailerType = trailerType,

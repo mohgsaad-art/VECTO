@@ -98,7 +98,7 @@ namespace TUGraz.VectoCore.Tests.XML
 
 			var trailerDataAdapter = new DeclarationTrailerDataAdapter();
 
-			var genericInputDataProvider = trailerDataAdapter.GetGenericVehicleData(trailerSegment.GenericCode);
+			var genericInputDataProvider = DeclarationData.TrailerSegments.GetGenericVehicleData(trailerSegment.GenericCode);
 
 			var specificTrailerData = trailerDataAdapter.GetSpecificTrailerData(trailerSegment, inputDataProvider.JobInputData.Trailer, genericInputDataProvider.JobInputData.Vehicle);
 

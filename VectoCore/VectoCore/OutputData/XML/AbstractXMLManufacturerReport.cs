@@ -251,7 +251,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 				return CreateADAS(adasData);
 			}
 
-			var ns = XNamespace.Get(adasData.InputData.XMLSource.SchemaInfo.SchemaType.QualifiedName.Namespace);
+			var ns = XNamespace.Get(adasData.InputData.XMLSource.SchemaInfo.SchemaType?.QualifiedName.Namespace);
 			var type = adasData.InputData.XMLSource.SchemaInfo.SchemaType.QualifiedName.Name;
 				
 			const string adasPrefix = "adas";

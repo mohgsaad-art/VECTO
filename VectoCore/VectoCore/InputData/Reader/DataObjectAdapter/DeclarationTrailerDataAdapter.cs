@@ -42,7 +42,10 @@ using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.InputData.FileIO.XML;
+using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Interfaces;
+using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl;
+using TUGraz.VectoCore.InputData.Impl;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl.HVAC;
 using TUGraz.VectoCore.InputData.Reader.ShiftStrategy;
@@ -160,6 +163,8 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				axleData.Add(axle);
 			}
 
+			//TODO get tyre data from corresponding file instead of declaration data
+
 			foreach (var trailer in mission.Trailer) {
 				axleData.AddRange(
 					trailer.TrailerWheels.Select(
@@ -238,7 +243,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			}
 
 			var trailerAxles = trailerData.Axles;
-
+			
 			for (var i = 0; i < trailerAxles.Count; i++)
 			{
 				var axleInput = trailerAxles[i];
