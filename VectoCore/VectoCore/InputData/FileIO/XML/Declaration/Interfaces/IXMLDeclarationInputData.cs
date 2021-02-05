@@ -21,4 +21,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Interfaces
 
 		XmlNode ApplicationInformationNode { get; }
 	}
+
+	public interface IXMLComponentInputData 
+	{
+		IComponentInputData Component { get; }
+	}
 }

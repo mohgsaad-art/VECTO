@@ -62,12 +62,18 @@ namespace TUGraz.VectoCore.Utils
 		private static XmlDocumentType? GetDocumentType(string rootElementName, string vehicleElementType, string vehicleElementNamespace)
 		{
 			var trailerJobNamespaces = new[] { XMLDefinitions.DECLARATION_DEFINITIONS_NAMESPACE_URI_V27 };
-			
-			if (XMLNames.VectoInputDeclaration.Equals(rootElementName, StringComparison.InvariantCulture))
-					//; "VectoInputDeclaration":
+
+			if (XMLNames.VectoInputDeclaration.Equals(rootElementName, StringComparison.InvariantCulture)) {
+				//; "VectoInputDeclaration":
+				if (XMLNames.Component_Vehicle.Equals(vehicleElementType, StringComparison.InvariantCulture)) {
 					return trailerJobNamespaces.Contains(vehicleElementNamespace)
 						? XmlDocumentType.DeclarationTrailerJobData
 						: XmlDocumentType.DeclarationJobData;
+				}
+
+				return XmlDocumentType.DeclarationComponentData;
+			}
+
 			if (XMLNames.VectoInputEngineering.Equals(rootElementName, StringComparison.InvariantCulture))
 					//"VectoInputEngineering":
 					return XmlDocumentType.EngineeringJobData;

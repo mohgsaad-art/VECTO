@@ -142,6 +142,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Factory
 
 		IXMLResultsInputData CreateResultsInputDataReader(string version, XmlNode resultsNode);
 
+		IXMLComponentInputData CreateComponentInputProvider(string version, XmlDocument xmlDoc, string fileName);
 	}
 
 }

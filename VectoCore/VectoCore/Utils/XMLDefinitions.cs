@@ -64,7 +64,9 @@ namespace TUGraz.VectoCore.Utils
 
 		public const string DECLARATION_INPUT_NAMESPACE_URI_V20 = DECLARATION_INPUT_NAMESPACE + ":v2.0";
 
-//		public const string DECLARATION_COMPONENT_NAMESPACE_URI_V10 = "urn:tugraz:ivt:VectoAPI:DeclarationComponent:v1.0";
+        public const string DECLARATION_COMPONENT_NAMESPACE_URI_V10 = "urn:tugraz:ivt:VectoAPI:DeclarationComponent:v1.0";
+
+		public const string DECLARATION_COMPONENT_NAMESPACE_URI_V20 = "urn:tugraz:ivt:VectoAPI:DeclarationComponent:v2.0";
 
 		public const string DECLARATION_PRIMARY_BUS_VEHICLE_NAMESPACE = "urn:tugraz:ivt:VectoAPI:DeclarationOutput:PrimaryVehicleInformation";
 
