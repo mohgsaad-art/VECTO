@@ -45,6 +45,7 @@ using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.InputData.FileIO.XML;
+using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider;
 using TUGraz.VectoCore.InputData.Impl;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
 using TUGraz.VectoCore.Utils;
@@ -282,17 +283,9 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 			var trailerType = TrailerTypeHelper.Parse(trailerValue);
 
-			//FOR MARKUS DEBUG
 			IKernel _kernel = new StandardKernel(new VectoNinjectModule());
 			var xmlInputReader = _kernel.Get<IXMLInputDataReader>();
-            var component = xmlInputReader.CreateComponent(RessourceHelper.ReadStream(DeclarationData.DeclarationDataResourcePrefix + ".GenericVehicles." + row.Field<string>("ref_TyreXml").Replace("/","_") + ".xml"));
-
-			
-			TyreInputData tyreComponent = new TyreInputData();
-			if (component is ITyreDeclarationInputData)
-				tyreComponent = (TyreInputData)component;
-
-			//FOR MARKUS DEBUG END
+			XMLDeclarationTyreDataProviderV23 component = (XMLDeclarationTyreDataProviderV23)xmlInputReader.CreateComponent(RessourceHelper.ReadStream(DeclarationData.DeclarationDataResourcePrefix + ".GenericVehicles." + row.Field<string>("ref_TyreXml").Replace("/","_") + ".xml"));
 
 			return new MissionTrailer
 			{
@@ -304,7 +297,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 				DeltaCdA = deltaCDxA,
 				CargoVolume = cargoVolume,
 				TwinTyres = row.Field<string>("ref_TwinTyres") == "TRUE",
-				TyreComponent = tyreComponent
+				TyreComponent = component
 			};
 
 		}
