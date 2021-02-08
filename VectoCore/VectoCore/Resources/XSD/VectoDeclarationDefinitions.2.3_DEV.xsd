@@ -461,6 +461,7 @@
 			<xs:enumeration value="285/65 R16C"/>
 			<xs:enumeration value="295/75 R22.5"/>
 			<xs:enumeration value="325/85 R16"/>
+			<xs:enumeration value="385/65 R22.5"/>
 			<xs:enumeration value="435/50 R19.5"/>
 			<xs:enumeration value="435/50 R22.5"/>
 			<xs:enumeration value="445/40 R22.5"/>

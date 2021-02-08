@@ -969,7 +969,10 @@
       <Name>VectoHashing</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\235_75_R17.5_Standard.xml" />
+    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\385_65_R22.5_Standard.xml" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Declaration\GenericVehicles\A1.xml" />
     <EmbeddedResource Include="Resources\Declaration\GenericVehicles\A2.xml" />
