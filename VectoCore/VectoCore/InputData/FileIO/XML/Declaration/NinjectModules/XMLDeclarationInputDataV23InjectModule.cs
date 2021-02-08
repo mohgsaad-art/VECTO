@@ -29,6 +29,10 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.NinjectModules
 														.Named(XMLAuxiliaryDeclarationDataProviderV23.QUALIFIED_XSD_TYPE);
 
 			Bind<IXMLAuxiliaryReader>().To<XMLAuxiliaryReaderV23>().Named(XMLAuxiliaryReaderV23.QUALIFIED_XSD_TYPE);
+
+			Bind<IXMLTyreDeclarationInputData>().To<XMLDeclarationTyreDataProviderV23>().Named(
+				XMLDeclarationTyreDataProviderV23.QUALIFIED_XSD_TYPE);
+
 		}
 
 		#endregion
