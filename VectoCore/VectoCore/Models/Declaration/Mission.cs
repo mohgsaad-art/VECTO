@@ -35,8 +35,10 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using TUGraz.VectoCommon.BusAuxiliaries;
+using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.InputData.Impl;
 
 namespace TUGraz.VectoCore.Models.Declaration
 {
@@ -178,6 +180,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 		public SquareMeter DeltaCdA { get; internal set; }
 		public CubicMeter CargoVolume { get; internal set; }
 		public bool TwinTyres { get; internal set; }
+		public TyreInputData TyreComponent { get; internal set; }
 
 	}
 

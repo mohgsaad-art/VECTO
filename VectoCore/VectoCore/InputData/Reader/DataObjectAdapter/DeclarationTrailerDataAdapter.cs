@@ -163,18 +163,19 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				axleData.Add(axle);
 			}
 
-			//TODO get tyre data from corresponding file instead of declaration data
 
 			foreach (var trailer in mission.Trailer) {
+				
+
 				axleData.AddRange(
 					trailer.TrailerWheels.Select(
 						trailerWheel => new Axle {
 							AxleType = AxleType.Trailer,
 							AxleWeightShare = trailer.TrailerAxleWeightShare,
 							TwinTyres = trailer.TwinTyres,
-							RollResistanceCoefficient = DeclarationData.Trailer.RollResistanceCoefficient,
-							TyreTestLoad = DeclarationData.Trailer.TyreTestLoad.SI<Newton>(),
-							FuelEfficiencyClass = DeclarationData.Trailer.FuelEfficiencyClass,
+							RollResistanceCoefficient = trailer.TyreComponent.RollResistanceCoefficient,
+							TyreTestLoad = trailer.TyreComponent.TyreTestLoad,
+							FuelEfficiencyClass = trailer.TyreComponent.FuelEfficiencyClass,
 							Inertia = trailerWheel.Inertia,
 							WheelsDimension = trailerWheel.WheelType
 						}));
