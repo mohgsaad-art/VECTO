@@ -40,7 +40,7 @@ namespace TUGraz.VectoCore.Tests.XML
 		public void TrailerFullTest()
 		{
 			//InputData
-			TestXMLInputDeclTrailer(inputDataProvider);
+			TestXMLInputDeclTrailer();
 
 			//Trailer Segment lookup
 			DeclarationSegmentTrailerTest declarationSegmentTrailerTest = new DeclarationSegmentTrailerTest();
@@ -62,7 +62,7 @@ namespace TUGraz.VectoCore.Tests.XML
 		}
 
 		[TestCase]
-		public void TestXMLInputDeclTrailer(IDeclarationTrailerInputDataProvider inputDataProvider)
+		public void TestXMLInputDeclTrailer()
 		{
 			//general info
 			Assert.AreEqual("testing123", inputDataProvider.JobInputData.Trailer.Manufacturer);

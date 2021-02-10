@@ -759,14 +759,15 @@ namespace TUGraz.VectoCore.OutputData
 			row[Fields.SLEEPER_CAB] = data.SleeperCab ? "yes" : "no";
 
 			if (data.InputDataTrailer != null) {
-				row[Fields.A1] = data.TrailerSegment.A1.Value();
-				row[Fields.A2] = data.TrailerSegment.A2.Value();
-				row[Fields.A3] = data.TrailerSegment.A3.Value();
+				row[Fields.A1] = data.TrailerSegment.A1?.Value();
+				row[Fields.A2] = data.TrailerSegment.A2?.Value();
+				row[Fields.A3] = data.TrailerSegment.A3?.Value();
 			} else {
-				row[Fields.A1] = runData.Mission?.MissionType == MissionType.LongHaul ? data.TrailerSegment.RefLhA1.Value() : data.TrailerSegment.RefOtherA1.Value();
-				row[Fields.A2] = runData.Mission?.MissionType == MissionType.LongHaul ? data.TrailerSegment.RefLhA2.Value() : data.TrailerSegment.RefOtherA2.Value();
-				row[Fields.A3] = runData.Mission?.MissionType == MissionType.LongHaul ? data.TrailerSegment.RefLhA3.Value() : data.TrailerSegment.RefOtherA3.Value();
+				row[Fields.A1] = runData.Mission?.MissionType == MissionType.LongHaul ? data.TrailerSegment.RefLhA1?.Value() : data.TrailerSegment.RefOtherA1?.Value();
+				row[Fields.A2] = runData.Mission?.MissionType == MissionType.LongHaul ? data.TrailerSegment.RefLhA2?.Value() : data.TrailerSegment.RefOtherA2?.Value();
+				row[Fields.A3] = runData.Mission?.MissionType == MissionType.LongHaul ? data.TrailerSegment.RefLhA3?.Value() : data.TrailerSegment.RefOtherA3?.Value();
 			}
+			
 
 			row[Fields.ROLLING_RESISTANCE_COEFFICIENT_WO_TRAILER] =
 				data.RollResistanceCoefficientWithoutTrailer;
