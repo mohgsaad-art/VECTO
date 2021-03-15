@@ -239,6 +239,8 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 		/// </summary>
 		[ModalResultField(typeof(SI), caption: "P_brake_loss [kW]", outputFactor: 1e-3)] P_brake_loss,
 
+		[ModalResultField(typeof(SI), caption: "T_brake [Nm]")] T_brake,
+
 		[ModalResultField(typeof(SI), caption: "P_wheel_inertia [kW]", outputFactor: 1e-3)] P_wheel_inertia,
 
 		[ModalResultField(typeof(SI), caption: "P_brake_in [kW]", outputFactor: 1e-3)] P_brake_in,
@@ -250,6 +252,8 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 		[ModalResultField(typeof(SI), caption: "P_ret_in [kW]", outputFactor: 1e-3)] P_retarder_in,
 
 		[ModalResultField(typeof(SI), caption: "P_gbx_in [kW]", outputFactor: 1e-3)] P_gbx_in,
+
+		[ModalResultField(typeof(SI), caption: "T_gbx_in [Nm]")] T_gbx_in,
 
 		[ModalResultField(typeof(SI), caption: "P_clutch_loss [kW]", outputFactor: 1e-3)] P_clutch_loss,
 
@@ -263,6 +267,11 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 		///     [kW]	Power demand of Auxiliary with ID xxx. See also Aux Dialog and Driving Cycle.
 		/// </summary>
 		[ModalResultField(typeof(SI), caption: "P_aux_{0} [kW]", outputFactor: 1e-3)] P_aux_,
+
+		/// <summary>
+		///     [kW]	Power demand of Auxiliary.
+		/// </summary>
+		[ModalResultField(typeof(SI), caption: "P_aux [kW]", outputFactor: 1e-3)] P_aux,
 
 		/// Bus Aux Data
 		[ModalResultField(typeof(SI), caption: "P_busAux_ES_HVAC [kW]", outputFactor: 1e-3)] P_busAux_ES_HVAC,
@@ -398,7 +407,9 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 		[ModalResultField(typeof(SI), caption: "P_{0}_out [kW]", outputFactor: 1e-3)] P_EM_out_,
 		[ModalResultField(typeof(SI), caption: "P_{0}_mech [kW]", outputFactor: 1e-3)] P_EM_mech_,
 		[ModalResultField(typeof(SI), caption: "P_{0}_loss [kW]", outputFactor: 1e-3)] P_EM_loss_,
-		
+
+		[ModalResultField(typeof(SI), caption: "T_{0}_out [Nm]")] T_EM_out_,
+
 		[ModalResultField(typeof(SI), caption: "P_{0}_transm_loss [kW]", outputFactor: 1e-3)] P_EM_TransmissionLoss_,
 
 		[ModalResultField(typeof(SI), caption: "EM_OVL-{0}-em [%]", outputFactor: 100)] ElectricMotor_OvlBuffer_,

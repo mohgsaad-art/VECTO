@@ -265,6 +265,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			CurrentState.DynamicFullLoadTorque = dynamicFullLoadTorque;
 			CurrentState.InertiaTorqueLoss = inertiaTorqueLoss;
 			CurrentState.StationaryFullLoadTorque = stationaryFullLoadTorque;
+			CurrentState.AuxiliariesPowerDemand = auxTorqueDemand * avgEngineSpeed;
 
 			if ((deltaFull * avgEngineSpeed).IsGreater(0.SI<Watt>(), Constants.SimulationSettings.LineSearchTolerance) &&
 				(deltaDrag * avgEngineSpeed).IsSmaller(0.SI<Watt>(), Constants.SimulationSettings.LineSearchTolerance)) {
@@ -440,6 +441,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			container[ModalResultField.P_ice_drag] = CurrentState.FullDragTorque * avgEngineSpeed;
 			container[ModalResultField.T_ice_full] = CurrentState.DynamicFullLoadTorque;
 			container[ModalResultField.T_ice_drag] = CurrentState.FullDragTorque;
+			container[ModalResultField.P_aux] = CurrentState.AuxiliariesPowerDemand;
 			container[ModalResultField.ICEOn] = CurrentState.EngineOn;
 
 			WriteWHRPower(container, avgEngineSpeed, CurrentState.EngineTorque);
@@ -625,7 +627,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			public bool EngineOn { get; set; }
 
 			public Watt AuxPowerEngineOff { get; set; }
-		}
+            public object AuxiliariesPowerDemand { get; internal set; }
+        }
 
 		protected internal class CombustionEngineIdleController : LoggingObject, IIdleController
 		{

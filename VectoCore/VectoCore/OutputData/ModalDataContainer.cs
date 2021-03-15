@@ -82,7 +82,9 @@ namespace TUGraz.VectoCore.OutputData
 			ModalResultField.n_EM_electricMotor_, 
 			ModalResultField.T_EM_electricMotor_, 
 			ModalResultField.T_EM_electricMotor_map_,
-			
+
+			ModalResultField.T_EM_out_,
+
 			ModalResultField.T_EM_electricMotor_drive_max_, 
 			ModalResultField.T_EM_electricMotor_gen_max_,
 			
@@ -698,6 +700,7 @@ namespace TUGraz.VectoCore.OutputData
 					ModalResultField.P_ice_drag,
 					ModalResultField.P_ice_inertia,
 					ModalResultField.P_ice_out,
+					ModalResultField.P_aux
 				}.Select(x => x.GetName()));
 			if (ElectricMotors.Count > 0) {
 				dataColumns.AddRange(new[] {
@@ -740,6 +743,7 @@ namespace TUGraz.VectoCore.OutputData
 				dataColumns.AddRange(
 					new[] {
 						ModalResultField.P_gbx_in,
+						ModalResultField.T_gbx_in,
 						ModalResultField.P_gbx_loss,
 						ModalResultField.P_gbx_inertia,
 						ModalResultField.P_retarder_in,
@@ -750,6 +754,7 @@ namespace TUGraz.VectoCore.OutputData
 						ModalResultField.P_axle_loss,
 						ModalResultField.P_brake_in,
 						ModalResultField.P_brake_loss,
+						ModalResultField.T_brake,
 						ModalResultField.P_wheel_in,
 						ModalResultField.P_wheel_inertia,
 						ModalResultField.P_trac,

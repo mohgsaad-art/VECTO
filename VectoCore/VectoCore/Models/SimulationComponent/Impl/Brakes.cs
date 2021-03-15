@@ -46,6 +46,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 	{
 		public Watt BrakePower { get; set; }
 
+		public NewtonMeter BrakeTorque { get; set; }
+
 		public Brakes(IVehicleContainer dataBus) : base(dataBus) {}
 
 		public IResponse Initialize(NewtonMeter torque, PerSecond angularVelocity)
@@ -78,12 +80,17 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			var retVal = NextComponent.Request(absTime, dt, outTorque + brakeTorque, outAngularVelocity, dryRun);
 			retVal.Brakes.BrakePower = brakeTorque * avgAngularSpeed;
+			if(!dryRun)
+            {
+				BrakeTorque = brakeTorque;
+			}				
 			return retVal;
 		}
 
 		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
 			container[ModalResultField.P_brake_loss] = BrakePower;
+			container[ModalResultField.T_brake] = BrakeTorque;
 			container[ModalResultField.P_brake_in] = CurrentState.InTorque *
 													(PreviousState.InAngularVelocity + CurrentState.InAngularVelocity) / 2.0;
 		}

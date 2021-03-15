@@ -397,6 +397,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			container[ModalResultField.P_EM_in_, Position] = CurrentState.DrivetrainInTorque * avgDTSpeed;
 			container[ModalResultField.P_EM_out_, Position] = CurrentState.DrivetrainOutTorque * avgDTSpeed;
+			container[ModalResultField.T_EM_out_, Position] = CurrentState.DrivetrainOutTorque;
 			container[ModalResultField.P_EM_mech_, Position] = (CurrentState.DrivetrainInTorque - CurrentState.DrivetrainOutTorque) * avgDTSpeed;
 			
 			container[ModalResultField.P_EM_electricMotor_el_, Position] = CurrentState.ElectricPowerToBattery;

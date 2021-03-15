@@ -486,6 +486,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			container[ModalResultField.P_gbx_loss] = inPower - outPower;
 			container[ModalResultField.P_gbx_inertia] = CurrentState.InertiaTorqueLossOut * avgOutAngularSpeed;
 			container[ModalResultField.P_gbx_in] = inPower;
+			container[ModalResultField.T_gbx_in] = CurrentState.InTorque;
 			container[ModalResultField.n_gbx_out_avg] = (PreviousState.OutAngularVelocity +
 														CurrentState.OutAngularVelocity) / 2.0;
 			container[ModalResultField.T_gbx_out] = CurrentState.OutTorque;
