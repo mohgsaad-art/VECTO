@@ -4723,6 +4723,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\FMIWrapper\FmiWrapper_Net\FmiWrapper_Net\FmiWrapper_Net.csproj">
+      <Project>{b413d696-62d7-457d-8a41-2f78cfd17f7b}</Project>
+      <Name>FmiWrapper_Net</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\VectoCommon\VectoCommon\VectoCommon.csproj">
       <Project>{79A066AD-69A9-4223-90F6-6ED5D2D084F4}</Project>
       <Name>VectoCommon</Name>
