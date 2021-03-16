@@ -475,6 +475,7 @@
     <Compile Include="OutputData\XML\XMLManufacturerReportExemptedTruck.cs" />
     <Compile Include="OutputData\XML\XMLManufacturerReportPrimaryBus.cs" />
     <Compile Include="OutputData\XML\XMLPrimaryVehicleReport.cs" />
+    <Compile Include="Utils\FMUConnector.cs" />
     <Compile Include="Utils\Ninject\UseFirstArgumentAsInstanceProvider.cs" />
     <Compile Include="InputData\FileIO\XML\Declaration\NinjectModules\XMLDeclarationReaderInjectModule.cs" />
     <Compile Include="InputData\FileIO\XML\Declaration\DataProvider\XMLDeclarationVehicleDataProvider.cs" />
@@ -974,6 +975,10 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\FMIWrapper\FmiWrapper_Net\FmiWrapper_Net\FmiWrapper_Net.csproj">
+      <Project>{b413d696-62d7-457d-8a41-2f78cfd17f7b}</Project>
+      <Name>FmiWrapper_Net</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\VectoCommon\VectoCommon\VectoCommon.csproj">
       <Project>{79a066ad-69a9-4223-90f6-6ed5d2d084f4}</Project>
       <Name>VectoCommon</Name>
