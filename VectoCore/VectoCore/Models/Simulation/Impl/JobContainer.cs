@@ -96,6 +96,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				var entry = new RunEntry { Run = run, JobContainer = this };
 				Runs.Add(entry);
 				runIDs.Add(entry.Run.RunIdentifier);
+				//break;
 			}
 			return runIDs;
 		}

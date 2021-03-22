@@ -87,8 +87,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			if (!nextGear.Engaged) {
 				TestPowertrain.Gearbox._nextGear = Controller.ShiftStrategy.NextGear;
 				TestPowertrain.Gearbox.Disengaged = !nextGear.Engaged;
-			}
 
+			}
 			//if (!PreviousState.GearboxEngaged) {
 			TestPowertrain.CombustionEngine.Initialize(
 				(DataBus.EngineInfo as CombustionEngine).PreviousState.EngineTorque,

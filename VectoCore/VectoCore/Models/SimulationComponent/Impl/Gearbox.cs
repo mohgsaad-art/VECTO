@@ -364,6 +364,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			response.Gearbox.PowerRequest = outTorque * avgAngularVelocity;
 			response.Gearbox.Gear = new GearshiftPosition(0);
+			response.Gearbox.InTorque = inTorque;
 			return response;
 		}
 
@@ -394,6 +395,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					outTorque * (PreviousState.OutAngularVelocity + outAngularVelocity) / 2.0;
 				dryRunResponse.Gearbox.Gear = Gear;
 				dryRunResponse.Gearbox.InputSpeed = inAngularVelocity;
+				dryRunResponse.Gearbox.InTorque = inTorque;
 				return dryRunResponse;
 			}
 
@@ -452,6 +454,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			response.Gearbox.PowerRequest =
 				outTorque * (PreviousState.OutAngularVelocity + CurrentState.OutAngularVelocity) / 2.0;
 			response.Gearbox.Gear = Gear;
+			response.Gearbox.InTorque = inTorque;
 
 			return response;
 		}

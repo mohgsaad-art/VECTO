@@ -49,6 +49,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
             public HybridResultEntry Solution { get; set; }
         }
 
+        protected double PreviousEMTorque;
+
         protected VectoRunData ModelData;
         protected IDataBus DataBus;
 
@@ -59,9 +61,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
         protected DryRunSolutionState DryRunSolution;
 
+        protected ResponseDryRun DryRunResponse;
+
         protected readonly VelocityRollingLookup VelocityDropData = new VelocityRollingLookup();
 
         protected Dictionary<PowertrainPosition, Tuple<PerSecond, NewtonMeter>> ElectricMotorsOff;
+        protected FMUConnector connector = new FMUConnector();
 
 
         public FMUSimulinkModelHybridStrategy(VectoRunData runData, IVehicleContainer vehicleContainer)
@@ -81,6 +86,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
             ElectricMotorsOff = ModelData.ElectricMachinesData
                                         .Select(x => new KeyValuePair<PowertrainPosition, NewtonMeter>(x.Item1, null))
                                         .ToDictionary(x => x.Key, x => new Tuple<PerSecond, NewtonMeter>(null, x.Value));
+
+            string fmu = @"C:\Users\Work\Programming\HybridACEAStrategy\HybridACEAStrategy_20210223_grt_fmi_rtw\HybridACEAStrategy_20210223.fmu";
+            connector.InitFMU(fmu);
+
+
         }
 
         public IHybridController Controller { protected get; set; }
@@ -197,19 +207,59 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
         public IHybridStrategyResponse Request(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, bool dryRun)
         {
+            if(dryRun && DryRunResponse != null)
+            {
+                var PrevemPos = ModelData.ElectricMachinesData.First().Item1;
+                var PrevcurrentGear = PreviousState.GearboxEngaged ? DataBus.GearboxInfo.Gear : Controller.ShiftStrategy.NextGear;
+                var retValDryRun = new HybridStrategyResponse()
+                {
+                    //CombustionEngineOn = (PreviousEMTorque == ((DryRunResponse.Gearbox.InTorque != null) ? DryRunResponse.Gearbox.InTorque.Value() : 0)),
+                    CombustionEngineOn = DataBus.EngineInfo.EngineOn,
+                    GearboxInNeutral = false,
+                    MechanicalAssistPower = new Dictionary<PowertrainPosition, Tuple<PerSecond, NewtonMeter>>() {
+                    { PrevemPos, Tuple.Create(DryRunResponse.ElectricMotor.AngularVelocity, PreviousEMTorque.SI<NewtonMeter>()) }
+                },
+                    NextGear = PrevcurrentGear
+                };
+
+                return retValDryRun;
+            }
+
             var cfg = new HybridStrategyResponse()
             {
                 CombustionEngineOn = true,
                 GearboxInNeutral = false,
                 MechanicalAssistPower = ElectricMotorsOff
             };
+            var emPos = ModelData.ElectricMachinesData.First().Item1;
             var currentGear = PreviousState.GearboxEngaged ? DataBus.GearboxInfo.Gear : Controller.ShiftStrategy.NextGear;
+            TestPowertrain.Gearbox._nextGear = currentGear;
             ResponseDryRun response = RequestDryRun(absTime, dt, outTorque, outAngularVelocity, currentGear, cfg);
 
+            double ModelOutputEMTorque = connector.Step(absTime, dt, outTorque, outAngularVelocity, response);
+
+            PreviousEMTorque = ModelOutputEMTorque;
+
+            var retVal = new HybridStrategyResponse()
+            {
+                CombustionEngineOn = (ModelOutputEMTorque == ((response.Gearbox.InTorque != null) ? response.Gearbox.InTorque.Value() : 0)),
+                GearboxInNeutral = false,
+                MechanicalAssistPower = (ModelOutputEMTorque == 0) ? ElectricMotorsOff : new Dictionary<PowertrainPosition, Tuple<PerSecond, NewtonMeter>>() {
+                    { emPos, Tuple.Create(response.ElectricMotor.AngularVelocity, ModelOutputEMTorque.SI<NewtonMeter>()) }
+                },
+                NextGear = currentGear
+            };
+            retVal.GearboxEngaged = DataBus.GearboxInfo.GearEngaged(absTime);
 
 
+            DryRunResponse = response;
 
-            return null;
+            if(!dryRun)
+            {
+                CurrentState.GearboxEngaged = DataBus.GearboxInfo.GearEngaged(absTime);
+            }
+
+            return retVal;
         }
 
         public IResponse AmendResponse(IResponse response, Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, bool dryRun)
@@ -219,29 +269,47 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
         public void CommitSimulationStep(Second time, Second simulationInterval)
         {
-            throw new NotImplementedException();
+            PreviousState = CurrentState;
+            CurrentState = new StrategyState();
+            CurrentState.ICEStartTStmp = PreviousState.ICEStartTStmp;
+            CurrentState.GearshiftTriggerTstmp = PreviousState.GearshiftTriggerTstmp;
+            AllowEmergencyShift = false;
+            //DebugData = new DebugData();
+            DryRunSolution = null;
         }
 
-        public IHybridStrategyResponse Initialize(NewtonMeter outTorque, PerSecond outAngularVelocity)
+        public virtual IHybridStrategyResponse Initialize(NewtonMeter outTorque, PerSecond outAngularVelocity)
         {
-            throw new NotImplementedException();
+            var retVal = new HybridStrategyResponse()
+            { MechanicalAssistPower = new Dictionary<PowertrainPosition, Tuple<PerSecond, NewtonMeter>>() };
+
+            foreach (var em in ModelData.ElectricMachinesData)
+            {
+                retVal.MechanicalAssistPower[em.Item1] = null;
+            }
+            PreviousState.AngularVelocity = outAngularVelocity;
+            PreviousState.GearboxEngaged = true;
+            PreviousState.GearshiftTriggerTstmp = -double.MaxValue.SI<Second>();
+            CurrentState.GearshiftTriggerTstmp = -double.MaxValue.SI<Second>();
+            return retVal;
         }
 
         public void OperatingpointChangedDuringRequest(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, bool dryRun, IResponse retVal)
         {
-            throw new NotImplementedException();
+            DryRunResponse = null;
         }
 
         public void RepeatDrivingAction(Second absTime)
         {
-            throw new NotImplementedException();
+            DryRunResponse = null;
         }
 
     
 
         public void WriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
         {
-            
+            container[ModalResultField.HybridStrategyScore] = 0;
+            container[ModalResultField.HybridStrategySolution] = 0;
         }
     }
 }

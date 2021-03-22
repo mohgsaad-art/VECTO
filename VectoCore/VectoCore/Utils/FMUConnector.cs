@@ -12,6 +12,9 @@ using FmiWrapper_Net;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
+using TUGraz.VectoCore.Models.Connector.Ports.Impl;
+using TUGraz.VectoCore.OutputData;
+using TUGraz.VectoCore.Models.Simulation.Data;
 
 namespace TUGraz.VectoCore.Utils
 {
@@ -54,163 +57,84 @@ namespace TUGraz.VectoCore.Utils
 
 
 
-        public uint Step(int function_, Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, NewtonMeter inTorque, PerSecond inAngularVelocity, uint gear, Second lastShiftTime, IDataBus DataBus, Gearbox gearbox)
+        public double Step(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, ResponseDryRun response)
         {
             //set Inputs
-            if (function_ != 4)
-                StepSetInput(function_, absTime, dt, outTorque, outAngularVelocity, inTorque, inAngularVelocity, gear, lastShiftTime, DataBus, gearbox);
+            StepSetInput(absTime, dt, outTorque, outAngularVelocity, response);
 
             //doStep
             Fmi2Status step_status = Instance.DoStep((double)Time, 0.1, true);
 
             //getOutput
-            uint[] getOutputName = { OutputDict["OutShiftRequired"] };
-            double[] getOutput = new double[getOutputName.Length];
-            Instance.GetReal(getOutputName, getOutput);
+            uint[] getEMTorqueOutput = { OutputDict["EM_Torq"] };
+            double[] getOutEM = new double[getEMTorqueOutput.Length];
+            Instance.GetReal(getEMTorqueOutput, getOutEM);
 
-            uint[] getOutShiftRequiredName = { OutputDict["OutShiftRequired"] };
-            double[] getOutShiftRequired = new double[getOutShiftRequiredName.Length];
-            Instance.GetReal(getOutShiftRequiredName, getOutShiftRequired);
+            uint[] getICETorqueOutput = { OutputDict["ICE_Torq"] };
+            double[] getOutICE = new double[getICETorqueOutput.Length];
+            Instance.GetReal(getICETorqueOutput, getOutICE);
 
-            uint[] getOutNextGearName = { OutputDict["OutNextGear"] };
-            double[] getOutNextGear = new double[getOutNextGearName.Length];
-            Instance.GetReal(getOutNextGearName, getOutNextGear);
 
-            switch (function_)
-            {
-                case 1:
-                    return (uint)getOutShiftRequired[0];
-                case 2:
-                    return (uint)getOutNextGear[0];
-                case 3:
-                    if ((int)getOutShiftRequired[0] != -1)
-                    {
-                        InitGearNextGear = (uint)getOutShiftRequired[0];
-
-                    }
-                    return (uint)getOutNextGear[0];
-                default:
-                    break;
-            }
-            Time = Time + 0.1m;
-            if (getOutput.Length > 0 && getOutput[0] > 0)
-                return (uint)getOutput[0];
-            else
-                return 0;
+            return getOutEM[0];
         }
 
-        private void StepSetInput(int function_, Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, NewtonMeter inTorque, PerSecond inAngularVelocity, uint gear, Second lastShiftTime, IDataBus DataBus, Gearbox gearbox)
+        private void StepSetInput(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, ResponseDryRun response)
         {
-            var StrategyType = function_;
-            SetInput(new uint[] { InputDict["StrategyType"] }, new double[] { StrategyType });
-            var InAbsTime = absTime.Value();
+
+            /*var InAbsTime = absTime.Value();
             SetInput(new uint[] { InputDict["InAbsTime"] }, new double[] { InAbsTime });
             var InDt = dt.Value();
             SetInput(new uint[] { InputDict["InDt"] }, new double[] { InDt });
             var InOutTorque = outTorque.Value();
             SetInput(new uint[] { InputDict["InOutTorque"] }, new double[] { InOutTorque });
-            var InInTorque = inTorque.Value();
-            SetInput(new uint[] { InputDict["InInTorque"] }, new double[] { InInTorque });
+
             var InOutAngularVelocity = outAngularVelocity.AsRPM;
             SetInput(new uint[] { InputDict["InOutAngularVelocity"] }, new double[] { InOutAngularVelocity });
-            var InInAngularVelocity = inAngularVelocity.AsRPM;
-            SetInput(new uint[] { InputDict["InInAngularVelocity"] }, new double[] { InInAngularVelocity });
-            var InGear = gear;
-            SetInput(new uint[] { InputDict["InGear"] }, new double[] { InGear });
-            var InLastShifttime = (lastShiftTime.Value() == -double.MaxValue.SI().Value()) ? MinValue : lastShiftTime.Value();
-            SetInput(new uint[] { InputDict["InLastShifttime"] }, new double[] { InLastShifttime });
+            */
+            var ICE_MaxTorque_Nm = response.Engine.DynamicFullLoadPower.Value();
+            SetInput(new uint[] { InputDict["ICE_MaxTorque_Nm"] }, new double[] { ICE_MaxTorque_Nm });
 
-            /*var TCLocked = DataBus.TCLocked ? 1 : 0;
-            SetInput(new uint[] { InputDict["TCLocked"] }, new double[] { TCLocked });
-            var StartSpeed = DataBus.StartSpeed.Value();
-            SetInput(new uint[] { InputDict["StartSpeed"] }, new double[] { StartSpeed });
-            var StartAcceleration = DataBus.StartAcceleration.Value();
-            SetInput(new uint[] { InputDict["StartAcceleration"] }, new double[] { StartAcceleration });
-            var LastShift = (DataBus.LastShift.Value() == -double.MaxValue.SI().Value()) ? MinValue : DataBus.LastShift.Value();
-            SetInput(new uint[] { InputDict["LastShift"] }, new double[] { LastShift });
-            var TractionInterruption = DataBus.TractionInterruption.Value();
-            SetInput(new uint[] { InputDict["TractionInterruption"] }, new double[] { TractionInterruption });
-            var NumGears = DataBus.NumGears;
-            SetInput(new uint[] { InputDict["NumGears"] }, new double[] { NumGears });
-            var AxlegearLoss = DataBus.AxlegearLoss().Value();
-            SetInput(new uint[] { InputDict["AxlegearLoss"] }, new double[] { AxlegearLoss });
-            var EngineSpeed = (DataBus.EngineSpeed != null) ? DataBus.EngineSpeed.AsRPM : 0;
-            SetInput(new uint[] { InputDict["EngineSpeed"] }, new double[] { EngineSpeed });
-            var EngineTorque = (DataBus.EngineTorque != null) ? DataBus.EngineTorque.Value() : 0;
-            SetInput(new uint[] { InputDict["EngineTorque"] }, new double[] { EngineTorque });
-            var EngineIdleSpeed = (DataBus.EngineIdleSpeed != null) ? DataBus.EngineIdleSpeed.AsRPM : 0;
-            SetInput(new uint[] { InputDict["EngineIdleSpeed"] }, new double[] { EngineIdleSpeed });
-            var EngineRatedSpeed = (DataBus.EngineRatedSpeed != null) ? DataBus.EngineRatedSpeed.AsRPM : 0;
-            SetInput(new uint[] { InputDict["EngineRatedSpeed"] }, new double[] { EngineRatedSpeed });
-            var EngineN95hSpeed = (DataBus.EngineN95hSpeed != null) ? DataBus.EngineN95hSpeed.AsRPM : 0;
-            SetInput(new uint[] { InputDict["EngineN95hSpeed"] }, new double[] { EngineN95hSpeed });
-            var EngineN80hSpeed = (DataBus.EngineN80hSpeed != null) ? DataBus.EngineN80hSpeed.AsRPM : 0;
-            SetInput(new uint[] { InputDict["EngineN80hSpeed"] }, new double[] { EngineN80hSpeed });
-            var VehicleSpeed = (DataBus.VehicleSpeed != null) ? DataBus.VehicleSpeed.Value() : 0;
-            SetInput(new uint[] { InputDict["VehicleSpeed"] }, new double[] { VehicleSpeed });
-            var VehicleStopped = DataBus.VehicleStopped ? 1 : 0;
-            SetInput(new uint[] { InputDict["VehicleStopped"] }, new double[] { VehicleStopped });
-            var VehicleMass = (DataBus.VehicleMass != null) ? DataBus.VehicleMass.Value() : 0;
-            SetInput(new uint[] { InputDict["VehicleMass"] }, new double[] { VehicleMass });
-            var VehicleLoading = (DataBus.VehicleLoading != null) ? DataBus.VehicleLoading.Value() : 0;
-            SetInput(new uint[] { InputDict["VehicleLoading"] }, new double[] { VehicleLoading });
-            var TotalMass = (DataBus.TotalMass != null) ? DataBus.TotalMass.Value() : 0;
-            SetInput(new uint[] { InputDict["TotalMass"] }, new double[] { TotalMass });
-            var CargoVolume = (DataBus.CargoVolume != null) ? DataBus.CargoVolume.Value() : 0;
-            SetInput(new uint[] { InputDict["CargoVolume"] }, new double[] { CargoVolume });
-            var MaxVehicleSpeed = (DataBus.MaxVehicleSpeed != null) ? DataBus.MaxVehicleSpeed.Value() : 0;
-            SetInput(new uint[] { InputDict["MaxVehicleSpeed"] }, new double[] { MaxVehicleSpeed });
-            var Distance = (DataBus.Distance != null) ? DataBus.Distance.Value() : 0;
-            SetInput(new uint[] { InputDict["Distance"] }, new double[] { Distance });
-            var BrakePower = (DataBus.BrakePower != null) ? DataBus.BrakePower.Value() : 0;
-            SetInput(new uint[] { InputDict["BrakePower"] }, new double[] { BrakePower });
-            var ReducedMassWheels = (DataBus.ReducedMassWheels != null) ? DataBus.ReducedMassWheels.Value() : 0;
-            SetInput(new uint[] { InputDict["ReducedMassWheels"] }, new double[] { ReducedMassWheels });
-            var DrivingBehavior = (int)DataBus.DriverBehavior;
-            SetInput(new uint[] { InputDict["DrivingBehavior"] }, new double[] { DrivingBehavior });
-            var DrivingAction = (int)DataBus.DrivingAction;
-            SetInput(new uint[] { InputDict["DrivingAction"] }, new double[] { DrivingAction });
-            var DriverAcceleration = DataBus.DriverAcceleration.Value();
-            SetInput(new uint[] { InputDict["DriverAcceleration"] }, new double[] { DriverAcceleration });
-            var PTOActive = DataBus.PTOActive ? 1 : 0;
-            SetInput(new uint[] { InputDict["PTOActive"] }, new double[] { PTOActive });
-            var Altitude = (DataBus.Altitude != null) ? DataBus.Altitude.Value() : 0;
-            SetInput(new uint[] { InputDict["Altitude"] }, new double[] { Altitude });
-            var RoadGradient = (DataBus.RoadGradient != null) ? DataBus.RoadGradient.Value() : 0;
-            SetInput(new uint[] { InputDict["RoadGradient"] }, new double[] { RoadGradient });
-            var CycleStartDistance = (DataBus.CycleStartDistance != null) ? DataBus.CycleStartDistance.Value() : 0;
-            SetInput(new uint[] { InputDict["CycleStartDistance"] }, new double[] { CycleStartDistance });
-            var InLastUpshift = (gearbox.LastUpshift.Value() == -double.MaxValue.SI().Value()) ? MinValue : gearbox.LastUpshift.Value();
-            SetInput(new uint[] { InputDict["InLastUpshift"] }, new double[] { InLastUpshift });
-            var InLastDownshift = (gearbox.LastDownshift.Value() == -double.MaxValue.SI().Value()) ? MinValue : gearbox.LastDownshift.Value();
-            SetInput(new uint[] { InputDict["InLastDownshift"] }, new double[] { InLastDownshift });
-            var GearboxPreviousStateInTorque = (gearbox.PreviousState.InTorque != null) ? gearbox.PreviousState.InTorque.Value() : 0;
-            SetInput(new uint[] { InputDict["GearboxPreviousStateInTorque"] }, new double[] { GearboxPreviousStateInTorque });
-            var GearboxPreviousStateInAngularVelocity = (gearbox.PreviousState.InAngularVelocity != null) ? gearbox.PreviousState.InAngularVelocity.AsRPM : 0;
-            SetInput(new uint[] { InputDict["GearboxPreviousStateInAngularVelocity"] }, new double[] { GearboxPreviousStateInAngularVelocity });
-            var GearboxPreviousStateOutTorque = (gearbox.PreviousState.OutTorque != null) ? gearbox.PreviousState.OutTorque.Value() : 0;
-            SetInput(new uint[] { InputDict["GearboxPreviousStateOutTorque"] }, new double[] { GearboxPreviousStateOutTorque });
-            var GearboxPreviousStateOutAngularVelocity = (gearbox.PreviousState.OutAngularVelocity != null) ? gearbox.PreviousState.OutAngularVelocity.AsRPM : 0;
-            SetInput(new uint[] { InputDict["GearboxPreviousStateOutAngularVelocity"] }, new double[] { GearboxPreviousStateOutAngularVelocity });
-            var EnginePreviousStateEnginePower = (DataBus.PreviousStateEnginePower != null) ? DataBus.PreviousStateEnginePower.Value() : 0;
-            SetInput(new uint[] { InputDict["EnginePreviousStateEnginePower"] }, new double[] { EnginePreviousStateEnginePower });
-            var EnginePreviousStateEngineSpeed = (DataBus.EngineSpeed != null) ? DataBus.EngineSpeed.AsRPM : 0;
-            SetInput(new uint[] { InputDict["EnginePreviousStateEngineSpeed"] }, new double[] { EnginePreviousStateEngineSpeed });
-            var EnginePreviousStateEngineTorque = (DataBus.EngineTorque != null) ? DataBus.EngineTorque.Value() : 0;
-            SetInput(new uint[] { InputDict["EnginePreviousStateEngineTorque"] }, new double[] { EnginePreviousStateEngineTorque });
-            var EnginePreviousStateEngineTorqueOut = (DataBus.PreviousStateEngineTorqueOut != null) ? DataBus.PreviousStateEngineTorqueOut.Value() : 0;
-            SetInput(new uint[] { InputDict["EnginePreviousStateEngineTorqueOut"] }, new double[] { EnginePreviousStateEngineTorqueOut });
-            var EnginePreviousStateFullDragTorque = (DataBus.PreviousStateFullDragTorque != null) ? DataBus.PreviousStateFullDragTorque.Value() : 0;
-            SetInput(new uint[] { InputDict["EnginePreviousStateFullDragTorque"] }, new double[] { EnginePreviousStateFullDragTorque });
-            var EnginePreviousStateInertiaTorqueLoss = (DataBus.PreviousStateInertiaTorqueLoss != null) ? DataBus.PreviousStateInertiaTorqueLoss.Value() : 0;
-            SetInput(new uint[] { InputDict["EnginePreviousStateInertiaTorqueLoss"] }, new double[] { EnginePreviousStateInertiaTorqueLoss });
-            var EnginePreviousStateOperationMode = (int)DataBus.PreviousStateOperationMode;
-            SetInput(new uint[] { InputDict["EnginePreviousStateOperationMode"] }, new double[] { EnginePreviousStateOperationMode });
-            var EnginePreviousStateStationaryFullLoadTorque = (DataBus.PreviousStateStationaryFullLoadTorque != null) ? DataBus.PreviousStateStationaryFullLoadTorque.Value() : 0;
-            SetInput(new uint[] { InputDict["EnginePreviousStateStationaryFullLoadTorque"] }, new double[] { EnginePreviousStateStationaryFullLoadTorque });
-            var EnginePreviousStatedt = (DataBus.PreviousStateDt != null) ? DataBus.PreviousStateDt.Value() : 0;
-            SetInput(new uint[] { InputDict["EnginePreviousStatedt"] }, new double[] { EnginePreviousStatedt });
-        */
+            var torqueDemandPwt_Nm = (response.Gearbox.InTorque != null) ? response.Gearbox.InTorque.Value() : 0;
+            SetInput(new uint[] { InputDict["torqueDemandPwt_Nm"] }, new double[] { torqueDemandPwt_Nm });
+
+            var AuxCons_kW = (response.Engine.AuxiliariesPowerDemand != null) ? response.Engine.AuxiliariesPowerDemand.Value() : 0;
+            SetInput(new uint[] { InputDict["AuxCons_kW"] }, new double[] { AuxCons_kW });
+
+            var abilEssDchPower_kW = (response.ElectricSystem.RESSResponse.MaxDischargePower != null) ? response.ElectricSystem.RESSResponse.MaxDischargePower.Value() : 0;
+            SetInput(new uint[] { InputDict["abilEssDchPower_kW"] }, new double[] { abilEssDchPower_kW });
+
+            var abilEssRegenPower_kW = (response.ElectricSystem.RESSResponse.MaxChargePower != null) ? response.ElectricSystem.RESSResponse.MaxChargePower.Value() : 0;
+            SetInput(new uint[] { InputDict["abilEssRegenPower_kW"] }, new double[] { abilEssRegenPower_kW });
+
+            var reqMotorBrakeTorque_Nm = (response.Brakes.BrakeTorque != null) ? response.Brakes.BrakeTorque.Value() : 0;
+            SetInput(new uint[] { InputDict["reqMotorBrakeTorque_Nm"] }, new double[] { reqMotorBrakeTorque_Nm });
+
+            var SOC = response.ElectricSystem.RESSResponse.StateOfCharge;
+            SetInput(new uint[] { InputDict["SOC"] }, new double[] { SOC });
+
+            var abilMotorTorque_Nm = (response.ElectricMotor.MaxDriveTorque != null) ? response.ElectricMotor.MaxDriveTorque.Value() : 0;
+            SetInput(new uint[] { InputDict["abilMotorTorque_Nm"] }, new double[] { abilMotorTorque_Nm });
+
+            var abilMotorPower_kW = ((response.ElectricMotor.MaxDriveTorque ?? 0.SI<NewtonMeter>()) * response.ElectricMotor.AngularVelocity).Value();
+            SetInput(new uint[] { InputDict["abilMotorPower_kW"] }, new double[] { abilMotorPower_kW });
+
+            var motorSpeed_rpm = (response.Engine.EngineSpeed != null) ? response.Engine.EngineSpeed.Value() : 0;
+            SetInput(new uint[] { InputDict["motorSpeed_rpm"] }, new double[] { motorSpeed_rpm });
+
+            var abilRegenPower_kW = ((response.ElectricMotor.MaxRecuperationTorqueEmMap ?? 0.SI<NewtonMeter>()) * response.ElectricMotor.AngularVelocity).Value();
+            SetInput(new uint[] { InputDict["abilRegenPower_kW"] }, new double[] { abilRegenPower_kW });
+
+            var abilRegenTorque_Nm = (response.ElectricMotor.MaxRecuperationTorqueEmMap != null) ? response.ElectricMotor.MaxRecuperationTorqueEmMap.Value() : 0;
+            SetInput(new uint[] { InputDict["abilRegenTorque_Nm"] }, new double[] { abilRegenTorque_Nm });
+
+            var EM_speed_rpm = (response.ElectricMotor.AngularVelocity != null) ? response.ElectricMotor.AngularVelocity.Value() : 0;
+            SetInput(new uint[] { InputDict["EM_speed_rpm"] }, new double[] { EM_speed_rpm });
+
+            var motorTorque_Nm = (response.ElectricMotor.EmTorqueMap != null) ? response.ElectricMotor.EmTorqueMap.Value() : 0;
+            SetInput(new uint[] { InputDict["motorTorque_Nm"] }, new double[] { motorTorque_Nm });
+
+            var VehicleSpeed_kmh = (response.Vehicle.VehicleSpeed != null) ? response.Vehicle.VehicleSpeed.Value() : 0;
+            SetInput(new uint[] { InputDict["VehicleSpeed"] }, new double[] { VehicleSpeed_kmh });
         }
 
 

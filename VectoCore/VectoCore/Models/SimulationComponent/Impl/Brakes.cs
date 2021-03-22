@@ -80,6 +80,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			var retVal = NextComponent.Request(absTime, dt, outTorque + brakeTorque, outAngularVelocity, dryRun);
 			retVal.Brakes.BrakePower = brakeTorque * avgAngularSpeed;
+			retVal.Brakes.BrakeTorque = brakeTorque;
+
 			if(!dryRun)
             {
 				BrakeTorque = brakeTorque;

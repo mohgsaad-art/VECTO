@@ -97,7 +97,8 @@ namespace TUGraz.VectoCommon.Models
 		public PerSecond InputSpeed { get; set; }
 
 		public GearshiftPosition Gear { get; set; }
-	}
+        public NewtonMeter InTorque { get; set; }
+    }
 
 	public class TorqueConverterResponse : AbstractPowertrainComponentResponse
 	{
@@ -131,7 +132,8 @@ namespace TUGraz.VectoCommon.Models
 	public class BrakesResponse : AbstractComponentResponse
 	{
 		public Watt BrakePower { get; set; }
-	}
+        public NewtonMeter BrakeTorque { get; set; }
+    }
 
 	[DebuggerDisplay("P_em_mech: {ElectricMotorPowerMech}")]
 
@@ -147,7 +149,9 @@ namespace TUGraz.VectoCommon.Models
 
 		public SIBase<Watt> InertiaPowerDemand { get; set; }
 		public NewtonMeter TotalTorqueDemand { get; set; }
-	}
+        public NewtonMeter MaxRecuperationTorqueEmMap { get; set; }
+        public NewtonMeter EmTorqueMap { get; set; }
+    }
 
 
 	/// <summary>
