@@ -81,7 +81,8 @@ namespace TUGraz.VectoCommon.Models
 		public NewtonMeter DragTorque { get; set; }
 
 		public Watt AuxiliariesPowerDemand { get; set; }
-	}
+        public NewtonMeter InertiaTorqueLoss { get; set; }
+    }
 
 
 
@@ -151,6 +152,9 @@ namespace TUGraz.VectoCommon.Models
 		public NewtonMeter TotalTorqueDemand { get; set; }
         public NewtonMeter MaxRecuperationTorqueEmMap { get; set; }
         public NewtonMeter EmTorqueMap { get; set; }
+        public PerSecond EmSpeed { get; set; }
+        public NewtonMeter InertiaTorqueEm { get; set; }
+        public NewtonMeter MaxRecuperationTorqueEm { get; set; }
     }
 
 

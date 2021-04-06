@@ -50,6 +50,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
         }
 
         protected double PreviousEMTorque;
+        protected double PreviousICETorque;
 
         protected VectoRunData ModelData;
         protected IDataBus DataBus;
@@ -107,7 +108,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
         protected ResponseDryRun RequestDryRun(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, GearshiftPosition nextGear, HybridStrategyResponse cfg)
         {
-            TestPowertrain.Gearbox.Gear = PreviousState.GearboxEngaged ? DataBus.GearboxInfo.Gear : Controller.ShiftStrategy.NextGear;
+            TestPowertrain.Gearbox.Gear = PreviousState.GearboxEngaged ? DataBus.GearboxInfo.Gear : DataBus.GearboxInfo.NextGear;
             TestPowertrain.Gearbox.Disengaged = !nextGear.Engaged;
             TestPowertrain.Gearbox.DisengageGearbox = !nextGear.Engaged;
             TestPowertrain.Container.VehiclePort.Initialize(DataBus.VehicleInfo.VehicleSpeed, DataBus.DrivingCycleInfo.RoadGradient ?? 0.SI<Radian>());
@@ -117,7 +118,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
             TestPowertrain.Battery?.Initialize(DataBus.BatteryInfo.StateOfCharge);
             TestPowertrain.SuperCap?.Initialize(DataBus.BatteryInfo.StateOfCharge);
 
-            var currentGear = PreviousState.GearboxEngaged ? DataBus.GearboxInfo.Gear : Controller.ShiftStrategy.NextGear;
+            var currentGear = PreviousState.GearboxEngaged ? DataBus.GearboxInfo.Gear : DataBus.GearboxInfo.NextGear;
 
             if (nextGear.Engaged && !nextGear.Equals(currentGear))
             {
@@ -151,7 +152,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
             if (!nextGear.Engaged)
             {
-                TestPowertrain.Gearbox._nextGear = Controller.ShiftStrategy.NextGear;
+                TestPowertrain.Gearbox._nextGear = DataBus.GearboxInfo.NextGear;
                 TestPowertrain.Gearbox.Disengaged = !nextGear.Engaged;
             }
 
@@ -207,57 +208,110 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
         public IHybridStrategyResponse Request(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, bool dryRun)
         {
-            if(dryRun && DryRunResponse != null)
+            var emPos = ModelData.ElectricMachinesData.First().Item1;
+            var currentGearEngaged = DataBus.GearboxInfo.GearEngaged(absTime);
+            var currentGear = DataBus.GearboxInfo.Gear;
+
+            var nextGear = !DataBus.GearboxInfo.GearEngaged(absTime)
+                ? new GearshiftPosition(0)
+                : (PreviousState.GearboxEngaged
+                    ? DataBus.GearboxInfo.Gear
+                    : DataBus.GearboxInfo.NextGear);
+
+            if(!currentGearEngaged)
             {
-                var PrevemPos = ModelData.ElectricMachinesData.First().Item1;
-                var PrevcurrentGear = PreviousState.GearboxEngaged ? DataBus.GearboxInfo.Gear : Controller.ShiftStrategy.NextGear;
+                var retValDisengaged = new HybridStrategyResponse()
+                {
+                    //CombustionEngineOn = (ModelOutputEMTorque == ((response.Gearbox.InTorque != null) ? response.Gearbox.InTorque.Value() : 0)),
+                    CombustionEngineOn = ((PreviousICETorque == 0 && PreviousEMTorque < 0 && DataBus.VehicleInfo.VehicleSpeed > 0.5) && !(PreviousICETorque == 0 && PreviousEMTorque == 0)) ? false : true,
+                    GearboxInNeutral = false,
+                    MechanicalAssistPower = ElectricMotorsOff,
+                    NextGear = DataBus.GearboxInfo.NextGear,
+                    GearboxEngaged = DataBus.GearboxInfo.GearEngaged(absTime)
+                };
+
+
+                HybridResultEntry DisengagedBest = new HybridResultEntry
+                {
+                    Response = DryRunResponse,
+                    Gear = DataBus.GearboxInfo.NextGear,
+                    Setting = retValDisengaged
+                };
+                retValDisengaged.EvaluatedSolution = DisengagedBest;
+
+                return retValDisengaged;
+            }
+
+            // Dru Run, return previous saved response and current gear
+            if ((dryRun && DryRunResponse != null))
+            {
                 var retValDryRun = new HybridStrategyResponse()
                 {
                     //CombustionEngineOn = (PreviousEMTorque == ((DryRunResponse.Gearbox.InTorque != null) ? DryRunResponse.Gearbox.InTorque.Value() : 0)),
-                    CombustionEngineOn = DataBus.EngineInfo.EngineOn,
+                    CombustionEngineOn = ((PreviousICETorque == 0 && PreviousEMTorque < 0 && DataBus.VehicleInfo.VehicleSpeed > 0.5) && !(PreviousICETorque == 0 && PreviousEMTorque == 0)) ? false : true,
                     GearboxInNeutral = false,
                     MechanicalAssistPower = new Dictionary<PowertrainPosition, Tuple<PerSecond, NewtonMeter>>() {
-                    { PrevemPos, Tuple.Create(DryRunResponse.ElectricMotor.AngularVelocity, PreviousEMTorque.SI<NewtonMeter>()) }
-                },
-                    NextGear = PrevcurrentGear
+                    { emPos, Tuple.Create(DryRunResponse.ElectricMotor.AngularVelocity, PreviousEMTorque.SI<NewtonMeter>()) }
+                }
                 };
+
+
+                HybridResultEntry bestPrev = new HybridResultEntry
+                {
+                    Response = DryRunResponse,
+                    Gear = nextGear,
+                    Setting = retValDryRun
+                };
+                retValDryRun.EvaluatedSolution = bestPrev;
 
                 return retValDryRun;
             }
 
-            var cfg = new HybridStrategyResponse()
+            //Set _nextGear as necessary to function, normaly done in VelocitySpeedGearshiftPreprocessor
+            TestPowertrain.Gearbox._nextGear = nextGear;
+
+            //Set Strategy Response
+            var emOffSetting = new HybridStrategyResponse()
             {
                 CombustionEngineOn = true,
                 GearboxInNeutral = false,
                 MechanicalAssistPower = ElectricMotorsOff
             };
-            var emPos = ModelData.ElectricMachinesData.First().Item1;
-            var currentGear = PreviousState.GearboxEngaged ? DataBus.GearboxInfo.Gear : Controller.ShiftStrategy.NextGear;
-            TestPowertrain.Gearbox._nextGear = currentGear;
-            ResponseDryRun response = RequestDryRun(absTime, dt, outTorque, outAngularVelocity, currentGear, cfg);
+            //First dry run, to get max EM values
+            var emOffResponse = RequestDryRun(absTime, dt, outTorque, outAngularVelocity, nextGear, emOffSetting);
 
-            double ModelOutputEMTorque = connector.Step(absTime, dt, outTorque, outAngularVelocity, response);
+            double EMTorque;
+            double ICETorque;
+            connector.Step(absTime, dt, outTorque, outAngularVelocity, emOffResponse, DataBus, out EMTorque, out ICETorque);
 
-            PreviousEMTorque = ModelOutputEMTorque;
+            EMTorque = EMTorque * -1;
+            PreviousEMTorque = EMTorque;
+            PreviousICETorque = ICETorque;
 
             var retVal = new HybridStrategyResponse()
             {
-                CombustionEngineOn = (ModelOutputEMTorque == ((response.Gearbox.InTorque != null) ? response.Gearbox.InTorque.Value() : 0)),
+                //CombustionEngineOn = (ModelOutputEMTorque == ((response.Gearbox.InTorque != null) ? response.Gearbox.InTorque.Value() : 0)),
+                CombustionEngineOn = ((ICETorque == 0 && EMTorque < 0 && DataBus.VehicleInfo.VehicleSpeed > 0.5) && !(ICETorque == 0 && EMTorque == 0)) ? false : true,
                 GearboxInNeutral = false,
-                MechanicalAssistPower = (ModelOutputEMTorque == 0) ? ElectricMotorsOff : new Dictionary<PowertrainPosition, Tuple<PerSecond, NewtonMeter>>() {
-                    { emPos, Tuple.Create(response.ElectricMotor.AngularVelocity, ModelOutputEMTorque.SI<NewtonMeter>()) }
+                MechanicalAssistPower = (EMTorque == 0 || !currentGearEngaged || !emOffResponse.Gearbox.Gear.Engaged) ? ElectricMotorsOff : new Dictionary<PowertrainPosition, Tuple<PerSecond, NewtonMeter>>() {
+                    { emPos, Tuple.Create(emOffResponse.ElectricMotor.AngularVelocity, EMTorque.SI<NewtonMeter>()) }
                 },
-                NextGear = currentGear
+                NextGear = nextGear,
+                GearboxEngaged = DataBus.GearboxInfo.GearEngaged(absTime)
             };
-            retVal.GearboxEngaged = DataBus.GearboxInfo.GearEngaged(absTime);
 
 
-            DryRunResponse = response;
+            HybridResultEntry best = new HybridResultEntry{ 
+                Response = emOffResponse,
+                Gear = currentGear,
+                Setting = retVal
+            };
+            retVal.EvaluatedSolution = best;
 
-            if(!dryRun)
-            {
-                CurrentState.GearboxEngaged = DataBus.GearboxInfo.GearEngaged(absTime);
-            }
+
+            DryRunResponse = emOffResponse;
+            CurrentState.GearboxEngaged = retVal.GearboxEngaged;
+  
 
             return retVal;
         }

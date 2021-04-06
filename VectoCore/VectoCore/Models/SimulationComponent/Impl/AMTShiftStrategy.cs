@@ -185,6 +185,34 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			PerSecond outAngularVelocity, NewtonMeter inTorque, PerSecond inAngularVelocity, GearshiftPosition gear,
 			Second lastShiftTime, IResponse response)
 		{
+			// no shift when ICE Off
+			
+			if(!DataBus.EngineCtl.CombustionEngineOn )
+            {
+				/*var tooHigh = SpeedTooHighForEngine(gear, inAngularVelocity / GearboxModelData.Gears[gear.Gear].Ratio);
+				var tooLow = SpeedTooLowForEngine(gear, inAngularVelocity / GearboxModelData.Gears[gear.Gear].Ratio);
+				var tooHigh2 = SpeedTooHighForEngine(Gears.Successor(gear), inAngularVelocity / GearboxModelData.Gears[gear.Gear].Ratio);
+				var tooLow2 = SpeedTooLowForEngine(Gears.Successor(gear), inAngularVelocity / GearboxModelData.Gears[gear.Gear].Ratio);*/
+				_nextGear = gear;
+				if (DataBus.DriverInfo.DrivingAction == DrivingAction.Accelerate &&
+					IsAboveUpShiftCurve(_nextGear, inTorque, inAngularVelocity) &&
+					Gears.HasSuccessor(gear))
+				{
+					_nextGear = Gears.Successor(gear);
+					return true;
+				}/* else if((DataBus.DriverInfo.DriverBehavior == DrivingBehavior.Accelerating ||
+					DataBus.DriverInfo.DriverBehavior == DrivingBehavior.Driving) &&
+					IsBelowDownShiftCurve(_nextGear, inTorque, inAngularVelocity) &&
+					Gears.HasPredecessor(gear))
+                {
+					_nextGear = Gears.Predecessor(gear);
+					return true;
+				}*/ else
+                {
+					return false;
+				}
+            }
+
 			// no shift when vehicle stands
 			if (DataBus.VehicleInfo.VehicleStopped) {
 				return false;

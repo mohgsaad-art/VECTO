@@ -11,7 +11,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent
 		PerSecond ICESpeed { get; }
 		bool GearboxEngaged { get; }
 
-
+		bool ICEEngineOn { get; }
 		Second SimulationInterval { get; }
 
 		PerSecond ElectricMotorSpeed(PowertrainPosition pos);

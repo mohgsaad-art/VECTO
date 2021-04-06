@@ -31,7 +31,7 @@ using Wheels = TUGraz.VectoCore.Models.SimulationComponent.Impl.Wheels;
 namespace TUGraz.VectoCore.Tests.Integration.HybridFMUSimulinkModel
 {
     [TestFixture]
-    [Parallelizable(ParallelScope.All)]
+    //[Parallelizable(ParallelScope.All)]
     public class ParallelHybridFMUSimulinkModelTest
     {
         //private ModalResultField[] Yfields;
@@ -87,7 +87,8 @@ namespace TUGraz.VectoCore.Tests.Integration.HybridFMUSimulinkModel
         ]
         public void P2HybridDriveOff(double vmax, double initialSoC, double slope)
         {
-            var graphWriter = GetGraphWriter(new[] { ModalResultField.P_electricMotor_mech_P2 });
+			//NLog.LogManager.EnableLogging();
+			var graphWriter = GetGraphWriter(new[] { ModalResultField.P_electricMotor_mech_P2 });
             var cycleData = string.Format(
                 @"   0,   0, {1},    3
 				   700, {0}, {1},    0", vmax, slope);
@@ -113,11 +114,103 @@ namespace TUGraz.VectoCore.Tests.Integration.HybridFMUSimulinkModel
 
             Assert.IsTrue(modData.Rows.Count > 0);
             graphWriter.Write(modFilename);
-        }
+			//NLog.LogManager.DisableLogging();
+		}
 
-        // =================================================
+		[
+		TestCase(30, 0.7, 0, 0, TestName = "P2 Hybrid ConstantSpeed 30km/h SoC: 0.7, level"),
+		TestCase(50, 0.7, 0, 0, TestName = "P2 Hybrid ConstantSpeed 50km/h SoC: 0.7, level"),
+		TestCase(80, 0.7, 0, 0, TestName = "P2 Hybrid ConstantSpeed 80km/h SoC: 0.7, level"),
 
-        public static JobContainer CreateEngineeringRun(DrivingCycleData cycleData, string modFileName, double initialSoc, PowertrainPosition pos, double ratio, bool largeMotor = false, double pAuxEl = 0, Kilogram payload = null, Watt maxDriveTrainPower = null)
+		TestCase(30, 0.25, 0, 0, TestName = "P2 Hybrid ConstantSpeed 30km/h SoC: 0.25, level"),
+		TestCase(50, 0.25, 0, 0, TestName = "P2 Hybrid ConstantSpeed 50km/h SoC: 0.25, level"),
+		TestCase(80, 0.25, 0, 0, TestName = "P2 Hybrid ConstantSpeed 80km/h SoC: 0.25, level"),
+
+		TestCase(30, 0.5, 5, 0, TestName = "P2 Hybrid ConstantSpeed 30km/h SoC: 0.5, UH 5%"),
+		TestCase(50, 0.5, 5, 0, TestName = "P2 Hybrid ConstantSpeed 50km/h SoC: 0.5, UH 5%"),
+		TestCase(80, 0.5, 5, 0, TestName = "P2 Hybrid ConstantSpeed 80km/h SoC: 0.5, UH 5%"),
+
+		TestCase(30, 0.5, -5, 0, TestName = "P2 Hybrid ConstantSpeed 30km/h SoC: 0.5, DH 5%"),
+		TestCase(50, 0.5, -5, 0, TestName = "P2 Hybrid ConstantSpeed 50km/h SoC: 0.5, DH 5%"),
+		TestCase(80, 0.5, -5, 0, TestName = "P2 Hybrid ConstantSpeed 80km/h SoC: 0.5, DH 5%"),
+
+		TestCase(30, 0.25, 0, 1000, TestName = "P2 Hybrid ConstantSpeed 30km/h SoC: 0.25, level P_auxEl: 1kW"),
+			TestCase(30, 0.25, 0, 5000, TestName = "P2 Hybrid ConstantSpeed 30km/h SoC: 0.25, level P_auxEl: 5kW"),
+		]
+		public void P2HybridConstantSpeed(double vmax, double initialSoC, double slope, double pAuxEl)
+		{
+			//NLog.LogManager.EnableLogging();
+			var cycleData = string.Format(
+				@"   0, {0}, {1},    0
+				  7000, {0}, {1},    0", vmax, slope);
+			var cycle = SimpleDrivingCycles.CreateCycleData(cycleData);
+
+			const bool largeMotor = true;
+
+			var modFilename = string.Format("SimulinkMatlabSimpleParallelHybrid-P2_constant_{0}-{1}_{2}_{3}.vmod", vmax, initialSoC, slope, pAuxEl);
+			const PowertrainPosition pos = PowertrainPosition.HybridP2;
+			var job = CreateEngineeringRun(
+				cycle, modFilename, initialSoC, pos, 1.0, largeMotor: true, pAuxEl: pAuxEl);
+			var run = job.Runs.First().Run;
+
+			var hybridController = (HybridController)((VehicleContainer)run.GetContainer()).HybridController;
+			Assert.NotNull(hybridController);
+
+			var modData = ((ModalDataContainer)((VehicleContainer)run.GetContainer()).ModData).Data;
+
+			var data = run.GetContainer().RunData;
+			//File.WriteAllText(
+			//	$"{modFilename}.json",
+			//	JsonConvert.SerializeObject(data, Formatting.Indented));
+
+			run.Run();
+			Assert.IsTrue(run.FinishedWithoutErrors);
+
+			Assert.IsTrue(modData.Rows.Count > 0);
+			var graphWriter = GetGraphWriter(new[] { ModalResultField.P_electricMotor_mech_P2 });
+			graphWriter.Write(modFilename);
+			//NLog.LogManager.DisableLogging();
+		}
+
+		[TestCase(50, 0.79, 0, TestName = "P2 Hybrid Brake Standstill 50km/h SoC: 0.79, level"),
+		TestCase(50, 0.25, 0, TestName = "P2 Hybrid Brake Standstill 50km/h SoC: 0.25, level"),
+		TestCase(50, 0.65, 0, TestName = "P2 Hybrid Brake Standstill 50km/h SoC: 0.65, level")
+		]
+		public void P2HybridBrakeStandstill(double vmax, double initialSoC, double slope)
+		{
+			//NLog.LogManager.EnableLogging();
+			var cycleData = string.Format(
+				@"   0, {0}, {1},    0
+				   200,   0, {1},    3", vmax, slope);
+			var cycle = SimpleDrivingCycles.CreateCycleData(cycleData);
+
+			const bool largeMotor = true;
+
+			var modFilename = string.Format("SimulinkMatlabSimpleParallelHybrid-P2_stop_{0}-{1}_{2}.vmod", vmax, initialSoC, slope);
+			const PowertrainPosition pos = PowertrainPosition.HybridP2;
+			var job = CreateEngineeringRun(
+				cycle, modFilename, initialSoC, pos, 1.0, largeMotor: true);
+			var run = job.Runs.First().Run;
+
+			var hybridController = (HybridController)((VehicleContainer)run.GetContainer()).HybridController;
+			Assert.NotNull(hybridController);
+			//var strategy = (DelegateParallelHybridStrategy)hybridController.Strategy;
+			//Assert.NotNull(strategy);
+
+			var modData = ((ModalDataContainer)((VehicleContainer)run.GetContainer()).ModData).Data;
+
+			run.Run();
+			Assert.IsTrue(run.FinishedWithoutErrors);
+
+			Assert.IsTrue(modData.Rows.Count > 0);
+			var graphWriter = GetGraphWriter(new[] { ModalResultField.P_electricMotor_mech_P2 });
+			graphWriter.Write(modFilename);
+			//NLog.LogManager.DisableLogging();
+		}
+
+		// =================================================
+
+		public static JobContainer CreateEngineeringRun(DrivingCycleData cycleData, string modFileName, double initialSoc, PowertrainPosition pos, double ratio, bool largeMotor = false, double pAuxEl = 0, Kilogram payload = null, Watt maxDriveTrainPower = null)
         {
             var fileWriter = new FileOutputWriter(Path.GetFileNameWithoutExtension(modFileName));
             var sumData = new SummaryDataContainer(fileWriter);

@@ -122,6 +122,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			get { return CurrentStrategySettings.EvaluatedSolution.Response?.Engine.EngineSpeed; }
 		}
 
+		public bool ICEEngineOn
+		{
+			get { return CurrentStrategySettings.CombustionEngineOn; }
+		}
+
 
 		public IResponse Request(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity,
 			bool dryRun = false)

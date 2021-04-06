@@ -404,8 +404,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var shiftAllowed = !inAngularVelocity.IsEqual(0) && !DataBus.VehicleInfo.VehicleSpeed.IsEqual(0);
 
 			if (response is ResponseSuccess && shiftAllowed) {
+				var Speed = response.Engine.EngineSpeed;
+				if(Speed.Equals(0.SI<PerSecond>()) && !response.Engine.EngineOn)
+                {
+					Speed = response.Gearbox.InputSpeed;
+                }
 				var shiftRequired = _strategy?.ShiftRequired(absTime, dt, outTorque, outAngularVelocity, inTorque,
-					response.Engine.EngineSpeed, Gear, EngageTime, response) ?? false;
+					Speed, Gear, EngageTime, response) ?? false;
 
 				if (shiftRequired) {
 					if (_overrideDisengage != null) {

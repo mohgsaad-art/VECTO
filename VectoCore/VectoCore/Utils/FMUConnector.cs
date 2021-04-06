@@ -20,6 +20,10 @@ namespace TUGraz.VectoCore.Utils
 {
     public class FMUConnector
     {
+        static bool firstLine = false;
+
+        static string header = "Time;ICE_MaxTorque_Nm;torqueDemandPwt_Nm;AuxCons_kW;abilEssDchPower_kW;abilEssRegenPower_kW;reqMotorBrakeTorque_Nm;SOC;abilMotorTorque_Nm;abilMotorPower_kW;motorSpeed_rpm;abilRegenPower_kW;abilRegenTorque_Nm;EM_speed_rpm;motorTorque_Nm;VehicleSpeed";
+
         const Double MinValue = -2.2251E+307;
         private string ModelDescriptionGuid { get; set; }
         private string ModelIdentifier { get; set; }
@@ -57,10 +61,10 @@ namespace TUGraz.VectoCore.Utils
 
 
 
-        public double Step(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, ResponseDryRun response)
+        public double Step(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, ResponseDryRun response, IDataBus DataBus, out double EMTorque, out double ICETorque)
         {
             //set Inputs
-            StepSetInput(absTime, dt, outTorque, outAngularVelocity, response);
+            StepSetInput(absTime, dt, outTorque, outAngularVelocity, response, DataBus);
 
             //doStep
             Fmi2Status step_status = Instance.DoStep((double)Time, 0.1, true);
@@ -74,11 +78,12 @@ namespace TUGraz.VectoCore.Utils
             double[] getOutICE = new double[getICETorqueOutput.Length];
             Instance.GetReal(getICETorqueOutput, getOutICE);
 
-
+            EMTorque = getOutEM[0];
+            ICETorque = getOutICE[0];
             return getOutEM[0];
         }
 
-        private void StepSetInput(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, ResponseDryRun response)
+        private void StepSetInput(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, ResponseDryRun response, IDataBus DataBus)
         {
 
             /*var InAbsTime = absTime.Value();
@@ -91,7 +96,11 @@ namespace TUGraz.VectoCore.Utils
             var InOutAngularVelocity = outAngularVelocity.AsRPM;
             SetInput(new uint[] { InputDict["InOutAngularVelocity"] }, new double[] { InOutAngularVelocity });
             */
-            var ICE_MaxTorque_Nm = response.Engine.DynamicFullLoadPower.Value();
+            
+            var InertiaTorqueLoss = (DataBus.EngineInfo.EngineOn ? response.Engine.InertiaTorqueLoss.Value() : 0);
+
+            var ICE_MaxTorque_Nm = (response.Engine.DynamicFullLoadTorque != null) ? (response.Engine.DynamicFullLoadTorque.Value() - InertiaTorqueLoss) : 0;
+            //var ICE_MaxTorque_Nm = (response.Engine.DynamicFullLoadTorque != null) ? (response.Engine.DynamicFullLoadTorque).Value() : 0;
             SetInput(new uint[] { InputDict["ICE_MaxTorque_Nm"] }, new double[] { ICE_MaxTorque_Nm });
 
             var torqueDemandPwt_Nm = (response.Gearbox.InTorque != null) ? response.Gearbox.InTorque.Value() : 0;
@@ -100,41 +109,44 @@ namespace TUGraz.VectoCore.Utils
             var AuxCons_kW = (response.Engine.AuxiliariesPowerDemand != null) ? response.Engine.AuxiliariesPowerDemand.Value() : 0;
             SetInput(new uint[] { InputDict["AuxCons_kW"] }, new double[] { AuxCons_kW });
 
-            var abilEssDchPower_kW = (response.ElectricSystem.RESSResponse.MaxDischargePower != null) ? response.ElectricSystem.RESSResponse.MaxDischargePower.Value() : 0;
+            var abilEssDchPower_kW = (response.ElectricSystem != null && response.ElectricSystem.RESSResponse.MaxDischargePower != null) ? response.ElectricSystem.RESSResponse.MaxDischargePower.Value() / 1000 : 0;
             SetInput(new uint[] { InputDict["abilEssDchPower_kW"] }, new double[] { abilEssDchPower_kW });
 
-            var abilEssRegenPower_kW = (response.ElectricSystem.RESSResponse.MaxChargePower != null) ? response.ElectricSystem.RESSResponse.MaxChargePower.Value() : 0;
+            var abilEssRegenPower_kW = (response.ElectricSystem != null && response.ElectricSystem.RESSResponse.MaxChargePower != null) ? response.ElectricSystem.RESSResponse.MaxChargePower.Value() / 1000 : 0;
             SetInput(new uint[] { InputDict["abilEssRegenPower_kW"] }, new double[] { abilEssRegenPower_kW });
 
             var reqMotorBrakeTorque_Nm = (response.Brakes.BrakeTorque != null) ? response.Brakes.BrakeTorque.Value() : 0;
             SetInput(new uint[] { InputDict["reqMotorBrakeTorque_Nm"] }, new double[] { reqMotorBrakeTorque_Nm });
 
-            var SOC = response.ElectricSystem.RESSResponse.StateOfCharge;
+            var SOC = (response.ElectricSystem != null && response.ElectricSystem.RESSResponse != null) ? response.ElectricSystem.RESSResponse.StateOfCharge * 100 : 0 ;
             SetInput(new uint[] { InputDict["SOC"] }, new double[] { SOC });
 
             var abilMotorTorque_Nm = (response.ElectricMotor.MaxDriveTorque != null) ? response.ElectricMotor.MaxDriveTorque.Value() : 0;
             SetInput(new uint[] { InputDict["abilMotorTorque_Nm"] }, new double[] { abilMotorTorque_Nm });
 
-            var abilMotorPower_kW = ((response.ElectricMotor.MaxDriveTorque ?? 0.SI<NewtonMeter>()) * response.ElectricMotor.AngularVelocity).Value();
+            var abilMotorPower_kW = ((((response.ElectricMotor.MaxDriveTorque ?? 0.SI<NewtonMeter>())) * response.ElectricMotor.AngularVelocity).Value()) / 1000;
             SetInput(new uint[] { InputDict["abilMotorPower_kW"] }, new double[] { abilMotorPower_kW });
 
             var motorSpeed_rpm = (response.Engine.EngineSpeed != null) ? response.Engine.EngineSpeed.Value() : 0;
             SetInput(new uint[] { InputDict["motorSpeed_rpm"] }, new double[] { motorSpeed_rpm });
 
-            var abilRegenPower_kW = ((response.ElectricMotor.MaxRecuperationTorqueEmMap ?? 0.SI<NewtonMeter>()) * response.ElectricMotor.AngularVelocity).Value();
+            var abilRegenPower_kW = ((((response.ElectricMotor.MaxRecuperationTorqueEm ?? 0.SI<NewtonMeter>())) * response.ElectricMotor.AngularVelocity).Value()) / 1000;
             SetInput(new uint[] { InputDict["abilRegenPower_kW"] }, new double[] { abilRegenPower_kW });
 
-            var abilRegenTorque_Nm = (response.ElectricMotor.MaxRecuperationTorqueEmMap != null) ? response.ElectricMotor.MaxRecuperationTorqueEmMap.Value() : 0;
+            var abilRegenTorque_Nm = (response.ElectricMotor.MaxRecuperationTorqueEmMap != null) ? response.ElectricMotor.MaxRecuperationTorqueEm.Value() : 0;
             SetInput(new uint[] { InputDict["abilRegenTorque_Nm"] }, new double[] { abilRegenTorque_Nm });
 
-            var EM_speed_rpm = (response.ElectricMotor.AngularVelocity != null) ? response.ElectricMotor.AngularVelocity.Value() : 0;
+            var EM_speed_rpm = (response.ElectricMotor.AngularVelocity != null) ? response.ElectricMotor.EmSpeed.AsRPM : 0;
             SetInput(new uint[] { InputDict["EM_speed_rpm"] }, new double[] { EM_speed_rpm });
 
-            var motorTorque_Nm = (response.ElectricMotor.EmTorqueMap != null) ? response.ElectricMotor.EmTorqueMap.Value() : 0;
+            var motorTorque_Nm = ((DataBus.ElectricMotorInfo(VectoCommon.InputData.PowertrainPosition.HybridP2) as ElectricMotor).CurrentState.EmTorqueMap != null) ? (DataBus.ElectricMotorInfo(VectoCommon.InputData.PowertrainPosition.HybridP2) as ElectricMotor).CurrentState.EmTorqueMap.Value() : 0;
             SetInput(new uint[] { InputDict["motorTorque_Nm"] }, new double[] { motorTorque_Nm });
 
-            var VehicleSpeed_kmh = (response.Vehicle.VehicleSpeed != null) ? response.Vehicle.VehicleSpeed.Value() : 0;
+            var VehicleSpeed_kmh = (DataBus.VehicleInfo.VehicleSpeed != null) ? DataBus.VehicleInfo.VehicleSpeed.AsKmph : 0;
             SetInput(new uint[] { InputDict["VehicleSpeed"] }, new double[] { VehicleSpeed_kmh });
+
+            LogShiftDataToExcel(absTime, dt, outTorque, outAngularVelocity, response, ICE_MaxTorque_Nm, torqueDemandPwt_Nm, AuxCons_kW, abilEssDchPower_kW, abilEssRegenPower_kW, reqMotorBrakeTorque_Nm,
+                    SOC, abilMotorTorque_Nm, abilMotorPower_kW, motorSpeed_rpm, abilRegenPower_kW, abilRegenTorque_Nm, EM_speed_rpm, motorTorque_Nm, VehicleSpeed_kmh);
         }
 
 
@@ -235,6 +247,32 @@ namespace TUGraz.VectoCore.Utils
                     }
                 }
 
+            }
+        }
+
+        public static void LogShiftDataToExcel(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, ResponseDryRun response, double iCE_MaxTorque_Nm, 
+            double torqueDemandPwt_Nm, double auxCons_kW, double abilEssDchPower_kW, double abilEssRegenPower_kW, double reqMotorBrakeTorque_Nm, double sOC, 
+            double abilMotorTorque_Nm, double abilMotorPower_kW, double motorSpeed_rpm, double abilRegenPower_kW, double abilRegenTorque_Nm, double eM_speed_rpm, 
+            double motorTorque_Nm, double vehicleSpeed_kmh)
+        {
+            using (var w = new StreamWriter(@"C:\Users\Work\Workspace\Data\Test_Volvo.csv", true, Encoding.UTF8))
+            {
+                if (!firstLine)
+                {
+                    w.WriteLine(header);
+                    firstLine = true;
+                }
+                //var function = function_;
+
+                var Time = absTime.Value();
+
+                //var EngageTime = DataBus.EngageTime?.Value();
+
+                var line = string.Format("{0}; {1}; {2}; {3}; {4}; {5}; {6}; {7}; {8}; {9}; {10}; {11}; {12}; {13}; {14}; {15}",
+                    Time, iCE_MaxTorque_Nm, torqueDemandPwt_Nm, auxCons_kW, abilEssDchPower_kW, abilEssRegenPower_kW, reqMotorBrakeTorque_Nm,
+                    sOC, abilMotorTorque_Nm, abilMotorPower_kW, motorSpeed_rpm, abilRegenPower_kW, abilRegenTorque_Nm, eM_speed_rpm, motorTorque_Nm, vehicleSpeed_kmh);
+                w.WriteLine(line);
+                w.Flush();
             }
         }
     }
