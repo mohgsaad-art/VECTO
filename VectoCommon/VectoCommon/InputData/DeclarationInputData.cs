@@ -247,8 +247,8 @@ namespace TUGraz.VectoCommon.InputData
 
 		IList<AeroFeatureTechnology> AeroFeatureTechnologies { get; }
 
-		IList<IAxleDeclarationInputData> Axles { get; }
-		IVehicleComponentsDeclaration Components { get; } //TEMP TODO: REMOVE THIS
+		IList<ITrailerAxleDeclarationInputData> Axles { get; }
+		IVehicleComponentsDeclaration Components { get; }
 		XmlNode XMLSource { get; }
 
 	}
@@ -287,6 +287,18 @@ namespace TUGraz.VectoCommon.InputData
 		/// cf. VECTO Input Parameters.xlsx
 		/// </summary>
 		IList<IAxleDeclarationInputData> AxlesDeclaration { get; }
+
+		XmlNode XMLSource { get; }
+	}
+
+	public interface ITrailerAxlesDeclarationInputData
+	{
+		/// <summary>
+		/// parameters for every axle
+		/// P044, P045, P046, P047, P048, P108
+		/// cf. VECTO Input Parameters.xlsx
+		/// </summary>
+		IList<ITrailerAxleDeclarationInputData> AxlesDeclaration { get; }
 
 		XmlNode XMLSource { get; }
 	}
@@ -482,6 +494,20 @@ namespace TUGraz.VectoCommon.InputData
 		ITyreDeclarationInputData Tyre { get; }
 
 		DataSource DataSource { get; }
+	}
+
+	public interface ITrailerAxleDeclarationInputData
+	{
+		bool TwinTyres { get; }
+
+		AxleType AxleType { get; }
+
+		ITyreDeclarationInputData Tyre { get; }
+
+		DataSource DataSource { get; }
+
+		bool Liftable { get; }
+		bool Steered { get; }
 	}
 
 	public interface ITyreDeclarationInputData : IComponentInputData

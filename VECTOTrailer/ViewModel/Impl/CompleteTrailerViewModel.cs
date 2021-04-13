@@ -67,7 +67,13 @@ namespace VECTOTrailer.ViewModel.Impl
 		private bool _axle1IsTwin;
 		private bool _axle2IsTwin;
 		private bool _axle3IsTwin;
-		
+		private bool _axle1IsLiftable;
+		private bool _axle2IsLiftable;
+		private bool _axle3IsLiftable;
+		private bool _axle1IsSteered;
+		private bool _axle2IsSteered;
+		private bool _axle3IsSteered;
+
 		private ICommand _selectFirstFileCommand;
 		private ICommand _selectSecondFileCommand;
 		private ICommand _selectThirdFileCommand;
@@ -416,6 +422,38 @@ namespace VECTOTrailer.ViewModel.Impl
 			set => SetProperty(ref _axle3IsTwin, value);
 		}
 
+		public bool Axle1IsLiftable
+		{
+			get => _axle1IsLiftable;
+			set => SetProperty(ref _axle1IsLiftable, value);
+		}
+		public bool Axle2IsLiftable
+		{
+			get => _axle2IsLiftable;
+			set => SetProperty(ref _axle2IsLiftable, value);
+		}
+		public bool Axle3IsLiftable
+		{
+			get => _axle3IsLiftable;
+			set => SetProperty(ref _axle3IsLiftable, value);
+		}
+
+		public bool Axle1IsSteered
+		{
+			get => _axle1IsSteered;
+			set => SetProperty(ref _axle1IsSteered, value);
+		}
+		public bool Axle2IsSteered
+		{
+			get => _axle2IsSteered;
+			set => SetProperty(ref _axle2IsSteered, value);
+		}
+		public bool Axle3IsSteered
+		{
+			get => _axle3IsSteered;
+			set => SetProperty(ref _axle3IsSteered, value);
+		}
+
 		public IList<AeroFeatureTechnology> Technologies
 		{
 			get => _technologies;
@@ -555,9 +593,11 @@ namespace VECTOTrailer.ViewModel.Impl
 		private void EnableFirstAxle(XmlNode axle)
 		{
 			Axle1Xml = axle.OuterXml;
-			Axle1FilePath = axle.ChildNodes[1].ChildNodes[0].ChildNodes[1].InnerText + 
-				", " + axle.ChildNodes[1].ChildNodes[0].ChildNodes[5].InnerText;
+			Axle1FilePath = axle.ChildNodes[3].ChildNodes[0].ChildNodes[1].InnerText + 
+				", " + axle.ChildNodes[3].ChildNodes[0].ChildNodes[5].InnerText;
 			Axle1IsTwin = axle.ChildNodes[0].InnerText == "true";
+			Axle1IsLiftable = axle.ChildNodes[1].InnerText == "true";
+			Axle1IsSteered = axle.ChildNodes[2].InnerText == "true";
 			Axle1ButtonsVisibility = true;
 			Axle1NewVisibility = false;
 		}
@@ -565,9 +605,11 @@ namespace VECTOTrailer.ViewModel.Impl
 		private void EnableSecondAxle(XmlNode axle)
 		{
 			Axle2Xml = axle.OuterXml;
-			Axle2FilePath = axle.ChildNodes[1].ChildNodes[0].ChildNodes[1].InnerText +
-							", " + axle.ChildNodes[1].ChildNodes[0].ChildNodes[5].InnerText;
+			Axle2FilePath = axle.ChildNodes[3].ChildNodes[0].ChildNodes[1].InnerText +
+							", " + axle.ChildNodes[3].ChildNodes[0].ChildNodes[5].InnerText;
 			Axle2IsTwin = axle.ChildNodes[0].InnerText == "true";
+			Axle2IsLiftable = axle.ChildNodes[1].InnerText == "true";
+			Axle2IsSteered = axle.ChildNodes[2].InnerText == "true";
 			Axle2ButtonsVisibility = true;
 			Axle2NewVisibility = false;
 		}
@@ -575,9 +617,11 @@ namespace VECTOTrailer.ViewModel.Impl
 		private void EnableThirdAxle(XmlNode axle)
 		{
 			Axle3Xml = axle.OuterXml;
-			Axle3FilePath = axle.ChildNodes[1].ChildNodes[0].ChildNodes[1].InnerText +
-							", " + axle.ChildNodes[1].ChildNodes[0].ChildNodes[5].InnerText;
+			Axle3FilePath = axle.ChildNodes[3].ChildNodes[0].ChildNodes[1].InnerText +
+							", " + axle.ChildNodes[3].ChildNodes[0].ChildNodes[5].InnerText;
 			Axle3IsTwin = axle.ChildNodes[0].InnerText == "true";
+			Axle3IsLiftable = axle.ChildNodes[1].InnerText == "true";
+			Axle3IsSteered = axle.ChildNodes[2].InnerText == "true";
 			Axle3ButtonsVisibility = true;
 			Axle3NewVisibility = false;
 		}
@@ -741,6 +785,8 @@ namespace VECTOTrailer.ViewModel.Impl
 			this.Axle1NewVisibility = true;
 			this.Axle1FilePath = string.Empty;
 			this.Axle1IsTwin = false;
+			this.Axle1IsLiftable = false;
+			this.Axle1IsSteered = false;
 		}
 		private void DoDownloadSecondAxle()
 		{
@@ -755,6 +801,8 @@ namespace VECTOTrailer.ViewModel.Impl
 			this.Axle2NewVisibility = true;
 			this.Axle2FilePath = null;
 			this.Axle2IsTwin = false;
+			this.Axle2IsLiftable = false;
+			this.Axle2IsSteered = false;
 		}
 		private void DoDownloadThirdAxle()
 		{
@@ -769,6 +817,8 @@ namespace VECTOTrailer.ViewModel.Impl
 			this.Axle3NewVisibility = true;
 			this.Axle3FilePath = null;
 			this.Axle3IsTwin = false;
+			this.Axle3IsLiftable = false;
+			this.Axle3IsSteered = false;
 		}
 
 		private string OpenFileSelector(JobFileType jobFileType, string textPropertyName, string filePath)

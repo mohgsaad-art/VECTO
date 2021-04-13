@@ -66,7 +66,7 @@ namespace TUGraz.VectoCore.OutputData
 			Fields.FCWHR_H_CORR, Fields.FCWHR_KM_CORR,
 			Fields.FC_AUXHTR_H, Fields.FC_AUXHTR_KM,
 			Fields.FC_AUXHTR_H_CORR, Fields.FC_AUXHTR_KM_CORR,
-			Fields.FCFINAL_H, Fields.FCFINAL_KM, Fields.FCFINAL_LITERPER100KM, Fields.FCFINAL_LITERPER100TKM,
+			Fields.FCLCORR_H, Fields.FCSCORR_H, Fields.FCFINAL_H, Fields.FCFINAL_KM, Fields.FCFINAL_LITERPER100KM, Fields.FCFINAL_LITERPER100TKM,
 			Fields.FCFINAL_LiterPer100M3KM, Fields.FCFINAL_LiterPer100PassengerKM,
 			Fields.SPECIFIC_FC, Fields.K_VEHLINE, Fields.K_ENGLINE
 		};
@@ -487,6 +487,16 @@ namespace TUGraz.VectoCore.OutputData
 
 				row[FcCol(Fields.FCFINAL_H, suffix)] = (fcFinal / duration).ConvertToGrammPerHour();
 
+				// *** Trailer FC correction ***
+				var data = runData.VehicleData;
+				if (data.InputDataTrailer != null) {
+					
+					row[FcCol(Fields.FCLCORR_H, suffix)] = modData.FuelConsumptionPerSecond(ModalResultField.FCLiftTrailer, fuel)
+						?.ConvertToGrammPerHour();
+					row[FcCol(Fields.FCSCORR_H, suffix)] = modData.FuelConsumptionPerSecond(ModalResultField.FCSteerTrailer, fuel)
+						?.ConvertToGrammPerHour();
+				}
+
 				if (distance != null && distance.IsGreater(0)) {
 					row[FcCol(Fields.FCWHR_KM_CORR, suffix)] = (fcWHRCorr / distance).ConvertToGrammPerKiloMeter();
 					row[FcCol(Fields.FC_BusAux_PS_CORR_KM, suffix)] = (fcBusAuxPSCorr / distance).ConvertToGrammPerKiloMeter();
@@ -526,9 +536,8 @@ namespace TUGraz.VectoCore.OutputData
 				}
 			}
 
-			
-
 			row[Fields.CO2_KM] = kilogramCO2PerMeter.ConvertToGrammPerKiloMeter();
+
 			if (vehicleLoading != null && !vehicleLoading.IsEqual(0)) {
 				row[Fields.CO2_TKM] = (kilogramCO2PerMeter / vehicleLoading).ConvertToGrammPerTonKilometer();
 			}
@@ -1085,6 +1094,8 @@ namespace TUGraz.VectoCore.OutputData
 
 
 			public const string FCFINAL_H = "FC-Final{0} [g/h]";
+			public const string FCLCORR_H = "FC_Lift_trailer_c{0} [g/h]";
+			public const string FCSCORR_H = "FC_Steer_trailer_c{0} [g/h]";
 			public const string FCFINAL_KM = "FC-Final{0} [g/km]";
 			public const string FCFINAL_LITERPER100KM = "FC-Final{0} [l/100km]";
 			public const string FCFINAL_LITERPER100TKM = "FC-Final{0} [l/100tkm]";

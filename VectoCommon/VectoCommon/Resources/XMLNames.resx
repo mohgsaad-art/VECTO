@@ -666,6 +666,9 @@
   <data name="AxleWheels_Axles_Axle_Steered" xml:space="preserve">
     <value>Steered</value>
   </data>
+	<data name="AxleWheels_Axles_Axle_Liftable" xml:space="preserve">
+    <value>Liftable</value>
+  </data>
   <data name="AxleWheels_Axles_Axle_Tyre" xml:space="preserve">
     <value>Tyre</value>
   </data>

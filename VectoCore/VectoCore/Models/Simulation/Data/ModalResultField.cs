@@ -142,6 +142,17 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 		[ModalResultField(typeof(SI), name: "FC-Final_mod", caption: "FC-Final_mod{0} [g/h]", outputFactor: 3600 * 1000)] FCFinal,
 
 		/// <summary>
+		/// [g/h] Fuel consumption after WHTC Correction. (Based on FC-ADAS.)
+		/// </summary>
+		[ModalResultField(typeof(SI), name: "FC_Lift_trailer_c", caption: "FC_Lift_trailer_c{0} [g/h]", outputFactor: 3600 * 1000)] FCLiftTrailer,
+
+		/// <summary>
+		/// [g/h] Fuel consumption after WHTC Correction. (Based on FC-ADAS.)
+		/// </summary>
+		[ModalResultField(typeof(SI), name: "FC_Steer_trailer_c", caption: "FC_Steer_trailer_c{0} [g/h]", outputFactor: 3600 * 1000)] FCSteerTrailer,
+		
+
+		/// <summary>
 		///     [km]	Travelled distance.
 		/// </summary>
 		[ModalResultField(typeof(SI), caption: "dist [m]")] dist,

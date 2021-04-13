@@ -144,31 +144,37 @@ namespace VECTOTrailer.Util.XML
 
 			try {
 				var tyre = XDocument.Parse(trailerData.Axle1Xml).Elements().FirstOrDefault()?.Elements()
-					.FirstOrDefault(x => !x.Name.ToString().Contains("TwinTyres"));
+					.FirstOrDefault(x => !x.Name.ToString().Contains("TwinTyres") && !x.Name.ToString().Contains("Liftable") && !x.Name.ToString().Contains("Steered"));
 				vehicle.Element(_v27 + "AxleWheels")?.Element(_v27 + "Data")?.Element(_v27 + "Axles")?.Add(
 					new XElement(_v27 + "Axle", new XAttribute(_xsi + "type", "v2.7:TrailerAxleType"), new XAttribute("axleNumber", "1"), 
-					new XElement(_v27 + "TwinTyres", trailerData.Axle1IsTwin.ToString().ToLower()), 
+					new XElement(_v27 + "TwinTyres", trailerData.Axle1IsTwin.ToString().ToLower()),
+					new XElement(_v27 + "Liftable", trailerData.Axle1IsLiftable.ToString().ToLower()),
+					new XElement(_v27 + "Steered", trailerData.Axle1IsSteered.ToString().ToLower()),
 					tyre));
 
 				if (int.Parse(trailerData.NumberOfAxles.GetLabel()) <= 1)
 					return vehicle;
 
 				tyre = XDocument.Parse(trailerData.Axle2Xml).Elements().FirstOrDefault()?.Elements()
-					.FirstOrDefault(x => !x.Name.ToString().Contains("TwinTyres"));
+					.FirstOrDefault(x => !x.Name.ToString().Contains("TwinTyres") && !x.Name.ToString().Contains("Liftable") && !x.Name.ToString().Contains("Steered"));
 
 				vehicle.Element(_v27 + "AxleWheels")?.Element(_v27 + "Data")?.Element(_v27 + "Axles")?.Add(
 					new XElement(_v27 + "Axle", new XAttribute(_xsi + "type", "v2.7:TrailerAxleType"), new XAttribute("axleNumber", "2"), 
-					new XElement(_v27 + "TwinTyres", trailerData.Axle2IsTwin.ToString().ToLower()), 
+					new XElement(_v27 + "TwinTyres", trailerData.Axle2IsTwin.ToString().ToLower()),
+					new XElement(_v27 + "Liftable", trailerData.Axle2IsLiftable.ToString().ToLower()),
+					new XElement(_v27 + "Steered", trailerData.Axle2IsSteered.ToString().ToLower()),
 					tyre));
 				if (int.Parse(trailerData.NumberOfAxles.GetLabel()) <= 2)
 					return vehicle;
 
 				tyre = XDocument.Parse(trailerData.Axle3Xml).Elements().FirstOrDefault()?.Elements()
-					.FirstOrDefault(x => !x.Name.ToString().Contains("TwinTyres"));
+					.FirstOrDefault(x => !x.Name.ToString().Contains("TwinTyres") && !x.Name.ToString().Contains("Liftable") && !x.Name.ToString().Contains("Steered"));
 
 				vehicle.Element(_v27 + "AxleWheels")?.Element(_v27 + "Data")?.Element(_v27 + "Axles")?.Add(
 					new XElement(_v27 + "Axle", new XAttribute(_xsi + "type", "v2.7:TrailerAxleType"), new XAttribute("axleNumber", "3"), 
-					new XElement(_v27 + "TwinTyres", trailerData.Axle3IsTwin.ToString().ToLower()), 
+					new XElement(_v27 + "TwinTyres", trailerData.Axle3IsTwin.ToString().ToLower()),
+					new XElement(_v27 + "Liftable", trailerData.Axle3IsLiftable.ToString().ToLower()),
+					new XElement(_v27 + "Steered", trailerData.Axle3IsSteered.ToString().ToLower()),
 					tyre));
 
 			} catch { }

@@ -114,6 +114,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		private Mission[] CreateMissions(DataRow row)
 		{
+			var impact = new Impact();
 			var missionTypes = new List<MissionType>();
 
 			if (!row["Mission_long_haul"].ToString().Contains("-"))
@@ -194,7 +195,9 @@ namespace TUGraz.VectoCore.Models.Declaration
 					Trailer = referenceTrailers,
 					SpecificTrailer = specificTrailers,
 					TotalCargoVolume = CubicMeter.Create(row.ParseDouble(missionType == MissionType.LongHaul ? "generic_cargo_lh" : "generic_cargo_om")),
-					CrossWindCorrectionParameters = "TractorSemitrailer", //TODO: Check this
+					CrossWindCorrectionParameters = "TractorSemitrailer", 
+					TrailerLiftableImpact = impact.Lookup(row.Field<string>("vehicle_group"), "Liftable", missionType),
+					TrailerSteeredImpact = impact.Lookup(row.Field<string>("vehicle_group"), "Steered", missionType),
 #if USE_EXTENAL_DECLARATION_DATA
 					CycleFile = File.OpenRead(Path.Combine("DeclarationMissions", missionType.ToString().Replace("EMS", "") + ".vdri")),
 #else

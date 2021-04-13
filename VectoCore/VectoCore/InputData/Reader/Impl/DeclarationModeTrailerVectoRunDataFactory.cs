@@ -108,7 +108,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			for (var modeIdx = 0; modeIdx < engineModes.Count; modeIdx++) {
 				foreach (var mission in _trailerSegment.Missions) {
 					foreach (var loading in mission.Loadings) {
-						yield return CreateTrailerVectoRunData(vehicle, modeIdx, mission, loading);
+						yield return CreateSpecificTrailerVectoRunData(vehicle, modeIdx, mission, loading);
 						yield return CreateVectoRunData(vehicle, modeIdx, mission, loading);
 					}
 				}
@@ -118,7 +118,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 		protected virtual void InitializeReport()
 		{
 			var powertrainConfig = _trailerSegment.Missions.Select(
-				mission => CreateTrailerVectoRunData(_genericInputDataProvider.JobInputData.Vehicle, 0, mission, mission.Loadings.FirstOrDefault())
+				mission => CreateSpecificTrailerVectoRunData(_genericInputDataProvider.JobInputData.Vehicle, 0, mission, mission.Loadings.FirstOrDefault())
 			).FirstOrDefault(x => x != null);
 			var fuels = _genericInputDataProvider.JobInputData.Vehicle.Components.EngineInputData.EngineModes.Select(x => x.Fuels.Select(f => DeclarationData.FuelData.Lookup(f.FuelType, null)).ToList())
 				.ToList();
@@ -223,7 +223,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			return simulationRunData;
 		}
 
-		protected VectoRunData CreateTrailerVectoRunData(
+		protected VectoRunData CreateSpecificTrailerVectoRunData(
 			IVehicleDeclarationInputData vehicle, int modeIdx, Mission mission, KeyValuePair<LoadingType, Tuple<Kilogram, double?>> loading)
 		{
 			var engine = _genericInputDataProvider.JobInputData.Vehicle.Components.EngineInputData;
@@ -257,7 +257,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 				VehicleData = TrailerDataAdapter.CreateTrailerData(vehicle, _trailer, _trailerSegment, mission, loading, _specificTrailerData),
 				VehicleDesignSpeed = _trailerSegment.DesignSpeed,
 				AirdragData = TrailerDataAdapter.CreateTrailerAirdragData(_genericInputDataProvider.JobInputData.Vehicle.Components.AirdragInputData, mission, _specificTrailerData, _trailerSegment),
-				EngineData = TrailerDataAdapter.CreateEngineData(_genericInputDataProvider.JobInputData.Vehicle, engineMode, mission),
+				EngineData = TrailerDataAdapter.CreateTrailerEngineData(_genericInputDataProvider.JobInputData.Vehicle, engineMode, mission, _trailer, loading.Key),
 				GearboxData = _gearboxData,
 				AxleGearData = _axlegearData,
 				AngledriveData = _angledriveData,

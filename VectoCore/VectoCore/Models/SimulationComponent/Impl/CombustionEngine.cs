@@ -466,14 +466,30 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					advancedAux.DoWriteModalResults(time, simulationInterval, container);
 					//fcAAUX = advancedAux.AAuxFuelConsumption;
 				}
-				var fcFinal = fcWHTC; // fcAAUX;
+
+				var fcFinal = fcWHTC;
+
+				KilogramPerSecond fcLift = null, fcSteer = null;
+				var fcTrailerFinal = fcFinal;
+
+				if (fuel.FcLiftCorrectionFactor > 0 && fuel.FcSteerCorrectionFactor > 0) {
+					fcLift = fcTrailerFinal * fuel.FcLiftCorrectionFactor;
+					fcSteer = (fcTrailerFinal * fuel.FcLiftCorrectionFactor) * fuel.FcSteerCorrectionFactor;
+					fcTrailerFinal = fcSteer;
+				}
+
 
 				container[ModalResultField.FCMap, fuelData] = fc;
 				container[ModalResultField.FCNCVc, fuel.FuelData] = fcNCVcorr;
 				container[ModalResultField.FCWHTCc, fuel.FuelData] = fcWHTC;
 				//container[ModalResultField.FCAAUX, fuel.FuelData] = fcAAUX;
 				container[ModalResultField.FCICEStopStart, fuel.FuelData] = fcFinal;
-				container[ModalResultField.FCFinal, fuel.FuelData] = fcFinal;
+
+				//Specific Trailer columns
+				container[ModalResultField.FCLiftTrailer, fuel.FuelData] = fcLift;
+				container[ModalResultField.FCSteerTrailer, fuel.FuelData] = fcSteer;
+
+				container[ModalResultField.FCFinal, fuel.FuelData] = fcTrailerFinal;
 			}
 		}
 

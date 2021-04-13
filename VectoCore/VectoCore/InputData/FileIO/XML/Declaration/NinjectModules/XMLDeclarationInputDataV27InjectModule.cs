@@ -22,10 +22,10 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.NinjectModules
 			Bind<IXMLTrailerDeclarationVehicleData>().To<XMLDeclarationVehicleDataProviderV27>().Named(
 				XMLDeclarationVehicleDataProviderV27.QUALIFIED_XSD_TYPE);
 
-			Bind<IXMLAxlesDeclarationInputData>().To<XMLDeclarationAxlesDataProviderV27>().Named(
+			Bind<IXMLTrailerAxlesDeclarationInputData>().To<XMLDeclarationAxlesDataProviderV27>().Named(
 				XMLDeclarationAxlesDataProviderV27.QUALIFIED_XSD_TYPE);
 
-			Bind<IXMLAxleDeclarationInputData>().To<XMLDeclarationAxleDataProviderV27>().Named(
+			Bind<IXMLTrailerAxleDeclarationInputData>().To<XMLDeclarationAxleDataProviderV27>().Named(
 				XMLDeclarationAxleDataProviderV27.QUALIFIED_XSD_TYPE);
 
 			Bind<ITransmissionInputData>().To<XMLGearDataV10>().Named(
@@ -40,10 +40,10 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.NinjectModules
 			Bind<IXMLJobTrailerDataReader>().To<XMLJobDataReaderV27>()
 				.Named(XMLJobDataReaderV27.QUALIFIED_XSD_TYPE);
 
-			Bind<IXMLAxlesReader>().To<XMLComponentReaderV27>()
+			Bind<IXMLTrailerAxlesReader>().To<XMLComponentReaderV27>()
 				.Named(XMLComponentReaderV27.AXLES_READER_QUALIFIED_XSD_TYPE);
 
-			Bind<IXMLAxleReader>().To<XMLComponentReaderV27>()
+			Bind<IXMLTrailerAxleReader>().To<XMLComponentReaderV27>()
 				.Named(XMLComponentReaderV27.AXLE_READER_QUALIFIED_XSD_TYPE);
 
 		}

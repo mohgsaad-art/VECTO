@@ -55,6 +55,12 @@ namespace VECTOTrailer.Model.TempDataObject
 		public bool Axle1IsTwin { get; set; }
 		public bool Axle2IsTwin { get; set; }
 		public bool Axle3IsTwin { get; set; }
+		public bool Axle1IsLiftable { get; set; }
+		public bool Axle2IsLiftable { get; set; }
+		public bool Axle3IsLiftable { get; set; }
+		public bool Axle1IsSteered { get; set; }
+		public bool Axle2IsSteered { get; set; }
+		public bool Axle3IsSteered { get; set; }
 		public ICommand SelectFirstFileCommand { get; set;  }
 		public ICommand SelectSecondFileCommand { get; set;  }
 		public ICommand SelectThirdFileCommand { get; set;  }
@@ -123,7 +129,12 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.Axle1IsTwin = Axle1IsTwin;
 			viewModel.Axle2IsTwin = Axle2IsTwin;
 			viewModel.Axle3IsTwin = Axle3IsTwin;
-
+			viewModel.Axle1IsLiftable = Axle1IsLiftable;
+			viewModel.Axle2IsLiftable = Axle2IsLiftable;
+			viewModel.Axle3IsLiftable = Axle3IsLiftable;
+			viewModel.Axle1IsSteered = Axle1IsSteered;
+			viewModel.Axle2IsSteered = Axle2IsSteered;
+			viewModel.Axle3IsSteered = Axle3IsSteered;
 			viewModel.Axle1Xml = Axle1Xml;
 			viewModel.Axle2Xml = Axle2Xml;
 			viewModel.Axle3Xml = Axle3Xml;
@@ -173,6 +184,12 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.Axle1IsTwin = false;
 			viewModel.Axle2IsTwin = false;
 			viewModel.Axle3IsTwin = false;
+			viewModel.Axle1IsLiftable = false;
+			viewModel.Axle2IsLiftable = false;
+			viewModel.Axle3IsLiftable = false;
+			viewModel.Axle1IsSteered = false;
+			viewModel.Axle2IsSteered = false;
+			viewModel.Axle3IsSteered = false;
 
 			viewModel.Axle1ButtonsVisibility = false;
 			viewModel.Axle1NewVisibility = true;
@@ -209,7 +226,15 @@ namespace VECTOTrailer.Model.TempDataObject
 			TPLMAxleAssembly = trailer.TPLMAxleAssembly;
 			Axle1IsTwin = trailer.Axle1IsTwin;
 			Axle2IsTwin = trailer.Axle2IsTwin;
-			Axle3IsTwin = trailer.Axle3IsTwin;
+            Axle3IsTwin = trailer.Axle3IsTwin;
+
+			Axle1IsLiftable = trailer.Axle1IsLiftable;
+			Axle2IsLiftable = trailer.Axle2IsLiftable;
+			Axle3IsLiftable = trailer.Axle3IsLiftable;
+			Axle1IsSteered = trailer.Axle1IsSteered;
+			Axle2IsSteered = trailer.Axle2IsSteered;
+			Axle3IsSteered = trailer.Axle3IsSteered;
+
 			Axle1Xml = trailer.Axle1Xml;
 			Axle2Xml = trailer.Axle2Xml;
 			Axle3Xml = trailer.Axle3Xml;

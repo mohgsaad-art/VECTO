@@ -6,4 +6,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Interfaces {
 	{
 		IXMLAxlesReader Reader { set; }
 	}
+
+	public interface IXMLTrailerAxlesDeclarationInputData : ITrailerAxlesDeclarationInputData, IXMLResource
+	{
+		IXMLTrailerAxlesReader Reader { set; }
+	}
 }

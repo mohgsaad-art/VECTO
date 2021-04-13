@@ -340,6 +340,15 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Liftable.
+        /// </summary>
+        public static string AxleWheels_Axles_Axle_Liftable {
+            get {
+                return ResourceManager.GetString("AxleWheels_Axles_Axle_Liftable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to RRCDeclared.
         /// </summary>
         public static string AxleWheels_Axles_Axle_RRCDeclared {

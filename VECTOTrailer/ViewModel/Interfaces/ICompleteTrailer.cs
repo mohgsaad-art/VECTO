@@ -43,6 +43,12 @@ namespace VECTOTrailer.ViewModel.Interfaces
 		bool Axle1IsTwin { get; set; }
 		bool Axle2IsTwin { get; set; }
 		bool Axle3IsTwin { get; set; }
+		bool Axle1IsLiftable { get; set; }
+		bool Axle2IsLiftable { get; set; }
+		bool Axle3IsLiftable { get; set; }
+		bool Axle1IsSteered  { get; set; }
+		bool Axle2IsSteered { get; set; }
+		bool Axle3IsSteered { get; set; }
 		ICommand SelectFirstFileCommand { get; }
 		ICommand SelectSecondFileCommand { get; }
 		ICommand SelectThirdFileCommand { get; }

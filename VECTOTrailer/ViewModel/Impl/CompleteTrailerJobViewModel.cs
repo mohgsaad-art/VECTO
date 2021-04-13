@@ -222,17 +222,8 @@ namespace VECTOTrailer.ViewModel.Impl
 			get { return _validateInputCommand ?? (_validateInputCommand = new RelayCommand(DoValidateInput)); }
 		}
 
-		private void DoValidateInput()
+		private void CheckAeroFeatures(Model.TempDataObject.TrailerComponentData trailer)
 		{
-			ClearValidationErrors();
-
-			_errors = new Dictionary<string, string>();
-
-			SetCurrentDataToSave();
-			var xDoc = _xmlCompletedTrailer.GenerateCompletedTrailerDocument(CompleteVehicleTrailerData);
-
-			var trailer = (Model.TempDataObject.TrailerComponentData)CompleteVehicleTrailerData.Values.FirstOrDefault();
-			#region Aero features combination validation
 			var aeroFeatures = new List<AeroFeatureTechnology>();
 			if (trailer.SideSkirtsShort) aeroFeatures.Add(AeroFeatureTechnology.SideSkirtsShort);
 			if (trailer.SideSkirtsLong) aeroFeatures.Add(AeroFeatureTechnology.SideSkirtsLong);
@@ -242,27 +233,42 @@ namespace VECTOTrailer.ViewModel.Impl
 			var combination = DeclarationData.AeroFeatures.Lookup(aeroFeatures);
 			if (combination < 0)
 				ValidationResultDialogWindow(false);
-			#endregion
+		}
 
-			#region Axles 
-			if (trailer?.NumberOfAxles == NumberOfTrailerAxles.Two &&
-				(trailer?.Axle2FilePath == null))
+		private void CheckAxles(Model.TempDataObject.TrailerComponentData trailer)
+		{
+			var liftableCount = 0;
+			if (trailer.Axle1IsLiftable)
+				liftableCount++;
+			if (trailer.Axle2IsLiftable)
+				liftableCount++;
+			if (trailer.Axle3IsLiftable)
+				liftableCount++;
+
+			switch (trailer.NumberOfAxles)
+			{
+				case NumberOfTrailerAxles.One when trailer.Axle1IsLiftable: //one axle cant be liftable
+				case NumberOfTrailerAxles.Two when trailer.Axle2FilePath == null: //missing axle
+				case NumberOfTrailerAxles.Two when trailer.TrailerType == TypeTrailer.DB && liftableCount > 0:
+				case NumberOfTrailerAxles.Two when liftableCount > 1: //too many liftable
+				case NumberOfTrailerAxles.Three when trailer.TrailerType == TypeTrailer.DB && liftableCount > 1: //too many liftable
+				case NumberOfTrailerAxles.Three when liftableCount > 2: //too many liftable
+				case NumberOfTrailerAxles.Three when (trailer.Axle2FilePath == null || trailer.Axle3FilePath == null):  //missing axles
+					ValidationResultDialogWindow(false);
+					break;
+			}
+		}
+
+		private void CheckTrailerType(Model.TempDataObject.TrailerComponentData trailer)
+		{
+			if (trailer.TrailerType == TypeTrailer.DA &&
+				(trailer.TPLMAxleAssembly == null ||
+				trailer.TPLMAxleAssembly.Value() == 0))
 				ValidationResultDialogWindow(false);
+		}
 
-			else if (trailer?.NumberOfAxles == NumberOfTrailerAxles.Three &&
-				(trailer?.Axle2FilePath == null ||
-				trailer?.Axle3FilePath == null))
-				ValidationResultDialogWindow(false);
-			#endregion
-
-			#region Trailer Type
-			if (trailer?.TrailerType == TypeTrailer.DA &&
-			(trailer?.TPLMAxleAssembly == null ||
-			trailer?.TPLMAxleAssembly?.Value() == 0))
-			ValidationResultDialogWindow(false);
-			#endregion
-
-			#region validity checks
+		private void GeneralCheck(Model.TempDataObject.TrailerComponentData trailer)
+		{
 			if (trailer.InternalHeightOfTheBody >= trailer.ExternalHeightOfTheBody ||
 				trailer.ExternalHeightOfTheBody >= trailer.TotalHeightOfTheTrailer ||
 				trailer.InternalHeightOfTheBody >= trailer.TotalHeightOfTheTrailer)
@@ -273,13 +279,27 @@ namespace VECTOTrailer.ViewModel.Impl
 
 			if (trailer.TPLMAxleAssembly >= trailer.TPLMTotalTrailer)
 				ValidationResultDialogWindow(false);
-			#endregion
+		}
 
-			else if (XmlHelper.ValidateXDocument(xDoc, null, ValidationErrorAction)) {
-				ValidationResultDialogWindow(true);
-			} else {
-				ValidationResultDialogWindow(false);
-			}
+		private void DoValidateInput()
+		{
+			ClearValidationErrors();
+
+			_errors = new Dictionary<string, string>();
+
+			SetCurrentDataToSave();
+			var xDoc = _xmlCompletedTrailer.GenerateCompletedTrailerDocument(CompleteVehicleTrailerData);
+
+			var trailer = (Model.TempDataObject.TrailerComponentData)CompleteVehicleTrailerData.Values.FirstOrDefault();
+
+			//Form Input Validation
+			CheckAeroFeatures(trailer);
+			CheckAxles(trailer);
+			CheckTrailerType(trailer);
+			GeneralCheck(trailer);
+
+			//XML Schema Validation
+			ValidationResultDialogWindow(XmlHelper.ValidateXDocument(xDoc, null, ValidationErrorAction));
 		}
 
 		public ICommand ShowValidationErrors

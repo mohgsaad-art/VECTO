@@ -298,7 +298,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 	// ---------------------------------------------------------------------------------------
 
 
-	public class XMLComponentReaderV27 : AbstractComponentReader, IXMLAxlesReader, IXMLAxleReader
+	public class XMLComponentReaderV27 : AbstractComponentReader, IXMLTrailerAxlesReader, IXMLTrailerAxleReader
 	{
 		public static readonly XNamespace NAMESPACE_URI = XMLDefinitions.DECLARATION_DEFINITIONS_NAMESPACE_URI_V27;
 
@@ -312,7 +312,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 		public static readonly string AXLE_READER_QUALIFIED_XSD_TYPE = XMLHelper.CombineNamespace(NAMESPACE_URI, AXLE_READER_TYPE);
 
 		protected IXMLTrailerDeclarationVehicleData Vehicle;
-		protected IAxlesDeclarationInputData _axlesInputData;
+		protected ITrailerAxlesDeclarationInputData _axlesInputData;
 
 		[Inject] public IDeclarationInjectFactory Factory { protected get; set; }
 
@@ -327,11 +327,11 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 			Vehicle = vehicle;
 		}
 
-		public virtual IAxlesDeclarationInputData AxlesDeclarationInputData => _axlesInputData ?? (_axlesInputData = CreateComponent(XMLNames.Component_AxleWheels, AxleWheelsCreator));
+		public virtual ITrailerAxlesDeclarationInputData AxlesDeclarationInputData => _axlesInputData ?? (_axlesInputData = CreateComponent(XMLNames.Component_AxleWheels, AxleWheelsCreator));
 
 		public virtual ITyreDeclarationInputData Tyre => CreateComponent(XMLNames.AxleWheels_Axles_Axle_Tyre, TyreCreator);
 
-		public virtual IAxleDeclarationInputData CreateAxle(XmlNode axleNode)
+		public virtual ITrailerAxleDeclarationInputData CreateAxle(XmlNode axleNode)
 		{
 			var version = XMLHelper.GetXsdType(axleNode.SchemaInfo.SchemaType);
 			try
@@ -347,7 +347,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl
 					"Unsupported XML Version! Node: {0} Axle: {1} Version: {2}", e, axleNode.LocalName, axleNumber, version);
 			}
 		}
-		protected virtual IAxlesDeclarationInputData AxleWheelsCreator(
+		protected virtual IXMLTrailerAxlesDeclarationInputData AxleWheelsCreator(
 			string version, XmlNode componentNode, string sourceFile)
 		{
 			var axles = Factory.CreateTrailerAxleWheels(version, Vehicle, componentNode, sourceFile);

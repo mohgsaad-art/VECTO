@@ -12,7 +12,8 @@
 			<xs:extension base="v2.7:AbstractTrailerAxleDataType">
 				<xs:sequence>
 					<xs:element name="TwinTyres" type="xs:boolean"/>
-					<xs:element name="Steered" type="xs:boolean" minOccurs="0"/>
+					<xs:element name="Liftable" type="v2.7:AxleLiftableType" minOccurs="0"/>
+					<xs:element name="Steered" type="v2.7:AxleSteeredType" minOccurs="0"/>
 					<xs:element name="WheelBearings" minOccurs="0"/>
 					<xs:element name="Tyre">
 						<xs:complexType>
@@ -122,6 +123,14 @@
 		<xs:restriction base="xs:int">
 			<xs:minInclusive value="1"/>
 			<xs:maxInclusive value="4"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AxleLiftableType">
+		<xs:restriction base="xs:boolean">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AxleSteeredType">
+		<xs:restriction base="xs:boolean">
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="TrailerCargoVolumeType">

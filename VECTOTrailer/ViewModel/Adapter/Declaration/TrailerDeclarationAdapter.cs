@@ -76,7 +76,7 @@ namespace VECTOTrailer.ViewModel.Adapter.Declaration
 		public string Identifier { get; }
 		public AxleConfiguration AxleConfiguration { get; }
 		public bool ExemptedVehicle { get; }
-		public IList<IAxleDeclarationInputData> Axles { get; }
+		public IList<ITrailerAxleDeclarationInputData> Axles { get; }
 		public IVehicleComponentsDeclaration Components { get; }
 		public string ManufacturerAddress { get { return ViewModel.ManufacturerAddress; } }
 		public string VIN { get; }

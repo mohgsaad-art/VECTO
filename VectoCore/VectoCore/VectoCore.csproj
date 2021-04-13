@@ -333,6 +333,7 @@
     <Compile Include="Models\Declaration\GenericTowingVehicles.cs" />
     <Compile Include="Models\Declaration\CompletedBusSegments.cs" />
     <Compile Include="Models\Declaration\AeroFeatures.cs" />
+    <Compile Include="Models\Declaration\Impact.cs" />
     <Compile Include="Models\Declaration\TrailerSegments.cs" />
     <Compile Include="Models\GenericModelData\GenericTorqueConverterData.cs" />
     <Compile Include="Models\GenericModelData\GenericTransmissionComponentData.cs" />
@@ -938,6 +939,7 @@
     <EmbeddedResource Include="Resources\XSD\VectoOutputCustomer.0.9.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Declaration\liftable_steered_axles.csv" />
     <None Include="Utils\VectoVersionCore.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>VectoVersionCore.cs</LastGenOutput>

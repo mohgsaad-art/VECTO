@@ -430,7 +430,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 						ConsumptionMap = FuelConsumptionMapReader.Create(fuel.FuelConsumptionMap),
 						FuelConsumptionCorrectionFactor = DeclarationData.WHTCCorrection.Lookup(
 															mission.MissionType.GetNonEMSMissionType(), fuel.WHTCRural, fuel.WHTCUrban, 
-															fuel.WHTCMotorway) * fuel.ColdHotBalancingFactor * fuel.CorrectionFactorRegPer,
+															fuel.WHTCMotorway) * fuel.ColdHotBalancingFactor * fuel.CorrectionFactorRegPer
 					});
 			}
 
@@ -461,6 +461,99 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			{
 				retVal.MechanicalWHR = CreateWHRData(
 					mode.WasteHeatRecoveryDataMechanical, mission.MissionType, WHRType.MechanicalOutputDrivetrain); 
+			}
+
+			return retVal;
+		}
+
+		public CombustionEngineData CreateTrailerEngineData(IVehicleDeclarationInputData vehicle, IEngineModeDeclarationInputData mode, Mission mission, ITrailerDeclarationInputData trailer, LoadingType loadingType)
+		{
+			var engine = vehicle.Components.EngineInputData;
+			var gearbox = vehicle.Components.GearboxInputData;
+
+			if (!engine.SavedInDeclarationMode)
+			{
+				WarnDeclarationMode("EngineData");
+			}
+
+			var retVal = SetCommonCombustionEngineData(engine, vehicle.TankSystem);
+			retVal.IdleSpeed = VectoMath.Max(mode.IdleSpeed, vehicle.EngineIdleSpeed);
+
+			var liftFactor = 1.0;
+			var steerFactor = 1.0;
+
+			if (loadingType == LoadingType.LowLoading)
+			{ //LOW loading
+				if (trailer.Axles.Count(x => x.Liftable) > 1) //if 2 liftable
+					liftFactor = (1 + (mission.TrailerLiftableImpact.Key * 1.5) / 100);
+				
+				else if (trailer.Axles.Count(x => x.Liftable) > 0) //if 1 liftable
+					liftFactor = (1 + mission.TrailerLiftableImpact.Key / 100);
+
+				if (trailer.Axles.Count(x => x.Steered) > 1) // 2 steered
+					steerFactor = (1 +(mission.TrailerSteeredImpact.Key * 1.2) / 100);
+				else if (trailer.Axles.Count(x => x.Steered) > 0) // 1 steered
+					steerFactor = (1 + mission.TrailerSteeredImpact.Key / 100);
+			}
+			else
+			{ //REF loading
+				if (trailer.Axles.Count(x => x.Liftable) > 0)
+					liftFactor = (1 + mission.TrailerLiftableImpact.Value / 100);
+
+				if (trailer.Axles.Count(x => x.Steered) > 1) //2 steered
+					steerFactor = (1 + (mission.TrailerSteeredImpact.Value * 1.2) / 100);
+				else if (trailer.Axles.Count(x => x.Steered) > 0) // 1 steered
+					steerFactor = (1 + mission.TrailerSteeredImpact.Value / 100);
+			}
+
+			retVal.Fuels = new List<CombustionEngineFuelData>();
+			foreach (var fuel in mode.Fuels)
+			{
+				retVal.Fuels.Add(
+					new CombustionEngineFuelData()
+					{
+						WHTCUrban = fuel.WHTCUrban,
+						WHTCRural = fuel.WHTCRural,
+						WHTCMotorway = fuel.WHTCMotorway,
+						ColdHotCorrectionFactor = fuel.ColdHotBalancingFactor,
+						CorrectionFactorRegPer = fuel.CorrectionFactorRegPer,
+						FuelData = DeclarationData.FuelData.Lookup(fuel.FuelType, vehicle.TankSystem),
+						ConsumptionMap = FuelConsumptionMapReader.Create(fuel.FuelConsumptionMap),
+						FuelConsumptionCorrectionFactor = DeclarationData.WHTCCorrection.Lookup(
+															mission.MissionType.GetNonEMSMissionType(), fuel.WHTCRural, fuel.WHTCUrban,
+															fuel.WHTCMotorway) * fuel.ColdHotBalancingFactor * fuel.CorrectionFactorRegPer,
+						FcLiftCorrectionFactor = liftFactor,
+						FcSteerCorrectionFactor = steerFactor
+					});
+			}
+
+			retVal.Inertia = DeclarationData.Engine.EngineInertia(retVal.Displacement, gearbox.Type);
+			retVal.EngineStartTime = DeclarationData.Engine.DefaultEngineStartTime;
+			var limits = vehicle.TorqueLimits.ToDictionary(e => e.Gear);
+			var numGears = gearbox.Gears.Count;
+			var fullLoadCurves = new Dictionary<uint, EngineFullLoadCurve>(numGears + 1);
+			fullLoadCurves[0] = FullLoadCurveReader.Create(mode.FullLoadCurve, true);
+			fullLoadCurves[0].EngineData = retVal;
+			foreach (var gear in gearbox.Gears)
+			{
+				var maxTorque = VectoMath.Min(
+					GbxMaxTorque(gear, numGears, fullLoadCurves[0].MaxTorque),
+					VehMaxTorque(gear, numGears, limits, fullLoadCurves[0].MaxTorque));
+				fullLoadCurves[(uint)gear.Gear] = IntersectFullLoadCurves(fullLoadCurves[0], maxTorque);
+			}
+
+			retVal.FullLoadCurves = fullLoadCurves;
+
+			retVal.WHRType = engine.WHRType;
+			if ((retVal.WHRType & WHRType.ElectricalOutput) != 0)
+			{
+				retVal.ElectricalWHR = CreateWHRData(
+					mode.WasteHeatRecoveryDataElectrical, mission.MissionType, WHRType.ElectricalOutput);
+			}
+			if ((retVal.WHRType & WHRType.MechanicalOutputDrivetrain) != 0)
+			{
+				retVal.MechanicalWHR = CreateWHRData(
+					mode.WasteHeatRecoveryDataMechanical, mission.MissionType, WHRType.MechanicalOutputDrivetrain);
 			}
 
 			return retVal;
@@ -1014,10 +1107,8 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			return retVal;
 		}
 
-		public void ValidateTrailerInput(ITrailerDeclarationInputData trailer)
+		private void ValidateAeroFeatures(ITrailerDeclarationInputData trailer)
 		{
-			#region Aero features combination validation
-
 			var aeroFeatures = new List<AeroFeatureTechnology>();
 			if (trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.SideSkirtsShort)) aeroFeatures.Add(AeroFeatureTechnology.SideSkirtsShort);
 			if (trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.SideSkirtsLong)) aeroFeatures.Add(AeroFeatureTechnology.SideSkirtsLong);
@@ -1027,42 +1118,57 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			var combination = DeclarationData.AeroFeatures.Lookup(aeroFeatures);
 			if (combination < 0)
 				throw new Exception("invalid aero feature combination");
+		}
 
-			#endregion
+		private void ValidateAxles(ITrailerDeclarationInputData trailer)
+		{
+			var liftableCount = 0;
+			if (trailer.Axles[0].Liftable)
+				liftableCount++;
+			if (trailer.Axles.Count > 1 && trailer.Axles[1].Liftable)
+				liftableCount++;
+			if (trailer.Axles.Count > 2 && trailer.Axles[2].Liftable)
+				liftableCount++;
 
-			#region TrailerType
+			switch (trailer.NumberOfAxles)
+			{
+				case NumberOfTrailerAxles.One when trailer.Axles[0].Liftable: //one axle cant be liftable
+				case NumberOfTrailerAxles.Two when trailer.Axles.Count < 2: //missing axle
+				case NumberOfTrailerAxles.Two when trailer.TrailerType == TypeTrailer.DB && liftableCount > 0:
+				case NumberOfTrailerAxles.Two when liftableCount > 1: //too many liftable
+				case NumberOfTrailerAxles.Three when trailer.TrailerType == TypeTrailer.DB && liftableCount > 1: //too many liftable
+				case NumberOfTrailerAxles.Three when liftableCount > 2: //too many liftable
+				case NumberOfTrailerAxles.Three when trailer.Axles.Count < 3:  //missing axles
+					throw new Exception("Wrong axle configuration");
+			}
+		}
+
+		private void ValidateInputValues(ITrailerDeclarationInputData trailer)
+		{
 			if (trailer.TrailerType == TypeTrailer.DA && (trailer.TPMLMAxleAssembly == null || trailer.TPMLMAxleAssembly.Value() == 0))
 				throw new Exception("Trailer is DA but no TPMLM Axle Assembly value is given");
-			#endregion
-
-			#region Tyre dimension validation
 
 			var trailerAxles = trailer.Axles;
 			if ((trailerAxles ?? throw new InvalidOperationException()).Any(x => x.Tyre.Dimension != trailerAxles.FirstOrDefault()?.Tyre.Dimension))
 				throw new Exception("invalid trailer configurations - different tyre dimensions specified");
 
-			#endregion
-
-			#region axles
-			if (trailer.NumberOfAxles == NumberOfTrailerAxles.Two && trailer.Axles.Count < 2)
-				throw new Exception("Second axle is missing");
-
-			else if (trailer.NumberOfAxles == NumberOfTrailerAxles.Three && trailer.Axles.Count < 3)
-				throw new Exception("Third axle is missing");
-            #endregion
-
-            #region validity checks
-            if (trailer.InternalBodyHeight >= trailer.ExternalBodyHeight || 
-				trailer.ExternalBodyHeight >= trailer.TotalTrailerHeight || 
+			if (trailer.InternalBodyHeight >= trailer.ExternalBodyHeight ||
+				trailer.ExternalBodyHeight >= trailer.TotalTrailerHeight ||
 				trailer.InternalBodyHeight >= trailer.TotalTrailerHeight)
 				throw new Exception("Invalid dimensions declared");
 
-			if(trailer.LengthTrailerFrontToFirstAxleCenter >= trailer.LengthTrailerFrontToLastAxleCenter)
+			if (trailer.LengthTrailerFrontToFirstAxleCenter >= trailer.LengthTrailerFrontToLastAxleCenter)
 				throw new Exception("Invalid dimensions declared");
 
 			if (trailer.TPMLMAxleAssembly >= trailer.TPMLMTotalTrailer)
 				throw new Exception("Invalid masses declared");
-			#endregion
+		}
+
+		public void ValidateTrailerInput(ITrailerDeclarationInputData trailer)
+		{
+			ValidateAeroFeatures(trailer);
+			ValidateInputValues(trailer);
+			ValidateAxles(trailer);
 		}
 
         private static int GetAeroFeatureCombination(ITrailerDeclarationInputData trailer)
@@ -1176,7 +1282,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				CurbMassTrailer = trailer.CurbMass,
 				Inertia = wheels.Lookup(GetAxleWheelDimension(genericVehicle)).Inertia,
 				TotalCorrection = GetTrailerCorrection(trailerSegment, trailer, genericVehicle),
-				MaxGcm = maxGcm 
+				MaxGcm = maxGcm
 			};
 
 			return specificTrailerData;

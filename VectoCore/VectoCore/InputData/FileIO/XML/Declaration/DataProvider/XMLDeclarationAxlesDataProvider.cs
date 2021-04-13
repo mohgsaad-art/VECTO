@@ -108,7 +108,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		}
 	}
 
-	public class XMLDeclarationAxlesDataProviderV27 : AbstractXMLType, IXMLAxlesDeclarationInputData
+	public class XMLDeclarationAxlesDataProviderV27 : AbstractXMLType, IXMLTrailerAxlesDeclarationInputData
 	{
 		public static readonly XNamespace NAMESPACE_URI = XMLDefinitions.DECLARATION_DEFINITIONS_NAMESPACE_URI_V27;
 
@@ -116,7 +116,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		public static readonly string QUALIFIED_XSD_TYPE = XMLHelper.CombineNamespace(NAMESPACE_URI.NamespaceName, XSD_TYPE);
 
-		protected IAxleDeclarationInputData[] _axles;
+		protected ITrailerAxleDeclarationInputData[] _axles;
 
 
 		public XMLDeclarationAxlesDataProviderV27(
@@ -132,7 +132,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		#region Implementation of IAxlesDeclarationInputData
 
-		public virtual IList<IAxleDeclarationInputData> AxlesDeclaration
+		public virtual IList<ITrailerAxleDeclarationInputData> AxlesDeclaration
 		{
 			get
 			{
@@ -144,10 +144,10 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 				var axleNodes = GetNodes(new[] { XMLNames.AxleWheels_Axles, XMLNames.AxleWheels_Axles_Axle });
 				if (axleNodes == null)
 				{
-					return new List<IAxleDeclarationInputData>();
+					return new List<ITrailerAxleDeclarationInputData>();
 				}
 
-				_axles = new IAxleDeclarationInputData[axleNodes.Count];
+				_axles = new ITrailerAxleDeclarationInputData[axleNodes.Count];
 				foreach (XmlNode axlenode in axleNodes)
 				{
 					var axleNumber = GetAttribute(axlenode, XMLNames.AxleWheels_Axles_Axle_AxleNumber_Attr).ToInt();
@@ -179,7 +179,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		#region Implementation of IXMLAxlesDeclarationInputData
 
-		public virtual IXMLAxlesReader Reader { protected get; set; }
+		public virtual IXMLTrailerAxlesReader Reader { protected get; set; }
 
 		#endregion
 

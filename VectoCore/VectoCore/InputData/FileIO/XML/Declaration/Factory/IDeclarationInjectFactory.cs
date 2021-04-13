@@ -79,9 +79,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Factory
 			string version, IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile);
 
 		IXMLAxlesDeclarationInputData CreateAxleWheels(string version, IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile);
-		IXMLAxlesDeclarationInputData CreateTrailerAxleWheels(string version, IXMLTrailerDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile);
+		IXMLTrailerAxlesDeclarationInputData CreateTrailerAxleWheels(string version, IXMLTrailerDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile);
 		IXMLAxleDeclarationInputData CreateAxleData(string version, IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile);
-		IXMLAxleDeclarationInputData CreateTrailerAxleData(string version, IXMLTrailerDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile);
+		IXMLTrailerAxleDeclarationInputData CreateTrailerAxleData(string version, IXMLTrailerDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile);
 
 		IXMLTyreDeclarationInputData CreateTyre(string version, XmlNode componentNode, string sourceFile);
 
@@ -130,11 +130,12 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Factory
 
 		IXMLAxlesReader CreateAxlesReader(string version, IXMLDeclarationVehicleData vehicle, XmlNode componentsNode);
 
-		IXMLAxlesReader CreateTrailerAxlesReader(string version, IXMLTrailerDeclarationVehicleData vehicle, XmlNode componentsNode);
+		IXMLTrailerAxlesReader CreateTrailerAxlesReader(string version, IXMLTrailerDeclarationVehicleData vehicle, XmlNode componentsNode);
 
 		IXMLAxleReader CreateAxleReader(string version, IXMLDeclarationVehicleData vehicle, XmlNode componentsNode);
 
-		IXMLAxleReader CreateTrailerAxleReader(string version, IXMLTrailerDeclarationVehicleData vehicle, XmlNode componentsNode);
+		IXMLTrailerAxleReader CreateTrailerAxleReader(string version, IXMLTrailerDeclarationVehicleData vehicle, XmlNode componentsNode);
+
 		IXMLGearboxReader CreateGearboxReader(string version, IXMLDeclarationVehicleData vehicle, XmlNode componentsNode);
 		IXMLAuxiliaryReader CreateAuxiliariesReader(string version, IXMLDeclarationVehicleData vehicle, XmlNode componentsNode);
 

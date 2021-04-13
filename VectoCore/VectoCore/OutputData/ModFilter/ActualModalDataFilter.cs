@@ -130,6 +130,8 @@ namespace TUGraz.VectoCore.OutputData.ModFilter
 					ModalResultField.FCNCVc,
 					//ModalResultField.FCAAUX,
 					ModalResultField.FCWHTCc,
+					ModalResultField.FCLiftTrailer,
+					ModalResultField.FCSteerTrailer,
 					ModalResultField.FCFinal);
 
 				//---

@@ -293,8 +293,8 @@
             </StackPanel>
         </GroupBox>
 
-        <GroupBox Header="Masses" Grid.Row="1" Grid.Column="3" Width="350" Height="200" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
-            <StackPanel Orientation="Vertical" Width="330" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
+        <GroupBox Header="Masses" Grid.Row="1" Grid.Column="3" Width="540" Height="200" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
+            <StackPanel Orientation="Vertical" Width="520" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
                 <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
                 
                     <Grid>
@@ -324,8 +324,8 @@
             </StackPanel>
         </GroupBox>
 
-        <GroupBox Header="Axle and Tyre Features" Grid.Row="2" Grid.Column="3" Width="450" Height="300" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
-            <StackPanel Orientation="Vertical" Width="430" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
+        <GroupBox Header="Axle and Tyre Features" Grid.Row="2" Grid.Column="3" Width="540" Height="300" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
+            <StackPanel Orientation="Vertical" Width="520" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
                 <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
                 
                     <Grid Margin="5">
@@ -350,6 +350,9 @@
                         </Grid.Style>
 
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
@@ -388,6 +391,10 @@
                         <Button Name="DeleteFirstAxleButton" Grid.Column="4" Content="Delete" Width="60" Margin="5,0,0,0" Command="{Binding DeleteFirstAxle}" Visibility="{Binding Axle1ButtonsVisibility, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         <TextBlock Grid.Column="5" Text="Twin tyres" Margin="5,0,0,0"/>
                         <CheckBox Grid.Column="6" IsChecked="{Binding Axle1IsTwin}" Margin="5,0,0,0"/>
+                        <TextBlock Grid.Column="7" Text="Liftable" Margin="5,0,0,0"/>
+                        <CheckBox Grid.Column="8" IsChecked="{Binding Axle1IsLiftable}" Margin="5,0,0,0"/>
+                        <TextBlock Grid.Column="9" Text="Steered" Margin="5,0,0,0"/>
+                        <CheckBox Grid.Column="10" IsChecked="{Binding Axle1IsSteered}" Margin="5,0,0,0"/>
                     </Grid>
 
                     <Grid Margin="5">
@@ -408,6 +415,9 @@
                         </Grid.Style>
 
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
@@ -446,6 +456,10 @@
                         <Button Name="DeleteSecondAxleButton" Grid.Column="4" Content="Delete" Width="60" Margin="5,0,0,0" Command="{Binding DeleteSecondAxle}" Visibility="{Binding Axle2ButtonsVisibility, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         <TextBlock Grid.Column="5" Text="Twin tyres" Margin="5,0,0,0"/>
                         <CheckBox Grid.Column="6" IsChecked="{Binding Axle2IsTwin}" Margin="5,0,0,0"/>
+                        <TextBlock Grid.Column="7" Text="Liftable" Margin="5,0,0,0"/>
+                        <CheckBox Grid.Column="8" IsChecked="{Binding Axle2IsLiftable}" Margin="5,0,0,0"/>
+                        <TextBlock Grid.Column="9" Text="Steered" Margin="5,0,0,0"/>
+                        <CheckBox Grid.Column="10" IsChecked="{Binding Axle2IsSteered}" Margin="5,0,0,0"/>
                     </Grid>
 
                     <Grid Margin="5">
@@ -462,6 +476,9 @@
                         </Grid.Style>
 
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
@@ -500,6 +517,10 @@
                         <Button Name="DeleteThirdAxleButton" Grid.Column="4" Content="Delete" Width="60" Margin="5,0,0,0" Command="{Binding DownloadThirdAxle}" Visibility="{Binding Axle3ButtonsVisibility, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         <TextBlock Grid.Column="5" Text="Twin tyres" Margin="5,0,0,0"/>
                         <CheckBox Grid.Column="6" IsChecked="{Binding Axle3IsTwin}" Margin="5,0,0,0"/>
+                        <TextBlock Grid.Column="7" Text="Liftable" Margin="5,0,0,0"/>
+                        <CheckBox Grid.Column="8" IsChecked="{Binding Axle3IsLiftable}" Margin="5,0,0,0"/>
+                        <TextBlock Grid.Column="9" Text="Steered" Margin="5,0,0,0"/>
+                        <CheckBox Grid.Column="10" IsChecked="{Binding Axle3IsSteered}" Margin="5,0,0,0"/>
                     </Grid>
 
 

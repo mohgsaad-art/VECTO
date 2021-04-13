@@ -968,11 +968,11 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		public virtual IXMLComponentReader ComponentReader { protected get; set; }
 
-		public IXMLAxlesReader AxlesReader { get; set; }
+		public IXMLTrailerAxlesReader AxlesReader { get; set; }
 
 		public virtual IXMLDeclarationTrailerJobInputData Job { get; }
 
-		public IList<IAxleDeclarationInputData> Axles => ReadAxles();
+		public IList<ITrailerAxleDeclarationInputData> Axles => ReadAxles();
 
 		public string CommercialName => GetString(XMLNames.Trailer_CommercialName);
 
@@ -1020,9 +1020,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		protected override DataSourceType SourceType { get; }
 
-		protected IList<IAxleDeclarationInputData> ReadAxles()
+		protected IList<ITrailerAxleDeclarationInputData> ReadAxles()
 		{
-			var axles = new List<IAxleDeclarationInputData>();
+			var axles = new List<ITrailerAxleDeclarationInputData>();
 
 			var trailerAxles = GetNodes(new[] { XMLNames.AxleWheels_Axles_Axle });
 

@@ -99,7 +99,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 	// -----------------------------------------------------------------------------------
 
-	public class XMLDeclarationAxleDataProviderV27 : AbstractCommonComponentType, IXMLAxleDeclarationInputData
+	public class XMLDeclarationAxleDataProviderV27 : AbstractCommonComponentType, IXMLTrailerAxleDeclarationInputData
 	{
 		public static XNamespace NAMESPACE_URI = XMLDefinitions.DECLARATION_DEFINITIONS_NAMESPACE_URI_V27;
 
@@ -109,6 +109,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		protected ITyreDeclarationInputData _tyre;
 		protected bool? _twinTyre;
+		protected bool? _liftable;
+		protected bool? _steered;
 		protected AxleType? _axleType;
 
 		public XMLDeclarationAxleDataProviderV27(IXMLTrailerDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile)
@@ -120,6 +122,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		#region Implementation of IAxleDeclarationInputData
 
 		public virtual bool TwinTyres => _twinTyre ?? (_twinTyre = XmlConvert.ToBoolean(GetString(XMLNames.AxleWheels_Axles_Axle_TwinTyres))).Value;
+		public virtual bool Liftable => _liftable ?? (_liftable = XmlConvert.ToBoolean(GetString(XMLNames.AxleWheels_Axles_Axle_Liftable))).Value;
+		public virtual bool Steered => _steered ?? (_steered = XmlConvert.ToBoolean(GetString(XMLNames.AxleWheels_Axles_Axle_Steered))).Value;
 
 		public virtual AxleType AxleType => _axleType ?? (_axleType = GetString(XMLNames.AxleWheels_Axles_Axle_AxleType).ParseEnum<AxleType>()).Value;
 
@@ -130,7 +134,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		#region Implementation of IXMLAxleDeclarationInputData
 
-		public virtual IXMLAxleReader Reader { protected get; set; }
+		public virtual IXMLTrailerAxleReader Reader { protected get; set; }
 
 		#endregion
 
