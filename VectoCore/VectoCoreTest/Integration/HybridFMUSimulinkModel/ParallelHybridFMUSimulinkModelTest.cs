@@ -208,6 +208,54 @@ namespace TUGraz.VectoCore.Tests.Integration.HybridFMUSimulinkModel
 			//NLog.LogManager.DisableLogging();
 		}
 
+		[
+			TestCase("LongHaul", 2000, 0.5, 0, 320, TestName = "P2 Hybrid DriveCycle LongHaul, SoC: 0.5 Payload: 2t P_auxEl: 0kW maxPwr: 320kW"),
+			TestCase("RegionalDelivery", 2000, 0.5, 0, 320, TestName = "P2 Hybrid DriveCycle RegionalDelivery, SoC: 0.5 Payload: 2t P_auxEl: 0kW maxPwr: 320kW"),
+			TestCase("UrbanDelivery", 2000, 0.5, 0, 320, TestName = "P2 Hybrid DriveCycle UrbanDelivery, SoC: 0.5 Payload: 2t P_auxEl: 0kW maxPwr: 320kW"),
+			TestCase("Construction", 2000, 0.5, 0, 320, TestName = "P2 Hybrid DriveCycle Construction, SoC: 0.5 Payload: 2t P_auxEl: 0kW maxPwr: 320kW"),
+			TestCase("Urban", 2000, 0.5, 0, 320, TestName = "P2 Hybrid DriveCycle Urban, SoC: 0.5 Payload: 2t P_auxEl: 0kW maxPwr: 320kW"),
+			TestCase("Suburban", 2000, 0.5, 0, 320, TestName = "P2 Hybrid DriveCycle SubUrban, SoC: 0.5 Payload: 2t P_auxEl: 0kW maxPwr: 320kW"),
+			TestCase("Interurban", 2000, 0.5, 0, 320, TestName = "P2 Hybrid DriveCycle InterUrban, SoC: 0.5 Payload: 2t P_auxEl: 0kW maxPwr: 320kW"),
+			TestCase("Coach", 2000, 0.5, 0, 320, TestName = "P2 Hybrid DriveCycle Coach, SoC: 0.5 Payload: 2t P_auxEl: 0kW maxPwr: 320kW"),
+		]
+		public void P2HybriDriveCycleOffLimitPwr(string declarationMission, double payload, double initialSoC, double pAuxEl, double maxPwrkW)
+		{
+			NLog.LogManager.EnableLogging();
+			var cycleData = RessourceHelper.ReadStream(
+				DeclarationData.DeclarationDataResourcePrefix + ".MissionCycles." +
+				declarationMission +
+				Constants.FileExtensions.CycleFile);
+			var cycle = DrivingCycleDataReader.ReadFromStream(cycleData, CycleType.DistanceBased, "", false);
+
+			const bool largeMotor = true;
+
+			var modFilename = string.Format("SimulinkMatlabSimpleParallelHybrid-P2_cycle_{0}-{1}_{2}_{3}_maxPwr-{3}.vmod", declarationMission, initialSoC, payload, pAuxEl, maxPwrkW);
+			const PowertrainPosition pos = PowertrainPosition.HybridP2;
+			var job = CreateEngineeringRun(
+				cycle, modFilename, initialSoC, pos, 1.0, largeMotor: true, pAuxEl: pAuxEl, payload: payload.SI<Kilogram>());
+			var run = job.Runs.First().Run;
+
+			var hybridController = (HybridController)((VehicleContainer)run.GetContainer()).HybridController;
+			Assert.NotNull(hybridController);
+
+			var modData = ((ModalDataContainer)((VehicleContainer)run.GetContainer()).ModData).Data;
+
+			var data = run.GetContainer().RunData;
+			//File.WriteAllText(
+			//	$"{modFilename}.json",
+			//	JsonConvert.SerializeObject(data, Formatting.Indented));
+
+			run.Run();
+			Assert.IsTrue(run.FinishedWithoutErrors);
+			job.Execute();
+			job.WaitFinished();
+			Assert.IsTrue(modData.Rows.Count > 0);
+
+			var graphWriter = GetGraphWriter(new[] { ModalResultField.P_electricMotor_mech_P2 });
+			graphWriter.Write(modFilename);
+			NLog.LogManager.DisableLogging();
+		}
+
 		// =================================================
 
 		public static JobContainer CreateEngineeringRun(DrivingCycleData cycleData, string modFileName, double initialSoc, PowertrainPosition pos, double ratio, bool largeMotor = false, double pAuxEl = 0, Kilogram payload = null, Watt maxDriveTrainPower = null)
@@ -282,19 +330,20 @@ namespace TUGraz.VectoCore.Tests.Integration.HybridFMUSimulinkModel
 
 			//var strategy = new HybridStrategy(runData, container);
 			var strategy = new FMUSimulinkModelHybridStrategy(runData, container);
+			
 			var es = new ElectricSystem(container);
 			var battery = new Battery(container, batteryData);
 			battery.Initialize(initialBatCharge);
 
 			var clutch = new SwitchableClutch(container, runData.EngineData);
-			var ctl = new HybridController(container, strategy, es);
+			var ctl = new HybridController(container, strategy, es, true);
 
 			es.Connect(battery);
 
 			var engine = new StopStartCombustionEngine(container, runData.EngineData);
 			//var gearbox = new Gearbox(container, ctl.ShiftStrategy);
-			var amtShiftStrategy = new AMTShiftStrategy(container);
-			var gearbox = new Gearbox(container, amtShiftStrategy);
+			
+			var gearbox = new Gearbox(container, ctl.ShiftStrategy);
 			//var hybridStrategy = new DelegateParallelHybridStrategy();
 			ctl.Gearbox = gearbox;
 

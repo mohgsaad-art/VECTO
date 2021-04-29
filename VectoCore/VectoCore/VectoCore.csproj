@@ -403,6 +403,7 @@
     <Compile Include="Models\SimulationComponent\Impl\PEVAMTShiftStrategy.cs" />
     <Compile Include="Models\SimulationComponent\Impl\ShiftLineSet.cs" />
     <Compile Include="Models\SimulationComponent\Strategies\FMUSimulinkModelHybridStrategy.cs" />
+    <Compile Include="Models\SimulationComponent\Strategies\HybridFMUShiftStrategy.cs" />
     <Compile Include="Models\Simulation\DataBus\IHybridControllerInfo.cs" />
     <Compile Include="Models\SimulationComponent\IHybridControlStrategy.cs" />
     <Compile Include="Models\SimulationComponent\Impl\Battery.cs" />

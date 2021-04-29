@@ -59,6 +59,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl {
 							DragPower = 0.SI<Watt>(),
 							EngineSpeed = outAngularVelocity, // 0.RPMtoRad(),
 							AuxiliariesPowerDemand = 0.SI<Watt>(),
+							InertiaTorqueLoss = 0.SI<NewtonMeter>()
 						},
 						DeltaEngineSpeed = 0.RPMtoRad(),
 					};
@@ -75,6 +76,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl {
 				retVal.Engine.DragPower = 0.SI<Watt>();
 				retVal.Engine.EngineSpeed = 0.RPMtoRad();
 				retVal.Engine.AuxiliariesPowerDemand = 0.SI<Watt>();
+				retVal.Engine.InertiaTorqueLoss = 0.SI<NewtonMeter>();
 				return retVal;
 
 				//throw new VectoSimulationException("Combustion engine cannot supply outtorque when switched off (T_out: {0})", outTorque);
@@ -101,7 +103,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl {
 						EngineSpeed = outAngularVelocity, // 0.RPMtoRad(),
 						AuxiliariesPowerDemand = 0.SI<Watt>(),
 						TotalTorqueDemand = 0.SI<NewtonMeter>(),
-						DragTorque = 0.SI<NewtonMeter>()
+						DragTorque = 0.SI<NewtonMeter>(),
+						InertiaTorqueLoss = 0.SI<NewtonMeter>()
 					},
 					DeltaEngineSpeed = 0.RPMtoRad(),
 				};
@@ -116,6 +119,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl {
 					DragPower = 0.SI<Watt>(),
 					EngineSpeed = 0.RPMtoRad(),
 					AuxiliariesPowerDemand = 0.SI<Watt>(),
+					InertiaTorqueLoss = 0.SI<NewtonMeter>(),
 				},
 			};
 		}

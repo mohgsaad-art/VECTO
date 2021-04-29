@@ -116,6 +116,7 @@ namespace TUGraz.VectoCore.Utils
             SetInput(new uint[] { InputDict["abilEssRegenPower_kW"] }, new double[] { abilEssRegenPower_kW });
 
             var reqMotorBrakeTorque_Nm = (response.Brakes.BrakeTorque != null) ? response.Brakes.BrakeTorque.Value() : 0;
+            //var reqMotorBrakeTorque_Nm = (DataBus.Brakes.BrakeTorque != null) ? DataBus.Brakes.BrakeTorque.Value() : 0;
             SetInput(new uint[] { InputDict["reqMotorBrakeTorque_Nm"] }, new double[] { reqMotorBrakeTorque_Nm });
 
             var SOC = (response.ElectricSystem != null && response.ElectricSystem.RESSResponse != null) ? response.ElectricSystem.RESSResponse.StateOfCharge * 100 : 0 ;
@@ -133,7 +134,7 @@ namespace TUGraz.VectoCore.Utils
             var abilRegenPower_kW = ((((response.ElectricMotor.MaxRecuperationTorqueEm ?? 0.SI<NewtonMeter>())) * response.ElectricMotor.AngularVelocity).Value()) / 1000;
             SetInput(new uint[] { InputDict["abilRegenPower_kW"] }, new double[] { abilRegenPower_kW });
 
-            var abilRegenTorque_Nm = (response.ElectricMotor.MaxRecuperationTorqueEmMap != null) ? response.ElectricMotor.MaxRecuperationTorqueEm.Value() : 0;
+            var abilRegenTorque_Nm = (response.ElectricMotor.MaxRecuperationTorqueEm != null) ? response.ElectricMotor.MaxRecuperationTorqueEm.Value() : 0;
             SetInput(new uint[] { InputDict["abilRegenTorque_Nm"] }, new double[] { abilRegenTorque_Nm });
 
             var EM_speed_rpm = (response.ElectricMotor.AngularVelocity != null) ? response.ElectricMotor.EmSpeed.AsRPM : 0;
@@ -145,8 +146,8 @@ namespace TUGraz.VectoCore.Utils
             var VehicleSpeed_kmh = (DataBus.VehicleInfo.VehicleSpeed != null) ? DataBus.VehicleInfo.VehicleSpeed.AsKmph : 0;
             SetInput(new uint[] { InputDict["VehicleSpeed"] }, new double[] { VehicleSpeed_kmh });
 
-            LogShiftDataToExcel(absTime, dt, outTorque, outAngularVelocity, response, ICE_MaxTorque_Nm, torqueDemandPwt_Nm, AuxCons_kW, abilEssDchPower_kW, abilEssRegenPower_kW, reqMotorBrakeTorque_Nm,
-                    SOC, abilMotorTorque_Nm, abilMotorPower_kW, motorSpeed_rpm, abilRegenPower_kW, abilRegenTorque_Nm, EM_speed_rpm, motorTorque_Nm, VehicleSpeed_kmh);
+            //LogShiftDataToExcel(absTime, dt, outTorque, outAngularVelocity, response, ICE_MaxTorque_Nm, torqueDemandPwt_Nm, AuxCons_kW, abilEssDchPower_kW, abilEssRegenPower_kW, reqMotorBrakeTorque_Nm,
+            //        SOC, abilMotorTorque_Nm, abilMotorPower_kW, motorSpeed_rpm, abilRegenPower_kW, abilRegenTorque_Nm, EM_speed_rpm, motorTorque_Nm, VehicleSpeed_kmh);
         }
 
 

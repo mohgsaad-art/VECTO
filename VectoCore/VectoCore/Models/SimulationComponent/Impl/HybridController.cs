@@ -36,12 +36,30 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		protected DebugData DebugData = new DebugData();
 
 
-		public HybridController(IVehicleContainer container, IHybridControlStrategy strategy, IElectricSystem es) : base(container)
+		public HybridController(IVehicleContainer container, IHybridControlStrategy strategy, IElectricSystem es, bool shiftstrategy = false) : base(container)
 		{
 			_electricMotorCtl = new Dictionary<PowertrainPosition, ElectricMotorController>();
-			_shiftStrategy = container.RunData.GearboxData.Type.AutomaticTransmission()
+
+			//_shiftStrategy = shiftstrategy ? new AMTShiftStrategy(container) : new HybridCtlATShiftStrategy(this, container);
+			if(shiftstrategy)
+            {
+				_shiftStrategy = new HybridFMUShiftStrategy(container, this);
+
+			} else
+            {
+				_shiftStrategy = container.RunData.GearboxData.Type.AutomaticTransmission()
 				? new HybridCtlATShiftStrategy(this, container)
 				: new HybridCtlShiftStrategy(this, container);
+
+			}
+
+			/*
+				(container.RunData.GearboxData.Type.AutomaticTransmission()
+				? new HybridCtlATShiftStrategy(this, container)
+				: new HybridCtlShiftStrategy(this, container));
+			*/
+
+
 			_hybridStrategy = strategy;
 			strategy.Controller = this;
 

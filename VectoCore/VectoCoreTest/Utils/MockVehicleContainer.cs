@@ -394,7 +394,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		public bool HasElectricMotor { get; }
 		public PowertrainPosition[] ElectricMotorPositions { get; }
+        public NewtonMeter BrakeTorque { get; set; }
 
-		#endregion
-	}
+        #endregion
+    }
 }

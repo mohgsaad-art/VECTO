@@ -57,7 +57,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies {
 
 			Driver = new MockDriver(container, realContainer);
 			DrivingCycle = new MockDrivingCycle(container, realContainer);
-			Brakes = new MockBrakes(container);
+				//Brakes = new MockBrakes(container);
+
+			Brakes = container.Brakes as Brakes;
+			if (Brakes == null)
+            {
+				throw new VectoException("error unknown missing brakes");
+            }
 		}
 	}
 
@@ -85,9 +91,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies {
 		#region Implementation of IBrakes
 
 		public Watt BrakePower { get; set; }
+        public NewtonMeter BrakeTorque { get; set; }
 
-		#endregion
-	}
+        #endregion
+    }
 
 	public class MockDrivingCycle : VectoSimulationComponent, IDrivingCycleInfo
 	{

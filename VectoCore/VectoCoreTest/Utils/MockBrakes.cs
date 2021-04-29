@@ -44,8 +44,9 @@ namespace TUGraz.VectoCore.Tests.Utils
 		}
 
 		public Watt BrakePower { get; set; }
+        public NewtonMeter BrakeTorque { get; set; }
 
-		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container) {}
+        protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container) {}
 
 		protected override void DoCommitSimulationStep(Second time, Second simulationInterval) {}
 	}
