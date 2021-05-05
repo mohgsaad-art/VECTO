@@ -47,7 +47,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 	{
 		private DataTable _aeroFeaturesTable;
 
-		protected override string ResourceId => DeclarationData.DeclarationDataResourcePrefix + ".TrailerAeroFeatures.csv";
+		protected override string ResourceId => DeclarationData.DeclarationDataResourcePrefix + ".Trailer.trailer_combination_addon.csv";
 
 		protected override string ErrorMessage => "ERROR: Could not find the aero feature combination for trailer.";
 
@@ -74,10 +74,10 @@ namespace TUGraz.VectoCore.Models.Declaration
 			try {
 				row = _aeroFeaturesTable.AsEnumerable().FirstOrDefault(
 					r => {
-						var sideSkirtShort = int.Parse(r.Field<string>("sideSkirtShort"));
-						var sideSkirtsLong = int.Parse(r.Field<string>("sideSkirtsLong"));
-						var boatTailShort = int.Parse(r.Field<string>("boatTailShort"));
-						var boatTailLong = int.Parse(r.Field<string>("boatTailLong"));
+						var sideSkirtShort = int.Parse(r.Field<string>("side_skirt_short"));
+						var sideSkirtsLong = int.Parse(r.Field<string>("side_skirt_long"));
+						var boatTailShort = int.Parse(r.Field<string>("boat_tail_short"));
+						var boatTailLong = int.Parse(r.Field<string>("boat_tail_long"));
 						return aeroFeatures.Contains(AeroFeatureTechnology.SideSkirtsShort) == (sideSkirtShort == 1) &&
 								aeroFeatures.Contains(AeroFeatureTechnology.SideSkirtsLong) == (sideSkirtsLong == 1) &&
 								aeroFeatures.Contains(AeroFeatureTechnology.BoatTailShort) == (boatTailShort == 1) &&

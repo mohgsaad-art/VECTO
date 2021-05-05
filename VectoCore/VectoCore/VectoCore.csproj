@@ -329,11 +329,14 @@
     <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\HVAC\SSMInputs.cs" />
     <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\HVAC\SSMRun.cs" />
     <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\HVAC\SSMTOOL.cs" />
+    <Compile Include="Models\Declaration\GenericCadVehicle.cs" />
+    <Compile Include="Models\Declaration\StandardTrailer.cs" />
+    <Compile Include="Models\Declaration\SpecificTrailer.cs" />
     <Compile Include="Models\Declaration\TrailerData.cs" />
     <Compile Include="Models\Declaration\GenericTowingVehicles.cs" />
     <Compile Include="Models\Declaration\CompletedBusSegments.cs" />
     <Compile Include="Models\Declaration\AeroFeatures.cs" />
-    <Compile Include="Models\Declaration\Impact.cs" />
+    <Compile Include="Models\Declaration\ReferenceTrailer.cs" />
     <Compile Include="Models\Declaration\TrailerSegments.cs" />
     <Compile Include="Models\GenericModelData\GenericTorqueConverterData.cs" />
     <Compile Include="Models\GenericModelData\GenericTransmissionComponentData.cs" />
@@ -930,8 +933,6 @@
     <EmbeddedResource Include="Resources\XSD\VectoDeclarationDefinitions.2.7_BT.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Declaration\TrailerSegmentationTable.csv" />
-    <EmbeddedResource Include="Resources\Declaration\TrailerAeroFeatures.csv" />
     <EmbeddedResource Include="Resources\Declaration\GenericTowingVehicles.csv" />
     <EmbeddedResource Include="Resources\XSD\VectoOutputManufacturer.0.9.xsd">
       <SubType>Designer</SubType>
@@ -939,7 +940,12 @@
     <EmbeddedResource Include="Resources\XSD\VectoOutputCustomer.0.9.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Declaration\liftable_steered_axles.csv" />
+    <EmbeddedResource Include="Resources\Declaration\Trailer\reference_trailer.csv" />
+    <EmbeddedResource Include="Resources\Declaration\Trailer\specific_trailer.csv" />
+    <EmbeddedResource Include="Resources\Declaration\Trailer\standard_trailer.csv" />
+    <EmbeddedResource Include="Resources\Declaration\Trailer\trailerSegmentationTable.csv" />
+    <EmbeddedResource Include="Resources\Declaration\Trailer\trailer_combination_addon.csv" />
+    <EmbeddedResource Include="Resources\Declaration\Trailer\generic_cad_vehicle.csv" />
     <None Include="Utils\VectoVersionCore.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>VectoVersionCore.cs</LastGenOutput>
@@ -983,6 +989,7 @@
     <EmbeddedResource Include="Resources\Declaration\GenericVehicles\R2.xml" />
     <EmbeddedResource Include="Resources\Declaration\GenericVehicles\R3.xml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

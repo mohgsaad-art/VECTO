@@ -990,7 +990,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		public BodyWorkCode BodyworkCode => BodyWorkCodeHelper.Parse(GetString(XMLNames.Trailer_BodyCode));
 
-		public Kilogram CurbMass => GetDouble(XMLNames.Trailer_CurbMass).SI<Kilogram>();
+		public Kilogram MassInRunningOrder => GetDouble(XMLNames.Trailer_MassInRunningOrder).SI<Kilogram>();
 
 		public Kilogram TPMLMTotalTrailer => GetDouble(XMLNames.Trailer_TPMLMTotalTrailer).SI<Kilogram>();
 
@@ -1004,13 +1004,15 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		public Meter TotalTrailerHeight => GetDouble(XMLNames.Trailer_TotalHeightTrailer).SI<Meter>();
 
-		public Meter LengthTrailerFrontToFirstAxleCenter => GetDouble(XMLNames.Trailer_PositionXFirstAxle).SI<Meter>();
+		public Meter LengthFromFrontToFirstAxle => GetDouble(XMLNames.Trailer_LengthFromFrontToFirstAxle).SI<Meter>();
 
-		public Meter LengthTrailerFrontToLastAxleCenter => GetDouble(XMLNames.Trailer_PositionXLastAxle).SI<Meter>();
+		public Meter LengthBetweenCentersOfAxles => GetDouble(XMLNames.Trailer_LengthBetweenCentersOfAxles).SI<Meter>();
 
 		public Meter InternalBodyHeight => GetDouble(XMLNames.Trailer_InternalHeightBody).SI<Meter>();
 
 		public CubicMeter CargoVolume => GetDouble(XMLNames.Trailer_CargoVolume).SI<CubicMeter>();
+
+		public TrailerCouplingPoint TrailerCouplingPoint => TrailerCouplingPointHelper.Parse(GetString(XMLNames.Trailer_TrailerCouplingPoint));
 
 		public IList<AeroFeatureTechnology> AeroFeatureTechnologies => ReadAeroFeatures();
 

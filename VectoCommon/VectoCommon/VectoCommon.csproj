@@ -107,6 +107,7 @@
     <Compile Include="Models\LegislativeClass.cs" />
     <Compile Include="Models\LoggingObject.cs" />
     <Compile Include="Models\MissionType.cs" />
+    <Compile Include="Models\TrailerCouplingPoint.cs" />
     <Compile Include="Models\OperatingPoint.cs" />
     <Compile Include="Models\RegistrationClass.cs" />
     <Compile Include="Models\RetarderType.cs" />

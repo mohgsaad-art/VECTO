@@ -223,7 +223,7 @@ namespace TUGraz.VectoCommon.InputData
 
 		BodyWorkCode BodyworkCode { get; }
 
-		Kilogram CurbMass { get; }
+		Kilogram MassInRunningOrder { get; }
 
 		Kilogram TPMLMTotalTrailer { get; }
 
@@ -237,13 +237,15 @@ namespace TUGraz.VectoCommon.InputData
 
 		Meter TotalTrailerHeight { get; }
 
-		Meter LengthTrailerFrontToFirstAxleCenter { get; }
+		Meter LengthFromFrontToFirstAxle { get; }
 
-		Meter LengthTrailerFrontToLastAxleCenter { get; }
+		Meter LengthBetweenCentersOfAxles { get; }
 		
 		Meter InternalBodyHeight { get; }
 
 		CubicMeter CargoVolume { get; }
+
+		TrailerCouplingPoint TrailerCouplingPoint { get; }
 
 		IList<AeroFeatureTechnology> AeroFeatureTechnologies { get; }
 

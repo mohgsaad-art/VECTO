@@ -68,10 +68,11 @@
 					<xs:element name="AxleCount" type="v2.7:TrailerAxleCountType"/>
 					<xs:element name="TrailerType" type="v2.7:TrailerTypeType"/>
 					<xs:element name="BodyCode" type="v2.7:BodyWorkCodeType"/>
+					<xs:element name="TrailerCouplingPoint" type="v2.7:TrailerCouplingPoint" minOccurs="0"/>
 					<xs:element name="Masses">
 						<xs:complexType>
 							<xs:sequence>
-								<xs:element name="CurbMass" type="v2.7:TrailerMassType"/>
+								<xs:element name="MassInRunningOrder" type="v2.7:TrailerMassType"/>
 								<xs:element name="TPMLMTotalTrailer" type="v2.7:TrailerMassType"/>
 								<xs:element name="TPMLMAxleAssembly" type="v2.7:TrailerMassType" minOccurs="0"/>
 							</xs:sequence>
@@ -84,8 +85,8 @@
 								<xs:element name="ExternalWidthBody" type="v2.7:TrailerLengthType"/>
 								<xs:element name="ExternalHeightBody" type="v2.7:TrailerLengthType"/>
 								<xs:element name="TotalHeightTrailer" type="v2.7:TrailerLengthType"/>
-								<xs:element name="PositionXFirstAxle" type="v2.7:TrailerLengthType"/>
-								<xs:element name="PositionXLastAxle" type="v2.7:TrailerLengthType"/>
+								<xs:element name="LengthFromFrontToFirstAxle" type="v2.7:TrailerLengthType"/>
+								<xs:element name="LengthBetweenCentersOfAxles" type="v2.7:TrailerLengthType"/>
 								<xs:element name="InternalHeightBody" type="v2.7:TrailerLengthType"/>
 								<xs:element name="CargoVolume" type="v2.7:TrailerCargoVolumeType"/>
 							</xs:sequence>
@@ -105,10 +106,11 @@
 	</xs:complexType>
 	<xs:simpleType name="BodyWorkCodeType">
 		<xs:restriction base="xs:string">
-			<xs:enumeration value="03"/>
-			<xs:enumeration value="04"/>
-			<xs:enumeration value="05"/>
-			<xs:enumeration value="06"/>
+			<xs:enumeration value="dry box"/>
+			<xs:enumeration value="regrigerated"/>
+			<xs:enumeration value="conditioned"/>
+			<xs:enumeration value="curtainsider"/>
+			<xs:enumeration value="drop-side with tarpaulin body"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="TrailerAeroFeatureTechnologyType">
@@ -131,6 +133,12 @@
 	</xs:simpleType>
 	<xs:simpleType name="AxleSteeredType">
 		<xs:restriction base="xs:boolean">
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TrailerCouplingPoint">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="low"/>
+			<xs:enumeration value="high"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="TrailerCargoVolumeType">

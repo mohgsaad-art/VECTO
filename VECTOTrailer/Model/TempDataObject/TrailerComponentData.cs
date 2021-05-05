@@ -31,8 +31,8 @@ namespace VECTOTrailer.Model.TempDataObject
 		public Meter ExternalWidthOfTheBody { get; set; }
 		public Meter ExternalHeightOfTheBody { get; set; }
 		public Meter TotalHeightOfTheTrailer { get; set; }
-		public Meter PositionXFirstAxle { get; set; }
-		public Meter PositionXLastAxle { get; set; }
+		public Meter LengthFromFrontToFirstAxle { get; set; }
+		public Meter LengthBetweenCentersOfAxles { get; set; }
 		public Meter InternalHeightOfTheBody { get; set; }
 		public CubicMeter CargoVolume { get; set; }
 		public NumberOfTrailerAxles NumberOfAxles { get; set; }
@@ -43,7 +43,7 @@ namespace VECTOTrailer.Model.TempDataObject
 		public bool SideSkirtsLong { get; set; }
 		public bool BoatTailShort { get; set; }
 		public bool BoatTailLong { get; set; }
-		public Kilogram CurbMassTrailer { get; set; }
+		public Kilogram MassInRunningOrder { get; set; }
 		public Kilogram TPLMTotalTrailer { get; set; }
 		public Kilogram TPLMAxleAssembly { get; set; }
 		public string Axle1FilePath { get; set; }
@@ -82,6 +82,8 @@ namespace VECTOTrailer.Model.TempDataObject
 		public bool Axle3ButtonsVisibility { get; set; }
 		public bool Axle3NewVisibility { get; set; }
 		public bool TPMLMAxleAssemblyVisibility { get; set; }
+		public bool TrailerCouplingPointVisibility { get; set; }
+		public TrailerCouplingPoint TrailerCouplingPoint { get; set; }
 		public Dictionary<string, string> XmlNamesToPropertyMapping { get;  private set; }
 
 		#endregion
@@ -116,14 +118,14 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.ExternalLengthOfTheBody = ExternalLengthOfTheBody;
 			viewModel.ExternalWidthOfTheBody = ExternalWidthOfTheBody;
 			viewModel.TotalHeightOfTheTrailer = TotalHeightOfTheTrailer;
-			viewModel.PositionXFirstAxle = PositionXFirstAxle;
-			viewModel.PositionXLastAxle = PositionXFirstAxle;
+			viewModel.LengthFromFrontToFirstAxle = LengthFromFrontToFirstAxle;
+			viewModel.LengthBetweenCentersOfAxles = LengthBetweenCentersOfAxles;
 			viewModel.InternalHeightOfTheBody = InternalHeightOfTheBody;
 			viewModel.CargoVolume = CargoVolume;
 			viewModel.NumberOfAxles = NumberOfAxles;
 			viewModel.TrailerType = TrailerType;
 			viewModel.BodyCode = BodyCode;
-			viewModel.CurbMassTrailer = CurbMassTrailer;
+			viewModel.MassInRunningOrder = MassInRunningOrder;
 			viewModel.TPLMTotalTrailer = TPLMTotalTrailer;
 			viewModel.TPLMAxleAssembly = TPLMAxleAssembly;
 			viewModel.Axle1IsTwin = Axle1IsTwin;
@@ -153,6 +155,9 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.Axle3NewVisibility = Axle3NewVisibility;
 
 			viewModel.TPMLMAxleAssemblyVisibility = TPMLMAxleAssemblyVisibility;
+			viewModel.TrailerCouplingPointVisibility = TrailerCouplingPointVisibility;
+
+			viewModel.TrailerCouplingPoint = viewModel.TrailerCouplingPoint;
 		}
 
 		public void ClearValues(ICompleteTrailerViewModel viewModel)
@@ -167,8 +172,8 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.ExternalLengthOfTheBody = default;
 			viewModel.ExternalWidthOfTheBody = default;
 			viewModel.TotalHeightOfTheTrailer = default;
-			viewModel.PositionXFirstAxle = default;
-			viewModel.PositionXLastAxle = default;
+			viewModel.LengthFromFrontToFirstAxle = default;
+			viewModel.LengthBetweenCentersOfAxles = default;
 			viewModel.InternalHeightOfTheBody = default;
 			viewModel.CargoVolume = default;
 			viewModel.NumberOfAxles = NumberOfTrailerAxles.One;
@@ -178,7 +183,7 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.SideSkirtsLong = false;
 			viewModel.BoatTailShort = false;
 			viewModel.BoatTailLong = false;
-			viewModel.CurbMassTrailer = default;
+			viewModel.MassInRunningOrder = default;
 			viewModel.TPLMTotalTrailer = default;
 			viewModel.TPLMAxleAssembly = default;
 			viewModel.Axle1IsTwin = false;
@@ -199,6 +204,9 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.Axle3NewVisibility = true;
 
 			TPMLMAxleAssemblyVisibility = true;
+			TrailerCouplingPointVisibility = true;
+
+			viewModel.TrailerCouplingPoint = TrailerCouplingPoint.Low;
 		}
 
 		
@@ -214,14 +222,14 @@ namespace VECTOTrailer.Model.TempDataObject
 			ExternalLengthOfTheBody = trailer.ExternalLengthOfTheBody;
 			ExternalWidthOfTheBody = trailer.ExternalWidthOfTheBody;
 			TotalHeightOfTheTrailer = trailer.TotalHeightOfTheTrailer;
-			PositionXFirstAxle = trailer.PositionXFirstAxle;
-			PositionXLastAxle = trailer.PositionXLastAxle;
+			LengthFromFrontToFirstAxle = trailer.LengthFromFrontToFirstAxle;
+			LengthBetweenCentersOfAxles = trailer.LengthBetweenCentersOfAxles;
 			InternalHeightOfTheBody = trailer.InternalHeightOfTheBody;
 			CargoVolume = trailer.CargoVolume;
 			NumberOfAxles = trailer.NumberOfAxles;
 			TrailerType = trailer.TrailerType;
 			BodyCode = trailer.BodyCode;
-			CurbMassTrailer = trailer.CurbMassTrailer;
+			MassInRunningOrder = trailer.MassInRunningOrder;
 			TPLMTotalTrailer = trailer.TPLMTotalTrailer;
 			TPLMAxleAssembly = trailer.TPLMAxleAssembly;
 			Axle1IsTwin = trailer.Axle1IsTwin;
@@ -255,6 +263,8 @@ namespace VECTOTrailer.Model.TempDataObject
 			Axle2NewVisibility = trailer.Axle2NewVisibility;
 			Axle3ButtonsVisibility = trailer.Axle3ButtonsVisibility;
 			Axle3NewVisibility = trailer.Axle3NewVisibility;
+
+			TrailerCouplingPoint = trailer.TrailerCouplingPoint;
 		}
 
 		private void SetXmlNamesToPropertyMapping()
@@ -270,15 +280,15 @@ namespace VECTOTrailer.Model.TempDataObject
 				{XMLNames.Trailer_ExternalLengthBody, nameof(ExternalLengthOfTheBody)},
 				{XMLNames.Trailer_ExternalWidthBody, nameof(ExternalWidthOfTheBody)},
 				{XMLNames.Trailer_TotalHeightTrailer, nameof(TotalHeightOfTheTrailer)},
-				{XMLNames.Trailer_PositionXFirstAxle, nameof(PositionXFirstAxle)},
-				{XMLNames.Trailer_PositionXLastAxle, nameof(PositionXLastAxle)},
+				{XMLNames.Trailer_LengthFromFrontToFirstAxle, nameof(LengthFromFrontToFirstAxle)},
+				{XMLNames.Trailer_LengthBetweenCentersOfAxles, nameof(LengthBetweenCentersOfAxles)},
 				{XMLNames.Trailer_InternalHeightBody, nameof(InternalHeightOfTheBody)},
 				{XMLNames.Trailer_CargoVolume, nameof(CargoVolume)},
 				{XMLNames.Trailer_AxleCount, nameof(NumberOfAxles)},
 				{XMLNames.Trailer_TrailerType, nameof(TrailerType)},
 				{XMLNames.Trailer_BodyCode, nameof(BodyCode)},
 				{XMLNames.Trailer_AeroFeatureTechnologies, nameof(Technologies)},
-				{XMLNames.Trailer_CurbMass, nameof(CurbMassTrailer)},
+				{XMLNames.Trailer_CurbMass, nameof(MassInRunningOrder)},
 				{XMLNames.Trailer_TPMLMTotalTrailer, nameof(TPLMTotalTrailer)},
 				{XMLNames.Trailer_TPLMAxleAssembly, nameof(TPLMAxleAssembly)},
 				{XMLNames.AxleWheels_Axles, nameof(Axle1FilePath)},

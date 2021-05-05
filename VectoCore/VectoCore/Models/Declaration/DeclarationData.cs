@@ -74,6 +74,10 @@ namespace TUGraz.VectoCore.Models.Declaration
 		public static readonly Watt MinEnginePowerForEMS = 300e3.SI<Watt>();
 
 		public static readonly TrailerSegments TrailerSegments = new TrailerSegments();
+		public static readonly ReferenceTrailer ReferenceTrailer = new ReferenceTrailer();
+		public static readonly SpecificTrailer SpecificTrailer = new SpecificTrailer();
+		public static readonly GenericCadVehicle GenericCadVehicle = new GenericCadVehicle();
+
 		public static readonly AeroFeatures AeroFeatures = new AeroFeatures();
 		public static readonly GenericTowingVehicles GenericTowingVehicles = new GenericTowingVehicles();
 
@@ -798,7 +802,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 			/// <param name="shiftLine">second part of the shift polygon (slope)</param>
 			/// <param name="fldMargin">reduced full-load curve</param>
 			/// <param name="maxTorque">max torque</param>
-			/// <returns>returns a corrected shift polygon segment (slope) that is below the full load curve and reaches given maxTorque. the returned segment has the same slope</returns>
+			/// <returns>returns a corrected shift polygon classification (slope) that is below the full load curve and reaches given maxTorque. the returned classification has the same slope</returns>
 			internal static Edge MoveDownshiftBelowFld(Edge shiftLine, IEnumerable<Point> fldMargin, NewtonMeter maxTorque)
 			{
 				var slope = shiftLine.SlopeXY;

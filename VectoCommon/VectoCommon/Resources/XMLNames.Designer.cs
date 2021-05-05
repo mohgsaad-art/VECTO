@@ -3074,7 +3074,16 @@ namespace TUGraz.VectoCommon.Resources {
                 return ResourceManager.GetString("Trailer_CargoVolume", resourceCulture);
             }
         }
-        
+
+		/// <summary>
+		///   Looks up a localized string similar to CargoVolume.
+		/// </summary>
+		public static string Trailer_TrailerCouplingPoint {
+			get {
+				return ResourceManager.GetString("Trailer_TrailerCouplingPoint", resourceCulture);
+			}
+		}
+
         /// <summary>
         ///   Looks up a localized string similar to CommercialName.
         /// </summary>
@@ -3148,6 +3157,24 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to LengthBetweenCentersOfAxles.
+        /// </summary>
+        public static string Trailer_LengthBetweenCentersOfAxles {
+            get {
+                return ResourceManager.GetString("Trailer_LengthBetweenCentersOfAxles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LengthFromFrontToFirstAxle.
+        /// </summary>
+        public static string Trailer_LengthFromFrontToFirstAxle {
+            get {
+                return ResourceManager.GetString("Trailer_LengthFromFrontToFirstAxle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Masses.
         /// </summary>
         public static string Trailer_Masses {
@@ -3157,20 +3184,11 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PositionXFirstAxle.
+        ///   Looks up a localized string similar to MassInRunningOrder.
         /// </summary>
-        public static string Trailer_PositionXFirstAxle {
+        public static string Trailer_MassInRunningOrder {
             get {
-                return ResourceManager.GetString("Trailer_PositionXFirstAxle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to PositionXLastAxle.
-        /// </summary>
-        public static string Trailer_PositionXLastAxle {
-            get {
-                return ResourceManager.GetString("Trailer_PositionXLastAxle", resourceCulture);
+                return ResourceManager.GetString("Trailer_MassInRunningOrder", resourceCulture);
             }
         }
         
@@ -3200,7 +3218,7 @@ namespace TUGraz.VectoCommon.Resources {
                 return ResourceManager.GetString("Trailer_TPMLMTotalTrailer", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to TrailerType.
         /// </summary>

@@ -114,7 +114,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(tns + XMLNames.Trailer_TrailerType, modelData.VehicleData.InputDataTrailer.TrailerType), 
 				new XElement(tns + XMLNames.Trailer_BodyCode, modelData.VehicleData.InputDataTrailer.BodyworkCode.GetLabel()),
 				new XElement(tns + XMLNames.Trailer_Masses,
-					new XElement(tns + XMLNames.Trailer_CurbMass, XMLHelper.ValueAsUnit(modelData.VehicleData.InputDataTrailer.CurbMass, XMLNames.Unit_kg)),
+					new XElement(tns + XMLNames.Trailer_MassInRunningOrder, XMLHelper.ValueAsUnit(modelData.VehicleData.InputDataTrailer.MassInRunningOrder, XMLNames.Unit_kg)),
 					new XElement(tns + XMLNames.Trailer_TPMLMTotalTrailer, XMLHelper.ValueAsUnit(modelData.VehicleData.InputDataTrailer.TPMLMTotalTrailer, XMLNames.Unit_kg)),
 					new XElement(tns + XMLNames.Trailer_TPLMAxleAssembly, XMLHelper.ValueAsUnit(modelData.VehicleData.InputDataTrailer.TPMLMAxleAssembly, XMLNames.Unit_kg))
 				),
@@ -188,7 +188,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 
 		private XElement GetErrorResult(XMLDeclarationReport.ResultEntry resultEntry)
 		{
-			var content = new object[] { };
+			object[] content;
 			switch (resultEntry.Status) {
 				case VectoRun.Status.Pending:
 				case VectoRun.Status.Running:
@@ -228,24 +228,23 @@ namespace TUGraz.VectoCore.OutputData.XML
 				ratio = man.CalculateFactor(key, value);
 				ratioTons = man.DoCalculateFactor(key.CO2Total, key.Distance, key.Payload, value.CO2Total, value.Distance,
 					value.Payload);
-				ratioCubicMeter = man.DoCalculateFactor(key.CO2Total, key.Distance, CargoVolumeTrailer, value.CO2Total,
-					value.Distance, CargoVolumeGeneric);
+				ratioCubicMeter = man.DoCalculateFactor(key.CO2Total, CargoVolumeTrailer, value.CO2Total, CargoVolumeGeneric);
 			}
 
 			var cdxAYawAngle3 = result.CdxA +
-								_trailerSegment.A1 * 3 +
-								_trailerSegment.A2 * 3 * 3 +
-								_trailerSegment.A3 * 3 * 3 * 3;
+								_trailerSegment.GenericCadVehicle.A1 * 3 +
+								_trailerSegment.GenericCadVehicle.A2 * 3 * 3 +
+								_trailerSegment.GenericCadVehicle.A3 * 3 * 3 * 3;
 
 			var cdxAYawAngle6 = result.CdxA +
-								_trailerSegment.A1 * 6 +
-								_trailerSegment.A2 * 6 * 6 +
-								_trailerSegment.A3 * 6 * 6 * 6;
+								_trailerSegment.GenericCadVehicle.A1 * 6 +
+								_trailerSegment.GenericCadVehicle.A2 * 6 * 6 +
+								_trailerSegment.GenericCadVehicle.A3 * 6 * 6 * 6;
 
 			var cdxAYawAngle9 = result.CdxA +
-								_trailerSegment.A1 * 9 +
-								_trailerSegment.A2 * 9 * 9 +
-								_trailerSegment.A3 * 9 * 9 * 9;
+								_trailerSegment.GenericCadVehicle.A1 * 9 +
+								_trailerSegment.GenericCadVehicle.A2 * 9 * 9 +
+								_trailerSegment.GenericCadVehicle.A3 * 9 * 9 * 9;
 
 			return new XElement(
 				tns + XMLNames.Report_Result_Result,

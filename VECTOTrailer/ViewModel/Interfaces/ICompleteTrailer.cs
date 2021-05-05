@@ -19,8 +19,8 @@ namespace VECTOTrailer.ViewModel.Interfaces
 		Meter ExternalWidthOfTheBody { get; set; }
 		Meter ExternalHeightOfTheBody { get; set; }
 		Meter TotalHeightOfTheTrailer { get; set; }
-		Meter PositionXFirstAxle { get; set; }
-		Meter PositionXLastAxle { get; set; }
+		Meter LengthFromFrontToFirstAxle { get; set; }
+		Meter LengthBetweenCentersOfAxles { get; set; }
 		Meter InternalHeightOfTheBody { get; set; }
 		CubicMeter CargoVolume { get; set; }
 		NumberOfTrailerAxles NumberOfAxles { get; set; }
@@ -31,7 +31,7 @@ namespace VECTOTrailer.ViewModel.Interfaces
 		bool SideSkirtsLong { get; set; }
 		bool BoatTailShort { get; set; }
 		bool BoatTailLong { get; set; }
-		Kilogram CurbMassTrailer { get; set; }
+		Kilogram MassInRunningOrder { get; set; }
 		Kilogram TPLMTotalTrailer { get; set; }
 		Kilogram TPLMAxleAssembly { get; set; }
 		string Axle1FilePath { get; set; }
@@ -64,11 +64,13 @@ namespace VECTOTrailer.ViewModel.Interfaces
 		Dictionary<string,string> XmlNamesToPropertyMapping { get; }
 
 		bool TPMLMAxleAssemblyVisibility { get; set; }
+		bool TrailerCouplingPointVisibility { get; set; }
 		bool Axle1ButtonsVisibility { get; set; }
 		bool Axle1NewVisibility { get; set; }
 		bool Axle2ButtonsVisibility { get; set; }
 		bool Axle2NewVisibility { get; set; }
 		bool Axle3ButtonsVisibility { get; set; }
 		bool Axle3NewVisibility { get; set; }
+		TrailerCouplingPoint TrailerCouplingPoint { get; set; }
 	}
 }

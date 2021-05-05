@@ -156,16 +156,16 @@
 
                     <Grid>
                         <customControls:VectoParameterControl
-                            Caption="PositionXFirstAxle" CaptionWidthGroup="lblGWidth"
-                            Value="{Binding PositionXFirstAxle, Converter={converter:SIValueConverter}, ConverterParameter=AsMeter|double3}" ValueAlign="right"
+                            Caption="Length from trailer front to first axle" CaptionWidthGroup="lblGWidth"
+                            Value="{Binding LengthFromFrontToFirstAxle, Converter={converter:SIValueConverter}, ConverterParameter=AsMeter|double3}" ValueAlign="right"
                             Unit="m" UnitWidthGroup="unitWidth"/>
                     </Grid>
 
                     
                     <Grid>
                         <customControls:VectoParameterControl
-                            Caption="PositionXLastAxle" CaptionWidthGroup="lblGWidth"
-                            Value="{Binding PositionXLastAxle, Converter={converter:SIValueConverter}, ConverterParameter=AsMeter|double3}" ValueAlign="right"
+                            Caption="Length between centers of axles" CaptionWidthGroup="lblGWidth"
+                            Value="{Binding LengthBetweenCentersOfAxles, Converter={converter:SIValueConverter}, ConverterParameter=AsMeter|double3}" ValueAlign="right"
                             Unit="m" UnitWidthGroup="unitWidth"/>
                     </Grid>
 
@@ -238,7 +238,28 @@
                             <ColumnDefinition SharedSizeGroup="unitWidth"/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Column="0" Text="Body Code" Margin="0,0,10,0"/>
+                        <TextBlock Grid.Column="0" Text="Trailer Coupling Point" Margin="0,0,10,0" Visibility="{Binding TrailerCouplingPointVisibility, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        <ComboBox Grid.Column="1"
+                                  Margin="20,0,0,0"
+                                  ItemsSource="{Binding AllowedTrailerCouplingPoint}"
+                                  SelectedValue="{Binding TrailerCouplingPoint, Mode=TwoWay ,ValidatesOnDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"
+                                  SelectedValuePath="Value"
+                                  DisplayMemberPath="Label"
+                                  IsEditable="True"
+                                  IsReadOnly="True"
+                                  Text="Select..."
+                                  Visibility="{Binding TrailerCouplingPointVisibility, Converter={StaticResource BoolToVisibilityConverter}}">
+                        </ComboBox>
+                    </Grid>
+
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition SharedSizeGroup="vehicleLbl"/>
+                            <ColumnDefinition />
+                            <ColumnDefinition SharedSizeGroup="unitWidth"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Text="Bodywork Type" Margin="0,0,10,0"/>
                         <ComboBox Grid.Column="1" 
                                   Margin="20,0,0,0"
                                   ItemsSource="{Binding AllowedBodyCodes}"
@@ -299,8 +320,8 @@
                 
                     <Grid>
                         <customControls:VectoParameterControl
-                            Caption="Curb Mass Trailer" CaptionWidthGroup="lblGWidth"
-                            Value="{Binding CurbMassTrailer, Converter={converter:SIValueConverter}, ConverterParameter=AsKilos|int}" ValueAlign="right"
+                            Caption="Mass in running order" CaptionWidthGroup="lblGWidth"
+                            Value="{Binding MassInRunningOrder, Converter={converter:SIValueConverter}, ConverterParameter=AsKilos|int}" ValueAlign="right"
                             Unit="kg" UnitWidthGroup="unitWidth"/>
                     </Grid>
 

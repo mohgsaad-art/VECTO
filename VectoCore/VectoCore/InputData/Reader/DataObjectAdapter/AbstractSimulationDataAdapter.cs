@@ -77,7 +77,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				ModelName = data.Model,
 				Date = data.Date,
 				DigestValueInput = data.DigestValue != null ? data.DigestValue.DigestValue : "",
-				CurbMass = data.CurbMass,
+				CurbMass = data.MassInRunningOrder,
 				AirDensity = Physics.AirDensity,
 			};
 

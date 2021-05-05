@@ -1425,6 +1425,9 @@
   <data name="Trailer_CurbMass" xml:space="preserve">
     <value>CurbMass</value>
   </data>
+<data name="Trailer_MassInRunningOrder" xml:space="preserve">
+    <value>MassInRunningOrder</value>
+  </data>
   <data name="Trailer_TPMLMTotalTrailer" xml:space="preserve">
     <value>TPMLMTotalTrailer</value>
   </data>
@@ -1443,11 +1446,11 @@
   <data name="Trailer_TotalHeightTrailer" xml:space="preserve">
     <value>TotalHeightTrailer</value>
   </data>
-  <data name="Trailer_PositionXFirstAxle" xml:space="preserve">
-    <value>PositionXFirstAxle</value>
+  <data name="Trailer_LengthFromFrontToFirstAxle" xml:space="preserve">
+    <value>LengthFromFrontToFirstAxle</value>
   </data>
-  <data name="Trailer_PositionXLastAxle" xml:space="preserve">
-    <value>PositionXLastAxle</value>
+  <data name="Trailer_LengthBetweenCentersOfAxles" xml:space="preserve">
+    <value>LengthBetweenCentersOfAxles</value>
   </data>
   <data name="Trailer_InternalHeightBody" xml:space="preserve">
     <value>InternalHeightBody</value>
@@ -1455,4 +1458,8 @@
   <data name="Trailer_CargoVolume" xml:space="preserve">
     <value>CargoVolume</value>
   </data>
+<data name="Trailer_TrailerCouplingPoint" xml:space="preserve">
+    <value>TrailerCouplingPoint</value>
+  </data>
+
 </root>

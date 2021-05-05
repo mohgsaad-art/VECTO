@@ -55,6 +55,10 @@
       <Project>{6A27F93E-4A58-48F6-B00B-3908C5D3D5A2}</Project>
       <Name>VectoCoreTest</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\VECTO\VECTO.vbproj">
+      <Project>{aac0f132-0a9f-45b3-b682-77ac9b24b352}</Project>
+      <Name>VECTO</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

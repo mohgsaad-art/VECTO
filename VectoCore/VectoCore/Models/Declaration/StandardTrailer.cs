@@ -52,78 +52,59 @@ using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.Declaration
 {
-	public sealed class Impact : LookupData<string, string, MissionType, KeyValuePair<double,double>>
+	public sealed class StandardTrailer : LookupData<string, StandardTrailerSegment>
 	{
 		private DataTable _segmentTable;
 
-		protected override string ResourceId => DeclarationData.DeclarationDataResourcePrefix + ".liftable_steered_axles.csv";
+		protected override string ResourceId => DeclarationData.DeclarationDataResourcePrefix + ".Trailer.standard_trailer.csv";
 
-		protected override string ErrorMessage => "ERROR: Could not find the vehicle group for trailer. Vehicle Group: {0}";
+		protected override string ErrorMessage => "ERROR: Could not find the vehicle group for trailer. vehicleGroup: {0}";
 
 		protected override void ParseData(DataTable table)
 		{
 			_segmentTable = table.Copy();
 		}
 
-		public override KeyValuePair<double, double> Lookup(string vehicleGroup, string type, MissionType missionType)
+		public override StandardTrailerSegment Lookup(string code)
 		{
-			
-			var row = GetTrailerDataRow(vehicleGroup);
+			var row = GetTrailerDataRow(code);
 			if (row == null) {
-				return new KeyValuePair<double, double>(1.0, 1.0);
+				return new StandardTrailerSegment { VehicleGroup = -1 };
 			}
 
-			if (type == "Liftable") {
-				if (missionType == MissionType.LongHaul)
-					return new KeyValuePair<double, double>(
-						double.Parse(row.Field<string>("Liftaxle_lh_low").Replace("%", "")),
-						double.Parse(row.Field<string>("Liftaxle_lh_ref").Replace("%", "")));
+			return new StandardTrailerSegment {
+				VehicleGroup = (int)row.ParseDouble("Vehicle_group"),
+				MaxGcm = row.Field<string>("max_gcm"),
+				LhA1 = SquareMeter.Create(row.ParseDouble("polar_curve_lh_a1")),
+				LhA2 = SquareMeter.Create(row.ParseDouble("polar_curve_lh_a2")),
+				LhA3 = SquareMeter.Create(row.ParseDouble("polar_curve_lh_a3")),
+				OtherA1 = SquareMeter.Create(row.ParseDouble("polar_curve_o_a1")),
+				OtherA2 = SquareMeter.Create(row.ParseDouble("polar_curve_o_a2")),
+				OtherA3 = SquareMeter.Create(row.ParseDouble("polar_curve_o_a3")),
+				CargoVolumeLh = CubicMeter.Create(row.ParseDouble("cargo_volume_lh")),
+				CargoVolumeOther = CubicMeter.Create(row.ParseDouble("cargo_volume_o")),
+				CurbMassLh = Kilogram.Create(row.ParseDouble("cargo_volume_o")),
+				CurbMassOther = Kilogram.Create(row.ParseDouble("cargo_volume_o")),
+				CdxaLh = SquareMeter.Create(row.ParseDouble("curb_mass_trailer_body_lh")),
+				CdxaOther = SquareMeter.Create(row.ParseDouble("curb_mass_trailer_body_o")),
+				TyreXml = row.Field<string>("tyre_xml").Replace("_", "").Replace("Standard", ""),
+				TwinTyres = row.Field<string>("twin_tyres") == "TRUE"
+			};
 
-				if (missionType == MissionType.RegionalDelivery)
-					return new KeyValuePair<double, double>(
-						double.Parse(row.Field<string>("Liftaxle_r_low").Replace("%", "")),
-						double.Parse(row.Field<string>("Liftaxle_r_ref").Replace("%", "")));
-
-				if (missionType == MissionType.UrbanDelivery)
-					return new KeyValuePair<double, double>(
-						double.Parse(row.Field<string>("Liftaxle_u_low").Replace("%", "")),
-						double.Parse(row.Field<string>("Liftaxle_u_ref").Replace("%", "")));
-			}
-			else if (type == "Steered")
-			{
-				if (missionType == MissionType.LongHaul)
-					return new KeyValuePair<double, double>(
-						double.Parse(row.Field<string>("Steered_lh_low").Replace("%", "")),
-						double.Parse(row.Field<string>("Steered_lh_ref").Replace("%", "")));
-
-				if (missionType == MissionType.RegionalDelivery)
-					return new KeyValuePair<double, double>(
-						double.Parse(row.Field<string>("Steered_r_low").Replace("%", "")),
-						double.Parse(row.Field<string>("Steered_r_ref").Replace("%", "")));
-
-				if (missionType == MissionType.UrbanDelivery)
-					return new KeyValuePair<double, double>(
-						double.Parse(row.Field<string>("Steered_u_low").Replace("%", "")),
-						double.Parse(row.Field<string>("Steered_u_ref").Replace("%", "")));
-			}
-
-
-			return new KeyValuePair<double, double>(1.0, 1.0);
 		}
 
-		
-		private DataRow GetTrailerDataRow(string vehiclegroup)
+		private DataRow GetTrailerDataRow(string code)
 		{
 			DataRow row;
 			try {
 				row = _segmentTable.AsEnumerable().First(
 					r => {
-						var vehiclegroupRow = r.Field<string>("vehicle_group");
-						return vehiclegroupRow == vehiclegroup;
+						var codeRow = r.Field<string>("code_standard");
+						return codeRow == code;
 					});
 			} catch (InvalidOperationException e) {
 				var errorMessage = string.Format(
-					ErrorMessage, vehiclegroup);
+					ErrorMessage, code);
 				Log.Fatal(errorMessage);
 				throw new VectoException(errorMessage, e);
 			}

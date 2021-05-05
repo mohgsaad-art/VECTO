@@ -203,10 +203,9 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 				var payloads = row.Field<string>(missionType.ToString());
 
-				Kilogram refLoad, lowLoad;
 				var weight = grossVehicleWeight;
 				GetLoadings(
-					out lowLoad, out refLoad, payloads, (p, l) => GetLoading(p, weight, vehicleWeight, trailers, l), maxLoad);
+					out var lowLoad, out var refLoad, payloads, (p, l) => GetLoading(p, weight, vehicleWeight, trailers, l), maxLoad);
 				
 				var mission = new Mission {
 					MissionType = missionType,

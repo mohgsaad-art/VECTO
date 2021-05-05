@@ -3917,7 +3917,7 @@
       <Name>VectoHashing</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\VECTO\VECTO.vbproj">
-      <Project>{AAC0F132-0A9F-45B3-B682-77AC9B24B352}</Project>
+      <Project>{aac0f132-0a9f-45b3-b682-77ac9b24b352}</Project>
       <Name>VECTO</Name>
     </ProjectReference>
     <ProjectReference Include="..\VectoCore\VectoCore.csproj">

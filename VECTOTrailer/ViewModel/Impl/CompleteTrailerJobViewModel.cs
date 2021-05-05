@@ -274,7 +274,7 @@ namespace VECTOTrailer.ViewModel.Impl
 				trailer.InternalHeightOfTheBody >= trailer.TotalHeightOfTheTrailer)
 				ValidationResultDialogWindow(false);
 
-			if (trailer.PositionXFirstAxle >= trailer.PositionXLastAxle)
+			if (trailer.LengthFromFrontToFirstAxle >= trailer.LengthBetweenCentersOfAxles)
 				ValidationResultDialogWindow(false);
 
 			if (trailer.TPLMAxleAssembly >= trailer.TPLMTotalTrailer)

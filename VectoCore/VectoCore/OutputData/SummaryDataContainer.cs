@@ -768,13 +768,13 @@ namespace TUGraz.VectoCore.OutputData
 			row[Fields.SLEEPER_CAB] = data.SleeperCab ? "yes" : "no";
 
 			if (data.InputDataTrailer != null) {
-				row[Fields.A1] = data.TrailerSegment.A1?.Value();
-				row[Fields.A2] = data.TrailerSegment.A2?.Value();
-				row[Fields.A3] = data.TrailerSegment.A3?.Value();
-			} else if(data.TrailerSegment.RefLhA1 != null && data.TrailerSegment.RefLhA2 != null && data.TrailerSegment.RefLhA3 != null) {
-				row[Fields.A1] = runData.Mission?.MissionType == MissionType.LongHaul ? data.TrailerSegment.RefLhA1?.Value() : data.TrailerSegment.RefOtherA1?.Value();
-				row[Fields.A2] = runData.Mission?.MissionType == MissionType.LongHaul ? data.TrailerSegment.RefLhA2?.Value() : data.TrailerSegment.RefOtherA2?.Value();
-				row[Fields.A3] = runData.Mission?.MissionType == MissionType.LongHaul ? data.TrailerSegment.RefLhA3?.Value() : data.TrailerSegment.RefOtherA3?.Value();
+				row[Fields.A1] = data.TrailerSegment.GenericCadVehicle.A1?.Value(); //TODO
+				row[Fields.A2] = data.TrailerSegment.GenericCadVehicle.A2?.Value();
+				row[Fields.A3] = data.TrailerSegment.GenericCadVehicle.A3?.Value();
+			} else if(data.TrailerSegment.GenericCadVehicle.A1 != null && data.TrailerSegment.GenericCadVehicle.A2 != null && data.TrailerSegment.GenericCadVehicle.A3 != null) {
+				row[Fields.A1] = data.TrailerSegment.GenericCadVehicle.A1.Value();
+				row[Fields.A2] = data.TrailerSegment.GenericCadVehicle.A2.Value();
+				row[Fields.A3] = data.TrailerSegment.GenericCadVehicle.A3.Value();
 			}
 			
 

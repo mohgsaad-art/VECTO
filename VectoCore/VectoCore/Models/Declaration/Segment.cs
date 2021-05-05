@@ -72,31 +72,78 @@ namespace TUGraz.VectoCore.Models.Declaration
 		public VehicleClass Class { get; set; } 
 		public string GenericCode { get; set; }
 		public bool CrossSectionAreaCorrection { get; set; }
-		public double AcrMin { get; set; }
-		public double AcrBase { get; set; }
-		public double CdxABase { get; set; }
 		public bool LengthCorrection { get; set; }
-		public double Aero0 { get; set; }
-		public double Aero1 { get; set; }
-		public double Aero2 { get; set; }
-		public double Aero3 { get; set; }
-		public double Aero4 { get; set; }
-		public double Aero5 { get; set; }
-		public double Aero6 { get; set; }
-		public double Aero7 { get; set; }
-		public double Aero8 { get; set; }
 		public string MaxGcm { get; set; }
+		public Mission[] Missions { get; internal set; }
+		public MeterPerSecond DesignSpeed { get; set; }
+		public ReferenceTrailerSegment ReferenceTrailerSegment { get; set; }
+		public SpecificTrailerSegment SpecificTrailerSegment { get; set; }
+		public GenericCadSegment GenericCadVehicle { get; set; }
+
+	}
+
+	public struct ReferenceTrailerSegment
+	{
+		[JsonIgnore]
+		public int VehicleGroup { get; set; }
+		public CubicMeter CargoVolume { get; set; }
+		public Kilogram CurbMass { get; set; }
+		public Meter TotalTrailerHeight { get; set; }
+		public Meter ExternalBodyHeight { get; set; }
+		public Meter ExternalBodyWidth { get; set; }
+		public Meter ExternalBodyLength { get; set; }
+		public Meter LengthTrailerFrontToFirstAxle { get; set; }
+		public string TyreXml { get; set; }
+		public bool TwinTyres { get; set; }
+		public bool LengthAxleCorrection { get; set; }
+		public bool WidthCorrection { get; set; }
+		public bool HeightCorrection { get; set; }
+		public bool VolumeCorrection { get; set; }
+		public bool AeroCorrection { get; set; }
+}
+
+	public struct SpecificTrailerSegment
+	{
+		[JsonIgnore]
+		public int VehicleGroup { get; set; }
+		public double[] Aero0 { get; set; }
+		public double[] Aero1 { get; set; }
+		public double[] Aero2 { get; set; }
+		public double[] Aero3 { get; set; }
+		public double[] Aero4 { get; set; }
+		public double[] Aero5 { get; set; }
+		public double[] Aero6 { get; set; }
+		public double[] Aero7 { get; set; }
+		public double[] Aero8 { get; set; }
+	}
+	public struct GenericCadSegment
+	{
+		[JsonIgnore]
+		public int VehicleGroup { get; set; }
+		public SquareMeter AcrBase { get; set; }
+		public SquareMeter CdxABase { get; set; }
 		public SquareMeter A1 { get; set; }
 		public SquareMeter A2 { get; set; }
 		public SquareMeter A3 { get; set; }
-		public SquareMeter RefLhA1 { get; set; }
-		public SquareMeter RefLhA2 { get; set; }
-		public SquareMeter RefLhA3 { get; set; }
-		public SquareMeter RefOtherA1 { get; set; }
-		public SquareMeter RefOtherA2 { get; set; }
-		public SquareMeter RefOtherA3 { get; set; }
-		public Mission[] Missions { get; internal set; }
-		public MeterPerSecond DesignSpeed { get; set; }
-
 	}
+	public struct StandardTrailerSegment
+	{
+		[JsonIgnore]
+		public int VehicleGroup { get; set; }
+		public string MaxGcm { get; set; }
+		public SquareMeter LhA1 { get; set; }
+		public SquareMeter LhA2 { get; set; }
+		public SquareMeter LhA3 { get; set; }
+		public SquareMeter OtherA1 { get; set; }
+		public SquareMeter OtherA2 { get; set; }
+		public SquareMeter OtherA3 { get; set; }
+		public CubicMeter CargoVolumeLh { get; set; }
+		public CubicMeter CargoVolumeOther { get; set; }
+		public SquareMeter CdxaLh { get; set; }
+		public SquareMeter CdxaOther { get; set; }
+		public string TyreXml { get; set; }
+		public bool TwinTyres { get; set; }
+		public Kilogram CurbMassLh { get; set; }
+		public Kilogram CurbMassOther { get; set; }
+	} 
 }

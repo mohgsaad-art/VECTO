@@ -64,7 +64,6 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 		private readonly DeclarationDataAdapterHeavyLorry _da = new DeclarationDataAdapterHeavyLorry();
 		private Segment _segment;
 		private DriverData _driverdata;
-		private AirdragData _airdragData;
 		private AxleGearData _axlegearData;
 		private AngledriveData _angledriveData;
 		private GearboxData _gearboxData;
@@ -143,7 +142,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 
 			var tempVehicle = DataAdapter.CreateVehicleData(_genericInputDataProvider.JobInputData.Vehicle, _segment, _segment.Missions.First(), _segment.Missions.First().Loadings.First());
 
-			_airdragData = DataAdapter.CreateAirdragData(_genericInputDataProvider.JobInputData.Vehicle.Components.AirdragInputData, _segment.Missions.First(), _segment);
+			DataAdapter.CreateAirdragData(_genericInputDataProvider.JobInputData.Vehicle.Components.AirdragInputData, _segment.Missions.First(), _segment);
 
 			_axlegearData = _genericInputDataProvider.JobInputData.Vehicle.AxleConfiguration.AxlegearIncludedInGearbox() ?
 				DataAdapter.CreateDummyAxleGearData(_genericInputDataProvider.JobInputData.Vehicle.Components.GearboxInputData) : 
@@ -195,7 +194,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 				Loading = loading.Key,
 				VehicleData = TrailerDataAdapter.CreateVehicleData(vehicle, mission, loading, _trailerSegment),
 				VehicleDesignSpeed = _trailerSegment.DesignSpeed,
-				AirdragData = TrailerDataAdapter.CreateAirdragData(_genericInputDataProvider.JobInputData.Vehicle.Components.AirdragInputData, mission, _trailerSegment),
+				AirdragData = TrailerDataAdapter.CreateAirdragData(_genericInputDataProvider.JobInputData.Vehicle.Components.AirdragInputData, mission, _specificTrailerData, _trailerSegment),
 				EngineData = TrailerDataAdapter.CreateEngineData(_genericInputDataProvider.JobInputData.Vehicle, engineMode, mission), 
 				GearboxData = _gearboxData,
 				AxleGearData = _axlegearData,

@@ -20,7 +20,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter {
 			TrailerSegment trailerSegment,
 			Mission mission, KeyValuePair<LoadingType, Tuple<Kilogram, double?>> loading,
 			TrailerData specificTrailerData);
-		AirdragData CreateAirdragData(IAirdragDeclarationInputData airdragInputData, Mission mission, TrailerSegment trailerSegment);
+		AirdragData CreateAirdragData(IAirdragDeclarationInputData airdragInputData, Mission mission, TrailerData specificTrailerData, TrailerSegment trailerSegment);
 		AirdragData CreateTrailerAirdragData(IAirdragDeclarationInputData airdragData, Mission mission, TrailerData specificTrailerData, TrailerSegment trailerSegment);
 	}
 }

@@ -103,8 +103,8 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(tns + XMLNames.Trailer_BodyCode,
 					modelData.VehicleData.InputDataTrailer.BodyworkCode.GetLabel()),
 				new XElement(tns + XMLNames.Trailer_Masses,
-					new XElement(tns + XMLNames.Trailer_CurbMass,
-						XMLHelper.ValueAsUnit(modelData.VehicleData.InputDataTrailer.CurbMass, XMLNames.Unit_kg)),
+					new XElement(tns + XMLNames.Trailer_MassInRunningOrder,
+						XMLHelper.ValueAsUnit(modelData.VehicleData.InputDataTrailer.MassInRunningOrder, XMLNames.Unit_kg)),
 					new XElement(tns + XMLNames.Trailer_TPMLMTotalTrailer,
 						XMLHelper.ValueAsUnit(modelData.VehicleData.InputDataTrailer.TPMLMTotalTrailer,
 							XMLNames.Unit_kg)),
@@ -121,10 +121,10 @@ namespace TUGraz.VectoCore.OutputData.XML
 						modelData.VehicleData.InputDataTrailer.ExternalBodyHeight.ToXMLFormat(3)),
 					new XElement(tns + XMLNames.Trailer_TotalHeightTrailer,
 						modelData.VehicleData.InputDataTrailer.TotalTrailerHeight.ToXMLFormat(3)),
-					new XElement(tns + XMLNames.Trailer_PositionXFirstAxle,
-						modelData.VehicleData.InputDataTrailer.LengthTrailerFrontToFirstAxleCenter.ToXMLFormat(3)),
-					new XElement(tns + XMLNames.Trailer_PositionXLastAxle,
-						modelData.VehicleData.InputDataTrailer.LengthTrailerFrontToLastAxleCenter.ToXMLFormat(3)),
+					new XElement(tns + XMLNames.Trailer_LengthFromFrontToFirstAxle,
+						modelData.VehicleData.InputDataTrailer.LengthFromFrontToFirstAxle.ToXMLFormat(3)),
+					new XElement(tns + XMLNames.Trailer_LengthBetweenCentersOfAxles,
+						modelData.VehicleData.InputDataTrailer.LengthBetweenCentersOfAxles.ToXMLFormat(3)),
 					new XElement(tns + XMLNames.Trailer_InternalHeightBody,
 						modelData.VehicleData.InputDataTrailer.InternalBodyHeight.ToXMLFormat(3)),
 					new XElement(tns + XMLNames.Trailer_CargoVolume,
@@ -164,20 +164,21 @@ namespace TUGraz.VectoCore.OutputData.XML
 
 		protected override XElement GetSimulationParameters(XMLDeclarationReport.ResultEntry result)
 		{
+			//TODO: UPDATE THIS
 			var cdxAYawAngle3 = result.CdxA +
-								_trailerSegment.A1 * 3 +
-								_trailerSegment.A2 * 3 * 3 +
-								_trailerSegment.A3 * 3 * 3 * 3;
+								_trailerSegment.GenericCadVehicle.A1 * 3 +
+								_trailerSegment.GenericCadVehicle.A2 * 3 * 3 +
+								_trailerSegment.GenericCadVehicle.A3 * 3 * 3 * 3;
 
 			var cdxAYawAngle6 = result.CdxA + 
-								_trailerSegment.A1 * 6 +
-								_trailerSegment.A2 * 6 * 6 +
-								_trailerSegment.A3 * 6 * 6 * 6;
+								_trailerSegment.GenericCadVehicle.A1 * 6 +
+								_trailerSegment.GenericCadVehicle.A2 * 6 * 6 +
+								_trailerSegment.GenericCadVehicle.A3 * 6 * 6 * 6;
 
 			var cdxAYawAngle9 = result.CdxA + 
-								_trailerSegment.A1 * 9 +
-								_trailerSegment.A2 * 9 * 9 +
-								_trailerSegment.A3 * 9 * 9 * 9;
+								_trailerSegment.GenericCadVehicle.A1 * 9 +
+								_trailerSegment.GenericCadVehicle.A2 * 9 * 9 +
+								_trailerSegment.GenericCadVehicle.A3 * 9 * 9 * 9;
 
 			return new XElement(
 				tns + XMLNames.Report_ResultEntry_SimulationParameters,
@@ -212,7 +213,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 				(((genericCo2 * 1000) / (genericDistance / 1000)) / (genericPayload.Value()));
 			//g/t-km
 		}
-		public double DoCalculateFactor(Kilogram specificCo2, Meter specificDistance, CubicMeter specificCargoVolume, Kilogram genericCo2, Meter genericDistance, CubicMeter genericCargoVolume)
+		public double DoCalculateFactor(Kilogram specificCo2, CubicMeter specificCargoVolume, Kilogram genericCo2, CubicMeter genericCargoVolume)
 		{
 			return ((specificCo2 * 1000) / specificCargoVolume.Value()) /
 					((genericCo2 * 1000) / genericCargoVolume.Value());
@@ -261,8 +262,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 				ratio = CalculateFactor(key, value);
 				ratioTons = DoCalculateFactor(key.CO2Total, key.Distance, key.Payload, value.CO2Total, value.Distance,
 					value.Payload);
-				ratioCubicMeter = DoCalculateFactor(key.CO2Total, key.Distance, CargoVolumeTrailer, value.CO2Total,
-					value.Distance, CargoVolumeGeneric);
+				ratioCubicMeter = DoCalculateFactor(key.CO2Total, CargoVolumeTrailer, value.CO2Total, CargoVolumeGeneric);
 			}
 
 			return new XElement(

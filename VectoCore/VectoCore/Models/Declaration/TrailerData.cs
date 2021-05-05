@@ -45,8 +45,9 @@ namespace TUGraz.VectoCore.Models.Declaration
 		public string GenericVehicleCode { get; set; }
 		public Kilogram CurbMassTrailer { get; set; }
 		public KilogramSquareMeter Inertia { get; set; }
-		public double TotalCorrection { get; set; }
+		public double[] TotalCorrection { get; set; }
 		public double MaxGcm { get; set; }
+		public SquareMeter CdxABase { get; set; }
 
 	}
 }

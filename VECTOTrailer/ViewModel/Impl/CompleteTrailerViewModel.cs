@@ -43,8 +43,8 @@ namespace VECTOTrailer.ViewModel.Impl
 		private Meter _externalWidthOfTheBody;
 		private Meter _externalHeightOfTheBody;
 		private Meter _totalHeightOfTheTrailer;
-		private Meter _positionXFirstAxle;
-		private Meter _positionXLastAxle;
+		private Meter _lengthFromFrontToFirstAxle;
+		private Meter _lengthBetweenCentersOfAxles;
 		private Meter _internalHeightOfTheBody;
 		private CubicMeter _cargoVolume;
 		private NumberOfTrailerAxles _numberOfAxles;
@@ -100,6 +100,8 @@ namespace VECTOTrailer.ViewModel.Impl
 		private bool _axle3ButtonsVisibilty;
 		private bool _axle3NewVisibility;
 		private bool _tPMLMAxleAssemblyVisibility;
+		private bool _trailerCouplingPointVisibility;
+		private TrailerCouplingPoint _TrailerCouplingPoint;
 
 		private readonly bool _editJob;
 		protected SettingsModel Settings = new SettingsModel();
@@ -221,25 +223,25 @@ namespace VECTOTrailer.ViewModel.Impl
 			}
 		}
 
-		public Meter PositionXFirstAxle
+		public Meter LengthFromFrontToFirstAxle
 		{
-			get => _positionXFirstAxle;
+			get => _lengthFromFrontToFirstAxle;
 			set
 			{
-				if (!SetProperty(ref _positionXFirstAxle, value))
+				if (!SetProperty(ref _lengthFromFrontToFirstAxle, value))
 					return;
-				IsDataChanged(_positionXFirstAxle, _componentData);
+				IsDataChanged(_lengthFromFrontToFirstAxle, _componentData);
 			}
 		}
 
-		public Meter PositionXLastAxle
+		public Meter LengthBetweenCentersOfAxles
 		{
-			get => _positionXLastAxle;
+			get => _lengthBetweenCentersOfAxles;
 			set
 			{
-				if (!SetProperty(ref _positionXLastAxle, value))
+				if (!SetProperty(ref _lengthBetweenCentersOfAxles, value))
 					return;
-				IsDataChanged(_positionXLastAxle, _componentData);
+				IsDataChanged(_lengthBetweenCentersOfAxles, _componentData);
 			}
 		}
 
@@ -284,10 +286,13 @@ namespace VECTOTrailer.ViewModel.Impl
 				if (!SetProperty(ref _trailerType, value))
 					return;
 
-				if (!(TrailerType is TypeTrailer.DA))
+				if (!(TrailerType is TypeTrailer.DA)) {
 					TPMLMAxleAssemblyVisibility = false;
-				else 
+					TrailerCouplingPointVisibility = false;
+				} else {
 					TPMLMAxleAssemblyVisibility = true;
+					TrailerCouplingPointVisibility = true;
+				}
 
 				IsDataChanged(_trailerType, _componentData);
 			}
@@ -324,7 +329,7 @@ namespace VECTOTrailer.ViewModel.Impl
 			set => SetProperty(ref _boatTailLong, value);
 		}
 
-		public Kilogram CurbMassTrailer
+		public Kilogram MassInRunningOrder
 		{
 			get => _curbMassTrailer;
 			set
@@ -464,6 +469,11 @@ namespace VECTOTrailer.ViewModel.Impl
 				IsDataChanged(_technologies, _componentData);
 			}
 		}
+		public TrailerCouplingPoint TrailerCouplingPoint
+		{
+			get => _TrailerCouplingPoint;
+			set => SetProperty(ref _TrailerCouplingPoint, value);
+		}
 		public bool Axle1ButtonsVisibility
 		{
 			get => _axle1ButtonsVisibilty;
@@ -500,6 +510,12 @@ namespace VECTOTrailer.ViewModel.Impl
 			set => SetProperty(ref _tPMLMAxleAssemblyVisibility, value);
 		}
 
+		public bool TrailerCouplingPointVisibility
+		{
+			get => _trailerCouplingPointVisibility;
+			set => SetProperty(ref _trailerCouplingPointVisibility, value);
+		}
+
 
 		public Dictionary<string, string> XmlNamesToPropertyMapping { get; private set; }
 		public AllowedEntry<TypeTrailer>[] AllowedTrailerTypes { get; private set; }
@@ -507,6 +523,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		public  AllowedEntry<AeroFeatureTechnology>[] AllowedTechnologies { get; private set; }
 		public AllowedEntry<NumberOfTrailerAxles>[] AllowedNumberOfAxles { get; private set; }
 		public AllowedEntry<string>[] AllowedLegislativeCategory { get; private set; }
+		public AllowedEntry<TrailerCouplingPoint>[] AllowedTrailerCouplingPoint { get; private set; }
 
 		#endregion
 
@@ -540,15 +557,15 @@ namespace VECTOTrailer.ViewModel.Impl
 				NumberOfAxles = trailer.NumberOfAxles;
 				TrailerType = trailer.TrailerType;
 				BodyCode = trailer.BodyworkCode;
-				CurbMassTrailer = trailer.CurbMass;
+				MassInRunningOrder = trailer.MassInRunningOrder;
 				TPLMTotalTrailer = trailer.TPMLMTotalTrailer;
 				TPLMAxleAssembly = trailer.TPMLMAxleAssembly;
 				ExternalLengthOfTheBody = trailer.ExternalBodyLength;
 				ExternalWidthOfTheBody = trailer.ExternalBodyWidth;
 				ExternalHeightOfTheBody = trailer.ExternalBodyHeight;
 				TotalHeightOfTheTrailer = trailer.TotalTrailerHeight;
-				PositionXFirstAxle = trailer.LengthTrailerFrontToFirstAxleCenter;
-				PositionXLastAxle = trailer.LengthTrailerFrontToLastAxleCenter;
+				LengthFromFrontToFirstAxle = trailer.LengthFromFrontToFirstAxle;
+				LengthBetweenCentersOfAxles = trailer.LengthBetweenCentersOfAxles;
 				InternalHeightOfTheBody = trailer.InternalBodyHeight;
 				CargoVolume = trailer.CargoVolume;
 				Technologies = trailer.AeroFeatureTechnologies;
@@ -556,6 +573,9 @@ namespace VECTOTrailer.ViewModel.Impl
 				SideSkirtsLong = trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.SideSkirtsLong);
 				BoatTailShort = trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.BoatTailShort);
 				BoatTailLong = trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.BoatTailLong);
+
+				TrailerCouplingPoint = trailer.TrailerCouplingPoint;
+
 				this.Trailer = _trailer;
 
 				//TODO: AXLES
@@ -564,7 +584,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 				List<XmlNode> _axles = new List<XmlNode>();
 
-				foreach (XmlNode _axle in xmlDoc.ChildNodes[0].ChildNodes[12].ChildNodes[0].ChildNodes[0])
+				foreach (XmlNode _axle in xmlDoc.ChildNodes[0].ChildNodes[13].ChildNodes[0].ChildNodes[0])
 					_axles.Add(_axle);
 
 				switch (_axles.Count) {
@@ -639,6 +659,9 @@ namespace VECTOTrailer.ViewModel.Impl
 				.Select(vc => AllowedEntry.Create(vc, vc.GetLabel())).ToArray();
 
 			AllowedNumberOfAxles = EnumHelper.GetValues<NumberOfTrailerAxles>().Where(x => x != NumberOfTrailerAxles.Unknown)
+				.Select(vc => AllowedEntry.Create(vc, vc.GetLabel())).ToArray();
+
+			AllowedTrailerCouplingPoint = EnumHelper.GetValues<TrailerCouplingPoint>().Where(x => x != TrailerCouplingPoint.Unknown)
 				.Select(vc => AllowedEntry.Create(vc, vc.GetLabel())).ToArray();
 
 			AllowedLegislativeCategory = new[] { AllowedEntry.Create("O4", "O4") };

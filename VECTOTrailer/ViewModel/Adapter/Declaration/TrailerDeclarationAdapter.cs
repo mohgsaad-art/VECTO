@@ -84,17 +84,18 @@ namespace VECTOTrailer.ViewModel.Adapter.Declaration
 		public NumberOfTrailerAxles NumberOfAxles { get; }
 		public TypeTrailer TrailerType { get; }
 		public BodyWorkCode BodyworkCode { get; }
-		public Kilogram CurbMass { get; }
+		public Kilogram MassInRunningOrder { get; }
 		public Kilogram TPMLMTotalTrailer { get; }
 		public Kilogram TPMLMAxleAssembly { get; }
 		public Meter ExternalBodyLength { get; }
 		public Meter ExternalBodyWidth { get; }
 		public Meter ExternalBodyHeight { get; }
 		public Meter TotalTrailerHeight { get; }
-		public Meter LengthTrailerFrontToFirstAxleCenter { get; }
-		public Meter LengthTrailerFrontToLastAxleCenter { get; }
+		public Meter LengthFromFrontToFirstAxle { get; }
+		public Meter LengthBetweenCentersOfAxles { get; }
 		public Meter InternalBodyHeight { get; }
 		public CubicMeter CargoVolume { get; }
+		public TrailerCouplingPoint TrailerCouplingPoint { get; }
 		public IList<AeroFeatureTechnology> AeroFeatureTechnologies { get; }
 
 		public XmlNode XMLSource { get; }
