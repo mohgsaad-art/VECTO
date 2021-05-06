@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -222,8 +223,15 @@ namespace VECTOTrailer.ViewModel.Impl
 			get { return _validateInputCommand ?? (_validateInputCommand = new RelayCommand(DoValidateInput)); }
 		}
 
-		private void CheckAeroFeatures(Model.TempDataObject.TrailerComponentData trailer)
+		private bool CheckAeroFeatures(Model.TempDataObject.TrailerComponentData trailer)
 		{
+			if (trailer.IsCertified &&
+				trailer.YawAngle0 == 0 && 
+				trailer.YawAngle3 == 0 &&
+				trailer.YawAngle6 == 0 &&
+				trailer.YawAngle9 == 0)
+				return false;
+
 			var aeroFeatures = new List<AeroFeatureTechnology>();
 			if (trailer.SideSkirtsShort) aeroFeatures.Add(AeroFeatureTechnology.SideSkirtsShort);
 			if (trailer.SideSkirtsLong) aeroFeatures.Add(AeroFeatureTechnology.SideSkirtsLong);
@@ -231,11 +239,13 @@ namespace VECTOTrailer.ViewModel.Impl
 			if (trailer.BoatTailLong) aeroFeatures.Add(AeroFeatureTechnology.BoatTailLong);
 
 			var combination = DeclarationData.AeroFeatures.Lookup(aeroFeatures);
-			if (combination < 0)
-				ValidationResultDialogWindow(false);
+			if (combination < 0 && trailer.IsStandard)
+				return false;
+
+			return true;
 		}
 
-		private void CheckAxles(Model.TempDataObject.TrailerComponentData trailer)
+		private bool CheckAxles(Model.TempDataObject.TrailerComponentData trailer)
 		{
 			var liftableCount = 0;
 			if (trailer.Axle1IsLiftable)
@@ -254,31 +264,40 @@ namespace VECTOTrailer.ViewModel.Impl
 				case NumberOfTrailerAxles.Three when trailer.TrailerType == TypeTrailer.DB && liftableCount > 1: //too many liftable
 				case NumberOfTrailerAxles.Three when liftableCount > 2: //too many liftable
 				case NumberOfTrailerAxles.Three when (trailer.Axle2FilePath == null || trailer.Axle3FilePath == null):  //missing axles
-					ValidationResultDialogWindow(false);
-					break;
+					return false;
 			}
+
+			return true;
 		}
 
-		private void CheckTrailerType(Model.TempDataObject.TrailerComponentData trailer)
+		private bool CheckTrailerType(Model.TempDataObject.TrailerComponentData trailer)
 		{
 			if (trailer.TrailerType == TypeTrailer.DA &&
 				(trailer.TPLMAxleAssembly == null ||
 				trailer.TPLMAxleAssembly.Value() == 0))
-				ValidationResultDialogWindow(false);
+				return false;
+
+			if (trailer.TrailerType != TypeTrailer.DC &&
+				(trailer.TrailerCouplingPoint == TrailerCouplingPoint.Low ||
+				trailer.TrailerCouplingPoint == TrailerCouplingPoint.High))
+				return false;
+			return true;
 		}
 
-		private void GeneralCheck(Model.TempDataObject.TrailerComponentData trailer)
+		private bool GeneralCheck(Model.TempDataObject.TrailerComponentData trailer)
 		{
 			if (trailer.InternalHeightOfTheBody >= trailer.ExternalHeightOfTheBody ||
 				trailer.ExternalHeightOfTheBody >= trailer.TotalHeightOfTheTrailer ||
 				trailer.InternalHeightOfTheBody >= trailer.TotalHeightOfTheTrailer)
-				ValidationResultDialogWindow(false);
+				return false;
 
 			if (trailer.LengthFromFrontToFirstAxle >= trailer.LengthBetweenCentersOfAxles)
-				ValidationResultDialogWindow(false);
+				return false;
 
 			if (trailer.TPLMAxleAssembly >= trailer.TPLMTotalTrailer)
-				ValidationResultDialogWindow(false);
+				return false;
+
+			return true;
 		}
 
 		private void DoValidateInput()
@@ -293,10 +312,23 @@ namespace VECTOTrailer.ViewModel.Impl
 			var trailer = (Model.TempDataObject.TrailerComponentData)CompleteVehicleTrailerData.Values.FirstOrDefault();
 
 			//Form Input Validation
-			CheckAeroFeatures(trailer);
-			CheckAxles(trailer);
-			CheckTrailerType(trailer);
-			GeneralCheck(trailer);
+			if (!CheckAeroFeatures(trailer)) {
+				ValidationResultDialogWindow(false);
+				return;
+			}
+
+			if (!CheckAxles(trailer)){
+				ValidationResultDialogWindow(false);
+				return;
+			}
+			if (!CheckTrailerType(trailer)){
+				ValidationResultDialogWindow(false);
+				return;
+			}
+			if (!GeneralCheck(trailer)){
+				ValidationResultDialogWindow(false);
+				return;
+			}
 
 			//XML Schema Validation
 			ValidationResultDialogWindow(XmlHelper.ValidateXDocument(xDoc, null, ValidationErrorAction));

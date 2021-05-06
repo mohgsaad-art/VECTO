@@ -13,6 +13,7 @@ using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.XML;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider;
+using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Factory;
 using TUGraz.VectoCore.Models.Declaration;
 using VECTOTrailer.Helper;
 using VECTOTrailer.Model;
@@ -51,10 +52,20 @@ namespace VECTOTrailer.ViewModel.Impl
 		private TypeTrailer _trailerType;
 		private BodyWorkCode _bodyCode;
 		private IList<AeroFeatureTechnology> _technologies;
+
+		private bool _isStandard;
+		private bool _isCertified;
+
 		private bool _sideSkirtsShort;
 		private bool _sideSkirtsLong;
 		private bool _boatTailShort;
 		private bool _boatTailLong;
+
+		private double _yawAngle0;
+		private double _yawAngle3;
+		private double _yawAngle6;
+		private double _yawAngle9;
+
 		private Kilogram _curbMassTrailer;
 		private Kilogram _tPLMTotalTrailer;
 		private Kilogram _tPLMAxleAssembly;
@@ -286,13 +297,9 @@ namespace VECTOTrailer.ViewModel.Impl
 				if (!SetProperty(ref _trailerType, value))
 					return;
 
-				if (!(TrailerType is TypeTrailer.DA)) {
-					TPMLMAxleAssemblyVisibility = false;
-					TrailerCouplingPointVisibility = false;
-				} else {
-					TPMLMAxleAssemblyVisibility = true;
-					TrailerCouplingPointVisibility = true;
-				}
+				TPMLMAxleAssemblyVisibility = TrailerType is TypeTrailer.DA;
+				
+				TrailerCouplingPointVisibility = TrailerType is TypeTrailer.DC;
 
 				IsDataChanged(_trailerType, _componentData);
 			}
@@ -308,6 +315,17 @@ namespace VECTOTrailer.ViewModel.Impl
 				IsDataChanged(_bodyCode, _componentData);
 			}
 		}
+		public bool IsStandard
+		{
+			get => _isStandard;
+			set => SetProperty(ref _isStandard, value);
+		}
+		public bool IsCertified
+		{
+			get => _isCertified;
+			set => SetProperty(ref _isCertified, value);
+		}
+
 		public bool SideSkirtsShort
 		{
 			get => _sideSkirtsShort;
@@ -327,6 +345,27 @@ namespace VECTOTrailer.ViewModel.Impl
 		{
 			get => _boatTailLong;
 			set => SetProperty(ref _boatTailLong, value);
+		}
+
+		public double YawAngle0
+		{
+			get => _yawAngle0;
+			set => SetProperty(ref _yawAngle0, value);
+		}
+		public double YawAngle3
+		{
+			get => _yawAngle3;
+			set => SetProperty(ref _yawAngle3, value);
+		}
+		public double YawAngle6
+		{
+			get => _yawAngle6;
+			set => SetProperty(ref _yawAngle6, value);
+		}
+		public double YawAngle9
+		{
+			get => _yawAngle9;
+			set => SetProperty(ref _yawAngle9, value);
 		}
 
 		public Kilogram MassInRunningOrder
@@ -527,6 +566,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		#endregion
 
+		[Inject] public IDeclarationInjectFactory Factory { protected get; set; }
 
 		#region Set XML Data
 
@@ -569,22 +609,31 @@ namespace VECTOTrailer.ViewModel.Impl
 				InternalHeightOfTheBody = trailer.InternalBodyHeight;
 				CargoVolume = trailer.CargoVolume;
 				Technologies = trailer.AeroFeatureTechnologies;
+
+				IsCertified = (trailer.YawAngle0 != 0 || trailer.YawAngle3 != 0 || trailer.YawAngle6 != 0 || trailer.YawAngle9 != 0);
+
+				YawAngle0 = trailer.YawAngle0;
+				YawAngle3 = trailer.YawAngle3;
+				YawAngle6 = trailer.YawAngle6;
+				YawAngle9 = trailer.YawAngle9;
+
 				SideSkirtsShort = trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.SideSkirtsShort);
 				SideSkirtsLong = trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.SideSkirtsLong);
 				BoatTailShort = trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.BoatTailShort);
 				BoatTailLong = trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.BoatTailLong);
 
+				IsStandard = (SideSkirtsShort || SideSkirtsLong || BoatTailShort || BoatTailLong);
+
 				TrailerCouplingPoint = trailer.TrailerCouplingPoint;
 
 				this.Trailer = _trailer;
 
-				//TODO: AXLES
 				XmlDocument xmlDoc = new XmlDocument();
 				xmlDoc.LoadXml(_trailer.XMLSource.OuterXml);
 
 				List<XmlNode> _axles = new List<XmlNode>();
 
-				foreach (XmlNode _axle in xmlDoc.ChildNodes[0].ChildNodes[13].ChildNodes[0].ChildNodes[0])
+				foreach (XmlNode _axle in xmlDoc.GetElementsByTagName("v2.7:Axles").Item(0))
 					_axles.Add(_axle);
 
 				switch (_axles.Count) {

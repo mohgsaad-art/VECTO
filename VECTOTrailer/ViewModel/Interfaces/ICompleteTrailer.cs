@@ -27,10 +27,16 @@ namespace VECTOTrailer.ViewModel.Interfaces
 		TypeTrailer TrailerType { get; set; }
 		BodyWorkCode BodyCode { get; set; }
 		IList<AeroFeatureTechnology> Technologies { get; set; }
+		bool IsStandard { get; set; }
+		bool IsCertified { get; set; }
 		bool SideSkirtsShort { get; set; }
 		bool SideSkirtsLong { get; set; }
 		bool BoatTailShort { get; set; }
 		bool BoatTailLong { get; set; }
+		double YawAngle0 { get; set; }
+		double YawAngle3 { get; set; }
+		double YawAngle6 { get; set; }
+		double YawAngle9 { get; set; }
 		Kilogram MassInRunningOrder { get; set; }
 		Kilogram TPLMTotalTrailer { get; set; }
 		Kilogram TPLMAxleAssembly { get; set; }

@@ -17,9 +17,6 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 			var trailerSegment = DeclarationData.TrailerSegments.Lookup(inputDataProvider.JobInputData.Trailer.NumberOfAxles, inputDataProvider.JobInputData.Trailer.TrailerType, inputDataProvider.JobInputData.Trailer.BodyworkCode, false);
 			Assert.AreEqual(2111, trailerSegment.VehicleGroup);
 			Assert.AreEqual("18000 + TPMLMAxle", trailerSegment.MaxGcm);
-			Assert.AreEqual(10.2, trailerSegment.AcrBase);
-			Assert.AreEqual(8.5, trailerSegment.AcrMin);
-			Assert.AreEqual(5.3, trailerSegment.CdxABase);
 			Assert.AreEqual(VehicleClass.Class5, trailerSegment.Class);
 			Assert.AreEqual("A2", trailerSegment.GenericCode);
 		}

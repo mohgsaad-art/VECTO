@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,10 +40,18 @@ namespace VECTOTrailer.Model.TempDataObject
 		public TypeTrailer TrailerType { get; set; }
 		public BodyWorkCode BodyCode { get; set; }
 		public IList<AeroFeatureTechnology> Technologies { get; set; }
+
+		public bool IsStandard { get; set; }
+		public bool IsCertified { get; set; }
+
 		public bool SideSkirtsShort { get; set; }
 		public bool SideSkirtsLong { get; set; }
 		public bool BoatTailShort { get; set; }
 		public bool BoatTailLong { get; set; }
+		public double YawAngle0 { get; set; }
+		public double YawAngle3 { get; set; }
+		public double YawAngle6 { get; set; }
+		public double YawAngle9 { get; set; }
 		public Kilogram MassInRunningOrder { get; set; }
 		public Kilogram TPLMTotalTrailer { get; set; }
 		public Kilogram TPLMAxleAssembly { get; set; }
@@ -141,11 +150,19 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.Axle2Xml = Axle2Xml;
 			viewModel.Axle3Xml = Axle3Xml;
 
+			viewModel.IsStandard = IsStandard;
+			viewModel.IsCertified = IsCertified;
+
 			viewModel.Technologies = Technologies;
 			viewModel.SideSkirtsShort = Technologies != null && Technologies.Contains(AeroFeatureTechnology.SideSkirtsShort);
 			viewModel.SideSkirtsLong = Technologies != null && Technologies.Contains(AeroFeatureTechnology.SideSkirtsLong);
 			viewModel.BoatTailShort = Technologies != null && Technologies.Contains(AeroFeatureTechnology.BoatTailShort);
 			viewModel.BoatTailLong = Technologies != null && Technologies.Contains(AeroFeatureTechnology.BoatTailLong);
+
+			viewModel.YawAngle0 = YawAngle0;
+			viewModel.YawAngle3 = YawAngle3;
+			viewModel.YawAngle6 = YawAngle6;
+			viewModel.YawAngle9 = YawAngle9;
 
 			viewModel.Axle1ButtonsVisibility = Axle1ButtonsVisibility;
 			viewModel.Axle1NewVisibility = Axle1NewVisibility;
@@ -183,6 +200,15 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.SideSkirtsLong = false;
 			viewModel.BoatTailShort = false;
 			viewModel.BoatTailLong = false;
+
+			viewModel.IsStandard = false;
+			viewModel.IsCertified = false;
+
+			viewModel.YawAngle0 = default;
+			viewModel.YawAngle3 = default;
+			viewModel.YawAngle6 = default;
+			viewModel.YawAngle9 = default;
+
 			viewModel.MassInRunningOrder = default;
 			viewModel.TPLMTotalTrailer = default;
 			viewModel.TPLMAxleAssembly = default;
@@ -235,6 +261,14 @@ namespace VECTOTrailer.Model.TempDataObject
 			Axle1IsTwin = trailer.Axle1IsTwin;
 			Axle2IsTwin = trailer.Axle2IsTwin;
             Axle3IsTwin = trailer.Axle3IsTwin;
+
+			IsStandard = trailer.IsStandard;
+			IsCertified = trailer.IsCertified;
+
+			YawAngle0 = trailer.YawAngle0;
+			YawAngle3 = trailer.YawAngle3;
+			YawAngle6 = trailer.YawAngle6;
+			YawAngle9 = trailer.YawAngle9;
 
 			Axle1IsLiftable = trailer.Axle1IsLiftable;
 			Axle2IsLiftable = trailer.Axle2IsLiftable;

@@ -113,6 +113,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(tns + XMLNames.Trailer_AxleCount, int.Parse(modelData.VehicleData.InputDataTrailer.NumberOfAxles.GetLabel())), 
 				new XElement(tns + XMLNames.Trailer_TrailerType, modelData.VehicleData.InputDataTrailer.TrailerType), 
 				new XElement(tns + XMLNames.Trailer_BodyCode, modelData.VehicleData.InputDataTrailer.BodyworkCode.GetLabel()),
+				new XElement(tns + XMLNames.Trailer_BodyCode, modelData.VehicleData.InputDataTrailer.BodyworkCode.GetLabel()),
 				new XElement(tns + XMLNames.Trailer_Masses,
 					new XElement(tns + XMLNames.Trailer_MassInRunningOrder, XMLHelper.ValueAsUnit(modelData.VehicleData.InputDataTrailer.MassInRunningOrder, XMLNames.Unit_kg)),
 					new XElement(tns + XMLNames.Trailer_TPMLMTotalTrailer, XMLHelper.ValueAsUnit(modelData.VehicleData.InputDataTrailer.TPMLMTotalTrailer, XMLNames.Unit_kg)),

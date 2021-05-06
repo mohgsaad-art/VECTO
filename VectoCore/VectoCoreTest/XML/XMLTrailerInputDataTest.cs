@@ -75,7 +75,7 @@ namespace TUGraz.VectoCore.Tests.XML
 			Assert.AreEqual(BodyWorkCode.Drybody, inputDataProvider.JobInputData.Trailer.BodyworkCode);
 
 			//weights
-			Assert.AreEqual(Kilogram.Create(7000), inputDataProvider.JobInputData.Trailer.CurbMass);
+			Assert.AreEqual(Kilogram.Create(7000), inputDataProvider.JobInputData.Trailer.MassInRunningOrder);
 			Assert.AreEqual(Kilogram.Create(18000), inputDataProvider.JobInputData.Trailer.TPMLMTotalTrailer);
 			Assert.AreEqual(Kilogram.Create(17000), inputDataProvider.JobInputData.Trailer.TPMLMAxleAssembly);
 
@@ -84,8 +84,8 @@ namespace TUGraz.VectoCore.Tests.XML
 			Assert.AreEqual(Meter.Create(2.550), inputDataProvider.JobInputData.Trailer.ExternalBodyWidth);
 			Assert.AreEqual(Meter.Create(4.250), inputDataProvider.JobInputData.Trailer.ExternalBodyHeight);
 			Assert.AreEqual(Meter.Create(5.250), inputDataProvider.JobInputData.Trailer.TotalTrailerHeight);
-			Assert.AreEqual(Meter.Create(5.333), inputDataProvider.JobInputData.Trailer.LengthTrailerFrontToFirstAxleCenter);
-			Assert.AreEqual(Meter.Create(7.550), inputDataProvider.JobInputData.Trailer.LengthTrailerFrontToLastAxleCenter);
+			Assert.AreEqual(Meter.Create(5.333), inputDataProvider.JobInputData.Trailer.LengthFromFrontToFirstAxle);
+			Assert.AreEqual(Meter.Create(7.550), inputDataProvider.JobInputData.Trailer.LengthBetweenCentersOfAxles);
 			Assert.AreEqual(Meter.Create(4.000), inputDataProvider.JobInputData.Trailer.InternalBodyHeight);
 
 			Assert.AreEqual(CubicMeter.Create(86.700), inputDataProvider.JobInputData.Trailer.CargoVolume);

@@ -67,7 +67,7 @@
 					<xs:element name="LegislativeCategory" type="v2.7:TrailerLegislativeCategoryType"/>
 					<xs:element name="AxleCount" type="v2.7:TrailerAxleCountType"/>
 					<xs:element name="TrailerType" type="v2.7:TrailerTypeType"/>
-					<xs:element name="BodyCode" type="v2.7:BodyWorkCodeType"/>
+					<xs:element name="BodyWorkType" type="v2.7:BodyWorkCodeType"/>
 					<xs:element name="TrailerCouplingPoint" type="v2.7:TrailerCouplingPoint" minOccurs="0"/>
 					<xs:element name="Masses">
 						<xs:complexType>
@@ -96,6 +96,16 @@
 						<xs:complexType>
 							<xs:sequence>
 								<xs:element name="Technology" type="v2.7:TrailerAeroFeatureTechnologyType" minOccurs="0" maxOccurs="unbounded"/>
+								<xs:element name="CertifiedAeroReduction" minOccurs="0" maxOccurs="1">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="YawAngle0" type="v1.0:Double2" minOccurs="0" maxOccurs="1"/>
+											<xs:element name="YawAngle3" type="v1.0:Double2" minOccurs="0" maxOccurs="1"/>
+											<xs:element name="YawAngle6" type="v1.0:Double2" minOccurs="0" maxOccurs="1"/>
+											<xs:element name="YawAngle9" type="v1.0:Double2" minOccurs="0" maxOccurs="1"/>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
 							</xs:sequence>
 						</xs:complexType>
 					</xs:element>
@@ -139,6 +149,7 @@
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="low"/>
 			<xs:enumeration value="high"/>
+			<xs:enumeration value="n/a"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="TrailerCargoVolumeType">

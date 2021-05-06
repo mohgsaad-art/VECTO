@@ -249,6 +249,11 @@ namespace TUGraz.VectoCommon.InputData
 
 		IList<AeroFeatureTechnology> AeroFeatureTechnologies { get; }
 
+		double YawAngle0 { get; }
+		double YawAngle3 { get; }
+		double YawAngle6 { get; }
+		double YawAngle9 { get; }
+
 		IList<ITrailerAxleDeclarationInputData> Axles { get; }
 		IVehicleComponentsDeclaration Components { get; }
 		XmlNode XMLSource { get; }

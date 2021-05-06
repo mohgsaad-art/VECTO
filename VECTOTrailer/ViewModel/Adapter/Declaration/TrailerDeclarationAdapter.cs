@@ -96,6 +96,10 @@ namespace VECTOTrailer.ViewModel.Adapter.Declaration
 		public Meter InternalBodyHeight { get; }
 		public CubicMeter CargoVolume { get; }
 		public TrailerCouplingPoint TrailerCouplingPoint { get; }
+		public double YawAngle0 { get; }
+		public double YawAngle3 { get; }
+		public double YawAngle6 { get; }
+		public double YawAngle9 { get; }
 		public IList<AeroFeatureTechnology> AeroFeatureTechnologies { get; }
 
 		public XmlNode XMLSource { get; }

@@ -1401,6 +1401,18 @@
   <data name="Trailer_AeroFeatureTechnologies" xml:space="preserve">
     <value>Technology</value>
   </data>
+<data name="Trailer_YawAngle0" xml:space="preserve">
+    <value>YawAngle0</value>
+  </data>
+<data name="Trailer_YawAngle3" xml:space="preserve">
+    <value>YawAngle3</value>
+  </data>
+<data name="Trailer_YawAngle6" xml:space="preserve">
+    <value>YawAngle6</value>
+  </data>
+<data name="Trailer_YawAngle9" xml:space="preserve">
+    <value>YawAngle9</value>
+  </data>
 <data name="Trailer_AeroFeatures" xml:space="preserve">
     <value>AeroFeatures</value>
   </data>
@@ -1420,7 +1432,7 @@
     <value>WeightedEfficiencyRatio</value>
   </data>
   <data name="Trailer_BodyCode" xml:space="preserve">
-    <value>BodyCode</value>
+    <value>BodyWorkType</value>
   </data>
   <data name="Trailer_CurbMass" xml:space="preserve">
     <value>CurbMass</value>

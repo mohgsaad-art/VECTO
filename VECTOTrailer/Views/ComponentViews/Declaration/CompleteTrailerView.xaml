@@ -275,11 +275,14 @@
             </StackPanel>
         </GroupBox>
 
-        <GroupBox Header="Standard aero feature technologies" Grid.Row="2" Grid.Column="2" Width="350" Height="300" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
+        <GroupBox Header="Αero feature technologies" Grid.Row="2" Grid.Column="2" Width="350" Height="300" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
             <StackPanel Orientation="Vertical" Width="330" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
                 <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
-                
-                    <Grid Margin="5">
+
+                    <RadioButton Margin="0,5,0,0" GroupName="features" Name="standard" IsChecked="{Binding IsStandard}">Standard aero feature technologies</RadioButton>
+                    <RadioButton Margin="0,5,0,0" GroupName="features" Name="certified" IsChecked="{Binding IsCertified}">Certified aero feature technologies</RadioButton>
+
+                    <Grid Margin="5" Visibility="{Binding IsChecked,ElementName=standard,Converter={StaticResource BoolToVisibilityConverter}}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100"/>
                             <ColumnDefinition Width="Auto"/>
@@ -294,7 +297,7 @@
                         <TextBlock Grid.Column="3" Text="Boat tail short" />
                         <CheckBox Grid.Column="4" IsChecked="{Binding BoatTailShort}"/>
                     </Grid>
-                    <Grid Margin="5">
+                    <Grid Margin="5" Visibility="{Binding IsChecked,ElementName=standard,Converter={StaticResource BoolToVisibilityConverter}}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100"/>
                             <ColumnDefinition Width="Auto"/>
@@ -308,7 +311,34 @@
                         <TextBlock Grid.Column="3" Text="Boat tail long"/>
                         <CheckBox Grid.Column="4" IsChecked="{Binding BoatTailLong}"/>
                     </Grid>
-
+                    <Grid Margin="5" Visibility="{Binding IsChecked,ElementName=certified,Converter={StaticResource BoolToVisibilityConverter}}">
+                        <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
+                        <Grid>
+                            <customControls:VectoParameterControl
+                                Caption="Yaw angle 0" CaptionWidthGroup="lblGWidth"
+                                Value="{Binding YawAngle0, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,StringFormat=N2}" ValueAlign="right"
+                                Unit="%" UnitWidthGroup="unitWidth"/>
+                        </Grid>
+                        <Grid>
+                            <customControls:VectoParameterControl
+                                Caption="Yaw angle 3" CaptionWidthGroup="lblGWidth"
+                                Value="{Binding YawAngle3, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,StringFormat=N2}" ValueAlign="right"
+                                Unit="%" UnitWidthGroup="unitWidth"/>
+                        </Grid>
+                        <Grid>
+                            <customControls:VectoParameterControl
+                                Caption="Yaw angle 6" CaptionWidthGroup="lblGWidth"
+                                Value="{Binding YawAngle6, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,StringFormat=N2}" ValueAlign="right"
+                                Unit="%" UnitWidthGroup="unitWidth"/>
+                        </Grid>
+                        <Grid>
+                            <customControls:VectoParameterControl
+                                Caption="Yaw angle 9" CaptionWidthGroup="lblGWidth"
+                                Value="{Binding YawAngle9, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,StringFormat=N2}" ValueAlign="right"
+                                Unit="%" UnitWidthGroup="unitWidth"/>
+                        </Grid>
+                        </StackPanel>
+                    </Grid>
 
                 </StackPanel>
             </StackPanel>
@@ -543,13 +573,8 @@
                         <TextBlock Grid.Column="9" Text="Steered" Margin="5,0,0,0"/>
                         <CheckBox Grid.Column="10" IsChecked="{Binding Axle3IsSteered}" Margin="5,0,0,0"/>
                     </Grid>
-
-
-
                 </StackPanel>
             </StackPanel>
         </GroupBox>
-
-
     </Grid>
 </UserControl>

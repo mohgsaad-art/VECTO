@@ -1055,6 +1055,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			if (trailer.TrailerType == TypeTrailer.DA && (trailer.TPMLMAxleAssembly == null || trailer.TPMLMAxleAssembly.Value() == 0))
 				throw new Exception("Trailer is DA but no TPMLM Axle Assembly value is given");
 
+			if (trailer.TrailerType != TypeTrailer.DC && (trailer.TrailerCouplingPoint == TrailerCouplingPoint.Low || trailer.TrailerCouplingPoint == TrailerCouplingPoint.High))
+				throw new Exception("Trailer is not DC but Coupling Point is given");
+
 			var trailerAxles = trailer.Axles;
 			if ((trailerAxles ?? throw new InvalidOperationException()).Any(x => x.Tyre.Dimension != trailerAxles.FirstOrDefault()?.Tyre.Dimension))
 				throw new Exception("invalid trailer configurations - different tyre dimensions specified");

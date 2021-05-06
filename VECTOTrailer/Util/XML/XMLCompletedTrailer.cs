@@ -10,6 +10,7 @@ using Castle.Core.Internal;
 using TUGraz.IVT.VectoXML.Writer;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Resources;
+using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider;
 using VECTOTrailer.Helper;
 using VECTOTrailer.Model;
@@ -119,9 +120,10 @@ namespace VECTOTrailer.Util.XML
 					new XElement(_v27 + XMLNames.Trailer_CargoVolume, trailerData.CargoVolume?.ToXMLFormat(3)))
 			);
 
-			if (trailerData.SideSkirtsShort || trailerData.SideSkirtsLong || trailerData.BoatTailShort || trailerData.BoatTailLong) {
+			if (trailerData.IsStandard || trailerData.IsCertified)
 				vehicle.Add(new XElement(_v27 + "AeroFeatures"));
 
+			if (trailerData.IsStandard) {
 				if (trailerData.SideSkirtsShort)
 					vehicle.Element(_v27 + "AeroFeatures")
 						?.Add(new XElement(_v27 + XMLNames.Trailer_AeroFeatureTechnologies, "side skirts short"));
@@ -135,6 +137,21 @@ namespace VECTOTrailer.Util.XML
 					vehicle.Element(_v27 + "AeroFeatures")
 						?.Add(new XElement(_v27 + XMLNames.Trailer_AeroFeatureTechnologies, "boat tail long"));
 			}
+
+			else if (trailerData.IsCertified) {
+				vehicle.Element(_v27 + "AeroFeatures")?.Add(new XElement(_v27 + "CertifiedAeroReduction"));
+
+				vehicle.Element(_v27 + "AeroFeatures")?.Element(_v27 + "CertifiedAeroReduction")
+					?.Add(new XElement(_v27 + XMLNames.Trailer_YawAngle0, trailerData.YawAngle0.ToXMLFormat(2)));
+				vehicle.Element(_v27 + "AeroFeatures")?.Element(_v27 + "CertifiedAeroReduction")
+					?.Add(new XElement(_v27 + XMLNames.Trailer_YawAngle3, trailerData.YawAngle3.ToXMLFormat(2)));
+				vehicle.Element(_v27 + "AeroFeatures")?.Element(_v27 + "CertifiedAeroReduction")
+					?.Add(new XElement(_v27 + XMLNames.Trailer_YawAngle6, trailerData.YawAngle6.ToXMLFormat(2)));
+				vehicle.Element(_v27 + "AeroFeatures")?.Element(_v27 + "CertifiedAeroReduction")
+					?.Add(new XElement(_v27 + XMLNames.Trailer_YawAngle9, trailerData.YawAngle9.ToXMLFormat(2)));
+			}
+
+
 
 			if (int.Parse(trailerData.NumberOfAxles.GetLabel()) <= 0)
 				return vehicle;

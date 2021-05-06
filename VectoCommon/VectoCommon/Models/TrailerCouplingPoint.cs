@@ -52,6 +52,8 @@ namespace TUGraz.VectoCommon.Models
 					return "low";
 				case TrailerCouplingPoint.High:
 					return "high";
+				case TrailerCouplingPoint.Unknown:
+					return "n/a";
 				default:
 					throw new ArgumentOutOfRangeException("Trailer Coupling Point", ttype, null);
 			}
@@ -69,6 +71,8 @@ namespace TUGraz.VectoCommon.Models
 					return TrailerCouplingPoint.Low;
 				case "high":
 					return TrailerCouplingPoint.High;
+				case "n/a":
+					return TrailerCouplingPoint.Unknown;
 				default:
 					return TrailerCouplingPoint.Unknown;
 			}
