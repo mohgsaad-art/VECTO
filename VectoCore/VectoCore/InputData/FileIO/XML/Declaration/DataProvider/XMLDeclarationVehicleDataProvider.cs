@@ -994,7 +994,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		public Kilogram TPMLMTotalTrailer => GetDouble(XMLNames.Trailer_TPMLMTotalTrailer).SI<Kilogram>();
 
-		public Kilogram TPMLMAxleAssembly => GetDouble(XMLNames.Trailer_TPLMAxleAssembly).SI<Kilogram>();
+		public Kilogram TPMLMAxleAssembly => TrailerType == TypeTrailer.DA ? GetDouble(XMLNames.Trailer_TPLMAxleAssembly).SI<Kilogram>() : 0.SI<Kilogram>();
 
 		public Meter ExternalBodyLength => GetDouble(XMLNames.Trailer_ExternalLengthBody).SI<Meter>();
 
@@ -1014,10 +1014,10 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		public TrailerCouplingPoint TrailerCouplingPoint => TrailerCouplingPointHelper.Parse(GetString(XMLNames.Trailer_TrailerCouplingPoint));
 
-		public double YawAngle0 => GetNodes("v2.7:CertifiedAeroReduction").Count > 0 ? GetDouble(XMLNames.Trailer_YawAngle0) : 0;
-		public double YawAngle3 => GetNodes("v2.7:CertifiedAeroReduction").Count > 0 ? GetDouble(XMLNames.Trailer_YawAngle3) : 0;
-		public double YawAngle6 => GetNodes("v2.7:CertifiedAeroReduction").Count > 0 ? GetDouble(XMLNames.Trailer_YawAngle6) : 0;
-		public double YawAngle9 => GetNodes("v2.7:CertifiedAeroReduction").Count > 0 ? GetDouble(XMLNames.Trailer_YawAngle9) : 0;
+		public double YawAngle0 => GetNodes(XMLNames.Trailer_YawAngle0).Count > 0 ? GetDouble(XMLNames.Trailer_YawAngle0) : 0;
+		public double YawAngle3 => GetNodes(XMLNames.Trailer_YawAngle3).Count > 0 ? GetDouble(XMLNames.Trailer_YawAngle3) : 0;
+		public double YawAngle6 => GetNodes(XMLNames.Trailer_YawAngle6).Count > 0 ? GetDouble(XMLNames.Trailer_YawAngle6) : 0;
+		public double YawAngle9 => GetNodes(XMLNames.Trailer_YawAngle9).Count > 0 ? GetDouble(XMLNames.Trailer_YawAngle9) : 0;
 		public IList<AeroFeatureTechnology> AeroFeatureTechnologies => ReadAeroFeatures();
 
 		public IVehicleComponentsDeclaration Components => _components ?? (_components = ComponentReader.ComponentInputData);

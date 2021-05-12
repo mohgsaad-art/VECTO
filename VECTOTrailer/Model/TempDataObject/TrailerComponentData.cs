@@ -196,6 +196,7 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.NumberOfAxles = NumberOfTrailerAxles.One;
 			viewModel.TrailerType = TypeTrailer.DA;
 			viewModel.BodyCode = BodyWorkCode.Drybody;
+			viewModel.TrailerCouplingPoint = TrailerCouplingPoint.Unknown;
 			viewModel.SideSkirtsShort = false;
 			viewModel.SideSkirtsLong = false;
 			viewModel.BoatTailShort = false;
@@ -298,7 +299,7 @@ namespace VECTOTrailer.Model.TempDataObject
 			Axle3ButtonsVisibility = trailer.Axle3ButtonsVisibility;
 			Axle3NewVisibility = trailer.Axle3NewVisibility;
 
-			TrailerCouplingPoint = trailer.TrailerCouplingPoint;
+			TrailerCouplingPoint = trailer.TrailerType == TypeTrailer.DC ? trailer.TrailerCouplingPoint : TrailerCouplingPoint.Unknown;
 		}
 
 		private void SetXmlNamesToPropertyMapping()

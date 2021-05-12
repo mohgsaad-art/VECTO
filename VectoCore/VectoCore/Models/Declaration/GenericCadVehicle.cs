@@ -75,11 +75,20 @@ namespace TUGraz.VectoCore.Models.Declaration
 			return new GenericCadSegment
 			{
 				VehicleGroup = (int)row.ParseDouble("Vehicle_group"),
+				TotalHeight = Meter.Create(row.ParseDouble("total_trailer_height")),
+				ExternalBodyHeight = Meter.Create(row.ParseDouble("External_body_height")),
 				AcrBase = SquareMeter.Create(row.ParseDouble("AcrBase")),
-				CdxABase = SquareMeter.Create(row.ParseDouble("Yaw0")),
+				CdxABase = row.ParseDouble("Yaw0"),
 				A1 = SquareMeter.Create(row.ParseDouble("a1")),
 				A2 = SquareMeter.Create(row.ParseDouble("a2")),
-				A3 = SquareMeter.Create(row.ParseDouble("a3"))
+				A3 = SquareMeter.Create(row.ParseDouble("a3")),
+				Lbf = Meter.Create(row.ParseDouble("Lbf")),
+				DCdf0 = row.ParseDouble("dCdf0"),
+				Lba = Meter.Create(row.ParseDouble("Lba")),
+				DCda0 = row.ParseDouble("dCdf0"),
+				Lbr = Meter.Create(row.ParseDouble("Lbr")),
+				DCdr0 = row.ParseDouble("dCdr0"),
+				
 			};
 			
 		}

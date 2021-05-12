@@ -298,8 +298,14 @@ namespace VECTOTrailer.ViewModel.Impl
 					return;
 
 				TPMLMAxleAssemblyVisibility = TrailerType is TypeTrailer.DA;
-				
+
 				TrailerCouplingPointVisibility = TrailerType is TypeTrailer.DC;
+
+				if(TrailerType != TypeTrailer.DC)
+					TrailerCouplingPoint = TrailerCouplingPoint.Unknown;
+
+				if (TrailerType != TypeTrailer.DA)
+					TPLMAxleAssembly = 0.SI<Kilogram>();
 
 				IsDataChanged(_trailerType, _componentData);
 			}
@@ -624,7 +630,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 				IsStandard = (SideSkirtsShort || SideSkirtsLong || BoatTailShort || BoatTailLong);
 
-				TrailerCouplingPoint = trailer.TrailerCouplingPoint;
+				TrailerCouplingPoint = trailer.TrailerType == TypeTrailer.DC ? trailer.TrailerCouplingPoint : TrailerCouplingPoint.Unknown;
 
 				this.Trailer = _trailer;
 
@@ -905,7 +911,7 @@ namespace VECTOTrailer.ViewModel.Impl
 				RemovePropertyError(textPropertyName);
 				return filePath;
 
-				//TODO
+				//TODO Enable xml validation on file open
 				/*var validationResult = IsValidXml(jobFileType, filePath);
 
 				if (!validationResult)

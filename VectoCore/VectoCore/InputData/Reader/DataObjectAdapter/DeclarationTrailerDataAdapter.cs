@@ -33,6 +33,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms.DataVisualization.Charting;
 using System.Xml;
 using Ninject;
 using TUGraz.VectoCommon.BusAuxiliaries;
@@ -883,7 +884,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 		}
 
 		public static List<CrossWindCorrectionCurveReader.CrossWindCorrectionEntry> GetTrailerDeclarationAirResistanceCurve(
-			string crosswindCorrectionParameters, SquareMeter aerodynamicDragAera, Meter vehicleHeight, TrailerSegment segment)
+			string crosswindCorrectionParameters, SquareMeter aerodynamicDragAera, Meter vehicleHeight, TrailerSegment segment, CorrectedTrailerData data)
 		{
 			var startSpeed = Constants.SimulationSettings.CrosswindCorrection.MinVehicleSpeed;
 			var maxSpeed = Constants.SimulationSettings.CrosswindCorrection.MaxVehicleSpeed;
@@ -905,9 +906,10 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				}
 			};
 
-			var a1 = segment.GenericCadVehicle.A1;
-			var a2 = segment.GenericCadVehicle.A2;
-			var a3 = segment.GenericCadVehicle.A3;
+			//corrected A1, A2, A3
+			var a1 = data.A1;
+			var a2 = data.A2;
+			var a3 = data.A3;
 
 			for (var speed = startSpeed; speed <= maxSpeed; speed += speedStep)
 			{
@@ -963,7 +965,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			
 			var retVal = SetCommonAirdragData(airdragInputData);
 			retVal.CrossWindCorrectionMode = CrossWindCorrectionMode.DeclarationModeCorrection;
-			retVal.DeclaredAirdragArea = specificTrailerData.CdxABase;
+			retVal.DeclaredAirdragArea = SquareMeter.Create(specificTrailerData.CdxABase);
 
 			var aerodynamicDragArea = retVal.DeclaredAirdragArea + mission.Trailer.Sum(t => t.DeltaCdA).DefaultIfNull(0);
 
@@ -986,15 +988,14 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			var retVal = SetCommonAirdragData(airdragInputData);
 			retVal.CrossWindCorrectionMode = CrossWindCorrectionMode.DeclarationModeCorrection;
 
-			var airDragArea = specificTrailerData.CdxABase;
-			var cor = specificTrailerData.TotalCorrection[0] / 100;
-			retVal.DeclaredAirdragArea = (airDragArea + (airDragArea * cor));
+			//Corrected CdxA(0)
+			retVal.DeclaredAirdragArea = specificTrailerData.TotalCorrection.CdxA0; 
 
 			retVal.CrossWindCorrectionCurve =
 				new CrosswindCorrectionCdxALookup(
 					retVal.DeclaredAirdragArea,
 					GetTrailerDeclarationAirResistanceCurve(
-						mission.CrossWindCorrectionParameters, retVal.DeclaredAirdragArea, mission.VehicleHeight, trailerSegment),
+						mission.CrossWindCorrectionParameters, retVal.DeclaredAirdragArea, mission.VehicleHeight, trailerSegment, specificTrailerData.TotalCorrection),
 					CrossWindCorrectionMode.DeclarationModeCorrection); 
 			return retVal;
 		}
@@ -1067,9 +1068,6 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				trailer.InternalBodyHeight >= trailer.TotalTrailerHeight)
 				throw new Exception("Invalid dimensions declared");
 
-			if (trailer.LengthFromFrontToFirstAxle >= trailer.LengthBetweenCentersOfAxles)
-				throw new Exception("Invalid dimensions declared");
-
 			if (trailer.TPMLMAxleAssembly >= trailer.TPMLMTotalTrailer)
 				throw new Exception("Invalid masses declared");
 		}
@@ -1092,84 +1090,166 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			return DeclarationData.AeroFeatures.Lookup(aeroFeatures);
 		}
 
-		private static double CalcAreaCorrection(TrailerSegment trailerSegment, ITrailerDeclarationInputData trailer)
-		{
-			var acrMin = 0; //trailerSegment.ReferenceTrailerSegment.AcrMin; //TODO
-			var acrBase = trailerSegment.GenericCadVehicle.AcrBase; //TODO
-			var cdxaBase = 0; //trailerSegment.CdxABase;  //TODO
-
-			var acr = trailer.TotalTrailerHeight.Value() * trailer.ExternalBodyWidth.Value() > acrMin ?
-				trailer.TotalTrailerHeight.Value() * trailer.ExternalBodyWidth.Value() : acrMin;
-			return cdxaBase * acr / acrBase.Value();
-		}
-
 		private static string GetAxleWheelDimension(IVehicleDeclarationInputData genericVehicle)
 		{
 			return genericVehicle.Components.AxleWheels.XMLSource.ChildNodes[0].ChildNodes[0].FirstChild.ChildNodes[3].FirstChild.ChildNodes[5].InnerText;
 		}
 
-		private static double CalcLengthCorrection(IVehicleDeclarationInputData genericVehicle)
+		private static SquareMeter CalcLengthCorrection(TrailerSegment trailerSegment, ITrailerDeclarationInputData trailer)
 		{
-			var wheels = new Wheels();
-			var wheelRadius = wheels.Lookup(GetAxleWheelDimension(genericVehicle)).WheelsDiameter / 2;
-			//TODO
-			return 0;
+			//acr_base * (cdA_base_yaw0 / acr_base + (Lf-Lbf) * dCdf + (La-Lba) * dCda + (Lr-Lbr) * dCdr)
+			var s = trailerSegment.GenericCadVehicle;
+
+			var wheelsDiameter = trailerSegment.Missions.FirstOrDefault()?.Trailer.FirstOrDefault()?.TrailerWheels.FirstOrDefault().WheelsDiameter;
+			var lf = trailer.LengthFromFrontToFirstAxle - (wheelsDiameter / 2);
+			var la = trailer.LengthBetweenCentersOfAxles + wheelsDiameter;
+			var lr = trailer.ExternalBodyLength - ((trailer.LengthFromFrontToFirstAxle) + (trailer.LengthBetweenCentersOfAxles) + (wheelsDiameter / 2));
+
+			var correction = s.AcrBase.Value() * (s.CdxABase / s.AcrBase.Value() + (lf - s.Lbf).Value() * s.DCdf0 + (la-s.Lba).Value() * s.DCda0 + (lr-s.Lbr).Value() * s.DCdr0);
+
+			return SquareMeter.Create(correction);
 		}
 
-		private static double[] GetTrailerCorrection(TrailerSegment trailerSegment, ITrailerDeclarationInputData trailer, IVehicleDeclarationInputData genericVehicle)
+		private static SquareMeter CalcHeightCorrection(TrailerSegment trailerSegment, ITrailerDeclarationInputData trailer, double previousCorrection)
 		{
-			var cCorrection = 0.0;
-			var lCorrection = 0.0;
-			double[] aCorrection = {};
+			//CdxA(0)_width_correction*(Total_height_of_the_trailer/Total_trailer_height_generic_cad)
+			var s = trailerSegment.GenericCadVehicle;
 
-			#region Cross Section Correction
-			var doCrossSectionAreaCorrection = trailerSegment.CrossSectionAreaCorrection;
-			if (doCrossSectionAreaCorrection)
-				cCorrection = CalcAreaCorrection(trailerSegment, trailer);
-			#endregion
 
-			#region Length Correction
-			var doLengthcorrection = false; //_trailerSegment.LengthCorrection;
-			if (doLengthcorrection)
-				lCorrection = CalcLengthCorrection(genericVehicle);
-			#endregion
+			var correction = previousCorrection * (trailer.TotalTrailerHeight / s.TotalHeight);
+			return SquareMeter.Create(correction);
+		}
 
-			#region Aero feature Correction
-			var combination = GetAeroFeatureCombination(trailer);
+		private static SquareMeter CalcVolumeCorrection(TrailerSegment trailerSegment, ITrailerDeclarationInputData trailer, double previousCorrection)
+		{
+			//CdxA(3)_height_correction*(External_height_of_the_body/External_body_height_generic_cad)
+			var s = trailerSegment.GenericCadVehicle;
 
-			switch (combination)
-			{
-				case 0:
-					aCorrection = trailerSegment.SpecificTrailerSegment.Aero0;
-					break;
-				case 1:
-					aCorrection = trailerSegment.SpecificTrailerSegment.Aero1;
-					break;
-				case 2:
-					aCorrection = trailerSegment.SpecificTrailerSegment.Aero2;
-					break;
-				case 3:
-					aCorrection = trailerSegment.SpecificTrailerSegment.Aero3;
-					break;
-				case 4:
-					aCorrection = trailerSegment.SpecificTrailerSegment.Aero4;
-					break;
-				case 5:
-					aCorrection = trailerSegment.SpecificTrailerSegment.Aero5;
-					break;
-				case 6:
-					aCorrection = trailerSegment.SpecificTrailerSegment.Aero6;
-					break;
-				case 7:
-					aCorrection = trailerSegment.SpecificTrailerSegment.Aero7;
-					break;
-				case 8:
-					aCorrection = trailerSegment.SpecificTrailerSegment.Aero8;
-					break;
+
+			var correction = previousCorrection * (trailer.ExternalBodyHeight / s.ExternalBodyHeight);
+			return SquareMeter.Create(correction);
+		}
+
+		private static SquareMeter CalcAeroCorrection(TrailerSegment trailerSegment, ITrailerDeclarationInputData trailer, double previousCorrection, int yaw)
+		{
+			//CdxA(0)_volume-oriented_correction*(1-dCdxA_combination(0))
+			var s = trailerSegment.GenericCadVehicle;
+			double[] aCorrection = { };
+
+			if (trailer.YawAngle0 > 0 || trailer.YawAngle3 > 0 || trailer.YawAngle6 > 0 || trailer.YawAngle9 > 0)
+				aCorrection = new [] { trailer.YawAngle0, trailer.YawAngle3, trailer.YawAngle6, trailer.YawAngle9 };
+
+			else {
+				var combination = GetAeroFeatureCombination(trailer);
+
+				switch (combination) {
+					case 0:
+						aCorrection = trailerSegment.SpecificTrailerSegment.Aero0;
+						break;
+					case 1:
+						aCorrection = trailerSegment.SpecificTrailerSegment.Aero1;
+						break;
+					case 2:
+						aCorrection = trailerSegment.SpecificTrailerSegment.Aero2;
+						break;
+					case 3:
+						aCorrection = trailerSegment.SpecificTrailerSegment.Aero3;
+						break;
+					case 4:
+						aCorrection = trailerSegment.SpecificTrailerSegment.Aero4;
+						break;
+					case 5:
+						aCorrection = trailerSegment.SpecificTrailerSegment.Aero5;
+						break;
+					case 6:
+						aCorrection = trailerSegment.SpecificTrailerSegment.Aero6;
+						break;
+					case 7:
+						aCorrection = trailerSegment.SpecificTrailerSegment.Aero7;
+						break;
+					case 8:
+						aCorrection = trailerSegment.SpecificTrailerSegment.Aero8;
+						break;
+				}
 			}
+
+			var correction = previousCorrection * (1 - aCorrection[yaw]);
+
+			return SquareMeter.Create(correction);
+		}
+
+		private static CorrectedTrailerData GetTrailerCorrection(TrailerSegment trailerSegment, ITrailerDeclarationInputData trailer, IVehicleDeclarationInputData genericVehicle)
+		{
+			var data = new CorrectedTrailerData();
+			data.A1 = trailerSegment.GenericCadVehicle.A1;
+			data.A2 = trailerSegment.GenericCadVehicle.A2;
+			data.A3 = trailerSegment.GenericCadVehicle.A3;
+
+			#region LengthAxleCorrection
+
+			if (trailerSegment.SpecificTrailerSegment.LengthAxleCorrection) {
+				data.CdxA0 = CalcLengthCorrection(trailerSegment, trailer);
+				data.CdxA3 = data.CdxA0 + (data.A1 * 3) + (data.A2 * 3 * 3) + (data.A3 * 3 * 3 * 3);
+				data.CdxA6 = data.CdxA0 + (data.A1 * 6) + (data.A2 * 6 * 6) + (data.A3 * 6 * 6 * 6);
+				data.CdxA9 = data.CdxA0 + (data.A1 * 9) + (data.A2 * 9 * 9) + (data.A3 * 9 * 9 * 9);
+			}
+
 			#endregion
 
-			return aCorrection;
+			//WidthCorrection not implemented yet
+			var widthCdxA0 = data.CdxA0;
+
+			#region HeightCorrection
+
+			if (trailerSegment.SpecificTrailerSegment.HeightCorrection) {
+				data.CdxA0 = CalcHeightCorrection(trailerSegment, trailer, data.CdxA0.Value());
+				data.CdxA3 = CalcHeightCorrection(trailerSegment, trailer, data.CdxA3.Value());
+				data.CdxA6 = CalcHeightCorrection(trailerSegment, trailer, data.CdxA6.Value());
+				data.CdxA9 = CalcHeightCorrection(trailerSegment, trailer, data.CdxA9.Value());
+			}
+
+			#endregion
+
+			#region VolumeCorrection
+
+			if (trailerSegment.SpecificTrailerSegment.VolumeCorrection) {
+				data.CdxA3 = CalcVolumeCorrection(trailerSegment, trailer, data.CdxA3.Value());
+				data.CdxA6 = CalcVolumeCorrection(trailerSegment, trailer, data.CdxA6.Value());
+				data.CdxA9 = CalcVolumeCorrection(trailerSegment, trailer, data.CdxA9.Value());
+			}
+            #endregion
+
+            #region Aero feature Correction
+
+			if (trailerSegment.SpecificTrailerSegment.AeroCorrection) {
+
+				//TODO: calculate the following 4 lines only for specific
+				data.CdxA0 = CalcAeroCorrection(trailerSegment, trailer, data.CdxA0.Value(), 0);
+				data.CdxA3 = CalcAeroCorrection(trailerSegment, trailer, data.CdxA3.Value(), 1);
+				data.CdxA6 = CalcAeroCorrection(trailerSegment, trailer, data.CdxA6.Value(), 2);
+				data.CdxA9 = CalcAeroCorrection(trailerSegment, trailer, data.CdxA9.Value(), 3);
+
+				data.CdxA00 = data.CdxA0 - widthCdxA0;
+				data.CdxA03 = data.CdxA3 - widthCdxA0;
+				data.CdxA06 = data.CdxA6 - widthCdxA0;
+				data.CdxA09 = data.CdxA9 - widthCdxA0;
+
+				//TODO: calc corrected a1, a2, a3
+				//(ΔcdA(9)_spe - (3 * ΔcdA(6)_spe) +(3 * ΔcdA(3)_spe) -ΔcdA(0)_spe ) *(1 / 162)
+				var a3 = (data.CdxA09.Value() - (3 * data.CdxA06).Value() + (3 * data.CdxA03).Value() - data.CdxA00.Value()) * 0.0061728395;
+				//(ΔcdA(6)_spe - (2 * ΔcdA(3)_spe) + ΔcdA(0)_spe - (162 * a3_spe) ) *(1 / 18)
+				var a2 = (data.CdxA06.Value() - (2 * data.CdxA03).Value() + data.CdxA00.Value() - (162 * a3)) * 0.05555555555;
+				//(ΔcdA(3)_spe - ΔcdA(0)_spe - (9 * a2_spe) - (27 * a3_spe)) * (1 / 3)
+				var a1 = (data.CdxA03.Value() - data.CdxA00.Value() - (9 * a2) - (27 * a3)) * 0.33333333333;
+				
+				data.A1 = SquareMeter.Create(a1);
+				data.A1 = SquareMeter.Create(a2);
+				data.A1 = SquareMeter.Create(a3);
+			}
+
+			#endregion
+
+			return data;
 		}
 
 		public TrailerData GetSpecificTrailerData(TrailerSegment trailerSegment, ITrailerDeclarationInputData trailer,

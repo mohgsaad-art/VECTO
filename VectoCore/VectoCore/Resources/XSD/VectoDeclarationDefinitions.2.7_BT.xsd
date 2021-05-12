@@ -74,7 +74,7 @@
 							<xs:sequence>
 								<xs:element name="MassInRunningOrder" type="v2.7:TrailerMassType"/>
 								<xs:element name="TPMLMTotalTrailer" type="v2.7:TrailerMassType"/>
-								<xs:element name="TPMLMAxleAssembly" type="v2.7:TrailerMassType" minOccurs="0"/>
+								<xs:element name="TPMLMAxleAssembly" type="xs:int" minOccurs="0"/>
 							</xs:sequence>
 						</xs:complexType>
 					</xs:element>

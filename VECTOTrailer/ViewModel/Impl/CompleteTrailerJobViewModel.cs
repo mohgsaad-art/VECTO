@@ -273,15 +273,10 @@ namespace VECTOTrailer.ViewModel.Impl
 		private bool CheckTrailerType(Model.TempDataObject.TrailerComponentData trailer)
 		{
 			if (trailer.TrailerType == TypeTrailer.DA &&
-				(trailer.TPLMAxleAssembly == null ||
-				trailer.TPLMAxleAssembly.Value() == 0))
+				(trailer.TPLMAxleAssembly == null || trailer.TPLMAxleAssembly.Value() == 0))
 				return false;
 
-			if (trailer.TrailerType != TypeTrailer.DC &&
-				(trailer.TrailerCouplingPoint == TrailerCouplingPoint.Low ||
-				trailer.TrailerCouplingPoint == TrailerCouplingPoint.High))
-				return false;
-			return true;
+			return trailer.TrailerType == TypeTrailer.DC || trailer.TrailerCouplingPoint == TrailerCouplingPoint.Unknown;
 		}
 
 		private bool GeneralCheck(Model.TempDataObject.TrailerComponentData trailer)
@@ -289,9 +284,6 @@ namespace VECTOTrailer.ViewModel.Impl
 			if (trailer.InternalHeightOfTheBody >= trailer.ExternalHeightOfTheBody ||
 				trailer.ExternalHeightOfTheBody >= trailer.TotalHeightOfTheTrailer ||
 				trailer.InternalHeightOfTheBody >= trailer.TotalHeightOfTheTrailer)
-				return false;
-
-			if (trailer.LengthFromFrontToFirstAxle >= trailer.LengthBetweenCentersOfAxles)
 				return false;
 
 			if (trailer.TPLMAxleAssembly >= trailer.TPLMTotalTrailer)

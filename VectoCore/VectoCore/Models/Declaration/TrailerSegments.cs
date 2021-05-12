@@ -82,8 +82,6 @@ namespace TUGraz.VectoCore.Models.Declaration
 				VehicleGroupActive = row.ParseBoolean("Active"),
 				GenericCode = row.Field<string>("Generic_code"),
 				Class = VehicleClassHelper.Parse(row.Field<string>("Generic_vehicle_group").Replace("-RD", "").Replace("-LH", "")),
-				CrossSectionAreaCorrection = false, //TODO
-				LengthCorrection = false, //TODO
 				MaxGcm = row.Field<string>("max_gcm"),
 				Missions = CreateMissions(row),
 				ReferenceTrailerSegment = DeclarationData.ReferenceTrailer.Lookup((int)row.ParseDouble("Vehicle_group")),
@@ -267,7 +265,9 @@ namespace TUGraz.VectoCore.Models.Declaration
 				}
 			}
 
-			var trailerType = TrailerTypeHelper.Parse(trailerValue);
+			var trailerType = TrailerType.T2a;
+			if (trailerValue != "none") //TODO temporary until "none" values are fixed (this is lookup value for standard trailers)
+				trailerType = TrailerTypeHelper.Parse(trailerValue);
 
 			IKernel _kernel = new StandardKernel(new VectoNinjectModule());
 			var xmlInputReader = _kernel.Get<IXMLInputDataReader>();

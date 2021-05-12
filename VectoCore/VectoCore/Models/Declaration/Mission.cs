@@ -197,7 +197,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 		ST1,
 		Dolly,
 		STT1,
-		STT2
+		STT2,
+		T2a
 	}
 
 	public static class TrailerTypeHelper

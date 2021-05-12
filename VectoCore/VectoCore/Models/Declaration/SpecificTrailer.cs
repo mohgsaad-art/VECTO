@@ -75,6 +75,13 @@ namespace TUGraz.VectoCore.Models.Declaration
 			return new SpecificTrailerSegment
 			{
 				VehicleGroup = (int)row.ParseDouble("Vehicle_group"),
+
+				LengthAxleCorrection = row.Field<string>("length_axle_correction") == "1",
+				WidthCorrection = row.Field<string>("width_correction") == "1",
+				HeightCorrection = row.Field<string>("height_correction") == "1",
+				VolumeCorrection = row.Field<string>("volume_correction") == "1",   
+				AeroCorrection = row.Field<string>("aero_correction") == "1",
+
 				Aero0 = new[] { row.ParseDouble("aero0_0"), row.ParseDouble("aero0_3"), row.ParseDouble("aero0_6"), row.ParseDouble("aero0_9") },
 				Aero1 = new[] { row.ParseDouble("aero1_0"), row.ParseDouble("aero1_3"), row.ParseDouble("aero1_6"), row.ParseDouble("aero1_9") },
 				Aero2 = new[] { row.ParseDouble("aero2_0"), row.ParseDouble("aero2_3"), row.ParseDouble("aero2_6"), row.ParseDouble("aero2_9") },

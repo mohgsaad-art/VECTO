@@ -272,7 +272,8 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		public ICommand RunSimulation
 		{
-			get { return _runSimulationCommand ?? (_runSimulationCommand = new RelayCommand(DoRunSimulation, CanRunSimulationCmd)); }
+			get { return _runSimulationCommand ?? (
+				_runSimulationCommand = new RelayCommand(DoRunSimulation, CanRunSimulationCmd)); }
 		}
 
 		public ICommand StopSimulation

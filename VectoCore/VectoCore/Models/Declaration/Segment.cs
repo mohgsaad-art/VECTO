@@ -71,8 +71,6 @@ namespace TUGraz.VectoCore.Models.Declaration
 		public int VehicleGroup { get; set; }
 		public VehicleClass Class { get; set; } 
 		public string GenericCode { get; set; }
-		public bool CrossSectionAreaCorrection { get; set; }
-		public bool LengthCorrection { get; set; }
 		public string MaxGcm { get; set; }
 		public Mission[] Missions { get; internal set; }
 		public MeterPerSecond DesignSpeed { get; set; }
@@ -106,6 +104,11 @@ namespace TUGraz.VectoCore.Models.Declaration
 	{
 		[JsonIgnore]
 		public int VehicleGroup { get; set; }
+		public bool LengthAxleCorrection { get; set; }
+		public bool WidthCorrection  { get; set; }
+		public bool HeightCorrection  { get; set; }
+		public bool VolumeCorrection { get; set; }
+		public bool AeroCorrection { get; set; }
 		public double[] Aero0 { get; set; }
 		public double[] Aero1 { get; set; }
 		public double[] Aero2 { get; set; }
@@ -120,11 +123,20 @@ namespace TUGraz.VectoCore.Models.Declaration
 	{
 		[JsonIgnore]
 		public int VehicleGroup { get; set; }
+		public Meter TotalHeight { get; set; }
+		public Meter ExternalBodyHeight { get; set; }
 		public SquareMeter AcrBase { get; set; }
-		public SquareMeter CdxABase { get; set; }
+		public double CdxABase { get; set; }
 		public SquareMeter A1 { get; set; }
 		public SquareMeter A2 { get; set; }
 		public SquareMeter A3 { get; set; }
+		public Meter Lbf { get; set; }
+		public double DCdf0 { get; set; }
+		public Meter Lba { get; set; }
+		public double DCda0 { get; set; }
+		public Meter Lbr { get; set; }
+		public double DCdr0 { get; set; }
+
 	}
 	public struct StandardTrailerSegment
 	{

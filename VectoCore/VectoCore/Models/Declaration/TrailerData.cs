@@ -45,9 +45,26 @@ namespace TUGraz.VectoCore.Models.Declaration
 		public string GenericVehicleCode { get; set; }
 		public Kilogram CurbMassTrailer { get; set; }
 		public KilogramSquareMeter Inertia { get; set; }
-		public double[] TotalCorrection { get; set; }
+		public CorrectedTrailerData TotalCorrection { get; set; }
 		public double MaxGcm { get; set; }
-		public SquareMeter CdxABase { get; set; }
+		public double CdxABase { get; set; }
 
+	}
+
+	public class CorrectedTrailerData
+	{
+		public SquareMeter CdxA0 { get; set; }
+		public SquareMeter CdxA3 { get; set; }
+		public SquareMeter CdxA6 { get; set; }
+		public SquareMeter CdxA9 { get; set; }
+
+		public SquareMeter CdxA00 { get; set; }
+		public SquareMeter CdxA03 { get; set; }
+		public SquareMeter CdxA06 { get; set; }
+		public SquareMeter CdxA09 { get; set; }
+
+		public SquareMeter A1 { get; set; }
+		public SquareMeter A2 { get; set; }
+		public SquareMeter A3 { get; set; }
 	}
 }
