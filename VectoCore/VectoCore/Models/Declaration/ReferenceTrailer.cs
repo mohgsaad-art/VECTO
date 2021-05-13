@@ -84,6 +84,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 				ExternalBodyWidth = Meter.Create(row.ParseDouble("external_body_width")),
 				TotalTrailerHeight = Meter.Create(row.ParseDouble("total_trailer_height")),
 				LengthTrailerFrontToFirstAxle = Meter.Create(row.ParseDouble("length_trailer_front_first_axle")),
+				LengthBetweenCentersOfAxles = Meter.Create(row.ParseDouble("distance_first_last_axle")),
 				LengthAxleCorrection = row.Field<string>("length_axle_correction") == "1",
 				WidthCorrection = row.Field<string>("width_correction") == "1",
 				HeightCorrection = row.Field<string>("height_correction") == "1",

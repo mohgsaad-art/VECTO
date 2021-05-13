@@ -80,6 +80,9 @@ namespace TUGraz.VectoCore.Models.Declaration
 		public SquareMeter A1Cor { get; set; }
 		public SquareMeter A2Cor { get; set; }
 		public SquareMeter A3Cor { get; set; }
+		public SquareMeter A1RefCor { get; set; }
+		public SquareMeter A2RefCor { get; set; }
+		public SquareMeter A3RefCor { get; set; }
 	}
 
 	public struct ReferenceTrailerSegment
@@ -93,6 +96,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 		public Meter ExternalBodyWidth { get; set; }
 		public Meter ExternalBodyLength { get; set; }
 		public Meter LengthTrailerFrontToFirstAxle { get; set; }
+		public Meter LengthBetweenCentersOfAxles { get; set; }
 		public string TyreXml { get; set; }
 		public bool TwinTyres { get; set; }
 		public bool LengthAxleCorrection { get; set; }

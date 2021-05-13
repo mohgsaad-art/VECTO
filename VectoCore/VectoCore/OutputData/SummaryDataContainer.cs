@@ -771,10 +771,10 @@ namespace TUGraz.VectoCore.OutputData
 				row[Fields.A1] = data.TrailerSegment.A1Cor?.Value(); 
 				row[Fields.A2] = data.TrailerSegment.A2Cor?.Value();
 				row[Fields.A3] = data.TrailerSegment.A3Cor?.Value();
-			} else if(data.TrailerSegment.A1Cor != null && data.TrailerSegment.A2Cor != null && data.TrailerSegment.A3Cor != null) {
-				row[Fields.A1] = data.TrailerSegment.A2Cor.Value();
-				row[Fields.A2] = data.TrailerSegment.A2Cor.Value();
-				row[Fields.A3] = data.TrailerSegment.A3Cor.Value();
+			} else if(data.TrailerSegment.A1RefCor != null && data.TrailerSegment.A2RefCor != null && data.TrailerSegment.A3RefCor != null) {
+				row[Fields.A1] = data.TrailerSegment.A1RefCor.Value();
+				row[Fields.A2] = data.TrailerSegment.A2RefCor.Value();
+				row[Fields.A3] = data.TrailerSegment.A3RefCor.Value();
 			}
 			
 

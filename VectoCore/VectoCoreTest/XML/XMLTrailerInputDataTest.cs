@@ -106,7 +106,7 @@ namespace TUGraz.VectoCore.Tests.XML
 
 			var genericInputDataProvider = DeclarationData.TrailerSegments.GetGenericVehicleData(trailerSegment.GenericCode);
 
-			var specificTrailerData = trailerDataAdapter.GetSpecificTrailerData(trailerSegment, inputDataProvider.JobInputData.Trailer, genericInputDataProvider.JobInputData.Vehicle);
+			var specificTrailerData = trailerDataAdapter.GetTrailerData(trailerSegment, inputDataProvider.JobInputData.Trailer, genericInputDataProvider.JobInputData.Vehicle);
 
 			Assert.AreEqual(SquareMeter.Create(0.002002076364697263), specificTrailerData.TotalCorrection.A1);
 			Assert.AreEqual(SquareMeter.Create(0.00435041028151623), specificTrailerData.TotalCorrection.A2);

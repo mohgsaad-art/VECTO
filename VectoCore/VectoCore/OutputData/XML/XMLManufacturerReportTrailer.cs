@@ -166,21 +166,32 @@ namespace TUGraz.VectoCore.OutputData.XML
 
 		protected override XElement GetSimulationParameters(XMLDeclarationReport.ResultEntry result)
 		{
-			//TODO: UPDATE THIS
+			SquareMeter a1, a2, a3;
+
+			if (result.PassengerCount != null && result.PassengerCount == 1) {
+				a1 = _trailerSegment.A1Cor;
+				a2 = _trailerSegment.A2Cor;
+				a3 = _trailerSegment.A3Cor;
+			} else {
+				a1 = _trailerSegment.A1RefCor;
+				a2 = _trailerSegment.A2RefCor;
+				a3 = _trailerSegment.A3RefCor;
+			}
+
 			var cdxAYawAngle3 = result.CdxA +
-								_trailerSegment.GenericCadVehicle.A1 * 3 +
-								_trailerSegment.GenericCadVehicle.A2 * 3 * 3 +
-								_trailerSegment.GenericCadVehicle.A3 * 3 * 3 * 3;
+								a1 * 3 +
+								a2 * 3 * 3 +
+								a3 * 3 * 3 * 3;
 
 			var cdxAYawAngle6 = result.CdxA + 
-								_trailerSegment.GenericCadVehicle.A1 * 6 +
-								_trailerSegment.GenericCadVehicle.A2 * 6 * 6 +
-								_trailerSegment.GenericCadVehicle.A3 * 6 * 6 * 6;
+								a1 * 6 +
+								a2 * 6 * 6 +
+								a3 * 6 * 6 * 6;
 
 			var cdxAYawAngle9 = result.CdxA + 
-								_trailerSegment.GenericCadVehicle.A1 * 9 +
-								_trailerSegment.GenericCadVehicle.A2 * 9 * 9 +
-								_trailerSegment.GenericCadVehicle.A3 * 9 * 9 * 9;
+								a1 * 9 +
+								a2 * 9 * 9 +
+								a3 * 9 * 9 * 9;
 
 			return new XElement(
 				tns + XMLNames.Report_ResultEntry_SimulationParameters,
