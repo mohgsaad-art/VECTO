@@ -1270,7 +1270,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				}
 			}
 
-			var correction = previousCorrection * (1 - aCorrection[yaw]);
+			var correction = previousCorrection * (1 + (aCorrection[yaw]/100));
 
 			return SquareMeter.Create(correction);
 		}
