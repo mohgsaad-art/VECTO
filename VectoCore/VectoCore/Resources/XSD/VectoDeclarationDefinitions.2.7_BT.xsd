@@ -117,7 +117,7 @@
 	<xs:simpleType name="BodyWorkCodeType">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="dry box"/>
-			<xs:enumeration value="regrigerated"/>
+			<xs:enumeration value="refrigerated"/>
 			<xs:enumeration value="conditioned"/>
 			<xs:enumeration value="curtainsider"/>
 			<xs:enumeration value="drop-side with tarpaulin body"/>
