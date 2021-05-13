@@ -146,6 +146,16 @@ namespace VECTOTrailer.Util.XML
 			else if (trailerData.IsCertified) {
 				vehicle.Element(_v27 + "AeroFeatures")?.Add(new XElement(_v27 + "CertifiedAeroReduction"));
 
+				//convert yaw Angle values to negative before printing
+				if (trailerData.YawAngle0 > 0)
+					trailerData.YawAngle0 *= -1;
+				if (trailerData.YawAngle3 > 0)
+					trailerData.YawAngle3 *= -1;
+				if (trailerData.YawAngle6 > 0)
+					trailerData.YawAngle6 *= -1;
+				if (trailerData.YawAngle9 > 0)
+					trailerData.YawAngle9 *= -1;
+
 				vehicle.Element(_v27 + "AeroFeatures")?.Element(_v27 + "CertifiedAeroReduction")
 					?.Add(new XElement(_v27 + XMLNames.Trailer_YawAngle0, trailerData.YawAngle0.ToXMLFormat(2)));
 				vehicle.Element(_v27 + "AeroFeatures")?.Element(_v27 + "CertifiedAeroReduction")

@@ -1027,6 +1027,10 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			var combination = DeclarationData.AeroFeatures.Lookup(aeroFeatures);
 			if (combination < 0)
 				throw new Exception("invalid aero feature combination");
+
+			if(trailer.YawAngle0 > 0 || trailer.YawAngle3 > 0 || trailer.YawAngle6 > 0 || trailer.YawAngle9 > 0)
+				throw new Exception("CertifiedAeroReduction values should be negative");
+
 		}
 
 		private void ValidateAxles(ITrailerDeclarationInputData trailer)
@@ -1233,7 +1237,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			var s = trailerSegment.GenericCadVehicle;
 			double[] aCorrection = { };
 
-			if (trailer.YawAngle0 > 0 || trailer.YawAngle3 > 0 || trailer.YawAngle6 > 0 || trailer.YawAngle9 > 0)
+			if (trailer.YawAngle0 < 0 || trailer.YawAngle3 < 0 || trailer.YawAngle6 < 0 || trailer.YawAngle9 < 0)
 				aCorrection = new [] { trailer.YawAngle0, trailer.YawAngle3, trailer.YawAngle6, trailer.YawAngle9 };
 
 			else {
@@ -1270,6 +1274,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				}
 			}
 
+			//If value is positive, fix it by converting it to negative
+			if (aCorrection[yaw] > 0)
+				aCorrection[yaw] = aCorrection[yaw] * -1;
 			var correction = previousCorrection * (1 + (aCorrection[yaw]/100));
 
 			return SquareMeter.Create(correction);
