@@ -3097,6 +3097,9 @@
     <None Include="TestData\test.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Content Include="TestData\Trailer\TEST_CASE.vsum">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="TestData\XML\EngineeringJob\Class5_Tractor_4x2\325kW.vfld">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -3657,9 +3660,13 @@
     <Content Include="TestData\Jobs\Tractor_4x2_vehicle-class-5_Generic vehicle.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\Trailer\test4.RSLT_CUSTOMER.xml" />
-    <Content Include="TestData\Trailer\test4.RSLT_MANUFACTURER.xml" />
-    <Content Include="TestData\Trailer\test4.xml">
+    <Content Include="TestData\Trailer\TEST_CASE.RSLT_CUSTOMER.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\Trailer\TEST_CASE.RSLT_MANUFACTURER.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\Trailer\TEST_CASE.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\XML\EngineeringJob\SampleJobEngineering1.0.xml">

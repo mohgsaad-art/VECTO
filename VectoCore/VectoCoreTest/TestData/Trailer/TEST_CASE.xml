@@ -1,38 +1,46 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <tns:VectoInputDeclaration schemaVersion="2.7" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7" xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v2.0" xmlns:v2.7="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7" xmlns:v2.2="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.2" xmlns:v2.1="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:di="http://www.w3.org/2000/09/xmldsig#" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob F:\Vecto\vecto-dev_bt\VectoCore\VectoCore\Resources\XSD/VectoDeclarationJob.xsd">
-  <v2.0:Vehicle id="CB-1cf2a979ec9c483c92ef" xsi:type="VehicleDeclarationType">
-    <v2.7:Manufacturer>testing123</v2.7:Manufacturer>
-    <v2.7:ManufacturerAddress>testing123</v2.7:ManufacturerAddress>
-    <v2.7:CommercialName>Generic Tyre Model</v2.7:CommercialName>
-    <v2.7:VIN>123-123-123</v2.7:VIN>
-    <v2.7:Date>2020-12-02T08:46:38.1278593Z</v2.7:Date>
+  <v2.0:Vehicle id="CB-3dec0ff9e2434d86aba3" xsi:type="VehicleDeclarationType">
+    <v2.7:Manufacturer>Manufacturer</v2.7:Manufacturer>
+    <v2.7:ManufacturerAddress>ManufacturerAddress</v2.7:ManufacturerAddress>
+    <v2.7:CommercialName>CommercialName</v2.7:CommercialName>
+    <v2.7:VIN>123-456-789</v2.7:VIN>
+    <v2.7:Date>2021-05-12T11:13:59.0529685Z</v2.7:Date>
     <v2.7:LegislativeCategory>O4</v2.7:LegislativeCategory>
     <v2.7:AxleCount>2</v2.7:AxleCount>
-    <v2.7:TrailerType>DA</v2.7:TrailerType>
-    <v2.7:BodyCode>03</v2.7:BodyCode>
+    <v2.7:TrailerType>DB</v2.7:TrailerType>
+    <v2.7:BodyWorkType>dry box</v2.7:BodyWorkType>
+    <v2.7:TrailerCouplingPoint>n/a</v2.7:TrailerCouplingPoint>
     <v2.7:Masses>
-      <v2.7:CurbMass>7000</v2.7:CurbMass>
-      <v2.7:TPMLMTotalTrailer>18000</v2.7:TPMLMTotalTrailer>
-      <v2.7:TPMLMAxleAssembly>17000</v2.7:TPMLMAxleAssembly>
+      <v2.7:MassInRunningOrder>7500</v2.7:MassInRunningOrder>
+      <v2.7:TPMLMTotalTrailer>39000</v2.7:TPMLMTotalTrailer>
+      <v2.7:TPMLMAxleAssembly>0</v2.7:TPMLMAxleAssembly>
     </v2.7:Masses>
     <v2.7:Dimensions>
-      <v2.7:ExternalLengthBody>8.740</v2.7:ExternalLengthBody>
+      <v2.7:ExternalLengthBody>7.400</v2.7:ExternalLengthBody>
       <v2.7:ExternalWidthBody>2.550</v2.7:ExternalWidthBody>
-      <v2.7:ExternalHeightBody>4.250</v2.7:ExternalHeightBody>
-      <v2.7:TotalHeightTrailer>5.250</v2.7:TotalHeightTrailer>
-      <v2.7:PositionXFirstAxle>5.333</v2.7:PositionXFirstAxle>
-      <v2.7:PositionXLastAxle>7.550</v2.7:PositionXLastAxle>
-      <v2.7:InternalHeightBody>4.000</v2.7:InternalHeightBody>
-      <v2.7:CargoVolume>86.700</v2.7:CargoVolume>
+      <v2.7:ExternalHeightBody>2.730</v2.7:ExternalHeightBody>
+      <v2.7:TotalHeightTrailer>4.000</v2.7:TotalHeightTrailer>
+      <v2.7:LengthFromFrontToFirstAxle>1.450</v2.7:LengthFromFrontToFirstAxle>
+      <v2.7:LengthBetweenCentersOfAxles>5.300</v2.7:LengthBetweenCentersOfAxles>
+      <v2.7:InternalHeightBody>2.700</v2.7:InternalHeightBody>
+      <v2.7:CargoVolume>91.000</v2.7:CargoVolume>
     </v2.7:Dimensions>
     <v2.7:AeroFeatures>
-      <v2.7:Technology>side skirts short</v2.7:Technology>
+      <v2.7:CertifiedAeroReduction>
+        <v2.7:YawAngle0>0.00</v2.7:YawAngle0>
+        <v2.7:YawAngle3>0.00</v2.7:YawAngle3>
+        <v2.7:YawAngle6>0.00</v2.7:YawAngle6>
+        <v2.7:YawAngle9>0.00</v2.7:YawAngle9>
+      </v2.7:CertifiedAeroReduction>
     </v2.7:AeroFeatures>
     <v2.7:AxleWheels>
       <v2.7:Data xsi:type="v2.7:TrailerAxleWheelsDataDeclarationType">
         <v2.7:Axles>
           <v2.7:Axle xsi:type="v2.7:TrailerAxleType" axleNumber="1">
-            <v2.7:TwinTyres>true</v2.7:TwinTyres>
+            <v2.7:TwinTyres>false</v2.7:TwinTyres>
+            <v2.7:Liftable>false</v2.7:Liftable>
+            <v2.7:Steered>false</v2.7:Steered>
             <v2.7:Tyre>
               <v2.7:Data id="TYR-gooZah3D" xsi:type="v2.2:TyreDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.2">
                 <Manufacturer>Generic Tyre Manufacturer</Manufacturer>
@@ -58,6 +66,8 @@
           </v2.7:Axle>
           <v2.7:Axle xsi:type="v2.7:TrailerAxleType" axleNumber="2">
             <v2.7:TwinTyres>false</v2.7:TwinTyres>
+            <v2.7:Liftable>false</v2.7:Liftable>
+            <v2.7:Steered>false</v2.7:Steered>
             <v2.7:Tyre>
               <v2.7:Data id="TYR-gooZah3D" xsi:type="v2.2:TyreDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.2">
                 <Manufacturer>Generic Tyre Manufacturer</Manufacturer>

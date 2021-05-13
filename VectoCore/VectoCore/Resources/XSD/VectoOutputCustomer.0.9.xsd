@@ -56,7 +56,32 @@
 			<xs:element name="CdxAyawAngle6" type="xs:double"/>
 			<xs:element name="CdxAyawAngle9" type="xs:double"/>
 			<xs:element name="AverageSpeed" type="xs:double"/>
-			<xs:element name="EfficiencyRatio" type="xs:double"/>
+			<xs:element name="EfficiencyRatio" type="xs:double" maxOccurs="unbounded"/>
+			<xs:element name="Fuel">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="FuelConsumption" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:simpleContent>
+									<xs:extension base="xs:double">
+										<xs:attribute name="unit" use="required"/>
+									</xs:extension>
+								</xs:simpleContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="type" use="required"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="CO2" maxOccurs="unbounded">
+			<xs:complexType>
+				<xs:simpleContent>
+					<xs:extension base="xs:double">
+						<xs:attribute name="unit" use="required"/>
+					</xs:extension>
+				</xs:simpleContent>
+			</xs:complexType>
+			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="VectoOutputDataType">
@@ -84,6 +109,24 @@
 											<xs:complexType>
 												<xs:sequence>
 													<xs:element name="WeightedPayloadTrailer">
+														<xs:complexType>
+															<xs:simpleContent>
+																<xs:extension base="xs:double">
+																	<xs:attribute name="unit" use="required"/>
+																</xs:extension>
+															</xs:simpleContent>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="CO2" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:simpleContent>
+																<xs:extension base="xs:double">
+																	<xs:attribute name="unit" use="required"/>
+																</xs:extension>
+															</xs:simpleContent>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="FuelConsumption" maxOccurs="unbounded">
 														<xs:complexType>
 															<xs:simpleContent>
 																<xs:extension base="xs:double">
@@ -150,11 +193,11 @@
 					<xs:element name="LegislativeCategory" type="xs:string"/>
 					<xs:element name="AxleCount" type="xs:string"/>
 					<xs:element name="TrailerType" type="xs:string"/>
-					<xs:element name="BodyCode" type="xs:string"/>
+					<xs:element name="BodyWorkType" type="xs:string"/>
 					<xs:element name="Masses">
 						<xs:complexType>
 							<xs:all>
-								<xs:element name="CurbMass">
+								<xs:element name="MassInRunningOrder">
 									<xs:complexType>
 										<xs:simpleContent>
 											<xs:extension base="xs:double">
@@ -198,9 +241,9 @@
 					</xs:element>
 					<xs:element name="AeroFeatures">
 						<xs:complexType>
-							<xs:all>
-								<xs:element name="Technology" type="xs:string"/>
-							</xs:all>
+							<xs:sequence>
+								<xs:element name="Technology" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+							</xs:sequence>
 						</xs:complexType>
 					</xs:element>
 					<xs:element name="AxlesAndTyreFeatures">
