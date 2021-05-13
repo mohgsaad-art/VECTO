@@ -768,13 +768,13 @@ namespace TUGraz.VectoCore.OutputData
 			row[Fields.SLEEPER_CAB] = data.SleeperCab ? "yes" : "no";
 
 			if (data.InputDataTrailer != null) {
-				row[Fields.A1] = data.TrailerSegment.GenericCadVehicle.A1?.Value(); //TODO
-				row[Fields.A2] = data.TrailerSegment.GenericCadVehicle.A2?.Value();
-				row[Fields.A3] = data.TrailerSegment.GenericCadVehicle.A3?.Value();
-			} else if(data.TrailerSegment.GenericCadVehicle.A1 != null && data.TrailerSegment.GenericCadVehicle.A2 != null && data.TrailerSegment.GenericCadVehicle.A3 != null) {
-				row[Fields.A1] = data.TrailerSegment.GenericCadVehicle.A1.Value();
-				row[Fields.A2] = data.TrailerSegment.GenericCadVehicle.A2.Value();
-				row[Fields.A3] = data.TrailerSegment.GenericCadVehicle.A3.Value();
+				row[Fields.A1] = data.TrailerSegment.A1Cor?.Value(); 
+				row[Fields.A2] = data.TrailerSegment.A2Cor?.Value();
+				row[Fields.A3] = data.TrailerSegment.A3Cor?.Value();
+			} else if(data.TrailerSegment.A1Cor != null && data.TrailerSegment.A2Cor != null && data.TrailerSegment.A3Cor != null) {
+				row[Fields.A1] = data.TrailerSegment.A2Cor.Value();
+				row[Fields.A2] = data.TrailerSegment.A2Cor.Value();
+				row[Fields.A3] = data.TrailerSegment.A3Cor.Value();
 			}
 			
 

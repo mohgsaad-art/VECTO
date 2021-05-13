@@ -77,7 +77,9 @@ namespace TUGraz.VectoCore.Models.Declaration
 		public ReferenceTrailerSegment ReferenceTrailerSegment { get; set; }
 		public SpecificTrailerSegment SpecificTrailerSegment { get; set; }
 		public GenericCadSegment GenericCadVehicle { get; set; }
-
+		public SquareMeter A1Cor { get; set; }
+		public SquareMeter A2Cor { get; set; }
+		public SquareMeter A3Cor { get; set; }
 	}
 
 	public struct ReferenceTrailerSegment
@@ -126,16 +128,28 @@ namespace TUGraz.VectoCore.Models.Declaration
 		public Meter TotalHeight { get; set; }
 		public Meter ExternalBodyHeight { get; set; }
 		public SquareMeter AcrBase { get; set; }
-		public double CdxABase { get; set; }
+		public double CdxA0 { get; set; }
+		public double CdxA3 { get; set; }
+		public double CdxA6 { get; set; }
+		public double CdxA9 { get; set; }
 		public SquareMeter A1 { get; set; }
 		public SquareMeter A2 { get; set; }
 		public SquareMeter A3 { get; set; }
 		public Meter Lbf { get; set; }
 		public double DCdf0 { get; set; }
+		public double DCdf3 { get; set; }
+		public double DCdf6 { get; set; }
+		public double DCdf9 { get; set; }
 		public Meter Lba { get; set; }
 		public double DCda0 { get; set; }
+		public double DCda3 { get; set; }
+		public double DCda6 { get; set; }
+		public double DCda9 { get; set; }
 		public Meter Lbr { get; set; }
 		public double DCdr0 { get; set; }
+		public double DCdr3 { get; set; }
+		public double DCdr6 { get; set; }
+		public double DCdr9 { get; set; }
 
 	}
 	public struct StandardTrailerSegment

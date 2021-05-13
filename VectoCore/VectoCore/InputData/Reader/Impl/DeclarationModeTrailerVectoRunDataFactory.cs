@@ -134,6 +134,11 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			_trailerSegment = DeclarationData.TrailerSegments.Lookup(_trailer.NumberOfAxles, _trailer.TrailerType, _trailer.BodyworkCode, volumeOrientation);
 			_genericInputDataProvider = DeclarationData.TrailerSegments.GetGenericVehicleData(_trailerSegment.GenericCode);
 			_specificTrailerData = TrailerDataAdapter.GetSpecificTrailerData(_trailerSegment, _trailer, _genericInputDataProvider.JobInputData.Vehicle);
+			
+			//Add Corrected A1, A2, A3
+			_trailerSegment.A1Cor = _specificTrailerData.TotalCorrection.A1;
+			_trailerSegment.A2Cor = _specificTrailerData.TotalCorrection.A2;
+			_trailerSegment.A3Cor = _specificTrailerData.TotalCorrection.A3;
 			#endregion
 
 			_segment = GetSegment(_genericInputDataProvider.JobInputData.Vehicle);

@@ -78,17 +78,29 @@ namespace TUGraz.VectoCore.Models.Declaration
 				TotalHeight = Meter.Create(row.ParseDouble("total_trailer_height")),
 				ExternalBodyHeight = Meter.Create(row.ParseDouble("External_body_height")),
 				AcrBase = SquareMeter.Create(row.ParseDouble("AcrBase")),
-				CdxABase = row.ParseDouble("Yaw0"),
+				CdxA0 = row.ParseDouble("Yaw0"),
+				CdxA3 = row.ParseDouble("Yaw3"),
+				CdxA6 = row.ParseDouble("Yaw6"),
+				CdxA9 = row.ParseDouble("Yaw9"),
 				A1 = SquareMeter.Create(row.ParseDouble("a1")),
 				A2 = SquareMeter.Create(row.ParseDouble("a2")),
 				A3 = SquareMeter.Create(row.ParseDouble("a3")),
 				Lbf = Meter.Create(row.ParseDouble("Lbf")),
 				DCdf0 = row.ParseDouble("dCdf0"),
+				DCdf3 = row.ParseDouble("dCdf3"),
+				DCdf6 = row.ParseDouble("dCdf6"),
+				DCdf9 = row.ParseDouble("dCdf9"),
 				Lba = Meter.Create(row.ParseDouble("Lba")),
-				DCda0 = row.ParseDouble("dCdf0"),
+				DCda0 = row.ParseDouble("dCda0"),
+				DCda3 = row.ParseDouble("dCda3"),
+				DCda6 = row.ParseDouble("dCda6"),
+				DCda9 = row.ParseDouble("dCda9"),
 				Lbr = Meter.Create(row.ParseDouble("Lbr")),
 				DCdr0 = row.ParseDouble("dCdr0"),
-				
+				DCdr3 = row.ParseDouble("dCdr3"),
+				DCdr6 = row.ParseDouble("dCdr6"),
+				DCdr9 = row.ParseDouble("dCdr9"),
+
 			};
 			
 		}
