@@ -71,6 +71,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 		public int VehicleGroup { get; set; }
 		public VehicleClass Class { get; set; } 
 		public string GenericCode { get; set; }
+		public Kilogram MassBody { get; set; }
 		public string MaxGcm { get; set; }
 		public Mission[] Missions { get; internal set; }
 		public MeterPerSecond DesignSpeed { get; set; }

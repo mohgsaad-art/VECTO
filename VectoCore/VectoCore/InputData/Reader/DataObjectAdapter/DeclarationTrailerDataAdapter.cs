@@ -210,7 +210,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			retVal.SleeperCab = data.SleeperCab;
 			retVal.TrailerSegment = trailerSegment;
 			retVal.InputDataTrailer = trailerData;
-			retVal.BodyAndTrailerMass = trailerData.MassInRunningOrder;
+			retVal.BodyAndTrailerMass = trailerData.MassInRunningOrder + trailerSegment.MassBody;
 
 			retVal.Loading = Kilogram.Create(Math.Min(loading.Value(), (specificTrailerData.MaxGcm - data.CurbMassChassis.Value() - trailerData.MassInRunningOrder.Value())));
 

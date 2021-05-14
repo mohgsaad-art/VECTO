@@ -76,7 +76,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 			{
 				VehicleGroup = (int)row.ParseDouble("Vehicle_group"),
 				CargoVolume = CubicMeter.Create(row["cargo_volume_semi_trailer"].ToString() == "---" ? 0 : row.ParseDouble("cargo_volume_semi_trailer")),
-				CurbMass = Kilogram.Create(row.ParseDouble("curb_mass_semi_trailer")),
+				CurbMass = Kilogram.Create(!row.Field<string>("curb_mass_semi_trailer").Contains("-") ? row.ParseDouble("curb_mass_semi_trailer") : 0),
 				TyreXml = row.Field<string>("tyre_xml"),
 				TwinTyres = row.Field<string>("twin_tyres") == "TRUE",
 				ExternalBodyHeight = Meter.Create(row.ParseDouble("external_body_height")),

@@ -81,6 +81,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 				VehicleGroup = (int)row.ParseDouble("Vehicle_group"),
 				VehicleGroupActive = row.ParseBoolean("Active"),
 				GenericCode = row.Field<string>("Generic_code"),
+				MassBody = Kilogram.Create(row.ParseDouble("generic_mass_body")),
 				Class = VehicleClassHelper.Parse(row.Field<string>("Generic_vehicle_group").Replace("-RD", "").Replace("-LH", "")),
 				MaxGcm = row.Field<string>("max_gcm"),
 				Missions = CreateMissions(row),
@@ -250,7 +251,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 			var referenceTrailerSegment = DeclarationData.ReferenceTrailer.Lookup((int)row.ParseDouble("Vehicle_group"));
 
 			if (!isSpecific) { //for specific these are taken from the input xml document
-				curbWeight = referenceTrailerSegment.CurbMass;
+				curbWeight = referenceTrailerSegment.CurbMass + Kilogram.Create(row.ParseDouble("generic_mass_body"));
 
 				cargoVolume = referenceTrailerSegment.CargoVolume;
 				//deltaCDxA = referenceTrailerSegment.Cdxa;
@@ -316,7 +317,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 			if (axle3.Contains('/'))
 				axle3 = (axle3.Split('/')[0].ToDouble() / axle3.Split('/')[1].ToDouble()).ToString();
 
-			return new [] { axle1.ToDouble() / 100.0, axle2.ToDouble() / 100.0, axle3.ToDouble()};
+			return new [] { axle1.ToDouble() / 100.0, axle2.ToDouble() / 100.0, axle3.ToDouble() / 100.0 };
 
 		}
 
