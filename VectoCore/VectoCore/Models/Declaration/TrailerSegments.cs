@@ -81,7 +81,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 				VehicleGroup = (int)row.ParseDouble("Vehicle_group"),
 				VehicleGroupActive = row.ParseBoolean("Active"),
 				GenericCode = row.Field<string>("Generic_code"),
-				MassBody = Kilogram.Create(row.ParseDouble("generic_mass_body")),
+				MassBody = Kilogram.Create(!row.Field<string>("Generic_code").Contains("-") ? row.ParseDouble("generic_mass_body") : 0),
 				Class = VehicleClassHelper.Parse(row.Field<string>("Generic_vehicle_group").Replace("-RD", "").Replace("-LH", "")),
 				MaxGcm = row.Field<string>("max_gcm"),
 				Missions = CreateMissions(row),
@@ -251,23 +251,23 @@ namespace TUGraz.VectoCore.Models.Declaration
 			var referenceTrailerSegment = DeclarationData.ReferenceTrailer.Lookup((int)row.ParseDouble("Vehicle_group"));
 
 			if (!isSpecific) { //for specific these are taken from the input xml document
-				curbWeight = referenceTrailerSegment.CurbMass + Kilogram.Create(row.ParseDouble("generic_mass_body"));
+				curbWeight = referenceTrailerSegment.CurbMass + Kilogram.Create(!row.Field<string>("Generic_code").Contains("-") ? row.ParseDouble("generic_mass_body") : 0);
 
 				cargoVolume = referenceTrailerSegment.CargoVolume;
 				//deltaCDxA = referenceTrailerSegment.Cdxa;
 
-				wheels.Add(DeclarationData.Wheels.Lookup(referenceTrailerSegment.TyreXml.Replace("_", " ").Replace("Standard", "")));
+				wheels.Add(DeclarationData.Wheels.Lookup(referenceTrailerSegment.TyreXml.Replace("_", " ").Replace("Standard", "").Trim()));
 				if(row.Field<string>("Number_of_axles") == "2")
-					wheels.Add(DeclarationData.Wheels.Lookup(referenceTrailerSegment.TyreXml.Replace("_", " ").Replace("Standard", "")));
+					wheels.Add(DeclarationData.Wheels.Lookup(referenceTrailerSegment.TyreXml.Replace("_", " ").Replace("Standard", "").Trim()));
 				if (row.Field<string>("Number_of_axles") == "3") {
-					wheels.Add(DeclarationData.Wheels.Lookup(referenceTrailerSegment.TyreXml.Replace("_", " ").Replace("Standard", "")));
-					wheels.Add(DeclarationData.Wheels.Lookup(referenceTrailerSegment.TyreXml.Replace("_", " ").Replace("Standard", "")));
+					wheels.Add(DeclarationData.Wheels.Lookup(referenceTrailerSegment.TyreXml.Replace("_", " ").Replace("Standard", "").Trim()));
+					wheels.Add(DeclarationData.Wheels.Lookup(referenceTrailerSegment.TyreXml.Replace("_", " ").Replace("Standard", "").Trim()));
 
 				}
 			}
 
 			var trailerType = TrailerType.T2a;
-			if (trailerValue != "none") //TODO temporary until "none" values are fixed (this is lookup value for standard trailers)
+			if (trailerValue != "none" && trailerValue !="T2b") //TODO temporary until "none" values are fixed (this is lookup value for standard trailers)
 				trailerType = TrailerTypeHelper.Parse(trailerValue);
 
 			IKernel _kernel = new StandardKernel(new VectoNinjectModule());
