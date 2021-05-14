@@ -81,7 +81,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 				VehicleGroup = (int)row.ParseDouble("Vehicle_group"),
 				VehicleGroupActive = row.ParseBoolean("Active"),
 				GenericCode = row.Field<string>("Generic_code"),
-				MassBody = Kilogram.Create(!row.Field<string>("Generic_code").Contains("-") ? row.ParseDouble("generic_mass_body") : 0),
+				MassBody = Kilogram.Create(!row.Field<string>("generic_mass_body").Contains("-") ? row.ParseDouble("generic_mass_body") : 0),
 				Class = VehicleClassHelper.Parse(row.Field<string>("Generic_vehicle_group").Replace("-RD", "").Replace("-LH", "")),
 				MaxGcm = row.Field<string>("max_gcm"),
 				Missions = CreateMissions(row),
@@ -251,7 +251,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 			var referenceTrailerSegment = DeclarationData.ReferenceTrailer.Lookup((int)row.ParseDouble("Vehicle_group"));
 
 			if (!isSpecific) { //for specific these are taken from the input xml document
-				curbWeight = referenceTrailerSegment.CurbMass + Kilogram.Create(!row.Field<string>("Generic_code").Contains("-") ? row.ParseDouble("generic_mass_body") : 0);
+				curbWeight = referenceTrailerSegment.CurbMass + Kilogram.Create(!row.Field<string>("generic_mass_body").Contains("-") ? row.ParseDouble("generic_mass_body") : 0);
 
 				cargoVolume = referenceTrailerSegment.CargoVolume;
 				//deltaCDxA = referenceTrailerSegment.Cdxa;
