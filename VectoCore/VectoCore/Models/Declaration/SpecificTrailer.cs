@@ -121,7 +121,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 							double.Parse(row.Field<string>("liftable_u_payload_rep").Replace("%", "").Replace("---", "0")));
 				}
 			}
-			else if (type == "steered")
+			else if (type == "Steered")
 			{
 				switch (missionType) {
 					case MissionType.LongHaul:
