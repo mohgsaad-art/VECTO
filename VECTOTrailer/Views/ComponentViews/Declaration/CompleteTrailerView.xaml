@@ -566,7 +566,7 @@
                                 Command="{Binding SelectThirdFileCommand}"
                                 CommandParameter="{Binding ThirdFileType}" />
                         <Button Name="DownloadThirdAxleButton" Grid.Column="3" Content="Download" Width="60" Margin="5,0,0,0" Command="{Binding DownloadThirdAxle}" Visibility="{Binding Axle3ButtonsVisibility, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                        <Button Name="DeleteThirdAxleButton" Grid.Column="4" Content="Delete" Width="60" Margin="5,0,0,0" Command="{Binding DownloadThirdAxle}" Visibility="{Binding Axle3ButtonsVisibility, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        <Button Name="DeleteThirdAxleButton" Grid.Column="4" Content="Delete" Width="60" Margin="5,0,0,0" Command="{Binding DeleteThirdAxle}" Visibility="{Binding Axle3ButtonsVisibility, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         <TextBlock Grid.Column="5" Text="Twin tyres" Margin="5,0,0,0"/>
                         <CheckBox Grid.Column="6" IsChecked="{Binding Axle3IsTwin}" Margin="5,0,0,0"/>
                         <TextBlock Grid.Column="7" Text="Liftable" Margin="5,0,0,0"/>
