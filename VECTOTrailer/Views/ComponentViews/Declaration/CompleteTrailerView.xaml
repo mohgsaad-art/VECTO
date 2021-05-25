@@ -279,8 +279,9 @@
             <StackPanel Orientation="Vertical" Width="330" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
                 <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
 
-                    <RadioButton Margin="0,5,0,0" GroupName="features" Name="standard" IsChecked="{Binding IsStandard}">Standard aero feature technologies</RadioButton>
-                    <RadioButton Margin="0,5,0,0" GroupName="features" Name="certified" IsChecked="{Binding IsCertified}">Certified aero feature technologies</RadioButton>
+                    <RadioButton Margin="0,5,0,0" GroupName="features" Name="standard" IsChecked="{Binding IsStandard}">Standard aerodynamic devices</RadioButton>
+                    <RadioButton Margin="0,5,0,0" GroupName="features" Name="certified" IsChecked="{Binding IsCertified}">Certified aerodynamic device</RadioButton>
+                    <RadioButton Margin="0,5,0,0" GroupName="features" Name="none" IsChecked="{Binding IsNone}">None</RadioButton>
 
                     <Grid Margin="5" Visibility="{Binding IsChecked,ElementName=standard,Converter={StaticResource BoolToVisibilityConverter}}">
                         <Grid.ColumnDefinitions>

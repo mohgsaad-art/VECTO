@@ -272,7 +272,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		private bool CheckTrailerType(Model.TempDataObject.TrailerComponentData trailer)
 		{
-			if (trailer.TrailerType == TypeTrailer.DA &&
+			if (trailer.TrailerType != TypeTrailer.DB &&
 				(trailer.TPLMAxleAssembly == null || trailer.TPLMAxleAssembly.Value() == 0))
 				return false;
 

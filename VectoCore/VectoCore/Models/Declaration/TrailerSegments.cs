@@ -165,7 +165,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 				var totalCargoVolume = CubicMeter.Create(row["generic_cargo_volume"].ToString() != "---"
 					? row.ParseDouble("generic_cargo_volume")
-					: 0) + referenceTrailerSegment.CargoVolume;
+					: 0);
 
 				var mission = new Mission
 				{
@@ -176,7 +176,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 					SpecificTrailerLowLoad = Kilogram.Create(lowLoad),
 					SpecificTrailerRefLoad = Kilogram.Create(refLoad),
 					AxleWeightDistribution = GetTowingAxleWeightDistribution(row, missionType),
-					SpecificAxleWeightDistribution = GetTowingAxleWeightDistribution(row, missionType, true),
+					SpecificTrailerAxleWeightDistribution = GetTowingAxleWeightDistribution(row, missionType, true),
 					CurbMass = referenceTrailerSegment.CurbMass,
 					VehicleHeight = referenceTrailerSegment.TotalTrailerHeight,
 					MinLoad = null,

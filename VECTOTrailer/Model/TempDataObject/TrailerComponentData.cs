@@ -41,6 +41,7 @@ namespace VECTOTrailer.Model.TempDataObject
 		public BodyWorkCode BodyCode { get; set; }
 		public IList<AeroFeatureTechnology> Technologies { get; set; }
 
+		public bool IsNone { get; set; }
 		public bool IsStandard { get; set; }
 		public bool IsCertified { get; set; }
 
@@ -150,6 +151,7 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.Axle2Xml = Axle2Xml;
 			viewModel.Axle3Xml = Axle3Xml;
 
+			viewModel.IsNone = IsNone;
 			viewModel.IsStandard = IsStandard;
 			viewModel.IsCertified = IsCertified;
 
@@ -202,6 +204,7 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.BoatTailShort = false;
 			viewModel.BoatTailLong = false;
 
+			viewModel.IsNone = true;
 			viewModel.IsStandard = false;
 			viewModel.IsCertified = false;
 
@@ -263,6 +266,7 @@ namespace VECTOTrailer.Model.TempDataObject
 			Axle2IsTwin = trailer.Axle2IsTwin;
             Axle3IsTwin = trailer.Axle3IsTwin;
 
+			IsNone = true;
 			IsStandard = trailer.IsStandard;
 			IsCertified = trailer.IsCertified;
 

@@ -3076,6 +3076,15 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CertifiedAeroReduction.
+        /// </summary>
+        public static string Trailer_CertifiedAeroReduction {
+            get {
+                return ResourceManager.GetString("Trailer_CertifiedAeroReduction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CommercialName.
         /// </summary>
         public static string Trailer_CommercialName {
@@ -3227,47 +3236,44 @@ namespace TUGraz.VectoCommon.Resources {
                 return ResourceManager.GetString("Trailer_TrailerType", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Looks up a localized string similar to Technology.
+        ///   Looks up a localized string similar to YawAngle0.
         /// </summary>
         public static string Trailer_YawAngle0 {
             get {
                 return ResourceManager.GetString("Trailer_YawAngle0", resourceCulture);
             }
         }
+        
         /// <summary>
-        ///   Looks up a localized string similar to Technology.
+        ///   Looks up a localized string similar to YawAngle3.
         /// </summary>
-        public static string Trailer_YawAngle3
-		{
-			get
-			{
-				return ResourceManager.GetString("Trailer_YawAngle3", resourceCulture);
-			}
-		}
+        public static string Trailer_YawAngle3 {
+            get {
+                return ResourceManager.GetString("Trailer_YawAngle3", resourceCulture);
+            }
+        }
+        
         /// <summary>
-        ///   Looks up a localized string similar to Technology.
+        ///   Looks up a localized string similar to YawAngle6.
         /// </summary>
-        public static string Trailer_YawAngle6
-		{
-			get
-			{
-				return ResourceManager.GetString("Trailer_YawAngle6", resourceCulture);
-			}
-		}
-		/// <summary>
-		///   Looks up a localized string similar to Technology.
-		/// </summary>
-		public static string Trailer_YawAngle9
-		{
-			get
-			{
-				return ResourceManager.GetString("Trailer_YawAngle9", resourceCulture);
-			}
-		}
-
-		/// <summary>
+        public static string Trailer_YawAngle6 {
+            get {
+                return ResourceManager.GetString("Trailer_YawAngle6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to YawAngle9.
+        /// </summary>
+        public static string Trailer_YawAngle9 {
+            get {
+                return ResourceManager.GetString("Trailer_YawAngle9", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to inputSpeed.
         /// </summary>
         public static string TransmissionLossmap_InputSpeed_Attr {

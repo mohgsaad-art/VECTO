@@ -59,7 +59,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 		public MissionType MissionType { get; internal set; }
 		public string CrossWindCorrectionParameters { get; internal set; }
 		public double[] AxleWeightDistribution { get; internal set; }
-		public double[] SpecificAxleWeightDistribution { get; internal set; }
+		public double[] SpecificTrailerAxleWeightDistribution { get; internal set; }
 
 		public Kilogram BodyCurbWeight { get; internal set; }
 

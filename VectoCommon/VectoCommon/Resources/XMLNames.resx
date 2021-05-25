@@ -1401,6 +1401,9 @@
   <data name="Trailer_AeroFeatureTechnologies" xml:space="preserve">
     <value>Technology</value>
   </data>
+<data name="Trailer_CertifiedAeroReduction" xml:space="preserve">
+    <value>CertifiedAeroReduction</value>
+  </data>
 <data name="Trailer_YawAngle0" xml:space="preserve">
     <value>YawAngle0</value>
   </data>

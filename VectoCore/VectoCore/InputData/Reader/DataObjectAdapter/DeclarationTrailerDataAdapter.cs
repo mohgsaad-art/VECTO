@@ -142,7 +142,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 					.Select(da => DeclarationData.Wheels.Lookup(da.Tyre.Dimension).DynamicTyreRadius)
 					.Average();
 
-			retVal.CargoVolume = mission.TotalCargoVolume; 
+			retVal.CargoVolume = mission.TotalCargoVolume + trailerSegment.ReferenceTrailerSegment.CargoVolume; 
 
 			
 			var axles = data.Components.AxleWheels.AxlesDeclaration;
@@ -220,7 +220,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 					.Select(da => DeclarationData.Wheels.Lookup(da.Tyre.Dimension).DynamicTyreRadius)
 					.Average();
 			
-			retVal.CargoVolume = trailerData.CargoVolume;
+			retVal.CargoVolume = mission.TotalCargoVolume + trailerData.CargoVolume;
 			
 
 			var axles = data.Components.AxleWheels.AxlesDeclaration;
@@ -233,7 +233,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				{
 					WheelsDimension = axleInput.Tyre.Dimension,
 					AxleType = axleInput.AxleType,
-					AxleWeightShare = mission.SpecificAxleWeightDistribution[i],
+					AxleWeightShare = mission.SpecificTrailerAxleWeightDistribution[i],
 					TwinTyres = axleInput.TwinTyres,
 					RollResistanceCoefficient = axleInput.Tyre.RollResistanceCoefficient,
 					TyreTestLoad = axleInput.Tyre.TyreTestLoad,
@@ -1028,9 +1028,6 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			if (combination < 0)
 				throw new Exception("invalid aero feature combination");
 
-			if(trailer.YawAngle0 > 0 || trailer.YawAngle3 > 0 || trailer.YawAngle6 > 0 || trailer.YawAngle9 > 0)
-				throw new Exception("CertifiedAeroReduction values should be negative");
-
 		}
 
 		private void ValidateAxles(ITrailerDeclarationInputData trailer)
@@ -1058,8 +1055,8 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 		private void ValidateInputValues(ITrailerDeclarationInputData trailer)
 		{
-			if (trailer.TrailerType == TypeTrailer.DA && (trailer.TPMLMAxleAssembly == null || trailer.TPMLMAxleAssembly.Value() == 0))
-				throw new Exception("Trailer is DA but no TPMLM Axle Assembly value is given");
+			if (trailer.TrailerType != TypeTrailer.DB && (trailer.TPMLMAxleAssembly == null || trailer.TPMLMAxleAssembly.Value() == 0))
+				throw new Exception("Trailer is not DB but no TPMLM Axle Assembly value is given");
 
 			if (trailer.TrailerType != TypeTrailer.DC && (trailer.TrailerCouplingPoint == TrailerCouplingPoint.Low || trailer.TrailerCouplingPoint == TrailerCouplingPoint.High))
 				throw new Exception("Trailer is not DC but Coupling Point is given");
@@ -1136,9 +1133,21 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			}
 
 			var wheelsDiameter = trailerSegment.Missions.FirstOrDefault()?.Trailer.FirstOrDefault()?.TrailerWheels.FirstOrDefault().WheelsDiameter;
-			var lf = trailer.LengthFromFrontToFirstAxle + (wheelsDiameter / 2);
-			var la = trailer.LengthBetweenCentersOfAxles - wheelsDiameter;
-			var lr = trailer.ExternalBodyLength - (lf+la);
+			
+			var lf = trailer.TrailerType == TypeTrailer.DB ? 
+				trailer.LengthFromFrontToFirstAxle + (wheelsDiameter / 2) 
+				: trailer.LengthFromFrontToFirstAxle - (wheelsDiameter / 2);
+
+			var la = trailer.TrailerType == TypeTrailer.DB ? 
+				trailer.LengthBetweenCentersOfAxles - wheelsDiameter 
+				: trailer.LengthBetweenCentersOfAxles + wheelsDiameter;
+
+			var lr = trailer.TrailerType == TypeTrailer.DB
+				? trailer.ExternalBodyLength - (lf + la)
+				: trailer.TrailerType == TypeTrailer.DC && trailer.NumberOfAxles == NumberOfTrailerAxles.One
+					? trailer.ExternalBodyLength - lf - la
+					: trailer.ExternalBodyLength - (trailer.LengthFromFrontToFirstAxle +
+													trailer.LengthBetweenCentersOfAxles + (wheelsDiameter / 2));
 
 			var correction = s.AcrBase.Value() * (cdaBase / s.AcrBase.Value() + (lf - s.Lbf).Value() * dcdf + (la-s.Lba).Value() * dcda + (lr-s.Lbr).Value() * dcdr);
 

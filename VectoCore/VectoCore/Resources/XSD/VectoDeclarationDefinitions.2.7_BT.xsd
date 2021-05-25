@@ -159,6 +159,7 @@
 	</xs:simpleType>
 	<xs:simpleType name="TrailerLegislativeCategoryType">
 		<xs:restriction base="xs:string">
+			<xs:enumeration value="O3"/>
 			<xs:enumeration value="O4"/>
 		</xs:restriction>
 	</xs:simpleType>

@@ -55,6 +55,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		private bool _isStandard;
 		private bool _isCertified;
+		private bool _isNone;
 
 		private bool _sideSkirtsShort;
 		private bool _sideSkirtsLong;
@@ -297,14 +298,14 @@ namespace VECTOTrailer.ViewModel.Impl
 				if (!SetProperty(ref _trailerType, value))
 					return;
 
-				TPMLMAxleAssemblyVisibility = TrailerType is TypeTrailer.DA;
+				TPMLMAxleAssemblyVisibility = TrailerType != TypeTrailer.DB;
 
 				TrailerCouplingPointVisibility = TrailerType is TypeTrailer.DC;
 
 				if(TrailerType != TypeTrailer.DC)
 					TrailerCouplingPoint = TrailerCouplingPoint.Unknown;
 
-				if (TrailerType != TypeTrailer.DA)
+				if (TrailerType == TypeTrailer.DB)
 					TPLMAxleAssembly = 0.SI<Kilogram>();
 
 				IsDataChanged(_trailerType, _componentData);
@@ -321,11 +322,17 @@ namespace VECTOTrailer.ViewModel.Impl
 				IsDataChanged(_bodyCode, _componentData);
 			}
 		}
+		public bool IsNone
+		{
+			get => _isNone;
+			set => SetProperty(ref _isNone, value);
+		}
 		public bool IsStandard
 		{
 			get => _isStandard;
 			set => SetProperty(ref _isStandard, value);
 		}
+
 		public bool IsCertified
 		{
 			get => _isCertified;
@@ -630,6 +637,8 @@ namespace VECTOTrailer.ViewModel.Impl
 
 				IsStandard = (SideSkirtsShort || SideSkirtsLong || BoatTailShort || BoatTailLong);
 
+				IsNone = (!IsCertified && !IsStandard);
+
 				TrailerCouplingPoint = trailer.TrailerType == TypeTrailer.DC ? trailer.TrailerCouplingPoint : TrailerCouplingPoint.Unknown;
 
 				this.Trailer = _trailer;
@@ -719,7 +728,7 @@ namespace VECTOTrailer.ViewModel.Impl
 			AllowedTrailerCouplingPoint = EnumHelper.GetValues<TrailerCouplingPoint>().Where(x => x != TrailerCouplingPoint.Unknown)
 				.Select(vc => AllowedEntry.Create(vc, vc.GetLabel())).ToArray();
 
-			AllowedLegislativeCategory = new[] { AllowedEntry.Create("O4", "O4") };
+			AllowedLegislativeCategory = new[] { AllowedEntry.Create("O3", "O3"), AllowedEntry.Create("O4", "O4") };
 		}
 
 		#endregion
