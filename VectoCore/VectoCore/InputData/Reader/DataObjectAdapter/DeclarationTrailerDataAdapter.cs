@@ -476,7 +476,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 					liftFactor = (1 + mission.TrailerLiftableImpact.Key / 100);
 
 				if (trailer.Axles.Count(x => x.Steered) > 1) // 2 steered
-					steerFactor = (1 +(mission.TrailerSteeredImpact.Key * 1.2) / 100);
+					steerFactor = (1 + (mission.TrailerSteeredImpact.Key * 1.2) / 100);
 				else if (trailer.Axles.Count(x => x.Steered) > 0) // 1 steered
 					steerFactor = (1 + mission.TrailerSteeredImpact.Key / 100);
 			}

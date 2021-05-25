@@ -101,7 +101,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 			var row = GetTrailerDataRow(vehicleGroup);
 			if (row == null)
 			{
-				return new KeyValuePair<double, double>(1.0, 1.0);
+				return new KeyValuePair<double, double>(0.0, 0.0);
 			}
 
 			if (type == "Liftable")
@@ -109,16 +109,16 @@ namespace TUGraz.VectoCore.Models.Declaration
 				switch (missionType) {
 					case MissionType.LongHaul:
 						return new KeyValuePair<double, double>(
-							double.Parse(row.Field<string>("liftable_lh_payload_low").Replace("%", "").Replace("-", "0")),
-							double.Parse(row.Field<string>("liftable_lh_payload_rep").Replace("%", "").Replace("-", "0")));
+							double.Parse(row.Field<string>("liftable_lh_payload_low").Replace("%", "").Replace("---", "0")),
+							double.Parse(row.Field<string>("liftable_lh_payload_rep").Replace("%", "").Replace("---", "0")));
 					case MissionType.RegionalDelivery:
 						return new KeyValuePair<double, double>(
-							double.Parse(row.Field<string>("liftable_r_payload_low").Replace("%", "").Replace("-", "0")),
-							double.Parse(row.Field<string>("liftable_r_payload_rep").Replace("%", "").Replace("-", "0")));
+							double.Parse(row.Field<string>("liftable_r_payload_low").Replace("%", "").Replace("---", "0")),
+							double.Parse(row.Field<string>("liftable_r_payload_rep").Replace("%", "").Replace("---", "0")));
 					case MissionType.UrbanDelivery:
 						return new KeyValuePair<double, double>(
-							double.Parse(row.Field<string>("liftable_u_payload_low").Replace("%", "").Replace("-", "0")),
-							double.Parse(row.Field<string>("liftable_u_payload_rep").Replace("%", "").Replace("-", "0")));
+							double.Parse(row.Field<string>("liftable_u_payload_low").Replace("%", "").Replace("---", "0")),
+							double.Parse(row.Field<string>("liftable_u_payload_rep").Replace("%", "").Replace("---", "0")));
 				}
 			}
 			else if (type == "steered")
@@ -126,21 +126,21 @@ namespace TUGraz.VectoCore.Models.Declaration
 				switch (missionType) {
 					case MissionType.LongHaul:
 						return new KeyValuePair<double, double>(
-							double.Parse(row.Field<string>("steered_lh_payload_low").Replace("%", "").Replace("-", "0")),
-							double.Parse(row.Field<string>("steered_lh_payload_rep").Replace("%", "").Replace("-", "0")));
+							double.Parse(row.Field<string>("steered_lh_payload_low").Replace("%", "").Replace("---", "0")),
+							double.Parse(row.Field<string>("steered_lh_payload_rep").Replace("%", "").Replace("---", "0")));
 					case MissionType.RegionalDelivery:
 						return new KeyValuePair<double, double>(
-							double.Parse(row.Field<string>("steered_r_payload_low").Replace("%", "").Replace("-", "0")),
-							double.Parse(row.Field<string>("steered_r_payload_rep").Replace("%", "").Replace("-", "0")));
+							double.Parse(row.Field<string>("steered_r_payload_low").Replace("%", "").Replace("---", "0")),
+							double.Parse(row.Field<string>("steered_r_payload_rep").Replace("%", "").Replace("---", "0")));
 					case MissionType.UrbanDelivery:
 						return new KeyValuePair<double, double>(
-							double.Parse(row.Field<string>("steered_u_payload_low").Replace("%", "").Replace("-", "0")),
-							double.Parse(row.Field<string>("steered_u_payload_rep").Replace("%", "").Replace("-", "0")));
+							double.Parse(row.Field<string>("steered_u_payload_low").Replace("%", "").Replace("---", "0")),
+							double.Parse(row.Field<string>("steered_u_payload_rep").Replace("%", "").Replace("---", "0")));
 				}
 			}
 
 
-			return new KeyValuePair<double, double>(1.0, 1.0);
+			return new KeyValuePair<double, double>(0.0, 0.0);
 		}
 
 		private DataRow GetTrailerDataRow(int vehicleGroup)
