@@ -226,10 +226,10 @@ namespace VECTOTrailer.ViewModel.Impl
 		private bool CheckAeroFeatures(Model.TempDataObject.TrailerComponentData trailer)
 		{
 			if (trailer.IsCertified &&
-				trailer.YawAngle0 == 0 && 
-				trailer.YawAngle3 == 0 &&
-				trailer.YawAngle6 == 0 &&
-				trailer.YawAngle9 == 0)
+				(trailer.YawAngle0 < 0 || 
+				trailer.YawAngle3 < 0 ||
+				trailer.YawAngle6 < 0 ||
+				trailer.YawAngle9 < 0))
 				return false;
 
 			var aeroFeatures = new List<AeroFeatureTechnology>();
@@ -254,6 +254,10 @@ namespace VECTOTrailer.ViewModel.Impl
 				liftableCount++;
 			if (trailer.Axle3IsLiftable)
 				liftableCount++;
+
+			if (trailer.Axle1IsLiftable && trailer.Axle1IsSteered) return false;
+			if (trailer.Axle2IsLiftable && trailer.Axle2IsSteered) return false;
+			if (trailer.Axle3IsLiftable && trailer.Axle3IsSteered) return false;
 
 			switch (trailer.NumberOfAxles)
 			{

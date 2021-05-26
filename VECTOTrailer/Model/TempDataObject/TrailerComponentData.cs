@@ -71,6 +71,9 @@ namespace VECTOTrailer.Model.TempDataObject
 		public bool Axle1IsSteered { get; set; }
 		public bool Axle2IsSteered { get; set; }
 		public bool Axle3IsSteered { get; set; }
+		public bool Axle1IsNone { get; set; }
+		public bool Axle2IsNone { get; set; }
+		public bool Axle3IsNone { get; set; }
 		public ICommand SelectFirstFileCommand { get; set;  }
 		public ICommand SelectSecondFileCommand { get; set;  }
 		public ICommand SelectThirdFileCommand { get; set;  }
@@ -147,6 +150,11 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.Axle1IsSteered = Axle1IsSteered;
 			viewModel.Axle2IsSteered = Axle2IsSteered;
 			viewModel.Axle3IsSteered = Axle3IsSteered;
+
+			viewModel.Axle1IsNone = !Axle1IsSteered && !Axle1IsLiftable;
+			viewModel.Axle2IsNone = !Axle2IsSteered && !Axle2IsLiftable;
+			viewModel.Axle3IsNone = !Axle3IsSteered && !Axle3IsLiftable;
+
 			viewModel.Axle1Xml = Axle1Xml;
 			viewModel.Axle2Xml = Axle2Xml;
 			viewModel.Axle3Xml = Axle3Xml;
@@ -225,6 +233,10 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.Axle1IsSteered = false;
 			viewModel.Axle2IsSteered = false;
 			viewModel.Axle3IsSteered = false;
+
+			viewModel.Axle1IsNone = true;
+			viewModel.Axle2IsNone = true;
+			viewModel.Axle3IsNone = true;
 
 			viewModel.Axle1ButtonsVisibility = false;
 			viewModel.Axle1NewVisibility = true;

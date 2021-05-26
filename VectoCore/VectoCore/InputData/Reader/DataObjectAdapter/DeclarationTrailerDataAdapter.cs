@@ -168,7 +168,6 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 			foreach (var trailer in mission.Trailer) {
 				
-
 				axleData.AddRange(
 					trailer.TrailerWheels.Select(
 						trailerWheel => new Axle {
@@ -1028,6 +1027,13 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			if (combination < 0)
 				throw new Exception("invalid aero feature combination");
 
+			if (trailer.AeroFeatureTechnologies.Count == 0 &&
+				(trailer.YawAngle0 < 0 ||
+				trailer.YawAngle3 < 0 ||
+				trailer.YawAngle6 < 0 ||
+				trailer.YawAngle9 < 0))
+				throw new Exception("Certified Aero Reduction values must be positive");
+
 		}
 
 		private void ValidateAxles(ITrailerDeclarationInputData trailer)
@@ -1039,6 +1045,11 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				liftableCount++;
 			if (trailer.Axles.Count > 2 && trailer.Axles[2].Liftable)
 				liftableCount++;
+
+			if (trailer.Axles[0].Liftable && trailer.Axles[0].Steered) throw new Exception("An axle cannot be both liftable and steered");
+			if (trailer.Axles.Count > 1 && trailer.Axles[1].Liftable && trailer.Axles[1].Steered) throw new Exception("An axle cannot be both liftable and steered");
+			if (trailer.Axles.Count > 2 && trailer.Axles[2].Liftable && trailer.Axles[2].Steered) throw new Exception("An axle cannot be both liftable and steered");
+
 
 			switch (trailer.NumberOfAxles)
 			{
@@ -1258,7 +1269,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			var s = trailerSegment.GenericCadVehicle;
 			double[] aCorrection = { };
 
-			if (trailer.YawAngle0 < 0 || trailer.YawAngle3 < 0 || trailer.YawAngle6 < 0 || trailer.YawAngle9 < 0)
+			if (trailer.YawAngle0 != 0 || trailer.YawAngle3 != 0 || trailer.YawAngle6 != 0 || trailer.YawAngle9 != 0)
 				aCorrection = new [] { trailer.YawAngle0, trailer.YawAngle3, trailer.YawAngle6, trailer.YawAngle9 };
 
 			else {

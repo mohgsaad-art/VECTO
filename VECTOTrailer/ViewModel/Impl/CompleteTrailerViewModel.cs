@@ -86,6 +86,10 @@ namespace VECTOTrailer.ViewModel.Impl
 		private bool _axle2IsSteered;
 		private bool _axle3IsSteered;
 
+		private bool _axle1IsNone;
+		private bool _axle2IsNone;
+		private bool _axle3IsNone;
+
 		private ICommand _selectFirstFileCommand;
 		private ICommand _selectSecondFileCommand;
 		private ICommand _selectThirdFileCommand;
@@ -511,6 +515,22 @@ namespace VECTOTrailer.ViewModel.Impl
 			set => SetProperty(ref _axle3IsSteered, value);
 		}
 
+		public bool Axle1IsNone
+		{
+			get => _axle1IsNone;
+			set => SetProperty(ref _axle1IsNone, value);
+		}
+		public bool Axle2IsNone
+		{
+			get => _axle2IsNone;
+			set => SetProperty(ref _axle2IsNone, value);
+		}
+		public bool Axle3IsNone
+		{
+			get => _axle3IsNone;
+			set => SetProperty(ref _axle3IsNone, value);
+		}
+
 		public IList<AeroFeatureTechnology> Technologies
 		{
 			get => _technologies;
@@ -682,6 +702,9 @@ namespace VECTOTrailer.ViewModel.Impl
 			Axle1IsTwin = axle.ChildNodes[0].InnerText == "true";
 			Axle1IsLiftable = axle.ChildNodes[1].InnerText == "true";
 			Axle1IsSteered = axle.ChildNodes[2].InnerText == "true";
+
+			Axle1IsNone = axle.ChildNodes[1].InnerText == "false" && axle.ChildNodes[2].InnerText == "false";
+
 			Axle1ButtonsVisibility = true;
 			Axle1NewVisibility = false;
 		}
@@ -694,6 +717,9 @@ namespace VECTOTrailer.ViewModel.Impl
 			Axle2IsTwin = axle.ChildNodes[0].InnerText == "true";
 			Axle2IsLiftable = axle.ChildNodes[1].InnerText == "true";
 			Axle2IsSteered = axle.ChildNodes[2].InnerText == "true";
+
+			Axle2IsNone = axle.ChildNodes[1].InnerText == "false" && axle.ChildNodes[2].InnerText == "false";
+
 			Axle2ButtonsVisibility = true;
 			Axle2NewVisibility = false;
 		}
@@ -706,6 +732,9 @@ namespace VECTOTrailer.ViewModel.Impl
 			Axle3IsTwin = axle.ChildNodes[0].InnerText == "true";
 			Axle3IsLiftable = axle.ChildNodes[1].InnerText == "true";
 			Axle3IsSteered = axle.ChildNodes[2].InnerText == "true";
+
+			Axle3IsNone = axle.ChildNodes[1].InnerText == "false" && axle.ChildNodes[2].InnerText == "false";
+
 			Axle3ButtonsVisibility = true;
 			Axle3NewVisibility = false;
 		}

@@ -205,10 +205,10 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		private static double GetTrailerAxleWeightDistribution(DataRow row, MissionType missionType, bool isSpecific = false)
 		{
-			var axleDistributionColumn = missionType == MissionType.LongHaul ? "semi_lh_axle" : "semi_lh_axle";
+			var axleDistributionColumn = missionType == MissionType.LongHaul ? "semi_lh_axle" : "semi_other_axle";
 
-			if (isSpecific)
-				axleDistributionColumn = missionType == MissionType.LongHaul ? "semi_lh_axle" : "semi_other_axle";
+			//if (isSpecific)
+			//	axleDistributionColumn = missionType == MissionType.LongHaul ? "semi_lh_axle" : "semi_other_axle";
 
 			var axle1 = row.Field<string>(axleDistributionColumn + "1");
 			var axle2 = row.Field<string>(axleDistributionColumn + "2");
@@ -298,8 +298,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 		{
 			var axleDistributionColumn = missionType == MissionType.LongHaul ? "towing_lh_axle" : "towing_other_axle";
 
-			if (isSpecific) // we will need this logic later for the standard trailer. For now, this is not used.
-				axleDistributionColumn = missionType == MissionType.LongHaul ? "towing_lh_axle" : "towing_other_axle";
+			//if (isSpecific) // we will need this logic later for the standard trailer. For now, this is not used.
+			//	axleDistributionColumn = missionType == MissionType.LongHaul ? "towing_lh_axle" : "towing_other_axle";
 
 			var axle1 = row.Field<string>(axleDistributionColumn + "1");
 			axle1 = axle1.Contains("---") || axle1.IsNullOrEmpty() ? "0" : axle1;
