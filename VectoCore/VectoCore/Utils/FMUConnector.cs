@@ -98,15 +98,16 @@ namespace TUGraz.VectoCore.Utils
             */
             
             var InertiaTorqueLoss = (DataBus.EngineInfo.EngineOn ? response.Engine.InertiaTorqueLoss.Value() : 0);
+            var AuxTorqueDemand = (DataBus.EngineInfo.EngineOn ? response.Engine.AuxTorqueDemand.Value() : 0);
 
-            var ICE_MaxTorque_Nm = (response.Engine.DynamicFullLoadTorque != null) ? (response.Engine.DynamicFullLoadTorque.Value() - InertiaTorqueLoss) : 0;
+            var ICE_MaxTorque_Nm = (response.Engine.DynamicFullLoadTorque != null) ? (response.Engine.DynamicFullLoadTorque.Value() - InertiaTorqueLoss - AuxTorqueDemand) : 0;
             //var ICE_MaxTorque_Nm = (response.Engine.DynamicFullLoadTorque != null) ? (response.Engine.DynamicFullLoadTorque).Value() : 0;
             SetInput(new uint[] { InputDict["ICE_MaxTorque_Nm"] }, new double[] { ICE_MaxTorque_Nm });
 
             var torqueDemandPwt_Nm = (response.Gearbox.InTorque != null) ? response.Gearbox.InTorque.Value() : 0;
             SetInput(new uint[] { InputDict["torqueDemandPwt_Nm"] }, new double[] { torqueDemandPwt_Nm });
 
-            var AuxCons_kW = (response.Engine.AuxiliariesPowerDemand != null) ? response.Engine.AuxiliariesPowerDemand.Value() : 0;
+            var AuxCons_kW = (response.Engine.AuxiliariesPowerDemand != null) ? response.Engine.AuxiliariesPowerDemand.Value() / 1000 : 0;
             SetInput(new uint[] { InputDict["AuxCons_kW"] }, new double[] { AuxCons_kW });
 
             var abilEssDchPower_kW = (response.ElectricSystem != null && response.ElectricSystem.RESSResponse.MaxDischargePower != null) ? response.ElectricSystem.RESSResponse.MaxDischargePower.Value() / 1000 : 0;
@@ -115,9 +116,9 @@ namespace TUGraz.VectoCore.Utils
             var abilEssRegenPower_kW = (response.ElectricSystem != null && response.ElectricSystem.RESSResponse.MaxChargePower != null) ? response.ElectricSystem.RESSResponse.MaxChargePower.Value() / 1000 : 0;
             SetInput(new uint[] { InputDict["abilEssRegenPower_kW"] }, new double[] { abilEssRegenPower_kW });
 
-            var reqMotorBrakeTorque_Nm = (response.Brakes.BrakeTorque != null) ? response.Brakes.BrakeTorque.Value() : 0;
+            //var reqMotorBrakeTorque_Nm = (response.Brakes.BrakeTorque != null) ? response.Brakes.BrakeTorque.Value() : 0;
             //var reqMotorBrakeTorque_Nm = (DataBus.Brakes.BrakeTorque != null) ? DataBus.Brakes.BrakeTorque.Value() : 0;
-            SetInput(new uint[] { InputDict["reqMotorBrakeTorque_Nm"] }, new double[] { reqMotorBrakeTorque_Nm });
+            //SetInput(new uint[] { InputDict["reqMotorBrakeTorque_Nm"] }, new double[] { reqMotorBrakeTorque_Nm });
 
             var SOC = (response.ElectricSystem != null && response.ElectricSystem.RESSResponse != null) ? response.ElectricSystem.RESSResponse.StateOfCharge * 100 : 0 ;
             SetInput(new uint[] { InputDict["SOC"] }, new double[] { SOC });

@@ -254,7 +254,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 						DragPower = fullDragTorque * avgEngineSpeed,
 						DragTorque = fullDragTorque,
 						AuxiliariesPowerDemand = auxTorqueDemand * avgEngineSpeed,
-						InertiaTorqueLoss = inertiaTorqueLoss
+						InertiaTorqueLoss = inertiaTorqueLoss,
+						AuxTorqueDemand = auxTorqueDemand
 					},
 				};
 			}
@@ -309,7 +310,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 						DragPower = CurrentState.FullDragTorque * avgEngineSpeed,
 						AuxiliariesPowerDemand = auxTorqueDemand * avgEngineSpeed,
 						DragTorque = fullDragTorque,
-						InertiaTorqueLoss = inertiaTorqueLoss
+						InertiaTorqueLoss = inertiaTorqueLoss,
+						AuxTorqueDemand = auxTorqueDemand
 					},
 				};
 			}
@@ -335,7 +337,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 						EngineSpeed = angularVelocity,
 						AuxiliariesPowerDemand = auxTorqueDemand * avgEngineSpeed,
 						DragTorque = fullDragTorque,
-						InertiaTorqueLoss = inertiaTorqueLoss
+						InertiaTorqueLoss = inertiaTorqueLoss,
+						AuxTorqueDemand = auxTorqueDemand
 					},
 				};
 			}
@@ -354,7 +357,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					EngineSpeed = angularVelocity,
 					AuxiliariesPowerDemand = auxTorqueDemand * avgEngineSpeed,
 					DragTorque = fullDragTorque,
-					InertiaTorqueLoss = inertiaTorqueLoss
+					InertiaTorqueLoss = inertiaTorqueLoss,
+					AuxTorqueDemand = auxTorqueDemand
 				},
 			};
 		}

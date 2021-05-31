@@ -82,6 +82,7 @@ namespace TUGraz.VectoCommon.Models
 
 		public Watt AuxiliariesPowerDemand { get; set; }
         public NewtonMeter InertiaTorqueLoss { get; set; }
+        public NewtonMeter AuxTorqueDemand { get; set; }
     }
 
 
