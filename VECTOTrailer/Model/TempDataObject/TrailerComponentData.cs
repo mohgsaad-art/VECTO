@@ -41,6 +41,7 @@ namespace VECTOTrailer.Model.TempDataObject
 		public BodyWorkCode BodyCode { get; set; }
 		public IList<AeroFeatureTechnology> Technologies { get; set; }
 
+		public bool ShowLengthBetweenCentersOfAxles { get; set; }
 		public bool IsNone { get; set; }
 		public bool IsStandard { get; set; }
 		public bool IsCertified { get; set; }
@@ -132,7 +133,6 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.ExternalWidthOfTheBody = ExternalWidthOfTheBody;
 			viewModel.TotalHeightOfTheTrailer = TotalHeightOfTheTrailer;
 			viewModel.LengthFromFrontToFirstAxle = LengthFromFrontToFirstAxle;
-			viewModel.LengthBetweenCentersOfAxles = LengthBetweenCentersOfAxles;
 			viewModel.InternalHeightOfTheBody = InternalHeightOfTheBody;
 			viewModel.CargoVolume = CargoVolume;
 			viewModel.NumberOfAxles = NumberOfAxles;
@@ -162,6 +162,9 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.IsNone = IsNone;
 			viewModel.IsStandard = IsStandard;
 			viewModel.IsCertified = IsCertified;
+
+			viewModel.ShowLengthBetweenCentersOfAxles = NumberOfAxles != NumberOfTrailerAxles.One;
+			viewModel.LengthBetweenCentersOfAxles = viewModel.ShowLengthBetweenCentersOfAxles ? viewModel.LengthBetweenCentersOfAxles : 0.SI<Meter>();
 
 			viewModel.Technologies = Technologies;
 			viewModel.SideSkirtsShort = Technologies != null && Technologies.Contains(AeroFeatureTechnology.SideSkirtsShort);
@@ -216,6 +219,8 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.IsStandard = false;
 			viewModel.IsCertified = false;
 
+			viewModel.ShowLengthBetweenCentersOfAxles = false;
+
 			viewModel.YawAngle0 = default;
 			viewModel.YawAngle3 = default;
 			viewModel.YawAngle6 = default;
@@ -265,7 +270,6 @@ namespace VECTOTrailer.Model.TempDataObject
 			ExternalWidthOfTheBody = trailer.ExternalWidthOfTheBody;
 			TotalHeightOfTheTrailer = trailer.TotalHeightOfTheTrailer;
 			LengthFromFrontToFirstAxle = trailer.LengthFromFrontToFirstAxle;
-			LengthBetweenCentersOfAxles = trailer.LengthBetweenCentersOfAxles;
 			InternalHeightOfTheBody = trailer.InternalHeightOfTheBody;
 			CargoVolume = trailer.CargoVolume;
 			NumberOfAxles = trailer.NumberOfAxles;
@@ -277,6 +281,9 @@ namespace VECTOTrailer.Model.TempDataObject
 			Axle1IsTwin = trailer.Axle1IsTwin;
 			Axle2IsTwin = trailer.Axle2IsTwin;
             Axle3IsTwin = trailer.Axle3IsTwin;
+
+			ShowLengthBetweenCentersOfAxles = trailer.NumberOfAxles != NumberOfTrailerAxles.One;
+			LengthBetweenCentersOfAxles = ShowLengthBetweenCentersOfAxles ? trailer.LengthBetweenCentersOfAxles : 0.SI<Meter>();
 
 			IsNone = true;
 			IsStandard = trailer.IsStandard;

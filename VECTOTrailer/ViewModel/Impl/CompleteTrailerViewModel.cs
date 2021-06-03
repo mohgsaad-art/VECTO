@@ -56,6 +56,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		private bool _isStandard;
 		private bool _isCertified;
 		private bool _isNone;
+		private bool _showLengthBetweenCentersOfAxles;
 
 		private bool _sideSkirtsShort;
 		private bool _sideSkirtsLong;
@@ -290,6 +291,10 @@ namespace VECTOTrailer.ViewModel.Impl
 			{
 				if (!SetProperty(ref _numberOfAxles, value))
 					return;
+
+				ShowLengthBetweenCentersOfAxles = NumberOfAxles != NumberOfTrailerAxles.One;
+				LengthBetweenCentersOfAxles = ShowLengthBetweenCentersOfAxles ? LengthBetweenCentersOfAxles : 0.SI<Meter>();
+
 				IsDataChanged(_numberOfAxles, _componentData);
 			}
 		}
@@ -331,6 +336,13 @@ namespace VECTOTrailer.ViewModel.Impl
 			get => _isNone;
 			set => SetProperty(ref _isNone, value);
 		}
+
+		public bool ShowLengthBetweenCentersOfAxles
+		{
+			get => _showLengthBetweenCentersOfAxles;
+			set => SetProperty(ref _showLengthBetweenCentersOfAxles, value);
+		}
+
 		public bool IsStandard
 		{
 			get => _isStandard;
@@ -659,6 +671,8 @@ namespace VECTOTrailer.ViewModel.Impl
 
 				IsNone = (!IsCertified && !IsStandard);
 
+				ShowLengthBetweenCentersOfAxles = trailer.NumberOfAxles != NumberOfTrailerAxles.One;
+				
 				TrailerCouplingPoint = trailer.TrailerType == TypeTrailer.DC ? trailer.TrailerCouplingPoint : TrailerCouplingPoint.Unknown;
 
 				this.Trailer = _trailer;

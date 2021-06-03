@@ -27,6 +27,7 @@ namespace VECTOTrailer.ViewModel.Interfaces
 		TypeTrailer TrailerType { get; set; }
 		BodyWorkCode BodyCode { get; set; }
 		IList<AeroFeatureTechnology> Technologies { get; set; }
+		bool ShowLengthBetweenCentersOfAxles { get; set; }
 		bool IsNone { get; set; }
 		bool IsStandard { get; set; }
 		bool IsCertified { get; set; }

@@ -161,12 +161,12 @@
                             Unit="m" UnitWidthGroup="unitWidth"/>
                     </Grid>
 
-                    
+
                     <Grid>
                         <customControls:VectoParameterControl
                             Caption="Length between centers of axles" CaptionWidthGroup="lblGWidth"
                             Value="{Binding LengthBetweenCentersOfAxles, Converter={converter:SIValueConverter}, ConverterParameter=AsMeter|double3}" ValueAlign="right"
-                            Unit="m" UnitWidthGroup="unitWidth"/>
+                            Unit="m" UnitWidthGroup="unitWidth" Visibility="{Binding ShowLengthBetweenCentersOfAxles, Converter={StaticResource BoolToVisibilityConverter}}"/>
                     </Grid>
 
                     
@@ -314,7 +314,8 @@
                     </Grid>
                     <Grid Margin="5" Visibility="{Binding IsChecked,ElementName=certified,Converter={StaticResource BoolToVisibilityConverter}}">
                         <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
-                        <Grid>
+                        <TextBlock Text="CdXA reduction"/>
+                            <Grid>
                             <customControls:VectoParameterControl
                                 Caption="Yaw angle 0" CaptionWidthGroup="lblGWidth"
                                 Value="{Binding YawAngle0, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,StringFormat=N2}" ValueAlign="right"

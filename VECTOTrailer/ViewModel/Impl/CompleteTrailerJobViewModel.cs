@@ -290,6 +290,9 @@ namespace VECTOTrailer.ViewModel.Impl
 				trailer.InternalHeightOfTheBody >= trailer.TotalHeightOfTheTrailer)
 				return false;
 
+			if (trailer.NumberOfAxles == NumberOfTrailerAxles.One && trailer.LengthBetweenCentersOfAxles.Value() > 0)
+				return false;
+
 			if (trailer.TPLMAxleAssembly >= trailer.TPLMTotalTrailer)
 				return false;
 

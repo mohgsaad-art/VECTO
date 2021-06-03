@@ -165,7 +165,6 @@
 	</xs:simpleType>
 	<xs:simpleType name="TrailerLengthType">
 		<xs:restriction base="v1.0:Double3">
-			<xs:minExclusive value="0.000"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="TrailerMassType">
