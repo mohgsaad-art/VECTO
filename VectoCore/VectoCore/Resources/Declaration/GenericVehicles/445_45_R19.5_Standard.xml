@@ -27,8 +27,8 @@
 					<di:Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
 					<di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
 				</di:Transforms>
-				<di:DigestMethod Algorithm="urn:vecto:xml:2017:DUMMY_SIGNATURE" />
-				<di:DigestValue>NotSignedQ	==</di:DigestValue>
+				<di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+				<di:DigestValue>JWEwzKSP0lXvwRgQZTiWJm9dpdtQ72FOX0CC5Vy6f2Y=</di:DigestValue>
 			</di:Reference>
 		</v2.0:Signature>
 	</tns:Tyre>
