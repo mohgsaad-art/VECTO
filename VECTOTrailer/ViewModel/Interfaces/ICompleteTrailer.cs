@@ -28,7 +28,6 @@ namespace VECTOTrailer.ViewModel.Interfaces
 		BodyWorkCode BodyCode { get; set; }
 		IList<AeroFeatureTechnology> Technologies { get; set; }
 		bool ShowLengthBetweenCentersOfAxles { get; set; }
-		bool IsNone { get; set; }
 		bool IsStandard { get; set; }
 		bool IsCertified { get; set; }
 		bool SideSkirtsShort { get; set; }

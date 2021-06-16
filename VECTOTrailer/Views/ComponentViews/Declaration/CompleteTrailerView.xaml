@@ -447,11 +447,9 @@
                         <TextBlock Grid.Column="5" Text="Twin tyres" Margin="5,0,0,0"/>
                         <CheckBox Grid.Column="6" IsChecked="{Binding Axle1IsTwin}" Margin="0,3,0,0"/>
                         <TextBlock Grid.Column="7" Text="Liftable" Margin="5,0,0,0"/>
-                        <RadioButton GroupName="firstAxleOptions" Grid.Column="8" IsChecked="{Binding Axle1IsLiftable}" Margin="0,3,0,0"/>
+                        <CheckBox Grid.Column="8" IsChecked="{Binding Axle1IsLiftable}" Margin="0,3,0,0"/>
                         <TextBlock Grid.Column="9" Text="Steered" Margin="5,0,0,0"/>
-                        <RadioButton GroupName="firstAxleOptions" Grid.Column="10" IsChecked="{Binding Axle1IsSteered}" Margin="0,3,0,0"/>
-                        <TextBlock Grid.Column="11" Text="None" Margin="5,0,0,0"/>
-                        <RadioButton GroupName="firstAxleOptions" Grid.Column="12" IsChecked="{Binding Axle1IsNone}" Margin="0,3,0,0"/>
+                        <CheckBox Grid.Column="10" IsChecked="{Binding Axle1IsSteered}" Margin="0,3,0,0"/>
                     </Grid>
 
                     <Grid Margin="5">
@@ -516,11 +514,9 @@
                         <TextBlock Grid.Column="5" Text="Twin tyres" Margin="5,0,0,0"/>
                         <CheckBox Grid.Column="6" IsChecked="{Binding Axle2IsTwin}" Margin="0,3,0,0"/>
                         <TextBlock Grid.Column="7" Text="Liftable" Margin="5,0,0,0"/>
-                        <RadioButton GroupName="secondAxleOptions" Grid.Column="8" IsChecked="{Binding Axle2IsLiftable}" Margin="0,3,0,0"/>
+                        <CheckBox Grid.Column="8" IsChecked="{Binding Axle2IsLiftable}" Margin="0,3,0,0"/>
                         <TextBlock Grid.Column="9" Text="Steered" Margin="5,0,0,0"/>
-                        <RadioButton GroupName="secondAxleOptions" Grid.Column="10" IsChecked="{Binding Axle2IsSteered}" Margin="0,3,0,0"/>
-                        <TextBlock Grid.Column="11" Text="None" Margin="5,0,0,0"/>
-                        <RadioButton GroupName="secondAxleOptions" Grid.Column="12" IsChecked="{Binding Axle2IsNone}" Margin="0,3,0,0"/>
+                        <CheckBox Grid.Column="10" IsChecked="{Binding Axle2IsSteered}" Margin="0,3,0,0"/>
                     </Grid>
 
                     <Grid Margin="5">
@@ -581,11 +577,9 @@
                         <TextBlock Grid.Column="5" Text="Twin tyres" Margin="5,0,0,0"/>
                         <CheckBox Grid.Column="6" IsChecked="{Binding Axle3IsTwin}" Margin="0,3,0,0"/>
                         <TextBlock Grid.Column="7" Text="Liftable" Margin="5,0,0,0"/>
-                        <RadioButton GroupName="thirdAxleOptions" Grid.Column="8" IsChecked="{Binding Axle3IsLiftable}" Margin="0,3,0,0"/>
+                        <CheckBox Grid.Column="8" IsChecked="{Binding Axle3IsLiftable}" Margin="0,3,0,0"/>
                         <TextBlock Grid.Column="9" Text="Steered" Margin="5,0,0,0"/>
-                        <RadioButton GroupName="thirdAxleOptions" Grid.Column="10" IsChecked="{Binding Axle3IsSteered}" Margin="0,3,0,0"/>
-                        <TextBlock Grid.Column="11" Text="None" Margin="5,0,0,0"/>
-                        <RadioButton GroupName="thirdAxleOptions" Grid.Column="12" IsChecked="{Binding Axle3IsNone}" Margin="0,3,0,0"/>
+                        <CheckBox Grid.Column="10" IsChecked="{Binding Axle3IsSteered}" Margin="0,3,0,0"/>
                     </Grid>
                 </StackPanel>
             </StackPanel>

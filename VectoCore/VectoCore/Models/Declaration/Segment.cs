@@ -69,6 +69,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		public bool VehicleGroupActive { get; set; }
 		public int VehicleGroup { get; set; }
+		public int VehicleGroupAnnex { get; set; }
 		public VehicleClass Class { get; set; } 
 		public string GenericCode { get; set; }
 		public Kilogram MassBody { get; set; }

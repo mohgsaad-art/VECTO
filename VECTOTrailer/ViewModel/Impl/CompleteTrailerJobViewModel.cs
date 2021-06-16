@@ -255,9 +255,9 @@ namespace VECTOTrailer.ViewModel.Impl
 			if (trailer.Axle3IsLiftable)
 				liftableCount++;
 
-			if (trailer.Axle1IsLiftable && trailer.Axle1IsSteered) return false;
-			if (trailer.Axle2IsLiftable && trailer.Axle2IsSteered) return false;
-			if (trailer.Axle3IsLiftable && trailer.Axle3IsSteered) return false;
+			//if (trailer.Axle1IsLiftable && trailer.Axle1IsSteered) return false;
+			//if (trailer.Axle2IsLiftable && trailer.Axle2IsSteered) return false;
+			//if (trailer.Axle3IsLiftable && trailer.Axle3IsSteered) return false;
 
 			switch (trailer.NumberOfAxles)
 			{

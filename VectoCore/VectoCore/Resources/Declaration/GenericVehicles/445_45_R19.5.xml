@@ -11,15 +11,15 @@
 	<tns:Tyre xsi:type="v2.0:TyreComponentDeclarationType">
 		<v2.0:Data id="TYR-gooZah3D" xsi:type="v2.3:TyreDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.3">
 			<Manufacturer>Generic</Manufacturer>
-			<Model>385/65 R 22.5</Model>
+			<Model>235/75 R 17.5</Model>
 			<CertificationNumber>standard</CertificationNumber>
 			<Date>2017-02-15T11:00:00Z</Date>
 			<AppVersion>DemoTyreApp 1.0</AppVersion>
-			<Dimension>385/65 R22.5</Dimension>
+			<Dimension>445/45 R19.5</Dimension>
 			<TyreClass>C3</TyreClass>
 			<FuelEfficiencyClass>C</FuelEfficiencyClass>
 			<RRCDeclared>0.0055</RRCDeclared>
-			<FzISO>37500</FzISO>
+			<FzISO>37523</FzISO>
 		</v2.0:Data>
 		<v2.0:Signature>
 			<di:Reference URI="#TYR-gooZah3D">

@@ -3238,6 +3238,24 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to VehicleGroupAnnexI.
+        /// </summary>
+        public static string Trailer_VehicleGroupAnnexI {
+            get {
+                return ResourceManager.GetString("Trailer_VehicleGroupAnnexI", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to VehicleGroupToolInternal.
+        /// </summary>
+        public static string Trailer_VehicleGroupToolInternal {
+            get {
+                return ResourceManager.GetString("Trailer_VehicleGroupToolInternal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to YawAngle0.
         /// </summary>
         public static string Trailer_YawAngle0 {

@@ -978,10 +978,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\235_75_R17.5_Standard.xml" />
-    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\385_65_R22.5_Standard.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Resources\Declaration\GenericVehicles\A1.xml" />
     <EmbeddedResource Include="Resources\Declaration\GenericVehicles\A2.xml" />
     <EmbeddedResource Include="Resources\Declaration\GenericVehicles\A3.xml" />
@@ -990,10 +986,12 @@
     <EmbeddedResource Include="Resources\Declaration\GenericVehicles\R3.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\445_45_R19.5_Standard.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\245_70_R19.5_Standard.xml" />
+    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\235_75_R17.5.xml" />
+    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\245_70_R19.5.xml" />
+    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\265_70_R19.5.xml" />
+    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\275_70_R22.5.xml" />
+    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\385_65_R22.5.xml" />
+    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\445_45_R19.5.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

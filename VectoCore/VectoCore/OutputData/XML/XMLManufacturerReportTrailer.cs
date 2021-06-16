@@ -126,6 +126,8 @@ namespace TUGraz.VectoCore.OutputData.XML
 						XMLHelper.ValueAsUnit(modelData.VehicleData.InputDataTrailer.TPMLMAxleAssembly,
 							XMLNames.Unit_kg))
 				),
+				new XElement(tns + XMLNames.Trailer_VehicleGroupAnnexI, modelData.VehicleData.TrailerSegment.VehicleGroupAnnex),
+				new XElement(tns + XMLNames.Trailer_VehicleGroupToolInternal, modelData.VehicleData.TrailerSegment.VehicleGroup),
 				new XElement(tns + XMLNames.Trailer_Dimensions,
 					new XElement(tns + XMLNames.Trailer_ExternalLengthBody,
 						modelData.VehicleData.InputDataTrailer.ExternalBodyLength.ToXMLFormat(3)),

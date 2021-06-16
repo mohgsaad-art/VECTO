@@ -125,7 +125,7 @@ namespace VECTOTrailer.Util.XML
 					new XElement(_v27 + XMLNames.Trailer_CargoVolume, trailerData.CargoVolume?.ToXMLFormat(3)))
 			);
 
-			if (trailerData.IsStandard || trailerData.IsCertified || trailerData.IsNone)
+			if (trailerData.IsStandard || trailerData.IsCertified)
 				vehicle.Add(new XElement(_v27 + XMLNames.Trailer_AeroFeatures));
 
 			if (trailerData.IsStandard) {

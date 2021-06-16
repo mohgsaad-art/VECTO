@@ -466,28 +466,57 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			var liftFactor = 1.0;
 			var steerFactor = 1.0;
 
-			if (loadingType == LoadingType.LowLoading)
-			{ //LOW loading
-				if (trailer.Axles.Count(x => x.Liftable) > 1) //if 2 liftable
-					liftFactor = (1 + (mission.TrailerLiftableImpact.Key * 1.5) / 100);
-				
-				else if (trailer.Axles.Count(x => x.Liftable) > 0) //if 1 liftable
-					liftFactor = (1 + mission.TrailerLiftableImpact.Key / 100);
+			if (trailer.Axles.Count(x => x.Steered && x.Liftable) > 0) {
+				if (mission.MissionType == MissionType.LongHaul) {
+					if (loadingType == LoadingType.LowLoading) {
+						if (trailer.Axles.Count(x => x.Liftable) > 1) //if 2 liftable
+							liftFactor = (1 + (mission.TrailerLiftableImpact.Key * 1.5) / 100);
 
-				if (trailer.Axles.Count(x => x.Steered) > 1) // 2 steered
-					steerFactor = (1 + (mission.TrailerSteeredImpact.Key * 1.2) / 100);
-				else if (trailer.Axles.Count(x => x.Steered) > 0) // 1 steered
-					steerFactor = (1 + mission.TrailerSteeredImpact.Key / 100);
-			}
-			else
-			{ //REF loading
-				if (trailer.Axles.Count(x => x.Liftable) > 0)
-					liftFactor = (1 + mission.TrailerLiftableImpact.Value / 100);
+						else if (trailer.Axles.Count(x => x.Liftable) > 0) //if 1 liftable
+							liftFactor = (1 + mission.TrailerLiftableImpact.Key / 100);
+					} else {
+						if (trailer.Axles.Count(x => x.Liftable) > 0)
+							liftFactor = (1 + mission.TrailerLiftableImpact.Value / 100);
+					}
+				} else {
+					if (loadingType == LoadingType.LowLoading)
+					{
+						if (trailer.Axles.Count(x => x.Steered) > 1) // 2 steered
+							steerFactor = (1 + (mission.TrailerSteeredImpact.Key * 1.2) / 100);
+						else if (trailer.Axles.Count(x => x.Steered) > 0) // 1 steered
+							steerFactor = (1 + mission.TrailerSteeredImpact.Key / 100);
+					}
+					else
+					{
+						if (trailer.Axles.Count(x => x.Steered) > 1) //2 steered
+							steerFactor = (1 + (mission.TrailerSteeredImpact.Value * 1.2) / 100);
+						else if (trailer.Axles.Count(x => x.Steered) > 0) // 1 steered
+							steerFactor = (1 + mission.TrailerSteeredImpact.Value / 100);
+					}
+				}
+			} else {
+				if (loadingType == LoadingType.LowLoading) {
+					//LOW loading
+					if (trailer.Axles.Count(x => x.Liftable) > 1) //if 2 liftable
+						liftFactor = (1 + (mission.TrailerLiftableImpact.Key * 1.5) / 100);
 
-				if (trailer.Axles.Count(x => x.Steered) > 1) //2 steered
-					steerFactor = (1 + (mission.TrailerSteeredImpact.Value * 1.2) / 100);
-				else if (trailer.Axles.Count(x => x.Steered) > 0) // 1 steered
-					steerFactor = (1 + mission.TrailerSteeredImpact.Value / 100);
+					else if (trailer.Axles.Count(x => x.Liftable) > 0) //if 1 liftable
+						liftFactor = (1 + mission.TrailerLiftableImpact.Key / 100);
+
+					if (trailer.Axles.Count(x => x.Steered) > 1) // 2 steered
+						steerFactor = (1 + (mission.TrailerSteeredImpact.Key * 1.2) / 100);
+					else if (trailer.Axles.Count(x => x.Steered) > 0) // 1 steered
+						steerFactor = (1 + mission.TrailerSteeredImpact.Key / 100);
+				} else {
+					//REF loading
+					if (trailer.Axles.Count(x => x.Liftable) > 0)
+						liftFactor = (1 + mission.TrailerLiftableImpact.Value / 100);
+
+					if (trailer.Axles.Count(x => x.Steered) > 1) //2 steered
+						steerFactor = (1 + (mission.TrailerSteeredImpact.Value * 1.2) / 100);
+					else if (trailer.Axles.Count(x => x.Steered) > 0) // 1 steered
+						steerFactor = (1 + mission.TrailerSteeredImpact.Value / 100);
+				}
 			}
 
 			retVal.Fuels = new List<CombustionEngineFuelData>();
@@ -1046,11 +1075,10 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			if (trailer.Axles.Count > 2 && trailer.Axles[2].Liftable)
 				liftableCount++;
 
-			if (trailer.Axles[0].Liftable && trailer.Axles[0].Steered) throw new Exception("An axle cannot be both liftable and steered");
-			if (trailer.Axles.Count > 1 && trailer.Axles[1].Liftable && trailer.Axles[1].Steered) throw new Exception("An axle cannot be both liftable and steered");
-			if (trailer.Axles.Count > 2 && trailer.Axles[2].Liftable && trailer.Axles[2].Steered) throw new Exception("An axle cannot be both liftable and steered");
-
-
+			//if (trailer.Axles[0].Liftable && trailer.Axles[0].Steered) throw new Exception("An axle cannot be both liftable and steered");
+			//if (trailer.Axles.Count > 1 && trailer.Axles[1].Liftable && trailer.Axles[1].Steered) throw new Exception("An axle cannot be both liftable and steered");
+			//if (trailer.Axles.Count > 2 && trailer.Axles[2].Liftable && trailer.Axles[2].Steered) throw new Exception("An axle cannot be both liftable and steered");
+			
 			switch (trailer.NumberOfAxles)
 			{
 				case NumberOfTrailerAxles.One when trailer.Axles[0].Liftable: //one axle cant be liftable

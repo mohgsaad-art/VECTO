@@ -79,6 +79,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 					RessourceHelper.ReadStream(
 						DeclarationData.DeclarationDataResourcePrefix + ".VACC.Truck.vacc"), //row.Field<string>(".vaccfile")), TODO - CHECK THIS
 				VehicleGroup = (int)row.ParseDouble("Vehicle_group"),
+				VehicleGroupAnnex = (int)row.ParseDouble("Vehicle_group_acc"),
 				VehicleGroupActive = row.ParseBoolean("Active"),
 				GenericCode = row.Field<string>("Generic_code"),
 				MassBody = Kilogram.Create(!row.Field<string>("generic_mass_body").Contains("-") ? row.ParseDouble("generic_mass_body") : 0),

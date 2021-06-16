@@ -1437,6 +1437,12 @@
   <data name="Trailer_BodyCode" xml:space="preserve">
     <value>BodyWorkType</value>
   </data>
+<data name="Trailer_VehicleGroupAnnexI" xml:space="preserve">
+    <value>VehicleGroupAnnexI</value>
+  </data>
+<data name="Trailer_VehicleGroupToolInternal" xml:space="preserve">
+    <value>VehicleGroupToolInternal</value>
+  </data>
   <data name="Trailer_CurbMass" xml:space="preserve">
     <value>CurbMass</value>
   </data>
