@@ -55,6 +55,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		private bool _isStandard;
 		private bool _isCertified;
+		private bool _isNone;
 		private bool _showLengthBetweenCentersOfAxles;
 
 		private bool _sideSkirtsShort;
@@ -329,6 +330,11 @@ namespace VECTOTrailer.ViewModel.Impl
 					return;
 				IsDataChanged(_bodyCode, _componentData);
 			}
+		}
+		public bool IsNone
+		{
+			get => _isNone;
+			set => SetProperty(ref _isNone, value);
 		}
 
 		public bool ShowLengthBetweenCentersOfAxles
@@ -662,6 +668,8 @@ namespace VECTOTrailer.ViewModel.Impl
 				BoatTailLong = trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.BoatTailLong);
 
 				IsStandard = (SideSkirtsShort || SideSkirtsLong || BoatTailShort || BoatTailLong);
+
+				IsNone = (!IsCertified && !IsStandard);
 
 				ShowLengthBetweenCentersOfAxles = trailer.NumberOfAxles != NumberOfTrailerAxles.One;
 				

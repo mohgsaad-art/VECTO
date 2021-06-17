@@ -171,6 +171,8 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.BoatTailShort = Technologies != null && Technologies.Contains(AeroFeatureTechnology.BoatTailShort);
 			viewModel.BoatTailLong = Technologies != null && Technologies.Contains(AeroFeatureTechnology.BoatTailLong);
 
+			viewModel.IsNone = IsNone;
+
 			viewModel.YawAngle0 = YawAngle0;
 			viewModel.YawAngle3 = YawAngle3;
 			viewModel.YawAngle6 = YawAngle6;
@@ -213,6 +215,8 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.SideSkirtsLong = false;
 			viewModel.BoatTailShort = false;
 			viewModel.BoatTailLong = false;
+
+			viewModel.IsNone = true;
 
 			viewModel.IsStandard = false;
 			viewModel.IsCertified = false;

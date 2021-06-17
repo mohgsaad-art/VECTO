@@ -30,6 +30,7 @@ namespace VECTOTrailer.ViewModel.Interfaces
 		bool ShowLengthBetweenCentersOfAxles { get; set; }
 		bool IsStandard { get; set; }
 		bool IsCertified { get; set; }
+		bool IsNone { get; set; }
 		bool SideSkirtsShort { get; set; }
 		bool SideSkirtsLong { get; set; }
 		bool BoatTailShort { get; set; }
