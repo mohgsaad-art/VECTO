@@ -227,6 +227,8 @@
 							</xs:all>
 						</xs:complexType>
 					</xs:element>
+					<xs:element name="VehicleGroupAnnexI" type="xs:string"/>
+					<xs:element name="VehicleGroupToolInternal" type="xs:string"/>
 					<xs:element name="Dimensions">
 						<xs:complexType>
 							<xs:all>
