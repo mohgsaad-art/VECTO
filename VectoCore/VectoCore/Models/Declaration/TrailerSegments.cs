@@ -52,7 +52,7 @@ using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.Declaration
 {
-	public sealed class TrailerSegments : LookupData<NumberOfTrailerAxles, TypeTrailer, BodyWorkCode, bool, TrailerSegment>
+	public sealed class TrailerSegments : LookupData<NumberOfTrailerAxles, TypeTrailer, BodyWorkCode, bool, Kilogram, TrailerSegment>
 	{
 		private DataTable _segmentTable;
 		private static int _numberOfAxles;
@@ -66,10 +66,10 @@ namespace TUGraz.VectoCore.Models.Declaration
 			_segmentTable = table.Copy();
 		}
 
-		public override TrailerSegment Lookup(NumberOfTrailerAxles numberOfAxles, TypeTrailer typeTrailer, BodyWorkCode bodyWorkCode, bool volumeOrientation)
+		public override TrailerSegment Lookup(NumberOfTrailerAxles numberOfAxles, TypeTrailer typeTrailer, BodyWorkCode bodyWorkCode, bool volumeOrientation, Kilogram tpmlmAxleAssembly)
 		{
 			_numberOfAxles = int.Parse(numberOfAxles.GetLabel());
-			var row = GetTrailerDataRow(numberOfAxles, typeTrailer, bodyWorkCode, volumeOrientation);
+			var row = GetTrailerDataRow(numberOfAxles, typeTrailer, bodyWorkCode, volumeOrientation, tpmlmAxleAssembly);
 			if (row == null) {
 				return new TrailerSegment { VehicleGroup = -1 };
 			}
@@ -324,7 +324,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 
 		private DataRow GetTrailerDataRow(
-			NumberOfTrailerAxles numberOfAxles, TypeTrailer typeTrailer, BodyWorkCode bodyWorkCode, bool volumeOrientation)
+			NumberOfTrailerAxles numberOfAxles, TypeTrailer typeTrailer, BodyWorkCode bodyWorkCode, bool volumeOrientation, Kilogram tpmlmAxleAssembly)
 		{
 			DataRow row;
 			try {
@@ -334,9 +334,15 @@ namespace TUGraz.VectoCore.Models.Declaration
 						var typeTrailerRow = r.Field<string>("Trailer_type");
 						var bodyWorkCodeRow = r.Field<string>("Bodywork_code");
 						var volumeOrientationRow = r.Field<string>("Volume_orientation");
+						var tpmlmAxleAssemblyRow = r.Field<string>("TPMLM_axle_assembly");
+						var tpmlmMinRow = !string.IsNullOrEmpty(r.Field<string>("TPMLM_min")) ? r.ParseDouble("TPMLM_min") : 0;
+						var tpmlmMaxRow = !string.IsNullOrEmpty(r.Field<string>("TPMLM_max")) ? r.ParseDouble("TPMLM_max"): 0;
 						return numberOfAxlesRow == numberOfAxles.GetLabel()
 								&& typeTrailerRow == typeTrailer.ToString()
 								&& bodyWorkCodeRow.Contains(bodyWorkCode.GetLabel())
+								&& (tpmlmAxleAssemblyRow.Contains("-") ||
+									tpmlmAxleAssemblyRow.Contains("all weights") ||
+									(tpmlmAxleAssembly.ConvertToTon().Value > tpmlmMinRow && tpmlmAxleAssembly.ConvertToTon().Value < tpmlmMaxRow))
 								&& (volumeOrientationRow == "Yes" && volumeOrientation || volumeOrientationRow == "No" && !volumeOrientation);
 					});
 			} catch (InvalidOperationException e) {

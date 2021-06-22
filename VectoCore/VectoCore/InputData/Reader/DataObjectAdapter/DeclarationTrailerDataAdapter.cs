@@ -481,17 +481,14 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				} else {
 					if (loadingType == LoadingType.LowLoading)
 					{
-						if (trailer.Axles.Count(x => x.Steered) > 1) // 2 steered
-							steerFactor = (1 + (mission.TrailerSteeredImpact.Key * 1.2) / 100);
-						else if (trailer.Axles.Count(x => x.Steered) > 0) // 1 steered
-							steerFactor = (1 + mission.TrailerSteeredImpact.Key / 100);
+						liftFactor = (1 + mission.TrailerLiftableImpact.Key / 100);
+						steerFactor = (1 + mission.TrailerSteeredImpact.Key / 100);
 					}
 					else
 					{
-						if (trailer.Axles.Count(x => x.Steered) > 1) //2 steered
-							steerFactor = (1 + (mission.TrailerSteeredImpact.Value * 1.2) / 100);
-						else if (trailer.Axles.Count(x => x.Steered) > 0) // 1 steered
-							steerFactor = (1 + mission.TrailerSteeredImpact.Value / 100);
+						liftFactor = (1 + mission.TrailerLiftableImpact.Value / 100);
+						steerFactor = (1 + mission.TrailerSteeredImpact.Value / 100);
+
 					}
 				}
 			} else {
