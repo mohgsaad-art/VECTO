@@ -466,48 +466,57 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			var liftFactor = 1.0;
 			var steerFactor = 1.0;
 
-			if (trailer.Axles.Count(x => x.Steered && x.Liftable) > 0) { //found axle with both steered and liftable
-				if (mission.MissionType == MissionType.LongHaul) { //LH
-					if (loadingType == LoadingType.LowLoading) { // LOW LOADING
+			if (trailer.Axles.Count(x => x.Steered && x.Liftable) > 0) {
+				//found axle with both steered and liftable
+				if (mission.MissionType == MissionType.LongHaul) {
+					//LH
+					if (loadingType == LoadingType.LowLoading) {
+						// LOW LOADING
 						if (trailer.Axles.Count(x => x.Liftable) > 1) //1 both + 1 liftable
 							liftFactor = (1 + (mission.TrailerLiftableImpact.Key * 1.5) / 100);
-						else if (trailer.Axles.Count(x => x.Steered) > 1) { //1 both + 1 steered
+						else if (trailer.Axles.Count(x => x.Steered) > 1) {
+							//1 both + 1 steered
 							liftFactor = (1 + mission.TrailerLiftableImpact.Key / 100);
 							steerFactor = (1 + mission.TrailerSteeredImpact.Key / 100);
 						} else //1 both
 							liftFactor = (1 + mission.TrailerLiftableImpact.Key / 100);
-					} else { //REF LOADING
-						if (trailer.Axles.Count(x => x.Steered) > 1) { //1 both + 1 steered
+					} else {
+						//REF LOADING
+						if (trailer.Axles.Count(x => x.Steered) > 1) {
+							//1 both + 1 steered
 							liftFactor = (1 + mission.TrailerLiftableImpact.Value / 100);
 							steerFactor = (1 + mission.TrailerSteeredImpact.Value / 100);
-						}
-						else //1 both or 1 both + 1 liftable
+						} else //1 both or 1 both + 1 liftable
 							liftFactor = (1 + mission.TrailerLiftableImpact.Value / 100);
 					}
-				} else { //RD & UD
-					 if (loadingType == LoadingType.LowLoading) { //Low lading
-						if (trailer.Axles.Count(x => x.Liftable) > 1) { //1 both + 1 liftable
+				} else {
+					//RD & UD
+					if (loadingType == LoadingType.LowLoading) {
+						//Low lading
+						if (trailer.Axles.Count(x => x.Liftable) > 1) {
+							//1 both + 1 liftable
 							liftFactor = (1 + mission.TrailerLiftableImpact.Key / 100);
 							steerFactor = (1 + mission.TrailerSteeredImpact.Key / 100);
 						} else if (trailer.Axles.Count(x => x.Steered) > 1) //1 both + 1 steered
 							steerFactor = (1 + (mission.TrailerSteeredImpact.Key * 1.2) / 100);
 						else // 1 both
 							steerFactor = (1 + mission.TrailerSteeredImpact.Key / 100);
-					}
-					else //Ref loading
-					{
-						if (trailer.Axles.Count(x => x.Liftable) > 1) { //1 both + 1 liftable
+					} else {
+						//Ref loading
+						if (trailer.Axles.Count(x => x.Liftable) > 1) {
+							//1 both + 1 liftable
 							liftFactor = (1 + mission.TrailerLiftableImpact.Value / 100);
 							steerFactor = (1 + mission.TrailerSteeredImpact.Value / 100);
-						}
-						else if(trailer.Axles.Count(x => x.Steered) > 1) //1 both + 1 steered
+						} else if (trailer.Axles.Count(x => x.Steered) > 1) //1 both + 1 steered
 							steerFactor = (1 + (mission.TrailerSteeredImpact.Value * 1.2) / 100);
 						else // 1 both
 							steerFactor = (1 + mission.TrailerSteeredImpact.Value / 100);
 					}
 				}
-			} else { // no axle is both liftable and steered
-				if (loadingType == LoadingType.LowLoading) {//LOW loading
+			} else {
+				// no axle is both liftable and steered
+				if (loadingType == LoadingType.LowLoading) {
+					//LOW loading
 					if (trailer.Axles.Count(x => x.Liftable) > 1) //if 2 liftable
 						liftFactor = (1 + (mission.TrailerLiftableImpact.Key * 1.5) / 100);
 
@@ -518,7 +527,8 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 						steerFactor = (1 + (mission.TrailerSteeredImpact.Key * 1.2) / 100);
 					else if (trailer.Axles.Count(x => x.Steered) > 0) // 1 steered
 						steerFactor = (1 + mission.TrailerSteeredImpact.Key / 100);
-				} else { //REF loading
+				} else {
+					//REF loading
 					if (trailer.Axles.Count(x => x.Liftable) > 0)
 						liftFactor = (1 + mission.TrailerLiftableImpact.Value / 100);
 
