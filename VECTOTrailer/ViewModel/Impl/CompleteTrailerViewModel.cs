@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Input;
@@ -675,31 +676,27 @@ namespace VECTOTrailer.ViewModel.Impl
 				
 				TrailerCouplingPoint = trailer.TrailerType == TypeTrailer.DC ? trailer.TrailerCouplingPoint : TrailerCouplingPoint.Unknown;
 
-				this.Trailer = _trailer;
+				Trailer = _trailer;
 
-				XmlDocument xmlDoc = new XmlDocument();
-				xmlDoc.LoadXml(_trailer.XMLSource.OuterXml);
+				var xmlDoc = new XmlDocument();
+				xmlDoc.LoadXml(_trailer.XMLSource.OuterXml.ToString(CultureInfo.InvariantCulture));
 
-				List<XmlNode> _axles = new List<XmlNode>();
+				var axles = (xmlDoc.GetElementsByTagName("v2.7:Axles").Item(0) ?? throw new Exception("Cannot parse axle information")).Cast<XmlNode>().ToList();
 
-				foreach (XmlNode _axle in xmlDoc.GetElementsByTagName("v2.7:Axles").Item(0))
-					_axles.Add(_axle);
-
-				switch (_axles.Count) {
+				switch (axles.Count) {
 					case 0: break;
 					case 1:
-						EnableFirstAxle(_axles[0]);
+						EnableFirstAxle(axles[0]);
 						break;
 					case 2:
-						EnableFirstAxle(_axles[0]);
-						EnableSecondAxle(_axles[1]);
+						EnableFirstAxle(axles[0]);
+						EnableSecondAxle(axles[1]);
 						break;
 					case 3:
-						EnableFirstAxle(_axles[0]);
-						EnableSecondAxle(_axles[1]);
-						EnableThirdAxle(_axles[2]);
+						EnableFirstAxle(axles[0]);
+						EnableSecondAxle(axles[1]);
+						EnableThirdAxle(axles[2]);
 						break;
-					default: break;
 				}
 
 				_componentData = new TrailerComponentData(this);

@@ -274,7 +274,7 @@ namespace VECTOTrailer.ViewModel.Impl
 			return true;
 		}
 
-		private bool CheckTrailerType(Model.TempDataObject.TrailerComponentData trailer)
+		private static bool CheckTrailerType(Model.TempDataObject.TrailerComponentData trailer)
 		{
 			if (trailer.TrailerType != TypeTrailer.DB &&
 				(trailer.TPLMAxleAssembly == null || trailer.TPLMAxleAssembly.Value() == 0))
@@ -283,7 +283,7 @@ namespace VECTOTrailer.ViewModel.Impl
 			return trailer.TrailerType == TypeTrailer.DC || trailer.TrailerCouplingPoint == TrailerCouplingPoint.Unknown;
 		}
 
-		private bool GeneralCheck(Model.TempDataObject.TrailerComponentData trailer)
+		private static bool GeneralCheck(Model.TempDataObject.TrailerComponentData trailer)
 		{
 			if (trailer.InternalHeightOfTheBody >= trailer.ExternalHeightOfTheBody ||
 				trailer.ExternalHeightOfTheBody >= trailer.TotalHeightOfTheTrailer ||
@@ -382,7 +382,7 @@ namespace VECTOTrailer.ViewModel.Impl
 			_validationErrorsDisplayed = false;
 		}
 
-		private void ValidationResultDialogWindow(bool validationResult)
+		private static void ValidationResultDialogWindow(bool validationResult)
 		{
 			if (validationResult) {
 				MessageBox.Show("No validation errors were found, the entered data is valid!", "Input Validation", MessageBoxButton.OK);
