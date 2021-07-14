@@ -1,0 +1,676 @@
+/*
+* This file is part of VECTO.
+*
+* Copyright © 2012-2017 European Union
+*
+* Developed by Graz University of Technology,
+*              Institute of Internal Combustion Engines and Thermodynamics,
+*              Institute of Technical Informatics
+*
+* VECTO is licensed under the EUPL, Version 1.1 or - as soon they will be approved
+* by the European Commission - subsequent versions of the EUPL (the "Licence");
+* You may not use VECTO except in compliance with the Licence.
+* You may obtain a copy of the Licence at:
+*
+* https://joinup.ec.europa.eu/community/eupl/og_page/eupl
+*
+* Unless required by applicable law or agreed to in writing, VECTO
+* distributed under the Licence is distributed on an "AS IS" basis,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the Licence for the specific language governing permissions and
+* limitations under the Licence.
+*
+* Authors:
+*   Stefan Hausberger, hausberger@ivt.tugraz.at, IVT, Graz University of Technology
+*   Christian Kreiner, christian.kreiner@tugraz.at, ITI, Graz University of Technology
+*   Michael Krisper, michael.krisper@tugraz.at, ITI, Graz University of Technology
+*   Raphael Luz, luz@ivt.tugraz.at, IVT, Graz University of Technology
+*   Markus Quaritsch, markus.quaritsch@tugraz.at, IVT, Graz University of Technology
+*   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
+*/
+
+Results { display: flex; flex-flow: row wrap; }
+Results Status { display: none; }
+Result { display: flex; }
+Result  * { display: block; }
+ApplicationInformation { display: block; }
+Signature { display: none; }
+ResultDataSignature { display: none; }
+VectoVTPReport General {display: none; }
+VectoVTPReport TestConditions { display: none; } 
+
+*[unit]:after { display: inline-block; min-width: 5em; padding-left: 0.3em; text-align: left; }
+*[unit="g/km"]:after { content: "g/km"; }
+*[unit="g/t-km"]:after { content: "g/t-km"; }
+*[unit="g/m³-km"]:after { content: "g/m³-km"; }
+*[unit="MJ/km"]:after { content: "MJ/km"; }
+*[unit="MJ/t-km"]:after { content: "MJ/t-km"; }
+*[unit="MJ/m³-km"]:after { content: "MJ/m³-km"; }
+*[unit="l/100km"]:after { content: "l/100km"; }
+*[unit="l/t-km"]:after { content: "l/t-km"; }
+*[unit="l/m³-km"]:after { content: "l/m³-km"; }
+*[unit="km"]:after { content: "km" }
+*[unit="m"]:after { content: "m" }
+*[unit="kg"]:after { content: "kg" }
+*[unit="km/h"]:after { content: "km/h" }
+*[unit="m/s²"]:after { content: "m/s²" }
+*[unit="kW"]:after { content: "kW" }
+*[unit="kWh"]:after { content: "kWh" }
+*[unit="MJ/kg"]:after { content: "MJ/kg" }
+*[unit="g/kWh"]:after { content: "g/kWh" }
+*[unit="rpm"]:after { content: "rpm" }
+*[unit="t"]:after { content: "t" }
+*[unit="ltr"]:after { content: "ltr" }
+*[unit="gCO2/tkm"]:after { content: "gCO2/tkm" }
+
+
+Data {
+	font-family: sans-serif;
+	font-size: 12pt;
+	font-size: 1rem;
+	line-height: 1.3;
+	display: flex;
+	flex-flow: column;
+	max-width: 1024px;
+	margin: 20px auto;
+}
+
+Data:before {
+	font-size: xx-large;
+	color: #1f6032;
+	font-weight: bold;
+	text-align: center;
+	display: block;
+	background-image: url(data:image/png;base64,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);
+	background-position: top left;
+	background-repeat: no-repeat;
+}
+VectoOutput Data:before {
+	content: "Declaration Results";
+}
+VectoCustomerInformation Data:before {
+	content: "Customer Information";
+}
+VectoVTPReport Data:before {
+	content: "VT Report";
+}
+
+Data:after {
+	content: "Note: this presentation of the report does not show all details!";
+	display: block;
+	font-weight: bold;
+	text-align: right;
+	font-size: small;
+	margin: 3px 0 -5px;
+}
+
+VectoCustomerInformation:after,
+VectoOutput:after 
+{
+	content: '';
+	display: block;
+	max-width: 1024px;
+	margin: 0 auto;
+	height: 40px;
+	margin-bottom: 20px;
+	background:
+	url(data:image/jpeg;base64,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) right top no-repeat;
+	background-size: contain;
+}
+
+Vehicle {
+	/*display: flex;*/
+	flex-flow: row wrap;
+	order: 1;
+	border: 2px solid #1f6032;
+	padding: 5px 10px;
+	margin: 5px 0;
+}
+Vehicle:before {
+	content: "Vehicle Configuration";
+	color: #1f6032;
+	display: block;
+	flex-basis: 100%;
+	font-size: large;
+	font-weight: bold;
+	order: -99;
+}
+Vehicle * {
+	display: block;
+	padding: 5px 10;
+}
+Vehicle *:before {
+	min-width: 15em;
+	/*color: #1f6032;*/
+	padding: 0 5px 0 0;
+	display: inline-block;
+	/*font-style: italic;*/
+}
+Vehicle > * {
+	display: inline-block;
+	width: 50%;
+}
+Vehicle > *:before,
+
+/*VectoCustomerInformation Vehicle:before {order: -99;}*/
+
+Vehicle Manufacturer:before {content: "Manufacturer:"; }
+Vehicle ManufacturerAddress:before {content: "Manufacturer Address:"; }
+Vehicle CommercialName:before {content: "Commercial Name:"; }
+Vehicle VIN:before {content: "VIN:"; }
+Vehicle Date:before {content: "Date:"; }
+Vehicle LegislativeCategory:before {content: "Legislative Category:"; }
+Vehicle AxleCount:before {content: "Axle Count:";}
+Vehicle TrailerType:before {content: "Trailer Type:";}
+Vehicle BodyCode:before {content: "Body Code:";}
+Vehicle CurbMass:before {content: "Curb Mass:";}
+Vehicle TrailerType:before {content: "Trailer Type:";}
+Vehicle BodyCode:before {content: "Body Code:";}
+
+Vehicle Masses:before {content: "Masses:"; margin-top:5px;}
+Vehicle MassInRunningOrder:before {content: "Mass In Running Order:"; margin-left: 10px;}
+Vehicle TPMLMTotalTrailer:before {content: "TPMLM Total Trailer:"; margin-left: 10px;}
+Vehicle TPMLMAxleAssembly:before {content: "TPMLM Axle Assembly:"; margin-left: 10px;}
+
+Vehicle VehicleGroupAnnexI:before {content: "Vehicle Group Annex I:"; margin-top:5px;}
+Vehicle VehicleGroupToolInternal:before {content: "Vehicle Group Tool Internal:"; }
+
+
+Vehicle Dimensions:before {content: "Dimensions:";margin-top:5px;}
+Vehicle ExternalLengthBody:before {content: "External length of the body:"; margin-left: 10px;}
+Vehicle ExternalWidthBody:before {content: "External width of the body:"; margin-left: 10px;}
+Vehicle ExternalHeightBody:before {content: "External height of the body:"; margin-left: 10px;}
+Vehicle TotalHeightTrailer:before {content: "Total height of the trailer:"; margin-left: 10px;}
+Vehicle LengthFromFrontToFirstAxle:before {content: "Length from trailer front end to center of first axle:"; margin-left: 10px;}
+Vehicle LengthBetweenCentersOfAxles:before {content: "Length between centers of axles:"; margin-left: 10px;}
+Vehicle InternalHeightBody:before {content: "Internal height of the body:"; margin-left: 10px;}
+Vehicle CargoVolume:before {content: "Cargo Volume:"; margin-left: 10px;}
+
+Vehicle AeroFeatures:before {content: "Aero Features:";margin-top:5px;}
+Vehicle Technology:before {content: "Technology:"; margin-left: 10px;}
+
+Vehicle CertifiedAeroReduction:before {content: "Certified Aero Reduction:"; margin-left: 10px;}
+Vehicle YawAngle0:before {content: "Yaw Angle 0:"; margin-left: 20px;}
+Vehicle YawAngle3:before {content: "Yaw Angle 3:"; margin-left: 20px;}
+Vehicle YawAngle6:before {content: "Yaw Angle 6:"; margin-left: 20px;}
+Vehicle YawAngle9:before {content: "Yaw Angle 9:"; margin-left: 20px;}
+
+
+Vehicle AxlesAndTyreFeatures {display: none;}*/
+
+Vehicle * {
+	/*text-align: right;*/
+}
+
+Vehicle *:after {
+	display: inline-block; 
+	min-width: 5em; 
+	padding-left: 0.3em; 
+	text-align: left;
+}
+/*Vehicle ExternalLengthBody:after,
+Vehicle ExternalWidthBody:after,
+Vehicle ExternalHeightBody:after,
+Vehicle TotalHeightTrailer:after, 
+Vehicle PositionXFirstAxle:after,
+Vehicle PositionXLastAxle:after,
+Vehicle InternalHeightBody:after { content: "m"; }
+Vehicle CargoVolume:after { content: "m³"; }*/
+
+Vehicle InputDataSignature {
+	display: flex;
+	flex-flow: column;
+	flex-basis: calc(50% - 20px);
+	width: calc(50% - 20px);
+	margin-bottom: 20px;
+	padding-left: 20px;
+	border-top: 2px solid #1f6032;
+}
+Vehicle InputDataSignature:before {
+	display: block;
+	font-weight: bold;
+	font-style: normal;
+	margin: 10px 0 5px;
+	margin-left: -20px;
+	color: #1f6032;
+}
+
+Vehicle InputDataSignature {
+	flex-basis: 100%;
+}
+Vehicle InputDataSignature:before {
+	content: "Input Data Hash";
+	font-style: normal;
+	padding-left: 0px;
+}
+
+Vehicle AxlesAndTyreFeatures Axle {
+	margin-left: 20px;
+}
+Vehicle AxlesAndTyreFeatures Axle:before {
+	font-weight: bold;
+	font-style: normal;
+	margin-left: -20px;
+}
+Vehicle AxlesAndTyreFeatures Axle[axleNumber="1"]:before { content: "Axle 1" }
+Vehicle AxlesAndTyreFeatures Axle[axleNumber="2"]:before { content: "Axle 2" }
+Vehicle AxlesAndTyreFeatures Axle[axleNumber="3"]:before { content: "Axle 3" }
+Vehicle AxlesAndTyreFeatures Axle[axleNumber="4"]:before { content: "Axle 4" }
+
+
+Vehicle CdxA:before {content: "Cd x A:";}
+Vehicle TyreDimension:before {content: "Dimension:";}
+Vehicle TyreCertificationNumber:before {content: "Certification Nbr.:";}
+
+Vehicle CertificationMethod { order: 97; }
+Vehicle CertificationNumber { order: 98; }
+Vehicle DigestValue { 
+	order: 99;
+    overflow: hidden;
+    margin-right: 2em;
+    text-overflow: ellipsis;
+    white-space: nowrap; 
+}
+
+ApplicationInformation {
+	order: 2;
+	border: 2px solid #1f6032;
+	padding: 5px 10px;
+}
+ApplicationInformation * {
+	display: block;
+	padding: 5px 0;
+}
+ApplicationInformation *:before {
+	min-width: calc(10em + 20px);
+	padding: 0 5px 0 0;
+	display: inline-block;
+	font-weight: bold;
+	color: #1f6032;	
+}
+ApplicationInformation SimulationToolVersion:before {
+	content: "VECTO Version:";
+}
+ApplicationInformation Date:before {
+	content: "Date:";
+}
+
+Results{
+	align-content: space-between;
+	justify-content: space-between;
+	order: 3;
+	margin-top:20px;
+}
+
+Results TowingVehicle:before { 
+	content: "Towing Vehicle:";
+}
+
+Results TowingVehicle{
+	position: absolute;
+	margin-top: -15px;
+}
+
+Result { 
+	/*border: 1px solid red;*/
+	border: 2px solid #1f6032; 
+	margin: 5px 0; 
+	padding: 5px 7px; 
+	width: calc(25% - 36px); 
+	float: left; 
+	position: relative; 
+	overflow: visible; 
+	flex-direction: column;
+	min-width: 325px;
+	flex-basis: calc(50% - 30px);
+}
+Result[status="error"] {
+	background: rgba(255, 0, 0, 0.3);
+}
+/*Result[status="success"] {
+	background: rgba(0, 255, 0, 0.1);
+}
+*/
+Result Mission {
+	font-size: x-large;
+	font-weight: bold;
+	margin: 10px 0px 5px 10px;
+	color: #1f6032;
+}
+Result Distance {
+	display: none;
+}
+Result SimulationParameters {
+	margin: 0 0 20px 20px;
+	position: relative;
+	display: flex;
+	flex-flow: column;
+	border: 1px solid #ccc;
+	width: 70%;
+}
+Result SimulationParameters FuelType,
+Result FuelType
+{
+	display: none;
+}
+/*Result SimulationParameters *:before,*/
+/*Result *:before
+{ 
+	display: inline-block; 
+	min-width: 10em; 
+	width: 50% ; 
+	position: absolute; 
+	left: 0px; 
+	text-align: left;
+}*/
+TotalVehicleMass:before { content: "Total Vehicle Mass:"; }
+Payload:before { content: "Loading: " }
+CdxAyawAngle0:before { content: "CdxAyawAngle0: " }
+CdxAyawAngle3:before { content: "CdxAyawAngle3: " }
+CdxAyawAngle6:before { content: "CdxAyawAngle6: " }
+CdxAyawAngle6:before { content: "CdxAyawAngle6: " }
+CdxAyawAngle9:before { content: "CdxAyawAngle9: " }
+AverageSpeed:before { content: "Average Speed: " }
+
+FuelConsumption:before { content: "Fuel Consumption: " }
+CO2:before { content: "CO2: " }
+EfficiencyRatio:before { content: "Efficiency Ratio: " }
+
+TotalVehicleMass,
+/*Payload {
+	width: 100%;
+	margin-right: 20px;
+	text-align: right;
+}*/
+
+
+Summary {
+	border: 2px solid #1f6032;
+	width: 100%;
+	padding: 5px 7px;
+}
+Summary:before {
+	order: -99;
+	content: "Summary";
+	color: #1f6032;
+	display: block;
+	flex-basis: 100%;
+	font-size: x-large;
+	font-weight: bold;
+	margin: 10px 0 5px 10px;
+}
+
+Summary * { text-align: left; display: block; }
+Summary WeightedPayloadTrailer:before { content: "Weighted Payload Trailer:"; }
+Summary WeightedEfficiencyRatio:before { content: "Weighted Efficiency Ratio:"; }
+
+DataIntegrityCheck,
+VectoVTPReport Results
+{ 
+	display: flex;
+    flex-flow: row wrap;
+    border: 2px solid #1f6032;
+    padding: 5px 10px;
+    margin: 5px 0; 
+}
+DataIntegrityCheck {
+    order: 10;
+}
+
+DataIntegrityCheck[status=failed] {
+	border-color: red;
+}
+
+DataIntegrityCheck > * {
+	display: flex;
+	flex-flow: column;
+	flex-basis: calc(100% - 20px);
+    width: calc(100% - 20px);
+    padding-left: 40px;
+}
+DataIntegrityCheck JobData {
+	order: 1;
+	border-bottom: 2px solid #1f6032;
+	padding-bottom: 10px;
+ 	 margin-bottom: 10px;
+}
+DataIntegrityCheck JobData:before { content: "Job Data Integrity" }
+
+DataIntegrityCheck ManufacturerReport {
+	order: 2;
+	border-bottom: 2px solid #1f6032;
+	padding-bottom: 10px;
+	margin-bottom: 10px;
+}
+DataIntegrityCheck ManufacturerReport:before { content: "Manufacturer Record Integrity" }
+
+DataIntegrityCheck Components:before {
+	content: "Component Integrity";
+	margin-left: -20px;
+}
+DataIntegrityCheck Components {
+	order: 3;
+    padding-left: 20px;
+}
+DataIntegrityCheck ManufacturerReport[status=failed],
+DataIntegrityCheck JobData[status=failed],
+DataIntegrityCheck Component[status='failed']
+{
+	background-color: rgba(255, 0, 0, 0.3);
+}
+
+DataIntegrityCheck > *:before {
+	display: block;
+    font-weight: bold;
+    font-style: normal;
+    margin: 10px 0 5px;
+    margin-left: -40px;
+    color: #1f6032;
+}
+
+DataIntegrityCheck Component:before {
+    display: block;
+    /*font-weight: bold;*/
+    font-style: normal;
+    margin: 10px 0 5px;
+    margin-left: -20px;
+    color: #1f6032;
+}
+DataIntegrityCheck Component[componentName='Engine']:before {content: "Engine";}
+DataIntegrityCheck Component[componentName='Gearbox']:before {content: "Transmission";}
+DataIntegrityCheck Component[componentName='Torqueconverter']:before {content: "Torque Converter";}
+DataIntegrityCheck Component[componentName='Retarder']:before {content: "Retarder";}
+DataIntegrityCheck Component[componentName='Angledrive']:before {content: "Angledrive";}
+DataIntegrityCheck Component[componentName='Axlegear']:before {content: "Axlegear";}
+DataIntegrityCheck Component[componentName='AirDrag']:before {content: "Cabin/Airdrag";}
+DataIntegrityCheck Component[componentName='Axle']:before {content: "Wheels";}
+DataIntegrityCheck Component[componentName='Tyre (1)']:before {content: "Tyre Axle 1";}
+DataIntegrityCheck Component[componentName='Tyre (2)']:before {content: "Tyre Axle 2";}
+DataIntegrityCheck Component[componentName='Tyre (3)']:before {content: "Tyre Axle 3";}
+DataIntegrityCheck Component[componentName='Tyre (4)']:before {content: "Tyre Axle 4";}
+DataIntegrityCheck Component[componentName='Auxiliaries']:before {content: "Auxiliaries";}
+
+DataIntegrityCheck Components Component {
+	display: flex;
+    flex-flow: column;
+    flex-basis: calc(100% - 20px);
+    width: calc(100% - 20px);
+    /*margin-bottom: 20px;*/
+    padding-left: 20px;
+    /*border-bottom: 2px solid #1f6032;*/
+}
+
+DataIntegrityCheck Component > *:before,
+DataIntegrityCheck ManufacturerReport > *:before,
+DataIntegrityCheck JobData > *:before
+ {
+    min-width: 20em;
+    padding: 0 5px 0 0;
+    display: inline-block;
+    font-style: italic;
+}
+
+DataIntegrityCheck DigestValueRead,
+DataIntegrityCheck DigestValueRecomputed
+{ 
+	/*order: 99;*/
+    overflow: hidden;
+    margin-right: 2em;
+    text-overflow: ellipsis;
+    white-space: nowrap; 
+    font-family: monospace;
+    font-size: larger;
+}
+DataIntegrityCheck DigestValueRead:before,
+DataIntegrityCheck DigestValueRecomputed:before
+{
+	font-family: sans-serif;
+	font-size: medium;
+}
+DataIntegrityCheck DigestValueRecomputed:before { content: "Digest Value Recomputed:"; }
+DataIntegrityCheck DigestValueRead[source='JobData']:before { content: "Digest Value in Job Data:"; }
+DataIntegrityCheck DigestValueRead[source='ManufacturerRecord']:before { content: "Digest Value in ManufacturerRecord:"; }
+
+VectoVTPReport Results {
+	display: flex;
+	flex-flow: column;
+	flex-basis: calc(100% - 20px);
+    width: calc(100% - 20px);
+    padding: 5px 10px;
+    margin: 5px 0;
+}
+VectoVTPReport Results:before {
+	content: "Results";
+	display: block;
+    font-weight: bold;
+    font-style: normal;
+    margin: 10px 0 5px;
+    /*margin-left: -20px;*/
+    color: #1f6032;
+}
+
+VectoVTPReport Results AverageFanPower:before {content: "Average Fan Power:";}
+VectoVTPReport Results WorkPosVT:before {content: "E_Wheel_pos.:";}
+VectoVTPReport Results TestFuelNCV:before {content: "NCV of Test Fuel:";}
+VectoVTPReport Results Measured:before {content: "Measured:";}
+VectoVTPReport Results MeasuredCorrected:before {content: "Corrected measured:";}
+VectoVTPReport Results Simulated:before {content: "Simulated:";}
+VectoVTPReport Results Declared:before {content: "Declared:";}
+VectoVTPReport Results Verified:before {content: "Verified:";}
+VectoVTPReport Results VTRatio:before {content: "VT Ratio";}
+VectoVTPReport Results Mission:before {content: "Simulated Mission:";}
+
+VectoVTPReport Results AverageFanPower,
+VectoVTPReport Results WorkPosVT,
+VectoVTPReport Results TestFuelNCV,
+VectoVTPReport Results Measured,
+VectoVTPReport Results MeasuredCorrected,
+VectoVTPReport Results Simulated,
+VectoVTPReport Results Declared,
+VectoVTPReport Results Verified,
+VectoVTPReport Results Mission
+{
+	position: relative;
+	width: calc(40% - 40px);
+	display: block;
+	text-align: right;
+	margin-left: 40px;
+	padding: 5px 0;
+}
+VectoVTPReport Results Mission {
+	text-align: left;
+	padding-left: 13em;
+}
+
+VectoVTPReport Results AverageFanPower:before,
+VectoVTPReport Results WorkPosVT:before,
+VectoVTPReport Results TestFuelNCV:before,
+VectoVTPReport Results Measured:before,
+VectoVTPReport Results MeasuredCorrected:before,
+VectoVTPReport Results Simulated:before,
+VectoVTPReport Results Declared:before,
+VectoVTPReport Results Verified:before,
+VectoVTPReport Results Mission:before
+{
+	position: absolute;
+    left: 0px;
+}
+
+
+VectoVTPReport Results > * {
+	flex-basis: calc(100% - 40px);
+    width: 100%;
+    /*padding-left: 40px;*/
+}
+VectoVTPReport Results > *:before,
+VectoVTPReport Results FuelConsumption > *:before,
+VectoVTPReport Results CO2 > *:before
+ {
+    min-width: 12em;
+    width: 12em;
+    padding: 0 5px 0 0;
+    display: inline-block;
+    font-style: italic;
+    text-align: left;
+}
+
+VectoVTPReport Results FuelConsumption,
+VectoVTPReport Results CO2
+{
+	display: flex;
+	flex-flow: column;
+	padding-left: 0px;
+}
+
+VectoVTPReport Results FuelConsumption:before { content: "Fuel Consumption Calculations"; }
+VectoVTPReport Results CO2:before { content: "CO2"; }
+
+VectoVTPReport Results FuelConsumption:before,
+VectoVTPReport Results CO2:before,
+VectoVTPReport Results VTRatio:before
+{
+	display: block;
+    font-weight: bold;
+    font-style: normal;
+    margin: 10px 0 5px;
+    /*margin-left: -40px;*/
+    color: #1f6032;
+    font-size: medium;
+    width: 100%;
+}
+
+VectoVTPReport Results VTRatio {
+	font-size: larger;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	font-weight: bold;
+	padding-left: 40px;
+}
+VectoVTPReport Results VTRatio:before {
+	margin-left: -40px;
+}
+
+VectoVTPReport Results Warnings:before {
+	content: "Simulation Warnings:";
+	display: block;
+	font-size: larger;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	font-weight: bold;
+	font-style: normal;
+
+	/*padding-left: 40px;*/
+}
+VectoVTPReport Results Warnings {
+	display: flex;
+	flex-direction: column;
+	flex-basis: 100%;
+	border: 2px solid #ff9d00;
+	background-color: rgba(255, 157, 0,0.3)
+
+}
+VectoVTPReport Results Warnings Warning {
+	display: block;
+	margin-left: 40px;
+}
+

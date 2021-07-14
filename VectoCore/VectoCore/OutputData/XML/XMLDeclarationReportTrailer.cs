@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using Omu.ValueInjecter.Utils;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Data;
+using TUGraz.VectoCore.OutputData.FileIO;
 
 namespace TUGraz.VectoCore.OutputData.XML {
 	public class XMLDeclarationReportTrailer : XMLDeclarationReport
@@ -80,6 +84,26 @@ namespace TUGraz.VectoCore.OutputData.XML {
 			if (Writer != null) {
 				OutputReports();
 			}
+
+			var writer = (FileOutputWriter)Writer;
+			WriteStyleSheet(writer?.BasePath);
+		}
+
+		private static void WriteStyleSheet(string basePath)
+		{
+			//write stylesheet file
+			var assembly = Assembly.GetExecutingAssembly();
+			const string resourceName = DeclarationData.DeclarationDataResourcePrefix + ".Trailer.VectoReports.css";
+			var styleSheet = string.Empty;
+
+			using (var stream = assembly.GetManifestResourceStream(resourceName))
+			using (var reader = new StreamReader(stream ?? throw new Exception("Cant find StyleSheet")))
+			{
+				styleSheet = reader.ReadToEnd();
+			}
+
+			File.WriteAllText(basePath+"/VectoReports.css", styleSheet);
+
 		}
 	}
 }

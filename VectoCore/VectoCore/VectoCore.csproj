@@ -780,11 +780,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\XSD\VectoEngineeringDefinitions.0.6.xsd">
       <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\XSD\VectoEngineeringDefinitions.0.7.xsd">
       <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\XSD\VectoOutputManufacturer.xsd">
       <SubType>Designer</SubType>
@@ -957,6 +955,7 @@
     <EmbeddedResource Include="Resources\Declaration\GenericBusData\EngineConsumptionMap_PI_normalized.vmap" />
     <EmbeddedResource Include="Resources\XSD\VectoDeclarationDefinitions.2.7_BT.xsd">
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Declaration\GenericTowingVehicles.csv" />
     <EmbeddedResource Include="Resources\XSD\VectoOutputManufacturer.0.9.xsd">
@@ -1029,6 +1028,11 @@
     <EmbeddedResource Include="Resources\Declaration\GenericVehicles\275_70_R22.5.xml" />
     <EmbeddedResource Include="Resources\Declaration\GenericVehicles\385_65_R22.5.xml" />
     <EmbeddedResource Include="Resources\Declaration\GenericVehicles\445_45_R19.5.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Declaration\Trailer\VectoReports.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

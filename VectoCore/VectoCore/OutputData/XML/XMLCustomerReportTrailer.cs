@@ -350,7 +350,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 			results.Add(summary);
 			var vehicle = new XElement(VehiclePart);
 			//vehicle.Add(InputDataIntegrity);
-			retVal.Add(new XProcessingInstruction("xml-stylesheet", "href=\"https://webgate.ec.europa.eu/CITnet/svn/VECTO/trunk/Share/XML/CSS/VectoReports.css\""));
+			retVal.Add(new XProcessingInstruction("xml-stylesheet", "href=\"VectoReports.css\""));
 			retVal.Add(new XElement(rootNS + XMLNames.VectoCustomerReport,
 				//new XAttribute("schemaVersion", CURRENT_SCHEMA_VERSION),
 				new XAttribute(XNamespace.Xmlns + "xsi", xsi.NamespaceName),

@@ -422,7 +422,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 			vehicle.Add(InputDataIntegrity);
 			retVal.Add(
 				new XProcessingInstruction(
-					"xml-stylesheet", "href=\"https://webgate.ec.europa.eu/CITnet/svn/VECTO/trunk/Share/XML/CSS/VectoReports.css\""));
+					"xml-stylesheet", "href=\"VectoReports.css\""));
 			retVal.Add(
 				new XElement(
 					mrf + XMLNames.VectoManufacturerReport,
