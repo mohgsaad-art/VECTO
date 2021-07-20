@@ -93,7 +93,7 @@ namespace TUGraz.VectoCore.OutputData.XML {
 		{
 			//write stylesheet file
 			var assembly = Assembly.GetExecutingAssembly();
-			const string resourceName = DeclarationData.DeclarationDataResourcePrefix + ".Trailer.VectoReports.css";
+			const string resourceName = DeclarationData.DeclarationDataResourcePrefix + ".Trailer.VectoReportsTrailer.css";
 			var styleSheet = string.Empty;
 
 			using (var stream = assembly.GetManifestResourceStream(resourceName))
@@ -102,7 +102,7 @@ namespace TUGraz.VectoCore.OutputData.XML {
 				styleSheet = reader.ReadToEnd();
 			}
 
-			File.WriteAllText(basePath+"/VectoReports.css", styleSheet);
+			File.WriteAllText(basePath+ "/VectoReportsTrailer.css", styleSheet);
 
 		}
 	}

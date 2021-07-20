@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -166,7 +167,7 @@ namespace VECTOTrailer.Util.XML
 					new XElement(_v27 + "Axles"))));
 
 			try {
-				var tyre = XDocument.Parse(trailerData.Axle1Xml).Elements().FirstOrDefault()?.Elements()
+				var tyre = XDocument.Parse(trailerData.Axle1Xml.ToString(CultureInfo.InvariantCulture)).Elements().FirstOrDefault()?.Elements()
 					.FirstOrDefault(x =>
 						!x.Name.ToString().Contains("TwinTyres") && !x.Name.ToString().Contains("Liftable") &&
 						!x.Name.ToString().Contains("Steered"));
@@ -181,7 +182,7 @@ namespace VECTOTrailer.Util.XML
 				if (int.Parse(trailerData.NumberOfAxles.GetLabel()) <= 1)
 					return vehicle;
 
-				tyre = XDocument.Parse(trailerData.Axle2Xml).Elements().FirstOrDefault()?.Elements()
+				tyre = XDocument.Parse(trailerData.Axle2Xml.ToString(CultureInfo.InvariantCulture)).Elements().FirstOrDefault()?.Elements()
 					.FirstOrDefault(x =>
 						!x.Name.ToString().Contains("TwinTyres") && !x.Name.ToString().Contains("Liftable") &&
 						!x.Name.ToString().Contains("Steered"));
@@ -196,7 +197,7 @@ namespace VECTOTrailer.Util.XML
 				if (int.Parse(trailerData.NumberOfAxles.GetLabel()) <= 2)
 					return vehicle;
 
-				tyre = XDocument.Parse(trailerData.Axle3Xml).Elements().FirstOrDefault()?.Elements()
+				tyre = XDocument.Parse(trailerData.Axle3Xml.ToString(CultureInfo.InvariantCulture)).Elements().FirstOrDefault()?.Elements()
 					.FirstOrDefault(x =>
 						!x.Name.ToString().Contains("TwinTyres") && !x.Name.ToString().Contains("Liftable") &&
 						!x.Name.ToString().Contains("Steered"));

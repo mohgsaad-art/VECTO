@@ -36,8 +36,8 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <GroupBox Header="Documentation" Grid.Row="1" Grid.Column="1" Width="350" Height="200" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
-            <StackPanel Orientation="Vertical" Width="330" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
+        <GroupBox Header="Documentation" Grid.Row="1" Grid.Column="1" Width="400" Height="200" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
+            <StackPanel Orientation="Vertical" Width="390" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
                 <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
 
                     <Grid Margin="5">
@@ -71,7 +71,7 @@
                             <ColumnDefinition />
                             <ColumnDefinition SharedSizeGroup="unitWidth"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="Commercial Name" Margin="0,0,10,0"/>
+                        <TextBlock Grid.Column="0" Text="Model" Margin="0,0,10,0"/>
                         <TextBox Grid.Column="1" Margin="20,0,0,0" 
                                  Text="{Binding CommercialName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
                     </Grid>
@@ -122,8 +122,8 @@
             </StackPanel>
         </GroupBox>
 
-        <GroupBox Header="Dimensions" Grid.Row="2" Grid.Column="1" Width="350" Height="300" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
-            <StackPanel Orientation="Vertical" Width="330" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
+        <GroupBox Header="Dimensions" Grid.Row="2" Grid.Column="1" Width="400" Height="300" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
+            <StackPanel Orientation="Vertical" Width="390" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
                 <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
 
                     <Grid>
@@ -156,7 +156,7 @@
 
                     <Grid>
                         <customControls:VectoParameterControl
-                            Caption="Length from trailer front to first axle" CaptionWidthGroup="lblGWidth"
+                            Caption="Length from trailer front end to center of first axle" CaptionWidthGroup="lblGWidth"
                             Value="{Binding LengthFromFrontToFirstAxle, Converter={converter:SIValueConverter}, ConverterParameter=AsMeter|double3}" ValueAlign="right"
                             Unit="m" UnitWidthGroup="unitWidth"/>
                     </Grid>

@@ -1030,7 +1030,7 @@
     <EmbeddedResource Include="Resources\Declaration\GenericVehicles\445_45_R19.5.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Declaration\Trailer\VectoReports.css">
+    <EmbeddedResource Include="Resources\Declaration\Trailer\VectoReportsTrailer.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>

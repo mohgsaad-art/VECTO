@@ -135,12 +135,12 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(tns + XMLNames.Trailer_VehicleGroupAnnexI, modelData.VehicleData.TrailerSegment.VehicleGroupAnnex),
 				new XElement(tns + XMLNames.Trailer_VehicleGroupToolInternal, modelData.VehicleData.TrailerSegment.VehicleGroup),
 				new XElement(tns + XMLNames.Trailer_Dimensions,
-					new XElement(tns + XMLNames.Trailer_ExternalLengthBody, modelData.VehicleData.InputDataTrailer.ExternalBodyLength.ToXMLFormat(3)),
-					new XElement(tns + XMLNames.Trailer_ExternalWidthBody, modelData.VehicleData.InputDataTrailer.ExternalBodyWidth.ToXMLFormat(3)),
-					new XElement(tns + XMLNames.Trailer_ExternalHeightBody, modelData.VehicleData.InputDataTrailer.ExternalBodyHeight.ToXMLFormat(3)),
-					new XElement(tns + XMLNames.Trailer_TotalHeightTrailer, modelData.VehicleData.InputDataTrailer.TotalTrailerHeight.ToXMLFormat(3)),
-					new XElement(tns + XMLNames.Trailer_InternalHeightBody, modelData.VehicleData.InputDataTrailer.InternalBodyHeight.ToXMLFormat(3)),
-					new XElement(tns + XMLNames.Trailer_CargoVolume, modelData.VehicleData.InputDataTrailer.CargoVolume.ToXMLFormat(3))
+					new XElement(tns + XMLNames.Trailer_ExternalLengthBody, new XAttribute(XMLNames.Report_Results_Unit_Attr, "m"), modelData.VehicleData.InputDataTrailer.ExternalBodyLength.ToXMLFormat(3)),
+					new XElement(tns + XMLNames.Trailer_ExternalWidthBody, new XAttribute(XMLNames.Report_Results_Unit_Attr, "m"), modelData.VehicleData.InputDataTrailer.ExternalBodyWidth.ToXMLFormat(3)),
+					new XElement(tns + XMLNames.Trailer_ExternalHeightBody, new XAttribute(XMLNames.Report_Results_Unit_Attr, "m"), modelData.VehicleData.InputDataTrailer.ExternalBodyHeight.ToXMLFormat(3)),
+					new XElement(tns + XMLNames.Trailer_TotalHeightTrailer, new XAttribute(XMLNames.Report_Results_Unit_Attr, "m"), modelData.VehicleData.InputDataTrailer.TotalTrailerHeight.ToXMLFormat(3)),
+					new XElement(tns + XMLNames.Trailer_InternalHeightBody, new XAttribute(XMLNames.Report_Results_Unit_Attr, "m"), modelData.VehicleData.InputDataTrailer.InternalBodyHeight.ToXMLFormat(3)),
+					new XElement(tns + XMLNames.Trailer_CargoVolume, new XAttribute(XMLNames.Report_Results_Unit_Attr, "m³"), modelData.VehicleData.InputDataTrailer.CargoVolume.ToXMLFormat(3))
 				),
 				aeroFeatures
 			);
@@ -350,7 +350,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 			results.Add(summary);
 			var vehicle = new XElement(VehiclePart);
 			//vehicle.Add(InputDataIntegrity);
-			retVal.Add(new XProcessingInstruction("xml-stylesheet", "href=\"VectoReports.css\""));
+			retVal.Add(new XProcessingInstruction("xml-stylesheet", "href=\"VectoReportsTrailer.css\""));
 			retVal.Add(new XElement(rootNS + XMLNames.VectoCustomerReport,
 				//new XAttribute("schemaVersion", CURRENT_SCHEMA_VERSION),
 				new XAttribute(XNamespace.Xmlns + "xsi", xsi.NamespaceName),
