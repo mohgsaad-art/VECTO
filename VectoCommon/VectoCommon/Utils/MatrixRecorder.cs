@@ -1,6 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.IO;
-using NLog;
+using MongoDB.Bson.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,9 +8,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
-using TUGraz.VectoCommon.Models;
 
-namespace TUGraz.VectoCommon.Utils.MatrixRecorder
+namespace MatrixRecorder
 {
     public class ThreadLocalData
     {
@@ -39,49 +38,26 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         {
             currentRow = null;
             currentRowIndex = -1;
-            pendingRows = new List<Dictionary<string, object>>();
-            headerDict = new Dictionary<string, object>
-            {
-                // Keep file_version first to the top, to facilitate parsers.
-                { "file_version", "0.0.0" },
-                { "vecto_version", GetVectoCommonVersionInformation() },
-                { "name", "matrixrecorder" }
-            }; ;
+            pendingRows = null;
+            headerDict = null;
             filename = null;
             writeReminder.Stop();
             writeReminder.Reset();
         }
-
-        private string GetVectoCommonVersionInformation()
-        {
-            return "debug version";
-        }
     }
-
-    public static class MatrixRecorder
+    
+    public static class MatrixRecorder 
     {
-        /// <summary>
-        /// Thread local data initialization
-        /// </summary>
+        private static readonly long docStoreIntervalSec = 1;
+
         private static ThreadLocal<ThreadLocalData> _ThreadLocalData =
             new ThreadLocal<ThreadLocalData>(() => new ThreadLocalData());
 
-        /// <summary>
-        /// Absolute time recording
-        /// </summary>
-        public static double AbsTime;
-
-        /// <summary>
-        /// Thread local data
-        /// </summary>
         private static ThreadLocalData ThreadLocalData
         {
             get { return _ThreadLocalData.Value; }
             set { _ThreadLocalData.Value = value; }
         }
-        
-        // vecto common dll name, used for retrieving the version
-        private static readonly string commonDllName = "VectoCommon.dll";
 
         /// <summary>
         /// Prepare the thread local data with needed properties for recording pendingRows and storing them later.
@@ -91,28 +67,25 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         {
             ThreadLocalData.filename = filepath;
 
+            // the order needs to be kept, file_version pair should be first            
             Dictionary<string, object> headerDict = new Dictionary<string, object>
             {
-                // Keep file_version first to the top, to facilitate parsers.
                 { "file_version", "0.0.0" },
-                { "vecto_version", GetVectoCommonVersionInformation() },
+                //{ "vecto_version", VectoSimulationCore.VersionNumber },
                 { "name", "matrixrecorder" }
             };
 
-            if (header != null)
+            foreach (var item in header)
             {
-                foreach (var item in header)
-                {
-                    headerDict.Add(item.Key, item.Value);
-                }
+                headerDict.Add(item.Key, item.Value);
             }
 
             ThreadLocalData.headerDict = headerDict;
             ThreadLocalData.currentRow = null;
             ThreadLocalData.currentRowIndex = -1;
             ThreadLocalData.pendingRows = new List<Dictionary<string, object>>();
-            ThreadLocalData.writeReminder = new Stopwatch();
             ThreadLocalData.writeReminder.Start();
+            
         }
 
         /// <summary>
@@ -123,23 +96,13 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
             var pendingRows = ThreadLocalData.pendingRows;
 
             string filename = ThreadLocalData.filename;
-            var row0 = ThreadLocalData.currentRowIndex + 1;
-
+            var row0 = ThreadLocalData.currentRowIndex;
             if (pendingRows == null || !pendingRows.Any())
             {
-                Debug.Write("$Skipped writting file({ filename}) with empty pendingRows@{row0}.");
+                //Log.Info($"Skipped writting file({ filename}) with empty pendingRows@{row0}.");
                 return;
             }
-            if (ThreadLocalData.headerDict == null)
-            {
-                ThreadLocalData.headerDict = new Dictionary<string, object>
-                    {
-                        // Keep file_version first to the top, to facilitate parsers.
-                        { "file_version", "0.0.0" },
-                        { "vecto_version", GetVectoCommonVersionInformation() },
-                        { "name", "matrixrecorder" }
-                    };
-            }
+
             Dictionary<string, object> header = ThreadLocalData.headerDict;
             header["row0"] = row0;
 
@@ -149,34 +112,15 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
                 ["rows"] = pendingRows
             };
 
-            bool isFirstDoc = row0 == 0;
-            //BsonDocument bsonDoc = new BsonDocument(root.ToBsonDocument());
-
-            BsonDocument bsonDoc = new BsonDocument(root);
-            
-            //BsonDocument bsonDoc = BsonDocument.Create(root);
-
-            var bsonBinary = bsonDoc.ToBson();
-
-            if ( ThreadLocalData.filename == null )
-            {
-                ThreadLocalData.filename = Directory.GetCurrentDirectory() + "\\Logs\\Matrec" + DateTime.Now.ToString("MMddhhmmss");
-            }
-            using (FileStream fs = new FileStream(
-                        ThreadLocalData.filename,
-                        isFirstDoc ? FileMode.Create : FileMode.Append, FileAccess.Write, FileShare.Write)
-                   )
-            using (BsonBinaryWriter writer = new BsonBinaryWriter(fs))
-            {
-                fs.Write(bsonBinary, 0, bsonBinary.Length);
-            }
+            var doc = new BsonDocument(root);
+            using (FileStream fs = new FileStream(ThreadLocalData.filename,
+                FileMode.Append, FileAccess.Write, FileShare.Read))
+                using (BsonBinaryWriter writer = new BsonBinaryWriter(fs))
+                {
+                    BsonSerializer.Serialize(writer, root);
+                }
 
             ThreadLocalData.pendingRows.Clear();
-            if (ThreadLocalData.writeReminder == null)
-            {
-                ThreadLocalData.writeReminder = new Stopwatch();
-                ThreadLocalData.writeReminder.Start();
-            }
             ThreadLocalData.writeReminder.Reset();
         }
 
@@ -185,20 +129,13 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         /// 1. Append current row to pendingRows
         /// 2. Create a document with header and pendingRows
         /// 3. Write document into the file
-        /// 4. Clear the thread local data
+        /// 4. Clear the tl
         /// </summary>
         public static void Close()
         {
-            //Debug.Assert(ThreadLocalData.pendingRows != null, "pendingRows != null");
-
-            if (ThreadLocalData.currentRow != null)
+            if (ThreadLocalData.currentRow != null && ThreadLocalData.pendingRows != null)
             {
-                if (ThreadLocalData.pendingRows == null)
-                {
-                    ThreadLocalData.pendingRows = new List<Dictionary<string, object>>();
-                }
                 ThreadLocalData.pendingRows.Add(ThreadLocalData.currentRow);
-                ThreadLocalData.currentRowIndex++;
             }
 
             StoreCurrentDoc();
@@ -209,20 +146,29 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         /// <summary>
         /// Send any old row to the sink and initiate a new one.
         /// Create a new underlying *dict* to store values, and append any given values in `index`.
-        /// Check if the recorder has not used `Open()` yet.
+        /// Check if recorder has not `Open()` yet.
         /// </summary>
         /// <param name="index">List of key value pairs to be updated in current row</param>
         public static void NewRow(IEnumerable<KeyValuePair<string, object>> index = null)
         {
-            NewRow(null, null);
+            if (ThreadLocalData.currentRow != null && ThreadLocalData.pendingRows != null)
+            {
+                ThreadLocalData.pendingRows.Add(ThreadLocalData.currentRow);
+                ThreadLocalData.currentRowIndex++;
+            }
+            
+            if (ThreadLocalData.writeReminder.Elapsed.TotalSeconds > docStoreIntervalSec)
+            {
+                StoreCurrentDoc();
+            }
+
             ThreadLocalData.currentRow = new Dictionary<string, object>();
             if (index != null)
             {
                 foreach (var item in index)
                 {
-                     ThreadLocalData.currentRow[item.Key] = item.Value;
+                    ThreadLocalData.currentRow[item.Key] = item.Value;
                 }
-                ThreadLocalData.currentRow["AbsTime"] = AbsTime;
             }
         }
 
@@ -230,63 +176,16 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         /// Record a new key-value pair. 
         /// Append the pair into the *dict* representing the row.
         /// Any pre-existing value for some key is overwritten.
-        /// Check if recorder has not used `Open()` yet.
+        /// Check if recorder has not `Open()` yet.
         /// </summary>
         /// <param name="key">key to be recorded</param>
         /// <param name="value">value to be recorded</param>
         public static void Record(string key, object value)
         {
-            // NRE error if NewRow() has not been called
+            //NRE error if NewRow() has not been called
             var row = ThreadLocalData.currentRow;
 
-            Debug.Assert(row != null, "row != null");
-
             row[key] = value;
-        }
-
-        /// <summary>
-        /// Send any old row to the sink and initiate a new one.
-        /// Create a new underlying *dict* to store values, and append any given values in `index`.
-        /// Check if the recorder has not used `Open()` yet.
-        /// </summary>
-        /// <param name="key">key to be recorded; if null no column is written</param>
-        /// <param name="value">value to be recorded; if null no column is written</param>
-        public static void NewRow(string key = null, object value = null)
-        {
-
-            //Debug.Assert(ThreadLocalData.pendingRows != null, "pendingRows != null");
-
-            if (ThreadLocalData.currentRow != null)
-            {
-                if (ThreadLocalData.pendingRows == null)
-                {
-                    ThreadLocalData.pendingRows = new List<Dictionary<string, object>>();
-                }
-                ThreadLocalData.pendingRows.Add(ThreadLocalData.currentRow);
-                ThreadLocalData.currentRowIndex++;
-            }
-
-            int docStoreInterval = 10;
-            if (Environment.GetEnvironmentVariable("DocStoreInterval") != null)
-            {
-                docStoreInterval = int.Parse(Environment.GetEnvironmentVariable("DocStoreInterval"));
-            }
-            if (ThreadLocalData.writeReminder == null ) 
-                {   
-                    ThreadLocalData.writeReminder = new Stopwatch();
-                }
-            if (ThreadLocalData.writeReminder.Elapsed.TotalSeconds > docStoreInterval)
-                {
-                    StoreCurrentDoc();
-                }
-            ThreadLocalData.currentRow = new Dictionary<string, object>();
-            if (key != null)
-                {
-                    ThreadLocalData.currentRow[key] = value;
-                }
-
-
-
         }
 
         /// <summary>
@@ -297,7 +196,6 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         {
             //NRE error if NewRow() has not been called
             var row = ThreadLocalData.currentRow;
-            Debug.Assert(row != null, "row != null");
 
             foreach (var item in values)
             {
@@ -305,24 +203,12 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
             }
         }
 
-        /// <summary>
-        /// Get the version from vecto common
-        /// </summary>
-        private static string GetVectoCommonVersionInformation()
+        private static void ShowVersionInformation()
         {
-            var currentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            var commonDll = Assembly.LoadFile(Path.Combine(currentDirectory, commonDllName))
+            var core = Assembly.LoadFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "VectoCore.dll"))
               .GetName();
-
-            return commonDll.Version.ToString();
+            //Console.WriteLine(string.Format(@"CoreLibrary: {0}", core.Version));
         }
-
-        /// <summary>
-        /// Update absolute time
-        /// </summary>
-        public static void UpdateAbsTime(double absTime)
-        {
-            AbsTime = absTime;
-        }
+    
     }
 }
