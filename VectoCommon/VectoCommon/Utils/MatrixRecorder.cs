@@ -77,6 +77,7 @@ namespace MatrixRecorder
             // the order needs to be kept, file_version pair should be first            
             Dictionary<string, object> headerDict = new Dictionary<string, object>
             {
+                // Keep file_version first to the top, to facilitate parsers.
                 { "file_version", "0.0.0" },
                 { "vecto_version", GetVectoCommonVersionInformation() },
                 { "name", "matrixrecorder" }
