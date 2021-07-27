@@ -1,6 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -45,10 +46,9 @@ namespace MatrixRecorder
             writeReminder.Reset();
         }
     }
-    
-    public static class MatrixRecorder 
+
+    public static class MatrixRecorder
     {
-        private static readonly long docStoreIntervalSec = 1;
 
         private static ThreadLocal<ThreadLocalData> _ThreadLocalData =
             new ThreadLocal<ThreadLocalData>(() => new ThreadLocalData());
@@ -57,6 +57,13 @@ namespace MatrixRecorder
         {
             get { return _ThreadLocalData.Value; }
             set { _ThreadLocalData.Value = value; }
+        }
+
+        private static int GetStoreInterval()
+        {
+            JObject envVars = JObject.Parse(File.ReadAllText(@"MatrixRecorderEnv.json"));
+
+            return envVars.Value<int>("DocStoreInterval");
         }
 
         /// <summary>
@@ -85,7 +92,7 @@ namespace MatrixRecorder
             ThreadLocalData.currentRowIndex = -1;
             ThreadLocalData.pendingRows = new List<Dictionary<string, object>>();
             ThreadLocalData.writeReminder = new Stopwatch();
-            ThreadLocalData.writeReminder.Start();            
+            ThreadLocalData.writeReminder.Start();
         }
 
         /// <summary>
@@ -112,13 +119,19 @@ namespace MatrixRecorder
                 ["rows"] = pendingRows
             };
 
-            var doc = new BsonDocument(root);
-            using (FileStream fs = new FileStream(ThreadLocalData.filename,
-                FileMode.Append, FileAccess.Write, FileShare.Read))
-                using (BsonBinaryWriter writer = new BsonBinaryWriter(fs))
-                {
-                    BsonSerializer.Serialize(writer, root);
-                }
+            BsonDocument doc = new BsonDocument(root);
+            bool isFirstDoc = row0 == 0;
+            var bson = root.ToBson();
+            using (FileStream fs = new FileStream(
+                            ThreadLocalData.filename,
+                            isFirstDoc ? FileMode.Create : FileMode.Append, FileAccess.Write, FileShare.Read)
+                        )
+            using (BsonBinaryWriter writer = new BsonBinaryWriter(fs))
+            {
+                BsonSerializer.Serialize(writer, root.ToBson());
+                //fs.Write(doc.ToBson(), 0, doc.ToBson().Length);
+                Console.WriteLine("Written!");
+            }
 
             ThreadLocalData.pendingRows.Clear();
             ThreadLocalData.writeReminder.Reset();
@@ -156,8 +169,8 @@ namespace MatrixRecorder
                 ThreadLocalData.pendingRows.Add(ThreadLocalData.currentRow);
                 ThreadLocalData.currentRowIndex++;
             }
-            
-            if (ThreadLocalData.writeReminder.Elapsed.TotalSeconds > docStoreIntervalSec)
+
+            if (ThreadLocalData.writeReminder.Elapsed.TotalSeconds > GetStoreInterval())
             {
                 StoreCurrentDoc();
             }
