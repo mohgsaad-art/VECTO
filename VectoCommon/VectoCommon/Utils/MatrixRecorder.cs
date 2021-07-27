@@ -84,6 +84,7 @@ namespace MatrixRecorder
             ThreadLocalData.currentRow = null;
             ThreadLocalData.currentRowIndex = -1;
             ThreadLocalData.pendingRows = new List<Dictionary<string, object>>();
+            ThreadLocalData.writeReminder = new Stopwatch();
             ThreadLocalData.writeReminder.Start();
             
         }
