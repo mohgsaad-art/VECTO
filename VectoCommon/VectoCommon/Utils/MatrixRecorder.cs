@@ -61,7 +61,7 @@ namespace MatrixRecorder
 
         private static int GetStoreInterval()
         {
-            JObject envVars = JObject.Parse(File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "utils","MatrixRecorderEnv.json")));
+            JObject envVars = JObject.Parse(File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "VectoCommon", "VectoCommon", "utils","MatrixRecorderEnv.json")));
 
             return envVars.Value<int>("DocStoreInterval");
         }
@@ -180,7 +180,7 @@ namespace MatrixRecorder
             {
                 foreach (var item in index)
                 {
-                    ThreadLocalData.currentRow[item.Key] = item.Value;
+                     ThreadLocalData.currentRow[item.Key] = item.Value;
                 }
             }
         }
