@@ -61,7 +61,7 @@ namespace MatrixRecorder
 
         private static int GetStoreInterval()
         {
-            JObject envVars = JObject.Parse(File.ReadAllText(@"MatrixRecorderEnv.json"));
+            JObject envVars = JObject.Parse(File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "utils","MatrixRecorderEnv.json")));
 
             return envVars.Value<int>("DocStoreInterval");
         }
@@ -128,7 +128,7 @@ namespace MatrixRecorder
                         )
             using (BsonBinaryWriter writer = new BsonBinaryWriter(fs))
             {
-                BsonSerializer.Serialize(writer, root.ToBson());
+                BsonSerializer.Serialize(writer, root.ToBsonDocument());
                 //fs.Write(doc.ToBson(), 0, doc.ToBson().Length);
                 Console.WriteLine("Written!");
             }

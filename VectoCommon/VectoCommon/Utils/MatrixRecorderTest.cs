@@ -11,7 +11,6 @@ namespace MatrixRecorder
         [OneTimeSetUp]
         public void RunBeforeAnyTests()
         {
-            Directory.SetCurrentDirectory(Path.GetTempPath());
         }
 
         [TestCase]
@@ -22,7 +21,7 @@ namespace MatrixRecorder
 
             Dictionary<string, object> headerDict = new Dictionary<string, object>();
 
-            MatrixRecorder.Open("out.bson", headerDict);
+            MatrixRecorder.Open(Path.Combine(Path.GetTempPath(), "out.bson"), headerDict);
 
             MatrixRecorder.NewRow(dict);
 
