@@ -71,7 +71,7 @@ namespace MatrixRecorder
             Dictionary<string, object> headerDict = new Dictionary<string, object>
             {
                 { "file_version", "0.0.0" },
-                //{ "vecto_version", VectoSimulationCore.VersionNumber },
+                { "vecto_version", GetVectoCommonVersionInformation() },
                 { "name", "matrixrecorder" }
             };
 
@@ -85,8 +85,7 @@ namespace MatrixRecorder
             ThreadLocalData.currentRowIndex = -1;
             ThreadLocalData.pendingRows = new List<Dictionary<string, object>>();
             ThreadLocalData.writeReminder = new Stopwatch();
-            ThreadLocalData.writeReminder.Start();
-            
+            ThreadLocalData.writeReminder.Start();            
         }
 
         /// <summary>
@@ -204,12 +203,12 @@ namespace MatrixRecorder
             }
         }
 
-        private static void ShowVersionInformation()
+        private static string GetVectoCommonVersionInformation()
         {
-            var core = Assembly.LoadFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "VectoCore.dll"))
+            var common_dll = Assembly.LoadFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "VectoCommon.dll"))
               .GetName();
-            //Console.WriteLine(string.Format(@"CoreLibrary: {0}", core.Version));
+
+            return common_dll.Version.ToString();
         }
-    
     }
 }
