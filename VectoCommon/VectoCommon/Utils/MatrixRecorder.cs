@@ -1,7 +1,5 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.IO;
-using MongoDB.Bson.Serialization;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -49,7 +47,9 @@ namespace MatrixRecorder
 
     public static class MatrixRecorder
     {
-
+        /// <summary>
+        /// Thread local data initialization
+        /// </summary>
         private static ThreadLocal<ThreadLocalData> _ThreadLocalData =
             new ThreadLocal<ThreadLocalData>(() => new ThreadLocalData());
 
@@ -58,13 +58,9 @@ namespace MatrixRecorder
             get { return _ThreadLocalData.Value; }
             set { _ThreadLocalData.Value = value; }
         }
-
-        private static int GetStoreInterval()
-        {
-            JObject envVars = JObject.Parse(File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "VectoCommon", "VectoCommon", "utils","MatrixRecorderEnv.json")));
-
-            return envVars.Value<int>("DocStoreInterval");
-        }
+        
+        // vecto common dll name, used for retrieving the version
+        private static readonly string commonDllName = "VectoCommon.dll";
 
         /// <summary>
         /// Prepare the thread local data with needed properties for recording pendingRows and storing them later.
@@ -74,7 +70,6 @@ namespace MatrixRecorder
         {
             ThreadLocalData.filename = filepath;
 
-            // the order needs to be kept, file_version pair should be first            
             Dictionary<string, object> headerDict = new Dictionary<string, object>
             {
                 // Keep file_version first to the top, to facilitate parsers.
@@ -105,9 +100,10 @@ namespace MatrixRecorder
 
             string filename = ThreadLocalData.filename;
             var row0 = ThreadLocalData.currentRowIndex;
+
             if (pendingRows == null || !pendingRows.Any())
             {
-                //Log.Info($"Skipped writting file({ filename}) with empty pendingRows@{row0}.");
+                Debug.Write("$Skipped writting file({ filename}) with empty pendingRows@{row0}.");
                 return;
             }
 
@@ -120,18 +116,17 @@ namespace MatrixRecorder
                 ["rows"] = pendingRows
             };
 
-            BsonDocument doc = new BsonDocument(root);
             bool isFirstDoc = row0 == 0;
-            var bson = root.ToBson();
+            BsonDocument bsonDoc = new BsonDocument(root);
+            var bsonBinary = bsonDoc.ToBson();
+
             using (FileStream fs = new FileStream(
-                            ThreadLocalData.filename,
-                            isFirstDoc ? FileMode.Create : FileMode.Append, FileAccess.Write, FileShare.Read)
-                        )
+                        ThreadLocalData.filename,
+                        isFirstDoc ? FileMode.Create : FileMode.Append, FileAccess.Write, FileShare.Read)
+                   )
             using (BsonBinaryWriter writer = new BsonBinaryWriter(fs))
             {
-                BsonSerializer.Serialize(writer, root.ToBsonDocument());
-                //fs.Write(doc.ToBson(), 0, doc.ToBson().Length);
-                Console.WriteLine("Written!");
+                fs.Write(bsonBinary, 0, bsonBinary.Length);
             }
 
             ThreadLocalData.pendingRows.Clear();
@@ -143,13 +138,16 @@ namespace MatrixRecorder
         /// 1. Append current row to pendingRows
         /// 2. Create a document with header and pendingRows
         /// 3. Write document into the file
-        /// 4. Clear the tl
+        /// 4. Clear the thread local data
         /// </summary>
         public static void Close()
         {
-            if (ThreadLocalData.currentRow != null && ThreadLocalData.pendingRows != null)
+            Debug.Assert(ThreadLocalData.pendingRows != null, "pendingRows != null");
+
+            if (ThreadLocalData.currentRow != null)
             {
                 ThreadLocalData.pendingRows.Add(ThreadLocalData.currentRow);
+                ThreadLocalData.currentRowIndex++;
             }
 
             StoreCurrentDoc();
@@ -160,18 +158,21 @@ namespace MatrixRecorder
         /// <summary>
         /// Send any old row to the sink and initiate a new one.
         /// Create a new underlying *dict* to store values, and append any given values in `index`.
-        /// Check if recorder has not `Open()` yet.
+        /// Check if the recorder has not used `Open()` yet.
         /// </summary>
         /// <param name="index">List of key value pairs to be updated in current row</param>
         public static void NewRow(IEnumerable<KeyValuePair<string, object>> index = null)
         {
-            if (ThreadLocalData.currentRow != null && ThreadLocalData.pendingRows != null)
+            Debug.Assert(ThreadLocalData.pendingRows != null, "pendingRows != null");
+
+            if (ThreadLocalData.currentRow != null)
             {
                 ThreadLocalData.pendingRows.Add(ThreadLocalData.currentRow);
-                ThreadLocalData.currentRowIndex++;
+                ThreadLocalData.currentRowIndex++;   
             }
-
-            if (ThreadLocalData.writeReminder.Elapsed.TotalSeconds > GetStoreInterval())
+            
+            var docStoreInterval = int.Parse(Environment.GetEnvironmentVariable("DocStoreInterval"));
+            if (ThreadLocalData.writeReminder.Elapsed.TotalSeconds > docStoreInterval)
             {
                 StoreCurrentDoc();
             }
@@ -190,14 +191,16 @@ namespace MatrixRecorder
         /// Record a new key-value pair. 
         /// Append the pair into the *dict* representing the row.
         /// Any pre-existing value for some key is overwritten.
-        /// Check if recorder has not `Open()` yet.
+        /// Check if recorder has not used `Open()` yet.
         /// </summary>
         /// <param name="key">key to be recorded</param>
         /// <param name="value">value to be recorded</param>
         public static void Record(string key, object value)
         {
-            //NRE error if NewRow() has not been called
+            // NRE error if NewRow() has not been called
             var row = ThreadLocalData.currentRow;
+
+            Debug.Assert(row != null, "row != null");
 
             row[key] = value;
         }
@@ -210,6 +213,7 @@ namespace MatrixRecorder
         {
             //NRE error if NewRow() has not been called
             var row = ThreadLocalData.currentRow;
+            Debug.Assert(row != null, "row != null");
 
             foreach (var item in values)
             {
@@ -217,12 +221,16 @@ namespace MatrixRecorder
             }
         }
 
+        /// <summary>
+        /// Get the version from vecto common
+        /// </summary>
         private static string GetVectoCommonVersionInformation()
         {
-            var common_dll = Assembly.LoadFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "VectoCommon.dll"))
+            var currentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            var commonDll = Assembly.LoadFile(Path.Combine(currentDirectory, commonDllName))
               .GetName();
 
-            return common_dll.Version.ToString();
+            return commonDll.Version.ToString();
         }
     }
 }

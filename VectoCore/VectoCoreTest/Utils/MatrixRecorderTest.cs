@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
@@ -12,6 +13,12 @@ namespace MatrixRecorder
         [OneTimeSetUp]
         public void RunBeforeAnyTests()
         {
+            Environment.SetEnvironmentVariable("DocStoreInterval", "33");
+         
+            File.Delete(Path.Combine(Path.GetTempPath(), "out1.bson"));
+            File.Delete(Path.Combine(Path.GetTempPath(), "out2.bson"));
+            File.Delete(Path.Combine(Path.GetTempPath(), "out3.bson"));
+            File.Delete(Path.Combine(Path.GetTempPath(), "out4.bson"));
         }
 
         [TestCase]
@@ -26,13 +33,13 @@ namespace MatrixRecorder
 
             MatrixRecorder.NewRow(dict);
 
-            MatrixRecorder.Record("record key", "record val");
+            MatrixRecorder.Record("record key 1", "record val 1");
+            
+            MatrixRecorder.NewRow(dict);
+
+            MatrixRecorder.Record("record key 2", "record val 2");
 
             MatrixRecorder.Close();
-            /*
-             * {{ "header" : { "file_version" : "0.0.0", "name" : "matrixrecorder", "row0" : 0 }, "rows" : [{ "dict a" : "dict b", "record key" : "record val" }] }}
-             * 
-             */
         }
 
         [TestCase]
