@@ -122,7 +122,7 @@ namespace MatrixRecorder
 
             using (FileStream fs = new FileStream(
                         ThreadLocalData.filename,
-                        isFirstDoc ? FileMode.Create : FileMode.Append, FileAccess.Write, FileShare.Read)
+                        isFirstDoc ? FileMode.Create : FileMode.Append, FileAccess.ReadWrite, FileShare.ReadWrite)
                    )
             using (BsonBinaryWriter writer = new BsonBinaryWriter(fs))
             {
