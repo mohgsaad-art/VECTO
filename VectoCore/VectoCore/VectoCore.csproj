@@ -910,13 +910,9 @@
     <EmbeddedResource Include="Resources\Declaration\Buses\ElectricConsumers.csv" />
     <EmbeddedResource Include="Resources\Declaration\Buses\SSMTechList.csv" />
     <EmbeddedResource Include="Resources\Declaration\Buses\SSMDefaults.ahsm" />
-    <EmbeddedResource Include="Resources\Declaration\Buses\DefaultClimatic.aenv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Declaration\Buses\DefaultClimatic.aenv" />
     <EmbeddedResource Include="Resources\Declaration\Buses\AlternatorTechnologies.csv" />
-    <None Include="Resources\Declaration\Buses\DefaultBusAuxCfg.aaux">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <EmbeddedResource Include="Resources\Declaration\Buses\DefaultBusAuxCfg.aaux" />
     <EmbeddedResource Include="Resources\Declaration\Buses\DefaultActuationsMap.apac" />
     <EmbeddedResource Include="Resources\Declaration\PrimaryBusSegmentationTable.csv" />
     <EmbeddedResource Include="Resources\Declaration\VACC\Bus.vacc" />
@@ -1022,12 +1018,24 @@
     <EmbeddedResource Include="Resources\Declaration\GenericVehicles\R3.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\235_75_R17.5.xml" />
-    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\245_70_R19.5.xml" />
-    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\265_70_R19.5.xml" />
-    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\275_70_R22.5.xml" />
-    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\385_65_R22.5.xml" />
-    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\445_45_R19.5.xml" />
+    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\235_75_R17.5.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\245_70_R19.5.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\265_70_R19.5.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\275_70_R22.5.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\385_65_R22.5.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\445_45_R19.5.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Declaration\Trailer\VectoReportsTrailer.css">

@@ -51,6 +51,7 @@ VectoVTPReport TestConditions { display: none; }
 *[unit="l/m³-km"]:after { content: "l/m³-km"; }
 *[unit="km"]:after { content: "km" }
 *[unit="m"]:after { content: "m" }
+*[unit="m²"]:after { content: "m²" }
 *[unit="m³"]:after { content: "m³" }
 *[unit="kg"]:after { content: "kg" }
 *[unit="km/h"]:after { content: "km/h" }

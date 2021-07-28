@@ -10,16 +10,16 @@
 	xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationComponent E:\QUAM\Workspace\VECTO_DEV_Hybrid\VectoCore\VectoCore\Resources\XSD/VectoDeclarationComponent.xsd">
 	<tns:Tyre xsi:type="v2.0:TyreComponentDeclarationType">
 		<v2.0:Data id="TYR-gooZah3D" xsi:type="v2.3:TyreDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.3">
-			<Manufacturer>Generic</Manufacturer>
-			<Model>235/75 R 17.5</Model>
-			<CertificationNumber>standard</CertificationNumber>
+			<Manufacturer>Generic Tyre Manufacturer</Manufacturer>
+			<Model>Generic Tyre Model</Model>
+			<CertificationNumber>e12*0815/8051*2017/05T0000*00</CertificationNumber>
 			<Date>2017-02-15T11:00:00Z</Date>
 			<AppVersion>DemoTyreApp 1.0</AppVersion>
 			<Dimension>275/70 R22.5</Dimension>
 			<TyreClass>C3</TyreClass>
 			<FuelEfficiencyClass>C</FuelEfficiencyClass>
-			<RRCDeclared>0.0055</RRCDeclared>
-			<FzISO>37500</FzISO>
+			<RRCDeclared>0.0065</RRCDeclared>
+			<FzISO>26266</FzISO>
 		</v2.0:Data>
 		<v2.0:Signature>
 			<di:Reference URI="#TYR-gooZah3D">
