@@ -100,7 +100,7 @@ namespace TUGraz.VectoCore.Tests.XML
 		[TestCase]
 		public void TrailerCorrectionsTest()
 		{
-			var trailerSegment = DeclarationData.TrailerSegments.Lookup(inputDataProvider.JobInputData.Trailer.NumberOfAxles, inputDataProvider.JobInputData.Trailer.TrailerType, inputDataProvider.JobInputData.Trailer.BodyworkCode, false);
+			var trailerSegment = DeclarationData.TrailerSegments.Lookup(inputDataProvider.JobInputData.Trailer.NumberOfAxles, inputDataProvider.JobInputData.Trailer.TrailerType, inputDataProvider.JobInputData.Trailer.BodyworkCode, false, null);
 
 			var trailerDataAdapter = new DeclarationTrailerDataAdapter();
 
@@ -128,7 +128,7 @@ namespace TUGraz.VectoCore.Tests.XML
 			var trailerSegment = DeclarationData.TrailerSegments.Lookup(
 				inputDataProvider.JobInputData.Trailer.NumberOfAxles,
 				inputDataProvider.JobInputData.Trailer.TrailerType, inputDataProvider.JobInputData.Trailer.BodyworkCode,
-				false);
+				false, null);
 
 			Assert.AreEqual(3, trailerSegment.Missions.Count());
 			Assert.AreEqual(1, trailerSegment.Missions.Count(x=> x.MissionType == MissionType.LongHaul));

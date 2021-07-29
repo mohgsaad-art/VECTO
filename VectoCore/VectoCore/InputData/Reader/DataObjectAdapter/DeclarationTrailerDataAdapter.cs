@@ -1414,9 +1414,20 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				data.CdxA6 = CalcVolumeCorrection(trailerSegment, trailer, data.CdxA6.Value());
 				data.CdxA9 = CalcVolumeCorrection(trailerSegment, trailer, data.CdxA9.Value());
 			}
-            #endregion
+			#endregion
 
-            #region Aero feature Correction
+			#region Coupling point
+
+			if (trailer.TrailerType == TypeTrailer.DC && trailer.TrailerCouplingPoint == TrailerCouplingPoint.High) {
+				data.CdxA0 *= 1.1037;
+				data.CdxA3 *= 1.1348;
+				data.CdxA6 *= 1.1804;
+				data.CdxA9 *= 1.2235;
+
+			}
+			#endregion 
+
+			#region Aero feature Correction
 
 			if (trailerSegment.SpecificTrailerSegment.AeroCorrection) {
 

@@ -63,7 +63,7 @@ namespace TUGraz.VectoCore.OutputData.XML {
 		protected internal override void DoWriteReport()
 		{
 			//TODO: identifies trailer missions with PassengerCount - need to change this probably
-			foreach (var resultEntry in Results.OrderBy(x=> x.Mission.ToString())) {
+			foreach (var resultEntry in Results.OrderBy(x=> x.Mission)) {
 				var mappings = new Dictionary<ResultEntry, ResultEntry>();
 				if (Results.Count(x => x.Mission == resultEntry.Mission && x.LoadingType == resultEntry.LoadingType && x.PassengerCount != null) > 0
 				&& Results.Count(x => x.Mission == resultEntry.Mission && x.LoadingType == resultEntry.LoadingType && x.PassengerCount == null) > 0) {

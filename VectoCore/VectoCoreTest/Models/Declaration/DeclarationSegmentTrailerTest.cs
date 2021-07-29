@@ -14,7 +14,7 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 		[TestCase]
 		public void TrailerLookupTest(IDeclarationTrailerInputDataProvider inputDataProvider)
 		{
-			var trailerSegment = DeclarationData.TrailerSegments.Lookup(inputDataProvider.JobInputData.Trailer.NumberOfAxles, inputDataProvider.JobInputData.Trailer.TrailerType, inputDataProvider.JobInputData.Trailer.BodyworkCode, false);
+			var trailerSegment = DeclarationData.TrailerSegments.Lookup(inputDataProvider.JobInputData.Trailer.NumberOfAxles, inputDataProvider.JobInputData.Trailer.TrailerType, inputDataProvider.JobInputData.Trailer.BodyworkCode, false, null);
 			Assert.AreEqual(23101, trailerSegment.VehicleGroup);
 			Assert.AreEqual("40000", trailerSegment.MaxGcm);
 			Assert.AreEqual(VehicleClass.Class9, trailerSegment.Class);
