@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 
-namespace MatrixRecorder
+namespace TUGraz.VectoCommon.Utils.MatrixRecorder
 {
     [TestFixture]
     [Parallelizable(ParallelScope.All)]
