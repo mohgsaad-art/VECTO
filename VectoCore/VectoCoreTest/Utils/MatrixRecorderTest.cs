@@ -99,14 +99,14 @@ namespace MatrixRecorder
         {
             var expectedJsonStr = "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"0.7.3.2171\", \"name\" : \"matrixrecorder\", \"row0\" : 1 }, \"rows\" : [{ \"dict a\" : \"dict b\", \"record key2\" : \"record val2\" }, { \"dict a\" : \"dict b\" }] }";
 
-            string outpath = Path.Combine(Path.GetTempPath(), "out2.bson");
+            string outpath = Path.Combine(Path.GetTempPath(), "out3.bson");
 
             Dictionary<string, object> dict = new Dictionary<string, object>();
             dict.Add("dict a", "dict b");
 
             Dictionary<string, object> headerDict = new Dictionary<string, object>();
 
-            MatrixRecorder.Open(Path.Combine(Path.GetTempPath(), "out3.bson"), headerDict);
+            MatrixRecorder.Open(outpath, headerDict);
 
             MatrixRecorder.NewRow(dict);
 
