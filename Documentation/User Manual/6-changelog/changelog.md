@@ -2,6 +2,11 @@
 
 **VECTO-3.3.10**
 
+***Build 2401 (2021-07-29) OFFICIAL RELEASE***
+
+- Bugfixes (compared to 3.3.10.2373)
+    * *No additional bugfixes*
+
 ***Build 2373 (2021-07-01) RELEASE CANDIDATE***
 
 - Improvements
