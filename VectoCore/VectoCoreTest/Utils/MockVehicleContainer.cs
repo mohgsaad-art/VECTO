@@ -235,5 +235,21 @@ namespace TUGraz.VectoCore.Tests.Utils
 		}
 
 		public Kilogram ReducedMassWheels { get; set; }
+
+        public Watt PreviousStateEnginePower { get; set; }
+
+		public NewtonMeter PreviousStateEngineTorque { get; set; }
+
+		public NewtonMeter PreviousStateEngineTorqueOut { get; set; }
+
+		public NewtonMeter PreviousStateFullDragTorque { get; set; }
+
+		public NewtonMeter PreviousStateInertiaTorqueLoss { get; set; }
+
+		public CombustionEngine.EngineOperationMode PreviousStateOperationMode { get; set; }
+
+		public NewtonMeter PreviousStateStationaryFullLoadTorque { get; set; }
+
+		public Second PreviousStateDt { get; set; }
 	}
 }

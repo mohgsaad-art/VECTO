@@ -164,7 +164,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			NewtonMeter inTorque, PerSecond inAngularVelocity, uint gear, Second lastShiftTime)
 		{
 
-			LogShiftData.LogShiftDataToExcel(absTime, dt, outTorque, outAngularVelocity, inTorque, inAngularVelocity, gear, lastShiftTime, DataBus, _gearbox);
+			//LogShiftData.LogShiftDataToExcel(absTime, dt, outTorque, outAngularVelocity, inTorque, inAngularVelocity, gear, lastShiftTime, DataBus, _gearbox);
 
 			// no shift when vehicle stands
 			if (DataBus.VehicleStopped) {

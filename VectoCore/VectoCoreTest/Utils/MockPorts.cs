@@ -35,6 +35,7 @@ using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Connector.Ports;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 
 namespace TUGraz.VectoCore.Tests.Utils
 {
@@ -130,6 +131,20 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		public PerSecond EngineN95hSpeed { get; set; }
 		public PerSecond EngineN80hSpeed { get; set; }
+
+        public Watt PreviousStateEnginePower { get; set; }
+		public NewtonMeter PreviousStateEngineTorque { get; set; }
+		public NewtonMeter PreviousStateEngineTorqueOut { get; set; }
+
+		public NewtonMeter PreviousStateFullDragTorque { get; set; }
+
+		public NewtonMeter PreviousStateInertiaTorqueLoss { get; set; }
+
+		public CombustionEngine.EngineOperationMode PreviousStateOperationMode { get; set; }
+
+		public NewtonMeter PreviousStateStationaryFullLoadTorque { get; set; }
+
+		public Second PreviousStateDt { get; set; }
 	}
 
 	public class MockDrivingCycleOutPort : LoggingObject, IDrivingCycleOutPort

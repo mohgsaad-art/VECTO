@@ -93,9 +93,13 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			factory.JobNumber = Interlocked.Increment(ref _jobNumber);
 
 			foreach (var run in factory.SimulationRuns()) {
-				var entry = new RunEntry { Run = run, JobContainer = this };
-				Runs.Add(entry);
-				runIDs.Add(entry.Run.RunIdentifier);
+				if(run.CycleName == "UrbanDelivery" && run.RunSuffix == "ReferenceLoad")
+                {
+					var entry = new RunEntry { Run = run, JobContainer = this };
+					Runs.Add(entry);
+					runIDs.Add(entry.Run.RunIdentifier);
+				}
+				//break;
 			}
 			return runIDs;
 		}
