@@ -195,6 +195,21 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			
 			DetermineDriverAction(absTime);    
 
+			// TODO: worth making it a `DrivingAction` method with `DrivingBehavior` arg.
+			//
+			if (DriverBehavior == DrivingBehavior.Halted)
+			{
+				DrivingAction = DrivingAction.Halt;
+			}
+			else if (DriverBehavior == DrivingBehavior.Braking)
+			{
+				DrivingAction = DrivingAction.Brake;
+			} 
+			else if (acceleration > 0)
+			{
+				DrivingAction = DrivingAction.Accelerate;
+			}
+
 			IResponse response;
 			var responseCount = 0;
 			do {
