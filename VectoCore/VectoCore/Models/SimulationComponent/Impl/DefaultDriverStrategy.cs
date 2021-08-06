@@ -206,6 +206,16 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
 		}
 
+		protected virtual IResponse DoHandleRequest(Second absTime, Second dt, MeterPerSquareSecond accelaration, Radian gradient)
+		{
+			var targetVelocity = 1.SI<MeterPerSecond>();
+			var ds = 1.SI<Meter>();
+			var retVal = DrivingModes[CurrentDrivingMode].Request(
+				absTime, ds, VectoMath.Min(Driver.DataBus.VehicleInfo.MaxVehicleSpeed, targetVelocity), gradient);
+
+			return retVal;
+		}
+
 		protected virtual IResponse DoHandleRequest(Second absTime, Meter ds, MeterPerSecond targetVelocity, Radian gradient)
 		{
 			VehicleHaltTimestamp = null;

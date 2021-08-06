@@ -171,7 +171,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					},
 					evaluateFunction: acc => {
 						var response = vehicle.Request(time, simulationInterval, acc, gradient, true);
-						response.Driver.Acceleration = acc;
+						// FIXME: ank: Is this DriveResponse-is-null still necessary??
+						//
+						if (response.Driver != null) {
+							response.Driver.Acceleration = acc;
+						}
 						return response;
 					},
 					criterion: response => {

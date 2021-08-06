@@ -442,6 +442,128 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			return container;
 		}
 
+		private IVehicleContainer BuildMeasuredSpeedHybrid(VectoRunData data)
+		{
+			if (data.Cycle.CycleType != CycleType.MeasuredSpeed)
+			{
+				throw new VectoException("CycleType must be MeasuredSpeed");
+			}
+
+			var container = new VehicleContainer(data.ExecutionMode, _modData, _sumWriter) { RunData = data };
+			var es = new ElectricSystem(container);
+
+			if (data.BatteryData != null)
+			{
+				if (data.BatteryData.InitialSoC < data.BatteryData.MinSOC)
+				{
+					throw new VectoException("Battery: Initial SoC has to be higher than min SoC");
+				}
+				var battery = new Battery(container, data.BatteryData);
+				battery.Initialize(data.BatteryData.InitialSoC);
+				es.Connect(battery);
+			}
+
+			if (data.SuperCapData != null)
+			{
+				if (data.SuperCapData.InitialSoC < data.SuperCapData.MinVoltage / data.SuperCapData.MaxVoltage)
+				{
+					throw new VectoException("SuperCap: Initial SoC has to be higher than min SoC");
+				}
+				var superCap = new SuperCap(container, data.SuperCapData);
+				superCap.Initialize(data.SuperCapData.InitialSoC);
+				es.Connect(superCap);
+			}
+
+
+			var aux = new ElectricAuxiliary(container);
+			aux.AddConstant("P_aux_el", data.ElectricAuxDemand ?? 0.SI<Watt>());
+			es.Connect(aux);
+
+			HybridController ctl;
+			SwitchableClutch clutch = null;
+			if (data.GearboxData.Type.ManualTransmission())
+			{
+				var strategy = new HybridStrategy(data, container);
+				clutch = new SwitchableClutch(container, data.EngineData);
+
+				ctl = new HybridController(container, strategy, es);
+			} else {
+				var strategy = new HybridStrategyAT(data, container);
+
+				ctl = new HybridController(container, strategy, es);
+				new ATClutchInfo(container);
+			}
+
+			// add engine before gearbox so that gearbox can obtain if an ICE is available already in constructor
+			var engine = new StopStartCombustionEngine(container, data.EngineData);
+
+			var gearbox = GetGearbox(container, ctl.ShiftStrategy);
+			var gbx = gearbox as IHybridControlledGearbox;
+			if (gbx == null)
+			{
+				throw new VectoException("Gearbox can not be used for parallel hybrid");
+			}
+
+			var idleController = GetIdleController(data.PTO, engine, container);
+
+			ctl.Gearbox = gbx;
+			ctl.Engine = engine;
+
+			var cycle = new MeasuredSpeedDrivingCycle(container, data.Cycle);
+			cycle
+				.AddComponent(new Vehicle(container, data.VehicleData, data.AirdragData))
+				.AddComponent(new Wheels(container, data.VehicleData.DynamicTyreRadius, data.VehicleData.WheelsInertia))
+				.AddComponent(ctl)
+				.AddComponent(new Brakes(container))
+				.AddComponent(GetElectricMachine(PowertrainPosition.HybridP4, data.ElectricMachinesData, container, es, ctl))
+				.AddComponent(new AxleGear(container, data.AxleGearData))
+				.AddComponent(GetElectricMachine(PowertrainPosition.HybridP3, data.ElectricMachinesData, container, es, ctl))
+				.AddComponent(data.AngledriveData != null ? new Angledrive(container, data.AngledriveData) : null)
+				.AddComponent(gearbox, data.Retarder, container)
+				.AddComponent(GetElectricMachine(PowertrainPosition.HybridP2_5, data.ElectricMachinesData, container, es, ctl))
+				.AddComponent(GetElectricMachine(PowertrainPosition.HybridP2, data.ElectricMachinesData, container, es, ctl))
+				.AddComponent(clutch)
+				.AddComponent(GetElectricMachine(PowertrainPosition.HybridP1, data.ElectricMachinesData, container, es, ctl))
+				.AddComponent(engine, idleController)
+				.AddAuxiliaries(container, data);
+
+			if (data.ElectricMachinesData.Any(x => x.Item1 == PowertrainPosition.HybridP1))
+			{
+				if (gearbox is ATGearbox atGbx)
+				{
+					atGbx.IdleController = idleController;
+				} else {
+					clutch.IdleController = idleController;
+				}
+			}
+
+			cycle.IdleController = idleController as IdleControllerSwitcher;
+
+			if (data.BusAuxiliaries != null)
+			{
+				if (container.BusAux is BusAuxiliariesAdapter busAux)
+				{
+					var auxCfg = data.BusAuxiliaries;
+					var electricStorage = auxCfg.ElectricalUserInputsConfig.AlternatorType == AlternatorType.Smart
+						? new SimpleBattery(container, auxCfg.ElectricalUserInputsConfig.ElectricStorageCapacity, auxCfg.ElectricalUserInputsConfig.StoredEnergyEfficiency)
+						: (ISimpleBattery)new NoBattery(container);
+					busAux.ElectricStorage = electricStorage;
+					if (data.BusAuxiliaries.ElectricalUserInputsConfig.ConnectESToREESS)
+					{
+						var dcdc = new DCDCConverter(container,
+							data.BusAuxiliaries.ElectricalUserInputsConfig.DCDCEfficiency);
+						busAux.DCDCConverter = dcdc;
+						es.Connect(dcdc);
+					}
+
+				} else {
+					throw new VectoException("BusAux data set but no BusAux component found!");
+				}
+			}
+
+			return container;
+		}
+
 		/// <summary>
 		/// Builds a distance-based parallel hybrid powertrain.
 		/// <code>
@@ -470,6 +592,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		{
 			if (_sumWriter == null)
 				throw new ArgumentNullException(nameof(_sumWriter));
+		
 			if (data.Cycle.CycleType != CycleType.DistanceBased) {
 				throw new VectoException("CycleType must be DistanceBased");
 			}

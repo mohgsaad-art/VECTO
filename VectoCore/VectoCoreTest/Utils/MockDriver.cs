@@ -105,6 +105,26 @@ namespace TUGraz.VectoCore.Tests.Utils
 			_next = other;
 		}
 
+		IResponse IDrivingCycleOutPort.Request(Second absTime, Meter ds, MeterPerSecond targetVelocity, Radian gradient, bool dryRun)
+		{
+			throw new System.NotImplementedException();
+		}
+
+			IResponse IDrivingCycleOutPort.Request(Second absTime, Second ds, MeterPerSecond targetVelocity, Radian gradient, bool dryRun)
+		{
+			throw new System.NotImplementedException();
+		}
+
+			IResponse IDrivingCycleOutPort.Request(Second absTime, Second dt, MeterPerSquareSecond acceleration, Radian gradient)
+		{
+			throw new System.NotImplementedException();
+		}
+
+			IResponse IDrivingCycleOutPort.Request(Second absTime, Second dt, MeterPerSquareSecond acceleration, Radian gradient, bool dryRun)
+		{
+			throw new System.NotImplementedException();
+		}
+
 		public class RequestData
 		{
 			public Second AbsTime;

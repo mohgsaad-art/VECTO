@@ -183,6 +183,26 @@ namespace TUGraz.VectoCore.Tests.Utils
 		{
 			throw new NotImplementedException();
 		}
+
+		IResponse IDrivingCycleOutPort.Request(Second absTime, Meter ds, MeterPerSecond targetVelocity, Radian gradient, bool dryRun)
+		{
+			throw new NotImplementedException();
+		}
+
+		IResponse IDrivingCycleOutPort.Request(Second absTime, Second ds, MeterPerSecond targetVelocity, Radian gradient, bool dryRun)
+		{
+			throw new NotImplementedException();
+		}
+
+		IResponse IDrivingCycleOutPort.Request(Second absTime, Second dt, MeterPerSquareSecond acceleration, Radian gradient)
+		{
+			throw new NotImplementedException();
+		}
+
+		IResponse IDrivingCycleOutPort.Request(Second absTime, Second dt, MeterPerSquareSecond acceleration, Radian gradient, bool dryRun)
+		{
+			throw new NotImplementedException();
+		}
 	}
 
 	public class MockFvOutPort : LoggingObject, IFvOutPort
