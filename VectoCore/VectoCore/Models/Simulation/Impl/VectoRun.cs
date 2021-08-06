@@ -1,4 +1,4 @@
-﻿/*
+/*
 * This file is part of VECTO.
 *
 * Copyright © 2012-2019 European Union
@@ -117,6 +117,8 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 							return;
 						}
 						Container.AbsTime = AbsTime;
+						// add here extended logging
+						Log.Info("AbsTime: "+AbsTime.Value());
 					}
 				} while (response is ResponseSuccess);
 				if (!(GetContainer().RunData.Exempted || GetContainer().RunData.MultistageRun)) {

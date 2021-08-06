@@ -1,4 +1,4 @@
-﻿/*
+/*
 * This file is part of VECTO.
 *
 * Copyright © 2012-2019 European Union
@@ -180,6 +180,26 @@ namespace TUGraz.VectoCore.Tests.Utils
 		}
 
 		public IResponse Initialize(MeterPerSecond vehicleSpeed, Radian roadGradient, MeterPerSquareSecond startAcceleration)
+		{
+			throw new NotImplementedException();
+		}
+
+		IResponse IDrivingCycleOutPort.Request(Second absTime, Meter ds, MeterPerSecond targetVelocity, Radian gradient, bool dryRun)
+		{
+			throw new NotImplementedException();
+		}
+
+		IResponse IDrivingCycleOutPort.Request(Second absTime, Second ds, MeterPerSecond targetVelocity, Radian gradient, bool dryRun)
+		{
+			throw new NotImplementedException();
+		}
+
+		IResponse IDrivingCycleOutPort.Request(Second absTime, Second dt, MeterPerSquareSecond acceleration, Radian gradient)
+		{
+			throw new NotImplementedException();
+		}
+
+		IResponse IDrivingCycleOutPort.Request(Second absTime, Second dt, MeterPerSquareSecond acceleration, Radian gradient, bool dryRun)
 		{
 			throw new NotImplementedException();
 		}

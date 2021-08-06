@@ -1,4 +1,4 @@
-﻿/*
+/*
 * This file is part of VECTO.
 *
 * Copyright © 2012-2019 European Union
@@ -204,6 +204,16 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					pccState = PCCStates.OutsideSegment;
 				}
 			}
+		}
+
+		protected virtual IResponse DoHandleRequest(Second absTime, Second dt, MeterPerSquareSecond accelaration, Radian gradient)
+		{
+			var targetVelocity = 1.SI<MeterPerSecond>();
+			var ds = 1.SI<Meter>();
+			var retVal = DrivingModes[CurrentDrivingMode].Request(
+				absTime, ds, VectoMath.Min(Driver.DataBus.VehicleInfo.MaxVehicleSpeed, targetVelocity), gradient);
+
+			return retVal;
 		}
 
 		protected virtual IResponse DoHandleRequest(Second absTime, Meter ds, MeterPerSecond targetVelocity, Radian gradient)
@@ -796,6 +806,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		public DefaultDriverStrategy DriverStrategy { get; set; }
 
 		protected IDriverActions Driver => _driver ?? (_driver = DriverStrategy.Driver);
+
+		public TimeBasedDriverStrategy TimeBasedDriverStrategy { get; set; }
 
 		protected DriverData DriverData => _driverData ?? (_driverData = Driver.DriverData);
 

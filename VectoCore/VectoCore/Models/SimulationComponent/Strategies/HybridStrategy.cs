@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TUGraz.VectoCommon.Exceptions;
@@ -1578,9 +1578,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				DataBus.VehicleInfo.VehicleSpeed.IsSmaller(DataBus.DrivingCycleInfo.TargetSpeed, 1.KMPHtoMeterPerSecond())) {
 				best = eval.Where(x => !double.IsNaN(x.Score)).Where(x => !x.IgnoreReason.EngineSpeedTooHigh())
 							.OrderBy(x => x.Score).FirstOrDefault();
+				// add here extended logging
 			} else {
 				best = eval.Where(x => !double.IsNaN(x.Score)).Where(x => x.IgnoreReason.AllOK()).OrderBy(x => x.Score)
 								.FirstOrDefault();
+				// add here extended logging
 			}
 			if (best != null) {
 				return best;
@@ -1592,10 +1594,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 						!double.IsNaN(x.Score) && !x.IgnoreReason.EngineSpeedTooLow() &&
 						!x.IgnoreReason.EngineSpeedTooHigh() && x.IgnoreReason.EngineTorqueOK()).OrderBy(x => x.Score)
 					.FirstOrDefault();
+				// add here extended logging
 			} else {
 				best = eval.Where(x => !double.IsNaN(x.Score) && !x.IgnoreReason.InvalidEngineSpeed())
 					.OrderBy(x => x.Score)
 					.FirstOrDefault();
+				// add here extended logging
 			}
 			//best = eval.Where(x => !double.IsNaN(x.Score) && !x.IgnoreReason.InvalidEngineSpeed()).OrderBy(x => x.Score)
 			//			.FirstOrDefault();
@@ -1788,9 +1792,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				}
 				if (nextGear.Equals(gear) && gearRange.Item2 == 0 && (emOffEntry.IgnoreReason & HybridConfigurationIgnoreReason.EngineSpeedTooHigh) != 0) {
 					allowEmergencyUpshift = true;
+					// add here extended logging
 				}
 				if (nextGear.Equals(gear) && gearRange.Item1 == 0 && (emOffEntry.IgnoreReason & HybridConfigurationIgnoreReason.EngineSpeedTooLow) != 0) {
 					allowEmergencyDownshift = true;
+					// add here extended logging
 				}
 			}
 
@@ -2139,6 +2145,15 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				return;
 			}
 
+			// FIXME: ank: Is this check-reqTorque-is-0 still necessary??
+			//
+			if (resp.Engine.TotalTorqueDemand == null)
+			{
+				tmp.FuelCosts = double.NaN;
+				tmp.IgnoreReason |= HybridConfigurationIgnoreReason.NoResponseAvailable;
+				return;
+			}
+
 			var iceOff = allowIceOff && resp.Engine.TorqueOutDemand.IsEqual(0, 1e-3);
 			if (DataBus.DriverInfo.DrivingAction == DrivingAction.Accelerate && dryRun) {
 				// this means we search for an acceleration the vehicle is capable to do - so treat ICE overload regularly
@@ -2167,13 +2182,23 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				}
 			}
 
-
-			if (!iceOff && /*!resp.Engine.TotalTorqueDemand.IsBetween(resp.Engine.DragTorque, resp.Engine.DynamicFullLoadTorque)*/
-				(resp.Engine.TotalTorqueDemand.IsSmaller(resp.Engine.DragTorque) || resp.Engine.TotalTorqueDemand.IsGreater(resp.Engine.DynamicFullLoadTorque))) {
+			// FIXME: ank: Is this check-reqTorque-is-0 still necessary??
+			//
+			try
+			{
+				var dummyTorque = resp.Engine.TotalTorqueDemand;
+				if (!iceOff && /*!resp.Engine.TotalTorqueDemand.IsBetween(resp.Engine.DragTorque, resp.Engine.DynamicFullLoadTorque)*/
+					(resp.Engine.TotalTorqueDemand.IsSmaller(resp.Engine.DragTorque) || resp.Engine.TotalTorqueDemand.IsGreater(resp.Engine.DynamicFullLoadTorque)))
+				{
+					tmp.FuelCosts = double.NaN;
+					tmp.IgnoreReason |= resp.Engine.TotalTorqueDemand.IsGreater(resp.Engine.DynamicFullLoadTorque)
+						? HybridConfigurationIgnoreReason.EngineTorqueDemandTooHigh
+						: HybridConfigurationIgnoreReason.EngineTorqueDemandTooLow;
+				}
+			} catch {
+				Log.Info("Error during Hybrid strategy TotalTorqueDemand!");
 				tmp.FuelCosts = double.NaN;
-				tmp.IgnoreReason |= resp.Engine.TotalTorqueDemand.IsGreater(resp.Engine.DynamicFullLoadTorque)
-					? HybridConfigurationIgnoreReason.EngineTorqueDemandTooHigh
-					: HybridConfigurationIgnoreReason.EngineTorqueDemandTooLow;
+				tmp.IgnoreReason = HybridConfigurationIgnoreReason.EngineTorqueDemandTooLow;
 			}
 
 			if (resp.Gearbox.Gear.Engaged && resp.Engine.EngineSpeed.IsGreaterOrEqual(
@@ -2183,8 +2208,16 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				tmp.FuelCosts = iceOff ? 0 : double.NaN;
 				tmp.IgnoreReason |= HybridConfigurationIgnoreReason.EngineSpeedTooHigh;
 			}
-			if (resp.Engine.EngineSpeed.IsSmallerOrEqual(ModelData.EngineData.IdleSpeed)) {
-				tmp.FuelCosts = iceOff ? 0 : double.NaN;
+			try
+			{
+				if (resp.Engine.EngineSpeed.IsSmallerOrEqual(ModelData.EngineData.IdleSpeed))
+				{
+					tmp.FuelCosts = iceOff ? 0 : double.NaN;
+					tmp.IgnoreReason |= HybridConfigurationIgnoreReason.EngineSpeedTooLow;
+				}
+			} catch {
+				Log.Info("Error during Hybrid strategy Gearbox!");
+				tmp.FuelCosts = double.NaN;
 				tmp.IgnoreReason |= HybridConfigurationIgnoreReason.EngineSpeedTooLow;
 			}
 
@@ -2380,6 +2413,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			DebugData = new DebugData();
 			DryRunSolution = null;
 			LimitedGbxTorque = false;
+			// add here extended logging
 		}
 
 		public void WriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
