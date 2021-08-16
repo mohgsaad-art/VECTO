@@ -1386,8 +1386,8 @@
   <data name="Report_Result_PassengerCount" xml:space="preserve">
     <value>PassengerCount</value>
   </data>
-  <data name="Trailer_CommercialName" xml:space="preserve">
-    <value>CommercialName</value>
+  <data name="Trailer_Model" xml:space="preserve">
+    <value>Model</value>
   </data>
   <data name="Trailer_LegislativeCategory" xml:space="preserve">
     <value>LegislativeCategory</value>
@@ -1450,7 +1450,7 @@
     <value>MassInRunningOrder</value>
   </data>
   <data name="Trailer_TPMLMTotalTrailer" xml:space="preserve">
-    <value>TPMLMTotalTrailer</value>
+    <value>TPMLMTrailer</value>
   </data>
   <data name="Trailer_TPLMAxleAssembly" xml:space="preserve">
     <value>TPMLMAxleAssembly</value>

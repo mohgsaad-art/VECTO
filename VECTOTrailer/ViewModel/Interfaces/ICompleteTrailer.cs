@@ -11,7 +11,7 @@ namespace VECTOTrailer.ViewModel.Interfaces
 	{
 		string Manufacturer { get; set; }
 		string ManufacturerAddress { get; set; }
-		string CommercialName { get; set; }
+		string TrailerModel { get; set; }
 		string VIN { get; set; }
 		DateTime Date { get; set; }
 		string LegislativeCategory { get; set; }

@@ -24,7 +24,7 @@ namespace VECTOTrailer.Model.TempDataObject
 
 		public string Manufacturer { get; set; }
 		public string ManufacturerAddress { get; set; }
-		public string CommercialName { get; set; }
+		public string TrailerModel { get; set; }
 		public string VIN { get; set; }
 		public DateTime Date { get; set; }
 		public string LegislativeCategory { get; set; }
@@ -124,7 +124,7 @@ namespace VECTOTrailer.Model.TempDataObject
 		{
 			viewModel.Manufacturer = Manufacturer;
 			viewModel.ManufacturerAddress = ManufacturerAddress;
-			viewModel.CommercialName = CommercialName;
+			viewModel.TrailerModel = TrailerModel;
 			viewModel.VIN = VIN;
 			viewModel.Date = Date;
 			viewModel.LegislativeCategory = LegislativeCategory;
@@ -195,7 +195,7 @@ namespace VECTOTrailer.Model.TempDataObject
 		{
 			viewModel.Manufacturer = default;
 			viewModel.ManufacturerAddress = default;
-			viewModel.CommercialName = default;
+			viewModel.TrailerModel = default;
 			viewModel.VIN = default;
 			viewModel.Date = DateTime.Now;
 			viewModel.LegislativeCategory = default;
@@ -263,7 +263,7 @@ namespace VECTOTrailer.Model.TempDataObject
 		{
 			Manufacturer = trailer.Manufacturer;
 			ManufacturerAddress = trailer.ManufacturerAddress;
-			CommercialName = trailer.CommercialName;
+			TrailerModel = trailer.TrailerModel;
 			VIN = trailer.VIN;
 			Date = DateTime.UtcNow;//Set DateTime UTC of current save
 			LegislativeCategory = trailer.LegislativeCategory;
@@ -332,7 +332,7 @@ namespace VECTOTrailer.Model.TempDataObject
 			XmlNamesToPropertyMapping = new Dictionary<string, string> {
 				{XMLNames.Component_Manufacturer, nameof(Manufacturer)},
 				{XMLNames.Component_ManufacturerAddress, nameof(ManufacturerAddress)},
-				{XMLNames.Component_Model, nameof(CommercialName)},
+				{XMLNames.Component_Model, nameof(TrailerModel)},
 				{XMLNames.Vehicle_VIN, nameof(VIN)},
 				{XMLNames.Component_Date, nameof(Date)},
 				{XMLNames.Vehicle_LegislativeClass, nameof(LegislativeCategory)},

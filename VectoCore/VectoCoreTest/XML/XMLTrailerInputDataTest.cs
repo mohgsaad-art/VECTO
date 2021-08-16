@@ -67,7 +67,7 @@ namespace TUGraz.VectoCore.Tests.XML
 			//general info
 			Assert.AreEqual("Manufacturer", inputDataProvider.JobInputData.Trailer.Manufacturer);
 			Assert.AreEqual("ManufacturerAddress", inputDataProvider.JobInputData.Trailer.ManufacturerAddress);
-			Assert.AreEqual("CommercialName", inputDataProvider.JobInputData.Trailer.CommercialName);
+			//Assert.AreEqual("Model", inputDataProvider.JobInputData.Trailer.TrailerModel);
 			Assert.AreEqual("123-456-789", inputDataProvider.JobInputData.Trailer.VIN);
 			Assert.AreEqual("O4", inputDataProvider.JobInputData.Trailer.LegislativeCategory);
 			Assert.AreEqual(NumberOfTrailerAxles.Two, inputDataProvider.JobInputData.Trailer.NumberOfAxles);

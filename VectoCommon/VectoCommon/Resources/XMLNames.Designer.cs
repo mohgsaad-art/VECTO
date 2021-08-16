@@ -3085,15 +3085,6 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CommercialName.
-        /// </summary>
-        public static string Trailer_CommercialName {
-            get {
-                return ResourceManager.GetString("Trailer_CommercialName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to CurbMass.
         /// </summary>
         public static string Trailer_CurbMass {
@@ -3193,6 +3184,15 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Model.
+        /// </summary>
+        public static string Trailer_Model {
+            get {
+                return ResourceManager.GetString("Trailer_Model", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to TotalHeightTrailer.
         /// </summary>
         public static string Trailer_TotalHeightTrailer {
@@ -3211,7 +3211,7 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to TPMLMTotalTrailer.
+        ///   Looks up a localized string similar to TPMLMTrailer.
         /// </summary>
         public static string Trailer_TPMLMTotalTrailer {
             get {

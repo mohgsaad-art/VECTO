@@ -974,7 +974,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		public IList<ITrailerAxleDeclarationInputData> Axles => ReadAxles();
 
-		public string CommercialName => GetString(XMLNames.Trailer_CommercialName);
+		public string TrailerModel => GetString(XMLNames.Trailer_Model);
 
 		public string Identifier => GetAttribute(BaseNode, XMLNames.Component_ID_Attr);
 

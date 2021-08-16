@@ -232,7 +232,7 @@
 							<xs:documentation>P252 / II.1.1.6</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="CommercialName" type="xs:string"/>
+					<xs:element name="Model" type="xs:string"/>
 					<xs:element name="VIN" type="vdecdef:VINType"/>
 					<xs:element name="Date" type="xs:string"/>
 					<xs:element name="LegislativeCategory" type="xs:string"/>
@@ -252,7 +252,7 @@
 										</xs:simpleContent>
 									</xs:complexType>
 								</xs:element>
-								<xs:element name="TPMLMTotalTrailer">
+								<xs:element name="TPMLMTrailer">
 									<xs:complexType>
 										<xs:simpleContent>
 											<xs:extension base="xs:double">

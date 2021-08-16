@@ -158,7 +158,7 @@ Vehicle > *:before,
 
 Vehicle Manufacturer:before {content: "Manufacturer:"; }
 Vehicle ManufacturerAddress:before {content: "Manufacturer Address:"; }
-Vehicle CommercialName:before {content: "Commercial Name:"; }
+Vehicle Model:before {content: "Model:"; }
 Vehicle VIN:before {content: "VIN:"; }
 Vehicle Date:before {content: "Date:"; }
 Vehicle LegislativeCategory:before {content: "Legislative Category:"; }
@@ -171,7 +171,7 @@ Vehicle BodyCode:before {content: "Body Code:";}
 
 Vehicle Masses:before {content: "Masses:"; margin-top:5px;}
 Vehicle MassInRunningOrder:before {content: "Mass In Running Order:"; margin-left: 10px;}
-Vehicle TPMLMTotalTrailer:before {content: "TPMLM Total Trailer:"; margin-left: 10px;}
+Vehicle TPMLMTrailer:before {content: "TPMLM Trailer:"; margin-left: 10px;}
 Vehicle TPMLMAxleAssembly:before {content: "TPMLM Axle Assembly:"; margin-left: 10px;}
 
 Vehicle VehicleGroupAnnexI:before {content: "Vehicle Group Annex I:"; margin-top:5px;}

@@ -1132,7 +1132,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			if (trailer.NumberOfAxles == NumberOfTrailerAxles.One && trailer.LengthBetweenCentersOfAxles.Value() > 0)
 				throw new Exception("One axle trailers should have Length Between Centers Of Axles = 0");
 
-			if (trailer.TPMLMAxleAssembly >= trailer.TPMLMTotalTrailer)
+			if (trailer.TPMLMAxleAssembly > trailer.TPMLMTotalTrailer)
 				throw new Exception("Invalid masses declared");
 		}
 

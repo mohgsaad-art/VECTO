@@ -209,7 +209,7 @@ namespace TUGraz.VectoCommon.InputData
 	{
 		string Identifier { get; }
 
-		string CommercialName { get; }
+		string TrailerModel { get; }
 
 		string ManufacturerAddress { get; }
 
