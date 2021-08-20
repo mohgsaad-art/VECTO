@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
+using TUGraz.VectoCore.Models.SimulationComponent.Data;
 
 namespace TUGraz.VectoCommon.Utils.MatrixRecorder
 {
@@ -153,6 +154,49 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
 
             MatrixRecorder.Record("record key2", "record val2");
             MatrixRecorder.NewRow(dict);
+
+            MatrixRecorder.Close();
+
+            CheckOutput(outpath, expectedJsonStr);
+        }
+
+        [TestCase]
+        public static void BSON_MatrixRecorder_null_header()
+        {
+            var expectedJsonStr = "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"0.7.3.2171\", \"name\" : \"matrixrecorder\", \"row0\" : 1 }, \"rows\" : [{ }] }";
+
+            string outpath = Path.Combine(Path.GetTempPath(), "out5.bson");
+
+            MatrixRecorder.Open(outpath, null);
+
+            MatrixRecorder.NewRow(null);
+
+            MatrixRecorder.Close();
+
+            CheckOutput(outpath, expectedJsonStr);
+        }
+
+        [TestCase]
+        public static void BSON_MatrixRecorder_custom_header()
+        {
+            var expectedJsonStr = "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"0.7.3.2171\", \"name\" : \"matrixrecorder\", \"CycleName\" : \"\", \"CycleType\" : 3, \"row0\" : 1 }, \"rows\" : [{ }] }";
+
+            string outpath = Path.Combine(Path.GetTempPath(), "out6.bson");
+            DrivingCycleData cycle = new DrivingCycleData
+            {
+                Name = "",
+                CycleType = CycleType.MeasuredSpeed
+            };
+
+            Dictionary<string, object> headerDict = new Dictionary<string, object>()
+            {
+                ["CycleName"] = cycle.Name,
+                ["CycleType"] = cycle.CycleType
+            };
+
+            MatrixRecorder.Open(outpath, headerDict);
+
+            MatrixRecorder.NewRow(null);
 
             MatrixRecorder.Close();
 
