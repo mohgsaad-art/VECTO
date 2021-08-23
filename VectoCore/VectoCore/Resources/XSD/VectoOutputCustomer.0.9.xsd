@@ -51,12 +51,60 @@
 					</xs:simpleContent>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="CdxAyawAngle0" type="xs:double"/>
-			<xs:element name="CdxAyawAngle3" type="xs:double"/>
-			<xs:element name="CdxAyawAngle6" type="xs:double"/>
-			<xs:element name="CdxAyawAngle9" type="xs:double"/>
-			<xs:element name="AverageSpeed" type="xs:double"/>
-			<xs:element name="EfficiencyRatio" type="xs:double" maxOccurs="unbounded"/>
+			<xs:element name="CdxAyawAngle0">
+				<xs:complexType>
+				<xs:simpleContent>
+					<xs:extension base="xs:double">
+						<xs:attribute name="unit" type="OtherType" use="required"/>
+					</xs:extension>
+				</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="CdxAyawAngle3">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="unit" type="OtherType" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="CdxAyawAngle6">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="unit" type="OtherType" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="CdxAyawAngle9">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="unit" type="OtherType" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="AverageSpeed">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="unit" type="OtherType" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="EfficiencyRatio">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="unit" type="CO2UnitType" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
 			<xs:element name="Fuel">
 				<xs:complexType>
 					<xs:sequence>
@@ -232,12 +280,60 @@
 					<xs:element name="Dimensions">
 						<xs:complexType>
 							<xs:all>
-								<xs:element name="ExternalLengthBody" type="xs:double"/>
-								<xs:element name="ExternalWidthBody" type="xs:double"/>
-								<xs:element name="ExternalHeightBody" type="xs:double"/>
-								<xs:element name="TotalHeightTrailer" type="xs:double"/>
-								<xs:element name="InternalHeightBody" type="xs:double"/>
-								<xs:element name="CargoVolume" type="xs:double"/>
+								<xs:element name="ExternalLengthBody">
+									<xs:complexType>
+										<xs:simpleContent>
+											<xs:extension base="xs:double">
+												<xs:attribute name="unit" type="OtherType" use="required"/>
+											</xs:extension>
+										</xs:simpleContent>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="ExternalWidthBody">
+									<xs:complexType>
+										<xs:simpleContent>
+											<xs:extension base="xs:double">
+												<xs:attribute name="unit" type="OtherType" use="required"/>
+											</xs:extension>
+										</xs:simpleContent>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="ExternalHeightBody">
+									<xs:complexType>
+										<xs:simpleContent>
+											<xs:extension base="xs:double">
+												<xs:attribute name="unit" type="OtherType" use="required"/>
+											</xs:extension>
+										</xs:simpleContent>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="TotalHeightTrailer">
+									<xs:complexType>
+										<xs:simpleContent>
+											<xs:extension base="xs:double">
+												<xs:attribute name="unit" type="OtherType" use="required"/>
+											</xs:extension>
+										</xs:simpleContent>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="InternalHeightBody">
+									<xs:complexType>
+										<xs:simpleContent>
+											<xs:extension base="xs:double">
+												<xs:attribute name="unit" type="OtherType" use="required"/>
+											</xs:extension>
+										</xs:simpleContent>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="CargoVolume">
+									<xs:complexType>
+										<xs:simpleContent>
+											<xs:extension base="xs:double">
+												<xs:attribute name="unit" type="OtherType" use="required"/>
+											</xs:extension>
+										</xs:simpleContent>
+									</xs:complexType>
+								</xs:element>
 							</xs:all>
 						</xs:complexType>
 					</xs:element>
@@ -305,6 +401,11 @@
 	</xs:simpleType>
 	<xs:simpleType name="MissionTypeType">
 		<xs:restriction base="xs:token">
+			<xs:minLength value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="OtherType">
+		<xs:restriction base="xs:string">
 			<xs:minLength value="1"/>
 		</xs:restriction>
 	</xs:simpleType>

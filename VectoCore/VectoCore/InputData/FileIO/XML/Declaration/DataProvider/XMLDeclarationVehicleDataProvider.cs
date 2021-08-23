@@ -962,6 +962,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 			SourceType = DataSourceType.XMLEmbedded;
 		}
 
+		public string CommercialName { get; set; }
 		public virtual XmlNode AxleWheelsNode => _axlesNode ?? (_axlesNode = GetNode(new[] { XMLNames.Component_AxleWheels, XMLNames.ComponentDataWrapper }, required: false));
 
 		public XmlElement ComponentNode => _componentNode ?? (_componentNode = GetNode(XMLNames.Vehicle_Components) as XmlElement);
