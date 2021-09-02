@@ -262,10 +262,16 @@ namespace VECTOTrailer.ViewModel.Impl
 			switch (trailer.NumberOfAxles)
 			{
 				case NumberOfTrailerAxles.One when trailer.Axle1IsLiftable: //one axle cant be liftable
+				case NumberOfTrailerAxles.One when trailer.TrailerType == TypeTrailer.DC && trailer.Axle1IsSteered:
 				case NumberOfTrailerAxles.Two when trailer.Axle2FilePath == null: //missing axle
 				case NumberOfTrailerAxles.Two when trailer.TrailerType == TypeTrailer.DB && liftableCount > 0:
+				case NumberOfTrailerAxles.Two when trailer.TrailerType == TypeTrailer.DC && trailer.Axle1IsSteered:
+				case NumberOfTrailerAxles.Two when trailer.TrailerType == TypeTrailer.DA && trailer.Axle1IsSteered:
 				case NumberOfTrailerAxles.Two when liftableCount > 1: //too many liftable
+				case NumberOfTrailerAxles.Two when trailer.Axle3IsLiftable || trailer.Axle3IsSteered: //no axle 3 allowed
 				case NumberOfTrailerAxles.Three when trailer.TrailerType == TypeTrailer.DB && liftableCount > 1: //too many liftable
+				case NumberOfTrailerAxles.Three when trailer.TrailerType == TypeTrailer.DB && (trailer.Axle1IsLiftable || trailer.Axle1IsSteered || trailer.Axle2IsSteered): //for For 3 axle DBs it should not be possible to declare a lift or a steered axle on the first axle
+				case NumberOfTrailerAxles.Three when trailer.TrailerType == TypeTrailer.DC && (trailer.Axle2IsLiftable || trailer.Axle1IsSteered || trailer.Axle2IsSteered):
 				case NumberOfTrailerAxles.Three when liftableCount > 2: //too many liftable
 				case NumberOfTrailerAxles.Three when (trailer.Axle2FilePath == null || trailer.Axle3FilePath == null):  //missing axles
 					return false;

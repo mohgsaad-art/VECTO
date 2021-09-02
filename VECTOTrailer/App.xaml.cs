@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using Ninject;
@@ -26,8 +28,8 @@ namespace VECTOTrailer
         #region Overrides of Application
 
         protected override void OnStartup(StartupEventArgs e)
-        {
-            ConfigureContainer();
+		{
+			ConfigureContainer();
             base.OnStartup(e);
         }
 

@@ -275,33 +275,9 @@
 					<xs:element name="Masses">
 						<xs:complexType>
 							<xs:all>
-								<xs:element name="MassInRunningOrder">
-									<xs:complexType>
-										<xs:simpleContent>
-											<xs:extension base="xs:double">
-												<xs:attribute name="unit" use="required"/>
-											</xs:extension>
-										</xs:simpleContent>
-									</xs:complexType>
-								</xs:element>
-								<xs:element name="TPMLMTrailer">
-									<xs:complexType>
-										<xs:simpleContent>
-											<xs:extension base="xs:double">
-												<xs:attribute name="unit" use="required"/>
-											</xs:extension>
-										</xs:simpleContent>
-									</xs:complexType>
-								</xs:element>
-								<xs:element name="TPMLMAxleAssembly">
-									<xs:complexType>
-										<xs:simpleContent>
-											<xs:extension base="xs:double">
-												<xs:attribute name="unit" use="required"/>
-											</xs:extension>
-										</xs:simpleContent>
-									</xs:complexType>
-								</xs:element>
+								<xs:element name="MassInRunningOrder"/>
+								<xs:element name="TPMLMTrailer"/>
+								<xs:element name="TPMLMAxleAssembly"/>
 							</xs:all>
 						</xs:complexType>
 					</xs:element>
@@ -310,78 +286,14 @@
 					<xs:element name="Dimensions">
 						<xs:complexType>
 							<xs:all>
-								<xs:element name="ExternalLengthBody">
-									<xs:complexType>
-										<xs:simpleContent>
-											<xs:extension base="xs:double">
-												<xs:attribute name="unit" type="OtherType" use="required"/>
-											</xs:extension>
-										</xs:simpleContent>
-									</xs:complexType>
-								</xs:element>
-								<xs:element name="ExternalWidthBody">
-									<xs:complexType>
-										<xs:simpleContent>
-											<xs:extension base="xs:double">
-												<xs:attribute name="unit" type="OtherType" use="required"/>
-											</xs:extension>
-										</xs:simpleContent>
-									</xs:complexType>
-								</xs:element>
-								<xs:element name="ExternalHeightBody">
-									<xs:complexType>
-										<xs:simpleContent>
-											<xs:extension base="xs:double">
-												<xs:attribute name="unit" type="OtherType" use="required"/>
-											</xs:extension>
-										</xs:simpleContent>
-									</xs:complexType>
-								</xs:element>
-								<xs:element name="TotalHeightTrailer">
-									<xs:complexType>
-										<xs:simpleContent>
-											<xs:extension base="xs:double">
-												<xs:attribute name="unit" type="OtherType" use="required"/>
-											</xs:extension>
-										</xs:simpleContent>
-									</xs:complexType>
-								</xs:element>
-								<xs:element name="LengthFromFrontToFirstAxle">
-									<xs:complexType>
-										<xs:simpleContent>
-											<xs:extension base="xs:double">
-												<xs:attribute name="unit" type="OtherType" use="required"/>
-											</xs:extension>
-										</xs:simpleContent>
-									</xs:complexType>
-								</xs:element>
-								<xs:element name="LengthBetweenCentersOfAxles">
-									<xs:complexType>
-										<xs:simpleContent>
-											<xs:extension base="xs:double">
-												<xs:attribute name="unit" type="OtherType" use="required"/>
-											</xs:extension>
-										</xs:simpleContent>
-									</xs:complexType>
-								</xs:element>
-								<xs:element name="InternalHeightBody">
-									<xs:complexType>
-										<xs:simpleContent>
-											<xs:extension base="xs:double">
-												<xs:attribute name="unit" type="OtherType" use="required"/>
-											</xs:extension>
-										</xs:simpleContent>
-									</xs:complexType>
-								</xs:element>
-								<xs:element name="CargoVolume">
-									<xs:complexType>
-										<xs:simpleContent>
-											<xs:extension base="xs:double">
-												<xs:attribute name="unit" type="OtherType" use="required"/>
-											</xs:extension>
-										</xs:simpleContent>
-									</xs:complexType>
-								</xs:element>
+								<xs:element name="ExternalLengthBody"/>
+								<xs:element name="ExternalWidthBody"/>
+								<xs:element name="ExternalHeightBody"/>
+								<xs:element name="TotalHeightTrailer"/>
+								<xs:element name="LengthFromFrontToFirstAxle"/>
+								<xs:element name="LengthBetweenCentersOfAxles"/>
+								<xs:element name="InternalHeightBody"/>
+								<xs:element name="CargoVolume"/>
 							</xs:all>
 						</xs:complexType>
 					</xs:element>

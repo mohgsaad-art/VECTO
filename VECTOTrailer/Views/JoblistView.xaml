@@ -204,10 +204,7 @@
                         <GroupBox Header ="Output Directory">
                             <StackPanel Orientation="Horizontal">
                                 <TextBox Width="200" Text="{Binding OutputDirectory}"/>
-                                <Button Width="25" Command="{Binding BrowseOutputDirectory}" Margin="5,0,0,0">
-                                    <StackPanel Orientation="Horizontal">
-                                    </StackPanel>
-                                </Button>
+                                <Button Width="60" Content="Browse" Command="{Binding BrowseOutputDirectory}" Margin="5,0,0,0"/>
                                 
                             </StackPanel>
                         </GroupBox>

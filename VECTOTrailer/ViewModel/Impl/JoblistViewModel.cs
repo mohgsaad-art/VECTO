@@ -339,11 +339,11 @@ namespace VECTOTrailer.ViewModel.Impl
 		
 		private void DoBrowseOutputDirectory()
 		{
-			var filePath = FileDialogHelper.ShowSelectFilesDialog(false, FileDialogHelper.JobFilter);
+			var filePath = FileDialogHelper.ShowSelectDirectoryDialog();
 			if (filePath.IsNullOrEmpty())
 				return;
 
-			OutputDirectory = filePath[0];
+			OutputDirectory = filePath;
 		}
 
 

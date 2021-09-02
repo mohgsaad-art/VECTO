@@ -108,22 +108,22 @@ namespace VECTOTrailer.Util.XML
 				: new XElement(_v27 + XMLNames.Trailer_TrailerCouplingPoint, TrailerCouplingPoint.Unknown.GetLabel()));
 
 			vehicle.Add(new XElement(_v27 + "Masses",
-					new XElement(_v27 + XMLNames.Trailer_MassInRunningOrder, trailerData.MassInRunningOrder.ToXMLFormat(0)),
-					new XElement(_v27 + XMLNames.Trailer_TPMLMTotalTrailer, trailerData.TPLMTotalTrailer.ToXMLFormat(0)),
-					new XElement(_v27 + XMLNames.Trailer_TPLMAxleAssembly, trailerData.TPLMAxleAssembly.ToXMLFormat(0))), 
+					new XElement(_v27 + XMLNames.Trailer_MassInRunningOrder, trailerData.MassInRunningOrder.ToXMLFormat(0).ToString(CultureInfo.InvariantCulture)),
+					new XElement(_v27 + XMLNames.Trailer_TPMLMTotalTrailer, trailerData.TPLMTotalTrailer.ToXMLFormat(0).ToString(CultureInfo.InvariantCulture)),
+					new XElement(_v27 + XMLNames.Trailer_TPLMAxleAssembly, trailerData.TPLMAxleAssembly.ToXMLFormat(0).ToString(CultureInfo.InvariantCulture))), 
 			new XElement(_v27 + "Dimensions",
-					new XElement(_v27 + XMLNames.Trailer_ExternalLengthBody,
-						trailerData.ExternalLengthOfTheBody?.ToXMLFormat(3)),
+					new XElement(_v27 + XMLNames.Trailer_ExternalLengthBody.ToString(CultureInfo.InvariantCulture),
+						trailerData.ExternalLengthOfTheBody?.ToXMLFormat(3).ToString(CultureInfo.InvariantCulture)),
 					new XElement(_v27 + XMLNames.Trailer_ExternalWidthBody, trailerData.ExternalWidthOfTheBody?.ToXMLFormat(3)),
-					new XElement(_v27 + XMLNames.Trailer_ExternalHeightBody,
-						trailerData.ExternalHeightOfTheBody?.ToXMLFormat(3)),
-					new XElement(_v27 + XMLNames.Trailer_TotalHeightTrailer,
-						trailerData.TotalHeightOfTheTrailer?.ToXMLFormat(3)),
-					new XElement(_v27 + XMLNames.Trailer_LengthFromFrontToFirstAxle, trailerData.LengthFromFrontToFirstAxle?.ToXMLFormat(3)),
-					new XElement(_v27 + XMLNames.Trailer_LengthBetweenCentersOfAxles, trailerData.LengthBetweenCentersOfAxles?.ToXMLFormat(3)),
-					new XElement(_v27 + XMLNames.Trailer_InternalHeightBody,
-						trailerData.InternalHeightOfTheBody?.ToXMLFormat(3)),
-					new XElement(_v27 + XMLNames.Trailer_CargoVolume, trailerData.CargoVolume?.ToXMLFormat(3)))
+					new XElement(_v27 + XMLNames.Trailer_ExternalHeightBody.ToString(CultureInfo.InvariantCulture),
+						trailerData.ExternalHeightOfTheBody?.ToXMLFormat(3).ToString(CultureInfo.InvariantCulture)),
+					new XElement(_v27 + XMLNames.Trailer_TotalHeightTrailer.ToString(CultureInfo.InvariantCulture),
+						trailerData.TotalHeightOfTheTrailer?.ToXMLFormat(3).ToString(CultureInfo.InvariantCulture)),
+					new XElement(_v27 + XMLNames.Trailer_LengthFromFrontToFirstAxle, trailerData.LengthFromFrontToFirstAxle?.ToXMLFormat(3).ToString(CultureInfo.InvariantCulture)),
+					new XElement(_v27 + XMLNames.Trailer_LengthBetweenCentersOfAxles, trailerData.LengthBetweenCentersOfAxles?.ToXMLFormat(3).ToString(CultureInfo.InvariantCulture)),
+					new XElement(_v27 + XMLNames.Trailer_InternalHeightBody.ToString(CultureInfo.InvariantCulture),
+						trailerData.InternalHeightOfTheBody?.ToXMLFormat(3).ToString(CultureInfo.InvariantCulture)),
+					new XElement(_v27 + XMLNames.Trailer_CargoVolume, trailerData.CargoVolume?.ToXMLFormat(3).ToString(CultureInfo.InvariantCulture)))
 			);
 
 			if (trailerData.IsStandard || trailerData.IsCertified || trailerData.IsNone)
@@ -148,13 +148,13 @@ namespace VECTOTrailer.Util.XML
 				vehicle.Element(_v27 + XMLNames.Trailer_AeroFeatures)?.Add(new XElement(_v27 + XMLNames.Trailer_CertifiedAeroReduction));
 
 				vehicle.Element(_v27 + XMLNames.Trailer_AeroFeatures)?.Element(_v27 + XMLNames.Trailer_CertifiedAeroReduction)
-					?.Add(new XElement(_v27 + XMLNames.Trailer_YawAngle0, trailerData.YawAngle0.ToXMLFormat(2)));
+					?.Add(new XElement(_v27 + XMLNames.Trailer_YawAngle0, trailerData.YawAngle0.ToXMLFormat(2).ToString(CultureInfo.InvariantCulture)));
 				vehicle.Element(_v27 + XMLNames.Trailer_AeroFeatures)?.Element(_v27 + XMLNames.Trailer_CertifiedAeroReduction)
-					?.Add(new XElement(_v27 + XMLNames.Trailer_YawAngle3, trailerData.YawAngle3.ToXMLFormat(2)));
+					?.Add(new XElement(_v27 + XMLNames.Trailer_YawAngle3, trailerData.YawAngle3.ToXMLFormat(2).ToString(CultureInfo.InvariantCulture)));
 				vehicle.Element(_v27 + XMLNames.Trailer_AeroFeatures)?.Element(_v27 + XMLNames.Trailer_CertifiedAeroReduction)
-					?.Add(new XElement(_v27 + XMLNames.Trailer_YawAngle6, trailerData.YawAngle6.ToXMLFormat(2)));
+					?.Add(new XElement(_v27 + XMLNames.Trailer_YawAngle6, trailerData.YawAngle6.ToXMLFormat(2).ToString(CultureInfo.InvariantCulture)));
 				vehicle.Element(_v27 + XMLNames.Trailer_AeroFeatures)?.Element(_v27 + XMLNames.Trailer_CertifiedAeroReduction)
-					?.Add(new XElement(_v27 + XMLNames.Trailer_YawAngle9, trailerData.YawAngle9.ToXMLFormat(2)));
+					?.Add(new XElement(_v27 + XMLNames.Trailer_YawAngle9, trailerData.YawAngle9.ToXMLFormat(2).ToString(CultureInfo.InvariantCulture)));
 			}
 
 
@@ -210,9 +210,7 @@ namespace VECTOTrailer.Util.XML
 						new XElement(_v27 + "Steered", trailerData.Axle3IsSteered.ToString().ToLower()),
 						tyre));
 
-			} catch {
-				
-			}
+			} catch { }
 
 			return vehicle;
 		}

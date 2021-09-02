@@ -1102,12 +1102,15 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			switch (trailer.NumberOfAxles)
 			{
 				case NumberOfTrailerAxles.One when trailer.Axles[0].Liftable: //one axle cant be liftable
-				case NumberOfTrailerAxles.Two when trailer.Axles.Count < 2: //missing axle
+				case NumberOfTrailerAxles.One when trailer.TrailerType == TypeTrailer.DC && trailer.Axles[0].Steered:
 				case NumberOfTrailerAxles.Two when trailer.TrailerType == TypeTrailer.DB && liftableCount > 0:
 				case NumberOfTrailerAxles.Two when liftableCount > 1: //too many liftable
+				case NumberOfTrailerAxles.Two when trailer.TrailerType == TypeTrailer.DC && trailer.Axles[0].Steered:
+				case NumberOfTrailerAxles.Two when trailer.TrailerType == TypeTrailer.DA && trailer.Axles[0].Steered:
 				case NumberOfTrailerAxles.Three when trailer.TrailerType == TypeTrailer.DB && liftableCount > 1: //too many liftable
+				case NumberOfTrailerAxles.Three when trailer.TrailerType == TypeTrailer.DB && (trailer.Axles[0].Liftable || trailer.Axles[0].Steered || trailer.Axles[1].Steered):
+				case NumberOfTrailerAxles.Three when trailer.TrailerType == TypeTrailer.DC && (trailer.Axles[1].Liftable || trailer.Axles[0].Steered || trailer.Axles[1].Steered):
 				case NumberOfTrailerAxles.Three when liftableCount > 2: //too many liftable
-				case NumberOfTrailerAxles.Three when trailer.Axles.Count < 3:  //missing axles
 					throw new Exception("Wrong axle configuration");
 			}
 		}
