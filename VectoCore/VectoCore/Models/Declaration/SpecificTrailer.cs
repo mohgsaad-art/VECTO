@@ -34,6 +34,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Xml;
@@ -109,16 +110,16 @@ namespace TUGraz.VectoCore.Models.Declaration
 				switch (missionType) {
 					case MissionType.LongHaul:
 						return new KeyValuePair<double, double>(
-							double.Parse(row.Field<string>("liftable_lh_payload_low").Replace("%", "").Replace("---", "0")),
-							double.Parse(row.Field<string>("liftable_lh_payload_rep").Replace("%", "").Replace("---", "0")));
+							double.Parse(row.Field<string>("liftable_lh_payload_low").Replace("%", "").Replace("---", "0"), CultureInfo.InvariantCulture),
+							double.Parse(row.Field<string>("liftable_lh_payload_rep").Replace("%", "").Replace("---", "0"), CultureInfo.InvariantCulture));
 					case MissionType.RegionalDelivery:
 						return new KeyValuePair<double, double>(
-							double.Parse(row.Field<string>("liftable_r_payload_low").Replace("%", "").Replace("---", "0")),
-							double.Parse(row.Field<string>("liftable_r_payload_rep").Replace("%", "").Replace("---", "0")));
+							double.Parse(row.Field<string>("liftable_r_payload_low").Replace("%", "").Replace("---", "0"), CultureInfo.InvariantCulture),
+							double.Parse(row.Field<string>("liftable_r_payload_rep").Replace("%", "").Replace("---", "0"), CultureInfo.InvariantCulture));
 					case MissionType.UrbanDelivery:
 						return new KeyValuePair<double, double>(
-							double.Parse(row.Field<string>("liftable_u_payload_low").Replace("%", "").Replace("---", "0")),
-							double.Parse(row.Field<string>("liftable_u_payload_rep").Replace("%", "").Replace("---", "0")));
+							double.Parse(row.Field<string>("liftable_u_payload_low").Replace("%", "").Replace("---", "0"), CultureInfo.InvariantCulture),
+							double.Parse(row.Field<string>("liftable_u_payload_rep").Replace("%", "").Replace("---", "0"), CultureInfo.InvariantCulture));
 				}
 			}
 			else if (type == "Steered")
@@ -126,16 +127,16 @@ namespace TUGraz.VectoCore.Models.Declaration
 				switch (missionType) {
 					case MissionType.LongHaul:
 						return new KeyValuePair<double, double>(
-							double.Parse(row.Field<string>("steered_lh_payload_low").Replace("%", "").Replace("---", "0")),
-							double.Parse(row.Field<string>("steered_lh_payload_rep").Replace("%", "").Replace("---", "0")));
+							double.Parse(row.Field<string>("steered_lh_payload_low").Replace("%", "").Replace("---", "0"), CultureInfo.InvariantCulture),
+							double.Parse(row.Field<string>("steered_lh_payload_rep").Replace("%", "").Replace("---", "0"), CultureInfo.InvariantCulture));
 					case MissionType.RegionalDelivery:
 						return new KeyValuePair<double, double>(
-							double.Parse(row.Field<string>("steered_r_payload_low").Replace("%", "").Replace("---", "0")),
-							double.Parse(row.Field<string>("steered_r_payload_rep").Replace("%", "").Replace("---", "0")));
+							double.Parse(row.Field<string>("steered_r_payload_low").Replace("%", "").Replace("---", "0"), CultureInfo.InvariantCulture),
+							double.Parse(row.Field<string>("steered_r_payload_rep").Replace("%", "").Replace("---", "0"), CultureInfo.InvariantCulture));
 					case MissionType.UrbanDelivery:
 						return new KeyValuePair<double, double>(
-							double.Parse(row.Field<string>("steered_u_payload_low").Replace("%", "").Replace("---", "0")),
-							double.Parse(row.Field<string>("steered_u_payload_rep").Replace("%", "").Replace("---", "0")));
+							double.Parse(row.Field<string>("steered_u_payload_low").Replace("%", "").Replace("---", "0"), CultureInfo.InvariantCulture),
+							double.Parse(row.Field<string>("steered_u_payload_rep").Replace("%", "").Replace("---", "0"), CultureInfo.InvariantCulture));
 				}
 			}
 
