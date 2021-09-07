@@ -255,6 +255,14 @@ namespace VECTOTrailer.ViewModel.Impl
 			if (trailer.Axle3IsLiftable)
 				liftableCount++;
 
+			var steerCount = 0;
+			if (trailer.Axle1IsSteered)
+				steerCount++;
+			if (trailer.Axle2IsSteered)
+				steerCount++;
+			if (trailer.Axle3IsSteered)
+				steerCount++;
+
 			//if (trailer.Axle1IsLiftable && trailer.Axle1IsSteered) return false;
 			//if (trailer.Axle2IsLiftable && trailer.Axle2IsSteered) return false;
 			//if (trailer.Axle3IsLiftable && trailer.Axle3IsSteered) return false;
@@ -264,6 +272,7 @@ namespace VECTOTrailer.ViewModel.Impl
 				case NumberOfTrailerAxles.One when trailer.Axle1IsLiftable: //one axle cant be liftable
 				case NumberOfTrailerAxles.One when trailer.TrailerType == TypeTrailer.DC && trailer.Axle1IsSteered:
 				case NumberOfTrailerAxles.Two when trailer.Axle2FilePath == null: //missing axle
+				case NumberOfTrailerAxles.Two when trailer.TrailerType == TypeTrailer.DB && steerCount > 0:
 				case NumberOfTrailerAxles.Two when trailer.TrailerType == TypeTrailer.DB && liftableCount > 0:
 				case NumberOfTrailerAxles.Two when trailer.TrailerType == TypeTrailer.DC && trailer.Axle1IsSteered:
 				case NumberOfTrailerAxles.Two when trailer.TrailerType == TypeTrailer.DA && trailer.Axle1IsSteered:
@@ -273,6 +282,7 @@ namespace VECTOTrailer.ViewModel.Impl
 				case NumberOfTrailerAxles.Three when trailer.TrailerType == TypeTrailer.DB && (trailer.Axle1IsLiftable || trailer.Axle1IsSteered || trailer.Axle2IsSteered): //for For 3 axle DBs it should not be possible to declare a lift or a steered axle on the first axle
 				case NumberOfTrailerAxles.Three when trailer.TrailerType == TypeTrailer.DC && (trailer.Axle2IsLiftable || trailer.Axle1IsSteered || trailer.Axle2IsSteered):
 				case NumberOfTrailerAxles.Three when liftableCount > 2: //too many liftable
+				case NumberOfTrailerAxles.Three when steerCount > 2: //too many liftable
 				case NumberOfTrailerAxles.Three when (trailer.Axle2FilePath == null || trailer.Axle3FilePath == null):  //missing axles
 					return false;
 			}
