@@ -454,11 +454,15 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 			if (data.BatteryData != null)
 			{
-				if (data.BatteryData.InitialSoC < data.BatteryData.MinSOC)
+
+				if (data.BatteryData != null)
 				{
-					throw new VectoException("Battery: Initial SoC has to be higher than min SoC");
+					if (data.BatteryData.InitialSoC < data.BatteryData.Batteries.Min(x => x.Item2.MinSOC))
+					{
+						throw new VectoException("Battery: Initial SoC has to be higher than min SoC");
+					}
 				}
-				var battery = new Battery(container, data.BatteryData);
+				var battery = new BatterySystem(container, data.BatteryData);
 				battery.Initialize(data.BatteryData.InitialSoC);
 				es.Connect(battery);
 			}
