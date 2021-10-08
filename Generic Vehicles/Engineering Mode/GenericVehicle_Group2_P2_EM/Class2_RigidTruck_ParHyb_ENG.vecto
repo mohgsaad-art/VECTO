@@ -1,7 +1,7 @@
 {
   "Header": {
     "CreatedBy": "",
-    "Date": "2020-09-07T15:00:31.8946028Z",
+    "Date": "2021-10-08T12:29:32.0034946Z",
     "AppVersion": "3",
     "FileVersion": 8
   },
@@ -14,16 +14,15 @@
     "TCU": "AMT_6.vgbx",
     "ShiftStrategy": "",
     "HybridStrategyParams": "HybridStrategyParams.vhctl",
-    "AuxiliaryAssembly": "Classic",
-    "AuxiliaryVersion": "CLASSIC",
-    "AdvancedAuxiliaryFilePath": "",
-    "Aux": [],
     "Padd": 3540.0,
+    "Paux_ICEOff_Driving": 0.0,
+    "Paux_ICEOff_Standstill": 0.0,
     "Padd_electric": 0.0,
     "VACC": "Truck.vacc",
     "EngineStopStartAtVehicleStopThreshold": 2.0,
     "EngineStopStartMaxOffTimespan": 120.0,
     "EngineStopStartUtilityFactor": 1.0,
+    "EngineStopStartUtilityFactorDriving": 1.0,
     "EcoRollMinSpeed": 0.0,
     "EcoRollActivationDelay": 0.0,
     "EcoRollUnderspeedThreshold": 0.0,
@@ -49,9 +48,8 @@
       "OverSpeed": 2.5
     },
     "Cycles": [
-      "LongHaul.vdri",
-      "RegionalDelivery.vdri",
-      "UrbanDelivery.vdri"
+      "03Cycle_time_no_grad_exact_gear_small_org.vdri",
+      "Cycle_time_no_grad_exact_gear.vdri"
     ]
   }
 }
