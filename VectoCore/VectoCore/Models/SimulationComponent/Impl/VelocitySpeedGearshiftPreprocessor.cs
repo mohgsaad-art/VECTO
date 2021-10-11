@@ -63,7 +63,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
 
 			var gearbox = container.GearboxInfo as Gearbox;
-			if (gearbox == null) {
+			if (gearbox == null)
+			{
 				throw new VectoException("no gearbox found...");
 			}
 
@@ -115,7 +116,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			return tmp.ToArray();
 		}
 
-		protected virtual PerSecond GetMotorTargetSpeed(VectoRunData runData)
+	protected virtual PerSecond GetMotorTargetSpeed(VectoRunData runData)
 		{
 			return 0.5 * (runData.EngineData.FullLoadCurves[0].RatedSpeed - runData.EngineData.IdleSpeed) + runData.EngineData.IdleSpeed;
 		}
