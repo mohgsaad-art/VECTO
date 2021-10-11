@@ -209,7 +209,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			AbsTime = absTime + dt;
 
 			response.SimulationInterval = dt;
-			response.Acceleration = acceleration;
+			response.Driver.Acceleration = acceleration;
 			debug.Add(response);
 
 			CurrentState.SimulationDistance = acceleration / 2 * dt * dt + DataBus.VehicleSpeed * dt;

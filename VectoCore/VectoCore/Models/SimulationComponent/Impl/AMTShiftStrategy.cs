@@ -133,8 +133,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				var response = _gearbox.Initialize(gear, outTorque, outAngularVelocity);
 
 				var inAngularSpeed = outAngularVelocity * GearboxModelData.Gears[gear.Gear].Ratio;
-				var fullLoadPower = response.EnginePowerRequest - response.DeltaFullLoad;
-				var reserve = 1 - response.EnginePowerRequest / fullLoadPower;
+				var fullLoadPower = response.Engine.PowerRequest - response.DeltaFullLoad;
+				var reserve = 1 - response.Engine.PowerRequest / fullLoadPower;
 				var inTorque = response.ClutchPowerRequest / inAngularSpeed;
 
 				// if in shift curve and torque reserve is provided: return the current gear
@@ -174,10 +174,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 				var response = _gearbox.Initialize(gear, outTorque, outAngularVelocity);
 
-				var fullLoadPower = response.DynamicFullLoadPower; //EnginePowerRequest - response.DeltaFullLoad;
-				var reserve = 1 - response.EnginePowerRequest / fullLoadPower;
+				var fullLoadPower = response.Engine.DynamicFullLoadPower; //EnginePowerRequest - response.DeltaFullLoad;
+				var reserve = 1 - response.Engine.PowerRequest / fullLoadPower;
 
-				if (response.EngineSpeed > DataBus.EngineIdleSpeed && reserve >= GearboxModelData.StartTorqueReserve) {
+				if (response.Engine.EngineSpeed > DataBus.EngineIdleSpeed && reserve >= GearboxModelData.StartTorqueReserve) {
 					_nextGear = gear;
 					return gear;
 				}
@@ -306,12 +306,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					currentGear = Gears.Successor(currentGear);
 					var response = RequestDryRunWithGear(absTime, dt, outTorque, outAngularVelocity, currentGear);
 
-					inAngularVelocity = response.EngineSpeed; //GearboxModelData.Gears[currentGear].Ratio * outAngularVelocity;
+					inAngularVelocity = response.Engine.EngineSpeed; //GearboxModelData.Gears[currentGear].Ratio * outAngularVelocity;
 					inTorque = response.ClutchPowerRequest / inAngularVelocity;
 
-					var maxTorque = VectoMath.Min(response.DynamicFullLoadPower / ((DataBus.EngineSpeed + response.EngineSpeed) / 2),
+					var maxTorque = VectoMath.Min(response.Engine.DynamicFullLoadPower / ((DataBus.EngineSpeed + response.Engine.EngineSpeed) / 2),
 						currentGear.Equals(Gears.First())
-							? GearboxModelData.Gears[currentGear.Gear].ShiftPolygon.InterpolateDownshift(response.EngineSpeed)
+							? GearboxModelData.Gears[currentGear.Gear].ShiftPolygon.InterpolateDownshift(response.Engine.EngineSpeed)
 							: double.MaxValue.SI<NewtonMeter>());
 					var reserve = 1 - inTorque / maxTorque;
 
@@ -346,8 +346,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			// if next gear supplied enough power reserve: take it
 			// otherwise take
 			if (!IsBelowDownShiftCurve(tryNextGear, inTorque, inAngularVelocity)) {
-				var fullLoadPower = response.EnginePowerRequest - response.DeltaFullLoad;
-				var reserve = 1 - response.EnginePowerRequest / fullLoadPower;
+				var fullLoadPower = response.Engine.PowerRequest - response.DeltaFullLoad;
+				var reserve = 1 - response.Engine.PowerRequest / fullLoadPower;
 
 				if (reserve >= GearboxModelData.TorqueReserve) {
 					currentGear = tryNextGear;
@@ -380,9 +380,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 					inAngularVelocity = GearboxModelData.Gears[currentGear.Gear].Ratio * outAngularVelocity;
 					inTorque = response.ClutchPowerRequest / inAngularVelocity;
-					var maxTorque = VectoMath.Min(response.DynamicFullLoadPower / ((DataBus.EngineSpeed + response.EngineSpeed) / 2),
+					var maxTorque = VectoMath.Min(response.Engine.DynamicFullLoadPower / ((DataBus.EngineSpeed + response.Engine.EngineSpeed) / 2),
 						Gears.First().Equals(currentGear)
-							? GearboxModelData.Gears[currentGear.Gear].ShiftPolygon.InterpolateDownshift(response.EngineSpeed)
+							? GearboxModelData.Gears[currentGear.Gear].ShiftPolygon.InterpolateDownshift(response.Engine.EngineSpeed)
 							: double.MaxValue.SI<NewtonMeter>());
 					var reserve = maxTorque.IsEqual(0) ? -1 : (1 - inTorque / maxTorque).Value();
 					if (reserve >= GearboxModelData.TorqueReserve && IsBelowUpShiftCurve(currentGear, inTorque, inAngularVelocity)) {

@@ -99,7 +99,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			CurrentState.Response = retVal;
 			retVal.SimulationInterval = CurrentState.dt;
-			retVal.Acceleration = CurrentState.Acceleration;
+			retVal.Driver.Acceleration = CurrentState.Acceleration;
 
 			return retVal;
 		}
@@ -118,7 +118,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			CurrentState.Response = retVal;
 			retVal.SimulationInterval = CurrentState.dt;
-			retVal.Acceleration = CurrentState.Acceleration;
+			retVal.Driver.Acceleration = CurrentState.Acceleration;
 
 			return retVal;
 		}
@@ -151,7 +151,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var response = previousResponse ??
 							NextComponent.Request(absTime, operatingPoint.SimulationInterval, operatingPoint.Acceleration,
 								gradient);
-			response.Acceleration = operatingPoint.Acceleration;
+			response.Driver.Acceleration = operatingPoint.Acceleration;
 
 			response.Switch().
 				Case<ResponseSuccess>(r => {
@@ -166,7 +166,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				Case<ResponseFailTimeInterval>(r => {
 					// occurs only with AT gearboxes - extend time interval after gearshift!
 					retVal = new ResponseDrivingCycleDistanceExceeded(this) {
-						MaxDistance = r.Acceleration / 2 * r.DeltaT * r.DeltaT + DataBus.VehicleSpeed * r.DeltaT
+						MaxDistance = r.Driver.Acceleration / 2 * r.DeltaT * r.DeltaT + DataBus.VehicleSpeed * r.DeltaT
 					};
 				}).
 				Case<ResponseGearShift>(r => {
@@ -196,13 +196,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					retVal = DrivingActionHalt(absTime, operatingPoint.SimulationInterval, 0.SI<MeterPerSecond>(), gradient);
 					
 					retVal.SimulationDistance = 0.SI<Meter>();
-					retVal.Acceleration = 0.SI<MeterPerSquareSecond>();
-					retVal.SimulationInterval = operatingPoint.SimulationInterval;
-					retVal.OperatingPoint = new OperatingPoint() {
-						Acceleration = retVal.Acceleration,
+					retVal.Driver.Acceleration = 0.SI<MeterPerSquareSecond>();
+					retVal.Driver.OperatingPoint = new OperatingPoint() {
+						Acceleration = retVal.Driver.Acceleration,
 						SimulationDistance = retVal.SimulationDistance,
 						SimulationInterval = operatingPoint.SimulationInterval
 					};
+					retVal.SimulationInterval = operatingPoint.SimulationInterval;
 					return retVal;
 				} 
 
@@ -221,7 +221,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					limitedOperatingPoint.Acceleration,
 					gradient);
 				if (retVal != null) {
-					retVal.Acceleration = limitedOperatingPoint.Acceleration;
+					retVal.Driver.Acceleration = limitedOperatingPoint.Acceleration;
 				}
 				retVal.Switch().
 					Case<ResponseUnderload>(() => operatingPoint = limitedOperatingPoint)
@@ -276,7 +276,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 								}
 							}
 						}
-						retVal.Acceleration = operatingPoint.Acceleration;
+						retVal.Driver.Acceleration = operatingPoint.Acceleration;
 						retVal.Switch().
 							Case<ResponseDrivingCycleDistanceExceeded>().
 							Case<ResponseSuccess>(() => operatingPoint = nextOperatingPoint).
@@ -299,7 +299,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 							Case<ResponseFailTimeInterval>(r => {
 									// occurs only with AT gearboxes - extend time interval after gearshift!
 									retVal = new ResponseDrivingCycleDistanceExceeded(this) {
-										MaxDistance = r.Acceleration / 2 * r.DeltaT * r.DeltaT + DataBus.VehicleSpeed * r.DeltaT
+										MaxDistance = r.Driver.Acceleration / 2 * r.DeltaT * r.DeltaT + DataBus.VehicleSpeed * r.DeltaT
 									};
 								}).
 							Default(
@@ -311,7 +311,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					Case<ResponseFailTimeInterval>(r => {
 						// occurs only with AT gearboxes - extend time interval after gearshift!
 						retVal = new ResponseDrivingCycleDistanceExceeded(this) {
-							MaxDistance = r.Acceleration / 2 * r.DeltaT * r.DeltaT + DataBus.VehicleSpeed * r.DeltaT
+							MaxDistance = r.Driver.Acceleration / 2 * r.DeltaT * r.DeltaT + DataBus.VehicleSpeed * r.DeltaT
 						};
 					}).
 					Case<ResponseSuccess>(() => operatingPoint = limitedOperatingPoint).
@@ -325,10 +325,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			CurrentState.dt = operatingPoint.SimulationInterval;
 			CurrentState.Response = retVal;
 
-			retVal.Acceleration = operatingPoint.Acceleration;
+			retVal.Driver.Acceleration = operatingPoint.Acceleration;
+			retVal.Driver.OperatingPoint = operatingPoint;
 			retVal.SimulationInterval = operatingPoint.SimulationInterval;
 			retVal.SimulationDistance = ds;
-			retVal.OperatingPoint = operatingPoint;
 
 			return retVal;
 		}
@@ -428,9 +428,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					searchedOperatingPoint.SimulationDistance, ds);
 				CurrentState.Response = new ResponseDrivingCycleDistanceExceeded(this) {
 					MaxDistance = searchedOperatingPoint.SimulationDistance,
-					Acceleration = searchedOperatingPoint.Acceleration,
+					Driver = {
+						Acceleration = searchedOperatingPoint.Acceleration,
+						OperatingPoint = searchedOperatingPoint
+					},
 					SimulationInterval = searchedOperatingPoint.SimulationInterval,
-					OperatingPoint = searchedOperatingPoint
+					
 				};
 				return CurrentState.Response;
 			}
@@ -456,8 +459,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			response.SimulationInterval = limitedOperatingPoint.SimulationInterval;
 			response.SimulationDistance = ds;
-			response.Acceleration = limitedOperatingPoint.Acceleration;
-			response.OperatingPoint = limitedOperatingPoint;
+			response.Driver.Acceleration = limitedOperatingPoint.Acceleration;
+			response.Driver.OperatingPoint = limitedOperatingPoint;
 
 			response.Switch().
 				Case<ResponseSuccess>().
@@ -468,7 +471,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				Case<ResponseGearShift>().
 				Case<ResponseFailTimeInterval>(r => {
 					response = new ResponseDrivingCycleDistanceExceeded(this) {
-						MaxDistance = r.Acceleration / 2 * r.DeltaT * r.DeltaT + DataBus.VehicleSpeed * r.DeltaT
+						MaxDistance = r.Driver.Acceleration / 2 * r.DeltaT * r.DeltaT + DataBus.VehicleSpeed * r.DeltaT
 					};
 				}).
 				Default(
@@ -478,7 +481,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					});
 
 			CurrentState.Response = response;
-			CurrentState.Acceleration = response.Acceleration;
+			CurrentState.Acceleration = response.Driver.Acceleration;
 			CurrentState.dt = response.SimulationInterval;
 			return response;
 		}
@@ -529,10 +532,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				CurrentState.Acceleration = operatingPoint.Acceleration;
 				CurrentState.dt = operatingPoint.SimulationInterval;
 				CurrentState.Response = retVal;
-				retVal.Acceleration = operatingPoint.Acceleration;
+				retVal.Driver.Acceleration = operatingPoint.Acceleration;
+				retVal.Driver.OperatingPoint = operatingPoint;
 				retVal.SimulationInterval = operatingPoint.SimulationInterval;
 				retVal.SimulationDistance = ds;
-				retVal.OperatingPoint = operatingPoint;
 				return retVal;
 			}
 
@@ -554,7 +557,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			if (DataBus.BrakePower < 0) {
 				var overload = new ResponseOverload(this) {
 					BrakePower = DataBus.BrakePower,
-					Acceleration = operatingPoint.Acceleration
+					Driver = { Acceleration = operatingPoint.Acceleration }
 				};
 				DataBus.BrakePower = 0.SI<Watt>();
 				return overload;
@@ -626,10 +629,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			CurrentState.Acceleration = operatingPoint.Acceleration;
 			CurrentState.dt = operatingPoint.SimulationInterval;
 			CurrentState.Response = retVal;
-			retVal.Acceleration = operatingPoint.Acceleration;
+			retVal.Driver.Acceleration = operatingPoint.Acceleration;
+			retVal.Driver.OperatingPoint = operatingPoint;
 			retVal.SimulationInterval = operatingPoint.SimulationInterval;
 			retVal.SimulationDistance = ds;
-			retVal.OperatingPoint = operatingPoint;
 			
 			return retVal;
 		}
@@ -876,7 +879,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 							IterationStatistics.Increment(this, "SearchOperatingPoint");
 							DriverAcceleration = acc;
 							var response = NextComponent.Request(absTime, retVal.SimulationInterval, acc, gradient, true);
-							response.OperatingPoint = retVal;
+							response.Driver.OperatingPoint = retVal;
 							return response;
 							
 						},
@@ -893,7 +896,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					abortCriterion:
 						(response, cnt) => {
 							var r = (ResponseDryRun)response;
-							return r != null && !actionRoll && !ds.IsEqual(r.OperatingPoint.SimulationDistance);
+							return r != null && !actionRoll && !ds.IsEqual(r.Driver.OperatingPoint.SimulationDistance);
 						});
 				return ComputeTimeInterval(retVal.Acceleration, retVal.SimulationDistance);
 			} catch (VectoSearchAbortedException) {

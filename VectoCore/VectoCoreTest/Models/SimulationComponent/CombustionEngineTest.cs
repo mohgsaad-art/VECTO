@@ -365,7 +365,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var response = (ResponseSuccess)requestPort.Initialize(torque, angularVelocity);
 
 			response = (ResponseSuccess)requestPort.Request(absTime, dt, torque, angularVelocity);
-			Assert.AreEqual(105000, response.EnginePowerRequest.Value(), Tolerance);
+			Assert.AreEqual(105000, response.Engine.PowerRequest.Value(), Tolerance);
 			container.CommitSimulationStep(absTime, dt);
 			absTime += dt;
 
@@ -423,7 +423,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var response = (ResponseSuccess)requestPort.Initialize(torque, angularVelocity);
 
 			response = (ResponseSuccess)requestPort.Request(absTime, dt, torque, angularVelocity);
-			Assert.AreEqual(350000, response.EnginePowerRequest.Value(), Tolerance);
+			Assert.AreEqual(350000, response.Engine.PowerRequest.Value(), Tolerance);
 			container.CommitSimulationStep(absTime, dt);
 			absTime += dt;
 
@@ -479,7 +479,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var response = (ResponseSuccess)requestPort.Initialize(torque, angularVelocity);
 
 			response = (ResponseSuccess)requestPort.Request(absTime, dt, torque, angularVelocity);
-			Assert.AreEqual(-14829.79713, response.EnginePowerRequest.Value(), Tolerance);
+			Assert.AreEqual(-14829.79713, response.Engine.PowerRequest.Value(), Tolerance);
 			container.CommitSimulationStep(absTime, dt);
 			absTime += dt;
 

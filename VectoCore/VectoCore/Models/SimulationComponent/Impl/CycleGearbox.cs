@@ -354,16 +354,16 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			if (TorqueConverter != null) {
 				if (DataBus.VehicleStopped) {
 					TorqueConverter.Locked(
-						0.SI<NewtonMeter>(), disengagedResponse.EngineSpeed, CurrentState.InTorque,
+						0.SI<NewtonMeter>(), disengagedResponse.Engine.EngineSpeed, CurrentState.InTorque,
 						outAngularVelocity);
 				} else {
 					TorqueConverter.Locked(
-						CurrentState.InTorque, disengagedResponse.EngineSpeed, CurrentState.InTorque,
-						disengagedResponse.EngineSpeed);
+						CurrentState.InTorque, disengagedResponse.Engine.EngineSpeed, CurrentState.InTorque,
+						disengagedResponse.Engine.EngineSpeed);
 				}
 			}
 			disengagedResponse.GearboxPowerRequest = outTorque * avgOutAngularVelocity;
-			CurrentState.SetState(0.SI<NewtonMeter>(), disengagedResponse.EngineSpeed, 0.SI<NewtonMeter>(), outAngularVelocity);
+			CurrentState.SetState(0.SI<NewtonMeter>(), disengagedResponse.Engine.EngineSpeed, 0.SI<NewtonMeter>(), outAngularVelocity);
 			CurrentState.Gear = Gear;
 
 			return disengagedResponse;

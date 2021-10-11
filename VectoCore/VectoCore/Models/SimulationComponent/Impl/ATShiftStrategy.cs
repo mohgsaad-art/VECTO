@@ -110,11 +110,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				}
 				var response = _gearbox.Initialize(gear, torqueConverterLocked, torque, outAngularVelocity);
 
-				if (response.EngineSpeed > DataBus.EngineRatedSpeed || response.EngineSpeed < DataBus.EngineIdleSpeed) {
+				if (response.Engine.EngineSpeed > DataBus.EngineRatedSpeed || response.Engine.EngineSpeed < DataBus.EngineIdleSpeed) {
 					continue;
 				}
 
-				if (!IsBelowDownShiftCurve(gear, response.EnginePowerRequest / response.EngineSpeed, response.EngineSpeed)) {
+				if (!IsBelowDownShiftCurve(gear, response.Engine.PowerRequest / response.Engine.EngineSpeed, response.Engine.EngineSpeed)) {
 					_gearbox.Disengaged = false;
 					return gear;
 				}

@@ -43,12 +43,8 @@ namespace TUGraz.VectoCommon.Models
 		Second AbsTime { get; set; }
 		Meter SimulationDistance { get; set; }
 		Second SimulationInterval { get; set; }
-		MeterPerSquareSecond Acceleration { get; set; }
-		PerSecond EngineSpeed { get; set; }
-		OperatingPoint OperatingPoint { get; set; }
 		object Source { get; }
 
-		Watt EnginePowerRequest { get; set; }
 		Watt ClutchPowerRequest { get; set; }
 		Watt GearboxPowerRequest { get; set; }
 		Watt AxlegearPowerRequest { get; set; }
@@ -56,8 +52,6 @@ namespace TUGraz.VectoCommon.Models
 		Watt VehiclePowerRequest { get; set; }
 		Watt BrakePower { get; set; }
 		Watt AngledrivePowerRequest { get; set; }
-
-		Watt AuxiliariesPowerDemand { get; set; }
 
 		DriverResponse Driver { get; }
 

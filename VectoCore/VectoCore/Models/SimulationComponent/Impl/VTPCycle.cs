@@ -203,10 +203,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 				var response = Initialize(gear, wheelStartTorque, wheelStartSpeed);
 
-				var fullLoadPower = response.DynamicFullLoadPower; //EnginePowerRequest - response.DeltaFullLoad;
-				var reserve = 1 - response.EnginePowerRequest / fullLoadPower;
+				var fullLoadPower = response.Engine.DynamicFullLoadPower; //EnginePowerRequest - response.DeltaFullLoad;
+				var reserve = 1 - response.Engine.PowerRequest / fullLoadPower;
 
-				if (response.EngineSpeed > DataBus.EngineIdleSpeed && reserve >= RunData.GearboxData.StartTorqueReserve) {
+				if (response.Engine.EngineSpeed > DataBus.EngineIdleSpeed && reserve >= RunData.GearboxData.StartTorqueReserve) {
 					StartGear = gear;
 					return;
 				}
@@ -229,9 +229,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			//var fullLoad = DataBus.EngineStationaryFullPower(inAngularVelocity);
 
 			return new ResponseDryRun(this) {
-				EnginePowerRequest = response.EnginePowerRequest,
-				EngineSpeed = response.EngineSpeed,
-				DynamicFullLoadPower = response.DynamicFullLoadPower,
+				Engine = {
+					PowerRequest = response.Engine.PowerRequest,
+					EngineSpeed = response.Engine.EngineSpeed,
+					DynamicFullLoadPower = response.Engine.DynamicFullLoadPower,
+				},
 				ClutchPowerRequest = response.ClutchPowerRequest,
 				GearboxPowerRequest = outTorque * outAngularVelocity,
 				//DeltaFullLoad = response.EnginePowerRequest - fullLoad

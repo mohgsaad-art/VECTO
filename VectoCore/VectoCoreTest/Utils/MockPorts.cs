@@ -59,30 +59,36 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 			if (dryRun) {
 				return new ResponseDryRun(this) {
+					Engine = {
+						PowerRequest = outTorque * outAngularVelocity,
+						EngineSpeed = outAngularVelocity,
+						DynamicFullLoadPower = (outTorque + 2300.SI<NewtonMeter>()) * outAngularVelocity,
+					},
 					GearboxPowerRequest = outTorque * outAngularVelocity,
-					EnginePowerRequest = outTorque * outAngularVelocity,
 					ClutchPowerRequest = outTorque * outAngularVelocity,
-					EngineSpeed = outAngularVelocity,
-					DynamicFullLoadPower = (outTorque + 2300.SI<NewtonMeter>()) * outAngularVelocity,
 					DeltaFullLoad = (outTorque - 2300.SI<NewtonMeter>()) * outAngularVelocity,
 					DeltaDragLoad = (outTorque - -100.SI<NewtonMeter>()) * outAngularVelocity
 				};
 			}
 
 			return new ResponseSuccess(this) {
+				Engine = {
+					PowerRequest = outTorque * outAngularVelocity,
+					EngineSpeed = outAngularVelocity,
+				},
 				GearboxPowerRequest = outTorque * outAngularVelocity,
-				EnginePowerRequest = outTorque * outAngularVelocity,
 				ClutchPowerRequest = outTorque * outAngularVelocity,
-				EngineSpeed = outAngularVelocity,
 			};
 		}
 
 		public IResponse Initialize(NewtonMeter outTorque, PerSecond outAngularVelocity)
 		{
 			return new ResponseSuccess(this) {
-				EnginePowerRequest = outTorque * (outAngularVelocity ?? 0.SI<PerSecond>()),
+				Engine = {
+					PowerRequest = outTorque * (outAngularVelocity ?? 0.SI<PerSecond>()),
+					EngineSpeed = outAngularVelocity,
+				},
 				ClutchPowerRequest = outTorque * (outAngularVelocity ?? 0.SI<PerSecond>()),
-				EngineSpeed = outAngularVelocity,
 			};
 		}
 

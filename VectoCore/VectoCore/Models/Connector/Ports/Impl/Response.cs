@@ -66,14 +66,6 @@ namespace TUGraz.VectoCore.Models.Connector.Ports.Impl
 		public Second AbsTime { get; set; }
 		public Second SimulationInterval { get; set; }
 		public Meter SimulationDistance { get; set; }
-		public MeterPerSquareSecond Acceleration { get; set; }
-		public OperatingPoint OperatingPoint { get; set; }
-		public PerSecond EngineSpeed { get; set; }
-
-		public Watt EnginePowerRequest { get; set; }
-		public Watt DynamicFullLoadPower { get; set; }
-		public Watt DragPower { get; set; }
-
 		public Watt AngledrivePowerRequest { get; set; }
 		public Watt ClutchPowerRequest { get; set; }
 		public Watt GearboxPowerRequest { get; set; }
@@ -81,7 +73,6 @@ namespace TUGraz.VectoCore.Models.Connector.Ports.Impl
 		public Watt WheelsPowerRequest { get; set; }
 		public Watt VehiclePowerRequest { get; set; }
 		public Watt BrakePower { get; set; }
-		public Watt AuxiliariesPowerDemand { get; set; }
 		public GearboxResponse Gearbox { get; }
 
 		public DriverResponse Driver { get; }

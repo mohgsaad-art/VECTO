@@ -100,7 +100,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				Log.Debug("Invoking IdleController...");
 				var retval = IdleController.Request(absTime, dt, outTorque, null, dryRun);
 				retval.ClutchPowerRequest = 0.SI<Watt>();
-				CurrentState.SetState(0.SI<NewtonMeter>(), retval.EngineSpeed, outTorque, outAngularVelocity);
+				CurrentState.SetState(0.SI<NewtonMeter>(), retval.Engine.EngineSpeed, outTorque, outAngularVelocity);
 				CurrentState.ClutchLoss = 0.SI<Watt>();
 				return retval;
 			}

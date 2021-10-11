@@ -153,12 +153,16 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			Gear = oldGear;
 			return new ResponseDryRun(this) {
-				EnginePowerRequest = response.EnginePowerRequest,
-				EngineSpeed = response.EngineSpeed,
-				DynamicFullLoadPower = response.DynamicFullLoadPower,
+				Engine = {
+					PowerRequest = response.Engine.PowerRequest,
+					EngineSpeed = response.Engine.EngineSpeed,
+					DynamicFullLoadPower = response.Engine.DynamicFullLoadPower,
+					TorqueOutDemand = response.Engine.TorqueOutDemand,
+					DynamicFullLoadTorque = response.Engine.DynamicFullLoadTorque
+				},
 				ClutchPowerRequest = response.ClutchPowerRequest,
 				GearboxPowerRequest = outTorque * outAngularVelocity,
-				DeltaFullLoad = response.EnginePowerRequest - fullLoad
+				DeltaFullLoad = response.Engine.PowerRequest - fullLoad
 			};
 		}
 
@@ -352,7 +356,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			if (response is ResponseSuccess && shiftAllowed) {
 				var shiftRequired = _strategy.ShiftRequired(absTime, dt, outTorque, outAngularVelocity, inTorque,
-					response.EngineSpeed, Gear, EngageTime, response);
+					response.Engine.EngineSpeed, Gear, EngageTime, response);
 
 				if (shiftRequired) {
 					EngageTime = absTime + ModelData.TractionInterruption;

@@ -199,8 +199,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				});
 
 			return new ResponseDryRun(this) {
-				EngineSpeed = response.EngineSpeed,
-				EnginePowerRequest = response.EnginePowerRequest,
+				Engine = {
+					EngineSpeed = response.Engine.EngineSpeed,
+					PowerRequest = response.Engine.PowerRequest,
+				},
 				GearboxPowerRequest = outTorque * outAngularVelocity,
 			};
 		}
@@ -389,7 +391,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				Extrapolated = false,
 				Value = 0.SI<NewtonMeter>()
 			};
-			TorqueConverter.Locked(DataBus.VehicleStopped ? 0.SI<NewtonMeter>() : CurrentState.InTorque, retval.EngineSpeed,
+			TorqueConverter.Locked(DataBus.VehicleStopped ? 0.SI<NewtonMeter>() : CurrentState.InTorque, retval.Engine.EngineSpeed,
 				CurrentState.InTorque,
 				outAngularVelocity * effectiveRatio);
 
