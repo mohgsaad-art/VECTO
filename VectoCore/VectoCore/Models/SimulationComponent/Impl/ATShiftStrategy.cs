@@ -97,7 +97,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		public override GearshiftPosition InitGear(Second absTime, Second dt, NewtonMeter torque, PerSecond outAngularVelocity)
 		{
-			if (DataBus.VehicleSpeed.IsEqual(0)) {
+			if (DataBus.VehicleInfo.VehicleSpeed.IsEqual(0)) {
 				// AT always starts in first gear and TC active!
 				_gearbox.Disengaged = true;
 				return Gears.First();
@@ -110,7 +110,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				}
 				var response = _gearbox.Initialize(gear, torqueConverterLocked, torque, outAngularVelocity);
 
-				if (response.Engine.EngineSpeed > DataBus.EngineRatedSpeed || response.Engine.EngineSpeed < DataBus.EngineIdleSpeed) {
+				if (response.Engine.EngineSpeed > DataBus.EngineInfo.EngineRatedSpeed || response.Engine.EngineSpeed < DataBus.EngineInfo.EngineIdleSpeed) {
 					continue;
 				}
 
@@ -157,7 +157,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var braking = DataBus.DriverInfo.DriverBehavior == DrivingBehavior.Braking;
 			var torqueNegative = outTorque.IsSmaller(0);
 			var slowerThanDisengageSpeed =
-				DataBus.VehicleSpeed.IsSmaller(Constants.SimulationSettings.ATGearboxDisengageWhenHaltingSpeed);
+				DataBus.VehicleInfo.VehicleSpeed.IsSmaller(Constants.SimulationSettings.ATGearboxDisengageWhenHaltingSpeed);
 			var disengageBeforeHalting = braking && torqueNegative && slowerThanDisengageSpeed;
 
 			// 2) L -> 0: disengage if inAngularVelocity == 0
@@ -169,7 +169,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 													inTorque.IsGreater(0);
 
 			var disengageTCEngineSpeedLowerIdle = braking && torqueNegative && gear1C &&
-												inAngularVelocity.IsSmallerOrEqual(DataBus.EngineIdleSpeed);
+												inAngularVelocity.IsSmallerOrEqual(DataBus.EngineInfo.EngineIdleSpeed);
 
 			if (disengageBeforeHalting || disengageTCEngineSpeedLowerIdle || disengageAngularVelocityZero ||
 				disengageTOutNegativeAndTInPositive) {
@@ -200,13 +200,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		private bool CheckEmergencyShift(Second absTime, NewtonMeter outTorque, PerSecond outAngularVelocity, PerSecond inAngularVelocity, GearshiftPosition gear)
 		{
 			// Emergency Downshift: if lower than engine idle speed
-			if (inAngularVelocity.IsSmaller(DataBus.EngineIdleSpeed)) {
+			if (inAngularVelocity.IsSmaller(DataBus.EngineInfo.EngineIdleSpeed)) {
 				Log.Debug("engine speed would fall below idle speed - shift down");
 				Downshift(absTime, gear);
 				return true;
 			}
 			// Emergency Upshift: if higher than engine rated speed
-			if (inAngularVelocity.IsGreaterOrEqual(VectoMath.Min(GearboxModelData.Gears[gear.Gear].MaxSpeed, DataBus.EngineRatedSpeed))) {
+			if (inAngularVelocity.IsGreaterOrEqual(VectoMath.Min(GearboxModelData.Gears[gear.Gear].MaxSpeed, DataBus.EngineInfo.EngineRatedSpeed))) {
 				// check if upshift is possible
 				if (!Gears.HasSuccessor(gear)) {
 					return false;
@@ -283,7 +283,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var nextGearPos = Gears.Successor(gear); // GearboxModelData.Gears[gear + 1];
 			var nextGear = GearboxModelData.Gears[nextGearPos.Gear];
 			var gearRatio = nextGear.TorqueConverterRatio / currentGear.TorqueConverterRatio;
-			var minEngineSpeed = VectoMath.Min(700.RPMtoRad(), gearRatio * (DataBus.EngineN80hSpeed - 150.RPMtoRad()));
+			var minEngineSpeed = VectoMath.Min(700.RPMtoRad(), gearRatio * (DataBus.EngineInfo.EngineN80hSpeed - 150.RPMtoRad()));
 
 			var nextGearboxInSpeed = outAngularVelocity * nextGear.TorqueConverterRatio;
 			var nextGearboxInTorque = outTorque / nextGear.TorqueConverterRatio;
@@ -292,9 +292,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var tcOperatingPoint = _gearbox.TorqueConverter.FindOperatingPoint(absTime, dt, nextGearboxInTorque, nextGearboxInSpeed);
 
 			var engineSpeedOverMin = tcOperatingPoint.InAngularVelocity.IsGreater(minEngineSpeed);
-			var avgSpeed = (DataBus.EngineSpeed + tcOperatingPoint.InAngularVelocity) / 2;
-			var engineMaxTorque = DataBus.EngineStationaryFullPower(avgSpeed) / avgSpeed;
-			var engineInertiaTorque = Formulas.InertiaPower(DataBus.EngineSpeed, tcOperatingPoint.InAngularVelocity, _gearbox.EngineInertia, dt) / avgSpeed;
+			var avgSpeed = (DataBus.EngineInfo.EngineSpeed + tcOperatingPoint.InAngularVelocity) / 2;
+			var engineMaxTorque = DataBus.EngineInfo.EngineStationaryFullPower(avgSpeed) / avgSpeed;
+			var engineInertiaTorque = Formulas.InertiaPower(DataBus.EngineInfo.EngineSpeed, tcOperatingPoint.InAngularVelocity, _gearbox.EngineInertia, dt) / avgSpeed;
 			var engineTorqueBelowMax =
 				tcOperatingPoint.InTorque.IsSmallerOrEqual(engineMaxTorque - engineInertiaTorque);
 
@@ -331,7 +331,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var isAboveUpShift = IsAboveUpShiftCurve(gear, nextEngineTorque, nextEngineSpeed, _gearbox.TorqueConverterLocked);
 
 			var minAccelerationReachable = true;
-			if (!DataBus.VehicleSpeed.IsEqual(0)) {
+			if (!DataBus.VehicleInfo.VehicleSpeed.IsEqual(0)) {
 				var reachableAcceleration = EstimateAccelerationForGear(nextGear, outAngularVelocity);
 				var minAcceleration = _gearbox.TorqueConverterLocked
 					? GearboxModelData.UpshiftMinAcceleration
@@ -387,7 +387,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
 
 			if (shiftTimeReached && DataBus.DriverInfo.DrivingAction == DrivingAction.Accelerate) {
-				if (DataBus.VehicleSpeed < DataBus.CycleData.LeftSample.VehicleTargetSpeed - 10.KMPHtoMeterPerSecond() && DataBus.DriverInfo.DriverAcceleration < 0.SI<MeterPerSquareSecond>()) {
+				if (DataBus.VehicleInfo.VehicleSpeed < DataBus.DrivingCycleInfo.CycleData.LeftSample.VehicleTargetSpeed - 10.KMPHtoMeterPerSecond() && DataBus.DriverInfo.DriverAcceleration < 0.SI<MeterPerSquareSecond>()) {
 					var tmpResponseCurr = (ResponseDryRun)_gearbox.Request(absTime, dt, outTorque, outAngularVelocity, true);
 					if (_gearbox.Gear > Gears.First()) {
 						var tmpCurr = _nextGear.Clone();

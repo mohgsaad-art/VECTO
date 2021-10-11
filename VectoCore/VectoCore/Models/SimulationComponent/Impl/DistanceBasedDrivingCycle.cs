@@ -92,8 +92,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		public IResponse Initialize()
 		{
 			if (Left.VehicleTargetSpeed.IsEqual(0)) {
-				var retVal = NextComponent.Initialize(DataBus.StartSpeed,
-					Left.RoadGradient, DataBus.StartAcceleration);
+				var retVal = NextComponent.Initialize(DataBus.GearboxInfo.StartSpeed,
+					Left.RoadGradient, DataBus.GearboxInfo.StartAcceleration);
 				if (!(retVal is ResponseSuccess)) {
 					throw new UnexpectedResponseException("DistanceBasedDrivingCycle.Initialize: Couldn't find start gear.", retVal);
 				}
@@ -123,12 +123,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			var nextSpeedChange = GetSpeedChangeWithinSimulationInterval(ds);
 			if (nextSpeedChange == null || ds.IsSmallerOrEqual(nextSpeedChange - PreviousState.Distance)) {
-				if (nextSpeedChange == null || DataBus.VehicleSpeed.IsEqual(0.SI<MeterPerSecond>())) {
+				if (nextSpeedChange == null || DataBus.VehicleInfo.VehicleSpeed.IsEqual(0.SI<MeterPerSecond>())) {
 					CurrentState.Response = DriveDistance(absTime, ds);
 					return CurrentState.Response;
 				}
 				var remainingDistance = nextSpeedChange - PreviousState.Distance - ds;
-				var estimatedRemainingTime = remainingDistance / DataBus.VehicleSpeed;
+				var estimatedRemainingTime = remainingDistance / DataBus.VehicleInfo.VehicleSpeed;
 				if (_intervalProlonged || remainingDistance.IsEqual(0.SI<Meter>()) ||
 					estimatedRemainingTime.IsGreater(Constants.SimulationSettings.LowerBoundTimeInterval)) {
 					CurrentState.Response = DriveDistance(absTime, ds);
@@ -143,12 +143,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				return CurrentState.Response;
 			}
 
-			if (DataBus.VehicleSpeed.IsGreater(0) && Right.Distance.IsSmaller(CycleEndDistance)) {
+			if (DataBus.VehicleInfo.VehicleSpeed.IsGreater(0) && Right.Distance.IsSmaller(CycleEndDistance)) {
 				var distanceToSpeedChange = nextSpeedChange - PreviousState.Distance;
-				var estimatedTimeToSpeedChange = distanceToSpeedChange / DataBus.VehicleSpeed;
+				var estimatedTimeToSpeedChange = distanceToSpeedChange / DataBus.VehicleInfo.VehicleSpeed;
 				if (estimatedTimeToSpeedChange.IsSmaller(Constants.SimulationSettings.LowerBoundTimeInterval / 2) &&
-					DataBus.VehicleSpeed.IsSmaller(Left.VehicleTargetSpeed, 1.KMPHtoMeterPerSecond()) &&
-					DataBus.VehicleSpeed.IsSmaller(Right.VehicleTargetSpeed, 1.KMPHtoMeterPerSecond())) {
+					DataBus.VehicleInfo.VehicleSpeed.IsSmaller(Left.VehicleTargetSpeed, 1.KMPHtoMeterPerSecond()) &&
+					DataBus.VehicleInfo.VehicleSpeed.IsSmaller(Right.VehicleTargetSpeed, 1.KMPHtoMeterPerSecond())) {
 					CurrentState.Response = DriveDistance(absTime, ds);
 					return CurrentState.Response;
 				}
@@ -438,7 +438,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		public IReadOnlyList<DrivingCycleData.DrivingCycleEntry> LookAhead(Second time)
 		{
-			return LookAhead(LookaheadTimeSafetyMargin * DataBus.VehicleSpeed * time);
+			return LookAhead(LookaheadTimeSafetyMargin * DataBus.VehicleInfo.VehicleSpeed * time);
 		}
 
 		public void FinishSimulation()

@@ -13,15 +13,15 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl {
 			RunData = runData;
 		}
 
-		public IDriverDemandOutPort VehiclePort => (Vehicle as Vehicle)?.OutPort();
+		public IDriverDemandOutPort VehiclePort => (VehicleInfo as Vehicle)?.OutPort();
 
-		public ITnOutPort GearboxOutPort => (Gearbox as IGearbox)?.OutPort();
+		public ITnOutPort GearboxOutPort => (GearboxInfo as IGearbox)?.OutPort();
 
-		public IGearbox GearboxCtlTest => Gearbox as IGearbox;
+		public IGearbox GearboxCtlTest => GearboxCtl as IGearbox;
 
 		public override Second AbsTime => 0.SI<Second>();
 
-		public override IDriverInfo DriverInfo => base.Driver ?? this;
+		public override IDriverInfo DriverInfo => base.DriverInfo ?? this;
 
 		public override bool IsTestPowertrain => true;
 

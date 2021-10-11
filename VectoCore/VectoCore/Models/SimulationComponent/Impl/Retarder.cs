@@ -72,7 +72,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		public IResponse Request(Second absTime, Second dt, NewtonMeter torque, PerSecond angularVelocity, bool dryRun = false)
 		{
-			if (angularVelocity == null || (_primaryRetarder && !DataBus.ClutchClosed(absTime))) {
+			if (angularVelocity == null || (_primaryRetarder && !DataBus.ClutchInfo.ClutchClosed(absTime))) {
 				return NextComponent.Request(absTime, dt, torque, angularVelocity, dryRun);
 			}
 			var avgAngularSpeed = (PreviousState.InAngularVelocity + angularVelocity) / 2.0;

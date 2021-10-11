@@ -61,8 +61,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					EngineSpeed = outAngularVelocity,
 					dt = 1.SI<Second>(),
 					InertiaTorqueLoss = 0.SI<NewtonMeter>(),
-					StationaryFullLoadTorque = ModelData.FullLoadCurves[DataBus.Gear.Gear].FullLoadStationaryTorque(outAngularVelocity),
-					FullDragTorque = ModelData.FullLoadCurves[DataBus.Gear.Gear].DragLoadStationaryTorque(outAngularVelocity),
+					StationaryFullLoadTorque = ModelData.FullLoadCurves[DataBus.GearboxInfo.Gear.Gear].FullLoadStationaryTorque(outAngularVelocity),
+					FullDragTorque = ModelData.FullLoadCurves[DataBus.GearboxInfo.Gear.Gear].DragLoadStationaryTorque(outAngularVelocity),
 					EngineTorque = outTorque + auxDemand,
 					EnginePower = (outTorque + auxDemand) * outAngularVelocity,
 				};
@@ -86,8 +86,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var torqueOut = powerDemand / avgEngineSpeed;
 
 
-			var fullDragTorque = ModelData.FullLoadCurves[DataBus.Gear.Gear].DragLoadStationaryTorque(avgEngineSpeed);
-			var fullLoadTorque = ModelData.FullLoadCurves[DataBus.Gear.Gear].FullLoadStationaryTorque(avgEngineSpeed);
+			var fullDragTorque = ModelData.FullLoadCurves[DataBus.GearboxInfo.Gear.Gear].DragLoadStationaryTorque(avgEngineSpeed);
+			var fullLoadTorque = ModelData.FullLoadCurves[DataBus.GearboxInfo.Gear.Gear].FullLoadStationaryTorque(avgEngineSpeed);
 			
 			var inertiaTorqueLoss =
 				Formulas.InertiaPower(angularVelocity, PreviousState.EngineSpeed, ModelData.Inertia, dt) /
@@ -199,17 +199,17 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		protected override PerSecond GetEngineSpeed(PerSecond angularSpeed)
         {
-            return DataBus.CycleData.LeftSample.EngineSpeed;
+            return DataBus.DrivingCycleInfo.CycleData.LeftSample.EngineSpeed;
         }
 
 		protected override double WHTCCorrectionFactor(IFuelProperties fuel)
 		{
 			var selected = ModelData.Fuels.First(x => x.FuelData.FuelType == fuel.FuelType);
 
-			if (DataBus.CycleData.LeftSample.VehicleTargetSpeed >= Constants.SimulationSettings.HighwaySpeedThreshold) {
+			if (DataBus.DrivingCycleInfo.CycleData.LeftSample.VehicleTargetSpeed >= Constants.SimulationSettings.HighwaySpeedThreshold) {
 				return selected.WHTCMotorway;
 			}
-			if (DataBus.CycleData.LeftSample.VehicleTargetSpeed >= Constants.SimulationSettings.RuralSpeedThreshold) {
+			if (DataBus.DrivingCycleInfo.CycleData.LeftSample.VehicleTargetSpeed >= Constants.SimulationSettings.RuralSpeedThreshold) {
 				return selected.WHTCRural;
 			}
 			return selected.WHTCUrban;

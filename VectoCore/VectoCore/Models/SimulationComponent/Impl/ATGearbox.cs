@@ -133,7 +133,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				effectiveRatio = ModelData.Gears[Gear.Gear].TorqueConverterRatio;
 				effectiveLossMap = ModelData.Gears[Gear.Gear].TorqueConverterGearLossMap;
 			}
-			if (!DataBus.VehicleStopped) {
+			if (!DataBus.VehicleInfo.VehicleStopped) {
 				inAngularVelocity = outAngularVelocity * effectiveRatio;
 				var torqueLossResult = effectiveLossMap.GetTorqueLoss(outAngularVelocity, outTorque);
 				CurrentState.TorqueLossResult = torqueLossResult;
@@ -216,7 +216,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			Log.Debug("AT-Gearbox Power Request: torque: {0}, angularVelocity: {1}", outTorque, outAngularVelocity);
 
-			var driveOffSpeed = DataBus.VehicleStopped && outAngularVelocity > 0;
+			var driveOffSpeed = DataBus.VehicleInfo.VehicleStopped && outAngularVelocity > 0;
 			var driveOffTorque = CurrentState.Disengaged && outTorque.IsGreater(0, 1e-1);
 			if (!dryRun && (driveOffSpeed || driveOffTorque)) {
 				Gear = ModelData.GearList.First();
@@ -309,7 +309,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				var remainingShiftLossLime = ModelData.PowershiftShiftTime - (absTime - LastShift);
 				if (remainingShiftLossLime.IsGreater(0)) {
 					aliquotEnergyLoss = _powershiftLossEnergy * VectoMath.Min(1.0, VectoMath.Min(dt, remainingShiftLossLime) / ModelData.PowershiftShiftTime);
-					var avgEngineSpeed = (DataBus.EngineSpeed + outAngularVelocity * effectiveRatio) / 2;
+					var avgEngineSpeed = (DataBus.EngineInfo.EngineSpeed + outAngularVelocity * effectiveRatio) / 2;
 					powershiftLoss = aliquotEnergyLoss / dt / avgEngineSpeed;
 					inTorque += powershiftLoss;
 
@@ -395,7 +395,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				Extrapolated = false,
 				Value = 0.SI<NewtonMeter>()
 			};
-			TorqueConverter.Locked(DataBus.VehicleStopped ? 0.SI<NewtonMeter>() : CurrentState.InTorque, retval.Engine.EngineSpeed,
+			TorqueConverter.Locked(DataBus.VehicleInfo.VehicleStopped ? 0.SI<NewtonMeter>() : CurrentState.InTorque, retval.Engine.EngineSpeed,
 				CurrentState.InTorque,
 				outAngularVelocity * effectiveRatio);
 
@@ -409,7 +409,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var avgOutAngularSpeed = (PreviousState.OutAngularVelocity + CurrentState.OutAngularVelocity) / 2.0;
 
 			container[ModalResultField.Gear] =
-				CurrentState.Disengaged || DataBus.VehicleStopped ||
+				CurrentState.Disengaged || DataBus.VehicleInfo.VehicleStopped ||
 				(DisengageGearbox && !ModelData.ATEcoRollReleaseLockupClutch)
 					? 0
 					: Gear.Gear;
@@ -445,7 +445,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
 			RequestAfterGearshift = false;
 
-			if (DataBus.VehicleStopped) {
+			if (DataBus.VehicleInfo.VehicleStopped) {
 				CurrentState.Disengaged = true;
 			}
 

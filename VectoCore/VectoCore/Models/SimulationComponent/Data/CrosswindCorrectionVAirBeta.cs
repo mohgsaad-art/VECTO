@@ -70,8 +70,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 			if (DataBus == null) {
 				throw new VectoException("Databus is not set - can't access vAir, beta!");
 			}
-			var vAir = DataBus.CycleData.LeftSample.AirSpeedRelativeToVehicle;
-			var beta = DataBus.CycleData.LeftSample.WindYawAngle;
+			var vAir = DataBus.DrivingCycleInfo.CycleData.LeftSample.AirSpeedRelativeToVehicle;
+			var beta = DataBus.DrivingCycleInfo.CycleData.LeftSample.WindYawAngle;
 
 			// F_air(t) = k * CdA_korr * v_air^2   // assumption: v_air = const for the current interval
 			// P(t) = F_air(t) * v(t) , v(t) = v1 + a * t

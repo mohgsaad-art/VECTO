@@ -220,7 +220,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			engine = new CombustionEngine(
 				container,
 				MockSimulationDataFactory.CreateEngineDataFromFile(ATPowerTrain.EngineFile, gearboxData.Gears.Count));
-			container.Engine = engine;
+			container.EngineInfo = engine;
 			var runData = new VectoRunData() {
 				GearboxData = gearboxData,
 				EngineData = new CombustionEngineData() { Inertia = 5.SI<KilogramSquareMeter>() }

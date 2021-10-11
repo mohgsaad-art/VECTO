@@ -197,7 +197,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			for (var gear = maxStartGear; gear > 1; gear--) {
 				var inAngularSpeed = cardanStartSpeed * RunData.GearboxData.Gears[gear].Ratio;
 
-				var ratedSpeed = DataBus.EngineRatedSpeed;
+				var ratedSpeed = DataBus.EngineInfo.EngineRatedSpeed;
 				if (inAngularSpeed > ratedSpeed || inAngularSpeed.IsEqual(0))
 					continue;
 
@@ -206,7 +206,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				var fullLoadPower = response.Engine.DynamicFullLoadPower; //EnginePowerRequest - response.DeltaFullLoad;
 				var reserve = 1 - response.Engine.PowerRequest / fullLoadPower;
 
-				if (response.Engine.EngineSpeed > DataBus.EngineIdleSpeed && reserve >= RunData.GearboxData.StartTorqueReserve) {
+				if (response.Engine.EngineSpeed > DataBus.EngineInfo.EngineIdleSpeed && reserve >= RunData.GearboxData.StartTorqueReserve) {
 					StartGear = gear;
 					return;
 				}

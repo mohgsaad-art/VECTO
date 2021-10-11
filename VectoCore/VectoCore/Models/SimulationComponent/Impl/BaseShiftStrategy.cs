@@ -92,26 +92,26 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				throw new VectoSimulationException("EstimateAccelerationForGear: invalid gear: {0}", gear);
 			}
 
-			var vehicleSpeed = DataBus.VehicleSpeed;
+			var vehicleSpeed = DataBus.VehicleInfo.VehicleSpeed;
 
 			var nextEngineSpeed = gbxAngularVelocityOut * GearboxModelData.Gears[gear.Gear].Ratio;
-			var maxEnginePower = DataBus.EngineStationaryFullPower(nextEngineSpeed);
+			var maxEnginePower = DataBus.EngineInfo.EngineStationaryFullPower(nextEngineSpeed);
 
 			var avgSlope =
-				((DataBus.CycleLookAhead(Constants.SimulationSettings.GearboxLookaheadForAccelerationEstimation).Altitude -
-				DataBus.Altitude) / Constants.SimulationSettings.GearboxLookaheadForAccelerationEstimation).Value().SI<Radian>();
+				((DataBus.DrivingCycleInfo.CycleLookAhead(Constants.SimulationSettings.GearboxLookaheadForAccelerationEstimation).Altitude -
+				DataBus.DrivingCycleInfo.Altitude) / Constants.SimulationSettings.GearboxLookaheadForAccelerationEstimation).Value().SI<Radian>();
 
-			var airDragLoss = DataBus.AirDragResistance(vehicleSpeed, vehicleSpeed) * DataBus.VehicleSpeed;
-			var rollResistanceLoss = DataBus.RollingResistance(avgSlope) * DataBus.VehicleSpeed;
+			var airDragLoss = DataBus.VehicleInfo.AirDragResistance(vehicleSpeed, vehicleSpeed) * DataBus.VehicleInfo.VehicleSpeed;
+			var rollResistanceLoss = DataBus.VehicleInfo.RollingResistance(avgSlope) * DataBus.VehicleInfo.VehicleSpeed;
 			var gearboxLoss = GearboxModelData.Gears[gear.Gear].LossMap.GetTorqueLoss(gbxAngularVelocityOut,
 				maxEnginePower / nextEngineSpeed * GearboxModelData.Gears[gear.Gear].Ratio).Value * nextEngineSpeed;
 			//DataBus.GearboxLoss();
-			var slopeLoss = DataBus.SlopeResistance(avgSlope) * DataBus.VehicleSpeed;
-			var axleLoss = DataBus.AxlegearLoss();
+			var slopeLoss = DataBus.VehicleInfo.SlopeResistance(avgSlope) * DataBus.VehicleInfo.VehicleSpeed;
+			var axleLoss = DataBus.AxlegearInfo.AxlegearLoss();
 
 			var accelerationPower = maxEnginePower - gearboxLoss - axleLoss - airDragLoss - rollResistanceLoss - slopeLoss;
 
-			var acceleration = accelerationPower / DataBus.VehicleSpeed / (DataBus.TotalMass + DataBus.ReducedMassWheels);
+			var acceleration = accelerationPower / DataBus.VehicleInfo.VehicleSpeed / (DataBus.VehicleInfo.TotalMass + DataBus.WheelsInfo.ReducedMassWheels);
 
 			return acceleration.Cast<MeterPerSquareSecond>();
 		}
@@ -128,20 +128,20 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		protected MeterPerSquareSecond EstimateAcceleration(PerSecond gbxOutSpeed, NewtonMeter gbxOutTorque)
 		{
-			var vehicleSpeed = DataBus.VehicleSpeed;
+			var vehicleSpeed = DataBus.VehicleInfo.VehicleSpeed;
 			var avgSlope =
-			((DataBus.CycleLookAhead(Constants.SimulationSettings.GearboxLookaheadForAccelerationEstimation).Altitude -
-			DataBus.Altitude) / Constants.SimulationSettings.GearboxLookaheadForAccelerationEstimation).Value().SI<Radian>();
+			((DataBus.DrivingCycleInfo.CycleLookAhead(Constants.SimulationSettings.GearboxLookaheadForAccelerationEstimation).Altitude -
+			DataBus.DrivingCycleInfo.Altitude) / Constants.SimulationSettings.GearboxLookaheadForAccelerationEstimation).Value().SI<Radian>();
 
-			var airDragLoss = DataBus.AirDragResistance(vehicleSpeed, vehicleSpeed) * DataBus.VehicleSpeed;
-			var rollResistanceLoss = DataBus.RollingResistance(avgSlope) * DataBus.VehicleSpeed;
+			var airDragLoss = DataBus.VehicleInfo.AirDragResistance(vehicleSpeed, vehicleSpeed) * DataBus.VehicleInfo.VehicleSpeed;
+			var rollResistanceLoss = DataBus.VehicleInfo.RollingResistance(avgSlope) * DataBus.VehicleInfo.VehicleSpeed;
 			//DataBus.GearboxLoss();
-			var slopeLoss = DataBus.SlopeResistance(avgSlope) * DataBus.VehicleSpeed;
-			var axleLoss = DataBus.AxlegearLoss();
+			var slopeLoss = DataBus.VehicleInfo.SlopeResistance(avgSlope) * DataBus.VehicleInfo.VehicleSpeed;
+			var axleLoss = DataBus.AxlegearInfo.AxlegearLoss();
 
 			var accelerationPower = gbxOutSpeed * gbxOutTorque - axleLoss - airDragLoss - rollResistanceLoss - slopeLoss;
 
-			var acceleration = accelerationPower / DataBus.VehicleSpeed / (DataBus.TotalMass + DataBus.ReducedMassWheels);
+			var acceleration = accelerationPower / DataBus.VehicleInfo.VehicleSpeed / (DataBus.VehicleInfo.TotalMass + DataBus.WheelsInfo.ReducedMassWheels);
 
 			return acceleration.Cast<MeterPerSquareSecond>();
 

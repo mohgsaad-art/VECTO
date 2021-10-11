@@ -30,7 +30,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		{
 			var slopes = new Dictionary<MeterPerSecond, Radian>();
 			new PCCEcoRollEngineStopPreprocessor(Container, slopes, PCCDriverData.MinSpeed,
-					VectoMath.Min(Container.MaxVehicleSpeed,
+					VectoMath.Min(Container.VehicleInfo.MaxVehicleSpeed,
 					Container.RunData.Cycle.Entries.Max(x => x.VehicleTargetSpeed)))
 				.RunPreprocessing();
 

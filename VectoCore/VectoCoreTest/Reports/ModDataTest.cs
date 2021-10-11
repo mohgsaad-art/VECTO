@@ -318,12 +318,12 @@ namespace TUGraz.VectoCore.Tests.Reports
 			jobContainer.AddRuns(runsFactory);
 			var modData = new List<Tuple<ModalResults, double>>();
 			foreach (var run in jobContainer.Runs) {
-				var distanceCycle = ((VehicleContainer)run.Run.GetContainer()).DrivingCycle as DistanceBasedDrivingCycle;
+				var distanceCycle = ((VehicleContainer)run.Run.GetContainer()).DrivingCycleInfo as DistanceBasedDrivingCycle;
 				if (distanceCycle != null) {
 					modData.Add(Tuple.Create(((ModalDataContainer)run.Run.GetContainer().ModalData).Data,
 						distanceCycle.Data.Entries.Last().Distance.Value()));
 				}
-				var cycle = ((VehicleContainer)run.Run.GetContainer()).DrivingCycle as PowertrainDrivingCycle;
+				var cycle = ((VehicleContainer)run.Run.GetContainer()).DrivingCycleInfo as PowertrainDrivingCycle;
 				if (cycle != null)
 					modData.Add(Tuple.Create(((ModalDataContainer)run.Run.GetContainer().ModalData).Data,
 						cycle.Data.Entries.Last().Time.Value()));
@@ -351,7 +351,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 					.Components.EngineInputData.EngineModes.First().Fuels.First().FuelConsumptionMap);
 			}
 			var disatanceBased =
-				((VehicleContainer)(jobContainer.Runs.First().Run.GetContainer())).DrivingCycle is DistanceBasedDrivingCycle;
+				((VehicleContainer)(jobContainer.Runs.First().Run.GetContainer())).DrivingCycleInfo is DistanceBasedDrivingCycle;
 			foreach (var modalResults in modData) {
 				AssertModDataIntegrity(modalResults.Item1, auxKeys, modalResults.Item2,fcMap, disatanceBased);
 			}
@@ -621,7 +621,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 			var modData = new List<Tuple<ModalResults, Meter>>();
 			foreach (var run in jobContainer.Runs) {
 				modData.Add(Tuple.Create(((ModalDataContainer)run.Run.GetContainer().ModalData).Data,
-					((DistanceBasedDrivingCycle)((VehicleContainer)run.Run.GetContainer()).DrivingCycle).Data.Entries.Last()
+					((DistanceBasedDrivingCycle)((VehicleContainer)run.Run.GetContainer()).DrivingCycleInfo).Data.Entries.Last()
 						.Distance));
 			}
 			var auxKeys =

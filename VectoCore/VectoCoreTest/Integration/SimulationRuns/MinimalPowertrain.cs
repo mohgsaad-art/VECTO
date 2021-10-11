@@ -116,7 +116,7 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 			//			time [s] , dist [m] , v_act [km/h] , v_targ [km/h] , acc [m/s²] , grad [%] , n_eng_avg [1/min] , T_eng_fcmap [Nm] , Tq_clutch [Nm] , Tq_full [Nm] , Tq_drag [Nm] , P_eng_out [kW] , P_eng_full [kW] , P_eng_drag [kW] , P_clutch_out [kW] , Pa Eng [kW] , P_aux [kW] , Gear [-] , Ploss GB [kW] , Ploss Diff [kW] , Ploss Retarder [kW] , Pa GB [kW] , Pa Veh [kW] , P_roll [kW] , P_air [kW] , P_slope [kW] , P_wheel_in [kW] , P_brake_loss [kW] , FC-Map [g/h] , FC-AUXc [g/h] , FC-WHTCc [g/h]
 			//			1.5      , 5        , 18           , 18            , 0          , 2.842372 , 964.1117  , 323.7562    , 323.7562       , 2208.664     , -158.0261    , 32.68693    , 222.9902     , -15.95456    , 32.68693       , 0           , 0         , 1        , 0             , 0               , 0                   , 0          , 0           , 5.965827   , 0.2423075 , 26.47879   , 32.68693    , 0           , 7574.113     , -             , -
 
-			AssertHelper.AreRelativeEqual(964.1117.RPMtoRad().Value(), container.Engine.EngineSpeed.Value());
+			AssertHelper.AreRelativeEqual(964.1117.RPMtoRad().Value(), container.EngineInfo.EngineSpeed.Value());
 			Assert.AreEqual(2208.664, engine.PreviousState.StationaryFullLoadTorque.Value(), Tolerance);
 			Assert.AreEqual(-158.0261, engine.PreviousState.FullDragTorque.Value(), Tolerance);
 
@@ -175,7 +175,7 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 
 			gbx.Gear = new GearshiftPosition(1);
 			var cnt = 0;
-			while (!(response is ResponseCycleFinished) && container.Distance < 17000) {
+			while (!(response is ResponseCycleFinished) && container.MileageCounter.Distance < 17000) {
 				response = cyclePort.Request(absTime, ds);
 				response.Switch().
 					Case<ResponseDrivingCycleDistanceExceeded>(r => ds = r.MaxDistance).
@@ -184,9 +184,9 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 						container.CommitSimulationStep(absTime, r.SimulationInterval);
 						absTime += r.SimulationInterval;
 
-						ds = container.VehicleSpeed.IsEqual(0)
+						ds = container.VehicleInfo.VehicleSpeed.IsEqual(0)
 							? Constants.SimulationSettings.DriveOffDistance
-							: (Constants.SimulationSettings.TargetTimeInterval * container.VehicleSpeed)
+							: (Constants.SimulationSettings.TargetTimeInterval * container.VehicleInfo.VehicleSpeed)
 								.Cast<Meter>();
 
 						if (cnt++ % 100 == 0) {
@@ -245,7 +245,7 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 
 			gbx.Gear = new GearshiftPosition(1);
 			var ds = Constants.SimulationSettings.DriveOffDistance;
-			while (container.Distance < 100) {
+			while (container.MileageCounter.Distance < 100) {
 				var response = cyclePort.Request(absTime, ds);
 				response.Switch().
 					Case<ResponseDrivingCycleDistanceExceeded>(r => ds = r.MaxDistance).
@@ -253,9 +253,9 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 						container.CommitSimulationStep(absTime, r.SimulationInterval);
 						absTime += r.SimulationInterval;
 
-						ds = container.VehicleSpeed.IsEqual(0)
+						ds = container.VehicleInfo.VehicleSpeed.IsEqual(0)
 							? Constants.SimulationSettings.DriveOffDistance
-							: (Constants.SimulationSettings.TargetTimeInterval * container.VehicleSpeed)
+							: (Constants.SimulationSettings.TargetTimeInterval * container.VehicleInfo.VehicleSpeed)
 								.Cast<Meter>();
 
 						modData.Finish(VectoRun.Status.Success);

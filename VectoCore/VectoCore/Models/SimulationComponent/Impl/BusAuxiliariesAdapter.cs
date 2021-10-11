@@ -224,10 +224,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		{
 			_fcMapAdapter.AllowExtrapolation = true;
 
-			Auxiliaries.Signals.ClutchEngaged = DataBus.ClutchClosed(absTime);
+			Auxiliaries.Signals.ClutchEngaged = DataBus.ClutchInfo.ClutchClosed(absTime);
 			Auxiliaries.Signals.EngineDrivelinePower = torquePowerTrain * angularSpeed;
 			Auxiliaries.Signals.EngineDrivelineTorque = torquePowerTrain;
-			Auxiliaries.Signals.InternalEnginePower = torqueEngine * angularSpeed - DataBus.BrakePower;
+			Auxiliaries.Signals.InternalEnginePower = torqueEngine * angularSpeed - DataBus.Brakes.BrakePower;
 			if (DataBus.DriverInfo.DriverBehavior == DrivingBehavior.Coasting) {
 				// make sure smart aux are _not_ enabled for now
 				// set internal_engine_power a little bit lower so there is no excessive power for smart aux
@@ -243,15 +243,15 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					// smart aux should be on during braking
 				}
 			}
-			Auxiliaries.Signals.EngineMotoringPower = -DataBus.EngineDragPower(angularSpeed);
+			Auxiliaries.Signals.EngineMotoringPower = -DataBus.EngineInfo.EngineDragPower(angularSpeed);
 			Auxiliaries.Signals.EngineSpeed = angularSpeed;
 			var avgAngularSpeed = (PreviousState.AngularSpeed + CurrentState.AngularSpeed) / 2;
 			Auxiliaries.Signals.PreExistingAuxPower = AdditionalAux != null
 				? AdditionalAux.TorqueDemand(absTime, dt, torquePowerTrain, torqueEngine, angularSpeed, dryRun) * avgAngularSpeed
 				: 0.SI<Watt>();
 			//mAAUX_Global.PreExistingAuxPower;
-			Auxiliaries.Signals.Idle = DataBus.VehicleStopped;
-			Auxiliaries.Signals.InNeutral = DataBus.Gear.Gear == 0;
+			Auxiliaries.Signals.Idle = DataBus.VehicleInfo.VehicleStopped;
+			Auxiliaries.Signals.InNeutral = DataBus.GearboxInfo.Gear.Gear == 0;
 			Auxiliaries.Signals.RunningCalc = true;
 
 			//mAAUX_Global.Internal_Engine_Power;

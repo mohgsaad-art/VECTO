@@ -74,7 +74,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
 			if (IdleStart == null) {
 				IdleStart = absTime;
-				PreviousState.InAngularVelocity = DataBus.EngineSpeed;
+				PreviousState.InAngularVelocity = DataBus.EngineInfo.EngineSpeed;
 			}
 			return base.Request(absTime - IdleStart, dt);
 		}

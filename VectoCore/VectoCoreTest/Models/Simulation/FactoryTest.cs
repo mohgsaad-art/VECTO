@@ -73,11 +73,11 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 
 			Assert.AreEqual(11, vehicleContainer.SimulationComponents().Count);
 
-			Assert.IsInstanceOf<Gearbox>(vehicleContainer.Gearbox, "gearbox not installed");
-			Assert.IsInstanceOf<CombustionEngine>(vehicleContainer.Engine, "engine not installed");
-			Assert.IsInstanceOf<Vehicle>(vehicleContainer.Vehicle, "vehicle not installed");
+			Assert.IsInstanceOf<Gearbox>(vehicleContainer.GearboxInfo, "gearbox not installed");
+			Assert.IsInstanceOf<CombustionEngine>(vehicleContainer.EngineInfo, "engine not installed");
+			Assert.IsInstanceOf<Vehicle>(vehicleContainer.VehicleInfo, "vehicle not installed");
 
-			var gearbox = vehicleContainer.Gearbox as Gearbox;
+			var gearbox = vehicleContainer.GearboxInfo as Gearbox;
 			Assert.IsNotNull(gearbox);
 
 			// -- shiftpolygon downshift 
@@ -126,9 +126,9 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			var vehicleContainer = (VehicleContainer)run.GetContainer();
 			Assert.AreEqual(12, vehicleContainer.SimulationComponents().Count);
 
-			Assert.IsInstanceOf<Gearbox>(vehicleContainer.Gearbox, "gearbox not installed");
-			Assert.IsInstanceOf<CombustionEngine>(vehicleContainer.Engine,  "engine not installed");
-			Assert.IsInstanceOf<Vehicle>(vehicleContainer.Vehicle,  "vehicle not installed");
+			Assert.IsInstanceOf<Gearbox>(vehicleContainer.GearboxInfo, "gearbox not installed");
+			Assert.IsInstanceOf<CombustionEngine>(vehicleContainer.EngineInfo,  "engine not installed");
+			Assert.IsInstanceOf<Vehicle>(vehicleContainer.VehicleInfo,  "vehicle not installed");
 		}
 
 		[Category("LongRunning")]

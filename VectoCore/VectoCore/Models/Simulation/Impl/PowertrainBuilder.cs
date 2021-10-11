@@ -186,7 +186,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
                     Constants.Auxiliaries.PowerPrefix + Constants.Auxiliaries.IDs.PTOTransmission);
 
                 aux.Add(Constants.Auxiliaries.IDs.PTOConsumer,
-                    (n, absTime, dt, dryRun) => container.PTOActive ? null : data.PTO.LossMap.GetTorqueLoss(n) * n);
+                    (n, absTime, dt, dryRun) => container.DrivingCycleInfo.PTOActive ? null : data.PTO.LossMap.GetTorqueLoss(n) * n);
                 container.ModalData.AddAuxiliary(Constants.Auxiliaries.IDs.PTOConsumer,
                     Constants.Auxiliaries.PowerPrefix + Constants.Auxiliaries.IDs.PTOConsumer);
             }
@@ -446,7 +446,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 												Constants.Auxiliaries.PowerPrefix + Constants.Auxiliaries.IDs.PTOTransmission);
 
 				aux.Add(Constants.Auxiliaries.IDs.PTOConsumer,
-						(n, absTime, dt, dryRun) => container.PTOActive || (rdSwpAux?.Active(absTime) ?? false) || (ptoDrive?.Active(absTime) ?? false) ? null : data.PTO.LossMap.GetTorqueLoss(n) * n);
+						(n, absTime, dt, dryRun) => container.DrivingCycleInfo.PTOActive || (rdSwpAux?.Active(absTime) ?? false) || (ptoDrive?.Active(absTime) ?? false) ? null : data.PTO.LossMap.GetTorqueLoss(n) * n);
 				container.ModalData.AddAuxiliary(Constants.Auxiliaries.IDs.PTOConsumer,
 												Constants.Auxiliaries.PowerPrefix + Constants.Auxiliaries.IDs.PTOConsumer);
 			}

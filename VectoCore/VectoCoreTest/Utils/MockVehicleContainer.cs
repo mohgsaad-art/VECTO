@@ -48,7 +48,7 @@ using TUGraz.VectoCore.OutputData;
 
 namespace TUGraz.VectoCore.Tests.Utils
 {
-	public class MockVehicleContainer : IVehicleContainer, IDriverInfo, IPowertainInfo, IEngineControl
+	public class MockVehicleContainer : IVehicleContainer, IDriverInfo, IPowertainInfo, IEngineControl, IMileageCounter, IDrivingCycleInfo, IBrakes, IClutchInfo, IVehicleInfo, IGearboxInfo
 	{
 		// only CycleData Lookup is set / accessed...
 

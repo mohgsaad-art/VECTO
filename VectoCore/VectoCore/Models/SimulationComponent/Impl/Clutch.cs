@@ -79,7 +79,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				engineSpeedIn = _idleSpeed;
 				torqueIn = 0.SI<NewtonMeter>();
 			} else {
-				AddClutchLoss(outTorque, outAngularVelocity, firstInitialize || DataBus.VehicleStopped, out torqueIn, out engineSpeedIn);
+				AddClutchLoss(outTorque, outAngularVelocity, firstInitialize || DataBus.VehicleInfo.VehicleStopped, out torqueIn, out engineSpeedIn);
 			}
 			PreviousState.SetState(torqueIn, engineSpeedIn, outTorque, outAngularVelocity);
 			//if (!firstInitialize) {
@@ -96,8 +96,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			bool dryRun = false)
 		{
 			firstInitialize = false;
-			var startClutch = DataBus.VehicleStopped || !PreviousState.ClutchLoss.IsEqual(0);
-			if (!DataBus.ClutchClosed(absTime) && !dryRun) {
+			var startClutch = DataBus.VehicleInfo.VehicleStopped || !PreviousState.ClutchLoss.IsEqual(0);
+			if (!DataBus.ClutchInfo.ClutchClosed(absTime) && !dryRun) {
 				Log.Debug("Invoking IdleController...");
 				var retval = IdleController.Request(absTime, dt, outTorque, null, dryRun);
 				retval.Clutch.PowerRequest = 0.SI<Watt>();
@@ -116,8 +116,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			NewtonMeter torqueIn;
 			PerSecond angularVelocityIn;
 
-			var slippingClutchWhenDriving = (DataBus.Gear.Gear <= 2 && DataBus.DriverInfo.DriverBehavior != DrivingBehavior.Braking);
-			var slippingClutchDuringBraking = DataBus.Gear.Gear == 1 && DataBus.DriverInfo.DriverBehavior == DrivingBehavior.Braking && outTorque > 0 && DataBus.BrakePower.IsEqual(0);
+			var slippingClutchWhenDriving = (DataBus.GearboxInfo.Gear.Gear <= 2 && DataBus.DriverInfo.DriverBehavior != DrivingBehavior.Braking);
+			var slippingClutchDuringBraking = DataBus.GearboxInfo.Gear.Gear == 1 && DataBus.DriverInfo.DriverBehavior == DrivingBehavior.Braking && outTorque > 0 && DataBus.Brakes.BrakePower.IsEqual(0);
 			//var slippingClutchWhenDriving = (DataBus.Gear == 1 && outTorque > 0);
 			AddClutchLoss(outTorque, outAngularVelocity,
 				slippingClutchWhenDriving || slippingClutchDuringBraking || startClutch || outAngularVelocity.IsEqual(0),
@@ -129,7 +129,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var avgOutAngularVelocity = (PreviousState.OutAngularVelocity + outAngularVelocity) / 2.0;
 			var avgInAngularVelocity = (PreviousState.InAngularVelocity + angularVelocityIn) / 2.0;
 			var clutchLoss = torqueIn * avgInAngularVelocity - outTorque * avgOutAngularVelocity;
-			if (!startClutch && !clutchLoss.IsEqual(0) && (DataBus.Gear.Gear != 1 || clutchLoss.IsSmaller(0))) {
+			if (!startClutch && !clutchLoss.IsEqual(0) && (DataBus.GearboxInfo.Gear.Gear != 1 || clutchLoss.IsSmaller(0))) {
 				// we don't want to have negative clutch losses, so adapt input torque to match the average output power
 				torqueIn = outTorque * avgOutAngularVelocity / avgInAngularVelocity;
 			}

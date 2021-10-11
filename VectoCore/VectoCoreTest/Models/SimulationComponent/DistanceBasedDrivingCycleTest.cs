@@ -172,7 +172,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			// just in test mock driver
 			driver.VehicleStopped = false;
 
-			var startDistance = container.CycleStartDistance.Value();
+			var startDistance = container.DrivingCycleInfo.CycleStartDistance.Value();
 			var absTime = 0.SI<Second>();
 
 
