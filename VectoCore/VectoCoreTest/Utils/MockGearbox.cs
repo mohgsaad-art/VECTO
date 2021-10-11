@@ -37,6 +37,7 @@ using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.OutputData;
 
 namespace TUGraz.VectoCore.Tests.Utils
@@ -62,9 +63,9 @@ namespace TUGraz.VectoCore.Tests.Utils
 		}
 
 		public GearboxType GearboxType { get; set; }
-		public uint Gear { get; set; }
+		public GearshiftPosition Gear { get; set; }
 		public bool TCLocked { get; set; }
-		public GearInfo NextGear { get; private set; }
+		public GearshiftPosition NextGear { get; private set; }
 
 		public Second TractionInterruption
 		{
@@ -146,5 +147,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 		{
 			throw new NotImplementedException();
 		}
+
+		public bool DisengageGearbox { get; set; }
 	}
 }

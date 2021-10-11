@@ -72,10 +72,11 @@
     <Compile Include="Models\AxleLineType.cs" />
     <Compile Include="Models\CertificationMethod.cs" />
     <Compile Include="Models\CrossWindCorrectionMode.cs" />
-    <Compile Include="Models\DriverMode.cs" />
     <Compile Include="Models\ExecutionMode.cs" />
     <Compile Include="Models\FuelType.cs" />
     <Compile Include="Models\GearboxType.cs" />
+    <Compile Include="Models\GearshiftPosition.cs" />
+    <Compile Include="Models\IFuelProperties.cs" />
     <Compile Include="Models\IResponse.cs" />
     <Compile Include="Models\LegislativeClass.cs" />
     <Compile Include="Models\LoggingObject.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="Models\RetarderType.cs" />
     <Compile Include="Models\SimulationType.cs" />
     <Compile Include="Models\VehicleCategory.cs" />
+    <Compile Include="Models\WHRType.cs" />
     <Compile Include="OutputData\IOutputFileWriter.cs" />
     <Compile Include="OutputData\IOutputPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -121,7 +121,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			// cycle finished
 			if (CycleIterator.LastEntry && absTime >= CycleIterator.RightSample.Time) {
-				return new ResponseCycleFinished { AbsTime = absTime, Source = this };
+				return new ResponseCycleFinished(this) { AbsTime = absTime };
 			}
 
 			if (CycleIterator.RightSample == null) {
@@ -129,9 +129,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
 			// interval exceeded
 			if ((absTime + dt).IsGreater(CycleIterator.RightSample.Time)) {
-				return new ResponseFailTimeInterval {
+				return new ResponseFailTimeInterval(this) {
 					AbsTime = absTime,
-					Source = this,
 					DeltaT = CycleIterator.RightSample.Time - absTime
 				};
 			}
@@ -140,9 +139,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					Constants.SimulationSettings.MeasuredSpeedTargetTimeInterval < 0.5) {
 					// the remaining simulation interval would be below 0.5 seconds (i.e., half of MeasuredSpeedTargetTimeInterval)
 					// reduce the current simulation interval to extend the remaining interval
-					return new ResponseFailTimeInterval {
+					return new ResponseFailTimeInterval(this) {
 						AbsTime = absTime,
-						Source = this,
 						DeltaT = (CycleIterator.RightSample.Time - absTime)/2
 					};
 				}

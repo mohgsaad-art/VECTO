@@ -33,6 +33,7 @@ using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 
 namespace TUGraz.VectoCore.Models.Simulation.DataBus
 {
@@ -47,7 +48,7 @@ namespace TUGraz.VectoCore.Models.Simulation.DataBus
 		/// Returns the current gear.
 		/// </summary>
 		/// <returns></returns>
-		uint Gear { get; }
+		GearshiftPosition Gear { get; }
 
 		bool TCLocked { get; }
 
@@ -64,7 +65,7 @@ namespace TUGraz.VectoCore.Models.Simulation.DataBus
 		/// <summary>
 		/// Returns the next gear during shifting operations
 		/// </summary>
-		GearInfo NextGear { get; }
+		GearshiftPosition NextGear { get; }
 
 		Second TractionInterruption { get; }
 		uint NumGears { get; }

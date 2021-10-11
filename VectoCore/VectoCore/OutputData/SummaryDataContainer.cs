@@ -730,7 +730,7 @@ namespace TUGraz.VectoCore.OutputData
 			row[ENGINE_MANUFACTURER] = data.Manufacturer;
 			row[ENGINE_MODEL] = data.ModelName;
 			row[ENGINE_CERTIFICATION_NUMBER] = data.CertificationNumber;
-			row[ENGINE_FUEL_TYPE] = data.FuelData.GetLabel();
+			row[ENGINE_FUEL_TYPE] = string.Join(" / ", data.Fuels.Select(x => x.FuelData.GetLabel()));
 			row[ENGINE_RATED_POWER] = data.RatedPowerDeclared != null && data.RatedPowerDeclared > 0
 				? data.RatedPowerDeclared.ConvertToKiloWatt()
 				: data.FullLoadCurves[0].MaxPower.ConvertToKiloWatt();
@@ -740,12 +740,13 @@ namespace TUGraz.VectoCore.OutputData
 				: (ConvertedSI)data.FullLoadCurves[0].RatedSpeed.AsRPM.SI<Scalar>();
 			row[ENGINE_DISPLACEMENT] = data.Displacement.ConvertToCubicCentiMeter();
 
-			row[ENGINE_WHTC_URBAN] = data.WHTCUrban;
-			row[ENGINE_WHTC_RURAL] = data.WHTCRural;
-			row[ENGINE_WHTC_MOTORWAY] = data.WHTCMotorway;
-			row[ENGINE_BF_COLD_HOT] = data.ColdHotCorrectionFactor;
-			row[ENGINE_CF_REG_PER] = data.CorrectionFactorRegPer;
-			row[ENGINE_ACTUAL_CORRECTION_FACTOR] = data.FuelConsumptionCorrectionFactor;
+			row[ENGINE_WHTC_URBAN] = string.Join(" / ", data.Fuels.Select(x => x.WHTCUrban));
+			row[ENGINE_WHTC_RURAL] = string.Join(" / ", data.Fuels.Select(x => x.WHTCRural));
+			row[ENGINE_WHTC_MOTORWAY] = string.Join(" / ", data.Fuels.Select(x => x.WHTCMotorway));
+			row[ENGINE_BF_COLD_HOT] = string.Join(" / ", data.Fuels.Select(x => x.ColdHotCorrectionFactor));
+			row[ENGINE_CF_REG_PER] = string.Join(" / ", data.Fuels.Select(x => x.CorrectionFactorRegPer));
+			row[ENGINE_ACTUAL_CORRECTION_FACTOR] = string.Join(" / ", data.Fuels.Select(x => x.FuelConsumptionCorrectionFactor));
+
 		}
 
 		private static void WriteAxleWheelsData(List<Axle> data, DataRow row)

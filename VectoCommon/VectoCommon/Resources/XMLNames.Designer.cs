@@ -736,6 +736,24 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to EcoRoll.
+        /// </summary>
+        public static string DriverModel_EcoRoll {
+            get {
+                return ResourceManager.GetString("DriverModel_EcoRoll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EngineStopStartParameters.
+        /// </summary>
+        public static string DriverModel_EngineStopStartParameters {
+            get {
+                return ResourceManager.GetString("DriverModel_EngineStopStartParameters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to LookAheadCoasting.
         /// </summary>
         public static string DriverModel_LookAheadCoasting {
@@ -831,6 +849,15 @@ namespace TUGraz.VectoCommon.Resources {
         public static string DriverModel_Overspeed_AllowedUnderspeed {
             get {
                 return ResourceManager.GetString("DriverModel_Overspeed_AllowedUnderspeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enabled.
+        /// </summary>
+        public static string DriverModel_Overspeed_Enabled {
+            get {
+                return ResourceManager.GetString("DriverModel_Overspeed_Enabled", resourceCulture);
             }
         }
         

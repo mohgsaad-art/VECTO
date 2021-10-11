@@ -145,6 +145,11 @@ namespace TUGraz.VectoCore.Tests.Utils
 			Data.Rows.Clear();
 		}
 
+		public void Reset()
+		{
+
+		}
+
 		public string RunName { get; set; }
 		public string CycleName { get; set; }
 		public string RunSuffix { get; set; }

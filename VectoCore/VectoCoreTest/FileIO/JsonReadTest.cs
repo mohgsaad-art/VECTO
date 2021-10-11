@@ -157,7 +157,7 @@ namespace TUGraz.VectoCore.Tests.FileIO
 
 			AssertHelper.Exception<VectoException>(
 				() => {
-					var tmp = ((IEngineeringInputDataProvider)new JSONInputDataV2(json, TestJobFile)).DriverInputData.OverSpeedEcoRoll;
+					var tmp = ((IEngineeringInputDataProvider)new JSONInputDataV2(json, TestJobFile)).DriverInputData.OverSpeedData;
 				},
 				"Key OverSpeedEcoRoll not found");
 		}

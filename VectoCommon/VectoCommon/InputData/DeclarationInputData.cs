@@ -36,6 +36,7 @@ using System.Net.NetworkInformation;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Models.Declaration;
 
 namespace TUGraz.VectoCommon.InputData
 {
@@ -46,6 +47,10 @@ namespace TUGraz.VectoCommon.InputData
 		IVehicleDeclarationInputData Vehicle { get; }
 
 		string JobName { get; }
+
+		string ShiftStrategy { get; }
+
+		VectoSimulationJobType JobType { get; }
 	}
 
 	public interface IComponentInputData
@@ -203,6 +208,8 @@ namespace TUGraz.VectoCommon.InputData
 		EcoRollType EcoRoll { get; }
 
 		PredictiveCruiseControlType PredictiveCruiseControl { get; }
+
+		bool? ATEcoRollReleaseLockupClutch { get; }
 	}
 
 	public enum PredictiveCruiseControlType
@@ -486,11 +493,59 @@ namespace TUGraz.VectoCommon.InputData
 		/// </summary>
 		CubicMeter Displacement { get; }
 
+		Watt RatedPowerDeclared { get; }
+
+		PerSecond RatedSpeedDeclared { get; }
+
+		NewtonMeter MaxTorqueDeclared { get; }
+
+		IList<IEngineModeDeclarationInputData> EngineModes { get; }
+
+		WHRType WHRType { get; }
+	}
+
+	public interface IEngineModeDeclarationInputData
+	{
 		/// <summary>
 		/// P063
 		/// cf. VECTO Input Parameters.xlsx
 		/// </summary>
 		PerSecond IdleSpeed { get; }
+
+		/// <summary>
+		/// P144
+		/// P068, P069, P70, P71
+		/// cf. VECTO Input Parameters.xlsx
+		/// </summary>
+		TableData FullLoadCurve { get; }
+
+		IList<IEngineFuelDeclarationInputData> Fuels { get; }
+
+		IWHRData WasteHeatRecoveryDataElectrical { get; }
+
+		IWHRData WasteHeatRecoveryDataMechanical { get; }
+	}
+
+	public interface IWHRData
+	{
+		double UrbanCorrectionFactor { get; }
+
+		double RuralCorrectionFactor { get; }
+
+		double MotorwayCorrectionFactor { get; }
+
+		double BFColdHot { get; }
+
+		double CFRegPer { get; }
+
+		double EngineeringCorrectionFactor { get; }
+
+		TableData GeneratedPower { get; }
+	}
+
+	public interface IEngineFuelDeclarationInputData
+	{
+		FuelType FuelType { get; }
 
 		/// <summary>
 		/// P111
@@ -517,8 +572,6 @@ namespace TUGraz.VectoCommon.InputData
 
 		double CorrectionFactorRegPer { get; }
 
-		FuelType FuelType { get; }
-
 		/// <summary>
 		/// P067
 		/// P072, P073, P074
@@ -526,19 +579,6 @@ namespace TUGraz.VectoCommon.InputData
 		/// engine speed in rpm, torque in NM, fuel consumption in g/h
 		/// </summary>
 		TableData FuelConsumptionMap { get; }
-
-		/// <summary>
-		/// P144
-		/// P068, P069, P70, P71
-		/// cf. VECTO Input Parameters.xlsx
-		/// </summary>
-		TableData FullLoadCurve { get; }
-
-		Watt RatedPowerDeclared { get; }
-
-		PerSecond RatedSpeedDeclared { get; }
-
-		NewtonMeter MaxTorqueDeclared { get; }
 	}
 
 	public interface IAuxiliariesDeclarationInputData
@@ -570,7 +610,8 @@ namespace TUGraz.VectoCommon.InputData
 		/// P015
 		/// cf. VECTO Input Parameters.xlsx
 		/// </summary>
-		DriverMode Mode { get; }
+		
+		bool Enabled { get; }
 	}
 
 	public interface IAuxiliaryDeclarationInputData

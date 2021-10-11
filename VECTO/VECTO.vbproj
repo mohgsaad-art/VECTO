@@ -308,7 +308,6 @@
     <Compile Include="GUI\VectoJobForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="OutputData\JSONFileWriter.vb" />
     <Compile Include="VECTO_Global.vb" />
     <Compile Include="VECTO_Types.vb" />
     <Compile Include="GUI\GUI_Subs.vb" />
@@ -559,7 +558,9 @@
     <Content Include="Resources\up.ico" />
     <Content Include="Resources\up.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="OutputData\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
     <PostBuildEvent>

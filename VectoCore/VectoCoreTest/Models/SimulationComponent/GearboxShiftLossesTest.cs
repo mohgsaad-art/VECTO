@@ -94,7 +94,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var cycleDataStr = "0, 0, 0, 2\n100, 20, 0, 0\n1000, 50, 0, 0";
 			var container = CreateVehicle(cycleDataStr, preShiftRpm, out axleGear, out gbx, out engine);
 
-			gbx.Gear = gear;
+			gbx.Gear = new GearshiftPosition(gear);
 
 			var absTime = 20.SI<Second>();
 			var dt = 0.5.SI<Second>();
@@ -147,7 +147,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var container = CreateVehicle(cycleDataStr, preShiftRpm, out axleGear, out gbx, out engine);
 			var modData = new MockModalDataContainer();
 			
-			gbx.Gear = gear;
+			gbx.Gear = new GearshiftPosition(gear);
 
 			var absTime = 20.SI<Second>();
 			var dt = 0.5.SI<Second>();
@@ -225,7 +225,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 				GearboxData = gearboxData,
 				EngineData = new CombustionEngineData() { Inertia = 5.SI<KilogramSquareMeter>() }
 			};
-			gbx = new ATGearbox(container, new ATShiftStrategy(gearboxData, container), runData);
+			gbx = new ATGearbox(container, new ATShiftStrategy(container));
 			gbx.Connect(engine);
 			gbx.IdleController = new MockIdleController();
 

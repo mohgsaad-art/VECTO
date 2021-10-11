@@ -33,6 +33,7 @@ using System.Collections.Generic;
 using System.Data;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 
 namespace TUGraz.VectoCommon.InputData
 {
@@ -46,13 +47,16 @@ namespace TUGraz.VectoCommon.InputData
 		/// </summary>
 		IList<ICycleData> Cycles { get; }
 
-		/// <summary>
-		/// P001
-		/// cf. VECTO Input Parameters.xlsx
-		/// </summary>
-		bool EngineOnlyMode { get; }
-
 		IEngineEngineeringInputData EngineOnly { get; }
+	}
+
+	public enum VectoSimulationJobType
+	{
+		ConventionalVehicle,
+		//ParallelHybridVehicle,
+		//SerialHybridVehicle,
+		//BatteryElectricVehicle,
+		EngineOnlySimulation,
 	}
 
 	public interface IVehicleEngineeringInputData : IVehicleDeclarationInputData
@@ -83,12 +87,12 @@ namespace TUGraz.VectoCommon.InputData
 
 		// input parameters for road sweeper use case
 
-		uint? PTO_DriveGear { get; }
+		GearshiftPosition PTO_DriveGear { get; }
 
 		PerSecond PTO_DriveEngineSpeed { get; }
 	}
 
-	public interface IAdvancedDriverAssistantSystemsEngineering
+	public interface IAdvancedDriverAssistantSystemsEngineering : IAdvancedDriverAssistantSystemDeclarationInputData
 	{
 		DataSource DataSource { get; }
 	}
@@ -257,6 +261,51 @@ namespace TUGraz.VectoCommon.InputData
 		Second UpshiftAfterDownshiftDelay { get; }
 
 		MeterPerSquareSecond UpshiftMinAcceleration { get; }
+
+		// ACEA/Scania GS Parameters
+		//Second GearResidenceTime { get; }
+		//double? DnT99LHMin1 { get; }
+		//double? DnT99LHMin2 { get; }
+		//int? AllowedGearRangeUp { get; }
+		//int? AllowedGearRangeDown { get; }
+		//Second LookBackInterval { get; }
+		//Watt AvgCardanPowerThresholdPropulsion { get; }
+		//Watt CurrCardanPowerThresholdPropulsion { get; }
+		//double? TargetSpeedDeviationFactor { get; }
+		//double? EngineSpeedHighDriveOffFactor { get; }
+		double? RatingFactorCurrentGear { get; }
+		//TableData AccelerationReserveLookup { get; }
+		//TableData ShareTorque99L { get; }
+		//TableData PredictionDurationLookup { get; }
+		//TableData ShareIdleLow { get; }
+		//TableData ShareEngineHigh { get; }
+		string Source { get; }
+		//Second DriverAccelerationLookBackInterval { get; }
+		//MeterPerSquareSecond DriverAccelerationThresholdLow { get; }
+
+		// FC-Based GS parameters
+		double? RatioEarlyUpshiftFC { get; }
+		double? RatioEarlyDownshiftFC { get; }
+
+		int? AllowedGearRangeFC { get; }
+
+		double? VeloictyDropFactor { get; }
+
+		double? AccelerationFactor { get; }
+
+		// Voith GS Parameters
+		//TableData LoadStageShiftLines { get; }
+		IList<double> LoadStageThresholdsUp { get; }
+		IList<double> LoadStageThresholdsDown { get; }
+		PerSecond MinEngineSpeedPostUpshift { get; }
+
+		Second ATLookAheadTime { get; }
+		double[][] ShiftSpeedsTCToLocked { get; }
+
+		//double? PEV_TargetSpeedBrakeNorm { get; }
+
+		//double? PEV_DeRatingDownshiftSpeedFactor { get; }
+		//double? PEV_DownshiftMinSpeedFactor { get; }
 	}
 
 	public interface ITorqueConverterEngineeringShiftParameterInputData
@@ -306,6 +355,19 @@ namespace TUGraz.VectoCommon.InputData
 		/// </summary>
 		KilogramSquareMeter Inertia { get; }
 
+		new IList<IEngineModeEngineeringInputData> EngineModes { get; }
+
+		Second EngineStartTime { get; }
+
+	}
+
+	public interface IEngineModeEngineeringInputData : IEngineModeDeclarationInputData
+	{
+		new IList<IEngineFuelEngineeringInputData> Fuels { get; }
+	}
+
+	public interface IEngineFuelEngineeringInputData : IEngineFuelDeclarationInputData
+	{
 		/// <summary>
 		/// P170
 		/// </summary>
@@ -336,7 +398,7 @@ namespace TUGraz.VectoCommon.InputData
 	{
 		//new IStartStopEngineeringInputData StartStop { get; }
 
-		IOverSpeedEcoRollEngineeringInputData OverSpeedEcoRoll { get; }
+		IOverSpeedEngineeringInputData OverSpeedData { get; }
 
 		/// <summary>
 		/// P009; P033, P034, P035
@@ -347,9 +409,40 @@ namespace TUGraz.VectoCommon.InputData
 		ILookaheadCoastingInputData Lookahead { get; }
 
 		IGearshiftEngineeringInputData GearshiftInputData { get; }
+
+		IEngineStopStartEngineeringInputData EngineStopStartData { get; }
+
+		IEcoRollEngineeringInputData EcoRollData { get; }
+		IPCCEngineeringInputData PCCData { get; }
 	}
 
-	public interface IOverSpeedEcoRollEngineeringInputData : IOverSpeedEcoRollDeclarationInputData
+	public interface IEcoRollEngineeringInputData
+	{
+		MeterPerSecond MinSpeed { get; }
+
+		Second ActivationDelay { get; }
+
+		MeterPerSecond UnderspeedThreshold { get; }
+
+		MeterPerSquareSecond AccelerationUpperLimit { get; }
+	}
+
+	public interface IPCCEngineeringInputData
+	{
+		MeterPerSecond PCCEnabledSpeed { get; }
+
+		MeterPerSecond MinSpeed { get; }
+
+		Meter PreviewDistanceUseCase1 { get; }
+
+		Meter PreviewDistanceUseCase2 { get; }
+
+		MeterPerSecond Underspeed { get; }
+
+		MeterPerSecond OverspeedUseCase3 { get; }
+	}
+
+	public interface IOverSpeedEngineeringInputData : IOverSpeedEcoRollDeclarationInputData
 	{
 		/// <summary>
 		/// P016
@@ -363,12 +456,8 @@ namespace TUGraz.VectoCommon.InputData
 		/// </summary>
 		MeterPerSecond OverSpeed { get; }
 
-		/// <summary>
-		/// P018
-		/// cf. VECTO Input Parameters.xlsx
-		/// </summary>
-		MeterPerSecond UnderSpeed { get; }
 	}
+	
 
 	public interface ILookaheadCoastingInputData : IDriverModelData
 	{
@@ -398,6 +487,14 @@ namespace TUGraz.VectoCommon.InputData
 		TableData CoastingDecisionFactorTargetSpeedLookup { get; }
 
 		TableData CoastingDecisionFactorVelocityDropLookup { get; }
+	}
+
+	public interface IEngineStopStartEngineeringInputData
+	{
+		Second ActivationDelay { get; }
+		Second MaxEngineOffTimespan { get; }
+		double UtilityFactorStandstill { get; }
+		double UtilityFactorDriving { get; }
 	}
 
 	public interface IAuxiliaryEngineeringInputData

@@ -1056,4 +1056,13 @@
 <data name="Report_CO2StandardsGroup" xml:space="preserve">
 	<value>CO2StandardsGroup</value>
 </data>
+<data name="DriverModel_EcoRoll" xml:space="preserve">
+	<value>EcoRoll</value>
+</data>
+<data name="DriverModel_EngineStopStartParameters" xml:space="preserve">
+	<value>EngineStopStartParameters</value>
+</data>
+<data name="DriverModel_Overspeed_Enabled" xml:space="preserve">
+	<value>Enabled</value>
+</data>
 </root>

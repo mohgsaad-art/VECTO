@@ -151,6 +151,13 @@ Partial Class VehicleForm
         Me.cbEngineStopStart = New System.Windows.Forms.CheckBox()
         Me.lblPCC = New System.Windows.Forms.Label()
         Me.tpRoadSweeper = New System.Windows.Forms.TabPage()
+        Me.gbPTODrive = New System.Windows.Forms.GroupBox()
+        Me.Label27 = New System.Windows.Forms.Label()
+        Me.tbPtoGear = New System.Windows.Forms.TextBox()
+        Me.Label26 = New System.Windows.Forms.Label()
+        Me.tbPtoEngineSpeed = New System.Windows.Forms.TextBox()
+        Me.Label25 = New System.Windows.Forms.Label()
+        Me.Label24 = New System.Windows.Forms.Label()
         Me.pnPTO = New System.Windows.Forms.Panel()
         Me.btPTOCycleDrive = New System.Windows.Forms.Button()
         Me.Label28 = New System.Windows.Forms.Label()
@@ -159,15 +166,9 @@ Partial Class VehicleForm
         Me.btPTOLossMapBrowse = New System.Windows.Forms.Button()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.gbPTO = New System.Windows.Forms.GroupBox()
-        Me.gbPTODrive = New System.Windows.Forms.GroupBox()
-        Me.Label27 = New System.Windows.Forms.Label()
-        Me.tbPtoGear = New System.Windows.Forms.TextBox()
-        Me.Label26 = New System.Windows.Forms.Label()
-        Me.tbPtoEngineSpeed = New System.Windows.Forms.TextBox()
-        Me.Label25 = New System.Windows.Forms.Label()
-        Me.Label24 = New System.Windows.Forms.Label()
         Me.cbLegislativeClass = New System.Windows.Forms.ComboBox()
         Me.Label21 = New System.Windows.Forms.Label()
+        Me.cbAtEcoRollReleaseLockupClutch = New System.Windows.Forms.CheckBox()
         Me.GroupBox6.SuspendLayout
         Me.ToolStrip1.SuspendLayout
         Me.GroupBox7.SuspendLayout
@@ -195,9 +196,9 @@ Partial Class VehicleForm
         Me.tpADAS.SuspendLayout
         Me.GroupBox5.SuspendLayout
         Me.tpRoadSweeper.SuspendLayout
+        Me.gbPTODrive.SuspendLayout
         Me.pnPTO.SuspendLayout
         Me.gbPTO.SuspendLayout
-        Me.gbPTODrive.SuspendLayout
         Me.SuspendLayout
         '
         'Label1
@@ -1209,6 +1210,7 @@ Partial Class VehicleForm
         '
         'GroupBox5
         '
+        Me.GroupBox5.Controls.Add(Me.cbAtEcoRollReleaseLockupClutch)
         Me.GroupBox5.Controls.Add(Me.cbPcc)
         Me.GroupBox5.Controls.Add(Me.cbEcoRoll)
         Me.GroupBox5.Controls.Add(Me.Label22)
@@ -1276,6 +1278,73 @@ Partial Class VehicleForm
         Me.tpRoadSweeper.TabIndex = 4
         Me.tpRoadSweeper.Text = "PTO"
         Me.tpRoadSweeper.UseVisualStyleBackColor = true
+        '
+        'gbPTODrive
+        '
+        Me.gbPTODrive.Controls.Add(Me.Label27)
+        Me.gbPTODrive.Controls.Add(Me.tbPtoGear)
+        Me.gbPTODrive.Controls.Add(Me.Label26)
+        Me.gbPTODrive.Controls.Add(Me.tbPtoEngineSpeed)
+        Me.gbPTODrive.Controls.Add(Me.Label25)
+        Me.gbPTODrive.Controls.Add(Me.Label24)
+        Me.gbPTODrive.Location = New System.Drawing.Point(5, 172)
+        Me.gbPTODrive.Name = "gbPTODrive"
+        Me.gbPTODrive.Size = New System.Drawing.Size(566, 55)
+        Me.gbPTODrive.TabIndex = 0
+        Me.gbPTODrive.TabStop = false
+        Me.gbPTODrive.Text = "Working operation settings (PTO mode 2)"
+        '
+        'Label27
+        '
+        Me.Label27.AutoSize = true
+        Me.Label27.Location = New System.Drawing.Point(446, 24)
+        Me.Label27.Name = "Label27"
+        Me.Label27.Size = New System.Drawing.Size(20, 13)
+        Me.Label27.TabIndex = 6
+        Me.Label27.Text = "[#]"
+        Me.Label27.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'tbPtoGear
+        '
+        Me.tbPtoGear.Location = New System.Drawing.Point(371, 21)
+        Me.tbPtoGear.Name = "tbPtoGear"
+        Me.tbPtoGear.Size = New System.Drawing.Size(70, 20)
+        Me.tbPtoGear.TabIndex = 5
+        '
+        'Label26
+        '
+        Me.Label26.AutoSize = true
+        Me.Label26.Location = New System.Drawing.Point(196, 24)
+        Me.Label26.Name = "Label26"
+        Me.Label26.Size = New System.Drawing.Size(30, 13)
+        Me.Label26.TabIndex = 4
+        Me.Label26.Text = "[rpm]"
+        Me.Label26.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'tbPtoEngineSpeed
+        '
+        Me.tbPtoEngineSpeed.Location = New System.Drawing.Point(120, 21)
+        Me.tbPtoEngineSpeed.Name = "tbPtoEngineSpeed"
+        Me.tbPtoEngineSpeed.Size = New System.Drawing.Size(70, 20)
+        Me.tbPtoEngineSpeed.TabIndex = 2
+        '
+        'Label25
+        '
+        Me.Label25.AutoSize = true
+        Me.Label25.Location = New System.Drawing.Point(297, 24)
+        Me.Label25.Name = "Label25"
+        Me.Label25.Size = New System.Drawing.Size(68, 13)
+        Me.Label25.TabIndex = 1
+        Me.Label25.Text = "Gear number"
+        '
+        'Label24
+        '
+        Me.Label24.AutoSize = true
+        Me.Label24.Location = New System.Drawing.Point(7, 24)
+        Me.Label24.Name = "Label24"
+        Me.Label24.Size = New System.Drawing.Size(97, 13)
+        Me.Label24.TabIndex = 0
+        Me.Label24.Text = "Min. Engine Speed"
         '
         'pnPTO
         '
@@ -1357,73 +1426,6 @@ Partial Class VehicleForm
         Me.gbPTO.TabStop = false
         Me.gbPTO.Text = "PTO Design Variant"
         '
-        'gbPTODrive
-        '
-        Me.gbPTODrive.Controls.Add(Me.Label27)
-        Me.gbPTODrive.Controls.Add(Me.tbPtoGear)
-        Me.gbPTODrive.Controls.Add(Me.Label26)
-        Me.gbPTODrive.Controls.Add(Me.tbPtoEngineSpeed)
-        Me.gbPTODrive.Controls.Add(Me.Label25)
-        Me.gbPTODrive.Controls.Add(Me.Label24)
-        Me.gbPTODrive.Location = New System.Drawing.Point(5, 172)
-        Me.gbPTODrive.Name = "gbPTODrive"
-        Me.gbPTODrive.Size = New System.Drawing.Size(566, 55)
-        Me.gbPTODrive.TabIndex = 0
-        Me.gbPTODrive.TabStop = false
-        Me.gbPTODrive.Text = "Working operation settings (PTO mode 2)"
-        '
-        'Label27
-        '
-        Me.Label27.AutoSize = true
-        Me.Label27.Location = New System.Drawing.Point(446, 24)
-        Me.Label27.Name = "Label27"
-        Me.Label27.Size = New System.Drawing.Size(20, 13)
-        Me.Label27.TabIndex = 6
-        Me.Label27.Text = "[#]"
-        Me.Label27.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'tbPtoGear
-        '
-        Me.tbPtoGear.Location = New System.Drawing.Point(371, 21)
-        Me.tbPtoGear.Name = "tbPtoGear"
-        Me.tbPtoGear.Size = New System.Drawing.Size(70, 20)
-        Me.tbPtoGear.TabIndex = 5
-        '
-        'Label26
-        '
-        Me.Label26.AutoSize = true
-        Me.Label26.Location = New System.Drawing.Point(196, 24)
-        Me.Label26.Name = "Label26"
-        Me.Label26.Size = New System.Drawing.Size(30, 13)
-        Me.Label26.TabIndex = 4
-        Me.Label26.Text = "[rpm]"
-        Me.Label26.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
-        'tbPtoEngineSpeed
-        '
-        Me.tbPtoEngineSpeed.Location = New System.Drawing.Point(120, 21)
-        Me.tbPtoEngineSpeed.Name = "tbPtoEngineSpeed"
-        Me.tbPtoEngineSpeed.Size = New System.Drawing.Size(70, 20)
-        Me.tbPtoEngineSpeed.TabIndex = 2
-        '
-        'Label25
-        '
-        Me.Label25.AutoSize = true
-        Me.Label25.Location = New System.Drawing.Point(297, 24)
-        Me.Label25.Name = "Label25"
-        Me.Label25.Size = New System.Drawing.Size(68, 13)
-        Me.Label25.TabIndex = 1
-        Me.Label25.Text = "Gear number"
-        '
-        'Label24
-        '
-        Me.Label24.AutoSize = true
-        Me.Label24.Location = New System.Drawing.Point(7, 24)
-        Me.Label24.Name = "Label24"
-        Me.Label24.Size = New System.Drawing.Size(97, 13)
-        Me.Label24.TabIndex = 0
-        Me.Label24.Text = "Min. Engine Speed"
-        '
         'cbLegislativeClass
         '
         Me.cbLegislativeClass.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
@@ -1441,6 +1443,16 @@ Partial Class VehicleForm
         Me.Label21.Size = New System.Drawing.Size(112, 13)
         Me.Label21.TabIndex = 42
         Me.Label21.Text = "Maximum Laden Mass"
+        '
+        'cbAtEcoRollReleaseLockupClutch
+        '
+        Me.cbAtEcoRollReleaseLockupClutch.AutoSize = true
+        Me.cbAtEcoRollReleaseLockupClutch.Location = New System.Drawing.Point(265, 19)
+        Me.cbAtEcoRollReleaseLockupClutch.Name = "cbAtEcoRollReleaseLockupClutch"
+        Me.cbAtEcoRollReleaseLockupClutch.Size = New System.Drawing.Size(243, 17)
+        Me.cbAtEcoRollReleaseLockupClutch.TabIndex = 10
+        Me.cbAtEcoRollReleaseLockupClutch.Text = "AT Gearbox: Eco-Roll Release Lockup Clutch"
+        Me.cbAtEcoRollReleaseLockupClutch.UseVisualStyleBackColor = true
         '
         'VehicleForm
         '
@@ -1512,11 +1524,11 @@ Partial Class VehicleForm
         Me.GroupBox5.ResumeLayout(false)
         Me.GroupBox5.PerformLayout
         Me.tpRoadSweeper.ResumeLayout(false)
+        Me.gbPTODrive.ResumeLayout(false)
+        Me.gbPTODrive.PerformLayout
         Me.pnPTO.ResumeLayout(false)
         Me.pnPTO.PerformLayout
         Me.gbPTO.ResumeLayout(false)
-        Me.gbPTODrive.ResumeLayout(false)
-        Me.gbPTODrive.PerformLayout
         Me.ResumeLayout(false)
         Me.PerformLayout
 
@@ -1655,4 +1667,5 @@ End Sub
     Friend WithEvents btPTOCycleDrive As Button
     Friend WithEvents Label28 As Label
     Friend WithEvents tbPTODrive As TextBox
+    Friend WithEvents cbAtEcoRollReleaseLockupClutch As CheckBox
 End Class

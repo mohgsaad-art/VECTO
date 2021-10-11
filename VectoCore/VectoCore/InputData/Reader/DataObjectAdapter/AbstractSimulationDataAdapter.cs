@@ -132,12 +132,14 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				CertificationMethod = CertificationMethod.Measured,
 				DigestValueInput = data.DigestValue != null ? data.DigestValue.DigestValue : "",
 				Displacement = data.Displacement,
-				IdleSpeed = data.IdleSpeed,
-				ConsumptionMap = FuelConsumptionMapReader.Create(data.FuelConsumptionMap),
+				//IdleSpeed = data.IdleSpeed,
+				//ConsumptionMap = FuelConsumptionMapReader.Create(data.FuelConsumptionMap),
 				RatedPowerDeclared = data.RatedPowerDeclared,
 				RatedSpeedDeclared = data.RatedSpeedDeclared,
 				MaxTorqueDeclared = data.MaxTorqueDeclared,
-				FuelData = DeclarationData.FuelData.Lookup(data.FuelType, tankSystem)
+				//FuelData = DeclarationData.FuelData.Lookup(data.FuelType, tankSystem)
+				MultipleEngineFuelModes = data.EngineModes.Count > 1,
+				WHRType = data.WHRType,
 			};
 			return retVal;
 		}

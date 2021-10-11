@@ -84,7 +84,10 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 			var driverData = CreateDriverData(AccelerationFile);
 
 			var fileWriter = new FileOutputWriter("Coach_MinimalPowertrainOverload");
-			var modData = new ModalDataContainer("Coach_MinimalPowertrainOverload", FuelData.Diesel, fileWriter);
+			var runData = new VectoRunData() {
+				JobName = "Coach_MinimalPowertrainOverload"
+			};
+			var modData = new ModalDataContainer(runData, fileWriter, null);
 			var container = new VehicleContainer(ExecutionMode.Engineering, modData) {
 				RunData = new VectoRunData() {
 					DriverData = driverData
@@ -103,7 +106,7 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 
 			var driverPort = driver.OutPort();
 
-			gbx.Gear = 1;
+			gbx.Gear = new GearshiftPosition(1);
 
 			var response = driverPort.Initialize(18.KMPHtoMeterPerSecond(),
 				VectoMath.InclinationToAngle(2.842372037 / 100));
@@ -134,7 +137,10 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 			var driverData = CreateDriverData(AccelerationFile);
 
 			var fileWriter = new FileOutputWriter("Coach_MinimalPowertrain");
-			var modData = new ModalDataContainer("Coach_MinimalPowertrain", FuelData.Diesel, fileWriter);
+			var runData = new VectoRunData() {
+				JobName = "Coach_MinimalPowertrainOverload"
+			};
+			var modData = new ModalDataContainer(runData, fileWriter, null);
 			var container = new VehicleContainer(ExecutionMode.Engineering, modData) {
 				RunData = new VectoRunData() {
 					DriverData = driverData
@@ -158,7 +164,7 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 
 			cyclePort.Initialize();
 
-			gbx.Gear = 0;
+			gbx.Gear = new GearshiftPosition(0);
 
 			var absTime = 0.SI<Second>();
 			var ds = Constants.SimulationSettings.DriveOffDistance;
@@ -167,7 +173,7 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 			container.CommitSimulationStep(absTime, response.SimulationInterval);
 			absTime += response.SimulationInterval;
 
-			gbx.Gear = 1;
+			gbx.Gear = new GearshiftPosition(1);
 			var cnt = 0;
 			while (!(response is ResponseCycleFinished) && container.Distance < 17000) {
 				response = cyclePort.Request(absTime, ds);
@@ -210,7 +216,10 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 			var driverData = CreateDriverData(AccelerationFile2);
 
 			var fileWriter = new FileOutputWriter("Coach_MinimalPowertrainOverload");
-			var modData = new ModalDataContainer("Coach_MinimalPowertrainOverload", FuelData.Diesel, fileWriter);
+			var runData = new VectoRunData() {
+				JobName = "Coach_MinimalPowertrainOverload"
+			};
+			var modData = new ModalDataContainer(runData, fileWriter, null);
 			var container = new VehicleContainer(ExecutionMode.Engineering, modData);
 			container.RunData = new VectoRunData() { SimulationType = SimulationType.DistanceCycle, DriverData = driverData};
 
@@ -230,11 +239,11 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 
 			cyclePort.Initialize();
 
-			gbx.Gear = 0;
+			gbx.Gear = new GearshiftPosition(0);
 
 			var absTime = 0.SI<Second>();
 
-			gbx.Gear = 1;
+			gbx.Gear = new GearshiftPosition(1);
 			var ds = Constants.SimulationSettings.DriveOffDistance;
 			while (container.Distance < 100) {
 				var response = cyclePort.Request(absTime, ds);
@@ -321,9 +330,7 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 					//Deceleration = -0.5.SI<MeterPerSquareSecond>()
 					LookAheadDecisionFactor = new LACDecisionFactor()
 				},
-				OverSpeedEcoRoll = new DriverData.OverSpeedEcoRollData {
-					Mode = DriverMode.Off
-				},
+				OverSpeed = new DriverData.OverSpeedData { Enabled = false }
 			};
 		}
 	}

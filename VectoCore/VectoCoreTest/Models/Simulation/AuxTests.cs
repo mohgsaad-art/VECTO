@@ -29,8 +29,10 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
@@ -49,6 +51,7 @@ using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Tests.Models.SimulationComponent;
 using TUGraz.VectoCore.Tests.Utils;
 using NUnit.Framework;
+using TUGraz.VectoCore.Models.SimulationComponent.Data.Engine;
 
 // ReSharper disable ObjectCreationAsStatement
 
@@ -71,7 +74,24 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 
 		{
 			var fileWriter = new FileOutputWriter("AuxWriteModFileSumFile");
-			var modData = new ModalDataContainer("AuxWriteModFileSumFile", FuelData.Diesel, fileWriter) {
+			var runData = new VectoRunData() {
+				JobName = "AuxWriteModFileSumFile",
+				EngineData = new CombustionEngineData() {
+					Fuels = new[] {new CombustionEngineFuelData {
+						FuelData = FuelData.Diesel,
+						ConsumptionMap = FuelConsumptionMapReader.ReadFromFile(@"TestData\Components\12t Delivery Truck.vmap"),
+					}}.ToList(),
+					IdleSpeed = 600.RPMtoRad()
+				},
+
+				Cycle = new DrivingCycleData() {
+					Name = "MockCycle",
+				},
+				DriverData = new DriverData() {
+					EngineStopStart = new DriverData.EngineStopStartData(),
+				}
+			};
+			var modData = new ModalDataContainer(runData, fileWriter, null) {
 				WriteModalResults = true
 			};
 			modData.AddAuxiliary("FAN");
@@ -82,7 +102,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 
 			var sumWriter = new SummaryDataContainer(fileWriter);
 			var container = new VehicleContainer(ExecutionMode.Declaration, modData,
-				(modalData) => sumWriter.Write(modalData, 0, 0, new MockRunData()));
+				(modalData) => sumWriter.Write(modalData, 0, 0, runData));
 			var data = DrivingCycleDataReader.ReadFromFile(@"TestData\Cycles\LongHaul_short.vdri", CycleType.DistanceBased, false);
 			new MockDrivingCycle(container, data);
 

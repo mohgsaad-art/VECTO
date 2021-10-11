@@ -35,9 +35,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
+using Newtonsoft.Json;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 {
@@ -49,6 +51,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 	[DebuggerDisplay("GearboxData({Type}, #Gears: {Gears.Count}, ...)")]
 	public class GearboxData : SimulationComponentData
 	{
+		private GearList _gearlist;
+
 		public GearboxType Type { get; internal set; }
 
 		[Required, ValidateObject] public Dictionary<uint, GearData> Gears = new Dictionary<uint, GearData>();
@@ -60,6 +64,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 
 		[Required, SIRange(0, 5)]
 		public Second TractionInterruption { get; internal set; }
+
+		[SIRange(0.5, 1)]
+		public Second PowershiftShiftTime { get; internal set; }
+
+		public bool ATEcoRollReleaseLockupClutch { get; internal set; }
 
 		/// <summary>
 		///	[%] (0-1) The torque reserve for shift strategy (early upshift, skipgears)
@@ -96,8 +105,27 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 		[Required, SIRange(0, double.MaxValue)]
 		public MeterPerSquareSecond UpshiftMinAcceleration { get; internal set; }
 
-		[SIRange(0.5, 1)]
-		public Second PowershiftShiftTime { get; internal set; }
+		[JsonIgnore]
+		public GearList GearList => _gearlist ?? (_gearlist = CreateGearList());
+
+		private GearList CreateGearList()
+		{
+			var gearList = new List<GearshiftPosition>();
+			foreach (var gear in Gears) {
+				if (Type.AutomaticTransmission()) {
+					if (gear.Value.HasTorqueConverter) {
+						gearList.Add(new GearshiftPosition(gear.Key, false));
+					}
+					if (gear.Value.HasLockedGear) {
+						gearList.Add(new GearshiftPosition(gear.Key, true));
+					}
+				} else {
+					gearList.Add(new GearshiftPosition(gear.Key));
+				}
+			}
+
+			return new GearList(gearList.ToArray());
+		}
 
 		// ReSharper disable once UnusedMember.Global -- used via Validation
 		public static ValidationResult ValidateGearboxData(GearboxData gearboxData, ValidationContext validationContext)

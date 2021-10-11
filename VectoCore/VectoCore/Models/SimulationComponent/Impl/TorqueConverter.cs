@@ -117,9 +117,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 							(PreviousState.OutAngularVelocity + operatingPoint.OutAngularVelocity) / 2.0;
 				if (!delta.IsEqual(0, Constants.SimulationSettings.LineSearchTolerance)) {
 					return delta > 0
-						? new ResponseOverload { Source = this, Delta = delta, TorqueConverterOperatingPoint = operatingPoint }
+						? new ResponseOverload(this) { Delta = delta, TorqueConverterOperatingPoint = operatingPoint }
 						: (IResponse)
-						new ResponseUnderload { Source = this, Delta = delta, TorqueConverterOperatingPoint = operatingPoint };
+						new ResponseUnderload(this) {Delta = delta, TorqueConverterOperatingPoint = operatingPoint };
 				}
 			}
 
@@ -129,12 +129,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var retVal = NextComponent.Request(absTime, dt, inTorque, operatingPoint.InAngularVelocity);
 
 			// check if shift is required
-			var ratio = Gearbox.GetGearData(Gearbox.Gear).TorqueConverterRatio;
+			var ratio = Gearbox.GetGearData(Gearbox.Gear.Gear).TorqueConverterRatio;
 			if (absTime > DataBus.LastShift && retVal is ResponseSuccess) {
 				var shiftRequired = ShiftStrategy.ShiftRequired(
 					absTime, dt, outTorque * ratio, outAngularVelocity / ratio, inTorque,
-					operatingPoint.InAngularVelocity, Gearbox.Gear, Gearbox.LastShift);
-				return shiftRequired ? new ResponseGearShift { Source = this } : retVal;
+					operatingPoint.InAngularVelocity, Gearbox.Gear, Gearbox.LastShift, retVal);
+				return shiftRequired ? new ResponseGearShift(this) : retVal;
 			}
 
 			return retVal;
@@ -163,11 +163,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				NextComponent.Request(absTime, dt, inTorque, operatingPoint.InAngularVelocity, true);
 
 			var engineOK = engineResponse.DeltaDragLoad.IsGreaterOrEqual(0) && engineResponse.DeltaFullLoad.IsSmallerOrEqual(0);
-			if (DataBus.DriverBehavior != DrivingBehavior.Braking && engineOK && operatingPoint.Creeping) {
+			if (DataBus.DriverInfo.DriverBehavior != DrivingBehavior.Braking && engineOK && operatingPoint.Creeping) {
 				var delta = (outTorque - operatingPoint.OutTorque) *
 							(PreviousState.OutAngularVelocity + operatingPoint.OutAngularVelocity) / 2.0;
-				return new ResponseDryRun() {
-					Source = this,
+				return new ResponseDryRun(this) {
 					DeltaFullLoad = delta,
 					DeltaDragLoad = delta,
 					TorqueConverterOperatingPoint = operatingPoint
@@ -192,11 +191,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				deltaMin = (outTorque - dryOperatingPointMin.OutTorque) * avgOutSpeedMin;
 			}
 
-			return new ResponseDryRun {
-				Source = this,
+			return new ResponseDryRun(this) {
 				DeltaFullLoad = 10 * deltaMax,
 				DeltaDragLoad = 10 * deltaMin,
-				TorqueConverterOperatingPoint = DataBus.DrivingAction == DrivingAction.Brake ? dryOperatingPointMin : dryOperatingPointMax
+				TorqueConverterOperatingPoint = DataBus.DriverInfo.DrivingAction == DrivingAction.Brake ? dryOperatingPointMin : dryOperatingPointMax
 			};
 		}
 
@@ -209,7 +207,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					engineResponse.DragPower - engineResponse.AuxiliariesPowerDemand,
 					DataBus.EngineSpeed, outAngularVelocity, _engineInertia, dt, previousPower);
 				var maxInputSpeed = VectoMath.Min(ModelData.TorqueConverterSpeedLimit, DataBus.EngineN95hSpeed);
-				var lowerInputSpeed = DataBus.DrivingAction == DrivingAction.Brake
+				var lowerInputSpeed = DataBus.DriverInfo.DrivingAction == DrivingAction.Brake
 					? DataBus.EngineIdleSpeed * 1.001
 					: VectoMath.Max(DataBus.EngineIdleSpeed * 1.001, 0.8 * DataBus.EngineSpeed);
 				var corrected = false;
@@ -232,7 +230,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				return operatingPoint;
 			} catch (VectoException ve) {
 				Log.Error(ve, "TorqueConverter: Failed to find operating point for DragPower {0}", engineResponse.DragPower);
-				var engineSpeed = DataBus.DrivingAction == DrivingAction.Brake
+				var engineSpeed = DataBus.DriverInfo.DrivingAction == DrivingAction.Brake
 					? DataBus.EngineIdleSpeed * 1.001
 					: VectoMath.Max(DataBus.EngineIdleSpeed * 1.001, 0.8 * DataBus.EngineSpeed);
 

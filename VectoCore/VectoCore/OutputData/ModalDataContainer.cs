@@ -35,17 +35,20 @@ using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using TUGraz.VectoCommon.BusAuxiliaries;
+using TUGraz.VectoCommon.Exceptions;
+using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
+using TUGraz.VectoCore.Models.SimulationComponent.Data;
 
 namespace TUGraz.VectoCore.OutputData
 {
 	public class ModalDataContainer : IModalDataContainer
 	{
-		private readonly bool _writeEngineOnly;
 		private readonly IModalDataFilter[] _filters;
 		private readonly Action<ModalDataContainer> _addReportResult;
 		protected internal ModalResults Data { get; set; }
@@ -54,6 +57,9 @@ namespace TUGraz.VectoCore.OutputData
 		private readonly IModalDataWriter _writer;
 		private readonly List<string> _additionalColumns = new List<string>();
 		private Exception SimException;
+
+		protected internal readonly Dictionary<IFuelProperties, Dictionary<ModalResultField, DataColumn>> FuelColumns = new Dictionary<IFuelProperties, Dictionary<ModalResultField, DataColumn>>();
+
 		public int JobRunId { get; private set; }
 		public string RunName { get; private set; }
 		public string CycleName { get; private set; }
@@ -77,40 +83,74 @@ namespace TUGraz.VectoCore.OutputData
 			}
 		}
 
+		public void Reset()
+		{
+			Data.Rows.Clear();
+			CurrentRow = Data.NewRow();
+			//ClearAggregateResults();
+		}
+
 		public bool WriteAdvancedAux { get; set; }
 
-		public ModalDataContainer(string runName, FuelData.Entry fuel, IModalDataWriter writer, bool writeEngineOnly = false, params IModalDataFilter[] filters)
-			: this(0, runName, "", fuel, "", writer, _ => { }, writeEngineOnly, filters) {}
 
-		public ModalDataContainer(VectoRunData runData, IModalDataWriter writer, Action<ModalDataContainer> addReportResult,
-			bool writeEngineOnly, params IModalDataFilter[] filter)
-			: this(
-				runData.JobRunId, runData.JobName, runData.Cycle.Name, runData.EngineData.FuelData, runData.ModFileSuffix, writer,
-				addReportResult,
-				writeEngineOnly, filter) {}
+		public static readonly IList<ModalResultField> FuelConsumptionSignals = new[] {
+			ModalResultField.FCMap, ModalResultField.FCNCVc, ModalResultField.FCWHTCc, // ModalResultField.FCAAUX,
+			/*ModalResultField.FCICEStopStart,*/ ModalResultField.FCFinal
+		};
 
-		protected ModalDataContainer(int jobRunId, string runName, string cycleName, FuelData.Entry fuelData, string runSuffix,
-			IModalDataWriter writer,
-			Action<ModalDataContainer> addReportResult, bool writeEngineOnly, params IModalDataFilter[] filters)
+		protected VectoRunData _runData;
+
+		public ModalDataContainer(VectoRunData runData, IModalDataWriter writer,
+			Action<ModalDataContainer> addReportResult, params IModalDataFilter[] filter)
 		{
-			HasTorqueConverter = false;
-			RunName = runName;
-			CycleName = cycleName;
-			RunSuffix = runSuffix;
-			JobRunId = jobRunId;
+			_runData = runData;
 			_writer = writer;
 
-			FuelData = fuelData;
-
-			_writeEngineOnly = writeEngineOnly;
-			_filters = filters ?? new IModalDataFilter[0];
+			_filters = filter ?? new IModalDataFilter[0];
 			_addReportResult = addReportResult ?? (x => { });
 
-			Data = new ModalResults();
 			Auxiliaries = new Dictionary<string, DataColumn>();
+			Data = new ModalResults(false);
 			CurrentRow = Data.NewRow();
-			WriteAdvancedAux = false;
+
+			//if (runData.JobType == VectoSimulationJobType.BatteryElectricVehicle) {
+			//	return;
+			//}
+
+			//PostProcessingCorrection = new ModalDataPostprocessingCorrection();
+
+			var multipleEngineModes = runData.EngineData?.MultipleEngineFuelModes ?? false;
+			var fuels = runData.EngineData?.Fuels ?? new List<CombustionEngineFuelData>();
+			foreach (var fuel in fuels) {
+				var entry = fuel.FuelData;
+				if (FuelColumns.ContainsKey(entry)) {
+					throw new VectoException("Fuel {0} already added!", entry.FuelType.GetLabel());
+				}
+
+				FuelColumns[entry] = new Dictionary<ModalResultField, DataColumn>();
+				foreach (var fcCol in FuelConsumptionSignals) {
+
+					var col = new DataColumn(
+						fuels.Count == 1 && !multipleEngineModes
+							? fcCol.GetName()
+							: $"{fcCol.GetName()}_{entry.FuelType.GetLabel()}", typeof(SI)) {
+						Caption = string.Format(fcCol.GetCaption(),
+							fuels.Count == 1 && !multipleEngineModes ? "" : "_" + entry.FuelType.GetLabel())
+					};
+					col.ExtendedProperties[ModalResults.ExtendedPropertyNames.Decimals] =
+						fcCol.GetAttribute().Decimals;
+					col.ExtendedProperties[ModalResults.ExtendedPropertyNames.OutputFactor] =
+						fcCol.GetAttribute().OutputFactor;
+					col.ExtendedProperties[ModalResults.ExtendedPropertyNames.ShowUnit] =
+						fcCol.GetAttribute().ShowUnit;
+					FuelColumns[entry][fcCol] = col;
+					Data.Columns.Add(col);
+				}
+			}
+
+
 		}
+
 
 
 		public bool HasTorqueConverter { get; set; }
@@ -162,8 +202,9 @@ namespace TUGraz.VectoCore.OutputData
 		private IEnumerable<ModalResultField> GetOutputColumns()
 		{
 			var dataColumns = new List<ModalResultField> { ModalResultField.time };
+            var writeEngineOnly = _runData.JobType == VectoSimulationJobType.EngineOnlySimulation;
 
-			if (!_writeEngineOnly) {
+            if (!writeEngineOnly) {
 				dataColumns.AddRange(
 					new[] {
 						ModalResultField.simulationInterval,
@@ -174,7 +215,7 @@ namespace TUGraz.VectoCore.OutputData
 						ModalResultField.grad
 					});
 			}
-			if (!_writeEngineOnly) {
+			if (!writeEngineOnly) {
 				dataColumns.AddRange(
 					new[] {
 						ModalResultField.Gear,
@@ -215,7 +256,7 @@ namespace TUGraz.VectoCore.OutputData
 					ModalResultField.P_aux
 				});
 
-			if (!_writeEngineOnly) {
+			if (!writeEngineOnly) {
 				dataColumns.AddRange(
 					new[] {
 						ModalResultField.P_gbx_in,
@@ -252,7 +293,7 @@ namespace TUGraz.VectoCore.OutputData
 						});
 				}
 			}
-			if (!_writeEngineOnly && WriteAdvancedAux) {
+			if (!writeEngineOnly && WriteAdvancedAux) {
 				dataColumns.AddRange(
 					new[] {
 						ModalResultField.AA_NonSmartAlternatorsEfficiency,

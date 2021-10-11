@@ -34,6 +34,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
@@ -106,7 +107,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 			
 		}
 
-		public struct Entry
+		public struct Entry : IFuelProperties
 		{
 			public Entry(FuelType type, TankSystem? tankSystem, KilogramPerCubicMeter density, double weight, JoulePerKilogramm heatingValueVecto, JoulePerKilogramm heatingValueAnnex) : this()
 			{

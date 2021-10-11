@@ -29,6 +29,8 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using System.Diagnostics;
+using System.Linq;
 using TUGraz.VectoCommon.Utils;
 
 namespace TUGraz.VectoCommon.Models
@@ -44,7 +46,7 @@ namespace TUGraz.VectoCommon.Models
 		MeterPerSquareSecond Acceleration { get; set; }
 		PerSecond EngineSpeed { get; set; }
 		OperatingPoint OperatingPoint { get; set; }
-		object Source { get; set; }
+		object Source { get; }
 
 		Watt EnginePowerRequest { get; set; }
 		Watt ClutchPowerRequest { get; set; }
@@ -56,5 +58,79 @@ namespace TUGraz.VectoCommon.Models
 		Watt AngledrivePowerRequest { get; set; }
 
 		Watt AuxiliariesPowerDemand { get; set; }
+
+		DriverResponse Driver { get; }
+
+		EngineResponse Engine { get; }
+
+		ClutchResponse Clutch { get; }
+
+		GearboxResponse Gearbox { get; }
+
+	}
+
+	public abstract class AbstractComponentResponse
+	{
+		public Watt PowerRequest { get; set; }
+
+		public override string ToString()
+		{
+			var t = GetType();
+			return $"{t.Name}{{{string.Join(", ", t.GetProperties().Select(p => $"{p.Name}: {p.GetValue(this)}"))}}}";
+		}
+	}
+
+	public abstract class AbstractPowertrainComponentResponse : AbstractComponentResponse
+	{
+
+	}
+
+	[DebuggerDisplay("a: {Acceleration}; {OperatingPoint.SimulationDistance}; {OperatingPoint.SimulationInterval}")]
+	public class DriverResponse : AbstractComponentResponse
+	{
+		public MeterPerSquareSecond Acceleration { get; set; }
+		public OperatingPoint OperatingPoint { get; set; }
+
+	}
+
+	[DebuggerDisplay("n_ice: {EngineSpeed.AsRPM}; T_out: {TorqueOutDemand}; T_ice: {TotalTorqueDemand}; T_full_dyn: {DynamicFullLoadTorque}; P_full_dyn: {DynamicFullLoadPower}; P_drag: {DragPower}; P_aux: {AuxiliariesPowerDemand}")]
+
+	public class EngineResponse : AbstractPowertrainComponentResponse
+	{
+		public bool EngineOn { get; set; }
+		public PerSecond EngineSpeed { get; set; }
+
+		public NewtonMeter TorqueOutDemand { get; set; }
+		public NewtonMeter TotalTorqueDemand { get; set; }
+		public NewtonMeter DynamicFullLoadTorque { get; set; }
+
+		public NewtonMeter StationaryFullLoadTorque { get; set; }
+
+		public Watt DynamicFullLoadPower { get; set; }
+		public Watt DragPower { get; set; }
+
+		public NewtonMeter DragTorque { get; set; }
+
+		public Watt AuxiliariesPowerDemand { get; set; }
+	}
+
+	[DebuggerDisplay("P_out: {PowerRequest}")]
+	public class ClutchResponse : AbstractPowertrainComponentResponse
+	{
+		public PerSecond OutputSpeed { get; set; }
+	}
+
+	[DebuggerDisplay("P_out: {PowerRequest}")]
+	public class GearboxResponse : AbstractPowertrainComponentResponse
+	{
+		public PerSecond InputSpeed { get; set; }
+
+		public NewtonMeter InputTorque { get; set; }
+
+		public uint Gear { get; set; }
+
+		public PerSecond OutputSpeed { get; set; }
+
+		public NewtonMeter OutputTorque { get; set; }
 	}
 }

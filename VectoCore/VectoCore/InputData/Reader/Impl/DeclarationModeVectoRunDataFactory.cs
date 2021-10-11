@@ -62,7 +62,6 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 		private bool allowVocational;
 		private DriverData _driverdata;
 		private AirdragData _airdragData;
-		private CombustionEngineData _engineData;
 		private AxleGearData _axlegearData;
 		private AngledriveData _angledriveData;
 		private GearboxData _gearboxData;
@@ -126,12 +125,11 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 				_segment.Missions.First().Loadings.First().Value, allowVocational);
 			_airdragData = _dao.CreateAirdragData(vehicle.Components.AirdragInputData,
 				_segment.Missions.First(), _segment);
-			_engineData = _dao.CreateEngineData(vehicle.Components.EngineInputData,
-				vehicle.EngineIdleSpeed,
-				vehicle.Components.GearboxInputData, vehicle.TorqueLimits, vehicle.TankSystem);
+			var tmpEngine = _dao.CreateEngineData(
+				vehicle, vehicle.Components.EngineInputData.EngineModes[0], _segment.Missions.First());
 			_axlegearData = _dao.CreateAxleGearData(InputDataProvider.JobInputData.Vehicle.Components.AxleGearInputData);
 			_angledriveData = _dao.CreateAngledriveData(InputDataProvider.JobInputData.Vehicle.Components.AngledriveInputData);
-			_gearboxData = _dao.CreateGearboxData(vehicle.Components.GearboxInputData, _engineData,
+			_gearboxData = _dao.CreateGearboxData(vehicle.Components.GearboxInputData, tmpEngine,
 				_axlegearData.AxleGear.Ratio,
 				tempVehicle.DynamicTyreRadius, tempVehicle.VehicleCategory, vehicle.Components.TorqueConverterInputData);
 			_retarderData = _dao.CreateRetarderData(vehicle.Components.RetarderInputData);
@@ -144,6 +142,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 		private void InitializeReport()
 		{
 			VectoRunData powertrainConfig;
+			var vehicle = InputDataProvider.JobInputData.Vehicle;
 			if (InputDataProvider.JobInputData.Vehicle.ExemptedVehicle) {
 				powertrainConfig = new VectoRunData() {
 					Exempted = true,
@@ -152,25 +151,10 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 				};
 				powertrainConfig.VehicleData.VehicleClass = _segment.Found ? _segment.VehicleClass : VehicleClass.Class0;
 			} else {
-				powertrainConfig = new VectoRunData() {
-					VehicleData =
-						_dao.CreateVehicleData(
-							InputDataProvider.JobInputData.Vehicle, _segment.Missions.First(),
-							_segment.Missions.First().Loadings.First().Value, allowVocational),
-					AirdragData = _airdragData,
-					EngineData = _engineData,
-					GearboxData = _gearboxData,
-					AxleGearData = _axlegearData,
-					Retarder = _retarderData,
-					Aux =
-						_dao.CreateAuxiliaryData(
-							InputDataProvider.JobInputData.Vehicle.Components.AuxiliaryInputData,
-							_segment.Missions.First().MissionType,
-							_segment.VehicleClass),
-					PTO = _ptoTransmissionData,
-					InputDataHash = InputDataProvider.XMLHash
-				};
-				powertrainConfig.VehicleData.VehicleClass = _segment.VehicleClass;
+				powertrainConfig = _segment.Missions.Select(
+						mission => CreateVectoRunData(
+							vehicle, 0, mission, mission.Loadings.First()))
+					.FirstOrDefault(x => x != null);
 			}
 			Report.InitializeReport(powertrainConfig);
 		}
@@ -199,58 +183,80 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 		{
 			
 			var vehicle = InputDataProvider.JobInputData.Vehicle;
+			var engine = InputDataProvider.JobInputData.Vehicle.Components.EngineInputData;
+			var engineModes = engine.EngineModes;
 			var adasCombination = DeclarationData.ADASCombinations.Lookup(vehicle.ADAS);
-			foreach (var mission in _segment.Missions) {
-				if (mission.MissionType.IsEMS() &&
-					_engineData.RatedPowerDeclared.IsSmaller(DeclarationData.MinEnginePowerForEMS)) {
-					continue;
-				}
+			for (var modeIdx = 0; modeIdx < engineModes.Count; modeIdx++) {
+				foreach (var mission in _segment.Missions) {
+					if (mission.MissionType.IsEMS() &&
+						engine.RatedPowerDeclared.IsSmaller(DeclarationData.MinEnginePowerForEMS)) {
+						continue;
+					}
 
-				DrivingCycleData cycle;
-				lock (CyclesCacheLock) {
-					if (CyclesCache.ContainsKey(mission.MissionType)) {
-						cycle = CyclesCache[mission.MissionType];
-					} else {
-						cycle = DrivingCycleDataReader.ReadFromStream(mission.CycleFile, CycleType.DistanceBased, "", false);
-						CyclesCache.Add(mission.MissionType, cycle);
+					foreach (var loading in mission.Loadings) {
+						var simulationRunData = CreateVectoRunData(vehicle, modeIdx, mission, loading);
+						yield return simulationRunData;
 					}
 				}
-				foreach (var loading in mission.Loadings) {
-					var simulationRunData = new VectoRunData {
-						Loading = loading.Key,
-						VehicleDesignSpeed = _segment.DesignSpeed,
-						VehicleData = _dao.CreateVehicleData(vehicle, mission, loading.Value, allowVocational),
-						AirdragData = _dao.CreateAirdragData(vehicle.Components.AirdragInputData, mission, _segment),
-						EngineData = _engineData.Copy(), // a copy is necessary because every run has a different correction factor!
-						GearboxData = _gearboxData,
-						AxleGearData = _axlegearData,
-						AngledriveData = _angledriveData,
-						Aux = _dao.CreateAuxiliaryData(vehicle.Components.AuxiliaryInputData, mission.MissionType,
-							_segment.VehicleClass),
-						Cycle = new DrivingCycleProxy(cycle, mission.MissionType.ToString()),
-						Retarder = _retarderData,
-						DriverData = _driverdata,
-						ExecutionMode = ExecutionMode.Declaration,
-						JobName = InputDataProvider.JobInputData.JobName,
-						ModFileSuffix = loading.Key.ToString(),
-						Report = Report,
-						Mission = mission,
-						PTO = mission.MissionType == MissionType.MunicipalUtility
-							? _municipalPtoTransmissionData
-							: _ptoTransmissionData,
-						InputDataHash = InputDataProvider.XMLHash,
-						SimulationType = SimulationType.DistanceCycle
-					};
-					simulationRunData.EngineData.FuelConsumptionCorrectionFactor = DeclarationData.WHTCCorrection.Lookup(
-																						mission.MissionType.GetNonEMSMissionType(), _engineData.WHTCRural, _engineData.WHTCUrban,
-																						_engineData.WHTCMotorway) *
-																					_engineData.ColdHotCorrectionFactor * _engineData.CorrectionFactorRegPer;
-					simulationRunData.EngineData.ADASCorrectionFactor = DeclarationData.ADASBenefits.Lookup(
-						_segment.VehicleClass, adasCombination, mission.MissionType, loading.Key);
-					simulationRunData.VehicleData.VehicleClass = _segment.VehicleClass;
-					yield return simulationRunData;
+			}
+		}
+
+		private VectoRunData CreateVectoRunData(IVehicleDeclarationInputData vehicle, int modeIdx, Mission mission, KeyValuePair<LoadingType, Kilogram> loading)
+		{
+			if (InputDataProvider.JobInputData.Vehicle.ExemptedVehicle) {
+				return new VectoRunData {
+					Exempted = true,
+					Report = Report,
+					Mission = new Mission() { MissionType = MissionType.ExemptedMission },
+					VehicleData = _dao.CreateVehicleData(InputDataProvider.JobInputData.Vehicle, null, 0.SI<Kilogram>(), allowVocational),
+					InputDataHash = InputDataProvider.XMLHash
+				};
+			}
+
+			var engine = InputDataProvider.JobInputData.Vehicle.Components.EngineInputData;
+			var engineModes = engine.EngineModes;
+			var engineMode = engineModes[modeIdx];
+
+			DrivingCycleData cycle;
+			lock (CyclesCacheLock) {
+				if (CyclesCache.ContainsKey(mission.MissionType)) {
+					cycle = CyclesCache[mission.MissionType];
+				} else {
+					cycle = DrivingCycleDataReader.ReadFromStream(mission.CycleFile, CycleType.DistanceBased,
+						"", false);
+					CyclesCache.Add(mission.MissionType, cycle);
 				}
 			}
+
+			var simulationRunData = new VectoRunData {
+				Loading = loading.Key,
+				VehicleDesignSpeed = _segment.DesignSpeed,
+				VehicleData = _dao.CreateVehicleData(vehicle, mission, loading.Value, allowVocational),
+				AirdragData =
+					_dao.CreateAirdragData(vehicle.Components.AirdragInputData, mission, _segment),
+				EngineData = _dao.CreateEngineData(InputDataProvider.JobInputData.Vehicle, engineMode, mission),
+				GearboxData = _gearboxData,
+				AxleGearData = _axlegearData,
+				AngledriveData = _angledriveData,
+				Aux = _dao.CreateAuxiliaryData(vehicle.Components.AuxiliaryInputData, mission.MissionType,
+					_segment.VehicleClass),
+				Cycle = new DrivingCycleProxy(cycle, mission.MissionType.ToString()),
+				Retarder = _retarderData,
+				DriverData = _driverdata,
+				ExecutionMode = ExecutionMode.Declaration,
+				JobName = InputDataProvider.JobInputData.JobName,
+				ModFileSuffix = loading.Key.ToString(),
+				Report = Report,
+				Mission = mission,
+				PTO = mission.MissionType == MissionType.MunicipalUtility
+					? _municipalPtoTransmissionData
+					: _ptoTransmissionData,
+				InputDataHash = InputDataProvider.XMLHash,
+				SimulationType = SimulationType.DistanceCycle
+			};
+			simulationRunData.EngineData.FuelMode = modeIdx;
+			simulationRunData.VehicleData.VehicleClass = _segment.VehicleClass;
+			return simulationRunData;
 		}
 
 		private PTOData CreateDefaultPTOData()

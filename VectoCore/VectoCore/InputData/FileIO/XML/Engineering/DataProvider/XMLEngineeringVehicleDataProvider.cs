@@ -40,6 +40,7 @@ using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.XML.Engineering.Interfaces;
 using TUGraz.VectoCore.InputData.Impl;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider
@@ -204,7 +205,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider
 			get { return null; }
 		}
 
-		public virtual uint? PTO_DriveGear { get { return null; } }
+		public virtual GearshiftPosition PTO_DriveGear { get { return null; } }
 		public virtual PerSecond PTO_DriveEngineSpeed { get { return null; } }
 
 

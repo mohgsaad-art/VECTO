@@ -117,7 +117,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				}
 			}
 			if (CycleIntervalIterator.LastEntry && PreviousState.Distance.IsEqual(Right.Distance)) {
-				CurrentState.Response = new ResponseCycleFinished();
+				CurrentState.Response = new ResponseCycleFinished(this);
 				return CurrentState.Response;
 			}
 
@@ -137,8 +137,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				Log.Debug("Extending distance by {0} to next sample point. ds: {1} new ds: {2}", remainingDistance, ds,
 					nextSpeedChange - PreviousState.Distance);
 				_intervalProlonged = true;
-				CurrentState.Response = new ResponseDrivingCycleDistanceExceeded {
-					Source = this,
+				CurrentState.Response = new ResponseDrivingCycleDistanceExceeded(this) {
 					MaxDistance = nextSpeedChange - PreviousState.Distance
 				};
 				return CurrentState.Response;
@@ -158,8 +157,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			// only drive until next sample point in cycle with speed change
 			Log.Debug("Limiting distance to next sample point {0}",
 				Right.Distance - PreviousState.Distance);
-			CurrentState.Response = new ResponseDrivingCycleDistanceExceeded {
-				Source = this,
+			CurrentState.Response = new ResponseDrivingCycleDistanceExceeded(this) {
 				MaxDistance = nextSpeedChange - PreviousState.Distance
 			};
 			return CurrentState.Response;
@@ -273,8 +271,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				CurrentState.RequestToNextSamplePointDone = true;
 				Log.Debug("current distance is close to the next speed change: {0}",
 					nextSpeedChanges.First().Distance - PreviousState.Distance);
-				return new ResponseDrivingCycleDistanceExceeded {
-					Source = this,
+				return new ResponseDrivingCycleDistanceExceeded(this) {
 					MaxDistance = Constants.SimulationSettings.BrakeNextTargetDistance
 				};
 			}

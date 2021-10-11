@@ -78,7 +78,10 @@ namespace TUGraz.VectoCore.Tests.Reports
 			TestCase(10, 0.1)]
 		public void SumDataTest(double initialSpeedVal, double accVal)
 		{
-			var modData = new ModalDataContainer("sumDataTest", FuelData.Diesel, null, false);
+			var rundata = new VectoRunData() {
+				JobName = "sumDataTest"
+			};
+			var modData = new ModalDataContainer(rundata, null, null);
 			var initalSpeed = initialSpeedVal.KMPHtoMeterPerSecond();
 			var speed = initalSpeed;
 			var dist = 0.SI<Meter>();
@@ -127,7 +130,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 			run.Run();
 			Assert.IsTrue(run.FinishedWithoutErrors);
 
-			AssertModDataIntegrity(modData, auxKeys, cycle.Entries.Last().Distance.Value(), engineData.ConsumptionMap, true);
+			AssertModDataIntegrity(modData, auxKeys, cycle.Entries.Last().Distance.Value(), engineData.Fuels.First().ConsumptionMap, true);
 		}
 
 		[Category("LongRunning")]
@@ -340,12 +343,12 @@ namespace TUGraz.VectoCore.Tests.Reports
 			FuelConsumptionMap fcMap = null;
 			if (engInput != null) {
 				 fcMap = FuelConsumptionMapReader.Create(engInput.JobInputData.Vehicle
-					.Components.EngineInputData.FuelConsumptionMap);
+					.Components.EngineInputData.EngineModes.First().Fuels.First().FuelConsumptionMap);
 			}
 			var vtpInput = inputData as IVTPEngineeringInputDataProvider;
 			if (vtpInput != null ) {
 				fcMap = FuelConsumptionMapReader.Create(vtpInput.JobInputData.Vehicle
-					.Components.EngineInputData.FuelConsumptionMap);
+					.Components.EngineInputData.EngineModes.First().Fuels.First().FuelConsumptionMap);
 			}
 			var disatanceBased =
 				((VehicleContainer)(jobContainer.Runs.First().Run.GetContainer())).DrivingCycle is DistanceBasedDrivingCycle;
@@ -629,7 +632,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 
 			foreach (var modalResults in modData) {
 				AssertModDataIntegrityAT(modalResults.Item1, auxKeys, modalResults.Item2,
-					FuelConsumptionMapReader.Create(((IEngineeringInputDataProvider)inputData).JobInputData.Vehicle.Components.EngineInputData.FuelConsumptionMap), true);
+					FuelConsumptionMapReader.Create(((IEngineeringInputDataProvider)inputData).JobInputData.Vehicle.Components.EngineInputData.EngineModes.First().Fuels.First().FuelConsumptionMap), true);
 			}
 
 			AssertSumDataIntegrity(sumData, ExecutionMode.Engineering, true);

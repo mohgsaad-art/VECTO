@@ -79,10 +79,6 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 		[TestCase, Category("LongRunning")]
 		public void Test_FullPowertrain_SimpleGearbox()
 		{
-			var fileWriter = new FileOutputWriter("Coach_FullPowertrain_SimpleGearbox");
-			var modData = new ModalDataContainer("Coach_FullPowertrain_SimpleGearbox", FuelData.Diesel, fileWriter);
-			var container = new VehicleContainer(ExecutionMode.Engineering, modData);
-			//container.RunData = new VectoRunData() { SimulationType = SimulationType.DistanceCycle };
 
 			var gearboxData = CreateSimpleGearboxData();
 			var engineData = MockSimulationDataFactory.CreateEngineDataFromFile(EngineFile, gearboxData.Gears.Count);
@@ -92,10 +88,8 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 			var driverData = CreateDriverData(AccelerationFile);
 			var airDragData = CreateAirdragData();
 
-			var cycle = new DistanceBasedDrivingCycle(container, cycleData);
-			var cyclePort = cycle.OutPort();
-
 			var runData = new VectoRunData() {
+				JobName = "Coach_FullPowertrain_SimpleGearbox",
 				EngineData = engineData,
 				AxleGearData = axleGearData,
 				GearboxData = gearboxData,
@@ -103,14 +97,19 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 				AirdragData = airDragData,
 				DriverData = driverData
 			};
-			container.RunData = runData;
+			var fileWriter = new FileOutputWriter("Coach_FullPowertrain_SimpleGearbox");
+			var modData = new ModalDataContainer(runData, fileWriter, null);
+			var container = new VehicleContainer(ExecutionMode.Engineering, modData) { RunData = runData };
+
+			var cycle = new DistanceBasedDrivingCycle(container, cycleData);
+			var cyclePort = cycle.OutPort();
 
 			cycle.AddComponent(new Driver(container, driverData, new DefaultDriverStrategy(container)))
 				.AddComponent(new Vehicle(container, vehicleData, airDragData))
 				.AddComponent(new Wheels(container, vehicleData.DynamicTyreRadius, vehicleData.WheelsInertia))
 				.AddComponent(new Brakes(container))
 				.AddComponent(new AxleGear(container, axleGearData))
-				.AddComponent(new Gearbox(container, new AMTShiftStrategy(runData, container), runData))
+				.AddComponent(new Gearbox(container, new AMTShiftStrategy(container)))
 				.AddComponent(new Clutch(container, engineData))
 				.AddComponent(new CombustionEngine(container, engineData));
 
@@ -148,9 +147,6 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 		[TestCase]
 		public void Test_FullPowertrain()
 		{
-			var fileWriter = new FileOutputWriter("Coach_FullPowertrain");
-			var modData = new ModalDataContainer("Coach_FullPowertrain", FuelData.Diesel, fileWriter);
-			var container = new VehicleContainer(ExecutionMode.Engineering, modData);
 			//container.RunData = new VectoRunData() {SimulationType = SimulationType.DistanceCycle };
 
 			var gearboxData = CreateGearboxData();
@@ -161,9 +157,8 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 			var driverData = CreateDriverData(AccelerationFile);
 			var airDragData = CreateAirdragData();
 
-			var cycle = new DistanceBasedDrivingCycle(container, cycleData);
-
 			var runData = new VectoRunData() {
+				JobName = "Coach_FullPowertrain",
 				SimulationType = SimulationType.DistanceCycle,
 				EngineData = engineData,
 				VehicleData = vehicleData,
@@ -172,7 +167,13 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 				AirdragData = airDragData,
 				DriverData = driverData
 			};
-			container.RunData = runData;
+
+			var fileWriter = new FileOutputWriter("Coach_FullPowertrain");
+			var modData = new ModalDataContainer(runData, fileWriter, null);
+			var container = new VehicleContainer(ExecutionMode.Engineering, modData) { RunData = runData };
+
+
+			var cycle = new DistanceBasedDrivingCycle(container, cycleData);
 
 			var cyclePort = cycle.OutPort();
 			cycle.AddComponent(new Driver(container, driverData, new DefaultDriverStrategy(container)))
@@ -180,7 +181,7 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 				.AddComponent(new Wheels(container, vehicleData.DynamicTyreRadius, vehicleData.WheelsInertia))
 				.AddComponent(new Brakes(container))
 				.AddComponent(new AxleGear(container, axleGearData))
-				.AddComponent(new Gearbox(container, new AMTShiftStrategy(runData, container), runData))
+				.AddComponent(new Gearbox(container, new AMTShiftStrategy(container)))
 				.AddComponent(new Clutch(container, engineData))
 				.AddComponent(new CombustionEngine(container, engineData));
 
@@ -232,10 +233,7 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 		[TestCase, Category("LongRunning")]
 		public void Test_FullPowertrain_LowSpeed()
 		{
-			var fileWriter = new FileOutputWriter("Coach_FullPowertrain_LowSpeed");
-			var modData = new ModalDataContainer("Coach_FullPowertrain_LowSpeed", FuelData.Diesel, fileWriter);
-			var container = new VehicleContainer(ExecutionMode.Engineering, modData);
-
+			
 			var gearboxData = CreateGearboxData();
 			var engineData = MockSimulationDataFactory.CreateEngineDataFromFile(EngineFile, gearboxData.Gears.Count);
 			var cycleData = DrivingCycleDataReader.ReadFromFile(CycleFile, CycleType.DistanceBased, false);
@@ -245,6 +243,7 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 			var driverData = CreateDriverData(AccelerationFile);
 
 			var runData = new VectoRunData() {
+				JobName = "Coach_FullPowertrain_LowSpeed",
 				EngineData = engineData,
 				VehicleData = vehicleData,
 				AxleGearData = axleGearData,
@@ -252,7 +251,10 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 				AirdragData = airDragData,
 				DriverData = driverData
 			};
-			container.RunData = runData;
+			var fileWriter = new FileOutputWriter("Coach_FullPowertrain_LowSpeed");
+			var modData = new ModalDataContainer(runData, fileWriter, null);
+			var container = new VehicleContainer(ExecutionMode.Engineering, modData) { RunData = runData };
+
 
 			var cycle = new DistanceBasedDrivingCycle(container, cycleData);
 			var cyclePort = cycle.OutPort();
@@ -261,7 +263,7 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 				.AddComponent(new Wheels(container, vehicleData.DynamicTyreRadius, vehicleData.WheelsInertia))
 				.AddComponent(new Brakes(container))
 				.AddComponent(new AxleGear(container, axleGearData))
-				.AddComponent(new Gearbox(container, new AMTShiftStrategy(runData, container), runData))
+				.AddComponent(new Gearbox(container, new AMTShiftStrategy(container)))
 				.AddComponent(new Clutch(container, engineData))
 				.AddComponent(new CombustionEngine(container, engineData));
 
@@ -453,9 +455,7 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 					//Deceleration = -0.5.SI<MeterPerSquareSecond>()
 					LookAheadDecisionFactor = new LACDecisionFactor()
 				},
-				OverSpeedEcoRoll = new DriverData.OverSpeedEcoRollData {
-					Mode = DriverMode.Off
-				},
+				OverSpeed = new DriverData.OverSpeedData { Enabled = false }
 			};
 		}
 	}

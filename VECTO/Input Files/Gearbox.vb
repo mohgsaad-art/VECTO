@@ -123,7 +123,7 @@ Public Class Gearbox
 
 		Try
 			Dim writer As JSONFileWriter = JSONFileWriter.Instance
-			writer.SaveGearbox(Me, Me, Me, Me, _filePath)
+			writer.SaveGearbox(Me, Me, Me, Me, _filePath, cfg.DeclMode)
 		Catch ex As Exception
 			MsgBox("failed to write Gearbox file: " + ex.Message)
 			Return False
@@ -217,7 +217,7 @@ Public Class Gearbox
 
 				Try
 
-					engine = doa.CreateEngineData(inputData.JobInputData.Vehicle.Components.EngineInputData, Nothing, gearbox, New List(Of ITorqueLimitInputData), TankSystem.Compressed)
+					engine = doa.CreateEngineData(inputData.JobInputData.Vehicle, inputData.JobInputData.Vehicle.Components.EngineInputData.EngineModes.First(),New Mission() With {.MissionType = MissionType.LongHaul})
 				Catch
 					engine = GetDefaultEngine(gearbox.Gears)
 				End Try
@@ -227,7 +227,9 @@ Public Class Gearbox
 			Else
 				Dim doa As EngineeringDataAdapter = New EngineeringDataAdapter()
 				Try
-					engine = doa.CreateEngineData(inputData.JobInputData.Vehicle.Components.EngineInputData, gearbox, New List(Of ITorqueLimitInputData), gearbox, TankSystem.Compressed)
+					engine = doa.CreateEngineData(inputData.JobInputData.Vehicle,
+                                                  inputData.JobInputData.Vehicle.Components.EngineInputData.EngineModes.
+                                                     First())
 				Catch
 					engine = GetDefaultEngine(gearbox.Gears)
 				End Try
@@ -463,7 +465,64 @@ Public Class Gearbox
 		End Get
 	End Property
 
-	Public ReadOnly Property PowershiftShiftTime As Second Implements IGearboxEngineeringInputData.PowershiftShiftTime
+    Public ReadOnly Property RatingFactorCurrentGear As Double? Implements IGearshiftEngineeringInputData.RatingFactorCurrentGear
+	get
+		return Nothing
+	End Get
+    End Property
+    Public ReadOnly Property Source As String Implements IGearshiftEngineeringInputData.Source
+    Public ReadOnly Property RatioEarlyUpshiftFC As Double? Implements IGearshiftEngineeringInputData.RatioEarlyUpshiftFC
+        get
+            return Nothing
+        End Get
+    End Property
+    Public ReadOnly Property RatioEarlyDownshiftFC As Double? Implements IGearshiftEngineeringInputData.RatioEarlyDownshiftFC
+        get
+            return Nothing
+        End Get
+    End Property
+    Public ReadOnly Property AllowedGearRangeFC As Integer? Implements IGearshiftEngineeringInputData.AllowedGearRangeFC
+        get
+            return Nothing
+        End Get
+    End Property
+    Public ReadOnly Property VeloictyDropFactor As Double? Implements IGearshiftEngineeringInputData.VeloictyDropFactor
+        get
+            return Nothing
+        End Get
+    End Property
+    Public ReadOnly Property AccelerationFactor As Double? Implements IGearshiftEngineeringInputData.AccelerationFactor
+        get
+            return Nothing
+        End Get
+    End Property
+    Public ReadOnly Property LoadStageThresholdsUp As IList(Of Double) Implements IGearshiftEngineeringInputData.LoadStageThresholdsUp
+        get
+            return Nothing
+        End Get
+    End Property
+    Public ReadOnly Property LoadStageThresholdsDown As IList(Of Double) Implements IGearshiftEngineeringInputData.LoadStageThresholdsDown
+        get
+            return Nothing
+        End Get
+    End Property
+    Public ReadOnly Property MinEngineSpeedPostUpshift As PerSecond Implements IGearshiftEngineeringInputData.MinEngineSpeedPostUpshift
+        get
+            return Nothing
+        End Get
+    End Property
+    Public ReadOnly Property ATLookAheadTime As Second Implements IGearshiftEngineeringInputData.ATLookAheadTime
+        get
+            return Nothing
+        End Get
+    End Property
+    Public ReadOnly Property ShiftSpeedsTCToLocked As Double()() Implements IGearshiftEngineeringInputData.ShiftSpeedsTCToLocked
+        get
+            return Nothing
+        End Get
+    End Property
+
+    Public ReadOnly Property PowershiftShiftTime As Second Implements IGearboxEngineeringInputData.PowershiftShiftTime
 		Get
 			Return PSShiftTime.SI(Of Second)()
 		End Get

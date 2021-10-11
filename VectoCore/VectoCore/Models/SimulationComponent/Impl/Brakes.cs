@@ -52,7 +52,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		{
 			BrakePower = 0.SI<Watt>();
 			PreviousState.SetState(torque, angularVelocity, torque, angularVelocity);
-			return DataBus.DriverBehavior == DrivingBehavior.Halted && DataBus.VehicleStopped
+			return DataBus.DriverInfo.DriverBehavior == DrivingBehavior.Halted && DataBus.VehicleStopped
 				? NextComponent.Initialize(0.SI<NewtonMeter>(), 0.SI<PerSecond>())
 				: NextComponent.Initialize(torque, angularVelocity);
 		}

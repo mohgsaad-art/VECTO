@@ -34,6 +34,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Xml.Linq;
 using TUGraz.VectoCommon.Exceptions;
+using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
@@ -41,6 +42,7 @@ using TUGraz.VectoCore.InputData.Reader.Impl;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.OutputData;
 using DriverData = TUGraz.VectoCore.Models.SimulationComponent.Data.DriverData;
 
@@ -53,7 +55,10 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 		public VectoRunData()
 		{
 			Exempted = false;
+			JobType = VectoSimulationJobType.ConventionalVehicle;
 		}
+
+		public VectoSimulationJobType JobType { get; internal set; }
 
 		public MeterPerSecond VehicleDesignSpeed { get; internal set; }
 
@@ -118,9 +123,13 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 
 		public VTPData VTPData { get; set; }
 
+		public ShiftStrategyParameters GearshiftParameters { get; internal set; }
+
 		public bool Exempted { get; set; }
 
 		public IDrivingCycleData PTOCycleWhileDrive { get; internal set; }
+
+		public string ShiftStrategy { get; set; }
 
 
 		public class AuxData
@@ -162,7 +171,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 					return new ValidationResult("RoadSweeping PTO activity detected in cycle but no min. engine speed during road sweeping provided");
 				}
 
-				if (runData.DriverData.PTODriveRoadsweepingGear == 0) {
+				if (runData.DriverData.PTODriveRoadsweepingGear == null || runData.DriverData.PTODriveRoadsweepingGear.Equals(new GearshiftPosition(0))) {
 					return new ValidationResult("RoadSweeping PTO activity detected in cycle but no gear during road sweeping provided");
 				}
 			}
@@ -202,7 +211,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 			var vehicleMaxSpeed = runData.EngineData.FullLoadCurves[0].N95hSpeed /
 								runData.GearboxData.Gears[runData.GearboxData.Gears.Keys.Max()].Ratio / axlegearRatio /
 								angledriveRatio * dynamicTyreRadius;
-			var maxSpeed = VectoMath.Min(vehicleMaxSpeed, (runData.VehicleDesignSpeed ?? 90.KMPHtoMeterPerSecond()) + (runData.DriverData?.OverSpeedEcoRoll?.OverSpeed ?? 0.KMPHtoMeterPerSecond()));
+			var maxSpeed = VectoMath.Min(vehicleMaxSpeed, (runData.VehicleDesignSpeed ?? 90.KMPHtoMeterPerSecond()) + (runData.DriverData?.OverSpeed?.OverSpeed ?? 0.KMPHtoMeterPerSecond()));
 
 			if (gearboxData.Gears.Count + 1 != engineData.FullLoadCurves.Count) {
 				return

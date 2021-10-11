@@ -29,6 +29,8 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using TUGraz.IVT.VectoXML;
@@ -38,12 +40,13 @@ using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.XML.Engineering.Interfaces;
+using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider
 {
 	internal class XMLEngineeringEngineDataProviderV07 : AbstractEngineeringXMLComponentDataProvider,
-		IXMLEngineData
+		IXMLEngineData, IEngineModeEngineeringInputData, IEngineFuelEngineeringInputData
 	{
 		public static readonly XNamespace NAMESPACE_URI = XMLDefinitions.ENGINEERING_DEFINITONS_NAMESPACE_V07;
 
@@ -51,6 +54,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider
 
 		public static readonly string QUALIFIED_XSD_TYPE = XMLHelper.CombineNamespace(NAMESPACE_URI.NamespaceName, XSD_TYPE);
 
+		protected IList<IEngineModeEngineeringInputData> _modes;
 
 		public XMLEngineeringEngineDataProviderV07(
 			IXMLEngineeringVehicleData vehicle,
@@ -79,6 +83,10 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider
 		{
 			get { return GetDouble(XMLNames.Engine_WHTCEngineering); }
 		}
+		IList<IEngineModeEngineeringInputData> IEngineEngineeringInputData.EngineModes => _modes ?? (_modes = ReadEngineModes());
+
+		public virtual Second EngineStartTime => null;
+
 
 		public virtual double WHTCMotorway
 		{
@@ -139,6 +147,18 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider
 			}
 		}
 
+		IList<IEngineFuelEngineeringInputData> IEngineModeEngineeringInputData.Fuels {
+			get { return new[] { this }.Cast<IEngineFuelEngineeringInputData>().ToList(); }
+		}
+
+		public virtual IList<IEngineFuelDeclarationInputData> Fuels {
+			get { return new[] { this }.Cast<IEngineFuelDeclarationInputData>().ToList(); }
+		}
+
+		public virtual IWHRData WasteHeatRecoveryDataElectrical => null;
+
+
+		public virtual IWHRData WasteHeatRecoveryDataMechanical => null;
 		public virtual Watt RatedPowerDeclared
 		{
 			get {
@@ -159,6 +179,15 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider
 				return null; //GetDoubleElementValue(XMLNames.Engine_MaxTorque).SI<NewtonMeter>(); 
 			}
 		}
+
+		public virtual IList<IEngineModeDeclarationInputData> EngineModes => (_modes ?? (_modes = ReadEngineModes())).Cast<IEngineModeDeclarationInputData>().ToList();
+
+		protected virtual IList<IEngineModeEngineeringInputData> ReadEngineModes()
+		{
+			return new IEngineModeEngineeringInputData[] { this };
+		}
+
+		public virtual WHRType WHRType => WHRType.None;
 
 		public virtual KilogramSquareMeter Inertia
 		{

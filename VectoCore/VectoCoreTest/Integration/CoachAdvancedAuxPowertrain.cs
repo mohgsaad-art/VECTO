@@ -75,13 +75,6 @@ namespace TUGraz.VectoCore.Tests.Integration
 		public static VehicleContainer CreatePowerTrain(DrivingCycleData cycleData, string modFileName, bool overspeed = false,
 			bool highEnginePower = true)
 		{
-			var fileWriter = new FileOutputWriter(modFileName);
-			var modData = new ModalDataContainer(modFileName, FuelData.Diesel, fileWriter) {
-				WriteAdvancedAux = true,
-				WriteModalResults = true
-			};
-			var container = new VehicleContainer(ExecutionMode.Engineering, modData);
-
 			var gearboxData = CreateGearboxData();
 			var engineData = MockSimulationDataFactory.CreateEngineDataFromFile(highEnginePower ? EngineFileHigh : EngineFile,
 				gearboxData.Gears.Count);
@@ -89,9 +82,6 @@ namespace TUGraz.VectoCore.Tests.Integration
 			var vehicleData = CreateVehicleData(3300.SI<Kilogram>());
 			var airdragData = CreateAirdragData();
 			var driverData = CreateDriverData(AccelerationFile, overspeed);
-
-			var cycle = new DistanceBasedDrivingCycle(container, cycleData);
-			var engine = new CombustionEngine(container, engineData);
 
 			var runData = new VectoRunData() {
 				JobRunId = 0,
@@ -101,22 +91,35 @@ namespace TUGraz.VectoCore.Tests.Integration
 				GearboxData = gearboxData,
 				EngineData = engineData,
 				SimulationType = SimulationType.DistanceCycle,
-				Cycle = cycleData, 
+				Cycle = cycleData,
 				DriverData = driverData
 			};
-			container.RunData = runData;
+
+			var fileWriter = new FileOutputWriter(modFileName);
+			var modData = new ModalDataContainer(runData, fileWriter, null) {
+				WriteAdvancedAux = true,
+				WriteModalResults = true
+			};
+			var container = new VehicleContainer(ExecutionMode.Engineering, modData) { RunData = runData };
+
+
+			var cycle = new DistanceBasedDrivingCycle(container, cycleData);
+			var engine = new CombustionEngine(container, engineData);
+
+			
+			
 			cycle.AddComponent(new Driver(container, driverData, new DefaultDriverStrategy(container)))
 				.AddComponent(new Vehicle(container, vehicleData, airdragData))
 				.AddComponent(new Wheels(container, vehicleData.DynamicTyreRadius, vehicleData.WheelsInertia))
 				.AddComponent(new Brakes(container))
 				.AddComponent(new AxleGear(container, axleGearData))
 				.AddComponent(new DummyRetarder(container))
-				.AddComponent(new Gearbox(container, new AMTShiftStrategy(runData, container), runData))
+				.AddComponent(new Gearbox(container, new AMTShiftStrategy( container)))
 				.AddComponent(new Clutch(container, engineData))
 				.AddComponent(engine);
 
 			var aux = new BusAuxiliariesAdapter(container, AdvancedAuxFile, "Coach",
-				vehicleData.TotalVehicleWeight, engineData.ConsumptionMap, engineData.IdleSpeed);
+				vehicleData.TotalVehicleWeight, engineData.Fuels.First().ConsumptionMap, engineData.IdleSpeed);
 
 			engine.Connect(aux.Port());
 
@@ -220,15 +223,11 @@ namespace TUGraz.VectoCore.Tests.Integration
 					LookAheadDistanceFactor = DeclarationData.Driver.LookAhead.LookAheadDistanceFactor,
 					LookAheadDecisionFactor = new LACDecisionFactor()
 				},
-				OverSpeedEcoRoll = overspeed
-					? new DriverData.OverSpeedEcoRollData {
-						Mode = DriverMode.Overspeed,
-						MinSpeed = 50.KMPHtoMeterPerSecond(),
-						OverSpeed = 5.KMPHtoMeterPerSecond()
-					}
-					: new DriverData.OverSpeedEcoRollData {
-						Mode = DriverMode.Off
-					},
+				OverSpeed = new DriverData.OverSpeedData {
+					Enabled = overspeed,
+					MinSpeed = 50.KMPHtoMeterPerSecond(),
+					OverSpeed = 5.KMPHtoMeterPerSecond()
+				}
 			};
 		}
 	}

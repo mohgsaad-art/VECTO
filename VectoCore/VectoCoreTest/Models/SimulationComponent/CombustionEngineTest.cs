@@ -90,7 +90,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var vehicle = new VehicleContainer(ExecutionMode.Engineering);
 			var engineData = MockSimulationDataFactory.CreateEngineDataFromFile(CoachEngine, 0);
 			var engine = new CombustionEngine(vehicle, engineData);
-			var gearbox = new MockGearbox(vehicle) { Gear = 0 };
+			var gearbox = new MockGearbox(vehicle) { Gear = new GearshiftPosition(0) };
 
 			var port = engine.OutPort();
 
@@ -109,7 +109,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var vehicle = new VehicleContainer(ExecutionMode.Engineering);
 			var engineData = MockSimulationDataFactory.CreateEngineDataFromFile(CoachEngine, 0);
 			var engine = new CombustionEngine(vehicle, engineData);
-			var gearbox = new MockGearbox(vehicle) { Gear = 0 };
+			var gearbox = new MockGearbox(vehicle) { Gear = new GearshiftPosition(0) };
 			var port = engine.OutPort();
 
 			var absTime = 0.SI<Second>();
@@ -234,7 +234,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var vehicleContainer = new VehicleContainer(ExecutionMode.Engineering);
 			var engineData = MockSimulationDataFactory.CreateEngineDataFromFile(engineFile, 0);
 			var engine = new CombustionEngine(vehicleContainer, engineData);
-			var gearbox = new MockGearbox(vehicleContainer) { Gear = 0 };
+			var gearbox = new MockGearbox(vehicleContainer) { Gear = new GearshiftPosition(0) };
 
 			var expectedResults = VectoCSVFile.Read(resultFile);
 
@@ -293,7 +293,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var aux = new EngineAuxiliary(container);
 			aux.AddConstant("CONST", 5000.SI<Watt>());
 
-			gearbox.Gear = 1;
+			gearbox.Gear = new GearshiftPosition(1);
 
 			//gearbox.InPort().Connect(engine.OutPort());
 			gearbox.InPort().Connect(clutch.OutPort());
@@ -333,7 +333,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 			// actual test...
 
-			gearbox.Gear = 0;
+			gearbox.Gear = new GearshiftPosition(0);
 			gearbox.SetClutch(false);
 			torque = 0.SI<NewtonMeter>();
 
@@ -518,13 +518,13 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 		public void Test_EngineData()
 		{
 			var engineData = MockSimulationDataFactory.CreateEngineDataFromFile(CoachEngine, 0);
-			var motorway = engineData.WHTCMotorway;
+			var motorway = engineData.Fuels.First().WHTCMotorway;
 			Assert.AreEqual(motorway, 1);
 
-			var rural = engineData.WHTCRural;
+			var rural = engineData.Fuels.First().WHTCRural;
 			Assert.AreEqual(rural, 1);
 
-			var urban = engineData.WHTCUrban;
+			var urban = engineData.Fuels.First().WHTCUrban;
 			Assert.AreEqual(urban, 1);
 
 			var displace = engineData.Displacement;
@@ -556,7 +556,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var aux = new EngineAuxiliary(container);
 			aux.AddConstant("CONST", 5000.SI<Watt>());
 
-			gearbox.Gear = 1;
+			gearbox.Gear = new GearshiftPosition(1);
 			var vehicle = new MockVehicle(container);
 			vehicle.MyVehicleSpeed = 0.SI<MeterPerSecond>();
 			//gearbox.InPort().Connect(engine.OutPort());

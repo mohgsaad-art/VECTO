@@ -57,7 +57,7 @@ namespace TUGraz.VectoCore.OutputData.XML.Engineering.Writer
 			var v10 = ComponentDataNamespace;
 
 			var lacWriter = Factory.GetWriter(driverData.Lookahead, Writer, inputData.DataSource);
-			var overspeedWriter = Factory.GetWriter(driverData.OverSpeedEcoRoll, Writer, inputData.DataSource);
+			var overspeedWriter = Factory.GetWriter(driverData.OverSpeedData, Writer, inputData.DataSource);
 			var accWriter = Factory.GetWriter(driverData.AccelerationCurve, Writer, inputData.DataSource);
 			var gearshiftWriter = Factory.GetWriter(driverData.GearshiftInputData, Writer, inputData.DataSource);
 			return new object[] {
@@ -69,7 +69,7 @@ namespace TUGraz.VectoCore.OutputData.XML.Engineering.Writer
 				new XElement(
 					v10 + XMLNames.DriverModel_Overspeed,
 					overspeedWriter.GetXMLTypeAttribute(),
-					overspeedWriter.WriteXML(driverData.OverSpeedEcoRoll)
+					overspeedWriter.WriteXML(driverData.OverSpeedData)
 				),
 				new XElement(
 					v10 + XMLNames.DriverModel_DriverAccelerationCurve,

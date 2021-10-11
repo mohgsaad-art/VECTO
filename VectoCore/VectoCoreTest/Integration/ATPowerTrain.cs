@@ -77,12 +77,6 @@ namespace TUGraz.VectoCore.Tests.Integration
 		public static VehicleContainer CreatePowerTrain(DrivingCycleData cycleData, GearboxType gbxType, string modFileName,
 			bool overspeed = false, KilogramSquareMeter gearBoxInertia = null)
 		{
-			var fileWriter = new FileOutputWriter(modFileName);
-			var modData = new ModalDataContainer(modFileName, FuelData.Diesel, fileWriter) {
-				WriteModalResults = true,
-				HasTorqueConverter = true
-			};
-
 			var gearboxData = CreateGearboxData(gbxType);
 			var engineData = MockSimulationDataFactory.CreateEngineDataFromFile(EngineFile, gearboxData.Gears.Count);
 			var axleGearData = CreateAxleGearData(gbxType);
@@ -109,9 +103,17 @@ namespace TUGraz.VectoCore.Tests.Integration
 				SimulationType = SimulationType.DistanceCycle,
 				DriverData = driverData
 			};
+			
+
+			var fileWriter = new FileOutputWriter(modFileName);
+			var modData = new ModalDataContainer(runData, fileWriter, null) {
+				WriteModalResults = true,
+				HasTorqueConverter = true
+			};
 			var container = new VehicleContainer(ExecutionMode.Engineering, modData) {
 				RunData = runData,
 			};
+
 			var cycle = new DistanceBasedDrivingCycle(container, cycleData);
 			var engine = new CombustionEngine(container, engineData);
 			var tmp = cycle.AddComponent(new Driver(container, driverData, new DefaultDriverStrategy(container)))
@@ -120,7 +122,7 @@ namespace TUGraz.VectoCore.Tests.Integration
 				.AddComponent(new Brakes(container))
 				.AddComponent(new AxleGear(container, axleGearData))
 				.AddComponent(new DummyRetarder(container))
-				.AddComponent(new ATGearbox(container, new ATShiftStrategy(gearboxData, container), runData))
+				.AddComponent(new ATGearbox(container, new ATShiftStrategy(container)))
 				.AddComponent(engine);
 
 			var aux = new EngineAuxiliary(container);
@@ -239,15 +241,11 @@ namespace TUGraz.VectoCore.Tests.Integration
 					LookAheadDistanceFactor = DeclarationData.Driver.LookAhead.LookAheadDistanceFactor,
 					LookAheadDecisionFactor = new LACDecisionFactor()
 				},
-				OverSpeedEcoRoll = overspeed
-					? new DriverData.OverSpeedEcoRollData {
-						Mode = DriverMode.Overspeed,
-						MinSpeed = 50.KMPHtoMeterPerSecond(),
-						OverSpeed = 5.KMPHtoMeterPerSecond()
-					}
-					: new DriverData.OverSpeedEcoRollData {
-						Mode = DriverMode.Off
-					},
+				OverSpeed = new DriverData.OverSpeedData {
+					Enabled = overspeed,
+					MinSpeed = 50.KMPHtoMeterPerSecond(),
+					OverSpeed = 5.KMPHtoMeterPerSecond()
+				}
 			};
 		}
 	}

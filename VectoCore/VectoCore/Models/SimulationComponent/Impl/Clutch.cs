@@ -75,7 +75,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		{
 			NewtonMeter torqueIn;
 			PerSecond engineSpeedIn;
-			if (DataBus.DriverBehavior == DrivingBehavior.Halted /*DataBus.VehicleStopped*/) {
+			if (DataBus.DriverInfo.DriverBehavior == DrivingBehavior.Halted /*DataBus.VehicleStopped*/) {
 				engineSpeedIn = _idleSpeed;
 				torqueIn = 0.SI<NewtonMeter>();
 			} else {
@@ -114,8 +114,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			NewtonMeter torqueIn;
 			PerSecond angularVelocityIn;
 
-			var slippingClutchWhenDriving = (DataBus.Gear <= 2 && DataBus.DriverBehavior != DrivingBehavior.Braking);
-			var slippingClutchDuringBraking = DataBus.Gear == 1 && DataBus.DriverBehavior == DrivingBehavior.Braking && outTorque > 0 && DataBus.BrakePower.IsEqual(0);
+			var slippingClutchWhenDriving = (DataBus.Gear.Gear <= 2 && DataBus.DriverInfo.DriverBehavior != DrivingBehavior.Braking);
+			var slippingClutchDuringBraking = DataBus.Gear.Gear == 1 && DataBus.DriverInfo.DriverBehavior == DrivingBehavior.Braking && outTorque > 0 && DataBus.BrakePower.IsEqual(0);
 			//var slippingClutchWhenDriving = (DataBus.Gear == 1 && outTorque > 0);
 			AddClutchLoss(outTorque, outAngularVelocity,
 				slippingClutchWhenDriving || slippingClutchDuringBraking || startClutch || outAngularVelocity.IsEqual(0),
@@ -127,7 +127,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var avgOutAngularVelocity = (PreviousState.OutAngularVelocity + outAngularVelocity) / 2.0;
 			var avgInAngularVelocity = (PreviousState.InAngularVelocity + angularVelocityIn) / 2.0;
 			var clutchLoss = torqueIn * avgInAngularVelocity - outTorque * avgOutAngularVelocity;
-			if (!startClutch && !clutchLoss.IsEqual(0) && (DataBus.Gear != 1 || clutchLoss.IsSmaller(0))) {
+			if (!startClutch && !clutchLoss.IsEqual(0) && (DataBus.Gear.Gear != 1 || clutchLoss.IsSmaller(0))) {
 				// we don't want to have negative clutch losses, so adapt input torque to match the average output power
 				torqueIn = outTorque * avgOutAngularVelocity / avgInAngularVelocity;
 			}
@@ -145,7 +145,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		private void AddClutchLoss(NewtonMeter torque, PerSecond angularVelocity, bool allowSlipping, out NewtonMeter torqueIn,
 			out PerSecond angularVelocityIn)
 		{
-			if (DataBus.DriverBehavior == DrivingBehavior.Halted) {
+			if (DataBus.DriverInfo.DriverBehavior == DrivingBehavior.Halted) {
 				angularVelocityIn = _idleSpeed;
 				torqueIn = 0.SI<NewtonMeter>();
 				return;

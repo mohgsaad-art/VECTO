@@ -119,10 +119,9 @@ Public Class VectoJobForm
 		tbLacDfTargetSpeedFile.Text = ""
 		tbLacDfVelocityDropFile.Text = ""
 
-		TbOverspeed.Text = DeclarationData.Driver.OverSpeedEcoRoll.OverSpeed.AsKmph.ToGUIFormat()	 'cDeclaration.Overspeed
-		TbUnderSpeed.Text = DeclarationData.Driver.OverSpeedEcoRoll.UnderSpeed.AsKmph.ToGUIFormat() _
+		TbOverspeed.Text = DeclarationData.Driver.OverSpeed.AllowedOverSpeed.AsKmph.ToGUIFormat()	 'cDeclaration.Overspeed
 		' cDeclaration.Underspeed
-		TbVmin.Text = DeclarationData.Driver.OverSpeedEcoRoll.MinSpeed.AsKmph.ToGUIFormat()	 'cDeclaration.ECvmin
+		TbVmin.Text = DeclarationData.Driver.OverSpeed.MinSpeed.AsKmph.ToGUIFormat()	 'cDeclaration.ECvmin
 		TbAuxPAdd.Text = ""
 		If _
 			LvAux.Items.Count <> 5 OrElse
@@ -422,7 +421,7 @@ Public Class VectoJobForm
 		_basePath = Path.GetDirectoryName(file)
 		'Update Form
 
-		If inputData.JobInputData().EngineOnlyMode Then
+		If inputData.JobInputData().JobType = VectoSimulationJobType.EngineOnlySimulation Then
 			TbENG.Text = GetRelativePath(inputData.JobInputData.EngineOnly.DataSource.SourceFile, _basePath)
 			CbEngOnly.Checked = True
 			Try
@@ -511,18 +510,15 @@ Public Class VectoJobForm
 		Catch ex As Exception
 		End Try
 
-		If driver.OverSpeedEcoRoll.Mode = DriverMode.EcoRoll Then
+		If driver.OverSpeedData.Enabled Then
 			'mk 2016-11-10: removed eco roll - instead automatically overspeed is used
 			'RdEcoRoll.Checked = True
-			RdOverspeed.Checked = True
-		ElseIf driver.OverSpeedEcoRoll.Mode = DriverMode.Overspeed Then
 			RdOverspeed.Checked = True
 		Else
 			RdOff.Checked = True
 		End If
-		TbOverspeed.Text = driver.OverSpeedEcoRoll.OverSpeed.AsKmph.ToGUIFormat()
-		TbUnderSpeed.Text = driver.OverSpeedEcoRoll.UnderSpeed.AsKmph.ToGUIFormat()
-		TbVmin.Text = driver.OverSpeedEcoRoll.MinSpeed.AsKmph.ToGUIFormat()
+		TbOverspeed.Text = driver.OverSpeedData.OverSpeed.AsKmph.ToGUIFormat()
+		TbVmin.Text = driver.OverSpeedData.MinSpeed.AsKmph.ToGUIFormat()
 		If Not driver.Lookahead Is Nothing Then
 			CbLookAhead.Checked = driver.Lookahead.Enabled
 			'TbAlookahead.Text = CStr(VEC0.ALookahead)
@@ -537,6 +533,24 @@ Public Class VectoJobForm
 			tbLacDfVelocityDropFile.Text = If(driver.Lookahead.CoastingDecisionFactorVelocityDropLookup Is Nothing, "",
 											GetRelativePath(driver.Lookahead.CoastingDecisionFactorVelocityDropLookup.Source, _basePath))
 		End If
+
+		tbEngineStopStartActivationDelay.Text = If(driver.EngineStopStartData?.ActivationDelay?.ToGUIFormat(), DeclarationData.Driver.EngineStopStart.ActivationDelay.ToGUIFormat())
+        tbMaxEngineOffTimespan.Text = If(driver.EngineStopStartData?.MaxEngineOffTimespan?.ToGUIFormat(), DeclarationData.Driver.EngineStopStart.MaxEngineOffTimespan.ToGUIFormat())
+        tbEssUtility.Text = If(driver.EngineStopStartData?.UtilityFactorStandstill.ToGUIFormat(), DeclarationData.Driver.EngineStopStart.UtilityFactor.ToGUIFormat())
+        tbESSUtilityFactorDriving.Text = If(driver.EngineStopStartData?.UtilityFactorDriving.ToGUIFormat(), DeclarationData.Driver.EngineStopStart.UtilityFactor.ToGUIFormat())
+
+        tbEcoRollActivationDelay.Text = If(driver.EcoRollData?.ActivationDelay?.ToGUIFormat(), DeclarationData.Driver.EcoRoll.ActivationDelay.ToGUIFormat())
+        tbEcoRollMinSpeed.Text = If(driver.EcoRollData?.MinSpeed?.AsKmph().ToGUIFormat(), DeclarationData.Driver.EcoRoll.MinSpeed.AsKmph().ToGUIFormat())
+        tbEcoRollUnderspeed.Text = If(driver.EcoRollData?.UnderspeedThreshold?.AsKmph().ToGUIFormat(), DeclarationData.Driver.EcoRoll.UnderspeedThreshold.AsKmph().ToGUIFormat())
+        tbEcoRollMaxAcc.Text = If(driver.EcoRollData?.AccelerationUpperLimit?.ToGUIFormat(), DeclarationData.Driver.EcoRoll.AccelerationUpperLimit.ToGUIFormat())
+
+        tbPCCUnderspeed.Text = If(driver.PCCData?.Underspeed?.AsKmph().ToGUIFormat(), DeclarationData.Driver.PCC.Underspeed.AsKmph().ToGUIFormat())
+        tbPCCOverspeed.Text = If(driver.PCCData?.OverspeedUseCase3?.AsKmph().ToGUIFormat(), DeclarationData.Driver.PCC.OverspeedUseCase3.AsKmph().ToGUIFormat())
+        tbPCCEnableSpeed.Text = If(driver.PCCData?.PCCEnabledSpeed?.AsKmph().ToGUIFormat(), DeclarationData.Driver.PCC.PCCEnableSpeed.AsKmph().ToGUIFormat())
+        tbPCCMinSpeed.Text = If(driver.PCCData?.MinSpeed?.AsKmph().ToGUIFormat(), DeclarationData.Driver.PCC.MinSpeed.AsKmph().ToGUIFormat())
+        tbPCCPreviewUseCase1.Text = If(driver.PCCData?.PreviewDistanceUseCase1?.ToGUIFormat(), DeclarationData.Driver.PCC.PreviewDistanceUseCase1.ToGUIFormat())
+        tbPCCPreviewUseCase2.Text = If(driver.PCCData?.PreviewDistanceUseCase2?.ToGUIFormat(), DeclarationData.Driver.PCC.PreviewDistanceUseCase2.ToGUIFormat())
+
 		'-------------------------------------------------------------
 
 		DeclInit()
@@ -642,7 +656,6 @@ Public Class VectoJobForm
 		vectoJob.EcoRollOn = False 'RdEcoRoll.Checked
 		vectoJob.OverSpeedOn = RdOverspeed.Checked
 		vectoJob.OverSpeed = TbOverspeed.Text.ToDouble(0)
-		vectoJob.UnderSpeed = TbUnderSpeed.Text.ToDouble(0)
 		vectoJob.VMin = TbVmin.Text.ToDouble(0)
 		vectoJob.LookAheadOn = CbLookAhead.Checked
 		'vec0.ALookahead = CSng(fTextboxToNumString(TbAlookahead.Text))
@@ -653,6 +666,23 @@ Public Class VectoJobForm
 		vectoJob.LacDfScale = tbDfCoastingScale.Text.ToDouble(0)
 		vectoJob.LacDfTargetSpeedFile = tbLacDfTargetSpeedFile.Text
 		vectoJob.LacDfVelocityDropFile = tbLacDfVelocityDropFile.Text
+
+	    vectoJob.EngineStopStartActivationThreshold = tbEngineStopStartActivationDelay.Text.ToDouble(0)
+	    vectoJob.EngineOffTimeLimit = tbMaxEngineOffTimespan.Text.ToDouble(0)
+	    vectoJob.EngineStStUtilityFactor = tbEssUtility.Text.ToDouble(0)
+	    vectoJob.EngineStStUtilityFactorDriving = tbESSUtilityFactorDriving.Text.ToDouble(0)
+
+	    vectoJob.EcoRollActivationDelay = tbEcoRollActivationDelay.Text.ToDouble(0)
+	    vectoJob.EcoRollMinSpeed = tbEcoRollMinSpeed.Text.ToDouble(0)
+	    vectoJob.EcoRollUnderspeedThreshold = tbEcoRollUnderspeed.Text.ToDouble(0)
+	    vectoJob.EcoRollMaxAcceleration = tbEcoRollMaxAcc.Text.ToDouble(0)
+
+	    vectoJob.PCCEnableSpeedVal = tbPCCEnableSpeed.Text.ToDouble(0)
+	    vectoJob.PCCMinSpeed = tbPCCMinSpeed.Text.ToDouble(0)
+	    vectoJob.PCCUnderspeed = tbPCCUnderspeed.Text.ToDouble(0)
+	    vectoJob.PCCOverspeedUseCase3 = tbPCCOverspeed.Text.ToDouble(0)
+	    vectoJob.PCCPrevewiDistance1 = tbPCCPreviewUseCase1.Text.ToDouble(0)
+	    vectoJob.PCCPreviewDistance2 = tbPCCPreviewUseCase2.Text.ToDouble(0)
 		'------------------------------------------------------------
 
 		'SAVE
@@ -695,9 +725,8 @@ Public Class VectoJobForm
 		RdOverspeed.Checked = True
 		CbLookAhead.Checked = True
 		'TbAlookahead.Text = "-0.5"
-		TbOverspeed.Text = DeclarationData.Driver.OverSpeedEcoRoll.OverSpeed.AsKmph.ToGUIFormat()
-		TbUnderSpeed.Text = DeclarationData.Driver.OverSpeedEcoRoll.UnderSpeed.AsKmph.ToGUIFormat()
-		TbVmin.Text = DeclarationData.Driver.OverSpeedEcoRoll.MinSpeed.AsKmph.ToGUIFormat()
+		TbOverspeed.Text = DeclarationData.Driver.OverSpeed.AllowedOverSpeed.AsKmph.ToGUIFormat()
+		TbVmin.Text = DeclarationData.Driver.OverSpeed.MinSpeed.AsKmph.ToGUIFormat()
 
 		'TbVminLA.Text = "50"
 		tbLacMinSpeed.Text = DeclarationData.Driver.LookAhead.MinimumSpeed.AsKmph.ToGUIFormat()
@@ -762,7 +791,7 @@ Public Class VectoJobForm
 		Change()
 	End Sub
 
-	Private Sub TbUnderSpeed_TextChanged(sender As Object, e As EventArgs) Handles TbUnderSpeed.TextChanged
+	Private Sub TbUnderSpeed_TextChanged(sender As Object, e As EventArgs) 
 		Change()
 	End Sub
 
@@ -1066,7 +1095,6 @@ lbDlog:
 		Label13.Enabled = overspeed Or ecoRoll
 		Label14.Enabled = overspeed Or ecoRoll
 
-		TbUnderSpeed.Enabled = ecoRoll
 		Label22.Enabled = ecoRoll
 		Label20.Enabled = ecoRoll
 
@@ -1246,9 +1274,9 @@ lbDlog:
 		If engine Is Nothing Then Return
 
 
-		engine.IdleSpeed.Value()
+		'engine.IdleSpeed.Value()
 
-		Dim fullLoadCurve As EngineFullLoadCurve = FullLoadCurveReader.Create(engine.FullLoadCurve)
+		Dim fullLoadCurve As EngineFullLoadCurve = FullLoadCurveReader.Create(engine.EngineModes.First().FullLoadCurve)
 
 		s = New Series
 		s.Points.DataBindXY(fullLoadCurve.FullLoadEntries.Select(Function(x) x.EngineSpeed.AsRPM).ToArray(),
@@ -1274,7 +1302,7 @@ lbDlog:
 		TbEngTxt.Text = String.Format("{0} l {1} kw {2}", (engine.Displacement.Value() * 1000).ToString("0.0"),
 									pmax.ToString("#"), engine.Model)
 
-		Dim fuelConsumptionMap As FuelConsumptionMap = FuelConsumptionMapReader.Create(engine.FuelConsumptionMap)
+		Dim fuelConsumptionMap As FuelConsumptionMap = FuelConsumptionMapReader.Create(engine.EngineModes.First().Fuels.First().FuelConsumptionMap)
 
 		s = New Series
 		s.Points.DataBindXY(fuelConsumptionMap.Entries.Select(Function(x) x.EngineSpeed.AsRPM).ToArray(),
@@ -1283,6 +1311,20 @@ lbDlog:
 		s.MarkerSize = 3
 		s.Color = Color.Red
 		s.Name = "Map"
+
+	    If (engine.EngineModes.First().Fuels.Count > 1) then
+	        Dim fcMap2 As FuelConsumptionMap = FuelConsumptionMapReader.Create(engine.EngineModes.First().Fuels(1).FuelConsumptionMap)
+
+	        Dim s2 As Series = New Series
+	        s2.Points.DataBindXY(fcMap2.Entries.Select(Function(x) x.EngineSpeed.AsRPM).ToArray(),
+                                 fcMap2.Entries.Select(Function(x) x.Torque.Value()).ToArray())
+	        s2.ChartType = SeriesChartType.Point
+	        s2.MarkerSize = 3
+	        s2.Color = Color.Green
+	        s2.Name = "Map 2"
+	        chart.Series.Add(s2)
+	    End If
+
 		chart.Series.Add(s)
 
 		Dim engineCharacteristics As String =
@@ -1517,6 +1559,33 @@ lbDlog:
 	Private Sub LvAux_SelectedIndexChanged(sender As Object, e As EventArgs) Handles LvAux.SelectedIndexChanged
 	End Sub
 
+    Private Sub btnOpenHybridStrategyParameters_Click(sender As Object, e As EventArgs)
+
+    End Sub
+
+    Private Sub btnBrowseHybridStrategyParams_Click(sender As Object, e As EventArgs)
+
+    End Sub
+
+    Private Sub BtnShiftStrategyParams_Click(sender As Object, e As EventArgs)
+
+    End Sub
+
+    Private Sub cbEnableBusAux_CheckedChanged(sender As Object, e As EventArgs)
+
+    End Sub
+
+    Private Sub btnBusAuxP_Click(sender As Object, e As EventArgs)
+
+    End Sub
+
+    Private Sub btnBrowsBusAuxParams_Click(sender As Object, e As EventArgs)
+
+    End Sub
+
+    Private Sub Label44_Click(sender As Object, e As EventArgs)
+
+    End Sub
 End Class
 
 

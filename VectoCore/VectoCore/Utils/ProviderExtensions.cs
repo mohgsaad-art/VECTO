@@ -43,7 +43,7 @@ namespace TUGraz.VectoCore.Utils
 {
 	public static class ProviderExtensions
 	{
-		public static void AddAuxiliaries(this CombustionEngine engine, VehicleContainer container,
+		public static void AddAuxiliaries(this CombustionEngine engine, IVehicleContainer container,
 			VectoRunData data)
 		{
 			// aux --> engine

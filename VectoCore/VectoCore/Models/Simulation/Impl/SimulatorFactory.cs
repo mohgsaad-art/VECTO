@@ -54,7 +54,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		private static int _jobNumberCounter;
 
 		private readonly ExecutionMode _mode;
-		private bool _engineOnlyMode;
 
 		public SimulatorFactory(ExecutionMode mode, IInputDataProvider dataProvider, IOutputDataWriter writer,
 			IDeclarationReport declarationReport = null, IVTPReport vtpReport = null, bool validate = true)
@@ -111,9 +110,8 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			}
 			if (dataProvider is IEngineeringInputDataProvider) {
 				var engDataProvider = dataProvider as IEngineeringInputDataProvider;
-				if (engDataProvider.JobInputData.EngineOnlyMode) {
+				if (engDataProvider.JobInputData.JobType == VectoSimulationJobType.EngineOnlySimulation) {
 					DataReader = new EngineOnlyVectoRunDataFactory(engDataProvider);
-					_engineOnlyMode = true;
 				} else {
 					DataReader = new EngineeringModeVectoRunDataFactory(engDataProvider);
 				}
@@ -177,7 +175,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				new ModalDataContainer(
 					data, ModWriter,
 					addReportResult: _mode == ExecutionMode.Declaration ? addReportResult : null,
-					writeEngineOnly: _engineOnlyMode,
 					filter: GetModDataFilter(data)) {
 					WriteAdvancedAux = data.AdvancedAux != null && data.AdvancedAux.AuxiliaryAssembly == AuxiliaryModel.Advanced,
 					WriteModalResults = _mode != ExecutionMode.Declaration || WriteModalResults

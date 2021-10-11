@@ -165,8 +165,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				}).
 				Case<ResponseFailTimeInterval>(r => {
 					// occurs only with AT gearboxes - extend time interval after gearshift!
-					retVal = new ResponseDrivingCycleDistanceExceeded {
-						Source = this,
+					retVal = new ResponseDrivingCycleDistanceExceeded(this) {
 						MaxDistance = r.Acceleration / 2 * r.DeltaT * r.DeltaT + DataBus.VehicleSpeed * r.DeltaT
 					};
 				}).
@@ -244,8 +243,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 							retVal.Switch().Case<ResponseFailTimeInterval>(
 								rt => {
 									// occurs only with AT gearboxes - extend time interval after gearshift!
-									retVal = new ResponseDrivingCycleDistanceExceeded {
-										Source = this,
+									retVal = new ResponseDrivingCycleDistanceExceeded(this) {
 										MaxDistance = DriverAcceleration / 2 * rt.DeltaT * rt.DeltaT + DataBus.VehicleSpeed * rt.DeltaT
 									};
 								});
@@ -293,16 +291,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 										retVal.Switch().Case<ResponseFailTimeInterval>(
 											rt => {
 												// occurs only with AT gearboxes - extend time interval after gearshift!
-												retVal = new ResponseDrivingCycleDistanceExceeded {
-													Source = this,
+												retVal = new ResponseDrivingCycleDistanceExceeded(this) {
 													MaxDistance = DriverAcceleration / 2 * rt.DeltaT * rt.DeltaT + DataBus.VehicleSpeed * rt.DeltaT
 												};
 											});
 									}).
 							Case<ResponseFailTimeInterval>(r => {
 									// occurs only with AT gearboxes - extend time interval after gearshift!
-									retVal = new ResponseDrivingCycleDistanceExceeded {
-										Source = this,
+									retVal = new ResponseDrivingCycleDistanceExceeded(this) {
 										MaxDistance = r.Acceleration / 2 * r.DeltaT * r.DeltaT + DataBus.VehicleSpeed * r.DeltaT
 									};
 								}).
@@ -314,8 +310,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					Case<ResponseGearShift>(() => operatingPoint = limitedOperatingPoint).
 					Case<ResponseFailTimeInterval>(r => {
 						// occurs only with AT gearboxes - extend time interval after gearshift!
-						retVal = new ResponseDrivingCycleDistanceExceeded {
-							Source = this,
+						retVal = new ResponseDrivingCycleDistanceExceeded(this) {
 							MaxDistance = r.Acceleration / 2 * r.DeltaT * r.DeltaT + DataBus.VehicleSpeed * r.DeltaT
 						};
 					}).
@@ -431,8 +426,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				Log.Debug(
 					"SearchOperatingPoint reduced the max. distance: {0} -> {1}. Issue new request from driving cycle!",
 					searchedOperatingPoint.SimulationDistance, ds);
-				CurrentState.Response = new ResponseDrivingCycleDistanceExceeded {
-					Source = this,
+				CurrentState.Response = new ResponseDrivingCycleDistanceExceeded(this) {
 					MaxDistance = searchedOperatingPoint.SimulationDistance,
 					Acceleration = searchedOperatingPoint.Acceleration,
 					SimulationInterval = searchedOperatingPoint.SimulationInterval,
@@ -453,7 +447,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					limitedOperatingPoint.Acceleration * limitedOperatingPoint.SimulationInterval;
 			if (v2 > maxVelocity && limitedOperatingPoint.Acceleration.IsGreaterOrEqual(0)) {
 				Log.Debug("vehicle's velocity would exceed given max speed. v2: {0}, max speed: {1}", v2, maxVelocity);
-				return new ResponseSpeedLimitExceeded() { Source = this };
+				return new ResponseSpeedLimitExceeded(this);
 			}
 
 			DriverAcceleration = limitedOperatingPoint.Acceleration;
@@ -473,8 +467,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				Case<ResponseEngineSpeedTooHigh>(). // reduce acceleration/vehicle speed
 				Case<ResponseGearShift>().
 				Case<ResponseFailTimeInterval>(r => {
-					response = new ResponseDrivingCycleDistanceExceeded {
-						Source = this,
+					response = new ResponseDrivingCycleDistanceExceeded(this) {
 						MaxDistance = r.Acceleration / 2 * r.DeltaT * r.DeltaT + DataBus.VehicleSpeed * r.DeltaT
 					};
 				}).
@@ -525,8 +518,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				}). // will be handled in SearchBrakingPower
 				Case<ResponseGearShift>(). // will be handled in SearchBrakingPower
 				Case<ResponseFailTimeInterval>(r =>
-					retVal = new ResponseDrivingCycleDistanceExceeded() {
-						Source = this,
+					retVal = new ResponseDrivingCycleDistanceExceeded(this) {
 						MaxDistance = DataBus.VehicleSpeed * r.DeltaT + point.Acceleration / 2 * r.DeltaT * r.DeltaT
 					}).
 				Default(r => {
@@ -551,8 +543,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				Log.Info(
 					"SearchOperatingPoint Braking reduced the max. distance: {0} -> {1}. Issue new request from driving cycle!",
 					operatingPoint.SimulationDistance, ds);
-				return new ResponseDrivingCycleDistanceExceeded {
-					Source = this,
+				return new ResponseDrivingCycleDistanceExceeded(this) {
 					MaxDistance = operatingPoint.SimulationDistance
 				};
 			}
@@ -561,8 +552,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				operatingPoint.SimulationInterval,
 				operatingPoint.Acceleration, DataBus.BrakePower);
 			if (DataBus.BrakePower < 0) {
-				var overload = new ResponseOverload {
-					Source = this,
+				var overload = new ResponseOverload(this) {
 					BrakePower = DataBus.BrakePower,
 					Acceleration = operatingPoint.Acceleration
 				};
@@ -584,8 +574,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				Case<ResponseSuccess>().
 				Case<ResponseGearShift>().
 				Case<ResponseFailTimeInterval>(r =>
-					retVal = new ResponseDrivingCycleDistanceExceeded() {
-						Source = this,
+					retVal = new ResponseDrivingCycleDistanceExceeded(this) {
 						MaxDistance =
 							DataBus.VehicleSpeed * r.DeltaT + operatingPoint.Acceleration / 2 * r.DeltaT * r.DeltaT
 					}).

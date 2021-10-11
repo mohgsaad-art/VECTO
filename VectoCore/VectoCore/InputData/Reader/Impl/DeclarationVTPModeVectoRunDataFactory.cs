@@ -134,13 +134,13 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			var tempVehicle = Dao.CreateVehicleData(
 				vehicle, Segment.Missions.First(),
 				Segment.Missions.First().Loadings.First().Value, allowVocational);
+
 			AirdragData = Dao.CreateAirdragData(
 				vehicle.Components.AirdragInputData,
 				Segment.Missions.First(), Segment);
 			EngineData = Dao.CreateEngineData(
-				vehicle.Components.EngineInputData,
-				vehicle.EngineIdleSpeed,
-				vehicle.Components.GearboxInputData, vehicle.TorqueLimits, vehicle.TankSystem);
+				vehicle,
+				vehicle.Components.EngineInputData.EngineModes.First(), new Mission() {MissionType = DeclarationData.VTPMode.SelectedMission });
 			AxlegearData = Dao.CreateAxleGearData(vehicle.Components.AxleGearInputData);
 			AngledriveData = Dao.CreateAngledriveData(vehicle.Components.AngledriveInputData);
 			GearboxData = Dao.CreateGearboxData(
@@ -170,13 +170,9 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			}
 			var loading = mission.Loadings.FirstOrDefault(l => l.Key == DeclarationData.VTPMode.SelectedLoading);
 			var runData = CreateVectoRunData(Segment, mission, loading.Value);
-			runData.EngineData.FuelConsumptionCorrectionFactor = DeclarationData.WHTCCorrection.Lookup(
-																	mission.MissionType.GetNonEMSMissionType(), runData.EngineData.WHTCRural, runData.EngineData.WHTCUrban,
-																	runData.EngineData.WHTCMotorway) *
-																runData.EngineData.ColdHotCorrectionFactor * runData.EngineData.CorrectionFactorRegPer;
 			var adasCombination = DeclarationData.ADASCombinations.Lookup(JobInputData.Vehicle.ADAS);
-			runData.EngineData.ADASCorrectionFactor = DeclarationData.ADASBenefits.Lookup(
-				Segment.VehicleClass, adasCombination, mission.MissionType, loading.Key);
+			//runData.EngineData.ADASCorrectionFactor = DeclarationData.ADASBenefits.Lookup(
+			//	Segment.VehicleClass, adasCombination, mission.MissionType, loading.Key);
 			runData.ModFileSuffix = loading.Key.ToString();
 			var cycle = DrivingCycleDataReader.ReadFromStream(mission.CycleFile, CycleType.DistanceBased, "", false);
 			runData.Cycle = new DrivingCycleProxy(cycle, mission.MissionType.ToString());

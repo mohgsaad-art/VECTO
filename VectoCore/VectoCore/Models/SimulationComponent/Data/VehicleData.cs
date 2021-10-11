@@ -198,6 +198,17 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 			get { return (CurbWeight ?? 0.SI<Kilogram>()) + (BodyAndTrailerWeight ?? 0.SI<Kilogram>()); }
 		}
 
+		public Kilogram MinimumVehicleMass {
+			get {
+				var retVal = 0.0.SI<Kilogram>();
+				retVal += CurbWeight ?? 0.SI<Kilogram>();
+				retVal += BodyAndTrailerWeight ?? 0.SI<Kilogram>();
+				return retVal;
+			}
+		}
+
+		public Kilogram MaximumVehicleMass => GrossVehicleWeight;
+
 		public double AverageRollingResistanceTruck
 		{
 			get {

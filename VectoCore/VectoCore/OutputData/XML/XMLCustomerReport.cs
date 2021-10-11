@@ -140,7 +140,13 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(
 					tns + XMLNames.Report_Vehicle_EngineDisplacement,
 					XMLHelper.ValueAsUnit(modelData.EngineData.Displacement, XMLNames.Unit_ltr, 1)),
-				new XElement(tns + XMLNames.Engine_FuelType, modelData.EngineData.FuelData.FuelType.ToXMLFormat()),
+				// TODO: MQ 20211004 (merging ADAS idl, WHR, DF) - should be the following, but is not supported by XML schema
+				//new XElement(
+				//	tns + XMLNames.Report_Vehicle_FuelTypes,
+				//	fuelModes.SelectMany(x => x.Select(f => f.FuelType.ToXMLFormat())).Distinct()
+				//		.Select(x => new XElement(tns + XMLNames.Engine_FuelType, x))
+				//),
+				new XElement(tns + XMLNames.Engine_FuelType, modelData.EngineData.Fuels.First().FuelData.FuelType.ToXMLFormat()),
 				new XElement(
 					tns + XMLNames.Report_Vehicle_TransmissionCertificationMethod,
 					modelData.GearboxData.CertificationMethod.ToXMLFormat()),

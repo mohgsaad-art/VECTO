@@ -228,7 +228,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			Auxiliaries.Signals.EngineDrivelinePower = torquePowerTrain * angularSpeed;
 			Auxiliaries.Signals.EngineDrivelineTorque = torquePowerTrain;
 			Auxiliaries.Signals.InternalEnginePower = torqueEngine * angularSpeed - DataBus.BrakePower;
-			if (DataBus.DriverBehavior == DrivingBehavior.Coasting) {
+			if (DataBus.DriverInfo.DriverBehavior == DrivingBehavior.Coasting) {
 				// make sure smart aux are _not_ enabled for now
 				// set internal_engine_power a little bit lower so there is no excessive power for smart aux
 				Auxiliaries.Signals.InternalEnginePower = 0.9 * torqueEngine * angularSpeed /*- DataBus.BrakePower*/;
@@ -236,7 +236,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				// set internal_engine_power to a large value (*10) so that there's excessive power for smart aux (alreadin during search operating point)
 				//(float)DataBus.EngineDragPower(angularSpeed).Value() / 100;
 			} else {
-				if (DataBus.DriverBehavior != DrivingBehavior.Braking) {
+				if (DataBus.DriverInfo.DriverBehavior != DrivingBehavior.Braking) {
 					Auxiliaries.Signals.InternalEnginePower = 0.SI<Watt>();
 					//(float)((0.9 * torqueEngine * angularSpeed - DataBus.BrakePower) / 1000).Value();
 				} else {
@@ -251,7 +251,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				: 0.SI<Watt>();
 			//mAAUX_Global.PreExistingAuxPower;
 			Auxiliaries.Signals.Idle = DataBus.VehicleStopped;
-			Auxiliaries.Signals.InNeutral = DataBus.Gear == 0;
+			Auxiliaries.Signals.InNeutral = DataBus.Gear.Gear == 0;
 			Auxiliaries.Signals.RunningCalc = true;
 
 			//mAAUX_Global.Internal_Engine_Power;

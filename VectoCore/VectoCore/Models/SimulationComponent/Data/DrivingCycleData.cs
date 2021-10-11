@@ -181,6 +181,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 			public Meter Altitude;
 
 			/// <summary>
+			/// this section of the cycle is considered to be highway driving (used for PCC atm)
+			/// </summary>
+			public bool Highway;
+
+			/// <summary>
 			/// Required for distance-based cycles. Not used in time based cycles. "stop" defines the time the vehicle spends in stop phases.
 			/// </summary>
 			public Second StoppingTime;

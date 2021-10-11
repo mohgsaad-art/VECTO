@@ -41,6 +41,7 @@ using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Declaration;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.InputData.FileIO.JSON
@@ -158,6 +159,12 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			get { return ""; }
 		}
 
+		public string ShiftStrategy
+		{
+			get { return ""; }
+		}
+		public VectoSimulationJobType JobType { get; private set; }
+
 		public string Identifier
 		{
 			get { return Vehicle.Identifier; }
@@ -208,6 +215,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			get { return _axleWheelsDecl; }
 		}
 
+		public bool? ATEcoRollReleaseLockupClutch => VehicleData.ADAS.ATEcoRollReleaseLockupClutch;
+
+
 		public Meter DynamicTyreRadius
 		{
 			get { return VehicleData.DynamicTyreRadius; }
@@ -228,7 +238,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			get { return this; }
 		}
 
-		public uint? PTO_DriveGear
+		public GearshiftPosition PTO_DriveGear
 		{
 			get { return VehicleData.PTO_DriveGear; }
 		}

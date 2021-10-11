@@ -31,6 +31,7 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using NUnit.Framework;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
@@ -120,7 +121,7 @@ namespace TUGraz.VectoCore.Tests.Integration
 
 			var fuelData = FuelData.Instance().Lookup(fuelType, tankSystem);
 			modContainer.FuelData = fuelData;
-			((VehicleContainer)run.Run.GetContainer()).RunData.EngineData.FuelData = fuelData;
+			((VehicleContainer)run.Run.GetContainer()).RunData.EngineData.Fuels.First().FuelData = fuelData;
 
 			run.Run.Run();
 

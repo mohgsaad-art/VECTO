@@ -102,6 +102,8 @@ namespace TUGraz.VectoCore.OutputData
 		/// called after the simulation is finished and the sum-entries have been written
 		/// </summary>
 		void FinishSimulation();
+
+		void Reset();
 	}
 
 	public static class ModalDataContainerExtensions

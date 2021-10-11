@@ -81,7 +81,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		public IResponse Initialize(NewtonMeter outTorque, PerSecond outAngularVelocity)
 		{
-			return new ResponseSuccess { Source = this };
+			return new ResponseSuccess(this);
 		}
 
 		public void Reset()

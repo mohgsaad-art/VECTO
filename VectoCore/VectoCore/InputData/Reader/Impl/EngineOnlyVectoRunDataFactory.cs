@@ -50,16 +50,20 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 				yield break;
 			}
 			var dao = new EngineeringDataAdapter();
-			foreach (var cycle in InputDataProvider.JobInputData.Cycles) {
-				var simulationRunData = new VectoRunData {
-					JobName = InputDataProvider.JobInputData.JobName,
-					EngineData = dao.CreateEngineData(InputDataProvider.JobInputData.EngineOnly, null, new List<ITorqueLimitInputData>(), null, null),
-					Cycle = new DrivingCycleProxy(
-						DrivingCycleDataReader.ReadFromDataTable(cycle.CycleData, cycle.Name, false), cycle.Name),
-					ExecutionMode = ExecutionMode.Engineering,
-					SimulationType = SimulationType.EngineOnly
-				};
-				yield return simulationRunData;
+			for (var modeIdx = 0; modeIdx < InputDataProvider.JobInputData.EngineOnly.EngineModes.Count; modeIdx++) {
+				var mode = InputDataProvider.JobInputData.EngineOnly.EngineModes[modeIdx];
+				foreach (var cycle in InputDataProvider.JobInputData.Cycles) {
+					var simulationRunData = new VectoRunData {
+						JobName = InputDataProvider.JobInputData.JobName,
+						JobType = VectoSimulationJobType.EngineOnlySimulation,
+						EngineData = dao.CreateEngineData(InputDataProvider.JobInputData.EngineOnly, mode),
+						Cycle = new DrivingCycleProxy(
+							DrivingCycleDataReader.ReadFromDataTable(cycle.CycleData, cycle.Name, false), cycle.Name),
+						ExecutionMode = ExecutionMode.Engineering,
+						SimulationType = SimulationType.EngineOnly
+					};
+					yield return simulationRunData;
+				}
 			}
 		}
 	}

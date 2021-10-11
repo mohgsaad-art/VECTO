@@ -49,14 +49,14 @@ namespace TUGraz.VectoCore.Tests.Utils
 			bool dryRun = false)
 		{
 			if (dryRun)
-				return new ResponseDryRun();
+				return new ResponseDryRun(this);
 			else
-				return new ResponseSuccess();
+				return new ResponseSuccess(this);
 		}
 
 		public IResponse Initialize(NewtonMeter outTorque, PerSecond outAngularVelocity)
 		{
-			return new ResponseSuccess();
+			return new ResponseSuccess(this);
 		}
 	}
 }

@@ -33,7 +33,7 @@ Imports TUGraz.VectoCore.Utils
 Public Class VectoJob
     Implements IEngineeringInputDataProvider, IDeclarationInputDataProvider, IEngineeringJobInputData,
                 IDeclarationJobInputData, IDriverEngineeringInputData, IDriverDeclarationInputData, IAuxiliariesEngineeringInputData,
-                IAuxiliariesDeclarationInputData, IJSONVehicleComponents
+                IAuxiliariesDeclarationInputData, IJSONVehicleComponents, IEngineStopStartEngineeringInputData, IEcoRollEngineeringInputData, IPCCEngineeringInputData
 
     'AA-TB
     'STORES THE Type and version of the chosen or default Auxiliary Type ( Classic/Original or other )
@@ -69,10 +69,26 @@ Public Class VectoJob
     Public LookAheadOn As Boolean
     Public OverSpeedOn As Boolean
     Public OverSpeed As Double
-    Public UnderSpeed As Double
     Public EcoRollOn As Boolean
 
     Public LookAheadMinSpeed As Double
+    Public EngineStopStartActivationThreshold As Double
+    Private _shiftStrategy As String
+    public EngineOffTimeLimit As double
+    public EngineStStUtilityFactor As Double
+    public EngineStStUtilityFactorDriving as Double
+
+    Public EcoRollMinSpeed As double
+    Public EcoRollUnderspeedThreshold As Double
+    Public EcoRollActivationDelay as double
+    public EcoRollMaxAcceleration as Double
+
+    Public PCCEnableSpeedVal As Double
+    Public PCCMinSpeed As Double
+    Public PCCPrevewiDistance1 As Double
+    Public PCCPreviewDistance2 As Double
+    Public PCCUnderspeed As Double
+    Public PCCOverspeedUseCase3 As Double
 
     Public Property StartStopMaxSpeed As Double
 
@@ -127,7 +143,7 @@ Public Class VectoJob
 
         Try
             Dim writer As JSONFileWriter = JSONFileWriter.Instance
-            writer.SaveJob(Me, _sFilePath)
+            writer.SaveJob(Me, _sFilePath, cfg.DeclMode)
         Catch ex As Exception
             MsgBox("Failed to save Job file: " + ex.Message)
             Return False
@@ -212,21 +228,13 @@ Public Class VectoJob
     '	End Set
     'End Property
 
-    Public ReadOnly Property IDriverEngineeringInputData_OverSpeedEcoRoll As IOverSpeedEcoRollEngineeringInputData _
-        Implements IDriverEngineeringInputData.OverSpeedEcoRoll
+    Public ReadOnly Property OverSpeedData As IOverSpeedEngineeringInputData _
+        Implements IDriverEngineeringInputData.OverSpeedData
         Get
-            Dim mode As DriverMode = DriverMode.Off
-            If EcoRollOn Then
-                mode = DriverMode.EcoRoll
-            ElseIf OverSpeedOn Then
-                mode = DriverMode.Overspeed
-            End If
-
-            Return New OverSpeedEcoRollInputData() With {
-                .Mode = mode,
+            Return New OverSpeedInputData() With {
+                .Enabled = OverSpeedOn,
                 .MinSpeed = VMin.KMPHtoMeterPerSecond(),
-                .OverSpeed = OverSpeed.KMPHtoMeterPerSecond(),
-                .UnderSpeed = UnderSpeed.KMPHtoMeterPerSecond()
+                .OverSpeed = OverSpeed.KMPHtoMeterPerSecond()
                 }
         End Get
     End Property
@@ -276,6 +284,104 @@ Public Class VectoJob
         get
             Return TryCast( New JSONComponentInputData(_gearboxFile.FullPath, Me).JobInputData.Vehicle.Components.GearboxInputData, IGearshiftEngineeringInputData)
         End Get
+    End Property
+
+    Public ReadOnly Property EngineStopStartData As IEngineStopStartEngineeringInputData Implements IDriverEngineeringInputData.EngineStopStartData
+        Get
+            Return me
+        End Get
+    End Property
+
+    Public ReadOnly Property EcoRollData As IEcoRollEngineeringInputData Implements IDriverEngineeringInputData.EcoRollData
+    Get
+            Return me
+    End Get
+    End Property
+
+    Public ReadOnly Property PCCData As IPCCEngineeringInputData Implements IDriverEngineeringInputData.PCCData
+    get
+            return me
+    End Get
+    End Property
+
+    Public ReadOnly Property PCCEnabledSpeed As MeterPerSecond Implements IPCCEngineeringInputData.PCCEnabledSpeed
+    get
+            return PCCEnableSpeedVal.KMPHtoMeterPerSecond()
+    End Get
+    End Property
+    Public ReadOnly Property IPCCEngineeringInputData_MinSpeed As MeterPerSecond Implements IPCCEngineeringInputData.MinSpeed
+    get
+            return PCCMinSpeed.KMPHtoMeterPerSecond()
+    End Get
+    End Property
+
+    Public ReadOnly Property MinSpeed As MeterPerSecond Implements IEcoRollEngineeringInputData.MinSpeed
+    get
+            Return EcoRollMinSpeed.KMPHtoMeterPerSecond()
+    End Get
+    End Property
+
+    Public ReadOnly Property PreviewDistanceUseCase1 As Meter Implements IPCCEngineeringInputData.PreviewDistanceUseCase1
+    get
+            return PCCPrevewiDistance1.SI(of Meter)
+    End Get
+    End Property
+    Public ReadOnly Property PreviewDistanceUseCase2 As Meter Implements IPCCEngineeringInputData.PreviewDistanceUseCase2
+    get
+            return PCCPreviewDistance2.SI(of Meter)
+    End Get
+    End Property
+    Public ReadOnly Property Underspeed As MeterPerSecond Implements IPCCEngineeringInputData.Underspeed
+    get
+            return PCCUnderspeed.KMPHtoMeterPerSecond()
+    End Get
+    End Property
+    Public ReadOnly Property OverspeedUseCase3 As MeterPerSecond Implements IPCCEngineeringInputData.OverspeedUseCase3
+    get
+            Return PCCOverspeedUseCase3.KMPHtoMeterPerSecond()
+    End Get
+    End Property
+
+    Public ReadOnly Property IEcoRollEngineeringInputData_ActivationDelay As Second Implements IEcoRollEngineeringInputData.ActivationDelay
+    get
+            Return EcoRollActivationDelay.SI(Of Second)()
+    End Get
+    End Property
+
+    Public ReadOnly Property ActivationDelay As Second Implements IEngineStopStartEngineeringInputData.ActivationDelay
+        Get
+            return EngineStopStartActivationThreshold.SI(Of Second)()
+        End Get
+    End Property
+
+    Public ReadOnly Property UnderspeedThreshold As MeterPerSecond Implements IEcoRollEngineeringInputData.UnderspeedThreshold
+    get
+            Return EcoRollUnderspeedThreshold.KMPHtoMeterPerSecond()
+    End Get
+    End Property
+
+    Public ReadOnly Property AccelerationUpperLimit As MeterPerSquareSecond Implements IEcoRollEngineeringInputData.AccelerationUpperLimit
+        Get
+            Return EcoRollMaxAcceleration.SI(of MeterPerSquareSecond)
+        End Get
+    End Property
+
+    Public ReadOnly Property MaxEngineOffTimespan As Second Implements IEngineStopStartEngineeringInputData.MaxEngineOffTimespan
+        Get
+            Return EngineOffTimeLimit.SI(Of Second)()
+        End Get
+    End Property
+
+    Public ReadOnly Property UtilityFactorStandstill As Double Implements IEngineStopStartEngineeringInputData.UtilityFactorStandstill
+        Get
+            Return EngineStStUtilityFactor
+        End Get
+    End Property
+
+    Public ReadOnly Property UtilityFactorDriving As Double Implements IEngineStopStartEngineeringInputData.UtilityFactorDriving
+    get
+        Return EngineStStUtilityFactorDriving
+    End Get
     End Property
 
     Public Property DesMaxFile(Optional ByVal original As Boolean = False) As String
@@ -513,12 +619,9 @@ Public Class VectoJob
         End Get
     End Property
 
-    Public ReadOnly Property EngineOnlyMode As Boolean Implements IEngineeringJobInputData.EngineOnlyMode
-        Get
-            Return EngineOnly
-        End Get
-    End Property
+    Public Property JobType As VectoSimulationJobType Implements IEngineeringJobInputData.JobType
 
+    
  
     Public ReadOnly Property IEngineeringJobInputData_EngineOnly As IEngineEngineeringInputData Implements IEngineeringJobInputData.EngineOnly
         Get
@@ -531,6 +634,15 @@ Public Class VectoJob
         Get
             Return Path.GetFileNameWithoutExtension(FilePath)
         End Get
+    End Property
+
+    Public Property ShiftStrategy As String Implements IDeclarationJobInputData.ShiftStrategy
+        Get
+            Return _shiftStrategy
+        End Get
+        set (value as string)
+            _shiftStrategy = value
+        End set
     End Property
 
     Public Property AuxPAdd As Double

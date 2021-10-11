@@ -132,19 +132,35 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			Log.Error("{0} is in Declaration Mode but is used for Engineering Mode!", msg);
 		}
 
-		internal CombustionEngineData CreateEngineData(IEngineEngineeringInputData engine, IGearboxEngineeringInputData gbx, IEnumerable<ITorqueLimitInputData> torqueLimits, ITorqueConverterEngineeringInputData torqueConverter, TankSystem? tankSystem = null)
+		internal CombustionEngineData CreateEngineData(IVehicleEngineeringInputData vehicle, IEngineModeEngineeringInputData engineMode)
 		{
+			var engine = vehicle.Components.EngineInputData;
+			var gbx = vehicle.Components.GearboxInputData;
+			var torqueLimits = vehicle.TorqueLimits;
+			var torqueConverter = vehicle.Components.TorqueConverterInputData;
+			var tankSystem = vehicle.TankSystem;
+
 			if (engine.SavedInDeclarationMode) {
 				WarnEngineeringMode("EngineData");
 			}
 
 			var retVal = SetCommonCombustionEngineData(engine, tankSystem);
+			retVal.IdleSpeed = VectoMath.Max(engineMode.IdleSpeed, vehicle.EngineIdleSpeed);
+			retVal.Fuels = new List<CombustionEngineFuelData>();
+			foreach (var fuel in engineMode.Fuels) {
+				retVal.Fuels.Add(
+					new CombustionEngineFuelData() {
+						FuelData = DeclarationData.FuelData.Lookup(fuel.FuelType, tankSystem),
+						ConsumptionMap = FuelConsumptionMapReader.Create(fuel.FuelConsumptionMap),
+						FuelConsumptionCorrectionFactor = fuel.WHTCEngineering,
+					});
+			}
 			retVal.Inertia = engine.Inertia +
 							(gbx != null && gbx.Type.AutomaticTransmission() ? torqueConverter.Inertia : 0.SI<KilogramSquareMeter>());
 			var limits = torqueLimits.ToDictionary(e => e.Gear);
 			var numGears = gbx == null ? 0 : gbx.Gears.Count;
 			var fullLoadCurves = new Dictionary<uint, EngineFullLoadCurve>(numGears + 1);
-			fullLoadCurves[0] = FullLoadCurveReader.Create(engine.FullLoadCurve);
+			fullLoadCurves[0] = FullLoadCurveReader.Create(engine.EngineModes.First().FullLoadCurve);
 			fullLoadCurves[0].EngineData = retVal;
 			if (gbx != null) {
 				foreach (var gear in gbx.Gears) {
@@ -153,7 +169,59 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				}
 			}
 			retVal.FullLoadCurves = fullLoadCurves;
-			retVal.FuelConsumptionCorrectionFactor = engine.WHTCEngineering;
+
+			retVal.WHRType = engine.WHRType;
+			if ((retVal.WHRType & WHRType.ElectricalOutput) != 0) {
+				retVal.ElectricalWHR = CreateWHRData(
+					engineMode.WasteHeatRecoveryDataElectrical, WHRType.ElectricalOutput);
+			}
+			if ((retVal.WHRType & WHRType.MechanicalOutputDrivetrain) != 0) {
+				retVal.MechanicalWHR = CreateWHRData(
+					engineMode.WasteHeatRecoveryDataMechanical, WHRType.MechanicalOutputDrivetrain);
+			}
+
+			return retVal;
+		}
+
+		private WHRData CreateWHRData(IWHRData whrInputData, WHRType whrType)
+		{
+			if (whrInputData == null || whrInputData.GeneratedPower == null) {
+				return null;
+			}
+
+			return new WHRData() {
+				CFUrban = 1,
+				CFRural = 1,
+				CFMotorway = 1,
+				CFColdHot = 1,
+				CFRegPer = 1,
+				WHRMap = WHRPowerReader.Create(whrInputData.GeneratedPower, whrType),
+				WHRCorrectionFactor = whrInputData.EngineeringCorrectionFactor,
+			};
+		}
+
+		internal CombustionEngineData CreateEngineData(IEngineEngineeringInputData engine, IEngineModeEngineeringInputData engineMode)
+		{
+			if (engine.SavedInDeclarationMode) {
+				WarnEngineeringMode("EngineData");
+			}
+			var retVal = SetCommonCombustionEngineData(engine, null);
+			retVal.IdleSpeed = engineMode.IdleSpeed;
+			retVal.Fuels = new List<CombustionEngineFuelData>();
+			foreach (var fuel in engineMode.Fuels) {
+				retVal.Fuels.Add(
+					new CombustionEngineFuelData() {
+						FuelData = DeclarationData.FuelData.Lookup(fuel.FuelType, null),
+						ConsumptionMap = FuelConsumptionMapReader.Create(fuel.FuelConsumptionMap),
+						FuelConsumptionCorrectionFactor = fuel.WHTCEngineering,
+					});
+			}
+
+			retVal.Inertia = engine.Inertia;
+			retVal.EngineStartTime = engine.EngineStartTime ?? DeclarationData.Engine.DefaultEngineStartTime;
+			var fullLoadCurves = new Dictionary<uint, EngineFullLoadCurve>();
+			fullLoadCurves[0] = FullLoadCurveReader.Create(engine.EngineModes.First().FullLoadCurve);
+			retVal.FullLoadCurves = fullLoadCurves;
 			return retVal;
 		}
 
@@ -336,16 +404,15 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 						driver.Lookahead.CoastingDecisionFactorVelocityDropLookup),
 				LookAheadDistanceFactor = driver.Lookahead.LookaheadDistanceFactor
 			};
-			var overspeedData = new DriverData.OverSpeedEcoRollData {
-				Mode = driver.OverSpeedEcoRoll.Mode,
-				MinSpeed = driver.OverSpeedEcoRoll.MinSpeed,
-				OverSpeed = driver.OverSpeedEcoRoll.OverSpeed,
-				UnderSpeed = driver.OverSpeedEcoRoll.UnderSpeed,
+			var overspeedData = new DriverData.OverSpeedData()  {
+				Enabled = driver.OverSpeedData.Enabled,
+				MinSpeed = driver.OverSpeedData.MinSpeed,
+				OverSpeed = driver.OverSpeedData.OverSpeed,
 			};
 			var retVal = new DriverData {
 				AccelerationCurve = accelerationData,
 				LookAheadCoasting = lookAheadData,
-				OverSpeedEcoRoll = overspeedData,
+				OverSpeed = overspeedData,
 			};
 			return retVal;
 		}

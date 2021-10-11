@@ -32,13 +32,36 @@
 using System.Linq;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl;
+using Wheels = TUGraz.VectoCore.Models.SimulationComponent.Impl.Wheels;
 
 namespace TUGraz.VectoCore.Models.Connector.Ports.Impl
 {
+
 	public abstract class AbstractResponse : IResponse
 	{
-		public object Source { get; set; }
+		public AbstractResponse(object source)
+		{
+			Source = source;
+            Driver = new DriverResponse();
+            Engine = new EngineResponse();
+            Clutch = new ClutchResponse();
+            Gearbox = new GearboxResponse();
+			//Axlegear = new AxlegearResponse();
+			//Angledrive = new AngledriveResponse();
+			//Wheels = new WheelsResponse();
+			//Vehicle = new VehicleResponse();
+			//Brakes = new BrakesResponse();
+			//ElectricMotor = new ElectricMotorResponse();
+			////ElectricSystem = new
+			//TorqueConverter = new TorqueConverterResponse();
+			//HybridController = new HybridControllerResponse();
+		}
+
+
+		public object Source { get; }
 
 		public Second AbsTime { get; set; }
 		public Second SimulationInterval { get; set; }
@@ -59,6 +82,13 @@ namespace TUGraz.VectoCore.Models.Connector.Ports.Impl
 		public Watt VehiclePowerRequest { get; set; }
 		public Watt BrakePower { get; set; }
 		public Watt AuxiliariesPowerDemand { get; set; }
+		public GearboxResponse Gearbox { get; }
+
+		public DriverResponse Driver { get; }
+
+		public EngineResponse Engine { get; }
+
+		public ClutchResponse Clutch { get; }
 
 		public TorqueConverterOperatingPoint TorqueConverterOperatingPoint { get; set; }
 
@@ -68,17 +98,25 @@ namespace TUGraz.VectoCore.Models.Connector.Ports.Impl
 			return string.Format("{0}{{{1}}}", t.Name,
 				string.Join(", ", t.GetProperties().Select(p => string.Format("{0}: {1}", p.Name, p.GetValue(this)))));
 		}
+
+		
 	}
 
 	/// <summary>
 	/// Response when the Cycle is finished.
 	/// </summary>
-	public class ResponseCycleFinished : AbstractResponse {}
+	public class ResponseCycleFinished : AbstractResponse
+	{
+		public ResponseCycleFinished(object source) : base(source) { }
+	}
 
 	/// <summary>
 	/// Response when a request was successful.
 	/// </summary>
-	public class ResponseSuccess : AbstractResponse {}
+	public class ResponseSuccess : AbstractResponse
+	{
+		public ResponseSuccess(object source) : base(source) { }
+	}
 
 	/// <summary>
 	/// Response when the request resulted in an engine or gearbox overload. 
@@ -86,6 +124,7 @@ namespace TUGraz.VectoCore.Models.Connector.Ports.Impl
 	public class ResponseOverload : AbstractResponse
 	{
 		public Watt Delta { get; set; }
+		public ResponseOverload(object source) : base(source) { }
 	}
 
 	/// <summary>
@@ -94,6 +133,7 @@ namespace TUGraz.VectoCore.Models.Connector.Ports.Impl
 	public class ResponseUnderload : AbstractResponse
 	{
 		public Watt Delta { get; set; }
+		public ResponseUnderload(object source) : base(source) { }
 	}
 
 	/// <summary>
@@ -101,7 +141,7 @@ namespace TUGraz.VectoCore.Models.Connector.Ports.Impl
 	/// </summary>
 	public class ResponseSpeedLimitExceeded : AbstractResponse
 	{
-		public ResponseSpeedLimitExceeded() { }
+		public ResponseSpeedLimitExceeded(object source) : base(source) { }
 	}
 
 	/// <summary>
@@ -110,22 +150,27 @@ namespace TUGraz.VectoCore.Models.Connector.Ports.Impl
 	public class ResponseFailTimeInterval : AbstractResponse
 	{
 		public Second DeltaT { get; set; }
+		public ResponseFailTimeInterval(object source) : base(source) { }
 	}
 
 	public class ResponseDrivingCycleDistanceExceeded : AbstractResponse
 	{
 		public Meter MaxDistance { get; set; }
+		public ResponseDrivingCycleDistanceExceeded(object source) : base(source) { }
 	}
 
-	internal class ResponseDryRun : AbstractResponse
+	public class ResponseDryRun : AbstractResponse
 	{
 		public Watt DeltaFullLoad { get; set; }
 		public Watt DeltaDragLoad { get; set; }
 		public PerSecond DeltaEngineSpeed { get; set; }
+		public ResponseDryRun(object source) : base(source) { }
 	}
 
 	internal class ResponseGearShift : AbstractResponse
-	{}
+	{
+		public ResponseGearShift(object source) : base(source) { }
+	}
 
 /*
 	internal class ResponseEngineSpeedTooLow : ResponseDryRun {}
@@ -133,6 +178,7 @@ namespace TUGraz.VectoCore.Models.Connector.Ports.Impl
 
 	internal class ResponseEngineSpeedTooHigh : AbstractResponse
 	{
-		public PerSecond DeltaEngineSpeed { get; set; }	
+		public PerSecond DeltaEngineSpeed { get; set; }
+		public ResponseEngineSpeedTooHigh(object source) : base(source) { }
 	}
 }

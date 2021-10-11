@@ -29,6 +29,7 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using System;
 using System.Xml;
 using System.Xml.Linq;
 using TUGraz.VectoCommon.Models;
@@ -57,10 +58,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider
 
 		#region Implementation of IOverSpeedEcoRollDeclarationInputData
 
-		public virtual DriverMode Mode
-		{
-			get { return GetNode(XMLNames.DriverModel_Overspeed_Mode, required: false)?.InnerText.ParseEnum<DriverMode>() ?? DriverMode.Off; }
-		}
+		public virtual bool Enabled => GetNode(XMLNames.DriverModel_Overspeed_Mode, required: false)?.InnerText.Equals("Overspeed", StringComparison.InvariantCultureIgnoreCase) ?? false;
+
 
 		#endregion
 

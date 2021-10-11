@@ -30,6 +30,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Linq;
 using TUGraz.IVT.VectoXML;
@@ -38,6 +39,7 @@ using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Interfaces;
+using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
@@ -49,6 +51,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		public const string XSD_TYPE = "EngineDataDeclarationType";
 
 		public static readonly string QUALIFIED_XSD_TYPE = XMLHelper.CombineNamespace(NAMESPACE_URI.NamespaceName, XSD_TYPE);
+
+		protected List<IEngineModeDeclarationInputData> _engineModes;
 
 		public XMLDeclarationEngineDataProviderV10(
 			IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile) :
@@ -117,33 +121,71 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 			get { return GetDouble(XMLNames.Engine_MaxTorque).SI<NewtonMeter>(); }
 		}
 
-		public virtual double WHTCMotorway
+		public virtual IList<IEngineModeDeclarationInputData> EngineModes =>
+			_engineModes ??
+			(_engineModes = new List<IEngineModeDeclarationInputData>() { new XMLSingleFuelEngineMode(BaseNode) });
+
+		public virtual WHRType WHRType => WHRType.None;
+
+
+		public class XMLSingleFuelEngineMode : AbstractXMLType, IEngineModeDeclarationInputData
 		{
-			get { return GetDouble(XMLNames.Engine_WHTCMotorway); }
+			protected IList<IEngineFuelDeclarationInputData> FuelsList;
+
+			public XMLSingleFuelEngineMode(XmlNode baseNode) : base(baseNode) { }
+
+			public virtual PerSecond IdleSpeed => GetDouble(XMLNames.Engine_IdlingSpeed).RPMtoRad();
+
+			public virtual TableData FullLoadCurve =>
+				ReadTableData(
+					XMLNames.Engine_FullLoadAndDragCurve, XMLNames.Engine_FullLoadCurve_Entry,
+					AttributeMappings.EngineFullLoadCurveMapping);
+
+			public virtual IList<IEngineFuelDeclarationInputData> Fuels =>
+				FuelsList ??
+				(FuelsList = new List<IEngineFuelDeclarationInputData>() { new XMLSingleFuelEngineFuel(BaseNode) });
+
+			public virtual IWHRData WasteHeatRecoveryDataElectrical => null;
+
+			public virtual IWHRData WasteHeatRecoveryDataMechanical => null;
 		}
 
-		public virtual double WHTCRural
+		public class XMLSingleFuelEngineFuel : AbstractXMLType, IEngineFuelDeclarationInputData
 		{
-			get { return GetDouble(XMLNames.Engine_WHTCRural); }
-		}
+			public XMLSingleFuelEngineFuel(XmlNode baseNode) : base(baseNode) { }
 
-		public virtual double WHTCUrban
-		{
-			get { return GetDouble(XMLNames.Engine_WHTCUrban); }
-		}
+			public virtual FuelType FuelType {
+				get {
+					var value = GetString(XMLNames.Engine_FuelType).Replace(" ", "");
+					if ("LPG".Equals(value, StringComparison.InvariantCultureIgnoreCase)) {
+						return FuelType.LPGPI;
+					}
+					if ("NG".Equals(value, StringComparison.InvariantCultureIgnoreCase)) {
+						return FuelType.NGPI;
+					}
 
-		public virtual double ColdHotBalancingFactor
-		{
-			get { return GetDouble(XMLNames.Engine_ColdHotBalancingFactor); }
-		}
+					return value.ParseEnum<FuelType>();
+				}
+			}
 
-		public virtual double CorrectionFactorRegPer
-		{
-			get { return GetDouble(XMLNames.Engine_CorrectionFactor_RegPer); }
+			public virtual TableData FuelConsumptionMap =>
+				ReadTableData(
+					XMLNames.Engine_FuelConsumptionMap, XMLNames.Engine_FuelConsumptionMap_Entry,
+					AttributeMappings.FuelConsumptionMapMapping);
+
+			public virtual double WHTCMotorway => GetDouble(XMLNames.Engine_WHTCMotorway);
+
+			public virtual double WHTCRural => GetDouble(XMLNames.Engine_WHTCRural);
+
+			public virtual double WHTCUrban => GetDouble(XMLNames.Engine_WHTCUrban);
+
+			public virtual double ColdHotBalancingFactor => GetDouble(XMLNames.Engine_ColdHotBalancingFactor);
+
+			public virtual double CorrectionFactorRegPer => GetDouble(XMLNames.Engine_CorrectionFactor_RegPer);
 		}
 
 		#endregion
-
+		
 		#region Overrides of AbstractXMLResource
 
 		protected override XNamespace SchemaNamespace

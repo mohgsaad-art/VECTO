@@ -153,6 +153,7 @@
     <Compile Include="Utils\InputDataHelper.cs" />
     <Compile Include="Utils\MockBrakes.cs" />
     <Compile Include="Utils\MockComponent.cs" />
+    <Compile Include="Utils\MockDeclarationVehicleInputData.cs" />
     <Compile Include="Utils\MockEngineDataProvider.cs" />
     <Compile Include="Utils\MockIdleController.cs" />
     <Compile Include="Utils\MockRunData.cs" />

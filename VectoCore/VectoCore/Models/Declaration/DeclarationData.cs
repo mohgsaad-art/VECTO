@@ -32,11 +32,15 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
+using Newtonsoft.Json.Linq;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Configuration;
+using TUGraz.VectoCore.InputData.FileIO.JSON;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Engine;
@@ -127,24 +131,39 @@ namespace TUGraz.VectoCore.Models.Declaration
 				public static readonly MeterPerSecond MinimumSpeed = 50.KMPHtoMeterPerSecond();
 			}
 
-			public static class OverSpeedEcoRoll
+			public static class OverSpeed
 			{
-				public static readonly IList<DriverMode> AllowedModes = new List<DriverMode> {
-					DriverMode.EcoRoll,
-					DriverMode.Overspeed
-				};
-
 				public static readonly MeterPerSecond MinSpeed = 50.KMPHtoMeterPerSecond();
-				public static readonly MeterPerSecond OverSpeed = 2.5.KMPHtoMeterPerSecond();
-				public static readonly MeterPerSecond UnderSpeed = 5.KMPHtoMeterPerSecond();
+				public static readonly MeterPerSecond AllowedOverSpeed = 2.5.KMPHtoMeterPerSecond();
 			}
 
-			//public static class StartStop
-			//{
-			//	public static readonly MeterPerSecond MaxSpeed = 5.KMPHtoMeterPerSecond();
-			//	public static readonly Second Delay = 5.SI<Second>();
-			//	public static readonly Second MinTime = 5.SI<Second>();
-			//}
+			public static class EngineStopStart
+			{
+				public static readonly Second ActivationDelay = 2.SI<Second>();
+				public static readonly Second MaxEngineOffTimespan = 120.SI<Second>();
+				public const double UtilityFactor = 0.8;
+			}
+
+			public static class EcoRoll
+			{
+				public static readonly MeterPerSecond MinSpeed = 60.KMPHtoMeterPerSecond();
+				public static readonly Second ActivationDelay = 2.SI<Second>();
+				public static readonly MeterPerSecond UnderspeedThreshold = 0.KMPHtoMeterPerSecond();
+
+				public static readonly MeterPerSquareSecond AccelerationLowerLimit = 0.SI<MeterPerSquareSecond>();
+				public static readonly MeterPerSquareSecond AccelerationUpperLimit = 0.1.SI<MeterPerSquareSecond>();
+			}
+
+			public static class PCC
+			{
+				public static readonly MeterPerSecond PCCEnableSpeed = 80.KMPHtoMeterPerSecond();
+				public static readonly MeterPerSecond MinSpeed = 50.KMPHtoMeterPerSecond();
+				public static readonly Meter PreviewDistanceUseCase1 = 1500.SI<Meter>();
+				public static readonly Meter PreviewDistanceUseCase2 = 1000.SI<Meter>();
+				public static readonly MeterPerSecond Underspeed = 8.KMPHtoMeterPerSecond();
+				public static readonly MeterPerSecond OverspeedUseCase3 = 5.KMPHtoMeterPerSecond();
+			}
+
 		}
 
 		public static class Trailer
@@ -163,6 +182,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 			public static readonly KilogramSquareMeter EngineBaseInertia = 0.41.SI<KilogramSquareMeter>();
 		    public static readonly SI EngineDisplacementInertia = (0.27 * 1000).SI(Unit.SI.Kilo.Gramm.Per.Meter); // [kg/m]
+			public static readonly Second DefaultEngineStartTime = 1.SI<Second>();
 
 			public const double TorqueLimitGearboxFactor = 0.9;
 			public const double TorqueLimitVehicleFactor = 0.95;
@@ -172,6 +192,122 @@ namespace TUGraz.VectoCore.Models.Declaration
 				// VB Code:    Return 1.3 + 0.41 + 0.27 * (Displ / 1000)
 				return (gbxType.AutomaticTransmission() ? TorqueConverterInertia : ClutchInertia) + EngineBaseInertia +
 						EngineDisplacementInertia * displacement;
+			}
+		}
+
+		public static class GearboxTCU
+		{
+
+			public static readonly MeterPerSecond MIN_SPEED_AFTER_TRACTION_INTERRUPTION = 5.KMPHtoMeterPerSecond();
+
+			public const double TorqueReserve = 0;
+			public const double TorqueReserveStart = 0.2;
+
+			public static readonly MeterPerSecond StartSpeed = 8.KMPHtoMeterPerSecond();
+			public static readonly MeterPerSquareSecond StartAcceleration = 0.8.SI<MeterPerSquareSecond>();
+
+			public static readonly Second GearResidenceTime = 5.SI<Second>();
+			public static readonly Watt CurrentCardanPowerThresholdPropulsion = 5000.SI<Watt>();
+			public static readonly Watt AverageCardanPowerThresholdPropulsion = 1000.SI<Watt>();
+			public static readonly Second LookBackInterval = 4.SI<Second>();
+			public static readonly Second DriverAccelerationLookBackInterval = 2.SI<Second>();
+			public const double EngineSpeedHighDriveOffFactor = 1.05;
+			public const double DnT99L_highMin1 = 0.4;
+			public const double DnT99L_highMin2 = 0.5;
+
+			public const int AllowedGearRangeUp = 3;
+			public const int AllowedGearRangeDown = 3;
+
+			public const double TargetSpeedDeviationFactor = 0.1;
+
+			public static double RatingFactorCurrentGear = 0.97;
+			public static double RatingFactorCurrentGearAT = 0.97;
+
+			public static readonly MeterPerSquareSecond DriverAccelerationThresholdLow = 0.1.SI<MeterPerSquareSecond>();
+			public static double VelocityDropFactor = 1.0;
+			public static double AccelerationFactor = 0.5;
+
+			public static double RatioEarlyUpshiftFC = 24;
+			public static double RatioEarlyDownshiftFC = 24;
+
+			public static int AllowedGearRangeFCAMT = 2;
+			public static int AllowedGearRangeFCAT = 1;
+			public static int AllowedGearRangeFCATSkipGear = 2;
+			public static int ATSkipGearsThreshold = 6;
+
+			public static PerSecond MinEngineSpeedPostUpshift = 0.RPMtoRad();
+
+			public static Second ATLookAheadTime = Gearbox.PowershiftShiftTime;
+
+			public static double[] LoadStageThresholdsUp = { 19.7, 36.34, 53.01, 69.68, 86.35 };
+			public static double[] LoadStageThresoldsDown = { 13.7, 30.34, 47.01, 63.68, 80.35 };
+
+			public static double[][] ShiftSpeedsTCToLocked = {
+				new[] {  90.0, 120, 165,  90, 120, 165 },
+				new[] {  90.0, 120, 165,  90, 120, 165 },
+				new[] {  90.0, 120, 165,  90, 120, 165 },
+				new[] {  90.0, 120, 165, 110, 140, 185 },
+				new[] { 100.0, 130, 175, 120, 150, 195 },
+				new[] { 110.0, 140, 185, 130, 160, 205 },
+			};
+
+			public const double DownhillSlope = -5;
+			public const double UphillSlope = 5;
+
+			public static string DefaultShiftStrategy = "";
+			public const double DragMarginFactor = 0.7;
+
+
+			// TODO: MQ 2019-11-26 remove, once the parameters are fixed! make fields above read-only or const
+			static GearboxTCU()
+			{
+				//#if RELEASE_CANDIDATE
+				var expectedFile = @"Declaration\EffShiftParameters.vtcu";
+				if (!File.Exists(expectedFile)) {
+					return;
+				}
+
+				var tcuData = JSONInputDataFactory.ReadShiftParameters(expectedFile, true);
+				if (tcuData.RatingFactorCurrentGear.HasValue) {
+					RatingFactorCurrentGear = tcuData.RatingFactorCurrentGear.Value;
+					RatingFactorCurrentGearAT = tcuData.RatingFactorCurrentGear.Value;
+				}
+				if (tcuData.RatioEarlyDownshiftFC.HasValue) {
+					RatioEarlyDownshiftFC = tcuData.RatioEarlyDownshiftFC.Value;
+				}
+				if (tcuData.RatioEarlyUpshiftFC.HasValue) {
+					RatioEarlyUpshiftFC = tcuData.RatioEarlyUpshiftFC.Value;
+				}
+				if (tcuData.AllowedGearRangeFC.HasValue) {
+					AllowedGearRangeFCAMT = tcuData.AllowedGearRangeFC.Value;
+					AllowedGearRangeFCAT = tcuData.AllowedGearRangeFC.Value;
+				}
+				if (tcuData.VeloictyDropFactor.HasValue) {
+					VelocityDropFactor = tcuData.VeloictyDropFactor.Value;
+				}
+				if (tcuData.AccelerationFactor.HasValue) {
+					AccelerationFactor = tcuData.AccelerationFactor.Value;
+				}
+				if (tcuData.ATLookAheadTime != null) {
+					ATLookAheadTime = tcuData.ATLookAheadTime;
+				}
+				if (tcuData.LoadStageThresholdsDown != null && LoadStageThresoldsDown.Length > 0) {
+					LoadStageThresoldsDown = tcuData.LoadStageThresholdsDown.ToArray();
+				}
+				if (tcuData.LoadStageThresholdsUp != null && LoadStageThresholdsUp.Length > 0) {
+					LoadStageThresholdsUp = tcuData.LoadStageThresholdsUp.ToArray();
+				}
+				if (tcuData.ShiftSpeedsTCToLocked != null && ShiftSpeedsTCToLocked.Length > 0) {
+					ShiftSpeedsTCToLocked = tcuData.ShiftSpeedsTCToLocked;
+				}
+				if (tcuData.MinEngineSpeedPostUpshift != null) {
+					MinEngineSpeedPostUpshift = tcuData.MinEngineSpeedPostUpshift;
+				}
+				var tmp = tcuData as JSONFile;
+				if (tmp != null && tmp.Body["ShiftStrategy"] != null) {
+					DefaultShiftStrategy = tmp.Body["ShiftStrategy"].Value<string>();
+				}
+				//#endif
 			}
 		}
 
@@ -219,6 +355,72 @@ namespace TUGraz.VectoCore.Models.Declaration
 					? TorqueConverter.ComputeShiftPolygon(fullLoadCurve, gearIdx == 0, gearIdx >= gears.Count - 1)
 					// That's the same for all gears, so call the same method...
 					: ComputeManualTransmissionShiftPolygon(gearIdx, fullLoadCurve, gears, engine, axlegearRatio, dynamicTyreRadius);
+			}
+
+			public static ShiftPolygon ComputeEfficiencyShiftPolygon(
+				int gearIdx, EngineFullLoadCurve fullLoadCurve, IList<ITransmissionInputData> gears, CombustionEngineData engine,
+				double axlegearRatio, Meter dynamicTyreRadius)
+			{
+				if (gears.Count < 2) {
+					throw new VectoException("ComputeShiftPolygon needs at least 2 gears. {0} gears given.", gears.Count);
+				}
+
+				var clutchClosingSpeed = (engine.FullLoadCurves[0].RatedSpeed - engine.IdleSpeed) *
+									Constants.SimulationSettings.ClutchClosingSpeedNorm + engine.IdleSpeed;
+
+				var p2 = new Point(Math.Min((clutchClosingSpeed - 10.RPMtoRad()).Value(), engine.IdleSpeed.Value() * 1.1), 0);
+				var p3 = new Point(fullLoadCurve.NTq99lSpeed.Value(), 0);
+				var p5 = new Point(fullLoadCurve.NP98hSpeed.Value(), fullLoadCurve.MaxTorque.Value() * 1.1);
+
+				var downShift = new List<ShiftPolygon.ShiftPolygonEntry>();
+
+				if (gearIdx > 0) {
+					var downShiftPoints = fullLoadCurve
+						.FullLoadEntries.Where(fldEntry => fldEntry.EngineSpeed >= p2.X && fldEntry.EngineSpeed <= p3.X)
+						.Select(
+							fldEntry =>
+								new Point(fldEntry.EngineSpeed.Value(), fldEntry.TorqueFullLoad.Value() * ShiftPolygonEngineFldMargin))
+						.ToList();
+					downShift.Add(new ShiftPolygon.ShiftPolygonEntry(fullLoadCurve.MaxDragTorque * 1.1, p2.X.SI<PerSecond>()));
+					if (downShiftPoints.Count == 0) {
+						// coarse grid points in FLD
+						downShift.Add(
+							new ShiftPolygon.ShiftPolygonEntry(
+								fullLoadCurve.FullLoadStationaryTorque(p2.X.SI<PerSecond>()) * ShiftPolygonEngineFldMargin,
+								p2.X.SI<PerSecond>()));
+						downShift.Add(
+							new ShiftPolygon.ShiftPolygonEntry(
+								fullLoadCurve.FullLoadStationaryTorque(p3.X.SI<PerSecond>()) * ShiftPolygonEngineFldMargin,
+								p3.X.SI<PerSecond>()));
+					} else {
+						if (downShiftPoints.Min(x => x.X) > p2.X) {
+							downShift.Add(
+								new ShiftPolygon.ShiftPolygonEntry(
+									fullLoadCurve.FullLoadStationaryTorque(p2.X.SI<PerSecond>()) * ShiftPolygonEngineFldMargin,
+									p2.X.SI<PerSecond>()));
+						}
+
+						downShift.AddRange(
+							downShiftPoints.Select(
+								x => new ShiftPolygon.ShiftPolygonEntry(
+									x.Y.SI<NewtonMeter>() * ShiftPolygonEngineFldMargin, x.X.SI<PerSecond>())));
+						if (downShiftPoints.Max(x => x.X) < p3.X) {
+							downShift.Add(
+								new ShiftPolygon.ShiftPolygonEntry(
+									fullLoadCurve.FullLoadStationaryTorque(p3.X.SI<PerSecond>()) * ShiftPolygonEngineFldMargin,
+									p3.X.SI<PerSecond>()));
+						}
+					}
+					downShift.Add(new ShiftPolygon.ShiftPolygonEntry(fullLoadCurve.MaxTorque * 1.1, p3.X.SI<PerSecond>()));
+				}
+				var upShift = new List<ShiftPolygon.ShiftPolygonEntry>();
+				if (gearIdx >= gears.Count - 1) {
+					return new ShiftPolygon(downShift, upShift);
+				}
+
+				upShift.Add(new ShiftPolygon.ShiftPolygonEntry(fullLoadCurve.MaxDragTorque * 1.1, p5.X.SI<PerSecond>()));
+				upShift.Add(new ShiftPolygon.ShiftPolygonEntry(p5.Y.SI<NewtonMeter>(), p5.X.SI<PerSecond>()));
+				return new ShiftPolygon(downShift, upShift);
 			}
 
 			public static ShiftPolygon ComputeManualTransmissionShiftPolygon(int gearIdx, EngineFullLoadCurve fullLoadCurve,

@@ -401,21 +401,20 @@ Public Class VehicleForm
 		TbRtRatio.Text = retarder.Ratio.ToGUIFormat()
 		TbRtPath.Text = If(retarder.LossMap Is Nothing, "", GetRelativePath(retarder.LossMap.Source, basePath))
 
+	    cbPcc.SelectedValue = vehicle.ADAS.PredictiveCruiseControl
+	    cbEcoRoll.SelectedValue = vehicle.ADAS.EcoRoll
+	    cbEngineStopStart.Checked = vehicle.ADAS.EngineStopStart
+	    cbAtEcoRollReleaseLockupClutch.Checked = If(vehicle.ADAS.ATEcoRollReleaseLockupClutch , false)
+
         if (vehicle.SavedInDeclarationMode) then
             Dim declVehicle as IVehicleDeclarationInputData = vehicle
-            cbPcc.SelectedValue = declVehicle.ADAS.PredictiveCruiseControl
-            cbEcoRoll.SelectedValue = declvehicle.ADAS.EcoRoll
-            cbEngineStopStart.Checked = declVehicle.ADAS.EngineStopStart
+            
             if (declVehicle.TankSystem.HasValue) then
                 cbTankSystem.SelectedValue = declVehicle.TankSystem.Value
             End If
         Else 
-            cbPcc.SelectedValue = PredictiveCruiseControlType.None
-            cbEcoRoll.SelectedValue = EcoRollType.None
-            cbEngineStopStart.Checked = False
-
             tbPtoEngineSpeed.Text = vehicle.PTO_DriveEngineSpeed?.AsRPM.ToGUIFormat()
-            tbPtoGear.Text = if (vehicle.PTO_DriveGear.HasValue, vehicle.PTO_DriveGear.Value.ToString() ,"")
+            tbPtoGear.Text = if (not vehicle.PTO_DriveGear is nothing, vehicle.PTO_DriveGear.Gear.ToString() ,"")
         End If
 
 		LvRRC.Items.Clear()
@@ -549,6 +548,7 @@ Public Class VehicleForm
         veh.EcoRollType = CType(cbEcoRoll.SelectedValue, EcoRollType)
         veh.PCC = CType(cbPcc.SelectedValue, PredictiveCruiseControlType)
         veh.EngineStop = cbEngineStopStart.Checked
+	    veh.EcoRollReleaseLockupClutch = cbAtEcoRollReleaseLockupClutch.Checked
 
         veh.VehicleTankSystem = CType(If(cbTankSystem.SelectedIndex > 0, cbTankSystem.SelectedValue, nothing), TankSystem?)
 

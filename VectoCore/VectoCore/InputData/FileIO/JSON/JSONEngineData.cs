@@ -30,12 +30,15 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json.Linq;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
+using TUGraz.VectoCore.Models.Declaration;
 
 namespace TUGraz.VectoCore.InputData.FileIO.JSON
 {
@@ -102,8 +105,11 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 	}
 
 
-	public class JSONEngineDataV3 : JSONFile, IEngineEngineeringInputData
+	public class JSONEngineDataV3 : JSONFile, IEngineEngineeringInputData, IEngineModeEngineeringInputData,
+		IEngineFuelEngineeringInputData
 	{
+		protected IList<IEngineFuelEngineeringInputData> _fuels;
+
 		public JSONEngineDataV3(JObject data, string fileName, bool tolerateMissing = false)
 			: base(data, fileName, tolerateMissing) {}
 
@@ -156,6 +162,19 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			}
 		}
 
+		IList<IEngineFuelEngineeringInputData> IEngineModeEngineeringInputData.Fuels => _fuels ?? (_fuels = ReadFuels());
+
+		public virtual IList<IEngineFuelDeclarationInputData> Fuels => (_fuels ?? (_fuels = ReadFuels())).Cast<IEngineFuelDeclarationInputData>().ToList();
+
+		protected virtual IList<IEngineFuelEngineeringInputData> ReadFuels()
+		{
+			return new IEngineFuelEngineeringInputData[] { this };
+		}
+
+		public virtual IWHRData WasteHeatRecoveryDataElectrical => null;
+
+		public virtual IWHRData WasteHeatRecoveryDataMechanical => null;
+
 		public virtual Watt RatedPowerDeclared
 		{
 			get { return 0.SI<Watt>(); }
@@ -170,6 +189,21 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 		{
 			get { return 0.SI<NewtonMeter>(); }
 		}
+
+		IList<IEngineModeEngineeringInputData> IEngineEngineeringInputData.EngineModes {
+			get { return new IEngineModeEngineeringInputData[] { this }; }
+		}
+
+		public Second EngineStartTime
+		{
+			get { return null; }
+		}
+
+		public virtual IList<IEngineModeDeclarationInputData> EngineModes {
+			get { return new IEngineModeDeclarationInputData[] { this }; }
+		}
+
+		public virtual WHRType WHRType => WHRType.None;
 
 		public virtual KilogramSquareMeter Inertia
 		{
