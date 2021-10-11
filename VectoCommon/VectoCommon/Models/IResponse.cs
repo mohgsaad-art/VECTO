@@ -40,16 +40,12 @@ namespace TUGraz.VectoCommon.Models
 	/// </summary>
 	public interface IResponse
 	{
+		object Source { get; }
+
 		Second AbsTime { get; set; }
 		Meter SimulationDistance { get; set; }
 		Second SimulationInterval { get; set; }
-		object Source { get; }
 
-		Watt AxlegearPowerRequest { get; set; }
-		Watt WheelsPowerRequest { get; set; }
-		Watt VehiclePowerRequest { get; set; }
-		Watt BrakePower { get; set; }
-		Watt AngledrivePowerRequest { get; set; }
 
 		DriverResponse Driver { get; }
 
@@ -58,6 +54,18 @@ namespace TUGraz.VectoCommon.Models
 		ClutchResponse Clutch { get; }
 
 		GearboxResponse Gearbox { get; }
+
+		TorqueConverterResponse TorqueConverter { get; }
+
+		AxlegearResponse Axlegear { get; }
+
+		AngledriveResponse Angledrive { get; }
+
+		WheelsResponse Wheels { get; }
+
+		VehicleResponse Vehicle { get; }
+
+		BrakesResponse Brakes { get; }
 
 	}
 
@@ -124,5 +132,49 @@ namespace TUGraz.VectoCommon.Models
 		public PerSecond OutputSpeed { get; set; }
 
 		public NewtonMeter OutputTorque { get; set; }
+	}
+
+	public class TorqueConverterResponse : AbstractPowertrainComponentResponse
+	{
+		public TorqueConverterOperatingPoint TorqueConverterOperatingPoint { get; set; }
+
+		public NewtonMeter TorqueConverterTorqueDemand { get; set; }
+
+	}
+
+	[DebuggerDisplay("P_out: {PowerRequest}; T_card: {CardanTorque}")]
+	public class AxlegearResponse : AbstractPowertrainComponentResponse
+	{
+		public NewtonMeter CardanTorque { get; set; }
+
+		public NewtonMeter OutputTorque { get; set; }
+
+		public PerSecond OutputSpeed { get; set; }
+	}
+
+	[DebuggerDisplay("P_out: {PowerRequest}")]
+	public class AngledriveResponse : AbstractPowertrainComponentResponse
+	{
+		public NewtonMeter OutputTorque { get; set; }
+
+		public PerSecond OutputSpeed { get; set; }
+
+	}
+
+	[DebuggerDisplay("P_out: {PowerRequest}")]
+	public class WheelsResponse : AbstractPowertrainComponentResponse { }
+
+	[DebuggerDisplay("v_veh: {VehicleSpeed}")]
+
+	public class VehicleResponse : AbstractComponentResponse
+	{
+		public MeterPerSecond VehicleSpeed { get; set; }
+	}
+
+	[DebuggerDisplay("P_brake: {BrakePower}")]
+
+	public class BrakesResponse : AbstractComponentResponse
+	{
+		public Watt BrakePower { get; set; }
 	}
 }

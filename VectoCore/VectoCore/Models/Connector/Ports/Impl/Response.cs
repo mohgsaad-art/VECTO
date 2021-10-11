@@ -49,16 +49,18 @@ namespace TUGraz.VectoCore.Models.Connector.Ports.Impl
             Engine = new EngineResponse();
             Clutch = new ClutchResponse();
             Gearbox = new GearboxResponse();
-			//Axlegear = new AxlegearResponse();
-			//Angledrive = new AngledriveResponse();
-			//Wheels = new WheelsResponse();
-			//Vehicle = new VehicleResponse();
-			//Brakes = new BrakesResponse();
-			//ElectricMotor = new ElectricMotorResponse();
-			////ElectricSystem = new
-			//TorqueConverter = new TorqueConverterResponse();
-			//HybridController = new HybridControllerResponse();
-		}
+            Axlegear = new AxlegearResponse();
+            Angledrive = new AngledriveResponse();
+            Wheels = new WheelsResponse();
+            Vehicle = new VehicleResponse();
+            Brakes = new BrakesResponse();
+            //ElectricMotor = new ElectricMotorResponse();
+            ////ElectricSystem = new
+            TorqueConverter = new TorqueConverterResponse();
+            //HybridController = new HybridControllerResponse();
+        }
+
+		
 
 
 		public object Source { get; }
@@ -66,11 +68,7 @@ namespace TUGraz.VectoCore.Models.Connector.Ports.Impl
 		public Second AbsTime { get; set; }
 		public Second SimulationInterval { get; set; }
 		public Meter SimulationDistance { get; set; }
-		public Watt AngledrivePowerRequest { get; set; }
-		public Watt AxlegearPowerRequest { get; set; }
-		public Watt WheelsPowerRequest { get; set; }
-		public Watt VehiclePowerRequest { get; set; }
-		public Watt BrakePower { get; set; }
+
 		public GearboxResponse Gearbox { get; }
 
 		public DriverResponse Driver { get; }
@@ -79,8 +77,18 @@ namespace TUGraz.VectoCore.Models.Connector.Ports.Impl
 
 		public ClutchResponse Clutch { get; }
 
-		public TorqueConverterOperatingPoint TorqueConverterOperatingPoint { get; set; }
+		public AxlegearResponse Axlegear { get; }
 
+		public AngledriveResponse Angledrive { get; }
+
+		public TorqueConverterResponse TorqueConverter { get; }
+
+		public WheelsResponse Wheels { get; }
+
+		public VehicleResponse Vehicle { get; }
+
+		public BrakesResponse Brakes { get; }
+		
 		public override string ToString()
 		{
 			var t = GetType();

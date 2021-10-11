@@ -106,7 +106,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var inTorque = CalculateAverageInTorque(operatingPoint);
 
 			if (dryRun) {
-				return HandleDryRun(absTime, dt, outTorque, outAngularVelocity, inTorque, operatingPoint);
+				var retValD = HandleDryRun(absTime, dt, outTorque, outAngularVelocity, inTorque, operatingPoint);
+				retValD.TorqueConverter.TorqueConverterTorqueDemand = outTorque;
+				return retValD;
 			}
 
 			// normal request
@@ -117,9 +119,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 							(PreviousState.OutAngularVelocity + operatingPoint.OutAngularVelocity) / 2.0;
 				if (!delta.IsEqual(0, Constants.SimulationSettings.LineSearchTolerance)) {
 					return delta > 0
-						? new ResponseOverload(this) { Delta = delta, TorqueConverterOperatingPoint = operatingPoint }
+						? new ResponseOverload(this) { Delta = delta, TorqueConverter = { TorqueConverterOperatingPoint = operatingPoint }}
 						: (IResponse)
-						new ResponseUnderload(this) {Delta = delta, TorqueConverterOperatingPoint = operatingPoint };
+						new ResponseUnderload(this) {Delta = delta, TorqueConverter = { TorqueConverterOperatingPoint = operatingPoint } };
 				}
 			}
 
@@ -169,7 +171,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				return new ResponseDryRun(this) {
 					DeltaFullLoad = delta,
 					DeltaDragLoad = delta,
-					TorqueConverterOperatingPoint = operatingPoint
+					TorqueConverter = { 
+						TorqueConverterOperatingPoint = operatingPoint
+					}
 				};
 			}
 
@@ -194,7 +198,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			return new ResponseDryRun(this) {
 				DeltaFullLoad = 10 * deltaMax,
 				DeltaDragLoad = 10 * deltaMin,
-				TorqueConverterOperatingPoint = DataBus.DriverInfo.DrivingAction == DrivingAction.Brake ? dryOperatingPointMin : dryOperatingPointMax
+				TorqueConverter = { 
+					TorqueConverterOperatingPoint = DataBus.DriverInfo.DrivingAction == DrivingAction.Brake ? dryOperatingPointMin : dryOperatingPointMax
+				}
 			};
 		}
 

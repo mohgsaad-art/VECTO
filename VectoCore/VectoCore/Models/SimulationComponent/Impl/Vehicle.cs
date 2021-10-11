@@ -134,6 +134,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			var retval = NextComponent.Request(absTime, dt, CurrentState.VehicleTractionForce,
 				CurrentState.Velocity, dryRun);
+			retval.Vehicle.VehicleSpeed = CurrentState.Velocity;
 			return retval;
 		}
 
