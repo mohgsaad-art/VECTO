@@ -45,7 +45,7 @@ namespace TUGraz.VectoCommon.Models
 		Second SimulationInterval { get; set; }
 		object Source { get; }
 
-		Watt ClutchPowerRequest { get; set; }
+		//Watt ClutchPowerRequest { get; set; }
 		Watt GearboxPowerRequest { get; set; }
 		Watt AxlegearPowerRequest { get; set; }
 		Watt WheelsPowerRequest { get; set; }

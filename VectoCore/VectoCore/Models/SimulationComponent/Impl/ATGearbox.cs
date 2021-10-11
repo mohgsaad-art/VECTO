@@ -376,7 +376,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			Log.Debug("Invoking IdleController...");
 
 			var retval = IdleController.Request(absTime, dt, 0.SI<NewtonMeter>(), null);
-			retval.ClutchPowerRequest = 0.SI<Watt>();
+			retval.Clutch.PowerRequest = 0.SI<Watt>();
 
 			// no dry-run - update state
 			var effectiveRatio = ModelData.Gears[Gear.Gear].Ratio;

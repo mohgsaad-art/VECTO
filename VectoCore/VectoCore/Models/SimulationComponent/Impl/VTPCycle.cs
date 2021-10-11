@@ -234,7 +234,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					EngineSpeed = response.Engine.EngineSpeed,
 					DynamicFullLoadPower = response.Engine.DynamicFullLoadPower,
 				},
-				ClutchPowerRequest = response.ClutchPowerRequest,
+				Clutch = {
+					PowerRequest = response.Clutch.PowerRequest,
+					OutputSpeed = response.Clutch.OutputSpeed
+				},
 				GearboxPowerRequest = outTorque * outAngularVelocity,
 				//DeltaFullLoad = response.EnginePowerRequest - fullLoad
 			};

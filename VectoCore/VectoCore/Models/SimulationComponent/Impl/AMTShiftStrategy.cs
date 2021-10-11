@@ -135,7 +135,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				var inAngularSpeed = outAngularVelocity * GearboxModelData.Gears[gear.Gear].Ratio;
 				var fullLoadPower = response.Engine.PowerRequest - response.DeltaFullLoad;
 				var reserve = 1 - response.Engine.PowerRequest / fullLoadPower;
-				var inTorque = response.ClutchPowerRequest / inAngularSpeed;
+				var inTorque = response.Clutch.PowerRequest / inAngularSpeed;
 
 				// if in shift curve and torque reserve is provided: return the current gear
 				if (!IsBelowDownShiftCurve(gear, inTorque, inAngularSpeed) && !IsAboveUpShiftCurve(gear, inTorque, inAngularSpeed) &&
@@ -307,7 +307,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					var response = RequestDryRunWithGear(absTime, dt, outTorque, outAngularVelocity, currentGear);
 
 					inAngularVelocity = response.Engine.EngineSpeed; //GearboxModelData.Gears[currentGear].Ratio * outAngularVelocity;
-					inTorque = response.ClutchPowerRequest / inAngularVelocity;
+					inTorque = response.Clutch.PowerRequest / inAngularVelocity;
 
 					var maxTorque = VectoMath.Min(response.Engine.DynamicFullLoadPower / ((DataBus.EngineSpeed + response.Engine.EngineSpeed) / 2),
 						currentGear.Equals(Gears.First())
@@ -341,7 +341,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var response = RequestDryRunWithGear(absTime, dt, outTorque, outAngularVelocity, tryNextGear);
 
 			inAngularVelocity = GearboxModelData.Gears[tryNextGear.Gear].Ratio * outAngularVelocity;
-			inTorque = response.ClutchPowerRequest / inAngularVelocity;
+			inTorque = response.Clutch.PowerRequest / inAngularVelocity;
 
 			// if next gear supplied enough power reserve: take it
 			// otherwise take
@@ -379,7 +379,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					var response = RequestDryRunWithGear(absTime, dt, outTorque, outAngularVelocity, currentGear);
 
 					inAngularVelocity = GearboxModelData.Gears[currentGear.Gear].Ratio * outAngularVelocity;
-					inTorque = response.ClutchPowerRequest / inAngularVelocity;
+					inTorque = response.Clutch.PowerRequest / inAngularVelocity;
 					var maxTorque = VectoMath.Min(response.Engine.DynamicFullLoadPower / ((DataBus.EngineSpeed + response.Engine.EngineSpeed) / 2),
 						Gears.First().Equals(currentGear)
 							? GearboxModelData.Gears[currentGear.Gear].ShiftPolygon.InterpolateDownshift(response.Engine.EngineSpeed)
