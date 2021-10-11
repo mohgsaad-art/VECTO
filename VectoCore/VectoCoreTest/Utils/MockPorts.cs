@@ -64,7 +64,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 						EngineSpeed = outAngularVelocity,
 						DynamicFullLoadPower = (outTorque + 2300.SI<NewtonMeter>()) * outAngularVelocity,
 					},
-					GearboxPowerRequest = outTorque * outAngularVelocity,
+					Gearbox = { PowerRequest = outTorque * outAngularVelocity, },
 					Clutch = {
 						PowerRequest = outTorque * outAngularVelocity,
 					},
@@ -78,7 +78,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 					PowerRequest = outTorque * outAngularVelocity,
 					EngineSpeed = outAngularVelocity,
 				},
-				GearboxPowerRequest = outTorque * outAngularVelocity,
+				Gearbox = { PowerRequest = outTorque * outAngularVelocity, },
 				Clutch = { 
 					PowerRequest = outTorque * outAngularVelocity,
 				}

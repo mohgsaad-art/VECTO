@@ -231,14 +231,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			DataBus.BrakePower = SearchAlgorithm.Search(DataBus.BrakePower, r.Delta, -r.Delta,
 				getYValue: result => DataBus.ClutchClosed(absTime)
 					? ((ResponseDryRun)result).DeltaDragLoad
-					: ((ResponseDryRun)result).GearboxPowerRequest,
+					: ((ResponseDryRun)result).Gearbox.PowerRequest,
 				evaluateFunction: x => {
 					DataBus.BrakePower = x;
 					return NextComponent.Request(absTime, dt, acc, gradient, true);
 				},
 				criterion: y => DataBus.ClutchClosed(absTime)
 					? ((ResponseDryRun)y).DeltaDragLoad.Value()
-					: ((ResponseDryRun)y).GearboxPowerRequest.Value());
+					: ((ResponseDryRun)y).Gearbox.PowerRequest.Value());
 			Log.Info(
 				"Found operating point for braking. absTime: {0}, dt: {1}, acceleration: {2}, gradient: {3}, BrakePower: {4}",
 				absTime, dt, acceleration, gradient, DataBus.BrakePower);
@@ -278,14 +278,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				DataBus.BrakePower = SearchAlgorithm.Search(DataBus.BrakePower, r.Delta, -r.Delta,
 					getYValue: result => DataBus.ClutchClosed(absTime)
 						? ((ResponseDryRun)result).DeltaDragLoad
-						: ((ResponseDryRun)result).GearboxPowerRequest,
+						: ((ResponseDryRun)result).Gearbox.PowerRequest,
 					evaluateFunction: x => {
 						DataBus.BrakePower = x;
 						return NextComponent.Request(absTime, dt, acc, gradient, true);
 					},
 					criterion: y => DataBus.ClutchClosed(absTime)
 						? ((ResponseDryRun)y).DeltaDragLoad.Value()
-						: ((ResponseDryRun)y).GearboxPowerRequest.Value());
+						: ((ResponseDryRun)y).Gearbox.PowerRequest.Value());
 				Log.Info(
 					"Found operating point for braking. absTime: {0}, dt: {1}, acceleration: {2}, gradient: {3}, BrakePower: {4}",
 					absTime, dt, acceleration, gradient, DataBus.BrakePower);

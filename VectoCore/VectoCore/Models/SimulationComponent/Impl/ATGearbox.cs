@@ -203,7 +203,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					EngineSpeed = response.Engine.EngineSpeed,
 					PowerRequest = response.Engine.PowerRequest,
 				},
-				GearboxPowerRequest = outTorque * outAngularVelocity,
+				Gearbox = {
+					PowerRequest = outTorque * outAngularVelocity,
+				}
 			};
 		}
 
@@ -242,8 +244,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				if (ConsiderShiftLosses(_strategy.NextGear, outTorque) && !RequestAfterGearshift) {
 					retVal = new ResponseFailTimeInterval(this) {
 						DeltaT = ModelData.PowershiftShiftTime,
-						GearboxPowerRequest =
+						Gearbox = {
+							PowerRequest =
 							outTorque * (PreviousState.OutAngularVelocity + outAngularVelocity) / 2.0
+						}
 					};
 					RequestAfterGearshift = true;
 					LastShift = absTime;
@@ -254,7 +258,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				}
 			} while (loop && ++count < 2);
 
-			retVal.GearboxPowerRequest = outTorque * (PreviousState.OutAngularVelocity + outAngularVelocity) / 2.0;
+			retVal.Gearbox.PowerRequest = outTorque * (PreviousState.OutAngularVelocity + outAngularVelocity) / 2.0;
 			return retVal;
 		}
 
@@ -352,7 +356,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			if (dryRun) {
 				// if gearbox is disengaged the 0[W]-line is the limit for drag and full load.
 				return new ResponseDryRun(this) {
-					GearboxPowerRequest = outTorque * avgAngularVelocity,
+					Gearbox = { PowerRequest = outTorque * avgAngularVelocity },
 					DeltaDragLoad = outTorque * avgAngularVelocity,
 					DeltaFullLoad = outTorque * avgAngularVelocity,
 				};
@@ -361,7 +365,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				Constants.SimulationSettings.LineSearchTolerance)) {
 				return new ResponseOverload(this) {
 					Delta = outTorque * avgAngularVelocity,
-					GearboxPowerRequest = outTorque * avgAngularVelocity
+					Gearbox = {PowerRequest = outTorque * avgAngularVelocity }
 				};
 			}
 
@@ -369,7 +373,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				Constants.SimulationSettings.LineSearchTolerance)) {
 				return new ResponseUnderload(this) {
 					Delta = outTorque * avgAngularVelocity,
-					GearboxPowerRequest = outTorque * avgAngularVelocity
+					Gearbox = { PowerRequest = outTorque * avgAngularVelocity }
 				};
 			}
 
