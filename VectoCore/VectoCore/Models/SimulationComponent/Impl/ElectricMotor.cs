@@ -441,7 +441,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var dtSpeed = emSpeed / ModelData.RatioADC;
 			var emTorqueBwd = ConvertDrivetrainTorqueToEm(dtSpeed, dtTorque);
 			if (!emTorque.IsEqual(emTorqueBwd, 1e-8.SI<NewtonMeter>())) {
-				Log.Debug("Forward Calculation and Backward Calculation do not match...");
+				//Log.Debug("Forward Calculation and Backward Calculation do not match...");
 				dtTorque = SearchAlgorithm.Search(emTorque, (emTorqueBwd - emTorque) * 1e3, emTorque / 10,
 					getYValue: r => ((r as NewtonMeter) - emTorque) * 1e3,
 					evaluateFunction: x => ConvertDrivetrainTorqueToEm(dtSpeed, x),

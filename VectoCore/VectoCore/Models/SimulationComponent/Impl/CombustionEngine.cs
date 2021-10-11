@@ -152,8 +152,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		{
 			IterationStatistics.Increment(this, "Requests");
 
-			Log.Debug("Engine Powertrain Power Request: torque: {0}, angularVelocity: {1}, power: {2}", outTorque,
-				outAngularVelocity, outTorque * outAngularVelocity);
+			//Log.Debug("Engine Powertrain Power Request: torque: {0}, angularVelocity: {1}, power: {2}", outTorque,outAngularVelocity, outTorque * outAngularVelocity);
 
 			var retVal = DoHandleRequest(absTime, dt, outTorque, outAngularVelocity, dryRun);
 			retVal.Engine.EngineOn = true;
@@ -190,10 +189,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			// compute the torque the engine has to provide. powertrain + aux + its own inertia
 			var totalTorqueDemand = torqueOut + auxTorqueDemand + inertiaTorqueLoss;
 
-			Log.Debug("EngineInertiaTorque: {0}", inertiaTorqueLoss);
-			Log.Debug("Drag Curve: torque: {0}, power: {1}", fullDragTorque, fullDragTorque * avgEngineSpeed);
+			//Log.Debug("EngineInertiaTorque: {0}", inertiaTorqueLoss);
+			//Log.Debug("Drag Curve: torque: {0}, power: {1}", fullDragTorque, fullDragTorque * avgEngineSpeed);
 
-			Log.Debug("Dynamic FullLoad: torque: {0}, power: {1}", dynamicFullLoadTorque, dynamicFullLoadPower);
+			//Log.Debug("Dynamic FullLoad: torque: {0}, power: {1}", dynamicFullLoadTorque, dynamicFullLoadPower);
 
 			//ValidatePowerDemand(totalTorqueDemand, dynamicFullLoadTorque, fullDragTorque); 
 
@@ -298,7 +297,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			if (totalTorqueDemand.IsGreater(0) &&
 				(deltaFull * avgEngineSpeed).IsGreater(0, Constants.SimulationSettings.LineSearchTolerance)) {
-				Log.Debug("requested engine power exceeds fullload power: delta: {0}", deltaFull);
+				//Log.Debug("requested engine power exceeds fullload power: delta: {0}", deltaFull);
 				if (DataBus.HybridControllerInfo?.ICESpeed != null && DataBus.HybridControllerInfo.ICESpeed != angularVelocity && DataBus.GearboxInfo.GearEngaged(absTime))
 				{
 					return new ResponseInvalidOperatingPoint(this);
@@ -323,7 +322,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			if (totalTorqueDemand.IsSmaller(0) &&
 				(deltaDrag * avgEngineSpeed).IsSmaller(0, Constants.SimulationSettings.LineSearchTolerance)) {
-				Log.Debug("requested engine power is below drag power: delta: {0}", deltaDrag);
+				//Log.Debug("requested engine power is below drag power: delta: {0}", deltaDrag);
 				if (DataBus.HybridControllerInfo?.ICESpeed != null && DataBus.HybridControllerInfo.ICESpeed != angularVelocity && DataBus.GearboxInfo.GearEngaged(absTime))
 				{
 					return new ResponseInvalidOperatingPoint(this);

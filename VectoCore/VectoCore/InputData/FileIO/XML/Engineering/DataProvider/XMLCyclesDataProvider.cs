@@ -92,7 +92,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider
 									CycleData = VectoCSVFile.ReadStream(RessourceHelper.ReadStream(resourceName), source: resourceName),
 								});
 						} catch {
-							//Log.Debug("Driving Cycle could not be read: " + cycleFile);
+							////Log.Debug("Driving Cycle could not be read: " + cycleFile);
 							throw new VectoException("Driving Cycle could not be read: " + file);
 						}
 					}

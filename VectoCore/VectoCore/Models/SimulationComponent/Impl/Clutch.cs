@@ -111,8 +111,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				IdleController.Reset();
 			}
 
-			Log.Debug("from Wheels: torque: {0}, angularVelocity: {1}, power {2}", outTorque, outAngularVelocity,
-				Formulas.TorqueToPower(outTorque, outAngularVelocity));
+			//Log.Debug("from Wheels: torque: {0}, angularVelocity: {1}, power {2}", outTorque, outAngularVelocity,Formulas.TorqueToPower(outTorque, outAngularVelocity));
 
 			return HandleClutchClosed(absTime, dt, outTorque, outAngularVelocity, dryRun);
 		}
@@ -156,7 +155,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					};
 				}
 
-				Log.Debug("Invoking IdleController...");
+				//Log.Debug("Invoking IdleController...");
 				var retVal = IdleController.Request(absTime, dt, outTorque, null, false);
 				retVal.Clutch.PowerRequest = 0.SI<Watt>();
 				retVal.Clutch.OutputSpeed = outAngularVelocity;
@@ -176,8 +175,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				slippingClutchWhenDriving || slippingClutchDuringBraking || startClutch || outAngularVelocity.IsEqual(0),
 				out var torqueIn, out var angularVelocityIn);
 
-			Log.Debug("to Engine:   torque: {0}, angularVelocity: {1}, power {2}", torqueIn, angularVelocityIn,
-				Formulas.TorqueToPower(torqueIn, angularVelocityIn));
+			//Log.Debug("to Engine:   torque: {0}, angularVelocity: {1}, power {2}", torqueIn, angularVelocityIn,Formulas.TorqueToPower(torqueIn, angularVelocityIn));
 
 			var avgOutAngularVelocity = (PreviousState.OutAngularVelocity + outAngularVelocity) / 2.0;
 			var iceOn = !DataBus.EngineInfo.EngineOn && DataBus.EngineCtl.CombustionEngineOn;

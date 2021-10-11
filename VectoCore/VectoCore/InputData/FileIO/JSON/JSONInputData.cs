@@ -301,7 +301,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 								RessourceHelper.ReadStream(resourceName),
 								source: resourceName);
 						} catch (Exception e) {
-							Log.Debug("Driving Cycle could not be read: " + cycleFile);
+							//Log.Debug("Driving Cycle could not be read: " + cycleFile);
 							if (!TolerateMissing) {
 								throw new VectoException("Driving Cycle could not be read: " + cycleFile, e);
 							}

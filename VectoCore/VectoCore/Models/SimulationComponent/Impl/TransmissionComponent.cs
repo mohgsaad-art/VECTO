@@ -74,7 +74,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		public virtual IResponse Request(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity,
 			bool dryRun)
 		{
-			Log.Debug("request: torque: {0}, angularVelocity: {1}", outTorque, outAngularVelocity);
+			//Log.Debug("request: torque: {0}, angularVelocity: {1}", outTorque, outAngularVelocity);
 
 			var inAngularVelocity = outAngularVelocity * ModelData.Ratio;
 			var avgOutAngularVelocity = (PreviousState.OutAngularVelocity + outAngularVelocity) / 2.0;

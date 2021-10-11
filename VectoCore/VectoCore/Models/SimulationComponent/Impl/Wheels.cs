@@ -69,7 +69,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		public IResponse Request(Second absTime, Second dt, Newton force, MeterPerSecond velocity, bool dryRun)
 		{
-			Log.Debug("request: force: {0}, velocity: {1}", force, velocity);
+			//Log.Debug("request: force: {0}, velocity: {1}", force, velocity);
 
 			CurrentState.AngularVelocity = velocity / DynamicTyreRadius;
 			var avgAngularSpeed = (CurrentState.AngularVelocity + PreviousState.AngularVelocity) / 2.0;

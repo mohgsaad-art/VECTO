@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
@@ -16,7 +18,7 @@ using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
-	public class VelocitySpeedGearshiftPreprocessor : ISimulationPreprocessor
+	public class VelocitySpeedGearshiftPreprocessor : LoggingObject,ISimulationPreprocessor
 	{
 		protected readonly Second TractionInterruption;
 		protected readonly VelocityRollingLookup VehicleVelocityDropLookup;
@@ -75,6 +77,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 						(runData.AngledriveData?.Angledrive.Ratio ?? 1.0);
 
 			var tmp = new List<Entry>();
+			var tmpdebug = new List<MyDebugEntry>();
+
 			//(Container.DriverInfo as MockDriver).DriverBehavior = DrivingBehavior.Coasting;
 			var maxSpeed = GetVehicleMaxSpeed(runData);
 			foreach (var speed in Speeds) {
@@ -113,10 +117,54 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				}
 			}
 
+			#region save to file
+			StringBuilder sb = new StringBuilder();
+
+			
+			foreach (var key in tmpdebug[0].Container)
+			{
+				sb.Append($"{key.Key},");
+			}
+
+			foreach (var key in tmpdebug[0].Vehicle)
+			{
+				sb.Append($"{key.Key},");
+			}
+			sb.Append("VehicleSpeed");
+			sb.Append(",");
+			sb.Append("GearForSpeed");
+			sb.Append(",");
+			sb.Append("StartVelocity");
+			sb.Append(",");
+			sb.Append("Gradient");
+			sb.Append(",");
+			sb.Append("EndVelocity" + Environment.NewLine);
+
+			string csvpath = $"c:\\Temp\\IVSAG_{((TUGraz.VectoCore.InputData.Reader.Impl.DrivingCycleProxy)this.Container.RunData.Cycle).Name}.csv";
+
+			if (File.Exists(csvpath))
+			{
+				File.Delete(csvpath);
+			}
+
+			foreach (var Item in tmpdebug)
+			{
+				foreach (var item in Item.Vehicle)
+				{
+					sb.Append($"{item.Value},");
+				}
+				sb.Append($"{Item.VehicleSpeed},{Item.GearForSpeed},{Item.StartVelocity},{Item.Gradient},{Item.EndVelocity}" + Environment.NewLine);
+			}
+
+
+			// Writing the string to the file
+			File.WriteAllText(csvpath, sb.ToString());
+			#endregion
+
 			return tmp.ToArray();
 		}
 
-	protected virtual PerSecond GetMotorTargetSpeed(VectoRunData runData)
+        protected virtual PerSecond GetMotorTargetSpeed(VectoRunData runData)
 		{
 			return 0.5 * (runData.EngineData.FullLoadCurves[0].RatedSpeed - runData.EngineData.IdleSpeed) + runData.EngineData.IdleSpeed;
 		}
@@ -202,6 +250,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			container.CommitSimulationStep(absTime, simulationInterval);
 
 			return vehicle.VehicleSpeed;
+		}
+
+		public class MyDebugEntry : Entry
+		{
+			public IDictionary<string, string> Container;
+			public IDictionary<string, string> Vehicle;
+			public MeterPerSecond VehicleSpeed;
+			public GearshiftPosition GearForSpeed;
 		}
 
 		public class Entry

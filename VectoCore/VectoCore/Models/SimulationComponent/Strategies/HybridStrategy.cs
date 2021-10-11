@@ -380,8 +380,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 				retVal.HybridController.StrategySettings = cfg;
 				return retVal;
-			} catch (Exception e) {
-				Log.Debug(e);
+			} catch (Exception ex) {
+				Log.Debug(ex);
 				return null;
 			}
 		}
@@ -2013,7 +2013,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 							responses.Add(tmp);
 						}
 					} catch (Exception) {
-						Log.Debug("Failed to find EM torque to compensate drag losses of next components.");
+						//Log.Debug("Failed to find EM torque to compensate drag losses of next components.");
 					}
 				}
 
@@ -2053,7 +2053,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 							responses.Add(tmp);
 						}
 					} catch (Exception) {
-						Log.Debug("Failed to find EM torque to compensate drag losses of next components.");
+						//Log.Debug("Failed to find EM torque to compensate drag losses of next components.");
 					}
 				}
 			}
@@ -2110,7 +2110,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 								responses.Add(tmp);
 							}
 						} catch (Exception) {
-							Log.Debug("Failed to find EM torque to compensate drag losses of next components.");
+							//Log.Debug("Failed to find EM torque to compensate drag losses of next components.");
 						}
 					} else {
 						if (maxEmTorqueRecuperate.IsGreater(0) && (-emTqReq).IsBetween(maxEmTorqueRecuperate, 0.SI<NewtonMeter>())) {

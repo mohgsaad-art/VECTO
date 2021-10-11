@@ -140,7 +140,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			// ENGAGE ---------------------------------------------------------
 			// 0 -> 1C: drive off after disengaged - engage first gear
 			if (_gearbox.Disengaged && outAngularVelocity.IsGreater(0.SI<PerSecond>())) {
-				Log.Debug("shift required: drive off after vehicle stopped");
+				//Log.Debug("shift required: drive off after vehicle stopped");
 				_nextGear.SetState(absTime, disengaged: false, gear: Gears.First());
 				return true;
 			}
@@ -197,7 +197,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		{
 			// Emergency Downshift: if lower than engine idle speed
 			if (inAngularVelocity.IsSmaller(DataBus.EngineInfo.EngineIdleSpeed) && Gears.HasPredecessor(gear)) {
-				Log.Debug("engine speed would fall below idle speed - shift down");
+				//Log.Debug("engine speed would fall below idle speed - shift down");
 				Downshift(absTime, gear);
 				return true;
 			}
@@ -222,7 +222,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				var nextGear = Gears.Successor(gear);
 				var acc = EstimateAccelerationForGear(nextGear, outAngularVelocity);
 				if ((acc > 0 || _gearbox.TCLocked) && !IsBelowDownShiftCurve(nextGear, nextInTorque, nextInAngularSpeed)) {
-					Log.Debug("engine speed would be above max speed / rated speed - shift up");
+					//Log.Debug("engine speed would be above max speed / rated speed - shift up");
 					Upshift(absTime, gear);
 					return true;
 				}

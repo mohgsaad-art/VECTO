@@ -78,10 +78,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			Gearbox.SwitchToNeutral = strategySettings.GearboxInNeutral;
 			//var gear = GetGearFromCycle();
 			var gear = new GearshiftPosition(this.DataBus.DrivingCycleInfo.CycleData.RightSample.Gear, false);
-			////////Log.Debug("GetGearFromCycle: " + gear.ToString());
-			////////Log.Debug("ApplyStrategySettings SelectedGear: " + this.SelectedGear.Gear.ToString());
+			//////////Log.Debug("GetGearFromCycle: " + gear.ToString());
+			//////////Log.Debug("ApplyStrategySettings SelectedGear: " + this.SelectedGear.Gear.ToString());
 		
-			////////Log.Debug("ApplyStrategySettings strategySettings.GearboxInNeutral: " + strategySettings.GearboxInNeutral.ToString());
+			//////////Log.Debug("ApplyStrategySettings strategySettings.GearboxInNeutral: " + strategySettings.GearboxInNeutral.ToString());
 			Engine.CombustionEngineOn = strategySettings.CombustionEngineOn;
 			_electricMotorTorque = strategySettings.MechanicalAssistPower;
 			if (DataBus.VehicleInfo.VehicleStopped && strategySettings.NextGear.Gear != 0)
@@ -142,7 +142,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			IResponse retVal;
 			do
 			{
-				//////Log.Debug($"retry : #{retryCount}");
+				////////Log.Debug($"retry : #{retryCount}");
 
 				if (retryCount > 10)
 				{
@@ -154,7 +154,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 				IHybridStrategyResponse strategyResponse = Strategy.Request(absTime, dt, outTorque, outAngularVelocity, dryRun);
 				
-				////Log.Debug($"strategyResponse {strategyResponse}");
+				//////Log.Debug($"strategyResponse {strategyResponse}");
 
 				if (strategyResponse is HybridStrategyLimitedResponse)
 				{
@@ -218,14 +218,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				CurrentStrategySettings = strategySettings;
 				if (absTime.IsGreaterOrEqual(273.9851.SI<Second>()) && dryRun) //273.4851 //273.4851 //13.0332 //274.5037,13.0332,3
 				{
-					//////Log.Debug($"absTime: {absTime}");273.9851
-					////Log.Debug($"DRYRUN: Hybrid Controller outTorque: {outTorque}");
+					////////Log.Debug($"absTime: {absTime}");273.9851
+					//////Log.Debug($"DRYRUN: Hybrid Controller outTorque: {outTorque}");
 				}
 				retVal = NextComponent.Request(absTime, dt, outTorque, outAngularVelocity, dryRun);
 				if (absTime.IsGreaterOrEqual(273.9851.SI<Second>()) && dryRun) //273.4851 //273.4851 //13.0332 //274.5037,13.0332,3
 				{
-					//////Log.Debug($"absTime: {absTime}");273.9851
-					////Log.Debug($"DRYRUN: Hybrid Controller outTorque: {outTorque}");
+					////////Log.Debug($"absTime: {absTime}");273.9851
+					//////Log.Debug($"DRYRUN: Hybrid Controller outTorque: {outTorque}");
 				}
 				DebugData.Add(new
 				{
@@ -295,8 +295,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			
 			if (absTime.IsGreaterOrEqual(273.9851.SI<Second>()) && dryRun) //273.4851 //273.4851 //13.0332 //274.5037,13.0332,3
 			{
-				//////Log.Debug($"absTime: {absTime}");273.9851
-				////Log.Debug($"DRYRUN: Hybrid Controller outTorque: {outTorque}");
+				////////Log.Debug($"absTime: {absTime}");273.9851
+				//////Log.Debug($"DRYRUN: Hybrid Controller outTorque: {outTorque}");
 			}
 
 			return modifiedResponse;

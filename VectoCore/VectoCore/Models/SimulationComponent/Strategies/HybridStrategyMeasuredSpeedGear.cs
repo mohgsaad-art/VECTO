@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TUGraz.VectoCommon.Exceptions;
@@ -756,7 +757,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 			if (absTime.IsGreaterOrEqual(2830.4145))
 			{
-				//Log.Debug($"DataBus.DriverInfo.DrivingAction: {DataBus.DriverInfo.DrivingAction}");
+				////Log.Debug($"DataBus.DriverInfo.DrivingAction: {DataBus.DriverInfo.DrivingAction}");
 			}
 
 			switch (DataBus.DriverInfo.DrivingAction)
@@ -787,11 +788,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			
 			var best = SelectBestOption(eval, absTime, dt, outTorque, outAngularVelocity, dryRun, currentGear);
 
-			if (absTime.IsGreaterOrEqual(2830.4145))
+			if (absTime.IsGreaterOrEqual(2816.0842))
 			{
-				Log.Debug($"absTime: {absTime} eval.count: {eval.Count()}");
+				//Log.Debug($"absTime: {absTime} eval.count: {eval.Count()}");
 			}
 
+			Log.Debug($"absTime: {absTime} eval.count: {eval.Count()}");
 			if (best == null)
 			{
 				best = ResponseEmOff;
@@ -1248,6 +1250,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 					return;
 				}
 
+				if (absTime.IsGreaterOrEqual(2816.0842))
+				{
+					Log.Debug($"AbsTime: {absTime} AllowICEOff(absTime): {AllowICEOff(absTime)} dryRun: {dryRun}");
+				}
+				
+
 				if (tmp.CombustionEngineOn)
 				{
 					var firstEntry = new HybridResultEntry();
@@ -1285,7 +1293,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 				if (absTime.IsGreaterOrEqual(766.5729))
 				{
-					////Log.Debug($"disengaged at HandleBreakAction: {disengaged}");
+					//////Log.Debug($"disengaged at HandleBreakAction: {disengaged}");
 				}
 
 				NewtonMeter deltaDragTqFirst = 0.SI<NewtonMeter>();
@@ -2121,6 +2129,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 					return null;
 				}
 			}
+			
+			if (absTime.IsGreaterOrEqual(2816.0842))
+			{
+				Log.Debug($"AbsTime: {absTime} allowICEOff: {allowICEOff} dryRun: {dryRun}");
+			}
 
 			CalculateCosts(emOffEntry.Response, dt, emOffEntry, allowICEOff, dryRun);
 
@@ -2291,7 +2304,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 					}
 					catch (Exception)
 					{
-						//////Log.Debug("Failed to find EM torque to compensate drag losses of next components.");
+						////////Log.Debug("Failed to find EM torque to compensate drag losses of next components.");
 					}
 				}
 
@@ -2351,7 +2364,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 					}
 					catch (Exception)
 					{
-						//////Log.Debug("Failed to find EM torque to compensate drag losses of next components.");
+						////////Log.Debug("Failed to find EM torque to compensate drag losses of next components.");
 					}
 				}
 			}
@@ -2422,7 +2435,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 						}
 						catch (Exception)
 						{
-							//////Log.Debug("Failed to find EM torque to compensate drag losses of next components.");
+							////////Log.Debug("Failed to find EM torque to compensate drag losses of next components.");
 						}
 					}
 					else
@@ -2460,12 +2473,17 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				Gear = nextGear,
 			};
 
+			if (absTime.IsGreaterOrEqual(2816.0842))
+			{
+				Log.Debug($"AbsTime: {absTime} allowICEOff: {allowIceOff} dryRun: {dryRun}");
+			}
 			CalculateCosts(resp, dt, tmp, allowIceOff, dryRun);
 			return tmp;
 		}
 
 		private void CalculateCosts(IResponse resp, Second dt, HybridResultEntry tmp, bool allowIceOff, bool dryRun)
 		{
+			
 			tmp.IgnoreReason = 0;
 			if (resp == null)
 			{
@@ -2482,6 +2500,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			}
 
 			var iceOff = allowIceOff && resp.Engine.TorqueOutDemand.IsEqual(0, 1e-3);
+
 			if (DataBus.DriverInfo.DrivingAction == DrivingAction.Accelerate && dryRun)
 			{
 				// this means we search for an acceleration the vehicle is capable to do - so treat ICE overload regularly
@@ -2696,7 +2715,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 			if (absTime.IsGreaterOrEqual(2830.4145))
 			{
-				//Log.Debug($"tmp.IgnoreReason: {tmp.IgnoreReason}");
+				////Log.Debug($"tmp.IgnoreReason: {tmp.IgnoreReason}");
 			}
 		}
 
