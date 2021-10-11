@@ -10,6 +10,11 @@ import matplotlib.pyplot as plt
 import os
 cwd = os.getcwd()
 
+
+#one test is
+#time_run_path = r'..\..\Generic Vehicles\Engineering Mode\GenericVehicle_Group2_P2_EM\Class2_RigidTruck_ParHyb_ENG_01Cycle_time_no_grad_exact_160s.vmod'
+#distance_run_path = r'..\..\Generic Vehicles\Engineering Mode\GenericVehicle_Group2_P2_EM\Class2_RigidTruck_ParHyb_ENG_LongHaulNoGrad.vmod'
+
 #time_run_path = r'..\..\Generic Vehicles\Engineering Mode\GenericVehicle_Group2_P2_EM\Class2_RigidTruck_ParHyb_ENG_UrbanDelivery.vmod'
 #time_run_path = r'..\..\Generic Vehicles\Engineering Mode\GenericVehicle_Group2_P2_EM\Class2_RigidTruck_ParHyb_ENG_Test_cycle_time.vmod'
 #time_run_path = r'..\..\Generic Vehicles\Engineering Mode\GenericVehicle_Group2_P2_EM\Class2_RigidTruck_ParHyb_ENG_RegionalDelivery.vmod'
@@ -21,10 +26,9 @@ cwd = os.getcwd()
 #time_run_path = r'..\..\Generic Vehicles\Engineering Mode\GenericVehicle_Group2_P2_EM\Class2_RigidTruck_ParHyb_ENG_03Cycle_time_no_grad_exact_gear_small_org.vmod'
 #time_run_path = r'..\..\Generic Vehicles\Engineering Mode\GenericVehicle_Group2_P2_EM\Class2_RigidTruck_ParHyb_ENG_02Cycle_time_no_grad_no_gear_small_org.vmod'
 #time_run_path = r'..\..\Generic Vehicles\Engineering Mode\GenericVehicle_Group2_P2_EM\Class2_RigidTruck_ParHyb_ENG_01Cycle_time_no_grad_exact_gear_small_org.vmod'
-#distance_run_path = r'..\..\Generic Vehicles\Engineering Mode\GenericVehicle_Group2_P2_EM\Class2_RigidTruck_ParHyb_ENG_01Cycle_time_no_grad_exact_160s.vmod'
 
-time_run_path = r'..\..\Generic Vehicles\Engineering Mode\GenericVehicle_Group2_P2_EM\Class2_RigidTruck_ParHyb_ENG_01Cycle_time_no_grad_exact_gear_small_org.vmod'
-distance_run_path = r'..\..\Generic Vehicles\Engineering Mode\GenericVehicle_Group2_P2_EM\Class2_RigidTruck_ParHyb_ENG_01Cycle_time_no_grad_exact_160s.vmod'
+time_run_path = r'..\..\Generic Vehicles\Engineering Mode\GenericVehicle_Group2_P2_EM\Class2_RigidTruck_ParHyb_ENG_Cycle_time_no_grad_exact_gear.vmod'
+distance_run_path = r'..\..\Generic Vehicles\Engineering Mode\GenericVehicle_Group2_P2_EM\Class2_RigidTruck_ParHyb_ENG_LongHaulNoGrad.vmod'
 
 
 df_time = pd.read_csv(time_run_path, sep=',' , encoding='latin-1',skiprows=1)
