@@ -221,3 +221,7 @@ Documentation/VehiclesReleaseComparisonDeclarationMode/**/*.vsum
 /VectoCore/VectoCoreTest/TestData/XML/XMLReaderDeclaration/output
 /Vecto3GUI2020Test/TestData/output
 /VectoCommon/VectoCommon/InputData/BusInputData.cd
+/.idea/.idea.VECTO/.idea
+
+
+**/*.user
