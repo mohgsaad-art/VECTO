@@ -395,7 +395,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			return disengagedResponse;
 		}
 
-		protected override void DoWriteModalResults(IModalDataContainer container)
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
 			var avgInAngularSpeed = (PreviousState.InAngularVelocity + CurrentState.InAngularVelocity) / 2.0;
 			var avgOutAngularSpeed = (PreviousState.OutAngularVelocity + CurrentState.OutAngularVelocity) / 2.0;
@@ -419,7 +419,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			// torque converter fields are written by TorqueConverter (if present), called from Vehicle container 
 		}
 
-		protected override void DoCommitSimulationStep()
+		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)
 		{
 			if (Gear.Gear != 0) {
 				if (CurrentState.TorqueLossResult != null && CurrentState.TorqueLossResult.Extrapolated) {
@@ -434,7 +434,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				}
 			}
 
-			base.DoCommitSimulationStep();
+			base.DoCommitSimulationStep(time, simulationInterval);
 		}
 
 		#region ICluchInfo
@@ -501,13 +501,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
 		}
 
-		public override bool ClutchClosed(Second absTime)
+		
+		public override bool GearEngaged(Second absTime)
 		{
 			return (DataBus.DriverInfo.DriverBehavior == DrivingBehavior.Braking
-						? DataBus.DrivingCycleInfo.CycleData.LeftSample.Gear
-						: DataBus.DrivingCycleInfo.CycleData.RightSample.Gear) != 0;
+				? DataBus.DrivingCycleInfo.CycleData.LeftSample.Gear
+				: DataBus.DrivingCycleInfo.CycleData.RightSample.Gear) != 0;
 		}
-
 
 		public override bool DisengageGearbox {
 			get => false;

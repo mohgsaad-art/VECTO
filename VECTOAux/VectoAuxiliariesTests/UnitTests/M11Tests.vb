@@ -1,11 +1,11 @@
-﻿Imports VectoAuxiliaries.Electrics
-Imports VectoAuxiliaries.Pneumatics
-Imports VectoAuxiliaries.Hvac
-Imports VectoAuxiliaries.DownstreamModules
+﻿
 Imports NUnit.Framework
-Imports VectoAuxiliaries
 Imports Moq
+Imports TUGraz.VectoCommon.BusAuxiliaries
 Imports TUGraz.VectoCommon.Utils
+Imports TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl
+Imports TUGraz.VectoCore.Models.BusAuxiliaries.Interfaces.DownstreamModules
+
 
 Namespace UnitTests
 	<TestFixture()>
@@ -41,19 +41,19 @@ Namespace UnitTests
 			Dim fmap As New MockFuel50PC
 
 
-			m6Mock.Setup(Function(x) x.OverrunFlag).Returns(IP1)
+			m6Mock.Setup(Function(x) x.OverrunFlag).Returns(IP1 <> 0)
 			m8Mock.Setup(Function(x) x.SmartElectricalAlternatorPowerGenAtCrank).Returns(IP2.SI(Of Watt))
 			m6Mock.Setup(Function(x) x.AvgPowerDemandAtCrankFromElectricsIncHVAC).Returns(IP3.SI(Of Watt))
 			sgnlsMock.Setup(Function(x) x.EngineDrivelineTorque).Returns(IP4.SI(Of NewtonMeter))
 			sgnlsMock.Setup(Function(x) x.PreExistingAuxPower).Returns(0.SI(Of Watt))
 			m3Mock.Setup(Function(x) x.GetAveragePowerDemandAtCrankFromPneumatics).Returns(IP5.SI(Of Watt))
-			m1Mock.Setup(Function(x) x.AveragePowerDemandAtCrankFromHVACMechanicalsWatts).Returns(IP6.SI(Of Watt))
+			m1Mock.Setup(Function(x) x.AveragePowerDemandAtCrankFromHVACMechanicals).Returns(IP6.SI(Of Watt))
 			sgnlsMock.Setup(Function(x) x.EngineSpeed).Returns(IP7.RPMtoRad())
 			sgnlsMock.Setup(Function(x) x.EngineStopped).Returns(IP8)
 
 
 			'Act
-			Dim target = New M11(m1Mock.Object, m3Mock.Object, m6Mock.Object, m8Mock.Object, fmap, sgnlsMock.Object) _
+			Dim target = New M11Impl(m1Mock.Object, m3Mock.Object, m6Mock.Object, m8Mock.Object, fmap, sgnlsMock.Object) _
 			',m3Mock.Object,m6Mock.Object,m8Mock.Object,fmap,sgnlsMock.Object)
 
 			'Add Current Calculation to Internal Aggregates ( Accesseed by public output properties which are external interface )
@@ -98,18 +98,18 @@ Namespace UnitTests
 			Dim sgnlsMock As New Mock(Of ISignals)
 			Dim fmap As New MockFuel50PC
 
-			m6Mock.Setup(Function(x) x.OverrunFlag).Returns(IP1)
+			m6Mock.Setup(Function(x) x.OverrunFlag).Returns(IP1 <> 0)
 			m8Mock.Setup(Function(x) x.SmartElectricalAlternatorPowerGenAtCrank).Returns(IP2.SI(Of Watt))
 			m6Mock.Setup(Function(x) x.AvgPowerDemandAtCrankFromElectricsIncHVAC).Returns(IP3.SI(Of Watt))
 			sgnlsMock.Setup(Function(x) x.EngineDrivelineTorque).Returns(IP4.SI(Of NewtonMeter))
 			m3Mock.Setup(Function(x) x.GetAveragePowerDemandAtCrankFromPneumatics).Returns(IP5.SI(Of Watt))
-			m1Mock.Setup(Function(x) x.AveragePowerDemandAtCrankFromHVACMechanicalsWatts).Returns(IP6.SI(Of Watt))
+			m1Mock.Setup(Function(x) x.AveragePowerDemandAtCrankFromHVACMechanicals).Returns(IP6.SI(Of Watt))
 			sgnlsMock.Setup(Function(x) x.EngineSpeed).Returns(IP7.RPMtoRad())
 			sgnlsMock.Setup(Function(x) x.EngineStopped).Returns(IP8)
 
 
 			'Act
-			Dim target = New M11(m1Mock.Object, m3Mock.Object, m6Mock.Object, m8Mock.Object, fmap, sgnlsMock.Object) _
+			Dim target = New M11Impl(m1Mock.Object, m3Mock.Object, m6Mock.Object, m8Mock.Object, fmap, sgnlsMock.Object) _
 			',m3Mock.Object,m6Mock.Object,m8Mock.Object,fmap,sgnlsMock.Object)
 
 

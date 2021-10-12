@@ -327,7 +327,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
 		}
 
-		protected override void DoCommitSimulationStep()
+		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)
 		{
 			if (SimulationIntervalEndTime.IsGreaterOrEqual(CycleIterator.RightSample.Time)) {
 				CycleIterator.MoveNext();
@@ -335,9 +335,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			AdvanceState();
 		}
 
-		protected override void DoWriteModalResults(IModalDataContainer container)
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
-			base.DoWriteModalResults(container);
+			base.DoWriteModalResults(time, simulationInterval, container);
 			container[ModalResultField.P_wheel_in] = CurrentState.InTorque * CurrentState.InAngularVelocity;
 			container[ModalResultField.v_act] = CycleIterator.LeftSample.VehicleTargetSpeed;
 		}

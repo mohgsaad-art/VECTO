@@ -103,10 +103,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			return DoHandleRequest(absTime, dt, CycleIterator.LeftSample.WheelAngularVelocity);
 		}
 
-		protected override void DoWriteModalResults(IModalDataContainer container)
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
 			container[ModalResultField.P_wheel_in] = CycleIterator.LeftSample.PWheel;
-			base.DoWriteModalResults(container);
+			base.DoWriteModalResults(time, simulationInterval, container);
 		}
 
 		#region IDriverInfo

@@ -104,7 +104,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			// --------
 			outPort.Initialize(50.SI<NewtonMeter>(), 650.RPMtoRad());
 			outPort.Request(absTime, dt, 50.SI<NewtonMeter>(), 1550.RPMtoRad());
-			retarder.CommitSimulationStep(new MockModalDataContainer());
+			retarder.CommitSimulationStep(absTime, dt, new MockModalDataContainer());
 			Assert.AreEqual(1550.RPMtoRad().Value(), nextRequest.AngularVelocity.Value(), Delta);
 
 			// (650+1550)/2 = 1100 => 12.42Nm
@@ -156,7 +156,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 			outPort.Initialize(50.SI<NewtonMeter>(), 2550.RPMtoRad());
 			outPort.Request(0.SI<Second>(), 0.SI<Second>(), 50.SI<NewtonMeter>(), 2550.RPMtoRad());
-			AssertHelper.Exception<VectoException>(() => retarder.CommitSimulationStep(new MockModalDataContainer()),
+			AssertHelper.Exception<VectoException>(() => retarder.CommitSimulationStep(0.SI<Second>(), 0.SI<Second>(), new MockModalDataContainer()),
 				"Retarder LossMap data was extrapolated in Declaration mode: range for loss map is not sufficient: n:2550 (min:0, max:2300), ratio:2");
 		}
 

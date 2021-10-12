@@ -29,8 +29,13 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using System.Collections.Generic;
+using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Models.SimulationComponent.Data;
+using TUGraz.VectoCore.Models.SimulationComponent.Data.Engine;
+using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.OutputData;
 
@@ -39,7 +44,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent
 	/// <summary>
 	/// Interface for the ShiftStrategy. Decides when to shift and which gear to take.
 	/// </summary>
-	public interface IShiftStrategy
+	public interface IShiftStrategy : IShiftPolygonCalculator
 	{
 		/// <summary>
 		/// Checks if a shift operation is required.
@@ -98,5 +103,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent
 		void WriteModalResults(IModalDataContainer container);
 	}
 
-    
+	public interface IShiftPolygonCalculator
+	{
+		ShiftPolygon ComputeDeclarationShiftPolygon(
+			GearboxType gearboxType, int i, EngineFullLoadCurve engineDataFullLoadCurve,
+			IList<ITransmissionInputData> gearboxGears, CombustionEngineData engineData, double axlegearRatio,
+			Meter dynamicTyreRadius);
+	}
+
 }

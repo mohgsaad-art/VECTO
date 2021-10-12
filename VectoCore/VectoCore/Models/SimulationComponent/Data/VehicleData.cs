@@ -33,6 +33,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
@@ -72,7 +73,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 	/// Data Class for the Vehicle
 	/// </summary>
 	[CustomValidation(typeof(VehicleData), "ValidateVehicleData")]
-	public class VehicleData : SimulationComponentData
+	public class VehicleData : SimulationComponentData, IVehicleData
 	{
 		public string VIN { get; internal set; }
 

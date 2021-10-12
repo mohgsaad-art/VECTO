@@ -40,6 +40,9 @@ public class JSONFileWriter : IOutputFileWriter
 
 	//private const int HybridStrategyParamsVersion = 1;
 
+	private const int BusAuxEngParamsVersion = 1;
+
+
 	private static JSONFileWriter _instance;
 
 	public const string VECTOvers = "3";
@@ -501,39 +504,17 @@ public class JSONFileWriter : IOutputFileWriter
 
 		if (!job.SavedInDeclarationMode && job.Vehicle is IVehicleEngineeringInputData engVehicle) {
 			var aux = engVehicle.Components.AuxiliaryInputData;
-			var pAdd = 0.0;
-			var auxList = new List<object>();
-			foreach (var auxEntry in aux.Auxiliaries) {
-				if (auxEntry.AuxiliaryType == AuxiliaryDemandType.Constant) {
-					pAdd += auxEntry.ConstantPowerDemand.Value();
-					continue;
-				}
-
-				var auxOut = new Dictionary<string, object>();
-
-				auxOut.Add("Type", AuxiliaryTypeHelper.ParseKey(auxEntry.ID).Name());
-				auxOut.Add("Path", GetRelativePath(auxEntry.DemandMap.Source, basePath));
-				auxOut.Add("Technology", new string[] { });
-
-				auxList.Add(auxOut);
+			if (aux.BusAuxiliariesData != null) {
+				body.Add("BusAux",
+					GetRelativePath(job.Vehicle.Components.AuxiliaryInputData.BusAuxiliariesData.DataSource.SourceFile,
+						basePath));
 			}
 
-			body.Add("Aux", auxList);
-			body.Add("Padd", pAdd);
+			body.Add("Padd", aux.Auxiliaries.ConstantPowerDemand.Value());
+			body.Add("Paux_ICEOff_Driving", aux.Auxiliaries.PowerDemandICEOffDriving.Value());
+			body.Add("Paux_ICEOff_Standstill", aux.Auxiliaries.PowerDemandICEOffStandstill.Value());
+
 		}
-
-		//if (!job.SavedInDeclarationMode && job.Vehicle is IVehicleEngineeringInputData engVehicle) {
-		//	var aux = engVehicle.Components.AuxiliaryInputData;
-		//	//if (aux.BusAuxiliariesData != null) {
-		//	//	body.Add("BusAux",
-		//	//		GetRelativePath(job.Vehicle.Components.AuxiliaryInputData.BusAuxiliariesData.DataSource.SourceFile,
-		//	//			basePath));
-		//	//}
-
-		//	body.Add("Padd", aux.Auxiliaries.ConstantPowerDemand.Value());
-		//	body.Add("Paux_ICEOff_Driving", aux.Auxiliaries.PowerDemandICEOffDriving.Value());
-		//	body.Add("Paux_ICEOff_Standstill", aux.Auxiliaries.PowerDemandICEOffStandstill.Value());
-		//}
 
 		var driver = input.DriverInputData;
 
@@ -671,5 +652,41 @@ public class JSONFileWriter : IOutputFileWriter
 	}
 
 
-	
+	public void SaveBusAuxEngineeringParameters(IBusAuxiliariesEngineeringData busAux, string filePath, bool declMode)
+	{
+		var header = GetHeader(BusAuxEngParamsVersion);
+
+
+		var ps = new Dictionary<string, object>() {
+			{"CompressorMap", busAux.PneumaticSystem.CompressorMap != null ? GetRelativePath(busAux.PneumaticSystem.CompressorMap.Source, Path.GetDirectoryName(filePath)) : ""},
+			{"AverageAirDemand", busAux.PneumaticSystem.AverageAirConsumed.Value()},
+			{"SmartAirCompression", busAux.PneumaticSystem.SmartAirCompression},
+			{"GearRatio", busAux.PneumaticSystem.GearRatio},
+		};
+		var es = new Dictionary<string, object>() {
+			{"AlternatorEfficiency", busAux.ElectricSystem.AlternatorEfficiency},
+			{"CurrentDemand", busAux.ElectricSystem.CurrentDemand.Value()},
+			{"CurrentDemandEngineOffDriving", busAux.ElectricSystem.CurrentDemandEngineOffDriving.Value()},
+			{"CurrentDemandEngineOffStandstill", busAux.ElectricSystem.CurrentDemandEngineOffStandstill.Value()},
+			{"AlternatorType", busAux.ElectricSystem.AlternatorType.ToString()},
+			{"ElectricStorageCapacity", busAux.ElectricSystem.ElectricStorageCapacity.ConvertToWattHour().Value},
+			{"BatteryEfficiency", busAux.ElectricSystem.ElectricStorageEfficiency},
+			{"MaxAlternatorPower", busAux.ElectricSystem.MaxAlternatorPower.Value()},
+			{"DCDCConverterEfficiency", busAux.ElectricSystem.DCDCConverterEfficiency},
+			{"ESSupplyFromHEVREESS", busAux.ElectricSystem.ESSupplyFromHEVREESS}
+		};
+		var hvac = new Dictionary<string, object>() {
+			{"ElectricPowerDemand", busAux.HVACData.ElectricalPowerDemand.Value()},
+			{"MechanicalPowerDemand", busAux.HVACData.MechanicalPowerDemand.Value()},
+			{"AuxHeaterPower", busAux.HVACData.AuxHeaterPower.Value()},
+			{"AverageHeatingDemand", busAux.HVACData.AverageHeatingDemand.Value() / 1e6}
+		};
+
+		var body = new Dictionary<string, object>() {
+			{"PneumaticSystem", ps},
+			{"ElectricSystem", es},
+			{ "HVAC", hvac}
+		};
+		WriteFile(header, body, filePath);
+	}
 }

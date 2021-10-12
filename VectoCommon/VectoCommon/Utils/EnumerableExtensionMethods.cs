@@ -109,7 +109,7 @@ namespace TUGraz.VectoCommon.Utils
 			return valueList.Any() ? valueList.Aggregate((sum, current) => sum + current) / valueList.Count : null;
 		}
 
-		public static SI Sum(this IEnumerable<SI> values)
+		public static T Sum<T>(this IEnumerable<T> values) where T : SIBase<T>
 		{
 			return values.DefaultIfEmpty().Aggregate((sum, current) => sum + current);
 		}

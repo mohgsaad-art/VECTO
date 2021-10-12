@@ -73,7 +73,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			get { return _strategy?.NextGear ?? _nextGear; }
 		}
 
-		public override bool ClutchClosed(Second absTime)
+		public override bool GearEngaged(Second absTime)
 		{
 			return !DisengageGearbox && EngageTime.IsSmallerOrEqual(absTime, ModelData.TractionInterruption / 20) && !postponeEngage;
 		}
@@ -195,7 +195,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
 
 			postponeEngage = false;
-			if (ClutchClosed(absTime) && Disengaged && !outAngularVelocity.IsEqual(0)) {
+			if (GearEngaged(absTime) && Disengaged && !outAngularVelocity.IsEqual(0)) {
 				if (dt.IsSmaller(Constants.SimulationSettings.TargetTimeInterval / 10)) {
 					Log.Debug("postponing re-engage due to small simulation interval {0}", dt);
 					postponeEngage = true;
@@ -238,7 +238,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				return RequestGearDisengaged(absTime, dt, outTorque, outAngularVelocity, inTorque, dryRun);
 			}
 
-			return ClutchClosed(absTime)
+			return GearEngaged(absTime)
 				? RequestGearEngaged(absTime, dt, outTorque, outAngularVelocity, inTorque, inTorqueLossResult, inertiaTorqueLossOut, dryRun)
 				: RequestGearDisengaged(absTime, dt, outTorque, outAngularVelocity, inTorque, dryRun);
 		}
@@ -415,7 +415,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
 		}
 
-		protected override void DoWriteModalResults(IModalDataContainer container)
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
 			var avgInAngularSpeed = (PreviousState.InAngularVelocity + CurrentState.InAngularVelocity) / 2.0;
 			var avgOutAngularSpeed = (PreviousState.OutAngularVelocity + CurrentState.OutAngularVelocity) / 2.0;
@@ -431,7 +431,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			_strategy.WriteModalResults(container);
 		}
 
-		protected override void DoCommitSimulationStep()
+		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)
 		{
 			postponeEngage = false;
 			if (!Disengaged) {
@@ -452,7 +452,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				Disengaged = true;
 				EngageTime = -double.MaxValue.SI<Second>();
 			}
-			base.DoCommitSimulationStep();
+			base.DoCommitSimulationStep(time, simulationInterval);
 		}
 	}
 }

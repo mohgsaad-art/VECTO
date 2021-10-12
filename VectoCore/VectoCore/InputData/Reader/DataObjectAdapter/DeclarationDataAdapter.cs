@@ -40,6 +40,7 @@ using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Data;
+using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Engine;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
@@ -272,11 +273,26 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			return null;
 		}
 
-		internal GearboxData CreateGearboxData(IGearboxDeclarationInputData gearbox, CombustionEngineData engine, double axlegearRatio, Meter dynamicTyreRadius, VehicleCategory vehicleCategory, ITorqueConverterDeclarationInputData torqueConverter)
+		public virtual GearboxData CreateGearboxData(IVehicleDeclarationInputData inputData, VectoRunData runData,
+			IShiftPolygonCalculator shiftPolygonCalc)
 		{
-			if (!gearbox.SavedInDeclarationMode) {
+			if (!inputData.Components.GearboxInputData.SavedInDeclarationMode) {
 				WarnDeclarationMode("GearboxData");
 			}
+			return DoCreateGearboxData(inputData, runData, shiftPolygonCalc);
+		}
+
+		public virtual GearboxData DoCreateGearboxData(IVehicleDeclarationInputData inputData, VectoRunData runData,
+			IShiftPolygonCalculator shiftPolygonCalc)
+		{
+			var gearbox = inputData.Components.GearboxInputData;
+
+			var adas = inputData.ADAS;
+			var torqueConverter = inputData.Components.TorqueConverterInputData;
+
+			var engine = runData.EngineData;
+			var axlegearRatio = runData.AxleGearData.AxleGear.Ratio;
+			var dynamicTyreRadius = runData.VehicleData.DynamicTyreRadius;
 			var retVal = SetCommonGearboxData(gearbox);
 
 			if (!SupportedGearboxTypes.Contains(gearbox.Type)) {
@@ -296,9 +312,13 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 			var gears = new Dictionary<uint, GearData>();
 			var tcShiftPolygon = DeclarationData.TorqueConverter.ComputeShiftPolygon(engine.FullLoadCurves[0]);
+			var vehicleCategory = inputData.VehicleCategory;
+			//var vehicleCategory = runData.VehicleData.VehicleCategory == VehicleCategory.GenericBusVehicle
+			//	? VehicleCategory.GenericBusVehicle
+			//	: inputData.VehicleCategory;
 			for (uint i = 0; i < gearsInput.Count; i++) {
 				var gear = gearsInput[(int)i];
-				var lossMap = CreateGearLossMap(gear, i, false);
+				var lossMap = CreateGearLossMap(gear, i, false, vehicleCategory, gearbox.Type);
 
 				var shiftPolygon = DeclarationData.Gearbox.ComputeShiftPolygon(gearbox.Type, (int)i, engine.FullLoadCurves[i + 1],
 					gearsInput, engine,

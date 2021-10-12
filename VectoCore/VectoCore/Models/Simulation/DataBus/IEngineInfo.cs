@@ -56,5 +56,7 @@ namespace TUGraz.VectoCore.Models.Simulation.DataBus
 		PerSecond EngineN95hSpeed { get; }
 
 		PerSecond EngineN80hSpeed { get; }
+
+		bool EngineOn { get; }
 	}
 }

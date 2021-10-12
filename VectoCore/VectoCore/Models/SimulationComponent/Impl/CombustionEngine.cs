@@ -94,6 +94,16 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		#region IEngineCockpit
 
+		public virtual bool EngineOn
+		{
+			get { return PreviousState.EngineOn; }
+		}
+
+		public virtual bool CombustionEngineOn {
+			get => true;
+			set { }
+		}
+
 		public PerSecond EngineSpeed
 		{
 			get { return PreviousState.EngineSpeed; }
@@ -160,7 +170,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		#region ITnOutPort
 
-		public IResponse Request(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, bool dryRun)
+		public virtual IResponse Request(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, bool dryRun)
 		{
 			IterationStatistics.Increment(this, "Requests");
 
@@ -198,8 +208,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			var auxTorqueDemand = EngineAux == null
 				? 0.SI<NewtonMeter>()
-				: EngineAux.TorqueDemand(absTime, dt, torqueOut,
-					torqueOut + inertiaTorqueLoss, angularVelocity, dryRun);
+				: EngineAux.TorqueDemand(absTime, dt, torqueOut, angularVelocity, dryRun);
 			// compute the torque the engine has to provide. powertrain + aux + its own inertia
 			var totalTorqueDemand = torqueOut + auxTorqueDemand + inertiaTorqueLoss;
 
@@ -409,7 +418,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		#region VectoSimulationComponent
 
-		protected override void DoWriteModalResults(IModalDataContainer container)
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
 			ValidatePowerDemand(CurrentState.EngineTorque, CurrentState.DynamicFullLoadTorque, CurrentState.FullDragTorque);
 
@@ -432,45 +441,45 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			container[ModalResultField.P_eng_drag] = CurrentState.FullDragTorque * avgEngineSpeed;
 			container[ModalResultField.Tq_full] = CurrentState.DynamicFullLoadTorque;
 			container[ModalResultField.Tq_drag] = CurrentState.FullDragTorque;
+			container[ModalResultField.ICEOn] = CurrentState.EngineOn;
 
 			WriteWHRPower(container, avgEngineSpeed, CurrentState.EngineTorque);
 
 			foreach (var fuel in ModelData.Fuels) {
-				var result = fuel.ConsumptionMap.GetFuelConsumption(CurrentState.EngineTorque, avgEngineSpeed,
+				var result = fuel.ConsumptionMap.GetFuelConsumption(
+					CurrentState.EngineTorque, avgEngineSpeed,
 					DataBus.ExecutionMode != ExecutionMode.Declaration);
 				var fuelData = fuel.FuelData;
 				if (DataBus.ExecutionMode != ExecutionMode.Declaration && result.Extrapolated) {
 					Log.Warn(
-						"FuelConsumptionMap was extrapolated: range for FC-Map is not sufficient: n: {0}, torque: {1}",
-						avgEngineSpeed.Value(), CurrentState.EngineTorque.Value());
+						"FuelConsumptionMap for fuel {2} was extrapolated: range for FC-Map is not sufficient: n: {0}, torque: {1}",
+						avgEngineSpeed.Value(), CurrentState.EngineTorque.Value(), fuelData.FuelType.GetLabel());
 				}
-
 				var pt1 = ModelData.FullLoadCurves[DataBus.GearboxInfo.Gear.Gear].PT1(avgEngineSpeed);
 				if (DataBus.ExecutionMode == ExecutionMode.Declaration && pt1.Extrapolated) {
-					Log.Error("requested rpm below minimum rpm in pt1 - extrapolating. n_eng_avg: {0}",
+					Log.Error(
+						"requested rpm below minimum rpm in pt1 - extrapolating. n_eng_avg: {0}",
 						avgEngineSpeed);
 				}
 
 				var fc = result.Value;
-				var fcNCVcorr = fc * fuelData.HeatingValueCorrection;
+				var fcNCVcorr = fc * fuelData.HeatingValueCorrection; // TODO: wird fcNCVcorr
 
-				var fcWHTC = fcNCVcorr * WHTCCorrectionFactor(fuelData);
-				var fcAAUX = fcWHTC;
+				var fcWHTC = fcNCVcorr * WHTCCorrectionFactor(fuel.FuelData);
+				//var fcAAUX = fcWHTC;
 				var advancedAux = EngineAux as BusAuxiliariesAdapter;
 				if (advancedAux != null) {
-					advancedAux.DoWriteModalResults(container);
-					fcAAUX = advancedAux.AAuxFuelConsumption;
+					advancedAux.DoWriteModalResultsICE(time, simulationInterval, container);
+					//fcAAUX = advancedAux.AAuxFuelConsumption;
 				}
+				var fcFinal = fcWHTC; // fcAAUX;
 
-				var fcADAS = fcAAUX; // * ModelData.ADASCorrectionFactor;
-				var fcFinal = fcADAS;
-
-				container[ModalResultField.FCMap] = fc;
-				container[ModalResultField.FCNCVc] = fcNCVcorr;
-				container[ModalResultField.FCWHTCc] = fcWHTC;
-				container[ModalResultField.FCAAUX] = fcAAUX;
-				container[ModalResultField.FCADAS] = fcADAS;
-				container[ModalResultField.FCFinal] = fcFinal;
+				container[ModalResultField.FCMap, fuelData] = fc;
+				container[ModalResultField.FCNCVc, fuel.FuelData] = fcNCVcorr;
+				container[ModalResultField.FCWHTCc, fuel.FuelData] = fcWHTC;
+				//container[ModalResultField.FCAAUX, fuel.FuelData] = fcAAUX;
+				//container[ModalResultField.FCICEStopStart, fuel.FuelData] = fcFinal;
+				container[ModalResultField.FCFinal, fuel.FuelData] = fcFinal;
 			}
 		}
 
@@ -514,7 +523,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			return ModelData.Fuels.First(x => x.FuelData.FuelType == fuel.FuelType).FuelConsumptionCorrectionFactor;
 		}
 
-		protected override void DoCommitSimulationStep()
+		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)
 		{
 			AdvanceState();
 			var advancedAux = EngineAux as BusAuxiliariesAdapter;
@@ -605,6 +614,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			public NewtonMeter DynamicFullLoadTorque { get; set; }
 
 			public NewtonMeter FullDragTorque { get; set; }
+
+			public bool EngineOn { get; set; }
 		}
 
 		protected internal class CombustionEngineIdleController : LoggingObject, IIdleController

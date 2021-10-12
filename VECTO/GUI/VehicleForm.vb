@@ -50,8 +50,9 @@ Public Class VehicleForm
 	Public AutoSendTo As Boolean = False
 	Public JobDir As String = ""
 	Private _torqueLimitDlog As VehicleTorqueLimitDialog
+    Public VehicleType As VectoSimulationJobType
 
-	'Close - Check for unsaved changes
+    'Close - Check for unsaved changes
 	Private Sub VehicleFormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
 		If e.CloseReason <> CloseReason.ApplicationExitCall And e.CloseReason <> CloseReason.WindowsShutDown Then
 			e.Cancel = ChangeCheckCancel()

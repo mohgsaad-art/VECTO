@@ -33,6 +33,9 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using TUGraz.VectoCommon.BusAuxiliaries;
+using TUGraz.VectoCommon.Exceptions;
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Data;
@@ -46,11 +49,52 @@ namespace TUGraz.VectoCore.Tests.Utils
 	/// </summary>
 	internal class MockModalDataContainer : IModalDataContainer
 	{
+		protected Dictionary<IFuelProperties, Dictionary<ModalResultField, DataColumn>> FuelColumns =
+			new Dictionary<IFuelProperties, Dictionary<ModalResultField, DataColumn>>();
+
 		public MockModalDataContainer()
 		{
 			Data = new ModalResults();
+
+			foreach (var value in EnumHelper.GetValues<ModalResultField>()) {
+				if (ModalDataContainer.FuelConsumptionSignals.Contains(value)) {
+					continue;
+				}
+
+				var col = new DataColumn(value.GetName(), value.GetAttribute().DataType) { Caption = value.GetCaption() };
+				col.ExtendedProperties[ModalResults.ExtendedPropertyNames.Decimals] = value.GetAttribute().Decimals;
+				col.ExtendedProperties[ModalResults.ExtendedPropertyNames.OutputFactor] = value.GetAttribute().OutputFactor;
+				col.ExtendedProperties[ModalResults.ExtendedPropertyNames.ShowUnit] = value.GetAttribute().ShowUnit;
+				Data.Columns.Add(col);
+			}
+
 			CurrentRow = Data.NewRow();
 			Auxiliaries = new Dictionary<string, DataColumn>();
+
+			AddFuels(new IFuelProperties[] { VectoCore.Models.Declaration.FuelData.Diesel }.ToList());
+		}
+
+		protected void AddFuels(List<IFuelProperties> fuels)
+		{
+			foreach (var entry in fuels) {
+				if (FuelColumns.ContainsKey(entry)) {
+					throw new VectoException("Fuel {0} already added!", entry.FuelType.GetLabel());
+				}
+
+				FuelColumns[entry] = new Dictionary<ModalResultField, DataColumn>();
+				foreach (var fcCol in ModalDataContainer.FuelConsumptionSignals) {
+					var col = Data.Columns.Add(
+						fuels.Count == 1 ? fcCol.GetName() : $"{fcCol.GetName()}_{entry.FuelType.GetLabel()}",
+						typeof(SI));
+					col.ExtendedProperties[ModalResults.ExtendedPropertyNames.Decimals] =
+						fcCol.GetAttribute().Decimals;
+					col.ExtendedProperties[ModalResults.ExtendedPropertyNames.OutputFactor] =
+						fcCol.GetAttribute().OutputFactor;
+					col.ExtendedProperties[ModalResults.ExtendedPropertyNames.ShowUnit] =
+						fcCol.GetAttribute().ShowUnit;
+					FuelColumns[entry][fcCol] = col;
+				}
+			}
 		}
 
 		public ModalResults Data { get; set; }
@@ -59,6 +103,24 @@ namespace TUGraz.VectoCore.Tests.Utils
 		public string ModFileName
 		{
 			get { return ""; }
+		}
+
+		public object this[ModalResultField key, IFuelProperties fuel] {
+			get {
+				try {
+					return CurrentRow[FuelColumns[fuel][key]];
+				} catch (KeyNotFoundException e) {
+					throw new VectoException($"unknown fuel {fuel.GetLabel()} for key {key.GetName()}", e);
+				}
+
+			}
+			set {
+				try {
+					CurrentRow[FuelColumns[fuel][key]] = value;
+				} catch (KeyNotFoundException e) {
+					throw new VectoException($"unknown fuel {fuel.GetLabel()} for key {key.GetName()}", e);
+				}
+			}
 		}
 
 		public object this[string auxId]
@@ -149,6 +211,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 		{
 
 		}
+
+		public Func<Second, Joule, Joule> AuxHeaterDemandCalc { get; set; }
 
 		public string RunName { get; set; }
 		public string CycleName { get; set; }

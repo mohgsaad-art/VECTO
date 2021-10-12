@@ -32,17 +32,24 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
+using TUGraz.VectoCore.Models.BusAuxiliaries;
+using TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl.Electrics;
+using TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl.HVAC;
+using TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl.Pneumatics;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Data;
+using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Engine;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
+using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 {
@@ -225,13 +232,33 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			return retVal;
 		}
 
-		internal GearboxData CreateGearboxData(IGearboxEngineeringInputData gearbox, CombustionEngineData engineData, IGearshiftEngineeringInputData gearshiftData, double axlegearRatio, Meter dynamicTyreRadius, VehicleCategory vehicleCategory, ITorqueConverterEngineeringInputData torqueConverter)
+		internal GearboxData CreateGearboxData(IEngineeringInputDataProvider inputData, VectoRunData runData, IShiftPolygonCalculator shiftPolygonCalc)
+		//IGearboxEngineeringInputData gearbox, CombustionEngineData engineData, IGearshiftEngineeringInputData gearshiftData,
+		//double axlegearRatio, Meter dynamicTyreRadius, VehicleCategory vehicleCategory,
+		//ITorqueConverterEngineeringInputData torqueConverter, IShiftPolygonCalculator shiftPolygonCalc, IAdvancedDriverAssistantSystemDeclarationInputData adas)
 		{
+			var vehicle = inputData.JobInputData.Vehicle;
+			var gearbox = vehicle.Components.GearboxInputData;
+			var torqueConverter = vehicle.Components.TorqueConverterInputData;
+
+			var adas = vehicle.ADAS;
+			var gearshiftData = inputData.DriverInputData.GearshiftInputData;
+
+			var engineData = runData.EngineData;
+			var axlegearRatio = runData.AxleGearData.AxleGear.Ratio;
+			var dynamicTyreRadius = runData.VehicleData.DynamicTyreRadius;
+			var vehicleCategory = runData.VehicleData.VehicleCategory;
+
 			if (gearbox.SavedInDeclarationMode) {
 				WarnEngineeringMode("GearboxData");
 			}
 
 			var retVal = SetCommonGearboxData(gearbox);
+
+			if (adas != null && adas.EcoRoll != EcoRollType.None && retVal.Type.AutomaticTransmission() && !adas.ATEcoRollReleaseLockupClutch.HasValue) {
+				throw new VectoException("Parameter ATEcoRollReleaseLockupClutch required for AT gearbox");
+			}
+			retVal.ATEcoRollReleaseLockupClutch = adas != null && adas.EcoRoll != EcoRollType.None && retVal.Type.AutomaticTransmission() ? adas.ATEcoRollReleaseLockupClutch.Value : false;
 
 			//var gears = gearbox.Gears;
 			if (gearbox.Gears.Count < 2) {
@@ -253,13 +280,19 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			}
 			for (uint i = 0; i < gearbox.Gears.Count; i++) {
 				var gear = gearbox.Gears[(int)i];
-				var lossMap = CreateGearLossMap(gear, i, true);
+				var lossMap = CreateGearLossMap(gear, i, true, VehicleCategory.Unknown, gearbox.Type);
 
 				var shiftPolygon = gear.ShiftPolygon != null && gear.ShiftPolygon.SourceType != DataSourceType.Missing
 					? ShiftPolygonReader.Create(gear.ShiftPolygon)
-					: DeclarationData.Gearbox.ComputeShiftPolygon(gearbox.Type, (int)i, engineData.FullLoadCurves[i + 1], gearbox.Gears,
-						engineData,
-						axlegearRatio, dynamicTyreRadius);
+					: shiftPolygonCalc != null
+						? shiftPolygonCalc.ComputeDeclarationShiftPolygon(
+							gearbox.Type, (int)i, engineData?.FullLoadCurves[i + 1], gearbox.Gears,
+							engineData,
+							axlegearRatio, dynamicTyreRadius)
+						: DeclarationData.Gearbox.ComputeShiftPolygon(
+							gearbox.Type, (int)i, engineData?.FullLoadCurves[i + 1], gearbox.Gears,
+							engineData,
+							axlegearRatio, dynamicTyreRadius);
 				var gearData = new GearData {
 					ShiftPolygon = shiftPolygon,
 					MaxSpeed = gear.MaxInputSpeed,
@@ -270,16 +303,17 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				CreateATGearData(gearbox, i, gearData, tcShiftPolygon, gearDifferenceRatio, gears, vehicleCategory);
 				gears.Add(i + 1, gearData);
 			}
+
 			retVal.Gears = gears;
 
 			if (retVal.Type.AutomaticTransmission()) {
 				var ratio = double.IsNaN(retVal.Gears[1].Ratio) ? 1 : retVal.Gears[1].TorqueConverterRatio / retVal.Gears[1].Ratio;
 				retVal.PowershiftShiftTime = gearbox.PowershiftShiftTime;
-				retVal.TorqueConverterData = TorqueConverterDataReader.Create(torqueConverter.TCData,
+				retVal.TorqueConverterData = TorqueConverterDataReader.Create(
+					torqueConverter.TCData,
 					torqueConverter.ReferenceRPM, torqueConverter.MaxInputSpeed, ExecutionMode.Engineering, ratio,
 					gearshiftData.CLUpshiftMinAcceleration, gearshiftData.CCUpshiftMinAcceleration);
 			}
-
 
 			return retVal;
 		}
@@ -336,49 +370,23 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 		public IList<VectoRunData.AuxData> CreateAuxiliaryData(IAuxiliariesEngineeringInputData auxInputData)
 		{
-			var auxList = new List<VectoRunData.AuxData>(auxInputData.Auxiliaries.Count + 1) {
-				new VectoRunData.AuxData { ID = Constants.Auxiliaries.Cycle, DemandType = AuxiliaryDemandType.Direct }
+			var pwrICEOn = auxInputData.Auxiliaries.ConstantPowerDemand;
+			var pwrICEOffDriving = auxInputData.Auxiliaries.PowerDemandICEOffDriving;
+			var pwrICEOffStandstill = auxInputData.Auxiliaries.PowerDemandICEOffStandstill;
+
+			var baseDemand = pwrICEOffStandstill;
+			var stpDemand = pwrICEOffDriving - pwrICEOffStandstill;
+			var fanDemand = pwrICEOn - pwrICEOffDriving;
+
+			var auxList = new List<VectoRunData.AuxData>() {
+				new VectoRunData.AuxData { ID = Constants.Auxiliaries.IDs.ENG_AUX_MECH_BASE, DemandType = AuxiliaryDemandType.Constant, PowerDemand = baseDemand},
+				new VectoRunData.AuxData { ID = Constants.Auxiliaries.IDs.ENG_AUX_MECH_STP, DemandType = AuxiliaryDemandType.Constant, PowerDemand = stpDemand},
+				new VectoRunData.AuxData { ID = Constants.Auxiliaries.IDs.ENG_AUX_MECH_FAN, DemandType = AuxiliaryDemandType.Constant, PowerDemand = fanDemand},
 			};
 
-			foreach (var a in auxInputData.Auxiliaries) {
-				switch (a.AuxiliaryType) {
-					case AuxiliaryDemandType.Mapping:
-						auxList.Add(CreateMappingAuxiliary(a));
-						break;
-					case AuxiliaryDemandType.Constant:
-						auxList.Add(CreateConstantAuxiliary(a));
-						break;
-					default:
-						throw new VectoException("Auxiliary type {0} not supported!", a.AuxiliaryType);
-				}
-			}
 			return auxList;
 		}
 
-		private static VectoRunData.AuxData CreateMappingAuxiliary(IAuxiliaryEngineeringInputData a)
-		{
-			if (a.DemandMap == null) {
-				throw new VectoSimulationException("Demand Map for auxiliary {0} required", a.ID);
-			}
-			if (a.DemandMap.Columns.Count != 3 || a.DemandMap.Rows.Count < 4) {
-				throw new VectoSimulationException(
-					"Demand Map for auxiliary {0} has to contain exactly 3 columns and at least 4 rows", a.ID);
-			}
-			return new VectoRunData.AuxData {
-				ID = a.ID,
-				DemandType = AuxiliaryDemandType.Mapping,
-				Data = AuxiliaryDataReader.Create(a)
-			};
-		}
-
-		private static VectoRunData.AuxData CreateConstantAuxiliary(IAuxiliaryEngineeringInputData a)
-		{
-			return new VectoRunData.AuxData {
-				ID = a.ID,
-				DemandType = AuxiliaryDemandType.Constant,
-				PowerDemand = a.ConstantPowerDemand
-			};
-		}
 
 		internal DriverData CreateDriverData(IDriverEngineeringInputData driver)
 		{
@@ -439,13 +447,226 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			return null;
 		}
 
-		public AdvancedAuxData CreateAdvancedAuxData(IAuxiliariesEngineeringInputData auxInputData)
+		public IAuxiliaryConfig CreateBusAuxiliariesData(IAuxiliariesEngineeringInputData auxInputData,
+			VehicleData vehicleData, VectoSimulationJobType jobType)
 		{
-			return new AdvancedAuxData() {
-				AdvancedAuxiliaryFilePath = auxInputData.AdvancedAuxiliaryFilePath,
-				AuxiliaryAssembly = auxInputData.AuxiliaryAssembly,
-				AuxiliaryVersion = auxInputData.AuxiliaryVersion
+			if (auxInputData == null || auxInputData.BusAuxiliariesData == null) {
+				return null;
+			}
+
+			var busAux = auxInputData.BusAuxiliariesData;
+			//return jobType == VectoSimulationJobType.BatteryElectricVehicle
+			//	? GetBatteryElectricBusAuxiliariesData(vehicleData, busAux)
+			//	: GetBusAuxiliariesData(vehicleData, busAux);
+			return GetBusAuxiliariesData(vehicleData, busAux);
+		}
+
+		private IAuxiliaryConfig GetBusAuxiliariesData(VehicleData vehicleData, IBusAuxiliariesEngineeringData busAux)
+		{
+			return new AuxiliaryConfig() {
+				//InputData = auxInputData.BusAuxiliariesData,
+				ElectricalUserInputsConfig = new ElectricsUserInputsConfig() {
+					PowerNetVoltage = Constants.BusAuxiliaries.ElectricSystem.PowernetVoltage,
+					//StoredEnergyEfficiency = Constants.BusAuxiliaries.ElectricSystem.StoredEnergyEfficiency,
+					ResultCardIdle = new DummyResultCard(),
+					ResultCardOverrun = new DummyResultCard(),
+					ResultCardTraction = new DummyResultCard(),
+					AlternatorGearEfficiency = Constants.BusAuxiliaries.ElectricSystem.AlternatorGearEfficiency,
+					DoorActuationTimeSecond = Constants.BusAuxiliaries.ElectricalConsumers.DoorActuationTimeSecond,
+					AlternatorMap = new SimpleAlternator(busAux.ElectricSystem.AlternatorEfficiency),
+					AlternatorType =
+						busAux.ElectricSystem.ESSupplyFromHEVREESS &&
+						busAux.ElectricSystem.AlternatorType != AlternatorType.Smart
+							? AlternatorType.None
+							: busAux.ElectricSystem.AlternatorType,
+					ConnectESToREESS = busAux.ElectricSystem.ESSupplyFromHEVREESS,
+					DCDCEfficiency = busAux.ElectricSystem.DCDCConverterEfficiency.LimitTo(0, 1),
+					MaxAlternatorPower = busAux.ElectricSystem.MaxAlternatorPower,
+					ElectricStorageCapacity = busAux.ElectricSystem.ElectricStorageCapacity ?? 0.SI<WattSecond>(),
+					StoredEnergyEfficiency = busAux.ElectricSystem.ElectricStorageEfficiency,
+					ElectricalConsumers = GetElectricConsumers(busAux.ElectricSystem)
+				},
+				PneumaticAuxillariesConfig = new PneumaticsConsumersDemand() {
+					AdBlueInjection = 0.SI<NormLiterPerSecond>(),
+					AirControlledSuspension = busAux.PneumaticSystem.AverageAirConsumed,
+					Braking = 0.SI<NormLiterPerKilogram>(),
+					BreakingWithKneeling = 0.SI<NormLiterPerKilogramMeter>(),
+					DeadVolBlowOuts = 0.SI<PerSecond>(),
+					DeadVolume = 0.SI<NormLiter>(),
+					NonSmartRegenFractionTotalAirDemand = 0,
+					SmartRegenFractionTotalAirDemand = 0,
+					OverrunUtilisationForCompressionFraction =
+						Constants.BusAuxiliaries.PneumaticConsumersDemands.OverrunUtilisationForCompressionFraction,
+					DoorOpening = 0.SI<NormLiter>(),
+					StopBrakeActuation = 0.SI<NormLiterPerKilogram>(),
+				},
+				PneumaticUserInputsConfig = new PneumaticUserInputsConfig() {
+					CompressorMap =
+						new CompressorMap(CompressorMapReader.Create(busAux.PneumaticSystem.CompressorMap, 1.0),
+							"engineering mode", busAux.PneumaticSystem.CompressorMap.Source),
+					CompressorGearEfficiency = Constants.BusAuxiliaries.PneumaticUserConfig.CompressorGearEfficiency,
+					CompressorGearRatio = busAux.PneumaticSystem.GearRatio,
+					SmartAirCompression = busAux.PneumaticSystem.SmartAirCompression,
+					SmartRegeneration = false,
+					KneelingHeight = 0.SI<Meter>(),
+					AirSuspensionControl = ConsumerTechnology.Pneumatically,
+					AdBlueDosing = ConsumerTechnology.Electrically,
+					Doors = ConsumerTechnology.Electrically
+				},
+				Actuations = new Actuations() {
+					Braking = 0,
+					Kneeling = 0,
+					ParkBrakeAndDoors = 0,
+					CycleTime = 1.SI<Second>()
+				},
+				SSMInputs = new SSMEngineeringInputs() {
+					MechanicalPower = busAux.HVACData.MechanicalPowerDemand,
+					ElectricPower = busAux.HVACData.ElectricalPowerDemand,
+					AuxHeaterPower = busAux.HVACData.AuxHeaterPower,
+					HeatingDemand = busAux.HVACData.AverageHeatingDemand,
+					AuxHeaterEfficiency = Constants.BusAuxiliaries.SteadyStateModel.AuxHeaterEfficiency,
+					FuelEnergyToHeatToCoolant = Constants.BusAuxiliaries.Heater.FuelEnergyToHeatToCoolant,
+					CoolantHeatTransferredToAirCabinHeater =
+						Constants.BusAuxiliaries.Heater.CoolantHeatTransferredToAirCabinHeater,
+				},
+				VehicleData = vehicleData,
 			};
+		}
+
+		private Dictionary<string, ElectricConsumerEntry> GetElectricConsumers(IBusAuxElectricSystemEngineeringData busAuxElectricSystem)
+		{
+			var retVal = new Dictionary<string, ElectricConsumerEntry>();
+
+			var iBase = busAuxElectricSystem.CurrentDemandEngineOffStandstill;
+			var iSP = busAuxElectricSystem.CurrentDemandEngineOffDriving -
+					busAuxElectricSystem.CurrentDemandEngineOffStandstill;
+			var iFan = busAuxElectricSystem.CurrentDemand - busAuxElectricSystem.CurrentDemandEngineOffDriving;
+
+			retVal["BaseLoad"] = new ElectricConsumerEntry() {
+				Current = iBase,
+				BaseVehicle = true
+			};
+			retVal[Constants.Auxiliaries.IDs.SteeringPump] = new ElectricConsumerEntry() {
+				Current = iSP,
+				ActiveDuringEngineStopStandstill = false,
+			};
+			retVal[Constants.Auxiliaries.IDs.Fan] = new ElectricConsumerEntry() {
+				Current = iFan,
+				ActiveDuringEngineStopStandstill = false,
+				ActiveDuringEngineStopDriving = false,
+			};
+			return retVal;
+		}
+
+		public ShiftStrategyParameters CreateGearshiftData(GearboxType gbxType, IGearshiftEngineeringInputData gsInputData, double axleRatio, PerSecond engineIdlingSpeed)
+		{
+			if (gsInputData == null) {
+				return null;
+			}
+
+			var retVal = new ShiftStrategyParameters {
+				TorqueReserve = gsInputData.TorqueReserve,
+				StartTorqueReserve = gsInputData.StartTorqueReserve,
+				TimeBetweenGearshifts = gsInputData.MinTimeBetweenGearshift,
+				StartSpeed = gsInputData.StartSpeed,
+				DownshiftAfterUpshiftDelay = gsInputData.DownshiftAfterUpshiftDelay,
+				UpshiftAfterDownshiftDelay = gsInputData.UpshiftAfterDownshiftDelay,
+				UpshiftMinAcceleration = gsInputData.UpshiftMinAcceleration,
+
+				StartVelocity = gsInputData.StartSpeed ?? DeclarationData.GearboxTCU.StartSpeed,
+				StartAcceleration = gsInputData.StartAcceleration ?? DeclarationData.GearboxTCU.StartAcceleration,
+				//GearResidenceTime = gsInputData.GearResidenceTime ?? DeclarationData.GearboxTCU.GearResidenceTime,
+				//DnT99L_highMin1 = gsInputData.DnT99LHMin1 ?? DeclarationData.GearboxTCU.DnT99L_highMin1,
+				//DnT99L_highMin2 = gsInputData.DnT99LHMin2 ?? DeclarationData.GearboxTCU.DnT99L_highMin2,
+				//AllowedGearRangeUp = gsInputData.AllowedGearRangeUp ?? DeclarationData.GearboxTCU.AllowedGearRangeUp,
+				//AllowedGearRangeDown = gsInputData.AllowedGearRangeDown ?? DeclarationData.GearboxTCU.AllowedGearRangeDown,
+				//LookBackInterval = gsInputData.LookBackInterval ?? DeclarationData.GearboxTCU.LookBackInterval,
+				//DriverAccelerationLookBackInterval = gsInputData.DriverAccelerationLookBackInterval ?? DeclarationData.GearboxTCU.DriverAccelerationLookBackInterval,
+				//DriverAccelerationThresholdLow = gsInputData.DriverAccelerationThresholdLow ?? DeclarationData.GearboxTCU.DriverAccelerationThresholdLow,
+				//AverageCardanPowerThresholdPropulsion = gsInputData.AvgCardanPowerThresholdPropulsion ??
+				//										DeclarationData.GearboxTCU.AverageCardanPowerThresholdPropulsion,
+				//CurrentCardanPowerThresholdPropulsion = gsInputData.CurrCardanPowerThresholdPropulsion ??
+				//										DeclarationData.GearboxTCU.CurrentCardanPowerThresholdPropulsion,
+				//TargetSpeedDeviationFactor = gsInputData.TargetSpeedDeviationFactor ?? DeclarationData.GearboxTCU.TargetSpeedDeviationFactor,
+				//EngineSpeedHighDriveOffFactor = gsInputData.EngineSpeedHighDriveOffFactor ?? DeclarationData.GearboxTCU.EngineSpeedHighDriveOffFactor,
+				//AccelerationReserveLookup = AccelerationReserveLookupReader.Create(gsInputData.AccelerationReserveLookup) ??
+				//							AccelerationReserveLookupReader.ReadFromStream(
+				//								RessourceHelper.ReadStream(
+				//									DeclarationData.DeclarationDataResourcePrefix + ".GearshiftParameters.AccelerationReserveLookup.csv")),
+				//ShareTorque99L = ShareTorque99lLookupReader.Create(gsInputData.ShareTorque99L) ??
+				//				ShareTorque99lLookupReader.ReadFromStream(
+				//					RessourceHelper.ReadStream(
+				//						DeclarationData.DeclarationDataResourcePrefix + ".GearshiftParameters.ShareTq99L.csv")
+				//				),
+				//PredictionDurationLookup = PredictionDurationLookupReader.Create(gsInputData.PredictionDurationLookup) ??
+				//							PredictionDurationLookupReader.ReadFromStream(
+				//								RessourceHelper.ReadStream(
+				//									DeclarationData.DeclarationDataResourcePrefix + ".GearshiftParameters.PredictionTimeLookup.csv")
+				//							),
+				//ShareIdleLow = ShareIdleLowReader.Create(gsInputData.ShareIdleLow) ?? ShareIdleLowReader.ReadFromStream(
+				//					RessourceHelper.ReadStream(
+				//						DeclarationData.DeclarationDataResourcePrefix + ".GearshiftParameters.ShareIdleLow.csv")
+				//				),
+				//ShareEngineHigh = EngineSpeedHighLookupReader.Create(gsInputData.ShareEngineHigh) ??
+				//				EngineSpeedHighLookupReader.ReadFromStream(
+				//					RessourceHelper.ReadStream(
+				//						DeclarationData.DeclarationDataResourcePrefix + ".GearshiftParameters.ShareEngineSpeedHigh.csv")
+				//				),
+				//---------------
+				RatingFactorCurrentGear = gsInputData.RatingFactorCurrentGear ?? (gbxType.AutomaticTransmission()
+											? DeclarationData.GearboxTCU.RatingFactorCurrentGearAT
+											: DeclarationData.GearboxTCU.RatingFactorCurrentGear),
+
+				RatioEarlyUpshiftFC = (gsInputData.RatioEarlyUpshiftFC ?? DeclarationData.GearboxTCU.RatioEarlyUpshiftFC) / axleRatio,
+				RatioEarlyDownshiftFC = (gsInputData.RatioEarlyDownshiftFC ?? DeclarationData.GearboxTCU.RatioEarlyDownshiftFC) / axleRatio,
+				AllowedGearRangeFC = gsInputData.AllowedGearRangeFC ?? (gbxType.AutomaticTransmission() ? DeclarationData.GearboxTCU.AllowedGearRangeFCAT : DeclarationData.GearboxTCU.AllowedGearRangeFCAMT),
+				VelocityDropFactor = gsInputData.VeloictyDropFactor ?? DeclarationData.GearboxTCU.VelocityDropFactor,
+				AccelerationFactor = gsInputData.AccelerationFactor ?? DeclarationData.GearboxTCU.AccelerationFactor,
+				MinEngineSpeedPostUpshift = gsInputData.MinEngineSpeedPostUpshift ?? DeclarationData.GearboxTCU.MinEngineSpeedPostUpshift,
+				ATLookAheadTime = gsInputData.ATLookAheadTime ?? DeclarationData.GearboxTCU.ATLookAheadTime,
+
+				LoadStageThresoldsDown = gsInputData.LoadStageThresholdsDown?.ToArray() ?? DeclarationData.GearboxTCU.LoadStageThresoldsDown,
+				LoadStageThresoldsUp = gsInputData.LoadStageThresholdsUp?.ToArray() ?? DeclarationData.GearboxTCU.LoadStageThresholdsUp,
+				ShiftSpeedsTCToLocked = engineIdlingSpeed == null ? null : (gsInputData.ShiftSpeedsTCToLocked ?? DeclarationData.GearboxTCU.ShiftSpeedsTCToLocked).Select(x => x.Select(y => y + engineIdlingSpeed.AsRPM).ToArray()).ToArray(),
+
+				// voith gs parameters
+
+				//GearshiftLines = gsInputData.LoadStageShiftLines,
+
+				LoadstageThresholds = gsInputData.LoadStageThresholdsUp != null && gsInputData.LoadStageThresholdsDown != null ? gsInputData.LoadStageThresholdsUp.Zip(gsInputData.LoadStageThresholdsDown, Tuple.Create) : null
+			};
+
+			//if (gsInputData.PEV_DeRatingDownshiftSpeedFactor != null) {
+			//	retVal.PEV_DeRatedDownshiftSpeedFactor = gsInputData.PEV_DeRatingDownshiftSpeedFactor.Value;
+			//}
+
+			//if (gsInputData.PEV_TargetSpeedBrakeNorm != null) {
+			//	retVal.PEV_TargetSpeedBrakeNorm = gsInputData.PEV_TargetSpeedBrakeNorm.Value;
+			//}
+
+			//if (gsInputData.PEV_DownshiftMinSpeedFactor != null) {
+			//	retVal.PEV_DownshiftMinSpeedFactor = gsInputData.PEV_DownshiftMinSpeedFactor.Value;
+			//}
+
+			return retVal;
+		}
+
+
+		public class ElectricConsumerEntry
+		{
+
+			public ElectricConsumerEntry()
+			{
+				ActiveDuringEngineStopStandstill = true;
+				ActiveDuringEngineStopDriving = true;
+			}
+
+			public bool ActiveDuringEngineStopDriving { get; set; }
+
+			public bool ActiveDuringEngineStopStandstill { get; set; }
+
+			public bool BaseVehicle { get; set; }
+			public Ampere Current { get; set; }
 		}
 	}
 }

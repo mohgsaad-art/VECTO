@@ -90,9 +90,8 @@ namespace TUGraz.VectoCore.OutputData
 			//ClearAggregateResults();
 		}
 
-		public bool WriteAdvancedAux { get; set; }
-
-
+		public Func<Second, Joule, Joule> AuxHeaterDemandCalc { get; set; }
+		
 		public static readonly IList<ModalResultField> FuelConsumptionSignals = new[] {
 			ModalResultField.FCMap, ModalResultField.FCNCVc, ModalResultField.FCWHTCc, // ModalResultField.FCAAUX,
 			/*ModalResultField.FCICEStopStart,*/ ModalResultField.FCFinal
@@ -170,16 +169,19 @@ namespace TUGraz.VectoCore.OutputData
 
 			var dataColumns = GetOutputColumns();
 
-			var strCols = dataColumns.Select(x => x.GetName())
-				.Concat(Auxiliaries.Values.Select(c => c.ColumnName))
+			var strCols = dataColumns.Concat(Auxiliaries.Values.Where(x => !x.ColumnName.Contains("P_aux_ENG_AUX_"))
+					.Select(c => c.ColumnName))
 				.Concat(
 					new[] {
-						ModalResultField.FCMap, ModalResultField.FCNCVc, ModalResultField.FCWHTCc,
-						ModalResultField.FCAAUX, ModalResultField.FCADAS, ModalResultField.FCFinal
-					}.Select(x => x.GetName()));
+						ModalResultField.P_WHR_el_map, ModalResultField.P_WHR_el_corr, ModalResultField.P_WHR_mech_map,
+						ModalResultField.P_WHR_mech_corr, ModalResultField.P_aux_ESS_mech_ice_off, ModalResultField.P_aux_ESS_mech_ice_on,
+						ModalResultField.P_ice_start, ModalResultField.ICEOn //, ModalResultField.altitude
+					}.Select(x => x.GetName()))
+				.Concat(FuelColumns.SelectMany(kv => kv.Value.Select(kv2 => kv2.Value.ColumnName)));
 #if TRACE
 			strCols = strCols.Concat(_additionalColumns);
 #endif
+
 			if (WriteModalResults) {
 				var filteredData = Data;
 				foreach (var filter in _filters) {
@@ -199,7 +201,7 @@ namespace TUGraz.VectoCore.OutputData
 			_addReportResult(this);
 		}
 
-		private IEnumerable<ModalResultField> GetOutputColumns()
+		private IList<string> GetOutputColumns()
 		{
 			var dataColumns = new List<ModalResultField> { ModalResultField.time };
             var writeEngineOnly = _runData.JobType == VectoSimulationJobType.EngineOnlySimulation;
@@ -293,31 +295,30 @@ namespace TUGraz.VectoCore.OutputData
 						});
 				}
 			}
-			if (!writeEngineOnly && WriteAdvancedAux) {
+			if (!writeEngineOnly && _runData.BusAuxiliaries != null) {
 				dataColumns.AddRange(
 					new[] {
-						ModalResultField.AA_NonSmartAlternatorsEfficiency,
-						ModalResultField.AA_SmartIdleCurrent_Amps,
-						ModalResultField.AA_SmartIdleAlternatorsEfficiency,
-						ModalResultField.AA_SmartTractionCurrent_Amps,
-						ModalResultField.AA_SmartTractionAlternatorEfficiency,
-						ModalResultField.AA_SmartOverrunCurrent_Amps,
-						ModalResultField.AA_SmartOverrunAlternatorEfficiency,
-						ModalResultField.AA_CompressorFlowRate_LitrePerSec,
-						ModalResultField.AA_OverrunFlag,
-						ModalResultField.AA_EngineIdleFlag,
-						ModalResultField.AA_CompressorFlag,
-						ModalResultField.AA_TotalCycleFC_Grams,
-						ModalResultField.AA_TotalCycleFC_Litres,
-						ModalResultField.AA_AveragePowerDemandCrankHVACMechanicals,
-						ModalResultField.AA_AveragePowerDemandCrankHVACElectricals,
-						ModalResultField.AA_AveragePowerDemandCrankElectrics,
-						ModalResultField.AA_AveragePowerDemandCrankPneumatics,
-						ModalResultField.AA_TotalCycleFuelConsumptionCompressorOff,
-						ModalResultField.AA_TotalCycleFuelConsumptionCompressorOn,
+						ModalResultField.P_busAux_ES_HVAC,
+						ModalResultField.P_busAux_ES_other,
+						ModalResultField.P_busAux_ES_consumer_sum,
+						ModalResultField.P_busAux_ES_sum_mech,
+						ModalResultField.P_busAux_ES_generated,
+						ModalResultField.BatterySOC,
+						ModalResultField.P_busAux_HVACmech_consumer,
+						ModalResultField.P_busAux_HVACmech_gen,
+						ModalResultField.Nl_busAux_PS_consumer,
+						ModalResultField.Nl_busAux_PS_generated,
+						ModalResultField.Nl_busAux_PS_generated_alwaysOn,
+						//ModalResultField.Nl_busAux_PS_generated_dragOnly,
+						ModalResultField.P_busAux_PS_generated,
+						ModalResultField.P_busAux_PS_generated_alwaysOn,
+						ModalResultField.P_busAux_PS_generated_dragOnly,
+						//ModalResultField.P_DCDC_In,
+						//ModalResultField.P_DCDC_Out,
+						//ModalResultField.P_DCDC_missing,
 					});
 			}
-			return dataColumns;
+			return dataColumns.Select(x => x.GetName()).ToList();
 		}
 
 		public IEnumerable<T> GetValues<T>(DataColumn col)
@@ -355,6 +356,23 @@ namespace TUGraz.VectoCore.OutputData
 		{
 			get { return CurrentRow[(int)key]; }
 			set { CurrentRow[(int)key] = value; }
+		}
+
+		public object this[ModalResultField key, IFuelProperties fuel] {
+			get {
+				try {
+					return CurrentRow[FuelColumns[fuel][key]];
+				} catch (KeyNotFoundException e) {
+					throw new VectoException($"unknown fuel {fuel.GetLabel()} for key {key.GetName()}", e);
+				}
+			}
+			set {
+				try {
+					CurrentRow[FuelColumns[fuel][key]] = value;
+				} catch (KeyNotFoundException e) {
+					throw new VectoException($"unknown fuel {fuel.GetLabel()} for key {key.GetName()}", e);
+				}
+			}
 		}
 
 		public object this[string auxId]

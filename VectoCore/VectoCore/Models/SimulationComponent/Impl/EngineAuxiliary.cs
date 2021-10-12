@@ -86,30 +86,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		{
 			Add(auxId, (nEng, absTime, dt, dryRun) => powerLossFunc(DataBus.DrivingCycleInfo.CycleData.LeftSample));
 		}
-
-		/// <summary>
-		/// Adds an auxiliary which calculates the demand based on a aux-map and the engine speed.
-		/// </summary>
-		/// <param name="auxId"></param>
-		/// <param name="data"></param>
-		public void AddMapping(string auxId, AuxiliaryData data)
-		{
-			if (!DataBus.DrivingCycleInfo.CycleData.LeftSample.AuxiliarySupplyPower.ContainsKey(auxId)) {
-				var error = string.Format("driving cycle does not contain column for auxiliary: {0}",
-					Constants.Auxiliaries.Prefix + auxId);
-				Log.Error(error);
-				throw new VectoException(error);
-			}
-
-			Add(auxId, (speed, absTime, dt, dryRun) => {
-				var powerSupply = DataBus.DrivingCycleInfo.CycleData.LeftSample.AuxiliarySupplyPower[auxId];
-				var nAuxiliary = speed * data.TransmissionRatio;
-				var powerAuxOut = powerSupply / data.EfficiencyToSupply;
-				var powerAuxIn = data.GetPowerDemand(nAuxiliary, powerAuxOut);
-				return powerAuxIn / data.EfficiencyToEngine;
-			});
-		}
-
+		
 		/// <summary>
 		/// Adds an auxiliary with a function returning the power demand based on the engine speed.
 		/// </summary>
@@ -140,8 +117,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		/// <param name="angularSpeed"></param>
 		/// <param name="dryRun"></param>
 		/// <returns></returns>
-		public NewtonMeter TorqueDemand(Second absTime, Second dt, NewtonMeter torquePowerTrain, NewtonMeter torqueEngine,
-			PerSecond angularSpeed, bool dryRun = false)
+		public NewtonMeter TorqueDemand(Second absTime, Second dt, NewtonMeter torquePowerTrain, PerSecond angularSpeed, bool dryRun = false)
 		{
 			var avgAngularSpeed = PreviousState.AngularSpeed != null
 				? (angularSpeed + PreviousState.AngularSpeed) / 2.0
@@ -153,6 +129,47 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				return ComputePowerDemand(avgAngularSpeed, absTime, dt, dryRun) / avgAngularSpeed;
 			}
 			return 0.SI<NewtonMeter>();
+		}
+
+		public Watt PowerDemandESSEngineOff(Second absTime, Second dt)
+		{
+
+			var auxiliarieIgnoredDuringVehicleStop = new[] {
+				Constants.Auxiliaries.IDs.SteeringPump, Constants.Auxiliaries.IDs.Fan,
+				Constants.Auxiliaries.IDs.PTOConsumer, Constants.Auxiliaries.IDs.PTOTransmission,
+				Constants.Auxiliaries.IDs.ENG_AUX_MECH_FAN, Constants.Auxiliaries.IDs.ENG_AUX_MECH_STP
+			};
+			var auxiliarieIgnoredDuringDrive = new[] {
+				Constants.Auxiliaries.IDs.Fan,
+				Constants.Auxiliaries.IDs.ENG_AUX_MECH_FAN
+			};
+			var powerDemands = new Dictionary<string, Watt>(Auxiliaries.Count);
+			var engineOffDemand = 0.SI<Watt>();
+			foreach (var item in Auxiliaries) {
+
+				var value = item.Value(DataBus.EngineInfo.EngineIdleSpeed, absTime, dt, true);
+				if (value == null) {
+					continue;
+				}
+
+				powerDemands[item.Key] = value * 0;
+				if (DataBus.VehicleInfo.VehicleStopped) {
+					engineOffDemand += auxiliarieIgnoredDuringVehicleStop.Contains(item.Key)
+						? 0.SI<Watt>()
+						: value ;
+				} else {
+					engineOffDemand += auxiliarieIgnoredDuringDrive.Contains(item.Key)
+						? 0.SI<Watt>()
+						: value ;
+				}
+			}
+			CurrentState.PowerDemands = powerDemands;
+			return engineOffDemand;  //powerDemands.Sum(kv => kv.Value); 
+		}
+
+		public Watt PowerDemandESSEngineOn(Second absTime, Second dt, PerSecond engineSpeed)
+		{
+			return ComputePowerDemand(engineSpeed, absTime, dt, true);
 		}
 
 		protected Watt ComputePowerDemand(PerSecond engineSpeed, Second absTime, Second dt, bool dryRun)
@@ -170,7 +187,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			return powerDemands.Sum(kv => kv.Value);
 		}
 
-		protected override void DoWriteModalResults(IModalDataContainer container)
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
 			var auxPowerDemand = 0.SI<Watt>();
 			var excludedFromAuxSum = new[] {
@@ -212,7 +229,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
 		}
 
-		protected override void DoCommitSimulationStep()
+		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)
 		{
 			AdvanceState();
 		}

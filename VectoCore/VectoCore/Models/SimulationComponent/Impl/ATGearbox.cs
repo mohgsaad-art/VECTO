@@ -111,14 +111,15 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		#endregion
 
-		public override bool DisengageGearbox { get; set; }
-
-		public override bool ClutchClosed(Second absTime)
+		public override bool GearEngaged(Second absTime)
 		{
 			return absTime.IsGreater(DataBus.AbsTime) ||
-					!(CurrentState.Disengaged || (DataBus.DriverInfo.DriverBehavior == DrivingBehavior.Halted));
+					!(CurrentState.Disengaged || (DataBus.DriverInfo.DriverBehavior == DrivingBehavior.Halted || (DisengageGearbox && !ModelData.ATEcoRollReleaseLockupClutch)));
 		}
 
+		public override bool DisengageGearbox { get; set; }
+
+		
 		public override IResponse Initialize(NewtonMeter outTorque, PerSecond outAngularVelocity)
 		{
 			if (CurrentState.Disengaged) {
@@ -403,7 +404,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			return retval;
 		}
 
-		protected override void DoWriteModalResults(IModalDataContainer container)
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
 			var avgInAngularSpeed = (PreviousState.InAngularVelocity + CurrentState.InAngularVelocity) / 2.0;
 			var avgOutAngularSpeed = (PreviousState.OutAngularVelocity + CurrentState.OutAngularVelocity) / 2.0;
@@ -428,7 +429,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			_strategy?.WriteModalResults(container);
 		}
 
-		protected override void DoCommitSimulationStep()
+		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)
 		{
 			if (!CurrentState.Disengaged && CurrentState.TorqueLossResult != null &&
 				CurrentState.TorqueLossResult.Extrapolated) {

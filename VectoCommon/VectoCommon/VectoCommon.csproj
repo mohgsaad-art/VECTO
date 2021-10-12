@@ -49,6 +49,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BusAuxiliaries\BusHVACSystemConfiguration.cs" />
+    <Compile Include="BusAuxiliaries\CompressorMapValues.cs" />
+    <Compile Include="BusAuxiliaries\FloorType.cs" />
+    <Compile Include="BusAuxiliaries\IActuations.cs" />
+    <Compile Include="BusAuxiliaries\IActuationsMap.cs" />
+    <Compile Include="BusAuxiliaries\IAlternatorMap.cs" />
+    <Compile Include="BusAuxiliaries\IAuxiliaryConfig.cs" />
+    <Compile Include="BusAuxiliaries\ICombinedAlternatorMapRow.cs" />
+    <Compile Include="BusAuxiliaries\ICompressorMap.cs" />
+    <Compile Include="BusAuxiliaries\IElectricsUserInputsConfig.cs" />
+    <Compile Include="BusAuxiliaries\IEnvironmentalConditionsMap.cs" />
+    <Compile Include="BusAuxiliaries\IEnvironmentalConditionsMapEntry.cs" />
+    <Compile Include="BusAuxiliaries\IFuelConsumptionMap.cs" />
+    <Compile Include="BusAuxiliaries\IFuelProperties.cs" />
+    <Compile Include="BusAuxiliaries\IHVACConstants.cs" />
+    <Compile Include="BusAuxiliaries\IHVACUserInputsConfig.cs" />
+    <Compile Include="BusAuxiliaries\IPneumaticsConsumersDemand.cs" />
+    <Compile Include="BusAuxiliaries\IPneumaticUserInputsConfig.cs" />
+    <Compile Include="BusAuxiliaries\IResultCard.cs" />
+    <Compile Include="BusAuxiliaries\ISignals.cs" />
+    <Compile Include="BusAuxiliaries\ISSMDeclarationInputs.cs" />
+    <Compile Include="BusAuxiliaries\ISSMTechnologyBenefits.cs" />
+    <Compile Include="BusAuxiliaries\IVehicleData.cs" />
+    <Compile Include="BusAuxiliaries\SmartResult.cs" />
     <Compile Include="Hashing\IVectoHash.cs" />
     <Compile Include="Hashing\VectoComponents.cs" />
     <Compile Include="InputData\DataSourceType.cs" />
@@ -58,6 +82,7 @@
     </Compile>
     <Compile Include="InputData\VTPDeclarationInputData.cs" />
     <Compile Include="InputData\VTPEngineeringInputData.cs" />
+    <Compile Include="Models\AlternatorType.cs" />
     <Compile Include="Models\AuxiliaryType.cs" />
     <Compile Include="Exceptions\VectoExceptions.cs" />
     <Compile Include="Exceptions\VectoSimulationException.cs" />
@@ -76,10 +101,10 @@
     <Compile Include="Models\FuelType.cs" />
     <Compile Include="Models\GearboxType.cs" />
     <Compile Include="Models\GearshiftPosition.cs" />
-    <Compile Include="Models\IFuelProperties.cs" />
     <Compile Include="Models\IResponse.cs" />
     <Compile Include="Models\LegislativeClass.cs" />
     <Compile Include="Models\LoggingObject.cs" />
+    <Compile Include="Models\MissionType.cs" />
     <Compile Include="Models\OperatingPoint.cs" />
     <Compile Include="Models\RetarderType.cs" />
     <Compile Include="Models\SimulationType.cs" />

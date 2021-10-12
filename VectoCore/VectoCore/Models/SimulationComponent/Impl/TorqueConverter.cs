@@ -379,7 +379,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			return operatingPointList[0];
 		}
 
-		protected override void DoWriteModalResults(IModalDataContainer container)
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
 			if (CurrentState.OperatingPoint == null) {
 				container[ModalResultField.TorqueConverterTorqueRatio] = 1.0;
@@ -401,7 +401,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			container[ModalResultField.P_TC_in] = CurrentState.InTorque * avgInVelocity;
 		}
 
-		protected override void DoCommitSimulationStep()
+		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)
 		{
 			AdvanceState();
 		}

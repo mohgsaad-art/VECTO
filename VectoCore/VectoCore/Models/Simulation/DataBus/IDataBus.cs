@@ -79,17 +79,17 @@ namespace TUGraz.VectoCore.Models.Simulation.DataBus
 
 		//ITorqueConverterControl TorqueConverterCtl { get; }
 
-        IPowertainInfo PowertrainInfo { get; }
+        //IPowertainInfo PowertrainInfo { get; }
 
         //IHybridControllerInfo HybridControllerInfo { get; }
 
 		//IHybridControllerCtl HybridControllerCtl { get; }
 
-		IAngledriveInfo AngledriveInfo { get; }
+		//IAngledriveInfo AngledriveInfo { get; }
 
 		//IDCDCConverter DCDCConverter { get; }
 
-		bool IsTestPowertrain { get; }
+		//bool IsTestPowertrain { get; }
 
 	}
 

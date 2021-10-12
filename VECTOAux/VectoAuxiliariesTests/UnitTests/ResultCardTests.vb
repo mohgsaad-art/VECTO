@@ -1,6 +1,9 @@
-﻿Imports NUnit.Framework
+﻿
+Imports NUnit.Framework
+Imports TUGraz.VectoCommon.BusAuxiliaries
 Imports TUGraz.VectoCommon.Utils
-Imports VectoAuxiliaries.Electrics
+Imports TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl.Electrics
+
 
 <TestFixture()>
 Public Class ResultCardTests
@@ -13,15 +16,15 @@ Public Class ResultCardTests
 
 	Public Sub New()
 
-		results.Add(New SmartResult(20, 18))
-		results.Add(New SmartResult(30, 27))
-		results.Add(New SmartResult(40, 36))
-		results.Add(New SmartResult(50, 45))
+		results.Add(New SmartResult(20.SI(Of Ampere), 18.SI(Of Ampere)))
+		results.Add(New SmartResult(30.SI(Of Ampere), 27.SI(Of Ampere)))
+		results.Add(New SmartResult(40.SI(Of Ampere), 36.SI(Of Ampere)))
+		results.Add(New SmartResult(50.SI(Of Ampere), 45.SI(Of Ampere)))
 
-		unorderedResults.Add(New SmartResult(40, 36))
-		unorderedResults.Add(New SmartResult(30, 27))
-		unorderedResults.Add(New SmartResult(50, 45))
-		unorderedResults.Add(New SmartResult(20, 18))
+		unorderedResults.Add(New SmartResult(40.SI(Of Ampere), 36.SI(Of Ampere)))
+		unorderedResults.Add(New SmartResult(30.SI(Of Ampere), 27.SI(Of Ampere)))
+		unorderedResults.Add(New SmartResult(50.SI(Of Ampere), 45.SI(Of Ampere)))
+		unorderedResults.Add(New SmartResult(20.SI(Of Ampere), 18.SI(Of Ampere)))
 
 		'results.Add(60, 54)
 
@@ -169,9 +172,11 @@ Public Class ResultCardTests
 		Dim resultSet As New List(Of SmartResult)
 
 		Dim expected As Single = 10
-		Dim actual As Ampere = (New ResultCard(resultSet)).GetSmartCurrentResult(10.SI(Of Ampere))
+        Assert.That(Sub()
+                          Dim actual As Ampere = (New ResultCard(resultSet)).GetSmartCurrentResult(10.SI(Of Ampere))
+                      End Sub, Throws.InstanceOf(Of ArgumentException))
 
-		Assert.AreEqual(expected, actual.Value(), 0.001)
+		'Assert.AreEqual(expected, actual.Value(), 0.001)
 	End Sub
 End Class
 

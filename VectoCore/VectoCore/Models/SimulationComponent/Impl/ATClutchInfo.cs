@@ -12,12 +12,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl {
 
 		#region Overrides of VectoSimulationComponent
 
-		protected override void DoWriteModalResults(/*Second time, Second simulationInterval,*/ IModalDataContainer container)
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
 			
 		}
 
-		protected override void DoCommitSimulationStep(/*Second time, Second simulationInterval*/)
+		protected override void DoCommitSimulationStep(Second time,
+			Second simulationInterval /*Second time, Second simulationInterval*/)
 		{
 			
 		}

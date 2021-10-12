@@ -296,7 +296,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			return retVal;
 		}
 
-		protected override void DoWriteModalResults(IModalDataContainer container)
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
 			container[ModalResultField.dist] = CurrentState.Distance; // (CurrentState.Distance + PreviousState.Distance) / 2.0;
 			container[ModalResultField.simulationDistance] = CurrentState.SimulationDistance;
@@ -305,11 +305,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			container[ModalResultField.altitude] = CurrentState.Altitude;
 
 			if (IdleController != null) {
-				IdleController.CommitSimulationStep(container);
+				IdleController.CommitSimulationStep(time, simulationInterval, container);
 			}
 		}
 
-		protected override void DoCommitSimulationStep()
+		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)
 		{
 			if (!(CurrentState.Response is ResponseSuccess)) {
 				throw new VectoSimulationException("Previous request did not succeed!");

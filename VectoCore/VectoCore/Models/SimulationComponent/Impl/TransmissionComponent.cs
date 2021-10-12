@@ -104,7 +104,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			return NextComponent.Initialize(inTorque, inAngularVelocity);
 		}
 
-		protected override void DoCommitSimulationStep()
+		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)
 		{
 			if (CurrentState.TorqueLossResult.Extrapolated) {
 				Log.Warn("{2} LossMap data was extrapolated: range for loss map is not sufficient: n:{0}, torque:{1}",

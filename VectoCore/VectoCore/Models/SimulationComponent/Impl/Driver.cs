@@ -1048,14 +1048,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			return retVal;
 		}
 
-		protected override void DoWriteModalResults(IModalDataContainer container)
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
 			container[ModalResultField.acc] = CurrentState.Acceleration;
 			container.SetDataValue("DriverAction", (int)DrivingAction);
 		}
 
 		
-		protected override void DoCommitSimulationStep()
+		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)
 		{
 			if (!(CurrentState.Response is ResponseSuccess)) {
 				throw new VectoSimulationException("Previous request did not succeed!");

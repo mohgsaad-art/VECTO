@@ -30,27 +30,11 @@
 */
 
 using System;
+using TUGraz.VectoCommon.Models;
 
 namespace TUGraz.VectoCore.Models.Declaration
 {
-	public enum MissionType
-	{
-		LongHaul,
-		LongHaulEMS,
-		RegionalDelivery,
-		RegionalDeliveryEMS,
-		UrbanDelivery,
-		MunicipalUtility,
-		Construction,
-		HeavyUrban,
-		Urban,
-		Suburban,
-		Interurban,
-		Coach,
-		VerificationTest,
-		ExemptedMission
-	}
-
+	
 	public static class MissionTypeHelper
 	{
 		public static string GetName(this MissionType self)
@@ -77,6 +61,11 @@ namespace TUGraz.VectoCore.Models.Declaration
 				return MissionType.RegionalDelivery;
 			}
 			return self;
+		}
+
+		public static string GetLabel(this MissionType self)
+		{
+			return self.ToXMLFormat();
 		}
 
 		public static string ToXMLFormat(this MissionType self)
@@ -108,6 +97,22 @@ namespace TUGraz.VectoCore.Models.Declaration
 				//	return "";
 				default:
 					throw new ArgumentOutOfRangeException("MissionType", self, null);
+			}
+		}
+
+		public static double GetLowLoadFactorBus(this MissionType self)
+		{
+			switch (self) {
+				case MissionType.HeavyUrban:
+				case MissionType.Urban:
+				case MissionType.Suburban:
+					return 0.2;
+				case MissionType.Interurban:
+					return 0.25;
+				case MissionType.Coach:
+					return 0.4;
+				default:
+					return 0.1;
 			}
 		}
 	}

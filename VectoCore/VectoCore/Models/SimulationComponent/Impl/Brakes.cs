@@ -81,17 +81,17 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			return retVal;
 		}
 
-		protected override void DoWriteModalResults(IModalDataContainer container)
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
 			container[ModalResultField.P_brake_loss] = BrakePower;
 			container[ModalResultField.P_brake_in] = CurrentState.InTorque *
 													(PreviousState.InAngularVelocity + CurrentState.InAngularVelocity) / 2.0;
 		}
 
-		protected override void DoCommitSimulationStep()
+		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)
 		{
 			BrakePower = 0.SI<Watt>();
-			base.DoCommitSimulationStep();
+			base.DoCommitSimulationStep(time, simulationInterval);
 		}
 	}
 }

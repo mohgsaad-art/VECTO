@@ -112,7 +112,7 @@ namespace TUGraz.VectoCore.Tests.Integration.EngineOnlyCycle
 				var response = (ResponseSuccess)port.Request(absTime, dt, cycleEntry.Torque, cycleEntry.AngularVelocity);
 				foreach (var sc in vehicle.SimulationComponents()) {
 					modData[ModalResultField.time] = absTime + dt / 2;
-					sc.CommitSimulationStep(modData);
+					sc.CommitSimulationStep(absTime, dt, modData);
 				}
 
 				modData.CommitSimulationStep();
@@ -143,7 +143,7 @@ namespace TUGraz.VectoCore.Tests.Integration.EngineOnlyCycle
 			engine.OutPort().Request(absTime, dt, power / angularVelocity, angularVelocity);
 
 			foreach (var sc in vehicleContainer.SimulationComponents()) {
-				sc.CommitSimulationStep(dataWriter);
+				sc.CommitSimulationStep(absTime, dt, dataWriter);
 			}
 
 			Assert.IsNotNull(dataWriter.CurrentRow);

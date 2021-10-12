@@ -69,8 +69,7 @@ namespace TUGraz.VectoCore.Tests.Integration.BusAuxiliaries
 			var engineSpeed = engineSpeedRpm.RPMtoRad();
 			busAux.Initialize(engineDrivelinePower / engineSpeed, engineSpeed);
 
-			var torque = busAux.TorqueDemand(0.SI<Second>(), 1.SI<Second>(), engineDrivelinePower / engineSpeed,
-				(internalPower * 1000).SI<Watt>() / engineSpeed, engineSpeed);
+			var torque = busAux.TorqueDemand(0.SI<Second>(), 1.SI<Second>(), engineDrivelinePower / engineSpeed, engineSpeed);
 
 			Assert.AreEqual(expectedPowerDemand, (torque * engineSpeed).Value(), 1e-2);
 		}
@@ -101,8 +100,7 @@ namespace TUGraz.VectoCore.Tests.Integration.BusAuxiliaries
 			var engineSpeed = engineSpeedRpm.RPMtoRad();
 			busAux.Initialize(engineDrivelinePower / engineSpeed, engineSpeed);
 
-			var torque = busAux.TorqueDemand(0.SI<Second>(), 1.SI<Second>(), engineDrivelinePower / engineSpeed,
-				(internalPower * 1000).SI<Watt>() / engineSpeed, engineSpeed);
+			var torque = busAux.TorqueDemand(0.SI<Second>(), 1.SI<Second>(), engineDrivelinePower / engineSpeed, engineSpeed);
 
 			Assert.AreEqual(expectedPowerDemand, (torque * engineSpeed).Value(), 1e-2);
 		}
@@ -124,8 +122,7 @@ namespace TUGraz.VectoCore.Tests.Integration.BusAuxiliaries
 			var engineSpeed = engineSpeedRpm.RPMtoRad();
 			busAux.Initialize(engineDrivelinePower / engineSpeed, engineSpeed);
 
-			var torque = busAux.TorqueDemand(0.SI<Second>(), 1.SI<Second>(), engineDrivelinePower / engineSpeed,
-				(internalPower * 1000).SI<Watt>() / engineSpeed, engineSpeed);
+			var torque = busAux.TorqueDemand(0.SI<Second>(), 1.SI<Second>(), engineDrivelinePower / engineSpeed, engineSpeed);
 
 			Assert.AreEqual(expectedPowerDemand, (torque * engineSpeed).Value(), 1e-3);
 		}
@@ -153,8 +150,7 @@ namespace TUGraz.VectoCore.Tests.Integration.BusAuxiliaries
 				var engineSpeed = engineSpeedRpm.RPMtoRad();
 				busAux.Initialize(engineDrivelinePower / engineSpeed, engineSpeed);
 
-				var torque = busAux.TorqueDemand(0.SI<Second>(), 1.SI<Second>(), engineDrivelinePower / engineSpeed,
-					(internalPower).SI<Watt>() / engineSpeed, engineSpeed);
+				var torque = busAux.TorqueDemand(0.SI<Second>(), 1.SI<Second>(), engineDrivelinePower / engineSpeed, engineSpeed);
 
 				var row = table.NewRow();
 				row["engineSpeed"] = engineSpeed.Value() / Constants.RPMToRad;

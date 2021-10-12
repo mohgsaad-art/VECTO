@@ -86,7 +86,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			return retVal;
 		}
 
-		protected override void DoWriteModalResults(IModalDataContainer container)
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
 			var avgAngularSpeed = (CurrentState.AngularVelocity + PreviousState.AngularVelocity) / 2.0;
 

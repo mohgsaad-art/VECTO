@@ -176,7 +176,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 					data, ModWriter,
 					addReportResult: _mode == ExecutionMode.Declaration ? addReportResult : null,
 					filter: GetModDataFilter(data)) {
-					WriteAdvancedAux = data.AdvancedAux != null && data.AdvancedAux.AuxiliaryAssembly == AuxiliaryModel.Advanced,
 					WriteModalResults = _mode != ExecutionMode.Declaration || WriteModalResults
 				};
 

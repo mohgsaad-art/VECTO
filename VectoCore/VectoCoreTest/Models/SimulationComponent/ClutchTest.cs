@@ -181,8 +181,9 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 		public PerSecond EngineRatedSpeed { get; set; }
 		public PerSecond EngineN95hSpeed { get; set; }
 		public PerSecond EngineN80hSpeed { get; set; }
+		public bool EngineOn { get; }
 
-		protected override void DoWriteModalResults(IModalDataContainer container)
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
 			container[ModalResultField.P_eng_fcmap] = 0.SI<Watt>();
 			container[ModalResultField.P_eng_out] = 0.SI<Watt>();
@@ -203,6 +204,6 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			container[ModalResultField.FCFinal] = 0.SI<KilogramPerSecond>();
 		}
 
-		protected override void DoCommitSimulationStep() {}
+		protected override void DoCommitSimulationStep(Second time, Second simulationInterval) {}
 	}
 }

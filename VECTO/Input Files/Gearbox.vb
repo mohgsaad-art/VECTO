@@ -13,8 +13,10 @@ Imports System.ComponentModel.DataAnnotations
 Imports System.IO
 Imports System.Linq
 Imports System.Runtime.CompilerServices
+Imports System.Xml
 Imports Newtonsoft.Json.Linq
 Imports TUGraz.VECTO.Input_Files
+Imports TUGraz.VectoCommon.BusAuxiliaries
 Imports TUGraz.VectoCommon.InputData
 Imports TUGraz.VectoCommon.Models
 Imports TUGraz.VectoCommon.Utils
@@ -23,8 +25,10 @@ Imports TUGraz.VectoCore.InputData.Impl
 Imports TUGraz.VectoCore.InputData.Reader
 Imports TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 Imports TUGraz.VectoCore.Models.Declaration
+Imports TUGraz.VectoCore.Models.Simulation.Data
 Imports TUGraz.VectoCore.Models.SimulationComponent.Data
 Imports TUGraz.VectoCore.Models.SimulationComponent.Data.Engine
+Imports TUGraz.VectoCore.Models.SimulationComponent.Impl
 Imports TUGraz.VectoCore.Utils
 
 <CustomValidation(GetType(Gearbox), "ValidateGearbox")>
@@ -223,7 +227,19 @@ Public Class Gearbox
 				End Try
 				
 				axlegearData = doa.CreateAxleGearData(gearbox)
-				gearboxData = doa.CreateGearboxData(gearbox, engine, axlegearData.AxleGear.Ratio, rdyn, vehiclecategory, gearbox)
+			    gearboxData = doa.CreateGearboxData(
+			        new MockVehicleInputData() _
+                                                       With { _
+                                                       .Components =
+                                                       New MockComponents() _
+                                                       With {.GearboxInputData =  gearbox,
+                                                       .TorqueConverterInputData = gearbox }},
+                    New VectoRunData() _
+                                                       With {.AxleGearData = axlegearData, .EngineData = engine,
+                                                       .VehicleData =
+                                                       New VehicleData() _
+                                                       With { .DynamicTyreRadius = rdyn,
+                                                       .VehicleCategory = vehiclecategory}}, Nothing)
 			Else
 				Dim doa As EngineeringDataAdapter = New EngineeringDataAdapter()
 				Try
@@ -235,7 +251,25 @@ Public Class Gearbox
 				End Try
 
 				axlegearData = doa.CreateAxleGearData(gearbox)
-				gearboxData = doa.CreateGearboxData(gearbox, engine, gearbox, axlegearData.AxleGear.Ratio, rdyn, vehiclecategory, gearbox)
+			    gearboxData = doa.CreateGearboxData(New MockEngineeringInputData() With {
+                                                       .DriverInputData =
+                                                       New MockDriverInputData() With {.GearshiftInputData = gearbox },
+                                                       .JobInputData =
+                                                       New MockJobInputData() _
+                                                       With { _
+                                                       .IEngineeringJobInputData_Vehicle =
+                                                       New MockEngineeringVehicle() _
+                                                       With { .GearboxInputData = gearbox,
+                                                       .TorqueConverterInputData = gearbox}}                                    
+                                                       },
+                                                    New VectoRunData() _
+                                                       With {.AxleGearData = axlegearData, .EngineData = engine,
+                                                       .VehicleData =
+                                                       New VehicleData() _
+                                                       With { .DynamicTyreRadius = rdyn,
+                                                       .VehicleCategory = vehiclecategory}}, Nothing)
+
+				'gearboxData = doa.CreateGearboxData(gearbox, engine, gearbox, axlegearData.AxleGear.Ratio, rdyn, vehiclecategory, gearbox)
 			End If
 
 			Dim result As IList(Of ValidationResult) =
@@ -585,3 +619,151 @@ Public Class Gearbox
 	End Property
 End Class
 
+
+Public Class MockEngineeringVehicle
+    Implements IVehicleEngineeringInputData, IVehicleComponentsEngineering
+
+    Public Property DataSource As DataSource Implements IComponentInputData.DataSource
+    Public Property SavedInDeclarationMode As Boolean Implements IComponentInputData.SavedInDeclarationMode
+    Public Property Manufacturer As String Implements IComponentInputData.Manufacturer
+    Public Property Model As String Implements IComponentInputData.Model
+    Public Property [Date] As String Implements IComponentInputData.[Date]
+    'Public ReadOnly Property AppVersion As String Implements IComponentInputData.AppVersion
+    Public Property CertificationMethod As CertificationMethod Implements IComponentInputData.CertificationMethod
+    Public Property CertificationNumber As String Implements IComponentInputData.CertificationNumber
+    Public Property DigestValue As DigestData Implements IComponentInputData.DigestValue
+    Public Property Identifier As String Implements IVehicleDeclarationInputData.Identifier
+    Public Property ExemptedVehicle As Boolean Implements IVehicleDeclarationInputData.ExemptedVehicle
+    Public Property VIN As String Implements IVehicleDeclarationInputData.VIN
+    Public Property LegislativeClass As LegislativeClass Implements IVehicleDeclarationInputData.LegislativeClass
+    Public Property VehicleCategory As VehicleCategory Implements IVehicleDeclarationInputData.VehicleCategory
+    Public Property AxleConfiguration As AxleConfiguration Implements IVehicleDeclarationInputData.AxleConfiguration
+    Public Property CurbMassChassis As Kilogram Implements IVehicleDeclarationInputData.CurbMassChassis
+    Public Property GrossVehicleMassRating As Kilogram Implements IVehicleDeclarationInputData.GrossVehicleMassRating
+    Public Property TorqueLimits As IList(Of ITorqueLimitInputData) Implements IVehicleDeclarationInputData.TorqueLimits
+    Public Property ManufacturerAddress As String Implements IVehicleDeclarationInputData.ManufacturerAddress
+    Public Property EngineIdleSpeed As PerSecond Implements IVehicleDeclarationInputData.EngineIdleSpeed
+    Public Property VocationalVehicle As Boolean Implements IVehicleDeclarationInputData.VocationalVehicle
+    Public Property SleeperCab As Boolean? Implements IVehicleDeclarationInputData.SleeperCab
+    'Public ReadOnly Property AirdragModifiedMultistage As Boolean? Implements IVehicleDeclarationInputData.AirdragModifiedMultistage
+    Public Property TankSystem As TankSystem? Implements IVehicleDeclarationInputData.TankSystem
+
+    Public Property IVehicleEngineeringInputData_ADAS As IAdvancedDriverAssistantSystemsEngineering _
+        Implements IVehicleEngineeringInputData.ADAS
+
+    Public ReadOnly Property IVehicleEngineeringInputData_Components As IVehicleComponentsEngineering _
+        Implements IVehicleEngineeringInputData.Components
+        Get
+            Return Me
+        End Get
+    End Property
+
+    Public Property ADAS As IAdvancedDriverAssistantSystemDeclarationInputData _
+        Implements IVehicleDeclarationInputData.ADAS
+
+    'Public ReadOnly Property InitialSOC As Double Implements IVehicleEngineeringInputData.InitialSOC
+    'Public ReadOnly Property VehicleType As VectoSimulationJobType Implements IVehicleEngineeringInputData.VehicleType
+    Public ReadOnly Property PTO_DriveGear As GearshiftPosition Implements IVehicleEngineeringInputData.PTO_DriveGear
+    Public ReadOnly Property PTO_DriveEngineSpeed As PerSecond Implements IVehicleEngineeringInputData.PTO_DriveEngineSpeed
+
+    Public Property ZeroEmissionVehicle As Boolean Implements IVehicleDeclarationInputData.ZeroEmissionVehicle
+    Public Property HybridElectricHDV As Boolean Implements IVehicleDeclarationInputData.HybridElectricHDV
+    Public Property DualFuelVehicle As Boolean Implements IVehicleDeclarationInputData.DualFuelVehicle
+    Public Property MaxNetPower1 As Watt Implements IVehicleDeclarationInputData.MaxNetPower1
+    Public Property MaxNetPower2 As Watt Implements IVehicleDeclarationInputData.MaxNetPower2
+    'Public ReadOnly Property ExemptedTechnology As String Implements IVehicleDeclarationInputData.ExemptedTechnology
+    'Public ReadOnly Property RegisteredClass As RegistrationClass? Implements IVehicleDeclarationInputData.RegisteredClass
+    'Public ReadOnly Property NumberPassengerSeatsUpperDeck As Integer? Implements IVehicleDeclarationInputData.NumberPassengerSeatsUpperDeck
+    'Public ReadOnly Property NumberPassengerSeatsLowerDeck As Integer? Implements IVehicleDeclarationInputData.NumberPassengerSeatsLowerDeck
+    'Public ReadOnly Property NumberPassengersStandingLowerDeck As Integer? Implements IVehicleDeclarationInputData.NumberPassengersStandingLowerDeck
+    'Public ReadOnly Property NumberPassengersStandingUpperDeck As Integer? Implements IVehicleDeclarationInputData.NumberPassengersStandingUpperDeck
+    'Public ReadOnly Property CargoVolume As CubicMeter Implements IVehicleDeclarationInputData.CargoVolume
+    'Public ReadOnly Property VehicleCode As VehicleCode? Implements IVehicleDeclarationInputData.VehicleCode
+    'Public ReadOnly Property LowEntry As Boolean? Implements IVehicleDeclarationInputData.LowEntry
+    'Public ReadOnly Property Articulated As Boolean Implements IVehicleDeclarationInputData.Articulated
+    'Public ReadOnly Property IVehicleDeclarationInputData_Height As Meter Implements IVehicleDeclarationInputData.Height
+    Public Property CurbMassExtra As Kilogram Implements IVehicleEngineeringInputData.CurbMassExtra
+    Public Property Loading As Kilogram Implements IVehicleEngineeringInputData.Loading
+    Public Property DynamicTyreRadius As Meter Implements IVehicleEngineeringInputData.DynamicTyreRadius
+    Public Property Height As Meter Implements IVehicleEngineeringInputData.Height
+    'Public ReadOnly Property ElectricMotorTorqueLimits As TableData Implements IVehicleEngineeringInputData.ElectricMotorTorqueLimits
+    'Public ReadOnly Property MaxPropulsionTorque As TableData Implements IVehicleEngineeringInputData.MaxPropulsionTorque
+    'Public ReadOnly Property Length As Meter Implements IVehicleDeclarationInputData.Length
+    'Public ReadOnly Property Width As Meter Implements IVehicleDeclarationInputData.Width
+    'Public ReadOnly Property EntranceHeight As Meter Implements IVehicleDeclarationInputData.EntranceHeight
+    'Public ReadOnly Property DoorDriveTechnology As ConsumerTechnology? Implements IVehicleDeclarationInputData.DoorDriveTechnology
+    'Public ReadOnly Property VehicleDeclarationType As VehicleDeclarationType Implements IVehicleDeclarationInputData.VehicleDeclarationType
+    Public Property Components As IVehicleComponentsDeclaration Implements IVehicleDeclarationInputData.Components
+    'Public ReadOnly Property XMLSource As XmlNode Implements IVehicleDeclarationInputData.XMLSource
+
+    Public Property AirdragInputData As IAirdragEngineeringInputData _
+        Implements IVehicleComponentsEngineering.AirdragInputData
+
+    Public Property GearboxInputData As IGearboxEngineeringInputData _
+        Implements IVehicleComponentsEngineering.GearboxInputData
+
+    Public Property TorqueConverterInputData As ITorqueConverterEngineeringInputData _
+        Implements IVehicleComponentsEngineering.TorqueConverterInputData
+
+    Public Property AxleGearInputData As IAxleGearInputData Implements IVehicleComponentsEngineering.AxleGearInputData
+
+    Public Property AngledriveInputData As IAngledriveInputData _
+        Implements IVehicleComponentsEngineering.AngledriveInputData
+
+    Public Property EngineInputData As IEngineEngineeringInputData _
+        Implements IVehicleComponentsEngineering.EngineInputData
+
+    Public Property AuxiliaryInputData As IAuxiliariesEngineeringInputData _
+        Implements IVehicleComponentsEngineering.AuxiliaryInputData
+
+    Public Property RetarderInputData As IRetarderInputData Implements IVehicleComponentsEngineering.RetarderInputData
+
+    Public Property PTOTransmissionInputData As IPTOTransmissionInputData _
+        Implements IVehicleComponentsEngineering.PTOTransmissionInputData
+
+    Public Property AxleWheels As IAxlesEngineeringInputData Implements IVehicleComponentsEngineering.AxleWheels
+End Class
+
+Public Class MockJobInputData
+    Implements IEngineeringJobInputData
+    Public Property SavedInDeclarationMode As Boolean Implements IDeclarationJobInputData.SavedInDeclarationMode
+
+    Public Property IEngineeringJobInputData_Vehicle As IVehicleEngineeringInputData _
+        Implements IEngineeringJobInputData.Vehicle
+
+    Public Property Vehicle As IVehicleDeclarationInputData Implements IDeclarationJobInputData.Vehicle
+    Public Property Cycles As IList(Of ICycleData) Implements IEngineeringJobInputData.Cycles
+    Public Property JobType As VectoSimulationJobType Implements IEngineeringJobInputData.JobType
+    Public Property EngineOnly As IEngineEngineeringInputData Implements IEngineeringJobInputData.EngineOnly
+    Public Property JobName As String Implements IDeclarationJobInputData.JobName
+    Public Property ShiftStrategy As String Implements IDeclarationJobInputData.ShiftStrategy
+End Class
+
+Public Class MockDriverInputData
+    Implements IDriverEngineeringInputData
+    Public Property SavedInDeclarationMode As Boolean Implements IDriverDeclarationInputData.SavedInDeclarationMode
+    Public Property OverSpeedData As IOverSpeedEngineeringInputData Implements IDriverEngineeringInputData.OverSpeedData
+
+    Public Property AccelerationCurve As IDriverAccelerationData _
+        Implements IDriverEngineeringInputData.AccelerationCurve
+
+    Public Property Lookahead As ILookaheadCoastingInputData Implements IDriverEngineeringInputData.Lookahead
+
+    Public Property GearshiftInputData As IGearshiftEngineeringInputData _
+        Implements IDriverEngineeringInputData.GearshiftInputData
+
+    Public Property EngineStopStartData As IEngineStopStartEngineeringInputData _
+        Implements IDriverEngineeringInputData.EngineStopStartData
+
+    Public Property EcoRollData As IEcoRollEngineeringInputData Implements IDriverEngineeringInputData.EcoRollData
+    Public Property PCCData As IPCCEngineeringInputData Implements IDriverEngineeringInputData.PCCData
+End Class
+
+Public Class MockEngineeringInputData
+    Implements IEngineeringInputDataProvider
+    Public Property DataSource As DataSource Implements IInputDataProvider.DataSource
+    Public Property JobInputData As IEngineeringJobInputData Implements IEngineeringInputDataProvider.JobInputData
+
+    Public Property DriverInputData As IDriverEngineeringInputData _
+        Implements IEngineeringInputDataProvider.DriverInputData
+End Class

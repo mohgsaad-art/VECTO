@@ -33,6 +33,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Data;
@@ -55,6 +56,8 @@ namespace TUGraz.VectoCore.OutputData
 		/// <param name="key"></param>
 		/// <returns></returns>
 		object this[ModalResultField key] { get; set; }
+
+		object this[ModalResultField key, IFuelProperties fuel] { get; set; }
 
 		/// <summary>
 		/// Indexer for auxiliary fields of the DataWriter.
@@ -102,6 +105,9 @@ namespace TUGraz.VectoCore.OutputData
 		/// called after the simulation is finished and the sum-entries have been written
 		/// </summary>
 		void FinishSimulation();
+
+		Func<Second, Joule, Joule> AuxHeaterDemandCalc { get; set; }
+
 
 		void Reset();
 	}

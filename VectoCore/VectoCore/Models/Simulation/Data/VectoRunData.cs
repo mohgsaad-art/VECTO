@@ -33,6 +33,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Xml.Linq;
+using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
@@ -86,7 +87,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 		[ValidateObject]
 		public IEnumerable<AuxData> Aux { get; internal set; }
 
-		public AdvancedAuxData AdvancedAux { get; internal set; }
+		public IAuxiliaryConfig BusAuxiliaries { get; internal set; }
 
 		[ValidateObject]
 		public RetarderData Retarder { get; internal set; }
@@ -131,6 +132,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 
 		public string ShiftStrategy { get; set; }
 
+		public Watt ElectricAuxDemand { get; internal set; }
 
 		public class AuxData
 		{
@@ -142,8 +144,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 			[SIRange(0, 100 * Constants.Kilo)] public Watt PowerDemand;
 
 			[Required] public AuxiliaryDemandType DemandType;
-
-			[ValidateObject] public AuxiliaryData Data;
 
 			public MissionType? MissionType;
 		}

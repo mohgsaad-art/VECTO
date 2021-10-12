@@ -306,7 +306,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			return response;
 		}
 
-		protected override void DoWriteModalResults(IModalDataContainer container)
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
 			container[ModalResultField.dist] = CurrentState.Distance;
 			container[ModalResultField.simulationDistance] = CurrentState.SimulationDistance;
@@ -316,7 +316,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			container[ModalResultField.acc] = CurrentState.Acceleration;
 		}
 
-		protected override void DoCommitSimulationStep()
+		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)
 		{
 			if ((CycleIterator.RightSample == null) || AbsTime.IsGreaterOrEqual(CycleIterator.RightSample.Time)) {
 				CycleIterator.MoveNext();

@@ -138,7 +138,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			return retval;
 		}
 
-		protected override void DoWriteModalResults(IModalDataContainer container)
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
 			var averageVelocity = (PreviousState.Velocity + CurrentState.Velocity) / 2.0;
 

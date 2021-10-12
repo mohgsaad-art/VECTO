@@ -164,7 +164,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
 		}
 
-		protected override void DoWriteModalResults(IModalDataContainer container)
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
 			if (PreviousState.InAngularVelocity == null || CurrentState.InAngularVelocity == null) {
 				container[ModalResultField.P_clutch_out] = 0.SI<Watt>();
@@ -176,6 +176,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				container[ModalResultField.P_clutch_loss] = CurrentState.InTorque * avgInAngularVelocity -
 															CurrentState.OutTorque * avgOutAngularVelocity;
 			}
+		}
+
+		public virtual bool ClutchClosed(Second absTime)
+		{
+			return DataBus.GearboxInfo.GearEngaged(absTime);
 		}
 
 		public class ClutchState : SimpleComponentState

@@ -23,7 +23,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl {
 
 		public override IDriverInfo DriverInfo => base.DriverInfo ?? this;
 
-		public override bool IsTestPowertrain => true;
+		//public override bool IsTestPowertrain => true;
 
 		#region Implementation of IDriverInfo
 

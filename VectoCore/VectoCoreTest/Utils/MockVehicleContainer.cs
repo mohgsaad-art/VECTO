@@ -235,7 +235,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 		public void CommitSimulationStep(Second time, Second simulationInterval)
 		{
 			foreach (var entry in Components) {
-				entry.CommitSimulationStep(ModalData);
+				entry.CommitSimulationStep(time, simulationInterval, ModalData);
 			}
 		}
 
@@ -266,5 +266,16 @@ namespace TUGraz.VectoCore.Tests.Utils
 		public Kilogram ReducedMassWheels { get; set; }
 		public bool HasCombustionEngine { get; set; }
 		public bool CombustionEngineOn { get; set; }
+
+		#region Implementation of IGearboxControl
+
+		public bool DisengageGearbox { get; set; }
+		
+		public bool GearEngaged(Second absTime)
+		{
+			return ClutchClosed(absTime);
+		}
+
+		#endregion
 	}
 }

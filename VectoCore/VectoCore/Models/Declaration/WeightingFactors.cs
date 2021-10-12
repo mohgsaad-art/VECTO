@@ -35,6 +35,7 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using TUGraz.VectoCommon.Exceptions;
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 
 namespace TUGraz.VectoCore.Models.Declaration

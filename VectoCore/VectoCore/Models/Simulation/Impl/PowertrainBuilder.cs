@@ -38,6 +38,8 @@ using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.InputData.Reader;
+using TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl.Electrics;
+using TUGraz.VectoCore.Models.BusAuxiliaries.Interfaces.DownstreamModules.Electrics;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.SimulationComponent;
@@ -388,8 +390,13 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		internal static IAuxInProvider CreateAdvancedAuxiliaries(VectoRunData data, IVehicleContainer container)
 		{
 			var conventionalAux = CreateAuxiliaries(data, container);
-			var busAux = new BusAuxiliariesAdapter(container, data.AdvancedAux.AdvancedAuxiliaryFilePath, data.Cycle.Name,
-				data.VehicleData.TotalVehicleWeight, data.EngineData.Fuels.First().ConsumptionMap, data.EngineData.IdleSpeed, conventionalAux);
+			// TODO: MQ 2019-07-30 -- which fuel map for advanced auxiliaries?!
+			var busAux = new BusAuxiliariesAdapter(container, data.BusAuxiliaries, conventionalAux);
+			var auxCfg = data.BusAuxiliaries;
+			var electricStorage = auxCfg.ElectricalUserInputsConfig.AlternatorType == AlternatorType.Smart
+				? new SimpleBattery(container, auxCfg.ElectricalUserInputsConfig.ElectricStorageCapacity, auxCfg.ElectricalUserInputsConfig.StoredEnergyEfficiency)
+				: (ISimpleBattery)new NoBattery(container);
+			busAux.ElectricStorage = electricStorage;
 			return busAux;
 		}
 
@@ -406,9 +413,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 						break;
 					case AuxiliaryDemandType.Direct:
 						aux.AddCycle(id);
-						break;
-					case AuxiliaryDemandType.Mapping:
-						aux.AddMapping(id, auxData.Data);
 						break;
 					default:
 						throw new ArgumentOutOfRangeException("AuxiliaryDemandType", auxData.DemandType.ToString());
@@ -552,6 +556,17 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 			runData.ShiftStrategy = selected.Item3;
 			return selected.Item4(container);
+		}
+
+
+		public static IEnumerable<Tuple<string, string>> GetRegisteredShiftStrategies(GearboxType? type)
+		{
+			if (!type.HasValue) {
+				return new List<Tuple<string, string>>();
+			}
+
+			return ShiftStrategies.Where(x => x.Item1.Contains(type.Value)).Select(x => Tuple.Create(x.Item2, x.Item3))
+				.ToList();
 		}
 	}
 

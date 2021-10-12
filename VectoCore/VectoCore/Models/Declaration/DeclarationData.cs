@@ -35,6 +35,7 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json.Linq;
+using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
@@ -42,6 +43,7 @@ using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
+using TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl.Electrics;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Engine;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
@@ -88,6 +90,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 		public static readonly WeightingGroups WeightingGroup = new WeightingGroups();
 		public static readonly WeightingFactors WeightingFactors = new WeightingFactors();
 
+		public const double AlternatorEfficiency = 0.7;
+
 		/// <summary>
 		/// Formula for calculating the payload for a given gross vehicle weight.
 		/// (so called "pc-formula", Whitebook Apr 2016, Part 1, p.187)
@@ -117,6 +121,226 @@ namespace TUGraz.VectoCore.Models.Declaration
 		public static int PoweredAxle()
 		{
 			return 1;
+		}
+
+		public static class BusAuxiliaries
+		{
+			//private static ISSMInputs ssmInputs = null;
+
+			private static IEnvironmentalConditionsMap envMap;
+
+			//private static AuxiliaryConfig busAuxConfig = null;
+			private static ElectricalConsumerList elUserConfig;
+
+			private static IActuationsMap actuationsMap;
+			//private static PneumaticsAuxilliariesConfig pneumaticAuxConfig;
+			private static List<SSMTechnology> ssmTechnologies;
+
+
+			//public static ISSMInputs SSMDefaultValues
+			//{
+			//	get {
+			//		return ssmInputs ?? (ssmInputs = SSMInputData.ReadStream(
+			//					RessourceHelper.ReadStream(DeclarationDataResourcePrefix + ".Buses.SSMDefaults.AHSM"),
+			//					DefaultEnvironmentalConditions));
+			//	}
+			//}
+
+			public static ICompressorMap GetCompressorMap(string compressorSize, string clutchType)
+			{
+				var resource = GetCompressorResourceForSize(compressorSize);
+
+				var dragCurveFactorClutch = 1.0;
+				switch (clutchType) {
+					case "visco":
+						dragCurveFactorClutch = Constants.BusAuxiliaries.PneumaticUserConfig.ViscoClutchDragCurveFactor;
+						break;
+					case "mechanically":
+						dragCurveFactorClutch = Constants.BusAuxiliaries.PneumaticUserConfig.MechanicClutchDragCurveFactor;
+						break;
+				}
+
+				return CompressorMapReader.ReadStream(
+					RessourceHelper.ReadStream(DeclarationDataResourcePrefix + ".VAUXBus." + resource), dragCurveFactorClutch, $"{compressorSize} - {clutchType}");
+			}
+
+			private static string GetCompressorResourceForSize(string compressorSize)
+			{
+				switch (compressorSize) {
+					case "Small":
+						return "DEFAULT_1-Cylinder_1-Stage_393ccm.acmp";
+					case "Medium Supply 1-stage":
+						return "DEFAULT_1-Cylinder_1-Stage_393ccm.acmp";
+					case "Medium Supply 2-stage":
+						return "DEFAULT_2-Cylinder_1-Stage_650ccm.acmp";
+					case "Large Supply 1-stage":
+						return "DEFAULT_2-Cylinder_2-Stage_398ccm.acmp";
+					case "Large Supply 2-stage":
+						return "DEFAULT_3-Cylinder_2-Stage_598ccm.acmp";
+					default:
+						throw new ArgumentException($"unknown compressor size {compressorSize}", compressorSize);
+				}
+			}
+
+			public static BusAlternatorTechnologies AlternatorTechnologies = new BusAlternatorTechnologies();
+			private static HVACCoolingPower hvacMaxCoolingPower;
+
+			public static List<SSMTechnology> SSMTechnologyList =>
+				ssmTechnologies ?? (ssmTechnologies = SSMTechnologiesReader.ReadFromStream(
+					RessourceHelper.ReadStream(DeclarationDataResourcePrefix + ".Buses.SSMTechList.csv")));
+
+			public static IEnvironmentalConditionsMap DefaultEnvironmentalConditions =>
+				envMap ?? (envMap = EnvironmentalContidionsMapReader.ReadStream(
+					RessourceHelper.ReadStream(DeclarationDataResourcePrefix + ".Buses.DefaultClimatic.aenv")));
+
+			public static ElectricalConsumerList DefaultElectricConsumerList =>
+				elUserConfig ?? (elUserConfig = ElectricConsumerReader.ReadStream(
+					RessourceHelper.ReadStream(DeclarationDataResourcePrefix + ".Buses.ElectricConsumers.csv")));
+
+
+			public static IActuationsMap ActuationsMap =>
+				actuationsMap ?? (actuationsMap = ActuationsMapReader.ReadStream(
+					RessourceHelper.ReadStream(DeclarationDataResourcePrefix + ".Buses.DefaultActuationsMap.apac")));
+
+			public static HVACCoolingPower HVACMaxCoolingPower => hvacMaxCoolingPower ?? (hvacMaxCoolingPower = new HVACCoolingPower());
+
+			public static PerSecond VentilationRate(BusHVACSystemConfiguration? hvacSystemConfig, bool heating)
+			{
+
+				switch (hvacSystemConfig) {
+
+					case BusHVACSystemConfiguration.Configuration1:
+					case BusHVACSystemConfiguration.Configuration2:
+						return Constants.BusAuxiliaries.SteadyStateModel.LowVentilation;
+
+					case BusHVACSystemConfiguration.Configuration3:
+					case BusHVACSystemConfiguration.Configuration4:
+					case BusHVACSystemConfiguration.Configuration5:
+					case BusHVACSystemConfiguration.Configuration6:
+					case BusHVACSystemConfiguration.Configuration7:
+					case BusHVACSystemConfiguration.Configuration8:
+					case BusHVACSystemConfiguration.Configuration9:
+					case BusHVACSystemConfiguration.Configuration10:
+						return heating
+							? Constants.BusAuxiliaries.SteadyStateModel.HighVentilationHeating
+							: Constants.BusAuxiliaries.SteadyStateModel.HighVentilation;
+
+					default:
+						throw new ArgumentOutOfRangeException(nameof(hvacSystemConfig), hvacSystemConfig, null);
+				}
+			}
+
+			public static SquareMeter CalculateBusFloorSurfaceArea(Meter busLength, Meter busWidth)
+			{
+				return (busLength - Constants.BusParameters.DriverCompartmentLength) * CorrectedBusWidth(busWidth);
+			}
+
+			public static Meter CorrectedBusWidth(Meter busWidth)
+			{
+				return busWidth.IsBetween(Constants.BusParameters.VehicleWidthLow, Constants.BusParameters.VehicleWidthHigh)
+					? Constants.BusParameters.VehicleWidthHigh
+					: busWidth;
+			}
+
+
+			public static Meter CalculateInternalLength(Meter vehicleLength, VehicleCode? vehicleCode, double numPassSeatsLowerDeck)
+			{
+				if (vehicleCode.GetFloorType() == FloorType.LowFloor) {
+					return vehicleCode.IsDoubleDeckerBus() ? 2 * vehicleLength : vehicleLength;
+				}
+
+				if (vehicleCode.GetFloorType() == FloorType.HighFloor) {
+					if (vehicleCode.IsDoubleDeckerBus()) {
+						return numPassSeatsLowerDeck > 6 ? 1.5 * vehicleLength : vehicleLength + 2.4.SI<Meter>();
+					}
+
+					return vehicleLength;
+				}
+				throw new VectoException("Internal Length for floorType {0} {1} not defined", vehicleCode.GetFloorType().ToString(), vehicleCode.IsDoubleDeckerBus() ? "DD" : "SD");
+			}
+
+			public static Meter CalculateLengthInteriorLights(
+				Meter vehicleLength, VehicleCode? vehicleCode, double numPassLowFloor)
+			{
+				return CalculateInternalLength(vehicleLength, vehicleCode, numPassLowFloor);
+			}
+
+			public static Meter CalculateInternalHeight(VehicleCode? vehicleCode, RegistrationClass? registrationClass, Meter bodyHeight)
+			{
+				if (vehicleCode.IsDoubleDeckerBus()) {
+					return Constants.BusParameters.InternalHeightDoubleDecker;
+				}
+
+				switch (vehicleCode.GetFloorType()) {
+					case FloorType.LowFloor:
+						return bodyHeight;
+					case FloorType.HighFloor:
+						if ((registrationClass == RegistrationClass.II_III && bodyHeight > 3.1.SI<Meter>()) ||
+							registrationClass == RegistrationClass.III || registrationClass == RegistrationClass.B) {
+							return Constants.BusParameters.InternalHeightDoubleDecker;
+						}
+						return bodyHeight - Constants.BusParameters.HeightLuggageCompartment;
+				}
+
+				throw new VectoException("Internal height for vehicle floor type '{0}' {1} not defined", vehicleCode.GetFloorType().ToString(), vehicleCode.IsDoubleDeckerBus() ? "double decker" : "single decker");
+			}
+
+			public static Meter WindowHeight(bool doubleDecker)
+			{
+				return doubleDecker
+					? Constants.BusParameters.WindowHeightDoubleDecker
+					: Constants.BusParameters.WindowHeightSingleDecker;
+			}
+
+			public static SquareMeter FrontAndRearWindowArea(bool doubleDecker)
+			{
+				return doubleDecker
+					? Constants.BusParameters.FrontAndRearWindowAreaDoubleDecker
+					: Constants.BusParameters.FrontAndRearWindowAreaSingleDecker;
+			}
+
+			public static WattPerKelvinSquareMeter UValue(FloorType floorType)
+			{
+				switch (floorType) {
+					case FloorType.LowFloor:
+						return 4.SI<WattPerKelvinSquareMeter>();
+					case FloorType.SemiLowFloor:
+						return 3.5.SI<WattPerKelvinSquareMeter>();
+					case FloorType.HighFloor:
+						return 3.SI<WattPerKelvinSquareMeter>();
+					default:
+						throw new ArgumentOutOfRangeException(nameof(floorType), floorType, null);
+				}
+			}
+
+			public static double CalculateCOP(Watt coolingPwrDriver, HeatPumpType comprTypeDriver, Watt coolingPwrPass, HeatPumpType comprTypePass, FloorType floorType)
+			{
+				if (coolingPwrDriver.IsGreater(0) && comprTypeDriver == HeatPumpType.none) {
+					comprTypeDriver = comprTypePass;
+				}
+				if (coolingPwrDriver.IsEqual(0) && coolingPwrPass.IsEqual(0)) {
+					return 1.0;
+				}
+				return (coolingPwrDriver * comprTypeDriver.COP(floorType) + coolingPwrPass * comprTypePass.COP(floorType)) /
+						(coolingPwrDriver + coolingPwrPass);
+			}
+
+			public static Meter CorrectionLengthDrivetrainVolume(VehicleCode? vehicleCode, bool? lowEntry, int numAxles, bool articulated)
+			{
+				if ((vehicleCode == VehicleCode.CE || vehicleCode == VehicleCode.CG) && !(bool)lowEntry) {
+					switch (numAxles) {
+						case 2:
+							return 1.0.SI<Meter>();
+						case 3:
+							return articulated ? 1.0.SI<Meter>() : 1.25.SI<Meter>();
+						case 4:
+							return 1.25.SI<Meter>();
+						default:
+							throw new VectoException("invalid number of axles {0}", numAxles);
+					}
+				}
+				return 0.SI<Meter>();
+			}
 		}
 
 		public static class Driver

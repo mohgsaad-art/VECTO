@@ -32,7 +32,7 @@ Imports TUGraz.VectoCore.Utils
 <CustomValidation(GetType(VectoJob), "ValidateJob")>
 Public Class VectoJob
     Implements IEngineeringInputDataProvider, IDeclarationInputDataProvider, IEngineeringJobInputData,
-                IDeclarationJobInputData, IDriverEngineeringInputData, IDriverDeclarationInputData, IAuxiliariesEngineeringInputData,
+                IDeclarationJobInputData, IDriverEngineeringInputData, IDriverDeclarationInputData, IAuxiliariesEngineeringInputData, IAuxiliaryEngineeringInputData,
                 IAuxiliariesDeclarationInputData, IJSONVehicleComponents, IEngineStopStartEngineeringInputData, IEcoRollEngineeringInputData, IPCCEngineeringInputData
 
     'AA-TB
@@ -48,6 +48,9 @@ Public Class VectoJob
     Private ReadOnly _vehicleFile As SubPath
     Private ReadOnly _engineFile As SubPath
     Private ReadOnly _gearboxFile As SubPath
+    Private ReadOnly _tcuFile As SubPath
+    Private ReadOnly _busAuxFile As SubPath
+
 
     Private ReadOnly _lacDfTargetSpeedFile As SubPath
     Private ReadOnly _lacDfVelocityDropFile as SubPath
@@ -55,6 +58,8 @@ Public Class VectoJob
 
     Private _startStop As Boolean
     Public StartStopDelay As Double
+
+    public UseBusAux as Boolean
 
     Private ReadOnly _driverAccelerationFile As SubPath
 
@@ -90,6 +95,13 @@ Public Class VectoJob
     Public PCCUnderspeed As Double
     Public PCCOverspeedUseCase3 As Double
 
+    Public AuxElPadd As Double
+    Public AuxPwrDrivingICEOff As Double
+    Public AuxPwrStandstillICEOff As Double
+    Public AuxPwrICEOn As Double
+
+    Public AuxEntries As Dictionary(Of String, AuxEntry )
+
     Public Property StartStopMaxSpeed As Double
 
     Public Property StartStopTime As Double
@@ -117,6 +129,8 @@ Public Class VectoJob
         _vehicleFile = New SubPath
         _engineFile = New SubPath
         _gearboxFile = New SubPath
+        _tcuFile = New SubPath
+        _busAuxFile = new SubPath()
         _lacDfTargetSpeedFile = New SubPath()
         _lacDfVelocityDropFile = New SubPath()
         _ptoCycleWhileDriveFile = new SubPath()
@@ -182,6 +196,32 @@ Public Class VectoJob
         End Get
         Set(value As String)
             _vehicleFile.Init(_myPath, value)
+        End Set
+    End Property
+
+    Public Property PathBusAux(Optional ByVal original As Boolean = False) As String
+        Get
+            If original Then
+                Return _busAuxFile.OriginalPath
+            Else
+                Return _busAuxFile.FullPath
+            End If
+        End Get
+        Set(value As String)
+            _busAuxFile.Init(_myPath, value)
+        End Set
+    End Property
+
+    Public Property PathShiftParams(Optional ByVal original As Boolean = False) As String
+        Get
+            If original Then
+                Return _tcuFile.OriginalPath
+            Else
+                Return _tcuFile.FullPath
+            End If
+        End Get
+        Set(value As String)
+            _tcuFile.Init(_myPath, value)
         End Set
     End Property
 
@@ -654,34 +694,23 @@ Public Class VectoJob
         End Get
     End Property
 
-    Public ReadOnly Property Auxiliaries As IList(Of IAuxiliaryEngineeringInputData) _
+    Public ReadOnly Property Auxiliaries As IAuxiliaryEngineeringInputData _
         Implements IAuxiliariesEngineeringInputData.Auxiliaries
         Get
-            Return AuxData().Cast(Of IAuxiliaryEngineeringInputData).ToList()
+            Return me
         End Get
     End Property
 
-    Public ReadOnly Property IAuxiliariesEngineeringInputData_AdvancedAuxiliaryFilePath As String _
-        Implements IAuxiliariesEngineeringInputData.AdvancedAuxiliaryFilePath
-        Get
-            Return AdvancedAuxiliaryFilePath
+    Public ReadOnly Property BusAuxiliariesData As IBusAuxiliariesEngineeringData Implements IAuxiliariesEngineeringInputData.BusAuxiliariesData
+        get
+            If (not UseBusAux) Then
+                Return Nothing
+            End If
+            Return New JSONComponentInputData(_busAuxFile.FullPath, Me).JobInputData.Vehicle.Components.AuxiliaryInputData.BusAuxiliariesData
         End Get
     End Property
 
-    Public ReadOnly Property IAuxiliariesEngineeringInputData_AuxiliaryVersion As String _
-        Implements IAuxiliariesEngineeringInputData.AuxiliaryVersion
-        Get
-            Return AuxiliaryVersion
-        End Get
-    End Property
-
-    Public ReadOnly Property IAuxiliariesEngineeringInputData_AuxiliaryAssembly As AuxiliaryModel _
-        Implements IAuxiliariesEngineeringInputData.AuxiliaryAssembly
-        Get
-            Return AuxiliaryModelHelper.Parse(AuxiliaryAssembly)
-        End Get
-    End Property
-
+    
     Public ReadOnly Property IAuxiliariesDeclarationInputData_Auxiliaries As IList(Of IAuxiliaryDeclarationInputData) _
         Implements IAuxiliariesDeclarationInputData.Auxiliaries
         Get
@@ -689,36 +718,11 @@ Public Class VectoJob
         End Get
     End Property
 
-    Protected Function AuxData() As IList(Of AuxiliaryDataInputData)
-        Dim retVal As List(Of AuxiliaryDataInputData) = New List(Of AuxiliaryDataInputData)
-
-        If AuxPAdd > 0 Then
-            retVal.Add(New AuxiliaryDataInputData() With {
-                        .ID = "ConstantAux",
-                        .AuxiliaryType = AuxiliaryDemandType.Constant,
-                        .ConstantPowerDemand = AuxPAdd.SI(Of Watt)()
-                        })
-        End If
-        For Each auxEntry As KeyValuePair(Of String, AuxEntry) In AuxPaths
-            Dim theAuxData As AuxiliaryDataInputData = New AuxiliaryDataInputData() With {
-                    .Type = auxEntry.Value.Type,
-                    .Technology = auxEntry.Value.TechnologyList,
-                    .ID = auxEntry.Key
-                    }
-            retVal.Add(theAuxData)
-            If Not File.Exists(auxEntry.Value.Path.FullPath) Then Continue For
-
-            Dim stream As StreamReader = New StreamReader(auxEntry.Value.Path.FullPath)
-            stream.ReadLine() ' skip header "Transmission ration to engine rpm [-]"
-            theAuxData.TransmissionRatio = stream.ReadLine().IndulgentParse()
-            stream.ReadLine() ' skip header "Efficiency to engine [-]"
-            theAuxData.EfficiencyToEngine = stream.ReadLine().IndulgentParse()
-            stream.ReadLine() ' skip header "Efficiency auxiliary to supply [-]"
-            theAuxData.EfficiencyToSupply = stream.ReadLine().IndulgentParse()
-            theAuxData.DemandMap = VectoCSVFile.ReadStream(New MemoryStream(Encoding.UTF8.GetBytes(stream.ReadToEnd())),
-                                                            source:=auxEntry.Value.Path.FullPath)
+    Protected Function AuxData() As IList(Of DeclarationAuxiliaryDataInputData)
+        Dim retVal As List(Of DeclarationAuxiliaryDataInputData) = New List(Of DeclarationAuxiliaryDataInputData)
+        For Each entry As KeyValuePair(Of string, AuxEntry) In AuxEntries
+            retVal.Add(New DeclarationAuxiliaryDataInputData() With{ .ID = entry.Key, .Technology = entry.Value.TechnologyList, .Type = AuxiliaryTypeHelper.ParseKey(entry.Key)})
         Next
-
         Return retVal
     End Function
 
@@ -771,6 +775,26 @@ Public Class VectoJob
         End Get
     End Property
 
+    Public ReadOnly Property ConstantPowerDemand As Watt Implements IAuxiliaryEngineeringInputData.ConstantPowerDemand
+        get
+            Return AuxPwrICEOn.SI(of Watt)
+        End Get
+    End Property
+    Public ReadOnly Property PowerDemandICEOffDriving As Watt Implements IAuxiliaryEngineeringInputData.PowerDemandICEOffDriving
+        get
+            Return AuxPwrDrivingICEOff.SI(of Watt)
+        End Get
+    End Property
+    Public ReadOnly Property PowerDemandICEOffStandstill As Watt Implements IAuxiliaryEngineeringInputData.PowerDemandICEOffStandstill
+        get
+            Return AuxPwrStandstillICEOff.SI(Of Watt)
+        End Get
+    End Property
+    Public ReadOnly Property ElectricPowerDemand As Watt Implements IAuxiliaryEngineeringInputData.ElectricPowerDemand
+        get
+            Return AuxElPadd.SI(of Watt)
+        End Get
+        End Property
 End Class
 
 

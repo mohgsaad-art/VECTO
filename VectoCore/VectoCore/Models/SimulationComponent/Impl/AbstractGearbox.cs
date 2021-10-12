@@ -43,8 +43,7 @@ using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
 	public abstract class AbstractGearbox<TStateType> :
-		StatefulProviderComponent<TStateType, ITnOutPort, ITnInPort, ITnOutPort>, ITnOutPort, ITnInPort, IGearbox,
-		IClutchInfo
+		StatefulProviderComponent<TStateType, ITnOutPort, ITnInPort, ITnOutPort>, ITnOutPort, ITnInPort, IGearbox
 		where TStateType : GearboxState, new()
 	{
 		/// <summary>
@@ -128,9 +127,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			get { return (uint)ModelData.Gears.Count; }
 		}
 
-		#endregion
+		public abstract bool GearEngaged(Second absTime);
 
-		public abstract bool ClutchClosed(Second absTime);
+		#endregion
 
 		protected bool ConsiderShiftLosses(GearshiftPosition nextGear, NewtonMeter torqueOut)
 		{

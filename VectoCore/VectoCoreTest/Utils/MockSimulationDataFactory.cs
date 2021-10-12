@@ -38,7 +38,10 @@ using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
 using TUGraz.VectoCore.Models.Declaration;
+using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
+using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
+using TUGraz.VectoCore.Tests.FileIO;
 
 namespace TUGraz.VectoCore.Tests.Utils
 {
@@ -67,8 +70,20 @@ namespace TUGraz.VectoCore.Tests.Utils
 				var engineData = dao.CreateEngineData(
 					vehicleInput, engineInput.EngineModes.First(),
 					mission);
-				return dao.CreateGearboxData(gearboxInput, engineData, ((IAxleGearInputData)gearboxInput).Ratio, 0.5.SI<Meter>(),
-					VehicleCategory.RigidTruck, (ITorqueConverterDeclarationInputData)gearboxInput);
+				return dao.CreateGearboxData(
+					new MockVehicleTestInputData() {
+						Components = new MockComponentsTest() {
+							GearboxInputData = gearboxInput,
+							TorqueConverterInputData = (ITorqueConverterDeclarationInputData)gearboxInput
+						}
+					}, new VectoRunData() {
+						EngineData = engineData,
+						AxleGearData = new AxleGearData() {
+							AxleGear = new TransmissionData() { Ratio = ((IAxleGearInputData)gearboxInput).Ratio },
+						},
+						VehicleData =
+							new VehicleData() { VehicleCategory = VehicleCategory.RigidTruck, DynamicTyreRadius = 0.5.SI<Meter>() }
+					}, null);
 			} else {
 				var dao = new EngineeringDataAdapter();
 				var runData = new MockEngineeringVehicleInputData() {
@@ -77,9 +92,25 @@ namespace TUGraz.VectoCore.Tests.Utils
 					TorqueConverterInputData = (ITorqueConverterEngineeringInputData)gearboxInput
 				};
 				var engineData = dao.CreateEngineData(runData, engineInput.EngineModes.First());
-				return dao.CreateGearboxData(gearboxInput, engineData, (IGearshiftEngineeringInputData)gearboxInput, 
-					((IAxleGearInputData)gearboxInput).Ratio, 0.5.SI<Meter>(),
-					VehicleCategory.RigidTruck, (ITorqueConverterEngineeringInputData)gearboxInput);
+				return dao.CreateGearboxData(
+					new MockEngineeringInputProvider() {
+						DriverInputData = new MockDriverTestInputData() {
+							GearshiftInputData = (IGearshiftEngineeringInputData)gearboxInput
+						},
+						JobInputData = new MockJobTestInputData() {
+							Vehicle = new MockEngineeringVehicleInputData() {
+								GearboxInputData = gearboxInput,
+								TorqueConverterInputData = (ITorqueConverterEngineeringInputData)gearboxInput,
+							}
+						}
+					}, new VectoRunData() {
+						EngineData = engineData,
+						VehicleData = new VehicleData() {
+							VehicleCategory = VehicleCategory.RigidTruck,
+							DynamicTyreRadius = 0.5.SI<Meter>()
+						},
+						AxleGearData = new AxleGearData() { AxleGear = new TransmissionData() { Ratio = 2.1 } }
+					}, null);
 			}
 		}
 
@@ -136,5 +167,52 @@ namespace TUGraz.VectoCore.Tests.Utils
 			var dao = new EngineeringDataAdapter();
 			return dao.CreateDriverData(engineeringJob.DriverInputData);
 		}
+	}
+
+	public class MockComponentsTest : IVehicleComponentsDeclaration
+	{
+		public IAirdragDeclarationInputData AirdragInputData { get; }
+		public IGearboxDeclarationInputData GearboxInputData { get; set; }
+		public ITorqueConverterDeclarationInputData TorqueConverterInputData { get; set; }
+		public IAxleGearInputData AxleGearInputData { get; }
+		public IAngledriveInputData AngledriveInputData { get; }
+		public IEngineDeclarationInputData EngineInputData { get; }
+		public IAuxiliariesDeclarationInputData AuxiliaryInputData { get; }
+		public IRetarderInputData RetarderInputData { get; }
+		public IPTOTransmissionInputData PTOTransmissionInputData { get; }
+		public IAxlesDeclarationInputData AxleWheels { get; }
+	}
+
+	public class MockVehicleTestInputData : IVehicleDeclarationInputData
+	{
+		public DataSource DataSource { get; }
+		public bool SavedInDeclarationMode { get; }
+		public string Manufacturer { get; }
+		public string Model { get; }
+		public string Date { get; }
+		public CertificationMethod CertificationMethod { get; }
+		public string CertificationNumber { get; }
+		public DigestData DigestValue { get; }
+		public string Identifier { get; }
+		public bool ExemptedVehicle { get; }
+		public string VIN { get; }
+		public LegislativeClass LegislativeClass { get; }
+		public VehicleCategory VehicleCategory { get; }
+		public AxleConfiguration AxleConfiguration { get; }
+		public Kilogram CurbMassChassis { get; }
+		public Kilogram GrossVehicleMassRating { get; }
+		public IList<ITorqueLimitInputData> TorqueLimits { get; }
+		public string ManufacturerAddress { get; }
+		public PerSecond EngineIdleSpeed { get; }
+		public bool VocationalVehicle { get; }
+		public bool? SleeperCab { get; }
+		public TankSystem? TankSystem { get; }
+		public IAdvancedDriverAssistantSystemDeclarationInputData ADAS { get; }
+		public bool ZeroEmissionVehicle { get; }
+		public bool HybridElectricHDV { get; }
+		public bool DualFuelVehicle { get; }
+		public Watt MaxNetPower1 { get; }
+		public Watt MaxNetPower2 { get; }
+		public IVehicleComponentsDeclaration Components { get; set; }
 	}
 }

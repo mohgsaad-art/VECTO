@@ -55,7 +55,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			new List<Tuple<int, VectoSimulationComponent>>();
 
 		
-		public virtual bool IsTestPowertrain => false;
+		//public virtual bool IsTestPowertrain => false;
 
 		internal ISimulationOutPort Cycle;
 
@@ -92,11 +92,13 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		}
 
 		public virtual Second AbsTime { get; set; }
+
+		public virtual IDriverInfo DriverInfo { get; protected set; }
+		public IDrivingCycleInfo DrivingCycleInfo { get; protected set; }
 		public IMileageCounter MileageCounter { get; protected set; }
 		public IGearboxInfo GearboxInfo { get; protected set; }
 		public IGearboxControl GearboxCtl { get; protected set; }
 		public IAxlegearInfo AxlegearInfo { get; protected set; }
-
 		public IAngledriveInfo AngledriveInfo { get; protected set; }
 		public IEngineInfo EngineInfo { get; protected internal set; }
 		public IEngineControl EngineCtl { get; protected set; }
@@ -154,7 +156,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 
 			foreach (var component in _components) {
-				component.Item2.CommitSimulationStep(ModData);
+				component.Item2.CommitSimulationStep(time, simulationInterval, ModData);
 			}
 
 			if (ModData != null) {
@@ -205,11 +207,9 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 
 
-		public virtual IDriverInfo DriverInfo { get; protected set; }
 
-		public IDrivingCycleInfo DrivingCycleInfo { get; protected set; }
 
-		public IPowertainInfo PowertrainInfo { get; }
+		//public IPowertainInfo PowertrainInfo { get; }
 
 		
 

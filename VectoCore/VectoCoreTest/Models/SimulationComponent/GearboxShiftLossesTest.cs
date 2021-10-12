@@ -118,7 +118,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 			if (!double.IsNaN(expectedShiftLossEnergy)) {
 				var modData = new MockModalDataContainer();
-				gbx.CommitSimulationStep(modData);
+				gbx.CommitSimulationStep(absTime, dt, modData);
 				var shiftLossE = (Watt)modData[ModalResultField.P_gbx_shift_loss] * dt;
 				Assert.AreEqual(expectedShiftLossEnergy, shiftLossE.Value(), 1e-3);
 			}
@@ -171,8 +171,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			Assert.AreEqual(expectedShiftLoss, gbx.CurrentState.PowershiftLoss.Value(), 1e-3);
 			Assert.AreEqual(gear + (postShiftRpm > preShiftRpm ? 1 : -1), gbx.Gear);
 
-			gbx.CommitSimulationStep(modData);
-			engine.CommitSimulationStep(modData);
+			gbx.CommitSimulationStep(absTime, dt, modData);
+			engine.CommitSimulationStep(absTime, dt, modData);
 			var shiftLoss1 = (Watt)modData[ModalResultField.P_gbx_shift_loss] * dt;
 			Assert.AreEqual(expectedShiftLossEnergy * splitFactor, shiftLoss1.Value(), 1e-3);
 			axleGear.Request(absTime, dt, 0.SI<NewtonMeter>(), preShiftRpm.RPMtoRad());
@@ -183,8 +183,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			response = gbx.Request(absTime, dt, torqueDemand.SI<NewtonMeter>(), postShiftRpm.RPMtoRad());
 
 			Assert.IsInstanceOf<ResponseSuccess>(response);
-			gbx.CommitSimulationStep(modData);
-			engine.CommitSimulationStep(modData);
+			gbx.CommitSimulationStep(absTime, dt, modData);
+			engine.CommitSimulationStep(absTime, dt, modData);
 			var shiftLoss2 = (Watt)modData[ModalResultField.P_gbx_shift_loss]  *  dt;
 			Console.WriteLine("expected shiftloss energy: {0}, sum of shift loss energy: {1} ({2} + {3})", expectedShiftLossEnergy, shiftLoss1 + shiftLoss2, shiftLoss1, shiftLoss2);
 			Assert.AreEqual(expectedShiftLossEnergy * (1 - splitFactor), shiftLoss2.Value(), 1e-3);
