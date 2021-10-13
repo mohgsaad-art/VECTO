@@ -413,7 +413,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
             Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity,
             bool dryRun)
         {
-            var myCurrentState = (CycleGearboxState)CurrentState;
+            CycleGearboxState myCurrentState = new CycleGearboxState();
+            myCurrentState.OutTorque = CurrentState.OutTorque;
+            myCurrentState.OutAngularVelocity = CurrentState.OutAngularVelocity;
+            myCurrentState.InertiaTorqueLossOut = CurrentState.InertiaTorqueLossOut;
+            myCurrentState.TransmissionTorqueLoss = CurrentState.TransmissionTorqueLoss;
+            myCurrentState.TorqueLossResult = CurrentState.TorqueLossResult;
+            myCurrentState.DrivingBehavior = CurrentState.DrivingBehavior;
+
             DisengagedTime = null;
 
             var tcLocked = DataBus.DrivingCycleInfo.CycleData.LeftSample.TorqueConverterActive != null

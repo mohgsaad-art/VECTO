@@ -48,7 +48,19 @@
       "OverSpeed": 2.5
     },
     "Cycles": [
-      "Cycle_time_no_grad_exact_gear.vdri"
+      "01Cycle_time_no_grad_exact_160s.vdri",
+      "02Cycle_time_no_grad_no_gear_small_org.vdri",
+      "03Cycle_time_no_grad_exact_gear_small_org.vdri",
+      "Cycle_time.vdri",
+      "Cycle_time_no_grad.vdri",
+      "Cycle_time_no_grad_exact_gear.vdri",
+      "LongHaul.vdri",
+      "LongHaulNoGrad.vdri",
+      "LongHaulNoGrad_small.vdri",
+      "RegionalDelivery.vdri",
+      "Test_cycle_time.vdri",
+      "UrbanDelivery.vdri",
+      "UrbanDeliveryNoGrad_Time_Gear.vdri"
     ]
   }
 }

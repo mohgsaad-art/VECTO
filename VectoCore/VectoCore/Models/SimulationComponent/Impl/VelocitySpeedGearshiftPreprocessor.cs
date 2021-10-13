@@ -12,13 +12,14 @@ using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Strategies;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
-	public class VelocitySpeedGearshiftPreprocessor : LoggingObject,ISimulationPreprocessor
+	public class VelocitySpeedGearshiftPreprocessor : LoggingObject, ISimulationPreprocessor
 	{
 		protected readonly Second TractionInterruption;
 		protected readonly VelocityRollingLookup VehicleVelocityDropLookup;
@@ -60,7 +61,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var container = Container;
 			var vehicle = container?.VehicleInfo as Vehicle;
 
-			if (vehicle == null) {
+			if (vehicle == null)
+			{
 				throw new VectoException("no vehicle found...");
 			}
 
@@ -81,8 +83,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			//(Container.DriverInfo as MockDriver).DriverBehavior = DrivingBehavior.Coasting;
 			var maxSpeed = GetVehicleMaxSpeed(runData);
-			foreach (var speed in Speeds) {
-				if (speed > maxSpeed) {
+			foreach (var speed in Speeds)
+			{
+				if (speed > maxSpeed)
+				{
 					continue;
 				}
 
@@ -97,7 +101,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					.OrderBy(x => x.SpeedDiff).FirstOrDefault()?.Gear ?? new GearshiftPosition(0);
 				//var gearForSpeed = runData.GearboxData.Gears.OrderBy(x => Math.Abs((speed * ratio * x.Value.Ratio - targetEngineSpeed).Value()))
 				//	.FirstOrDefault().Key;
-				if (!gearForSpeed.Engaged) {
+				if (!gearForSpeed.Engaged)
+				{
 					continue;
 				}
 
@@ -117,54 +122,88 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				}
 			}
 
-			#region save to file
-			StringBuilder sb = new StringBuilder();
-
-			
-			foreach (var key in tmpdebug[0].Container)
-			{
-				sb.Append($"{key.Key},");
-			}
-
-			foreach (var key in tmpdebug[0].Vehicle)
-			{
-				sb.Append($"{key.Key},");
-			}
-			sb.Append("VehicleSpeed");
-			sb.Append(",");
-			sb.Append("GearForSpeed");
-			sb.Append(",");
-			sb.Append("StartVelocity");
-			sb.Append(",");
-			sb.Append("Gradient");
-			sb.Append(",");
-			sb.Append("EndVelocity" + Environment.NewLine);
-
-			string csvpath = $"c:\\Temp\\IVSAG_{((TUGraz.VectoCore.InputData.Reader.Impl.DrivingCycleProxy)this.Container.RunData.Cycle).Name}.csv";
-
-			if (File.Exists(csvpath))
-			{
-				File.Delete(csvpath);
-			}
-
-			foreach (var Item in tmpdebug)
-			{
-				foreach (var item in Item.Vehicle)
-				{
-					sb.Append($"{item.Value},");
-				}
-				sb.Append($"{Item.VehicleSpeed},{Item.GearForSpeed},{Item.StartVelocity},{Item.Gradient},{Item.EndVelocity}" + Environment.NewLine);
-			}
-
-
-			// Writing the string to the file
-			File.WriteAllText(csvpath, sb.ToString());
-			#endregion
-
+			SaveLogToFile(tmpdebug);
 			return tmp.ToArray();
 		}
 
-        protected virtual PerSecond GetMotorTargetSpeed(VectoRunData runData)
+		protected virtual void SaveLogToFile(List<MyDebugEntry> tmpdebug)
+		{
+			StringBuilder sb = new StringBuilder();
+
+			// prepare header
+			sb.Append("VehicleSpeed,GearForSpeed,StartVelocity,Gradient,EndVelocity,");
+			sb.Append(String.Join(",", from item in tmpdebug[0].Container select item.Key.ToString()));
+			sb.Append(String.Join(",", from item in tmpdebug[0].Vehicle select item.Key.ToString()));
+			sb.Append(Environment.NewLine);
+
+			
+			// prepare rows with values
+			foreach (var row in tmpdebug)
+			{
+				sb.Append($"{row.VehicleSpeed},{row.GearForSpeed},{row.StartVelocity},{row.Gradient},{row.EndVelocity}");
+				sb.Append(String.Join(",", from itm in row.Container select itm.Value.ToString()));
+				sb.Append(String.Join(",", from itm in row.Vehicle select itm.Value.ToString()));
+				sb.Append(Environment.NewLine);
+			}
+
+			var cycleName = this.Container.RunData.Cycle.Name;
+			var currentPath = AppDomain.CurrentDomain.BaseDirectory;
+			var csvpath = $"{currentPath}\\logs\\VSGP_{cycleName}.csv";
+
+			File.WriteAllText(csvpath, sb.ToString());
+		}
+
+		protected virtual IDictionary<string, string> GetPropertiesOfClass(Object myclass)
+        {
+			IDictionary<string, string> result = new Dictionary<string, string>();
+			_GetPropertiesOfClass(myclass, " ", result, new HashSet<object>());
+			return result;
+		}
+		// nested visitor TO-DO: move as a utility
+		protected virtual void _GetPropertiesOfClass(Object myclass, string prefix, IDictionary<string, string> result, HashSet<object> visited)
+		{
+			if (visited.Contains(myclass))
+			{
+				return;
+			}
+			else
+            {
+				visited.Add(myclass);
+            }
+
+			var currentLevel = prefix + "/";
+			var currentType = myclass.GetType();
+			foreach (var prop in currentType.GetProperties())
+			{
+				try
+				{
+					object propertyValue = prop.GetValue(myclass, null);
+					var propertyLabel = $"{currentLevel}{prop.Name} ({currentType.ToString()})";
+
+					if (propertyValue == null)
+					{
+						propertyValue = "";
+					}
+					else
+                    {
+						if (propertyValue is VectoSimulationComponent || propertyValue is IResponse || propertyValue is SimpleComponentState)
+						{
+							_GetPropertiesOfClass(propertyValue, propertyLabel, result, visited);
+							continue;
+						}
+					}
+					
+					result.Add(propertyLabel, propertyValue.ToString());
+				}
+				catch (Exception ex)
+				{
+					Log.Debug(currentLevel + ex.ToString());
+				}
+			}
+
+		}
+
+		protected virtual PerSecond GetMotorTargetSpeed(VectoRunData runData)
 		{
 			return 0.5 * (runData.EngineData.FullLoadCurves[0].RatedSpeed - runData.EngineData.IdleSpeed) + runData.EngineData.IdleSpeed;
 		}
@@ -183,7 +222,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var vehicleMaxSpeed = GetMaxMotorspeed(runData) /
 					runData.GearboxData.Gears[runData.GearboxData.Gears.Keys.Max()].Ratio / axlegearRatio /
 					angledriveRatio * dynamicTyreRadius;
-			
+
 			var maxSpeed = VectoMath.Min(
 				vehicleMaxSpeed,
 				(runData.VehicleDesignSpeed ?? 90.KMPHtoMeterPerSecond()) +
@@ -210,7 +249,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var absTime = 0.SI<Second>();
 			var initialResponse = vehicle.Request(absTime, simulationInterval, acceleration, gradient);
 			var delta = initialResponse.Gearbox.PowerRequest;
-			try {
+			try
+			{
 				var time = absTime;
 				acceleration = SearchAlgorithm.Search(
 					acceleration, delta, Constants.SimulationSettings.OperatingPointInitialSearchIntervalAccelerating,
@@ -222,7 +262,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 						var response = vehicle.Request(time, simulationInterval, acc, gradient, true);
 						// FIXME: ank: Is this DriveResponse-is-null still necessary??
 						//
-						if (response.Driver != null) {
+						if (response.Driver != null)
+						{
 							response.Driver.Acceleration = acc;
 						}
 						return response;
@@ -238,12 +279,15 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					searcher: this
 				);
 				var step = vehicle.Request(absTime, simulationInterval, acceleration, gradient);
-				if (!(step is ResponseSuccess)) {
+				if (!(step is ResponseSuccess))
+				{
 					throw new VectoSimulationException("failed to find acceleration for rolling");
 				}
 
 				absTime += simulationInterval;
-			} catch (VectoSearchAbortedException) {
+			}
+			catch (VectoSearchAbortedException)
+			{
 				return 0.KMPHtoMeterPerSecond();
 			}
 
@@ -273,7 +317,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		public VelocitySpeedGearshiftPreprocessorE2(VelocityRollingLookup velocityDropData,
 			Second tracktionInterruption, SimplePowertrainContainer simpleContainer, int minGradient = -24,
 			int maxGradient = 24, int gradientStep = 2) : base(velocityDropData, tracktionInterruption, simpleContainer,
-			minGradient, maxGradient, gradientStep) { }
+			minGradient, maxGradient, gradientStep)
+		{ }
 
 		protected override PerSecond GetMotorTargetSpeed(VectoRunData runData)
 		{
@@ -294,6 +339,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				throw new VectoException("E2 EM required for PEV E2 GearshiftPreprocessing");
 			}
 			return em.Item2.EfficiencyData.VoltageLevels.First().FullLoadCurve.MaxSpeed / em.Item2.RatioADC;
-        }
+		}
 	}
 }

@@ -43,6 +43,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HashingCmd", "HashingCmd\HashingCmd.csproj", "{33F9848E-9257-4BE2-915F-68E748AEB204}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8FA41CF6-D2BE-44F5-AD08-3675433F2187}"
+	ProjectSection(SolutionItems) = preProject
+		Generic Vehicles\Engineering Mode\GenericVehicle_Group2_P2_EM\Class2_RigidTruck_ParHyb_ENG.vecto = Generic Vehicles\Engineering Mode\GenericVehicle_Group2_P2_EM\Class2_RigidTruck_ParHyb_ENG.vecto
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
