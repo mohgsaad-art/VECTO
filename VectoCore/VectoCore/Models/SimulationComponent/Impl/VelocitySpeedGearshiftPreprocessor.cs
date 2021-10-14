@@ -155,7 +155,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		protected virtual IDictionary<string, string> GetPropertiesOfClass(Object myclass)
         {
-			IDictionary<string, string> result = new Dictionary<string, string>();
+			IDictionary<string, string> result = new SortedDictionary<string, string>();
 			_GetPropertiesOfClass(myclass, " ", result, new HashSet<object>());
 			return result;
 		}
@@ -178,7 +178,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				try
 				{
 					object propertyValue = prop.GetValue(myclass, null);
-					var propertyLabel = $"{currentLevel}{prop.Name} ({currentType.ToString()})";
+					var propertyLabel = $"{currentLevel}{prop.Name}";
 
 					if (propertyValue == null)
 					{
@@ -188,6 +188,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
                     {
 						if (propertyValue is VectoSimulationComponent || propertyValue is IResponse || propertyValue is SimpleComponentState)
 						{
+							string currentTypeClass = currentType.ToString().Substring(currentType.ToString().LastIndexOf('.') + 1);
+							propertyLabel += $"({currentTypeClass})";
 							_GetPropertiesOfClass(propertyValue, propertyLabel, result, visited);
 							continue;
 						}
