@@ -23,6 +23,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
     public class GearBoxHybridsMeasuredSpeedGear : Gearbox
     {
 
+        protected internal bool IsPreProcessing { get; set; }
+
         protected internal readonly TorqueConverterWrapper TorqueConverter;
 
         public override GearshiftPosition Gear { get; protected internal set; }
@@ -32,10 +34,17 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
         // FIXME: check if needed
         private Second _overrideDisengage = 0.SI<Second>();
 
+        protected internal new GearshiftPosition _nextGear;
+
         public override GearshiftPosition NextGear
         {
             get
             {
+                if (IsPreProcessing)
+                {
+                    return _nextGear;
+                }
+
                 if (Disengaged == false)
                 {
                     return Gear;
@@ -70,6 +79,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
                 return new GearshiftPosition(nextGear, GearboxType.ManualTransmission() ? (bool?)null : torqueConverterLocked);
             }
         }
+
 
         public override bool GearEngaged(Second absTime)
         {
@@ -136,7 +146,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
             var tcLocked = DataBus.DrivingCycleInfo.CycleData.LeftSample.TorqueConverterActive != null
                 ? !DataBus.DrivingCycleInfo.CycleData.LeftSample.TorqueConverterActive
                 : null;
-            Gear = new GearshiftPosition(GetGearFromCycle(), tcLocked);
 
             if (TorqueConverter != null && Gear.TorqueConverterLocked == null)
             {
@@ -147,6 +156,18 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
             var inTorque = 0.SI<NewtonMeter>();
             IResponse response;
 
+            if (IsPreProcessing)
+            {
+                if (_nextGear == null)
+                {
+                    _nextGear = new GearshiftPosition(0);
+                }
+                Gear =  new GearshiftPosition(_nextGear.Gear);
+            }
+            if (Gear == null)
+            {
+                Gear = new GearshiftPosition(0);
+            }
             if (Gear.Gear != 0)
             {
                 var ratio = !Gear.IsLockedGear()
@@ -245,6 +266,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
         {
             ////////Log.Debug("Gearbox Power Request: torque: {0}, angularVelocity: {1}", outTorque, outAngularVelocity);
             var gear = GetGearFromCycle();
+
+            if (IsPreProcessing)
+            {
+                gear =  _nextGear.Gear;
+            }
 
             var TorqueConverterActive = DataBus.DriverInfo.DriverBehavior == DrivingBehavior.Braking
                 ? DataBus.DrivingCycleInfo.CycleData.LeftSample.TorqueConverterActive
