@@ -184,7 +184,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var wheelStartTorque =
 				(RunData.VehicleData.VehicleCategory == VehicleCategory.Tractor
 					? 40000.SI<Kilogram>()
-					: RunData.VehicleData.GrossVehicleWeight) * RunData.GearboxData.StartAcceleration *
+					: RunData.VehicleData.GrossVehicleMass) * RunData.GearboxData.StartAcceleration *
 				RunData.VehicleData.DynamicTyreRadius;
 			var wheelStartSpeed = RunData.GearboxData.StartSpeed / RunData.VehicleData.DynamicTyreRadius;
 			CycleIterator.LeftSample.WheelAngularVelocity = wheelStartSpeed;

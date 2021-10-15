@@ -108,7 +108,6 @@ namespace TUGraz.VectoCore.Tests.Integration
 			var fileWriter = new FileOutputWriter(modFileName);
 			var modData = new ModalDataContainer(runData, fileWriter, null) {
 				WriteModalResults = true,
-				HasTorqueConverter = true
 			};
 			var container = new VehicleContainer(ExecutionMode.Engineering, modData) {
 				RunData = runData,
@@ -124,6 +123,7 @@ namespace TUGraz.VectoCore.Tests.Integration
 				.AddComponent(new DummyRetarder(container))
 				.AddComponent(new ATGearbox(container, new ATShiftStrategy(container)))
 				.AddComponent(engine);
+			new ATClutchInfo(container);
 
 			var aux = new EngineAuxiliary(container);
 			aux.AddConstant("ZERO", 0.SI<Watt>());
@@ -211,7 +211,7 @@ namespace TUGraz.VectoCore.Tests.Integration
 			return new VehicleData {
 				AirDensity = DeclarationData.AirDensity,
 				AxleConfiguration = AxleConfiguration.AxleConfig_4x2,
-				CurbWeight = 11500.SI<Kilogram>(),
+				CurbMass = 11500.SI<Kilogram>(),
 				Loading = loading,
 				DynamicTyreRadius = 0.465.SI<Meter>(),
 				AxleData = axles,

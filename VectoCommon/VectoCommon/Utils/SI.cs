@@ -571,6 +571,11 @@ namespace TUGraz.VectoCommon.Utils
 		private KilogramPerWattSecond(double val) : base(val, Units) { }
 
 		public override string UnitString { get { return "kg/Ws"; } }
+
+		public static Kilogram operator *(KilogramPerWattSecond kpws, WattSecond ws)
+		{
+			return SIBase<Kilogram>.Create(kpws.Val * ws.Value());
+		}
 	}
 
 	/// <summary>
@@ -590,6 +595,11 @@ namespace TUGraz.VectoCommon.Utils
 		public static Watt operator /(WattSecond wattSecond, Second second)
 		{
 			return SIBase<Watt>.Create(wattSecond.Val / second.Value());
+		}
+
+		public static Kilogram operator *(WattSecond ws, KilogramPerWattSecond kpws)
+		{
+			return SIBase<Kilogram>.Create(ws.Val * kpws.Value());
 		}
 	}
 
@@ -731,6 +741,11 @@ namespace TUGraz.VectoCommon.Utils
 		public static JoulePerMeter operator /(Joule joule, Meter meter)
 		{
 			return SIBase<JoulePerMeter>.Create(joule.Val / meter.Value());
+		}
+
+		public static Kilogram operator /(Joule j, JoulePerKilogramm jpkg)
+		{
+			return SIBase<Kilogram>.Create(j.Val / jpkg.Value());
 		}
 	}
 

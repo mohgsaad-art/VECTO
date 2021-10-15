@@ -42,8 +42,10 @@ using TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl.Electrics;
 using TUGraz.VectoCore.Models.BusAuxiliaries.Interfaces.DownstreamModules.Electrics;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Data;
+using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
+using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Utils;
@@ -129,6 +131,9 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			directAux.AddCycle(Constants.Auxiliaries.Cycle);
 			container.ModalData.AddAuxiliary(Constants.Auxiliaries.Cycle);
 			var engine = new EngineOnlyCombustionEngine(container, data.EngineData);
+			new EngineOnlyGearboxInfo(container);
+			new ZeroMileageCounter(container);
+			new DummyDriverInfo(container);
 			engine.Connect(directAux.Port());
 
 			cycle.InPort().Connect(engine.OutPort());
@@ -236,7 +241,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 			powertrain.AddComponent(engine, idleController)
 				.AddAuxiliaries(container, data);
-			_modData.HasTorqueConverter = data.GearboxData.Type.AutomaticTransmission();
+			//_modData.HasTorqueConverter = data.GearboxData.Type.AutomaticTransmission();
 
 			return container;
 		}
@@ -260,11 +265,13 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				.AddComponent(new CycleGearbox(container));
 			if (data.GearboxData.Type.ManualTransmission()) {
 				powertrain = powertrain.AddComponent(new Clutch(container, data.EngineData));
+			} else {
+				new ATClutchInfo(container);
 			}
 			powertrain.AddComponent(new CombustionEngine(container, data.EngineData))
 				.AddAuxiliaries(container, data);
 
-			_modData.HasTorqueConverter = data.GearboxData.Type.AutomaticTransmission();
+			//_modData.HasTorqueConverter = data.GearboxData.Type.AutomaticTransmission();
 
 			return container;
 		}
@@ -298,7 +305,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			powertrain.AddComponent(engine, idleController)
 				.AddAuxiliaries(container, data);
 
-			_modData.HasTorqueConverter = data.GearboxData.Type.AutomaticTransmission();
+			//_modData.HasTorqueConverter = data.GearboxData.Type.AutomaticTransmission();
 
 			return container;
 		}
@@ -417,7 +424,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 					default:
 						throw new ArgumentOutOfRangeException("AuxiliaryDemandType", auxData.DemandType.ToString());
 				}
-				container.ModalData.AddAuxiliary(id);
+				container.ModalData?.AddAuxiliary(id);
 			}
 
 			RoadSweeperAuxiliary rdSwpAux = null;
@@ -430,7 +437,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				}
 				rdSwpAux = new RoadSweeperAuxiliary(container);
 				aux.Add(Constants.Auxiliaries.IDs.PTORoadsweeping, (nEng, absTime, dt, dryRun) => rdSwpAux.PowerDemand(nEng, absTime, dt, dryRun));
-				container.ModalData.AddAuxiliary(Constants.Auxiliaries.IDs.PTORoadsweeping, Constants.Auxiliaries.PowerPrefix + Constants.Auxiliaries.IDs.PTORoadsweeping);
+				container.ModalData?.AddAuxiliary(Constants.Auxiliaries.IDs.PTORoadsweeping, Constants.Auxiliaries.PowerPrefix + Constants.Auxiliaries.IDs.PTORoadsweeping);
 			}
 
 			if (data.ExecutionMode == ExecutionMode.Engineering &&
@@ -441,17 +448,17 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 				ptoDrive = new PTODriveAuxiliary(container, data.PTOCycleWhileDrive);
 				aux.Add(Constants.Auxiliaries.IDs.PTODuringDrive, (nEng, absTime, dt, dryRun) => ptoDrive.PowerDemand(nEng, absTime, dt, dryRun));
-				container.ModalData.AddAuxiliary(Constants.Auxiliaries.IDs.PTODuringDrive, Constants.Auxiliaries.PowerPrefix + Constants.Auxiliaries.IDs.PTODuringDrive);
+				container.ModalData?.AddAuxiliary(Constants.Auxiliaries.IDs.PTODuringDrive, Constants.Auxiliaries.PowerPrefix + Constants.Auxiliaries.IDs.PTODuringDrive);
 			}
 			if (data.PTO != null) {
 				aux.AddConstant(Constants.Auxiliaries.IDs.PTOTransmission,
 								DeclarationData.PTOTransmission.Lookup(data.PTO.TransmissionType).PowerDemand);
-				container.ModalData.AddAuxiliary(Constants.Auxiliaries.IDs.PTOTransmission,
+				container.ModalData?.AddAuxiliary(Constants.Auxiliaries.IDs.PTOTransmission,
 												Constants.Auxiliaries.PowerPrefix + Constants.Auxiliaries.IDs.PTOTransmission);
 
 				aux.Add(Constants.Auxiliaries.IDs.PTOConsumer,
 						(n, absTime, dt, dryRun) => container.DrivingCycleInfo.PTOActive || (rdSwpAux?.Active(absTime) ?? false) || (ptoDrive?.Active(absTime) ?? false) ? null : data.PTO.LossMap.GetTorqueLoss(n) * n);
-				container.ModalData.AddAuxiliary(Constants.Auxiliaries.IDs.PTOConsumer,
+				container.ModalData?.AddAuxiliary(Constants.Auxiliaries.IDs.PTOConsumer,
 												Constants.Auxiliaries.PowerPrefix + Constants.Auxiliaries.IDs.PTOConsumer);
 			}
 			return aux;
@@ -570,5 +577,130 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		}
 	}
 
-	
+
+	internal class DummyDriverInfo : VectoSimulationComponent, IDriverInfo
+	{
+		public DummyDriverInfo(VehicleContainer container) : base(container)
+		{
+
+		}
+
+		#region Overrides of VectoSimulationComponent
+
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
+		{
+
+		}
+
+		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)
+		{
+
+		}
+
+		#endregion
+
+		#region Implementation of IDriverInfo
+
+		public DrivingBehavior DriverBehavior => DrivingBehavior.Accelerating;
+
+		public DrivingAction DrivingAction => DrivingAction.Accelerate;
+
+		public MeterPerSquareSecond DriverAcceleration => 0.SI<MeterPerSquareSecond>();
+		public PCCStates PCCState => PCCStates.OutsideSegment;
+
+		#endregion
+	}
+
+	internal class EngineOnlyGearboxInfo : VectoSimulationComponent, IGearboxInfo
+	{
+		public EngineOnlyGearboxInfo(VehicleContainer container) : base(container)
+		{
+
+		}
+
+		#region Overrides of VectoSimulationComponent
+
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
+		{
+
+		}
+
+		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)
+		{
+
+		}
+
+		#endregion
+
+		#region Implementation of IGearboxInfo
+
+		public GearboxType GearboxType => GearboxType.DrivingCycle;
+
+		public GearshiftPosition Gear => new GearshiftPosition(0);
+
+		public bool TCLocked => true;
+
+		public MeterPerSecond StartSpeed => throw new VectoException("No Gearbox available. StartSpeed unknown.");
+
+		public MeterPerSquareSecond StartAcceleration => throw new VectoException("No Gearbox available. StartAcceleration unknown.");
+
+		public Watt GearboxLoss()
+		{
+			throw new VectoException("No Gearbox available.");
+		}
+
+		public Second LastShift => throw new VectoException("No Gearbox available.");
+
+		public Second LastUpshift => throw new VectoException("No Gearbox available.");
+
+		public Second LastDownshift => throw new VectoException("No Gearbox available.");
+
+		public GearData GetGearData(uint gear)
+		{
+			throw new VectoException("No Gearbox available.");
+		}
+
+		public GearshiftPosition NextGear => throw new VectoException("No Gearbox available.");
+
+		public Second TractionInterruption => throw new NotImplementedException();
+
+		public uint NumGears => throw new NotImplementedException();
+
+		public bool DisengageGearbox => throw new VectoException("No Gearbox available.");
+
+		public bool GearEngaged(Second absTime)
+		{
+			return true;
+		}
+
+		#endregion
+	}
+
+	internal class ZeroMileageCounter : VectoSimulationComponent, IMileageCounter
+	{
+		public ZeroMileageCounter(VehicleContainer container) : base(container)
+		{
+
+		}
+
+		#region Overrides of VectoSimulationComponent
+
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
+		{
+
+		}
+
+		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)
+		{
+
+		}
+
+		#endregion
+
+		#region Implementation of IMileageCounter
+
+		public Meter Distance => 0.SI<Meter>();
+
+		#endregion
+	}
 }

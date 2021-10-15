@@ -144,8 +144,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 	public class MissionTrailer
 	{
 		public TrailerType TrailerType;
-		public Kilogram TrailerCurbWeight;
-		public Kilogram TrailerGrossVehicleWeight;
+		public Kilogram TrailerCurbMass;
+		public Kilogram TrailerGrossVehicleMass;
 		public List<Wheels.Entry> TrailerWheels;
 		public double TrailerAxleWeightShare;
 		public SquareMeter DeltaCdA;

@@ -62,11 +62,13 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			}
 			var retVal = SetCommonVehicleData(data);
 			retVal.AxleConfiguration = data.AxleConfiguration;
-			retVal.BodyAndTrailerWeight = data.CurbMassExtra;
+			retVal.BodyAndTrailerMass = data.CurbMassExtra;
 			//retVal.CurbWeight += data.CurbMassExtra;
-			retVal.TrailerGrossVehicleWeight = 0.SI<Kilogram>();
+			retVal.TrailerGrossVehicleMass = 0.SI<Kilogram>();
 			retVal.Loading = data.Loading;
 			retVal.DynamicTyreRadius = data.DynamicTyreRadius;
+			retVal.ADAS = CreateADAS(data.ADAS);
+
 			var axles = data.Components.AxleWheels.AxlesEngineering;
 
 			retVal.AxleData = axles.Select(axle => new Axle {
@@ -80,6 +82,21 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				//Wheels = axle.WheelsStr
 			}).ToList();
 			return retVal;
+		}
+
+		private VehicleData.ADASData CreateADAS(IAdvancedDriverAssistantSystemsEngineering adas)
+		{
+			return adas == null ?
+				new VehicleData.ADASData() {
+					EngineStopStart = false,
+					EcoRoll = EcoRollType.None,
+					PredictiveCruiseControl = PredictiveCruiseControlType.None
+				} :
+				new VehicleData.ADASData {
+					EngineStopStart = adas.EngineStopStart,
+					EcoRoll = adas.EcoRoll,
+					PredictiveCruiseControl = adas.PredictiveCruiseControl
+				};
 		}
 
 		public AirdragData CreateAirdragData(IAirdragEngineeringInputData airdragData, IVehicleEngineeringInputData data)
@@ -164,6 +181,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			}
 			retVal.Inertia = engine.Inertia +
 							(gbx != null && gbx.Type.AutomaticTransmission() ? torqueConverter.Inertia : 0.SI<KilogramSquareMeter>());
+			retVal.EngineStartTime = engine.EngineStartTime ?? DeclarationData.Engine.DefaultEngineStartTime;
 			var limits = torqueLimits.ToDictionary(e => e.Gear);
 			var numGears = gbx == null ? 0 : gbx.Gears.Count;
 			var fullLoadCurves = new Dictionary<uint, EngineFullLoadCurve>(numGears + 1);
@@ -421,6 +439,28 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				AccelerationCurve = accelerationData,
 				LookAheadCoasting = lookAheadData,
 				OverSpeed = overspeedData,
+				EngineStopStart = new DriverData.EngineStopStartData() {
+					EngineOffStandStillActivationDelay =
+						driver.EngineStopStartData?.ActivationDelay ?? DeclarationData.Driver.EngineStopStart.ActivationDelay,
+					MaxEngineOffTimespan = driver.EngineStopStartData?.MaxEngineOffTimespan ?? DeclarationData.Driver.EngineStopStart.MaxEngineOffTimespan,
+					UtilityFactorStandstill = driver.EngineStopStartData?.UtilityFactorStandstill ?? DeclarationData.Driver.EngineStopStart.UtilityFactor,
+					UtilityFactorDriving = driver.EngineStopStartData?.UtilityFactorDriving ?? DeclarationData.Driver.EngineStopStart.UtilityFactor,
+				},
+				EcoRoll = new DriverData.EcoRollData() {
+					UnderspeedThreshold = driver.EcoRollData?.UnderspeedThreshold ?? DeclarationData.Driver.EcoRoll.UnderspeedThreshold,
+					MinSpeed = driver.EcoRollData?.MinSpeed ?? DeclarationData.Driver.EcoRoll.MinSpeed,
+					ActivationPhaseDuration = driver.EcoRollData?.ActivationDelay ?? DeclarationData.Driver.EcoRoll.ActivationDelay,
+					AccelerationLowerLimit = DeclarationData.Driver.EcoRoll.AccelerationLowerLimit,
+					AccelerationUpperLimit = driver.EcoRollData?.AccelerationUpperLimit ?? DeclarationData.Driver.EcoRoll.AccelerationUpperLimit,
+				},
+				PCC = new DriverData.PCCData() {
+					PCCEnableSpeed = driver.PCCData?.PCCEnabledSpeed ?? DeclarationData.Driver.PCC.PCCEnableSpeed,
+					MinSpeed = driver.PCCData?.MinSpeed ?? DeclarationData.Driver.PCC.MinSpeed,
+					PreviewDistanceUseCase1 = driver.PCCData?.PreviewDistanceUseCase1 ?? DeclarationData.Driver.PCC.PreviewDistanceUseCase1,
+					PreviewDistanceUseCase2 = driver.PCCData?.PreviewDistanceUseCase2 ?? DeclarationData.Driver.PCC.PreviewDistanceUseCase2,
+					UnderSpeed = driver.PCCData?.Underspeed ?? DeclarationData.Driver.PCC.Underspeed,
+					OverspeedUseCase3 = driver.PCCData?.OverspeedUseCase3 ?? DeclarationData.Driver.PCC.OverspeedUseCase3
+				}
 			};
 			return retVal;
 		}

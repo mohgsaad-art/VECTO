@@ -68,7 +68,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				return;
 			}
 
-			var strategy = new CycleShiftStrategy(null);
+			var strategy = new CycleShiftStrategy(container);
 
 			
 			TorqueConverter = new TorqueConverterWrapper(container.RunData.Cycle.Entries.All(x => x.EngineSpeed != null),

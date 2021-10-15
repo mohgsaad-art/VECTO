@@ -194,12 +194,12 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 			var vehicleData = new VehicleData {
 				AxleConfiguration = AxleConfiguration.AxleConfig_4x2,
 				AirDensity = DeclarationData.AirDensity,
-				CurbWeight = 7500.SI<Kilogram>(),
+				CurbMass = 7500.SI<Kilogram>(),
 				DynamicTyreRadius = 0.5.SI<Meter>(),
 				//CurbWeigthExtra = 0.SI<Kilogram>(),
 				Loading = 12000.SI<Kilogram>(),
-				GrossVehicleWeight = 16000.SI<Kilogram>(),
-				TrailerGrossVehicleWeight = 0.SI<Kilogram>(),
+				GrossVehicleMass = 16000.SI<Kilogram>(),
+				TrailerGrossVehicleMass = 0.SI<Kilogram>(),
 				AxleData = new List<Axle> {
 					new Axle {
 						AxleType = AxleType.VehicleNonDriven,
@@ -256,12 +256,12 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 			var vehicleData = new VehicleData {
 				AxleConfiguration = AxleConfiguration.AxleConfig_4x2,
 				AirDensity = DeclarationData.AirDensity,
-				CurbWeight = 7500.SI<Kilogram>(),
+				CurbMass = 7500.SI<Kilogram>(),
 				DynamicTyreRadius = 0.5.SI<Meter>(),
 				//CurbWeigthExtra = 0.SI<Kilogram>(),
 				Loading = 12000.SI<Kilogram>(),
-				GrossVehicleWeight = 16000.SI<Kilogram>(),
-				TrailerGrossVehicleWeight = 0.SI<Kilogram>(),
+				GrossVehicleMass = 16000.SI<Kilogram>(),
+				TrailerGrossVehicleMass = 0.SI<Kilogram>(),
 				AxleData = new List<Axle> {
 					new Axle {
 						AxleType = AxleType.VehicleNonDriven,

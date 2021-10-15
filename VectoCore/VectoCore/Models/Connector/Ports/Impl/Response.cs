@@ -60,7 +60,23 @@ namespace TUGraz.VectoCore.Models.Connector.Ports.Impl
             //HybridController = new HybridControllerResponse();
         }
 
-		
+		public AbstractResponse(object source, IResponse subResponse)
+		{
+			Source = source;
+			Driver = subResponse.Driver;
+			Engine = subResponse.Engine;
+			Clutch = subResponse.Clutch;
+			Gearbox = subResponse.Gearbox;
+			Axlegear = subResponse.Axlegear;
+			Angledrive = subResponse.Angledrive;
+			Wheels = subResponse.Wheels;
+			Vehicle = subResponse.Vehicle;
+			Brakes = subResponse.Brakes;
+			//ElectricMotor = subResponse.ElectricMotor;
+			//ElectricSystem = subResponse.ElectricSystem;
+			TorqueConverter = subResponse.TorqueConverter;
+			//HybridController = subResponse.HybridController;
+		}
 
 
 		public object Source { get; }
@@ -162,6 +178,8 @@ namespace TUGraz.VectoCore.Models.Connector.Ports.Impl
 		public Watt DeltaDragLoad { get; set; }
 		public PerSecond DeltaEngineSpeed { get; set; }
 		public ResponseDryRun(object source) : base(source) { }
+
+		public ResponseDryRun(object source, IResponse subResponse) : base(source, subResponse) { }
 	}
 
 	internal class ResponseGearShift : AbstractResponse

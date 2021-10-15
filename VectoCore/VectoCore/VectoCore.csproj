@@ -366,6 +366,7 @@
     <Compile Include="Models\Simulation\SimulationFactoryNinjectModule.cs" />
     <Compile Include="OutputData\FileIO\BusAuxWriter.cs" />
     <Compile Include="OutputData\FileIO\JSONFileWriter.cs" />
+    <Compile Include="OutputData\ModalDataPostprocessingCorrection.cs" />
     <Compile Include="OutputData\XML\Engineering\Factory\EngineeringWriterFactory.cs" />
     <Compile Include="OutputData\XML\Engineering\Factory\IEngineeringWriterInjectFactory.cs" />
     <Compile Include="OutputData\XML\Engineering\Interfaces\IXMLEngineeringComponentWriter.cs" />
@@ -805,6 +806,15 @@
     <EmbeddedResource Include="Resources\XSD\VectoDeclarationDefinitions.2.2.1.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Declaration\Buses\AlternatorTechnologies.csv" />
+    <EmbeddedResource Include="Resources\Declaration\Buses\DefaultActuationsMap.APAC" />
+    <EmbeddedResource Include="Resources\Declaration\Buses\DefaultBusAuxCfg.aaux" />
+    <EmbeddedResource Include="Resources\Declaration\Buses\DefaultClimatic.aenv" />
+    <EmbeddedResource Include="Resources\Declaration\Buses\ElectricConsumers.csv" />
+    <EmbeddedResource Include="Resources\Declaration\Buses\HVACCoolingPowerDriver.csv" />
+    <EmbeddedResource Include="Resources\Declaration\Buses\HVACCoolingPowerPassenger.csv" />
+    <EmbeddedResource Include="Resources\Declaration\Buses\SSMDefaults.AHSM" />
+    <EmbeddedResource Include="Resources\Declaration\Buses\SSMTechList.csv" />
     <None Include="Utils\VectoVersionCore.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>VectoVersionCore.cs</LastGenOutput>

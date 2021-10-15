@@ -84,10 +84,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		public Gearbox(IVehicleContainer container, IShiftStrategy strategy) : base(container)
 		{
 			_strategy = strategy;
-			_strategy.Gearbox = this;
+			if (_strategy != null) {
+				_strategy.Gearbox = this;
+			}
 
 			LastDownshift = -double.MaxValue.SI<Second>();
 			LastUpshift = -double.MaxValue.SI<Second>();
+			Disengaged = true;
 		}
 
 		public override IResponse Initialize(NewtonMeter outTorque, PerSecond outAngularVelocity)
@@ -97,7 +100,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			EngageTime = -double.MaxValue.SI<Second>();
 
-			if (Disengaged) {
+			if (_strategy != null && (Disengaged || DisengageGearbox)) {
 				Gear = _strategy.InitGear(absTime, dt, outTorque, outAngularVelocity);
 			}
 

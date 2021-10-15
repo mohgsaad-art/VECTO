@@ -130,6 +130,7 @@
     <Compile Include="Utils\IntExtensionMethods.cs" />
     <Compile Include="Utils\SI.cs" />
     <Compile Include="Utils\SIConvertExtensionMethods.cs" />
+    <Compile Include="Utils\SIExtensionMetods.cs" />
     <Compile Include="Utils\SIUtils.cs" />
     <Compile Include="Utils\StringExtensionMethods.cs" />
     <Compile Include="Utils\Validation.cs" />

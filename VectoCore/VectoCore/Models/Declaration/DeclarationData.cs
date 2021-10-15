@@ -556,7 +556,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 			//public static readonly PerSecond TorqueConverterSpeedLimit = 1600.RPMtoRad();
 			public static double TorqueConverterSecondGearThreshold(VehicleCategory category)
 			{
-				return category.IsTruck() ? 1.8 : 1.85;
+				return category.IsLorry() ? 1.8 : 1.85;
 			}
 
 			public static readonly Second PowershiftShiftTime = 0.8.SI<Second>();

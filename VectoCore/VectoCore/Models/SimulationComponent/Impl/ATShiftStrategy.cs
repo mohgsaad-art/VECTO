@@ -317,7 +317,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			// L -> L+1 
 			// C -> L
 			var nextGear = Gears.Successor(gear);
-			if (nextGear != null || !GearboxModelData.Gears.ContainsKey(nextGear.Gear)) {
+			if (nextGear == null || !GearboxModelData.Gears.ContainsKey(nextGear.Gear)) {
 				return false;
 			}
 

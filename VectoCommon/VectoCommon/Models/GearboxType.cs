@@ -44,7 +44,8 @@ namespace TUGraz.VectoCommon.Models
 		ATSerial, // Automatic Transmission
 		ATPowerSplit,
 		//Custom,
-		DrivingCycle
+		DrivingCycle,
+		NoGearbox
 	}
 
 	public static class GearBoxTypeHelper

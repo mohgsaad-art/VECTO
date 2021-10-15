@@ -358,7 +358,7 @@ namespace TUGraz.VectoCore.Tests.FileIO
 				}, new VectoRunData() {
 					EngineData = MockSimulationDataFactory.CreateEngineDataFromFile(@"TestData\Components\AT_GBX\Engine.veng", 0),
 					VehicleData = new VehicleData() {
-						VehicleCategory = VehicleCategory.RigidTruck,
+						VehicleCategory = VehicleCategory.HeavyBusPrimaryVehicle,
 						DynamicTyreRadius = 0.5.SI<Meter>()
 					},
 					AxleGearData = new AxleGearData() { AxleGear = new TransmissionData() { Ratio = 2.1 } }

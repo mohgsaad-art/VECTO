@@ -350,7 +350,7 @@ Namespace UnitTests
                 .PneumaticAuxillariesConfig = psAuxConfig,
                 .PneumaticUserInputsConfig = _defaultInputConfig,
                 .VehicleData = New VehicleData() with {
-                    .CurbWeight = _vehicleMassKG.SI(of Kilogram)
+                    .CurbMass = _vehicleMassKG.SI(of Kilogram)
                     },
                 .Actuations = New Actuations() With {
                 .Braking = 153,

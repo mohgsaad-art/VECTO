@@ -142,7 +142,18 @@ namespace TUGraz.VectoCore.Tests.Integration.BusAuxiliaries
 				FullLoadCurves = new Dictionary<uint, EngineFullLoadCurve>() { { 0, fld }, { 1, fld } },
 				IdleSpeed = 560.SI<PerSecond>()
 			};
-
+			vehicle.RunData = new VectoRunData() {
+				EngineData = modelData,
+				VehicleData = new VehicleData() {
+					//Length = 10.655.SI< Meter>(),
+					//Width = 2.55.SI<Meter>(),
+					//Height = 2.275.SI< Meter>(),
+					//FloorType = FloorType.HighFloor,
+					//PassengerCount = 47,
+					//DoubleDecker = false,
+					CurbMass = vehicleWeight.SI<Kilogram>()
+				}
+			};
 			var engine = new CombustionEngine(vehicle, modelData);
 			//new Vehicle(vehicle, new VehicleData());
 			driver = new MockDriver(vehicle) { VehicleStopped = false, DriverBehavior = DrivingBehavior.Braking };

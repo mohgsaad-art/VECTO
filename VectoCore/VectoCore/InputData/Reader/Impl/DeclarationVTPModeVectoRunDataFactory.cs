@@ -64,6 +64,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 		protected Exception InitException;
 
 		public IVTPReport Report;
+		protected ShiftStrategyParameters GearshiftData;
 
 		public DeclarationVTPModeVectoRunDataFactory(IVTPDeclarationInputDataProvider ivtpProvider, IVTPReport report) : this(
 			ivtpProvider.JobInputData, report) { }
@@ -151,6 +152,9 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			PTOTransmissionData =
 				Dao.CreatePTOTransmissionData(vehicle.Components.PTOTransmissionInputData);
 
+			GearshiftData = Dao.CreateGearshiftData(
+				GearboxData, AxlegearData.AxleGear.Ratio * (AngledriveData?.Angledrive.Ratio ?? 1.0), EngineData.IdleSpeed);
+
 			AuxVTP = CreateVTPAuxData(vehicle);
 		}
 
@@ -236,6 +240,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 				JobName = JobInputData.Vehicle.VIN,
 				EngineData = EngineData,
 				GearboxData = GearboxData,
+				GearshiftParameters = GearshiftData,
 				AxleGearData = AxlegearData,
 				AngledriveData = AngledriveData,
 				VehicleData = Dao.CreateVehicleData(

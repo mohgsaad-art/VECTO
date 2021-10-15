@@ -86,10 +86,10 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			return Cycle;
 		}
 
-		public FuelType FuelType
-		{
-			get { return ModData.FuelData.FuelType; }
-		}
+		//public FuelType FuelType
+		//{
+		//	get { return ModData.FuelData.FuelType; }
+		//}
 
 		public virtual Second AbsTime { get; set; }
 

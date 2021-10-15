@@ -47,8 +47,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 			JobName = "MockJob";
 			Retarder = new RetarderData() { Type = RetarderType.None };
 			VehicleData = new VehicleData() {
-				CurbWeight = 0.SI<Kilogram>(),
-				BodyAndTrailerWeight = 0.SI<Kilogram>(),
+				CurbMass = 0.SI<Kilogram>(),
+				BodyAndTrailerMass = 0.SI<Kilogram>(),
 				CargoVolume = 0.SI<CubicMeter>(),
 				Loading = 0.SI<Kilogram>(),
 				TotalRollResistanceCoefficient = 0,

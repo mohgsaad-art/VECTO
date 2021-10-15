@@ -50,6 +50,7 @@ using Wheels = TUGraz.VectoCore.Models.SimulationComponent.Impl.Wheels;
 using NUnit.Framework;
 using System.IO;
 using TUGraz.VectoCore.InputData.Reader.Impl;
+using TUGraz.VectoCore.Tests.Models.SimulationComponent;
 
 namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 {
@@ -90,6 +91,7 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 			var modData = new ModalDataContainer(runData, fileWriter, null);
 			var container = new VehicleContainer(ExecutionMode.Engineering, modData) {
 				RunData = new VectoRunData() {
+					VehicleData = vehicleData,
 					DriverData = driverData
 				}
 			};
@@ -103,7 +105,7 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 				.AddComponent(engine);
 
 			var gbx = new MockGearbox(container);
-
+			new DummyCycle(container);
 			var driverPort = driver.OutPort();
 
 			gbx.Gear = new GearshiftPosition(1);
@@ -138,13 +140,20 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 
 			var fileWriter = new FileOutputWriter("Coach_MinimalPowertrain");
 			var runData = new VectoRunData() {
-				JobName = "Coach_MinimalPowertrainOverload"
+				JobName = "Coach_MinimalPowertrain",
+				VehicleData = vehicleData,
+				EngineData = engineData,
+				AxleGearData = axleGearData,
+				DriverData = driverData,
+				GearshiftParameters = new ShiftStrategyParameters() {
+					StartSpeed = DeclarationData.GearboxTCU.StartSpeed,
+					StartAcceleration = DeclarationData.GearboxTCU.StartAcceleration
+				}
+
 			};
 			var modData = new ModalDataContainer(runData, fileWriter, null);
 			var container = new VehicleContainer(ExecutionMode.Engineering, modData) {
-				RunData = new VectoRunData() {
-					DriverData = driverData
-				}
+				RunData = runData
 			};
 
 			var cycle = new DistanceBasedDrivingCycle(container, cycleData);
@@ -158,8 +167,8 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 				.AddComponent(new CombustionEngine(container, engineData));
 			//engine.IdleController.RequestPort = clutch.IdleControlPort;
 
-			var gbx = new MockGearbox(container);
-
+			var gbx = new MockGearbox(container) { Gear = new GearshiftPosition(0) };
+			
 			var cyclePort = cycle.OutPort();
 
 			cyclePort.Initialize();
@@ -217,11 +226,15 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 
 			var fileWriter = new FileOutputWriter("Coach_MinimalPowertrainOverload");
 			var runData = new VectoRunData() {
-				JobName = "Coach_MinimalPowertrainOverload"
+				JobName = "Coach_MinimalPowertrain",
+				SimulationType = SimulationType.DistanceCycle,
+				VehicleData = vehicleData,
+				EngineData = engineData,
+				AxleGearData = axleGearData,
+				DriverData = driverData,
 			};
 			var modData = new ModalDataContainer(runData, fileWriter, null);
-			var container = new VehicleContainer(ExecutionMode.Engineering, modData);
-			container.RunData = new VectoRunData() { SimulationType = SimulationType.DistanceCycle, DriverData = driverData};
+			var container = new VehicleContainer(ExecutionMode.Engineering, modData) { RunData = runData };
 
 			var cycle = new DistanceBasedDrivingCycle(container, cycleData);
 			cycle.AddComponent(new Driver(container, driverData, new DefaultDriverStrategy(container)))
@@ -233,8 +246,7 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 				.AddComponent(new CombustionEngine(container, engineData));
 			//engine.IdleController.RequestPort = clutch.IdleControlPort;
 
-			var gbx = new MockGearbox(container);
-
+			var gbx = new MockGearbox(container) { Gear = new GearshiftPosition(0) };
 			var cyclePort = cycle.OutPort();
 
 			cyclePort.Initialize();
@@ -303,7 +315,7 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 			return new VehicleData {
 				AxleConfiguration = AxleConfiguration.AxleConfig_6x2,
 				AirDensity = DeclarationData.AirDensity,
-				CurbWeight = 15700.SI<Kilogram>(),
+				CurbMass = 15700.SI<Kilogram>(),
 				Loading = loading,
 				DynamicTyreRadius = 0.52.SI<Meter>(),
 				AxleData = axles,

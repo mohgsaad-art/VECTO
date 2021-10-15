@@ -51,7 +51,10 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 			public const string ShowUnit = "showUnit";
 		}
 
-		protected ModalResults(SerializationInfo info, StreamingContext context) : base(info, context) {}
+		//protected ModalResults(SerializationInfo info, StreamingContext context) : base(info, context) {}
+
+		public ModalResults()
+		{}
 
 		public ModalResults(bool createFcColumns = true)
 		{

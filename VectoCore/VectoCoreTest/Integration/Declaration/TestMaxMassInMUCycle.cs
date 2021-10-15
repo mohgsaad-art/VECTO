@@ -78,7 +78,7 @@ namespace TUGraz.VectoCore.Tests.Integration.Declaration
 
 			var muRefLoadData = jobContainer.Runs.Last().Run.GetContainer().RunData;
 			Assert.AreEqual(2700, muRefLoadData.VehicleData.Loading.Value());
-			Assert.AreEqual(6000, muRefLoadData.VehicleData.BodyAndTrailerWeight.Value());
+			Assert.AreEqual(6000, muRefLoadData.VehicleData.BodyAndTrailerMass.Value());
 			Assert.AreEqual(18000, muRefLoadData.VehicleData.TotalVehicleWeight.Value());
 
 		}

@@ -30,10 +30,13 @@
 */
 
 using System.Collections.Generic;
+using System.Linq;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
+using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
+using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 
@@ -60,11 +63,45 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 						Cycle = new DrivingCycleProxy(
 							DrivingCycleDataReader.ReadFromDataTable(cycle.CycleData, cycle.Name, false), cycle.Name),
 						ExecutionMode = ExecutionMode.Engineering,
-						SimulationType = SimulationType.EngineOnly
+						SimulationType = SimulationType.EngineOnly,
+						DriverData = CreateDummyDriverData(),
 					};
 					yield return simulationRunData;
 				}
 			}
+
+		}
+
+		private DriverData CreateDummyDriverData()
+		{
+			return new DriverData() {
+				EngineStopStart = new DriverData.EngineStopStartData() { EngineOffStandStillActivationDelay = 0.SI<Second>(), MaxEngineOffTimespan = 0.SI<Second>() },
+				LookAheadCoasting = new DriverData.LACData() {
+					Enabled = false,
+					MinSpeed = 0.KMPHtoMeterPerSecond(),
+					LookAheadDecisionFactor = new LACDecisionFactor()
+				},
+				AccelerationCurve = new AccelerationCurveData(new[] {
+					new KeyValuePair<MeterPerSecond, AccelerationCurveData.AccelerationEntry>(
+						0.KMPHtoMeterPerSecond(),
+						new AccelerationCurveData.AccelerationEntry() {
+							Acceleration = 1.SI<MeterPerSquareSecond>(),
+							Deceleration = -1.SI<MeterPerSquareSecond>()
+						}),
+					new KeyValuePair<MeterPerSecond, AccelerationCurveData.AccelerationEntry>(
+						200.KMPHtoMeterPerSecond(),
+						new AccelerationCurveData.AccelerationEntry() {
+							Acceleration = 1.SI<MeterPerSquareSecond>(),
+							Deceleration = -1.SI<MeterPerSquareSecond>()
+						}),
+				}.ToList()),
+				EcoRoll = new DriverData.EcoRollData(),
+				OverSpeed = new DriverData.OverSpeedData() {
+					MinSpeed = 0.KMPHtoMeterPerSecond(),
+					OverSpeed = 0.KMPHtoMeterPerSecond(),
+					Enabled = false
+				}
+			};
 		}
 	}
 }
