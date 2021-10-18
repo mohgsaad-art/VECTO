@@ -1,7 +1,7 @@
 {
   "Header": {
     "CreatedBy": "",
-    "Date": "2021-10-11T14:07:48.9438203Z",
+    "Date": "2021-10-18T10:18:52.5163022Z",
     "AppVersion": "3",
     "FileVersion": 8
   },
@@ -59,8 +59,7 @@
       "LongHaulNoGrad_small.vdri",
       "RegionalDelivery.vdri",
       "Test_cycle_time.vdri",
-      "UrbanDelivery.vdri",
-      "UrbanDeliveryNoGrad_Time_Gear.vdri"
+      "UrbanDelivery.vdri"
     ]
   }
 }

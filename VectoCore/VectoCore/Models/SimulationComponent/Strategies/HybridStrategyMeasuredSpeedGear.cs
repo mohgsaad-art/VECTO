@@ -27,7 +27,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 		public HybridStrategyMeasuredSpeedGear(VectoRunData runData, IVehicleContainer vehicleContainer) : base(runData,vehicleContainer)
 		{
             // register pre-processors
-            vehicleContainer.AddPreprocessor(GetGearshiftPreprocessor(runData));
+            //vehicleContainer.AddPreprocessor(GetGearshiftPreprocessor(runData));
 		}
 
 		protected ISimulationPreprocessor GetGearshiftPreprocessor(VectoRunData runData)
@@ -105,22 +105,22 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 					return null;
 				}
 
-				var estimatedVelocityPostShift = VelocityDropData.Interpolate(DataBus.VehicleInfo.VehicleSpeed, DataBus.DrivingCycleInfo.RoadGradient ?? 0.SI<Radian>());
-				if (!AllowEmergencyShift && !estimatedVelocityPostShift.IsGreater(DeclarationData.GearboxTCU.MIN_SPEED_AFTER_TRACTION_INTERRUPTION))
-				{
-					return null;
-				}
+				//var estimatedVelocityPostShift = VelocityDropData.Interpolate(DataBus.VehicleInfo.VehicleSpeed, DataBus.DrivingCycleInfo.RoadGradient ?? 0.SI<Radian>());
+				//if (!AllowEmergencyShift && !estimatedVelocityPostShift.IsGreater(DeclarationData.GearboxTCU.MIN_SPEED_AFTER_TRACTION_INTERRUPTION))
+				//{
+					//return null;
+				//}
 
 
-				var vDrop = DataBus.VehicleInfo.VehicleSpeed - estimatedVelocityPostShift;
-				var vehicleSpeedPostShift = estimatedVelocityPostShift; // DataBus.VehicleInfo.VehicleSpeed - vDrop * ModelData.GearshiftParameters.VelocityDropFactor;
-				TestPowertrain.Gearbox.Gear = nextGear;
-				var init = TestPowertrain.Container.VehiclePort.Initialize(
-					vehicleSpeedPostShift, DataBus.DrivingCycleInfo.RoadGradient ?? 0.SI<Radian>());
-				if (!AllowEmergencyShift && init.Engine.EngineSpeed.IsSmaller(ModelData.EngineData.IdleSpeed))
-				{
-					return null;
-				}
+				//var vDrop = DataBus.VehicleInfo.VehicleSpeed - estimatedVelocityPostShift;
+				//var vehicleSpeedPostShift = estimatedVelocityPostShift; // DataBus.VehicleInfo.VehicleSpeed - vDrop * ModelData.GearshiftParameters.VelocityDropFactor;
+				//TestPowertrain.Gearbox.Gear = nextGear;
+				//var init = TestPowertrain.Container.VehiclePort.Initialize(
+					//vehicleSpeedPostShift, DataBus.DrivingCycleInfo.RoadGradient ?? 0.SI<Radian>());
+				//if (!AllowEmergencyShift && init.Engine.EngineSpeed.IsSmaller(ModelData.EngineData.IdleSpeed))
+				//{
+					//return null;
+				//}
 			}
 
 			//if (!nextGear.Engaged) {

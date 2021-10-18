@@ -27,6 +27,7 @@ cwd = os.getcwd()
 #time_run_path = r'..\..\Generic Vehicles\Engineering Mode\GenericVehicle_Group2_P2_EM\Class2_RigidTruck_ParHyb_ENG_02Cycle_time_no_grad_no_gear_small_org.vmod'
 #time_run_path = r'..\..\Generic Vehicles\Engineering Mode\GenericVehicle_Group2_P2_EM\Class2_RigidTruck_ParHyb_ENG_01Cycle_time_no_grad_exact_gear_small_org.vmod'
 
+#time_run_path = r'..\..\Generic Vehicles\Engineering Mode\GenericVehicle_Group2_P2_EM\Class2_RigidTruck_ParHyb_ENG_03Cycle_time_no_grad_exact_gear_small_org.vmod'
 time_run_path = r'..\..\Generic Vehicles\Engineering Mode\GenericVehicle_Group2_P2_EM\Class2_RigidTruck_ParHyb_ENG_Cycle_time_no_grad_exact_gear.vmod'
 distance_run_path = r'..\..\Generic Vehicles\Engineering Mode\GenericVehicle_Group2_P2_EM\Class2_RigidTruck_ParHyb_ENG_LongHaulNoGrad.vmod'
 

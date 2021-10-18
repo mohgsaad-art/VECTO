@@ -40,46 +40,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
         {
             get
             {
-                if (IsPreProcessing)
-                {
-                    return _nextGear;
-                }
-
-                if (Disengaged == false)
-                {
-                    return Gear;
-                }
-
-                var future = DataBus.DrivingCycleInfo.LookAhead(ModelData.TractionInterruption * 5);
-                var nextGear = 0u;
-                var torqueConverterLocked = false;
-                foreach (var entry in future)
-                {
-                    if (entry.VehicleTargetSpeed != null && entry.VehicleTargetSpeed.IsEqual(0))
-                    {
-                        // vehicle is stopped, no next gear, engine should go to idle
-                        break;
-                    }
-                    if (entry.WheelAngularVelocity != null && entry.WheelAngularVelocity.IsEqual(0))
-                    {
-                        // vehicle is stopped, no next gear, engine should go to idle
-                        break;
-                    }
-
-                    if (entry.Gear == 0)
-                    {
-                        continue;
-                    }
-
-                    nextGear = entry.Gear;
-                    torqueConverterLocked = !entry.TorqueConverterActive ?? false;
-                    break;
-                }
-
-                return new GearshiftPosition(nextGear, GearboxType.ManualTransmission() ? (bool?)null : torqueConverterLocked);
+                _nextGear = new GearshiftPosition(DataBus.DrivingCycleInfo.CycleData.LeftSample.Gear);
+                return _nextGear;
             }
         }
-
 
         public override bool GearEngaged(Second absTime)
         {
@@ -604,10 +568,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
             }
             else
             {
-                disengagedResponse = NextGear.Gear > 0
+                var nextGear = new GearshiftPosition(this.DataBus.DrivingCycleInfo.CycleData.RightSample.Gear);
+                disengagedResponse = nextGear.Gear > 0
                     ? NextComponent.Request(
                         absTime, dt, 0.SI<NewtonMeter>(),
-                        outAngularVelocity * ModelData.Gears[NextGear.Gear].Ratio, false)
+                        outAngularVelocity * ModelData.Gears[nextGear.Gear].Ratio, false)
                     : EngineIdleRequest(absTime, dt);
             }
             if (TorqueConverter != null)

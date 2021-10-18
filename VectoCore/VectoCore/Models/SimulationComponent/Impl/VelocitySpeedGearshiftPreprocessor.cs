@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
@@ -12,14 +10,13 @@ using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
-using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Strategies;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
-	public class VelocitySpeedGearshiftPreprocessor : LoggingObject, ISimulationPreprocessor
+	public class VelocitySpeedGearshiftPreprocessor : ISimulationPreprocessor
 	{
 		protected readonly Second TractionInterruption;
 		protected readonly VelocityRollingLookup VehicleVelocityDropLookup;
@@ -79,8 +76,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 						(runData.AngledriveData?.Angledrive.Ratio ?? 1.0);
 
 			var tmp = new List<Entry>();
-			var tmpdebug = new List<MyDebugEntry>();
-
 			//(Container.DriverInfo as MockDriver).DriverBehavior = DrivingBehavior.Coasting;
 			var maxSpeed = GetVehicleMaxSpeed(runData);
 			foreach (var speed in Speeds)
@@ -122,87 +117,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				}
 			}
 
-			SaveLogToFile(tmpdebug);
 			return tmp.ToArray();
-		}
-
-		protected virtual void SaveLogToFile(List<MyDebugEntry> tmpdebug)
-		{
-			StringBuilder sb = new StringBuilder();
-
-			// prepare header
-			sb.Append("VehicleSpeed,GearForSpeed,StartVelocity,Gradient,EndVelocity,");
-			sb.Append(String.Join(",", from item in tmpdebug[0].Container select item.Key.ToString()));
-			sb.Append(String.Join(",", from item in tmpdebug[0].Vehicle select item.Key.ToString()));
-			sb.Append(Environment.NewLine);
-
-			
-			// prepare rows with values
-			foreach (var row in tmpdebug)
-			{
-				sb.Append($"{row.VehicleSpeed},{row.GearForSpeed},{row.StartVelocity},{row.Gradient},{row.EndVelocity}");
-				sb.Append(String.Join(",", from itm in row.Container select itm.Value.ToString()));
-				sb.Append(String.Join(",", from itm in row.Vehicle select itm.Value.ToString()));
-				sb.Append(Environment.NewLine);
-			}
-
-			var cycleName = this.Container.RunData.Cycle.Name;
-			var currentPath = AppDomain.CurrentDomain.BaseDirectory;
-			var csvpath = $"{currentPath}\\logs\\VSGP_{cycleName}.csv";
-
-			File.WriteAllText(csvpath, sb.ToString());
-		}
-
-		protected virtual IDictionary<string, string> GetPropertiesOfClass(Object myclass)
-        {
-			IDictionary<string, string> result = new SortedDictionary<string, string>();
-			_GetPropertiesOfClass(myclass, " ", result, new HashSet<object>());
-			return result;
-		}
-		// nested visitor TO-DO: move as a utility
-		protected virtual void _GetPropertiesOfClass(Object myclass, string prefix, IDictionary<string, string> result, HashSet<object> visited)
-		{
-			if (visited.Contains(myclass))
-			{
-				return;
-			}
-			else
-            {
-				visited.Add(myclass);
-            }
-
-			var currentLevel = prefix + "/";
-			var currentType = myclass.GetType();
-			foreach (var prop in currentType.GetProperties())
-			{
-				try
-				{
-					object propertyValue = prop.GetValue(myclass, null);
-					var propertyLabel = $"{currentLevel}{prop.Name}";
-
-					if (propertyValue == null)
-					{
-						propertyValue = "";
-					}
-					else
-                    {
-						if (propertyValue is VectoSimulationComponent || propertyValue is IResponse || propertyValue is SimpleComponentState)
-						{
-							string currentTypeClass = currentType.ToString().Substring(currentType.ToString().LastIndexOf('.') + 1);
-							propertyLabel += $"({currentTypeClass})";
-							_GetPropertiesOfClass(propertyValue, propertyLabel, result, visited);
-							continue;
-						}
-					}
-					
-					result.Add(propertyLabel, propertyValue.ToString());
-				}
-				catch (Exception ex)
-				{
-					Log.Debug(currentLevel + ex.ToString());
-				}
-			}
-
 		}
 
 		protected virtual PerSecond GetMotorTargetSpeed(VectoRunData runData)
@@ -262,12 +177,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					},
 					evaluateFunction: acc => {
 						var response = vehicle.Request(time, simulationInterval, acc, gradient, true);
-						// FIXME: ank: Is this DriveResponse-is-null still necessary??
-						//
-						if (response.Driver != null)
-						{
-							response.Driver.Acceleration = acc;
-						}
+						response.Driver.Acceleration = acc;
 						return response;
 					},
 					criterion: response => {
@@ -296,14 +206,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			container.CommitSimulationStep(absTime, simulationInterval);
 
 			return vehicle.VehicleSpeed;
-		}
-
-		public class MyDebugEntry : Entry
-		{
-			public IDictionary<string, string> Container;
-			public IDictionary<string, string> Vehicle;
-			public MeterPerSecond VehicleSpeed;
-			public GearshiftPosition GearForSpeed;
 		}
 
 		public class Entry
