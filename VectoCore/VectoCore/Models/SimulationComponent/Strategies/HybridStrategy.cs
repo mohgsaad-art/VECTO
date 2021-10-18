@@ -664,6 +664,19 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 			var best = SelectBestOption(eval, absTime, dt, outTorque, outAngularVelocity, dryRun, currentGear);
 
+			if (absTime.IsGreaterOrEqual(2829.9877))
+			{
+				Log.Debug($"Investigate absTime: {absTime} eval.count: {eval.Count()}");
+				foreach (var ev in eval)
+				{
+					Log.Debug($"ICEOff:{ev.ICEOff} FuelCosts: {ev.FuelCosts} EquivalenceFactor: {ev.EquivalenceFactor} " +
+						$"BatCosts: {ev.BatCosts} ICEStartPenalty1: {ev.ICEStartPenalty1} SoCPenalty: {ev.SoCPenalty} " +
+						$"ICEStartPenalty2: {ev.ICEStartPenalty2} RampUpPenalty: {ev.RampUpPenalty} GearshiftPenalty: {ev.GearshiftPenalty} " +
+						$"Score: {ev.Score}");
+				}
+
+			}
+
 			if (best == null) {
 				best = ResponseEmOff;
 				best.ICEOff = false;

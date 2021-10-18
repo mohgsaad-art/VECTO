@@ -87,7 +87,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			EngageTime = absTime + ModelData.TractionInterruption;
 			Disengaged = true;
 			_strategy.Disengage(absTime, dt, null, null);
-			Log.Info("Gearshift triggered - Gearbox disengaged");
+			//Log.Info("Gearshift triggered - Gearbox disengaged");
 		}
 
 		public Gearbox(IVehicleContainer container, IShiftStrategy strategy) : base(container)

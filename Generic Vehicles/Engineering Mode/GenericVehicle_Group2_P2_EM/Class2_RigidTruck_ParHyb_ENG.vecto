@@ -1,7 +1,7 @@
 {
   "Header": {
     "CreatedBy": "",
-    "Date": "2021-10-18T12:02:27.8062099Z",
+    "Date": "2021-10-18T13:11:01.6387109Z",
     "AppVersion": "3",
     "FileVersion": 8
   },
@@ -48,7 +48,7 @@
       "OverSpeed": 2.5
     },
     "Cycles": [
-      "Cycle_time_no_grad_exact_gear.vdri"
+      "LongHaulNoGrad.vdri"
     ]
   }
 }
