@@ -636,7 +636,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			}
 			if (shiftStrategyParameters.AllowedGearRangeFC > 2 || shiftStrategyParameters.AllowedGearRangeFC < 1)
 			{
-				Log.Warn("Gear-range for FC-based gearshift must be either 1 or 2!");
+				//Log.Warn("Gear-range for FC-based gearshift must be either 1 or 2!");
 				shiftStrategyParameters.AllowedGearRangeFC = shiftStrategyParameters.AllowedGearRangeFC.LimitTo(1, 2);
 			}
 
@@ -788,12 +788,21 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			
 			var best = SelectBestOption(eval, absTime, dt, outTorque, outAngularVelocity, dryRun, currentGear);
 
-			if (absTime.IsGreaterOrEqual(2816.0842))
+			if (absTime.IsGreaterOrEqual(2829.9877))
 			{
-				//Log.Debug($"absTime: {absTime} eval.count: {eval.Count()}");
+				Log.Debug($"Investigate absTime: {absTime} eval.count: {eval.Count()}");
+				foreach(var ev in eval)
+                {
+					Log.Debug($"ICEOff:{ev.ICEOff} FuelCosts: {ev.FuelCosts} EquivalenceFactor: {ev.EquivalenceFactor} " +
+						$"BatCosts: {ev.BatCosts} ICEStartPenalty1: {ev.ICEStartPenalty1} SoCPenalty: {ev.SoCPenalty} " +
+						$"ICEStartPenalty2: {ev.ICEStartPenalty2} RampUpPenalty: {ev.RampUpPenalty} GearshiftPenalty: {ev.GearshiftPenalty} " +
+						$"Score: {ev.Score}");
+				}
+
 			}
 
-			Log.Debug($"absTime: {absTime} eval.count: {eval.Count()}");
+			Log.Debug($"absTime: {absTime} eval.count: {eval.Count()} best.ICEOff : {best.ICEOff} ");
+
 			if (best == null)
 			{
 				best = ResponseEmOff;
@@ -1252,7 +1261,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 				if (absTime.IsGreaterOrEqual(2816.0842))
 				{
-					Log.Debug($"AbsTime: {absTime} AllowICEOff(absTime): {AllowICEOff(absTime)} dryRun: {dryRun}");
+					Log.Debug($"AbsTime: {absTime} AllowICEOff(absTime): {AllowICEOff(absTime)} dryRun: {dryRun} tmp.CombustionEngineOn: {tmp.CombustionEngineOn}");
 				}
 				
 
@@ -2552,7 +2561,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			}
 			catch
 			{
-				Log.Info("Error during Hybrid strategy TotalTorqueDemand!");
+				//Log.Info("Error during Hybrid strategy TotalTorqueDemand!");
 				tmp.FuelCosts = double.NaN;
 				tmp.IgnoreReason = HybridConfigurationIgnoreReason.EngineTorqueDemandTooLow;
 			}

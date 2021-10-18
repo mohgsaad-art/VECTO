@@ -1,7 +1,7 @@
 {
   "Header": {
     "CreatedBy": "",
-    "Date": "2021-10-18T10:18:52.5163022Z",
+    "Date": "2021-10-18T12:02:27.8062099Z",
     "AppVersion": "3",
     "FileVersion": 8
   },
@@ -48,18 +48,7 @@
       "OverSpeed": 2.5
     },
     "Cycles": [
-      "01Cycle_time_no_grad_exact_160s.vdri",
-      "02Cycle_time_no_grad_no_gear_small_org.vdri",
-      "03Cycle_time_no_grad_exact_gear_small_org.vdri",
-      "Cycle_time.vdri",
-      "Cycle_time_no_grad.vdri",
-      "Cycle_time_no_grad_exact_gear.vdri",
-      "LongHaul.vdri",
-      "LongHaulNoGrad.vdri",
-      "LongHaulNoGrad_small.vdri",
-      "RegionalDelivery.vdri",
-      "Test_cycle_time.vdri",
-      "UrbanDelivery.vdri"
+      "Cycle_time_no_grad_exact_gear.vdri"
     ]
   }
 }

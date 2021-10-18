@@ -88,7 +88,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			}
 			var debug = new DebugData();
 
-			Log.Info("VectoJob preprocessing.");
+			//Log.Info("VectoJob preprocessing.");
 
 			foreach (var preprocessing in Container.GetPreprocessingRuns) {
 				preprocessing.RunPreprocessing();
@@ -119,7 +119,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 						Container.AbsTime = AbsTime;
 						// add here extended logging
 						LogManager.EnableLogging();
-						Log.Debug("AbsTime: "+AbsTime.Value());
+						//Log.Debug("AbsTime: "+AbsTime.Value());
 					}
 				} while (response is ResponseSuccess);
 				if (!(GetContainer().RunData.Exempted || GetContainer().RunData.MultistageRun)) {
