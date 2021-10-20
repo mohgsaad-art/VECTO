@@ -163,7 +163,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			// dry run request
 			var engineResponse = (ResponseDryRun)
 				NextComponent.Request(absTime, dt, inTorque, operatingPoint.InAngularVelocity, true);
-
+			var maxEngineSpeed = DataBus.EngineInfo.EngineN95hSpeed;
 			var engineOK = engineResponse.DeltaDragLoad.IsGreaterOrEqual(0) && engineResponse.DeltaFullLoad.IsSmallerOrEqual(0);
 			if (DataBus.DriverInfo.DriverBehavior != DrivingBehavior.Braking && engineOK && operatingPoint.Creeping) {
 				var delta = (outTorque - operatingPoint.OutTorque) *
@@ -171,8 +171,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				return new ResponseDryRun(this) {
 					DeltaFullLoad = delta,
 					DeltaDragLoad = delta,
-					TorqueConverter = { 
-						TorqueConverterOperatingPoint = operatingPoint
+					DeltaEngineSpeed = operatingPoint.InAngularVelocity - maxEngineSpeed,
+					TorqueConverter = { TorqueConverterOperatingPoint = operatingPoint },
+					Engine = {
+						TorqueOutDemand = inTorque,
+						EngineSpeed = engineResponse.Engine.EngineSpeed,
+						PowerRequest = engineResponse.Engine.PowerRequest
 					}
 				};
 			}
@@ -198,8 +202,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			return new ResponseDryRun(this) {
 				DeltaFullLoad = 10 * deltaMax,
 				DeltaDragLoad = 10 * deltaMin,
-				TorqueConverter = { 
-					TorqueConverterOperatingPoint = DataBus.DriverInfo.DrivingAction == DrivingAction.Brake ? dryOperatingPointMin : dryOperatingPointMax
+				DeltaEngineSpeed = dryOperatingPointMax.InAngularVelocity - maxEngineSpeed,
+				TorqueConverter = { TorqueConverterOperatingPoint = dryOperatingPointMax },
+				Engine = {
+					TorqueOutDemand = inTorque,
+					EngineSpeed = dryOperatingPointMax?.InAngularVelocity ??
+								dryOperatingPointMin?.InAngularVelocity ?? 0.RPMtoRad(),
+					PowerRequest = engineResponse.Engine.PowerRequest
 				}
 			};
 		}
