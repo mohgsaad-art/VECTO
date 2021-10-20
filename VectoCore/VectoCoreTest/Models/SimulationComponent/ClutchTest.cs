@@ -172,7 +172,17 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			throw new System.NotImplementedException();
 		}
 
+		public Watt EngineDynamicFullLoadPower(PerSecond avgEngineSpeed, Second dt)
+		{
+			throw new System.NotImplementedException();
+		}
+
 		public Watt EngineDragPower(PerSecond angularSpeed)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public Watt EngineAuxDemand(PerSecond avgEngineSpeed, Second dt)
 		{
 			throw new System.NotImplementedException();
 		}

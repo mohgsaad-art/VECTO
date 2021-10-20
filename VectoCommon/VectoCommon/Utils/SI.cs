@@ -36,6 +36,7 @@ using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Newtonsoft.Json;
 using TUGraz.VectoCommon.Exceptions;
 
 // ReSharper disable ClassNeverInstantiated.Global
@@ -1612,7 +1613,7 @@ namespace TUGraz.VectoCommon.Utils
 		/// <returns></returns>
 		public bool IsBetween(SI lower, SI upper)
 		{
-			return lower <= Val && Val <= upper;
+			return VectoMath.Min(lower, upper) <= Val && Val <= VectoMath.Max(lower, upper);
 		}
 
 		/// <summary>
@@ -1623,7 +1624,7 @@ namespace TUGraz.VectoCommon.Utils
 		/// <returns></returns>
 		public bool IsBetween(double lower, double upper)
 		{
-			return lower <= Val && Val <= upper;
+			return VectoMath.Min(lower, upper) <= Val && Val <= VectoMath.Max(lower, upper);
 		}
 
 		#endregion
@@ -1646,6 +1647,9 @@ namespace TUGraz.VectoCommon.Utils
 			return ToString(null);
 		}
 
+		public virtual string SerializedValue => ToString();
+
+		[JsonIgnore]
 		public virtual string UnitString
 		{
 			get { return GetUnitString(_units); }

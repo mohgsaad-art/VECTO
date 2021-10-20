@@ -3,6 +3,6 @@
 namespace TUGraz.VectoCommon.BusAuxiliaries {
 	public interface IVehicleData
 	{
-		Kilogram TotalVehicleWeight { get; }
+		Kilogram TotalVehicleMass { get; }
 	}
 }

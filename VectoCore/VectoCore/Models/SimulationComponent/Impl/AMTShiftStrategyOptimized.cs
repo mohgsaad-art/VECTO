@@ -44,7 +44,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			fld = runData.EngineData.FullLoadCurves;
 			shiftStrategyParameters = runData.GearshiftParameters;
 			//accCurve = runData.DriverData.AccelerationCurve;
-			vehicleMass = runData.VehicleData.TotalVehicleWeight;
+			vehicleMass = runData.VehicleData.TotalVehicleMass;
 			if (shiftStrategyParameters == null) {
 				throw new VectoException("Parameters for shift strategy missing!");
 			}

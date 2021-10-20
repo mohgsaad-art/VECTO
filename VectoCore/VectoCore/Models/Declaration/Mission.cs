@@ -32,6 +32,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Newtonsoft.Json;
 using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
@@ -54,6 +55,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		public Kilogram BodyCurbWeight;
 
+		[JsonIgnore]
 		public Stream CycleFile;
 
 		public IList<MissionTrailer> Trailer;

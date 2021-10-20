@@ -1,0 +1,40 @@
+﻿{
+  "Header": {
+    "CreatedBy": " ()",
+    "Date": "2016-10-13T15:52:04.0766564Z",
+    "AppVersion": "3",
+    "FileVersion": 1
+  },
+  "Body": {
+    "TqReserve": 20.0,
+    "ShiftTime": 2.0,
+    "StartTqReserve": 20.0,
+    "StartAcc": 0.6,
+    "StartSpeed": 8,
+    "StartAcceleration": 0.8,
+    "GearResidenceTime": 5,
+    "Dn_Tq99L_high_min_1": 0.4,
+    "Dn_Tq99L_high_min_2": 0.5,
+    "GearRangeUp": 3,
+    "GearRangeDown": 3,
+    "LookBackDriver": 4,
+    "DriverAccelerationLookBackInterval": 10,
+    "DriverAccelerationThresholdLow": 0.1,
+    "P_card_avg_threshold": 5000,
+    "P_card_curr_threshold": 1000,
+    "Diff_curr_targ_vel": 0.1,
+    "EngineSpeedHighDriveOffFactor": 1.05,
+    "Rating_current_gear": 0.99,
+
+    "RatioEarlyUpshiftFC": 8,
+    "RatioEarlyDownshiftFC": 21,
+    "AllowedGearRangeFC": 1,  
+
+    "AccelerationReserveLookup": "AccelerationReserveLookup.csv",
+    "ShareTorque99L": "ShareTq99L.csv",
+    "PredictionDurationLookup": "PredictionTimeLookup.csv",
+    "ShareIdleLow": "ShareIdleLow.csv",
+    "ShareEngineHigh": "ShareEngineSpeedHigh.csv"
+
+  }
+}

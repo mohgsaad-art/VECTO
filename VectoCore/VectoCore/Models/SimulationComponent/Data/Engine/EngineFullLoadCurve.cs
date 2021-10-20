@@ -34,6 +34,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
+using Newtonsoft.Json;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
@@ -67,7 +68,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Engine
 
 		private SortedList<PerSecond, int> _quickLookup;
 
-		[Required] internal readonly LookupData<PerSecond, PT1.PT1Result> PT1Data;
+		[Required] public readonly LookupData<PerSecond, PT1.PT1Result> PT1Data;
 
 		internal EngineFullLoadCurve(List<FullLoadCurveEntry> entries, LookupData<PerSecond, PT1.PT1Result> pt1Data)
 		{
@@ -85,7 +86,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Engine
 			return Formulas.TorqueToPower(DragLoadStationaryTorque(angularVelocity), angularVelocity);
 		}
 
+		[JsonIgnore]
 		public CombustionEngineData EngineData { get; internal set; }
+
+
+		public string[] FullLoadCurve {
+			get { return FullLoadEntries.Select(x => $"{x.EngineSpeed.AsRPM} [rpm], {x.TorqueFullLoad}, {x.TorqueDrag}").ToArray(); }
+		}
+
 
 		public PT1.PT1Result PT1(PerSecond angularVelocity)
 		{

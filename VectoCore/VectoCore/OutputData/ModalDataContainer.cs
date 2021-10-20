@@ -335,10 +335,10 @@ namespace TUGraz.VectoCore.OutputData
 				.Concat(FuelColumns.SelectMany(kv => kv.Value.Select(kv2 => kv2.Value.ColumnName)));
 
 			// TODO: 2018-11-20: Disable additional columns after testing gearshifting!
-#if TRACE
+//#if TRACE
 			strCols = strCols.Concat(_additionalColumns);
 			//dataColumns.Add(ModalResultField.altitude);
-#endif
+//#endif
 			strCols = strCols.Concat(new[] { ModalResultField.ICEOn }.Select(x => x.GetName()));
             var fileSuffix = RunSuffix;
 			if (WriteModalResults) {

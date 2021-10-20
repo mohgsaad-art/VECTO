@@ -61,6 +61,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		internal IdleControllerSwitcher IdleController;
 		private Meter CycleEndDistance;
 
+		private MeterPerSquareSecond StartAcceleration;
+		private MeterPerSecond StartSpeed;
 
 		private DrivingCycleData.DrivingCycleEntry Left
 		{
@@ -87,13 +89,28 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				Altitude = first.Altitude,
 			};
 			CurrentState = PreviousState.Clone();
+
+			StartSpeed = container.RunData.GearshiftParameters?.StartSpeed;
+			StartAcceleration = container.RunData.GearshiftParameters?.StartAcceleration;
 		}
 
 		public IResponse Initialize()
 		{
+			CycleStartDistance = Data.Entries.Count > 0 ? Data.Entries.First().Distance : 0.SI<Meter>();
+			CycleEndDistance = Data.Entries.Count > 0 ? Data.Entries.Last().Distance : 0.SI<Meter>();
+			var first = Data.Entries.First();
+			PreviousState = new DrivingCycleState {
+				AbsTime = 0.SI<Second>(),
+				WaitTime = 0.SI<Second>(),
+				Distance = first.Distance,
+				Altitude = first.Altitude,
+				VehicleTargetSpeed = Data.Entries.First().VehicleTargetSpeed
+			};
+			CurrentState = PreviousState.Clone();
+
 			if (Left.VehicleTargetSpeed.IsEqual(0)) {
-				var retVal = NextComponent.Initialize(DataBus.GearboxInfo.StartSpeed,
-					Left.RoadGradient, DataBus.GearboxInfo.StartAcceleration);
+				var retVal = NextComponent.Initialize(StartSpeed,
+					Left.RoadGradient, StartAcceleration);
 				if (!(retVal is ResponseSuccess)) {
 					throw new UnexpectedResponseException("DistanceBasedDrivingCycle.Initialize: Couldn't find start gear.", retVal);
 				}
@@ -311,7 +328,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)
 		{
-			if (!(CurrentState.Response is ResponseSuccess)) {
+			if (!DataBus.IsTestPowertrain &&  !(CurrentState.Response is ResponseSuccess)) {
 				throw new VectoSimulationException("Previous request did not succeed!");
 			}
 

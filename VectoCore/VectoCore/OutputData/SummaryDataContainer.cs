@@ -718,7 +718,7 @@ namespace TUGraz.VectoCore.OutputData
 			row[Fields.LOADING] = (ConvertedSI)data.Loading;
 			row[Fields.CARGO_VOLUME] = (ConvertedSI)data.CargoVolume;
 
-			row[Fields.TOTAL_VEHICLE_MASS] = (ConvertedSI)data.TotalVehicleWeight;
+			row[Fields.TOTAL_VEHICLE_MASS] = (ConvertedSI)data.TotalVehicleMass;
 
 			row[Fields.SLEEPER_CAB] = data.SleeperCab.HasValue ? (data.SleeperCab.Value ? "yes" : "no") : "-";
 

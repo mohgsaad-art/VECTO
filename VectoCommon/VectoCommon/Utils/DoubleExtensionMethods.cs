@@ -162,7 +162,7 @@ namespace TUGraz.VectoCommon.Utils
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool IsBetween(this double self, double min, double max)
 		{
-			return min <= self && self <= max;
+			return Math.Min(min, max) <= self && self <= Math.Max(min, max);
 		}
 
 		/// <summary>
@@ -172,7 +172,7 @@ namespace TUGraz.VectoCommon.Utils
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool IsBetween(this double self, SI min, SI max)
 		{
-			return min <= self && self <= max;
+			return VectoMath.Min(min, max) <= self && self <= VectoMath.Max(min, max);
 		}
 
 		/// <summary>

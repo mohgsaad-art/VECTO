@@ -183,7 +183,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 			protected internal set { _rollResistanceCoefficientWithoutTrailer = value; }
 		}
 
-		public Kilogram TotalVehicleWeight
+		public Kilogram TotalVehicleMass
 		{
 			get {
 				var retVal = 0.0.SI<Kilogram>();
@@ -194,7 +194,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 			}
 		}
 
-		public Kilogram TotalCurbWeight
+		public Kilogram TotalCurbMass
 		{
 			get { return (CurbMass ?? 0.SI<Kilogram>()) + (BodyAndTrailerMass ?? 0.SI<Kilogram>()); }
 		}
@@ -239,7 +239,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 
 		protected void ComputeRollResistanceAndReducedMassWheels()
 		{
-			if (TotalVehicleWeight == 0.SI<Kilogram>()) {
+			if (TotalVehicleMass == 0.SI<Kilogram>()) {
 				throw new VectoException("Total vehicle weight must be greater than 0! Set CurbWeight and Loading before!");
 			}
 			if (DynamicTyreRadius == null) {
@@ -259,7 +259,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 					continue;
 				}
 				var nrWheels = axle.TwinTyres ? 4 : 2;
-				var baseValue = (axle.AxleWeightShare * TotalVehicleWeight * g / axle.TyreTestLoad / nrWheels).Value();
+				var baseValue = (axle.AxleWeightShare * TotalVehicleMass * g / axle.TyreTestLoad / nrWheels).Value();
 
 				var rrcShare = axle.AxleWeightShare * axle.RollResistanceCoefficient *
 								Math.Pow(baseValue, Physics.RollResistanceExponent - 1);
@@ -323,10 +323,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 			//				vehicleData.AxleConfiguration.GetName(), vehicleData.AxleConfiguration.NumAxles(), vehicleData.AxleData.Count));
 			//}
 
-			if (vehicleData.TotalVehicleWeight > gvwTotal) {
+			if (vehicleData.TotalVehicleMass > gvwTotal) {
 				return new ValidationResult(
 					string.Format("Total Vehicle Weight is greater than GrossVehicleWeight! Weight: {0},  GVW: {1}",
-						vehicleData.TotalVehicleWeight, gvwTotal));
+						vehicleData.TotalVehicleMass, gvwTotal));
 			}
 
 			var numDrivenAxles = vehicleData._axleData.Count(x => x.AxleType == AxleType.VehicleDriven);

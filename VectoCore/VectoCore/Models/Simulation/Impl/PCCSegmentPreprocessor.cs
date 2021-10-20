@@ -48,11 +48,11 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			if (runData.GearboxData != null && runData.GearboxData.Type.AutomaticTransmission()) {
 				if ((runData.VehicleData.ADAS.EcoRoll != EcoRollType.None && runData.GearboxData.ATEcoRollReleaseLockupClutch) ||
 					runData.VehicleData.ADAS.EcoRoll == EcoRollType.None) {
-					slopeEngineDrag = (engineDrag / Physics.GravityAccelleration / runData.VehicleData.TotalVehicleWeight).Value();
+					slopeEngineDrag = (engineDrag / Physics.GravityAccelleration / runData.VehicleData.TotalVehicleMass).Value();
 				}
 			} else {
 				if (runData.VehicleData.ADAS.EcoRoll == EcoRollType.None) {
-					slopeEngineDrag = (engineDrag / Physics.GravityAccelleration / runData.VehicleData.TotalVehicleWeight).Value();
+					slopeEngineDrag = (engineDrag / Physics.GravityAccelleration / runData.VehicleData.TotalVehicleMass).Value();
 				}
 			}
 
@@ -107,9 +107,9 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 								PCCDriverData.PreviewDistanceUseCase1),
 						TargetSpeed = start.VehicleTargetSpeed,
 						Altitude = start.Altitude,
-						EnergyMinSpeed = (runData.VehicleData.TotalVehicleWeight * Physics.GravityAccelleration * start.Altitude)
+						EnergyMinSpeed = (runData.VehicleData.TotalVehicleMass * Physics.GravityAccelleration * start.Altitude)
 										.Cast<Joule>() +
-										runData.VehicleData.TotalVehicleWeight * (start.VehicleTargetSpeed - PCCDriverData.UnderSpeed) *
+										runData.VehicleData.TotalVehicleMass * (start.VehicleTargetSpeed - PCCDriverData.UnderSpeed) *
 										(start.VehicleTargetSpeed - PCCDriverData.UnderSpeed) / 2,
 					};
 				}
@@ -117,8 +117,8 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				if (pccSegment != null && slope > minSlope) {
 					pccSegment.EndDistance = start.Distance;
 					pccSegment.EnergyEnd =
-						(runData.VehicleData.TotalVehicleWeight * Physics.GravityAccelleration * start.Altitude).Cast<Joule>() +
-						runData.VehicleData.TotalVehicleWeight * start.VehicleTargetSpeed *
+						(runData.VehicleData.TotalVehicleMass * Physics.GravityAccelleration * start.Altitude).Cast<Joule>() +
+						runData.VehicleData.TotalVehicleMass * start.VehicleTargetSpeed *
 						start.VehicleTargetSpeed / 2;
 					PCCSegments.Segments.Add(pccSegment);
 					pccSegment = null;

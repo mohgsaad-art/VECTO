@@ -100,6 +100,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent
 
 		GearshiftPosition NextGear { get; }
 
+		bool CheckGearshiftRequired { get; }
+
 		void WriteModalResults(IModalDataContainer container);
 	}
 

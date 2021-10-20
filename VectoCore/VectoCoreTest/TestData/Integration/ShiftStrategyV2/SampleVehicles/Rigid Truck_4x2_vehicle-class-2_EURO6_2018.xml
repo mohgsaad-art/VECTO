@@ -1,0 +1,474 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<tns:VectoInputDeclaration schemaVersion="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v1.0" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationInput:v1.0 https://webgate.ec.europa.eu/CITnet/svn/VECTO/trunk/Share/XML/XSD/VectoInput.xsd">
+  <Vehicle id="VEH-class2">
+    <Manufacturer>Generic Vendor</Manufacturer>
+    <ManufacturerAddress>N.A.</ManufacturerAddress>
+    <Model>N.A.</Model>
+    <VIN>N/A</VIN>
+    <Date>2017-07-06T15:06:05.4663609Z</Date>
+    <LegislativeClass>N3</LegislativeClass>
+    <VehicleCategory>Rigid Truck</VehicleCategory>
+    <AxleConfiguration>4x2</AxleConfiguration>
+    <CurbMassChassis>4670</CurbMassChassis>
+    <GrossVehicleMass>11990</GrossVehicleMass>
+    <IdlingSpeed>600</IdlingSpeed>
+    <RetarderType>None</RetarderType>
+    <AngledriveType>None</AngledriveType>
+    <PTO>
+      <PTOShaftsGearWheels>none</PTOShaftsGearWheels>
+      <PTOOtherElements>none</PTOOtherElements>
+    </PTO>
+    <ZeroEmissionVehicle>false</ZeroEmissionVehicle>
+    <VocationalVehicle>false</VocationalVehicle>
+    <SleeperCab>true</SleeperCab>
+    <ADAS>
+      <EngineStopStart>false</EngineStopStart>
+      <EcoRollWithoutEngineStop>false</EcoRollWithoutEngineStop>
+      <EcoRollWithEngineStop>false</EcoRollWithEngineStop>
+      <PredictiveCruiseControl>none</PredictiveCruiseControl>
+    </ADAS>
+    <Components>
+      <Engine>
+        <Data id="ENG-N.A.">
+          <Manufacturer>Generic Vendor</Manufacturer>
+          <Model>N.A.</Model>
+          <CertificationNumber>ENG-N.A.</CertificationNumber>
+          <Date>2017-07-06T15:06:05.4673609Z</Date>
+          <AppVersion>VectoCore</AppVersion>
+          <Displacement>6871</Displacement>
+          <IdlingSpeed>600</IdlingSpeed>
+          <RatedSpeed>2200</RatedSpeed>
+          <RatedPower>175091</RatedPower>
+          <MaxEngineTorque>956</MaxEngineTorque>
+          <WHTCUrban>1.0000</WHTCUrban>
+          <WHTCRural>1.0000</WHTCRural>
+          <WHTCMotorway>1.0000</WHTCMotorway>
+          <BFColdHot>1.0000</BFColdHot>
+          <CFRegPer>1.0000</CFRegPer>
+          <CFNCV>1.0000</CFNCV>
+          <FuelType>Diesel CI</FuelType>
+          <FuelConsumptionMap>
+            <Entry engineSpeed="600.00" torque="-35.00" fuelConsumption="0.00" />
+            <Entry engineSpeed="600.00" torque="0.00" fuelConsumption="508.00" />
+            <Entry engineSpeed="600.00" torque="56.00" fuelConsumption="1275.00" />
+            <Entry engineSpeed="600.00" torque="80.00" fuelConsumption="1609.00" />
+            <Entry engineSpeed="600.00" torque="159.00" fuelConsumption="2652.00" />
+            <Entry engineSpeed="600.00" torque="239.00" fuelConsumption="3704.00" />
+            <Entry engineSpeed="600.00" torque="319.00" fuelConsumption="4748.00" />
+            <Entry engineSpeed="600.00" torque="398.00" fuelConsumption="6354.00" />
+            <Entry engineSpeed="600.00" torque="478.00" fuelConsumption="7983.00" />
+            <Entry engineSpeed="800.00" torque="-44.00" fuelConsumption="0.00" />
+            <Entry engineSpeed="800.00" torque="0.00" fuelConsumption="728.00" />
+            <Entry engineSpeed="800.00" torque="56.00" fuelConsumption="1483.00" />
+            <Entry engineSpeed="800.00" torque="80.00" fuelConsumption="1885.00" />
+            <Entry engineSpeed="800.00" torque="159.00" fuelConsumption="3190.00" />
+            <Entry engineSpeed="800.00" torque="239.00" fuelConsumption="4513.00" />
+            <Entry engineSpeed="800.00" torque="319.00" fuelConsumption="5841.00" />
+            <Entry engineSpeed="800.00" torque="398.00" fuelConsumption="7573.00" />
+            <Entry engineSpeed="800.00" torque="478.00" fuelConsumption="9277.00" />
+            <Entry engineSpeed="800.00" torque="557.00" fuelConsumption="10968.00" />
+            <Entry engineSpeed="800.00" torque="637.00" fuelConsumption="12579.00" />
+            <Entry engineSpeed="800.00" torque="666.00" fuelConsumption="13162.00" />
+            <Entry engineSpeed="1000.00" torque="-51.00" fuelConsumption="0.00" />
+            <Entry engineSpeed="1000.00" torque="0.00" fuelConsumption="948.00" />
+            <Entry engineSpeed="1000.00" torque="56.00" fuelConsumption="1691.00" />
+            <Entry engineSpeed="1000.00" torque="80.00" fuelConsumption="2162.00" />
+            <Entry engineSpeed="1000.00" torque="159.00" fuelConsumption="3729.00" />
+            <Entry engineSpeed="1000.00" torque="239.00" fuelConsumption="5323.00" />
+            <Entry engineSpeed="1000.00" torque="319.00" fuelConsumption="6934.00" />
+            <Entry engineSpeed="1000.00" torque="398.00" fuelConsumption="8793.00" />
+            <Entry engineSpeed="1000.00" torque="478.00" fuelConsumption="10571.00" />
+            <Entry engineSpeed="1000.00" torque="557.00" fuelConsumption="12325.00" />
+            <Entry engineSpeed="1000.00" torque="637.00" fuelConsumption="14080.00" />
+            <Entry engineSpeed="1000.00" torque="717.00" fuelConsumption="15854.00" />
+            <Entry engineSpeed="1000.00" torque="796.00" fuelConsumption="17627.00" />
+            <Entry engineSpeed="1000.00" torque="852.00" fuelConsumption="18862.00" />
+            <Entry engineSpeed="1200.00" torque="-60.00" fuelConsumption="0.00" />
+            <Entry engineSpeed="1200.00" torque="0.00" fuelConsumption="1168.00" />
+            <Entry engineSpeed="1200.00" torque="56.00" fuelConsumption="1898.00" />
+            <Entry engineSpeed="1200.00" torque="80.00" fuelConsumption="2439.00" />
+            <Entry engineSpeed="1200.00" torque="159.00" fuelConsumption="4267.00" />
+            <Entry engineSpeed="1200.00" torque="239.00" fuelConsumption="6132.00" />
+            <Entry engineSpeed="1200.00" torque="319.00" fuelConsumption="8027.00" />
+            <Entry engineSpeed="1200.00" torque="398.00" fuelConsumption="10013.00" />
+            <Entry engineSpeed="1200.00" torque="478.00" fuelConsumption="11866.00" />
+            <Entry engineSpeed="1200.00" torque="557.00" fuelConsumption="13681.00" />
+            <Entry engineSpeed="1200.00" torque="637.00" fuelConsumption="15581.00" />
+            <Entry engineSpeed="1200.00" torque="717.00" fuelConsumption="17509.00" />
+            <Entry engineSpeed="1200.00" torque="796.00" fuelConsumption="19437.00" />
+            <Entry engineSpeed="1200.00" torque="876.00" fuelConsumption="21355.00" />
+            <Entry engineSpeed="1200.00" torque="956.00" fuelConsumption="23570.00" />
+            <Entry engineSpeed="1400.00" torque="-69.00" fuelConsumption="0.00" />
+            <Entry engineSpeed="1400.00" torque="0.00" fuelConsumption="1547.00" />
+            <Entry engineSpeed="1400.00" torque="56.00" fuelConsumption="2283.00" />
+            <Entry engineSpeed="1400.00" torque="80.00" fuelConsumption="2915.00" />
+            <Entry engineSpeed="1400.00" torque="159.00" fuelConsumption="5021.00" />
+            <Entry engineSpeed="1400.00" torque="239.00" fuelConsumption="7193.00" />
+            <Entry engineSpeed="1400.00" torque="319.00" fuelConsumption="9385.00" />
+            <Entry engineSpeed="1400.00" torque="398.00" fuelConsumption="11522.00" />
+            <Entry engineSpeed="1400.00" torque="478.00" fuelConsumption="13683.00" />
+            <Entry engineSpeed="1400.00" torque="557.00" fuelConsumption="15941.00" />
+            <Entry engineSpeed="1400.00" torque="637.00" fuelConsumption="18181.00" />
+            <Entry engineSpeed="1400.00" torque="717.00" fuelConsumption="20308.00" />
+            <Entry engineSpeed="1400.00" torque="796.00" fuelConsumption="22402.00" />
+            <Entry engineSpeed="1400.00" torque="876.00" fuelConsumption="24543.00" />
+            <Entry engineSpeed="1400.00" torque="956.00" fuelConsumption="26768.00" />
+            <Entry engineSpeed="1600.00" torque="-78.00" fuelConsumption="0.00" />
+            <Entry engineSpeed="1600.00" torque="0.00" fuelConsumption="1904.00" />
+            <Entry engineSpeed="1600.00" torque="56.00" fuelConsumption="2688.00" />
+            <Entry engineSpeed="1600.00" torque="80.00" fuelConsumption="3401.00" />
+            <Entry engineSpeed="1600.00" torque="159.00" fuelConsumption="5777.00" />
+            <Entry engineSpeed="1600.00" torque="239.00" fuelConsumption="8277.00" />
+            <Entry engineSpeed="1600.00" torque="319.00" fuelConsumption="10776.00" />
+            <Entry engineSpeed="1600.00" torque="398.00" fuelConsumption="13303.00" />
+            <Entry engineSpeed="1600.00" torque="478.00" fuelConsumption="15790.00" />
+            <Entry engineSpeed="1600.00" torque="557.00" fuelConsumption="18283.00" />
+            <Entry engineSpeed="1600.00" torque="637.00" fuelConsumption="20790.00" />
+            <Entry engineSpeed="1600.00" torque="717.00" fuelConsumption="23218.00" />
+            <Entry engineSpeed="1600.00" torque="796.00" fuelConsumption="25521.00" />
+            <Entry engineSpeed="1600.00" torque="876.00" fuelConsumption="28048.00" />
+            <Entry engineSpeed="1600.00" torque="956.00" fuelConsumption="30589.00" />
+            <Entry engineSpeed="1800.00" torque="-83.00" fuelConsumption="0.00" />
+            <Entry engineSpeed="1800.00" torque="0.00" fuelConsumption="2302.00" />
+            <Entry engineSpeed="1800.00" torque="56.00" fuelConsumption="3173.00" />
+            <Entry engineSpeed="1800.00" torque="80.00" fuelConsumption="3954.00" />
+            <Entry engineSpeed="1800.00" torque="159.00" fuelConsumption="6556.00" />
+            <Entry engineSpeed="1800.00" torque="239.00" fuelConsumption="9383.00" />
+            <Entry engineSpeed="1800.00" torque="319.00" fuelConsumption="12189.00" />
+            <Entry engineSpeed="1800.00" torque="398.00" fuelConsumption="15009.00" />
+            <Entry engineSpeed="1800.00" torque="478.00" fuelConsumption="17731.00" />
+            <Entry engineSpeed="1800.00" torque="557.00" fuelConsumption="20503.00" />
+            <Entry engineSpeed="1800.00" torque="637.00" fuelConsumption="23402.00" />
+            <Entry engineSpeed="1800.00" torque="717.00" fuelConsumption="26238.00" />
+            <Entry engineSpeed="1800.00" torque="796.00" fuelConsumption="29118.00" />
+            <Entry engineSpeed="1800.00" torque="876.00" fuelConsumption="32133.00" />
+            <Entry engineSpeed="1800.00" torque="895.00" fuelConsumption="32857.00" />
+            <Entry engineSpeed="2000.00" torque="-89.00" fuelConsumption="0.00" />
+            <Entry engineSpeed="2000.00" torque="0.00" fuelConsumption="2784.00" />
+            <Entry engineSpeed="2000.00" torque="56.00" fuelConsumption="3828.00" />
+            <Entry engineSpeed="2000.00" torque="80.00" fuelConsumption="4662.00" />
+            <Entry engineSpeed="2000.00" torque="159.00" fuelConsumption="7443.00" />
+            <Entry engineSpeed="2000.00" torque="239.00" fuelConsumption="10605.00" />
+            <Entry engineSpeed="2000.00" torque="319.00" fuelConsumption="13690.00" />
+            <Entry engineSpeed="2000.00" torque="398.00" fuelConsumption="16834.00" />
+            <Entry engineSpeed="2000.00" torque="478.00" fuelConsumption="19958.00" />
+            <Entry engineSpeed="2000.00" torque="557.00" fuelConsumption="23039.00" />
+            <Entry engineSpeed="2000.00" torque="637.00" fuelConsumption="26303.00" />
+            <Entry engineSpeed="2000.00" torque="717.00" fuelConsumption="29611.00" />
+            <Entry engineSpeed="2000.00" torque="796.00" fuelConsumption="32820.00" />
+            <Entry engineSpeed="2000.00" torque="827.00" fuelConsumption="33999.00" />
+            <Entry engineSpeed="2200.00" torque="-100.00" fuelConsumption="0.00" />
+            <Entry engineSpeed="2200.00" torque="0.00" fuelConsumption="3382.00" />
+            <Entry engineSpeed="2200.00" torque="56.00" fuelConsumption="4407.00" />
+            <Entry engineSpeed="2200.00" torque="80.00" fuelConsumption="5325.00" />
+            <Entry engineSpeed="2200.00" torque="159.00" fuelConsumption="8388.00" />
+            <Entry engineSpeed="2200.00" torque="239.00" fuelConsumption="11827.00" />
+            <Entry engineSpeed="2200.00" torque="319.00" fuelConsumption="15247.00" />
+            <Entry engineSpeed="2200.00" torque="398.00" fuelConsumption="18626.00" />
+            <Entry engineSpeed="2200.00" torque="478.00" fuelConsumption="22160.00" />
+            <Entry engineSpeed="2200.00" torque="557.00" fuelConsumption="25879.00" />
+            <Entry engineSpeed="2200.00" torque="637.00" fuelConsumption="29561.00" />
+            <Entry engineSpeed="2200.00" torque="717.00" fuelConsumption="33135.00" />
+            <Entry engineSpeed="2200.00" torque="760.00" fuelConsumption="35076.00" />
+            <Entry engineSpeed="2400.00" torque="-108.00" fuelConsumption="0.00" />
+            <Entry engineSpeed="2400.00" torque="0.00" fuelConsumption="3938.00" />
+            <Entry engineSpeed="2400.00" torque="56.00" fuelConsumption="4964.00" />
+            <Entry engineSpeed="2400.00" torque="80.00" fuelConsumption="5992.00" />
+            <Entry engineSpeed="2400.00" torque="159.00" fuelConsumption="9420.00" />
+            <Entry engineSpeed="2400.00" torque="239.00" fuelConsumption="13093.00" />
+            <Entry engineSpeed="2400.00" torque="319.00" fuelConsumption="16967.00" />
+            <Entry engineSpeed="2400.00" torque="398.00" fuelConsumption="20962.00" />
+            <Entry engineSpeed="2400.00" torque="478.00" fuelConsumption="24952.00" />
+            <Entry engineSpeed="2400.00" torque="557.00" fuelConsumption="29236.00" />
+            <Entry engineSpeed="2400.00" torque="637.00" fuelConsumption="33528.00" />
+            <Entry engineSpeed="2400.00" torque="649.00" fuelConsumption="34116.00" />
+            <Entry engineSpeed="2500.00" torque="-112.00" fuelConsumption="0.00" />
+            <Entry engineSpeed="2500.00" torque="0.00" fuelConsumption="4250.00" />
+            <Entry engineSpeed="2500.00" torque="56.00" fuelConsumption="5006.00" />
+            <Entry engineSpeed="2500.00" torque="80.00" fuelConsumption="6157.00" />
+            <Entry engineSpeed="2500.00" torque="159.00" fuelConsumption="9863.00" />
+            <Entry engineSpeed="2500.00" torque="239.00" fuelConsumption="13722.00" />
+            <Entry engineSpeed="2500.00" torque="319.00" fuelConsumption="17786.00" />
+            <Entry engineSpeed="2500.00" torque="398.00" fuelConsumption="22251.00" />
+            <Entry engineSpeed="2500.00" torque="478.00" fuelConsumption="26436.00" />
+            <Entry engineSpeed="2500.00" torque="565.00" fuelConsumption="31364.00" />
+            <Entry engineSpeed="2600.00" torque="-116.00" fuelConsumption="0.00" />
+            <Entry engineSpeed="2600.00" torque="0.00" fuelConsumption="4407.00" />
+          </FuelConsumptionMap>
+          <FullLoadAndDragCurve>
+            <Entry engineSpeed="600.00" maxTorque="478.00" dragTorque="-35.00" />
+            <Entry engineSpeed="800.00" maxTorque="666.00" dragTorque="-43.00" />
+            <Entry engineSpeed="1000.00" maxTorque="852.00" dragTorque="-49.00" />
+            <Entry engineSpeed="1200.00" maxTorque="956.00" dragTorque="-59.00" />
+            <Entry engineSpeed="1400.00" maxTorque="956.00" dragTorque="-68.00" />
+            <Entry engineSpeed="1600.00" maxTorque="956.00" dragTorque="-77.00" />
+            <Entry engineSpeed="1800.00" maxTorque="895.00" dragTorque="-82.00" />
+            <Entry engineSpeed="2000.00" maxTorque="826.00" dragTorque="-88.00" />
+            <Entry engineSpeed="2200.00" maxTorque="760.00" dragTorque="-99.00" />
+            <Entry engineSpeed="2400.00" maxTorque="649.00" dragTorque="-107.00" />
+            <Entry engineSpeed="2500.00" maxTorque="566.00" dragTorque="-111.00" />
+            <Entry engineSpeed="2600.00" maxTorque="0.00" dragTorque="-116.00" />
+          </FullLoadAndDragCurve>
+        </Data>
+        <Signature>
+          <Reference URI="#ENG-N.A." xmlns="http://www.w3.org/2000/09/xmldsig#">
+            <Transforms>
+              <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithoutComments" />
+              <Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+            </Transforms>
+            <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+            <DigestValue></DigestValue>
+          </Reference>
+        </Signature>
+      </Engine>
+      <Gearbox>
+        <Data id="GBX-N.A.">
+          <Manufacturer>Generic Vendor</Manufacturer>
+          <Model>N.A.</Model>
+          <CertificationNumber>GBX-N.A.</CertificationNumber>
+          <Date>2017-07-06T15:06:05.4703609Z</Date>
+          <AppVersion>VectoCore</AppVersion>
+          <TransmissionType>AMT</TransmissionType>
+          <MainCertificationMethod>Standard values</MainCertificationMethod>
+          <Gears>
+            <Gear number="1">
+              <Ratio>6.700</Ratio>
+              <TorqueLossMap>
+                <Entry inputSpeed="0.00" inputTorque="-10000.00" torqueLoss="400.00" />
+                <Entry inputSpeed="0.00" inputTorque="-50.00" torqueLoss="2.00" />
+                <Entry inputSpeed="0.00" inputTorque="0.00" torqueLoss="2.00" />
+                <Entry inputSpeed="0.00" inputTorque="50.00" torqueLoss="2.00" />
+                <Entry inputSpeed="0.00" inputTorque="10000.00" torqueLoss="400.00" />
+                <Entry inputSpeed="5000.00" inputTorque="-10000.00" torqueLoss="400.00" />
+                <Entry inputSpeed="5000.00" inputTorque="-310.00" torqueLoss="12.00" />
+                <Entry inputSpeed="5000.00" inputTorque="0.00" torqueLoss="12.00" />
+                <Entry inputSpeed="5000.00" inputTorque="310.00" torqueLoss="12.00" />
+                <Entry inputSpeed="5000.00" inputTorque="10000.00" torqueLoss="400.00" />
+              </TorqueLossMap>
+            </Gear>
+            <Gear number="2">
+              <Ratio>3.810</Ratio>
+              <TorqueLossMap>
+                <Entry inputSpeed="0.00" inputTorque="-10000.00" torqueLoss="400.00" />
+                <Entry inputSpeed="0.00" inputTorque="-50.00" torqueLoss="2.00" />
+                <Entry inputSpeed="0.00" inputTorque="0.00" torqueLoss="2.00" />
+                <Entry inputSpeed="0.00" inputTorque="50.00" torqueLoss="2.00" />
+                <Entry inputSpeed="0.00" inputTorque="10000.00" torqueLoss="400.00" />
+                <Entry inputSpeed="5000.00" inputTorque="-10000.00" torqueLoss="400.00" />
+                <Entry inputSpeed="5000.00" inputTorque="-310.00" torqueLoss="12.00" />
+                <Entry inputSpeed="5000.00" inputTorque="0.00" torqueLoss="12.00" />
+                <Entry inputSpeed="5000.00" inputTorque="310.00" torqueLoss="12.00" />
+                <Entry inputSpeed="5000.00" inputTorque="10000.00" torqueLoss="400.00" />
+              </TorqueLossMap>
+            </Gear>
+            <Gear number="3">
+              <Ratio>2.290</Ratio>
+              <TorqueLossMap>
+                <Entry inputSpeed="0.00" inputTorque="-10000.00" torqueLoss="400.00" />
+                <Entry inputSpeed="0.00" inputTorque="-50.00" torqueLoss="2.00" />
+                <Entry inputSpeed="0.00" inputTorque="0.00" torqueLoss="2.00" />
+                <Entry inputSpeed="0.00" inputTorque="50.00" torqueLoss="2.00" />
+                <Entry inputSpeed="0.00" inputTorque="10000.00" torqueLoss="400.00" />
+                <Entry inputSpeed="5000.00" inputTorque="-10000.00" torqueLoss="400.00" />
+                <Entry inputSpeed="5000.00" inputTorque="-310.00" torqueLoss="12.00" />
+                <Entry inputSpeed="5000.00" inputTorque="0.00" torqueLoss="12.00" />
+                <Entry inputSpeed="5000.00" inputTorque="310.00" torqueLoss="12.00" />
+                <Entry inputSpeed="5000.00" inputTorque="10000.00" torqueLoss="400.00" />
+              </TorqueLossMap>
+            </Gear>
+            <Gear number="4">
+              <Ratio>1.480</Ratio>
+              <TorqueLossMap>
+                <Entry inputSpeed="0.00" inputTorque="-10000.00" torqueLoss="400.00" />
+                <Entry inputSpeed="0.00" inputTorque="-50.00" torqueLoss="2.00" />
+                <Entry inputSpeed="0.00" inputTorque="0.00" torqueLoss="2.00" />
+                <Entry inputSpeed="0.00" inputTorque="50.00" torqueLoss="2.00" />
+                <Entry inputSpeed="0.00" inputTorque="10000.00" torqueLoss="400.00" />
+                <Entry inputSpeed="5000.00" inputTorque="-10000.00" torqueLoss="400.00" />
+                <Entry inputSpeed="5000.00" inputTorque="-310.00" torqueLoss="12.00" />
+                <Entry inputSpeed="5000.00" inputTorque="0.00" torqueLoss="12.00" />
+                <Entry inputSpeed="5000.00" inputTorque="310.00" torqueLoss="12.00" />
+                <Entry inputSpeed="5000.00" inputTorque="10000.00" torqueLoss="400.00" />
+              </TorqueLossMap>
+            </Gear>
+            <Gear number="5">
+              <Ratio>1.000</Ratio>
+              <TorqueLossMap>
+                <Entry inputSpeed="0.00" inputTorque="-10000.00" torqueLoss="200.00" />
+                <Entry inputSpeed="0.00" inputTorque="-100.00" torqueLoss="2.00" />
+                <Entry inputSpeed="0.00" inputTorque="0.00" torqueLoss="2.00" />
+                <Entry inputSpeed="0.00" inputTorque="100.00" torqueLoss="2.00" />
+                <Entry inputSpeed="0.00" inputTorque="10000.00" torqueLoss="200.00" />
+                <Entry inputSpeed="5000.00" inputTorque="-10000.00" torqueLoss="200.00" />
+                <Entry inputSpeed="5000.00" inputTorque="-413.00" torqueLoss="8.00" />
+                <Entry inputSpeed="5000.00" inputTorque="0.00" torqueLoss="8.00" />
+                <Entry inputSpeed="5000.00" inputTorque="413.00" torqueLoss="8.00" />
+                <Entry inputSpeed="5000.00" inputTorque="10000.00" torqueLoss="200.00" />
+              </TorqueLossMap>
+            </Gear>
+            <Gear number="6">
+              <Ratio>0.730</Ratio>
+              <TorqueLossMap>
+                <Entry inputSpeed="0.00" inputTorque="-10000.00" torqueLoss="400.00" />
+                <Entry inputSpeed="0.00" inputTorque="-50.00" torqueLoss="2.00" />
+                <Entry inputSpeed="0.00" inputTorque="0.00" torqueLoss="2.00" />
+                <Entry inputSpeed="0.00" inputTorque="50.00" torqueLoss="2.00" />
+                <Entry inputSpeed="0.00" inputTorque="10000.00" torqueLoss="400.00" />
+                <Entry inputSpeed="5000.00" inputTorque="-10000.00" torqueLoss="400.00" />
+                <Entry inputSpeed="5000.00" inputTorque="-310.00" torqueLoss="12.00" />
+                <Entry inputSpeed="5000.00" inputTorque="0.00" torqueLoss="12.00" />
+                <Entry inputSpeed="5000.00" inputTorque="310.00" torqueLoss="12.00" />
+                <Entry inputSpeed="5000.00" inputTorque="10000.00" torqueLoss="400.00" />
+              </TorqueLossMap>
+            </Gear>
+          </Gears>
+        </Data>
+        <Signature>
+          <Reference URI="#GBX-N.A." xmlns="http://www.w3.org/2000/09/xmldsig#">
+            <Transforms>
+              <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithoutComments" />
+              <Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+            </Transforms>
+            <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+            <DigestValue></DigestValue>
+          </Reference>
+        </Signature>
+      </Gearbox>
+      <Axlegear>
+        <Data id="AXLGEAR-4.180">
+          <Manufacturer>Generic Vendor</Manufacturer>
+          <Model>N.A.</Model>
+          <CertificationNumber>AXLGEAR-4.180</CertificationNumber>
+          <Date>2017-07-06T15:06:05.4703609Z</Date>
+          <AppVersion>VectoCore</AppVersion>
+          <LineType>Single portal axle</LineType>
+          <Ratio>4.180</Ratio>
+          <CertificationMethod>Standard values</CertificationMethod>
+          <TorqueLossMap>
+            <Entry inputSpeed="0.00" inputTorque="-50000.00" torqueLoss="2500.00" />
+            <Entry inputSpeed="0.00" inputTorque="-50.00" torqueLoss="2.50" />
+            <Entry inputSpeed="0.00" inputTorque="0.00" torqueLoss="0.00" />
+            <Entry inputSpeed="0.00" inputTorque="50.00" torqueLoss="2.50" />
+            <Entry inputSpeed="0.00" inputTorque="50000.00" torqueLoss="2500.00" />
+            <Entry inputSpeed="5000.00" inputTorque="-50000.00" torqueLoss="2500.00" />
+            <Entry inputSpeed="5000.00" inputTorque="-50.00" torqueLoss="2.50" />
+            <Entry inputSpeed="5000.00" inputTorque="0.00" torqueLoss="0.00" />
+            <Entry inputSpeed="5000.00" inputTorque="50.00" torqueLoss="2.50" />
+            <Entry inputSpeed="5000.00" inputTorque="50000.00" torqueLoss="2500.00" />
+          </TorqueLossMap>
+        </Data>
+        <Signature>
+          <Reference URI="#AXLGEAR-4.180" xmlns="http://www.w3.org/2000/09/xmldsig#">
+            <Transforms>
+              <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithoutComments" />
+              <Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+            </Transforms>
+            <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+            <DigestValue></DigestValue>
+          </Reference>
+        </Signature>
+      </Axlegear>
+      <AxleWheels>
+        <Data>
+          <Axles>
+            <Axle axleNumber="1">
+              <AxleType>VehicleNonDriven</AxleType>
+              <TwinTyres>false</TwinTyres>
+              <Steered>true</Steered>
+              <Tyre>
+                <Data id="TYRE-265_70R19.5">
+                  <Manufacturer>Generic Vendor</Manufacturer>
+                  <Model>265/70 R19.5</Model>
+                  <CertificationNumber>TYRE-265/70 R19.5</CertificationNumber>
+                  <Date>2017-07-06T15:06:08.1443609Z</Date>
+                  <AppVersion>VectoCore</AppVersion>
+                  <Dimension>265/70 R19.5</Dimension>
+                  <RRCDeclared>0.0061</RRCDeclared>
+                  <FzISO>20850</FzISO>
+                </Data>
+                <Signature>
+                  <Reference URI="#TYRE-265_70R19.5" xmlns="http://www.w3.org/2000/09/xmldsig#">
+                    <Transforms>
+                      <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithoutComments" />
+                      <Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+                    </Transforms>
+                    <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+                    <DigestValue></DigestValue>
+                  </Reference>
+                </Signature>
+              </Tyre>
+            </Axle>
+            <Axle axleNumber="2">
+              <AxleType>VehicleDriven</AxleType>
+              <TwinTyres>true</TwinTyres>
+              <Steered>false</Steered>
+              <Tyre>
+                <Data id="TYRE-265_70R19.5">
+                  <Manufacturer>Generic Vendor</Manufacturer>
+                  <Model>265/70 R19.5</Model>
+                  <CertificationNumber>TYRE-265/70 R19.5</CertificationNumber>
+                  <Date>2017-07-06T15:06:08.1443609Z</Date>
+                  <AppVersion>VectoCore</AppVersion>
+                  <Dimension>265/70 R19.5</Dimension>
+                  <RRCDeclared>0.0071</RRCDeclared>
+                  <FzISO>20850</FzISO>
+                </Data>
+                <Signature>
+                  <Reference URI="#TYRE-265_70R19.5" xmlns="http://www.w3.org/2000/09/xmldsig#">
+                    <Transforms>
+                      <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithoutComments" />
+                      <Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+                    </Transforms>
+                    <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+                    <DigestValue></DigestValue>
+                  </Reference>
+                </Signature>
+              </Tyre>
+            </Axle>
+          </Axles>
+        </Data>
+      </AxleWheels>
+      <Auxiliaries>
+        <Data>
+          <Fan>
+            <Technology>Crankshaft mounted - Electronically controlled visco clutch</Technology>
+          </Fan>
+          <SteeringPump>
+            <Technology>Fixed displacement</Technology>
+          </SteeringPump>
+          <ElectricSystem>
+            <Technology>Standard technology</Technology>
+          </ElectricSystem>
+          <PneumaticSystem>
+            <Technology>Small</Technology>
+          </PneumaticSystem>
+          <HVAC>
+            <Technology>None</Technology>
+          </HVAC>
+        </Data>
+      </Auxiliaries>
+      <AirDrag>
+        <Data id="Airdrag-N.A.">
+          <Manufacturer>Generic Vendor</Manufacturer>
+          <Model>N.A.</Model>
+          <CertificationNumber>N.A.</CertificationNumber>
+          <Date>2017-07-06T15:06:08.1443609Z</Date>
+          <AppVersion>VectoCore</AppVersion>
+          <CdxA_0>5.58</CdxA_0>
+          <TransferredCdxA>5.58</TransferredCdxA>
+          <DeclaredCdxA>5.58</DeclaredCdxA>
+        </Data>
+        <Signature>
+          <Reference URI="#Airdrag-N.A." xmlns="http://www.w3.org/2000/09/xmldsig#">
+            <Transforms>
+              <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithoutComments" />
+              <Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+            </Transforms>
+            <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+            <DigestValue></DigestValue>
+          </Reference>
+        </Signature>
+      </AirDrag>
+    </Components>
+  </Vehicle>
+</tns:VectoInputDeclaration>

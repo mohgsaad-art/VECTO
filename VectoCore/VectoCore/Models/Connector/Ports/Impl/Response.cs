@@ -185,6 +185,8 @@ namespace TUGraz.VectoCore.Models.Connector.Ports.Impl
 	internal class ResponseGearShift : AbstractResponse
 	{
 		public ResponseGearShift(object source) : base(source) { }
+
+		public ResponseGearShift(object source, IResponse subResponse) : base(source, subResponse) { }
 	}
 
 /*

@@ -1,0 +1,4 @@
+engine torque [Nm],downshift rpm [1/min],upshift rpm [1/min]
+-200,700,800
+0,700,800
+3000,700,800

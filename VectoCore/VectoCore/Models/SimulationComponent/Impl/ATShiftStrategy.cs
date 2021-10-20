@@ -236,7 +236,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		private bool CheckUpshift(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity,
 			NewtonMeter inTorque, PerSecond inAngularVelocity, GearshiftPosition gear, Second lastShiftTime, IResponse response)
 		{
-			var shiftTimeReached = (absTime - lastShiftTime).IsGreaterOrEqual(GearboxModelData.ShiftTime);
+			var shiftTimeReached = (absTime - lastShiftTime).IsGreaterOrEqual(GearshiftParams.TimeBetweenGearshifts);
 			if (!shiftTimeReached) {
 				return false;
 			}
@@ -334,7 +334,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			if (!DataBus.VehicleInfo.VehicleSpeed.IsEqual(0)) {
 				var reachableAcceleration = EstimateAccelerationForGear(nextGear, outAngularVelocity);
 				var minAcceleration = _gearbox.TorqueConverterLocked
-					? GearboxModelData.UpshiftMinAcceleration
+					? GearshiftParams.UpshiftMinAcceleration
 					: GearboxModelData.TorqueConverterData.CLUpshiftMinAcceleration;
 				minAcceleration = VectoMath.Min(minAcceleration, VectoMath.Max(0.SI<MeterPerSquareSecond>(), DataBus.DriverInfo.DriverAcceleration));
 				minAccelerationReachable = reachableAcceleration.IsGreaterOrEqual(minAcceleration);
@@ -379,7 +379,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		private bool CheckDownshift(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity,
 			NewtonMeter inTorque, PerSecond inAngularVelocity, GearshiftPosition gear, Second lastShiftTime, IResponse response)
 		{
-			var shiftTimeReached = (absTime - lastShiftTime).IsGreaterOrEqual(GearboxModelData.ShiftTime);
+			var shiftTimeReached = (absTime - lastShiftTime).IsGreaterOrEqual(GearshiftParams.TimeBetweenGearshifts);
 
 			if (shiftTimeReached && IsBelowDownShiftCurve(gear, inTorque, inAngularVelocity)) {
 				Downshift(absTime, gear);

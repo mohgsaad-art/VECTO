@@ -33,6 +33,7 @@ using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Connector.Ports;
+using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
@@ -71,7 +72,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 										(_idleSpeed + Constants.SimulationSettings.ClutchClosingSpeedNorm * (_ratedSpeed - _idleSpeed));
 		}
 
-		public IResponse Initialize(NewtonMeter outTorque, PerSecond outAngularVelocity)
+		public virtual IResponse Initialize(NewtonMeter outTorque, PerSecond outAngularVelocity)
 		{
 			NewtonMeter torqueIn;
 			PerSecond engineSpeedIn;
@@ -92,20 +93,20 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			return retVal;
 		}
 
-		public IResponse Request(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity,
+		public virtual void Initialize(Watt clutchLoss)
+		{
+			PreviousState.ClutchLoss = clutchLoss;
+		}
+
+
+		public virtual IResponse Request(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity,
 			bool dryRun = false)
 		{
 			firstInitialize = false;
-			var startClutch = DataBus.VehicleInfo.VehicleStopped || !PreviousState.ClutchLoss.IsEqual(0);
-			if (!DataBus.ClutchInfo.ClutchClosed(absTime) && !dryRun) {
-				Log.Debug("Invoking IdleController...");
-				var retval = IdleController.Request(absTime, dt, outTorque, null, dryRun);
-				retval.Clutch.PowerRequest = 0.SI<Watt>();
-				retval.Clutch.OutputSpeed = outAngularVelocity;
-				CurrentState.SetState(0.SI<NewtonMeter>(), retval.Engine.EngineSpeed, outTorque, outAngularVelocity);
-				CurrentState.ClutchLoss = 0.SI<Watt>();
-				return retval;
+			if ((!DataBus.ClutchInfo.ClutchClosed(absTime) || !DataBus.GearboxInfo.GearEngaged(absTime)) && !dryRun) {
+				return HandleClutchOpen(absTime, dt, outTorque, outAngularVelocity, false);
 			}
+
 			if (IdleController != null) {
 				IdleController.Reset();
 			}
@@ -113,15 +114,67 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			Log.Debug("from Wheels: torque: {0}, angularVelocity: {1}, power {2}", outTorque, outAngularVelocity,
 				Formulas.TorqueToPower(outTorque, outAngularVelocity));
 
-			NewtonMeter torqueIn;
-			PerSecond angularVelocityIn;
+			return HandleClutchClosed(absTime, dt, outTorque, outAngularVelocity, dryRun);
+		}
 
+		protected IResponse HandleClutchOpen(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity,
+			bool dryRun)
+		{
+			var avgOutAngularVelocity = (PreviousState.OutAngularVelocity + outAngularVelocity) / 2.0;
+			if (dryRun) {
+				var delta = outTorque * avgOutAngularVelocity;
+				return new ResponseDryRun(this) {
+					Gearbox = { PowerRequest = delta },
+					DeltaDragLoad = delta,
+					DeltaFullLoad = delta,
+					//DeltaFullLoadTorque = outTorque,
+					//DeltaDragLoadTorque = outTorque,
+					Clutch = {
+						PowerRequest = delta,
+						OutputSpeed = outAngularVelocity
+					}
+				};
+			} else {
+
+				if ((outTorque * avgOutAngularVelocity).IsGreater(0.SI<Watt>(), Constants.SimulationSettings.LineSearchTolerance)) {
+					return new ResponseOverload(this) {
+						Delta = outTorque * avgOutAngularVelocity,
+						Clutch = {
+						PowerRequest = outTorque * avgOutAngularVelocity,
+						OutputSpeed = outAngularVelocity
+					}
+					};
+				}
+
+				if ((outTorque * avgOutAngularVelocity).IsSmaller(0.SI<Watt>(), Constants.SimulationSettings.LineSearchTolerance)) {
+					return new ResponseUnderload(this) {
+						Delta = outTorque * avgOutAngularVelocity,
+						Clutch = {
+						PowerRequest = outTorque * avgOutAngularVelocity,
+						OutputSpeed = outAngularVelocity
+					}
+					};
+				}
+
+				Log.Debug("Invoking IdleController...");
+				var retVal = IdleController.Request(absTime, dt, outTorque, null, false);
+				retVal.Clutch.PowerRequest = 0.SI<Watt>();
+				retVal.Clutch.OutputSpeed = outAngularVelocity;
+				CurrentState.SetState(0.SI<NewtonMeter>(), retVal.Engine.EngineSpeed, outTorque, outAngularVelocity);
+				CurrentState.ClutchLoss = 0.SI<Watt>();
+				return retVal;
+			}
+		}
+
+		protected virtual IResponse HandleClutchClosed(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, bool dryRun)
+		{
+			var startClutch = DataBus.VehicleInfo.VehicleStopped || !PreviousState.ClutchLoss.IsEqual(0, 1e-3) || (outAngularVelocity.IsSmaller(DataBus.EngineInfo.EngineSpeed, 1e-3) && !DataBus.EngineInfo.EngineOn); // || (PreviousState.ClutchLoss.IsEqual(0) && outAngularVelocity.IsSmaller(DataBus.EngineInfo.EngineIdleSpeed));
 			var slippingClutchWhenDriving = (DataBus.GearboxInfo.Gear.Gear <= 2 && DataBus.DriverInfo.DriverBehavior != DrivingBehavior.Braking);
 			var slippingClutchDuringBraking = DataBus.GearboxInfo.Gear.Gear == 1 && DataBus.DriverInfo.DriverBehavior == DrivingBehavior.Braking && outTorque > 0 && DataBus.Brakes.BrakePower.IsEqual(0);
 			//var slippingClutchWhenDriving = (DataBus.Gear == 1 && outTorque > 0);
 			AddClutchLoss(outTorque, outAngularVelocity,
 				slippingClutchWhenDriving || slippingClutchDuringBraking || startClutch || outAngularVelocity.IsEqual(0),
-				out torqueIn, out angularVelocityIn);
+				out var torqueIn, out var angularVelocityIn);
 
 			Log.Debug("to Engine:   torque: {0}, angularVelocity: {1}, power {2}", torqueIn, angularVelocityIn,
 				Formulas.TorqueToPower(torqueIn, angularVelocityIn));
@@ -145,7 +198,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			return retVal;
 		}
 
-		private void AddClutchLoss(NewtonMeter torque, PerSecond angularVelocity, bool allowSlipping, out NewtonMeter torqueIn,
+		protected virtual void AddClutchLoss(NewtonMeter torque, PerSecond angularVelocity, bool allowSlipping, out NewtonMeter torqueIn,
 			out PerSecond angularVelocityIn)
 		{
 			if (DataBus.DriverInfo.DriverBehavior == DrivingBehavior.Halted) {
@@ -182,6 +235,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		{
 			return DataBus.GearboxInfo.GearEngaged(absTime);
 		}
+
+		public Watt ClutchLosses => PreviousState.ClutchLoss;
 
 		public class ClutchState : SimpleComponentState
 		{

@@ -48,7 +48,7 @@ using TUGraz.VectoCore.Utils;
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
 	public class TorqueConverter : StatefulVectoSimulationComponent<TorqueConverter.TorqueConverterComponentState>,
-		ITnInPort, ITnOutPort
+		ITnInPort, ITnOutPort, ITorqueConverter
 	{
 		protected readonly IGearboxInfo Gearbox;
 		protected readonly IShiftStrategy ShiftStrategy;
@@ -328,6 +328,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			NewtonMeter outTorque,
 			PerSecond outAngularVelocity)
 		{
+			if (SetOperatingPoint != null) {
+				return SetOperatingPoint;
+			}
 			var operatingPointList = ModelData.FindOperatingPoint(outTorque, outAngularVelocity, DataBus.EngineInfo.EngineIdleSpeed);
 			if (operatingPointList.Count == 0) {
 				Log.Debug("TorqueConverter: Failed to find torque converter operating point, fallback: creeping");
@@ -403,6 +406,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)
 		{
+			SetOperatingPoint = null;
 			AdvanceState();
 		}
 
@@ -417,5 +421,19 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		{
 			public TorqueConverterOperatingPoint OperatingPoint;
 		}
+
+		#region Implementation of ITorqueConverterControl
+
+		public Tuple<TorqueConverterOperatingPoint, NewtonMeter> CalculateOperatingPoint(PerSecond inSpeed, PerSecond outSpeed)
+		{
+			var tcOps = ModelData.FindOperatingPoint(inSpeed, outSpeed);
+
+			return Tuple.Create(tcOps, CalculateAverageInTorque(tcOps));
+		}
+
+		public TorqueConverterOperatingPoint SetOperatingPoint { get; set; }
+
+
+		#endregion
 	}
 }

@@ -121,9 +121,19 @@ namespace TUGraz.VectoCore.Tests.Utils
 			return 2300.SI<NewtonMeter>() * angularSpeed;
 		}
 
+		public Watt EngineDynamicFullLoadPower(PerSecond avgEngineSpeed, Second dt)
+		{
+			throw new NotImplementedException();
+		}
+
 		public Watt EngineDragPower(PerSecond angularSpeed)
 		{
 			return -1000.SI<NewtonMeter>() * angularSpeed;
+		}
+
+		public Watt EngineAuxDemand(PerSecond avgEngineSpeed, Second dt)
+		{
+			throw new NotImplementedException();
 		}
 
 		public PerSecond EngineIdleSpeed

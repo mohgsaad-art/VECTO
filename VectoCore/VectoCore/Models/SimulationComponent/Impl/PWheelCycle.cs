@@ -123,7 +123,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		public Kilogram VehicleMass
 		{
-			get { return RunData.VehicleData.TotalCurbWeight; }
+			get { return RunData.VehicleData.TotalCurbMass; }
 		}
 
 		public Kilogram VehicleLoading
@@ -133,7 +133,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		public Kilogram TotalMass
 		{
-			get { return RunData.VehicleData.TotalVehicleWeight; }
+			get { return RunData.VehicleData.TotalVehicleMass; }
 		}
 
 		public CubicMeter CargoVolume

@@ -46,7 +46,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			fcMap = runData.EngineData.Fuels;
 			fld = runData.EngineData.FullLoadCurves;
-			vehicleMass = runData.VehicleData.TotalVehicleWeight;
+			vehicleMass = runData.VehicleData.TotalVehicleMass;
 			shiftStrategyParameters = runData.GearshiftParameters;
 
 			MinMass = runData.VehicleData.MinimumVehicleMass;

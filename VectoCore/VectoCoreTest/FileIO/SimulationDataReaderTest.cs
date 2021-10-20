@@ -76,7 +76,7 @@ namespace TUGraz.VectoCore.Tests.FileIO
 			Assert.AreEqual(Path.GetFileNameWithoutExtension(DeclarationJob), runData.JobName);
 
 			// curbweight + bodyCurbWeight + trailerCurbWeight (for Long Haul only)
-			Assert.AreEqual(5850 + 1900 + 3400, runData.VehicleData.TotalCurbWeight.Value());
+			Assert.AreEqual(5850 + 1900 + 3400, runData.VehicleData.TotalCurbMass.Value());
 
 			Assert.AreEqual(11900, runData.VehicleData.GrossVehicleMass.Value());
 			Assert.AreEqual(AxleConfiguration.AxleConfig_4x2, runData.VehicleData.AxleConfiguration);

@@ -29,6 +29,7 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using System;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.SimulationComponent;
@@ -52,9 +53,9 @@ namespace TUGraz.VectoCore.Models.Simulation.DataBus
 
 		bool TCLocked { get; }
 
-		MeterPerSecond StartSpeed { get; }
+		//MeterPerSecond StartSpeed { get; }
 
-		MeterPerSquareSecond StartAcceleration { get; }
+		//MeterPerSquareSecond StartAcceleration { get; }
 
 		Watt GearboxLoss();
 
@@ -73,5 +74,17 @@ namespace TUGraz.VectoCore.Models.Simulation.DataBus
 		bool DisengageGearbox { get; }
 
 		bool GearEngaged(Second absTime);
+	}
+
+	public interface ITorqueConverterInfo
+	{
+		Tuple<TorqueConverterOperatingPoint, NewtonMeter> CalculateOperatingPoint(PerSecond inSpeed, PerSecond outSpeed);
+
+	}
+
+	public interface ITorqueConverterControl
+	{
+
+		TorqueConverterOperatingPoint SetOperatingPoint { get; set; }
 	}
 }

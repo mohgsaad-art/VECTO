@@ -34,6 +34,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl {
 		public MeterPerSquareSecond DriverAcceleration => 0.SI<MeterPerSquareSecond>();
 		public PCCStates PCCState => PCCStates.OutsideSegment;
 
+		public override bool IsTestPowertrain
+		{
+			get { return true; }
+		}
+
 		#endregion
 	}
 }

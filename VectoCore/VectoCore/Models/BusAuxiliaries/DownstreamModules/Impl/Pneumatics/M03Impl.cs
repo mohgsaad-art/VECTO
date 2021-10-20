@@ -32,7 +32,7 @@ namespace TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl.Pneumati
 		{
 			var psUserConfig = auxConfig.PneumaticUserInputsConfig;
 			var psAuxconfig = auxConfig.PneumaticAuxillariesConfig;
-			var vehicleMass = auxConfig.VehicleData.TotalVehicleWeight;
+			var vehicleMass = auxConfig.VehicleData.TotalVehicleMass;
 
 			//'* * Breaks * *
 			var airConsumptionPerActuation = psAuxconfig.Braking * vehicleMass;

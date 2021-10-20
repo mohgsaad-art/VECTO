@@ -31,9 +31,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using Newtonsoft.Json;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
@@ -44,6 +46,7 @@ using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.OutputData;
+using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.OutputData.ModFilter;
 using TUGraz.VectoCore.OutputData.XML;
 
@@ -134,6 +137,8 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		public bool ModalResults1Hz { get; set; }
 		public bool ActualModalData { get; set; }
 
+		public bool SerializeVectoRunData { get; set; }
+
 		/// <summary>
 		/// Creates powertrain and initializes it with the component's data.
 		/// </summary>
@@ -178,6 +183,14 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 					filter: GetModDataFilter(data)) {
 					WriteModalResults = _mode != ExecutionMode.Declaration || WriteModalResults
 				};
+
+			// TODO: MQ 20200410 - Remove for official release!
+			if (SerializeVectoRunData) {
+				File.WriteAllText(
+					Path.Combine(
+						(ModWriter as FileOutputWriter)?.BasePath ?? "", $"{data.JobName}_{data.Cycle.Name}{data.ModFileSuffix}.json"),
+					JsonConvert.SerializeObject(data, Formatting.Indented));
+			}
 
 			var builder = new PowertrainBuilder(
 				modContainer, modData => {

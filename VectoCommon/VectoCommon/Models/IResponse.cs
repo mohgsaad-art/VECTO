@@ -32,6 +32,7 @@
 using System.Diagnostics;
 using System.Linq;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 
 namespace TUGraz.VectoCommon.Models
 {
@@ -127,7 +128,7 @@ namespace TUGraz.VectoCommon.Models
 
 		public NewtonMeter InputTorque { get; set; }
 
-		public uint Gear { get; set; }
+		public GearshiftPosition Gear { get; set; }
 
 		public PerSecond OutputSpeed { get; set; }
 

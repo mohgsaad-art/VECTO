@@ -91,6 +91,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 		public IMileageCounter MileageCounter { get { return this; } }
 		public IGearboxInfo GearboxInfo { get { return this; } }
 		public IGearboxControl GearboxCtl { get; }
+		public ITorqueConverterInfo TorqueConverterInfo { get; }
+		public ITorqueConverterControl TorqueConverterCtl { get; }
 		public IAxlegearInfo AxlegearInfo { get; }
 		public IEngineInfo EngineInfo { get; }
 		public IEngineControl EngineCtl

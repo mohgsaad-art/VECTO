@@ -32,6 +32,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
+using System.Linq;
+using Newtonsoft.Json;
 using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Utils;
@@ -74,6 +76,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Engine
 				angularVelocity.AsRPM);
 		}
 
+		[JsonIgnore]
 		public IReadOnlyCollection<Entry> Entries
 		{
 			get
@@ -96,6 +99,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Engine
 		}
 
 		#endregion
+
+		public string[] EntriesSerialized {
+			get {
+				return _fuelMap.Entries.Select(
+						entry => $"{entry.Y.SI<PerSecond>().AsRPM} [rpm], {entry.X.SI<NewtonMeter>()}, {entry.Z.SI<KilogramPerSecond>().ConvertToGrammPerHour()} [g/h]")
+					.ToArray();
+			}
+		}
 
 		public class Entry
 		{

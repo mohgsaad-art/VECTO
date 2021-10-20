@@ -384,14 +384,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 		{
 			retVal.Inertia = DeclarationData.Gearbox.Inertia;
 			retVal.TractionInterruption = retVal.Type.TractionInterruption();
-			retVal.TorqueReserve = DeclarationData.Gearbox.TorqueReserve;
-			retVal.StartTorqueReserve = DeclarationData.Gearbox.TorqueReserveStart;
-			retVal.ShiftTime = DeclarationData.Gearbox.MinTimeBetweenGearshifts;
-			retVal.StartSpeed = DeclarationData.Gearbox.StartSpeed;
-			retVal.StartAcceleration = DeclarationData.Gearbox.StartAcceleration;
-			retVal.DownshiftAfterUpshiftDelay = DeclarationData.Gearbox.DownshiftAfterUpshiftDelay;
-			retVal.UpshiftAfterDownshiftDelay = DeclarationData.Gearbox.UpshiftAfterDownshiftDelay;
-			retVal.UpshiftMinAcceleration = DeclarationData.Gearbox.UpshiftMinAcceleration;
+			
 		}
 
 		public AxleGearData CreateAxleGearData(IAxleGearInputData data)

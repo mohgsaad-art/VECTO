@@ -52,6 +52,10 @@ namespace TUGraz.VectoCore.Models.Simulation.DataBus
 
 		IGearboxControl GearboxCtl { get; }
 
+		ITorqueConverterInfo TorqueConverterInfo { get; }
+
+		ITorqueConverterControl TorqueConverterCtl { get; }
+
 		IAxlegearInfo AxlegearInfo { get; }
 
 		IEngineInfo EngineInfo { get; }
@@ -71,27 +75,27 @@ namespace TUGraz.VectoCore.Models.Simulation.DataBus
 
 		IDrivingCycleInfo DrivingCycleInfo { get; }
 
-		//IElectricMotorInfo ElectricMotorInfo(PowertrainPosition pos);
+        //IElectricMotorInfo ElectricMotorInfo(PowertrainPosition pos);
 
-		//IRESSInfo BatteryInfo { get; }
+        //IRESSInfo BatteryInfo { get; }
 
-		//ITorqueConverterInfo TorqueConverterInfo { get; }
+        //ITorqueConverterInfo TorqueConverterInfo { get; }
 
-		//ITorqueConverterControl TorqueConverterCtl { get; }
+        //ITorqueConverterControl TorqueConverterCtl { get; }
 
         //IPowertainInfo PowertrainInfo { get; }
 
         //IHybridControllerInfo HybridControllerInfo { get; }
 
-		//IHybridControllerCtl HybridControllerCtl { get; }
+        //IHybridControllerCtl HybridControllerCtl { get; }
 
-		//IAngledriveInfo AngledriveInfo { get; }
+        //IAngledriveInfo AngledriveInfo { get; }
 
-		//IDCDCConverter DCDCConverter { get; }
+        //IDCDCConverter DCDCConverter { get; }
 
-		//bool IsTestPowertrain { get; }
+        bool IsTestPowertrain { get; }
 
-	}
+    }
 
 	public interface IPowertainInfo
 	{

@@ -547,7 +547,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 			public const double ShiftPolygonRPMMargin = 7; // %
 			private const double ShiftPolygonEngineFldMargin = 0.98;
 
-			public static readonly Second MinTimeBetweenGearshifts = 1.5.SI<Second>();
+			public static readonly Second MinTimeBetweenGearshifts = 2.SI<Second>();
 			public static readonly Second DownshiftAfterUpshiftDelay = 6.SI<Second>();
 			public static readonly Second UpshiftAfterDownshiftDelay = 6.SI<Second>();
 

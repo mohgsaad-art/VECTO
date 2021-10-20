@@ -31,6 +31,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 
 namespace TUGraz.VectoCore.InputData.Reader.Impl
@@ -44,6 +45,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			Entries = cycle.Entries;
 		}
 
+		[JsonIgnore]
 		public List<DrivingCycleData.DrivingCycleEntry> Entries { get; private set; }
 
 		public string Name { get; private set; }

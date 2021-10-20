@@ -86,17 +86,17 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		public abstract bool TCLocked { get; }
 
-		[DebuggerHidden]
-		public MeterPerSecond StartSpeed
-		{
-			get { return ModelData.StartSpeed; }
-		}
+		//[DebuggerHidden]
+		//public MeterPerSecond StartSpeed
+		//{
+		//	get { return ModelData.StartSpeed; }
+		//}
 
-		[DebuggerHidden]
-		public MeterPerSquareSecond StartAcceleration
-		{
-			get { return ModelData.StartAcceleration; }
-		}
+		//[DebuggerHidden]
+		//public MeterPerSquareSecond StartAcceleration
+		//{
+		//	get { return ModelData.StartAcceleration; }
+		//}
 
 		public Watt GearboxLoss()
 		{
@@ -108,7 +108,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					PreviousState.InertiaTorqueLossOut) / ratio * PreviousState.InAngularVelocity;
 		}
 
-		public Second LastShift { get; protected set; }
+		public virtual Second LastShift { get; protected set; }
 
 		public GearData GetGearData(uint gear)
 		{
@@ -170,5 +170,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		public NewtonMeter TransmissionTorqueLoss = 0.SI<NewtonMeter>();
 		public GearshiftPosition Gear;
 		public TransmissionLossMap.LossMapResult TorqueLossResult;
+		public DrivingBehavior DrivingBehavior;
 	}
 }

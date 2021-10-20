@@ -364,14 +364,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 		{
 			retVal.Inertia = gearbox.Type.ManualTransmission() ? gearbox.Inertia : 0.SI<KilogramSquareMeter>();
 			retVal.TractionInterruption = gearbox.TractionInterruption;
-			retVal.TorqueReserve = gearshiftData.TorqueReserve;
-			retVal.StartTorqueReserve = gearshiftData.StartTorqueReserve;
-			retVal.ShiftTime = gearshiftData.MinTimeBetweenGearshift;
-			retVal.StartSpeed = gearshiftData.StartSpeed;
-			retVal.StartAcceleration = gearshiftData.StartAcceleration;
-			retVal.DownshiftAfterUpshiftDelay = gearshiftData.DownshiftAfterUpshiftDelay;
-			retVal.UpshiftAfterDownshiftDelay = gearshiftData.UpshiftAfterDownshiftDelay;
-			retVal.UpshiftMinAcceleration = gearshiftData.UpshiftMinAcceleration;
+			
 		}
 
 		public AxleGearData CreateAxleGearData(IAxleGearInputData data)

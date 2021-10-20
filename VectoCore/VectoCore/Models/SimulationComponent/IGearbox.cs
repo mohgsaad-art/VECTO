@@ -37,4 +37,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent
 	/// Defines interfaces for a gearbox.
 	/// </summary>
 	public interface IGearbox : IPowerTrainComponent, IGearboxInfo, IGearboxControl {}
+
+	public interface ITorqueConverter : ITorqueConverterInfo, ITorqueConverterControl { }
 }

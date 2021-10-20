@@ -106,6 +106,9 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		public IClutchInfo ClutchInfo { get; protected set; }
 		public IBrakes Brakes { get; protected set; }
 		public IWheelsInfo WheelsInfo { get; protected set; }
+		public ITorqueConverterInfo TorqueConverterInfo { get; protected set; }
+
+		public virtual ITorqueConverterControl TorqueConverterCtl { get; private set; }
 
 		public void AddComponent(VectoSimulationComponent component)
 		{
@@ -127,6 +130,8 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				.If<IGearboxControl>(c => {
 					GearboxCtl = c;
 				})
+				.If<ITorqueConverterInfo>(c => TorqueConverterInfo = c)
+				.If<ITorqueConverterControl>(c => TorqueConverterCtl = c)
 				.If<IAxlegearInfo>(c => AxlegearInfo = c)
 				.If<IAngledriveInfo>(c => AngledriveInfo = c)
 				.If<IWheelsInfo>(c => WheelsInfo = c)
@@ -183,6 +188,11 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		public virtual void AddPreprocessor(ISimulationPreprocessor simulationPreprocessor)
 		{
 			Preprocessors.Add(simulationPreprocessor);
+		}
+
+		public virtual bool IsTestPowertrain
+		{
+			get { return false; }
 		}
 
 		public virtual void StartSimulationRun()
