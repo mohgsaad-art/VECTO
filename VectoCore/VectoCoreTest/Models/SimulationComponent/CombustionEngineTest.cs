@@ -178,6 +178,9 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var vehicleContainer = new VehicleContainer(ExecutionMode.Engineering);
 			var engineData = MockSimulationDataFactory.CreateEngineDataFromFile(engineFile, 0);
 			var engine = new EngineOnlyCombustionEngine(vehicleContainer, engineData);
+			new EngineOnlyGearboxInfo(vehicleContainer);
+			new ZeroMileageCounter(vehicleContainer);
+			new DummyDriverInfo(vehicleContainer);
 
 			var expectedResults = VectoCSVFile.Read(resultFile);
 

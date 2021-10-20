@@ -67,6 +67,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 			var absTime = 0.SI<Second>();
 			var ds = 1.SI<Meter>();
+			container.AbsTime = absTime;
 
 			retVal = container.Cycle.Request(absTime, ds);
 			container.CommitSimulationStep(absTime, retVal.SimulationInterval);
@@ -98,6 +99,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 			var absTime = 0.SI<Second>();
 			var ds = 1.SI<Meter>();
+			container.AbsTime = absTime;
 
 			retVal = container.Cycle.Request(absTime, ds);
 			container.CommitSimulationStep(absTime, retVal.SimulationInterval);
@@ -129,6 +131,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 			var absTime = 0.SI<Second>();
 			var ds = 1.SI<Meter>();
+			container.AbsTime = absTime;
 
 			retVal = container.Cycle.Request(absTime, ds);
 			container.CommitSimulationStep(absTime, retVal.SimulationInterval);

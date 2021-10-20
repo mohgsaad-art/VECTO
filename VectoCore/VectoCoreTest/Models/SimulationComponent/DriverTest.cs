@@ -229,7 +229,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var vehicleContainer = new VehicleContainer(ExecutionMode.Engineering, modData) {RunData = runData};
 			var cycleData = DrivingCycleDataReader.ReadFromStream("s,v,grad,stop\n0,0,0,10\n10,20,0,0\n20,21,0,0\n30,22,0,0\n40,23,0,0\n50,24,0,0\n60,25,0,0\n70,26,0,0\n80,27,0,0\n90,28,0,0\n100,29,0,0".ToStream(), CycleType.DistanceBased, "DummyCycle", false);
 			var cycle = new MockDrivingCycle(vehicleContainer, cycleData);
-			
+			var brakes = new Brakes(vehicleContainer);
+
 			var driver = new Driver(vehicleContainer, driverData, new DefaultDriverStrategy(vehicleContainer));
 
 			dynamic tmp = AddComponent(driver, new Vehicle(vehicleContainer, vehicleData, airdragData));
@@ -288,6 +289,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			new EngineOnlyGearboxInfo(vehicleContainer);
 			new ATClutchInfo(vehicleContainer);
 
+			var brakes = new Brakes(vehicleContainer);
 			driver.Connect(vehicle.OutPort());
 
 			vehicle.MyVehicleSpeed = 0.SI<MeterPerSecond>();
@@ -362,12 +364,9 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			new MockEngine(vehicleContainer);
 			new EngineOnlyGearboxInfo(vehicleContainer);
 			new ATClutchInfo(vehicleContainer);
-			
+
+			var brakes = new Brakes(vehicleContainer);
 			var cycle = new MockDrivingCycle(vehicleContainer, cycleData);
-			vehicleContainer.RunData = new VectoRunData() {
-				Cycle = cycleData,
-				DriverData = driverData
-			};
 
 			var driver = new Driver(vehicleContainer, driverData, new DefaultDriverStrategy(vehicleContainer));
 			driver.Connect(vehicle.OutPort());

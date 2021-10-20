@@ -279,7 +279,6 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 
 		[TestCase("Tractor_4x2_vehicle-class-5_EURO6_2018_FlatFCMap.xml", null, TestName = "AMT ShiftV2 Group5 FlatMap ALL"),
 		TestCase("Tractor_4x2_vehicle-class-5_EURO6_2018_IncreasingFCMap.xml", null, TestName = "AMT ShiftV2 Group5 IncreasingMap ALL"),
-		TestCase("Tractor_4x2_vehicle-class-5_EURO6_2018_IncreasingFCMap.xml", 0, TestName = "AMT ShiftV2 Group5 IncreasingMap 0"),
 		]
 		public void RunDeclarationTestNewShiftStrategy_Group5_FCMapInfluence(string filename, int? idx)
 		{

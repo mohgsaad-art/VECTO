@@ -264,15 +264,15 @@ namespace TUGraz.VectoCore.Tests.Reports
 			Assert.AreEqual(dataProvider.JobInputData.Vehicle.Components.AxleGearInputData.Model, sumRow[SummaryDataContainer.Fields.AXLE_MODEL]);
 
 			Assert.AreEqual(dataProvider.JobInputData.Vehicle.Components.EngineInputData.EngineModes.First().Fuels.First().ColdHotBalancingFactor,
-				sumRow[SummaryDataContainer.Fields.ENGINE_BF_COLD_HOT]);
+				sumRow[SummaryDataContainer.Fields.ENGINE_BF_COLD_HOT].ToString().ToDouble());
 			Assert.AreEqual(dataProvider.JobInputData.Vehicle.Components.EngineInputData.EngineModes.First().Fuels.First().CorrectionFactorRegPer,
-				sumRow[SummaryDataContainer.Fields.ENGINE_CF_REG_PER]);
+				sumRow[SummaryDataContainer.Fields.ENGINE_CF_REG_PER].ToString().ToDouble());
 			Assert.AreEqual(dataProvider.JobInputData.Vehicle.Components.EngineInputData.EngineModes.First().Fuels.First().WHTCRural,
-				sumRow[SummaryDataContainer.Fields.ENGINE_WHTC_RURAL]);
+				sumRow[SummaryDataContainer.Fields.ENGINE_WHTC_RURAL].ToString().ToDouble());
 			Assert.AreEqual(dataProvider.JobInputData.Vehicle.Components.EngineInputData.EngineModes.First().Fuels.First().WHTCUrban,
-				sumRow[SummaryDataContainer.Fields.ENGINE_WHTC_URBAN]);
+				sumRow[SummaryDataContainer.Fields.ENGINE_WHTC_URBAN].ToString().ToDouble());
 			Assert.AreEqual(dataProvider.JobInputData.Vehicle.Components.EngineInputData.EngineModes.First().Fuels.First().WHTCMotorway,
-				sumRow[SummaryDataContainer.Fields.ENGINE_WHTC_MOTORWAY]);
+				sumRow[SummaryDataContainer.Fields.ENGINE_WHTC_MOTORWAY].ToString().ToDouble());
 		}
 
 

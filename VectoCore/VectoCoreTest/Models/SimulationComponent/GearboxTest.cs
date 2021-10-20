@@ -216,8 +216,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			double inAngularSpeed, double expectedTorque)
 		{
 			var gearboxData = MockSimulationDataFactory.CreateGearboxDataFromFile(gbxFile, engineFile);
-			var container = new VehicleContainer(ExecutionMode.Engineering);
-			var runData = GetDummyRunData(gearboxData);
+			var container = new VehicleContainer(ExecutionMode.Engineering) { RunData = GetDummyRunData(gearboxData) };
 			var gearbox = new Gearbox(container, new AMTShiftStrategy(container));
 			var driver = new MockDriver(container);
 			var vehicle = new MockVehicle(container) { MyVehicleSpeed = 0.KMPHtoMeterPerSecond() };
@@ -232,6 +231,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var dt = 2.SI<Second>();
 			var tq = torque.SI<NewtonMeter>();
 			var n = inAngularSpeed.RPMtoRad();
+			container.AbsTime = absTime;
 			var response = (ResponseSuccess)gearbox.OutPort().Request(absTime, dt, tq * ratio, n / ratio);
 
 			Assert.IsFalse(gearbox.CurrentState.TorqueLossResult.Extrapolated);
@@ -285,7 +285,14 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 				},
 				EngineData = engineData,
 				GearboxData = gearboxData,
-				DriverData = new DriverData(),
+				GearshiftParameters = new ShiftStrategyParameters() {
+					StartSpeed = 2.SI<MeterPerSecond>(),
+					StartAcceleration = DeclarationData.GearboxTCU.StartAcceleration,
+					TimeBetweenGearshifts = DeclarationData.Gearbox.MinTimeBetweenGearshifts,
+					DownshiftAfterUpshiftDelay = DeclarationData.Gearbox.DownshiftAfterUpshiftDelay,
+					UpshiftAfterDownshiftDelay = DeclarationData.Gearbox.UpshiftAfterDownshiftDelay,
+					UpshiftMinAcceleration = DeclarationData.Gearbox.UpshiftMinAcceleration,
+				}
 			};
 		}
 
@@ -345,6 +352,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var dt = 2.SI<Second>();
 			var t = torque.SI<NewtonMeter>();
 			var n = inAngularSpeed.RPMtoRad();
+			container.AbsTime = absTime;
 			var response = (ResponseSuccess)gearbox.OutPort().Request(absTime, dt, t * ratio, n / ratio);
 
 			Assert.IsTrue(gearbox.CurrentState.TorqueLossResult.Extrapolated);
@@ -381,6 +389,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var dt = 2.SI<Second>();
 			var t = torque.SI<NewtonMeter>();
 			var n = inAngularSpeed.RPMtoRad();
+			container.AbsTime = absTime;
 			var response = (ResponseSuccess)gearbox.OutPort().Request(absTime, dt, t * ratio, n / ratio);
 
 			Assert.AreEqual(absTime, port.AbsTime);
@@ -477,7 +486,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 			gearbox.OutPort().Initialize(outTorque, angularVelocity);
 
-			Assert.AreEqual(gear, gearbox.Gear);
+			Assert.AreEqual(gear, gearbox.Gear.Gear);
 
 			gearbox.Gear = new GearshiftPosition((uint)gear);
 			var response = gearbox.OutPort().Request(absTime, dt, outTorque, angularVelocity);
@@ -535,7 +544,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 			absTime += dt;
 			var successResponse = (ResponseSuccess)gearbox.OutPort().Request(absTime, dt, torque, angularVelocity);
-			Assert.AreEqual((uint)newGear, container.GearboxInfo.Gear);
+			Assert.AreEqual((uint)newGear, container.GearboxInfo.Gear.Gear);
 		}
 
 		[TestCase(7, 8, 1000, 1400, typeof(ResponseGearShift)),
@@ -587,7 +596,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 			var gearbox = new Gearbox(container, new AMTShiftStrategy(container));
 			var port = new MockTnOutPort() { EngineN95hSpeed = 2000.RPMtoRad() };
-			container.Engine = port;
+			container.EngineInfo = port;
 			gearbox.InPort().Connect(port);
 
 			var ratios = new[] { 0.0, 6.38, 4.63, 3.44, 2.59, 1.86, 1.35, 1, 0.76 };
@@ -614,7 +623,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 			absTime += dt;
 			response = (ResponseSuccess)gearbox.OutPort().Request(absTime, dt, torque, angularVelocity);
-			Assert.AreEqual((uint)newGear, gearbox.Gear);
+			Assert.AreEqual((uint)newGear, gearbox.Gear.Gear);
 		}
 	}
 }

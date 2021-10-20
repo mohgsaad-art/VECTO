@@ -81,7 +81,9 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var clutch = new Clutch(container, engineData) { IdleController = new MockIdleController() };
 			var brakes = new Brakes(container) { BrakePower = 0.SI<Watt>() };
 			var vehicle = new MockVehicle(container) { MyVehicleSpeed = 50.KMPHtoMeterPerSecond() };
-
+			var engine = new MockEngine(container) {
+				EngineSpeed = 800.RPMtoRad()
+			};
 			var inPort = clutch.InPort();
 			var outPort = new MockTnOutPort();
 
@@ -160,7 +162,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 		}
 	}
 
-	public class MockEngine : VectoSimulationComponent, IEngineInfo
+	public class MockEngine : VectoSimulationComponent, IEngineInfo, IEngineControl
 	{
 		public MockEngine(IVehicleContainer container) : base(container) {}
 
@@ -191,7 +193,10 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 		public PerSecond EngineRatedSpeed { get; set; }
 		public PerSecond EngineN95hSpeed { get; set; }
 		public PerSecond EngineN80hSpeed { get; set; }
-		public bool EngineOn { get; }
+		public bool EngineOn
+		{
+			get { return true; }
+		}
 
 		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
@@ -215,5 +220,6 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 		}
 
 		protected override void DoCommitSimulationStep(Second time, Second simulationInterval) {}
+		public bool CombustionEngineOn { get; set; }
 	}
 }

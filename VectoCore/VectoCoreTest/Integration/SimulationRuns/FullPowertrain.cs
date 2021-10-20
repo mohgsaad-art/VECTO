@@ -118,6 +118,7 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 
 			var absTime = 0.SI<Second>();
 			var ds = Constants.SimulationSettings.DriveOffDistance;
+			container.AbsTime = absTime;
 			IResponse response;
 
 			var cnt = 0;
@@ -194,6 +195,7 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 			var absTime = 0.SI<Second>();
 			var ds = Constants.SimulationSettings.DriveOffDistance;
 			var response = cyclePort.Request(absTime, ds);
+			container.AbsTime = absTime;
 			Assert.IsInstanceOf<ResponseSuccess>(response);
 			container.CommitSimulationStep(absTime, response.SimulationInterval);
 			absTime += response.SimulationInterval;
@@ -276,6 +278,7 @@ namespace TUGraz.VectoCore.Tests.Integration.SimulationRuns
 			var absTime = 0.SI<Second>();
 			var ds = Constants.SimulationSettings.DriveOffDistance;
 			var response = cyclePort.Request(absTime, ds);
+			container.AbsTime = absTime;
 			Assert.IsInstanceOf<ResponseSuccess>(response);
 			container.CommitSimulationStep(absTime, response.SimulationInterval);
 			absTime += response.SimulationInterval;
