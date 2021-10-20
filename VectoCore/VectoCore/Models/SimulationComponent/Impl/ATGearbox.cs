@@ -67,7 +67,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			: base(container)
 		{
 			_strategy = strategy;
-			_strategy.Gearbox = this;
+			if (_strategy != null) {
+				_strategy.Gearbox = this;
+			}
 			LastShift = -double.MaxValue.SI<Second>();
 			TorqueConverter = new TorqueConverter(this, _strategy, container, ModelData.TorqueConverterData,
 				container.RunData);
@@ -126,7 +128,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		
 		public override IResponse Initialize(NewtonMeter outTorque, PerSecond outAngularVelocity)
 		{
-			if (CurrentState.Disengaged) {
+			if (_strategy != null && CurrentState.Disengaged) {
 				Gear = _strategy.InitGear(0.SI<Second>(), Constants.SimulationSettings.TargetTimeInterval, outTorque,
 					outAngularVelocity);
 			}
@@ -146,6 +148,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				inTorque = outTorque / effectiveRatio + torqueLossResult.Value;
 			}
 			if (CurrentState.Disengaged) {
+				PreviousState.Gear = new GearshiftPosition(0);
 				return NextComponent.Initialize(0.SI<NewtonMeter>(), null);
 			}
 
