@@ -69,7 +69,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var minEngineSpeed = (runData.EngineData.FullLoadCurves[0].RatedSpeed - runData.EngineData.IdleSpeed) *
 								Constants.SimulationSettings.ClutchClosingSpeedNorm + runData.EngineData.IdleSpeed;
 
-			DesiredGearRoadsweeping = runData.DriverData.PTODriveRoadsweepingGear;
+			DesiredGearRoadsweeping = runData.DriverData?.PTODriveRoadsweepingGear;
 
 			MaxStartGear = GearboxModelData.GearList.First();
 			foreach (var gear in GearboxModelData.GearList.Reverse()) {
