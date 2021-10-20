@@ -18,6 +18,7 @@ using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 using TUGraz.VectoCore.Models.SimulationComponent.Strategies;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Utils;
+using static TUGraz.VectoCore.Models.SimulationComponent.Impl.HybridController;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
@@ -40,9 +41,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		public HybridControllerMeasuredSpeedGear(IVehicleContainer container, IHybridControlStrategy strategy, IElectricSystem es) : base(container)
 		{
 			_electricMotorCtl = new Dictionary<PowertrainPosition, ElectricMotorControllerMeasuredSpeedGear>();
-			//_shiftStrategy = container.RunData.GearboxData.Type.AutomaticTransmission()
-			//	? new HybridCtlATShiftStrategy(this, container)
-			//	: new HybridCtlShiftStrategy(this, container);
+			_shiftStrategy = container.RunData.GearboxData.Type.AutomaticTransmission()
+				? new HybridCtlATShiftStrategy(this, container)
+				: new HybridCtlShiftStrategy(this, container);
 			_hybridStrategy = strategy;
 			strategy.Controller = this;
 
@@ -73,24 +74,20 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			//return retVal;
 		//}
 
-		private void ApplyStrategySettings(HybridStrategyResponse strategySettings)
+		private void ApplyStrategySettings(Second absTime, HybridStrategyResponse strategySettings)
 		{
-			Gearbox.SwitchToNeutral = strategySettings.GearboxInNeutral;
-			//var gear = GetGearFromCycle();
-			var gear = new GearshiftPosition(this.DataBus.DrivingCycleInfo.CycleData.RightSample.Gear, false);
-			//////////Log.Debug("GetGearFromCycle: " + gear.ToString());
-			//////////Log.Debug("ApplyStrategySettings SelectedGear: " + this.SelectedGear.Gear.ToString());
-		
-			//////////Log.Debug("ApplyStrategySettings strategySettings.GearboxInNeutral: " + strategySettings.GearboxInNeutral.ToString());
+			var nextGear = new GearshiftPosition(this.DataBus.DrivingCycleInfo.CycleData.RightSample.Gear);
+			strategySettings.ShiftRequired = DataBus.GearboxInfo.GearEngaged(absTime) && this.DataBus.DrivingCycleInfo.CycleData.LeftSample.Gear != this.DataBus.DrivingCycleInfo.CycleData.RightSample.Gear;
 			Engine.CombustionEngineOn = strategySettings.CombustionEngineOn;
 			_electricMotorTorque = strategySettings.MechanicalAssistPower;
+			Gearbox.SwitchToNeutral = strategySettings.GearboxInNeutral;
 			if (DataBus.VehicleInfo.VehicleStopped && strategySettings.NextGear.Gear != 0)
 			{
-				_shiftStrategy.SetNextGear(strategySettings.NextGear);
+				_shiftStrategy.SetNextGear(nextGear);
 			}
-			//if (strategySettings.ShiftRequired) {
-			//	_shiftStrategy.SetNextGear(strategySettings.NextGear);
-			//}
+			if (strategySettings.ShiftRequired) {
+				_shiftStrategy.SetNextGear(nextGear);
+			}
 		}
 
 		SimpleComponentState IHybridController.PreviousState
@@ -186,7 +183,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				}
 
 				var strategySettings = strategyResponse as HybridStrategyResponse;
-				ApplyStrategySettings(strategySettings);
+				ApplyStrategySettings(absTime,strategySettings);
 				if (!dryRun)
 				{
 					CurrentState.SetState(outTorque, outAngularVelocity, outTorque, outAngularVelocity);
@@ -393,7 +390,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		public class HybridCtlShiftStrategy : ShiftStrategy
 		{
-			protected HybridController _controller;
+			protected HybridControllerMeasuredSpeedGear _controller;
 
 
 			//protected readonly GearshiftPosition MaxStartGear;
@@ -402,7 +399,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			protected readonly GearList GearList;
 			private readonly VectoRunData _runData;
 
-			public HybridCtlShiftStrategy(HybridController hybridController, IVehicleContainer container) : base(
+			public HybridCtlShiftStrategy(HybridControllerMeasuredSpeedGear hybridController, IVehicleContainer container) : base(
 				container)
 			{
 				_controller = hybridController;
@@ -645,6 +642,113 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			{
 				_nextGear = nextGear;
 			}
+		}
+
+		///=======================================================================================
+
+		public class HybridCtlATShiftStrategy : HybridCtlShiftStrategy
+		{
+			protected new ATGearbox _gearbox;
+
+			public HybridCtlATShiftStrategy(HybridControllerMeasuredSpeedGear hybridController, IVehicleContainer container) : base(
+				hybridController, container)
+			{ }
+
+			public override IGearbox Gearbox
+			{
+				get => _gearbox;
+				set
+				{
+					var myGearbox = value as ATGearbox;
+					if (myGearbox == null)
+					{
+						throw new VectoException("This shift strategy can't handle gearbox of type {0}",
+							value.GetType());
+					}
+
+					_gearbox = myGearbox;
+				}
+			}
+
+			public override GearshiftPosition InitGear(Second absTime, Second dt, NewtonMeter torque, PerSecond outAngularVelocity)
+			{
+				if (DataBus.VehicleInfo.VehicleSpeed.IsEqual(0))
+				{
+					// AT always starts in first gear and TC active!
+					_gearbox.Disengaged = true;
+					return Gears.First();
+				}
+
+				foreach (var gear in Gears.Reverse())
+				{
+					var response = _gearbox.Initialize(gear, torque, outAngularVelocity);
+
+					if (response.Engine.EngineSpeed > DataBus.EngineInfo.EngineRatedSpeed || response.Engine.EngineSpeed < DataBus.EngineInfo.EngineIdleSpeed)
+					{
+						continue;
+					}
+
+					if (!IsBelowDownShiftCurve(gear, response.Engine.PowerRequest / response.Engine.EngineSpeed, response.Engine.EngineSpeed))
+					{
+						_gearbox.Disengaged = false;
+						return gear;
+					}
+				}
+
+				// fallback: start with first gear;
+				_gearbox.Disengaged = false;
+				return Gears.First();
+			}
+
+			protected override bool DoCheckShiftRequired(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity,
+				NewtonMeter inTorque, PerSecond inAngularVelocity, GearshiftPosition gear, Second lastShiftTime,
+				IResponse response)
+			{
+				return false;
+			}
+
+			//public override GearshiftPosition Engage(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity)
+			//{
+			//	if (_nextGear.AbsTime != null && _nextGear.AbsTime.IsEqual(absTime)) {
+			//		//_gearbox.Gear = _nextGear.Gear;
+			//		_gearbox.Disengaged = _nextGear.Disengaged;
+			//		_nextGear.AbsTime = null;
+			//		return _nextGear.Gear;
+			//	}
+
+			//	_nextGear.AbsTime = null;
+			//	return _gearbox.Gear;
+			//}
+
+			public override void Disengage(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity)
+			{
+				throw new NotImplementedException("AT Shift Strategy does not support disengaging.");
+			}
+
+			protected override bool SpeedTooLowForEngine(GearshiftPosition gear, PerSecond outAngularSpeed)
+			{
+				if (gear.TorqueConverterLocked.HasValue && !gear.TorqueConverterLocked.Value)
+				{
+					return false;
+				}
+
+				return base.SpeedTooLowForEngine(gear, outAngularSpeed);
+				//(outAngularSpeed * GearboxModelData.Gears[gear.Gear].Ratio).IsSmaller(DataBus.EngineInfo.EngineIdleSpeed);
+			}
+
+			protected override bool SpeedTooHighForEngine(GearshiftPosition gear, PerSecond outAngularSpeed)
+			{
+				if (gear.TorqueConverterLocked.HasValue && !gear.TorqueConverterLocked.Value)
+				{
+					return false;
+				}
+
+				return base.SpeedTooHighForEngine(gear, outAngularSpeed);
+				//(outAngularSpeed * GearboxModelData.Gears[gear.Gear].Ratio).IsGreaterOrEqual(VectoMath.Min(
+				//	GearboxModelData.Gears[gear.Gear].MaxSpeed,
+				//	DataBus.EngineInfo.EngineN95hSpeed));
+			}
+
 		}
 
 
