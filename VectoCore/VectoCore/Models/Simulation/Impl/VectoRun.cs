@@ -141,7 +141,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				Log.Error(vse);
 				Container.RunStatus = Status.Aborted;
 				var ex = new VectoSimulationException("{6} ({7} {8}) - absTime: {0}, distance: {1}, dt: {2}, v: {3}, Gear: {4} | {5}",
-						vse, AbsTime, Container.MileageCounter.Distance, dt, Container.VehicleInfo.VehicleSpeed, TryCatch(() => Container.GearboxInfo.Gear),
+						vse, AbsTime, Container.MileageCounter?.Distance ?? 0.SI<Meter>(), dt, Container.VehicleInfo?.VehicleSpeed ?? 0.KMPHtoMeterPerSecond(), Container.GearboxInfo?.Gear,
 						vse.Message, RunIdentifier, CycleName, RunSuffix);
 				Container.FinishSimulationRun(ex);
 				throw ex;
@@ -151,7 +151,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				Container.RunStatus = Status.Aborted;
 				var ex = new VectoSimulationException("{6} ({7} {8}) - absTime: {0}, distance: {1}, dt: {2}, v: {3}, Gear: {4} | {5}",
 						ve,
-						AbsTime, Container.MileageCounter.Distance, dt, Container.VehicleInfo.VehicleSpeed, TryCatch(() => Container.GearboxInfo.Gear), ve.Message,
+						AbsTime, Container.MileageCounter?.Distance ?? 0.SI<Meter>(), dt, Container.VehicleInfo?.VehicleSpeed ?? 0.KMPHtoMeterPerSecond(), Container.GearboxInfo?.Gear, ve.Message,
 						RunIdentifier, CycleName, RunSuffix);
 				try {
 					Container.FinishSimulationRun(ex);
@@ -168,7 +168,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 				var ex = new VectoSimulationException("{6} ({7} {8}) - absTime: {0}, distance: {1}, dt: {2}, v: {3}, Gear: {4} | {5}",
 						e, AbsTime,
-						Container.MileageCounter.Distance, dt, Container.VehicleInfo.VehicleSpeed, TryCatch(() => Container.GearboxInfo.Gear), e.Message,
+						Container.MileageCounter?.Distance ?? 0.SI<Meter>(), dt, Container.VehicleInfo?.VehicleSpeed ?? 0.KMPHtoMeterPerSecond(), Container.GearboxInfo?.Gear, e.Message,
 						RunIdentifier, CycleName, RunSuffix);
 				Container.FinishSimulationRun(ex);
 				throw ex;
@@ -178,7 +178,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			if (Progress.IsSmaller(1, 1e-9)) {
 				throw new VectoSimulationException(
 					"{5} ({6} {7}) Progress: {8} - absTime: {0}, distance: {1}, dt: {2}, v: {3}, Gear: {4}",
-					AbsTime, Container.MileageCounter.Distance, dt, Container.VehicleInfo.VehicleSpeed, TryCatch(() => Container.GearboxInfo.Gear), RunIdentifier, CycleName,
+					AbsTime, Container.MileageCounter?.Distance ?? 0.SI<Meter>(), dt, Container.VehicleInfo?.VehicleSpeed ?? 0.KMPHtoMeterPerSecond(), Container.GearboxInfo?.Gear, RunIdentifier, CycleName,
 					RunSuffix, Progress);
 			}
 			IterationStatistics.FinishSimulation(RunName + CycleName + RunSuffix + RunIdentifier);
