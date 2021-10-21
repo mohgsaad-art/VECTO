@@ -2070,7 +2070,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 			var responses = new List<HybridResultEntry>();
 
-			var nextGear = gear;
+			var nextGear = new GearshiftPosition(this.DataBus.DrivingCycleInfo.CycleData.RightSample.Gear, false);
 
 			var emOffEntry = EvaluateConfigsForGear(absTime, dt, outTorque, outAngularVelocity, nextGear, allowICEOff, responses, emPos, dryRun);
 
@@ -2172,8 +2172,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				return null;
 			}
 
-
-
 			var entry = new HybridResultEntry()
 			{
 				U = double.NaN,
@@ -2188,6 +2186,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			GearshiftPosition nextGear, bool allowIceOff, IResponse firstResponse, NewtonMeter emTqReq, PowertrainPosition emPos,
 			List<HybridResultEntry> responses, bool dryRun)
 		{
+			if (absTime.IsGreaterOrEqual(2816.0842))
+			{
+				Log.Debug($"IterateEMTorque AbsTime: {absTime} ");
+			}
 			const double stepSize = 0.1;
 
 			// iterate over 'EM provides torque'. allow EM to provide more torque in order to overcome ICE inertia
@@ -2202,7 +2204,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				maxU = 0;
 			}
 			bool engaged = false; //firstResponse.Gearbox.Gear.Engaged
-			if (this.DataBus.DrivingCycleInfo.CycleData.LeftSample.Gear > 0 )
+			if (this.DataBus.DrivingCycleInfo.CycleData.RightSample.Gear > 0 )
             {
 				engaged = true;
 			}
@@ -2378,7 +2380,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				}
 			}
 			engaged = false; //firstResponse.Gearbox.Gear.Engaged
-			if (this.DataBus.DrivingCycleInfo.CycleData.LeftSample.Gear > 0)
+			if (this.DataBus.DrivingCycleInfo.CycleData.RightSample.Gear > 0)
 			{
 				engaged = true;
 			}
