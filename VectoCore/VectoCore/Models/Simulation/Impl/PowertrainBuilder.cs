@@ -155,7 +155,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				.AddComponent(data.AngledriveData != null ? new Angledrive(container, data.AngledriveData) : null)
 				.AddComponent(gearbox, data.Retarder, container)
 				.AddComponent(new Clutch(container, data.EngineData));
-			var engine = new CombustionEngine(container, data.EngineData, pt1Disabled: true);
+			var engine = new StopStartCombustionEngine(container, data.EngineData, pt1Disabled: true);
 			var idleController = GetIdleController(data.PTO, engine, container);
 
 			powertrain.AddComponent(engine, idleController)
@@ -236,7 +236,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				powertrain = powertrain.AddComponent(new Clutch(container, data.EngineData));
 			}
 
-			var engine = new CombustionEngine(container, data.EngineData);
+			var engine = new StopStartCombustionEngine(container, data.EngineData);
 			var idleController = GetIdleController(data.PTO, engine, container);
 
 			powertrain.AddComponent(engine, idleController)
@@ -268,7 +268,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			} else {
 				new ATClutchInfo(container);
 			}
-			powertrain.AddComponent(new CombustionEngine(container, data.EngineData))
+			powertrain.AddComponent(new StopStartCombustionEngine(container, data.EngineData))
 				.AddAuxiliaries(container, data);
 
 			//_modData.HasTorqueConverter = data.GearboxData.Type.AutomaticTransmission();
@@ -298,7 +298,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				powertrain = powertrain.AddComponent(new Clutch(container, data.EngineData));
 			}
 
-			var engine = new CombustionEngine(container, data.EngineData);
+			var engine = new StopStartCombustionEngine(container, data.EngineData);
 			var idleController = GetIdleController(data.PTO, engine, container);
 			cycle.IdleController = idleController as IdleControllerSwitcher;
 
@@ -348,7 +348,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			}
 
 
-			var engine = new CombustionEngine(container, data.EngineData);
+			var engine = new StopStartCombustionEngine(container, data.EngineData);
 			var idleController = GetIdleController(data.PTO, engine, container);
 			//cycle.IdleController = idleController as IdleControllerSwitcher;
 

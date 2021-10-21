@@ -374,8 +374,8 @@ namespace TUGraz.VectoCore.OutputData
 						ModalResultField.v_targ,
 						ModalResultField.acc,
 						ModalResultField.grad,
-						//ModalResultField.altitude
-			}.Select(x => x.GetName()));
+                        ModalResultField.altitude
+            }.Select(x => x.GetName()));
 			}
 			if (!writeEngineOnly) {
 				dataColumns.AddRange(

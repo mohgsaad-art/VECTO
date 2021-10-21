@@ -107,6 +107,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 					return new JSONVehicleDataV7(json, filename, job,tolerateMissing);
 				case 8:
 					return new JSONVehicleDataV8(json, filename, job, tolerateMissing);
+				case 9:
+					return new JSONVehicleDataV9(json, filename, job, tolerateMissing);
 				default:
 					throw new VectoException("Vehicle-File: Unsupported FileVersion. Got {0}", version);
 			}
@@ -135,6 +137,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 					return new JSONEngineDataV3(json, filename, tolerateMissing);
 				case 4:
 					return new JSONEngineDataV4(json, filename, tolerateMissing);
+				case 5:
+					return new JSONEngineDataV5(json, filename, tolerateMissing);
 				default:
 					throw new VectoException("Engine-File: Unsupported FileVersion. Got {0}", version);
 			}

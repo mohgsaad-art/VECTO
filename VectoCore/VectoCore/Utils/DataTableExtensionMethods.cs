@@ -33,6 +33,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
+using System.Linq;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Utils;
 
@@ -113,9 +114,12 @@ namespace TUGraz.VectoCore.Utils
 			return row.Field<string>(row.Table.Columns[columnName]).ToBoolean();
 		}
 
-		public static IEnumerable<T> Values<T>(this DataColumn column)
-		{
-			return column.Table.AsEnumerable().Select(r => r.Field<T>(column));
-		}
+		public static IEnumerable<T> Values<T>(this DataColumn column) =>
+			typeof(T).IsEnum
+				? column.Table.Values(r => r[column].ParseEnum<T>())
+				: column.Table.Values(r => r.Field<T>(column));
+
+		public static IEnumerable<TResult> Values<TResult>(this DataTable self, Func<DataRow, TResult> selector) =>
+			self.Rows.Cast<DataRow>().Select(selector);
 	}
 }

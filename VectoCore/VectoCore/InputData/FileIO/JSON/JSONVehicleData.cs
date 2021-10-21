@@ -210,7 +210,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 
 		IAdvancedDriverAssistantSystemsEngineering IVehicleEngineeringInputData.ADAS
 		{
-			get { return null; }
+			get { return GetADS(); }
 		}
 
 		public GearshiftPosition PTO_DriveGear { get {
