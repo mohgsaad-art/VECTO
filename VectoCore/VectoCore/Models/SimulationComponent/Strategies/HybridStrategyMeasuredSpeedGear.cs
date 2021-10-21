@@ -2670,10 +2670,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			tmp.EquivalenceFactor = resp.ElectricSystem.RESSPowerDemand.IsSmaller(0)
 				? StrategyParameters.EquivalenceFactorDischarge
 				: StrategyParameters.EquivalenceFactorCharge;
-			//tmp.GearshiftPenalty = resp.Gearbox.Gear.Engaged && !resp.Gearbox.Gear.Equals(DataBus.GearboxInfo.Gear)
-			//	? ModelData.GearshiftParameters.RatingFactorCurrentGear
-			//	: 1;
-			tmp.GearshiftPenalty = 1;
+			tmp.GearshiftPenalty = resp.Gearbox.Gear.Engaged && !resp.Gearbox.Gear.Equals(DataBus.GearboxInfo.Gear)
+				? ModelData.GearshiftParameters.RatingFactorCurrentGear
+				: 1;
+			//tmp.GearshiftPenalty = 1;
 
 			if (!DataBus.EngineCtl.CombustionEngineOn && !tmp.ICEOff && DataBus.BatteryInfo.StateOfCharge.IsGreater(socthreshold))
 			{
