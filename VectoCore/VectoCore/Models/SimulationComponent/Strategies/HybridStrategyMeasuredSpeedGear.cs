@@ -59,26 +59,15 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 		protected override IResponse RequestDryRun(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, GearshiftPosition nextGear, HybridStrategyResponse cfg)
 		{
 			//!= CycleType.MeasuredSpeedGear
-			if (DataBus.DrivingCycleInfo.CycleData.LeftSample.Gear > 0)
+			TestPowertrain.Gearbox.Gear = new GearshiftPosition(DataBus.DrivingCycleInfo.CycleData.RightSample.Gear);
+			if (DataBus.DrivingCycleInfo.CycleData.RightSample.Gear == 0)
 			{
-				TestPowertrain.Gearbox.Gear = new GearshiftPosition(DataBus.DrivingCycleInfo.CycleData.LeftSample.Gear);
+				TestPowertrain.Gearbox.Disengaged = true;
+				TestPowertrain.Gearbox.DisengageGearbox = true;
+			}
+			else { 
 				TestPowertrain.Gearbox.Disengaged = false;
 				TestPowertrain.Gearbox.DisengageGearbox = false;
-			}
-			else
-			{
-				if (DataBus.DrivingCycleInfo.CycleData.LeftSample.Gear == 0)
-				{
-					//TestPowertrain.Gearbox.Gear = new GearshiftPosition(DataBus.DrivingCycleInfo.CycleData.LeftSample.Gear);
-					//TestPowertrain.Gearbox.Disengaged = true;
-					//TestPowertrain.Gearbox.DisengageGearbox = true;
-				}
-				else
-				{
-					TestPowertrain.Gearbox.Gear = DataBus.VehicleInfo.VehicleStopped ? Controller.ShiftStrategy.NextGear : PreviousState.GearboxEngaged ? DataBus.GearboxInfo.Gear : Controller.ShiftStrategy.NextGear;
-					TestPowertrain.Gearbox.Disengaged = !nextGear.Engaged;
-					TestPowertrain.Gearbox.DisengageGearbox = !nextGear.Engaged;
-				}
 			}
 
 			TestPowertrain.Container.VehiclePort.Initialize(DataBus.VehicleInfo.VehicleSpeed, DataBus.DrivingCycleInfo.RoadGradient ?? 0.SI<Radian>());
@@ -172,10 +161,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 					(DataBus.DCDCConverter as DCDCConverter).PreviousState.ConsumedEnergy;
 			}
 
-			if ((DataBus.GearboxInfo as Gearbox) != null)
+			if ((DataBus.GearboxInfo as GearBoxHybridsMeasuredSpeedGear) != null)
 			{
 				TestPowertrain.Gearbox.PreviousState.InAngularVelocity =
-					(DataBus.GearboxInfo as Gearbox).PreviousState.InAngularVelocity;
+					(DataBus.GearboxInfo as GearBoxHybridsMeasuredSpeedGear).PreviousState.InAngularVelocity;
 			}
 			else
 			{
@@ -2203,13 +2192,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			{
 				maxU = 0;
 			}
-			bool engaged = false; //firstResponse.Gearbox.Gear.Engaged
-			if (this.DataBus.DrivingCycleInfo.CycleData.RightSample.Gear > 0 )
-            {
-				engaged = true;
-			}
+
 			if (firstResponse.ElectricMotor.MaxDriveTorque != null && 
-				(ElectricMotorCanPropellDuringTractionInterruption || engaged))
+				(ElectricMotorCanPropellDuringTractionInterruption || firstResponse.Gearbox.Gear.Engaged))
 			{
 				for (var u = -stepSize; u >= maxU; u -= stepSize * (u < -10 ? 100 : (u < -4 ? 10 : (u < -2 ? 5 : 1))))
 				{
@@ -2379,14 +2364,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 					}
 				}
 			}
-			engaged = false; //firstResponse.Gearbox.Gear.Engaged
-			if (this.DataBus.DrivingCycleInfo.CycleData.RightSample.Gear > 0)
-			{
-				engaged = true;
-			}
+
 			// iterate over 'EM recuperates' up to max available recuperation potential
 			if (firstResponse.ElectricMotor.MaxRecuperationTorque != null && 
-				(ElectricMotorCanPropellDuringTractionInterruption || engaged))
+				(ElectricMotorCanPropellDuringTractionInterruption || firstResponse.Gearbox.Gear.Engaged))
 			{
 				for (var u = stepSize; u <= 1.0; u += stepSize)
 				{

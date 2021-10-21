@@ -644,7 +644,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
             //	Gear = 0;
             //	return RequestDisengaged(absTime, dt, outTorque, outAngularVelocity, dryRun);
             //}
-            return NextComponent.Request(absTime, dt, inTorque, inAngularVelocity, true);
+            
+            var dryRunResponse = NextComponent.Request(absTime, dt, inTorque, inAngularVelocity, true);
+            dryRunResponse.Gearbox.Gear = Gear;
+            dryRunResponse.Gearbox.InputSpeed = inAngularVelocity;
+            dryRunResponse.Gearbox.InputTorque = inTorque;
+            return dryRunResponse;
         }
 
         protected override void DoWriteModalResults(Second time, Second simulationInterval,
