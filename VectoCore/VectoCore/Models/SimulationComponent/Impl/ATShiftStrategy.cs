@@ -390,14 +390,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				if (DataBus.VehicleInfo.VehicleSpeed < DataBus.DrivingCycleInfo.CycleData.LeftSample.VehicleTargetSpeed - 10.KMPHtoMeterPerSecond() && DataBus.DriverInfo.DriverAcceleration < 0.SI<MeterPerSquareSecond>()) {
 					var tmpResponseCurr = (ResponseDryRun)_gearbox.Request(absTime, dt, outTorque, outAngularVelocity, true);
 					if (_gearbox.Gear > Gears.First()) {
-						var tmpCurr = _nextGear.Clone();
-						var tmpGbxState = new NextGearState(absTime, _gearbox);
-						
-						Downshift(absTime, gear);
-						SetGear(_nextGear);
+						// clone current state of _nextgear, set gearbox state to lower gear, issue request, restore old gearbox state
+						var tmp = _nextGear.Clone();
+						var gbxState = new NextGearState(absTime, _gearbox);
+						tmp.Gear = Gears.Predecessor(_gearbox.Gear);
+						SetGear(tmp);
 						var tmpResponseDs = (ResponseDryRun)_gearbox.Request(absTime, dt, outTorque, outAngularVelocity, true);
-						_nextGear.SetState(tmpCurr);
-						SetGear(tmpGbxState);
+						SetGear(gbxState);
+						// done
 						if (tmpResponseDs.DeltaFullLoad - Formulas.InertiaPower(
 							tmpResponseDs.Engine.EngineSpeed, DataBus.EngineInfo.EngineSpeed, EngineInertia, dt) < tmpResponseCurr.DeltaFullLoad) {
 							Downshift(absTime, gear);
@@ -458,8 +458,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			public Second AbsTime;
 			public bool Disengaged;
 			public GearshiftPosition Gear;
-			
-			public NextGearState() { }
+
+			public NextGearState()
+			{
+				Gear = new GearshiftPosition(0);
+			}
 
 			private NextGearState(NextGearState nextGearState)
 			{

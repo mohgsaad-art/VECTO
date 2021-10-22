@@ -95,19 +95,21 @@ namespace TUGraz.VectoCore.Tests.Integration.BusAuxiliaries
 
 			for (int i = 0; i < 10; i++) {
 				var torque = busAux.TorqueDemand(0.SI<Second>(), 1.SI<Second>(), engineDrivelinePower / engineSpeed, engineSpeed);
-				Assert.AreEqual(6086.9321, (torque * engineSpeed).Value(), 1e-3);
+				Assert.AreEqual(6087.03221, (torque * engineSpeed).Value(), 1e-3);
 				busAux.DoWriteModalResultsICE(0.SI<Second>(), 1.SI<Second>(), modalData);
+				busAux.DoCommitSimulationStep();
 			}
 
 		    //Assert.AreEqual(79.303.SI(Unit.SI.Gramm).Value(), ((SI)modalData[ModalResultField.AA_TotalCycleFC_Grams]).Value(), 0.0001);
 
-			engineDrivelinePower = -15000.SI<Watt>();
+			engineDrivelinePower = -45000.SI<Watt>();
 			internalPower = -50;
 
 			for (int i = 0; i < 10; i++) {
 				var torque = busAux.TorqueDemand(0.SI<Second>(), 1.SI<Second>(), engineDrivelinePower / engineSpeed, engineSpeed);
-				Assert.AreEqual(8954.1396, (torque * engineSpeed).Value(), 1e-3);
+				Assert.AreEqual(8954.1429, (torque * engineSpeed).Value(), 1e-3);
 				busAux.DoWriteModalResultsICE(0.SI<Second>(), 1.SI<Second>(), modalData);
+				busAux.DoCommitSimulationStep();
 			}
 
 		    //Assert.AreEqual(82.5783.SI(Unit.SI.Gramm).Value(), ((SI)modalData[ModalResultField.AA_TotalCycleFC_Grams]).Value(), 0.0001);
@@ -117,8 +119,9 @@ namespace TUGraz.VectoCore.Tests.Integration.BusAuxiliaries
 
 			for (int i = 0; i < 10; i++) {
 				var torque = busAux.TorqueDemand(0.SI<Second>(), 1.SI<Second>(), engineDrivelinePower / engineSpeed, engineSpeed);
-				Assert.AreEqual(6086.9321, (torque * engineSpeed).Value(), 1e-3);
+				Assert.AreEqual(6087.03221, (torque * engineSpeed).Value(), 1e-3);
 				busAux.DoWriteModalResultsICE(0.SI<Second>(), 1.SI<Second>(), modalData);
+				busAux.DoCommitSimulationStep();
 			}
 
 		    //Assert.AreEqual(162.4654.SI(Unit.SI.Gramm).Value(), ((SI)modalData[ModalResultField.AA_TotalCycleFC_Grams]).Value(), 0.0001);

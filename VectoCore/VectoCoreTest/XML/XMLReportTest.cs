@@ -97,13 +97,13 @@ namespace TUGraz.VectoCore.Tests.XML
 			var validationMsg1 = new List<string> {customerRecord} ;
 
 			var validator1 = new XMLValidator(XmlReader.Create(customerRecord), validationErrorAction: (s,e) => {
-				validationMsg1.Add(e.ValidationEventArgs.Message);
+				validationMsg1.Add(e?.ValidationEventArgs?.Message ?? "no schema found");
 			});
 			Assert.IsTrue(validator1.ValidateXML(XmlDocumentType.CustomerReport), string.Join("\n", validationMsg1));
 
 			var validationMsg2 = new List<string> {manufacturerRecord};
 			var validator2 = new XMLValidator(XmlReader.Create(manufacturerRecord), validationErrorAction: (s,e) => {
-				validationMsg2.Add(e.ValidationEventArgs.Message);
+				validationMsg2.Add(e?.ValidationEventArgs?.Message ?? "no schema found");
 			});
 			Assert.IsTrue(validator2.ValidateXML(XmlDocumentType.ManufacturerReport), string.Join("\n", validationMsg2));
 		}

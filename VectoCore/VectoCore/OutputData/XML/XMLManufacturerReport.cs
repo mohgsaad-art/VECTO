@@ -242,7 +242,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 			}
 			return new XElement(tns + XMLNames.Component_Angledrive,
 				GetCommonDescription(angledriveData),
-				new XElement(tns + XMLNames.AngleDrive_Ratio, angledriveData.Angledrive.Ratio));
+				new XElement(tns + XMLNames.AngleDrive_Ratio, angledriveData.Angledrive.Ratio.ToXMLFormat(3)));
 		}
 
 		private XElement GetAxlegearDescription(AxleGearData axleGearData)
