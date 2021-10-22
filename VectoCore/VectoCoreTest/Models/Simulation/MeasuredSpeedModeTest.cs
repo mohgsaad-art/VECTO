@@ -258,6 +258,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 				EngineData =
 					new CombustionEngineData {
 						IdleSpeed = 560.RPMtoRad(),
+						EngineStartTime = DeclarationData.Engine.DefaultEngineStartTime,
+						Inertia = 1.SI<KilogramSquareMeter>(),
 						FullLoadCurves = new Dictionary<uint, EngineFullLoadCurve>() { { 0, fullLoadCurve }, { 1, fullLoadCurve } }
 					},
 				GearboxData = new GearboxData { Gears = new Dictionary<uint, GearData> { { 1, new GearData { Ratio = 6.2 } } } },
@@ -320,6 +322,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 				AxleGearData = new AxleGearData { AxleGear = new GearData { Ratio = 2.3 } },
 				EngineData = new CombustionEngineData {
 					IdleSpeed = 560.RPMtoRad(),
+					EngineStartTime = DeclarationData.Engine.DefaultEngineStartTime,
+					Inertia = 1.SI<KilogramSquareMeter>(),
 					FullLoadCurves = new Dictionary<uint, EngineFullLoadCurve> {
 						{ 0, fullLoadCurve },
 						{ 1, fullLoadCurve },

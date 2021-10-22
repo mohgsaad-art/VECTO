@@ -68,6 +68,10 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 					runData.FanData = GetFanData();
 					runData.ExecutionMode = ExecutionMode.Engineering;
 					runData.SimulationType = SimulationType.VerificationTest;
+					runData.Mission = new Mission() {
+						MissionType = MissionType.VerificationTest
+					};
+					runData.DriverData = Driverdata;
 					return runData;
 				});
 		}

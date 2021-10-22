@@ -237,7 +237,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var loop = false;
 			SetPowershiftLossEnergy(absTime, dt, outTorque, outAngularVelocity);
 			do {
-				if (CurrentState.Disengaged || (DataBus.DriverInfo.DriverBehavior == DrivingBehavior.Halted)) {
+				if (CurrentState.Disengaged || (DataBus.DriverInfo.DriverBehavior == DrivingBehavior.Halted) || (DisengageGearbox && !ModelData.ATEcoRollReleaseLockupClutch)) {
 					// only when vehicle is halted or close before halting
 					retVal = RequestDisengaged(absTime, dt, outTorque, outAngularVelocity, dryRun);
 				} else {

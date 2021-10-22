@@ -58,10 +58,10 @@ namespace TUGraz.VectoCore.Tests.Integration.BusAuxiliaries
 			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
 		}
 
-		[Test]
-		[TestCase(12000, 1256, 148, 148, 6086.9321)]
-		[TestCase(12000, 1256, -15, -50, 8954.1396)]
-		[TestCase(15700, 1319, -35.79263, -144.0441, 9093.9473)]
+		
+		[TestCase(12000, 1256, 148, 148, 6087.03221)]
+		[TestCase(12000, 1256, -45, -30, 8954.1396)]
+		[TestCase(15700, 1319, -45.79263, -24.0441, 9093.9473)]
 		public void AuxDemandtest(double vehicleWeight, double engineSpeedRpm, double driveLinePower, double internalPower,
 			double expectedPowerDemand)
 		{
@@ -156,7 +156,7 @@ namespace TUGraz.VectoCore.Tests.Integration.BusAuxiliaries
 			};
 			var engine = new CombustionEngine(vehicle, modelData);
 			//new Vehicle(vehicle, new VehicleData());
-			driver = new MockDriver(vehicle) { VehicleStopped = false, DriverBehavior = DrivingBehavior.Braking };
+			driver = new MockDriver(vehicle) { VehicleStopped = false, DriverBehavior = DrivingBehavior.Braking, DrivingAction = DrivingAction.Brake };
 			var gbx = new MockGearbox(vehicle) { Gear = new GearshiftPosition(1) };
 			var brakes = new MockBrakes(vehicle);
 			var veh = new MockVehicle(vehicle) { MyVehicleSpeed = 50.KMPHtoMeterPerSecond() };

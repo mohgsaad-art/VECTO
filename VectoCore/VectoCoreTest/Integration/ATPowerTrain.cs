@@ -249,11 +249,16 @@ namespace TUGraz.VectoCore.Tests.Integration
 					LookAheadDistanceFactor = DeclarationData.Driver.LookAhead.LookAheadDistanceFactor,
 					LookAheadDecisionFactor = new LACDecisionFactor()
 				},
+				EngineStopStart = new DriverData.EngineStopStartData() {
+					EngineOffStandStillActivationDelay = DeclarationData.Driver.EngineStopStart.ActivationDelay,
+					MaxEngineOffTimespan = DeclarationData.Driver.EngineStopStart.MaxEngineOffTimespan,
+					UtilityFactorStandstill = DeclarationData.Driver.EngineStopStart.UtilityFactor,
+				},
 				OverSpeed = new DriverData.OverSpeedData {
-					Enabled = overspeed,
-					MinSpeed = 50.KMPHtoMeterPerSecond(),
-					OverSpeed = 5.KMPHtoMeterPerSecond()
-				}
+						Enabled = overspeed,
+						MinSpeed = 50.KMPHtoMeterPerSecond(),
+						OverSpeed = 5.KMPHtoMeterPerSecond()
+					}
 			};
 		}
 	}
