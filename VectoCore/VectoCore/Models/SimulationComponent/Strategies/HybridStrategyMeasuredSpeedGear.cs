@@ -777,26 +777,30 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			
 			var best = SelectBestOption(eval, absTime, dt, outTorque, outAngularVelocity, dryRun, currentGear);
 
-			if (absTime.IsGreaterOrEqual(2829.9877))
+			
+			if (absTime.IsGreaterOrEqual(9545.3282))
 			{
+				
 				Log.Debug($"Investigate absTime: {absTime} eval.count: {eval.Count()}");
 				foreach(var ev in eval)
                 {
 					Log.Debug($"ICEOff:{ev.ICEOff} FuelCosts: {ev.FuelCosts} EquivalenceFactor: {ev.EquivalenceFactor} " +
 						$"BatCosts: {ev.BatCosts} ICEStartPenalty1: {ev.ICEStartPenalty1} SoCPenalty: {ev.SoCPenalty} " +
 						$"ICEStartPenalty2: {ev.ICEStartPenalty2} RampUpPenalty: {ev.RampUpPenalty} GearshiftPenalty: {ev.GearshiftPenalty} " +
-						$"Score: {ev.Score}");
+						$"Score: {ev.Score}"); //DataBus.BatteryInfo.StateOfCharge
 				}
 
 			}
 
-			Log.Debug($"absTime: {absTime} eval.count: {eval.Count()} best.ICEOff : {best.ICEOff} ");
+			//Log.Debug($"absTime: {absTime} eval.count: {eval.Count()} best.ICEOff : {best.ICEOff} ");
+			
+
 
 			if (best == null)
 			{
 				best = ResponseEmOff;
 				best.ICEOff = false;
-				Log.Debug($"best.ICEOff {best.ICEOff} at absTime {absTime} because of best == null");
+				//Log.Debug($"best.ICEOff {best.ICEOff} at absTime {absTime} because of best == null");
 			}
 					
 			var retVal = CreateResponse(best, currentGear);
@@ -1137,7 +1141,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			//	return false;
 			//}
 			var emPos = ModelData.ElectricMachinesData.First().Item1;
-			if (/*ModelData.VehicleData.ADAS.EngineStopStart &&*/ emPos == PowertrainPosition.HybridP1)
+			if (/*ModelData.VehicleData.ADAS.EngineStopStart &&*/
+			emPos == PowertrainPosition.HybridP1)
 			{
 				return false;
 			}
@@ -1250,7 +1255,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 				if (absTime.IsGreaterOrEqual(2816.0842))
 				{
-					Log.Debug($"AbsTime: {absTime} AllowICEOff(absTime): {AllowICEOff(absTime)} dryRun: {dryRun} tmp.CombustionEngineOn: {tmp.CombustionEngineOn}");
+					//Log.Debug($"AbsTime: {absTime} AllowICEOff(absTime): {AllowICEOff(absTime)} dryRun: {dryRun} tmp.CombustionEngineOn: {tmp.CombustionEngineOn}");
 				}
 				
 
@@ -2130,7 +2135,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			
 			if (absTime.IsGreaterOrEqual(2816.0842))
 			{
-				Log.Debug($"AbsTime: {absTime} allowICEOff: {allowICEOff} dryRun: {dryRun}");
+				//Log.Debug($"AbsTime: {absTime} allowICEOff: {allowICEOff} dryRun: {dryRun}");
 			}
 
 			CalculateCosts(emOffEntry.Response, dt, emOffEntry, allowICEOff, dryRun);
@@ -2177,7 +2182,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 		{
 			if (absTime.IsGreaterOrEqual(2816.0842))
 			{
-				Log.Debug($"IterateEMTorque AbsTime: {absTime} ");
+				//Log.Debug($"IterateEMTorque AbsTime: {absTime} ");
 			}
 			const double stepSize = 0.1;
 
@@ -2465,11 +2470,15 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				Gear = nextGear,
 			};
 
-			if (absTime.IsGreaterOrEqual(2816.0842))
-			{
-				Log.Debug($"AbsTime: {absTime} allowICEOff: {allowIceOff} dryRun: {dryRun}");
-			}
 			CalculateCosts(resp, dt, tmp, allowIceOff, dryRun);
+
+			if (absTime.IsGreaterOrEqual(9545.3282))
+			{
+				Log.Debug($"TryConfiguration AbsTime: {absTime} allowICEOff: {allowIceOff} dryRun: {dryRun} " +
+					$"resp.ElectricSystem.RESSResponse.MaxDischargePower: {resp.ElectricSystem.RESSResponse.MaxDischargePower} DataBus.BatteryInfo.StateOfCharge : {this.DataBus.BatteryInfo.StateOfCharge} resp.Engine.PowerRequest :{resp.Engine.PowerRequest} resp.ElectricSystem.RESSPowerDemand: {resp.ElectricSystem.RESSPowerDemand} tmp.IgnoreReason:{tmp.IgnoreReason}");
+			
+			}
+			
 			return tmp;
 		}
 

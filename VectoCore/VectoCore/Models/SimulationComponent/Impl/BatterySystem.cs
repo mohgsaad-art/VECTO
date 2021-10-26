@@ -153,9 +153,19 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
 			var cellVoltage = InternalVoltage;
-			var tPulse = PreviousState.PowerDemand.Sign() == CurrentState.PowerDemand.Sign()
-				? PreviousState.PulseDuration
-				: 0.SI<Second>();
+			Second tPulse = 0.SI<Second>();
+			if (CurrentState.PowerDemand == null)
+            {
+				CurrentState.PowerDemand = 0.SI<Watt>();
+			}
+			if (CurrentState.TotalCurrent == null)
+            {
+				CurrentState.TotalCurrent = 1.SI<Ampere>();
+			}
+			tPulse = PreviousState.PowerDemand.Sign() == CurrentState.PowerDemand.Sign()
+					? PreviousState.PulseDuration
+					: 0.SI<Second>();
+
 			container[ModalResultField.U0_reess] = cellVoltage;
 			container[ModalResultField.U_reess_terminal] =
 				cellVoltage +
@@ -215,7 +225,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var tPulse = PreviousState.PowerDemand.Sign() < 0 // keep on discharging?
 				? PreviousState.PulseDuration
 				: 0.SI<Second>();
-			return Batteries.Values.Sum(bs => bs.MaxDischargePower(dt, tPulse));
+			var result = Batteries.Values.Sum(bs => bs.MaxDischargePower(dt, tPulse)); 
+			if (dt.IsGreaterOrEqual(9545.0797))  //9545.3282
+			{
+				Log.Debug($"MaxDischargePower: {result}");
+			}
+			return result;
 		}
 
 		public double MinSoC => _minSoc ?? (_minSoc = Batteries.Values.Sum(x => x.CapacityMinSoc) / TotalCapacity);
@@ -270,6 +285,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				foreach (var bs in Batteries) {
 					if (limitBB.ContainsKey(bs.Key)) {
 						continue;
+					}
+					if (averageSoC == 0)
+                    {
+						averageSoC = 1;
 					}
 					var delta = 1 - Math.Sign(remainingPower.Value()) * (bs.Value.SoC - averageSoC) / averageSoC;
 					var power = bs.Value.Capacity / totalCapacity * delta * remainingPower;

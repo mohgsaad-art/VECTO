@@ -135,7 +135,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricMotor
 					return null;
 				}
 			} else {
-				if (!elPowerMaxEM.Extrapolated && elPowerMaxEM.ElectricalPower.IsSmallerOrEqual(batPower)) {
+				if (elPowerMaxEM.ElectricalPower == null)
+                {
+					elPowerMaxEM.ElectricalPower = 0.SI<Watt>();
+				}
+				if (!elPowerMaxEM.Extrapolated && elPowerMaxEM.ElectricalPower.IsSmallerOrEqual(batPower))
+				{
 					// the battery can provide more electric power than the EM  - no limitation here
 					return null;
 				}

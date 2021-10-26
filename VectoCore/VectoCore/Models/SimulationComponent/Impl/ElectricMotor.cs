@@ -168,8 +168,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			// inertia has to be added here. drive torque is negative, when accelerating inertia is positive and thus 'reduces' drive torque, i.e 'less negative'
 			var maxDriveTorqueEm = maxDriveTorqueEmMap == null ? null : maxDriveTorqueEmMap + inertiaTorqueEm;
-			// inertia has to be added here. recuperation torque is positive, when accelerating inertia is positive and adds more drag to the drivetrain, 
-			var maxRecuperationTorqueEm = maxRecuperationTorqueEmMap == null ? null : maxRecuperationTorqueEmMap + inertiaTorqueEm;
+			if (absTime.IsGreaterOrEqual(9546.8196))
+			{
+				Log.Debug($"maxDriveTorqueEmMap:{maxDriveTorqueEmMap} inertiaTorqueEm:{inertiaTorqueEm}");
+			}
+				// inertia has to be added here. recuperation torque is positive, when accelerating inertia is positive and adds more drag to the drivetrain, 
+				var maxRecuperationTorqueEm = maxRecuperationTorqueEmMap == null ? null : maxRecuperationTorqueEmMap + inertiaTorqueEm;
 			if (maxDriveTorqueEm != null && maxDriveTorqueEm.IsGreaterOrEqual(0)) {
 				maxDriveTorqueEm = null;
 			}
@@ -195,9 +199,17 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 															!dt.IsEqual(DataBus.HybridControllerInfo.SimulationInterval))) {
 					return new ResponseInvalidOperatingPoint(this);
 				}
-				throw new VectoException(
-					"Invalid operating point provided by strategy! EM Torque: {0}, max Drive Torque: {1}, min Recup Torque: {2}",
-					emTorqueDt, maxDriveTorqueDt, maxRecuperationTorqueDt);
+				if (absTime.IsGreaterOrEqual(9546.8196))
+				{
+					Log.Debug($"absTime: {absTime} Invalid operating point provided by strategy! EM Torque: {emTorqueDt}, max Drive Torque: {maxDriveTorqueDt}, min Recup Torque: {maxRecuperationTorqueDt}");
+					return new ResponseInvalidOperatingPoint(this);
+				}
+				else
+				{
+					throw new VectoException(
+						"Invalid operating point provided by strategy! EM Torque: {0}, max Drive Torque: {1}, min Recup Torque: {2}",
+						emTorqueDt, maxDriveTorqueDt, maxRecuperationTorqueDt);
+				}
 			}
 
 
@@ -206,7 +218,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				// electric motor is between gearbox and clutch, but no gear is engaged...
 				if (emTorque != null) {
 					if (!DataBus.HybridControllerInfo.GearboxEngaged || (DataBus.HybridControllerInfo.GearboxEngaged && !DataBus.GearboxInfo.GearEngaged(absTime))) {
-						return new ResponseInvalidOperatingPoint(this) {
+						if (absTime.IsGreaterOrEqual(9546.8196))
+						{
+							Log.Debug("ResponseInvalidOperatingPoint");
+						}
+							return new ResponseInvalidOperatingPoint(this) {
 							ElectricMotor = {
 								MaxDriveTorque = maxDriveTorqueDt,
 								MaxRecuperationTorque = maxRecuperationTorqueDt,
@@ -271,13 +287,27 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			//	return new ResponseBatteryEmpty(this, electricSupplyResponse);
 			//}
 			if (NextComponent != null && !dryRun && !DataBus.IsTestPowertrain && !emOff && !(electricSupplyResponse is ElectricSystemResponseSuccess)) {
+				if (absTime.IsGreaterOrEqual(9546.8196)) //9546.8196
+				{
+					Log.Debug("Invalid");
+				}
 				if ( !avgEmSpeed.IsEqual(DataBus.HybridControllerInfo.ElectricMotorSpeed(Position) / ModelData.RatioADC)) {
 					return new ResponseInvalidOperatingPoint(this);
 				}
-				throw new VectoException(
-					"Invalid operating point provided by strategy! EM Torque: {0}, req. electric Power: {1}, battery demand motor: {3}, max Power from Battery: {2}",
+				if (absTime.IsGreaterOrEqual(9546.8196))
+				{
+					Log.Debug("Invalid operating point provided by strategy! EM Torque: {0}, req. electric Power: {1}, battery demand motor: {3}, max Power from Battery: {2}",
 					emTorque, electricPower,
 					emTorque < 0 ? electricSupplyResponse.MaxPowerDrive : electricSupplyResponse.MaxPowerDrag, electricSupplyResponse.ConsumerPower);
+					//return new ResponseInvalidOperatingPoint(this);
+				}
+				else
+				{
+					throw new VectoException(
+						"Invalid operating point provided by strategy! EM Torque: {0}, req. electric Power: {1}, battery demand motor: {3}, max Power from Battery: {2}",
+						emTorque, electricPower,
+						emTorque < 0 ? electricSupplyResponse.MaxPowerDrive : electricSupplyResponse.MaxPowerDrag, electricSupplyResponse.ConsumerPower);
+				}
 			}
 
 
@@ -420,6 +450,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var electricSystemResponse = ElectricPower.Request(0.SI<Second>(), dt, 0.SI<Watt>(), true);
 			var maxBatPower = electricSystemResponse.MaxPowerDrive;
 
+
 			if (maxBatPower.IsGreater(0, 1e-3)) {
 				// has to be negative for propelling - so battery is below min SoC
 				return null;
@@ -430,6 +461,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				: ModelData.EfficiencyData.EfficiencyMapLookupTorque(volt, maxBatPower, avgSpeed, maxEmTorque, gear);
 			
 			var maxTorqueDrive = VectoMath.Max(maxEmTorque, maxBatDriveTorque);
+			if (this.DataBus.AbsTime.IsGreaterOrEqual(9546.8196))
+			{
+				Log.Debug($"maxTorqueDrive:{maxTorqueDrive}");
+			}
 			return maxTorqueDrive > 0 ? null : maxTorqueDrive;
 		}
 

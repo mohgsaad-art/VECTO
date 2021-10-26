@@ -157,6 +157,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		protected override void DoWriteModalResults(Second absTime, Second dt, IModalDataContainer container)
 		{
+			if (CurrentState.PowerDemand == null)
+			{
+				CurrentState.PowerDemand = 0.SI<Watt>();
+			}
+			if (CurrentState.TotalCurrent == null)
+			{
+				CurrentState.TotalCurrent = 1.SI<Ampere>();
+			}
 			var cellVoltage = ModelData.SOCMap.Lookup(PreviousState.StateOfCharge);
 			var tPulse = PreviousState.PowerDemand.Sign() == CurrentState.PowerDemand.Sign()
 				? PreviousState.PulseDuration

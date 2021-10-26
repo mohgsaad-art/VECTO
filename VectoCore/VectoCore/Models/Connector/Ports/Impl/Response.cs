@@ -215,7 +215,9 @@ namespace TUGraz.VectoCore.Models.Connector.Ports.Impl
 	[DebuggerDisplay("InvalidOperatingPoint")]
 	internal class ResponseInvalidOperatingPoint : AbstractResponse
 	{
-		public ResponseInvalidOperatingPoint(object source) : base(source) { }
+		public ResponseInvalidOperatingPoint(object source) : base(source) {
+				//Log.Debug($"ResponseInvalidOperatingPoint: {source.GetType().Name}"); 
+		}
 	}
 
 	/*

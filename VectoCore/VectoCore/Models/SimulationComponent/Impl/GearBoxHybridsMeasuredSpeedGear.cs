@@ -478,12 +478,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
                     CurrentState.InTorque, CurrentState.InAngularVelocity, CurrentState.InTorque,
                     CurrentState.InAngularVelocity);
             }
-            if (absTime.IsGreaterOrEqual(273.9851.SI<Second>()) && dryRun) //273.4851 //273.4851 //13.0332 //274.5037,13.0332,3
-            {
-                ////////Log.Debug($"DRYRUN: Gearbox inTorque: {inTorque}");
-            }
+
             var response = NextComponent.Request(absTime, dt, inTorque, inAngularVelocity, false);
             response.Gearbox.PowerRequest = outTorque * avgOutAngularVelocity;
+            response.Gearbox.Gear = Gear;
+            response.Gearbox.InputSpeed = inAngularVelocity;
+            response.Gearbox.InputTorque = inTorque;
             return response;
         }
 

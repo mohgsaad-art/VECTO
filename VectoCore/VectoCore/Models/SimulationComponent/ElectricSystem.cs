@@ -57,6 +57,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent
 			response.ConsumerPower = powerDemand;
 			response.AuxPower = auxDemand;
 			response.ChargingPower = chargePower;
+			//Log.Debug("");
 			return response;
 		}
 

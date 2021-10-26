@@ -237,7 +237,7 @@ namespace TUGraz.VectoCore.Utils
 				}
 				if (criterion(result).IsEqual(0, Constants.SimulationSettings.InterpolateSearchTolerance)) {
 					LogManager.EnableLogging();
-					log.Debug("InterpolateSearch found an operating point after 1 function call.");
+					//log.Debug("InterpolateSearch found an operating point after 1 function call.");
 					AppendDebug(debug);
 					LogManager.DisableLogging();
 					iterationCount++;

@@ -141,15 +141,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			{
 				////////Log.Debug($"retry : #{retryCount}");
 
-				if (retryCount > 10)
-				{
-					//throw new VectoException("HybridStrategy: retry count exceeded! {0}", DebugData);
-					throw new VectoException("HybridStrategy: retry count exceeded! at abstime: {0}", absTime);
-				}
+				IHybridStrategyResponse strategyResponse = Strategy.Request(absTime, dt, outTorque, outAngularVelocity, dryRun);
 
 				retry = false;
-
-				IHybridStrategyResponse strategyResponse = Strategy.Request(absTime, dt, outTorque, outAngularVelocity, dryRun);
 				
 				//////Log.Debug($"strategyResponse {strategyResponse}");
 
@@ -190,22 +184,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					CurrentState.StrategyResponse = strategySettings;
 				}
 
-                //SelectedGear = new GearInfo(strategySettings.NextGear, true);
-                #region noneed
-				/*
-                if (!dryRun && /*!DataBus.EngineInfo.EngineOn &&*/ //strategySettings.ShiftRequired)
-				/*{
-					DataBus.GearboxCtl.TriggerGearshift(absTime, dt);
-					_shiftStrategy.SetNextGear(strategySettings.NextGear);
-					SelectedGear = strategySettings.NextGear;
-					if (!DataBus.GearboxInfo.GearboxType.AutomaticTransmission())
-					{
-						return new ResponseGearShift(this);
-					}
-				}
-                */
-				#endregion
-
                 if (!dryRun /*&& DataBus.VehicleInfo.VehicleStopped*/)
 				{
 					//SelectedGear = strategySettings.NextGear;
@@ -213,17 +191,20 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				}
 
 				CurrentStrategySettings = strategySettings;
-				if (absTime.IsGreaterOrEqual(273.9851.SI<Second>()) && dryRun) //273.4851 //273.4851 //13.0332 //274.5037,13.0332,3
+				if (absTime.IsGreaterOrEqual(9545.3282))
 				{
-					////////Log.Debug($"absTime: {absTime}");273.9851
-					//////Log.Debug($"DRYRUN: Hybrid Controller outTorque: {outTorque}");
+					Log.Debug($"absTime: {absTime} DataBus.BatteryInfo.StateOfCharge: {DataBus.BatteryInfo.StateOfCharge}"); 
+					//9546.8196 DataBus.BatteryInfo.StateOfCharge 
 				}
+				
 				retVal = NextComponent.Request(absTime, dt, outTorque, outAngularVelocity, dryRun);
-				if (absTime.IsGreaterOrEqual(273.9851.SI<Second>()) && dryRun) //273.4851 //273.4851 //13.0332 //274.5037,13.0332,3
+
+				if (retryCount > 20)
 				{
-					////////Log.Debug($"absTime: {absTime}");273.9851
-					//////Log.Debug($"DRYRUN: Hybrid Controller outTorque: {outTorque}");
+					//throw new VectoException("HybridStrategy: retry count exceeded! {0}", DebugData);
+					throw new VectoException($"HybridStrategy: retry count exceeded! at abstime: {absTime} Last Response: {retVal.GetType().Name}");
 				}
+
 				DebugData.Add(new
 				{
 					DrivingAction = DataBus.DriverInfo.DrivingAction,
@@ -264,6 +245,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 				if (retVal is ResponseInvalidOperatingPoint)
 				{
+					if (absTime.IsGreaterOrEqual(9546.8196)) 
+					{
+						Log.Debug($"retVal is ResponseInvalidOperatingPoint");
+						//9546.8196 DataBus.BatteryInfo.StateOfCharge 
+					}
 					retryCount++;
 					retry = true;
 					Strategy.OperatingpointChangedDuringRequest(absTime, dt, outTorque, outAngularVelocity, dryRun,
