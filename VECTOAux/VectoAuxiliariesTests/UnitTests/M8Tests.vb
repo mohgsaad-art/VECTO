@@ -88,7 +88,7 @@ Namespace UnitTests
 		End Sub
 
 		<Test()> _
-		<TestCase(10, 20, 30, 40, 50, 60, 70, 0, 1, False, False, True, 0, 40, True)> _
+		<TestCase(10, 20, 30, 40, 50, 60, 70, 0, 1, False, False, True, 140, 40, True)> _
 		<TestCase(10, 20, 30, 40, 50, 60, 70, 0, 1, False, False, False, 140, 40, True)>
 		Public Sub TestIdlingFunction(IP1 As Double,
 									IP2 As Double,

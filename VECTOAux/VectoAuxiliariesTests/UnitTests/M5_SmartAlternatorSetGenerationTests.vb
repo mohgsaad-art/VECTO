@@ -90,39 +90,39 @@ Namespace UnitTests
 			Assert.IsNotNull(_target)
 		End Sub
 
-		<TestCase()>
-		Public Sub PowerAtCrankIdleWatts()
+		'<TestCase()>
+		'Public Sub PowerAtCrankIdleWatts()
 
-			Initialise()
-			_target = New M05Impl(_m05, _powerNetVoltage, _altGearPullyEfficiency)
-			Dim expected As Single = 1641.35791
-			Dim actual As Watt = _target.AlternatorsGenerationPowerAtCrankIdle()
+		'	Initialise()
+		'	_target = New M05Impl(_m05, _powerNetVoltage, _altGearPullyEfficiency)
+		'	Dim expected As Single = 1641.35791
+		'	Dim actual As Watt = _target.AlternatorsGenerationPowerAtCrankIdle()
 
-			Assert.AreEqual(expected, actual.Value(), 0.001)
-		End Sub
+		'	Assert.AreEqual(expected, actual.Value(), 0.001)
+		'End Sub
 
-		<TestCase()>
-		Public Sub PowerAtCrankTractionWatts()
+		'<TestCase()>
+		'Public Sub PowerAtCrankTractionWatts()
 
-			Initialise()
-			_target = New M05Impl(_m05, _powerNetVoltage, _altGearPullyEfficiency)
-			Dim expected As Single = 1641.35791
-			Dim actual As Watt = _target.AlternatorsGenerationPowerAtCrankTractionOn()
+		'	Initialise()
+		'	_target = New M05Impl(_m05, _powerNetVoltage, _altGearPullyEfficiency)
+		'	Dim expected As Single = 1641.35791
+		'	Dim actual As Watt = _target.AlternatorsGenerationPowerAtCrankTractionOn()
 
-			Assert.AreEqual(expected, actual.Value(), 0.001)
-		End Sub
+		'	Assert.AreEqual(expected, actual.Value(), 0.001)
+		'End Sub
 
-		<TestCase()>
-		Public Sub PowerAtCrankOverrunWatts()
+		'<TestCase()>
+		'Public Sub PowerAtCrankOverrunWatts()
 
-			Initialise()
-			_target = New M05Impl(_m05, _powerNetVoltage, _altGearPullyEfficiency)
-			Dim expected As Single = 1641.35791F
+		'	Initialise()
+		'	_target = New M05Impl(_m05, _powerNetVoltage, _altGearPullyEfficiency)
+		'	Dim expected As Single = 1641.35791F
 
-			Dim actual As Watt = _target.AlternatorsGenerationPowerAtCrankOverrun()
+		'	Dim actual As Watt = _target.AlternatorsGenerationPowerAtCrankOverrun()
 
-			Assert.AreEqual(expected, actual.Value(), 0.001)
-		End Sub
+		'	Assert.AreEqual(expected, actual.Value(), 0.001)
+		'End Sub
 	End Class
 End Namespace
 

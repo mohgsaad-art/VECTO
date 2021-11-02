@@ -1216,7 +1216,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			Driver.DriverBehavior = DrivingBehavior.Braking;
 
 			if (DataBus.VehicleInfo.VehicleSpeed.IsEqual(0) && DriverStrategy.BrakeTrigger.NextTargetSpeed.IsEqual(0)) {
-				if (ds.IsEqual(targetDistance - currentDistance)) {
+				if (ds.IsEqual(targetDistance - currentDistance, 1e-4.SI<Meter>())) {
 					return new ResponseDrivingCycleDistanceExceeded(this) {
 						MaxDistance = ds / 2
 					};

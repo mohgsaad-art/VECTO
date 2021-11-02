@@ -101,7 +101,7 @@ Namespace UnitTests
         Public Sub EfficiencyValueTest()
 
             Dim auxConfig = utils.GetAuxTestConfig()
-
+            CType(auxConfig.ElectricalUserInputsConfig, ElectricsUserInputsConfig).ElectricalConsumers = Nothing
             'CType(auxConfig.ElectricalUserInputsConfig, ElectricsUserInputsConfig).ElectricalConsumers = elecConsumers
             'CType(auxConfig.ElectricalUserInputsConfig, ElectricsUserInputsConfig).AverageCurrentDemandInclBaseLoad = 0.5.SI(Of Ampere)
             'CType(auxConfig.ElectricalUserInputsConfig, ElectricsUserInputsConfig).AverageCurrentDemandInclBaseLoad = 0.5.SI(Of Ampere)

@@ -205,7 +205,7 @@ namespace TUGraz.VectoCore.OutputData.FileIO
 
 			retVal["EC_EnviromentalTemperature"] = ssmInputs.EnvironmentalConditions.DefaultConditions.Temperature.AsDegCelsius;
 			retVal["EC_Solar"] = ssmInputs.EnvironmentalConditions.DefaultConditions.Solar.Value();
-			retVal["AC_CompressorType"] = ssmInputs.ACSystem.HVACCompressorType.ToString();
+			retVal["AC_CompressorType"] = ssmInputs.ACSystem.HVACCompressorType.GetLabel(); // .ToString();
 			retVal["AC_CompressorCapacitykW"] = ssmInputs.ACSystem.HVACMaxCoolingPower.ConvertToKiloWatt().Value;
 			retVal["AC_COP"] = ssmInputs.ACSystem.COP;
 			retVal["VEN_VentilationOnDuringHeating"] = ssmInputs.Ventilation.VentilationOnDuringHeating;

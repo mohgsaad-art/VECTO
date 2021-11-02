@@ -84,7 +84,8 @@ Namespace UnitTests
                 .VehicleLength = 10.655.SI(Of Meter),
                 .BodyHeight = 2.275.SI(Of Meter),
                 .PassengerDensityRef = 3.SI(Of PerSquareMeter),
-                .PassengerDensityLow = 3.SI(Of PerSquareMeter)
+                .PassengerDensityLow = 3.SI(Of PerSquareMeter),
+                .VehicleCode = VehicleCode.CA
             },
             .MissionType = MissionType.Urban
             }
@@ -646,7 +647,7 @@ Namespace UnitTests
 			retVal.BusWindowSurface = DeclarationData.BusAuxiliaries.WindowHeight(busParams.DoubleDecker) * internalLength +
 									DeclarationData.BusAuxiliaries.FrontAndRearWindowArea(busParams.DoubleDecker)
             Dim factor = If(isDoubleDecker, 2.0, 1.0).SI()
-			retVal.BusSurfaceArea = (2.0.SI() * (internalLength * busParams.VehicleWidth + internalLength * internalHeight +
+			retVal.BusSurfaceArea = (2.0.SI() * (internalLength * busParams.VehicleWidth + internalLength * busParams.BodyHeight +
 										(busParams.VehicleWidth * busParams.BodyHeight * factor))).Cast(Of SquareMeter)
 			retVal.BusVolume = (internalLength * busParams.VehicleWidth * internalHeight).Cast(of CubicMeter)
 
