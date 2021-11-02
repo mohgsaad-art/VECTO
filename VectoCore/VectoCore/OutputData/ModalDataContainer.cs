@@ -333,14 +333,21 @@ namespace TUGraz.VectoCore.OutputData
 						ModalResultField.P_ice_start //, ModalResultField.altitude
 					}.Select(x => x.GetName()))
 				.Concat(FuelColumns.SelectMany(kv => kv.Value.Select(kv2 => kv2.Value.ColumnName)));
-
 			// TODO: 2018-11-20: Disable additional columns after testing gearshifting!
-//#if TRACE
+#if TRACE
 			strCols = strCols.Concat(_additionalColumns);
 			//dataColumns.Add(ModalResultField.altitude);
-//#endif
+#endif
 			strCols = strCols.Concat(new[] { ModalResultField.ICEOn }.Select(x => x.GetName()));
-            var fileSuffix = RunSuffix;
+			if (_runData.JobType != VectoSimulationJobType.EngineOnlySimulation) {
+				strCols = strCols.Concat(new[] {
+					ModalResultField.DriverAction,
+					ModalResultField.EcoRollConditionsMet,
+					ModalResultField.PCCSegment,
+					ModalResultField.PCCState
+				}.Select(x => x.GetName()));
+			}
+			var fileSuffix = RunSuffix;
 			if (WriteModalResults) {
 				var filteredData = Data;
 				foreach (var filter in _filters) {
@@ -374,8 +381,8 @@ namespace TUGraz.VectoCore.OutputData
 						ModalResultField.v_targ,
 						ModalResultField.acc,
 						ModalResultField.grad,
-                        ModalResultField.altitude
-            }.Select(x => x.GetName()));
+						ModalResultField.altitude
+			}.Select(x => x.GetName()));
 			}
 			if (!writeEngineOnly) {
 				dataColumns.AddRange(
@@ -390,6 +397,7 @@ namespace TUGraz.VectoCore.OutputData
 				new[] {
 					ModalResultField.n_eng_avg,
 					ModalResultField.T_eng_fcmap,
+					ModalResultField.Tq_full,
 					ModalResultField.Tq_drag,
 					ModalResultField.P_eng_fcmap,
 					ModalResultField.P_eng_full,

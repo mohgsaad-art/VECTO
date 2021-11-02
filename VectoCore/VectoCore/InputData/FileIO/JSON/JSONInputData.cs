@@ -162,7 +162,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 
 		public IGearboxEngineeringInputData Gearbox { get; internal set; }
 
-		public IGearshiftEngineeringInputData GearshiftInputData { get; internal set; }
+		public virtual IGearshiftEngineeringInputData GearshiftInputData { get; internal set; }
 
 		public virtual IEngineStopStartEngineeringInputData EngineStopStartData => null;
 
@@ -688,6 +688,12 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 		{
 			get { return Body["PTOCycleDuringDrive"] != null ? VectoCSVFile.Read(Path.Combine(BasePath, Body.GetEx<string>("PTOCycleDuringDrive"))) : null; }
 		}
+
+		public override IGearshiftEngineeringInputData GearshiftInputData =>
+			Body["TCU"] == null
+				? null
+				: JSONInputDataFactory.ReadShiftParameters(Path.Combine(BasePath, Body.GetEx<string>("TCU")), false);
+
 	}
 
 

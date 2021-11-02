@@ -69,7 +69,8 @@ namespace TUGraz.VectoCore.OutputData
 			Fields.FC_AUXHTR_H, Fields.FC_AUXHTR_KM,
 			Fields.FC_AUXHTR_H_CORR, Fields.FC_AUXHTR_KM_CORR,
 			Fields.FCFINAL_H, Fields.FCFINAL_KM, Fields.FCFINAL_LITERPER100KM, Fields.FCFINAL_LITERPER100TKM,
-			Fields.FCFINAL_LiterPer100M3KM, Fields.FCFINAL_LiterPer100PassengerKM,
+			Fields.FCFINAL_LiterPer100M3KM, 
+			//Fields.FCFINAL_LiterPer100PassengerKM,
 			Fields.SPECIFIC_FC, Fields.K_VEHLINE, Fields.K_ENGLINE
 		};
 
@@ -105,7 +106,7 @@ namespace TUGraz.VectoCore.OutputData
 					Tuple.Create(Fields.HDV_CO2_VEHICLE_CLASS, typeof(string)),
 					Tuple.Create(Fields.CURB_MASS, typeof(ConvertedSI)),
 					Tuple.Create(Fields.LOADING, typeof(ConvertedSI)),
-					Tuple.Create(Fields.PassengerCount, typeof(double)),
+					//Tuple.Create(Fields.PassengerCount, typeof(double)),
 					Tuple.Create(Fields.TOTAL_VEHICLE_MASS, typeof(ConvertedSI)),
 					Tuple.Create(Fields.ENGINE_MANUFACTURER, typeof(string)),
 					Tuple.Create(Fields.ENGINE_MODEL, typeof(string)),
@@ -177,7 +178,7 @@ namespace TUGraz.VectoCore.OutputData
 
 				Table.Columns.AddRange(
 					new[] {
-					Fields.CO2_KM, Fields.CO2_TKM, Fields.CO2_M3KM, Fields.CO2_PKM, Fields.P_WHEEL, Fields.P_WHEEL_POS, Fields.P_FCMAP, Fields.P_FCMAP_POS,
+					Fields.CO2_KM, Fields.CO2_TKM, Fields.CO2_M3KM, /*Fields.CO2_PKM, */ Fields.P_WHEEL, Fields.P_WHEEL_POS, Fields.P_FCMAP, Fields.P_FCMAP_POS,
 					Fields.E_FCMAP_POS, Fields.E_FCMAP_NEG, Fields.E_POWERTRAIN_INERTIA, Fields.E_AUX, Fields.E_AUX_EL_HV, Fields.E_CLUTCH_LOSS,
 					Fields.E_TC_LOSS, Fields.E_SHIFT_LOSS, Fields.E_GBX_LOSS, Fields.E_RET_LOSS, Fields.E_ANGLE_LOSS,
 					Fields.E_AXL_LOSS, Fields.E_BRAKE, Fields.E_VEHICLE_INERTIA, Fields.E_WHEEL, Fields.E_AIR, Fields.E_ROLL, Fields.E_GRAD,
@@ -468,11 +469,11 @@ namespace TUGraz.VectoCore.OutputData
 							(fcVolumePerMeter / cargoVolume).ConvertToLiterPerCubicMeter100KiloMeter();
 					}
 
-					if (passengers != null && fcVolumePerMeter != null) {
-						// subtract driver!
-						row[FcCol(Fields.FCFINAL_LiterPer100PassengerKM, suffix)] =
-							(fcVolumePerMeter / passengers.Value).ConvertToLiterPer100Kilometer();
-					}
+					//if (passengers != null && fcVolumePerMeter != null) {
+					//	// subtract driver!
+					//	row[FcCol(Fields.FCFINAL_LiterPer100PassengerKM, suffix)] =
+					//		(fcVolumePerMeter / passengers.Value).ConvertToLiterPer100Kilometer();
+					//}
 				}
 
 				if (vtpCycle) {
@@ -490,9 +491,9 @@ namespace TUGraz.VectoCore.OutputData
 			if (cargoVolume > 0) {
 				row[Fields.CO2_M3KM] = (modData.CorrectedModalData.KilogramCO2PerMeter / cargoVolume).ConvertToGrammPerCubicMeterKiloMeter();
 			}
-			if (passengers != null) {
-				row[Fields.CO2_PKM] = (modData.CorrectedModalData.KilogramCO2PerMeter / passengers.Value).ConvertToGrammPerKiloMeter();
-			}
+			//if (passengers != null) {
+			//	row[Fields.CO2_PKM] = (modData.CorrectedModalData.KilogramCO2PerMeter / passengers.Value).ConvertToGrammPerKiloMeter();
+			//}
 		}
 
 		private static string FcCol(string col, string suffix)
@@ -954,7 +955,7 @@ namespace TUGraz.VectoCore.OutputData
 			public const string STATUS = "Status";
 			public const string CURB_MASS = "Corrected Actual Curb Mass [kg]";
 			public const string LOADING = "Loading [kg]";
-			public const string PassengerCount = "Passenger count [-]";
+			//public const string PassengerCount = "Passenger count [-]";
 
 			public const string VEHICLE_MANUFACTURER = "Vehicle manufacturer [-]";
 			public const string VIN_NUMBER = "VIN number";
@@ -1048,14 +1049,14 @@ namespace TUGraz.VectoCore.OutputData
 			public const string FCFINAL_LITERPER100KM = "FC-Final{0} [l/100km]";
 			public const string FCFINAL_LITERPER100TKM = "FC-Final{0} [l/100tkm]";
 			public const string FCFINAL_LiterPer100M3KM = "FC-Final{0} [l/100m³km]";
-			public const string FCFINAL_LiterPer100PassengerKM = "FC-Final{0} [l/100Pkm]";
+			//public const string FCFINAL_LiterPer100PassengerKM = "FC-Final{0} [l/100Pkm]";
 
 			public const string ElectricEnergyConsumptionPerKm = "EC_el_final [kWh/km]";
 
 			public const string CO2_KM = "CO2 [g/km]";
 			public const string CO2_TKM = "CO2 [g/tkm]";
 			public const string CO2_M3KM = "CO2 [g/m³km]";
-			public const string CO2_PKM = "CO2 [g/Pkm]";
+			//public const string CO2_PKM = "CO2 [g/Pkm]";
 
 			public const string P_WHEEL_POS = "P_wheel_in_pos [kW]";
 			public const string P_WHEEL = "P_wheel_in [kW]";

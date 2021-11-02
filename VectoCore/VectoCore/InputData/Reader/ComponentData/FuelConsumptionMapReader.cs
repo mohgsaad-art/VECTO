@@ -31,6 +31,7 @@
 
 using System;
 using System.Data;
+using System.IO;
 using System.Linq;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
@@ -48,6 +49,16 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Engine
 				return Create(data);
 			} catch (Exception e) {
 				throw new VectoException(string.Format("File {0}: {1}", fileName, e.Message), e);
+			}
+		}
+
+		public static FuelConsumptionMap ReadFromStream(Stream stream)
+		{
+			try {
+				var data = VectoCSVFile.ReadStream(stream);
+				return Create(data);
+			} catch (Exception e) {
+				throw new VectoException($"Failed reading stream: {e.Message}", e);
 			}
 		}
 

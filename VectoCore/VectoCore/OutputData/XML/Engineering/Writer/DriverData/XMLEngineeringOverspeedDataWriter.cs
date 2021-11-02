@@ -56,16 +56,16 @@ namespace TUGraz.VectoCore.OutputData.XML.Engineering.Writer
 				return new object[] { };
 			}
 
-			if (overspeed.Enabled) {
-				return new object[] {
-					new XElement(ns + XMLNames.DriverModel_Overspeed_Enabled, overspeed.Enabled),
-					new XElement(ns + XMLNames.DriverModel_Overspeed_MinSpeed, overspeed.MinSpeed.AsKmph),
-					new XElement(ns + XMLNames.DriverModel_Overspeed_AllowedOverspeed, overspeed.OverSpeed.AsKmph),
-				};
-			}
+			//if (overspeed.Enabled) {
+			//	return new object[] {
+			//		new XElement(ns + XMLNames.DriverModel_Overspeed_Enabled, overspeed.Enabled),
+			//		new XElement(ns + XMLNames.DriverModel_Overspeed_MinSpeed, overspeed.MinSpeed.AsKmph),
+			//		new XElement(ns + XMLNames.DriverModel_Overspeed_AllowedOverspeed, overspeed.OverSpeed.AsKmph),
+			//	};
+			//}
 
 			return new object[] {
-				new XElement(ns + XMLNames.DriverModel_Overspeed_Enabled, overspeed.Enabled),
+				new XElement(ns + XMLNames.DriverModel_Overspeed_Mode, "Off"),
 			};
 		}
 

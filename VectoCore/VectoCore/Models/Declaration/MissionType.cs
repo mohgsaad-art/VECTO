@@ -85,16 +85,20 @@ namespace TUGraz.VectoCore.Models.Declaration
 					return "Municipal Utility";
 				case MissionType.Construction:
 					return "Construction";
-				//case MissionType.HeavyUrban:
-				//	return "";
-				//case MissionType.Urban:
-				//	return "";
-				//case MissionType.Suburban:
-				//	return "";
-				//case MissionType.Interurban:
-				//	return "";
-				//case MissionType.Coach:
-				//	return "";
+				case MissionType.HeavyUrban:
+					return "Heavy Urban";
+				case MissionType.Urban:
+					return "Urban";
+				case MissionType.Suburban:
+					return "Suburban";
+				case MissionType.Interurban:
+					return "Interurban";
+				case MissionType.Coach:
+					return "Coach";
+				case MissionType.VerificationTest:
+					return "Verification Test";
+				case MissionType.ExemptedMission:
+					return "Exempted";
 				default:
 					throw new ArgumentOutOfRangeException("MissionType", self, null);
 			}

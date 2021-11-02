@@ -90,7 +90,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		{
 			return
 				(outAngularSpeed * GearboxModelData.Gears[gear.Gear].Ratio).IsGreaterOrEqual(VectoMath.Min(GearboxModelData.Gears[gear.Gear].MaxSpeed,
-																				DataBus.EngineInfo.EngineN95hSpeed));
+																				DataBus.EngineInfo.EngineN95hSpeed - 1.RPMtoRad()));
 		}
 
 		public override GearshiftPosition NextGear

@@ -202,7 +202,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			return new ResponseDryRun(this) {
 				DeltaFullLoad = 10 * deltaMax,
 				DeltaDragLoad = 10 * deltaMin,
-				DeltaEngineSpeed = dryOperatingPointMax.InAngularVelocity - maxEngineSpeed,
+				DeltaEngineSpeed = dryOperatingPointMax?.InAngularVelocity ?? 0.RPMtoRad() - maxEngineSpeed,
 				TorqueConverter = { TorqueConverterOperatingPoint = dryOperatingPointMax },
 				Engine = {
 					TorqueOutDemand = inTorque,

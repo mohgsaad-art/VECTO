@@ -97,7 +97,7 @@ namespace TUGraz.VectoCore.Tests.FileIO
 			Assert.NotNull(savedInprovider);
 
 			AssertHelper.PublicPropertiesEqual(typeof(IEngineDeclarationInputData),engineInputData, savedInprovider.JobInputData.Vehicle.Components.EngineInputData,
-				new[] { "Source" });
+				new[] { "Source", "EngineModes" });
 		}
 
 		[TestCase(@"TestData\Generic Vehicles\Declaration Mode\Class9_RigidTruck_6x2\AMT_12.vgbx")]

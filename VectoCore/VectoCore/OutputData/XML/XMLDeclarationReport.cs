@@ -169,6 +169,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 
 				WeightingFactor = weightingFactor;
 			}
+
 		}
 
 		public XMLDeclarationReport(IReportWriter writer = null) : base(writer)

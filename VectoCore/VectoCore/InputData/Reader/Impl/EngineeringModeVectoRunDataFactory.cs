@@ -93,7 +93,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 						InputDataProvider, new VectoRunData() {
 							EngineData = engineData,
 							VehicleData = tempVehicle,
-							AxleGearData = axlegearData
+							AxleGearData = axlegearData,
 						}, tmpStrategy);
 
 					var crossWindRequired = vehicle.Components.AirdragInputData.CrossWindCorrectionMode ==

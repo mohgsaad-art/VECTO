@@ -147,7 +147,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider
 
 		public virtual PerSecond EngineIdleSpeed
 		{
-			get { return GetDouble(XMLNames.Vehicle_IdlingSpeed).RPMtoRad(); }
+			get { return ElementExists(XMLNames.Vehicle_IdlingSpeed) ? GetDouble(XMLNames.Vehicle_IdlingSpeed).RPMtoRad() : null; }
 		}
 
 		public bool VocationalVehicle

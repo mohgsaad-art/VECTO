@@ -277,7 +277,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				var reserve = 1 - response.Engine.PowerRequest / fullLoadPower;
 
 				if (reserve < GearshiftParams.TorqueReserve) {
-					var accelerationFactor = outAngularVelocity * GearboxModelData.Gears[currentGear.Gear].Ratio < fld[0].NTq98hSpeed
+					var ratio = currentGear.TorqueConverterLocked.HasValue && !currentGear.TorqueConverterLocked.Value
+						? GearboxModelData.Gears[currentGear.Gear].TorqueConverterRatio
+						: GearboxModelData.Gears[currentGear.Gear].Ratio;
+					var accelerationFactor = outAngularVelocity * ratio < fld[0].NTq98hSpeed
 						? 1.0
 						: VectoMath.Interpolate(
 							fld[0].NTq98hSpeed, fld[0].NP98hSpeed, 1.0, shiftStrategyParameters.AccelerationFactor,

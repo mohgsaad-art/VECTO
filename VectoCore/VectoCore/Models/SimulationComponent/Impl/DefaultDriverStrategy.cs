@@ -40,6 +40,7 @@ using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
+using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
@@ -161,7 +162,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		public void WriteModalResults(IModalDataContainer container)
 		{
-			container.SetDataValue("EcoRollConditionsMet", EcoRollState.AllConditionsMet ? 1 : 0);
+			container[ModalResultField.EcoRollConditionsMet] = EcoRollState.AllConditionsMet ? 1 : 0;
 			if (PCCSegments.Count > 0) {
 				var val = 0;
 				if (Driver.DataBus.MileageCounter.Distance > PCCSegments.Current.EndDistance) {
@@ -171,11 +172,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				} else if (Driver.DataBus.MileageCounter.Distance > PCCSegments.Current.StartDistance) {
 					val = -5;
 				}
-				container.SetDataValue("PCCSegment", val);
-				container.SetDataValue("PCCState", (int)pccState);
+
+				container[ModalResultField.PCCSegment] = val;
+				container[ModalResultField.PCCState] = (int)pccState;
 			} else {
-				container.SetDataValue("PCCSegment", 0);
-				container.SetDataValue("PCCState", (int)pccState);
+				container[ModalResultField.PCCSegment] = 0;
+				container[ModalResultField.PCCState] = (int)pccState;
 			}
 		}
 

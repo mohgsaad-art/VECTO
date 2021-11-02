@@ -481,6 +481,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 			public static string DefaultShiftStrategy = "";
 			public const double DragMarginFactor = 0.7;
 
+			public static bool Fallback_ATEcoRollReleaseLockupClutch = false;
+
 
 			// TODO: MQ 2019-11-26 remove, once the parameters are fixed! make fields above read-only or const
 			static GearboxTCU()

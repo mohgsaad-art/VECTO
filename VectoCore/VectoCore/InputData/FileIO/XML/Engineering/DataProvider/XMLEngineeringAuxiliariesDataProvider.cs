@@ -63,7 +63,11 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider
 
 		public virtual IAuxiliaryEngineeringInputData Auxiliaries
 		{
-			get { return null; }
+			get { return new EngineeringAuxiliaryDataInputData() {
+				ConstantPowerDemand = 0.SI<Watt>(),
+				PowerDemandICEOffDriving = 0.SI<Watt>(),
+				PowerDemandICEOffStandstill = 0.SI<Watt>()
+			}; }
 		}
 
 		public IBusAuxiliariesEngineeringData BusAuxiliariesData =>

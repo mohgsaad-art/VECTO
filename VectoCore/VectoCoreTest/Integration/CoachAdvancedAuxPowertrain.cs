@@ -88,6 +88,7 @@ namespace TUGraz.VectoCore.Tests.Integration
 
 			var runData = new VectoRunData() {
 				JobRunId = 0,
+				JobName = modFileName,
 				AxleGearData = axleGearData,
 				VehicleData = vehicleData,
 				AirdragData = airdragData,

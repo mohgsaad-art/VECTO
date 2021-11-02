@@ -331,6 +331,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var isAboveUpShift = IsAboveUpShiftCurve(gear, nextEngineTorque, nextEngineSpeed, _gearbox.TorqueConverterLocked);
 
 			var minAccelerationReachable = true;
+			if (DataBus.DriverInfo.DriverAcceleration.IsSmaller(0)) {
+				return null;
+			}
 			if (!DataBus.VehicleInfo.VehicleSpeed.IsEqual(0)) {
 				var reachableAcceleration = EstimateAccelerationForGear(nextGear, outAngularVelocity);
 				var minAcceleration = _gearbox.TorqueConverterLocked

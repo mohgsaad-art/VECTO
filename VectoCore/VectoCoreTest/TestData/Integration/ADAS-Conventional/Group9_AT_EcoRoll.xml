@@ -8,7 +8,7 @@
 	xmlns:v2.1="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1" 
 	xmlns:v2.3="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.3"
 	xmlns:di="http://www.w3.org/2000/09/xmldsig#" 
-	xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob E:\QUAM\Workspace\VECTO_DEV_ADAS\VectoCore\VectoCore\Resources\XSD/VectoDeclarationJob.xsd">
+	xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob E:\QUAM\Workspace\VECTO_quam\VectoCore\VectoCore\Resources\XSD/VectoDeclarationJob.xsd">
 	<v2.0:Vehicle id="VEH-class9_AT_EcoRoll"  xsi:type="VehicleDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1">
     <Manufacturer>TUG Generic</Manufacturer>
     <ManufacturerAddress>N.A.</ManufacturerAddress>
@@ -30,12 +30,11 @@
 		<ZeroEmissionVehicle>false</ZeroEmissionVehicle>
 		<VocationalVehicle>false</VocationalVehicle>
 		<SleeperCab>false</SleeperCab>
-		<v2.1:ADAS xsi:type="v2.3:AdvancedDriverAssistantSystemsType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.3">
+		<v2.1:ADAS xsi:type="v2.1:AdvancedDriverAssistantSystemsType">
 			<EngineStopStart>false</EngineStopStart>
 			<EcoRollWithoutEngineStop>true</EcoRollWithoutEngineStop>
 			<EcoRollWithEngineStop>false</EcoRollWithEngineStop>
 			<PredictiveCruiseControl>none</PredictiveCruiseControl>
-			<APTEcoRollReleaseLockupClutch>false</APTEcoRollReleaseLockupClutch>
 		</v2.1:ADAS>
     <Components xsi:type="v2.0:VehicleComponentsType">
       <Engine xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xsi:type="EngineComponentDeclarationType">
@@ -252,7 +251,7 @@
           <AppVersion>VectoCore</AppVersion>
           <TransmissionType>APT-S</TransmissionType>
           <MainCertificationMethod>Standard values</MainCertificationMethod>
-          <Gears xsi:type="GearsDeclarationType">
+          <Gears>
             <Gear number="1">
               <Ratio>3.490</Ratio>
               <TorqueLossMap>

@@ -340,7 +340,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 		/// <summary>
 		///     [m]	Altitude
 		/// </summary>
-		[ModalResultField(typeof(SI))] altitude,
+		[ModalResultField(typeof(SI), caption: "altitude [m]")] altitude,
 
 		[ModalResultField(typeof(SI), name: "ds [m]")] simulationDistance,
 
@@ -351,6 +351,10 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 		[ModalResultField(typeof(SI), "P_WHR_mech [kW]", outputFactor: 1e-3)] P_WHR_mech_map,
 		[ModalResultField(typeof(SI), "P_WHR_mech_corr [kW]", outputFactor: 1e-3)] P_WHR_mech_corr,
 
+		[ModalResultField(typeof(int), caption: "DriverAction")] DriverAction,
+		[ModalResultField(typeof(int), caption: "EcoRollConditionsMet")] EcoRollConditionsMet,
+		[ModalResultField(typeof(int), caption: "PCCSegment")] PCCSegment,
+		[ModalResultField(typeof(int), caption: "PCCState")] PCCState,
 
 		//[ModalResultField(typeof(double), caption: "AA_NonSmartAlternatorsEfficiency [%]")] AA_NonSmartAlternatorsEfficiency,
 		//[ModalResultField(typeof(SI), caption: "AA_SmartIdleCurrent_Amps [A]")] AA_SmartIdleCurrent_Amps,
@@ -371,7 +375,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 		//[ModalResultField(typeof(SI), caption: "AA_AveragePowerDemandCrankPneumatics [W]")] AA_AveragePowerDemandCrankPneumatics,
 		//[ModalResultField(typeof(SI), caption: "AA_TotalCycleFuelConsumptionCompressorOff [g]", outputFactor: 1000)] AA_TotalCycleFuelConsumptionCompressorOff,
 		//[ModalResultField(typeof(SI), caption: "AA_TotalCycleFuelConsumptionCompressorOn [g]", outputFactor: 1000)] AA_TotalCycleFuelConsumptionCompressorOn,
-		
+
 	}
 
 	[AttributeUsage(AttributeTargets.Field)]

@@ -161,7 +161,7 @@ namespace TUGraz.VectoCore.Tests.XML
 
 		[TestCase("NG CI", TankSystem.Liquefied),
 		TestCase("NG CI", TankSystem.Compressed),]
-		public void TestUnsupportedEngineFuelTypes(string fuel, TankSystem? tankSystem)
+		public void TestEngineFuelTypesNGCI(string fuel, TankSystem? tankSystem)
 		{
 			
 			var reader = XmlReader.Create(SampleVehicleDecl);
@@ -186,10 +186,11 @@ namespace TUGraz.VectoCore.Tests.XML
 			var inputDataProvider = xmlInputReader.CreateDeclaration(modified);
 			var fuelTyle = inputDataProvider.JobInputData.Vehicle.Components.EngineInputData.EngineModes.First().Fuels.First().FuelType;
 			Assert.AreEqual(fuel, fuelTyle.ToXMLFormat());
-			AssertHelper.Exception<VectoException>(
-				() => {
-					DeclarationData.FuelData.Lookup(fuelTyle, tankSystem);
-				});			
+			//AssertHelper.Exception<VectoException>(
+			//	() => {
+			//		DeclarationData.FuelData.Lookup(fuelTyle, tankSystem);
+			//	});			
+			Assert.NotNull(DeclarationData.FuelData.Lookup(fuelTyle, tankSystem));
 		}
 
 		[TestCase]

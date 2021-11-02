@@ -296,6 +296,8 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			var dynamicTyreRadius = runData.VehicleData.DynamicTyreRadius;
 			var retVal = SetCommonGearboxData(gearbox);
 
+			retVal.ATEcoRollReleaseLockupClutch = DeclarationData.GearboxTCU.Fallback_ATEcoRollReleaseLockupClutch;
+
 			if (!SupportedGearboxTypes.Contains(gearbox.Type)) {
 				throw new VectoSimulationException("Unsupported gearbox type: {0}!", retVal.Type);
 			}
@@ -583,7 +585,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				TorqueReserve = DeclarationData.GearboxTCU.TorqueReserve,
 				StartTorqueReserve = DeclarationData.GearboxTCU.TorqueReserveStart,
 				TimeBetweenGearshifts = DeclarationData.Gearbox.MinTimeBetweenGearshifts,
-				StartSpeed = DeclarationData.GearboxTCU.StartSpeed,
+				StartSpeed = gbx.Type == GearboxType.MT ? DeclarationData.Gearbox.StartSpeed : DeclarationData.GearboxTCU.StartSpeed,
 				StartAcceleration = DeclarationData.GearboxTCU.StartAcceleration,
 				DownshiftAfterUpshiftDelay = DeclarationData.Gearbox.DownshiftAfterUpshiftDelay,
 				UpshiftAfterDownshiftDelay = DeclarationData.Gearbox.UpshiftAfterDownshiftDelay,

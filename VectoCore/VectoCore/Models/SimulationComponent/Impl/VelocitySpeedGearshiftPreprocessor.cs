@@ -147,6 +147,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		protected MeterPerSecond SimulateRollingVehicle(Vehicle vehicle, Radian gradient, IVehicleContainer container)
 		{
+			if (TractionInterruption.IsEqual(0)) {
+				return vehicle.VehicleSpeed;
+			}
 			var simulationInterval = TractionInterruption;
 
 			var acceleration = 0.SI<MeterPerSquareSecond>();

@@ -815,6 +815,13 @@
     <EmbeddedResource Include="Resources\Declaration\Buses\HVACCoolingPowerPassenger.csv" />
     <EmbeddedResource Include="Resources\Declaration\Buses\SSMDefaults.AHSM" />
     <EmbeddedResource Include="Resources\Declaration\Buses\SSMTechList.csv" />
+    <EmbeddedResource Include="Resources\Declaration\VAUXBus\DEFAULT_1-Cylinder_1-Stage_393ccm.acmp" />
+    <EmbeddedResource Include="Resources\Declaration\VAUXBus\DEFAULT_2-Cylinder_1-Stage_650ccm.acmp" />
+    <EmbeddedResource Include="Resources\Declaration\VAUXBus\DEFAULT_2-Cylinder_2-Stage_398ccm.acmp" />
+    <EmbeddedResource Include="Resources\Declaration\VAUXBus\DEFAULT_3-Cylinder_2-Stage_598ccm.acmp" />
+    <EmbeddedResource Include="Resources\Declaration\VAUXBus\SP-AxleFactor.csv" />
+    <EmbeddedResource Include="Resources\Declaration\VAUXBus\SP-Axles_Bus.csv" />
+    <EmbeddedResource Include="Resources\Declaration\VAUXBus\SP-Factors_Bus.csv" />
     <None Include="Utils\VectoVersionCore.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>VectoVersionCore.cs</LastGenOutput>

@@ -215,6 +215,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var vehicle = new MockVehicle(container);
 			container.AbsTime = 100.SI<Second>();
 			var driver = new MockDriver(container);
+			driver.DriverAcceleration = 0.SI<MeterPerSquareSecond>();
 			vehicle.MyVehicleSpeed = 10.KMPHtoMeterPerSecond();
 			driver.DriverBehavior = DrivingBehavior.Driving;
 			engine = new CombustionEngine(
