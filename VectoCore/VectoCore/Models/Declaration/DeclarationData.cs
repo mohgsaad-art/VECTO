@@ -705,7 +705,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 				var upShiftPts = IntersectTakeHigherShiftLine(new[] { p4, p7, p5 }, new[] { p2p, p6p, p3pExt });
 				if (gears[gearIdx].MaxInputSpeed != null) {
-					var maxSpeed = gears[gearIdx].MaxInputSpeed.Value();
+					var maxSpeed = (gears[gearIdx].MaxInputSpeed - 2.RPMtoRad()).Value();
 					upShiftPts = IntersectTakeLowerShiftLine(upShiftPts,
 						new[] { new Point(maxSpeed, 0), new Point(maxSpeed, upShiftPts.Max(pt => pt.Y)) });
 				}
