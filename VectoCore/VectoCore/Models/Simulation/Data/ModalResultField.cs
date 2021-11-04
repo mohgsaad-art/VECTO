@@ -115,32 +115,32 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 		/// <summary>
 		/// [g/h] Fuel consumption from FC map..
 		/// </summary>
-		[ModalResultField(typeof(SI), name: "FC-Map", caption: "FC-Map [g/h]", outputFactor: 3600 * 1000)] FCMap,
+		[ModalResultField(typeof(SI), name: "FC-Map", caption: "FC-Map{0} [g/h]", outputFactor: 3600 * 1000)] FCMap,
 
 		/// <summary>
 		/// [g/h] Fuel consumption after correction for different NCV in VECTO Engine and VECTO sim. (Based on FC.)
 		/// </summary>
-		[ModalResultField(typeof(SI), name: "FC-NCVc", caption: "FC-NCVc [g/h]", outputFactor: 3600 * 1000)] FCNCVc,
+		[ModalResultField(typeof(SI), name: "FC-NCVc", caption: "FC-NCVc{0} [g/h]", outputFactor: 3600 * 1000)] FCNCVc,
 
 		/// <summary>
 		/// [g/h] Fuel consumption after WHTC Correction. (Based on FC-AUXc.)
 		/// </summary>
-		[ModalResultField(typeof(SI), name: "FC-WHTCc", caption: "FC-WHTCc [g/h]", outputFactor: 3600 * 1000)] FCWHTCc,
+		[ModalResultField(typeof(SI), name: "FC-WHTCc", caption: "FC-WHTCc{0} [g/h]", outputFactor: 3600 * 1000)] FCWHTCc,
 
 		/// <summary>
 		/// [g/h] Fuel consumption after smart auxiliary correction.
 		/// </summary>
-		[ModalResultField(typeof(SI), name: "FC-AAUX", caption: "FC-AAUX [g/h]", outputFactor: 3600 * 1000)] FCAAUX,
+		[ModalResultField(typeof(SI), name: "FC-AAUX", caption: "FC-AAUX{0} [g/h]", outputFactor: 3600 * 1000)] FCAAUX,
 
-		/// <summary>
-		/// [g/h] Fuel consumption after correction for ADAS technologies. (Based on FC-AAUXc.)
-		/// </summary>
-		[ModalResultField(typeof(SI), name: "FC-ADAS", caption: "FC-ADAS [g/h]", outputFactor: 3600 * 1000)] FCADAS,
+		///// <summary>
+		///// [g/h] Fuel consumption after correction for ADAS technologies. (Based on FC-AAUXc.)
+		///// </summary>
+		//[ModalResultField(typeof(SI), name: "FC-ADAS", caption: "FC-ADAS{0} [g/h]", outputFactor: 3600 * 1000)] FCADAS,
 
 		/// <summary>
 		/// [g/h] Fuel consumption after WHTC Correction. (Based on FC-ADAS.)
 		/// </summary>
-		[ModalResultField(typeof(SI), name: "FC-Final", caption: "FC-Final [g/h]", outputFactor: 3600 * 1000)] FCFinal,
+		[ModalResultField(typeof(SI), name: "FC-Final_mod", caption: "FC-Final_mod{0} [g/h]", outputFactor: 3600 * 1000)] FCFinal,
 
 		/// <summary>
 		///     [km]	Travelled distance.

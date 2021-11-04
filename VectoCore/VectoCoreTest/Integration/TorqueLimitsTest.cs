@@ -228,18 +228,20 @@ namespace TUGraz.VectoCore.Tests.Integration
 			var inputDataProvider = JSONInputDataFactory.ReadJsonJob(file);
 			var factory = new SimulatorFactory(ExecutionMode.Declaration, inputDataProvider, fileWriter) {
 				WriteModalResults = true,
-				ActualModalData = true
+				//ActualModalData = true
 			};
 
 
 			var jobContainer = new JobContainer(sumData);
 			jobContainer.AddRuns(factory);
 
-			jobContainer.Execute();
-			jobContainer.WaitFinished();
+            //jobContainer.Runs[4].RunWorkerAsync().Wait();
 
-			Assert.IsTrue(jobContainer.Runs.All(r => r.Success), string.Concat(jobContainer.Runs.Select(r => r.ExecException)));
-		}
+            jobContainer.Execute();
+            jobContainer.WaitFinished();
+
+            Assert.IsTrue(jobContainer.Runs.All(r => r.Success), string.Concat(jobContainer.Runs.Select(r => r.ExecException)));
+        }
 
 		[TestCase(EngineSpeedLimitJobDecl), Category("LongRunning")]
 		public void TestRunEngineSpeedLimitedSimulations(string file)

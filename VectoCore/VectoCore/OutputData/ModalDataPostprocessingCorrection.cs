@@ -20,7 +20,12 @@ namespace TUGraz.VectoCore.OutputData
 
 		public ICorrectedModalData ApplyCorrection(IModalDataContainer modData, VectoRunData runData)
 		{
-			var r = new CorrectedModalData();
+			var essParams = runData.DriverData.EngineStopStart;
+			var r = new CorrectedModalData {
+				UtilityFactorDriving = essParams.UtilityFactorDriving,
+				UtilityFactorStandstill = essParams.UtilityFactorStandstill
+			};
+
 			var duration = modData.Duration;
 			var distance = modData.Distance;
 			
@@ -49,7 +54,7 @@ namespace TUGraz.VectoCore.OutputData
 
 			SetAuxHeaterDemand(modData, r, duration);
 
-			r.DeltaEReessMech = 0.SI<WattSecond>();
+			//r.DeltaEReessMech = 0.SI<WattSecond>();
 			//SetReesCorrectionDemand(modData, runData, r);
 			
 			var kilogramCO2PerMeter = 0.SI<KilogramPerMeter>();
@@ -80,7 +85,7 @@ namespace TUGraz.VectoCore.OutputData
 		{
 			var duration = modData.Duration;
 			var distance = modData.Distance;
-			var essParams = runData.DriverData.EngineStopStart;
+			//var essParams = runData.DriverData.EngineStopStart;
 			var engFuel = runData.EngineData.Fuels.First(x => x.FuelData.Equals(fuel));
 
 			var fcIceIdle = engFuel.ConsumptionMap.GetFuelConsumptionValue(
@@ -94,8 +99,6 @@ namespace TUGraz.VectoCore.OutputData
 				runData.BusAuxiliaries?.PneumaticUserInputsConfig.CompressorMap
 					.Interpolate(runData.EngineData.IdleSpeed);
 
-			
-
 			var f = new FuelConsumptionCorrection {
 				Fuel = fuel,
 				Distance = distance != null && distance.IsGreater(0) ? distance : null,
@@ -105,26 +108,24 @@ namespace TUGraz.VectoCore.OutputData
 				FcModSum = modData.TotalFuelConsumption(ModalResultField.FCFinal, fuel),
 				FcESS_EngineStart = engLine * modData.WorkEngineStart(),
 
-				FcESS_AuxStandstill_ICEOff = r.EnergyAuxICEOffStandstill * engLine *
-											essParams.UtilityFactorStandstill,
-				FcESS_AuxStandstill_ICEOn =
-					r.EnergyAuxICEOnStandstill * engLine * (1 - essParams.UtilityFactorStandstill) +
-					fcIceIdle * r.ICEOffTimeStandstill * (1 - essParams.UtilityFactorStandstill),
+				FcESS_AuxStandstill_ICEOff = r.EnergyAuxICEOffStandstill_UF * engLine ,
+				FcESS_AuxStandstill_ICEOn = r.EnergyAuxICEOnStandstill_UF * engLine +
+											fcIceIdle * r.ICEOffTimeStandstill * (1 - r.UtilityFactorStandstill),
 
-				FcESS_AuxDriving_ICEOff = r.EnergyAuxICEOffDriving * engLine * essParams.UtilityFactorDriving,
-				FcESS_AuxDriving_ICEOn = r.EnergyAuxICEOnDriving * engLine * (1 - essParams.UtilityFactorDriving) +
-										fcIceIdle * r.ICEOffTimeDriving * (1 - essParams.UtilityFactorDriving),
+				FcESS_AuxDriving_ICEOff = r.EnergyAuxICEOffDriving_UF * engLine,
+				FcESS_AuxDriving_ICEOn = r.EnergyAuxICEOnDriving_UF * engLine +
+										fcIceIdle * r.ICEOffTimeDriving * (1 - r.UtilityFactorDriving),
 
 				FcESS_DCDCMissing = r.EnergyDCDCMissing * engLine,
 				FcBusAuxPSAirDemand = engLine * r.WorkBusAuxPSCorr,
 
 				FcBusAuxPSDragICEOffStandstill = comp == null
 					? 0.SI<Kilogram>()
-					: comp.PowerOff * r.ICEOffTimeStandstill * engLine * (1 - essParams.UtilityFactorStandstill),
+					: comp.PowerOff * r.ICEOffTimeStandstill * engLine * (1 - r.UtilityFactorStandstill),
 				FcBusAuxPSDragICEOffDriving = comp == null
 					? 0.SI<Kilogram>()
-					: comp.PowerOff * r.ICEOffTimeDriving * engLine * (1 - essParams.UtilityFactorDriving),
-				FcREESSSoc = r.DeltaEReessMech * engLine,
+					: comp.PowerOff * r.ICEOffTimeDriving * engLine * (1 - r.UtilityFactorDriving),
+				//FcREESSSoc = r.DeltaEReessMech * engLine,
 				FcBusAuxEs = engLine * r.WorkBusAuxESMech,
 				FcWHR = engLine * r.WorkWHR,
 				FcAuxHtr = 0.SI<Kilogram>()
@@ -247,6 +248,14 @@ namespace TUGraz.VectoCore.OutputData
 		}
 
 		//public WattSecond WorkESS { get; set; }
+		public WattSecond WorkESSMissing
+		{
+			get
+			{
+				return EnergyAuxICEOffStandstill_UF + EnergyAuxICEOffDriving_UF + EnergyAuxICEOnDriving_UF +
+						EnergyAuxICEOnStandstill_UF;
+			}
+		}
 		public WattSecond WorkWHREl { get; set; }
 		public WattSecond WorkWHRElMech { get; set; }
 		public WattSecond WorkWHRMech { get; set; }
@@ -286,19 +295,40 @@ namespace TUGraz.VectoCore.OutputData
 
 		public Second ICEOffTimeStandstill { get; set; }
 		public WattSecond EnergyAuxICEOffStandstill { get; set; }
+
+		public WattSecond EnergyAuxICEOffStandstill_UF {get
+		{
+			return EnergyAuxICEOffStandstill * UtilityFactorStandstill;
+		} }
+
+		public double UtilityFactorStandstill { get; set; }
+
 		public WattSecond EnergyAuxICEOnStandstill { get; set; }
+
+		public WattSecond EnergyAuxICEOnStandstill_UF
+		{
+			get { return EnergyAuxICEOnStandstill * (1 - UtilityFactorStandstill); }
+		}
+
 		public Watt AvgAuxPowerICEOnStandstill => ICEOffTimeStandstill.IsEqual(0) ? 0.SI<Watt>() : EnergyAuxICEOnStandstill / ICEOffTimeStandstill;
 
 
 		public Second ICEOffTimeDriving { get; set; }
 		public WattSecond EnergyAuxICEOffDriving { get; set; }
+		public WattSecond EnergyAuxICEOffDriving_UF { get { return EnergyAuxICEOffDriving * UtilityFactorDriving; } }
+		public double UtilityFactorDriving { get; set; }
+
 		public WattSecond EnergyAuxICEOnDriving { get; set; }
+		public WattSecond EnergyAuxICEOnDriving_UF { get
+		{
+			return EnergyAuxICEOnDriving * (1 - UtilityFactorDriving);
+		} }
 		public Watt AvgAuxPowerICEOnDriving => ICEOffTimeDriving.IsEqual(0) ? 0.SI<Watt>() : EnergyAuxICEOnDriving / ICEOffTimeDriving;
 
 		public WattSecond EnergyDCDCMissing { get; set; }
 		public NormLiter CorrectedAirDemand { get; set; }
 		public NormLiter DeltaAir { get; set; }
-        public WattSecond DeltaEReessMech { get; set; }
+        //public WattSecond DeltaEReessMech { get; set; }
 
         #endregion
     }
@@ -334,7 +364,7 @@ namespace TUGraz.VectoCore.OutputData
 		}
 		public Kilogram FcBusAuxEs { get; set; }
 		public Kilogram FcWHR { get; set; }
-		public Kilogram FcREESSSoc { get; set; }
+		//public Kilogram FcREESSSoc { get; set; }
 
 		public Kilogram FcAuxHtr { get; set; }
 
@@ -343,9 +373,9 @@ namespace TUGraz.VectoCore.OutputData
 		public Kilogram FcBusAuxPsCorr => FcEssCorr + FcBusAuxPs;
 		public Kilogram FcBusAuxEsCorr => FcBusAuxPsCorr + FcBusAuxEs;
 		public Kilogram FcWHRCorr => FcBusAuxEsCorr + FcWHR;
-		public Kilogram FcREESSSoCCorr => FcWHRCorr + FcREESSSoc;
+		//public Kilogram FcREESSSoCCorr => FcWHRCorr + FcREESSSoc;
 
-		public Kilogram FcAuxHtrCorr => FcREESSSoCCorr + FcAuxHtr;
+		public Kilogram FcAuxHtrCorr => FcWHRCorr + FcAuxHtr;
 
 		public Kilogram FcFinal => FcAuxHtrCorr;
 
@@ -360,12 +390,12 @@ namespace TUGraz.VectoCore.OutputData
 		public KilogramPerSecond FC_WHR_CORR_H => Duration != null ? (FcWHRCorr / Duration) : null;
 		public KilogramPerSecond FC_AUXHTR_H => Duration != null ? (FcAuxHtr / Duration) : null;
 		public KilogramPerSecond FC_AUXHTR_H_CORR => Duration != null ? (FcAuxHtrCorr / Duration) : null;
-		public KilogramPerSecond FC_REESS_SOC_H => Duration != null ? FcREESSSoc / Duration : null;
-		public KilogramPerSecond FC_REESS_SOC_CORR_H => Duration != null ? (FcREESSSoCCorr / Duration) : null;
+		//public KilogramPerSecond FC_REESS_SOC_H => Duration != null ? FcREESSSoc / Duration : null;
+		//public KilogramPerSecond FC_REESS_SOC_CORR_H => Duration != null ? (FcREESSSoCCorr / Duration) : null;
 		public KilogramPerSecond FC_FINAL_H => Duration != null ? FcFinal / Duration : null;
 
-		public KilogramPerMeter FC_REESS_SOC_KM => Distance != null ? FcREESSSoc / Distance : null;
-		public KilogramPerMeter FC_REESS_SOC_CORR_KM => Distance != null ? (FcREESSSoCCorr / Distance) : null;
+		//public KilogramPerMeter FC_REESS_SOC_KM => Distance != null ? FcREESSSoc / Distance : null;
+		//public KilogramPerMeter FC_REESS_SOC_CORR_KM => Distance != null ? (FcREESSSoCCorr / Distance) : null;
 		public KilogramPerMeter FC_ESS_KM => Distance != null ? (FcESS / Distance) : null;
 		public KilogramPerMeter FC_ESS_CORR_KM => Distance != null ? (FcEssCorr / Distance) : null;
 		public KilogramPerMeter FC_WHR_CORR_KM => Distance != null ? (FcWHRCorr / Distance) : null;

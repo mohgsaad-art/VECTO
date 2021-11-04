@@ -64,8 +64,8 @@ namespace TUGraz.VectoCore.OutputData
 			Fields.FC_BusAux_PS_CORR_H, Fields.FC_BusAux_PS_CORR_KM,
 			Fields.FC_BusAux_ES_CORR_H, Fields.FC_BusAux_ES_CORR_KM,
 			Fields.FCWHR_H_CORR, Fields.FCWHR_KM_CORR,
-			Fields.FC_HEV_SOC_H, Fields.FC_HEV_SOC_KM,
-			Fields.FC_HEV_SOC_CORR_H, Fields.FC_HEV_SOC_CORR_KM,
+			//Fields.FC_HEV_SOC_H, Fields.FC_HEV_SOC_KM,
+			//Fields.FC_HEV_SOC_CORR_H, Fields.FC_HEV_SOC_CORR_KM,
 			Fields.FC_AUXHTR_H, Fields.FC_AUXHTR_KM,
 			Fields.FC_AUXHTR_H_CORR, Fields.FC_AUXHTR_KM_CORR,
 			Fields.FCFINAL_H, Fields.FCFINAL_KM, Fields.FCFINAL_LITERPER100KM, Fields.FCFINAL_LITERPER100TKM,
@@ -166,7 +166,7 @@ namespace TUGraz.VectoCore.OutputData
 				Tuple.Create(Fields.TCU_MODEL, typeof(string)),
 					Tuple.Create(Fields.ADAS_TECHNOLOGY_COMBINATION, typeof(string)),
 					Tuple.Create(Fields.PTO_TECHNOLOGY, typeof(string)),
-					Tuple.Create(Fields.REESS_CAPACITY, typeof(string)),
+					//Tuple.Create(Fields.REESS_CAPACITY, typeof(string)),
 						//Tuple.Create(PTO_OTHER_ELEMENTS, typeof(string)),
 					}.Select(x => new DataColumn(x.Item1, x.Item2)).ToArray());
 
@@ -179,9 +179,9 @@ namespace TUGraz.VectoCore.OutputData
 				Table.Columns.AddRange(
 					new[] {
 					Fields.CO2_KM, Fields.CO2_TKM, Fields.CO2_M3KM, /*Fields.CO2_PKM, */ Fields.P_WHEEL, Fields.P_WHEEL_POS, Fields.P_FCMAP, Fields.P_FCMAP_POS,
-					Fields.E_FCMAP_POS, Fields.E_FCMAP_NEG, Fields.E_POWERTRAIN_INERTIA, Fields.E_AUX, Fields.E_AUX_EL_HV, Fields.E_CLUTCH_LOSS,
+					Fields.E_FCMAP_POS, Fields.E_FCMAP_NEG, Fields.E_POWERTRAIN_INERTIA, Fields.E_AUX, /*Fields.E_AUX_EL_HV,*/ Fields.E_CLUTCH_LOSS,
 					Fields.E_TC_LOSS, Fields.E_SHIFT_LOSS, Fields.E_GBX_LOSS, Fields.E_RET_LOSS, Fields.E_ANGLE_LOSS,
-					Fields.E_AXL_LOSS, Fields.E_BRAKE, Fields.E_VEHICLE_INERTIA, Fields.E_WHEEL, Fields.E_AIR, Fields.E_ROLL, Fields.E_GRAD,
+					Fields.E_AXL_LOSS, Fields.E_BRAKE, Fields.E_VEHICLE_INERTIA, Fields.E_WHEEL, Fields.E_AIR, Fields.E_ROLL, Fields.E_GRAD, Fields.E_AUX_ESS_missing,
 					Fields.AirConsumed, Fields.AirGenerated, Fields.E_PS_CompressorOff, Fields.E_PS_CompressorOn,
 					Fields.E_BusAux_ES_consumed, Fields.E_BusAux_ES_generated, Fields.Delta_E_BusAux_Battery,
 					Fields.E_BusAux_PS_corr, Fields.E_BusAux_ES_mech_corr,
@@ -436,9 +436,9 @@ namespace TUGraz.VectoCore.OutputData
 				row[FcCol(Fields.FC_BusAux_PS_CORR_H, suffix)] = fuelConsumption.FC_BusAux_PS_CORR_H?.ConvertToGrammPerHour();
 				row[FcCol(Fields.FC_BusAux_ES_CORR_H, suffix)] = fuelConsumption.FC_BusAux_ES_CORR_H?.ConvertToGrammPerHour();
 				row[FcCol(Fields.FCWHR_H_CORR, suffix)] = fuelConsumption.FC_WHR_CORR_H?.ConvertToGrammPerHour();
-				row[FcCol(Fields.FC_HEV_SOC_CORR_H, suffix)] = fuelConsumption.FC_REESS_SOC_CORR_H?.ConvertToGrammPerHour();
-				row[FcCol(Fields.FC_HEV_SOC_H, suffix)] = fuelConsumption.FC_REESS_SOC_H?.ConvertToGrammPerHour();
-				row[FcCol(Fields.FC_AUXHTR_H, suffix)] = fuelConsumption.FC_AUXHTR_H?.ConvertToGrammPerHour();
+                //row[FcCol(Fields.FC_HEV_SOC_CORR_H, suffix)] = fuelConsumption.FC_REESS_SOC_CORR_H?.ConvertToGrammPerHour();
+                //row[FcCol(Fields.FC_HEV_SOC_H, suffix)] = fuelConsumption.FC_REESS_SOC_H?.ConvertToGrammPerHour();
+                row[FcCol(Fields.FC_AUXHTR_H, suffix)] = fuelConsumption.FC_AUXHTR_H?.ConvertToGrammPerHour();
 				row[FcCol(Fields.FC_AUXHTR_H_CORR, suffix)] = fuelConsumption.FC_AUXHTR_H_CORR?.ConvertToGrammPerHour();
 
 				row[FcCol(Fields.FCFINAL_H, suffix)] = fuelConsumption.FC_FINAL_H?.ConvertToGrammPerHour();
@@ -446,8 +446,8 @@ namespace TUGraz.VectoCore.OutputData
 				row[FcCol(Fields.FCWHR_KM_CORR, suffix)] = fuelConsumption.FC_WHR_CORR_KM?.ConvertToGrammPerKiloMeter();
 				row[FcCol(Fields.FC_BusAux_PS_CORR_KM, suffix)] = fuelConsumption.FC_BusAux_PS_CORR_KM?.ConvertToGrammPerKiloMeter();
 				row[FcCol(Fields.FC_BusAux_ES_CORR_KM, suffix)] = fuelConsumption.FC_BusAux_ES_CORR_KM?.ConvertToGrammPerKiloMeter();
-				row[FcCol(Fields.FC_HEV_SOC_CORR_KM, suffix)] = fuelConsumption.FC_REESS_SOC_CORR_KM?.ConvertToGrammPerKiloMeter();
-				row[FcCol(Fields.FC_HEV_SOC_KM, suffix)] = fuelConsumption.FC_REESS_SOC_KM?.ConvertToGrammPerKiloMeter();
+				//row[FcCol(Fields.FC_HEV_SOC_CORR_KM, suffix)] = fuelConsumption.FC_REESS_SOC_CORR_KM?.ConvertToGrammPerKiloMeter();
+				//row[FcCol(Fields.FC_HEV_SOC_KM, suffix)] = fuelConsumption.FC_REESS_SOC_KM?.ConvertToGrammPerKiloMeter();
 				row[FcCol(Fields.FC_AUXHTR_KM, suffix)] = fuelConsumption.FC_AUXHTR_KM?.ConvertToGrammPerKiloMeter();
 				row[FcCol(Fields.FC_AUXHTR_KM_CORR, suffix)] = fuelConsumption.FC_AUXHTR_KM_CORR?.ConvertToGrammPerKiloMeter();
 
@@ -648,6 +648,7 @@ namespace TUGraz.VectoCore.OutputData
 			row[Fields.E_AIR] = modData.WorkAirResistance().ConvertToKiloWattHour();
 			row[Fields.E_ROLL] = modData.WorkRollingResistance().ConvertToKiloWattHour();
 			row[Fields.E_GRAD] = modData.WorkRoadGradientResistance().ConvertToKiloWattHour();
+			row[Fields.E_AUX_ESS_missing] = modData.CorrectedModalData.WorkESSMissing.ConvertToKiloWattHour();
 			if (runData.Cycle.CycleType == CycleType.VTP) {
 				row[Fields.E_WHEEL] = modData.WorkWheels().ConvertToKiloWattHour();
 			}
@@ -732,10 +733,8 @@ namespace TUGraz.VectoCore.OutputData
 
 			row[Fields.ADAS_TECHNOLOGY_COMBINATION] = data.ADAS != null ? DeclarationData.ADASCombinations.Lookup(data.ADAS, gbxType).ID : "";
 
-			var cap = "";
-			
-
-			row[Fields.REESS_CAPACITY] = cap;
+			//var cap = "";
+			//row[Fields.REESS_CAPACITY] = cap;
 		}
 
 		private static void WriteAirdragData(AirdragData data, DataRow row)
@@ -1028,10 +1027,10 @@ namespace TUGraz.VectoCore.OutputData
 			public const string FCESS_KM_CORR = "FC-ESS_Corr{0} [g/km]";
 			public const string FCWHR_H_CORR = "FC-WHR_Corr{0} [g/h]";
 			public const string FCWHR_KM_CORR = "FC-WHR_Corr{0} [g/km]";
-			public const string FC_HEV_SOC_H = "FC-SoC{0} [g/h]";
-			public const string FC_HEV_SOC_KM = "FC-SoC{0} [g/km]";
-			public const string FC_HEV_SOC_CORR_H = "FC-SoC_Corr{0} [g/h]";
-			public const string FC_HEV_SOC_CORR_KM = "FC-SoC_Corr{0} [g/km]";
+			//public const string FC_HEV_SOC_H = "FC-SoC{0} [g/h]";
+			//public const string FC_HEV_SOC_KM = "FC-SoC{0} [g/km]";
+			//public const string FC_HEV_SOC_CORR_H = "FC-SoC_Corr{0} [g/h]";
+			//public const string FC_HEV_SOC_CORR_KM = "FC-SoC_Corr{0} [g/km]";
 
 
 			public const string FC_BusAux_PS_CORR_H = "FC-BusAux_PS_Corr{0} [g/h]";
@@ -1067,7 +1066,7 @@ namespace TUGraz.VectoCore.OutputData
 			public const string E_AUX_FORMAT = "E_aux_{0} [kWh]";
 			public const string E_AUX = "E_aux_sum [kWh]";
 
-			public const string E_AUX_EL_HV = "E_aux_el(HV) [kWh]";
+			//public const string E_AUX_EL_HV = "E_aux_el(HV) [kWh]";
 
 			public const string E_ICE_START = "E_ice_start [kWh]";
 			public const string NUM_ICE_STARTS = "ice_starts [-]";
@@ -1109,6 +1108,8 @@ namespace TUGraz.VectoCore.OutputData
 
 			public const string E_BusAux_HVAC_Mech = "E_BusAux_HVAC_mech [kWh]";
 			public const string E_BusAux_HVAC_El = "E_BusAux_HVAC_el [kWh]";
+
+			public const string E_AUX_ESS_missing = "E_aux_ESS_missing [kWh]";
 
 			public const string SPECIFIC_FC = "Specific FC{0} [g/kWh] wheel pos.";
 
@@ -1184,34 +1185,34 @@ namespace TUGraz.VectoCore.OutputData
 
 			public const string AVERAGE_POS_ACC = "a_avg_acc";
 
-			public const string E_EM_DRIVE_FORMAT = "E_EM_{0}_drive [kWh]";
-			public const string E_EM_GENERATE_FORMAT = "E_EM_{0}_gen [kWh]";
-			public const string ETA_EM_DRIVE_FORMAT = "η_EM_{0}_drive";
-			public const string ETA_EM_GEN_FORMAT = "η_EM_{0}_gen";
+			//public const string E_EM_DRIVE_FORMAT = "E_EM_{0}_drive [kWh]";
+			//public const string E_EM_GENERATE_FORMAT = "E_EM_{0}_gen [kWh]";
+			//public const string ETA_EM_DRIVE_FORMAT = "η_EM_{0}_drive";
+			//public const string ETA_EM_GEN_FORMAT = "η_EM_{0}_gen";
 
-			public const string E_EM_Mot_DRIVE_FORMAT = "E_EM_{0}-em_drive [kWh]";
-			public const string E_EM_Mot_GENERATE_FORMAT = "E_EM_{0}-em_gen [kWh]";
-			public const string ETA_EM_Mot_DRIVE_FORMAT = "η_EM_{0}-em_drive";
-			public const string ETA_EM_Mot_GEN_FORMAT = "η_EM_{0}-em_gen";
+			//public const string E_EM_Mot_DRIVE_FORMAT = "E_EM_{0}-em_drive [kWh]";
+			//public const string E_EM_Mot_GENERATE_FORMAT = "E_EM_{0}-em_gen [kWh]";
+			//public const string ETA_EM_Mot_DRIVE_FORMAT = "η_EM_{0}-em_drive";
+			//public const string ETA_EM_Mot_GEN_FORMAT = "η_EM_{0}-em_gen";
 
-			public const string EM_AVG_SPEED_FORMAT = "n_EM_{0}-em_avg [rpm]";
+			//public const string EM_AVG_SPEED_FORMAT = "n_EM_{0}-em_avg [rpm]";
 
-			public const string E_EM_OFF_Loss_Format = "E_EM_{0}_off_loss [kWh]";
-			public const string E_EM_LOSS_TRANSM_FORMAT = "E_EM_{0}_transm_loss [kWh]";
-			public const string E_EM_Mot_LOSS_FORMAT = "E_EM_{0}-em_loss [kWh]";
-			public const string E_EM_LOSS_FORMAT = "E_EM_{0}_loss [kWh]";
-			public const string E_EM_OFF_TIME_SHARE = "EM {0} off time share [%]";
+			//public const string E_EM_OFF_Loss_Format = "E_EM_{0}_off_loss [kWh]";
+			//public const string E_EM_LOSS_TRANSM_FORMAT = "E_EM_{0}_transm_loss [kWh]";
+			//public const string E_EM_Mot_LOSS_FORMAT = "E_EM_{0}-em_loss [kWh]";
+			//public const string E_EM_LOSS_FORMAT = "E_EM_{0}_loss [kWh]";
+			//public const string E_EM_OFF_TIME_SHARE = "EM {0} off time share [%]";
 
-			public const string REESS_CAPACITY = "REESS Capacity";
-			public const string REESS_StartSoC = "REESS Start SoC [%]";
-			public const string REESS_EndSoC = "REESS End SoC [%]";
-			public const string REESS_DeltaEnergy = "ΔE_REESS [kWh]";
+			//public const string REESS_CAPACITY = "REESS Capacity";
+			//public const string REESS_StartSoC = "REESS Start SoC [%]";
+			//public const string REESS_EndSoC = "REESS End SoC [%]";
+			//public const string REESS_DeltaEnergy = "ΔE_REESS [kWh]";
 
-			public const string E_REESS_LOSS = "E_REESS_loss [kWh]";
-			public const string E_REESS_T_chg = "E_REESS_T_chg [kWh]";
-			public const string E_REESS_T_dischg = "E_REESS_T_dischg [kWh]";
-			public const string E_REESS_int_chg = "E_REESS_int_chg [kWh]";
-			public const string E_REESS_int_dischg = "E_REESS_int_dischg [kWh]";
+			//public const string E_REESS_LOSS = "E_REESS_loss [kWh]";
+			//public const string E_REESS_T_chg = "E_REESS_T_chg [kWh]";
+			//public const string E_REESS_T_dischg = "E_REESS_T_dischg [kWh]";
+			//public const string E_REESS_int_chg = "E_REESS_int_chg [kWh]";
+			//public const string E_REESS_int_dischg = "E_REESS_int_dischg [kWh]";
 		}
 	}
 }

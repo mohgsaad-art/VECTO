@@ -171,6 +171,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 			var E_auxICEOnStandstill = (P_on * T2).Value(); // 46054.609042105534
 			var E_auxICEOffStandstill = (P_off * T2).Value(); // 15351.536347368512
 
+			var E_auxESSMissing = E_auxICEOnStandstill * (1 - UF_ESS_Standstill) + E_auxICEOffStandstill * UF_ESS_Standstill;
+
 			var fcEssStandStillOff = E_auxICEOffStandstill * k_engline * UF_ESS_Standstill; // 0.0003034945726763096
 			var fcEssStandStillOn =
 				(E_auxICEOnStandstill * k_engline + (fcIdle * T2).Value()) * (1 - UF_ESS_Standstill); // 0.00400097222027925
@@ -184,6 +186,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 
 			Assert.AreEqual(E_auxICEOnStandstill, corr.EnergyAuxICEOnStandstill.Value(), 1e-3);
 			Assert.AreEqual(E_auxICEOffStandstill, corr.EnergyAuxICEOffStandstill.Value(), 1e-3);
+
+			Assert.AreEqual(E_auxESSMissing, corr.WorkESSMissing.Value(), 1e-3);
 
 			Assert.AreEqual(0, corr.EnergyAuxICEOnDriving.Value(), 1e-3);
 			Assert.AreEqual(0, corr.EnergyAuxICEOffDriving.Value(), 1e-3);
@@ -324,6 +328,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 			var E_auxICEOnDriving = (P_on * T2).Value(); // 46054.609042105534;
 			var E_auxICEOffDriving = (P_off * T2).Value(); // 15351.536347368512
 
+			var E_auxESSMissing = E_auxICEOnDriving * (1 - UF_ESS_Driving) + E_auxICEOffDriving * UF_ESS_Driving;
+
 			var fcIdle =
 				fuel.ConsumptionMap.GetFuelConsumption(0.SI<NewtonMeter>(), runData.EngineData.IdleSpeed).Value
 					.Value() * fuel.FuelConsumptionCorrectionFactor; // 0.0002929177777777778
@@ -343,6 +349,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 
 			Assert.AreEqual(E_auxICEOnDriving, corr.EnergyAuxICEOnDriving.Value(), 1e-3);
 			Assert.AreEqual(E_auxICEOffDriving, corr.EnergyAuxICEOffDriving.Value(), 1e-3);
+
+			Assert.AreEqual(E_auxESSMissing, corr.WorkESSMissing.Value(), 1e-3);
 
 			var f = corr.FuelCorrection[fuel.FuelData.FuelType] as FuelConsumptionCorrection;
 
@@ -486,6 +494,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 			var E_auxICEOffStandstill = (P_off * T2).Value(); // 15351.536347368512
 			var E_ICEStart = (P_ICEStart * tStart).Value(); // 11525.53891554733
 
+			var E_auxESSMissing = E_auxICEOnStandstill * (1 - UF_ESS_Standstill) + E_auxICEOffStandstill * UF_ESS_Standstill;
 
 			var fcEssStandStillOff = E_auxICEOffStandstill * k_engline * UF_ESS_Standstill; // 0.0003034945726763096
 			var fcEssStandStillOn =
@@ -502,6 +511,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 			Assert.AreEqual(E_auxICEOnStandstill, corr.EnergyAuxICEOnStandstill.Value(), 1e-3);
 			Assert.AreEqual(E_auxICEOffStandstill, corr.EnergyAuxICEOffStandstill.Value(), 1e-3);
 			Assert.AreEqual(E_ICEStart, modData.WorkEngineStart().Value());
+
+			Assert.AreEqual(E_auxESSMissing, corr.WorkESSMissing.Value(), 1e-3);
 
 			Assert.AreEqual(0, corr.EnergyAuxICEOnDriving.Value(), 1e-3);
 			Assert.AreEqual(0, corr.EnergyAuxICEOffDriving.Value(), 1e-3);
