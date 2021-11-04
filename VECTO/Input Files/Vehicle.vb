@@ -29,7 +29,7 @@ Imports TUGraz.VectoCore.Utils
 <CustomValidation(GetType(Vehicle), "ValidateVehicle")>
 Public Class Vehicle
 	Implements IVehicleEngineeringInputData, IVehicleDeclarationInputData, IRetarderInputData, IPTOTransmissionInputData, 
-				IAngledriveInputData, IAirdragEngineeringInputData, IAdvancedDriverAssistantSystemDeclarationInputData,
+				IAngledriveInputData, IAirdragEngineeringInputData, IAdvancedDriverAssistantSystemDeclarationInputData, IAdvancedDriverAssistantSystemsEngineering,
 				IVehicleComponentsEngineering, IVehicleComponentsDeclaration, IAxlesEngineeringInputData, IAxlesDeclarationInputData
 
 	Private _filePath As String
@@ -717,7 +717,7 @@ Public Class Vehicle
 
 	Public ReadOnly Property IVehicleEngineeringInputData_ADAS As IAdvancedDriverAssistantSystemsEngineering Implements IVehicleEngineeringInputData.ADAS
 	get
-			Return Nothing
+			Return me
 	End Get
 	End Property
 
@@ -807,4 +807,6 @@ Public Class Vehicle
 		Return New DataSource() With {.SourceType = DataSourceType.JSONFile}
 	End Get
 	End Property
+
+    Public ReadOnly Property IAdvancedDriverAssistantSystemsEngineering_DataSource As DataSource Implements IAdvancedDriverAssistantSystemsEngineering.DataSource
 End Class

@@ -138,7 +138,7 @@ Public Class VectoJob
         _driverAccelerationFile = New SubPath
 
         AuxPaths = New Dictionary(Of String, AuxEntry)
-
+        AuxEntries = New Dictionary(Of String,AuxEntry)()
         CycleFiles = New List(Of SubPath)
     End Sub
 
