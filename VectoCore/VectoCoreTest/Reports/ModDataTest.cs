@@ -140,6 +140,13 @@ namespace TUGraz.VectoCore.Tests.Reports
 			RunSimulation(jobName, ExecutionMode.Declaration);
 		}
 
+		[Category("LongRunning")]
+		[TestCase(@"TestData\Integration\DeclarationMode\Class2_RigidTruck_4x2_ESS\Class2_RigidTruck_DECL.vecto")]
+		public void TestFullCycleModDataIntegrityDeclESS(string jobName)
+		{
+			RunSimulation(jobName, ExecutionMode.Declaration);
+		}
+
 		[TestCase(@"TestData\Integration\DeclarationMode\Class2_RigidTruck_4x2\Class2_RigidTruck_DECL.vecto")]
 		public void TestVSUM_VMOD_FormatDecl(string jobName)
 		{
