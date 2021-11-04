@@ -180,7 +180,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				Formulas.TorqueToPower(torqueIn, angularVelocityIn));
 
 			var avgOutAngularVelocity = (PreviousState.OutAngularVelocity + outAngularVelocity) / 2.0;
-			var avgInAngularVelocity = (PreviousState.InAngularVelocity + angularVelocityIn) / 2.0;
+			var iceOn = !DataBus.EngineInfo.EngineOn && DataBus.EngineCtl.CombustionEngineOn;
+			var prevInAngularVelocity = iceOn ? DataBus.EngineInfo.EngineSpeed : PreviousState.InAngularVelocity;
+			var avgInAngularVelocity = (prevInAngularVelocity + angularVelocityIn) / 2.0;
 			var clutchLoss = torqueIn * avgInAngularVelocity - outTorque * avgOutAngularVelocity;
 			if (!startClutch && !clutchLoss.IsEqual(0) && (DataBus.GearboxInfo.Gear.Gear != 1 || clutchLoss.IsSmaller(0))) {
 				// we don't want to have negative clutch losses, so adapt input torque to match the average output power
@@ -191,6 +193,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			if (!dryRun) {
 				CurrentState.SetState(torqueIn, angularVelocityIn, outTorque, outAngularVelocity);
 				CurrentState.ClutchLoss = torqueIn * avgInAngularVelocity - outTorque * avgOutAngularVelocity;
+				CurrentState.ICEOn = iceOn;
+				CurrentState.ICEOnSpeed = DataBus.EngineInfo.EngineSpeed;
 			}
 			retVal.Clutch.PowerRequest = outTorque *
 										((PreviousState.OutAngularVelocity ?? 0.SI<PerSecond>()) + CurrentState.OutAngularVelocity) / 2.0;
@@ -224,7 +228,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				container[ModalResultField.P_clutch_loss] = 0.SI<Watt>();
 			} else {
 				var avgOutAngularVelocity = (PreviousState.OutAngularVelocity + CurrentState.OutAngularVelocity) / 2.0;
-				var avgInAngularVelocity = (PreviousState.InAngularVelocity + CurrentState.InAngularVelocity) / 2.0;
+				var prevInAngularVelocity = CurrentState.ICEOn ? CurrentState.ICEOnSpeed : PreviousState.InAngularVelocity;
+				var avgInAngularVelocity = (prevInAngularVelocity + CurrentState.InAngularVelocity) / 2.0;
 				container[ModalResultField.P_clutch_out] = CurrentState.OutTorque * avgOutAngularVelocity;
 				container[ModalResultField.P_clutch_loss] = CurrentState.InTorque * avgInAngularVelocity -
 															CurrentState.OutTorque * avgOutAngularVelocity;
@@ -241,6 +246,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		public class ClutchState : SimpleComponentState
 		{
 			public Watt ClutchLoss = 0.SI<Watt>();
+			public bool ICEOn;
+			public PerSecond ICEOnSpeed;
 		}
 	}
 }
