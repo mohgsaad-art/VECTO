@@ -1097,8 +1097,8 @@ namespace TUGraz.VectoCore.Tests.Integration.ADAS
 			(3410, 3468, OutsideSegment, Coast), // len: 58m
 			(3468, 3854, OutsideSegment, Roll), // len: 386m
 			(3854, 3864, OutsideSegment, Brake), // len: 10m
-			(3864, 3884, OutsideSegment, Coast), // len: 20m
-			(3884, 5012, OutsideSegment, Brake), // len: 1128m
+			(3864, 3915, OutsideSegment, Coast), // len: 20m
+			(3915, 5012, OutsideSegment, Brake), // len: 1128m
 			(5012, 5420, OutsideSegment, Coast), // len: 408m
 			(5420, 1e6, OutsideSegment, Accelerate));
 
@@ -1313,8 +1313,8 @@ namespace TUGraz.VectoCore.Tests.Integration.ADAS
 			(0, 4025, OutsideSegment, Accelerate), // len: 4025m
 			(4025, 5309, WithinSegment, Accelerate), // len: 1284m
 			(5309, 5908, UseCase1, Roll), // len: 599m
-			(5908, 5932, OutsideSegment, Coast), // len: 24m
-			(5932, 1e6, OutsideSegment, Accelerate));
+			(5908, 5920, OutsideSegment, Coast), // len: 24m
+			(5920, 1e6, OutsideSegment, Accelerate));
 
 		[TestCase]
 		public void Class5_PCC123EcoRollEngineStop_CaseB_Conventional() => TestPCC(
@@ -1324,8 +1324,8 @@ namespace TUGraz.VectoCore.Tests.Integration.ADAS
 			(5216, 6698, UseCase1, Roll), // len: 1482m
 			(6698, 6757, WithinSegment, Coast), // len: 59m
 			(6757, 7158, WithinSegment, Roll), // len: 401m
-			(7158, 7170, WithinSegment, Brake), // len: 12m
-			(7170, 7552, WithinSegment, Coast), // len: 382m
+			//(7158, 7168, WithinSegment, Brake), // len: 12m
+			(7168, 7552, WithinSegment, Coast), // len: 382m
 			(7552, 7912, OutsideSegment, Coast), // len: 360m
 			(7912, 1e6, OutsideSegment, Accelerate));
 
@@ -1460,8 +1460,8 @@ namespace TUGraz.VectoCore.Tests.Integration.ADAS
 			(3410, 3468, OutsideSegment, Coast), // len: 58m
 			(3468, 3854, OutsideSegment, Roll), // len: 386m
 			(3854, 3864, OutsideSegment, Brake), // len: 10m
-			(3864, 3884, OutsideSegment, Coast), // len: 20m
-			(3884, 5012, OutsideSegment, Brake), // len: 1128m
+			(3864, 3915, OutsideSegment, Coast), // len: 20m
+			(3915, 5012, OutsideSegment, Brake), // len: 1128m
 			(5012, 5420, OutsideSegment, Coast), // len: 408m
 			(5420, 1e6, OutsideSegment, Accelerate));
 
