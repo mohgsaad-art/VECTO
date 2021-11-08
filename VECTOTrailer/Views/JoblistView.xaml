@@ -205,7 +205,22 @@
                             <StackPanel Orientation="Horizontal">
                                 <TextBox Width="200" Text="{Binding OutputDirectory}"/>
                                 <Button Width="60" Content="Browse" Command="{Binding BrowseOutputDirectory}" Margin="5,0,0,0"/>
-                                
+                            </StackPanel>
+                        </GroupBox>
+                        <GroupBox Header="Scan">
+                            <StackPanel>
+                                <GroupBox Header="Input Directory">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBox Width="200" Text="{Binding AutoSimInput}"/>
+                                        <Button Width="60" Content="Browse" Command="{Binding BrowseAutoSimInputDirectory}" Margin="5,0,0,0"/>
+                                    </StackPanel>
+                                </GroupBox>
+                                <GroupBox Header="Output Directory">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBox Width="200" Text="{Binding AutoSimOutput}"/>
+                                        <Button Width="60" Content="Browse" Command="{Binding BrowseAutoSimOutputDirectory}" Margin="5,0,0,0"/>
+                                    </StackPanel>
+                                </GroupBox>
                             </StackPanel>
                         </GroupBox>
                         <GroupBox Header="Simulation Data" Margin =" 0,5,0,0">

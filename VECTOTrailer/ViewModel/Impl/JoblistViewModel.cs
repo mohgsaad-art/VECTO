@@ -192,9 +192,14 @@ namespace VECTOTrailer.ViewModel.Impl
 				ValidateData = body.GetValueOrDefault<bool>("ValidateRunData") ?? true;
 				WriteModData1Hz = body.GetValueOrDefault<bool>("WriteModData1Hz") ?? false;
 				WriteActualModData = body.GetValueOrDefault<bool>("WriteActualModData") ?? false;
+
 				OutputDirectory = body["OutputDirectory"] == null ? "" : body["OutputDirectory"].Value<string>();
+				AutoSimOutput = body["AutoSimOutput"] == null ? "" : body["AutoSimOutput"].Value<string>();
+				AutoSimInput = body["AutoSimOutput"] == null ? "" : body["AutoSimOutput"].Value<string>();
 			}
 		}
+
+
 
 		private void SaveOptions()
 		{
@@ -326,10 +331,34 @@ namespace VECTOTrailer.ViewModel.Impl
 			set { SetProperty(ref _outputDirectory, value); }
 		}
 
+		public string AutoSimInput
+		{
+			get { throw new NotImplementedException(); }
+			set { throw new NotImplementedException(); }
+		}
+
+		public string AutoSimOutput
+		{
+			get { throw new NotImplementedException(); }
+			set { throw new NotImplementedException(); }
+		}
+
 		public ICommand BrowseOutputDirectory
 		{
-			get { return _browseOutputDirectory ?? (_browseOutputDirectory = new RelayCommand(DoBrowseOutputDirectory)); }
+			get { return _browseOutputDirectory ?? (_browseOutputDirectory = new RelayCommand(() => DoBrowseDirectory(s => OutputDirectory = s))); }
 		}
+
+		public ICommand BrowseAutoSimOutputDirectory
+		{
+
+			get { return _browseOutputDirectory ?? (_browseOutputDirectory = new RelayCommand( () => DoBrowseDirectory(s => AutoSimOutput = s))); }
+		}
+
+		public ICommand BrowseAutoSimInputDirectory
+		{
+			get { return _browseOutputDirectory ?? (_browseOutputDirectory = new RelayCommand(() => DoBrowseDirectory(s => AutoSimInput = s))); }
+		}
+
 
 		public bool WriteModelData
 		{
@@ -337,13 +366,12 @@ namespace VECTOTrailer.ViewModel.Impl
 			set { SetProperty(ref _writeModelData, value); }
 		}
 		
-		private void DoBrowseOutputDirectory()
+		private void DoBrowseDirectory(Action<string> assignToAction)
 		{
 			var filePath = FileDialogHelper.ShowSelectDirectoryDialog();
 			if (filePath.IsNullOrEmpty())
 				return;
-
-			OutputDirectory = filePath;
+			assignToAction.Invoke(filePath);
 		}
 
 

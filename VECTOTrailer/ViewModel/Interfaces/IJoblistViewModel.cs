@@ -36,5 +36,9 @@ namespace VECTOTrailer.ViewModel.Interfaces
 		ICommand BrowseOutputDirectory { get; }
 		bool WriteModelData { get; set; }
 		ICommand AboutViewCommand { get; }
+		string AutoSimInput { get; set; }
+		string AutoSimOutput { get; set; }
+		ICommand BrowseAutoSimOutputDirectory { get; }
+		ICommand BrowseAutoSimInputDirectory { get; }
 	}
 }
