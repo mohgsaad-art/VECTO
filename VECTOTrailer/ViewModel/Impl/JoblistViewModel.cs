@@ -1158,27 +1158,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		}
 
 
-		public class VectoSimulationProgress
-		{
-			public enum MsgType
-			{
-				StatusMessage,
-				InfoMessage,
-				Progress,
-				LogError,
-				LogWarning,
-				
-			}
-
-			public string Message { get; set; }
-
-			public MsgType Type { get; set; }
-
-			public string Link { get; set; }
-		}
-
-		
-#endregion
+		#endregion
 
 		#region Implementation of IMainView
 
@@ -1189,19 +1169,6 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		#endregion
 	}
-	public static class MsgTypeExtensions
-	{
-		public static MessageType ToMessageType(this JoblistViewModel.VectoSimulationProgress.MsgType mt)
-		{
-			switch (mt) {
-				case JoblistViewModel.VectoSimulationProgress.MsgType.StatusMessage: return MessageType.StatusMessage;
-				case JoblistViewModel.VectoSimulationProgress.MsgType.InfoMessage: return MessageType.InfoMessage;
-				case JoblistViewModel.VectoSimulationProgress.MsgType.Progress: return MessageType.StatusMessage;
-				case JoblistViewModel.VectoSimulationProgress.MsgType.LogError: return MessageType.ErrorMessage;
-				case JoblistViewModel.VectoSimulationProgress.MsgType.LogWarning: return MessageType.WarningMessage;
-				default: throw new ArgumentOutOfRangeException(nameof(mt), mt, null);
-			}
-		}
-	}
+
 
 }
