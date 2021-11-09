@@ -40,5 +40,6 @@ namespace VECTOTrailer.ViewModel.Interfaces
 		string AutoSimOutput { get; set; }
 		ICommand BrowseAutoSimOutputDirectory { get; }
 		ICommand BrowseAutoSimInputDirectory { get; }
+		bool AutoSimActivated { get; set; }
 	}
 }

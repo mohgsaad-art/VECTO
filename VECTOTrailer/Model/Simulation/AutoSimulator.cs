@@ -17,18 +17,38 @@ namespace VECTOTrailer.Model.Simulation
 		string InputDirectory { get; set; }
 		string OutputDirectory { get; set; }
 
+
+		bool WriteModData { get; set; }
+		bool WriteModData1Hz { get; set; }
+		bool ValidateData { get; set; }
+		bool WriteActualModData { get; set; }
+
+
 		bool StartAutoSimulator();
 		bool StopOutputSimulator();
 	}
     public class AutoSimulator : IAutoSimulator
 	{
+
 		private BackgroundWorker worker;
 		public AutoSimulator()
 		{
-			worker = new BackgroundWorker();
+			worker = new BackgroundWorker() {
+				WorkerSupportsCancellation = true,
+				WorkerReportsProgress = true
+			};
+			worker.DoWork += DoWork;
 		}
+		#region SimulationSettings
 
+		public bool WriteModData { get; set; }
+		public bool WriteModData1Hz { get; set; }
+		public bool ValidateData { get; set; }
+		public bool WriteActualModData { get; set; }
 
+		#endregion
+
+		private object dirLock = new object();
 
 		#region Implementation of IAutoSimulator
 
@@ -37,13 +57,13 @@ namespace VECTOTrailer.Model.Simulation
 		{
 			get
 			{
-				lock (_outputDirectory) {
+				lock (dirLock) {
 					return _inputDirectory;
 				}
 			}
 			set
 			{
-				lock (_outputDirectory) {
+				lock (dirLock) {
 					_inputDirectory = value;
 				}
 			}
@@ -54,24 +74,26 @@ namespace VECTOTrailer.Model.Simulation
 		{
 			get
 			{
-				lock (_outputDirectory) {
+				lock (dirLock) {
 					return _outputDirectory;
 				}
 				
 			}
 			set
 			{
-				lock (_outputDirectory) {
+				lock (dirLock) {
 					_outputDirectory = value;
 				}
 				
 			}
 		}
 
+
 		public bool StartAutoSimulator()
 		{
 			if (!worker.IsBusy) {
 				worker.RunWorkerAsync();
+				return true;
 			}
 
 			return false;
@@ -92,38 +114,48 @@ namespace VECTOTrailer.Model.Simulation
 		private void DoWork(object theSender, DoWorkEventArgs e)
 		{
 			var backgroundWorker = theSender as BackgroundWorker;
-			//backgroundWorker.ReportProgress();
+			if (backgroundWorker == null) {
+				throw new ArgumentException();
+			}
+
+			
 			while (!backgroundWorker.CancellationPending) {
-				var filesToSimulate = CheckDirectoryAndCopyFiles();
+				var filesToSimulate = CheckDirectoryAndCopyFiles(progressAction:(progress => backgroundWorker.ReportProgress(0, progress)));
 				
 
 
 			}
 		}
 
-		private IList<string> CheckDirectoryAndCopyFiles()
+		private IList<string> CheckDirectoryAndCopyFiles(Action<VectoSimulationProgress> progressAction)
 		{
 			var copiedFiles = new List<string>();
-			lock (_inputDirectory)
+			lock (dirLock)
 			{
 				if (Directory.Exists(_inputDirectory))
 				{
 					foreach (var file in Directory.GetFiles(_inputDirectory))
 					{
-						lock (_outputDirectory)
-						{
-							if (CopyTo(file, _outputDirectory, out var destFile, true, exception => Debug.WriteLine(exception.Message))){
+
+							if (_outputDirectory == _inputDirectory) {
+								throw new Exception("Input and output directory must not be the same directory");
+							}
+							if (CopyTo(file, _outputDirectory, out var destFile, true, progressAction)){
 								copiedFiles.Add(destFile);
 							}
-						}
 					}
+				} else {
+					progressAction.Invoke(new VectoSimulationProgress() {
+						Message = $"Directory {_inputDirectory} does not exist",
+						Type = VectoSimulationProgress.MsgType.LogError
+					});
 				}
 			}
 
 			return copiedFiles;
 		}
 
-		private bool CopyTo(string source, string destDirectory, out string destFileName, bool overwrite, Action<Exception> errorAction)
+		private bool CopyTo(string source, string destDirectory, out string destFileName, bool overwrite, Action<VectoSimulationProgress> errorAction)
 		{
 			destFileName = Path.Combine(destDirectory, Path.GetFileName(source));
 	
@@ -132,7 +164,10 @@ namespace VECTOTrailer.Model.Simulation
 				File.Copy(source, destFileName, overwrite);
 				File.Delete(source);
 			} catch (Exception ex) {
-				errorAction.Invoke(ex);
+				errorAction.Invoke(new VectoSimulationProgress() {
+					Type = VectoSimulationProgress.MsgType.LogError,
+					Message = "Error while copying files: " + ex.Message
+				});
 				return false;
 			}
 			return true;

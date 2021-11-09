@@ -48,7 +48,7 @@
                                     <TextBlock Text="Stop" Margin="0,0,0,0" />
                                 </StackPanel>
                             </Button>
-                            <ToggleButton VerticalAlignment="Top" Margin="10 10 0 0" Checked="{Binding }">
+                            <ToggleButton VerticalAlignment="Top" Margin="10 10 0 0" IsChecked="{Binding AutoSimActivated}">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="Scan Folder"></TextBlock>
                                 </StackPanel>

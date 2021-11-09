@@ -93,6 +93,8 @@ namespace VECTOTrailer.ViewModel.Impl
 		private string _lookAheadMinSpeedOverride;
 		private bool _autoSimActivated;
 		private readonly IAutoSimulator _autoSimulator;
+		private ICommand _browseAutoSimOutputDirectory;
+		private ICommand _browseAutoSimInputDirectory;
 
 		#endregion
 
@@ -193,14 +195,14 @@ namespace VECTOTrailer.ViewModel.Impl
 					return;
 				}
 
-				WriteModData = body.GetValueOrDefault<bool>("WriteModData") ?? true;
-				ValidateData = body.GetValueOrDefault<bool>("ValidateRunData") ?? true;
-				WriteModData1Hz = body.GetValueOrDefault<bool>("WriteModData1Hz") ?? false;
-				WriteActualModData = body.GetValueOrDefault<bool>("WriteActualModData") ?? false;
+				WriteModData = body.GetValueOrDefault<bool>(nameof(WriteModData)) ?? true;
+				ValidateData = body.GetValueOrDefault<bool>(nameof(ValidateData)) ?? true;
+				WriteModData1Hz = body.GetValueOrDefault<bool>(nameof(WriteModData1Hz)) ?? false;
+				WriteActualModData = body.GetValueOrDefault<bool>(nameof(WriteActualModData)) ?? false;
 
-				OutputDirectory = body["OutputDirectory"] == null ? "" : body["OutputDirectory"].Value<string>();
-				AutoSimOutput = body["AutoSimOutput"] == null ? "" : body["AutoSimOutput"].Value<string>();
-				AutoSimInput = body["AutoSimOutput"] == null ? "" : body["AutoSimOutput"].Value<string>();
+				OutputDirectory = body[nameof(OutputDirectory)] == null ? "" : body[nameof(OutputDirectory)].Value<string>();
+				AutoSimOutput = body[nameof(AutoSimOutput)] == null ? "" : body[nameof(AutoSimOutput)].Value<string>();
+				AutoSimInput = body[nameof(AutoSimInput)] == null ? "" : body[nameof(AutoSimInput)].Value<string>();
 			}
 		}
 
@@ -214,11 +216,13 @@ namespace VECTOTrailer.ViewModel.Impl
 			header.Add("FileVersion", "4");
 
 			var body = new Dictionary<string, object>();
-			body.Add("WriteModData", WriteModData);
-			body.Add("ValidateRunData", ValidateData);
-			body.Add("WriteModData1Hz", WriteModData1Hz);
-			body.Add("WriteActualModData", WriteActualModData);
-			body.Add("OutputDirectory", OutputDirectory);
+			body.Add(nameof(WriteModData), WriteModData);
+			body.Add(nameof(ValidateData), ValidateData);
+			body.Add(nameof(WriteModData1Hz), WriteModData1Hz);
+			body.Add(nameof(WriteActualModData), WriteActualModData);
+			body.Add(nameof(OutputDirectory), OutputDirectory);
+			body.Add(nameof(AutoSimOutput), AutoSimOutput);
+			body.Add(nameof(AutoSimInput), AutoSimInput);
 
 			JSONFileWriter.WriteFile(new Dictionary<string, object>() { { "Header", header }, { "Body", body } }, SETTINGS_FILE);
 		}
@@ -309,25 +313,44 @@ namespace VECTOTrailer.ViewModel.Impl
 		public bool WriteModData
 		{
 			get { return _writeModData; }
-			set { SetProperty(ref _writeModData, value); }
+			set {
+				if (SetProperty(ref _writeModData, value)) {
+					_autoSimulator.WriteModData = value;
+				}
+			}
 		}
 
 		public bool WriteModData1Hz
 		{
 			get { return _writeModData1Hz; }
-			set { SetProperty(ref _writeModData1Hz,value); }
+			set {
+				if (SetProperty(ref _writeModData1Hz, value)) {
+					_autoSimulator.WriteModData1Hz = value;
+				}
+
+			}
 		}
 
 		public bool ValidateData
 		{
 			get { return _validateData; }
-			set { SetProperty(ref _validateData, value); }
+			set
+			{
+				if (SetProperty(ref _validateData, value)) {
+					_autoSimulator.ValidateData = value;
+				}
+			}
 		}
 
 		public bool WriteActualModData
 		{
 			get { return _writeActualModData; }
-			set { SetProperty(ref _writeActualModData, value); }
+			set
+			{
+				if (SetProperty(ref _writeActualModData, value)) {
+					_autoSimulator.WriteActualModData = value;
+				}
+			}
 		}
 
 		public string OutputDirectory
@@ -349,30 +372,33 @@ namespace VECTOTrailer.ViewModel.Impl
 			{
 				if (SetProperty(ref _autoSimActivated, value)) {
 					if (_autoSimActivated) {
-						
+						_autoSimulator.StartAutoSimulator();
+					} else {
+						_autoSimulator.StopOutputSimulator();
 					}
 				}
 			}
 		}
 
-		public async Task AutoSimTask(CancellationToken ct)
-		{
-			while (true) {
-				Debug.WriteLine("Scann task running");
-				await Task.Delay(500);
-			}
-		}
 
 		public string AutoSimInput
 		{
-			get { throw new NotImplementedException(); }
-			set { throw new NotImplementedException(); }
+			get { return _autoSimulator.InputDirectory; }
+			set
+			{
+				_autoSimulator.InputDirectory = value;
+				OnPropertyChanged(nameof(AutoSimInput));
+			}
 		}
 
 		public string AutoSimOutput
 		{
-			get { throw new NotImplementedException(); }
-			set { throw new NotImplementedException(); }
+			get { return _autoSimulator.OutputDirectory; }
+			set
+			{
+				_autoSimulator.OutputDirectory = value;
+				OnPropertyChanged(nameof(AutoSimOutput));
+			}
 		}
 
 
@@ -380,12 +406,12 @@ namespace VECTOTrailer.ViewModel.Impl
 		public ICommand BrowseAutoSimOutputDirectory
 		{
 
-			get { return _browseOutputDirectory ?? (_browseOutputDirectory = new RelayCommand( () => DoBrowseDirectory(s => AutoSimOutput = s))); }
+			get { return _browseAutoSimOutputDirectory ?? (_browseAutoSimOutputDirectory = new RelayCommand( () => DoBrowseDirectory(s => AutoSimOutput = s))); }
 		}
 
 		public ICommand BrowseAutoSimInputDirectory
 		{
-			get { return _browseOutputDirectory ?? (_browseOutputDirectory = new RelayCommand(() => DoBrowseDirectory(s => AutoSimInput = s))); }
+			get { return _browseAutoSimInputDirectory ?? (_browseAutoSimInputDirectory = new RelayCommand(() => DoBrowseDirectory(s => AutoSimInput = s))); }
 		}
 #endregion
 
