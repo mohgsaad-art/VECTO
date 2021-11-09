@@ -183,7 +183,7 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Options">
-                <StackPanel Orientation="Horizontal" Margin="5,10,5,5">
+                <WrapPanel Orientation="Horizontal" Margin="5,10,5,5">
                     <StackPanel Orientation="Vertical">
                         <GroupBox Header="Output">
                             <StackPanel Orientation="Vertical">
@@ -205,7 +205,7 @@
                             </StackPanel>
                         </GroupBox>
                     </StackPanel>
-                    <StackPanel Orientation="Vertical" Margin="5,0,0,0" MaxWidth="300">
+                    <StackPanel Orientation="Vertical">
                         <GroupBox Header ="Output Directory">
                             <StackPanel Orientation="Horizontal">
                                 <TextBox Width="200" Text="{Binding OutputDirectory}"/>
@@ -228,6 +228,9 @@
                                 </GroupBox>
                             </StackPanel>
                         </GroupBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="5,0,0,0" MaxWidth="300">
+                       
                         <GroupBox Header="Simulation Data" Margin =" 0,5,0,0">
                             <StackPanel Orientation="Vertical">
                                 <CheckBox IsChecked="{Binding WriteModelData}" Margin="0,0,0,3">Write internal model data (EXPERT!)</CheckBox>
@@ -244,7 +247,7 @@
                             </StackPanel>
                         </GroupBox>
                     </StackPanel>
-                </StackPanel>
+                </WrapPanel>
                
             </TabItem>
         </TabControl>

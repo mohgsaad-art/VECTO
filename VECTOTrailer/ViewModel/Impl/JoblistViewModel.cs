@@ -418,7 +418,10 @@ namespace VECTOTrailer.ViewModel.Impl
 		public bool WriteModelData
 		{
 			get { return _writeModelData; }
-			set { SetProperty(ref _writeModelData, value); }
+			set {
+				if (SetProperty(ref _writeModelData, value)) {
+					_autoSimulator.WriteModelData = value;
+				}; }
 		}
 		
 		private void DoBrowseDirectory(Action<string> assignToAction)
@@ -1091,14 +1094,14 @@ namespace VECTOTrailer.ViewModel.Impl
 			if (File.Exists(sumFileWriter.SumFileName)) {
 				sender.ReportProgress(100, new VectoSimulationProgress() {
 					Type = VectoSimulationProgress.MsgType.StatusMessage,
-					Message = string.Format("Sum file written to {0}", sumFileWriter.SumFileName),
+					Message = $"Sum file written to {sumFileWriter.SumFileName}",
 					Link = "<CSV>" + sumFileWriter.SumFileName
 				});
 			}
 
 			sender.ReportProgress(100, new VectoSimulationProgress() {
 				Type = VectoSimulationProgress.MsgType.StatusMessage,
-				Message = string.Format("Simulation finished in {0:F1}s", start.Elapsed.TotalSeconds)
+				Message = $"Simulation finished in {start.Elapsed.TotalSeconds:F1}s"
 			});
 		}
 
