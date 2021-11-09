@@ -192,6 +192,7 @@
     <Compile Include="Helper\XmlHelper.cs" />
     <Compile Include="Model\JobListModel.cs" />
     <Compile Include="Model\SettingsModel.cs" />
+    <Compile Include="Model\Simulation\AutoSimulator.cs" />
     <Compile Include="Model\TempDataObject\ITempDataObject.cs" />
     <Compile Include="Model\TempDataObject\TrailerComponentData.cs" />
     <Compile Include="Properties\Version.cs">

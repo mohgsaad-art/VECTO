@@ -9,6 +9,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Xml;
@@ -36,6 +37,7 @@ using VECTOTrailer.Util;
 using VECTOTrailer.ViewModel.Interfaces;
 using VECTOTrailer.Helper;
 using VECTOTrailer.Model;
+using VECTOTrailer.Model.Simulation;
 using VECTOTrailer.Views;
 using LogManager = TUGraz.VectoCommon.Models.LogManager;
 using MessageBox = System.Windows.MessageBox;
@@ -89,6 +91,8 @@ namespace VECTOTrailer.ViewModel.Impl
 		private bool _writeModelData;
 		private ICommand _aboutViewCommand;
 		private string _lookAheadMinSpeedOverride;
+		private bool _autoSimActivated;
+		private readonly IAutoSimulator _autoSimulator;
 
 		#endregion
 
@@ -157,9 +161,10 @@ namespace VECTOTrailer.ViewModel.Impl
 		#endregion
 
 
-		public JoblistViewModel()
+		public JoblistViewModel(IAutoSimulator autoSimulator)
 		{
 			_settings = new SettingsModel();
+			_autoSimulator = autoSimulator;
 			LoadOptions();
 			SetJobEntries();
 
@@ -330,6 +335,33 @@ namespace VECTOTrailer.ViewModel.Impl
 			get { return _outputDirectory; }
 			set { SetProperty(ref _outputDirectory, value); }
 		}
+		public ICommand BrowseOutputDirectory
+		{
+			get { return _browseOutputDirectory ?? (_browseOutputDirectory = new RelayCommand(() => DoBrowseDirectory(s => OutputDirectory = s))); }
+		}
+		#region AutoSim
+
+
+		public bool AutoSimActivated
+		{
+			get => _autoSimActivated;
+			set
+			{
+				if (SetProperty(ref _autoSimActivated, value)) {
+					if (_autoSimActivated) {
+						
+					}
+				}
+			}
+		}
+
+		public async Task AutoSimTask(CancellationToken ct)
+		{
+			while (true) {
+				Debug.WriteLine("Scann task running");
+				await Task.Delay(500);
+			}
+		}
 
 		public string AutoSimInput
 		{
@@ -343,10 +375,7 @@ namespace VECTOTrailer.ViewModel.Impl
 			set { throw new NotImplementedException(); }
 		}
 
-		public ICommand BrowseOutputDirectory
-		{
-			get { return _browseOutputDirectory ?? (_browseOutputDirectory = new RelayCommand(() => DoBrowseDirectory(s => OutputDirectory = s))); }
-		}
+
 
 		public ICommand BrowseAutoSimOutputDirectory
 		{
@@ -358,7 +387,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		{
 			get { return _browseOutputDirectory ?? (_browseOutputDirectory = new RelayCommand(() => DoBrowseDirectory(s => AutoSimInput = s))); }
 		}
-
+#endregion
 
 		public bool WriteModelData
 		{
