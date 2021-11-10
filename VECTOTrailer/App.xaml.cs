@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Ninject;
 using Ninject.Extensions.Factory;
+using NLog.Config;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCore;
 using VECTOTrailer.Model.Simulation;
@@ -30,9 +31,15 @@ namespace VECTOTrailer
 
         protected override void OnStartup(StartupEventArgs e)
 		{
-			ConfigureContainer();
-            base.OnStartup(e);
+			ConfigureNLog();
+            ConfigureContainer();
+			base.OnStartup(e);
         }
+
+		private void ConfigureNLog()
+		{
+			NLog.LogManager.Configuration = new LoggingConfiguration();
+		}
 
         private void ConfigureContainer()
         {
