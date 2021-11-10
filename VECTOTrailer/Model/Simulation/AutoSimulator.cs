@@ -11,7 +11,11 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Xml;
 using System.Xml.Linq;
+using Castle.Core.Internal;
 using ControlzEx.Standard;
+using NLog;
+using NLog.Config;
+using NLog.Targets;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Resources;
@@ -44,7 +48,7 @@ namespace VECTOTrailer.Model.Simulation
 	}
     public class AutoSimulator : ObservableObject, IAutoSimulator
 	{
-
+		private ILogger _logger;
 		private BackgroundWorker worker;
 		public AutoSimulator(IXMLInputDataReader inputDataReader)
 		{
@@ -53,9 +57,31 @@ namespace VECTOTrailer.Model.Simulation
 				WorkerSupportsCancellation = true,
 				WorkerReportsProgress = true
 			};
+			ConfigureNLOg();
 			worker.DoWork += DoWork;
 			worker.RunWorkerCompleted += VectoSimulationCompleted;
+			worker.ProgressChanged += WorkerOnProgressChanged;
 		}
+
+
+
+		#region Logging
+
+		private void ConfigureNLOg()
+		{
+			var target = new FileTarget(nameof(AutoSimulator)) {
+				FileName = Path.GetFullPath("AutoSimulator.log"),
+				Layout = "${longdate} ${level} ${message}  ${exception} ${event-properties:myProperty}"
+			};
+			var loggingRule = new LoggingRule($"{nameof(AutoSimulator)}", LogLevel.Trace, target);
+			NLog.LogManager.Configuration.AddTarget(target); 
+			NLog.LogManager.Configuration.LoggingRules.Add(loggingRule);
+			NLog.LogManager.Configuration.Reload();
+			NLog.LogManager.ReconfigExistingLoggers();
+			_logger = NLog.LogManager.GetLogger(nameof(AutoSimulator));
+		}
+		#endregion	
+
 		#region SimulationSettings
 
 		public bool WriteModData { get; set; }
@@ -142,6 +168,7 @@ namespace VECTOTrailer.Model.Simulation
 		{
 			if (!worker.IsBusy) {
 				worker.RunWorkerAsync();
+				_logger.Log(LogLevel.Info, string.Format("Starting Auto-Simulator \n Input directory: {0} \n Output directory{1} \n", InputDirectory, OutputDirectory));
 				return true;
 			}
 
@@ -152,6 +179,7 @@ namespace VECTOTrailer.Model.Simulation
 		{
 			if (worker.WorkerSupportsCancellation) {
 				worker.CancelAsync();
+				_logger.Log(LogLevel.Info, string.Format("Stopping Auto-Simulator\n"));
 				return true;
 			}
 
@@ -199,7 +227,11 @@ namespace VECTOTrailer.Model.Simulation
 				{
 					foreach (var file in Directory.GetFiles(_inputDirectory))
 					{
-
+						progressAction.Invoke(new VectoSimulationProgress()
+						{
+							Message = string.Format("Copy {0} \n to {1} \n", file, OutputDirectory),
+							Type = VectoSimulationProgress.MsgType.InfoMessage
+						});
 						if (_outputDirectory == _inputDirectory)
 						{
 							throw new Exception("Input and output directory must not be the same directory");
@@ -446,6 +478,18 @@ namespace VECTOTrailer.Model.Simulation
 			AutoSimActive = false;
 			AutoSimBusy = false;
 		}
+
+		private void WorkerOnProgressChanged(object sender, ProgressChangedEventArgs e)
+		{
+			var progress = e.UserState as VectoSimulationProgress;
+			if (progress == null) {
+				return;
+			}
+
+			_logger.Log(progress.Type.ToLogLevel(), progress.Message);
+		}
+
+
 	}
 
 
