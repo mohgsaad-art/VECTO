@@ -21,6 +21,7 @@ using TUGraz.VectoCore.InputData.FileIO.XML;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
+using VECTOTrailer.ViewModel.Impl;
 
 namespace VECTOTrailer.Model.Simulation
 {
@@ -40,7 +41,7 @@ namespace VECTOTrailer.Model.Simulation
 		bool StartAutoSimulator();
 		bool StopOutputSimulator();
 	}
-    public class AutoSimulator : IAutoSimulator
+    public class AutoSimulator : ObservableObject, IAutoSimulator
 	{
 
 		private BackgroundWorker worker;
@@ -78,7 +79,7 @@ namespace VECTOTrailer.Model.Simulation
 			set
 			{
 				lock (dirLock) {
-					_inputDirectory = value;
+					SetProperty(ref _inputDirectory, value);
 				}
 			}
 		}
@@ -98,7 +99,7 @@ namespace VECTOTrailer.Model.Simulation
 			set
 			{
 				lock (dirLock) {
-					_outputDirectory = value;
+					SetProperty(ref _outputDirectory, value);
 				}
 				
 			}
