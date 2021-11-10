@@ -19,6 +19,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Ninject;
 using NLog;
+using NLog.Config;
 using NLog.Targets;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
@@ -178,7 +179,9 @@ namespace VECTOTrailer.ViewModel.Impl
 			SimulationWorker.WorkerSupportsCancellation = true;
 
 			var target = new MethodCallTarget("VectoGuiTarget", (evtInfo, obj) => LogMethod(evtInfo, obj));
-			NLog.Config.SimpleConfigurator.ConfigureForTargetLogging(target);
+			//NLog.Config.SimpleConfigurator.ConfigureForTargetLogging(target);
+			NLog.LogManager.Configuration.AddTarget(target);
+			NLog.LogManager.ReconfigExistingLoggers();
 		}
 
 		private void LoadOptions()
