@@ -366,8 +366,6 @@ namespace VECTOTrailer.ViewModel.Impl
 
 
 
-        public bool AutoSimBusy => _autoSimulator.AutoSimBusy;
-
 		public IAutoSimulator AutoSimulator
 		{
 			get => _autoSimulator;
