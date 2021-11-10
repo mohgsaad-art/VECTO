@@ -36,10 +36,11 @@ namespace VECTOTrailer.Model.Simulation
 		bool ValidateData { get; set; }
 		bool WriteActualModData { get; set; }
 		bool WriteModelData { get; set; }
+		bool AutoSimBusy { get; }
+		bool AutoSimActive { get; }
 
+		void ToggleAutoSimulator();
 
-		bool StartAutoSimulator();
-		bool StopOutputSimulator();
 	}
     public class AutoSimulator : ObservableObject, IAutoSimulator
 	{
@@ -53,6 +54,7 @@ namespace VECTOTrailer.Model.Simulation
 				WorkerReportsProgress = true
 			};
 			worker.DoWork += DoWork;
+			worker.RunWorkerCompleted += VectoSimulationCompleted;
 		}
 		#region SimulationSettings
 
@@ -61,6 +63,13 @@ namespace VECTOTrailer.Model.Simulation
 		public bool ValidateData { get; set; }
 		public bool WriteActualModData { get; set; }
 		public bool WriteModelData { get; set; }
+
+		public bool AutoSimBusy
+		{
+			get => _autoSimBusy;
+			private set => SetProperty(ref _autoSimBusy, value);
+		}
+
 		#endregion
 
 		private object dirLock = new object();
@@ -86,6 +95,8 @@ namespace VECTOTrailer.Model.Simulation
 
 		private string _outputDirectory;
 		private readonly IXMLInputDataReader _inputDataReader;
+		private bool _autoSimBusy;
+		private bool _autoSimActive;
 
 		public string OutputDirectory
 		{
@@ -105,8 +116,29 @@ namespace VECTOTrailer.Model.Simulation
 			}
 		}
 
+		public bool AutoSimActive
+		{
+			get
+			{
+				return _autoSimActive;
+			}
+			private set
+			{
+				SetProperty(ref _autoSimActive, value);
+			}
+		}
 
-		public bool StartAutoSimulator()
+		public void ToggleAutoSimulator()
+		{
+			if (AutoSimActive) {
+				StopAutoSimulator();
+			} else {
+				StartAutoSimulator();
+			}	
+			OnPropertyChanged(nameof(AutoSimActive)); //<- DO not remove
+		}
+
+		private bool StartAutoSimulator()
 		{
 			if (!worker.IsBusy) {
 				worker.RunWorkerAsync();
@@ -116,7 +148,7 @@ namespace VECTOTrailer.Model.Simulation
 			return false;
 		}
 
-		public bool StopOutputSimulator()
+		private bool StopAutoSimulator()
 		{
 			if (worker.WorkerSupportsCancellation) {
 				worker.CancelAsync();
@@ -125,6 +157,7 @@ namespace VECTOTrailer.Model.Simulation
 
 			return false;
 		}
+
 
 		#endregion
 
@@ -135,8 +168,10 @@ namespace VECTOTrailer.Model.Simulation
 				throw new ArgumentException();
 			}
 
+			AutoSimActive = true;
 			
 			while (!backgroundWorker.CancellationPending) {
+				AutoSimBusy = true;
 				string outputDirectory = null;
 				IList<string> filesToSimulate = null;
 				lock (dirLock) {
@@ -146,15 +181,21 @@ namespace VECTOTrailer.Model.Simulation
 
 				if (filesToSimulate.Count > 0) {
 					RunSimulation(filesToSimulate, outputDirectory, backgroundWorker.ReportProgress, () => backgroundWorker.CancellationPending);
+				} else {
+					Thread.Sleep(2000);
+					AutoSimBusy = false;
+					Thread.Sleep(2000);
 				}
 			}
+
+			AutoSimBusy = false;
 		}
 
 		private IList<string> CheckDirectoryAndCopyFiles(Action<VectoSimulationProgress> progressAction)
 		{
 			var copiedFiles = new List<string>();
 			lock (dirLock) {
-				if (Directory.Exists(_inputDirectory))
+				if (Directory.Exists(_inputDirectory) && _outputDirectory != null)
 				{
 					foreach (var file in Directory.GetFiles(_inputDirectory))
 					{
@@ -304,7 +345,7 @@ namespace VECTOTrailer.Model.Simulation
 						Type = VectoSimulationProgress.MsgType.StatusMessage,
 						Message = "Simulation canceled"
 					});
-					return jobContainer;
+					return null;
 				}
 
 				try {
@@ -399,6 +440,11 @@ namespace VECTOTrailer.Model.Simulation
 			}
 
 			return jobContainer;
+		}
+		private void VectoSimulationCompleted(object sender, RunWorkerCompletedEventArgs e)
+		{
+			AutoSimActive = false;
+			AutoSimBusy = false;
 		}
 	}
 

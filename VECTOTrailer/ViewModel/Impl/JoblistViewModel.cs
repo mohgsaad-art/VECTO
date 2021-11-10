@@ -201,8 +201,8 @@ namespace VECTOTrailer.ViewModel.Impl
 				WriteActualModData = body.GetValueOrDefault<bool>(nameof(WriteActualModData)) ?? false;
 
 				OutputDirectory = body[nameof(OutputDirectory)] == null ? "" : body[nameof(OutputDirectory)].Value<string>();
-				AutoSimOutput = body[nameof(AutoSimOutput)] == null ? "" : body[nameof(AutoSimOutput)].Value<string>();
-				AutoSimInput = body[nameof(AutoSimInput)] == null ? "" : body[nameof(AutoSimInput)].Value<string>();
+				_autoSimulator.OutputDirectory = body[nameof(_autoSimulator.OutputDirectory) + "-autosim"] == null ? "" : body[nameof(_autoSimulator.OutputDirectory) + "-autosim"].Value<string>();
+				_autoSimulator.InputDirectory = body[nameof(_autoSimulator.InputDirectory) + "-autosim"] == null ? "" : body[nameof(_autoSimulator.InputDirectory) + "-autosim"].Value<string>();
 			}
 		}
 
@@ -221,8 +221,8 @@ namespace VECTOTrailer.ViewModel.Impl
 			body.Add(nameof(WriteModData1Hz), WriteModData1Hz);
 			body.Add(nameof(WriteActualModData), WriteActualModData);
 			body.Add(nameof(OutputDirectory), OutputDirectory);
-			body.Add(nameof(AutoSimOutput), AutoSimOutput);
-			body.Add(nameof(AutoSimInput), AutoSimInput);
+			body.Add(nameof(_autoSimulator.OutputDirectory) + "-autosim", _autoSimulator.OutputDirectory);
+			body.Add(nameof(_autoSimulator.InputDirectory) + "-autosim", _autoSimulator.InputDirectory);
 
 			JSONFileWriter.WriteFile(new Dictionary<string, object>() { { "Header", header }, { "Body", body } }, SETTINGS_FILE);
 		}
@@ -365,53 +365,31 @@ namespace VECTOTrailer.ViewModel.Impl
 		#region AutoSim
 
 
-		public bool AutoSimActivated
+
+        public bool AutoSimBusy => _autoSimulator.AutoSimBusy;
+
+		public IAutoSimulator AutoSimulator
 		{
-			get => _autoSimActivated;
-			set
-			{
-				if (SetProperty(ref _autoSimActivated, value)) {
-					if (_autoSimActivated) {
-						_autoSimulator.StartAutoSimulator();
-					} else {
-						_autoSimulator.StopOutputSimulator();
-					}
-				}
-			}
+			get => _autoSimulator;
 		}
 
+		private ICommand _toggleAutoSimCommand;
 
-		public string AutoSimInput
-		{
-			get { return _autoSimulator.InputDirectory; }
-			set
-			{
-				_autoSimulator.InputDirectory = value;
-				OnPropertyChanged(nameof(AutoSimInput));
-			}
-		}
-
-		public string AutoSimOutput
-		{
-			get { return _autoSimulator.OutputDirectory; }
-			set
-			{
-				_autoSimulator.OutputDirectory = value;
-				OnPropertyChanged(nameof(AutoSimOutput));
-			}
-		}
-
+		public ICommand ToggleAutoSim { get => _toggleAutoSimCommand ?? (_toggleAutoSimCommand = new RelayCommand(
+			() => {
+				_autoSimulator.ToggleAutoSimulator();
+			})); }
 
 
 		public ICommand BrowseAutoSimOutputDirectory
 		{
 
-			get { return _browseAutoSimOutputDirectory ?? (_browseAutoSimOutputDirectory = new RelayCommand( () => DoBrowseDirectory(s => AutoSimOutput = s))); }
+			get { return _browseAutoSimOutputDirectory ?? (_browseAutoSimOutputDirectory = new RelayCommand( () => DoBrowseDirectory(s => _autoSimulator.OutputDirectory = s))); }
 		}
 
 		public ICommand BrowseAutoSimInputDirectory
 		{
-			get { return _browseAutoSimInputDirectory ?? (_browseAutoSimInputDirectory = new RelayCommand(() => DoBrowseDirectory(s => AutoSimInput = s))); }
+			get { return _browseAutoSimInputDirectory ?? (_browseAutoSimInputDirectory = new RelayCommand(() => DoBrowseDirectory(s => _autoSimulator.InputDirectory = s))); }
 		}
 #endregion
 

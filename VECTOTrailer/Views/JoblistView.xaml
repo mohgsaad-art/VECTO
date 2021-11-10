@@ -48,9 +48,10 @@
                                     <TextBlock Text="Stop" Margin="0,0,0,0" />
                                 </StackPanel>
                             </Button>
-                            <ToggleButton VerticalAlignment="Top" Margin="10 10 0 0" IsChecked="{Binding AutoSimActivated}">
-                                <StackPanel Orientation="Horizontal">
+                            <ToggleButton VerticalAlignment="Top" Margin="10 10 0 0" Command="{Binding ToggleAutoSim}" IsChecked="{Binding AutoSimulator.AutoSimActive, Mode=OneWay}">
+                                <StackPanel Orientation="Vertical">
                                     <TextBlock Text="Scan Folder"></TextBlock>
+                                    <ProgressBar Orientation="Horizontal" IsIndeterminate="{Binding AutoSimulator.AutoSimBusy, Mode=OneWay}"></ProgressBar>
                                 </StackPanel>
                             </ToggleButton>
 
@@ -71,6 +72,7 @@
                                     </StackPanel>
                                 </Button>
                             </StackPanel>
+                            
                         </StackPanel>
                     </Grid>
 
@@ -216,13 +218,13 @@
                             <StackPanel>
                                 <GroupBox Header="Input Directory">
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBox Width="200" Text="{Binding AutoSimInput}"/>
+                                        <TextBox Width="200" Text="{Binding AutoSimulator.InputDirectory}"/>
                                         <Button Width="60" Content="Browse" Command="{Binding BrowseAutoSimInputDirectory}" Margin="5,0,0,0"/>
                                     </StackPanel>
                                 </GroupBox>
                                 <GroupBox Header="Output Directory">
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBox Width="200" Text="{Binding AutoSimOutput}"/>
+                                        <TextBox Width="200" Text="{Binding AutoSimulator.OutputDirectory}"/>
                                         <Button Width="60" Content="Browse" Command="{Binding BrowseAutoSimOutputDirectory}" Margin="5,0,0,0"/>
                                     </StackPanel>
                                 </GroupBox>
