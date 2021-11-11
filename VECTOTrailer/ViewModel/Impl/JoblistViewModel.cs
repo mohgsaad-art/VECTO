@@ -168,20 +168,38 @@ namespace VECTOTrailer.ViewModel.Impl
 		{
 			_settings = new SettingsModel();
 			_autoSimulator = autoSimulator;
+            _autoSimulator.Messages.CollectionChanged += Messages_CollectionChanged;
+				
 			LoadOptions();
 			SetJobEntries();
 
+			ConfigureSimulationWorker();
+			ConfigureNlog();
+		}
+
+        private void Messages_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+		{
+			foreach (var newItem in e.NewItems) {
+				Messages.Add((MessageEntry)newItem);
+			}
+		}
+
+        private void ConfigureNlog()
+		{
+			var target = new MethodCallTarget("VectoGuiTarget", (evtInfo, obj) => LogMethod(evtInfo, obj));
+			//NLog.Config.SimpleConfigurator.ConfigureForTargetLogging(target);
+			NLog.LogManager.Configuration.AddTarget(target);
+			NLog.LogManager.ReconfigExistingLoggers();
+		}
+
+		private void ConfigureSimulationWorker()
+		{
 			SimulationWorker = new BackgroundWorker();
 			SimulationWorker.DoWork += RunVectoSimulation;
 			SimulationWorker.ProgressChanged += VectoSimulationProgressChanged;
 			SimulationWorker.RunWorkerCompleted += VectoSimulationCompleted;
 			SimulationWorker.WorkerReportsProgress = true;
 			SimulationWorker.WorkerSupportsCancellation = true;
-
-			var target = new MethodCallTarget("VectoGuiTarget", (evtInfo, obj) => LogMethod(evtInfo, obj));
-			//NLog.Config.SimpleConfigurator.ConfigureForTargetLogging(target);
-			NLog.LogManager.Configuration.AddTarget(target);
-			NLog.LogManager.ReconfigExistingLoggers();
 		}
 
 		private void LoadOptions()

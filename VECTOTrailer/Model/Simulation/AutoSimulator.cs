@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security.RightsManagement;
+using System.ServiceModel.Security;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -34,7 +36,7 @@ namespace VECTOTrailer.Model.Simulation
 		string InputDirectory { get; set; }
 		string OutputDirectory { get; set; }
 
-
+		ObservableCollection<MessageEntry> Messages { get; }
 		bool WriteModData { get; set; }
 		bool WriteModData1Hz { get; set; }
 		bool ValidateData { get; set; }
@@ -50,6 +52,7 @@ namespace VECTOTrailer.Model.Simulation
 	{
 		private ILogger _logger;
 		private BackgroundWorker worker;
+
 		public AutoSimulator(IXMLInputDataReader inputDataReader)
 		{
 			_inputDataReader = inputDataReader;
@@ -63,6 +66,8 @@ namespace VECTOTrailer.Model.Simulation
 			worker.ProgressChanged += WorkerOnProgressChanged;
 		}
 
+		private ObservableCollection<MessageEntry> _messages = new ObservableCollection<MessageEntry>();
+		public ObservableCollection<MessageEntry> Messages => _messages;
 
 
 		#region Logging
@@ -124,6 +129,7 @@ namespace VECTOTrailer.Model.Simulation
 		private bool _autoSimBusy;
 		private bool _autoSimActive;
 
+
 		public string OutputDirectory
 		{
 			get
@@ -161,14 +167,20 @@ namespace VECTOTrailer.Model.Simulation
 			} else {
 				StartAutoSimulator();
 			}	
-			OnPropertyChanged(nameof(AutoSimActive)); //<- DO not remove
+			OnPropertyChanged(nameof(AutoSimActive)); //<- DO not remove important to sync the state of the toggle button
 		}
 
 		private bool StartAutoSimulator()
 		{
 			if (!worker.IsBusy) {
 				worker.RunWorkerAsync();
-				_logger.Log(LogLevel.Info, string.Format("Starting Auto-Simulator \n Input directory: {0} \n Output directory{1} \n", InputDirectory, OutputDirectory));
+				var msg = string.Format("Starting Auto-Simulator \n Input directory: {0} \n Output directory{1} \n",
+					InputDirectory, OutputDirectory);
+				_logger.Log(LogLevel.Info, msg);
+				Messages.Add(new MessageEntry()
+				{
+					Message = msg,
+				});
 				return true;
 			}
 
@@ -179,7 +191,11 @@ namespace VECTOTrailer.Model.Simulation
 		{
 			if (worker.WorkerSupportsCancellation) {
 				worker.CancelAsync();
-				_logger.Log(LogLevel.Info, string.Format("Stopping Auto-Simulator\n"));
+				var msg = ("Stopping Auto-Simulator\n");
+				_logger.Log(LogLevel.Info, msg);
+				Messages.Add(new MessageEntry() {
+					Message = "msg",
+				});
 				return true;
 			}
 
@@ -306,7 +322,8 @@ namespace VECTOTrailer.Model.Simulation
 						Type = VectoSimulationProgress.MsgType.Progress,
 						Message = string.Format(
 							"Duration: {0:F1}s, Current Progress: {1:P} ({2})", duration, sumProgress / progress.Count,
-							string.Join(", ", progress.Select(x => string.Format("{0,4:P}", x.Value.Progress))))
+							string.Join(", ", progress.Select(x => string.Format("{0,4:P}", x.Value.Progress)))),
+						Target = VectoSimulationProgress.MsgTarget.NLog
 					});
 				var justFinished = progress.Where(x => x.Value.Done & !finishedRuns.Contains(x.Key))
 					.ToDictionary(x => x.Key, x => x.Value);
@@ -328,7 +345,8 @@ namespace VECTOTrailer.Model.Simulation
 							$"{progressEntry.Value.RunName} {progressEntry.Value.CycleName} {progressEntry.Value.RunSuffix}",
 							progressEntry.Value.Progress,
 							progressEntry.Value.ExecTime / 1000.0,
-							progressEntry.Value.Success ? "Success" : "Aborted")
+							progressEntry.Value.Success ? "Success" : "Aborted"),
+					Target = VectoSimulationProgress.MsgTarget.NLog
 				});
 				if (!progressEntry.Value.Success)
 				{
@@ -337,7 +355,8 @@ namespace VECTOTrailer.Model.Simulation
 						new VectoSimulationProgress()
 						{
 							Type = VectoSimulationProgress.MsgType.StatusMessage,
-							Message = progressEntry.Value.Error.Message
+							Message = progressEntry.Value.Error.Message,
+							Target = VectoSimulationProgress.MsgTarget.NLog,
 						}
 					);
 				}
@@ -355,9 +374,16 @@ namespace VECTOTrailer.Model.Simulation
 				reportProgress(100, new VectoSimulationProgress()
 				{
 					Type = VectoSimulationProgress.MsgType.StatusMessage,
-					Message = string.Format("Simulation finished in {0:F1}s", start.Elapsed.TotalSeconds)
+					Message = string.Format("Auto-Simulation finished in {0:F1}s", start.Elapsed.TotalSeconds),
+					Target = VectoSimulationProgress.MsgTarget.NLog,
 				});
 			}
+
+			reportProgress(100, new VectoSimulationProgress() {
+				Type = VectoSimulationProgress.MsgType.StatusMessage,
+				Message = "Finished Simulation",
+				Target = VectoSimulationProgress.MsgTarget.NLog | VectoSimulationProgress.MsgTarget.MessageWindow,
+			});
 		}
 
 		private JobContainer ReadJobFiles(IList<string> jobFileNames, string outputDirectory, Action<int, VectoSimulationProgress> reportProgress, Func<bool> cancel)
@@ -375,7 +401,8 @@ namespace VECTOTrailer.Model.Simulation
 				if (cancel()) {
 					reportProgress(0, new VectoSimulationProgress() {
 						Type = VectoSimulationProgress.MsgType.StatusMessage,
-						Message = "Simulation canceled"
+						Message = "Simulation canceled",
+						Target = VectoSimulationProgress.MsgTarget.MessageWindow | VectoSimulationProgress.MsgTarget.NLog,
 					});
 					return null;
 				}
@@ -387,7 +414,8 @@ namespace VECTOTrailer.Model.Simulation
 							0, new VectoSimulationProgress() {
 								Type = VectoSimulationProgress.MsgType.StatusMessage,
 								Message =
-									$"File {fullFileName} not found!"
+									$"File {fullFileName} not found!",
+								Target = VectoSimulationProgress.MsgTarget.NLog
 							});
 						continue;
 					}
@@ -396,7 +424,8 @@ namespace VECTOTrailer.Model.Simulation
 						0,
 						new VectoSimulationProgress() {
 							Type = VectoSimulationProgress.MsgType.StatusMessage,
-							Message = $"Reading file {Path.GetFileName(fullFileName)}"
+							Message = $"Reading file {Path.GetFileName(fullFileName)}",
+							Target = VectoSimulationProgress.MsgTarget.NLog | VectoSimulationProgress.MsgTarget.MessageWindow
 						});
 					var extension = Path.GetExtension(fullFileName);
 					IInputDataProvider input = null;
@@ -486,7 +515,17 @@ namespace VECTOTrailer.Model.Simulation
 				return;
 			}
 
-			_logger.Log(progress.Type.ToLogLevel(), progress.Message);
+			if (progress.Target.HasFlag(VectoSimulationProgress.MsgTarget.NLog)) {
+				_logger.Log(progress.Type.ToLogLevel(), progress.Message);
+			}
+
+			if (progress.Target.HasFlag(VectoSimulationProgress.MsgTarget.MessageWindow)) {
+				Messages.Add(new MessageEntry() {
+					Message = progress.Message,
+					Type = progress.Type.ToMessageType(),
+				});
+			}
+			
 		}
 
 
