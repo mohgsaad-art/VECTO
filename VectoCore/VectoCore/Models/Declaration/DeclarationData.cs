@@ -430,24 +430,9 @@ namespace TUGraz.VectoCore.Models.Declaration
 			public static readonly MeterPerSecond StartSpeed = 8.KMPHtoMeterPerSecond();
 			public static readonly MeterPerSquareSecond StartAcceleration = 0.8.SI<MeterPerSquareSecond>();
 
-			public static readonly Second GearResidenceTime = 5.SI<Second>();
-			public static readonly Watt CurrentCardanPowerThresholdPropulsion = 5000.SI<Watt>();
-			public static readonly Watt AverageCardanPowerThresholdPropulsion = 1000.SI<Watt>();
-			public static readonly Second LookBackInterval = 4.SI<Second>();
-			public static readonly Second DriverAccelerationLookBackInterval = 2.SI<Second>();
-			public const double EngineSpeedHighDriveOffFactor = 1.05;
-			public const double DnT99L_highMin1 = 0.4;
-			public const double DnT99L_highMin2 = 0.5;
-
-			public const int AllowedGearRangeUp = 3;
-			public const int AllowedGearRangeDown = 3;
-
-			public const double TargetSpeedDeviationFactor = 0.1;
-
 			public static double RatingFactorCurrentGear = 0.97;
-			public static double RatingFactorCurrentGearAT = 0.97;
+			public static double RatingFactorCurrentGearAPT = 0.97;
 
-			public static readonly MeterPerSquareSecond DriverAccelerationThresholdLow = 0.1.SI<MeterPerSquareSecond>();
 			public static double VelocityDropFactor = 1.0;
 			public static double AccelerationFactor = 0.5;
 
@@ -487,7 +472,6 @@ namespace TUGraz.VectoCore.Models.Declaration
 			// TODO: MQ 2019-11-26 remove, once the parameters are fixed! make fields above read-only or const
 			static GearboxTCU()
 			{
-				//#if RELEASE_CANDIDATE
 				var expectedFile = @"Declaration\EffShiftParameters.vtcu";
 				if (!File.Exists(expectedFile)) {
 					return;
@@ -496,7 +480,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 				var tcuData = JSONInputDataFactory.ReadShiftParameters(expectedFile, true);
 				if (tcuData.RatingFactorCurrentGear.HasValue) {
 					RatingFactorCurrentGear = tcuData.RatingFactorCurrentGear.Value;
-					RatingFactorCurrentGearAT = tcuData.RatingFactorCurrentGear.Value;
+					RatingFactorCurrentGearAPT = tcuData.RatingFactorCurrentGear.Value;
 				}
 				if (tcuData.RatioEarlyDownshiftFC.HasValue) {
 					RatioEarlyDownshiftFC = tcuData.RatioEarlyDownshiftFC.Value;
@@ -533,7 +517,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 				if (tmp != null && tmp.Body["ShiftStrategy"] != null) {
 					DefaultShiftStrategy = tmp.Body["ShiftStrategy"].Value<string>();
 				}
-				//#endif
+				
 			}
 		}
 
