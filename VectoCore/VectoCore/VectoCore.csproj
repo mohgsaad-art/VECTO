@@ -822,6 +822,7 @@
     <EmbeddedResource Include="Resources\Declaration\VAUXBus\SP-AxleFactor.csv" />
     <EmbeddedResource Include="Resources\Declaration\VAUXBus\SP-Axles_Bus.csv" />
     <EmbeddedResource Include="Resources\Declaration\VAUXBus\SP-Factors_Bus.csv" />
+    <None Include="Resources\Declaration\EffShiftParameters.vtcu" />
     <None Include="Utils\VectoVersionCore.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>VectoVersionCore.cs</LastGenOutput>
