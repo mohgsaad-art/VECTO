@@ -520,12 +520,12 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		public static IShiftStrategy GetShiftStrategy(IVehicleContainer container)
 		{
 			var runData = container.RunData;
-			var shiftStrategy = runData.ShiftStrategy;
-			if (string.IsNullOrWhiteSpace(shiftStrategy)) {
-				shiftStrategy = DeclarationData.GearboxTCU.DefaultShiftStrategy;
-			}
+			//var shiftStrategy = runData.ShiftStrategy;
+			//if (string.IsNullOrWhiteSpace(shiftStrategy)) {
+			//	shiftStrategy = DeclarationData.GearboxTCU.DefaultShiftStrategy;
+			//}
 
-			if (string.IsNullOrWhiteSpace(shiftStrategy)) {
+			//if (string.IsNullOrWhiteSpace(shiftStrategy)) {
 				switch (runData.GearboxData.Type) {
 					case GearboxType.AMT:
 						//if (runData.JobType == VectoSimulationJobType.ConventionalVehicle) {
@@ -551,18 +551,18 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 						throw new ArgumentOutOfRangeException("GearboxType",
 							$"Unknown Gearbox Type {runData.GearboxData.Type.ToString()}");
 				}
-			}
+			//}
 
-			var selected = ShiftStrategies.FirstOrDefault(x =>
-				x.Item1.Contains(runData.GearboxData.Type) &&
-				x.Item2.Equals(shiftStrategy, StringComparison.InvariantCultureIgnoreCase));
-			if (selected == null) {
-				throw new ArgumentOutOfRangeException("ShiftStrategy",
-					$"Unknown Shiftstrategy {shiftStrategy} for Gearbox Type {runData.GearboxData.Type.ToString()}");
-			}
+			//var selected = ShiftStrategies.FirstOrDefault(x =>
+			//	x.Item1.Contains(runData.GearboxData.Type) &&
+			//	x.Item2.Equals(shiftStrategy, StringComparison.InvariantCultureIgnoreCase));
+			//if (selected == null) {
+			//	throw new ArgumentOutOfRangeException("ShiftStrategy",
+			//		$"Unknown Shiftstrategy {shiftStrategy} for Gearbox Type {runData.GearboxData.Type.ToString()}");
+			//}
 
-			runData.ShiftStrategy = selected.Item3;
-			return selected.Item4(container);
+			//runData.ShiftStrategy = selected.Item3;
+			//return selected.Item4(container);
 		}
 
 

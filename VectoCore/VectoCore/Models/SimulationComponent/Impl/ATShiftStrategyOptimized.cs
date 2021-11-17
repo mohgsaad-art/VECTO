@@ -359,6 +359,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				return null;
 			}
 
+			//var minAcceleration = VectoMath.Min(shiftStrategyParameters.DownshiftMaxAccelerationAT, ???);
+			//if (!(DataBus.DriverInfo.DrivingAction == DrivingAction.Accelerate &&
+			//	DataBus.DriverInfo.DriverAcceleration.IsGreater(minAcceleration))) {
+			//	return null;
+			//}
+
 			var minFcGear = currentGear;
 			var minFc = double.MaxValue;
 			var fcCurrent = double.NaN;

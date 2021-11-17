@@ -440,8 +440,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 			public static double RatioEarlyDownshiftFC = 24;
 
 			public static int AllowedGearRangeFCAMT = 2;
-			public static int AllowedGearRangeFCAT = 1;
-			public static int AllowedGearRangeFCATSkipGear = 2;
+			public static int AllowedGearRangeFCAPT = 1;
+			public static int AllowedGearRangeFCAPTSkipGear = 2;
 			public static int ATSkipGearsThreshold = 6;
 
 			public static PerSecond MinEngineSpeedPostUpshift = 0.RPMtoRad();
@@ -463,10 +463,11 @@ namespace TUGraz.VectoCore.Models.Declaration
 			public const double DownhillSlope = -5;
 			public const double UphillSlope = 5;
 
-			public static string DefaultShiftStrategy = "";
+			//public static string DefaultShiftStrategy = "";
 			public const double DragMarginFactor = 0.7;
 
 			public static bool Fallback_ATEcoRollReleaseLockupClutch = false;
+			public static MeterPerSquareSecond DownshiftMaxAccelerationAT = -5.SI<MeterPerSquareSecond>();
 
 
 			// TODO: MQ 2019-11-26 remove, once the parameters are fixed! make fields above read-only or const
@@ -480,7 +481,6 @@ namespace TUGraz.VectoCore.Models.Declaration
 				var tcuData = JSONInputDataFactory.ReadShiftParameters(expectedFile, true);
 				if (tcuData.RatingFactorCurrentGear.HasValue) {
 					RatingFactorCurrentGear = tcuData.RatingFactorCurrentGear.Value;
-					RatingFactorCurrentGearAPT = tcuData.RatingFactorCurrentGear.Value;
 				}
 				if (tcuData.RatioEarlyDownshiftFC.HasValue) {
 					RatioEarlyDownshiftFC = tcuData.RatioEarlyDownshiftFC.Value;
@@ -490,7 +490,6 @@ namespace TUGraz.VectoCore.Models.Declaration
 				}
 				if (tcuData.AllowedGearRangeFC.HasValue) {
 					AllowedGearRangeFCAMT = tcuData.AllowedGearRangeFC.Value;
-					AllowedGearRangeFCAT = tcuData.AllowedGearRangeFC.Value;
 				}
 				if (tcuData.VeloictyDropFactor.HasValue) {
 					VelocityDropFactor = tcuData.VeloictyDropFactor.Value;
@@ -513,11 +512,28 @@ namespace TUGraz.VectoCore.Models.Declaration
 				if (tcuData.MinEngineSpeedPostUpshift != null) {
 					MinEngineSpeedPostUpshift = tcuData.MinEngineSpeedPostUpshift;
 				}
-				var tmp = tcuData as JSONFile;
-				if (tmp != null && tmp.Body["ShiftStrategy"] != null) {
-					DefaultShiftStrategy = tmp.Body["ShiftStrategy"].Value<string>();
+
+				if (tcuData.DownshiftMaxAccelerationAT != null) {
+					DownshiftMaxAccelerationAT = tcuData.DownshiftMaxAccelerationAT;
 				}
-				
+
+				var raw = tcuData as JSONFile;
+				if (raw.Body["Rating_current_gear_APT"] != null) {
+					RatingFactorCurrentGearAPT = raw.Body.GetEx<double>("Rating_current_gear_APT");
+				}
+				if (raw.Body["AllowedGearRangeFCAPT"] != null) {
+					AllowedGearRangeFCAPT = raw.Body.GetEx<int>("AllowedGearRangeFCAPT");
+				}
+				if (raw.Body["AllowedGearRangeFCAPTSkipGear"] != null) {
+					AllowedGearRangeFCAPTSkipGear = raw.Body.GetEx<int>("AllowedGearRangeFCAPTSkipGear");
+				}
+
+
+				//var tmp = tcuData as JSONFile;
+				//if (tmp != null && tmp.Body["ShiftStrategy"] != null) {
+				//	DefaultShiftStrategy = tmp.Body["ShiftStrategy"].Value<string>();
+				//}
+
 			}
 		}
 

@@ -602,8 +602,8 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				RatioEarlyDownshiftFC = DeclarationData.GearboxTCU.RatioEarlyDownshiftFC / axleRatio,
 				AllowedGearRangeFC = gbx.Type.AutomaticTransmission()
 					? (gbx.Gears.Count > DeclarationData.GearboxTCU.ATSkipGearsThreshold
-						? DeclarationData.GearboxTCU.AllowedGearRangeFCATSkipGear
-						: DeclarationData.GearboxTCU.AllowedGearRangeFCAT)
+						? DeclarationData.GearboxTCU.AllowedGearRangeFCAPTSkipGear
+						: DeclarationData.GearboxTCU.AllowedGearRangeFCAPT)
 					: DeclarationData.GearboxTCU.AllowedGearRangeFCAMT,
 				VelocityDropFactor = DeclarationData.GearboxTCU.VelocityDropFactor,
 				AccelerationFactor = DeclarationData.GearboxTCU.AccelerationFactor,
@@ -614,6 +614,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				LoadStageThresoldsDown = DeclarationData.GearboxTCU.LoadStageThresoldsDown,
 				ShiftSpeedsTCToLocked = DeclarationData.GearboxTCU.ShiftSpeedsTCToLocked
 														.Select(x => x.Select(y => y + engineIdlingSpeed.AsRPM).ToArray()).ToArray(),
+				DownshiftMaxAccelerationAT = DeclarationData.GearboxTCU.DownshiftMaxAccelerationAT,
 			};
 
 			return retVal;

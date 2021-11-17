@@ -64,115 +64,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 
 		public MeterPerSquareSecond StartAcceleration => Body.GetValueOrDefault<double>(JsonKeys.Gearbox_StartAcceleration)?.SI<MeterPerSquareSecond>() ?? DeclarationData.GearboxTCU.StartAcceleration;
 
-		public Second GearResidenceTime => Body.GetValueOrDefault<double>("GearResidenceTime")?.SI<Second>();
-
-		public double? DnT99LHMin1 => Body.GetValueOrDefault<double>("Dn_Tq99L_high_min_1");
-
-		public double? DnT99LHMin2 => Body.GetValueOrDefault<double>("Dn_Tq99L_high_min_2");
-
-		public int? AllowedGearRangeUp => Body.GetValueOrDefault<int>("GearRangeUp");
-
-		public int? AllowedGearRangeDown => Body.GetValueOrDefault<int>("GearRangeDown");
-
-		public Second LookBackInterval => Body.GetValueOrDefault<double>("LookBackDriver")?.SI<Second>();
-
-		public Watt AvgCardanPowerThresholdPropulsion => Body.GetValueOrDefault<double>("P_card_avg_threshold")?.SI<Watt>();
-
-		public Watt CurrCardanPowerThresholdPropulsion => Body.GetValueOrDefault<double>("P_card_curr_threshold")?.SI<Watt>();
-
-		public double? TargetSpeedDeviationFactor => Body.GetValueOrDefault<double>("Diff_curr_targ_vel");
-
-		public double? EngineSpeedHighDriveOffFactor => Body.GetValueOrDefault<double>("EngineSpeedHighDriveOffFactor");
-
 		public double? RatingFactorCurrentGear => Body.GetValueOrDefault<double>("Rating_current_gear");
-
-		public TableData AccelerationReserveLookup
-		{
-			get {
-				try {
-					return ReadTableData(Body["AccelerationReserveLookup"]?.ToString(), "AccelerationReserveLookup", false);
-				} catch (Exception) {
-					if (!TolerateMissing) {
-						throw;
-					}
-
-					return new TableData(
-						Path.Combine(BasePath, Body["AccelerationReserveLookup"]?.ToString() ?? "") + MissingFileSuffix,
-						DataSourceType.Missing);
-				}
-			}
-		}
-
-		public TableData ShareTorque99L
-		{
-			get {
-				try {
-					return ReadTableData(Body["ShareTorque99L"]?.ToString(), "ShareTorque99L", false);
-				} catch (Exception) {
-					if (!TolerateMissing) {
-						throw;
-					}
-
-					return new TableData(
-						Path.Combine(BasePath, Body["ShareTorque99L"]?.ToString() ?? "") + MissingFileSuffix,
-						DataSourceType.Missing);
-				}
-			}
-		}
-
-		public TableData PredictionDurationLookup
-		{
-			get {
-				try {
-					return ReadTableData(Body["PredictionDurationLookup"]?.ToString(), "PredictionDurationLookup", false);
-				} catch (Exception) {
-					if (!TolerateMissing) {
-						throw;
-					}
-
-					return new TableData(
-						Path.Combine(BasePath, Body["PredictionDurationLookup"]?.ToString() ?? "") + MissingFileSuffix,
-						DataSourceType.Missing);
-				}
-			}
-		}
-
-		public TableData ShareIdleLow
-		{
-			get {
-				try {
-					return ReadTableData(Body["ShareIdleLow"]?.ToString(), "ShareIdleLow", false);
-				} catch (Exception) {
-					if (!TolerateMissing) {
-						throw;
-					}
-
-					return new TableData(
-						Path.Combine(BasePath, Body["ShareIdleLow"]?.ToString() ?? "") + MissingFileSuffix,
-						DataSourceType.Missing);
-				}
-			}
-		}
-
-		public TableData ShareEngineHigh
-		{
-			get {
-				try {
-					return ReadTableData(Body["ShareEngineHigh"]?.ToString(), "ShareEngineHigh", false);
-				} catch (Exception) {
-					if (!TolerateMissing) {
-						throw;
-					}
-
-					return new TableData(
-						Path.Combine(BasePath, Body["ShareEngineHigh"]?.ToString() ?? "") + MissingFileSuffix,
-						DataSourceType.Missing);
-				}
-			}
-		}
-
-		public Second DriverAccelerationLookBackInterval => Body.GetValueOrDefault<double>("DriverAccelerationLookBackInterval")?.SI<Second>();
-		public MeterPerSquareSecond DriverAccelerationThresholdLow => Body.GetValueOrDefault<double>("DriverAccelerationThresholdLow")?.SI<MeterPerSquareSecond>();
 
 		public double? RatioEarlyUpshiftFC => Body.GetValueOrDefault<double>("RatioEarlyUpshiftFC");
 
@@ -253,64 +145,29 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			}
 		}
 
-		public double? PEV_TargetSpeedBrakeNorm
+		public MeterPerSquareSecond DownshiftMaxAccelerationAT
 		{
 			get
 			{
-				if (Body["PEV_TargetSpeedBrakeNorm"] != null) {
-					return Body.GetEx<double>("PEV_TargetSpeedBrakeNorm");
-				}
-
-				return null;
-			}
-		}
-
-		public double? PEV_DeRatingDownshiftSpeedFactor
-		{
-			get
-			{
-				if (Body["PEV_DeRatingDownshiftSpeedFactor"] != null) {
-					return Body.GetEx<double>("PEV_DeRatingDownshiftSpeedFactor");
-				}
-
-				return null;
-			}
-		}
-
-		public double? PEV_DownshiftMinSpeedFactor
-		{
-			get
-			{
-				if (Body["PEV_DownshiftMinSpeedFactor"] != null) {
-					return Body.GetEx<double>("PEV_DownshiftMinSpeedFactor");
-				}
-
-				return null;
-			}
-		}
-
-		public TableData LoadStageShiftLines
-		{
-			get {
-				try {
-					return ReadTableData(Body["LoadStageShiftLines"]?.ToString(), "LoadStageShiftLines", false);
-				} catch (Exception) {
+				if (Body["DownshiftMaxAccelerationAT"] == null) {
 					return null;
 				}
+
+				return Body.GetEx<double>("DownshiftMaxAccelerationAT").SI<MeterPerSquareSecond>();
 			}
 		}
 
 		public IList<double> LoadStageThresholdsUp
 		{
 			get {
-				return (Body["LoadStageThresoldsUp"]?.ToString())?.Split(';').Select(x => x.ToDouble(0)).ToList();
+				return (Body["LoadStageThresholdsUp"]?.ToString())?.Split(';').Select(x => x.ToDouble(0)).ToList();
 			}
 		}
 
 		public IList<double> LoadStageThresholdsDown
 		{
 			get {
-				return (Body["LoadStageThresoldsDown"]?.ToString())?.Split(';').Select(x => x.ToDouble(0)).ToList();
+				return (Body["LoadStageThresholdsDown"]?.ToString())?.Split(';').Select(x => x.ToDouble(0)).ToList();
 			}
 		}
 

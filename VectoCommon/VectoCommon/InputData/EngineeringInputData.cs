@@ -262,27 +262,11 @@ namespace TUGraz.VectoCommon.InputData
 
 		MeterPerSquareSecond UpshiftMinAcceleration { get; }
 
-		// ACEA/Scania GS Parameters
-		//Second GearResidenceTime { get; }
-		//double? DnT99LHMin1 { get; }
-		//double? DnT99LHMin2 { get; }
-		//int? AllowedGearRangeUp { get; }
-		//int? AllowedGearRangeDown { get; }
-		//Second LookBackInterval { get; }
-		//Watt AvgCardanPowerThresholdPropulsion { get; }
-		//Watt CurrCardanPowerThresholdPropulsion { get; }
-		//double? TargetSpeedDeviationFactor { get; }
-		//double? EngineSpeedHighDriveOffFactor { get; }
+		
 		double? RatingFactorCurrentGear { get; }
-		//TableData AccelerationReserveLookup { get; }
-		//TableData ShareTorque99L { get; }
-		//TableData PredictionDurationLookup { get; }
-		//TableData ShareIdleLow { get; }
-		//TableData ShareEngineHigh { get; }
+		
 		string Source { get; }
-		//Second DriverAccelerationLookBackInterval { get; }
-		//MeterPerSquareSecond DriverAccelerationThresholdLow { get; }
-
+		
 		// FC-Based GS parameters
 		double? RatioEarlyUpshiftFC { get; }
 		double? RatioEarlyDownshiftFC { get; }
@@ -293,8 +277,7 @@ namespace TUGraz.VectoCommon.InputData
 
 		double? AccelerationFactor { get; }
 
-		// Voith GS Parameters
-		//TableData LoadStageShiftLines { get; }
+		
 		IList<double> LoadStageThresholdsUp { get; }
 		IList<double> LoadStageThresholdsDown { get; }
 		PerSecond MinEngineSpeedPostUpshift { get; }
@@ -302,10 +285,7 @@ namespace TUGraz.VectoCommon.InputData
 		Second ATLookAheadTime { get; }
 		double[][] ShiftSpeedsTCToLocked { get; }
 
-		//double? PEV_TargetSpeedBrakeNorm { get; }
-
-		//double? PEV_DeRatingDownshiftSpeedFactor { get; }
-		//double? PEV_DownshiftMinSpeedFactor { get; }
+		MeterPerSquareSecond DownshiftMaxAccelerationAT { get; }
 	}
 
 	public interface ITorqueConverterEngineeringShiftParameterInputData

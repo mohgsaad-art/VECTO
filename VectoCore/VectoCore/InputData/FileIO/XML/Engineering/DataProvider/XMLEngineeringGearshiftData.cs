@@ -124,25 +124,10 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider
 			}
 		}
 
-		public virtual Second GearResidenceTime => null;
-		public virtual double? DnT99LHMin1 => null;
-		public virtual double? DnT99LHMin2 => null;
-		public virtual int? AllowedGearRangeUp => null;
-		public virtual int? AllowedGearRangeDown => null;
-		public virtual Second LookBackInterval => null;
-		public virtual Watt AvgCardanPowerThresholdPropulsion => null;
-		public virtual Watt CurrCardanPowerThresholdPropulsion => null;
-		public virtual double? TargetSpeedDeviationFactor => null;
-		public virtual double? EngineSpeedHighDriveOffFactor => null;
 		public virtual double? RatingFactorCurrentGear => null;
-		public virtual TableData AccelerationReserveLookup => null;
-		public virtual TableData ShareTorque99L => null;
-		public virtual TableData PredictionDurationLookup => null;
-		public virtual TableData ShareIdleLow => null;
-		public virtual TableData ShareEngineHigh => null;
+		
 		public virtual string Source => null;
-		public virtual Second DriverAccelerationLookBackInterval => null;
-		public virtual MeterPerSquareSecond DriverAccelerationThresholdLow => null;
+		
 		public virtual double? RatioEarlyUpshiftFC => null;
 		public virtual double? RatioEarlyDownshiftFC => null;
 		public int? AllowedGearRangeFC => null;
@@ -152,23 +137,14 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider
 		public PerSecond MinEngineSpeedPostUpshift => null;
 		public Second ATLookAheadTime => null;
 		public double[][] ShiftSpeedsTCToLocked => null;
-		public double? PEV_TargetSpeedBrakeNorm => null;
-		public double? PEV_DeRatingDownshiftSpeedFactor => null;
-		public double? PEV_DownshiftMinSpeedFactor => null;
+		public MeterPerSquareSecond DownshiftMaxAccelerationAT { get; }
+		
 
 		public double? AccelerationFactor => null;
 
-		public virtual TableData LoadStageShiftLines => null;
+		
 		public virtual IList<double> LoadStageThresholdsUp => null;
 		public virtual IList<double> LoadStageThresholdsDown => null;
-
-		public virtual Second PowershiftShiftTime
-		{
-			get {
-				return GetNode(XMLNames.DriverModel_ShiftStrategyParameters_PowershiftShiftTime, required: false)
-							?.InnerText.ToDouble().SI<Second>() ?? 0.8.SI<Second>();
-			}
-		}
 
 		#endregion
 
