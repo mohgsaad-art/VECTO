@@ -76,7 +76,8 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>CERTIFICATION_RELEASE</DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
@@ -822,6 +823,7 @@
     <EmbeddedResource Include="Resources\Declaration\VAUXBus\SP-AxleFactor.csv" />
     <EmbeddedResource Include="Resources\Declaration\VAUXBus\SP-Axles_Bus.csv" />
     <EmbeddedResource Include="Resources\Declaration\VAUXBus\SP-Factors_Bus.csv" />
+    <None Include="Resources\Declaration\ADASParameters.json" />
     <None Include="Resources\Declaration\EffShiftParameters.vtcu" />
     <None Include="Utils\VectoVersionCore.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

@@ -34,6 +34,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.Exceptions;
@@ -345,6 +346,25 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		public static class Driver
 		{
+			internal static JObject adasParams;
+
+			static Driver()
+			{
+				ReadAdasConfig();
+			}
+
+			// TODO: MQ 2019-11-26 remove, once the parameters are fixed! make fields above read-only or const
+			internal static void ReadAdasConfig()
+			{
+				var expectedFile = @"Declaration\ADASParameters.json";
+				if (!File.Exists(expectedFile)) {
+					return;
+				}
+				using (var reader = File.OpenText(expectedFile)) {
+					adasParams = (JObject)(JToken.ReadFrom(new JsonTextReader(reader)).GetEx(JsonKeys.JsonBody));
+				}
+			}
+
 			public static class LookAhead
 			{
 				public const bool Enabled = true;
@@ -380,6 +400,34 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 			public static class PCC
 			{
+				// TODO: MQ 2019-11-26 remove, once the parameters are fixed! make fields above read-only or const
+				static PCC()
+				{
+					ReadAdasConfig();
+					if (adasParams == null) {
+						return;
+					}
+
+					if (adasParams["PCCEnableSpeed"] != null) {
+						PCCEnableSpeed = adasParams.GetEx<double>("PCCEnableSpeed").KMPHtoMeterPerSecond();
+					}
+					if (adasParams["MinSpeed"] != null) {
+						MinSpeed = adasParams.GetEx<double>("MinSpeed").KMPHtoMeterPerSecond();
+					}
+					if (adasParams["PreviewDistanceUseCase1"] != null) {
+						PreviewDistanceUseCase1 = adasParams.GetEx<double>("PreviewDistanceUseCase1").SI<Meter>();
+					}
+					if (adasParams["PreviewDistanceUseCase2"] != null) {
+						PreviewDistanceUseCase2 = adasParams.GetEx<double>("PreviewDistanceUseCase2").SI<Meter>();
+					}
+					if (adasParams["Underspeed"] != null) {
+						Underspeed = adasParams.GetEx<double>("Underspeed").KMPHtoMeterPerSecond();
+					}
+					if (adasParams["OverspeedUseCase3"] != null) {
+						OverspeedUseCase3 = adasParams.GetEx<double>("OverspeedUseCase3").KMPHtoMeterPerSecond();
+					}
+				}
+
 				public static readonly MeterPerSecond PCCEnableSpeed = 80.KMPHtoMeterPerSecond();
 				public static readonly MeterPerSecond MinSpeed = 50.KMPHtoMeterPerSecond();
 				public static readonly Meter PreviewDistanceUseCase1 = 1500.SI<Meter>();

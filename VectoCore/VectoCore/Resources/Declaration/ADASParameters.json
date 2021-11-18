@@ -1,0 +1,13 @@
+﻿{
+"Header": {
+  "FileVersion": 1 
+},
+  "Body": {
+    "PCCEnableSpeed": 80,
+    "MinSpeed": 50,
+    "PreviewDistanceUseCase1": 1500,
+    "PreviewDistanceUseCase2": 1000,
+    "Underspeed": 8,
+    "OverspeedUseCase3": 5 
+  }
+}
