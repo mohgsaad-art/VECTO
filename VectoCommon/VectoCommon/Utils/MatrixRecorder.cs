@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.IO;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -7,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using TUGraz.VectoCommon.Models;
 
 namespace TUGraz.VectoCommon.Utils.MatrixRecorder
 {
@@ -37,11 +39,22 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         {
             currentRow = null;
             currentRowIndex = -1;
-            pendingRows = null;
-            headerDict = null;
+            pendingRows = new List<Dictionary<string, object>>();
+            headerDict = new Dictionary<string, object>
+            {
+                // Keep file_version first to the top, to facilitate parsers.
+                { "file_version", "0.0.0" },
+                { "vecto_version", GetVectoCommonVersionInformation() },
+                { "name", "matrixrecorder" }
+            }; ;
             filename = null;
             writeReminder.Stop();
             writeReminder.Reset();
+        }
+
+        private string GetVectoCommonVersionInformation()
+        {
+            return "debug version";
         }
     }
 
@@ -117,7 +130,16 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
                 Debug.Write("$Skipped writting file({ filename}) with empty pendingRows@{row0}.");
                 return;
             }
-
+            if (ThreadLocalData.headerDict == null)
+            {
+                ThreadLocalData.headerDict = new Dictionary<string, object>
+                    {
+                        // Keep file_version first to the top, to facilitate parsers.
+                        { "file_version", "0.0.0" },
+                        { "vecto_version", GetVectoCommonVersionInformation() },
+                        { "name", "matrixrecorder" }
+                    };
+            }
             Dictionary<string, object> header = ThreadLocalData.headerDict;
             header["row0"] = row0;
 
@@ -136,6 +158,10 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
 
             var bsonBinary = bsonDoc.ToBson();
 
+            if ( ThreadLocalData.filename == null )
+            {
+                ThreadLocalData.filename = Directory.GetCurrentDirectory() + "\\Logs\\Matrec" + DateTime.Now.ToString("MMddhhmmss");
+            }
             using (FileStream fs = new FileStream(
                         ThreadLocalData.filename,
                         isFirstDoc ? FileMode.Create : FileMode.Append, FileAccess.Write, FileShare.Write)
@@ -146,6 +172,10 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
             }
 
             ThreadLocalData.pendingRows.Clear();
+            if (ThreadLocalData.writeReminder == null)
+            {
+                ThreadLocalData.writeReminder = new Stopwatch();
+            }
             ThreadLocalData.writeReminder.Reset();
         }
 
@@ -158,10 +188,14 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         /// </summary>
         public static void Close()
         {
-            Debug.Assert(ThreadLocalData.pendingRows != null, "pendingRows != null");
+            //Debug.Assert(ThreadLocalData.pendingRows != null, "pendingRows != null");
 
             if (ThreadLocalData.currentRow != null)
             {
+                if (ThreadLocalData.pendingRows == null)
+                {
+                    ThreadLocalData.pendingRows = new List<Dictionary<string, object>>();
+                }
                 ThreadLocalData.pendingRows.Add(ThreadLocalData.currentRow);
                 ThreadLocalData.currentRowIndex++;
             }
@@ -218,25 +252,34 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         /// <param name="value">value to be recorded; if null no column is written</param>
         public static void NewRow(string key = null, object value = null)
         {
-            Debug.Assert(ThreadLocalData.pendingRows != null, "pendingRows != null");
-
-            if (ThreadLocalData.currentRow != null)
+            try
             {
-                ThreadLocalData.pendingRows.Add(ThreadLocalData.currentRow);
-                ThreadLocalData.currentRowIndex++;
+                //Debug.Assert(ThreadLocalData.pendingRows != null, "pendingRows != null");
+
+                if (ThreadLocalData.currentRow != null)
+                {
+                    ThreadLocalData.pendingRows.Add(ThreadLocalData.currentRow);
+                    ThreadLocalData.currentRowIndex++;
+                }
+
+                var docStoreInterval = int.Parse(Environment.GetEnvironmentVariable("DocStoreInterval"));
+                if (ThreadLocalData.writeReminder.Elapsed.TotalSeconds > docStoreInterval)
+                {
+                    StoreCurrentDoc();
+                }
+
+                ThreadLocalData.currentRow = new Dictionary<string, object>();
+                if (key != null)
+                {
+                    ThreadLocalData.currentRow[key] = value;
+                }
+            }
+            catch (Exception ex) {
+                Logger _log;
+                _log = NLog.LogManager.GetLogger("Matrix Recorder");
+                _log.Debug(ex.ToString());
             }
 
-            var docStoreInterval = int.Parse(Environment.GetEnvironmentVariable("DocStoreInterval"));
-            if (ThreadLocalData.writeReminder.Elapsed.TotalSeconds > docStoreInterval)
-            {
-                StoreCurrentDoc();
-            }
-
-            ThreadLocalData.currentRow = new Dictionary<string, object>();
-            if (key != null)
-            { 
-                ThreadLocalData.currentRow[key] = value;
-            }
         }
 
         /// <summary>
