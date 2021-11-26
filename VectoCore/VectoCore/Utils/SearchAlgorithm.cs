@@ -104,7 +104,7 @@ namespace TUGraz.VectoCore.Utils
 					result = InterpolateSearch(x, y, interval, getYValue, evaluateFunction, criterion, abortCriterion,
 						ref iterationCount, searcher);
 				}
-			} catch {
+			} catch (Exception ex) {
 				var log = LogManager.GetLogger(typeof(SearchAlgorithm).FullName);
 				log.Debug("Falling back to LineSearch. Reverse InterpolationSearch failed: " + ex.Message);
 				result = LineSearch(x, y, interval, getYValue, evaluateFunction, criterion, abortCriterion,
