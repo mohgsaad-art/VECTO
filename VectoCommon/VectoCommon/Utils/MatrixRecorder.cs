@@ -244,6 +244,36 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         }
 
         /// <summary>
+        /// Send any old row to the sink and initiate a new one.
+        /// Create a new underlying *dict* to store values, and append any given values in `index`.
+        /// Check if the recorder has not used `Open()` yet.
+        /// </summary>
+        /// <param name="key">key to be recorded; if null no column is written</param>
+        /// <param name="value">value to be recorded; if null no column is written</param>
+        public static void NewRow(string key = null, object value = null)
+        {
+            Debug.Assert(ThreadLocalData.pendingRows != null, "pendingRows != null");
+
+            if (ThreadLocalData.currentRow != null)
+            {
+                ThreadLocalData.pendingRows.Add(ThreadLocalData.currentRow);
+            }
+            ThreadLocalData.currentRowIndex++;
+
+            var docStoreInterval = int.Parse(Environment.GetEnvironmentVariable("DocStoreInterval"));
+            if (ThreadLocalData.writeReminder.Elapsed.TotalSeconds > docStoreInterval)
+            {
+                StoreCurrentDoc();
+            }
+
+            ThreadLocalData.currentRow = new Dictionary<string, object>();
+            if (key != null)
+            {
+                ThreadLocalData.currentRow[key] = value;
+            }
+        }
+
+        /// <summary>
         /// En-mass `Record()` key-value pairs
         /// Scream if NewRow() has not been called after `Open()`.
         /// </summary>
