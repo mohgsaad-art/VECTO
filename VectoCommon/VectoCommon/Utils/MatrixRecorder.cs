@@ -239,9 +239,11 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         }
 
         /// <summary>
-        /// Get the version from vecto common
+        /// Get the version from vecto-common assembly
+        /// 
+        /// It's public for TCs.
         /// </summary>
-        private static string GetVectoCommonVersionInformation()
+        public static string GetVectoCommonVersionInformation()
         {
             var currentDirectory = AppDomain.CurrentDomain.BaseDirectory;
             var commonDll = Assembly.LoadFile(Path.Combine(currentDirectory, commonDllName))
