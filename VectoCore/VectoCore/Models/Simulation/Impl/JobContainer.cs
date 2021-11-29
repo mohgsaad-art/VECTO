@@ -508,6 +508,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 						throw;
 					} finally {
 						stopWatch.Stop();
+						MatrixRecorder.Close();
 						Success = Run.FinishedWithoutErrors && ExecException == null;
 						ExecTime = stopWatch.Elapsed.TotalMilliseconds;
 						JobContainer.JobCompleted(RunId, _runContainerId);

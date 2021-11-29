@@ -193,7 +193,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				}
 			}
 			IterationStatistics.FinishSimulation(RunName + CycleName + RunSuffix + RunIdentifier);
-			MatrixRecorder.Close();
 			Log.Info("VectoJob finished.");
 		}
 
