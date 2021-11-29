@@ -14,6 +14,8 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
     [Parallelizable(ParallelScope.All)]
     public class MatrixRecorderTests
     {
+        private const int store_delay_sec = 1;
+
         private static void CheckOutput(string outpath, string expectedJsonStr)
         {
             expectedJsonStr = expectedJsonStr.Replace("@@", MatrixRecorder.GetVectoCommonVersionInformation());
@@ -49,8 +51,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         [OneTimeSetUp]
         public void RunBeforeAnyTests()
         {
-            Environment.SetEnvironmentVariable("DocStoreInterval", "33");
-
+            Environment.SetEnvironmentVariable("DocStoreInterval", $"{store_delay_sec}");
             File.Delete(Path.Combine(Path.GetTempPath(), "out1.bson"));
             File.Delete(Path.Combine(Path.GetTempPath(), "out2.bson"));
             File.Delete(Path.Combine(Path.GetTempPath(), "out3.bson"));
@@ -108,7 +109,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
 
             MatrixRecorder.Record("record key1", "record val1");
 
-            Thread.Sleep(40000);
+            Thread.Sleep(store_delay_sec * 1500);
 
             MatrixRecorder.Record("record key2", "record val2");
 
@@ -141,7 +142,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
 
             MatrixRecorder.Record("record key1", "record val1");
 
-            Thread.Sleep(40000);
+            Thread.Sleep(store_delay_sec * 1500);
 
             MatrixRecorder.Open(outpath);
 
