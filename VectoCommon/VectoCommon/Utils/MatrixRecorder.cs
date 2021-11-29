@@ -1,4 +1,4 @@
-﻿using MongoDB.Bson;
+using MongoDB.Bson;
 using MongoDB.Bson.IO;
 using System;
 using System.Collections.Generic;
@@ -206,8 +206,8 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
             if (ThreadLocalData.currentRow != null)
             {
                 ThreadLocalData.pendingRows.Add(ThreadLocalData.currentRow);
-                ThreadLocalData.currentRowIndex++;
             }
+            ThreadLocalData.currentRowIndex++;
 
             var docStoreInterval = int.Parse(Environment.GetEnvironmentVariable("DocStoreInterval"));
             if (ThreadLocalData.writeReminder.Elapsed.TotalSeconds > docStoreInterval)
