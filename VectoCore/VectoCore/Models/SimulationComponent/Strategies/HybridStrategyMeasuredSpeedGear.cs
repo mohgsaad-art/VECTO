@@ -2249,8 +2249,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 					//var emDriveTorque = DataBus.ElectricMotorInfo(emPos).GetTorqueForElectricPower(emDrivePower, firstResponse.ElectricMotor.AngularVelocity, dt);
 					//var emDragTorque = ModelData.ElectricMachinesData.Where(x => x.Item1 == emPos).First().Item2.DragCurve.Lookup(firstResponse.ElectricMotor.AngularVelocity);
 					var emDragTorque = ModelData.ElectricMachinesData.First(x => x.Item1 == emPos).Item2
-											.EfficiencyData.LookupDragTorque(voltage, firstResponse.ElectricMotor.AngularVelocity);
-
+							.DragCurve.Lookup(firstResponse.ElectricMotor.AngularVelocity);
+					
 					if (emDriveTorque != null &&
 						emDriveTorque.IsBetween(
 							firstResponse.ElectricMotor.MaxRecuperationTorque, firstResponse.ElectricMotor.MaxDriveTorque) &&
