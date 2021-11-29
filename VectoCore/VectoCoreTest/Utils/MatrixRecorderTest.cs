@@ -36,7 +36,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         public void RunBeforeAnyTests()
         {
             Environment.SetEnvironmentVariable("DocStoreInterval", "33");
-         
+
             File.Delete(Path.Combine(Path.GetTempPath(), "out1.bson"));
             File.Delete(Path.Combine(Path.GetTempPath(), "out2.bson"));
             File.Delete(Path.Combine(Path.GetTempPath(), "out3.bson"));
@@ -59,11 +59,11 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
             MatrixRecorder.NewRow(dict);
 
             MatrixRecorder.Record("record key 1", "record val 1");
-            
+
             MatrixRecorder.NewRow(dict);
 
             MatrixRecorder.Record("record key 2", "record val 2");
-            
+
             MatrixRecorder.Close();
 
             CheckOutput(outpath, expectedJsonStr);
@@ -73,7 +73,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         public static void BSON_MatrixRecorder_delayed()
         {
             var expectedJsonStr = "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"0.7.3.2171\", \"name\" : \"matrixrecorder\", \"row0\" : 1 }, \"rows\" : [{ \"dict a\" : \"dict b\", \"record key1\" : \"record val1\", \"record key2\" : \"record val2\" }] }";
-            
+
             string outpath = Path.Combine(Path.GetTempPath(), "out2.bson");
 
             Dictionary<string, object> dict = new Dictionary<string, object>
@@ -137,7 +137,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         public static void BSON_MatrixRecorder_two_bson_doc_subseq()
         {
             string expectedJsonStr = "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"0.7.3.2171\", \"name\" : \"matrixrecorder\", \"row0\" : 1 }, \"rows\" : [{ \"dict a\" : \"dict b\", \"record key1\" : \"record val1\", \"record key2\" : \"record val2\" }] }";
-                    
+
             string outpath = Path.Combine(Path.GetTempPath(), "out4.bson");
 
             Dictionary<string, object> dict = new Dictionary<string, object>

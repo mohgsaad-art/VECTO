@@ -58,7 +58,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
             get { return _ThreadLocalData.Value; }
             set { _ThreadLocalData.Value = value; }
         }
-        
+
         // vecto common dll name, used for retrieving the version
         private static readonly string commonDllName = "VectoCommon.dll";
 
@@ -169,7 +169,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
             {
                 foreach (var item in index)
                 {
-                     ThreadLocalData.currentRow[item.Key] = item.Value;
+                    ThreadLocalData.currentRow[item.Key] = item.Value;
                 }
             }
         }
@@ -217,7 +217,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
 
             ThreadLocalData.currentRow = new Dictionary<string, object>();
             if (key != null)
-            { 
+            {
                 ThreadLocalData.currentRow[key] = value;
             }
         }
