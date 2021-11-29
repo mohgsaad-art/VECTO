@@ -175,6 +175,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
             if (ThreadLocalData.writeReminder == null)
             {
                 ThreadLocalData.writeReminder = new Stopwatch();
+                ThreadLocalData.writeReminder.Start();
             }
             ThreadLocalData.writeReminder.Reset();
         }
@@ -252,33 +253,39 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         /// <param name="value">value to be recorded; if null no column is written</param>
         public static void NewRow(string key = null, object value = null)
         {
-            try
+
+            //Debug.Assert(ThreadLocalData.pendingRows != null, "pendingRows != null");
+
+            if (ThreadLocalData.currentRow != null)
             {
-                //Debug.Assert(ThreadLocalData.pendingRows != null, "pendingRows != null");
-
-                if (ThreadLocalData.currentRow != null)
+                if (ThreadLocalData.pendingRows == null)
                 {
-                    ThreadLocalData.pendingRows.Add(ThreadLocalData.currentRow);
-                    ThreadLocalData.currentRowIndex++;
+                    ThreadLocalData.pendingRows = new List<Dictionary<string, object>>();
                 }
+                ThreadLocalData.pendingRows.Add(ThreadLocalData.currentRow);
+                ThreadLocalData.currentRowIndex++;
+            }
 
-                var docStoreInterval = int.Parse(Environment.GetEnvironmentVariable("DocStoreInterval"));
-                if (ThreadLocalData.writeReminder.Elapsed.TotalSeconds > docStoreInterval)
+            int docStoreInterval = 10;
+            if (Environment.GetEnvironmentVariable("DocStoreInterval") != null)
+            {
+                docStoreInterval = int.Parse(Environment.GetEnvironmentVariable("DocStoreInterval"));
+            }
+            if (ThreadLocalData.writeReminder == null ) 
+                {   
+                    ThreadLocalData.writeReminder = new Stopwatch();
+                }
+            if (ThreadLocalData.writeReminder.Elapsed.TotalSeconds > docStoreInterval)
                 {
                     StoreCurrentDoc();
                 }
-
-                ThreadLocalData.currentRow = new Dictionary<string, object>();
-                if (key != null)
+            ThreadLocalData.currentRow = new Dictionary<string, object>();
+            if (key != null)
                 {
                     ThreadLocalData.currentRow[key] = value;
                 }
-            }
-            catch (Exception ex) {
-                Logger _log;
-                _log = NLog.LogManager.GetLogger("Matrix Recorder");
-                _log.Debug(ex.ToString());
-            }
+
+
 
         }
 
