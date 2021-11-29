@@ -1028,6 +1028,7 @@ Public Class VectoJobForm
         pnHybridStrategy.Enabled = False
         lblESSUtilityFactorDriving.Enabled  = false
         tbESSUtilityFactorDriving.Enabled = false
+        pnHybridStrategy.Enabled = Not Cfg.DeclMode
         Select Case JobType
             Case VectoSimulationJobType.ConventionalVehicle
                 gbElectricAux.Enabled = False
@@ -1040,6 +1041,7 @@ Public Class VectoJobForm
                 TabPgADAS.Enabled = False
                 tpAuxiliaries.Enabled = False
                 pnShiftParams.Enabled = False
+                pnHybridStrategy.Enabled = false
             'Case VectoSimulationJobType.ParallelHybridVehicle
             '    ' empty line - do not fall-through
             '    pnHybridStrategy.Enabled = True
@@ -1348,7 +1350,7 @@ Public Class VectoJobForm
 
 		End If
 
-		PicVehicle.Image = ConvPicPath(HDVclass, False) _
+		PicVehicle.Image = ConvPicPath(If( Not s0.Found, -1, HDVclass.GetClassNumber().ToInt()), False) _
 		'Image.FromFile(cDeclaration.ConvPicPath(HDVclass, False))
 
 		TbHVCclass.Text = $"HDV Group {HDVclass}"

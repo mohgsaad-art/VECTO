@@ -130,8 +130,11 @@ Partial Class EngineForm
         Me.Label35 = New System.Windows.Forms.Label()
         Me.cbDualFuel = New System.Windows.Forms.CheckBox()
         Me.tbWHR = New System.Windows.Forms.TabControl()
+        Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.cbElWHR = New System.Windows.Forms.CheckBox()
+        Me.cbMechWHRNotConnectedCrankshaft = New System.Windows.Forms.CheckBox()
+        Me.cbMechWHRInMap = New System.Windows.Forms.CheckBox()
         Me.tbElectricalWHR = New System.Windows.Forms.TabPage()
-        Me.tbMechanicalWHR = New System.Windows.Forms.TabPage()
         Me.Label36 = New System.Windows.Forms.Label()
         Me.pnElWHRDeclaration = New System.Windows.Forms.Panel()
         Me.lblWHRRegPer = New System.Windows.Forms.Label()
@@ -148,6 +151,7 @@ Partial Class EngineForm
         Me.pnElWhrEngineering = New System.Windows.Forms.Panel()
         Me.tbElWHREngineering = New System.Windows.Forms.TextBox()
         Me.Label26 = New System.Windows.Forms.Label()
+        Me.tbMechanicalWHR = New System.Windows.Forms.TabPage()
         Me.Label37 = New System.Windows.Forms.Label()
         Me.pnMechWhrDeclaration = New System.Windows.Forms.Panel()
         Me.Label38 = New System.Windows.Forms.Label()
@@ -164,10 +168,6 @@ Partial Class EngineForm
         Me.pnMechWhrEngineering = New System.Windows.Forms.Panel()
         Me.tbMechWHREngineering = New System.Windows.Forms.TextBox()
         Me.Label46 = New System.Windows.Forms.Label()
-        Me.TabPage1 = New System.Windows.Forms.TabPage()
-        Me.cbMechWHRInMap = New System.Windows.Forms.CheckBox()
-        Me.cbMechWHRNotConnectedCrankshaft = New System.Windows.Forms.CheckBox()
-        Me.cbElWHR = New System.Windows.Forms.CheckBox()
         Me.ToolStrip1.SuspendLayout
         Me.StatusStrip1.SuspendLayout
         CType(Me.PictureBox1,System.ComponentModel.ISupportInitialize).BeginInit
@@ -184,13 +184,13 @@ Partial Class EngineForm
         Me.pnWhtcFuel2.SuspendLayout
         Me.pnEngCFFuel2.SuspendLayout
         Me.tbWHR.SuspendLayout
+        Me.TabPage1.SuspendLayout
         Me.tbElectricalWHR.SuspendLayout
-        Me.tbMechanicalWHR.SuspendLayout
         Me.pnElWHRDeclaration.SuspendLayout
         Me.pnElWhrEngineering.SuspendLayout
+        Me.tbMechanicalWHR.SuspendLayout
         Me.pnMechWhrDeclaration.SuspendLayout
         Me.pnMechWhrEngineering.SuspendLayout
-        Me.TabPage1.SuspendLayout
         Me.SuspendLayout
         '
         'TbIdleSpeed
@@ -1027,6 +1027,48 @@ Partial Class EngineForm
         Me.tbWHR.Size = New System.Drawing.Size(482, 171)
         Me.tbWHR.TabIndex = 59
         '
+        'TabPage1
+        '
+        Me.TabPage1.Controls.Add(Me.cbElWHR)
+        Me.TabPage1.Controls.Add(Me.cbMechWHRNotConnectedCrankshaft)
+        Me.TabPage1.Controls.Add(Me.cbMechWHRInMap)
+        Me.TabPage1.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage1.Name = "TabPage1"
+        Me.TabPage1.Size = New System.Drawing.Size(474, 145)
+        Me.TabPage1.TabIndex = 2
+        Me.TabPage1.Text = "WHR Type"
+        Me.TabPage1.UseVisualStyleBackColor = true
+        '
+        'cbElWHR
+        '
+        Me.cbElWHR.AutoSize = true
+        Me.cbElWHR.Location = New System.Drawing.Point(17, 58)
+        Me.cbElWHR.Name = "cbElWHR"
+        Me.cbElWHR.Size = New System.Drawing.Size(136, 17)
+        Me.cbElWHR.TabIndex = 2
+        Me.cbElWHR.Text = "Electrical WHR System"
+        Me.cbElWHR.UseVisualStyleBackColor = true
+        '
+        'cbMechWHRNotConnectedCrankshaft
+        '
+        Me.cbMechWHRNotConnectedCrankshaft.AutoSize = true
+        Me.cbMechWHRNotConnectedCrankshaft.Location = New System.Drawing.Point(17, 35)
+        Me.cbMechWHRNotConnectedCrankshaft.Name = "cbMechWHRNotConnectedCrankshaft"
+        Me.cbMechWHRNotConnectedCrankshaft.Size = New System.Drawing.Size(303, 17)
+        Me.cbMechWHRNotConnectedCrankshaft.TabIndex = 1
+        Me.cbMechWHRNotConnectedCrankshaft.Text = "Mechanical WHR System not connected to the crankshaft"
+        Me.cbMechWHRNotConnectedCrankshaft.UseVisualStyleBackColor = true
+        '
+        'cbMechWHRInMap
+        '
+        Me.cbMechWHRInMap.AutoSize = true
+        Me.cbMechWHRInMap.Location = New System.Drawing.Point(17, 12)
+        Me.cbMechWHRInMap.Name = "cbMechWHRInMap"
+        Me.cbMechWHRInMap.Size = New System.Drawing.Size(287, 17)
+        Me.cbMechWHRInMap.TabIndex = 0
+        Me.cbMechWHRInMap.Text = "Mechanical WHR System incuded in FC measurements"
+        Me.cbMechWHRInMap.UseVisualStyleBackColor = true
+        '
         'tbElectricalWHR
         '
         Me.tbElectricalWHR.Controls.Add(Me.Label36)
@@ -1039,19 +1081,6 @@ Partial Class EngineForm
         Me.tbElectricalWHR.TabIndex = 0
         Me.tbElectricalWHR.Text = "Correction Factors Electrical WHR"
         Me.tbElectricalWHR.UseVisualStyleBackColor = true
-        '
-        'tbMechanicalWHR
-        '
-        Me.tbMechanicalWHR.Controls.Add(Me.Label37)
-        Me.tbMechanicalWHR.Controls.Add(Me.pnMechWhrDeclaration)
-        Me.tbMechanicalWHR.Controls.Add(Me.pnMechWhrEngineering)
-        Me.tbMechanicalWHR.Location = New System.Drawing.Point(4, 22)
-        Me.tbMechanicalWHR.Name = "tbMechanicalWHR"
-        Me.tbMechanicalWHR.Padding = New System.Windows.Forms.Padding(3)
-        Me.tbMechanicalWHR.Size = New System.Drawing.Size(474, 145)
-        Me.tbMechanicalWHR.TabIndex = 1
-        Me.tbMechanicalWHR.Text = "Correction Factors Mechanical WHR"
-        Me.tbMechanicalWHR.UseVisualStyleBackColor = true
         '
         'Label36
         '
@@ -1196,15 +1225,28 @@ Partial Class EngineForm
         Me.Label26.TabIndex = 6
         Me.Label26.Text = "Engineering"
         '
+        'tbMechanicalWHR
+        '
+        Me.tbMechanicalWHR.Controls.Add(Me.Label37)
+        Me.tbMechanicalWHR.Controls.Add(Me.pnMechWhrDeclaration)
+        Me.tbMechanicalWHR.Controls.Add(Me.pnMechWhrEngineering)
+        Me.tbMechanicalWHR.Location = New System.Drawing.Point(4, 22)
+        Me.tbMechanicalWHR.Name = "tbMechanicalWHR"
+        Me.tbMechanicalWHR.Padding = New System.Windows.Forms.Padding(3)
+        Me.tbMechanicalWHR.Size = New System.Drawing.Size(474, 145)
+        Me.tbMechanicalWHR.TabIndex = 1
+        Me.tbMechanicalWHR.Text = "Correction Factors Mechanical WHR"
+        Me.tbMechanicalWHR.UseVisualStyleBackColor = true
+        '
         'Label37
         '
         Me.Label37.AutoSize = true
         Me.Label37.Location = New System.Drawing.Point(7, 119)
         Me.Label37.Name = "Label37"
-        Me.Label37.Size = New System.Drawing.Size(426, 13)
+        Me.Label37.Size = New System.Drawing.Size(428, 13)
         Me.Label37.TabIndex = 14
-        Me.Label37.Text = "Note: Mechanica power generated by WHR has to be provided in FC-Map of primary fu"& _ 
-    "el"
+        Me.Label37.Text = "Note: Mechanical power generated by WHR has to be provided in FC-Map of primary f"& _ 
+    "uel"
         '
         'pnMechWhrDeclaration
         '
@@ -1339,48 +1381,6 @@ Partial Class EngineForm
         Me.Label46.TabIndex = 6
         Me.Label46.Text = "Engineering"
         '
-        'TabPage1
-        '
-        Me.TabPage1.Controls.Add(Me.cbElWHR)
-        Me.TabPage1.Controls.Add(Me.cbMechWHRNotConnectedCrankshaft)
-        Me.TabPage1.Controls.Add(Me.cbMechWHRInMap)
-        Me.TabPage1.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage1.Name = "TabPage1"
-        Me.TabPage1.Size = New System.Drawing.Size(474, 145)
-        Me.TabPage1.TabIndex = 2
-        Me.TabPage1.Text = "WHR Type"
-        Me.TabPage1.UseVisualStyleBackColor = true
-        '
-        'cbMechWHRInMap
-        '
-        Me.cbMechWHRInMap.AutoSize = true
-        Me.cbMechWHRInMap.Location = New System.Drawing.Point(17, 12)
-        Me.cbMechWHRInMap.Name = "cbMechWHRInMap"
-        Me.cbMechWHRInMap.Size = New System.Drawing.Size(287, 17)
-        Me.cbMechWHRInMap.TabIndex = 0
-        Me.cbMechWHRInMap.Text = "Mechanical WHR System incuded in FC measurements"
-        Me.cbMechWHRInMap.UseVisualStyleBackColor = true
-        '
-        'cbMechWHRNotConnectedCrankshaft
-        '
-        Me.cbMechWHRNotConnectedCrankshaft.AutoSize = true
-        Me.cbMechWHRNotConnectedCrankshaft.Location = New System.Drawing.Point(17, 35)
-        Me.cbMechWHRNotConnectedCrankshaft.Name = "cbMechWHRNotConnectedCrankshaft"
-        Me.cbMechWHRNotConnectedCrankshaft.Size = New System.Drawing.Size(303, 17)
-        Me.cbMechWHRNotConnectedCrankshaft.TabIndex = 1
-        Me.cbMechWHRNotConnectedCrankshaft.Text = "Mechanical WHR System not connected to the crankshaft"
-        Me.cbMechWHRNotConnectedCrankshaft.UseVisualStyleBackColor = true
-        '
-        'cbElWHR
-        '
-        Me.cbElWHR.AutoSize = true
-        Me.cbElWHR.Location = New System.Drawing.Point(17, 58)
-        Me.cbElWHR.Name = "cbElWHR"
-        Me.cbElWHR.Size = New System.Drawing.Size(136, 17)
-        Me.cbElWHR.TabIndex = 2
-        Me.cbElWHR.Text = "Electrical WHR System"
-        Me.cbElWHR.UseVisualStyleBackColor = true
-        '
         'EngineForm
         '
         Me.AcceptButton = Me.ButOK
@@ -1452,20 +1452,20 @@ Partial Class EngineForm
         Me.pnEngCFFuel2.ResumeLayout(false)
         Me.pnEngCFFuel2.PerformLayout
         Me.tbWHR.ResumeLayout(false)
+        Me.TabPage1.ResumeLayout(false)
+        Me.TabPage1.PerformLayout
         Me.tbElectricalWHR.ResumeLayout(false)
         Me.tbElectricalWHR.PerformLayout
-        Me.tbMechanicalWHR.ResumeLayout(false)
-        Me.tbMechanicalWHR.PerformLayout
         Me.pnElWHRDeclaration.ResumeLayout(false)
         Me.pnElWHRDeclaration.PerformLayout
         Me.pnElWhrEngineering.ResumeLayout(false)
         Me.pnElWhrEngineering.PerformLayout
+        Me.tbMechanicalWHR.ResumeLayout(false)
+        Me.tbMechanicalWHR.PerformLayout
         Me.pnMechWhrDeclaration.ResumeLayout(false)
         Me.pnMechWhrDeclaration.PerformLayout
         Me.pnMechWhrEngineering.ResumeLayout(false)
         Me.pnMechWhrEngineering.PerformLayout
-        Me.TabPage1.ResumeLayout(false)
-        Me.TabPage1.PerformLayout
         Me.ResumeLayout(false)
         Me.PerformLayout
 

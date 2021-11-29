@@ -144,7 +144,8 @@ Partial Class VehicleForm
         Me.btDelMaxTorqueEntry = New System.Windows.Forms.Button()
         Me.btAddMaxTorqueEntry = New System.Windows.Forms.Button()
         Me.tpADAS = New System.Windows.Forms.TabPage()
-        Me.GroupBox5 = New System.Windows.Forms.GroupBox()
+        Me.gbADAS = New System.Windows.Forms.GroupBox()
+        Me.cbAtEcoRollReleaseLockupClutch = New System.Windows.Forms.CheckBox()
         Me.cbPcc = New System.Windows.Forms.ComboBox()
         Me.cbEcoRoll = New System.Windows.Forms.ComboBox()
         Me.Label22 = New System.Windows.Forms.Label()
@@ -168,7 +169,6 @@ Partial Class VehicleForm
         Me.gbPTO = New System.Windows.Forms.GroupBox()
         Me.cbLegislativeClass = New System.Windows.Forms.ComboBox()
         Me.Label21 = New System.Windows.Forms.Label()
-        Me.cbAtEcoRollReleaseLockupClutch = New System.Windows.Forms.CheckBox()
         Me.GroupBox6.SuspendLayout
         Me.ToolStrip1.SuspendLayout
         Me.GroupBox7.SuspendLayout
@@ -194,7 +194,7 @@ Partial Class VehicleForm
         Me.GroupBox9.SuspendLayout
         Me.TabPage3.SuspendLayout
         Me.tpADAS.SuspendLayout
-        Me.GroupBox5.SuspendLayout
+        Me.gbADAS.SuspendLayout
         Me.tpRoadSweeper.SuspendLayout
         Me.gbPTODrive.SuspendLayout
         Me.pnPTO.SuspendLayout
@@ -1199,7 +1199,7 @@ Partial Class VehicleForm
         '
         'tpADAS
         '
-        Me.tpADAS.Controls.Add(Me.GroupBox5)
+        Me.tpADAS.Controls.Add(Me.gbADAS)
         Me.tpADAS.Location = New System.Drawing.Point(4, 22)
         Me.tpADAS.Name = "tpADAS"
         Me.tpADAS.Padding = New System.Windows.Forms.Padding(3)
@@ -1208,20 +1208,30 @@ Partial Class VehicleForm
         Me.tpADAS.Text = "ADAS"
         Me.tpADAS.UseVisualStyleBackColor = true
         '
-        'GroupBox5
+        'gbADAS
         '
-        Me.GroupBox5.Controls.Add(Me.cbAtEcoRollReleaseLockupClutch)
-        Me.GroupBox5.Controls.Add(Me.cbPcc)
-        Me.GroupBox5.Controls.Add(Me.cbEcoRoll)
-        Me.GroupBox5.Controls.Add(Me.Label22)
-        Me.GroupBox5.Controls.Add(Me.cbEngineStopStart)
-        Me.GroupBox5.Controls.Add(Me.lblPCC)
-        Me.GroupBox5.Location = New System.Drawing.Point(6, 6)
-        Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(565, 136)
-        Me.GroupBox5.TabIndex = 0
-        Me.GroupBox5.TabStop = false
-        Me.GroupBox5.Text = "ADAS Options"
+        Me.gbADAS.Controls.Add(Me.cbAtEcoRollReleaseLockupClutch)
+        Me.gbADAS.Controls.Add(Me.cbPcc)
+        Me.gbADAS.Controls.Add(Me.cbEcoRoll)
+        Me.gbADAS.Controls.Add(Me.Label22)
+        Me.gbADAS.Controls.Add(Me.cbEngineStopStart)
+        Me.gbADAS.Controls.Add(Me.lblPCC)
+        Me.gbADAS.Location = New System.Drawing.Point(6, 6)
+        Me.gbADAS.Name = "gbADAS"
+        Me.gbADAS.Size = New System.Drawing.Size(565, 136)
+        Me.gbADAS.TabIndex = 0
+        Me.gbADAS.TabStop = false
+        Me.gbADAS.Text = "ADAS Options"
+        '
+        'cbAtEcoRollReleaseLockupClutch
+        '
+        Me.cbAtEcoRollReleaseLockupClutch.AutoSize = true
+        Me.cbAtEcoRollReleaseLockupClutch.Location = New System.Drawing.Point(265, 19)
+        Me.cbAtEcoRollReleaseLockupClutch.Name = "cbAtEcoRollReleaseLockupClutch"
+        Me.cbAtEcoRollReleaseLockupClutch.Size = New System.Drawing.Size(243, 17)
+        Me.cbAtEcoRollReleaseLockupClutch.TabIndex = 10
+        Me.cbAtEcoRollReleaseLockupClutch.Text = "AT Gearbox: Eco-Roll Release Lockup Clutch"
+        Me.cbAtEcoRollReleaseLockupClutch.UseVisualStyleBackColor = true
         '
         'cbPcc
         '
@@ -1444,16 +1454,6 @@ Partial Class VehicleForm
         Me.Label21.TabIndex = 42
         Me.Label21.Text = "Maximum Laden Mass"
         '
-        'cbAtEcoRollReleaseLockupClutch
-        '
-        Me.cbAtEcoRollReleaseLockupClutch.AutoSize = true
-        Me.cbAtEcoRollReleaseLockupClutch.Location = New System.Drawing.Point(265, 19)
-        Me.cbAtEcoRollReleaseLockupClutch.Name = "cbAtEcoRollReleaseLockupClutch"
-        Me.cbAtEcoRollReleaseLockupClutch.Size = New System.Drawing.Size(243, 17)
-        Me.cbAtEcoRollReleaseLockupClutch.TabIndex = 10
-        Me.cbAtEcoRollReleaseLockupClutch.Text = "AT Gearbox: Eco-Roll Release Lockup Clutch"
-        Me.cbAtEcoRollReleaseLockupClutch.UseVisualStyleBackColor = true
-        '
         'VehicleForm
         '
         Me.AcceptButton = Me.ButOK
@@ -1521,8 +1521,8 @@ Partial Class VehicleForm
         Me.TabPage3.ResumeLayout(false)
         Me.TabPage3.PerformLayout
         Me.tpADAS.ResumeLayout(false)
-        Me.GroupBox5.ResumeLayout(false)
-        Me.GroupBox5.PerformLayout
+        Me.gbADAS.ResumeLayout(false)
+        Me.gbADAS.PerformLayout
         Me.tpRoadSweeper.ResumeLayout(false)
         Me.gbPTODrive.ResumeLayout(false)
         Me.gbPTODrive.PerformLayout
@@ -1638,7 +1638,7 @@ End Sub
 	Friend WithEvents Label20 As System.Windows.Forms.Label
     Friend WithEvents Label21 As Label
     Friend WithEvents tpADAS As TabPage
-    Friend WithEvents GroupBox5 As GroupBox
+    Friend WithEvents gbADAS As GroupBox
     Friend WithEvents cbEngineStopStart As CheckBox
     Friend WithEvents lblPCC As Label
     Friend WithEvents Label22 As Label

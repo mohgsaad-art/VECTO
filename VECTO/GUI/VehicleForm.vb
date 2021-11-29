@@ -109,7 +109,7 @@ Public Class VehicleForm
         
         cbTankSystem.DataSource = {New With {Key .Value = CType(Nothing, TankSystem?), .Label = ""}}.Concat([Enum].GetValues(GetType(TankSystem)).Cast(Of TankSystem?).Select(Function(ts) New With {Key .Value = ts , .Label = ts.ToString()})).ToList()
 
-        tpADAS.Enabled = Cfg.DeclMode
+        'tpADAS.Enabled = Cfg.DeclMode
 
 		CbCat.ValueMember = "Value"
 		CbCat.DisplayMember = "Label"
@@ -799,9 +799,8 @@ Public Class VehicleForm
 		_axlDlog.TbRRC.Text = lv0.SubItems(AxleTbl.RRC).Text
 		_axlDlog.TbFzISO.Text = lv0.SubItems(AxleTbl.FzISO).Text
 		_axlDlog.TbI_wheels.Text = lv0.SubItems(AxleTbl.Inertia).Text
-		_axlDlog.CbWheels.Text = lv0.SubItems(AxleTbl.WheelsDimension).Text
+		_axlDlog.CbWheels.SelectedItem = if(string.IsNullOrWhiteSpace(lv0.SubItems(AxleTbl.WheelsDimension).Text), "-",lv0.SubItems(AxleTbl.WheelsDimension).Text) 
 		_axlDlog.cbAxleType.SelectedValue = lv0.SubItems(AxleTbl.AxleType).Text.ParseEnum(Of AxleType)()
-
 		If _axlDlog.ShowDialog = DialogResult.OK Then
 			lv0.SubItems(AxleTbl.RelativeLoad).Text = _axlDlog.TbAxleShare.Text
 			If _axlDlog.CbTwinT.Checked Then
