@@ -59,9 +59,14 @@ namespace TUGraz.VectoCommon.Models {
 				Dictionary<string, object> dict = new Dictionary<string, object>()
 				{
 					["score"] = score,
+					["Cost"] = Cost,
 					["FuelCosts"] = FuelCosts,
 					["BatCosts"] = BatCosts,
-					["EquivalenceFactor"] = EquivalenceFactor,
+					["ICEStartPenalty1"] = ICEStartPenalty1,
+					["ICEStartPenalty2"] = ICEStartPenalty2,
+					["SoCPenalty"] = SoCPenalty,
+					["RampUpPenalty"] = RampUpPenalty,
+					["GearshiftPenalty"] = GearshiftPenalty
 					//["AbsTime"] = abstime
 				};
 				MatrixRecorder.NewRow(dict);
