@@ -35,6 +35,7 @@ using System.Threading;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCommon.Utils.MatrixRecorder;
 using TUGraz.VectoCore.Models.Connector.Ports;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Utils;
@@ -117,6 +118,10 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 							return;
 						}
 						Container.AbsTime = AbsTime;
+						
+						MatrixRecorder.UpdateAbsTime(AbsTime.Value());
+						MatrixRecorder.Record("AbsTime", AbsTime.Value());
+
 						// add here extended logging
 						LogManager.EnableLogging();
 						//Log.Debug("AbsTime: "+AbsTime.Value());
@@ -188,6 +193,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				}
 			}
 			IterationStatistics.FinishSimulation(RunName + CycleName + RunSuffix + RunIdentifier);
+			MatrixRecorder.Close();
 			Log.Info("VectoJob finished.");
 		}
 
