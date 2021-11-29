@@ -1,4 +1,4 @@
-﻿using MongoDB.Bson;
+using MongoDB.Bson;
 using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization;
 using NUnit.Framework;
@@ -48,21 +48,25 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         [TestCase]
         public static void BSON_MatrixRecorder_Basic()
         {
-            var expectedJsonStr = "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"0.7.3.2171\", \"name\" : \"matrixrecorder\", \"row0\" : 2 }, \"rows\" : [{ \"dict a\" : \"dict b\", \"record key 1\" : \"record val 1\" }, { \"dict a\" : \"dict b\", \"record key 2\" : \"record val 2\" }] }";
-            Dictionary<string, object> dict = new Dictionary<string, object>();
-            dict.Add("dict a", "dict b");
+            // FIXME: version-id will fail in the future
+            var expectedJsonStr
+                = "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"0.7.3.2171\", \"name\" : \"matrixrecorder\", \"row0\" : 2 }"
+                + ", \"rows\" : [{ \"dict a\" : \"dict b\", \"record key 1\" : \"record val 1\" }, { \"dict a\" : \"dict b\" }] }";
+            var dict = new Dictionary<string, object>()
+            {
+                { "dict a", "dict b" }
+            };
 
-            Dictionary<string, object> headerDict = new Dictionary<string, object>();
             string outpath = Path.Combine(Path.GetTempPath(), "out1.bson");
-            MatrixRecorder.Open(outpath, headerDict);
+            MatrixRecorder.Open(outpath);
 
             MatrixRecorder.NewRow(dict);
 
             MatrixRecorder.Record("record key 1", "record val 1");
 
-            MatrixRecorder.NewRow(dict);
+            MatrixRecorder.NewRow();
 
-            MatrixRecorder.Record("record key 2", "record val 2");
+            MatrixRecorder.Record(dict);
 
             MatrixRecorder.Close();
 
@@ -72,7 +76,10 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         [TestCase]
         public static void BSON_MatrixRecorder_delayed()
         {
-            var expectedJsonStr = "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"0.7.3.2171\", \"name\" : \"matrixrecorder\", \"row0\" : 1 }, \"rows\" : [{ \"dict a\" : \"dict b\", \"record key1\" : \"record val1\", \"record key2\" : \"record val2\" }] }";
+            // FIXME: version-id will fail in the future
+            var expectedJsonStr 
+                = "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"0.7.3.2171\", \"name\" : \"matrixrecorder\", \"row0\" : 1 }"
+                + ", \"rows\" : [{ \"dict a\" : \"dict b\", \"record key1\" : \"record val1\", \"record key2\" : \"record val2\" }] }";
 
             string outpath = Path.Combine(Path.GetTempPath(), "out2.bson");
 
@@ -81,9 +88,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
                 { "dict a", "dict b" }
             };
 
-            Dictionary<string, object> headerDict = new Dictionary<string, object>();
-
-            MatrixRecorder.Open(outpath, headerDict);
+            MatrixRecorder.Open(outpath);
 
             MatrixRecorder.NewRow(dict);
 
@@ -102,7 +107,10 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         [TestCase]
         public static void BSON_MatrixRecorder_delayed_two_bson_doc_subseq_first_without_close()
         {
-            string expectedJsonStr = "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"0.7.3.2171\", \"name\" : \"matrixrecorder\", \"row0\" : 2 }, \"rows\" : [{ \"dict a\" : \"dict b\", \"record key2\" : \"record val2\" }, { \"dict a\" : \"dict b\" }] }";
+            // FIXME: version-id will fail in the future
+            string expectedJsonStr 
+                = "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"0.7.3.2171\", \"name\" : \"matrixrecorder\", \"row0\" : 2 }"
+                + ", \"rows\" : [{ \"dict a\" : \"dict b\", \"record key2\" : \"record val2\" }, { \"dict a\" : \"dict b\" }] }";
 
             string outpath = Path.Combine(Path.GetTempPath(), "out3.bson");
 
@@ -111,9 +119,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
                 { "dict a", "dict b" }
             };
 
-            Dictionary<string, object> headerDict = new Dictionary<string, object>();
-
-            MatrixRecorder.Open(outpath, headerDict);
+            MatrixRecorder.Open(outpath);
 
             MatrixRecorder.NewRow(dict);
 
@@ -121,7 +127,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
 
             Thread.Sleep(60000);
 
-            MatrixRecorder.Open(outpath, headerDict);
+            MatrixRecorder.Open(outpath);
 
             MatrixRecorder.NewRow(dict);
 
@@ -136,7 +142,10 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         [TestCase]
         public static void BSON_MatrixRecorder_two_bson_doc_subseq()
         {
-            string expectedJsonStr = "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"0.7.3.2171\", \"name\" : \"matrixrecorder\", \"row0\" : 1 }, \"rows\" : [{ \"dict a\" : \"dict b\", \"record key1\" : \"record val1\", \"record key2\" : \"record val2\" }] }";
+            // FIXME: version-id will fail in the future
+            string expectedJsonStr 
+                = "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"0.7.3.2171\", \"name\" : \"matrixrecorder\", \"row0\" : 1 }"
+                + ", \"rows\" : [{ \"dict a\" : \"dict b\", \"record key1\" : \"record val1\", \"record key2\" : \"record val2\" }] }";
 
             string outpath = Path.Combine(Path.GetTempPath(), "out4.bson");
 
@@ -170,13 +179,16 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         [TestCase]
         public static void BSON_MatrixRecorder_null_header()
         {
-            var expectedJsonStr = "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"0.7.3.2171\", \"name\" : \"matrixrecorder\", \"row0\" : 1 }, \"rows\" : [{ }] }";
+            // FIXME: version-id will fail in the future
+            var expectedJsonStr =
+                "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"0.7.3.2171\", \"name\" : \"matrixrecorder\", \"row0\" : 1 }"
+                + ", \"rows\" : [{ }] }";
 
             string outpath = Path.Combine(Path.GetTempPath(), "out5.bson");
 
             MatrixRecorder.Open(outpath, null);
 
-            MatrixRecorder.NewRow(null);
+            MatrixRecorder.NewRow();
 
             MatrixRecorder.Close();
 
@@ -186,7 +198,10 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         [TestCase]
         public static void BSON_MatrixRecorder_custom_header()
         {
-            var expectedJsonStr = "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"0.7.3.2171\", \"name\" : \"matrixrecorder\", \"CycleName\" : \"\", \"CycleType\" : 3, \"row0\" : 1 }, \"rows\" : [{ }] }";
+            // FIXME: version-id will fail in the future
+            var expectedJsonStr =
+                "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"0.7.3.2171\", \"name\" : \"matrixrecorder\", \"CycleName\" : \"\", \"CycleType\" : 3, \"row0\" : 1 }"
+                + ", \"rows\" : [{ }] }";
 
             string outpath = Path.Combine(Path.GetTempPath(), "out6.bson");
             DrivingCycleData cycle = new DrivingCycleData
@@ -203,7 +218,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
 
             MatrixRecorder.Open(outpath, headerDict);
 
-            MatrixRecorder.NewRow(null);
+            MatrixRecorder.NewRow();
 
             MatrixRecorder.Close();
 

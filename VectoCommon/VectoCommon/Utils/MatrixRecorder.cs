@@ -1,4 +1,4 @@
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
 using MongoDB.Bson.IO;
 using System;
 using System.Collections.Generic;
@@ -66,7 +66,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         /// Prepare the thread local data with needed properties for recording pendingRows and storing them later.
         /// </summary>
         /// <param name="header">Metadata like cycle info, the file version etc.</param>
-        public static void Open(string filepath, IEnumerable<KeyValuePair<string, object>> header)
+        public static void Open(string filepath, IEnumerable<KeyValuePair<string, object>> header = null)
         {
             ThreadLocalData.filename = filepath;
 
@@ -78,10 +78,13 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
                 { "name", "matrixrecorder" }
             };
 
-            foreach (var item in header)
+            if (header != null)
             {
-                headerDict.Add(item.Key, item.Value);
-            }
+                foreach (var item in header)
+                {
+                    headerDict.Add(item.Key, item.Value);
+                }
+            };
 
             ThreadLocalData.headerDict = headerDict;
             ThreadLocalData.currentRow = null;
@@ -161,16 +164,13 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         /// Check if the recorder has not used `Open()` yet.
         /// </summary>
         /// <param name="index">List of key value pairs to be updated in current row</param>
-        public static void NewRow(IEnumerable<KeyValuePair<string, object>> index = null)
+        public static void NewRow(IEnumerable<KeyValuePair<string, object>> index)
         {
             NewRow(null, null);
             ThreadLocalData.currentRow = new Dictionary<string, object>();
-            if (index != null)
+            foreach (var item in index)
             {
-                foreach (var item in index)
-                {
-                    ThreadLocalData.currentRow[item.Key] = item.Value;
-                }
+                ThreadLocalData.currentRow[item.Key] = item.Value;
             }
         }
 
