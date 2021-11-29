@@ -66,14 +66,25 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         [TestCase]
         public void MatrixRecorder_Basic()
         {
-            string outpath = Path.Combine(MyTempDir, "out1.bson");
+            // FIXME: version-id will fail in the future
             var expectedJsonStr
-                = "{ \"header\" : { \"matrec_ver\" : \"0.0.0\", \"vecto_ver\" : \"@@\", \"row0\" : 0 }"
+                = "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"0.7.3.2171\", \"name\" : \"matrixrecorder\", \"row0\" : 2 }"
                 + ", \"rows\" : [{ \"dict a\" : \"dict b\", \"record key 1\" : \"record val 1\" }, { \"dict a\" : \"dict b\" }] }";
             var dict = new Dictionary<string, object>()
             {
                 { "dict a", "dict b" }
             };
+
+            string outpath = Path.Combine(Path.GetTempPath(), "out1.bson");
+            MatrixRecorder.Open(outpath);
+
+            MatrixRecorder.NewRow(dict);
+
+            MatrixRecorder.Record("record key 1", "record val 1");
+
+            MatrixRecorder.NewRow();
+
+            MatrixRecorder.Record(dict);
 
             MatRec.Open(outpath);
             MatRec.NewRow(dict);
@@ -88,21 +99,19 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         [TestCase]
         public void MatrixRecorder_delayed()
         {
-            string outpath = Path.Combine(MyTempDir, "out2.bson");
-            var expectedJsonStr
-                = "{ \"header\" : { \"matrec_ver\" : \"0.0.0\", \"vecto_ver\" : \"@@\", \"row0\" : 0 }"
-                + ", \"rows\" : [{ \"dict a\" : \"dict b\", \"A1\" : \"V1\" }, { \"A2\" : \"V2\", \"A3\" : \"V3\" }] }"
-                + "{ \"header\" : { \"row0\" : 2 }"
-                + ", \"rows\" : [{ \"dict a\" : \"dict b\" }] }";
-            var dict = new Dictionary<string, object>
+            // FIXME: version-id will fail in the future
+            var expectedJsonStr 
+                = "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"0.7.3.2171\", \"name\" : \"matrixrecorder\", \"row0\" : 1 }"
+                + ", \"rows\" : [{ \"dict a\" : \"dict b\", \"record key1\" : \"record val1\", \"record key2\" : \"record val2\" }] }";
+
+            string outpath = Path.Combine(Path.GetTempPath(), "out2.bson");
+
+            Dictionary<string, object> dict = new Dictionary<string, object>
             {
                 { "dict a", "dict b" }
             };
 
-            MatRec.Open(outpath);
-            MatRec.NewRow(dict);
-            MatRec.Record("A1", "V1");
-            MatRec.NewRow("A2", "V2");
+            MatrixRecorder.Open(outpath);
 
             Thread.Sleep(store_interval_sec * store_sleep_factor);
 
@@ -119,21 +128,20 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         [TestCase]
         public void MatrixRecorder_close_and_reopen_overwrites()
         {
-            string outpath = Path.Combine(MyTempDir, "out3b.bson");
-            string[] expectedJsonStr = {
-                "{ \"header\" : { \"matrec_ver\" : \"0.0.0\", \"vecto_ver\" : \"@@\""
-                + ", \"HK\" : 3.1400000000000001, \"row0\" : 0 }"
-                + ", \"rows\" : [{ \"a\" : \"aa\" }] }",
-                "{ \"header\" : { \"matrec_ver\" : \"0.0.0\", \"vecto_ver\" : \"@@\", \"row0\" : 0 }"  // row0 restarted
-                + ", \"rows\" : [{ \"b\" : \"bb\" }] }"
+            // FIXME: version-id will fail in the future
+            string expectedJsonStr 
+                = "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"0.7.3.2171\", \"name\" : \"matrixrecorder\", \"row0\" : 2 }"
+                + ", \"rows\" : [{ \"dict a\" : \"dict b\", \"record key2\" : \"record val2\" }, { \"dict a\" : \"dict b\" }] }";
+
+            string outpath = Path.Combine(Path.GetTempPath(), "out3.bson");
+
+            Dictionary<string, object> dict = new Dictionary<string, object>
+            {
+                { "dict a", "dict b" }
             };
             var header= new Dictionary<string, object> { { "HK", 3.14} };
 
-            MatRec.Open(outpath, header);
-            MatRec.NewRow("a", "aa");
-            MatRec.Close();
-
-            CheckOutput(outpath, expectedJsonStr[0]);
+            MatrixRecorder.Open(outpath);
 
             MatRec.Open(outpath);
             MatRec.NewRow("b", "bb");
@@ -150,8 +158,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
                 = "{ \"header\" : { \"matrec_ver\" : \"0.0.0\", \"vecto_ver\" : \"@@\", \"row0\" : 0 }"
                 + ", \"rows\" : [{ \"b\" : \"bb\" }] }";
 
-            MatRec.Open(outpath);
-            MatRec.NewRow("a", "aa");
+            MatrixRecorder.Open(outpath);
 
             Thread.Sleep(store_interval_sec * store_sleep_factor);
 
@@ -167,32 +174,29 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         [TestCase]
         public void MatrixRecorder_forgot_Open()
         {
-            string outpath = Path.Combine(MyTempDir, "out3ca.bson");
-            var d = new Dictionary<string, object>();
+            // FIXME: version-id will fail in the future
+            string expectedJsonStr 
+                = "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"0.7.3.2171\", \"name\" : \"matrixrecorder\", \"row0\" : 1 }"
+                + ", \"rows\" : [{ \"dict a\" : \"dict b\", \"record key1\" : \"record val1\", \"record key2\" : \"record val2\" }] }";
 
-            Assert.Throws<InvalidOperationException>(() => MatRec.NewRow("Forgotten", "Open+NewRow()"));
-            Assert.Throws<InvalidOperationException>(() => MatRec.Record("Forgotten", "Open+NewRow()"));
-            Assert.Throws<InvalidOperationException>(() => MatRec.NewRow("Forgotten", "NewRow()"));
-            Assert.Throws<InvalidOperationException>(() => MatRec.Close());
-            Assert.Throws<InvalidOperationException>(() => MatRec.NewRow("Forgotten", "NewRow()"));
-            Assert.Throws<InvalidOperationException>(() => MatRec.Record("Forgotten", "Open+NewRow()"));
+            string outpath = Path.Combine(Path.GetTempPath(), "out4.bson");
 
-            Assert.Throws<InvalidOperationException>(() => MatRec.NewRow(d));
-            Assert.Throws<InvalidOperationException>(() => MatRec.Record(d));
-            Assert.Throws<InvalidOperationException>(() => MatRec.NewRow(d));
-            Assert.Throws<InvalidOperationException>(() => MatRec.Close());
-            Assert.Throws<InvalidOperationException>(() => MatRec.NewRow(d));
-            Assert.Throws<InvalidOperationException>(() => MatRec.Record(d));
+            Dictionary<string, object> dict = new Dictionary<string, object>
+            {
+                { "dict a", "dict b" }
+            };
 
-            MatRec.Open(outpath);
-            MatRec.Close();
+            Dictionary<string, object> headerDict = new Dictionary<string, object>();
 
-            Assert.Throws<InvalidOperationException>(() => MatRec.NewRow("Forgotten", "Open+NewRow()"));
-            Assert.Throws<InvalidOperationException>(() => MatRec.Record("Forgotten", "Open+NewRow()"));
-            Assert.Throws<InvalidOperationException>(() => MatRec.NewRow(d));
-            Assert.Throws<InvalidOperationException>(() => MatRec.Record(d));
-            Assert.Throws<InvalidOperationException>(() => MatRec.Close());
-        }
+            MatrixRecorder.Open(outpath, headerDict);
+
+            MatrixRecorder.NewRow(dict);
+
+            MatrixRecorder.Record("record key1", "record val1");
+
+            MatrixRecorder.Close();
+
+            MatrixRecorder.Open(outpath, headerDict);
 
         [TestCase]
         public void MatrixRecorder_forgot_NewRow()
@@ -217,14 +221,18 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         [TestCase]
         public void MatrixRecorder_null_header()
         {
-            string outpath = Path.Combine(MyTempDir, "out5.bson");
+            // FIXME: version-id will fail in the future
             var expectedJsonStr =
-                "{ \"header\" : { \"matrec_ver\" : \"0.0.0\", \"vecto_ver\" : \"@@\", \"row0\" : 0 }"
+                "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"0.7.3.2171\", \"name\" : \"matrixrecorder\", \"row0\" : 1 }"
                 + ", \"rows\" : [{ }] }";
 
-            MatRec.Open(outpath, null);
-            MatRec.NewRow();
-            MatRec.Close();
+            string outpath = Path.Combine(Path.GetTempPath(), "out5.bson");
+
+            MatrixRecorder.Open(outpath, null);
+
+            MatrixRecorder.NewRow();
+
+            MatrixRecorder.Close();
 
             CheckOutput(outpath, expectedJsonStr);
         }
@@ -232,10 +240,12 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         [TestCase]
         public void MatrixRecorder_custom_header()
         {
-            string outpath = Path.Combine(MyTempDir, "out6.bson");
+            // FIXME: version-id will fail in the future
             var expectedJsonStr =
-                "{ \"header\" : { \"matrec_ver\" : \"0.0.0\", \"vecto_ver\" : \"@@\", \"CycleName\" : \"\", \"CycleType\" : 3, \"row0\" : 0 }"
+                "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"0.7.3.2171\", \"name\" : \"matrixrecorder\", \"CycleName\" : \"\", \"CycleType\" : 3, \"row0\" : 1 }"
                 + ", \"rows\" : [{ }] }";
+
+            string outpath = Path.Combine(Path.GetTempPath(), "out6.bson");
             DrivingCycleData cycle = new DrivingCycleData
             {
                 Name = "",
@@ -247,9 +257,11 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
                 ["CycleType"] = cycle.CycleType
             };
 
-            MatRec.Open(outpath, headerDict);
-            MatRec.NewRow();
-            MatRec.Close();
+            MatrixRecorder.Open(outpath, headerDict);
+
+            MatrixRecorder.NewRow();
+
+            MatrixRecorder.Close();
 
             CheckOutput(outpath, expectedJsonStr);
         }

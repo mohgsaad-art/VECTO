@@ -180,29 +180,14 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         /// Create a new underlying *dict* to store values, and append any given values in `index`.
         /// Scream if  `Open()` has not been called.
         /// </summary>
-        /// <param name="key">key to be recorded; if null no column is written</param>
-        /// <param name="value">value to be recorded; if null no column is written</param>
-        public static void NewRow(string key = null, object value = null)
+        /// <param name="index">List of key value pairs to be updated in current row</param>
+        public static void NewRow(IEnumerable<KeyValuePair<string, object>> index)
         {
-            MatRecData mrd = MatRecThreadLocal.Value;
-            if (mrd.pendingRows is null)
-                throw new InvalidOperationException("Forgotten Open() from Open->NewRow->Record->Close.");
-
-            if (mrd.currentRow != null)
-                mrd.pendingRows.Add(mrd.currentRow);
-
-            var intervalEnvVar = Environment.GetEnvironmentVariable(STORE_INTERVAL_ENV_VAR_NAME);
-            var docStoreInterval = intervalEnvVar is null ? DEFAULT_STORE_INTERVAL_SEC : int.Parse(intervalEnvVar);
-            if (mrd.writeReminder.Elapsed.TotalSeconds > docStoreInterval)
+            NewRow(null, null);
+            ThreadLocalData.currentRow = new Dictionary<string, object>();
+            foreach (var item in index)
             {
-                try
-                {
-                    StoreCurrentDoc();
-                } catch (IOException ex)
-                {
-                    // FIXME: use proper logging
-                    Debug.Write($"Matrec failed storing batch row0({mrd.row0})@({mrd.filename}) due to: {ex}");
-                }
+                ThreadLocalData.currentRow[item.Key] = item.Value;
             }
 
             mrd.currentRow = new Dictionary<string, object>();
