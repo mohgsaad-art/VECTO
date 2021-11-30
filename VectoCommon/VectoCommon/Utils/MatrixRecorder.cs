@@ -82,6 +82,8 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
 
         /// <summary>
         /// Prepare the thread local data with needed properties for recording pendingRows and storing them later.
+        ///
+        /// Atention: better not call it twice or it will override your file.
         /// </summary>
         /// <param name="header">Metadata like cycle info, the file version etc.</param>
         public static void Open(string filepath, IEnumerable<KeyValuePair<string, object>> header = null)
@@ -160,10 +162,12 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         /// 2. Create a document with header and pendingRows
         /// 3. Write document into the file
         /// 4. Clear the thread local data
+        /// Scream if  `Open()` has not been called.
         /// </summary>
         public static void Close()
         {
-            Debug.Assert(ThreadLocalData.pendingRows != null, "pendingRows != null");
+            if (ThreadLocalData.pendingRows is null)
+                throw new InvalidOperationException("Forgotten Open() from Open->NewRow->Record->Close.");
 
             if (ThreadLocalData.currentRow != null)
             {
@@ -178,13 +182,14 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         /// <summary>
         /// Send any old row to the sink and initiate a new one.
         /// Create a new underlying *dict* to store values, and append any given values in `index`.
-        /// Check if the recorder has not used `Open()` yet.
+        /// Scream if  `Open()` has not been called.
         /// </summary>
         /// <param name="key">key to be recorded; if null no column is written</param>
         /// <param name="value">value to be recorded; if null no column is written</param>
         public static void NewRow(string key = null, object value = null)
         {
-            Debug.Assert(ThreadLocalData.pendingRows != null, "pendingRows != null");
+            if (ThreadLocalData.pendingRows is null)
+                throw new InvalidOperationException("Forgotten Open() from Open->NewRow->Record->Close.");
 
             if (ThreadLocalData.currentRow != null)
             {
@@ -207,7 +212,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         /// <summary>
         /// Send any old row to the sink and initiate a new one.
         /// Create a new underlying *dict* to store values, and append any given values in `index`.
-        /// Check if the recorder has not used `Open()` yet.
+        /// Scream if  `Open()` has not been called.
         /// </summary>
         /// <param name="index">List of key value pairs to be updated in current row</param>
         public static void NewRow(IEnumerable<KeyValuePair<string, object>> index)
@@ -232,7 +237,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         {
             var row = ThreadLocalData.currentRow;
             if (row is null)
-                throw new InvalidOperationException("Please invoke `NewRow()` first.");
+                throw new InvalidOperationException("Forgotten NewRow() from Open->NewRow->Record->Close.");
 
             row[key] = value;
         }
@@ -246,7 +251,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         {
             var row = ThreadLocalData.currentRow;
             if (row is null)
-                throw new InvalidOperationException("Please invoke `NewRow()` first.");
+                throw new InvalidOperationException("Forgotten NewRow() from Open->NewRow->Record->Close.");
 
             foreach (var item in values)
             {

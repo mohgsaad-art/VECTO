@@ -1,4 +1,4 @@
-﻿using MongoDB.Bson;
+using MongoDB.Bson;
 using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization;
 using NUnit.Framework;
@@ -93,7 +93,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
                 + ", \"rows\" : [{ \"dict a\" : \"dict b\", \"A1\" : \"V1\" }, { \"A2\" : \"V2\", \"A3\" : \"V3\" }] }"
                 + "{ \"header\" : { \"row0\" : 2 }"
                 + ", \"rows\" : [{ \"dict a\" : \"dict b\" }] }";
-            Dictionary<string, object> dict = new Dictionary<string, object>
+            var dict = new Dictionary<string, object>
             {
                 { "dict a", "dict b" }
             };
@@ -105,7 +105,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
 
             Thread.Sleep(store_delay_sec * 1500);
 
-            MatrixRecorder.Record("A3", "V3");
+            MatrixRecorder.Record("A3", "V3");  // Appended in pending row & not yet stored. 
 
             // 1st doc closes here.
 
@@ -126,7 +126,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
                 "{ \"header\" : { \"matrec_ver\" : \"0.0.0\", \"vecto_ver\" : \"@@\", \"row0\" : 0 }"  // row0 restarted
                 + ", \"rows\" : [{ \"b\" : \"bb\" }] }"
             };
-            Dictionary<string, object> header= new Dictionary<string, object> { { "HK", 3.14} };
+            var header= new Dictionary<string, object> { { "HK", 3.14} };
 
             MatrixRecorder.Open(outpath, header);
             MatrixRecorder.NewRow("a", "aa");
@@ -164,16 +164,52 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         }
 
         [TestCase]
-        public void MatrixRecorder_forgot_new_row()
+        public void MatrixRecorder_forgot_Open()
         {
-            string outpath = Path.Combine(MyTempDir, "out3c.bson");
+            string outpath = Path.Combine(MyTempDir, "out3ca.bson");
+            var d = new Dictionary<string, object>();
+
+            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.NewRow("Forgotten", "Open+NewRow()"));
+            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.Record("Forgotten", "Open+NewRow()"));
+            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.NewRow("Forgotten", "NewRow()"));
+            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.Close());
+            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.NewRow("Forgotten", "NewRow()"));
+            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.Record("Forgotten", "Open+NewRow()"));
+
+            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.NewRow(d));
+            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.Record(d));
+            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.NewRow(d));
+            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.Close());
+            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.NewRow(d));
+            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.Record(d));
 
             MatrixRecorder.Open(outpath);
-            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.Record("Forgotten", "NewRow()"));
             MatrixRecorder.Close();
 
+            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.NewRow("Forgotten", "Open+NewRow()"));
+            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.Record("Forgotten", "Open+NewRow()"));
+            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.NewRow(d));
+            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.Record(d));
+            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.Close());
+        }
+
+        [TestCase]
+        public void MatrixRecorder_forgot_NewRow()
+        {
+            string outpath = Path.Combine(MyTempDir, "out3cb.bson");
+            var d = new Dictionary<string, object>();
+
             MatrixRecorder.Open(outpath);
             Assert.Throws<InvalidOperationException>(() => MatrixRecorder.Record("Forgotten", "NewRow()"));
+            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.Record(d));
+            MatrixRecorder.Close();
+
+            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.Record("Forgotten", "NewRow()"));
+            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.Record(d));
+
+            MatrixRecorder.Open(outpath);
+            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.Record("Forgotten", "NewRow()"));
+            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.Record(d));
             MatrixRecorder.Close();
         }
 
@@ -204,7 +240,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
                 Name = "",
                 CycleType = CycleType.MeasuredSpeed
             };
-            Dictionary<string, object> headerDict = new Dictionary<string, object>()
+            var headerDict = new Dictionary<string, object>()
             {
                 ["CycleName"] = cycle.Name,
                 ["CycleType"] = cycle.CycleType
