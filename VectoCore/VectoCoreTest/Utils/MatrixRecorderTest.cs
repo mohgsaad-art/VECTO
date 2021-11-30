@@ -91,7 +91,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
             var expectedJsonStr
                 = "{ \"header\" : { \"matrec_ver\" : \"0.0.0\", \"vecto_ver\" : \"@@\", \"row0\" : 0 }"
                 + ", \"rows\" : [{ \"dict a\" : \"dict b\", \"A1\" : \"V1\" }, { \"A2\" : \"V2\", \"A3\" : \"V3\" }] }"
-                + "{ \"header\" : { \"matrec_ver\" : \"0.0.0\", \"vecto_ver\" : \"@@\", \"row0\" : 2 }"
+                + "{ \"header\" : { \"row0\" : 2 }"
                 + ", \"rows\" : [{ \"dict a\" : \"dict b\" }] }";
             Dictionary<string, object> dict = new Dictionary<string, object>
             {

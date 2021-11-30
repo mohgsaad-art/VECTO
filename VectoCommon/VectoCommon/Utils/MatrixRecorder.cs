@@ -149,6 +149,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
                 fs.Write(bsonBinary, 0, bsonBinary.Length);
             }
 
+            ThreadLocalData.headerDict = new Dictionary<string, object>();  // subsequent docs have light headers.
             ThreadLocalData.row0 += pendingRows.Count;
             pendingRows.Clear();
         }
