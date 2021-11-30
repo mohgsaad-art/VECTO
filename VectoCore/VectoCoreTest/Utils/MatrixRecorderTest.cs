@@ -33,7 +33,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
 
         private void CheckOutput(string outpath, string expectedJsonStr)
         {
-            expectedJsonStr = expectedJsonStr.Replace("@@", MatrixRecorder.GetVectoCommonVersionInformation());
+            expectedJsonStr = expectedJsonStr.Replace("@@", MatrixRecorder.VectoVersionId);
 
             using (FileStream fs = new FileStream(
                         outpath,

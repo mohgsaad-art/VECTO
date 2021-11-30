@@ -59,8 +59,26 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
             set { _ThreadLocalData.Value = value; }
         }
 
-        // vecto common dll name, used for retrieving the version
-        private static readonly string commonDllName = "VectoCommon.dll";
+        private static string _VectoVersionId;
+        // Vecto-version to add in the header (public for TCs).
+        public static string VectoVersionId
+        {
+            get
+            {
+                if (_VectoVersionId is null)
+                {
+                    var dllName = "VectoCommon.dll";
+                    var assemblyDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                    var commonDll = Assembly.LoadFile(
+                        Path.Combine(assemblyDirectory, dllName)
+                    ).GetName();
+
+                    _VectoVersionId = commonDll.Version.ToString();
+                }
+
+                return _VectoVersionId;
+            }
+        }
 
         /// <summary>
         /// Prepare the thread local data with needed properties for recording pendingRows and storing them later.
@@ -74,7 +92,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
             {
                 // Keep file_version first to the top, to facilitate parsers.
                 { "file_version", "0.0.0" },
-                { "vecto_version", GetVectoCommonVersionInformation() },
+                { "vecto_version", VectoVersionId },
                 { "name", "matrixrecorder" }
             };
 
@@ -236,20 +254,6 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
             {
                 row[item.Key] = item.Value;
             }
-        }
-
-        /// <summary>
-        /// Get the version from vecto-common assembly
-        /// 
-        /// It's public for TCs.
-        /// </summary>
-        public static string GetVectoCommonVersionInformation()
-        {
-            var currentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            var commonDll = Assembly.LoadFile(Path.Combine(currentDirectory, commonDllName))
-              .GetName();
-
-            return commonDll.Version.ToString();
         }
     }
 }
