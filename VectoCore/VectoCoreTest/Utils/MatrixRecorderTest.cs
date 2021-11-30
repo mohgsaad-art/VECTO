@@ -67,7 +67,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         {
             string outpath = Path.Combine(MyTempDir, "out1.bson");
             var expectedJsonStr
-                = "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"@@\", \"name\" : \"matrixrecorder\", \"row0\" : 0 }"
+                = "{ \"header\" : { \"matrec_ver\" : \"0.0.0\", \"vecto_ver\" : \"@@\", \"row0\" : 0 }"
                 + ", \"rows\" : [{ \"dict a\" : \"dict b\", \"record key 1\" : \"record val 1\" }, { \"dict a\" : \"dict b\" }] }";
             var dict = new Dictionary<string, object>()
             {
@@ -89,9 +89,9 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         {
             string outpath = Path.Combine(MyTempDir, "out2.bson");
             var expectedJsonStr
-                = "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"@@\", \"name\" : \"matrixrecorder\", \"row0\" : 0 }"
+                = "{ \"header\" : { \"matrec_ver\" : \"0.0.0\", \"vecto_ver\" : \"@@\", \"row0\" : 0 }"
                 + ", \"rows\" : [{ \"dict a\" : \"dict b\", \"A1\" : \"V1\" }, { \"A2\" : \"V2\", \"A3\" : \"V3\" }] }"
-                + "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"@@\", \"name\" : \"matrixrecorder\", \"row0\" : 2 }"
+                + "{ \"header\" : { \"matrec_ver\" : \"0.0.0\", \"vecto_ver\" : \"@@\", \"row0\" : 2 }"
                 + ", \"rows\" : [{ \"dict a\" : \"dict b\" }] }";
             Dictionary<string, object> dict = new Dictionary<string, object>
             {
@@ -120,10 +120,10 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         {
             string outpath = Path.Combine(MyTempDir, "out3b.bson");
             string[] expectedJsonStr = {
-                "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"@@\", \"name\" : \"matrixrecorder\""
+                "{ \"header\" : { \"matrec_ver\" : \"0.0.0\", \"vecto_ver\" : \"@@\""
                 + ", \"HK\" : 3.1400000000000001, \"row0\" : 0 }"
                 + ", \"rows\" : [{ \"a\" : \"aa\" }] }",
-                "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"@@\", \"name\" : \"matrixrecorder\", \"row0\" : 0 }"  // row0 restarted
+                "{ \"header\" : { \"matrec_ver\" : \"0.0.0\", \"vecto_ver\" : \"@@\", \"row0\" : 0 }"  // row0 restarted
                 + ", \"rows\" : [{ \"b\" : \"bb\" }] }"
             };
             Dictionary<string, object> header= new Dictionary<string, object> { { "HK", 3.14} };
@@ -146,7 +146,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         {
             string outpath = Path.Combine(MyTempDir, "out3d.bson");
             string expectedJsonStr
-                = "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"@@\", \"name\" : \"matrixrecorder\", \"row0\" : 0 }"
+                = "{ \"header\" : { \"matrec_ver\" : \"0.0.0\", \"vecto_ver\" : \"@@\", \"row0\" : 0 }"
                 + ", \"rows\" : [{ \"b\" : \"bb\" }] }";
 
             MatrixRecorder.Open(outpath);
@@ -182,7 +182,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         {
             string outpath = Path.Combine(MyTempDir, "out5.bson");
             var expectedJsonStr =
-                "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"@@\", \"name\" : \"matrixrecorder\", \"row0\" : 0 }"
+                "{ \"header\" : { \"matrec_ver\" : \"0.0.0\", \"vecto_ver\" : \"@@\", \"row0\" : 0 }"
                 + ", \"rows\" : [{ }] }";
 
             MatrixRecorder.Open(outpath, null);
@@ -197,7 +197,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         {
             string outpath = Path.Combine(MyTempDir, "out6.bson");
             var expectedJsonStr =
-                "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"@@\", \"name\" : \"matrixrecorder\", \"CycleName\" : \"\", \"CycleType\" : 3, \"row0\" : 0 }"
+                "{ \"header\" : { \"matrec_ver\" : \"0.0.0\", \"vecto_ver\" : \"@@\", \"CycleName\" : \"\", \"CycleType\" : 3, \"row0\" : 0 }"
                 + ", \"rows\" : [{ }] }";
             DrivingCycleData cycle = new DrivingCycleData
             {

@@ -91,9 +91,8 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
             Dictionary<string, object> headerDict = new Dictionary<string, object>
             {
                 // Keep file_version first to the top, to facilitate parsers.
-                { "file_version", "0.0.0" },
-                { "vecto_version", VectoVersionId },
-                { "name", "matrixrecorder" }
+                { "matrec_ver", "0.0.0" },
+                { "vecto_ver", VectoVersionId },
             };
 
             if (header != null)
