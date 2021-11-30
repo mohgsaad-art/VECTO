@@ -1,4 +1,4 @@
-﻿using MongoDB.Bson;
+using MongoDB.Bson;
 using MongoDB.Bson.IO;
 using System;
 using System.Collections.Generic;
@@ -180,6 +180,35 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         /// Create a new underlying *dict* to store values, and append any given values in `index`.
         /// Check if the recorder has not used `Open()` yet.
         /// </summary>
+        /// <param name="key">key to be recorded; if null no column is written</param>
+        /// <param name="value">value to be recorded; if null no column is written</param>
+        public static void NewRow(string key = null, object value = null)
+        {
+            Debug.Assert(ThreadLocalData.pendingRows != null, "pendingRows != null");
+
+            if (ThreadLocalData.currentRow != null)
+            {
+                ThreadLocalData.pendingRows.Add(ThreadLocalData.currentRow);
+            }
+
+            var docStoreInterval = int.Parse(Environment.GetEnvironmentVariable("DocStoreInterval"));
+            if (ThreadLocalData.writeReminder.Elapsed.TotalSeconds > docStoreInterval)
+            {
+                StoreCurrentDoc();
+            }
+
+            ThreadLocalData.currentRow = new Dictionary<string, object>();
+            if (key != null)
+            {
+                ThreadLocalData.currentRow[key] = value;
+            }
+        }
+
+        /// <summary>
+        /// Send any old row to the sink and initiate a new one.
+        /// Create a new underlying *dict* to store values, and append any given values in `index`.
+        /// Check if the recorder has not used `Open()` yet.
+        /// </summary>
         /// <param name="index">List of key value pairs to be updated in current row</param>
         public static void NewRow(IEnumerable<KeyValuePair<string, object>> index)
         {
@@ -206,35 +235,6 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
                 throw new InvalidOperationException("Please invoke `NewRow()` first.");
 
             row[key] = value;
-        }
-
-        /// <summary>
-        /// Send any old row to the sink and initiate a new one.
-        /// Create a new underlying *dict* to store values, and append any given values in `index`.
-        /// Check if the recorder has not used `Open()` yet.
-        /// </summary>
-        /// <param name="key">key to be recorded; if null no column is written</param>
-        /// <param name="value">value to be recorded; if null no column is written</param>
-        public static void NewRow(string key = null, object value = null)
-        {
-            Debug.Assert(ThreadLocalData.pendingRows != null, "pendingRows != null");
-
-            if (ThreadLocalData.currentRow != null)
-            {
-                ThreadLocalData.pendingRows.Add(ThreadLocalData.currentRow);
-            }
-
-            var docStoreInterval = int.Parse(Environment.GetEnvironmentVariable("DocStoreInterval"));
-            if (ThreadLocalData.writeReminder.Elapsed.TotalSeconds > docStoreInterval)
-            {
-                StoreCurrentDoc();
-            }
-
-            ThreadLocalData.currentRow = new Dictionary<string, object>();
-            if (key != null)
-            {
-                ThreadLocalData.currentRow[key] = value;
-            }
         }
 
         /// <summary>
