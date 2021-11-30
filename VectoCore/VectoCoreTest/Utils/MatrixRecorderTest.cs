@@ -74,7 +74,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
                 { "dict a", "dict b" }
             };
 
-            string outpath = Path.Combine(Path.GetTempPath(), "out1.bson");
+            string outpath = Path.Combine(MyTempDir, "out1.bson");
             MatrixRecorder.Open(outpath);
 
             MatrixRecorder.NewRow(dict);
@@ -104,7 +104,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
                 + "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"@@\", \"name\" : \"matrixrecorder\", \"row0\" : 2 }"
                 + ", \"rows\" : [{ \"dict a\" : \"dict b\" }] }";
 
-            string outpath = Path.Combine(Path.GetTempPath(), "out2.bson");
+            string outpath = Path.Combine(MyTempDir, "out2.bson");
 
             Dictionary<string, object> dict = new Dictionary<string, object>
             {
@@ -132,7 +132,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
                 = "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"@@\", \"name\" : \"matrixrecorder\", \"row0\" : 2 }"
                 + ", \"rows\" : [{ \"dict a\" : \"dict b\", \"record key2\" : \"record val2\" }, { \"dict a\" : \"dict b\" }] }";
 
-            string outpath = Path.Combine(Path.GetTempPath(), "out3.bson");
+            string outpath = Path.Combine(MyTempDir, "out3a.bson");
 
             Dictionary<string, object> dict = new Dictionary<string, object>
             {
@@ -179,7 +179,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
                 + "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"@@\", \"name\" : \"matrixrecorder\", \"row0\" : 2 }"
                 + ", \"rows\" : [{ \"dict a\" : \"dict b\", \"record key2\" : \"record val2\" }, { \"dict a\" : \"dict b\" }] }";
 
-            string outpath = Path.Combine(Path.GetTempPath(), "out4.bson");
+            string outpath = Path.Combine(MyTempDir, "out4.bson");
 
             Dictionary<string, object> dict = new Dictionary<string, object>
             {
@@ -228,7 +228,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
                 "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"@@\", \"name\" : \"matrixrecorder\", \"row0\" : 1 }"
                 + ", \"rows\" : [{ }] }";
 
-            string outpath = Path.Combine(Path.GetTempPath(), "out5.bson");
+            string outpath = Path.Combine(MyTempDir, "out5.bson");
 
             MatrixRecorder.Open(outpath, null);
 
@@ -246,7 +246,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
                 "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"@@\", \"name\" : \"matrixrecorder\", \"CycleName\" : \"\", \"CycleType\" : 3, \"row0\" : 1 }"
                 + ", \"rows\" : [{ }] }";
 
-            string outpath = Path.Combine(Path.GetTempPath(), "out6.bson");
+            string outpath = Path.Combine(MyTempDir, "out6.bson");
             DrivingCycleData cycle = new DrivingCycleData
             {
                 Name = "",
