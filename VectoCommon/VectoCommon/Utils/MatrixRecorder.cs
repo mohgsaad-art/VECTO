@@ -178,16 +178,15 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         /// Record a new key-value pair. 
         /// Append the pair into the *dict* representing the row.
         /// Any pre-existing value for some key is overwritten.
-        /// Check if recorder has not used `Open()` yet.
+        /// Scream if NewRow() has not been called after `Open()`.
         /// </summary>
         /// <param name="key">key to be recorded</param>
         /// <param name="value">value to be recorded</param>
         public static void Record(string key, object value)
         {
-            // NRE error if NewRow() has not been called
             var row = ThreadLocalData.currentRow;
-
-            Debug.Assert(row != null, "row != null");
+            if (row is null)
+                throw new InvalidOperationException("Please invoke `NewRow()` first.");
 
             row[key] = value;
         }
@@ -224,13 +223,14 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
 
         /// <summary>
         /// En-mass `Record()` key-value pairs
+        /// Scream if NewRow() has not been called after `Open()`.
         /// </summary>
         /// <param name="values">list of key value pairs to be recorded</param>
         public static void Record(IEnumerable<KeyValuePair<string, object>> values)
         {
-            //NRE error if NewRow() has not been called
             var row = ThreadLocalData.currentRow;
-            Debug.Assert(row != null, "row != null");
+            if (row is null)
+                throw new InvalidOperationException("Please invoke `NewRow()` first.");
 
             foreach (var item in values)
             {

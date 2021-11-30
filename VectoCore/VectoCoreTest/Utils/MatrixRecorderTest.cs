@@ -63,6 +63,8 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
             }
         }
 
+        // TODO: Cetegorize TCs.
+
         [TestCase]
         public void BSON_MatrixRecorder_Basic()
         {
@@ -162,6 +164,12 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         [TestCase]
         public void BSON_MatrixRecorder_interspese_close_open_with_newrow()
         {
+            string expectedJsonStr
+                = "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"@@\", \"name\" : \"matrixrecorder\", \"row0\" : 1 }"
+                + ", \"rows\" : [{ \"a\" : \"aa\" }] }"
+                + "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"@@\", \"name\" : \"matrixrecorder\", \"row0\" : 1 }"  // wrong row0?
+                + ", \"rows\" : [{ \"b\" : \"bb\" }] }";
+
             string outpath = Path.Combine(MyTempDir, "out3b.bson");
 
             MatrixRecorder.Open(outpath);
@@ -174,6 +182,8 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
             MatrixRecorder.NewRow("b", "bb");
 
             MatrixRecorder.Close();
+
+            CheckOutput(outpath, expectedJsonStr);
         }
 
         [TestCase]
@@ -188,7 +198,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
 
             MatrixRecorder.Open(outpath);
 
-            MatrixRecorder.Record("b", "bb");
+            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.Record("b", "bb"));
 
             MatrixRecorder.Close();
         }
@@ -206,7 +216,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
 
             MatrixRecorder.Open(outpath);
 
-            MatrixRecorder.Record("b", "bb");
+            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.Record("b", "bb"));
 
             MatrixRecorder.Close();
         }
