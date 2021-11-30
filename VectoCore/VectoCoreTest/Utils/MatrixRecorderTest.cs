@@ -1,4 +1,4 @@
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
 using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization;
 using NUnit.Framework;
@@ -154,6 +154,58 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
             MatrixRecorder.Close();
 
             CheckOutput(outpath, expectedJsonStr);
+        }
+
+        [TestCase]
+        public static void BSON_MatrixRecorder_interspese_close_open_with_newrow()
+        {
+            string outpath = Path.Combine(Path.GetTempPath(), "out3.bson");
+
+            MatrixRecorder.Open(outpath);
+
+            MatrixRecorder.NewRow("a", "aa");
+            MatrixRecorder.Close();
+
+            MatrixRecorder.Open(outpath);
+
+            MatrixRecorder.NewRow("b", "bb");
+
+            MatrixRecorder.Close();
+        }
+
+        [TestCase]
+        public static void BSON_MatrixRecorder_interspese_close_open()
+        {
+            string outpath = Path.Combine(Path.GetTempPath(), "out3.bson");
+
+            MatrixRecorder.Open(outpath);
+
+            MatrixRecorder.NewRow("a", "aa");
+            MatrixRecorder.Close();
+
+            MatrixRecorder.Open(outpath);
+
+            MatrixRecorder.Record("b", "bb");
+
+            MatrixRecorder.Close();
+        }
+
+        [TestCase]
+        public static void BSON_MatrixRecorder_delayed_interspese_open()
+        {
+            string outpath = Path.Combine(Path.GetTempPath(), "out3.bson");
+
+            MatrixRecorder.Open(outpath);
+
+            MatrixRecorder.NewRow("a", "aa");
+
+            Thread.Sleep(store_delay_sec * 1500);
+
+            MatrixRecorder.Open(outpath);
+
+            MatrixRecorder.Record("b", "bb");
+
+            MatrixRecorder.Close();
         }
 
         [TestCase]
