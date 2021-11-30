@@ -24,8 +24,8 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         // The row where new column-values are appended on Record().
         public Dictionary<string, object> currentRow;
 
-        // The row where new column-values are appended on Record().
-        public int currentRowIndex;
+        // The 0-based row where new column-values are appended on Record().
+        public int row0;
 
         // Updated when any pending rows are written to disk.
         public Stopwatch writeReminder;
@@ -36,7 +36,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         public void Clear()
         {
             currentRow = null;
-            currentRowIndex = -1;
+            row0 = 0;
             pendingRows = null;
             headerDict = null;
             filename = null;
@@ -106,7 +106,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
 
             ThreadLocalData.headerDict = headerDict;
             ThreadLocalData.currentRow = null;
-            ThreadLocalData.currentRowIndex = -1;
+            ThreadLocalData.row0 = 0;
             ThreadLocalData.pendingRows = new List<Dictionary<string, object>>();
             ThreadLocalData.writeReminder = new Stopwatch();
             ThreadLocalData.writeReminder.Start();
@@ -120,11 +120,11 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
             var pendingRows = ThreadLocalData.pendingRows;
 
             string filename = ThreadLocalData.filename;
-            var row0 = ThreadLocalData.currentRowIndex;
+            var row0 = ThreadLocalData.row0;
 
             if (pendingRows == null || !pendingRows.Any())
             {
-                Debug.Write("$Skipped writting file({ filename}) with empty pendingRows@{row0}.");
+                Debug.Write($"Skipped writting file({filename}) with empty pendingRows@{row0}.");
                 return;
             }
 
@@ -150,8 +150,8 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
                 fs.Write(bsonBinary, 0, bsonBinary.Length);
             }
 
-            ThreadLocalData.pendingRows.Clear();
-            ThreadLocalData.writeReminder.Reset();
+            ThreadLocalData.row0 += pendingRows.Count;
+            pendingRows.Clear();
         }
 
         /// <summary>
@@ -168,7 +168,6 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
             if (ThreadLocalData.currentRow != null)
             {
                 ThreadLocalData.pendingRows.Add(ThreadLocalData.currentRow);
-                ThreadLocalData.currentRowIndex++;
             }
 
             StoreCurrentDoc();
@@ -224,7 +223,6 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
             {
                 ThreadLocalData.pendingRows.Add(ThreadLocalData.currentRow);
             }
-            ThreadLocalData.currentRowIndex++;
 
             var docStoreInterval = int.Parse(Environment.GetEnvironmentVariable("DocStoreInterval"));
             if (ThreadLocalData.writeReminder.Elapsed.TotalSeconds > docStoreInterval)

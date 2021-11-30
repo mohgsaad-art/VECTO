@@ -36,264 +36,174 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
             expectedJsonStr = expectedJsonStr.Replace("@@", MatrixRecorder.VectoVersionId);
 
             using (FileStream fs = new FileStream(
-                        outpath,
-                        FileMode.Open, FileAccess.Read, FileShare.Read))
+                outpath, FileMode.Open, FileAccess.Read, FileShare.Read
+            ))
+            using (BsonBinaryReader reader = new BsonBinaryReader(fs))
             {
-                using (BsonBinaryReader reader = new BsonBinaryReader(fs))
+                int ndoc = 0;
+                int initExpLength = expectedJsonStr.Length;
+                while (!reader.IsAtEndOfFile())
                 {
-                    int ndoc = 0;
-                    int initExpLength = expectedJsonStr.Length;
-                    while (!reader.IsAtEndOfFile())
-                    {
-                        var document = BsonSerializer.Deserialize<BsonDocument>(reader);
+                    var document = BsonSerializer.Deserialize<BsonDocument>(reader);
+                    var jsonStr = document.ToJson();
+                    var jslen = jsonStr.Length;
 
-                        var jsonStr = document.ToJson();
-                        var jslen = jsonStr.Length;
+                    // Chop expected-string to the chunk just read only if lengths matching,
+                    // so that we still receive the assert-equal message on length-mismatches.
+                    var chopLen = (jslen <= expectedJsonStr.Length) ? jslen : expectedJsonStr.Length;
+                    Assert.AreEqual(expectedJsonStr.Substring(0, chopLen), jsonStr, $"ndoc={ndoc}, initExpLength ={initExpLength}");
 
-                        // Chop expected-string to the chunk just read only if lengths matching,
-                        // so that we still receive the assert-equal message on length-mismatches.
-                        var chopLen = (jslen <= expectedJsonStr.Length) ? jslen : expectedJsonStr.Length;
-                        Assert.AreEqual(expectedJsonStr.Substring(0, chopLen), jsonStr, $"ndoc={ndoc}, initExpLength ={initExpLength}");
-
-                        expectedJsonStr = expectedJsonStr.Substring(jslen);
-                        ndoc++;
-                    }
-                    Assert.Zero(expectedJsonStr.Length, $"ndoc={ndoc}, initExpLength ={initExpLength}, remaining expectedJsonStr={expectedJsonStr}");
+                    expectedJsonStr = expectedJsonStr.Substring(jslen);
+                    ndoc++;
                 }
+                Assert.Zero(expectedJsonStr.Length, $"ndoc={ndoc}, initExpLength ={initExpLength}, remaining expectedJsonStr={expectedJsonStr}");
             }
         }
 
         // TODO: Cetegorize TCs.
 
         [TestCase]
-        public void BSON_MatrixRecorder_Basic()
+        public void MatrixRecorder_Basic()
         {
+            string outpath = Path.Combine(MyTempDir, "out1.bson");
             var expectedJsonStr
-                = "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"@@\", \"name\" : \"matrixrecorder\", \"row0\" : 2 }"
+                = "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"@@\", \"name\" : \"matrixrecorder\", \"row0\" : 0 }"
                 + ", \"rows\" : [{ \"dict a\" : \"dict b\", \"record key 1\" : \"record val 1\" }, { \"dict a\" : \"dict b\" }] }";
             var dict = new Dictionary<string, object>()
             {
                 { "dict a", "dict b" }
             };
 
-            string outpath = Path.Combine(MyTempDir, "out1.bson");
             MatrixRecorder.Open(outpath);
-
             MatrixRecorder.NewRow(dict);
-
             MatrixRecorder.Record("record key 1", "record val 1");
-
             MatrixRecorder.NewRow();
-
             MatrixRecorder.Record(dict);
-
             MatrixRecorder.Close();
 
             CheckOutput(outpath, expectedJsonStr);
         }
 
         [TestCase]
-        public void BSON_MatrixRecorder_delayed()
+        public void MatrixRecorder_delayed()
         {
+            string outpath = Path.Combine(MyTempDir, "out2.bson");
             var expectedJsonStr
-                = "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"@@\", \"name\" : \"matrixrecorder\", \"row0\" : 1 }"
-                + ", \"rows\" : [{ \"dict a\" : \"dict b\", \"record key1\" : \"record val1\", \"record key2\" : \"record val2\" }] }"
+                = "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"@@\", \"name\" : \"matrixrecorder\", \"row0\" : 0 }"
+                + ", \"rows\" : [{ \"dict a\" : \"dict b\", \"A1\" : \"V1\" }, { \"A2\" : \"V2\", \"A3\" : \"V3\" }] }"
                 + "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"@@\", \"name\" : \"matrixrecorder\", \"row0\" : 2 }"
                 + ", \"rows\" : [{ \"dict a\" : \"dict b\" }] }";
-
-            string outpath = Path.Combine(MyTempDir, "out2.bson");
-
             Dictionary<string, object> dict = new Dictionary<string, object>
             {
                 { "dict a", "dict b" }
             };
 
             MatrixRecorder.Open(outpath);
-
             MatrixRecorder.NewRow(dict);
-
-            MatrixRecorder.Record("record key1", "record val1");
+            MatrixRecorder.Record("A1", "V1");
+            MatrixRecorder.NewRow("A2", "V2");
 
             Thread.Sleep(store_delay_sec * 1500);
 
-            MatrixRecorder.Record("record key2", "record val2");
+            MatrixRecorder.Record("A3", "V3");
 
             // 1st doc closes here.
 
             MatrixRecorder.NewRow(dict);
-
             MatrixRecorder.Close();
 
             CheckOutput(outpath, expectedJsonStr);
         }
 
         [TestCase]
-        public void BSON_MatrixRecorder_delayed_2_open_docs_without_close_between()
+        public void MatrixRecorder_close_and_reopen_overwrites()
         {
-            string expectedJsonStr
-                = "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"@@\", \"name\" : \"matrixrecorder\", \"row0\" : 2 }"
-                + ", \"rows\" : [{ \"dict a\" : \"dict b\", \"record key2\" : \"record val2\" }, { \"dict a\" : \"dict b\" }] }";
-
-            string outpath = Path.Combine(MyTempDir, "out3a.bson");
-
-            Dictionary<string, object> dict = new Dictionary<string, object>
-            {
-                { "dict a", "dict b" }
+            string outpath = Path.Combine(MyTempDir, "out3b.bson");
+            string[] expectedJsonStr = {
+                "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"@@\", \"name\" : \"matrixrecorder\""
+                + ", \"HK\" : 3.1400000000000001, \"row0\" : 0 }"
+                + ", \"rows\" : [{ \"a\" : \"aa\" }] }",
+                "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"@@\", \"name\" : \"matrixrecorder\", \"row0\" : 0 }"  // row0 restarted
+                + ", \"rows\" : [{ \"b\" : \"bb\" }] }"
             };
+            Dictionary<string, object> header= new Dictionary<string, object> { { "HK", 3.14} };
+
+            MatrixRecorder.Open(outpath, header);
+            MatrixRecorder.NewRow("a", "aa");
+            MatrixRecorder.Close();
+
+            CheckOutput(outpath, expectedJsonStr[0]);
 
             MatrixRecorder.Open(outpath);
+            MatrixRecorder.NewRow("b", "bb");
+            MatrixRecorder.Close();
 
-            MatrixRecorder.NewRow(dict);
+            CheckOutput(outpath, expectedJsonStr[1]);
+        }
 
-            MatrixRecorder.Record("record key1", "record val1");
+        [TestCase]
+        public void MatrixRecorder_delayed_reopen_overwrites()
+        {
+            string outpath = Path.Combine(MyTempDir, "out3d.bson");
+            string expectedJsonStr
+                = "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"@@\", \"name\" : \"matrixrecorder\", \"row0\" : 0 }"
+                + ", \"rows\" : [{ \"b\" : \"bb\" }] }";
+
+            MatrixRecorder.Open(outpath);
+            MatrixRecorder.NewRow("a", "aa");
 
             Thread.Sleep(store_delay_sec * 1500);
 
             MatrixRecorder.Open(outpath);
-
-            MatrixRecorder.NewRow(dict);
-
-            MatrixRecorder.Record("record key2", "record val2");
-            MatrixRecorder.NewRow(dict);
-
-            MatrixRecorder.Close();
-
-            CheckOutput(outpath, expectedJsonStr);
-        }
-
-        [TestCase]
-        public void BSON_MatrixRecorder_interspese_close_open_with_newrow()
-        {
-            string expectedJsonStr
-                = "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"@@\", \"name\" : \"matrixrecorder\", \"row0\" : 1 }"
-                + ", \"rows\" : [{ \"a\" : \"aa\" }] }"
-                + "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"@@\", \"name\" : \"matrixrecorder\", \"row0\" : 1 }"  // wrong row0?
-                + ", \"rows\" : [{ \"b\" : \"bb\" }] }";
-
-            string outpath = Path.Combine(MyTempDir, "out3b.bson");
-
-            MatrixRecorder.Open(outpath);
-
-            MatrixRecorder.NewRow("a", "aa");
-            MatrixRecorder.Close();
-
-            MatrixRecorder.Open(outpath);
+            Assert.False(File.Exists(outpath), $"File({outpath}) should not have been written!");
 
             MatrixRecorder.NewRow("b", "bb");
-
             MatrixRecorder.Close();
 
             CheckOutput(outpath, expectedJsonStr);
         }
 
         [TestCase]
-        public void BSON_MatrixRecorder_interspese_close_open()
+        public void MatrixRecorder_forgot_new_row()
         {
             string outpath = Path.Combine(MyTempDir, "out3c.bson");
 
             MatrixRecorder.Open(outpath);
-
-            MatrixRecorder.NewRow("a", "aa");
+            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.Record("Forgotten", "NewRow()"));
             MatrixRecorder.Close();
 
             MatrixRecorder.Open(outpath);
-
-            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.Record("b", "bb"));
-
+            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.Record("Forgotten", "NewRow()"));
             MatrixRecorder.Close();
         }
 
         [TestCase]
-        public void BSON_MatrixRecorder_delayed_interspese_open()
+        public void MatrixRecorder_null_header()
         {
-            string outpath = Path.Combine(MyTempDir, "out3d.bson");
-
-            MatrixRecorder.Open(outpath);
-
-            MatrixRecorder.NewRow("a", "aa");
-
-            Thread.Sleep(store_delay_sec * 1500);
-
-            MatrixRecorder.Open(outpath);
-
-            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.Record("b", "bb"));
-
-            MatrixRecorder.Close();
-        }
-
-        [TestCase]
-        public void BSON_MatrixRecorder_2_open_close_docs()
-        {
-            string expectedJsonStr
-                = "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"@@\", \"name\" : \"matrixrecorder\", \"h\" : 22, \"row0\" : 1 }"
-                + ", \"rows\" : [{ \"dict a\" : \"dict b\", \"record key1\" : \"record val1\" }] }"
-                + "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"@@\", \"name\" : \"matrixrecorder\", \"row0\" : 2 }"
-                + ", \"rows\" : [{ \"dict a\" : \"dict b\", \"record key2\" : \"record val2\" }, { \"dict a\" : \"dict b\" }] }";
-
-            string outpath = Path.Combine(MyTempDir, "out4.bson");
-
-            Dictionary<string, object> dict = new Dictionary<string, object>
-            {
-                { "dict a", "dict b" }
-            };
-
-            Dictionary<string, object> headerDict = new Dictionary<string, object>()
-            {
-                {"h", 22}
-            };
-
-            MatrixRecorder.Open(outpath, headerDict);
-
-            MatrixRecorder.NewRow(dict);
-
-            MatrixRecorder.Record("record key1", "record val1");
-
-            MatrixRecorder.Close();
-
-            MatrixRecorder.Open(outpath);
-
-            MatrixRecorder.NewRow(dict);
-
-            MatrixRecorder.Record("record key2", "record val2");
-            MatrixRecorder.NewRow(dict);
-
-            MatrixRecorder.Close();
-
-            CheckOutput(outpath, expectedJsonStr);
-        }
-
-        [TestCase]
-        public void BSON_MatrixRecorder_null_header()
-        {
-            var expectedJsonStr =
-                "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"@@\", \"name\" : \"matrixrecorder\", \"row0\" : 1 }"
-                + ", \"rows\" : [{ }] }";
-
             string outpath = Path.Combine(MyTempDir, "out5.bson");
+            var expectedJsonStr =
+                "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"@@\", \"name\" : \"matrixrecorder\", \"row0\" : 0 }"
+                + ", \"rows\" : [{ }] }";
 
             MatrixRecorder.Open(outpath, null);
-
             MatrixRecorder.NewRow();
-
             MatrixRecorder.Close();
 
             CheckOutput(outpath, expectedJsonStr);
         }
 
         [TestCase]
-        public void BSON_MatrixRecorder_custom_header()
+        public void MatrixRecorder_custom_header()
         {
-            var expectedJsonStr =
-                "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"@@\", \"name\" : \"matrixrecorder\", \"CycleName\" : \"\", \"CycleType\" : 3, \"row0\" : 1 }"
-                + ", \"rows\" : [{ }] }";
-
             string outpath = Path.Combine(MyTempDir, "out6.bson");
+            var expectedJsonStr =
+                "{ \"header\" : { \"file_version\" : \"0.0.0\", \"vecto_version\" : \"@@\", \"name\" : \"matrixrecorder\", \"CycleName\" : \"\", \"CycleType\" : 3, \"row0\" : 0 }"
+                + ", \"rows\" : [{ }] }";
             DrivingCycleData cycle = new DrivingCycleData
             {
                 Name = "",
                 CycleType = CycleType.MeasuredSpeed
             };
-
             Dictionary<string, object> headerDict = new Dictionary<string, object>()
             {
                 ["CycleName"] = cycle.Name,
@@ -301,9 +211,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
             };
 
             MatrixRecorder.Open(outpath, headerDict);
-
             MatrixRecorder.NewRow();
-
             MatrixRecorder.Close();
 
             CheckOutput(outpath, expectedJsonStr);
