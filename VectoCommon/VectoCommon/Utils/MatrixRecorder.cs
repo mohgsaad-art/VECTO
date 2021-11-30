@@ -139,17 +139,13 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
             };
 
             bool isFirstDoc = row0 == 0;
+            var fileAccess = isFirstDoc ? FileMode.Create : FileMode.Append;
             BsonDocument bsonDoc = new BsonDocument(root);
             var bsonBinary = bsonDoc.ToBson();
 
-            using (FileStream fs = new FileStream(
-                        ThreadLocalData.filename,
-                        isFirstDoc ? FileMode.Create : FileMode.Append, FileAccess.Write, FileShare.Write)
-                   )
+            using (FileStream fs = new FileStream(ThreadLocalData.filename, fileAccess, FileAccess.Write, FileShare.Write))
             using (BsonBinaryWriter writer = new BsonBinaryWriter(fs))
-            {
                 fs.Write(bsonBinary, 0, bsonBinary.Length);
-            }
 
             ThreadLocalData.headerDict = new Dictionary<string, object>();  // subsequent docs have light headers.
             ThreadLocalData.row0 += pendingRows.Count;
@@ -170,9 +166,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
                 throw new InvalidOperationException("Forgotten Open() from Open->NewRow->Record->Close.");
 
             if (ThreadLocalData.currentRow != null)
-            {
                 ThreadLocalData.pendingRows.Add(ThreadLocalData.currentRow);
-            }
 
             StoreCurrentDoc();
 
@@ -192,21 +186,15 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
                 throw new InvalidOperationException("Forgotten Open() from Open->NewRow->Record->Close.");
 
             if (ThreadLocalData.currentRow != null)
-            {
                 ThreadLocalData.pendingRows.Add(ThreadLocalData.currentRow);
-            }
 
             var docStoreInterval = int.Parse(Environment.GetEnvironmentVariable("DocStoreInterval"));
             if (ThreadLocalData.writeReminder.Elapsed.TotalSeconds > docStoreInterval)
-            {
                 StoreCurrentDoc();
-            }
 
             ThreadLocalData.currentRow = new Dictionary<string, object>();
             if (key != null)
-            {
                 ThreadLocalData.currentRow[key] = value;
-            }
         }
 
         /// <summary>
@@ -220,9 +208,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
             NewRow(null, null);
             ThreadLocalData.currentRow = new Dictionary<string, object>();
             foreach (var item in index)
-            {
                 ThreadLocalData.currentRow[item.Key] = item.Value;
-            }
         }
 
         /// <summary>
@@ -254,9 +240,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
                 throw new InvalidOperationException("Forgotten NewRow() from Open->NewRow->Record->Close.");
 
             foreach (var item in values)
-            {
                 row[item.Key] = item.Value;
-            }
         }
     }
 }
