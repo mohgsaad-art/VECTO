@@ -125,7 +125,8 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
 
             if (pendingRows == null || !pendingRows.Any())
             {
-                Debug.Write($"Skipped writting file({filename}) with empty pendingRows@{row0}.");
+                // FIXME: use proper logging
+                Debug.Write($"Matrec skipped writting file({filename}) with empty pendingRows@{row0}.");
                 return;
             }
 
@@ -190,7 +191,16 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
 
             var docStoreInterval = int.Parse(Environment.GetEnvironmentVariable("DocStoreInterval"));
             if (ThreadLocalData.writeReminder.Elapsed.TotalSeconds > docStoreInterval)
-                StoreCurrentDoc();
+            {
+                try
+                {
+                    StoreCurrentDoc();
+                } catch (IOException ex)
+                {
+                    // FIXME: use proper logging
+                    Debug.Write($"Matrec failed storing batch row0({ThreadLocalData.row0})@({ThreadLocalData.filename}) due to: {ex}");
+                }
+            }
 
             ThreadLocalData.currentRow = new Dictionary<string, object>();
             if (key != null)
