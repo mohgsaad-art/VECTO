@@ -14,13 +14,14 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
     [Parallelizable(ParallelScope.All)]
     public class MatrixRecorderTests
     {
-        private const int store_delay_sec = 1;
+        private const int store_interval_sec = 1;
+        private const int store_sleep_factor = 1200;
         private string MyTempDir;
 
         [OneTimeSetUp]
         public void Init()
         {
-            Environment.SetEnvironmentVariable("DocStoreInterval", $"{store_delay_sec}");
+            Environment.SetEnvironmentVariable("MATREC_STORE_INTERVAL_SEC", $"{store_interval_sec}");
             MyTempDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
             Directory.CreateDirectory(MyTempDir);
         }
@@ -103,7 +104,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
             MatRec.Record("A1", "V1");
             MatRec.NewRow("A2", "V2");
 
-            Thread.Sleep(store_delay_sec * 1500);
+            Thread.Sleep(store_interval_sec * store_sleep_factor);
 
             MatRec.Record("A3", "V3");  // Appended in pending row & not yet stored. 
 
@@ -152,7 +153,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
             MatRec.Open(outpath);
             MatRec.NewRow("a", "aa");
 
-            Thread.Sleep(store_delay_sec * 1500);
+            Thread.Sleep(store_interval_sec * store_sleep_factor);
 
             MatRec.Open(outpath);
             Assert.False(File.Exists(outpath), $"File({outpath}) should not have been written!");

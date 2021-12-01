@@ -1,4 +1,4 @@
-﻿using MongoDB.Bson;
+using MongoDB.Bson;
 using MongoDB.Bson.IO;
 using System;
 using System.Collections.Generic;
@@ -48,6 +48,9 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
     /// <summary>The public API of Matrix Recorder.</summary>
     public static class MatRec
     {
+        public const string STORE_INTERVAL_ENV_VAR_NAME = "MATREC_STORE_INTERVAL_SEC";
+        public const int DEFAULT_STORE_INTERVAL_SEC = 17;
+
         /// <summary>
         /// Thread local data initialization
         /// </summary>
@@ -188,7 +191,8 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
             if (mrd.currentRow != null)
                 mrd.pendingRows.Add(mrd.currentRow);
 
-            int docStoreInterval = 10;
+            var intervalEnvVar = Environment.GetEnvironmentVariable(STORE_INTERVAL_ENV_VAR_NAME);
+            var docStoreInterval = intervalEnvVar is null ? DEFAULT_STORE_INTERVAL_SEC : int.Parse(intervalEnvVar);
             if (mrd.writeReminder.Elapsed.TotalSeconds > docStoreInterval)
             {
                 try
