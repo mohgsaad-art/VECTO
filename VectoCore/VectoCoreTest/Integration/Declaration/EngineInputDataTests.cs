@@ -66,10 +66,10 @@ namespace TUGraz.VectoCore.Tests.Integration.Declaration
 			xmlInputReader = _kernel.Get<IXMLInputDataReader>();
 		}
 
-		[TestCase(null, 1.0, 45.555177, TestName = "Engine CF - NONE"),
-		TestCase("CFRegPer", 1.2, 45.555177 * 1.2, TestName = "Engine CF - CFRegPer"),
-		TestCase("BFColdHot", 1.2, 45.555177 * 1.2, TestName = "Engine CF - BFColdHod"),
-		TestCase("CFNCV", 1.2, 45.555177, TestName = "Engine CF - CFNCV")  // has no influence - only for documentation purpose
+		[TestCase(null, 1.0, 45.7715457, TestName = "Engine CF - NONE"),
+		TestCase("CFRegPer", 1.2, 45.7715457 * 1.2, TestName = "Engine CF - CFRegPer"),
+		TestCase("BFColdHot", 1.2, 45.7715457 * 1.2, TestName = "Engine CF - BFColdHod"),
+		TestCase("CFNCV", 1.2, 45.7715457, TestName = "Engine CF - CFNCV")  // has no influence - only for documentation purpose
 			]
 		public void TestEngineCorrectionFactors(string correctionFactor, double value, double expectedFc)
 		{
