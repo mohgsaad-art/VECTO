@@ -33,7 +33,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
 
         private void CheckOutput(string outpath, string expectedJsonStr)
         {
-            expectedJsonStr = expectedJsonStr.Replace("@@", MatrixRecorder.VectoVersionId);
+            expectedJsonStr = expectedJsonStr.Replace("@@", MatRec.VectoVersionId);
 
             using (FileStream fs = new FileStream(
                 outpath, FileMode.Open, FileAccess.Read, FileShare.Read
@@ -74,12 +74,12 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
                 { "dict a", "dict b" }
             };
 
-            MatrixRecorder.Open(outpath);
-            MatrixRecorder.NewRow(dict);
-            MatrixRecorder.Record("record key 1", "record val 1");
-            MatrixRecorder.NewRow();
-            MatrixRecorder.Record(dict);
-            MatrixRecorder.Close();
+            MatRec.Open(outpath);
+            MatRec.NewRow(dict);
+            MatRec.Record("record key 1", "record val 1");
+            MatRec.NewRow();
+            MatRec.Record(dict);
+            MatRec.Close();
 
             CheckOutput(outpath, expectedJsonStr);
         }
@@ -98,19 +98,19 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
                 { "dict a", "dict b" }
             };
 
-            MatrixRecorder.Open(outpath);
-            MatrixRecorder.NewRow(dict);
-            MatrixRecorder.Record("A1", "V1");
-            MatrixRecorder.NewRow("A2", "V2");
+            MatRec.Open(outpath);
+            MatRec.NewRow(dict);
+            MatRec.Record("A1", "V1");
+            MatRec.NewRow("A2", "V2");
 
             Thread.Sleep(store_delay_sec * 1500);
 
-            MatrixRecorder.Record("A3", "V3");  // Appended in pending row & not yet stored. 
+            MatRec.Record("A3", "V3");  // Appended in pending row & not yet stored. 
 
             // 1st doc closes here.
 
-            MatrixRecorder.NewRow(dict);
-            MatrixRecorder.Close();
+            MatRec.NewRow(dict);
+            MatRec.Close();
 
             CheckOutput(outpath, expectedJsonStr);
         }
@@ -128,15 +128,15 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
             };
             var header= new Dictionary<string, object> { { "HK", 3.14} };
 
-            MatrixRecorder.Open(outpath, header);
-            MatrixRecorder.NewRow("a", "aa");
-            MatrixRecorder.Close();
+            MatRec.Open(outpath, header);
+            MatRec.NewRow("a", "aa");
+            MatRec.Close();
 
             CheckOutput(outpath, expectedJsonStr[0]);
 
-            MatrixRecorder.Open(outpath);
-            MatrixRecorder.NewRow("b", "bb");
-            MatrixRecorder.Close();
+            MatRec.Open(outpath);
+            MatRec.NewRow("b", "bb");
+            MatRec.Close();
 
             CheckOutput(outpath, expectedJsonStr[1]);
         }
@@ -149,16 +149,16 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
                 = "{ \"header\" : { \"matrec_ver\" : \"0.0.0\", \"vecto_ver\" : \"@@\", \"row0\" : 0 }"
                 + ", \"rows\" : [{ \"b\" : \"bb\" }] }";
 
-            MatrixRecorder.Open(outpath);
-            MatrixRecorder.NewRow("a", "aa");
+            MatRec.Open(outpath);
+            MatRec.NewRow("a", "aa");
 
             Thread.Sleep(store_delay_sec * 1500);
 
-            MatrixRecorder.Open(outpath);
+            MatRec.Open(outpath);
             Assert.False(File.Exists(outpath), $"File({outpath}) should not have been written!");
 
-            MatrixRecorder.NewRow("b", "bb");
-            MatrixRecorder.Close();
+            MatRec.NewRow("b", "bb");
+            MatRec.Close();
 
             CheckOutput(outpath, expectedJsonStr);
         }
@@ -169,28 +169,28 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
             string outpath = Path.Combine(MyTempDir, "out3ca.bson");
             var d = new Dictionary<string, object>();
 
-            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.NewRow("Forgotten", "Open+NewRow()"));
-            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.Record("Forgotten", "Open+NewRow()"));
-            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.NewRow("Forgotten", "NewRow()"));
-            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.Close());
-            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.NewRow("Forgotten", "NewRow()"));
-            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.Record("Forgotten", "Open+NewRow()"));
+            Assert.Throws<InvalidOperationException>(() => MatRec.NewRow("Forgotten", "Open+NewRow()"));
+            Assert.Throws<InvalidOperationException>(() => MatRec.Record("Forgotten", "Open+NewRow()"));
+            Assert.Throws<InvalidOperationException>(() => MatRec.NewRow("Forgotten", "NewRow()"));
+            Assert.Throws<InvalidOperationException>(() => MatRec.Close());
+            Assert.Throws<InvalidOperationException>(() => MatRec.NewRow("Forgotten", "NewRow()"));
+            Assert.Throws<InvalidOperationException>(() => MatRec.Record("Forgotten", "Open+NewRow()"));
 
-            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.NewRow(d));
-            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.Record(d));
-            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.NewRow(d));
-            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.Close());
-            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.NewRow(d));
-            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.Record(d));
+            Assert.Throws<InvalidOperationException>(() => MatRec.NewRow(d));
+            Assert.Throws<InvalidOperationException>(() => MatRec.Record(d));
+            Assert.Throws<InvalidOperationException>(() => MatRec.NewRow(d));
+            Assert.Throws<InvalidOperationException>(() => MatRec.Close());
+            Assert.Throws<InvalidOperationException>(() => MatRec.NewRow(d));
+            Assert.Throws<InvalidOperationException>(() => MatRec.Record(d));
 
-            MatrixRecorder.Open(outpath);
-            MatrixRecorder.Close();
+            MatRec.Open(outpath);
+            MatRec.Close();
 
-            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.NewRow("Forgotten", "Open+NewRow()"));
-            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.Record("Forgotten", "Open+NewRow()"));
-            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.NewRow(d));
-            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.Record(d));
-            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.Close());
+            Assert.Throws<InvalidOperationException>(() => MatRec.NewRow("Forgotten", "Open+NewRow()"));
+            Assert.Throws<InvalidOperationException>(() => MatRec.Record("Forgotten", "Open+NewRow()"));
+            Assert.Throws<InvalidOperationException>(() => MatRec.NewRow(d));
+            Assert.Throws<InvalidOperationException>(() => MatRec.Record(d));
+            Assert.Throws<InvalidOperationException>(() => MatRec.Close());
         }
 
         [TestCase]
@@ -199,18 +199,18 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
             string outpath = Path.Combine(MyTempDir, "out3cb.bson");
             var d = new Dictionary<string, object>();
 
-            MatrixRecorder.Open(outpath);
-            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.Record("Forgotten", "NewRow()"));
-            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.Record(d));
-            MatrixRecorder.Close();
+            MatRec.Open(outpath);
+            Assert.Throws<InvalidOperationException>(() => MatRec.Record("Forgotten", "NewRow()"));
+            Assert.Throws<InvalidOperationException>(() => MatRec.Record(d));
+            MatRec.Close();
 
-            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.Record("Forgotten", "NewRow()"));
-            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.Record(d));
+            Assert.Throws<InvalidOperationException>(() => MatRec.Record("Forgotten", "NewRow()"));
+            Assert.Throws<InvalidOperationException>(() => MatRec.Record(d));
 
-            MatrixRecorder.Open(outpath);
-            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.Record("Forgotten", "NewRow()"));
-            Assert.Throws<InvalidOperationException>(() => MatrixRecorder.Record(d));
-            MatrixRecorder.Close();
+            MatRec.Open(outpath);
+            Assert.Throws<InvalidOperationException>(() => MatRec.Record("Forgotten", "NewRow()"));
+            Assert.Throws<InvalidOperationException>(() => MatRec.Record(d));
+            MatRec.Close();
         }
 
         [TestCase]
@@ -221,9 +221,9 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
                 "{ \"header\" : { \"matrec_ver\" : \"0.0.0\", \"vecto_ver\" : \"@@\", \"row0\" : 0 }"
                 + ", \"rows\" : [{ }] }";
 
-            MatrixRecorder.Open(outpath, null);
-            MatrixRecorder.NewRow();
-            MatrixRecorder.Close();
+            MatRec.Open(outpath, null);
+            MatRec.NewRow();
+            MatRec.Close();
 
             CheckOutput(outpath, expectedJsonStr);
         }
@@ -246,9 +246,9 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
                 ["CycleType"] = cycle.CycleType
             };
 
-            MatrixRecorder.Open(outpath, headerDict);
-            MatrixRecorder.NewRow();
-            MatrixRecorder.Close();
+            MatRec.Open(outpath, headerDict);
+            MatRec.NewRow();
+            MatRec.Close();
 
             CheckOutput(outpath, expectedJsonStr);
         }

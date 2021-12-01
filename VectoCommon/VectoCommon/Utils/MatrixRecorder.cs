@@ -1,4 +1,4 @@
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
 using MongoDB.Bson.IO;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using System.Threading;
 
 namespace TUGraz.VectoCommon.Utils.MatrixRecorder
 {
-    public class ThreadLocalData
+    public class MatRecData
     {
         // Filename, stored when Open is called
         public string filename;
@@ -45,19 +45,14 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         }
     }
 
-    public static class MatrixRecorder
+    /// <summary>The public API of Matrix Recorder.</summary>
+    public static class MatRec
     {
         /// <summary>
         /// Thread local data initialization
         /// </summary>
-        private static ThreadLocal<ThreadLocalData> _ThreadLocalData =
-            new ThreadLocal<ThreadLocalData>(() => new ThreadLocalData());
-
-        private static ThreadLocalData ThreadLocalData
-        {
-            get { return _ThreadLocalData.Value; }
-            set { _ThreadLocalData.Value = value; }
-        }
+        private static ThreadLocal<MatRecData> MatRecThreadLocal =
+            new ThreadLocal<MatRecData>(() => new MatRecData());
 
         private static string _VectoVersionId;
         // Vecto-version to add in the header (public for TCs).
@@ -88,7 +83,8 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         /// <param name="header">Metadata like cycle info, the file version etc.</param>
         public static void Open(string filepath, IEnumerable<KeyValuePair<string, object>> header = null)
         {
-            ThreadLocalData.filename = filepath;
+            MatRecData mrd = MatRecThreadLocal.Value;
+            mrd.filename = filepath;
 
             Dictionary<string, object> headerDict = new Dictionary<string, object>
             {
@@ -105,12 +101,12 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
                 }
             };
 
-            ThreadLocalData.headerDict = headerDict;
-            ThreadLocalData.currentRow = null;
-            ThreadLocalData.row0 = 0;
-            ThreadLocalData.pendingRows = new List<Dictionary<string, object>>();
-            ThreadLocalData.writeReminder = new Stopwatch();
-            ThreadLocalData.writeReminder.Start();
+            mrd.headerDict = headerDict;
+            mrd.currentRow = null;
+            mrd.row0 = 0;
+            mrd.pendingRows = new List<Dictionary<string, object>>();
+            mrd.writeReminder = new Stopwatch();
+            mrd.writeReminder.Start();
         }
 
         /// <summary>
@@ -118,10 +114,11 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         /// </summary>
         private static void StoreCurrentDoc()
         {
-            var pendingRows = ThreadLocalData.pendingRows;
+            MatRecData mrd = MatRecThreadLocal.Value;
+            var pendingRows = mrd.pendingRows;
 
-            string filename = ThreadLocalData.filename;
-            var row0 = ThreadLocalData.row0;
+            string filename = mrd.filename;
+            var row0 = mrd.row0;
 
             if (pendingRows == null || !pendingRows.Any())
             {
@@ -130,7 +127,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
                 return;
             }
 
-            Dictionary<string, object> header = ThreadLocalData.headerDict;
+            Dictionary<string, object> header = mrd.headerDict;
             header["row0"] = row0;
 
             Dictionary<string, object> root = new Dictionary<string, object>()
@@ -144,12 +141,12 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
             BsonDocument bsonDoc = new BsonDocument(root);
             var bsonBinary = bsonDoc.ToBson();
 
-            using (FileStream fs = new FileStream(ThreadLocalData.filename, fileAccess, FileAccess.Write, FileShare.Write))
+            using (FileStream fs = new FileStream(mrd.filename, fileAccess, FileAccess.Write, FileShare.Write))
             using (BsonBinaryWriter writer = new BsonBinaryWriter(fs))
                 fs.Write(bsonBinary, 0, bsonBinary.Length);
 
-            ThreadLocalData.headerDict = new Dictionary<string, object>();  // subsequent docs have light headers.
-            ThreadLocalData.row0 += pendingRows.Count;
+            mrd.headerDict = new Dictionary<string, object>();  // subsequent docs have light headers.
+            mrd.row0 += pendingRows.Count;
             pendingRows.Clear();
         }
 
@@ -163,15 +160,16 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         /// </summary>
         public static void Close()
         {
-            if (ThreadLocalData.pendingRows is null)
+            MatRecData mrd = MatRecThreadLocal.Value;
+            if (mrd.pendingRows is null)
                 throw new InvalidOperationException("Forgotten Open() from Open->NewRow->Record->Close.");
 
-            if (ThreadLocalData.currentRow != null)
-                ThreadLocalData.pendingRows.Add(ThreadLocalData.currentRow);
+            if (mrd.currentRow != null)
+                mrd.pendingRows.Add(mrd.currentRow);
 
             StoreCurrentDoc();
 
-            ThreadLocalData.Clear();
+            mrd.Clear();
         }
 
         /// <summary>
@@ -183,14 +181,15 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         /// <param name="value">value to be recorded; if null no column is written</param>
         public static void NewRow(string key = null, object value = null)
         {
-            if (ThreadLocalData.pendingRows is null)
+            MatRecData mrd = MatRecThreadLocal.Value;
+            if (mrd.pendingRows is null)
                 throw new InvalidOperationException("Forgotten Open() from Open->NewRow->Record->Close.");
 
-            if (ThreadLocalData.currentRow != null)
-                ThreadLocalData.pendingRows.Add(ThreadLocalData.currentRow);
+            if (mrd.currentRow != null)
+                mrd.pendingRows.Add(mrd.currentRow);
 
             var docStoreInterval = int.Parse(Environment.GetEnvironmentVariable("DocStoreInterval"));
-            if (ThreadLocalData.writeReminder.Elapsed.TotalSeconds > docStoreInterval)
+            if (mrd.writeReminder.Elapsed.TotalSeconds > docStoreInterval)
             {
                 try
                 {
@@ -198,13 +197,13 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
                 } catch (IOException ex)
                 {
                     // FIXME: use proper logging
-                    Debug.Write($"Matrec failed storing batch row0({ThreadLocalData.row0})@({ThreadLocalData.filename}) due to: {ex}");
+                    Debug.Write($"Matrec failed storing batch row0({mrd.row0})@({mrd.filename}) due to: {ex}");
                 }
             }
 
-            ThreadLocalData.currentRow = new Dictionary<string, object>();
+            mrd.currentRow = new Dictionary<string, object>();
             if (key != null)
-                ThreadLocalData.currentRow[key] = value;
+                mrd.currentRow[key] = value;
         }
 
         /// <summary>
@@ -215,10 +214,11 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         /// <param name="index">List of key value pairs to be updated in current row</param>
         public static void NewRow(IEnumerable<KeyValuePair<string, object>> index)
         {
+            MatRecData mrd = MatRecThreadLocal.Value;
             NewRow(null, null);
-            ThreadLocalData.currentRow = new Dictionary<string, object>();
+            mrd.currentRow = new Dictionary<string, object>();
             foreach (var item in index)
-                ThreadLocalData.currentRow[item.Key] = item.Value;
+                mrd.currentRow[item.Key] = item.Value;
         }
 
         /// <summary>
@@ -231,7 +231,8 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         /// <param name="value">value to be recorded</param>
         public static void Record(string key, object value)
         {
-            var row = ThreadLocalData.currentRow;
+            MatRecData mrd = MatRecThreadLocal.Value;
+            var row = mrd.currentRow;
             if (row is null)
                 throw new InvalidOperationException("Forgotten NewRow() from Open->NewRow->Record->Close.");
 
@@ -245,7 +246,8 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
         /// <param name="values">list of key value pairs to be recorded</param>
         public static void Record(IEnumerable<KeyValuePair<string, object>> values)
         {
-            var row = ThreadLocalData.currentRow;
+            MatRecData mrd = MatRecThreadLocal.Value;
+            var row = mrd.currentRow;
             if (row is null)
                 throw new InvalidOperationException("Forgotten NewRow() from Open->NewRow->Record->Close.");
 
