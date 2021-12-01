@@ -4,8 +4,8 @@ using System.Diagnostics;
 using System.Linq;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Utils;
-using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCommon.Utils.MatrixRecorder;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 
 namespace TUGraz.VectoCommon.Models {
 
@@ -69,7 +69,8 @@ namespace TUGraz.VectoCommon.Models {
 					["GearshiftPenalty"] = GearshiftPenalty
 					//["AbsTime"] = abstime
 				};
-				MatrixRecorder.NewRow(dict);
+
+				MatRec.NewRow(dict);
 				return score;
 			}
 		}

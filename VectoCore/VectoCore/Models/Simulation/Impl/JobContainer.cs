@@ -33,6 +33,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -508,7 +509,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 						throw;
 					} finally {
 						stopWatch.Stop();
-						MatrixRecorder.Close();
+						MatRec.Close();
 						Success = Run.FinishedWithoutErrors && ExecException == null;
 						ExecTime = stopWatch.Elapsed.TotalMilliseconds;
 						JobContainer.JobCompleted(RunId, _runContainerId);

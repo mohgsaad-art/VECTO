@@ -119,8 +119,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 						}
 						Container.AbsTime = AbsTime;
 						
-						MatrixRecorder.UpdateAbsTime(AbsTime.Value());
-						MatrixRecorder.Record("AbsTime", AbsTime.Value());
+						MatRec.Record("AbsTime", AbsTime.Value());
 
 						// add here extended logging
 						LogManager.EnableLogging();

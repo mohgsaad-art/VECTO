@@ -188,7 +188,7 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
             if (mrd.currentRow != null)
                 mrd.pendingRows.Add(mrd.currentRow);
 
-            var docStoreInterval = int.Parse(Environment.GetEnvironmentVariable("DocStoreInterval"));
+            int docStoreInterval = 10;
             if (mrd.writeReminder.Elapsed.TotalSeconds > docStoreInterval)
             {
                 try
