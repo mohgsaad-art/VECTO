@@ -68,11 +68,12 @@
 					<xs:element name="AxleCount" type="v2.7:TrailerAxleCountType"/>
 					<xs:element name="TrailerType" type="v2.7:TrailerTypeType"/>
 					<xs:element name="BodyWorkType" type="v2.7:BodyWorkCodeType"/>
+					<xs:element name="VolumeOrientation" type="xs:boolean"/>
 					<xs:element name="TrailerCouplingPoint" type="v2.7:TrailerCouplingPoint" minOccurs="0"/>
 					<xs:element name="Masses">
 						<xs:complexType>
 							<xs:sequence>
-								<xs:element name="MassInRunningOrder" type="v2.7:TrailerMassType"/>
+								<xs:element name="CorrectedMassInRunningOrder" type="v2.7:TrailerMassType"/>
 								<xs:element name="TPMLMTrailer" type="v2.7:TrailerMassType"/>
 								<xs:element name="TPMLMAxleAssembly" type="xs:int" minOccurs="0"/>
 							</xs:sequence>
@@ -87,7 +88,6 @@
 								<xs:element name="TotalHeightTrailer" type="v2.7:TrailerLengthType"/>
 								<xs:element name="LengthFromFrontToFirstAxle" type="v2.7:TrailerLengthType"/>
 								<xs:element name="LengthBetweenCentersOfAxles" type="v2.7:TrailerLengthType"/>
-								<xs:element name="InternalHeightBody" type="v2.7:TrailerLengthType"/>
 								<xs:element name="CargoVolume" type="v2.7:TrailerCargoVolumeType"/>
 							</xs:sequence>
 						</xs:complexType>
@@ -177,6 +177,33 @@
 			<xs:enumeration value="DA"/>
 			<xs:enumeration value="DB"/>
 			<xs:enumeration value="DC"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TPMLMAxleAssembly">
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="1000"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CorrectedMassInRunningOrder">
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="1000"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TPMLMTrailer">
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="1000"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ExternalWidthBody">
+		<xs:restriction base="xs:double">
+			<xs:minInclusive value="1"/>
+			<xs:maxInclusive value="2.6"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TotalHeightOfTheTrailer">
+		<xs:restriction base="xs:double">
+			<xs:minInclusive value="1"/>
+			<xs:maxInclusive value="4"/>
 		</xs:restriction>
 	</xs:simpleType>
 </xs:schema>

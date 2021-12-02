@@ -72,6 +72,9 @@ namespace VECTOTrailer.ViewModel.Impl
 		private Kilogram _curbMassTrailer;
 		private Kilogram _tPLMTotalTrailer;
 		private Kilogram _tPLMAxleAssembly;
+
+		private bool _volumeOrientation;
+
 		private string _axle1FilePath;
 		private string _axle2FilePath;
 		private string _axle3FilePath;
@@ -263,17 +266,6 @@ namespace VECTOTrailer.ViewModel.Impl
 			}
 		}
 
-		public Meter InternalHeightOfTheBody
-		{
-			get => _internalHeightOfTheBody;
-			set
-			{
-				if (!SetProperty(ref _internalHeightOfTheBody, value))
-					return;
-				IsDataChanged(_internalHeightOfTheBody, _componentData);
-			}
-		}
-
 		public CubicMeter CargoVolume
 		{
 			get => _cargoVolume;
@@ -320,6 +312,12 @@ namespace VECTOTrailer.ViewModel.Impl
 
 				IsDataChanged(_trailerType, _componentData);
 			}
+		}
+
+		public bool VolumeOrientation
+		{
+			get => _volumeOrientation;
+			set => SetProperty(ref _volumeOrientation, value);
 		}
 
 		public BodyWorkCode BodyCode
@@ -652,7 +650,6 @@ namespace VECTOTrailer.ViewModel.Impl
 				TotalHeightOfTheTrailer = trailer.TotalTrailerHeight;
 				LengthFromFrontToFirstAxle = trailer.LengthFromFrontToFirstAxle;
 				LengthBetweenCentersOfAxles = trailer.LengthBetweenCentersOfAxles;
-				InternalHeightOfTheBody = trailer.InternalBodyHeight;
 				CargoVolume = trailer.CargoVolume;
 				Technologies = trailer.AeroFeatureTechnologies;
 

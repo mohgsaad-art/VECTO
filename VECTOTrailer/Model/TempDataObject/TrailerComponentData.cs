@@ -57,6 +57,7 @@ namespace VECTOTrailer.Model.TempDataObject
 		public Kilogram MassInRunningOrder { get; set; }
 		public Kilogram TPLMTotalTrailer { get; set; }
 		public Kilogram TPLMAxleAssembly { get; set; }
+		public bool VolumeOrientation { get; set; }
 		public string Axle1FilePath { get; set; }
 		public string Axle2FilePath { get; set; }
 		public string Axle3FilePath { get; set; }
@@ -133,7 +134,6 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.ExternalWidthOfTheBody = ExternalWidthOfTheBody;
 			viewModel.TotalHeightOfTheTrailer = TotalHeightOfTheTrailer;
 			viewModel.LengthFromFrontToFirstAxle = LengthFromFrontToFirstAxle;
-			viewModel.InternalHeightOfTheBody = InternalHeightOfTheBody;
 			viewModel.CargoVolume = CargoVolume;
 			viewModel.NumberOfAxles = NumberOfAxles;
 			viewModel.TrailerType = TrailerType;
@@ -141,6 +141,7 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.MassInRunningOrder = MassInRunningOrder;
 			viewModel.TPLMTotalTrailer = TPLMTotalTrailer;
 			viewModel.TPLMAxleAssembly = TPLMAxleAssembly;
+			viewModel.VolumeOrientation = VolumeOrientation;
 			viewModel.Axle1IsTwin = Axle1IsTwin;
 			viewModel.Axle2IsTwin = Axle2IsTwin;
 			viewModel.Axle3IsTwin = Axle3IsTwin;
@@ -205,7 +206,6 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.TotalHeightOfTheTrailer = default;
 			viewModel.LengthFromFrontToFirstAxle = default;
 			viewModel.LengthBetweenCentersOfAxles = default;
-			viewModel.InternalHeightOfTheBody = default;
 			viewModel.CargoVolume = default;
 			viewModel.NumberOfAxles = NumberOfTrailerAxles.One;
 			viewModel.TrailerType = TypeTrailer.DA;
@@ -231,6 +231,7 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.MassInRunningOrder = default;
 			viewModel.TPLMTotalTrailer = default;
 			viewModel.TPLMAxleAssembly = default;
+			viewModel.VolumeOrientation = false;
 			viewModel.Axle1IsTwin = false;
 			viewModel.Axle2IsTwin = false;
 			viewModel.Axle3IsTwin = false;
@@ -272,7 +273,6 @@ namespace VECTOTrailer.Model.TempDataObject
 			ExternalWidthOfTheBody = trailer.ExternalWidthOfTheBody;
 			TotalHeightOfTheTrailer = trailer.TotalHeightOfTheTrailer;
 			LengthFromFrontToFirstAxle = trailer.LengthFromFrontToFirstAxle;
-			InternalHeightOfTheBody = trailer.InternalHeightOfTheBody;
 			CargoVolume = trailer.CargoVolume;
 			NumberOfAxles = trailer.NumberOfAxles;
 			TrailerType = trailer.TrailerType;
@@ -280,6 +280,9 @@ namespace VECTOTrailer.Model.TempDataObject
 			MassInRunningOrder = trailer.MassInRunningOrder;
 			TPLMTotalTrailer = trailer.TPLMTotalTrailer;
 			TPLMAxleAssembly = trailer.TPLMAxleAssembly;
+
+			VolumeOrientation = trailer.VolumeOrientation;
+
 			Axle1IsTwin = trailer.Axle1IsTwin;
 			Axle2IsTwin = trailer.Axle2IsTwin;
             Axle3IsTwin = trailer.Axle3IsTwin;
@@ -351,6 +354,7 @@ namespace VECTOTrailer.Model.TempDataObject
 				{XMLNames.Trailer_CurbMass, nameof(MassInRunningOrder)},
 				{XMLNames.Trailer_TPMLMTotalTrailer, nameof(TPLMTotalTrailer)},
 				{XMLNames.Trailer_TPLMAxleAssembly, nameof(TPLMAxleAssembly)},
+				{XMLNames.Trailer_VolumeOrientation, nameof(VolumeOrientation)},
 				{XMLNames.AxleWheels_Axles, nameof(Axle1FilePath)},
 			};
 		}

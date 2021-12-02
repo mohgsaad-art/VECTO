@@ -3175,7 +3175,7 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MassInRunningOrder.
+        ///   Looks up a localized string similar to CorrectedMassInRunningOrder.
         /// </summary>
         public static string Trailer_MassInRunningOrder {
             get {
@@ -3252,6 +3252,15 @@ namespace TUGraz.VectoCommon.Resources {
         public static string Trailer_VehicleGroupToolInternal {
             get {
                 return ResourceManager.GetString("Trailer_VehicleGroupToolInternal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to VolumeOrientation.
+        /// </summary>
+        public static string Trailer_VolumeOrientation {
+            get {
+                return ResourceManager.GetString("Trailer_VolumeOrientation", resourceCulture);
             }
         }
         

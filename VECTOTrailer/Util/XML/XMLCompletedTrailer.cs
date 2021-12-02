@@ -1,25 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
-using Castle.Core.Internal;
-using TUGraz.IVT.VectoXML.Writer;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider;
-using VECTOTrailer.Helper;
-using VECTOTrailer.Model;
 using VECTOTrailer.ViewModel.Interfaces;
 
 
 namespace VECTOTrailer.Util.XML
 {
+
 	public class XMLCompletedTrailer
 	{
 		private string _declarationDefinition;
@@ -62,13 +56,13 @@ namespace VECTOTrailer.Util.XML
 			var doc = new XDocument(
 				new XDeclaration("1.0", "utf-8", "no"),
 				new XElement(_tns + XMLNames.VectoInputDeclaration,
+
 					new XAttribute("schemaVersion", _schemaVersion),
 					new XAttribute(XNamespace.Xmlns + "xsi", _xsi.NamespaceName),
 					new XAttribute("xmlns", _v27),
 					new XAttribute(XNamespace.Xmlns + "tns", _tns),
 					new XAttribute(XNamespace.Xmlns + "v2.7", _v27),
 					new XAttribute(XNamespace.Xmlns + "v2.2", _v22),
-					new XAttribute(XNamespace.Xmlns + "v2.1", _v21),
 					new XAttribute(XNamespace.Xmlns + "v2.0", _v20),
 					new XAttribute(XNamespace.Xmlns +"di", _di),
 					new XAttribute(_xsi + "schemaLocation",
@@ -100,7 +94,8 @@ namespace VECTOTrailer.Util.XML
 				new XElement(_v27 + XMLNames.Trailer_LegislativeCategory, trailerData.LegislativeCategory),
 				new XElement(_v27 + XMLNames.Trailer_AxleCount, trailerData.NumberOfAxles.GetLabel()),
 				new XElement(_v27 + XMLNames.Trailer_TrailerType, trailerData.TrailerType),
-				new XElement(_v27 + XMLNames.Trailer_BodyCode, trailerData.BodyCode.GetLabel()));
+				new XElement(_v27 + XMLNames.Trailer_BodyCode, trailerData.BodyCode.GetLabel()),
+			    new XElement(_v27 + XMLNames.Trailer_VolumeOrientation, trailerData.VolumeOrientation));
 
 			vehicle.Add(trailerData.TrailerType == TypeTrailer.DC
 				? new XElement(_v27 + XMLNames.Trailer_TrailerCouplingPoint,
@@ -110,7 +105,7 @@ namespace VECTOTrailer.Util.XML
 			vehicle.Add(new XElement(_v27 + "Masses",
 					new XElement(_v27 + XMLNames.Trailer_MassInRunningOrder, trailerData.MassInRunningOrder.ToXMLFormat(0).ToString(CultureInfo.InvariantCulture)),
 					new XElement(_v27 + XMLNames.Trailer_TPMLMTotalTrailer, trailerData.TPLMTotalTrailer.ToXMLFormat(0).ToString(CultureInfo.InvariantCulture)),
-					new XElement(_v27 + XMLNames.Trailer_TPLMAxleAssembly, trailerData.TPLMAxleAssembly.ToXMLFormat(0).ToString(CultureInfo.InvariantCulture))), 
+					new XElement(_v27 + XMLNames.Trailer_TPLMAxleAssembly, trailerData.TPLMAxleAssembly.ToXMLFormat(0).ToString(CultureInfo.InvariantCulture))),
 			new XElement(_v27 + "Dimensions",
 					new XElement(_v27 + XMLNames.Trailer_ExternalLengthBody.ToString(CultureInfo.InvariantCulture),
 						trailerData.ExternalLengthOfTheBody?.ToXMLFormat(3).ToString(CultureInfo.InvariantCulture)),
@@ -121,8 +116,6 @@ namespace VECTOTrailer.Util.XML
 						trailerData.TotalHeightOfTheTrailer?.ToXMLFormat(3).ToString(CultureInfo.InvariantCulture)),
 					new XElement(_v27 + XMLNames.Trailer_LengthFromFrontToFirstAxle, trailerData.LengthFromFrontToFirstAxle?.ToXMLFormat(3).ToString(CultureInfo.InvariantCulture)),
 					new XElement(_v27 + XMLNames.Trailer_LengthBetweenCentersOfAxles, trailerData.LengthBetweenCentersOfAxles?.ToXMLFormat(3).ToString(CultureInfo.InvariantCulture)),
-					new XElement(_v27 + XMLNames.Trailer_InternalHeightBody.ToString(CultureInfo.InvariantCulture),
-						trailerData.InternalHeightOfTheBody?.ToXMLFormat(3).ToString(CultureInfo.InvariantCulture)),
 					new XElement(_v27 + XMLNames.Trailer_CargoVolume, trailerData.CargoVolume?.ToXMLFormat(3).ToString(CultureInfo.InvariantCulture)))
 			);
 

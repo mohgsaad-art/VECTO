@@ -1447,10 +1447,13 @@
     <value>CurbMass</value>
   </data>
 <data name="Trailer_MassInRunningOrder" xml:space="preserve">
-    <value>MassInRunningOrder</value>
+    <value>CorrectedMassInRunningOrder</value>
   </data>
   <data name="Trailer_TPMLMTotalTrailer" xml:space="preserve">
     <value>TPMLMTrailer</value>
+  </data>
+<data name="Trailer_VolumeOrientation" xml:space="preserve">
+    <value>VolumeOrientation</value>
   </data>
   <data name="Trailer_TPLMAxleAssembly" xml:space="preserve">
     <value>TPMLMAxleAssembly</value>

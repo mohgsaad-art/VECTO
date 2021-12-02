@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -223,7 +224,7 @@ namespace VECTOTrailer.ViewModel.Impl
 			get { return _validateInputCommand ?? (_validateInputCommand = new RelayCommand(DoValidateInput)); }
 		}
 
-		private bool CheckAeroFeatures(Model.TempDataObject.TrailerComponentData trailer)
+		private static bool CheckAeroFeatures(Model.TempDataObject.TrailerComponentData trailer)
 		{
 			if (trailer.IsCertified &&
 				(trailer.YawAngle0 < 0 || 
@@ -245,7 +246,7 @@ namespace VECTOTrailer.ViewModel.Impl
 			return true;
 		}
 
-		private bool CheckAxles(Model.TempDataObject.TrailerComponentData trailer)
+		private static bool CheckAxles(Model.TempDataObject.TrailerComponentData trailer)
 		{
 			var liftableCount = 0;
 			if (trailer.Axle1IsLiftable)
@@ -296,17 +297,57 @@ namespace VECTOTrailer.ViewModel.Impl
 				(trailer.TPLMAxleAssembly == null || trailer.TPLMAxleAssembly.Value() == 0))
 				return false;
 
+			if (trailer.TrailerType != TypeTrailer.DB &&
+				((trailer.Axle1IsLiftable || trailer.Axle1IsSteered) || (trailer.Axle2IsLiftable || trailer.Axle2IsSteered)))
+				return false;
+
+			if ((trailer.TrailerType != TypeTrailer.DC || trailer.TrailerType != TypeTrailer.DA) &&
+				trailer.NumberOfAxles == NumberOfTrailerAxles.One && trailer.LegislativeCategory.ToUpper() != "O3")
+				return false;
+
+			if ((trailer.TrailerType != TypeTrailer.DC || trailer.TrailerType != TypeTrailer.DA) &&
+				trailer.NumberOfAxles == NumberOfTrailerAxles.One && trailer.Axle1IsLiftable)
+				return false;
+
+			if (trailer.TrailerType != TypeTrailer.DC && trailer.TPLMAxleAssembly > trailer.TPLMTotalTrailer)
+				return false;
+
+			if (trailer.TrailerType != TypeTrailer.DA && trailer.TPLMAxleAssembly >= trailer.TPLMTotalTrailer)
+				return false;
+
 			return trailer.TrailerType == TypeTrailer.DC || trailer.TrailerCouplingPoint == TrailerCouplingPoint.Unknown;
 		}
 
 		private static bool GeneralCheck(Model.TempDataObject.TrailerComponentData trailer)
 		{
-			if (trailer.InternalHeightOfTheBody >= trailer.ExternalHeightOfTheBody ||
-				trailer.ExternalHeightOfTheBody >= trailer.TotalHeightOfTheTrailer ||
-				trailer.InternalHeightOfTheBody >= trailer.TotalHeightOfTheTrailer)
+			if (trailer.VIN.Length != 17)
+				return false;
+
+			if (trailer.ExternalHeightOfTheBody >= trailer.TotalHeightOfTheTrailer)
 				return false;
 
 			if (trailer.NumberOfAxles == NumberOfTrailerAxles.One && trailer.LengthBetweenCentersOfAxles.Value() > 0)
+				return false;
+
+			if (trailer.NumberOfAxles == NumberOfTrailerAxles.One && trailer.TrailerType == TypeTrailer.DB)
+				return false;
+
+			if (trailer.ExternalWidthOfTheBody < 1 || trailer.ExternalWidthOfTheBody > 2.6)
+				return false;
+
+			if (trailer.TotalHeightOfTheTrailer < 1 || trailer.TotalHeightOfTheTrailer > 4)
+				return false;
+
+			if (trailer.ExternalWidthOfTheBody >= trailer.TotalHeightOfTheTrailer)
+				return false;
+
+			if (trailer.TrailerType == TypeTrailer.DA && trailer.ExternalWidthOfTheBody > 14)
+				return false;
+
+			if (trailer.TrailerType == TypeTrailer.DC && trailer.ExternalWidthOfTheBody > 12)
+				return false;
+
+			if (trailer.TrailerType == TypeTrailer.DB && trailer.ExternalWidthOfTheBody > 12)
 				return false;
 
 			return trailer.TPLMAxleAssembly <= trailer.TPLMTotalTrailer;

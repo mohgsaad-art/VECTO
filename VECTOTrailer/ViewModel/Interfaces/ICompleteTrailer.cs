@@ -21,7 +21,6 @@ namespace VECTOTrailer.ViewModel.Interfaces
 		Meter TotalHeightOfTheTrailer { get; set; }
 		Meter LengthFromFrontToFirstAxle { get; set; }
 		Meter LengthBetweenCentersOfAxles { get; set; }
-		Meter InternalHeightOfTheBody { get; set; }
 		CubicMeter CargoVolume { get; set; }
 		NumberOfTrailerAxles NumberOfAxles { get; set; }
 		TypeTrailer TrailerType { get; set; }
@@ -42,6 +41,7 @@ namespace VECTOTrailer.ViewModel.Interfaces
 		Kilogram MassInRunningOrder { get; set; }
 		Kilogram TPLMTotalTrailer { get; set; }
 		Kilogram TPLMAxleAssembly { get; set; }
+		bool VolumeOrientation { get; set; }
 		string Axle1FilePath { get; set; }
 		string Axle2FilePath { get; set; }
 		string Axle3FilePath { get; set; }

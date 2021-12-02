@@ -1064,7 +1064,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			};
 		}
 
-		private void ValidateAeroFeatures(ITrailerDeclarationInputData trailer)
+		private static void ValidateAeroFeatures(ITrailerDeclarationInputData trailer)
 		{
 			var aeroFeatures = new List<AeroFeatureTechnology>();
 			if (trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.SideSkirtsShort)) aeroFeatures.Add(AeroFeatureTechnology.SideSkirtsShort);
@@ -1085,7 +1085,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 		}
 
-		private void ValidateAxles(ITrailerDeclarationInputData trailer)
+		private static void ValidateAxles(ITrailerDeclarationInputData trailer)
 		{
 			var liftableCount = 0;
 			if (trailer.Axles[0].Liftable)
@@ -1117,7 +1117,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			}
 		}
 
-		private void ValidateInputValues(ITrailerDeclarationInputData trailer)
+		private static void ValidateInputValues(ITrailerDeclarationInputData trailer)
 		{
 			if (trailer.TrailerType != TypeTrailer.DB && (trailer.TPMLMAxleAssembly == null || trailer.TPMLMAxleAssembly.Value() == 0))
 				throw new Exception("Trailer is not DB but no TPMLM Axle Assembly value is given");
@@ -1129,16 +1129,23 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			if ((trailerAxles ?? throw new InvalidOperationException()).Any(x => x.Tyre.Dimension != trailerAxles.FirstOrDefault()?.Tyre.Dimension))
 				throw new Exception("invalid trailer configurations - different tyre dimensions specified");
 
-			if (trailer.InternalBodyHeight >= trailer.ExternalBodyHeight ||
-				trailer.ExternalBodyHeight >= trailer.TotalTrailerHeight ||
-				trailer.InternalBodyHeight >= trailer.TotalTrailerHeight)
-				throw new Exception("Invalid dimensions declared");
-
 			if (trailer.NumberOfAxles == NumberOfTrailerAxles.One && trailer.LengthBetweenCentersOfAxles.Value() > 0)
 				throw new Exception("One axle trailers should have Length Between Centers Of Axles = 0");
 
 			if (trailer.TPMLMAxleAssembly > trailer.TPMLMTotalTrailer)
 				throw new Exception("Invalid masses declared");
+
+			if (trailer.ExternalBodyWidth >= trailer.TotalTrailerHeight)
+				throw new Exception("External body width value is larger than the total trailer height");
+
+			if (trailer.TrailerType == TypeTrailer.DA && trailer.ExternalBodyWidth > 14)
+				throw new Exception("Invalid external body width declared");
+
+			if (trailer.TrailerType == TypeTrailer.DC && trailer.ExternalBodyWidth > 12)
+				throw new Exception("Invalid external body width declared");
+
+			if (trailer.TrailerType == TypeTrailer.DB && trailer.ExternalBodyWidth > 12)
+				throw new Exception("Invalid external body width declared");
 		}
 
 		public void ValidateTrailerInput(ITrailerDeclarationInputData trailer)
@@ -1557,7 +1564,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			}
 
 			var specificTrailerData = new TrailerData {
-				VolumeOrientation = (trailer.InternalBodyHeight >= 2.9 && trailer.TotalTrailerHeight <= 4),
+				VolumeOrientation = trailer.VolumeOrientation,
 				VehicleGroup = trailerSegment.VehicleGroup,
 				VehicleGroupActive = trailerSegment.VehicleGroupActive,
 				GenericVehicleCode = trailerSegment.GenericCode,

@@ -87,7 +87,6 @@ namespace TUGraz.VectoCore.Tests.XML
 			Assert.AreEqual(Meter.Create(4.000), inputDataProvider.JobInputData.Trailer.TotalTrailerHeight);
 			Assert.AreEqual(Meter.Create(3.695), inputDataProvider.JobInputData.Trailer.LengthFromFrontToFirstAxle);
 			Assert.AreEqual(Meter.Create(1.310), inputDataProvider.JobInputData.Trailer.LengthBetweenCentersOfAxles);
-			Assert.AreEqual(Meter.Create(2.600), inputDataProvider.JobInputData.Trailer.InternalBodyHeight);
 
 			Assert.AreEqual(CubicMeter.Create(49.500), inputDataProvider.JobInputData.Trailer.CargoVolume);
 

@@ -122,7 +122,8 @@ namespace TUGraz.VectoCore.OutputData.XML
 					new XElement(tns + XMLNames.Trailer_TPMLMTotalTrailer,
 						modelData.VehicleData.InputDataTrailer.TPMLMTotalTrailer.ToXMLFormat(0)),
 					new XElement(tns + XMLNames.Trailer_TPLMAxleAssembly,
-						modelData.VehicleData.InputDataTrailer.TPMLMAxleAssembly.ToXMLFormat(0))
+						modelData.VehicleData.InputDataTrailer.TPMLMAxleAssembly.ToXMLFormat(0)),
+					new XElement(tns + XMLNames.Trailer_VolumeOrientation, modelData.VehicleData.InputDataTrailer.VolumeOrientation)
 				),
 				new XElement(tns + XMLNames.Trailer_VehicleGroupAnnexI, modelData.VehicleData.TrailerSegment.VehicleGroupAnnex),
 				new XElement(tns + XMLNames.Trailer_VehicleGroupToolInternal, modelData.VehicleData.TrailerSegment.VehicleGroup),
@@ -139,8 +140,6 @@ namespace TUGraz.VectoCore.OutputData.XML
 						modelData.VehicleData.InputDataTrailer.LengthFromFrontToFirstAxle.ToXMLFormat(3)),
 					new XElement(tns + XMLNames.Trailer_LengthBetweenCentersOfAxles, 
 						modelData.VehicleData.InputDataTrailer.LengthBetweenCentersOfAxles.ToXMLFormat(3)),
-					new XElement(tns + XMLNames.Trailer_InternalHeightBody, 
-						modelData.VehicleData.InputDataTrailer.InternalBodyHeight.ToXMLFormat(3)),
 					new XElement(tns + XMLNames.Trailer_CargoVolume, 
 						modelData.VehicleData.InputDataTrailer.CargoVolume.ToXMLFormat(3))
 				),

@@ -87,6 +87,7 @@ namespace VECTOTrailer.ViewModel.Adapter.Declaration
 		public Kilogram MassInRunningOrder { get; }
 		public Kilogram TPMLMTotalTrailer { get; }
 		public Kilogram TPMLMAxleAssembly { get; }
+		public bool VolumeOrientation { get; }
 		public Meter ExternalBodyLength { get; }
 		public Meter ExternalBodyWidth { get; }
 		public Meter ExternalBodyHeight { get; }

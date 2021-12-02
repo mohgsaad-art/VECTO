@@ -240,8 +240,8 @@ namespace TUGraz.VectoCommon.InputData
 		Meter LengthFromFrontToFirstAxle { get; }
 
 		Meter LengthBetweenCentersOfAxles { get; }
-		
-		Meter InternalBodyHeight { get; }
+
+		bool VolumeOrientation { get; }
 
 		CubicMeter CargoVolume { get; }
 

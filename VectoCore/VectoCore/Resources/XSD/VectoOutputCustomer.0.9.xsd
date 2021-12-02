@@ -248,6 +248,7 @@
 								<xs:element name="MassInRunningOrder"/>
 								<xs:element name="TPMLMTrailer"/>
 								<xs:element name="TPMLMAxleAssembly"/>
+								<xs:element name="VolumeOrientation"/>
 							</xs:all>
 						</xs:complexType>
 					</xs:element>
@@ -260,7 +261,6 @@
 								<xs:element name="ExternalWidthBody"/>
 								<xs:element name="ExternalHeightBody"/>
 								<xs:element name="TotalHeightTrailer"/>
-								<xs:element name="InternalHeightBody"/>
 								<xs:element name="CargoVolume"/>
 							</xs:all>
 						</xs:complexType>

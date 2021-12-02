@@ -1009,7 +1009,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		public Meter LengthBetweenCentersOfAxles => GetDouble(XMLNames.Trailer_LengthBetweenCentersOfAxles).SI<Meter>();
 
-		public Meter InternalBodyHeight => GetDouble(XMLNames.Trailer_InternalHeightBody).SI<Meter>();
+		public bool VolumeOrientation => GetBool(XMLNames.Trailer_VolumeOrientation);
 
 		public CubicMeter CargoVolume => GetDouble(XMLNames.Trailer_CargoVolume).SI<CubicMeter>();
 
