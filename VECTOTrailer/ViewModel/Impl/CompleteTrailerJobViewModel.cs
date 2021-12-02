@@ -243,6 +243,11 @@ namespace VECTOTrailer.ViewModel.Impl
 			if (combination < 0 && trailer.IsStandard)
 				return false;
 
+			if (trailer.SideSkirtsShort && trailer.SideSkirtsLong)
+				return false;
+			if (trailer.BoatTailShort && trailer.BoatTailLong)
+				return false;
+
 			return true;
 		}
 
