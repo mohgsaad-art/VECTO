@@ -10,9 +10,10 @@ using TUGraz.VectoCore.Models.SimulationComponent.Data;
 
 namespace TUGraz.VectoCommon.Utils.MatrixRecorder
 {
-    [TestFixture]
+    [TestFixture, TestOf(typeof(MatRec))]
+    [Category("Utils"), Explicit]
     [Parallelizable(ParallelScope.All)]
-    public class MatrixRecorderTests
+    public class MatRecTests
     {
         private const int store_interval_sec = 1;
         private const int store_sleep_factor = 1200;
@@ -60,8 +61,6 @@ namespace TUGraz.VectoCommon.Utils.MatrixRecorder
                 Assert.Zero(expectedJsonStr.Length, $"ndoc={ndoc}, initExpLength ={initExpLength}, remaining expectedJsonStr={expectedJsonStr}");
             }
         }
-
-        // TODO: Cetegorize TCs.
 
         [TestCase]
         public void MatrixRecorder_Basic()
