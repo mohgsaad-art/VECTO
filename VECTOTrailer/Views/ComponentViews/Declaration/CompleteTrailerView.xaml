@@ -21,7 +21,8 @@
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </UserControl.Resources>
 
-    <Grid>
+<Grid>
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10" />
             <ColumnDefinition Width="Auto" />
@@ -32,6 +33,7 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="10" />
+            <RowDefinition />
             <RowDefinition />
             <RowDefinition />
         </Grid.RowDefinitions>
@@ -589,5 +591,5 @@
                 </StackPanel>
             </StackPanel>
         </GroupBox>
-    </Grid>
+</Grid>
 </UserControl>

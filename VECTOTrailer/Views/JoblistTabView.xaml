@@ -70,7 +70,7 @@
 
                     <TabControl.ContentTemplate>
                         <DataTemplate>
-                            <ScrollViewer  DockPanel.Dock="Top">
+                            <ScrollViewer DockPanel.Dock="Top" HorizontalScrollBarVisibility="Auto">
                                 <AdornerDecorator>
                                     <Grid>
                                         <ContentControl Content="{Binding DataContext.CurrentComponent, 

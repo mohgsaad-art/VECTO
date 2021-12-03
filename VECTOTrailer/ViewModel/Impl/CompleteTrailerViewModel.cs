@@ -678,7 +678,7 @@ namespace VECTOTrailer.ViewModel.Impl
 				var xmlDoc = new XmlDocument();
 				xmlDoc.LoadXml(_trailer.XMLSource.OuterXml.ToString(CultureInfo.InvariantCulture));
 
-				var axles = (xmlDoc.GetElementsByTagName("v2.7:Axles").Item(0) ?? throw new Exception("Cannot parse axle information")).Cast<XmlNode>().ToList();
+				var axles = (xmlDoc.GetElementsByTagName("Axles").Item(0) ?? throw new Exception("Cannot parse axle information")).Cast<XmlNode>().ToList();
 
 				switch (axles.Count) {
 					case 0: break;

@@ -59,12 +59,12 @@ namespace VECTOTrailer.Util.XML
 
 					new XAttribute("schemaVersion", _schemaVersion),
 					new XAttribute(XNamespace.Xmlns + "xsi", _xsi.NamespaceName),
-					new XAttribute("xmlns", _v27),
 					new XAttribute(XNamespace.Xmlns + "tns", _tns),
 					new XAttribute(XNamespace.Xmlns + "v2.7", _v27),
 					new XAttribute(XNamespace.Xmlns + "v2.2", _v22),
 					new XAttribute(XNamespace.Xmlns + "v2.0", _v20),
 					new XAttribute(XNamespace.Xmlns +"di", _di),
+					new XAttribute("xmlns", _v27),
 					new XAttribute(_xsi + "schemaLocation",
 						@"urn:tugraz:ivt:VectoAPI:DeclarationJob F:\Vecto\vecto-dev_bt\VectoCore\VectoCore\Resources\XSD/VectoDeclarationJob.xsd"
 						//$"{_rootNamespace} {AbstractXMLWriter.SchemaLocationBaseUrl}VectoDeclarationJob.xsd"
