@@ -1387,7 +1387,7 @@
     <value>PassengerCount</value>
   </data>
   <data name="Trailer_Model" xml:space="preserve">
-    <value>Model</value>
+    <value>Model_CommercialName</value>
   </data>
   <data name="Trailer_LegislativeCategory" xml:space="preserve">
     <value>LegislativeCategory</value>

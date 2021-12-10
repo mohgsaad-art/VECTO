@@ -61,7 +61,7 @@
 				<xs:sequence>
 					<xs:element name="Manufacturer" type="v1.0:ManufacturerType"/>
 					<xs:element name="ManufacturerAddress" type="v1.0:ManufacturerAddressType"/>
-					<xs:element name="Model" type="v1.0:ModelType"/>
+					<xs:element name="Model_CommercialName" type="v1.0:ModelType"/>
 					<xs:element name="VIN" type="v1.0:VINType"/>
 					<xs:element name="Date" type="v1.0:DateTimeWithTimezone"/>
 					<xs:element name="LegislativeCategory" type="v2.7:TrailerLegislativeCategoryType"/>

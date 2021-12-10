@@ -45,9 +45,12 @@ namespace VECTOTrailer.ViewModel.Interfaces
 		string Axle1FilePath { get; set; }
 		string Axle2FilePath { get; set; }
 		string Axle3FilePath { get; set; }
+		string CertifiedAeroDeviceFilePath { get; set; }
 		string Axle1Xml{ get; set; }
 		string Axle2Xml { get; set; }
 		string Axle3Xml { get; set; }
+		string CertifiedAeroDeviceXml { get; set; }
+
 		bool Axle1IsTwin { get; set; }
 		bool Axle2IsTwin { get; set; }
 		bool Axle3IsTwin { get; set; }
@@ -63,15 +66,23 @@ namespace VECTOTrailer.ViewModel.Interfaces
 		ICommand SelectFirstFileCommand { get; }
 		ICommand SelectSecondFileCommand { get; }
 		ICommand SelectThirdFileCommand { get; }
+
+		ICommand SelectCertifiedAeroDeviceCommand { get; }
 		ICommand DownloadFirstAxle { get; }
 		ICommand DeleteFirstAxle { get; }
 		ICommand DownloadSecondAxle { get; }
 		ICommand DeleteSecondAxle { get; }
 		ICommand DownloadThirdAxle { get; }
 		ICommand DeleteThirdAxle { get; }
+
+		ICommand DownloadCertifiedAeroDevice { get; }
+		ICommand DeleteCertifiedAeroDevice { get; }
+
 		JobFileType FirstFileType { get; }
 		JobFileType SecondFileType { get; }
 		JobFileType ThirdFileType { get; }
+
+		JobFileType CertifiedAeroDeviceType { get; }
 		Dictionary<string,string> XmlNamesToPropertyMapping { get; }
 
 		bool TPMLMAxleAssemblyVisibility { get; set; }
@@ -82,6 +93,9 @@ namespace VECTOTrailer.ViewModel.Interfaces
 		bool Axle2NewVisibility { get; set; }
 		bool Axle3ButtonsVisibility { get; set; }
 		bool Axle3NewVisibility { get; set; }
+
+		bool CertifiedAeroDeviceButtonsVisibility { get; set; }
+		bool CertifiedAeroDeviceNewVisibility { get; set; }
 		TrailerCouplingPoint TrailerCouplingPoint { get; set; }
 	}
 }

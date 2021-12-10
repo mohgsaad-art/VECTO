@@ -3184,7 +3184,7 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Model.
+        ///   Looks up a localized string similar to Model_CommercialName.
         /// </summary>
         public static string Trailer_Model {
             get {

@@ -47,7 +47,6 @@ namespace VECTOTrailer.ViewModel.Impl
 		private Meter _totalHeightOfTheTrailer;
 		private Meter _lengthFromFrontToFirstAxle;
 		private Meter _lengthBetweenCentersOfAxles;
-		private Meter _internalHeightOfTheBody;
 		private CubicMeter _cargoVolume;
 		private NumberOfTrailerAxles _numberOfAxles;
 		private TypeTrailer _trailerType;
@@ -78,9 +77,15 @@ namespace VECTOTrailer.ViewModel.Impl
 		private string _axle1FilePath;
 		private string _axle2FilePath;
 		private string _axle3FilePath;
+
+		private string _certifiedAeroDeviceFilePath;
+
 		private string _axle1Xml;
 		private string _axle2Xml;
 		private string _axle3Xml;
+
+		private string _CertifiedAeroDeviceXml;
+
 		private bool _axle1IsTwin;
 		private bool _axle2IsTwin;
 		private bool _axle3IsTwin;
@@ -99,6 +104,8 @@ namespace VECTOTrailer.ViewModel.Impl
 		private ICommand _selectSecondFileCommand;
 		private ICommand _selectThirdFileCommand;
 
+		private ICommand _selectCertifiedAeroDeviceCommand;
+
 		private ICommand _downloadFirstAxle;
 		private ICommand _deleteFirstAxle;
 		private ICommand _downloadSecondAxle;
@@ -106,9 +113,14 @@ namespace VECTOTrailer.ViewModel.Impl
 		private ICommand _downloadThirdAxle;
 		private ICommand _deleteThirdAxle;
 
+		private ICommand _downloadCertifiedAeroDevice;
+		private ICommand _deleteCertifiedAeroDevice;
+
 		private JobFileType _firstFileType;
 		private JobFileType _secondFileType;
 		private JobFileType _thirdFileType;
+
+		private JobFileType _certifiedAeroDeviceType;
 
 		private string _firstFilePath;
 		private string _secondFilePath;
@@ -120,6 +132,10 @@ namespace VECTOTrailer.ViewModel.Impl
 		private bool _axle2NewVisibility;
 		private bool _axle3ButtonsVisibilty;
 		private bool _axle3NewVisibility;
+
+		private bool _certifiedAeroDeviceButtonsVisibility;
+		private bool _certifiedAeroDeviceNewVisibility;
+
 		private bool _tPMLMAxleAssemblyVisibility;
 		private bool _trailerCouplingPointVisibility;
 		private TrailerCouplingPoint _TrailerCouplingPoint;
@@ -445,6 +461,13 @@ namespace VECTOTrailer.ViewModel.Impl
 			get => _axle3FilePath;
 			set => SetProperty(ref _axle3FilePath, value);
 		}
+
+		public string CertifiedAeroDeviceFilePath
+		{
+			get => _certifiedAeroDeviceFilePath;
+			set => SetProperty(ref _certifiedAeroDeviceFilePath, value);
+		}
+
 		public string Axle1Xml
 		{
 			get
@@ -478,6 +501,19 @@ namespace VECTOTrailer.ViewModel.Impl
 			}
 			set => SetProperty(ref _axle3Xml, value);
 		}
+
+		public string CertifiedAeroDeviceXml
+		{
+			get
+			{
+				if (string.IsNullOrEmpty(_certifiedAeroDeviceFilePath))
+					return _CertifiedAeroDeviceXml;
+
+				return File.ReadAllText(_certifiedAeroDeviceFilePath);
+			}
+			set => SetProperty(ref _CertifiedAeroDeviceXml, value);
+		}
+
 		public bool Axle1IsTwin
 		{
 			get => _axle1IsTwin;
@@ -588,6 +624,17 @@ namespace VECTOTrailer.ViewModel.Impl
 			set => SetProperty(ref _axle3NewVisibility, value);
 		}
 
+		public bool CertifiedAeroDeviceButtonsVisibility
+		{
+			get => _certifiedAeroDeviceButtonsVisibility;
+			set => SetProperty(ref _certifiedAeroDeviceButtonsVisibility, value);
+		}
+		public bool CertifiedAeroDeviceNewVisibility
+		{
+			get => _certifiedAeroDeviceNewVisibility;
+			set => SetProperty(ref _certifiedAeroDeviceNewVisibility, value);
+		}
+
 		public bool TPMLMAxleAssemblyVisibility {
 			get => _tPMLMAxleAssemblyVisibility;
 			set => SetProperty(ref _tPMLMAxleAssemblyVisibility, value);
@@ -696,6 +743,13 @@ namespace VECTOTrailer.ViewModel.Impl
 						break;
 				}
 
+				if (IsCertified) {
+					var device = (xmlDoc.GetElementsByTagName("CertifiedAeroDevice").Item(0) ??
+								throw new Exception("Cannot parse aero device information")).Cast<XmlNode>().ToList();
+
+					EnableCertifiedAeroDevice(device[0]);
+				}
+
 				_componentData = new TrailerComponentData(this);
 			}
 
@@ -745,6 +799,17 @@ namespace VECTOTrailer.ViewModel.Impl
 
 			Axle3ButtonsVisibility = true;
 			Axle3NewVisibility = false;
+		}
+
+		private void EnableCertifiedAeroDevice(XmlNode device)
+		{
+			//TODO 12/21
+			CertifiedAeroDeviceXml = device.OuterXml.ToString(CultureInfo.InvariantCulture);
+			CertifiedAeroDeviceFilePath = device.ChildNodes[3].ChildNodes[0].ChildNodes[1].InnerText +
+							", " + device.ChildNodes[3].ChildNodes[0].ChildNodes[5].InnerText;
+
+			CertifiedAeroDeviceButtonsVisibility = true;
+			CertifiedAeroDeviceNewVisibility = false;
 		}
 
 		private void SetAllowedEntries()
@@ -826,6 +891,12 @@ namespace VECTOTrailer.ViewModel.Impl
 			set => SetProperty(ref _thirdFileType, value);
 		}
 
+		public JobFileType CertifiedAeroDeviceType
+		{
+			get => _certifiedAeroDeviceType;
+			set => SetProperty(ref _certifiedAeroDeviceType, value);
+		}
+
 		public string FirstFilePath
 		{
 			get => _firstFilePath;
@@ -856,9 +927,22 @@ namespace VECTOTrailer.ViewModel.Impl
 			_selectThirdFileCommand ??
 			(_selectThirdFileCommand = new RelayCommand<JobFileType>(DoSelectThirdFileCommand));
 
+		public ICommand SelectCertifiedAeroDeviceCommand =>
+			_selectCertifiedAeroDeviceCommand ??
+			(_selectCertifiedAeroDeviceCommand = new RelayCommand<JobFileType>(DoSelectCertifiedAeroDeviceFileCommand));
+
+
 		public ICommand DownloadFirstAxle =>
 			_downloadFirstAxle ??
 			(_downloadFirstAxle = new RelayCommand(DoDownloadFirstAxle));
+
+		public ICommand DownloadCertifiedAeroDevice =>
+			_downloadCertifiedAeroDevice ??
+			(_downloadCertifiedAeroDevice = new RelayCommand(DoDownloadCertifiedAeroDevice));
+
+		public ICommand DeleteCertifiedAeroDevice =>
+			_deleteCertifiedAeroDevice ??
+			(_deleteCertifiedAeroDevice = new RelayCommand(DoDeleteCertifiedAeroDevice));
 
 		public ICommand DeleteFirstAxle =>
 			_deleteFirstAxle ??
@@ -896,6 +980,11 @@ namespace VECTOTrailer.ViewModel.Impl
 			this.Axle3FilePath = ThirdFilePath;
 		}
 
+		private void DoSelectCertifiedAeroDeviceFileCommand(JobFileType jobFileType)
+		{
+			this.CertifiedAeroDeviceFilePath = OpenFileSelector(jobFileType, nameof(CertifiedAeroDeviceFilePath), CertifiedAeroDeviceFilePath);
+		}
+
 		private void DoDownloadFirstAxle()
 		{
 			var saveFileDialog = new SaveFileDialog();
@@ -912,6 +1001,7 @@ namespace VECTOTrailer.ViewModel.Impl
 			this.Axle1IsLiftable = false;
 			this.Axle1IsSteered = false;
 		}
+
 		private void DoDownloadSecondAxle()
 		{
 			var saveFileDialog = new SaveFileDialog();
@@ -943,6 +1033,23 @@ namespace VECTOTrailer.ViewModel.Impl
 			this.Axle3IsTwin = false;
 			this.Axle3IsLiftable = false;
 			this.Axle3IsSteered = false;
+		}
+
+		private void DoDownloadCertifiedAeroDevice()
+		{
+			var saveFileDialog = new SaveFileDialog();
+			if (saveFileDialog.ShowDialog() == true)
+				File.WriteAllText(saveFileDialog.FileName, CertifiedAeroDeviceXml);
+		}
+
+		private void DoDeleteCertifiedAeroDevice()
+		{
+			this.Axle1ButtonsVisibility = false;
+			this.Axle1NewVisibility = true;
+			this.Axle1FilePath = string.Empty;
+			this.Axle1IsTwin = false;
+			this.Axle1IsLiftable = false;
+			this.Axle1IsSteered = false;
 		}
 
 		private string OpenFileSelector(JobFileType jobFileType, string textPropertyName, string filePath)

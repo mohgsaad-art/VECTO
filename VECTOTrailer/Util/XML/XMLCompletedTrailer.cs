@@ -137,7 +137,7 @@ namespace VECTOTrailer.Util.XML
 						?.Add(new XElement(_v27 + XMLNames.Trailer_AeroFeatureTechnologies, "boat tail long"));
 			}
 
-			else if (trailerData.IsCertified) {
+			else if (trailerData.IsCertified) { //TODO 12/21
 				vehicle.Element(_v27 + XMLNames.Trailer_AeroFeatures)?.Add(new XElement(_v27 + XMLNames.Trailer_CertifiedAeroReduction));
 
 				vehicle.Element(_v27 + XMLNames.Trailer_AeroFeatures)?.Element(_v27 + XMLNames.Trailer_CertifiedAeroReduction)
