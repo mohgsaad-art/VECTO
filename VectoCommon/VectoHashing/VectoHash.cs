@@ -401,7 +401,7 @@ namespace TUGraz.VectoHashing
 
 		public bool ValidateHash()
 		{
-			return ReadHash().Equals(ComputeHash(), StringComparison.Ordinal);
+			return ReadHash()?.Equals(ComputeHash(), StringComparison.Ordinal) ?? false;
 		}
 
 		public bool ValidateHash(VectoComponents component, int index = 0)
