@@ -8,9 +8,9 @@
 	xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationComponent:v2.0"
 	xmlns:di="http://www.w3.org/2000/09/xmldsig#" schemaVersion="2.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationComponent F:\Vecto\vecto-dev_bt\VectoCore\VectoCore\Resources\XSD/VectoDeclarationComponent.xsd">
-	<v2.7:Tyre>
-		<v2.7:Data id="TYR-gooZah3D" xsi:type="v2.2:TyreDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.2">
+	xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationComponent v:\VectoCore\VectoCore\Resources\XSD/VectoDeclarationComponent.xsd">
+	<tns:Tyre>
+		<v2.0:Data id="TYR-gooZah3D" xsi:type="v2.2:TyreDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.2">
 			<Manufacturer>Generic Tyre Manufacturer</Manufacturer>
 			<Model>Generic Tyre Model</Model>
 			<CertificationNumber>e12*0815/8051*2017/05T0000*00</CertificationNumber>
@@ -19,8 +19,8 @@
 			<Dimension>235/60 R17C</Dimension>
 			<RRCDeclared>0.0055</RRCDeclared>
 			<FzISO>33500</FzISO>
-		</v2.7:Data>
-		<v2.7:Signature>
+		</v2.0:Data>
+		<v2.0:Signature>
 			<di:Reference URI="#TYR-gooZah3D">
 				<di:Transforms>
 					<di:Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
@@ -29,6 +29,6 @@
 				<di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
 				<di:DigestValue>JWEwzKSP0lXvwRgQZTiWJm9dpdtQ72FOX0CC5Vy6f2Y=</di:DigestValue>
 			</di:Reference>
-		</v2.7:Signature>
-	</v2.7:Tyre>
+		</v2.0:Signature>
+	</tns:Tyre>
 </tns:VectoInputDeclaration>
