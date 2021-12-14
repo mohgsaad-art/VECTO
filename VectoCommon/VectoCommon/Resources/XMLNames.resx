@@ -1405,16 +1405,16 @@
     <value>CertifiedAeroReduction</value>
   </data>
 <data name="Trailer_YawAngle0" xml:space="preserve">
-    <value>YawAngle0</value>
+    <value>CertifiedAerodynamicReduction0</value>
   </data>
 <data name="Trailer_YawAngle3" xml:space="preserve">
-    <value>YawAngle3</value>
+    <value>CertifiedAerodynamicReduction3</value>
   </data>
 <data name="Trailer_YawAngle6" xml:space="preserve">
-    <value>YawAngle6</value>
+    <value>CertifiedAerodynamicReduction6</value>
   </data>
 <data name="Trailer_YawAngle9" xml:space="preserve">
-    <value>YawAngle9</value>
+    <value>CertifiedAerodynamicReduction9</value>
   </data>
 <data name="Trailer_AeroFeatures" xml:space="preserve">
     <value>AeroFeatures</value>
