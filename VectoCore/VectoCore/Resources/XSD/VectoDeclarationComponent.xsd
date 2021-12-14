@@ -8,5 +8,7 @@
  -->
 	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationComponent:v1.0" schemaLocation="VectoComponent.1.0.xsd"/>
 	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationComponent:v2.0" schemaLocation="VectoComponent.2.0.xsd"/>
+	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationComponent:DEV:v2.7" schemaLocation="VectoComponent.2.7.xsd"/>
 	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions" schemaLocation="VectoDeclarationDefinitions.xsd"/>
+	
 </xs:schema>
