@@ -132,7 +132,7 @@ namespace TUGraz.VectoCore.Utils
 			log.Debug("Log Disabled during LineSearch.");
 			LogManager.DisableLogging();
 			try {
-				for (var count = 1; count < 100; count++, iterationCount++) {
+				for (var count = 1; count < 150; count++, iterationCount++) {
 					if (origY.Sign() != y.Sign()) {
 						intervalFactor = 0.5;
 					}
