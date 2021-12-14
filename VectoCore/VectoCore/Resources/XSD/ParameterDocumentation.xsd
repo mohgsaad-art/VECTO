@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSpy v2016 rel. 2 sp1 (x64) (http://www.altova.com) by Helmut Eichlseder (TU Graz/Inst. f. VKM und THD) -->
+<!-- edited with XMLSpy v2021 (x64) (http://www.altova.com) by Markus Quaritsch (Technische Universität Graz) -->
 <xs:schema xmlns:tns="urn:tugraz:ivt:VectoAPI:ParameterDocumentation" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:tugraz:ivt:VectoAPI:ParameterDocumentation" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xs:element name="description">
 		<xs:complexType>
@@ -39,6 +39,7 @@
 											<xs:enumeration value="Vehicle/TorqueLimits"/>
 											<xs:enumeration value="Gearshiftstrategy"/>
 											<xs:enumeration value="Vehicle/ADAS"/>
+											<xs:enumeration value="CertifiedAerodynamicReduction"/>
 										</xs:restriction>
 									</xs:simpleType>
 								</xs:attribute>
