@@ -77,6 +77,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 		public static readonly ReferenceTrailer ReferenceTrailer = new ReferenceTrailer();
 		public static readonly SpecificTrailer SpecificTrailer = new SpecificTrailer();
 		public static readonly GenericCadVehicle GenericCadVehicle = new GenericCadVehicle();
+		public static readonly StandardTrailer StandardTrailer = new StandardTrailer();
 
 		public static readonly AeroFeatures AeroFeatures = new AeroFeatures();
 		public static readonly GenericTowingVehicles GenericTowingVehicles = new GenericTowingVehicles();

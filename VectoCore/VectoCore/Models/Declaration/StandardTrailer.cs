@@ -65,16 +65,21 @@ namespace TUGraz.VectoCore.Models.Declaration
 			_segmentTable = table.Copy();
 		}
 
+		public DataRow GetRow(string code)
+		{
+			return GetTrailerDataRow(code);
+		}
+
 		public override StandardTrailerSegment Lookup(string code)
 		{
 			var row = GetTrailerDataRow(code);
 			if (row == null) {
-				return new StandardTrailerSegment { VehicleGroup = -1 };
+				return new StandardTrailerSegment {};
 			}
 
 			return new StandardTrailerSegment {
-				VehicleGroup = (int)row.ParseDouble("Vehicle_group"),
-				MaxGcm = row.Field<string>("max_gcm"),
+				//VehicleGroup = (int)row.ParseDouble("Vehicle_group"),
+				MaxGcm = row.ParseDouble("max_gcm"),
 				LhA1 = SquareMeter.Create(row.ParseDouble("polar_curve_lh_a1")),
 				LhA2 = SquareMeter.Create(row.ParseDouble("polar_curve_lh_a2")),
 				LhA3 = SquareMeter.Create(row.ParseDouble("polar_curve_lh_a3")),
@@ -88,7 +93,12 @@ namespace TUGraz.VectoCore.Models.Declaration
 				CdxaLh = SquareMeter.Create(row.ParseDouble("curb_mass_trailer_body_lh")),
 				CdxaOther = SquareMeter.Create(row.ParseDouble("curb_mass_trailer_body_o")),
 				TyreXml = row.Field<string>("tyre_xml").Replace("_", "").Replace("Standard", ""),
-				TwinTyres = row.Field<string>("twin_tyres") == "TRUE"
+				TwinTyres = row.Field<string>("twin_tyres") == "TRUE",
+				TotalHeight = Meter.Create(row.ParseDouble("total_vehicle_height")),
+				PayloadLhLow = row.ParseDouble("payload_lh_low"),
+				PayloadLhRef = row.ParseDouble("payload_lh_ref"),
+				PayloadOtherLow = row.ParseDouble("payload_o_low"),
+				PayloadOtherRef = row.ParseDouble("payload_o_ref")
 			};
 
 		}

@@ -29,6 +29,7 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 using TUGraz.VectoCommon.Models;
@@ -85,6 +86,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 		public SquareMeter A1RefCor { get; set; }
 		public SquareMeter A2RefCor { get; set; }
 		public SquareMeter A3RefCor { get; set; }
+
+		public Dictionary<MissionType, string> CodeStandard { get; set; }
 	}
 
 	public struct ReferenceTrailerSegment
@@ -161,8 +164,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 	public struct StandardTrailerSegment
 	{
 		[JsonIgnore]
-		public int VehicleGroup { get; set; }
-		public string MaxGcm { get; set; }
+		//public int VehicleGroup { get; set; }
+		public double MaxGcm { get; set; }
 		public SquareMeter LhA1 { get; set; }
 		public SquareMeter LhA2 { get; set; }
 		public SquareMeter LhA3 { get; set; }
@@ -177,5 +180,10 @@ namespace TUGraz.VectoCore.Models.Declaration
 		public bool TwinTyres { get; set; }
 		public Kilogram CurbMassLh { get; set; }
 		public Kilogram CurbMassOther { get; set; }
+		public Meter TotalHeight { get; set; }
+		public double PayloadLhLow { get; set; }
+		public double PayloadLhRef { get; set; }
+		public double PayloadOtherLow { get; set; }
+		public double PayloadOtherRef { get; set; }
 	} 
 }

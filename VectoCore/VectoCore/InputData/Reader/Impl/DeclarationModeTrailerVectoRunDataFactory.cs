@@ -127,14 +127,21 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 
 		protected virtual void Initialize()
 		{
+			var rfRun = (Environment.GetEnvironmentVariable("referenceFactorRun") == "true");
+
 			#region Get trailer specific data from trailerAdapter
 			_trailer = TrailerInputDataProvider.JobInputData.Trailer;
 			TrailerDataAdapter.ValidateTrailerInput(_trailer);
 			var volumeOrientation = _trailer.VolumeOrientation;
 			_trailerSegment = DeclarationData.TrailerSegments.Lookup(_trailer.NumberOfAxles, _trailer.TrailerType, _trailer.BodyworkCode, volumeOrientation, _trailer.TPMLMAxleAssembly);
 			_genericInputDataProvider = DeclarationData.TrailerSegments.GetGenericVehicleData(_trailerSegment.GenericCode);
-			_specificTrailerData = TrailerDataAdapter.GetTrailerData(_trailerSegment, _trailer, _genericInputDataProvider.JobInputData.Vehicle);
-			
+
+			if(!rfRun)
+				_specificTrailerData = TrailerDataAdapter.GetTrailerData(_trailerSegment, _trailer, _genericInputDataProvider.JobInputData.Vehicle);
+
+			else
+				_specificTrailerData = TrailerDataAdapter.GetTrailerDataRf(_trailerSegment, _trailer, _genericInputDataProvider.JobInputData.Vehicle);
+
 			//Add Corrected A1, A2, A3
 			_trailerSegment.A1Cor = _specificTrailerData.TotalCorrection.A1;
 			_trailerSegment.A2Cor = _specificTrailerData.TotalCorrection.A2;
@@ -266,7 +273,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 				Loading = loading.Key,
 				VehicleData = TrailerDataAdapter.CreateTrailerData(vehicle, _trailer, _trailerSegment, mission, loading, _specificTrailerData),
 				VehicleDesignSpeed = _trailerSegment.DesignSpeed,
-				AirdragData = TrailerDataAdapter.CreateTrailerAirdragData(_genericInputDataProvider.JobInputData.Vehicle.Components.AirdragInputData, mission, _specificTrailerData, _trailerSegment),
+				AirdragData = TrailerDataAdapter.CreateTrailerAirdragData(_genericInputDataProvider, mission, _specificTrailerData, _trailerSegment),
 				EngineData = TrailerDataAdapter.CreateTrailerEngineData(_genericInputDataProvider.JobInputData.Vehicle, engineMode, mission, _trailer, loading.Key),
 				GearboxData = _gearboxData,
 				AxleGearData = _axlegearData,

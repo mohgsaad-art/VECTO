@@ -142,7 +142,14 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 					.Select(da => DeclarationData.Wheels.Lookup(da.Tyre.Dimension).DynamicTyreRadius)
 					.Average();
 
-			retVal.CargoVolume = mission.TotalCargoVolume + trailerSegment.ReferenceTrailerSegment.CargoVolume; 
+			var rfRun = (Environment.GetEnvironmentVariable("referenceFactorRun") == "true");
+			var cargo = trailerSegment.ReferenceTrailerSegment.CargoVolume;
+			if (rfRun)
+				cargo = (mission.MissionType == MissionType.LongHaul
+					? mission.StandardTrailerSegment.CargoVolumeLh
+					: mission.StandardTrailerSegment.CargoVolumeOther);
+
+			retVal.CargoVolume = mission.TotalCargoVolume + cargo; 
 
 			
 			var axles = data.Components.AxleWheels.AxlesDeclaration;
@@ -211,7 +218,12 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			retVal.InputDataTrailer = trailerData;
 			retVal.BodyAndTrailerMass = trailerData.MassInRunningOrder + trailerSegment.MassBody;
 
-			retVal.Loading = Kilogram.Create(Math.Min(loading.Value(), (specificTrailerData.MaxGcm - data.CurbMassChassis.Value() - trailerData.MassInRunningOrder.Value())));
+			var maxGcm = specificTrailerData.MaxGcm;
+			var rfRun = (Environment.GetEnvironmentVariable("referenceFactorRun") == "true");
+			if (rfRun)
+				maxGcm = mission.StandardTrailerSegment.MaxGcm;
+
+			retVal.Loading = Kilogram.Create(Math.Min(loading.Value(), (maxGcm - data.CurbMassChassis.Value() - trailerData.MassInRunningOrder.Value())));
 
 			retVal.PassengerCount = 1;
 			retVal.DynamicTyreRadius =
@@ -933,7 +945,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 		}
 
 		public static List<CrossWindCorrectionCurveReader.CrossWindCorrectionEntry> GetTrailerDeclarationAirResistanceCurve(
-			string crosswindCorrectionParameters, SquareMeter aerodynamicDragAera, Meter vehicleHeight, TrailerSegment segment, CorrectedTrailerData data)
+			string crosswindCorrectionParameters, SquareMeter aerodynamicDragAera, Meter vehicleHeight, TrailerSegment segment, CorrectedTrailerData data, Mission mission, IDeclarationInputDataProvider vehicle)
 		{
 			var startSpeed = Constants.SimulationSettings.CrosswindCorrection.MinVehicleSpeed;
 			var maxSpeed = Constants.SimulationSettings.CrosswindCorrection.MaxVehicleSpeed;
@@ -978,11 +990,35 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 						var beta = Math.Atan(vAirY / vAirX).ToDegree();
 
+						var rfRun = (Environment.GetEnvironmentVariable("referenceFactorRun") == "true");
+
+						
+						SquareMeter deltaCdA;
+
+						if (rfRun && beta == 0) {
+							deltaCdA = mission.MissionType == MissionType.LongHaul
+								? mission.StandardTrailerSegment.CdxaLh
+								: mission.StandardTrailerSegment.CdxaOther;
+							aerodynamicDragAera = vehicle.JobInputData.Vehicle.Components.AirdragInputData.AirDragArea;
+						}
+
+						if (rfRun && beta != 0) {
+							a1 = mission.MissionType == MissionType.LongHaul
+								? mission.StandardTrailerSegment.LhA1
+								: mission.StandardTrailerSegment.OtherA1;
+							a2 = mission.MissionType == MissionType.LongHaul
+								? mission.StandardTrailerSegment.LhA2
+								: mission.StandardTrailerSegment.OtherA2;
+							a3 = mission.MissionType == MissionType.LongHaul
+								? mission.StandardTrailerSegment.LhA3
+								: mission.StandardTrailerSegment.OtherA3;
+						}
+
 						// ΔCdxA = A1β + A2β² + A3β³
-						var deltaCdA = a1 * beta + a2 * beta * beta + a3 * beta * beta * beta;
+						deltaCdA = a1 * beta + a2 * beta * beta + a3 * beta * beta * beta;
 
 						// CdxA(β) = CdxA(0) + ΔCdxA(β)
-						var cdA = aerodynamicDragAera + deltaCdA;
+						var cdA = aerodynamicDragAera + deltaCdA; 
 
 						var share = (alpha == 0 || alpha == maxAlpha ? alphaStep / 2.0 : alphaStep) / maxAlpha;
 
@@ -1014,7 +1050,10 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			
 			var retVal = SetCommonAirdragData(airdragInputData);
 			retVal.CrossWindCorrectionMode = CrossWindCorrectionMode.DeclarationModeCorrection;
-			retVal.DeclaredAirdragArea = trailerData.TotalRefCorrection.CdxA0;
+
+			var rfRun = (Environment.GetEnvironmentVariable("referenceFactorRun") == "true");
+
+			retVal.DeclaredAirdragArea = rfRun ? trailerData.CdxABase.SI<SquareMeter>() : trailerData.TotalRefCorrection.CdxA0;
 
 			var aerodynamicDragArea = retVal.DeclaredAirdragArea + mission.Trailer.Sum(t => t.DeltaCdA).DefaultIfNull(0);
 
@@ -1027,8 +1066,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 		}
 
 		public virtual AirdragData CreateTrailerAirdragData(
-			IAirdragDeclarationInputData airdragInputData, Mission mission, TrailerData specificTrailerData, TrailerSegment trailerSegment)
+			IDeclarationInputDataProvider vehicle, Mission mission, TrailerData specificTrailerData, TrailerSegment trailerSegment)
 		{
+			var airdragInputData = vehicle.JobInputData.Vehicle.Components.AirdragInputData;
 			if (airdragInputData == null || airdragInputData.AirDragArea == null)
 			{
 				return DefaultAirdragData(mission, trailerSegment, specificTrailerData); 
@@ -1038,13 +1078,13 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			retVal.CrossWindCorrectionMode = CrossWindCorrectionMode.DeclarationModeCorrection;
 
 			//Corrected CdxA(0)
-			retVal.DeclaredAirdragArea = specificTrailerData.TotalCorrection.CdxA0; 
+			retVal.DeclaredAirdragArea = specificTrailerData.TotalCorrection.CdxA0;
 
 			retVal.CrossWindCorrectionCurve =
 				new CrosswindCorrectionCdxALookup(
 					retVal.DeclaredAirdragArea,
 					GetTrailerDeclarationAirResistanceCurve(
-						mission.CrossWindCorrectionParameters, retVal.DeclaredAirdragArea, mission.VehicleHeight, trailerSegment, specificTrailerData.TotalCorrection),
+						mission.CrossWindCorrectionParameters, retVal.DeclaredAirdragArea, mission.VehicleHeight, trailerSegment, specificTrailerData.TotalCorrection, mission, vehicle),
 					CrossWindCorrectionMode.DeclarationModeCorrection); 
 			return retVal;
 		}
@@ -1296,13 +1336,18 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			return SquareMeter.Create(correction);
 		}
 
-		private static SquareMeter CalcRefHeightCorrection(TrailerSegment trailerSegment, ReferenceTrailerSegment trailer, double previousCorrection)
+		private static SquareMeter CalcRefHeightCorrection(TrailerSegment trailerSegment, ReferenceTrailerSegment trailer, double previousCorrection, bool rfRun = false)
 		{
 			//CdxA(0)_width_correction*(Total_height_of_the_trailer/Total_trailer_height_generic_cad)
 			var s = trailerSegment.GenericCadVehicle;
 
+			var totalHeight = s.TotalHeight;
+			if (rfRun) {
+				var codeStandard = trailerSegment.CodeStandard.Where(x => x.Key == MissionType.LongHaul)?.FirstOrDefault().Value;
+				totalHeight = DeclarationData.StandardTrailer.Lookup(codeStandard).TotalHeight;
+			}
 
-			var correction = previousCorrection * (trailer.TotalTrailerHeight / s.TotalHeight);
+			var correction = previousCorrection * (trailer.TotalTrailerHeight / totalHeight);
 			return SquareMeter.Create(correction);
 		}
 
@@ -1320,7 +1365,6 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 		{
 			//CdxA(3)_height_correction*(External_height_of_the_body/External_body_height_generic_cad)
 			var s = trailerSegment.GenericCadVehicle;
-
 
 			var correction = previousCorrection * (trailer.ExternalBodyHeight / s.ExternalBodyHeight);
 			return SquareMeter.Create(correction);
@@ -1471,12 +1515,15 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 		}
 
 		public CorrectedTrailerData GetReferenceTrailerCorrection(TrailerSegment trailerSegment,
-			ITrailerDeclarationInputData trailer)
+			ITrailerDeclarationInputData trailer, bool rfRun = false)
 		{
 			var data = new CorrectedTrailerData();
 			data.A1 = trailerSegment.GenericCadVehicle.A1;
 			data.A2 = trailerSegment.GenericCadVehicle.A2;
 			data.A3 = trailerSegment.GenericCadVehicle.A3;
+
+			if (rfRun)
+				return data;
 
 			#region LengthAxleCorrection
 
@@ -1504,13 +1551,13 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 			if (trailerSegment.ReferenceTrailerSegment.HeightCorrection) {
 				data.CdxA0 = CalcRefHeightCorrection(trailerSegment, trailerSegment.ReferenceTrailerSegment,
-					data.CdxA0.Value());
+					data.CdxA0.Value(), rfRun);
 				data.CdxA3 = CalcRefHeightCorrection(trailerSegment, trailerSegment.ReferenceTrailerSegment,
-					data.CdxA3.Value());
+					data.CdxA3.Value(), rfRun);
 				data.CdxA6 = CalcRefHeightCorrection(trailerSegment, trailerSegment.ReferenceTrailerSegment,
-					data.CdxA6.Value());
+					data.CdxA6.Value(), rfRun);
 				data.CdxA9 = CalcRefHeightCorrection(trailerSegment, trailerSegment.ReferenceTrailerSegment,
-					data.CdxA9.Value());
+					data.CdxA9.Value(), rfRun);
 			}
 
 			#endregion
@@ -1572,6 +1619,36 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				Inertia = wheels.Lookup(GetAxleWheelDimension(genericVehicle)).Inertia,
 				TotalCorrection = GetSpecificTrailerCorrection(trailerSegment, trailer),
 				TotalRefCorrection = GetReferenceTrailerCorrection(trailerSegment, trailer),
+				MaxGcm = maxGcm,
+				CdxABase = trailerSegment.GenericCadVehicle.CdxA0
+			};
+
+			return specificTrailerData;
+		}
+
+		public TrailerData GetTrailerDataRf(TrailerSegment trailerSegment, ITrailerDeclarationInputData trailer,
+			IVehicleDeclarationInputData genericVehicle)
+		{
+			var wheels = new Wheels();
+
+			//Read the + tpmlm axle assembly and add accordingly
+			if (!double.TryParse(trailerSegment.MaxGcm, out double maxGcm)
+				&& trailerSegment.MaxGcm.Contains("+"))
+			{
+				double.TryParse(trailerSegment.MaxGcm.Substring(0, trailerSegment.MaxGcm.IndexOf("+")), out maxGcm);
+				maxGcm += trailer.TPMLMAxleAssembly.Value();
+			}
+
+			var specificTrailerData = new TrailerData
+			{
+				VolumeOrientation = trailer.VolumeOrientation,
+				VehicleGroup = trailerSegment.VehicleGroup,
+				VehicleGroupActive = trailerSegment.VehicleGroupActive,
+				GenericVehicleCode = trailerSegment.GenericCode,
+				CurbMassTrailer = trailer.MassInRunningOrder,
+				Inertia = wheels.Lookup(GetAxleWheelDimension(genericVehicle)).Inertia,
+				TotalCorrection = GetSpecificTrailerCorrection(trailerSegment, trailer),
+				TotalRefCorrection = GetReferenceTrailerCorrection(trailerSegment, trailer, true),
 				MaxGcm = maxGcm,
 				CdxABase = trailerSegment.GenericCadVehicle.CdxA0
 			};
