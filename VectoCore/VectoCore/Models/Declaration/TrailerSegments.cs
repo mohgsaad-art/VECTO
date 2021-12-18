@@ -66,6 +66,25 @@ namespace TUGraz.VectoCore.Models.Declaration
 			_segmentTable = table.Copy();
 		}
 
+		public List<int> GetActiveVehicleGroups()
+		{
+			EnumerableRowCollection<DataRow> rows;
+			try
+			{
+				rows = _segmentTable.AsEnumerable().Where(
+					r => {
+						var active = (int)r.ParseDouble("Active_Final");
+						return active == 1;
+					});
+			}
+			catch (InvalidOperationException e)
+			{
+				throw new VectoException("Can't get active vehicle groups", e);
+			}
+
+			return Enumerable.Select(rows, row => (int)row.ParseDouble("Vehicle_group")).ToList();
+		}
+
 		public override TrailerSegment Lookup(NumberOfTrailerAxles numberOfAxles, TypeTrailer typeTrailer, BodyWorkCode bodyWorkCode, bool volumeOrientation, Kilogram tpmlmAxleAssembly)
 		{
 			_numberOfAxles = int.Parse(numberOfAxles.GetLabel());
@@ -74,11 +93,16 @@ namespace TUGraz.VectoCore.Models.Declaration
 				return new TrailerSegment { VehicleGroup = -1 };
 			}
 
+			var group = (int)row.ParseDouble("Vehicle_group");
+			var rfRun = (Environment.GetEnvironmentVariable("referenceFactorRun") == "true");
+			if (rfRun)
+				int.TryParse(Environment.GetEnvironmentVariable("vehicleGroup"), out group);
+
 			return new TrailerSegment {
 				AccelerationFile =
 					RessourceHelper.ReadStream(
 						DeclarationData.DeclarationDataResourcePrefix + ".VACC.Truck.vacc"), //row.Field<string>(".vaccfile")), TODO - CHECK THIS
-				VehicleGroup = (int)row.ParseDouble("Vehicle_group"),
+				VehicleGroup = group,
 				VehicleGroupAnnex = row.Field<string>("Vehicle_group_acc"),
 				VehicleGroupActive = row.ParseBoolean("Active"),
 				GenericCode = row.Field<string>("Generic_code"),
@@ -86,9 +110,9 @@ namespace TUGraz.VectoCore.Models.Declaration
 				Class = VehicleClassHelper.Parse(row.Field<string>("Generic_vehicle_group").Replace("-RD", "").Replace("-LH", "")),
 				MaxGcm = row.Field<string>("max_gcm"),
 				Missions = CreateMissions(row),
-				ReferenceTrailerSegment = DeclarationData.ReferenceTrailer.Lookup((int)row.ParseDouble("Vehicle_group")),
-				SpecificTrailerSegment = DeclarationData.SpecificTrailer.Lookup((int)row.ParseDouble("Vehicle_group")),
-				GenericCadVehicle = DeclarationData.GenericCadVehicle.Lookup((int)row.ParseDouble("Vehicle_group")),
+				ReferenceTrailerSegment = DeclarationData.ReferenceTrailer.Lookup(group),
+				SpecificTrailerSegment = DeclarationData.SpecificTrailer.Lookup(group),
+				GenericCadVehicle = DeclarationData.GenericCadVehicle.Lookup(group),
 				DesignSpeed = MeterPerSecond.Create(25), //90km/h
 				CodeStandard = new Dictionary<MissionType, string>{{MissionType.LongHaul, row.Field<string>("ref_code_lh")}, {MissionType.RegionalDelivery, row.Field<string>("ref_code_other")}}
 			};
@@ -98,9 +122,13 @@ namespace TUGraz.VectoCore.Models.Declaration
 		{
 			var missionTypes = new List<MissionType>();
 
-			var referenceTrailerSegment = DeclarationData.ReferenceTrailer.Lookup((int)row.ParseDouble("Vehicle_group"));
-
+			var group = (int)row.ParseDouble("Vehicle_group");
 			var rfRun = (Environment.GetEnvironmentVariable("referenceFactorRun") == "true");
+			if (rfRun)
+				int.TryParse(Environment.GetEnvironmentVariable("vehicleGroup"), out group);
+
+			var referenceTrailerSegment = DeclarationData.ReferenceTrailer.Lookup(group);
+
 
 			if (!row["Mission_long_haul"].ToString().Contains("-"))
 				missionTypes.Add(MissionType.LongHaul);
@@ -208,8 +236,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 					SpecificTrailer = specificTrailers,
 					TotalCargoVolume = totalCargoVolume,
 					CrossWindCorrectionParameters = "TractorSemitrailer",
-					TrailerLiftableImpact = DeclarationData.SpecificTrailer.GetImpact((int)row.ParseDouble("Vehicle_group"), "Liftable", missionType),
-					TrailerSteeredImpact = DeclarationData.SpecificTrailer.GetImpact((int)row.ParseDouble("Vehicle_group"), "Steered", missionType),
+					TrailerLiftableImpact = DeclarationData.SpecificTrailer.GetImpact(group, "Liftable", missionType),
+					TrailerSteeredImpact = DeclarationData.SpecificTrailer.GetImpact(group, "Steered", missionType),
 					StandardTrailerSegment = stdTrailer,
 #if USE_EXTENAL_DECLARATION_DATA
 					CycleFile = File.OpenRead(Path.Combine("DeclarationMissions", missionType.ToString().Replace("EMS", "") + ".vdri")),
@@ -272,6 +300,10 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		private MissionTrailer CreateTrailer(string trailerValue, double axleWeightShare, bool isSpecific, DataRow row)
 		{
+			var group = (int)row.ParseDouble("Vehicle_group");
+			var rfRun = (Environment.GetEnvironmentVariable("referenceFactorRun") == "true");
+			if (rfRun)
+				int.TryParse(Environment.GetEnvironmentVariable("vehicleGroup"), out group);
 
 			Kilogram curbWeight = 0.SI<Kilogram>();
 			Kilogram grossVehicleWeight = GetGenericVehicleData(row.Field<string>("Generic_code")).JobInputData.Vehicle.GrossVehicleMassRating;
@@ -281,7 +313,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 			var wheels = new List<Wheels.Entry>();
 
-			var referenceTrailerSegment = DeclarationData.ReferenceTrailer.Lookup((int)row.ParseDouble("Vehicle_group"));
+			var referenceTrailerSegment = DeclarationData.ReferenceTrailer.Lookup(group);
 
 			if (!isSpecific) { //for specific these are taken from the input xml document
 				curbWeight = referenceTrailerSegment.CurbMass + Kilogram.Create(!row.Field<string>("generic_mass_body").Contains("-") ? row.ParseDouble("generic_mass_body") : 0);

@@ -42,29 +42,32 @@ namespace TUGraz.VectoCore.Tests.XML
 
 		public void RunTrailerDeclarationJob()
 		{
-
 			System.Environment.SetEnvironmentVariable("referenceFactorRun", "true");
 
-			var fileWriter = new FileOutputWriter(SampleTrailer);
-			var sumWriter = new SummaryDataContainer(fileWriter);
-			var jobContainer = new JobContainer(sumWriter);
-			var dataProvider = XMLInputReader.CreateDeclarationTrailer(XmlReader.Create(SampleTrailer));
-			var runsFactory = new SimulatorFactory(ExecutionMode.Declaration, dataProvider, fileWriter)
-			{
-				ModalResults1Hz = false,
-				WriteModalResults = false,
-				ActualModalData = false,
-				Validate = false,
-			};
-			jobContainer.AddRuns(runsFactory);
-			jobContainer.Execute();
-			jobContainer.WaitFinished();
+			var trailerList = DeclarationData.TrailerSegments.GetActiveVehicleGroups();
+			foreach (var group in trailerList) {
 
-			//var customerRecord = fileWriter.XMLCustomerReportName;
-			//var manufacturerRecord = fileWriter.XMLFullReportName;
+				System.Environment.SetEnvironmentVariable("vehicleGroup", group.ToString());
 
-			//TODO: Calculate factors and write to csv 
+				var fileWriter = new FileOutputWriter(SampleTrailer);
+				var sumWriter = new SummaryDataContainer(fileWriter);
+				var jobContainer = new JobContainer(sumWriter);
+				var dataProvider = XMLInputReader.CreateDeclarationTrailer(XmlReader.Create(SampleTrailer));
+				var runsFactory = new SimulatorFactory(ExecutionMode.Declaration, dataProvider, fileWriter) {
+					ModalResults1Hz = false,
+					WriteModalResults = false,
+					ActualModalData = false,
+					Validate = false,
+				};
+				jobContainer.AddRuns(runsFactory);
+				jobContainer.Execute();
+				jobContainer.WaitFinished();
 
+				//var customerRecord = fileWriter.XMLCustomerReportName;
+				//var manufacturerRecord = fileWriter.XMLFullReportName;
+
+				//TODO: Calculate factors and write to csv 
+			}
 		}
 
 		[TestCase]

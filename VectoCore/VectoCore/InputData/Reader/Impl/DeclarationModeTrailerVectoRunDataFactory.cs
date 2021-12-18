@@ -136,9 +136,8 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			_trailerSegment = DeclarationData.TrailerSegments.Lookup(_trailer.NumberOfAxles, _trailer.TrailerType, _trailer.BodyworkCode, volumeOrientation, _trailer.TPMLMAxleAssembly);
 			_genericInputDataProvider = DeclarationData.TrailerSegments.GetGenericVehicleData(_trailerSegment.GenericCode);
 
-			if(!rfRun)
+			if (!rfRun)
 				_specificTrailerData = TrailerDataAdapter.GetTrailerData(_trailerSegment, _trailer, _genericInputDataProvider.JobInputData.Vehicle);
-
 			else
 				_specificTrailerData = TrailerDataAdapter.GetTrailerDataRf(_trailerSegment, _trailer, _genericInputDataProvider.JobInputData.Vehicle);
 
