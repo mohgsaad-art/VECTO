@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -147,9 +148,9 @@ namespace TUGraz.VectoCore.Tests.XML
 
 				var refLongHaulCo2 = double.Parse(dt.Rows[1]["CO2 [g/km]"].ToString()) / double.Parse(dt.Rows[3]["CO2 [g/km]"].ToString());
 
-				var refRegionalDeliveryCo2 = double.Parse(dt.Rows[7]["CO2 [g/km]"].ToString()) / double.Parse(dt.Rows[9]["CO2 [g/km]"].ToString());
+				var refRegionalDeliveryCo2 = double.Parse(dt.Rows[5]["CO2 [g/km]"].ToString()) / double.Parse(dt.Rows[7]["CO2 [g/km]"].ToString());
 
-				var refUrbanDeliveryCo2 = double.Parse(dt.Rows[9]["CO2 [g/km]"].ToString()) / double.Parse(dt.Rows[1]["CO2 [g/km]"].ToString());
+				var refUrbanDeliveryCo2 = double.Parse(dt.Rows[9]["CO2 [g/km]"].ToString()) / double.Parse(dt.Rows[11]["CO2 [g/km]"].ToString());
 
 				var dr = rfDt.NewRow(); 
 				var rowArray = new object[] { group.ToString(),
@@ -159,6 +160,7 @@ namespace TUGraz.VectoCore.Tests.XML
 				};
 				dr.ItemArray = rowArray;
 				rfDt.Rows.Add(dr);
+				//Debug.WriteLine("Added Group: " + group);
 			}
 			ToCSV(rfDt, @"TestData\Trailer\ReferenceFactors.csv");
 		}
@@ -244,7 +246,6 @@ namespace TUGraz.VectoCore.Tests.XML
 		[TestCase]
 		public void CreateReferenceFactors()
 		{
-			//TODO: Create loop for all active vehicle groups and foreach create factors:
 			RunBeforeAnyTests();
 			RunTrailerDeclarationJob();
 		}
