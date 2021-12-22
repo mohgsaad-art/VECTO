@@ -219,11 +219,17 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			retVal.BodyAndTrailerMass = trailerData.MassInRunningOrder + trailerSegment.MassBody;
 
 			var maxGcm = specificTrailerData.MaxGcm;
-			var rfRun = (Environment.GetEnvironmentVariable("referenceFactorRun") == "true");
-			if (rfRun)
-				maxGcm = mission.StandardTrailerSegment.MaxGcm;
+			var curbmass = trailerData.MassInRunningOrder.Value();
 
-			retVal.Loading = Kilogram.Create(Math.Min(loading.Value(), (maxGcm - data.CurbMassChassis.Value() - trailerData.MassInRunningOrder.Value())));
+			var rfRun = (Environment.GetEnvironmentVariable("referenceFactorRun") == "true");
+			if (rfRun) {
+				maxGcm = mission.StandardTrailerSegment.MaxGcm;
+				curbmass = mission.MissionType == MissionType.LongHaul
+					? mission.StandardTrailerSegment.CurbMassLh.Value()
+					: mission.StandardTrailerSegment.CurbMassOther.Value();
+			}
+
+			retVal.Loading = Kilogram.Create(Math.Min(loading.Value(), (maxGcm - data.CurbMassChassis.Value() - curbmass)));
 
 			retVal.PassengerCount = 1;
 			retVal.DynamicTyreRadius =
@@ -1002,7 +1008,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 							aerodynamicDragAera = vehicle.JobInputData.Vehicle.Components.AirdragInputData.AirDragArea;
 						}
 
-						if (rfRun && beta != 0) {
+						else if (rfRun && beta != 0) {
 							a1 = mission.MissionType == MissionType.LongHaul
 								? mission.StandardTrailerSegment.LhA1
 								: mission.StandardTrailerSegment.OtherA1;
@@ -1012,10 +1018,13 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 							a3 = mission.MissionType == MissionType.LongHaul
 								? mission.StandardTrailerSegment.LhA3
 								: mission.StandardTrailerSegment.OtherA3;
-						}
 
-						// ΔCdxA = A1β + A2β² + A3β³
-						deltaCdA = a1 * beta + a2 * beta * beta + a3 * beta * beta * beta;
+
+							// ΔCdxA = A1β + A2β² + A3β³
+							deltaCdA = a1 * beta + a2 * beta * beta + a3 * beta * beta * beta;
+						}
+						else
+							deltaCdA = a1 * beta + a2 * beta * beta + a3 * beta * beta * beta;
 
 						// CdxA(β) = CdxA(0) + ΔCdxA(β)
 						var cdA = aerodynamicDragAera + deltaCdA; 
