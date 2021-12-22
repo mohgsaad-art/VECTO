@@ -216,18 +216,21 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			retVal.SleeperCab = data.SleeperCab;
 			retVal.TrailerSegment = trailerSegment;
 			retVal.InputDataTrailer = trailerData;
-			retVal.BodyAndTrailerMass = trailerData.MassInRunningOrder + trailerSegment.MassBody;
 
 			var maxGcm = specificTrailerData.MaxGcm;
 			var curbmass = trailerData.MassInRunningOrder.Value();
 
 			var rfRun = (Environment.GetEnvironmentVariable("referenceFactorRun") == "true");
-			if (rfRun) {
+			if (rfRun)
+			{
 				maxGcm = mission.StandardTrailerSegment.MaxGcm;
 				curbmass = mission.MissionType == MissionType.LongHaul
 					? mission.StandardTrailerSegment.CurbMassLh.Value()
 					: mission.StandardTrailerSegment.CurbMassOther.Value();
 			}
+
+
+			retVal.BodyAndTrailerMass = Kilogram.Create(curbmass) + trailerSegment.MassBody;
 
 			retVal.Loading = Kilogram.Create(Math.Min(loading.Value(), (maxGcm - data.CurbMassChassis.Value() - curbmass)));
 
