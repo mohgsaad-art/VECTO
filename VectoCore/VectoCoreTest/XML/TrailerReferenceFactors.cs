@@ -82,6 +82,11 @@ namespace TUGraz.VectoCore.Tests.XML
 				jobContainer.WaitFinished();
 				var vsum = fileWriter.SumFileName;
 
+				//CO2 Standard LongHaul [g/km]
+				//CO2 Standard Regional Delivery[g/km]
+				//CO2 Standard Urban Delivery[g/km]
+
+
 				var mrf = XDocument.Load(fileWriter.XMLFullReportName);
 
 				double.TryParse(mrf.Descendants().Where(x => x.Name.ToString().Contains("Result")).Descendants()
@@ -92,7 +97,7 @@ namespace TUGraz.VectoCore.Tests.XML
 						.Where(x => x.Name.ToString().Contains("CO2"))?.FirstOrDefault()?.Value,
 					out var longHaulRefLoadCo2);
 
-				var stlongHaulCo2 = longHaulLowLoadCo2 / longHaulRefLoadCo2;
+				var stlongHaulCo2 = longHaulLowLoadCo2 + "/" + longHaulRefLoadCo2;
 
 				double.TryParse(mrf.Descendants().Where(x => x.Name.ToString().Contains("Result")).Skip(2).Descendants()
 						.Where(x => x.Name.ToString().Contains("CO2"))?.FirstOrDefault()?.Value,
@@ -102,7 +107,7 @@ namespace TUGraz.VectoCore.Tests.XML
 						.Where(x => x.Name.ToString().Contains("CO2"))?.FirstOrDefault()?.Value,
 					out var regionalDeliveryRefLoadCo2);
 
-				var stRegionalDeliveryCo2 = regionalDeliveryLowLoadCo2 / regionalDeliveryRefLoadCo2;
+				var stRegionalDeliveryCo2 = regionalDeliveryLowLoadCo2 + "/" + regionalDeliveryRefLoadCo2;
 
 				double.TryParse(mrf.Descendants().Where(x => x.Name.ToString().Contains("Result")).Skip(4).Descendants()
 						.Where(x => x.Name.ToString().Contains("CO2"))?.FirstOrDefault()?.Value,
@@ -112,7 +117,24 @@ namespace TUGraz.VectoCore.Tests.XML
 						.Where(x => x.Name.ToString().Contains("CO2"))?.FirstOrDefault()?.Value,
 					out var urbanDeliveryRefLoadCo2);
 
-				var stUrbanDeliveryCo2 = urbanDeliveryLowLoadCo2 / urbanDeliveryRefLoadCo2;
+				var stUrbanDeliveryCo2 = urbanDeliveryLowLoadCo2 + "/" + urbanDeliveryRefLoadCo2;
+
+				//Read data vsum file
+				//CO2 Reference LongHaul [g/km]
+				//CO2 Reference Regional Delivery [g/km]
+				//CO2 Reference Urban Delivery [g/km]
+
+				var dt = GetDataTableFromCsv(vsum);
+
+				var refLongHaulCo2 = dt.Rows[1][114] + "/" + dt.Rows[3][114];
+
+				var refRegionalDeliveryCo2 = dt.Rows[5][114] + "/" + dt.Rows[7][114];
+
+				var refUrbanDeliveryCo2 = dt.Rows[9][114] + "/" + dt.Rows[11][114];
+
+				//Ref-Factor LongHaul  
+				//Ref-Factor Regional Delivery 
+				//Ref-Factor Urban Delivery 
 
 				double.TryParse(mrf.Descendants().Where(x => x.Name.ToString().Contains("Result")).Descendants()
 						.Where(x => x.Name.ToString().Contains("EfficiencyRatio"))?.FirstOrDefault()?.Value,
@@ -122,7 +144,7 @@ namespace TUGraz.VectoCore.Tests.XML
 						.Where(x => x.Name.ToString().Contains("EfficiencyRatio"))?.FirstOrDefault()?.Value,
 					out var longHaulRefLoadEf);
 
-				var longHaulReferenceFactor = longHaulLowLoadEf / longHaulRefLoadEf;
+				var longHaulReferenceFactor = (1 / longHaulLowLoadEf) + "/"+ (1 / longHaulRefLoadEf);
 
 				double.TryParse(mrf.Descendants().Where(x => x.Name.ToString().Contains("Result")).Skip(2).Descendants()
 						.Where(x => x.Name.ToString().Contains("EfficiencyRatio"))?.FirstOrDefault()?.Value,
@@ -132,7 +154,7 @@ namespace TUGraz.VectoCore.Tests.XML
 						.Where(x => x.Name.ToString().Contains("EfficiencyRatio"))?.FirstOrDefault()?.Value,
 					out var regionalDeliveryRefLoadEf);
 
-				var regionalDeliveryReferenceFactor = regionalDeliveryLowLoadEf / regionalDeliveryRefLoadEf;
+				var regionalDeliveryReferenceFactor = (1 / regionalDeliveryLowLoadEf) + "/" + (1 / regionalDeliveryRefLoadEf);
 
 				double.TryParse(mrf.Descendants().Where(x => x.Name.ToString().Contains("Result")).Skip(4).Descendants()
 						.Where(x => x.Name.ToString().Contains("EfficiencyRatio"))?.FirstOrDefault()?.Value,
@@ -142,15 +164,9 @@ namespace TUGraz.VectoCore.Tests.XML
 						.Where(x => x.Name.ToString().Contains("EfficiencyRatio"))?.FirstOrDefault()?.Value,
 					out var urbanDeliveryRefLoadEf);
 
-				var urbanDeliveryReferenceFactor = urbanDeliveryLowLoadEf / urbanDeliveryRefLoadEf;
+				var urbanDeliveryReferenceFactor = (1 / urbanDeliveryLowLoadEf) + "/" + (1 / urbanDeliveryRefLoadEf);
 
-				var dt = GetDataTableFromCsv(vsum);
-
-				var refLongHaulCo2 = double.Parse(dt.Rows[1]["CO2 [g/km]"].ToString()) / double.Parse(dt.Rows[3]["CO2 [g/km]"].ToString());
-
-				var refRegionalDeliveryCo2 = double.Parse(dt.Rows[5]["CO2 [g/km]"].ToString()) / double.Parse(dt.Rows[7]["CO2 [g/km]"].ToString());
-
-				var refUrbanDeliveryCo2 = double.Parse(dt.Rows[9]["CO2 [g/km]"].ToString()) / double.Parse(dt.Rows[11]["CO2 [g/km]"].ToString());
+				//Add columns to DataTable
 
 				var dr = rfDt.NewRow(); 
 				var rowArray = new object[] { group.ToString(),
@@ -160,7 +176,7 @@ namespace TUGraz.VectoCore.Tests.XML
 				};
 				dr.ItemArray = rowArray;
 				rfDt.Rows.Add(dr);
-				//Debug.WriteLine("Added Group: " + group);
+				//break;
 			}
 			ToCSV(rfDt, @"TestData\Trailer\ReferenceFactors.csv");
 		}
