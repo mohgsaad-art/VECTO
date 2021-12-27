@@ -98,6 +98,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 			if (rfRun)
 				int.TryParse(Environment.GetEnvironmentVariable("vehicleGroup"), out group);
 
+			var rf = new TrailerReferenceFactors();
+
 			return new TrailerSegment {
 				AccelerationFile =
 					RessourceHelper.ReadStream(
@@ -114,7 +116,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 				SpecificTrailerSegment = DeclarationData.SpecificTrailer.Lookup(group),
 				GenericCadVehicle = DeclarationData.GenericCadVehicle.Lookup(group),
 				DesignSpeed = MeterPerSecond.Create(25), //90km/h
-				CodeStandard = new Dictionary<MissionType, string>{{MissionType.LongHaul, row.Field<string>("ref_code_lh")}, {MissionType.RegionalDelivery, row.Field<string>("ref_code_other")}}
+				CodeStandard = new Dictionary<MissionType, string>{{MissionType.LongHaul, row.Field<string>("ref_code_lh")}, {MissionType.RegionalDelivery, row.Field<string>("ref_code_other")}},
+				ReferenceRatios = rf.Lookup(group.ToString())
 			};
 		}
 

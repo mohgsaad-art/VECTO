@@ -31,6 +31,7 @@
 
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime;
 using Newtonsoft.Json;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
@@ -86,8 +87,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 		public SquareMeter A1RefCor { get; set; }
 		public SquareMeter A2RefCor { get; set; }
 		public SquareMeter A3RefCor { get; set; }
-
 		public Dictionary<MissionType, string> CodeStandard { get; set; }
+		public TrailerReferenceRatios ReferenceRatios { get; set; }
 	}
 
 	public struct ReferenceTrailerSegment
@@ -185,5 +186,16 @@ namespace TUGraz.VectoCore.Models.Declaration
 		public double PayloadLhRef { get; set; }
 		public double PayloadOtherLow { get; set; }
 		public double PayloadOtherRef { get; set; }
-	} 
+	}
+
+	public struct TrailerReferenceRatios
+	{
+		public double LongHaulLow { get; set; }
+		public double LongHaulRef { get; set; }
+		public double RegionalDeliveryLow { get; set; }
+		public double RegionalDeliveryRef { get; set; }
+		public double UrbanDeliveryLow { get; set; }
+		public double UrbanDeliveryRef { get; set; }
+
+	}
 }

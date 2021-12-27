@@ -262,6 +262,28 @@ namespace TUGraz.VectoCore.OutputData.XML
 								_trailerSegment.GenericCadVehicle.A2 * 9 * 9 +
 								_trailerSegment.GenericCadVehicle.A3 * 9 * 9 * 9;
 
+			var rf = 0.0;
+
+			if (result.Mission == MissionType.LongHaul)
+			{
+				rf = result.LoadingType == LoadingType.LowLoading
+					? _trailerSegment.ReferenceRatios.LongHaulLow
+					: _trailerSegment.ReferenceRatios.LongHaulRef;
+
+			}
+			else if (result.Mission == MissionType.RegionalDelivery)
+			{
+				rf = result.LoadingType == LoadingType.LowLoading
+					? _trailerSegment.ReferenceRatios.RegionalDeliveryLow
+					: _trailerSegment.ReferenceRatios.RegionalDeliveryRef;
+			}
+			else
+			{
+				rf = result.LoadingType == LoadingType.LowLoading
+					? _trailerSegment.ReferenceRatios.UrbanDeliveryLow
+					: _trailerSegment.ReferenceRatios.UrbanDeliveryRef;
+			}
+
 			return new XElement(
 				tns + XMLNames.Report_Result_Result,
 				new XElement(tns + XMLNames.Report_Result_Mission, result.Mission.ToXMLFormat()),
@@ -274,6 +296,8 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(tns + XMLNames.Efficiency_Ratio, new XAttribute("unit", "g/km"), ratio.ToXMLFormat(4)),
 				new XElement(tns + XMLNames.Efficiency_Ratio, new XAttribute("unit", "g/t-km"), ratioTons.ToXMLFormat(4)),
 				new XElement(tns + XMLNames.Efficiency_Ratio, new XAttribute("unit", "g/m³-km"), ratioCubicMeter.ToXMLFormat(4)),
+				new XElement(tns + XMLNames.Reference_Ratio, new XAttribute("unit", "g/km"),
+					rf.ToXMLFormat(4)),
 				man.GetResults(result, tns).Cast<object>().ToArray()
 			);
 		}

@@ -2149,6 +2149,15 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ReferenceRatio.
+        /// </summary>
+        public static string Reference_Ratio {
+            get {
+                return ResourceManager.GetString("Reference_Ratio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CdxA.
         /// </summary>
         public static string Report_AirDrag_CdxA {
