@@ -150,9 +150,8 @@ namespace VECTOTrailer.Util.XML
 
 				var signature = certifiedAeroDevice.Descendants().Where(x => x.Name.ToString().Contains("Signature"));
 
-				if (signature != null)
-					vehicle.Element(_v27 + XMLNames.Trailer_AeroFeatures)?.Element(_v27 + XMLNames.Trailer_CertifiedAeroReduction)?
-						.Add(signature);
+				vehicle.Element(_v27 + XMLNames.Trailer_AeroFeatures)?.Element(_v27 + XMLNames.Trailer_CertifiedAeroReduction)?
+					.Add(signature);
 
 			}
 

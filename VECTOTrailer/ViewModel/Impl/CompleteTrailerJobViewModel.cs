@@ -424,7 +424,7 @@ namespace VECTOTrailer.ViewModel.Impl
 				var sourceObject = xmlException.SourceObject as XmlElement;
 				var localName = sourceObject?.LocalName;
 
-				if (sourceObject != null)
+				if (sourceObject != null && !_errors.ContainsKey(localName))
 					_errors.Add(localName, message?.Message);
 			}
 		}

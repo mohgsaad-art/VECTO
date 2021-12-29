@@ -1,30 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tns:VectoInputDeclaration xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" 
-xmlns:v2.1="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1" xmlns:v2.2="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.2" 
-xmlns:v2.7="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7" xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationComponent:DEV:v2.7"
- xmlns:di="http://www.w3.org/2000/09/xmldsig#" schemaVersion="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
- xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationComponent v:\VectoCore\VectoCore\Resources\XSD/VectoDeclarationComponent.xsd">
-	<tns:CertifiedAeroReduction >
-		<Data xsi:type="CertifiedAeroDataDeclarationType" id="AERO-asdf">
-			<Manufacturer>Generic Manufacturer</Manufacturer>
-			<Model>Generic Tyre Model</Model>
-			<CertificationNumber>e12*0815/8051*2017/05T0000*00</CertificationNumber>
-			<Date>2017-02-15T11:00:00Z</Date>
-			<CertifiedAerodynamicReduction0>1.00</CertifiedAerodynamicReduction0>
-			<CertifiedAerodynamicReduction3>2.00</CertifiedAerodynamicReduction3>
-			<CertifiedAerodynamicReduction6>3.00</CertifiedAerodynamicReduction6>
-			<CertifiedAerodynamicReduction9>4.00</CertifiedAerodynamicReduction9>
-			<ApplicableVehicleGroup>1123</ApplicableVehicleGroup>
-		</Data>
+
+<tns:VectoInputDeclaration xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0"
+							xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0"
+							xmlns:v2.1="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1"
+							xmlns:v2.4="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.4"
+							xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationComponent:v2.0"
+							xmlns:di="http://www.w3.org/2000/09/xmldsig#" schemaVersion="2.0"
+							xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+							xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationComponent https://webgate.ec.europa.eu/CITnet/svn/VECTO/trunk/Share/XML/XSD/DEV/VectoDeclarationComponent.xsd">
+	<tns:Tyre xsi:type="v2.0:TyreComponentDeclarationType">
+		<v2.0:Data id="TYR-gooZah3D" xsi:type="TyreDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.4">
+			<Manufacturer>Generic</Manufacturer>
+			<Model>235/75 R 17.5</Model>
+			<CertificationNumber>standard</CertificationNumber>
+			<Date>2020-10-01T11:00:00Z</Date>
+			<AppVersion>DemoTyreApp 1.0</AppVersion>
+			<Dimension>235/75 R 17.5</Dimension>
+			<TyreClass>C3</TyreClass>
+			<FuelEfficiencyClass>C</FuelEfficiencyClass>
+			<RRCDeclared>0.0055</RRCDeclared>
+			<FzISO>37500</FzISO>
+		</v2.0:Data>
 		<Signature>
-			<di:Reference URI="#AERO-asdf">
+			<di:Reference URI="#TYR-gooZah3D">
 				<di:Transforms>
-					<di:Transform Algorithm="urn:vecto:xml:2017:canonicalization"/>
-					<di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+					<di:Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+					<di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
 				</di:Transforms>
-				<di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
-				<di:DigestValue>7vbS5FPUgb2ce2NfcDGWMWpV6aZUyjY0SXqE2AP8Oh8=</di:DigestValue>
+				<di:DigestMethod Algorithm="urn:vecto:xml:2017:DUMMY_SIGNATURE" />
+				<di:DigestValue>NotSignedQ	==</di:DigestValue>
 			</di:Reference>
 		</Signature>
-	</tns:CertifiedAeroReduction>
+	</tns:Tyre>
 </tns:VectoInputDeclaration>

@@ -15,7 +15,7 @@
 	<xs:complexType name="CertifiedAeroComponentDeclarationType">
 		<xs:sequence>
 			<xs:element name="Data" type="v2.7:AbstractCertifiedAeroDataDeclarationType"/>
-			<xs:element name="Signature" type="v1.0:SignatureType"/>
+			<xs:element name="Signature" type="v2.0:SignatureType"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="CertifiedAeroDataDeclarationType">
