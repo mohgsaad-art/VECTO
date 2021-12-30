@@ -1154,6 +1154,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			switch (trailer.NumberOfAxles)
 			{
 				case NumberOfTrailerAxles.One when trailer.Axles[0].Liftable: //one axle cant be liftable
+				case NumberOfTrailerAxles.One when trailer.TrailerType == TypeTrailer.DB:
 				case NumberOfTrailerAxles.One when trailer.TrailerType == TypeTrailer.DC && trailer.Axles[0].Steered:
 				case NumberOfTrailerAxles.Two when trailer.TrailerType == TypeTrailer.DB && liftableCount > 0:
 				case NumberOfTrailerAxles.Two when trailer.TrailerType == TypeTrailer.DB && (trailer.Axles[0].Steered || trailer.Axles[1].Steered):
@@ -1167,10 +1168,14 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				case NumberOfTrailerAxles.Three when trailer.Axles.Count(x => x.Steered) > 2:
 					throw new Exception("Wrong axle configuration");
 			}
+
 		}
 
 		private static void ValidateInputValues(ITrailerDeclarationInputData trailer)
 		{
+			if (trailer.VIN.Length != 17)
+				throw new Exception("VIN must be 17 characters long");
+
 			if (trailer.TrailerType != TypeTrailer.DB && (trailer.TPMLMAxleAssembly == null || trailer.TPMLMAxleAssembly.Value() == 0))
 				throw new Exception("Trailer is not DB but no TPMLM Axle Assembly value is given");
 
@@ -1184,7 +1189,13 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			if (trailer.NumberOfAxles == NumberOfTrailerAxles.One && trailer.LengthBetweenCentersOfAxles.Value() > 0)
 				throw new Exception("One axle trailers should have Length Between Centers Of Axles = 0");
 
-			if (trailer.TPMLMAxleAssembly > trailer.TPMLMTotalTrailer)
+			if (trailer.TrailerType != TypeTrailer.DC && trailer.TPMLMAxleAssembly > trailer.TPMLMTotalTrailer)
+				throw new Exception("Invalid masses declared");
+
+			if (trailer.TrailerType != TypeTrailer.DA && trailer.TPMLMAxleAssembly >= trailer.TPMLMTotalTrailer)
+				throw new Exception("Invalid masses declared");
+
+			if (trailer.TrailerType != TypeTrailer.DA && trailer.TPMLMAxleAssembly >= trailer.TPMLMTotalTrailer)
 				throw new Exception("Invalid masses declared");
 
 			if (trailer.ExternalBodyWidth >= trailer.TotalTrailerHeight)
@@ -1198,6 +1209,25 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 			if (trailer.TrailerType == TypeTrailer.DB && trailer.ExternalBodyWidth > 12)
 				throw new Exception("Invalid external body width declared");
+
+			if (trailer.ExternalBodyWidth < 1 || trailer.ExternalBodyWidth > 2.6)
+				throw new Exception("External body width is invalid");
+
+			if (trailer.ExternalBodyWidth < 1 || trailer.ExternalBodyWidth > 4)
+				throw new Exception("External body width is invalid");
+
+			if ((trailer.TrailerType != TypeTrailer.DC || trailer.TrailerType != TypeTrailer.DA) &&
+				trailer.NumberOfAxles == NumberOfTrailerAxles.One && trailer.LegislativeCategory.ToUpper() != "O3")
+				throw new Exception("Invalid xml values");
+
+			if (trailer.ExternalBodyHeight >= trailer.TotalTrailerHeight)
+				throw new Exception("Invalid height");
+
+			if (trailer.NumberOfAxles == NumberOfTrailerAxles.One && trailer.LengthBetweenCentersOfAxles.Value() > 0)
+				throw new Exception("Invalid value for one axle");
+
+			if (trailer.TotalTrailerHeight < 1 || trailer.TotalTrailerHeight > 4)
+				throw new Exception("Invalid total height");
 		}
 
 		public void ValidateTrailerInput(ITrailerDeclarationInputData trailer)
