@@ -1195,19 +1195,16 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			if (trailer.TrailerType != TypeTrailer.DA && trailer.TPMLMAxleAssembly >= trailer.TPMLMTotalTrailer)
 				throw new Exception("Invalid masses declared");
 
-			if (trailer.TrailerType != TypeTrailer.DA && trailer.TPMLMAxleAssembly >= trailer.TPMLMTotalTrailer)
-				throw new Exception("Invalid masses declared");
-
 			if (trailer.ExternalBodyWidth >= trailer.TotalTrailerHeight)
 				throw new Exception("External body width value is larger than the total trailer height");
 
-			if (trailer.TrailerType == TypeTrailer.DA && trailer.ExternalBodyWidth > 14)
+			if (trailer.TrailerType == TypeTrailer.DA && trailer.ExternalBodyLength > 14)
 				throw new Exception("Invalid external body width declared");
 
-			if (trailer.TrailerType == TypeTrailer.DC && trailer.ExternalBodyWidth > 12)
+			if (trailer.TrailerType == TypeTrailer.DC && trailer.ExternalBodyLength > 12)
 				throw new Exception("Invalid external body width declared");
 
-			if (trailer.TrailerType == TypeTrailer.DB && trailer.ExternalBodyWidth > 12)
+			if (trailer.TrailerType == TypeTrailer.DB && trailer.ExternalBodyLength > 12)
 				throw new Exception("Invalid external body width declared");
 
 			if (trailer.ExternalBodyWidth < 1 || trailer.ExternalBodyWidth > 2.6)
@@ -1228,6 +1225,10 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 			if (trailer.TotalTrailerHeight < 1 || trailer.TotalTrailerHeight > 4)
 				throw new Exception("Invalid total height");
+
+			if (trailer.MassInRunningOrder.Value() < 1000 || trailer.TPMLMAxleAssembly.Value() < 1000 ||
+				trailer.TPMLMTotalTrailer.Value() < 1000)
+				throw new Exception("Invalid values");
 		}
 
 		public void ValidateTrailerInput(ITrailerDeclarationInputData trailer)
