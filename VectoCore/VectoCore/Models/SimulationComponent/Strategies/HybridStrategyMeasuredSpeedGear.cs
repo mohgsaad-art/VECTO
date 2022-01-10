@@ -6,6 +6,7 @@ using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCommon.Utils.MatrixRecorder;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl.Electrics;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
@@ -778,16 +779,26 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			var best = SelectBestOption(eval, absTime, dt, outTorque, outAngularVelocity, dryRun, currentGear);
 
 			
-			if (absTime.IsGreaterOrEqual(9545.3282))
+			if (absTime.IsGreaterOrEqual(0))
 			{
-				
+
 				Log.Debug($"Investigate absTime: {absTime} eval.count: {eval.Count()}");
 				foreach(var ev in eval)
                 {
-					Log.Debug($"ICEOff:{ev.ICEOff} FuelCosts: {ev.FuelCosts} EquivalenceFactor: {ev.EquivalenceFactor} " +
-						$"BatCosts: {ev.BatCosts} ICEStartPenalty1: {ev.ICEStartPenalty1} SoCPenalty: {ev.SoCPenalty} " +
-						$"ICEStartPenalty2: {ev.ICEStartPenalty2} RampUpPenalty: {ev.RampUpPenalty} GearshiftPenalty: {ev.GearshiftPenalty} " +
-						$"Score: {ev.Score}"); //DataBus.BatteryInfo.StateOfCharge
+					Dictionary<string, object> dict = new Dictionary<string, object>()
+					{
+						["Cost"] = ev.Cost,
+						["FuelCosts"] = ev.FuelCosts,
+						["BatCosts"] = ev.BatCosts,
+						["ICEStartPenalty1"] = ev.ICEStartPenalty1,
+						["ICEStartPenalty2"] = ev.ICEStartPenalty2,
+						["SoCPenalty"] = ev.SoCPenalty,
+						["RampUpPenalty"] = ev.RampUpPenalty,
+						["GearshiftPenalty"] = ev.GearshiftPenalty,
+						["IgnoreReason"] = ev.IgnoreReason.HumanReadable()
+					};
+
+					MatRec.NewRow(dict);
 				}
 
 			}
