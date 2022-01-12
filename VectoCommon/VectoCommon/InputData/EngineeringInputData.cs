@@ -285,7 +285,7 @@ namespace TUGraz.VectoCommon.InputData
 		Second ATLookAheadTime { get; }
 		double[][] ShiftSpeedsTCToLocked { get; }
 
-		MeterPerSquareSecond DownshiftMaxAccelerationAT { get; }
+		double? DownshiftMaxAccelerationAT { get; }
 	}
 
 	public interface ITorqueConverterEngineeringShiftParameterInputData

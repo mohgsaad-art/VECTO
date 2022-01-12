@@ -72,6 +72,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Data {
 		public double[] LoadStageThresoldsUp { get; set; }
 		public double[] LoadStageThresoldsDown { get; set; }
 		public double[][] ShiftSpeedsTCToLocked { get; set; }
-		public MeterPerSquareSecond DownshiftMaxAccelerationAT { get; set; }
+		public double EffshiftAccelerationFactorAT { get; set; }
 	}
 }

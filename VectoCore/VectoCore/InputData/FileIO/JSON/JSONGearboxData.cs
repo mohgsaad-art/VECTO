@@ -390,7 +390,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 		public PerSecond MinEngineSpeedPostUpshift => null;
 		public Second ATLookAheadTime => null;
 		public double[][] ShiftSpeedsTCToLocked => null;
-		public MeterPerSquareSecond DownshiftMaxAccelerationAT => null;
+		public double? DownshiftMaxAccelerationAT => null;
 
 		public double? VeloictyDropFactor => null;
 

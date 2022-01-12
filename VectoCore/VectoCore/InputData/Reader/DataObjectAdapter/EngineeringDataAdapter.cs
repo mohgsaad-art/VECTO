@@ -623,7 +623,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				LoadStageThresoldsDown = gsInputData.LoadStageThresholdsDown?.ToArray() ?? DeclarationData.GearboxTCU.LoadStageThresoldsDown,
 				LoadStageThresoldsUp = gsInputData.LoadStageThresholdsUp?.ToArray() ?? DeclarationData.GearboxTCU.LoadStageThresholdsUp,
 				ShiftSpeedsTCToLocked = engineIdlingSpeed == null ? null : (gsInputData.ShiftSpeedsTCToLocked ?? DeclarationData.GearboxTCU.ShiftSpeedsTCToLocked).Select(x => x.Select(y => y + engineIdlingSpeed.AsRPM).ToArray()).ToArray(),
-				DownshiftMaxAccelerationAT = gsInputData.DownshiftMaxAccelerationAT ?? DeclarationData.GearboxTCU.DownshiftMaxAccelerationAT,
+				EffshiftAccelerationFactorAT = gsInputData.DownshiftMaxAccelerationAT ?? DeclarationData.GearboxTCU.DownshiftMaxAccelerationAT,
 
 			};
 

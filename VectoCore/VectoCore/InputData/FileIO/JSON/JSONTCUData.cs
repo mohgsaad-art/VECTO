@@ -145,15 +145,15 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			}
 		}
 
-		public MeterPerSquareSecond DownshiftMaxAccelerationAT
+		public double? DownshiftMaxAccelerationAT
 		{
 			get
 			{
-				if (Body["DownshiftMaxAccelerationAT"] == null) {
+				if (Body["EffshiftAccelerationFactorAT"] == null) {
 					return null;
 				}
 
-				return Body.GetEx<double>("DownshiftMaxAccelerationAT").SI<MeterPerSquareSecond>();
+				return Body.GetEx<double>("EffshiftAccelerationFactorAT");
 			}
 		}
 

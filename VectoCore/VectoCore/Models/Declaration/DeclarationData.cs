@@ -515,7 +515,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 			public const double DragMarginFactor = 0.7;
 
 			public static bool Fallback_ATEcoRollReleaseLockupClutch = false;
-			public static MeterPerSquareSecond DownshiftMaxAccelerationAT = -5.SI<MeterPerSquareSecond>();
+			public static double DownshiftMaxAccelerationAT = 0.35;
 
 
 			// TODO: MQ 2019-11-26 remove, once the parameters are fixed! make fields above read-only or const
@@ -562,7 +562,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 				}
 
 				if (tcuData.DownshiftMaxAccelerationAT != null) {
-					DownshiftMaxAccelerationAT = tcuData.DownshiftMaxAccelerationAT;
+					DownshiftMaxAccelerationAT = tcuData.DownshiftMaxAccelerationAT.Value;
 				}
 
 				var raw = tcuData as JSONFile;

@@ -556,7 +556,7 @@ Public Class Gearbox
         End Get
     End Property
 
-    Public ReadOnly Property DownshiftMaxAccelerationAT As MeterPerSquareSecond Implements IGearshiftEngineeringInputData.DownshiftMaxAccelerationAT
+    Public ReadOnly Property DownshiftMaxAccelerationAT As double? Implements IGearshiftEngineeringInputData.DownshiftMaxAccelerationAT
 	get
 		return Nothing
 	End Get

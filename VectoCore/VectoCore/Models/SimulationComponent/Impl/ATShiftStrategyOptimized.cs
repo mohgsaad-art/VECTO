@@ -34,6 +34,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		private List<SchmittTrigger> LoadStageSteps = new List<SchmittTrigger>();
 		private ShiftLineSet UpshiftLineTCLocked = new ShiftLineSet();
+		private AccelerationCurveData accelerationCurve;
 
 		public new static string Name => "AT - EffShift";
 
@@ -48,6 +49,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			fld = runData.EngineData.FullLoadCurves;
 			vehicleMass = runData.VehicleData.TotalVehicleMass;
 			shiftStrategyParameters = runData.GearshiftParameters;
+			accelerationCurve = runData.DriverData.AccelerationCurve;
 
 			MinMass = runData.VehicleData.MinimumVehicleMass;
 			MaxMass = runData.VehicleData.MaximumVehicleMass;
@@ -359,13 +361,16 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				return null;
 			}
 
-			//var minAcceleration = VectoMath.Min(shiftStrategyParameters.DownshiftMaxAccelerationAT, ???);
-			//if (!(DataBus.DriverInfo.DrivingAction == DrivingAction.Accelerate &&
-			//	DataBus.DriverInfo.DriverAcceleration.IsGreater(minAcceleration))) {
-			//	return null;
-			//}
+            var minAcceleration = accelerationCurve.Lookup(DataBus.VehicleInfo.VehicleSpeed).Acceleration * shiftStrategyParameters.EffshiftAccelerationFactorAT;
+			var targetspeedIncreased =
+				DataBus.DrivingCycleInfo.CycleData.PreviousTargetSpeed.IsSmaller(DataBus.DrivingCycleInfo.CycleData
+					.LeftSample.VehicleTargetSpeed, 5.KMPHtoMeterPerSecond());
+			if (!targetspeedIncreased && !(DataBus.DriverInfo.DrivingAction == DrivingAction.Accelerate &&
+										DataBus.DriverInfo.DriverAcceleration.IsGreater(minAcceleration))) {
+                return null;
+            }
 
-			var minFcGear = currentGear;
+            var minFcGear = currentGear;
 			var minFc = double.MaxValue;
 			var fcCurrent = double.NaN;
 

@@ -470,7 +470,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					AbsTime = CurrentState.AbsTime,
 					AbsDistance = CurrentState.Distance,
 					LeftSample = Left,
-					RightSample = CycleIntervalIterator.RightSample
+					RightSample = CycleIntervalIterator.RightSample,
+					PreviousTargetSpeed = PreviousState.VehicleTargetSpeed,
 				};
 			}
 		}
