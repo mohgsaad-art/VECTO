@@ -52,7 +52,7 @@ using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.Declaration
 {
-	public sealed class StandardTrailer : LookupData<string, StandardTrailerSegment>
+	public sealed class StandardTrailer : LookupData<string, double, StandardTrailerSegment>
 	{
 		private DataTable _segmentTable;
 
@@ -70,14 +70,15 @@ namespace TUGraz.VectoCore.Models.Declaration
 			return GetTrailerDataRow(code);
 		}
 
-		public override StandardTrailerSegment Lookup(string code)
+		public override StandardTrailerSegment Lookup(string code, double grossVehicleWeight = 0)
 		{
 			var row = GetTrailerDataRow(code);
 			if (row == null) {
 				return new StandardTrailerSegment {};
 			}
 
-			return new StandardTrailerSegment {
+			return new StandardTrailerSegment
+			{
 				//VehicleGroup = (int)row.ParseDouble("Vehicle_group"),
 				MaxGcm = row.ParseDouble("max_gcm"),
 				LhA1 = SquareMeter.Create(row.ParseDouble("polar_curve_lh_a1")),
@@ -95,11 +96,16 @@ namespace TUGraz.VectoCore.Models.Declaration
 				TyreXml = row.Field<string>("tyre_xml").Replace("_", "").Replace("Standard", ""),
 				TwinTyres = row.Field<string>("twin_tyres") == "TRUE",
 				TotalHeight = Meter.Create(row.ParseDouble("total_vehicle_height")),
-				PayloadLhLow = row.ParseDouble("payload_lh_low"),
-				PayloadLhRef = row.ParseDouble("payload_lh_ref"),
-				PayloadOtherLow = row.ParseDouble("payload_o_low"),
-				PayloadOtherRef = row.ParseDouble("payload_o_ref")
+				PayloadLhLow = !row.Field<string>("payload_lh_low").Contains("pc") ? row.ParseDouble("payload_lh_low") :
+				DeclarationData.GetPayloadForGrossVehicleWeight(Kilogram.Create(grossVehicleWeight), row.Field<string>("payload_lh_low")).Value(),
+				PayloadLhRef = !row.Field<string>("payload_lh_ref").Contains("pc") ? row.ParseDouble("payload_lh_ref") :
+				DeclarationData.GetPayloadForGrossVehicleWeight(Kilogram.Create(grossVehicleWeight), row.Field<string>("payload_lh_low")).Value(),
+				PayloadOtherLow = !row.Field<string>("payload_o_low").Contains("pc") ? row.ParseDouble("payload_o_low") :
+				DeclarationData.GetPayloadForGrossVehicleWeight(Kilogram.Create(grossVehicleWeight), row.Field<string>("payload_lh_low")).Value(),
+				PayloadOtherRef = !row.Field<string>("payload_o_ref").Contains("pc") ? row.ParseDouble("payload_o_ref") :
+				DeclarationData.GetPayloadForGrossVehicleWeight(Kilogram.Create(grossVehicleWeight), row.Field<string>("payload_lh_low")).Value()
 			};
+
 
 		}
 

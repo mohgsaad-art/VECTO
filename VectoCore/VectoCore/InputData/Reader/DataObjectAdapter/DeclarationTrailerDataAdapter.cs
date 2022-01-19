@@ -220,6 +220,10 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			var maxGcm = specificTrailerData.MaxGcm;
 			var curbmass = trailerData.MassInRunningOrder.Value();
 
+			var massBody = trailerSegment.MassBody;
+
+			var totalCargoVolume = mission.TotalCargoVolume;
+
 			var rfRun = (Environment.GetEnvironmentVariable("referenceFactorRun") == "true");
 			if (rfRun)
 			{
@@ -227,10 +231,12 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				curbmass = mission.MissionType == MissionType.LongHaul
 					? mission.StandardTrailerSegment.CurbMassLh.Value()
 					: mission.StandardTrailerSegment.CurbMassOther.Value();
+
+				massBody = Kilogram.Create(0);
+				totalCargoVolume = CubicMeter.Create(0);
 			}
 
-
-			retVal.BodyAndTrailerMass = Kilogram.Create(curbmass) + trailerSegment.MassBody;
+			retVal.BodyAndTrailerMass = Kilogram.Create(curbmass) + massBody;
 
 			retVal.Loading = Kilogram.Create(Math.Min(loading.Value(), (maxGcm - data.CurbMassChassis.Value() - curbmass)));
 
@@ -240,7 +246,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 					.Select(da => DeclarationData.Wheels.Lookup(da.Tyre.Dimension).DynamicTyreRadius)
 					.Average();
 			
-			retVal.CargoVolume = mission.TotalCargoVolume + trailerData.CargoVolume;
+			retVal.CargoVolume = totalCargoVolume + trailerData.CargoVolume;
 			
 
 			var axles = data.Components.AxleWheels.AxlesDeclaration;
@@ -1176,7 +1182,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			if (trailer.VIN.Length != 17)
 				throw new Exception("VIN must be 17 characters long");
 
-			if (trailer.TrailerType != TypeTrailer.DB && (trailer.TPMLMAxleAssembly == null || trailer.TPMLMAxleAssembly.Value() == 0))
+			if (trailer.TrailerType != TypeTrailer.DB && (trailer.TPMLMAxleAssembly == null || trailer.TPMLMAxleAssembly.Value() == 0 || trailer.TPMLMAxleAssembly.Value() < 1000))
 				throw new Exception("Trailer is not DB but no TPMLM Axle Assembly value is given");
 
 			if (trailer.TrailerType != TypeTrailer.DC && (trailer.TrailerCouplingPoint == TrailerCouplingPoint.Low || trailer.TrailerCouplingPoint == TrailerCouplingPoint.High))
@@ -1226,8 +1232,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			if (trailer.TotalTrailerHeight < 1 || trailer.TotalTrailerHeight > 4)
 				throw new Exception("Invalid total height");
 
-			if (trailer.MassInRunningOrder.Value() < 1000 || trailer.TPMLMAxleAssembly.Value() < 1000 ||
-				trailer.TPMLMTotalTrailer.Value() < 1000)
+			if (trailer.MassInRunningOrder.Value() < 1000 || trailer.TPMLMTotalTrailer.Value() < 1000)
 				throw new Exception("Invalid values");
 		}
 

@@ -117,7 +117,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 				GenericCadVehicle = DeclarationData.GenericCadVehicle.Lookup(group),
 				DesignSpeed = MeterPerSecond.Create(25), //90km/h
 				CodeStandard = new Dictionary<MissionType, string>{{MissionType.LongHaul, row.Field<string>("ref_code_lh")}, {MissionType.RegionalDelivery, row.Field<string>("ref_code_other")}},
-				ReferenceRatios = rf.Lookup(group.ToString())
+				ReferenceRatios = rfRun ? new TrailerReferenceRatios() : rf.Lookup(group.ToString())
 			};
 		}
 
@@ -145,7 +145,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 				var refCode = (missionType == MissionType.LongHaul ? "ref_code_lh" : "ref_code_other");
 
-				var stdTrailer = DeclarationData.StandardTrailer.Lookup(row.Field<string>(refCode));
+				Kilogram grossVehicleWeight = GetGenericVehicleData(row.Field<string>("Generic_code")).JobInputData.Vehicle.GrossVehicleMassRating;
+				var stdTrailer = DeclarationData.StandardTrailer.Lookup(row.Field<string>(refCode), grossVehicleWeight.Value());
 
 				//double maxPayload = 0;
 				double lowLoad = 0;

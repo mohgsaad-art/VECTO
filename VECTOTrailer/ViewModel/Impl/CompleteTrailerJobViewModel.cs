@@ -299,7 +299,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		private static bool CheckTrailerType(Model.TempDataObject.TrailerComponentData trailer)
 		{
 			if (trailer.TrailerType != TypeTrailer.DB &&
-				(trailer.TPLMAxleAssembly == null || trailer.TPLMAxleAssembly.Value() == 0))
+				(trailer.TPLMAxleAssembly == null || trailer.TPLMAxleAssembly.Value() == 0 || trailer.TPLMAxleAssembly.Value() < 1000))
 				return false;
 
 			if (trailer.TrailerType != TypeTrailer.DB &&
@@ -355,7 +355,7 @@ namespace VECTOTrailer.ViewModel.Impl
 			if (trailer.TrailerType == TypeTrailer.DB && trailer.ExternalLengthOfTheBody > 12)
 				return false;
 
-			if (trailer.MassInRunningOrder.Value() < 1000 || trailer.TPLMAxleAssembly.Value() < 1000 || trailer.TPLMTotalTrailer.Value() < 1000)
+			if (trailer.MassInRunningOrder.Value() < 1000 || trailer.TPLMTotalTrailer.Value() < 1000)
 				return false;
 
 			return trailer.TPLMAxleAssembly <= trailer.TPLMTotalTrailer;

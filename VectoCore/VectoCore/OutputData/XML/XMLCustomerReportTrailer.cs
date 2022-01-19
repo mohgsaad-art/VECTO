@@ -264,24 +264,28 @@ namespace TUGraz.VectoCore.OutputData.XML
 
 			var rf = 0.0;
 
-			if (result.Mission == MissionType.LongHaul)
+			var rfRun = (Environment.GetEnvironmentVariable("referenceFactorRun") == "true");
+			if (!rfRun)
 			{
-				rf = result.LoadingType == LoadingType.LowLoading
-					? _trailerSegment.ReferenceRatios.LongHaulLow
-					: _trailerSegment.ReferenceRatios.LongHaulRef;
+				if (result.Mission == MissionType.LongHaul)
+				{
+					rf = result.LoadingType == LoadingType.LowLoading
+						? _trailerSegment.ReferenceRatios.LongHaulLow
+						: _trailerSegment.ReferenceRatios.LongHaulRef;
 
-			}
-			else if (result.Mission == MissionType.RegionalDelivery)
-			{
-				rf = result.LoadingType == LoadingType.LowLoading
-					? _trailerSegment.ReferenceRatios.RegionalDeliveryLow
-					: _trailerSegment.ReferenceRatios.RegionalDeliveryRef;
-			}
-			else
-			{
-				rf = result.LoadingType == LoadingType.LowLoading
-					? _trailerSegment.ReferenceRatios.UrbanDeliveryLow
-					: _trailerSegment.ReferenceRatios.UrbanDeliveryRef;
+				}
+				else if (result.Mission == MissionType.RegionalDelivery)
+				{
+					rf = result.LoadingType == LoadingType.LowLoading
+						? _trailerSegment.ReferenceRatios.RegionalDeliveryLow
+						: _trailerSegment.ReferenceRatios.RegionalDeliveryRef;
+				}
+				else
+				{
+					rf = result.LoadingType == LoadingType.LowLoading
+						? _trailerSegment.ReferenceRatios.UrbanDeliveryLow
+						: _trailerSegment.ReferenceRatios.UrbanDeliveryRef;
+				}
 			}
 
 			return new XElement(
