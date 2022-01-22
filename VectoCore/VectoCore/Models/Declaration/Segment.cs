@@ -87,7 +87,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 		public SquareMeter A1RefCor { get; set; }
 		public SquareMeter A2RefCor { get; set; }
 		public SquareMeter A3RefCor { get; set; }
-		public Dictionary<MissionType, string> CodeStandard { get; set; }
+		public string CodeStandard { get; set; }
 		public TrailerReferenceRatios ReferenceRatios { get; set; }
 	}
 
@@ -173,14 +173,18 @@ namespace TUGraz.VectoCore.Models.Declaration
 		public SquareMeter OtherA1 { get; set; }
 		public SquareMeter OtherA2 { get; set; }
 		public SquareMeter OtherA3 { get; set; }
-		public CubicMeter CargoVolumeLh { get; set; }
-		public CubicMeter CargoVolumeOther { get; set; }
+		public CubicMeter CargoVolumeTrailerLh { get; set; }
+		public CubicMeter CargoVolumeTrailerOther { get; set; }
+		public CubicMeter CargoVolumeBodyLh { get; set; }
+		public CubicMeter CargoVolumeBodyOther { get; set; }
 		public SquareMeter CdxaLh { get; set; }
 		public SquareMeter CdxaOther { get; set; }
 		public string TyreXml { get; set; }
 		public bool TwinTyres { get; set; }
-		public Kilogram CurbMassLh { get; set; }
-		public Kilogram CurbMassOther { get; set; }
+		public Kilogram CurbMassTrailerLh { get; set; }
+		public Kilogram CurbMassTrailerOther { get; set; }
+		public Kilogram CurbMassBodyLh { get; set; }
+		public Kilogram CurbMassBodyOther { get; set; }
 		public Meter TotalHeight { get; set; }
 		public double PayloadLhLow { get; set; }
 		public double PayloadLhRef { get; set; }

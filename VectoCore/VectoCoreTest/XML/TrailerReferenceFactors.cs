@@ -286,6 +286,5 @@ namespace TUGraz.VectoCore.Tests.XML
 			RunBeforeAnyTests();
 			RunTrailerDeclarationJob();
 		}
-
 	}
 }

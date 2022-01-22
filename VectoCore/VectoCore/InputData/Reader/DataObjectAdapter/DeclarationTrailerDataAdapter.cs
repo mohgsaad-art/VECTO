@@ -142,16 +142,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 					.Select(da => DeclarationData.Wheels.Lookup(da.Tyre.Dimension).DynamicTyreRadius)
 					.Average();
 
-			var rfRun = (Environment.GetEnvironmentVariable("referenceFactorRun") == "true");
-			var cargo = trailerSegment.ReferenceTrailerSegment.CargoVolume;
-			if (rfRun)
-				cargo = (mission.MissionType == MissionType.LongHaul
-					? mission.StandardTrailerSegment.CargoVolumeLh
-					: mission.StandardTrailerSegment.CargoVolumeOther);
 
-			retVal.CargoVolume = mission.TotalCargoVolume + cargo; 
+			retVal.CargoVolume = mission.TotalCargoVolume + trailerSegment.ReferenceTrailerSegment.CargoVolume;
 
-			
 			var axles = data.Components.AxleWheels.AxlesDeclaration;
 
 			var axleData = new List<Axle>();
@@ -222,18 +215,28 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 			var massBody = trailerSegment.MassBody;
 
-			var totalCargoVolume = mission.TotalCargoVolume;
+			var trailerCargoVolume = mission.TotalCargoVolume;
+			var BodyCargoVolume = trailerData.CargoVolume;
 
 			var rfRun = (Environment.GetEnvironmentVariable("referenceFactorRun") == "true");
 			if (rfRun)
 			{
 				maxGcm = mission.StandardTrailerSegment.MaxGcm;
 				curbmass = mission.MissionType == MissionType.LongHaul
-					? mission.StandardTrailerSegment.CurbMassLh.Value()
-					: mission.StandardTrailerSegment.CurbMassOther.Value();
+					? mission.StandardTrailerSegment.CurbMassTrailerLh.Value()
+					: mission.StandardTrailerSegment.CurbMassTrailerOther.Value();
 
-				massBody = Kilogram.Create(0);
-				totalCargoVolume = CubicMeter.Create(0);
+				massBody = mission.MissionType == MissionType.LongHaul
+					? mission.StandardTrailerSegment.CurbMassBodyLh
+					: mission.StandardTrailerSegment.CurbMassBodyOther;
+
+				trailerCargoVolume = (mission.MissionType == MissionType.LongHaul
+					? mission.StandardTrailerSegment.CargoVolumeTrailerLh
+					: mission.StandardTrailerSegment.CargoVolumeTrailerOther);
+
+				BodyCargoVolume += (mission.MissionType == MissionType.LongHaul
+					? mission.StandardTrailerSegment.CargoVolumeBodyLh
+					: mission.StandardTrailerSegment.CargoVolumeBodyOther);
 			}
 
 			retVal.BodyAndTrailerMass = Kilogram.Create(curbmass) + massBody;
@@ -246,7 +249,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 					.Select(da => DeclarationData.Wheels.Lookup(da.Tyre.Dimension).DynamicTyreRadius)
 					.Average();
 			
-			retVal.CargoVolume = totalCargoVolume + trailerData.CargoVolume;
+			retVal.CargoVolume = trailerCargoVolume + BodyCargoVolume;
 			
 
 			var axles = data.Components.AxleWheels.AxlesDeclaration;
@@ -1391,7 +1394,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 			var totalHeight = s.TotalHeight;
 			if (rfRun) {
-				var codeStandard = trailerSegment.CodeStandard.Where(x => x.Key == MissionType.LongHaul)?.FirstOrDefault().Value;
+				var codeStandard = trailerSegment.CodeStandard;
 				totalHeight = DeclarationData.StandardTrailer.Lookup(codeStandard).TotalHeight;
 			}
 
