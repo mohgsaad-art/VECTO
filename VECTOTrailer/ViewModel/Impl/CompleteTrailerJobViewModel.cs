@@ -302,10 +302,6 @@ namespace VECTOTrailer.ViewModel.Impl
 				(trailer.TPLMAxleAssembly == null || trailer.TPLMAxleAssembly.Value() == 0 || trailer.TPLMAxleAssembly.Value() < 1000))
 				return false;
 
-			if (trailer.TrailerType != TypeTrailer.DB &&
-				((trailer.Axle1IsLiftable || trailer.Axle1IsSteered) || (trailer.Axle2IsLiftable || trailer.Axle2IsSteered)))
-				return false;
-
 			if ((trailer.TrailerType != TypeTrailer.DC || trailer.TrailerType != TypeTrailer.DA) &&
 				trailer.NumberOfAxles == NumberOfTrailerAxles.One && trailer.LegislativeCategory.ToUpper() != "O3")
 				return false;
