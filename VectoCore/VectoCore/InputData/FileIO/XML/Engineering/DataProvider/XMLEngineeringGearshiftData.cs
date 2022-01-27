@@ -137,7 +137,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider
 		public PerSecond MinEngineSpeedPostUpshift => null;
 		public Second ATLookAheadTime => null;
 		public double[][] ShiftSpeedsTCToLocked => null;
-		public double? DownshiftMaxAccelerationAT { get; }
+		public double? EffshiftAccelerationFactorAT { get; }
 		
 
 		public double? AccelerationFactor => null;

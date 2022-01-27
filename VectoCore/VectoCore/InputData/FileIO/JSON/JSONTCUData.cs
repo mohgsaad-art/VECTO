@@ -145,7 +145,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			}
 		}
 
-		public double? DownshiftMaxAccelerationAT
+		public double? EffshiftAccelerationFactorAT
 		{
 			get
 			{

@@ -513,7 +513,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 			//public static string DefaultShiftStrategy = "";
 			public const double DragMarginFactor = 0.7;
-
+			
 			public static bool Fallback_ATEcoRollReleaseLockupClutch = false;
 			public static double DownshiftMaxAccelerationAT = 0.35;
 
@@ -561,8 +561,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 					MinEngineSpeedPostUpshift = tcuData.MinEngineSpeedPostUpshift;
 				}
 
-				if (tcuData.DownshiftMaxAccelerationAT != null) {
-					DownshiftMaxAccelerationAT = tcuData.DownshiftMaxAccelerationAT.Value;
+				if (tcuData.EffshiftAccelerationFactorAT != null) {
+					DownshiftMaxAccelerationAT = tcuData.EffshiftAccelerationFactorAT.Value;
 				}
 
 				var raw = tcuData as JSONFile;
