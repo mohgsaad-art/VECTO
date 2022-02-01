@@ -266,7 +266,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 			string axleDistributionColumn;
 
-			if (rfRun) {
+			if (rfRun && isSpecific) {
 				row = DeclarationData.StandardTrailer.GetRow(row.Field<string>("ref_code_lh"));
 
 				axleDistributionColumn = missionType == MissionType.LongHaul ? "trailer_axle_load_lh_" : "trailer_axle_load_o_";
@@ -370,7 +370,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 			string axleDistributionColumn;
 
-			if (rfRun) {
+			if (rfRun && isSpecific) {
 				row = DeclarationData.StandardTrailer.GetRow(row.Field<string>("ref_code_lh"));
 
 				axleDistributionColumn = missionType == MissionType.LongHaul ? "towing_axle_load_lh_" : "towing_axle_load_o_";

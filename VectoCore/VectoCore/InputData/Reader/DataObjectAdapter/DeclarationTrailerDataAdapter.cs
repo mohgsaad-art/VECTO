@@ -1389,17 +1389,12 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			return SquareMeter.Create(correction);
 		}
 
-		private static SquareMeter CalcRefHeightCorrection(TrailerSegment trailerSegment, ReferenceTrailerSegment trailer, double previousCorrection, bool rfRun = false)
+		private static SquareMeter CalcRefHeightCorrection(TrailerSegment trailerSegment, ReferenceTrailerSegment trailer, double previousCorrection)
 		{
 			//CdxA(0)_width_correction*(Total_height_of_the_trailer/Total_trailer_height_generic_cad)
 			var s = trailerSegment.GenericCadVehicle;
 
-			var totalHeight = s.TotalHeight;
-			if (rfRun)
-				totalHeight = DeclarationData.StandardTrailer.Lookup(trailerSegment.CodeStandard).TotalHeight;
-			
-
-			var correction = previousCorrection * (trailer.TotalTrailerHeight / totalHeight);
+			var correction = previousCorrection * (trailer.TotalTrailerHeight / s.TotalHeight);
 			return SquareMeter.Create(correction);
 		}
 
@@ -1572,7 +1567,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 		}
 
 		public CorrectedTrailerData GetReferenceTrailerCorrection(TrailerSegment trailerSegment,
-			ITrailerDeclarationInputData trailer, bool rfRun = false)
+			ITrailerDeclarationInputData trailer)
 		{
 			var data = new CorrectedTrailerData();
 			data.A1 = trailerSegment.GenericCadVehicle.A1;
@@ -1605,13 +1600,13 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 			if (trailerSegment.ReferenceTrailerSegment.HeightCorrection) {
 				data.CdxA0 = CalcRefHeightCorrection(trailerSegment, trailerSegment.ReferenceTrailerSegment,
-					data.CdxA0.Value(), rfRun);
+					data.CdxA0.Value());
 				data.CdxA3 = CalcRefHeightCorrection(trailerSegment, trailerSegment.ReferenceTrailerSegment,
-					data.CdxA3.Value(), rfRun);
+					data.CdxA3.Value());
 				data.CdxA6 = CalcRefHeightCorrection(trailerSegment, trailerSegment.ReferenceTrailerSegment,
-					data.CdxA6.Value(), rfRun);
+					data.CdxA6.Value());
 				data.CdxA9 = CalcRefHeightCorrection(trailerSegment, trailerSegment.ReferenceTrailerSegment,
-					data.CdxA9.Value(), rfRun);
+					data.CdxA9.Value());
 			}
 
 			#endregion
@@ -1702,7 +1697,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				CurbMassTrailer = trailer.MassInRunningOrder,
 				Inertia = wheels.Lookup(GetAxleWheelDimension(genericVehicle)).Inertia,
 				TotalCorrection = GetSpecificTrailerCorrection(trailerSegment, trailer, true),
-				TotalRefCorrection = GetReferenceTrailerCorrection(trailerSegment, trailer, true),
+				TotalRefCorrection = GetReferenceTrailerCorrection(trailerSegment, trailer),
 				MaxGcm = maxGcm,
 				CdxABase = trailerSegment.GenericCadVehicle.CdxA0
 			};
