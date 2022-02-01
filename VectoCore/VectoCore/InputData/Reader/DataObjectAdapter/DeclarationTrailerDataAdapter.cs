@@ -1394,7 +1394,12 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			//CdxA(0)_width_correction*(Total_height_of_the_trailer/Total_trailer_height_generic_cad)
 			var s = trailerSegment.GenericCadVehicle;
 
-			var correction = previousCorrection * (trailer.TotalTrailerHeight / s.TotalHeight);
+			var totalHeight = s.TotalHeight;
+			if (rfRun)
+				totalHeight = DeclarationData.StandardTrailer.Lookup(trailerSegment.CodeStandard).TotalHeight;
+			
+
+			var correction = previousCorrection * (trailer.TotalTrailerHeight / totalHeight);
 			return SquareMeter.Create(correction);
 		}
 
@@ -1600,13 +1605,13 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 			if (trailerSegment.ReferenceTrailerSegment.HeightCorrection) {
 				data.CdxA0 = CalcRefHeightCorrection(trailerSegment, trailerSegment.ReferenceTrailerSegment,
-					data.CdxA0.Value());
+					data.CdxA0.Value(), rfRun);
 				data.CdxA3 = CalcRefHeightCorrection(trailerSegment, trailerSegment.ReferenceTrailerSegment,
-					data.CdxA3.Value());
+					data.CdxA3.Value(), rfRun);
 				data.CdxA6 = CalcRefHeightCorrection(trailerSegment, trailerSegment.ReferenceTrailerSegment,
-					data.CdxA6.Value());
+					data.CdxA6.Value(), rfRun);
 				data.CdxA9 = CalcRefHeightCorrection(trailerSegment, trailerSegment.ReferenceTrailerSegment,
-					data.CdxA9.Value());
+					data.CdxA9.Value(), rfRun);
 			}
 
 			#endregion
