@@ -494,7 +494,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 			public static PerSecond MinEngineSpeedPostUpshift = 0.RPMtoRad();
 
-			public static Second ATLookAheadTime = Gearbox.PowershiftShiftTime;
+			public static Second ATLookAheadTime = 1.5.SI<Second>(); //Gearbox.PowershiftShiftTime;
 
 			public static double[] LoadStageThresholdsUp = { 19.7, 36.34, 53.01, 69.68, 86.35 };
 			public static double[] LoadStageThresoldsDown = { 13.7, 30.34, 47.01, 63.68, 80.35 };
@@ -515,7 +515,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 			public const double DragMarginFactor = 0.7;
 			
 			public static bool Fallback_ATEcoRollReleaseLockupClutch = false;
-			public static double DownshiftMaxAccelerationAT = 0.35;
+			public static double DownshiftMaxAccelerationAT = 0.5;
 
 
 			// TODO: MQ 2019-11-26 remove, once the parameters are fixed! make fields above read-only or const
