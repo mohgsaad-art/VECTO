@@ -62,7 +62,6 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 		protected DeclarationTrailerDataAdapter TrailerDataAdapter = new DeclarationTrailerDataAdapter();
 
 		private readonly DeclarationDataAdapterHeavyLorry _da = new DeclarationDataAdapterHeavyLorry();
-		private Segment _segment;
 		private DriverData _driverdata;
 		private AxleGearData _axlegearData;
 		private AngledriveData _angledriveData;
@@ -151,15 +150,14 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			_trailerSegment.A3RefCor = _specificTrailerData.TotalRefCorrection.A3;
 			#endregion
 
-			_segment = GetSegment(_genericInputDataProvider.JobInputData.Vehicle);
 			_driverdata = DataAdapter.CreateDriverData();
-			_driverdata.AccelerationCurve = AccelerationCurveReader.ReadFromStream(_segment.AccelerationFile);
+			_driverdata.AccelerationCurve = AccelerationCurveReader.ReadFromStream(_trailerSegment.AccelerationFile);
 
-			var tempVehicle = DataAdapter.CreateVehicleData(_genericInputDataProvider.JobInputData.Vehicle, _segment, _segment.Missions.First(), _segment.Missions.First().Loadings.First());
-			tempVehicle.DynamicTyreRadius = _genericInputDataProvider.JobInputData.Vehicle.Components.AxleWheels.AxlesDeclaration.Where(axle => axle.AxleType == AxleType.VehicleDriven)
+			var _tempData = TrailerDataAdapter.CreateVehicleData(_genericInputDataProvider.JobInputData.Vehicle, _trailerSegment.Missions.First(), _trailerSegment.Missions.First().Loadings.First(), _trailerSegment);
+			_tempData.DynamicTyreRadius = _genericInputDataProvider.JobInputData.Vehicle.Components.AxleWheels.AxlesDeclaration.Where(axle => axle.AxleType == AxleType.VehicleDriven)
 					.Select(da => DeclarationData.Wheels.Lookup(da.Tyre.Dimension).DynamicTyreRadius).Average();
 
-			DataAdapter.CreateAirdragData(_genericInputDataProvider.JobInputData.Vehicle.Components.AirdragInputData, _segment.Missions.First(), _segment);
+			TrailerDataAdapter.CreateAirdragData(_genericInputDataProvider.JobInputData.Vehicle.Components.AirdragInputData, _trailerSegment.Missions.First(), _specificTrailerData, _trailerSegment);
 
 			_axlegearData = _genericInputDataProvider.JobInputData.Vehicle.AxleConfiguration.AxlegearIncludedInGearbox() ?
 				DataAdapter.CreateDummyAxleGearData(_genericInputDataProvider.JobInputData.Vehicle.Components.GearboxInputData) : 
@@ -177,10 +175,10 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			};
 			var tmpStrategy = PowertrainBuilder.GetShiftStrategy(tmpRunData, new SimplePowertrainContainer(tmpRunData));
 			var tmpEngine = DataAdapter.CreateEngineData(_genericInputDataProvider.JobInputData.Vehicle,
-				 _genericInputDataProvider.JobInputData.Vehicle.Components.EngineInputData.EngineModes[0], _segment.Missions.First());
+				 _genericInputDataProvider.JobInputData.Vehicle.Components.EngineInputData.EngineModes[0], _trailerSegment.Missions.First());
 
 			_gearboxData = DataAdapter.CreateGearboxData(
-				_genericInputDataProvider.JobInputData.Vehicle, new VectoRunData() { EngineData = tmpEngine, AxleGearData = _axlegearData, VehicleData = tempVehicle },
+				_genericInputDataProvider.JobInputData.Vehicle, new VectoRunData() { EngineData = tmpEngine, AxleGearData = _axlegearData, VehicleData = _tempData },
 				tmpStrategy);
 
 			_retarderData = DataAdapter.CreateRetarderData(_genericInputDataProvider.JobInputData.Vehicle.Components.RetarderInputData);

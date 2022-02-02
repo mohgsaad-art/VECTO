@@ -138,7 +138,7 @@ namespace TUGraz.VectoCore.Tests.XML
 
 					var refRegionalDeliveryCo2 = dt.Rows[5][114] + "/" + dt.Rows[7][114];
 
-					var refUrbanDeliveryCo2 = dt.Rows[9][114] + "/" + dt.Rows[11][114];
+					var refUrbanDeliveryCo2 = dt.Rows.Count > 9 ? dt.Rows[9][114] + "/" + dt.Rows[11][114] : "0/0";
 
 					//Ref-Factor LongHaul  
 					//Ref-Factor Regional Delivery 

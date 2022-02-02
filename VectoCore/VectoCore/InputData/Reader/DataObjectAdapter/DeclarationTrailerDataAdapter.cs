@@ -63,7 +63,7 @@ using TUGraz.VectoCore.Utils;
 namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 {
 
-	public class DeclarationTrailerDataAdapter : AbstractSimulationDataAdapter, IDeclarationTrailerDataAdapter
+	public class DeclarationTrailerDataAdapter : AbstractSimulationDataAdapter, IDeclarationDataAdapterTrailer
 	{
 		public static readonly GearboxType[] SupportedGearboxTypes =
 			{ GearboxType.MT, GearboxType.AMT, GearboxType.ATPowerSplit, GearboxType.ATSerial };

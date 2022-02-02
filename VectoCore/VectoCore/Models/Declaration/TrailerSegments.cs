@@ -87,18 +87,26 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		public override TrailerSegment Lookup(NumberOfTrailerAxles numberOfAxles, TypeTrailer typeTrailer, BodyWorkCode bodyWorkCode, bool volumeOrientation, Kilogram tpmlmAxleAssembly)
 		{
+			var group = 0;
+			DataRow row;
+			var rf = new TrailerReferenceFactors();
 			_numberOfAxles = int.Parse(numberOfAxles.GetLabel());
-			var row = GetTrailerDataRow(numberOfAxles, typeTrailer, bodyWorkCode, volumeOrientation, tpmlmAxleAssembly);
+
+			var rfRun = (Environment.GetEnvironmentVariable("referenceFactorRun") == "true");
+			if (rfRun)
+			{
+				row = GetTrailerDataRow(Environment.GetEnvironmentVariable("vehicleGroup"));
+				int.TryParse(Environment.GetEnvironmentVariable("vehicleGroup"), out group);
+			}
+			else
+			{
+				row = GetTrailerDataRow(numberOfAxles, typeTrailer, bodyWorkCode, volumeOrientation, tpmlmAxleAssembly);
+				group = (int)row.ParseDouble("Vehicle_group");
+			}
+
 			if (row == null) {
 				return new TrailerSegment { VehicleGroup = -1 };
 			}
-
-			var group = (int)row.ParseDouble("Vehicle_group");
-			var rfRun = (Environment.GetEnvironmentVariable("referenceFactorRun") == "true");
-			if (rfRun)
-				int.TryParse(Environment.GetEnvironmentVariable("vehicleGroup"), out group);
-
-			var rf = new TrailerReferenceFactors();
 
 			return new TrailerSegment {
 				AccelerationFile =
@@ -430,6 +438,28 @@ namespace TUGraz.VectoCore.Models.Declaration
 			} catch (InvalidOperationException e) {
 				var errorMessage = string.Format(
 					ErrorMessage, numberOfAxles, typeTrailer, bodyWorkCode);
+				Log.Fatal(errorMessage);
+				throw new VectoException(errorMessage, e);
+			}
+
+			return row;
+		}
+
+		private DataRow GetTrailerDataRow(string vehiclGroup)
+		{
+			DataRow row;
+			try
+			{
+				row = _segmentTable.AsEnumerable().First(
+					r => {
+						var VehiclGroupRow = r.Field<string>("Vehicle_group");
+						return VehiclGroupRow == vehiclGroup;
+					});
+			}
+			catch (InvalidOperationException e)
+			{
+				var errorMessage = string.Format(
+					ErrorMessage, vehiclGroup);
 				Log.Fatal(errorMessage);
 				throw new VectoException(errorMessage, e);
 			}

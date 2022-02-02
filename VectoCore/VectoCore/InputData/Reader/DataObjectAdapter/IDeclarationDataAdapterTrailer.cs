@@ -11,7 +11,7 @@ using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 
 namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter {
-	public interface IDeclarationTrailerDataAdapter
+	public interface IDeclarationDataAdapterTrailer
 	{
 		VehicleData CreateVehicleData(IVehicleDeclarationInputData data,
 			Mission mission, KeyValuePair<LoadingType, Tuple<Kilogram, double?>> loading, TrailerSegment trailerSegment);
