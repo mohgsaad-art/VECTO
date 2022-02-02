@@ -103,7 +103,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 					new XElement(tns + XMLNames.Report_CO2StandardsGroup, DeclarationReport.WeightingGroup.ToXMLFormat()),
 					new XElement(tns + XMLNames.Vehicle_VocationalVehicle, modelData.VehicleData.VocationalVehicle),
 					new XElement(tns + XMLNames.Vehicle_SleeperCab, modelData.VehicleData.SleeperCab),
-					GetADAS(modelData.VehicleData.ADAS)
+					GetADAS(modelData.VehicleData.InputData.ADAS)
 				}.Concat(ComponentData(modelData))
 				);
 			if (exempted) {
@@ -121,7 +121,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 			};
 		}
 
-		private XElement GetADAS(VehicleData.ADASData adasData)
+		private XElement GetADAS(IAdvancedDriverAssistantSystemDeclarationInputData adasData)
 		{
 			return new XElement(tns + XMLNames.Vehicle_ADAS,
 								new XElement(tns + XMLNames.Vehicle_ADAS_EngineStopStart, adasData.EngineStopStart),

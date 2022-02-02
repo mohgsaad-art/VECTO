@@ -174,11 +174,18 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 		private VehicleData.ADASData CreateADAS(IAdvancedDriverAssistantSystemDeclarationInputData adas)
 		{
-			return new VehicleData.ADASData {
+			var retVal = new VehicleData.ADASData {
 				EngineStopStart = adas.EngineStopStart,
 				EcoRoll = adas.EcoRoll,
 				PredictiveCruiseControl = adas.PredictiveCruiseControl
 			};
+
+			if (retVal.PredictiveCruiseControl == PredictiveCruiseControlType.None &&
+				retVal.EcoRoll.WithoutEngineStop()) {
+				retVal.EcoRoll = EcoRollType.None;
+			}
+
+			return retVal;
 		}
 
 		private VehicleData CreateExemptedVehicleData(IVehicleDeclarationInputData data)

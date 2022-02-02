@@ -33,6 +33,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using Newtonsoft.Json;
 using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
@@ -229,6 +230,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 		public bool? SleeperCab { get; internal set; }
 		public ADASData ADAS { get; internal set; }
 		public bool VocationalVehicle { get; internal set; }
+		
+		[JsonIgnore]
+		public IVehicleDeclarationInputData InputData { get; set; }
 
 		public class ADASData
 		{

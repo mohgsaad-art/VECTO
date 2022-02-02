@@ -103,10 +103,22 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		#endregion
 
+		public ADASCombination Lookup(IAdvancedDriverAssistantSystemDeclarationInputData adas, GearboxType gbxType)
+		{
+			var entry = Lookup(
+				adas.EngineStopStart, adas.EcoRoll, adas.PredictiveCruiseControl);
+			return ValidateAdasCombination(gbxType, entry);
+		}
+
 		internal ADASCombination Lookup(VehicleData.ADASData adas, GearboxType gbxType)
 		{
 			var entry = Lookup(
 				adas.EngineStopStart, adas.EcoRoll, adas.PredictiveCruiseControl);
+			return ValidateAdasCombination(gbxType, entry);
+		}
+
+		private static ADASCombination ValidateAdasCombination(GearboxType gbxType, ADASCombination entry)
+		{
 			if (gbxType.AutomaticTransmission() && !entry.AllowedForAT) {
 				throw new VectoException("ADAS combination {0} not allowed for AT transmissions", entry.ID);
 			}
@@ -118,6 +130,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 			if (gbxType == GearboxType.AMT && !entry.AllowedForAMT) {
 				throw new VectoException("ADAS combination {0} not allowed for AMT transmissions", entry.ID);
 			}
+
 			return entry;
 		}
 
@@ -144,5 +157,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 			return Lookup(
 				adas.EngineStopStart, adas.EcoRoll, adas.PredictiveCruiseControl);
 		}
+
+		
 	}
 }

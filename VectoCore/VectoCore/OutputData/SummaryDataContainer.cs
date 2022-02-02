@@ -731,7 +731,7 @@ namespace TUGraz.VectoCore.OutputData
 
 			row[Fields.R_DYN] = (ConvertedSI)data.DynamicTyreRadius;
 
-			row[Fields.ADAS_TECHNOLOGY_COMBINATION] = data.ADAS != null ? DeclarationData.ADASCombinations.Lookup(data.ADAS, gbxType).ID : "";
+			row[Fields.ADAS_TECHNOLOGY_COMBINATION] = data.ADAS != null ? DeclarationData.ADASCombinations.Lookup(data.InputData.ADAS, gbxType).ID : "";
 
 			//var cap = "";
 			//row[Fields.REESS_CAPACITY] = cap;
