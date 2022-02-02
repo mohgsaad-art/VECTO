@@ -65,6 +65,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				// pcc is only applicable on highway sections
 				if (!start.Highway) {
 					pccSegment = null;
+					targetSpeedChanged = end.Distance;
 					continue;
 				}
 
