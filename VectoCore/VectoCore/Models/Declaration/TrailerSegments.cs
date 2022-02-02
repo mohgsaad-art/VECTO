@@ -149,6 +149,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 				//double maxPayload = 0;
 				double lowLoad = 0;
 				double refLoad = 0;
+				double lowLoadRef = 0;
+				double refLoadRef = 0;
 
 				switch (missionType) {
 					case MissionType.LongHaul:
@@ -159,6 +161,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 							lowLoad = row.ParseDouble("specific_lh_semi_payload_low");
 							refLoad = row.ParseDouble("specific_lh_semi_payload_rep");
 						}
+						lowLoadRef = row.ParseDouble("specific_lh_semi_payload_low");
+						refLoadRef = row.ParseDouble("specific_lh_semi_payload_rep");
 						break;
 					default:
 						if (rfRun)
@@ -169,6 +173,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 							lowLoad = row.ParseDouble("specific_other_semi_payload_low");
 							refLoad = row.ParseDouble("specific_other_semi_payload_rep");
 						}
+						lowLoadRef = row.ParseDouble("specific_other_semi_payload_low");
+						refLoadRef = row.ParseDouble("specific_other_semi_payload_rep");
 						break;
 				}
 
@@ -227,8 +233,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 				{
 					TrailerWeightingFactors = data,
 					MissionType = missionType,
-					LowLoad = Kilogram.Create(lowLoad),
-					RefLoad = Kilogram.Create(refLoad),
+					LowLoad = Kilogram.Create(lowLoadRef),
+					RefLoad = Kilogram.Create(refLoadRef),
 					SpecificTrailerLowLoad = Kilogram.Create(lowLoad),
 					SpecificTrailerRefLoad = Kilogram.Create(refLoad),
 					AxleWeightDistribution = GetTowingAxleWeightDistribution(row, missionType),
