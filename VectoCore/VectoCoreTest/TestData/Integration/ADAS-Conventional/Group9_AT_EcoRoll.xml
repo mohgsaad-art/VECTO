@@ -251,7 +251,7 @@
           <AppVersion>VectoCore</AppVersion>
           <TransmissionType>APT-S</TransmissionType>
           <MainCertificationMethod>Standard values</MainCertificationMethod>
-          <Gears>
+          <Gears xsi:type="GearsDeclarationType">
             <Gear number="1">
               <Ratio>3.490</Ratio>
               <TorqueLossMap>
