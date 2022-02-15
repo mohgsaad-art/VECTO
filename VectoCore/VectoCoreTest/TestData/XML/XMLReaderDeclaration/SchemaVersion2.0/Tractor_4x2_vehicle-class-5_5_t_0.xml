@@ -198,7 +198,7 @@
           <AppVersion>VectoCore</AppVersion>
           <TransmissionType>AMT</TransmissionType>
           <MainCertificationMethod>Standard values</MainCertificationMethod>
-          <Gears>
+          <Gears xsi:type="GearsDeclarationType">
             <Gear number="1">
               <Ratio>14.930</Ratio>
               <TorqueLossMap>
