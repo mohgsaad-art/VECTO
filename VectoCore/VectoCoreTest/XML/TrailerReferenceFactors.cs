@@ -62,7 +62,9 @@ namespace TUGraz.VectoCore.Tests.XML
 
 			System.Environment.SetEnvironmentVariable("referenceFactorRun", "true");
 
-			var trailerList = DeclarationData.TrailerSegments.GetActiveVehicleGroups();
+			//var trailerList = DeclarationData.TrailerSegments.GetActiveVehicleGroups();
+			var trailerList = new List<int> { 31101 };
+
 			foreach (var group in trailerList) {
 
 				System.Environment.SetEnvironmentVariable("vehicleGroup", group.ToString());
@@ -138,7 +140,7 @@ namespace TUGraz.VectoCore.Tests.XML
 
 					var refRegionalDeliveryCo2 = dt.Rows[5][114] + "/" + dt.Rows[7][114];
 
-					var refUrbanDeliveryCo2 = dt.Rows.Count > 9 ? dt.Rows[9][114] + "/" + dt.Rows[11][114] : "0/0";
+					var refUrbanDeliveryCo2 = dt.Rows.Count > 10 ? dt.Rows[9][114] + "/" + dt.Rows[11][114] : "0/0";
 
 					//Ref-Factor LongHaul  
 					//Ref-Factor Regional Delivery 
@@ -179,8 +181,8 @@ namespace TUGraz.VectoCore.Tests.XML
 							.Where(x => x.Name.ToString().Contains("EfficiencyRatio"))?.FirstOrDefault()?.Value,
 						out var urbanDeliveryRefLoadEf);
 
-					var urbanDeliveryReferenceFactor =
-						(1 / urbanDeliveryLowLoadEf) + "/" + (1 / urbanDeliveryRefLoadEf);
+					var urbanDeliveryReferenceFactor  = urbanDeliveryLowLoadEf != 0 && urbanDeliveryRefLoadEf != 0 ?
+						(1 / urbanDeliveryLowLoadEf) + "/" + (1 / urbanDeliveryRefLoadEf) : "0/0";
 
 					//Add columns to DataTable
 
@@ -204,7 +206,7 @@ namespace TUGraz.VectoCore.Tests.XML
 
 		private static void ToCSV(DataTable dtDataTable, string strFilePath)
 		{
-			var sw = new StreamWriter(strFilePath, false);
+			var sw = new StreamWriter(strFilePath, false, new System.Text.UTF8Encoding(true));
 			//headers    
 			for (var i = 0; i < dtDataTable.Columns.Count; i++)
 			{

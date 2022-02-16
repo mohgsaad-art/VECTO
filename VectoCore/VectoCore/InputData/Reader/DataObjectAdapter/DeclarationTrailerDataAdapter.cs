@@ -1021,6 +1021,10 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 						}
 
 						else if (rfRun && beta != 0) {
+							deltaCdA = mission.MissionType == MissionType.LongHaul
+								? mission.StandardTrailerSegment.CdxaLh
+								: mission.StandardTrailerSegment.CdxaOther;
+
 							a1 = mission.MissionType == MissionType.LongHaul
 								? mission.StandardTrailerSegment.LhA1
 								: mission.StandardTrailerSegment.OtherA1;
@@ -1031,9 +1035,12 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 								? mission.StandardTrailerSegment.LhA3
 								: mission.StandardTrailerSegment.OtherA3;
 
+							aerodynamicDragAera = vehicle.JobInputData.Vehicle.Components.AirdragInputData.AirDragArea;
 
 							// ΔCdxA = A1β + A2β² + A3β³
-							deltaCdA = a1 * beta + a2 * beta * beta + a3 * beta * beta * beta;
+							SquareMeter deltaCdAYaw = a1 * beta + a2 * beta * beta + a3 * beta * beta * beta;
+
+							deltaCdA += deltaCdAYaw;
 						}
 						else
 							deltaCdA = a1 * beta + a2 * beta * beta + a3 * beta * beta * beta;

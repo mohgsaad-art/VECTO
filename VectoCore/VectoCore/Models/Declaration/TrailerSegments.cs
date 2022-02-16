@@ -333,6 +333,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 			var referenceTrailerSegment = DeclarationData.ReferenceTrailer.Lookup(group);
 
+			var twinTyres = referenceTrailerSegment.TwinTyres;
+
 			if (!isSpecific) { //for specific these are taken from the input xml document
 				curbWeight = referenceTrailerSegment.CurbMass + Kilogram.Create(!row.Field<string>("generic_mass_body").Contains("-") ? row.ParseDouble("generic_mass_body") : 0);
 
@@ -348,9 +350,24 @@ namespace TUGraz.VectoCore.Models.Declaration
 					wheels.Add(DeclarationData.Wheels.Lookup(xml));
 					wheels.Add(DeclarationData.Wheels.Lookup(xml));
 				}
+			} else if (rfRun)
+			{
+				var rowTrailer = DeclarationData.StandardTrailer.GetRow(row.Field<string>("ref_code_lh"));
+
+				var xml = rowTrailer.Field<string>("tyre_xml").Replace("_", " ").Replace("Standard", "").Trim();
+				twinTyres = rowTrailer.Field<string>("twin_tyres") == "TRUE";
+
+				wheels.Add(DeclarationData.Wheels.Lookup(xml));
+				if (rowTrailer.Field<string>("Number_of_axles") == "2")
+					wheels.Add(DeclarationData.Wheels.Lookup(xml));
+				if (rowTrailer.Field<string>("Number_of_axles") == "3")
+				{
+					wheels.Add(DeclarationData.Wheels.Lookup(xml));
+					wheels.Add(DeclarationData.Wheels.Lookup(xml));
+				}
 			}
 
-			var trailerType = TrailerType.T2a;
+				var trailerType = TrailerType.T2a;
 			if (trailerValue != "none" && trailerValue !="T2b") //TODO temporary until "none" values are fixed (this is lookup value for standard trailers)
 				trailerType = TrailerTypeHelper.Parse(trailerValue);
 
@@ -367,7 +384,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 				TrailerGrossVehicleWeight = grossVehicleWeight,
 				DeltaCdA = deltaCDxA,
 				CargoVolume = cargoVolume,
-				TwinTyres = referenceTrailerSegment.TwinTyres,
+				TwinTyres = twinTyres,
 				TyreComponent = component
 			};
 
