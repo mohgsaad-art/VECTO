@@ -62,8 +62,8 @@ namespace TUGraz.VectoCore.Tests.XML
 
 			System.Environment.SetEnvironmentVariable("referenceFactorRun", "true");
 
-			//var trailerList = DeclarationData.TrailerSegments.GetActiveVehicleGroups();
-			var trailerList = new List<int> { 31101 };
+			var trailerList = DeclarationData.TrailerSegments.GetActiveVehicleGroups();
+			//var trailerList = new List<int> { 31101 };
 
 			foreach (var group in trailerList) {
 
