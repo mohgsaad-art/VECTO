@@ -36,15 +36,6 @@
                                   Command="{Binding CloseJob}" 
                                   CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
                     </MenuItem>
-
-                    <MenuItem Header="Input Validation">
-                        <MenuItem Header="Validate"
-                                  Command="{Binding ValidateInput}"/>
-                        <MenuItem Header="Show Validation Errors"
-                                  Command="{Binding ShowValidationErrors}"/>
-                        <MenuItem Header="Remove Validation Errors"
-                                  Command="{Binding RemoveValidationErrors}"/>
-                    </MenuItem>
                 </Menu>
                 <Separator HorizontalAlignment="Stretch" Background="Gray"/>
             </StackPanel>
