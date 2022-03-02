@@ -491,8 +491,15 @@ namespace VECTOTrailer.ViewModel.Impl
 			var filePath = FileDialogHelper.ShowSelectFilesDialog(false, FileDialogHelper.JobFilter);
 			if (filePath.IsNullOrEmpty() || !IsNewJobFile(filePath.First()))
 				return;
+            try
+			{
+				HandleFileOpen(filePath.First());
+			}
+			catch(Exception ex)
+            {
+				MessageBox.Show(ex.Message, "Error opening file", MessageBoxButton.OK);
+            }
 
-			HandleFileOpen(filePath.First());
 		}
 
 		public void HandleFileOpen(string filePath)
@@ -504,9 +511,10 @@ namespace VECTOTrailer.ViewModel.Impl
 				jobEntry.Selected = true;
 				//_jobs.Add(jobEntry);
 			} else if (IsXmlFile(filePath)) {
-				jobEntry = GetAdditionalJobEntry(filePath);
-				jobEntry.Selected = true;
-				//_jobs.Add(jobEntry);
+					jobEntry = GetAdditionalJobEntry(filePath);
+					jobEntry.Selected = true;
+					//_jobs.Add(jobEntry);
+
 			}
 			if (jobEntry == null) {
 				return;
