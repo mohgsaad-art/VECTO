@@ -188,7 +188,7 @@
                         </GroupBox>
                         <GroupBox Header="Misc" Margin="0 5,0,0">
                             <StackPanel Orientation="Vertical">
-                                <CheckBox Margin="0,0,0,3" IsChecked="{Binding ValidateData}">Validate data</CheckBox>
+                                <!--<CheckBox Margin="0,0,0,3" IsChecked="{Binding ValidateData}">Validate data</CheckBox>-->
                                 <CheckBox Margin="0,0,0,3" IsChecked="{Binding WriteActualModData}">
                                     <TextBlock>
                                         <Run> Output values in vmod at</Run><LineBreak/>
