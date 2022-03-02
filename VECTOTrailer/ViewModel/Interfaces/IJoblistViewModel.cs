@@ -26,6 +26,7 @@ namespace VECTOTrailer.ViewModel.Interfaces
 		ICommand DoubleClickCommand { get; }
 		ICommand RunSimulation { get; }
 		ICommand StopSimulation { get; }
+		ICommand ShowUserGuide { get; }
 		bool CanRunSimulation { get; }
 		bool CanStopSimulation { get; }
 		bool WriteModData { get; set; }

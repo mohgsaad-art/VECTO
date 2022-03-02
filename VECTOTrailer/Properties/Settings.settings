@@ -8,5 +8,8 @@
     <Setting Name="XMLFilesPathFolder" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="UserGuideFilePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Resources/User Guide_Trailer_Tool.pdf</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

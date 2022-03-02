@@ -396,6 +396,9 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="Resources\User Guide_Trailer_Tool.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="VECTOTrailer_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>

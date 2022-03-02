@@ -90,6 +90,8 @@ namespace VECTOTrailer.ViewModel.Impl
 		private ICommand _aboutViewCommand;
 		private string _lookAheadMinSpeedOverride;
 
+		private string _userGuidePath = null;
+		private string UserGuidePath => _userGuidePath ?? (_userGuidePath = Path.GetFullPath(Properties.Settings.Default.UserGuideFilePath));
 		#endregion
 
 		#region Properties
@@ -176,6 +178,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		private void LoadOptions()
 		{
+
 			if (!File.Exists(SETTINGS_FILE)) {
 				WriteModData = true;
 				ValidateData = true;
@@ -618,12 +621,28 @@ namespace VECTOTrailer.ViewModel.Impl
 				}
 			}
 		}
+		public ICommand ShowUserGuide => _aboutViewCommand ?? (_aboutViewCommand = new RelayCommand(DoShowUserGuideCommand));
 
+		private void DoShowUserGuideCommand()
+        {
+            try
+            {
+				System.Diagnostics.Process.Start(UserGuidePath);
+            }
+            catch (Exception ex)
+            {
+				MessageBox.Show($"Error opening user guide {UserGuidePath}\n \n {ex.Message}", "Error", MessageBoxButton.OK);
+            }
+			
+		}
 		public ICommand AboutViewCommand
 		{
 			get { return _aboutViewCommand ?? (_aboutViewCommand = new RelayCommand(DoAboutViewCommand)); }
 		}
-		private void DoAboutViewCommand()
+
+     
+
+        private void DoAboutViewCommand()
 		{
 
 			var viewModel  = new AboutViewModel();
