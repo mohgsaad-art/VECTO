@@ -593,37 +593,7 @@ namespace VECTOTrailer.ViewModel.Impl
 			get => _TrailerCouplingPoint;
 			set => SetProperty(ref _TrailerCouplingPoint, value);
 		}
-		public bool Axle1ButtonsVisibility
-		{
-			get => _axle1ButtonsVisibilty;
-			set => SetProperty(ref _axle1ButtonsVisibilty, value);
-		}
-		public bool Axle1NewVisibility
-		{
-			get => _axle1NewVisibility;
-			set => SetProperty(ref _axle1NewVisibility, value);
-		}
-		public bool Axle2ButtonsVisibility
-		{
-			get => _axle2ButtonsVisibilty;
-			set => SetProperty(ref _axle2ButtonsVisibilty, value);
-		}
-		public bool Axle2NewVisibility
-		{
-			get => _axle2NewVisibility;
-			set => SetProperty(ref _axle2NewVisibility, value);
-		}
-		public bool Axle3ButtonsVisibility
-		{
-			get => _axle3ButtonsVisibilty;
-			set => SetProperty(ref _axle3ButtonsVisibilty, value);
-		}
-		public bool Axle3NewVisibility
-		{
-			get => _axle3NewVisibility;
-			set => SetProperty(ref _axle3NewVisibility, value);
-		}
-
+		
 		public bool CertifiedAeroDeviceButtonsVisibility
 		{
 			get => _certifiedAeroDeviceButtonsVisibility;
@@ -766,9 +736,6 @@ namespace VECTOTrailer.ViewModel.Impl
 			Axle1IsSteered = axle.ChildNodes[2].InnerText == "true";
 
 			Axle1IsNone = axle.ChildNodes[1].InnerText == "false" && axle.ChildNodes[2].InnerText == "false";
-
-			Axle1ButtonsVisibility = true;
-			Axle1NewVisibility = false;
 		}
 
 		private void EnableSecondAxle(XmlNode axle)
@@ -781,9 +748,6 @@ namespace VECTOTrailer.ViewModel.Impl
 			Axle2IsSteered = axle.ChildNodes[2].InnerText == "true";
 
 			Axle2IsNone = axle.ChildNodes[1].InnerText == "false" && axle.ChildNodes[2].InnerText == "false";
-
-			Axle2ButtonsVisibility = true;
-			Axle2NewVisibility = false;
 		}
 
 		private void EnableThirdAxle(XmlNode axle)
@@ -796,9 +760,6 @@ namespace VECTOTrailer.ViewModel.Impl
 			Axle3IsSteered = axle.ChildNodes[2].InnerText == "true";
 
 			Axle3IsNone = axle.ChildNodes[1].InnerText == "false" && axle.ChildNodes[2].InnerText == "false";
-
-			Axle3ButtonsVisibility = true;
-			Axle3NewVisibility = false;
 		}
 
 		private void EnableCertifiedAeroDevice(XmlNode device)
@@ -931,37 +892,6 @@ namespace VECTOTrailer.ViewModel.Impl
 			(_selectCertifiedAeroDeviceCommand = new RelayCommand<JobFileType>(DoSelectCertifiedAeroDeviceFileCommand));
 
 
-		public ICommand DownloadFirstAxle =>
-			_downloadFirstAxle ??
-			(_downloadFirstAxle = new RelayCommand(DoDownloadFirstAxle));
-
-		public ICommand DownloadCertifiedAeroDevice =>
-			_downloadCertifiedAeroDevice ??
-			(_downloadCertifiedAeroDevice = new RelayCommand(DoDownloadCertifiedAeroDevice));
-
-		public ICommand DeleteCertifiedAeroDevice =>
-			_deleteCertifiedAeroDevice ??
-			(_deleteCertifiedAeroDevice = new RelayCommand(DoDeleteCertifiedAeroDevice));
-
-		public ICommand DeleteFirstAxle =>
-			_deleteFirstAxle ??
-			(_deleteFirstAxle = new RelayCommand(DoDeleteFirstAxle));
-
-		public ICommand DownloadSecondAxle =>
-			_downloadSecondAxle ??
-			(_downloadSecondAxle = new RelayCommand(DoDownloadSecondAxle));
-
-		public ICommand DeleteSecondAxle =>
-			_deleteSecondAxle ??
-			(_deleteSecondAxle = new RelayCommand(DoDeleteSecondAxle));
-
-		public ICommand DownloadThirdAxle =>
-			_downloadThirdAxle ??
-			(_downloadThirdAxle = new RelayCommand(DoDownloadThirdAxle));
-
-		public ICommand DeleteThirdAxle =>
-			_deleteThirdAxle ??
-			(_deleteThirdAxle = new RelayCommand(DoDeleteThirdAxle));
 
 		private void DoSelectFirstFileCommand(JobFileType jobFileType)
 		{
@@ -982,70 +912,6 @@ namespace VECTOTrailer.ViewModel.Impl
 		private void DoSelectCertifiedAeroDeviceFileCommand(JobFileType jobFileType)
 		{
 			this.CertifiedAeroDeviceFilePath = OpenFileSelector(jobFileType, nameof(CertifiedAeroDeviceFilePath), CertifiedAeroDeviceFilePath);
-		}
-
-		private void DoDownloadFirstAxle()
-		{
-			var saveFileDialog = new SaveFileDialog();
-			if (saveFileDialog.ShowDialog() == true)
-				File.WriteAllText(saveFileDialog.FileName, Axle1Xml);
-		}
-
-		private void DoDeleteFirstAxle()
-		{
-			this.Axle1ButtonsVisibility = false;
-			this.Axle1NewVisibility = true;
-			this.Axle1FilePath = string.Empty;
-			this.Axle1IsTwin = false;
-			this.Axle1IsLiftable = false;
-			this.Axle1IsSteered = false;
-		}
-
-		private void DoDownloadSecondAxle()
-		{
-			var saveFileDialog = new SaveFileDialog();
-			if (saveFileDialog.ShowDialog() == true)
-				File.WriteAllText(saveFileDialog.FileName, Axle2Xml);
-		}
-
-		private void DoDeleteSecondAxle()
-		{
-			this.Axle2ButtonsVisibility = false;
-			this.Axle2NewVisibility = true;
-			this.Axle2FilePath = null;
-			this.Axle2IsTwin = false;
-			this.Axle2IsLiftable = false;
-			this.Axle2IsSteered = false;
-		}
-		private void DoDownloadThirdAxle()
-		{
-			var saveFileDialog = new SaveFileDialog();
-			if (saveFileDialog.ShowDialog() == true)
-				File.WriteAllText(saveFileDialog.FileName, Axle3Xml);
-		}
-
-		private void DoDeleteThirdAxle()
-		{
-			this.Axle3ButtonsVisibility = false;
-			this.Axle3NewVisibility = true;
-			this.Axle3FilePath = null;
-			this.Axle3IsTwin = false;
-			this.Axle3IsLiftable = false;
-			this.Axle3IsSteered = false;
-		}
-
-		private void DoDownloadCertifiedAeroDevice()
-		{
-			var saveFileDialog = new SaveFileDialog();
-			if (saveFileDialog.ShowDialog() == true)
-				File.WriteAllText(saveFileDialog.FileName, CertifiedAeroDeviceXml);
-		}
-
-		private void DoDeleteCertifiedAeroDevice()
-		{
-			this.CertifiedAeroDeviceButtonsVisibility = false;
-			this.CertifiedAeroDeviceNewVisibility = true;
-			this.CertifiedAeroDeviceFilePath = null;
 		}
 
 		private string OpenFileSelector(JobFileType jobFileType, string textPropertyName, string filePath)

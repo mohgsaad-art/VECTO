@@ -353,9 +353,7 @@
                         <Button Name="UploadCertifiedAeroDeviceButton" Grid.Column="3" Content="..." Width="30" Margin="5,0,0,0"
                                 Command="{Binding SelectCertifiedAeroDeviceCommand}"
                                 CommandParameter="{Binding CertifiedAeroDeviceType}" />
-                        <Button Name="DownloadCertifiedAeroDeviceButton" Grid.Column="3" Content="Download" Width="60" Margin="5,0,0,0" Command="{Binding DownloadCertifiedAeroDevice}" Visibility="{Binding CertifiedAeroDeviceButtonsVisibility, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                        <Button Name="DeleteCertifiedAeroDeviceButton" Grid.Column="4" Content="Delete" Width="60" Margin="5,0,0,0" Command="{Binding DeleteCertifiedAeroDevice}" Visibility="{Binding CertifiedAeroDeviceButtonsVisibility, Converter={StaticResource BoolToVisibilityConverter}}"/>
-
+                        
                         <!--<StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
                         <TextBlock Text="CdXA reduction"/>
                             <Grid>
@@ -484,9 +482,7 @@
                         </TextBox>
                         <Button Name="UploadFirstAxleButton" Grid.Column="3" Content="..." Width="30" Margin="5,0,0,0"
                                 Command="{Binding SelectFirstFileCommand}"
-                                CommandParameter="{Binding FirstFileType}" Visibility="{Binding Axle1NewVisibility, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                        <Button Name="DownloadFirstAxleButton" Grid.Column="3" Content="Download" Width="60" Margin="5,0,0,0" Command="{Binding DownloadFirstAxle}" Visibility="{Binding Axle1ButtonsVisibility, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                        <Button Name="DeleteFirstAxleButton" Grid.Column="4" Content="Delete" Width="60" Margin="5,0,0,0" Command="{Binding DeleteFirstAxle}" Visibility="{Binding Axle1ButtonsVisibility, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                CommandParameter="{Binding FirstFileType}"/>
                         <TextBlock Grid.Column="5" Text="Twin tyres" Margin="5,0,0,0"/>
                         <CheckBox Grid.Column="6" IsChecked="{Binding Axle1IsTwin}" Margin="0,3,0,0"/>
                         <TextBlock Grid.Column="7" Text="Liftable" Margin="5,0,0,0"/>
@@ -552,8 +548,6 @@
                         <Button Name="UploadSecondAxleButton" Grid.Column="3" Content="..." Width="30" Margin="5,0,0,0"
                                 Command="{Binding SelectSecondFileCommand}"
                                 CommandParameter="{Binding SecondFileType}" />
-                        <Button Name="DownloadSecondAxleButton" Grid.Column="3" Content="Download" Width="60" Margin="5,0,0,0" Command="{Binding DownloadSecondAxle}" Visibility="{Binding Axle2ButtonsVisibility, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                        <Button Name="DeleteSecondAxleButton" Grid.Column="4" Content="Delete" Width="60" Margin="5,0,0,0" Command="{Binding DeleteSecondAxle}" Visibility="{Binding Axle2ButtonsVisibility, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         <TextBlock Grid.Column="5" Text="Twin tyres" Margin="5,0,0,0"/>
                         <CheckBox Grid.Column="6" IsChecked="{Binding Axle2IsTwin}" Margin="0,3,0,0"/>
                         <TextBlock Grid.Column="7" Text="Liftable" Margin="5,0,0,0"/>
@@ -615,8 +609,6 @@
                         <Button Name="UploadThirdAxleButton" Grid.Column="3" Content="..." Width="30" Margin="5,0,0,0"
                                 Command="{Binding SelectThirdFileCommand}"
                                 CommandParameter="{Binding ThirdFileType}" />
-                        <Button Name="DownloadThirdAxleButton" Grid.Column="3" Content="Download" Width="60" Margin="5,0,0,0" Command="{Binding DownloadThirdAxle}" Visibility="{Binding Axle3ButtonsVisibility, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                        <Button Name="DeleteThirdAxleButton" Grid.Column="4" Content="Delete" Width="60" Margin="5,0,0,0" Command="{Binding DeleteThirdAxle}" Visibility="{Binding Axle3ButtonsVisibility, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         <TextBlock Grid.Column="5" Text="Twin tyres" Margin="5,0,0,0"/>
                         <CheckBox Grid.Column="6" IsChecked="{Binding Axle3IsTwin}" Margin="0,3,0,0"/>
                         <TextBlock Grid.Column="7" Text="Liftable" Margin="5,0,0,0"/>
