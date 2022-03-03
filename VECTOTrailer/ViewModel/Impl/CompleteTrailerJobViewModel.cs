@@ -106,15 +106,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 			if (dialogResult == MessageBoxResult.Yes)
 			{
-				SetCurrentDataToSave();
-				var xDoc = _xmlCompletedTrailer.GenerateCompletedTrailerDocument(CompleteVehicleTrailerData);
-
-				if (XmlHelper.ValidateXDocument(xDoc, null, ValidationErrorAction)) {
-					_xmlCompletedTrailerWriter.WriteCompletedTrailerXml(XmlFilePath, xDoc);
-					CloseWindow(window);
-				} else {
-					ValidationResultDialogWindow(false);
-				}
+				Save(window, XmlFilePath);
 			}
 		}
 
@@ -133,16 +125,22 @@ namespace VECTOTrailer.ViewModel.Impl
 			if (filePath == null)
 				return;
 
+			Save(window, filePath);
+		}
+
+		private void Save(Window window, string filePath)
+		{
 			SetCurrentDataToSave();
 			var xDocument = _xmlCompletedTrailer.GenerateCompletedTrailerDocument(CompleteVehicleTrailerData);
 
 			_xmlCompletedTrailerWriter.WriteCompletedTrailerXml(filePath, xDocument);
-			
+
 			if (XmlHelper.ValidateXDocument(xDocument, null, ValidationErrorAction)) {
 				_xmlCompletedTrailerWriter.WriteCompletedTrailerXml(filePath, xDocument);
 				CloseWindow(window);
 			} else {
 				ValidationResultDialogWindow(false);
+				DoShowValidationErrors();
 			}
 		}
 
@@ -403,7 +401,7 @@ namespace VECTOTrailer.ViewModel.Impl
 			return !_validationErrorsDisplayed && !_errors.IsNullOrEmpty();
 		}
 		private void DoShowValidationErrors()
-		{
+		{ 
 			ClearValidationErrors();
 
 			var completedTrailerViewModel = _subModels[Component.CompleteTrailer] as CompleteTrailerViewModel;
