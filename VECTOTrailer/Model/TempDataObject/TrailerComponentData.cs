@@ -92,12 +92,6 @@ namespace VECTOTrailer.Model.TempDataObject
 		public JobFileType CertifiedAeroDeviceType { get; set; }
 		public ITrailerDeclarationInputData Trailer { get; set; }
 
-		public bool Axle1ButtonsVisibility { get; set; }
-		public bool Axle1NewVisibility { get; set; }
-		public bool Axle2ButtonsVisibility { get; set; }
-		public bool Axle2NewVisibility { get; set; }
-		public bool Axle3ButtonsVisibility { get; set; }
-		public bool Axle3NewVisibility { get; set; }
 
 		public bool CertifiedAeroDeviceButtonsVisibility { get; set; }
 		public bool CertifiedAeroDeviceNewVisibility { get; set; }
@@ -325,8 +319,6 @@ namespace VECTOTrailer.Model.TempDataObject
 
 			CertifiedAeroDeviceFilePath = trailer.CertifiedAeroDeviceFilePath;
 
-			CertifiedAeroDeviceButtonsVisibility = trailer.CertifiedAeroDeviceButtonsVisibility;
-			CertifiedAeroDeviceNewVisibility = trailer.CertifiedAeroDeviceNewVisibility;
 
 			TrailerCouplingPoint = trailer.TrailerType == TypeTrailer.DC ? trailer.TrailerCouplingPoint : TrailerCouplingPoint.Unknown;
 		}
