@@ -205,22 +205,11 @@
                             <StackPanel Orientation="Horizontal">
                                 <TextBox Width="200" Text="{Binding OutputDirectory}"/>
                                 <Button Width="60" Content="Browse" Command="{Binding BrowseOutputDirectory}" Margin="5,0,0,0"/>
-                                
                             </StackPanel>
                         </GroupBox>
                         <GroupBox Header="Simulation Data" Margin =" 0,5,0,0">
                             <StackPanel Orientation="Vertical">
                                 <CheckBox IsChecked="{Binding WriteModelData}" Margin="0,0,0,3">Write internal model data (EXPERT!)</CheckBox>
-                            </StackPanel>
-                        </GroupBox>
-                        <GroupBox Header="Look-Ahead Coasting Override (DEV!)" Margin="0,5,0,0">
-                            <StackPanel Orientation="Vertical">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock>Min. Speed:</TextBlock>
-                                    <TextBox MinWidth="50" Margin="10,0,4,0" Text="{Binding LookAheadMinSpeedOverride}"/>
-                                    <TextBlock>[km/h]</TextBlock>
-                                </StackPanel>
-                                <TextBlock FontStyle="Italic" TextWrapping="Wrap" Margin="0,5,0,0">Overrides Lok-Ahead Coasting in declaration mode. Leave empty to use default behavious.</TextBlock>
                             </StackPanel>
                         </GroupBox>
                     </StackPanel>
