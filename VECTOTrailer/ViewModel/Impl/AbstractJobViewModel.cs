@@ -138,9 +138,9 @@ namespace VECTOTrailer.ViewModel.Impl
 		protected bool CloseWindowDialog()
 		{
 
-			var res = MessageBox.Show("","Do you really want to close ?", MessageBoxButton.OK);
+			var res = MessageBox.Show("Do you really want to close ?", "Close", MessageBoxButton.YesNo);
 
-			return res == MessageBoxResult.OK;
+			return res == MessageBoxResult.Yes;
 		}
 	}
 }
