@@ -211,17 +211,11 @@ namespace VECTOTrailer.Util.XML
 
 		private XElement CreateTyre(string axleXml)
 		{
-			//var tyre = XDocument.Parse(axleXml.ToString(CultureInfo.InvariantCulture)).Elements()
-			//	.FirstOrDefault()?.Elements()
-			//	.FirstOrDefault(x =>
-			//		!x.Name.ToString().Contains("TwinTyres") && !x.Name.ToString().Contains("Liftable") &&
-			//		!x.Name.ToString().Contains("Steered"));
-			
-			
+
+
 			var tyre = new XElement(_v27 + XMLNames.AxleWheels_Axles_Axle_Tyre);
 			try {
 				var sourceXml = XDocument.Parse(axleXml.ToString(CultureInfo.InvariantCulture));
-				//var elements = sourceXml.Elements(); 
 				var nsDeclarations = sourceXml.Root.Attributes().Where(attr => attr.IsNamespaceDeclaration);
 				tyre.Add(nsDeclarations);
 				
