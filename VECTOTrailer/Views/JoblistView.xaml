@@ -48,6 +48,12 @@
                                     <TextBlock Text="Stop" Margin="0,0,0,0" />
                                 </StackPanel>
                             </Button>
+                            <ToggleButton VerticalAlignment="Top" Margin="10 10 0 0" Command="{Binding ToggleAutoSim}" IsChecked="{Binding AutoSimulator.AutoSimActive, Mode=OneWay}">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="Scan Folder"></TextBlock>
+                                    <ProgressBar Orientation="Horizontal" IsIndeterminate="{Binding AutoSimulator.AutoSimBusy, Mode=OneWay}"></ProgressBar>
+                                </StackPanel>
+                            </ToggleButton>
 
                             <StackPanel Orientation="Vertical" HorizontalAlignment="Right" Margin="0,10,0,0">
                                 <Button Width="20" 
@@ -66,6 +72,7 @@
                                     </StackPanel>
                                 </Button>
                             </StackPanel>
+                            
                         </StackPanel>
                     </Grid>
 
@@ -178,7 +185,7 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Options">
-                <StackPanel Orientation="Horizontal" Margin="5,10,5,5">
+                <WrapPanel Orientation="Horizontal" Margin="5,10,5,5">
                     <StackPanel Orientation="Vertical">
                         <GroupBox Header="Output">
                             <StackPanel Orientation="Vertical">
@@ -200,20 +207,39 @@
                             </StackPanel>
                         </GroupBox>
                     </StackPanel>
-                    <StackPanel Orientation="Vertical" Margin="5,0,0,0" MaxWidth="300">
+                    <StackPanel Orientation="Vertical">
                         <GroupBox Header ="Output Directory">
                             <StackPanel Orientation="Horizontal">
                                 <TextBox Width="200" Text="{Binding OutputDirectory}"/>
                                 <Button Width="60" Content="Browse" Command="{Binding BrowseOutputDirectory}" Margin="5,0,0,0"/>
                             </StackPanel>
                         </GroupBox>
+                        <GroupBox Header="Scan">
+                            <StackPanel>
+                                <GroupBox Header="Input Directory">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBox Width="200" Text="{Binding AutoSimulator.InputDirectory}"/>
+                                        <Button Width="60" Content="Browse" Command="{Binding BrowseAutoSimInputDirectory}" Margin="5,0,0,0"/>
+                                    </StackPanel>
+                                </GroupBox>
+                                <GroupBox Header="Output Directory">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBox Width="200" Text="{Binding AutoSimulator.OutputDirectory}"/>
+                                        <Button Width="60" Content="Browse" Command="{Binding BrowseAutoSimOutputDirectory}" Margin="5,0,0,0"/>
+                                    </StackPanel>
+                                </GroupBox>
+                            </StackPanel>
+                        </GroupBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="5,0,0,0" MaxWidth="300">
+                       
                         <GroupBox Header="Simulation Data" Margin =" 0,5,0,0">
                             <StackPanel Orientation="Vertical">
                                 <CheckBox IsChecked="{Binding WriteModelData}" Margin="0,0,0,3">Write internal model data (EXPERT!)</CheckBox>
                             </StackPanel>
                         </GroupBox>
                     </StackPanel>
-                </StackPanel>
+                </WrapPanel>
                
             </TabItem>
         </TabControl>

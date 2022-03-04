@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using VECTOTrailer.Helper;
+using VECTOTrailer.Model.Simulation;
 using VECTOTrailer.ViewModel.Impl;
 
 namespace VECTOTrailer.ViewModel.Interfaces
@@ -37,5 +38,9 @@ namespace VECTOTrailer.ViewModel.Interfaces
 		ICommand BrowseOutputDirectory { get; }
 		bool WriteModelData { get; set; }
 		ICommand AboutViewCommand { get; }
+		ICommand BrowseAutoSimOutputDirectory { get; }
+		ICommand BrowseAutoSimInputDirectory { get; }
+		IAutoSimulator AutoSimulator { get; }
+		ICommand ToggleAutoSim { get; }
 	}
 }

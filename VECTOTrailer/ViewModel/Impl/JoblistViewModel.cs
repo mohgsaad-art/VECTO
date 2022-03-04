@@ -9,6 +9,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Xml;
@@ -18,6 +19,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Ninject;
 using NLog;
+using NLog.Config;
 using NLog.Targets;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
@@ -36,6 +38,7 @@ using VECTOTrailer.Util;
 using VECTOTrailer.ViewModel.Interfaces;
 using VECTOTrailer.Helper;
 using VECTOTrailer.Model;
+using VECTOTrailer.Model.Simulation;
 using VECTOTrailer.Views;
 using LogManager = TUGraz.VectoCommon.Models.LogManager;
 using MessageBox = System.Windows.MessageBox;
@@ -89,6 +92,10 @@ namespace VECTOTrailer.ViewModel.Impl
 		private bool _writeModelData;
 		private ICommand _aboutViewCommand;
 		private string _lookAheadMinSpeedOverride;
+		private bool _autoSimActivated;
+		private readonly IAutoSimulator _autoSimulator;
+		private ICommand _browseAutoSimOutputDirectory;
+		private ICommand _browseAutoSimInputDirectory;
 
 		private string _userGuidePath = null;
 		private string UserGuidePath => _userGuidePath ?? (_userGuidePath = Path.GetFullPath(Properties.Settings.Default.UserGuideFilePath));
@@ -159,21 +166,42 @@ namespace VECTOTrailer.ViewModel.Impl
 		#endregion
 
 
-		public JoblistViewModel()
+		public JoblistViewModel(IAutoSimulator autoSimulator)
 		{
 			_settings = new SettingsModel();
+			_autoSimulator = autoSimulator;
+            _autoSimulator.Messages.CollectionChanged += Messages_CollectionChanged;
+				
 			LoadOptions();
 			SetJobEntries();
 
+			ConfigureSimulationWorker();
+			ConfigureNlog();
+		}
+
+        private void Messages_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+		{
+			foreach (var newItem in e.NewItems) {
+				Messages.Add((MessageEntry)newItem);
+			}
+		}
+
+        private void ConfigureNlog()
+		{
+			var target = new MethodCallTarget("VectoGuiTarget", (evtInfo, obj) => LogMethod(evtInfo, obj));
+			//NLog.Config.SimpleConfigurator.ConfigureForTargetLogging(target);
+			NLog.LogManager.Configuration.AddTarget(target);
+			NLog.LogManager.ReconfigExistingLoggers();
+		}
+
+		private void ConfigureSimulationWorker()
+		{
 			SimulationWorker = new BackgroundWorker();
 			SimulationWorker.DoWork += RunVectoSimulation;
 			SimulationWorker.ProgressChanged += VectoSimulationProgressChanged;
 			SimulationWorker.RunWorkerCompleted += VectoSimulationCompleted;
 			SimulationWorker.WorkerReportsProgress = true;
 			SimulationWorker.WorkerSupportsCancellation = true;
-
-			var target = new MethodCallTarget("VectoGuiTarget", (evtInfo, obj) => LogMethod(evtInfo, obj));
-			NLog.Config.SimpleConfigurator.ConfigureForTargetLogging(target);
 		}
 
 		private void LoadOptions()
@@ -191,13 +219,18 @@ namespace VECTOTrailer.ViewModel.Impl
 					return;
 				}
 
-				WriteModData = body.GetValueOrDefault<bool>("WriteModData") ?? true;
-				ValidateData = body.GetValueOrDefault<bool>("ValidateRunData") ?? true;
-				WriteModData1Hz = body.GetValueOrDefault<bool>("WriteModData1Hz") ?? false;
-				WriteActualModData = body.GetValueOrDefault<bool>("WriteActualModData") ?? false;
-				OutputDirectory = body["OutputDirectory"] == null ? "" : body["OutputDirectory"].Value<string>();
+				WriteModData = body.GetValueOrDefault<bool>(nameof(WriteModData)) ?? true;
+				ValidateData = body.GetValueOrDefault<bool>(nameof(ValidateData)) ?? true;
+				WriteModData1Hz = body.GetValueOrDefault<bool>(nameof(WriteModData1Hz)) ?? false;
+				WriteActualModData = body.GetValueOrDefault<bool>(nameof(WriteActualModData)) ?? false;
+
+				OutputDirectory = body[nameof(OutputDirectory)] == null ? "" : body[nameof(OutputDirectory)].Value<string>();
+				_autoSimulator.OutputDirectory = body[nameof(_autoSimulator.OutputDirectory) + "-autosim"] == null ? "" : body[nameof(_autoSimulator.OutputDirectory) + "-autosim"].Value<string>();
+				_autoSimulator.InputDirectory = body[nameof(_autoSimulator.InputDirectory) + "-autosim"] == null ? "" : body[nameof(_autoSimulator.InputDirectory) + "-autosim"].Value<string>();
 			}
 		}
+
+
 
 		private void SaveOptions()
 		{
@@ -207,11 +240,13 @@ namespace VECTOTrailer.ViewModel.Impl
 			header.Add("FileVersion", "4");
 
 			var body = new Dictionary<string, object>();
-			body.Add("WriteModData", WriteModData);
-			body.Add("ValidateRunData", ValidateData);
-			body.Add("WriteModData1Hz", WriteModData1Hz);
-			body.Add("WriteActualModData", WriteActualModData);
-			body.Add("OutputDirectory", OutputDirectory);
+			body.Add(nameof(WriteModData), WriteModData);
+			body.Add(nameof(ValidateData), ValidateData);
+			body.Add(nameof(WriteModData1Hz), WriteModData1Hz);
+			body.Add(nameof(WriteActualModData), WriteActualModData);
+			body.Add(nameof(OutputDirectory), OutputDirectory);
+			body.Add(nameof(_autoSimulator.OutputDirectory) + "-autosim", _autoSimulator.OutputDirectory);
+			body.Add(nameof(_autoSimulator.InputDirectory) + "-autosim", _autoSimulator.InputDirectory);
 
 			JSONFileWriter.WriteFile(new Dictionary<string, object>() { { "Header", header }, { "Body", body } }, SETTINGS_FILE);
 		}
@@ -302,25 +337,44 @@ namespace VECTOTrailer.ViewModel.Impl
 		public bool WriteModData
 		{
 			get { return _writeModData; }
-			set { SetProperty(ref _writeModData, value); }
+			set {
+				if (SetProperty(ref _writeModData, value)) {
+					_autoSimulator.WriteModData = value;
+				}
+			}
 		}
 
 		public bool WriteModData1Hz
 		{
 			get { return _writeModData1Hz; }
-			set { SetProperty(ref _writeModData1Hz,value); }
+			set {
+				if (SetProperty(ref _writeModData1Hz, value)) {
+					_autoSimulator.WriteModData1Hz = value;
+				}
+
+			}
 		}
 
 		public bool ValidateData
 		{
 			get { return _validateData; }
-			set { SetProperty(ref _validateData, value); }
+			set
+			{
+				if (SetProperty(ref _validateData, value)) {
+					_autoSimulator.ValidateData = value;
+				}
+			}
 		}
 
 		public bool WriteActualModData
 		{
 			get { return _writeActualModData; }
-			set { SetProperty(ref _writeActualModData, value); }
+			set
+			{
+				if (SetProperty(ref _writeActualModData, value)) {
+					_autoSimulator.WriteActualModData = value;
+				}
+			}
 		}
 
 		public string OutputDirectory
@@ -328,25 +382,54 @@ namespace VECTOTrailer.ViewModel.Impl
 			get { return _outputDirectory; }
 			set { SetProperty(ref _outputDirectory, value); }
 		}
-
 		public ICommand BrowseOutputDirectory
 		{
-			get { return _browseOutputDirectory ?? (_browseOutputDirectory = new RelayCommand(DoBrowseOutputDirectory)); }
+			get { return _browseOutputDirectory ?? (_browseOutputDirectory = new RelayCommand(() => DoBrowseDirectory(s => OutputDirectory = s))); }
 		}
+		#region AutoSim
+
+
+
+		public IAutoSimulator AutoSimulator
+		{
+			get => _autoSimulator;
+		}
+
+		private ICommand _toggleAutoSimCommand;
+
+		public ICommand ToggleAutoSim { get => _toggleAutoSimCommand ?? (_toggleAutoSimCommand = new RelayCommand(
+			() => {
+				_autoSimulator.ToggleAutoSimulator();
+			})); }
+
+
+		public ICommand BrowseAutoSimOutputDirectory
+		{
+
+			get { return _browseAutoSimOutputDirectory ?? (_browseAutoSimOutputDirectory = new RelayCommand( () => DoBrowseDirectory(s => _autoSimulator.OutputDirectory = s))); }
+		}
+
+		public ICommand BrowseAutoSimInputDirectory
+		{
+			get { return _browseAutoSimInputDirectory ?? (_browseAutoSimInputDirectory = new RelayCommand(() => DoBrowseDirectory(s => _autoSimulator.InputDirectory = s))); }
+		}
+#endregion
 
 		public bool WriteModelData
 		{
 			get { return _writeModelData; }
-			set { SetProperty(ref _writeModelData, value); }
+			set {
+				if (SetProperty(ref _writeModelData, value)) {
+					_autoSimulator.WriteModelData = value;
+				}; }
 		}
 		
-		private void DoBrowseOutputDirectory()
+		private void DoBrowseDirectory(Action<string> assignToAction)
 		{
 			var filePath = FileDialogHelper.ShowSelectDirectoryDialog();
 			if (filePath.IsNullOrEmpty())
 				return;
-
-			OutputDirectory = filePath;
+			assignToAction.Invoke(filePath);
 		}
 
 
@@ -1035,14 +1118,14 @@ namespace VECTOTrailer.ViewModel.Impl
 			if (File.Exists(sumFileWriter.SumFileName)) {
 				sender.ReportProgress(100, new VectoSimulationProgress() {
 					Type = VectoSimulationProgress.MsgType.StatusMessage,
-					Message = string.Format("Sum file written to {0}", sumFileWriter.SumFileName),
+					Message = $"Sum file written to {sumFileWriter.SumFileName}",
 					Link = "<CSV>" + sumFileWriter.SumFileName
 				});
 			}
 
 			sender.ReportProgress(100, new VectoSimulationProgress() {
 				Type = VectoSimulationProgress.MsgType.StatusMessage,
-				Message = string.Format("Simulation finished in {0:F1}s", start.Elapsed.TotalSeconds)
+				Message = $"Simulation finished in {start.Elapsed.TotalSeconds:F1}s"
 			});
 		}
 
@@ -1128,27 +1211,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		}
 
 
-		public class VectoSimulationProgress
-		{
-			public enum MsgType
-			{
-				StatusMessage,
-				InfoMessage,
-				Progress,
-				LogError,
-				LogWarning,
-				
-			}
-
-			public string Message { get; set; }
-
-			public MsgType Type { get; set; }
-
-			public string Link { get; set; }
-		}
-
-		
-#endregion
+		#endregion
 
 		#region Implementation of IMainView
 
@@ -1159,19 +1222,6 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		#endregion
 	}
-	public static class MsgTypeExtensions
-	{
-		public static MessageType ToMessageType(this JoblistViewModel.VectoSimulationProgress.MsgType mt)
-		{
-			switch (mt) {
-				case JoblistViewModel.VectoSimulationProgress.MsgType.StatusMessage: return MessageType.StatusMessage;
-				case JoblistViewModel.VectoSimulationProgress.MsgType.InfoMessage: return MessageType.InfoMessage;
-				case JoblistViewModel.VectoSimulationProgress.MsgType.Progress: return MessageType.StatusMessage;
-				case JoblistViewModel.VectoSimulationProgress.MsgType.LogError: return MessageType.ErrorMessage;
-				case JoblistViewModel.VectoSimulationProgress.MsgType.LogWarning: return MessageType.WarningMessage;
-				default: throw new ArgumentOutOfRangeException(nameof(mt), mt, null);
-			}
-		}
-	}
+
 
 }
