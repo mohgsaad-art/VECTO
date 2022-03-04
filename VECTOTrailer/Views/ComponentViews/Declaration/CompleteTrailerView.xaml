@@ -158,7 +158,7 @@
 
                     <Grid>
                         <customControls:VectoParameterControl
-                            Caption="Length from trailer front end to center of first axle" CaptionWidthGroup="lblGWidth"
+                            Caption="Length from trailer front end to centre of first axle" CaptionWidthGroup="lblGWidth"
                             Value="{Binding LengthFromFrontToFirstAxle, Converter={converter:SIValueConverter}, ConverterParameter=AsMeter|double3}" ValueAlign="right"
                             Unit="m" UnitWidthGroup="unitWidth"/>
                     </Grid>
@@ -166,7 +166,7 @@
 
                     <Grid>
                         <customControls:VectoParameterControl
-                            Caption="Length between centers of axles" CaptionWidthGroup="lblGWidth"
+                            Caption="Length between centres of axles" CaptionWidthGroup="lblGWidth"
                             Value="{Binding LengthBetweenCentersOfAxles, Converter={converter:SIValueConverter}, ConverterParameter=AsMeter|double3}" ValueAlign="right"
                             Unit="m" UnitWidthGroup="unitWidth" Visibility="{Binding ShowLengthBetweenCentersOfAxles, Converter={StaticResource BoolToVisibilityConverter}}"/>
                     </Grid>
