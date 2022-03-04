@@ -34,10 +34,12 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Xml;
 using Castle.Core.Internal;
+using Microsoft.SqlServer.Server;
 using Ninject;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
@@ -67,20 +69,27 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		public override TrailerReferenceRatios Lookup(string vehicleGroup)
 		{
+			System.Diagnostics.Debug.WriteLine(vehicleGroup);
 			var row = GetTrailerDataRow(vehicleGroup);
 			if (row == null) {
 				return new TrailerReferenceRatios();
 			}
 
 			return new TrailerReferenceRatios {
-				LongHaulLow = double.Parse(row[7].ToString().Split('/')[0]),
-				LongHaulRef = double.Parse(row[7].ToString().Split('/')[1]),
-				RegionalDeliveryLow = double.Parse(row[8].ToString().Split('/')[0]),
-				RegionalDeliveryRef = double.Parse(row[8].ToString().Split('/')[1]),
-				UrbanDeliveryLow = double.Parse(row[9].ToString().Split('/')[0]),
-				UrbanDeliveryRef = double.Parse(row[9].ToString().Split('/')[1])
+				LongHaulLow = GetDouble(7,0,row),
+				LongHaulRef = GetDouble(7, 1, row),
+				RegionalDeliveryLow = GetDouble(8, 0, row),
+				RegionalDeliveryRef = GetDouble(8,1,row),
+				UrbanDeliveryLow = GetDouble(9, 0, row),
+				UrbanDeliveryRef = GetDouble(9,1,row)
 			};
 
+		}
+
+		private double GetDouble(int rowIndex, int elementIndex, DataRow row)
+		{
+			return double.Parse(((string)row[rowIndex]).Split('/')[elementIndex], NumberStyles.AllowDecimalPoint,
+				NumberFormatInfo.InvariantInfo);
 		}
 
 		private DataRow GetTrailerDataRow(string vehicleGroup)
