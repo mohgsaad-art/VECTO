@@ -299,10 +299,10 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Column="0" Text="Side skirts short"/>
+                        <TextBlock Grid.Column="0" Text="Short side covers"/>
                         <CheckBox Grid.Column="1" IsChecked="{Binding SideSkirtsShort}"/>
 
-                        <TextBlock Grid.Column="3" Text="Boat tail short" />
+                        <TextBlock Grid.Column="3" Text="Short rear flaps" />
                         <CheckBox Grid.Column="4" IsChecked="{Binding BoatTailShort}"/>
                     </Grid>
                     <Grid Margin="5" Visibility="{Binding IsChecked,ElementName=standard,Converter={StaticResource BoolToVisibilityConverter}}">
@@ -314,9 +314,9 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Column="0" Text="Side skirts long"/>
+                        <TextBlock Grid.Column="0" Text="Long side covers"/>
                         <CheckBox Grid.Column="1" IsChecked="{Binding SideSkirtsLong}"/>
-                        <TextBlock Grid.Column="3" Text="Boat tail long"/>
+                        <TextBlock Grid.Column="3" Text="Tall rear flaps"/>
                         <CheckBox Grid.Column="4" IsChecked="{Binding BoatTailLong}"/>
                     </Grid>
                     <Grid Margin="5" Visibility="{Binding IsChecked,ElementName=certified,Converter={StaticResource BoolToVisibilityConverter}}">
