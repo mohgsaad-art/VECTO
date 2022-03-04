@@ -4,10 +4,12 @@ using System.Globalization;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
+using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider;
+using TUGraz.VectoCore.Utils;
 using VECTOTrailer.ViewModel.Interfaces;
 
 
@@ -52,7 +54,8 @@ namespace VECTOTrailer.Util.XML
 		}
 
 		public XDocument GenerateCompletedTrailerDocument(Dictionary<Component, object> inputData)
-		{
+		{ 
+			
 			var doc = new XDocument(
 				new XDeclaration("1.0", "utf-8", "no"),
 				new XElement(_tns + XMLNames.VectoInputDeclaration,
@@ -165,10 +168,7 @@ namespace VECTOTrailer.Util.XML
 					new XElement(_v27 + "Axles"))));
 
 			try {
-				var tyre = XDocument.Parse(trailerData.Axle1Xml.ToString(CultureInfo.InvariantCulture)).Elements().FirstOrDefault()?.Elements()
-					.FirstOrDefault(x =>
-						!x.Name.ToString().Contains("TwinTyres") && !x.Name.ToString().Contains("Liftable") &&
-						!x.Name.ToString().Contains("Steered"));
+				var tyre = CreateTyre(trailerData.Axle1Xml);
 				vehicle.Element(_v27 + "AxleWheels")?.Element(_v27 + "Data")?.Element(_v27 + "Axles")?.Add(
 					new XElement(_v27 + "Axle", new XAttribute(_xsi + "type", "v2.7:TrailerAxleType"),
 						new XAttribute("axleNumber", "1"),
@@ -180,10 +180,7 @@ namespace VECTOTrailer.Util.XML
 				if (int.Parse(trailerData.NumberOfAxles.GetLabel()) <= 1)
 					return vehicle;
 
-				tyre = XDocument.Parse(trailerData.Axle2Xml.ToString(CultureInfo.InvariantCulture)).Elements().FirstOrDefault()?.Elements()
-					.FirstOrDefault(x =>
-						!x.Name.ToString().Contains("TwinTyres") && !x.Name.ToString().Contains("Liftable") &&
-						!x.Name.ToString().Contains("Steered"));
+				tyre = CreateTyre(trailerData.Axle2Xml);
 
 				vehicle.Element(_v27 + "AxleWheels")?.Element(_v27 + "Data")?.Element(_v27 + "Axles")?.Add(
 					new XElement(_v27 + "Axle", new XAttribute(_xsi + "type", "v2.7:TrailerAxleType"),
@@ -195,10 +192,7 @@ namespace VECTOTrailer.Util.XML
 				if (int.Parse(trailerData.NumberOfAxles.GetLabel()) <= 2)
 					return vehicle;
 
-				tyre = XDocument.Parse(trailerData.Axle3Xml.ToString(CultureInfo.InvariantCulture)).Elements().FirstOrDefault()?.Elements()
-					.FirstOrDefault(x =>
-						!x.Name.ToString().Contains("TwinTyres") && !x.Name.ToString().Contains("Liftable") &&
-						!x.Name.ToString().Contains("Steered"));
+				tyre = CreateTyre(trailerData.Axle3Xml);
 
 				vehicle.Element(_v27 + "AxleWheels")?.Element(_v27 + "Data")?.Element(_v27 + "Axles")?.Add(
 					new XElement(_v27 + "Axle", new XAttribute(_xsi + "type", "v2.7:TrailerAxleType"),
@@ -208,9 +202,44 @@ namespace VECTOTrailer.Util.XML
 						new XElement(_v27 + "Steered", trailerData.Axle3IsSteered.ToString().ToLower()),
 						tyre));
 
-			} catch { }
+			} catch (Exception ex) {
+				throw new VectoException("Error writing XML", ex);
+			}
 
 			return vehicle;
+		}
+
+		private XElement CreateTyre(string axleXml)
+		{
+			//var tyre = XDocument.Parse(axleXml.ToString(CultureInfo.InvariantCulture)).Elements()
+			//	.FirstOrDefault()?.Elements()
+			//	.FirstOrDefault(x =>
+			//		!x.Name.ToString().Contains("TwinTyres") && !x.Name.ToString().Contains("Liftable") &&
+			//		!x.Name.ToString().Contains("Steered"));
+			
+			
+			var tyre = new XElement(_v27 + XMLNames.AxleWheels_Axles_Axle_Tyre);
+			try {
+				var sourceXml = XDocument.Parse(axleXml.ToString(CultureInfo.InvariantCulture));
+				//var elements = sourceXml.Elements(); 
+				var nsDeclarations = sourceXml.Root.Attributes().Where(attr => attr.IsNamespaceDeclaration);
+				tyre.Add(nsDeclarations);
+				
+				var tyreNode = sourceXml.Root.Elements().Single(e => e.Name.LocalName == XMLNames.AxleWheels_Axles_Axle_Tyre);
+				var tyreData = tyreNode.Elements().Single(e => e.Name.LocalName == XMLNames.ComponentDataWrapper);
+				tyreData.Name = _v27 + XMLNames.ComponentDataWrapper; //Data is in namespace v27
+				
+
+				var tyreSignature = tyreNode.Elements().Single(e => e.Name.LocalName == XMLNames.DI_Signature);
+				tyreSignature.Name = _v27 + XMLNames.DI_Signature; //Signature element is in namespace v27
+
+
+				tyre.Add(tyreData, tyreSignature);
+
+			} catch (Exception ex) {
+				throw new VectoException("Invalid tyre xml", ex);
+			}
+			return tyre;
 		}
 	}
 }

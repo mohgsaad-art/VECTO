@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
@@ -133,6 +134,7 @@ namespace VECTOTrailer.ViewModel.Impl
 			SetCurrentDataToSave();
 			var xDocument = _xmlCompletedTrailer.GenerateCompletedTrailerDocument(CompleteVehicleTrailerData);
 
+			//TODO: remove on invalid validation
 			_xmlCompletedTrailerWriter.WriteCompletedTrailerXml(filePath, xDocument);
 
 			if (XmlHelper.ValidateXDocument(xDocument, null, ValidationErrorAction)) {
@@ -415,8 +417,9 @@ namespace VECTOTrailer.ViewModel.Impl
 		private void ValidationErrorAction(XmlSeverityType arg1, ValidationEvent arg2)
 		{
 			var xmlException = arg2?.ValidationEventArgs?.Exception as XmlSchemaValidationException;
-			if (xmlException != null)
-			{
+			
+			if (xmlException != null) {
+				Debug.WriteLine(arg2?.ValidationEventArgs.Message);
 				var message = xmlException.InnerException;
 				var sourceObject = xmlException.SourceObject as XmlElement;
 				var localName = sourceObject?.LocalName;
@@ -442,7 +445,6 @@ namespace VECTOTrailer.ViewModel.Impl
 		{
 			if (validationResult) {
 				MessageBox.Show("No validation errors were found, the entered data is valid!", "Input Validation", MessageBoxButton.OK);
-
 			} else {
 				MessageBox.Show("There are some input validation errors, the data must be valid for saving!", "Input Validation", MessageBoxButton.OK);
 			}
