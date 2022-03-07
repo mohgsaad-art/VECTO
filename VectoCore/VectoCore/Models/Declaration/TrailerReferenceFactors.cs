@@ -75,14 +75,20 @@ namespace TUGraz.VectoCore.Models.Declaration
 				return new TrailerReferenceRatios();
 			}
 
-			return new TrailerReferenceRatios {
-				LongHaulLow = GetDouble(7,0,row),
-				LongHaulRef = GetDouble(7, 1, row),
-				RegionalDeliveryLow = GetDouble(8, 0, row),
-				RegionalDeliveryRef = GetDouble(8,1,row),
-				UrbanDeliveryLow = GetDouble(9, 0, row),
-				UrbanDeliveryRef = GetDouble(9,1,row)
-			};
+			try {
+				return new TrailerReferenceRatios {
+					LongHaulLow = GetDouble(7, 0, row),
+					LongHaulRef = GetDouble(7, 1, row),
+					RegionalDeliveryLow = GetDouble(8, 0, row),
+					RegionalDeliveryRef = GetDouble(8, 1, row),
+					UrbanDeliveryLow = GetDouble(9, 0, row),
+					UrbanDeliveryRef = GetDouble(9, 1, row)
+				};
+			} catch (Exception ex) {
+				throw new VectoException($"Error reading trailer reference ratios for vehicle group {vehicleGroup}",
+					ex);
+			}
+
 
 		}
 
