@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
 using Ninject;
@@ -33,12 +34,13 @@ namespace TUGraz.VectoCore.Tests.XML
 		private const string SampleTrailer = @"TestData\Trailer\trailerSample.xml";
 
 		private IDeclarationTrailerInputDataProvider inputDataProvider;
+		private int _vsumCO2ColumnIndex;
 
 
 		public void RunBeforeAnyTests()
 		{
 			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
-
+			Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture; //fixes double parsing
 			_kernel = new StandardKernel(new VectoNinjectModule());
 			XMLInputReader = _kernel.Get<IXMLInputDataReader>();
 
@@ -63,7 +65,8 @@ namespace TUGraz.VectoCore.Tests.XML
 			System.Environment.SetEnvironmentVariable("referenceFactorRun", "true");
 
 			var trailerList = DeclarationData.TrailerSegments.GetActiveVehicleGroups();
-			//var trailerList = new List<int> { 31101 };
+
+			trailerList = new List<int> { 31101 };//, 31102, 31201, 31301 };
 
 			foreach (var group in trailerList) {
 
@@ -99,39 +102,40 @@ namespace TUGraz.VectoCore.Tests.XML
 					//CO2 Standard Regional Delivery[g/km]
 					//CO2 Standard Urban Delivery[g/km]
 
-
 					var mrf = XDocument.Load(fileWriter.XMLFullReportName);
-
-					double.TryParse(mrf.Descendants().Where(x => x.Name.ToString().Contains("Result")).Skip(1)
+					bool doubleParseSuccess = true;
+					doubleParseSuccess &= double.TryParse(mrf.Descendants().Where(x => x.Name.ToString().Contains("Result")).Skip(1)
 							.Descendants()
-							.Where(x => x.Name.ToString().Contains("CO2"))?.FirstOrDefault()?.Value,
+							.Where(x => x.Name.ToString().Contains("CO2"))?.FirstOrDefault()?.Value, 
+						NumberStyles.AllowDecimalPoint, 
+						NumberFormatInfo.InvariantInfo, 
 						out var longHaulLowLoadCo2);
 
-					double.TryParse(mrf.Descendants().Where(x => x.Name.ToString().Contains("Result")).Skip(1).Skip(1)
+					doubleParseSuccess &= double.TryParse(mrf.Descendants().Where(x => x.Name.ToString().Contains("Result")).Skip(1).Skip(1)
 							.Descendants()
 							.Where(x => x.Name.ToString().Contains("CO2"))?.FirstOrDefault()?.Value,
 						out var longHaulRefLoadCo2);
 
 					var stlongHaulCo2 = longHaulLowLoadCo2 + "/" + longHaulRefLoadCo2;
 
-					double.TryParse(mrf.Descendants().Where(x => x.Name.ToString().Contains("Result")).Skip(2).Skip(1)
+					doubleParseSuccess &= double.TryParse(mrf.Descendants().Where(x => x.Name.ToString().Contains("Result")).Skip(2).Skip(1)
 							.Descendants()
 							.Where(x => x.Name.ToString().Contains("CO2"))?.FirstOrDefault()?.Value,
 						out var regionalDeliveryLowLoadCo2);
 
-					double.TryParse(mrf.Descendants().Where(x => x.Name.ToString().Contains("Result")).Skip(3).Skip(1)
+					doubleParseSuccess &= double.TryParse(mrf.Descendants().Where(x => x.Name.ToString().Contains("Result")).Skip(3).Skip(1)
 							.Descendants()
 							.Where(x => x.Name.ToString().Contains("CO2"))?.FirstOrDefault()?.Value,
 						out var regionalDeliveryRefLoadCo2);
 
 					var stRegionalDeliveryCo2 = regionalDeliveryLowLoadCo2 + "/" + regionalDeliveryRefLoadCo2;
 
-					double.TryParse(mrf.Descendants().Where(x => x.Name.ToString().Contains("Result")).Skip(4).Skip(1)
+					doubleParseSuccess &= double.TryParse(mrf.Descendants().Where(x => x.Name.ToString().Contains("Result")).Skip(4).Skip(1)
 							.Descendants()
 							.Where(x => x.Name.ToString().Contains("CO2"))?.FirstOrDefault()?.Value,
 						out var urbanDeliveryLowLoadCo2);
 
-					double.TryParse(mrf.Descendants().Where(x => x.Name.ToString().Contains("Result")).Skip(5).Skip(1)
+					doubleParseSuccess &= double.TryParse(mrf.Descendants().Where(x => x.Name.ToString().Contains("Result")).Skip(5).Skip(1)
 							.Descendants()
 							.Where(x => x.Name.ToString().Contains("CO2"))?.FirstOrDefault()?.Value,
 						out var urbanDeliveryRefLoadCo2);
@@ -145,34 +149,36 @@ namespace TUGraz.VectoCore.Tests.XML
 
 					var dt = GetDataTableFromCsv(vsum);
 
-					var refLongHaulCo2 = dt.Rows[1][114] + "/" + dt.Rows[3][114];
+					_vsumCO2ColumnIndex = 118;
+					var refLongHaulCo2 = dt.Rows[1][_vsumCO2ColumnIndex] + "/" + dt.Rows[3][_vsumCO2ColumnIndex];
 
-					var refRegionalDeliveryCo2 = dt.Rows[5][114] + "/" + dt.Rows[7][114];
+					var refRegionalDeliveryCo2 = dt.Rows[5][_vsumCO2ColumnIndex] + "/" + dt.Rows[7][_vsumCO2ColumnIndex];
 
-					var refUrbanDeliveryCo2 = dt.Rows.Count > 10 ? dt.Rows[9][114] + "/" + dt.Rows[11][114] : "0/0";
+					var refUrbanDeliveryCo2 = dt.Rows.Count > 10 ? dt.Rows[9][_vsumCO2ColumnIndex] + "/" + dt.Rows[11][_vsumCO2ColumnIndex] : "0/0";
 
 					//Ref-Factor LongHaul  
 					//Ref-Factor Regional Delivery 
 					//Ref-Factor Urban Delivery 
 
-					double.TryParse(mrf.Descendants().Where(x => x.Name.ToString().Contains("Result")).Skip(1)
+					
+					doubleParseSuccess &= double.TryParse(mrf.Descendants().Where(x => x.Name.ToString().Contains("Result")).Skip(1)
 							.Descendants()
 							.Where(x => x.Name.ToString().Contains("EfficiencyRatio"))?.FirstOrDefault()?.Value,
 						out var longHaulLowLoadEf);
 
-					double.TryParse(mrf.Descendants().Where(x => x.Name.ToString().Contains("Result")).Skip(1).Skip(1)
+					doubleParseSuccess &= double.TryParse(mrf.Descendants().Where(x => x.Name.ToString().Contains("Result")).Skip(1).Skip(1)
 							.Descendants()
 							.Where(x => x.Name.ToString().Contains("EfficiencyRatio"))?.FirstOrDefault()?.Value,
 						out var longHaulRefLoadEf);
 
 					var longHaulReferenceFactor = (1 / longHaulLowLoadEf) + "/" + (1 / longHaulRefLoadEf);
 
-					double.TryParse(mrf.Descendants().Where(x => x.Name.ToString().Contains("Result")).Skip(2).Skip(1)
+					doubleParseSuccess &= double.TryParse(mrf.Descendants().Where(x => x.Name.ToString().Contains("Result")).Skip(2).Skip(1)
 							.Descendants()
 							.Where(x => x.Name.ToString().Contains("EfficiencyRatio"))?.FirstOrDefault()?.Value,
 						out var regionalDeliveryLowLoadEf);
 
-					double.TryParse(mrf.Descendants().Where(x => x.Name.ToString().Contains("Result")).Skip(3).Skip(1)
+					doubleParseSuccess &= double.TryParse(mrf.Descendants().Where(x => x.Name.ToString().Contains("Result")).Skip(3).Skip(1)
 							.Descendants()
 							.Where(x => x.Name.ToString().Contains("EfficiencyRatio"))?.FirstOrDefault()?.Value,
 						out var regionalDeliveryRefLoadEf);
@@ -180,12 +186,12 @@ namespace TUGraz.VectoCore.Tests.XML
 					var regionalDeliveryReferenceFactor =
 						(1 / regionalDeliveryLowLoadEf) + "/" + (1 / regionalDeliveryRefLoadEf);
 
-					double.TryParse(mrf.Descendants().Where(x => x.Name.ToString().Contains("Result")).Skip(4).Skip(1)
+					doubleParseSuccess &= double.TryParse(mrf.Descendants().Where(x => x.Name.ToString().Contains("Result")).Skip(4).Skip(1)
 							.Descendants()
 							.Where(x => x.Name.ToString().Contains("EfficiencyRatio"))?.FirstOrDefault()?.Value,
 						out var urbanDeliveryLowLoadEf);
 
-					double.TryParse(mrf.Descendants().Where(x => x.Name.ToString().Contains("Result")).Skip(5).Skip(1)
+					doubleParseSuccess &= double.TryParse(mrf.Descendants().Where(x => x.Name.ToString().Contains("Result")).Skip(5).Skip(1)
 							.Descendants()
 							.Where(x => x.Name.ToString().Contains("EfficiencyRatio"))?.FirstOrDefault()?.Value,
 						out var urbanDeliveryRefLoadEf);
@@ -194,6 +200,10 @@ namespace TUGraz.VectoCore.Tests.XML
 						(1 / urbanDeliveryLowLoadEf) + "/" + (1 / urbanDeliveryRefLoadEf) : "0/0";
 
 					//Add columns to DataTable
+					if (!doubleParseSuccess) {
+						TestContext.WriteLine("parsing error");
+					}
+					//Assert.IsTrue(doubleParseSuccess, "double parsing failed");
 
 					var dr = rfDt.NewRow();
 					var rowArray = new object[] {
@@ -206,8 +216,8 @@ namespace TUGraz.VectoCore.Tests.XML
 					rfDt.Rows.Add(dr);
 					//break;
 
-				} catch {
-					// ignored
+				} catch (Exception ex) {
+					TestContext.WriteLine(ex.Message);
 				}
 			}
 			ToCSV(rfDt, @"TestData\Trailer\reference_factors.csv");
