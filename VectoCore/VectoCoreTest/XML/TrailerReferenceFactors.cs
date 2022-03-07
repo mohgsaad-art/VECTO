@@ -46,7 +46,7 @@ namespace TUGraz.VectoCore.Tests.XML
 			//inputDataProvider = XMLInputReader.CreateDeclarationTrailer(reader);
 		}
 
-		public void RunTrailerDeclarationJob()
+		public void RunTrailerDeclarationJob(bool serializeVectoRunData)
 		{
 			var rfDt = new DataTable();
 			rfDt.Columns.Add("Vehicle_Group");
@@ -71,6 +71,13 @@ namespace TUGraz.VectoCore.Tests.XML
 
 				try {
 					var fileWriter = new FileOutputWriter(SampleTrailer);
+					if (serializeVectoRunData) {
+						var groupDir = Path.Combine(Path.GetDirectoryName(SampleTrailer), group.ToString());
+						Directory.CreateDirectory(groupDir);
+						var groupSamplePath = Path.Combine(groupDir + "\\dummy.xml"); //no real xml only used for the filewriter to use a different output path
+						fileWriter = new FileOutputWriter(groupSamplePath);
+					}
+					
 					var sumWriter = new SummaryDataContainer(fileWriter);
 					var jobContainer = new JobContainer(sumWriter);
 					var dataProvider = XMLInputReader.CreateDeclarationTrailer(XmlReader.Create(SampleTrailer));
@@ -79,7 +86,9 @@ namespace TUGraz.VectoCore.Tests.XML
 						WriteModalResults = false,
 						ActualModalData = false,
 						Validate = false,
+						SerializeVectoRunData = serializeVectoRunData,
 					};
+					
 					jobContainer.AddRuns(runsFactory);
 					jobContainer.Execute();
 					jobContainer.WaitFinished();
@@ -282,11 +291,12 @@ namespace TUGraz.VectoCore.Tests.XML
 			return dtCsv;
 		}
 
-		[TestCase]
-		public void CreateReferenceFactors()
+		[TestCase(false, TestName="Create reference factors")]
+		[TestCase(true, TestName="Create reference factors (serialize output)")]
+		public void CreateReferenceFactors(bool serializeOutput)
 		{
 			RunBeforeAnyTests();
-			RunTrailerDeclarationJob();
+			RunTrailerDeclarationJob(serializeOutput);
 		}
 	}
 }
