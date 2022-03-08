@@ -218,26 +218,6 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			var trailerCargoVolume = mission.TotalCargoVolume;
 			var BodyCargoVolume = trailerData.CargoVolume;
 
-			var rfRun = (Environment.GetEnvironmentVariable("referenceFactorRun") == "true");
-			if (rfRun)
-			{
-				maxGcm = mission.StandardTrailerSegment.MaxGcm;
-				curbmass = mission.MissionType == MissionType.LongHaul
-					? mission.StandardTrailerSegment.CurbMassTrailerLh.Value()
-					: mission.StandardTrailerSegment.CurbMassTrailerOther.Value();
-
-				massBody = mission.MissionType == MissionType.LongHaul
-					? mission.StandardTrailerSegment.CurbMassBodyLh
-					: mission.StandardTrailerSegment.CurbMassBodyOther;
-
-				trailerCargoVolume = (mission.MissionType == MissionType.LongHaul
-					? mission.StandardTrailerSegment.CargoVolumeTrailerLh
-					: mission.StandardTrailerSegment.CargoVolumeTrailerOther);
-
-				BodyCargoVolume += (mission.MissionType == MissionType.LongHaul
-					? mission.StandardTrailerSegment.CargoVolumeBodyLh
-					: mission.StandardTrailerSegment.CargoVolumeBodyOther);
-			}
 
 			retVal.BodyAndTrailerMass = Kilogram.Create(curbmass) + massBody;
 
@@ -1008,42 +988,10 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 						var beta = Math.Atan(vAirY / vAirX).ToDegree();
 
-						var rfRun = (Environment.GetEnvironmentVariable("referenceFactorRun") == "true");
 
-						
-						SquareMeter deltaCdA;
 
-						if (rfRun && beta == 0) {
-							deltaCdA = mission.MissionType == MissionType.LongHaul
-								? mission.StandardTrailerSegment.CdxaLh
-								: mission.StandardTrailerSegment.CdxaOther;
-							aerodynamicDragAera = vehicle.JobInputData.Vehicle.Components.AirdragInputData.AirDragArea;
-						}
 
-						else if (rfRun && beta != 0) {
-							deltaCdA = mission.MissionType == MissionType.LongHaul
-								? mission.StandardTrailerSegment.CdxaLh
-								: mission.StandardTrailerSegment.CdxaOther;
-
-							a1 = mission.MissionType == MissionType.LongHaul
-								? mission.StandardTrailerSegment.LhA1
-								: mission.StandardTrailerSegment.OtherA1;
-							a2 = mission.MissionType == MissionType.LongHaul
-								? mission.StandardTrailerSegment.LhA2
-								: mission.StandardTrailerSegment.OtherA2;
-							a3 = mission.MissionType == MissionType.LongHaul
-								? mission.StandardTrailerSegment.LhA3
-								: mission.StandardTrailerSegment.OtherA3;
-
-							aerodynamicDragAera = vehicle.JobInputData.Vehicle.Components.AirdragInputData.AirDragArea;
-
-							// ΔCdxA = A1β + A2β² + A3β³
-							SquareMeter deltaCdAYaw = a1 * beta + a2 * beta * beta + a3 * beta * beta * beta;
-
-							deltaCdA += deltaCdAYaw;
-						}
-						else
-							deltaCdA = a1 * beta + a2 * beta * beta + a3 * beta * beta * beta;
+						var deltaCdA = a1 * beta + a2 * beta * beta + a3 * beta * beta * beta;
 
 						// CdxA(β) = CdxA(0) + ΔCdxA(β)
 						var cdA = aerodynamicDragAera + deltaCdA; 
@@ -1104,9 +1052,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			retVal.CrossWindCorrectionMode = CrossWindCorrectionMode.DeclarationModeCorrection;
 
 			//Corrected CdxA(0)
-			var rfRun = (Environment.GetEnvironmentVariable("referenceFactorRun") == "true");
+			//var rfRun = false;
 
-			retVal.DeclaredAirdragArea = rfRun ? specificTrailerData.CdxABase.SI<SquareMeter>() : specificTrailerData.TotalRefCorrection.CdxA0;
+			//retVal.DeclaredAirdragArea = rfRun ? specificTrailerData.CdxABase.SI<SquareMeter>() : specificTrailerData.TotalRefCorrection.CdxA0;
 
 			retVal.DeclaredAirdragArea = specificTrailerData.TotalCorrection.CdxA0;
 
@@ -1475,7 +1423,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			return SquareMeter.Create(correction);
 		}
 
-		private static CorrectedTrailerData GetSpecificTrailerCorrection(TrailerSegment trailerSegment, ITrailerDeclarationInputData trailer, bool rfRun = false)
+		private static CorrectedTrailerData GetSpecificTrailerCorrection(TrailerSegment trailerSegment, ITrailerDeclarationInputData trailer)
 		{
 			var data = new CorrectedTrailerData();
 			data.CdxA0 = SquareMeter.Create(trailerSegment.GenericCadVehicle.CdxA0);
@@ -1484,8 +1432,6 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			data.A2 = trailerSegment.GenericCadVehicle.A2;
 			data.A3 = trailerSegment.GenericCadVehicle.A3;
 
-			if (rfRun)
-				return data;
 
 			#region LengthAxleCorrection
 

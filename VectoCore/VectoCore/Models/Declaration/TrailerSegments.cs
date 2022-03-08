@@ -92,17 +92,9 @@ namespace TUGraz.VectoCore.Models.Declaration
 			var rf = new TrailerReferenceFactors();
 			_numberOfAxles = int.Parse(numberOfAxles.GetLabel());
 
-			var rfRun = (Environment.GetEnvironmentVariable("referenceFactorRun") == "true");
-			if (rfRun)
-			{
-				row = GetTrailerDataRow(Environment.GetEnvironmentVariable("vehicleGroup"));
-				int.TryParse(Environment.GetEnvironmentVariable("vehicleGroup"), out group);
-			}
-			else
-			{
-				row = GetTrailerDataRow(numberOfAxles, typeTrailer, bodyWorkCode, volumeOrientation, tpmlmAxleAssembly);
-				group = (int)row.ParseDouble("Vehicle_group");
-			}
+			var rfRun = false;
+			row = GetTrailerDataRow(numberOfAxles, typeTrailer, bodyWorkCode, volumeOrientation, tpmlmAxleAssembly);
+			@group = (int)row.ParseDouble("Vehicle_group");
 
 			if (row == null) {
 				return new TrailerSegment { VehicleGroup = -1 };
@@ -125,7 +117,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 				GenericCadVehicle = DeclarationData.GenericCadVehicle.Lookup(group),
 				DesignSpeed = MeterPerSecond.Create(25), //90km/h
 				CodeStandard = row.Field<string>("ref_code_lh"),
-				ReferenceRatios = rfRun ? new TrailerReferenceRatios() : rf.Lookup(group.ToString())
+				ReferenceRatios = rf.Lookup(group.ToString())
 			};
 		}
 
@@ -134,9 +126,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 			var missionTypes = new List<MissionType>();
 
 			var group = (int)row.ParseDouble("Vehicle_group");
-			var rfRun = (Environment.GetEnvironmentVariable("referenceFactorRun") == "true");
-			if (rfRun)
-				int.TryParse(Environment.GetEnvironmentVariable("vehicleGroup"), out group);
+
 
 			var referenceTrailerSegment = DeclarationData.ReferenceTrailer.Lookup(group);
 
@@ -159,28 +149,16 @@ namespace TUGraz.VectoCore.Models.Declaration
 				double refLoad = 0;
 				double lowLoadRef = 0;
 				double refLoadRef = 0;
-
 				switch (missionType) {
 					case MissionType.LongHaul:
-						if (rfRun) {
-							lowLoad = stdTrailer.PayloadLhLow;
-							refLoad = stdTrailer.PayloadLhRef;
-						} else {
-							lowLoad = row.ParseDouble("specific_lh_semi_payload_low");
-							refLoad = row.ParseDouble("specific_lh_semi_payload_rep");
-						}
+						lowLoad = row.ParseDouble("specific_lh_semi_payload_low");
+						refLoad = row.ParseDouble("specific_lh_semi_payload_rep");
 						lowLoadRef = row.ParseDouble("specific_lh_semi_payload_low");
 						refLoadRef = row.ParseDouble("specific_lh_semi_payload_rep");
 						break;
 					default:
-						if (rfRun)
-						{
-							lowLoad = stdTrailer.PayloadOtherLow;
-							refLoad = stdTrailer.PayloadOtherRef;
-						} else {
-							lowLoad = row.ParseDouble("specific_other_semi_payload_low");
-							refLoad = row.ParseDouble("specific_other_semi_payload_rep");
-						}
+						lowLoad = row.ParseDouble("specific_other_semi_payload_low");
+						refLoad = row.ParseDouble("specific_other_semi_payload_rep");
 						lowLoadRef = row.ParseDouble("specific_other_semi_payload_low");
 						refLoadRef = row.ParseDouble("specific_other_semi_payload_rep");
 						break;
@@ -231,11 +209,6 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 				var curbMass = referenceTrailerSegment.CurbMass;
 
-				/*if (rfRun)
-				{
-					curbMass = (missionType == MissionType.LongHaul ? stdTrailer.CurbMassTrailerLh : stdTrailer.CurbMassTrailerOther);
-					curbMass += (missionType == MissionType.LongHaul ? stdTrailer.CurbMassBodyLh : stdTrailer.CurbMassBodyOther);
-				}*/
 
 				var mission = new Mission
 				{
@@ -276,18 +249,9 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		private static double GetTrailerAxleWeightDistribution(DataRow row, MissionType missionType, bool isSpecific = false)
 		{
-			var rfRun = (Environment.GetEnvironmentVariable("referenceFactorRun") == "true");
-
 			string axleDistributionColumn;
 
-			if (rfRun && isSpecific) {
-				row = DeclarationData.StandardTrailer.GetRow(row.Field<string>("ref_code_lh"));
-
-				axleDistributionColumn = missionType == MissionType.LongHaul ? "trailer_axle_load_lh_" : "trailer_axle_load_o_";
-			}
-			else {
-				axleDistributionColumn = missionType == MissionType.LongHaul ? "semi_lh_axle" : "semi_other_axle";
-			}
+			axleDistributionColumn = missionType == MissionType.LongHaul ? "semi_lh_axle" : "semi_other_axle";
 
 			var axle1 = row.Field<string>(axleDistributionColumn + "1");
 			var axle2 = row.Field<string>(axleDistributionColumn + "2");
@@ -318,10 +282,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		private MissionTrailer CreateTrailer(string trailerValue, double axleWeightShare, bool isSpecific, DataRow row)
 		{
+			var rfRun = false;
 			var group = (int)row.ParseDouble("Vehicle_group");
-			var rfRun = (Environment.GetEnvironmentVariable("referenceFactorRun") == "true");
-			if (rfRun)
-				int.TryParse(Environment.GetEnvironmentVariable("vehicleGroup"), out group);
 
 			Kilogram curbWeight = 0.SI<Kilogram>();
 			Kilogram grossVehicleWeight = GetGenericVehicleData(row.Field<string>("Generic_code")).JobInputData.Vehicle.GrossVehicleMassRating;
@@ -367,7 +329,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 				}
 			}
 
-				var trailerType = TrailerType.T2a;
+			var trailerType = TrailerType.T2a;
 			if (trailerValue != "none" && trailerValue !="T2b") //TODO temporary until "none" values are fixed (this is lookup value for standard trailers)
 				trailerType = TrailerTypeHelper.Parse(trailerValue);
 
@@ -397,17 +359,11 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		private static double[] GetTowingAxleWeightDistribution(DataRow row, MissionType missionType, bool isSpecific = false)
 		{
-			var rfRun = (Environment.GetEnvironmentVariable("referenceFactorRun") == "true");
+			var rfRun = false;
 
 			string axleDistributionColumn;
 
-			if (rfRun && isSpecific) {
-				row = DeclarationData.StandardTrailer.GetRow(row.Field<string>("ref_code_lh"));
-
-				axleDistributionColumn = missionType == MissionType.LongHaul ? "towing_axle_load_lh_" : "towing_axle_load_o_";
-			}
-            else
-				axleDistributionColumn = missionType == MissionType.LongHaul ? "towing_lh_axle" : "towing_other_axle";
+			axleDistributionColumn = missionType == MissionType.LongHaul ? "towing_lh_axle" : "towing_other_axle";
 
 			var axle1 = row.Field<string>(axleDistributionColumn + "1");
 			axle1 = axle1.Contains("---") || axle1.IsNullOrEmpty() ? "0" : axle1;
