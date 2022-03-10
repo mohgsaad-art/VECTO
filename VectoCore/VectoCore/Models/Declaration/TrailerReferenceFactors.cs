@@ -95,7 +95,11 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		private double GetDouble(int rowIndex, int elementIndex, DataRow row)
 		{
-			return double.Parse(((string)row[rowIndex]).Split('/')[elementIndex], NumberStyles.AllowDecimalPoint,
+			var refRatioString = row[rowIndex].ToString();
+			if (refRatioString == "---") {
+				return 0;
+			}
+			return double.Parse(refRatioString.Split('/')[elementIndex], NumberStyles.AllowDecimalPoint,
 				NumberFormatInfo.InvariantInfo);
 		}
 
