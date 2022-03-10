@@ -145,7 +145,7 @@ namespace TUGraz.VectoCore.Tests.XML
 					
 
 					jobContainer.AddRuns(runsFactory, (vectoRunData) => vectoRunData.ModFileSuffix.Contains("_genericTrailer"));
-					continue; //debug
+					
 					jobContainer.Execute(true); //I guess the synchronization fix is not implemented in the trailerTool
 					jobContainer.WaitFinished();
 
@@ -462,17 +462,34 @@ namespace TUGraz.VectoCore.Tests.XML
 		{
 			var vehicleGroups = DeclarationData.TrailerSegments.GetActiveVehicleGroups();
 
-			//vehicleGroups = new List<int> { 11101, 11102, 11201, 11301, 11302, 11401, 11402, 11501, 11502, 15101, 15301, 15401, 15402, 15501, 15502, 21111 };
-			//vehicleGroups  = new List<int> { 23101};//crashes
+			vehicleGroups = new List<int> { 11101, 11102, 11201, 11301, 11302, 11401, 11402, 11501, 11502, 15101, 15301, 15401, 15402, 15501, 15502, 21111 };
+			vehicleGroups  = new List<int> { 23101};
 			var groupManager = new ResultManager(vehicleGroups);
 			SimulateReferenceTrailer(groupManager, vehicleGroups);
-			ToCSV(CreateDataTable(groupManager, vehicleGroups), "TestOutput.csv");
-		
+			ToCSV(CreateDataTable(groupManager, vehicleGroups), "referenceResults.csv");
 			SimulateStandardTrailer(groupManager, vehicleGroups);
+			ToCSV(CreateDataTable(groupManager, vehicleGroups), "standardAndReferenceResults.csv");
+			CalculateReferenceFactors(groupManager,vehicleGroups);
+			ToCSV(CreateDataTable(groupManager,vehicleGroups), "referenceFactors.csv");
 
 		}
 
 
+		private void CalculateReferenceFactors(ResultManager manager, IList<int> vehicleGroups)
+		{
+			foreach (var vehicleGroup in vehicleGroups) {
+				var simResult = manager.GetSimulationResult(vehicleGroup);
+
+				simResult.RefFactor.RegionalDeliveryLow = simResult.CO2Ref.RegionalDeliveryLow / simResult.CO2Standard.RegionalDeliveryLow;
+				simResult.RefFactor.RegionalDeliveryRef = simResult.CO2Ref.RegionalDeliveryRef / simResult.CO2Standard.RegionalDeliveryRef;
+
+				simResult.RefFactor.UrbanDeliveryLow = simResult.CO2Ref.UrbanDeliveryLow / simResult.CO2Standard.UrbanDeliveryLow;
+				simResult.RefFactor.UrbanDeliveryRef = simResult.CO2Ref.UrbanDeliveryRef / simResult.CO2Standard.UrbanDeliveryRef;
+
+				simResult.RefFactor.LongHaulLow = simResult.CO2Ref.LongHaulLow / simResult.CO2Standard.LongHaulLow;
+				simResult.RefFactor.LongHaulRef = simResult.CO2Ref.LongHaulRef / simResult.CO2Standard.LongHaulRef;
+			}
+		}
 
 		private DataTable CreateDataTable(ResultManager groupManager, IList<int> vehicleGroups)
 		{
@@ -502,14 +519,10 @@ namespace TUGraz.VectoCore.Tests.XML
 				row[_co2StandardRegionalDeliveryGKm] = $"{result.CO2Standard.RegionalDeliveryLow}/{result.CO2Standard.RegionalDeliveryRef}";
 				row[_co2StandardUrbanDeliveryGKm] = $"{result.CO2Standard.UrbanDeliveryLow}/{result.CO2Standard.UrbanDeliveryRef}";
 
-
-
-
-
-
-
-
-
+				row[_refFactorLonghaul] = $"{result.RefFactor.LongHaulLow}/{result.RefFactor.LongHaulRef}";
+				row[_refFactorRegionalDelivery] = $"{result.RefFactor.RegionalDeliveryLow}/{result.RefFactor.RegionalDeliveryRef}";
+				row[_refFactorUrbanDelivery] = $"{result.RefFactor.UrbanDeliveryLow}/{result.RefFactor.UrbanDeliveryRef}";
+				
 				rfDt.Rows.Add(row);
 			}
 			
