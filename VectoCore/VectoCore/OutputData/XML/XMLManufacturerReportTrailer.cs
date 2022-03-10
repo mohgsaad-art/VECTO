@@ -291,7 +291,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 
 			var rf = 0.0;
 
-			var rfRun = false;
+			//var rfRun = false;
 			if (result.Mission == MissionType.LongHaul)
 			{
 				rf = result.LoadingType == LoadingType.LowLoading
