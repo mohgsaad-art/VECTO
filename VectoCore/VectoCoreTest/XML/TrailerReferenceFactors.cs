@@ -36,6 +36,7 @@ namespace TUGraz.VectoCore.Tests.XML
 		public class SimulationResult
 		{
 			public int group;
+			public string towingGroup;
 			public bool referenceSimulated;
 			public bool success;
 			public string error;
@@ -58,6 +59,14 @@ namespace TUGraz.VectoCore.Tests.XML
 				_vehicleGroupResults.Add(i, new SimulationResult() {
 					group = i,
 				});
+			}
+		}
+
+		public void SetTowingVehicleGroups(TrailerSegments segments)
+		{
+			foreach (var group in _vehicleGroupResults) {
+				var row = segments.GetRow(group.Key.ToString());
+				group.Value.towingGroup = row["Generic_vehicle_group"].ToString();
 			}
 		}
 
@@ -483,11 +492,15 @@ namespace TUGraz.VectoCore.Tests.XML
 				simResult.RefFactor.RegionalDeliveryLow = simResult.CO2Ref.RegionalDeliveryLow / simResult.CO2Standard.RegionalDeliveryLow;
 				simResult.RefFactor.RegionalDeliveryRef = simResult.CO2Ref.RegionalDeliveryRef / simResult.CO2Standard.RegionalDeliveryRef;
 
-				simResult.RefFactor.UrbanDeliveryLow = simResult.CO2Ref.UrbanDeliveryLow / simResult.CO2Standard.UrbanDeliveryLow;
-				simResult.RefFactor.UrbanDeliveryRef = simResult.CO2Ref.UrbanDeliveryRef / simResult.CO2Standard.UrbanDeliveryRef;
+				
 
 				simResult.RefFactor.LongHaulLow = simResult.CO2Ref.LongHaulLow / simResult.CO2Standard.LongHaulLow;
 				simResult.RefFactor.LongHaulRef = simResult.CO2Ref.LongHaulRef / simResult.CO2Standard.LongHaulRef;
+
+				if (simResult.towingGroup != "9-LH") {
+					simResult.RefFactor.UrbanDeliveryLow = simResult.CO2Ref.UrbanDeliveryLow / simResult.CO2Standard.UrbanDeliveryLow;
+					simResult.RefFactor.UrbanDeliveryRef = simResult.CO2Ref.UrbanDeliveryRef / simResult.CO2Standard.UrbanDeliveryRef;
+				}
 			}
 		}
 
