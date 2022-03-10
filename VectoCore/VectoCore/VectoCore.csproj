@@ -1025,12 +1025,24 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\A1.xml" />
-    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\A2.xml" />
-    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\A3.xml" />
-    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\R1.xml" />
-    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\R2.xml" />
-    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\R3.xml" />
+    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\A1.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\A2.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\A3.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\R1.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\R2.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\R3.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Declaration\GenericVehicles\235_75_R17.5.xml">
