@@ -85,6 +85,10 @@ namespace TUGraz.VectoCore.Models.Declaration
 			return Enumerable.Select(rows, row => (int)row.ParseDouble("Vehicle_group")).ToList();
 		}
 
+		public DataRow GetRow(string vehicleGroup)
+		{
+			return GetTrailerDataRow(vehicleGroup);
+		}
 		public override TrailerSegment Lookup(NumberOfTrailerAxles numberOfAxles, TypeTrailer typeTrailer, BodyWorkCode bodyWorkCode, bool volumeOrientation, Kilogram tpmlmAxleAssembly)
 		{
 			var group = 0;
@@ -92,7 +96,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 			var rf = new TrailerReferenceFactors();
 			_numberOfAxles = int.Parse(numberOfAxles.GetLabel());
 
-			var rfRun = false;
+			//var rfRun = false;
 			row = GetTrailerDataRow(numberOfAxles, typeTrailer, bodyWorkCode, volumeOrientation, tpmlmAxleAssembly);
 			@group = (int)row.ParseDouble("Vehicle_group");
 
@@ -359,7 +363,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		private static double[] GetTowingAxleWeightDistribution(DataRow row, MissionType missionType, bool isSpecific = false)
 		{
-			var rfRun = false;
+			//var rfRun = false;
 
 			string axleDistributionColumn;
 
