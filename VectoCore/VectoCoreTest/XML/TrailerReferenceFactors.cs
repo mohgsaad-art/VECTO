@@ -37,9 +37,6 @@ namespace TUGraz.VectoCore.Tests.XML
 		{
 			public int group;
 			public string towingGroup;
-			public bool referenceSimulated;
-			public bool success;
-			public string error;
 			public TrailerReferenceRatios CO2Ref;
 			public TrailerReferenceRatios CO2Standard;
 			public TrailerReferenceRatios RefFactor;
@@ -94,8 +91,6 @@ namespace TUGraz.VectoCore.Tests.XML
 		private IKernel _kernel;
 
 		private const string SampleTrailer = @"TestData\Trailer\trailerSample.xml";
-
-		private IDeclarationTrailerInputDataProvider inputDataProvider;
 		private int _vsumCO2ColumnIndex;
 		private static string _vehicleGroup = "Vehicle_Group";
 		private string _co2StandardLonghaulGKm = "CO2 Standard LongHaul [g/km]";
@@ -107,34 +102,20 @@ namespace TUGraz.VectoCore.Tests.XML
 		private string _refFactorLonghaul = "Ref-Factor_LongHaul";
 		private string _refFactorRegionalDelivery = "Ref-Factor_Regional_Delivery";
 		private string _refFactorUrbanDelivery = "Ref-Factor_Urban_Delivery";
-
-
-		private string _logFile = "log.txt";
 		[SetUp]
 		public void RunBeforeAnyTests()
 		{
-			if (File.Exists(_logFile))
-			{
-				File.Delete(_logFile);
-			}
 			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
 			Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture; //fixes double parsing
 			_kernel = new StandardKernel(new VectoNinjectModule());
 			XMLInputReader = _kernel.Get<IXMLInputDataReader>();
-
-			//var reader = XmlReader.Create(SampleTrailer);
-			//inputDataProvider = XMLInputReader.CreateDeclarationTrailer(reader);
 		}
 
-		private void SimulateReferenceTrailer(ResultManager groupManager, IList<int> vehicleGroups)
+		private void SimulateReferenceTrailers(ResultManager groupManager, IList<int> vehicleGroups)
 		{
 			
 			foreach(var group in vehicleGroups){
 				var simResult = groupManager.GetSimulationResult(group); //holds the result of the simulation
-				var writer = File.AppendText(_logFile);
-				writer.Write(($"Simulating reference trailer for group {group}"));
-				writer.Flush();
-				writer.Close();
 
 				try {
 					var xDoc = XDocumentCreator.CreateXDocument(group);
@@ -181,12 +162,8 @@ namespace TUGraz.VectoCore.Tests.XML
 				} catch (Exception ex) {
 					TestContext.WriteLine(ex.Message);
 					TestContext.WriteLine($"Error in group{group}");
-					ToCSV(CreateDataTable(groupManager, vehicleGroups), "TestOutput.csv");
+					ToCSV(CreateDataTable(groupManager, vehicleGroups), "crashResultRefFactor.csv");
 					throw ex;
-					Assert.Fail($"group{group}");
-					var result = groupManager.GetSimulationResult(group);
-					simResult.success = false;
-					simResult.error = ex.Message;
 				}
 				simResult.referenceSimulated = true;
 			}
@@ -197,187 +174,6 @@ namespace TUGraz.VectoCore.Tests.XML
 			return double.Parse(stringFromCsv.ToString(), NumberFormatInfo.InvariantInfo);
 		}
 
-		public void RunTrailerDeclarationJob(bool serializeVectoRunData)
-		{
-			var rfDt = new DataTable();
-			rfDt.Columns.Add(_vehicleGroup);
-			rfDt.Columns.Add(_co2StandardLonghaulGKm);
-			rfDt.Columns.Add(_co2StandardRegionalDeliveryGKm);
-			rfDt.Columns.Add(_co2StandardUrbanDeliveryGKm);
-			rfDt.Columns.Add(_co2ReferenceLonghaulGKm);
-			rfDt.Columns.Add(_co2ReferenceRegionalDeliveryGKm);
-			rfDt.Columns.Add(_co2ReferenceUrbanDeliveryGKm);
-			rfDt.Columns.Add(_refFactorLonghaul);
-			rfDt.Columns.Add(_refFactorRegionalDelivery);
-			rfDt.Columns.Add(_refFactorUrbanDelivery);
-
-			//System.Environment.SetEnvironmentVariable("referenceFactorRun", "true");
-
-			//vehicle group is determined via
-			//private DataRow GetTrailerDataRow(
-			//	NumberOfTrailerAxles numberOfAxles, TypeTrailer typeTrailer, BodyWorkCode bodyWorkCode, bool volumeOrientation, Kilogram tpmlmAxleAssembly)
-			//reference trailer is determined via vehiclegroup;
-
-
-			var trailerList = DeclarationData.TrailerSegments.GetActiveVehicleGroups();
-
-			trailerList = new List<int> { 31101 };//, 31102, 31201, 31301 };
-
-			foreach (var group in trailerList) {
-
-				System.Environment.SetEnvironmentVariable("vehicleGroup", group.ToString());
-
-				try {
-					var fileWriter = new FileOutputWriter(SampleTrailer);
-					if (serializeVectoRunData) {
-						var groupDir = Path.Combine(Path.GetDirectoryName(SampleTrailer), group.ToString());
-						Directory.CreateDirectory(groupDir);
-						var groupSamplePath = Path.Combine(groupDir + "\\dummy.xml"); //no real xml only used for the filewriter to use a different output path
-						fileWriter = new FileOutputWriter(groupSamplePath);
-					}
-					
-					var sumWriter = new SummaryDataContainer(fileWriter);
-					var jobContainer = new JobContainer(sumWriter);
-					var dataProvider = XMLInputReader.CreateDeclarationTrailer(XmlReader.Create(SampleTrailer));
-					var runsFactory = new SimulatorFactory(ExecutionMode.Declaration, dataProvider, fileWriter) {
-						ModalResults1Hz = false,
-						WriteModalResults = false,
-						ActualModalData = false,
-						Validate = false,
-						SerializeVectoRunData = serializeVectoRunData,
-					};
-					
-					
-					jobContainer.AddRuns(runsFactory);
-					jobContainer.Execute();
-					jobContainer.WaitFinished();
-
-					var vsum = fileWriter.SumFileName;
-
-					//CO2 Standard LongHaul [g/km]
-					//CO2 Standard Regional Delivery[g/km]
-					//CO2 Standard Urban Delivery[g/km]
-
-					var mrf = XDocument.Load(fileWriter.XMLFullReportName);
-					bool doubleParseSuccess = true;
-					doubleParseSuccess &= double.TryParse(mrf.Descendants().Where(x => x.Name.ToString().Contains("Result")).Skip(1)
-							.Descendants()
-							.Where(x => x.Name.ToString().Contains("CO2"))?.FirstOrDefault()?.Value, 
-						NumberStyles.AllowDecimalPoint, 
-						NumberFormatInfo.InvariantInfo, 
-						out var longHaulLowLoadCo2);
-
-					doubleParseSuccess &= double.TryParse(mrf.Descendants().Where(x => x.Name.ToString().Contains("Result")).Skip(1).Skip(1)
-							.Descendants()
-							.Where(x => x.Name.ToString().Contains("CO2"))?.FirstOrDefault()?.Value,
-						out var longHaulRefLoadCo2);
-
-					var stlongHaulCo2 = longHaulLowLoadCo2 + "/" + longHaulRefLoadCo2;
-
-					doubleParseSuccess &= double.TryParse(mrf.Descendants().Where(x => x.Name.ToString().Contains("Result")).Skip(2).Skip(1)
-							.Descendants()
-							.Where(x => x.Name.ToString().Contains("CO2"))?.FirstOrDefault()?.Value,
-						out var regionalDeliveryLowLoadCo2);
-
-					doubleParseSuccess &= double.TryParse(mrf.Descendants().Where(x => x.Name.ToString().Contains("Result")).Skip(3).Skip(1)
-							.Descendants()
-							.Where(x => x.Name.ToString().Contains("CO2"))?.FirstOrDefault()?.Value,
-						out var regionalDeliveryRefLoadCo2);
-
-					var stRegionalDeliveryCo2 = regionalDeliveryLowLoadCo2 + "/" + regionalDeliveryRefLoadCo2;
-
-					doubleParseSuccess &= double.TryParse(mrf.Descendants().Where(x => x.Name.ToString().Contains("Result")).Skip(4).Skip(1)
-							.Descendants()
-							.Where(x => x.Name.ToString().Contains("CO2"))?.FirstOrDefault()?.Value,
-						out var urbanDeliveryLowLoadCo2);
-
-					doubleParseSuccess &= double.TryParse(mrf.Descendants().Where(x => x.Name.ToString().Contains("Result")).Skip(5).Skip(1)
-							.Descendants()
-							.Where(x => x.Name.ToString().Contains("CO2"))?.FirstOrDefault()?.Value,
-						out var urbanDeliveryRefLoadCo2);
-
-					var stUrbanDeliveryCo2 = urbanDeliveryLowLoadCo2 + "/" + urbanDeliveryRefLoadCo2;
-
-					//Read data vsum file
-					//CO2 Reference LongHaul [g/km]
-					//CO2 Reference Regional Delivery [g/km]
-					//CO2 Reference Urban Delivery [g/km]
-
-					var dt = GetDataTableFromCsv(vsum);
-
-					_vsumCO2ColumnIndex = 118;
-					var refLongHaulCo2 = dt.Rows[1][_vsumCO2ColumnIndex] + "/" + dt.Rows[3][_vsumCO2ColumnIndex];
-
-					var refRegionalDeliveryCo2 = dt.Rows[5][_vsumCO2ColumnIndex] + "/" + dt.Rows[7][_vsumCO2ColumnIndex];
-
-					var refUrbanDeliveryCo2 = dt.Rows.Count > 10 ? dt.Rows[9][_vsumCO2ColumnIndex] + "/" + dt.Rows[11][_vsumCO2ColumnIndex] : "0/0";
-
-					//Ref-Factor LongHaul  
-					//Ref-Factor Regional Delivery 
-					//Ref-Factor Urban Delivery 
-
-					
-					doubleParseSuccess &= double.TryParse(mrf.Descendants().Where(x => x.Name.ToString().Contains("Result")).Skip(1)
-							.Descendants()
-							.Where(x => x.Name.ToString().Contains("EfficiencyRatio"))?.FirstOrDefault()?.Value,
-						out var longHaulLowLoadEf);
-
-					doubleParseSuccess &= double.TryParse(mrf.Descendants().Where(x => x.Name.ToString().Contains("Result")).Skip(1).Skip(1)
-							.Descendants()
-							.Where(x => x.Name.ToString().Contains("EfficiencyRatio"))?.FirstOrDefault()?.Value,
-						out var longHaulRefLoadEf);
-
-					var longHaulReferenceFactor = (1 / longHaulLowLoadEf) + "/" + (1 / longHaulRefLoadEf);
-
-					doubleParseSuccess &= double.TryParse(mrf.Descendants().Where(x => x.Name.ToString().Contains("Result")).Skip(2).Skip(1)
-							.Descendants()
-							.Where(x => x.Name.ToString().Contains("EfficiencyRatio"))?.FirstOrDefault()?.Value,
-						out var regionalDeliveryLowLoadEf);
-
-					doubleParseSuccess &= double.TryParse(mrf.Descendants().Where(x => x.Name.ToString().Contains("Result")).Skip(3).Skip(1)
-							.Descendants()
-							.Where(x => x.Name.ToString().Contains("EfficiencyRatio"))?.FirstOrDefault()?.Value,
-						out var regionalDeliveryRefLoadEf);
-
-					var regionalDeliveryReferenceFactor =
-						(1 / regionalDeliveryLowLoadEf) + "/" + (1 / regionalDeliveryRefLoadEf);
-
-					doubleParseSuccess &= double.TryParse(mrf.Descendants().Where(x => x.Name.ToString().Contains("Result")).Skip(4).Skip(1)
-							.Descendants()
-							.Where(x => x.Name.ToString().Contains("EfficiencyRatio"))?.FirstOrDefault()?.Value,
-						out var urbanDeliveryLowLoadEf);
-
-					doubleParseSuccess &= double.TryParse(mrf.Descendants().Where(x => x.Name.ToString().Contains("Result")).Skip(5).Skip(1)
-							.Descendants()
-							.Where(x => x.Name.ToString().Contains("EfficiencyRatio"))?.FirstOrDefault()?.Value,
-						out var urbanDeliveryRefLoadEf);
-
-					var urbanDeliveryReferenceFactor  = urbanDeliveryLowLoadEf != 0 && urbanDeliveryRefLoadEf != 0 ?
-						(1 / urbanDeliveryLowLoadEf) + "/" + (1 / urbanDeliveryRefLoadEf) : "0/0";
-
-					//Add columns to DataTable
-					if (!doubleParseSuccess) {
-						TestContext.WriteLine("parsing error");
-					}
-					//Assert.IsTrue(doubleParseSuccess, "double parsing failed");
-
-					var dr = rfDt.NewRow();
-					var rowArray = new object[] {
-						group.ToString(),
-						stlongHaulCo2, stRegionalDeliveryCo2, stUrbanDeliveryCo2,
-						refLongHaulCo2, refRegionalDeliveryCo2, refUrbanDeliveryCo2,
-						longHaulReferenceFactor, regionalDeliveryReferenceFactor, urbanDeliveryReferenceFactor
-					};
-					dr.ItemArray = rowArray;
-					rfDt.Rows.Add(dr);
-					//break;
-
-				} catch (Exception ex) {
-					TestContext.WriteLine(ex.Message);
-				}
-			}
-			ToCSV(rfDt, @"TestData\Trailer\reference_factors.csv");
-		}
 
 		private static void ToCSV(DataTable dtDataTable, string strFilePath)
 		{
@@ -457,24 +253,14 @@ namespace TUGraz.VectoCore.Tests.XML
 			return dtCsv;
 		}
 
-		[TestCase(false, TestName="Create reference factors")]
-		[TestCase(true, TestName="Create reference factors (serialize output)")]
-		public void CreateReferenceFactors(bool serializeOutput)
-		{
-			RunBeforeAnyTests();
-			RunTrailerDeclarationJob(serializeOutput);
-		}
-
 
 		[TestCase(false)]
-		public void CreateReferenceFactorsNew(bool serializeOutput)
+		public void CreateReferenceFactors()
 		{
 			var vehicleGroups = DeclarationData.TrailerSegments.GetActiveVehicleGroups();
-
-			vehicleGroups = new List<int> { 11101, 11102, 11201, 11301, 11302, 11401, 11402, 11501, 11502, 15101, 15301, 15401, 15402, 15501, 15502, 21111 };
-			vehicleGroups  = new List<int> { 23101};
 			var groupManager = new ResultManager(vehicleGroups);
-			SimulateReferenceTrailer(groupManager, vehicleGroups);
+			groupManager.SetTowingVehicleGroups(new TrailerSegments());
+			SimulateReferenceTrailers(groupManager, vehicleGroups);
 			ToCSV(CreateDataTable(groupManager, vehicleGroups), "referenceResults.csv");
 			SimulateStandardTrailer(groupManager, vehicleGroups);
 			ToCSV(CreateDataTable(groupManager, vehicleGroups), "standardAndReferenceResults.csv");
@@ -497,7 +283,9 @@ namespace TUGraz.VectoCore.Tests.XML
 				simResult.RefFactor.LongHaulLow = simResult.CO2Ref.LongHaulLow / simResult.CO2Standard.LongHaulLow;
 				simResult.RefFactor.LongHaulRef = simResult.CO2Ref.LongHaulRef / simResult.CO2Standard.LongHaulRef;
 
-				if (simResult.towingGroup != "9-LH") {
+				if (simResult.towingGroup == "9-LH") {
+
+				}else{
 					simResult.RefFactor.UrbanDeliveryLow = simResult.CO2Ref.UrbanDeliveryLow / simResult.CO2Standard.UrbanDeliveryLow;
 					simResult.RefFactor.UrbanDeliveryRef = simResult.CO2Ref.UrbanDeliveryRef / simResult.CO2Standard.UrbanDeliveryRef;
 				}
@@ -567,7 +355,7 @@ namespace TUGraz.VectoCore.Tests.XML
 
 
 
-				var xDoc = XDocumentCreator.GetTowingVehicleXml(genericTowingVehicleCode, out var path); //doestn work with xDoc
+				XDocumentCreator.GetTowingVehicleXml(genericTowingVehicleCode, out var path); //doestn work with xDoc
 
 				//
 				var fileWriter = new FileOutputWriter(path);
@@ -624,12 +412,13 @@ namespace TUGraz.VectoCore.Tests.XML
 		/// <param name="min"></param>
 		/// <param name="max"></param>
 		/// <param name="expected"></param>
-
+		
 		[TestCase(8, 9, 9999)]
 		[TestCase(0,18.001, 18)]
 		[TestCase(18,9999,9999)]
 		[TestCase(13.5, 9999, 9999)]
 		[TestCase(8, 13.501, 13)]
+		[Ignore("just used for creating the in memory xmls")]
 		public void TPMLMCalcTest(double min, double max, int expected)
 		{
 			Assert.AreEqual(expected, XDocumentCreator.GetMaxIntBetween(min, max));
