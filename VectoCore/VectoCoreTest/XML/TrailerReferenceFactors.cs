@@ -40,6 +40,8 @@ namespace TUGraz.VectoCore.Tests.XML
 			public TrailerReferenceRatios CO2Ref;
 			public TrailerReferenceRatios CO2Standard;
 			public TrailerReferenceRatios RefFactor;
+			public bool success;
+			public bool referenceSimulated;
 		}
 
 		public class StandardResult
