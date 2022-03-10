@@ -85,8 +85,9 @@ namespace TUGraz.VectoCore.Models.Declaration
 					UrbanDeliveryRef = GetDouble(9, 1, row)
 				};
 			} catch (Exception ex) {
-				throw new VectoException($"Error reading trailer reference ratios for vehicle group {vehicleGroup}",
-					ex);
+				Log.Error(ex.Message);
+				//TODO: ignored
+				return new TrailerReferenceRatios();
 			}
 
 
