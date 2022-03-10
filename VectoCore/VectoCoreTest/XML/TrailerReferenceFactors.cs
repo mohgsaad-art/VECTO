@@ -256,7 +256,7 @@ namespace TUGraz.VectoCore.Tests.XML
 		}
 
 
-		[TestCase(false)]
+		[TestCase]
 		public void CreateReferenceFactors()
 		{
 			var vehicleGroups = DeclarationData.TrailerSegments.GetActiveVehicleGroups();
