@@ -669,6 +669,7 @@ namespace VECTOTrailer.ViewModel.Impl
 				LengthBetweenCentersOfAxles = trailer.LengthBetweenCentersOfAxles;
 				CargoVolume = trailer.CargoVolume;
 				Technologies = trailer.AeroFeatureTechnologies;
+				VolumeOrientation = trailer.VolumeOrientation;
 
 				IsCertified = (trailer.YawAngle0 != 0 || trailer.YawAngle3 != 0 || trailer.YawAngle6 != 0 || trailer.YawAngle9 != 0);
 
