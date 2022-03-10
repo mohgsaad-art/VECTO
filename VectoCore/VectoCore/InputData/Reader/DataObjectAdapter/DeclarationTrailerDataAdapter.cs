@@ -1628,35 +1628,6 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			return specificTrailerData;
 		}
 
-		public TrailerData GetTrailerDataRf(TrailerSegment trailerSegment, ITrailerDeclarationInputData trailer,
-			IVehicleDeclarationInputData genericVehicle)
-		{
-			var wheels = new Wheels();
-
-			//Read the + tpmlm axle assembly and add accordingly
-			if (!double.TryParse(trailerSegment.MaxGcm, out double maxGcm)
-				&& trailerSegment.MaxGcm.Contains("+"))
-			{
-				double.TryParse(trailerSegment.MaxGcm.Substring(0, trailerSegment.MaxGcm.IndexOf("+")), out maxGcm);
-				maxGcm += trailer.TPMLMAxleAssembly.Value();
-			}
-
-			var specificTrailerData = new TrailerData
-			{
-				VolumeOrientation = trailer.VolumeOrientation,
-				VehicleGroup = trailerSegment.VehicleGroup,
-				VehicleGroupActive = trailerSegment.VehicleGroupActive,
-				GenericVehicleCode = trailerSegment.GenericCode,
-				CurbMassTrailer = trailer.MassInRunningOrder,
-				Inertia = wheels.Lookup(GetAxleWheelDimension(genericVehicle)).Inertia,
-				TotalCorrection = GetSpecificTrailerCorrection(trailerSegment, trailer, true),
-				TotalRefCorrection = GetReferenceTrailerCorrection(trailerSegment, trailer),
-				MaxGcm = maxGcm,
-				CdxABase = trailerSegment.GenericCadVehicle.CdxA0
-			};
-
-			return specificTrailerData;
-		}
 
 	}
 }
