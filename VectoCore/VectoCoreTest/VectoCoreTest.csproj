@@ -112,6 +112,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Helper\TrailerTool\XDocumentCreator.cs" />
     <Compile Include="Integration\AMTShiftStrategyTests.cs" />
     <Compile Include="Algorithms\CSVDigestValueTest.cs" />
     <Compile Include="Algorithms\MeanShiftClusteringTest.cs" />

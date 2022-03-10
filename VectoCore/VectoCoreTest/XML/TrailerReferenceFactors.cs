@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
 using System.Diagnostics;
+using System.Drawing.Text;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
 using Ninject;
 using NUnit.Framework;
+using NUnit.Framework.Interfaces;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
@@ -20,12 +23,62 @@ using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
+using TUGraz.VectoCore.Tests.Helper.TrailerTool;
 using TUGraz.VectoCore.Utils;
 using XmlDocumentType = System.Xml.XmlDocumentType;
 
 namespace TUGraz.VectoCore.Tests.XML
 {
 
+	public class ResultManager
+	{
+
+		public class SimulationResult
+		{
+			public int group;
+			public bool referenceSimulated;
+			public bool success;
+			public string error;
+			public TrailerReferenceRatios CO2Ref;
+			public TrailerReferenceRatios CO2Standard;
+			public TrailerReferenceRatios RefFactor;
+		}
+
+		public class StandardResult
+		{
+			public string XmlCode;
+			public TrailerReferenceRatios StandardResults;
+		}
+
+		private Dictionary<int, SimulationResult> _vehicleGroupResults = new Dictionary<int, SimulationResult>();
+		private Dictionary<string, StandardResult> _standardResults = new Dictionary<string, StandardResult>();
+		public ResultManager(IList<int> groupsToSimulate)
+		{
+			foreach (var i in groupsToSimulate) {
+				_vehicleGroupResults.Add(i, new SimulationResult() {
+					group = i,
+				});
+			}
+		}
+
+		public SimulationResult GetSimulationResult(int group)
+		{
+			return _vehicleGroupResults[group];
+		}
+
+		public void AddStandardSimulationResult(string xmlCode, StandardResult standardResult)
+		{
+			_standardResults[xmlCode] = standardResult;
+
+		}
+
+		public bool GetStandardResult(string xmlCode, out StandardResult standardResult)
+		{
+			return _standardResults.TryGetValue(xmlCode, out standardResult);
+		}
+
+
+	}
 	public class TrailerReferenceFactors
 	{
 		protected IXMLInputDataReader XMLInputReader;
@@ -35,10 +88,26 @@ namespace TUGraz.VectoCore.Tests.XML
 
 		private IDeclarationTrailerInputDataProvider inputDataProvider;
 		private int _vsumCO2ColumnIndex;
+		private static string _vehicleGroup = "Vehicle_Group";
+		private string _co2StandardLonghaulGKm = "CO2 Standard LongHaul [g/km]";
+		private string _co2StandardRegionalDeliveryGKm = "CO2 Standard Regional Delivery [g/km]";
+		private string _co2StandardUrbanDeliveryGKm = "CO2 Standard Urban Delivery [g/km]";
+		private string _co2ReferenceLonghaulGKm = "CO2 Reference LongHaul [g/km]";
+		private string _co2ReferenceRegionalDeliveryGKm = "CO2 Reference Regional Delivery [g/km]";
+		private string _co2ReferenceUrbanDeliveryGKm = "CO2 Reference Urban Delivery [g/km]";
+		private string _refFactorLonghaul = "Ref-Factor_LongHaul";
+		private string _refFactorRegionalDelivery = "Ref-Factor_Regional_Delivery";
+		private string _refFactorUrbanDelivery = "Ref-Factor_Urban_Delivery";
 
 
+		private string _logFile = "log.txt";
+		[SetUp]
 		public void RunBeforeAnyTests()
 		{
+			if (File.Exists(_logFile))
+			{
+				File.Delete(_logFile);
+			}
 			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
 			Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture; //fixes double parsing
 			_kernel = new StandardKernel(new VectoNinjectModule());
@@ -48,21 +117,98 @@ namespace TUGraz.VectoCore.Tests.XML
 			//inputDataProvider = XMLInputReader.CreateDeclarationTrailer(reader);
 		}
 
+		private void SimulateReferenceTrailer(ResultManager groupManager, IList<int> vehicleGroups)
+		{
+			
+			foreach(var group in vehicleGroups){
+				var simResult = groupManager.GetSimulationResult(group); //holds the result of the simulation
+				var writer = File.AppendText(_logFile);
+				writer.Write(($"Simulating reference trailer for group {group}"));
+				writer.Flush();
+				writer.Close();
+
+				try {
+					var xDoc = XDocumentCreator.CreateXDocument(group);
+
+					var fileWriter = new FileOutputWriter(SampleTrailer);
+
+					var sumWriter = new SummaryDataContainer(fileWriter);
+					var jobContainer = new JobContainer(sumWriter);
+
+					var dataProvider = XMLInputReader.CreateDeclarationTrailer(xDoc.CreateReader());
+					var runsFactory = new SimulatorFactory(ExecutionMode.Declaration, dataProvider, fileWriter) {
+						ModalResults1Hz = false,
+						WriteModalResults = false,
+						ActualModalData = false,
+						Validate = false,
+					};
+					
+
+					jobContainer.AddRuns(runsFactory, (vectoRunData) => vectoRunData.ModFileSuffix.Contains("_genericTrailer"));
+					continue; //debug
+					jobContainer.Execute(true); //I guess the synchronization fix is not implemented in the trailerTool
+					jobContainer.WaitFinished();
+
+					var vsum = fileWriter.SumFileName;
+					var dt = GetDataTableFromCsv(vsum);
+
+					_vsumCO2ColumnIndex = 118;
+				
+					simResult.CO2Ref.LongHaulLow = parseInvariant(dt.Rows[0][_vsumCO2ColumnIndex]);
+					simResult.CO2Ref.LongHaulRef = parseInvariant(dt.Rows[1][_vsumCO2ColumnIndex]);
+
+					simResult.CO2Ref.RegionalDeliveryLow = parseInvariant(dt.Rows[2][_vsumCO2ColumnIndex]);
+
+					simResult.CO2Ref.RegionalDeliveryRef = parseInvariant(dt.Rows[3][_vsumCO2ColumnIndex]);
+
+					if (dt.Rows.Count > 4) {
+						simResult.CO2Ref.UrbanDeliveryLow = parseInvariant(dt.Rows[4][_vsumCO2ColumnIndex]);
+						simResult.CO2Ref.UrbanDeliveryRef = parseInvariant(dt.Rows[5][_vsumCO2ColumnIndex]);
+					}
+
+
+
+					simResult.success = true;
+				} catch (Exception ex) {
+					TestContext.WriteLine(ex.Message);
+					TestContext.WriteLine($"Error in group{group}");
+					ToCSV(CreateDataTable(groupManager, vehicleGroups), "TestOutput.csv");
+					throw ex;
+					Assert.Fail($"group{group}");
+					var result = groupManager.GetSimulationResult(group);
+					simResult.success = false;
+					simResult.error = ex.Message;
+				}
+				simResult.referenceSimulated = true;
+			}
+		}
+
+		public double parseInvariant(object stringFromCsv)
+		{
+			return double.Parse(stringFromCsv.ToString(), NumberFormatInfo.InvariantInfo);
+		}
+
 		public void RunTrailerDeclarationJob(bool serializeVectoRunData)
 		{
 			var rfDt = new DataTable();
-			rfDt.Columns.Add("Vehicle_Group");
-			rfDt.Columns.Add("CO2 Standard LongHaul [g/km]");
-			rfDt.Columns.Add("CO2 Standard Regional Delivery [g/km]");
-			rfDt.Columns.Add("CO2 Standard Urban Delivery [g/km]");
-			rfDt.Columns.Add("CO2 Reference LongHaul [g/km]");
-			rfDt.Columns.Add("CO2 Reference Regional Delivery [g/km]");
-			rfDt.Columns.Add("CO2 Reference Urban Delivery [g/km]");
-			rfDt.Columns.Add("Ref-Factor_LongHaul");
-			rfDt.Columns.Add("Ref-Factor_Regional_Delivery");
-			rfDt.Columns.Add("Ref-Factor_Urban_Delivery");
+			rfDt.Columns.Add(_vehicleGroup);
+			rfDt.Columns.Add(_co2StandardLonghaulGKm);
+			rfDt.Columns.Add(_co2StandardRegionalDeliveryGKm);
+			rfDt.Columns.Add(_co2StandardUrbanDeliveryGKm);
+			rfDt.Columns.Add(_co2ReferenceLonghaulGKm);
+			rfDt.Columns.Add(_co2ReferenceRegionalDeliveryGKm);
+			rfDt.Columns.Add(_co2ReferenceUrbanDeliveryGKm);
+			rfDt.Columns.Add(_refFactorLonghaul);
+			rfDt.Columns.Add(_refFactorRegionalDelivery);
+			rfDt.Columns.Add(_refFactorUrbanDelivery);
 
-			System.Environment.SetEnvironmentVariable("referenceFactorRun", "true");
+			//System.Environment.SetEnvironmentVariable("referenceFactorRun", "true");
+
+			//vehicle group is determined via
+			//private DataRow GetTrailerDataRow(
+			//	NumberOfTrailerAxles numberOfAxles, TypeTrailer typeTrailer, BodyWorkCode bodyWorkCode, bool volumeOrientation, Kilogram tpmlmAxleAssembly)
+			//reference trailer is determined via vehiclegroup;
+
 
 			var trailerList = DeclarationData.TrailerSegments.GetActiveVehicleGroups();
 
@@ -91,6 +237,7 @@ namespace TUGraz.VectoCore.Tests.XML
 						Validate = false,
 						SerializeVectoRunData = serializeVectoRunData,
 					};
+					
 					
 					jobContainer.AddRuns(runsFactory);
 					jobContainer.Execute();
@@ -308,5 +455,161 @@ namespace TUGraz.VectoCore.Tests.XML
 			RunBeforeAnyTests();
 			RunTrailerDeclarationJob(serializeOutput);
 		}
+
+
+		[TestCase(false)]
+		public void CreateReferenceFactorsNew(bool serializeOutput)
+		{
+			var vehicleGroups = DeclarationData.TrailerSegments.GetActiveVehicleGroups();
+
+			//vehicleGroups = new List<int> { 11101, 11102, 11201, 11301, 11302, 11401, 11402, 11501, 11502, 15101, 15301, 15401, 15402, 15501, 15502, 21111 };
+			//vehicleGroups  = new List<int> { 23101};//crashes
+			var groupManager = new ResultManager(vehicleGroups);
+			SimulateReferenceTrailer(groupManager, vehicleGroups);
+			ToCSV(CreateDataTable(groupManager, vehicleGroups), "TestOutput.csv");
+		
+			SimulateStandardTrailer(groupManager, vehicleGroups);
+
+		}
+
+
+
+		private DataTable CreateDataTable(ResultManager groupManager, IList<int> vehicleGroups)
+		{
+			var rfDt = new DataTable();
+
+			rfDt.Columns.Add(_vehicleGroup);
+			rfDt.Columns.Add(_co2StandardLonghaulGKm);
+			rfDt.Columns.Add(_co2StandardRegionalDeliveryGKm);
+			rfDt.Columns.Add(_co2StandardUrbanDeliveryGKm);
+			rfDt.Columns.Add(_co2ReferenceLonghaulGKm);
+			rfDt.Columns.Add(_co2ReferenceRegionalDeliveryGKm);
+			rfDt.Columns.Add(_co2ReferenceUrbanDeliveryGKm);
+			rfDt.Columns.Add(_refFactorLonghaul);
+			rfDt.Columns.Add(_refFactorRegionalDelivery);
+			rfDt.Columns.Add(_refFactorUrbanDelivery);
+
+
+			foreach (var group in vehicleGroups) {
+				var result = groupManager.GetSimulationResult(group);
+				var row = rfDt.NewRow();
+				row[_vehicleGroup] = group;
+				row[_co2ReferenceLonghaulGKm] = $"{result.CO2Ref.LongHaulLow}/{result.CO2Ref.LongHaulRef}";
+				row[_co2ReferenceRegionalDeliveryGKm] = $"{result.CO2Ref.RegionalDeliveryLow}/{result.CO2Ref.RegionalDeliveryRef}";
+				row[_co2ReferenceUrbanDeliveryGKm] = $"{result.CO2Ref.UrbanDeliveryLow}/{result.CO2Ref.UrbanDeliveryRef}";
+
+				row[_co2StandardLonghaulGKm] = $"{result.CO2Standard.LongHaulLow}/{result.CO2Standard.LongHaulRef}";
+				row[_co2StandardRegionalDeliveryGKm] = $"{result.CO2Standard.RegionalDeliveryLow}/{result.CO2Standard.RegionalDeliveryRef}";
+				row[_co2StandardUrbanDeliveryGKm] = $"{result.CO2Standard.UrbanDeliveryLow}/{result.CO2Standard.UrbanDeliveryRef}";
+
+
+
+
+
+
+
+
+
+				rfDt.Rows.Add(row);
+			}
+			
+			return rfDt;
+		}
+
+		private void SimulateStandardTrailer(ResultManager groupManager, List<int> vehicleGroups)
+		{
+			HashSet<MissionType> missionTypes = new HashSet<MissionType>() {
+				MissionType.RegionalDelivery,
+				MissionType.UrbanDelivery,
+				MissionType.LongHaul
+			};
+
+			var trailerSegments = new TrailerSegments();
+			foreach (var group in vehicleGroups) {
+				var row = trailerSegments.GetRow(group.ToString());
+				var genericTowingVehicleCode = row["Generic_code"].ToString();
+				ResultManager.StandardResult standardResult;
+				if (groupManager.GetStandardResult(genericTowingVehicleCode, out standardResult)) {
+					groupManager.GetSimulationResult(group).CO2Standard = standardResult.StandardResults;
+					continue;
+				} else {
+					standardResult = new ResultManager.StandardResult() {
+						XmlCode = genericTowingVehicleCode
+					};
+				}
+
+
+
+
+				var xDoc = XDocumentCreator.GetTowingVehicleXml(genericTowingVehicleCode, out var path); //doestn work with xDoc
+
+				//
+				var fileWriter = new FileOutputWriter(path);
+
+				var sumWriter = new SummaryDataContainer(fileWriter);
+				var jobContainer = new JobContainer(sumWriter);
+
+				var dataProvider = XMLInputReader.CreateDeclaration(path);
+				var runsFactory = new SimulatorFactory(ExecutionMode.Declaration, dataProvider, fileWriter)
+				{
+					ModalResults1Hz = false,
+					WriteModalResults = false,
+					ActualModalData = false,
+					Validate = false,
+				};
+
+
+				jobContainer.AddRuns(runsFactory, (vectoRunData) => missionTypes.Contains(vectoRunData.Mission.MissionType));
+				jobContainer.Execute(false); //I guess the synchronization fix is not implemented in the trailerTool
+				jobContainer.WaitFinished();
+
+				var vsum = fileWriter.SumFileName;
+				var dt = GetDataTableFromCsv(vsum);
+
+				_vsumCO2ColumnIndex = 118;
+
+				ResultManager.StandardResult simResult = new ResultManager.StandardResult() {
+					XmlCode = genericTowingVehicleCode
+				};
+
+				simResult.StandardResults.LongHaulLow = parseInvariant(dt.Rows[0][_vsumCO2ColumnIndex]);
+				simResult.StandardResults.LongHaulRef = parseInvariant(dt.Rows[1][_vsumCO2ColumnIndex]);
+
+				simResult.StandardResults.RegionalDeliveryLow = parseInvariant(dt.Rows[2][_vsumCO2ColumnIndex]);
+
+				simResult.StandardResults.RegionalDeliveryRef = parseInvariant(dt.Rows[3][_vsumCO2ColumnIndex]);
+
+				if (dt.Rows.Count > 4)
+				{
+					simResult.StandardResults.UrbanDeliveryLow = parseInvariant(dt.Rows[4][_vsumCO2ColumnIndex]);
+					simResult.StandardResults.UrbanDeliveryRef = parseInvariant(dt.Rows[5][_vsumCO2ColumnIndex]);
+				}
+
+				groupManager.GetSimulationResult(group).CO2Standard = simResult.StandardResults;
+				groupManager.AddStandardSimulationResult(genericTowingVehicleCode, simResult);
+			}
+		}
+
+
+
+		/// <summary>
+		/// This test checks the calculation of a tpmlmaxle assembly value based on tpmlm_min and tpmlm_max wich can be found in the trailerSegmentationTable.csv
+		/// </summary>
+		/// <param name="min"></param>
+		/// <param name="max"></param>
+		/// <param name="expected"></param>
+
+		[TestCase(8, 9, 9999)]
+		[TestCase(0,18.001, 18)]
+		[TestCase(18,9999,9999)]
+		[TestCase(13.5, 9999, 9999)]
+		[TestCase(8, 13.501, 13)]
+		public void TPMLMCalcTest(double min, double max, int expected)
+		{
+			Assert.AreEqual(expected, XDocumentCreator.GetMaxIntBetween(min, max));
+		}
 	}
+
+
+
 }
