@@ -41,6 +41,7 @@ using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData;
+using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.InputData.Reader.Impl;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Data;
@@ -191,17 +192,21 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		/// Creates powertrain and initializes it with the component's data.
 		/// </summary>
 		/// <returns>new VectoRun Instance</returns>
-		public IEnumerable<IVectoRun> SimulationRuns()
+		public IEnumerable<IVectoRun> SimulationRuns(Func<VectoRunData, bool> filter = null)
 		{
 			var i = 0;
 			var warning1Hz = false;
 
-			foreach (var data in DataReader.NextRun()) {
+			
+			
+			foreach (var data in DataReader.NextRun().Where(runData => filter == null || filter.Invoke(runData))) {
 				var current = i++;
 				var d = data;
 				data.JobRunId = current;
 				yield return data.Exempted ? GetExemptedRun(data) : GetNonExemptedRun(data, current, d, ref warning1Hz);
 			}
+
+
 		}
 
 		private IVectoRun GetExemptedRun(VectoRunData data)
