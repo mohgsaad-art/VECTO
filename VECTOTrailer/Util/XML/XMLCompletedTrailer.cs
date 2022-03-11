@@ -8,6 +8,7 @@ using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.InputData.FileIO.XML;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider;
 using TUGraz.VectoCore.Utils;
 using VECTOTrailer.ViewModel.Interfaces;
@@ -24,6 +25,7 @@ namespace VECTOTrailer.Util.XML
 		private XNamespace _xsi;
 		private XNamespace _tns;
 		private XNamespace _v27;
+		private XNamespace _v23;
 		private XNamespace _v22;
 		private XNamespace _v21;
 		private XNamespace _v20;
@@ -46,6 +48,7 @@ namespace VECTOTrailer.Util.XML
 
 			_tns = "urn:tugraz:ivt:VectoAPI:DeclarationInput:v2.0";
 			_v27 = _declarationDefinition + ":DEV:v2.7";
+			_v23 = _declarationDefinition + ":DEV:v2.3";
 			_v22 = _declarationDefinition + ":v2.2";
 			_v21 = _declarationDefinition + ":v2.1";
 			_v20 = _declarationDefinition + ":v2.0";
@@ -54,8 +57,8 @@ namespace VECTOTrailer.Util.XML
 		}
 
 		public XDocument GenerateCompletedTrailerDocument(Dictionary<Component, object> inputData)
-		{ 
-			
+		{
+
 			var doc = new XDocument(
 				new XDeclaration("1.0", "utf-8", "no"),
 				new XElement(_tns + XMLNames.VectoInputDeclaration,
@@ -66,7 +69,8 @@ namespace VECTOTrailer.Util.XML
 					new XAttribute(XNamespace.Xmlns + "v2.7", _v27),
 					new XAttribute(XNamespace.Xmlns + "v2.2", _v22),
 					new XAttribute(XNamespace.Xmlns + "v2.0", _v20),
-					new XAttribute(XNamespace.Xmlns +"di", _di),
+					new XAttribute(XNamespace.Xmlns + "di", _di),
+					new XAttribute(XNamespace.Xmlns + "v2.3", _v23),
 					new XAttribute("xmlns", _v27),
 					new XAttribute(_xsi + "schemaLocation",
 						@"urn:tugraz:ivt:VectoAPI:DeclarationJob F:\Vecto\vecto-dev_bt\VectoCore\VectoCore\Resources\XSD/VectoDeclarationJob.xsd"
@@ -211,13 +215,15 @@ namespace VECTOTrailer.Util.XML
 
 		private XElement CreateTyre(string axleXml)
 		{
-
+			
 
 			var tyre = new XElement(_v27 + XMLNames.AxleWheels_Axles_Axle_Tyre);
 			try {
 				var sourceXml = XDocument.Parse(axleXml.ToString(CultureInfo.InvariantCulture));
+				
+				
 				var nsDeclarations = sourceXml.Root.Attributes().Where(attr => attr.IsNamespaceDeclaration);
-				tyre.Add(nsDeclarations);
+				//tyre.Add(nsDeclarations);
 				
 				var tyreNode = sourceXml.Root.Elements().Single(e => e.Name.LocalName == XMLNames.AxleWheels_Axles_Axle_Tyre);
 				var tyreData = tyreNode.Elements().Single(e => e.Name.LocalName == XMLNames.ComponentDataWrapper);
