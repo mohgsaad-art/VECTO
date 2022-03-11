@@ -14,7 +14,6 @@ using Castle.Core.Internal;
 using Ninject;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
-using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.OutputData.XML.DeclarationJobs;
 using TUGraz.VectoCore.Utils;

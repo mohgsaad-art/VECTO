@@ -880,36 +880,50 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		private void DoSelectFirstFileCommand(JobFileType jobFileType)
 		{
-			FirstFilePath = OpenFileSelector(jobFileType, nameof(FirstFilePath), FirstFilePath);
-			this.Axle1FilePath = FirstFilePath;
+			if (OpenFileSelector(jobFileType, nameof(FirstFilePath), FirstFilePath, out var result))
+			{
+				ThirdFilePath = result;
+				this.Axle1FilePath = FirstFilePath;
+			}
 		}
 		private void DoSelectSecondFileCommand(JobFileType jobFileType)
 		{
-			SecondFilePath = OpenFileSelector(jobFileType, nameof(SecondFilePath), SecondFilePath);
-			this.Axle2FilePath = SecondFilePath;
+			if (OpenFileSelector(jobFileType, nameof(SecondFilePath), SecondFilePath, out var result))
+			{
+				SecondFilePath = result;
+				this.Axle2FilePath = SecondFilePath;
+			}
 		}
 		private void DoSelectThirdFileCommand(JobFileType jobFileType)
 		{
-			ThirdFilePath = OpenFileSelector(jobFileType, nameof(ThirdFilePath), ThirdFilePath);
-			this.Axle3FilePath = ThirdFilePath;
+			if (OpenFileSelector(jobFileType, nameof(ThirdFilePath), ThirdFilePath, out var result)) {
+				ThirdFilePath = result;
+				this.Axle3FilePath = ThirdFilePath;
+			}
 		}
 
 		private void DoSelectCertifiedAeroDeviceFileCommand(JobFileType jobFileType)
-		{
-			this.CertifiedAeroDeviceFilePath = OpenFileSelector(jobFileType, nameof(CertifiedAeroDeviceFilePath), CertifiedAeroDeviceFilePath);
+		{ 
+			if(OpenFileSelector(jobFileType, nameof(CertifiedAeroDeviceFilePath),
+				CertifiedAeroDeviceFilePath, out var result))
+			{
+				CertifiedAeroDeviceFilePath = result;
+			}
 		}
 
-		private string OpenFileSelector(JobFileType jobFileType, string textPropertyName, string filePath)
+		private bool OpenFileSelector(JobFileType jobFileType, string textPropertyName, string initPath, out string selectedFile)
 		{
-			var folderPath = GetFolderPath(filePath);
+			selectedFile = null;
+			var folderPath = GetFolderPath(initPath);
 
 			var dialogResult = FileDialogHelper.ShowSelectFilesDialog(false, FileDialogHelper.XMLFilter, folderPath);
 			if (dialogResult != null) {
 
-				filePath = dialogResult.FirstOrDefault();
+				var result = dialogResult.FirstOrDefault();
 				
 				RemovePropertyError(textPropertyName);
-				return filePath;
+				selectedFile = result;
+				return true;
 
 				//TODO Enable xml validation on file open
 				/*var validationResult = IsValidXml(jobFileType, filePath);
@@ -921,8 +935,9 @@ namespace VECTOTrailer.ViewModel.Impl
 
 				return !validationResult ? null : filePath;*/
 			}
-			
-			return filePath;
+
+
+			return false;
 		}
 
 		private string GetFolderPath(string filePath)
