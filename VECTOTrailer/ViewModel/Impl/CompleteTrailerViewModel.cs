@@ -106,15 +106,6 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		private ICommand _selectCertifiedAeroDeviceCommand;
 
-		private ICommand _downloadFirstAxle;
-		private ICommand _deleteFirstAxle;
-		private ICommand _downloadSecondAxle;
-		private ICommand _deleteSecondAxle;
-		private ICommand _downloadThirdAxle;
-		private ICommand _deleteThirdAxle;
-
-		private ICommand _downloadCertifiedAeroDevice;
-		private ICommand _deleteCertifiedAeroDevice;
 
 		private JobFileType _firstFileType;
 		private JobFileType _secondFileType;
@@ -125,13 +116,6 @@ namespace VECTOTrailer.ViewModel.Impl
 		private string _firstFilePath;
 		private string _secondFilePath;
 		private string _thirdFilePath;
-
-		private bool _axle1ButtonsVisibilty;
-		private bool _axle1NewVisibility;
-		private bool _axle2ButtonsVisibilty;
-		private bool _axle2NewVisibility;
-		private bool _axle3ButtonsVisibilty;
-		private bool _axle3NewVisibility;
 
 		private bool _certifiedAeroDeviceButtonsVisibility;
 		private bool _certifiedAeroDeviceNewVisibility;
