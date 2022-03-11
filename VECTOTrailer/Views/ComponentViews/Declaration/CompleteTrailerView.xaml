@@ -62,7 +62,7 @@
                             <ColumnDefinition SharedSizeGroup="unitWidth"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Text="Manufacturer Address" Margin="0,0,10,0"/>
-                        <TextBox Grid.Column="1" Margin="20,0,0,0" 
+                        <TextBox Grid.Column="1" Margin="20,0,0,0" TextWrapping="Wrap"
                                  Text="{Binding ManufacturerAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
                     </Grid>
 
@@ -330,7 +330,7 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Grid.Column="0" Text="Device" Width="40" />
-                        <TextBox Grid.Column="1" Width="120" IsReadOnly="True" IsReadOnlyCaretVisible="True" 
+                        <TextBox Grid.Column="1" HorizontalAlignment="Stretch" IsReadOnly="True" IsReadOnlyCaretVisible="True" TextWrapping="Wrap"
                                  Text="{Binding CertifiedAeroDeviceFilePath}">
                             <Validation.ErrorTemplate>
                                 <ControlTemplate>
