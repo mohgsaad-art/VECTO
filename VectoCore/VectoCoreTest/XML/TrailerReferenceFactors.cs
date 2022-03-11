@@ -286,7 +286,7 @@ namespace TUGraz.VectoCore.Tests.XML
 				simResult.RefFactor.LongHaulRef = simResult.CO2Ref.LongHaulRef / simResult.CO2Standard.LongHaulRef;
 
 				if (simResult.towingGroup == "9-LH") {
-
+					
 				}else{
 					simResult.RefFactor.UrbanDeliveryLow = simResult.CO2Ref.UrbanDeliveryLow / simResult.CO2Standard.UrbanDeliveryLow;
 					simResult.RefFactor.UrbanDeliveryRef = simResult.CO2Ref.UrbanDeliveryRef / simResult.CO2Standard.UrbanDeliveryRef;
@@ -324,7 +324,15 @@ namespace TUGraz.VectoCore.Tests.XML
 
 				row[_refFactorLonghaul] = $"{result.RefFactor.LongHaulLow}/{result.RefFactor.LongHaulRef}";
 				row[_refFactorRegionalDelivery] = $"{result.RefFactor.RegionalDeliveryLow}/{result.RefFactor.RegionalDeliveryRef}";
-				row[_refFactorUrbanDelivery] = $"{result.RefFactor.UrbanDeliveryLow}/{result.RefFactor.UrbanDeliveryRef}";
+				if(result.towingGroup == "9-LH")
+                {
+					row[_refFactorUrbanDelivery] = "---";
+                }
+                else
+                {
+					row[_refFactorUrbanDelivery] = $"{result.RefFactor.UrbanDeliveryLow}/{result.RefFactor.UrbanDeliveryRef}";
+				}
+				
 				
 				rfDt.Rows.Add(row);
 			}
