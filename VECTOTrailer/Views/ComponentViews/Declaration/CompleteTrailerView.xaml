@@ -22,7 +22,7 @@
     </UserControl.Resources>
 
 <Grid>
-
+        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10" />
             <ColumnDefinition Width="Auto" />
@@ -418,14 +418,14 @@
             </StackPanel>
         </GroupBox>
 
-        <GroupBox Header="Axle and Tyre Features" Grid.Row="2" Grid.Column="3" Width="560" Height="300" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
-            <StackPanel Orientation="Vertical" Width="540" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
+        <GroupBox Header="Axle and Tyre Features" Grid.Row="2" Grid.Column="3" Width="560" Height="300" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5" HorizontalContentAlignment="Stretch">
+            <StackPanel Orientation="Vertical" Width="540" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
                 <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
-                
+
                     <Grid Margin="5">
                         <Grid.Style>
                             <Style>
-                            <Setter Property="Grid.Visibility" Value="Collapsed"></Setter>
+                                <Setter Property="Grid.Visibility" Value="Collapsed"></Setter>
                                 <Style.Triggers>
                                     <DataTrigger  
                                         Binding="{Binding ElementName=NumberOfAxles, Path=SelectedItem.Value}" Value="1">
@@ -443,58 +443,60 @@
                             </Style>
                         </Grid.Style>
 
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock Grid.Column="0" Text="Axle 1" Width="40" />
-                        <TextBox Grid.Column="1" Width="120" IsReadOnly="True" IsReadOnlyCaretVisible="True"
-                                 Text="{Binding Axle1FilePath}" Name="FilePath1" > 
-                            <Validation.ErrorTemplate>
-                                <ControlTemplate>
-                                    <DockPanel>
-                                        <TextBlock Foreground="Red" DockPanel.Dock="Top" Text="{Binding ErrorContent}" />
-                                        <AdornedElementPlaceholder/>
-                                    </DockPanel>
-                                </ControlTemplate>
-                            </Validation.ErrorTemplate>
-                            <TextBox.Style>
-                                <Style>
-                                    <Style.Triggers>
-                                        <Trigger Property="Validation.HasError" Value="true">
-                                            <Setter Property="Border.BorderBrush" Value="Red"/>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBox.Style>
-                        </TextBox>
-                        <Button Name="UploadFirstAxleButton" Grid.Column="3" Content="..." Width="30" Margin="5,0,0,0"
-                                Command="{Binding SelectFirstFileCommand}"
-                                CommandParameter="{Binding FirstFileType}"/>
-                        <TextBlock Grid.Column="5" Text="Twin tyres" Margin="5,0,0,0"/>
-                        <CheckBox Grid.Column="6" IsChecked="{Binding Axle1IsTwin}" Margin="0,3,0,0"/>
-                        <TextBlock Grid.Column="7" Text="Liftable" Margin="5,0,0,0"/>
-                        <CheckBox Grid.Column="8" IsChecked="{Binding Axle1IsLiftable}" Margin="0,3,0,0"/>
-                        <TextBlock Grid.Column="9" Text="Steered" Margin="5,0,0,0"/>
-                        <CheckBox Grid.Column="10" IsChecked="{Binding Axle1IsSteered}" Margin="0,3,0,0"/>
+                        <GroupBox Grid.Column="0" Header="Axle 1" HorizontalAlignment="Stretch" >
+                            <StackPanel>
+                                <DockPanel LastChildFill="True">
+                                    <Button DockPanel.Dock =" Right" Name="UploadFirstAxleButton" Grid.Column="3" Content="..." HorizontalAlignment="Right" Width="30" Margin="5,0,0,0"
+                                            Command="{Binding SelectFirstFileCommand}"
+                                            CommandParameter="{Binding FirstFileType}"/>
+                                    <TextBox HorizontalAlignment="Stretch" IsReadOnly="True" DockPanel.Dock="Left"
+                                             Text="{Binding Axle1FilePath}" Name="FilePath1" TextChanged="TextBoxBase_OnTextChanged" IsReadOnlyCaretVisible="True">
+                                        <Validation.ErrorTemplate>
+                                            <ControlTemplate>
+                                                <DockPanel>
+                                                    <TextBlock Foreground="Red" DockPanel.Dock="Top" Text="{Binding ErrorContent}" />
+                                                    <AdornedElementPlaceholder/>
+                                                </DockPanel>
+                                            </ControlTemplate>
+                                        </Validation.ErrorTemplate>
+                                        <TextBox.Style>
+                                            <Style>
+                                                <Style.Triggers>
+                                                    <Trigger Property="Validation.HasError" Value="true">
+                                                        <Setter Property="Border.BorderBrush" Value="Red"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBox.Style>
+                                    </TextBox>
+                                </DockPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                        <StackPanel Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
+                                            <TextBlock Grid.Column="5" Text="Twin tyres" Margin="5,0,5,0"/>
+                                            <CheckBox Grid.Column="6" IsChecked="{Binding Axle1IsTwin}" Margin="0,3,0,0"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
+                                            <TextBlock Grid.Column="7" Text="Liftable" Margin="5,0,5,0"/>
+                                            <CheckBox Grid.Column="8" IsChecked="{Binding Axle1IsLiftable}" Margin="0,3,0,0"/>
+                                        </StackPanel>
+                                      <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
+                                          <TextBlock Grid.Column="9" Text="Steered" Margin="5,0,5,0"/>
+                                          <CheckBox Grid.Column="10" IsChecked="{Binding Axle1IsSteered}" Margin="0,3,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </GroupBox>
                     </Grid>
 
                     <Grid Margin="5">
                         <Grid.Style>
                             <Style>
-                            <Setter Property="Grid.Visibility" Value="Collapsed"></Setter>
+                                <Setter Property="Grid.Visibility" Value="Collapsed"></Setter>
                                 <Style.Triggers>
                                     <DataTrigger  
                                         Binding="{Binding ElementName=NumberOfAxles, Path=SelectedItem.Value}" Value="2">
@@ -507,55 +509,55 @@
                                 </Style.Triggers>
                             </Style>
                         </Grid.Style>
-
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock Grid.Column="0" Text="Axle 2" Width="40" />
-                        <TextBox Grid.Column="1" Width="120" IsReadOnly="True" IsReadOnlyCaretVisible="True" 
-                                 Text="{Binding Axle2FilePath}">
-                            <Validation.ErrorTemplate>
-                                <ControlTemplate>
-                                    <DockPanel>
-                                        <TextBlock Foreground="Red" DockPanel.Dock="Top" Text="{Binding ErrorContent}" />
-                                        <AdornedElementPlaceholder/>
-                                    </DockPanel>
-                                </ControlTemplate>
-                            </Validation.ErrorTemplate>
-                            <TextBox.Style>
-                                <Style>
-                                    <Style.Triggers>
-                                        <Trigger Property="Validation.HasError" Value="true">
-                                            <Setter Property="Border.BorderBrush" Value="Red"/>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBox.Style>
-                        </TextBox>
-                        <Button Name="UploadSecondAxleButton" Grid.Column="3" Content="..." Width="30" Margin="5,0,0,0"
-                                Command="{Binding SelectSecondFileCommand}"
-                                CommandParameter="{Binding SecondFileType}" />
-                        <TextBlock Grid.Column="5" Text="Twin tyres" Margin="5,0,0,0"/>
-                        <CheckBox Grid.Column="6" IsChecked="{Binding Axle2IsTwin}" Margin="0,3,0,0"/>
-                        <TextBlock Grid.Column="7" Text="Liftable" Margin="5,0,0,0"/>
-                        <CheckBox Grid.Column="8" IsChecked="{Binding Axle2IsLiftable}" Margin="0,3,0,0"/>
-                        <TextBlock Grid.Column="9" Text="Steered" Margin="5,0,0,0"/>
-                        <CheckBox Grid.Column="10" IsChecked="{Binding Axle2IsSteered}" Margin="0,3,0,0"/>
+                        <GroupBox Grid.Column="0" Header="Axle 2" HorizontalAlignment="Stretch" >
+                            <StackPanel>
+                                <DockPanel LastChildFill="True">
+                                    <Button DockPanel.Dock =" Right"  Grid.Column="3" Content="..." HorizontalAlignment="Right" Width="30" Margin="5,0,0,0"
+                                            Command="{Binding SelectSecondFileCommand}"
+                                            CommandParameter="{Binding SecondFileType}"/>
+                                    <TextBox HorizontalAlignment="Stretch" IsReadOnly="True" DockPanel.Dock="Left"
+                                             Text="{Binding Axle2FilePath}" TextChanged="TextBoxBase_OnTextChanged" IsReadOnlyCaretVisible="True">
+                                        <Validation.ErrorTemplate>
+                                            <ControlTemplate>
+                                                <DockPanel>
+                                                    <TextBlock Foreground="Red" DockPanel.Dock="Top" Text="{Binding ErrorContent}" />
+                                                    <AdornedElementPlaceholder/>
+                                                </DockPanel>
+                                            </ControlTemplate>
+                                        </Validation.ErrorTemplate>
+                                        <TextBox.Style>
+                                            <Style>
+                                                <Style.Triggers>
+                                                    <Trigger Property="Validation.HasError" Value="true">
+                                                        <Setter Property="Border.BorderBrush" Value="Red"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBox.Style>
+                                    </TextBox>
+                                </DockPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
+                                        <TextBlock Grid.Column="5" Text="Twin tyres" Margin="5,0,5,0"/>
+                                        <CheckBox Grid.Column="6" IsChecked="{Binding Axle2IsTwin}" Margin="0,3,0,0"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
+                                        <TextBlock Grid.Column="7" Text="Liftable" Margin="5,0,5,0"/>
+                                        <CheckBox Grid.Column="8" IsChecked="{Binding Axle2IsLiftable}" Margin="0,3,0,0"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
+                                        <TextBlock Grid.Column="9" Text="Steered" Margin="5,0,5,0"/>
+                                        <CheckBox Grid.Column="10" IsChecked="{Binding Axle2IsSteered}" Margin="0,3,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </GroupBox>
                     </Grid>
-
                     <Grid Margin="5">
                         <Grid.Style>
                             <Style>
@@ -568,56 +570,58 @@
                                 </Style.Triggers>
                             </Style>
                         </Grid.Style>
+                        <GroupBox Grid.Column="0" Header="Axle 3" HorizontalAlignment="Stretch" >
+                            <StackPanel>
+                                <DockPanel LastChildFill="True">
+                                    <Button DockPanel.Dock =" Right"  Grid.Column="3" Content="..." HorizontalAlignment="Right" Width="30" Margin="5,0,0,0"
+                                            Command="{Binding SelectThirdFileCommand}"
+                                            CommandParameter="{Binding ThirdFileType}"/>
+                                    <TextBox HorizontalAlignment="Stretch" IsReadOnly="True" DockPanel.Dock="Left"
+                                             Text="{Binding Axle3FilePath}" TextChanged="TextBoxBase_OnTextChanged" IsReadOnlyCaretVisible="True">
+                                        <Validation.ErrorTemplate>
+                                            <ControlTemplate>
+                                                <DockPanel>
+                                                    <TextBlock Foreground="Red" DockPanel.Dock="Top" Text="{Binding ErrorContent}" />
+                                                    <AdornedElementPlaceholder/>
+                                                </DockPanel>
+                                            </ControlTemplate>
+                                        </Validation.ErrorTemplate>
+                                        <TextBox.Style>
+                                            <Style>
+                                                <Style.Triggers>
+                                                    <Trigger Property="Validation.HasError" Value="true">
+                                                        <Setter Property="Border.BorderBrush" Value="Red"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBox.Style>
+                                    </TextBox>
+                                </DockPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
+                                        <TextBlock Grid.Column="5" Text="Twin tyres" Margin="5,0,5,0"/>
+                                        <CheckBox Grid.Column="6" IsChecked="{Binding Axle3IsTwin}" Margin="0,3,0,0"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
+                                        <TextBlock Grid.Column="7" Text="Liftable" Margin="5,0,5,0"/>
+                                        <CheckBox Grid.Column="8" IsChecked="{Binding Axle3IsLiftable}" Margin="0,3,0,0"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
+                                        <TextBlock Grid.Column="9" Text="Steered" Margin="5,0,5,0"/>
+                                        <CheckBox Grid.Column="10" IsChecked="{Binding Axle3IsSteered}" Margin="0,3,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </GroupBox>
 
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock Grid.Column="0" Text="Axle 3" Width="40" />
-                        <TextBox Grid.Column="1" Width="120" IsReadOnly="True" IsReadOnlyCaretVisible="True" 
-                                 Text="{Binding Axle3FilePath}">
-                            <Validation.ErrorTemplate>
-                                <ControlTemplate>
-                                    <DockPanel>
-                                        <TextBlock Foreground="Red" DockPanel.Dock="Top" Text="{Binding ErrorContent}" />
-                                        <AdornedElementPlaceholder/>
-                                    </DockPanel>
-                                </ControlTemplate>
-                            </Validation.ErrorTemplate>
-                            <TextBox.Style>
-                                <Style>
-                                    <Style.Triggers>
-                                        <Trigger Property="Validation.HasError" Value="true">
-                                            <Setter Property="Border.BorderBrush" Value="Red"/>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBox.Style>
-                        </TextBox>
-                        <Button Name="UploadThirdAxleButton" Grid.Column="3" Content="..." Width="30" Margin="5,0,0,0"
-                                Command="{Binding SelectThirdFileCommand}"
-                                CommandParameter="{Binding ThirdFileType}" />
-                        <TextBlock Grid.Column="5" Text="Twin tyres" Margin="5,0,0,0"/>
-                        <CheckBox Grid.Column="6" IsChecked="{Binding Axle3IsTwin}" Margin="0,3,0,0"/>
-                        <TextBlock Grid.Column="7" Text="Liftable" Margin="5,0,0,0"/>
-                        <CheckBox Grid.Column="8" IsChecked="{Binding Axle3IsLiftable}" Margin="0,3,0,0"/>
-                        <TextBlock Grid.Column="9" Text="Steered" Margin="5,0,0,0"/>
-                        <CheckBox Grid.Column="10" IsChecked="{Binding Axle3IsSteered}" Margin="0,3,0,0"/>
                     </Grid>
                 </StackPanel>
             </StackPanel>
         </GroupBox>
-</Grid>
+    </Grid>
 </UserControl>
