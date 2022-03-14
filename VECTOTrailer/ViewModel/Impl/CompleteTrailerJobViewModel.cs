@@ -9,11 +9,14 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Xml;
+using System.Xml.Linq;
 using System.Xml.Schema;
 using Castle.Core.Internal;
 using Ninject;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
+using TUGraz.VectoCore.InputData.FileIO.XML;
+using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.OutputData.XML.DeclarationJobs;
 using TUGraz.VectoCore.Utils;
@@ -21,6 +24,7 @@ using VECTOTrailer.Helper;
 using VECTOTrailer.ViewModel.Interfaces;
 using VECTOTrailer.Util;
 using VECTOTrailer.Util.XML;
+using VECTOTrailer.ViewModel.Adapter.Declaration;
 using Component = VECTOTrailer.Util.Component;
 
 
@@ -46,6 +50,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		private bool _validationErrorsDisplayed;
 
+		private IXMLInputDataReader _xmlReader; 
 		#endregion
 
 		#region Properties
@@ -68,6 +73,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		public CompleteTrailerJobViewModel(IKernel kernel, IDeclarationTrailerInputDataProvider inputData)
 		{
 			Kernel = kernel;
+			_xmlReader = kernel.Get<IXMLInputDataReader>();
 			InputDataProvider = inputData;
 			IsNewJob = inputData == null;
 			JobViewModel = this;
@@ -131,16 +137,21 @@ namespace VECTOTrailer.ViewModel.Impl
 		private void Save(Window window, string filePath)
 		{
 			SetCurrentDataToSave();
+
+			IList<string> errors = new List<string>();
+	
+
 			var xDocument = _xmlCompletedTrailer.GenerateCompletedTrailerDocument(CompleteVehicleTrailerData);
 
-			//TODO: remove on invalid validation
-			_xmlCompletedTrailerWriter.WriteCompletedTrailerXml(filePath, xDocument);
+			var trailerData = _xmlReader.CreateDeclarationTrailer(xDocument.CreateReader(new ReaderOptions()));
+			var valid = DeclarationTrailerDataAdapter.ValidateTrailerInput(trailerData.JobInputData.Trailer, ref errors);
 
-			if (XmlHelper.ValidateXDocument(xDocument, null, ValidationErrorAction)) {
+
+			if (valid && XmlHelper.ValidateXDocument(xDocument, null, ValidationErrorAction)) {
 				_xmlCompletedTrailerWriter.WriteCompletedTrailerXml(filePath, xDocument);
 				CloseWindow(window);
 			} else {
-				ValidationResultDialogWindow(false);
+				ValidationResultDialogWindow(false, errors);
 				DoShowValidationErrors();
 			}
 		}
@@ -442,10 +453,15 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		private static void ValidationResultDialogWindow(bool validationResult)
 		{
+			ValidationResultDialogWindow(validationResult, null);
+		}
+		private static void ValidationResultDialogWindow(bool validationResult, IList<string> errors)
+		{
+			errors = errors ?? new List<string>();
 			if (validationResult) {
-				MessageBox.Show("No validation errors were found, the entered data is valid!", "Input Validation", MessageBoxButton.OK);
+				MessageBox.Show("No validation errors were found, the entered data is valid!", "Input Validation", MessageBoxButton.OK, MessageBoxImage.Information);
 			} else {
-				MessageBox.Show("There are some input validation errors, the data must be valid for saving!", "Input Validation", MessageBoxButton.OK);
+				MessageBox.Show($"There are some input validation errors, the data must be valid for saving! \n \n- {string.Join("\n- ", errors)}", "Input Validation", MessageBoxButton.OK, MessageBoxImage.Error);
 			}
 		}
 

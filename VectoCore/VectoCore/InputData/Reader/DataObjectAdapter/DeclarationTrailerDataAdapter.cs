@@ -36,6 +36,7 @@ using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Xml;
+using JetBrains.Annotations;
 using Ninject;
 using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.Exceptions;
@@ -1082,36 +1083,60 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			};
 		}
 
-		private static void ValidateAeroFeatures(ITrailerDeclarationInputData trailer)
+		private static bool ValidateAeroFeatures(ITrailerDeclarationInputData trailer, ref IList<string> errors)
 		{
+			var prevErrors = errors.Count;
 			var aeroFeatures = new List<AeroFeatureTechnology>();
-			if (trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.SideSkirtsShort)) aeroFeatures.Add(AeroFeatureTechnology.SideSkirtsShort);
-			if (trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.SideSkirtsLong)) aeroFeatures.Add(AeroFeatureTechnology.SideSkirtsLong);
-			if (trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.BoatTailShort)) aeroFeatures.Add(AeroFeatureTechnology.BoatTailShort);
-			if (trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.BoatTailLong)) aeroFeatures.Add(AeroFeatureTechnology.BoatTailLong);
+			if (trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.SideSkirtsShort)) {
+				aeroFeatures.Add(AeroFeatureTechnology.SideSkirtsShort);
+			}
+
+			if (trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.SideSkirtsLong)) {
+				aeroFeatures.Add(AeroFeatureTechnology.SideSkirtsLong);
+			}
+
+			if (trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.BoatTailShort)) {
+				aeroFeatures.Add(AeroFeatureTechnology.BoatTailShort);
+			}
+
+			if (trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.BoatTailLong)) {
+				aeroFeatures.Add(AeroFeatureTechnology.BoatTailLong);
+			}
 
 			var combination = DeclarationData.AeroFeatures.Lookup(aeroFeatures);
-			if (combination < 0)
-				throw new Exception("invalid aero feature combination");
+			if (combination < 0) {
+				errors.Add("invalid aero feature combination");
+				//throw new Exception("invalid aero feature combination");
+			}
+
 
 			if (trailer.AeroFeatureTechnologies.Count == 0 &&
 				(trailer.YawAngle0 < 0 ||
 				trailer.YawAngle3 < 0 ||
 				trailer.YawAngle6 < 0 ||
-				trailer.YawAngle9 < 0))
-				throw new Exception("Certified Aero Reduction values must be positive");
+				trailer.YawAngle9 < 0)) {
+				errors.Add("Certified Aero Reduction values must be positive");
+				//throw new Exception("Certified Aero Reduction values must be positive");
+			}
 
+			return prevErrors == errors.Count;
 		}
 
-		private static void ValidateAxles(ITrailerDeclarationInputData trailer)
+		private static bool ValidateAxles(ITrailerDeclarationInputData trailer, ref IList<string> errors)
 		{
+			var error = false;
 			var liftableCount = 0;
-			if (trailer.Axles[0].Liftable)
+			if (trailer.Axles[0].Liftable) {
 				liftableCount++;
-			if (trailer.Axles.Count > 1 && trailer.Axles[1].Liftable)
+			}
+
+			if (trailer.Axles.Count > 1 && trailer.Axles[1].Liftable) {
 				liftableCount++;
-			if (trailer.Axles.Count > 2 && trailer.Axles[2].Liftable)
+			}
+
+			if (trailer.Axles.Count > 2 && trailer.Axles[2].Liftable) {
 				liftableCount++;
+			}
 
 			//if (trailer.Axles[0].Liftable && trailer.Axles[0].Steered) throw new Exception("An axle cannot be both liftable and steered");
 			//if (trailer.Axles.Count > 1 && trailer.Axles[1].Liftable && trailer.Axles[1].Steered) throw new Exception("An axle cannot be both liftable and steered");
@@ -1131,76 +1156,140 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				case NumberOfTrailerAxles.Three when trailer.TrailerType == TypeTrailer.DB && (trailer.Axles[0].Liftable || trailer.Axles[0].Steered || trailer.Axles[1].Steered):
 				case NumberOfTrailerAxles.Three when trailer.TrailerType == TypeTrailer.DC && (trailer.Axles[1].Liftable || trailer.Axles[0].Steered || trailer.Axles[1].Steered):
 				case NumberOfTrailerAxles.Three when liftableCount > 2: //too many liftable
-				case NumberOfTrailerAxles.Three when trailer.Axles.Count(x => x.Steered) > 2:
-					throw new Exception("Wrong axle configuration");
+                case NumberOfTrailerAxles.Three when trailer.Axles.Count(x => x.Steered) > 2:
+					errors.Add("Wrong axle configuration");
+					error = true;
+					break;
+				//throw new Exception("Wrong axle configuration");
 			}
 
+			return !error;
 		}
 
-		private static void ValidateInputValues(ITrailerDeclarationInputData trailer)
+
+		private static bool ValidateInputValues(ITrailerDeclarationInputData trailer, ref IList<string> errors)
 		{
-			if (trailer.VIN.Length != 17)
-				throw new Exception("VIN must be 17 characters long");
 
-			if (trailer.TrailerType != TypeTrailer.DB && (trailer.TPMLMAxleAssembly == null || trailer.TPMLMAxleAssembly.Value() == 0 || trailer.TPMLMAxleAssembly.Value() < 1000))
-				throw new Exception("Trailer is not DB but no TPMLM Axle Assembly value is given");
+			var prevErrors = errors.Count;
+			if (trailer.VIN.Length != 17) {
+				errors.Add("VIN must be 17 characters long");
+				//throw new Exception("VIN must be 17 characters long");
+			}
 
-			if (trailer.TrailerType != TypeTrailer.DC && (trailer.TrailerCouplingPoint == TrailerCouplingPoint.Low || trailer.TrailerCouplingPoint == TrailerCouplingPoint.High))
-				throw new Exception("Trailer is not DC but Coupling Point is given");
+			if (trailer.TrailerType != TypeTrailer.DB && (trailer.TPMLMAxleAssembly == null ||
+														trailer.TPMLMAxleAssembly.Value() == 0 ||
+														trailer.TPMLMAxleAssembly.Value() < 1000)) {
+				errors.Add("Trailer is not DB but no TPMLM Axle Assembly value is given");
+				//throw new Exception("Trailer is not DB but no TPMLM Axle Assembly value is given");
+			}
+
+			if (trailer.TrailerType != TypeTrailer.DC && (trailer.TrailerCouplingPoint == TrailerCouplingPoint.Low ||
+														trailer.TrailerCouplingPoint == TrailerCouplingPoint.High)) {
+				errors.Add("Trailer is not DC but Coupling Point is given");
+				//throw new Exception("Trailer is not DC but Coupling Point is given");
+			}
 
 			var trailerAxles = trailer.Axles;
-			if ((trailerAxles ?? throw new InvalidOperationException()).Any(x => x.Tyre.Dimension != trailerAxles.FirstOrDefault()?.Tyre.Dimension))
-				throw new Exception("invalid trailer configurations - different tyre dimensions specified");
+			if ((trailerAxles ?? throw new InvalidOperationException()).Any(x =>
+					x.Tyre.Dimension != trailerAxles.FirstOrDefault()?.Tyre.Dimension)) {
+				errors.Add("invalid trailer configurations - different tyre dimensions specified");
+				//throw new Exception("invalid trailer configurations - different tyre dimensions specified");
+			}
 
-			if (trailer.NumberOfAxles == NumberOfTrailerAxles.One && trailer.LengthBetweenCentersOfAxles.Value() > 0)
-				throw new Exception("One axle trailers should have Length Between Centers Of Axles = 0");
+			if (trailer.NumberOfAxles == NumberOfTrailerAxles.One && trailer.LengthBetweenCentersOfAxles.Value() > 0) {
+				errors.Add("One axle trailers should have Length Between Centers Of Axles = 0");
+				//throw new Exception("One axle trailers should have Length Between Centers Of Axles = 0");
+			}
 
-			if (trailer.TrailerType != TypeTrailer.DC && trailer.TPMLMAxleAssembly > trailer.TPMLMTotalTrailer)
-				throw new Exception("Invalid masses declared");
+			if (trailer.TrailerType != TypeTrailer.DC && trailer.TPMLMAxleAssembly > trailer.TPMLMTotalTrailer) {
+				errors.Add("Invalid masses declared");
+				//throw new Exception("Invalid masses declared");
+			}
 
-			if (trailer.TrailerType != TypeTrailer.DA && trailer.TPMLMAxleAssembly >= trailer.TPMLMTotalTrailer)
-				throw new Exception("Invalid masses declared");
 
-			if (trailer.ExternalBodyWidth >= trailer.TotalTrailerHeight)
-				throw new Exception("External body width value is larger than the total trailer height");
+			if (trailer.TrailerType != TypeTrailer.DA && trailer.TPMLMAxleAssembly >= trailer.TPMLMTotalTrailer) {
+				errors.Add("Invalid masses declared");
+				//throw new Exception("Invalid masses declared");
+			}
 
-			if (trailer.TrailerType == TypeTrailer.DA && trailer.ExternalBodyLength > 14)
-				throw new Exception("Invalid external body width declared");
 
-			if (trailer.TrailerType == TypeTrailer.DC && trailer.ExternalBodyLength > 12)
-				throw new Exception("Invalid external body width declared");
+			if (trailer.ExternalBodyWidth >= trailer.TotalTrailerHeight) {
+				errors.Add("External body width value is larger than the total trailer height");
+				//throw new Exception("External body width value is larger than the total trailer height");
+			}
 
-			if (trailer.TrailerType == TypeTrailer.DB && trailer.ExternalBodyLength > 12)
-				throw new Exception("Invalid external body width declared");
 
-			if (trailer.ExternalBodyWidth < 1 || trailer.ExternalBodyWidth > 2.6)
-				throw new Exception("External body width is invalid");
+			if (trailer.TrailerType == TypeTrailer.DA && trailer.ExternalBodyLength > 14) {
+				errors.Add("Invalid external body length declared");
+				//throw new Exception("Invalid external body length declared");
+			}
 
-			if (trailer.ExternalBodyWidth < 1 || trailer.ExternalBodyWidth > 4)
-				throw new Exception("External body width is invalid");
+			if (trailer.TrailerType == TypeTrailer.DC && trailer.ExternalBodyLength > 12) {
+				errors.Add("Invalid external body length declared");
+				//throw new Exception("Invalid external body width declared");
+			}
+
+			if (trailer.TrailerType == TypeTrailer.DB && trailer.ExternalBodyLength > 12) {
+
+				errors.Add("Invalid external body length declared");
+				//throw new Exception("Invalid external body length declared");
+			}
+
+			if (trailer.ExternalBodyWidth < 1 || trailer.ExternalBodyWidth > 2.6) {
+				errors.Add("External body width is invalid");
+				//throw new Exception("External body width is invalid");
+			}
+
+			if (trailer.ExternalBodyWidth < 1 || trailer.ExternalBodyWidth > 4) {
+				errors.Add("External body width is invalid"); 
+				//throw new Exception("External body width is invalid");
+			}
 
 			if ((trailer.TrailerType != TypeTrailer.DC || trailer.TrailerType != TypeTrailer.DA) &&
-				trailer.NumberOfAxles == NumberOfTrailerAxles.One && trailer.LegislativeCategory.ToUpper() != "O3")
-				throw new Exception("Invalid xml values");
+				trailer.NumberOfAxles == NumberOfTrailerAxles.One && trailer.LegislativeCategory.ToUpper() != "O3") {
+				errors.Add("Invalid xml values");
+				//throw new Exception("Invalid xml values");
+			}
 
-			if (trailer.ExternalBodyHeight >= trailer.TotalTrailerHeight)
-				throw new Exception("Invalid height");
+			if (trailer.ExternalBodyHeight >= trailer.TotalTrailerHeight) {
+				errors.Add("Invalid height");
+				//throw new Exception("Invalid height");
+			}
 
-			if (trailer.NumberOfAxles == NumberOfTrailerAxles.One && trailer.LengthBetweenCentersOfAxles.Value() > 0)
-				throw new Exception("Invalid value for one axle");
+			if (trailer.NumberOfAxles == NumberOfTrailerAxles.One && trailer.LengthBetweenCentersOfAxles.Value() > 0) {
+				errors.Add("Invalid value for one axle");
+				//throw new Exception("Invalid value for one axle");
+			}
 
-			if (trailer.TotalTrailerHeight < 1 || trailer.TotalTrailerHeight > 4)
-				throw new Exception("Invalid total height");
+			if (trailer.TotalTrailerHeight < 1 || trailer.TotalTrailerHeight > 4) {
+				errors.Add("Invalid total height");
+				//throw new Exception("Invalid total height");
+			}
 
-			if (trailer.MassInRunningOrder.Value() < 1000 || trailer.TPMLMTotalTrailer.Value() < 1000)
-				throw new Exception("Invalid values");
+			if (trailer.MassInRunningOrder.Value() < 1000 || trailer.TPMLMTotalTrailer.Value() < 1000) {
+				errors.Add("Invalid mass in running order");
+				//throw new Exception("Invalid values");
+			}
+
+			if (trailer.TPMLMTotalTrailer.Value() < 1000) {
+				errors.Add("Invalid TPMLM total trailer");
+			}
+
+			return prevErrors == errors.Count; // no new errors added 
 		}
-
+		
 		public void ValidateTrailerInput(ITrailerDeclarationInputData trailer)
 		{
-			ValidateAeroFeatures(trailer);
-			ValidateInputValues(trailer);
-			ValidateAxles(trailer);
+			IList<string> errors = new List<string>();
+			if (!ValidateTrailerInput(trailer, ref errors)) {
+				throw new VectoException(string.Join("\n", errors));
+			}
+		}
+
+		public static bool ValidateTrailerInput(ITrailerDeclarationInputData trailer, ref IList<string> errors)
+		{
+			return ValidateAeroFeatures(trailer, ref errors) & ValidateInputValues(trailer, ref errors) &
+						ValidateAxles(trailer, ref errors);
 		}
 
         private static int GetAeroFeatureCombination(ITrailerDeclarationInputData trailer)

@@ -604,7 +604,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		public Dictionary<string, string> XmlNamesToPropertyMapping { get; private set; }
 		public AllowedEntry<TypeTrailer>[] AllowedTrailerTypes { get; private set; }
 		public AllowedEntry<BodyWorkCode>[] AllowedBodyCodes { get; private set; }
-		public  AllowedEntry<AeroFeatureTechnology>[] AllowedTechnologies { get; private set; }
+		public AllowedEntry<AeroFeatureTechnology>[] AllowedTechnologies { get; private set; }
 		public AllowedEntry<NumberOfTrailerAxles>[] AllowedNumberOfAxles { get; private set; }
 		public AllowedEntry<string>[] AllowedLegislativeCategory { get; private set; }
 		public AllowedEntry<TrailerCouplingPoint>[] AllowedTrailerCouplingPoint { get; private set; }
