@@ -94,30 +94,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			return retVal;
 		}
 
-		public IResponse Request(Second absTime, Meter ds, MeterPerSecond targetVelocity, Radian gradient, bool dryRun)
-		{
-			Second dt = 1.SI<Second>();
-			return this.Request(absTime, dt, targetVelocity, gradient);
-		}
-
-		public IResponse Request(Second absTime, Second ds, MeterPerSecond targetVelocity, Radian gradient, bool dryRun)
-		{
-			Second dt = 1.SI<Second>();
-			return this.Request(absTime, dt, targetVelocity, gradient);
-		}
-
-		public IResponse Request(Second absTime, Second dt, MeterPerSquareSecond acceleration, Radian gradient)
-		{
-			MeterPerSquareSecond targetVelocity = 0.SI<MeterPerSquareSecond>();
-			return this.Request(absTime, dt, targetVelocity, gradient);
-		}
-
-		public IResponse Request(Second absTime, Second dt, MeterPerSquareSecond acceleration, Radian gradient, bool dryRun)
-		{
-			MeterPerSquareSecond targetVelocity = 0.SI<MeterPerSquareSecond>();
-			return this.Request(absTime, dt, targetVelocity, gradient);
-		}
-
 		public IResponse Request(Second absTime, Meter ds, MeterPerSecond targetVelocity, Radian gradient)
 		{
 			IterationStatistics.Increment(this, "Requests");
