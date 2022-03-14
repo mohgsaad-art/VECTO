@@ -27,7 +27,7 @@ namespace VECTOTrailer.Views.ComponentViews.Declaration
 			InitializeComponent();
 		}
 
-		private void TextBoxBase_OnTextChanged(object sender, TextChangedEventArgs e)
+		private void ScrollToEnd(object sender, TextChangedEventArgs e)
 		{
 			if (sender is TextBox textBox) {
 				Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>

@@ -330,7 +330,7 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Grid.Column="0" Text="Device" Width="40" />
-                        <TextBox Grid.Column="1" HorizontalAlignment="Stretch" IsReadOnly="True" IsReadOnlyCaretVisible="True" TextWrapping="Wrap"
+                        <TextBox Grid.Column="1" HorizontalAlignment="Stretch" IsReadOnly="True" IsReadOnlyCaretVisible="True" TextWrapping="Wrap" TextChanged="ScrollToEnd"
                                  Text="{Binding CertifiedAeroDeviceFilePath}">
                             <Validation.ErrorTemplate>
                                 <ControlTemplate>
@@ -450,7 +450,7 @@
                                             Command="{Binding SelectFirstFileCommand}"
                                             CommandParameter="{Binding FirstFileType}"/>
                                     <TextBox HorizontalAlignment="Stretch" IsReadOnly="True" DockPanel.Dock="Left"
-                                             Text="{Binding Axle1FilePath}" Name="FilePath1" TextChanged="TextBoxBase_OnTextChanged" IsReadOnlyCaretVisible="True">
+                                             Text="{Binding Axle1FilePath}" Name="FilePath1" TextChanged="ScrollToEnd" IsReadOnlyCaretVisible="True">
                                         <Validation.ErrorTemplate>
                                             <ControlTemplate>
                                                 <DockPanel>
@@ -516,7 +516,7 @@
                                             Command="{Binding SelectSecondFileCommand}"
                                             CommandParameter="{Binding SecondFileType}"/>
                                     <TextBox HorizontalAlignment="Stretch" IsReadOnly="True" DockPanel.Dock="Left"
-                                             Text="{Binding Axle2FilePath}" TextChanged="TextBoxBase_OnTextChanged" IsReadOnlyCaretVisible="True">
+                                             Text="{Binding Axle2FilePath}" TextChanged="ScrollToEnd" IsReadOnlyCaretVisible="True">
                                         <Validation.ErrorTemplate>
                                             <ControlTemplate>
                                                 <DockPanel>
@@ -577,7 +577,7 @@
                                             Command="{Binding SelectThirdFileCommand}"
                                             CommandParameter="{Binding ThirdFileType}"/>
                                     <TextBox HorizontalAlignment="Stretch" IsReadOnly="True" DockPanel.Dock="Left"
-                                             Text="{Binding Axle3FilePath}" TextChanged="TextBoxBase_OnTextChanged" IsReadOnlyCaretVisible="True">
+                                             Text="{Binding Axle3FilePath}" TextChanged="ScrollToEnd" IsReadOnlyCaretVisible="True">
                                         <Validation.ErrorTemplate>
                                             <ControlTemplate>
                                                 <DockPanel>

@@ -1488,5 +1488,7 @@
 <data name="Trailer_TrailerCouplingPoint" xml:space="preserve">
     <value>TrailerCouplingPoint</value>
   </data>
-
+<data name="Trailer_AeroDevice_ApplicableVehicleGroup" xml:space="preserve">
+	<value>ApplicableVehicleGroup</value>
+</data>
 </root>

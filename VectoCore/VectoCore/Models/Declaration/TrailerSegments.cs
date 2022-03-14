@@ -114,6 +114,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 				GenericCode = row.Field<string>("Generic_code"),
 				MassBody = Kilogram.Create(!row.Field<string>("generic_mass_body").Contains("-") ? row.ParseDouble("generic_mass_body") : 0),
 				Class = VehicleClassHelper.Parse(row.Field<string>("Generic_vehicle_group").Replace("-RD", "").Replace("-LH", "")),
+				TowingVehicle = row.Field<string>("Generic_vehicle_group"),
 				MaxGcm = row.Field<string>("max_gcm"),
 				Missions = CreateMissions(row),
 				ReferenceTrailerSegment = DeclarationData.ReferenceTrailer.Lookup(group),

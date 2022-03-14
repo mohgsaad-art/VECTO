@@ -89,6 +89,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 		public SquareMeter A3RefCor { get; set; }
 		public string CodeStandard { get; set; }
 		public TrailerReferenceRatios ReferenceRatios { get; set; }
+		public string TowingVehicle { get; set; }
 	}
 
 	public struct ReferenceTrailerSegment

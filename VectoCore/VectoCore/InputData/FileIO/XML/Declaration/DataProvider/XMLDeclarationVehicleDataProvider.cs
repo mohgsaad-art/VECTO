@@ -1015,6 +1015,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		public TrailerCouplingPoint TrailerCouplingPoint => TrailerCouplingPointHelper.Parse(GetString(XMLNames.Trailer_TrailerCouplingPoint));
 
+		public string CertifiedAeroDeviceApplicableVehicleGroup => GetNodes(XMLNames.Trailer_AeroDevice_ApplicableVehicleGroup).Count > 0
+			? GetString(XMLNames.Trailer_AeroDevice_ApplicableVehicleGroup)
+			: null;
 		public double YawAngle0 => GetNodes(XMLNames.Trailer_YawAngle0).Count > 0 ? GetDouble(XMLNames.Trailer_YawAngle0) : 0;
 		public double YawAngle3 => GetNodes(XMLNames.Trailer_YawAngle3).Count > 0 ? GetDouble(XMLNames.Trailer_YawAngle3) : 0;
 		public double YawAngle6 => GetNodes(XMLNames.Trailer_YawAngle6).Count > 0 ? GetDouble(XMLNames.Trailer_YawAngle6) : 0;
