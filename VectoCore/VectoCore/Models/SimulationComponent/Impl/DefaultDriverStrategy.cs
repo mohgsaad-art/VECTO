@@ -797,8 +797,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		protected IDriverActions Driver => _driver ?? (_driver = DriverStrategy.Driver);
 
-		public TimeBasedDriverStrategy TimeBasedDriverStrategy { get; set; }
-
 		protected DriverData DriverData => _driverData ?? (_driverData = Driver.DriverData);
 
 		protected IDataBus DataBus => _dataBus ?? (_dataBus = Driver.DataBus);

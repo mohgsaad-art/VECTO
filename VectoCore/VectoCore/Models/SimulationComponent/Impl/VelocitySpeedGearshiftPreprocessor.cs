@@ -171,11 +171,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					},
 					evaluateFunction: acc => {
 						var response = vehicle.Request(time, simulationInterval, acc, gradient, true);
-						// FIXME: ank: Is this DriveResponse-is-null still necessary??
-						//
-						if (response.Driver != null) {
-							response.Driver.Acceleration = acc;
-						}
+
+						response.Driver.Acceleration = acc;
 						return response;
 					},
 					criterion: response => {
@@ -184,15 +181,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					},
 					abortCriterion: (response, cnt) => {
 						var r = (ResponseDryRun)response;
-						
-						// FIXME: ank: Is this DriveResponse-is-null still necessary??
-						//
-						if (r.Driver != null)
-						{
-							return r != null && (vehicle.VehicleSpeed + r.Driver.Acceleration * simulationInterval) < 0.KMPHtoMeterPerSecond();
-						} else {
-							throw new VectoSimulationException("DriverResponse is null at VelocitySpeedGearshiftPreprocessors on abortCriterion");
-						}
+						return r != null && (vehicle.VehicleSpeed + r.Driver.Acceleration * simulationInterval) < 0.KMPHtoMeterPerSecond();
 					},
 					searcher: this
 				);
