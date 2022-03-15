@@ -31,9 +31,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using Newtonsoft.Json;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
@@ -44,6 +46,7 @@ using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.OutputData;
+using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.OutputData.ModFilter;
 using TUGraz.VectoCore.OutputData.XML;
 
@@ -54,7 +57,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		private static int _jobNumberCounter;
 
 		private readonly ExecutionMode _mode;
-		private bool _engineOnlyMode;
 
 		public SimulatorFactory(ExecutionMode mode, IInputDataProvider dataProvider, IOutputDataWriter writer,
 			IDeclarationReport declarationReport = null, IVTPReport vtpReport = null, bool validate = true)
@@ -111,9 +113,8 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			}
 			if (dataProvider is IEngineeringInputDataProvider) {
 				var engDataProvider = dataProvider as IEngineeringInputDataProvider;
-				if (engDataProvider.JobInputData.EngineOnlyMode) {
+				if (engDataProvider.JobInputData.JobType == VectoSimulationJobType.EngineOnlySimulation) {
 					DataReader = new EngineOnlyVectoRunDataFactory(engDataProvider);
-					_engineOnlyMode = true;
 				} else {
 					DataReader = new EngineeringModeVectoRunDataFactory(engDataProvider);
 				}
@@ -135,6 +136,8 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		public bool WriteModalResults { get; set; }
 		public bool ModalResults1Hz { get; set; }
 		public bool ActualModalData { get; set; }
+
+		public bool SerializeVectoRunData { get; set; }
 
 		/// <summary>
 		/// Creates powertrain and initializes it with the component's data.
@@ -177,11 +180,17 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				new ModalDataContainer(
 					data, ModWriter,
 					addReportResult: _mode == ExecutionMode.Declaration ? addReportResult : null,
-					writeEngineOnly: _engineOnlyMode,
 					filter: GetModDataFilter(data)) {
-					WriteAdvancedAux = data.AdvancedAux != null && data.AdvancedAux.AuxiliaryAssembly == AuxiliaryModel.Advanced,
 					WriteModalResults = _mode != ExecutionMode.Declaration || WriteModalResults
 				};
+
+			// TODO: MQ 20200410 - Remove for official release!
+			if (SerializeVectoRunData) {
+				File.WriteAllText(
+					Path.Combine(
+						(ModWriter as FileOutputWriter)?.BasePath ?? "", $"{data.JobName}_{data.Cycle.Name}{data.ModFileSuffix}.json"),
+					JsonConvert.SerializeObject(data, Formatting.Indented));
+			}
 
 			var builder = new PowertrainBuilder(
 				modContainer, modData => {

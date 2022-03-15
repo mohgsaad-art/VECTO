@@ -37,4 +37,9 @@ namespace TUGraz.VectoCore.Models.Simulation.DataBus
 	{
 		Watt AxlegearLoss();
 	}
+
+	public interface IAngledriveInfo
+	{
+		double Ratio { get; }
+	}
 }

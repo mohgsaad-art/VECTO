@@ -34,6 +34,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
+using Newtonsoft.Json;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
@@ -58,11 +59,16 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Engine
 		private PerSecond _n95hSpeed; // 95% of Pmax
 		private PerSecond _n80hSpeed; // 80% of Pmax
 
+		private PerSecond _nTq99lSpeed; // 99% of max Torque below rated speed
+		private PerSecond _nTq98hSpeed; // 99% of max Torque above rated
+		private PerSecond _nP98hSpeed; // 99% of Pmax above rated speed
+
+
 		[Required, ValidateObject] internal readonly List<FullLoadCurveEntry> FullLoadEntries;
 
 		private SortedList<PerSecond, int> _quickLookup;
 
-		[Required] internal readonly LookupData<PerSecond, PT1.PT1Result> PT1Data;
+		[Required] public readonly LookupData<PerSecond, PT1.PT1Result> PT1Data;
 
 		internal EngineFullLoadCurve(List<FullLoadCurveEntry> entries, LookupData<PerSecond, PT1.PT1Result> pt1Data)
 		{
@@ -80,7 +86,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Engine
 			return Formulas.TorqueToPower(DragLoadStationaryTorque(angularVelocity), angularVelocity);
 		}
 
+		[JsonIgnore]
 		public CombustionEngineData EngineData { get; internal set; }
+
+
+		public string[] FullLoadCurve {
+			get { return FullLoadEntries.Select(x => $"{x.EngineSpeed.AsRPM} [rpm], {x.TorqueFullLoad}, {x.TorqueDrag}").ToArray(); }
+		}
+
 
 		public PT1.PT1Result PT1(PerSecond angularVelocity)
 		{
@@ -273,6 +286,23 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Engine
 			}
 		}
 
+		public PerSecond NTq99lSpeed => _nTq99lSpeed ?? (_nTq99lSpeed = FindEnginSpeedForTorque(0.99 * MaxTorque).First());
+
+		public PerSecond NTq98hSpeed => _nTq98hSpeed ?? (_nTq98hSpeed = FindEnginSpeedForTorque(0.98 * MaxTorque).Last());
+
+		public PerSecond NP98hSpeed => _nP98hSpeed ?? (_nP98hSpeed = ComputeNP98HSpeed());
+
+		private PerSecond ComputeNP98HSpeed()
+		{
+			var retVal = FindEngineSpeedForPower(0.98 * MaxPower).Last();
+			if (retVal <= RatedSpeed) {
+				throw new VectoException(
+					"failed to compute n_P99H - must be higher than rated speed. rated speed: {0}, n_tq99h: {1}", RatedSpeed, retVal);
+			}
+			return retVal;
+		}
+
+
 		public PerSecond LoSpeed
 		{
 			get { return _engineSpeedLo ?? (_engineSpeedLo = FindEngineSpeedForPower(0.55 * MaxPower).First()); }
@@ -331,6 +361,31 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Engine
 				Log.Info("No real solution found for requested area: P: {0}, p1: {1}, p2: {2}", area, p1, p2);
 			}
 			return retVal.First(x => x.IsBetween(p1.EngineSpeed, p2.EngineSpeed)).SI<PerSecond>();
+		}
+
+		private List<PerSecond> FindEnginSpeedForTorque(NewtonMeter torque)
+		{
+			var retVal = new List<PerSecond>();
+			foreach (var pair in FullLoadEntries.Pairwise(Tuple.Create)) {
+				var solution = FindEnginSpeedForTorque(pair.Item1, pair.Item2, torque);
+				if (solution != null) {
+					retVal.Add(solution);
+				}
+			}
+			retVal.Sort();
+			return retVal.Distinct(new SI.EqualityComparer<PerSecond>()).ToList();
+		}
+
+		private PerSecond FindEnginSpeedForTorque(FullLoadCurveEntry p1, FullLoadCurveEntry p2, NewtonMeter torque)
+		{
+			if (p1.TorqueFullLoad.IsEqual(p2.TorqueFullLoad) && p1.TorqueFullLoad.IsEqual(torque)) {
+				// horizontal line in FLD that equals requested torque
+				return p2.EngineSpeed;
+			}
+			if (torque.IsBetween(p1.TorqueFullLoad, p2.TorqueFullLoad)) {
+				return VectoMath.Interpolate(p1.TorqueFullLoad, p2.TorqueFullLoad, p1.EngineSpeed, p2.EngineSpeed, torque);
+			}
+			return null;
 		}
 
 		private List<PerSecond> FindEngineSpeedForPower(Watt power)

@@ -77,12 +77,6 @@ namespace TUGraz.VectoCore.Tests.Integration
 		public static VehicleContainer CreatePowerTrain(DrivingCycleData cycleData, GearboxType gbxType, string modFileName,
 			bool overspeed = false, KilogramSquareMeter gearBoxInertia = null)
 		{
-			var fileWriter = new FileOutputWriter(modFileName);
-			var modData = new ModalDataContainer(modFileName, FuelData.Diesel, fileWriter) {
-				WriteModalResults = true,
-				HasTorqueConverter = true
-			};
-
 			var gearboxData = CreateGearboxData(gbxType);
 			var engineData = MockSimulationDataFactory.CreateEngineDataFromFile(EngineFile, gearboxData.Gears.Count);
 			var axleGearData = CreateAxleGearData(gbxType);
@@ -101,6 +95,7 @@ namespace TUGraz.VectoCore.Tests.Integration
 				VehicleData = vehicleData,
 				AirdragData = airdragData,
 				GearboxData = gearboxData,
+				GearshiftParameters = CreateGearshiftData(),
 				EngineData = engineData,
 				JobName = modFileName,
 				Cycle = cycleData,
@@ -109,9 +104,16 @@ namespace TUGraz.VectoCore.Tests.Integration
 				SimulationType = SimulationType.DistanceCycle,
 				DriverData = driverData
 			};
+			
+
+			var fileWriter = new FileOutputWriter(modFileName);
+			var modData = new ModalDataContainer(runData, fileWriter, null) {
+				WriteModalResults = true,
+			};
 			var container = new VehicleContainer(ExecutionMode.Engineering, modData) {
 				RunData = runData,
 			};
+
 			var cycle = new DistanceBasedDrivingCycle(container, cycleData);
 			var engine = new CombustionEngine(container, engineData);
 			var tmp = cycle.AddComponent(new Driver(container, driverData, new DefaultDriverStrategy(container)))
@@ -120,8 +122,9 @@ namespace TUGraz.VectoCore.Tests.Integration
 				.AddComponent(new Brakes(container))
 				.AddComponent(new AxleGear(container, axleGearData))
 				.AddComponent(new DummyRetarder(container))
-				.AddComponent(new ATGearbox(container, new ATShiftStrategy(gearboxData, container), runData))
+				.AddComponent(new ATGearbox(container, new ATShiftStrategy(container)))
 				.AddComponent(engine);
+			new ATClutchInfo(container);
 
 			var aux = new EngineAuxiliary(container);
 			aux.AddConstant("ZERO", 0.SI<Watt>());
@@ -159,9 +162,21 @@ namespace TUGraz.VectoCore.Tests.Integration
 							TorqueConverterShiftPolygon = i == 0 ? ShiftPolygonReader.ReadFromFile(GearboxShiftPolygonFile) : null
 						}))
 					.ToDictionary(k => k.Item1 + 1, v => v.Item2),
-				ShiftTime = 1.SI<Second>(),
 				Inertia = 0.SI<KilogramSquareMeter>(),
 				TractionInterruption = 0.SI<Second>(),
+
+				PowershiftShiftTime = 0.8.SI<Second>(),
+				TorqueConverterData =
+					TorqueConverterDataReader.ReadFromFile(torqueConverterFile, 1000.RPMtoRad(),
+						MaxTcSpeed, ExecutionMode.Engineering, gbxType == GearboxType.ATSerial ? 1 : 1 / ratios[0],
+						DeclarationData.Gearbox.UpshiftMinAcceleration, DeclarationData.Gearbox.UpshiftMinAcceleration)
+			};
+		}
+
+		public static ShiftStrategyParameters CreateGearshiftData()
+		{
+			return new ShiftStrategyParameters() {
+				TimeBetweenGearshifts = 1.SI<Second>(),
 				StartSpeed = 2.SI<MeterPerSecond>(),
 				StartAcceleration = 0.6.SI<MeterPerSquareSecond>(),
 				StartTorqueReserve = 0.2,
@@ -169,11 +184,6 @@ namespace TUGraz.VectoCore.Tests.Integration
 				DownshiftAfterUpshiftDelay = DeclarationData.Gearbox.DownshiftAfterUpshiftDelay,
 				UpshiftAfterDownshiftDelay = DeclarationData.Gearbox.UpshiftAfterDownshiftDelay,
 				UpshiftMinAcceleration = DeclarationData.Gearbox.UpshiftMinAcceleration,
-				PowershiftShiftTime = 0.8.SI<Second>(),
-				TorqueConverterData =
-					TorqueConverterDataReader.ReadFromFile(torqueConverterFile, 1000.RPMtoRad(),
-						MaxTcSpeed, ExecutionMode.Engineering, gbxType == GearboxType.ATSerial ? 1 : 1 / ratios[0],
-						DeclarationData.Gearbox.UpshiftMinAcceleration, DeclarationData.Gearbox.UpshiftMinAcceleration)
 			};
 		}
 
@@ -209,7 +219,7 @@ namespace TUGraz.VectoCore.Tests.Integration
 			return new VehicleData {
 				AirDensity = DeclarationData.AirDensity,
 				AxleConfiguration = AxleConfiguration.AxleConfig_4x2,
-				CurbWeight = 11500.SI<Kilogram>(),
+				CurbMass = 11500.SI<Kilogram>(),
 				Loading = loading,
 				DynamicTyreRadius = 0.465.SI<Meter>(),
 				AxleData = axles,
@@ -239,15 +249,16 @@ namespace TUGraz.VectoCore.Tests.Integration
 					LookAheadDistanceFactor = DeclarationData.Driver.LookAhead.LookAheadDistanceFactor,
 					LookAheadDecisionFactor = new LACDecisionFactor()
 				},
-				OverSpeedEcoRoll = overspeed
-					? new DriverData.OverSpeedEcoRollData {
-						Mode = DriverMode.Overspeed,
+				EngineStopStart = new DriverData.EngineStopStartData() {
+					EngineOffStandStillActivationDelay = DeclarationData.Driver.EngineStopStart.ActivationDelay,
+					MaxEngineOffTimespan = DeclarationData.Driver.EngineStopStart.MaxEngineOffTimespan,
+					UtilityFactorStandstill = DeclarationData.Driver.EngineStopStart.UtilityFactor,
+				},
+				OverSpeed = new DriverData.OverSpeedData {
+						Enabled = overspeed,
 						MinSpeed = 50.KMPHtoMeterPerSecond(),
 						OverSpeed = 5.KMPHtoMeterPerSecond()
 					}
-					: new DriverData.OverSpeedEcoRollData {
-						Mode = DriverMode.Off
-					},
 			};
 		}
 	}

@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\..\packages\NUnit3TestAdapter.3.11.2\build\net35\NUnit3TestAdapter.props" Condition="Exists('..\..\packages\NUnit3TestAdapter.3.11.2\build\net35\NUnit3TestAdapter.props')" />
-  <Import Project="..\..\packages\NUnit.3.11.0\build\NUnit.props" Condition="Exists('..\..\packages\NUnit.3.11.0\build\NUnit.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -37,8 +36,10 @@
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Debug\</OutputPath>
     <DocumentationFile>VectoAuxiliariesTests.xml</DocumentationFile>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <NoWarn>
+    </NoWarn>
     <Prefer32Bit>false</Prefer32Bit>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -47,8 +48,10 @@
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DocumentationFile>VectoAuxiliariesTests.xml</DocumentationFile>
-    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <NoWarn>
+    </NoWarn>
     <Prefer32Bit>false</Prefer32Bit>
+    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup>
     <OptionExplicit>On</OptionExplicit>
@@ -57,15 +60,17 @@
     <OptionCompare>Binary</OptionCompare>
   </PropertyGroup>
   <PropertyGroup>
-    <OptionStrict>Off</OptionStrict>
+    <OptionStrict>On</OptionStrict>
   </PropertyGroup>
   <PropertyGroup>
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.JScript" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Moq">
+    <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -80,6 +85,7 @@
       <HintPath>3rdParty\SpreadsheetLight.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -111,6 +117,7 @@
     <Compile Include="Mocks\AlternatorMapMock.vb" />
     <Compile Include="Mocks\CompressorMapMock.vb" />
     <Compile Include="Mocks\MockFuel50PC.vb" />
+    <Compile Include="UnitTests\AlternatorMapTests.vb" />
     <Compile Include="UnitTests\AuxiliaryEnvironmentComparisonTests.vb" />
     <Compile Include="Mocks\M1_Mock.vb" />
     <Compile Include="Mocks\M2_Mock.vb" />
@@ -119,10 +126,8 @@
     <Compile Include="Mocks\M5_Mock.vb" />
     <Compile Include="Mocks\M6_Mock.vb" />
     <Compile Include="Mocks\M7_Mock.vb" />
-    <Compile Include="UnitTests\BusDatabaseTests.vb" />
     <Compile Include="UnitTests\CombinedAlternatorTests.vb" />
     <Compile Include="UnitTests\FilePathUtilityTests.vb" />
-    <Compile Include="UnitTests\HVACSSMMapTests.vb" />
     <Compile Include="UnitTests\M0_5_SmartAlternatorSetEfficiencyTests.vb" />
     <Compile Include="UnitTests\M0_NonSmart_AlternatorsSetEfficiencyTests.vb" />
     <Compile Include="UnitTests\AveragePneumaticLoadDemandTests.vb" />
@@ -141,7 +146,6 @@
     <Compile Include="UnitTests\M9Tests.vb" />
     <Compile Include="UnitTests\PneumaticActuationsMapTests.vb" />
     <Compile Include="UnitTests\AirCompressorTests.vb" />
-    <Compile Include="UnitTests\AlternatorMapTests.vb" />
     <Compile Include="UnitTests\M2_AverageElectricalLoadTests.vb" />
     <Compile Include="UnitTests\CompressorMapTests.vb" />
     <Compile Include="UnitTests\ElectricalConsumerTests.vb" />
@@ -164,6 +168,7 @@
     <Compile Include="UnitTests\ResultCardTests.vb" />
     <Compile Include="UnitTests\AuxiliaryEnvironmentPersistanceTests.vb" />
     <Compile Include="UnitTests\SSMTOOLTests.vb" />
+    <Compile Include="UnitTests\Utils.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
@@ -174,6 +179,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
+    <None Include="TestFiles\CombinedAlternatorDefaultsTest.aalt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
@@ -191,21 +200,6 @@
     <Content Include="3rdParty\SpreadsheetLight.dll" />
     <Content Include="3rdParty\SpreadsheetLight.xml" />
     <Content Include="TestFiles\testPneumaticActuationsMap_GOODMAP.apac">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestFiles\testAlternatorMapNotEnoughRows.aalt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestFiles\testAlternatorMapReadOnly.aalt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestFiles\testAlternatorMapWithInvalidEfficiency.aalt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestFiles\testAlternatorMapWithInvalidRpm.aalt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestFiles\testAlternatorMapWrongNoOfColumns.aalt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestFiles\testCompressorMap.acmp">
@@ -245,18 +239,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestFiles\TestHvacMap - MissingHeader.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestFiles\testHVACSteadyStateModelGOODMAP.ahsm">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestFiles\testHVACSteadyStateModelBadHeaders.ahsm">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestFiles\testHVACSteadyStateModelBadValues.ahsm">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestFiles\testHVACSteadyStateModelInsufficientLines.ahsm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestFiles\testBusDatabase.csv">
@@ -355,22 +337,13 @@
     <Content Include="TestFiles\testBusDatabaseInvalidWidth - Kopieren.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="TestFiles\testCombinedAlternatorMap.aalt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="TestFiles\testAlternatorMapAsymetricalXYPairsCombined.aalt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="TestFiles\testAlternatorMapOriginalSingleMap.aalt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="TestFiles\testAlternatorMapAsymetricalRowsCombined.aalt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="TestFiles\testAlternatorMapCombined.aalt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="TestFiles\TechBenefits.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="TestFiles\testAlternatorMap.aalt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\testCombinedAlternatorMap.aalt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <Content Include="TestFiles\testPneumaticActuationsMap_DUPLICATEKEY.apac">
@@ -388,20 +361,22 @@
     <None Include="TestFiles\testCompressorMap - Copy.acmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="TestFiles\testPneumaticActuationsMap_INCORRECTCOLUMNS.apac">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestFiles\testPneumaticActuationsMap_INVALIDINTEGERVALUE.apac">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\..\VectoCommon\AdvancedAuxiliaryInterfaces\AdvancedAuxiliaryInterfaces.vbproj">
-      <Project>{b4b9bd2f-fd8f-4bb8-82fa-e2154d2c7fbd}</Project>
-      <Name>AdvancedAuxiliaryInterfaces</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\VectoCommon\VectoCommon\VectoCommon.csproj">
       <Project>{79a066ad-69a9-4223-90f6-6ed5d2d084f4}</Project>
       <Name>VectoCommon</Name>
     </ProjectReference>
-    <ProjectReference Include="..\VectoAuxiliaries\VectoAuxiliaries.vbproj">
-      <Project>{fdeee460-0b8a-4ef6-8d9e-72f203a50f65}</Project>
-      <Name>VectoAuxiliaries</Name>
+    <ProjectReference Include="..\..\VectoCore\VectoCore\VectoCore.csproj">
+      <Project>{CD36938A-ADD9-4C65-96DA-B397CDEEA90A}</Project>
+      <Name>VectoCore</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>
@@ -428,7 +403,6 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\..\packages\NUnit.3.11.0\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\NUnit.3.11.0\build\NUnit.props'))" />
     <Error Condition="!Exists('..\..\packages\NUnit3TestAdapter.3.11.2\build\net35\NUnit3TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\NUnit3TestAdapter.3.11.2\build\net35\NUnit3TestAdapter.props'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

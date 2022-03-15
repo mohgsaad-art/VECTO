@@ -39,7 +39,11 @@ using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
 using TUGraz.VectoCore.InputData.Reader;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
+using TUGraz.VectoCore.Models.Declaration;
+using TUGraz.VectoCore.Models.Simulation.Data;
+using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Models.Simulation.Impl;
+using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.OutputData;
@@ -76,11 +80,19 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 				" 20,  30, -0.1,   0"
 			};
 			var cycleData = SimpleDrivingCycles.CreateCycleData(data);
-			var container = new VehicleContainer(ExecutionMode.Engineering);
+			var container = new VehicleContainer(ExecutionMode.Engineering) {
+				RunData = new VectoRunData() {
+					GearshiftParameters = new ShiftStrategyParameters() {
+						StartSpeed = DeclarationData.GearboxTCU.StartSpeed,
+						StartAcceleration = DeclarationData.GearboxTCU.StartAcceleration
+					}
+				}
+			};
 			var cycle = new DistanceBasedDrivingCycle(container, cycleData);
 
 			var gbx = new MockGearbox(container);
-
+			new ZeroMileageCounter(container);
+			new DummyVehicleInfo(container);
 			var driver = new MockDriver(container);
 			cycle.InPort().Connect(driver.OutPort());
 
@@ -159,10 +171,19 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 		{
 			var cycleData = DrivingCycleDataReader.ReadFromFile(ShortCycle, CycleType.DistanceBased, false);
 
-			var container = new VehicleContainer(ExecutionMode.Engineering);
+			var container = new VehicleContainer(ExecutionMode.Engineering) {
+				RunData = new VectoRunData() {
+					GearshiftParameters = new ShiftStrategyParameters() {
+						StartSpeed = DeclarationData.GearboxTCU.StartSpeed,
+						StartAcceleration = DeclarationData.GearboxTCU.StartAcceleration
+					}
+				}
+			};
 			var cycle = new DistanceBasedDrivingCycle(container, cycleData);
 
 			var gbx = new MockGearbox(container);
+			new ZeroMileageCounter(container);
+			new DummyVehicleInfo(container);
 
 			var driver = new MockDriver(container);
 			cycle.InPort().Connect(driver.OutPort());
@@ -172,7 +193,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			// just in test mock driver
 			driver.VehicleStopped = false;
 
-			var startDistance = container.CycleStartDistance.Value();
+			var startDistance = container.DrivingCycleInfo.CycleStartDistance.Value();
 			var absTime = 0.SI<Second>();
 
 
@@ -271,5 +292,60 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 			Assert.IsTrue(run.FinishedWithoutErrors, "Cycle start witout stoptime FAILED");
 		}
+	}
+
+	public class DummyVehicleInfo : VectoSimulationComponent, IVehicleInfo
+	{
+		public DummyVehicleInfo(VehicleContainer container) : base(container)
+		{
+
+		}
+
+		#region Overrides of VectoSimulationComponent
+
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
+		{
+
+		}
+
+		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)
+		{
+
+		}
+
+		#endregion
+
+		#region Implementation of IVehicleInfo
+
+		public MeterPerSecond VehicleSpeed => 0.SI<MeterPerSecond>();
+
+		public bool VehicleStopped => throw new System.NotImplementedException();
+
+		public Kilogram VehicleMass => throw new System.NotImplementedException();
+
+		public Kilogram VehicleLoading => throw new System.NotImplementedException();
+
+		public Kilogram TotalMass => throw new System.NotImplementedException();
+
+		public CubicMeter CargoVolume => throw new System.NotImplementedException();
+
+		public Newton AirDragResistance(MeterPerSecond previousVelocity, MeterPerSecond nextVelocity)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public Newton RollingResistance(Radian gradient)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public Newton SlopeResistance(Radian gradient)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public MeterPerSecond MaxVehicleSpeed => throw new System.NotImplementedException();
+
+		#endregion
 	}
 }

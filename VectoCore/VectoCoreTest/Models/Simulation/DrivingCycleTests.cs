@@ -47,6 +47,13 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 	[TestFixture]
 	public class DrivingCycleTests
 	{
+
+		[OneTimeSetUp]
+		public void RunBeforeAnyTests()
+		{
+			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
+		}
+
 		[TestCase()]
 		[Parallelizable(ParallelScope.All)]
 		public void TestEngineOnly()

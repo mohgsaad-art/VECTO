@@ -1,5 +1,22 @@
 #Changelog
 
+**VECTO-3.3.11**
+
+***Build 2526 (2021-12-01) DEVELOPMENT VERSION***
+
+- Improvements
+    * Implementation of ADAS in-the-loop simulation (Declaration and Engineering mode)
+        * Engine stop/start
+        * Eco-roll
+        * Predictive cruise control: option 1,2; option 1,2,3
+        * Post-processing: fuel consumption correction for ICE-off phases
+     * Update shift strategy: EffShift for AMT and AT (Declaration and Engineering mode)
+     * Update LongHaul driving cycle (Declaration mode)
+     * Dual-fuel support (Engineering mode)
+     * WHR support (Engineering mode)
+     * BusAuxiliaries model in engineering mode updated (simplified input)
+     * Support to read driving cycle and EffShift parameters from file system(only once when application is started!)
+
 **VECTO-3.3.10**
 
 ***Build 2401 (2021-07-29) OFFICIAL RELEASE***

@@ -240,8 +240,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 				VehicleData =
 					new VehicleData {
 						VehicleCategory = VehicleCategory.RigidTruck,
-						GrossVehicleWeight = 12000.SI<Kilogram>(),
-						CurbWeight = 3400.SI<Kilogram>(),
+						GrossVehicleMass = 12000.SI<Kilogram>(),
+						CurbMass = 3400.SI<Kilogram>(),
 						DynamicTyreRadius = 0.5.SI<Meter>(),
 						AxleData =
 							new List<Axle> {
@@ -258,6 +258,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 				EngineData =
 					new CombustionEngineData {
 						IdleSpeed = 560.RPMtoRad(),
+						EngineStartTime = DeclarationData.Engine.DefaultEngineStartTime,
+						Inertia = 1.SI<KilogramSquareMeter>(),
 						FullLoadCurves = new Dictionary<uint, EngineFullLoadCurve>() { { 0, fullLoadCurve }, { 1, fullLoadCurve } }
 					},
 				GearboxData = new GearboxData { Gears = new Dictionary<uint, GearData> { { 1, new GearData { Ratio = 6.2 } } } },
@@ -320,6 +322,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 				AxleGearData = new AxleGearData { AxleGear = new GearData { Ratio = 2.3 } },
 				EngineData = new CombustionEngineData {
 					IdleSpeed = 560.RPMtoRad(),
+					EngineStartTime = DeclarationData.Engine.DefaultEngineStartTime,
+					Inertia = 1.SI<KilogramSquareMeter>(),
 					FullLoadCurves = new Dictionary<uint, EngineFullLoadCurve> {
 						{ 0, fullLoadCurve },
 						{ 1, fullLoadCurve },
@@ -333,10 +337,18 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 						{ 2, new GearData { Ratio = 3.806 } },
 						{ 3, new GearData { Ratio = 2.289 } }
 					},
+				},
+				GearshiftParameters = new ShiftStrategyParameters() {
 					StartSpeed = 2.SI<MeterPerSecond>()
 				},
 				Retarder = new RetarderData(),
-				DriverData = new DriverData()
+				DriverData = new DriverData() {
+					EngineStopStart = new DriverData.EngineStopStartData() {
+						EngineOffStandStillActivationDelay = DeclarationData.Driver.EngineStopStart.ActivationDelay,
+						UtilityFactorStandstill = DeclarationData.Driver.EngineStopStart.UtilityFactor,
+						MaxEngineOffTimespan = DeclarationData.Driver.EngineStopStart.MaxEngineOffTimespan,
+					}
+				},
 			};
 
 			// call builder (actual test)

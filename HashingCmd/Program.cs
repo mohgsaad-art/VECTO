@@ -36,6 +36,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Xml;
+using System.Xml.Linq;
 using System.Xml.Schema;
 using TUGraz.VectoCommon.Hashing;
 using TUGraz.VectoCore.Utils;
@@ -49,7 +50,7 @@ namespace HashingCmd
 		public delegate void HashingAction(string filename, VectoHash h);
 
 		private const string Usage = @"
-hashingcmd.exe (-h | [-v] [[-s] -x] [-c] [-r]) <file.xml> <file2.xml> <file3.xml>
+hashingcmd.exe (-h | [-v] [-s] [-c] [-r]) <file.xml> <file2.xml> <file3.xml>
 
 ";
 
@@ -59,7 +60,6 @@ hashingcmd.exe
 -h:    print help
 -v:    verify hashed file
 -s:    create hashed file
--x:    validate XML file against VECTO XML schema
 -c:    compute hash and write to stdout
 -r:    read hash from file and write to stdout
 ";
@@ -71,26 +71,27 @@ hashingcmd.exe
 			{ "-s", CreateHashedFileAction }
 		};
 
-		static bool _validateXML;
-		
-
 		static int Main(string[] args)
 		{
 			try {
 				if (args.Contains("-h")) {
 					ShowVersionInformation();
 					Console.Write(Help);
+#if DEBUG
+					if (!Console.IsInputRedirected)
+						Console.ReadKey();
+#endif
 					return 0;
-				}
-
-				if (args.Contains("-x")) {
-					_validateXML = true;
 				}
 
 				var fileList = args.Except(Actions.Keys.Concat(new[] { "-x" })).ToArray();
 				if (fileList.Length == 0 || !args.Intersect(Actions.Keys.ToArray()).Any()) {
 					ShowVersionInformation();
 					Console.Write(Usage);
+#if DEBUG
+					if (!Console.IsInputRedirected)
+						Console.ReadKey();
+#endif
 					return 0;
 				}
 				foreach (var file in fileList) {
@@ -134,6 +135,10 @@ hashingcmd.exe
 
 		private static void CreateHashedFileAction(string filename, VectoHash h)
 		{
+			var result = h.AddHash();
+
+			ValidateHashedFile(result);
+			
 			var destination = Path.Combine(Path.GetDirectoryName(filename),
 				Path.GetFileNameWithoutExtension(filename) + "_hashed.xml");
 			if (File.Exists(destination)) {
@@ -150,7 +155,7 @@ hashingcmd.exe
 			} else {
 				Console.Error.WriteLine("creating file " + Path.GetFileName(destination));
 			}
-			var result = h.AddHash();
+			
 			var writer = new XmlTextWriter(destination, Encoding.UTF8) {
 				Formatting = Formatting.Indented,
 				Indentation = 4
@@ -158,11 +163,19 @@ hashingcmd.exe
 			result.WriteTo(writer);
 			writer.Flush();
 			writer.Close();
+		}
 
-			if (_validateXML) {
-				new XMLValidator(XmlReader.Create(destination), null, ValidationCallBack).ValidateXML(XmlDocumentType.DeclarationComponentData);
-				WriteLine("Valid", ConsoleColor.Green);
-				 
+		private static void ValidateHashedFile(XDocument result)
+		{
+			using (var ms = new MemoryStream()) {
+				using (var xw = XmlWriter.Create(ms, new XmlWriterSettings { Indent = true })) {
+					result.WriteTo(xw);
+					xw.Flush();
+				}
+				ms.Flush();
+				ms.Seek(0, SeekOrigin.Begin);
+
+				new XMLValidator(XmlReader.Create(ms), null, ValidationCallBack).ValidateXML(XmlDocumentType.DeclarationComponentData);
 			}
 		}
 

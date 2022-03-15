@@ -1,8 +1,6 @@
-﻿Imports TUGraz.VectoCommon.Utils
-Imports VectoAuxiliaries.Electrics
-Imports VectoAuxiliaries.Pneumatics
-Imports VectoAuxiliaries.Hvac
-Imports VectoAuxiliaries.DownstreamModules
+﻿
+Imports TUGraz.VectoCommon.Utils
+Imports TUGraz.VectoCore.Models.BusAuxiliaries.Interfaces.DownstreamModules
 
 Public Class M5_Mock
 	Implements IM5_SmartAlternatorSetGeneration
@@ -12,18 +10,18 @@ Public Class M5_Mock
 	Public Property _AlternatorsGenerationPowerAtCrankTractionOnWatts As Watt
 
 
-	Public Function AlternatorsGenerationPowerAtCrankIdleWatts() As Watt _
-		Implements IM5_SmartAlternatorSetGeneration.AlternatorsGenerationPowerAtCrankIdleWatts
+	Public Function AlternatorsGenerationPowerAtCrankIdle() As Watt _
+		Implements IM5_SmartAlternatorSetGeneration.AlternatorsGenerationPowerAtCrankIdle
 		Return _AlternatorsGenerationPowerAtCrankIdleWatts
 	End Function
 
-	Public Function AlternatorsGenerationPowerAtCrankOverrunWatts() As Watt _
-		Implements IM5_SmartAlternatorSetGeneration.AlternatorsGenerationPowerAtCrankOverrunWatts
+	Public Function AlternatorsGenerationPowerAtCrankOverrun() As Watt _
+		Implements IM5_SmartAlternatorSetGeneration.AlternatorsGenerationPowerAtCrankOverrun
 		Return _AlternatorsGenerationPowerAtCrankOverrunWatts
 	End Function
 
-	Public Function AlternatorsGenerationPowerAtCrankTractionOnWatts() As Watt _
-		Implements IM5_SmartAlternatorSetGeneration.AlternatorsGenerationPowerAtCrankTractionOnWatts
+	Public Function AlternatorsGenerationPowerAtCrankTractionOn() As Watt _
+		Implements IM5_SmartAlternatorSetGeneration.AlternatorsGenerationPowerAtCrankTractionOn
 		Return _AlternatorsGenerationPowerAtCrankTractionOnWatts
 	End Function
 
@@ -40,5 +38,9 @@ Public Class M5_Mock
 		_AlternatorsGenerationPowerAtCrankOverrunWatts = AlternatorsGenerationPowerAtCrankOverrunWatts.SI(Of Watt)()
 		_AlternatorsGenerationPowerAtCrankTractionOnWatts = AlternatorsGenerationPowerAtCrankTractionOnWatts.SI(Of Watt)()
 	End Sub
+
+    Public Sub ResetCalculations() Implements IAbstractModule.ResetCalculations
+        Throw New NotImplementedException
+    End Sub
 End Class
 

@@ -30,6 +30,7 @@
 */
 
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 {
@@ -54,5 +55,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 		///     The right data sample of the current driving cycle position. (current end point)
 		/// </summary>
 		public DrivingCycleData.DrivingCycleEntry RightSample;
+
+		public MeterPerSecond PreviousTargetSpeed { get; set; }
 	}
 }

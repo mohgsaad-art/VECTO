@@ -29,14 +29,20 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
+using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
+using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Data;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl;
+using TUGraz.VectoCore.Utils;
 
 [assembly: InternalsVisibleTo("VectoCoreTest")]
 
@@ -59,65 +65,152 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 		/// <returns>VectoRunData instance for initializing the powertrain.</returns>
 		public virtual IEnumerable<VectoRunData> NextRun()
 		{
-			var dao = new EngineeringDataAdapter();
-			var driver = dao.CreateDriverData(InputDataProvider.DriverInputData);
-			var vehicle = InputDataProvider.JobInputData.Vehicle;
-			var engineData = dao.CreateEngineData(vehicle.Components.EngineInputData, vehicle.Components.GearboxInputData,
-				vehicle.TorqueLimits, vehicle.Components.TorqueConverterInputData, vehicle.TankSystem);
+			var engine = InputDataProvider.JobInputData.Vehicle.Components.EngineInputData;
+			var engineModes = engine.EngineModes;
 
-			var tempVehicle = dao.CreateVehicleData(vehicle);
+			//foreach (var engineMode in engineModes) {
+			for (var modeIdx = 0; modeIdx < engineModes.Count; modeIdx++) {
+				var engineMode = engineModes[modeIdx];
+				foreach (var cycle in InputDataProvider.JobInputData.Cycles) {
+					var dao = new EngineeringDataAdapter();
+					var driver = dao.CreateDriverData(InputDataProvider.DriverInputData);
+					if (InputDataProvider.JobInputData.JobType != VectoSimulationJobType.ConventionalVehicle)
+						driver.EngineStopStart.UtilityFactorDriving = 1;
+					var vehicle = InputDataProvider.JobInputData.Vehicle;
+					var engineData = dao.CreateEngineData(vehicle, engineMode);
+					engineData.FuelMode = modeIdx;
+					var tempVehicle = dao.CreateVehicleData(vehicle);
 
-			var axlegearData = dao.CreateAxleGearData(vehicle.Components.AxleGearInputData);
-			var gearboxData = dao.CreateGearboxData(
-				vehicle.Components.GearboxInputData, engineData, InputDataProvider.DriverInputData.GearshiftInputData,
-				axlegearData.AxleGear.Ratio, tempVehicle.DynamicTyreRadius, tempVehicle.VehicleCategory, vehicle.Components.TorqueConverterInputData);
-			var crossWindRequired = vehicle.Components.AirdragInputData.CrossWindCorrectionMode ==
-									CrossWindCorrectionMode.VAirBetaLookupTable;
-			var angledriveData = dao.CreateAngledriveData(vehicle.Components.AngledriveInputData);
-			var ptoTransmissionData = dao.CreatePTOTransmissionData(vehicle.Components.PTOTransmissionInputData);
+					var axlegearData = dao.CreateAxleGearData(vehicle.Components.AxleGearInputData);
+					var tmpRunData = new VectoRunData() {
+						ShiftStrategy = InputDataProvider.JobInputData.ShiftStrategy,
+						GearboxData = new GearboxData() {
+							Type = vehicle.Components.GearboxInputData.Type,
+						}
+					};
+					var tmpStrategy = PowertrainBuilder.GetShiftStrategy(new SimplePowertrainContainer(tmpRunData));
+					var gearboxData = dao.CreateGearboxData(
+						InputDataProvider, new VectoRunData() {
+							EngineData = engineData,
+							VehicleData = tempVehicle,
+							AxleGearData = axlegearData,
+						}, tmpStrategy);
 
-			if (InputDataProvider.JobInputData.Vehicle.PTO_DriveGear.HasValue &&
-				InputDataProvider.JobInputData.Vehicle.PTO_DriveEngineSpeed != null) {
-				driver.PTODriveMinSpeed = InputDataProvider.JobInputData.Vehicle.PTO_DriveEngineSpeed /
-										axlegearData.AxleGear.Ratio /
-										gearboxData.Gears[InputDataProvider.JobInputData.Vehicle.PTO_DriveGear.Value].Ratio /
-										(angledriveData?.Angledrive.Ratio ?? 1.0) * vehicle.DynamicTyreRadius;
-				driver.PTODriveRoadsweepingGear = InputDataProvider.JobInputData.Vehicle.PTO_DriveGear.Value;
-				engineData.PTORoadSweepEngineSpeed = InputDataProvider.JobInputData.Vehicle.PTO_DriveEngineSpeed;
+					var crossWindRequired = vehicle.Components.AirdragInputData.CrossWindCorrectionMode ==
+											CrossWindCorrectionMode.VAirBetaLookupTable;
+					var angledriveData = dao.CreateAngledriveData(vehicle.Components.AngledriveInputData);
+					var ptoTransmissionData =
+						dao.CreatePTOTransmissionData(vehicle.Components.PTOTransmissionInputData);
+
+					if (InputDataProvider.JobInputData.Vehicle.PTO_DriveGear != null &&
+						InputDataProvider.JobInputData.Vehicle.PTO_DriveEngineSpeed != null) {
+						driver.PTODriveMinSpeed = InputDataProvider.JobInputData.Vehicle.PTO_DriveEngineSpeed /
+							axlegearData.AxleGear.Ratio /
+							gearboxData.Gears[InputDataProvider.JobInputData.Vehicle.PTO_DriveGear.Gear].Ratio /
+							(angledriveData?.Angledrive.Ratio ?? 1.0) * vehicle.DynamicTyreRadius;
+						driver.PTODriveRoadsweepingGear = InputDataProvider.JobInputData.Vehicle.PTO_DriveGear;
+						engineData.PTORoadSweepEngineSpeed =
+							InputDataProvider.JobInputData.Vehicle.PTO_DriveEngineSpeed;
+					}
+
+					var ptoCycleWhileDrive =
+						InputDataProvider.JobInputData.Vehicle.Components.PTOTransmissionInputData
+							.PTOCycleWhileDriving != null
+							? DrivingCycleDataReader.ReadFromDataTable(
+								InputDataProvider.JobInputData.Vehicle.Components.PTOTransmissionInputData
+									.PTOCycleWhileDriving,
+								"PTO During Drive", false)
+							: null;
+
+
+					var drivingCycle = CyclesCache.GetOrAdd(cycle.CycleData.Source, _ => DrivingCycleDataReader.ReadFromDataTable(cycle.CycleData, cycle.Name, crossWindRequired));
+
+					
+					var jobType = VectoSimulationJobType.ConventionalVehicle;
+
+					var vehicleData = dao.CreateVehicleData(vehicle);
+
+					var gearshiftParams = dao.CreateGearshiftData(
+						gearboxData.Type, InputDataProvider.DriverInputData.GearshiftInputData,
+						axlegearData.AxleGear.Ratio * (angledriveData?.Angledrive.Ratio ?? 1.0),
+						engineData.IdleSpeed);
+					if (gearshiftParams == null) {
+						gearshiftParams = new ShiftStrategyParameters() {
+							StartSpeed = DeclarationData.GearboxTCU.StartSpeed,
+							StartAcceleration = DeclarationData.GearboxTCU.StartAcceleration,
+							TimeBetweenGearshifts = DeclarationData.Gearbox.MinTimeBetweenGearshifts,
+							DownshiftAfterUpshiftDelay = DeclarationData.Gearbox.DownshiftAfterUpshiftDelay,
+							UpshiftAfterDownshiftDelay = DeclarationData.Gearbox.UpshiftAfterDownshiftDelay,
+							UpshiftMinAcceleration = DeclarationData.Gearbox.UpshiftMinAcceleration,
+						};
+					}
+					
+					yield return new VectoRunData {
+						JobName = InputDataProvider.JobInputData.JobName,
+						JobType = jobType,
+						EngineData = engineData,
+						GearboxData = gearboxData,
+						AxleGearData = axlegearData,
+						AngledriveData = angledriveData,
+						VehicleData = vehicleData,
+						AirdragData = dao.CreateAirdragData(vehicle.Components.AirdragInputData, vehicle),
+						DriverData = driver,
+						Aux = dao.CreateAuxiliaryData(vehicle.Components.AuxiliaryInputData),
+						BusAuxiliaries =
+							dao.CreateBusAuxiliariesData(vehicle.Components.AuxiliaryInputData, vehicleData, jobType),
+						Retarder = dao.CreateRetarderData(vehicle.Components.RetarderInputData),
+						PTO = ptoTransmissionData,
+						Cycle = new DrivingCycleProxy(drivingCycle, cycle.Name),
+						ExecutionMode = ExecutionMode.Engineering,
+						PTOCycleWhileDrive = ptoCycleWhileDrive,
+						SimulationType = SimulationType.DistanceCycle | SimulationType.MeasuredSpeedCycle |
+										SimulationType.PWheel,
+						GearshiftParameters = gearshiftParams,
+						ShiftStrategy = InputDataProvider.JobInputData.ShiftStrategy,
+						ElectricAuxDemand = InputDataProvider.JobInputData.Vehicle.Components.AuxiliaryInputData
+							.Auxiliaries.ElectricPowerDemand,
+					};
+				}
+			}
+		}
+
+		public ShiftStrategyParameters CreateGearshiftData(GearboxType gbxType, IGearshiftEngineeringInputData gsInputData, double axleRatio, PerSecond engineIdlingSpeed)
+		{
+			if (gsInputData == null) {
+				return null;
 			}
 
-			var ptoCycleWhileDrive =
-				InputDataProvider.JobInputData.Vehicle.Components.PTOTransmissionInputData.PTOCycleWhileDriving != null
-					? DrivingCycleDataReader.ReadFromDataTable(
-						InputDataProvider.JobInputData.Vehicle.Components.PTOTransmissionInputData.PTOCycleWhileDriving,
-						"PTO During Drive", false)
-					: null;
+			var retVal = new ShiftStrategyParameters {
+				TorqueReserve = gsInputData.TorqueReserve,
+				StartTorqueReserve = gsInputData.StartTorqueReserve,
+				TimeBetweenGearshifts = gsInputData.MinTimeBetweenGearshift,
+				StartSpeed = gsInputData.StartSpeed,
+				DownshiftAfterUpshiftDelay = gsInputData.DownshiftAfterUpshiftDelay,
+				UpshiftAfterDownshiftDelay = gsInputData.UpshiftAfterDownshiftDelay,
+				UpshiftMinAcceleration = gsInputData.UpshiftMinAcceleration,
 
+				StartVelocity = gsInputData.StartSpeed ?? DeclarationData.GearboxTCU.StartSpeed,
+				StartAcceleration = gsInputData.StartAcceleration ?? DeclarationData.GearboxTCU.StartAcceleration,
+				RatingFactorCurrentGear = gsInputData.RatingFactorCurrentGear ?? (gbxType.AutomaticTransmission()
+											? DeclarationData.GearboxTCU.RatingFactorCurrentGearAPT
+											: DeclarationData.GearboxTCU.RatingFactorCurrentGear),
 
-			return InputDataProvider.JobInputData.Cycles.Select(cycle => {
-				var drivingCycle = CyclesCache.ContainsKey(cycle.CycleData.Source)
-					? CyclesCache[cycle.CycleData.Source]
-					: DrivingCycleDataReader.ReadFromDataTable(cycle.CycleData, cycle.Name, crossWindRequired);
+				RatioEarlyUpshiftFC = (gsInputData.RatioEarlyUpshiftFC ?? DeclarationData.GearboxTCU.RatioEarlyUpshiftFC) / axleRatio,
+				RatioEarlyDownshiftFC = (gsInputData.RatioEarlyDownshiftFC ?? DeclarationData.GearboxTCU.RatioEarlyDownshiftFC) / axleRatio,
+				AllowedGearRangeFC = gsInputData.AllowedGearRangeFC ?? (gbxType.AutomaticTransmission() ? DeclarationData.GearboxTCU.AllowedGearRangeFCAPT : DeclarationData.GearboxTCU.AllowedGearRangeFCAMT),
+				VelocityDropFactor = gsInputData.VeloictyDropFactor ?? DeclarationData.GearboxTCU.VelocityDropFactor,
+				AccelerationFactor = gsInputData.AccelerationFactor ?? DeclarationData.GearboxTCU.AccelerationFactor,
+				MinEngineSpeedPostUpshift = gsInputData.MinEngineSpeedPostUpshift ?? DeclarationData.GearboxTCU.MinEngineSpeedPostUpshift,
+				ATLookAheadTime = gsInputData.ATLookAheadTime ?? DeclarationData.GearboxTCU.ATLookAheadTime,
 
-				return new VectoRunData {
-					JobName = InputDataProvider.JobInputData.JobName,
-					EngineData = engineData,
-					GearboxData = gearboxData,
-					AxleGearData = axlegearData,
-					AngledriveData = angledriveData,
-					VehicleData = dao.CreateVehicleData(vehicle),
-					AirdragData = dao.CreateAirdragData(vehicle.Components.AirdragInputData, vehicle),
-					DriverData = driver,
-					Aux = dao.CreateAuxiliaryData(vehicle.Components.AuxiliaryInputData),
-					AdvancedAux = dao.CreateAdvancedAuxData(vehicle.Components.AuxiliaryInputData),
-					Retarder = dao.CreateRetarderData(vehicle.Components.RetarderInputData),
-					PTO = ptoTransmissionData,
-					Cycle = new DrivingCycleProxy(drivingCycle, cycle.Name),
-					ExecutionMode = ExecutionMode.Engineering,
-					SimulationType = SimulationType.DistanceCycle | SimulationType.MeasuredSpeedCycle | SimulationType.PWheel,
-					PTOCycleWhileDrive = ptoCycleWhileDrive
-				};
-			});
+				LoadStageThresoldsDown = gsInputData.LoadStageThresholdsDown?.ToArray() ?? DeclarationData.GearboxTCU.LoadStageThresoldsDown,
+				LoadStageThresoldsUp = gsInputData.LoadStageThresholdsUp?.ToArray() ?? DeclarationData.GearboxTCU.LoadStageThresholdsUp,
+				ShiftSpeedsTCToLocked = engineIdlingSpeed == null ? null : (gsInputData.ShiftSpeedsTCToLocked ?? DeclarationData.GearboxTCU.ShiftSpeedsTCToLocked).Select(x => x.Select(y => y + engineIdlingSpeed.AsRPM).ToArray()).ToArray(),
+
+			};
+
+			return retVal;
 		}
+
 	}
 }

@@ -91,9 +91,9 @@ Public Class VectoVTPJob
         Try
             Dim writer As JSONFileWriter = JSONFileWriter.Instance
             if Cfg.DeclMode Then
-                writer.SaveJob(CType(Me, IVTPDeclarationInputDataProvider), _sFilePath)
+                writer.SaveJob(CType(Me, IVTPDeclarationInputDataProvider), _sFilePath, Cfg.DeclMode)
             else
-                writer.SaveJob(CType(Me, IVTPEngineeringInputDataProvider), _sFilePath)
+                writer.SaveJob(CType(Me, IVTPEngineeringInputDataProvider), _sFilePath, cfg.DeclMode)
             End If
         Catch ex As Exception
             MsgBox("Failed to save Job file: " + ex.Message)

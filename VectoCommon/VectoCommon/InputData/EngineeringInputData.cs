@@ -33,6 +33,7 @@ using System.Collections.Generic;
 using System.Data;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 
 namespace TUGraz.VectoCommon.InputData
 {
@@ -46,13 +47,16 @@ namespace TUGraz.VectoCommon.InputData
 		/// </summary>
 		IList<ICycleData> Cycles { get; }
 
-		/// <summary>
-		/// P001
-		/// cf. VECTO Input Parameters.xlsx
-		/// </summary>
-		bool EngineOnlyMode { get; }
-
 		IEngineEngineeringInputData EngineOnly { get; }
+	}
+
+	public enum VectoSimulationJobType
+	{
+		ConventionalVehicle,
+		//ParallelHybridVehicle,
+		//SerialHybridVehicle,
+		//BatteryElectricVehicle,
+		EngineOnlySimulation,
 	}
 
 	public interface IVehicleEngineeringInputData : IVehicleDeclarationInputData
@@ -83,12 +87,12 @@ namespace TUGraz.VectoCommon.InputData
 
 		// input parameters for road sweeper use case
 
-		uint? PTO_DriveGear { get; }
+		GearshiftPosition PTO_DriveGear { get; }
 
 		PerSecond PTO_DriveEngineSpeed { get; }
 	}
 
-	public interface IAdvancedDriverAssistantSystemsEngineering
+	public interface IAdvancedDriverAssistantSystemsEngineering : IAdvancedDriverAssistantSystemDeclarationInputData
 	{
 		DataSource DataSource { get; }
 	}
@@ -257,6 +261,31 @@ namespace TUGraz.VectoCommon.InputData
 		Second UpshiftAfterDownshiftDelay { get; }
 
 		MeterPerSquareSecond UpshiftMinAcceleration { get; }
+
+		
+		double? RatingFactorCurrentGear { get; }
+		
+		string Source { get; }
+		
+		// FC-Based GS parameters
+		double? RatioEarlyUpshiftFC { get; }
+		double? RatioEarlyDownshiftFC { get; }
+
+		int? AllowedGearRangeFC { get; }
+
+		double? VeloictyDropFactor { get; }
+
+		double? AccelerationFactor { get; }
+
+		
+		IList<double> LoadStageThresholdsUp { get; }
+		IList<double> LoadStageThresholdsDown { get; }
+		PerSecond MinEngineSpeedPostUpshift { get; }
+
+		Second ATLookAheadTime { get; }
+		double[][] ShiftSpeedsTCToLocked { get; }
+
+		double? EffshiftAccelerationFactorAT { get; }
 	}
 
 	public interface ITorqueConverterEngineeringShiftParameterInputData
@@ -306,6 +335,19 @@ namespace TUGraz.VectoCommon.InputData
 		/// </summary>
 		KilogramSquareMeter Inertia { get; }
 
+		new IList<IEngineModeEngineeringInputData> EngineModes { get; }
+
+		Second EngineStartTime { get; }
+
+	}
+
+	public interface IEngineModeEngineeringInputData : IEngineModeDeclarationInputData
+	{
+		new IList<IEngineFuelEngineeringInputData> Fuels { get; }
+	}
+
+	public interface IEngineFuelEngineeringInputData : IEngineFuelDeclarationInputData
+	{
 		/// <summary>
 		/// P170
 		/// </summary>
@@ -314,14 +356,9 @@ namespace TUGraz.VectoCommon.InputData
 
 	public interface IAuxiliariesEngineeringInputData
 	{
-		IList<IAuxiliaryEngineeringInputData> Auxiliaries { get; }
+		IAuxiliaryEngineeringInputData Auxiliaries { get; }
 
-		// Advanced Auxiliaries
-		AuxiliaryModel AuxiliaryAssembly { get; }
-
-		string AuxiliaryVersion { get; }
-
-		string AdvancedAuxiliaryFilePath { get; }
+		IBusAuxiliariesEngineeringData BusAuxiliariesData { get; }
 	}
 
 	public interface IDriverModelData { }
@@ -336,7 +373,7 @@ namespace TUGraz.VectoCommon.InputData
 	{
 		//new IStartStopEngineeringInputData StartStop { get; }
 
-		IOverSpeedEcoRollEngineeringInputData OverSpeedEcoRoll { get; }
+		IOverSpeedEngineeringInputData OverSpeedData { get; }
 
 		/// <summary>
 		/// P009; P033, P034, P035
@@ -347,9 +384,40 @@ namespace TUGraz.VectoCommon.InputData
 		ILookaheadCoastingInputData Lookahead { get; }
 
 		IGearshiftEngineeringInputData GearshiftInputData { get; }
+
+		IEngineStopStartEngineeringInputData EngineStopStartData { get; }
+
+		IEcoRollEngineeringInputData EcoRollData { get; }
+		IPCCEngineeringInputData PCCData { get; }
 	}
 
-	public interface IOverSpeedEcoRollEngineeringInputData : IOverSpeedEcoRollDeclarationInputData
+	public interface IEcoRollEngineeringInputData
+	{
+		MeterPerSecond MinSpeed { get; }
+
+		Second ActivationDelay { get; }
+
+		MeterPerSecond UnderspeedThreshold { get; }
+
+		MeterPerSquareSecond AccelerationUpperLimit { get; }
+	}
+
+	public interface IPCCEngineeringInputData
+	{
+		MeterPerSecond PCCEnabledSpeed { get; }
+
+		MeterPerSecond MinSpeed { get; }
+
+		Meter PreviewDistanceUseCase1 { get; }
+
+		Meter PreviewDistanceUseCase2 { get; }
+
+		MeterPerSecond Underspeed { get; }
+
+		MeterPerSecond OverspeedUseCase3 { get; }
+	}
+
+	public interface IOverSpeedEngineeringInputData : IOverSpeedEcoRollDeclarationInputData
 	{
 		/// <summary>
 		/// P016
@@ -363,12 +431,8 @@ namespace TUGraz.VectoCommon.InputData
 		/// </summary>
 		MeterPerSecond OverSpeed { get; }
 
-		/// <summary>
-		/// P018
-		/// cf. VECTO Input Parameters.xlsx
-		/// </summary>
-		MeterPerSecond UnderSpeed { get; }
 	}
+	
 
 	public interface ILookaheadCoastingInputData : IDriverModelData
 	{
@@ -400,49 +464,82 @@ namespace TUGraz.VectoCommon.InputData
 		TableData CoastingDecisionFactorVelocityDropLookup { get; }
 	}
 
+	public interface IEngineStopStartEngineeringInputData
+	{
+		Second ActivationDelay { get; }
+		Second MaxEngineOffTimespan { get; }
+		double UtilityFactorStandstill { get; }
+		double UtilityFactorDriving { get; }
+	}
+
 	public interface IAuxiliaryEngineeringInputData
 	{
-		/// <summary>
-		/// P006  Aux-ID
-		/// cf. VECTO Input Parameters.xlsx
-		/// </summary>
-		string ID { get; }
-
-		/// <summary>
-		/// either mapping or constant
-		/// </summary>
-		AuxiliaryDemandType AuxiliaryType { get; }
-
-		/// <summary>
-		/// P022  Aux-InputFile: transmission ratio
-		/// cf. VECTO Input Parameters.xlsx
-		/// </summary>
-		double TransmissionRatio { get; }
-
-		/// <summary>
-		/// P023  Aux-InputFile: efficiency to engine
-		/// cf. VECTO Input Parameters.xlsx
-		/// </summary>
-		double EfficiencyToEngine { get; }
-
-		/// <summary>
-		/// P024  Aux-InputFile: efficiency to supply
-		/// cf. VECTO Input Parameters.xlsx
-		/// </summary>
-		double EfficiencyToSupply { get; }
-
-		/// <summary>
-		/// P025, P026, P027  Aux-InputFile: map
-		/// cf. VECTO Input Parameters.xlsx
-		/// </summary>
-		TableData DemandMap { get; }
-
 		/// <summary>
 		/// P178
 		/// additional constant auxiliary load, similar to Padd; not specified in the cycle but as auxiliary
 		/// </summary>
 		Watt ConstantPowerDemand { get; }
 
+		Watt PowerDemandICEOffDriving { get; }
+
+		Watt PowerDemandICEOffStandstill { get; }
+
+
+		Watt ElectricPowerDemand { get; }
+	}
+
+	public interface IBusAuxiliariesEngineeringData
+	{
 		DataSource DataSource { get; }
+
+		IBusAuxPneumaticSystemEngineeringData PneumaticSystem { get; }
+
+		IBusAuxElectricSystemEngineeringData ElectricSystem { get; }
+
+		IBusAuxHVACData HVACData { get; }
+	}
+
+	public interface IBusAuxPneumaticSystemEngineeringData
+	{
+		TableData CompressorMap { get; }
+
+		NormLiterPerSecond AverageAirConsumed { get; }
+
+		bool SmartAirCompression { get; }
+
+		double GearRatio { get; }
+	}
+
+	public interface IBusAuxElectricSystemEngineeringData
+	{
+		double AlternatorEfficiency { get; }
+
+		double DCDCConverterEfficiency { get; }
+
+		Ampere CurrentDemand { get; }
+
+		Ampere CurrentDemandEngineOffDriving { get; }
+
+		Ampere CurrentDemandEngineOffStandstill { get; }
+
+		AlternatorType AlternatorType { get; }
+
+		WattSecond ElectricStorageCapacity { get; }
+
+		Watt MaxAlternatorPower { get; }
+
+		bool ESSupplyFromHEVREESS { get; }
+		double ElectricStorageEfficiency { get; }
+	}
+
+	public interface IBusAuxHVACData
+	{
+		Watt ElectricalPowerDemand { get; }
+
+		Watt MechanicalPowerDemand { get; }
+
+		Joule AverageHeatingDemand { get; }
+
+		Watt AuxHeaterPower { get; }
 	}
 }

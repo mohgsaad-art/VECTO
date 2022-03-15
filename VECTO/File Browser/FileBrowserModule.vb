@@ -31,8 +31,12 @@ Public Module FileBrowserModule
 	Public FuelConsumptionMapFileBrowser As FileBrowser
 	Public FullLoadCurveFileBrowser As FileBrowser
 
+    public BusAuxFileBrowser As FileBrowser
+    public BusAuxCompressorMapFileBrowser As FileBrowser
+
 	Public EngineFileBrowser As FileBrowser
 	Public GearboxFileBrowser As FileBrowser
+    Public TCUFileBrowser As FileBrowser
 	Public DriverAccelerationFileBrowser As FileBrowser
 	Public DriverDecisionFactorTargetSpeedFileBrowser As FileBrowser
 	Public DriverDecisionFactorVelocityDropFileBrowser As FileBrowser

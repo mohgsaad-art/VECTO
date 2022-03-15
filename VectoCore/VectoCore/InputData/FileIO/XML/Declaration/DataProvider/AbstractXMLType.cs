@@ -29,8 +29,10 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using System.Collections.Generic;
 using System.Xml;
 using TUGraz.VectoCommon.Exceptions;
+using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Utils;
 
@@ -114,6 +116,17 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider {
 		protected string GetAttribute(XmlNode node, string attribute)
 		{
 			return node?.Attributes?.GetNamedItem(attribute)?.InnerText;
+		}
+
+		protected virtual TableData ReadTableData(string baseElement, string entryElement, Dictionary<string, string> mapping)
+		{
+			var entries = BaseNode.SelectNodes(
+				XMLHelper.QueryLocalName(baseElement, entryElement));
+			if (entries != null && entries.Count > 0) {
+				return XMLHelper.ReadTableData(mapping, entries);
+			}
+
+			return null;
 		}
 	}
 }

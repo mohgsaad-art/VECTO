@@ -76,9 +76,9 @@ namespace TUGraz.VectoCore.Tests.FileIO
 			Assert.AreEqual(Path.GetFileNameWithoutExtension(DeclarationJob), runData.JobName);
 
 			// curbweight + bodyCurbWeight + trailerCurbWeight (for Long Haul only)
-			Assert.AreEqual(5850 + 1900 + 3400, runData.VehicleData.TotalCurbWeight.Value());
+			Assert.AreEqual(5850 + 1900 + 3400, runData.VehicleData.TotalCurbMass.Value());
 
-			Assert.AreEqual(11900, runData.VehicleData.GrossVehicleWeight.Value());
+			Assert.AreEqual(11900, runData.VehicleData.GrossVehicleMass.Value());
 			Assert.AreEqual(AxleConfiguration.AxleConfig_4x2, runData.VehicleData.AxleConfiguration);
 			AssertHelper.AreRelativeEqual(0.40726954, runData.VehicleData.DynamicTyreRadius);
 
@@ -92,18 +92,16 @@ namespace TUGraz.VectoCore.Tests.FileIO
 			//Assert.AreEqual(DeclarationData.Driver.LookAhead.Deceleration.Value(),
 			//	runData.DriverData.LookAheadCoasting.Deceleration.Value(), Tolerance);
 
-			Assert.AreNotEqual(DriverMode.Off, runData.DriverData.OverSpeedEcoRoll.Mode);
-			Assert.AreEqual(DeclarationData.Driver.OverSpeedEcoRoll.MinSpeed.Value(),
-				runData.DriverData.OverSpeedEcoRoll.MinSpeed.Value(), Tolerance);
-			Assert.AreEqual(DeclarationData.Driver.OverSpeedEcoRoll.OverSpeed.Value(),
-				runData.DriverData.OverSpeedEcoRoll.OverSpeed.Value(), Tolerance);
-			Assert.AreEqual(DeclarationData.Driver.OverSpeedEcoRoll.UnderSpeed.Value(),
-				runData.DriverData.OverSpeedEcoRoll.UnderSpeed.Value(), Tolerance);
+			Assert.IsTrue(runData.DriverData.OverSpeed.Enabled);
+			Assert.AreEqual(DeclarationData.Driver.OverSpeed.MinSpeed.Value(),
+				runData.DriverData.OverSpeed.MinSpeed.Value(), Tolerance);
+			Assert.AreEqual(DeclarationData.Driver.OverSpeed.AllowedOverSpeed.Value(),
+				runData.DriverData.OverSpeed.OverSpeed.Value(), Tolerance);
 
 			Assert.AreEqual(3.7890, runData.EngineData.Inertia.Value(), 1e-6);
 
-			var downshiftSpeeds = new[] { 660, 660, 1679.9982 };
-			var downshiftTorque = new[] { -163.9, 257.9742, 988.9 };
+			var downshiftSpeeds = new[] { 660, 660, 800, 1000, 1087.625, 1087.625 };
+			var downshiftTorque = new[] { -163.9, 623.966, 725.102, 848.0332, 872.2098, 988.9 };
 
 			Assert.AreEqual(downshiftSpeeds.Length, runData.GearboxData.Gears[2].ShiftPolygon.Downshift.Count);
 			for (var i = 0; i < downshiftSpeeds.Length; i++) {
@@ -113,11 +111,11 @@ namespace TUGraz.VectoCore.Tests.FileIO
 					"i: " + i);
 			}
 
-			var upshiftSpeed = new[] { 1889.6633, 1889.6633, 606.64575 / Constants.RPMToRad };
-			var upshiftTorque = new[] { -163.9, 245.31958, 988.9 };
+			var upshiftSpeed = new[] { 2318.28077, 2318.28077 };
+			var upshiftTorque = new[] { -163.9, 988.9 };
 
-			Assert.AreEqual(upshiftSpeed.Length, runData.GearboxData.Gears[2].ShiftPolygon.Downshift.Count);
-			for (var i = 0; i < downshiftSpeeds.Length; i++) {
+			Assert.AreEqual(upshiftSpeed.Length, runData.GearboxData.Gears[2].ShiftPolygon.Upshift.Count);
+			for (var i = 0; i < upshiftSpeed.Length; i++) {
 				Assert.AreEqual(upshiftSpeed[i].RPMtoRad().Value(),
 					runData.GearboxData.Gears[1].ShiftPolygon.Upshift[i].AngularSpeed.Value(), Tolerance);
 				Assert.AreEqual(upshiftTorque[i], runData.GearboxData.Gears[1].ShiftPolygon.Upshift[i].Torque.Value(), Tolerance);

@@ -232,6 +232,8 @@ namespace TUGraz.VectoCore.Utils
 					} else if (items[i] is ConvertedSI) {
 						// todo mk-2017-10-02: maybe we also have to use decimals and showUnit from columnFormatter here?
 						formattedList[i] = columnFormatter[i]((ConvertedSI)items[i]);
+					} else if (items[i] is bool) {
+						formattedList[i] = (bool)items[i] ? "1" : "0";
 					} else {
 						formattedList[i] = string.Format(CultureInfo.InvariantCulture, "{0}", items[i]);
 					}

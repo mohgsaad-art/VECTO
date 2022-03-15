@@ -43,11 +43,11 @@ namespace TUGraz.VectoCore.Utils
 {
 	public static class ProviderExtensions
 	{
-		public static void AddAuxiliaries(this CombustionEngine engine, VehicleContainer container,
+		public static void AddAuxiliaries(this CombustionEngine engine, IVehicleContainer container,
 			VectoRunData data)
 		{
 			// aux --> engine
-			if (data.AdvancedAux != null && data.AdvancedAux.AuxiliaryAssembly == AuxiliaryModel.Advanced) {
+			if (data.BusAuxiliaries != null) {
 				engine.Connect(PowertrainBuilder.CreateAdvancedAuxiliaries(data, container).Port());
 			} else {
 				if (data.Aux != null) {

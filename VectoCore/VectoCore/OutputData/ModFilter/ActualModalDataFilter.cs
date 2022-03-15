@@ -46,10 +46,10 @@ namespace TUGraz.VectoCore.OutputData.ModFilter
 			//var ds = 1e-12.SI<Meter>();
 
 			var init = data.Rows[0];
-			var v_act = init.Field<MeterPerSecond>((int)ModalResultField.v_act);
-			var n_engine = init.Field<PerSecond>((int)ModalResultField.n_eng_avg);
-			var dist = init.Field<Meter>((int)ModalResultField.dist);
-			var n_gbx_out = init.Field<PerSecond>((int)ModalResultField.n_gbx_out_avg);
+			var v_act = init.Field<MeterPerSecond>(ModalResultField.v_act.GetName());
+			var n_engine = init.Field<PerSecond>(ModalResultField.n_eng_avg.GetName());
+			var dist = init.Field<Meter>(ModalResultField.dist.GetName());
+			var n_gbx_out = init.Field<PerSecond>(ModalResultField.n_gbx_out_avg.GetName());
 
 			for (var i = 1; i < data.Rows.Count; i++) {
 				//var prev = data.Rows[i - 1];
@@ -57,10 +57,10 @@ namespace TUGraz.VectoCore.OutputData.ModFilter
 				var start = results.NewRow();
 				var end = results.NewRow();
 
-				start[(int)ModalResultField.time] = current.Field<Second>((int)ModalResultField.time) -
-													current.Field<Second>((int)ModalResultField.simulationInterval) / 2.0;
-				end[(int)ModalResultField.time] = current.Field<Second>((int)ModalResultField.time) +
-												current.Field<Second>((int)ModalResultField.simulationInterval) / 2.0;
+				start[ModalResultField.time.GetName()] = current.Field<Second>(ModalResultField.time.GetName()) -
+													current.Field<Second>(ModalResultField.simulationInterval.GetName()) / 2.0;
+				end[ModalResultField.time.GetName()] = current.Field<Second>(ModalResultField.time.GetName()) +
+														current.Field<Second>(ModalResultField.simulationInterval.GetName()) / 2.0;
 
 				SetConstantValues(current, start, end,
 					ModalResultField.simulationInterval,
@@ -70,23 +70,23 @@ namespace TUGraz.VectoCore.OutputData.ModFilter
 					ModalResultField.Gear,
 					ModalResultField.TC_Locked);
 
-				start[(int)ModalResultField.v_act] = v_act;
-				v_act = 2 * current.Field<MeterPerSecond>((int)ModalResultField.v_act) - v_act;
-				end[(int)ModalResultField.v_act] = v_act;
+				start[ModalResultField.v_act.GetName()] = v_act;
+				v_act = 2 * current.Field<MeterPerSecond>(ModalResultField.v_act.GetName()) - v_act;
+				end[ModalResultField.v_act.GetName()] = v_act;
 
 				SetConstantValues(current, start, end, ModalResultField.v_targ);
 
-				start[(int)ModalResultField.dist] = dist;
-				dist = current.Field<Meter>((int)ModalResultField.dist);
-				end[(int)ModalResultField.dist] = dist;
+				start[ModalResultField.dist.GetName()] = dist;
+				dist = current.Field<Meter>(ModalResultField.dist.GetName());
+				end[ModalResultField.dist.GetName()] = dist;
 
-				start[(int)ModalResultField.n_eng_avg] = n_engine;
-				n_engine = 2 * current.Field<PerSecond>((int)ModalResultField.n_eng_avg) - n_engine;
-				end[(int)ModalResultField.n_eng_avg] = n_engine;
+				start[ModalResultField.n_eng_avg.GetName()] = n_engine;
+				n_engine = 2 * current.Field<PerSecond>(ModalResultField.n_eng_avg.GetName()) - n_engine;
+				end[ModalResultField.n_eng_avg.GetName()] = n_engine;
 
-				start[(int)ModalResultField.n_gbx_out_avg] = n_gbx_out;
-				n_gbx_out = 2 * current.Field<PerSecond>((int)ModalResultField.n_gbx_out_avg) - n_gbx_out;
-				end[(int)ModalResultField.n_gbx_out_avg] = n_gbx_out;
+				start[ModalResultField.n_gbx_out_avg.GetName()] = n_gbx_out;
+				n_gbx_out = 2 * current.Field<PerSecond>(ModalResultField.n_gbx_out_avg.GetName()) - n_gbx_out;
+				end[ModalResultField.n_gbx_out_avg.GetName()] = n_gbx_out;
 
 				SetConstantValues(current, start, end,
 					ModalResultField.T_eng_fcmap,

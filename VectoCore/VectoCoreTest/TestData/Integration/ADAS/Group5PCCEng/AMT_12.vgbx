@@ -1,0 +1,104 @@
+﻿{
+  "Header": {
+    "CreatedBy": " ()",
+    "Date": "2016-10-13T08:52:52.1686119Z",
+    "AppVersion": "3",
+    "FileVersion": 6
+  },
+  "Body": {
+    "SavedInDeclMode": false,
+    "ModelName": "tractor_12gear_example",
+    "Inertia": 0.0,
+    "TracInt": 1.0,
+    "Gears": [
+      {
+        "Ratio": 2.64,
+        "LossMap": "Axle_4x2_Tractor.vtlm"
+      },
+      {
+        "Ratio": 14.93,
+        "LossMap": "Gear_1.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": ""
+      },
+      {
+        "Ratio": 11.64,
+        "LossMap": "Gear_2.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": ""
+      },
+      {
+        "Ratio": 9.02,
+        "LossMap": "Gear_3.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": ""
+      },
+      {
+        "Ratio": 7.04,
+        "LossMap": "Gear_4.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": ""
+      },
+      {
+        "Ratio": 5.64,
+        "LossMap": "Gear_5.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": ""
+      },
+      {
+        "Ratio": 4.4,
+        "LossMap": "Gear_6.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": ""
+      },
+      {
+        "Ratio": 3.39,
+        "LossMap": "Gear_7.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": ""
+      },
+      {
+        "Ratio": 2.65,
+        "LossMap": "Gear_8.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": ""
+      },
+      {
+        "Ratio": 2.05,
+        "LossMap": "Gear_9.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": ""
+      },
+      {
+        "Ratio": 1.6,
+        "LossMap": "Gear_10.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": ""
+      },
+      {
+        "Ratio": 1.28,
+        "LossMap": "Gear_11.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": ""
+      },
+      {
+        "Ratio": 1.0,
+        "LossMap": "Gear_12.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": ""
+      }
+    ],
+    "TqReserve": 20.0,
+    "ShiftTime": 2.0,
+    "StartTqReserve": 20.0,
+    "StartSpeed": 2.0,
+    "StartAcc": 0.6,
+    "GearboxType": "AMT",
+    "TorqueConverter": {
+      "Enabled": false
+    },
+    "DownshiftAferUpshiftDelay": 10.0,
+    "UpshiftAfterDownshiftDelay": 10.0,
+    "UpshiftMinAcceleration": 0.1
+  }
+}

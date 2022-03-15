@@ -1,4 +1,4 @@
-rpm,flowRate [l/min],power [on] [kW]
+rpm,flowRate [l/min],power on [W],power off [W]
 100,200,2
 200,400,4
 300,600,6

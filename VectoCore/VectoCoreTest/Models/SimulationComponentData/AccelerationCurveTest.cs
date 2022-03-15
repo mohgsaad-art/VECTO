@@ -120,43 +120,29 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 			EqualAcceleration(130, 0.16, -0.103);
 		}
 
-		[TestCase]
-		public void ComputeAccelerationDistanceTest()
+		[
+			// in this part the deceleration is constant
+			TestCase(25, 0, 24.11265432099),
+			TestCase(25, 15, 15.43209876543),
+			TestCase(50, 0, 96.45061728395),
+			TestCase(50, 15, 87.77006172840),
+			TestCase(100, 60, 493.82716049383),
+			// decelerate in the non-constant part only
+			TestCase(60, 50, 59.44491148),
+			TestCase(59, 55, 27.33155090),
+			// decelerate across multiple areas of acceleration curve
+			TestCase(60, 0, 59.44491148 + 96.45061728395),
+			TestCase(100, 0, 59.44491148 + 96.45061728395 + 493.82716049383)
+		]
+		public void ComputeAccelerationDistanceTest(double v1, double v2, double expectedDistance)
 		{
 			Data = AccelerationCurveReader.ReadFromFile(@"TestData\Components\Truck.vacc");
 
-			// in this part the deceleration is constant
+			var result = Data.ComputeDecelerationDistance(v1.KMPHtoMeterPerSecond(), v2.KMPHtoMeterPerSecond());
+			Assert.AreEqual(expectedDistance, result.Value(), Tolerance);
 
-			var result = Data.ComputeAccelerationDistance(25.KMPHtoMeterPerSecond(), 0.KMPHtoMeterPerSecond());
-			Assert.AreEqual(24.11265432099, result.Value(), Tolerance);
-
-			result = Data.ComputeAccelerationDistance(25.KMPHtoMeterPerSecond(), 15.KMPHtoMeterPerSecond());
-			Assert.AreEqual(15.43209876543, result.Value(), Tolerance);
-
-			result = Data.ComputeAccelerationDistance(50.KMPHtoMeterPerSecond(), 0.KMPHtoMeterPerSecond());
-			Assert.AreEqual(96.45061728395, result.Value(), Tolerance);
-
-			result = Data.ComputeAccelerationDistance(50.KMPHtoMeterPerSecond(), 15.KMPHtoMeterPerSecond());
-			Assert.AreEqual(87.77006172840, result.Value(), Tolerance);
-
-			result = Data.ComputeAccelerationDistance(100.KMPHtoMeterPerSecond(), 60.KMPHtoMeterPerSecond());
-			Assert.AreEqual(493.82716049383, result.Value(), Tolerance);
-
-			// decelerate in the non-constant part only
-
-			result = Data.ComputeAccelerationDistance(60.KMPHtoMeterPerSecond(), 50.KMPHtoMeterPerSecond());
-			Assert.AreEqual(59.44491148, result.Value(), Tolerance);
-
-			result = Data.ComputeAccelerationDistance(59.KMPHtoMeterPerSecond(), 55.KMPHtoMeterPerSecond());
-			Assert.AreEqual(27.33155090, result.Value(), Tolerance);
-
-			// decelerate across multiple areas of acceleration curve
-
-			result = Data.ComputeAccelerationDistance(60.KMPHtoMeterPerSecond(), 0.KMPHtoMeterPerSecond());
-			Assert.AreEqual(59.44491148 + 96.45061728395, result.Value(), Tolerance);
-
-			result = Data.ComputeAccelerationDistance(100.KMPHtoMeterPerSecond(), 0.KMPHtoMeterPerSecond());
-			Assert.AreEqual(59.44491148 + 96.45061728395 + 493.82716049383, result.Value(), Tolerance);
 		}
+
+		
 	}
 }

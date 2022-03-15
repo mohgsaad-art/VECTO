@@ -92,14 +92,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		{
 			// cycle finished (no more entries in cycle)
 			if (CycleIterator.LastEntry && CycleIterator.RightSample.Time == absTime) {
-				return new ResponseCycleFinished { Source = this };
+				return new ResponseCycleFinished(this);
 			}
 
 			// interval exceeded
 			if (CycleIterator.RightSample != null && (absTime + dt).IsGreater(CycleIterator.RightSample.Time)) {
-				return new ResponseFailTimeInterval {
+				return new ResponseFailTimeInterval(this) {
 					AbsTime = absTime,
-					Source = this,
 					DeltaT = CycleIterator.RightSample.Time - absTime
 				};
 			}
@@ -167,9 +166,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		#region VectoSimulationComponent
 
-		protected override void DoWriteModalResults(IModalDataContainer container) {}
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container) {}
 
-		protected override void DoCommitSimulationStep()
+		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)
 		{
 			CycleIterator.MoveNext();
 			AdvanceState();

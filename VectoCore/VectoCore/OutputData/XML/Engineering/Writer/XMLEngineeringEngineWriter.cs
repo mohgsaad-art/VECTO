@@ -30,6 +30,7 @@
 */
 
 using System.IO;
+using System.Linq;
 using System.Xml.Linq;
 using TUGraz.IVT.VectoXML;
 using TUGraz.VectoCommon.InputData;
@@ -59,10 +60,10 @@ namespace TUGraz.VectoCore.OutputData.XML.Engineering.Writer
 				GetXMLTypeAttribute(),
 				GetDefaultComponentElements(data),
 				new XElement(ns + XMLNames.Engine_Displacement, (data.Displacement.Value() * 1000 * 1000).ToXMLFormat(0)),
-				new XElement(ns + XMLNames.Engine_IdlingSpeed, data.IdleSpeed.AsRPM.ToXMLFormat(0)),
+				new XElement(ns + XMLNames.Engine_IdlingSpeed, data.EngineModes.First().IdleSpeed.AsRPM.ToXMLFormat(0)),
 				data.Inertia != null ? new XElement(ns + XMLNames.Engine_Inertia, data.Inertia.Value()) : null,
-				new XElement(ns + XMLNames.Engine_FCCorrection, data.WHTCEngineering.ToXMLFormat(4)),
-				new XElement(ns + XMLNames.Engine_FuelType, data.FuelType.ToXMLFormat()),
+				new XElement(ns + XMLNames.Engine_FCCorrection, data.EngineModes.First().Fuels.First().WHTCEngineering.ToXMLFormat(4)),
+				new XElement(ns + XMLNames.Engine_FuelType, data.EngineModes.First().Fuels.First().FuelType.ToXMLFormat()),
 				new XElement(ns + XMLNames.Engine_FuelConsumptionMap, GetFuelConsumptionMap(ns, data)),
 				new XElement(ns + XMLNames.Engine_FullLoadAndDragCurve, GetFullLoadDragCurve(ns, data))
 			};
@@ -73,23 +74,23 @@ namespace TUGraz.VectoCore.OutputData.XML.Engineering.Writer
 		protected virtual object[] GetFullLoadDragCurve(XNamespace ns, IEngineEngineeringInputData data)
 		{
 			if (Writer.Configuration.SingleFile) {
-				return EmbedDataTable(data.FullLoadCurve, AttributeMappings.EngineFullLoadCurveMapping);
+				return EmbedDataTable(data.EngineModes.First().FullLoadCurve, AttributeMappings.EngineFullLoadCurveMapping);
 			}
 
 			var filename = Path.Combine(
 				Writer.Configuration.BasePath, Writer.RemoveInvalidFileCharacters(string.Format("ENG_{0}.vfld", data.Model)));
-			return ExtCSVResource(data.FullLoadCurve, filename);
+			return ExtCSVResource(data.EngineModes.First().FullLoadCurve, filename);
 		}
 
 		protected virtual object[] GetFuelConsumptionMap(XNamespace ns, IEngineEngineeringInputData data)
 		{
 			if (Writer.Configuration.SingleFile) {
-				return EmbedDataTable(data.FuelConsumptionMap, AttributeMappings.FuelConsumptionMapMapping);
+				return EmbedDataTable(data.EngineModes.First().Fuels.First().FuelConsumptionMap, AttributeMappings.FuelConsumptionMapMapping);
 			}
 
 			var filename = Path.Combine(
 				Writer.Configuration.BasePath, Writer.RemoveInvalidFileCharacters(string.Format("ENG_{0}.vmap", data.Model)));
-			return ExtCSVResource(data.FuelConsumptionMap, filename);
+			return ExtCSVResource(data.EngineModes.First().Fuels.First().FuelConsumptionMap, filename);
 		}
 
 		#region Overrides of AbstractXMLWriter
@@ -114,10 +115,10 @@ namespace TUGraz.VectoCore.OutputData.XML.Engineering.Writer
 				GetXMLTypeAttribute(),
 				GetDefaultComponentElements(data),
 				new XElement(v10 + XMLNames.Engine_Displacement, (data.Displacement.Value() * 1000 * 1000).ToXMLFormat(0)),
-				new XElement(v10 + XMLNames.Engine_IdlingSpeed, data.IdleSpeed.AsRPM.ToXMLFormat(0)),
+				new XElement(v10 + XMLNames.Engine_IdlingSpeed, data.EngineModes.First().IdleSpeed.AsRPM.ToXMLFormat(0)),
 				data.Inertia != null ? new XElement(v10 + XMLNames.Engine_Inertia, data.Inertia.Value()) : null,
-				new XElement(v10 + XMLNames.Engine_FCCorrection, data.WHTCEngineering.ToXMLFormat(4)),
-				new XElement(v10 + XMLNames.Engine_FuelType, data.FuelType.ToXMLFormat()),
+				new XElement(v10 + XMLNames.Engine_FCCorrection, data.EngineModes.First().Fuels.First().WHTCEngineering.ToXMLFormat(4)),
+				new XElement(v10 + XMLNames.Engine_FuelType, data.EngineModes.First().Fuels.First().FuelType.ToXMLFormat()),
 				new XElement(v10 + XMLNames.Engine_FuelConsumptionMap, GetFuelConsumptionMap(v10, data)),
 				new XElement(v10 + XMLNames.Engine_FullLoadAndDragCurve, GetFullLoadDragCurve(v10, data)),
 				new XElement(v11 + XMLNames.Engine_RatedPower, data.RatedPowerDeclared?.Value().ToXMLFormat(0) ?? "xxx kW"),

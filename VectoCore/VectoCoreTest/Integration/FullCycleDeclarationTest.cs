@@ -287,7 +287,7 @@ namespace TUGraz.VectoCore.Tests.Integration
 			// test fuel consumption not negative
 			Assert.IsTrue(
 				modFile1Hz.Rows.Cast<DataRow>()
-					.All(r => r.ParseDouble(ModalResultField.FCWHTCc.GetShortCaption()).IsGreaterOrEqual(0)),
+					.All(r => r.ParseDouble(string.Format(ModalResultField.FCWHTCc.GetShortCaption(), "")).IsGreaterOrEqual(0)),
 				"fuel consumption must not be negative.");
 
 			// last v_act entry must be the same as original

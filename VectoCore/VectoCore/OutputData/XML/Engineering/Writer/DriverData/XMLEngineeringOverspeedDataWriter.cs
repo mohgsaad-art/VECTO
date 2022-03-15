@@ -50,23 +50,22 @@ namespace TUGraz.VectoCore.OutputData.XML.Engineering.Writer
 
 		public override object[] WriteXML(IDriverModelData inputData)
 		{
-			var overspeed = inputData as IOverSpeedEcoRollEngineeringInputData;
+			var overspeed = inputData as IOverSpeedEngineeringInputData;
 			var ns = ComponentDataNamespace;
 			if (overspeed == null) {
 				return new object[] { };
 			}
 
-			if (overspeed.Mode != DriverMode.Off) {
-				return new object[] {
-					new XElement(ns + XMLNames.DriverModel_Overspeed_Mode, overspeed.Mode),
-					new XElement(ns + XMLNames.DriverModel_Overspeed_MinSpeed, overspeed.MinSpeed.AsKmph),
-					new XElement(ns + XMLNames.DriverModel_Overspeed_AllowedOverspeed, overspeed.OverSpeed.AsKmph),
-					new XElement(ns + XMLNames.DriverModel_Overspeed_AllowedUnderspeed, overspeed.UnderSpeed.AsKmph)
-				};
-			}
+			//if (overspeed.Enabled) {
+			//	return new object[] {
+			//		new XElement(ns + XMLNames.DriverModel_Overspeed_Enabled, overspeed.Enabled),
+			//		new XElement(ns + XMLNames.DriverModel_Overspeed_MinSpeed, overspeed.MinSpeed.AsKmph),
+			//		new XElement(ns + XMLNames.DriverModel_Overspeed_AllowedOverspeed, overspeed.OverSpeed.AsKmph),
+			//	};
+			//}
 
 			return new object[] {
-				new XElement(ns + XMLNames.DriverModel_Overspeed_Mode, overspeed.Mode),
+				new XElement(ns + XMLNames.DriverModel_Overspeed_Mode, "Off"),
 			};
 		}
 

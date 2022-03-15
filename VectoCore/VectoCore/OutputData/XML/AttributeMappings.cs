@@ -58,13 +58,7 @@ namespace TUGraz.IVT.VectoXML
 			{ ShiftPolygonReader.Fields.AngularSpeedDown, XMLNames.Gear_ShiftPolygonMapping_DownshiftSpeed_Attr },
 			{ ShiftPolygonReader.Fields.AngularSpeedUp, XMLNames.Gear_ShiftPolygonMapping_UpshiftSpeed_Attr }
 		};
-
-		public static readonly Dictionary<string, string> AuxMapMapping = new Dictionary<string, string>() {
-			{ AuxiliaryDataReader.Fields.AuxSpeed, XMLNames.Aux_AuxMap_AuxiliarySpeed_Attr },
-			{ AuxiliaryDataReader.Fields.MechPower, XMLNames.Aux_AuxMap_MechanicalPower_Attr },
-			{ AuxiliaryDataReader.Fields.SupplyPower, XMLNames.Auxr_AuxMapMapping_SupplyPower_Attr }
-		};
-
+		
 		public static readonly Dictionary<string, string> RetarderLossmapMapping = new Dictionary<string, string> {
 			{ RetarderLossMapReader.Fields.RetarderSpeed, XMLNames.Retarder_RetarderLossmap_RetarderSpeed_Attr },
 			{ RetarderLossMapReader.Fields.TorqueLoss, XMLNames.Retarder_RetarderLossmap_TorqueLoss_Attr }

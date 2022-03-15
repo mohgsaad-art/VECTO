@@ -295,9 +295,9 @@ namespace TUGraz.VectoCore.Utils
 				row["x"] = entry.x.Value();
 				row["y"] = entry.y.Value();
 				row["delta"] = entry.delta;
-				row["AuxPower"] = response.AuxiliariesPowerDemand == null ? -1 : response.AuxiliariesPowerDemand.Value();
-				row["engineSpeed"] = response.EngineSpeed == null ? -1 : response.EngineSpeed.Value();
-				row["enginePower"] = response.EnginePowerRequest == null ? -1 : response.EnginePowerRequest.Value();
+				row["AuxPower"] = response.Engine.AuxiliariesPowerDemand == null ? -1 : response.Engine.AuxiliariesPowerDemand.Value();
+				row["engineSpeed"] = response.Engine.EngineSpeed == null ? -1 : response.Engine.EngineSpeed.Value();
+				row["enginePower"] = response.Engine.PowerRequest == null ? -1 : response.Engine.PowerRequest.Value();
 
 				table.Rows.Add(row);
 			}

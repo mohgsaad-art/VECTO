@@ -1,0 +1,9 @@
+Technology                             , axle - Heavy Urban , axle - Urban , axle - Suburban , axle - Interurban , axle - Coach
+Fixed displacement                     , 1.00               , 1.00         , 1.00            , 1.00              , 1.00
+Fixed displacement with elec. control  , 1.00               , 1.00         , 1.00            , 1.00              , 1.00
+Dual displacement with mech. control   , 0.85               , 0.85         , 0.85            , 0.85              , 0.85
+Dual displacement with elec. control   , 0.85               , 0.85         , 0.85            , 0.85              , 0.85
+Variable displacement mech. controlled , 0.75               , 0.75         , 0.75            , 0.75              , 0.75
+Variable displacement elec. controlled , 0.60               , 0.60         , 0.60            , 0.60              , 0.60
+Electric driven pump                   , 0.25               , 0.25         , 0.25            , 0.25              , 0.25
+Full electric steering gear            , 0.10               , 0.10         , 0.10            , 0.10              , 0.10

@@ -35,6 +35,7 @@ using System.Data;
 using System.Linq;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Utils;
 
@@ -44,6 +45,10 @@ namespace TUGraz.VectoCore.Models.Declaration
 	public struct ADASCombination
 	{
 		public string ID;
+
+		public bool AllowedForAMT;
+		public bool AllowedForAT;
+		public bool AllowedForMT;
 	}
 	public sealed class ADASCombinations : LookupData<bool, EcoRollType, PredictiveCruiseControlType, ADASCombination>
 	{
@@ -57,7 +62,12 @@ namespace TUGraz.VectoCore.Models.Declaration
 				var entry = _combinations.First(
 					x => x.EngineStopStart == enginestopstart && x.EcoRoll == ecoRoll &&
 						x.PCCType == pcc);
-				return new ADASCombination {ID = entry.ADASCombination};
+				return new ADASCombination {
+					ID = entry.ADASCombination,
+					AllowedForAT = entry.AllowedForAT,
+					AllowedForMT = entry.AllowedForMT,
+					AllowedForAMT = entry.AllowedForAMT
+				};
 			} catch (Exception ) { 
 				throw new VectoException(string.Format(ErrorMessage, enginestopstart, ecoRoll, pcc));
 			}
@@ -83,12 +93,46 @@ namespace TUGraz.VectoCore.Models.Declaration
 					EngineStopStart = row.ParseBoolean("enginestopstart"),
 					EcoRoll = EcorollTypeHelper.Get(row.ParseBoolean("ecorollwithoutenginestop"), row.ParseBoolean("ecorollwithenginestop")),
 					PCCType = PredictiveCruiseControlTypeHelper.Parse(row.Field<string>("predictivecruisecontrol")),
-					ADASCombination = row.Field<string>("adascombination")
+					ADASCombination = row.Field<string>("adascombination"),
+					AllowedForAT = row.ParseBoolean("allowedat"),
+					AllowedForAMT = row.ParseBoolean("allowedamt"),
+					AllowedForMT = row.ParseBoolean("allowedmt")
 				});
 			}
 		}
 
 		#endregion
+
+		public ADASCombination Lookup(IAdvancedDriverAssistantSystemDeclarationInputData adas, GearboxType gbxType)
+		{
+			var entry = Lookup(
+				adas.EngineStopStart, adas.EcoRoll, adas.PredictiveCruiseControl);
+			return ValidateAdasCombination(gbxType, entry);
+		}
+
+		internal ADASCombination Lookup(VehicleData.ADASData adas, GearboxType gbxType)
+		{
+			var entry = Lookup(
+				adas.EngineStopStart, adas.EcoRoll, adas.PredictiveCruiseControl);
+			return ValidateAdasCombination(gbxType, entry);
+		}
+
+		private static ADASCombination ValidateAdasCombination(GearboxType gbxType, ADASCombination entry)
+		{
+			if (gbxType.AutomaticTransmission() && !entry.AllowedForAT) {
+				throw new VectoException("ADAS combination {0} not allowed for AT transmissions", entry.ID);
+			}
+
+			if (gbxType == GearboxType.MT && !entry.AllowedForMT) {
+				throw new VectoException("ADAS combination {0} not allowed for MT transmissions", entry.ID);
+			}
+
+			if (gbxType == GearboxType.AMT && !entry.AllowedForAMT) {
+				throw new VectoException("ADAS combination {0} not allowed for AMT transmissions", entry.ID);
+			}
+
+			return entry;
+		}
 
 		public struct Entry
 		{
@@ -97,6 +141,9 @@ namespace TUGraz.VectoCore.Models.Declaration
 			public PredictiveCruiseControlType PCCType;
 			public string ADASCombination;
 
+			public bool AllowedForAMT;
+			public bool AllowedForAT;
+			public bool AllowedForMT;
 		}
 
 		public ADASCombination Lookup(IAdvancedDriverAssistantSystemDeclarationInputData adas)
@@ -110,5 +157,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 			return Lookup(
 				adas.EngineStopStart, adas.EcoRoll, adas.PredictiveCruiseControl);
 		}
+
+		
 	}
 }

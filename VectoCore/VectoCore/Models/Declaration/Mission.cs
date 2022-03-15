@@ -32,6 +32,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Newtonsoft.Json;
+using TUGraz.VectoCommon.BusAuxiliaries;
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 
 namespace TUGraz.VectoCore.Models.Declaration
@@ -52,6 +55,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		public Kilogram BodyCurbWeight;
 
+		[JsonIgnore]
 		public Stream CycleFile;
 
 		public IList<MissionTrailer> Trailer;
@@ -74,13 +78,76 @@ namespace TUGraz.VectoCore.Models.Declaration
 				};
 			}
 		}
+
+		public BusParameters BusParameter { get; internal set; }
 	}
+
+	public class BusParameters
+	{
+
+		public Meter VehicleWidth { get; internal set; }
+
+		public Meter VehicleLength { get; internal set; }
+
+		public Meter BodyHeight { get; internal set; }
+
+		public double NumberPassengersLowerDeck { get; internal set; }
+
+		public double NumberPassengersUpperDeck { get; internal set; }
+
+		public bool DoubleDecker { get; internal set; }
+
+		public bool? LowEntry { get; internal set; }
+
+		// #### HVAC Model Parameters
+
+		public BusHVACSystemConfiguration? HVACConfiguration { get; internal set; }
+
+		public Watt HVACAuxHeaterPower { get; internal set; }
+
+		public HeatPumpType HVACCompressorType { get; internal set; }
+
+		public bool HVACDoubleGlasing { get; internal set; }
+
+		public bool HVACHeatpump { get; internal set; }
+		public bool HVACAdjustableAuxHeater { get; internal set; }
+
+		// used for primary bus only
+		public bool HVACSeparateAirDistributionDucts { get; internal set; }
+
+		public PerSquareMeter PassengerDensityLow { get; internal set; }
+		public PerSquareMeter PassengerDensityRef { get; internal set; }
+		public VehicleClass BusGroup { get; internal set; }
+
+		//Completed Bus
+		//public VehicleCode VehicleCode { get; internal set; }
+
+		//public double PassengerDensity{ get; internal set; }
+		//public double PassengerDensityUrban { get; internal set; }
+		//public double PassengersSuburban { get; internal set; }
+		//public double PassengersInterurban { get; internal set; }
+		//public double PassengersCoach { get; internal set; }
+
+		//public bool?  BodyHeightLowerOrEqual { get; internal set; }
+		//public bool? PassengersSeatsLowerOrEqual { get; internal set; }
+
+		public bool AirDragMeasurementAllowed { get; internal set; }
+
+		public Dictionary<string, double> ElectricalConsumers { get; internal set; }
+
+		public Meter DeltaHeight { get; internal set; }
+		public Meter EntranceHeight { get; set; }
+		public VehicleCode? VehicleCode { get; set; }
+		public FloorType FloorType { get; set; }
+		public IList<BusHVACSystemConfiguration?> SeparateAirDistributionDuctsHVACCfg { get; set; }
+	}
+
 
 	public class MissionTrailer
 	{
 		public TrailerType TrailerType;
-		public Kilogram TrailerCurbWeight;
-		public Kilogram TrailerGrossVehicleWeight;
+		public Kilogram TrailerCurbMass;
+		public Kilogram TrailerGrossVehicleMass;
 		public List<Wheels.Entry> TrailerWheels;
 		public double TrailerAxleWeightShare;
 		public SquareMeter DeltaCdA;

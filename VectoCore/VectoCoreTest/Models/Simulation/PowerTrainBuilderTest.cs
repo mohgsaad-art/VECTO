@@ -86,10 +86,10 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			Assert.IsInstanceOf<IVehicleContainer>(powerTrain);
 			Assert.AreEqual(componentCount, powerTrain.SimulationComponents().Count);
 
-			Assert.IsInstanceOf<CombustionEngine>(powerTrain.Engine);
-			Assert.IsInstanceOf<Gearbox>(powerTrain.Gearbox);
+			Assert.IsInstanceOf<CombustionEngine>(powerTrain.EngineInfo);
+			Assert.IsInstanceOf<Gearbox>(powerTrain.GearboxInfo);
 			Assert.IsInstanceOf<ISimulationOutPort>(powerTrain.Cycle);
-			Assert.IsInstanceOf<Vehicle>(powerTrain.Vehicle);
+			Assert.IsInstanceOf<Vehicle>(powerTrain.VehicleInfo);
 		}
 
 		[TestCase(JobFileDeclNoAngular, 11, false),
@@ -115,10 +115,10 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 				Assert.IsInstanceOf<IVehicleContainer>(powerTrain);
 				Assert.AreEqual(componentCount, powerTrain.SimulationComponents().Count);
 
-				Assert.IsInstanceOf<CombustionEngine>(powerTrain.Engine);
-				Assert.IsInstanceOf<Gearbox>(powerTrain.Gearbox);
+				Assert.IsInstanceOf<CombustionEngine>(powerTrain.EngineInfo);
+				Assert.IsInstanceOf<Gearbox>(powerTrain.GearboxInfo);
 				Assert.IsInstanceOf<ISimulationOutPort>(powerTrain.Cycle);
-				Assert.IsInstanceOf<Vehicle>(powerTrain.Vehicle);
+				Assert.IsInstanceOf<Vehicle>(powerTrain.VehicleInfo);
 			} else {
 				AssertHelper.Exception<VectoException>(() => { reader.NextRun().ToList(); });
 			}

@@ -35,6 +35,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 {
 	public enum VehicleClass
 	{
+		Unknown,
+
 		Class0,
 		Class1,
 		Class2,

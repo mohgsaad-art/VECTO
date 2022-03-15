@@ -72,7 +72,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		public IResponse Request(Second absTime, Second dt, NewtonMeter torque, PerSecond angularVelocity, bool dryRun = false)
 		{
-			if (angularVelocity == null || (_primaryRetarder && !DataBus.ClutchClosed(absTime))) {
+			if (angularVelocity == null || (_primaryRetarder && !DataBus.ClutchInfo.ClutchClosed(absTime))) {
 				return NextComponent.Request(absTime, dt, torque, angularVelocity, dryRun);
 			}
 			var avgAngularSpeed = (PreviousState.InAngularVelocity + angularVelocity) / 2.0;
@@ -81,14 +81,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			return NextComponent.Request(absTime, dt, CurrentState.InTorque, CurrentState.InAngularVelocity, dryRun);
 		}
 
-		protected override void DoWriteModalResults(IModalDataContainer container)
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
 			var avgAngularSpeed = (PreviousState.InAngularVelocity + CurrentState.InAngularVelocity) / 2.0;
 			container[ModalResultField.P_ret_loss] = (CurrentState.InTorque - CurrentState.OutTorque) * avgAngularSpeed;
 			container[ModalResultField.P_retarder_in] = CurrentState.InTorque * avgAngularSpeed;
 		}
 
-		protected override void DoCommitSimulationStep()
+		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)
 		{
 			var avgAngularSpeed = (PreviousState.InAngularVelocity + CurrentState.InAngularVelocity) / 2.0;
 			if (!avgAngularSpeed.IsBetween(_lossMap.MinSpeed, _lossMap.MaxSpeed)) {
@@ -101,7 +101,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 						CurrentState.OutAngularVelocity.AsRPM, _lossMap.MinSpeed.AsRPM, _lossMap.MaxSpeed.AsRPM, _ratio);
 				}
 			}
-			base.DoCommitSimulationStep();
+			base.DoCommitSimulationStep(time, simulationInterval);
 		}
 	}
 }

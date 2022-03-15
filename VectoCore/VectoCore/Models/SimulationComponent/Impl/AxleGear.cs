@@ -46,11 +46,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			bool dryRun = false)
 		{
 			var retVal = base.Request(absTime, dt, outTorque, outAngularVelocity, dryRun);
-			retVal.AxlegearPowerRequest = outTorque * (PreviousState.OutAngularVelocity + CurrentState.OutAngularVelocity) / 2.0;
+			retVal.Axlegear.PowerRequest = outTorque * (PreviousState.OutAngularVelocity + CurrentState.OutAngularVelocity) / 2.0;
+			retVal.Axlegear.CardanTorque = PreviousState.InTorque;
 			return retVal;
 		}
 
-		protected override void DoWriteModalResults(IModalDataContainer container)
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
 			var avgAngularVelocity = (PreviousState.InAngularVelocity + CurrentState.InAngularVelocity) / 2.0;
 			container[ModalResultField.P_axle_loss] = (CurrentState.InTorque - CurrentState.OutTorque / ModelData.Ratio) *

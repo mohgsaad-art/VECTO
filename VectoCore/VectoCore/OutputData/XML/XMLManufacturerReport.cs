@@ -87,8 +87,8 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(tns + XMLNames.Component_ManufacturerAddress, modelData.VehicleData.ManufacturerAddress),
 				new XElement(tns + XMLNames.Vehicle_VIN, modelData.VehicleData.VIN),
 				new XElement(tns + XMLNames.Vehicle_LegislativeClass, modelData.VehicleData.LegislativeClass.ToXMLFormat()),
-				new XElement(tns + XMLNames.Vehicle_GrossVehicleMass, XMLHelper.ValueAsUnit(modelData.VehicleData.GrossVehicleWeight, XMLNames.Unit_t, 1)),
-				new XElement(tns + XMLNames.Vehicle_CurbMassChassis, XMLHelper.ValueAsUnit(modelData.VehicleData.CurbWeight, XMLNames.Unit_kg)),
+				new XElement(tns + XMLNames.Vehicle_GrossVehicleMass, XMLHelper.ValueAsUnit(modelData.VehicleData.GrossVehicleMass, XMLNames.Unit_t, 1)),
+				new XElement(tns + XMLNames.Vehicle_CurbMassChassis, XMLHelper.ValueAsUnit(modelData.VehicleData.CurbMass, XMLNames.Unit_kg)),
 				new XElement(tns + XMLNames.Vehicle_ZeroEmissionVehicle, modelData.VehicleData.ZeroEmissionVehicle),
 				new XElement(tns + XMLNames.Vehicle_HybridElectricHDV, modelData.VehicleData.HybridElectricHDV),
 				new XElement(tns + XMLNames.Vehicle_DualFuelVehicle, modelData.VehicleData.DualFuelVehicle),
@@ -101,7 +101,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 						new XElement(tns + XMLNames.Vehicle_VocationalVehicle, modelData.VehicleData.VocationalVehicle),
 						new XElement(tns + XMLNames.Vehicle_SleeperCab, modelData.VehicleData.SleeperCab),
 						new XElement(tns + XMLNames.Vehicle_PTO, modelData.PTO != null),
-						GetADAS(modelData.VehicleData.ADAS),
+						GetADAS(modelData.VehicleData.InputData.ADAS),
 						GetTorqueLimits(modelData.EngineData),
 						VehicleComponents(modelData)
 					}
@@ -113,7 +113,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 				modelData.InputDataHash == null ? CreateDummySig() : new XElement(modelData.InputDataHash));
 		}
 
-		private XElement GetADAS(VehicleData.ADASData adasData)
+		private XElement GetADAS(IAdvancedDriverAssistantSystemDeclarationInputData adasData)
 		{
 			return new XElement(tns + XMLNames.Vehicle_ADAS,
 				new XElement(tns + XMLNames.Vehicle_ADAS_EngineStopStart, adasData.EngineStopStart),
@@ -204,7 +204,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(tns + XMLNames.Engine_IdlingSpeed, XMLHelper.ValueAsUnit(engineData.IdleSpeed, XMLNames.Unit_RPM)),
 				new XElement(tns + XMLNames.Engine_RatedSpeed, XMLHelper.ValueAsUnit(engineData.RatedSpeedDeclared, XMLNames.Unit_RPM)),
 				new XElement(tns + XMLNames.Engine_Displacement, XMLHelper.ValueAsUnit(engineData.Displacement, XMLNames.Unit_ltr, 1)),
-				new XElement(tns + XMLNames.Engine_FuelType, engineData.FuelData.FuelType.ToXMLFormat())
+				new XElement(tns + XMLNames.Engine_FuelType, engineData.Fuels.First().FuelData.FuelType.ToXMLFormat())
 				);
 		}
 
@@ -242,7 +242,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 			}
 			return new XElement(tns + XMLNames.Component_Angledrive,
 				GetCommonDescription(angledriveData),
-				new XElement(tns + XMLNames.AngleDrive_Ratio, angledriveData.Angledrive.Ratio));
+				new XElement(tns + XMLNames.AngleDrive_Ratio, angledriveData.Angledrive.Ratio.ToXMLFormat(3)));
 		}
 
 		private XElement GetAxlegearDescription(AxleGearData axleGearData)
@@ -377,7 +377,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(tns + XMLNames.Report_ResultEntry_SimulationParameters,
 					new XElement(tns + XMLNames.Report_ResultEntry_TotalVehicleMass, XMLHelper.ValueAsUnit(result.TotalVehicleWeight, XMLNames.Unit_kg)),
 					new XElement(tns + XMLNames.Report_ResultEntry_Payload, XMLHelper.ValueAsUnit(result.Payload, XMLNames.Unit_kg)),
-					new XElement(tns + XMLNames.Report_ResultEntry_FuelType, XMLHelper.ToXmlStr(result.FuelData))
+					new XElement(tns + XMLNames.Report_ResultEntry_FuelType, XMLHelper.ToXmlStr(DeclarationData.FuelData.Lookup(result.FuelData.First().FuelType, result.FuelData.First().TankSystem)))
 					),
 				new XElement(tns + XMLNames.Report_ResultEntry_VehiclePerformance,
 					new XElement(tns + XMLNames.Report_ResultEntry_AverageSpeed, XMLHelper.ValueAsUnit(result.AverageSpeed, XMLNames.Unit_kmph, 1)),

@@ -62,7 +62,9 @@ namespace TUGraz.VectoCore.Tests.FileIO
 			var writer = JSONFileWriter.Instance;
 
 			VECTO_Global.Cfg = new VECTO.Configuration() {DeclMode = true};
-			writer.SaveVehicle(vehicleInput, vehicleInput.Components.AirdragInputData, vehicleInput.Components.RetarderInputData, vehicleInput.Components.PTOTransmissionInputData, vehicleInput.Components.AngledriveInputData, outFile);
+			writer.SaveVehicle(
+				vehicleInput, vehicleInput.Components.AirdragInputData, vehicleInput.Components.RetarderInputData,
+				vehicleInput.Components.PTOTransmissionInputData, vehicleInput.Components.AngledriveInputData, outFile, true);
 
 			var savedData = JSONInputDataFactory.ReadComponentData(outFile);
 			var savedInprovider = savedData as IEngineeringInputDataProvider;
@@ -88,14 +90,14 @@ namespace TUGraz.VectoCore.Tests.FileIO
 			var writer = JSONFileWriter.Instance;
 
 			VECTO_Global.Cfg = new VECTO.Configuration() { DeclMode = true };
-			writer.SaveEngine(engineInputData,outFile);
+			writer.SaveEngine(engineInputData, outFile, true);
 
 			var savedData = JSONInputDataFactory.ReadComponentData(outFile);
 			var savedInprovider = savedData as IEngineeringInputDataProvider;
 			Assert.NotNull(savedInprovider);
 
 			AssertHelper.PublicPropertiesEqual(typeof(IEngineDeclarationInputData),engineInputData, savedInprovider.JobInputData.Vehicle.Components.EngineInputData,
-				new[] { "Source" });
+				new[] { "Source", "EngineModes" });
 		}
 
 		[TestCase(@"TestData\Generic Vehicles\Declaration Mode\Class9_RigidTruck_6x2\AMT_12.vgbx")]
@@ -112,7 +114,9 @@ namespace TUGraz.VectoCore.Tests.FileIO
 			var writer = JSONFileWriter.Instance;
 
 			VECTO_Global.Cfg = new VECTO.Configuration() { DeclMode = true };
-			writer.SaveGearbox(components.GearboxInputData, components.AxleGearInputData, components.TorqueConverterInputData, (IGearshiftEngineeringInputData)components.GearboxInputData, outFile);
+			writer.SaveGearbox(
+				components.GearboxInputData, components.AxleGearInputData, components.TorqueConverterInputData,
+				(IGearshiftEngineeringInputData)components.GearboxInputData, outFile, true);
 
 			var savedData = JSONInputDataFactory.ReadComponentData(outFile);
 			var savedInprovider = savedData as IEngineeringInputDataProvider;

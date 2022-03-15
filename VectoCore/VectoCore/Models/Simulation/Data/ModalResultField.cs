@@ -53,6 +53,15 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 		/// </summary>
 		[ModalResultField(typeof(SI), "simulation_interval", "dt [s]")] simulationInterval,
 
+		[ModalResultField(typeof(bool), "ICE On")] ICEOn,
+
+		[ModalResultField(typeof(SI), caption: "P_ice_start [kW]", outputFactor: 1e-3)] P_ice_start,
+
+
+		[ModalResultField(typeof(SI), caption: "P_aux_ESS_mech_ICE_off [kW]", outputFactor: 1e-3)] P_aux_ESS_mech_ice_off,
+
+		[ModalResultField(typeof(SI), caption: "P_aux_ESS_mech_ICE_on [kW]", outputFactor: 1e-3)] P_aux_ESS_mech_ice_on,
+
 		/// <summary>
 		///     Engine speed [1/min].
 		/// </summary>
@@ -106,32 +115,32 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 		/// <summary>
 		/// [g/h] Fuel consumption from FC map..
 		/// </summary>
-		[ModalResultField(typeof(SI), name: "FC-Map", caption: "FC-Map [g/h]", outputFactor: 3600 * 1000)] FCMap,
+		[ModalResultField(typeof(SI), name: "FC-Map", caption: "FC-Map{0} [g/h]", outputFactor: 3600 * 1000)] FCMap,
 
 		/// <summary>
 		/// [g/h] Fuel consumption after correction for different NCV in VECTO Engine and VECTO sim. (Based on FC.)
 		/// </summary>
-		[ModalResultField(typeof(SI), name: "FC-NCVc", caption: "FC-NCVc [g/h]", outputFactor: 3600 * 1000)] FCNCVc,
+		[ModalResultField(typeof(SI), name: "FC-NCVc", caption: "FC-NCVc{0} [g/h]", outputFactor: 3600 * 1000)] FCNCVc,
 
 		/// <summary>
 		/// [g/h] Fuel consumption after WHTC Correction. (Based on FC-AUXc.)
 		/// </summary>
-		[ModalResultField(typeof(SI), name: "FC-WHTCc", caption: "FC-WHTCc [g/h]", outputFactor: 3600 * 1000)] FCWHTCc,
+		[ModalResultField(typeof(SI), name: "FC-WHTCc", caption: "FC-WHTCc{0} [g/h]", outputFactor: 3600 * 1000)] FCWHTCc,
 
 		/// <summary>
 		/// [g/h] Fuel consumption after smart auxiliary correction.
 		/// </summary>
-		[ModalResultField(typeof(SI), name: "FC-AAUX", caption: "FC-AAUX [g/h]", outputFactor: 3600 * 1000)] FCAAUX,
+		[ModalResultField(typeof(SI), name: "FC-AAUX", caption: "FC-AAUX{0} [g/h]", outputFactor: 3600 * 1000)] FCAAUX,
 
-		/// <summary>
-		/// [g/h] Fuel consumption after correction for ADAS technologies. (Based on FC-AAUXc.)
-		/// </summary>
-		[ModalResultField(typeof(SI), name: "FC-ADAS", caption: "FC-ADAS [g/h]", outputFactor: 3600 * 1000)] FCADAS,
+		///// <summary>
+		///// [g/h] Fuel consumption after correction for ADAS technologies. (Based on FC-AAUXc.)
+		///// </summary>
+		//[ModalResultField(typeof(SI), name: "FC-ADAS", caption: "FC-ADAS{0} [g/h]", outputFactor: 3600 * 1000)] FCADAS,
 
 		/// <summary>
 		/// [g/h] Fuel consumption after WHTC Correction. (Based on FC-ADAS.)
 		/// </summary>
-		[ModalResultField(typeof(SI), name: "FC-Final", caption: "FC-Final [g/h]", outputFactor: 3600 * 1000)] FCFinal,
+		[ModalResultField(typeof(SI), name: "FC-Final_mod", caption: "FC-Final_mod{0} [g/h]", outputFactor: 3600 * 1000)] FCFinal,
 
 		/// <summary>
 		///     [km]	Travelled distance.
@@ -249,7 +258,40 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 		/// <summary>
 		///     [kW]	Power demand of Auxiliary with ID xxx. See also Aux Dialog and Driving Cycle.
 		/// </summary>
-		[ModalResultField(typeof(SI), outputFactor: 1e-3)] P_aux_,
+		[ModalResultField(typeof(SI), caption: "P_aux_{0} [kW]", outputFactor: 1e-3)] P_aux_,
+
+		/// Bus Aux Data
+		[ModalResultField(typeof(SI), caption: "P_busAux_ES_HVAC [kW]", outputFactor: 1e-3)] P_busAux_ES_HVAC,
+
+		[ModalResultField(typeof(SI), caption: "P_busAux_ES_other [kW]", outputFactor: 1e-3)] P_busAux_ES_other,
+
+		[ModalResultField(typeof(SI), caption: "P_busAux_ES_consumer_sum [kW]", outputFactor: 1e-3)] P_busAux_ES_consumer_sum,
+
+		[ModalResultField(typeof(SI), caption: "P_busAux_ES_gen [kW]", outputFactor: 1e-3)] P_busAux_ES_generated,
+
+		[ModalResultField(typeof(SI), caption: "P_busAux_ES_mech [kW]", outputFactor: 1e-3)] P_busAux_ES_sum_mech,
+
+		[ModalResultField(typeof(SI), caption: "Nl_busAux_consumer [Nl]")] Nl_busAux_PS_consumer,
+
+		[ModalResultField(typeof(SI), caption: "Nl_busAux_gen [Nl]")] Nl_busAux_PS_generated,
+
+		[ModalResultField(typeof(SI), caption: "Nl_busAux_gen_max [Nl]")] Nl_busAux_PS_generated_alwaysOn,
+
+		//[ModalResultField(typeof(SI), caption: "Nl_busAux_gen_drag [Nl]")] Nl_busAux_PS_generated_dragOnly,
+
+		[ModalResultField(typeof(SI), caption: "P_busAux_PS_gen [kW]", outputFactor: 1e-3)] P_busAux_PS_generated,
+
+		[ModalResultField(typeof(SI), caption: "P_busAux_PS_gen_max [kW]", outputFactor: 1e-3)] P_busAux_PS_generated_alwaysOn,
+
+		[ModalResultField(typeof(SI), caption: "P_busAux_PS_gen_drag [kW]", outputFactor: 1e-3)] P_busAux_PS_generated_dragOnly,
+
+		[ModalResultField(typeof(SI), caption: "P_busAux_HVACmech_consumer [kW]", outputFactor: 1e-3)] P_busAux_HVACmech_consumer,
+
+		[ModalResultField(typeof(SI), caption: "P_busAux_HVACmech_gen [kW]", outputFactor: 1e-3)] P_busAux_HVACmech_gen,
+
+		[ModalResultField(typeof(double), caption: "Battery SoC")] BatterySOC,
+
+		[ModalResultField(typeof(SI), caption: "P_busAux_bat [kW]", outputFactor: 1e-3)] P_busAux_bat,
 
 		/// <summary>
 		///		[-]  true/false  indicate whether torque converter is locked or not (only applicable for gears with TC)
@@ -298,32 +340,42 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 		/// <summary>
 		///     [m]	Altitude
 		/// </summary>
-		[ModalResultField(typeof(SI))] altitude,
+		[ModalResultField(typeof(SI), caption: "altitude [m]")] altitude,
 
 		[ModalResultField(typeof(SI), name: "ds [m]")] simulationDistance,
 
 		[ModalResultField(typeof(DrivingBehavior))] drivingBehavior,
 
-		[ModalResultField(typeof(double), caption: "AA_NonSmartAlternatorsEfficiency [%]")] AA_NonSmartAlternatorsEfficiency,
-		[ModalResultField(typeof(SI), caption: "AA_SmartIdleCurrent_Amps [A]")] AA_SmartIdleCurrent_Amps,
-		[ModalResultField(typeof(double), caption: "AA_SmartIdleAlternatorsEfficiency [%]")] AA_SmartIdleAlternatorsEfficiency,
-		[ModalResultField(typeof(SI), caption: "AA_SmartTractionCurrent_Amps [A]")] AA_SmartTractionCurrent_Amps,
-		[ModalResultField(typeof(double), caption: "AA_SmartTractionAlternatorEfficiency [%]")] AA_SmartTractionAlternatorEfficiency,
-		[ModalResultField(typeof(SI), caption: "AA_SmartOverrunCurrent_Amps [A]")] AA_SmartOverrunCurrent_Amps,
-		[ModalResultField(typeof(double), caption: "AA_SmartOverrunAlternatorEfficiency [%]")] AA_SmartOverrunAlternatorEfficiency,
-		[ModalResultField(typeof(SI), caption: "AA_CompressorFlowRate_LitrePerSec [Ni L/s]")] AA_CompressorFlowRate_LitrePerSec,
-		[ModalResultField(typeof(int), caption: "AA_OverrunFlag [bool]")] AA_OverrunFlag,
-		[ModalResultField(typeof(int), caption: "AA_EngineIdleFlag [bool]")] AA_EngineIdleFlag,
-		[ModalResultField(typeof(int), caption: "AA_CompressorFlag [bool]")] AA_CompressorFlag,
-		[ModalResultField(typeof(SI), caption: "AA_TotalCycleFC_Grams [g]", outputFactor: 1000)] AA_TotalCycleFC_Grams,
-		[ModalResultField(typeof(SI), caption: "AA_TotalCycleFC_Litres [l]")] AA_TotalCycleFC_Litres,
-		[ModalResultField(typeof(SI), caption: "AA_AveragePowerDemandCrankHVACMechanicals [W]")] AA_AveragePowerDemandCrankHVACMechanicals,
-		[ModalResultField(typeof(SI), caption: "AA_AveragePowerDemandCrankHVACElectricals [W]")] AA_AveragePowerDemandCrankHVACElectricals,
-		[ModalResultField(typeof(SI), caption: "AA_AveragePowerDemandCrankElectrics [W]")] AA_AveragePowerDemandCrankElectrics,
-		[ModalResultField(typeof(SI), caption: "AA_AveragePowerDemandCrankPneumatics [W]")] AA_AveragePowerDemandCrankPneumatics,
-		[ModalResultField(typeof(SI), caption: "AA_TotalCycleFuelConsumptionCompressorOff [g]", outputFactor: 1000)] AA_TotalCycleFuelConsumptionCompressorOff,
-		[ModalResultField(typeof(SI), caption: "AA_TotalCycleFuelConsumptionCompressorOn [g]", outputFactor: 1000)] AA_TotalCycleFuelConsumptionCompressorOn,
-		
+		[ModalResultField(typeof(SI), "P_WHR_el [kW]", outputFactor: 1e-3)] P_WHR_el_map,
+		[ModalResultField(typeof(SI), "P_WHR_el_corr [kW]", outputFactor: 1e-3)] P_WHR_el_corr,
+		[ModalResultField(typeof(SI), "P_WHR_mech [kW]", outputFactor: 1e-3)] P_WHR_mech_map,
+		[ModalResultField(typeof(SI), "P_WHR_mech_corr [kW]", outputFactor: 1e-3)] P_WHR_mech_corr,
+
+		[ModalResultField(typeof(int), caption: "DriverAction")] DriverAction,
+		[ModalResultField(typeof(int), caption: "EcoRollConditionsMet")] EcoRollConditionsMet,
+		[ModalResultField(typeof(int), caption: "PCCSegment")] PCCSegment,
+		[ModalResultField(typeof(int), caption: "PCCState")] PCCState,
+
+		//[ModalResultField(typeof(double), caption: "AA_NonSmartAlternatorsEfficiency [%]")] AA_NonSmartAlternatorsEfficiency,
+		//[ModalResultField(typeof(SI), caption: "AA_SmartIdleCurrent_Amps [A]")] AA_SmartIdleCurrent_Amps,
+		//[ModalResultField(typeof(double), caption: "AA_SmartIdleAlternatorsEfficiency [%]")] AA_SmartIdleAlternatorsEfficiency,
+		//[ModalResultField(typeof(SI), caption: "AA_SmartTractionCurrent_Amps [A]")] AA_SmartTractionCurrent_Amps,
+		//[ModalResultField(typeof(double), caption: "AA_SmartTractionAlternatorEfficiency [%]")] AA_SmartTractionAlternatorEfficiency,
+		//[ModalResultField(typeof(SI), caption: "AA_SmartOverrunCurrent_Amps [A]")] AA_SmartOverrunCurrent_Amps,
+		//[ModalResultField(typeof(double), caption: "AA_SmartOverrunAlternatorEfficiency [%]")] AA_SmartOverrunAlternatorEfficiency,
+		//[ModalResultField(typeof(SI), caption: "AA_CompressorFlowRate_LitrePerSec [Ni L/s]")] AA_CompressorFlowRate_LitrePerSec,
+		//[ModalResultField(typeof(int), caption: "AA_OverrunFlag [bool]")] AA_OverrunFlag,
+		//[ModalResultField(typeof(int), caption: "AA_EngineIdleFlag [bool]")] AA_EngineIdleFlag,
+		//[ModalResultField(typeof(int), caption: "AA_CompressorFlag [bool]")] AA_CompressorFlag,
+		//[ModalResultField(typeof(SI), caption: "AA_TotalCycleFC_Grams [g]", outputFactor: 1000)] AA_TotalCycleFC_Grams,
+		//[ModalResultField(typeof(SI), caption: "AA_TotalCycleFC_Litres [l]")] AA_TotalCycleFC_Litres,
+		//[ModalResultField(typeof(SI), caption: "AA_AveragePowerDemandCrankHVACMechanicals [W]")] AA_AveragePowerDemandCrankHVACMechanicals,
+		//[ModalResultField(typeof(SI), caption: "AA_AveragePowerDemandCrankHVACElectricals [W]")] AA_AveragePowerDemandCrankHVACElectricals,
+		//[ModalResultField(typeof(SI), caption: "AA_AveragePowerDemandCrankElectrics [W]")] AA_AveragePowerDemandCrankElectrics,
+		//[ModalResultField(typeof(SI), caption: "AA_AveragePowerDemandCrankPneumatics [W]")] AA_AveragePowerDemandCrankPneumatics,
+		//[ModalResultField(typeof(SI), caption: "AA_TotalCycleFuelConsumptionCompressorOff [g]", outputFactor: 1000)] AA_TotalCycleFuelConsumptionCompressorOff,
+		//[ModalResultField(typeof(SI), caption: "AA_TotalCycleFuelConsumptionCompressorOn [g]", outputFactor: 1000)] AA_TotalCycleFuelConsumptionCompressorOn,
+
 	}
 
 	[AttributeUsage(AttributeTargets.Field)]

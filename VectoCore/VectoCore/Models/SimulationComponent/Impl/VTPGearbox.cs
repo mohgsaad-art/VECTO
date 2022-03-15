@@ -31,22 +31,21 @@
 
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Simulation;
-using TUGraz.VectoCore.Models.Simulation.Data;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
 	public class VTPGearbox : CycleGearbox
 	{
-		public VTPGearbox(IVehicleContainer container, VectoRunData runData) : base(container, runData) { }
+		public VTPGearbox(IVehicleContainer container) : base(container) { }
 
 		protected override uint GetGearFromCycle()
 		{
-			return DataBus.CycleData.LeftSample.Gear;
+			return DataBus.DrivingCycleInfo.CycleData.LeftSample.Gear;
 		}
 
-		public override bool ClutchClosed(Second absTime)
+		public override bool GearEngaged(Second absTime)
 		{
-			return DataBus.CycleData.LeftSample.Gear != 0;
+			return DataBus.DrivingCycleInfo.CycleData.LeftSample.Gear != 0;
 		}
 	}
 }

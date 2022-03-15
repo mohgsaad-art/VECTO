@@ -35,6 +35,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
+using Newtonsoft.Json;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 
@@ -51,15 +52,25 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox
 			_upShiftPolygon = upShift;
 			_downShiftPolygon = downshift;
 		}
-
+		
+		[JsonIgnore]
 		public ReadOnlyCollection<ShiftPolygonEntry> Upshift
 		{
 			get { return _upShiftPolygon.AsReadOnly(); }
 		}
 
+		[JsonIgnore]
 		public ReadOnlyCollection<ShiftPolygonEntry> Downshift
 		{
 			get { return _downShiftPolygon.AsReadOnly(); }
+		}
+
+		public string[] DownshiftSerialized {
+			get { return _downShiftPolygon.Select(x => $"{x.AngularSpeed.AsRPM} [rpm], {x.Torque}").ToArray(); }
+		}
+
+		public string[] UpshiftSerialized {
+			get { return _upShiftPolygon.Select(x => $"{x.AngularSpeed.AsRPM} [rpm], {x.Torque}").ToArray(); }
 		}
 
 		public bool IsBelowDownshiftCurve(NewtonMeter inTorque, PerSecond inAngularVelocity)

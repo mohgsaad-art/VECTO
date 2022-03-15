@@ -451,9 +451,12 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 
 			var dao = new DeclarationDataAdapter();
 			var gearboxData = new JSONGearboxDataV5(JSONInputDataFactory.ReadFile(gearboxFile), gearboxFile);
-			var engineData = dao.CreateEngineData(new JSONEngineDataV3(JSONInputDataFactory.ReadFile(engineFile), engineFile),
-				null,
-				gearboxData, new List<ITorqueLimitInputData>());
+			var engineInput = new JSONEngineDataV3(JSONInputDataFactory.ReadFile(engineFile), engineFile);
+			var vehicle = new MockDeclarationVehicleInputData() {
+				EngineInputData = engineInput,
+				GearboxInputData = gearboxData
+			};
+			var engineData = dao.CreateEngineData(vehicle, engineInput.EngineModes.First(), new Mission() { MissionType = MissionType.LongHaul });
 
 			var shiftPolygons = new List<ShiftPolygon>();
 			for (var i = 0; i < gearboxData.Gears.Count; i++) {
@@ -500,9 +503,12 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 
 			var dao = new DeclarationDataAdapter();
 			var gearboxData = new JSONGearboxDataV5(JSONInputDataFactory.ReadFile(gearboxFile), gearboxFile);
-			var engineData = dao.CreateEngineData(new JSONEngineDataV3(JSONInputDataFactory.ReadFile(engineFile), engineFile),
-				null,
-				gearboxData, new List<ITorqueLimitInputData>());
+			var engineInput = new JSONEngineDataV3(JSONInputDataFactory.ReadFile(engineFile), engineFile);
+			var vehicle = new MockDeclarationVehicleInputData() {
+				EngineInputData = engineInput,
+				GearboxInputData = gearboxData
+			};
+			var engineData = dao.CreateEngineData(vehicle, engineInput.EngineModes.First(), new Mission() { MissionType = MissionType.LongHaul });
 
 			var shiftPolygons = new List<ShiftPolygon>();
 			for (var i = 0; i < gearboxData.Gears.Count; i++) {
@@ -612,10 +618,10 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 
 			var gearboxData = job.JobInputData.Vehicle.Components.GearboxInputData;
 			var idlespeed = VectoMath.Max(
-				job.JobInputData.Vehicle.EngineIdleSpeed, job.JobInputData.Vehicle.Components.EngineInputData.IdleSpeed);
+				job.JobInputData.Vehicle.EngineIdleSpeed, job.JobInputData.Vehicle.Components.EngineInputData.EngineModes.First().IdleSpeed);
 			var dao = new DeclarationDataAdapter();
 			var engineData = dao.CreateEngineData(
-				job.JobInputData.Vehicle.Components.EngineInputData, idlespeed, gearboxData, job.JobInputData.Vehicle.TorqueLimits);
+				job.JobInputData.Vehicle, job.JobInputData.Vehicle.Components.EngineInputData.EngineModes.First(), new Mission() { MissionType = MissionType.LongHaul });
 			var axlegearRatio = job.JobInputData.Vehicle.Components.AxleGearInputData.Ratio;
 			var rdyn = job.JobInputData.Vehicle.Components.AxleWheels.AxlesDeclaration.Where(x => x.AxleType == AxleType.VehicleDriven)
 						.Select(x => DeclarationData.Wheels.Lookup(x.Tyre.Dimension)).Average(x => x.DynamicTyreRadius.Value())
@@ -871,7 +877,7 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 			var dao = new DeclarationDataAdapter();
 
 			var gearboxData = inputData.JobInputData.Vehicle.Components.GearboxInputData;
-			var engineData = dao.CreateEngineData(inputData.JobInputData.Vehicle.Components.EngineInputData,0.RPMtoRad(), gearboxData, new List<ITorqueLimitInputData>());
+			var engineData = dao.CreateEngineData(inputData.JobInputData.Vehicle, inputData.JobInputData.Vehicle.Components.EngineInputData.EngineModes.First(), new Mission() { MissionType = MissionType.LongHaul});
 
 			var fullLoadCurves = engineData.FullLoadCurves;
 

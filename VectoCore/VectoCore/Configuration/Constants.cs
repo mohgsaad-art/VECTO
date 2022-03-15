@@ -60,6 +60,10 @@ namespace TUGraz.VectoCore.Configuration
 				public const string HeatingVentilationAirCondition = "AC";
 				public const string PneumaticSystem = "PS";
 				public const string PTOConsumer = "PTO_CONSUM";
+
+				public const string ENG_AUX_MECH_BASE = "ENG_AUX_BASE";
+				public const string ENG_AUX_MECH_FAN = "ENG_AUX_FAN";
+				public const string ENG_AUX_MECH_STP = "ENG_AUX_STP";
 			}
 
 			public static class Names
@@ -71,6 +75,157 @@ namespace TUGraz.VectoCore.Configuration
 				public const string PneumaticSystem = "Pneumatic System";
 			}
 		}
+
+		public static class BusAuxiliaries
+		{
+			public static class SteadyStateModel
+			{
+				public static readonly Kelvin PassengerBoundaryTemperature = 17.0.DegCelsiusToKelvin();
+				public const double SolarCloudingLow = 0.65;
+				public const double SolarCloudingHigh = 0.8;
+				public static readonly Watt HeatPerPassengerIntoCabinLow = 50.SI<Watt>();
+				public static readonly Watt HeatPerPassengerIntoCabinHigh = 80.SI<Watt>();
+
+				public static readonly Kelvin MaxTemperatureDeltaForLowFloorBusses = 3.SI<Kelvin>();
+				public const double MaxPossibleBenefitFromTechnologyList = 0.5;
+
+				public static readonly Kelvin HeatingBoundaryTemperature = 18.0.DegCelsiusToKelvin();
+				public static readonly Kelvin CoolingBoundaryTemperature = 23.0.DegCelsiusToKelvin();
+
+				public static readonly PerSecond HighVentilation = 20.SI(Unit.SI.Per.Hour).Cast<PerSecond>();
+				public static readonly PerSecond HighVentilationHeating = 10.SI(Unit.SI.Per.Hour).Cast<PerSecond>();
+				public static readonly PerSecond LowVentilation = 7.SI(Unit.SI.Per.Hour).Cast<PerSecond>();
+
+				public const double AuxHeaterEfficiency = 0.84;
+
+				public static readonly JoulePerCubicMeter SpecificVentilationPower =
+					0.56.SI(Unit.SI.Watt.Hour.Per.Cubic.Meter).Cast<JoulePerCubicMeter>();
+
+				public const double GFactor = 0.95;
+
+				public static readonly Kelvin DefaultTemperature = 25.0.DegCelsiusToKelvin();
+				public static readonly WattPerSquareMeter DefaultSolar = 400.SI<WattPerSquareMeter>();
+			}
+
+			public static class ElectricSystem
+			{
+				public static readonly Volt PowernetVoltage = 28.3.SI<Volt>();
+
+				public const double AlternatorGearEfficiency = 1;
+
+				public const double StoredEnergyEfficiency = 0.935;
+			}
+
+			public static class ElectricConstants
+			{
+				// Anticipated Min and Max Allowable values for Powernet, normally 26.3 volts but could be 48 in the future.
+				public const double PowenetVoltageMin = 6;
+				public const double PowenetVoltageMax = 50;
+
+				// Duty Cycle IE Percentage of use
+				public const double PhaseIdleTractionOnMin = 0;
+				public const double PhaseIdleTractionMax = 1;
+
+				// Max Min Expected Consumption for a Single Consumer, negative values allowed as bonuses.
+				public const int NonminalConsumerConsumptionAmpsMin = -10;
+				public const int NominalConsumptionAmpsMax = 100;
+
+
+				// Alternator
+				public const double AlternatorPulleyEfficiencyMin = 0.1;
+				public const double AlternatorPulleyEfficiencyMax = 1;
+			}
+
+			public static class ElectricalConsumers
+			{
+				public const string DoorsPerVehicleConsumer = "Doors per vehicle";
+				public static readonly Second DoorActuationTimeSecond = 4.SI<Second>();
+			}
+
+			public static class PneumaticConsumersDemands
+			{
+				public static readonly NormLiterPerSecond AdBlueInjection =
+					21.25.SI(Unit.SI.Liter.Per.Minute).Cast<NormLiterPerSecond>();
+
+				public static readonly NormLiterPerSecond AirControlledSuspension =
+					15.SI(Unit.SI.Liter.Per.Minute).Cast<NormLiterPerSecond>();
+
+				public static readonly NormLiterPerKilogram BrakingNoRetarder =
+					0.00081.SI(Unit.SI.Liter.Per.Kilo.Gramm).Cast<NormLiterPerKilogram>();
+
+				public static readonly NormLiterPerKilogram BrakingWithRetarder =
+					0.0006.SI(Unit.SI.Liter.Per.Kilo.Gramm).Cast<NormLiterPerKilogram>();
+
+				public static readonly NormLiterPerKilogramMeter BreakingAndKneeling =
+					0.000066.SI(Unit.SI.Liter.Per.Kilo.Gramm.Milli.Meter).Cast<NormLiterPerKilogramMeter>();
+
+				// Nl (blowout) / Nl (DeadVolume) / h -> 1/s
+				public static readonly PerSecond DeadVolBlowOuts = 24.SI(Unit.SI.Per.Hour).Cast<PerSecond>();
+				public static readonly NormLiter DeadVolume = 30.SI<NormLiter>();
+				public static readonly double NonSmartRegenFractionTotalAirDemand = 0.26;
+				public static readonly double SmartRegenFractionTotalAirDemand = 0.12;
+				public static readonly double OverrunUtilisationForCompressionFraction = 0.97;
+				public static readonly NormLiter DoorOpening = 12.7.SI<NormLiter>();
+
+				public static readonly NormLiterPerKilogram StopBrakeActuation =
+					0.00064.SI(Unit.SI.Liter.Per.Kilo.Gramm).Cast<NormLiterPerKilogram>();
+
+			}
+
+			public static class PneumaticUserConfig
+			{
+				public static readonly Meter DefaultKneelingHeight = 80.SI(Unit.SI.Milli.Meter).Cast<Meter>();
+				public const double CompressorGearRatio = 1.0;
+				public const double CompressorGearEfficiency = 0.97;
+
+				public const double PneumaticOverrunUtilisation = 0.97;
+
+				public const double ViscoClutchDragCurveFactor = 1 - 0.35;
+				public const double MechanicClutchDragCurveFactor = 1 - 0.75;
+			}
+
+			public static class Heater
+			{
+				public const double CoolantHeatTransferredToAirCabinHeater = 0.75;
+				public const double FuelEnergyToHeatToCoolant = 0.2;
+			}
+		}
+
+
+		public static class BusParameters
+		{
+			public static readonly Meter DriverCompartmentLength = 1.2.SI<Meter>();
+
+			public static readonly Kilogram PassengerWeightLow = 68.SI<Kilogram>();
+			public static readonly Kilogram PassengerWeightHigh = 71.SI<Kilogram>();
+
+			public static readonly Meter WindowHeightSingleDecker = 1.5.SI<Meter>();
+			public static readonly Meter WindowHeightDoubleDecker = 2.5.SI<Meter>();
+
+			public static readonly SquareMeter FrontAndRearWindowAreaSingleDecker = 5.SI<SquareMeter>();
+			public static readonly SquareMeter FrontAndRearWindowAreaDoubleDecker = 8.SI<SquareMeter>();
+
+			public static readonly Meter InternalHeightDoubleDecker = 1.8.SI<Meter>();
+			public static readonly Meter HeightLuggageCompartment = 0.5.SI<Meter>();
+			public static readonly SIBase<Meter> EntranceHeight = 0.27.SI<Meter>();
+
+			public static readonly MeterPerSecond MaxBusSpeed = 103.KMPHtoMeterPerSecond();
+
+			public static readonly Meter VehicleWidthLow = 2.5.SI<Meter>();
+			public static readonly Meter VehicleWidthHigh = 2.55.SI<Meter>();
+
+			public static class Auxiliaries
+			{
+				public static class SteeringPump
+				{
+					public static readonly SI TubingLoss = 52000.SI(Unit.SI.Kilo.Gramm.Per.Square.Second.Square.Meter);
+					public static readonly Meter LengthBonus = 1.2.SI<Meter>();
+					public static readonly SI VolumeFlow = 16.SI(Unit.SI.Cubic.Dezi.Meter.Per.Minute);
+
+				}
+			}
+		}
+
 
 		public static class FileExtensions
 		{

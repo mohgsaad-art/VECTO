@@ -76,7 +76,8 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>CERTIFICATION_RELEASE</DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
@@ -131,10 +132,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\Constants.cs" />
-    <Compile Include="InputData\AuxiliaryFileHelper.cs" />
+    <Compile Include="InputData\FileIO\JSON\BusAuxiliaryInputData.cs" />
     <Compile Include="InputData\FileIO\JSON\IJSONVehicleComponents.cs" />
+    <Compile Include="InputData\FileIO\JSON\JSONBusAuxiliariesEngineeringData.cs" />
     <Compile Include="InputData\FileIO\JSON\JSONComponentInputData.cs" />
     <Compile Include="InputData\FileIO\JSON\JsonExtensionMethods.cs" />
+    <Compile Include="InputData\FileIO\JSON\JSONSubComponent.cs" />
+    <Compile Include="InputData\FileIO\JSON\JSONTCUData.cs" />
+    <Compile Include="InputData\FileIO\JSON\SSMInputData.cs" />
     <Compile Include="InputData\FileIO\XML\Declaration\DataProvider\AbstractCommonComponentType.cs" />
     <Compile Include="InputData\FileIO\XML\Declaration\DataProvider\AbstractXMLResource.cs" />
     <Compile Include="InputData\FileIO\XML\Declaration\DataProvider\AbstractXMLType.cs" />
@@ -224,9 +229,12 @@
     <Compile Include="InputData\FileIO\XML\Engineering\Interfaces\IXMLDriverAcceleration.cs" />
     <Compile Include="InputData\FileIO\XML\Engineering\Interfaces\IXMLEngineData.cs" />
     <Compile Include="InputData\FileIO\XML\Engineering\Interfaces\IXMLEngineeringDriverData.cs" />
+    <Compile Include="InputData\FileIO\XML\Engineering\Interfaces\IXMLEngineeringEcoRollData.cs" />
+    <Compile Include="InputData\FileIO\XML\Engineering\Interfaces\IXMLEngineeringEngineStopStartData.cs" />
     <Compile Include="InputData\FileIO\XML\Engineering\Interfaces\IXMLEngineeringGearshiftData.cs" />
     <Compile Include="InputData\FileIO\XML\Engineering\Interfaces\IXMLEngineeringInputData.cs" />
     <Compile Include="InputData\FileIO\XML\Engineering\Interfaces\IXMLEngineeringJobInputData.cs" />
+    <Compile Include="InputData\FileIO\XML\Engineering\Interfaces\IXMLEngineeringPCCInputData.cs" />
     <Compile Include="InputData\FileIO\XML\Engineering\Interfaces\IXMLEngineeringVehicleComponentsData.cs" />
     <Compile Include="InputData\FileIO\XML\Engineering\Interfaces\IXMLEngineeringVehicleData.cs" />
     <Compile Include="InputData\FileIO\XML\Engineering\Interfaces\IXMLGearboxData.cs" />
@@ -254,11 +262,112 @@
     <Compile Include="InputData\FileIO\XML\Declaration\IXMLDeclarationInputDataReader.cs" />
     <Compile Include="InputData\FileIO\XML\IXMLInputDataReader.cs" />
     <Compile Include="InputData\FileIO\XML\XMLInputDataNinjectModule.cs" />
+    <Compile Include="InputData\Reader\ComponentData\ActuationsMapReader.cs" />
+    <Compile Include="InputData\Reader\ComponentData\AlternatorReader.cs" />
+    <Compile Include="InputData\Reader\ComponentData\CompressorMapReader.cs" />
+    <Compile Include="InputData\Reader\ComponentData\ElectricConsumerReader.cs" />
+    <Compile Include="InputData\Reader\ComponentData\EnvironmentalContidionsMapReader.cs" />
+    <Compile Include="InputData\Reader\ComponentData\SSMTechnologiesReader.cs" />
+    <Compile Include="InputData\Reader\ComponentData\WHRPowerReader.cs" />
+    <Compile Include="Models\BusAuxiliaries\Actuations.cs" />
+    <Compile Include="Models\BusAuxiliaries\AuxiliaryConfig.cs" />
+    <Compile Include="Models\BusAuxiliaries\BusAuxiliaries.cs" />
+    <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\AbstractModule.cs" />
+    <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\Electrics\Alternator.cs" />
+    <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\Electrics\AlternatorMap.cs" />
+    <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\Electrics\CombinedAlternator.cs" />
+    <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\Electrics\CombinedAlternatorMapRow.cs" />
+    <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\Electrics\ElectricalConsumer.cs" />
+    <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\Electrics\ElectricalConsumerList.cs" />
+    <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\Electrics\ElectricsUserInputsConfig.cs" />
+    <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\Electrics\M00Impl.cs" />
+    <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\Electrics\M02Impl.cs" />
+    <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\Electrics\M05Impl.cs" />
+    <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\Electrics\M05Impl_P0.cs" />
+    <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\Electrics\M0_5Impl.cs" />
+    <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\Electrics\ResultCard.cs" />
+    <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\Electrics\SimpleAlternator.cs" />
+    <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\Electrics\SimpleBattery.cs" />
+    <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\HVAC\EnvironmentalConditionMapEntry.cs" />
+    <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\HVAC\EnvironmentalConditionsMap.cs" />
+    <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\HVAC\M01Impl.cs" />
+    <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\HVAC\SSMCalculate.cs" />
+    <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\HVAC\SSMInputs.cs" />
+    <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\HVAC\SSMRun.cs" />
+    <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\HVAC\SSMTOOL.cs" />
+    <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\HVAC\TechnologyBenefits.cs" />
+    <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\M06Impl.cs" />
+    <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\M07Impl.cs" />
+    <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\M08Impl.cs" />
+    <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\M09Impl.cs" />
+    <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\M10Impl.cs" />
+    <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\M11Impl.cs" />
+    <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\M12Impl.cs" />
+    <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\M13Impl.cs" />
+    <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\M14Impl.cs" />
+    <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\Pneumatics\ActuationsMap.cs" />
+    <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\Pneumatics\CompressorMap.cs" />
+    <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\Pneumatics\M03Impl.cs" />
+    <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\Pneumatics\M04Impl.cs" />
+    <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\Pneumatics\PneumaticsConsumersDemand.cs" />
+    <Compile Include="Models\BusAuxiliaries\DownstreamModules\Impl\Pneumatics\PneumaticUserInputsConfig.cs" />
+    <Compile Include="Models\BusAuxiliaries\Interfaces\DownstreamModules\Electrics\AltUserInput.cs" />
+    <Compile Include="Models\BusAuxiliaries\Interfaces\DownstreamModules\Electrics\IAlternator.cs" />
+    <Compile Include="Models\BusAuxiliaries\Interfaces\DownstreamModules\Electrics\ICombinedAlternator.cs" />
+    <Compile Include="Models\BusAuxiliaries\Interfaces\DownstreamModules\Electrics\ISimpleBattery.cs" />
+    <Compile Include="Models\BusAuxiliaries\Interfaces\DownstreamModules\HVAC\ISSMCalculate.cs" />
+    <Compile Include="Models\BusAuxiliaries\Interfaces\DownstreamModules\HVAC\ISSMRun.cs" />
+    <Compile Include="Models\BusAuxiliaries\Interfaces\DownstreamModules\HVAC\ISSMTOOL.cs" />
+    <Compile Include="Models\BusAuxiliaries\Interfaces\DownstreamModules\IAbstractModule.cs" />
+    <Compile Include="Models\BusAuxiliaries\Interfaces\DownstreamModules\IM0_5_SmartAlternatorSetEfficiency.cs" />
+    <Compile Include="Models\BusAuxiliaries\Interfaces\DownstreamModules\IM0_NonSmart_AlternatorsSetEfficiency.cs" />
+    <Compile Include="Models\BusAuxiliaries\Interfaces\DownstreamModules\IM10.cs" />
+    <Compile Include="Models\BusAuxiliaries\Interfaces\DownstreamModules\IM11.cs" />
+    <Compile Include="Models\BusAuxiliaries\Interfaces\DownstreamModules\IM13.cs" />
+    <Compile Include="Models\BusAuxiliaries\Interfaces\DownstreamModules\IM14.cs" />
+    <Compile Include="Models\BusAuxiliaries\Interfaces\DownstreamModules\IM1_AverageHVACLoadDemand.cs" />
+    <Compile Include="Models\BusAuxiliaries\Interfaces\DownstreamModules\IM2_AverageElectrialLoadDemand.cs" />
+    <Compile Include="Models\BusAuxiliaries\Interfaces\DownstreamModules\IM3_AveragePneumaticLoadDemand.cs" />
+    <Compile Include="Models\BusAuxiliaries\Interfaces\DownstreamModules\IM4_AirCompressor.cs" />
+    <Compile Include="Models\BusAuxiliaries\Interfaces\DownstreamModules\IM5_SmartAlternatorSetGeneration.cs" />
+    <Compile Include="Models\BusAuxiliaries\Interfaces\DownstreamModules\IM6.cs" />
+    <Compile Include="Models\BusAuxiliaries\Interfaces\DownstreamModules\IM7.cs" />
+    <Compile Include="Models\BusAuxiliaries\Interfaces\DownstreamModules\IM8.cs" />
+    <Compile Include="Models\BusAuxiliaries\Interfaces\DownstreamModules\IM9.cs" />
+    <Compile Include="Models\BusAuxiliaries\Interfaces\Enumerations.cs" />
+    <Compile Include="Models\BusAuxiliaries\Interfaces\IAuxiliaryEvent.cs" />
+    <Compile Include="Models\BusAuxiliaries\Interfaces\IBusAuxiliaries.cs" />
+    <Compile Include="Models\BusAuxiliaries\Interfaces\IM12.cs" />
+    <Compile Include="Models\BusAuxiliaries\Interfaces\Signals.cs" />
+    <Compile Include="Models\BusAuxiliaries\Util\FilePathUtils.cs" />
+    <Compile Include="Models\Declaration\BusAlternatorTechnologies.cs" />
+    <Compile Include="Models\Declaration\HVACCoolingPower.cs" />
+    <Compile Include="Models\Declaration\RegistrationClass.cs" />
+    <Compile Include="Models\Declaration\SSMTechnology.cs" />
+    <Compile Include="Models\Declaration\VehicleCode.cs" />
+    <Compile Include="Models\SimulationComponent\Data\Engine\WHRPowerMap.cs" />
+    <Compile Include="Models\SimulationComponent\Impl\AMTShiftStrategyOptimized.cs" />
+    <Compile Include="Models\SimulationComponent\Impl\ATClutchInfo.cs" />
+    <Compile Include="Models\SimulationComponent\Impl\ATShiftStrategyOptimized.cs" />
     <Compile Include="Models\SimulationComponent\Impl\PTODriveAuxiliary.cs" />
     <Compile Include="Models\SimulationComponent\Impl\RoadSweeperAuxiliary.cs" />
+    <Compile Include="Models\SimulationComponent\Impl\ShiftLineSet.cs" />
+    <Compile Include="Models\SimulationComponent\Impl\SimplePowertrainContainer.cs" />
+    <Compile Include="Models\SimulationComponent\Impl\StopStartCombustionEngine.cs" />
+    <Compile Include="Models\SimulationComponent\Impl\VelocityRollingLookup.cs" />
+    <Compile Include="Models\SimulationComponent\Impl\VelocitySpeedGearshiftPreprocessor.cs" />
+    <Compile Include="Models\Simulation\DataBus\IEngineControl.cs" />
+    <Compile Include="Models\Simulation\DataBus\IGearboxControl.cs" />
+    <Compile Include="Models\Simulation\Data\ShiftStrategyParameters.cs" />
+    <Compile Include="Models\Simulation\Impl\PCCEcoRollEngineStopPreprocessor.cs" />
+    <Compile Include="Models\Simulation\Impl\PCCSegmentPreprocessor.cs" />
+    <Compile Include="Models\Simulation\ISimulationPreprocessor.cs" />
     <Compile Include="Models\Simulation\ISimulatorFactory.cs" />
     <Compile Include="Models\Simulation\ISimulatorFactoryFactory.cs" />
     <Compile Include="Models\Simulation\SimulationFactoryNinjectModule.cs" />
+    <Compile Include="OutputData\FileIO\BusAuxWriter.cs" />
+    <Compile Include="OutputData\FileIO\JSONFileWriter.cs" />
+    <Compile Include="OutputData\ModalDataPostprocessingCorrection.cs" />
     <Compile Include="OutputData\XML\Engineering\Factory\EngineeringWriterFactory.cs" />
     <Compile Include="OutputData\XML\Engineering\Factory\IEngineeringWriterInjectFactory.cs" />
     <Compile Include="OutputData\XML\Engineering\Interfaces\IXMLEngineeringComponentWriter.cs" />
@@ -293,6 +402,7 @@
     <Compile Include="OutputData\XML\Engineering\XMLEngineeringWriter.cs" />
     <Compile Include="OutputData\XML\Engineering\XMLEngineeringWriterInjectModule.cs" />
     <Compile Include="OutputData\XML\Engineering\XMLWriterMapping.cs" />
+    <Compile Include="Utils\Interpolate2D.cs" />
     <Compile Include="Utils\Ninject\UseFirstArgumentAsInstanceProvider.cs" />
     <Compile Include="InputData\FileIO\XML\Declaration\NinjectModules\XMLDeclarationReaderInjectModule.cs" />
     <Compile Include="InputData\FileIO\XML\Declaration\DataProvider\XMLDeclarationVehicleDataProvider.cs" />
@@ -306,7 +416,6 @@
     <Compile Include="InputData\Impl\InputData.cs" />
     <Compile Include="InputData\IVectoRunDataFactory.cs" />
     <Compile Include="InputData\Reader\ComponentData\AccelerationCurveReader.cs" />
-    <Compile Include="InputData\Reader\ComponentData\AuxiliaryDataReader.cs" />
     <Compile Include="InputData\Reader\ComponentData\CrossWindCorrectionCurveReader.cs" />
     <Compile Include="InputData\Reader\ComponentData\PTOIdleLossMapReader.cs" />
     <Compile Include="InputData\Reader\ComponentData\RetarderLossMapReader.cs" />
@@ -339,7 +448,7 @@
     <Compile Include="Models\Declaration\WeightingFactors.cs" />
     <Compile Include="Models\Declaration\WeightingGroups.cs" />
     <Compile Include="Models\SimulationComponent\Data\AngledriveData.cs" />
-    <Compile Include="Models\SimulationComponent\Data\Engine\FuelConsumptionMapReader.cs" />
+    <Compile Include="InputData\Reader\ComponentData\FuelConsumptionMapReader.cs" />
     <Compile Include="Models\SimulationComponent\Data\PTOData.cs" />
     <Compile Include="Models\SimulationComponent\ILossMap.cs" />
     <Compile Include="Models\SimulationComponent\Data\PTOLossMap.cs" />
@@ -390,7 +499,6 @@
     <Compile Include="Models\Declaration\Wheels.cs" />
     <Compile Include="Models\Declaration\WHTCCorrection.cs" />
     <Compile Include="Models\SimulationComponent\Data\CrosswindCorrectionCdxALookup.cs" />
-    <Compile Include="Models\SimulationComponent\Data\AuxiliaryData.cs" />
     <Compile Include="Models\SimulationComponent\Data\AuxSupplyPowerReader.cs" />
     <Compile Include="Models\SimulationComponent\Data\AxleGearData.cs" />
     <Compile Include="Models\SimulationComponent\Data\CycleData.cs" />
@@ -480,6 +588,7 @@
     <Compile Include="Models\SimulationComponent\Impl\Driver.cs" />
     <Compile Include="Utils\Formulas.cs" />
     <Compile Include="Utils\Physics.cs" />
+    <Compile Include="Utils\SchmittTrigger.cs" />
     <Compile Include="Utils\SearchAlgorithm.cs" />
     <Compile Include="Models\SimulationComponent\Data\SimulationComponentData.cs" />
     <Compile Include="Models\SimulationComponent\ICombustionEngine.cs" />
@@ -698,6 +807,30 @@
     <EmbeddedResource Include="Resources\XSD\VectoDeclarationDefinitions.2.2.1.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Declaration\Buses\AlternatorTechnologies.csv" />
+    <EmbeddedResource Include="Resources\Declaration\Buses\DefaultActuationsMap.APAC" />
+    <EmbeddedResource Include="Resources\Declaration\Buses\DefaultBusAuxCfg.aaux" />
+    <EmbeddedResource Include="Resources\Declaration\Buses\DefaultClimatic.aenv" />
+    <EmbeddedResource Include="Resources\Declaration\Buses\ElectricConsumers.csv" />
+    <EmbeddedResource Include="Resources\Declaration\Buses\HVACCoolingPowerDriver.csv" />
+    <EmbeddedResource Include="Resources\Declaration\Buses\HVACCoolingPowerPassenger.csv" />
+    <EmbeddedResource Include="Resources\Declaration\Buses\SSMDefaults.AHSM" />
+    <EmbeddedResource Include="Resources\Declaration\Buses\SSMTechList.csv" />
+    <EmbeddedResource Include="Resources\Declaration\VAUXBus\DEFAULT_1-Cylinder_1-Stage_393ccm.acmp" />
+    <EmbeddedResource Include="Resources\Declaration\VAUXBus\DEFAULT_2-Cylinder_1-Stage_650ccm.acmp" />
+    <EmbeddedResource Include="Resources\Declaration\VAUXBus\DEFAULT_2-Cylinder_2-Stage_398ccm.acmp" />
+    <EmbeddedResource Include="Resources\Declaration\VAUXBus\DEFAULT_3-Cylinder_2-Stage_598ccm.acmp" />
+    <EmbeddedResource Include="Resources\Declaration\VAUXBus\SP-AxleFactor.csv" />
+    <EmbeddedResource Include="Resources\Declaration\VAUXBus\SP-Axles_Bus.csv" />
+    <EmbeddedResource Include="Resources\Declaration\VAUXBus\SP-Factors_Bus.csv" />
+    <None Include="Resources\Declaration\ADASParameters.json" />
+    <None Include="Resources\Declaration\EffShiftParameters.vtcu" />
+    <EmbeddedResource Include="Resources\XSD\VectoDeclarationDefinitions.2.3.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\XSD\VectoComponent.2.1.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <None Include="Utils\VectoVersionCore.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>VectoVersionCore.cs</LastGenOutput>
@@ -720,14 +853,6 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\VectoCommon\AdvancedAuxiliaryInterfaces\AdvancedAuxiliaryInterfaces.vbproj">
-      <Project>{b4b9bd2f-fd8f-4bb8-82fa-e2154d2c7fbd}</Project>
-      <Name>AdvancedAuxiliaryInterfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\VECTOAux\VectoAuxiliaries\VectoAuxiliaries.vbproj">
-      <Project>{fdeee460-0b8a-4ef6-8d9e-72f203a50f65}</Project>
-      <Name>VectoAuxiliaries</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\VectoCommon\VectoCommon\VectoCommon.csproj">
       <Project>{79a066ad-69a9-4223-90f6-6ed5d2d084f4}</Project>
       <Name>VectoCommon</Name>

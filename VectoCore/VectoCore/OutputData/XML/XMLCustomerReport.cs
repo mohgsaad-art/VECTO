@@ -91,8 +91,8 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(tns + XMLNames.Component_ManufacturerAddress, modelData.VehicleData.ManufacturerAddress),
 				new XElement(tns + XMLNames.Vehicle_VIN, modelData.VehicleData.VIN),
 				new XElement(tns + XMLNames.Vehicle_LegislativeClass, modelData.VehicleData.LegislativeClass.ToXMLFormat()),
-				new XElement(tns + XMLNames.Vehicle_GrossVehicleMass, XMLHelper.ValueAsUnit(modelData.VehicleData.GrossVehicleWeight, XMLNames.Unit_t, 1)),
-				new XElement(tns + XMLNames.Vehicle_CurbMassChassis, XMLHelper.ValueAsUnit(modelData.VehicleData.CurbWeight, XMLNames.Unit_kg)),
+				new XElement(tns + XMLNames.Vehicle_GrossVehicleMass, XMLHelper.ValueAsUnit(modelData.VehicleData.GrossVehicleMass, XMLNames.Unit_t, 1)),
+				new XElement(tns + XMLNames.Vehicle_CurbMassChassis, XMLHelper.ValueAsUnit(modelData.VehicleData.CurbMass, XMLNames.Unit_kg)),
 				new XElement(tns + XMLNames.Vehicle_ZeroEmissionVehicle, modelData.VehicleData.ZeroEmissionVehicle),
 				new XElement(tns + XMLNames.Vehicle_HybridElectricHDV, modelData.VehicleData.HybridElectricHDV),
 				new XElement(tns + XMLNames.Vehicle_DualFuelVehicle, modelData.VehicleData.DualFuelVehicle),
@@ -103,7 +103,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 					new XElement(tns + XMLNames.Report_CO2StandardsGroup, DeclarationReport.WeightingGroup.ToXMLFormat()),
 					new XElement(tns + XMLNames.Vehicle_VocationalVehicle, modelData.VehicleData.VocationalVehicle),
 					new XElement(tns + XMLNames.Vehicle_SleeperCab, modelData.VehicleData.SleeperCab),
-					GetADAS(modelData.VehicleData.ADAS)
+					GetADAS(modelData.VehicleData.InputData.ADAS)
 				}.Concat(ComponentData(modelData))
 				);
 			if (exempted) {
@@ -121,7 +121,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 			};
 		}
 
-		private XElement GetADAS(VehicleData.ADASData adasData)
+		private XElement GetADAS(IAdvancedDriverAssistantSystemDeclarationInputData adasData)
 		{
 			return new XElement(tns + XMLNames.Vehicle_ADAS,
 								new XElement(tns + XMLNames.Vehicle_ADAS_EngineStopStart, adasData.EngineStopStart),
@@ -140,7 +140,13 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(
 					tns + XMLNames.Report_Vehicle_EngineDisplacement,
 					XMLHelper.ValueAsUnit(modelData.EngineData.Displacement, XMLNames.Unit_ltr, 1)),
-				new XElement(tns + XMLNames.Engine_FuelType, modelData.EngineData.FuelData.FuelType.ToXMLFormat()),
+				// TODO: MQ 20211004 (merging ADAS idl, WHR, DF) - should be the following, but is not supported by XML schema
+				//new XElement(
+				//	tns + XMLNames.Report_Vehicle_FuelTypes,
+				//	fuelModes.SelectMany(x => x.Select(f => f.FuelType.ToXMLFormat())).Distinct()
+				//		.Select(x => new XElement(tns + XMLNames.Engine_FuelType, x))
+				//),
+				new XElement(tns + XMLNames.Engine_FuelType, modelData.EngineData.Fuels.First().FuelData.FuelType.ToXMLFormat()),
 				new XElement(
 					tns + XMLNames.Report_Vehicle_TransmissionCertificationMethod,
 					modelData.GearboxData.CertificationMethod.ToXMLFormat()),
@@ -203,7 +209,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 		{
 			return new object[] {
 				new XElement(tns + XMLNames.Report_Result_Payload, XMLHelper.ValueAsUnit(result.Payload, XMLNames.Unit_kg, 0)),
-				new XElement(tns + XMLNames.Report_Results_FuelType, XMLHelper.ToXmlStr(result.FuelData)),
+				new XElement(tns + XMLNames.Report_Results_FuelType, XMLHelper.ToXmlStr(DeclarationData.FuelData.Lookup(result.FuelData.First().FuelType, result.FuelData.First().TankSystem))),
 				new XElement(tns + XMLNames.Report_Results_AverageSpeed, XMLHelper.ValueAsUnit(result.AverageSpeed, XMLNames.Unit_kmph, 1)),
 				XMLDeclarationReport.GetResults(result, tns, false).Cast<object>().ToArray()
 			};

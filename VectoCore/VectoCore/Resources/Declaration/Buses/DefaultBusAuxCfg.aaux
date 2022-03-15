@@ -1,0 +1,48 @@
+{
+  "Header": "AAUX",
+  "Body": {
+    "ElectricalUserInputsConfig": {
+      "$type":
+        "TUGraz.VectoCore.BusAuxiliaries.DownstreamModules.Impl.Electrics.ElectricsUserInputsConfig, BusAuxiliaries",
+      "PowerNetVoltage": 28.3,
+      "AlternatorMap": "testCombAlternatorMap_1Alt.AALT",
+      "AlternatorGearEfficiency": 0.92,
+      "DoorActuationTimeSecond": 4,
+      "ResultCardIdle": [],
+      "ResultCardTraction": [],
+      "ResultCardOverrun": [],
+      "SmartElectrical": false
+    },
+    "PneumaticUserInputsConfig": {
+      "CompressorMap": "DEFAULT_2-Cylinder_1-Stage_650ccm.ACMP",
+      "CompressorGearRatio": 1.0,
+      "CompressorGearEfficiency": 0.8,
+      "AdBlueDosing": "Pneumatic",
+      "AirSuspensionControl": "Electrically",
+      "Doors": "Pneumatic",
+      "KneelingHeightMillimeters": 80.0,
+      "ActuationsMap": "testPneumaticActuationsMap.APAC",
+      "RetarderBrake": true,
+      "SmartAirCompression": true,
+      "SmartRegeneration": true
+    },
+    "PneumaticAuxillariesConfig": {
+      "AdBlueNIperMinute": 21.25,
+      "AirControlledSuspensionNIperMinute": 15.0,
+      "BrakingNoRetarderNIperKG": 0.00081,
+      "BrakingWithRetarderNIperKG": 0.0006,
+      "BreakingPerKneelingNIperKGinMM": 6.6E-05,
+      "DeadVolBlowOutsPerLitresperHour": 24.0,
+      "DeadVolumeLitres": 30.0,
+      "NonSmartRegenFractionTotalAirDemand": 0.26,
+      "OverrunUtilisationForCompressionFraction": 0.97,
+      "PerDoorOpeningNI": 12.7,
+      "PerStopBrakeActuationNIperKG": 0.00064,
+      "SmartRegenFractionTotalAirDemand": 0.12
+    },
+    "HvacUserInputsConfig": {
+      "SSMFilePath": "testHVACssm.AHSM",
+      "SSMDisabled": false
+    }
+  }
+}

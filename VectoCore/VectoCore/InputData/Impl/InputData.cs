@@ -58,15 +58,14 @@ namespace TUGraz.VectoCore.InputData.Impl
 		public TableData CoastingDecisionFactorVelocityDropLookup { get; internal set; }
 	}
 
-	public class OverSpeedEcoRollInputData : IOverSpeedEcoRollEngineeringInputData
+	public class OverSpeedInputData : IOverSpeedEngineeringInputData
 	{
-		public DriverMode Mode { get; internal set; }
+		public bool Enabled { get; internal set; }
 
 		public MeterPerSecond MinSpeed { get; internal set; }
 
 		public MeterPerSecond OverSpeed { get; internal set; }
 
-		public MeterPerSecond UnderSpeed { get; internal set; }
 	}
 
 	public class DriverAccelerationInputData : IDriverAccelerationData
@@ -151,12 +150,11 @@ namespace TUGraz.VectoCore.InputData.Impl
 		public Meter DynamicTyreRadius { get; }
 	}
 
-	public class AuxiliaryDataInputData : IAuxiliaryEngineeringInputData, IAuxiliaryDeclarationInputData
+	public class DeclarationAuxiliaryDataInputData : IAuxiliaryDeclarationInputData
 	{
-		public AuxiliaryDataInputData()
+		public DeclarationAuxiliaryDataInputData()
 		{
-			AuxiliaryType = AuxiliaryDemandType.Mapping;
-			ConstantPowerDemand = 0.SI<Watt>();
+			AuxiliaryType = AuxiliaryDemandType.Constant;
 		}
 
 		public AuxiliaryDemandType AuxiliaryType { get; internal set; }
@@ -167,18 +165,27 @@ namespace TUGraz.VectoCore.InputData.Impl
 
 		public IList<string> Technology { get; set; }
 
-		public double TransmissionRatio { get; internal set; }
 
-		public double EfficiencyToEngine { get; internal set; }
+	}
 
-		public double EfficiencyToSupply { get; internal set; }
+	public class EngineeringAuxiliaryDataInputData : IAuxiliaryEngineeringInputData
+	{
+		public EngineeringAuxiliaryDataInputData()
+		{
+			AuxiliaryType = AuxiliaryDemandType.Constant;
+			ConstantPowerDemand = 0.SI<Watt>();
+		}
 
-		public TableData DemandMap { get; internal set; }
+		public AuxiliaryDemandType AuxiliaryType { get; internal set; }
+
+		public string ID { get; internal set; }
 
 		public Watt ConstantPowerDemand { get; internal set; }
-
-		public DataSource DataSource { get; internal set; }
+		public Watt PowerDemandICEOffDriving { get; internal set; }
+		public Watt PowerDemandICEOffStandstill { get; internal set; }
+		public Watt ElectricPowerDemand { get; internal set; }
 	}
+
 
 	public class TorqueLimitInputData : ITorqueLimitInputData
 	{

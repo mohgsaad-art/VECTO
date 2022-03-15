@@ -29,7 +29,10 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using System.Diagnostics;
+using System.Linq;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 
 namespace TUGraz.VectoCommon.Models
 {
@@ -38,23 +41,141 @@ namespace TUGraz.VectoCommon.Models
 	/// </summary>
 	public interface IResponse
 	{
+		object Source { get; }
+
 		Second AbsTime { get; set; }
 		Meter SimulationDistance { get; set; }
 		Second SimulationInterval { get; set; }
-		MeterPerSquareSecond Acceleration { get; set; }
-		PerSecond EngineSpeed { get; set; }
-		OperatingPoint OperatingPoint { get; set; }
-		object Source { get; set; }
 
-		Watt EnginePowerRequest { get; set; }
-		Watt ClutchPowerRequest { get; set; }
-		Watt GearboxPowerRequest { get; set; }
-		Watt AxlegearPowerRequest { get; set; }
-		Watt WheelsPowerRequest { get; set; }
-		Watt VehiclePowerRequest { get; set; }
-		Watt BrakePower { get; set; }
-		Watt AngledrivePowerRequest { get; set; }
 
-		Watt AuxiliariesPowerDemand { get; set; }
+		DriverResponse Driver { get; }
+
+		EngineResponse Engine { get; }
+
+		ClutchResponse Clutch { get; }
+
+		GearboxResponse Gearbox { get; }
+
+		TorqueConverterResponse TorqueConverter { get; }
+
+		AxlegearResponse Axlegear { get; }
+
+		AngledriveResponse Angledrive { get; }
+
+		WheelsResponse Wheels { get; }
+
+		VehicleResponse Vehicle { get; }
+
+		BrakesResponse Brakes { get; }
+
+	}
+
+	public abstract class AbstractComponentResponse
+	{
+		public Watt PowerRequest { get; set; }
+
+		public override string ToString()
+		{
+			var t = GetType();
+			return $"{t.Name}{{{string.Join(", ", t.GetProperties().Select(p => $"{p.Name}: {p.GetValue(this)}"))}}}";
+		}
+	}
+
+	public abstract class AbstractPowertrainComponentResponse : AbstractComponentResponse
+	{
+
+	}
+
+	[DebuggerDisplay("a: {Acceleration}; {OperatingPoint.SimulationDistance}; {OperatingPoint.SimulationInterval}")]
+	public class DriverResponse : AbstractComponentResponse
+	{
+		public MeterPerSquareSecond Acceleration { get; set; }
+		public OperatingPoint OperatingPoint { get; set; }
+
+	}
+
+	[DebuggerDisplay("n_ice: {EngineSpeed.AsRPM}; T_out: {TorqueOutDemand}; T_ice: {TotalTorqueDemand}; T_full_dyn: {DynamicFullLoadTorque}; P_full_dyn: {DynamicFullLoadPower}; P_drag: {DragPower}; P_aux: {AuxiliariesPowerDemand}")]
+
+	public class EngineResponse : AbstractPowertrainComponentResponse
+	{
+		public bool EngineOn { get; set; }
+		public PerSecond EngineSpeed { get; set; }
+
+		public NewtonMeter TorqueOutDemand { get; set; }
+		public NewtonMeter TotalTorqueDemand { get; set; }
+		public NewtonMeter DynamicFullLoadTorque { get; set; }
+
+		public NewtonMeter StationaryFullLoadTorque { get; set; }
+
+		public Watt DynamicFullLoadPower { get; set; }
+		public Watt DragPower { get; set; }
+
+		public NewtonMeter DragTorque { get; set; }
+
+		public Watt AuxiliariesPowerDemand { get; set; }
+	}
+
+	[DebuggerDisplay("P_out: {PowerRequest}")]
+	public class ClutchResponse : AbstractPowertrainComponentResponse
+	{
+		public PerSecond OutputSpeed { get; set; }
+	}
+
+	[DebuggerDisplay("P_out: {PowerRequest}")]
+	public class GearboxResponse : AbstractPowertrainComponentResponse
+	{
+		public PerSecond InputSpeed { get; set; }
+
+		public NewtonMeter InputTorque { get; set; }
+
+		public GearshiftPosition Gear { get; set; }
+
+		public PerSecond OutputSpeed { get; set; }
+
+		public NewtonMeter OutputTorque { get; set; }
+	}
+
+	public class TorqueConverterResponse : AbstractPowertrainComponentResponse
+	{
+		public TorqueConverterOperatingPoint TorqueConverterOperatingPoint { get; set; }
+
+		public NewtonMeter TorqueConverterTorqueDemand { get; set; }
+
+	}
+
+	[DebuggerDisplay("P_out: {PowerRequest}; T_card: {CardanTorque}")]
+	public class AxlegearResponse : AbstractPowertrainComponentResponse
+	{
+		public NewtonMeter CardanTorque { get; set; }
+
+		public NewtonMeter OutputTorque { get; set; }
+
+		public PerSecond OutputSpeed { get; set; }
+	}
+
+	[DebuggerDisplay("P_out: {PowerRequest}")]
+	public class AngledriveResponse : AbstractPowertrainComponentResponse
+	{
+		public NewtonMeter OutputTorque { get; set; }
+
+		public PerSecond OutputSpeed { get; set; }
+
+	}
+
+	[DebuggerDisplay("P_out: {PowerRequest}")]
+	public class WheelsResponse : AbstractPowertrainComponentResponse { }
+
+	[DebuggerDisplay("v_veh: {VehicleSpeed}")]
+
+	public class VehicleResponse : AbstractComponentResponse
+	{
+		public MeterPerSecond VehicleSpeed { get; set; }
+	}
+
+	[DebuggerDisplay("P_brake: {BrakePower}")]
+
+	public class BrakesResponse : AbstractComponentResponse
+	{
+		public Watt BrakePower { get; set; }
 	}
 }

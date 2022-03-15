@@ -73,11 +73,11 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 
 			Assert.AreEqual(11, vehicleContainer.SimulationComponents().Count);
 
-			Assert.IsInstanceOf<Gearbox>(vehicleContainer.Gearbox, "gearbox not installed");
-			Assert.IsInstanceOf<CombustionEngine>(vehicleContainer.Engine, "engine not installed");
-			Assert.IsInstanceOf<Vehicle>(vehicleContainer.Vehicle, "vehicle not installed");
+			Assert.IsInstanceOf<Gearbox>(vehicleContainer.GearboxInfo, "gearbox not installed");
+			Assert.IsInstanceOf<CombustionEngine>(vehicleContainer.EngineInfo, "engine not installed");
+			Assert.IsInstanceOf<Vehicle>(vehicleContainer.VehicleInfo, "vehicle not installed");
 
-			var gearbox = vehicleContainer.Gearbox as Gearbox;
+			var gearbox = vehicleContainer.GearboxInfo as Gearbox;
 			Assert.IsNotNull(gearbox);
 
 			// -- shiftpolygon downshift 
@@ -89,28 +89,25 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 
 			Assert.AreEqual(660.RPMtoRad().Value(), gearbox.ModelData.Gears[2].ShiftPolygon.Downshift[1].AngularSpeed.Value(),
 				0.0001);
-			Assert.AreEqual(257.9742, gearbox.ModelData.Gears[2].ShiftPolygon.Downshift[1].Torque.Value(), 0.1);
+			Assert.AreEqual(623.966, gearbox.ModelData.Gears[2].ShiftPolygon.Downshift[1].Torque.Value(), 0.1);
 
-			Assert.AreEqual(1679.9982.RPMtoRad().Value(),
+			Assert.AreEqual(800.RPMtoRad().Value(),
 				gearbox.ModelData.Gears[2].ShiftPolygon.Downshift[2].AngularSpeed.Value(),
 				0.1);
-			Assert.AreEqual(988.9, gearbox.ModelData.Gears[2].ShiftPolygon.Downshift[2].Torque.Value(), 0.0001);
+			Assert.AreEqual(725.102, gearbox.ModelData.Gears[2].ShiftPolygon.Downshift[2].Torque.Value(), 0.0001);
 
 			// -- shiftpolygon upshift
 
-			Assert.AreEqual(1889.66433.RPMtoRad().Value(),
+			Assert.AreEqual(2318.2812.RPMtoRad().Value(),
 				gearbox.ModelData.Gears[1].ShiftPolygon.Upshift[0].AngularSpeed.Value(),
 				0.1);
 			Assert.AreEqual(-163.9, gearbox.ModelData.Gears[1].ShiftPolygon.Upshift[0].Torque.Value(), 0.0001);
 
-			Assert.AreEqual(1889.66433.RPMtoRad().Value(),
+			Assert.AreEqual(2318.2812.RPMtoRad().Value(),
 				gearbox.ModelData.Gears[1].ShiftPolygon.Upshift[1].AngularSpeed.Value(),
 				0.1);
-			Assert.AreEqual(245.3663, gearbox.ModelData.Gears[1].ShiftPolygon.Upshift[1].Torque.Value(), 0.1);
+			Assert.AreEqual(988.9, gearbox.ModelData.Gears[1].ShiftPolygon.Upshift[1].Torque.Value(), 0.1);
 
-			Assert.AreEqual(5793.0409.RPMtoRad().Value(), gearbox.ModelData.Gears[1].ShiftPolygon.Upshift[2].AngularSpeed.Value(),
-				0.1);
-			Assert.AreEqual(988.9, gearbox.ModelData.Gears[1].ShiftPolygon.Upshift[2].Torque.Value(), 0.1);
 		}
 
 		[TestCase]
@@ -126,9 +123,9 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			var vehicleContainer = (VehicleContainer)run.GetContainer();
 			Assert.AreEqual(12, vehicleContainer.SimulationComponents().Count);
 
-			Assert.IsInstanceOf<Gearbox>(vehicleContainer.Gearbox, "gearbox not installed");
-			Assert.IsInstanceOf<CombustionEngine>(vehicleContainer.Engine,  "engine not installed");
-			Assert.IsInstanceOf<Vehicle>(vehicleContainer.Vehicle,  "vehicle not installed");
+			Assert.IsInstanceOf<Gearbox>(vehicleContainer.GearboxInfo, "gearbox not installed");
+			Assert.IsInstanceOf<CombustionEngine>(vehicleContainer.EngineInfo,  "engine not installed");
+			Assert.IsInstanceOf<Vehicle>(vehicleContainer.VehicleInfo,  "vehicle not installed");
 		}
 
 		[Category("LongRunning")]

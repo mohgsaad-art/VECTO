@@ -1,0 +1,75 @@
+﻿{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2017-07-03T14:48:36.5106880Z",
+    "AppVersion": "3",
+    "FileVersion": 9
+  },
+  "Body": {
+    "SavedInDeclMode": true,
+    "VehCat": "RigidTruck",
+    "LegislativeClass": "N3",
+    "CurbWeight": 7750.0,
+    "CurbWeightExtra": 0.0,
+    "Loading": 19300.0,
+    "MassMax": 26.0,
+    "CdA": 5.3,
+    "rdyn": 492.0,
+    "CdCorrMode": "CdofVdecl",
+    "CdCorrFile": "",
+    "EngineStopStart":  false,
+    "EcoRoll": "WithoutEngineStop",
+    "PredictiveCruiseControl":  "none",  
+    "ATEcoRollReleaseLockupClutch": true, 
+    "Retarder": {
+      "Type": "None",
+      "Ratio": 1.0,
+      "File": ""
+    },
+    "Angledrive": {
+      "Type": "None",
+      "Ratio": "NaN",
+      "LossMap": ""
+    },
+    "PTO": {
+      "Type": "None",
+      "LossMap": "",
+      "Cycle": ""
+    },
+    "TorqueLimits": {},
+    "IdlingSpeed": 0.0,
+    "AxleConfig": {
+      "Type": "6x2",
+      "Axles": [
+        {
+          "Inertia": 14.9,
+          "Wheels": "315/70 R22.5",
+          "AxleWeightShare": 0.3,
+          "TwinTyres": false,
+          "RRCISO": 0.0055,
+          "FzISO": 33350.0,
+          "Type": "VehicleNonDriven"
+        },
+        {
+          "Inertia": 14.9,
+          "Wheels": "315/70 R22.5",
+          "AxleWeightShare": 0.35,
+          "TwinTyres": true,
+          "RRCISO": 0.0055,
+          "FzISO": 33350.0,
+          "Type": "VehicleDriven"
+        },
+        {
+          "Inertia": 14.9,
+          "Wheels": "315/70 R22.5",
+          "AxleWeightShare": 0.35,
+          "TwinTyres": false,
+          "RRCISO": 0.0055,
+          "FzISO": 33350.0,
+          "Type": "VehicleNonDriven"
+        }
+      ]
+    },
+    "CdA": 5.8
+  }
+}

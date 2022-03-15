@@ -126,6 +126,9 @@ Imports TUGraz.VectoCore.Utils
         FullLoadCurveFileBrowser = New FileBrowser("vfld")
         EngineFileBrowser = New FileBrowser("veng")
         GearboxFileBrowser = New FileBrowser("vgbx")
+        TCUFileBrowser = New FileBrowser("vtcu")
+        BusAuxFileBrowser = new FileBrowser(".vaux")
+        BusAuxCompressorMapFileBrowser = new FileBrowser(".acmp")
         DriverAccelerationFileBrowser = New FileBrowser("vacc")
         AuxFileBrowser = New FileBrowser("vaux")
         GearboxShiftPolygonFileBrowser = New FileBrowser("vgbs")
@@ -156,6 +159,9 @@ Imports TUGraz.VectoCore.Utils
         FullLoadCurveFileBrowser.Extensions = New String() {"vfld"}
         EngineFileBrowser.Extensions = New String() {"veng"}
         GearboxFileBrowser.Extensions = New String() {"vgbx"}
+        TCUFileBrowser.Extensions = New String() {"vtcu", "vgbx"}
+        BusAuxFileBrowser.Extensions = New String(){"vaux"}
+        BusAuxCompressorMapFileBrowser.Extensions = new String(){"acmp"}
         DriverAccelerationFileBrowser.Extensions = New String() {"vacc"}
         AuxFileBrowser.Extensions = New String() {"vaux"}
         GearboxShiftPolygonFileBrowser.Extensions = New String() {"vgbs"}

@@ -23,12 +23,13 @@ Imports TUGraz.VectoCore.InputData.Impl
 Imports TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 Imports TUGraz.VectoCore.Models.Declaration
 Imports TUGraz.VectoCore.Models.SimulationComponent.Data
+Imports TUGraz.VectoCore.Models.SimulationComponent.Impl
 Imports TUGraz.VectoCore.Utils
 
 <CustomValidation(GetType(Vehicle), "ValidateVehicle")>
 Public Class Vehicle
 	Implements IVehicleEngineeringInputData, IVehicleDeclarationInputData, IRetarderInputData, IPTOTransmissionInputData, 
-				IAngledriveInputData, IAirdragEngineeringInputData, IAdvancedDriverAssistantSystemDeclarationInputData,
+				IAngledriveInputData, IAirdragEngineeringInputData, IAdvancedDriverAssistantSystemDeclarationInputData, IAdvancedDriverAssistantSystemsEngineering,
 				IVehicleComponentsEngineering, IVehicleComponentsDeclaration, IAxlesEngineeringInputData, IAxlesDeclarationInputData
 
 	Private _filePath As String
@@ -230,7 +231,7 @@ Public Class Vehicle
 
 		Try
 			Dim writer As JSONFileWriter = JSONFileWriter.Instance
-			writer.SaveVehicle(Me, Me, Me, Me, Me, _filePath)
+			writer.SaveVehicle(Me, Me, Me, Me, Me, _filePath, cfg.DeclMode)
 		Catch ex As Exception
 			MsgBox("Failed to save Vehicle file: " + ex.Message)
 			Return False
@@ -716,7 +717,7 @@ Public Class Vehicle
 
 	Public ReadOnly Property IVehicleEngineeringInputData_ADAS As IAdvancedDriverAssistantSystemsEngineering Implements IVehicleEngineeringInputData.ADAS
 	get
-			Return Nothing
+			Return me
 	End Get
 	End Property
 
@@ -726,9 +727,9 @@ Public Class Vehicle
 	End Get
 	End Property
 
-    Public ReadOnly Property PTO_DriveGear As UInteger? Implements IVehicleEngineeringInputData.PTO_DriveGear
+    Public ReadOnly Property PTO_DriveGear As GearshiftPosition Implements IVehicleEngineeringInputData.PTO_DriveGear
     get
-            return gearDuringPTODrive
+            return  If(gearDuringPTODrive.HasValue, new GearshiftPosition(GearDuringPTODrive.Value), Nothing)
     End Get
     End Property
 
@@ -793,10 +794,19 @@ Public Class Vehicle
 	End Get
 	End Property
 
+    Public ReadOnly Property ATEcoRollReleaseLockupClutch As Boolean? Implements IAdvancedDriverAssistantSystemDeclarationInputData.ATEcoRollReleaseLockupClutch
+        Get
+            Return EcoRollReleaseLockupClutch
+        End Get
+    End Property
 
-	Public ReadOnly Property IAxlesEngineeringInputData_DataSource As DataSource Implements IAxlesEngineeringInputData.DataSource
+    Public Property EcoRollReleaseLockupClutch As Boolean
+
+    Public ReadOnly Property IAxlesEngineeringInputData_DataSource As DataSource Implements IAxlesEngineeringInputData.DataSource
 	get
 		Return New DataSource() With {.SourceType = DataSourceType.JSONFile}
 	End Get
 	End Property
+
+    Public ReadOnly Property IAdvancedDriverAssistantSystemsEngineering_DataSource As DataSource Implements IAdvancedDriverAssistantSystemsEngineering.DataSource
 End Class

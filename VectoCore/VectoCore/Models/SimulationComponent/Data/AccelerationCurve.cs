@@ -112,7 +112,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 		/// <param name="v1">current speed of the vehicle</param>
 		/// <param name="v2">desired speed of the vehicle at the end of acceleration/deceleration phase</param>
 		/// <returns>distance required to accelerate/decelerate the vehicle from v1 to v2 according to the acceleration curve</returns>
-		public Meter ComputeAccelerationDistance(MeterPerSecond v1, MeterPerSecond v2)
+		public Meter ComputeDecelerationDistance(MeterPerSecond v1, MeterPerSecond v2)
 		{
 			var index1 = FindIndex(v1);
 			var index2 = FindIndex(v2);

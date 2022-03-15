@@ -32,6 +32,9 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
+using System.Linq;
+using Newtonsoft.Json;
+using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
@@ -39,7 +42,7 @@ using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Engine
 {
-	public class FuelConsumptionMap : SimulationComponentData
+	public class FuelConsumptionMap : SimulationComponentData, IFuelConsumptionMap
 	{
 		[Required, ValidateObject] private readonly DelaunayMap _fuelMap;
 
@@ -73,6 +76,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Engine
 				angularVelocity.AsRPM);
 		}
 
+		[JsonIgnore]
 		public IReadOnlyCollection<Entry> Entries
 		{
 			get
@@ -84,6 +88,23 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Engine
 					retVal[i++] = new Entry(entry.Y.SI<PerSecond>(), entry.X.SI<NewtonMeter>(), entry.Z.SI<KilogramPerSecond>());
 				}
 				return retVal;
+			}
+		}
+
+		#region Implementation of IFuelConsumptionMap
+
+		public KilogramPerSecond GetFuelConsumptionValue(NewtonMeter torque, PerSecond angularVelocity)
+		{
+			return GetFuelConsumption(torque, angularVelocity, true).Value;
+		}
+
+		#endregion
+
+		public string[] EntriesSerialized {
+			get {
+				return _fuelMap.Entries.Select(
+						entry => $"{entry.Y.SI<PerSecond>().AsRPM} [rpm], {entry.X.SI<NewtonMeter>()}, {entry.Z.SI<KilogramPerSecond>().ConvertToGrammPerHour()} [g/h]")
+					.ToArray();
 			}
 		}
 
