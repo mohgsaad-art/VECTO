@@ -1358,6 +1358,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			return SquareMeter.Create(correction);
 		}
 
+
 		private static SquareMeter CalcRefLengthCorrection(TrailerSegment trailerSegment, ReferenceTrailerSegment trailer, ITrailerDeclarationInputData specificTrailer, int yaw = 0)
 		{
 			//acr_base * (cdA_base_yawX / acr_base + (Lf-Lbf) * dCdf + (La-Lba) * dCda + (Lr-Lbr) * dCdr)
@@ -1416,41 +1417,25 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			return SquareMeter.Create(correction);
 		}
 
-		private static SquareMeter CalcHeightCorrection(TrailerSegment trailerSegment, ITrailerDeclarationInputData trailer, double previousCorrection)
+
+		private static SquareMeter CalcHeightCorrection(TrailerSegment trailerSegment,
+			Meter trailerTotalTrailerHeight, double previousCorrection)
 		{
 			//CdxA(0)_width_correction*(Total_height_of_the_trailer/Total_trailer_height_generic_cad)
 			var s = trailerSegment.GenericCadVehicle;
 
-
-			var correction = previousCorrection * (trailer.TotalTrailerHeight / s.TotalHeight);
+			var correction = previousCorrection * (trailerTotalTrailerHeight / s.TotalHeight);
 			return SquareMeter.Create(correction);
 		}
 
-		private static SquareMeter CalcRefHeightCorrection(TrailerSegment trailerSegment, ReferenceTrailerSegment trailer, double previousCorrection)
-		{
-			//CdxA(0)_width_correction*(Total_height_of_the_trailer/Total_trailer_height_generic_cad)
-			var s = trailerSegment.GenericCadVehicle;
 
-			var correction = previousCorrection * (trailer.TotalTrailerHeight / s.TotalHeight);
-			return SquareMeter.Create(correction);
-		}
-
-		private static SquareMeter CalcVolumeCorrection(TrailerSegment trailerSegment, ITrailerDeclarationInputData trailer, double previousCorrection)
+		private static SquareMeter CalcVolumeCorrection(TrailerSegment trailerSegment,
+			Meter trailerExternalBodyHeight, double previousCorrection)
 		{
 			//CdxA(3)_height_correction*(External_height_of_the_body/External_body_height_generic_cad)
 			var s = trailerSegment.GenericCadVehicle;
 
-
-			var correction = previousCorrection * (trailer.ExternalBodyHeight / s.ExternalBodyHeight);
-			return SquareMeter.Create(correction);
-		}
-
-		private static SquareMeter CalcRefVolumeCorrection(TrailerSegment trailerSegment, ReferenceTrailerSegment trailer, double previousCorrection)
-		{
-			//CdxA(3)_height_correction*(External_height_of_the_body/External_body_height_generic_cad)
-			var s = trailerSegment.GenericCadVehicle;
-
-			var correction = previousCorrection * (trailer.ExternalBodyHeight / s.ExternalBodyHeight);
+			var correction = previousCorrection * (trailerExternalBodyHeight / s.ExternalBodyHeight);
 			return SquareMeter.Create(correction);
 		}
 
@@ -1511,6 +1496,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			ApplyDeltaCdxA.Add("4-LH", 1.5);
 			ApplyDeltaCdxA.Add("9-LH", 1.5);
 			ApplyDeltaCdxA.Add("2-RD", 1.3);
+
 			var data = new CorrectedTrailerData();
 			data.CdxA0 = SquareMeter.Create(trailerSegment.GenericCadVehicle.CdxA0);
 
@@ -1547,20 +1533,20 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			#region HeightCorrection
 
 			if (trailerSegment.SpecificTrailerSegment.HeightCorrection) {
-				data.CdxA0 = CalcHeightCorrection(trailerSegment, trailer, data.CdxA0.Value());
-				data.CdxA3 = CalcHeightCorrection(trailerSegment, trailer, data.CdxA3.Value());
-				data.CdxA6 = CalcHeightCorrection(trailerSegment, trailer, data.CdxA6.Value());
-				data.CdxA9 = CalcHeightCorrection(trailerSegment, trailer, data.CdxA9.Value());
+				data.CdxA0 = CalcHeightCorrection(trailerSegment, trailer.TotalTrailerHeight, data.CdxA0.Value());
+				data.CdxA3 = CalcHeightCorrection(trailerSegment, trailer.TotalTrailerHeight, data.CdxA3.Value());
+				data.CdxA6 = CalcHeightCorrection(trailerSegment, trailer.TotalTrailerHeight, data.CdxA6.Value());
+				data.CdxA9 = CalcHeightCorrection(trailerSegment, trailer.TotalTrailerHeight, data.CdxA9.Value());
 			}
 
 			#endregion
 
 			#region VolumeCorrection
-
-			if (trailerSegment.SpecificTrailerSegment.VolumeCorrection) {
-				data.CdxA3 = CalcVolumeCorrection(trailerSegment, trailer, data.CdxA3.Value());
-				data.CdxA6 = CalcVolumeCorrection(trailerSegment, trailer, data.CdxA6.Value());
-				data.CdxA9 = CalcVolumeCorrection(trailerSegment, trailer, data.CdxA9.Value());
+		   
+			if (trailerSegment.SpecificTrailerSegment.VolumeCorrection){
+				data.CdxA3 = CalcVolumeCorrection(trailerSegment, trailer.ExternalBodyHeight, data.CdxA3.Value());
+				data.CdxA6 = CalcVolumeCorrection(trailerSegment, trailer.ExternalBodyHeight, data.CdxA6.Value());
+				data.CdxA9 = CalcVolumeCorrection(trailerSegment, trailer.ExternalBodyHeight, data.CdxA9.Value());
 			}
 			#endregion
 
@@ -1639,14 +1625,11 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			#region HeightCorrection
 
 			if (trailerSegment.ReferenceTrailerSegment.HeightCorrection) {
-				data.CdxA0 = CalcRefHeightCorrection(trailerSegment, trailerSegment.ReferenceTrailerSegment,
-					data.CdxA0.Value());
-				data.CdxA3 = CalcRefHeightCorrection(trailerSegment, trailerSegment.ReferenceTrailerSegment,
-					data.CdxA3.Value());
-				data.CdxA6 = CalcRefHeightCorrection(trailerSegment, trailerSegment.ReferenceTrailerSegment,
-					data.CdxA6.Value());
-				data.CdxA9 = CalcRefHeightCorrection(trailerSegment, trailerSegment.ReferenceTrailerSegment,
-					data.CdxA9.Value());
+				ReferenceTrailerSegment refTrailer = trailerSegment.ReferenceTrailerSegment;
+				data.CdxA0 = CalcHeightCorrection(trailerSegment, trailer.TotalTrailerHeight, data.CdxA0.Value());
+				data.CdxA3 = CalcHeightCorrection(trailerSegment, trailer.TotalTrailerHeight, data.CdxA3.Value());
+				data.CdxA6 = CalcHeightCorrection(trailerSegment, trailer.TotalTrailerHeight, data.CdxA6.Value());
+				data.CdxA9 = CalcHeightCorrection(trailerSegment, trailer.TotalTrailerHeight, data.CdxA9.Value());
 			}
 
 			#endregion
@@ -1654,12 +1637,10 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			#region VolumeCorrection
 
 			if (trailerSegment.ReferenceTrailerSegment.VolumeCorrection) {
-				data.CdxA3 = CalcRefVolumeCorrection(trailerSegment, trailerSegment.ReferenceTrailerSegment,
-					data.CdxA3.Value());
-				data.CdxA6 = CalcRefVolumeCorrection(trailerSegment, trailerSegment.ReferenceTrailerSegment,
-					data.CdxA6.Value());
-				data.CdxA9 = CalcRefVolumeCorrection(trailerSegment, trailerSegment.ReferenceTrailerSegment,
-					data.CdxA9.Value());
+				ReferenceTrailerSegment refTrailer = trailerSegment.ReferenceTrailerSegment;
+				data.CdxA3 = CalcVolumeCorrection(trailerSegment, refTrailer.ExternalBodyHeight, data.CdxA3.Value());
+				data.CdxA6 = CalcVolumeCorrection(trailerSegment, refTrailer.ExternalBodyHeight, data.CdxA6.Value());
+				data.CdxA9 = CalcVolumeCorrection(trailerSegment, refTrailer.ExternalBodyHeight, data.CdxA9.Value());
 			}
 
 			#endregion
