@@ -31,6 +31,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
@@ -67,5 +68,18 @@ namespace TUGraz.VectoCore.Models.Declaration
 		public SquareMeter A1 { get; set; }
 		public SquareMeter A2 { get; set; }
 		public SquareMeter A3 { get; set; }
+	}
+
+	public static class CorrectedTrailerDataHelper
+	{
+		/// <summary>
+		/// Updates CdxA3 - CdxA9 based on CdxA0 (e.g. CdxA3 = CdxA0 + (A1 * 3) + (data.A2 * 3 * 3) + (data.A3 * 3 * 3 * 3) 
+		/// </summary>
+		public static void UpdateCdAxX(this CorrectedTrailerData data)
+		{
+			data.CdxA3 = data.CdxA0 + (data.A1 * 3) + (data.A2 * 3 * 3) + (data.A3 * 3 * 3 * 3);
+			data.CdxA6 = data.CdxA0 + (data.A1 * 6) + (data.A2 * 6 * 6) + (data.A3 * 6 * 6 * 6);
+			data.CdxA9 = data.CdxA0 + (data.A1 * 9) + (data.A2 * 9 * 9) + (data.A3 * 9 * 9 * 9);
+		}
 	}
 }
