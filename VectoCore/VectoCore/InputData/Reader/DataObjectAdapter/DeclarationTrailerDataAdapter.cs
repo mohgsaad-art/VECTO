@@ -69,6 +69,16 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 		public static readonly GearboxType[] SupportedGearboxTypes =
 			{ GearboxType.MT, GearboxType.AMT, GearboxType.ATPowerSplit, GearboxType.ATSerial };
 
+		private static Dictionary<string, double> _applyDeltaCdxA;
+
+		static DeclarationTrailerDataAdapter()
+		{
+			_applyDeltaCdxA = new Dictionary<string, double>();
+			_applyDeltaCdxA.Add("4-LH", 1.5);
+			_applyDeltaCdxA.Add("9-LH", 1.5);
+			_applyDeltaCdxA.Add("2-RD", 1.3);
+		}
+
 		public virtual DriverData CreateDriverData()
 		{
 			var lookAheadData = new DriverData.LACData {
@@ -1359,58 +1369,63 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 		}
 
 
-		private static SquareMeter CalcRefLengthCorrection(TrailerSegment trailerSegment, ReferenceTrailerSegment trailer, ITrailerDeclarationInputData specificTrailer, int yaw = 0)
+		private static SquareMeter CalcRefLengthCorrection(TrailerSegment trailerSegment, 
+			Meter trailerLengthTrailerFrontToFirstAxle, 
+			Meter trailerLengthBetweenCentersOfAxles, 
+			Meter trailerExternalBodyLength, 
+			TypeTrailer specificTrailerType, 
+			NumberOfTrailerAxles specificTrailerNumberOfAxles, int yaw, CorrectedTrailerData correctedTrailerData)
 		{
 			//acr_base * (cdA_base_yawX / acr_base + (Lf-Lbf) * dCdf + (La-Lba) * dCda + (Lr-Lbr) * dCdr)
 			var s = trailerSegment.GenericCadVehicle;
 
 			double cdaBase, dcdf, dcda, dcdr;
 
-			if (yaw == 0)
-			{
-				cdaBase = s.CdxA0;
-				dcdf = s.DCdf0;
-				dcda = s.DCda0;
-				dcdr = s.DCdr0;
-			}
-			else if (yaw == 3)
-			{
-				cdaBase = s.CdxA3;
-				dcdf = s.DCdf3;
-				dcda = s.DCda3;
-				dcdr = s.DCdr3;
-			}
-			else if (yaw == 6)
-			{
-				cdaBase = s.CdxA6;
-				dcdf = s.DCdf6;
-				dcda = s.DCda6;
-				dcdr = s.DCdr6;
-			}
-			else
-			{
-				cdaBase = s.CdxA9;
-				dcdf = s.DCdf9;
-				dcda = s.DCda9;
-				dcdr = s.DCdr9;
+			switch (yaw) {
+				case 0:
+					cdaBase = correctedTrailerData.CdxA0.Value();
+					dcdf = s.DCdf0;
+					dcda = s.DCda0;
+					dcdr = s.DCdr0;
+					break;
+				case 3:
+					cdaBase = correctedTrailerData.CdxA3.Value();
+					dcdf = s.DCdf3;
+					dcda = s.DCda3;
+					dcdr = s.DCdr3;
+					break;
+				case 6:
+					cdaBase = correctedTrailerData.CdxA6.Value();
+					dcdf = s.DCdf6;
+					dcda = s.DCda6;
+					dcdr = s.DCdr6;
+					break;
+				case 9:
+					cdaBase = correctedTrailerData.CdxA9.Value();
+					dcdf = s.DCdf9;
+					dcda = s.DCda9;
+					dcdr = s.DCdr9;
+					break;
+				default:
+					throw new ArgumentOutOfRangeException();
 			}
 
 			var wheelsDiameter = trailerSegment.Missions.FirstOrDefault()?.Trailer.FirstOrDefault()?.TrailerWheels.FirstOrDefault().WheelsDiameter;
 			
-			var lf = specificTrailer.TrailerType == TypeTrailer.DB ?
-				trailer.LengthTrailerFrontToFirstAxle + (wheelsDiameter / 2)
-				: trailer.LengthTrailerFrontToFirstAxle - (wheelsDiameter / 2);
+			var lf = specificTrailerType == TypeTrailer.DB ?
+				trailerLengthTrailerFrontToFirstAxle + (wheelsDiameter / 2)
+				: trailerLengthTrailerFrontToFirstAxle - (wheelsDiameter / 2);
 
-			var la = specificTrailer.TrailerType == TypeTrailer.DB ?
-				trailer.LengthBetweenCentersOfAxles - wheelsDiameter
-				: trailer.LengthBetweenCentersOfAxles + wheelsDiameter;
+			var la = specificTrailerType == TypeTrailer.DB ?
+				trailerLengthBetweenCentersOfAxles - wheelsDiameter
+				: trailerLengthBetweenCentersOfAxles + wheelsDiameter;
 
-			var lr = specificTrailer.TrailerType == TypeTrailer.DB
-				? trailer.ExternalBodyLength - (lf + la)
-				: specificTrailer.TrailerType == TypeTrailer.DC && specificTrailer.NumberOfAxles == NumberOfTrailerAxles.One
-					? trailer.ExternalBodyLength - lf - la
-					: trailer.ExternalBodyLength - (trailer.LengthTrailerFrontToFirstAxle +
-													trailer.LengthBetweenCentersOfAxles + (wheelsDiameter / 2));
+			var lr = specificTrailerType == TypeTrailer.DB
+				? trailerExternalBodyLength - (lf + la)
+				: specificTrailerType == TypeTrailer.DC && specificTrailerNumberOfAxles == NumberOfTrailerAxles.One
+					? trailerExternalBodyLength - lf - la
+					: trailerExternalBodyLength - (trailerLengthTrailerFrontToFirstAxle +
+													trailerLengthBetweenCentersOfAxles + (wheelsDiameter / 2));
 
 			var correction = s.AcrBase.Value() * (cdaBase / s.AcrBase.Value() + (lf - s.Lbf).Value() * dcdf + (la - s.Lba).Value() * dcda + (lr - s.Lbr).Value() * dcdr);
 
@@ -1492,36 +1507,42 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 		private static CorrectedTrailerData GetSpecificTrailerCorrection(TrailerSegment trailerSegment, ITrailerDeclarationInputData trailer)
 		{
-			Dictionary<string, double> ApplyDeltaCdxA = new Dictionary<string, double>();
-			ApplyDeltaCdxA.Add("4-LH", 1.5);
-			ApplyDeltaCdxA.Add("9-LH", 1.5);
-			ApplyDeltaCdxA.Add("2-RD", 1.3);
 
-			var data = new CorrectedTrailerData();
-			data.CdxA0 = SquareMeter.Create(trailerSegment.GenericCadVehicle.CdxA0);
 
-			if (ApplyDeltaCdxA.TryGetValue(trailerSegment.TowingVehicle, out var deltaCdxA)) {
-				data.CdxA0 += SquareMeter.Create(deltaCdxA);
-			}
+			var data = GetCorrectedTrailerData(trailerSegment);
 
-			data.A1 = trailerSegment.GenericCadVehicle.A1;
-			data.A2 = trailerSegment.GenericCadVehicle.A2;
-			data.A3 = trailerSegment.GenericCadVehicle.A3;
-
-			//Immer oder nur bei der lengthaxlecorrection
-			data.CdxA3 = data.CdxA0 + (data.A1 * 3) + (data.A2 * 3 * 3) + (data.A3 * 3 * 3 * 3);
-			data.CdxA6 = data.CdxA0 + (data.A1 * 6) + (data.A2 * 6 * 6) + (data.A3 * 6 * 6 * 6);
-			data.CdxA9 = data.CdxA0 + (data.A1 * 9) + (data.A2 * 9 * 9) + (data.A3 * 9 * 9 * 9);
 			#region LengthAxleCorrection
 
 			if (trailerSegment.SpecificTrailerSegment.LengthAxleCorrection) {
 				var s = trailerSegment.GenericCadVehicle;
-				data.CdxA0 = CalcLengthCorrection(trailerSegment, trailer, 0, data);
+				data.CdxA0 = CalcRefLengthCorrection(trailerSegment,
+					trailer.LengthFromFrontToFirstAxle,
+					trailer.LengthBetweenCentersOfAxles,
+					trailer.ExternalBodyLength,
+					trailer.TrailerType,
+					trailer.NumberOfAxles, 0, data);
 
 				if (trailer.TrailerType != TypeTrailer.DA) {
-					data.CdxA3 = CalcLengthCorrection(trailerSegment, trailer, 3, data);
-					data.CdxA6 = CalcLengthCorrection(trailerSegment, trailer, 6, data);
-					data.CdxA9 = CalcLengthCorrection(trailerSegment, trailer, 9, data);
+					data.CdxA3 = CalcRefLengthCorrection(trailerSegment,
+						trailer.LengthFromFrontToFirstAxle,
+						trailer.LengthBetweenCentersOfAxles,
+						trailer.ExternalBodyLength,
+						trailer.TrailerType,
+						trailer.NumberOfAxles, 3, data);
+					data.CdxA6 = CalcRefLengthCorrection(trailerSegment,
+						trailer.LengthFromFrontToFirstAxle,
+						trailer.LengthBetweenCentersOfAxles,
+						trailer.ExternalBodyLength,
+						trailer.TrailerType,
+						trailer.NumberOfAxles, 6, data);
+					data.CdxA9 = CalcRefLengthCorrection(trailerSegment,
+						trailer.LengthFromFrontToFirstAxle,
+						trailer.LengthBetweenCentersOfAxles,
+						trailer.ExternalBodyLength,
+						trailer.TrailerType,
+						trailer.NumberOfAxles, 9, data);
+				} else {
+					data.UpdateCdAxX();
 				}
 			}
 
@@ -1592,28 +1613,58 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			return data;
 		}
 
-		public CorrectedTrailerData GetReferenceTrailerCorrection(TrailerSegment trailerSegment,
-			ITrailerDeclarationInputData trailer)
+		private static CorrectedTrailerData GetCorrectedTrailerData(TrailerSegment trailerSegment)
 		{
 			var data = new CorrectedTrailerData();
+			data.CdxA0 = SquareMeter.Create(trailerSegment.GenericCadVehicle.CdxA0);
+
+			if (_applyDeltaCdxA.TryGetValue(trailerSegment.TowingVehicle, out var deltaCdxA)) {
+				data.CdxA0 += SquareMeter.Create(deltaCdxA);
+			}
+
 			data.A1 = trailerSegment.GenericCadVehicle.A1;
 			data.A2 = trailerSegment.GenericCadVehicle.A2;
 			data.A3 = trailerSegment.GenericCadVehicle.A3;
+
+
+			data.UpdateCdAxX();
+			return data;
+		}
+
+		public CorrectedTrailerData GetReferenceTrailerCorrection(TrailerSegment trailerSegment,
+			ITrailerDeclarationInputData trailer)
+		{
+			var data = GetCorrectedTrailerData(trailerSegment);
 
 			#region LengthAxleCorrection
 
 			if (trailerSegment.ReferenceTrailerSegment.LengthAxleCorrection) {
 				var s = trailerSegment.GenericCadVehicle;
-				data.CdxA0 = CalcRefLengthCorrection(trailerSegment, trailerSegment.ReferenceTrailerSegment, trailer);
+				ReferenceTrailerSegment referenceTrailerSegment = trailerSegment.ReferenceTrailerSegment;
+				data.CdxA0 = CalcRefLengthCorrection(trailerSegment, 
+					referenceTrailerSegment.LengthTrailerFrontToFirstAxle, 
+					referenceTrailerSegment.LengthBetweenCentersOfAxles, 
+					referenceTrailerSegment.ExternalBodyLength, 
+					trailer.TrailerType, trailer.NumberOfAxles, 0, data);
 
 				if (trailer.TrailerType != TypeTrailer.DA) {
-					data.CdxA3 = CalcRefLengthCorrection(trailerSegment, trailerSegment.ReferenceTrailerSegment, trailer, 3);
-					data.CdxA6 = CalcRefLengthCorrection(trailerSegment, trailerSegment.ReferenceTrailerSegment, trailer, 6);
-					data.CdxA9 = CalcRefLengthCorrection(trailerSegment, trailerSegment.ReferenceTrailerSegment, trailer, 9);
+					data.CdxA3 = CalcRefLengthCorrection(trailerSegment, 
+						referenceTrailerSegment.LengthTrailerFrontToFirstAxle, 
+						referenceTrailerSegment.LengthBetweenCentersOfAxles, 
+						referenceTrailerSegment.ExternalBodyLength, 
+						trailer.TrailerType, trailer.NumberOfAxles, 3, data);
+					data.CdxA6 = CalcRefLengthCorrection(trailerSegment, 
+						referenceTrailerSegment.LengthTrailerFrontToFirstAxle, 
+						referenceTrailerSegment.LengthBetweenCentersOfAxles, 
+						referenceTrailerSegment.ExternalBodyLength,
+						trailer.TrailerType, trailer.NumberOfAxles, 6, data);
+					data.CdxA9 = CalcRefLengthCorrection(trailerSegment,
+						referenceTrailerSegment.LengthTrailerFrontToFirstAxle,
+						referenceTrailerSegment.LengthBetweenCentersOfAxles, 
+						referenceTrailerSegment.ExternalBodyLength,
+						trailer.TrailerType, trailer.NumberOfAxles, 9, data);
 				} else {
-					data.CdxA3 = data.CdxA0 + (data.A1 * 3) + (data.A2 * 3 * 3) + (data.A3 * 3 * 3 * 3);
-					data.CdxA6 = data.CdxA0 + (data.A1 * 6) + (data.A2 * 6 * 6) + (data.A3 * 6 * 6 * 6);
-					data.CdxA9 = data.CdxA0 + (data.A1 * 9) + (data.A2 * 9 * 9) + (data.A3 * 9 * 9 * 9);
+					data.UpdateCdAxX();
 				}
 			}
 
