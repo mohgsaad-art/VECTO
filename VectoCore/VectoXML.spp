@@ -47,6 +47,45 @@
 			<File FilePath="VectoCoreTest\TestData\XML\EngineeringJob\SampleJobEngineering1.0.xml" HomeFolder="Yes"/>
 			<File FilePath="VectoCoreTest\TestData\XML\EngineeringJob\SampleJobEngineering1.1.xml" HomeFolder="Yes"/>
 		</Folder>
+		<Folder FolderName="HashingTests">
+			<Folder FolderName="Sorted">
+				<File FilePath="..\VectoCommon\VectoHashingTest\Testdata\XML\Sort\Component\Sorted\ADC.xml" HomeFolder="Yes"/>
+				<File FilePath="..\VectoCommon\VectoHashingTest\Testdata\XML\Sort\Component\Sorted\Angledrive.xml" HomeFolder="Yes"/>
+				<File FilePath="..\VectoCommon\VectoHashingTest\Testdata\XML\Sort\Component\Sorted\Axlegear.xml" HomeFolder="Yes"/>
+				<File FilePath="..\VectoCommon\VectoHashingTest\Testdata\XML\Sort\Component\Sorted\BatterySystem_1.xml" HomeFolder="Yes"/>
+				<File FilePath="..\VectoCommon\VectoHashingTest\Testdata\XML\Sort\Component\Sorted\CapacitorSystem_1.xml" HomeFolder="Yes"/>
+				<File FilePath="..\VectoCommon\VectoHashingTest\Testdata\XML\Sort\Component\Sorted\ElectricMachineSystem-IHPC_1.xml" HomeFolder="Yes"/>
+				<File FilePath="..\VectoCommon\VectoHashingTest\Testdata\XML\Sort\Component\Sorted\ElectricMachineSystem_1.xml" HomeFolder="Yes"/>
+				<File FilePath="..\VectoCommon\VectoHashingTest\Testdata\XML\Sort\Component\Sorted\ElectricMachineSystem_StdValues.xml" HomeFolder="Yes"/>
+				<File FilePath="..\VectoCommon\VectoHashingTest\Testdata\XML\Sort\Component\Sorted\Engine.xml" HomeFolder="Yes"/>
+				<File FilePath="..\VectoCommon\VectoHashingTest\Testdata\XML\Sort\Component\Sorted\Gearbox_APT-N.xml" HomeFolder="Yes"/>
+				<File FilePath="..\VectoCommon\VectoHashingTest\Testdata\XML\Sort\Component\Sorted\Gearbox_FWD.xml" HomeFolder="Yes"/>
+				<File FilePath="..\VectoCommon\VectoHashingTest\Testdata\XML\Sort\Component\Sorted\Gearbox_IHPC.xml" HomeFolder="Yes"/>
+				<File FilePath="..\VectoCommon\VectoHashingTest\Testdata\XML\Sort\Component\Sorted\IEPC_1.xml" HomeFolder="Yes"/>
+				<File FilePath="..\VectoCommon\VectoHashingTest\Testdata\XML\Sort\Component\Sorted\IEPC_StdValues.xml" HomeFolder="Yes"/>
+				<File FilePath="..\VectoCommon\VectoHashingTest\Testdata\XML\Sort\Component\Sorted\Retarder.xml" HomeFolder="Yes"/>
+				<File FilePath="..\VectoCommon\VectoHashingTest\Testdata\XML\Sort\Component\Sorted\TorqueConverter.xml" HomeFolder="Yes"/>
+			</Folder>
+			<Folder FolderName="Unsorted">
+				<File FilePath="..\VectoCommon\VectoHashingTest\Testdata\XML\Sort\Component\Unsorted\ADC.xml" HomeFolder="Yes"/>
+				<File FilePath="..\VectoCommon\VectoHashingTest\Testdata\XML\Sort\Component\Unsorted\Angledrive.xml" HomeFolder="Yes"/>
+				<File FilePath="..\VectoCommon\VectoHashingTest\Testdata\XML\Sort\Component\Unsorted\Axlegear.xml" HomeFolder="Yes"/>
+				<File FilePath="..\VectoCommon\VectoHashingTest\Testdata\XML\Sort\Component\Unsorted\BatterySystem_1.xml" HomeFolder="Yes"/>
+				<File FilePath="..\VectoCommon\VectoHashingTest\Testdata\XML\Sort\Component\Unsorted\CapacitorSystem_1.xml" HomeFolder="Yes"/>
+				<File FilePath="..\VectoCommon\VectoHashingTest\Testdata\XML\Sort\Component\Unsorted\ElectricMachineSystem-IHPC_1.xml" HomeFolder="Yes"/>
+				<File FilePath="..\VectoCommon\VectoHashingTest\Testdata\XML\Sort\Component\Unsorted\ElectricMachineSystem_1.xml" HomeFolder="Yes"/>
+				<File FilePath="..\VectoCommon\VectoHashingTest\Testdata\XML\Sort\Component\Unsorted\ElectricMachineSystem_StdValues.xml" HomeFolder="Yes"/>
+				<File FilePath="..\VectoCommon\VectoHashingTest\Testdata\XML\Sort\Component\Unsorted\Engine.xml" HomeFolder="Yes"/>
+				<File FilePath="..\VectoCommon\VectoHashingTest\Testdata\XML\Sort\Component\Unsorted\Gearbox_APT-N.xml" HomeFolder="Yes"/>
+				<File FilePath="..\VectoCommon\VectoHashingTest\Testdata\XML\Sort\Component\Unsorted\Gearbox_FWD.xml" HomeFolder="Yes"/>
+				<File FilePath="..\VectoCommon\VectoHashingTest\Testdata\XML\Sort\Component\Unsorted\Gearbox_IHPC.xml" HomeFolder="Yes"/>
+				<File FilePath="..\VectoCommon\VectoHashingTest\Testdata\XML\Sort\Component\Unsorted\IEPC_1.xml" HomeFolder="Yes"/>
+				<File FilePath="..\VectoCommon\VectoHashingTest\Testdata\XML\Sort\Component\Unsorted\IEPC_StdValues.xml" HomeFolder="Yes"/>
+				<File FilePath="..\VectoCommon\VectoHashingTest\Testdata\XML\Sort\Component\Unsorted\Retarder.xml" HomeFolder="Yes"/>
+				<File FilePath="..\VectoCommon\VectoHashingTest\Testdata\XML\Sort\Component\Unsorted\TorqueConverter.xml" HomeFolder="Yes"/>
+				<File FilePath="..\VectoCommon\VectoHashingTest\Testdata\XML\Sort\Component\Unsorted\TrailerAerodynamicDevice.xml" HomeFolder="Yes"/>
+			</Folder>
+		</Folder>
 	</Folder>
 	<Folder FolderName="XSL Files" ExtStr="xsl;xslt">
 		<File FilePath="E:\QUAM\Workspace\VECTO_quam\Documentation\XML\RenderTable.xslt" HomeFolder="Yes"/>
@@ -66,6 +105,7 @@
 			<File FilePath="VectoCore\Resources\XSD\VectoDeclarationDefinitions.2.1.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoDeclarationDefinitions.2.2.1.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoDeclarationDefinitions.2.2.xsd" HomeFolder="Yes"/>
+			<File FilePath="VectoCore\Resources\XSD\VectoDeclarationDefinitions.2.3.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoDeclarationDefinitions.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoDeclarationJob.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoInput.1.0.xsd" HomeFolder="Yes"/>

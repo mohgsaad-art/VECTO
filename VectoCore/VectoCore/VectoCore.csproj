@@ -825,6 +825,12 @@
     <EmbeddedResource Include="Resources\Declaration\VAUXBus\SP-Factors_Bus.csv" />
     <None Include="Resources\Declaration\ADASParameters.json" />
     <None Include="Resources\Declaration\EffShiftParameters.vtcu" />
+    <EmbeddedResource Include="Resources\XSD\VectoDeclarationDefinitions.2.3.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\XSD\VectoComponent.2.1.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <None Include="Utils\VectoVersionCore.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>VectoVersionCore.cs</LastGenOutput>

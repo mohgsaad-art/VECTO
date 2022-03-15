@@ -46,7 +46,15 @@ namespace TUGraz.VectoCommon.Hashing
 		Tyre,
 		Vehicle,
 		VectoOutput,
-		VectoCustomerInformation
+		VectoCustomerInformation,
+		VectoPrimaryVehicleInformation,
+		VectoManufacturingStage,
+		BatterySystem,
+		CapacitorSystem,
+		ElectricMachineSystem,
+		IEPC,
+		ADC,
+		REESS
 	}
 
 	public static class VectoComponentsExtensionMethods
@@ -76,6 +84,22 @@ namespace TUGraz.VectoCommon.Hashing
 					return "VectoOutput";
 				case VectoComponents.VectoCustomerInformation:
 					return "VectoCustomerInformation";
+				case VectoComponents.VectoPrimaryVehicleInformation:
+					return "PrimaryVehicle";
+				case VectoComponents.VectoManufacturingStage:
+					return "ManufacturingStage";
+				case VectoComponents.BatterySystem:
+					return XMLNames.Component_BatterySystem;
+				case VectoComponents.CapacitorSystem:
+					return XMLNames.Component_CapacitorSystem;
+				case VectoComponents.ElectricMachineSystem:
+					return XMLNames.Component_ElectricMachineSystem;
+				case VectoComponents.IEPC:
+					return XMLNames.Component_IEPC;
+				case VectoComponents.ADC:
+					return XMLNames.Component_ADC;
+				case VectoComponents.REESS:
+					return XMLNames.REESS;
 				default:
 					throw new ArgumentOutOfRangeException("VectoComponents", component, null);
 			}

@@ -1,0 +1,2365 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2021 (x64) (http://www.altova.com) by Markus Quaritsch (Technische Universität Graz) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:vectoParam="urn:tugraz:ivt:VectoAPI:ParameterDocumentation" xmlns:di="http://www.w3.org/2000/09/xmldsig#" xmlns:v1.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:v2.1="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1" xmlns:v2.3="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3" targetNamespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3" elementFormDefault="qualified" attributeFormDefault="unqualified" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:ParameterDocumentation ParameterDocumentation.xsd">
+	<xs:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="xmldsig-core-schema.xsd"/>
+	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" schemaLocation="VectoDeclarationDefinitions.1.0.xsd"/>
+	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" schemaLocation="VectoDeclarationDefinitions.2.0.xsd"/>
+	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1" schemaLocation="VectoDeclarationDefinitions.2.1.xsd"/>
+	<xs:complexType name="AbstractADCDataDeclarationType" abstract="true">
+		<xs:complexContent>
+			<xs:extension base="v1.0:AbstractAngledriveDataDeclarationType"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="AbstractBatterySystemDataType" abstract="true">
+		<xs:complexContent>
+			<xs:extension base="v2.3:AbstractREESSDataType"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="AbstractCapacitorSystemDataType" abstract="true">
+		<xs:complexContent>
+			<xs:extension base="v2.3:AbstractREESSDataType"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="AbstractElectricMachineSystemDataType" abstract="true">
+		<xs:complexContent>
+			<xs:extension base="v1.0:VectoSimulationComponent"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="AbstractElectricMachineSystemVoltageLevelType" abstract="true"/>
+	<xs:complexType name="AbstractIEPCDataType" abstract="true">
+		<xs:complexContent>
+			<xs:extension base="v1.0:VectoSimulationComponent"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="AbstractIEPCGearsDeclarationType" abstract="true"/>
+	<xs:complexType name="AbstractREESSDataType" abstract="true">
+		<xs:complexContent>
+			<xs:extension base="v1.0:VectoSimulationComponent"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ADCComponentDeclarationType">
+		<xs:sequence>
+			<xs:element name="Data" type="v2.3:AbstractADCDataDeclarationType"/>
+			<xs:element name="Signature" type="v2.0:SignatureType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ADCDataDeclarationType">
+		<xs:complexContent>
+			<xs:extension base="v2.3:AbstractADCDataDeclarationType">
+				<xs:sequence>
+					<xs:element name="Manufacturer" type="v1.0:ManufacturerType">
+						<xs:annotation>
+							<xs:documentation>P220 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Model" type="v1.0:ModelType">
+						<xs:annotation>
+							<xs:documentation>P221 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="CertificationNumber" type="v1.0:CertificationNumberType">
+						<xs:annotation>
+							<xs:documentation>P265 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Date" type="v1.0:DateTimeWithTimezone">
+						<xs:annotation>
+							<xs:documentation>P223 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="AppVersion" type="v1.0:AppVersionType">
+						<xs:annotation>
+							<xs:documentation>P224 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Ratio" type="v1.0:AngledriveRatioType">
+						<xs:annotation>
+							<xs:documentation>P176 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="CertificationMethod" type="v1.0:AngledriveCertificationOptionType">
+						<xs:annotation>
+							<xs:documentation>P258 - enum</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="TorqueLossMap">
+						<xs:complexType>
+							<xs:sequence minOccurs="4" maxOccurs="unbounded">
+								<xs:element name="Entry" type="v2.0:AngledriveLossMapEntryType"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="BatteryComponentDeclarationType">
+		<xs:sequence>
+			<xs:element name="Data" type="v2.3:AbstractBatterySystemDataType"/>
+			<xs:element name="Signature" type="v2.0:SignatureType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BatterySystemCurrentLimitsEntryType">
+		<xs:attribute name="SoC" type="v2.3:BatterySoCType" use="required">
+			<xs:annotation>
+				<xs:documentation>P529 - [%]</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="maxChargingCurrent" type="v2.3:BatteryMaxCurrentType" use="required">
+			<xs:annotation>
+				<xs:documentation>P530 - A]</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="maxDischargingCurrent" type="v2.3:BatteryMaxCurrentType" use="required">
+			<xs:annotation>
+				<xs:documentation>P531 - [A]</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="BatterySystemDataType">
+		<xs:complexContent>
+			<xs:extension base="v2.3:AbstractBatterySystemDataType">
+				<xs:sequence>
+					<xs:element name="Manufacturer" type="v1.0:ManufacturerType">
+						<xs:annotation>
+							<xs:documentation>P511 - [-]</xs:documentation>
+							<xs:appinfo>
+								<vectoParam:description>
+									<vectoParam:parameterId component="BatterySystem">511</vectoParam:parameterId>
+									<vectoParam:unit>-</vectoParam:unit>
+								</vectoParam:description>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Model" type="v1.0:ModelType">
+						<xs:annotation>
+							<xs:documentation>P512 - [-]</xs:documentation>
+							<xs:appinfo>
+								<vectoParam:description>
+									<vectoParam:parameterId component="BatterySystem">512</vectoParam:parameterId>
+									<vectoParam:unit>-</vectoParam:unit>
+								</vectoParam:description>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="CertificationNumber" type="v1.0:CertificationNumberType">
+						<xs:annotation>
+							<xs:documentation>P513 - [-]</xs:documentation>
+							<xs:appinfo>
+								<vectoParam:description>
+									<vectoParam:parameterId component="BatterySystem">513</vectoParam:parameterId>
+									<vectoParam:unit>-</vectoParam:unit>
+								</vectoParam:description>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Date" type="v1.0:DateTimeWithTimezone">
+						<xs:annotation>
+							<xs:documentation>P514 - [-]</xs:documentation>
+							<xs:appinfo>
+								<vectoParam:description>
+									<vectoParam:parameterId component="BatterySystem">514</vectoParam:parameterId>
+									<vectoParam:unit>-</vectoParam:unit>
+								</vectoParam:description>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="AppVersion" type="v1.0:AppVersionType">
+						<xs:annotation>
+							<xs:documentation>P515 - [-]</xs:documentation>
+							<xs:appinfo>
+								<vectoParam:description>
+									<vectoParam:parameterId component="BatterySystem">515</vectoParam:parameterId>
+									<vectoParam:unit>-</vectoParam:unit>
+								</vectoParam:description>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="CertificationMethod" type="v2.3:CertificationMethodType">
+						<xs:annotation>
+							<xs:documentation>P516 - enum</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="BatteryType" type="v2.3:BatteryTypeType">
+						<xs:annotation>
+							<xs:documentation>P517 - enum</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="RatedCapacity">
+						<xs:annotation>
+							<xs:documentation>P518 - [Ah]</xs:documentation>
+							<xs:appinfo>
+								<vectoParam:description>
+									<vectoParam:parameterId component="BatterySystem">518</vectoParam:parameterId>
+									<vectoParam:unit>Ah</vectoParam:unit>
+								</vectoParam:description>
+							</xs:appinfo>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="v1.0:Double2">
+								<xs:minExclusive value="0.00"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="ConnectorsSubsystemsIncluded" type="xs:boolean">
+						<xs:annotation>
+							<xs:documentation>P519 - bool</xs:documentation>
+							<xs:appinfo>
+								<vectoParam:description>
+									<vectoParam:parameterId component="BatterySystem">519</vectoParam:parameterId>
+									<vectoParam:unit>-</vectoParam:unit>
+								</vectoParam:description>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="JunctionboxIncluded" type="xs:boolean">
+						<xs:annotation>
+							<xs:documentation>P520 - bool</xs:documentation>
+							<xs:appinfo>
+								<vectoParam:description>
+									<vectoParam:parameterId component="BatterySystem">520</vectoParam:parameterId>
+									<vectoParam:unit>-</vectoParam:unit>
+								</vectoParam:description>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="TestingTemperature" type="xs:int" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>P521 - [°C]</xs:documentation>
+							<xs:appinfo>
+								<vectoParam:description>
+									<vectoParam:parameterId component="BatterySystem">521</vectoParam:parameterId>
+									<vectoParam:unit>°C</vectoParam:unit>
+								</vectoParam:description>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OCV">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Entry" type="v2.3:BatterySystemOCVEntryType" minOccurs="2" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="InternalResistance">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Entry" type="v2.3:BatterySystemInternalResistanceEntryType" minOccurs="2" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="CurrentLimits">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Entry" type="v2.3:BatterySystemCurrentLimitsEntryType" minOccurs="2" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="BatterySystemInternalResistanceEntryType">
+		<xs:attribute name="SoC" type="v2.3:BatterySoCType" use="required">
+			<xs:annotation>
+				<xs:documentation>P524 - [%]</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="R_2" type="v2.3:InternalResistanceType" use="required">
+			<xs:annotation>
+				<xs:documentation>P525 - [mOhm]</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="R_10" type="v2.3:InternalResistanceType" use="required">
+			<xs:annotation>
+				<xs:documentation>P526 - [mOhm]</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="R_20" type="v2.3:InternalResistanceType" use="required">
+			<xs:annotation>
+				<xs:documentation>P527 - [mOhm]</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="R_120" type="v2.3:InternalResistanceType">
+			<xs:annotation>
+				<xs:documentation>P528 - [mOhm]</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="BatterySystemOCVEntryType">
+		<xs:attribute name="SoC" type="v2.3:BatterySoCType" use="required">
+			<xs:annotation>
+				<xs:documentation>P522 - [%]</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="OCV" type="v2.3:BatteryOCVType" use="required">
+			<xs:annotation>
+				<xs:documentation>P523 - [V]</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="CapacitorSystemComponentDeclarationType">
+		<xs:sequence>
+			<xs:element name="Data" type="v2.3:AbstractCapacitorSystemDataType"/>
+			<xs:element name="Signature" type="v2.0:SignatureType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CapacitorSystemDataType">
+		<xs:complexContent>
+			<xs:extension base="v2.3:AbstractCapacitorSystemDataType">
+				<xs:sequence>
+					<xs:element name="Manufacturer" type="v1.0:ManufacturerType">
+						<xs:annotation>
+							<xs:documentation>P532 - [-]</xs:documentation>
+							<xs:appinfo>
+								<vectoParam:description>
+									<vectoParam:parameterId component="CapacitorSystem">532</vectoParam:parameterId>
+									<vectoParam:unit>-</vectoParam:unit>
+								</vectoParam:description>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Model" type="v1.0:ModelType">
+						<xs:annotation>
+							<xs:documentation>P533 - [-]</xs:documentation>
+							<xs:appinfo>
+								<vectoParam:description>
+									<vectoParam:parameterId component="CapacitorSystem">533</vectoParam:parameterId>
+									<vectoParam:unit>-</vectoParam:unit>
+								</vectoParam:description>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="CertificationNumber" type="v1.0:CertificationNumberType">
+						<xs:annotation>
+							<xs:documentation>P534 - [-]</xs:documentation>
+							<xs:appinfo>
+								<vectoParam:description>
+									<vectoParam:parameterId component="CapacitorSystem">534</vectoParam:parameterId>
+									<vectoParam:unit>-</vectoParam:unit>
+								</vectoParam:description>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Date" type="v1.0:DateTimeWithTimezone">
+						<xs:annotation>
+							<xs:documentation>P535 - [-]</xs:documentation>
+							<xs:appinfo>
+								<vectoParam:description>
+									<vectoParam:parameterId component="CapacitorSystem">535</vectoParam:parameterId>
+									<vectoParam:unit>-</vectoParam:unit>
+								</vectoParam:description>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="AppVersion" type="v1.0:AppVersionType">
+						<xs:annotation>
+							<xs:documentation>P536 - [-]</xs:documentation>
+							<xs:appinfo>
+								<vectoParam:description>
+									<vectoParam:parameterId component="CapacitorSystem">536</vectoParam:parameterId>
+									<vectoParam:unit>-</vectoParam:unit>
+								</vectoParam:description>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="CertificationMethod" type="v2.3:CertificationMethodType">
+						<xs:annotation>
+							<xs:documentation>P537 - enum</xs:documentation>
+							<xs:appinfo>
+								<vectoParam:description>
+									<vectoParam:parameterId component="CapacitorSystem">537</vectoParam:parameterId>
+									<vectoParam:unit>-</vectoParam:unit>
+								</vectoParam:description>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Capacitance" type="v2.3:CapacitanceType">
+						<xs:annotation>
+							<xs:documentation>P538 - [F]</xs:documentation>
+							<xs:appinfo>
+								<vectoParam:description>
+									<vectoParam:parameterId component="CapacitorSystem">538</vectoParam:parameterId>
+									<vectoParam:unit>F</vectoParam:unit>
+								</vectoParam:description>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="InternalResistance" type="v2.3:InternalResistanceType">
+						<xs:annotation>
+							<xs:documentation>P539 - [mOhm]</xs:documentation>
+							<xs:appinfo>
+								<vectoParam:description>
+									<vectoParam:parameterId component="CapacitorSystem">539</vectoParam:parameterId>
+									<vectoParam:unit>mOhm</vectoParam:unit>
+								</vectoParam:description>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MinVoltage" type="v2.3:CapacitorVoltageType">
+						<xs:annotation>
+							<xs:documentation>P540 - [V]</xs:documentation>
+							<xs:appinfo>
+								<vectoParam:description>
+									<vectoParam:parameterId component="CapacitorSystem">540</vectoParam:parameterId>
+									<vectoParam:unit>V</vectoParam:unit>
+								</vectoParam:description>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MaxVoltage" type="v2.3:CapacitorVoltageType">
+						<xs:annotation>
+							<xs:documentation>P541 - [V]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MaxChargingCurrent" type="v2.3:CapacitorMaxCurrentType">
+						<xs:annotation>
+							<xs:documentation>P542 - [A]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MaxDischargingCurrent" type="v2.3:CapacitorMaxCurrentType">
+						<xs:annotation>
+							<xs:documentation>P543 - [A]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="TestingTemperature" type="xs:int" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>P544 - [°C]</xs:documentation>
+							<xs:appinfo>
+								<vectoParam:description>
+									<vectoParam:parameterId component="CapacitorSystem">544</vectoParam:parameterId>
+									<vectoParam:unit>°C</vectoParam:unit>
+								</vectoParam:description>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ElectricMachineSystemComponentDeclarationType">
+		<xs:sequence>
+			<xs:element name="Data" type="v2.3:AbstractElectricMachineSystemDataType"/>
+			<xs:element name="Signature" type="v2.0:SignatureType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ElectricMachineSystemConditioningEntryType">
+		<xs:attribute name="coolantTempInlet" type="v2.3:CoolantTempInletType" use="required">
+			<xs:annotation>
+				<xs:documentation>P476 - [°C]</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="coolingPower" type="v2.3:CoolingPowerType" use="required">
+			<xs:annotation>
+				<xs:documentation>P477 - [W]</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="ElectricMachineSystemDragTorqueEntryType">
+		<xs:attribute name="outShaftSpeed" type="v2.3:OutShaftSpeedType" use="required">
+			<xs:annotation>
+				<xs:documentation>P471 - [rpm]</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="dragTorque" type="v2.3:DragTorqueType" use="required">
+			<xs:annotation>
+				<xs:documentation>P472 - [Nm]</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="ElectricMachineSystemIHPCMeasuredDataDeclarationType">
+		<xs:complexContent>
+			<xs:extension base="v2.3:AbstractElectricMachineSystemDataType">
+				<xs:sequence>
+					<xs:group ref="v2.3:ElectricMachineSystemCommonParametersSequenceGroup"/>
+					<xs:element name="CertificationMethod">
+						<xs:annotation>
+							<xs:documentation>P456 - enum</xs:documentation>
+							<xs:appinfo>
+								<vectoParam:description>
+									<vectoParam:parameterId component="ElectricMachine">456</vectoParam:parameterId>
+									<vectoParam:unit>-</vectoParam:unit>
+								</vectoParam:description>
+							</xs:appinfo>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="v2.3:CertificationMethodType">
+								<xs:enumeration value="Measured"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:group ref="v2.3:ElectricMachineSystemPowerRatingsSequenceGroup"/>
+					<xs:element name="DcDcConverterIncluded" type="xs:boolean">
+						<xs:annotation>
+							<xs:documentation>P465 - bool</xs:documentation>
+							<xs:appinfo>
+								<vectoParam:description>
+									<vectoParam:parameterId component="ElectricMachine">465</vectoParam:parameterId>
+									<vectoParam:unit>-</vectoParam:unit>
+								</vectoParam:description>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="IHPCType">
+						<xs:annotation>
+							<xs:documentation>P466 - enum</xs:documentation>
+							<xs:appinfo>
+								<vectoParam:description>
+									<vectoParam:parameterId component="ElectricMachine">466</vectoParam:parameterId>
+									<vectoParam:unit>-</vectoParam:unit>
+								</vectoParam:description>
+							</xs:appinfo>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="v2.3:IHPCTypeType">
+								<xs:enumeration value="IHPC Type 1"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="VoltageLevel" type="v2.3:ElectricMachineSystemIHPCVoltageLevelMeasuredType" minOccurs="2" maxOccurs="unbounded"/>
+					<xs:element name="DragCurve">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Entry" type="v2.3:ElectricMachineSystemDragTorqueEntryType" minOccurs="2" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Conditioning" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Entry" type="v2.3:ElectricMachineSystemConditioningEntryType" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ElectricMachineSystemIHPCVoltageLevelMeasuredType">
+		<xs:complexContent>
+			<xs:extension base="v2.3:AbstractElectricMachineSystemVoltageLevelType">
+				<xs:sequence>
+					<xs:element name="Voltage" type="v2.3:VoltageLevelVoltageType">
+						<xs:annotation>
+							<xs:documentation>P467 - [V]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ContinuousTorque" type="v2.3:MaxTorqueType">
+						<xs:annotation>
+							<xs:documentation>P459 - [Nm]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="TestSpeedContinuousTorque" type="v2.3:TestSpeedType">
+						<xs:annotation>
+							<xs:documentation>P460 - [1/min]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OverloadTorque" type="v2.3:MaxTorqueType">
+						<xs:annotation>
+							<xs:documentation>P461 - [Nm]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="TestSpeedOverloadTorque" type="v2.3:TestSpeedType">
+						<xs:annotation>
+							<xs:documentation>P462 - [1/min]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OverloadDuration" type="v2.3:OverloadDurationType">
+						<xs:annotation>
+							<xs:documentation>P463 - [s]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MaxTorqueCurve">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Entry" type="v2.3:ElectricMachineSystemMaxTorqueEntryType" minOccurs="2" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="PowerMap" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Entry" type="v2.3:ElectricMachineSystemPowerMapEntryType" minOccurs="4" maxOccurs="unbounded"/>
+							</xs:sequence>
+							<xs:attribute name="gear" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:int">
+										<xs:minInclusive value="1"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ElectricMachineSystemMaxTorqueCurveType">
+		<xs:sequence>
+			<xs:element name="Entry" type="v2.3:ElectricMachineSystemMaxTorqueEntryType" minOccurs="2" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ElectricMachineSystemMaxTorqueEntryType">
+		<xs:attribute name="outShaftSpeed" type="v2.3:OutShaftSpeedType" use="required">
+			<xs:annotation>
+				<xs:documentation>P468 - [rpm]</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="maxTorque" type="v2.3:maxTorqueType" use="required">
+			<xs:annotation>
+				<xs:documentation>P469 - [Nm]</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="minTorque" type="v2.3:minTorqueType" use="required">
+			<xs:annotation>
+				<xs:documentation>P470 - [Nm]</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="ElectricMachineSystemMeasuredDataDeclarationType">
+		<xs:complexContent>
+			<xs:extension base="v2.3:AbstractElectricMachineSystemDataType">
+				<xs:sequence>
+					<xs:group ref="v2.3:ElectricMachineSystemCommonParametersSequenceGroup"/>
+					<xs:element name="CertificationMethod">
+						<xs:annotation>
+							<xs:documentation>P456 - enum</xs:documentation>
+							<xs:appinfo>
+								<vectoParam:description>
+									<vectoParam:parameterId component="ElectricMachine">456</vectoParam:parameterId>
+									<vectoParam:unit>-</vectoParam:unit>
+								</vectoParam:description>
+							</xs:appinfo>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="v2.3:CertificationMethodType">
+								<xs:enumeration value="Measured"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:group ref="v2.3:ElectricMachineSystemPowerRatingsSequenceGroup"/>
+					<xs:element name="DcDcConverterIncluded" type="xs:boolean">
+						<xs:annotation>
+							<xs:documentation>P465 - bool</xs:documentation>
+							<xs:appinfo>
+								<vectoParam:description>
+									<vectoParam:parameterId component="ElectricMachine">465</vectoParam:parameterId>
+									<vectoParam:unit>-</vectoParam:unit>
+								</vectoParam:description>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="IHPCType">
+						<xs:annotation>
+							<xs:documentation>P466 - enum</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="v2.3:IHPCTypeType">
+								<xs:enumeration value="None"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="VoltageLevel" type="v2.3:ElectricMachineSystemVoltageLevelMeasuredType" minOccurs="2" maxOccurs="unbounded"/>
+					<xs:element name="DragCurve">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Entry" type="v2.3:ElectricMachineSystemDragTorqueEntryType" minOccurs="2" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Conditioning" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Entry" type="v2.3:ElectricMachineSystemConditioningEntryType" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ElectricMachineSystemPowerMapEntryType">
+		<xs:attribute name="outShaftSpeed" type="v2.3:OutShaftSpeedType" use="required">
+			<xs:annotation>
+				<xs:documentation>P473 - [rpm]</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="torque" type="v2.3:PowerMapTorqueType" use="required">
+			<xs:annotation>
+				<xs:documentation>P474 - [Nm]</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="electricPower" type="v2.3:PowerMapElectricPowerType" use="required">
+			<xs:annotation>
+				<xs:documentation>P475 - [W]</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="ElectricMachineSystemStandardValuesDataDeclarationType">
+		<xs:complexContent>
+			<xs:extension base="v2.3:AbstractElectricMachineSystemDataType">
+				<xs:sequence>
+					<xs:group ref="v2.3:ElectricMachineSystemCommonParametersSequenceGroup"/>
+					<xs:element name="CertificationMethod">
+						<xs:annotation>
+							<xs:documentation>P456 - enum</xs:documentation>
+							<xs:appinfo>
+								<vectoParam:description>
+									<vectoParam:parameterId component="ElectricMachine">456</vectoParam:parameterId>
+									<vectoParam:unit>-</vectoParam:unit>
+								</vectoParam:description>
+							</xs:appinfo>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="v2.3:CertificationMethodType">
+								<xs:enumeration value="Standard values"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:group ref="v2.3:ElectricMachineSystemPowerRatingsSequenceGroup"/>
+					<xs:element name="DcDcConverterIncluded" type="xs:boolean">
+						<xs:annotation>
+							<xs:documentation>P465 - bool</xs:documentation>
+							<xs:appinfo>
+								<vectoParam:description>
+									<vectoParam:parameterId component="ElectricMachine">465</vectoParam:parameterId>
+									<vectoParam:unit>-</vectoParam:unit>
+								</vectoParam:description>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="IHPCType">
+						<xs:annotation>
+							<xs:documentation>P466 - enum</xs:documentation>
+							<xs:appinfo>
+								<vectoParam:description>
+									<vectoParam:parameterId component="ElectricMachine">466</vectoParam:parameterId>
+									<vectoParam:unit>-</vectoParam:unit>
+								</vectoParam:description>
+							</xs:appinfo>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="v2.3:IHPCTypeType">
+								<xs:enumeration value="None"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="VoltageLevel" type="v2.3:ElectricMachineSystemVoltageLevelStandardValuesType"/>
+					<xs:element name="DragCurve">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Entry" type="v2.3:ElectricMachineSystemDragTorqueEntryType" minOccurs="2" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ElectricMachineSystemVoltageLevelMeasuredType">
+		<xs:complexContent>
+			<xs:extension base="v2.3:AbstractElectricMachineSystemVoltageLevelType">
+				<xs:sequence>
+					<xs:element name="Voltage" type="v2.3:VoltageLevelVoltageType">
+						<xs:annotation>
+							<xs:documentation>P467 - [V]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ContinuousTorque" type="v2.3:MaxTorqueType">
+						<xs:annotation>
+							<xs:documentation>P459 - [Nm]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="TestSpeedContinuousTorque" type="v2.3:TestSpeedType">
+						<xs:annotation>
+							<xs:documentation>P460 - [1/min]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OverloadTorque" type="v2.3:MaxTorqueType">
+						<xs:annotation>
+							<xs:documentation>P461 - [Nm]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="TestSpeedOverloadTorque" type="v2.3:TestSpeedType">
+						<xs:annotation>
+							<xs:documentation>P462 - [1/min]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OverloadDuration" type="v2.3:OverloadDurationType">
+						<xs:annotation>
+							<xs:documentation>P463 - [s]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MaxTorqueCurve" type="v2.3:ElectricMachineSystemMaxTorqueCurveType"/>
+					<xs:element name="PowerMap">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Entry" type="v2.3:ElectricMachineSystemPowerMapEntryType" minOccurs="4" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ElectricMachineSystemVoltageLevelStandardValuesType">
+		<xs:complexContent>
+			<xs:extension base="v2.3:AbstractElectricMachineSystemVoltageLevelType">
+				<xs:sequence>
+					<xs:element name="ContinuousTorque" type="v2.3:MaxTorqueType">
+						<xs:annotation>
+							<xs:documentation>P459 - [Nm]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="TestSpeedContinuousTorque" type="v2.3:TestSpeedType">
+						<xs:annotation>
+							<xs:documentation>P460 - [1/min]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OverloadTorque" type="v2.3:MaxTorqueType">
+						<xs:annotation>
+							<xs:documentation>P461 - [Nm]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="TestSpeedOverloadTorque" type="v2.3:TestSpeedType">
+						<xs:annotation>
+							<xs:documentation>P462 - [1/min]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OverloadDuration" type="v2.3:OverloadDurationType">
+						<xs:annotation>
+							<xs:documentation>P463 - [s]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MaxTorqueCurve">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Entry" type="v2.3:ElectricMachineSystemMaxTorqueEntryType" minOccurs="2" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="PowerMap">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Entry" type="v2.3:ElectricMachineSystemPowerMapEntryType" minOccurs="4" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="EngineDataDeclarationType">
+		<xs:complexContent>
+			<xs:extension base="v1.0:AbstractCombustionEngineDataDeclarationType">
+				<xs:sequence>
+					<xs:element name="Manufacturer" type="v1.0:ManufacturerType">
+						<xs:annotation>
+							<xs:documentation>P200 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Model" type="v1.0:ModelType">
+						<xs:annotation>
+							<xs:documentation>P201 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="CertificationNumber" type="v1.0:CertificationNumberType">
+						<xs:annotation>
+							<xs:documentation>P261 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Date" type="v1.0:DateTimeWithTimezone">
+						<xs:annotation>
+							<xs:documentation>P203 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="AppVersion" type="v1.0:AppVersionType">
+						<xs:annotation>
+							<xs:documentation>P204 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Displacement" type="v1.0:EngineDisplacementType" nillable="false">
+						<xs:annotation>
+							<xs:documentation>P061 - [cm³]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="RatedSpeed" type="v1.0:EngineDeclaredSpeedType">
+						<xs:annotation>
+							<xs:documentation>P249 - [1/min]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="RatedPower" type="v1.0:EngineRatedPower">
+						<xs:annotation>
+							<xs:documentation>P250 - [W]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MaxEngineTorque" type="v1.0:EngineMaxTorque">
+						<xs:annotation>
+							<xs:documentation>P259 - [Nm]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="WHRType" type="v2.3:WHRTypeType"/>
+					<xs:element name="Mode" type="v2.3:EngineFuelModeType" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="EngineFuelModeType">
+		<xs:sequence>
+			<xs:element name="IdlingSpeed" type="v1.0:EngineDeclaredSpeedType">
+				<xs:annotation>
+					<xs:documentation>P063 - [1/min]</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FullLoadAndDragCurve">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Entry" type="v1.0:FullLoadAndDragCurveEntryType" minOccurs="2" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Fuel" type="v2.3:EngineFuelType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EngineFuelType">
+		<xs:sequence>
+			<xs:element name="WHTCUrban" type="v1.0:EngineWHTCType">
+				<xs:annotation>
+					<xs:documentation>P109 - [-]</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="WHTCRural" type="v1.0:EngineWHTCType">
+				<xs:annotation>
+					<xs:documentation>P110 - [-]</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="WHTCMotorway" type="v1.0:EngineWHTCType">
+				<xs:annotation>
+					<xs:documentation>P111 - [-]</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="BFColdHot" type="v1.0:EngineColdHotBalancingFactorType">
+				<xs:annotation>
+					<xs:documentation>P159 - [-]</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CFRegPer" type="v1.0:EngineCFRegPerType">
+				<xs:annotation>
+					<xs:documentation>P192 [-]</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CFNCV" type="v1.0:EngineNCVCFType">
+				<xs:annotation>
+					<xs:documentation>P260 - [-]</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="WHRCorrectionFactors" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Electrical" type="v2.3:WHRElectricalCorrectionFactorsType" minOccurs="0"/>
+						<xs:element name="Mechanical" type="v2.3:WHRMechanicalCorrectionFactorsType" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="FuelConsumptionMap">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Entry" type="v2.3:FuelConsumptionEntryType" minOccurs="4" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="type" type="v1.0:FuelTypeType" use="required">
+			<xs:annotation>
+				<xs:documentation>P193 [enum]</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="FuelConsumptionEntryType">
+		<xs:attribute name="engineSpeed" type="v1.0:EngineSpeedType" use="required">
+			<xs:annotation>
+				<xs:documentation>P072 - [1/min]</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="torque" type="v1.0:EngineFuelConsumptionMapTorqueType" use="required">
+			<xs:annotation>
+				<xs:documentation>P073 - [Nm]</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="fuelConsumption" type="v1.0:EngineFuelConsumptionMapFuelConsumptionType" use="required">
+			<xs:annotation>
+				<xs:documentation>P074 - [g/h]</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="electricPower" type="v1.0:Double2">
+			<xs:annotation>
+				<xs:documentation>P348 - [W]</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="mechanicalPower" type="v1.0:Double2">
+			<xs:annotation>
+				<xs:documentation>P349 - [W]</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="GearboxDataDeclarationType">
+		<xs:annotation>
+			<xs:documentation>Gearbox Component</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="v1.0:AbstractTransmissionDataDeclarationType">
+				<xs:sequence>
+					<xs:element name="Manufacturer" type="v1.0:ManufacturerType">
+						<xs:annotation>
+							<xs:documentation>P205 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Model" type="v1.0:ModelType">
+						<xs:annotation>
+							<xs:documentation>P206 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="CertificationNumber" type="v1.0:CertificationNumberType">
+						<xs:annotation>
+							<xs:documentation>P262 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Date" type="v1.0:DateTimeWithTimezone">
+						<xs:annotation>
+							<xs:documentation>P208 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="AppVersion" type="v1.0:AppVersionType">
+						<xs:annotation>
+							<xs:documentation>P209 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="TransmissionType" type="v2.3:GearboxTransmissionTypeType">
+						<xs:annotation>
+							<xs:documentation>P076 - enum</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MainCertificationMethod" type="v1.0:GearboxCertificationOptionType">
+						<xs:annotation>
+							<xs:documentation>P254 - enum</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Gears" type="v2.0:AbstractGearsDeclarationType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="GearboxFWDDataDeclarationType">
+		<xs:annotation>
+			<xs:documentation>Gearbox Component</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="v1.0:AbstractTransmissionDataDeclarationType">
+				<xs:sequence>
+					<xs:element name="Manufacturer" type="v1.0:ManufacturerType">
+						<xs:annotation>
+							<xs:documentation>P205 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Model" type="v1.0:ModelType">
+						<xs:annotation>
+							<xs:documentation>P206 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="CertificationNumber" type="v1.0:CertificationNumberType">
+						<xs:annotation>
+							<xs:documentation>P262 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Date" type="v1.0:DateTimeWithTimezone">
+						<xs:annotation>
+							<xs:documentation>P208 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="AppVersion" type="v1.0:AppVersionType">
+						<xs:annotation>
+							<xs:documentation>P209 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="TransmissionType" type="v1.0:GearboxTransmissionTypeType">
+						<xs:annotation>
+							<xs:documentation>P076 - enum</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MainCertificationMethod" type="v1.0:GearboxCertificationOptionType">
+						<xs:annotation>
+							<xs:documentation>P254 - enum</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="DifferentialIncluded" type="xs:boolean">
+						<xs:annotation>
+							<xs:documentation>P353 - [bool]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="AxlegearRatio" type="v1.0:Double3">
+						<xs:annotation>
+							<xs:documentation>P150 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Gears" type="v2.0:AbstractGearsDeclarationType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="IEPCComponentDeclarationType">
+		<xs:sequence>
+			<xs:element name="Data" type="v2.3:AbstractIEPCDataType"/>
+			<xs:element name="Signature" type="v2.0:SignatureType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="IEPCGearDeclarationType">
+		<xs:sequence>
+			<xs:element name="Ratio" type="v1.0:GearboxGearRatioType">
+				<xs:annotation>
+					<xs:documentation>P497 - [-]</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MaxOutShaftTorque" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>P498 - [Nm]</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:int">
+						<xs:minExclusive value="0"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="MaxOutShaftSpeed" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>P499 - [1/min]</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:int">
+						<xs:minExclusive value="0"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="number" type="v1.0:GearboxGearNumberType" use="required">
+			<xs:annotation>
+				<xs:documentation>P496 - [-]</xs:documentation>
+				<xs:appinfo>
+				</xs:appinfo>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="IEPCGearsDeclarationType">
+		<xs:complexContent>
+			<xs:extension base="v2.3:AbstractIEPCGearsDeclarationType">
+				<xs:sequence>
+					<xs:element name="Gear" type="v2.3:IEPCGearDeclarationType" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="IEPCMeasuredDataDeclarationType">
+		<xs:complexContent>
+			<xs:extension base="v2.3:AbstractIEPCDataType">
+				<xs:sequence>
+					<xs:group ref="v2.3:IEPCCommonParametersSequenceGroup"/>
+					<xs:element name="CertificationMethod">
+						<xs:annotation>
+							<xs:documentation>P484 - enum</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="v2.3:IEPCCertificationMethodType">
+								<xs:enumeration value="Measured for complete component"/>
+								<xs:enumeration value="Measured for EM and standard values for other components"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:group ref="v2.3:IEPCPowerRatingsSequenceGroup"/>
+					<xs:element name="DifferentialIncluded" type="xs:boolean">
+						<xs:annotation>
+							<xs:documentation>P493 - bool</xs:documentation>
+							<xs:appinfo>
+								<vectoParam:description>
+									<vectoParam:parameterId component="IEPC">493</vectoParam:parameterId>
+									<vectoParam:unit>-</vectoParam:unit>
+								</vectoParam:description>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="DesignTypeWheelMotor" type="xs:boolean">
+						<xs:annotation>
+							<xs:documentation>P494 - bool</xs:documentation>
+							<xs:appinfo>
+								<vectoParam:description>
+									<vectoParam:parameterId component="IEPC">494</vectoParam:parameterId>
+									<vectoParam:unit>-</vectoParam:unit>
+								</vectoParam:description>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="NrOfDesignTypeWheelMotorMeasured" type="v2.3:NrOfDesignTypeWheelMotorMeasuredType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>P495 - enum</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Gears" type="v2.3:AbstractIEPCGearsDeclarationType"/>
+					<xs:element name="VoltageLevel" type="v2.3:IEPCSystemVoltageLevelMeasuredType" minOccurs="2" maxOccurs="unbounded"/>
+					<xs:element name="DragCurve" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Entry" type="v2.3:IEPCSystemDragTorqueEntryType" minOccurs="2" maxOccurs="unbounded"/>
+							</xs:sequence>
+							<xs:attribute name="gear" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:int">
+										<xs:minInclusive value="1"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Conditioning" minOccurs="0">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Entry" type="v2.3:IEPCSystemConditioningEntryType"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="IEPCStandardValuesDataDeclarationType">
+		<xs:complexContent>
+			<xs:extension base="v2.3:AbstractIEPCDataType">
+				<xs:sequence>
+					<xs:group ref="v2.3:IEPCCommonParametersSequenceGroup"/>
+					<xs:element name="CertificationMethod">
+						<xs:annotation>
+							<xs:documentation>P484 - enum</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="v2.3:IEPCCertificationMethodType">
+								<xs:enumeration value="Standard values for all components"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:group ref="v2.3:IEPCPowerRatingsSequenceGroup"/>
+					<xs:element name="DifferentialIncluded" type="xs:boolean">
+						<xs:annotation>
+							<xs:documentation>P493 - bool</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="DesignTypeWheelMotor" type="xs:boolean">
+						<xs:annotation>
+							<xs:documentation>P494 - bool</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="NrOfDesignTypeWheelMotorMeasured" type="v2.3:NrOfDesignTypeWheelMotorMeasuredType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>P495 - enum</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Gears" type="v2.3:AbstractIEPCGearsDeclarationType"/>
+					<xs:element name="VoltageLevel" type="v2.3:IEPCSystemVoltageLevelStandardValuesType"/>
+					<xs:element name="DragCurve">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Entry" type="v2.3:IEPCSystemDragTorqueEntryType" minOccurs="2" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="IEPCSystemConditioningEntryType">
+		<xs:attribute name="coolantTempInlet" type="v2.3:CoolantTempInletType" use="required">
+			<xs:annotation>
+				<xs:documentation>P509 - [°C]</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="coolingPower" type="v2.3:CoolingPowerType" use="required">
+			<xs:annotation>
+				<xs:documentation>P510 - [W]</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="IEPCSystemDragTorqueEntryType">
+		<xs:attribute name="outShaftSpeed" type="v2.3:OutShaftSpeedType" use="required">
+			<xs:annotation>
+				<xs:documentation>P504 - [rpm]</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="dragTorque" type="v2.3:DragTorqueType" use="required">
+			<xs:annotation>
+				<xs:documentation>P505 - [Nm]</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="IEPCSystemMaxTorqueEntryType">
+		<xs:attribute name="outShaftSpeed" type="v2.3:OutShaftSpeedType" use="required">
+			<xs:annotation>
+				<xs:documentation>P501 - [rpm]</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="maxTorque" type="v2.3:maxTorqueType" use="required">
+			<xs:annotation>
+				<xs:documentation>P502 - [Nm]</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="minTorque" type="v2.3:minTorqueType" use="required">
+			<xs:annotation>
+				<xs:documentation>P503 - [Nm]</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="IEPCSystemPowerMapEntryType">
+		<xs:attribute name="outShaftSpeed" type="v2.3:OutShaftSpeedType" use="required">
+			<xs:annotation>
+				<xs:documentation>P506 - [rpm]</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="torque" type="v2.3:PowerMapTorqueType" use="required">
+			<xs:annotation>
+				<xs:documentation>P507 - [Nm]</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="electricPower" type="v2.3:PowerMapElectricPowerType" use="required">
+			<xs:annotation>
+				<xs:documentation>P508 - [W]</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="IEPCSystemVoltageLevelMeasuredType">
+		<xs:complexContent>
+			<xs:extension base="v2.3:AbstractElectricMachineSystemVoltageLevelType">
+				<xs:sequence>
+					<xs:element name="Voltage" type="v2.3:VoltageLevelVoltageType">
+						<xs:annotation>
+							<xs:documentation>P500 - [V]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ContinuousTorque" type="v2.3:MaxTorqueType">
+						<xs:annotation>
+							<xs:documentation>P487 - [Nm]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="TestSpeedContinuousTorque" type="v2.3:TestSpeedType">
+						<xs:annotation>
+							<xs:documentation>P488 - [1/min]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OverloadTorque" type="v2.3:MaxTorqueType">
+						<xs:annotation>
+							<xs:documentation>P489 - [Nm]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="TestSpeedOverloadTorque" type="v2.3:TestSpeedType">
+						<xs:annotation>
+							<xs:documentation>P490 - [1/min]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OverloadDuration" type="v2.3:OverloadDurationType">
+						<xs:annotation>
+							<xs:documentation>P491 - [s]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MaxTorqueCurve" type="v2.3:ElectricMachineSystemMaxTorqueCurveType"/>
+					<xs:element name="PowerMap" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Entry" type="v2.3:IEPCSystemPowerMapEntryType" minOccurs="4" maxOccurs="unbounded"/>
+							</xs:sequence>
+							<xs:attribute name="gear" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:int">
+										<xs:minInclusive value="1"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="IEPCSystemVoltageLevelStandardValuesType">
+		<xs:complexContent>
+			<xs:extension base="v2.3:AbstractElectricMachineSystemVoltageLevelType">
+				<xs:sequence>
+					<xs:element name="ContinuousTorque" type="v2.3:MaxTorqueType">
+						<xs:annotation>
+							<xs:documentation>P487 - [Nm]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="TestSpeedContinuousTorque" type="v2.3:TestSpeedType">
+						<xs:annotation>
+							<xs:documentation>P488 - [1/min]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OverloadTorque" type="v2.3:MaxTorqueType">
+						<xs:annotation>
+							<xs:documentation>P489 - [Nm]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="TestSpeedOverloadTorque" type="v2.3:TestSpeedType">
+						<xs:annotation>
+							<xs:documentation>P490 - [1/min]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="OverloadDuration" type="v2.3:OverloadDurationType">
+						<xs:annotation>
+							<xs:documentation>P491 - [s]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MaxTorqueCurve">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Entry" type="v2.3:IEPCSystemMaxTorqueEntryType" minOccurs="2" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="PowerMap">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Entry" type="v2.3:IEPCSystemPowerMapEntryType" minOccurs="4" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="REESSComponentDeclarationType">
+		<xs:sequence>
+			<xs:element name="Data" type="v2.3:AbstractREESSDataType"/>
+			<xs:element name="Signature" type="v2.0:SignatureType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TyreDataDeclarationType">
+		<xs:complexContent>
+			<xs:extension base="v1.0:AbstractTyreDataDeclarationType">
+				<xs:sequence>
+					<xs:element name="Manufacturer" type="v1.0:ManufacturerType">
+						<xs:annotation>
+							<xs:documentation>P230 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Model" type="v1.0:ModelType">
+						<xs:annotation>
+							<xs:documentation>P231 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="CertificationNumber" type="v1.0:CertificationNumberType">
+						<xs:annotation>
+							<xs:documentation>P267 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Date" type="v1.0:DateTimeWithTimezone">
+						<xs:annotation>
+							<xs:documentation>P233 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="AppVersion" type="v1.0:AppVersionType">
+						<xs:annotation>
+							<xs:documentation>P234 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Dimension" type="v2.3:TyreDimensionType">
+						<xs:annotation>
+							<xs:documentation>P108 - enum</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="TyreClass">
+						<xs:annotation>
+							<xs:documentation>P370 - enum</xs:documentation>
+							<xs:appinfo>
+								<vectoParam:description>
+									<vectoParam:parameterId component="Tyre">370</vectoParam:parameterId>
+									<vectoParam:unit>-</vectoParam:unit>
+								</vectoParam:description>
+							</xs:appinfo>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:minLength value="1"/>
+								<xs:enumeration value="C1"/>
+								<xs:enumeration value="C2"/>
+								<xs:enumeration value="C3"/>
+								<xs:enumeration value="N/A"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="FuelEfficiencyClass">
+						<xs:annotation>
+							<xs:documentation>P371 - enum</xs:documentation>
+							<xs:appinfo>
+								<vectoParam:description>
+									<vectoParam:parameterId component="Tyre">371</vectoParam:parameterId>
+									<vectoParam:unit>-</vectoParam:unit>
+								</vectoParam:description>
+							</xs:appinfo>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:enumeration value="A"/>
+								<xs:enumeration value="B"/>
+								<xs:enumeration value="C"/>
+								<xs:enumeration value="D"/>
+								<xs:enumeration value="E"/>
+								<xs:enumeration value="F"/>
+								<xs:enumeration value="G"/>
+								<xs:enumeration value="N/A"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="RRCDeclared" type="v1.0:TyreRRCISOType">
+						<xs:annotation>
+							<xs:documentation>P046 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="FzISO" type="v1.0:TyreFzISOType">
+						<xs:annotation>
+							<xs:documentation>P047 - [N]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="WHRElectricalCorrectionFactorsType">
+		<xs:sequence>
+			<xs:element name="Urban">
+				<xs:annotation>
+					<xs:documentation>P338 - [-]</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="v1.0:Double4">
+						<xs:minExclusive value="0.0"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Rural">
+				<xs:annotation>
+					<xs:documentation>P339 - [-]</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="v1.0:Double4">
+						<xs:minExclusive value="0.0"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Motorway">
+				<xs:annotation>
+					<xs:documentation>P340 - [-]</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="v1.0:Double4">
+						<xs:minExclusive value="0.0"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="BFColdHot">
+				<xs:annotation>
+					<xs:documentation>P341 - [-]</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="v1.0:Double4">
+						<xs:minExclusive value="0.0"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="CFRegPer">
+				<xs:annotation>
+					<xs:documentation>P342 - [-]</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="v1.0:Double4">
+						<xs:minExclusive value="0.0"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="WHRMechanicalCorrectionFactorsType">
+		<xs:sequence>
+			<xs:element name="Urban">
+				<xs:annotation>
+					<xs:documentation>P343 - [-]</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="v1.0:Double4">
+						<xs:minExclusive value="0.0"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Rural">
+				<xs:annotation>
+					<xs:documentation>P344 - [-]</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="v1.0:Double4">
+						<xs:minExclusive value="0.0"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Motorway">
+				<xs:annotation>
+					<xs:documentation>P345 - [-]</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="v1.0:Double4">
+						<xs:minExclusive value="0.0"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="BFColdHot">
+				<xs:annotation>
+					<xs:documentation>P346 - [-]</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="v1.0:Double4">
+						<xs:minExclusive value="0.0"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="CFRegPer">
+				<xs:annotation>
+					<xs:documentation>P347 - [-]</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="v1.0:Double4">
+						<xs:minExclusive value="0.0"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="WHRTypeType">
+		<xs:sequence>
+			<xs:element name="MechanicalOutputICE" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>P335 - bool</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MechanicalOutputDrivetrain" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>P336 - bool</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ElectricalOutput" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>P337 - bool</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="AuxSPTechnologyType">
+		<xs:annotation>
+			<xs:documentation>P182</xs:documentation>
+			<xs:appinfo>
+				<vectoParam:description>
+					<vectoParam:parameterId component="Vehicle/Auxiliaries">182</vectoParam:parameterId>
+					<vectoParam:comment>Multiple entires allowed, one per steered axle</vectoParam:comment>
+					<vectoParam:unit>-</vectoParam:unit>
+				</vectoParam:description>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Fixed displacement"/>
+			<xs:enumeration value="Fixed displacement with elec. control"/>
+			<xs:enumeration value="Dual displacement with mech. control"/>
+			<xs:enumeration value="Dual displacement with elec. control"/>
+			<xs:enumeration value="Variable displacement mech. controlled"/>
+			<xs:enumeration value="Variable displacement elec. controlled"/>
+			<xs:enumeration value="Electric driven pump"/>
+			<xs:enumeration value="Full electric steering gear"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BatteryMaxCurrentType">
+		<xs:annotation>
+			<xs:appinfo>
+				<vectoParam:description>
+					<vectoParam:parameterId component="BatterySystem/CurrentLimits">530</vectoParam:parameterId>
+					<vectoParam:parameterId component="BatterySystem/CurrentLimits">531</vectoParam:parameterId>
+					<vectoParam:unit>A</vectoParam:unit>
+				</vectoParam:description>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="v1.0:Double2">
+			<xs:minInclusive value="0.00"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BatteryOCVType">
+		<xs:annotation>
+			<xs:appinfo>
+				<vectoParam:description>
+					<vectoParam:parameterId component="BatterySystem/OCV">523</vectoParam:parameterId>
+					<vectoParam:unit>V</vectoParam:unit>
+				</vectoParam:description>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="v1.0:Double2">
+			<xs:minExclusive value="0.00"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BatterySoCType">
+		<xs:annotation>
+			<xs:appinfo>
+				<vectoParam:description>
+					<vectoParam:parameterId component="BatterySystem/OCV">522</vectoParam:parameterId>
+					<vectoParam:parameterId component="BatterySystem/DCIR">524</vectoParam:parameterId>
+					<vectoParam:parameterId component="BatterySystem/CurrentLimits">529</vectoParam:parameterId>
+					<vectoParam:unit>%</vectoParam:unit>
+				</vectoParam:description>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:int">
+			<xs:minInclusive value="0"/>
+			<xs:maxInclusive value="100"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BatteryTypeType">
+		<xs:annotation>
+			<xs:appinfo>
+				<vectoParam:description>
+					<vectoParam:parameterId component="BatterySystem">517</vectoParam:parameterId>
+					<vectoParam:unit>-</vectoParam:unit>
+				</vectoParam:description>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="HPBS"/>
+			<xs:enumeration value="HEBS"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CapacitanceType">
+		<xs:annotation>
+			<xs:appinfo>
+				<vectoParam:description>
+					<vectoParam:parameterId component="CapacitorSystem">538</vectoParam:parameterId>
+					<vectoParam:unit>F</vectoParam:unit>
+				</vectoParam:description>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="v1.0:Double2">
+			<xs:minExclusive value="0.00"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CapacitorMaxCurrentType">
+		<xs:annotation>
+			<xs:appinfo>
+				<vectoParam:description>
+					<vectoParam:parameterId component="CapacitorSystem">542</vectoParam:parameterId>
+					<vectoParam:parameterId component="CapacitorSystem">543</vectoParam:parameterId>
+					<vectoParam:unit>A</vectoParam:unit>
+				</vectoParam:description>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="v1.0:Double2">
+			<xs:minExclusive value="0.00"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CapacitorVoltageType">
+		<xs:annotation>
+			<xs:appinfo>
+				<vectoParam:description>
+					<vectoParam:parameterId component="CapacitorSystem">540</vectoParam:parameterId>
+					<vectoParam:parameterId component="CapacitorSystem">541</vectoParam:parameterId>
+					<vectoParam:unit>V</vectoParam:unit>
+				</vectoParam:description>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="v1.0:Double2">
+			<xs:minInclusive value="0.00"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CertificationMethodType">
+		<xs:annotation>
+			<xs:appinfo>
+				<vectoParam:description>
+					<vectoParam:parameterId component="ElectricMachine">456</vectoParam:parameterId>
+					<vectoParam:parameterId component="IEPC">484</vectoParam:parameterId>
+					<vectoParam:parameterId component="BatterySystem">516</vectoParam:parameterId>
+					<vectoParam:parameterId component="CapacitorSystem">537</vectoParam:parameterId>
+					<vectoParam:unit>-</vectoParam:unit>
+				</vectoParam:description>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Measured"/>
+			<xs:enumeration value="Standard values"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CoolantTempInletType">
+		<xs:annotation>
+			<xs:documentation>P476, P509 - [°C]</xs:documentation>
+			<xs:appinfo>
+				<vectoParam:description>
+					<vectoParam:parameterId component="ElectricMachine/Conditioning">476</vectoParam:parameterId>
+					<vectoParam:parameterId component="IEPC/Conditioning">509</vectoParam:parameterId>
+					<vectoParam:unit>°C</vectoParam:unit>
+				</vectoParam:description>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:int"/>
+	</xs:simpleType>
+	<xs:simpleType name="CoolingPowerType">
+		<xs:annotation>
+			<xs:documentation>P477, P510 - [W]</xs:documentation>
+			<xs:appinfo>
+				<vectoParam:description>
+					<vectoParam:parameterId component="ElectricMachine/Conditioning">477</vectoParam:parameterId>
+					<vectoParam:parameterId component="IEPC/Conditioning">510</vectoParam:parameterId>
+					<vectoParam:unit>W</vectoParam:unit>
+				</vectoParam:description>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:int"/>
+	</xs:simpleType>
+	<xs:simpleType name="DragTorqueType">
+		<xs:annotation>
+			<xs:documentation>P472, P505 - [Nm]</xs:documentation>
+			<xs:appinfo>
+				<vectoParam:description>
+					<vectoParam:parameterId component="ElectricMachine/DragTorque">472</vectoParam:parameterId>
+					<vectoParam:parameterId component="IEPC/DragTorque">505</vectoParam:parameterId>
+					<vectoParam:unit>Nm</vectoParam:unit>
+				</vectoParam:description>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="v1.0:Double2"/>
+	</xs:simpleType>
+	<xs:simpleType name="ElectricMachineTypeType">
+		<xs:annotation>
+			<xs:appinfo>
+				<vectoParam:description>
+					<vectoParam:parameterId component="ElectricMachine">455</vectoParam:parameterId>
+					<vectoParam:parameterId component="IEPC">483</vectoParam:parameterId>
+					<vectoParam:unit>-</vectoParam:unit>
+				</vectoParam:description>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ASM"/>
+			<xs:enumeration value="ESM"/>
+			<xs:enumeration value="PSM"/>
+			<xs:enumeration value="RM"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="GearboxTransmissionTypeType">
+		<xs:annotation>
+			<xs:appinfo>
+				<vectoParam:description>
+					<vectoParam:parameterId component="Gearbox">076</vectoParam:parameterId>
+					<vectoParam:unit>-</vectoParam:unit>
+				</vectoParam:description>
+			</xs:appinfo>
+			<xs:documentation>P076 - [-]</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="SMT"/>
+			<xs:enumeration value="AMT"/>
+			<xs:enumeration value="APT-S"/>
+			<xs:enumeration value="APT-P"/>
+			<xs:enumeration value="APT-N"/>
+			<xs:enumeration value="IHPC Type 1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IEPCCertificationMethodType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Measured for complete component"/>
+			<xs:enumeration value="Measured for EM and standard values for other components"/>
+			<xs:enumeration value="Standard values for all components"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IHPCTypeType">
+		<xs:annotation>
+			<xs:appinfo>
+				<vectoParam:description>
+					<vectoParam:parameterId component="ElectricMachine">466</vectoParam:parameterId>
+					<vectoParam:unit>-</vectoParam:unit>
+				</vectoParam:description>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="None"/>
+			<xs:enumeration value="IHPC Type 1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="InternalResistanceType">
+		<xs:annotation>
+			<xs:appinfo>
+				<vectoParam:description>
+					<vectoParam:parameterId component="BatterySystem/DCIR">525</vectoParam:parameterId>
+					<vectoParam:parameterId component="BatterySystem/DCIR">526</vectoParam:parameterId>
+					<vectoParam:parameterId component="BatterySystem/DCIR">527</vectoParam:parameterId>
+					<vectoParam:parameterId component="BatterySystem/DCIR">528</vectoParam:parameterId>
+					<vectoParam:unit>mOhm</vectoParam:unit>
+				</vectoParam:description>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="v1.0:Double2">
+			<xs:minExclusive value="0.00"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="MaxTorqueType">
+		<xs:annotation>
+			<xs:appinfo>
+				<vectoParam:description>
+					<vectoParam:parameterId component="ElectricMachine">459</vectoParam:parameterId>
+					<vectoParam:parameterId component="ElectricMachine">461</vectoParam:parameterId>
+					<vectoParam:parameterId component="IEPC">487</vectoParam:parameterId>
+					<vectoParam:parameterId component="IEPC">489</vectoParam:parameterId>
+					<vectoParam:unit>Nm</vectoParam:unit>
+				</vectoParam:description>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="v1.0:Double2">
+			<xs:minExclusive value="0.00"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="maxTorqueType">
+		<xs:annotation>
+			<xs:documentation>P469, P502 - [Nm]</xs:documentation>
+			<xs:appinfo>
+				<vectoParam:description>
+					<vectoParam:parameterId component="ElectricMachine/MaxMinTorque">469</vectoParam:parameterId>
+					<vectoParam:parameterId component="IEPC/MaxMinTorque">502</vectoParam:parameterId>
+					<vectoParam:unit>Nm</vectoParam:unit>
+				</vectoParam:description>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="v1.0:Double2">
+			<xs:minInclusive value="0.00"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="minTorqueType">
+		<xs:annotation>
+			<xs:documentation>P470, P503 - [Nm]</xs:documentation>
+			<xs:appinfo>
+				<vectoParam:description>
+					<vectoParam:parameterId component="ElectricMachine/MaxMinTorque">470</vectoParam:parameterId>
+					<vectoParam:parameterId component="IEPC/MaxMinTorque">503</vectoParam:parameterId>
+					<vectoParam:unit>Nm</vectoParam:unit>
+				</vectoParam:description>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="v1.0:Double2">
+			<xs:maxInclusive value="0.00"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="NrOfDesignTypeWheelMotorMeasuredType">
+		<xs:annotation>
+			<xs:appinfo>
+				<vectoParam:description>
+					<vectoParam:parameterId component="IEPC">495</vectoParam:parameterId>
+					<vectoParam:unit>-</vectoParam:unit>
+				</vectoParam:description>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:int">
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="OutShaftSpeedType">
+		<xs:annotation>
+			<xs:documentation>P468, P471, P473, P501, P504, P506 - [rpm]</xs:documentation>
+			<xs:appinfo>
+				<vectoParam:description>
+					<vectoParam:parameterId component="ElectricMachine/MaxMinTorque">468</vectoParam:parameterId>
+					<vectoParam:parameterId component="ElectricMachine/PowerMap">473</vectoParam:parameterId>
+					<vectoParam:parameterId component="IEPC/MaxMinTorque">501</vectoParam:parameterId>
+					<vectoParam:parameterId component="IEPC/PowerMap">506</vectoParam:parameterId>
+					<vectoParam:parameterId component="ElectricMachine/DragTorque">471</vectoParam:parameterId>
+					<vectoParam:parameterId component="IEPC/DragTorque">504</vectoParam:parameterId>
+					<vectoParam:unit>1/min</vectoParam:unit>
+				</vectoParam:description>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="v1.0:Double2">
+			<xs:minInclusive value="0.00"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="OverloadDurationType">
+		<xs:annotation>
+			<xs:appinfo>
+				<vectoParam:description>
+					<vectoParam:parameterId component="ElectricMachine">463</vectoParam:parameterId>
+					<vectoParam:unit>s</vectoParam:unit>
+				</vectoParam:description>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="v1.0:Double2">
+			<xs:minExclusive value="0.00"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PowerMapElectricPowerType">
+		<xs:annotation>
+			<xs:documentation>P475, P508 - [W]</xs:documentation>
+			<xs:appinfo>
+				<vectoParam:description>
+					<vectoParam:parameterId component="ElectricMachine/PowerMap">475</vectoParam:parameterId>
+					<vectoParam:parameterId component="IEPC/PowerMap">508</vectoParam:parameterId>
+					<vectoParam:unit>W</vectoParam:unit>
+				</vectoParam:description>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="v1.0:Double2"/>
+	</xs:simpleType>
+	<xs:simpleType name="PowerMapTorqueType">
+		<xs:annotation>
+			<xs:documentation>P474, P507 - [Nm]</xs:documentation>
+			<xs:appinfo>
+				<vectoParam:description>
+					<vectoParam:parameterId component="ElectricMachine/PowerMap">474</vectoParam:parameterId>
+					<vectoParam:parameterId component="IEPC/PowerMap">507</vectoParam:parameterId>
+					<vectoParam:unit>Nm</vectoParam:unit>
+				</vectoParam:description>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="v1.0:Double2"/>
+	</xs:simpleType>
+	<xs:simpleType name="R85RatedPowerType">
+		<xs:annotation>
+			<xs:appinfo>
+				<vectoParam:description>
+					<vectoParam:parameterId component="ElectricMachine">457</vectoParam:parameterId>
+					<vectoParam:parameterId component="IEPC">483</vectoParam:parameterId>
+					<vectoParam:unit>W</vectoParam:unit>
+				</vectoParam:description>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:int">
+			<xs:minExclusive value="0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="RotationalInertiaType">
+		<xs:annotation>
+			<xs:appinfo>
+				<vectoParam:description>
+					<vectoParam:parameterId component="ElectricMachine">458</vectoParam:parameterId>
+					<vectoParam:parameterId component="IEPC">486</vectoParam:parameterId>
+					<vectoParam:unit>kgm²</vectoParam:unit>
+				</vectoParam:description>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="v1.0:Double2">
+			<xs:minExclusive value="0.00"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TestSpeedType">
+		<xs:annotation>
+			<xs:appinfo>
+				<vectoParam:description>
+					<vectoParam:parameterId component="ElectricMachine">460</vectoParam:parameterId>
+					<vectoParam:parameterId component="ElectricMachine">462</vectoParam:parameterId>
+					<vectoParam:parameterId component="IEPC">488</vectoParam:parameterId>
+					<vectoParam:parameterId component="IEPC">490</vectoParam:parameterId>
+					<vectoParam:unit>1/min</vectoParam:unit>
+				</vectoParam:description>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="v1.0:Double2">
+			<xs:minExclusive value="0.00"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TyreDimensionType">
+		<xs:annotation>
+			<xs:appinfo>
+				<vectoParam:description>
+					<vectoParam:parameterId component="Tyre">108</vectoParam:parameterId>
+					<vectoParam:unit>-</vectoParam:unit>
+				</vectoParam:description>
+			</xs:appinfo>
+			<xs:documentation>P108 - enum</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="9 R22.5"/>
+			<xs:enumeration value="9.00 R20"/>
+			<xs:enumeration value="9.5 R17.5"/>
+			<xs:enumeration value="10 R17.5"/>
+			<xs:enumeration value="10 R22.5"/>
+			<xs:enumeration value="10.00 R20"/>
+			<xs:enumeration value="11 R22.5"/>
+			<xs:enumeration value="11.00 R20"/>
+			<xs:enumeration value="12 R22.5"/>
+			<xs:enumeration value="12.00 R20"/>
+			<xs:enumeration value="12.00 R24"/>
+			<xs:enumeration value="12.5 R20"/>
+			<xs:enumeration value="13 R22.5"/>
+			<xs:enumeration value="14.00 R20"/>
+			<xs:enumeration value="14.5 R20"/>
+			<xs:enumeration value="16.00 R20"/>
+			<xs:enumeration value="205/75 R17.5"/>
+			<xs:enumeration value="215/75 R17.5"/>
+			<xs:enumeration value="225/70 R17.5"/>
+			<xs:enumeration value="225/75 R17.5"/>
+			<xs:enumeration value="235/75 R17.5"/>
+			<xs:enumeration value="245/70 R17.5"/>
+			<xs:enumeration value="245/70 R19.5"/>
+			<xs:enumeration value="255/70 R22.5"/>
+			<xs:enumeration value="265/70 R17.5"/>
+			<xs:enumeration value="265/70 R19.5"/>
+			<xs:enumeration value="275/70 R22.5"/>
+			<xs:enumeration value="275/80 R22.5"/>
+			<xs:enumeration value="285/60 R22.5"/>
+			<xs:enumeration value="285/70 R19.5"/>
+			<xs:enumeration value="295/55 R22.5"/>
+			<xs:enumeration value="295/60 R22.5"/>
+			<xs:enumeration value="295/80 R22.5"/>
+			<xs:enumeration value="305/60 R22.5"/>
+			<xs:enumeration value="305/70 R19.5"/>
+			<xs:enumeration value="305/70 R22.5"/>
+			<xs:enumeration value="305/75 R24.5"/>
+			<xs:enumeration value="315/45 R22.5"/>
+			<xs:enumeration value="315/60 R22.5"/>
+			<xs:enumeration value="315/70 R22.5"/>
+			<xs:enumeration value="315/80 R22.5"/>
+			<xs:enumeration value="325/95 R24"/>
+			<xs:enumeration value="335/80 R20"/>
+			<xs:enumeration value="355/50 R22.5"/>
+			<xs:enumeration value="365/70 R22.5"/>
+			<xs:enumeration value="365/80 R20"/>
+			<xs:enumeration value="365/85 R20"/>
+			<xs:enumeration value="375/45 R22.5"/>
+			<xs:enumeration value="375/50 R22.5"/>
+			<xs:enumeration value="375/90 R22.5"/>
+			<xs:enumeration value="385/55 R22.5"/>
+			<xs:enumeration value="385/65 R22.5"/>
+			<xs:enumeration value="395/85 R20"/>
+			<xs:enumeration value="425/65 R22.5"/>
+			<xs:enumeration value="495/45 R22.5"/>
+			<xs:enumeration value="525/65 R20.5"/>
+			<xs:enumeration value="11.00 R16"/>
+			<xs:enumeration value="6.00 R9"/>
+			<xs:enumeration value="205/65 R17.5"/>
+			<xs:enumeration value="225/75 R16C"/>
+			<xs:enumeration value="255/100 R16"/>
+			<xs:enumeration value="255/60 R19.5"/>
+			<xs:enumeration value="265/55 R19.5"/>
+			<xs:enumeration value="275/60 R19.5"/>
+			<xs:enumeration value="275/80 R20"/>
+			<xs:enumeration value="285/65 R16C"/>
+			<xs:enumeration value="295/75 R22.5"/>
+			<xs:enumeration value="325/85 R16"/>
+			<xs:enumeration value="435/50 R19.5"/>
+			<xs:enumeration value="435/50 R22.5"/>
+			<xs:enumeration value="445/40 R22.5"/>
+			<xs:enumeration value="445/45 R19.5"/>
+			<xs:enumeration value="445/65 R22.5"/>
+			<xs:enumeration value="445/75 R22.5"/>
+			<xs:enumeration value="455/40 R22.5"/>
+			<xs:enumeration value="455/45 R22.5"/>
+			<xs:enumeration value="475/80 R20"/>
+			<xs:enumeration value="7.00 R16C"/>
+			<xs:enumeration value="7.50 R15"/>
+			<xs:enumeration value="7.50 R16"/>
+			<xs:enumeration value="7.50 R16C"/>
+			<xs:enumeration value="8.25 R15"/>
+			<xs:enumeration value="8.25 R16C"/>
+			<xs:enumeration value="8.5 R17.5"/>
+			<xs:enumeration value="8 R17.5"/>
+			<xs:enumeration value="LT265/75 R16"/>
+			<xs:enumeration value="385/55 R19.5"/>
+			<xs:enumeration value="24 R21"/>
+			<xs:enumeration value="205/70 R15C"/>
+			<xs:enumeration value="215/70 R15C"/>
+			<xs:enumeration value="225/70 R15C"/>
+			<xs:enumeration value="185/75 R16C"/>
+			<xs:enumeration value="195/65 R16C"/>
+			<xs:enumeration value="195/75 R16C"/>
+			<xs:enumeration value="205/65 R16C"/>
+			<xs:enumeration value="205/75 R16C"/>
+			<xs:enumeration value="215/65 R16C"/>
+			<xs:enumeration value="215/75 R16C"/>
+			<xs:enumeration value="225/65 R16C"/>
+			<xs:enumeration value="235/65 R16C"/>
+			<xs:enumeration value="215/60 R17C"/>
+			<xs:enumeration value="235/60 R17C"/>
+			<xs:enumeration value="425/55 R19.5"/>
+			<xs:enumeration value="425/55 R19.5"/>
+			<xs:enumeration value="205/80 R 15"/>
+			<xs:enumeration value="205/70 R 15"/>
+			<xs:enumeration value="205/70 R17C"/>
+			<xs:enumeration value="285/55 R16C"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VoltageLevelVoltageType">
+		<xs:annotation>
+			<xs:appinfo>
+				<vectoParam:description>
+					<vectoParam:parameterId component="ElectricMachine/VoltageLevel">467</vectoParam:parameterId>
+					<vectoParam:parameterId component="IEPC/VoltageLevel">500</vectoParam:parameterId>
+					<vectoParam:unit>V</vectoParam:unit>
+				</vectoParam:description>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:int">
+			<xs:minExclusive value="0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:group name="ElectricMachineSystemCommonParametersSequenceGroup">
+		<xs:sequence>
+			<xs:element name="Manufacturer" type="v1.0:ManufacturerType">
+				<xs:annotation>
+					<xs:documentation>P450 - [-]</xs:documentation>
+					<xs:appinfo>
+						<vectoParam:description>
+							<vectoParam:parameterId component="ElectricMachine">450</vectoParam:parameterId>
+							<vectoParam:unit>-</vectoParam:unit>
+						</vectoParam:description>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Model" type="v1.0:ModelType">
+				<xs:annotation>
+					<xs:documentation>P451 - [-]</xs:documentation>
+					<xs:appinfo>
+						<vectoParam:description>
+							<vectoParam:parameterId component="ElectricMachine">451</vectoParam:parameterId>
+							<vectoParam:unit>-</vectoParam:unit>
+						</vectoParam:description>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CertificationNumber" type="v1.0:CertificationNumberType">
+				<xs:annotation>
+					<xs:documentation>P452 - [-]</xs:documentation>
+					<xs:appinfo>
+						<vectoParam:description>
+							<vectoParam:parameterId component="ElectricMachine">452</vectoParam:parameterId>
+							<vectoParam:unit>-</vectoParam:unit>
+						</vectoParam:description>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Date" type="v1.0:DateTimeWithTimezone">
+				<xs:annotation>
+					<xs:documentation>P453 - [-]</xs:documentation>
+					<xs:appinfo>
+						<vectoParam:description>
+							<vectoParam:parameterId component="ElectricMachine">453</vectoParam:parameterId>
+							<vectoParam:unit>-</vectoParam:unit>
+						</vectoParam:description>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AppVersion" type="v1.0:AppVersionType">
+				<xs:annotation>
+					<xs:documentation>P454 - [-]</xs:documentation>
+					<xs:appinfo>
+						<vectoParam:description>
+							<vectoParam:parameterId component="ElectricMachine">454</vectoParam:parameterId>
+							<vectoParam:unit>-</vectoParam:unit>
+						</vectoParam:description>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ElectricMachineType" type="v2.3:ElectricMachineTypeType">
+				<xs:annotation>
+					<xs:documentation>P455 - enum</xs:documentation>
+					<xs:appinfo>
+						<vectoParam:description>
+							<vectoParam:parameterId component="ElectricMachine">455</vectoParam:parameterId>
+							<vectoParam:unit>-</vectoParam:unit>
+						</vectoParam:description>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="ElectricMachineSystemPowerRatingsSequenceGroup">
+		<xs:sequence>
+			<xs:element name="R85RatedPower" type="v2.3:R85RatedPowerType">
+				<xs:annotation>
+					<xs:documentation>P457 - [W]</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RotationalInertia" type="v2.3:RotationalInertiaType">
+				<xs:annotation>
+					<xs:documentation>P458 - [kgm²]</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="IEPCCommonParametersSequenceGroup">
+		<xs:sequence>
+			<xs:element name="Manufacturer" type="v1.0:ManufacturerType">
+				<xs:annotation>
+					<xs:documentation>P478 - [-]</xs:documentation>
+					<xs:appinfo>
+						<vectoParam:description>
+							<vectoParam:parameterId component="IEPC">478</vectoParam:parameterId>
+							<vectoParam:unit>-</vectoParam:unit>
+						</vectoParam:description>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Model" type="v1.0:ModelType">
+				<xs:annotation>
+					<xs:documentation>P479 - [-]</xs:documentation>
+					<xs:appinfo>
+						<vectoParam:description>
+							<vectoParam:parameterId component="IEPC">479</vectoParam:parameterId>
+							<vectoParam:unit>-</vectoParam:unit>
+						</vectoParam:description>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CertificationNumber" type="v1.0:CertificationNumberType">
+				<xs:annotation>
+					<xs:documentation>P480 - [-]</xs:documentation>
+					<xs:appinfo>
+						<vectoParam:description>
+							<vectoParam:parameterId component="IEPC">480</vectoParam:parameterId>
+							<vectoParam:unit>-</vectoParam:unit>
+						</vectoParam:description>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Date" type="v1.0:DateTimeWithTimezone">
+				<xs:annotation>
+					<xs:documentation>P481 - [-]</xs:documentation>
+					<xs:appinfo>
+						<vectoParam:description>
+							<vectoParam:parameterId component="IEPC">481</vectoParam:parameterId>
+							<vectoParam:unit>-</vectoParam:unit>
+						</vectoParam:description>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AppVersion" type="v1.0:AppVersionType">
+				<xs:annotation>
+					<xs:documentation>P482 - [-]</xs:documentation>
+					<xs:appinfo>
+						<vectoParam:description>
+							<vectoParam:parameterId component="IEPC">482</vectoParam:parameterId>
+							<vectoParam:unit>-</vectoParam:unit>
+						</vectoParam:description>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ElectricMachineType" type="v2.3:ElectricMachineTypeType">
+				<xs:annotation>
+					<xs:documentation>P483 - enum</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="IEPCPowerRatingsSequenceGroup">
+		<xs:sequence>
+			<xs:element name="R85RatedPower" type="v2.3:R85RatedPowerType">
+				<xs:annotation>
+					<xs:documentation>P485 - [W]</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RotationalInertia" type="v2.3:RotationalInertiaType">
+				<xs:annotation>
+					<xs:documentation>P486 [ kgm2]</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:group>
+</xs:schema>
