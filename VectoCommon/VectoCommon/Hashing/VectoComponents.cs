@@ -122,6 +122,16 @@ namespace TUGraz.VectoCommon.Hashing
 					return "ANGL-";
 				case VectoComponents.Airdrag:
 					return "AD-";
+				case VectoComponents.ADC:
+					return "ADC-";
+				case VectoComponents.REESS:
+				case VectoComponents.BatterySystem:
+				case VectoComponents.CapacitorSystem:
+					return "REESS-";
+				case VectoComponents.ElectricMachineSystem:
+					return "EM-";
+				case VectoComponents.IEPC:
+					return "IEPC-";
 				case VectoComponents.Tyre:
 					return "TYRE-";
 				case VectoComponents.VectoOutput:

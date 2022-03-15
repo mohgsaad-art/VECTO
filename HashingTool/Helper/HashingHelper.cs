@@ -108,7 +108,9 @@ namespace HashingTool.Helper
 			var localName = x.DocumentElement.FirstChild.LocalName;
 			var components = new[] {
 				VectoComponents.Engine, VectoComponents.Airdrag, VectoComponents.Angledrive, VectoComponents.Axlegear,
-				VectoComponents.Gearbox, VectoComponents.Retarder, VectoComponents.TorqueConverter, VectoComponents.Tyre
+				VectoComponents.Gearbox, VectoComponents.Retarder, VectoComponents.TorqueConverter, VectoComponents.Tyre,
+				VectoComponents.ADC, VectoComponents.BatterySystem, VectoComponents.CapacitorSystem, VectoComponents.ElectricMachineSystem, VectoComponents.IEPC,
+				VectoComponents.REESS
 			};
 			var valid = components.Where(c => c.XMLElementName() == localName).Any();
 			if (!valid) {
