@@ -171,12 +171,18 @@ namespace VECTOTrailer.ViewModel.Impl
 			_settings = new SettingsModel();
 			_autoSimulator = autoSimulator;
             _autoSimulator.Messages.CollectionChanged += Messages_CollectionChanged;
+
+
 				
 			LoadOptions();
 			SetJobEntries();
 
 			ConfigureSimulationWorker();
 			ConfigureNlog();
+
+			Jobs.CollectionChanged += ((sender, args) => {
+				OnPropertyChanged(nameof(AllJobsChecked));
+			});
 		}
 
         private void Messages_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -402,6 +408,33 @@ namespace VECTOTrailer.ViewModel.Impl
 				_autoSimulator.ToggleAutoSimulator();
 			})); }
 
+		
+		public bool? AllJobsChecked
+		{
+			get
+			{
+				if (Jobs.All(job => job.Selected)) {
+					return true;
+				}
+
+				if (Jobs.All(job => !job.Selected)) {
+					return false;
+				}
+
+				return null;
+			}
+			set
+			{
+				if (value == null) {
+					return;
+				}
+
+				foreach (var jobEntry in Jobs) {
+					jobEntry.Selected = value.Value;
+				}
+			}
+		}
+
 
 		public ICommand BrowseAutoSimOutputDirectory
 		{
@@ -440,8 +473,10 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		private void DoDoubleClick(JobEntry jobEntry)
 		{
-			if (jobEntry == null || !IsJobFile(jobEntry.JobEntryFilePath))
+			if (jobEntry == null || !IsJobFile(jobEntry.JobEntryFilePath)) {
 				return;
+			}
+
 			DoEditJob(jobEntry);
 		}
 

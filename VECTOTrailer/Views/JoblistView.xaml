@@ -72,13 +72,22 @@
                                     </StackPanel>
                                 </Button>
                             </StackPanel>
+                            <DockPanel LastChildFill="True" HorizontalAlignment="Stretch" Margin="5 5 0 5">
+                                <StackPanel DockPanel.Dock="Right" Width="20">
+                                    <CheckBox  HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding Path=AllJobsChecked, Mode=TwoWay}"/>
+                                </StackPanel>
+                               
+                                    
+                      
+                                <TextBlock DockPanel.Dock="Left">Check All</TextBlock>
+                            </DockPanel>
                             
                         </StackPanel>
                     </Grid>
 
                     <Grid Grid.Row="0" Grid.Column="1" Margin="10">
 
-                        <DataGrid x:Name="JobList" ItemsSource="{Binding Jobs}" 
+                        <DataGrid x:Name="JobList" ItemsSource="{Binding Jobs}" HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
                       SelectedValue="{Binding DataContext.SelectedJobEntry, RelativeSource={RelativeSource AncestorType=views:JoblistView}}"
                       Style="{DynamicResource AzureDataGrid}" BorderThickness="1" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" 
                       IsReadOnly="False" HeadersVisibility="All"  RowHeaderWidth="5" IsSynchronizedWithCurrentItem="True" 
@@ -87,11 +96,9 @@
                             <DataGrid.InputBindings>
                                 <MouseBinding
                         MouseAction="LeftDoubleClick"
-                        Command="{Binding DoubleClickCommand}"
+                        Command="{Binding EditCompletedFile}"
                         CommandParameter="{Binding Jobs/}"/>
                             </DataGrid.InputBindings>
-
-
 
                             <DataGrid.Resources>
                                 <ContextMenu x:Key="RowMenu">
@@ -140,8 +147,24 @@
                             </DataGrid.ContextMenu>
 
                             <DataGrid.Columns>
-                                <DataGridCheckBoxColumn Binding="{Binding Selected, UpdateSourceTrigger=PropertyChanged}" />
-                                <DataGridTextColumn Header="File Path" Binding="{Binding JobEntryFilePath}" IsReadOnly="True">
+                                <DataGridCheckBoxColumn Binding="{Binding Selected, UpdateSourceTrigger=PropertyChanged}">
+                                    <DataGridCheckBoxColumn.ElementStyle>
+                                        <Style>
+                                            <Setter Property="CheckBox.HorizontalAlignment" Value="Center"/>
+                                            <Setter Property="CheckBox.VerticalAlignment" Value="Center"></Setter>
+                                        </Style>
+                                    </DataGridCheckBoxColumn.ElementStyle>
+                                    <!--<DataGridCheckBoxColumn.Header>
+                                        <CheckBox IsThreeState="True" IsChecked="{Binding Path=AllJobsChecked, Mode=TwoWay}"></CheckBox>
+                                    </DataGridCheckBoxColumn.Header>-->
+                                </DataGridCheckBoxColumn>
+                                <DataGridTextColumn Header="File Path" Binding="{Binding JobEntryFilePath}" IsReadOnly="True" Width="*">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style>
+                                            <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                            <Setter Property="TextBlock.TextAlignment" Value="Left"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
                                     <!-- <DataGridTextColumn.CellStyle>
                                         <Style TargetType= "{x:Type DataGridCell}" BasedOn="{StaticResource MetroDataGridCell}" >
                                             <Setter Property="ContextMenu" Value="{StaticResource RowMenu}"/>
