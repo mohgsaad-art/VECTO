@@ -439,12 +439,20 @@ namespace VECTOTrailer.ViewModel.Impl
 		public ICommand BrowseAutoSimOutputDirectory
 		{
 
-			get { return _browseAutoSimOutputDirectory ?? (_browseAutoSimOutputDirectory = new RelayCommand( () => DoBrowseDirectory(s => _autoSimulator.OutputDirectory = s))); }
+			get { return _browseAutoSimOutputDirectory ?? (_browseAutoSimOutputDirectory = new RelayCommand(
+				() => DoBrowseDirectory(s => _autoSimulator.OutputDirectory = s),
+				() => !_autoSimulator.AutoSimActive
+				));
+			}
 		}
 
 		public ICommand BrowseAutoSimInputDirectory
 		{
-			get { return _browseAutoSimInputDirectory ?? (_browseAutoSimInputDirectory = new RelayCommand(() => DoBrowseDirectory(s => _autoSimulator.InputDirectory = s))); }
+			get { return _browseAutoSimInputDirectory ?? (_browseAutoSimInputDirectory = new RelayCommand(
+				() => DoBrowseDirectory(s => _autoSimulator.InputDirectory = s),
+				() => !_autoSimulator.AutoSimActive
+				));
+			}
 		}
 #endregion
 

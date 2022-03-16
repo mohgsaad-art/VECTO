@@ -45,6 +45,7 @@ namespace VECTOTrailer.Model.Simulation
 		bool AutoSimBusy { get; }
 		bool AutoSimActive { get; }
 
+
 		void ToggleAutoSimulator();
 
 	}
@@ -52,7 +53,7 @@ namespace VECTOTrailer.Model.Simulation
 	{
 		private ILogger _logger;
 		private BackgroundWorker worker;
-
+		private ReaderWriterLockSlim _simSettingsRwLock = new ReaderWriterLockSlim();
 		public AutoSimulator(IXMLInputDataReader inputDataReader)
 		{
 			_inputDataReader = inputDataReader;
@@ -60,6 +61,7 @@ namespace VECTOTrailer.Model.Simulation
 				WorkerSupportsCancellation = true,
 				WorkerReportsProgress = true
 			};
+
 			ConfigureNLOg();
 			worker.DoWork += DoWork;
 			worker.RunWorkerCompleted += VectoSimulationCompleted;
@@ -89,8 +91,59 @@ namespace VECTOTrailer.Model.Simulation
 
 		#region SimulationSettings
 
-		public bool WriteModData { get; set; }
-		public bool WriteModData1Hz { get; set; }
+
+		private bool _writeModData;
+		public bool WriteModData
+		{
+			get
+			{
+				try {
+					_simSettingsRwLock.EnterReadLock();
+					return _writeModData;
+				} finally {
+					_simSettingsRwLock.ExitReadLock();
+				}
+			
+			}
+			set
+			{
+				try {
+					_simSettingsRwLock.EnterWriteLock();
+					SetProperty(ref _writeModData, value);
+				} finally {
+					_simSettingsRwLock.ExitWriteLock();
+				}
+			
+			}
+		}
+
+		private bool _writeModData1Hz;
+
+		public bool WriteModData1Hz
+		{
+			get
+			{
+				try {
+					_simSettingsRwLock.EnterReadLock();
+					return _writeModData1Hz;
+				} finally {
+					_simSettingsRwLock.ExitReadLock();
+				}
+				
+			}
+			set
+			{
+				try {
+					_simSettingsRwLock.EnterWriteLock();
+					SetProperty(ref _writeModData1Hz, value);
+				} finally {
+					_simSettingsRwLock.ExitWriteLock();
+				}
+				
+			}
+
+		}
+
 		public bool ValidateData { get; set; }
 		public bool WriteActualModData { get; set; }
 		public bool WriteModelData { get; set; }
@@ -191,10 +244,10 @@ namespace VECTOTrailer.Model.Simulation
 		{
 			if (worker.WorkerSupportsCancellation) {
 				worker.CancelAsync();
-				var msg = ("Stopping Auto-Simulator\n");
+				var msg = "Stopping Auto-Simulator\n";
 				_logger.Log(LogLevel.Info, msg);
 				Messages.Add(new MessageEntry() {
-					Message = "msg",
+					Message = msg,
 				});
 				return true;
 			}
@@ -212,14 +265,20 @@ namespace VECTOTrailer.Model.Simulation
 				throw new ArgumentException();
 			}
 
+		
+
 			AutoSimActive = true;
 			
 			while (!backgroundWorker.CancellationPending) {
+				if (!CheckDirectories(progress => backgroundWorker.ReportProgress(0, progress))) {
+					break;
+				}
+
 				AutoSimBusy = true;
 				string outputDirectory = null;
 				IList<string> filesToSimulate = null;
 				lock (dirLock) {
-					filesToSimulate = CheckDirectoryAndCopyFiles(progressAction: (progress => backgroundWorker.ReportProgress(0, progress)));
+					filesToSimulate = CopyFiles(progressAction: (progress => backgroundWorker.ReportProgress(0, progress)));
 					outputDirectory = _outputDirectory;
 				}
 
@@ -235,39 +294,58 @@ namespace VECTOTrailer.Model.Simulation
 			AutoSimBusy = false;
 		}
 
-		private IList<string> CheckDirectoryAndCopyFiles(Action<VectoSimulationProgress> progressAction)
+		private bool CheckDirectories(Action<VectoSimulationProgress> errorAction)
 		{
-			var copiedFiles = new List<string>();
+			var errorMsgs = new List<string>();
+			var directoriesValid = true;
 			lock (dirLock) {
-				if (Directory.Exists(_inputDirectory) && _outputDirectory != null)
-				{
-					foreach (var file in Directory.GetFiles(_inputDirectory))
-					{
-						progressAction.Invoke(new VectoSimulationProgress()
-						{
-							Message = string.Format("Copy {0} \n to {1} \n", file, OutputDirectory),
-							Type = VectoSimulationProgress.MsgType.InfoMessage
-						});
-						if (_outputDirectory == _inputDirectory)
-						{
-							throw new Exception("Input and output directory must not be the same directory");
-						}
-						if (CopyTo(file, _outputDirectory, out var destFile, true, progressAction))
-						{
-							copiedFiles.Add(destFile);
-						}
-					}
-				}
-				else
-				{
-					progressAction.Invoke(new VectoSimulationProgress()
-					{
-						Message = $"Directory {_inputDirectory} does not exist",
-						Type = VectoSimulationProgress.MsgType.LogError
-					});
+
+				if (InputDirectory.IsNullOrEmpty()) {
+					directoriesValid = false;
+					errorMsgs.Add("Input directory not set");
+				}else if (!Directory.Exists(_inputDirectory)) {
+					directoriesValid = false;
+					errorMsgs.Add($"Input directory {_inputDirectory} doesn't exist");
 				}
 
+				if (OutputDirectory.IsNullOrEmpty()) {
+					directoriesValid = false;
+					errorMsgs.Add("Output directory not set");
+				}
 			}
+
+			if (!directoriesValid) {
+				errorAction.Invoke(new VectoSimulationProgress()
+				{
+					Target = VectoSimulationProgress.MsgTarget.MessageWindow | VectoSimulationProgress.MsgTarget.NLog,
+					Message = String.Join("\n", errorMsgs),
+					Type = VectoSimulationProgress.MsgType.LogError,
+				});
+			}
+
+
+
+			return directoriesValid;
+		}
+		private IList<string> CopyFiles(Action<VectoSimulationProgress> progressAction)
+		{
+			var copiedFiles = new List<string>();
+	
+			foreach (var file in Directory.GetFiles(_inputDirectory))
+			{
+				progressAction.Invoke(new VectoSimulationProgress()
+				{
+					Message = string.Format("[AutoSim]: Copy {0} \n to {1} \n", file, OutputDirectory),
+					Type = VectoSimulationProgress.MsgType.InfoMessage,
+					Target = VectoSimulationProgress.MsgTarget.MessageWindow | VectoSimulationProgress.MsgTarget.NLog
+				});
+
+				if (CopyTo(file, _outputDirectory, out var destFile, true, progressAction))
+				{
+					copiedFiles.Add(destFile);
+				}
+			}
+				
 
 			return copiedFiles;
 		}
@@ -275,6 +353,14 @@ namespace VECTOTrailer.Model.Simulation
 		private bool CopyTo(string source, string destDirectory, out string destFileName, bool overwrite, Action<VectoSimulationProgress> errorAction)
 		{
 			destFileName = Path.Combine(destDirectory, Path.GetFileName(source));
+			if (!Directory.Exists(destDirectory)) {
+				errorAction.Invoke(new VectoSimulationProgress() {
+					Type = VectoSimulationProgress.MsgType.InfoMessage,
+					Message = $"Created directory {destDirectory}",
+					Target = VectoSimulationProgress.MsgTarget.MessageWindow | VectoSimulationProgress.MsgTarget.NLog,
+				});
+				Directory.CreateDirectory(destDirectory);
+			}
 	
 			try {
 				//TODO: Can be replaced in .NET5 with a single call to move;
@@ -283,7 +369,8 @@ namespace VECTOTrailer.Model.Simulation
 			} catch (Exception ex) {
 				errorAction.Invoke(new VectoSimulationProgress() {
 					Type = VectoSimulationProgress.MsgType.LogError,
-					Message = "Error while copying files: " + ex.Message
+					Message = "Error while copying files: " + ex.Message,
+					Target = VectoSimulationProgress.MsgTarget.MessageWindow | VectoSimulationProgress.MsgTarget.NLog
 				});
 				return false;
 			}
@@ -356,7 +443,7 @@ namespace VECTOTrailer.Model.Simulation
 						{
 							Type = VectoSimulationProgress.MsgType.StatusMessage,
 							Message = progressEntry.Value.Error.Message,
-							Target = VectoSimulationProgress.MsgTarget.NLog,
+							Target = VectoSimulationProgress.MsgTarget.NLog | VectoSimulationProgress.MsgTarget.MessageWindow
 						}
 					);
 				}
@@ -375,13 +462,13 @@ namespace VECTOTrailer.Model.Simulation
 				{
 					Type = VectoSimulationProgress.MsgType.StatusMessage,
 					Message = string.Format("Auto-Simulation finished in {0:F1}s", start.Elapsed.TotalSeconds),
-					Target = VectoSimulationProgress.MsgTarget.NLog,
+					Target = VectoSimulationProgress.MsgTarget.NLog
 				});
 			}
 
 			reportProgress(100, new VectoSimulationProgress() {
 				Type = VectoSimulationProgress.MsgType.StatusMessage,
-				Message = "Finished Simulation",
+				Message = string.Format("Auto-Simulation finished in {0:F1}s", start.Elapsed.TotalSeconds),
 				Target = VectoSimulationProgress.MsgTarget.NLog | VectoSimulationProgress.MsgTarget.MessageWindow,
 			});
 		}

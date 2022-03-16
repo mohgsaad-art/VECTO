@@ -237,18 +237,25 @@
                                 <Button Width="60" Content="Browse" Command="{Binding BrowseOutputDirectory}" Margin="5,0,0,0"/>
                             </StackPanel>
                         </GroupBox>
-                        <GroupBox Header="Scan">
-                            <StackPanel>
+                        <GroupBox Header="Auto Simulator">
+                            <StackPanel Width="265">
+                                <TextBlock TextWrapping="Wrap" Margin="5" Visibility="{Binding AutoSimulator.AutoSimActive, Converter={converter:BoolVisibilityConverter}}">To change the directories the AutoSimulator must be inactive</TextBlock>
                                 <GroupBox Header="Input Directory">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBox Width="200" Text="{Binding AutoSimulator.InputDirectory}"/>
-                                        <Button Width="60" Content="Browse" Command="{Binding BrowseAutoSimInputDirectory}" Margin="5,0,0,0"/>
-                                    </StackPanel>
+                                    <DockPanel LastChildFill="True">
+                                        <Button Width="60" DockPanel.Dock="Right" Content="Browse" Command="{Binding BrowseAutoSimInputDirectory}" Margin="5,0,0,0"/>
+                                        <TextBox HorizontalAlignment="Stretch" Text="{Binding AutoSimulator.InputDirectory}" IsReadOnly="True" TextWrapping="Wrap"/>
+                                    </DockPanel>
                                 </GroupBox>
                                 <GroupBox Header="Output Directory">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBox Width="200" Text="{Binding AutoSimulator.OutputDirectory}"/>
-                                        <Button Width="60" Content="Browse" Command="{Binding BrowseAutoSimOutputDirectory}" Margin="5,0,0,0"/>
+                                    <DockPanel >
+                                        <Button Width="60" DockPanel.Dock="Right" Content="Browse" Command="{Binding BrowseAutoSimOutputDirectory}" Margin="5,0,0,0"/>
+                                        <TextBox HorizontalAlignment="Stretch" Text="{Binding AutoSimulator.OutputDirectory}" IsReadOnly="True" TextWrapping="Wrap"/>
+                                    </DockPanel>
+                                </GroupBox>
+                                <GroupBox Header="Output">
+                                    <StackPanel Orientation="Vertical">
+                                        <CheckBox Margin="0,0,0,3" IsChecked="{Binding AutoSimulator.WriteModData}">Write modal results</CheckBox>
+                                        <CheckBox Margin="0,0,0,3" IsChecked="{Binding AutoSimulator.WriteModData1Hz}">Modal results in 1Hz</CheckBox>
                                     </StackPanel>
                                 </GroupBox>
                             </StackPanel>
