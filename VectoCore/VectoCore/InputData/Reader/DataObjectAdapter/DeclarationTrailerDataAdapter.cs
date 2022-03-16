@@ -1677,10 +1677,10 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 			if (trailerSegment.ReferenceTrailerSegment.HeightCorrection) {
 				ReferenceTrailerSegment refTrailer = trailerSegment.ReferenceTrailerSegment;
-				data.CdxA0 = CalcHeightCorrection(trailerSegment, trailer.TotalTrailerHeight, data.CdxA0.Value());
-				data.CdxA3 = CalcHeightCorrection(trailerSegment, trailer.TotalTrailerHeight, data.CdxA3.Value());
-				data.CdxA6 = CalcHeightCorrection(trailerSegment, trailer.TotalTrailerHeight, data.CdxA6.Value());
-				data.CdxA9 = CalcHeightCorrection(trailerSegment, trailer.TotalTrailerHeight, data.CdxA9.Value());
+				data.CdxA0 = CalcHeightCorrection(trailerSegment, refTrailer.TotalTrailerHeight, data.CdxA0.Value());
+				data.CdxA3 = CalcHeightCorrection(trailerSegment, refTrailer.TotalTrailerHeight, data.CdxA3.Value());
+				data.CdxA6 = CalcHeightCorrection(trailerSegment, refTrailer.TotalTrailerHeight, data.CdxA6.Value());
+				data.CdxA9 = CalcHeightCorrection(trailerSegment, refTrailer.TotalTrailerHeight, data.CdxA9.Value());
 			}
 
 			#endregion
