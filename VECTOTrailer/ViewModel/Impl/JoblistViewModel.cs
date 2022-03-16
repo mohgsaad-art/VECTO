@@ -231,8 +231,14 @@ namespace VECTOTrailer.ViewModel.Impl
 				WriteActualModData = body.GetValueOrDefault<bool>(nameof(WriteActualModData)) ?? false;
 
 				OutputDirectory = body[nameof(OutputDirectory)] == null ? "" : body[nameof(OutputDirectory)].Value<string>();
-				_autoSimulator.OutputDirectory = body[nameof(_autoSimulator.OutputDirectory) + "-autosim"] == null ? "" : body[nameof(_autoSimulator.OutputDirectory) + "-autosim"].Value<string>();
-				_autoSimulator.InputDirectory = body[nameof(_autoSimulator.InputDirectory) + "-autosim"] == null ? "" : body[nameof(_autoSimulator.InputDirectory) + "-autosim"].Value<string>();
+				_autoSimulator.OutputDirectory = body[nameof(_autoSimulator.OutputDirectory) + _autoSimSettingsSuffix] == null ? "" : body[nameof(_autoSimulator.OutputDirectory) + _autoSimSettingsSuffix].Value<string>();
+				_autoSimulator.InputDirectory = body[nameof(_autoSimulator.InputDirectory) + _autoSimSettingsSuffix] == null ? "" : body[nameof(_autoSimulator.InputDirectory) + _autoSimSettingsSuffix].Value<string>();
+				_autoSimulator.WriteModData1Hz =
+					body.GetValueOrDefault<bool>(nameof(_autoSimulator.WriteModData1Hz) + _autoSimSettingsSuffix) ?? false;
+				_autoSimulator.WriteModData =
+					body.GetValueOrDefault<bool>(nameof(_autoSimulator.WriteModData) + _autoSimSettingsSuffix) ?? false;
+
+
 			}
 		}
 
@@ -251,8 +257,10 @@ namespace VECTOTrailer.ViewModel.Impl
 			body.Add(nameof(WriteModData1Hz), WriteModData1Hz);
 			body.Add(nameof(WriteActualModData), WriteActualModData);
 			body.Add(nameof(OutputDirectory), OutputDirectory);
-			body.Add(nameof(_autoSimulator.OutputDirectory) + "-autosim", _autoSimulator.OutputDirectory);
-			body.Add(nameof(_autoSimulator.InputDirectory) + "-autosim", _autoSimulator.InputDirectory);
+			body.Add(nameof(_autoSimulator.OutputDirectory) + _autoSimSettingsSuffix, _autoSimulator.OutputDirectory);
+			body.Add(nameof(_autoSimulator.InputDirectory) + _autoSimSettingsSuffix, _autoSimulator.InputDirectory);
+			body.Add(nameof(WriteModData) + _autoSimSettingsSuffix, _autoSimulator.WriteModData);
+			body.Add(nameof(WriteModData1Hz) + _autoSimSettingsSuffix, _autoSimulator.WriteModData1Hz);
 
 			JSONFileWriter.WriteFile(new Dictionary<string, object>() { { "Header", header }, { "Body", body } }, SETTINGS_FILE);
 		}
@@ -402,6 +410,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		}
 
 		private ICommand _toggleAutoSimCommand;
+		private string _autoSimSettingsSuffix = "-autosim";
 
 		public ICommand ToggleAutoSim { get => _toggleAutoSimCommand ?? (_toggleAutoSimCommand = new RelayCommand(
 			() => {
