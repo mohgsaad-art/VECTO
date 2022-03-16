@@ -260,7 +260,13 @@ namespace TUGraz.VectoCore.Tests.XML
 		public void CreateReferenceFactors()
 		{
 			var vehicleGroups = DeclarationData.TrailerSegments.GetActiveVehicleGroups();
+
+			//vehicleGroups = new System.Collections.Generic.List<int>() { 25121 };
+
+
 			var groupManager = new ResultManager(vehicleGroups);
+
+		
 			groupManager.SetTowingVehicleGroups(new TrailerSegments());
 			SimulateReferenceTrailers(groupManager, vehicleGroups);
 			ToCSV(CreateDataTable(groupManager, vehicleGroups), "referenceResults.csv");
@@ -384,7 +390,7 @@ namespace TUGraz.VectoCore.Tests.XML
 
 
 				jobContainer.AddRuns(runsFactory, (vectoRunData) => missionTypes.Contains(vectoRunData.Mission.MissionType));
-				jobContainer.Execute(false); //I guess the synchronization fix is not implemented in the trailerTool
+				jobContainer.Execute(true); //I guess the synchronization fix is not implemented in the trailerTool
 				jobContainer.WaitFinished();
 
 				var vsum = fileWriter.SumFileName;
