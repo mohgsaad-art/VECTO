@@ -208,6 +208,7 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Options">
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                 <WrapPanel Orientation="Horizontal" Margin="5,10,5,5">
                     <StackPanel Orientation="Vertical">
                         <GroupBox Header="Output">
@@ -229,16 +230,21 @@
                                 </CheckBox>
                             </StackPanel>
                         </GroupBox>
-                    </StackPanel>
-                    <StackPanel Orientation="Vertical">
-                        <GroupBox Header ="Output Directory">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBox Width="200" Text="{Binding OutputDirectory}"/>
-                                <Button Width="60" Content="Browse" Command="{Binding BrowseOutputDirectory}" Margin="5,0,0,0"/>
+                        <GroupBox Header="Simulation Data" Margin =" 0,5,0,0">
+                            <StackPanel Orientation="Vertical">
+                                <CheckBox IsChecked="{Binding WriteModelData}" Margin="0,0,0,3">Write internal model data (EXPERT!)</CheckBox>
                             </StackPanel>
                         </GroupBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" MaxWidth="600">
+                        <GroupBox Header ="Output Directory">
+                            <DockPanel LastChildFill="True">
+                                <Button DockPanel.Dock="Right" Width="60" Content="Browse" Command="{Binding BrowseOutputDirectory}" Margin="5,0,0,0"/>
+                                <TextBox  Text="{Binding OutputDirectory}"/>
+                            </DockPanel>
+                        </GroupBox>
                         <GroupBox Header="Auto Simulator">
-                            <StackPanel Width="265">
+                            <StackPanel>
                                 <TextBlock TextWrapping="Wrap" Margin="5" Visibility="{Binding AutoSimulator.AutoSimActive, Converter={converter:BoolVisibilityConverter}}">To change the directories the AutoSimulator must be inactive</TextBlock>
                                 <GroupBox Header="Input Directory">
                                     <DockPanel LastChildFill="True">
@@ -261,16 +267,8 @@
                             </StackPanel>
                         </GroupBox>
                     </StackPanel>
-                    <StackPanel Orientation="Vertical" Margin="5,0,0,0" MaxWidth="300">
-                       
-                        <GroupBox Header="Simulation Data" Margin =" 0,5,0,0">
-                            <StackPanel Orientation="Vertical">
-                                <CheckBox IsChecked="{Binding WriteModelData}" Margin="0,0,0,3">Write internal model data (EXPERT!)</CheckBox>
-                            </StackPanel>
-                        </GroupBox>
-                    </StackPanel>
                 </WrapPanel>
-               
+                </ScrollViewer>
             </TabItem>
         </TabControl>
     
