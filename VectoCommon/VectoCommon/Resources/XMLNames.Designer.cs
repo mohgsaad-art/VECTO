@@ -3166,7 +3166,7 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LengthBetweenCentersOfAxles.
+        ///   Looks up a localized string similar to LengthBetweenCentresOfAxles.
         /// </summary>
         public static string Trailer_LengthBetweenCentersOfAxles {
             get {

@@ -10,7 +10,7 @@
     <AxleCount>2</AxleCount>
     <TrailerType>DC</TrailerType>
     <BodyWorkType>dry box</BodyWorkType>
-    <VolumeOrientation>false</VolumeOrientation>
+
     <TrailerCouplingPoint>low</TrailerCouplingPoint>
     <Masses>
       <CorrectedMassInRunningOrder>5600</CorrectedMassInRunningOrder>
@@ -23,8 +23,9 @@
       <ExternalHeightBody>2.730</ExternalHeightBody>
       <TotalHeightTrailer>4.000</TotalHeightTrailer>
       <LengthFromFrontToFirstAxle>3.695</LengthFromFrontToFirstAxle>
-      <LengthBetweenCentersOfAxles>1.310</LengthBetweenCentersOfAxles>
+      <LengthBetweenCentresOfAxles>1.310</LengthBetweenCentresOfAxles>
       <CargoVolume>49.500</CargoVolume>
+      <VolumeOrientation>false</VolumeOrientation>
     </Dimensions>
     <AeroFeatures />
     <AxleWheels>

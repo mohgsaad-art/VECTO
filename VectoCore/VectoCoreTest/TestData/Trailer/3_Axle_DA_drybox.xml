@@ -10,7 +10,7 @@
     <AxleCount>3</AxleCount>
     <TrailerType>DA</TrailerType>
     <BodyWorkType>dry box</BodyWorkType>
-    <VolumeOrientation>false</VolumeOrientation>
+
     <TrailerCouplingPoint>n/a</TrailerCouplingPoint>
     <Masses>
       <CorrectedMassInRunningOrder>7700</CorrectedMassInRunningOrder>
@@ -23,8 +23,9 @@
       <ExternalHeightBody>2.850</ExternalHeightBody>
       <TotalHeightTrailer>4.000</TotalHeightTrailer>
       <LengthFromFrontToFirstAxle>8.075</LengthFromFrontToFirstAxle>
-      <LengthBetweenCentersOfAxles>2.620</LengthBetweenCentersOfAxles>
+      <LengthBetweenCentresOfAxles>2.620</LengthBetweenCentresOfAxles>
       <CargoVolume>91.000</CargoVolume>
+      <VolumeOrientation>false</VolumeOrientation>
     </Dimensions>
     <AeroFeatures>
       <CertifiedAeroReduction>

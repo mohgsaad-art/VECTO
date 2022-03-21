@@ -963,12 +963,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Declaration\GenericTowingVehicles.csv" />
-    <EmbeddedResource Include="Resources\XSD\VectoOutputManufacturer.0.9.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\XSD\VectoOutputCustomer.0.9.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Declaration\Trailer\reference_trailer.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -992,6 +986,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Declaration\Trailer\reference_factors.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\XSD\VectoOutputCustomer.Trailer.0.1.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\XSD\VectoOutputManufacturer.Trailer.0.1.xsd">
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="Utils\VectoVersionCore.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

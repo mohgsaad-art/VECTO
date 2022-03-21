@@ -1477,7 +1477,7 @@
     <value>LengthFromFrontToFirstAxle</value>
   </data>
   <data name="Trailer_LengthBetweenCentersOfAxles" xml:space="preserve">
-    <value>LengthBetweenCentersOfAxles</value>
+    <value>LengthBetweenCentresOfAxles</value>
   </data>
   <data name="Trailer_InternalHeightBody" xml:space="preserve">
     <value>InternalHeightBody</value>

@@ -52,7 +52,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 {
 	public class XMLCustomerReportTrailer : AbstractXMLCustomerReport
 	{
-		public const string CURRENT_SCHEMA_VERSION = "0.9";
+		public const string CURRENT_SCHEMA_VERSION = "0.1";
 
 		protected readonly XElement VehiclePart;
 
@@ -61,7 +61,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 		protected readonly XElement Results;
 
 		protected readonly XNamespace rootNS = XNamespace.Get("urn:tugraz:ivt:VectoAPI:CustomerOutput");
-		protected readonly XNamespace tns = XNamespace.Get("urn:tugraz:ivt:VectoAPI:CustomerOutput:v" + CURRENT_SCHEMA_VERSION);
+		protected readonly XNamespace tns = XNamespace.Get("urn:tugraz:ivt:VectoAPI:CustomerOutput:Trailer:v" + CURRENT_SCHEMA_VERSION);
 		protected readonly XNamespace di = XNamespace.Get("http://www.w3.org/2000/09/xmldsig#");
 		protected readonly XNamespace xsi = XNamespace.Get("http://www.w3.org/2001/XMLSchema-instance");
 
