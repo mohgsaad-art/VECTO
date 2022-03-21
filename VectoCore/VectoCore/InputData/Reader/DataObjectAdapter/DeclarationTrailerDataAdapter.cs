@@ -1098,16 +1098,27 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 		{
 			var prevErrors = errors.Count;
 
+			var aeroFeatureRow = DeclarationData.AeroFeatures.GetTrailerDataRow(CreateAeroFeatureList(trailer));
+
+			bool valid = false;
+			try {
+				valid = aeroFeatureRow[trailer.TrailerType.ToString()].ToString() == "1";
+			} catch (Exception ex) {
+				throw new VectoException(ex.Message);
+			}
 			var combination = GetAeroFeatureCombination(trailer);
-			if (combination < 0) {
-				errors.Add("invalid aero feature combination");
+			if (combination < 0 || !valid) {
+				errors.Add("invalid standard aero-device declared");
+			} else {
+				var segment = DeclarationData.TrailerSegments.Lookup(trailer.NumberOfAxles, trailer.TrailerType, trailer.BodyworkCode, trailer.VolumeOrientation,
+					trailer.TPMLMAxleAssembly);
+				if (trailer.CertifiedAeroDeviceApplicableVehicleGroup != null && segment.VehicleGroup.ToString() != trailer.CertifiedAeroDeviceApplicableVehicleGroup)
+				{
+					errors.Add($"ApplicableVehicleGroup of the certified aero device ({trailer.CertifiedAeroDeviceApplicableVehicleGroup}) must match the vehicle group ({segment.VehicleGroup})");
+				}
 			}
 			
-			var segment = DeclarationData.TrailerSegments.Lookup(trailer.NumberOfAxles, trailer.TrailerType, trailer.BodyworkCode, trailer.VolumeOrientation,
-				trailer.TPMLMAxleAssembly);
-			if (trailer.CertifiedAeroDeviceApplicableVehicleGroup != null && segment.VehicleGroup.ToString() != trailer.CertifiedAeroDeviceApplicableVehicleGroup) {
-				errors.Add($"ApplicableVehicleGroup of the certified aero device ({trailer.CertifiedAeroDeviceApplicableVehicleGroup}) must match the vehicle group ({segment.VehicleGroup})");
-			}
+			
 
 			if (trailer.AeroFeatureTechnologies.Count == 0 &&
 				(trailer.YawAngle0 < 0 ||
@@ -1287,6 +1298,13 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
         private static int GetAeroFeatureCombination(ITrailerDeclarationInputData trailer)
 		{
+			var aeroFeatures = CreateAeroFeatureList(trailer);
+
+			return DeclarationData.AeroFeatures.Lookup(aeroFeatures);
+		}
+
+		private static List<AeroFeatureTechnology> CreateAeroFeatureList(ITrailerDeclarationInputData trailer)
+		{
 			var aeroFeatures = new List<AeroFeatureTechnology>();
 			if (trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.SideSkirtsShort)) {
 				aeroFeatures.Add(AeroFeatureTechnology.SideSkirtsShort);
@@ -1295,15 +1313,17 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			if (trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.SideSkirtsLong)) {
 				aeroFeatures.Add(AeroFeatureTechnology.SideSkirtsLong);
 			}
-			if (trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.BoatTailShort)){
+
+			if (trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.BoatTailShort)) {
 				aeroFeatures.Add(AeroFeatureTechnology.BoatTailShort);
 			}
+
 			;
 			if (trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.BoatTailLong)) {
 				aeroFeatures.Add(AeroFeatureTechnology.BoatTailLong);
 			}
 
-			return DeclarationData.AeroFeatures.Lookup(aeroFeatures);
+			return aeroFeatures;
 		}
 
 		private static string GetAxleWheelDimension(IVehicleDeclarationInputData genericVehicle)
