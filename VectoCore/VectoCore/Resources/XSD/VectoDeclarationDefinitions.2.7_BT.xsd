@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSpy v2021 (x64) (http://www.altova.com) by Markus Quaritsch (Technische Universität Graz) -->
+<!-- edited with XMLSpy v2016 rel. 2 sp1 (x64) (http://www.altova.com) by Helmut Eichlseder (TU Graz/Inst. f. VKM und THD) -->
 <xs:schema xmlns:v2.7="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:vectoParam="urn:tugraz:ivt:VectoAPI:ParameterDocumentation" xmlns:di="http://www.w3.org/2000/09/xmldsig#" xmlns:v1.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:v2.1="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1" targetNamespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7" elementFormDefault="qualified" attributeFormDefault="unqualified" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:ParameterDocumentation ParameterDocumentation.xsd">
 	<xs:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="xmldsig-core-schema.xsd"/>
 	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" schemaLocation="VectoDeclarationDefinitions.1.0.xsd"/>
@@ -134,7 +134,6 @@
 					<xs:element name="AxleCount" type="v2.7:TrailerAxleCountType"/>
 					<xs:element name="TrailerType" type="v2.7:TrailerTypeType"/>
 					<xs:element name="BodyWorkType" type="v2.7:BodyWorkCodeType"/>
-					<xs:element name="VolumeOrientation" type="xs:boolean"/>
 					<xs:element name="TrailerCouplingPoint" type="v2.7:TrailerCouplingPoint" minOccurs="0"/>
 					<xs:element name="Masses">
 						<xs:complexType>
@@ -155,6 +154,7 @@
 								<xs:element name="LengthFromFrontToFirstAxle" type="v2.7:TrailerLengthType"/>
 								<xs:element name="LengthBetweenCentersOfAxles" type="v2.7:TrailerLengthType"/>
 								<xs:element name="CargoVolume" type="v2.7:TrailerCargoVolumeType"/>
+								<xs:element name="VolumeOrientation" type="xs:boolean"/>
 							</xs:sequence>
 						</xs:complexType>
 					</xs:element>
@@ -182,8 +182,8 @@
 			<xs:enumeration value="dry box"/>
 			<xs:enumeration value="refrigerated"/>
 			<xs:enumeration value="conditioned"/>
-			<xs:enumeration value="curtainsider"/>
-			<xs:enumeration value="drop-side with tarpaulin body"/>
+			<xs:enumeration value="curtainsided"/>
+			<xs:enumeration value="drop-side tarpaulin body"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="CertifiedAerodynamicReductionType">
