@@ -40,6 +40,6 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 			var combination = DeclarationData.AeroFeatures.Lookup(aeroFeatures);
 			Assert.AreEqual(1, combination);
 		}
-
+		
 	}
 }
