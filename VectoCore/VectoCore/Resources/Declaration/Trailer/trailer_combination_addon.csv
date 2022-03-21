@@ -1,10 +1,10 @@
-﻿combination,side_skirt_short,side_skirt_long,boat_tail_short,boat_tail_long
-0,0,0,0,0
-1,1,0,0,0
-2,0,1,0,0
-3,0,0,1,0
-4,0,0,0,1
-5,1,0,1,0
-6,1,0,0,1
-7,0,1,1,0
-8,0,1,0,1
+﻿combination ,side_skirt_short ,side_skirt_long ,boat_tail_short ,boat_tail_long ,DA ,DB ,DC
+0           ,0                ,0               ,0               ,0              ,1  ,1  ,1
+1           ,1                ,0               ,0               ,0              ,1  ,1  ,1
+2           ,0                ,1               ,0               ,0              ,1  ,0  ,0
+3           ,0                ,0               ,1               ,0              ,1  ,1  ,1
+4           ,0                ,0               ,0               ,1              ,1  ,1  ,1
+5           ,1                ,0               ,1               ,0              ,1  ,1  ,1
+6           ,1                ,0               ,0               ,1              ,1  ,1  ,1
+7           ,0                ,1               ,1               ,0              ,1  ,0  ,0
+8           ,0                ,1               ,0               ,1              ,1  ,0  ,0
