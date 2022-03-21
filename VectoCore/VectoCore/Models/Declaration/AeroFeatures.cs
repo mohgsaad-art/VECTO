@@ -68,20 +68,20 @@ namespace TUGraz.VectoCore.Models.Declaration
 		}
 
 
-		private DataRow GetTrailerDataRow(List<AeroFeatureTechnology> aeroFeatures)
+		public DataRow GetTrailerDataRow(List<AeroFeatureTechnology> aeroFeatures)
 		{
 			DataRow row;
 			try {
 				row = _aeroFeaturesTable.AsEnumerable().FirstOrDefault(
 					r => {
-						var sideSkirtShort = int.Parse(r.Field<string>("side_skirt_short"));
-						var sideSkirtsLong = int.Parse(r.Field<string>("side_skirt_long"));
-						var boatTailShort = int.Parse(r.Field<string>("boat_tail_short"));
-						var boatTailLong = int.Parse(r.Field<string>("boat_tail_long"));
-						return aeroFeatures.Contains(AeroFeatureTechnology.SideSkirtsShort) == (sideSkirtShort == 1) &&
-								aeroFeatures.Contains(AeroFeatureTechnology.SideSkirtsLong) == (sideSkirtsLong == 1) &&
-								aeroFeatures.Contains(AeroFeatureTechnology.BoatTailShort) == (boatTailShort == 1) &&
-								aeroFeatures.Contains(AeroFeatureTechnology.BoatTailLong) == (boatTailLong == 1);
+						var sideSkirtShort = int.Parse(r.Field<string>("side_skirt_short")) == 1;
+						var sideSkirtsLong = int.Parse(r.Field<string>("side_skirt_long")) == 1;
+						var boatTailShort = int.Parse(r.Field<string>("boat_tail_short")) == 1;
+						var boatTailLong = int.Parse(r.Field<string>("boat_tail_long")) == 1;
+						return aeroFeatures.Contains(AeroFeatureTechnology.SideSkirtsShort) == (sideSkirtShort) &&
+								aeroFeatures.Contains(AeroFeatureTechnology.SideSkirtsLong) == (sideSkirtsLong) &&
+								aeroFeatures.Contains(AeroFeatureTechnology.BoatTailShort) == (boatTailShort) &&
+								aeroFeatures.Contains(AeroFeatureTechnology.BoatTailLong) == (boatTailLong);
 					});
 			} catch (InvalidOperationException e) {
 				var errorMessage = string.Format(ErrorMessage);
