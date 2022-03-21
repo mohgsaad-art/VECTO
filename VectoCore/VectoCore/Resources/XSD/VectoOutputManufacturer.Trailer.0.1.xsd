@@ -265,27 +265,27 @@
 					<xs:element name="TrailerCouplingPoint" type="xs:string"/>
 					<xs:element name="Masses">
 						<xs:complexType>
-							<xs:all>
+							<xs:sequence>
 								<xs:element name="MassInRunningOrder"/>
 								<xs:element name="TPMLMTrailer"/>
 								<xs:element name="TPMLMAxleAssembly"/>
-								<xs:element name="VolumeOrientation"/>
-							</xs:all>
+							</xs:sequence>
 						</xs:complexType>
 					</xs:element>
 					<xs:element name="VehicleGroupAnnexI" type="xs:string"/>
 					<xs:element name="VehicleGroupToolInternal" type="xs:string"/>
 					<xs:element name="Dimensions">
 						<xs:complexType>
-							<xs:all>
+							<xs:sequence>
 								<xs:element name="ExternalLengthBody"/>
 								<xs:element name="ExternalWidthBody"/>
 								<xs:element name="ExternalHeightBody"/>
 								<xs:element name="TotalHeightTrailer"/>
 								<xs:element name="LengthFromFrontToFirstAxle"/>
-								<xs:element name="LengthBetweenCentersOfAxles"/>
+								<xs:element name="LengthBetweenCentresOfAxles"/>
 								<xs:element name="CargoVolume"/>
-							</xs:all>
+								<xs:element name="VolumeOrientation"/>
+							</xs:sequence>
 						</xs:complexType>
 					</xs:element>
 					<xs:element name="AeroFeatures">
