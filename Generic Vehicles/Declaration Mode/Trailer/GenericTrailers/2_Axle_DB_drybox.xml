@@ -22,7 +22,7 @@
       <ExternalHeightBody>2.730</ExternalHeightBody>
       <TotalHeightTrailer>4.000</TotalHeightTrailer>
       <LengthFromFrontToFirstAxle>1.100</LengthFromFrontToFirstAxle>
-      <LengthBetweenCentersOfAxles>5.300</LengthBetweenCentersOfAxles>
+      <LengthBetweenCentresOfAxles>5.300</LengthBetweenCentresOfAxles>
       <CargoVolume>46.900</CargoVolume>
       <VolumeOrientation>false</VolumeOrientation>
     </Dimensions>
