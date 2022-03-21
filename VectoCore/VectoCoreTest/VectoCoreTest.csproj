@@ -248,8 +248,8 @@
     <Compile Include="XML\XMLDeclarationReaderVersionsTest.cs" />
     <Compile Include="XML\XMLEngineeringInputRefTest.cs" />
     <Compile Include="XML\XMLEngineeringInputSingleTest.cs" />
-    <Compile Include="XML\XMLReportTrailerTest.cs" />
-    <Compile Include="XML\TrailerReferenceFactors.cs" />
+    <Compile Include="TrailerTool\XMLReportTrailerTest.cs" />
+    <Compile Include="TrailerTool\TrailerReferenceFactors.cs" />
     <Compile Include="XML\XMLTrailerInputDataTest.cs" />
     <Compile Include="XML\XMLPrimaryBusInputDataTest.cs" />
     <Compile Include="XML\XMLReportTest.cs" />
@@ -3693,6 +3693,12 @@
     <EmbeddedResource Include="TestData\Trailer\tyreSample.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
+    <Content Include="TestData\Trailer\2_Axle_DB_drybox.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\Trailer\3_Axle_DA_drybox.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestData\XML\EngineeringJob\SampleJobEngineering1.0.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
