@@ -266,7 +266,7 @@
 					<xs:element name="Masses">
 						<xs:complexType>
 							<xs:sequence>
-								<xs:element name="MassInRunningOrder"/>
+								<xs:element name="CorrectedMassInRunningOrder"/>
 								<xs:element name="TPMLMTrailer"/>
 								<xs:element name="TPMLMAxleAssembly"/>
 							</xs:sequence>
