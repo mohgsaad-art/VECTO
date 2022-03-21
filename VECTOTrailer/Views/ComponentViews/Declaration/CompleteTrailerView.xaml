@@ -319,18 +319,15 @@
                         <TextBlock Grid.Column="3" Text="Tall rear flaps"/>
                         <CheckBox Grid.Column="4" IsChecked="{Binding BoatTailLong}"/>
                     </Grid>
-                    <Grid Margin="5" Visibility="{Binding IsChecked,ElementName=certified,Converter={StaticResource BoolToVisibilityConverter}}">
+                    <DockPanel HorizontalAlignment="Stretch" Margin="5" LastChildFill="True" Visibility="{Binding IsChecked,ElementName=certified,Converter={StaticResource BoolToVisibilityConverter}}">
+                        
+                        
 
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock Grid.Column="0" Text="Device" Width="40" />
-                        <TextBox Grid.Column="1" HorizontalAlignment="Stretch" IsReadOnly="True" IsReadOnlyCaretVisible="True" TextWrapping="Wrap" TextChanged="ScrollToEnd"
+                        <TextBlock DockPanel.Dock="Left" Text="Device" Width="40" />
+                        <Button DockPanel.Dock="Right" Name="UploadCertifiedAeroDeviceButton" Grid.Column="3" Content="..." Width="30" Margin="5,0,0,0"
+                                Command="{Binding SelectCertifiedAeroDeviceCommand}"
+                                CommandParameter="{Binding CertifiedAeroDeviceType}" />
+                        <TextBox DockPanel.Dock="Left" HorizontalAlignment="Stretch" IsReadOnly="True" IsReadOnlyCaretVisible="True" TextWrapping="Wrap" TextChanged="ScrollToEnd"
                                  Text="{Binding CertifiedAeroDeviceFilePath}">
                             <Validation.ErrorTemplate>
                                 <ControlTemplate>
@@ -350,9 +347,7 @@
                                 </Style>
                             </TextBox.Style>
                         </TextBox>
-                        <Button Name="UploadCertifiedAeroDeviceButton" Grid.Column="3" Content="..." Width="30" Margin="5,0,0,0"
-                                Command="{Binding SelectCertifiedAeroDeviceCommand}"
-                                CommandParameter="{Binding CertifiedAeroDeviceType}" />
+                     
                         
                         <!--<StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
                         <TextBlock Text="CdXA reduction"/>
@@ -381,7 +376,7 @@
                                 Unit="%" UnitWidthGroup="unitWidth"/>
                         </Grid>
                         </StackPanel>-->
-                    </Grid>
+                    </DockPanel>
 
                 </StackPanel>
             </StackPanel>
