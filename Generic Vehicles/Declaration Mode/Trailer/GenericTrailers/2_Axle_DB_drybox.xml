@@ -10,7 +10,6 @@
     <AxleCount>2</AxleCount>
     <TrailerType>DB</TrailerType>
     <BodyWorkType>dry box</BodyWorkType>
-    <VolumeOrientation>false</VolumeOrientation>
     <TrailerCouplingPoint>n/a</TrailerCouplingPoint>
     <Masses>
       <CorrectedMassInRunningOrder>5100</CorrectedMassInRunningOrder>
@@ -25,6 +24,7 @@
       <LengthFromFrontToFirstAxle>1.100</LengthFromFrontToFirstAxle>
       <LengthBetweenCentersOfAxles>5.300</LengthBetweenCentersOfAxles>
       <CargoVolume>46.900</CargoVolume>
+      <VolumeOrientation>false</VolumeOrientation>
     </Dimensions>
     <AeroFeatures />
     <AxleWheels>

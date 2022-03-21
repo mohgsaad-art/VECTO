@@ -10,7 +10,7 @@
     <AxleCount>1</AxleCount>
     <TrailerType>DA</TrailerType>
     <BodyWorkType>dry box</BodyWorkType>
-    <VolumeOrientation>false</VolumeOrientation>
+
     <TrailerCouplingPoint>n/a</TrailerCouplingPoint>
     <Masses>
       <CorrectedMassInRunningOrder>40000</CorrectedMassInRunningOrder>
@@ -25,6 +25,7 @@
       <LengthFromFrontToFirstAxle>2.000</LengthFromFrontToFirstAxle>
       <LengthBetweenCentersOfAxles>0.000</LengthBetweenCentersOfAxles>
       <CargoVolume>2.000</CargoVolume>
+      <VolumeOrientation>false</VolumeOrientation>
     </Dimensions>
     <AeroFeatures>
       <!--<CertifiedAeroReduction>
