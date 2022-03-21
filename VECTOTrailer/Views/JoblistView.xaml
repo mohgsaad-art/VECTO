@@ -19,7 +19,7 @@
     
     <Grid>
        <Grid.RowDefinitions>
-            <RowDefinition Height="*" MinHeight="270"/>
+            <RowDefinition Height="*" MinHeight="200"/>
             <RowDefinition Height="5"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -275,8 +275,14 @@
         <GridSplitter Grid.Row="1" Height="5" HorizontalAlignment="Stretch"/>
         
         <Grid Grid.Row="2" Grid.Column="0" Margin="10,10,10,10">
-            <DataGrid ItemsSource="{Binding Messages}" BorderThickness="1" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" 
-                      IsReadOnly="True" HeadersVisibility="All" RowHeaderWidth="5" Name="MessageList">
+            <DataGrid ItemsSource="{Binding Messages}" BorderThickness="1"
+                      CanUserAddRows="False" 
+                      AutoGenerateColumns="False"
+                      SelectionUnit="FullRow" 
+                      IsReadOnly="True" 
+                      HeadersVisibility="All"
+                      RowHeaderWidth="5" 
+                      Name="MessageList">
                 
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Message" Binding="{Binding Message}" Width="*">
