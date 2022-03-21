@@ -582,7 +582,8 @@ namespace VECTOTrailer.Model.Simulation
 						0,
 						new VectoSimulationProgress()
 						{
-							Type = VectoSimulationProgress.MsgType.LogError, Message = ex.Message
+							Type = VectoSimulationProgress.MsgType.LogError, Message = ex.Message,
+							Target = VectoSimulationProgress.MsgTarget.MessageWindow | VectoSimulationProgress.MsgTarget.NLog,
 						});
 				}
 			}
