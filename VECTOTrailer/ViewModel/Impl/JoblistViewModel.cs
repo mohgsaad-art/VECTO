@@ -938,7 +938,7 @@ namespace VECTOTrailer.ViewModel.Impl
 			else if (IsXmlFile(_selectedJobEntry.JobEntryFilePath))
 				VisibilitySecView = false;
 
-			var contextMenuText = _selectedJobEntry.Header.JobType == JobType.CompletedXml
+			var contextMenuText = _selectedJobEntry.Header?.JobType == JobType.CompletedXml
 				? JobType.CompletedXml.GetLabel() : "XML-File";
 			
 			FirstContextMenu = $"View {contextMenuText}";
