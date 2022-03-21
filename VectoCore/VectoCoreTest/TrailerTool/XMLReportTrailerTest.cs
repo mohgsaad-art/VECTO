@@ -30,13 +30,16 @@
 *   Vasileios kouliaridis, vasilis.k@emisia.com, EMISIA
 */
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using Ninject;
+using NLog.LayoutRenderers;
 using NUnit.Framework;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCore.InputData.FileIO.XML;
+using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
@@ -47,7 +50,8 @@ namespace TUGraz.VectoCore.Tests.XML
 {
 	public class XMLReportTrailerTest
 	{
-		private const string SampleTrailer = @"TestData\Trailer\trailerSample.xml";
+		private const string MinimalTrailer = @"TestData\Trailer\2_Axle_DB_drybox.xml";
+		private const string TrailerWithCertifiedAeroDevice = @"TestData\Trailer\3_axle_DA_drybox.xml";
 
 		protected IXMLInputDataReader XMLInputReader;
 		private IKernel _kernel;
@@ -61,22 +65,28 @@ namespace TUGraz.VectoCore.Tests.XML
 			XMLInputReader = _kernel.Get<IXMLInputDataReader>();
 		}
 
-		[TestCase]
-		public void RunTrailerDeclarationJob()
+		[TestCase(MinimalTrailer, TestName = "Minimal")]
+		[TestCase(TrailerWithCertifiedAeroDevice, TestName="CertifiedAeroDevice")]
+		public void RunTrailerDeclarationJob(string fileName)
 		{
-			var fileWriter = new FileOutputWriter(SampleTrailer);
+			var fileWriter = new FileOutputWriter(fileName);
 			var sumWriter = new SummaryDataContainer(fileWriter);
 			var jobContainer = new JobContainer(sumWriter);
-			var dataProvider = XMLInputReader.CreateDeclarationTrailer(XmlReader.Create(SampleTrailer));
+			var dataProvider = XMLInputReader.CreateDeclarationTrailer(XmlReader.Create(fileName));
 			var runsFactory = new SimulatorFactory(ExecutionMode.Declaration, dataProvider, fileWriter) {
 				ModalResults1Hz = false,
 				WriteModalResults = false,
 				ActualModalData = false,
 				Validate = false,
 			};
-			jobContainer.AddRuns(runsFactory);
-			jobContainer.Execute();
-			jobContainer.WaitFinished();
+			try {
+				jobContainer.AddRuns(runsFactory);
+				jobContainer.Execute();
+				jobContainer.WaitFinished();
+			} catch (Exception ex) {
+				Assert.Fail(ex.Message);
+			}
+
 
 			var customerRecord = fileWriter.XMLCustomerReportName;
 			var manufacturerRecord = fileWriter.XMLFullReportName;

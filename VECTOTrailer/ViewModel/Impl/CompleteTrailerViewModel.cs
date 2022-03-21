@@ -882,7 +882,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		{
 			if (OpenFileSelector(jobFileType, nameof(FirstFilePath), FirstFilePath, out var result))
 			{
-				ThirdFilePath = result;
+				FirstFilePath = result;
 				this.Axle1FilePath = FirstFilePath;
 			}
 		}
