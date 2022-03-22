@@ -122,8 +122,8 @@ namespace TUGraz.VectoCore.OutputData.XML
 					new XElement(tns + XMLNames.Trailer_TPMLMTotalTrailer,
 						modelData.VehicleData.InputDataTrailer.TPMLMTotalTrailer.ToXMLFormat(0)),
 					new XElement(tns + XMLNames.Trailer_TPLMAxleAssembly,
-						modelData.VehicleData.InputDataTrailer.TPMLMAxleAssembly.ToXMLFormat(0)),
-					new XElement(tns + XMLNames.Trailer_VolumeOrientation, modelData.VehicleData.InputDataTrailer.VolumeOrientation)
+						modelData.VehicleData.InputDataTrailer.TPMLMAxleAssembly.ToXMLFormat(0))
+					
 				),
 				new XElement(tns + XMLNames.Trailer_VehicleGroupAnnexI, modelData.VehicleData.TrailerSegment.VehicleGroupAnnex),
 				new XElement(tns + XMLNames.Trailer_VehicleGroupToolInternal, modelData.VehicleData.TrailerSegment.VehicleGroup),
@@ -141,7 +141,8 @@ namespace TUGraz.VectoCore.OutputData.XML
 					new XElement(tns + XMLNames.Trailer_LengthBetweenCentersOfAxles, 
 						modelData.VehicleData.InputDataTrailer.LengthBetweenCentersOfAxles.ToXMLFormat(3)),
 					new XElement(tns + XMLNames.Trailer_CargoVolume, 
-						modelData.VehicleData.InputDataTrailer.CargoVolume.ToXMLFormat(3))
+						modelData.VehicleData.InputDataTrailer.CargoVolume.ToXMLFormat(3)),
+					new XElement(tns + XMLNames.Trailer_VolumeOrientation, modelData.VehicleData.InputDataTrailer.VolumeOrientation)
 				),
 				aeroFeatures
 			);
@@ -288,30 +289,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 					value.Payload);
 				ratioCubicMeter = DoCalculateFactor(key.CO2Total, SpecificCargoVolume, value.CO2Total, ReferenceCargoVolume);
 			}
-
-			var rf = 0.0;
-
-			//var rfRun = false;
-			if (result.Mission == MissionType.LongHaul)
-			{
-				rf = result.LoadingType == LoadingType.LowLoading
-					? _trailerSegment.ReferenceRatios.LongHaulLow
-					: _trailerSegment.ReferenceRatios.LongHaulRef;
-
-			}
-			else if (result.Mission == MissionType.RegionalDelivery)
-			{
-				rf = result.LoadingType == LoadingType.LowLoading
-					? _trailerSegment.ReferenceRatios.RegionalDeliveryLow
-					: _trailerSegment.ReferenceRatios.RegionalDeliveryRef;
-			}
-			else
-			{
-				rf = result.LoadingType == LoadingType.LowLoading
-					? _trailerSegment.ReferenceRatios.UrbanDeliveryLow
-					: _trailerSegment.ReferenceRatios.UrbanDeliveryRef;
-			}
-
+			
 			return new XElement(
 				tns + XMLNames.Report_Result_Result,
 				new XAttribute(
@@ -325,9 +303,9 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(tns + XMLNames.Efficiency_Ratio, new XAttribute("unit", "g/t-km"),
 						ratioTons.ToXMLFormat(4)),
 				new XElement(tns + XMLNames.Efficiency_Ratio, new XAttribute("unit", "g/m³-km"),
-						ratioCubicMeter.ToXMLFormat(4)),
-				new XElement(tns + XMLNames.Reference_Ratio, new XAttribute("unit", "g/km"),
-					rf.ToXMLFormat(4))
+						ratioCubicMeter.ToXMLFormat(4))
+				//new XElement(tns + XMLNames.Reference_Ratio, new XAttribute("unit", "g/km"),
+				//	rf.ToXMLFormat(4))
 
 			);
 		}
