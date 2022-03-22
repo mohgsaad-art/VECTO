@@ -1,37 +1,28 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NUnit.Framework;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using TUGraz.VectoCommon.InputData;
+using NUnit.Framework;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
-using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
-using Assert = NUnit.Framework.Assert;
-using TestContext = NUnit.Framework.TestContext;
+using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 {
-    [TestClass]
-    public class HybridsTimeRun
+    [TestFixture]
+    [Parallelizable(ParallelScope.All)]
+    public class HybridsTimeRunTest
     {
-        public const string CycleFile = @"TestData\Integration\FullPowerTrain\1-Gear-Test-dist.vdri";
-        public const string CoachCycleFile = @"TestData\Integration\FullPowerTrain\Coach.vdri";
-        public const string EngineFile = @"TestData\Components\24t Coach.veng";
-        public const string AccelerationFile = @"TestData\Components\Coach.vacc";
-        public const string GearboxLossMap = @"TestData\Components\Indirect Gear.vtlm";
-        public const string AxleLossMap = @"TestData\Components\Axle.vtlm";
-        public const string GearboxShiftPolygonFile = @"TestData\Components\ShiftPolygons.vgbs";
-
-        const string TestJobP1_APTS = @"TestData\Hybrids\GenericVehicle_P1-APT\CityBus_AT_Ser.vecto";
-        const string TestJobP1_APTP = @"TestData\Hybrids\GenericVehicle_P1-APT\CityBus_AT_PS.vecto";
-
-        private const string TestJobCityBusP1_APTP = @"TestData\Hybrids\Citybus_P1-APT-P-220kW-7.7l\CityBus_AT-P.vecto";
+        private const string P2_JOB = @"TestData\Integration\TimeRun\MeasuredSpeed\GenericVehicle_Group2_P2_EM\Class2_RigidTruck_ParHyb_ENG.vecto";
+        private const string P3_JOB = @"TestData\Integration\TimeRun\MeasuredSpeed\GenericVehicle_Group2_P3_EM\Class2_RigidTruck_ParHyb_ENG.vecto";
+        private const string P4_JOB = @"TestData\Integration\TimeRun\MeasuredSpeed\GenericVehicle_Group2_P4_EM\Class2_RigidTruck_ParHyb_ENG.vecto";
+        private const string P2_5_JOB = @"TestData\Integration\TimeRun\MeasuredSpeed\GenericVehicle_Group5_P2.5\P2.5 Group 5 2.vecto";
+        private const string P1_JOB = @"TestData\Integration\TimeRun\MeasuredSpeed\GenericVehicle_P1-APT\CityBus_AT_PS.vecto";
 
         [OneTimeSetUp]
         public void Init()
@@ -39,74 +30,96 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
             Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
         }
 
+        [Category("JRC")]
+		[Category("LongRunning")]
+		[Category("Integration")]
         [
-            TestCase(TestJobP1_APTS, 0, TestName = "P1 Hybrid APT-S, DriveCycle LongHaul"),
-            TestCase(TestJobP1_APTS, 1, TestName = "P1 Hybrid APT-S, DriveCycle Coach"),
-            TestCase(TestJobP1_APTS, 2, TestName = "P1 Hybrid APT-S, DriveCycle Construction"),
-            TestCase(TestJobP1_APTS, 3, TestName = "P1 Hybrid APT-S, DriveCycle HeavyUrban"),
-            TestCase(TestJobP1_APTS, 4, TestName = "P1 Hybrid APT-S, DriveCycle Interurban"),
-            TestCase(TestJobP1_APTS, 5, TestName = "P1 Hybrid APT-S, DriveCycle MunicipalUtility"),
-            TestCase(TestJobP1_APTS, 6, TestName = "P1 Hybrid APT-S, DriveCycle RegionalDelivery"),
-            TestCase(TestJobP1_APTS, 7, TestName = "P1 Hybrid APT-S, DriveCycle Suburban"),
-            TestCase(TestJobP1_APTS, 8, TestName = "P1 Hybrid APT-S, DriveCycle Urban"),
-            TestCase(TestJobP1_APTS, 9, TestName = "P1 Hybrid APT-S, DriveCycle UrbanDelivery"),
-
-            TestCase(TestJobP1_APTP, 0, TestName = "P1 Hybrid APT-P, DriveCycle LongHaul"),
-            TestCase(TestJobP1_APTP, 1, TestName = "P1 Hybrid APT-P, DriveCycle Coach"),
-            TestCase(TestJobP1_APTP, 2, TestName = "P1 Hybrid APT-P, DriveCycle Construction"),
-            TestCase(TestJobP1_APTP, 3, TestName = "P1 Hybrid APT-P, DriveCycle HeavyUrban"),
-            TestCase(TestJobP1_APTP, 4, TestName = "P1 Hybrid APT-P, DriveCycle Interurban"),
-            TestCase(TestJobP1_APTP, 5, TestName = "P1 Hybrid APT-P, DriveCycle MunicipalUtility"),
-            TestCase(TestJobP1_APTP, 6, TestName = "P1 Hybrid APT-P, DriveCycle RegionalDelivery"),
-            TestCase(TestJobP1_APTP, 7, TestName = "P1 Hybrid APT-P, DriveCycle Suburban"),
-            TestCase(TestJobP1_APTP, 8, TestName = "P1 Hybrid APT-P, DriveCycle Urban"),
-            TestCase(TestJobP1_APTP, 9, TestName = "P1 Hybrid APT-P, DriveCycle UrbanDelivery"),
-
-            TestCase(TestJobCityBusP1_APTP, 0, TestName = "P1 CityBus Hybrid APT-P, DriveCycle LongHaul"),
-            TestCase(TestJobCityBusP1_APTP, 1, TestName = "P1 CityBus Hybrid APT-P, DriveCycle Coach"),
-            TestCase(TestJobCityBusP1_APTP, 2, TestName = "P1 CityBus Hybrid APT-P, DriveCycle Construction"),
-            TestCase(TestJobCityBusP1_APTP, 3, TestName = "P1 CityBus Hybrid APT-P, DriveCycle HeavyUrban"),
-            TestCase(TestJobCityBusP1_APTP, 4, TestName = "P1 CityBus Hybrid APT-P, DriveCycle Interurban"),
-            TestCase(TestJobCityBusP1_APTP, 5, TestName = "P1 CityBus Hybrid APT-P, DriveCycle MunicipalUtility"),
-            TestCase(TestJobCityBusP1_APTP, 6, TestName = "P1 CityBus Hybrid APT-P, DriveCycle RegionalDelivery"),
-            TestCase(TestJobCityBusP1_APTP, 7, TestName = "P1 CityBus Hybrid APT-P, DriveCycle Suburban"),
-            TestCase(TestJobCityBusP1_APTP, 8, TestName = "P1 CityBus Hybrid APT-P, DriveCycle Urban"),
-            TestCase(TestJobCityBusP1_APTP, 9, TestName = "P1 CityBus Hybrid APT-P, DriveCycle UrbanDelivery"),
-]
-
-        public void P1APTHybridDriveCycle(string jobFile, int cycleIdx)
+        TestCase(P2_JOB, 0, TestName = "P2 Hybrid TimeRun MeasuredSpeed LongHaul"),
+        TestCase(P2_JOB, 1, TestName = "P2 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(P2_JOB, 2, TestName = "P2 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
+        TestCase(P3_JOB, 0, TestName = "P3 Hybrid TimeRun MeasuredSpeed LongHaul"),
+        TestCase(P3_JOB, 1, TestName = "P3 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(P3_JOB, 2, TestName = "P3 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
+        TestCase(P4_JOB, 0, TestName = "P4 Hybrid TimeRun MeasuredSpeed LongHaul"),
+        TestCase(P4_JOB, 1, TestName = "P4 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(P4_JOB, 2, TestName = "P4 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
+        TestCase(P2_5_JOB, 0, TestName = "P2_5 Hybrid TimeRun MeasuredSpeed LongHaul"),
+        TestCase(P2_5_JOB, 1, TestName = "P2_5 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(P2_5_JOB, 2, TestName = "P2_5 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
+        TestCase(P1_JOB, 0, TestName = "P1 Hybrid TimeRun MeasuredSpeed LongHaul"),
+        TestCase(P1_JOB, 1, TestName = "P1 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(P1_JOB, 2, TestName = "P1 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
+        ]
+        public void RunHybridDriveCycle(string jobFile, int cycleIdx)
         {
             var inputProvider = JSONInputDataFactory.ReadJsonJob(jobFile);
 
-            var writer = new FileOutputWriter(jobFile);
-            var factory = new SimulatorFactory(ExecutionMode.Engineering, inputProvider, writer)
-            {
-                Validate = false,
-                WriteModalResults = true,
-            };
+			(string outputFile, Guid guid) = GetUniqueOutputSubfolder(jobFile);
+			var writer = new FileOutputWriter(outputFile);
 
-            var sumContainer = new SummaryDataContainer(writer);
-            var jobContainer = new JobContainer(sumContainer);
+			var factory = new SimulatorFactory(ExecutionMode.Engineering, inputProvider, writer) {
+				Validate = false,
+				WriteModalResults = true,
+			};
+			factory.SumData = new SummaryDataContainer(writer);
 
-            factory.SumData = sumContainer;
+			var run = factory.SimulationRuns().ToArray()[cycleIdx];
+			run.Run();
 
-            var run = factory.SimulationRuns().ToArray()[cycleIdx];
+			Assert.IsTrue(run.FinishedWithoutErrors);
+			//AssertVTPMetricsAreWithinLimits(factory, metrics);
 
-            Assert.NotNull(run);
-
-            var pt = run.GetContainer();
-
-            Assert.NotNull(pt);
-
-            run.Run();
-            Assert.IsTrue(run.FinishedWithoutErrors);
-
-            //jobContainer.AddRuns(factory);
-            //jobContainer.Execute();
-            //jobContainer.WaitFinished();
-            //Assert.IsTrue(jobContainer.GetProgress().All(x => x.Value.Success));
+			DeleteOutputSubFolder(outputFile, guid);
         }
-        [TestMethod]
+
+        private void DeleteOutputSubFolder(string outputFile, Guid guid)
+        { 
+			var folderName = new FileInfo(outputFile).Directory.Name;
+			
+			if (!folderName.Equals(guid.ToString())) {
+				return;
+            }
+
+			Directory.Delete(Path.GetDirectoryName(outputFile), recursive: true);
+		}
+
+        private (string outputFile, Guid guid) GetUniqueOutputSubfolder(String jobFile)
+        { 
+			Guid guid = Guid.NewGuid();
+
+			string outputFile = Path.Combine(Path.GetDirectoryName(jobFile), guid.ToString(), Path.GetFileName(jobFile));
+
+			if (!Directory.Exists(Path.GetDirectoryName(outputFile))) {
+				Directory.CreateDirectory(Path.GetDirectoryName(outputFile));
+            }
+
+			return (outputFile, guid);
+		}
+
+        private void AssertVTPMetricsAreWithinLimits(SimulatorFactory factory, Dictionary<String, double> metrics)
+        {
+			factory.SumData.Finish();
+
+			var table = VectoCSVFile.Read(((FileOutputWriter) factory.ModWriter).SumFileName, true, true);
+			var row = table.Rows[0];
+
+			Dictionary<string, double> results = new Dictionary<string, double>();
+
+			foreach (var kvp in metrics) {
+				double result;
+				Assert.IsTrue(double.TryParse(row[kvp.Key].ToString(), out result));
+
+				results.Add(kvp.Key, result);
+
+				TestContext.WriteLine($"{kvp.Key} = {result} %   (threshold = {kvp.Value})");
+            }
+
+			foreach (var kvp in metrics) {
+				Assert.IsTrue(results[kvp.Key] <= kvp.Value, $"{kvp.Key} ({results[kvp.Key]}) is above threshold ({kvp.Value})");
+			}
+        }
+
+        
         public void HybridsTimeRunSimpleUrbanDelivery()
         {
             string jobName = null;
@@ -152,7 +165,8 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
                 co2PerMeter?.Value(), energyPerMeter?.Value());
             Assert.IsTrue(true);
         }
-        [TestMethod]
+        
+        
         public void HybridsTimeRunwithGearUrbanDelivery()
         {
             string jobName = null;
@@ -200,7 +214,7 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
         }
 
 
-        [TestMethod]
+        
         public void HybridsTimeRunwihtGearandEMPowerUrbanDelivery()
         {
             string jobName = null;
@@ -246,7 +260,8 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
                 co2PerMeter?.Value(), energyPerMeter?.Value());
             Assert.IsTrue(true);
         }
-        [TestMethod]
+        
+       
         public void HybridsTimeRunSimpleLongHaul()
         {
             string jobName = null;
@@ -293,7 +308,8 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
             Assert.IsTrue(true);
             Assert.IsTrue(true);
         }
-        [TestMethod]
+        
+        
         public void HybridsTimeRunwithGearLongHaul()
         {
             string jobName = null;
@@ -339,7 +355,8 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
                 co2PerMeter?.Value(), energyPerMeter?.Value());
             Assert.IsTrue(true);
         }
-        [TestMethod]
+        
+        
         public void HybridsTimeRunwihtGearandEMPowerLongHaul()
         {
             string jobName = null;
@@ -385,7 +402,8 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
                 co2PerMeter?.Value(), energyPerMeter?.Value());
             Assert.IsTrue(true);
         }
-        [TestMethod]
+        
+       
         public void HybridsTimeRunSimpleRegionalDelivery()
         {
             string jobName = null;
@@ -431,7 +449,8 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
                 co2PerMeter?.Value(), energyPerMeter?.Value());
             Assert.IsTrue(true);
         }
-        [TestMethod]
+        
+        
         public void HybridsTimeRunwithGearRegionalDelivery()
         {
             string jobName = null;
@@ -477,7 +496,8 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
                 co2PerMeter?.Value(), energyPerMeter?.Value());
             Assert.IsTrue(true);
         }
-        [TestMethod]
+        
+        
         public void HybridsTimeRunwihtGearandEMPowerRegionalDelivery()
         {
             string jobName = null;

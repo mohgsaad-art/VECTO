@@ -1,0 +1,18 @@
+{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2020-09-07T15:28:30.2818342Z",
+    "AppVersion": "3",
+    "FileVersion": 1
+  },
+  "Body": {
+    "SavedInDeclMode": false,
+    "Model": "Generic Battery",
+    "Capacity": 14.0,
+    "SOC_min": 20.0,
+    "SOC_max": 80.0,
+    "MaxCurrentMap": "MaxCurrent.vimax",
+    "InternalResistanceCurve": "GenericBattery_10kWh_658V.vbatr",
+    "SoCCurve": "GenericBattery_10kWh_658V.vbatv"
+  }
+}
