@@ -272,7 +272,30 @@
 					<xs:element name="AeroFeatures">
 						<xs:complexType>
 							<xs:sequence>
-								<xs:element name="Technology" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+								<xs:choice>
+									<xs:sequence>
+										<xs:element name="Technology" type="xs:string" maxOccurs="unbounded"/>
+									</xs:sequence>
+									<xs:element name="CertifiedAeroDevice">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="CertificationNumber">
+													<xs:complexType/>
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+								</xs:choice>
+								<xs:element name="AeroReduction" minOccurs="0">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="AeroReductionYawAngle0"/>
+											<xs:element name="AeroReductionYawAngle3"/>
+											<xs:element name="AeroReductionYawAngle6"/>
+											<xs:element name="AeroReductionYawAngle9"/>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
 							</xs:sequence>
 						</xs:complexType>
 					</xs:element>
