@@ -38,6 +38,7 @@ namespace TUGraz.VectoCommon.Models
 	{
 		// ReSharper disable InconsistentNaming
 		Unknown,
+		None,
 		SideSkirtsShort,
 		SideSkirtsLong,
 		BoatTailShort,
@@ -58,6 +59,8 @@ namespace TUGraz.VectoCommon.Models
 					return "boat tail short";
 				case AeroFeatureTechnology.BoatTailLong:
 					return "boat tail long";
+				case AeroFeatureTechnology.None:
+					return "none";
 				default:
 					throw new ArgumentOutOfRangeException("AeroFeatureTechnology type", ttype, null);
 			}
@@ -68,9 +71,9 @@ namespace TUGraz.VectoCommon.Models
 			return ttype.GetLabel();
 		}
 
-		public static AeroFeatureTechnology Parse(string vehicleCategory)
+		public static AeroFeatureTechnology Parse(string technology)
 		{
-			switch (vehicleCategory) {
+			switch (technology) {
 				case "side skirts short":
 					return AeroFeatureTechnology.SideSkirtsShort;
 				case "side skirts long":
@@ -79,6 +82,8 @@ namespace TUGraz.VectoCommon.Models
 					return AeroFeatureTechnology.BoatTailShort;
 				case "boat tail long":
 					return AeroFeatureTechnology.BoatTailLong;
+				case "none":
+					return AeroFeatureTechnology.None;
 				default:
 					return AeroFeatureTechnology.Unknown;
 			}
