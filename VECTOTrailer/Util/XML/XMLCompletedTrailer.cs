@@ -125,26 +125,34 @@ namespace VECTOTrailer.Util.XML
 					new XElement(_v27 + XMLNames.Trailer_LengthBetweenCentersOfAxles, trailerData.LengthBetweenCentersOfAxles?.ToXMLFormat(3).ToString(CultureInfo.InvariantCulture)),
 					new XElement(_v27 + XMLNames.Trailer_CargoVolume, trailerData.CargoVolume?.ToXMLFormat(3).ToString(CultureInfo.InvariantCulture)))
 			);
+			
+	
+			var aeroFeatures = new XElement(_v27 + XMLNames.Trailer_AeroFeatures);
 
-			if (trailerData.IsStandard || trailerData.IsCertified || trailerData.IsNone)
-				vehicle.Add(new XElement(_v27 + XMLNames.Trailer_AeroFeatures));
+			if (trailerData.IsNone) {
+				aeroFeatures.Add(new XElement(_v27 + XMLNames.Trailer_AeroFeatureTechnologies,
+					AeroFeatureTechnology.None.ToXMLFormat()));
+			}else if (trailerData.IsStandard) {
+				if (trailerData.SideSkirtsShort) {
+					aeroFeatures.Add(new XElement(_v27 + XMLNames.Trailer_AeroFeatureTechnologies,
+						AeroFeatureTechnology.SideSkirtsShort.ToXMLFormat()));
+				}
 
-			if (trailerData.IsStandard) {
-				if (trailerData.SideSkirtsShort)
-					vehicle.Element(_v27 + XMLNames.Trailer_AeroFeatures)
-						?.Add(new XElement(_v27 + XMLNames.Trailer_AeroFeatureTechnologies, "side skirts short"));
-				if (trailerData.SideSkirtsLong)
-					vehicle.Element(_v27 + XMLNames.Trailer_AeroFeatures)
-						?.Add(new XElement(_v27 + XMLNames.Trailer_AeroFeatureTechnologies, "side skirts long"));
-				if (trailerData.BoatTailShort)
-					vehicle.Element(_v27 + XMLNames.Trailer_AeroFeatures)
-						?.Add(new XElement(_v27 + XMLNames.Trailer_AeroFeatureTechnologies, "boat tail short"));
-				if (trailerData.BoatTailLong)
-					vehicle.Element(_v27 + XMLNames.Trailer_AeroFeatures)
-						?.Add(new XElement(_v27 + XMLNames.Trailer_AeroFeatureTechnologies, "boat tail long"));
-			}
+				if (trailerData.SideSkirtsLong) {
+					aeroFeatures.Add(new XElement(_v27 + XMLNames.Trailer_AeroFeatureTechnologies,
+						AeroFeatureTechnology.SideSkirtsLong.ToXMLFormat()));
+				}
 
-			else if (trailerData.IsCertified) {
+				if (trailerData.BoatTailShort) {
+					aeroFeatures.Add(new XElement(_v27 + XMLNames.Trailer_AeroFeatureTechnologies,
+						AeroFeatureTechnology.BoatTailShort.ToXMLFormat()));
+				}
+
+				if (trailerData.BoatTailLong) {
+					aeroFeatures.Add(new XElement(_v27 + XMLNames.Trailer_AeroFeatureTechnologies, 
+						AeroFeatureTechnology.BoatTailLong.ToXMLFormat()));
+				}
+			} else if (trailerData.IsCertified) {
 				vehicle.Element(_v27 + XMLNames.Trailer_AeroFeatures)?.Add(new XElement(_v27 + XMLNames.Trailer_CertifiedAeroReduction));
 
 				var certifiedAeroDevice = XDocument.Parse(trailerData.CertifiedAeroDeviceXml.ToString(CultureInfo.InvariantCulture));
@@ -157,12 +165,13 @@ namespace VECTOTrailer.Util.XML
 
 				var signature = certifiedAeroDevice.Descendants().Where(x => x.Name.ToString().Contains("Signature"));
 
-				vehicle.Element(_v27 + XMLNames.Trailer_AeroFeatures)?.Element(_v27 + XMLNames.Trailer_CertifiedAeroReduction)?
+				aeroFeatures.Element(_v27 + XMLNames.Trailer_CertifiedAeroReduction)?
 					.Add(signature);
-
+			} else {
+				throw new VectoException("We should not be here aero device has to be either none/standard/certified");
 			}
 
-
+			vehicle.Add();
 
 			if (int.Parse(trailerData.NumberOfAxles.GetLabel()) <= 0)
 				return vehicle;
