@@ -5,6 +5,16 @@
 	<xs:complexType name="AbstractVectoOutputCustomerDataType" abstract="true"/>
 	<xs:complexType name="AbstractVectoOutputManufacturerDataType" abstract="true"/>
 	<xs:complexType name="AbstractVTPReportDataType" abstract="true"/>
+	<xs:simpleType name="CalculationType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="KilometerBased"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="NoUnitType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="-"/>
+		</xs:restriction>
+	</xs:simpleType>
 	<xs:simpleType name="DistanceUnitType">
 		<xs:restriction base="xs:token">
 			<xs:enumeration value="km"/>

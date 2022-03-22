@@ -83,7 +83,8 @@
 						<xs:complexType>
 							<xs:simpleContent>
 								<xs:extension base="xs:double">
-									<xs:attribute name="unit" use="required"/>
+									<xs:attribute name="type" type="out:CalculationType"/>
+									<xs:attribute name="unit" type="out:NoUnitType"/>
 								</xs:extension>
 							</xs:simpleContent>
 						</xs:complexType>

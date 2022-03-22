@@ -31,7 +31,16 @@
 					</xs:simpleContent>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="EfficiencyRatio" type="xs:double"/>
+			<xs:element name="EfficiencyRatio">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="type" type="out:CalculationType"/>
+							<xs:attribute name="unit" type="out:NoUnitType"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="ResultErrorType">
