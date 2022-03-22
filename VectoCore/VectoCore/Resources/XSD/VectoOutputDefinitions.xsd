@@ -7,7 +7,9 @@
 	<xs:complexType name="AbstractVTPReportDataType" abstract="true"/>
 	<xs:simpleType name="CalculationType">
 		<xs:restriction base="xs:token">
-			<xs:enumeration value="KilometerBased"/>
+			<xs:enumeration value="Kilometre-Based"/>
+			<xs:enumeration value="Ton-Kilometre-Based"/>
+			<xs:enumeration value="CubicMetre-KiloMetre-Based"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="NoUnitType">
