@@ -161,8 +161,8 @@
 					<xs:element name="AeroFeatures">
 						<xs:complexType>
 							<xs:choice>
-								<xs:element name="Technology" type="v2.7:TrailerAeroFeatureTechnologyType" minOccurs="0" maxOccurs="unbounded"/>
-								<xs:element name="CertifiedAeroReduction" type="v2.7:CertifiedAeroComponentDeclarationType" minOccurs="0"/>
+								<xs:element name="Technology" type="v2.7:TrailerAeroFeatureTechnologyType" maxOccurs="unbounded"/>
+								<xs:element name="CertifiedAeroReduction" type="v2.7:CertifiedAeroComponentDeclarationType"/>
 							</xs:choice>
 						</xs:complexType>
 					</xs:element>
@@ -229,6 +229,7 @@
 	</xs:simpleType>
 	<xs:simpleType name="TrailerAeroFeatureTechnologyType">
 		<xs:restriction base="xs:string">
+			<xs:enumeration value="none"/>
 			<xs:enumeration value="side skirts short"/>
 			<xs:enumeration value="side skirts long"/>
 			<xs:enumeration value="boat tail short"/>
