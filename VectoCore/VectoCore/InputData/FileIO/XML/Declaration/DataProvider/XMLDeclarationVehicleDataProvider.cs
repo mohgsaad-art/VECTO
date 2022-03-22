@@ -1063,14 +1063,18 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 				if (current == null)
 					continue;
 
-				if (current.InnerText == AeroFeatureTechnology.SideSkirtsShort.GetLabel())
-					aeroFeatureTechnologies.Add(AeroFeatureTechnology.SideSkirtsShort);
-				else if (current.InnerText == AeroFeatureTechnology.SideSkirtsLong.GetLabel())
-					aeroFeatureTechnologies.Add(AeroFeatureTechnology.SideSkirtsLong);
-				else if (current.InnerText == AeroFeatureTechnology.BoatTailShort.GetLabel())
-					aeroFeatureTechnologies.Add(AeroFeatureTechnology.BoatTailShort);
-				else if (current.InnerText == AeroFeatureTechnology.BoatTailLong.GetLabel())
-					aeroFeatureTechnologies.Add(AeroFeatureTechnology.BoatTailLong);
+				var technology = AeroFeatureTechnologiesHelper.Parse(current.InnerText);
+				if ((technology != AeroFeatureTechnology.None)) {
+					aeroFeatureTechnologies.Add(technology);
+				}
+				//if (current.InnerText == AeroFeatureTechnology.SideSkirtsShort.GetLabel())
+				//	aeroFeatureTechnologies.Add(AeroFeatureTechnology.SideSkirtsShort);
+				//else if (current.InnerText == AeroFeatureTechnology.SideSkirtsLong.GetLabel())
+				//	aeroFeatureTechnologies.Add(AeroFeatureTechnology.SideSkirtsLong);
+				//else if (current.InnerText == AeroFeatureTechnology.BoatTailShort.GetLabel())
+				//	aeroFeatureTechnologies.Add(AeroFeatureTechnology.BoatTailShort);
+				//else if (current.InnerText == AeroFeatureTechnology.BoatTailLong.GetLabel())
+				//	aeroFeatureTechnologies.Add(AeroFeatureTechnology.BoatTailLong);
 			}
 
 			return aeroFeatureTechnologies;
