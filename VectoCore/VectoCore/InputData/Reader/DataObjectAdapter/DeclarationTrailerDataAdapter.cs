@@ -1098,7 +1098,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 		{
 			var prevErrors = errors.Count;
 
-			var aeroFeatureRow = DeclarationData.AeroFeatures.GetTrailerDataRow(CreateAeroFeatureList(trailer));
+			var aeroFeatureRow = DeclarationData.AeroFeatures.GetTrailerDataRow(TrailerDataHelper.CreateAeroFeatureList(trailer));
 
 			bool valid = false;
 			try {
@@ -1106,7 +1106,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			} catch (Exception ex) {
 				throw new VectoException(ex.Message);
 			}
-			var combination = GetAeroFeatureCombination(trailer);
+			var combination = TrailerDataHelper.GetAeroFeatureCombination(trailer);
 			if (combination < 0 || !valid) {
 				errors.Add("invalid standard aero-device declared");
 			} else {
@@ -1296,36 +1296,6 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 						ValidateAxles(trailer, ref errors);
 		}
 
-        private static int GetAeroFeatureCombination(ITrailerDeclarationInputData trailer)
-		{
-			var aeroFeatures = CreateAeroFeatureList(trailer);
-
-			return DeclarationData.AeroFeatures.Lookup(aeroFeatures);
-		}
-
-		private static List<AeroFeatureTechnology> CreateAeroFeatureList(ITrailerDeclarationInputData trailer)
-		{
-			var aeroFeatures = new List<AeroFeatureTechnology>();
-			if (trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.SideSkirtsShort)) {
-				aeroFeatures.Add(AeroFeatureTechnology.SideSkirtsShort);
-			}
-
-			if (trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.SideSkirtsLong)) {
-				aeroFeatures.Add(AeroFeatureTechnology.SideSkirtsLong);
-			}
-
-			if (trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.BoatTailShort)) {
-				aeroFeatures.Add(AeroFeatureTechnology.BoatTailShort);
-			}
-
-			;
-			if (trailer.AeroFeatureTechnologies.Contains(AeroFeatureTechnology.BoatTailLong)) {
-				aeroFeatures.Add(AeroFeatureTechnology.BoatTailLong);
-			}
-
-			return aeroFeatures;
-		}
-
 		private static string GetAxleWheelDimension(IVehicleDeclarationInputData genericVehicle)
 		{
 			return genericVehicle.Components.AxleWheels.XMLSource.ChildNodes[0].ChildNodes[0].FirstChild.ChildNodes[3].FirstChild.ChildNodes[5].InnerText;
@@ -1484,7 +1454,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				aCorrection = new [] { trailer.YawAngle0, trailer.YawAngle3, trailer.YawAngle6, trailer.YawAngle9 };
 
 			else {
-				var combination = GetAeroFeatureCombination(trailer);
+				var combination = TrailerDataHelper.GetAeroFeatureCombination(trailer);
 
 				switch (combination) {
 					case 0:

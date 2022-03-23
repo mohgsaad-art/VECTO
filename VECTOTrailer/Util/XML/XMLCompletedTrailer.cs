@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Globalization;
 using System.Linq;
 using System.Xml;
@@ -112,27 +113,26 @@ namespace VECTOTrailer.Util.XML
 					new XElement(_v27 + XMLNames.Trailer_MassInRunningOrder, trailerData.MassInRunningOrder.ToXMLFormat(0).ToString(CultureInfo.InvariantCulture)),
 					new XElement(_v27 + XMLNames.Trailer_TPMLMTotalTrailer, trailerData.TPLMTotalTrailer.ToXMLFormat(0).ToString(CultureInfo.InvariantCulture)),
 					new XElement(_v27 + XMLNames.Trailer_TPLMAxleAssembly, trailerData.TPLMAxleAssembly.ToXMLFormat(0).ToString(CultureInfo.InvariantCulture))),
-			new XElement(_v27 + "Dimensions",
-					new XElement(_v27 + XMLNames.Trailer_ExternalLengthBody.ToString(CultureInfo.InvariantCulture),
-						trailerData.ExternalLengthOfTheBody?.ToXMLFormat(3).ToString(CultureInfo.InvariantCulture)),
-					new XElement(_v27 + XMLNames.Trailer_ExternalWidthBody, trailerData.ExternalWidthOfTheBody?.ToXMLFormat(3)),
-					new XElement(_v27 + XMLNames.Trailer_ExternalHeightBody.ToString(CultureInfo.InvariantCulture),
-						trailerData.ExternalHeightOfTheBody?.ToXMLFormat(3).ToString(CultureInfo.InvariantCulture)),
-					new XElement(_v27 + XMLNames.Trailer_TotalHeightTrailer.ToString(CultureInfo.InvariantCulture),
-						trailerData.TotalHeightOfTheTrailer?.ToXMLFormat(3).ToString(CultureInfo.InvariantCulture)),
-					new XElement(_v27 + XMLNames.Trailer_LengthFromFrontToFirstAxle, trailerData.LengthFromFrontToFirstAxle?.ToXMLFormat(3).ToString(CultureInfo.InvariantCulture)),
-					new XElement(_v27 + XMLNames.Trailer_LengthBetweenCentersOfAxles, trailerData.LengthBetweenCentersOfAxles?.ToXMLFormat(3).ToString(CultureInfo.InvariantCulture)),
-					new XElement(_v27 + XMLNames.Trailer_CargoVolume, trailerData.CargoVolume?.ToXMLFormat(3).ToString(CultureInfo.InvariantCulture))),
-					new XElement(_v27 + XMLNames.Trailer_VolumeOrientation, trailerData.VolumeOrientation)
+					new XElement(_v27 + "Dimensions",
+							new XElement(_v27 + XMLNames.Trailer_ExternalLengthBody.ToString(CultureInfo.InvariantCulture),
+								trailerData.ExternalLengthOfTheBody?.ToXMLFormat(3).ToString(CultureInfo.InvariantCulture)),
+							new XElement(_v27 + XMLNames.Trailer_ExternalWidthBody, trailerData.ExternalWidthOfTheBody?.ToXMLFormat(3)),
+							new XElement(_v27 + XMLNames.Trailer_ExternalHeightBody.ToString(CultureInfo.InvariantCulture),
+								trailerData.ExternalHeightOfTheBody?.ToXMLFormat(3).ToString(CultureInfo.InvariantCulture)),
+							new XElement(_v27 + XMLNames.Trailer_TotalHeightTrailer.ToString(CultureInfo.InvariantCulture),
+								trailerData.TotalHeightOfTheTrailer?.ToXMLFormat(3).ToString(CultureInfo.InvariantCulture)),
+							new XElement(_v27 + XMLNames.Trailer_LengthFromFrontToFirstAxle, trailerData.LengthFromFrontToFirstAxle?.ToXMLFormat(3).ToString(CultureInfo.InvariantCulture)),
+							new XElement(_v27 + XMLNames.Trailer_LengthBetweenCentersOfAxles, trailerData.LengthBetweenCentersOfAxles?.ToXMLFormat(3).ToString(CultureInfo.InvariantCulture)),
+							new XElement(_v27 + XMLNames.Trailer_CargoVolume, trailerData.CargoVolume?.ToXMLFormat(3).ToString(CultureInfo.InvariantCulture)),
+							new XElement(_v27 + XMLNames.Trailer_VolumeOrientation, trailerData.VolumeOrientation)
+				)
 			);
 			
 	
 			var aeroFeatures = new XElement(_v27 + XMLNames.Trailer_AeroFeatures);
-
-			if (trailerData.IsNone) {
-				aeroFeatures.Add(new XElement(_v27 + XMLNames.Trailer_AeroFeatureTechnologies,
-					AeroFeatureTechnology.None.ToXMLFormat()));
-			}else if (trailerData.IsStandard) {
+			vehicle.Add(aeroFeatures);
+			
+			if (trailerData.IsStandard) {
 				if (trailerData.SideSkirtsShort) {
 					aeroFeatures.Add(new XElement(_v27 + XMLNames.Trailer_AeroFeatureTechnologies,
 						AeroFeatureTechnology.SideSkirtsShort.ToXMLFormat()));
@@ -167,11 +167,13 @@ namespace VECTOTrailer.Util.XML
 
 				aeroFeatures.Element(_v27 + XMLNames.Trailer_AeroReduction)?
 					.Add(signature);
-			} else {
+			} else if (trailerData.IsNone) {
+				aeroFeatures.Add(new XElement(_v27 + XMLNames.Trailer_AeroFeatureTechnologies,
+					AeroFeatureTechnology.None.ToXMLFormat()));
+			} else{
 				throw new VectoException("We should not be here aero device has to be either none/standard/certified");
 			}
 
-			vehicle.Add();
 
 			if (int.Parse(trailerData.NumberOfAxles.GetLabel()) <= 0)
 				return vehicle;

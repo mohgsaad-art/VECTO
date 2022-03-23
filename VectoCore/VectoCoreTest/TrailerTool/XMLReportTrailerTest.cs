@@ -53,6 +53,9 @@ namespace TUGraz.VectoCore.Tests.XML
 		private const string MinimalTrailer = @"TestData\Trailer\2_Axle_DB_drybox.xml";
 		private const string TrailerWithCertifiedAeroDevice = @"TestData\Trailer\3_axle_DA_drybox.xml";
 
+		private const string TrailerWithStandardAeroDevice =
+			@"TestData\Trailer\2_Axle_DB_drybox_standard_aeroDevice.xml";
+
 		protected IXMLInputDataReader XMLInputReader;
 		private IKernel _kernel;
 
@@ -67,6 +70,7 @@ namespace TUGraz.VectoCore.Tests.XML
 
 		[TestCase(MinimalTrailer, TestName = "Minimal")]
 		[TestCase(TrailerWithCertifiedAeroDevice, TestName="CertifiedAeroDevice")]
+		[TestCase(TrailerWithStandardAeroDevice, TestName = "StandardAeroDevice")]
 		public void RunTrailerDeclarationJob(string fileName)
 		{
 			var fileWriter = new FileOutputWriter(fileName);
@@ -84,7 +88,7 @@ namespace TUGraz.VectoCore.Tests.XML
 				jobContainer.Execute();
 				jobContainer.WaitFinished();
 			} catch (Exception ex) {
-				Assert.Fail(ex.Message);
+				Assert.IsTrue(false, ex.Message);
 			}
 
 

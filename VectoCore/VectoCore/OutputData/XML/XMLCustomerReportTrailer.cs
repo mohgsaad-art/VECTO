@@ -37,10 +37,12 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using TUGraz.IVT.VectoXML.Writer;
+using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
@@ -101,19 +103,71 @@ namespace TUGraz.VectoCore.OutputData.XML
 			_genericTowingVehicle = modelData.VehicleData.ModelName;
 
 			var aeroFeatures = new XElement(tns + XMLNames.Trailer_AeroFeatures);
-			foreach (var technology in modelData.VehicleData.InputDataTrailer.AeroFeatureTechnologies)
-				aeroFeatures.Add(new XElement(tns + XMLNames.Trailer_AeroFeatureTechnologies, technology));
-
-			if (modelData.VehicleData.InputDataTrailer.AeroFeatureTechnologies.Count == 0 &&
-				(modelData.VehicleData.InputDataTrailer.YawAngle0 != 0 || modelData.VehicleData.InputDataTrailer.YawAngle3 != 0 ||
-				modelData.VehicleData.InputDataTrailer.YawAngle6 != 0 || modelData.VehicleData.InputDataTrailer.YawAngle9 != 0))
+			var trailerData = modelData.VehicleData.InputDataTrailer;
+			if (trailerData.AeroFeatureTechnologies.Count == 0 && modelData.VehicleData.InputDataTrailer.CertifiedAeroDeviceApplicableVehicleGroup == null)
 			{
+				aeroFeatures.Add(new XElement(tns + XMLNames.Trailer_AeroFeatureTechnologies, AeroFeatureTechnology.None.ToXMLFormat()));
+			}
+			else if (trailerData.AeroFeatureTechnologies.Count > 0 || trailerData.CertifiedAeroDeviceApplicableVehicleGroup != null)
+			{
+				foreach (var trailerDataAeroFeatureTechnology in trailerData.AeroFeatureTechnologies)
+				{
+					aeroFeatures.Add(new XElement(tns + XMLNames.Trailer_AeroFeatureTechnologies, trailerDataAeroFeatureTechnology.ToXMLFormat()));
+				}
 
-				aeroFeatures.Add(new XElement(tns + XMLNames.Trailer_CertifiedAeroReduction));
-				aeroFeatures.Element(tns + XMLNames.Trailer_CertifiedAeroReduction)?.Add(new XElement(tns + XMLNames.Trailer_YawAngle0, modelData.VehicleData.InputDataTrailer.YawAngle0));
-				aeroFeatures.Element(tns + XMLNames.Trailer_CertifiedAeroReduction)?.Add(new XElement(tns + XMLNames.Trailer_YawAngle3, modelData.VehicleData.InputDataTrailer.YawAngle3));
-				aeroFeatures.Element(tns + XMLNames.Trailer_CertifiedAeroReduction)?.Add(new XElement(tns + XMLNames.Trailer_YawAngle6, modelData.VehicleData.InputDataTrailer.YawAngle6));
-				aeroFeatures.Element(tns + XMLNames.Trailer_CertifiedAeroReduction)?.Add(new XElement(tns + XMLNames.Trailer_YawAngle9, modelData.VehicleData.InputDataTrailer.YawAngle9));
+				var aeroReduction = new XElement(tns + XMLNames.Trailer_AeroReduction);
+				aeroFeatures.Add(aeroReduction);
+				if (trailerData.AeroFeatureTechnologies.Count > 0) {
+					double[] aeroReductions;
+					var specificTrailerSegment = trailerData.GetTrailerSegment().SpecificTrailerSegment;
+					switch (trailerData.GetAeroFeatureCombination())
+					{
+						case 0:
+							aeroReductions = specificTrailerSegment.Aero0;
+							break;
+						case 1:
+							aeroReductions = specificTrailerSegment.Aero1;
+							break;
+						case 2:
+							aeroReductions = specificTrailerSegment.Aero2;
+							break;
+						case 3:
+							aeroReductions = specificTrailerSegment.Aero3;
+							break;
+						case 4:
+							aeroReductions = specificTrailerSegment.Aero4;
+							break;
+						case 5:
+							aeroReductions = specificTrailerSegment.Aero5;
+							break;
+						case 6:
+							aeroReductions = specificTrailerSegment.Aero6;
+							break;
+						case 7:
+							aeroReductions = specificTrailerSegment.Aero7;
+							break;
+						case 8:
+							aeroReductions = specificTrailerSegment.Aero8;
+							break;
+						default:
+							throw new VectoException("Invalid aero combination");
+					}
+
+
+					aeroReduction.Add(new XElement(tns + XMLNames.Trailer_YawAngle0, aeroReductions[0].ToXMLFormat(2)));
+					aeroReduction.Add(new XElement(tns + XMLNames.Trailer_YawAngle3, aeroReductions[1].ToXMLFormat(2)));
+					aeroReduction.Add(new XElement(tns + XMLNames.Trailer_YawAngle6, aeroReductions[2].ToXMLFormat(2)));
+					aeroReduction.Add(new XElement(tns + XMLNames.Trailer_YawAngle9, aeroReductions[3].ToXMLFormat(2)));
+
+
+
+
+				} else {
+					aeroReduction.Add(new XElement(tns + XMLNames.Trailer_YawAngle0, modelData.VehicleData.InputDataTrailer.YawAngle0.ToXMLFormat(2)));
+					aeroReduction.Add(new XElement(tns + XMLNames.Trailer_YawAngle3, modelData.VehicleData.InputDataTrailer.YawAngle3.ToXMLFormat(2)));
+					aeroReduction.Add(new XElement(tns + XMLNames.Trailer_YawAngle6, modelData.VehicleData.InputDataTrailer.YawAngle6.ToXMLFormat(2)));
+					aeroReduction.Add(new XElement(tns + XMLNames.Trailer_YawAngle9, modelData.VehicleData.InputDataTrailer.YawAngle9.ToXMLFormat(2)));
+				}
 			}
 
 			VehiclePart.Add(
@@ -242,10 +296,10 @@ namespace TUGraz.VectoCore.OutputData.XML
 				var value = Mappings
 					.FirstOrDefault(x => x.Key.Mission == result.Mission && x.Key.Payload == result.Payload)
 					.Value;
-				ratio = man.CalculateFactor(key, value);
-				ratioTons = man.DoCalculateFactor(key.CO2Total, key.Distance, key.Payload, value.CO2Total, value.Distance,
+				ratio = XMLReportHelperTrailer.CalculateFactor(key, value);
+				ratioTons = XMLReportHelperTrailer.DoCalculateFactor(key.CO2Total, key.Distance, key.Payload, value.CO2Total, value.Distance,
 					value.Payload);
-				ratioCubicMeter = man.DoCalculateFactor(key.CO2Total, SpecificCargoVolume, value.CO2Total, ReferenceCargoVolume);
+				ratioCubicMeter = XMLReportHelperTrailer.DoCalculateFactor(key.CO2Total, SpecificCargoVolume, value.CO2Total, ReferenceCargoVolume);
 			}
 
 			var cdxAYawAngle3 = result.CdxA +
@@ -294,13 +348,18 @@ namespace TUGraz.VectoCore.OutputData.XML
 				result.CdxA != null ? new XElement(tns + XMLNames.Report_AirDrag_CdxA + "yawAngle3", new XAttribute("unit", "m²"), cdxAYawAngle3.ToXMLFormat(3)) : null,
 				result.CdxA != null ? new XElement(tns + XMLNames.Report_AirDrag_CdxA + "yawAngle6", new XAttribute("unit", "m²"), cdxAYawAngle6.ToXMLFormat(3)) : null,
 				result.CdxA != null ? new XElement(tns + XMLNames.Report_AirDrag_CdxA + "yawAngle9", new XAttribute("unit", "m²"), cdxAYawAngle9.ToXMLFormat(3)) : null,
-				new XElement(tns + XMLNames.Report_ResultEntry_AverageSpeed, new XAttribute(XMLNames.Report_Results_Unit_Attr, XMLNames.Unit_kmph), result.AverageSpeed.ConvertToKiloMeterPerHour().Value.ToXMLFormat(2)),
-				new XElement(tns + XMLNames.Efficiency_Ratio, new XAttribute("unit", "g/km"), ratio.ToXMLFormat(4)),
-				new XElement(tns + XMLNames.Efficiency_Ratio, new XAttribute("unit", "g/t-km"), ratioTons.ToXMLFormat(4)),
-				new XElement(tns + XMLNames.Efficiency_Ratio, new XAttribute("unit", "g/m³-km"), ratioCubicMeter.ToXMLFormat(4)),
-				new XElement(tns + XMLNames.Reference_Ratio, new XAttribute("unit", "g/km"),
-					rf.ToXMLFormat(4)),
-				man.GetResults(result, tns).Cast<object>().ToArray()
+				
+
+
+
+				
+				///new XElement(tns + XMLNames.Report_ResultEntry_AverageSpeed, new XAttribute(XMLNames.Report_Results_Unit_Attr, XMLNames.Unit_kmph), result.AverageSpeed.ConvertToKiloMeterPerHour().Value.ToXMLFormat(2)),
+				///new XElement(tns + XMLNames.Efficiency_Ratio, new XAttribute("unit", "g/km"), ratio.ToXMLFormat(4)),
+				///new XElement(tns + XMLNames.Efficiency_Ratio, new XAttribute("unit", "g/t-km"), ratioTons.ToXMLFormat(4)),
+				///new XElement(tns + XMLNames.Efficiency_Ratio, new XAttribute("unit", "g/m³-km"), ratioCubicMeter.ToXMLFormat(4)),
+				///new XElement(tns + XMLNames.Reference_Ratio, new XAttribute("unit", "g/km"),
+					//rf.ToXMLFormat(4)),
+				XMLReportHelperTrailer.GetResults(result, tns).Cast<object>().ToArray()
 			);
 		}
 
@@ -362,7 +421,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 						new XAttribute(XMLNames.Report_Results_Unit_Attr, "l/m³-km"),
 						WeightedFcTrailerCubicMeter.ToXMLFormat(4)
 					),
-					new XElement(tns + XMLNames.Report_WeightedEfficiencyRatio,
+					new XElement(tns + XMLNames.Report_WeightedEfficiencyRatio, 
 						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/km"),
 						(WeightedCo2Trailer / ReferenceWeightedCo2).ToXMLFormat(4)),
 					new XElement(tns + XMLNames.Report_WeightedEfficiencyRatio,

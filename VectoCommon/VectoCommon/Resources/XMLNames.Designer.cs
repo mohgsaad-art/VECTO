@@ -3067,6 +3067,15 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AeroReduction.
+        /// </summary>
+        public static string Trailer_AeroReduction {
+            get {
+                return ResourceManager.GetString("Trailer_AeroReduction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to AxleCount.
         /// </summary>
         public static string Trailer_AxleCount {
@@ -3090,15 +3099,6 @@ namespace TUGraz.VectoCommon.Resources {
         public static string Trailer_CargoVolume {
             get {
                 return ResourceManager.GetString("Trailer_CargoVolume", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to CertifiedAeroReduction.
-        /// </summary>
-        public static string Trailer_CertifiedAeroReduction {
-            get {
-                return ResourceManager.GetString("Trailer_CertifiedAeroReduction", resourceCulture);
             }
         }
         
@@ -3283,7 +3283,7 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CertifiedAerodynamicReduction0.
+        ///   Looks up a localized string similar to AeroReductionYawAngle0.
         /// </summary>
         public static string Trailer_YawAngle0 {
             get {
@@ -3292,7 +3292,7 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CertifiedAerodynamicReduction3.
+        ///   Looks up a localized string similar to AeroReductionYawAngle3.
         /// </summary>
         public static string Trailer_YawAngle3 {
             get {
@@ -3301,7 +3301,7 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CertifiedAerodynamicReduction6.
+        ///   Looks up a localized string similar to AeroReductionYawAngle6.
         /// </summary>
         public static string Trailer_YawAngle6 {
             get {
@@ -3310,7 +3310,7 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CertifiedAerodynamicReduction9.
+        ///   Looks up a localized string similar to AeroReductionYawAngle9.
         /// </summary>
         public static string Trailer_YawAngle9 {
             get {

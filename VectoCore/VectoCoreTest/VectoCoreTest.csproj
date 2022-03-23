@@ -3696,6 +3696,9 @@
     <Content Include="TestData\Trailer\2_Axle_DB_drybox.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TestData\Trailer\2_Axle_DB_drybox_standard_aeroDevice.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestData\Trailer\3_Axle_DA_drybox.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
