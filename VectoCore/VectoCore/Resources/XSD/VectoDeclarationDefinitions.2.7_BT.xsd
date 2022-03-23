@@ -62,7 +62,7 @@
 							<xs:documentation>T032</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="ApplicableVehicleGroupAccAnnex1" maxOccurs="unbounded">
+					<xs:element name="ApplicableVehicleGroupAnnex1" maxOccurs="unbounded">
 						<xs:simpleType>
 							<xs:restriction base="xs:string">
 								<xs:minLength value="1"/>
