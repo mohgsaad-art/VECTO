@@ -31,6 +31,7 @@
 
 using System;
 using System.Collections.Concurrent;
+using System.IO;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -40,6 +41,7 @@ using System.Threading.Tasks;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.OutputData;
+using TUGraz.VectoCommon.Utils.MatrixRecorder;
 
 namespace TUGraz.VectoCore.Models.Simulation.Impl
 {
@@ -497,6 +499,9 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				JobContainer = jobContainer;
 				_runContainerId = runContainerId;
 				RunTask = new Task(() => {
+					MatRec.Open(Path.Combine(".", "matrec.bson"));
+					//MatRec.Record(new Dictionary<string, object>() { { "AbsTime", "" }});	
+
 					var stopWatch = Stopwatch.StartNew();
 					try {
 						Running = true;
@@ -507,6 +512,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 						throw;
 					} finally {
 						stopWatch.Stop();
+						MatRec.Close();
 						Success = Run.FinishedWithoutErrors && ExecException == null;
 						ExecTime = stopWatch.Elapsed.TotalMilliseconds;
 						JobContainer.JobCompleted(RunId, _runContainerId);

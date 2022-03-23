@@ -69,7 +69,7 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 			Assert.IsTrue(run.FinishedWithoutErrors);
 			//AssertVTPMetricsAreWithinLimits(factory, metrics);
 
-			DeleteOutputSubFolder(outputFile, guid);
+			//DeleteOutputSubFolder(outputFile, guid);
         }
 
         private void DeleteOutputSubFolder(string outputFile, Guid guid)

@@ -17,6 +17,7 @@ using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Utils;
+using TUGraz.VectoCommon.Utils.MatrixRecorder;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 {
@@ -1494,6 +1495,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			List<HybridResultEntry> eval, Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity,
 			bool dryRun, GearshiftPosition currentGear)
 		{
+			foreach(var e in eval) {
+				try {
+					MatRec.NewRow("AbsTime", absTime.Value());
+					MatRec.Record("ICE_speed", e.Response.Engine.EngineSpeed.Value());
+                }
+				catch {}
+            }
+
 			var eval2 = eval.Where(x =>
 					(x.IgnoreReason & HybridConfigurationIgnoreReason.VehicleSpeedBelowMinSpeedAfterGearshift) == 0)
 				.ToList();
