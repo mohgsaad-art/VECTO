@@ -101,10 +101,9 @@ namespace VECTOTrailer.Util.XML
 				new XElement(_v27 + XMLNames.Trailer_LegislativeCategory, trailerData.LegislativeCategory),
 				new XElement(_v27 + XMLNames.Trailer_AxleCount, trailerData.NumberOfAxles.GetLabel()),
 				new XElement(_v27 + XMLNames.Trailer_TrailerType, trailerData.TrailerType),
-				new XElement(_v27 + XMLNames.Trailer_BodyCode, trailerData.BodyCode.GetLabel()),
-			    new XElement(_v27 + XMLNames.Trailer_VolumeOrientation, trailerData.VolumeOrientation));
+				new XElement(_v27 + XMLNames.Trailer_BodyCode, trailerData.BodyCode.GetLabel()));
 
-			vehicle.Add(trailerData.TrailerType == TypeTrailer.DC
+				vehicle.Add(trailerData.TrailerType == TypeTrailer.DC
 				? new XElement(_v27 + XMLNames.Trailer_TrailerCouplingPoint,
 					trailerData.TrailerCouplingPoint.GetLabel())
 				: new XElement(_v27 + XMLNames.Trailer_TrailerCouplingPoint, TrailerCouplingPoint.Unknown.GetLabel()));
@@ -123,7 +122,8 @@ namespace VECTOTrailer.Util.XML
 						trailerData.TotalHeightOfTheTrailer?.ToXMLFormat(3).ToString(CultureInfo.InvariantCulture)),
 					new XElement(_v27 + XMLNames.Trailer_LengthFromFrontToFirstAxle, trailerData.LengthFromFrontToFirstAxle?.ToXMLFormat(3).ToString(CultureInfo.InvariantCulture)),
 					new XElement(_v27 + XMLNames.Trailer_LengthBetweenCentersOfAxles, trailerData.LengthBetweenCentersOfAxles?.ToXMLFormat(3).ToString(CultureInfo.InvariantCulture)),
-					new XElement(_v27 + XMLNames.Trailer_CargoVolume, trailerData.CargoVolume?.ToXMLFormat(3).ToString(CultureInfo.InvariantCulture)))
+					new XElement(_v27 + XMLNames.Trailer_CargoVolume, trailerData.CargoVolume?.ToXMLFormat(3).ToString(CultureInfo.InvariantCulture))),
+					new XElement(_v27 + XMLNames.Trailer_VolumeOrientation, trailerData.VolumeOrientation)
 			);
 			
 	
@@ -153,19 +153,19 @@ namespace VECTOTrailer.Util.XML
 						AeroFeatureTechnology.BoatTailLong.ToXMLFormat()));
 				}
 			} else if (trailerData.IsCertified) {
-				vehicle.Element(_v27 + XMLNames.Trailer_AeroFeatures)?.Add(new XElement(_v27 + XMLNames.Trailer_CertifiedAeroReduction));
+				vehicle.Element(_v27 + XMLNames.Trailer_AeroFeatures)?.Add(new XElement(_v27 + XMLNames.Trailer_AeroReduction));
 
 				var certifiedAeroDevice = XDocument.Parse(trailerData.CertifiedAeroDeviceXml.ToString(CultureInfo.InvariantCulture));
 
 				var data = certifiedAeroDevice.Descendants().Where(x => x.Name.ToString().Contains("Data"));
 
 				if (data != null)
-					vehicle.Element(_v27 + XMLNames.Trailer_AeroFeatures)?.Element(_v27 + XMLNames.Trailer_CertifiedAeroReduction)?
+					vehicle.Element(_v27 + XMLNames.Trailer_AeroFeatures)?.Element(_v27 + XMLNames.Trailer_AeroReduction)?
 						.Add(data);
 
 				var signature = certifiedAeroDevice.Descendants().Where(x => x.Name.ToString().Contains("Signature"));
 
-				aeroFeatures.Element(_v27 + XMLNames.Trailer_CertifiedAeroReduction)?
+				aeroFeatures.Element(_v27 + XMLNames.Trailer_AeroReduction)?
 					.Add(signature);
 			} else {
 				throw new VectoException("We should not be here aero device has to be either none/standard/certified");
