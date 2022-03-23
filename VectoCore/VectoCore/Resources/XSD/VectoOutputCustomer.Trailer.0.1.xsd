@@ -304,24 +304,24 @@
 							<xs:sequence>
 								<xs:element name="Axle" maxOccurs="unbounded">
 									<xs:complexType>
-										<xs:all>
+										<xs:sequence>
 											<xs:element name="Tyre">
 												<xs:complexType>
-													<xs:all>
+													<xs:sequence>
 														<xs:element name="Data">
 															<xs:complexType>
-																<xs:all>
+																<xs:sequence>
 																	<xs:element name="Model" type="xs:string"/>
 																	<xs:element name="Dimension" type="xs:string"/>
 																	<xs:element name="RRCDeclared" type="xs:string"/>
-																	<xs:element name="FuelEfficiencyClass" type="xs:string"/>
-																</xs:all>
+																	<xs:element name="FuelEfficiencyClass" type="xs:string" minOccurs="0"/>
+																</xs:sequence>
 															</xs:complexType>
 														</xs:element>
-													</xs:all>
+													</xs:sequence>
 												</xs:complexType>
 											</xs:element>
-										</xs:all>
+										</xs:sequence>
 										<xs:attribute name="axleNumber" use="required"/>
 									</xs:complexType>
 								</xs:element>
