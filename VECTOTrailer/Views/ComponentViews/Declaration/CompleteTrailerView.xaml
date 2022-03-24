@@ -290,7 +290,8 @@
                     <RadioButton Margin="0,5,0,0" GroupName="features" Name="certified" IsChecked="{Binding IsCertified}">Certified aerodynamic device</RadioButton>
                     <RadioButton Margin="0,5,0,0" GroupName="features" Name="none" IsChecked="{Binding IsNone}">None</RadioButton>
 
-                    <Grid Margin="5" Visibility="{Binding IsChecked,ElementName=standard,Converter={StaticResource BoolToVisibilityConverter}}">
+                    <GroupBox Header="Side covers"  Visibility="{Binding IsChecked,ElementName=standard,Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Grid Margin="5" >
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100"/>
                             <ColumnDefinition Width="Auto"/>
@@ -301,11 +302,13 @@
 
                         <TextBlock Grid.Column="0" Text="Short side covers"/>
                         <CheckBox Grid.Column="1" IsChecked="{Binding SideSkirtsShort}"/>
+                        <TextBlock Grid.Column="3" Text="Long side covers"/>
+                        <CheckBox Grid.Column="4" IsChecked="{Binding SideSkirtsLong}"/>
 
-                        <TextBlock Grid.Column="3" Text="Short rear flaps" />
-                        <CheckBox Grid.Column="4" IsChecked="{Binding BoatTailShort}"/>
                     </Grid>
-                    <Grid Margin="5" Visibility="{Binding IsChecked,ElementName=standard,Converter={StaticResource BoolToVisibilityConverter}}">
+                    </GroupBox>
+                    <GroupBox Header="Rear flaps" Visibility="{Binding IsChecked,ElementName=standard,Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Grid Margin="5" >
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100"/>
                             <ColumnDefinition Width="Auto"/>
@@ -313,12 +316,14 @@
                             <ColumnDefinition Width="100"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Short rear flaps" />
+                        <CheckBox Grid.Column="1" IsChecked="{Binding BoatTailShort}"/>
 
-                        <TextBlock Grid.Column="0" Text="Long side covers"/>
-                        <CheckBox Grid.Column="1" IsChecked="{Binding SideSkirtsLong}"/>
-                        <TextBlock Grid.Column="3" Text="Tall rear flaps"/>
+                            <TextBlock Grid.Column="3" Text="Tall rear flaps"/>
                         <CheckBox Grid.Column="4" IsChecked="{Binding BoatTailLong}"/>
-                    </Grid>
+                     
+                        </Grid>
+                    </GroupBox>
                     <DockPanel HorizontalAlignment="Stretch" Margin="5" LastChildFill="True" Visibility="{Binding IsChecked,ElementName=certified,Converter={StaticResource BoolToVisibilityConverter}}">
                         
                         
