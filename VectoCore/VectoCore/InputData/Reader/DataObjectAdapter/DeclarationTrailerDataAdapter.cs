@@ -1130,7 +1130,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 			return prevErrors == errors.Count;
 		}
-
+		#region Validation 
 		private static bool ValidateAxles(ITrailerDeclarationInputData trailer, ref IList<string> errors)
 		{
 			var error = false;
@@ -1295,7 +1295,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			return ValidateAeroFeatures(trailer, ref errors) & ValidateInputValues(trailer, ref errors) &
 						ValidateAxles(trailer, ref errors);
 		}
-
+#endregion validation
 		private static string GetAxleWheelDimension(IVehicleDeclarationInputData genericVehicle)
 		{
 			return genericVehicle.Components.AxleWheels.XMLSource.ChildNodes[0].ChildNodes[0].FirstChild.ChildNodes[3].FirstChild.ChildNodes[5].InnerText;
@@ -1563,12 +1563,12 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 			#region Coupling point
 
-			if (trailer.TrailerType == TypeTrailer.DC && trailer.TrailerCouplingPoint == TrailerCouplingPoint.High) {
+			//if (trailer.TrailerType == TypeTrailer.DC && trailer.TrailerCouplingPoint == TrailerCouplingPoint.High) {
+			if(trailerSegment.SpecificTrailerSegment.CouplingPointCorrection){
 				data.CdxA0 *= 1.1037;
 				data.CdxA3 *= 1.1348;
 				data.CdxA6 *= 1.1804;
 				data.CdxA9 *= 1.2235;
-
 			}
 			#endregion 
 
@@ -1685,6 +1685,15 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			}
 
 			#endregion
+
+			#region CoulpingPointCorrection
+
+			if (trailerSegment.ReferenceTrailerSegment.CouplingPointCorrection) {
+				throw new NotImplementedException(
+					"Trailer coupling point correction not implemented for reference trailers");
+			}
+
+			#endregion	
 
 			data.CdxA00 = data.CdxA0 - widthCdxA0;
 			data.CdxA03 = data.CdxA3 - widthCdxA0;
