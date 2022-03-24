@@ -115,8 +115,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 			} catch (InvalidOperationException e) {
 				var errorMessage = string.Format(
 					ErrorMessage, vehicleGroup);
-				Log.Fatal(errorMessage);
-				throw new VectoException(errorMessage, e);
+				Log.Fatal(errorMessage + e.Message);
+				row = null;
 			}
 
 			return row;
