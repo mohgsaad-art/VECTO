@@ -34,23 +34,37 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 		[Category("LongRunning")]
 		[Category("Integration")]
         [
-        TestCase(P2_JOB, 0, TestName = "P2 Hybrid TimeRun MeasuredSpeed LongHaul"),
-        TestCase(P2_JOB, 1, TestName = "P2 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
-        TestCase(P2_JOB, 2, TestName = "P2 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
-        TestCase(P3_JOB, 0, TestName = "P3 Hybrid TimeRun MeasuredSpeed LongHaul"),
-        TestCase(P3_JOB, 1, TestName = "P3 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
-        TestCase(P3_JOB, 2, TestName = "P3 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
-        TestCase(P4_JOB, 0, TestName = "P4 Hybrid TimeRun MeasuredSpeed LongHaul"),
-        TestCase(P4_JOB, 1, TestName = "P4 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
-        TestCase(P4_JOB, 2, TestName = "P4 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
-        TestCase(P2_5_JOB, 0, TestName = "P2_5 Hybrid TimeRun MeasuredSpeed LongHaul"),
-        TestCase(P2_5_JOB, 1, TestName = "P2_5 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
-        TestCase(P2_5_JOB, 2, TestName = "P2_5 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
-        TestCase(P1_JOB, 0, TestName = "P1 Hybrid TimeRun MeasuredSpeed LongHaul"),
-        TestCase(P1_JOB, 1, TestName = "P1 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
-        TestCase(P1_JOB, 2, TestName = "P1 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
+        TestCase(P2_JOB, 0, 584.9698, 5.519, 4.4734, TestName = "P2 Hybrid TimeRun MeasuredSpeed LongHaul"),
+        TestCase(P2_JOB, 1, 558.7214, 9.6829, 9.6138, TestName = "P2 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(P2_JOB, 2, 0, 0, 0, TestName = "P2 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
+        TestCase(P3_JOB, 0, 0, 0, 0, TestName = "P3 Hybrid TimeRun MeasuredSpeed LongHaul"),
+        TestCase(P3_JOB, 1, 0, 0, 0, TestName = "P3 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(P3_JOB, 2, 0, 0, 0, TestName = "P3 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
+        TestCase(P4_JOB, 0, 0, 0, 0, TestName = "P4 Hybrid TimeRun MeasuredSpeed LongHaul"),
+        TestCase(P4_JOB, 1, 0, 0, 0, TestName = "P4 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(P4_JOB, 2, 0, 0, 0, TestName = "P4 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
+        TestCase(P2_5_JOB, 0, 0, 0, 0, TestName = "P2_5 Hybrid TimeRun MeasuredSpeed LongHaul"),
+        TestCase(P2_5_JOB, 1, 0, 0, 0, TestName = "P2_5 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(P2_5_JOB, 2, 0, 0, 0, TestName = "P2_5 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
+        TestCase(P1_JOB, 0, 0, 0, 0, TestName = "P1 Hybrid TimeRun MeasuredSpeed LongHaul"),
+        TestCase(P1_JOB, 1, 0, 0, 0, TestName = "P1 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(P1_JOB, 2, 0, 0, 0, TestName = "P1 Hybrid TimeRun MeasuredSpeed UrbanDelivery")
         ]
-        public void RunHybridDriveCycle(string jobFile, int cycleIdx)
+        public void TestHybridTimerunCycle(string jobFile, int cycleIdx, double CO2, double charge, double discharge)
+        {
+            Dictionary<string, double> metrics = new Dictionary<string, double>()
+			{
+				//{ "FC-SoC [g/km]", fcSoC },
+				//{ "FC-SoC_Corr [g/km]", fcSocCorr },
+				{ SummaryDataContainer.Fields.CO2_KM, CO2 },
+                { SummaryDataContainer.Fields.E_REESS_T_chg, charge },
+                { SummaryDataContainer.Fields.E_REESS_T_dischg, discharge }
+			};
+
+            RunHybridDriveCycle(jobFile, cycleIdx, metrics);
+        }
+
+        public void RunHybridDriveCycle(string jobFile, int cycleIdx, Dictionary<String, double> metrics)
         {
             var inputProvider = JSONInputDataFactory.ReadJsonJob(jobFile);
 
@@ -67,9 +81,9 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 			run.Run();
 
 			Assert.IsTrue(run.FinishedWithoutErrors);
-			//AssertVTPMetricsAreWithinLimits(factory, metrics);
+			AssertMetricsAreWithinLimits(factory, metrics);
 
-			//DeleteOutputSubFolder(outputFile, guid);
+			DeleteOutputSubFolder(outputFile, guid);
         }
 
         private void DeleteOutputSubFolder(string outputFile, Guid guid)
@@ -96,7 +110,7 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 			return (outputFile, guid);
 		}
 
-        private void AssertVTPMetricsAreWithinLimits(SimulatorFactory factory, Dictionary<String, double> metrics)
+        private void AssertMetricsAreWithinLimits(SimulatorFactory factory, Dictionary<String, double> metrics)
         {
 			factory.SumData.Finish();
 
@@ -111,437 +125,13 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 
 				results.Add(kvp.Key, result);
 
-				TestContext.WriteLine($"{kvp.Key} = {result} %   (threshold = {kvp.Value})");
+				TestContext.WriteLine($"{kvp.Key} = {result}   (expected = {kvp.Value})");
             }
 
 			foreach (var kvp in metrics) {
-				Assert.IsTrue(results[kvp.Key] <= kvp.Value, $"{kvp.Key} ({results[kvp.Key]}) is above threshold ({kvp.Value})");
+				Assert.IsTrue(results[kvp.Key].IsEqual(kvp.Value, 1e-3), $"{kvp.Key} ({results[kvp.Key]}) is other than expected ({kvp.Value})");
 			}
         }
 
-        
-        public void HybridsTimeRunSimpleUrbanDelivery()
-        {
-            string jobName = null;
-            // the same engine fc-map is used for different fuel types, thus the difference in expected results
-            var fileWriter = new FileOutputWriter(jobName);
-            var sumData = new SummaryDataContainer(fileWriter);
-
-            var jobContainer = new JobContainer(sumData);
-            var inputData = JSONInputDataFactory.ReadJsonJob(jobName);
-
-            var runsFactory = new SimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter)
-            {
-                WriteModalResults = true,
-                Validate = false
-            };
-
-            jobContainer.AddRuns(runsFactory);
-
-            int runIdx = 0;
-            // store a reference to the data table here because it is going to be deleted
-            var run = jobContainer.Runs[runIdx];
-            var modContainer = (ModalDataContainer)run.Run.GetContainer().ModalData;
-            var modData = modContainer.Data;
-
-
-            run.Run.Run();
-
-            // restore data table before assertions
-            modContainer.Data = modData;
-            var fuel = modContainer.FuelData.First();
-            var distance = modContainer.Distance;
-            var fcFinal = modContainer.FuelConsumptionPerMeter(ModalResultField.FCFinal, fuel);
-            var fcVolumePerMeter = fuel.FuelDensity == null ? null :
-                (fcFinal / fuel.FuelDensity)
-                .Cast<VolumePerMeter>();
-            var co2PerMeter = distance == null ? null : fcFinal * fuel.CO2PerFuelWeight;
-            var energyPerMeter = distance == null ? null : fcFinal * fuel.LowerHeatingValueVecto;
-
-            //			Console.WriteLine("FC-Map g/m: {0}, FC-Final g/m {1}, FC-Final l/100km: {2}, CO2 g/m: {3}, Energy J/m: {4}",
-            Console.WriteLine("{0}, {1}, {2}, {3}, {4}",
-                modContainer.FuelConsumptionPerMeter(ModalResultField.FCMap, fuel).Value(),
-                fcFinal.Value(), fcVolumePerMeter?.ConvertToLiterPer100Kilometer().Value ?? double.NaN,
-                co2PerMeter?.Value(), energyPerMeter?.Value());
-            Assert.IsTrue(true);
-        }
-        
-        
-        public void HybridsTimeRunwithGearUrbanDelivery()
-        {
-            string jobName = null;
-            // the same engine fc-map is used for different fuel types, thus the difference in expected results
-            var fileWriter = new FileOutputWriter(jobName);
-            var sumData = new SummaryDataContainer(fileWriter);
-
-            var jobContainer = new JobContainer(sumData);
-            var inputData = JSONInputDataFactory.ReadJsonJob(jobName);
-
-            var runsFactory = new SimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter)
-            {
-                WriteModalResults = true,
-                Validate = false
-            };
-
-            jobContainer.AddRuns(runsFactory);
-
-            int runIdx = 0;
-            // store a reference to the data table here because it is going to be deleted
-            var run = jobContainer.Runs[runIdx];
-            var modContainer = (ModalDataContainer)run.Run.GetContainer().ModalData;
-            var modData = modContainer.Data;
-
-
-            run.Run.Run();
-
-            // restore data table before assertions
-            modContainer.Data = modData;
-            var fuel = modContainer.FuelData.First();
-            var distance = modContainer.Distance;
-            var fcFinal = modContainer.FuelConsumptionPerMeter(ModalResultField.FCFinal, fuel);
-            var fcVolumePerMeter = fuel.FuelDensity == null ? null :
-                (fcFinal / fuel.FuelDensity)
-                .Cast<VolumePerMeter>();
-            var co2PerMeter = distance == null ? null : fcFinal * fuel.CO2PerFuelWeight;
-            var energyPerMeter = distance == null ? null : fcFinal * fuel.LowerHeatingValueVecto;
-
-            //			Console.WriteLine("FC-Map g/m: {0}, FC-Final g/m {1}, FC-Final l/100km: {2}, CO2 g/m: {3}, Energy J/m: {4}",
-            Console.WriteLine("{0}, {1}, {2}, {3}, {4}",
-                modContainer.FuelConsumptionPerMeter(ModalResultField.FCMap, fuel).Value(),
-                fcFinal.Value(), fcVolumePerMeter?.ConvertToLiterPer100Kilometer().Value ?? double.NaN,
-                co2PerMeter?.Value(), energyPerMeter?.Value());
-            Assert.IsTrue(true);
-        }
-
-
-        
-        public void HybridsTimeRunwihtGearandEMPowerUrbanDelivery()
-        {
-            string jobName = null;
-            // the same engine fc-map is used for different fuel types, thus the difference in expected results
-            var fileWriter = new FileOutputWriter(jobName);
-            var sumData = new SummaryDataContainer(fileWriter);
-
-            var jobContainer = new JobContainer(sumData);
-            var inputData = JSONInputDataFactory.ReadJsonJob(jobName);
-
-            var runsFactory = new SimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter)
-            {
-                WriteModalResults = true,
-                Validate = false
-            };
-
-            jobContainer.AddRuns(runsFactory);
-
-            int runIdx = 0;
-            // store a reference to the data table here because it is going to be deleted
-            var run = jobContainer.Runs[runIdx];
-            var modContainer = (ModalDataContainer)run.Run.GetContainer().ModalData;
-            var modData = modContainer.Data;
-
-
-            run.Run.Run();
-
-            // restore data table before assertions
-            modContainer.Data = modData;
-            var fuel = modContainer.FuelData.First();
-            var distance = modContainer.Distance;
-            var fcFinal = modContainer.FuelConsumptionPerMeter(ModalResultField.FCFinal, fuel);
-            var fcVolumePerMeter = fuel.FuelDensity == null ? null :
-                (fcFinal / fuel.FuelDensity)
-                .Cast<VolumePerMeter>();
-            var co2PerMeter = distance == null ? null : fcFinal * fuel.CO2PerFuelWeight;
-            var energyPerMeter = distance == null ? null : fcFinal * fuel.LowerHeatingValueVecto;
-
-            //			Console.WriteLine("FC-Map g/m: {0}, FC-Final g/m {1}, FC-Final l/100km: {2}, CO2 g/m: {3}, Energy J/m: {4}",
-            Console.WriteLine("{0}, {1}, {2}, {3}, {4}",
-                modContainer.FuelConsumptionPerMeter(ModalResultField.FCMap, fuel).Value(),
-                fcFinal.Value(), fcVolumePerMeter?.ConvertToLiterPer100Kilometer().Value ?? double.NaN,
-                co2PerMeter?.Value(), energyPerMeter?.Value());
-            Assert.IsTrue(true);
-        }
-        
-       
-        public void HybridsTimeRunSimpleLongHaul()
-        {
-            string jobName = null;
-            // the same engine fc-map is used for different fuel types, thus the difference in expected results
-            var fileWriter = new FileOutputWriter(jobName);
-            var sumData = new SummaryDataContainer(fileWriter);
-
-            var jobContainer = new JobContainer(sumData);
-            var inputData = JSONInputDataFactory.ReadJsonJob(jobName);
-
-            var runsFactory = new SimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter)
-            {
-                WriteModalResults = true,
-                Validate = false
-            };
-
-            jobContainer.AddRuns(runsFactory);
-
-            int runIdx = 0;
-            // store a reference to the data table here because it is going to be deleted
-            var run = jobContainer.Runs[runIdx];
-            var modContainer = (ModalDataContainer)run.Run.GetContainer().ModalData;
-            var modData = modContainer.Data;
-
-
-            run.Run.Run();
-
-            // restore data table before assertions
-            modContainer.Data = modData;
-            var fuel = modContainer.FuelData.First();
-            var distance = modContainer.Distance;
-            var fcFinal = modContainer.FuelConsumptionPerMeter(ModalResultField.FCFinal, fuel);
-            var fcVolumePerMeter = fuel.FuelDensity == null ? null :
-                (fcFinal / fuel.FuelDensity)
-                .Cast<VolumePerMeter>();
-            var co2PerMeter = distance == null ? null : fcFinal * fuel.CO2PerFuelWeight;
-            var energyPerMeter = distance == null ? null : fcFinal * fuel.LowerHeatingValueVecto;
-
-            //			Console.WriteLine("FC-Map g/m: {0}, FC-Final g/m {1}, FC-Final l/100km: {2}, CO2 g/m: {3}, Energy J/m: {4}",
-            Console.WriteLine("{0}, {1}, {2}, {3}, {4}",
-                modContainer.FuelConsumptionPerMeter(ModalResultField.FCMap, fuel).Value(),
-                fcFinal.Value(), fcVolumePerMeter?.ConvertToLiterPer100Kilometer().Value ?? double.NaN,
-                co2PerMeter?.Value(), energyPerMeter?.Value());
-            Assert.IsTrue(true);
-            Assert.IsTrue(true);
-        }
-        
-        
-        public void HybridsTimeRunwithGearLongHaul()
-        {
-            string jobName = null;
-            // the same engine fc-map is used for different fuel types, thus the difference in expected results
-            var fileWriter = new FileOutputWriter(jobName);
-            var sumData = new SummaryDataContainer(fileWriter);
-
-            var jobContainer = new JobContainer(sumData);
-            var inputData = JSONInputDataFactory.ReadJsonJob(jobName);
-
-            var runsFactory = new SimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter)
-            {
-                WriteModalResults = true,
-                Validate = false
-            };
-
-            jobContainer.AddRuns(runsFactory);
-
-            int runIdx = 0;
-            // store a reference to the data table here because it is going to be deleted
-            var run = jobContainer.Runs[runIdx];
-            var modContainer = (ModalDataContainer)run.Run.GetContainer().ModalData;
-            var modData = modContainer.Data;
-
-
-            run.Run.Run();
-
-            // restore data table before assertions
-            modContainer.Data = modData;
-            var fuel = modContainer.FuelData.First();
-            var distance = modContainer.Distance;
-            var fcFinal = modContainer.FuelConsumptionPerMeter(ModalResultField.FCFinal, fuel);
-            var fcVolumePerMeter = fuel.FuelDensity == null ? null :
-                (fcFinal / fuel.FuelDensity)
-                .Cast<VolumePerMeter>();
-            var co2PerMeter = distance == null ? null : fcFinal * fuel.CO2PerFuelWeight;
-            var energyPerMeter = distance == null ? null : fcFinal * fuel.LowerHeatingValueVecto;
-
-            //			Console.WriteLine("FC-Map g/m: {0}, FC-Final g/m {1}, FC-Final l/100km: {2}, CO2 g/m: {3}, Energy J/m: {4}",
-            Console.WriteLine("{0}, {1}, {2}, {3}, {4}",
-                modContainer.FuelConsumptionPerMeter(ModalResultField.FCMap, fuel).Value(),
-                fcFinal.Value(), fcVolumePerMeter?.ConvertToLiterPer100Kilometer().Value ?? double.NaN,
-                co2PerMeter?.Value(), energyPerMeter?.Value());
-            Assert.IsTrue(true);
-        }
-        
-        
-        public void HybridsTimeRunwihtGearandEMPowerLongHaul()
-        {
-            string jobName = null;
-            // the same engine fc-map is used for different fuel types, thus the difference in expected results
-            var fileWriter = new FileOutputWriter(jobName);
-            var sumData = new SummaryDataContainer(fileWriter);
-
-            var jobContainer = new JobContainer(sumData);
-            var inputData = JSONInputDataFactory.ReadJsonJob(jobName);
-
-            var runsFactory = new SimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter)
-            {
-                WriteModalResults = true,
-                Validate = false
-            };
-
-            jobContainer.AddRuns(runsFactory);
-
-            int runIdx = 0;
-            // store a reference to the data table here because it is going to be deleted
-            var run = jobContainer.Runs[runIdx];
-            var modContainer = (ModalDataContainer)run.Run.GetContainer().ModalData;
-            var modData = modContainer.Data;
-
-
-            run.Run.Run();
-
-            // restore data table before assertions
-            modContainer.Data = modData;
-            var fuel = modContainer.FuelData.First();
-            var distance = modContainer.Distance;
-            var fcFinal = modContainer.FuelConsumptionPerMeter(ModalResultField.FCFinal, fuel);
-            var fcVolumePerMeter = fuel.FuelDensity == null ? null :
-                (fcFinal / fuel.FuelDensity)
-                .Cast<VolumePerMeter>();
-            var co2PerMeter = distance == null ? null : fcFinal * fuel.CO2PerFuelWeight;
-            var energyPerMeter = distance == null ? null : fcFinal * fuel.LowerHeatingValueVecto;
-
-            //			Console.WriteLine("FC-Map g/m: {0}, FC-Final g/m {1}, FC-Final l/100km: {2}, CO2 g/m: {3}, Energy J/m: {4}",
-            Console.WriteLine("{0}, {1}, {2}, {3}, {4}",
-                modContainer.FuelConsumptionPerMeter(ModalResultField.FCMap, fuel).Value(),
-                fcFinal.Value(), fcVolumePerMeter?.ConvertToLiterPer100Kilometer().Value ?? double.NaN,
-                co2PerMeter?.Value(), energyPerMeter?.Value());
-            Assert.IsTrue(true);
-        }
-        
-       
-        public void HybridsTimeRunSimpleRegionalDelivery()
-        {
-            string jobName = null;
-            // the same engine fc-map is used for different fuel types, thus the difference in expected results
-            var fileWriter = new FileOutputWriter(jobName);
-            var sumData = new SummaryDataContainer(fileWriter);
-
-            var jobContainer = new JobContainer(sumData);
-            var inputData = JSONInputDataFactory.ReadJsonJob(jobName);
-
-            var runsFactory = new SimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter)
-            {
-                WriteModalResults = true,
-                Validate = false
-            };
-
-            jobContainer.AddRuns(runsFactory);
-
-            int runIdx = 0;
-            // store a reference to the data table here because it is going to be deleted
-            var run = jobContainer.Runs[runIdx];
-            var modContainer = (ModalDataContainer)run.Run.GetContainer().ModalData;
-            var modData = modContainer.Data;
-
-
-            run.Run.Run();
-
-            // restore data table before assertions
-            modContainer.Data = modData;
-            var fuel = modContainer.FuelData.First();
-            var distance = modContainer.Distance;
-            var fcFinal = modContainer.FuelConsumptionPerMeter(ModalResultField.FCFinal, fuel);
-            var fcVolumePerMeter = fuel.FuelDensity == null ? null :
-                (fcFinal / fuel.FuelDensity)
-                .Cast<VolumePerMeter>();
-            var co2PerMeter = distance == null ? null : fcFinal * fuel.CO2PerFuelWeight;
-            var energyPerMeter = distance == null ? null : fcFinal * fuel.LowerHeatingValueVecto;
-
-            //			Console.WriteLine("FC-Map g/m: {0}, FC-Final g/m {1}, FC-Final l/100km: {2}, CO2 g/m: {3}, Energy J/m: {4}",
-            Console.WriteLine("{0}, {1}, {2}, {3}, {4}",
-                modContainer.FuelConsumptionPerMeter(ModalResultField.FCMap, fuel).Value(),
-                fcFinal.Value(), fcVolumePerMeter?.ConvertToLiterPer100Kilometer().Value ?? double.NaN,
-                co2PerMeter?.Value(), energyPerMeter?.Value());
-            Assert.IsTrue(true);
-        }
-        
-        
-        public void HybridsTimeRunwithGearRegionalDelivery()
-        {
-            string jobName = null;
-            // the same engine fc-map is used for different fuel types, thus the difference in expected results
-            var fileWriter = new FileOutputWriter(jobName);
-            var sumData = new SummaryDataContainer(fileWriter);
-
-            var jobContainer = new JobContainer(sumData);
-            var inputData = JSONInputDataFactory.ReadJsonJob(jobName);
-
-            var runsFactory = new SimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter)
-            {
-                WriteModalResults = true,
-                Validate = false
-            };
-
-            jobContainer.AddRuns(runsFactory);
-
-            int runIdx = 0;
-            // store a reference to the data table here because it is going to be deleted
-            var run = jobContainer.Runs[runIdx];
-            var modContainer = (ModalDataContainer)run.Run.GetContainer().ModalData;
-            var modData = modContainer.Data;
-
-
-            run.Run.Run();
-
-            // restore data table before assertions
-            modContainer.Data = modData;
-            var fuel = modContainer.FuelData.First();
-            var distance = modContainer.Distance;
-            var fcFinal = modContainer.FuelConsumptionPerMeter(ModalResultField.FCFinal, fuel);
-            var fcVolumePerMeter = fuel.FuelDensity == null ? null :
-                (fcFinal / fuel.FuelDensity)
-                .Cast<VolumePerMeter>();
-            var co2PerMeter = distance == null ? null : fcFinal * fuel.CO2PerFuelWeight;
-            var energyPerMeter = distance == null ? null : fcFinal * fuel.LowerHeatingValueVecto;
-
-            //			Console.WriteLine("FC-Map g/m: {0}, FC-Final g/m {1}, FC-Final l/100km: {2}, CO2 g/m: {3}, Energy J/m: {4}",
-            Console.WriteLine("{0}, {1}, {2}, {3}, {4}",
-                modContainer.FuelConsumptionPerMeter(ModalResultField.FCMap, fuel).Value(),
-                fcFinal.Value(), fcVolumePerMeter?.ConvertToLiterPer100Kilometer().Value ?? double.NaN,
-                co2PerMeter?.Value(), energyPerMeter?.Value());
-            Assert.IsTrue(true);
-        }
-        
-        
-        public void HybridsTimeRunwihtGearandEMPowerRegionalDelivery()
-        {
-            string jobName = null;
-            // the same engine fc-map is used for different fuel types, thus the difference in expected results
-            var fileWriter = new FileOutputWriter(jobName);
-            var sumData = new SummaryDataContainer(fileWriter);
-
-            var jobContainer = new JobContainer(sumData);
-            var inputData = JSONInputDataFactory.ReadJsonJob(jobName);
-
-            var runsFactory = new SimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter)
-            {
-                WriteModalResults = true,
-                Validate = false
-            };
-
-            jobContainer.AddRuns(runsFactory);
-
-            int runIdx = 0;
-            // store a reference to the data table here because it is going to be deleted
-            var run = jobContainer.Runs[runIdx];
-            var modContainer = (ModalDataContainer)run.Run.GetContainer().ModalData;
-            var modData = modContainer.Data;
-
-
-            run.Run.Run();
-
-            // restore data table before assertions
-            modContainer.Data = modData;
-            var fuel = modContainer.FuelData.First();
-            var distance = modContainer.Distance;
-            var fcFinal = modContainer.FuelConsumptionPerMeter(ModalResultField.FCFinal, fuel);
-            var fcVolumePerMeter = fuel.FuelDensity == null ? null :
-                (fcFinal / fuel.FuelDensity)
-                .Cast<VolumePerMeter>();
-            var co2PerMeter = distance == null ? null : fcFinal * fuel.CO2PerFuelWeight;
-            var energyPerMeter = distance == null ? null : fcFinal * fuel.LowerHeatingValueVecto;
-
-            //			Console.WriteLine("FC-Map g/m: {0}, FC-Final g/m {1}, FC-Final l/100km: {2}, CO2 g/m: {3}, Energy J/m: {4}",
-            Console.WriteLine("{0}, {1}, {2}, {3}, {4}",
-                modContainer.FuelConsumptionPerMeter(ModalResultField.FCMap, fuel).Value(),
-                fcFinal.Value(), fcVolumePerMeter?.ConvertToLiterPer100Kilometer().Value ?? double.NaN,
-                co2PerMeter?.Value(), energyPerMeter?.Value());
-            Assert.IsTrue(true);
-        }
     }
 }
