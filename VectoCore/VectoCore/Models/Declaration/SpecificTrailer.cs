@@ -82,6 +82,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 				HeightCorrection = row.Field<string>("height_correction") == "1",
 				VolumeCorrection = row.Field<string>("volume_correction") == "1",   
 				AeroCorrection = row.Field<string>("aero_correction") == "1",
+				CouplingPointCorrection = row.Field<string>("coupling_point_correction") == "1",
 
 				Aero0 = new[] {
 					row.ParseDoubleOrGetDefault("aero0_0"),
