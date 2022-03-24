@@ -1489,6 +1489,9 @@
     <value>TrailerCouplingPoint</value>
   </data>
 <data name="Trailer_AeroDevice_ApplicableVehicleGroup" xml:space="preserve">
-	<value>ApplicableVehicleGroup</value>
+	<value>ApplicableVehicleGroupAnnex1</value>
+</data>
+<data name="Trailer_CertifiedAeroReduction" xml:space="preserve">
+	<value>CertifiedAeroReduction</value>
 </data>
 </root>

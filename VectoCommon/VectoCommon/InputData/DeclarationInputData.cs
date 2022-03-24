@@ -258,6 +258,8 @@ namespace TUGraz.VectoCommon.InputData
 		IVehicleComponentsDeclaration Components { get; }
 		XmlNode XMLSource { get; }
 		string CertifiedAeroDeviceApplicableVehicleGroup { get; }
+		string CertifiedAeroCertificationNumber { get; }
+		string CertifiedAeroSignatureXml { get; }
 	}
 
 	public interface IVehicleComponentsDeclaration

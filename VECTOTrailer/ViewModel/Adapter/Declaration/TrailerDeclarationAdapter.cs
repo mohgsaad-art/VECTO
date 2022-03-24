@@ -106,6 +106,8 @@ namespace VECTOTrailer.ViewModel.Adapter.Declaration
 
 		public XmlNode XMLSource { get; }
 		public string CertifiedAeroDeviceApplicableVehicleGroup { get => throw new NotImplementedException(); }
+		public string CertifiedAeroCertificationNumber { get => throw new NotImplementedException(); }
+		public string CertifiedAeroSignatureXml { get => throw new NotImplementedException(); }
 
 		#endregion
 
