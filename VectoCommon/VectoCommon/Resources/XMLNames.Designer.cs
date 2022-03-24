@@ -3040,7 +3040,7 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ApplicableVehicleGroup.
+        ///   Looks up a localized string similar to ApplicableVehicleGroupAnnex1.
         /// </summary>
         public static string Trailer_AeroDevice_ApplicableVehicleGroup {
             get {
@@ -3099,6 +3099,15 @@ namespace TUGraz.VectoCommon.Resources {
         public static string Trailer_CargoVolume {
             get {
                 return ResourceManager.GetString("Trailer_CargoVolume", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CertifiedAeroReduction.
+        /// </summary>
+        public static string Trailer_CertifiedAeroReduction {
+            get {
+                return ResourceManager.GetString("Trailer_CertifiedAeroReduction", resourceCulture);
             }
         }
         

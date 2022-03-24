@@ -954,9 +954,18 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		protected XmlNode _axlesNode;
 		protected XmlElement _componentNode;
 
+		private CertifiedAeroDeviceReader _certifiedAeroDevice = null;
+		private CertifiedAeroDeviceReader CertifiedAeroDevice
+		{
+			get => _certifiedAeroDevice ?? (_certifiedAeroDevice = ElementExists(XMLNames.Trailer_CertifiedAeroReduction)
+				? new CertifiedAeroDeviceReader(GetNode(XMLNames.Trailer_CertifiedAeroReduction))
+				: null);
+		}
+
 		public XMLDeclarationVehicleDataProviderV27(IXMLDeclarationTrailerJobInputData jobData, XmlNode xmlNode,
 			string sourceFile) : base(xmlNode, sourceFile)
 		{
+
 			SourceFile = sourceFile;
 			Job = jobData;
 			SourceType = DataSourceType.XMLEmbedded;
@@ -1015,14 +1024,25 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		public TrailerCouplingPoint TrailerCouplingPoint => TrailerCouplingPointHelper.Parse(GetString(XMLNames.Trailer_TrailerCouplingPoint));
 
+		
 		public string CertifiedAeroDeviceApplicableVehicleGroup => GetNodes(XMLNames.Trailer_AeroDevice_ApplicableVehicleGroup).Count > 0
 			? GetString(XMLNames.Trailer_AeroDevice_ApplicableVehicleGroup)
 			: null;
-		public double YawAngle0 => GetNodes(XMLNames.Trailer_YawAngle0).Count > 0 ? GetDouble(XMLNames.Trailer_YawAngle0) : 0;
-		public double YawAngle3 => GetNodes(XMLNames.Trailer_YawAngle3).Count > 0 ? GetDouble(XMLNames.Trailer_YawAngle3) : 0;
-		public double YawAngle6 => GetNodes(XMLNames.Trailer_YawAngle6).Count > 0 ? GetDouble(XMLNames.Trailer_YawAngle6) : 0;
-		public double YawAngle9 => GetNodes(XMLNames.Trailer_YawAngle9).Count > 0 ? GetDouble(XMLNames.Trailer_YawAngle9) : 0;
+		//public double YawAngle0 => GetNodes(XMLNames.Trailer_YawAngle0).Count > 0 ? GetDouble(XMLNames.Trailer_YawAngle0) : 0;
+		//public double YawAngle3 => GetNodes(XMLNames.Trailer_YawAngle3).Count > 0 ? GetDouble(XMLNames.Trailer_YawAngle3) : 0;
+		//public double YawAngle6 => GetNodes(XMLNames.Trailer_YawAngle6).Count > 0 ? GetDouble(XMLNames.Trailer_YawAngle6) : 0;
+		//public double YawAngle9 => GetNodes(XMLNames.Trailer_YawAngle9).Count > 0 ? GetDouble(XMLNames.Trailer_YawAngle9) : 0;
+		public double YawAngle0 => CertifiedAeroDevice?.YawAngle0 ?? 0;
+		public double YawAngle3 => CertifiedAeroDevice?.YawAngle3 ?? 0;
+		public double YawAngle6 => CertifiedAeroDevice?.YawAngle6 ?? 0;
+		public double YawAngle9 => CertifiedAeroDevice?.YawAngle9 ?? 0;
+
+
+
 		public IList<AeroFeatureTechnology> AeroFeatureTechnologies => ReadAeroFeatures();
+
+		public string CertifiedAeroCertificationNumber => CertifiedAeroDevice?.CertificationNumber;
+		public string CertifiedAeroSignatureXml => CertifiedAeroDevice?.SignatureXml;
 
 		public IVehicleComponentsDeclaration Components => _components ?? (_components = ComponentReader.ComponentInputData);
 
@@ -1053,6 +1073,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 			return axles;
 		}
 
+		
+
 		protected IList<AeroFeatureTechnology> ReadAeroFeatures()
 		{
 			var aeroFeatureTechnologies = new List<AeroFeatureTechnology>();
@@ -1079,10 +1101,46 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 			return aeroFeatureTechnologies;
 		}
+
+		private class CertifiedAeroDeviceReader : AbstractXMLType
+		{
+			public CertifiedAeroDeviceReader(XmlNode certifiedDeviceNode) : base(certifiedDeviceNode) {
+
+
+			}
+			public double YawAngle0
+			{
+				get
+				{
+					var nodes = this.GetNodes(XMLNames.Trailer_YawAngle0);
+					return GetNodes(XMLNames.Trailer_CertifiedAeroReduction).Count > 0 ? GetDouble(XMLNames.Trailer_YawAngle0) : 0;
+				}
+			}
+
+			public double YawAngle3
+			{
+				get
+				{
+					return GetNodes(XMLNames.Trailer_YawAngle3).Count > 0 ? GetDouble(XMLNames.Trailer_YawAngle3) : 0;
+				}
+			}
+
+			public double YawAngle6 => this.GetNodes(XMLNames.Trailer_YawAngle6).Count > 0 ? GetDouble(XMLNames.Trailer_YawAngle6) : 0;
+			public double YawAngle9 => this.GetNodes(XMLNames.Trailer_YawAngle9).Count > 0 ? GetDouble(XMLNames.Trailer_YawAngle9) : 0;
+
+			public string CertificationNumber => ElementExists(XMLNames.Component_CertificationNumber)
+				? GetString(XMLNames.Component_CertificationNumber): null;
+
+			public string SignatureXml =>
+				ElementExists(XMLNames.DI_Signature) ? GetNode(XMLNames.DI_Signature).OuterXml : null;
+
+			public string CertifiedAeroDeviceApplicableVehicleGroup => GetNodes(XMLNames.Trailer_AeroDevice_ApplicableVehicleGroup).Count > 0
+				? GetString(XMLNames.Trailer_AeroDevice_ApplicableVehicleGroup)
+				: null;
+		}
 	}
 
 	// ---------------------------------------------------------------------------------------
-
 	public class XMLDeclarationPrimaryVehicleBusDataProviderV01 : AbstractCommonComponentType, IXMLDeclarationVehicleData
 	{
 		public static readonly XNamespace NAMESPACE_URI = XMLDefinitions.DECLARATION_PRIMARY_BUS_VEHICLE_URI_V01;

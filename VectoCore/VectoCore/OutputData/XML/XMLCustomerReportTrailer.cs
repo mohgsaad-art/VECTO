@@ -116,7 +116,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 				}
 
 				var aeroReduction = new XElement(tns + XMLNames.Trailer_AeroReduction);
-				aeroFeatures.Add(aeroReduction);
+				
 				if (trailerData.AeroFeatureTechnologies.Count > 0) {
 					double[] aeroReductions;
 					var specificTrailerSegment = trailerData.GetTrailerSegment().SpecificTrailerSegment;
@@ -163,11 +163,19 @@ namespace TUGraz.VectoCore.OutputData.XML
 
 
 				} else {
+
+					var certifiedAeroDevice = new XElement(tns + "CertifiedAeroDevice");
+					aeroFeatures.Add(certifiedAeroDevice);
+					certifiedAeroDevice.Add(new XElement(tns + XMLNames.Component_CertificationNumber, trailerData.CertifiedAeroCertificationNumber));
+
+
+
 					aeroReduction.Add(new XElement(tns + XMLNames.Trailer_YawAngle0, modelData.VehicleData.InputDataTrailer.YawAngle0.ToXMLFormat(2)));
 					aeroReduction.Add(new XElement(tns + XMLNames.Trailer_YawAngle3, modelData.VehicleData.InputDataTrailer.YawAngle3.ToXMLFormat(2)));
 					aeroReduction.Add(new XElement(tns + XMLNames.Trailer_YawAngle6, modelData.VehicleData.InputDataTrailer.YawAngle6.ToXMLFormat(2)));
 					aeroReduction.Add(new XElement(tns + XMLNames.Trailer_YawAngle9, modelData.VehicleData.InputDataTrailer.YawAngle9.ToXMLFormat(2)));
 				}
+				aeroFeatures.Add(aeroReduction);
 			}
 
 			VehiclePart.Add(
@@ -181,6 +189,8 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(tns + XMLNames.Trailer_AxleCount, int.Parse(modelData.VehicleData.InputDataTrailer.NumberOfAxles.GetLabel())), 
 				new XElement(tns + XMLNames.Trailer_TrailerType, modelData.VehicleData.InputDataTrailer.TrailerType), 
 				new XElement(tns + XMLNames.Trailer_BodyCode, modelData.VehicleData.InputDataTrailer.BodyworkCode.GetLabel()),
+				new XElement(tns + XMLNames.Trailer_TrailerCouplingPoint,
+					modelData.VehicleData.InputDataTrailer.TrailerCouplingPoint.GetLabel()),
 				new XElement(tns + XMLNames.Trailer_Masses,
 					new XElement(tns + XMLNames.Trailer_MassInRunningOrder, modelData.VehicleData.InputDataTrailer.MassInRunningOrder.ToXMLFormat(0)),
 					new XElement(tns + XMLNames.Trailer_TPMLMTotalTrailer, modelData.VehicleData.InputDataTrailer.TPMLMTotalTrailer.ToXMLFormat(0)),
