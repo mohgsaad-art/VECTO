@@ -183,16 +183,20 @@ namespace TUGraz.VectoCore.OutputData.XML
 			var aeroFeatures = new XElement(tns + XMLNames.Trailer_AeroFeatures);
 			var trailerData = modelData.VehicleData.InputDataTrailer;
 			if (trailerData.AeroFeatureTechnologies.Count == 0 && modelData.VehicleData.InputDataTrailer.CertifiedAeroDeviceApplicableVehicleGroup == null) {
+				//No Aero Device
 				aeroFeatures.Add(new XElement(tns + XMLNames.Trailer_AeroFeatureTechnologies, AeroFeatureTechnology.None.ToXMLFormat()));
+
+
 			} else if(trailerData.AeroFeatureTechnologies.Count > 0 || trailerData.CertifiedAeroDeviceApplicableVehicleGroup != null) {
 				foreach (var trailerDataAeroFeatureTechnology in trailerData.AeroFeatureTechnologies) {
 					aeroFeatures.Add(new XElement(tns + XMLNames.Trailer_AeroFeatureTechnologies, trailerDataAeroFeatureTechnology.ToXMLFormat()));
 				}
 
 				var aeroReductionElement = new XElement(tns + XMLNames.Trailer_AeroReduction);
-				aeroFeatures.Add(aeroReductionElement);
+				
 				if (trailerData.AeroFeatureTechnologies.Count > 0)
 				{
+					//Standard Aero Device
 					double[] aeroReductions;
 					var specificTrailerSegment = trailerData.GetTrailerSegment().SpecificTrailerSegment;
 					switch (trailerData.GetAeroFeatureCombination()) {
@@ -237,11 +241,21 @@ namespace TUGraz.VectoCore.OutputData.XML
 				}
 				else
 				{
+					
+					var certifiedAeroDevice = new XElement(tns + "CertifiedAeroDevice");
+					aeroFeatures.Add(certifiedAeroDevice);
+					certifiedAeroDevice.Add(new XElement(tns + XMLNames.Component_CertificationNumber, trailerData.CertifiedAeroCertificationNumber));
+					certifiedAeroDevice.Add(XElement.Parse(trailerData.CertifiedAeroSignatureXml));
+
+					//Certified Aero Device
 					aeroReductionElement.Add(new XElement(tns + XMLNames.Trailer_YawAngle0, modelData.VehicleData.InputDataTrailer.YawAngle0.ToXMLFormat(2)));
 					aeroReductionElement.Add(new XElement(tns + XMLNames.Trailer_YawAngle3, modelData.VehicleData.InputDataTrailer.YawAngle3.ToXMLFormat(2)));
 					aeroReductionElement.Add(new XElement(tns + XMLNames.Trailer_YawAngle6, modelData.VehicleData.InputDataTrailer.YawAngle6.ToXMLFormat(2)));
 					aeroReductionElement.Add(new XElement(tns + XMLNames.Trailer_YawAngle9, modelData.VehicleData.InputDataTrailer.YawAngle9.ToXMLFormat(2)));
+					
+
 				}
+				aeroFeatures.Add(aeroReductionElement);
 			}
 
 			//foreach (var technology in modelData.VehicleData.InputDataTrailer.AeroFeatureTechnologies)
