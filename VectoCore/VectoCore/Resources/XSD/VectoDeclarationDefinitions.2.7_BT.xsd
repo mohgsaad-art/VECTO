@@ -42,22 +42,22 @@
 							<xs:documentation>T031</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="CertifiedAerodynamicReduction0" type="v2.7:CertifiedAerodynamicReductionType">
+					<xs:element name="AeroReductionYawAngle0" type="v2.7:CertifiedAerodynamicReductionType">
 						<xs:annotation>
 							<xs:documentation>T032</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="CertifiedAerodynamicReduction3" type="v2.7:CertifiedAerodynamicReductionType">
+					<xs:element name="AeroReductionYawAngle3" type="v2.7:CertifiedAerodynamicReductionType">
 						<xs:annotation>
 							<xs:documentation>T032</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="CertifiedAerodynamicReduction6" type="v2.7:CertifiedAerodynamicReductionType">
+					<xs:element name="AeroReductionYawAngle6" type="v2.7:CertifiedAerodynamicReductionType">
 						<xs:annotation>
 							<xs:documentation>T032</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="CertifiedAerodynamicReduction9" type="v2.7:CertifiedAerodynamicReductionType">
+					<xs:element name="AeroReductionYawAngle9" type="v2.7:CertifiedAerodynamicReductionType">
 						<xs:annotation>
 							<xs:documentation>T032</xs:documentation>
 						</xs:annotation>
