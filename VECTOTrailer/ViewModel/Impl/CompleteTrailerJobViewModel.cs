@@ -139,7 +139,7 @@ namespace VECTOTrailer.ViewModel.Impl
 			SetCurrentDataToSave();
 
 			IList<string> errors = new List<string>();
-	
+			
 
 			var xDocument = _xmlCompletedTrailer.GenerateCompletedTrailerDocument(CompleteVehicleTrailerData);
 

@@ -155,18 +155,20 @@ namespace VECTOTrailer.Util.XML
 			} else if (trailerData.IsCertified) {
 				vehicle.Element(_v27 + XMLNames.Trailer_AeroFeatures)?.Add(new XElement(_v27 + XMLNames.Trailer_AeroReduction));
 
-				var certifiedAeroDevice = XDocument.Parse(trailerData.CertifiedAeroDeviceXml.ToString(CultureInfo.InvariantCulture));
+				if (trailerData.CertifiedAeroDeviceXml != null) {
+					var certifiedAeroDevice = XDocument.Parse(trailerData.CertifiedAeroDeviceXml.ToString(CultureInfo.InvariantCulture));
 
-				var data = certifiedAeroDevice.Descendants().Where(x => x.Name.ToString().Contains("Data"));
+					var data = certifiedAeroDevice.Descendants().Where(x => x.Name.ToString().Contains("Data"));
 
-				if (data != null)
-					vehicle.Element(_v27 + XMLNames.Trailer_AeroFeatures)?.Element(_v27 + XMLNames.Trailer_AeroReduction)?
-						.Add(data);
+					if (data != null)
+						vehicle.Element(_v27 + XMLNames.Trailer_AeroFeatures)?.Element(_v27 + XMLNames.Trailer_AeroReduction)?
+							.Add(data);
 
-				var signature = certifiedAeroDevice.Descendants().Where(x => x.Name.ToString().Contains("Signature"));
+					var signature = certifiedAeroDevice.Descendants().Where(x => x.Name.ToString().Contains("Signature"));
 
-				aeroFeatures.Element(_v27 + XMLNames.Trailer_AeroReduction)?
-					.Add(signature);
+					aeroFeatures.Element(_v27 + XMLNames.Trailer_AeroReduction)?
+						.Add(signature);
+				}
 			} else if (trailerData.IsNone) {
 				aeroFeatures.Add(new XElement(_v27 + XMLNames.Trailer_AeroFeatureTechnologies,
 					AeroFeatureTechnology.None.ToXMLFormat()));
