@@ -346,25 +346,6 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		public static class Driver
 		{
-			internal static JObject adasParams;
-
-			static Driver()
-			{
-				ReadAdasConfig();
-			}
-
-			// TODO: MQ 2019-11-26 remove, once the parameters are fixed! make fields above read-only or const
-			internal static void ReadAdasConfig()
-			{
-				var expectedFile = @"Declaration\ADASParameters.json";
-				if (!File.Exists(expectedFile)) {
-					return;
-				}
-				using (var reader = File.OpenText(expectedFile)) {
-					adasParams = (JObject)(JToken.ReadFrom(new JsonTextReader(reader)).GetEx(JsonKeys.JsonBody));
-				}
-			}
-
 			public static class LookAhead
 			{
 				public const bool Enabled = true;
@@ -400,34 +381,6 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 			public static class PCC
 			{
-				// TODO: MQ 2019-11-26 remove, once the parameters are fixed! make fields above read-only or const
-				static PCC()
-				{
-					ReadAdasConfig();
-					if (adasParams == null) {
-						return;
-					}
-
-					if (adasParams["PCCEnableSpeed"] != null) {
-						PCCEnableSpeed = adasParams.GetEx<double>("PCCEnableSpeed").KMPHtoMeterPerSecond();
-					}
-					if (adasParams["MinSpeed"] != null) {
-						MinSpeed = adasParams.GetEx<double>("MinSpeed").KMPHtoMeterPerSecond();
-					}
-					if (adasParams["PreviewDistanceUseCase1"] != null) {
-						PreviewDistanceUseCase1 = adasParams.GetEx<double>("PreviewDistanceUseCase1").SI<Meter>();
-					}
-					if (adasParams["PreviewDistanceUseCase2"] != null) {
-						PreviewDistanceUseCase2 = adasParams.GetEx<double>("PreviewDistanceUseCase2").SI<Meter>();
-					}
-					if (adasParams["Underspeed"] != null) {
-						Underspeed = adasParams.GetEx<double>("Underspeed").KMPHtoMeterPerSecond();
-					}
-					if (adasParams["OverspeedUseCase3"] != null) {
-						OverspeedUseCase3 = adasParams.GetEx<double>("OverspeedUseCase3").KMPHtoMeterPerSecond();
-					}
-				}
-
 				public static readonly MeterPerSecond PCCEnableSpeed = 80.KMPHtoMeterPerSecond();
 				public static readonly MeterPerSecond MinSpeed = 50.KMPHtoMeterPerSecond();
 				public static readonly Meter PreviewDistanceUseCase1 = 1500.SI<Meter>();
@@ -517,72 +470,6 @@ namespace TUGraz.VectoCore.Models.Declaration
 			public static bool Fallback_ATEcoRollReleaseLockupClutch = false;
 			public static double DownshiftMaxAccelerationAT = 0.5;
 
-
-			// TODO: MQ 2019-11-26 remove, once the parameters are fixed! make fields above read-only or const
-			static GearboxTCU()
-			{
-				var expectedFile = @"Declaration\EffShiftParameters.vtcu";
-				if (!File.Exists(expectedFile)) {
-					return;
-				}
-
-				var tcuData = JSONInputDataFactory.ReadShiftParameters(expectedFile, true);
-				if (tcuData.RatingFactorCurrentGear.HasValue) {
-					RatingFactorCurrentGear = tcuData.RatingFactorCurrentGear.Value;
-				}
-				if (tcuData.RatioEarlyDownshiftFC.HasValue) {
-					RatioEarlyDownshiftFC = tcuData.RatioEarlyDownshiftFC.Value;
-				}
-				if (tcuData.RatioEarlyUpshiftFC.HasValue) {
-					RatioEarlyUpshiftFC = tcuData.RatioEarlyUpshiftFC.Value;
-				}
-				if (tcuData.AllowedGearRangeFC.HasValue) {
-					AllowedGearRangeFCAMT = tcuData.AllowedGearRangeFC.Value;
-				}
-				if (tcuData.VeloictyDropFactor.HasValue) {
-					VelocityDropFactor = tcuData.VeloictyDropFactor.Value;
-				}
-				if (tcuData.AccelerationFactor.HasValue) {
-					AccelerationFactor = tcuData.AccelerationFactor.Value;
-				}
-				if (tcuData.ATLookAheadTime != null) {
-					ATLookAheadTime = tcuData.ATLookAheadTime;
-				}
-				if (tcuData.LoadStageThresholdsDown != null && LoadStageThresoldsDown.Length > 0) {
-					LoadStageThresoldsDown = tcuData.LoadStageThresholdsDown.ToArray();
-				}
-				if (tcuData.LoadStageThresholdsUp != null && LoadStageThresholdsUp.Length > 0) {
-					LoadStageThresholdsUp = tcuData.LoadStageThresholdsUp.ToArray();
-				}
-				if (tcuData.ShiftSpeedsTCToLocked != null && ShiftSpeedsTCToLocked.Length > 0) {
-					ShiftSpeedsTCToLocked = tcuData.ShiftSpeedsTCToLocked;
-				}
-				if (tcuData.MinEngineSpeedPostUpshift != null) {
-					MinEngineSpeedPostUpshift = tcuData.MinEngineSpeedPostUpshift;
-				}
-
-				if (tcuData.EffshiftAccelerationFactorAT != null) {
-					DownshiftMaxAccelerationAT = tcuData.EffshiftAccelerationFactorAT.Value;
-				}
-
-				var raw = tcuData as JSONFile;
-				if (raw.Body["Rating_current_gear_APT"] != null) {
-					RatingFactorCurrentGearAPT = raw.Body.GetEx<double>("Rating_current_gear_APT");
-				}
-				if (raw.Body["AllowedGearRangeFCAPT"] != null) {
-					AllowedGearRangeFCAPT = raw.Body.GetEx<int>("AllowedGearRangeFCAPT");
-				}
-				if (raw.Body["AllowedGearRangeFCAPTSkipGear"] != null) {
-					AllowedGearRangeFCAPTSkipGear = raw.Body.GetEx<int>("AllowedGearRangeFCAPTSkipGear");
-				}
-
-
-				//var tmp = tcuData as JSONFile;
-				//if (tmp != null && tmp.Body["ShiftStrategy"] != null) {
-				//	DefaultShiftStrategy = tmp.Body["ShiftStrategy"].Value<string>();
-				//}
-
-			}
 		}
 
 		public static class Gearbox

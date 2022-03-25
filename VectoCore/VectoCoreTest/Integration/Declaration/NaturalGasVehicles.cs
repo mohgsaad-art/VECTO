@@ -71,10 +71,9 @@ namespace TUGraz.VectoCore.Tests.Integration.Declaration
 			xmlInputReader = _kernel.Get<IXMLInputDataReader>();
 		}
 
-
 		[
-		TestCase(Class5NG, 2, TankSystem.Liquefied, 262.3, 726.64, TestName = "Class5 LNG 2"),
-		TestCase(Class5NG, 2, TankSystem.Compressed, 268.3, 721.82, TestName = "Class5 CNG 2"),
+		TestCase(Class5NG, 2, TankSystem.Liquefied, 249.8, 692.01, TestName = "Class5 LNG 2"),
+		TestCase(Class5NG, 2, TankSystem.Compressed, 255.5, 687.43, TestName = "Class5 CNG 2"),
 		TestCase(Class5NG, 6, TankSystem.Liquefied, 253.3, 701.63, TestName = "Class5 LNG 6"),
 		TestCase(Class5NG, 6, TankSystem.Compressed, 259.1, 696.98, TestName = "Class5 CNG 6"),
 			]

@@ -198,18 +198,10 @@ namespace TUGraz.VectoCore.Models.Declaration
 				var weight = grossVehicleWeight;
 				GetLoadings(out lowLoad, out refLoad, payloads, (p, l) => GetLoading(p, weight, vehicleWeight, trailers, l), maxLoad);
 
-				// TODO: MQ 2021-11-15 REMOVE IN OFFICIAL VERSION!
-				Stream cycleFile;
-				var cycleFileName = Path.Combine("DeclarationMissions",
-					missionType.ToString().Replace("EMS", "") + ".vdri");
-				if (File.Exists(cycleFileName)) {
-					cycleFile = File.OpenRead(cycleFileName);
-				} else {
-					cycleFile = RessourceHelper.ReadStream(DeclarationData.DeclarationDataResourcePrefix +
+				var cycleFile = RessourceHelper.ReadStream(DeclarationData.DeclarationDataResourcePrefix +
 															".MissionCycles." +
 															missionType.ToString().Replace("EMS", "") +
 															Constants.FileExtensions.CycleFile);
-				}
 
 				var mission = new Mission {
 					MissionType = missionType,
