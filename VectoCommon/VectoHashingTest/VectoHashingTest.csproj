@@ -196,6 +196,9 @@
     <Content Include="Testdata\XML\ToHash\vecto_gearbox-input_nodata.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Testdata\XML\ToHash\vecto_vehicle-sample_3axle1_unsortedAxle.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Testdata\XML\ToHash\vecto_vehicle-sample_3axle1.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
