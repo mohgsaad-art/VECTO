@@ -4,13 +4,11 @@ using System.IO;
 using System.Linq;
 using NUnit.Framework;
 using TUGraz.VectoCommon.Models;
-using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
-using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
-using TUGraz.VectoCore.Utils;
+using TUGraz.VectoCore.Tests.Utils;
 
 namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 {
@@ -54,8 +52,6 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
         {
             Dictionary<string, double> metrics = new Dictionary<string, double>()
 			{
-				//{ "FC-SoC [g/km]", fcSoC },
-				//{ "FC-SoC_Corr [g/km]", fcSocCorr },
 				{ SummaryDataContainer.Fields.CO2_KM, CO2 },
                 { SummaryDataContainer.Fields.E_REESS_T_chg, charge },
                 { SummaryDataContainer.Fields.E_REESS_T_dischg, discharge }
@@ -68,7 +64,7 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
         {
             var inputProvider = JSONInputDataFactory.ReadJsonJob(jobFile);
 
-			(string outputFile, Guid guid) = GetUniqueOutputSubfolder(jobFile);
+			string outputFile = InputDataHelper.CreateUniqueSubfolder(jobFile);
 			var writer = new FileOutputWriter(outputFile);
 
 			var factory = new SimulatorFactory(ExecutionMode.Engineering, inputProvider, writer) {
@@ -81,56 +77,9 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 			run.Run();
 
 			Assert.IsTrue(run.FinishedWithoutErrors);
-			AssertMetricsAreWithinLimits(factory, metrics);
-
-			DeleteOutputSubFolder(outputFile, guid);
-        }
-
-        private void DeleteOutputSubFolder(string outputFile, Guid guid)
-        { 
-			var folderName = new FileInfo(outputFile).Directory.Name;
-			
-			if (!folderName.Equals(guid.ToString())) {
-				return;
-            }
-
+			AssertHelper.AssertMetrics(factory, metrics);
+            
 			Directory.Delete(Path.GetDirectoryName(outputFile), recursive: true);
-		}
-
-        private (string outputFile, Guid guid) GetUniqueOutputSubfolder(String jobFile)
-        { 
-			Guid guid = Guid.NewGuid();
-
-			string outputFile = Path.Combine(Path.GetDirectoryName(jobFile), guid.ToString(), Path.GetFileName(jobFile));
-
-			if (!Directory.Exists(Path.GetDirectoryName(outputFile))) {
-				Directory.CreateDirectory(Path.GetDirectoryName(outputFile));
-            }
-
-			return (outputFile, guid);
-		}
-
-        private void AssertMetricsAreWithinLimits(SimulatorFactory factory, Dictionary<String, double> metrics)
-        {
-			factory.SumData.Finish();
-
-			var table = VectoCSVFile.Read(((FileOutputWriter) factory.ModWriter).SumFileName, true, true);
-			var row = table.Rows[0];
-
-			Dictionary<string, double> results = new Dictionary<string, double>();
-
-			foreach (var kvp in metrics) {
-				double result;
-				Assert.IsTrue(double.TryParse(row[kvp.Key].ToString(), out result));
-
-				results.Add(kvp.Key, result);
-
-				TestContext.WriteLine($"{kvp.Key} = {result}   (expected = {kvp.Value})");
-            }
-
-			foreach (var kvp in metrics) {
-				Assert.IsTrue(results[kvp.Key].IsEqual(kvp.Value, 1e-3), $"{kvp.Key} ({results[kvp.Key]}) is other than expected ({kvp.Value})");
-			}
         }
 
     }
