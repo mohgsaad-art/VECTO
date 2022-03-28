@@ -91,6 +91,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		private ICommand _browseOutputDirectory;
 		private bool _writeModelData;
 		private ICommand _aboutViewCommand;
+		private ICommand _showUserGuideCommand;
 		private string _lookAheadMinSpeedOverride;
 		private bool _autoSimActivated;
 		private readonly IAutoSimulator _autoSimulator;
@@ -764,7 +765,7 @@ namespace VECTOTrailer.ViewModel.Impl
 				}
 			}
 		}
-		public ICommand ShowUserGuide => _aboutViewCommand ?? (_aboutViewCommand = new RelayCommand(DoShowUserGuideCommand));
+		public ICommand ShowUserGuide => _showUserGuideCommand ?? (_showUserGuideCommand = new RelayCommand(DoShowUserGuideCommand));
 
 		private void DoShowUserGuideCommand()
         {
