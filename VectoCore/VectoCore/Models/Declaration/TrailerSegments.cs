@@ -414,9 +414,14 @@ namespace TUGraz.VectoCore.Models.Declaration
 								&& (volumeOrientationRow == "Yes" && volumeOrientation || volumeOrientationRow == "No" && !volumeOrientation);
 					});
 			} catch (InvalidOperationException e) {
-				var errorMessage = string.Format(
-					ErrorMessage, numberOfAxles, typeTrailer, bodyWorkCode);
-				Log.Fatal(errorMessage);
+				// No valid trailer configuration found 
+				var errorMessage = $"No valid trailer configuration found! " +
+									$"Trailer type: {typeTrailer.ToString()}, " +
+									$"Number of Axles: {numberOfAxles.ToXMLFormat()}, " +
+									$"Bodywork type: {bodyWorkCode.ToXMLFormat()}, " +
+									$"Volume orientation: {volumeOrientation} " +
+									$"TPMLM axle assembly: {tpmlmAxleAssembly.ToXMLFormat()})";
+				Log.Fatal(errorMessage + ErrorMessage);
 				throw new VectoException(errorMessage, e);
 			}
 

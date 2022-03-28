@@ -1112,10 +1112,12 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			var combination = TrailerDataHelper.GetAeroFeatureCombination(trailer);
 			if (combination < 0 || !valid) {
 				errors.Add("invalid standard aero-device declared");
-			} else {
+			} 
+			
+			if (trailer.CertifiedAeroDeviceApplicableVehicleGroup != null) {
 				var segment = DeclarationData.TrailerSegments.Lookup(trailer.NumberOfAxles, trailer.TrailerType, trailer.BodyworkCode, trailer.VolumeOrientation,
 					trailer.TPMLMAxleAssembly);
-				if (trailer.CertifiedAeroDeviceApplicableVehicleGroup != null && segment.VehicleGroup.ToString() != trailer.CertifiedAeroDeviceApplicableVehicleGroup)
+				if (segment.VehicleGroup.ToString() != trailer.CertifiedAeroDeviceApplicableVehicleGroup)
 				{
 					errors.Add($"ApplicableVehicleGroup of the certified aero device ({trailer.CertifiedAeroDeviceApplicableVehicleGroup}) must match the vehicle group ({segment.VehicleGroup})");
 				}
@@ -1183,6 +1185,15 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 		{
 
 			var prevErrors = errors.Count;
+			TrailerSegment segment;
+			try {
+				segment = DeclarationData.TrailerSegments.Lookup(trailer.NumberOfAxles, trailer.TrailerType,
+					trailer.BodyworkCode, trailer.VolumeOrientation,
+					trailer.TPMLMAxleAssembly);
+			} catch (Exception ex) {
+				errors.Add(ex.Message);
+			}
+
 			if (trailer.VIN.Length != 17) {
 				errors.Add("VIN must be 17 characters long");
 				//throw new Exception("VIN must be 17 characters long");
@@ -1259,7 +1270,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 			if ((trailer.TrailerType != TypeTrailer.DC || trailer.TrailerType != TypeTrailer.DA) &&
 				trailer.NumberOfAxles == NumberOfTrailerAxles.One && trailer.LegislativeCategory.ToUpper() != "O3") {
-				errors.Add("Invalid xml values");
+				errors.Add("Invalid legislative category");
 				//throw new Exception("Invalid xml values");
 			}
 
@@ -1295,8 +1306,8 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 		public static bool ValidateTrailerInput(ITrailerDeclarationInputData trailer, ref IList<string> errors)
 		{
-			return ValidateAeroFeatures(trailer, ref errors) & ValidateInputValues(trailer, ref errors) &
-						ValidateAxles(trailer, ref errors);
+			return ValidateInputValues(trailer, ref errors) &
+						ValidateAxles(trailer, ref errors) & ValidateAeroFeatures(trailer, ref errors);
 		}
 #endregion validation
 		private static string GetAxleWheelDimension(IVehicleDeclarationInputData genericVehicle)
