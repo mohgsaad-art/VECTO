@@ -32,12 +32,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Xml;
 using JetBrains.Annotations;
 using Ninject;
+using NLog.Fluent;
 using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
@@ -1098,13 +1100,14 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 		{
 			var prevErrors = errors.Count;
 
-			var aeroFeatureRow = DeclarationData.AeroFeatures.GetTrailerDataRow(TrailerDataHelper.CreateAeroFeatureList(trailer));
 
 			bool valid = false;
 			try {
+				var aeroFeatureRow = DeclarationData.AeroFeatures.GetTrailerDataRow(TrailerDataHelper.CreateAeroFeatureList(trailer));
 				valid = aeroFeatureRow[trailer.TrailerType.ToString()].ToString() == "1";
 			} catch (Exception ex) {
-				throw new VectoException(ex.Message);
+				System.Diagnostics.Debug.WriteLine(ex.Message);
+				valid = false;
 			}
 			var combination = TrailerDataHelper.GetAeroFeatureCombination(trailer);
 			if (combination < 0 || !valid) {
