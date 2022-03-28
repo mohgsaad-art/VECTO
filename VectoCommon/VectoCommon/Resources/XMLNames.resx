@@ -1494,4 +1494,7 @@
 <data name="Trailer_CertifiedAeroReduction" xml:space="preserve">
 	<value>CertifiedAeroReduction</value>
 </data>
+<data name="Report_Results_WeightedResults" xml:space="preserve">
+	<value>WeightedResults</value>
+</data>
 </root>

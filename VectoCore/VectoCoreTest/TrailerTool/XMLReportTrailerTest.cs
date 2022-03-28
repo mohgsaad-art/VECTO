@@ -52,7 +52,7 @@ namespace TUGraz.VectoCore.Tests.XML
 	{
 		private const string MinimalTrailer = @"TestData\Trailer\2_Axle_DB_drybox.xml";
 		private const string TrailerWithCertifiedAeroDevice = @"TestData\Trailer\3_axle_DA_drybox.xml";
-
+		private const string OldTyreXml = @"TestData\Trailer\old_tyre.xml";
 		private const string TrailerWithStandardAeroDevice =
 			@"TestData\Trailer\2_Axle_DB_drybox_standard_aeroDevice.xml";
 

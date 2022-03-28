@@ -2689,6 +2689,15 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to WeightedResults.
+        /// </summary>
+        public static string Report_Results_WeightedResults {
+            get {
+                return ResourceManager.GetString("Report_Results_WeightedResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to SpecificCO2Emissions.
         /// </summary>
         public static string Report_SpecificCO2Emissions {
