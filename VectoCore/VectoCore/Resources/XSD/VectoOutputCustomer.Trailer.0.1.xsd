@@ -304,15 +304,16 @@
 								<xs:element name="Axle" maxOccurs="unbounded">
 									<xs:complexType>
 										<xs:sequence>
+											<xs:element name="Steered" type="xs:boolean"/>
+											<xs:element name="Liftable" type="xs:boolean"/>
+											<xs:element name="TwinTyres" type="xs:boolean"/>
 											<xs:element name="Tyre">
 												<xs:complexType>
 													<xs:sequence>
 														<xs:element name="Data">
 															<xs:complexType>
 																<xs:sequence>
-																	<xs:element name="Model" type="xs:string"/>
 																	<xs:element name="Dimension" type="xs:string"/>
-																	<xs:element name="RRCDeclared" type="xs:string"/>
 																	<xs:element name="FuelEfficiencyClass" type="xs:string" minOccurs="0"/>
 																</xs:sequence>
 															</xs:complexType>
