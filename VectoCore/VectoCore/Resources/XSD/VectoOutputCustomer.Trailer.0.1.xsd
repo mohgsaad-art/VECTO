@@ -75,8 +75,8 @@
 						<xs:complexType>
 							<xs:simpleContent>
 								<xs:extension base="xs:double">
-									<xs:attribute name="type" type="out:CalculationType"/>
-									<xs:attribute name="unit" type="out:NoUnitType"/>
+									<xs:attribute name="type" type="out:CalculationType" use="required"/>
+									<xs:attribute name="unit" type="out:NoUnitType" use="required"/>
 								</xs:extension>
 							</xs:simpleContent>
 						</xs:complexType>
@@ -85,8 +85,8 @@
 						<xs:complexType>
 							<xs:simpleContent>
 								<xs:extension base="xs:double">
-									<xs:attribute name="type" type="out:CalculationType"/>
-									<xs:attribute name="unit" type="out:NoUnitType"/>
+									<xs:attribute name="type" type="out:CalculationType" use="required"/>
+									<xs:attribute name="unit" type="out:NoUnitType" use="required"/>
 								</xs:extension>
 							</xs:simpleContent>
 						</xs:complexType>
@@ -138,7 +138,7 @@
 										<xs:element name="WeightedResults" minOccurs="0">
 											<xs:complexType>
 												<xs:sequence>
-													<xs:element name="WeightedPayloadTrailer">
+													<xs:element name="Payload">
 														<xs:complexType>
 															<xs:simpleContent>
 																<xs:extension base="xs:double">
@@ -165,11 +165,12 @@
 															</xs:simpleContent>
 														</xs:complexType>
 													</xs:element>
-													<xs:element name="WeightedEfficiencyRatio" maxOccurs="unbounded">
+													<xs:element name="EfficiencyRatio" maxOccurs="unbounded">
 														<xs:complexType>
 															<xs:simpleContent>
 																<xs:extension base="xs:double">
-																	<xs:attribute name="unit" type="xs:string" use="required"/>
+																	<xs:attribute name="type" type="out:CalculationType" use="required"/>
+																	<xs:attribute name="unit" type="out:NoUnitType" use="required"/>
 																</xs:extension>
 															</xs:simpleContent>
 														</xs:complexType>
