@@ -28,6 +28,18 @@
 							<xs:documentation>I.2.1.1 / #56</xs:documentation>
 						</xs:annotation>
 					</xs:element>
+					<xs:element name="Payload">
+						<xs:annotation>
+							<xs:documentation>I.2.1.2 / #57</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:simpleContent>
+								<xs:extension base="xs:double">
+									<xs:attribute name="unit" type="MassUnitType" use="required"/>
+								</xs:extension>
+							</xs:simpleContent>
+						</xs:complexType>
+					</xs:element>
 					<xs:element name="TotalVehicleMass">
 						<xs:complexType>
 							<xs:simpleContent>
