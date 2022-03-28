@@ -299,9 +299,7 @@
 									<xs:element name="CertifiedAeroDevice">
 										<xs:complexType>
 											<xs:sequence>
-												<xs:element name="CertificationNumber">
-													<xs:complexType/>
-												</xs:element>
+												<xs:element name="CertificationNumber" type="vdecdef:CertificationNumberType"/>
 												<xs:element name="InputDataSignature" type="vdecdef:SignatureType"/>
 											</xs:sequence>
 										</xs:complexType>
