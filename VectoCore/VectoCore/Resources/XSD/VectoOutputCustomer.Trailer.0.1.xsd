@@ -124,11 +124,6 @@
 			<xs:extension base="out:AbstractVectoOutputCustomerDataType">
 				<xs:sequence>
 					<xs:element name="Vehicle" type="AbstractVehicleType"/>
-					<xs:element name="ResultDataSignature" type="vdecdef:SignatureType">
-						<xs:annotation>
-							<xs:documentation>II.3</xs:documentation>
-						</xs:annotation>
-					</xs:element>
 					<xs:element name="Results">
 						<xs:complexType>
 							<xs:sequence>
@@ -202,6 +197,11 @@
 								</xs:element>
 							</xs:sequence>
 						</xs:complexType>
+					</xs:element>
+					<xs:element name="ResultDataSignature" type="vdecdef:SignatureType">
+						<xs:annotation>
+							<xs:documentation>II.3</xs:documentation>
+						</xs:annotation>
 					</xs:element>
 				</xs:sequence>
 				<xs:attribute name="id" type="xs:NCName" use="required"/>
