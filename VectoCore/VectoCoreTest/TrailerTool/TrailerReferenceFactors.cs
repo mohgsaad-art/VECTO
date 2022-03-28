@@ -136,7 +136,7 @@ namespace TUGraz.VectoCore.Tests.XML
 					};
 					
 
-					jobContainer.AddRuns(runsFactory, (vectoRunData) => vectoRunData.ModFileSuffix.Contains("_genericTrailer"));
+					jobContainer.AddRuns(runsFactory, (vectoRunData) => vectoRunData.ModFileSuffix.Contains("_referenceTrailer"));
 					
 					jobContainer.Execute(true); //I guess the synchronization fix is not implemented in the trailerTool
 					jobContainer.WaitFinished();
