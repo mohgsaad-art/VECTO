@@ -262,7 +262,7 @@ namespace TUGraz.VectoCore.Tests.XML
 		{
 			var vehicleGroups = DeclarationData.TrailerSegments.GetActiveVehicleGroups();
 
-			vehicleGroups = new System.Collections.Generic.List<int>() { 25121 };
+			//vehicleGroups = new System.Collections.Generic.List<int>() { 25121 };
 
 
 			var groupManager = new ResultManager(vehicleGroups);
