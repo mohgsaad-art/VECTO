@@ -185,7 +185,7 @@
 										<xs:element name="Result" type="AbstractResultType" maxOccurs="unbounded"/>
 									</xs:sequence>
 								</xs:choice>
-								<xs:element name="Summary" minOccurs="0">
+								<xs:element name="WeightedResults" minOccurs="0">
 									<xs:complexType>
 										<xs:sequence>
 											<xs:element name="WeightedPayloadTrailer">
@@ -197,7 +197,7 @@
 													</xs:simpleContent>
 												</xs:complexType>
 											</xs:element>
-											<xs:element name="CO2" maxOccurs="unbounded">
+											<xs:element name="FuelConsumption" maxOccurs="unbounded">
 												<xs:complexType>
 													<xs:simpleContent>
 														<xs:extension base="xs:double">
@@ -206,7 +206,7 @@
 													</xs:simpleContent>
 												</xs:complexType>
 											</xs:element>
-											<xs:element name="FuelConsumption" maxOccurs="unbounded">
+											<xs:element name="CO2" maxOccurs="unbounded">
 												<xs:complexType>
 													<xs:simpleContent>
 														<xs:extension base="xs:double">
