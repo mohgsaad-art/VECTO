@@ -166,7 +166,7 @@
 												<xs:documentation>II.2.1, II.2.2</xs:documentation>
 											</xs:annotation>
 										</xs:element>
-										<xs:element name="Summary" minOccurs="0">
+										<xs:element name="WeightedResults" minOccurs="0">
 											<xs:complexType>
 												<xs:sequence>
 													<xs:element name="WeightedPayloadTrailer">
