@@ -300,7 +300,7 @@
 										<xs:complexType>
 											<xs:sequence>
 												<xs:element name="CertificationNumber" type="vdecdef:CertificationNumberType"/>
-												<xs:element name="InputDataSignature" type="vdecdef:SignatureType"/>
+												<xs:element name="Signature" type="vdecdef:SignatureType"/>
 											</xs:sequence>
 										</xs:complexType>
 									</xs:element>
