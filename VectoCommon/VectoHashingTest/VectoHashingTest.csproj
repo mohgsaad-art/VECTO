@@ -60,6 +60,7 @@
     <Compile Include="BasicHasingTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\AssertHelper.cs" />
+    <Compile Include="VectoComponentHashSortTest.cs" />
     <Compile Include="VectoHashTest.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -77,6 +78,102 @@
     </Content>
     <Content Include="Testdata\XML\simple_document.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Testdata\XML\Sort\Component\Sorted\ADC.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Testdata\XML\Sort\Component\Sorted\Angledrive.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Testdata\XML\Sort\Component\Sorted\Axlegear.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Testdata\XML\Sort\Component\Sorted\BatterySystem_1.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Testdata\XML\Sort\Component\Sorted\CapacitorSystem_1.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Testdata\XML\Sort\Component\Sorted\ElectricMachineSystem-IHPC_1.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Testdata\XML\Sort\Component\Sorted\ElectricMachineSystem_1.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Testdata\XML\Sort\Component\Sorted\ElectricMachineSystem_StdValues.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Testdata\XML\Sort\Component\Sorted\Engine.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Testdata\XML\Sort\Component\Sorted\Gearbox_APT-N.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Testdata\XML\Sort\Component\Sorted\Gearbox_FWD.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Testdata\XML\Sort\Component\Sorted\Gearbox_IHPC.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Testdata\XML\Sort\Component\Sorted\IEPC_1.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Testdata\XML\Sort\Component\Sorted\IEPC_StdValues.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Testdata\XML\Sort\Component\Sorted\Retarder.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Testdata\XML\Sort\Component\Sorted\TorqueConverter.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Testdata\XML\Sort\Component\Unsorted\ADC.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Testdata\XML\Sort\Component\Unsorted\Angledrive.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Testdata\XML\Sort\Component\Unsorted\Axlegear.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Testdata\XML\Sort\Component\Unsorted\BatterySystem_1.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Testdata\XML\Sort\Component\Unsorted\CapacitorSystem_1.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Testdata\XML\Sort\Component\Unsorted\ElectricMachineSystem-IHPC_1.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Testdata\XML\Sort\Component\Unsorted\ElectricMachineSystem_1.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Testdata\XML\Sort\Component\Unsorted\ElectricMachineSystem_StdValues.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Testdata\XML\Sort\Component\Unsorted\Engine.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Testdata\XML\Sort\Component\Unsorted\Gearbox_APT-N.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Testdata\XML\Sort\Component\Unsorted\Gearbox_FWD.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Testdata\XML\Sort\Component\Unsorted\Gearbox_IHPC.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Testdata\XML\Sort\Component\Unsorted\IEPC_1.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Testdata\XML\Sort\Component\Unsorted\IEPC_StdValues.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Testdata\XML\Sort\Component\Unsorted\Retarder.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Testdata\XML\Sort\Component\Unsorted\TorqueConverter.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Testdata\XML\ToHash\multiple_components.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -97,6 +194,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Testdata\XML\ToHash\vecto_gearbox-input_nodata.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Testdata\XML\ToHash\vecto_vehicle-sample_3axle1_unsortedAxle.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Testdata\XML\ToHash\vecto_vehicle-sample_3axle1.xml">

@@ -31,13 +31,17 @@
 3-simulation-models/Engine_FC.md
 3-simulation-models/Engine_DynamicFullLoad.md
 3-simulation-models/Engine_WHTC.md
+3-simulation-models/Engine_DualFuel.md
 3-simulation-models/Engine_Speed_Torque_limitations.md
+3-simulation-models/Engine_FC_Correction.md
+3-simulation-models/whr_system.md
 3-simulation-models/FuelProperties.md
 3-simulation-models/Transmission_Losses.md
 3-simulation-models/Gearbox_AT.md
 3-simulation-models/GearShift.md
 3-simulation-models/Gearshift_AMT.md
 3-simulation-models/Gearshift_AT.md
+3-simulation-models/Gearshift_MT.md
 3-simulation-models/TC.md
 3-simulation-models/Auxiliaries.md
 3-simulation-models/PwheelInput.md

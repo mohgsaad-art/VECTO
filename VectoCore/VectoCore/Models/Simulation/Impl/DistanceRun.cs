@@ -47,10 +47,10 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			IterationStatistics.StartIteration();
 
 			// estimate distance to be traveled within the next TargetTimeInterval
-			var ds = Container.VehicleSpeed.IsEqual(0.KMPHtoMeterPerSecond(), 0.01.SI<MeterPerSecond>())
+			var ds = Container.VehicleInfo.VehicleSpeed.IsEqual(0.KMPHtoMeterPerSecond(), 0.01.SI<MeterPerSecond>())
 				? Constants.SimulationSettings.DriveOffDistance
 				: VectoMath.Max(
-				Constants.SimulationSettings.TargetTimeInterval * Container.VehicleSpeed,
+				Constants.SimulationSettings.TargetTimeInterval * Container.VehicleInfo.VehicleSpeed,
 					Constants.SimulationSettings.DriveOffDistance);
 
 			var loopCount = 0;
@@ -59,7 +59,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			do {
 				IterationStatistics.Increment(this, "Iterations");
 
-				Container.BrakePower = 0.SI<Watt>();
+				Container.Brakes.BrakePower = 0.SI<Watt>();
 				response = CyclePort.Request(AbsTime, ds);
 				response.Switch().
 					Case<ResponseSuccess>(r => { dt = r.SimulationInterval; }).
@@ -80,7 +80,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				debug.Add(new {Response = response});
 			} while (!(response is ResponseSuccess || response is ResponseCycleFinished));
 
-			IterationStatistics.Increment(this, "Distance", Container.Distance.Value());
+			IterationStatistics.Increment(this, "Distance", Container.MileageCounter.Distance.Value());
 			IterationStatistics.Increment(this, "Time", AbsTime.Value());
 			IterationStatistics.FinishIteration(AbsTime);
 			response.AbsTime = AbsTime;

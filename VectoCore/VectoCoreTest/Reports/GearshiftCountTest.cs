@@ -45,7 +45,10 @@ namespace TUGraz.VectoCore.Tests.Reports
 		[TestCase()]
 		public void TestGearshiftCountTractionInterruptionShiftup()
 		{
-			var modData = new ModalDataContainer("GearshiftRun", FuelData.Diesel, null);
+			var rundata = new VectoRunData() {
+				JobName = "GearshiftRun"
+			};
+			var modData = new ModalDataContainer(rundata, null, null);
 
 			var entries = new[] {
 				new DummyEntry { v = 34, gear = 4u },
@@ -67,7 +70,10 @@ namespace TUGraz.VectoCore.Tests.Reports
 		[TestCase()]
 		public void TestGearshiftCountTractionInterruption()
 		{
-			var modData = new ModalDataContainer("GearshiftRun", FuelData.Diesel, null);
+			var rundata = new VectoRunData() {
+				JobName = "GearshiftRun"
+			};
+			var modData = new ModalDataContainer(rundata, null, null);
 
 			var entries = new[] {
 				new DummyEntry { v = 34, gear = 4u },
@@ -89,7 +95,10 @@ namespace TUGraz.VectoCore.Tests.Reports
 		[TestCase()]
 		public void TestGearshiftCountTractionInterruptionShiftDown()
 		{
-			var modData = new ModalDataContainer("GearshiftRun", FuelData.Diesel, null);
+			var rundata = new VectoRunData() {
+				JobName = "GearshiftRun"
+			};
+			var modData = new ModalDataContainer(rundata, null, null);
 
 			var entries = new[] {
 				new DummyEntry { v = 34, gear = 4u },
@@ -112,7 +121,10 @@ namespace TUGraz.VectoCore.Tests.Reports
 		[TestCase()]
 		public void TestGearshiftCountTractionInterruptionStop()
 		{
-			var modData = new ModalDataContainer("GearshiftRun", FuelData.Diesel, null);
+			var rundata = new VectoRunData() {
+				JobName = "GearshiftRun"
+			};
+			var modData = new ModalDataContainer(rundata, null, null);
 
 			var entries = new[] {
 				new DummyEntry { v = 4, gear = 4u },
@@ -134,7 +146,10 @@ namespace TUGraz.VectoCore.Tests.Reports
 		[TestCase()]
 		public void TestGearshiftCountTractionInterruptionStopDriveOff()
 		{
-			var modData = new ModalDataContainer("GearshiftRun", FuelData.Diesel, null);
+			var rundata = new VectoRunData() {
+				JobName = "GearshiftRun"
+			};
+			var modData = new ModalDataContainer(rundata, null, null);
 
 			var entries = new[] {
 				new DummyEntry { v = 4, gear = 4u },
@@ -158,7 +173,10 @@ namespace TUGraz.VectoCore.Tests.Reports
 		[TestCase()]
 		public void TestGearshiftCountTractionInterruptionShiftupAT()
 		{
-			var modData = new ModalDataContainer("GearshiftRun", FuelData.Diesel, null);
+			var rundata = new VectoRunData() {
+				JobName = "GearshiftRun"
+			};
+			var modData = new ModalDataContainer(rundata, null, null);
 
 			var entries = new[] {
 				new DummyEntry { v = 34, gear = 4u },
@@ -181,7 +199,10 @@ namespace TUGraz.VectoCore.Tests.Reports
 		[TestCase()]
 		public void TestGearshiftCountTractionInterruptionShiftDownAT()
 		{
-			var modData = new ModalDataContainer("GearshiftRun", FuelData.Diesel, null);
+			var rundata = new VectoRunData() {
+				JobName = "GearshiftRun"
+			};
+			var modData = new ModalDataContainer(rundata, null, null);
 
 			var entries = new[] {
 				new DummyEntry { v = 34, gear = 4u },

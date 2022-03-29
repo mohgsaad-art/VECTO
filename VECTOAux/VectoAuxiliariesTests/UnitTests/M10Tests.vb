@@ -1,11 +1,11 @@
-﻿Imports VectoAuxiliaries.Electrics
-Imports VectoAuxiliaries.Pneumatics
-Imports VectoAuxiliaries.Hvac
-Imports VectoAuxiliaries.DownstreamModules
+﻿
 Imports NUnit.Framework
-Imports VectoAuxiliaries
 Imports Moq
 Imports TUGraz.VectoCommon.Utils
+Imports TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl
+Imports TUGraz.VectoCore.Models.BusAuxiliaries.Interfaces
+Imports TUGraz.VectoCore.Models.BusAuxiliaries.Interfaces.DownstreamModules
+
 
 Namespace UnitTests
 	<TestFixture()>
@@ -19,7 +19,7 @@ Namespace UnitTests
 			Dim m9 As New Mock(Of IM9)
 			Dim signals As New Signals() ' Not required , here for expansion only.
 
-			m3.Setup(Function(x) x.AverageAirConsumedPerSecondLitre).Returns(xTAir.SI(Of NormLiterPerSecond))
+			m3.Setup(Function(x) x.AverageAirConsumed).Returns(xTAir.SI(Of NormLiterPerSecond))
 			m9.Setup(Function(x) x.LitresOfAirCompressorOnContinually).Returns(x1.SI(Of NormLiter))
 			m9.Setup(Function(x) x.TotalCycleFuelConsumptionCompressorOnContinuously).Returns((y1 / 1000).SI(Of Kilogram))
 			'x2 is not an output of m9, an is allways zero, but to keep in line with schematic, is represented anyway although it is a constant.
@@ -28,12 +28,12 @@ Namespace UnitTests
 			m9.Setup(Function(x) x.TotalCycleFuelConsumptionCompressorOffContinuously).Returns((y3 / 1000).SI(Of Kilogram))
 
 
-			Dim target As IM10 = New M10(m3.Object, m9.Object, signals)
+			Dim target As IM10 = New M10Impl(m3.Object, m9.Object)
 
 			target.CycleStep(1.SI(Of Second))
 
-            		Assert.AreEqual(out1.SI(Unit.SI.Gramm).Value(), target.AverageLoadsFuelConsumptionInterpolatedForPneumatics.Value(), 0.001)
-            		Assert.AreEqual(out2.SI(Unit.SI.Gramm).Value(), target.FuelConsumptionSmartPneumaticsAndAverageElectricalPowerDemand.Value(), 0.001)
+			Assert.AreEqual(out1.SI(Unit.SI.Gramm).Value(), target.AverageLoadsFuelConsumptionInterpolatedForPneumatics.Value(), 0.001)
+			Assert.AreEqual(out2.SI(Unit.SI.Gramm).Value(), target.FuelConsumptionSmartPneumaticsAndAverageElectricalPowerDemand.Value(), 0.001)
 		End Sub
 	End Class
 End Namespace

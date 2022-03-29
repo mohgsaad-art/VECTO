@@ -47,6 +47,11 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		protected LookupData()
 		{
+			ReadData();
+		}
+
+		protected void ReadData()
+		{
 			if (!string.IsNullOrWhiteSpace(ResourceId)) {
 				var table = ReadCsvResource(ResourceId);
 				NormalizeTable(table);

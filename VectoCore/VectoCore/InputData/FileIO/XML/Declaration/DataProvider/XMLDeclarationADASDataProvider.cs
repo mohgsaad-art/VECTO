@@ -86,6 +86,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 			get { return PredictiveCruiseControlTypeHelper.Parse(GetString(XMLNames.Vehicle_ADAS_PCC)); }
 		}
 
+		public virtual bool? ATEcoRollReleaseLockupClutch => null;
 		#endregion
 	}
 

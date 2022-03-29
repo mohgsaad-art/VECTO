@@ -38,10 +38,15 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering
 	{
 		ILookaheadCoastingInputData LookAheadData { get; }
 
-		IOverSpeedEcoRollEngineeringInputData OverspeedData { get; }
+		IOverSpeedEngineeringInputData OverspeedData { get; }
 
 		IXMLDriverAcceleration AccelerationCurveData { get; }
 
 		IGearshiftEngineeringInputData ShiftParameters { get; }
+
+		IEngineStopStartEngineeringInputData EngineStopStartData { get; }
+		IEcoRollEngineeringInputData EcoRollData { get; }
+
+		IPCCEngineeringInputData PCCData { get; }
 	}
 }

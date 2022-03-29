@@ -58,34 +58,43 @@ namespace TUGraz.VectoCore.Tests.Utils
 				outAngularVelocity);
 
 			if (dryRun) {
-				return new ResponseDryRun {
-					Source = this,
-					GearboxPowerRequest = outTorque * outAngularVelocity,
-					EnginePowerRequest = outTorque * outAngularVelocity,
-					ClutchPowerRequest = outTorque * outAngularVelocity,
-					EngineSpeed = outAngularVelocity,
-					DynamicFullLoadPower = (outTorque + 2300.SI<NewtonMeter>()) * outAngularVelocity,
+				return new ResponseDryRun(this) {
+					Engine = {
+						PowerRequest = outTorque * outAngularVelocity,
+						EngineSpeed = outAngularVelocity,
+						DynamicFullLoadPower = (outTorque + 2300.SI<NewtonMeter>()) * outAngularVelocity,
+					},
+					Gearbox = { PowerRequest = outTorque * outAngularVelocity, },
+					Clutch = {
+						PowerRequest = outTorque * outAngularVelocity,
+					},
 					DeltaFullLoad = (outTorque - 2300.SI<NewtonMeter>()) * outAngularVelocity,
 					DeltaDragLoad = (outTorque - -100.SI<NewtonMeter>()) * outAngularVelocity
 				};
 			}
 
-			return new ResponseSuccess {
-				Source = this,
-				GearboxPowerRequest = outTorque * outAngularVelocity,
-				EnginePowerRequest = outTorque * outAngularVelocity,
-				ClutchPowerRequest = outTorque * outAngularVelocity,
-				EngineSpeed = outAngularVelocity,
+			return new ResponseSuccess(this) {
+				Engine = {
+					PowerRequest = outTorque * outAngularVelocity,
+					EngineSpeed = outAngularVelocity,
+				},
+				Gearbox = { PowerRequest = outTorque * outAngularVelocity, },
+				Clutch = { 
+					PowerRequest = outTorque * outAngularVelocity,
+				}
 			};
 		}
 
 		public IResponse Initialize(NewtonMeter outTorque, PerSecond outAngularVelocity)
 		{
-			return new ResponseSuccess {
-				Source = this,
-				EnginePowerRequest = outTorque * (outAngularVelocity ?? 0.SI<PerSecond>()),
-				ClutchPowerRequest = outTorque * (outAngularVelocity ?? 0.SI<PerSecond>()),
-				EngineSpeed = outAngularVelocity,
+			return new ResponseSuccess(this) {
+				Engine = {
+					PowerRequest = outTorque * (outAngularVelocity ?? 0.SI<PerSecond>()),
+					EngineSpeed = outAngularVelocity,
+				},
+				Clutch = {
+					PowerRequest = outTorque * (outAngularVelocity ?? 0.SI<PerSecond>()),
+				}
 			};
 		}
 
@@ -112,9 +121,19 @@ namespace TUGraz.VectoCore.Tests.Utils
 			return 2300.SI<NewtonMeter>() * angularSpeed;
 		}
 
+		public Watt EngineDynamicFullLoadPower(PerSecond avgEngineSpeed, Second dt)
+		{
+			throw new NotImplementedException();
+		}
+
 		public Watt EngineDragPower(PerSecond angularSpeed)
 		{
 			return -1000.SI<NewtonMeter>() * angularSpeed;
+		}
+
+		public Watt EngineAuxDemand(PerSecond avgEngineSpeed, Second dt)
+		{
+			throw new NotImplementedException();
 		}
 
 		public PerSecond EngineIdleSpeed
@@ -130,6 +149,9 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		public PerSecond EngineN95hSpeed { get; set; }
 		public PerSecond EngineN80hSpeed { get; set; }
+		public bool EngineOn {
+			get { throw new NotImplementedException();}
+		}
 	}
 
 	public class MockDrivingCycleOutPort : LoggingObject, IDrivingCycleOutPort
@@ -147,7 +169,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 			Velocity = targetVelocity;
 			Gradient = gradient;
 			Log.Debug("Request: absTime: {0}, ds: {1}, velocity: {2}, gradient: {3}", absTime, ds, targetVelocity, gradient);
-			return new ResponseSuccess() { Source = this };
+			return new ResponseSuccess(this);
 		}
 
 		public IResponse Request(Second absTime, Second dt, MeterPerSecond targetVelocity, Radian gradient)
@@ -157,7 +179,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 			Velocity = targetVelocity;
 			Gradient = gradient;
 			Log.Debug("Request: absTime: {0}, ds: {1}, velocity: {2}, gradient: {3}", absTime, dt, targetVelocity, gradient);
-			return new ResponseSuccess() { Source = this };
+			return new ResponseSuccess(this);
 		}
 
 		public IResponse Initialize(MeterPerSecond vehicleSpeed, Radian roadGradient)
@@ -185,12 +207,12 @@ namespace TUGraz.VectoCore.Tests.Utils
 			Force = force;
 			Velocity = velocity;
 			Log.Debug("Request: abstime: {0}, dt: {1}, force: {2}, velocity: {3}", absTime, dt, force, velocity);
-			return new ResponseSuccess() { Source = this };
+			return new ResponseSuccess(this);
 		}
 
 		public IResponse Initialize(Newton vehicleForce, MeterPerSecond vehicleSpeed)
 		{
-			return new ResponseSuccess() { Source = this };
+			return new ResponseSuccess(this);
 		}
 	}
 }

@@ -715,7 +715,7 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 			if (expectedTrailerWeight.HasValue) {
 				var trailerMission = segment.Missions.Where(m => m.Trailer.Count > 0).ToList();
 				if (trailerMission.Count > 0) {
-					Assert.AreEqual(expectedTrailerWeight, trailerMission.First().Trailer.First().TrailerCurbWeight.Value());
+					Assert.AreEqual(expectedTrailerWeight, trailerMission.First().Trailer.First().TrailerCurbMass.Value());
 				}
 			}
 		}
@@ -1868,7 +1868,7 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 				"Trailer axle distribution not equal.\nexpected: {0}\nactual: {1}", string.Join(",", trailerAxleWeightDistribution),
 				string.Join(",", m.Trailer.Select(t => t.TrailerAxleWeightShare)));
 			Assert.AreEqual(bodyCurbWeight.SI<Kilogram>(), m.BodyCurbWeight);
-			CollectionAssert.AreEqual(trailerCurbWeight, m.Trailer.Select(t => t.TrailerCurbWeight.Value()));
+			CollectionAssert.AreEqual(trailerCurbWeight, m.Trailer.Select(t => t.TrailerCurbMass.Value()));
 			CollectionAssert.AreEqual(trailerType, m.Trailer.Select(t => t.TrailerType));
 			CollectionAssert.AreEqual(trailerAxleCount, m.Trailer.Select(t => t.TrailerWheels.Count));
 			Assert.IsNotNull(m.CycleFile);
@@ -1877,13 +1877,13 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 			AssertHelper.AreRelativeEqual(lowLoad, m.LowLoad);
 			AssertHelper.AreRelativeEqual(refLoad, m.RefLoad);
 			Assert.AreEqual(maxLoad.SI<Kilogram>(), m.MaxLoad);
-			CollectionAssert.AreEqual(trailerGrossVehicleWeight, m.Trailer.Select(t => t.TrailerGrossVehicleWeight.Value()));
+			CollectionAssert.AreEqual(trailerGrossVehicleWeight, m.Trailer.Select(t => t.TrailerGrossVehicleMass.Value()));
 			Assert.AreEqual(
 				VectoMath.Min(
 					vehicleData.GrossVehicleMassRating +
-					m.Trailer.Sum(t => t.TrailerGrossVehicleWeight).DefaultIfNull(0),
+					m.Trailer.Sum(t => t.TrailerGrossVehicleMass).DefaultIfNull(0),
 					ems ? 60000.SI<Kilogram>() : 40000.SI<Kilogram>())
-				- m.BodyCurbWeight - m.Trailer.Sum(t => t.TrailerCurbWeight).DefaultIfNull(0) -
+				- m.BodyCurbWeight - m.Trailer.Sum(t => t.TrailerCurbMass).DefaultIfNull(0) -
 				vehicleData.CurbWeight,
 				m.MaxLoad);
 			Assert.AreEqual(deltaCdA.SI<SquareMeter>(),

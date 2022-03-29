@@ -228,18 +228,20 @@ namespace TUGraz.VectoCore.Tests.Integration
 			var inputDataProvider = JSONInputDataFactory.ReadJsonJob(file);
 			var factory = new SimulatorFactory(ExecutionMode.Declaration, inputDataProvider, fileWriter) {
 				WriteModalResults = true,
-				ActualModalData = true
+				//ActualModalData = true
 			};
 
 
 			var jobContainer = new JobContainer(sumData);
 			jobContainer.AddRuns(factory);
 
-			jobContainer.Execute();
-			jobContainer.WaitFinished();
+            //jobContainer.Runs[4].RunWorkerAsync().Wait();
 
-			Assert.IsTrue(jobContainer.Runs.All(r => r.Success), string.Concat(jobContainer.Runs.Select(r => r.ExecException)));
-		}
+            jobContainer.Execute();
+            jobContainer.WaitFinished();
+
+            Assert.IsTrue(jobContainer.Runs.All(r => r.Success), string.Concat(jobContainer.Runs.Select(r => r.ExecException)));
+        }
 
 		[TestCase(EngineSpeedLimitJobDecl), Category("LongRunning")]
 		public void TestRunEngineSpeedLimitedSimulations(string file)
@@ -256,20 +258,22 @@ namespace TUGraz.VectoCore.Tests.Integration
 			var jobContainer = new JobContainer(sumData);
 			jobContainer.AddRuns(factory);
 
-			//jobContainer.Runs[1].RunWorkerAsync().Wait();
+            //jobContainer.Runs[0].RunWorkerAsync().Wait();
 
-			jobContainer.Execute();
-			jobContainer.WaitFinished();
+            jobContainer.Execute();
+            jobContainer.WaitFinished();
 
-			Assert.IsTrue(jobContainer.Runs.All(r => r.Success), string.Concat(jobContainer.Runs.Select(r => r.ExecException)));
-			var view = new DataView(sumData.Table, "", SummaryDataContainer.SORT, DataViewRowState.CurrentRows).ToTable();
-			Console.WriteLine(string.Join("; ", view.AsEnumerable().Select(x => x[SummaryDataContainer.FCMAP_KM].ToString().ToDouble())));
-			Assert.AreEqual(201.39195, view.Rows[0][SummaryDataContainer.FCMAP_KM].ToString().ToDouble(), 1e-3);
-			Assert.AreEqual(239.50432, view.Rows[1][SummaryDataContainer.FCMAP_KM].ToString().ToDouble(), 1e-3);
-			Assert.AreEqual(170.18354, view.Rows[2][SummaryDataContainer.FCMAP_KM].ToString().ToDouble(), 1e-3);
-			Assert.AreEqual(183.06159, view.Rows[3][SummaryDataContainer.FCMAP_KM].ToString().ToDouble(), 1e-3);
-			Assert.AreEqual(224.78226, view.Rows[4][SummaryDataContainer.FCMAP_KM].ToString().ToDouble(), 1e-3);
-			Assert.AreEqual(255.02087, view.Rows[5][SummaryDataContainer.FCMAP_KM].ToString().ToDouble(), 1e-3);
+            Assert.IsTrue(jobContainer.Runs.All(r => r.Success), string.Concat(jobContainer.Runs.Select(r => r.ExecException)));
+
+            var view = new DataView(sumData.Table, "", SummaryDataContainer.Fields.SORT, DataViewRowState.CurrentRows).ToTable();
+			Console.WriteLine(string.Join("; ", view.AsEnumerable().Select(x => x[string.Format(SummaryDataContainer.Fields.FCMAP_KM, "")].ToString().ToDouble())));
+			// 199.750225533639; 235.82213490632; 169.943109853321; 182.880939697492; 221.727012960826; 251.838137183945
+			Assert.AreEqual(199.750225533639, view.Rows[0][string.Format(SummaryDataContainer.Fields.FCMAP_KM, "")].ToString().ToDouble(), 1e-3);
+			Assert.AreEqual(235.82213490632, view.Rows[1][string.Format(SummaryDataContainer.Fields.FCMAP_KM, "")].ToString().ToDouble(), 1e-3);
+			Assert.AreEqual(169.943109853321, view.Rows[2][string.Format(SummaryDataContainer.Fields.FCMAP_KM, "")].ToString().ToDouble(), 1e-3);
+			Assert.AreEqual(182.880939697492, view.Rows[3][string.Format(SummaryDataContainer.Fields.FCMAP_KM, "")].ToString().ToDouble(), 1e-3);
+			Assert.AreEqual(221.727012960826, view.Rows[4][string.Format(SummaryDataContainer.Fields.FCMAP_KM, "")].ToString().ToDouble(), 1e-3);
+			Assert.AreEqual(251.838137183945, view.Rows[5][string.Format(SummaryDataContainer.Fields.FCMAP_KM, "")].ToString().ToDouble(), 1e-3);
 		}
 
 		[TestCase(EngineSpeedLimitJobATDecl)]

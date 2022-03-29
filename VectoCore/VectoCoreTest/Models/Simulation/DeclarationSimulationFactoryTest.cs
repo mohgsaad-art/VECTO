@@ -107,7 +107,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 
 			for (var i = 0; i < 8; i++)
 				Assert.AreEqual(
-					expected[i], runs[i].GetContainer().RunData.EngineData.FuelConsumptionCorrectionFactor, 1e-6,
+					expected[i], runs[i].GetContainer().RunData.EngineData.Fuels.First().FuelConsumptionCorrectionFactor, 1e-6,
 					"correction factor for cycle {0} payload {1} mismatch ({2})", runs[i].CycleName , runs[i].RunSuffix, i);
 		}
 	}

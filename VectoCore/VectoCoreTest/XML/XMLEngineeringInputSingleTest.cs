@@ -95,11 +95,11 @@ namespace TUGraz.VectoCore.Tests.XML
 			Assert.AreEqual(0.012730, engineDataProvider.Displacement.Value());
 			Assert.AreEqual(0.77, engineDataProvider.Inertia.Value());
 
-			AssertHelper.Exception<VectoException>(() => { var tmp = engineDataProvider.WHTCMotorway; });
-			AssertHelper.Exception<VectoException>(() => { var tmp = engineDataProvider.WHTCRural; });
-			AssertHelper.Exception<VectoException>(() => { var tmp = engineDataProvider.WHTCUrban; });
+			AssertHelper.Exception<VectoException>(() => { var tmp = engineDataProvider.EngineModes.First().Fuels.First().WHTCMotorway; });
+			AssertHelper.Exception<VectoException>(() => { var tmp = engineDataProvider.EngineModes.First().Fuels.First().WHTCRural; });
+			AssertHelper.Exception<VectoException>(() => { var tmp = engineDataProvider.EngineModes.First().Fuels.First().WHTCUrban; });
 
-			var fcMapTable = engineDataProvider.FuelConsumptionMap;
+			var fcMapTable = engineDataProvider.EngineModes.First().Fuels.First().FuelConsumptionMap;
 			Assert.AreEqual(112, fcMapTable.Rows.Count);
 			Assert.AreEqual("engine speed", fcMapTable.Columns[0].Caption);
 			Assert.AreEqual("torque", fcMapTable.Columns[1].Caption);
@@ -110,7 +110,7 @@ namespace TUGraz.VectoCore.Tests.XML
 			Assert.AreEqual(1256.SI(Unit.SI.Gramm.Per.Hour).Value(), 
 				fcMap.GetFuelConsumption(0.SI<NewtonMeter>(), 560.RPMtoRad()).Value.Value());
 
-			var fldTable = engineDataProvider.FullLoadCurve;
+			var fldTable = engineDataProvider.EngineModes.First().FullLoadCurve;
 			Assert.AreEqual(10, fldTable.Rows.Count);
 			Assert.AreEqual("engine speed", fldTable.Columns[0].Caption);
 			Assert.AreEqual("full load torque", fldTable.Columns[1].Caption);
@@ -355,16 +355,16 @@ namespace TUGraz.VectoCore.Tests.XML
 			var auxDataProvider = inputDataProvider.JobInputData.Vehicle.Components.AuxiliaryInputData;
 
 			var aux = auxDataProvider.Auxiliaries;
-			var aux1 = aux[0];
+			//var aux1 = aux[0];
 
-			Assert.AreEqual("ES", aux1.ID);
+			//Assert.AreEqual("ES", aux1.ID);
 
-			Assert.AreEqual(70, aux1.DemandMap.Rows[0].ParseDouble(AuxiliaryDataReader.Fields.MechPower));
-			Assert.AreEqual(640, aux1.DemandMap.Rows[2].ParseDouble(AuxiliaryDataReader.Fields.SupplyPower));
+			//Assert.AreEqual(70, aux1.DemandMap.Rows[0].ParseDouble(AuxiliaryDataReader.Fields.MechPower));
+			//Assert.AreEqual(640, aux1.DemandMap.Rows[2].ParseDouble(AuxiliaryDataReader.Fields.SupplyPower));
 
-			var aux2 = aux[1];
+			//var aux2 = aux[1];
 
-			Assert.AreEqual("FAN", aux2.ID);
+			//Assert.AreEqual("FAN", aux2.ID);
 		}
 
 		[TestCase]
@@ -376,7 +376,7 @@ namespace TUGraz.VectoCore.Tests.XML
 
 			var adas = inputDataProvider.DriverInputData;
 
-			Assert.AreEqual(DriverMode.Overspeed, adas.OverSpeedEcoRoll.Mode);
+			Assert.IsTrue(adas.OverSpeedData.Enabled);
 		}
 
 		[TestCase]
@@ -412,11 +412,11 @@ namespace TUGraz.VectoCore.Tests.XML
 			Assert.IsTrue(lac.Enabled);
 			Assert.AreEqual(DeclarationData.Driver.LookAhead.MinimumSpeed.AsKmph, lac.MinSpeed.AsKmph, 1e-6);
 
-			var overspeed = driverDataProvider.OverSpeedEcoRoll;
-			Assert.AreEqual(DriverMode.Overspeed, overspeed.Mode);
+			var overspeed = driverDataProvider.OverSpeedData;
+			Assert.IsTrue(overspeed.Enabled);
 			Assert.AreEqual(50, overspeed.MinSpeed.AsKmph, 1e-6);
 			Assert.AreEqual(5, overspeed.OverSpeed.AsKmph, 1e-6);
-			Assert.AreEqual(5, overspeed.UnderSpeed.AsKmph, 1e-6);
+			//Assert.AreEqual(5, overspeed.UnderSpeed.AsKmph, 1e-6);
 
 			var driverAcc = driverDataProvider.AccelerationCurve.AccelerationCurve;
 			Assert.AreEqual(2, driverAcc.Rows.Count);
@@ -561,11 +561,11 @@ namespace TUGraz.VectoCore.Tests.XML
 			Assert.AreEqual("100", lac.CoastingDecisionFactorVelocityDropLookup.Rows[1][0]);
 			Assert.AreEqual("1", lac.CoastingDecisionFactorVelocityDropLookup.Rows[1][1]);
 
-			var overspeed = driverDataProvider.OverSpeedEcoRoll;
-			Assert.AreEqual(DriverMode.Overspeed, overspeed.Mode);
+			var overspeed = driverDataProvider.OverSpeedData;
+			Assert.IsTrue(overspeed.Enabled);
 			Assert.AreEqual(50, overspeed.MinSpeed.AsKmph, 1e-6);
 			Assert.AreEqual(5, overspeed.OverSpeed.AsKmph, 1e-6);
-			Assert.AreEqual(5, overspeed.UnderSpeed.AsKmph, 1e-6);
+			//Assert.AreEqual(5, overspeed.UnderSpeed.AsKmph, 1e-6);
 
 			var driverAcc = driverDataProvider.AccelerationCurve.AccelerationCurve;
 			Assert.AreEqual(2, driverAcc.Rows.Count);
@@ -709,9 +709,9 @@ namespace TUGraz.VectoCore.Tests.XML
 
 			var auxInput = inputDataProvider.JobInputData.Vehicle.Components.AuxiliaryInputData.Auxiliaries;
 
-			Assert.AreEqual(1, auxInput.Count);
-			Assert.AreEqual(AuxiliaryDemandType.Constant, auxInput[0].AuxiliaryType);
-			Assert.AreEqual(5000, auxInput[0].ConstantPowerDemand.Value(), 1e-6);
+			//Assert.AreEqual(1, auxInput.Count);
+			//Assert.AreEqual(AuxiliaryDemandType.Constant, auxInput[0].AuxiliaryType);
+			//Assert.AreEqual(5000, auxInput[0].ConstantPowerDemand.Value(), 1e-6);
 		}
 
 		[TestCase]
@@ -895,7 +895,7 @@ namespace TUGraz.VectoCore.Tests.XML
 			Assert.NotNull(inputDataProvider);
 
 			Assert.AreEqual("Generic Eninge", inputDataProvider.JobInputData.Vehicle.Components.EngineInputData.Model);
-			Assert.AreEqual(1.0, inputDataProvider.JobInputData.Vehicle.Components.EngineInputData.WHTCEngineering, 1e-6);
+			Assert.AreEqual(1.0, inputDataProvider.JobInputData.Vehicle.Components.EngineInputData.EngineModes.First().Fuels.First().WHTCEngineering, 1e-6);
 
 		}
 
@@ -913,7 +913,7 @@ namespace TUGraz.VectoCore.Tests.XML
 			Assert.NotNull(inputDataProvider);
 
 			Assert.AreEqual("Generic Eninge", inputDataProvider.JobInputData.Vehicle.Components.EngineInputData.Model);
-			Assert.AreEqual(1.0, inputDataProvider.JobInputData.Vehicle.Components.EngineInputData.WHTCEngineering, 1e-6);
+			Assert.AreEqual(1.0, inputDataProvider.JobInputData.Vehicle.Components.EngineInputData.EngineModes.First().Fuels.First().WHTCEngineering, 1e-6);
 
 			Assert.AreEqual(2200, inputDataProvider.JobInputData.Vehicle.Components.EngineInputData.RatedSpeedDeclared.AsRPM, 1e-6);
 

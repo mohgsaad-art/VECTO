@@ -46,13 +46,17 @@ namespace TUGraz.VectoCommon.Models
 			return string.Format("a: {0}, dt: {1}, ds: {2}", Acceleration, SimulationInterval, SimulationDistance);
 		}
 
-		public OperatingPoint Clone()
+		public OperatingPoint(OperatingPoint operatingPoint)
 		{
-			return new OperatingPoint() {
-				Acceleration = Acceleration,
-				SimulationDistance = SimulationDistance,
-				SimulationInterval = SimulationInterval
-			};
+			Acceleration = operatingPoint.Acceleration;
+			SimulationDistance = operatingPoint.SimulationDistance;
+			SimulationInterval = operatingPoint.SimulationInterval;
 		}
+
+
+		public OperatingPoint()
+		{
+		}
+
 	}
 }

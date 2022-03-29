@@ -1,11 +1,11 @@
-﻿Imports VectoAuxiliaries.Electrics
-Imports VectoAuxiliaries.Pneumatics
-Imports VectoAuxiliaries.Hvac
-Imports VectoAuxiliaries.DownstreamModules
+﻿
 Imports NUnit.Framework
-Imports VectoAuxiliaries
 Imports Moq
+Imports TUGraz.VectoCommon.BusAuxiliaries
 Imports TUGraz.VectoCommon.Utils
+Imports TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl
+Imports TUGraz.VectoCore.Models.BusAuxiliaries.Interfaces.DownstreamModules
+
 
 Namespace UnitTests
 	<TestFixture()>
@@ -29,7 +29,7 @@ Namespace UnitTests
 			Dim sgnlsMock As New Mock(Of ISignals)
 
 
-			sgnlsMock.Setup(Function(x) x.StoredEnergyEfficiency).Returns(0.935)
+			'sgnlsMock.Setup(Function(x) x.StoredEnergyEfficiency).Returns(0.935)
 
 			m11Mock.Setup(Function(x) x.TotalCycleFuelConsumptionZeroElectricalLoad).Returns((IP2 / 1000).SI(Of Kilogram))
 			m11Mock.Setup(Function(x) x.SmartElectricalTotalCycleEletricalEnergyGenerated).Returns(IP3.SI(Of Joule))
@@ -39,7 +39,7 @@ Namespace UnitTests
 			M10Mock.Setup(Function(x) x.AverageLoadsFuelConsumptionInterpolatedForPneumatics).Returns((IP7 / 1000).SI(Of Kilogram))
 
 			'Act
-			Dim target = New M12(M10Mock.Object, m11Mock.Object, sgnlsMock.Object)
+			Dim target = New M12Impl(M10Mock.Object, m11Mock.Object)
 
 			'Assert
 			Assert.AreEqual(target.FuelconsumptionwithsmartElectricsandAveragePneumaticPowerDemand().Value(),

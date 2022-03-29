@@ -39,6 +39,24 @@
 											<xs:enumeration value="Vehicle/TorqueLimits"/>
 											<xs:enumeration value="Gearshiftstrategy"/>
 											<xs:enumeration value="Vehicle/ADAS"/>
+											<xs:enumeration value="ElectricMachine"/>
+											<xs:enumeration value="ElectricMachine/VoltageLevel"/>
+											<xs:enumeration value="ElectricMachine/MaxMinTorque"/>
+											<xs:enumeration value="ElectricMachine/DragTorque"/>
+											<xs:enumeration value="ElectricMachine/PowerMap"/>
+											<xs:enumeration value="ElectricMachine/Conditioning"/>
+											<xs:enumeration value="IEPC"/>
+											<xs:enumeration value="IEPC/Gear"/>
+											<xs:enumeration value="IEPC/VoltageLevel"/>
+											<xs:enumeration value="IEPC/MaxMinTorque"/>
+											<xs:enumeration value="IEPC/PowerMap"/>
+											<xs:enumeration value="IEPC/Conditioning"/>
+											<xs:enumeration value="BatterySystem"/>
+											<xs:enumeration value="BatterySystem/OCV"/>
+											<xs:enumeration value="BatterySystem/DCIR"/>
+											<xs:enumeration value="BatterySystem/CurrentLimits"/>
+											<xs:enumeration value="CapacitorSystem"/>
+											<xs:enumeration value="IEPC/DragTorque"/>
 										</xs:restriction>
 									</xs:simpleType>
 								</xs:attribute>
@@ -84,6 +102,12 @@
 							<xs:enumeration value="km/h"/>
 							<xs:enumeration value="m/s"/>
 							<xs:enumeration value="mm"/>
+							<xs:enumeration value="V"/>
+							<xs:enumeration value="A"/>
+							<xs:enumeration value="°C"/>
+							<xs:enumeration value="F"/>
+							<xs:enumeration value="mOhm"/>
+							<xs:enumeration value="Ah"/>
 						</xs:restriction>
 					</xs:simpleType>
 				</xs:element>

@@ -88,8 +88,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.NinjectModules
 			Bind<IXMLAxleEngineeringData>().To<XMLAxleEngineeringDataV10>().Named(
 				XMLAxleEngineeringDataV10.QUALIFIED_XSD_TYPE);
 			Bind<IXMLGearData>().To<XMLGearDataV10>().Named(XMLGearDataV10.QUALIFIED_XSD_TYPE);
-			Bind<IXMLAuxiliaryData>().To<XMLAuxiliaryEngineeringDataV10>().Named(
-				XMLAuxiliaryEngineeringDataV10.QUALIFIED_XSD_TYPE);
+			Bind<IXMLAuxiliaryData>().To<XMLAuxiliaryEngineeringDataV07.XMLAuxiliaryEngineeringDataV10>().Named(
+				XMLAuxiliaryEngineeringDataV07.XMLAuxiliaryEngineeringDataV10.QUALIFIED_XSD_TYPE);
 			Bind<IXMLAxlegearData>().To<XMLEngineeringAxlegearDataProviderV10>()
 									.Named(XMLEngineeringAxlegearDataProviderV10.QUALIFIED_XSD_TYPE);
 			Bind<IXMLAngledriveData>().To<XMLEngineeringAngledriveDataProviderV10>()

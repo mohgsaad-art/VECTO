@@ -59,7 +59,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl {
 			CheckValidInput();
 			FinishedWithoutErrors = true;
 			_writeSumData(null);
-			return new ResponseCycleFinished();
+			return new ResponseCycleFinished(this);
 		}
 
 		private void CheckValidInput()
@@ -80,7 +80,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl {
 
 		protected override IResponse Initialize()
 		{
-			return new ResponseSuccess();
+			return new ResponseSuccess(this);
 		}
 
 		#endregion

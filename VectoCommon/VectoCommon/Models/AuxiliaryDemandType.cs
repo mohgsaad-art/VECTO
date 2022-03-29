@@ -34,7 +34,6 @@ namespace TUGraz.VectoCommon.Models
 	public enum AuxiliaryDemandType
 	{
 		Direct,
-		Mapping,
 		Constant
 	}
 }

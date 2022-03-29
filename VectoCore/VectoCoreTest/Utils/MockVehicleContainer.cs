@@ -48,7 +48,7 @@ using TUGraz.VectoCore.OutputData;
 
 namespace TUGraz.VectoCore.Tests.Utils
 {
-	public class MockVehicleContainer : IVehicleContainer
+	public class MockVehicleContainer : IVehicleContainer, IDriverInfo, IPowertainInfo, IEngineControl, IMileageCounter, IDrivingCycleInfo, IBrakes, IClutchInfo, IVehicleInfo, IGearboxInfo, IAxlegearInfo, IWheelsInfo
 	{
 		// only CycleData Lookup is set / accessed...
 
@@ -56,13 +56,23 @@ namespace TUGraz.VectoCore.Tests.Utils
 		private Watt _axlegearLoss = 0.SI<Watt>();
 		private bool _clutchClosed = true;
 
-		public IEngineInfo Engine { get; set; }
+		public IWheelsInfo WheelsInfo
+		{
+			get { return this; }
+		}
+		public IDriverInfo DriverInfo => this;
+		public IDrivingCycleInfo DrivingCycleInfo { get { return this; } }
+		public IPowertainInfo PowertrainInfo { get { return this; } }
+		public IAngledriveInfo AngledriveInfo { get; }
+		public bool IsTestPowertrain { get; }
+
+		public IEngineInfo EngineInfo { get; set; }
 
 		public GearboxType GearboxType { get; set; }
 
-		public uint Gear { get; set; }
+		public GearshiftPosition Gear { get; set; }
 		public bool TCLocked { get; set; }
-		public GearInfo NextGear { get; private set; }
+		public GearshiftPosition NextGear { get; private set; }
 
 		public Second TractionInterruption
 		{
@@ -81,6 +91,22 @@ namespace TUGraz.VectoCore.Tests.Utils
 		}
 
 		public Second AbsTime { get; set; }
+		public IMileageCounter MileageCounter { get { return this; } }
+		public IGearboxInfo GearboxInfo { get { return this; } }
+		public IGearboxControl GearboxCtl { get; }
+		public ITorqueConverterInfo TorqueConverterInfo { get; }
+		public ITorqueConverterControl TorqueConverterCtl { get; }
+		public IAxlegearInfo AxlegearInfo
+		{
+			get { return this; }
+		}
+		public IEngineControl EngineCtl
+		{
+			get { return this; }
+		}
+		public IVehicleInfo VehicleInfo { get { return this; } }
+		public IClutchInfo ClutchInfo { get { return this; } }
+		public IBrakes Brakes { get { return this; } }
 
 		public Watt GearboxLoss()
 		{
@@ -99,32 +125,32 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		public Watt EngineStationaryFullPower(PerSecond angularSpeed)
 		{
-			return Engine.EngineStationaryFullPower(angularSpeed);
+			return EngineInfo.EngineStationaryFullPower(angularSpeed);
 		}
 
 		public Watt EngineDragPower(PerSecond angularSpeed)
 		{
-			return Engine.EngineStationaryFullPower(angularSpeed);
+			return EngineInfo.EngineStationaryFullPower(angularSpeed);
 		}
 
 		public PerSecond EngineIdleSpeed
 		{
-			get { return Engine.EngineIdleSpeed; }
+			get { return EngineInfo.EngineIdleSpeed; }
 		}
 
 		public PerSecond EngineRatedSpeed
 		{
-			get { return Engine.EngineRatedSpeed; }
+			get { return EngineInfo.EngineRatedSpeed; }
 		}
 
 		public PerSecond EngineN95hSpeed
 		{
-			get { return Engine.EngineN95hSpeed; }
+			get { return EngineInfo.EngineN95hSpeed; }
 		}
 
 		public PerSecond EngineN80hSpeed
 		{
-			get { return Engine.EngineN80hSpeed; }
+			get { return EngineInfo.EngineN80hSpeed; }
 		}
 
 		public MeterPerSecond VehicleSpeed { get; set; }
@@ -216,13 +242,23 @@ namespace TUGraz.VectoCore.Tests.Utils
 		public void CommitSimulationStep(Second time, Second simulationInterval)
 		{
 			foreach (var entry in Components) {
-				entry.CommitSimulationStep(ModalData);
+				entry.CommitSimulationStep(time, simulationInterval, ModalData);
 			}
 		}
 
 		public void FinishSimulation() {}
 
 		public void FinishSimulationRun(Exception e) {}
+		public void StartSimulationRun()
+		{
+			
+		}
+
+		public IEnumerable<ISimulationPreprocessor> GetPreprocessingRuns { get { return new ISimulationPreprocessor[] {};} }
+		public void AddPreprocessor(ISimulationPreprocessor simulationPreprocessor)
+		{
+			throw new NotImplementedException();
+		}
 
 		public Watt SetAxlegearLoss
 		{
@@ -235,5 +271,18 @@ namespace TUGraz.VectoCore.Tests.Utils
 		}
 
 		public Kilogram ReducedMassWheels { get; set; }
+		public bool HasCombustionEngine { get; set; }
+		public bool CombustionEngineOn { get; set; }
+
+		#region Implementation of IGearboxControl
+
+		public bool DisengageGearbox { get; set; }
+		
+		public bool GearEngaged(Second absTime)
+		{
+			return ClutchClosed(absTime);
+		}
+
+		#endregion
 	}
 }

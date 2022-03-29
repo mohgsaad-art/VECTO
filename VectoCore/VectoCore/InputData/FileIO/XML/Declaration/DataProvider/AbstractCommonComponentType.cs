@@ -70,17 +70,6 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider {
 			}
 		}
 
-		protected virtual TableData ReadTableData(string baseElement, string entryElement, Dictionary<string, string> mapping)
-		{
-			var entries = BaseNode.SelectNodes(
-				XMLHelper.QueryLocalName(baseElement, entryElement));
-			if (entries != null && entries.Count > 0) {
-				return XMLHelper.ReadTableData(mapping, entries);
-			}
-
-			return null;
-		}
-
 		public virtual string CertificationNumber
 		{
 			get { return GetString(XMLNames.Component_CertificationNumber); }

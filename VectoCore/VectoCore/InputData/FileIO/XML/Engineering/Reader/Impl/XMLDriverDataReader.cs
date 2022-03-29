@@ -71,11 +71,27 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.Reader {
 			}
 		}
 
-		public IOverSpeedEcoRollEngineeringInputData OverspeedData
-		{
+		public IOverSpeedEngineeringInputData OverspeedData {
 			get {
 				return CreateData(
 					XMLNames.DriverModel_Overspeed, (version, node) => Factory.CreateOverspeedData(version, DriverData, node));
+			}
+		}
+
+
+		public IEcoRollEngineeringInputData EcoRollData {
+			get {
+				return CreateData(
+					XMLNames.DriverModel_EcoRoll,
+					(version, node) => version == null ? null : Factory.CreateEcoRollData(version, DriverData, node), false);
+			}
+		}
+
+		public IPCCEngineeringInputData PCCData {
+			get {
+				return CreateData(
+					"PCCParameters",
+					(version, node) => version == null ? null : Factory.CreatePCCData(version, DriverData, node), false);
 			}
 		}
 
@@ -95,6 +111,15 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.Reader {
 			get {
 				return CreateData(
 					XMLNames.DriverModel_ShiftStrategyParameters, ShiftParametersCreator, false);
+			}
+		}
+
+		public IEngineStopStartEngineeringInputData EngineStopStartData {
+			get {
+				return CreateData(
+					XMLNames.DriverModel_EngineStopStartParameters,
+					//XMLNames.DriverModel_EngineStopStartParameters,
+					(version, node) => version == null ? null : Factory.CreateEngineStopStartData(version, DriverData, node), false);
 			}
 		}
 

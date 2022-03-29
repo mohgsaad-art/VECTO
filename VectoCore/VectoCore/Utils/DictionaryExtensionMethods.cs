@@ -37,17 +37,35 @@ namespace TUGraz.VectoCore.Utils
 {
 	internal static class DictionaryExtensionMethods
 	{
-		public static object GetValueOrNull<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key)
-		{
-			TValue value;
-			return dictionary.TryGetValue(key, out value) ? (object)value : DBNull.Value;
-		}
+
+		public static object GetValueOrNull<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key) =>
+			dictionary.TryGetValue(key, out var value) ? (object)value : DBNull.Value;
 
 		public static TValue GetValueOrZero<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key)
-			where TValue : SIBase<TValue>
+			where TValue : SIBase<TValue> => dictionary.TryGetValue(key, out var value) ? value : 0.SI<TValue>();
+
+		public static TValue GetOrAdd<TKey, TValue>(this IDictionary<TKey, TValue> self, TKey key,
+			Func<TKey, TValue> defaultConstructor)
 		{
-			TValue value;
-			return dictionary.TryGetValue(key, out value) ? value : 0.SI<TValue>();
+			if (self.TryGetValue(key, out var result))
+				return result;
+
+			lock (self) {
+				if (!self.TryGetValue(key, out result)) {
+					result = defaultConstructor(key);
+					self.Add(key, result);
+				}
+
+				return result;
+			}
 		}
+
+		public static TValue GetValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> self, TKey key) =>
+			self.TryGetValue(key, out var value) ? value : default;
+
+		public static TValue GetValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> self, TKey key,
+			TValue defaultValue) =>
+			self.TryGetValue(key, out var value) ? value : defaultValue;
+
 	}
 }

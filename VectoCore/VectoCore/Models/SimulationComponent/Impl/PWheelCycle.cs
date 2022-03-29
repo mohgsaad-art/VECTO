@@ -89,14 +89,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		public override IResponse Request(Second absTime, Second dt)
 		{
 			if (CycleIterator.LastEntry && CycleIterator.RightSample.Time == absTime) {
-				return new ResponseCycleFinished { Source = this };
+				return new ResponseCycleFinished(this);
 			}
 
 			// interval exceeded
 			if (CycleIterator.RightSample != null && (absTime + dt).IsGreater(CycleIterator.RightSample.Time)) {
-				return new ResponseFailTimeInterval {
+				return new ResponseFailTimeInterval(this) {
 					AbsTime = absTime,
-					Source = this,
 					DeltaT = CycleIterator.RightSample.Time - absTime
 				};
 			}
@@ -104,10 +103,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			return DoHandleRequest(absTime, dt, CycleIterator.LeftSample.WheelAngularVelocity);
 		}
 
-		protected override void DoWriteModalResults(IModalDataContainer container)
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
 			container[ModalResultField.P_wheel_in] = CycleIterator.LeftSample.PWheel;
-			base.DoWriteModalResults(container);
+			base.DoWriteModalResults(time, simulationInterval, container);
 		}
 
 		#region IDriverInfo
@@ -124,7 +123,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		public Kilogram VehicleMass
 		{
-			get { return RunData.VehicleData.TotalCurbWeight; }
+			get { return RunData.VehicleData.TotalCurbMass; }
 		}
 
 		public Kilogram VehicleLoading
@@ -134,7 +133,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		public Kilogram TotalMass
 		{
-			get { return RunData.VehicleData.TotalVehicleWeight; }
+			get { return RunData.VehicleData.TotalVehicleMass; }
 		}
 
 		public CubicMeter CargoVolume

@@ -64,6 +64,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 		protected Exception InitException;
 
 		public IVTPReport Report;
+		protected ShiftStrategyParameters GearshiftData;
 
 		public DeclarationVTPModeVectoRunDataFactory(IVTPDeclarationInputDataProvider ivtpProvider, IVTPReport report) : this(
 			ivtpProvider.JobInputData, report) { }
@@ -134,23 +135,25 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			var tempVehicle = Dao.CreateVehicleData(
 				vehicle, Segment.Missions.First(),
 				Segment.Missions.First().Loadings.First().Value, allowVocational);
+
 			AirdragData = Dao.CreateAirdragData(
 				vehicle.Components.AirdragInputData,
 				Segment.Missions.First(), Segment);
 			EngineData = Dao.CreateEngineData(
-				vehicle.Components.EngineInputData,
-				vehicle.EngineIdleSpeed,
-				vehicle.Components.GearboxInputData, vehicle.TorqueLimits, vehicle.TankSystem);
+				vehicle,
+				vehicle.Components.EngineInputData.EngineModes.First(), new Mission() {MissionType = DeclarationData.VTPMode.SelectedMission });
 			AxlegearData = Dao.CreateAxleGearData(vehicle.Components.AxleGearInputData);
 			AngledriveData = Dao.CreateAngledriveData(vehicle.Components.AngledriveInputData);
 			GearboxData = Dao.CreateGearboxData(
-				vehicle.Components.GearboxInputData, EngineData,
-				AxlegearData.AxleGear.Ratio,
-				tempVehicle.DynamicTyreRadius, tempVehicle.VehicleCategory, vehicle.Components.TorqueConverterInputData);
+				vehicle, new VectoRunData() { EngineData = EngineData, AxleGearData = AxlegearData, VehicleData = tempVehicle },
+				null);
 			RetarderData = Dao.CreateRetarderData(vehicle.Components.RetarderInputData);
 
 			PTOTransmissionData =
 				Dao.CreatePTOTransmissionData(vehicle.Components.PTOTransmissionInputData);
+
+			GearshiftData = Dao.CreateGearshiftData(
+				GearboxData, AxlegearData.AxleGear.Ratio * (AngledriveData?.Angledrive.Ratio ?? 1.0), EngineData.IdleSpeed);
 
 			AuxVTP = CreateVTPAuxData(vehicle);
 		}
@@ -170,13 +173,9 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			}
 			var loading = mission.Loadings.FirstOrDefault(l => l.Key == DeclarationData.VTPMode.SelectedLoading);
 			var runData = CreateVectoRunData(Segment, mission, loading.Value);
-			runData.EngineData.FuelConsumptionCorrectionFactor = DeclarationData.WHTCCorrection.Lookup(
-																	mission.MissionType.GetNonEMSMissionType(), runData.EngineData.WHTCRural, runData.EngineData.WHTCUrban,
-																	runData.EngineData.WHTCMotorway) *
-																runData.EngineData.ColdHotCorrectionFactor * runData.EngineData.CorrectionFactorRegPer;
 			var adasCombination = DeclarationData.ADASCombinations.Lookup(JobInputData.Vehicle.ADAS);
-			runData.EngineData.ADASCorrectionFactor = DeclarationData.ADASBenefits.Lookup(
-				Segment.VehicleClass, adasCombination, mission.MissionType, loading.Key);
+			//runData.EngineData.ADASCorrectionFactor = DeclarationData.ADASBenefits.Lookup(
+			//	Segment.VehicleClass, adasCombination, mission.MissionType, loading.Key);
 			runData.ModFileSuffix = loading.Key.ToString();
 			var cycle = DrivingCycleDataReader.ReadFromStream(mission.CycleFile, CycleType.DistanceBased, "", false);
 			runData.Cycle = new DrivingCycleProxy(cycle, mission.MissionType.ToString());
@@ -207,6 +206,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			vtpRunData.Mission = new Mission() {
 				MissionType = MissionType.VerificationTest
 			};
+			vtpRunData.DriverData = Driverdata;
 			//var ncvStd = DeclarationData.FuelData.Lookup(JobInputData.Vehicle.Components.EngineInputData.FuelType).LowerHeatingValueVecto;
 			//var ncvCorrection = ncvStd / JobInputData.NetCalorificValueTestFuel;
 			var mileageCorrection = GetMileagecorrectionFactor(JobInputData.Mileage);
@@ -241,6 +241,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 				JobName = JobInputData.Vehicle.VIN,
 				EngineData = EngineData,
 				GearboxData = GearboxData,
+				GearshiftParameters = GearshiftData,
 				AxleGearData = AxlegearData,
 				AngledriveData = AngledriveData,
 				VehicleData = Dao.CreateVehicleData(
@@ -248,7 +249,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 					loading, allowVocational),
 				AirdragData = AirdragData,
 				DriverData = null,
-				AdvancedAux = null,
+				BusAuxiliaries = null,
 				Retarder = RetarderData,
 				PTO = PTOTransmissionData,
 				Report = Report,

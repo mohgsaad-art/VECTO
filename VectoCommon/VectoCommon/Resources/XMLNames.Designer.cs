@@ -403,6 +403,15 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ADC.
+        /// </summary>
+        public static string Component_ADC {
+            get {
+                return ResourceManager.GetString("Component_ADC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to AirDrag.
         /// </summary>
         public static string Component_AirDrag {
@@ -457,6 +466,24 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to BatterySystem.
+        /// </summary>
+        public static string Component_BatterySystem {
+            get {
+                return ResourceManager.GetString("Component_BatterySystem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CapacitorSystem.
+        /// </summary>
+        public static string Component_CapacitorSystem {
+            get {
+                return ResourceManager.GetString("Component_CapacitorSystem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CertificationMethod.
         /// </summary>
         public static string Component_CertificationMethod {
@@ -502,6 +529,15 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ElectricMachineSystem.
+        /// </summary>
+        public static string Component_ElectricMachineSystem {
+            get {
+                return ResourceManager.GetString("Component_ElectricMachineSystem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Engine.
         /// </summary>
         public static string Component_Engine {
@@ -534,6 +570,15 @@ namespace TUGraz.VectoCommon.Resources {
         public static string Component_ID_Attr {
             get {
                 return ResourceManager.GetString("Component_ID_Attr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IEPC.
+        /// </summary>
+        public static string Component_IEPC {
+            get {
+                return ResourceManager.GetString("Component_IEPC", resourceCulture);
             }
         }
         
@@ -736,6 +781,24 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to EcoRoll.
+        /// </summary>
+        public static string DriverModel_EcoRoll {
+            get {
+                return ResourceManager.GetString("DriverModel_EcoRoll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EngineStopStartParameters.
+        /// </summary>
+        public static string DriverModel_EngineStopStartParameters {
+            get {
+                return ResourceManager.GetString("DriverModel_EngineStopStartParameters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to LookAheadCoasting.
         /// </summary>
         public static string DriverModel_LookAheadCoasting {
@@ -831,6 +894,15 @@ namespace TUGraz.VectoCommon.Resources {
         public static string DriverModel_Overspeed_AllowedUnderspeed {
             get {
                 return ResourceManager.GetString("DriverModel_Overspeed_AllowedUnderspeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enabled.
+        /// </summary>
+        public static string DriverModel_Overspeed_Enabled {
+            get {
+                return ResourceManager.GetString("DriverModel_Overspeed_Enabled", resourceCulture);
             }
         }
         
@@ -1398,6 +1470,15 @@ namespace TUGraz.VectoCommon.Resources {
         public static string Missions_Cycle {
             get {
                 return ResourceManager.GetString("Missions_Cycle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to REESS.
+        /// </summary>
+        public static string REESS {
+            get {
+                return ResourceManager.GetString("REESS", resourceCulture);
             }
         }
         

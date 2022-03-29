@@ -46,7 +46,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider
 		public static readonly string QUALIFIED_XSD_TYPE = XMLHelper.CombineNamespace(NAMESPACE_URI, XSD_TYPE);
 
 		private ILookaheadCoastingInputData _lookahead;
-		private IOverSpeedEcoRollEngineeringInputData _overspeed;
+		private IOverSpeedEngineeringInputData _overspeed; 
 		private IXMLDriverAcceleration _accCurve;
 		private IGearshiftEngineeringInputData _shiftParameters;
 
@@ -75,10 +75,14 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider
 			get { return _shiftParameters ?? (_shiftParameters = Reader.ShiftParameters); }
 		}
 
-		public virtual IOverSpeedEcoRollEngineeringInputData OverSpeedEcoRoll
-		{
-			get { return _overspeed ?? (_overspeed = Reader.OverspeedData); }
-		}
+		public virtual IEngineStopStartEngineeringInputData EngineStopStartData => null;
+
+
+		public virtual IEcoRollEngineeringInputData EcoRollData => null;
+
+		public virtual IPCCEngineeringInputData PCCData => null;
+
+		public virtual IOverSpeedEngineeringInputData OverSpeedData => _overspeed ?? (_overspeed = Reader.OverspeedData);
 
 		#region Overrides of AbstractXMLResource
 
@@ -97,6 +101,12 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider
 
 		public new static readonly string QUALIFIED_XSD_TYPE = XMLHelper.CombineNamespace(NAMESPACE_URI, XSD_TYPE);
 
+		protected IEngineStopStartEngineeringInputData _engineStopStart;
+
+		protected IEcoRollEngineeringInputData _ecoRollData;
+
+		protected IPCCEngineeringInputData _pccData;
+
 		public XMLEngineeringDriverDataProviderV10(
 			IXMLEngineeringInputData inputData, XmlNode driverDataNode, string fsBasePath) : base(
 			inputData, driverDataNode, fsBasePath) { }
@@ -106,5 +116,12 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider
 		protected override XNamespace SchemaNamespace { get { return NAMESPACE_URI; } }
 
 		#endregion
+
+		public override IEngineStopStartEngineeringInputData EngineStopStartData => _engineStopStart ?? (_engineStopStart = Reader.EngineStopStartData);
+
+		public override IEcoRollEngineeringInputData EcoRollData => _ecoRollData ?? (_ecoRollData = Reader.EcoRollData);
+
+
+		public override IPCCEngineeringInputData PCCData => _pccData ?? (_pccData = Reader.PCCData);
 	}
 }

@@ -55,7 +55,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			return NextComponent.Request(absTime, dt, outTorque, outAngularVelocity, dryRun);
 		}
 
-		protected override void DoWriteModalResults(IModalDataContainer container)
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
 			container[ModalResultField.P_ret_loss] = 0.SI<Watt>();
 

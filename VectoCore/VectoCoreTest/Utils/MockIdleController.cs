@@ -44,13 +44,13 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		public IResponse Initialize(NewtonMeter outTorque, PerSecond outAngularVelocity)
 		{
-			return new ResponseSuccess();
+			return new ResponseSuccess(this);
 		}
 
 		public IResponse Request(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity,
 			bool dryRun = false)
 		{
-			return new ResponseSuccess();
+			return new ResponseSuccess(this);
 		}
 	}
 }

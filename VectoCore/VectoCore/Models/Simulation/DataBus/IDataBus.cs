@@ -38,13 +38,72 @@ namespace TUGraz.VectoCore.Models.Simulation.DataBus
 	/// <summary>
 	/// Defines interfaces for all different cockpits to access shared data of the powertrain.
 	/// </summary>
-	public interface IDataBus : IGearboxInfo, IAxlegearInfo, IEngineInfo, IVehicleInfo, IMileageCounter, IClutchInfo,
-		IBrakes, IWheelsInfo, IDriverInfo, IDrivingCycleInfo
+	public interface IDataBus
 	{
 		ExecutionMode ExecutionMode { get; }
 
-		FuelType FuelType { get; }
+		//FuelType FuelType { get; }
 
 		Second AbsTime { get; set; }
+
+		IMileageCounter MileageCounter { get; }
+
+		IGearboxInfo GearboxInfo { get; }
+
+		IGearboxControl GearboxCtl { get; }
+
+		ITorqueConverterInfo TorqueConverterInfo { get; }
+
+		ITorqueConverterControl TorqueConverterCtl { get; }
+
+		IAxlegearInfo AxlegearInfo { get; }
+
+		IEngineInfo EngineInfo { get; }
+
+		IEngineControl EngineCtl { get; }
+
+		IVehicleInfo VehicleInfo { get; }
+
+
+		IClutchInfo ClutchInfo { get; }
+
+		IBrakes Brakes { get; }
+
+		IWheelsInfo WheelsInfo { get; }
+
+		IDriverInfo DriverInfo { get; }
+
+		IDrivingCycleInfo DrivingCycleInfo { get; }
+
+        //IElectricMotorInfo ElectricMotorInfo(PowertrainPosition pos);
+
+        //IRESSInfo BatteryInfo { get; }
+
+        //ITorqueConverterInfo TorqueConverterInfo { get; }
+
+        //ITorqueConverterControl TorqueConverterCtl { get; }
+
+        //IPowertainInfo PowertrainInfo { get; }
+
+        //IHybridControllerInfo HybridControllerInfo { get; }
+
+        //IHybridControllerCtl HybridControllerCtl { get; }
+
+        //IAngledriveInfo AngledriveInfo { get; }
+
+        //IDCDCConverter DCDCConverter { get; }
+
+        bool IsTestPowertrain { get; }
+
+    }
+
+	public interface IPowertainInfo
+	{
+		bool HasCombustionEngine { get; }
+
+		// used with hybrid vehicles later on
+		//bool HasElectricMotor { get; }
+
+		//PowertrainPosition[] ElectricMotorPositions { get; }
 	}
 }

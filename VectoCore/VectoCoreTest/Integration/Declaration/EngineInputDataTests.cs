@@ -66,10 +66,10 @@ namespace TUGraz.VectoCore.Tests.Integration.Declaration
 			xmlInputReader = _kernel.Get<IXMLInputDataReader>();
 		}
 
-		[TestCase(null, 1.0, 45.5401332, TestName = "Engine CF - NONE"),
-		TestCase("CFRegPer", 1.2, 45.5401332 * 1.2, TestName = "Engine CF - CFRegPer"),
-		TestCase("BFColdHot", 1.2, 45.5401332 * 1.2, TestName = "Engine CF - BFColdHod"),
-		TestCase("CFNCV", 1.2, 45.5401332, TestName = "Engine CF - CFNCV")  // has no influence - only for documentation purpose
+		[TestCase(null, 1.0, 44.9120687, TestName = "Engine CF - NONE"),
+		TestCase("CFRegPer", 1.2, 44.9120687 * 1.2, TestName = "Engine CF - CFRegPer"),
+		TestCase("BFColdHot", 1.2, 44.9120687 * 1.2, TestName = "Engine CF - BFColdHod"),
+		TestCase("CFNCV", 1.2, 44.9120687, TestName = "Engine CF - CFNCV")  // has no influence - only for documentation purpose
 			]
 		public void TestEngineCorrectionFactors(string correctionFactor, double value, double expectedFc)
 		{
@@ -101,7 +101,7 @@ namespace TUGraz.VectoCore.Tests.Integration.Declaration
 			var modData = ((ModalDataContainer)first.GetContainer().ModalData).Data;
 			first.Run();
 
-			Assert.AreEqual(expectedFc, modData.AsEnumerable().Sum(r => r.Field<SI>((int)ModalResultField.FCFinal).Value()), 1e-3);
+			Assert.AreEqual(expectedFc, modData.AsEnumerable().Sum(r => r.Field<SI>(ModalResultField.FCFinal.GetName()).Value()), 1e-3);
 
 		}
 	}

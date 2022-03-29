@@ -382,6 +382,22 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			}
 		}
 
+		public double? RatingFactorCurrentGear => null;
+		public double? RatioEarlyUpshiftFC => null;
+		public double? RatioEarlyDownshiftFC => null;
+		public int? AllowedGearRangeFC => null;
+
+		public PerSecond MinEngineSpeedPostUpshift => null;
+		public Second ATLookAheadTime => null;
+		public double[][] ShiftSpeedsTCToLocked => null;
+		public double? EffshiftAccelerationFactorAT => null;
+
+		public double? VeloictyDropFactor => null;
+
+		public double? AccelerationFactor => null;
+
+		public IList<double> LoadStageThresholdsUp => null;
+		public IList<double> LoadStageThresholdsDown => null;
 		public Second PowershiftShiftTime
 		{
 			get {

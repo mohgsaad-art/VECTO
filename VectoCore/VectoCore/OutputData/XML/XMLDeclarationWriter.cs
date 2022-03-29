@@ -138,7 +138,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(tns + XMLNames.Vehicle_IdlingSpeed,
 					vehicle.EngineIdleSpeed != null
 						? vehicle.EngineIdleSpeed.AsRPM.ToXMLFormat(0)
-						: engine.IdleSpeed.AsRPM.ToXMLFormat(0)),
+						: engine.EngineModes.First().IdleSpeed.AsRPM.ToXMLFormat(0)),
 				new XElement(tns + XMLNames.Vehicle_RetarderType, retarder.Type.ToXMLFormat()),
 				retarder.Type.IsDedicatedComponent()
 					? new XElement(tns + XMLNames.Vehicle_RetarderRatio, retarder.Ratio.ToXMLFormat(3))
@@ -174,27 +174,29 @@ namespace TUGraz.VectoCore.OutputData.XML
 		{
 			var id = CreateIdString(string.Format("ENG-{0}", data.Model.RemoveWhitespace()));
 
-			var fld = FullLoadCurveReader.Create(data.FullLoadCurve, true);
+			var fld = FullLoadCurveReader.Create(data.EngineModes.First().FullLoadCurve, true);
+			var mode = data.EngineModes.First();
+			var fuel = mode.Fuels.First();
 			return new XElement((ns ?? tns) + XMLNames.Component_Engine,
 				new XElement(tns + XMLNames.ComponentDataWrapper,
 					new XAttribute(XMLNames.Component_ID_Attr, id),
 					GetDefaultComponentElements(string.Format("ENG-{0}", data.Model), data.Model),
 					new XElement(tns + XMLNames.Engine_Displacement, (data.Displacement.Value() * 1000 * 1000).ToXMLFormat(0)),
-					new XElement(tns + XMLNames.Engine_IdlingSpeed, data.IdleSpeed.AsRPM.ToXMLFormat(0)),
+					new XElement(tns + XMLNames.Engine_IdlingSpeed, mode.IdleSpeed.AsRPM.ToXMLFormat(0)),
 					new XElement(tns + XMLNames.Engine_RatedSpeed, fld.RatedSpeed.AsRPM.ToXMLFormat(0)),
 					new XElement(tns + XMLNames.Engine_RatedPower, fld.FullLoadStationaryPower(fld.RatedSpeed).ToXMLFormat(0)),
 					new XElement(tns + XMLNames.Engine_MaxTorque, fld.MaxTorque.ToXMLFormat(0)),
-					new XElement(tns + XMLNames.Engine_WHTCUrban, data.WHTCUrban.ToXMLFormat(4)),
-					new XElement(tns + XMLNames.Engine_WHTCRural, data.WHTCRural.ToXMLFormat(4)),
-					new XElement(tns + XMLNames.Engine_WHTCMotorway, data.WHTCMotorway.ToXMLFormat(4)),
-					new XElement(tns + XMLNames.Engine_ColdHotBalancingFactor, data.ColdHotBalancingFactor.ToXMLFormat(4)),
+					new XElement(tns + XMLNames.Engine_WHTCUrban, fuel.WHTCUrban.ToXMLFormat(4)),
+					new XElement(tns + XMLNames.Engine_WHTCRural, fuel.WHTCRural.ToXMLFormat(4)),
+					new XElement(tns + XMLNames.Engine_WHTCMotorway, fuel.WHTCMotorway.ToXMLFormat(4)),
+					new XElement(tns + XMLNames.Engine_ColdHotBalancingFactor, fuel.ColdHotBalancingFactor.ToXMLFormat(4)),
 					new XElement(tns + XMLNames.Engine_CorrectionFactor_RegPer, "1.0000"),
 					new XElement(tns + XMLNames.Engine_CorrecionFactor_NCV, "1.0000"),
 					new XElement(tns + XMLNames.Engine_FuelType, "Diesel CI"),
 					new XElement(tns + XMLNames.Engine_FuelConsumptionMap,
-						EmbedDataTable(data.FuelConsumptionMap, AttributeMappings.FuelConsumptionMapMapping)),
+						EmbedDataTable(fuel.FuelConsumptionMap, AttributeMappings.FuelConsumptionMapMapping)),
 					new XElement(tns + XMLNames.Engine_FullLoadAndDragCurve,
-						EmbedDataTable(data.FullLoadCurve, AttributeMappings.EngineFullLoadCurveMapping)
+						EmbedDataTable(mode.FullLoadCurve, AttributeMappings.EngineFullLoadCurveMapping)
 						)
 					),
 				AddSignatureDummy(id)

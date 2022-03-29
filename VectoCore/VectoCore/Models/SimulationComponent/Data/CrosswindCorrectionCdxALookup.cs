@@ -30,6 +30,7 @@
 */
 
 using System.Collections.Generic;
+using System.Linq;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
@@ -57,6 +58,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 		public SquareMeter AirDragArea { get; internal set; }
 
 		public void SetDataBus(IDataBus dataBus) {}
+
+		public string[] SerializedEntries {
+			get {
+				return Entries.Select(x => $"{x.Velocity.AsKmph} [km/h] - {x.EffectiveCrossSectionArea}").ToArray();
+			}
+		}
+
 
 		public Watt AverageAirDragPowerLoss(MeterPerSecond v1, MeterPerSecond v2, KilogramPerCubicMeter airDensity)
 		{

@@ -33,9 +33,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.NetworkInformation;
+using System.Xml;
+using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Models.Declaration;
 
 namespace TUGraz.VectoCommon.InputData
 {
@@ -46,6 +49,10 @@ namespace TUGraz.VectoCommon.InputData
 		IVehicleDeclarationInputData Vehicle { get; }
 
 		string JobName { get; }
+
+		string ShiftStrategy { get; }
+
+		VectoSimulationJobType JobType { get; }
 	}
 
 	public interface IComponentInputData
@@ -203,6 +210,8 @@ namespace TUGraz.VectoCommon.InputData
 		EcoRollType EcoRoll { get; }
 
 		PredictiveCruiseControlType PredictiveCruiseControl { get; }
+
+		bool? ATEcoRollReleaseLockupClutch { get; }
 	}
 
 	public enum PredictiveCruiseControlType
@@ -486,11 +495,59 @@ namespace TUGraz.VectoCommon.InputData
 		/// </summary>
 		CubicMeter Displacement { get; }
 
+		Watt RatedPowerDeclared { get; }
+
+		PerSecond RatedSpeedDeclared { get; }
+
+		NewtonMeter MaxTorqueDeclared { get; }
+
+		IList<IEngineModeDeclarationInputData> EngineModes { get; }
+
+		WHRType WHRType { get; }
+	}
+
+	public interface IEngineModeDeclarationInputData
+	{
 		/// <summary>
 		/// P063
 		/// cf. VECTO Input Parameters.xlsx
 		/// </summary>
 		PerSecond IdleSpeed { get; }
+
+		/// <summary>
+		/// P144
+		/// P068, P069, P70, P71
+		/// cf. VECTO Input Parameters.xlsx
+		/// </summary>
+		TableData FullLoadCurve { get; }
+
+		IList<IEngineFuelDeclarationInputData> Fuels { get; }
+
+		IWHRData WasteHeatRecoveryDataElectrical { get; }
+
+		IWHRData WasteHeatRecoveryDataMechanical { get; }
+	}
+
+	public interface IWHRData
+	{
+		double UrbanCorrectionFactor { get; }
+
+		double RuralCorrectionFactor { get; }
+
+		double MotorwayCorrectionFactor { get; }
+
+		double BFColdHot { get; }
+
+		double CFRegPer { get; }
+
+		double EngineeringCorrectionFactor { get; }
+
+		TableData GeneratedPower { get; }
+	}
+
+	public interface IEngineFuelDeclarationInputData
+	{
+		FuelType FuelType { get; }
 
 		/// <summary>
 		/// P111
@@ -517,8 +574,6 @@ namespace TUGraz.VectoCommon.InputData
 
 		double CorrectionFactorRegPer { get; }
 
-		FuelType FuelType { get; }
-
 		/// <summary>
 		/// P067
 		/// P072, P073, P074
@@ -526,19 +581,6 @@ namespace TUGraz.VectoCommon.InputData
 		/// engine speed in rpm, torque in NM, fuel consumption in g/h
 		/// </summary>
 		TableData FuelConsumptionMap { get; }
-
-		/// <summary>
-		/// P144
-		/// P068, P069, P70, P71
-		/// cf. VECTO Input Parameters.xlsx
-		/// </summary>
-		TableData FullLoadCurve { get; }
-
-		Watt RatedPowerDeclared { get; }
-
-		PerSecond RatedSpeedDeclared { get; }
-
-		NewtonMeter MaxTorqueDeclared { get; }
 	}
 
 	public interface IAuxiliariesDeclarationInputData
@@ -570,7 +612,8 @@ namespace TUGraz.VectoCommon.InputData
 		/// P015
 		/// cf. VECTO Input Parameters.xlsx
 		/// </summary>
-		DriverMode Mode { get; }
+		
+		bool Enabled { get; }
 	}
 
 	public interface IAuxiliaryDeclarationInputData
@@ -593,5 +636,146 @@ namespace TUGraz.VectoCommon.InputData
 		int Gear { get; }
 
 		NewtonMeter MaxTorque { get; }
+	}
+
+	public interface IBusAuxiliariesDeclarationData
+	{
+		XmlNode XMLSource { get; }
+
+		string FanTechnology { get; }
+
+		IList<string> SteeringPumpTechnology { get; }
+
+		IElectricSupplyDeclarationData ElectricSupply { get; }
+
+		IElectricConsumersDeclarationData ElectricConsumers { get; }
+
+		IPneumaticSupplyDeclarationData PneumaticSupply { get; }
+
+		IPneumaticConsumersDeclarationData PneumaticConsumers { get; }
+
+		IHVACBusAuxiliariesDeclarationData HVACAux { get; }
+	}
+
+	public interface IElectricSupplyDeclarationData
+	{
+		AlternatorType AlternatorTechnology { get; }
+
+		IList<IAlternatorDeclarationInputData> Alternators { get; }
+
+		IList<IBusAuxElectricStorageDeclarationInputData> ElectricStorage { get; }
+	}
+
+	public interface IElectricConsumersDeclarationData
+	{
+		bool? InteriorLightsLED { get; }
+
+		bool? DayrunninglightsLED { get; }
+
+		bool? PositionlightsLED { get; }
+
+		bool? HeadlightsLED { get; }
+
+		bool? BrakelightsLED { get; }
+	}
+
+	public interface IAlternatorDeclarationInputData
+	{
+		Ampere RatedCurrent { get; }
+
+		Volt RatedVoltage { get; }
+	}
+
+	public interface IBusAuxElectricStorageDeclarationInputData
+	{
+		string Technology { get; }
+
+		WattSecond ElectricStorageCapacity { get; }
+	}
+
+
+
+
+	public interface IPneumaticSupplyDeclarationData
+	{
+		CompressorDrive CompressorDrive { get; }
+		string Clutch { get; }
+		double Ratio { get; }
+
+		string CompressorSize { get; }
+
+		bool SmartAirCompression { get; }
+
+		bool SmartRegeneration { get; }
+	}
+
+	public interface IPneumaticConsumersDeclarationData
+	{
+		ConsumerTechnology AirsuspensionControl { get; }
+		ConsumerTechnology AdBlueDosing { get; }
+	}
+
+	public interface IHVACBusAuxiliariesDeclarationData
+	{
+		BusHVACSystemConfiguration? SystemConfiguration { get; }
+
+		HeatPumpType? HeatPumpTypeDriverCompartment { get; }
+
+		HeatPumpMode? HeatPumpModeDriverCompartment { get; }
+
+		IList<Tuple<HeatPumpType, HeatPumpMode>> HeatPumpPassengerCompartments { get; }
+
+		Watt AuxHeaterPower { get; }
+
+		bool? DoubleGlazing { get; }
+
+		bool? AdjustableAuxiliaryHeater { get; }
+
+		bool? SeparateAirDistributionDucts { get; }
+
+		bool? WaterElectricHeater { get; }
+
+		bool? AirElectricHeater { get; }
+
+		bool? OtherHeatingTechnology { get; }
+
+		bool? AdjustableCoolantThermostat { get; }
+
+		bool EngineWasteGasHeatExchanger { get; }
+	}
+
+	public enum CompressorDrive
+	{
+		//[GuiLabel("Electrically")]
+		electrically,
+		//[GuiLabel("Mechanically")]
+		mechanically
+	}
+
+	public static class CompressorDriveHelper
+	{
+		public static CompressorDrive Parse(string parse)
+		{
+			switch (parse) {
+				case nameof(CompressorDrive.electrically):
+					return CompressorDrive.electrically;
+				case nameof(CompressorDrive.mechanically):
+					return CompressorDrive.mechanically;
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
+		}
+
+		public static string GetLabel(this CompressorDrive type)
+		{
+			switch (type) {
+				case CompressorDrive.electrically:
+					return nameof(CompressorDrive.electrically);
+				case CompressorDrive.mechanically:
+					return nameof(CompressorDrive.electrically);
+				default:
+					return null;
+			}
+		}
 	}
 }

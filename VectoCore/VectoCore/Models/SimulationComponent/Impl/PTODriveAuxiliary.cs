@@ -35,14 +35,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl {
 
 		public Watt PowerDemand(PerSecond nEng, Second absTime, Second dt, bool dryRun)
 		{
-			if (DataBus.CycleData.LeftSample.PTOActive == PTOActivity.PTOActivityWhileDrive) {
-				if (PTOActivityStart != null && !DataBus.CycleData.LeftSample.Distance.IsEqual(PTOCycleDistanceStart)) {
+			if (DataBus.DrivingCycleInfo.CycleData.LeftSample.PTOActive == PTOActivity.PTOActivityWhileDrive) {
+				if (PTOActivityStart != null && !DataBus.DrivingCycleInfo.CycleData.LeftSample.Distance.IsEqual(PTOCycleDistanceStart)) {
 					throw new VectoSimulationException("Additional PTO activation during drive requested while PTO still active!");
 				}
 
-				if (PTOActivityStart == null && (PTOCycleDistanceStart == null || !DataBus.CycleData.LeftSample.Distance.IsEqual(PTOCycleDistanceStart))) {
+				if (PTOActivityStart == null && (PTOCycleDistanceStart == null || !DataBus.DrivingCycleInfo.CycleData.LeftSample.Distance.IsEqual(PTOCycleDistanceStart))) {
 					PTOActivityStart = absTime;
-					PTOCycleDistanceStart = DataBus.CycleData.LeftSample.Distance;
+					PTOCycleDistanceStart = DataBus.DrivingCycleInfo.CycleData.LeftSample.Distance;
 				}
 			}
 
@@ -69,7 +69,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl {
 				sum += tuple.Item1.PTOPowerDemandDuringDrive * tInt;
 			}
 
-			if (sum.IsGreater(0) && DataBus.VehicleStopped) {
+			if (sum.IsGreater(0) && DataBus.VehicleInfo.VehicleStopped) {
 				LogManager.GetLogger(typeof(PTODriveAuxiliary).FullName).Warn("PTO still active while vehicle stopped. absTime: {0}", absTime);
 			}
 			return sum / dt;

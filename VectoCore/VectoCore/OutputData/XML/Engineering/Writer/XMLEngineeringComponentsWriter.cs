@@ -99,8 +99,8 @@ namespace TUGraz.VectoCore.OutputData.XML.Engineering.Writer
 				v10 + XMLNames.Component_Auxiliaries,
 				new XElement(
 					v10 + XMLNames.ComponentDataWrapper,
-					componentWriter.GetXMLTypeAttribute(),
-					auxData.Auxiliaries.Select(a => Factory.GetWriter(a, Writer, a.DataSource).WriteXML(a)).ToArray()
+					componentWriter.GetXMLTypeAttribute()
+					//auxData.Auxiliaries.Select(a => Factory.GetWriter(a, Writer, a.DataSource).WriteXML(a)).ToArray()
 				)
 			);
 		}

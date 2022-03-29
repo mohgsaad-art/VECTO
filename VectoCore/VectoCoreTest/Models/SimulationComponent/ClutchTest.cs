@@ -77,11 +77,13 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var container = new VehicleContainer(ExecutionMode.Engineering);
 			var engineData = MockSimulationDataFactory.CreateEngineDataFromFile(CoachEngine, 1);
 			var gearbox = new MockGearbox(container);
-			gearbox.Gear = (uint)gear;
+			gearbox.Gear = new GearshiftPosition((uint)gear);
 			var clutch = new Clutch(container, engineData) { IdleController = new MockIdleController() };
 			var brakes = new Brakes(container) { BrakePower = 0.SI<Watt>() };
 			var vehicle = new MockVehicle(container) { MyVehicleSpeed = 50.KMPHtoMeterPerSecond() };
-
+			var engine = new MockEngine(container) {
+				EngineSpeed = 800.RPMtoRad()
+			};
 			var inPort = clutch.InPort();
 			var outPort = new MockTnOutPort();
 
@@ -105,7 +107,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var container = new VehicleContainer(ExecutionMode.Engineering);
 			var engineData = MockSimulationDataFactory.CreateEngineDataFromFile(CoachEngine, 1);
 			var gearbox = new MockGearbox(container);
-			gearbox.Gear = 1;
+			gearbox.Gear = new GearshiftPosition(1);
 			var engine = new MockEngine(container);
 			var clutch = new Clutch(container, engineData) { IdleController = new MockIdleController() };
 
@@ -160,7 +162,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 		}
 	}
 
-	public class MockEngine : VectoSimulationComponent, IEngineInfo
+	public class MockEngine : VectoSimulationComponent, IEngineInfo, IEngineControl
 	{
 		public MockEngine(IVehicleContainer container) : base(container) {}
 
@@ -172,7 +174,17 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			throw new System.NotImplementedException();
 		}
 
+		public Watt EngineDynamicFullLoadPower(PerSecond avgEngineSpeed, Second dt)
+		{
+			throw new System.NotImplementedException();
+		}
+
 		public Watt EngineDragPower(PerSecond angularSpeed)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public Watt EngineAuxDemand(PerSecond avgEngineSpeed, Second dt)
 		{
 			throw new System.NotImplementedException();
 		}
@@ -181,8 +193,12 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 		public PerSecond EngineRatedSpeed { get; set; }
 		public PerSecond EngineN95hSpeed { get; set; }
 		public PerSecond EngineN80hSpeed { get; set; }
+		public bool EngineOn
+		{
+			get { return true; }
+		}
 
-		protected override void DoWriteModalResults(IModalDataContainer container)
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
 			container[ModalResultField.P_eng_fcmap] = 0.SI<Watt>();
 			container[ModalResultField.P_eng_out] = 0.SI<Watt>();
@@ -203,6 +219,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			container[ModalResultField.FCFinal] = 0.SI<KilogramPerSecond>();
 		}
 
-		protected override void DoCommitSimulationStep() {}
+		protected override void DoCommitSimulationStep(Second time, Second simulationInterval) {}
+		public bool CombustionEngineOn { get; set; }
 	}
 }

@@ -58,7 +58,7 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration.DataAdapter
 			Assert.AreEqual(vehicleCategory, vehicleData.VehicleCategory, "VehicleCategory");
 			Assert.AreEqual(vehicleClass, vehicleData.VehicleClass, "VehicleClass");
 			Assert.AreEqual(axleConfiguration, vehicleData.AxleConfiguration, "AxleConfiguration");
-			Assert.AreEqual(totalVehicleWeight, vehicleData.TotalVehicleWeight.Value(), 1e-3, "TotalVehicleWeight");
+			Assert.AreEqual(totalVehicleWeight, vehicleData.TotalVehicleMass.Value(), 1e-3, "TotalVehicleWeight");
 			Assert.AreEqual(wheelsInertia, vehicleData.WheelsInertia.Value(), 1e-6, "WheelsInertia");
 			Assert.AreEqual(totalRollResistance, vehicleData.TotalRollResistanceCoefficient, 1e-6, "TotalRollResistance");
 

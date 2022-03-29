@@ -278,7 +278,6 @@ namespace TUGraz.VectoCore.Tests.Integration.RoadSweepers
 
 			public IVehicleEngineeringInputData Vehicle { get; set; }
 			public IList<ICycleData> Cycles { get; set; }
-			public bool EngineOnlyMode { get { return false; } }
 			public IEngineEngineeringInputData EngineOnly { get { return null; } }
 			public TableData PTOCycleWhileDrive { get; set; }
 
@@ -288,6 +287,8 @@ namespace TUGraz.VectoCore.Tests.Integration.RoadSweepers
 			}
 
 			public string JobName { get; set; }
+			public string ShiftStrategy { get; }
+			public VectoSimulationJobType JobType { get; }
 
 			#endregion
 

@@ -33,6 +33,8 @@ using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.IO;
+using System.Linq;
+using System.Text;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCore.Configuration;
@@ -42,6 +44,20 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 	// ReSharper disable once InconsistentNaming
 	public static class JSONInputDataFactory
 	{
+		internal static void WriteFile(JToken content, string path)
+		{
+			if (!content.Any()) {
+				return;
+			}
+
+			try {
+				var str = JsonConvert.SerializeObject(content, Formatting.Indented);
+				File.WriteAllText(path, str, Encoding.UTF8);
+			} catch (Exception) {
+				return;
+			}
+		}
+
 		internal static JObject ReadFile(string fileName)
 		{
 			if (!File.Exists(fileName)) {
@@ -75,6 +91,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 						return new JSONVTPInputDataV4(json, filename, tolerateMissing);
 					}
 					return new JSONInputDataV4(json, filename, tolerateMissing);
+				case 5:
+					return new JSONInputDataV5(json, filename, tolerateMissing);
 				default:
 					throw new VectoException("Job-File: Unsupported FileVersion. Got: {0} ", version);
 			}
@@ -89,6 +107,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 					return new JSONVehicleDataV7(json, filename, job,tolerateMissing);
 				case 8:
 					return new JSONVehicleDataV8(json, filename, job, tolerateMissing);
+				case 9:
+					return new JSONVehicleDataV9(json, filename, job, tolerateMissing);
 				default:
 					throw new VectoException("Vehicle-File: Unsupported FileVersion. Got {0}", version);
 			}
@@ -117,6 +137,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 					return new JSONEngineDataV3(json, filename, tolerateMissing);
 				case 4:
 					return new JSONEngineDataV4(json, filename, tolerateMissing);
+				case 5:
+					return new JSONEngineDataV5(json, filename, tolerateMissing);
 				default:
 					throw new VectoException("Engine-File: Unsupported FileVersion. Got {0}", version);
 			}
@@ -126,6 +148,32 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 		{
 			var value = json.GetEx(JsonKeys.JsonHeader).GetEx<string>(JsonKeys.JsonHeader_FileVersion);
 			return (int)double.Parse(value.Trim('"'));
+		}
+
+		public static IGearshiftEngineeringInputData ReadShiftParameters(string filename, bool tolerateMissing)
+		{
+			var json = ReadFile(filename);
+			var version = ReadVersion(json);
+			switch (version) {
+				case 1:
+					return new JSONTCUDataV1(json, filename, tolerateMissing);
+				case 6:
+					return new JSONGearboxDataV6(json, filename, tolerateMissing);
+				default:
+					throw new VectoException("GearshiftParameter-File: Unsupported FileVersion. Got {0}", version);
+			}
+		}
+
+		public static IBusAuxiliariesEngineeringData ReadEngineeringBusAuxiliaries(string filename, bool tolerateMissing = false)
+		{
+			var json = ReadFile(filename);
+			var version = ReadVersion(json);
+			switch (version) {
+				case 1:
+					return new JSONBusAuxiliariesEngineeringDataV1(json, filename, tolerateMissing);
+				default:
+					throw new VectoException("Engineering BusAuxiliaries: Unsupported FileVersion. Got {0}", version);
+			}
 		}
 	}
 }

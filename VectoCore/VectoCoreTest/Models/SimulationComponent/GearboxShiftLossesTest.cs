@@ -93,8 +93,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			CombustionEngine engine;
 			var cycleDataStr = "0, 0, 0, 2\n100, 20, 0, 0\n1000, 50, 0, 0";
 			var container = CreateVehicle(cycleDataStr, preShiftRpm, out axleGear, out gbx, out engine);
-
-			gbx.Gear = gear;
+			new ATClutchInfo(container);
+			gbx.Gear = new GearshiftPosition(gear, true);
 
 			var absTime = 20.SI<Second>();
 			var dt = 0.5.SI<Second>();
@@ -114,11 +114,11 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 			Assert.IsInstanceOf<ResponseSuccess>(response);
 			Assert.AreEqual(expectedShiftLoss, gbx.CurrentState.PowershiftLoss.Value(), 1e-3);
-			Assert.AreEqual(gear + (postShiftRpm > preShiftRpm ? 1 : -1), gbx.Gear);
+			Assert.AreEqual(gear + (postShiftRpm > preShiftRpm ? 1 : -1), gbx.Gear.Gear);
 
 			if (!double.IsNaN(expectedShiftLossEnergy)) {
 				var modData = new MockModalDataContainer();
-				gbx.CommitSimulationStep(modData);
+				gbx.CommitSimulationStep(absTime, dt, modData);
 				var shiftLossE = (Watt)modData[ModalResultField.P_gbx_shift_loss] * dt;
 				Assert.AreEqual(expectedShiftLossEnergy, shiftLossE.Value(), 1e-3);
 			}
@@ -147,7 +147,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var container = CreateVehicle(cycleDataStr, preShiftRpm, out axleGear, out gbx, out engine);
 			var modData = new MockModalDataContainer();
 			
-			gbx.Gear = gear;
+			gbx.Gear = new GearshiftPosition(gear, true);
 
 			var absTime = 20.SI<Second>();
 			var dt = 0.5.SI<Second>();
@@ -169,10 +169,10 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 			Assert.IsInstanceOf<ResponseSuccess>(response);
 			Assert.AreEqual(expectedShiftLoss, gbx.CurrentState.PowershiftLoss.Value(), 1e-3);
-			Assert.AreEqual(gear + (postShiftRpm > preShiftRpm ? 1 : -1), gbx.Gear);
+			Assert.AreEqual(gear + (postShiftRpm > preShiftRpm ? 1 : -1), gbx.Gear.Gear);
 
-			gbx.CommitSimulationStep(modData);
-			engine.CommitSimulationStep(modData);
+			gbx.CommitSimulationStep(absTime, dt, modData);
+			engine.CommitSimulationStep(absTime, dt, modData);
 			var shiftLoss1 = (Watt)modData[ModalResultField.P_gbx_shift_loss] * dt;
 			Assert.AreEqual(expectedShiftLossEnergy * splitFactor, shiftLoss1.Value(), 1e-3);
 			axleGear.Request(absTime, dt, 0.SI<NewtonMeter>(), preShiftRpm.RPMtoRad());
@@ -183,8 +183,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			response = gbx.Request(absTime, dt, torqueDemand.SI<NewtonMeter>(), postShiftRpm.RPMtoRad());
 
 			Assert.IsInstanceOf<ResponseSuccess>(response);
-			gbx.CommitSimulationStep(modData);
-			engine.CommitSimulationStep(modData);
+			gbx.CommitSimulationStep(absTime, dt, modData);
+			engine.CommitSimulationStep(absTime, dt, modData);
 			var shiftLoss2 = (Watt)modData[ModalResultField.P_gbx_shift_loss]  *  dt;
 			Console.WriteLine("expected shiftloss energy: {0}, sum of shift loss energy: {1} ({2} + {3})", expectedShiftLossEnergy, shiftLoss1 + shiftLoss2, shiftLoss1, shiftLoss2);
 			Assert.AreEqual(expectedShiftLossEnergy * (1 - splitFactor), shiftLoss2.Value(), 1e-3);
@@ -202,8 +202,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 			var container = new VehicleContainer(ExecutionMode.Engineering);
 			gearboxData.PowershiftShiftTime = 0.8.SI<Second>();
+			new ATClutchInfo(container);
 
-			
 			var cycleData = SimpleDrivingCycles.CreateCycleData(cycleDataStr);
 			var cycle = new MockDrivingCycle(container, cycleData);
 
@@ -215,17 +215,20 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var vehicle = new MockVehicle(container);
 			container.AbsTime = 100.SI<Second>();
 			var driver = new MockDriver(container);
+			driver.DriverAcceleration = 0.SI<MeterPerSquareSecond>();
 			vehicle.MyVehicleSpeed = 10.KMPHtoMeterPerSecond();
 			driver.DriverBehavior = DrivingBehavior.Driving;
 			engine = new CombustionEngine(
 				container,
 				MockSimulationDataFactory.CreateEngineDataFromFile(ATPowerTrain.EngineFile, gearboxData.Gears.Count));
-			container.Engine = engine;
+			container.EngineInfo = engine;
 			var runData = new VectoRunData() {
 				GearboxData = gearboxData,
+				GearshiftParameters = ATPowerTrain.CreateGearshiftData(),
 				EngineData = new CombustionEngineData() { Inertia = 5.SI<KilogramSquareMeter>() }
 			};
-			gbx = new ATGearbox(container, new ATShiftStrategy(gearboxData, container), runData);
+			container.RunData = runData;
+			gbx = new ATGearbox(container, new ATShiftStrategy(container));
 			gbx.Connect(engine);
 			gbx.IdleController = new MockIdleController();
 

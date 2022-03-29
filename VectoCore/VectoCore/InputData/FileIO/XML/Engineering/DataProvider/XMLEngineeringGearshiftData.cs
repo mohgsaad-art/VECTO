@@ -29,8 +29,10 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Linq;
+using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.XML.Engineering.Interfaces;
@@ -122,13 +124,27 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider
 			}
 		}
 
-		public virtual Second PowershiftShiftTime
-		{
-			get {
-				return GetNode(XMLNames.DriverModel_ShiftStrategyParameters_PowershiftShiftTime, required: false)
-							?.InnerText.ToDouble().SI<Second>() ?? 0.8.SI<Second>();
-			}
-		}
+		public virtual double? RatingFactorCurrentGear => null;
+		
+		public virtual string Source => null;
+		
+		public virtual double? RatioEarlyUpshiftFC => null;
+		public virtual double? RatioEarlyDownshiftFC => null;
+		public int? AllowedGearRangeFC => null;
+
+		public double? VeloictyDropFactor => null;
+
+		public PerSecond MinEngineSpeedPostUpshift => null;
+		public Second ATLookAheadTime => null;
+		public double[][] ShiftSpeedsTCToLocked => null;
+		public double? EffshiftAccelerationFactorAT { get; }
+		
+
+		public double? AccelerationFactor => null;
+
+		
+		public virtual IList<double> LoadStageThresholdsUp => null;
+		public virtual IList<double> LoadStageThresholdsDown => null;
 
 		#endregion
 

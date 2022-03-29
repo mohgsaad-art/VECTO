@@ -40,9 +40,14 @@ namespace TUGraz.VectoCommon.Utils
 	{
 		public static T ParseEnum<T>(this string s, bool ignoreCase = true)
 		{
-			var r = new Regex("[^a-zA-Z0-9_]");
-			return (T)Enum.Parse(typeof(T), r.Replace(s, ""), ignoreCase);
+			return (T)Enum.Parse(typeof(T),
+				s.StartsWith("-")
+					? Regex.Replace(s, "[^a-zA-Z0-9_-]", "")
+					: Regex.Replace(s, "[^a-zA-Z0-9_]", ""), ignoreCase);
 		}
+
+		public static T ParseEnum<T>(this object o, bool ignoreCase = true) =>
+			o is string s ? ParseEnum<T>(s, ignoreCase) : (T)o;
 
 		public static IEnumerable<T> GetValues<T>()
 		{

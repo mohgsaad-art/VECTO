@@ -61,14 +61,15 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			var auxTorqueDemand = EngineAux == null
 				? 0.SI<NewtonMeter>()
-				: EngineAux.TorqueDemand(absTime, dt, CurrentState.EngineTorqueOut,
-					CurrentState.EngineTorqueOut + CurrentState.InertiaTorqueLoss, angularVelocity, dryRun);
+				: EngineAux.TorqueDemand(absTime, dt, CurrentState.EngineTorqueOut, angularVelocity, dryRun);
 
 			var totalTorqueDemand = CurrentState.EngineTorqueOut + auxTorqueDemand + CurrentState.InertiaTorqueLoss;
 			CurrentState.EngineTorque = totalTorqueDemand;
 
 			CurrentState.FullDragTorque = ModelData.FullLoadCurves[0].DragLoadStationaryTorque(avgEngineSpeed);
-			var dynamicFullLoadPower = ComputeFullLoadPower(avgEngineSpeed, dt, dryRun);
+			var stationaryFullLoadTorque = ModelData.FullLoadCurves[DataBus.GearboxInfo.Gear.Gear].FullLoadStationaryTorque(avgEngineSpeed);
+			var dynamicFullLoadPower = ComputeFullLoadPower(avgEngineSpeed, stationaryFullLoadTorque, dt, dryRun);
+			CurrentState.StationaryFullLoadTorque = stationaryFullLoadTorque;
 			CurrentState.DynamicFullLoadTorque = dynamicFullLoadPower / avgEngineSpeed;
 
 			ValidatePowerDemand(totalTorqueDemand, CurrentState.DynamicFullLoadTorque, CurrentState.FullDragTorque);
@@ -77,7 +78,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			CurrentState.EnginePower = CurrentState.EngineTorque * avgEngineSpeed;
 			if (dryRun) {
-				return new ResponseDryRun {
+				return new ResponseDryRun(this) {
 					DeltaFullLoad = CurrentState.EnginePower - CurrentState.DynamicFullLoadTorque * avgEngineSpeed,
 					DeltaDragLoad = CurrentState.EnginePower - CurrentState.FullDragTorque * avgEngineSpeed
 				};
@@ -85,7 +86,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			//UpdateEngineState(CurrentState.EnginePower, avgEngineSpeed);
 
-			return new ResponseSuccess { Source = this };
+			return new ResponseSuccess(this);
 		}
 
 		protected NewtonMeter LimitEnginePower(NewtonMeter requestedEngineTorque, PerSecond avgEngineSpeed, Second absTime)

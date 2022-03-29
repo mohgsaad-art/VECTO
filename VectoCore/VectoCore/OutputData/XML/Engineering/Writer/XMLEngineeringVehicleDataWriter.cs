@@ -99,10 +99,10 @@ namespace TUGraz.VectoCore.OutputData.XML.Engineering.Writer
 					ns + XMLNames.Vehicle_Components,
 					componentsWriter.WriteXML(vehicle)
 				),
-				vehicle.ADAS == null ? null : 
-				new XElement(ns + XMLNames.Vehicle_AdvancedDriverAssist,
-							Factory.GetWriter(vehicle.ADAS, Writer, vehicle.ADAS.DataSource).WriteXML(vehicle)
-				), 
+				//vehicle.ADAS == null ? null : 
+				//new XElement(ns + XMLNames.Vehicle_AdvancedDriverAssist,
+				//			Factory.GetWriter(vehicle.ADAS, Writer, vehicle.ADAS.DataSource).WriteXML(vehicle)
+				//), 
 			};
 			return retVal;
 		}

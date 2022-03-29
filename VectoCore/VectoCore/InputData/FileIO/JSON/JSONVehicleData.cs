@@ -42,9 +42,42 @@ using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.InputData.Impl;
 using TUGraz.VectoCore.Models.Declaration;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 
 namespace TUGraz.VectoCore.InputData.FileIO.JSON
 {
+
+	// ###################################################################
+	// ###################################################################
+
+	public class JSONVehicleDataV9 : JSONVehicleDataV7
+	{
+		//protected IBusAuxiliariesDeclarationData _busAuxiliariesData;
+
+		public JSONVehicleDataV9(JObject data, string fileName, IJSONVehicleComponents job, bool tolerateMissing = false) :
+			base(data, fileName, job, tolerateMissing)
+		{ }
+
+		#region Overrides of JSONVehicleDataV7
+
+		//public override IBusAuxiliariesDeclarationData BusAuxiliaries => _busAuxiliariesData ?? (_busAuxiliariesData = new JSONBusAuxiliariesData(this));
+
+		#region Overrides of JSONVehicleDataV7
+
+		//public override bool Articulated => Body.GetEx<bool>("Articulated");
+
+		protected override IAdvancedDriverAssistantSystemsEngineering GetADS()
+		{
+			return _adasInputData ?? (_adasInputData = new JSONADASInputDataV9(this));
+		}
+
+		#endregion
+
+		#endregion
+	}
+
+	// ###################################################################
+	// ###################################################################
 
 	public class JSONVehicleDataV8 : JSONVehicleDataV7
 	{
@@ -71,14 +104,22 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			}
 		}
 
+		protected override IAdvancedDriverAssistantSystemsEngineering GetADS()
+		{
+			return _adasInputData ?? (_adasInputData = new JSONADASInputDataV8(this));
+		}
 		#endregion
 
 	}
 
 
 	public class JSONVehicleDataV7 : JSONFile, IVehicleEngineeringInputData, IRetarderInputData, IAngledriveInputData,
-		IPTOTransmissionInputData, IAirdragEngineeringInputData, IAdvancedDriverAssistantSystemDeclarationInputData, IVehicleComponentsDeclaration, IVehicleComponentsEngineering, IAxlesEngineeringInputData, IAxlesDeclarationInputData
+		IPTOTransmissionInputData, IAirdragEngineeringInputData, IVehicleComponentsDeclaration, IVehicleComponentsEngineering, IAxlesEngineeringInputData, IAxlesDeclarationInputData
+		//IAdvancedDriverAssistantSystemDeclarationInputData, 
 	{
+
+		protected IAdvancedDriverAssistantSystemsEngineering _adasInputData;
+
 		public JSONVehicleDataV7(JObject data, string fileName, IJSONVehicleComponents job, bool tolerateMissing = false)
 			: base(data, fileName, tolerateMissing)
 		{
@@ -169,11 +210,11 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 
 		IAdvancedDriverAssistantSystemsEngineering IVehicleEngineeringInputData.ADAS
 		{
-			get { return null; }
+			get { return GetADS(); }
 		}
 
-		public uint? PTO_DriveGear { get {
-			return Body["GearDuringPTODrive"] != null ? Body["GearDuringPTODrive"].Value<uint>() : (uint?)null;
+		public GearshiftPosition PTO_DriveGear { get {
+			return Body["GearDuringPTODrive"] != null ? new GearshiftPosition (Body["GearDuringPTODrive"].Value<uint>()) : null;
 		} }
 
 		public PerSecond PTO_DriveEngineSpeed { get {
@@ -330,7 +371,12 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 		public virtual bool? SleeperCab { get { return DeclarationData.Vehicle.SleeperCabDefault; } }
 
 		public virtual TankSystem? TankSystem { get { return DeclarationData.Vehicle.TankSystemDefault; } }
-		public virtual IAdvancedDriverAssistantSystemDeclarationInputData ADAS { get { return this; } }
+		public virtual IAdvancedDriverAssistantSystemDeclarationInputData ADAS => GetADS();
+
+		protected virtual IAdvancedDriverAssistantSystemsEngineering GetADS()
+		{
+			return _adasInputData ?? (_adasInputData = new JSONADASInputDataV7(this));
+		}
 
 		public virtual bool ZeroEmissionVehicle { get { return DeclarationData.Vehicle.ZeroEmissionVehicleDefault; } }
 

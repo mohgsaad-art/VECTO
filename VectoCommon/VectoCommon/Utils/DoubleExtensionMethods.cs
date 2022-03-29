@@ -162,7 +162,7 @@ namespace TUGraz.VectoCommon.Utils
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool IsBetween(this double self, double min, double max)
 		{
-			return min <= self && self <= max;
+			return Math.Min(min, max) <= self && self <= Math.Max(min, max);
 		}
 
 		/// <summary>
@@ -172,7 +172,7 @@ namespace TUGraz.VectoCommon.Utils
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool IsBetween(this double self, SI min, SI max)
 		{
-			return min <= self && self <= max;
+			return VectoMath.Min(min, max) <= self && self <= VectoMath.Max(min, max);
 		}
 
 		/// <summary>
@@ -184,6 +184,11 @@ namespace TUGraz.VectoCommon.Utils
 		public static PerSecond RPMtoRad(this double self)
 		{
 			return SI<PerSecond>(self * 2 * Math.PI / 60.0);
+		}
+
+		public static Kelvin DegCelsiusToKelvin(this double self)
+		{
+			return SI<Kelvin>(self + 273.16);
 		}
 
 		/// <summary>

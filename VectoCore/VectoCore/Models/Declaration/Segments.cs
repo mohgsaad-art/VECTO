@@ -32,6 +32,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
@@ -184,11 +185,11 @@ namespace TUGraz.VectoCore.Models.Declaration
 				
 				// limit gvw to MaxGVW (40t)
 				var gvw = VectoMath.Min(
-						grossVehicleWeight + trailers.Sum(t => t.TrailerGrossVehicleWeight).DefaultIfNull(0),
+						grossVehicleWeight + trailers.Sum(t => t.TrailerGrossVehicleMass).DefaultIfNull(0),
 						maxGVW);
 				var vehicleWeight = curbWeight + body.CurbWeight;
 				var maxLoad = gvw - vehicleWeight -
-							trailers.Sum(t => t.TrailerCurbWeight).DefaultIfNull(0);
+							trailers.Sum(t => t.TrailerCurbMass).DefaultIfNull(0);
 
 
 				var payloads = row.Field<string>(missionType.ToString());
@@ -196,14 +197,19 @@ namespace TUGraz.VectoCore.Models.Declaration
 				Kilogram refLoad, lowLoad;
 				var weight = grossVehicleWeight;
 				GetLoadings(out lowLoad, out refLoad, payloads, (p, l) => GetLoading(p, weight, vehicleWeight, trailers, l), maxLoad);
-				
+
+				var cycleFile = RessourceHelper.ReadStream(DeclarationData.DeclarationDataResourcePrefix +
+															".MissionCycles." +
+															missionType.ToString().Replace("EMS", "") +
+															Constants.FileExtensions.CycleFile);
+
 				var mission = new Mission {
 					MissionType = missionType,
 					CrossWindCorrectionParameters = row.Field<string>("crosswindcorrection" + GetMissionSuffix(missionType, true)),
-					CycleFile =
-						RessourceHelper.ReadStream(DeclarationData.DeclarationDataResourcePrefix + ".MissionCycles." +
-													missionType.ToString().Replace("EMS", "") +
-													Constants.FileExtensions.CycleFile),
+					CycleFile = cycleFile,
+						//RessourceHelper.ReadStream(DeclarationData.DeclarationDataResourcePrefix + ".MissionCycles." +
+						//							missionType.ToString().Replace("EMS", "") +
+						//							Constants.FileExtensions.CycleFile),
 					AxleWeightDistribution = GetAxleWeightDistribution(row, missionType),
 					BodyCurbWeight = body.CurbWeight,
 					Trailer = trailers,
@@ -300,7 +306,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 				var vehiclePayload = DeclarationData.GetPayloadForGrossVehicleWeight(grossVehicleWeight, payloadStr)
 					.LimitTo(0.SI<Kilogram>(), grossVehicleWeight - vehicleWeight);
 				var trailerPayload = trailers.Sum(
-					t => DeclarationData.GetPayloadForTrailerWeight(t.TrailerGrossVehicleWeight, t.TrailerCurbWeight, lowLoading))
+					t => DeclarationData.GetPayloadForTrailerWeight(t.TrailerGrossVehicleMass, t.TrailerCurbMass, lowLoading))
 					.DefaultIfNull(0);
 					return vehiclePayload + trailerPayload;
 			}
@@ -351,8 +357,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 				TrailerType = trailerType,
 				TrailerWheels = trailer.Wheels,
 				TrailerAxleWeightShare = axleWeightShare,
-				TrailerCurbWeight = trailer.CurbWeight,
-				TrailerGrossVehicleWeight = trailer.GrossVehicleWeight,
+				TrailerCurbMass = trailer.CurbWeight,
+				TrailerGrossVehicleMass = trailer.GrossVehicleWeight,
 				DeltaCdA = trailer.DeltaCrossWindArea[firstTrailer ? 0 : 1],
 				CargoVolume = trailer.CargoVolume
 			};

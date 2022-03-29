@@ -1,0 +1,30 @@
+﻿{
+"Header": {
+  "FileVersion": 1 
+},
+  "Body": {
+
+    "Rating_current_gear": 0.97,
+    "Rating_current_gear_APT": 0.97,
+    "RatioEarlyDownshiftFC": 24,
+    "RatioEarlyUpshiftFC": 24,
+    "AllowedGearRangeFC": 2,
+    "AllowedGearRangeFCAPT": 1,
+    "AllowedGearRangeFCAPTSkipGear": 2,
+    "VelocityDropFactor": 1.0,
+    "AccelerationFactorNP98h": 0.5,
+    "ATLookAheadTime": 0.8,
+    "ShiftSpeedsTCLockup": [
+      [ 90.0, 120, 165, 90, 120, 165 ],
+      [ 90.0, 120, 165, 90, 120, 165 ],
+      [ 90.0, 120, 165, 90, 120, 165 ],
+      [ 90.0, 120, 165, 110, 140, 185 ],
+      [ 100.0, 130, 175, 120, 150, 195 ],
+      [ 110.0, 140, 185, 130, 160, 205 ]
+    ],
+    "LoadStageThresholdsUp": "19.7; 36.34; 53.01; 69.68; 86.35",
+    "LoadStageThresholdsDown": "13.7; 30.34; 47.01; 63.68; 80.35",
+    "MinEngineSpeedPostUpshift": 0,
+    "DownshiftMaxAccelerationAT": -2
+  }
+}

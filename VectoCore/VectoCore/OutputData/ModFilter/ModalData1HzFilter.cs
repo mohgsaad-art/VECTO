@@ -52,16 +52,16 @@ namespace TUGraz.VectoCore.OutputData.ModFilter
 
 			var absTime = 0.SI<Second>();
 			var distance = 0.SI<Meter>();
-			var v = data.Rows[0].Field<MeterPerSecond>((int)ModalResultField.v_act);
+			var v = data.Rows[0].Field<MeterPerSecond>(ModalResultField.v_act.GetName());
 			var remainingDt = 0.SI<Second>();
 			var vPrevious = v;
 
 			for (var i = 0; i < data.Rows.Count; i++) {
 				var row = data.Rows[i];
 
-				var currentDt = row.Field<Second>((int)ModalResultField.simulationInterval);
+				var currentDt = row.Field<Second>(ModalResultField.simulationInterval.GetName());
 
-				if (row.Field<Meter>((int)ModalResultField.dist).IsSmaller(distance, 1e-3)) {
+				if (row.Field<Meter>(ModalResultField.dist.GetName()).IsSmaller(distance, 1e-3)) {
 					LogManager.GetLogger(typeof(ModalData1HzFilter).FullName).Error("1Hz-Filter: distance must always be increasing.");
 				}
 
@@ -69,9 +69,9 @@ namespace TUGraz.VectoCore.OutputData.ModFilter
 				if (remainingDt > 0 && remainingDt + currentDt >= 1) {
 					// calculate values
 					var dt = 1.SI<Second>() - remainingDt;
-					var gear = row[(int)ModalResultField.Gear];
+					var gear = row[ModalResultField.Gear.GetName()];
 					gearsList[gear] = gearsList.GetValueOrZero(gear) + dt;
-					var a = (MeterPerSquareSecond)row[(int)ModalResultField.acc];
+					var a = (MeterPerSquareSecond)row[ModalResultField.acc.GetName()];
 					var ds = dt * v + a / 2 * dt * dt;
 					if (ds.IsSmaller(0)) {
 						throw new VectoSimulationException("1Hz-Filter: simulation distance must not be negative. ds: {0}  {1}", ds, "1");
@@ -83,11 +83,11 @@ namespace TUGraz.VectoCore.OutputData.ModFilter
 					// write a new row for the combined 1 second
 					var r = results.NewRow();
 					r.ItemArray = AddRow(remainingRow, MultiplyRow(row.ItemArray, dt));
-					r[(int)ModalResultField.time] = absTime;
-					r[(int)ModalResultField.simulationInterval] = 1.SI<Second>();
-					r[(int)ModalResultField.Gear] = gearsList.MaxBy(kv => kv.Value).Key;
-					r[(int)ModalResultField.dist] = distance;
-					r[(int)ModalResultField.v_act] = (v + vPrevious) / 2;
+					r[ModalResultField.time.GetName()] = absTime;
+					r[ModalResultField.simulationInterval.GetName()] = 1.SI<Second>();
+					r[ModalResultField.Gear.GetName()] = gearsList.MaxBy(kv => kv.Value).Key;
+					r[ModalResultField.dist.GetName()] = distance;
+					r[ModalResultField.v_act.GetName()] = (v + vPrevious) / 2;
 					vPrevious = v;
 					results.Rows.Add(r);
 
@@ -104,7 +104,7 @@ namespace TUGraz.VectoCore.OutputData.ModFilter
 					// calculate values
 					var dt = 1.SI<Second>();
 					currentDt = currentDt - 1.SI<Second>();
-					var a = (MeterPerSquareSecond)row[(int)ModalResultField.acc];
+					var a = (MeterPerSquareSecond)row[ModalResultField.acc.GetName()];
 					var ds = v * dt + a / 2 * dt * dt;
 					if (ds.IsSmaller(0)) {
 						throw new VectoSimulationException("1Hz-Filter: simulation distance must not be negative. ds: {0}  {1}", ds, "2");
@@ -116,10 +116,10 @@ namespace TUGraz.VectoCore.OutputData.ModFilter
 					// write a new row for the sliced 1 second
 					var r = results.NewRow();
 					r.ItemArray = row.ItemArray;
-					r[(int)ModalResultField.time] = absTime;
-					r[(int)ModalResultField.simulationInterval] = dt;
-					r[(int)ModalResultField.dist] = distance;
-					r[(int)ModalResultField.v_act] = (v + vPrevious) / 2;
+					r[ModalResultField.time.GetName()] = absTime;
+					r[ModalResultField.simulationInterval.GetName()] = dt;
+					r[ModalResultField.dist.GetName()] = distance;
+					r[ModalResultField.v_act.GetName()] = (v + vPrevious) / 2;
 					vPrevious = v;
 					results.Rows.Add(r);
 				}
@@ -128,9 +128,9 @@ namespace TUGraz.VectoCore.OutputData.ModFilter
 				if (currentDt > 0) {
 					// calculate values
 					var dt = currentDt;
-					var gear = row[(int)ModalResultField.Gear];
+					var gear = row[ModalResultField.Gear.GetName()];
 					gearsList[gear] = gearsList.GetValueOrZero(gear) + dt;
-					var a = (MeterPerSquareSecond)row[(int)ModalResultField.acc];
+					var a = (MeterPerSquareSecond)row[ModalResultField.acc.GetName()];
 					var ds = v * dt + a / 2 * dt * dt;
 					if (ds.IsSmaller(0)) {
 						throw new VectoSimulationException("1Hz-Filter: simulation distance must not be negative. ds: {0}  {1}", ds, "3");
@@ -155,7 +155,7 @@ namespace TUGraz.VectoCore.OutputData.ModFilter
 				// calculate values
 				var last = data.Rows.Cast<DataRow>().Last();
 				var dt = remainingDt;
-				var a = (MeterPerSquareSecond)last[(int)ModalResultField.acc];
+				var a = (MeterPerSquareSecond)last[ModalResultField.acc.GetName()];
 				var ds = v * dt + a / 2 * dt * dt;
 				if (v.IsEqual(0)) {
 					ds = 0.SI<Meter>();
@@ -170,11 +170,11 @@ namespace TUGraz.VectoCore.OutputData.ModFilter
 				// write a new row for the last second
 				var r = results.NewRow();
 				r.ItemArray = MultiplyRow(remainingRow, 1 / dt).ToArray();
-				r[(int)ModalResultField.time] = VectoMath.Ceiling(absTime);
-				r[(int)ModalResultField.simulationInterval] = 1.SI<Second>();
-				r[(int)ModalResultField.Gear] = gearsList.MaxBy(kv => kv.Value).Key;
-				r[(int)ModalResultField.dist] = distance;
-				r[(int)ModalResultField.v_act] = (v + vPrevious) / 2;
+				r[ModalResultField.time.GetName()] = VectoMath.Ceiling(absTime);
+				r[ModalResultField.simulationInterval.GetName()] = 1.SI<Second>();
+				r[ModalResultField.Gear.GetName()] = gearsList.MaxBy(kv => kv.Value).Key;
+				r[ModalResultField.dist.GetName()] = distance;
+				r[ModalResultField.v_act.GetName()] = (v + vPrevious) / 2;
 				results.Rows.Add(r);
 			}
 

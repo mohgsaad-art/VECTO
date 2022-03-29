@@ -201,6 +201,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationEvents.vb" />
+    <Compile Include="GUI\BusAuxiliariesEngParametersForm.Designer.vb">
+      <DependentUpon>BusAuxiliariesEngParametersForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\BusAuxiliariesEngParametersForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="GUI\VectoVTPJobForm.Designer.vb">
       <DependentUpon>VectoVTPJobForm.vb</DependentUpon>
     </Compile>
@@ -275,6 +281,7 @@
     <Compile Include="GUI\VehicleAxleDialog.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Input Files\BusParamsEngineering.vb" />
     <Compile Include="Input Files\Engine.vb" />
     <Compile Include="Input Files\Gearbox.vb" />
     <Compile Include="Configuration.vb" />
@@ -292,6 +299,8 @@
     <Compile Include="File Browser\FileBrowserFavoritesDialog.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Input Files\MockComponents.vb" />
+    <Compile Include="Input Files\MockVehicleInputData.vb" />
     <Compile Include="Input Files\VectoEPTPJob.vb" />
     <Compile Include="Input Files\VectoJob.vb" />
     <Compile Include="Input Files\Vehicle.vb" />
@@ -308,7 +317,6 @@
     <Compile Include="GUI\VectoJobForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="OutputData\JSONFileWriter.vb" />
     <Compile Include="VECTO_Global.vb" />
     <Compile Include="VECTO_Types.vb" />
     <Compile Include="GUI\GUI_Subs.vb" />
@@ -362,6 +370,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="File Browser\FileBrowserFavoritesDialog.resx">
       <DependentUpon>FileBrowserFavoritesDialog.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\BusAuxiliariesEngParametersForm.resx">
+      <DependentUpon>BusAuxiliariesEngParametersForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\GraphForm.resx">
       <DependentUpon>GraphForm.vb</DependentUpon>
@@ -559,7 +570,9 @@
     <Content Include="Resources\up.ico" />
     <Content Include="Resources\up.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="OutputData\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
     <PostBuildEvent>

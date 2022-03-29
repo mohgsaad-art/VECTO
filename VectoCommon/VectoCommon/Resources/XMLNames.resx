@@ -1056,4 +1056,31 @@
 <data name="Report_CO2StandardsGroup" xml:space="preserve">
 	<value>CO2StandardsGroup</value>
 </data>
+<data name="DriverModel_EcoRoll" xml:space="preserve">
+	<value>EcoRoll</value>
+</data>
+<data name="DriverModel_EngineStopStartParameters" xml:space="preserve">
+	<value>EngineStopStartParameters</value>
+</data>
+<data name="DriverModel_Overspeed_Enabled" xml:space="preserve">
+	<value>Enabled</value>
+</data>
+<data name="Component_BatterySystem" xml:space="preserve">
+    <value>BatterySystem</value>
+  </data>
+<data name="Component_CapacitorSystem" xml:space="preserve">
+    <value>CapacitorSystem</value>
+  </data>
+<data name="Component_ElectricMachineSystem" xml:space="preserve">
+    <value>ElectricMachineSystem</value>
+  </data>
+<data name="Component_IEPC" xml:space="preserve">
+    <value>IEPC</value>
+  </data>
+<data name="Component_ADC" xml:space="preserve">
+    <value>ADC</value>
+  </data>
+<data name="REESS" xml:space="preserve">
+    <value>REESS</value>
+  </data>
 </root>

@@ -90,7 +90,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		public Radian RoadGradient { get { return 0.SI<Radian>(); } }
 
-		protected override void DoWriteModalResults(IModalDataContainer container)
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
 			container[ModalResultField.dist] = 0.SI<Meter>();
 			container[ModalResultField.v_targ] = 0.KMPHtoMeterPerSecond();
@@ -98,7 +98,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 			container[ModalResultField.altitude] = 0.SI<Meter>();
 		}
 
-		protected override void DoCommitSimulationStep()
+		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)
 		{
 			_left.MoveNext();
 			_right.MoveNext();

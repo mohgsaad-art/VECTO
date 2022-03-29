@@ -30,6 +30,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using NUnit.Framework;
 using TUGraz.VectoCommon.Models;
@@ -39,8 +40,10 @@ using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Models.Simulation.Impl;
+using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
+using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Tests.Utils;
 
 namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
@@ -72,6 +75,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			//vehicleData.CrossWindCorrectionMode = CrossWindCorrectionMode.NoCorrection;
 			var vehicle = new Vehicle(container, vehicleData, airdragData);
 			var driver = new MockDriver(container) { DriverBehavior = DrivingBehavior.Driving };
+			new DummyCycle(container);
 			var mockPort = new MockFvOutPort();
 			vehicle.InPort().Connect(mockPort);
 
@@ -111,7 +115,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 				DeclarationDataAdapter.GetDeclarationAirResistanceCurve("TractorSemitrailer",
 					6.46.SI<SquareMeter>(), height.SI<Meter>()), CrossWindCorrectionMode.DeclarationModeCorrection);
 			var vehicle = new Vehicle(container, vehicleData,airdragData);
-
+			new DummyCycle(container);
 			var mockPort = new MockFvOutPort();
 			vehicle.InPort().Connect(mockPort);
 
@@ -137,6 +141,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 			var vehicle = new Vehicle(container, vehicleData,airdragData);
 			var driver = new MockDriver(container) { DriverBehavior = DrivingBehavior.Driving };
+			new DummyCycle(container);
 			var mockPort = new MockFvOutPort();
 			vehicle.InPort().Connect(mockPort);
 
@@ -148,12 +153,12 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var dt = 0.5.SI<Second>();
 
 			vehicle.Request(absTime, dt, 0.SI<MeterPerSquareSecond>(), 0.SI<Radian>());
-			vehicle.CommitSimulationStep(writer);
+			vehicle.CommitSimulationStep(absTime, dt, writer);
 
 			Assert.AreEqual(45956.3024, ((SI)writer[ModalResultField.P_air]).Value(), 0.1);
 
 			vehicle.Request(absTime, dt, 1.SI<MeterPerSquareSecond>(), 0.SI<Radian>());
-			vehicle.CommitSimulationStep(writer);
+			vehicle.CommitSimulationStep(absTime, dt, writer);
 			Assert.AreEqual(47448.0989, ((SI)writer[ModalResultField.P_air]).Value(), 0.1);
 		}
 
@@ -208,5 +213,65 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 				cwcc.EffectiveAirDragArea(velocity.KMPHtoMeterPerSecond()).Value(),
 				Tolerance);
 		}
+	}
+
+	public class DummyCycle : VectoSimulationComponent, IDrivingCycleInfo
+	{
+		public DummyCycle(VehicleContainer container) : base(container)
+		{
+
+		}
+
+		#region Overrides of VectoSimulationComponent
+
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
+		{
+
+		}
+
+		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)
+		{
+
+		}
+
+		#endregion
+
+		#region Implementation of IDrivingCycleInfo
+
+		public CycleData CycleData => throw new NotImplementedException();
+
+		public bool PTOActive => throw new NotImplementedException();
+
+		public DrivingCycleData.DrivingCycleEntry CycleLookAhead(Meter distance)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Meter Altitude => throw new NotImplementedException();
+
+		public Radian RoadGradient => throw new NotImplementedException();
+
+		public MeterPerSecond TargetSpeed => throw new NotImplementedException();
+
+		public Second StopTime => throw new NotImplementedException();
+
+		public Meter CycleStartDistance => 0.SI<Meter>();
+
+		public IReadOnlyList<DrivingCycleData.DrivingCycleEntry> LookAhead(Meter lookaheadDistance)
+		{
+			throw new NotImplementedException();
+		}
+
+		public IReadOnlyList<DrivingCycleData.DrivingCycleEntry> LookAhead(Second time)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void FinishSimulation()
+		{
+			throw new NotImplementedException();
+		}
+
+		#endregion
 	}
 }

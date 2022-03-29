@@ -1,11 +1,11 @@
-﻿Imports VectoAuxiliaries.Electrics
-Imports VectoAuxiliaries.Pneumatics
-Imports VectoAuxiliaries.Hvac
-Imports VectoAuxiliaries.DownstreamModules
+﻿
 Imports NUnit.Framework
-Imports VectoAuxiliaries
 Imports Moq
+Imports TUGraz.VectoCommon.BusAuxiliaries
 Imports TUGraz.VectoCommon.Utils
+Imports TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl
+Imports TUGraz.VectoCore.Models.BusAuxiliaries.Interfaces.DownstreamModules
+
 
 Namespace UnitTests
 	<TestFixture()>
@@ -38,24 +38,24 @@ Namespace UnitTests
 			Dim m8Mock As New Mock(Of IM8)
 			Dim fMapMock As New MockFuel50PC()
 			Dim sgnlsMock As New Mock(Of ISignals)
-			Dim psac As New Mock(Of IPneumaticsAuxilliariesConfig)
+			Dim psac As New Mock(Of IPneumaticsConsumersDemand)
 
 			m6Mock.Setup(Function(x) x.AvgPowerDemandAtCrankFromElectricsIncHVAC).Returns(IP1.SI(Of Watt))
-			m1Mock.Setup(Function(x) x.AveragePowerDemandAtCrankFromHVACMechanicalsWatts).Returns(IP2.SI(Of Watt))
+			m1Mock.Setup(Function(x) x.AveragePowerDemandAtCrankFromHVACMechanicals).Returns(IP2.SI(Of Watt))
 			m4Mock.Setup(Function(x) x.GetPowerCompressorOn).Returns(IP3.SI(Of Watt))
 			m4Mock.Setup(Function(x) x.GetPowerCompressorOff).Returns(IP4.SI(Of Watt))
 			sgnlsMock.Setup(Function(x) x.EngineDrivelineTorque).Returns(IP5.SI(Of NewtonMeter))
 			sgnlsMock.Setup(Function(x) x.EngineSpeed).Returns(IP6.RPMtoRad())
 			sgnlsMock.Setup(Function(x) x.PreExistingAuxPower).Returns(0.SI(Of Watt))
 			m4Mock.Setup(Function(x) x.GetFlowRate).Returns(IP7.SI(Of NormLiterPerSecond))
-			m6Mock.Setup(Function(x) x.OverrunFlag).Returns(IP8)
-			m8Mock.Setup(Function(x) x.CompressorFlag).Returns(IP9)
+			m6Mock.Setup(Function(x) x.OverrunFlag).Returns(IP8 <> 0)
+			m8Mock.Setup(Function(x) x.CompressorFlag).Returns(IP9 <> 0)
 			psac.Setup(Function(x) x.OverrunUtilisationForCompressionFraction).Returns(IP10)
 			sgnlsMock.Setup(Function(x) x.EngineStopped).Returns(IP11)
 
 			Dim _
 				target As _
-					New M9(m1Mock.Object, m4Mock.Object, m6Mock.Object, m8Mock.Object, fMapMock, psac.Object, sgnlsMock.Object)
+					New M09Impl(m1Mock.Object, m4Mock.Object, m6Mock.Object, m8Mock.Object, fMapMock, psac.Object, sgnlsMock.Object)
 
 			target.CycleStep(1.SI(Of Second))
 
@@ -90,26 +90,26 @@ Namespace UnitTests
 			Dim m8Mock As New Mock(Of IM8)
 			Dim fMapMock As New Mock(Of IFuelConsumptionMap)
 			Dim sgnlsMock As New Mock(Of ISignals)
-			Dim psac As New Mock(Of IPneumaticsAuxilliariesConfig)
+			Dim psac As New Mock(Of IPneumaticsConsumersDemand)
 
-			fMapMock.Setup(Function(x) x.GetFuelConsumption(1.SI(Of NewtonMeter), 1.RPMtoRad())).Returns(
+			fMapMock.Setup(Function(x) x.GetFuelConsumptionValue(1.SI(Of NewtonMeter), 1.RPMtoRad())).Returns(
 				(-1 / 1000).SI(Of KilogramPerSecond)())
 			m6Mock.Setup(Function(x) x.AvgPowerDemandAtCrankFromElectricsIncHVAC).Returns(IP1.SI(Of Watt))
-			m1Mock.Setup(Function(x) x.AveragePowerDemandAtCrankFromHVACMechanicalsWatts).Returns(IP2.SI(Of Watt))
+			m1Mock.Setup(Function(x) x.AveragePowerDemandAtCrankFromHVACMechanicals).Returns(IP2.SI(Of Watt))
 			m4Mock.Setup(Function(x) x.GetPowerCompressorOn).Returns(IP3.SI(Of Watt))
 			m4Mock.Setup(Function(x) x.GetPowerCompressorOff).Returns(IP4.SI(Of Watt))
 			sgnlsMock.Setup(Function(x) x.EngineDrivelineTorque).Returns(IP5.SI(Of NewtonMeter))
 			sgnlsMock.Setup(Function(x) x.EngineSpeed).Returns(IP6.RPMtoRad())
 			sgnlsMock.Setup(Function(x) x.PreExistingAuxPower).Returns(0.SI(Of Watt))
 			m4Mock.Setup(Function(x) x.GetFlowRate).Returns(IP7.SI(Of NormLiterPerSecond))
-			m6Mock.Setup(Function(x) x.OverrunFlag).Returns(IP8)
-			m8Mock.Setup(Function(x) x.CompressorFlag).Returns(IP9)
+			m6Mock.Setup(Function(x) x.OverrunFlag).Returns(IP8 <> 0)
+			m8Mock.Setup(Function(x) x.CompressorFlag).Returns(IP9 <> 0)
 			psac.Setup(Function(x) x.OverrunUtilisationForCompressionFraction).Returns(IP10)
 			sgnlsMock.Setup(Function(x) x.EngineStopped).Returns(IP11)
 
 			Dim _
 				target As _
-					New M9(m1Mock.Object, m4Mock.Object, m6Mock.Object, m8Mock.Object, fMapMock.Object, psac.Object, sgnlsMock.Object)
+					New M09Impl(m1Mock.Object, m4Mock.Object, m6Mock.Object, m8Mock.Object, fMapMock.Object, psac.Object, sgnlsMock.Object)
 
 			target.CycleStep(1.SI(Of Second))
 

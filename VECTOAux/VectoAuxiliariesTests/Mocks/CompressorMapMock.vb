@@ -1,46 +1,45 @@
-﻿Imports TUGraz.VectoCommon.Utils
-Imports VectoAuxiliaries
-Imports VectoAuxiliaries.Pneumatics
+﻿
+Imports TUGraz.VectoCommon.BusAuxiliaries
+Imports TUGraz.VectoCommon.Utils
 
 Namespace Mocks
-	Public Class CompressorMapMock
-		Implements ICompressorMap
+    Public Class CompressorMapMock
+        Implements ICompressorMap
 
-		Dim failing As Boolean
+        Dim failing As Boolean
 
-		Public Sub New(ByVal isFailing As Boolean)
-			failing = isFailing
-		End Sub
+        Public Sub New(ByVal isFailing As Boolean)
+            failing = isFailing
+        End Sub
 
-		Public Function Initialise() As Boolean Implements ICompressorMap.Initialise
-			If failing Then
-				Throw New System.ArgumentException
-			Else
-				Return True
-			End If
-		End Function
-
-		Public Function GetFlowRate(ByVal rpm As Double) As NormLiterPerSecond Implements ICompressorMap.GetFlowRate
-			Return 2.0.SI(Of NormLiterPerSecond)()
-		End Function
-
-		Public Function GetPowerCompressorOn(ByVal rpm As Double) As Watt Implements ICompressorMap.GetPowerCompressorOn
-			Return 8.0.SI(Of Watt)()
-		End Function
-
-		Public Function GetPowerCompressorOff(ByVal rpm As Double) As Watt Implements ICompressorMap.GetPowerCompressorOff
-			Return 5.0.SI(Of Watt)()
-		End Function
+        public Function interpolate(rpm As PerSecond) As CompressorResult Implements ICompressorMap.Interpolate
+            Return New CompressorResult() With {
+                .PowerOff =5.0.SI (Of Watt)(),
+                .PowerOn = 8.0.SI (Of Watt)(),
+                .FlowRate = 2.0.SI(Unit.SI.Liter.Per.Minute).cast (Of NormLiterPerSecond)(),
+                .RPM = rpm}
+        End Function
 
 
-		Public Function GetAveragePowerDemandPerCompressorUnitFlowRate() As Double _
-			Implements ICompressorMap.GetAveragePowerDemandPerCompressorUnitFlowRate
+        Public Function GetAveragePowerDemandPerCompressorUnitFlowRate() As JoulePerNormLiter _
+            Implements ICompressorMap.GetAveragePowerDemandPerCompressorUnitFlowRate
 
-			Return 0.01
-		End Function
+            Return 0.01.SI(Unit.SI.Watt.Per.Liter.Per.Hour).Cast (Of JoulePerNormLiter)
+        End Function
+
+        Public ReadOnly Property Technology As String Implements ICompressorMap.Technology
+        get
+                Return ""
+        End Get
+        End Property
+
+        Public readonly property Source As String Implements ICompressorMap.Source
+            get
+                return ""
+            End Get
+        End property
 
 
-		Public Event AuxiliaryEvent(ByRef sender As Object, message As String, messageType As AdvancedAuxiliaryMessageType) _
-			Implements IAuxiliaryEvent.AuxiliaryEvent
-	End Class
+        'Public Event AuxiliaryEvent As AuxiliaryEventEventHandler Implements IAuxiliaryEvent.AuxiliaryEvent
+    End Class
 End Namespace

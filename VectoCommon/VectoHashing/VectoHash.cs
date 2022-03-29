@@ -168,8 +168,10 @@ namespace TUGraz.VectoHashing
 				throw new Exception(string.Format("index exceeds number of components found! index: {0}, #components: {1}", index,
 					nodes.Count));
 			}
-			var componentId = nodes[index].Attributes[XMLNames.Component_ID_Attr].Value;
-			return GetHashValueFromSig(DoComputeHash(nodes[index], canonicalization, digestMethod), componentId);
+
+			var sortedNodes = SortComponentNodes(component, nodes);
+			var componentId = sortedNodes[index].Attributes[XMLNames.Component_ID_Attr].Value ?? "";
+			return GetHashValueFromSig(DoComputeHash(sortedNodes[index], canonicalization, digestMethod), componentId);
 		}
 
 		private static XmlDocument DoComputeHash(XmlNode dataNode, IEnumerable<string> canonicalization, string digestMethod)
@@ -381,7 +383,7 @@ namespace TUGraz.VectoHashing
 			return ReadHashValue(nodes[index]);
 		}
 
-		private XmlNodeList GetNodes(VectoComponents? component, int index)
+		private XmlNode[] GetNodes(VectoComponents? component, int index)
 		{
 			var nodes = Document.SelectNodes(GetComponentQueryString(component));
 			if (nodes == null || nodes.Count == 0) {
@@ -393,7 +395,17 @@ namespace TUGraz.VectoHashing
 				throw new Exception(string.Format("index exceeds number of components found! index: {0}, #components: {1}", index,
 					nodes.Count));
 			}
-			return nodes;
+
+			return SortComponentNodes(component, nodes);
+		}
+
+		private XmlNode[] SortComponentNodes(VectoComponents? component, XmlNodeList nodes)
+		{
+            if (component != null && component == VectoComponents.Tyre) {
+                return nodes.Cast<XmlNode>()
+                    .OrderBy(x => x.SelectSingleNode("./ancestor-or-self::*[@axleNumber]/@axleNumber")?.Value.ToInt() ?? 0).ToArray();
+            }
+            return nodes.Cast<XmlNode>().ToArray();
 		}
 
 

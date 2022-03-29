@@ -59,9 +59,10 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				//CertificationNumber = data.CertificationNumber,
 				DigestValueInput = data.DigestValue != null ? data.DigestValue.DigestValue : "",
 				VehicleCategory = data.VehicleCategory,
-				CurbWeight = data.CurbMassChassis,
-				GrossVehicleWeight = data.GrossVehicleMassRating,
+				CurbMass = data.CurbMassChassis,
+				GrossVehicleMass = data.GrossVehicleMassRating,
 				AirDensity = Physics.AirDensity,
+				InputData = data,
 			};
 
 			return retVal;
@@ -132,12 +133,14 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				CertificationMethod = CertificationMethod.Measured,
 				DigestValueInput = data.DigestValue != null ? data.DigestValue.DigestValue : "",
 				Displacement = data.Displacement,
-				IdleSpeed = data.IdleSpeed,
-				ConsumptionMap = FuelConsumptionMapReader.Create(data.FuelConsumptionMap),
+				//IdleSpeed = data.IdleSpeed,
+				//ConsumptionMap = FuelConsumptionMapReader.Create(data.FuelConsumptionMap),
 				RatedPowerDeclared = data.RatedPowerDeclared,
 				RatedSpeedDeclared = data.RatedSpeedDeclared,
 				MaxTorqueDeclared = data.MaxTorqueDeclared,
-				FuelData = DeclarationData.FuelData.Lookup(data.FuelType, tankSystem)
+				//FuelData = DeclarationData.FuelData.Lookup(data.FuelType, tankSystem)
+				MultipleEngineFuelModes = data.EngineModes.Count > 1,
+				WHRType = data.WHRType,
 			};
 			return retVal;
 		}
@@ -156,7 +159,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			};
 		}
 
-		protected TransmissionLossMap CreateGearLossMap(ITransmissionInputData gear, uint i, bool useEfficiencyFallback)
+		protected TransmissionLossMap CreateGearLossMap(ITransmissionInputData gear, uint i, bool useEfficiencyFallback, VehicleCategory vehicleCategory, GearboxType gearboxType)
 		{
 			if (gear.LossMap != null) {
 				return TransmissionLossMapReader.Create(gear.LossMap, gear.Ratio, string.Format("Gear {0}", i + 1), true);

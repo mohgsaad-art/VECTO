@@ -97,7 +97,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 				}
 
 				var aux = data.Auxiliaries.FirstOrDefault(x => x.Key == Constants.Auxiliaries.IDs.Fan);
-				AverageFanPower = data.AuxiliaryWork(aux.Value) / data.Duration();
+				AverageFanPower = data.AuxiliaryWork(aux.Value) / data.Duration;
 				var cycleEntries = runData.Cycle.Entries.Pairwise().Select(
 					x => new {
 						PWheel = x.Item1.PWheel > 0 ? x.Item1.PWheel : 0.SI<Watt>(),
@@ -181,15 +181,16 @@ namespace TUGraz.VectoCore.OutputData.XML
 			var vtpResult = Missions.FirstOrDefault(x => x.Key == MissionType.VerificationTest).Value.ResultEntry
 									.FirstOrDefault().Value;
 
+			var fuel = vtpResult.FuelData.First();
 			//const MissionType selectedMission = DeclarationData.VTPMode.SelectedMission;
 			const LoadingType selectedLoading = DeclarationData.VTPMode.SelectedLoading;
 			var result = Missions.FirstOrDefault(x => x.Key != MissionType.VerificationTest).Value.ResultEntry
 								.FirstOrDefault(x => x.Key == selectedLoading).Value;
 			var vtpFcMeasured = vtpResult.VTPFcMeasured / vtpResult.VTPWorkPWheelPos;
 			var vtpFcMeasuredCorr = vtpResult.VTPFcMeasured / vtpResult.VTPWorkPWheelPos * vtpResult.VTPFcCorrectionFactor;
-			var vtpFcSimulated = vtpResult.VTPFcFinalSimulated / vtpResult.FuelData.HeatingValueCorrection / vtpResult.VTPWorPWheelSimPos;
+			var vtpFcSimulated = vtpResult.VTPFcFinalSimulated / fuel.HeatingValueCorrection / vtpResult.VTPWorPWheelSimPos;
 			var cVtp = vtpFcMeasuredCorr / vtpFcSimulated;
-			var declaredCO2 = result.FuelConsumptionTotal * result.FuelData.CO2PerFuelWeight / result.Distance / result.Payload;
+			var declaredCO2 = result.FuelConsumptionFinal[fuel.FuelType].TotalFuelConsumptionCorrected * fuel.CO2PerFuelWeight / result.Distance / result.Payload;
 			var verifiedCO2 = declaredCO2 * cVtp;
 
 			Results.Add(
@@ -284,8 +285,8 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(tns + XMLNames.Vehicle_LegislativeClass, modelData.VehicleData.LegislativeClass.ToXMLFormat()),
 				new XElement(tns + XMLNames.Report_Vehicle_VehicleGroup, modelData.VehicleData.VehicleClass.GetClassNumber()),
 				new XElement(tns + XMLNames.Vehicle_AxleConfiguration, modelData.VehicleData.AxleConfiguration.GetName()),
-				new XElement(tns + XMLNames.Vehicle_GrossVehicleMass, modelData.VehicleData.GrossVehicleWeight.ToXMLFormat(0)),
-				new XElement(tns + XMLNames.Vehicle_CurbMassChassis, modelData.VehicleData.CurbWeight.ToXMLFormat(0)),
+				new XElement(tns + XMLNames.Vehicle_GrossVehicleMass, modelData.VehicleData.GrossVehicleMass.ToXMLFormat(0)),
+				new XElement(tns + XMLNames.Vehicle_CurbMassChassis, modelData.VehicleData.CurbMass.ToXMLFormat(0)),
 				modelData.Retarder.Type.IsDedicatedComponent()
 					? new XElement(tns + XMLNames.Vehicle_RetarderRatio, modelData.Retarder.Ratio.ToXMLFormat(3))
 					: null,
@@ -467,7 +468,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(
 					tns + XMLNames.Engine_Displacement,
 					engineData.Displacement.ConvertToCubicCentiMeter().ToXMLFormat(0)),
-				new XElement(tns + XMLNames.Engine_FuelType, engineData.FuelData.FuelType.ToXMLFormat())
+				new XElement(tns + XMLNames.Engine_FuelType, engineData.Fuels.First().FuelData.FuelType.ToXMLFormat())
 			);
 		}
 

@@ -81,9 +81,13 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var gearboxData = MockSimulationDataFactory.CreateGearboxDataFromFile(GearboxDataFile, EngineDataFile, false);
 			var vehicleContainer = new MockVehicleContainer(); //(ExecutionMode.Engineering);
 			var engineData = MockSimulationDataFactory.CreateEngineDataFromFile(EngineDataFile, gearboxData.Gears.Count);
-			vehicleContainer.Engine = new CombustionEngine(vehicleContainer, engineData);
-			var runData = new VectoRunData() { GearboxData = gearboxData, EngineData = new CombustionEngineData() {Inertia = 0.SI<KilogramSquareMeter>()} };
-			var gearbox = new ATGearbox(vehicleContainer, new ATShiftStrategy(gearboxData, vehicleContainer), runData);
+			vehicleContainer.EngineInfo = new CombustionEngine(vehicleContainer, engineData);
+			var runData = new VectoRunData() {
+				GearboxData = gearboxData,
+				EngineData = new CombustionEngineData() { Inertia = 0.SI<KilogramSquareMeter>() }
+			};
+			vehicleContainer.RunData = runData;
+			var gearbox = new ATGearbox(vehicleContainer, new ATShiftStrategy(vehicleContainer));
 
 			vehicleContainer.VehicleSpeed = vehicleSpeed.KMPHtoMeterPerSecond();
 
@@ -95,7 +99,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var response = gearbox.Initialize(torque.SI<NewtonMeter>(), angularVelocity);
 
 			Assert.IsInstanceOf(typeof(ResponseSuccess), response);
-			Assert.AreEqual(expectedGear, gearbox.Gear);
+			Assert.AreEqual(expectedGear, gearbox.Gear.Gear);
 			Assert.AreEqual(vehicleSpeed.IsEqual(0), gearbox.Disengaged);
 		}
 
