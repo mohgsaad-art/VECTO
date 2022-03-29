@@ -384,12 +384,9 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				{
 					throw new VectoException("Battery: Initial SoC has to be higher than min SoC");
 				}
-				//if (data.BatteryData.InitialSoC < data.BatteryData.MinSOC)
-				//{
-				//	throw new VectoException("Battery: Initial SoC has to be higher than min SoC");
-				//}
+				
 				var battery = new BatterySystem(container, data.BatteryData);
-				//var battery = new Battery(container, data.BatteryData);
+				
 				battery.Initialize(data.BatteryData.InitialSoC);
 				es.Connect(battery);
 			}
@@ -405,33 +402,20 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				es.Connect(superCap);
 			}
 
-
 			var aux = new ElectricAuxiliary(container);
 			aux.AddConstant("P_aux_el", data.ElectricAuxDemand ?? 0.SI<Watt>());
 			es.Connect(aux);
 
-			HybridControllerMeasuredSpeedGear ctl;
 			SwitchableClutch clutch = null;
-			//if (data.GearboxData.Type.ManualTransmission())
-			//{
+			
 			var strategy = new HybridStrategyMeasuredSpeedGear(data, container);
 			clutch = new SwitchableClutch(container, data.EngineData);
-			ctl = new HybridControllerMeasuredSpeedGear(container, strategy, es);
-			//}
-			//else
-			//{
-			//var strategy = new HybridStrategyAT(data, container);
-
-			//ctl = new HybridControllerMeasuredSpeedGear(container, strategy, es);
-			//new ATClutchInfo(container);
-			//}
+			HybridControllerDS ctl = new HybridControllerDS(container, strategy, es);
 
 			// add engine before gearbox so that gearbox can obtain if an ICE is available already in constructor
 			var engine = new StopStartCombustionEngine(container, data.EngineData);
 
 			var gearbox = GetGearBoxHybridsMeasuredSpeedGear(container, data);
-			//var gearbox = GetGearbox(container, ctl.ShiftStrategy);
-			//var gearbox = new CycleGearbox(container, data);
 			var gbx = gearbox as IHybridControlledGearbox;
 			if (gbx == null)
 			{
@@ -442,21 +426,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 			ctl.Gearbox = gbx;
 			ctl.Engine = engine;
-
-			/*var powertrain = new MeasuredSpeedDrivingCycle(container, data.Cycle)
-				.AddComponent(new Vehicle(container, data.VehicleData, data.AirdragData))
-				.AddComponent(new Wheels(container, data.VehicleData.DynamicTyreRadius, data.VehicleData.WheelsInertia))
-				.AddComponent(new Brakes(container))
-				.AddComponent(new AxleGear(container, data.AxleGearData))
-				.AddComponent(data.AngledriveData != null ? new Angledrive(container, data.AngledriveData) : null)
-				.AddComponent(new CycleGearbox(container, data));
-			new ATClutchInfo(container);
-			if (data.GearboxData.Type.ManualTransmission()) {
-				powertrain = powertrain.AddComponent(new Clutch(container, data.EngineData));
-			}
-			powertrain.AddComponent(new StopStartCombustionEngine(container, data.EngineData))
-				.AddAuxiliaries(container, data);
-			*/
 
 			var cycle = new MeasuredSpeedDrivingCycle(container, data.Cycle);
 			cycle
@@ -475,10 +444,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				.AddComponent(GetElectricMachine(PowertrainPosition.HybridP1, data.ElectricMachinesData, container, es, ctl))
 				.AddComponent(engine, idleController)
 				.AddAuxiliaries(container, data);
-
-			//.AddComponent(new CycleGearbox(container, data));
-			//vs .AddComponent(gearbox, data.Retarder, container)
-
 
 			if (data.ElectricMachinesData.Any(x => x.Item1 == PowertrainPosition.HybridP1))
 			{
