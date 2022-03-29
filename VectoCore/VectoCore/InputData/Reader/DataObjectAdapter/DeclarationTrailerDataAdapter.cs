@@ -489,6 +489,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 			var liftFactor = 1.0;
 			var steerFactor = 1.0;
+			var trailerType = trailer.TrailerType;
 
 			if (trailer.Axles.Count(x => x.Steered && x.Liftable) > 0) {
 				//found axle with both steered and liftable
@@ -1582,7 +1583,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			#region Coupling point
 
 			//if (trailer.TrailerType == TypeTrailer.DC && trailer.TrailerCouplingPoint == TrailerCouplingPoint.High) {
-			if(trailerSegment.SpecificTrailerSegment.CouplingPointCorrection){
+			if(trailerSegment.SpecificTrailerSegment.CouplingPointCorrection && trailer.TrailerCouplingPoint == TrailerCouplingPoint.High){
 				data.CdxA0 *= 1.1037;
 				data.CdxA3 *= 1.1348;
 				data.CdxA6 *= 1.1804;
