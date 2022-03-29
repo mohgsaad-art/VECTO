@@ -1224,16 +1224,20 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				//throw new Exception("One axle trailers should have Length Between Centers Of Axles = 0");
 			}
 
-			if (trailer.TrailerType != TypeTrailer.DC && trailer.TPMLMAxleAssembly > trailer.TPMLMTotalTrailer) {
+			if ((trailer.TrailerType == TypeTrailer.DC && trailer.TPMLMAxleAssembly > trailer.TPMLMTotalTrailer)
+				|| (trailer.TrailerType == TypeTrailer.DA && trailer.TPMLMAxleAssembly >= trailer.TPMLMTotalTrailer)) {
 				errors.Add("Invalid masses declared");
-				//throw new Exception("Invalid masses declared");
 			}
+			//if (trailer.TrailerType == TypeTrailer.DC && trailer.TPMLMAxleAssembly > trailer.TPMLMTotalTrailer) {
+			//	errors.Add("Invalid masses declared");
+			//	//throw new Exception("Invalid masses declared");
+			//}
 
 
-			if (trailer.TrailerType != TypeTrailer.DA && trailer.TPMLMAxleAssembly >= trailer.TPMLMTotalTrailer) {
-				errors.Add("Invalid masses declared");
-				//throw new Exception("Invalid masses declared");
-			}
+			//if (trailer.TrailerType != TypeTrailer.DA && trailer.TPMLMAxleAssembly >= trailer.TPMLMTotalTrailer) {
+			//	errors.Add("Invalid masses declared");
+			//	//throw new Exception("Invalid masses declared");
+			//}
 
 
 			if (trailer.ExternalBodyHeight >= trailer.TotalTrailerHeight) {
