@@ -137,17 +137,22 @@ namespace VECTOTrailer.Util.XML
 						?.Add(new XElement(_v27 + XMLNames.Trailer_AeroFeatureTechnologies, "boat tail long"));
 			}
 
-			else if (trailerData.IsCertified) { //TODO 12/21
+			else if (trailerData.IsCertified) {
 				vehicle.Element(_v27 + XMLNames.Trailer_AeroFeatures)?.Add(new XElement(_v27 + XMLNames.Trailer_CertifiedAeroReduction));
 
-				vehicle.Element(_v27 + XMLNames.Trailer_AeroFeatures)?.Element(_v27 + XMLNames.Trailer_CertifiedAeroReduction)
-					?.Add(new XElement(_v27 + XMLNames.Trailer_YawAngle0, trailerData.YawAngle0.ToXMLFormat(2).ToString(CultureInfo.InvariantCulture)));
-				vehicle.Element(_v27 + XMLNames.Trailer_AeroFeatures)?.Element(_v27 + XMLNames.Trailer_CertifiedAeroReduction)
-					?.Add(new XElement(_v27 + XMLNames.Trailer_YawAngle3, trailerData.YawAngle3.ToXMLFormat(2).ToString(CultureInfo.InvariantCulture)));
-				vehicle.Element(_v27 + XMLNames.Trailer_AeroFeatures)?.Element(_v27 + XMLNames.Trailer_CertifiedAeroReduction)
-					?.Add(new XElement(_v27 + XMLNames.Trailer_YawAngle6, trailerData.YawAngle6.ToXMLFormat(2).ToString(CultureInfo.InvariantCulture)));
-				vehicle.Element(_v27 + XMLNames.Trailer_AeroFeatures)?.Element(_v27 + XMLNames.Trailer_CertifiedAeroReduction)
-					?.Add(new XElement(_v27 + XMLNames.Trailer_YawAngle9, trailerData.YawAngle9.ToXMLFormat(2).ToString(CultureInfo.InvariantCulture)));
+				var certifiedAeroDevice = XDocument.Parse(trailerData.CertifiedAeroDeviceXml.ToString(CultureInfo.InvariantCulture));
+
+				var data = certifiedAeroDevice.Descendants().Where(x => x.Name.ToString().Contains("Data"));
+
+				if (data != null)
+					vehicle.Element(_v27 + XMLNames.Trailer_AeroFeatures)?.Element(_v27 + XMLNames.Trailer_CertifiedAeroReduction)?
+						.Add(data);
+
+				var signature = certifiedAeroDevice.Descendants().Where(x => x.Name.ToString().Contains("Signature"));
+
+				vehicle.Element(_v27 + XMLNames.Trailer_AeroFeatures)?.Element(_v27 + XMLNames.Trailer_CertifiedAeroReduction)?
+					.Add(signature);
+
 			}
 
 

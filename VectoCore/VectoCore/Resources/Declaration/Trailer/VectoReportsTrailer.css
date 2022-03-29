@@ -192,10 +192,10 @@ Vehicle AeroFeatures:before {content: "Aero Features:";margin-top:5px;}
 Vehicle Technology:before {content: "Technology:"; margin-left: 10px;}
 
 Vehicle CertifiedAeroReduction:before {content: "Certified Aero Reduction:"; margin-left: 10px;}
-Vehicle YawAngle0:before {content: "Yaw Angle 0:"; margin-left: 20px;}
-Vehicle YawAngle3:before {content: "Yaw Angle 3:"; margin-left: 20px;}
-Vehicle YawAngle6:before {content: "Yaw Angle 6:"; margin-left: 20px;}
-Vehicle YawAngle9:before {content: "Yaw Angle 9:"; margin-left: 20px;}
+Vehicle CertifiedAerodynamicReduction0:before {content: "Yaw Angle 0:"; margin-left: 20px;}
+Vehicle CertifiedAerodynamicReduction3:before {content: "Yaw Angle 3:"; margin-left: 20px;}
+Vehicle CertifiedAerodynamicReduction6:before {content: "Yaw Angle 6:"; margin-left: 20px;}
+Vehicle CertifiedAerodynamicReduction9:before {content: "Yaw Angle 9:"; margin-left: 20px;}
 
 
 Vehicle AxlesAndTyreFeatures {display: none;}*/
@@ -377,6 +377,7 @@ AverageSpeed:before { content: "Average Speed: " }
 FuelConsumption:before { content: "Fuel Consumption: " }
 CO2:before { content: "CO2: " }
 EfficiencyRatio:before { content: "Efficiency Ratio: " }
+ReferenceRatio:before { content: "Reference Ratio: " }
 
 TotalVehicleMass,
 /*Payload {

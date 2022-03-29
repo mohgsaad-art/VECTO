@@ -111,7 +111,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		public KeyValuePair<double, double> TrailerLiftableImpact { get; set; }
 		public KeyValuePair<double, double> TrailerSteeredImpact { get; set; }
-
+		public StandardTrailerSegment StandardTrailerSegment { get; set; }
 	}
 
 	public class BusParameters

@@ -310,7 +310,7 @@
     <Compile Include="InputData\Reader\DataObjectAdapter\DeclarationTrailerDataAdapter.cs" />
     <Compile Include="InputData\Reader\DataObjectAdapter\DeclarationDataAdapterPrimaryBus.cs" />
     <Compile Include="InputData\Reader\DataObjectAdapter\DeclarationDataAdapterSingleBus.cs" />
-    <Compile Include="InputData\Reader\DataObjectAdapter\IDeclarationTrailerDataAdapter.cs" />
+    <Compile Include="InputData\Reader\DataObjectAdapter\IDeclarationDataAdapterTrailer.cs" />
     <Compile Include="InputData\Reader\Impl\AbstractVTPModeVectoRunDataFactory.cs" />
     <Compile Include="InputData\Reader\Impl\CombinedBusAuxiliaries.cs" />
     <Compile Include="InputData\Reader\DataObjectAdapter\DeclarationDataAdapterCompletedBusSpecific.cs" />
@@ -365,6 +365,7 @@
     <Compile Include="Models\Declaration\CompletedBusSegments.cs" />
     <Compile Include="Models\Declaration\AeroFeatures.cs" />
     <Compile Include="Models\Declaration\ReferenceTrailer.cs" />
+    <Compile Include="Models\Declaration\TrailerReferenceFactors.cs" />
     <Compile Include="Models\Declaration\TrailerSegments.cs" />
     <Compile Include="Models\GenericModelData\GenericTorqueConverterData.cs" />
     <Compile Include="Models\GenericModelData\GenericTransmissionComponentData.cs" />
@@ -988,6 +989,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\XSD\VectoComponent.2.7.xsd">
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Declaration\Trailer\reference_factors.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <None Include="Utils\VectoVersionCore.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

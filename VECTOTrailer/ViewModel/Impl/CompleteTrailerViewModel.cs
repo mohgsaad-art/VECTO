@@ -84,7 +84,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		private string _axle2Xml;
 		private string _axle3Xml;
 
-		private string _CertifiedAeroDeviceXml;
+		private string _certifiedAeroDeviceXml;
 
 		private bool _axle1IsTwin;
 		private bool _axle2IsTwin;
@@ -506,12 +506,12 @@ namespace VECTOTrailer.ViewModel.Impl
 		{
 			get
 			{
-				if (string.IsNullOrEmpty(_certifiedAeroDeviceFilePath))
-					return _CertifiedAeroDeviceXml;
+				if (string.IsNullOrEmpty(_certifiedAeroDeviceFilePath) || !_certifiedAeroDeviceFilePath.Contains(".xml"))
+					return _certifiedAeroDeviceXml;
 
 				return File.ReadAllText(_certifiedAeroDeviceFilePath);
 			}
-			set => SetProperty(ref _CertifiedAeroDeviceXml, value);
+			set => SetProperty(ref _certifiedAeroDeviceXml, value);
 		}
 
 		public bool Axle1IsTwin
@@ -744,7 +744,7 @@ namespace VECTOTrailer.ViewModel.Impl
 				}
 
 				if (IsCertified) {
-					var device = (xmlDoc.GetElementsByTagName("CertifiedAeroDevice").Item(0) ??
+					var device = (xmlDoc.GetElementsByTagName("CertifiedAeroReduction") ??
 								throw new Exception("Cannot parse aero device information")).Cast<XmlNode>().ToList();
 
 					EnableCertifiedAeroDevice(device[0]);
@@ -803,11 +803,10 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		private void EnableCertifiedAeroDevice(XmlNode device)
 		{
-			//TODO 12/21
 			CertifiedAeroDeviceXml = device.OuterXml.ToString(CultureInfo.InvariantCulture);
-			CertifiedAeroDeviceFilePath = device.ChildNodes[3].ChildNodes[0].ChildNodes[1].InnerText +
-							", " + device.ChildNodes[3].ChildNodes[0].ChildNodes[5].InnerText;
-
+			CertifiedAeroDeviceFilePath = device.ChildNodes[0].ChildNodes[0].InnerText +
+										", " + device.ChildNodes[0].ChildNodes[1].InnerText;
+			
 			CertifiedAeroDeviceButtonsVisibility = true;
 			CertifiedAeroDeviceNewVisibility = false;
 		}
@@ -1044,12 +1043,9 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		private void DoDeleteCertifiedAeroDevice()
 		{
-			this.Axle1ButtonsVisibility = false;
-			this.Axle1NewVisibility = true;
-			this.Axle1FilePath = string.Empty;
-			this.Axle1IsTwin = false;
-			this.Axle1IsLiftable = false;
-			this.Axle1IsSteered = false;
+			this.CertifiedAeroDeviceButtonsVisibility = false;
+			this.CertifiedAeroDeviceNewVisibility = true;
+			this.CertifiedAeroDeviceFilePath = null;
 		}
 
 		private string OpenFileSelector(JobFileType jobFileType, string textPropertyName, string filePath)

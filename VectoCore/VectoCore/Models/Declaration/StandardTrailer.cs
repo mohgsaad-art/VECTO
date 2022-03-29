@@ -52,7 +52,7 @@ using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.Declaration
 {
-	public sealed class StandardTrailer : LookupData<string, StandardTrailerSegment>
+	public sealed class StandardTrailer : LookupData<string, double, StandardTrailerSegment>
 	{
 		private DataTable _segmentTable;
 
@@ -65,31 +65,51 @@ namespace TUGraz.VectoCore.Models.Declaration
 			_segmentTable = table.Copy();
 		}
 
-		public override StandardTrailerSegment Lookup(string code)
+		public DataRow GetRow(string code)
+		{
+			return GetTrailerDataRow(code);
+		}
+
+		public override StandardTrailerSegment Lookup(string code, double grossVehicleWeight = 0)
 		{
 			var row = GetTrailerDataRow(code);
 			if (row == null) {
-				return new StandardTrailerSegment { VehicleGroup = -1 };
+				return new StandardTrailerSegment {};
 			}
 
-			return new StandardTrailerSegment {
-				VehicleGroup = (int)row.ParseDouble("Vehicle_group"),
-				MaxGcm = row.Field<string>("max_gcm"),
+			return new StandardTrailerSegment
+			{
+				//VehicleGroup = (int)row.ParseDouble("Vehicle_group"),
+				MaxGcm = row.ParseDouble("max_gcm"),
 				LhA1 = SquareMeter.Create(row.ParseDouble("polar_curve_lh_a1")),
 				LhA2 = SquareMeter.Create(row.ParseDouble("polar_curve_lh_a2")),
 				LhA3 = SquareMeter.Create(row.ParseDouble("polar_curve_lh_a3")),
 				OtherA1 = SquareMeter.Create(row.ParseDouble("polar_curve_o_a1")),
 				OtherA2 = SquareMeter.Create(row.ParseDouble("polar_curve_o_a2")),
 				OtherA3 = SquareMeter.Create(row.ParseDouble("polar_curve_o_a3")),
-				CargoVolumeLh = CubicMeter.Create(row.ParseDouble("cargo_volume_lh")),
-				CargoVolumeOther = CubicMeter.Create(row.ParseDouble("cargo_volume_o")),
-				CurbMassLh = Kilogram.Create(row.ParseDouble("cargo_volume_o")),
-				CurbMassOther = Kilogram.Create(row.ParseDouble("cargo_volume_o")),
-				CdxaLh = SquareMeter.Create(row.ParseDouble("curb_mass_trailer_body_lh")),
-				CdxaOther = SquareMeter.Create(row.ParseDouble("curb_mass_trailer_body_o")),
+				CargoVolumeTrailerLh = CubicMeter.Create(row.ParseDouble("cargo_volume_trailer_lh")),
+				CargoVolumeTrailerOther = CubicMeter.Create(row.ParseDouble("cargo_volume_trailer_o")),
+				CargoVolumeBodyLh = CubicMeter.Create(row.ParseDouble("cargo_volume_body_lh")),
+				CargoVolumeBodyOther = CubicMeter.Create(row.ParseDouble("cargo_volume_body_o")),
+				CurbMassTrailerLh = Kilogram.Create(row.ParseDouble("curb_mass_trailer_lh")),
+				CurbMassTrailerOther = Kilogram.Create(row.ParseDouble("curb_mass_trailer_o")),
+				CurbMassBodyLh = Kilogram.Create(row.ParseDouble("curb_mass_body_lh")),
+				CurbMassBodyOther = Kilogram.Create(row.ParseDouble("curb_mass_body_o")),
+				CdxaLh = SquareMeter.Create(row.ParseDouble("CdxA_trailer_lh")),
+				CdxaOther = SquareMeter.Create(row.ParseDouble("CdxA_trailer_o")),
 				TyreXml = row.Field<string>("tyre_xml").Replace("_", "").Replace("Standard", ""),
-				TwinTyres = row.Field<string>("twin_tyres") == "TRUE"
+				TwinTyres = row.Field<string>("twin_tyres") == "TRUE",
+				TotalHeight = Meter.Create(row.ParseDouble("total_vehicle_height")),
+				PayloadLhLow = !row.Field<string>("payload_lh_low").Contains("pc") ? row.ParseDouble("payload_lh_low") :
+				DeclarationData.GetPayloadForGrossVehicleWeight(Kilogram.Create(grossVehicleWeight), row.Field<string>("payload_lh_low")).Value(),
+				PayloadLhRef = !row.Field<string>("payload_lh_ref").Contains("pc") ? row.ParseDouble("payload_lh_ref") :
+				DeclarationData.GetPayloadForGrossVehicleWeight(Kilogram.Create(grossVehicleWeight), row.Field<string>("payload_lh_low")).Value(),
+				PayloadOtherLow = !row.Field<string>("payload_o_low").Contains("pc") ? row.ParseDouble("payload_o_low") :
+				DeclarationData.GetPayloadForGrossVehicleWeight(Kilogram.Create(grossVehicleWeight), row.Field<string>("payload_lh_low")).Value(),
+				PayloadOtherRef = !row.Field<string>("payload_o_ref").Contains("pc") ? row.ParseDouble("payload_o_ref") :
+				DeclarationData.GetPayloadForGrossVehicleWeight(Kilogram.Create(grossVehicleWeight), row.Field<string>("payload_lh_low")).Value()
 			};
+
 
 		}
 

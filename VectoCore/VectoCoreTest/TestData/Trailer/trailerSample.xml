@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<tns:VectoInputDeclaration schemaVersion="2.7" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v2.0" xmlns:v2.7="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7" xmlns:v2.2="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.2" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:di="http://www.w3.org/2000/09/xmldsig#" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob F:\Vecto\vecto-dev_bt\VectoCore\VectoCore\Resources\XSD/VectoDeclarationJob.xsd">
+  <v2.0:Vehicle id="CB-ecb7ef1819b441779f23" xsi:type="VehicleDeclarationType">
+    <Manufacturer>demo</Manufacturer>
+    <ManufacturerAddress>demo</ManufacturerAddress>
+    <Model_CommercialName>demo</Model_CommercialName>
+    <VIN>12345678901234567</VIN>
+    <Date>2021-12-14T10:14:53.7322804Z</Date>
+    <LegislativeCategory>O3</LegislativeCategory>
+    <AxleCount>1</AxleCount>
+    <TrailerType>DA</TrailerType>
+    <BodyWorkType>dry box</BodyWorkType>
+    <VolumeOrientation>false</VolumeOrientation>
+    <TrailerCouplingPoint>n/a</TrailerCouplingPoint>
+    <Masses>
+      <CorrectedMassInRunningOrder>40000</CorrectedMassInRunningOrder>
+      <TPMLMTrailer>20000</TPMLMTrailer>
+      <TPMLMAxleAssembly>19000</TPMLMAxleAssembly>
+    </Masses>
+    <Dimensions>
+      <ExternalLengthBody>2.000</ExternalLengthBody>
+      <ExternalWidthBody>2.000</ExternalWidthBody>
+      <ExternalHeightBody>2.000</ExternalHeightBody>
+      <TotalHeightTrailer>3.000</TotalHeightTrailer>
+      <LengthFromFrontToFirstAxle>2.000</LengthFromFrontToFirstAxle>
+      <LengthBetweenCentersOfAxles>0.000</LengthBetweenCentersOfAxles>
+      <CargoVolume>2.000</CargoVolume>
+    </Dimensions>
+    <AeroFeatures>
+      <CertifiedAeroReduction>
+        <Data xsi:type="CertifiedAeroDataDeclarationType" id="AERO-asdf">
+          <Manufacturer>Generic Manufacturer</Manufacturer>
+          <Model>Generic Tyre Model</Model>
+          <CertificationNumber>e12*0815/8051*2017/05T0000*00</CertificationNumber>
+          <Date>2017-02-15T11:00:00Z</Date>
+          <CertifiedAerodynamicReduction0>1.00</CertifiedAerodynamicReduction0>
+          <CertifiedAerodynamicReduction3>2.00</CertifiedAerodynamicReduction3>
+          <CertifiedAerodynamicReduction6>3.00</CertifiedAerodynamicReduction6>
+          <CertifiedAerodynamicReduction9>4.00</CertifiedAerodynamicReduction9>
+          <ApplicableVehicleGroup>1123</ApplicableVehicleGroup>
+        </Data>
+        <Signature>
+          <di:Reference URI="#AERO-asdf">
+            <di:Transforms>
+              <di:Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+              <di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+            </di:Transforms>
+            <di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+            <di:DigestValue>7vbS5FPUgb2ce2NfcDGWMWpV6aZUyjY0SXqE2AP8Oh8=</di:DigestValue>
+          </di:Reference>
+        </Signature>
+      </CertifiedAeroReduction>
+    </AeroFeatures>
+    <AxleWheels>
+      <Data xsi:type="v2.7:TrailerAxleWheelsDataDeclarationType">
+        <Axles>
+          <Axle xsi:type="v2.7:TrailerAxleType" axleNumber="1">
+            <TwinTyres>false</TwinTyres>
+            <Liftable>false</Liftable>
+            <Steered>false</Steered>
+            <Tyre>
+              <v2.7:Data xsi:type="v2.2:TyreDataDeclarationType" id="TYR-789345" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.2" xmlns:v2.7="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7">
+                <Manufacturer>Generic Tyre Manufacturer</Manufacturer>
+                <Model>Trailer Tyre Model A</Model>
+                <CertificationNumber>456-654-456-654</CertificationNumber>
+                <Date>2019-01-01T12:00:00Z</Date>
+                <AppVersion>SomeTyrePreprocessingApp 1.0</AppVersion>
+                <Dimension>225/75 R17.5</Dimension>
+                <RRCDeclared>0.0055</RRCDeclared>
+                <FzISO>33500</FzISO>
+              </v2.7:Data>
+              <Signature>
+                <di:Reference URI="#CabinX23h" xmlns:di="http://www.w3.org/2000/09/xmldsig#">
+                  <di:Transforms>
+                    <di:Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+                  </di:Transforms>
+                  <di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+                  <di:DigestValue>oYvriifJU95to/PxQdZSA0ktT3/LD8xSN3LJDrEX45w=</di:DigestValue>
+                </di:Reference>
+              </Signature>
+            </Tyre>
+          </Axle>
+        </Axles>
+      </Data>
+    </AxleWheels>
+  </v2.0:Vehicle>
+</tns:VectoInputDeclaration>

@@ -248,6 +248,7 @@
     <Compile Include="XML\XMLEngineeringInputRefTest.cs" />
     <Compile Include="XML\XMLEngineeringInputSingleTest.cs" />
     <Compile Include="XML\XMLReportTrailerTest.cs" />
+    <Compile Include="XML\TrailerReferenceFactors.cs" />
     <Compile Include="XML\XMLTrailerInputDataTest.cs" />
     <Compile Include="XML\XMLPrimaryBusInputDataTest.cs" />
     <Compile Include="XML\XMLReportTest.cs" />
@@ -3122,9 +3123,6 @@
     <None Include="TestData\test.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Content Include="TestData\Trailer\TEST_CASE.vsum">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <None Include="TestData\XML\EngineeringJob\Class5_Tractor_4x2\325kW.vfld">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -3685,15 +3683,15 @@
     <Content Include="TestData\Jobs\Tractor_4x2_vehicle-class-5_Generic vehicle.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\Trailer\TEST_CASE.RSLT_CUSTOMER.xml">
+    <EmbeddedResource Include="TestData\Trailer\AerodynamicDevice_sample.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestData\Trailer\TEST_CASE.RSLT_MANUFACTURER.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestData\Trailer\trailerSample.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestData\Trailer\TEST_CASE.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestData\Trailer\tyreSample.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </EmbeddedResource>
     <Content Include="TestData\XML\EngineeringJob\SampleJobEngineering1.0.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -299,11 +299,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		private static bool CheckTrailerType(Model.TempDataObject.TrailerComponentData trailer)
 		{
 			if (trailer.TrailerType != TypeTrailer.DB &&
-				(trailer.TPLMAxleAssembly == null || trailer.TPLMAxleAssembly.Value() == 0))
-				return false;
-
-			if (trailer.TrailerType != TypeTrailer.DB &&
-				((trailer.Axle1IsLiftable || trailer.Axle1IsSteered) || (trailer.Axle2IsLiftable || trailer.Axle2IsSteered)))
+				(trailer.TPLMAxleAssembly == null || trailer.TPLMAxleAssembly.Value() == 0 || trailer.TPLMAxleAssembly.Value() < 1000))
 				return false;
 
 			if ((trailer.TrailerType != TypeTrailer.DC || trailer.TrailerType != TypeTrailer.DA) &&
@@ -346,13 +342,16 @@ namespace VECTOTrailer.ViewModel.Impl
 			if (trailer.ExternalWidthOfTheBody >= trailer.TotalHeightOfTheTrailer)
 				return false;
 
-			if (trailer.TrailerType == TypeTrailer.DA && trailer.ExternalWidthOfTheBody > 14)
+			if (trailer.TrailerType == TypeTrailer.DA && trailer.ExternalLengthOfTheBody > 14)
 				return false;
 
-			if (trailer.TrailerType == TypeTrailer.DC && trailer.ExternalWidthOfTheBody > 12)
+			if (trailer.TrailerType == TypeTrailer.DC && trailer.ExternalLengthOfTheBody > 12)
 				return false;
 
-			if (trailer.TrailerType == TypeTrailer.DB && trailer.ExternalWidthOfTheBody > 12)
+			if (trailer.TrailerType == TypeTrailer.DB && trailer.ExternalLengthOfTheBody > 12)
+				return false;
+
+			if (trailer.MassInRunningOrder.Value() < 1000 || trailer.TPLMTotalTrailer.Value() < 1000)
 				return false;
 
 			return trailer.TPLMAxleAssembly <= trailer.TPLMTotalTrailer;
@@ -424,7 +423,7 @@ namespace VECTOTrailer.ViewModel.Impl
 				var sourceObject = xmlException.SourceObject as XmlElement;
 				var localName = sourceObject?.LocalName;
 
-				if (sourceObject != null)
+				if (sourceObject != null && !_errors.ContainsKey(localName))
 					_errors.Add(localName, message?.Message);
 			}
 		}

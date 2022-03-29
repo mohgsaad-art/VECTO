@@ -47,7 +47,7 @@ namespace TUGraz.VectoCore.Tests.XML
 {
 	public class XMLReportTrailerTest
 	{
-		private const string SampleTrailer = @"TestData\Trailer\TEST_CASE.xml";
+		private const string SampleTrailer = @"TestData\Trailer\trailerSample.xml";
 
 		protected IXMLInputDataReader XMLInputReader;
 		private IKernel _kernel;

@@ -63,7 +63,7 @@ using TUGraz.VectoCore.Utils;
 namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 {
 
-	public class DeclarationTrailerDataAdapter : AbstractSimulationDataAdapter, IDeclarationTrailerDataAdapter
+	public class DeclarationTrailerDataAdapter : AbstractSimulationDataAdapter, IDeclarationDataAdapterTrailer
 	{
 		public static readonly GearboxType[] SupportedGearboxTypes =
 			{ GearboxType.MT, GearboxType.AMT, GearboxType.ATPowerSplit, GearboxType.ATSerial };
@@ -142,9 +142,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 					.Select(da => DeclarationData.Wheels.Lookup(da.Tyre.Dimension).DynamicTyreRadius)
 					.Average();
 
-			retVal.CargoVolume = mission.TotalCargoVolume + trailerSegment.ReferenceTrailerSegment.CargoVolume; 
 
-			
+			retVal.CargoVolume = mission.TotalCargoVolume + trailerSegment.ReferenceTrailerSegment.CargoVolume;
+
 			var axles = data.Components.AxleWheels.AxlesDeclaration;
 
 			var axleData = new List<Axle>();
@@ -209,9 +209,39 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			retVal.SleeperCab = data.SleeperCab;
 			retVal.TrailerSegment = trailerSegment;
 			retVal.InputDataTrailer = trailerData;
-			retVal.BodyAndTrailerMass = trailerData.MassInRunningOrder + trailerSegment.MassBody;
 
-			retVal.Loading = Kilogram.Create(Math.Min(loading.Value(), (specificTrailerData.MaxGcm - data.CurbMassChassis.Value() - trailerData.MassInRunningOrder.Value())));
+			var maxGcm = specificTrailerData.MaxGcm;
+			var curbmass = trailerData.MassInRunningOrder.Value();
+
+			var massBody = trailerSegment.MassBody;
+
+			var trailerCargoVolume = mission.TotalCargoVolume;
+			var BodyCargoVolume = trailerData.CargoVolume;
+
+			var rfRun = (Environment.GetEnvironmentVariable("referenceFactorRun") == "true");
+			if (rfRun)
+			{
+				maxGcm = mission.StandardTrailerSegment.MaxGcm;
+				curbmass = mission.MissionType == MissionType.LongHaul
+					? mission.StandardTrailerSegment.CurbMassTrailerLh.Value()
+					: mission.StandardTrailerSegment.CurbMassTrailerOther.Value();
+
+				massBody = mission.MissionType == MissionType.LongHaul
+					? mission.StandardTrailerSegment.CurbMassBodyLh
+					: mission.StandardTrailerSegment.CurbMassBodyOther;
+
+				trailerCargoVolume = (mission.MissionType == MissionType.LongHaul
+					? mission.StandardTrailerSegment.CargoVolumeTrailerLh
+					: mission.StandardTrailerSegment.CargoVolumeTrailerOther);
+
+				BodyCargoVolume += (mission.MissionType == MissionType.LongHaul
+					? mission.StandardTrailerSegment.CargoVolumeBodyLh
+					: mission.StandardTrailerSegment.CargoVolumeBodyOther);
+			}
+
+			retVal.BodyAndTrailerMass = Kilogram.Create(curbmass) + massBody;
+
+			retVal.Loading = Kilogram.Create(Math.Min(loading.Value(), (maxGcm - data.CurbMassChassis.Value() - curbmass)));
 
 			retVal.PassengerCount = 1;
 			retVal.DynamicTyreRadius =
@@ -219,7 +249,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 					.Select(da => DeclarationData.Wheels.Lookup(da.Tyre.Dimension).DynamicTyreRadius)
 					.Average();
 			
-			retVal.CargoVolume = mission.TotalCargoVolume + trailerData.CargoVolume;
+			retVal.CargoVolume = trailerCargoVolume + BodyCargoVolume;
 			
 
 			var axles = data.Components.AxleWheels.AxlesDeclaration;
@@ -933,7 +963,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 		}
 
 		public static List<CrossWindCorrectionCurveReader.CrossWindCorrectionEntry> GetTrailerDeclarationAirResistanceCurve(
-			string crosswindCorrectionParameters, SquareMeter aerodynamicDragAera, Meter vehicleHeight, TrailerSegment segment, CorrectedTrailerData data)
+			string crosswindCorrectionParameters, SquareMeter aerodynamicDragAera, Meter vehicleHeight, TrailerSegment segment, CorrectedTrailerData data, Mission mission, IDeclarationInputDataProvider vehicle)
 		{
 			var startSpeed = Constants.SimulationSettings.CrosswindCorrection.MinVehicleSpeed;
 			var maxSpeed = Constants.SimulationSettings.CrosswindCorrection.MaxVehicleSpeed;
@@ -978,11 +1008,45 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 						var beta = Math.Atan(vAirY / vAirX).ToDegree();
 
-						// ΔCdxA = A1β + A2β² + A3β³
-						var deltaCdA = a1 * beta + a2 * beta * beta + a3 * beta * beta * beta;
+						var rfRun = (Environment.GetEnvironmentVariable("referenceFactorRun") == "true");
+
+						
+						SquareMeter deltaCdA;
+
+						if (rfRun && beta == 0) {
+							deltaCdA = mission.MissionType == MissionType.LongHaul
+								? mission.StandardTrailerSegment.CdxaLh
+								: mission.StandardTrailerSegment.CdxaOther;
+							aerodynamicDragAera = vehicle.JobInputData.Vehicle.Components.AirdragInputData.AirDragArea;
+						}
+
+						else if (rfRun && beta != 0) {
+							deltaCdA = mission.MissionType == MissionType.LongHaul
+								? mission.StandardTrailerSegment.CdxaLh
+								: mission.StandardTrailerSegment.CdxaOther;
+
+							a1 = mission.MissionType == MissionType.LongHaul
+								? mission.StandardTrailerSegment.LhA1
+								: mission.StandardTrailerSegment.OtherA1;
+							a2 = mission.MissionType == MissionType.LongHaul
+								? mission.StandardTrailerSegment.LhA2
+								: mission.StandardTrailerSegment.OtherA2;
+							a3 = mission.MissionType == MissionType.LongHaul
+								? mission.StandardTrailerSegment.LhA3
+								: mission.StandardTrailerSegment.OtherA3;
+
+							aerodynamicDragAera = vehicle.JobInputData.Vehicle.Components.AirdragInputData.AirDragArea;
+
+							// ΔCdxA = A1β + A2β² + A3β³
+							SquareMeter deltaCdAYaw = a1 * beta + a2 * beta * beta + a3 * beta * beta * beta;
+
+							deltaCdA += deltaCdAYaw;
+						}
+						else
+							deltaCdA = a1 * beta + a2 * beta * beta + a3 * beta * beta * beta;
 
 						// CdxA(β) = CdxA(0) + ΔCdxA(β)
-						var cdA = aerodynamicDragAera + deltaCdA;
+						var cdA = aerodynamicDragAera + deltaCdA; 
 
 						var share = (alpha == 0 || alpha == maxAlpha ? alphaStep / 2.0 : alphaStep) / maxAlpha;
 
@@ -1014,6 +1078,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			
 			var retVal = SetCommonAirdragData(airdragInputData);
 			retVal.CrossWindCorrectionMode = CrossWindCorrectionMode.DeclarationModeCorrection;
+
 			retVal.DeclaredAirdragArea = trailerData.TotalRefCorrection.CdxA0;
 
 			var aerodynamicDragArea = retVal.DeclaredAirdragArea + mission.Trailer.Sum(t => t.DeltaCdA).DefaultIfNull(0);
@@ -1027,8 +1092,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 		}
 
 		public virtual AirdragData CreateTrailerAirdragData(
-			IAirdragDeclarationInputData airdragInputData, Mission mission, TrailerData specificTrailerData, TrailerSegment trailerSegment)
+			IDeclarationInputDataProvider vehicle, Mission mission, TrailerData specificTrailerData, TrailerSegment trailerSegment)
 		{
+			var airdragInputData = vehicle.JobInputData.Vehicle.Components.AirdragInputData;
 			if (airdragInputData == null || airdragInputData.AirDragArea == null)
 			{
 				return DefaultAirdragData(mission, trailerSegment, specificTrailerData); 
@@ -1038,13 +1104,17 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			retVal.CrossWindCorrectionMode = CrossWindCorrectionMode.DeclarationModeCorrection;
 
 			//Corrected CdxA(0)
-			retVal.DeclaredAirdragArea = specificTrailerData.TotalCorrection.CdxA0; 
+			var rfRun = (Environment.GetEnvironmentVariable("referenceFactorRun") == "true");
+
+			retVal.DeclaredAirdragArea = rfRun ? specificTrailerData.CdxABase.SI<SquareMeter>() : specificTrailerData.TotalRefCorrection.CdxA0;
+
+			retVal.DeclaredAirdragArea = specificTrailerData.TotalCorrection.CdxA0;
 
 			retVal.CrossWindCorrectionCurve =
 				new CrosswindCorrectionCdxALookup(
 					retVal.DeclaredAirdragArea,
 					GetTrailerDeclarationAirResistanceCurve(
-						mission.CrossWindCorrectionParameters, retVal.DeclaredAirdragArea, mission.VehicleHeight, trailerSegment, specificTrailerData.TotalCorrection),
+						mission.CrossWindCorrectionParameters, retVal.DeclaredAirdragArea, mission.VehicleHeight, trailerSegment, specificTrailerData.TotalCorrection, mission, vehicle),
 					CrossWindCorrectionMode.DeclarationModeCorrection); 
 			return retVal;
 		}
@@ -1102,6 +1172,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			switch (trailer.NumberOfAxles)
 			{
 				case NumberOfTrailerAxles.One when trailer.Axles[0].Liftable: //one axle cant be liftable
+				case NumberOfTrailerAxles.One when trailer.TrailerType == TypeTrailer.DB:
 				case NumberOfTrailerAxles.One when trailer.TrailerType == TypeTrailer.DC && trailer.Axles[0].Steered:
 				case NumberOfTrailerAxles.Two when trailer.TrailerType == TypeTrailer.DB && liftableCount > 0:
 				case NumberOfTrailerAxles.Two when trailer.TrailerType == TypeTrailer.DB && (trailer.Axles[0].Steered || trailer.Axles[1].Steered):
@@ -1115,11 +1186,15 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				case NumberOfTrailerAxles.Three when trailer.Axles.Count(x => x.Steered) > 2:
 					throw new Exception("Wrong axle configuration");
 			}
+
 		}
 
 		private static void ValidateInputValues(ITrailerDeclarationInputData trailer)
 		{
-			if (trailer.TrailerType != TypeTrailer.DB && (trailer.TPMLMAxleAssembly == null || trailer.TPMLMAxleAssembly.Value() == 0))
+			if (trailer.VIN.Length != 17)
+				throw new Exception("VIN must be 17 characters long");
+
+			if (trailer.TrailerType != TypeTrailer.DB && (trailer.TPMLMAxleAssembly == null || trailer.TPMLMAxleAssembly.Value() == 0 || trailer.TPMLMAxleAssembly.Value() < 1000))
 				throw new Exception("Trailer is not DB but no TPMLM Axle Assembly value is given");
 
 			if (trailer.TrailerType != TypeTrailer.DC && (trailer.TrailerCouplingPoint == TrailerCouplingPoint.Low || trailer.TrailerCouplingPoint == TrailerCouplingPoint.High))
@@ -1132,20 +1207,45 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			if (trailer.NumberOfAxles == NumberOfTrailerAxles.One && trailer.LengthBetweenCentersOfAxles.Value() > 0)
 				throw new Exception("One axle trailers should have Length Between Centers Of Axles = 0");
 
-			if (trailer.TPMLMAxleAssembly > trailer.TPMLMTotalTrailer)
+			if (trailer.TrailerType != TypeTrailer.DC && trailer.TPMLMAxleAssembly > trailer.TPMLMTotalTrailer)
+				throw new Exception("Invalid masses declared");
+
+			if (trailer.TrailerType != TypeTrailer.DA && trailer.TPMLMAxleAssembly >= trailer.TPMLMTotalTrailer)
 				throw new Exception("Invalid masses declared");
 
 			if (trailer.ExternalBodyWidth >= trailer.TotalTrailerHeight)
 				throw new Exception("External body width value is larger than the total trailer height");
 
-			if (trailer.TrailerType == TypeTrailer.DA && trailer.ExternalBodyWidth > 14)
+			if (trailer.TrailerType == TypeTrailer.DA && trailer.ExternalBodyLength > 14)
 				throw new Exception("Invalid external body width declared");
 
-			if (trailer.TrailerType == TypeTrailer.DC && trailer.ExternalBodyWidth > 12)
+			if (trailer.TrailerType == TypeTrailer.DC && trailer.ExternalBodyLength > 12)
 				throw new Exception("Invalid external body width declared");
 
-			if (trailer.TrailerType == TypeTrailer.DB && trailer.ExternalBodyWidth > 12)
+			if (trailer.TrailerType == TypeTrailer.DB && trailer.ExternalBodyLength > 12)
 				throw new Exception("Invalid external body width declared");
+
+			if (trailer.ExternalBodyWidth < 1 || trailer.ExternalBodyWidth > 2.6)
+				throw new Exception("External body width is invalid");
+
+			if (trailer.ExternalBodyWidth < 1 || trailer.ExternalBodyWidth > 4)
+				throw new Exception("External body width is invalid");
+
+			if ((trailer.TrailerType != TypeTrailer.DC || trailer.TrailerType != TypeTrailer.DA) &&
+				trailer.NumberOfAxles == NumberOfTrailerAxles.One && trailer.LegislativeCategory.ToUpper() != "O3")
+				throw new Exception("Invalid xml values");
+
+			if (trailer.ExternalBodyHeight >= trailer.TotalTrailerHeight)
+				throw new Exception("Invalid height");
+
+			if (trailer.NumberOfAxles == NumberOfTrailerAxles.One && trailer.LengthBetweenCentersOfAxles.Value() > 0)
+				throw new Exception("Invalid value for one axle");
+
+			if (trailer.TotalTrailerHeight < 1 || trailer.TotalTrailerHeight > 4)
+				throw new Exception("Invalid total height");
+
+			if (trailer.MassInRunningOrder.Value() < 1000 || trailer.TPMLMTotalTrailer.Value() < 1000)
+				throw new Exception("Invalid values");
 		}
 
 		public void ValidateTrailerInput(ITrailerDeclarationInputData trailer)
@@ -1301,7 +1401,6 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			//CdxA(0)_width_correction*(Total_height_of_the_trailer/Total_trailer_height_generic_cad)
 			var s = trailerSegment.GenericCadVehicle;
 
-
 			var correction = previousCorrection * (trailer.TotalTrailerHeight / s.TotalHeight);
 			return SquareMeter.Create(correction);
 		}
@@ -1320,7 +1419,6 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 		{
 			//CdxA(3)_height_correction*(External_height_of_the_body/External_body_height_generic_cad)
 			var s = trailerSegment.GenericCadVehicle;
-
 
 			var correction = previousCorrection * (trailer.ExternalBodyHeight / s.ExternalBodyHeight);
 			return SquareMeter.Create(correction);
@@ -1377,12 +1475,17 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			return SquareMeter.Create(correction);
 		}
 
-		private static CorrectedTrailerData GetSpecificTrailerCorrection(TrailerSegment trailerSegment, ITrailerDeclarationInputData trailer)
+		private static CorrectedTrailerData GetSpecificTrailerCorrection(TrailerSegment trailerSegment, ITrailerDeclarationInputData trailer, bool rfRun = false)
 		{
 			var data = new CorrectedTrailerData();
+			data.CdxA0 = SquareMeter.Create(trailerSegment.GenericCadVehicle.CdxA0);
+
 			data.A1 = trailerSegment.GenericCadVehicle.A1;
 			data.A2 = trailerSegment.GenericCadVehicle.A2;
 			data.A3 = trailerSegment.GenericCadVehicle.A3;
+
+			if (rfRun)
+				return data;
 
 			#region LengthAxleCorrection
 
@@ -1571,6 +1674,36 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				CurbMassTrailer = trailer.MassInRunningOrder,
 				Inertia = wheels.Lookup(GetAxleWheelDimension(genericVehicle)).Inertia,
 				TotalCorrection = GetSpecificTrailerCorrection(trailerSegment, trailer),
+				TotalRefCorrection = GetReferenceTrailerCorrection(trailerSegment, trailer),
+				MaxGcm = maxGcm,
+				CdxABase = trailerSegment.GenericCadVehicle.CdxA0
+			};
+
+			return specificTrailerData;
+		}
+
+		public TrailerData GetTrailerDataRf(TrailerSegment trailerSegment, ITrailerDeclarationInputData trailer,
+			IVehicleDeclarationInputData genericVehicle)
+		{
+			var wheels = new Wheels();
+
+			//Read the + tpmlm axle assembly and add accordingly
+			if (!double.TryParse(trailerSegment.MaxGcm, out double maxGcm)
+				&& trailerSegment.MaxGcm.Contains("+"))
+			{
+				double.TryParse(trailerSegment.MaxGcm.Substring(0, trailerSegment.MaxGcm.IndexOf("+")), out maxGcm);
+				maxGcm += trailer.TPMLMAxleAssembly.Value();
+			}
+
+			var specificTrailerData = new TrailerData
+			{
+				VolumeOrientation = trailer.VolumeOrientation,
+				VehicleGroup = trailerSegment.VehicleGroup,
+				VehicleGroupActive = trailerSegment.VehicleGroupActive,
+				GenericVehicleCode = trailerSegment.GenericCode,
+				CurbMassTrailer = trailer.MassInRunningOrder,
+				Inertia = wheels.Lookup(GetAxleWheelDimension(genericVehicle)).Inertia,
+				TotalCorrection = GetSpecificTrailerCorrection(trailerSegment, trailer, true),
 				TotalRefCorrection = GetReferenceTrailerCorrection(trailerSegment, trailer),
 				MaxGcm = maxGcm,
 				CdxABase = trailerSegment.GenericCadVehicle.CdxA0
