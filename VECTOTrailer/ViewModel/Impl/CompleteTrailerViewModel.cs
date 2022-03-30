@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 using System.Xml;
 using Castle.Core;
@@ -15,6 +16,7 @@ using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.XML;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Factory;
+using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
 using TUGraz.VectoCore.Models.Declaration;
 using VECTOTrailer.Helper;
 using VECTOTrailer.Model;
@@ -297,8 +299,13 @@ namespace VECTOTrailer.ViewModel.Impl
 			get => _trailerType;
 			set
 			{
-				if (!SetProperty(ref _trailerType, value))
+				if (!SetProperty(ref _trailerType, value)) {
 					return;
+				}
+
+				if (value == TypeTrailer.DB) {
+					Axle1IsSteered = true;
+				}
 
 				TPMLMAxleAssemblyVisibility = TrailerType != TypeTrailer.DB;
 
@@ -535,6 +542,8 @@ namespace VECTOTrailer.ViewModel.Impl
 			get => _axle1IsSteered;
 			set => SetProperty(ref _axle1IsSteered, value);
 		}
+
+
 		public bool Axle2IsSteered
 		{
 			get => _axle2IsSteered;
@@ -705,7 +714,13 @@ namespace VECTOTrailer.ViewModel.Impl
 					EnableCertifiedAeroDevice(device[0]);
 				}
 
+
+
 				_componentData = new TrailerComponentData(this);
+				var errors = new List<string>() as IList<string>;
+				if(!DeclarationTrailerDataAdapter.ValidateTrailerInput(trailer, ref errors)) {
+					MessageBox.Show(caption: "Invalid input file!", messageBoxText: string.Join("\n", errors),button:MessageBoxButton.OK, icon:MessageBoxImage.Information);
+				}
 			}
 
 			ClearChangedProperties();

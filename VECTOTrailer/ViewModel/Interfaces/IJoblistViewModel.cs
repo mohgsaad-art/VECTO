@@ -40,7 +40,7 @@ namespace VECTOTrailer.ViewModel.Interfaces
 		ICommand AboutViewCommand { get; }
 		ICommand BrowseAutoSimOutputDirectory { get; }
 		ICommand BrowseAutoSimInputDirectory { get; }
-		IAutoSimulator AutoSimulator { get; }
+		ISimulationBackgroundWorker SimulationBackgroundWorker { get; }
 		ICommand ToggleAutoSim { get; }
 
 		bool? AllJobsChecked { get; set; }

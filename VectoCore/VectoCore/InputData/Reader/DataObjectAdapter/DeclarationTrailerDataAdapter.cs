@@ -1153,9 +1153,11 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				liftableCount++;
 			}
 
-			//if (trailer.Axles[0].Liftable && trailer.Axles[0].Steered) throw new Exception("An axle cannot be both liftable and steered");
-			//if (trailer.Axles.Count > 1 && trailer.Axles[1].Liftable && trailer.Axles[1].Steered) throw new Exception("An axle cannot be both liftable and steered");
-			//if (trailer.Axles.Count > 2 && trailer.Axles[2].Liftable && trailer.Axles[2].Steered) throw new Exception("An axle cannot be both liftable and steered");
+			if (trailer.TrailerType == TypeTrailer.DB && !trailer.Axles[0].Steered) {
+				errors.Add("First axle has to be steered on DB trailers");
+				error = true;
+			}
+			
 			
 			switch (trailer.NumberOfAxles)
 			{
@@ -1163,7 +1165,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				case NumberOfTrailerAxles.One when trailer.TrailerType == TypeTrailer.DB:
 				case NumberOfTrailerAxles.One when trailer.TrailerType == TypeTrailer.DC && trailer.Axles[0].Steered:
 				case NumberOfTrailerAxles.Two when trailer.TrailerType == TypeTrailer.DB && liftableCount > 0:
-				case NumberOfTrailerAxles.Two when trailer.TrailerType == TypeTrailer.DB && (trailer.Axles[0].Steered || trailer.Axles[1].Steered):
+				case NumberOfTrailerAxles.Two when trailer.TrailerType == TypeTrailer.DB && trailer.Axles[1].Steered:
 				case NumberOfTrailerAxles.Two when liftableCount > 1: //too many liftable
 				case NumberOfTrailerAxles.Two when trailer.TrailerType == TypeTrailer.DC && trailer.Axles[0].Steered:
 				case NumberOfTrailerAxles.Two when trailer.TrailerType == TypeTrailer.DA && trailer.Axles[0].Steered:
