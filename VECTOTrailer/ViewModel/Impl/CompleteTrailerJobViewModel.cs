@@ -128,13 +128,16 @@ namespace VECTOTrailer.ViewModel.Impl
 		protected override void DoSaveAsJob(Window window)
 		{
 			var filePath = FileDialogHelper.SaveXmlFileToDialog(SettingsModel.XmlFilePathFolder);
-			if (filePath == null)
+			if (filePath == null) {
 				return;
+			}
 
-			Save(window, filePath);
+			if (Save(window, filePath)) {
+
+			}
 		}
 
-		private void Save(Window window, string filePath)
+		private bool Save(Window window, string filePath)
 		{
 			SetCurrentDataToSave();
 
@@ -150,9 +153,11 @@ namespace VECTOTrailer.ViewModel.Impl
 			if (valid && XmlHelper.ValidateXDocument(xDocument, null, ValidationErrorAction)) {
 				_xmlCompletedTrailerWriter.WriteCompletedTrailerXml(filePath, xDocument);
 				CloseWindow(window);
+				return true;
 			} else {
 				ValidationResultDialogWindow(false, errors);
 				DoShowValidationErrors();
+				return false;
 			}
 		}
 

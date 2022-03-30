@@ -489,6 +489,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 			var liftFactor = 1.0;
 			var steerFactor = 1.0;
+			var trailerType = trailer.TrailerType;
 
 			if (trailer.Axles.Count(x => x.Steered && x.Liftable) > 0) {
 				//found axle with both steered and liftable
@@ -1152,9 +1153,11 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				liftableCount++;
 			}
 
-			//if (trailer.Axles[0].Liftable && trailer.Axles[0].Steered) throw new Exception("An axle cannot be both liftable and steered");
-			//if (trailer.Axles.Count > 1 && trailer.Axles[1].Liftable && trailer.Axles[1].Steered) throw new Exception("An axle cannot be both liftable and steered");
-			//if (trailer.Axles.Count > 2 && trailer.Axles[2].Liftable && trailer.Axles[2].Steered) throw new Exception("An axle cannot be both liftable and steered");
+			if (trailer.TrailerType == TypeTrailer.DB && !trailer.Axles[0].Steered) {
+				errors.Add("First axle has to be steered on DB trailers");
+				error = true;
+			}
+			
 			
 			switch (trailer.NumberOfAxles)
 			{
@@ -1162,7 +1165,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				case NumberOfTrailerAxles.One when trailer.TrailerType == TypeTrailer.DB:
 				case NumberOfTrailerAxles.One when trailer.TrailerType == TypeTrailer.DC && trailer.Axles[0].Steered:
 				case NumberOfTrailerAxles.Two when trailer.TrailerType == TypeTrailer.DB && liftableCount > 0:
-				case NumberOfTrailerAxles.Two when trailer.TrailerType == TypeTrailer.DB && (trailer.Axles[0].Steered || trailer.Axles[1].Steered):
+				case NumberOfTrailerAxles.Two when trailer.TrailerType == TypeTrailer.DB && trailer.Axles[1].Steered:
 				case NumberOfTrailerAxles.Two when liftableCount > 1: //too many liftable
 				case NumberOfTrailerAxles.Two when trailer.TrailerType == TypeTrailer.DC && trailer.Axles[0].Steered:
 				case NumberOfTrailerAxles.Two when trailer.TrailerType == TypeTrailer.DA && trailer.Axles[0].Steered:
@@ -1224,16 +1227,20 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				//throw new Exception("One axle trailers should have Length Between Centers Of Axles = 0");
 			}
 
-			if (trailer.TrailerType != TypeTrailer.DC && trailer.TPMLMAxleAssembly > trailer.TPMLMTotalTrailer) {
+			if ((trailer.TrailerType == TypeTrailer.DC && trailer.TPMLMAxleAssembly > trailer.TPMLMTotalTrailer)
+				|| (trailer.TrailerType == TypeTrailer.DA && trailer.TPMLMAxleAssembly >= trailer.TPMLMTotalTrailer)) {
 				errors.Add("Invalid masses declared");
-				//throw new Exception("Invalid masses declared");
 			}
+			//if (trailer.TrailerType == TypeTrailer.DC && trailer.TPMLMAxleAssembly > trailer.TPMLMTotalTrailer) {
+			//	errors.Add("Invalid masses declared");
+			//	//throw new Exception("Invalid masses declared");
+			//}
 
 
-			if (trailer.TrailerType != TypeTrailer.DA && trailer.TPMLMAxleAssembly >= trailer.TPMLMTotalTrailer) {
-				errors.Add("Invalid masses declared");
-				//throw new Exception("Invalid masses declared");
-			}
+			//if (trailer.TrailerType != TypeTrailer.DA && trailer.TPMLMAxleAssembly >= trailer.TPMLMTotalTrailer) {
+			//	errors.Add("Invalid masses declared");
+			//	//throw new Exception("Invalid masses declared");
+			//}
 
 
 			if (trailer.ExternalBodyHeight >= trailer.TotalTrailerHeight) {
@@ -1578,7 +1585,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			#region Coupling point
 
 			//if (trailer.TrailerType == TypeTrailer.DC && trailer.TrailerCouplingPoint == TrailerCouplingPoint.High) {
-			if(trailerSegment.SpecificTrailerSegment.CouplingPointCorrection){
+			if(trailerSegment.SpecificTrailerSegment.CouplingPointCorrection && trailer.TrailerCouplingPoint == TrailerCouplingPoint.High){
 				data.CdxA0 *= 1.1037;
 				data.CdxA3 *= 1.1348;
 				data.CdxA6 *= 1.1804;
