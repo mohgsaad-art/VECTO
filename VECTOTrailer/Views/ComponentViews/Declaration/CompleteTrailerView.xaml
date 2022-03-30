@@ -445,7 +445,7 @@
                             <StackPanel>
                                 <DockPanel LastChildFill="True">
                                     <Button DockPanel.Dock =" Right" Name="UploadFirstAxleButton" Grid.Column="3" Content="..." HorizontalAlignment="Right" Width="30" Margin="5,0,0,0"
-                                            Command="{Binding SelectFirstFileCommand}"
+                                            Command="{Binding SelectFirstAxleXmlCommand}"
                                             CommandParameter="{Binding FirstFileType}"/>
                                     <TextBox HorizontalAlignment="Stretch" IsReadOnly="True" DockPanel.Dock="Left"
                                              Text="{Binding Axle1FilePath}" Name="FilePath1" TextChanged="ScrollToEnd" IsReadOnlyCaretVisible="True">
@@ -511,7 +511,7 @@
                             <StackPanel>
                                 <DockPanel LastChildFill="True">
                                     <Button DockPanel.Dock =" Right"  Grid.Column="3" Content="..." HorizontalAlignment="Right" Width="30" Margin="5,0,0,0"
-                                            Command="{Binding SelectSecondFileCommand}"
+                                            Command="{Binding SelectSecondAxleXmlCommand}"
                                             CommandParameter="{Binding SecondFileType}"/>
                                     <TextBox HorizontalAlignment="Stretch" IsReadOnly="True" DockPanel.Dock="Left"
                                              Text="{Binding Axle2FilePath}" TextChanged="ScrollToEnd" IsReadOnlyCaretVisible="True">
@@ -572,7 +572,7 @@
                             <StackPanel>
                                 <DockPanel LastChildFill="True">
                                     <Button DockPanel.Dock =" Right"  Grid.Column="3" Content="..." HorizontalAlignment="Right" Width="30" Margin="5,0,0,0"
-                                            Command="{Binding SelectThirdFileCommand}"
+                                            Command="{Binding SelectThirdAxleXmlCommand}"
                                             CommandParameter="{Binding ThirdFileType}"/>
                                     <TextBox HorizontalAlignment="Stretch" IsReadOnly="True" DockPanel.Dock="Left"
                                              Text="{Binding Axle3FilePath}" TextChanged="ScrollToEnd" IsReadOnlyCaretVisible="True">

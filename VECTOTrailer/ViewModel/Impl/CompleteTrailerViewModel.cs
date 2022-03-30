@@ -878,15 +878,15 @@ namespace VECTOTrailer.ViewModel.Impl
 			set => SetProperty(ref _thirdFilePath, value);
 		}
 
-		public ICommand SelectFirstFileCommand =>
+		public ICommand SelectFirstAxleXmlCommand =>
 			_selectFirstFileCommand ??
 			(_selectFirstFileCommand = new RelayCommand<JobFileType>(DoSelectFirstFileCommand));
 
-		public ICommand SelectSecondFileCommand =>
+		public ICommand SelectSecondAxleXmlCommand =>
 			_selectSecondFileCommand ??
 			(_selectSecondFileCommand = new RelayCommand<JobFileType>(DoSelectSecondFileCommand));
 
-		public ICommand SelectThirdFileCommand =>
+		public ICommand SelectThirdAxleXmlCommand =>
 			_selectThirdFileCommand ??
 			(_selectThirdFileCommand = new RelayCommand<JobFileType>(DoSelectThirdFileCommand));
 
@@ -898,52 +898,76 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		private void DoSelectFirstFileCommand(JobFileType jobFileType)
 		{
-			if (OpenFileSelector(jobFileType, nameof(FirstFilePath), FirstFilePath, out var result))
-			{
+			SelectFile(jobFileType, "Invalid tyre xml", (result) => {
 				FirstFilePath = result;
-				this.Axle1FilePath = FirstFilePath;
-			}
+				this.Axle2FilePath = result;
+			});
+			//if (OpenFileSelector(jobFileType, nameof(FirstFilePath), FirstFilePath, out var result))
+			//{
+			//	FirstFilePath = result;
+			//	this.Axle1FilePath = FirstFilePath;
+			//}
 		}
 		private void DoSelectSecondFileCommand(JobFileType jobFileType)
 		{
-			if (OpenFileSelector(jobFileType, nameof(SecondFilePath), SecondFilePath, out var result))
-			{
+			SelectFile(jobFileType, "Invalid tyre xml", (result) => { 
 				SecondFilePath = result;
-				this.Axle2FilePath = SecondFilePath;
-			}
+				this.Axle2FilePath = result;
+			});
+			//if (OpenFileSelector(jobFileType, nameof(SecondFilePath), SecondFilePath, out var result))
+			//{
+			//	SecondFilePath = result;
+			//	this.Axle2FilePath = SecondFilePath;
+			//}
 		}
 		private void DoSelectThirdFileCommand(JobFileType jobFileType)
 		{
-			if (OpenFileSelector(jobFileType, nameof(ThirdFilePath), ThirdFilePath, out var result)) {
+			SelectFile(jobFileType, "Invalid tyre xml", (result) => {
 				ThirdFilePath = result;
-				this.Axle3FilePath = ThirdFilePath;
+				this.Axle3FilePath = result;
+			});
+			//if (OpenFileSelector(jobFileType, nameof(ThirdFilePath), ThirdFilePath, out var result)) {
+			//	ThirdFilePath = result;
+			//	this.Axle3FilePath = ThirdFilePath;
+			//}
+		}
+
+		private void SelectFile(JobFileType jobFileType, string errorCaption, Action<string> successAction)
+		{
+			if (OpenFileSelector(jobFileType, nameof(CertifiedAeroDeviceFilePath),
+					CertifiedAeroDeviceFilePath, out var result))
+			{
+				var aeroDeviceXDoc = XDocument.Load(result);
+				if (!XmlHelper.ValidateXDocument(aeroDeviceXDoc, validationErrorAction: ValidationErrorAction))
+				{
+					MessageBox.Show(caption: errorCaption,
+						messageBoxText: string.Join("\n", xmlFileErrors),
+						button: MessageBoxButton.OK,
+						icon: MessageBoxImage.Error);
+					xmlFileErrors.Clear();
+				}
+				else
+				{
+					successAction.Invoke(result);
+					//CertifiedAeroDeviceFilePath = result;
+				}
+
 			}
 		}
 
-		private IList<string> aeroDeviceXmlErrors = new List<string>();
+		private IList<string> xmlFileErrors = new List<string>();
 		private void DoSelectCertifiedAeroDeviceFileCommand(JobFileType jobFileType)
 		{ 
-			if(OpenFileSelector(jobFileType, nameof(CertifiedAeroDeviceFilePath),
-				CertifiedAeroDeviceFilePath, out var result)) {
-				var aeroDeviceXDoc = XDocument.Load(result);
-				if(!XmlHelper.ValidateXDocument(aeroDeviceXDoc, validationErrorAction: ValidationErrorAction)) {
-					MessageBox.Show(caption: "Invalid aero device xml",
-						messageBoxText: string.Join("\n", aeroDeviceXmlErrors),
-						button: MessageBoxButton.OK,
-						icon: MessageBoxImage.Error);
-					aeroDeviceXmlErrors.Clear();
-				} else {
-					CertifiedAeroDeviceFilePath = result;
-				}
-				
-			}
+			SelectFile(jobFileType, "Invalid aero device xml", (result) => {
+				CertifiedAeroDeviceFilePath = result;
+			});
 		}
 
 		private void ValidationErrorAction(XmlSeverityType type, ValidationEvent validationEvent)
 		{
 			var xmlException = validationEvent?.ValidationEventArgs?.Exception as XmlSchemaValidationException;
 			if (xmlException != null) {
-				aeroDeviceXmlErrors.Add(xmlException.Message);
+				xmlFileErrors.Add(xmlException.Message);
 			}
 			return;
 		}
