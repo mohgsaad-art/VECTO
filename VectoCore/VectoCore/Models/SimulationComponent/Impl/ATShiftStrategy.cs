@@ -157,7 +157,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var braking = DataBus.DriverInfo.DriverBehavior == DrivingBehavior.Braking;
 			var torqueNegative = outTorque.IsSmaller(0);
 			var slowerThanDisengageSpeed =
-				DataBus.VehicleInfo.VehicleSpeed.IsSmaller(Constants.SimulationSettings.ATGearboxDisengageWhenHaltingSpeed);
+				DataBus.VehicleInfo.VehicleSpeed.IsSmaller(GearboxModelData.DisengageWhenHaltingSpeed);
 			var disengageBeforeHalting = braking && torqueNegative && slowerThanDisengageSpeed;
 
 			// 2) L -> 0: disengage if inAngularVelocity == 0

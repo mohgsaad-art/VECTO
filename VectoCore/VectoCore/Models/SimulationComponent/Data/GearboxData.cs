@@ -38,6 +38,7 @@ using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 
@@ -52,6 +53,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 	public class GearboxData : SimulationComponentData
 	{
 		private GearList _gearlist;
+		private MeterPerSecond _disengageWhenHaltingSpeed;
 
 		public GearboxType Type { get; internal set; }
 
@@ -72,6 +74,19 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 
 		[JsonIgnore]
 		public GearList GearList => _gearlist ?? (_gearlist = CreateGearList());
+
+		public MeterPerSecond DisengageWhenHaltingSpeed {
+			get {
+				return _disengageWhenHaltingSpeed != null
+					? _disengageWhenHaltingSpeed
+					: (Type.AutomaticTransmission()
+						? Constants.SimulationSettings.ATGearboxDisengageWhenHaltingSpeed
+						: Constants.SimulationSettings.ClutchDisengageWhenHaltingSpeed);
+			}
+			internal set {
+				_disengageWhenHaltingSpeed = value;
+			}
+		}
 
 		private GearList CreateGearList()
 		{
