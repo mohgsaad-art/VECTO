@@ -230,10 +230,10 @@
 	<xs:simpleType name="TrailerAeroFeatureTechnologyType">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="none"/>
-			<xs:enumeration value="side skirts short"/>
-			<xs:enumeration value="side skirts long"/>
-			<xs:enumeration value="boat tail short"/>
-			<xs:enumeration value="boat tail long"/>
+			<xs:enumeration value="short side covers"/>
+			<xs:enumeration value="long side covers"/>
+			<xs:enumeration value="short rear flaps"/>
+			<xs:enumeration value="long rear flaps"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="TrailerAxleCountType">
