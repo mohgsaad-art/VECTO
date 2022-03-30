@@ -498,17 +498,22 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				if (Gear < lastGear) {
 					LastDownshift = absTime;
 				}
-			}
+        }
+        }
+
+        protected virtual uint GetGearForModalResults()
+        { 
+			return Disengaged || DataBus.VehicleInfo.VehicleStopped ? 0 : Gear.Gear;
 		}
 
-		protected override void DoWriteModalResults(Second time, Second simulationInterval,
+        protected override void DoWriteModalResults(Second time, Second simulationInterval,
 			IModalDataContainer container)
 		{
 			var avgInAngularSpeed = (PreviousState.InAngularVelocity + CurrentState.InAngularVelocity) / 2.0;
 			var avgOutAngularSpeed = (PreviousState.OutAngularVelocity + CurrentState.OutAngularVelocity) / 2.0;
 			var inPower = CurrentState.InTorque * avgInAngularSpeed;
 			var outPower = CurrentState.OutTorque * avgOutAngularSpeed;
-			container[ModalResultField.Gear] = Disengaged || DataBus.VehicleInfo.VehicleStopped ? 0 : Gear.Gear;
+			container[ModalResultField.Gear] = GetGearForModalResults();
 			container[ModalResultField.P_gbx_loss] = inPower - outPower;
 			container[ModalResultField.P_gbx_inertia] = CurrentState.InertiaTorqueLossOut * avgOutAngularSpeed;
 			container[ModalResultField.P_gbx_in] = inPower;
@@ -516,13 +521,20 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 														CurrentState.OutAngularVelocity) / 2.0;
 			container[ModalResultField.T_gbx_out] = CurrentState.OutTorque;
 			container[ModalResultField.T_gbx_in] = CurrentState.InTorque;
-			_strategy.WriteModalResults(container);
+			_strategy?.WriteModalResults(container);
 		}
 
-		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)
+		protected virtual bool ShouldCheckLossMapRange => !Disengaged;
+
+        protected virtual void SetDisengaged(bool value)
+        { 
+			Disengaged = value;
+		}
+
+        protected override void DoCommitSimulationStep(Second time, Second simulationInterval)
 		{
 			postponeEngage = false;
-			if (!Disengaged) {
+			if (ShouldCheckLossMapRange) {
 				if (CurrentState.TorqueLossResult != null && CurrentState.TorqueLossResult.Extrapolated) {
 					Log.Warn(
 						"Gear {0} LossMap data was extrapolated: range for loss map is not sufficient: n:{1}, torque:{2}, ratio:{3}",
@@ -538,7 +550,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
 
 			if (DataBus.VehicleInfo.VehicleStopped) {
-				Disengaged = true;
+				SetDisengaged(true);
 				EngageTime = -double.MaxValue.SI<Second>();
 			}
 
