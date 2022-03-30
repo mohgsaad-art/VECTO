@@ -124,7 +124,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 				fcResult.Add(
 					new XElement(
 						tns + XMLNames.Report_Results_FuelConsumption,
-						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/km"),
+						
 						(result.FuelConsumptionFinal[fuel.FuelType].ConvertToGramm() /
 							result.Distance.ConvertToKiloMeter()).ToMinSignificantDigits(3, 1)),
 
@@ -226,6 +226,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 
 		protected double WeightedCo2Trailer = 0;
 		protected double WeightedFcTrailer = 0;
+		private Dictionary<FuelType, double> WeightedFcPerFuelType = new Dictionary<FuelType, double>();
 		protected double WeightedFcTrailerTon = 0;
 		protected double WeightedFcTrailerCubicMeter = 0;
 		protected Kilogram WeightedPayloadTrailer = 0.SI<Kilogram>();
@@ -480,6 +481,13 @@ namespace TUGraz.VectoCore.OutputData.XML
 						(resultEntry.FuelConsumptionFinal[resultEntry.FuelData.FirstOrDefault().FuelType]
 								.ConvertToGramm() / resultEntry.FuelData.FirstOrDefault().FuelDensity /
 							resultEntry.Distance.ConvertToKiloMeter() * 100).Value() * resultEntry.WeightingFactor;
+					foreach (var finalFuelConsumption in resultEntry.FuelConsumptionFinal) {
+						var fuelData = resultEntry.FuelData.Single((properties =>
+							properties.FuelType == finalFuelConsumption.Key));
+						WeightedFcPerFuelType[finalFuelConsumption.Key] = (
+							finalFuelConsumption.Value.ConvertToGramm() / fuelData.FuelDensity /
+							resultEntry.Distance.ConvertToKiloMeter() * 100).Value() * resultEntry.WeightingFactor;
+					}
 				} 
 				else {
 					ReferenceWeightedPayload += resultEntry.Payload * resultEntry.WeightingFactor;
@@ -520,9 +528,9 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XAttribute(xsi + "type", "ResultSuccessType"),
 				new XElement(tns + XMLNames.Report_Result_Mission, result.Mission.ToXMLFormat()),
 				GetSimulationParameters(result), XMLReportHelperTrailer.GetResults(result, tns).Cast<object>().ToArray(), 
-				XMLReportHelperTrailer.GetFactorWithAttributes(tns + XMLNames.Efficiency_Ratio, ratio, "Kilometre-Based", 4), 
-				XMLReportHelperTrailer.GetFactorWithAttributes(tns+XMLNames.Efficiency_Ratio, ratioTons, "Ton-Kilometre-Based", 4), 
-				XMLReportHelperTrailer.GetFactorWithAttributes(tns + XMLNames.Efficiency_Ratio, ratioCubicMeter, "CubicMetre-KiloMetre-Based", 4)
+				XMLReportHelperTrailer.GetFactorWithAttributes(tns + XMLNames.Efficiency_Ratio, ratio, XMLNames.Result_RatioType_KilometreBased, 4), 
+				XMLReportHelperTrailer.GetFactorWithAttributes(tns+XMLNames.Efficiency_Ratio, ratioTons, XMLNames.Result_RatioType_TonKilometreBased, 4), 
+				XMLReportHelperTrailer.GetFactorWithAttributes(tns + XMLNames.Efficiency_Ratio, ratioCubicMeter, XMLNames.Result_RatioType_CubicMetre_KilometreBased, 4)
 			);
 		}
 

@@ -484,7 +484,7 @@
                                         </StackPanel>
                                       <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
                                           <TextBlock Grid.Column="9" Text="Steered" Margin="5,0,5,0"/>
-                                          <CheckBox Grid.Column="10" IsChecked="{Binding Axle1IsSteered}" IsEnabled="{Binding Axle1SteeredCanBeEdited}"  Margin="0,3,0,0"/>
+                                          <CheckBox Grid.Column="10" IsChecked="{Binding Axle1IsSteered}"  Margin="0,3,0,0"/>
                                     </StackPanel>
                                 </Grid>
                             </StackPanel>

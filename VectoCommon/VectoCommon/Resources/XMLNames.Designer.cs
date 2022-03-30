@@ -2842,6 +2842,33 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CubicMetre-KiloMetre-Based.
+        /// </summary>
+        public static string Result_RatioType_CubicMetre_KilometreBased {
+            get {
+                return ResourceManager.GetString("Result_RatioType_CubicMetre_KilometreBased", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kilometre-Based.
+        /// </summary>
+        public static string Result_RatioType_KilometreBased {
+            get {
+                return ResourceManager.GetString("Result_RatioType_KilometreBased", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ton-Kilometre-Based.
+        /// </summary>
+        public static string Result_RatioType_TonKilometreBased {
+            get {
+                return ResourceManager.GetString("Result_RatioType_TonKilometreBased", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to status.
         /// </summary>
         public static string Result_Status {
