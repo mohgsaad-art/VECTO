@@ -6,6 +6,8 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Xml;
+using System.Xml.Linq;
+using System.Xml.Schema;
 using Castle.Core;
 using Castle.Core.Internal;
 using Microsoft.Win32;
@@ -18,6 +20,7 @@ using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Factory;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
 using TUGraz.VectoCore.Models.Declaration;
+using TUGraz.VectoCore.Utils;
 using VECTOTrailer.Helper;
 using VECTOTrailer.Model;
 using VECTOTrailer.Model.TempDataObject;
@@ -917,13 +920,32 @@ namespace VECTOTrailer.ViewModel.Impl
 			}
 		}
 
+		private IList<string> aeroDeviceXmlErrors = new List<string>();
 		private void DoSelectCertifiedAeroDeviceFileCommand(JobFileType jobFileType)
 		{ 
 			if(OpenFileSelector(jobFileType, nameof(CertifiedAeroDeviceFilePath),
-				CertifiedAeroDeviceFilePath, out var result))
-			{
-				CertifiedAeroDeviceFilePath = result;
+				CertifiedAeroDeviceFilePath, out var result)) {
+				var aeroDeviceXDoc = XDocument.Load(result);
+				if(!XmlHelper.ValidateXDocument(aeroDeviceXDoc, validationErrorAction: ValidationErrorAction)) {
+					MessageBox.Show(caption: "Invalid aero device xml",
+						messageBoxText: string.Join("\n", aeroDeviceXmlErrors),
+						button: MessageBoxButton.OK,
+						icon: MessageBoxImage.Error);
+					aeroDeviceXmlErrors.Clear();
+				} else {
+					CertifiedAeroDeviceFilePath = result;
+				}
+				
 			}
+		}
+
+		private void ValidationErrorAction(XmlSeverityType type, ValidationEvent validationEvent)
+		{
+			var xmlException = validationEvent?.ValidationEventArgs?.Exception as XmlSchemaValidationException;
+			if (xmlException != null) {
+				aeroDeviceXmlErrors.Add(xmlException.Message);
+			}
+			return;
 		}
 
 		private bool OpenFileSelector(JobFileType jobFileType, string textPropertyName, string initPath, out string selectedFile)
