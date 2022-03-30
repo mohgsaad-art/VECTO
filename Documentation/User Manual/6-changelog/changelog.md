@@ -2,6 +2,30 @@
 
 **VECTO-3.3.11**
 
+***Build 2645 (2022-03-30) RELEASE CANDIDATE***
+
+- Improvements
+    * [VECTO-1474] - Implementation of ADAS in-the-loop simulation (Declaration and Engineering mode)
+        * Engine stop/start
+        * Eco-roll
+        * Predictive cruise control: option 1,2; option 1,2,3
+        * Post-processing: fuel consumption correction for ICE-off phases
+    * Update shift strategy: EffShift for AMT and AT (Declaration and Engineering mode)
+    * [VECTO-1547] Update LongHaul driving cycle (Declaration mode)
+    * Dual-fuel support (Engineering mode)
+    * WHR support (Engineering mode)
+    * BusAuxiliaries model in engineering mode updated (simplified input)
+    * [VECTO-1473] - Additional tyre dimensions
+    * [VECTO-1521] - Updating tyre dimensions
+    * [VECTO-1536] - Component XML 2nd Amendment (schema version 2.3)
+    * [VECTO-1536] - verify generated xml by default when using command-line hashing tool
+
+- Bugfixes
+    * [VECTO-1525] - PCC Preprocessing
+    * [VECTO-1529] - XML Schema 2.0: missing abstract XML type in Gears 
+    * [VECTO-1550] - Error in hashing tool: sorting tires before comparing input data with MRF
+    * [VECTO-1551] - AT-P Transmission Bus Application: Error during braking phase
+
 ***Build 2526 (2021-12-01) DEVELOPMENT VERSION***
 
 - Improvements
@@ -10,12 +34,12 @@
         * Eco-roll
         * Predictive cruise control: option 1,2; option 1,2,3
         * Post-processing: fuel consumption correction for ICE-off phases
-     * Update shift strategy: EffShift for AMT and AT (Declaration and Engineering mode)
-     * Update LongHaul driving cycle (Declaration mode)
-     * Dual-fuel support (Engineering mode)
-     * WHR support (Engineering mode)
-     * BusAuxiliaries model in engineering mode updated (simplified input)
-     * Support to read driving cycle and EffShift parameters from file system(only once when application is started!)
+    * Update shift strategy: EffShift for AMT and AT (Declaration and Engineering mode)
+    * Update LongHaul driving cycle (Declaration mode)
+    * Dual-fuel support (Engineering mode)
+    * WHR support (Engineering mode)
+    * BusAuxiliaries model in engineering mode updated (simplified input)
+    * Support to read driving cycle and EffShift parameters from file system(only once when application is started!)
 
 **VECTO-3.3.10**
 

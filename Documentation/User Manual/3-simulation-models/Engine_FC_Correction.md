@@ -40,6 +40,7 @@ $$
      &   \textrm{E\_aux\_ESS\_mech\_ICEoff\_driving} \cdot k_\textrm{engline} \cdot \textrm{UF}_\textrm{driving} + \\
      &  (\textrm{E\_aux\_ESS\_mech\_ICEon\_driving} \cdot k_\textrm{engline} + \textrm{FC}(n_\textrm{idle}, 0) \cdot \textrm{t\_ICEoff\_driving}) \cdot (1 - \textrm{UF}_\textrm{driving})
 \end{align*}
+
 $$
 
 
@@ -103,8 +104,9 @@ $$
 \begin{align*}
 \textbf{\textrm{FC\_BusAux\_PS}} =\, &   \textrm{FC\_BusAux\_PS\_AirDemand}  + \\
  & \textrm{FC\_BusAux\_PS\_Drag\_ICEoff\_driving} + \\
- & \textrm{FC\_busAux\_PS\_Drag\_ICEoff\_standstill} \\
+ & \textrm{FC\_busAux\_PS\_Drag\_ICEoff\_standstill}
 \end{align*}
+
 $$
 
 
@@ -172,8 +174,9 @@ $$
                       &  \textrm{FC\_BusAux\_ES} \;+ \\
                       &  \textrm{FC\_WHR} \;+ \\
                       &  \textrm{FC\_BusAux\_AuxHeater} \;+ \\
-                      &  \textrm{FC\_SoC} \\
+                      &  \textrm{FC\_SoC}
 \end{align*}
+
 $$
 
 

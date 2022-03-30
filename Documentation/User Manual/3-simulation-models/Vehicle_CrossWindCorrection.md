@@ -32,7 +32,7 @@ The following table gives the coefficients per vehicle type:
 
 In a pre-processing step VECTO calculates the function for $C_dA$ value as a function of vehicle speed. This is done by integration of all possible directions of the ambient wind from ground level to maximum vehicle height considering the boundary layer effect based on the following formulas: 
 
-$C_{d,v}A(v_{veh}) = \frac{1}{2 \pi v_{veh}^2 h_{veh}}\int_{\alpha = 0°}^{\alpha = 360°}{\int_{h=0}^{h=h_{veh}}{C_dA(\beta)\cdot v_{air}(h, \alpha)^2} \text{d}h\ \text{d}\alpha}$
+$C_{d,v}A(v_{veh}) = \frac{1}{2 \pi v_{veh}^2 h_{veh}}\int_{\alpha = 0^\circ}^{\alpha = 360^\circ}{\int_{h=0}^{h=h_{veh}}{C_dA(\beta)\cdot v_{air}(h, \alpha)^2} \text{d}h\ \text{d}\alpha}$
 
 $v_{air}(h) = \sqrt{(v_{wind}(h)\cdot\cos\alpha + v_{veh})^2 + (v_{wind}(h)\cdot\sin\alpha)^2}$
 
@@ -59,7 +59,7 @@ The base C~d~A value (see [Vehicle File](#vehicle-file-.vveh)) is corrected with
 
 The C~d~A value given in the vehicle configuration is corrected depending on the vehicle's speed and the C~d~ scaling factor from the input file as follows:
 
-$C_dA(v_{veh}) = C_dA * F_C_d(v_{veh})$
+$C_dA(v_{veh}) = C_dA * F_Cd(v_{veh})$
 
  ![](pics/VCDV.png)
 
