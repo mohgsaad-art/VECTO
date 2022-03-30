@@ -14,7 +14,7 @@ xmlns:v2.7="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7" xmlns:tns="
 			<AeroReductionYawAngle3>2.00</AeroReductionYawAngle3>
 			<AeroReductionYawAngle6>3.00</AeroReductionYawAngle6>
 			<AeroReductionYawAngle9>4.00</AeroReductionYawAngle9>
-			<ApplicableVehicleGroup>1123</ApplicableVehicleGroup>
+			<ApplicableVehicleGroupAnnex1>1123</ApplicableVehicleGroupAnnex1>
 		</Data>
 		<Signature>
 			<di:Reference URI="#AERO-asdf">
