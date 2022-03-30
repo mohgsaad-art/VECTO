@@ -98,6 +98,7 @@
 							<xs:documentation>I.2.1.1 / #56</xs:documentation>
 						</xs:annotation>
 					</xs:element>
+					<xs:element name="SimulationParameters" type="SimulationParametersType"/>
 					<xs:element name="Fuel">
 						<xs:complexType>
 							<xs:sequence>
@@ -143,7 +144,6 @@
 							</xs:simpleContent>
 						</xs:complexType>
 					</xs:element>
-					<xs:element name="SimulationParameters" type="SimulationParametersType"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
