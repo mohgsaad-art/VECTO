@@ -72,13 +72,13 @@ It should be noted, that there is no skip gears at downshifting in the polygon s
 
 The efficiency shift rule is added on top of the polygon shift rule. The EffShift strategy allows gear shifts if the current engine operating point is inbetween the gearshift lines and a certain threshold above the engine's drag curve and the combined fuel efficiency considering engine and gearbox characteristics in the candidate gear is better than in the current gear. Therefore the fuel consumption of the current gear and the gears within an allowed gear shift range (parameter allowed +/- gears) is calculated. For AMT transmissions, the current operating point is used for this efficiency evaluation. Since, the velocity drop due to traction interruption is not relevant for this evaluation as this operating point only occurs for a short period of time. Efficiency shifts are only allowed below a certain gear ratio (gearbox + axle) to prevent frequent gear changes in the very lowest gears. 
 
-$FC_{gear}=min⁡(FC_{gear + i})   \forall i \in \textrm{Allowed gear range}$
+$FC_{gear}=min(FC_{gear + i})   \forall i \in \textrm{Allowed gear range}$
 
 Additionally the following boundary conditions must be fulfilled for an efficiency upshift to happen:  
 
    * $i_{gear + axle} \leq \textrm{RatioEarlyUpshift}$
    * Not left to downshift line
-   * $1-P_{eng}(candidate gear) / P_{eng,max}⁡(candidate gear) > T_reserve$      ($T_{reserve}$  is set to 0 for efficiency shifts)
+   * $1-P_{eng}(candidate gear) / P_{eng,max}(candidate gear) > T_reserve$      ($T_{reserve}$  is set to 0 for efficiency shifts)
    * $P_{eng,act } \leq P_{eng,post_shift}$    This condition is based on the assumption that sufficient power for the current acceleration is available in the next gear. The check for sufficient power in a candidate gear considers the velocity drop during traction interruption. 
    * $FC_{gear} < FC_{current gear} * \textrm{RatingFactor}$
 
