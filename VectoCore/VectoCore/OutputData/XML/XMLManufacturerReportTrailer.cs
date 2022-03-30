@@ -170,6 +170,50 @@ namespace TUGraz.VectoCore.OutputData.XML
 						.ToMinSignificantDigits(3, 2)));
 			return retVal;
 		}
+
+		public static XElement GetSimulationParameters(XMLDeclarationReport.ResultEntry result, TrailerSegment trailerSegment, XNamespace tns)
+		{
+			SquareMeter a1, a2, a3;
+
+			if (result.PassengerCount != null && result.PassengerCount == 1)
+			{
+				a1 = trailerSegment.A1Cor;
+				a2 = trailerSegment.A2Cor;
+				a3 = trailerSegment.A3Cor;
+			}
+			else
+			{
+				a1 = trailerSegment.A1RefCor;
+				a2 = trailerSegment.A2RefCor;
+				a3 = trailerSegment.A3RefCor;
+			}
+
+			var cdxAYawAngle3 = result.CdxA +
+								a1 * 3 +
+								a2 * 3 * 3 +
+								a3 * 3 * 3 * 3;
+
+			var cdxAYawAngle6 = result.CdxA +
+								a1 * 6 +
+								a2 * 6 * 6 +
+								a3 * 6 * 6 * 6;
+
+			var cdxAYawAngle9 = result.CdxA +
+								a1 * 9 +
+								a2 * 9 * 9 +
+								a3 * 9 * 9 * 9;
+
+			return new XElement(
+				tns + XMLNames.Report_ResultEntry_SimulationParameters,
+				new XElement(tns + XMLNames.Report_ResultEntry_Payload, XMLHelper.ValueAsUnit(result.Payload, XMLNames.Unit_kg)),
+				new XElement(tns + XMLNames.Report_ResultEntry_TotalVehicleMass, XMLHelper.ValueAsUnit(result.TotalVehicleMass, XMLNames.Unit_kg)),
+				result.CdxA != null ? new XElement(tns + XMLNames.Report_AirDrag_CdxA + "yawAngle0", new XAttribute("unit", "m²"), result.CdxA.ToXMLFormat(3)) : null,
+				result.CdxA != null ? new XElement(tns + XMLNames.Report_AirDrag_CdxA + "yawAngle3", new XAttribute("unit", "m²"), cdxAYawAngle3.ToXMLFormat(3)) : null,
+				result.CdxA != null ? new XElement(tns + XMLNames.Report_AirDrag_CdxA + "yawAngle6", new XAttribute("unit", "m²"), cdxAYawAngle6.ToXMLFormat(3)) : null,
+				result.CdxA != null ? new XElement(tns + XMLNames.Report_AirDrag_CdxA + "yawAngle9", new XAttribute("unit", "m²"), cdxAYawAngle9.ToXMLFormat(3)) : null,
+				new XElement(tns + XMLNames.Report_ResultEntry_AverageSpeed, new XAttribute(XMLNames.Report_Results_Unit_Attr, XMLNames.Unit_kmph), result.AverageSpeed.ConvertToKiloMeterPerHour().Value.ToXMLFormat(2))
+			);
+		}
 	}
 
 	public class XMLManufacturerReportTrailer : AbstractXMLManufacturerReport
@@ -414,43 +458,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 
 		protected override XElement GetSimulationParameters(XMLDeclarationReport.ResultEntry result)
 		{
-			SquareMeter a1, a2, a3;
-
-			if (result.PassengerCount != null && result.PassengerCount == 1) {
-				a1 = _trailerSegment.A1Cor;
-				a2 = _trailerSegment.A2Cor;
-				a3 = _trailerSegment.A3Cor;
-			} else {
-				a1 = _trailerSegment.A1RefCor;
-				a2 = _trailerSegment.A2RefCor;
-				a3 = _trailerSegment.A3RefCor;
-			}
-
-			var cdxAYawAngle3 = result.CdxA +
-								a1 * 3 +
-								a2 * 3 * 3 +
-								a3 * 3 * 3 * 3;
-
-			var cdxAYawAngle6 = result.CdxA + 
-								a1 * 6 +
-								a2 * 6 * 6 +
-								a3 * 6 * 6 * 6;
-
-			var cdxAYawAngle9 = result.CdxA + 
-								a1 * 9 +
-								a2 * 9 * 9 +
-								a3 * 9 * 9 * 9;
-
-			return new XElement(
-				tns + XMLNames.Report_ResultEntry_SimulationParameters,
-				new XElement(tns + XMLNames.Report_ResultEntry_Payload, XMLHelper.ValueAsUnit(result.Payload, XMLNames.Unit_kg)),
-				new XElement(tns + XMLNames.Report_ResultEntry_TotalVehicleMass, XMLHelper.ValueAsUnit(result.TotalVehicleMass, XMLNames.Unit_kg)),
-				result.CdxA != null ? new XElement(tns + XMLNames.Report_AirDrag_CdxA + "yawAngle0", new XAttribute("unit", "m²"), result.CdxA.ToXMLFormat(3)) : null,
-				result.CdxA != null ? new XElement(tns + XMLNames.Report_AirDrag_CdxA + "yawAngle3", new XAttribute("unit", "m²"), cdxAYawAngle3.ToXMLFormat(3)) : null,
-				result.CdxA != null ? new XElement(tns + XMLNames.Report_AirDrag_CdxA + "yawAngle6", new XAttribute("unit", "m²"), cdxAYawAngle6.ToXMLFormat(3)) : null,
-				result.CdxA != null ? new XElement(tns + XMLNames.Report_AirDrag_CdxA + "yawAngle9", new XAttribute("unit", "m²"), cdxAYawAngle9.ToXMLFormat(3)) : null,
-				new XElement(tns + XMLNames.Report_ResultEntry_AverageSpeed, new XAttribute(XMLNames.Report_Results_Unit_Attr, XMLNames.Unit_kmph), result.AverageSpeed.ConvertToKiloMeterPerHour().Value.ToXMLFormat(2))
-			);
+			return XMLReportHelperTrailer.GetSimulationParameters(result, _trailerSegment, tns);
 		}
 
 		protected override XElement VehicleComponents(VectoRunData modelData, List<List<FuelData.Entry>> fuelModes)
