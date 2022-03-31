@@ -200,13 +200,20 @@
 															</xs:simpleContent>
 														</xs:complexType>
 													</xs:element>
-													<xs:element name="FuelConsumption" maxOccurs="unbounded">
+													<xs:element name="Fuel" maxOccurs="unbounded">
 														<xs:complexType>
-															<xs:simpleContent>
-																<xs:extension base="xs:double">
-																	<xs:attribute name="unit" use="required"/>
-																</xs:extension>
-															</xs:simpleContent>
+															<xs:sequence>
+																<xs:element name="FuelConsumption" maxOccurs="unbounded">
+																	<xs:complexType>
+																		<xs:simpleContent>
+																			<xs:extension base="xs:double">
+																				<xs:attribute name="unit" use="required"/>
+																			</xs:extension>
+																		</xs:simpleContent>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+															<xs:attribute name="type" use="required"/>
 														</xs:complexType>
 													</xs:element>
 													<xs:element name="CO2" maxOccurs="unbounded">
