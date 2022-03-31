@@ -501,11 +501,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
         }
         }
 
-        protected virtual uint GetGearForModalResults()
-        { 
-			return Disengaged || DataBus.VehicleInfo.VehicleStopped ? 0 : Gear.Gear;
-		}
-
         protected override void DoWriteModalResults(Second time, Second simulationInterval,
 			IModalDataContainer container)
 		{
@@ -513,7 +508,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var avgOutAngularSpeed = (PreviousState.OutAngularVelocity + CurrentState.OutAngularVelocity) / 2.0;
 			var inPower = CurrentState.InTorque * avgInAngularSpeed;
 			var outPower = CurrentState.OutTorque * avgOutAngularSpeed;
-			container[ModalResultField.Gear] = GetGearForModalResults();
+			container[ModalResultField.Gear] = Disengaged || DataBus.VehicleInfo.VehicleStopped ? 0 : Gear.Gear;
 			container[ModalResultField.P_gbx_loss] = inPower - outPower;
 			container[ModalResultField.P_gbx_inertia] = CurrentState.InertiaTorqueLossOut * avgOutAngularSpeed;
 			container[ModalResultField.P_gbx_in] = inPower;
@@ -526,9 +521,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		protected virtual bool ShouldCheckLossMapRange => !Disengaged;
 
-        protected virtual void SetDisengaged(bool value)
+        protected virtual void DisengageOnVehicleStopped()
         { 
-			Disengaged = value;
+			Disengaged = true;
 		}
 
         protected override void DoCommitSimulationStep(Second time, Second simulationInterval)
@@ -550,7 +545,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
 
 			if (DataBus.VehicleInfo.VehicleStopped) {
-				SetDisengaged(true);
+				DisengageOnVehicleStopped();
 				EngageTime = -double.MaxValue.SI<Second>();
 			}
 

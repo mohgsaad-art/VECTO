@@ -14,6 +14,7 @@ using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 using TUGraz.VectoCore.Utils;
+using TUGraz.VectoCore.OutputData;
 using static TUGraz.VectoCore.Models.SimulationComponent.Impl.CycleGearbox;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
@@ -321,7 +322,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
                     DataBus.VehicleInfo.VehicleStopped ? outAngularVelocity : disengagedResponse.Engine.EngineSpeed);
             }
 
-            disengagedResponse.Gearbox.PowerRequest = outTorque * avgOutAngularVelocity;
+            disengagedResponse.Gearbox.PowerRequest = power;
             
             CurrentState.SetState(0.SI<NewtonMeter>(), disengagedResponse.Engine.EngineSpeed, 0.SI<NewtonMeter>(), outAngularVelocity);
             CurrentState.Gear = Gear;
@@ -374,14 +375,16 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
             return dryRunResponse;
         }
 
-        protected override uint GetGearForModalResults()
-        { 
-			return DataBus.DrivingCycleInfo.CycleData.LeftSample.Gear;
-		}
+        protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
+        {
+            base.DoWriteModalResults(time, simulationInterval, container);
+
+            container[ModalResultField.Gear] = DataBus.DrivingCycleInfo.CycleData.LeftSample.Gear;
+        }
 
         protected override bool ShouldCheckLossMapRange => DisengagedTime != null;
 
-        protected override void SetDisengaged(bool value)
+        protected override void DisengageOnVehicleStopped()
         { }
 
     }
