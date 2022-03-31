@@ -54,7 +54,7 @@
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="SimulationParameters" type="SimulationParametersType"/>
-					<xs:element name="Fuel">
+					<xs:element name="Fuel" maxOccurs="unbounded">
 						<xs:complexType>
 							<xs:sequence>
 								<xs:element name="FuelConsumption" maxOccurs="unbounded">
