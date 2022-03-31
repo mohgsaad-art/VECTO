@@ -42,42 +42,6 @@
 					</xs:simpleContent>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="CdxAyawAngle0">
-				<xs:complexType>
-					<xs:simpleContent>
-						<xs:extension base="xs:double">
-							<xs:attribute name="unit" type="OtherType" use="required"/>
-						</xs:extension>
-					</xs:simpleContent>
-				</xs:complexType>
-			</xs:element>
-			<xs:element name="CdxAyawAngle3">
-				<xs:complexType>
-					<xs:simpleContent>
-						<xs:extension base="xs:double">
-							<xs:attribute name="unit" type="OtherType" use="required"/>
-						</xs:extension>
-					</xs:simpleContent>
-				</xs:complexType>
-			</xs:element>
-			<xs:element name="CdxAyawAngle6">
-				<xs:complexType>
-					<xs:simpleContent>
-						<xs:extension base="xs:double">
-							<xs:attribute name="unit" type="OtherType" use="required"/>
-						</xs:extension>
-					</xs:simpleContent>
-				</xs:complexType>
-			</xs:element>
-			<xs:element name="CdxAyawAngle9">
-				<xs:complexType>
-					<xs:simpleContent>
-						<xs:extension base="xs:double">
-							<xs:attribute name="unit" type="OtherType" use="required"/>
-						</xs:extension>
-					</xs:simpleContent>
-				</xs:complexType>
-			</xs:element>
 			<xs:element name="AverageSpeed">
 				<xs:complexType>
 					<xs:simpleContent>
