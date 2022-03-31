@@ -235,15 +235,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 				var fuel = new XElement(tns + XMLNames.Engine_FuelModes_Fuel,
 					new XAttribute(XMLNames.Report_Results_Fuel_Type_Attr, weightedFuelConsumption.Key.ToXMLFormat()));
 				fuels.Add(fuel);
-				fuel.Add(new XElement(tns + XMLNames.Report_Results_FuelConsumption,
-						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/km"),
-						weightedfcTrailerGram.ToXMLFormat(4)),
-					new XElement(tns + XMLNames.Report_Results_FuelConsumption,
-						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/t-km"),
-						weightedFcTrailerGrammTon.ToXMLFormat(4)),
-					new XElement(tns + XMLNames.Report_Results_FuelConsumption,
-						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/m³-km"),
-						weightedFcTrailerGrammPerCubicMeter.ToXMLFormat(4)),
+				fuel.Add(
 
 					new XElement(tns + XMLNames.Report_Results_FuelConsumption,
 						new XAttribute(XMLNames.Report_Results_Unit_Attr, "l/100km"),
@@ -253,9 +245,17 @@ namespace TUGraz.VectoCore.OutputData.XML
 						weightedFcTrailerLiterTon.ToXMLFormat(4)),
 					new XElement(tns + XMLNames.Report_Results_FuelConsumption,
 						new XAttribute(XMLNames.Report_Results_Unit_Attr, "l/m³-km"),
-						weighteFcTrailerLiterCubicMeter.ToXMLFormat(4))
+						weighteFcTrailerLiterCubicMeter.ToXMLFormat(4)),
 
-
+					new XElement(tns + XMLNames.Report_Results_FuelConsumption,
+						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/km"),
+						weightedfcTrailerGram.ToXMLFormat(4)),
+					new XElement(tns + XMLNames.Report_Results_FuelConsumption,
+						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/t-km"),
+						weightedFcTrailerGrammTon.ToXMLFormat(4)),
+					new XElement(tns + XMLNames.Report_Results_FuelConsumption,
+						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/m³-km"),
+						weightedFcTrailerGrammPerCubicMeter.ToXMLFormat(4))
 					);
 			}
 
@@ -613,7 +613,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 
 			var summary = _allSuccess && WeightedPayloadTrailer > 0
 				? new XElement(tns + XMLNames.Report_Results_WeightedResults,
-					new XElement(tns + XMLNames.Report_WeightedPayloadTrailer,
+					new XElement(tns + XMLNames.Report_Result_Payload,
 						new XAttribute(XMLNames.Report_Results_Unit_Attr, XMLNames.Unit_kg),
 						WeightedPayloadTrailer.ToXMLFormat(0)
 					),
@@ -642,15 +642,15 @@ namespace TUGraz.VectoCore.OutputData.XML
 						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/m³-km"),
 						weightedCo2CubicMeter.ToXMLFormat(3)
 					),
-					XMLReportHelperTrailer.GetFactorWithAttributes(XMLNames.Efficiency_Ratio,
+					XMLReportHelperTrailer.GetFactorWithAttributes(tns + XMLNames.Efficiency_Ratio,
 						(WeightedCo2Trailer / ReferenceWeightedCo2),
 						XMLNames.Result_RatioType_KilometreBased, 4),
-					XMLReportHelperTrailer.GetFactorWithAttributes(XMLNames.Efficiency_Ratio,
+					XMLReportHelperTrailer.GetFactorWithAttributes(tns + XMLNames.Efficiency_Ratio,
 						(weightedCo2Ton / weightedReferenceCo2Ton),
 						XMLNames.Result_RatioType_TonKilometreBased, 4),
-					XMLReportHelperTrailer.GetFactorWithAttributes(XMLNames.Efficiency_Ratio,
+					XMLReportHelperTrailer.GetFactorWithAttributes(tns + XMLNames.Efficiency_Ratio,
 						(weightedCo2CubicMeter / weightedReferenceCo2CubicMeter).Value(),
-						XMLNames.Result_RatioType_KilometreBased, 4)
+						XMLNames.Result_RatioType_CubicMetre_KilometreBased, 4)
 				) : null;
 			results.Add(summary);
 			var vehicle = new XElement(VehiclePart);
