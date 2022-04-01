@@ -21,7 +21,7 @@ Usage
 
 Requirements
 ------------
-* pandoc installed [2]
+* pandoc installed (tested with version 2.17.1) [2]
 
 
 Directory Structure

@@ -13,6 +13,7 @@ $(function(){
     
 
     $("body > div:not(#TOC):not(#HEADER):not(#FOOTER):not(.vecto2):not(.vecto3)").hide();
+    $("body > section:not(#TOC):not(#HEADER):not(#FOOTER):not(.vecto2):not(.vecto3)").hide();
     $("body > div:not(#TOC):not(#HEADER):not(#FOOTER) > div:not(.vecto2):not(.vecto3)").hide();
 
     window.onhashchange=function(){showContent($(window.location.hash.replace(".", "\\.")));};
