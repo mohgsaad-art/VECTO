@@ -1,4 +1,4 @@
-##PTO
+## PTO
 
 VECTO supports the simulation of PTO related components and losses in the powertrain. Structurally this consists of 2 components (PTO transmission, PTO consumer) and 3 different kind of losses (transmission, idling, cycle).
 
@@ -53,7 +53,7 @@ The following image shows the behavior of running PTO cycles during a normal dri
 
 <div class="engineering">
 
-###Additional PTO activations in Engineering mode
+### Additional PTO activations in Engineering mode
 
 In engineering mode additonal PTO activations are available to simulate different types of municipal vehicles. It is possible to add a certain PTO load during driving while the engine speed and gear is fixed (to simulate for example roadsweepers), or to add PTO activation while driving (to simulate side loader refuse trucks for example). In both cases the PTO activation is indicated in the driving cycle.
 

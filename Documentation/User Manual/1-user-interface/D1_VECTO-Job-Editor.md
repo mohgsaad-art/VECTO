@@ -1,10 +1,10 @@
-##Job Editor
+## Job Editor
 
 
 ![](pics/VECTO-Editor.png)
 
 
-###Description
+### Description
 
 The [job file (.vecto)](#job-file) includes all informations to run a VECTO calculation. It defines the vehicle and the driving cycle(s) to be used for calculation. In summary it defines:
 
@@ -16,14 +16,14 @@ The [job file (.vecto)](#job-file) includes all informations to run a VECTO calc
 -   Driving Cycles (only in Engineering Mode)
 
 
-###Relative File Paths
+### Relative File Paths
 
 It is recommended to use relative filepaths. This way the Job File and all input files can be moved without having to update the paths. Example: "Vehicles\\Vehicle1.vveh" points to the "Vehicles" subdirectory of the Job File's directoy.
 
 VECTO automatically uses relative paths if the input file (e.g. Vehicle File) is in the same directory as the Job File. (*Note:* The Job File must be saved before browsing for input files.)
 
 
-###General Settings
+### General Settings
 
 ![](pics/checkbox.png) Engine Only Mode
 
@@ -73,7 +73,7 @@ Cycles
 : ![remcycle](pics/minus-circle-icon.png) Remove the selected cycle from the list
 
 
-###Driver Assist Tab
+### Driver Assist Tab
 
 ![](pics/VECTO-Editor-DriverAssist.png)
 
@@ -90,11 +90,11 @@ Acceleration Limiting
 :	See [Acceleration Limiting](#driver-acceleration-limiting) for details.
 
 
-###Chart Area
+### Chart Area
 
 If a valid [Vehicle File](#vehicle-editor), [Engine File](#engine-file-.veng) and [Gearbox File](#gearbox-file-.vgbx) is loaded into the Editor the main vehicle parameters like HDV group and axle configuration are shown here. The plot shows the full load curve(s) and sampling points of the fuel consumption map. 
 
-###Controls
+### Controls
 
 ![new](pics/blue-document-icon.png) New Job File
 :	Create a new empty .vecto file

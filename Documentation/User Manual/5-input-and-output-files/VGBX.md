@@ -1,4 +1,4 @@
-##Gearbox File (.vgbx)
+## Gearbox File (.vgbx)
 
 File for the definition of a gearbox in Vecto. Can be created with the [Gearbox Editor](#gearbox-editor).
 

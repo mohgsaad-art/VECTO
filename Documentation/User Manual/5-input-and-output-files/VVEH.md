@@ -1,4 +1,4 @@
-##Vehicle File (.vveh)
+## Vehicle File (.vveh)
 
 File for the definition of a vehicle in vecto. Can be created with the [Vehicle Editor](#vehicle-editor).
 

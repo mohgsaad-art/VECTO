@@ -1,4 +1,4 @@
-##Shift Strategy: AMT Gearshift Rules
+## Shift Strategy: AMT Gearshift Rules
 
 This section describes the gearshift rules for automatic manual transmission models. When a gearshift is triggered, gears may be skipped.
 
@@ -35,7 +35,7 @@ The general shift conditions are checked first in the shift algorithm. The follo
 | Rating current gear | 0.97 |
 | $T_{reserve}$          |  0 |
 
-###Emergency shifts
+### Emergency shifts
 
 Emergency shifts depend on the current gear and the engine speed. The shifting rules for emergency shifts have been adopted from the "Classic" gearshift strategy in VECTO. In case of application of emergency rule no skipping of gears is applied. 
 
@@ -54,7 +54,7 @@ Upshift conditions:
    * Current gear < highest gear
    * $n_{eng} < n_{95h}$
 
-###Polygon shifts
+### Polygon shifts
 
 The second level of the gearshift algorithm is the polygon shift rule. If the current operating point is outside of the shift polygons, the polygon shift rule applies:
 
@@ -68,7 +68,7 @@ Upshift behaviour:
 
 It should be noted, that there is no skip gears at downshifting in the polygon shift mode.
 
-###Efficiency shifts
+### Efficiency shifts
 
 The efficiency shift rule is added on top of the polygon shift rule. The EffShift strategy allows gear shifts if the current engine operating point is inbetween the gearshift lines and a certain threshold above the engine's drag curve and the combined fuel efficiency considering engine and gearbox characteristics in the candidate gear is better than in the current gear. Therefore the fuel consumption of the current gear and the gears within an allowed gear shift range (parameter allowed +/- gears) is calculated. For AMT transmissions, the current operating point is used for this efficiency evaluation. Since, the velocity drop due to traction interruption is not relevant for this evaluation as this operating point only occurs for a short period of time. Efficiency shifts are only allowed below a certain gear ratio (gearbox + axle) to prevent frequent gear changes in the very lowest gears. 
 

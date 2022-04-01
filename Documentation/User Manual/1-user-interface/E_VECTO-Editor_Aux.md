@@ -1,4 +1,4 @@
-##Auxiliary Dialog
+## Auxiliary Dialog
 
 
 
@@ -12,12 +12,12 @@
 ![Auxiliary Dialog (Engineering Mode)](pics/VECTO-Editor_Aux_ENG.jpg)
 </div>
 
-###Description
+### Description
 
 
 The Auxiliary Dialog is used to configure auxiliaries. In [Declaration Mode](#declaration-mode) the set of auxiliaries and their power demand is pre-defined. For every auxiliary the user has to select the technology from a given list. In [Engineering Mode](#engineering-mode) the set of auxiliaries can be specified by the user. Auxiliary efficieny is defined using an [Auxiliary Input File (.vaux)](#auxiliary-input-file-.vaux). See [Auxiliaries](#auxiliaries) for details on how the power demand for each auxiliary is calculated.
 
-###Settings
+### Settings
 
 <div class="declaration">
 Technology
@@ -40,7 +40,7 @@ Input File
 
 
 
-###Controls
+### Controls
 
 
 ![ok](pics/OK.png) ***Save and close***

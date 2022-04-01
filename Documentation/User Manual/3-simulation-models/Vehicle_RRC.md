@@ -1,4 +1,4 @@
-##Vehicle: Rolling Resistance Coefficient
+## Vehicle: Rolling Resistance Coefficient
 
 
 The rolling resistance is calculated using a speed-independent rolling resistance coefficient (RRC).

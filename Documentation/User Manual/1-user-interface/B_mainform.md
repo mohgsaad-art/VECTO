@@ -1,11 +1,11 @@
-##Main Form
+## Main Form
 
 
 
 ![](pics/mainform.svg)
 
 
-###Description
+### Description
 
 
 The Main Form is loaded when starting VECTO. Closing this form will close VECTO even if other dialogs are still open. In this form all global settings can be controlled and all other application dialogs can be opened.
@@ -18,10 +18,10 @@ The Main Form includes two tabs as described below:
 * Options Tab
 
 
-###Job Files Tab
+### Job Files Tab
 
 
-####Job Files List#
+#### Job Files List#
 
 Job files (.vecto) listed here will be used for calculation. Unchecked files will be ignored!
 Doubleclick entries to edit job files with the [VECTO Editor](#job-editor).
@@ -35,7 +35,7 @@ Doubleclick entries to edit job files with the [VECTO Editor](#job-editor).
 
 ![up](pics/Actions-arrow-up-icon.png)![down](pics/Actions-arrow-down-icon.png) ***Move selected files up or down in list***
 
-#####List Options#
+##### List Options#
 
 - **Save/Load List**
     - Save or load Job List to text file
@@ -50,13 +50,13 @@ Doubleclick entries to edit job files with the [VECTO Editor](#job-editor).
 
 
 
-####![START](pics/Play-icon.png) ***START Button***
+#### ![START](pics/Play-icon.png) ***START Button***
 
 Start VECTO in the selected mode (see [Options](#options-tab)).
 
 
 
-###Options Tab
+### Options Tab
 
 ![](pics/VECTO_OptionsTab.png)
 
@@ -89,7 +89,7 @@ Output values in vmod at beginning and end of simulation iterval
 ![](pics/VECTO_vmod_vgl.png)
 
 
-###Controls
+### Controls
 
 ![new](pics/blue-document-icon.png) New Job File
 : Create a new .vecto file using the [VECTO Editor](#job-editor)

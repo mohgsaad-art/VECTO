@@ -10,7 +10,7 @@ Software Requirements
 
    + Microsoft .NET Framework 4.5
 
-##Installation Options
+## Installation Options
 
 VECTO is distributed as a portable application. This means you can simply unzip the archive and directly execute it. This, however, requires write and execute permissions for the VECTO application directory.
 

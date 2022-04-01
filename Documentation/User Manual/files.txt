@@ -4,12 +4,6 @@
 1-user-interface/C_settings.md
 1-user-interface/D1_VECTO-Job-Editor.md
 1-user-interface/D2_VTP-Job-Editor.md
-1-user-interface/E_VECTO-Editor_Aux.md
-1-user-interface/K0_VECTO-AdvancedAux.md
-1-user-interface/K1_VECTO-AdvancedAux_EL.md
-1-user-interface/K2_VECTO-AdvancedAux_EL-ALT.md
-1-user-interface/K3_VECTO-AdvancedAux_PNEU.md
-1-user-interface/K4_VECTO-AdvancedAux_HVAC.md
 1-user-interface/F_VEH-Editor.md
 1-user-interface/G_ENG-Editor.md
 1-user-interface/H_GBX-Editor.md

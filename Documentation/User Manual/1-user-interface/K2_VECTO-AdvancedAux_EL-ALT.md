@@ -1,4 +1,4 @@
-##Combined Alternator Map File (.aalt)
+## Combined Alternator Map File (.aalt)
 
 The Combined Alternator Map (.AALT) file contains data relating to the efficiency of the alternator at various engine speeds and current demand. The .AALT file is a CSV file containing three fields: “Amp”, “RPM” (engine speed), and “Efficiency”. It can be created via the select file button, or an existing map directly imported into VECTO via the File Browser.
 
@@ -20,7 +20,7 @@ The methodology for calculating the combined efficiency map is summarised below 
 ![](pics/CombAltSchem.png)
 
 
-###File Format
+### File Format
 
 The file uses the VECTO CSV format.
 

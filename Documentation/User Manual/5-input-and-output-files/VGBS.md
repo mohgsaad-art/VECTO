@@ -1,4 +1,4 @@
-##Shift Polygons Input File (.vgbs)
+## Shift Polygons Input File (.vgbs)
 
 Defines up- and down-shift curves. See [Gear Shift Model](#gearbox-gear-shift-model) for details. The file uses the [VECTO CSV format](#csv).
 
