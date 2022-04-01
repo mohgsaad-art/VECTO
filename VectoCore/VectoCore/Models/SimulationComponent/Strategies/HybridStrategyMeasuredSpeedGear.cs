@@ -1177,7 +1177,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 					return;
 				}
 
-
+				bool iceOn = DataBus.EngineInfo.EngineOn;
+				
 				// full recuperation is not possible - ICE would need to propel - search max possible EM torque
 				var emRecuperationTq = SearchAlgorithm.Search(
 					maxRecuperationResponse.ElectricMotor.ElectricMotorPowerMech /
@@ -1195,7 +1196,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 					},
 					evaluateFunction: emTq => {
 						var cfg = new HybridStrategyResponse {
-							CombustionEngineOn = DataBus.EngineInfo.EngineOn,
+							CombustionEngineOn = iceOn,
 							GearboxInNeutral = false,
 							NextGear = nextGear,
 							MechanicalAssistPower = new Dictionary<PowertrainPosition, Tuple<PerSecond, NewtonMeter>> {
@@ -1260,7 +1261,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			if (firstResponse == null) {
 				return false;
 			}
-
+			
 			if (DataBus.GearboxInfo.GearboxType.AutomaticTransmission()) {
 				return firstResponse.Engine.EngineOn
 					? firstResponse.Engine.EngineSpeed.IsSmaller(ModelData.EngineData.IdleSpeed)
@@ -1676,8 +1677,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				(DataBus.GearboxInfo.LastShift + ModelData.GearshiftParameters.TimeBetweenGearshifts).IsSmallerOrEqual(absTime);
 				var dummy = (absTime - DataBus.GearboxInfo.LastUpshift).IsSmaller(ModelData.GearshiftParameters.DownshiftAfterUpshiftDelay /*, 0.1*/);
 
-				if (!AllowEmergencyShift)
-				{
+				if (!AllowEmergencyShift) {
 					if (dryRun || !minimumShiftTimePassed || dummy
 						|| (DataBus.DriverInfo.DrivingAction == DrivingAction.Accelerate &&
 							DataBus.VehicleInfo.VehicleSpeed.IsSmaller(5.KMPHtoMeterPerSecond())))
@@ -1688,9 +1688,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 					if (dryRun || !minimumShiftTimePassed ||
 						(absTime - DataBus.GearboxInfo.LastDownshift).IsSmaller(
 							ModelData.GearshiftParameters.UpshiftAfterDownshiftDelay /*,0.1*/)
-						|| (DataBus.DriverInfo.DrivingAction == DrivingAction.Accelerate &&
-							DataBus.VehicleInfo.VehicleSpeed.IsSmaller(5.KMPHtoMeterPerSecond())))
-					{
+						|| DataBus.DriverInfo.DrivingAction == DrivingAction.Accelerate &&
+							DataBus.VehicleInfo.VehicleSpeed.IsSmaller(5.KMPHtoMeterPerSecond())) {
 						gearRangeUpshift = 0;
 					}
 				}
