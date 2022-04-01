@@ -1,11 +1,11 @@
-##Advanced Auxiliary Dialog
+## Advanced Auxiliary Dialog
 
 <div class="engineering">
 
 
 ![](pics/VECTO-Editor_AAUX.png)
 
-###Description
+### Description
 
 In the VECTO Job Editor dialog you need to select "BusAuxiliaries" in the drop down list on the left to configure the advanced auxiliaries.
 
@@ -26,7 +26,7 @@ The Advance Auxiliaries Editor contains four tabs/sub-modules where the differen
     : The "HVAC" tab defines the steady state output values, which can also be loaded via the Steady State Model File (.AHSM)
 
 
-###Important notes
+### Important notes
 
 Note that the cycle file name used should ideally respect the following syntax to be correctly associated with the pneumatic actuations map (.apac), otherwise the number of actuations will be set to 0 by default:
 
@@ -35,7 +35,7 @@ Note that the cycle file name used should ideally respect the following syntax t
  
 Some flexibility in syntax is allowable (the model looks for 'Bus', 'Coach', 'Urban', etc. in the file name), meaning that the standard default cycles are fully/correctly supported. However, for newly created cycles (i.e. for use in Engineering Mode) it is recommended to follow the above convention to guarantee correct functionality.
 
-###File Format
+### File Format
 
 The file uses the VECTO JSON format.
 

@@ -1,21 +1,21 @@
-##Vehicle Editor
+## Vehicle Editor
 
 ![](pics/VEH-Editor.PNG)
 
-###Description
+### Description
 
 The [Vehicle File (.vveh)](#vehicle-file-.vveh) defines the main vehicle/chassis parameters like axles including [RRC](#vehicle-rolling-resistance-coefficient)s, air resistance and masses.
 
 The Vehicle Editor contains 3 tabs to edit all vehicle-related parameters. The 'General' tab allows to input mass, loading, air resistance, vehicle axles, etc. The 'Powertrain' allows to define the retarder, an optional angle drive, or PTO consumer. In the third tab the engine torque can be limited to a maximum for individual gears.
 
-###Relative File Paths
+### Relative File Paths
 
 It is recommended to use relative filepaths. This way the Job File and all input files can be moved without having to update the paths.
 Example: "Demo\\RT1.vrlm" points to the "Demo" subdirectory of the Vehicle File's directoy.
 
 VECTO automatically uses relative paths if the input file (e.g. Retarder Losses File) is in the same directory as the Vehicle File. (*Note:* The Vehicle File must be saved before browsing for input files.)
 
-###General vehicle parameters
+### General vehicle parameters
 
 Vehicle Category
 : Needed for [Declaration Mode](#declaration-mode) to identify the HDV Group.
@@ -29,7 +29,7 @@ Technically Permissible Maximum Laden Mass [t]
 HDV Group
 : Displays the automatically selected HDV Group depending on the settings above.
 
-###Masses/Loading
+### Masses/Loading
 
 Corrected Actual Curb Mass Vehicle
 : Specifies the vehicle's mass without loading
@@ -50,7 +50,7 @@ Loading
 In Declaration Mode only the vehicle itself needs to be specified. Depending on the vehicle category and mission the simulation adds a standard trailer for certain missions.
 </div>
 
-###Air Resistance and Corss Wind Correction Options
+### Air Resistance and Corss Wind Correction Options
 
 The product of Drag Coefficient [-] and Cross Sectional Area [m²] (**c~d~ x A**) and **Air Density** [kg/m³] (see [Settings](#settings)) together with the vehicle speed defines the Air Resistance. Vecto uses the combined value **c~d x A** as input. 
 **Note that the Air Drag depends on the chosen [**Cross Wind Correction**](#vehicle-cross-wind-correction).**
@@ -71,12 +71,12 @@ In delcaration mode the 'Speed dependent (Declaration Mode)' cross-wind correcti
 
 Depending on the chosen mode either a [Speed Dependent Cross Wind Correction Input File (.vcdv)](#speed-dependent-cross-wind-correction-input-file-.vcdv) or a [Vair & Beta Cross Wind Correction Input File (.vcdb)](#speed-dependent-cross-wind-correction-input-file-.vcdv) must be defined. For details see [Cross Wind Correction](#vehicle-cross-wind-correction).
 
-###Dynamic Tyre Radius
+### Dynamic Tyre Radius
 
 In [Engineering Mode](#engineering-mode) this defines the effective (dynamic) wheel radius (in [mm]) used to calculate engine speed. In [Declaration Mode](#declaration-mode) the radius calculated automatically using tyres of the powered axle.
 
 
-###Axles/Wheels
+### Axles/Wheels
 
 For each axle the parameters **Relative axle load, RRC~ISO~** and **F~zISO~** have to be given in order to calculate the total [Rolling Resistance Coefficient](#vehicle-rolling-resistance-coefficient).
 
@@ -97,7 +97,7 @@ For missions with a trailer predefined wheels and load-shares are added by Vecto
 Doubleclick entries to edit existing axle configurations.
 
 
-###Retarder Losses
+### Retarder Losses
 
 If a separate retarder is used in the vehicle a **Retarder Torque Loss Map** can be defined here to consider idling losses caused by the retarder.
 
@@ -111,7 +111,7 @@ Both, primary and secondary retarders, require an [Retarder Torque Loss Input Fi
 
 The Retarder Ratio defines the ratio between the engine speed/cardan shaft speed and the retarder.
 
-###Angledrive
+### Angledrive
 
 If an angledrive is used in the vehicle, it can be defined here.
 Three options are available:
@@ -121,7 +121,7 @@ Three options are available:
 - Included in transmission: Use this if the gearbox already includes the transmission losses for the angledrive in the respective transmission loss maps.
 
 
-###PTO Transmission
+### PTO Transmission
 
 If the vehicle has an PTO consumer, a pto transmission and consumer can be defined here. (Only in [Engineering Mode](#engineering-mode))
 
@@ -133,13 +133,13 @@ Three settings can be set:
 
 <div class="declaration">
 
-###ADAS
+### ADAS
 
 On the ADAS tab, the options for advanced driver assistant systems can be selected. This is only supported in declaration mode. Depending on the mission cycle, vehicle group, and payload a certain benefit is applied to the calcualated fuel consumption. See [ADAS: Overspeed](#driver-overspeed) and [ADAS Technologies](#vehicle-adas-technologies)
 
 </div>
 
-###Controls
+### Controls
 
 
 ![](pics/blue-document-icon.png) New file

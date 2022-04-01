@@ -1,9 +1,9 @@
-##Pneumatic Auxiliaries Editor
+## Pneumatic Auxiliaries Editor
  
 
 ![](pics/AA_Pneumatics.jpg)
  
-###Description
+### Description
 
 The "Pneumatics" tab defines various parameters for pneumatic auxiliaries used on the vehicle:
 
@@ -16,7 +16,7 @@ The "Pneumatics" tab defines various parameters for pneumatic auxiliaries used o
 -   The “Retarder Brake”, “Smart Pneumatics” and “Smart Regeneration” and enable via check boxes.
 
 
-###Default Values
+### Default Values
 
 The following table provides a summary of the default values that are populated whenever a new advanced auxiliaries (.AAUX) file is created from scratch.  The table also indicates the editable/default status of the relevant parameters in the VECTO UI in Engineering mode, and the recommended status in Declaration mode (not currently implemented).  The default values / parameter status has been agreed with the project steering group.
 

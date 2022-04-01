@@ -1,4 +1,4 @@
-##Advanced Auxiliary Input Data (.aaux)
+## Advanced Auxiliary Input Data (.aaux)
 
 **Example: **
 

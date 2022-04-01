@@ -1,4 +1,4 @@
-##Acceleration Limiting Input File (.vacc)
+## Acceleration Limiting Input File (.vacc)
 
 The file is used for [Acceleration Limiting](#driver-acceleration-limiting). It defines the acceleration and deceleration limits as function of
 vehicle speed. The filepath has to be defined in the [Job File](#job-file). The file uses the [VECTO CSV format](#csv).

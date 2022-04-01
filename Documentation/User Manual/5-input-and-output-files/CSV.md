@@ -1,10 +1,10 @@
-##CSV
+## CSV
 Many data files in Vecto use CSV (Comma Separated Values) as common file format. They consist of a header which defines the columns and data entries which are separated by a comma (",").
 
 In Vecto 3 the order of the columns is arbitrary if the column header matches the header definitions described in this user manual. If the column header does not match, a warning is written to the log file and the columns are parsed in the sequence as described in this manual as a fall-back.
 
 
-###Definition###
+### Definition###
 
 
 |                         |                                                                                                                                                                                                                                                                                                                                                                                                    |
@@ -42,8 +42,8 @@ Following files use the csv:
 The [Auxiliary Input File (.vaux)](#auxiliary-input-file-.vaux) uses a modified csv format with some special headers.
 
 
-###Examples###
-####Exampl 1: Acceleration Limiting File####
+### Examples###
+#### Exampl 1: Acceleration Limiting File####
 ~~~
 v [km/h],acc [m/s^2]     ,dec [m/s^2]
 0       ,1.01570922360353,-0.231742702878269
@@ -52,7 +52,7 @@ v [km/h],acc [m/s^2]     ,dec [m/s^2]
 15      ,1.29026714002479,-0.703434814668512
 ~~~
 
-####Example 2: Driving Cycle####
+#### Example 2: Driving Cycle####
 ~~~
 <s>,<v>,<grad>      ,<stop>,<Padd>,<Aux_ALT1>,<Aux_ALT2>,<Aux_ALT3>
 0  ,0  ,-0.020237973,2     ,6.1   ,0.25      ,0.25      ,0.25
@@ -61,7 +61,7 @@ v [km/h],acc [m/s^2]     ,dec [m/s^2]
 3  ,64 ,-0.020237973,0     ,6.1   ,0.25      ,0.25      ,0.25
 ~~~
 
-####Example 3: Transmission Loss Map####
+#### Example 3: Transmission Loss Map####
 ~~~
 Input Speed [rpm],Input Torque [Nm],Torque Loss [Nm]
 0                ,-2500            ,77.5

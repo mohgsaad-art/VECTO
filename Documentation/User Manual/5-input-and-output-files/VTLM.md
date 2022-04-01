@@ -1,4 +1,4 @@
-##Transmission Loss Map (.vtlm)
+## Transmission Loss Map (.vtlm)
 
 This file defines losses in transmission components, i.e. every gear, axlegear, angledrive. See [Transmission Losses] (#transmission-losses) for the formula how the losses are accounted in the components. The file uses the [VECTO CSV format](#csv).
 
@@ -21,7 +21,7 @@ Input Speed [rpm],Input Torque [Nm],Torque Loss [Nm]
 ~~~
 
 
-####Sign of torque values
+#### Sign of torque values
 
 * Input Torque >0 means normal driving operation.
 * Input Torque \<0 means motoring operation. **The Torque Loss Map must include negative torque values for engine motoring operation!**

@@ -1,10 +1,10 @@
-##Driver: Overspeed
+## Driver: Overspeed
 
 
 Both functions control the vehicle's behaviour on uneven road sections (slope ≠ 0) and can be configured in the [Job File](#job-file)'s Driver Assist Tab. Overspeed is designed to model an average driver's behaviour without the aid of driver assistance systems. Eco-Roll  represents an optional driver assistance feature. For this reason vehicles without Eco-Roll should always have the Overspeed function enabled.
 
 
-###Overspeed
+### Overspeed
 
 
 Overspeed activates as soon as the total power demand at the wheels (Pwheel) falls below zero, i.e. the vehicle accelerates on a negative slope. The clutch remains closed, engine in motoring operation, and the vehicle accelerates beyond the cycle's target speed. When the speed limit (target speed plus **Max. Overspeed**) is reached the mechanical brakes are engaged to prevent further acceleration.
@@ -20,13 +20,13 @@ Parameters in [Job File](#job-file):
 -   **Max. Overspeed \[km/h\]** (relative to target speed)
 
 
-##Advanced Driver Assistant Systems: Engine Stop/Start
+## Advanced Driver Assistant Systems: Engine Stop/Start
 
-###Description
+### Description
 
 If engine stop/start is enabled in the Vehicle, the engine is turned off during vehicle stops to reduce the fuel consumption. During vehicle stops the energy demand for certain auxiliaires and for starting the engine is accumulated. In a post-processing step the final [fuel consumption is corrected](#engine-fuel-consumption-correction) to consider the energy demand for the auxiliaries and engine start.
 
-###Model Parameters
+### Model Parameters
 
    - **Delay engine-off:** if the vehicle stops, the engine is switched off after this timespan
    - **Max engine-off timespan:** if the enine is switched off at a vehicle stand, the engine is turned on again after this timespan. This basically limits the max. time the engine is switched off at a single engine-off event.
@@ -38,7 +38,7 @@ If engine stop/start is enabled in the Vehicle, the engine is turned off during 
    - Engine stop/start utility factor: 0.8
 </div>
 
-###Engine Start-Up Energy Demand
+### Engine Start-Up Energy Demand
 
 The energy demand to ramp-up the engine depends on the engine's inertia and the engine's drag torque and is computed according to the following equation:
 
@@ -49,7 +49,7 @@ $E_{ICE,start} = E_{ICE,rampUp} / \eta_{alternator}^2$
 
 $E_{ICE,start}$ is the amount of energy the combustion engine needs to provide to compensate the start up is the ramp-up energy multiplied by the efficiency of the alternator.  $t_{ICE,start}$ is assumed to be 1 second and $\eta_{alternator}$ is 0.7.
 
-###Auxiliaries and Utility Factor
+### Auxiliaries and Utility Factor
 
 During ICE-off phases the ICE is fully shut of in the simulation (.vmod data). However, in reality the ICE is not always switched off due to certain
 boundary conditions (e.g. power demand from an auxiliary, temperature, etc.). This is considered in the [post-processing](#engine-fuel-consumption-correction). 
@@ -75,9 +75,9 @@ In Engineering Mode the energy demand of the auxiliaries can be specified for th
 </div>
 
 
-##Advanced Driver Assistant Systems: Eco-Roll
+## Advanced Driver Assistant Systems: Eco-Roll
 
-###Description
+### Description
 
 Eco-roll is a driver assistant system that automatically decouples the internal combustion engine from the power train during specific downhill driving conditions with low negative slopes. The aim is to save fuel during such phases. VECTO supports eco-roll without engine stop/start and eco-roll with engine stop/start. In the former case, the combustion engine is idling during eco-roll phases while in the latter case the combustion engine is turned off during eco-roll events. For vehicles having eco-roll with engine stop/start the fuel consumption is corrected for the engine stop/start events and the auxiliary power demand during engine-off phases.
 
@@ -96,7 +96,7 @@ In Engineering Mode the energy demand of all auxiliaries is assumed to be drawn 
 </div>
 
 
-###Model Parameters
+### Model Parameters
 
   - **Minimum speed:** minimum vehicle speed to allow eco-roll to be activated
   - **Activation delay:** delay between the point in time when all conditions for an eco-roll event are fulfilled until eco-roll is activated
@@ -109,7 +109,7 @@ In Engineering Mode the energy demand of all auxiliaries is assumed to be drawn 
   - Underspeed threshold: 0 km/h
 </div>
 
-###Eco-Roll Model
+### Eco-Roll Model
 
 **Calulations during simulation**
 
@@ -121,9 +121,9 @@ The following state diagram depicts when eco-roll is activated during the simula
 
 ![](pics/EcoRollActivation.svg)
 
-##Advanced Driver Assistant Systems: Predictive Cruise Control
+## Advanced Driver Assistant Systems: Predictive Cruise Control
 
-###Description
+### Description
 
 Predictive cruise control (PCC): systems which optimise the usage of potential energy during a driving cycle based on an available preview of road gradient data and the use of a GPS system. A PCC system declared in the input to the simulation tool shall have a gradient preview distance longer than 1000 meters and cover all following use cases:
 
@@ -147,7 +147,7 @@ Predictive cruise control is only considered on highway sections of the simulate
 In declaration mode, the whole long-haul cycle is considered as highway. Moreover, the section from 29760m to 96753m of the regional delivery cycle is considered as highway.
 </div>
 
-###Model Parameters
+### Model Parameters
 
    - **Allowed underspeed:** Threshold below the target speed the vehicle's velocity may be reduced to during a PCC event (use-case 1 & 2, $v_{neg}$)
    - **Allowed overspeed:** Threshold above the target speed the vehicle's velocity may reach during a PCC event (use-cae 3)
@@ -165,7 +165,7 @@ In declaration mode, the whole long-haul cycle is considered as highway. Moreove
    - Preview distance use case 2: 1000 m
 </div>
 
-###Predictive Cruise Control Model Use-cases 1 and 2
+### Predictive Cruise Control Model Use-cases 1 and 2
 
 **Pre-Processing**
 
@@ -203,7 +203,7 @@ The following state diagram depicts when a PCC event is activated during the sim
 
 The fuel consumption of vehicles equipped with PCC option 1 & 2 and eco-roll with engine stop/start will be corrected for engine stop/start as described in [engine stop/start correction](#engine-fuel-consumption-correction).
 
-###Predictive Cruise Control Model Use-case 3
+### Predictive Cruise Control Model Use-case 3
 
 To consider predictive cruise control use-case 3, the driver model's allowed overspeed is set to the model parameter *allowed overspeed* in highway sections if the vehicle supports PCC use-case 3.
 

@@ -1,4 +1,4 @@
-##Alternator Input Data (.aalt)
+## Alternator Input Data (.aalt)
 
 ~~~
 [AlternatorName],[RPM],[Amps],[Efficiency],[PulleyRatio]

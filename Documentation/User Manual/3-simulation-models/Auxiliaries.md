@@ -1,4 +1,4 @@
-##Auxiliaries
+## Auxiliaries
 
 <div class="declaration">
 In Declaration mode the auxiliaries are pre-defined and the power demand is defined based on the vehicle category and mission. For every type of auxiliary (fan, steering pump, HVAC, electrig system, pneumatic system) the user can select a technology from a given list.
