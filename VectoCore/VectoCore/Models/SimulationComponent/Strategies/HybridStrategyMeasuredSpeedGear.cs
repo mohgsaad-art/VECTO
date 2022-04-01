@@ -2030,10 +2030,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 			try
 			{
-				var dummyTorque = resp.Engine.TotalTorqueDemand;
 				if (!iceOff && /*!resp.Engine.TotalTorqueDemand.IsBetween(resp.Engine.DragTorque, resp.Engine.DynamicFullLoadTorque)*/
-					(resp.Engine.TotalTorqueDemand.IsSmaller(resp.Engine.DragTorque) || resp.Engine.TotalTorqueDemand.IsGreater(resp.Engine.DynamicFullLoadTorque)))
-				{
+					(resp.Engine.TotalTorqueDemand.IsSmaller(resp.Engine.DragTorque) || resp.Engine.TotalTorqueDemand.IsGreater(resp.Engine.DynamicFullLoadTorque))) {
 					tmp.FuelCosts = double.NaN;
 					tmp.IgnoreReason |= resp.Engine.TotalTorqueDemand.IsGreater(resp.Engine.DynamicFullLoadTorque)
 						? HybridConfigurationIgnoreReason.EngineTorqueDemandTooHigh
@@ -2044,14 +2042,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			{
 				//Log.Info("Error during Hybrid strategy TotalTorqueDemand!");
 				tmp.FuelCosts = double.NaN;
-				tmp.IgnoreReason = HybridConfigurationIgnoreReason.EngineTorqueDemandTooLow;
+				tmp.IgnoreReason |= HybridConfigurationIgnoreReason.NotEvaluated;
 			}
 
 
             try
             {
-				if (resp.Engine.EngineSpeed.IsSmallerOrEqual(ModelData.EngineData.IdleSpeed))
-				{
+				if (resp.Engine.EngineSpeed.IsSmallerOrEqual(ModelData.EngineData.IdleSpeed)) {
 					tmp.FuelCosts = double.NaN;
 					tmp.IgnoreReason |= HybridConfigurationIgnoreReason.EngineSpeedTooLow;
 				}
@@ -2060,7 +2057,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			{
 				Log.Info("Error during Hybrid strategy Gearbox!");
 				tmp.FuelCosts = double.NaN;
-				tmp.IgnoreReason |= HybridConfigurationIgnoreReason.EngineSpeedTooLow;
+				tmp.IgnoreReason |= HybridConfigurationIgnoreReason.NotEvaluated;
 			}
 
 			//if (resp.Engine.EngineSpeed != null && resp.Gearbox.Gear.Engaged && GearList.HasSuccessor(resp.Gearbox.Gear) && ModelData.GearboxData.Gears[resp.Gearbox.Gear.Gear].ShiftPolygon.IsAboveUpshiftCurve(resp.Engine.TorqueOutDemand, resp.Engine.EngineSpeed)) {

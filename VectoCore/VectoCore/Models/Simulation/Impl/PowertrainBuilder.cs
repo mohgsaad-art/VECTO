@@ -408,9 +408,9 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 			SwitchableClutch clutch = null;
 			
-			var strategy = new HybridStrategyMeasuredSpeedGear(data, container);
+			var strategy = new HybridStrategyTimerunGear(data, container);
 			clutch = new SwitchableClutch(container, data.EngineData);
-			HybridControllerDS ctl = new HybridControllerDS(container, strategy, es);
+			HybridControllerTimerunGear ctl = new HybridControllerTimerunGear(container, strategy, es);
 
 			// add engine before gearbox so that gearbox can obtain if an ICE is available already in constructor
 			var engine = new StopStartCombustionEngine(container, data.EngineData);

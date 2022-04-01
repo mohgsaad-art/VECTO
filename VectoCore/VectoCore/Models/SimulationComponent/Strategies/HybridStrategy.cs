@@ -556,8 +556,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 		protected virtual void CalculateBatteryDischargeEnergyThreshold()
 		{
 			// TODO: MQ 20210712 how to handle with batterysystem
-			//var auxEnergyReserve = ModelData.ElectricAuxDemand * StrategyParameters.AuxReserveTime;
 			BatteryDischargeEnergyThreshold = 0.SI<WattSecond>();
+
+			//var auxEnergyReserve = ModelData.ElectricAuxDemand * StrategyParameters.AuxReserveTime;
 			//if (auxEnergyReserve > 0) {
 			//	var minSoc = Math.Max(ModelData.BatteryData?.MinSOC ?? ModelData.SuperCapData.MinVoltage / ModelData.SuperCapData.MaxVoltage,
 			//		StrategyParameters.MinSoC);
@@ -565,6 +566,17 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			//		ModelData.BatteryData.Capacity * minSoc * ModelData.BatteryData.SOCMap.Lookup(minSoc) +
 			//		auxEnergyReserve;
 			//}
+        }
+
+		protected void CalculateBatteryDischargeEnergyThresholdWithAuxEnergyReserve()
+		{
+			var auxEnergyReserve = ModelData.ElectricAuxDemand * StrategyParameters.AuxReserveTime;
+			if (auxEnergyReserve > 0) {
+				var minSoc = Math.Max(DataBus.BatteryInfo.MinSoC, StrategyParameters.MinSoC);
+				BatteryDischargeEnergyThreshold =
+					DataBus.BatteryInfo.Capacity * minSoc * DataBus.BatteryInfo.NominalVoltage +
+					auxEnergyReserve;
+			}
         }
 
 		protected virtual void WarnGearShiftRange()
@@ -2257,7 +2269,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			return tmp;
 		}
 
-		private void CalculateCosts(IResponse resp, Second dt, HybridResultEntry tmp, bool allowIceOff, bool dryRun)
+		protected virtual void CalculateCosts(IResponse resp, Second dt, HybridResultEntry tmp, bool allowIceOff, bool dryRun)
 		{
 			tmp.IgnoreReason = 0;
 			if (resp == null) {
@@ -2442,7 +2454,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 		protected abstract void CheckGearshiftLimits(HybridResultEntry tmp, IResponse resp);
 
-		private void SetBatteryCosts(IResponse resp, Second dt, HybridResultEntry tmp)
+		protected void SetBatteryCosts(IResponse resp, Second dt, HybridResultEntry tmp)
 		{
 			var batEnergyStored = DataBus.BatteryInfo.StoredEnergy;
 			var batEnergy = resp.ElectricSystem.RESSPowerDemand * dt;
@@ -2487,22 +2499,22 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			}
 
 			// TODO: MQ 20210712 how to handle with batterysystem
-			var auxEnergyReserve = ModelData.ElectricAuxDemand * StrategyParameters.AuxReserveTime;
-			if (auxEnergyReserve > 0) {
-				var minSoc = Math.Max(DataBus.BatteryInfo.MinSoC, StrategyParameters.MinSoC);
-				BatteryDischargeEnergyThreshold =
-					DataBus.BatteryInfo.Capacity * minSoc * DataBus.BatteryInfo.NominalVoltage +
-					auxEnergyReserve;
-			}
+			InitializeBatteryDischargeEnergyThreshold();
 
 			PreviousState.AngularVelocity = outAngularVelocity;
 			PreviousState.GearboxEngaged = true;
 			PreviousState.GearshiftTriggerTstmp = -double.MaxValue.SI<Second>();
 			CurrentState.GearshiftTriggerTstmp = -double.MaxValue.SI<Second>();
 			return retVal;
+        }
+
+        protected virtual void InitializeBatteryDischargeEnergyThreshold()
+        { 
+			CalculateBatteryDischargeEnergyThresholdWithAuxEnergyReserve();
 		}
 
-		public virtual void CommitSimulationStep(Second time, Second simulationInterval)
+
+        public virtual void CommitSimulationStep(Second time, Second simulationInterval)
 		{
 			var iceStart = PreviousState.ICEStartTStmp;
 			PreviousState = CurrentState;

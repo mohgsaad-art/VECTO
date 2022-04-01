@@ -11,11 +11,11 @@ using TUGraz.VectoCommon.Models;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
-    public class HybridControllerDS : HybridController
+    public class HybridControllerTimerunGear : HybridController
     {
 		protected override int MaxRequestRetries => 20;
         
-		public HybridControllerDS(IVehicleContainer container, IHybridControlStrategy strategy, IElectricSystem es) :
+		public HybridControllerTimerunGear(IVehicleContainer container, IHybridControlStrategy strategy, IElectricSystem es) :
             base(container, strategy, es)
         {
         }
