@@ -104,6 +104,10 @@ namespace TUGraz.VectoCore.Tests.XML
 		private string _refFactorLonghaul = "Ref-Factor_LongHaul";
 		private string _refFactorRegionalDelivery = "Ref-Factor_Regional_Delivery";
 		private string _refFactorUrbanDelivery = "Ref-Factor_Urban_Delivery";
+		private bool _writeModalResults = false;
+		private bool _actualModalData = false;
+		private bool _serializeVectoRunData = false;
+
 		[SetUp]
 		public void RunBeforeAnyTests()
 		{
@@ -130,8 +134,9 @@ namespace TUGraz.VectoCore.Tests.XML
 					var dataProvider = XMLInputReader.CreateDeclarationTrailer(xDoc.CreateReader());
 					var runsFactory = new SimulatorFactory(ExecutionMode.Declaration, dataProvider, fileWriter) {
 						ModalResults1Hz = false,
-						WriteModalResults = false,
-						ActualModalData = false,
+						WriteModalResults = _writeModalResults,
+						ActualModalData = _actualModalData,
+						SerializeVectoRunData = _serializeVectoRunData,
 						Validate = false,
 					};
 					
@@ -278,6 +283,28 @@ namespace TUGraz.VectoCore.Tests.XML
 
 		}
 
+		[TestCase(23101, true)]
+		[TestCase(11101, true)]
+		public void SimulateTrailer(int group, bool writeAdditionalFiles)
+		{
+			_writeModalResults = writeAdditionalFiles;
+			_actualModalData = writeAdditionalFiles;
+			_serializeVectoRunData = writeAdditionalFiles;
+
+			var vehicleGroups = new List<int>();
+			vehicleGroups.Add(group);
+			var groupManager = new ResultManager(vehicleGroups);
+
+
+			groupManager.SetTowingVehicleGroups(new TrailerSegments());
+			SimulateReferenceTrailers(groupManager, vehicleGroups);
+			//ToCSV(CreateDataTable(groupManager, vehicleGroups), "referenceResults.csv");
+			SimulateStandardTrailer(groupManager, vehicleGroups);
+			//ToCSV(CreateDataTable(groupManager, vehicleGroups), "standardAndReferenceResults.csv");
+			//CalculateReferenceFactors(groupManager, vehicleGroups);
+			//ToCSV(CreateDataTable(groupManager, vehicleGroups), "referenceFactors.csv");
+		}
+
 
 		private void CalculateReferenceFactors(ResultManager manager, IList<int> vehicleGroups)
 		{
@@ -384,8 +411,9 @@ namespace TUGraz.VectoCore.Tests.XML
 				var runsFactory = new SimulatorFactory(ExecutionMode.Declaration, dataProvider, fileWriter)
 				{
 					ModalResults1Hz = false,
-					WriteModalResults = false,
-					ActualModalData = false,
+					WriteModalResults = _writeModalResults,
+					ActualModalData = _actualModalData,
+					SerializeVectoRunData = _serializeVectoRunData,
 					Validate = false,
 				};
 
