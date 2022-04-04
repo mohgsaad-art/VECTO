@@ -98,7 +98,12 @@ namespace TUGraz.VectoCore.Tests.Helper.TrailerTool
 
 			}
 
-
+			if (trailerType == TypeTrailer.DB) {
+				var Axle = xElements.Where((e) => e.Name.LocalName == XMLNames.AxleWheels_Axles_Axle)
+					.Single(e => e.LastAttribute.Value == "1");
+				Axle.Descendants().Single(e => e.Name.LocalName == XMLNames.AxleWheels_Axles_Axle_Steered).Value =
+					"true";
+			}
 
             return sampleDoc;
 		}
@@ -133,7 +138,7 @@ namespace TUGraz.VectoCore.Tests.Helper.TrailerTool
 		public static void AddAxle(int count, IEnumerable<XElement> xElements)
 		{
 			var axlesElement = xElements.Single(xElement => xElement.Name.LocalName == XMLNames.AxleWheels_Axles);
-			var elementToAdd = axlesElement.Descendants().First();
+			var elementToAdd = new XElement(axlesElement.Descendants().First()); //deep copy
 			elementToAdd.SetAttributeValue(XMLNames.AxleWheels_Axles_Axle_AxleNumber_Attr, count);
 			axlesElement.Add(elementToAdd);
 		}

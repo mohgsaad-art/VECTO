@@ -35,7 +35,7 @@
           <Axle xsi:type="v2.7:TrailerAxleType" axleNumber="1">
             <TwinTyres>false</TwinTyres>
             <Liftable>false</Liftable>
-            <Steered>false</Steered>
+            <Steered>true</Steered>
             <Tyre>
               <v2.7:Data id="TYR-gooZah3D" xsi:type="v2.2:TyreDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.2">
                 <Manufacturer>Generic Tyre Manufacturer</Manufacturer>

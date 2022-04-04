@@ -63,9 +63,9 @@ namespace VECTOTrailer.ViewModel.Interfaces
 		bool Axle1IsNone { get; set; }
 		bool Axle2IsNone { get; set; }
 		bool Axle3IsNone { get; set; }
-		ICommand SelectFirstFileCommand { get; }
-		ICommand SelectSecondFileCommand { get; }
-		ICommand SelectThirdFileCommand { get; }
+		ICommand SelectFirstAxleXmlCommand { get; }
+		ICommand SelectSecondAxleXmlCommand { get; }
+		ICommand SelectThirdAxleXmlCommand { get; }
 
 		ICommand SelectCertifiedAeroDeviceCommand { get; }
 

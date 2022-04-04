@@ -2689,6 +2689,15 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to WeightedResults.
+        /// </summary>
+        public static string Report_Results_WeightedResults {
+            get {
+                return ResourceManager.GetString("Report_Results_WeightedResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to SpecificCO2Emissions.
         /// </summary>
         public static string Report_SpecificCO2Emissions {
@@ -2829,6 +2838,33 @@ namespace TUGraz.VectoCommon.Resources {
         public static string Report_WeightedPayloadTrailer {
             get {
                 return ResourceManager.GetString("Report_WeightedPayloadTrailer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CubicMetre-KiloMetre-Based.
+        /// </summary>
+        public static string Result_RatioType_CubicMetre_KilometreBased {
+            get {
+                return ResourceManager.GetString("Result_RatioType_CubicMetre_KilometreBased", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kilometre-Based.
+        /// </summary>
+        public static string Result_RatioType_KilometreBased {
+            get {
+                return ResourceManager.GetString("Result_RatioType_KilometreBased", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ton-Kilometre-Based.
+        /// </summary>
+        public static string Result_RatioType_TonKilometreBased {
+            get {
+                return ResourceManager.GetString("Result_RatioType_TonKilometreBased", resourceCulture);
             }
         }
         

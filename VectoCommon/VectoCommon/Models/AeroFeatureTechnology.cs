@@ -48,19 +48,24 @@ namespace TUGraz.VectoCommon.Models
 
 	public static class AeroFeatureTechnologiesHelper
 	{
+		private const string _sideSkirtsShort = "short side covers";
+		private const string _sideSkirtsLong = "long side covers";
+		private const string _boatTailShort = "short rear flaps";
+		private const string _boatTailLong = "long rear flaps";
+		private const string _none = "none";
 		public static string GetLabel(this AeroFeatureTechnology ttype)
 		{
 			switch (ttype) {
 				case AeroFeatureTechnology.SideSkirtsShort:
-					return "side skirts short";
+					return _sideSkirtsShort;
 				case AeroFeatureTechnology.SideSkirtsLong:
-					return "side skirts long";
+					return _sideSkirtsLong;
 				case AeroFeatureTechnology.BoatTailShort:
-					return "boat tail short";
+					return _boatTailShort;
 				case AeroFeatureTechnology.BoatTailLong:
-					return "boat tail long";
+					return _boatTailLong;
 				case AeroFeatureTechnology.None:
-					return "none";
+					return _none;
 				default:
 					throw new ArgumentOutOfRangeException("AeroFeatureTechnology type", ttype, null);
 			}
@@ -74,15 +79,15 @@ namespace TUGraz.VectoCommon.Models
 		public static AeroFeatureTechnology Parse(string technology)
 		{
 			switch (technology) {
-				case "side skirts short":
+				case _sideSkirtsShort:
 					return AeroFeatureTechnology.SideSkirtsShort;
-				case "side skirts long":
+				case _sideSkirtsLong:
 					return AeroFeatureTechnology.SideSkirtsLong;
-				case "boat tail short":
+				case _boatTailShort:
 					return AeroFeatureTechnology.BoatTailShort;
-				case "boat tail long":
+				case _boatTailLong:
 					return AeroFeatureTechnology.BoatTailLong;
-				case "none":
+				case _none:
 					return AeroFeatureTechnology.None;
 				default:
 					return AeroFeatureTechnology.Unknown;

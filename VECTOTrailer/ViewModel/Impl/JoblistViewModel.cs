@@ -91,14 +91,21 @@ namespace VECTOTrailer.ViewModel.Impl
 		private ICommand _browseOutputDirectory;
 		private bool _writeModelData;
 		private ICommand _aboutViewCommand;
+		private ICommand _showUserGuideCommand;
 		private string _lookAheadMinSpeedOverride;
 		private bool _autoSimActivated;
-		private readonly IAutoSimulator _autoSimulator;
+		private readonly ISimulationBackgroundWorker _simulationBackgroundWorker;
 		private ICommand _browseAutoSimOutputDirectory;
 		private ICommand _browseAutoSimInputDirectory;
 
 		private string _userGuidePath = null;
 		private string UserGuidePath => _userGuidePath ?? (_userGuidePath = Path.GetFullPath(Properties.Settings.Default.UserGuideFilePath));
+
+		private string _vectoHelpPath = null;
+
+		public string VectoHelpPath => _vectoHelpPath ??
+										(_vectoHelpPath =
+											Path.GetFullPath(Properties.Settings.Default.VectoHelpPath));
 		#endregion
 
 		#region Properties
@@ -166,11 +173,11 @@ namespace VECTOTrailer.ViewModel.Impl
 		#endregion
 
 
-		public JoblistViewModel(IAutoSimulator autoSimulator)
+		public JoblistViewModel(ISimulationBackgroundWorker simulationBackgroundWorker)
 		{
 			_settings = new SettingsModel();
-			_autoSimulator = autoSimulator;
-            _autoSimulator.Messages.CollectionChanged += Messages_CollectionChanged;
+			_simulationBackgroundWorker = simulationBackgroundWorker;
+            _simulationBackgroundWorker.Messages.CollectionChanged += Messages_CollectionChanged;
 
 
 				
@@ -231,12 +238,12 @@ namespace VECTOTrailer.ViewModel.Impl
 				WriteActualModData = body.GetValueOrDefault<bool>(nameof(WriteActualModData)) ?? false;
 
 				OutputDirectory = body[nameof(OutputDirectory)] == null ? "" : body[nameof(OutputDirectory)].Value<string>();
-				_autoSimulator.OutputDirectory = body[nameof(_autoSimulator.OutputDirectory) + _autoSimSettingsSuffix] == null ? "" : body[nameof(_autoSimulator.OutputDirectory) + _autoSimSettingsSuffix].Value<string>();
-				_autoSimulator.InputDirectory = body[nameof(_autoSimulator.InputDirectory) + _autoSimSettingsSuffix] == null ? "" : body[nameof(_autoSimulator.InputDirectory) + _autoSimSettingsSuffix].Value<string>();
-				_autoSimulator.WriteModData1Hz =
-					body.GetValueOrDefault<bool>(nameof(_autoSimulator.WriteModData1Hz) + _autoSimSettingsSuffix) ?? false;
-				_autoSimulator.WriteModData =
-					body.GetValueOrDefault<bool>(nameof(_autoSimulator.WriteModData) + _autoSimSettingsSuffix) ?? false;
+				_simulationBackgroundWorker.OutputDirectory = body[nameof(_simulationBackgroundWorker.OutputDirectory) + _autoSimSettingsSuffix] == null ? "" : body[nameof(_simulationBackgroundWorker.OutputDirectory) + _autoSimSettingsSuffix].Value<string>();
+				_simulationBackgroundWorker.InputDirectory = body[nameof(_simulationBackgroundWorker.InputDirectory) + _autoSimSettingsSuffix] == null ? "" : body[nameof(_simulationBackgroundWorker.InputDirectory) + _autoSimSettingsSuffix].Value<string>();
+				_simulationBackgroundWorker.WriteModData1Hz =
+					body.GetValueOrDefault<bool>(nameof(_simulationBackgroundWorker.WriteModData1Hz) + _autoSimSettingsSuffix) ?? false;
+				_simulationBackgroundWorker.WriteModData =
+					body.GetValueOrDefault<bool>(nameof(_simulationBackgroundWorker.WriteModData) + _autoSimSettingsSuffix) ?? false;
 
 
 			}
@@ -257,10 +264,10 @@ namespace VECTOTrailer.ViewModel.Impl
 			body.Add(nameof(WriteModData1Hz), WriteModData1Hz);
 			body.Add(nameof(WriteActualModData), WriteActualModData);
 			body.Add(nameof(OutputDirectory), OutputDirectory);
-			body.Add(nameof(_autoSimulator.OutputDirectory) + _autoSimSettingsSuffix, _autoSimulator.OutputDirectory);
-			body.Add(nameof(_autoSimulator.InputDirectory) + _autoSimSettingsSuffix, _autoSimulator.InputDirectory);
-			body.Add(nameof(WriteModData) + _autoSimSettingsSuffix, _autoSimulator.WriteModData);
-			body.Add(nameof(WriteModData1Hz) + _autoSimSettingsSuffix, _autoSimulator.WriteModData1Hz);
+			body.Add(nameof(_simulationBackgroundWorker.OutputDirectory) + _autoSimSettingsSuffix, _simulationBackgroundWorker.OutputDirectory);
+			body.Add(nameof(_simulationBackgroundWorker.InputDirectory) + _autoSimSettingsSuffix, _simulationBackgroundWorker.InputDirectory);
+			body.Add(nameof(WriteModData) + _autoSimSettingsSuffix, _simulationBackgroundWorker.WriteModData);
+			body.Add(nameof(WriteModData1Hz) + _autoSimSettingsSuffix, _simulationBackgroundWorker.WriteModData1Hz);
 
 			JSONFileWriter.WriteFile(new Dictionary<string, object>() { { "Header", header }, { "Body", body } }, SETTINGS_FILE);
 		}
@@ -353,7 +360,7 @@ namespace VECTOTrailer.ViewModel.Impl
 			get { return _writeModData; }
 			set {
 				if (SetProperty(ref _writeModData, value)) {
-					_autoSimulator.WriteModData = value;
+					_simulationBackgroundWorker.WriteModData = value;
 				}
 			}
 		}
@@ -363,7 +370,7 @@ namespace VECTOTrailer.ViewModel.Impl
 			get { return _writeModData1Hz; }
 			set {
 				if (SetProperty(ref _writeModData1Hz, value)) {
-					_autoSimulator.WriteModData1Hz = value;
+					_simulationBackgroundWorker.WriteModData1Hz = value;
 				}
 
 			}
@@ -375,7 +382,7 @@ namespace VECTOTrailer.ViewModel.Impl
 			set
 			{
 				if (SetProperty(ref _validateData, value)) {
-					_autoSimulator.ValidateData = value;
+					_simulationBackgroundWorker.ValidateData = value;
 				}
 			}
 		}
@@ -386,7 +393,7 @@ namespace VECTOTrailer.ViewModel.Impl
 			set
 			{
 				if (SetProperty(ref _writeActualModData, value)) {
-					_autoSimulator.WriteActualModData = value;
+					_simulationBackgroundWorker.WriteActualModData = value;
 				}
 			}
 		}
@@ -404,17 +411,18 @@ namespace VECTOTrailer.ViewModel.Impl
 
 
 
-		public IAutoSimulator AutoSimulator
+		public ISimulationBackgroundWorker SimulationBackgroundWorker
 		{
-			get => _autoSimulator;
+			get => _simulationBackgroundWorker;
 		}
 
 		private ICommand _toggleAutoSimCommand;
 		private string _autoSimSettingsSuffix = "-autosim";
+		private ICommand _showVectoHelpCommand;
 
 		public ICommand ToggleAutoSim { get => _toggleAutoSimCommand ?? (_toggleAutoSimCommand = new RelayCommand(
 			() => {
-				_autoSimulator.ToggleAutoSimulator();
+				_simulationBackgroundWorker.ToggleSimulationBackgroundWorker();
 			})); }
 
 		
@@ -449,8 +457,8 @@ namespace VECTOTrailer.ViewModel.Impl
 		{
 
 			get { return _browseAutoSimOutputDirectory ?? (_browseAutoSimOutputDirectory = new RelayCommand(
-				() => DoBrowseDirectory(s => _autoSimulator.OutputDirectory = s),
-				() => !_autoSimulator.AutoSimActive
+				() => DoBrowseDirectory(s => _simulationBackgroundWorker.OutputDirectory = s),
+				() => !_simulationBackgroundWorker.AutoSimActive
 				));
 			}
 		}
@@ -458,8 +466,8 @@ namespace VECTOTrailer.ViewModel.Impl
 		public ICommand BrowseAutoSimInputDirectory
 		{
 			get { return _browseAutoSimInputDirectory ?? (_browseAutoSimInputDirectory = new RelayCommand(
-				() => DoBrowseDirectory(s => _autoSimulator.InputDirectory = s),
-				() => !_autoSimulator.AutoSimActive
+				() => DoBrowseDirectory(s => _simulationBackgroundWorker.InputDirectory = s),
+				() => !_simulationBackgroundWorker.AutoSimActive
 				));
 			}
 		}
@@ -470,7 +478,7 @@ namespace VECTOTrailer.ViewModel.Impl
 			get { return _writeModelData; }
 			set {
 				if (SetProperty(ref _writeModelData, value)) {
-					_autoSimulator.WriteModelData = value;
+					_simulationBackgroundWorker.WriteModelData = value;
 				}; }
 		}
 		
@@ -764,7 +772,7 @@ namespace VECTOTrailer.ViewModel.Impl
 				}
 			}
 		}
-		public ICommand ShowUserGuide => _aboutViewCommand ?? (_aboutViewCommand = new RelayCommand(DoShowUserGuideCommand));
+		public ICommand ShowUserGuide => _showUserGuideCommand ?? (_showUserGuideCommand = new RelayCommand(DoShowUserGuideCommand));
 
 		private void DoShowUserGuideCommand()
         {
@@ -776,8 +784,25 @@ namespace VECTOTrailer.ViewModel.Impl
             {
 				MessageBox.Show($"Error opening user guide {UserGuidePath}\n \n {ex.Message}", "Error", MessageBoxButton.OK);
             }
-			
 		}
+
+		public ICommand ShowVectoHelp =>
+			_showVectoHelpCommand ?? (_showVectoHelpCommand = new RelayCommand(DoShowVectoHelp));
+
+		private void DoShowVectoHelp()
+		{
+			try
+			{
+				
+				System.Diagnostics.Process.Start("explorer.exe", VectoHelpPath);
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show($"Error opening vecto help {VectoHelpPath}\n \n {ex.Message}", "Error", MessageBoxButton.OK);
+			}
+		}
+
+
 		public ICommand AboutViewCommand
 		{
 			get { return _aboutViewCommand ?? (_aboutViewCommand = new RelayCommand(DoAboutViewCommand)); }

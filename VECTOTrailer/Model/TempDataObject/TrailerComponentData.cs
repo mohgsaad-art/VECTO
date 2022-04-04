@@ -80,9 +80,9 @@ namespace VECTOTrailer.Model.TempDataObject
 		public bool Axle1IsNone { get; set; }
 		public bool Axle2IsNone { get; set; }
 		public bool Axle3IsNone { get; set; }
-		public ICommand SelectFirstFileCommand { get; set;  }
-		public ICommand SelectSecondFileCommand { get; set;  }
-		public ICommand SelectThirdFileCommand { get; set;  }
+		public ICommand SelectFirstAxleXmlCommand { get; set;  }
+		public ICommand SelectSecondAxleXmlCommand { get; set;  }
+		public ICommand SelectThirdAxleXmlCommand { get; set;  }
 
 		public ICommand SelectCertifiedAeroDeviceCommand { get; set; }
 		public JobFileType FirstFileType { get; set;  }

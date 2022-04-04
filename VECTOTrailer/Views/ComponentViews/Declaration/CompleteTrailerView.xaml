@@ -324,37 +324,36 @@
                      
                         </Grid>
                     </GroupBox>
-                    <DockPanel HorizontalAlignment="Stretch" Margin="5" LastChildFill="True" Visibility="{Binding IsChecked,ElementName=certified,Converter={StaticResource BoolToVisibilityConverter}}">
-                        
-                        
-
-                        <TextBlock DockPanel.Dock="Left" Text="Device" Width="40" />
+                    <GroupBox Header="Certified aerodynamic device XML" Visibility="{Binding IsChecked,ElementName=certified,Converter={StaticResource BoolToVisibilityConverter}}">
+                    <DockPanel HorizontalAlignment="Stretch" Margin="5" LastChildFill="True" >
                         <Button DockPanel.Dock="Right" Name="UploadCertifiedAeroDeviceButton" Grid.Column="3" Content="..." Width="30" Margin="5,0,0,0"
                                 Command="{Binding SelectCertifiedAeroDeviceCommand}"
                                 CommandParameter="{Binding CertifiedAeroDeviceType}" />
-                        <TextBox DockPanel.Dock="Left" HorizontalAlignment="Stretch" IsReadOnly="True" IsReadOnlyCaretVisible="True" TextWrapping="Wrap" TextChanged="ScrollToEnd"
-                                 Text="{Binding CertifiedAeroDeviceFilePath}">
-                            <Validation.ErrorTemplate>
-                                <ControlTemplate>
-                                    <DockPanel>
-                                        <TextBlock Foreground="Red" DockPanel.Dock="Top" Text="{Binding ErrorContent}" />
-                                        <AdornedElementPlaceholder/>
-                                    </DockPanel>
-                                </ControlTemplate>
-                            </Validation.ErrorTemplate>
-                            <TextBox.Style>
-                                <Style>
-                                    <Style.Triggers>
-                                        <Trigger Property="Validation.HasError" Value="true">
-                                            <Setter Property="Border.BorderBrush" Value="Red"/>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBox.Style>
-                        </TextBox>
-                     
-                        
-                        <!--<StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
+                            <TextBox DockPanel.Dock="Left" HorizontalAlignment="Stretch" IsReadOnly="True" IsReadOnlyCaretVisible="True" TextWrapping="Wrap" TextChanged="ScrollToEnd"
+                                     Text="{Binding CertifiedAeroDeviceFilePath}">
+                                <Validation.ErrorTemplate>
+                                    <ControlTemplate>
+                                        <DockPanel>
+                                            <TextBlock Foreground="Red" DockPanel.Dock="Top" Text="{Binding ErrorContent}" />
+                                            <AdornedElementPlaceholder/>
+                                        </DockPanel>
+                                    </ControlTemplate>
+                                </Validation.ErrorTemplate>
+                                <TextBox.Style>
+                                    <Style>
+                                        <Style.Triggers>
+                                            <Trigger Property="Validation.HasError" Value="true">
+                                                <Setter Property="Border.BorderBrush" Value="Red"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBox.Style>
+                            </TextBox>
+                            </DockPanel>
+                    </GroupBox>
+
+
+                    <!--<StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
                         <TextBlock Text="CdXA reduction"/>
                             <Grid>
                             <customControls:VectoParameterControl
@@ -381,7 +380,6 @@
                                 Unit="%" UnitWidthGroup="unitWidth"/>
                         </Grid>
                         </StackPanel>-->
-                    </DockPanel>
 
                 </StackPanel>
             </StackPanel>
@@ -443,11 +441,11 @@
                             </Style>
                         </Grid.Style>
 
-                        <GroupBox Grid.Column="0" Header="Axle 1" HorizontalAlignment="Stretch" >
+                        <GroupBox Grid.Column="0" Header="Axle 1 - Tyre XML" HorizontalAlignment="Stretch" >
                             <StackPanel>
                                 <DockPanel LastChildFill="True">
                                     <Button DockPanel.Dock =" Right" Name="UploadFirstAxleButton" Grid.Column="3" Content="..." HorizontalAlignment="Right" Width="30" Margin="5,0,0,0"
-                                            Command="{Binding SelectFirstFileCommand}"
+                                            Command="{Binding SelectFirstAxleXmlCommand}"
                                             CommandParameter="{Binding FirstFileType}"/>
                                     <TextBox HorizontalAlignment="Stretch" IsReadOnly="True" DockPanel.Dock="Left"
                                              Text="{Binding Axle1FilePath}" Name="FilePath1" TextChanged="ScrollToEnd" IsReadOnlyCaretVisible="True">
@@ -486,7 +484,7 @@
                                         </StackPanel>
                                       <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
                                           <TextBlock Grid.Column="9" Text="Steered" Margin="5,0,5,0"/>
-                                          <CheckBox Grid.Column="10" IsChecked="{Binding Axle1IsSteered}" Margin="0,3,0,0"/>
+                                          <CheckBox Grid.Column="10" IsChecked="{Binding Axle1IsSteered}"  Margin="0,3,0,0"/>
                                     </StackPanel>
                                 </Grid>
                             </StackPanel>
@@ -509,11 +507,11 @@
                                 </Style.Triggers>
                             </Style>
                         </Grid.Style>
-                        <GroupBox Grid.Column="0" Header="Axle 2" HorizontalAlignment="Stretch" >
+                        <GroupBox Grid.Column="0" Header="Axle 2  - Tyre XML" HorizontalAlignment="Stretch" >
                             <StackPanel>
                                 <DockPanel LastChildFill="True">
                                     <Button DockPanel.Dock =" Right"  Grid.Column="3" Content="..." HorizontalAlignment="Right" Width="30" Margin="5,0,0,0"
-                                            Command="{Binding SelectSecondFileCommand}"
+                                            Command="{Binding SelectSecondAxleXmlCommand}"
                                             CommandParameter="{Binding SecondFileType}"/>
                                     <TextBox HorizontalAlignment="Stretch" IsReadOnly="True" DockPanel.Dock="Left"
                                              Text="{Binding Axle2FilePath}" TextChanged="ScrollToEnd" IsReadOnlyCaretVisible="True">
@@ -570,11 +568,11 @@
                                 </Style.Triggers>
                             </Style>
                         </Grid.Style>
-                        <GroupBox Grid.Column="0" Header="Axle 3" HorizontalAlignment="Stretch" >
+                        <GroupBox Grid.Column="0" Header="Axle 3  - Tyre XML" HorizontalAlignment="Stretch" >
                             <StackPanel>
                                 <DockPanel LastChildFill="True">
                                     <Button DockPanel.Dock =" Right"  Grid.Column="3" Content="..." HorizontalAlignment="Right" Width="30" Margin="5,0,0,0"
-                                            Command="{Binding SelectThirdFileCommand}"
+                                            Command="{Binding SelectThirdAxleXmlCommand}"
                                             CommandParameter="{Binding ThirdFileType}"/>
                                     <TextBox HorizontalAlignment="Stretch" IsReadOnly="True" DockPanel.Dock="Left"
                                              Text="{Binding Axle3FilePath}" TextChanged="ScrollToEnd" IsReadOnlyCaretVisible="True">

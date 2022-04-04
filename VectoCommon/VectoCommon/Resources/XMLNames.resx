@@ -1494,4 +1494,16 @@
 <data name="Trailer_CertifiedAeroReduction" xml:space="preserve">
 	<value>CertifiedAeroReduction</value>
 </data>
+<data name="Report_Results_WeightedResults" xml:space="preserve">
+	<value>WeightedResults</value>
+</data>
+<data name="Result_RatioType_KilometreBased" xml:space="preserve">
+	<value>Kilometre-Based</value>
+</data>
+<data name="Result_RatioType_TonKilometreBased" xml:space="preserve">
+	<value>Ton-Kilometre-Based</value>
+</data>
+<data name="Result_RatioType_CubicMetre_KilometreBased" xml:space="preserve">
+	<value>CubicMetre-KiloMetre-Based</value>
+</data>
 </root>

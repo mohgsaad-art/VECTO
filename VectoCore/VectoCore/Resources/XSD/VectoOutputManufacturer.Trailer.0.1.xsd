@@ -54,7 +54,7 @@
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="SimulationParameters" type="SimulationParametersType"/>
-					<xs:element name="Fuel">
+					<xs:element name="Fuel" maxOccurs="unbounded">
 						<xs:complexType>
 							<xs:sequence>
 								<xs:element name="FuelConsumption" maxOccurs="unbounded">
@@ -99,6 +99,15 @@
 				<xs:annotation>
 					<xs:documentation>I.2.1.2 / #57</xs:documentation>
 				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="unit" type="MassUnitType" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="TotalVehicleMass">
 				<xs:complexType>
 					<xs:simpleContent>
 						<xs:extension base="xs:double">
@@ -176,16 +185,32 @@
 										<xs:element name="Result" type="AbstractResultType" maxOccurs="unbounded"/>
 									</xs:sequence>
 								</xs:choice>
-								<xs:element name="Summary" minOccurs="0">
+								<xs:element name="WeightedResults" minOccurs="0">
 									<xs:complexType>
 										<xs:sequence>
-											<xs:element name="WeightedPayloadTrailer">
+											<xs:element name="Payload">
 												<xs:complexType>
 													<xs:simpleContent>
 														<xs:extension base="xs:double">
 															<xs:attribute name="unit" use="required"/>
 														</xs:extension>
 													</xs:simpleContent>
+												</xs:complexType>
+											</xs:element>
+											<xs:element name="Fuel" maxOccurs="unbounded">
+												<xs:complexType>
+													<xs:sequence>
+														<xs:element name="FuelConsumption" maxOccurs="unbounded">
+															<xs:complexType>
+																<xs:simpleContent>
+																	<xs:extension base="xs:double">
+																		<xs:attribute name="unit" use="required"/>
+																	</xs:extension>
+																</xs:simpleContent>
+															</xs:complexType>
+														</xs:element>
+													</xs:sequence>
+													<xs:attribute name="type" use="required"/>
 												</xs:complexType>
 											</xs:element>
 											<xs:element name="CO2" maxOccurs="unbounded">
@@ -197,20 +222,12 @@
 													</xs:simpleContent>
 												</xs:complexType>
 											</xs:element>
-											<xs:element name="FuelConsumption" maxOccurs="unbounded">
+											<xs:element name="EfficiencyRatio" maxOccurs="unbounded">
 												<xs:complexType>
 													<xs:simpleContent>
 														<xs:extension base="xs:double">
-															<xs:attribute name="unit" use="required"/>
-														</xs:extension>
-													</xs:simpleContent>
-												</xs:complexType>
-											</xs:element>
-											<xs:element name="WeightedEfficiencyRatio" maxOccurs="unbounded">
-												<xs:complexType>
-													<xs:simpleContent>
-														<xs:extension base="xs:double">
-															<xs:attribute name="unit" type="xs:string" use="required"/>
+															<xs:attribute name="type" type="out:CalculationType" use="required"/>
+															<xs:attribute name="unit" type="out:NoUnitType" use="required"/>
 														</xs:extension>
 													</xs:simpleContent>
 												</xs:complexType>
@@ -299,10 +316,8 @@
 									<xs:element name="CertifiedAeroDevice">
 										<xs:complexType>
 											<xs:sequence>
-												<xs:element name="CertificationNumber">
-													<xs:complexType/>
-												</xs:element>
-												<xs:element name="InputDataSignature" type="vdecdef:SignatureType"/>
+												<xs:element name="CertificationNumber" type="vdecdef:CertificationNumberType"/>
+												<xs:element name="Signature" type="vdecdef:SignatureType"/>
 											</xs:sequence>
 										</xs:complexType>
 									</xs:element>
@@ -326,18 +341,22 @@
 								<xs:element name="Axle" maxOccurs="unbounded">
 									<xs:complexType>
 										<xs:sequence>
+											<xs:element name="Steered" type="xs:boolean"/>
+											<xs:element name="Liftable" type="xs:boolean"/>
+											<xs:element name="TwinTyres" type="xs:boolean"/>
 											<xs:element name="Tyre">
 												<xs:complexType>
 													<xs:sequence>
 														<xs:element name="Data">
 															<xs:complexType>
-																<xs:all>
+																<xs:sequence>
+																	<xs:element name="Model" type="xs:string"/>
 																	<xs:element name="CertificationNumber" type="xs:string"/>
 																	<xs:element name="Dimension" type="xs:string"/>
 																	<xs:element name="RRCDeclared" type="xs:string"/>
 																	<xs:element name="FuelEfficiencyClass" type="xs:string" minOccurs="0"/>
 																	<xs:element name="Hash" type="xs:string"/>
-																</xs:all>
+																</xs:sequence>
 															</xs:complexType>
 														</xs:element>
 													</xs:sequence>

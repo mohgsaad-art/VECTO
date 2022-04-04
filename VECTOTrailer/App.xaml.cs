@@ -53,7 +53,7 @@ namespace VECTOTrailer
             container.Bind<IJobEditViewModel>().To<CompleteTrailerJobViewModel>();
             container.Bind<INoneViewModel>().To<NoneViewModel>();
 			container.Bind<ICompleteTrailerViewModel>().To<CompleteTrailerViewModel>();
-			container.Bind<IAutoSimulator>().To<AutoSimulator>();
+			container.Bind<ISimulationBackgroundWorker>().To<SimulationBackgroundWorker>();
             
 			var mainWindow = container.Get<MainWindow>();
             mainWindow.Show();

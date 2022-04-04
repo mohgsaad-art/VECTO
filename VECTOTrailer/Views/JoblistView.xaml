@@ -48,10 +48,10 @@
                                     <TextBlock Text="Stop" Margin="0,0,0,0" />
                                 </StackPanel>
                             </Button>
-                            <ToggleButton VerticalAlignment="Top" Margin="10 10 0 0" Command="{Binding ToggleAutoSim}" IsChecked="{Binding AutoSimulator.AutoSimActive, Mode=OneWay}">
+                            <ToggleButton VerticalAlignment="Top" Margin="10 10 0 0" Command="{Binding ToggleAutoSim}" IsChecked="{Binding SimulationBackgroundWorker.AutoSimActive, Mode=OneWay}">
                                 <StackPanel Orientation="Vertical">
                                     <TextBlock Text="Scan Folder"></TextBlock>
-                                    <ProgressBar Orientation="Horizontal" IsIndeterminate="{Binding AutoSimulator.AutoSimBusy, Mode=OneWay}"></ProgressBar>
+                                    <ProgressBar Orientation="Horizontal" IsIndeterminate="{Binding SimulationBackgroundWorker.AutoSimBusy, Mode=OneWay}"></ProgressBar>
                                 </StackPanel>
                             </ToggleButton>
 
@@ -210,7 +210,7 @@
             <TabItem Header="Options">
                 <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                 <WrapPanel Orientation="Horizontal" Margin="5,10,5,5">
-                    <StackPanel Orientation="Vertical">
+                    <!--<StackPanel Orientation="Vertical">
                         <GroupBox Header="Output">
                             <StackPanel Orientation="Vertical">
                                 <CheckBox Margin="0,0,0,3" IsChecked="{Binding WriteModData}">Write modal results</CheckBox>
@@ -219,7 +219,7 @@
                         </GroupBox>
                         <GroupBox Header="Misc" Margin="0 5,0,0">
                             <StackPanel Orientation="Vertical">
-                                <!--<CheckBox Margin="0,0,0,3" IsChecked="{Binding ValidateData}">Validate data</CheckBox>-->
+                                --><!--<CheckBox Margin="0,0,0,3" IsChecked="{Binding ValidateData}">Validate data</CheckBox>--><!--
                                 <CheckBox Margin="0,0,0,3" IsChecked="{Binding WriteActualModData}">
                                     <TextBlock>
                                         <Run> Output values in vmod at</Run><LineBreak/>
@@ -235,33 +235,43 @@
                                 <CheckBox IsChecked="{Binding WriteModelData}" Margin="0,0,0,3">Write internal model data (EXPERT!)</CheckBox>
                             </StackPanel>
                         </GroupBox>
-                    </StackPanel>
-                    <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" MaxWidth="600">
-                        <GroupBox Header ="Output Directory">
-                            <DockPanel LastChildFill="True">
-                                <Button DockPanel.Dock="Right" Width="60" Content="Browse" Command="{Binding BrowseOutputDirectory}" Margin="5,0,0,0"/>
-                                <TextBox  Text="{Binding OutputDirectory}"/>
-                            </DockPanel>
+                    </StackPanel>-->
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" MaxWidth="1000">
+                        <GroupBox Header="Output">
+
+                            <StackPanel Orientation="Vertical">
+                                
+                                <GroupBox Header ="Output Directory">
+                                    <DockPanel LastChildFill="True">
+                                        <Button DockPanel.Dock="Right" Width="60" Content="Browse" Command="{Binding BrowseOutputDirectory}" Margin="5,0,0,0"/>
+                                        <TextBox  Text="{Binding OutputDirectory}"/>
+                                    </DockPanel>
+                                </GroupBox>
+                                <GroupBox Header ="Settings">
+                                <CheckBox Margin="0,0,0,3" IsChecked="{Binding WriteModData}">Write modal results</CheckBox>
+                                </GroupBox>
+                                    <!--<CheckBox Margin="0,0,0,3" IsChecked="{Binding WriteModData1Hz}">Modal results in 1Hz</CheckBox>-->
+                                </StackPanel>
                         </GroupBox>
-                        <GroupBox Header="Auto Simulator">
+                        <GroupBox Header="Background Worker">
                             <StackPanel>
-                                <TextBlock TextWrapping="Wrap" Margin="5" Visibility="{Binding AutoSimulator.AutoSimActive, Converter={converter:BoolVisibilityConverter}}">To change the directories the AutoSimulator must be inactive</TextBlock>
+                                <TextBlock TextWrapping="Wrap" Margin="5" Visibility="{Binding SimulationBackgroundWorker.AutoSimActive, Converter={converter:BoolVisibilityConverter}}">To change the directories the AutoSimulator must be inactive</TextBlock>
                                 <GroupBox Header="Input Directory">
                                     <DockPanel LastChildFill="True">
                                         <Button Width="60" DockPanel.Dock="Right" Content="Browse" Command="{Binding BrowseAutoSimInputDirectory}" Margin="5,0,0,0"/>
-                                        <TextBox HorizontalAlignment="Stretch" Text="{Binding AutoSimulator.InputDirectory}" IsReadOnly="True" TextWrapping="Wrap"/>
+                                        <TextBox HorizontalAlignment="Stretch" Text="{Binding SimulationBackgroundWorker.InputDirectory}" IsReadOnly="True" TextWrapping="Wrap"/>
                                     </DockPanel>
                                 </GroupBox>
                                 <GroupBox Header="Output Directory">
                                     <DockPanel >
                                         <Button Width="60" DockPanel.Dock="Right" Content="Browse" Command="{Binding BrowseAutoSimOutputDirectory}" Margin="5,0,0,0"/>
-                                        <TextBox HorizontalAlignment="Stretch" Text="{Binding AutoSimulator.OutputDirectory}" IsReadOnly="True" TextWrapping="Wrap"/>
+                                        <TextBox HorizontalAlignment="Stretch" Text="{Binding SimulationBackgroundWorker.OutputDirectory}" IsReadOnly="True" TextWrapping="Wrap"/>
                                     </DockPanel>
                                 </GroupBox>
-                                <GroupBox Header="Output">
+                                <GroupBox Header="Background Worker Settings">
                                     <StackPanel Orientation="Vertical">
-                                        <CheckBox Margin="0,0,0,3" IsChecked="{Binding AutoSimulator.WriteModData}">Write modal results</CheckBox>
-                                        <CheckBox Margin="0,0,0,3" IsChecked="{Binding AutoSimulator.WriteModData1Hz}">Modal results in 1Hz</CheckBox>
+                                        <CheckBox Margin="0,0,0,3" IsChecked="{Binding SimulationBackgroundWorker.WriteModData}">Write modal results</CheckBox>
+                                        <!--<CheckBox Margin="0,0,0,3" IsChecked="{Binding AutoSimulator.WriteModData1Hz}">Modal results in 1Hz</CheckBox>-->
                                     </StackPanel>
                                 </GroupBox>
                             </StackPanel>

@@ -218,7 +218,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 				DriverData = _driverdata,
 				ExecutionMode = ExecutionMode.Declaration,
 				JobName = TrailerInputDataProvider.JobInputData.JobName,
-				ModFileSuffix = (engineModes.Count > 1 ? $"_EngineMode{modeIdx}_" : "") + loading.Key + "_genericTrailer",
+				ModFileSuffix = (engineModes.Count > 1 ? $"_EngineMode{modeIdx}_" : "") + loading.Key + "_referenceTrailer",
 				Report = Report,
 				Mission = mission,
 				InputDataHash = TrailerInputDataProvider.XMLHash,

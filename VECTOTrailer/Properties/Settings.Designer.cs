@@ -58,5 +58,17 @@ namespace VECTOTrailer.Properties {
                 this["UserGuideFilePath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Resources/help.html")]
+        public string VectoHelpPath {
+            get {
+                return ((string)(this["VectoHelpPath"]));
+            }
+            set {
+                this["VectoHelpPath"] = value;
+            }
+        }
     }
 }

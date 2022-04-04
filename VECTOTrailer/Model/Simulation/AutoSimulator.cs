@@ -31,7 +31,7 @@ using VECTOTrailer.ViewModel.Impl;
 
 namespace VECTOTrailer.Model.Simulation
 {
-	public interface IAutoSimulator
+	public interface ISimulationBackgroundWorker
 	{
 		string InputDirectory { get; set; }
 		string OutputDirectory { get; set; }
@@ -46,15 +46,15 @@ namespace VECTOTrailer.Model.Simulation
 		bool AutoSimActive { get; }
 
 
-		void ToggleAutoSimulator();
+		void ToggleSimulationBackgroundWorker();
 
 	}
-    public class AutoSimulator : ObservableObject, IAutoSimulator
+    public class SimulationBackgroundWorker : ObservableObject, ISimulationBackgroundWorker
 	{
 		private ILogger _logger;
 		private BackgroundWorker worker;
 		private ReaderWriterLockSlim _simSettingsRwLock = new ReaderWriterLockSlim();
-		public AutoSimulator(IXMLInputDataReader inputDataReader)
+		public SimulationBackgroundWorker(IXMLInputDataReader inputDataReader)
 		{
 			_inputDataReader = inputDataReader;
 			worker = new BackgroundWorker() {
@@ -76,16 +76,16 @@ namespace VECTOTrailer.Model.Simulation
 
 		private void ConfigureNLOg()
 		{
-			var target = new FileTarget(nameof(AutoSimulator)) {
-				FileName = Path.GetFullPath("AutoSimulator.log"),
+			var target = new FileTarget(nameof(SimulationBackgroundWorker)) {
+				FileName = Path.GetFullPath("BackgroundWorker.log"),
 				Layout = "${longdate} ${level} ${message}  ${exception} ${event-properties:myProperty}"
 			};
-			var loggingRule = new LoggingRule($"{nameof(AutoSimulator)}", LogLevel.Trace, target);
+			var loggingRule = new LoggingRule($"{nameof(SimulationBackgroundWorker)}", LogLevel.Trace, target);
 			NLog.LogManager.Configuration.AddTarget(target); 
 			NLog.LogManager.Configuration.LoggingRules.Add(loggingRule);
 			NLog.LogManager.Configuration.Reload();
 			NLog.LogManager.ReconfigExistingLoggers();
-			_logger = NLog.LogManager.GetLogger(nameof(AutoSimulator));
+			_logger = NLog.LogManager.GetLogger(nameof(SimulationBackgroundWorker));
 		}
 		#endregion	
 
@@ -213,7 +213,7 @@ namespace VECTOTrailer.Model.Simulation
 			}
 		}
 
-		public void ToggleAutoSimulator()
+		public void ToggleSimulationBackgroundWorker()
 		{
 			if (AutoSimActive) {
 				StopAutoSimulator();
@@ -227,7 +227,7 @@ namespace VECTOTrailer.Model.Simulation
 		{
 			if (!worker.IsBusy) {
 				worker.RunWorkerAsync();
-				var msg = string.Format("Starting Auto-Simulator \n Input directory: {0} \n Output directory{1} \n",
+				var msg = string.Format("Starting Background Worker \n Input directory: {0} \n Output directory{1} \n",
 					InputDirectory, OutputDirectory);
 				_logger.Log(LogLevel.Info, msg);
 				Messages.Add(new MessageEntry()
@@ -244,7 +244,7 @@ namespace VECTOTrailer.Model.Simulation
 		{
 			if (worker.WorkerSupportsCancellation) {
 				worker.CancelAsync();
-				var msg = "Stopping Auto-Simulator\n";
+				var msg = "Stopping Background Worker\n";
 				_logger.Log(LogLevel.Info, msg);
 				Messages.Add(new MessageEntry() {
 					Message = msg,
@@ -335,7 +335,7 @@ namespace VECTOTrailer.Model.Simulation
 			{
 				progressAction.Invoke(new VectoSimulationProgress()
 				{
-					Message = string.Format("[AutoSim]: Copy {0} \n to {1} \n", file, OutputDirectory),
+					Message = string.Format("[Background Worker]: Copy {0} \n to {1} \n", file, OutputDirectory),
 					Type = VectoSimulationProgress.MsgType.InfoMessage,
 					Target = VectoSimulationProgress.MsgTarget.MessageWindow | VectoSimulationProgress.MsgTarget.NLog
 				});
@@ -457,18 +457,19 @@ namespace VECTOTrailer.Model.Simulation
 				//		Link = "<CSV>" + sumFileWriter.SumFileName
 				//	});
 				//}
-
+				
 				reportProgress(100, new VectoSimulationProgress()
 				{
+					
 					Type = VectoSimulationProgress.MsgType.StatusMessage,
-					Message = string.Format("Auto-Simulation finished in {0:F1}s", start.Elapsed.TotalSeconds),
+					Message = string.Format("Background Simulation for {} finished in {0:F1}s", progressEntry.Value.RunName, start.Elapsed.TotalSeconds),
 					Target = VectoSimulationProgress.MsgTarget.NLog
 				});
 			}
 
 			reportProgress(100, new VectoSimulationProgress() {
 				Type = VectoSimulationProgress.MsgType.StatusMessage,
-				Message = string.Format("Auto-Simulation finished in {0:F1}s", start.Elapsed.TotalSeconds),
+				Message = string.Format("Background Simulation finished in {0:F1}s", start.Elapsed.TotalSeconds),
 				Target = VectoSimulationProgress.MsgTarget.NLog | VectoSimulationProgress.MsgTarget.MessageWindow,
 			});
 		}
@@ -476,7 +477,7 @@ namespace VECTOTrailer.Model.Simulation
 		private JobContainer ReadJobFiles(IList<string> jobFileNames, string outputDirectory, Action<int, VectoSimulationProgress> reportProgress, Func<bool> cancel)
 		{
 			var mode = ExecutionMode.Declaration;
-			var sumFileWriter = new FileOutputWriter(Path.Combine(outputDirectory, $"AutoSim"));
+			var sumFileWriter = new FileOutputWriter(Path.Combine(outputDirectory, $"BackgroundSimulation"));
 			var sumContainer = new SummaryDataContainer(sumFileWriter);
 			var jobContainer = new JobContainer(sumContainer);
 

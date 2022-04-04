@@ -19,10 +19,12 @@
 			</xs:extension>
 		</xs:simpleContent>
 	</xs:complexType>
-	<xs:complexType name="ResultSuccessType">
+	<xs:complexType name="SimulationParametersType">
 		<xs:sequence>
-			<xs:element name="Mission" type="MissionTypeType"/>
 			<xs:element name="Payload">
+				<xs:annotation>
+					<xs:documentation>I.2.1.2 / #57</xs:documentation>
+				</xs:annotation>
 				<xs:complexType>
 					<xs:simpleContent>
 						<xs:extension base="xs:double">
@@ -31,101 +33,16 @@
 					</xs:simpleContent>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="EfficiencyRatio">
-				<xs:complexType>
-					<xs:simpleContent>
-						<xs:extension base="xs:double">
-							<xs:attribute name="type" type="out:CalculationType"/>
-							<xs:attribute name="unit" type="out:NoUnitType"/>
-						</xs:extension>
-					</xs:simpleContent>
-				</xs:complexType>
-			</xs:element>
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="ResultErrorType">
-		<xs:sequence>
-			<xs:element name="Mission" type="MissionTypeType"/>
-			<xs:element name="Payload">
+			<xs:element name="TotalVehicleMass">
 				<xs:complexType>
 					<xs:simpleContent>
 						<xs:extension base="xs:double">
 							<xs:attribute name="unit" type="MassUnitType" use="required"/>
-						</xs:extension>
-					</xs:simpleContent>
-				</xs:complexType>
-			</xs:element>
-			<xs:element name="CdxAyawAngle0">
-				<xs:complexType>
-					<xs:simpleContent>
-						<xs:extension base="xs:double">
-							<xs:attribute name="unit" type="OtherType" use="required"/>
-						</xs:extension>
-					</xs:simpleContent>
-				</xs:complexType>
-			</xs:element>
-			<xs:element name="CdxAyawAngle3">
-				<xs:complexType>
-					<xs:simpleContent>
-						<xs:extension base="xs:double">
-							<xs:attribute name="unit" type="OtherType" use="required"/>
-						</xs:extension>
-					</xs:simpleContent>
-				</xs:complexType>
-			</xs:element>
-			<xs:element name="CdxAyawAngle6">
-				<xs:complexType>
-					<xs:simpleContent>
-						<xs:extension base="xs:double">
-							<xs:attribute name="unit" type="OtherType" use="required"/>
-						</xs:extension>
-					</xs:simpleContent>
-				</xs:complexType>
-			</xs:element>
-			<xs:element name="CdxAyawAngle9">
-				<xs:complexType>
-					<xs:simpleContent>
-						<xs:extension base="xs:double">
-							<xs:attribute name="unit" type="OtherType" use="required"/>
 						</xs:extension>
 					</xs:simpleContent>
 				</xs:complexType>
 			</xs:element>
 			<xs:element name="AverageSpeed">
-				<xs:complexType>
-					<xs:simpleContent>
-						<xs:extension base="xs:double">
-							<xs:attribute name="unit" type="OtherType" use="required"/>
-						</xs:extension>
-					</xs:simpleContent>
-				</xs:complexType>
-			</xs:element>
-			<xs:element name="EfficiencyRatio">
-				<xs:complexType>
-					<xs:simpleContent>
-						<xs:extension base="xs:double">
-							<xs:attribute name="unit" type="CO2UnitType" use="required"/>
-						</xs:extension>
-					</xs:simpleContent>
-				</xs:complexType>
-			</xs:element>
-			<xs:element name="Fuel">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="FuelConsumption" maxOccurs="unbounded">
-							<xs:complexType>
-								<xs:simpleContent>
-									<xs:extension base="xs:double">
-										<xs:attribute name="unit" use="required"/>
-									</xs:extension>
-								</xs:simpleContent>
-							</xs:complexType>
-						</xs:element>
-					</xs:sequence>
-					<xs:attribute name="type" use="required"/>
-				</xs:complexType>
-			</xs:element>
-			<xs:element name="CO2" maxOccurs="unbounded">
 				<xs:complexType>
 					<xs:simpleContent>
 						<xs:extension base="xs:double">
@@ -136,37 +53,131 @@
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
+	<xs:complexType name="ResultSuccessType">
+		<xs:complexContent>
+			<xs:extension base="AbstractResultType">
+				<xs:sequence>
+					<xs:element name="Mission" type="MissionTypeType">
+						<xs:annotation>
+							<xs:documentation>I.2.1.1 / #56</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="SimulationParameters" type="SimulationParametersType"/>
+					<xs:element name="Fuel">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="FuelConsumption" maxOccurs="unbounded">
+									<xs:complexType>
+										<xs:simpleContent>
+											<xs:extension base="xs:double">
+												<xs:attribute name="unit" use="required"/>
+											</xs:extension>
+										</xs:simpleContent>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+							<xs:attribute name="type" use="required"/>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="CO2" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:simpleContent>
+								<xs:extension base="xs:double">
+									<xs:attribute name="unit" use="required"/>
+								</xs:extension>
+							</xs:simpleContent>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="EfficiencyRatio" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:simpleContent>
+								<xs:extension base="xs:double">
+									<xs:attribute name="type" type="out:CalculationType" use="required"/>
+									<xs:attribute name="unit" type="out:NoUnitType" use="required"/>
+								</xs:extension>
+							</xs:simpleContent>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="ReferenceRatio" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:simpleContent>
+								<xs:extension base="xs:double">
+									<xs:attribute name="type" type="out:CalculationType" use="required"/>
+									<xs:attribute name="unit" type="out:NoUnitType" use="required"/>
+								</xs:extension>
+							</xs:simpleContent>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ResultErrorType">
+		<xs:complexContent>
+			<xs:extension base="AbstractResultType">
+				<xs:sequence>
+					<xs:element name="Mission" type="MissionTypeType">
+						<xs:annotation>
+							<xs:documentation>I.2.1.1 / #56</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Error" type="xs:string"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="AbstractResultType" abstract="true">
+		<xs:attribute name="status" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="success"/>
+					<xs:enumeration value="error"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
 	<xs:complexType name="VectoOutputDataType">
 		<xs:complexContent>
 			<xs:extension base="out:AbstractVectoOutputCustomerDataType">
 				<xs:sequence>
 					<xs:element name="Vehicle" type="AbstractVehicleType"/>
-					<xs:element name="ResultDataSignature" type="vdecdef:SignatureType">
-						<xs:annotation>
-							<xs:documentation>II.3</xs:documentation>
-						</xs:annotation>
-					</xs:element>
 					<xs:element name="Results">
 						<xs:complexType>
 							<xs:sequence>
 								<xs:element name="TowingVehicle" type="xs:string"/>
 								<xs:choice>
 									<xs:sequence>
-										<xs:element name="Result" maxOccurs="unbounded">
+										<xs:element name="Result" type="AbstractResultType" maxOccurs="unbounded">
 											<xs:annotation>
 												<xs:documentation>II.2.1, II.2.2</xs:documentation>
 											</xs:annotation>
 										</xs:element>
-										<xs:element name="Summary" minOccurs="0">
+										<xs:element name="WeightedResults" minOccurs="0">
 											<xs:complexType>
 												<xs:sequence>
-													<xs:element name="WeightedPayloadTrailer">
+													<xs:element name="Payload">
 														<xs:complexType>
 															<xs:simpleContent>
 																<xs:extension base="xs:double">
 																	<xs:attribute name="unit" use="required"/>
 																</xs:extension>
 															</xs:simpleContent>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="Fuel" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="FuelConsumption" maxOccurs="unbounded">
+																	<xs:complexType>
+																		<xs:simpleContent>
+																			<xs:extension base="xs:double">
+																				<xs:attribute name="unit" use="required"/>
+																			</xs:extension>
+																		</xs:simpleContent>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+															<xs:attribute name="type" use="required"/>
 														</xs:complexType>
 													</xs:element>
 													<xs:element name="CO2" maxOccurs="unbounded">
@@ -178,20 +189,12 @@
 															</xs:simpleContent>
 														</xs:complexType>
 													</xs:element>
-													<xs:element name="FuelConsumption" maxOccurs="unbounded">
+													<xs:element name="EfficiencyRatio" maxOccurs="unbounded">
 														<xs:complexType>
 															<xs:simpleContent>
 																<xs:extension base="xs:double">
-																	<xs:attribute name="unit" use="required"/>
-																</xs:extension>
-															</xs:simpleContent>
-														</xs:complexType>
-													</xs:element>
-													<xs:element name="WeightedEfficiencyRatio" maxOccurs="unbounded">
-														<xs:complexType>
-															<xs:simpleContent>
-																<xs:extension base="xs:double">
-																	<xs:attribute name="unit" type="xs:string" use="required"/>
+																	<xs:attribute name="type" type="out:CalculationType" use="required"/>
+																	<xs:attribute name="unit" type="out:NoUnitType" use="required"/>
 																</xs:extension>
 															</xs:simpleContent>
 														</xs:complexType>
@@ -219,6 +222,11 @@
 								</xs:element>
 							</xs:sequence>
 						</xs:complexType>
+					</xs:element>
+					<xs:element name="ResultDataSignature" type="vdecdef:SignatureType">
+						<xs:annotation>
+							<xs:documentation>II.3</xs:documentation>
+						</xs:annotation>
 					</xs:element>
 				</xs:sequence>
 				<xs:attribute name="id" type="xs:NCName" use="required"/>
@@ -280,9 +288,7 @@
 									<xs:element name="CertifiedAeroDevice">
 										<xs:complexType>
 											<xs:sequence>
-												<xs:element name="CertificationNumber">
-													<xs:complexType/>
-												</xs:element>
+												<xs:element name="CertificationNumber" type="vdecdef:CertificationNumberType"/>
 											</xs:sequence>
 										</xs:complexType>
 									</xs:element>
@@ -306,15 +312,17 @@
 								<xs:element name="Axle" maxOccurs="unbounded">
 									<xs:complexType>
 										<xs:sequence>
+											<xs:element name="Steered" type="xs:boolean"/>
+											<xs:element name="Liftable" type="xs:boolean"/>
+											<xs:element name="TwinTyres" type="xs:boolean"/>
 											<xs:element name="Tyre">
 												<xs:complexType>
 													<xs:sequence>
 														<xs:element name="Data">
 															<xs:complexType>
 																<xs:sequence>
-																	<xs:element name="Model" type="xs:string"/>
+																	<xs:element name="CertificationNumber" type="xs:string"/>
 																	<xs:element name="Dimension" type="xs:string"/>
-																	<xs:element name="RRCDeclared" type="xs:string"/>
 																	<xs:element name="FuelEfficiencyClass" type="xs:string" minOccurs="0"/>
 																</xs:sequence>
 															</xs:complexType>

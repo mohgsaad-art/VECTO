@@ -487,81 +487,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			var retVal = SetCommonCombustionEngineData(engine, vehicle.TankSystem);
 			retVal.IdleSpeed = VectoMath.Max(mode.IdleSpeed, vehicle.EngineIdleSpeed);
 
-			var liftFactor = 1.0;
-			var steerFactor = 1.0;
-
-			if (trailer.Axles.Count(x => x.Steered && x.Liftable) > 0) {
-				//found axle with both steered and liftable
-				if (mission.MissionType == MissionType.LongHaul) {
-					//LH
-					if (loadingType == LoadingType.LowLoading) {
-						// LOW LOADING
-						if (trailer.Axles.Count(x => x.Liftable) > 1) //1 both + 1 liftable
-							liftFactor = (1 + (mission.TrailerLiftableImpact.Key * 1.5) / 100);
-						else if (trailer.Axles.Count(x => x.Steered) > 1) {
-							//1 both + 1 steered
-							liftFactor = (1 + mission.TrailerLiftableImpact.Key / 100);
-							steerFactor = (1 + mission.TrailerSteeredImpact.Key / 100);
-						} else //1 both
-							liftFactor = (1 + mission.TrailerLiftableImpact.Key / 100);
-					} else {
-						//REF LOADING
-						if (trailer.Axles.Count(x => x.Steered) > 1) {
-							//1 both + 1 steered
-							liftFactor = (1 + mission.TrailerLiftableImpact.Value / 100);
-							steerFactor = (1 + mission.TrailerSteeredImpact.Value / 100);
-						} else //1 both or 1 both + 1 liftable
-							liftFactor = (1 + mission.TrailerLiftableImpact.Value / 100);
-					}
-				} else {
-					//RD & UD
-					if (loadingType == LoadingType.LowLoading) {
-						//Low lading
-						if (trailer.Axles.Count(x => x.Liftable) > 1) {
-							//1 both + 1 liftable
-							liftFactor = (1 + mission.TrailerLiftableImpact.Key / 100);
-							steerFactor = (1 + mission.TrailerSteeredImpact.Key / 100);
-						} else if (trailer.Axles.Count(x => x.Steered) > 1) //1 both + 1 steered
-							steerFactor = (1 + (mission.TrailerSteeredImpact.Key * 1.2) / 100);
-						else // 1 both
-							steerFactor = (1 + mission.TrailerSteeredImpact.Key / 100);
-					} else {
-						//Ref loading
-						if (trailer.Axles.Count(x => x.Liftable) > 1) {
-							//1 both + 1 liftable
-							liftFactor = (1 + mission.TrailerLiftableImpact.Value / 100);
-							steerFactor = (1 + mission.TrailerSteeredImpact.Value / 100);
-						} else if (trailer.Axles.Count(x => x.Steered) > 1) //1 both + 1 steered
-							steerFactor = (1 + (mission.TrailerSteeredImpact.Value * 1.2) / 100);
-						else // 1 both
-							steerFactor = (1 + mission.TrailerSteeredImpact.Value / 100);
-					}
-				}
-			} else {
-				// no axle is both liftable and steered
-				if (loadingType == LoadingType.LowLoading) {
-					//LOW loading
-					if (trailer.Axles.Count(x => x.Liftable) > 1) //if 2 liftable
-						liftFactor = (1 + (mission.TrailerLiftableImpact.Key * 1.5) / 100);
-
-					else if (trailer.Axles.Count(x => x.Liftable) > 0) //if 1 liftable
-						liftFactor = (1 + mission.TrailerLiftableImpact.Key / 100);
-
-					if (trailer.Axles.Count(x => x.Steered) > 1) // 2 steered
-						steerFactor = (1 + (mission.TrailerSteeredImpact.Key * 1.2) / 100);
-					else if (trailer.Axles.Count(x => x.Steered) > 0) // 1 steered
-						steerFactor = (1 + mission.TrailerSteeredImpact.Key / 100);
-				} else {
-					//REF loading
-					if (trailer.Axles.Count(x => x.Liftable) > 0)
-						liftFactor = (1 + mission.TrailerLiftableImpact.Value / 100);
-
-					if (trailer.Axles.Count(x => x.Steered) > 1) //2 steered
-						steerFactor = (1 + (mission.TrailerSteeredImpact.Value * 1.2) / 100);
-					else if (trailer.Axles.Count(x => x.Steered) > 0) // 1 steered
-						steerFactor = (1 + mission.TrailerSteeredImpact.Value / 100);
-				}
-			}
+			GetSteeredAndLiftFactor(mission, trailer, loadingType, out var liftFactor, out var steerFactor);
 
 			retVal.Fuels = new List<CombustionEngineFuelData>();
 			foreach (var fuel in mode.Fuels)
@@ -614,6 +540,104 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			}
 
 			return retVal;
+		}
+
+		private static void GetSteeredAndLiftFactor(Mission mission, ITrailerDeclarationInputData trailer,
+			LoadingType loadingType, out double liftFactor, out double steerFactor)
+		{
+			liftFactor = 1.0;
+			steerFactor = 1.0;
+			var trailerType = trailer.TrailerType;
+			var axles = new List<(bool Steered, bool Liftable)>();
+			foreach (var trailerAxleDeclarationInputData in trailer.Axles) {
+				axles.Add((trailerAxleDeclarationInputData.Steered, trailerAxleDeclarationInputData.Liftable));
+			}
+
+			if (trailerType == TypeTrailer.DB) {
+				//DB steered axle not considered
+				var axle = axles[0];
+				axle.Steered = false;
+				axles[0] = axle;
+			}
+
+
+			if (axles.Count(x => x.Steered && x.Liftable) > 0) {
+				//found axle with both steered and liftable
+				if (mission.MissionType == MissionType.LongHaul) {
+					//LH
+					if (loadingType == LoadingType.LowLoading) {
+						// LOW LOADING
+						if (axles.Count(x => x.Liftable) > 1) //1 both + 1 liftable
+							liftFactor = (1 + (mission.TrailerLiftableImpact.lowPayLoadImpact * 1.5) / 100);
+						else if (axles.Count(x => x.Steered) > 1) {
+							//1 both + 1 steered
+							liftFactor = (1 + mission.TrailerLiftableImpact.lowPayLoadImpact / 100);
+							steerFactor = (1 + mission.TrailerSteeredImpact.lowPayLoadImpact / 100);
+						} else //1 both
+							liftFactor = (1 + mission.TrailerLiftableImpact.lowPayLoadImpact / 100);
+					} else {
+						//REF LOADING
+						if (axles.Count(x => x.Steered) > 1) {
+							//1 both + 1 steered
+							liftFactor = (1 + mission.TrailerLiftableImpact.repPayLoadImpact / 100);
+							steerFactor = (1 + mission.TrailerSteeredImpact.repPayLoadImpact/ 100);
+						} else //1 both or 1 both + 1 liftable
+							liftFactor = (1 + mission.TrailerLiftableImpact.repPayLoadImpact / 100);
+					}
+				} else {
+					//RD & UD
+					if (loadingType == LoadingType.LowLoading) {
+						//Low lading
+						if (axles.Count(x => x.Liftable) > 1) {
+							//1 both + 1 liftable
+							liftFactor = (1 + mission.TrailerLiftableImpact.lowPayLoadImpact / 100);
+							steerFactor = (1 + mission.TrailerSteeredImpact.lowPayLoadImpact / 100);
+						} else if (axles.Count(x => x.Steered) > 1) //1 both + 1 steered
+							steerFactor = (1 + (mission.TrailerSteeredImpact.lowPayLoadImpact * 1.2) / 100);
+						else // 1 both
+						{
+							steerFactor = (1 + mission.TrailerSteeredImpact.lowPayLoadImpact / 100);
+						}
+					} else {
+						//Ref loading
+						if (axles.Count(x => x.Liftable) > 1) {
+							//1 both + 1 liftable
+							liftFactor = (1 + mission.TrailerLiftableImpact.repPayLoadImpact / 100);
+							steerFactor = (1 + mission.TrailerSteeredImpact.repPayLoadImpact / 100);
+						} else if (axles.Count(x => x.Steered) > 1) //1 both + 1 steered
+						{
+							steerFactor = (1 + (mission.TrailerSteeredImpact.repPayLoadImpact * 1.2) / 100);
+						} else // 1 both
+						{
+							steerFactor = (1 + mission.TrailerSteeredImpact.repPayLoadImpact / 100);
+						}
+					}
+				}
+			} else {
+				// no axle is both liftable and steered
+				if (loadingType == LoadingType.LowLoading) {
+					//LOW loading
+					if (axles.Count(x => x.Liftable) > 1) //if 2 liftable
+						liftFactor = (1 + (mission.TrailerLiftableImpact.lowPayLoadImpact * 1.5) / 100);
+
+					else if (axles.Count(x => x.Liftable) > 0) //if 1 liftable
+						liftFactor = (1 + mission.TrailerLiftableImpact.lowPayLoadImpact / 100);
+
+					if (axles.Count(x => x.Steered) > 1) // 2 steered
+						steerFactor = (1 + (mission.TrailerSteeredImpact.lowPayLoadImpact * 1.2) / 100);
+					else if (axles.Count(x => x.Steered) > 0) // 1 steered
+						steerFactor = (1 + mission.TrailerSteeredImpact.lowPayLoadImpact / 100);
+				} else {
+					//REF loading
+					if (axles.Count(x => x.Liftable) > 0)
+						liftFactor = (1 + mission.TrailerLiftableImpact.repPayLoadImpact / 100);
+
+					if (axles.Count(x => x.Steered) > 1) //2 steered
+						steerFactor = (1 + (mission.TrailerSteeredImpact.repPayLoadImpact * 1.2) / 100);
+					else if (axles.Count(x => x.Steered) > 0) // 1 steered
+						steerFactor = (1 + mission.TrailerSteeredImpact.repPayLoadImpact / 100);
+				}
+			}
 		}
 
 		private static WHRData CreateWHRData(IWHRData whrInputData, MissionType missionType, WHRType type)
@@ -1112,10 +1136,12 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			var combination = TrailerDataHelper.GetAeroFeatureCombination(trailer);
 			if (combination < 0 || !valid) {
 				errors.Add("invalid standard aero-device declared");
-			} else {
+			} 
+			
+			if (trailer.CertifiedAeroDeviceApplicableVehicleGroup != null) {
 				var segment = DeclarationData.TrailerSegments.Lookup(trailer.NumberOfAxles, trailer.TrailerType, trailer.BodyworkCode, trailer.VolumeOrientation,
 					trailer.TPMLMAxleAssembly);
-				if (trailer.CertifiedAeroDeviceApplicableVehicleGroup != null && segment.VehicleGroup.ToString() != trailer.CertifiedAeroDeviceApplicableVehicleGroup)
+				if (segment.VehicleGroup.ToString() != trailer.CertifiedAeroDeviceApplicableVehicleGroup)
 				{
 					errors.Add($"ApplicableVehicleGroup of the certified aero device ({trailer.CertifiedAeroDeviceApplicableVehicleGroup}) must match the vehicle group ({segment.VehicleGroup})");
 				}
@@ -1150,9 +1176,11 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				liftableCount++;
 			}
 
-			//if (trailer.Axles[0].Liftable && trailer.Axles[0].Steered) throw new Exception("An axle cannot be both liftable and steered");
-			//if (trailer.Axles.Count > 1 && trailer.Axles[1].Liftable && trailer.Axles[1].Steered) throw new Exception("An axle cannot be both liftable and steered");
-			//if (trailer.Axles.Count > 2 && trailer.Axles[2].Liftable && trailer.Axles[2].Steered) throw new Exception("An axle cannot be both liftable and steered");
+			if (trailer.TrailerType == TypeTrailer.DB && !trailer.Axles[0].Steered) {
+				errors.Add("First axle has to be steered on DB trailers");
+				error = true;
+			}
+			
 			
 			switch (trailer.NumberOfAxles)
 			{
@@ -1160,7 +1188,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				case NumberOfTrailerAxles.One when trailer.TrailerType == TypeTrailer.DB:
 				case NumberOfTrailerAxles.One when trailer.TrailerType == TypeTrailer.DC && trailer.Axles[0].Steered:
 				case NumberOfTrailerAxles.Two when trailer.TrailerType == TypeTrailer.DB && liftableCount > 0:
-				case NumberOfTrailerAxles.Two when trailer.TrailerType == TypeTrailer.DB && (trailer.Axles[0].Steered || trailer.Axles[1].Steered):
+				case NumberOfTrailerAxles.Two when trailer.TrailerType == TypeTrailer.DB && trailer.Axles[1].Steered:
 				case NumberOfTrailerAxles.Two when liftableCount > 1: //too many liftable
 				case NumberOfTrailerAxles.Two when trailer.TrailerType == TypeTrailer.DC && trailer.Axles[0].Steered:
 				case NumberOfTrailerAxles.Two when trailer.TrailerType == TypeTrailer.DA && trailer.Axles[0].Steered:
@@ -1183,6 +1211,15 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 		{
 
 			var prevErrors = errors.Count;
+			TrailerSegment segment;
+			try {
+				segment = DeclarationData.TrailerSegments.Lookup(trailer.NumberOfAxles, trailer.TrailerType,
+					trailer.BodyworkCode, trailer.VolumeOrientation,
+					trailer.TPMLMAxleAssembly);
+			} catch (Exception ex) {
+				errors.Add(ex.Message);
+			}
+
 			if (trailer.VIN.Length != 17) {
 				errors.Add("VIN must be 17 characters long");
 				//throw new Exception("VIN must be 17 characters long");
@@ -1213,16 +1250,20 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				//throw new Exception("One axle trailers should have Length Between Centers Of Axles = 0");
 			}
 
-			if (trailer.TrailerType != TypeTrailer.DC && trailer.TPMLMAxleAssembly > trailer.TPMLMTotalTrailer) {
+			if ((trailer.TrailerType == TypeTrailer.DC && trailer.TPMLMAxleAssembly > trailer.TPMLMTotalTrailer)
+				|| (trailer.TrailerType == TypeTrailer.DA && trailer.TPMLMAxleAssembly >= trailer.TPMLMTotalTrailer)) {
 				errors.Add("Invalid masses declared");
-				//throw new Exception("Invalid masses declared");
 			}
+			//if (trailer.TrailerType == TypeTrailer.DC && trailer.TPMLMAxleAssembly > trailer.TPMLMTotalTrailer) {
+			//	errors.Add("Invalid masses declared");
+			//	//throw new Exception("Invalid masses declared");
+			//}
 
 
-			if (trailer.TrailerType != TypeTrailer.DA && trailer.TPMLMAxleAssembly >= trailer.TPMLMTotalTrailer) {
-				errors.Add("Invalid masses declared");
-				//throw new Exception("Invalid masses declared");
-			}
+			//if (trailer.TrailerType != TypeTrailer.DA && trailer.TPMLMAxleAssembly >= trailer.TPMLMTotalTrailer) {
+			//	errors.Add("Invalid masses declared");
+			//	//throw new Exception("Invalid masses declared");
+			//}
 
 
 			if (trailer.ExternalBodyHeight >= trailer.TotalTrailerHeight) {
@@ -1259,7 +1300,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 			if ((trailer.TrailerType != TypeTrailer.DC || trailer.TrailerType != TypeTrailer.DA) &&
 				trailer.NumberOfAxles == NumberOfTrailerAxles.One && trailer.LegislativeCategory.ToUpper() != "O3") {
-				errors.Add("Invalid xml values");
+				errors.Add("Invalid legislative category");
 				//throw new Exception("Invalid xml values");
 			}
 
@@ -1295,8 +1336,8 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 		public static bool ValidateTrailerInput(ITrailerDeclarationInputData trailer, ref IList<string> errors)
 		{
-			return ValidateAeroFeatures(trailer, ref errors) & ValidateInputValues(trailer, ref errors) &
-						ValidateAxles(trailer, ref errors);
+			return ValidateInputValues(trailer, ref errors) &
+						ValidateAxles(trailer, ref errors) & ValidateAeroFeatures(trailer, ref errors);
 		}
 #endregion validation
 		private static string GetAxleWheelDimension(IVehicleDeclarationInputData genericVehicle)
@@ -1567,7 +1608,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			#region Coupling point
 
 			//if (trailer.TrailerType == TypeTrailer.DC && trailer.TrailerCouplingPoint == TrailerCouplingPoint.High) {
-			if(trailerSegment.SpecificTrailerSegment.CouplingPointCorrection){
+			if(trailerSegment.SpecificTrailerSegment.CouplingPointCorrection && trailer.TrailerCouplingPoint == TrailerCouplingPoint.High){
 				data.CdxA0 *= 1.1037;
 				data.CdxA3 *= 1.1348;
 				data.CdxA6 *= 1.1804;
