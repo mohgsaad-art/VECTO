@@ -24,9 +24,9 @@
 		<SleeperCab>true</SleeperCab>
 		<ADAS>
 			<EngineStopStart>false</EngineStopStart>
-			<EcoRollWithoutEngineStop>false</EcoRollWithoutEngineStop>
+			<EcoRollWithoutEngineStop>true</EcoRollWithoutEngineStop>
 			<EcoRollWithEngineStop>false</EcoRollWithEngineStop>
-			<PredictiveCruiseControl>none</PredictiveCruiseControl>
+			<PredictiveCruiseControl>1,2,3</PredictiveCruiseControl>
 		</ADAS>
     <Components>
       <Engine>
