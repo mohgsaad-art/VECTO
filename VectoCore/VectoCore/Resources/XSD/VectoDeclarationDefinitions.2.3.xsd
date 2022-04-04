@@ -5,6 +5,11 @@
 	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" schemaLocation="VectoDeclarationDefinitions.1.0.xsd"/>
 	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" schemaLocation="VectoDeclarationDefinitions.2.0.xsd"/>
 	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1" schemaLocation="VectoDeclarationDefinitions.2.1.xsd"/>
+<!--
+Changelog:
+	03.02.2022: First official version uploaded to CITnet
+	04.04.2022: Changes in 'TyreDimensionType': remove space between tyre design code and rim diameter (205/70 R15, 205/80 R15) 
+-->
 	<xs:complexType name="AbstractADCDataDeclarationType" abstract="true">
 		<xs:complexContent>
 			<xs:extension base="v1.0:AbstractAngledriveDataDeclarationType"/>
@@ -2180,8 +2185,8 @@
 			<xs:enumeration value="235/60 R17C"/>
 			<xs:enumeration value="425/55 R19.5"/>
 			<xs:enumeration value="425/55 R19.5"/>
-			<xs:enumeration value="205/80 R 15"/>
-			<xs:enumeration value="205/70 R 15"/>
+			<xs:enumeration value="205/80 R15"/>
+			<xs:enumeration value="205/70 R15"/>
 			<xs:enumeration value="205/70 R17C"/>
 			<xs:enumeration value="285/55 R16C"/>
 		</xs:restriction>
