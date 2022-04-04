@@ -384,7 +384,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 					XMLNames.Report_Result_Status_Attr, "success"),
 				new XAttribute(xsi + "type", "ResultSuccessType"),
 				new XElement(tns + XMLNames.Report_Result_Mission, result.Mission.ToXMLFormat()),
-				XMLReportHelperTrailer.GetSimulationParameters(result, _trailerSegment, tns),
+				XMLReportHelperTrailer.GetSimulationParameters(result, _trailerSegment, tns, false),
 				//new XElement(tns + XMLNames.Report_ResultEntry_Payload, XMLHelper.ValueAsUnit(result.Payload, XMLNames.Unit_kg)),
 				//new XElement(tns + XMLNames.Report_ResultEntry_TotalVehicleMass, XMLHelper.ValueAsUnit(result.TotalVehicleMass, XMLNames.Unit_kg)),
 				//new XElement(tns + XMLNames.Report_ResultEntry_AverageSpeed, XMLHelper.ValueAsUnit(result.AverageSpeed, XMLNames.Unit_kmph, 2)),

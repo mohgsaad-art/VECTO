@@ -109,9 +109,21 @@ namespace TUGraz.VectoCore.Models.Declaration
 		
 		public BusParameters BusParameter { get; internal set; }
 
-		public KeyValuePair<double, double> TrailerLiftableImpact { get; set; }
-		public KeyValuePair<double, double> TrailerSteeredImpact { get; set; }
+		public AxleImpact TrailerLiftableImpact { get; set; }
+		public AxleImpact TrailerSteeredImpact { get; set; }
 		public StandardTrailerSegment StandardTrailerSegment { get; set; }
+
+		public struct AxleImpact
+		{
+			public AxleImpact(double lowPayLoadImpact, double repPayLoadImpact)
+			{
+				this.lowPayLoadImpact = lowPayLoadImpact;
+				this.repPayLoadImpact = repPayLoadImpact;
+			}
+			public double lowPayLoadImpact;
+			public double repPayLoadImpact;
+
+		}
 	}
 
 	public class BusParameters

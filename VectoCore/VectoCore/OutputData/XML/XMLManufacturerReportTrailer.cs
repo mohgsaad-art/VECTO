@@ -172,7 +172,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 			return retVal;
 		}
 
-		public static XElement GetSimulationParameters(XMLDeclarationReport.ResultEntry result, TrailerSegment trailerSegment, XNamespace tns)
+		public static XElement GetSimulationParameters(XMLDeclarationReport.ResultEntry result, TrailerSegment trailerSegment, XNamespace tns, bool includeYawAngles = true)
 		{
 			SquareMeter a1, a2, a3;
 
@@ -204,16 +204,36 @@ namespace TUGraz.VectoCore.OutputData.XML
 								a2 * 9 * 9 +
 								a3 * 9 * 9 * 9;
 
-			return new XElement(
+			var resultXElement = new XElement(
 				tns + XMLNames.Report_ResultEntry_SimulationParameters,
 				new XElement(tns + XMLNames.Report_ResultEntry_Payload, XMLHelper.ValueAsUnit(result.Payload, XMLNames.Unit_kg)),
-				new XElement(tns + XMLNames.Report_ResultEntry_TotalVehicleMass, XMLHelper.ValueAsUnit(result.TotalVehicleMass, XMLNames.Unit_kg)),
-				result.CdxA != null ? new XElement(tns + XMLNames.Report_AirDrag_CdxA + "yawAngle0", new XAttribute("unit", "m²"), result.CdxA.ToXMLFormat(3)) : null,
-				result.CdxA != null ? new XElement(tns + XMLNames.Report_AirDrag_CdxA + "yawAngle3", new XAttribute("unit", "m²"), cdxAYawAngle3.ToXMLFormat(3)) : null,
-				result.CdxA != null ? new XElement(tns + XMLNames.Report_AirDrag_CdxA + "yawAngle6", new XAttribute("unit", "m²"), cdxAYawAngle6.ToXMLFormat(3)) : null,
-				result.CdxA != null ? new XElement(tns + XMLNames.Report_AirDrag_CdxA + "yawAngle9", new XAttribute("unit", "m²"), cdxAYawAngle9.ToXMLFormat(3)) : null,
-				new XElement(tns + XMLNames.Report_ResultEntry_AverageSpeed, new XAttribute(XMLNames.Report_Results_Unit_Attr, XMLNames.Unit_kmph), result.AverageSpeed.ConvertToKiloMeterPerHour().Value.ToXMLFormat(2))
+				new XElement(tns + XMLNames.Report_ResultEntry_TotalVehicleMass, XMLHelper.ValueAsUnit(result.TotalVehicleMass, XMLNames.Unit_kg))
 			);
+			if (includeYawAngles) {
+				resultXElement.Add(
+					result.CdxA != null
+						? new XElement(tns + XMLNames.Report_AirDrag_CdxA + "yawAngle0", new XAttribute("unit", "m²"),
+							result.CdxA.ToXMLFormat(3))
+						: null,
+					result.CdxA != null
+						? new XElement(tns + XMLNames.Report_AirDrag_CdxA + "yawAngle3", new XAttribute("unit", "m²"),
+							cdxAYawAngle3.ToXMLFormat(3))
+						: null,
+					result.CdxA != null
+						? new XElement(tns + XMLNames.Report_AirDrag_CdxA + "yawAngle6", new XAttribute("unit", "m²"),
+							cdxAYawAngle6.ToXMLFormat(3))
+						: null,
+					result.CdxA != null
+						? new XElement(tns + XMLNames.Report_AirDrag_CdxA + "yawAngle9", new XAttribute("unit", "m²"),
+							cdxAYawAngle9.ToXMLFormat(3))
+						: null
+				);
+			}
+
+
+
+			resultXElement.Add(new XElement(tns + XMLNames.Report_ResultEntry_AverageSpeed, new XAttribute(XMLNames.Report_Results_Unit_Attr, XMLNames.Unit_kmph), result.AverageSpeed.ConvertToKiloMeterPerHour().Value.ToXMLFormat(2)));
+			return resultXElement;
 		}
 		public static XElement[] GetWeightedFuelConsumption(IDictionary<FuelType, WeightedFc> WeightedFcPerFuelType,
 			Kilogram WeightedPayloadTrailer, 
