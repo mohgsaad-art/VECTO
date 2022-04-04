@@ -407,10 +407,24 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			es.Connect(aux);
 
 			SwitchableClutch clutch = null;
-			
+			HybridControllerTimerunGear ctl;
+
+			//if (data.GearboxData.Type.ManualTransmission())
+			//{
 			var strategy = new HybridStrategyTimerunGear(data, container);
 			clutch = new SwitchableClutch(container, data.EngineData);
-			HybridControllerTimerunGear ctl = new HybridControllerTimerunGear(container, strategy, es);
+			ctl = new HybridControllerTimerunGear(container, strategy, es);
+			//}
+			//else
+			//{
+			//var strategy = new HybridStrategyAT(data, container);
+
+			//ctl = new HybridControllerMeasuredSpeedGear(container, strategy, es);
+			//new ATClutchInfo(container);
+			//}
+
+			
+			
 
 			// add engine before gearbox so that gearbox can obtain if an ICE is available already in constructor
 			var engine = new StopStartCombustionEngine(container, data.EngineData);

@@ -690,8 +690,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 			var best = SelectBestOption(eval, absTime, dt, outTorque, outAngularVelocity, dryRun, currentGear);
 
-			LogDataForInvestigation(absTime, eval);
-
 			if (best == null) {
 				best = ResponseEmOff;
 				best.ICEOff = false;
@@ -736,21 +734,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 		protected virtual bool Accelerating => (DataBus.DriverInfo.DrivingAction == DrivingAction.Accelerate && (nextGear != null) && StrategyParameters.MaxPropulsionTorque?.GetVECTOValueOrDefault(nextGear) != null && DataBus.GearboxInfo.TCLocked);
 
 		protected virtual GearshiftPosition CurrentGear => PreviousState.GearboxEngaged ? DataBus.GearboxInfo.Gear : Controller.ShiftStrategy.NextGear;
-
-		protected virtual void LogDataForInvestigation(Second absTime, List<HybridResultEntry> eval)
-		{
-			if (absTime.IsGreaterOrEqual(2829.9877))
-			{
-				Log.Debug($"Investigate absTime: {absTime} eval.count: {eval.Count()}");
-				foreach (var ev in eval)
-				{
-					Log.Debug($"ICEOff:{ev.ICEOff} FuelCosts: {ev.FuelCosts} EquivalenceFactor: {ev.EquivalenceFactor} " +
-						$"BatCosts: {ev.BatCosts} ICEStartPenalty1: {ev.ICEStartPenalty1} SoCPenalty: {ev.SoCPenalty} " +
-						$"ICEStartPenalty2: {ev.ICEStartPenalty2} RampUpPenalty: {ev.RampUpPenalty} GearshiftPenalty: {ev.GearshiftPenalty} " +
-						$"Score: {ev.Score}");
-				}
-			}
-        }
 
 		protected virtual void DoEmergencyGearShift(GearshiftPosition currentGear, Second absTime, Second dt, NewtonMeter outTorque, 
 			PerSecond outAngularVelocity, HybridResultEntry best)
@@ -1016,11 +999,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 			};
 		}
-
-		protected virtual bool CheckEngineSpeed(IResponse testRequest)
-		{
-			return testRequest.Engine.EngineSpeed < ModelData.EngineData.FullLoadCurves[0].NTq99hSpeed;
-        }
 
 		protected HybridResultEntry ResponseEmOff
 		{
