@@ -77,6 +77,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		private ICommand _openInFolderCommand;
 		private ICommand _doubleClickCommand;
 		private ICommand _runSimulationCommand;
+		private ICommand _printPDFTestCommand;
 		private BackgroundWorker SimulationWorker;
 		private string _status;
 		private double _progress;
@@ -173,12 +174,12 @@ namespace VECTOTrailer.ViewModel.Impl
 		#endregion
 
 
-		public JoblistViewModel(ISimulationBackgroundWorker simulationBackgroundWorker)
+		public JoblistViewModel(ISimulationBackgroundWorker simulationBackgroundWorker, IPdfCreator pdfCreator)
 		{
 			_settings = new SettingsModel();
 			_simulationBackgroundWorker = simulationBackgroundWorker;
             _simulationBackgroundWorker.Messages.CollectionChanged += Messages_CollectionChanged;
-
+			_pdfCreator = pdfCreator;
 
 				
 			LoadOptions();
@@ -233,15 +234,20 @@ namespace VECTOTrailer.ViewModel.Impl
 				}
 
 				WriteModData = body.GetValueOrDefault<bool>(nameof(WriteModData)) ?? true;
-				ValidateData = body.GetValueOrDefault<bool>(nameof(ValidateData)) ?? true;
+				ValidateData = body.GetValueOrDefault<bool>(nameof(ValidateData)) ?? false;
 				WriteModData1Hz = body.GetValueOrDefault<bool>(nameof(WriteModData1Hz)) ?? false;
 				WriteActualModData = body.GetValueOrDefault<bool>(nameof(WriteActualModData)) ?? false;
+
+				WritePDFReport = body.GetValueOrDefault<bool>(nameof(WritePDFReport)) ?? false;
+				_simulationBackgroundWorker.WritePdfReports =
+					body.GetValueOrDefault<bool>(nameof(WritePDFReport) + _autoSimSettingsSuffix) ?? false;
+
 
 				OutputDirectory = body[nameof(OutputDirectory)] == null ? "" : body[nameof(OutputDirectory)].Value<string>();
 				_simulationBackgroundWorker.OutputDirectory = body[nameof(_simulationBackgroundWorker.OutputDirectory) + _autoSimSettingsSuffix] == null ? "" : body[nameof(_simulationBackgroundWorker.OutputDirectory) + _autoSimSettingsSuffix].Value<string>();
 				_simulationBackgroundWorker.InputDirectory = body[nameof(_simulationBackgroundWorker.InputDirectory) + _autoSimSettingsSuffix] == null ? "" : body[nameof(_simulationBackgroundWorker.InputDirectory) + _autoSimSettingsSuffix].Value<string>();
-				_simulationBackgroundWorker.WriteModData1Hz =
-					body.GetValueOrDefault<bool>(nameof(_simulationBackgroundWorker.WriteModData1Hz) + _autoSimSettingsSuffix) ?? false;
+				//_simulationBackgroundWorker.WriteModData1Hz =
+				//	body.GetValueOrDefault<bool>(nameof(_simulationBackgroundWorker.WriteModData1Hz) + _autoSimSettingsSuffix) ?? false;
 				_simulationBackgroundWorker.WriteModData =
 					body.GetValueOrDefault<bool>(nameof(_simulationBackgroundWorker.WriteModData) + _autoSimSettingsSuffix) ?? false;
 
@@ -260,14 +266,16 @@ namespace VECTOTrailer.ViewModel.Impl
 
 			var body = new Dictionary<string, object>();
 			body.Add(nameof(WriteModData), WriteModData);
-			body.Add(nameof(ValidateData), ValidateData);
-			body.Add(nameof(WriteModData1Hz), WriteModData1Hz);
-			body.Add(nameof(WriteActualModData), WriteActualModData);
+			//body.Add(nameof(ValidateData), ValidateData);
+			//body.Add(nameof(WriteModData1Hz), WriteModData1Hz);
+			//body.Add(nameof(WriteActualModData), WriteActualModData);
 			body.Add(nameof(OutputDirectory), OutputDirectory);
 			body.Add(nameof(_simulationBackgroundWorker.OutputDirectory) + _autoSimSettingsSuffix, _simulationBackgroundWorker.OutputDirectory);
 			body.Add(nameof(_simulationBackgroundWorker.InputDirectory) + _autoSimSettingsSuffix, _simulationBackgroundWorker.InputDirectory);
 			body.Add(nameof(WriteModData) + _autoSimSettingsSuffix, _simulationBackgroundWorker.WriteModData);
-			body.Add(nameof(WriteModData1Hz) + _autoSimSettingsSuffix, _simulationBackgroundWorker.WriteModData1Hz);
+			body.Add(nameof(WritePDFReport), WritePDFReport);
+			body.Add(nameof(WritePDFReport) + _autoSimSettingsSuffix, _simulationBackgroundWorker.WritePdfReports);
+			//body.Add(nameof(WriteModData1Hz) + _autoSimSettingsSuffix, _simulationBackgroundWorker.WriteModData1Hz);
 
 			JSONFileWriter.WriteFile(new Dictionary<string, object>() { { "Header", header }, { "Body", body } }, SETTINGS_FILE);
 		}
@@ -419,6 +427,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		private ICommand _toggleAutoSimCommand;
 		private string _autoSimSettingsSuffix = "-autosim";
 		private ICommand _showVectoHelpCommand;
+		private readonly IPdfCreator _pdfCreator;
 
 		public ICommand ToggleAutoSim { get => _toggleAutoSimCommand ?? (_toggleAutoSimCommand = new RelayCommand(
 			() => {
@@ -476,12 +485,28 @@ namespace VECTOTrailer.ViewModel.Impl
 		public bool WriteModelData
 		{
 			get { return _writeModelData; }
-			set {
-				if (SetProperty(ref _writeModelData, value)) {
-					_simulationBackgroundWorker.WriteModelData = value;
-				}; }
+			set
+			{
+				SetProperty(ref _writeModelData, value);
+			}
 		}
-		
+
+
+		private bool _writePdfReport;
+
+		public bool WritePDFReport
+		{
+			get => _writePdfReport && _pdfCreator.Initialized;
+			set => SetProperty(ref _writePdfReport, value);
+		}
+
+		public bool WritePdfCanBeEdited
+		{
+			get => _pdfCreator.Initialized;
+		}
+
+
+
 		private void DoBrowseDirectory(Action<string> assignToAction)
 		{
 			var filePath = FileDialogHelper.ShowSelectDirectoryDialog();
@@ -490,6 +515,15 @@ namespace VECTOTrailer.ViewModel.Impl
 			assignToAction.Invoke(filePath);
 		}
 
+		public ICommand CreatePdfCommand
+		{
+			get => _printPDFTestCommand ?? (_printPDFTestCommand = new RelayCommand(DoCreatePDF));
+		}
+
+		private void DoCreatePDF()
+		{
+			_pdfCreator.CreatePDFFromXml(Path.GetFullPath("pdf1.RSLT_CUSTOMER.xml"), Path.GetFullPath("test.pdf"));
+		}
 
 		public ICommand DoubleClickCommand
 		{
@@ -1178,7 +1212,12 @@ namespace VECTOTrailer.ViewModel.Impl
 
 			foreach (var jobEntry in jobs) {
 				var w = new FileOutputWriter(GetOutputDirectory(jobEntry.JobEntryFilePath));
-				foreach (var entry in new Dictionary<string, string>() { {w.XMLFullReportName,  "XML ManufacturereReport"}, {w.XMLCustomerReportName, "XML Customer Report"}, { w.XMLVTPReportName, "VTP Report"}, {w.XMLPrimaryVehicleReportName, "Primary Trailer Information File"}  }) {
+				foreach (var entry in new Dictionary<string, string>() {
+							{w.XMLFullReportName,  "XML ManufacturereReport"}, 
+							{w.XMLCustomerReportName, "XML Customer Report"}, 
+							{w.XMLVTPReportName, "VTP Report"},
+							{w.XMLPrimaryVehicleReportName, "Primary Trailer Information File"}
+						}) {
 					if (File.Exists(entry.Key)) {
 						sender.ReportProgress(
 							100,
@@ -1188,7 +1227,38 @@ namespace VECTOTrailer.ViewModel.Impl
 									"{2} for '{0}' written to {1}", Path.GetFileName(jobEntry.JobEntryFilePath), entry.Key, entry.Value),
 								Link = "<XML>" + entry.Key
 							});
-					}	
+					}
+
+					if (WritePDFReport) {
+						if (entry.Key == w.XMLFullReportName || entry.Key == w.XMLCustomerReportName) {
+							var xmlPath = Path.GetFullPath(entry.Key);
+							var pdfPath = Path.Combine(Path.GetDirectoryName(xmlPath),
+								Path.GetFileNameWithoutExtension(xmlPath) + ".pdf");
+
+							if (_pdfCreator.CreatePDFFromXml(xmlPath, pdfPath)) {
+								sender.ReportProgress(
+									100,
+									new VectoSimulationProgress()
+									{
+										Type = VectoSimulationProgress.MsgType.StatusMessage,
+										Message = string.Format(
+											"{2} for '{0}' written to {1}", jobEntry.JobEntryFilePath, pdfPath, "PDF Report"),
+										//Link = "<XML>" + entry.Key
+									});
+							} else {
+								sender.ReportProgress(100,
+									new VectoSimulationProgress() {
+										Type = VectoSimulationProgress.MsgType.LogError,
+										Message = $"Error creating pdf {pdfPath}",
+									});
+							}
+						}
+
+
+					}//TODO: replace with pdf flag
+					
+
+
 				}
 			}
 

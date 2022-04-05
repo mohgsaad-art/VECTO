@@ -37,6 +37,7 @@ namespace VECTOTrailer.ViewModel.Interfaces
 		string OutputDirectory { get; set; }
 		ICommand BrowseOutputDirectory { get; }
 		bool WriteModelData { get; set; }
+		bool WritePDFReport { get; set; }
 		ICommand AboutViewCommand { get; }
 		ICommand BrowseAutoSimOutputDirectory { get; }
 		ICommand BrowseAutoSimInputDirectory { get; }
@@ -44,5 +45,6 @@ namespace VECTOTrailer.ViewModel.Interfaces
 		ICommand ToggleAutoSim { get; }
 
 		bool? AllJobsChecked { get; set; }
+		bool WritePdfCanBeEdited { get; }
 	}
 }
