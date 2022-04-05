@@ -38,7 +38,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			
 			if (strategySettings.ShiftRequired) {
 				_shiftStrategy.SetNextGear(nextGear);
-        }
+			}
         }
 
         protected override AbstractResponse ShiftGear(HybridStrategyResponse strategySettings, bool dryRun, Second absTime, Second dt)
@@ -51,7 +51,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			return new GearshiftPosition(DataBus.DrivingCycleInfo.CycleData.LeftSample.Gear, false);
 		}
 
-		protected override bool AdjustStrategyWhenExceedingMaxSpeed(bool dryRun, IResponse retVal, Second absTime, Second dt, 
+		protected override bool AdjustStrategyWhenExceedingGearMaxSpeed(bool dryRun, IResponse retVal, Second absTime, Second dt, 
 			NewtonMeter outTorque, PerSecond outAngularVelocity)
 		{
 			return false;

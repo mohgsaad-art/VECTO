@@ -181,7 +181,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					continue;
 				}
 
-				if (AdjustStrategyWhenExceedingMaxSpeed(dryRun, retVal, absTime, dt, outTorque, outAngularVelocity)) {
+				if (AdjustStrategyWhenExceedingGearMaxSpeed(dryRun, retVal, absTime, dt, outTorque, outAngularVelocity)) {
 					retryCount++;
 					retry = true;
 					continue;
@@ -245,7 +245,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			return strategySettings.NextGear;
 		}
 
-		protected virtual bool AdjustStrategyWhenExceedingMaxSpeed(bool dryRun, IResponse retVal, Second absTime, Second dt, 
+		protected virtual bool AdjustStrategyWhenExceedingGearMaxSpeed(bool dryRun, IResponse retVal, Second absTime, Second dt, 
 			NewtonMeter outTorque, PerSecond outAngularVelocity)
 		{
 			var gear = DataBus.GearboxInfo.Gear;

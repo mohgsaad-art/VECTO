@@ -674,8 +674,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 			var best = SelectBestOption(eval, absTime, dt, outTorque, outAngularVelocity, dryRun, currentGear);
 
-			
-
 			if (best == null) {
 				best = ResponseEmOff;
 				best.ICEOff = false;
@@ -1079,8 +1077,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				if (tmp.CombustionEngineOn) {
 					var firstEntry = new HybridResultEntry();
 					CalculateCosts(firstResponse, dt, firstEntry, AllowICEOff(absTime), dryRun);
-					//always true
-					var minimumShiftTimePassed = 0.SI<Second>().IsSmallerOrEqual(absTime);
 					if (DataBus.GearboxInfo.GearEngaged(absTime) && !vehiclespeedBelowThreshold) {
 						var reEngaged = !PreviousState.GearboxEngaged && DataBus.GearboxInfo.GearEngaged(absTime);
 						if ((firstEntry.IgnoreReason.EngineSpeedBelowDownshift() && !firstEntry.IgnoreReason.EngineTorqueDemandTooHigh() ||
@@ -1193,6 +1189,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 					return;
 				}
 
+				//DS: same as hybrid strategy
 				bool iceOn = DataBus.EngineInfo.EngineOn;
 				
 				// full recuperation is not possible - ICE would need to propel - search max possible EM torque
@@ -1348,7 +1345,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 					return;
 				}
 			}
-
+			//DS: test code from hybrid strategy
 			eval.Add(ResponseEmOff);
 		}
 
@@ -1448,7 +1445,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 					}
 				}
 			}
-
+			//DS test code from hybrid strategies
 			if ((!prohibitGearshift || AllowEmergencyShift) && best.IgnoreReason.EngineSpeedBelowDownshift()) {
 				best = DoSelectBestOption(eval, absTime, dt, outTorque, outAngularVelocity, dryRun, currentGear);
 				if (best.IgnoreReason.EngineSpeedBelowDownshift()) {
@@ -1728,6 +1725,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				return null;
 			}
 
+			//DS: Test: comment out
 			if (StrategyParameters.MaxPropulsionTorque != null && ModelData.GearboxData.Type.AutomaticTransmission())
 			{
 				var maxTqNextGear =
@@ -1781,6 +1779,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 			// iterate over 'EM provides torque'. allow EM to provide more torque in order to overcome ICE inertia
 			var maxEmTorque = firstResponse.ElectricMotor.MaxDriveTorque ?? 0.SI<NewtonMeter>();
+			//DS Test code from hybrid strategy
 			var maxU = -1.0;
 			if (!allowIceOff && !emTqReq.IsEqual(0))
 			{
@@ -2032,7 +2031,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				// this means we search for an acceleration the vehicle is capable to do - so treat ICE overload regularly
 				iceOff = false;
 			}
-
+			
 
 			if (DataBus.DriverInfo.DrivingAction == DrivingAction.Accelerate &&
 				StrategyParameters.MaxPropulsionTorque != null) {
@@ -2061,10 +2060,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				tmp.IgnoreReason |= HybridConfigurationIgnoreReason.NotEvaluated;
 			}
 
+			//DS Copy <check engine speed>
 
             try
             {
 				if (resp.Engine.EngineSpeed.IsSmallerOrEqual(ModelData.EngineData.IdleSpeed)) {
+					//DS Copy from hybrid strategy
 					tmp.FuelCosts = double.NaN;
 					tmp.IgnoreReason |= HybridConfigurationIgnoreReason.EngineSpeedTooLow;
 				}
@@ -2086,13 +2087,16 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			//	//tmp.FuelCosts = double.NaN; // = Tuple.Create(true, response.Gearbox.Gear - 1);
 			//	tmp.IgnoreReason |= HybridConfigurationIgnoreReason.EngineSpeedBelowDownshift;
 			//}
+			//DS Copy from hybrid strategy
 
 			if (resp.Source is TorqueConverter) {
 				if (resp is ResponseUnderload) {
+				//DS Copy from hybrid strategy
 					tmp.IgnoreReason |= HybridConfigurationIgnoreReason.EngineTorqueDemandTooLow;
 				}
 
 				if (resp is ResponseOverload) {
+				//DS Copy from hybrid strategy
 					tmp.IgnoreReason |= HybridConfigurationIgnoreReason.EngineTorqueDemandTooHigh;
 				}
 			}
@@ -2224,15 +2228,15 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			foreach (var em in ModelData.ElectricMachinesData) {
 				retVal.MechanicalAssistPower[em.Item1] = null;
 			}
-
+			//DS Copy from hybrid strategy
 			PreviousState.AngularVelocity = outAngularVelocity;
 			PreviousState.GearboxEngaged = true;
 			PreviousState.GearshiftTriggerTstmp = -double.MaxValue.SI<Second>();
 			CurrentState.GearshiftTriggerTstmp = -double.MaxValue.SI<Second>();
 			return retVal;
-		}
+        }
 
-		public virtual void CommitSimulationStep(Second time, Second simulationInterval)
+        public virtual void CommitSimulationStep(Second time, Second simulationInterval)
 		{
 			var iceStart = PreviousState.ICEStartTStmp;
 			PreviousState = CurrentState;
