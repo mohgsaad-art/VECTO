@@ -1,0 +1,21 @@
+﻿{
+  "Header": {
+    "CreatedBy": " ()",
+    "Date": "2016-10-13T08:54:28.7387223Z",
+    "AppVersion": "3",
+    "FileVersion": 3
+  },
+  "Body": {
+    "SavedInDeclMode": false,
+    "ModelName": "175kW 6.8l Engine",
+    "Displacement": "6871",
+    "IdlingSpeed": 600.0,
+    "Inertia": 3.565,
+    "FullLoadCurve": "175kW.vfld",
+    "FuelMap": "175kW.vmap",
+    "WHTC-Urban": 0.0,
+    "WHTC-Rural": 0.0,
+    "WHTC-Motorway": 0.0,
+    "ColdHotBalancingFactor": 0.0
+  }
+}

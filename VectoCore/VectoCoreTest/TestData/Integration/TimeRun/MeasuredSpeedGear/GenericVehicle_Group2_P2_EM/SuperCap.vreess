@@ -1,0 +1,19 @@
+{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2020-12-02T13:46:10.3043598Z",
+    "AppVersion": "3",
+    "FileVersion": 1
+  },
+  "Body": {
+    "SavedInDeclMode": false,
+    "REESSType": "SuperCap",
+    "Model": "SuperCap",
+    "Capacity": 161.9,
+    "InternalResistance": 0.00754,
+    "U_min": 39.87,
+    "U_max": 57.0,
+    "I_maxCharge": 100.0,
+    "I_maxDischarge": 100.0
+  }
+}
