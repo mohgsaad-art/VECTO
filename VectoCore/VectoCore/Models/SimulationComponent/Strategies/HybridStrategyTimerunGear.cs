@@ -21,7 +21,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
         public HybridStrategyTimerunGear(VectoRunData runData, IVehicleContainer vehicleContainer) : base(runData,vehicleContainer)
         { }
 
-		protected override IResponse RequestDryRun(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, GearshiftPosition nextGear, HybridStrategyResponse cfg)
+		protected override IResponse RequestDryRun(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, 
+			GearshiftPosition nextGear, HybridStrategyResponse cfg)
 		{
 			TestPowertrain.Gearbox.Gear = new GearshiftPosition(DataBus.DrivingCycleInfo.CycleData.RightSample.Gear);
 			TestPowertrain.Gearbox.Disengaged = (DataBus.DrivingCycleInfo.CycleData.RightSample.Gear == 0);
@@ -62,6 +63,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 					return null;
 				}
 			}
+
+			TestPowertrain.Gearbox._nextGear = Controller.ShiftStrategy.NextGear;
 
 			var combustionEngineInfo = DataBus.EngineInfo as CombustionEngine;
 			var enginePrevious = combustionEngineInfo.PreviousState;
@@ -146,7 +149,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
     }
 
 	//--------------------------------------------------
-	public class HybridStrategyATTimerunGear : AbstractHybridStrategyTimerunGear<ATGearbox>
+	public class HybridStrategyATTimerunGear : AbstractHybridStrategyTimerunGear<ATGearbox> //ATGearBoxHybridsMeasuredSpeedGear ?
 	{
 
 		public HybridStrategyATTimerunGear(VectoRunData runData, IVehicleContainer vehicleContainer) : base(runData,
@@ -374,15 +377,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
         protected override void CalculateBatteryDischargeEnergyThreshold()
         {
-            BatteryDischargeEnergyThreshold = 0.SI<WattSecond>();
+            var auxEnergyReserve = ModelData.ElectricAuxDemand * StrategyParameters.AuxReserveTime;
+			
+			var minSoc = Math.Max(DataBus.BatteryInfo.MinSoC, StrategyParameters.MinSoC);
 
-			var auxEnergyReserve = ModelData.ElectricAuxDemand * StrategyParameters.AuxReserveTime;
-			if (auxEnergyReserve > 0) {
-				var minSoc = Math.Max(DataBus.BatteryInfo.MinSoC, StrategyParameters.MinSoC);
-				BatteryDischargeEnergyThreshold =
-					DataBus.BatteryInfo.Capacity * minSoc * DataBus.BatteryInfo.NominalVoltage +
-					auxEnergyReserve;
-			}
+			BatteryDischargeEnergyThreshold = (auxEnergyReserve > 0)
+				? (DataBus.BatteryInfo.Capacity * minSoc * DataBus.BatteryInfo.NominalVoltage) + auxEnergyReserve
+				: 0.SI<WattSecond>();
         }
 
         protected override void WarnGearShiftRange()
@@ -390,11 +391,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
         protected override GearshiftPosition CurrentGear => new GearshiftPosition(DataBus.DrivingCycleInfo.CycleData.LeftSample.Gear, false);
 
+		protected override GearshiftPosition NextGear => new GearshiftPosition(DataBus.DrivingCycleInfo.CycleData.RightSample.Gear, false);
+
         protected override void DoEmergencyGearShift(GearshiftPosition currentGear, Second absTime, Second dt, NewtonMeter outTorque, 
             PerSecond outAngularVelocity, HybridResultEntry best)
         { }
-
-        protected override GearshiftPosition NextGear => new GearshiftPosition(DataBus.DrivingCycleInfo.CycleData.RightSample.Gear, false);
 
         protected override bool Disengaged(IResponse firstResponse)
         {
@@ -411,15 +412,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 			var emPos = ModelData.ElectricMachinesData.First().Item1;
 
-			var gear = new GearshiftPosition(this.DataBus.DrivingCycleInfo.CycleData.LeftSample.Gear, false);
-
 			var responses = new List<HybridResultEntry>();
 
-			var nextGear = new GearshiftPosition(this.DataBus.DrivingCycleInfo.CycleData.RightSample.Gear, false);
-
-			var emOffEntry = EvaluateConfigsForGear(absTime, dt, outTorque, outAngularVelocity, nextGear, allowICEOff, responses, emPos, dryRun);
-
-			var tmpBest = responses.Where(x => !double.IsNaN(x.Score)).OrderBy(x => x.Score).FirstOrDefault();
+			EvaluateConfigsForGear(absTime, dt, outTorque, outAngularVelocity, NextGear, allowICEOff, responses, emPos, dryRun);
 
 			return responses;
         }
