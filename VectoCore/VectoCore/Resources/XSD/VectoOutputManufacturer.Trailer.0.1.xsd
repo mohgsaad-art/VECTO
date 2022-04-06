@@ -284,9 +284,21 @@
 					<xs:element name="Masses">
 						<xs:complexType>
 							<xs:sequence>
-								<xs:element name="CorrectedMassInRunningOrder"/>
-								<xs:element name="TPMLMTrailer"/>
-								<xs:element name="TPMLMAxleAssembly"/>
+								<xs:element name="CorrectedMassInRunningOrder">
+									<xs:complexType>
+										<xs:attribute name="unit" type="out:MassUnitType" use="required"/>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="TPMLMTrailer">
+									<xs:complexType>
+										<xs:attribute name="unit" type="out:MassUnitType" use="required"/>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="TPMLMAxleAssembly">
+									<xs:complexType>
+										<xs:attribute name="unit" type="out:MassUnitType" use="required"/>
+									</xs:complexType>
+								</xs:element>
 							</xs:sequence>
 						</xs:complexType>
 					</xs:element>
@@ -295,13 +307,41 @@
 					<xs:element name="Dimensions">
 						<xs:complexType>
 							<xs:sequence>
-								<xs:element name="ExternalLengthBody"/>
-								<xs:element name="ExternalWidthBody"/>
-								<xs:element name="ExternalHeightBody"/>
-								<xs:element name="TotalHeightTrailer"/>
-								<xs:element name="LengthFromFrontToFirstAxle"/>
-								<xs:element name="LengthBetweenCentresOfAxles"/>
-								<xs:element name="CargoVolume"/>
+								<xs:element name="ExternalLengthBody">
+									<xs:complexType>
+										<xs:attribute name="unit" type="out:DistanceUnitType" use="required"/>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="ExternalWidthBody">
+									<xs:complexType>
+										<xs:attribute name="unit" type="out:DistanceUnitType" use="required"/>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="ExternalHeightBody">
+									<xs:complexType>
+										<xs:attribute name="unit" type="out:DistanceUnitType" use="required"/>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="TotalHeightTrailer">
+									<xs:complexType>
+										<xs:attribute name="unit" type="out:DistanceUnitType" use="required"/>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="LengthFromFrontToFirstAxle">
+									<xs:complexType>
+										<xs:attribute name="unit" type="out:DistanceUnitType" use="required"/>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="LengthBetweenCentresOfAxles">
+									<xs:complexType>
+										<xs:attribute name="unit" type="out:DistanceUnitType" use="required"/>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="CargoVolume">
+									<xs:complexType>
+										<xs:attribute name="unit" type="out:VolumeUnitType" use="required"/>
+									</xs:complexType>
+								</xs:element>
 								<xs:element name="VolumeOrientation"/>
 							</xs:sequence>
 						</xs:complexType>
