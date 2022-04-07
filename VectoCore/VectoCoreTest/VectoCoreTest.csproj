@@ -187,6 +187,7 @@
     <Compile Include="Models\Simulation\MeasuredSpeedModeTest.cs" />
     <Compile Include="Models\Simulation\PwheelModeTests.cs" />
     <Compile Include="Reports\SumWriterTest.cs" />
+    <Compile Include="TrailerTool\SegmentationTests.cs" />
     <Compile Include="Utils\GraphWriter.cs" />
     <Compile Include="Integration\EngineOnlyCycle\EngineOnlyCycleTest.cs" />
     <Compile Include="Integration\SimpleDrivingCycles.cs" />

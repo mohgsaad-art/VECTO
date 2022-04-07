@@ -34,8 +34,10 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml;
 using Castle.Core.Internal;
 using Ninject;
@@ -390,6 +392,68 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		}
 
+		public Func<ConvertedSI, bool> getTPMLMAxleAssemblyFunction(string tpmlmAxleAssemblyRestriction)
+		{
+			var numberRegex = new Regex(@"\d\d*([.]\d*)?");
+			double GetDoubleValue(Match match)
+			{
+				
+				var numberMatch = numberRegex.Match(match.Value);
+				var number = double.Parse(numberMatch.Value, NumberStyles.AllowDecimalPoint,
+					NumberFormatInfo.InvariantInfo);
+				return number;
+			}
+
+
+			List<Func<double, bool>> _functionsToCheck = new List<Func<double, bool>>();
+			if (tpmlmAxleAssemblyRestriction == "---" || tpmlmAxleAssemblyRestriction == "all weights") {
+				return kilogram => true;
+			}
+
+			
+
+			//Greater Regex
+			var greaterRegex = new Regex(@">\s*" + numberRegex);
+			if (greaterRegex.Match(tpmlmAxleAssemblyRestriction).Success) {
+				var match = greaterRegex.Match(tpmlmAxleAssemblyRestriction);
+				var number = GetDoubleValue(match);
+				_functionsToCheck.Add(val => val > number);
+			}
+
+			var greaterEqRegex = new Regex(@"(≥\s*" + numberRegex + @")|(>\s*=" + numberRegex + ")");
+			if (greaterRegex.Match(tpmlmAxleAssemblyRestriction).Success)
+			{
+				var match = greaterRegex.Match(tpmlmAxleAssemblyRestriction);
+				var number = GetDoubleValue(match);
+				_functionsToCheck.Add(val => val >= number);
+			}
+			var lessRegex = new Regex(@"<\s*" + numberRegex);
+			if (lessRegex.Match(tpmlmAxleAssemblyRestriction).Success)
+			{
+				var match = lessRegex.Match(tpmlmAxleAssemblyRestriction);
+				var number = GetDoubleValue(match);
+				_functionsToCheck.Add(val => val < number);
+			}
+			var lessEqRegex = new Regex(@"(≤\s*" + numberRegex + @")|(<\s*=\s*" + numberRegex + ")");
+			if (lessEqRegex.Match(tpmlmAxleAssemblyRestriction).Success)
+			{
+				var match = lessEqRegex.Match(tpmlmAxleAssemblyRestriction);
+				var number = GetDoubleValue(match);
+				_functionsToCheck.Add(val => val <= number);
+			}
+
+
+
+
+			return to => {
+
+				var result = _functionsToCheck.TrueForAll(func => func.Invoke(to.Value));
+
+
+
+				return result;
+			};
+		}
 
 		private DataRow GetTrailerDataRow(
 			NumberOfTrailerAxles numberOfAxles, TypeTrailer typeTrailer, BodyWorkCode bodyWorkCode, bool volumeOrientation, Kilogram tpmlmAxleAssembly)
@@ -408,9 +472,10 @@ namespace TUGraz.VectoCore.Models.Declaration
 						return numberOfAxlesRow == numberOfAxles.GetLabel()
 								&& typeTrailerRow == typeTrailer.ToString()
 								&& bodyWorkCodeRow.Contains(bodyWorkCode.GetLabel())
-								&& (tpmlmAxleAssemblyRow.Contains("-") ||
-									tpmlmAxleAssemblyRow.Contains("all weights") ||
-									(tpmlmAxleAssembly.ConvertToTon().Value > tpmlmMinRow && tpmlmAxleAssembly.ConvertToTon().Value < tpmlmMaxRow))
+								&& getTPMLMAxleAssemblyFunction(tpmlmAxleAssemblyRow).Invoke(tpmlmAxleAssembly.ConvertToTon())
+								//&& (tpmlmAxleAssemblyRow.Contains("-") ||
+								//	tpmlmAxleAssemblyRow.Contains("all weights") ||
+								//	(tpmlmAxleAssembly.ConvertToTon().Value > tpmlmMinRow && tpmlmAxleAssembly.ConvertToTon().Value < tpmlmMaxRow))
 								&& (volumeOrientationRow == "Yes" && volumeOrientation || volumeOrientationRow == "No" && !volumeOrientation);
 					});
 			} catch (InvalidOperationException e) {
