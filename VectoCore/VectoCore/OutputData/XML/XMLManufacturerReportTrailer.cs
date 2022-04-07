@@ -232,7 +232,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 
 
 
-			resultXElement.Add(new XElement(tns + XMLNames.Report_ResultEntry_AverageSpeed, new XAttribute(XMLNames.Report_Results_Unit_Attr, XMLNames.Unit_kmph), result.AverageSpeed.ConvertToKiloMeterPerHour().Value.ToXMLFormat(2)));
+			resultXElement.Add(new XElement(tns + XMLNames.Report_ResultEntry_AverageSpeed, new XAttribute(XMLNames.Report_Results_Unit_Attr, XMLNames.Unit_kmph), result.AverageSpeed.ConvertToKiloMeterPerHour().Value.ToXMLFormat(1)));
 			return resultXElement;
 		}
 		public static XElement[] GetWeightedFuelConsumption(IDictionary<FuelType, WeightedFc> WeightedFcPerFuelType,
@@ -259,23 +259,23 @@ namespace TUGraz.VectoCore.OutputData.XML
 
 					new XElement(tns + XMLNames.Report_Results_FuelConsumption,
 						new XAttribute(XMLNames.Report_Results_Unit_Attr, "l/100km"),
-						(weightedfcTrailerLiter * 100).ToXMLFormat(4)),
+						(weightedfcTrailerLiter * 100).ToXMLFormat(2)),
 					new XElement(tns + XMLNames.Report_Results_FuelConsumption,
 						new XAttribute(XMLNames.Report_Results_Unit_Attr, "l/t-km"),
 						weightedFcTrailerLiterTon.ToXMLFormat(4)),
 					new XElement(tns + XMLNames.Report_Results_FuelConsumption,
 						new XAttribute(XMLNames.Report_Results_Unit_Attr, "l/m³-km"),
-						weighteFcTrailerLiterCubicMeter.ToXMLFormat(4)),
+						weighteFcTrailerLiterCubicMeter.ToXMLFormat(5)),
 
 					new XElement(tns + XMLNames.Report_Results_FuelConsumption,
 						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/km"),
-						weightedfcTrailerGram.ToXMLFormat(4)),
+						weightedfcTrailerGram.ToXMLFormat(1)),
 					new XElement(tns + XMLNames.Report_Results_FuelConsumption,
 						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/t-km"),
-						weightedFcTrailerGrammTon.ToXMLFormat(4)),
+						weightedFcTrailerGrammTon.ToXMLFormat(2)),
 					new XElement(tns + XMLNames.Report_Results_FuelConsumption,
 						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/m³-km"),
-						weightedFcTrailerGrammPerCubicMeter.ToXMLFormat(4))
+						weightedFcTrailerGrammPerCubicMeter.ToXMLFormat(3))
 					);
 			}
 
@@ -375,10 +375,10 @@ namespace TUGraz.VectoCore.OutputData.XML
 					}
 
 
-					aeroReductionElement.Add(new XElement(tns + XMLNames.Trailer_YawAngle0, aeroReductions[0].ToXMLFormat(2)));
-					aeroReductionElement.Add(new XElement(tns + XMLNames.Trailer_YawAngle3, aeroReductions[1].ToXMLFormat(2)));
-					aeroReductionElement.Add(new XElement(tns + XMLNames.Trailer_YawAngle6, aeroReductions[2].ToXMLFormat(2)));
-					aeroReductionElement.Add(new XElement(tns + XMLNames.Trailer_YawAngle9, aeroReductions[3].ToXMLFormat(2)));
+					aeroReductionElement.Add(new XElement(tns + XMLNames.Trailer_YawAngle0, (aeroReductions[0]*(-1)).ToXMLFormat(2)));
+					aeroReductionElement.Add(new XElement(tns + XMLNames.Trailer_YawAngle3, (aeroReductions[1]*(-1)).ToXMLFormat(2)));
+					aeroReductionElement.Add(new XElement(tns + XMLNames.Trailer_YawAngle6, (aeroReductions[2]*(-1)).ToXMLFormat(2)));
+					aeroReductionElement.Add(new XElement(tns + XMLNames.Trailer_YawAngle9, (aeroReductions[3]*(-1)).ToXMLFormat(2)));
 
 
 				}
@@ -610,9 +610,9 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XAttribute(xsi + "type", "ResultSuccessType"),
 				new XElement(tns + XMLNames.Report_Result_Mission, result.Mission.ToXMLFormat()),
 				GetSimulationParameters(result), XMLReportHelperTrailer.GetResults(result, tns).Cast<object>().ToArray(), 
-				XMLReportHelperTrailer.GetFactorWithAttributes(tns + XMLNames.Efficiency_Ratio, ratio, XMLNames.Result_RatioType_KilometreBased, 4), 
-				XMLReportHelperTrailer.GetFactorWithAttributes(tns+XMLNames.Efficiency_Ratio, ratioTons, XMLNames.Result_RatioType_TonKilometreBased, 4), 
-				XMLReportHelperTrailer.GetFactorWithAttributes(tns + XMLNames.Efficiency_Ratio, ratioCubicMeter, XMLNames.Result_RatioType_CubicMetre_KilometreBased, 4)
+				XMLReportHelperTrailer.GetFactorWithAttributes(tns + XMLNames.Efficiency_Ratio, ratio, XMLNames.Result_RatioType_KilometreBased, 3), 
+				XMLReportHelperTrailer.GetFactorWithAttributes(tns+XMLNames.Efficiency_Ratio, ratioTons, XMLNames.Result_RatioType_TonKilometreBased, 3), 
+				XMLReportHelperTrailer.GetFactorWithAttributes(tns + XMLNames.Efficiency_Ratio, ratioCubicMeter, XMLNames.Result_RatioType_CubicMetre_KilometreBased, 3)
 			);
 		}
 

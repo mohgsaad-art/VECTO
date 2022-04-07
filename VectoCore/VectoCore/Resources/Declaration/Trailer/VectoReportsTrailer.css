@@ -32,12 +32,13 @@
 
 Signature { display: none; }
 ResultDataSignature { display: none; }
+
 VectoOutput  Data:before {
-	content: "Declaration Results";
+	content: "Vecto TrailerTool - Manufacturer Records File";
     max-width: 1024px;
 }
 VectoCustomerInformation Data:before {
-	content: "Customer Information";
+	content: " Vecto TrailerTool - Customer Information File";
     max-width: 1024px;
 }
 
@@ -60,20 +61,20 @@ Data:before {
 	font-weight: bold;
 	text-align: center;
 	display: block;
-	background-image: url(data:image/png;base64,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);
+/* 	background-image: url(data:image/png;base64,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); */
 	background-position: top left;
 	background-repeat: no-repeat;
 	-webkit-print-color-adjust: exact;
 }
 
-Data:after {
+/* Data:after {
 	content: "Note: this presentation of the report does not show all details!";
 	display: block;
 	font-weight: bold;
 	text-align: right;
 	font-size: small;
 	margin: 3px 0 -5px;
-}
+} */
 
 Vehicle {
     display:block;
@@ -168,19 +169,20 @@ Tyre{
 
 
 Vehicle Manufacturer:before {content: "Manufacturer:"; }
-Vehicle ManufacturerAddress:before {content: "Manufacturer Address:"; }
+Vehicle ManufacturerAddress:before {content: "Manufacturer address:"; }
 Vehicle Model:before {content: "Model:"; }
-Vehicle Model_CommercialName:before {content: "Model CommercialName:"; }
+Vehicle Model_CommercialName:before {content: "Model / Commercial name:"; }
 Vehicle VIN:before {content: "VIN:"; }
 Vehicle Date:before {content: "Date:"; }
-Vehicle LegislativeCategory:before {content: "Legislative Category:"; }
-Vehicle AxleCount:before {content: "Axle Count:";}
-Vehicle TrailerType:before {content: "Trailer Type:";}
-Vehicle BodyCode:before {content: "Body Code:";}
-Vehicle CurbMass:before {content: "Curb Mass:";}
-Vehicle TrailerType:before {content: "Trailer Type:";}
-Vehicle BodyWorkType:before {content: "Body Work Type:";}
-Vehicle TrailerCouplingPoint:before{content: "Trailer Coupling Point";}
+Vehicle LegislativeCategory:before {content: "Legislative category:"; }
+Vehicle AxleCount:before {content: "Axle count:";}
+Vehicle TrailerType:before {content: "Trailer type:";}
+/* Vehicle BodyCode:before {content: "Body Code:";} */
+/* Vehicle CurbMass:before {content: "Curb Mass:";} */
+
+
+Vehicle BodyWorkType:before {content: "Bodywork type:";}
+Vehicle TrailerCouplingPoint:before{content: "Trailer coupling point";}
 Vehicle Masses:before {
 	content: "Masses"; margin-top:5px;
 	font-size: medium;
@@ -190,14 +192,22 @@ Vehicle Masses:before {
 	width:100%;
 	color: #1f6032;
 	text-align:center;
-
 }
-Vehicle CorrectedMassInRunningOrder:before {content: "Corrected Mass In Running Order:"; margin-left: 10px;}
-Vehicle TPMLMTrailer:before {content: "TPMLM Trailer:"; margin-left: 10px;}
-Vehicle TPMLMAxleAssembly:before {content: "TPMLM Axle Assembly:"; margin-left: 10px;}
+Vehicle Masses >*:after{
+	float:right;
+}
 
-Vehicle VehicleGroupAnnexI:before {content: "Vehicle Group Annex I:"; /* margin-top:5px; */}
-Vehicle VehicleGroupToolInternal:before {content: "Vehicle Group Tool Internal:"; }
+Vehicle CorrectedMassInRunningOrder:before {content: "Corrected mass in running order:"; margin-left: 10px;}
+Vehicle CorrectedMassInRunningOrder:after {content: " kg";}
+
+
+Vehicle TPMLMTrailer:before {content: "TPMLM trailer:"; margin-left: 10px;}
+Vehicle TPMLMTrailer:after {content: " kg";}
+Vehicle TPMLMAxleAssembly:before {content: "TPMLM axle assembly:"; margin-left: 10px;}
+Vehicle TPMLMAxleAssembly:after {content: " kg";}
+
+Vehicle VehicleGroupAnnexI:before {content: "Vehicle group Annex I:"; /* margin-top:5px; */}
+Vehicle VehicleGroupToolInternal:before {content: "Vehicle group tool internal:"; }
 
 
 Vehicle Dimensions:before {
@@ -211,15 +221,30 @@ Vehicle Dimensions:before {
 	color: #1f6032;
 	text-align:center;
 }
+Vehicle Dimensions >*:after{
+	float:right;
+}
 Vehicle ExternalLengthBody:before {content: "External length of the body:"; margin-left: 10px;}
+Vehicle ExternalLengthBody:after {content: "m"}
+
 Vehicle ExternalWidthBody:before {content: "External width of the body:"; margin-left: 10px;}
+Vehicle ExternalWidthBody:after {content: "m"}
+
 Vehicle ExternalHeightBody:before {content: "External height of the body:"; margin-left: 10px;}
+Vehicle ExternalHeightBody:after {content: "m"}
+
 Vehicle TotalHeightTrailer:before {content: "Total height of the trailer:"; margin-left: 10px;}
+Vehicle TotalHeightTrailer:after {content: "m"}
+
 Vehicle LengthFromFrontToFirstAxle:before {content: "Length from trailer front end to center of first axle:"; margin-left: 10px;}
+Vehicle LengthFromFrontToFirstAxle:after {content: "m"}
+
 Vehicle LengthBetweenCentresOfAxles:before {content: "Length between centres of axles:"; margin-left: 10px;}
-Vehicle InternalHeightBody:before {content: "Internal height of the body:"; margin-left: 10px;}
-Vehicle CargoVolume:before {content: "Cargo Volume:"; margin-left: 10px;}
-Vehicle VolumeOrientation:before{content: "Volume Orientation"; margin-left: 10px;}
+Vehicle LengthBetweenCentresOfAxles:after {content: "m"}
+
+Vehicle CargoVolume:before {content: "Cargo volume:"; margin-left: 10px;}
+Vehicle CargoVolume:after {content: "m³"}
+Vehicle VolumeOrientation:before{content: "Volume orientation"; margin-left: 10px;}
 
 Vehicle AeroFeatures:before {
 	content: "Aero Features";
@@ -234,11 +259,32 @@ Vehicle AeroFeatures:before {
 }
 Vehicle Technology:before {content: "Technology:"; margin-left: 10px;}
 
-Vehicle CertifiedAeroReduction:before {content: "Certified Aero Reduction:"; margin-left: 10px;}
-Vehicle CertifiedAerodynamicReduction0:before {content: "Yaw Angle 0:"; margin-left: 20px;}
-Vehicle CertifiedAerodynamicReduction3:before {content: "Yaw Angle 3:"; margin-left: 20px;}
-Vehicle CertifiedAerodynamicReduction6:before {content: "Yaw Angle 6:"; margin-left: 20px;}
-Vehicle CertifiedAerodynamicReduction9:before {content: "Yaw Angle 9:"; margin-left: 20px;}
+CertifiedAeroDevice Transforms{display:none;}
+Vehicle CertifiedAeroDevice:before {
+	content: "Certified aero reduction:";
+	font-size: medium;
+	font-weight: bold;
+	display:block;
+	margin: auto;
+	width:100%;
+	color: #1f6032;
+	text-align:center;}
+CertifiedAeroDevice DigestValue:before{content:"Hash: ";width:20%;}
+CertifiedAeroDevice CertificationNumber:before{content:"Certification Nr.:"}
+
+Vehicle AeroReduction:before{
+	content: "Aero reduction: ";
+	font-size: medium;
+	font-weight: bold;
+	display:block;
+	margin: auto;
+	width:100%;
+	color: #1f6032;
+	text-align:center;}
+Vehicle AeroReductionYawAngle0:before {content: "Yaw angle 0:"; margin-left: 20px;}
+Vehicle AeroReductionYawAngle3:before {content: "Yaw angle 3:"; margin-left: 20px;}
+Vehicle AeroReductionYawAngle6:before {content: "Yaw angle 6:"; margin-left: 20px;}
+Vehicle AeroReductionYawAngle9:before {content: "Yaw angle 9:"; margin-left: 20px;}
 
 
 
@@ -269,7 +315,7 @@ Vehicle AxlesAndTyreFeatures Axle[axleNumber="4"]:before
 }
 Vehicle AxlesAndTyreFeatures Steered:before{content:"Steered";}
 Vehicle AxlesAndTyreFeatures Liftable:before{content:"Liftable";}
-Vehicle AxlesAndTyreFeatures TwinTyres:before{content:"Twin Tyres";}
+Vehicle AxlesAndTyreFeatures TwinTyres:before{content:"Twin tyres";}
 
 Vehicle AxlesAndTyreFeatures Tyre:before{
 	font-size: medium;
@@ -284,14 +330,15 @@ Vehicle AxlesAndTyreFeatures Tyre:before{
 
 Tyre Dimension:before {content: "Dimension:";}
 Tyre CertificationNumber:before {content: "Certification Nr.:";}
-Tyre RRCDeclared:before{content:"RRC Declared";}
-Tyre FuelEfficiencyClass:before{content:"Fuel Efficiency Class";}
-Tyre Hash:before{content:"Hash"} { 
-    overflow: hidden;
+Tyre RRCDeclared:before{content:"RRC declared";}
+Tyre FuelEfficiencyClass:before{content:"Fuel efficiency class";}
+Tyre Hash:before{content:"Hash"; width:20% }
+/* {  */
+/*     overflow: hidden;
     margin-right: 2em;
     text-overflow: ellipsis;
     white-space: nowrap; 
-}
+} */
 Vehicle DigestValue { 
     overflow: hidden;
     margin-right: 2em;
@@ -332,7 +379,7 @@ Results{
 /* 	border: 2px solid #1f6032;  */
 	display: flow-root;	
 	page-break-before: auto;
-	margin-top:20px;
+/* 	margin-top:20px; */
 	margin:auto;
 	width:--webkit-fill-available;
 }
@@ -373,7 +420,7 @@ Results Status { display: none; }
 Results TowingVehicle:before{
 	font-size: large;
 	font-weight: bold;
-	margin: 10px 0px 5px 10px;
+	margin: 0px 0px 5px 10px;
 	color: #1f6032;
 	content:"Towing Vehicle ";
 	display:block;
@@ -383,8 +430,7 @@ Results TowingVehicle:before{
 Results TowingVehicle{
 	display:block;
 	margin: auto;
-	margin-top: 0 px;
-	margin: 12px;
+	margin: 10px, 12px, 12px, 12px;
 	border: 2px solid #1f6032; 
 	padding: 10px 7px; 
 /* 	width: calc(90% + 15px);  */
@@ -604,19 +650,19 @@ WeightedResults Fuel >*:before{
 
 
 
-TotalVehicleMass:before { content: "Total Vehicle Mass:"; }
+TotalVehicleMass:before { content: "Total vehicle mass:"; }
 Payload:before { content: "Loading: "; }
 CdxAyawAngle0:before { content: "CdxAyawAngle0: " }
 CdxAyawAngle3:before { content: "CdxAyawAngle3: " }
 CdxAyawAngle6:before { content: "CdxAyawAngle6: " }
 CdxAyawAngle6:before { content: "CdxAyawAngle6: " }
 CdxAyawAngle9:before { content: "CdxAyawAngle9: " }
-AverageSpeed:before { content: "Average Speed: " }
+AverageSpeed:before { content: "Average speed: " }
 
-FuelConsumption:before { content: "Fuel Consumption: " }
+FuelConsumption:before { content: "Fuel consumption: " }
 CO2:before { content: "CO2: " }
-EfficiencyRatio:before { content: "Efficiency Ratio: " }
-ReferenceRatio:before { content: "Reference Ratio: " }
+EfficiencyRatio:before { content: "Efficiency ratio: " }
+ReferenceRatio:before { content: "Reference ratio: " }
 
 
 /*#endregion Results*/
@@ -654,6 +700,7 @@ ReferenceRatio:before { content: "Reference Ratio: " }
 *[unit="t"]:after { content: "t" }
 *[unit="ltr"]:after { content: "ltr" }
 *[unit="gCO2/tkm"]:after { content: "gCO2/tkm" }
+*[unit="%"]:after { content: "%" }
 
 *[type]:after {
 	display: inline-block;
@@ -685,7 +732,7 @@ ApplicationInformation *:before {
 	color: #1f6032;	
 }
 ApplicationInformation SimulationToolVersion:before {
-	content: "VECTO Version:";
+	content: "VECTO TrailerTool Version:";
 }
 ApplicationInformation Date:before {
 	content: "Date:";

@@ -140,6 +140,7 @@ namespace TUGraz.VectoCore.Tests.Helper.TrailerTool
 			//var tpmlmAxleAssemblyMax =	double.Parse(row["TPMLM_max"].ToString(), NumberFormatInfo.InvariantInfo);
 
 			//return GetMaxIntBetween(tpmlmAxleAssemblyMin, tpmlmAxleAssemblyMax) * 1000;
+			return -1;
 		}
 
 		public static void AddAxle(int count, IEnumerable<XElement> xElements)
