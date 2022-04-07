@@ -204,9 +204,9 @@
                                     Command="{Binding RemoveJob}" 
                                     CommandParameter="{Binding ElementName=JobList, Path=SelectedItem}"/>
 
-                            <Button Margin="0,5,0,0"  Content="Print PDF (TEST)"  
+                            <!--<Button Margin="0,5,0,0"  Content="Print PDF (TEST)"  
                                     Command="{Binding CreatePdfCommand}" />
-                                    <!--CommandParameter="{Binding ElementName=JobList, Path=SelectedItem}"/>-->
+                                    --><!--CommandParameter="{Binding ElementName=JobList, Path=SelectedItem}"/>-->
                         </StackPanel>
                     </Grid>
                 </Grid>

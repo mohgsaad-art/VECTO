@@ -522,6 +522,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		private void DoCreatePDF()
 		{
+			throw new NotImplementedException("Just for testing");
 			_pdfCreator.CreatePDFFromXml(Path.GetFullPath("pdf1.RSLT_CUSTOMER.xml"), Path.GetFullPath("test.pdf"));
 		}
 
