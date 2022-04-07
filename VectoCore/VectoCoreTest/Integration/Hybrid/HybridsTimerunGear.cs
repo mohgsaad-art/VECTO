@@ -18,6 +18,7 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
     public class HybridsTimerunGear
     {
         private const string P2_JOB = @"TestData\Integration\TimeRun\MeasuredSpeedGear\GenericVehicle_Group2_P2_EM\Class2_RigidTruck_ParHyb_ENG.vecto";
+        private const string P3_JOB = @"TestData\Integration\TimeRun\MeasuredSpeedGear\GenericVehicle_Group2_P3_EM\Class2_RigidTruck_ParHyb_ENG.vecto";
         
         [OneTimeSetUp]
         public void Init()
@@ -33,6 +34,8 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
         TestCase(P2_JOB, 1, 581.0263, 7.956, 8.8775, TestName = "P2 Hybrid TimeRun MeasuredSpeedGear SmallUrbanDeliveryNoGrad"),
         TestCase(P2_JOB, 2, 572.3749, 2.6878, 1.7033, TestName = "P2 Hybrid TimeRun MeasuredSpeedGear CycleTimeNoGrad"),
         TestCase(P2_JOB, 3, 0, 0, 0, TestName = "P2 Hybrid TimeRun MeasuredSpeedGear LongHaul"),
+        TestCase(P3_JOB, 0, 0, 0, 0, TestName = "P3 Hybrid TimeRun MeasuredSpeedGear LongHaulNoGrad"),
+        TestCase(P3_JOB, 1, 0, 0, 0, TestName = "P3 Hybrid TimeRun MeasuredSpeedGear UrbanDeliveryNoGrad"),
         ]
         public void TestHybridTimerunCycle(string jobFile, int cycleIdx, double CO2, double charge, double discharge)
         {
