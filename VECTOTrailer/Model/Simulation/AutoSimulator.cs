@@ -27,6 +27,7 @@ using TUGraz.VectoCore.InputData.FileIO.XML;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
+using VECTOTrailer.Helper;
 using VECTOTrailer.ViewModel.Impl;
 
 namespace VECTOTrailer.Model.Simulation
@@ -45,6 +46,8 @@ namespace VECTOTrailer.Model.Simulation
 		bool AutoSimBusy { get; }
 		bool AutoSimActive { get; }
 
+		bool WritePdfReports { get; set; }
+
 
 		void ToggleSimulationBackgroundWorker();
 
@@ -54,8 +57,9 @@ namespace VECTOTrailer.Model.Simulation
 		private ILogger _logger;
 		private BackgroundWorker worker;
 		private ReaderWriterLockSlim _simSettingsRwLock = new ReaderWriterLockSlim();
-		public SimulationBackgroundWorker(IXMLInputDataReader inputDataReader)
+		public SimulationBackgroundWorker(IXMLInputDataReader inputDataReader, IPdfCreator pdfCreator)
 		{
+			_pdfCreator = pdfCreator;
 			_inputDataReader = inputDataReader;
 			worker = new BackgroundWorker() {
 				WorkerSupportsCancellation = true,
@@ -148,6 +152,14 @@ namespace VECTOTrailer.Model.Simulation
 		public bool WriteActualModData { get; set; }
 		public bool WriteModelData { get; set; }
 
+		private bool _writePdfReports;
+		private readonly IPdfCreator _pdfCreator;
+
+		public bool WritePdfReports
+		{
+			get => _writePdfReports && _pdfCreator.Initialized;
+			set => SetProperty(ref _writePdfReports, value);
+		}
 		public bool AutoSimBusy
 		{
 			get => _autoSimBusy;
@@ -212,6 +224,7 @@ namespace VECTOTrailer.Model.Simulation
 				SetProperty(ref _autoSimActive, value);
 			}
 		}
+
 
 		public void ToggleSimulationBackgroundWorker()
 		{
@@ -421,7 +434,7 @@ namespace VECTOTrailer.Model.Simulation
 			start.Stop();
 			finishedRuns.Clear();
 
-
+			HashSet<string> runNames = new HashSet<string>();
 			foreach (var progressEntry in jobContainer.GetProgress())
 			{
 				reportProgress(100, new VectoSimulationProgress()
@@ -457,13 +470,25 @@ namespace VECTOTrailer.Model.Simulation
 				//		Link = "<CSV>" + sumFileWriter.SumFileName
 				//	});
 				//}
-				
+
+
+				if (!runNames.Contains(progressEntry.Value.RunName)) {
+					reportProgress(100, new VectoSimulationProgress()
+					{
+						Type = VectoSimulationProgress.MsgType.StatusMessage,
+						Message = $"Background Simulation for {progressEntry.Value.RunName} {progressEntry.Value.CycleName} finished in {start.Elapsed.TotalSeconds}s",
+						Target = VectoSimulationProgress.MsgTarget.NLog
+					});
+					runNames.Add(progressEntry.Value.RunName);
+				}
+			}
+
+			foreach (var jobFileName in jobFileNames) {
 				reportProgress(100, new VectoSimulationProgress()
 				{
-					
 					Type = VectoSimulationProgress.MsgType.StatusMessage,
-					Message = string.Format("Background Simulation for {} finished in {0:F1}s", progressEntry.Value.RunName, start.Elapsed.TotalSeconds),
-					Target = VectoSimulationProgress.MsgTarget.NLog
+					Message = $"Background Simulation for {Path.GetFileNameWithoutExtension(jobFileName)} finished in {start.Elapsed.TotalSeconds}s",
+					Target = VectoSimulationProgress.MsgTarget.MessageWindow
 				});
 			}
 
@@ -472,6 +497,15 @@ namespace VECTOTrailer.Model.Simulation
 				Message = string.Format("Background Simulation finished in {0:F1}s", start.Elapsed.TotalSeconds),
 				Target = VectoSimulationProgress.MsgTarget.NLog | VectoSimulationProgress.MsgTarget.MessageWindow,
 			});
+
+			if(WritePdfReports) {
+				foreach (var jobFileName in jobFileNames) {
+					var jobPath = Path.Combine(outputDirectory, jobFileName);
+					var w = new FileOutputWriter(jobPath);
+					_pdfCreator.CreatePDFFromXml(w.XMLCustomerReportName, jobPath.Replace(".xml", ".pdf"));
+					_pdfCreator.CreatePDFFromXml(w.XMLFullReportName, jobPath.Replace(".xml", ".pdf"));
+				}
+			}
 		}
 
 		private JobContainer ReadJobFiles(IList<string> jobFileNames, string outputDirectory, Action<int, VectoSimulationProgress> reportProgress, Func<bool> cancel)

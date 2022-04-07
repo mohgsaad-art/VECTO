@@ -448,28 +448,5 @@ namespace TUGraz.VectoCore.Tests.XML
 				groupManager.AddStandardSimulationResult(genericTowingVehicleCode, simResult);
 			}
 		}
-
-
-
-		/// <summary>
-		/// This test checks the calculation of a tpmlmaxle assembly value based on tpmlm_min and tpmlm_max wich can be found in the trailerSegmentationTable.csv
-		/// </summary>
-		/// <param name="min"></param>
-		/// <param name="max"></param>
-		/// <param name="expected"></param>
-		
-		[TestCase(8, 9, 9999)]
-		[TestCase(0,18.001, 18)]
-		[TestCase(18,9999,9999)]
-		[TestCase(13.5, 9999, 9999)]
-		[TestCase(8, 13.501, 13)]
-		[Ignore("just used for creating the in memory xmls")]
-		public void TPMLMCalcTest(double min, double max, int expected)
-		{
-			Assert.AreEqual(expected, XDocumentCreator.GetMaxIntBetween(min, max));
-		}
 	}
-
-
-
 }

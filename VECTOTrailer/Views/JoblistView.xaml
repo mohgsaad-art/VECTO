@@ -203,6 +203,10 @@
                             <Button Margin="0,5,0,0"  Content="Remove Job"  
                                     Command="{Binding RemoveJob}" 
                                     CommandParameter="{Binding ElementName=JobList, Path=SelectedItem}"/>
+
+                            <!--<Button Margin="0,5,0,0"  Content="Print PDF (TEST)"  
+                                    Command="{Binding CreatePdfCommand}" />
+                                    --><!--CommandParameter="{Binding ElementName=JobList, Path=SelectedItem}"/>-->
                         </StackPanel>
                     </Grid>
                 </Grid>
@@ -248,10 +252,13 @@
                                     </DockPanel>
                                 </GroupBox>
                                 <GroupBox Header ="Settings">
-                                <CheckBox Margin="0,0,0,3" IsChecked="{Binding WriteModData}">Write modal results</CheckBox>
+                                    <StackPanel>
+                                        <CheckBox Margin="0,0,0,3" IsChecked="{Binding WriteModData}">Write modal results</CheckBox>
+                                        <CheckBox Margin="0,0,0,3" IsEnabled="{Binding WritePdfCanBeEdited}" IsChecked="{Binding WritePDFReport}">Create PDF reports</CheckBox>
+                                    </StackPanel>
                                 </GroupBox>
                                     <!--<CheckBox Margin="0,0,0,3" IsChecked="{Binding WriteModData1Hz}">Modal results in 1Hz</CheckBox>-->
-                                </StackPanel>
+                            </StackPanel>
                         </GroupBox>
                         <GroupBox Header="Background Worker">
                             <StackPanel>
@@ -271,7 +278,8 @@
                                 <GroupBox Header="Background Worker Settings">
                                     <StackPanel Orientation="Vertical">
                                         <CheckBox Margin="0,0,0,3" IsChecked="{Binding SimulationBackgroundWorker.WriteModData}">Write modal results</CheckBox>
-                                        <!--<CheckBox Margin="0,0,0,3" IsChecked="{Binding AutoSimulator.WriteModData1Hz}">Modal results in 1Hz</CheckBox>-->
+                                            <CheckBox Margin="0,0,0,3" IsEnabled="{Binding WritePdfCanBeEdited}" IsChecked="{Binding SimulationBackgroundWorker.WritePdfReports}">Create PDF reports</CheckBox>
+                                            <!--<CheckBox Margin="0,0,0,3" IsChecked="{Binding AutoSimulator.WriteModData1Hz}">Modal results in 1Hz</CheckBox>-->
                                     </StackPanel>
                                 </GroupBox>
                             </StackPanel>
