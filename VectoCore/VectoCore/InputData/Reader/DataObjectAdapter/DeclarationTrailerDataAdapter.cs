@@ -487,82 +487,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			var retVal = SetCommonCombustionEngineData(engine, vehicle.TankSystem);
 			retVal.IdleSpeed = VectoMath.Max(mode.IdleSpeed, vehicle.EngineIdleSpeed);
 
-			var liftFactor = 1.0;
-			var steerFactor = 1.0;
-			var trailerType = trailer.TrailerType;
-
-			if (trailer.Axles.Count(x => x.Steered && x.Liftable) > 0) {
-				//found axle with both steered and liftable
-				if (mission.MissionType == MissionType.LongHaul) {
-					//LH
-					if (loadingType == LoadingType.LowLoading) {
-						// LOW LOADING
-						if (trailer.Axles.Count(x => x.Liftable) > 1) //1 both + 1 liftable
-							liftFactor = (1 + (mission.TrailerLiftableImpact.Key * 1.5) / 100);
-						else if (trailer.Axles.Count(x => x.Steered) > 1) {
-							//1 both + 1 steered
-							liftFactor = (1 + mission.TrailerLiftableImpact.Key / 100);
-							steerFactor = (1 + mission.TrailerSteeredImpact.Key / 100);
-						} else //1 both
-							liftFactor = (1 + mission.TrailerLiftableImpact.Key / 100);
-					} else {
-						//REF LOADING
-						if (trailer.Axles.Count(x => x.Steered) > 1) {
-							//1 both + 1 steered
-							liftFactor = (1 + mission.TrailerLiftableImpact.Value / 100);
-							steerFactor = (1 + mission.TrailerSteeredImpact.Value / 100);
-						} else //1 both or 1 both + 1 liftable
-							liftFactor = (1 + mission.TrailerLiftableImpact.Value / 100);
-					}
-				} else {
-					//RD & UD
-					if (loadingType == LoadingType.LowLoading) {
-						//Low lading
-						if (trailer.Axles.Count(x => x.Liftable) > 1) {
-							//1 both + 1 liftable
-							liftFactor = (1 + mission.TrailerLiftableImpact.Key / 100);
-							steerFactor = (1 + mission.TrailerSteeredImpact.Key / 100);
-						} else if (trailer.Axles.Count(x => x.Steered) > 1) //1 both + 1 steered
-							steerFactor = (1 + (mission.TrailerSteeredImpact.Key * 1.2) / 100);
-						else // 1 both
-							steerFactor = (1 + mission.TrailerSteeredImpact.Key / 100);
-					} else {
-						//Ref loading
-						if (trailer.Axles.Count(x => x.Liftable) > 1) {
-							//1 both + 1 liftable
-							liftFactor = (1 + mission.TrailerLiftableImpact.Value / 100);
-							steerFactor = (1 + mission.TrailerSteeredImpact.Value / 100);
-						} else if (trailer.Axles.Count(x => x.Steered) > 1) //1 both + 1 steered
-							steerFactor = (1 + (mission.TrailerSteeredImpact.Value * 1.2) / 100);
-						else // 1 both
-							steerFactor = (1 + mission.TrailerSteeredImpact.Value / 100);
-					}
-				}
-			} else {
-				// no axle is both liftable and steered
-				if (loadingType == LoadingType.LowLoading) {
-					//LOW loading
-					if (trailer.Axles.Count(x => x.Liftable) > 1) //if 2 liftable
-						liftFactor = (1 + (mission.TrailerLiftableImpact.Key * 1.5) / 100);
-
-					else if (trailer.Axles.Count(x => x.Liftable) > 0) //if 1 liftable
-						liftFactor = (1 + mission.TrailerLiftableImpact.Key / 100);
-
-					if (trailer.Axles.Count(x => x.Steered) > 1) // 2 steered
-						steerFactor = (1 + (mission.TrailerSteeredImpact.Key * 1.2) / 100);
-					else if (trailer.Axles.Count(x => x.Steered) > 0) // 1 steered
-						steerFactor = (1 + mission.TrailerSteeredImpact.Key / 100);
-				} else {
-					//REF loading
-					if (trailer.Axles.Count(x => x.Liftable) > 0)
-						liftFactor = (1 + mission.TrailerLiftableImpact.Value / 100);
-
-					if (trailer.Axles.Count(x => x.Steered) > 1) //2 steered
-						steerFactor = (1 + (mission.TrailerSteeredImpact.Value * 1.2) / 100);
-					else if (trailer.Axles.Count(x => x.Steered) > 0) // 1 steered
-						steerFactor = (1 + mission.TrailerSteeredImpact.Value / 100);
-				}
-			}
+			GetSteeredAndLiftFactor(mission, trailer, loadingType, out var liftFactor, out var steerFactor);
 
 			retVal.Fuels = new List<CombustionEngineFuelData>();
 			foreach (var fuel in mode.Fuels)
@@ -615,6 +540,104 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			}
 
 			return retVal;
+		}
+
+		private static void GetSteeredAndLiftFactor(Mission mission, ITrailerDeclarationInputData trailer,
+			LoadingType loadingType, out double liftFactor, out double steerFactor)
+		{
+			liftFactor = 1.0;
+			steerFactor = 1.0;
+			var trailerType = trailer.TrailerType;
+			var axles = new List<(bool Steered, bool Liftable)>();
+			foreach (var trailerAxleDeclarationInputData in trailer.Axles) {
+				axles.Add((trailerAxleDeclarationInputData.Steered, trailerAxleDeclarationInputData.Liftable));
+			}
+
+			if (trailerType == TypeTrailer.DB) {
+				//DB steered axle not considered
+				var axle = axles[0];
+				axle.Steered = false;
+				axles[0] = axle;
+			}
+
+
+			if (axles.Count(x => x.Steered && x.Liftable) > 0) {
+				//found axle with both steered and liftable
+				if (mission.MissionType == MissionType.LongHaul) {
+					//LH
+					if (loadingType == LoadingType.LowLoading) {
+						// LOW LOADING
+						if (axles.Count(x => x.Liftable) > 1) //1 both + 1 liftable
+							liftFactor = (1 + (mission.TrailerLiftableImpact.lowPayLoadImpact * 1.5) / 100);
+						else if (axles.Count(x => x.Steered) > 1) {
+							//1 both + 1 steered
+							liftFactor = (1 + mission.TrailerLiftableImpact.lowPayLoadImpact / 100);
+							steerFactor = (1 + mission.TrailerSteeredImpact.lowPayLoadImpact / 100);
+						} else //1 both
+							liftFactor = (1 + mission.TrailerLiftableImpact.lowPayLoadImpact / 100);
+					} else {
+						//REF LOADING
+						if (axles.Count(x => x.Steered) > 1) {
+							//1 both + 1 steered
+							liftFactor = (1 + mission.TrailerLiftableImpact.repPayLoadImpact / 100);
+							steerFactor = (1 + mission.TrailerSteeredImpact.repPayLoadImpact/ 100);
+						} else //1 both or 1 both + 1 liftable
+							liftFactor = (1 + mission.TrailerLiftableImpact.repPayLoadImpact / 100);
+					}
+				} else {
+					//RD & UD
+					if (loadingType == LoadingType.LowLoading) {
+						//Low lading
+						if (axles.Count(x => x.Liftable) > 1) {
+							//1 both + 1 liftable
+							liftFactor = (1 + mission.TrailerLiftableImpact.lowPayLoadImpact / 100);
+							steerFactor = (1 + mission.TrailerSteeredImpact.lowPayLoadImpact / 100);
+						} else if (axles.Count(x => x.Steered) > 1) //1 both + 1 steered
+							steerFactor = (1 + (mission.TrailerSteeredImpact.lowPayLoadImpact * 1.2) / 100);
+						else // 1 both
+						{
+							steerFactor = (1 + mission.TrailerSteeredImpact.lowPayLoadImpact / 100);
+						}
+					} else {
+						//Ref loading
+						if (axles.Count(x => x.Liftable) > 1) {
+							//1 both + 1 liftable
+							liftFactor = (1 + mission.TrailerLiftableImpact.repPayLoadImpact / 100);
+							steerFactor = (1 + mission.TrailerSteeredImpact.repPayLoadImpact / 100);
+						} else if (axles.Count(x => x.Steered) > 1) //1 both + 1 steered
+						{
+							steerFactor = (1 + (mission.TrailerSteeredImpact.repPayLoadImpact * 1.2) / 100);
+						} else // 1 both
+						{
+							steerFactor = (1 + mission.TrailerSteeredImpact.repPayLoadImpact / 100);
+						}
+					}
+				}
+			} else {
+				// no axle is both liftable and steered
+				if (loadingType == LoadingType.LowLoading) {
+					//LOW loading
+					if (axles.Count(x => x.Liftable) > 1) //if 2 liftable
+						liftFactor = (1 + (mission.TrailerLiftableImpact.lowPayLoadImpact * 1.5) / 100);
+
+					else if (axles.Count(x => x.Liftable) > 0) //if 1 liftable
+						liftFactor = (1 + mission.TrailerLiftableImpact.lowPayLoadImpact / 100);
+
+					if (axles.Count(x => x.Steered) > 1) // 2 steered
+						steerFactor = (1 + (mission.TrailerSteeredImpact.lowPayLoadImpact * 1.2) / 100);
+					else if (axles.Count(x => x.Steered) > 0) // 1 steered
+						steerFactor = (1 + mission.TrailerSteeredImpact.lowPayLoadImpact / 100);
+				} else {
+					//REF loading
+					if (axles.Count(x => x.Liftable) > 0)
+						liftFactor = (1 + mission.TrailerLiftableImpact.repPayLoadImpact / 100);
+
+					if (axles.Count(x => x.Steered) > 1) //2 steered
+						steerFactor = (1 + (mission.TrailerSteeredImpact.repPayLoadImpact * 1.2) / 100);
+					else if (axles.Count(x => x.Steered) > 0) // 1 steered
+						steerFactor = (1 + mission.TrailerSteeredImpact.repPayLoadImpact / 100);
+				}
+			}
 		}
 
 		private static WHRData CreateWHRData(IWHRData whrInputData, MissionType missionType, WHRType type)

@@ -135,27 +135,27 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		}
 
-		public KeyValuePair<double, double> GetImpact(int vehicleGroup, string type, MissionType missionType)
+		public Mission.AxleImpact GetImpact(int vehicleGroup, string type, MissionType missionType)
 		{
 			var row = GetTrailerDataRow(vehicleGroup);
 			if (row == null)
 			{
-				return new KeyValuePair<double, double>(0.0, 0.0);
+				return new Mission.AxleImpact();
 			}
 
 			if (type == "Liftable")
 			{
 				switch (missionType) {
 					case MissionType.LongHaul:
-						return new KeyValuePair<double, double>(
+						return new Mission.AxleImpact(
 							double.Parse(row.Field<string>("liftable_lh_payload_low").Replace("%", "").Replace("---", "0"), CultureInfo.InvariantCulture),
 							double.Parse(row.Field<string>("liftable_lh_payload_rep").Replace("%", "").Replace("---", "0"), CultureInfo.InvariantCulture));
 					case MissionType.RegionalDelivery:
-						return new KeyValuePair<double, double>(
+						return new Mission.AxleImpact(
 							double.Parse(row.Field<string>("liftable_r_payload_low").Replace("%", "").Replace("---", "0"), CultureInfo.InvariantCulture),
 							double.Parse(row.Field<string>("liftable_r_payload_rep").Replace("%", "").Replace("---", "0"), CultureInfo.InvariantCulture));
 					case MissionType.UrbanDelivery:
-						return new KeyValuePair<double, double>(
+						return new Mission.AxleImpact(
 							double.Parse(row.Field<string>("liftable_u_payload_low").Replace("%", "").Replace("---", "0"), CultureInfo.InvariantCulture),
 							double.Parse(row.Field<string>("liftable_u_payload_rep").Replace("%", "").Replace("---", "0"), CultureInfo.InvariantCulture));
 				}
@@ -164,22 +164,22 @@ namespace TUGraz.VectoCore.Models.Declaration
 			{
 				switch (missionType) {
 					case MissionType.LongHaul:
-						return new KeyValuePair<double, double>(
+						return new Mission.AxleImpact(
 							double.Parse(row.Field<string>("steered_lh_payload_low").Replace("%", "").Replace("---", "0"), CultureInfo.InvariantCulture),
 							double.Parse(row.Field<string>("steered_lh_payload_rep").Replace("%", "").Replace("---", "0"), CultureInfo.InvariantCulture));
 					case MissionType.RegionalDelivery:
-						return new KeyValuePair<double, double>(
+						return new Mission.AxleImpact(
 							double.Parse(row.Field<string>("steered_r_payload_low").Replace("%", "").Replace("---", "0"), CultureInfo.InvariantCulture),
 							double.Parse(row.Field<string>("steered_r_payload_rep").Replace("%", "").Replace("---", "0"), CultureInfo.InvariantCulture));
 					case MissionType.UrbanDelivery:
-						return new KeyValuePair<double, double>(
+						return new Mission.AxleImpact(
 							double.Parse(row.Field<string>("steered_u_payload_low").Replace("%", "").Replace("---", "0"), CultureInfo.InvariantCulture),
 							double.Parse(row.Field<string>("steered_u_payload_rep").Replace("%", "").Replace("---", "0"), CultureInfo.InvariantCulture));
 				}
 			}
 
 
-			return new KeyValuePair<double, double>(0.0, 0.0);
+			return new Mission.AxleImpact();
 		}
 
 		private DataRow GetTrailerDataRow(int vehicleGroup)

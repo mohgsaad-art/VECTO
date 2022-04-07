@@ -11,5 +11,8 @@
     <Setting Name="UserGuideFilePath" Type="System.String" Scope="User">
       <Value Profile="(Default)">Resources/User Guide_Trailer_Tool.pdf</Value>
     </Setting>
+    <Setting Name="VectoHelpPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Resources/help.html</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

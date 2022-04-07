@@ -100,6 +100,12 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		private string _userGuidePath = null;
 		private string UserGuidePath => _userGuidePath ?? (_userGuidePath = Path.GetFullPath(Properties.Settings.Default.UserGuideFilePath));
+
+		private string _vectoHelpPath = null;
+
+		public string VectoHelpPath => _vectoHelpPath ??
+										(_vectoHelpPath =
+											Path.GetFullPath(Properties.Settings.Default.VectoHelpPath));
 		#endregion
 
 		#region Properties
@@ -412,6 +418,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		private ICommand _toggleAutoSimCommand;
 		private string _autoSimSettingsSuffix = "-autosim";
+		private ICommand _showVectoHelpCommand;
 
 		public ICommand ToggleAutoSim { get => _toggleAutoSimCommand ?? (_toggleAutoSimCommand = new RelayCommand(
 			() => {
@@ -777,8 +784,25 @@ namespace VECTOTrailer.ViewModel.Impl
             {
 				MessageBox.Show($"Error opening user guide {UserGuidePath}\n \n {ex.Message}", "Error", MessageBoxButton.OK);
             }
-			
 		}
+
+		public ICommand ShowVectoHelp =>
+			_showVectoHelpCommand ?? (_showVectoHelpCommand = new RelayCommand(DoShowVectoHelp));
+
+		private void DoShowVectoHelp()
+		{
+			try
+			{
+				
+				System.Diagnostics.Process.Start("explorer.exe", VectoHelpPath);
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show($"Error opening vecto help {VectoHelpPath}\n \n {ex.Message}", "Error", MessageBoxButton.OK);
+			}
+		}
+
+
 		public ICommand AboutViewCommand
 		{
 			get { return _aboutViewCommand ?? (_aboutViewCommand = new RelayCommand(DoAboutViewCommand)); }
