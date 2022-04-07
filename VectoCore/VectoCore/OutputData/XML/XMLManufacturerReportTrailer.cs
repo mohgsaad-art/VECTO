@@ -375,10 +375,10 @@ namespace TUGraz.VectoCore.OutputData.XML
 					}
 
 
-					aeroReductionElement.Add(new XElement(tns + XMLNames.Trailer_YawAngle0, (aeroReductions[0]*(-1)).ToXMLFormat(2)));
-					aeroReductionElement.Add(new XElement(tns + XMLNames.Trailer_YawAngle3, (aeroReductions[1]*(-1)).ToXMLFormat(2)));
-					aeroReductionElement.Add(new XElement(tns + XMLNames.Trailer_YawAngle6, (aeroReductions[2]*(-1)).ToXMLFormat(2)));
-					aeroReductionElement.Add(new XElement(tns + XMLNames.Trailer_YawAngle9, (aeroReductions[3]*(-1)).ToXMLFormat(2)));
+					aeroReductionElement.Add(new XElement(tns + XMLNames.Trailer_YawAngle0, (aeroReductions[0]*(-1)).ToXMLFormat(2), new XAttribute(XMLNames.Report_Results_Unit_Attr, XMLNames.UnitPercent)));
+					aeroReductionElement.Add(new XElement(tns + XMLNames.Trailer_YawAngle3, (aeroReductions[1]*(-1)).ToXMLFormat(2), new XAttribute(XMLNames.Report_Results_Unit_Attr, XMLNames.UnitPercent)));
+					aeroReductionElement.Add(new XElement(tns + XMLNames.Trailer_YawAngle6, (aeroReductions[2]*(-1)).ToXMLFormat(2), new XAttribute(XMLNames.Report_Results_Unit_Attr, XMLNames.UnitPercent)));
+					aeroReductionElement.Add(new XElement(tns + XMLNames.Trailer_YawAngle9, (aeroReductions[3]*(-1)).ToXMLFormat(2), new XAttribute(XMLNames.Report_Results_Unit_Attr, XMLNames.UnitPercent)));
 
 
 				}
@@ -397,10 +397,10 @@ namespace TUGraz.VectoCore.OutputData.XML
 					//aeroSignature.Elements()
 
 					//Certified Aero Device
-					aeroReductionElement.Add(new XElement(tns + XMLNames.Trailer_YawAngle0, modelData.VehicleData.InputDataTrailer.YawAngle0.ToXMLFormat(2)));
-					aeroReductionElement.Add(new XElement(tns + XMLNames.Trailer_YawAngle3, modelData.VehicleData.InputDataTrailer.YawAngle3.ToXMLFormat(2)));
-					aeroReductionElement.Add(new XElement(tns + XMLNames.Trailer_YawAngle6, modelData.VehicleData.InputDataTrailer.YawAngle6.ToXMLFormat(2)));
-					aeroReductionElement.Add(new XElement(tns + XMLNames.Trailer_YawAngle9, modelData.VehicleData.InputDataTrailer.YawAngle9.ToXMLFormat(2)));
+					aeroReductionElement.Add(new XElement(tns + XMLNames.Trailer_YawAngle0, modelData.VehicleData.InputDataTrailer.YawAngle0.ToXMLFormat(2)), new XAttribute(XMLNames.Report_Results_Unit_Attr, XMLNames.UnitPercent));
+					aeroReductionElement.Add(new XElement(tns + XMLNames.Trailer_YawAngle3, modelData.VehicleData.InputDataTrailer.YawAngle3.ToXMLFormat(2)), new XAttribute(XMLNames.Report_Results_Unit_Attr, XMLNames.UnitPercent));
+					aeroReductionElement.Add(new XElement(tns + XMLNames.Trailer_YawAngle6, modelData.VehicleData.InputDataTrailer.YawAngle6.ToXMLFormat(2)), new XAttribute(XMLNames.Report_Results_Unit_Attr, XMLNames.UnitPercent));
+					aeroReductionElement.Add(new XElement(tns + XMLNames.Trailer_YawAngle9, modelData.VehicleData.InputDataTrailer.YawAngle9.ToXMLFormat(2)), new XAttribute(XMLNames.Report_Results_Unit_Attr, XMLNames.UnitPercent));
 					
 
 				}
