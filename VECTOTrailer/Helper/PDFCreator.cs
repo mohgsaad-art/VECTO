@@ -16,16 +16,26 @@ namespace VECTOTrailer.Helper
 		private bool _initialized;
 
 		public bool Initialized => _initialized;
+		private bool _initError = false;
 
 		public PdfCreator()
 		{
-			_cefSettings = new CefSettings() {
-				CachePath = "",
-			};
+			try {
+				_cefSettings = new CefSettings() {
+					CachePath = "",
+				};
+			} catch (Exception ex) {
+				Debug.WriteLine("Cef Settings could not be created, possibly due to missing c++ redistributable");
+				_initError = true;
+			}
+
 		}
 
 		public bool CreatePDFFromXml(string pathToXml, string outputPath)
 		{
+			if (!_initialized) {
+				return false;
+			}
 			var browser = new ChromiumWebBrowser(Path.GetFullPath(pathToXml));
 			browser.WaitForInitialLoadAsync().Wait();
 			var printTask = browser.PrintToPdfAsync(outputPath);
@@ -36,11 +46,19 @@ namespace VECTOTrailer.Helper
 
 		public bool Init()
 		{
-			try {
-				_initialized = Cef.Initialize(_cefSettings); //Could be done async
-				return _initialized;
-			} catch (Exception ex) {
-				Debug.WriteLine(ex.Message);
+			if (!_initError) {
+				try
+				{
+					_initialized = Cef.Initialize(_cefSettings); //Could be done async
+					return _initialized;
+				}
+				catch (Exception ex)
+				{
+					Debug.WriteLine(ex.Message);
+					return false;
+				}
+			} else {
+				_initialized = false;
 				return false;
 			}
 		}
