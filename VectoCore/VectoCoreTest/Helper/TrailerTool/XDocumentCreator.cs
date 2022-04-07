@@ -10,6 +10,7 @@ using System.Xml.Linq;
 using NUnit.Framework;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Resources;
+using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Declaration;
 using TrailerTypeHelper = TUGraz.VectoCommon.Models.TrailerTypeHelper;
 
@@ -119,20 +120,26 @@ namespace TUGraz.VectoCore.Tests.Helper.TrailerTool
 
 		public static int GetTPMLMAxleAssembly(DataRow row)
 		{
-		
-			var tpmlmAxleAssemblyMin = double.Parse(row["TPMLM_min"].ToString(), NumberFormatInfo.InvariantInfo);
-			var tpmlmAxleAssemblyMax =	double.Parse(row["TPMLM_max"].ToString(), NumberFormatInfo.InvariantInfo);
+			//HACK
+			var possibleValues = new List<int> {
+				8,
+				13,
+				19
+			};
+			foreach (var possibleValue in possibleValues) {
+				var valueInTons = Kilogram.Create(possibleValue * 1000).ConvertToTon();
+				if (_trailerSegments.getTPMLMAxleAssemblyFunction(row["TPMLM_axle_assembly"].ToString())
+					.Invoke(valueInTons)) {
+					return possibleValue;
+				}
+			}
+			Assert.Fail("No tpmlm axle assembly value was found for the given row");
 
-			return GetMaxIntBetween(tpmlmAxleAssemblyMin, tpmlmAxleAssemblyMax) * 1000;
-		}
 
-		public static int GetMaxIntBetween(double min, double max)
-		{
-			min = Math.Ceiling(min);
-			max = Math.Floor(max);
-			var maxBetween = Math.Max(min, max);
-			var floor = Math.Floor(maxBetween);
-			return (int)floor - 1;
+			//var tpmlmAxleAssemblyMin = double.Parse(row["TPMLM_min"].ToString(), NumberFormatInfo.InvariantInfo);
+			//var tpmlmAxleAssemblyMax =	double.Parse(row["TPMLM_max"].ToString(), NumberFormatInfo.InvariantInfo);
+
+			//return GetMaxIntBetween(tpmlmAxleAssemblyMin, tpmlmAxleAssemblyMax) * 1000;
 		}
 
 		public static void AddAxle(int count, IEnumerable<XElement> xElements)
