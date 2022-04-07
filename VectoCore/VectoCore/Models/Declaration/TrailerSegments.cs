@@ -467,8 +467,6 @@ namespace TUGraz.VectoCore.Models.Declaration
 						var bodyWorkCodeRow = r.Field<string>("Bodywork_code");
 						var volumeOrientationRow = r.Field<string>("Volume_orientation");
 						var tpmlmAxleAssemblyRow = r.Field<string>("TPMLM_axle_assembly");
-						var tpmlmMinRow = !string.IsNullOrEmpty(r.Field<string>("TPMLM_min")) ? r.ParseDouble("TPMLM_min") : 0;
-						var tpmlmMaxRow = !string.IsNullOrEmpty(r.Field<string>("TPMLM_max")) ? r.ParseDouble("TPMLM_max"): 0;
 						return numberOfAxlesRow == numberOfAxles.GetLabel()
 								&& typeTrailerRow == typeTrailer.ToString()
 								&& bodyWorkCodeRow.Contains(bodyWorkCode.GetLabel())
