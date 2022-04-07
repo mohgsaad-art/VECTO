@@ -434,7 +434,7 @@ namespace VECTOTrailer.Model.Simulation
 			start.Stop();
 			finishedRuns.Clear();
 
-
+			HashSet<string> runNames = new HashSet<string>();
 			foreach (var progressEntry in jobContainer.GetProgress())
 			{
 				reportProgress(100, new VectoSimulationProgress()
@@ -472,13 +472,23 @@ namespace VECTOTrailer.Model.Simulation
 				//}
 
 
-				
+				if (!runNames.Contains(progressEntry.Value.RunName)) {
+					reportProgress(100, new VectoSimulationProgress()
+					{
+						Type = VectoSimulationProgress.MsgType.StatusMessage,
+						Message = $"Background Simulation for {progressEntry.Value.RunName} {progressEntry.Value.CycleName} finished in {start.Elapsed.TotalSeconds}s",
+						Target = VectoSimulationProgress.MsgTarget.NLog
+					});
+					runNames.Add(progressEntry.Value.RunName);
+				}
+			}
+
+			foreach (var jobFileName in jobFileNames) {
 				reportProgress(100, new VectoSimulationProgress()
 				{
-					
 					Type = VectoSimulationProgress.MsgType.StatusMessage,
-					Message = string.Format("Background Simulation for {} finished in {0:F1}s", progressEntry.Value.RunName, start.Elapsed.TotalSeconds),
-					Target = VectoSimulationProgress.MsgTarget.NLog
+					Message = $"Background Simulation for {Path.GetFileNameWithoutExtension(jobFileName)} finished in {start.Elapsed.TotalSeconds}s",
+					Target = VectoSimulationProgress.MsgTarget.MessageWindow
 				});
 			}
 
