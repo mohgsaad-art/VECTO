@@ -1,0 +1,56 @@
+﻿{
+  "Header": {
+    "CreatedBy": " ()",
+    "Date": "2016-10-13T10:06:00.6206564Z",
+    "AppVersion": "3",
+    "FileVersion": 7
+  },
+  "Body": {
+    "SavedInDeclMode": false,
+    "VehCat": "CityBus",
+    "CurbWeight": 4670.0,
+    "CurbWeightExtra": 1900.0,
+    "Loading": 3020.0,
+    "MassMax": 11.99,
+    "CdA": 4.83,
+    "rdyn": 421.0,
+    "CdCorrMode": "CdofVdecl",
+    "CdCorrFile": "",
+    "Retarder": {
+      "Type": "None",
+      "Ratio": 0.0,
+      "File": ""
+    },
+    "Angledrive": {
+      "Type": "None",
+      "Ratio": 0.0,
+      "LossMap": ""
+    },
+    "PTO": {
+      "Type": "None",
+      "LossMap": "",
+      "Cycle": ""
+    },
+    "AxleConfig": {
+      "Type": "4x2",
+      "Axles": [
+        {
+          "Inertia": 6.5,
+          "Wheels": "265/70 R19.5",
+          "AxleWeightShare": 0.4,
+          "TwinTyres": false,
+          "RRCISO": 0.0065,
+          "FzISO": 20850.0
+        },
+        {
+          "Inertia": 6.5,
+          "Wheels": "265/70 R19.5",
+          "AxleWeightShare": 0.6,
+          "TwinTyres": true,
+          "RRCISO": 0.0075,
+          "FzISO": 20850.0
+        }
+      ]
+    }
+  }
+}

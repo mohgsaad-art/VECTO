@@ -1,0 +1,72 @@
+﻿{
+  "Header": {
+    "CreatedBy": " ()",
+    "Date": "2016-10-13T10:06:12.8616564Z",
+    "AppVersion": "3",
+    "FileVersion": 6
+  },
+  "Body": {
+    "SavedInDeclMode": false,
+    "ModelName": "AT Serial",
+    "Inertia": 0.0,
+    "TracInt": 0.0,
+    "Gears": [
+      {
+        "Ratio": 6.2,
+        "Efficiency": 0.98
+      },
+      {
+        "Ratio": 3.4,
+        "Efficiency": 0.98,
+        "ShiftPolygon": "AT-Shift.vgbs",
+        "MaxTorque": ""
+      },
+      {
+        "Ratio": 1.9,
+        "Efficiency": 0.98,
+        "ShiftPolygon": "AT-Shift.vgbs",
+        "MaxTorque": ""
+      },
+      {
+        "Ratio": 1.42,
+        "Efficiency": 0.98,
+        "ShiftPolygon": "AT-Shift.vgbs",
+        "MaxTorque": ""
+      },
+      {
+        "Ratio": 1.0,
+        "Efficiency": 0.98,
+        "ShiftPolygon": "AT-Shift.vgbs",
+        "MaxTorque": ""
+      },
+      {
+        "Ratio": 0.7,
+        "Efficiency": 0.98,
+        "ShiftPolygon": "AT-Shift.vgbs",
+        "MaxTorque": ""
+      },
+      {
+        "Ratio": 0.62,
+        "Efficiency": 0.98,
+        "ShiftPolygon": "AT-Shift.vgbs",
+        "MaxTorque": ""
+      }
+    ],
+    "TqReserve": 0.0,
+    "ShiftTime": 0.0,
+    "StartTqReserve": 0.0,
+    "StartSpeed": 2.0,
+    "StartAcc": 0.6,
+    "GearboxType": "ATSerial",
+    "TorqueConverter": {
+      "Enabled": true,
+      "File": "TorqueConverter.vtcc",
+      "RefRPM": 1000.0,
+      "Inertia": 0.0,
+      "ShiftPolygon": "AT-Shift.vgbs"
+    },
+    "DownshiftAferUpshiftDelay": 0.0,
+    "UpshiftAfterDownshiftDelay": 0.0,
+    "UpshiftMinAcceleration": 0.0
+  }
+}
