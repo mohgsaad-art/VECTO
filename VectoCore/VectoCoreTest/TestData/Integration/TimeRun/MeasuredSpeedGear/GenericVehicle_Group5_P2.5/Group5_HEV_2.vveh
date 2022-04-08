@@ -1,0 +1,110 @@
+{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2020-08-24T09:14:33.9240545Z",
+    "AppVersion": "3",
+    "FileVersion": 10
+  },
+  "Body": {
+    "SavedInDeclMode": false,
+    "VehCat": "Tractor",
+    "LegislativeClass": "Unknown",
+    "CurbWeight": 8229.0,
+    "CurbWeightExtra": 7500.0,
+    "MassMax": 18.0,
+    "Loading": 19300.0,
+    "rdyn": 492.0,
+    "CdCorrMode": "CdofVdecl",
+    "CdCorrFile": "",
+    "AxleConfig": {
+      "Type": "4x2",
+      "Axles": [
+        {
+          "Inertia": 14.9,
+          "Wheels": "315/70 R22.5",
+          "AxleWeightShare": 0.2,
+          "TwinTyres": false,
+          "RRCISO": 0.0055,
+          "FzISO": 33350.0,
+          "Type": "VehicleNonDriven"
+        },
+        {
+          "Inertia": 14.9,
+          "Wheels": "315/70 R22.5",
+          "AxleWeightShare": 0.25,
+          "TwinTyres": true,
+          "RRCISO": 0.0065,
+          "FzISO": 33350.0,
+          "Type": "VehicleDriven"
+        },
+        {
+          "Inertia": 19.2,
+          "Wheels": "385/65 R22.5",
+          "AxleWeightShare": 0.18333,
+          "TwinTyres": false,
+          "RRCISO": 0.0055,
+          "FzISO": 41690.0,
+          "Type": "Trailer"
+        },
+        {
+          "Inertia": 19.2,
+          "Wheels": "385/65 R22.5",
+          "AxleWeightShare": 0.18333,
+          "TwinTyres": false,
+          "RRCISO": 0.0055,
+          "FzISO": 41690.0,
+          "Type": "Trailer"
+        },
+        {
+          "Inertia": 19.2,
+          "Wheels": "385/65 R22.5",
+          "AxleWeightShare": 0.18334,
+          "TwinTyres": false,
+          "RRCISO": 0.0055,
+          "FzISO": 41690.0,
+          "Type": "Trailer"
+        }
+      ]
+    },
+    "EngineStopStart": true,
+    "EcoRoll": "None",
+    "PredictiveCruiseControl": "None",
+    "ATEcoRollReleaseLockupClutch": false,
+    "CdA": 5.3,
+    "VehicleHeight": 4.0,
+    "IdlingSpeed": 600.0,
+    "Retarder": {
+      "Type": "secondary",
+      "Ratio": 1.0,
+      "File": "Default.vrlm"
+    },
+    "Angledrive": {
+      "Type": "None",
+      "Ratio": 0.0,
+      "LossMap": ""
+    },
+    "PTO": {
+      "Type": "None",
+      "LossMap": "",
+      "Cycle": ""
+    },
+    "TorqueLimits": {},
+    "InitialSoC": 80.0,
+    "PowertrainConfiguration": "ParallelHybrid",
+    "MaxDrivetrainPower": 500000.0,
+    "ElectricMotors": [
+      {
+        "Count": 1,
+        "RatioPerGear": [ 1.0259, 0.8125, 1.0259, 0.8125, 1.0259, 0.8125, 1.0259, 0.8125, 1.0259, 0.8125, 1.0259, 0.8125 ],
+        "Ratio":  3.077, 
+        "MechanicalEfficiency": 0.98,
+        "Position": "P2_5",
+        "MotorFile": "GenericEMotor_30kW_50Nm.vem"
+      }
+    ],
+    "Battery": {
+      "NumPacks": 1,
+      "BatteryFile": "GenericBattery_10kWh_658V.vbat"
+    }
+  }
+}
