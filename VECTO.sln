@@ -71,7 +71,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VECTO-GIT", "VECTO-GIT", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VECTO_GIT_TEST", "..\STUDENTEN_PROJEKTE\Kober_VectoGIT\VECTO_GIT\VECTO_GIT_TEST\VECTO_GIT_TEST.csproj", "{52430C51-892A-4D8E-9189-B6C9D09791C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VectoCore BugReportTests", "..\VECTO-Bugreports_DEV\BugReportTests\VectoCore BugReportTests.csproj", "{7C364099-9B85-473A-8A42-BBEBE4798FF5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VectoCore BugReportTests", "..\VECTO-Bugreports\BugReportTests\VectoCore BugReportTests.csproj", "{7C364099-9B85-473A-8A42-BBEBE4798FF5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
