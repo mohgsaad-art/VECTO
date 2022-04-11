@@ -3139,6 +3139,15 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CertifiedAeroDevice.
+        /// </summary>
+        public static string Trailer_CertifiedAeroDevice {
+            get {
+                return ResourceManager.GetString("Trailer_CertifiedAeroDevice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CertifiedAeroReduction.
         /// </summary>
         public static string Trailer_CertifiedAeroReduction {

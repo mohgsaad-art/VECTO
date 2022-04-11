@@ -957,8 +957,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		private CertifiedAeroDeviceReader _certifiedAeroDevice = null;
 		private CertifiedAeroDeviceReader CertifiedAeroDevice
 		{
-			get => _certifiedAeroDevice ?? (_certifiedAeroDevice = ElementExists(XMLNames.Trailer_CertifiedAeroReduction)
-				? new CertifiedAeroDeviceReader(GetNode(XMLNames.Trailer_CertifiedAeroReduction))
+			get => _certifiedAeroDevice ?? (_certifiedAeroDevice = ElementExists(XMLNames.Trailer_CertifiedAeroDevice)
+				? new CertifiedAeroDeviceReader(GetNode(XMLNames.Trailer_CertifiedAeroDevice))
 				: null);
 		}
 

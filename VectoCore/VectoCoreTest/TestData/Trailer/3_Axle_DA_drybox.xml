@@ -28,7 +28,7 @@
       <VolumeOrientation>false</VolumeOrientation>
     </Dimensions>
     <AeroFeatures>
-      <CertifiedAeroReduction>
+      <CertifiedAeroDevice>
         <Data xsi:type="CertifiedAeroDataDeclarationType" id="AERO-asdf">
           <Manufacturer>Generic Manufacturer</Manufacturer>
           <Model>Generic Tyre Model</Model>
@@ -50,7 +50,7 @@
             <di:DigestValue>7vbS5FPUgb2ce2NfcDGWMWpV6aZUyjY0SXqE2AP8Oh8=</di:DigestValue>
           </di:Reference>
         </Signature>
-      </CertifiedAeroReduction>
+      </CertifiedAeroDevice>
     </AeroFeatures>
     <AxleWheels>
       <Data xsi:type="v2.7:TrailerAxleWheelsDataDeclarationType">
