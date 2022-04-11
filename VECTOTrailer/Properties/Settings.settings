@@ -9,10 +9,16 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="UserGuideFilePath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Resources/User Guide_Trailer_Tool.pdf</Value>
+      <Value Profile="(Default)">Resources/UserManual.pdf</Value>
     </Setting>
     <Setting Name="VectoHelpPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">Resources/help.html</Value>
+    </Setting>
+    <Setting Name="MasterExcelPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Resources/MasterExcel.xlsx</Value>
+    </Setting>
+    <Setting Name="LiteraturePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">https://www.google.at</Value>
     </Setting>
   </Settings>
 </SettingsFile>

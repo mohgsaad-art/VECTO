@@ -49,7 +49,7 @@ namespace VECTOTrailer.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Resources/User Guide_Trailer_Tool.pdf")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Resources/UserManual.pdf")]
         public string UserGuideFilePath {
             get {
                 return ((string)(this["UserGuideFilePath"]));
@@ -68,6 +68,30 @@ namespace VECTOTrailer.Properties {
             }
             set {
                 this["VectoHelpPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Resources/MasterExcel.xlsx")]
+        public string MasterExcelPath {
+            get {
+                return ((string)(this["MasterExcelPath"]));
+            }
+            set {
+                this["MasterExcelPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://www.google.at")]
+        public string LiteraturePath {
+            get {
+                return ((string)(this["LiteraturePath"]));
+            }
+            set {
+                this["LiteraturePath"] = value;
             }
         }
     }
