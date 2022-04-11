@@ -171,10 +171,10 @@ namespace TUGraz.VectoCore.OutputData.XML
 
 
 
-					aeroReduction.Add(new XElement(tns + XMLNames.Trailer_YawAngle0, modelData.VehicleData.InputDataTrailer.YawAngle0.ToXMLFormat(2)), new XAttribute(XMLNames.Report_Results_Unit_Attr, XMLNames.UnitPercent));
-					aeroReduction.Add(new XElement(tns + XMLNames.Trailer_YawAngle3, modelData.VehicleData.InputDataTrailer.YawAngle3.ToXMLFormat(2)), new XAttribute(XMLNames.Report_Results_Unit_Attr, XMLNames.UnitPercent));
-					aeroReduction.Add(new XElement(tns + XMLNames.Trailer_YawAngle6, modelData.VehicleData.InputDataTrailer.YawAngle6.ToXMLFormat(2)), new XAttribute(XMLNames.Report_Results_Unit_Attr, XMLNames.UnitPercent));
-					aeroReduction.Add(new XElement(tns + XMLNames.Trailer_YawAngle9, modelData.VehicleData.InputDataTrailer.YawAngle9.ToXMLFormat(2)), new XAttribute(XMLNames.Report_Results_Unit_Attr, XMLNames.UnitPercent));
+					aeroReduction.Add(new XElement(tns + XMLNames.Trailer_YawAngle0, modelData.VehicleData.InputDataTrailer.YawAngle0.ToXMLFormat(2), new XAttribute(XMLNames.Report_Results_Unit_Attr, XMLNames.UnitPercent)));
+					aeroReduction.Add(new XElement(tns + XMLNames.Trailer_YawAngle3, modelData.VehicleData.InputDataTrailer.YawAngle3.ToXMLFormat(2), new XAttribute(XMLNames.Report_Results_Unit_Attr, XMLNames.UnitPercent)));
+					aeroReduction.Add(new XElement(tns + XMLNames.Trailer_YawAngle6, modelData.VehicleData.InputDataTrailer.YawAngle6.ToXMLFormat(2), new XAttribute(XMLNames.Report_Results_Unit_Attr, XMLNames.UnitPercent)));
+					aeroReduction.Add(new XElement(tns + XMLNames.Trailer_YawAngle9, modelData.VehicleData.InputDataTrailer.YawAngle9.ToXMLFormat(2), new XAttribute(XMLNames.Report_Results_Unit_Attr, XMLNames.UnitPercent)));
 				}
 				aeroFeatures.Add(aeroReduction);
 			}
@@ -440,7 +440,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 
 					new XElement(tns + XMLNames.Report_Results_CO2,
 						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/km"),
-						WeightedCo2Trailer.ToXMLFormat(1)
+						WeightedCo2Trailer.ToXMLFormat(2)
 					),
 					new XElement(tns + XMLNames.Report_Results_CO2,
 						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/t-km"),
@@ -448,7 +448,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 					),
 					new XElement(tns + XMLNames.Report_Results_CO2,
 						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/m³-km"),
-						weightedCo2CubicMeter.ToXMLFormat(3)
+						weightedCo2CubicMeter.ToXMLFormat(2)
 					),
 					XMLReportHelperTrailer.GetFactorWithAttributes(tns + XMLNames.Efficiency_Ratio, 
 						(WeightedCo2Trailer/ReferenceWeightedCo2),

@@ -269,13 +269,13 @@ namespace TUGraz.VectoCore.OutputData.XML
 
 					new XElement(tns + XMLNames.Report_Results_FuelConsumption,
 						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/km"),
-						weightedfcTrailerGram.ToXMLFormat(1)),
+						weightedfcTrailerGram.ToXMLFormat(2)),
 					new XElement(tns + XMLNames.Report_Results_FuelConsumption,
 						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/t-km"),
 						weightedFcTrailerGrammTon.ToXMLFormat(2)),
 					new XElement(tns + XMLNames.Report_Results_FuelConsumption,
 						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/m³-km"),
-						weightedFcTrailerGrammPerCubicMeter.ToXMLFormat(3))
+						weightedFcTrailerGrammPerCubicMeter.ToXMLFormat(2))
 					);
 			}
 
@@ -397,10 +397,10 @@ namespace TUGraz.VectoCore.OutputData.XML
 					//aeroSignature.Elements()
 
 					//Certified Aero Device
-					aeroReductionElement.Add(new XElement(tns + XMLNames.Trailer_YawAngle0, modelData.VehicleData.InputDataTrailer.YawAngle0.ToXMLFormat(2)), new XAttribute(XMLNames.Report_Results_Unit_Attr, XMLNames.UnitPercent));
-					aeroReductionElement.Add(new XElement(tns + XMLNames.Trailer_YawAngle3, modelData.VehicleData.InputDataTrailer.YawAngle3.ToXMLFormat(2)), new XAttribute(XMLNames.Report_Results_Unit_Attr, XMLNames.UnitPercent));
-					aeroReductionElement.Add(new XElement(tns + XMLNames.Trailer_YawAngle6, modelData.VehicleData.InputDataTrailer.YawAngle6.ToXMLFormat(2)), new XAttribute(XMLNames.Report_Results_Unit_Attr, XMLNames.UnitPercent));
-					aeroReductionElement.Add(new XElement(tns + XMLNames.Trailer_YawAngle9, modelData.VehicleData.InputDataTrailer.YawAngle9.ToXMLFormat(2)), new XAttribute(XMLNames.Report_Results_Unit_Attr, XMLNames.UnitPercent));
+					aeroReductionElement.Add(new XElement(tns + XMLNames.Trailer_YawAngle0, modelData.VehicleData.InputDataTrailer.YawAngle0.ToXMLFormat(2), new XAttribute(XMLNames.Report_Results_Unit_Attr, XMLNames.UnitPercent)));
+					aeroReductionElement.Add(new XElement(tns + XMLNames.Trailer_YawAngle3, modelData.VehicleData.InputDataTrailer.YawAngle3.ToXMLFormat(2), new XAttribute(XMLNames.Report_Results_Unit_Attr, XMLNames.UnitPercent)));
+					aeroReductionElement.Add(new XElement(tns + XMLNames.Trailer_YawAngle6, modelData.VehicleData.InputDataTrailer.YawAngle6.ToXMLFormat(2), new XAttribute(XMLNames.Report_Results_Unit_Attr, XMLNames.UnitPercent)));
+					aeroReductionElement.Add(new XElement(tns + XMLNames.Trailer_YawAngle9, modelData.VehicleData.InputDataTrailer.YawAngle9.ToXMLFormat(2), new XAttribute(XMLNames.Report_Results_Unit_Attr, XMLNames.UnitPercent)));
 					
 
 				}
