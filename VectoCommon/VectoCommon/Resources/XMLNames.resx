@@ -1506,4 +1506,7 @@
 <data name="Result_RatioType_CubicMetre_KilometreBased" xml:space="preserve">
 	<value>CubicMetre-KiloMetre-Based</value>
 </data>
+<data name="Trailer_CertifiedAeroDevice" xml:space="preserve">
+	<value>CertifiedAeroDevice</value>
+</data>
 </root>
