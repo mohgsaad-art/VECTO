@@ -52,7 +52,7 @@ namespace TUGraz.VectoCommon.Models
 		private const string _refrigerated = "refrigerated";
 		private const string _dryBox = "dry box";
 		private const string _dropSideTarpaulinBody = "drop-side tarpaulin body";
-		private const string _curtainSided = "curtainsided";
+		private const string _curtainSided = "curtain-sided";
 
 		public static string GetLabel(this BodyWorkCode ttype)
 		{
