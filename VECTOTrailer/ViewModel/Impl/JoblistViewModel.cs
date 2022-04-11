@@ -102,9 +102,20 @@ namespace VECTOTrailer.ViewModel.Impl
 		private string _userGuidePath = null;
 		private string UserGuidePath => _userGuidePath ?? (_userGuidePath = Path.GetFullPath(Properties.Settings.Default.UserGuideFilePath));
 
+		private string _masterExcelPath;
+
+		private string MasterExcelPath => _masterExcelPath ??
+										(_masterExcelPath =
+											Path.GetFullPath(Properties.Settings.Default.MasterExcelPath));
+
+		private string _literatureLink;
+
+		private string LiteratureLink =>
+			_literatureLink ?? (_literatureLink = Properties.Settings.Default.LiteraturePath);
+
 		private string _vectoHelpPath = null;
 
-		public string VectoHelpPath => _vectoHelpPath ??
+		private string VectoHelpPath => _vectoHelpPath ??
 										(_vectoHelpPath =
 											Path.GetFullPath(Properties.Settings.Default.VectoHelpPath));
 		#endregion
@@ -493,6 +504,9 @@ namespace VECTOTrailer.ViewModel.Impl
 
 
 		private bool _writePdfReport;
+		private RelayCommand _showLiteratureCommand;
+		private ICommand _showMasterExcelCommand;
+
 
 		public bool WritePDFReport
 		{
@@ -677,7 +691,6 @@ namespace VECTOTrailer.ViewModel.Impl
             {
 				MessageBox.Show(ex.Message, "Error opening file", MessageBoxButton.OK);
             }
-
 		}
 
 		public void HandleFileOpen(string filePath)
@@ -828,12 +841,41 @@ namespace VECTOTrailer.ViewModel.Impl
 		{
 			try
 			{
-				
-				System.Diagnostics.Process.Start("explorer.exe", VectoHelpPath);
+				System.Diagnostics.Process.Start("explorer.exe", @"file:\\" + VectoHelpPath);
 			}
 			catch (Exception ex)
 			{
 				MessageBox.Show($"Error opening vecto help {VectoHelpPath}\n \n {ex.Message}", "Error", MessageBoxButton.OK);
+			}
+		}
+
+		public ICommand ShowLiteratureCommand =>
+			_showLiteratureCommand ?? (_showLiteratureCommand = new RelayCommand(DoShowLiterature));
+
+		private void DoShowLiterature()
+		{
+			try
+			{
+				System.Diagnostics.Process.Start("explorer.exe",  LiteratureLink);
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show($"Error opening literature {LiteratureLink}\n \n {ex.Message}", "Error", MessageBoxButton.OK);
+			}
+		}
+
+		public ICommand ShowMasterExcelCommand =>
+			_showMasterExcelCommand ?? (_showMasterExcelCommand = new RelayCommand(DoShowMasterExcel));
+
+		private void DoShowMasterExcel()
+		{
+			try
+			{
+				System.Diagnostics.Process.Start("explorer.exe", MasterExcelPath);
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show($"Error opening MasterExcel {MasterExcelPath}\n \n {ex.Message}", "Error", MessageBoxButton.OK);
 			}
 		}
 

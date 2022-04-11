@@ -1193,7 +1193,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				case NumberOfTrailerAxles.Two when trailer.TrailerType == TypeTrailer.DC && trailer.Axles[0].Steered:
 				case NumberOfTrailerAxles.Two when trailer.TrailerType == TypeTrailer.DA && trailer.Axles[0].Steered:
 				case NumberOfTrailerAxles.Three when trailer.TrailerType == TypeTrailer.DB && liftableCount > 1: //too many liftable
-				case NumberOfTrailerAxles.Three when trailer.TrailerType == TypeTrailer.DB && (trailer.Axles[0].Liftable || trailer.Axles[0].Steered || trailer.Axles[1].Steered):
+				case NumberOfTrailerAxles.Three when trailer.TrailerType == TypeTrailer.DB && (trailer.Axles[0].Liftable || trailer.Axles[1].Steered):
 				case NumberOfTrailerAxles.Three when trailer.TrailerType == TypeTrailer.DC && (trailer.Axles[1].Liftable || trailer.Axles[0].Steered || trailer.Axles[1].Steered):
 				case NumberOfTrailerAxles.Three when liftableCount > 2: //too many liftable
                 case NumberOfTrailerAxles.Three when trailer.Axles.Count(x => x.Steered) > 2:

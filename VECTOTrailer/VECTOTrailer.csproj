@@ -407,15 +407,20 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="..\Documentation\VectoTrailerTool\MasterExcel.xlsx">
+      <Link>Resources\MasterExcel.xlsx</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Documentation\VectoTrailerTool\UserManual.pdf">
+      <Link>Resources\UserManual.pdf</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="Resources\User Guide_Trailer_Tool.pdf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="VECTOTrailer_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>

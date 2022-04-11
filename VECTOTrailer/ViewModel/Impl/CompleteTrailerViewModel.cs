@@ -900,7 +900,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		{
 			SelectFile(jobFileType, "Invalid tyre xml", (result) => {
 				FirstFilePath = result;
-				this.Axle2FilePath = result;
+				this.Axle1FilePath = result;
 			});
 			//if (OpenFileSelector(jobFileType, nameof(FirstFilePath), FirstFilePath, out var result))
 			//{
