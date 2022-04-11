@@ -34,11 +34,11 @@ Signature { display: none; }
 ResultDataSignature { display: none; }
 
 VectoOutput  Data:before {
-	content: "Vecto TrailerTool - Manufacturer Records File";
+	content: "VECTO Trailer Tool - Manufacturer Records File";
     max-width: 1024px;
 }
 VectoCustomerInformation Data:before {
-	content: " Vecto TrailerTool - Customer Information File";
+	content: " VECTO Trailer Tool - Customer Information File";
     max-width: 1024px;
 }
 
@@ -732,7 +732,7 @@ ApplicationInformation *:before {
 	color: #1f6032;	
 }
 ApplicationInformation SimulationToolVersion:before {
-	content: "VECTO TrailerTool Version:";
+	content: "VECTO Trailer Tool Version:";
 }
 ApplicationInformation Date:before {
 	content: "Date:";
