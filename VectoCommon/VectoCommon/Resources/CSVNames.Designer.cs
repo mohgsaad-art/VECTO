@@ -61,7 +61,7 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Vehicle_group_annex1.
+        ///   Looks up a localized string similar to Vehicle_group_acc.
         /// </summary>
         public static string TrailerReferenceFactors_Vehicle_group_annex1 {
             get {

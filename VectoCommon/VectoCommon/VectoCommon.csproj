@@ -186,6 +186,7 @@
     <EmbeddedResource Include="Resources\CSVNames.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>CSVNames.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\XMLNames.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

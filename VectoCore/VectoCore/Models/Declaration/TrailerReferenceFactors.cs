@@ -114,7 +114,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 						//var group = r.Field<string>("Vehicle_Group");
 						return vehicleGroupAnnex1 == group;
 					});
-			} catch (InvalidOperationException e) {
+			} catch (Exception e) {
 				var errorMessage = string.Format(
 					ErrorMessage, vehicleGroupAnnex1);
 				Log.Fatal(errorMessage + e.Message);

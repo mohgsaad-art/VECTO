@@ -130,7 +130,7 @@ namespace TUGraz.VectoCore.Tests.Helper.TrailerTool
 				var valueInTons = Kilogram.Create(possibleValue * 1000).ConvertToTon();
 				if (_trailerSegments.getTPMLMAxleAssemblyFunction(row["TPMLM_axle_assembly"].ToString())
 					.Invoke(valueInTons)) {
-					return possibleValue;
+					return possibleValue*1000;
 				}
 			}
 			Assert.Fail("No tpmlm axle assembly value was found for the given row");
