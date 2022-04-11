@@ -103,7 +103,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 
 			var runs = factory.SimulationRuns().ToArray();
 
-			var expected = new[] { 1.018867, 1.018867, 1.018867, 1.018867, 1.013299, 1.013299, 1.013299, 1.013299 };
+			var expected = new[] { 1.02, 1.02, 1.02, 1.02, 1.013299, 1.013299, 1.013299, 1.013299 };
 
 			for (var i = 0; i < 8; i++)
 				Assert.AreEqual(
