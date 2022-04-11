@@ -38,7 +38,9 @@ namespace VECTOTrailer.Helper
 			}
 			var browser = new ChromiumWebBrowser(Path.GetFullPath(pathToXml));
 			browser.WaitForInitialLoadAsync().Wait();
-			var printTask = browser.PrintToPdfAsync(outputPath);
+			var printTask = browser.PrintToPdfAsync(outputPath, new PdfPrintSettings() {
+				HeaderFooterEnabled = true,
+			});
 			printTask.Wait();
 			return printTask.Result;
 		}
