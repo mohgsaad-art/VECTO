@@ -162,7 +162,7 @@
 						<xs:complexType>
 							<xs:choice>
 								<xs:element name="Technology" type="v2.7:TrailerAeroFeatureTechnologyType" maxOccurs="unbounded"/>
-								<xs:element name="CertifiedAeroReduction" type="v2.7:CertifiedAeroComponentDeclarationType"/>
+								<xs:element name="CertifiedAeroDevice" type="v2.7:CertifiedAeroComponentDeclarationType"/>
 							</xs:choice>
 						</xs:complexType>
 					</xs:element>

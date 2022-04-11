@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSpy v2021 (x64) (http://www.altova.com) by Markus Quaritsch (Technische Universität Graz) -->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:vectoParam="urn:tugraz:ivt:VectoAPI:ParameterDocumentation" 
-xmlns:vdecdef1.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" xmlns:vdecdef2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationComponent:v2.0" 
-xmlns:v2.7="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7" xmlns:vdecdef="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions" xmlns:c2.7="urn:tugraz:ivt:VectoAPI:DeclarationComponent:DEV:v2.7" 
-targetNamespace="urn:tugraz:ivt:VectoAPI:DeclarationComponent:DEV:v2.7" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:ParameterDocumentation ParameterDocumentation.xsd">
+<!-- edited with XMLSpy v2016 rel. 2 sp1 (x64) (http://www.altova.com) by Helmut Eichlseder (TU Graz/Inst. f. VKM und THD) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:vectoParam="urn:tugraz:ivt:VectoAPI:ParameterDocumentation" xmlns:vdecdef1.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" xmlns:vdecdef2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationComponent:v2.0" xmlns:v2.7="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7" xmlns:vdecdef="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions" xmlns:c2.7="urn:tugraz:ivt:VectoAPI:DeclarationComponent:DEV:v2.7" targetNamespace="urn:tugraz:ivt:VectoAPI:DeclarationComponent:DEV:v2.7" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:ParameterDocumentation ParameterDocumentation.xsd">
 	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions" schemaLocation="VectoDeclarationDefinitions.xsd"/>
 	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" schemaLocation="VectoDeclarationDefinitions.2.0.xsd"/>
 	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7" schemaLocation="VectoDeclarationDefinitions.2.7_BT.xsd"/>
 	<xs:element name="VectoInputDeclaration">
 		<xs:complexType>
 			<xs:choice>
-				<xs:element name="CertifiedAeroReduction" type="v2.7:CertifiedAeroComponentDeclarationType"/>
+				<xs:element name="CertifiedAeroDevice" type="v2.7:CertifiedAeroComponentDeclarationType"/>
 			</xs:choice>
 			<xs:attribute name="schemaVersion" use="required">
 				<xs:simpleType>

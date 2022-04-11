@@ -254,7 +254,7 @@
 					<xs:element name="AxleCount" type="xs:string"/>
 					<xs:element name="TrailerType" type="xs:string"/>
 					<xs:element name="BodyWorkType" type="xs:string"/>
-					<xs:element name="TrailerCouplingPoint" type="xs:string"/>
+					<xs:element name="TrailerCouplingPoint" type="xs:string" minOccurs="0"/>
 					<xs:element name="Masses">
 						<xs:complexType>
 							<xs:sequence>
