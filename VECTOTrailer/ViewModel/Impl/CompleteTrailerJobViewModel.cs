@@ -50,7 +50,9 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		private bool _validationErrorsDisplayed;
 
-		private IXMLInputDataReader _xmlReader; 
+		private IXMLInputDataReader _xmlReader;
+		private readonly IJoblistViewModel _jobListViewModel;
+
 		#endregion
 
 		#region Properties
@@ -74,6 +76,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		{
 			Kernel = kernel;
 			_xmlReader = kernel.Get<IXMLInputDataReader>();
+			_jobListViewModel = kernel.Get<IJoblistViewModel>();
 			InputDataProvider = inputData;
 			IsNewJob = inputData == null;
 			JobViewModel = this;
@@ -152,6 +155,10 @@ namespace VECTOTrailer.ViewModel.Impl
 
 			if (valid && XmlHelper.ValidateXDocument(xDocument, null, ValidationErrorAction)) {
 				_xmlCompletedTrailerWriter.WriteCompletedTrailerXml(filePath, xDocument);
+				if (filePath != XmlFilePath) {
+					_jobListViewModel.HandleFileOpen(filePath);
+					//SetXmlFilePath(filePath);
+				}
 				CloseWindow(window);
 				return true;
 			} else {

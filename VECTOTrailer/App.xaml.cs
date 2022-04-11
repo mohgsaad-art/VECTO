@@ -59,7 +59,7 @@ namespace VECTOTrailer
             container.Bind<IAdapterFactory>().ToFactory();
 
             container.Bind<IMainWindowViewModel>().To<MainWindowViewModel>();
-			container.Bind<IJoblistViewModel>().To<JoblistViewModel>();
+			container.Bind<IJoblistViewModel>().To<JoblistViewModel>().InSingletonScope();
 			container.Bind<IJobEditViewModel>().To<DeclarationJobViewModel>();
             container.Bind<IJobEditViewModel>().To<CompleteTrailerJobViewModel>();
             container.Bind<INoneViewModel>().To<NoneViewModel>();

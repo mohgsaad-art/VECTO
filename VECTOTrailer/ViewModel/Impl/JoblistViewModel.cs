@@ -677,7 +677,6 @@ namespace VECTOTrailer.ViewModel.Impl
             {
 				MessageBox.Show(ex.Message, "Error opening file", MessageBoxButton.OK);
             }
-
 		}
 
 		public void HandleFileOpen(string filePath)
