@@ -182,7 +182,7 @@
 			<xs:enumeration value="dry box"/>
 			<xs:enumeration value="refrigerated"/>
 			<xs:enumeration value="conditioned"/>
-			<xs:enumeration value="curtainsided"/>
+			<xs:enumeration value="curtain-sided"/>
 			<xs:enumeration value="drop-side tarpaulin body"/>
 		</xs:restriction>
 	</xs:simpleType>

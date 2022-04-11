@@ -88,7 +88,7 @@
 							</xs:simpleContent>
 						</xs:complexType>
 					</xs:element>
-					<xs:element name="EfficiencyRatio" maxOccurs="unbounded">
+					<xs:element name="ReferenceRatio" maxOccurs="unbounded">
 						<xs:complexType>
 							<xs:simpleContent>
 								<xs:extension base="xs:double">
@@ -98,12 +98,12 @@
 							</xs:simpleContent>
 						</xs:complexType>
 					</xs:element>
-					<xs:element name="ReferenceRatio" maxOccurs="unbounded">
+					<xs:element name="EfficiencyRatio" maxOccurs="unbounded">
 						<xs:complexType>
 							<xs:simpleContent>
-								<xs:extension base="xs:double">
-									<xs:attribute name="type" type="out:CalculationType" use="required"/>
-									<xs:attribute name="unit" type="out:NoUnitType" use="required"/>
+								<xs:extension base="vdecdef:Double3">
+									<xs:attribute name="type" type="out:CalculationType"/>
+									<xs:attribute name="unit" type="out:NoUnitType"/>
 								</xs:extension>
 							</xs:simpleContent>
 						</xs:complexType>
@@ -269,11 +269,11 @@
 					<xs:element name="Dimensions">
 						<xs:complexType>
 							<xs:sequence>
-								<xs:element name="ExternalLengthBody"/>
-								<xs:element name="ExternalWidthBody"/>
-								<xs:element name="ExternalHeightBody"/>
-								<xs:element name="TotalHeightTrailer"/>
-								<xs:element name="CargoVolume"/>
+								<xs:element name="ExternalLengthBody" type="vdecdef:Double3"/>
+								<xs:element name="ExternalWidthBody" type="vdecdef:Double3"/>
+								<xs:element name="ExternalHeightBody" type="vdecdef:Double3"/>
+								<xs:element name="TotalHeightTrailer" type="vdecdef:Double3"/>
+								<xs:element name="CargoVolume" type="vdecdef:Double3"/>
 								<xs:element name="VolumeOrientation"/>
 							</xs:sequence>
 						</xs:complexType>
@@ -296,10 +296,26 @@
 								<xs:element name="AeroReduction" minOccurs="0">
 									<xs:complexType>
 										<xs:sequence>
-											<xs:element name="AeroReductionYawAngle0"/>
-											<xs:element name="AeroReductionYawAngle3"/>
-											<xs:element name="AeroReductionYawAngle6"/>
-											<xs:element name="AeroReductionYawAngle9"/>
+											<xs:element name="AeroReductionYawAngle0">
+												<xs:complexType>
+													<xs:attribute name="unit" type="out:PercentType" use="required"/>
+												</xs:complexType>
+											</xs:element>
+											<xs:element name="AeroReductionYawAngle3">
+												<xs:complexType>
+													<xs:attribute name="unit" type="out:PercentType" use="required"/>
+												</xs:complexType>
+											</xs:element>
+											<xs:element name="AeroReductionYawAngle6">
+												<xs:complexType>
+													<xs:attribute name="unit" type="out:PercentType" use="required"/>
+												</xs:complexType>
+											</xs:element>
+											<xs:element name="AeroReductionYawAngle9">
+												<xs:complexType>
+													<xs:attribute name="unit" type="out:PercentType" use="required"/>
+												</xs:complexType>
+											</xs:element>
 										</xs:sequence>
 									</xs:complexType>
 								</xs:element>
