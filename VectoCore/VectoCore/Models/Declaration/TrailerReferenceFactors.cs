@@ -44,6 +44,7 @@ using Ninject;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
+using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.InputData.FileIO.XML;
@@ -67,10 +68,10 @@ namespace TUGraz.VectoCore.Models.Declaration
 			_segmentTable = table.Copy();
 		}
 
-		public override TrailerReferenceRatios Lookup(string vehicleGroup)
+		public override TrailerReferenceRatios Lookup(string vehicleGroupAnnex1)
 		{
-			System.Diagnostics.Debug.WriteLine(vehicleGroup);
-			var row = GetTrailerDataRow(vehicleGroup);
+			System.Diagnostics.Debug.WriteLine(vehicleGroupAnnex1);
+			var row = GetTrailerDataRow(vehicleGroupAnnex1);
 			if (row == null) {
 				return new TrailerReferenceRatios();
 			}
@@ -103,18 +104,19 @@ namespace TUGraz.VectoCore.Models.Declaration
 				NumberFormatInfo.InvariantInfo);
 		}
 
-		private DataRow GetTrailerDataRow(string vehicleGroup)
+		private DataRow GetTrailerDataRow(string vehicleGroupAnnex1)
 		{
 			DataRow row;
 			try {
 				row = _segmentTable.AsEnumerable().First(
 					r => {
-						var group = r.Field<string>("Vehicle_Group");
-						return vehicleGroup == group;
+						var group = r.Field<string>(CSVNames.TrailerReferenceFactors_Vehicle_group_annex1);
+						//var group = r.Field<string>("Vehicle_Group");
+						return vehicleGroupAnnex1 == group;
 					});
 			} catch (InvalidOperationException e) {
 				var errorMessage = string.Format(
-					ErrorMessage, vehicleGroup);
+					ErrorMessage, vehicleGroupAnnex1);
 				Log.Fatal(errorMessage + e.Message);
 				row = null;
 			}

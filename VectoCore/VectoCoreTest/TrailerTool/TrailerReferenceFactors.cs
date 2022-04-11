@@ -16,6 +16,7 @@ using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
+using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.XML;
 using TUGraz.VectoCore.Models.Declaration;
@@ -36,13 +37,13 @@ namespace TUGraz.VectoCore.Tests.XML
 		public class SimulationResult
 		{
 			public int group;
+			public string group_annex1;
 			public string towingGroup;
 			public TrailerReferenceRatios CO2Ref;
 			public TrailerReferenceRatios CO2Standard;
 			public TrailerReferenceRatios RefFactor;
-			public bool success;
-			public bool referenceSimulated;
 		}
+
 
 		public class StandardResult
 		{
@@ -50,42 +51,64 @@ namespace TUGraz.VectoCore.Tests.XML
 			public TrailerReferenceRatios StandardResults;
 		}
 
+		public class ReferenceResult
+		{
+			public string group_annex1;
+			public TrailerReferenceRatios CO2Ref;
+		}
+
 		private Dictionary<int, SimulationResult> _vehicleGroupResults = new Dictionary<int, SimulationResult>();
+		private Dictionary<string, ReferenceResult> _referenceResults = new Dictionary<string, ReferenceResult>();
 		private Dictionary<string, StandardResult> _standardResults = new Dictionary<string, StandardResult>();
 		public ResultManager(IList<int> groupsToSimulate)
 		{
 			foreach (var i in groupsToSimulate) {
 				_vehicleGroupResults.Add(i, new SimulationResult() {
 					group = i,
+					
 				});
 			}
+			SetTowingVehicleAndAnnex1Groups(new TrailerSegments());
 		}
 
-		public void SetTowingVehicleGroups(TrailerSegments segments)
+		private void SetTowingVehicleAndAnnex1Groups(TrailerSegments segments)
 		{
 			foreach (var group in _vehicleGroupResults) {
 				var row = segments.GetRow(group.Key.ToString());
 				group.Value.towingGroup = row["Generic_vehicle_group"].ToString();
+				group.Value.group_annex1 = row.Field<string>(CSVNames.TrailerReferenceFactors_Vehicle_group_annex1);
 			}
 		}
+
+
 
 		public SimulationResult GetSimulationResult(int group)
 		{
 			return _vehicleGroupResults[group];
 		}
 
+		public void AddReferenceResult(ReferenceResult referenceResult, int vehicleGroup)
+		{
+			var groupAnnex = _vehicleGroupResults[vehicleGroup].group_annex1;
+			foreach (var simulationResult in _vehicleGroupResults.Values.Where(simRes => simRes.group_annex1 == groupAnnex)) {
+				simulationResult.CO2Ref = referenceResult.CO2Ref;
+			}
+		}
+
+		public bool GetReferenceResult(int group, out ReferenceResult referenceResult)
+		{
+			return _referenceResults.TryGetValue(_vehicleGroupResults[group].group_annex1, out referenceResult);
+		}
+
 		public void AddStandardSimulationResult(string xmlCode, StandardResult standardResult)
 		{
 			_standardResults[xmlCode] = standardResult;
-
 		}
 
 		public bool GetStandardResult(string xmlCode, out StandardResult standardResult)
 		{
 			return _standardResults.TryGetValue(xmlCode, out standardResult);
 		}
-
-
 	}
 	public class TrailerReferenceFactors
 	{
@@ -120,8 +143,15 @@ namespace TUGraz.VectoCore.Tests.XML
 		private void SimulateReferenceTrailers(ResultManager groupManager, IList<int> vehicleGroups)
 		{
 			
-			foreach(var group in vehicleGroups){
-				var simResult = groupManager.GetSimulationResult(group); //holds the result of the simulation
+			foreach(var group in vehicleGroups) {
+				ResultManager.ReferenceResult refResult;
+				if (groupManager.GetReferenceResult(group, out refResult)) {
+					continue;
+				} else {
+					refResult = new ResultManager.ReferenceResult();
+				}
+				//var simResult = groupManager.GetSimulationResult(group); //holds the result of the simulation
+				
 
 				try {
 					var xDoc = XDocumentCreator.CreateXDocument(group);
@@ -151,28 +181,23 @@ namespace TUGraz.VectoCore.Tests.XML
 
 					_vsumCO2ColumnIndex = 118;
 				
-					simResult.CO2Ref.LongHaulLow = parseInvariant(dt.Rows[0][_vsumCO2ColumnIndex]);
-					simResult.CO2Ref.LongHaulRef = parseInvariant(dt.Rows[1][_vsumCO2ColumnIndex]);
+					refResult.CO2Ref.LongHaulLow = parseInvariant(dt.Rows[0][_vsumCO2ColumnIndex]);
+					refResult.CO2Ref.LongHaulRef = parseInvariant(dt.Rows[1][_vsumCO2ColumnIndex]);
 
-					simResult.CO2Ref.RegionalDeliveryLow = parseInvariant(dt.Rows[2][_vsumCO2ColumnIndex]);
+					refResult.CO2Ref.RegionalDeliveryLow = parseInvariant(dt.Rows[2][_vsumCO2ColumnIndex]);
 
-					simResult.CO2Ref.RegionalDeliveryRef = parseInvariant(dt.Rows[3][_vsumCO2ColumnIndex]);
+					refResult.CO2Ref.RegionalDeliveryRef = parseInvariant(dt.Rows[3][_vsumCO2ColumnIndex]);
 
 					if (dt.Rows.Count > 4) {
-						simResult.CO2Ref.UrbanDeliveryLow = parseInvariant(dt.Rows[4][_vsumCO2ColumnIndex]);
-						simResult.CO2Ref.UrbanDeliveryRef = parseInvariant(dt.Rows[5][_vsumCO2ColumnIndex]);
+						refResult.CO2Ref.UrbanDeliveryLow = parseInvariant(dt.Rows[4][_vsumCO2ColumnIndex]);
+						refResult.CO2Ref.UrbanDeliveryRef = parseInvariant(dt.Rows[5][_vsumCO2ColumnIndex]);
 					}
-
-
-
-					simResult.success = true;
 				} catch (Exception ex) {
 					TestContext.WriteLine(ex.Message);
 					TestContext.WriteLine($"Error in group{group}");
 					ToCSV(CreateDataTable(groupManager, vehicleGroups), "crashResultRefFactor.csv");
 					throw ex;
 				}
-				simResult.referenceSimulated = true;
 			}
 		}
 
@@ -272,8 +297,7 @@ namespace TUGraz.VectoCore.Tests.XML
 
 			var groupManager = new ResultManager(vehicleGroups);
 
-		
-			groupManager.SetTowingVehicleGroups(new TrailerSegments());
+	
 			SimulateReferenceTrailers(groupManager, vehicleGroups);
 			ToCSV(CreateDataTable(groupManager, vehicleGroups), "referenceResults.csv");
 			SimulateStandardTrailer(groupManager, vehicleGroups);
@@ -295,8 +319,6 @@ namespace TUGraz.VectoCore.Tests.XML
 			vehicleGroups.Add(group);
 			var groupManager = new ResultManager(vehicleGroups);
 
-
-			groupManager.SetTowingVehicleGroups(new TrailerSegments());
 			SimulateReferenceTrailers(groupManager, vehicleGroups);
 			//ToCSV(CreateDataTable(groupManager, vehicleGroups), "referenceResults.csv");
 			SimulateStandardTrailer(groupManager, vehicleGroups);

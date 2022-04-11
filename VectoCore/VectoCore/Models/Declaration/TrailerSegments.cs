@@ -101,7 +101,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 			//var rfRun = false;
 			row = GetTrailerDataRow(numberOfAxles, typeTrailer, bodyWorkCode, volumeOrientation, tpmlmAxleAssembly);
 			@group = (int)row.ParseDouble("Vehicle_group");
-
+			var vehicleGroupAnnex = row.Field<string>("Vehicle_group_acc");
 			if (row == null) {
 				return new TrailerSegment { VehicleGroup = -1 };
 			}
@@ -111,7 +111,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 					RessourceHelper.ReadStream(
 						DeclarationData.DeclarationDataResourcePrefix + ".VACC.Truck.vacc"), //row.Field<string>(".vaccfile")), TODO - CHECK THIS
 				VehicleGroup = group,
-				VehicleGroupAnnex = row.Field<string>("Vehicle_group_acc"),
+				VehicleGroupAnnex = vehicleGroupAnnex,
 				VehicleGroupActive = row.ParseBoolean("Active"),
 				GenericCode = row.Field<string>("Generic_code"),
 				MassBody = Kilogram.Create(!row.Field<string>("generic_mass_body").Contains("-") ? row.ParseDouble("generic_mass_body") : 0),
@@ -124,7 +124,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 				GenericCadVehicle = DeclarationData.GenericCadVehicle.Lookup(group),
 				DesignSpeed = MeterPerSecond.Create(25), //90km/h
 				CodeStandard = row.Field<string>("ref_code_lh"),
-				ReferenceRatios = rf.Lookup(group.ToString())
+				ReferenceRatios = rf.Lookup(vehicleGroupAnnex),
 			};
 		}
 
