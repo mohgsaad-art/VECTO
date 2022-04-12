@@ -88,22 +88,22 @@
 							</xs:simpleContent>
 						</xs:complexType>
 					</xs:element>
-					<xs:element name="ReferenceRatio" maxOccurs="unbounded">
-						<xs:complexType>
-							<xs:simpleContent>
-								<xs:extension base="xs:double">
-									<xs:attribute name="type" type="out:CalculationType" use="required"/>
-									<xs:attribute name="unit" type="out:NoUnitType" use="required"/>
-								</xs:extension>
-							</xs:simpleContent>
-						</xs:complexType>
-					</xs:element>
 					<xs:element name="EfficiencyRatio" maxOccurs="unbounded">
 						<xs:complexType>
 							<xs:simpleContent>
 								<xs:extension base="vdecdef:Double3">
 									<xs:attribute name="type" type="out:CalculationType"/>
 									<xs:attribute name="unit" type="out:NoUnitType"/>
+								</xs:extension>
+							</xs:simpleContent>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="ReferenceRatio" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:simpleContent>
+								<xs:extension base="xs:double">
+									<xs:attribute name="type" type="out:CalculationType" use="required"/>
+									<xs:attribute name="unit" type="out:NoUnitType" use="required"/>
 								</xs:extension>
 							</xs:simpleContent>
 						</xs:complexType>
