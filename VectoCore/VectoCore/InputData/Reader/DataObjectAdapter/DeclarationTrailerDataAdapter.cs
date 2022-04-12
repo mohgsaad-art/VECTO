@@ -1226,22 +1226,21 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			}
 
 			if (trailer.TrailerType != TypeTrailer.DB && (trailer.TPMLMAxleAssembly == null ||
-														trailer.TPMLMAxleAssembly.Value() == 0 ||
-														trailer.TPMLMAxleAssembly.Value() < 1000)) {
-				errors.Add("Trailer is not DB but no TPMLM Axle Assembly value is given");
+														trailer.TPMLMAxleAssembly.Value() < 8000)) {
+				errors.Add("TMLM Axle Assembly must be ≥ 8000");
 				//throw new Exception("Trailer is not DB but no TPMLM Axle Assembly value is given");
-			}
-
-			if (trailer.TrailerType != TypeTrailer.DB && trailer.TPMLMAxleAssembly != null) {
-				if (trailer.TPMLMAxleAssembly.Value() < 8000) {
-					errors.Add("TMLM Axle Assembly must be ≥ 8000");
-				}
 			}
 
 			if (trailer.TrailerType != TypeTrailer.DC && (trailer.TrailerCouplingPoint == TrailerCouplingPoint.Low ||
 														trailer.TrailerCouplingPoint == TrailerCouplingPoint.High)) {
 				errors.Add("Trailer is not DC but Coupling Point is given");
 				//throw new Exception("Trailer is not DC but Coupling Point is given");
+			}
+
+			if (trailer.TrailerType == TypeTrailer.DC &&
+				(trailer.TrailerCouplingPoint == TrailerCouplingPoint.Unknown)) {
+				errors.Add("Trailer is DC but no Coupling Point is given");
+
 			}
 
 			var trailerAxles = trailer.Axles;

@@ -1004,7 +1004,11 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		public Kilogram TPMLMTotalTrailer => GetDouble(XMLNames.Trailer_TPMLMTotalTrailer).SI<Kilogram>();
 
-		public Kilogram TPMLMAxleAssembly => TrailerType != TypeTrailer.DB ? GetDouble(XMLNames.Trailer_TPLMAxleAssembly).SI<Kilogram>() : 0.SI<Kilogram>();
+		public Kilogram TPMLMAxleAssembly => ElementExists(XMLNames.Trailer_TPLMAxleAssembly)
+			? GetDouble(XMLNames.Trailer_TPLMAxleAssembly).SI<Kilogram>()
+			: null;
+
+		//public Kilogram TPMLMAxleAssembly => TrailerType != TypeTrailer.DB ? GetDouble(XMLNames.Trailer_TPLMAxleAssembly).SI<Kilogram>() : 0.SI<Kilogram>();
 
 		public Meter ExternalBodyLength => GetDouble(XMLNames.Trailer_ExternalLengthBody).SI<Meter>();
 
@@ -1022,9 +1026,10 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		public CubicMeter CargoVolume => GetDouble(XMLNames.Trailer_CargoVolume).SI<CubicMeter>();
 
-		public TrailerCouplingPoint TrailerCouplingPoint => TrailerCouplingPointHelper.Parse(GetString(XMLNames.Trailer_TrailerCouplingPoint));
+		public TrailerCouplingPoint TrailerCouplingPoint => ElementExists(XMLNames.Trailer_TrailerCouplingPoint) 
+			? TrailerCouplingPointHelper.Parse(GetString(XMLNames.Trailer_TrailerCouplingPoint))
+			: TrailerCouplingPoint.Unknown;
 
-		
 		public string CertifiedAeroDeviceApplicableVehicleGroup => GetNodes(XMLNames.Trailer_AeroDevice_ApplicableVehicleGroup).Count > 0
 			? GetString(XMLNames.Trailer_AeroDevice_ApplicableVehicleGroup)
 			: null;
