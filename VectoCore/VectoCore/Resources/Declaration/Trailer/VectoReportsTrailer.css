@@ -828,3 +828,8 @@ Signature DigestValue, ResultDataSignature DigestValue {
 	margin: 5px; 
 }
 
+
+VectoOutput > Signature:before {
+	content: "Cryptographic hash manufacturer's records file:";
+}
+
