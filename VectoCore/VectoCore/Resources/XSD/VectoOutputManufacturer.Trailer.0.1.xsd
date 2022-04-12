@@ -310,9 +310,13 @@
 						<xs:complexType>
 							<xs:sequence>
 								<xs:choice>
-									<xs:sequence>
-										<xs:element name="Technology" type="xs:string" maxOccurs="unbounded"/>
-									</xs:sequence>
+									<xs:element name="StandardTechnologies">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="Technology" type="xs:string" maxOccurs="unbounded"/>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
 									<xs:element name="CertifiedAeroDevice">
 										<xs:complexType>
 											<xs:sequence>
