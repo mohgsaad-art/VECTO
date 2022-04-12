@@ -325,14 +325,21 @@ namespace TUGraz.VectoCore.OutputData.XML
 
 			var aeroFeatures = new XElement(tns + XMLNames.Trailer_AeroFeatures);
 			var trailerData = modelData.VehicleData.InputDataTrailer;
+			var standardTechnologies = new XElement(tns + "StandardTechnologies");
 			if (trailerData.AeroFeatureTechnologies.Count == 0 && modelData.VehicleData.InputDataTrailer.CertifiedAeroDeviceApplicableVehicleGroup == null) {
 				//No Aero Device
-				aeroFeatures.Add(new XElement(tns + XMLNames.Trailer_AeroFeatureTechnologies, AeroFeatureTechnology.None.ToXMLFormat()));
-
+				standardTechnologies.Add(new XElement(tns + XMLNames.Trailer_AeroFeatureTechnologies, AeroFeatureTechnology.None.ToXMLFormat()));
+				aeroFeatures.Add(standardTechnologies);
 
 			} else if(trailerData.AeroFeatureTechnologies.Count > 0 || trailerData.CertifiedAeroDeviceApplicableVehicleGroup != null) {
+
+
+				if (trailerData.AeroFeatureTechnologies.Count > 0)
+				{
+					aeroFeatures.Add(standardTechnologies);
+				}
 				foreach (var trailerDataAeroFeatureTechnology in trailerData.AeroFeatureTechnologies) {
-					aeroFeatures.Add(new XElement(tns + XMLNames.Trailer_AeroFeatureTechnologies, trailerDataAeroFeatureTechnology.ToXMLFormat()));
+					standardTechnologies.Add(new XElement(tns + XMLNames.Trailer_AeroFeatureTechnologies, trailerDataAeroFeatureTechnology.ToXMLFormat()));
 				}
 
 				var aeroReductionElement = new XElement(tns + XMLNames.Trailer_AeroReduction);
