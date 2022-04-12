@@ -331,22 +331,38 @@
 										<xs:sequence>
 											<xs:element name="AeroReductionYawAngle0">
 												<xs:complexType>
-													<xs:attribute name="unit" type="out:PercentType" use="required"/>
+													<xs:simpleContent>
+														<xs:extension base="vdecdef:Double2">
+															<xs:attribute name="unit" type="out:PercentType" use="required"/>
+														</xs:extension>
+													</xs:simpleContent>
 												</xs:complexType>
 											</xs:element>
 											<xs:element name="AeroReductionYawAngle3">
 												<xs:complexType>
-													<xs:attribute name="unit" type="out:PercentType" use="required"/>
+													<xs:simpleContent>
+														<xs:extension base="vdecdef:Double2">
+															<xs:attribute name="unit" type="out:PercentType" use="required"/>
+														</xs:extension>
+													</xs:simpleContent>
 												</xs:complexType>
 											</xs:element>
 											<xs:element name="AeroReductionYawAngle6">
 												<xs:complexType>
-													<xs:attribute name="unit" type="out:PercentType" use="required"/>
+													<xs:simpleContent>
+														<xs:extension base="vdecdef:Double2">
+															<xs:attribute name="unit" type="out:PercentType" use="required"/>
+														</xs:extension>
+													</xs:simpleContent>
 												</xs:complexType>
 											</xs:element>
 											<xs:element name="AeroReductionYawAngle9">
 												<xs:complexType>
-													<xs:attribute name="unit" type="out:PercentType" use="required"/>
+													<xs:simpleContent>
+														<xs:extension base="vdecdef:Double2">
+															<xs:attribute name="unit" type="out:PercentType" use="required"/>
+														</xs:extension>
+													</xs:simpleContent>
 												</xs:complexType>
 											</xs:element>
 										</xs:sequence>
