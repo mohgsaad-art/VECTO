@@ -94,6 +94,10 @@ namespace TUGraz.VectoCore.Tests.XML
 			foreach (var simulationResult in _vehicleGroupResults.Values.Where(simRes => simRes.group_annex1 == groupAnnex)) {
 				simulationResult.CO2Ref = referenceResult.CO2Ref;
 			}
+
+			if (!_referenceResults.ContainsKey(groupAnnex)) {
+				_referenceResults.Add(groupAnnex, referenceResult);
+			}
 		}
 
 		public bool GetReferenceResult(int group, out ReferenceResult referenceResult)
@@ -152,6 +156,7 @@ namespace TUGraz.VectoCore.Tests.XML
 			foreach(var group in vehicleGroups) {
 				ResultManager.ReferenceResult refResult;
 				if (groupManager.GetReferenceResult(group, out refResult)) {
+					groupManager.AddReferenceResult(refResult, group);
 					continue;
 				} else {
 					refResult = new ResultManager.ReferenceResult();
@@ -198,6 +203,8 @@ namespace TUGraz.VectoCore.Tests.XML
 						refResult.CO2Ref.UrbanDeliveryLow = parseInvariant(dt.Rows[4][_vsumCO2ColumnIndex]);
 						refResult.CO2Ref.UrbanDeliveryRef = parseInvariant(dt.Rows[5][_vsumCO2ColumnIndex]);
 					}
+
+					groupManager.AddReferenceResult(refResult, group);
 				} catch (Exception ex) {
 					TestContext.WriteLine(ex.Message);
 					TestContext.WriteLine($"Error in group{group}");
@@ -298,7 +305,7 @@ namespace TUGraz.VectoCore.Tests.XML
 		{
 			var vehicleGroups = DeclarationData.TrailerSegments.GetActiveVehicleGroups();
 
-			//vehicleGroups = new System.Collections.Generic.List<int>() { 25121 };
+			//vehicleGroups = new System.Collections.Generic.List<int>() { 11101,11301 };
 
 
 			var groupManager = new ResultManager(vehicleGroups);
@@ -361,7 +368,7 @@ namespace TUGraz.VectoCore.Tests.XML
 		{
 			var rfDt = new DataTable();
 
-			rfDt.Columns.Add(_vehicleGroup);
+			//rfDt.Columns.Add(_vehicleGroup);
 			rfDt.Columns.Add(CSVNames.TrailerReferenceFactors_Vehicle_group_annex1);
 			rfDt.Columns.Add(_co2StandardLonghaulGKm);
 			rfDt.Columns.Add(_co2StandardRegionalDeliveryGKm);
@@ -374,10 +381,9 @@ namespace TUGraz.VectoCore.Tests.XML
 			rfDt.Columns.Add(_refFactorUrbanDelivery);
 
 
-			foreach (var group in vehicleGroups) {
-				var result = groupManager.GetSimulationResult(group);
+			foreach (var result in groupManager.GetSimulationsResultsByAnnexGroup().OrderBy(result => result.group_annex1)) {
 				var row = rfDt.NewRow();
-				row[_vehicleGroup] = group;
+				//row[_vehicleGroup] = group;
 				row[CSVNames.TrailerReferenceFactors_Vehicle_group_annex1] = result.group_annex1;
 				row[_co2ReferenceLonghaulGKm] = $"{result.CO2Ref.LongHaulLow}/{result.CO2Ref.LongHaulRef}";
 				row[_co2ReferenceRegionalDeliveryGKm] = $"{result.CO2Ref.RegionalDeliveryLow}/{result.CO2Ref.RegionalDeliveryRef}";
