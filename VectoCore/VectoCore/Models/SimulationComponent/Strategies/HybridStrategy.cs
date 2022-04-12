@@ -702,6 +702,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			if (retVal.ShiftRequired) {
 				DryRunSolution = null;
 				CurrentState.GearshiftTriggerTstmp = absTime;
+
+				if (DataBus.DriverInfo is MeasuredSpeedDrivingCycle) {
+					MeasuredSpeedDrivingCycle cycle = DataBus.DriverInfo as MeasuredSpeedDrivingCycle;
+					cycle.DrivingAction = DrivingAction.Roll;
+				}
 			}
 
 			DebugData.Add("AHS.R", new { DataBus.DriverInfo.DrivingAction, Evaluations = eval, 
@@ -1491,23 +1496,27 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			}
 		}
 
+		private int _evalCount; //Matrec
+
 		private HybridResultEntry SelectBestOption(
 			List<HybridResultEntry> eval, Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity,
 			bool dryRun, GearshiftPosition currentGear)
 		{
-			foreach(var e in eval) {
-				try {
-					MatRec.NewRow("AbsTime", absTime.Value());
-					MatRec.Record("ICE_speed", e.Response.Engine.EngineSpeed.Value());
-                }
-				catch {}
-            }
-
+			//foreach(var e in eval) {
+			//	try {
+			//		MatRec.NewRow("AbsTime", absTime.Value());
+			//		MatRec.Record("ICE_speed", e.Response.Engine.EngineSpeed.Value());
+   //             }
+			//	catch {}
+   //         }
+			
 			var eval2 = eval.Where(x =>
 					(x.IgnoreReason & HybridConfigurationIgnoreReason.VehicleSpeedBelowMinSpeedAfterGearshift) == 0)
 				.ToList();
 			var prohibitGearshift = eval.Where(x => !x.Gear.Equals(currentGear)).All(x =>
 				(x.IgnoreReason & HybridConfigurationIgnoreReason.VehicleSpeedBelowMinSpeedAfterGearshift) != 0);
+
+			_evalCount = eval.Count; //Matrec
 			var best = DoSelectBestOption(eval2, absTime, dt, outTorque, outAngularVelocity, dryRun, currentGear);
 			if (best == null) {
 				return null;
@@ -1528,6 +1537,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 						newEval,
 						best.Setting.MechanicalAssistPower.First().Key, dryRun);
 					if (newEval.Count > 0) {
+						_evalCount = newEval.Count; //Matrec
 						var newBest = DoSelectBestOption(newEval, absTime, dt, outTorque, outAngularVelocity, dryRun,
 							currentGear);
 						if (!newBest.IgnoreReason.EngineSpeedTooHigh()) {
@@ -1563,6 +1573,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 						AllowICEOff(absTime), newEval,
 						best.Setting.MechanicalAssistPower.First().Key, dryRun);
 					if (newEval.Count > 0) {
+						_evalCount = newEval.Count; //Matrec
 						best = DoSelectBestOption(newEval, absTime, dt, outTorque, outAngularVelocity, dryRun,
 							currentGear);
 					}
@@ -2408,6 +2419,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			container[ModalResultField.HybridStrategySolution] = CurrentState.Solution?.U ?? -100;
 
 			container[ModalResultField.MaxPropulsionTorqe] = CurrentState.MaxGbxTq ?? 0.SI<NewtonMeter>();
+
+			container.SetDataValue("Combinations", _evalCount); //MatRec
+			container.SetDataValue("Driving Action", DataBus.DriverInfo.DrivingAction.ToString()); //MatRec
 
 			//if (CurrentState.Evaluations != null) {
 			//    container.SetDataValue(
