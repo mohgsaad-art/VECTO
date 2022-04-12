@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
@@ -108,6 +109,11 @@ namespace TUGraz.VectoCore.Tests.XML
 		public bool GetStandardResult(string xmlCode, out StandardResult standardResult)
 		{
 			return _standardResults.TryGetValue(xmlCode, out standardResult);
+		}
+
+		public IList<SimulationResult> GetSimulationsResultsByAnnexGroup()
+		{
+			return _vehicleGroupResults.Values.GroupBy(res => res.group_annex1).Select(group => group.First()).ToList();
 		}
 	}
 	public class TrailerReferenceFactors
@@ -307,6 +313,7 @@ namespace TUGraz.VectoCore.Tests.XML
 
 		}
 
+		[TestCase(33102, false)]
 		[TestCase(23101, true)]
 		[TestCase(11101, true)]
 		public void SimulateTrailer(int group, bool writeAdditionalFiles)
@@ -355,6 +362,7 @@ namespace TUGraz.VectoCore.Tests.XML
 			var rfDt = new DataTable();
 
 			rfDt.Columns.Add(_vehicleGroup);
+			rfDt.Columns.Add(CSVNames.TrailerReferenceFactors_Vehicle_group_annex1);
 			rfDt.Columns.Add(_co2StandardLonghaulGKm);
 			rfDt.Columns.Add(_co2StandardRegionalDeliveryGKm);
 			rfDt.Columns.Add(_co2StandardUrbanDeliveryGKm);
@@ -370,6 +378,7 @@ namespace TUGraz.VectoCore.Tests.XML
 				var result = groupManager.GetSimulationResult(group);
 				var row = rfDt.NewRow();
 				row[_vehicleGroup] = group;
+				row[CSVNames.TrailerReferenceFactors_Vehicle_group_annex1] = result.group_annex1;
 				row[_co2ReferenceLonghaulGKm] = $"{result.CO2Ref.LongHaulLow}/{result.CO2Ref.LongHaulRef}";
 				row[_co2ReferenceRegionalDeliveryGKm] = $"{result.CO2Ref.RegionalDeliveryLow}/{result.CO2Ref.RegionalDeliveryRef}";
 				row[_co2ReferenceUrbanDeliveryGKm] = $"{result.CO2Ref.UrbanDeliveryLow}/{result.CO2Ref.UrbanDeliveryRef}";
