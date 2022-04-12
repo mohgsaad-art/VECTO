@@ -1,35 +1,22 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.OleDb;
-using System.Diagnostics;
-using System.Drawing.Text;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Windows.Forms;
-using System.Xml;
-using System.Xml.Linq;
 using Ninject;
 using NUnit.Framework;
-using NUnit.Framework.Interfaces;
-using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Resources;
-using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.XML;
 using TUGraz.VectoCore.Models.Declaration;
-using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Tests.Helper.TrailerTool;
-using TUGraz.VectoCore.Utils;
-using XmlDocumentType = System.Xml.XmlDocumentType;
 
-namespace TUGraz.VectoCore.Tests.XML
+namespace TUGraz.VectoCore.Tests.TrailerTool
 {
 
 	public class ResultManager
@@ -65,7 +52,7 @@ namespace TUGraz.VectoCore.Tests.XML
 		{
 			foreach (var i in groupsToSimulate) {
 				_vehicleGroupResults.Add(i, new SimulationResult() {
-					group = i,
+					@group = i,
 					
 				});
 			}
@@ -391,7 +378,13 @@ namespace TUGraz.VectoCore.Tests.XML
 
 				row[_co2StandardLonghaulGKm] = $"{result.CO2Standard.LongHaulLow}/{result.CO2Standard.LongHaulRef}";
 				row[_co2StandardRegionalDeliveryGKm] = $"{result.CO2Standard.RegionalDeliveryLow}/{result.CO2Standard.RegionalDeliveryRef}";
-				row[_co2StandardUrbanDeliveryGKm] = $"{result.CO2Standard.UrbanDeliveryLow}/{result.CO2Standard.UrbanDeliveryRef}";
+				if (result.towingGroup == "9-LH") {
+					row[_co2StandardUrbanDeliveryGKm] = "---";
+				} else {
+					row[_co2StandardUrbanDeliveryGKm] = $"{result.CO2Standard.UrbanDeliveryLow}/{result.CO2Standard.UrbanDeliveryRef}";
+				}
+				
+
 
 				row[_refFactorLonghaul] = $"{result.RefFactor.LongHaulLow}/{result.RefFactor.LongHaulRef}";
 				row[_refFactorRegionalDelivery] = $"{result.RefFactor.RegionalDeliveryLow}/{result.RefFactor.RegionalDeliveryRef}";
