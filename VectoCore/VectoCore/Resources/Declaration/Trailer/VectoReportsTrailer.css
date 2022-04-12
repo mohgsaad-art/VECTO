@@ -30,8 +30,6 @@
 */
 
 
-Signature { display: none; }
-ResultDataSignature { display: none; }
 
 VectoOutput  Data:before {
 	content: "VECTO Trailer Tool - Manufacturer Records File";
@@ -52,7 +50,7 @@ VectoOutput {
 Data {
     display:block;
     border:1px;
-    background:blueviolet;
+/*     background:blueviolet; */
 }
 
 Data:before {
@@ -78,7 +76,7 @@ Data:before {
 
 Vehicle {
     display:block;
-    background:white;
+/*     background:white; */
 	border: 2px solid #1f6032;
 	margin:auto;
 	padding: 10px;
@@ -96,12 +94,16 @@ Vehicle > * {
 Vehicle * {
 	display: block;
  	float: right;
-	text-align: left;padding: 5px 10;
+	text-align: left;
+	padding: 0px 0px 0px 0px;
 	margin: 2px;
-	background: chartreuse;
+/* 	margin-left:100px; */
+/* background: chartreuse; */
 	width: -webkit-fill-available;
-	page-break-inside: avoid;
+	/* width:; */page-break-inside: avoid;
 	page-break-after: auto;}
+
+ManufacturerAddress {}
 
 Vehicle:before{
 	content: "Vehicle Configuration";
@@ -114,10 +116,12 @@ Vehicle:before{
 }
 Vehicle *:before{
 /* 	margin: 0px 5px; */
+/* 	margin-left: -60%; */
 	text-align:left;
 	float:left;
-	background:cadetblue;
-width: 60%;}
+/* 	background:cadetblue; */
+	width: 60%;
+}
 
 Vehicle:after{
 	
@@ -168,10 +172,33 @@ Tyre{
 }
 
 
-Vehicle Manufacturer:before {content: "Manufacturer:"; }
-Vehicle ManufacturerAddress:before {content: "Manufacturer address:"; }
-Vehicle Model:before {content: "Model:"; }
-Vehicle Model_CommercialName:before {content: "Model / Commercial name:"; }
+Vehicle Manufacturer:before {
+	content: "Manufacturer:";
+	margin-left:-150.5%;
+}
+Vehicle Manufacturer {margin-left:60%}
+Vehicle ManufacturerAddress {margin-left:60%; }
+Vehicle ManufacturerAddress:before {
+	content: "Manufacturer address:"; 
+	margin-left: -150.5%;
+}
+/* Vehicle Model {
+	margin-left:60%; 
+}
+Vehicle Model:before {
+	margin-left:-150%;
+	content: "Model:"; 
+} */
+
+Vehicle Model_CommercialName {
+	margin-left:60%;
+}
+Vehicle Model_CommercialName:before {
+	content: "Model / Commercial name:";
+	margin-left:-150.5%;
+	width:100%;
+}
+
 Vehicle VIN:before {content: "VIN:"; }
 Vehicle Date:before {content: "Date:"; }
 Vehicle LegislativeCategory:before {content: "Legislative category:"; }
@@ -257,23 +284,34 @@ Vehicle AeroFeatures:before {
 	color: #1f6032;
 	text-align:center;
 }
-Vehicle Technology:before {content: "Technology:"; margin-left: 10px;}
-
-CertifiedAeroDevice Transforms{display:none;}
-Vehicle CertifiedAeroDevice:before {
-	content: "Certified aero reduction:";
+/* AeroFeatures Technology:before{
+	content: "Standard technologies:";
 	font-size: medium;
 	font-weight: bold;
 	display:block;
 	margin: auto;
 	width:100%;
 	color: #1f6032;
-	text-align:center;}
+	text-align:center;
+} */
+Vehicle Technology:before {content: "Technology:"; margin-left: 10px;}
+
+CertifiedAeroDevice Transforms{display:none;}
+Vehicle CertifiedAeroDevice:before {
+	content: "Certified technologies:";
+	font-size: medium;
+	font-weight: bold;
+	display:block;
+	margin: auto;
+	width:100%;
+	color: #1f6032;
+	text-align:center;
+}
 CertifiedAeroDevice DigestValue:before{content:"Hash: ";width:20%;}
 CertifiedAeroDevice CertificationNumber:before{content:"Certification Nr.:"}
 
 Vehicle AeroReduction:before{
-	content: "Aero reduction: ";
+	content: "Airdrag reduction: ";
 	font-size: medium;
 	font-weight: bold;
 	display:block;
@@ -375,7 +413,7 @@ Tyre Data:after{
 
 Results{
 	display:block;
-	background:burlywood;
+/* 	background:burlywood; */
 /* 	border: 2px solid #1f6032;  */
 	display: flow-root;	
 	page-break-before: auto;
@@ -401,7 +439,7 @@ Results > *{
 
 Result{
     display:block;
-    background:pink;
+/*     background:pink; */
 	border: 2px solid #1f6032; 
 	margin: 5px; 
 	width:calc(50% - 15px);
@@ -425,16 +463,18 @@ Results TowingVehicle:before{
 	content:"Towing Vehicle ";
 	display:block;
 	text-align:center;
+	
 }
 
 Results TowingVehicle{
 	display:block;
 	margin: auto;
-	margin: 10px, 12px, 12px, 12px;
+	margin: 6px;
 	border: 2px solid #1f6032; 
 	padding: 10px 7px; 
 /* 	width: calc(90% + 15px);  */
 	text-align:center;
+	width:--webkit-fill-available;
 }
 
 Result Mission {
@@ -450,7 +490,7 @@ Result[status="error"] {
 
 Result SimulationParameters{
 	display:block;
-	background:azure;
+/* 	background:azure; */
 	padding-left: 0.3em;
 	padding:10px;
 	border: 1px solid #1f6032; 
@@ -489,7 +529,7 @@ Result SimulationParameters >*:before{
 
 Result *{
 	display:block;
-	background:#d6ff33;
+/* 	background:#d6ff33; */
 	width:-webkit-fill-available;
 }
 /* Fuel > * {
@@ -514,11 +554,11 @@ Result Fuel{
 	
 	padding:unset;
 	width:-webkit-fill-available;
-	background:hotpink;
+/* 	background:hotpink; */
 }
 Result Fuel *{
 	display:block;
-	background:#d6ff33;
+/* 	background:#d6ff33; */
 	display:flow-root;
 	width:-webkit-fill-available;
 }
@@ -541,7 +581,7 @@ Result >*:after{
 Result >*:before{
 	float: left;
 	text-align: left;
-background: #ff00f7;
+/* background: #ff00f7; */
 	padding:0px, 5px;
 }
 
@@ -574,7 +614,7 @@ WeightedResults:before{
 
 WeightedResults {
     display:block;
-    background:#4c244b;
+/*     background:#4c244b; */
 	border: 2px solid #1f6032; 
 	margin: 5px; 
 	width: ---webkit-fill-available;
@@ -603,11 +643,11 @@ WeightedResults Fuel{
 	
 	padding:unset;
 	width:-webkit-fill-available;
-	background:hotpink;
+/* 	background:hotpink; */
 }
 WeightedResults Fuel *{
 	display:block;
-	background:#d6ff33;
+/* 	background:#d6ff33; */
 	display:flow-root;
 	width:-webkit-fill-available;
 }
@@ -630,7 +670,7 @@ WeightedResults >*:after{
 WeightedResults >*:before{
 	float: left;
 	text-align: left;
-	background: #ff00f7;
+/* 	background: #ff00f7; */
 	padding:0px, 5px;
 }
 
@@ -716,20 +756,25 @@ ReferenceRatio:before { content: "Reference ratio: " }
 
 ApplicationInformation {
 	border: 2px solid #1f6032;
+	border-bottom:0px;
 	padding: 5px 10px;
-	background:coral;
+/* 	background:coral; */
 	display:block;
+	text-aling:center;
 }
 ApplicationInformation * {
 	display: block;
 	padding: 5px 0;
+	text-align:center;
+	
 }
 ApplicationInformation *:before {
 	min-width: calc(10em + 20px);
 	padding: 0 5px 0 0;
-	display: inline-block;
+	display: block;
 	font-weight: bold;
 	color: #1f6032;	
+	text-align:left;
 }
 ApplicationInformation SimulationToolVersion:before {
 	content: "VECTO Trailer Tool Version:";
@@ -737,3 +782,44 @@ ApplicationInformation SimulationToolVersion:before {
 ApplicationInformation Date:before {
 	content: "Date:";
 }
+
+ResultDataSignature {
+	display: block;
+	border: 2px solid #1f6032;
+	border-top:0px;
+	border-bottom:0px;
+	padding:5px;
+	text-align: center;
+}
+ResultDataSignature:before{
+	content:"Cryptographic hash manufacturer's records file:";
+	font-weight: bold;
+	color: #1f6032;
+	padding: 0px 5px 0px 0px;
+	display: block;
+	text-align: left;
+	}
+
+
+Signature { 
+	display: block; 
+	border: 2px solid #1f6032;
+	border-top:0px;
+	padding:5px;
+	text-align: center;
+}
+Signature:before{
+	content:
+		"Cryptographic hash customer information file:";
+	font-weight: bold;
+	color: #1f6032;
+	padding: 0px 5px 0px 0px;
+	display: block;
+	text-align: left;
+}
+
+Signature DigestValue, ResultDataSignature DigestValue {
+/* 	background:aqua; */
+	padding: 
+}
+
