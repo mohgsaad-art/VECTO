@@ -11,15 +11,15 @@
 	<tns:Tyre xsi:type="v2.0:TyreComponentDeclarationType">
 		<v2.0:Data id="TYR-gooZah3D" xsi:type="v2.3:TyreDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.3">
 			<Manufacturer>Generic</Manufacturer>
-			<Model>445/45 R 19.5</Model>
+			<Model>Model</Model>
 			<CertificationNumber>standard</CertificationNumber>
 			<Date>2020-10-01T11:00:00Z</Date>
 			<AppVersion>DemoTyreApp 1.0</AppVersion>
 			<Dimension>245/70 R19.5</Dimension>
 			<TyreClass>C3</TyreClass>
 			<FuelEfficiencyClass>C</FuelEfficiencyClass>
-			<RRCDeclared>0.0055</RRCDeclared>
-			<FzISO>37500</FzISO>
+			<RRCDeclared>0.0060</RRCDeclared>
+			<FzISO>21472</FzISO>
 		</v2.0:Data>
 		<v2.0:Signature>
 			<di:Reference URI="#TYR-gooZah3D">
@@ -28,7 +28,7 @@
 					<di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
 				</di:Transforms>
 				<di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
-				<di:DigestValue>JWEwzKSP0lXvwRgQZTiWJm9dpdtQ72FOX0CC5Vy6f2Y=</di:DigestValue>
+				<di:DigestValue>-------</di:DigestValue>
 			</di:Reference>
 		</v2.0:Signature>
 	</tns:Tyre>
