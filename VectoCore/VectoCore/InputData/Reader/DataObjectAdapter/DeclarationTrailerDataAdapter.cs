@@ -1227,7 +1227,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 			if (trailer.TrailerType != TypeTrailer.DB && (trailer.TPMLMAxleAssembly == null ||
 														trailer.TPMLMAxleAssembly.Value() < 8000)) {
-				errors.Add("TMLM Axle Assembly must be ≥ 8000");
+				errors.Add("TPMLM Axle Assembly must be ≥ 8000");
 				//throw new Exception("Trailer is not DB but no TPMLM Axle Assembly value is given");
 			}
 
@@ -1255,10 +1255,14 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				//throw new Exception("One axle trailers should have Length Between Centers Of Axles = 0");
 			}
 
-			if ((trailer.TrailerType == TypeTrailer.DC && trailer.TPMLMAxleAssembly > trailer.TPMLMTotalTrailer)
-				|| (trailer.TrailerType == TypeTrailer.DA && trailer.TPMLMAxleAssembly >= trailer.TPMLMTotalTrailer)) {
-				errors.Add("Invalid masses declared");
+			if (trailer.TPMLMAxleAssembly != null) {
+				if ((trailer.TrailerType == TypeTrailer.DC && trailer.TPMLMAxleAssembly > trailer.TPMLMTotalTrailer)
+					|| (trailer.TrailerType == TypeTrailer.DA && trailer.TPMLMAxleAssembly >= trailer.TPMLMTotalTrailer))
+				{
+					errors.Add("Invalid masses declared");
+				}
 			}
+
 			//if (trailer.TrailerType == TypeTrailer.DC && trailer.TPMLMAxleAssembly > trailer.TPMLMTotalTrailer) {
 			//	errors.Add("Invalid masses declared");
 			//	//throw new Exception("Invalid masses declared");

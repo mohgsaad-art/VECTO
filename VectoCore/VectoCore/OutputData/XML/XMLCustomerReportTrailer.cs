@@ -200,7 +200,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(tns + XMLNames.Trailer_Masses,
 					new XElement(tns + XMLNames.Trailer_MassInRunningOrder, modelData.VehicleData.InputDataTrailer.MassInRunningOrder.ToXMLFormat(0)),
 					new XElement(tns + XMLNames.Trailer_TPMLMTotalTrailer, modelData.VehicleData.InputDataTrailer.TPMLMTotalTrailer.ToXMLFormat(0)),
-					new XElement(tns + XMLNames.Trailer_TPLMAxleAssembly, modelData.VehicleData.InputDataTrailer.TPMLMAxleAssembly.ToXMLFormat(0))
+					new XElement(tns + XMLNames.Trailer_TPLMAxleAssembly, modelData.VehicleData.InputDataTrailer.TPMLMAxleAssembly?.ToXMLFormat(0) ?? "n/a")
 					
 				),
 				new XElement(tns + XMLNames.Trailer_VehicleGroupAnnexI, modelData.VehicleData.TrailerSegment.VehicleGroupAnnex),

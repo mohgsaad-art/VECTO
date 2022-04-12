@@ -446,12 +446,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 
 			return to => {
-
-				var result = _functionsToCheck.TrueForAll(func => func.Invoke(to.Value));
-
-
-
-				return result;
+				return _functionsToCheck.TrueForAll(func => func.Invoke(to?.Value ?? 0));
 			};
 		}
 
@@ -470,7 +465,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 						return numberOfAxlesRow == numberOfAxles.GetLabel()
 								&& typeTrailerRow == typeTrailer.ToString()
 								&& bodyWorkCodeRow.Contains(bodyWorkCode.GetLabel())
-								&& getTPMLMAxleAssemblyFunction(tpmlmAxleAssemblyRow).Invoke(tpmlmAxleAssembly.ConvertToTon())
+								&& getTPMLMAxleAssemblyFunction(tpmlmAxleAssemblyRow).Invoke(tpmlmAxleAssembly?.ConvertToTon())
 								//&& (tpmlmAxleAssemblyRow.Contains("-") ||
 								//	tpmlmAxleAssemblyRow.Contains("all weights") ||
 								//	(tpmlmAxleAssembly.ConvertToTon().Value > tpmlmMinRow && tpmlmAxleAssembly.ConvertToTon().Value < tpmlmMaxRow))

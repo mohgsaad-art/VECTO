@@ -398,10 +398,6 @@ namespace TUGraz.VectoCore.OutputData.XML
 
 					var aeroSignature = XElement.Parse(trailerData.CertifiedAeroSignatureXml);
 					certifiedAeroDevice.Add(new XElement(tns + XMLNames.DI_Signature, aeroSignature.Elements()));
-					//aeroSignature.Name = tns + XMLNames.DI_Signature;
-
-					////certifiedAeroDevice.Add(aeroSignature);
-					//aeroSignature.Elements()
 
 					//Certified Aero Device
 					aeroReductionElement.Add(new XElement(tns + XMLNames.Trailer_YawAngle0, modelData.VehicleData.InputDataTrailer.YawAngle0.ToXMLFormat(2), new XAttribute(XMLNames.Report_Results_Unit_Attr, XMLNames.UnitPercent)));
@@ -413,21 +409,6 @@ namespace TUGraz.VectoCore.OutputData.XML
 				}
 				aeroFeatures.Add(aeroReductionElement);
 			}
-
-			//foreach (var technology in modelData.VehicleData.InputDataTrailer.AeroFeatureTechnologies)
-			//	aeroFeatures.Add(new XElement(tns + XMLNames.Trailer_AeroFeatureTechnologies, technology));
-
-
-			//if (modelData.VehicleData.InputDataTrailer.AeroFeatureTechnologies.Count == 0 && 
-			//	(modelData.VehicleData.InputDataTrailer.YawAngle0 != 0 || modelData.VehicleData.InputDataTrailer.YawAngle3 != 0 ||
-			//	 modelData.VehicleData.InputDataTrailer.YawAngle6 != 0 || modelData.VehicleData.InputDataTrailer.YawAngle9 != 0)) {
-
-			//	aeroFeatures.Add(new XElement(tns + XMLNames.Trailer_CertifiedAeroReduction));
-			//	aeroFeatures.Element(tns + XMLNames.Trailer_CertifiedAeroReduction)?.Add(new XElement(tns + XMLNames.Trailer_YawAngle0, modelData.VehicleData.InputDataTrailer.YawAngle0));
-			//	aeroFeatures.Element(tns + XMLNames.Trailer_CertifiedAeroReduction)?.Add(new XElement(tns + XMLNames.Trailer_YawAngle3, modelData.VehicleData.InputDataTrailer.YawAngle3));
-			//	aeroFeatures.Element(tns + XMLNames.Trailer_CertifiedAeroReduction)?.Add(new XElement(tns + XMLNames.Trailer_YawAngle6, modelData.VehicleData.InputDataTrailer.YawAngle6));
-			//	aeroFeatures.Element(tns + XMLNames.Trailer_CertifiedAeroReduction)?.Add(new XElement(tns + XMLNames.Trailer_YawAngle9, modelData.VehicleData.InputDataTrailer.YawAngle9));
-			//}
 
 			VehiclePart.Add(
 				new XAttribute(xsi + "type", "VehicleType"),
@@ -454,7 +435,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 					new XElement(tns + XMLNames.Trailer_TPMLMTotalTrailer,
 						modelData.VehicleData.InputDataTrailer.TPMLMTotalTrailer.ToXMLFormat(0)),
 					new XElement(tns + XMLNames.Trailer_TPLMAxleAssembly,
-						modelData.VehicleData.InputDataTrailer.TPMLMAxleAssembly.ToXMLFormat(0))
+						modelData.VehicleData.InputDataTrailer.TPMLMAxleAssembly?.ToXMLFormat(0) ?? "n/a")
 					
 				),
 				new XElement(tns + XMLNames.Trailer_VehicleGroupAnnexI, modelData.VehicleData.TrailerSegment.VehicleGroupAnnex),
@@ -507,30 +488,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 						))
 					));
 			}
-			//foreach (var axleElem in modelData.VehicleData.InputDataTrailer.Axles.Select((axle, index) => new { index, axle }))
-			//	axles.Add(new XElement(tns + XMLNames.AxleWheels_Axles_Axle,
-			//		new XAttribute(XMLNames.AxleWheels_Axles_Axle_AxleNumber_Attr, axleElem.index+1),
-			//		new XElement(tns + XMLNames.AxleWheels_Axles_Axle_Tyre,
-			//			new XElement(tns + "Data",
-			//				new XElement(tns + XMLNames.Component_Model,
-			//					)
-			//				new XElement(tns + XMLNames.Component_CertificationNumber,
-			//					axleElem.axle.Tyre
-			//						.CertificationNumber),
-			//				new XElement(tns + XMLNames.AxleWheels_Axles_Axle_Dimension,
-			//					axleElem.axle.Tyre.Dimension),
-			//				new XElement(tns + XMLNames.AxleWheels_Axles_Axle_RRCDeclared,
-			//					axleElem.axle.Tyre
-			//						.RollResistanceCoefficient),
-			//				new XElement(tns + "FuelEfficiencyClass",
-			//					axleElem.axle.Tyre
-			//						.FuelEfficiencyClass),
-			//				new XElement(tns + "Hash",
-			//					axleElem.axle.Tyre.GetHashCode())
-			//			)
-			//		)
-			//	));
-			
+
 			VehiclePart.Add(axles);
 
 			InputDataIntegrity = GetInputDataSignature(modelData);
