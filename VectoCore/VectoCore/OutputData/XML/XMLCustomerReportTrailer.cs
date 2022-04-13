@@ -107,12 +107,12 @@ namespace TUGraz.VectoCore.OutputData.XML
 			var aeroFeatures = new XElement(tns + XMLNames.Trailer_AeroFeatures);
 			var trailerData = modelData.VehicleData.InputDataTrailer;
 			var standardTechnologies = new XElement(tns + "StandardTechnologies");
-			if (trailerData.AeroFeatureTechnologies.Count == 0 && modelData.VehicleData.InputDataTrailer.CertifiedAeroDeviceApplicableVehicleGroup == null)
+			if (trailerData.AeroFeatureTechnologies.Count == 0 && !modelData.VehicleData.InputDataTrailer.CertifiedAeroDevice)
 			{
 				standardTechnologies.Add(new XElement(tns + XMLNames.Trailer_AeroFeatureTechnologies, AeroFeatureTechnology.None.ToXMLFormat()));
 				aeroFeatures.Add(standardTechnologies);
 			}
-			else if (trailerData.AeroFeatureTechnologies.Count > 0 || trailerData.CertifiedAeroDeviceApplicableVehicleGroup != null) {
+			else if (trailerData.AeroFeatureTechnologies.Count > 0 || trailerData.CertifiedAeroDevice) {
 
 				if (trailerData.AeroFeatureTechnologies.Count > 0) {
 					aeroFeatures.Add(standardTechnologies);

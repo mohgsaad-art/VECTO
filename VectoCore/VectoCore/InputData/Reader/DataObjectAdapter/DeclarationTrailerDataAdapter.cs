@@ -1138,12 +1138,12 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				errors.Add("invalid standard aero-device declared");
 			} 
 			
-			if (trailer.CertifiedAeroDeviceApplicableVehicleGroup != null) {
+			if (trailer.CertifiedAeroDevice) {
 				var segment = DeclarationData.TrailerSegments.Lookup(trailer.NumberOfAxles, trailer.TrailerType, trailer.BodyworkCode, trailer.VolumeOrientation,
 					trailer.TPMLMAxleAssembly);
-				if (segment.VehicleGroup.ToString() != trailer.CertifiedAeroDeviceApplicableVehicleGroup)
+				if (!trailer.CertifiedAeroDeviceApplicableVehicleGroups.Contains(segment.VehicleGroupAnnex.ToString()))
 				{
-					errors.Add($"ApplicableVehicleGroup of the certified aero device ({trailer.CertifiedAeroDeviceApplicableVehicleGroup}) must match the vehicle group ({segment.VehicleGroup})");
+					errors.Add($"Certified Aero Device not applicable for vehicle group: {segment.VehicleGroupAnnex}! Applicable groups are {string.Join(",", trailer.CertifiedAeroDeviceApplicableVehicleGroups.ToList())}");
 				}
 			}
 			

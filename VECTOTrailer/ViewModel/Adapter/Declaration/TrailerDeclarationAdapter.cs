@@ -105,8 +105,10 @@ namespace VECTOTrailer.ViewModel.Adapter.Declaration
 		public IList<AeroFeatureTechnology> AeroFeatureTechnologies { get; }
 
 		public XmlNode XMLSource { get; }
+		public ICollection<string> CertifiedAeroDeviceApplicableVehicleGroups { get => throw new NotImplementedException(); }
 		public string CertifiedAeroDeviceApplicableVehicleGroup { get => throw new NotImplementedException(); }
 		public string CertifiedAeroCertificationNumber { get => throw new NotImplementedException(); }
+		public bool CertifiedAeroDevice { get => throw new NotImplementedException(); }
 		public string CertifiedAeroSignatureXml { get => throw new NotImplementedException(); }
 
 		#endregion

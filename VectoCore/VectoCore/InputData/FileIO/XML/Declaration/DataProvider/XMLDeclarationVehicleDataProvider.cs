@@ -955,6 +955,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		protected XmlElement _componentNode;
 
 		private CertifiedAeroDeviceReader _certifiedAeroDevice = null;
+
 		private CertifiedAeroDeviceReader CertifiedAeroDevice
 		{
 			get => _certifiedAeroDevice ?? (_certifiedAeroDevice = ElementExists(XMLNames.Trailer_CertifiedAeroDevice)
@@ -1030,9 +1031,6 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 			? TrailerCouplingPointHelper.Parse(GetString(XMLNames.Trailer_TrailerCouplingPoint))
 			: TrailerCouplingPoint.Unknown;
 
-		public string CertifiedAeroDeviceApplicableVehicleGroup => GetNodes(XMLNames.Trailer_AeroDevice_ApplicableVehicleGroup).Count > 0
-			? GetString(XMLNames.Trailer_AeroDevice_ApplicableVehicleGroup)
-			: null;
 		//public double YawAngle0 => GetNodes(XMLNames.Trailer_YawAngle0).Count > 0 ? GetDouble(XMLNames.Trailer_YawAngle0) : 0;
 		//public double YawAngle3 => GetNodes(XMLNames.Trailer_YawAngle3).Count > 0 ? GetDouble(XMLNames.Trailer_YawAngle3) : 0;
 		//public double YawAngle6 => GetNodes(XMLNames.Trailer_YawAngle6).Count > 0 ? GetDouble(XMLNames.Trailer_YawAngle6) : 0;
@@ -1046,7 +1044,14 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		public IList<AeroFeatureTechnology> AeroFeatureTechnologies => ReadAeroFeatures();
 
+		public ICollection<string> CertifiedAeroDeviceApplicableVehicleGroups { get => 
+			CertifiedAeroDevice?.CertifiedAeroDeviceApplicableVehicleGroups ?? new HashSet<string>();
+
+		}
 		public string CertifiedAeroCertificationNumber => CertifiedAeroDevice?.CertificationNumber;
+
+		bool ITrailerDeclarationInputData.CertifiedAeroDevice => CertifiedAeroDevice != null;
+
 		public string CertifiedAeroSignatureXml => CertifiedAeroDevice?.SignatureXml;
 
 		public IVehicleComponentsDeclaration Components => _components ?? (_components = ComponentReader.ComponentInputData);
@@ -1139,9 +1144,22 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 			public string SignatureXml =>
 				ElementExists(XMLNames.DI_Signature) ? GetNode(XMLNames.DI_Signature).OuterXml : null;
 
-			public string CertifiedAeroDeviceApplicableVehicleGroup => GetNodes(XMLNames.Trailer_AeroDevice_ApplicableVehicleGroup).Count > 0
-				? GetString(XMLNames.Trailer_AeroDevice_ApplicableVehicleGroup)
-				: null;
+			private HashSet<string> _certifiedAeroDeviceApplicableVehicleGroups = new HashSet<string>();
+			public HashSet<string> CertifiedAeroDeviceApplicableVehicleGroups
+			{
+				get
+				{
+					var nodes = GetNodes(XMLNames.Trailer_AeroDevice_ApplicableVehicleGroup);
+					foreach (XmlNode node in nodes) {
+						var group = node.InnerText;
+						if (!_certifiedAeroDeviceApplicableVehicleGroups.Contains(group)) {
+							_certifiedAeroDeviceApplicableVehicleGroups.Add(node.InnerText);
+						}
+					}
+
+					return _certifiedAeroDeviceApplicableVehicleGroups;
+				}
+			}
 		}
 	}
 
