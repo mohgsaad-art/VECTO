@@ -603,7 +603,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			var retVal = new ShiftStrategyParameters {
 				TorqueReserve = gbx.Type == GearboxType.MT ? DeclarationData.GearboxTCU.TorqueReserveSMT: DeclarationData.GearboxTCU.TorqueReserveAMT,
 				StartTorqueReserve = DeclarationData.GearboxTCU.TorqueReserveStart,
-				TimeBetweenGearshifts = DeclarationData.Gearbox.MinTimeBetweenGearshifts,
+				TimeBetweenGearshifts = gbx.Type == GearboxType.MT ? DeclarationData.Gearbox.MinTimeBetweenGearshiftsMT : DeclarationData.Gearbox.MinTimeBetweenGearshifts,
 				StartSpeed = gbx.Type == GearboxType.MT ? DeclarationData.Gearbox.StartSpeed : DeclarationData.GearboxTCU.StartSpeed,
 				StartAcceleration = DeclarationData.GearboxTCU.StartAcceleration,
 				DownshiftAfterUpshiftDelay = DeclarationData.Gearbox.DownshiftAfterUpshiftDelay,

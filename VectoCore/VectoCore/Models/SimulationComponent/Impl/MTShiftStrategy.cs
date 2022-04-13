@@ -105,5 +105,35 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
 			return currentGear;
 		}
+
+		protected override GearshiftPosition DoCheckDownshift(Second absTime, Second dt, NewtonMeter outTorque,
+			PerSecond outAngularVelocity,  NewtonMeter inTorque, PerSecond inAngularVelocity, GearshiftPosition currentGear, IResponse response1)
+		{
+			// down shift
+			if (IsBelowDownShiftCurve(currentGear, inTorque, inAngularVelocity)) {
+				currentGear = Gears.Predecessor(currentGear);
+				while (SkipGears && currentGear.Gear > 1) {
+					currentGear = Gears.Predecessor(currentGear);
+					var tmpGear = Gearbox.Gear;
+					_gearbox.Gear = currentGear;
+					var response = (ResponseDryRun)_gearbox.Request(absTime, dt, outTorque, outAngularVelocity, true);
+					_gearbox.Gear = tmpGear;
+
+					inAngularVelocity = GearboxModelData.Gears[currentGear.Gear].Ratio * outAngularVelocity;
+					inTorque = response.Clutch.PowerRequest / inAngularVelocity;
+					var maxTorque = VectoMath.Min(response.Engine.DynamicFullLoadPower / ((DataBus.EngineInfo.EngineSpeed + response.Engine.EngineSpeed) / 2),
+						currentGear.Gear > 1
+							? GearboxModelData.Gears[currentGear.Gear].ShiftPolygon.InterpolateDownshift(response.Engine.EngineSpeed)
+							: double.MaxValue.SI<NewtonMeter>());
+					var reserve = maxTorque.IsEqual(0) ? -1 : (1 - inTorque / maxTorque).Value();
+					if (reserve >= GearshiftParams.TorqueReserve && IsBelowUpShiftCurve(currentGear, inTorque, inAngularVelocity)) {
+						continue;
+					}
+					currentGear = Gears.Successor(currentGear);
+					break;
+				}
+			}
+			return currentGear;
+		}
 	}
 }
