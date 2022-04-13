@@ -59,7 +59,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 	{
 		private DataTable _segmentTable;
 
-		protected override string ResourceId => DeclarationData.DeclarationDataResourcePrefix + ".Trailer.reference_factors.csv";
+		protected override string ResourceId => DeclarationData.DeclarationDataResourcePrefix + ".Trailer.reference_ratios.csv";
 
 		protected override string ErrorMessage => "ERROR: Could not find the vehicle group for trailer. Vehicle Group: {0}";
 
@@ -78,12 +78,12 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 			try {
 				return new TrailerReferenceRatios {
-					LongHaulLow = GetDouble(7, 0, row),
-					LongHaulRef = GetDouble(7, 1, row),
-					RegionalDeliveryLow = GetDouble(8, 0, row),
-					RegionalDeliveryRef = GetDouble(8, 1, row),
-					UrbanDeliveryLow = GetDouble(9, 0, row),
-					UrbanDeliveryRef = GetDouble(9, 1, row)
+					LongHaulLow = GetDouble(CSVNames.TrailerReferenceFactors_Ref_Ratio_LongHaul, 0, row),
+					LongHaulRef = GetDouble(CSVNames.TrailerReferenceFactors_Ref_Ratio_LongHaul, 1, row),
+					RegionalDeliveryLow = GetDouble(CSVNames.TrailerReferenceFactors_Ref_Ratio_Regional_Delivery, 0, row),
+					RegionalDeliveryRef = GetDouble(CSVNames.TrailerReferenceFactors_Ref_Ratio_Regional_Delivery, 1, row),
+					UrbanDeliveryLow = GetDouble(CSVNames.TrailerReferenceFactors_Ref_Ratio_Urban_Delivery, 0, row),
+					UrbanDeliveryRef = GetDouble(CSVNames.TrailerReferenceFactors_Ref_Ratio_Urban_Delivery, 1, row)
 				};
 			} catch (Exception ex) {
 				Log.Error(ex.Message);
@@ -94,9 +94,9 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		}
 
-		private double GetDouble(int rowIndex, int elementIndex, DataRow row)
+		private double GetDouble(string rowName, int elementIndex, DataRow row)
 		{
-			var refRatioString = row[rowIndex].ToString();
+			var refRatioString = row[rowName].ToString();
 			if (refRatioString == "---") {
 				return 0;
 			}

@@ -61,7 +61,97 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Vehicle_group_acc.
+        ///   Looks up a localized string similar to CO2 Reference LongHaul [g/km].
+        /// </summary>
+        public static string TrailerReferenceFactors_CO2_Reference_LongHaul__g_km_ {
+            get {
+                return ResourceManager.GetString("TrailerReferenceFactors_CO2_Reference_LongHaul__g_km_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CO2 Reference Regional Delivery [g/km].
+        /// </summary>
+        public static string TrailerReferenceFactors_CO2_Reference_Regional_Delivery__g_km_ {
+            get {
+                return ResourceManager.GetString("TrailerReferenceFactors_CO2_Reference_Regional_Delivery__g_km_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CO2 Reference Urban Delivery [g/km].
+        /// </summary>
+        public static string TrailerReferenceFactors_CO2_Reference_Urban_Delivery__g_km_ {
+            get {
+                return ResourceManager.GetString("TrailerReferenceFactors_CO2_Reference_Urban_Delivery__g_km_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CO2 Standard LongHaul [g/km].
+        /// </summary>
+        public static string TrailerReferenceFactors_CO2_Standard_LongHaul__g_km_ {
+            get {
+                return ResourceManager.GetString("TrailerReferenceFactors_CO2_Standard_LongHaul__g_km_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CO2 Standard Regional Delivery [g/km].
+        /// </summary>
+        public static string TrailerReferenceFactors_CO2_Standard_Regional_Delivery__g_km_ {
+            get {
+                return ResourceManager.GetString("TrailerReferenceFactors_CO2_Standard_Regional_Delivery__g_km_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CO2 Standard Urban Delivery [g/km].
+        /// </summary>
+        public static string TrailerReferenceFactors_CO2_Standard_Urban_Delivery__g_km_ {
+            get {
+                return ResourceManager.GetString("TrailerReferenceFactors_CO2_Standard_Urban_Delivery__g_km_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ref-Ratio_LongHaul.
+        /// </summary>
+        public static string TrailerReferenceFactors_Ref_Ratio_LongHaul {
+            get {
+                return ResourceManager.GetString("TrailerReferenceFactors_Ref_Ratio_LongHaul", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ref-Ratio_Regional_Delivery.
+        /// </summary>
+        public static string TrailerReferenceFactors_Ref_Ratio_Regional_Delivery {
+            get {
+                return ResourceManager.GetString("TrailerReferenceFactors_Ref_Ratio_Regional_Delivery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ref-Ratio_Urban_Delivery.
+        /// </summary>
+        public static string TrailerReferenceFactors_Ref_Ratio_Urban_Delivery {
+            get {
+                return ResourceManager.GetString("TrailerReferenceFactors_Ref_Ratio_Urban_Delivery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vehicle_Group.
+        /// </summary>
+        public static string TrailerReferenceFactors_Vehicle_Group {
+            get {
+                return ResourceManager.GetString("TrailerReferenceFactors_Vehicle_Group", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vehicle_Group_Annex1.
         /// </summary>
         public static string TrailerReferenceFactors_Vehicle_group_annex1 {
             get {
