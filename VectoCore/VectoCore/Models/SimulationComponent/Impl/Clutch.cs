@@ -107,7 +107,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				return HandleClutchOpen(absTime, dt, outTorque, outAngularVelocity, false);
 			}
 
-			if (IdleController != null) {
+			if (IdleController != null && !dryRun) {
 				IdleController.Reset();
 			}
 
