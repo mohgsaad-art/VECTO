@@ -58,6 +58,14 @@ namespace TUGraz.VectoCore.Tests.Helper.TrailerTool
             var axleCountElement = xElements.Single(xElement => xElement.Name.LocalName == XMLNames.Trailer_AxleCount);
 			axleCountElement.Value = numberOfTrailerAxles.ToXMLFormat();
 
+			var couplingPointElement =
+				xElements.Single(xElement => xElement.Name.LocalName == XMLNames.Trailer_TrailerCouplingPoint);
+			if (trailerType == TypeTrailer.DC) {
+				couplingPointElement.Value = TrailerCouplingPoint.High.ToXMLFormat();
+			} else {
+				couplingPointElement.Remove();
+			}
+
 			switch (numberOfTrailerAxles) {
 				case NumberOfTrailerAxles.Unknown:
 					Assert.Fail();
