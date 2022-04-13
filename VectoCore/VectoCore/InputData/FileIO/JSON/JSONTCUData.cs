@@ -25,7 +25,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 
 		public virtual double TorqueReserve =>
 			Body[JsonKeys.Gearbox_TorqueReserve] == null ?
-				DeclarationData.GearboxTCU.TorqueReserve
+				DeclarationData.GearboxTCU.TorqueReserveAMT
 				:Body.GetEx<double>(JsonKeys.Gearbox_TorqueReserve) / 100.0;
 
 		public Second DownshiftAfterUpshiftDelay =>
