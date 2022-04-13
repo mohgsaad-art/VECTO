@@ -385,7 +385,7 @@ namespace TUGraz.VectoCore.Tests.TrailerTool
 				row[_co2StandardLonghaulGKm] = $"{result.CO2Standard.LongHaulLow}/{result.CO2Standard.LongHaulRef}";
 				row[_co2StandardRegionalDeliveryGKm] = $"{result.CO2Standard.RegionalDeliveryLow}/{result.CO2Standard.RegionalDeliveryRef}";
 				if (result.towingGroup == "9-LH") {
-					row[_co2StandardUrbanDeliveryGKm] = "---"
+					row[_co2StandardUrbanDeliveryGKm] = "---";
 				} else {
 					row[_co2StandardUrbanDeliveryGKm] = $"{result.CO2Standard.UrbanDeliveryLow}/{result.CO2Standard.UrbanDeliveryRef}";
 				}
