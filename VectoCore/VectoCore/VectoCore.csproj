@@ -988,7 +988,7 @@
     <EmbeddedResource Include="Resources\XSD\VectoComponent.2.7.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Declaration\Trailer\reference_factors.csv">
+    <EmbeddedResource Include="Resources\Declaration\Trailer\reference_ratios.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\XSD\VectoOutputCustomer.Trailer.0.1.xsd">
