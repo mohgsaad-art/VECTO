@@ -14,6 +14,7 @@ using Microsoft.Win32;
 using Ninject;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
+using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.XML;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider;
@@ -21,6 +22,7 @@ using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Factory;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Utils;
+using TUGraz.VectoHashing;
 using VECTOTrailer.Helper;
 using VECTOTrailer.Model;
 using VECTOTrailer.Model.TempDataObject;
@@ -711,7 +713,7 @@ namespace VECTOTrailer.ViewModel.Impl
 				}
 
 				if (IsCertified) {
-					var device = (xmlDoc.GetElementsByTagName("CertifiedAeroReduction") ??
+					var device = (xmlDoc.GetElementsByTagName(XMLNames.Trailer_CertifiedAeroDevice) ??
 								throw new Exception("Cannot parse aero device information")).Cast<XmlNode>().ToList();
 
 					EnableCertifiedAeroDevice(device[0]);
@@ -948,6 +950,13 @@ namespace VECTOTrailer.ViewModel.Impl
 				}
 				else
 				{
+					if (!VectoHash.Load(result).ValidateHash()) {
+						MessageBox.Show(caption: "Invalid Hash",
+							messageBoxText: $"Component file {result} has invalid hash\n",
+							icon: MessageBoxImage.Warning,
+							button: MessageBoxButton.OK);
+					}
+					
 					successAction.Invoke(result);
 					//CertifiedAeroDeviceFilePath = result;
 				}
