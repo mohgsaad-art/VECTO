@@ -64,7 +64,7 @@ namespace TUGraz.VectoCore.Tests.TrailerTool
 			foreach (var group in _vehicleGroupResults) {
 				var row = segments.GetRow(group.Key.ToString());
 				group.Value.towingGroup = row["Generic_vehicle_group"].ToString();
-				group.Value.group_annex1 = row.Field<string>(CSVNames.TrailerReferenceFactors_Vehicle_group_annex1);
+				group.Value.group_annex1 = row.Field<string>("Vehicle_group_acc");
 			}
 		}
 
