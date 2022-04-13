@@ -257,8 +257,9 @@ namespace TUGraz.VectoCommon.InputData
 		IList<ITrailerAxleDeclarationInputData> Axles { get; }
 		IVehicleComponentsDeclaration Components { get; }
 		XmlNode XMLSource { get; }
-		string CertifiedAeroDeviceApplicableVehicleGroup { get; }
+		ICollection<string> CertifiedAeroDeviceApplicableVehicleGroups { get; }
 		string CertifiedAeroCertificationNumber { get; }
+		bool CertifiedAeroDevice { get; }
 		string CertifiedAeroSignatureXml { get; }
 	}
 

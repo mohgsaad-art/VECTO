@@ -107,7 +107,7 @@ namespace HashingTool.Helper
 			var components = new[] {
 				VectoComponents.Engine, VectoComponents.Airdrag, VectoComponents.Angledrive, VectoComponents.Axlegear,
 				VectoComponents.Gearbox, VectoComponents.Retarder, VectoComponents.TorqueConverter, VectoComponents.Tyre,
-				VectoComponents.TrailerAirodynamicReduction
+				VectoComponents.TrailerAerodynamicReduction
 			};
 			var valid = components.Where(c => c.XMLElementName() == localName).Any();
 			if (!valid) {

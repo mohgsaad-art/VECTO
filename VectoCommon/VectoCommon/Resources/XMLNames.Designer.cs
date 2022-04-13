@@ -3076,7 +3076,7 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ApplicableVehicleGroupAnnex1.
+        ///   Looks up a localized string similar to ApplicableVehicleGroup.
         /// </summary>
         public static string Trailer_AeroDevice_ApplicableVehicleGroup {
             get {
