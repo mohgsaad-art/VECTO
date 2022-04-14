@@ -1,20 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<tns:VectoInputDeclaration schemaVersion="2.7" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v2.0" xmlns:v2.7="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7" xmlns:v2.2="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.2" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:di="http://www.w3.org/2000/09/xmldsig#" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob F:\Vecto\vecto-dev_bt\VectoCore\VectoCore\Resources\XSD/VectoDeclarationJob.xsd">
-  <v2.0:Vehicle id="CB-5baccb664fdf46abb9df" xsi:type="VehicleDeclarationType">
+<tns:VectoInputDeclaration schemaVersion="2.7" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v2.0" xmlns:v2.7="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7" xmlns:v2.2="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.2" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:di="http://www.w3.org/2000/09/xmldsig#" xmlns:v2.3="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.3" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob F:\Vecto\vecto-dev_bt\VectoCore\VectoCore\Resources\XSD/VectoDeclarationJob.xsd">
+  <v2.0:Vehicle id="CB-c5c9a4ce0ddb450eb89d" xsi:type="VehicleDeclarationType">
     <Manufacturer>Example Manufacturer</Manufacturer>
     <ManufacturerAddress>Example Street 1, Example City XY, Example Country</ManufacturerAddress>
     <Model_CommercialName>Example Trailer SuperEco</Model_CommercialName>
     <VIN>Example1234567890</VIN>
-    <Date>2021-12-31T09:06:44.7744498Z</Date>
+    <Date>2022-04-13T10:48:14.302048Z</Date>
     <LegislativeCategory>O4</LegislativeCategory>
     <AxleCount>2</AxleCount>
     <TrailerType>DB</TrailerType>
     <BodyWorkType>dry box</BodyWorkType>
-    <TrailerCouplingPoint>n/a</TrailerCouplingPoint>
     <Masses>
       <CorrectedMassInRunningOrder>5100</CorrectedMassInRunningOrder>
       <TPMLMTrailer>18000</TPMLMTrailer>
-      <TPMLMAxleAssembly>0</TPMLMAxleAssembly>
     </Masses>
     <Dimensions>
       <ExternalLengthBody>7.400</ExternalLengthBody>
@@ -26,14 +24,40 @@
       <CargoVolume>46.900</CargoVolume>
       <VolumeOrientation>false</VolumeOrientation>
     </Dimensions>
-    <AeroFeatures />
+    <AeroFeatures>
+      <CertifiedAeroDevice>
+        <Data xsi:type="CertifiedAeroDataDeclarationType" id="AERO-asdf">
+          <Manufacturer>Generic Manufacturer</Manufacturer>
+          <Model>Generic Tyre Model</Model>
+          <CertificationNumber>e12*0815/8051*2017/05T0000*00</CertificationNumber>
+          <Date>2022-04-13T08:25:35.674177Z</Date>
+          <AeroReductionYawAngle0>1.00</AeroReductionYawAngle0>
+          <AeroReductionYawAngle3>2.00</AeroReductionYawAngle3>
+          <AeroReductionYawAngle6>3.00</AeroReductionYawAngle6>
+          <AeroReductionYawAngle9>4.00</AeroReductionYawAngle9>
+          <ApplicableVehicleGroups>
+            <ApplicableVehicleGroup>422</ApplicableVehicleGroup>
+          </ApplicableVehicleGroups>
+        </Data>
+        <Signature>
+          <di:Reference URI="#AERO-asdf">
+            <di:Transforms>
+              <di:Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+              <di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+            </di:Transforms>
+            <di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+            <di:DigestValue>f/xIxxmRuSVOH4SAzrFDItRLLBeAY0Kedxm1GbU0hH4=</di:DigestValue>
+          </di:Reference>
+        </Signature>
+      </CertifiedAeroDevice>
+    </AeroFeatures>
     <AxleWheels>
       <Data xsi:type="v2.7:TrailerAxleWheelsDataDeclarationType">
         <Axles>
           <Axle xsi:type="v2.7:TrailerAxleType" axleNumber="1">
             <TwinTyres>false</TwinTyres>
             <Liftable>false</Liftable>
-            <Steered>false</Steered>
+            <Steered>true</Steered>
             <Tyre>
               <v2.7:Data id="TYR-gooZah3D" xsi:type="v2.2:TyreDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.2">
                 <Manufacturer>Generic Tyre Manufacturer</Manufacturer>

@@ -26,7 +26,9 @@
       <CargoVolume>49.500</CargoVolume>
       <VolumeOrientation>false</VolumeOrientation>
     </Dimensions>
-    <AeroFeatures />
+    <AeroFeatures>
+      <Technology>none</Technology>
+    </AeroFeatures>
     <AxleWheels>
       <Data xsi:type="v2.7:TrailerAxleWheelsDataDeclarationType">
         <Axles>
