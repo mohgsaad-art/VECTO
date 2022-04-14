@@ -988,9 +988,9 @@ namespace VECTOTrailer.ViewModel.Impl
 		private bool OpenFileSelector(JobFileType jobFileType, string textPropertyName, string initPath, out string selectedFile)
 		{
 			selectedFile = null;
-			var folderPath = GetFolderPath(initPath);
+			//var folderPath = GetFolderPath(initPath);
 
-			var dialogResult = FileDialogHelper.ShowSelectFilesDialog(false, FileDialogHelper.XMLFilter, folderPath);
+			var dialogResult = FileDialogHelper.ShowSelectFilesDialog(false, FileDialogHelper.XMLFilter, null);
 			if (dialogResult != null) {
 
 				var result = dialogResult.FirstOrDefault();

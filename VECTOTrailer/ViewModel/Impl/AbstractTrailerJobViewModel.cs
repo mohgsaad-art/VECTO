@@ -242,7 +242,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		private void SaveJob(Window window)
 		{
-			var jobFilePath = FileDialogHelper.SaveJobFileToDialog(Settings.XmlFilePathFolder);
+			var jobFilePath = FileDialogHelper.SaveJobFileToDialog();
 			if (jobFilePath == null)
 				return;
 
@@ -280,9 +280,9 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		private string OpenFileSelector(JobFileType jobFileType, string textPropertyName, string filePath)
 		{
-			var folderPath = GetFolderPath(filePath);
+			//var folderPath = GetFolderPath(filePath);
 
-			var dialogResult = FileDialogHelper.ShowSelectFilesDialog(false, FileDialogHelper.XMLFilter, folderPath);
+			var dialogResult = FileDialogHelper.ShowSelectFilesDialog(false, FileDialogHelper.XMLFilter, null);
 			if (dialogResult != null) {
 
 				filePath = dialogResult.FirstOrDefault();

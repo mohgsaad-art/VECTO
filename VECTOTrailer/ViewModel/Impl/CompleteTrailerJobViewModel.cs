@@ -130,7 +130,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		protected override void DoSaveAsJob(Window window)
 		{
-			var filePath = FileDialogHelper.SaveXmlFileToDialog(SettingsModel.XmlFilePathFolder);
+			var filePath = FileDialogHelper.SaveXmlFileToDialog();
 			if (filePath == null) {
 				return;
 			}
