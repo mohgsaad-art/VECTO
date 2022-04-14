@@ -35,6 +35,10 @@ namespace VECTOTrailer.ViewModel.Impl
 {
 	public class CompleteTrailerViewModel : AbstractComponentViewModel, ICompleteTrailerViewModel
 	{
+		public CompleteTrailerViewModel(SettingsModel settingsModel)
+		{
+			Settings = settingsModel;
+		}
 		#region Members
 
 		private ITrailerDeclarationInputData _trailer;
@@ -132,7 +136,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		private TrailerCouplingPoint _TrailerCouplingPoint;
 
 		private readonly bool _editJob;
-		protected SettingsModel Settings = new SettingsModel();
+		protected SettingsModel Settings;
 		protected JobEntry JobEntry;
 
 		#endregion

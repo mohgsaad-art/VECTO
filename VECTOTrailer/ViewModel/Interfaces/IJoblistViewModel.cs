@@ -21,7 +21,6 @@ namespace VECTOTrailer.ViewModel.Interfaces
 		ICommand EditCompletedFile { get; }
 		ICommand CreateNewJob { get; }
 		ICommand OpenJob { get; }
-		ICommand OpenSettings { get; }
 		ICommand ExitMainCommand { get; }
 		ICommand OpenInFolder { get; }
 		ICommand DoubleClickCommand { get; }
@@ -30,14 +29,15 @@ namespace VECTOTrailer.ViewModel.Interfaces
 		ICommand ShowUserGuide { get; }
 		bool CanRunSimulation { get; }
 		bool CanStopSimulation { get; }
-		bool WriteModData { get; set; }
-		bool WriteModData1Hz { get; set; }
-		bool ValidateData { get; set; }
-		bool WriteActualModData { get; set; }
-		string OutputDirectory { get; set; }
+		//bool WriteModData { get; set; }
+		//bool WriteModData1Hz { get; set; }
+		//bool ValidateData { get; set; }
+		//bool WriteActualModData { get; set; }
+		//string OutputDirectory { get; set; }
 		ICommand BrowseOutputDirectory { get; }
-		bool WriteModelData { get; set; }
-		bool WritePDFReport { get; set; }
+		//bool WriteModelData { get; set; }
+		//bool WritePDFReport { get; set; }
+		ITrailerToolSettings TrailerToolSettings { get; }
 		ICommand AboutViewCommand { get; }
 		ICommand BrowseAutoSimOutputDirectory { get; }
 		ICommand BrowseAutoSimInputDirectory { get; }

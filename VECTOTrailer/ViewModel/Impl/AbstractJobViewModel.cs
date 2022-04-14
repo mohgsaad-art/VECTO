@@ -52,9 +52,9 @@ namespace VECTOTrailer.ViewModel.Impl
 			}
 		}
 
-		public AbstractJobViewModel()
+		public AbstractJobViewModel(ITrailerToolSettings trailerToolSettings)
 		{
-			SettingsModel = new SettingsModel();
+			SettingsModel = new SettingsModel(settings:trailerToolSettings);
 		}
 
 		public ICommand SaveJob

@@ -240,7 +240,7 @@
                             </StackPanel>
                         </GroupBox>
                     </StackPanel>-->
-                    <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" MaxWidth="1000">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" MaxWidth="1000" MinWidth="400">
                         <GroupBox Header="Output">
 
                             <StackPanel Orientation="Vertical">
@@ -248,13 +248,13 @@
                                 <GroupBox Header ="Output Directory">
                                     <DockPanel LastChildFill="True">
                                         <Button DockPanel.Dock="Right" Width="60" Content="Browse" Command="{Binding BrowseOutputDirectory}" Margin="5,0,0,0"/>
-                                        <TextBox  Text="{Binding OutputDirectory}"/>
+                                        <TextBox  Text="{Binding TrailerToolSettings.GeneralSettings.SavePathFolder}"/>
                                     </DockPanel>
                                 </GroupBox>
                                 <GroupBox Header ="Settings">
                                     <StackPanel>
-                                        <CheckBox Margin="0,0,0,3" IsChecked="{Binding WriteModData}">Write modal results</CheckBox>
-                                        <CheckBox Margin="0,0,0,3" IsEnabled="{Binding WritePdfCanBeEdited}" IsChecked="{Binding WritePDFReport}">Create PDF reports</CheckBox>
+                                        <CheckBox Margin="0,0,0,3" IsChecked="{Binding TrailerToolSettings.SimulationSettings.WriteModData}">Write modal results</CheckBox>
+                                        <CheckBox Margin="0,0,0,3" IsEnabled="{Binding WritePdfCanBeEdited}" IsChecked="{Binding TrailerToolSettings.SimulationSettings.WritePDFReport}">Create PDF reports</CheckBox>
                                     </StackPanel>
                                 </GroupBox>
                                     <!--<CheckBox Margin="0,0,0,3" IsChecked="{Binding WriteModData1Hz}">Modal results in 1Hz</CheckBox>-->
@@ -277,8 +277,8 @@
                                 </GroupBox>
                                 <GroupBox Header="Background Worker Settings">
                                     <StackPanel Orientation="Vertical">
-                                        <CheckBox Margin="0,0,0,3" IsChecked="{Binding SimulationBackgroundWorker.WriteModData}">Write modal results</CheckBox>
-                                            <CheckBox Margin="0,0,0,3" IsEnabled="{Binding WritePdfCanBeEdited}" IsChecked="{Binding SimulationBackgroundWorker.WritePdfReports}">Create PDF reports</CheckBox>
+                                        <CheckBox Margin="0,0,0,3" IsChecked="{Binding TrailerToolSettings.SimulationSettings.BackgroundWriteModData}">Write modal results</CheckBox>
+                                            <CheckBox Margin="0,0,0,3" IsEnabled="{Binding WritePdfCanBeEdited}" IsChecked="{Binding TrailerToolSettings.SimulationSettings.BackgroudWritePDF}">Create PDF reports</CheckBox>
                                             <!--<CheckBox Margin="0,0,0,3" IsChecked="{Binding AutoSimulator.WriteModData1Hz}">Modal results in 1Hz</CheckBox>-->
                                     </StackPanel>
                                 </GroupBox>

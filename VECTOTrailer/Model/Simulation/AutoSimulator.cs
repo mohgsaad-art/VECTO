@@ -57,7 +57,7 @@ namespace VECTOTrailer.Model.Simulation
 		private ILogger _logger;
 		private BackgroundWorker worker;
 		private ReaderWriterLockSlim _simSettingsRwLock = new ReaderWriterLockSlim();
-		public SimulationBackgroundWorker(IXMLInputDataReader inputDataReader, IPdfCreator pdfCreator)
+		public SimulationBackgroundWorker(IXMLInputDataReader inputDataReader, IPdfCreator pdfCreator, ITrailerToolSettings settings)
 		{
 			_pdfCreator = pdfCreator;
 			_inputDataReader = inputDataReader;
@@ -70,6 +70,22 @@ namespace VECTOTrailer.Model.Simulation
 			worker.DoWork += DoWork;
 			worker.RunWorkerCompleted += VectoSimulationCompleted;
 			worker.ProgressChanged += WorkerOnProgressChanged;
+
+			_trailerToolSettings = settings;
+
+			settings.GeneralSettings.PropertyChanged += ((s, e) => {
+				var generalSettings = s as Properties.Settings;
+				switch (e.PropertyName) {
+					case nameof(generalSettings.BackgroundInputPath):
+						InputDirectory = generalSettings.BackgroundInputPath;
+						break;
+					case nameof(generalSettings.BackgroundOutputPath):
+						OutputDirectory = generalSettings.BackgroundOutputPath;
+						break;
+					default:
+						break;
+				}
+			});
 		}
 
 		private ObservableCollection<MessageEntry> _messages = new ObservableCollection<MessageEntry>();
@@ -143,9 +159,7 @@ namespace VECTOTrailer.Model.Simulation
 				} finally {
 					_simSettingsRwLock.ExitWriteLock();
 				}
-				
 			}
-
 		}
 
 		public bool ValidateData { get; set; }
@@ -184,7 +198,9 @@ namespace VECTOTrailer.Model.Simulation
 			set
 			{
 				lock (dirLock) {
-					SetProperty(ref _inputDirectory, value);
+					if (SetProperty(ref _inputDirectory, value)) {
+						_trailerToolSettings.GeneralSettings.BackgroundInputPath = value;
+					}
 				}
 			}
 		}
@@ -193,6 +209,7 @@ namespace VECTOTrailer.Model.Simulation
 		private readonly IXMLInputDataReader _inputDataReader;
 		private bool _autoSimBusy;
 		private bool _autoSimActive;
+		private readonly ITrailerToolSettings _trailerToolSettings;
 
 
 		public string OutputDirectory
@@ -207,7 +224,9 @@ namespace VECTOTrailer.Model.Simulation
 			set
 			{
 				lock (dirLock) {
-					SetProperty(ref _outputDirectory, value);
+					if (SetProperty(ref _outputDirectory, value)) {
+						_trailerToolSettings.GeneralSettings.BackgroundOutputPath = value;
+					};
 				}
 				
 			}

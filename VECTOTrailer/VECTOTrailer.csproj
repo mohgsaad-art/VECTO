@@ -197,6 +197,7 @@
     <Compile Include="Helper\Converter\SaveButtonLabelConverter.cs" />
     <Compile Include="Helper\PDFCreator.cs" />
     <Compile Include="Helper\SerializeHelper.cs" />
+    <Compile Include="Helper\Settings.cs" />
     <Compile Include="Helper\TextBoxInputRegExBehaviour.cs" />
     <Compile Include="Helper\Validation\DoubleValidator.cs" />
     <Compile Include="Helper\Validation\DoubleValidatorConfig.cs" />
@@ -211,6 +212,11 @@
     <Compile Include="Model\Simulation\VectoSimulationProgress.cs" />
     <Compile Include="Model\TempDataObject\ITempDataObject.cs" />
     <Compile Include="Model\TempDataObject\TrailerComponentData.cs" />
+    <Compile Include="Properties\SimulationSettings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>SimulationSettings.settings</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Version.cs">
       <DependentUpon>Version.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -243,7 +249,6 @@
     <Compile Include="ViewModel\Impl\NoneViewModel.cs" />
     <Compile Include="ViewModel\Impl\ObservableObject.cs" />
     <Compile Include="ViewModel\Impl\OutputWindowViewModel.cs" />
-    <Compile Include="ViewModel\Impl\SettingsViewModel.cs" />
     <Compile Include="ViewModel\Impl\ValidatingViewModel.cs" />
     <Compile Include="ViewModel\Impl\XMLViewModel.cs" />
     <Compile Include="ViewModel\Interfaces\ITrailerJobViewModel.cs" />
@@ -417,10 +422,14 @@
     </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="Properties\SimulationSettings.settings">
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
+      <LastGenOutput>SimulationSettings.Designer.cs</LastGenOutput>
+    </None>
     <None Include="VECTOTrailer_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>

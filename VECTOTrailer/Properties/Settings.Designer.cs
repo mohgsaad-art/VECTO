@@ -13,7 +13,7 @@ namespace VECTOTrailer.Properties {
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.1.0.0")]
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+    public sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
         
@@ -47,51 +47,74 @@ namespace VECTOTrailer.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Resources/UserManual.pdf")]
         public string UserGuideFilePath {
             get {
                 return ((string)(this["UserGuideFilePath"]));
             }
-            set {
-                this["UserGuideFilePath"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Resources/help.html")]
         public string VectoHelpPath {
             get {
                 return ((string)(this["VectoHelpPath"]));
             }
-            set {
-                this["VectoHelpPath"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Resources/MasterExcel.xlsx")]
         public string MasterExcelPath {
             get {
                 return ((string)(this["MasterExcelPath"]));
             }
-            set {
-                this["MasterExcelPath"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("https://www.google.at")]
         public string LiteraturePath {
             get {
                 return ((string)(this["LiteraturePath"]));
             }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string BackgroundOutputPath {
+            get {
+                return ((string)(this["BackgroundOutputPath"]));
+            }
             set {
-                this["LiteraturePath"] = value;
+                this["BackgroundOutputPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string BackgroundInputPath {
+            get {
+                return ((string)(this["BackgroundInputPath"]));
+            }
+            set {
+                this["BackgroundInputPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::VECTOTrailer.Model.JobCollection JobList {
+            get {
+                return ((global::VECTOTrailer.Model.JobCollection)(this["JobList"]));
+            }
+            set {
+                this["JobList"] = value;
             }
         }
     }

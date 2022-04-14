@@ -21,6 +21,7 @@ using Ninject;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
+using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Resources;
@@ -185,9 +186,10 @@ namespace VECTOTrailer.ViewModel.Impl
 		#endregion
 
 
-		public JoblistViewModel(ISimulationBackgroundWorker simulationBackgroundWorker, IPdfCreator pdfCreator)
+		public JoblistViewModel(ISimulationBackgroundWorker simulationBackgroundWorker, IPdfCreator pdfCreator, ITrailerToolSettings settings)
 		{
-			_settings = new SettingsModel();
+			_settings = new SettingsModel(settings);
+			_trailerToolSettings = settings;
 			_simulationBackgroundWorker = simulationBackgroundWorker;
             _simulationBackgroundWorker.Messages.CollectionChanged += Messages_CollectionChanged;
 			_pdfCreator = pdfCreator;
@@ -231,39 +233,46 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		private void LoadOptions()
 		{
-
-			if (!File.Exists(SETTINGS_FILE)) {
-				WriteModData = true;
-				ValidateData = true;
-				return;
-			}
-			using (var reader = File.OpenText(SETTINGS_FILE)) {
-				var content = JToken.ReadFrom(new JsonTextReader(reader));
-				var body = content["Body"];
-				if (body == null) {
-					return;
-				}
-
-				WriteModData = body.GetValueOrDefault<bool>(nameof(WriteModData)) ?? true;
-				ValidateData = body.GetValueOrDefault<bool>(nameof(ValidateData)) ?? false;
-				WriteModData1Hz = body.GetValueOrDefault<bool>(nameof(WriteModData1Hz)) ?? false;
-				WriteActualModData = body.GetValueOrDefault<bool>(nameof(WriteActualModData)) ?? false;
-
-				WritePDFReport = body.GetValueOrDefault<bool>(nameof(WritePDFReport)) ?? false;
-				_simulationBackgroundWorker.WritePdfReports =
-					body.GetValueOrDefault<bool>(nameof(WritePDFReport) + _autoSimSettingsSuffix) ?? false;
+			
 
 
-				OutputDirectory = body[nameof(OutputDirectory)] == null ? "" : body[nameof(OutputDirectory)].Value<string>();
-				_simulationBackgroundWorker.OutputDirectory = body[nameof(_simulationBackgroundWorker.OutputDirectory) + _autoSimSettingsSuffix] == null ? "" : body[nameof(_simulationBackgroundWorker.OutputDirectory) + _autoSimSettingsSuffix].Value<string>();
-				_simulationBackgroundWorker.InputDirectory = body[nameof(_simulationBackgroundWorker.InputDirectory) + _autoSimSettingsSuffix] == null ? "" : body[nameof(_simulationBackgroundWorker.InputDirectory) + _autoSimSettingsSuffix].Value<string>();
-				//_simulationBackgroundWorker.WriteModData1Hz =
-				//	body.GetValueOrDefault<bool>(nameof(_simulationBackgroundWorker.WriteModData1Hz) + _autoSimSettingsSuffix) ?? false;
-				_simulationBackgroundWorker.WriteModData =
-					body.GetValueOrDefault<bool>(nameof(_simulationBackgroundWorker.WriteModData) + _autoSimSettingsSuffix) ?? false;
 
 
-			}
+
+			return;
+			
+			//if (!File.Exists(SETTINGS_FILE)) {
+			//	WriteModData = true;
+			//	ValidateData = true;
+			//	return;
+			//}
+			//using (var reader = File.OpenText(SETTINGS_FILE)) {
+			//	var content = JToken.ReadFrom(new JsonTextReader(reader));
+			//	var body = content["Body"];
+			//	if (body == null) {
+			//		return;
+			//	}
+
+			//	WriteModData = body.GetValueOrDefault<bool>(nameof(WriteModData)) ?? true;
+			//	ValidateData = body.GetValueOrDefault<bool>(nameof(ValidateData)) ?? false;
+			//	WriteModData1Hz = body.GetValueOrDefault<bool>(nameof(WriteModData1Hz)) ?? false;
+			//	WriteActualModData = body.GetValueOrDefault<bool>(nameof(WriteActualModData)) ?? false;
+
+			//	WritePDFReport = body.GetValueOrDefault<bool>(nameof(WritePDFReport)) ?? false;
+			//	_simulationBackgroundWorker.WritePdfReports =
+			//		body.GetValueOrDefault<bool>(nameof(WritePDFReport) + _autoSimSettingsSuffix) ?? false;
+
+
+			//	OutputDirectory = body[nameof(OutputDirectory)] == null ? "" : body[nameof(OutputDirectory)].Value<string>();
+			//	_simulationBackgroundWorker.OutputDirectory = body[nameof(_simulationBackgroundWorker.OutputDirectory) + _autoSimSettingsSuffix] == null ? "" : body[nameof(_simulationBackgroundWorker.OutputDirectory) + _autoSimSettingsSuffix].Value<string>();
+			//	_simulationBackgroundWorker.InputDirectory = body[nameof(_simulationBackgroundWorker.InputDirectory) + _autoSimSettingsSuffix] == null ? "" : body[nameof(_simulationBackgroundWorker.InputDirectory) + _autoSimSettingsSuffix].Value<string>();
+			//	//_simulationBackgroundWorker.WriteModData1Hz =
+			//	//	body.GetValueOrDefault<bool>(nameof(_simulationBackgroundWorker.WriteModData1Hz) + _autoSimSettingsSuffix) ?? false;
+			//	_simulationBackgroundWorker.WriteModData =
+			//		body.GetValueOrDefault<bool>(nameof(_simulationBackgroundWorker.WriteModData) + _autoSimSettingsSuffix) ?? false;
+
+
+			//}
 		}
 
 
@@ -276,19 +285,19 @@ namespace VECTOTrailer.ViewModel.Impl
 			header.Add("FileVersion", "4");
 
 			var body = new Dictionary<string, object>();
-			body.Add(nameof(WriteModData), WriteModData);
-			//body.Add(nameof(ValidateData), ValidateData);
-			//body.Add(nameof(WriteModData1Hz), WriteModData1Hz);
-			//body.Add(nameof(WriteActualModData), WriteActualModData);
-			body.Add(nameof(OutputDirectory), OutputDirectory);
-			body.Add(nameof(_simulationBackgroundWorker.OutputDirectory) + _autoSimSettingsSuffix, _simulationBackgroundWorker.OutputDirectory);
-			body.Add(nameof(_simulationBackgroundWorker.InputDirectory) + _autoSimSettingsSuffix, _simulationBackgroundWorker.InputDirectory);
-			body.Add(nameof(WriteModData) + _autoSimSettingsSuffix, _simulationBackgroundWorker.WriteModData);
-			body.Add(nameof(WritePDFReport), WritePDFReport);
-			body.Add(nameof(WritePDFReport) + _autoSimSettingsSuffix, _simulationBackgroundWorker.WritePdfReports);
-			//body.Add(nameof(WriteModData1Hz) + _autoSimSettingsSuffix, _simulationBackgroundWorker.WriteModData1Hz);
+			//body.Add(nameof(WriteModData), WriteModData);
+			////body.Add(nameof(ValidateData), ValidateData);
+			////body.Add(nameof(WriteModData1Hz), WriteModData1Hz);
+			////body.Add(nameof(WriteActualModData), WriteActualModData);
+			//body.Add(nameof(OutputDirectory), OutputDirectory);
+			//body.Add(nameof(_simulationBackgroundWorker.OutputDirectory) + _autoSimSettingsSuffix, _simulationBackgroundWorker.OutputDirectory);
+			//body.Add(nameof(_simulationBackgroundWorker.InputDirectory) + _autoSimSettingsSuffix, _simulationBackgroundWorker.InputDirectory);
+			//body.Add(nameof(WriteModData) + _autoSimSettingsSuffix, _simulationBackgroundWorker.WriteModData);
+			//body.Add(nameof(WritePDFReport), WritePDFReport);
+			//body.Add(nameof(WritePDFReport) + _autoSimSettingsSuffix, _simulationBackgroundWorker.WritePdfReports);
+			////body.Add(nameof(WriteModData1Hz) + _autoSimSettingsSuffix, _simulationBackgroundWorker.WriteModData1Hz);
 
-			JSONFileWriter.WriteFile(new Dictionary<string, object>() { { "Header", header }, { "Body", body } }, SETTINGS_FILE);
+			//JSONFileWriter.WriteFile(new Dictionary<string, object>() { { "Header", header }, { "Body", body } }, SETTINGS_FILE);
 		}
 
 		private void LogMethod(LogEventInfo evtInfo, object[] objects)
@@ -317,7 +326,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		private void SetJobEntries()
 		{
-			_jobListModel = new JobListModel();
+			_jobListModel = new JobListModel(_trailerToolSettings);
 			_jobs = new ObservableCollectionEx<JobEntry>(_jobListModel.GetJobEntries());
 			_jobs.CollectionChanged += JobsCollectionChanged;
 			_jobs.CollectionItemChanged += JobItemChanged;
@@ -374,58 +383,80 @@ namespace VECTOTrailer.ViewModel.Impl
 			set { SetProperty(ref _canStopSimulation, value); }
 		}
 
-		public bool WriteModData
-		{
-			get { return _writeModData; }
-			set {
-				if (SetProperty(ref _writeModData, value)) {
-					_simulationBackgroundWorker.WriteModData = value;
-				}
-			}
-		}
+		//public bool WriteModData
+		//{
+		//	get
+		//	{
+		//		return _trailerToolSettings.SimulationSettings.WriteModData;
+		//		//return _writeModData;
 
-		public bool WriteModData1Hz
-		{
-			get { return _writeModData1Hz; }
-			set {
-				if (SetProperty(ref _writeModData1Hz, value)) {
-					_simulationBackgroundWorker.WriteModData1Hz = value;
-				}
+		//	}
+		//	set
+		//	{
+		//		_trailerToolSettings.SimulationSettings.WriteModData = value;
+		//		OnPropertyChanged();
+		//		//if (SetProperty(ref _writeModData, value)) {
+		//		//	_simulationBackgroundWorker.WriteModData = value;
+		//		//}
+		//	}
+		//}
 
-			}
-		}
+		//public bool WriteModData1Hz
+		//{
+		//	get
+		//	{
+		//		return _writeModData1Hz;
+		//	}
+		//	set {
+		//		if (SetProperty(ref _writeModData1Hz, value)) {
+		//			_simulationBackgroundWorker.WriteModData1Hz = value;
+		//		}
+		//	}
+		//}
 
-		public bool ValidateData
-		{
-			get { return _validateData; }
-			set
-			{
-				if (SetProperty(ref _validateData, value)) {
-					_simulationBackgroundWorker.ValidateData = value;
-				}
-			}
-		}
+		//public bool ValidateData
+		//{
+		//	get { return _validateData; }
+		//	set
+		//	{
+		//		if (SetProperty(ref _validateData, value)) {
+		//			_simulationBackgroundWorker.ValidateData = value;
+		//		}
+		//	}
+		//}
 
-		public bool WriteActualModData
-		{
-			get { return _writeActualModData; }
-			set
-			{
-				if (SetProperty(ref _writeActualModData, value)) {
-					_simulationBackgroundWorker.WriteActualModData = value;
-				}
-			}
-		}
+		//public bool WriteActualModData
+		//{
+		//	get { return _writeActualModData; }
+		//	set
+		//	{
+		//		if (SetProperty(ref _writeActualModData, value)) {
+		//			_simulationBackgroundWorker.WriteActualModData = value;
+		//		}
+		//	}
+		//}
 
-		public string OutputDirectory
-		{
-			get { return _outputDirectory; }
-			set { SetProperty(ref _outputDirectory, value); }
-		}
+		//public string OutputDirectory
+		//{
+		//	get
+		//	{
+		//		return _trailerToolSettings.GeneralSettings.SavePathFolder;
+		//		//return _outputDirectory;
+		//	}
+		//	set
+		//	{
+		//		_trailerToolSettings.GeneralSettings.SavePathFolder = value;
+		//		OnPropertyChanged();
+		//		//SetProperty(ref _outputDirectory, value);
+		//	}
+		//}
 		public ICommand BrowseOutputDirectory
 		{
-			get { return _browseOutputDirectory ?? (_browseOutputDirectory = new RelayCommand(() => DoBrowseDirectory(s => OutputDirectory = s))); }
+			get { return _browseOutputDirectory ?? (_browseOutputDirectory = new RelayCommand(() => DoBrowseDirectory(s => _trailerToolSettings.GeneralSettings.SavePathFolder = s))); }
 		}
+
+		public ITrailerToolSettings TrailerToolSettings { get => _trailerToolSettings; }
+
 		#region AutoSim
 
 
@@ -506,6 +537,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		private bool _writePdfReport;
 		private RelayCommand _showLiteratureCommand;
 		private ICommand _showMasterExcelCommand;
+		private readonly ITrailerToolSettings _trailerToolSettings;
 
 
 		public bool WritePDFReport
@@ -642,7 +674,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		}
 		private void DoNewJobCommand()
 		{
-			var jobEditView = new CompleteTrailerJobViewModel(Kernel, null);
+			var jobEditView = new CompleteTrailerJobViewModel(Kernel, null, _trailerToolSettings);
 			var window = OutputWindowHelper.CreateOutputWindow(Kernel, jobEditView, "New File");
 			window.Show();
 		}
@@ -731,22 +763,6 @@ namespace VECTOTrailer.ViewModel.Impl
 				return false;
 
 			return false;
-		}
-		
-
-		public ICommand OpenSettings
-		{
-			get
-			{
-				return _openSettingsCommand ?? (_openSettingsCommand = new RelayCommand(DoOpenSettingsCommand));
-			}
-		}
-		private void DoOpenSettingsCommand()
-		{
-			var viewModel = new SettingsViewModel();
-			var window = OutputWindowHelper.CreateOutputWindow(Kernel, viewModel, "Settings", 440, 200,
-				ResizeMode.NoResize);
-			window.ShowDialog();
 		}
 
 
@@ -999,7 +1015,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		private IJobEditViewModel CreateCompleteTrailerVehicleViewModel(IDeclarationTrailerInputDataProvider dataProvider)
 		{
-			return dataProvider == null ? null : new CompleteTrailerJobViewModel(Kernel, dataProvider);
+			return dataProvider == null ? null : new CompleteTrailerJobViewModel(Kernel, dataProvider, _trailerToolSettings);
 		}
 
 		private bool IsNewJobFile(string filePath)
@@ -1157,11 +1173,11 @@ namespace VECTOTrailer.ViewModel.Impl
 
 					var fileWriter = new FileOutputWriter(GetOutputDirectory(fullFileName));
 					var runsFactory = new SimulatorFactory(mode, input, fileWriter) {
-						WriteModalResults = WriteModData,
-						ModalResults1Hz = WriteModData1Hz,
-						Validate = ValidateData,
-						ActualModalData = WriteActualModData,
-						SerializeVectoRunData = WriteModelData
+						WriteModalResults = _trailerToolSettings.SimulationSettings.WriteModData,
+						//ModalResults1Hz = WriteModData1Hz,
+						//Validate = ValidateData,
+						//ActualModalData = WriteActualModData,
+						//SerializeVectoRunData = WriteModelData
 					};
 					foreach (var runId in jobContainer.AddRuns(runsFactory)) {
 						fileWriters.Add(runId, fileWriter);
@@ -1322,18 +1338,23 @@ namespace VECTOTrailer.ViewModel.Impl
 		private string GetOutputDirectory(string jobFilePath)
 		{
 			var outFile = jobFilePath;
-			if (!string.IsNullOrWhiteSpace(OutputDirectory)) {
-				if (Path.IsPathRooted(OutputDirectory)) {
-					outFile = Path.Combine(OutputDirectory, Path.GetFileName(jobFilePath) ?? "");
-				} else {
-					outFile = Path.Combine(Path.GetDirectoryName(jobFilePath) ?? "", OutputDirectory, Path.GetFileName(jobFilePath) ?? "");
-				}
-				if (!Directory.Exists(Path.GetDirectoryName(outFile))) {
-					Directory.CreateDirectory(Path.GetDirectoryName(outFile));
-				}
-			}
+            if (!string.IsNullOrWhiteSpace(_trailerToolSettings.GeneralSettings.SavePathFolder))
+            {
+                if (Path.IsPathRooted(_trailerToolSettings.GeneralSettings.SavePathFolder))
+                {
+                    outFile = Path.Combine(_trailerToolSettings.GeneralSettings.SavePathFolder, Path.GetFileName(jobFilePath) ?? "");
+                }
+                else
+                {
+                    outFile = Path.Combine(Path.GetDirectoryName(jobFilePath) ?? "", _trailerToolSettings.GeneralSettings.SavePathFolder, Path.GetFileName(jobFilePath) ?? "");
+                }
+                if (!Directory.Exists(Path.GetDirectoryName(outFile)))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(outFile));
+                }
+            }
 
-			return outFile;
+            return outFile;
 		}
 
 		private void PrintRuns(Dictionary<int, JobContainer.ProgressEntry> progress, Dictionary<int, FileOutputWriter> fileWriters)

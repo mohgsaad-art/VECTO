@@ -72,7 +72,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		}
 		#endregion
 
-		public CompleteTrailerJobViewModel(IKernel kernel, IDeclarationTrailerInputDataProvider inputData)
+		public CompleteTrailerJobViewModel(IKernel kernel, IDeclarationTrailerInputDataProvider inputData, ITrailerToolSettings settings) : base(settings)
 		{
 			Kernel = kernel;
 			_xmlReader = kernel.Get<IXMLInputDataReader>();

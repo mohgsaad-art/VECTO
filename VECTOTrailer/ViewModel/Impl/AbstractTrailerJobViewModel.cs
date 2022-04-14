@@ -140,7 +140,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		private void Init(IKernel kernel, JobType jobType)
 		{
 			SecondLabelText = $"Select {JobFileType.CompletedTrailerFile.GetLabel()}";
-			Settings = new SettingsModel();
+			Settings = Kernel.Get<SettingsModel>();
 			SetFileTypes(jobType);
 			Kernel = kernel;
 		}

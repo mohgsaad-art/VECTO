@@ -41,9 +41,6 @@
                     <MenuItem Header="Tools" VerticalAlignment="Center">
                         <MenuItem Header="Create Trailer Job"
                                   Command="{Binding CurrentViewModel.CreateNewJob}"/>
-                        <Separator HorizontalAlignment="Stretch" Background="Gray"/>
-                        <MenuItem Header="Settings"
-                                  Command="{Binding CurrentViewModel.OpenSettings}"/>
                     </MenuItem>
 
 

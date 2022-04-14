@@ -13,6 +13,7 @@ using NLog.Config;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCore;
 using VECTOTrailer.Helper;
+using VECTOTrailer.Model;
 using VECTOTrailer.Model.Simulation;
 using VECTOTrailer.ViewModel.Adapter;
 using VECTOTrailer.ViewModel.Adapter.Declaration;
@@ -28,6 +29,7 @@ namespace VECTOTrailer
     {
         private IKernel container;
 		private IPdfCreator _pdfCreator;
+		private ITrailerToolSettings _trailerToolSettings;
         #region Overrides of Application
 
         protected override void OnStartup(StartupEventArgs e)
@@ -35,6 +37,7 @@ namespace VECTOTrailer
 			ConfigureNLog();
 			ConfigureContainer();
 			ConfigurePdfCreator();
+			CreateSettings();
 			ShowMainWindow();
 			base.OnStartup(e);
         }
@@ -45,6 +48,11 @@ namespace VECTOTrailer
 			if (!_pdfCreator.Init()) {
 				MessageBox.Show("PDF Creation not supported");
 			};
+		}
+
+		private void CreateSettings()
+		{
+			_trailerToolSettings = container.Get<ITrailerToolSettings>();
 		}
 
 		private void ConfigureNLog()
@@ -66,7 +74,8 @@ namespace VECTOTrailer
 			container.Bind<ICompleteTrailerViewModel>().To<CompleteTrailerViewModel>();
 			container.Bind<ISimulationBackgroundWorker>().To<SimulationBackgroundWorker>();
 			container.Bind<IPdfCreator>().To<PdfCreator>().InSingletonScope();
-
+			container.Bind<ITrailerToolSettings>().To<TrailerToolSettings>().InSingletonScope();
+			container.Bind<SettingsModel>().ToSelf();
 
 		}
 
@@ -79,6 +88,7 @@ namespace VECTOTrailer
 		protected override void OnExit(ExitEventArgs e)
 		{
 			_pdfCreator.ShutDown();
+			_trailerToolSettings.Save();
 			base.OnExit(e);
 		}
 

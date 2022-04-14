@@ -5,33 +5,28 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using VECTOTrailer.Helper;
 
 namespace VECTOTrailer.Model
 {
 	public class SettingsModel
 	{
-		public SettingsModel()
+		private readonly ITrailerToolSettings _settings;
+
+		public SettingsModel(ITrailerToolSettings settings)
 		{
+			_settings = settings;
 			SetupDefaultPaths();
 		}
 		
-		public string SavePathFolder
-		{
-			get { return Properties.Settings.Default.SavePathFolder; }
-			set
-			{
-				Properties.Settings.Default.SavePathFolder = value;
-				Properties.Settings.Default.Save();
-			}
-		}
 
 		public string XmlFilePathFolder
 		{
-			get { return Properties.Settings.Default.XMLFilesPathFolder; }
+			get { return _settings.GeneralSettings.XMLFilesPathFolder; }
 			set
 			{
-				Properties.Settings.Default.XMLFilesPathFolder = value;
-				Properties.Settings.Default.Save();
+				_settings.GeneralSettings.XMLFilesPathFolder = value;
+				_settings.GeneralSettings.Save();
 			}
 		}
 
@@ -42,11 +37,6 @@ namespace VECTOTrailer.Model
 				var location = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 				var defaultPath = location; //+
 				XmlFilePathFolder = Path.GetFullPath(new Uri(defaultPath).LocalPath);
-			}
-
-			if (SavePathFolder == string.Empty)
-			{
-				SavePathFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 			}
 		}
 	}

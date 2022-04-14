@@ -20,6 +20,7 @@ using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.OutputData.XML;
 using TUGraz.VectoCore.Utils;
+using VECTOTrailer.Helper;
 using VECTOTrailer.Util;
 using VECTOTrailer.ViewModel.Adapter.Declaration;
 using VECTOTrailer.ViewModel.Impl;
@@ -33,7 +34,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		private IDeclarationTrailerInputDataProvider _inputData;
 
 		
-		public DeclarationJobViewModel(IKernel kernel, IDeclarationTrailerInputDataProvider inputData)
+		public DeclarationJobViewModel(IKernel kernel, IDeclarationTrailerInputDataProvider inputData, ITrailerToolSettings settings) : base(settings)
 		{
 			Kernel = kernel;
 			InputDataProvider = inputData;
