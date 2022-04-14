@@ -34,7 +34,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		private IDeclarationTrailerInputDataProvider _inputData;
 
 		
-		public DeclarationJobViewModel(IKernel kernel, IDeclarationTrailerInputDataProvider inputData, ITrailerToolSettings settings) : base(settings)
+		public DeclarationJobViewModel(IKernel kernel, IDeclarationTrailerInputDataProvider inputData, ITrailerToolSettings settings) : base()
 		{
 			Kernel = kernel;
 			InputDataProvider = inputData;

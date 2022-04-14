@@ -57,7 +57,6 @@ namespace VECTOTrailer.ViewModel.Impl
 		private ICommand _cancelCommand;
 		private ICommand _saveCommand;
 
-		protected SettingsModel Settings { get; private set; }
 
 		protected JobType JobType;
 		protected JobEntry JobEntry;
@@ -140,7 +139,6 @@ namespace VECTOTrailer.ViewModel.Impl
 		private void Init(IKernel kernel, JobType jobType)
 		{
 			SecondLabelText = $"Select {JobFileType.CompletedTrailerFile.GetLabel()}";
-			Settings = Kernel.Get<SettingsModel>();
 			SetFileTypes(jobType);
 			Kernel = kernel;
 		}
@@ -299,20 +297,6 @@ namespace VECTOTrailer.ViewModel.Impl
 			return filePath;
 		}
 
-		private string GetFolderPath(string filePath)
-		{
-			if (!_editJob || filePath.IsNullOrEmpty())
-				return Settings.XmlFilePathFolder;
-			
-			if (IsFileName(filePath)) {
-				return !JobEntry.JobEntryFilePath.IsNullOrEmpty()
-					? Path.GetDirectoryName(JobEntry.JobEntryFilePath)
-					: Path.GetDirectoryName(Settings.XmlFilePathFolder);
-			}
-
-			return filePath;
-		}
-		
 		private bool IsFileName( string filePath)
 		{
 			return !Directory.Exists(filePath);

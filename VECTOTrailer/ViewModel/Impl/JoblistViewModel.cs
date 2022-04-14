@@ -55,7 +55,6 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		protected ObservableCollectionEx<JobEntry> _jobs;
 		protected readonly ObservableCollection<MessageEntry> _messages = new ObservableCollection<MessageEntry>();
-		private readonly SettingsModel _settings;
 		private string _firstContextMenu;
 
 		private JobEntry _selectedJobEntry;
@@ -188,7 +187,6 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		public JoblistViewModel(ISimulationBackgroundWorker simulationBackgroundWorker, IPdfCreator pdfCreator, ITrailerToolSettings settings)
 		{
-			_settings = new SettingsModel(settings);
 			_trailerToolSettings = settings;
 			_simulationBackgroundWorker = simulationBackgroundWorker;
             _simulationBackgroundWorker.Messages.CollectionChanged += Messages_CollectionChanged;

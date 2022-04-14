@@ -207,7 +207,6 @@
     <Compile Include="Helper\XmlComponentReaderHelper.cs" />
     <Compile Include="Helper\XmlHelper.cs" />
     <Compile Include="Model\JobListModel.cs" />
-    <Compile Include="Model\SettingsModel.cs" />
     <Compile Include="Model\Simulation\AutoSimulator.cs" />
     <Compile Include="Model\Simulation\VectoSimulationProgress.cs" />
     <Compile Include="Model\TempDataObject\ITempDataObject.cs" />

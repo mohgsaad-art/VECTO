@@ -16,7 +16,6 @@ namespace VECTOTrailer.ViewModel.Impl
 	{
 		protected bool IsDeclarationMode;
 		protected bool WindowAlreadyClosed;
-		protected readonly SettingsModel SettingsModel;
 
 		private IComponentViewModel _currentComponent;
 		private ICommand _saveJobCommand;
@@ -52,9 +51,8 @@ namespace VECTOTrailer.ViewModel.Impl
 			}
 		}
 
-		public AbstractJobViewModel(ITrailerToolSettings trailerToolSettings)
+		public AbstractJobViewModel()
 		{
-			SettingsModel = new SettingsModel(settings:trailerToolSettings);
 		}
 
 		public ICommand SaveJob

@@ -75,8 +75,6 @@ namespace VECTOTrailer
 			container.Bind<ISimulationBackgroundWorker>().To<SimulationBackgroundWorker>();
 			container.Bind<IPdfCreator>().To<PdfCreator>().InSingletonScope();
 			container.Bind<ITrailerToolSettings>().To<TrailerToolSettings>().InSingletonScope();
-			container.Bind<SettingsModel>().ToSelf();
-
 		}
 
 		private void ShowMainWindow()

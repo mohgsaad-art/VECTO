@@ -35,9 +35,8 @@ namespace VECTOTrailer.ViewModel.Impl
 {
 	public class CompleteTrailerViewModel : AbstractComponentViewModel, ICompleteTrailerViewModel
 	{
-		public CompleteTrailerViewModel(SettingsModel settingsModel)
+		public CompleteTrailerViewModel()
 		{
-			Settings = settingsModel;
 		}
 		#region Members
 
@@ -136,7 +135,6 @@ namespace VECTOTrailer.ViewModel.Impl
 		private TrailerCouplingPoint _TrailerCouplingPoint;
 
 		private readonly bool _editJob;
-		protected SettingsModel Settings;
 		protected JobEntry JobEntry;
 
 		#endregion
@@ -998,41 +996,10 @@ namespace VECTOTrailer.ViewModel.Impl
 				RemovePropertyError(textPropertyName);
 				selectedFile = result;
 				return true;
-
-				//TODO Enable xml validation on file open
-				/*var validationResult = IsValidXml(jobFileType, filePath);
-
-				if (!validationResult)
-					AddPropertyError(textPropertyName, $"Selected XML-File is not a valid {jobFileType.GetLabel()}!");
-				else
-					RemovePropertyError(textPropertyName);
-
-				return !validationResult ? null : filePath;*/
 			}
 
 
 			return false;
 		}
-
-		private string GetFolderPath(string filePath)
-		{
-			if (!_editJob || filePath.IsNullOrEmpty())
-				return Settings.XmlFilePathFolder;
-			
-			if (IsFileName(filePath)) {
-				return !JobEntry.JobEntryFilePath.IsNullOrEmpty()
-					? Path.GetDirectoryName(JobEntry.JobEntryFilePath)
-					: Path.GetDirectoryName(Settings.XmlFilePathFolder);
-			}
-
-			return filePath;
-		}
-		
-		private bool IsFileName( string filePath)
-		{
-			return !Directory.Exists(filePath);
-		}
-
 	}
-
 }
