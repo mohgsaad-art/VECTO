@@ -29,20 +29,21 @@ using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using VECTOTrailer.Helper;
 using VECTOTrailer.ViewModel.Impl;
+using LogManager = NLog.LogManager;
 
 namespace VECTOTrailer.Model.Simulation
 {
-	public interface ISimulationBackgroundWorker
+	public interface IBackGroundSimulator
 	{
 		string InputDirectory { get; set; }
 		string OutputDirectory { get; set; }
 
 		ObservableCollection<MessageEntry> Messages { get; }
 		bool WriteModData { get; set; }
-		bool WriteModData1Hz { get; set; }
-		bool ValidateData { get; set; }
-		bool WriteActualModData { get; set; }
-		bool WriteModelData { get; set; }
+		//bool WriteModData1Hz { get; set; }
+		//bool ValidateData { get; set; }
+		//bool WriteActualModData { get; set; }
+		//bool WriteModelData { get; set; }
 		bool AutoSimBusy { get; }
 		bool AutoSimActive { get; }
 
@@ -52,12 +53,12 @@ namespace VECTOTrailer.Model.Simulation
 		void ToggleSimulationBackgroundWorker();
 
 	}
-    public class SimulationBackgroundWorker : ObservableObject, ISimulationBackgroundWorker
+    public class BackGroundSimulator : ObservableObject, IBackGroundSimulator
 	{
 		private ILogger _logger;
 		private BackgroundWorker worker;
 		private ReaderWriterLockSlim _simSettingsRwLock = new ReaderWriterLockSlim();
-		public SimulationBackgroundWorker(IXMLInputDataReader inputDataReader, IPdfCreator pdfCreator, ITrailerToolSettings settings)
+		public BackGroundSimulator(IXMLInputDataReader inputDataReader, IPdfCreator pdfCreator, ITrailerToolSettings settings)
 		{
 			_pdfCreator = pdfCreator;
 			_inputDataReader = inputDataReader;
@@ -66,21 +67,33 @@ namespace VECTOTrailer.Model.Simulation
 				WorkerReportsProgress = true
 			};
 
-			ConfigureNLOg();
+			ConfigureNlog();
 			worker.DoWork += DoWork;
 			worker.RunWorkerCompleted += VectoSimulationCompleted;
 			worker.ProgressChanged += WorkerOnProgressChanged;
 
 			_trailerToolSettings = settings;
 
+
+			InputDirectory = _trailerToolSettings.GeneralSettings.BackgroundInputPath;
+			OutputDirectory = _trailerToolSettings.GeneralSettings.BackgroundOutputPath;
+			WritePdfReports = _trailerToolSettings.SimulationSettings.BackgroudWritePDF;
+			WriteModData = _trailerToolSettings.SimulationSettings.BackgroundWriteModData;
 			settings.GeneralSettings.PropertyChanged += ((s, e) => {
 				var generalSettings = s as Properties.Settings;
+				var simulationSettings = s as Properties.SimulationSettings;
 				switch (e.PropertyName) {
 					case nameof(generalSettings.BackgroundInputPath):
-						InputDirectory = generalSettings.BackgroundInputPath;
+						InputDirectory = generalSettings?.BackgroundInputPath ?? InputDirectory;
 						break;
 					case nameof(generalSettings.BackgroundOutputPath):
-						OutputDirectory = generalSettings.BackgroundOutputPath;
+						OutputDirectory = generalSettings?.BackgroundOutputPath ?? InputDirectory;
+						break;
+					case nameof(simulationSettings.BackgroundWriteModData):
+						WriteModData = simulationSettings?.BackgroundWriteModData ?? WriteModData;
+						break;
+					case nameof(simulationSettings.WritePDFReport):
+						WritePdfReports = simulationSettings?.BackgroundWriteModData ?? WritePdfReports;
 						break;
 					default:
 						break;
@@ -94,18 +107,18 @@ namespace VECTOTrailer.Model.Simulation
 
 		#region Logging
 
-		private void ConfigureNLOg()
+		private void ConfigureNlog()
 		{
-			var target = new FileTarget(nameof(SimulationBackgroundWorker)) {
-				FileName = Path.GetFullPath("BackgroundWorker.log"),
+			var target = new FileTarget(nameof(BackGroundSimulator)) {
+				FileName = LogFileHelper.GetFileNameWithBasePath("BackgroundWorker.log"),
 				Layout = "${longdate} ${level} ${message}  ${exception} ${event-properties:myProperty}"
 			};
-			var loggingRule = new LoggingRule($"{nameof(SimulationBackgroundWorker)}", LogLevel.Trace, target);
+			var loggingRule = new LoggingRule($"{nameof(BackGroundSimulator)}", LogLevel.Trace, target);
 			NLog.LogManager.Configuration.AddTarget(target); 
 			NLog.LogManager.Configuration.LoggingRules.Add(loggingRule);
 			NLog.LogManager.Configuration.Reload();
 			NLog.LogManager.ReconfigExistingLoggers();
-			_logger = NLog.LogManager.GetLogger(nameof(SimulationBackgroundWorker));
+			_logger = NLog.LogManager.GetLogger(nameof(BackGroundSimulator));
 		}
 		#endregion	
 
@@ -129,7 +142,9 @@ namespace VECTOTrailer.Model.Simulation
 			{
 				try {
 					_simSettingsRwLock.EnterWriteLock();
-					SetProperty(ref _writeModData, value);
+					if (SetProperty(ref _writeModData, value)) {
+						_trailerToolSettings.SimulationSettings.WriteModData = value;
+					}
 				} finally {
 					_simSettingsRwLock.ExitWriteLock();
 				}
@@ -137,16 +152,49 @@ namespace VECTOTrailer.Model.Simulation
 			}
 		}
 
-		private bool _writeModData1Hz;
+		//private bool _writeModData1Hz;
 
-		public bool WriteModData1Hz
+		//public bool WriteModData1Hz
+		//{
+		//	get
+		//	{
+		//		try {
+		//			_simSettingsRwLock.EnterReadLock();
+		//			return _writeModData1Hz;
+		//		} finally {
+		//			_simSettingsRwLock.ExitReadLock();
+		//		}
+				
+		//	}
+		//	set
+		//	{
+		//		try {
+		//			_simSettingsRwLock.EnterWriteLock();
+		//			SetProperty(ref _writeModData1Hz, value);
+		//		} finally {
+		//			_simSettingsRwLock.ExitWriteLock();
+		//		}
+		//	}
+		//}
+
+		//public bool ValidateData { get; set; }
+		//public bool WriteActualModData { get; set; }
+		//public bool WriteModelData { get; set; }
+
+		private bool _writePdfReports;
+		private readonly IPdfCreator _pdfCreator;
+
+		public bool WritePdfReports
 		{
 			get
 			{
-				try {
+				try
+				{
 					_simSettingsRwLock.EnterReadLock();
-					return _writeModData1Hz;
-				} finally {
+					return _writePdfReports && _pdfCreator.Initialized;
+				}
+				finally
+				{
 					_simSettingsRwLock.ExitReadLock();
 				}
 				
@@ -155,25 +203,16 @@ namespace VECTOTrailer.Model.Simulation
 			{
 				try {
 					_simSettingsRwLock.EnterWriteLock();
-					SetProperty(ref _writeModData1Hz, value);
+					if (SetProperty(ref _writePdfReports, value)) {
+						_trailerToolSettings.SimulationSettings.BackgroudWritePDF = value;
+					}
 				} finally {
 					_simSettingsRwLock.ExitWriteLock();
 				}
+				
 			}
 		}
 
-		public bool ValidateData { get; set; }
-		public bool WriteActualModData { get; set; }
-		public bool WriteModelData { get; set; }
-
-		private bool _writePdfReports;
-		private readonly IPdfCreator _pdfCreator;
-
-		public bool WritePdfReports
-		{
-			get => _writePdfReports && _pdfCreator.Initialized;
-			set => SetProperty(ref _writePdfReports, value);
-		}
 		public bool AutoSimBusy
 		{
 			get => _autoSimBusy;
@@ -609,10 +648,10 @@ namespace VECTOTrailer.Model.Simulation
 					var fileWriter = new FileOutputWriter(fullFileName);
 					var runsFactory = new SimulatorFactory(mode, input, fileWriter) {
 						WriteModalResults = WriteModData,
-						ModalResults1Hz = WriteModData1Hz,
-						Validate = ValidateData,
-						ActualModalData = WriteActualModData,
-						SerializeVectoRunData = WriteModelData
+						ModalResults1Hz = false,//;WriteModData1Hz,
+						Validate = false, //ValidateData,
+						ActualModalData = false, //WriteActualModData,
+						SerializeVectoRunData = false, // WriteModelData
 					};
 					foreach (var runId in jobContainer.AddRuns(runsFactory)) {
 						fileWriters.Add(runId, fileWriter);

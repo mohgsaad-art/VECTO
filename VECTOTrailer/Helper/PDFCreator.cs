@@ -23,6 +23,8 @@ namespace VECTOTrailer.Helper
 			try {
 				_cefSettings = new CefSettings() {
 					CachePath = "",
+					LogFile = LogFileHelper.GetFileNameWithBasePath("cefSharpDebug.log"),
+					LogSeverity = LogSeverity.Disable,
 				};
 			} catch (Exception ex) {
 				Debug.WriteLine("Cef Settings could not be created, possibly due to missing c++ redistributable");

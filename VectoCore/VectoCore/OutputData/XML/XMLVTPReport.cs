@@ -151,7 +151,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 			LogList.Clear();
 			var target = new MethodCallTarget {
 				ClassName = typeof(XMLVTPReport).AssemblyQualifiedName,
-				MethodName = "LogMethod"
+				MethodName = nameof(LogMethod)
 			};
 			target.Parameters.Add(new MethodCallParameter("${level}"));
 			target.Parameters.Add(new MethodCallParameter("${message}"));

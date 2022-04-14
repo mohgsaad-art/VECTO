@@ -192,6 +192,7 @@
     <Compile Include="Helper\EventCommandExecuter.cs" />
     <Compile Include="Helper\Extension.cs" />
     <Compile Include="Helper\FileDialogHelper.cs" />
+    <Compile Include="Helper\LogFileNameHelper.cs" />
     <Compile Include="Helper\ObservableCollectionEx.cs" />
     <Compile Include="Helper\OutputWindowHelper.cs" />
     <Compile Include="Helper\Converter\SaveButtonLabelConverter.cs" />
@@ -417,6 +418,9 @@
     </None>
     <None Include="..\Documentation\VectoTrailerTool\UserManual.pdf">
       <Link>Resources\UserManual.pdf</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="install.ini">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />

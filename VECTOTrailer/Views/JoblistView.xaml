@@ -48,10 +48,10 @@
                                     <TextBlock Text="Stop" Margin="0,0,0,0" />
                                 </StackPanel>
                             </Button>
-                            <ToggleButton VerticalAlignment="Top" Margin="10 10 0 0" Command="{Binding ToggleAutoSim}" IsChecked="{Binding SimulationBackgroundWorker.AutoSimActive, Mode=OneWay}">
+                            <ToggleButton VerticalAlignment="Top" Margin="10 10 0 0" Command="{Binding ToggleAutoSim}" IsChecked="{Binding BackGroundSimulator.AutoSimActive, Mode=OneWay}">
                                 <StackPanel Orientation="Vertical">
                                     <TextBlock Text="Scan Folder"></TextBlock>
-                                    <ProgressBar Orientation="Horizontal" IsIndeterminate="{Binding SimulationBackgroundWorker.AutoSimBusy, Mode=OneWay}"></ProgressBar>
+                                    <ProgressBar Orientation="Horizontal" IsIndeterminate="{Binding BackGroundSimulator.AutoSimBusy, Mode=OneWay}"></ProgressBar>
                                 </StackPanel>
                             </ToggleButton>
 
@@ -262,17 +262,17 @@
                         </GroupBox>
                         <GroupBox Header="Background Worker">
                             <StackPanel>
-                                <TextBlock TextWrapping="Wrap" Margin="5" Visibility="{Binding SimulationBackgroundWorker.AutoSimActive, Converter={converter:BoolVisibilityConverter}}">To change the directories the AutoSimulator must be inactive</TextBlock>
+                                <TextBlock TextWrapping="Wrap" Margin="5" Visibility="{Binding BackGroundSimulator.AutoSimActive, Converter={converter:BoolVisibilityConverter}}">To change the directories the AutoSimulator must be inactive</TextBlock>
                                 <GroupBox Header="Input Directory">
                                     <DockPanel LastChildFill="True">
                                         <Button Width="60" DockPanel.Dock="Right" Content="Browse" Command="{Binding BrowseAutoSimInputDirectory}" Margin="5,0,0,0"/>
-                                        <TextBox HorizontalAlignment="Stretch" Text="{Binding SimulationBackgroundWorker.InputDirectory}" IsReadOnly="True" TextWrapping="Wrap"/>
+                                        <TextBox HorizontalAlignment="Stretch" Text="{Binding BackGroundSimulator.InputDirectory}" IsReadOnly="True" TextWrapping="Wrap"/>
                                     </DockPanel>
                                 </GroupBox>
                                 <GroupBox Header="Output Directory">
                                     <DockPanel >
                                         <Button Width="60" DockPanel.Dock="Right" Content="Browse" Command="{Binding BrowseAutoSimOutputDirectory}" Margin="5,0,0,0"/>
-                                        <TextBox HorizontalAlignment="Stretch" Text="{Binding SimulationBackgroundWorker.OutputDirectory}" IsReadOnly="True" TextWrapping="Wrap"/>
+                                        <TextBox HorizontalAlignment="Stretch" Text="{Binding BackGroundSimulator.OutputDirectory}" IsReadOnly="True" TextWrapping="Wrap"/>
                                     </DockPanel>
                                 </GroupBox>
                                 <GroupBox Header="Background Worker Settings">

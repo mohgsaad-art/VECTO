@@ -95,7 +95,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		private ICommand _showUserGuideCommand;
 		private string _lookAheadMinSpeedOverride;
 		private bool _autoSimActivated;
-		private readonly ISimulationBackgroundWorker _simulationBackgroundWorker;
+		private readonly IBackGroundSimulator _backGroundSimulator;
 		private ICommand _browseAutoSimOutputDirectory;
 		private ICommand _browseAutoSimInputDirectory;
 
@@ -185,11 +185,11 @@ namespace VECTOTrailer.ViewModel.Impl
 		#endregion
 
 
-		public JoblistViewModel(ISimulationBackgroundWorker simulationBackgroundWorker, IPdfCreator pdfCreator, ITrailerToolSettings settings)
+		public JoblistViewModel(IBackGroundSimulator backGroundSimulator, IPdfCreator pdfCreator, ITrailerToolSettings settings)
 		{
 			_trailerToolSettings = settings;
-			_simulationBackgroundWorker = simulationBackgroundWorker;
-            _simulationBackgroundWorker.Messages.CollectionChanged += Messages_CollectionChanged;
+			_backGroundSimulator = backGroundSimulator;
+            _backGroundSimulator.Messages.CollectionChanged += Messages_CollectionChanged;
 			_pdfCreator = pdfCreator;
 
 				
@@ -214,7 +214,7 @@ namespace VECTOTrailer.ViewModel.Impl
         private void ConfigureNlog()
 		{
 			var target = new MethodCallTarget("VectoGuiTarget", (evtInfo, obj) => LogMethod(evtInfo, obj));
-			//NLog.Config.SimpleConfigurator.ConfigureForTargetLogging(target);
+			
 			NLog.LogManager.Configuration.AddTarget(target);
 			NLog.LogManager.ReconfigExistingLoggers();
 		}
@@ -459,9 +459,9 @@ namespace VECTOTrailer.ViewModel.Impl
 
 
 
-		public ISimulationBackgroundWorker SimulationBackgroundWorker
+		public IBackGroundSimulator BackGroundSimulator
 		{
-			get => _simulationBackgroundWorker;
+			get => _backGroundSimulator;
 		}
 
 		private ICommand _toggleAutoSimCommand;
@@ -471,7 +471,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		public ICommand ToggleAutoSim { get => _toggleAutoSimCommand ?? (_toggleAutoSimCommand = new RelayCommand(
 			() => {
-				_simulationBackgroundWorker.ToggleSimulationBackgroundWorker();
+				_backGroundSimulator.ToggleSimulationBackgroundWorker();
 			})); }
 
 		
@@ -506,8 +506,8 @@ namespace VECTOTrailer.ViewModel.Impl
 		{
 
 			get { return _browseAutoSimOutputDirectory ?? (_browseAutoSimOutputDirectory = new RelayCommand(
-				() => DoBrowseDirectory(s => _simulationBackgroundWorker.OutputDirectory = s),
-				() => !_simulationBackgroundWorker.AutoSimActive
+				() => DoBrowseDirectory(s => _backGroundSimulator.OutputDirectory = s),
+				() => !_backGroundSimulator.AutoSimActive
 				));
 			}
 		}
@@ -515,8 +515,8 @@ namespace VECTOTrailer.ViewModel.Impl
 		public ICommand BrowseAutoSimInputDirectory
 		{
 			get { return _browseAutoSimInputDirectory ?? (_browseAutoSimInputDirectory = new RelayCommand(
-				() => DoBrowseDirectory(s => _simulationBackgroundWorker.InputDirectory = s),
-				() => !_simulationBackgroundWorker.AutoSimActive
+				() => DoBrowseDirectory(s => _backGroundSimulator.InputDirectory = s),
+				() => !_backGroundSimulator.AutoSimActive
 				));
 			}
 		}

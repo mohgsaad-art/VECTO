@@ -2,14 +2,21 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using Castle.Core.Smtp;
 using Ninject;
 using Ninject.Extensions.Factory;
+using NLog;
 using NLog.Config;
+using NLog.Targets;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCore;
 using VECTOTrailer.Helper;
@@ -30,10 +37,15 @@ namespace VECTOTrailer
         private IKernel container;
 		private IPdfCreator _pdfCreator;
 		private ITrailerToolSettings _trailerToolSettings;
-        #region Overrides of Application
+
+		private bool _installModeActivated = false;
+		private string _installIni = "install.ini";
+
+		#region Overrides of Application
 
         protected override void OnStartup(StartupEventArgs e)
 		{
+			ReadInstallMode();
 			ConfigureNLog();
 			ConfigureContainer();
 			ConfigurePdfCreator();
@@ -57,7 +69,15 @@ namespace VECTOTrailer
 
 		private void ConfigureNLog()
 		{
-			NLog.LogManager.Configuration = new LoggingConfiguration();
+			NLog.LogManager.Configuration = new LoggingConfiguration() { };
+			var folderName = "";
+			if (_installModeActivated) {
+				folderName = Path.Combine(
+					Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.Create),
+						Assembly.GetExecutingAssembly().GetName().Name
+					);
+			}
+			LogFileHelper.SetBasePath(Path.GetFullPath(Path.Combine(folderName,"Log")));
 		}
 
         private void ConfigureContainer()
@@ -72,7 +92,7 @@ namespace VECTOTrailer
             container.Bind<IJobEditViewModel>().To<CompleteTrailerJobViewModel>();
             container.Bind<INoneViewModel>().To<NoneViewModel>();
 			container.Bind<ICompleteTrailerViewModel>().To<CompleteTrailerViewModel>();
-			container.Bind<ISimulationBackgroundWorker>().To<SimulationBackgroundWorker>();
+			container.Bind<IBackGroundSimulator>().To<BackGroundSimulator>();
 			container.Bind<IPdfCreator>().To<PdfCreator>().InSingletonScope();
 			container.Bind<ITrailerToolSettings>().To<TrailerToolSettings>().InSingletonScope();
 		}
@@ -90,6 +110,26 @@ namespace VECTOTrailer
 			base.OnExit(e);
 		}
 
+
+		private void ReadInstallMode()
+		{
+			if (File.Exists(Path.GetFullPath(_installIni))) {
+				try {
+					var lines = File.ReadLines(_installIni)
+						.Where(s => s.SkipWhile(c => c.Equals(" ")).First() != '#');
+					foreach (var line in lines) {
+						var executionModeRegex = new Regex(@"ExecutionMode\s*=\s*install");
+						if (executionModeRegex.IsMatch(line)) {
+							_installModeActivated = true;
+							break;
+						}
+					}
+				} catch (Exception ex) {
+					Debug.WriteLine($"Error parsing {_installIni}");
+				}
+			}
+		}
+
 		#endregion
-    }
+	}
 }
