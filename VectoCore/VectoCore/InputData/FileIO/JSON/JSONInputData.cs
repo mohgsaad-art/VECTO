@@ -691,7 +691,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 
 		public override IGearshiftEngineeringInputData GearshiftInputData =>
 			Body["TCU"] == null
-				? null
+				? Body["GearboxFile"] == null ? null : JSONInputDataFactory.ReadShiftParameters(Path.Combine(BasePath, Body.GetEx<string>("GearboxFile")), false)
 				: JSONInputDataFactory.ReadShiftParameters(Path.Combine(BasePath, Body.GetEx<string>("TCU")), false);
 
 	}
