@@ -704,7 +704,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				CurrentState.GearshiftTriggerTstmp = absTime;
 
 				// MeasuredSpeedDrivingCycle: Set driving action to 'Roll' when changing gear. 
-				if (DataBus.DriverInfo is MeasuredSpeedDrivingCycle) {
+				if ((DataBus.DriverInfo is MeasuredSpeedDrivingCycle) && (DataBus.DriverInfo.DrivingAction == DrivingAction.Accelerate)) {
 					MeasuredSpeedDrivingCycle cycle = DataBus.DriverInfo as MeasuredSpeedDrivingCycle;
 					cycle.DrivingAction = DrivingAction.Roll;
 				}

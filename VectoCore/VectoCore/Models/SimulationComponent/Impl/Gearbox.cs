@@ -215,6 +215,16 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				EngageTime = absTime + dt;
 			}
 
+			if ((DataBus.HybridControllerInfo != null)
+				&& (DataBus.DriverInfo is MeasuredSpeedDrivingCycle)
+				&& (DataBus.DriverInfo.DriverBehavior == DrivingBehavior.Braking)
+				&& Disengaged
+				&& ShouldNotEngage(outTorque, outAngularVelocity, dt)) {
+				
+				EngageTime = absTime + dt;
+				_overrideDisengage = null;
+            }
+
 			postponeEngage = false;
 			var reEngaging = false;
 			if (GearEngaged(absTime) && Disengaged && !outAngularVelocity.IsEqual(0)) {
@@ -265,19 +275,20 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				: 0.SI<NewtonMeter>();
 			inTorque += inertiaTorqueLossOut / ModelData.Gears[gear].Ratio;
 
-			var halted = DataBus.DriverInfo.DrivingAction == DrivingAction.Halt;
 			var driverDeceleratingNegTorque = DataBus.DriverInfo.DriverBehavior == DrivingBehavior.Braking &&
 											DataBus.DriverInfo.DrivingAction == DrivingAction.Brake &&
 											(DataBus.DrivingCycleInfo.RoadGradient.IsSmaller(0) ||
 											(ICEAvailable && inAngularVelocity.IsSmaller(DataBus.EngineInfo.EngineIdleSpeed))) &&
 											(DataBus.Brakes.BrakePower.IsGreater(0) || inTorque.IsSmaller(0));
-			var vehicleSpeedBelowThreshold =
+			var vehiclespeedBelowThreshold =
 				DataBus.VehicleInfo.VehicleSpeed.IsSmaller(ModelData.DisengageWhenHaltingSpeed);
 			if (!dryRun) {
 				CurrentState.DrivingBehavior = DataBus.DriverInfo.DriverBehavior;
 			}
 			
-			if (halted || (driverDeceleratingNegTorque && vehicleSpeedBelowThreshold)) {
+			var halted = DataBus.DriverInfo.DrivingAction == DrivingAction.Halt;
+
+			if (halted || (driverDeceleratingNegTorque && vehiclespeedBelowThreshold)) {
 				EngageTime = VectoMath.Max(EngageTime, absTime + dt);
 				_strategy?.Disengage(absTime, dt, outTorque, outAngularVelocity);
 				//if (_strategy != null && DataBus.HybridControllerInfo != null &&
@@ -295,6 +306,39 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				return RequestGearDisengaged(absTime, dt, outTorque, outAngularVelocity, inTorque, dryRun);
 			}
 		}
+
+		private bool ShouldNotEngage(NewtonMeter outTorque, PerSecond outAngularVelocity, Second dt)
+		{
+			var gear = Disengaged ? NextGear.Gear : Gear.Gear;
+			var avgOutAngularVelocity = (PreviousState.OutAngularVelocity + outAngularVelocity) / 2.0;
+			var inTorqueLossResult = ModelData.Gears[gear].LossMap.GetTorqueLoss(avgOutAngularVelocity, outTorque);
+			if (avgOutAngularVelocity.IsEqual(0, 1e-9)) {
+				inTorqueLossResult.Value = 0.SI<NewtonMeter>();
+			}
+
+			var inAngularVelocity = outAngularVelocity * ModelData.Gears[gear].Ratio;
+			var avgInAngularVelocity = (PreviousState.InAngularVelocity + inAngularVelocity) / 2.0;
+			var inTorque = !avgInAngularVelocity.IsEqual(0)
+				? outTorque * (avgOutAngularVelocity / avgInAngularVelocity)
+				: outTorque / ModelData.Gears[Gear.Gear].Ratio;
+			inTorque += inTorqueLossResult.Value;
+			
+			var inertiaTorqueLossOut = !inAngularVelocity.IsEqual(0)
+				? Formulas.InertiaPower(outAngularVelocity, PreviousState.OutAngularVelocity, ModelData.Inertia, dt) /
+				avgOutAngularVelocity
+				: 0.SI<NewtonMeter>();
+			inTorque += inertiaTorqueLossOut / ModelData.Gears[gear].Ratio;
+
+			var driverDeceleratingNegTorque = DataBus.DriverInfo.DriverBehavior == DrivingBehavior.Braking &&
+											DataBus.DriverInfo.DrivingAction == DrivingAction.Brake &&
+											(DataBus.DrivingCycleInfo.RoadGradient.IsSmaller(0) ||
+											(ICEAvailable && inAngularVelocity.IsSmaller(DataBus.EngineInfo.EngineIdleSpeed))) &&
+											(DataBus.Brakes.BrakePower.IsGreater(0) || inTorque.IsSmaller(0));
+			var vehiclespeedBelowThreshold =
+				DataBus.VehicleInfo.VehicleSpeed.IsSmaller(Constants.SimulationSettings.ClutchDisengageWhenHaltingSpeed);
+
+			return driverDeceleratingNegTorque && vehiclespeedBelowThreshold;
+        }
 
 		/// <summary>
 		/// Requests the Gearbox in Disengaged mode
