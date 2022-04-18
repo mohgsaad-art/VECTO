@@ -216,6 +216,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
 
 			if ((DataBus.HybridControllerInfo != null)
+				&& (DataBus.PowertrainInfo.ElectricMotorPositions[0] == PowertrainPosition.HybridP3)
 				&& (DataBus.DriverInfo is MeasuredSpeedDrivingCycle)
 				&& (DataBus.DriverInfo.DriverBehavior == DrivingBehavior.Braking)
 				&& Disengaged
