@@ -37,12 +37,16 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
         TestCase(P2_JOB, 1, 581.0263, 7.956, 8.8775, TestName = "P2 Hybrid TimeRun MeasuredSpeedGear SmallUrbanDeliveryNoGrad"),
         TestCase(P2_JOB, 2, 572.3749, 2.6878, 1.7033, TestName = "P2 Hybrid TimeRun MeasuredSpeedGear CycleTimeNoGrad"),
         TestCase(P2_JOB, 3, 0, 0, 0, TestName = "P2 Hybrid TimeRun MeasuredSpeedGear LongHaul"),
+
         TestCase(P3_JOB, 0, 0, 0, 0, TestName = "P3 Hybrid TimeRun MeasuredSpeedGear LongHaulNoGrad"),
         TestCase(P3_JOB, 1, 0, 0, 0, TestName = "P3 Hybrid TimeRun MeasuredSpeedGear UrbanDeliveryNoGrad"),
+
         TestCase(P4_JOB, 0, 0, 0, 0, TestName = "P4 Hybrid TimeRun MeasuredSpeedGear LongHaulNoGrad"),
         TestCase(P4_JOB, 1, 0, 0, 0, TestName = "P4 Hybrid TimeRun MeasuredSpeedGear UrbanDeliveryNoGrad"),
+
         TestCase(P2_5_JOB, 0, 0, 0, 0, TestName = "P2_5 Hybrid TimeRun MeasuredSpeedGear LongHaul"),
         TestCase(P2_5_JOB, 1, 0, 0, 0, TestName = "P2_5 Hybrid TimeRun MeasuredSpeedGear UrbanDelivery"),
+
         TestCase(P1_JOB, 0, 0, 0, 0, TestName = "P1 Hybrid TimeRun MeasuredSpeedGear LongHaul"),
         TestCase(P1_JOB, 1, 0, 0, 0, TestName = "P1 Hybrid TimeRun MeasuredSpeedGear RegionalDelivery")
         ]
@@ -75,6 +79,10 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 			run.Run();
 
 			Assert.IsTrue(run.FinishedWithoutErrors);
+
+            string distanceSumPath = Path.Combine(Path.GetDirectoryName(jobFile), "distance.vsum");
+            AssertHelper.ReportDeviations(distanceSumPath, cycleIdx, factory, metrics);
+
 			AssertHelper.AssertMetrics(factory, metrics);
             
 			Directory.Delete(Path.GetDirectoryName(outputFile), recursive: true);
