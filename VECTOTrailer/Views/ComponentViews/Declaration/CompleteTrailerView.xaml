@@ -126,7 +126,7 @@
 
         <GroupBox Header="Dimensions" Grid.Row="2" Grid.Column="1" Width="400" Height="300" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
             <StackPanel Orientation="Vertical" Width="390" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
-                <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
+                <!--<StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">-->
 
                     <Grid>
                         <customControls:VectoParameterControl
@@ -140,7 +140,7 @@
                     <Grid>
                         <customControls:VectoParameterControl
                             Caption="External width of the body" CaptionWidthGroup="lblGWidth"
-                            Value="{Binding ExternalWidthOfTheBody, Converter={converter:SIValueConverter}, ConverterParameter=AsMeter|double3}" ValueAlign="right"
+                            Value="{Binding ExternalWidthOfTheBody, Converter={converter:SIValueConverter}, ConverterParameter=AsMeter|double3, UpdateSourceTrigger=LostFocus}" ValueAlign="right"
                             Unit="m" UnitWidthGroup="unitWidth"/>
                     </Grid>
 
@@ -181,7 +181,7 @@
                             Unit="m3" UnitWidthGroup="unitWidth"/>
                     </Grid>
 
-                </StackPanel>
+                <!--</StackPanel>-->
             </StackPanel>
         </GroupBox>
 
