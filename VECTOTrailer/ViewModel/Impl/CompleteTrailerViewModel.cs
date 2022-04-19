@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -214,9 +215,10 @@ namespace VECTOTrailer.ViewModel.Impl
 			get => _externalLengthOfTheBody;
 			set
 			{
-				if (!SetProperty(ref _externalLengthOfTheBody, value))
-					return;
-				IsDataChanged(_externalLengthOfTheBody, _componentData);
+				if (SetProperty(ref _externalLengthOfTheBody, value)) {
+					IsDataChanged(_externalLengthOfTheBody, _componentData);
+				}
+				
 			}
 		}
 
@@ -225,9 +227,9 @@ namespace VECTOTrailer.ViewModel.Impl
 			get => _externalWidthOfTheBody;
 			set
 			{
-				if (!SetProperty(ref _externalWidthOfTheBody, value))
-					return;
-				IsDataChanged(_externalWidthOfTheBody, _componentData);
+				if (SetProperty(ref _externalWidthOfTheBody, value)) {
+					IsDataChanged(_externalWidthOfTheBody, _componentData);
+				}
 			}
 		}
 

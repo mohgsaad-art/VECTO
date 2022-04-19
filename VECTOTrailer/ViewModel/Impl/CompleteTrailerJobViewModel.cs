@@ -108,6 +108,12 @@ namespace VECTOTrailer.ViewModel.Impl
 		}
 		protected override void DoSaveJob(Window window)
 		{
+			var hasErrors = (CurrentComponent as ViewModelBase)?.HasErrors ?? false;
+
+			if (hasErrors) {
+				MessageBox.Show("Invalid input!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				return;
+			}
 
 			var dialogResult = MessageBox.Show(
 				"The existing file will be overwritten, do you want to continue?", "Save",

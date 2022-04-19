@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -8,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using TUGraz.VectoCommon.Utils;
+using VECTOTrailer.Helper;
 
 
 namespace VECTOTrailer.Views.CustomControls
@@ -17,16 +19,23 @@ namespace VECTOTrailer.Views.CustomControls
 	/// </summary>
 	public partial class VectoParameterControl : UserControl, INotifyDataErrorInfo
 	{
-		
+
 		public VectoParameterControl()
 		{
 			InitializeComponent();
 			Validation.SetErrorTemplate(this, null);
-			(Content as FrameworkElement).DataContext = this;
+            //(Content as FrameworkElement).DataContext = this;
+
+            ErrorsChanged += VectoParameterControl_ErrorsChanged;
+
 		}
 
+        private void VectoParameterControl_ErrorsChanged(object sender, DataErrorsChangedEventArgs e)
+		{
+			//var _hasErrors = HasErrors;
+		}
 
-		public string Caption
+        public string Caption
 		{
 			get { return (string)GetValue(CaptionProperty); }
 			set { SetValue(CaptionProperty, value);  }
@@ -37,15 +46,19 @@ namespace VECTOTrailer.Views.CustomControls
 			DependencyProperty.Register("Caption", typeof(string), typeof(VectoParameterControl), new PropertyMetadata(string.Empty));
 
 
-		public string Value
+		public object Value
 		{
-			get { return (string)GetValue(ValueProperty); }
+			get { return (object)GetValue(ValueProperty); }
 			set { SetValue(ValueProperty, value);  }
 		}
 
 		//Using a DependencyProperty as the backing store for Value.This enables animation, styling, binding, etc...
 		public static readonly DependencyProperty ValueProperty =
-			DependencyProperty.Register("Value", typeof(string), typeof(VectoParameterControl), new FrameworkPropertyMetadata() {BindsTwoWayByDefault = true});
+			DependencyProperty.Register("Value", typeof(object), 
+				typeof(VectoParameterControl),
+				new FrameworkPropertyMetadata() {
+					BindsTwoWayByDefault = true, PropertyChangedCallback = ValidatePropertyWhenChangedCallback
+				});
 
 
 
@@ -108,7 +121,8 @@ namespace VECTOTrailer.Views.CustomControls
 		{
 			get {
 				var validationErrors = Validation.GetErrors(this);
-				return validationErrors.Any();
+				var hasErrors = validationErrors.Any();
+				return hasErrors;
 			}
 		}
 
@@ -121,18 +135,40 @@ namespace VECTOTrailer.Views.CustomControls
 			var specificValidationErrorMessages = specificValidationErrors.Select(valError => valError.ErrorContent);
 			return specificValidationErrorMessages;
 		}
+		
 
 		public void NotifyErrorsChanged(string propertyName)
 		{
+			var errors = Validation.GetErrors(this);
 			if (ErrorsChanged != null) {
 				ErrorsChanged(this, new DataErrorsChangedEventArgs(propertyName));
+				
 			}
 		}
 
 		protected static void ValidatePropertyWhenChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
 		{
-			((VectoParameterControl)dependencyObject).NotifyErrorsChanged(dependencyPropertyChangedEventArgs.Property.Name);
+			var errors = Validation.GetErrors(dependencyObject).Where(error => !(error.RuleInError.GetType() == typeof(NotifyDataErrorValidationRule))).ToList();
+			((VectoParameterControl)dependencyObject).UpdateErrorsInViewModel(errors, dependencyPropertyChangedEventArgs);
+
+			//((VectoParameterControl)dependencyObject).NotifyErrorsChanged(dependencyPropertyChangedEventArgs.Property.Name);
+
 		}
 
-	}
+		private void UpdateErrorsInViewModel(IList<ValidationError> errors, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+		{
+			var bindingEx = BindingOperations.GetBindingExpression(this, dependencyPropertyChangedEventArgs.Property);
+			if (DataContext is ViewModelBase viewModelBase)
+            {
+                if (errors.Any())
+                {
+                    viewModelBase.AddPropertyError(bindingEx.ResolvedSourcePropertyName, string.Join("\n", errors.Where(error => ((BindingExpression)error.BindingInError).ResolvedSourcePropertyName == bindingEx.ResolvedSourcePropertyName).Select(valError => valError.ErrorContent)));
+                }
+                else
+                {
+                    viewModelBase.RemovePropertyError(bindingEx.ResolvedSourcePropertyName);
+                }
+            }
+        }
+    }
 }

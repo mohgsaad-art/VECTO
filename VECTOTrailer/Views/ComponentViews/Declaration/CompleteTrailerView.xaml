@@ -131,7 +131,9 @@
                     <Grid>
                         <customControls:VectoParameterControl
                             Caption="External length of the body" CaptionWidthGroup="lblGWidth"
-                            Value="{Binding ExternalLengthOfTheBody, Converter={converter:SIValueConverter}, ConverterParameter=AsMeter|double3}" ValueAlign="right"
+                            Value="{Binding ExternalLengthOfTheBody, 
+                                Converter={converter:SIValueConverter},
+                                ConverterParameter=AsMeter|double3}" ValueAlign="right"
                             Unit="m" UnitWidthGroup="unitWidth"/>
                     </Grid>
 

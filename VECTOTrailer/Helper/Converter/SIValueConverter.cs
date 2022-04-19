@@ -70,7 +70,8 @@ namespace VECTOTrailer.Helper.Converter
 			double doubleVal;
 			var success = double.TryParse(value.ToString(), NumberStyles.Float, culture, out doubleVal);
 			if (!success) {
-				return DependencyProperty.UnsetValue;
+				//throw new Exception();
+				return value;
 			}
 
 			if (decimals != null) {
