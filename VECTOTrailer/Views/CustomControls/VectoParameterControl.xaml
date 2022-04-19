@@ -10,8 +10,8 @@
              Name="vectoParamControl"
              d:DesignHeight="40" d:DesignWidth="300" d:DataContext="{d:DesignInstance {x:Type customControls:VectoParameterControl}}">
     <Grid Margin="5">
-       <Grid.ColumnDefinitions>
-           <ColumnDefinition Width="Auto" SharedSizeGroup="{Binding CaptionWidthGroup, ElementName=vectoParamControl}"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" SharedSizeGroup="{Binding CaptionWidthGroup, ElementName=vectoParamControl}"/>
            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto" SharedSizeGroup="{Binding UnitWidthGroup, ElementName=vectoParamControl}"/>
        </Grid.ColumnDefinitions>

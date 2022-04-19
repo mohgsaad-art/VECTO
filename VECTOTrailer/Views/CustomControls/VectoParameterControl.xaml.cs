@@ -96,7 +96,7 @@ namespace VECTOTrailer.Views.CustomControls
 
 		// Using a DependencyProperty as the backing store for CaptionWidthGroup.  This enables animation, styling, binding, etc...
 		public static readonly DependencyProperty CaptionWidthGroupProperty =
-			DependencyProperty.Register("CaptionWidthGroup", typeof(string), typeof(VectoParameterControl), new PropertyMetadata(""));
+			DependencyProperty.Register("CaptionWidthGroup", typeof(string), typeof(VectoParameterControl), new PropertyMetadata("CustomControlcaptionWidth"));
 
 
 
@@ -108,7 +108,7 @@ namespace VECTOTrailer.Views.CustomControls
 
 		// Using a DependencyProperty as the backing store for UnitWidthGroup.  This enables animation, styling, binding, etc...
 		public static readonly DependencyProperty UnitWidthGroupProperty =
-			DependencyProperty.Register("UnitWidthGroup", typeof(string), typeof(VectoParameterControl), new PropertyMetadata(""));
+			DependencyProperty.Register("UnitWidthGroup", typeof(string), typeof(VectoParameterControl), new PropertyMetadata("CustomControlUnitWidth"));
 
 
 
