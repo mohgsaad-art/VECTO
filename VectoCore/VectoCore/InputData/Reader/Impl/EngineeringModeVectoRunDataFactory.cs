@@ -174,43 +174,6 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			}
 		}
 
-		public ShiftStrategyParameters CreateGearshiftData(GearboxType gbxType, IGearshiftEngineeringInputData gsInputData, double axleRatio, PerSecond engineIdlingSpeed)
-		{
-			if (gsInputData == null) {
-				return null;
-			}
-
-			var retVal = new ShiftStrategyParameters {
-				TorqueReserve = gsInputData.TorqueReserve,
-				StartTorqueReserve = gsInputData.StartTorqueReserve,
-				TimeBetweenGearshifts = gsInputData.MinTimeBetweenGearshift,
-				StartSpeed = gsInputData.StartSpeed,
-				DownshiftAfterUpshiftDelay = gsInputData.DownshiftAfterUpshiftDelay,
-				UpshiftAfterDownshiftDelay = gsInputData.UpshiftAfterDownshiftDelay,
-				UpshiftMinAcceleration = gsInputData.UpshiftMinAcceleration,
-
-				StartVelocity = gsInputData.StartSpeed ?? DeclarationData.GearboxTCU.StartSpeed,
-				StartAcceleration = gsInputData.StartAcceleration ?? DeclarationData.GearboxTCU.StartAcceleration,
-				RatingFactorCurrentGear = gsInputData.RatingFactorCurrentGear ?? (gbxType.AutomaticTransmission()
-											? DeclarationData.GearboxTCU.RatingFactorCurrentGearAPT
-											: DeclarationData.GearboxTCU.RatingFactorCurrentGear),
-
-				RatioEarlyUpshiftFC = (gsInputData.RatioEarlyUpshiftFC ?? DeclarationData.GearboxTCU.RatioEarlyUpshiftFC) / axleRatio,
-				RatioEarlyDownshiftFC = (gsInputData.RatioEarlyDownshiftFC ?? DeclarationData.GearboxTCU.RatioEarlyDownshiftFC) / axleRatio,
-				AllowedGearRangeFC = gsInputData.AllowedGearRangeFC ?? (gbxType.AutomaticTransmission() ? DeclarationData.GearboxTCU.AllowedGearRangeFCAPT : DeclarationData.GearboxTCU.AllowedGearRangeFCAMT),
-				VelocityDropFactor = gsInputData.VeloictyDropFactor ?? DeclarationData.GearboxTCU.VelocityDropFactor,
-				AccelerationFactor = gsInputData.AccelerationFactor ?? DeclarationData.GearboxTCU.AccelerationFactor,
-				MinEngineSpeedPostUpshift = gsInputData.MinEngineSpeedPostUpshift ?? DeclarationData.GearboxTCU.MinEngineSpeedPostUpshift,
-				ATLookAheadTime = gsInputData.ATLookAheadTime ?? DeclarationData.GearboxTCU.ATLookAheadTime,
-
-				LoadStageThresoldsDown = gsInputData.LoadStageThresholdsDown?.ToArray() ?? DeclarationData.GearboxTCU.LoadStageThresoldsDown,
-				LoadStageThresoldsUp = gsInputData.LoadStageThresholdsUp?.ToArray() ?? DeclarationData.GearboxTCU.LoadStageThresholdsUp,
-				ShiftSpeedsTCToLocked = engineIdlingSpeed == null ? null : (gsInputData.ShiftSpeedsTCToLocked ?? DeclarationData.GearboxTCU.ShiftSpeedsTCToLocked).Select(x => x.Select(y => y + engineIdlingSpeed.AsRPM).ToArray()).ToArray(),
-
-			};
-
-			return retVal;
-		}
-
+		
 	}
 }
