@@ -38,15 +38,15 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
         TestCase(P3_JOB, 0, 581.0761, 2.0993, 2.5302, TestName = "P3 Hybrid TimeRun MeasuredSpeed LongHaul"),
         TestCase(P3_JOB, 1, 554.6953, 7.5691, 8.4872, TestName = "P3 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
         TestCase(P3_JOB, 2, 0, 0, 0, TestName = "P3 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
-        TestCase(P4_JOB, 0, 579.5681, 1.5208, 1.4241, TestName = "P4 Hybrid TimeRun MeasuredSpeed LongHaul"),
-        TestCase(P4_JOB, 1, 565.9986, 3.2657, 3.8947, TestName = "P4 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
-        TestCase(P4_JOB, 2, 722.2364, 7.739, 8.814, TestName = "P4 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
-        TestCase(P2_5_JOB, 0, 847.0267, 3.5345, 7.1476, TestName = "P2_5 Hybrid TimeRun MeasuredSpeed LongHaul"),
+        TestCase(P4_JOB, 0, 579.6962, 1.5482, 1.4764, TestName = "P4 Hybrid TimeRun MeasuredSpeed LongHaul"),
+        TestCase(P4_JOB, 1, 566.8853, 3.2749, 3.895, TestName = "P4 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(P4_JOB, 2, 728.4415, 8.0957, 9.1887, TestName = "P4 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
+        TestCase(P2_5_JOB, 0, 847.2919, 3.4189, 7.0331, TestName = "P2_5 Hybrid TimeRun MeasuredSpeed LongHaul"),
         TestCase(P2_5_JOB, 1, 948.6298, 6.0281, 10.1448, TestName = "P2_5 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
         TestCase(P2_5_JOB, 2, 0, 0, 0, TestName = "P2_5 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
-        TestCase(P1_JOB, 0, 504.8033, 8.5106, 8.496, TestName = "P1 Hybrid TimeRun MeasuredSpeed LongHaul"),
-        TestCase(P1_JOB, 1, 497.1199, 14.4079, 14.4596, TestName = "P1 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
-        TestCase(P1_JOB, 2, 628.8726, 43.6095, 43.6332, TestName = "P1 Hybrid TimeRun MeasuredSpeed UrbanDelivery")
+        TestCase(P1_JOB, 0, 504.8872, 8.4546, 8.44, TestName = "P1 Hybrid TimeRun MeasuredSpeed LongHaul"),
+        TestCase(P1_JOB, 1, 497.1186, 14.3359, 14.3877, TestName = "P1 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(P1_JOB, 2, 629.4404, 42.8145, 42.8395, TestName = "P1 Hybrid TimeRun MeasuredSpeed UrbanDelivery")
         ]
         public void TestHybridTimerunCycle(string jobFile, int cycleIdx, double CO2, double charge, double discharge)
         {
@@ -79,7 +79,7 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 			Assert.IsTrue(run.FinishedWithoutErrors);
 			
             string distanceSumPath = Path.Combine(Path.GetDirectoryName(jobFile), "distance.vsum");
-            AssertHelper.ReportDeviations(distanceSumPath, cycleIdx, factory, metrics.Keys.ToList());
+            AssertHelper.ReportDeviations(distanceSumPath, cycleIdx, factory, metrics);
             
             AssertHelper.AssertMetrics(factory, metrics);
 

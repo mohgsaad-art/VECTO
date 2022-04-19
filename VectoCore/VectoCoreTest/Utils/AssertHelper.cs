@@ -169,7 +169,7 @@ namespace TUGraz.VectoCore.Tests.Utils
         }
 
         public static void ReportDeviations(String distanceSumPath, int distanceSumRow, SimulatorFactory factory, 
-			List<String> metrics)
+			Dictionary<String, double> metrics)
         { 
 			String sumFilePath = WriteSumFile(factory);
 
@@ -181,14 +181,16 @@ namespace TUGraz.VectoCore.Tests.Utils
 		
 			foreach (var metric in metrics) {
 				double result;
-				Assert.IsTrue(double.TryParse(row[metric].ToString(), out result));
+				Assert.IsTrue(double.TryParse(row[metric.Key].ToString(), out result));
 
 				double distanceResult;
-				Assert.IsTrue(double.TryParse(distanceRow[metric].ToString(), out distanceResult));
+				Assert.IsTrue(double.TryParse(distanceRow[metric.Key].ToString(), out distanceResult));
 
 				double deviation = ((Math.Abs(result) - Math.Abs(distanceResult)) / Math.Abs(distanceResult)) * 100;
 
-				TestContext.WriteLine($"Deviation of {metric} = {deviation.ToString("N2")} %   (TimeRun = {result}, DistanceRun = {distanceResult})");
+				double expectedDeviation = ((Math.Abs(metric.Value) - Math.Abs(distanceResult)) / Math.Abs(distanceResult)) * 100;
+
+				TestContext.WriteLine($"Distance run deviation of {metric.Key} = {deviation.ToString("N2")} %   (expected = {expectedDeviation.ToString("N2")} %)");
             }
 
 			TestContext.WriteLine();
