@@ -425,7 +425,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 			public static readonly MeterPerSecond MIN_SPEED_AFTER_TRACTION_INTERRUPTION = 5.KMPHtoMeterPerSecond();
 
-			public const double TorqueReserve = 0;
+			public const double TorqueReserveAMT = 0;
+			public const double TorqueReserveSMT = 0.2;
 			public const double TorqueReserveStart = 0.2;
 
 			public static readonly MeterPerSecond StartSpeed = 8.KMPHtoMeterPerSecond();
@@ -485,6 +486,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 			private const double ShiftPolygonEngineFldMargin = 0.98;
 
 			public static readonly Second MinTimeBetweenGearshifts = 2.SI<Second>();
+			public static readonly Second MinTimeBetweenGearshiftsMT = 1.5.SI<Second>();
 			public static readonly Second DownshiftAfterUpshiftDelay = 6.SI<Second>();
 			public static readonly Second UpshiftAfterDownshiftDelay = 6.SI<Second>();
 

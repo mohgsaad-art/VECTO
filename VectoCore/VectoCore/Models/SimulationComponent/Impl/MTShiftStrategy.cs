@@ -29,6 +29,9 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using TUGraz.VectoCommon.Models;
+using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
@@ -44,5 +47,93 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		}
 
 		public new static string Name => "MT Shift Strategy";
+
+		protected override GearshiftPosition DoCheckUpshift(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity,
+			NewtonMeter inTorque, PerSecond inAngularVelocity, GearshiftPosition currentGear, IResponse response1)
+		{
+			// upshift
+			if (IsAboveUpShiftCurve(currentGear, inTorque, inAngularVelocity)) {
+				currentGear = Gears.Successor(currentGear);
+
+				while (SkipGears && currentGear.Gear < GearboxModelData.Gears.Count) {
+					currentGear = Gears.Successor(currentGear);
+					var tmpGear = Gearbox.Gear;
+					_gearbox.Gear = currentGear;
+					var response = (ResponseDryRun)_gearbox.Request(absTime, dt, outTorque, outAngularVelocity, true);
+					_gearbox.Gear = tmpGear;
+
+					inAngularVelocity = response.Engine.EngineSpeed; //ModelData.Gears[currentGear].Ratio * outAngularVelocity;
+					inTorque = response.Clutch.PowerRequest / inAngularVelocity;
+
+					var maxTorque = VectoMath.Min(response.Engine.DynamicFullLoadPower / ((DataBus.EngineInfo.EngineSpeed + response.Engine.EngineSpeed) / 2),
+						currentGear.Gear > 1
+							? GearboxModelData.Gears[currentGear.Gear].ShiftPolygon.InterpolateDownshift(response.Engine.EngineSpeed)
+							: double.MaxValue.SI<NewtonMeter>());
+					var reserve = 1 - inTorque / maxTorque;
+
+					if (reserve >= GearshiftParams.TorqueReserve && IsAboveDownShiftCurve(currentGear, inTorque, inAngularVelocity)) {
+						continue;
+					}
+
+					currentGear = Gears.Predecessor(currentGear);
+					break;
+				}
+			}
+
+			// early up shift to higher gear ---------------------------------------
+			if (EarlyShiftUp && currentGear.Gear < GearboxModelData.Gears.Count) {
+				// try if next gear would provide enough torque reserve
+				var tryNextGear = Gears.Successor(currentGear);
+				var tmpGear = Gearbox.Gear;
+				_gearbox.Gear = tryNextGear;
+				var response = (ResponseDryRun)_gearbox.Request(absTime, dt, outTorque, outAngularVelocity, true);
+				_gearbox.Gear = tmpGear;
+
+				inAngularVelocity = GearboxModelData.Gears[tryNextGear.Gear].Ratio * outAngularVelocity;
+				inTorque = response.Clutch.PowerRequest / inAngularVelocity;
+
+				// if next gear supplied enough power reserve: take it
+				// otherwise take
+				if (!IsBelowDownShiftCurve(tryNextGear, inTorque, inAngularVelocity)) {
+					var fullLoadPower = response.Engine.PowerRequest - response.DeltaFullLoad;
+					var reserve = 1 - response.Engine.PowerRequest / fullLoadPower;
+
+					if (reserve >= GearshiftParams.TorqueReserve) {
+						currentGear = tryNextGear;
+					}
+				}
+			}
+			return currentGear;
+		}
+
+		protected override GearshiftPosition DoCheckDownshift(Second absTime, Second dt, NewtonMeter outTorque,
+			PerSecond outAngularVelocity,  NewtonMeter inTorque, PerSecond inAngularVelocity, GearshiftPosition currentGear, IResponse response1)
+		{
+			// down shift
+			if (IsBelowDownShiftCurve(currentGear, inTorque, inAngularVelocity)) {
+				currentGear = Gears.Predecessor(currentGear);
+				while (SkipGears && currentGear.Gear > 1) {
+					currentGear = Gears.Predecessor(currentGear);
+					var tmpGear = Gearbox.Gear;
+					_gearbox.Gear = currentGear;
+					var response = (ResponseDryRun)_gearbox.Request(absTime, dt, outTorque, outAngularVelocity, true);
+					_gearbox.Gear = tmpGear;
+
+					inAngularVelocity = GearboxModelData.Gears[currentGear.Gear].Ratio * outAngularVelocity;
+					inTorque = response.Clutch.PowerRequest / inAngularVelocity;
+					var maxTorque = VectoMath.Min(response.Engine.DynamicFullLoadPower / ((DataBus.EngineInfo.EngineSpeed + response.Engine.EngineSpeed) / 2),
+						currentGear.Gear > 1
+							? GearboxModelData.Gears[currentGear.Gear].ShiftPolygon.InterpolateDownshift(response.Engine.EngineSpeed)
+							: double.MaxValue.SI<NewtonMeter>());
+					var reserve = maxTorque.IsEqual(0) ? -1 : (1 - inTorque / maxTorque).Value();
+					if (reserve >= GearshiftParams.TorqueReserve && IsBelowUpShiftCurve(currentGear, inTorque, inAngularVelocity)) {
+						continue;
+					}
+					currentGear = Gears.Successor(currentGear);
+					break;
+				}
+			}
+			return currentGear;
+		}
 	}
 }
