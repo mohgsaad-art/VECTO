@@ -2423,6 +2423,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 			container.SetDataValue("Combinations", _evalCount); //MatRec
 			container.SetDataValue("Driving Action", DataBus.DriverInfo.DrivingAction.ToString()); //MatRec
+			var x = (int) DataBus.DriverInfo.DrivingAction;
+			container.SetDataValue("DriverAction", x); //MatRec
 
 			//if (CurrentState.Evaluations != null) {
 			//    container.SetDataValue(
