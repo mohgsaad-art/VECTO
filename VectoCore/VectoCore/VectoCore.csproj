@@ -918,8 +918,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Declaration\ADAS\ADAS_Combinations.csv" />
     <EmbeddedResource Include="Resources\Declaration\VAUX\Fan-Tech-Medium.csv" />
-    <EmbeddedResource Include="Resources\XSD\VectoDeclarationDefinitions.2.3_DEV.xsd">
-    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Declaration\Buses\ElectricConsumers.csv" />
     <EmbeddedResource Include="Resources\Declaration\Buses\SSMTechList.csv" />
     <EmbeddedResource Include="Resources\Declaration\Buses\SSMDefaults.ahsm" />
@@ -995,6 +993,9 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\XSD\VectoOutputManufacturer.Trailer.0.1.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\XSD\VectoDeclarationDefinitions.2.3.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="Utils\VectoVersionCore.tt">
