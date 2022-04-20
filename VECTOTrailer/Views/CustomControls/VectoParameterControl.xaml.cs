@@ -17,25 +17,75 @@ namespace VECTOTrailer.Views.CustomControls
 	/// <summary>
 	/// Interaction logic for VectoParameterControl.xaml
 	/// </summary>
-	public partial class VectoParameterControl : UserControl, INotifyDataErrorInfo
-	{
-
+	public partial class VectoParameterControl : UserControl//, INotifyDataErrorInfo
+    {
+		private RoutedEventHandler _routedEventHandler;
 		public VectoParameterControl()
 		{
 			InitializeComponent();
-			Validation.SetErrorTemplate(this, null);
-            //(Content as FrameworkElement).DataContext = this;
+			//Validation.SetErrorTemplate(this, null);
+			if (DataContext is ViewModelBase vmBase) {
+				vmBase.ErrorsChanged += (sender, args) => NotifyErrorsChanged("Value");
+			}
 
-            ErrorsChanged += VectoParameterControl_ErrorsChanged;
+			Loaded += (sender, args) => {
+				_routedEventHandler = new RoutedEventHandler(RoutedEventHandler);
+				AddHandler(Validation.ErrorEvent, _routedEventHandler);
+			};
+			Unloaded += (sender, args) => {
+				if (_routedEventHandler != null) {
+					RemoveHandler(Validation.ErrorEvent, _routedEventHandler);
+				}
+			};
 
+			
 		}
 
-        private void VectoParameterControl_ErrorsChanged(object sender, DataErrorsChangedEventArgs e)
+
+
+        private void RoutedEventHandler(object sender, RoutedEventArgs e)
 		{
-			//var _hasErrors = HasErrors;
+			switch (e) {
+				case ValidationErrorEventArgs valError:
+					ValidationErrorEventHandler(sender, valError);
+					break;
+				default:
+					break;
+			}
 		}
 
-        public string Caption
+		private void ValidationErrorEventHandler(object sender, ValidationErrorEventArgs valError)
+		{
+
+			
+			if (DataContext is ViewModelBase viewModelBase)
+			{
+
+				var propertyName = "unknown";
+				if (valError.Error.BindingInError is BindingExpression bindingEx) {
+					propertyName = bindingEx.ResolvedSourcePropertyName;
+					
+				}
+				else
+				{
+					throw new Exception("Multibinding not implemented");
+				}
+
+				if (valError.Action == ValidationErrorEventAction.Added)
+				{
+					viewModelBase.AddPropertyError(propertyName, valError.Error.ErrorContent.ToString());
+
+				}
+				else
+				{
+					viewModelBase.RemovePropertyError(propertyName, valError.Error.ErrorContent.ToString());
+				}
+			}
+
+		}
+
+
+		public string Caption
 		{
 			get { return (string)GetValue(CaptionProperty); }
 			set { SetValue(CaptionProperty, value);  }
@@ -48,8 +98,14 @@ namespace VECTOTrailer.Views.CustomControls
 
 		public object Value
 		{
-			get { return (object)GetValue(ValueProperty); }
-			set { SetValue(ValueProperty, value);  }
+			get
+			{
+				return (object)GetValue(ValueProperty);
+			}
+			set
+			{
+				SetValue(ValueProperty, value);
+			}
 		}
 
 		//Using a DependencyProperty as the backing store for Value.This enables animation, styling, binding, etc...
@@ -57,10 +113,14 @@ namespace VECTOTrailer.Views.CustomControls
 			DependencyProperty.Register("Value", typeof(object), 
 				typeof(VectoParameterControl),
 				new FrameworkPropertyMetadata() {
-					BindsTwoWayByDefault = true, PropertyChangedCallback = ValidatePropertyWhenChangedCallback
+					BindsTwoWayByDefault = true,
+					PropertyChangedCallback = PropertyChangedCallback
 				});
 
-
+		private static void PropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		{
+			
+		}
 
 
 		public string Unit
@@ -120,6 +180,10 @@ namespace VECTOTrailer.Views.CustomControls
 		public bool HasErrors
 		{
 			get {
+				if (DataContext is ViewModelBase vmBase) {
+					return vmBase.HasErrors;
+				}
+
 				var validationErrors = Validation.GetErrors(this);
 				var hasErrors = validationErrors.Any();
 				return hasErrors;
@@ -128,6 +192,9 @@ namespace VECTOTrailer.Views.CustomControls
 
 		public IEnumerable GetErrors(string propertyName)
 		{
+			if (DataContext is ViewModelBase vmBase) {
+				return vmBase.GetErrors(propertyName);
+			}
 			var validationErrors = Validation.GetErrors(this);
 			var specificValidationErrors =
 				validationErrors.Where(
@@ -139,19 +206,15 @@ namespace VECTOTrailer.Views.CustomControls
 
 		public void NotifyErrorsChanged(string propertyName)
 		{
-			var errors = Validation.GetErrors(this);
-			if (ErrorsChanged != null) {
-				ErrorsChanged(this, new DataErrorsChangedEventArgs(propertyName));
-				
-			}
+			ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
 		}
 
 		protected static void ValidatePropertyWhenChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
 		{
 			var errors = Validation.GetErrors(dependencyObject).Where(error => !(error.RuleInError.GetType() == typeof(NotifyDataErrorValidationRule))).ToList();
 			((VectoParameterControl)dependencyObject).UpdateErrorsInViewModel(errors, dependencyPropertyChangedEventArgs);
-
-			//((VectoParameterControl)dependencyObject).NotifyErrorsChanged(dependencyPropertyChangedEventArgs.Property.Name);
+			
+			((VectoParameterControl)dependencyObject).NotifyErrorsChanged(dependencyPropertyChangedEventArgs.Property.Name);
 
 		}
 
