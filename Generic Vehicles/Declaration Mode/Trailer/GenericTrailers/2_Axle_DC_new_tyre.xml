@@ -38,16 +38,16 @@
             <Steered>false</Steered>
             <Tyre>
               <Data id="TYR-gooZah3D" xsi:type="v2.3:TyreDataDeclarationType">
-                <Manufacturer xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.3">Generic Tyre Manufacturer</Manufacturer>
-                <Model xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.3">Generic Tyre Model</Model>
-                <CertificationNumber xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.3">e12*0815/8051*2017/05T0000*00</CertificationNumber>
-                <Date xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.3">2017-02-15T11:00:00Z</Date>
-                <AppVersion xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.3">DemoTyreApp 1.0</AppVersion>
-                <Dimension xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.3">385/65 R22.5</Dimension>
-                <TyreClass xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.3">C3</TyreClass>
-                <FuelEfficiencyClass xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.3">C</FuelEfficiencyClass>
-                <RRCDeclared xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.3">0.0055</RRCDeclared>
-                <FzISO xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.3">37500</FzISO>
+                <Manufacturer xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">Generic Tyre Manufacturer</Manufacturer>
+                <Model xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">Generic Tyre Model</Model>
+                <CertificationNumber xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">e12*0815/8051*2017/05T0000*00</CertificationNumber>
+                <Date xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">2017-02-15T11:00:00Z</Date>
+                <AppVersion xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">DemoTyreApp 1.0</AppVersion>
+                <Dimension xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">385/65 R22.5</Dimension>
+                <TyreClass xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">C3</TyreClass>
+                <FuelEfficiencyClass xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">C</FuelEfficiencyClass>
+                <RRCDeclared xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">0.0055</RRCDeclared>
+                <FzISO xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">37500</FzISO>
               </Data>
               <Signature>
                 <di:Reference URI="#TYR-gooZah3D">

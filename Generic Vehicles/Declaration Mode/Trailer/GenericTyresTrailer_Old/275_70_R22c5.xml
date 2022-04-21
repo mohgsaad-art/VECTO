@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<tns:VectoInputDeclaration xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0"
+	xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0"
+	xmlns:v2.1="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1"
+	xmlns:v2.2="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.2"
+	xmlns:v2.7="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7"
+	xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationComponent:v2.0"
+	xmlns:di="http://www.w3.org/2000/09/xmldsig#" schemaVersion="2.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationComponent F:\Vecto\vecto-dev_bt\VectoCore\VectoCore\Resources\XSD/VectoDeclarationComponent.xsd">
+	<v2.7:Tyre>
+		<v2.7:Data id="TYR-gooZah3D" xsi:type="v2.2:TyreDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.2">
+			<Manufacturer>Generic Tyre Manufacturer</Manufacturer>
+			<Model>Generic Tyre Model</Model>
+			<CertificationNumber>e12*0815/8051*2017/05T0000*00</CertificationNumber>
+			<Date>2017-02-15T11:00:00Z</Date>
+			<AppVersion>DemoTyreApp 1.0</AppVersion>
+			<Dimension>275/70 R22.5</Dimension>
+			<RRCDeclared>0.0065</RRCDeclared>
+			<FzISO>26266</FzISO>
+		</v2.7:Data>
+		<v2.7:Signature>
+			<di:Reference URI="#TYR-gooZah3D">
+				<di:Transforms>
+					<di:Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+					<di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+				</di:Transforms>
+				<di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+				<di:DigestValue>JWEwzKSP0lXvwRgQZTiWJm9dpdtQ72FOX0CC5Vy6f2Y=</di:DigestValue>
+			</di:Reference>
+		</v2.7:Signature>
+	</v2.7:Tyre>
+</tns:VectoInputDeclaration>
