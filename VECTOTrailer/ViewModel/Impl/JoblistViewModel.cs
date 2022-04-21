@@ -853,9 +853,10 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		private void DoShowVectoHelp()
 		{
+			
 			try
 			{
-				System.Diagnostics.Process.Start("explorer.exe", @"file:\\" + VectoHelpPath);
+				System.Diagnostics.Process.Start(BrowserUtils.GetDefaultBrowserPath() ?? "explorer.exe", @"file:\\" + VectoHelpPath);
 			}
 			catch (Exception ex)
 			{
