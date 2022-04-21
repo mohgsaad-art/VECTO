@@ -62,15 +62,15 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		protected static DataTable ReadCsvResource(string resourceId)
 		{
-            //// TODO: MQ 2020-07 Remove in official bus version!
-            ////#if USE_EXTENAL_DECLARATION_DATA
-            var tmp = resourceId.Replace(DeclarationData.DeclarationDataResourcePrefix + ".", "");
-            var parts = tmp.Split('.');
-            var fileName = Path.Combine("Declaration", string.Join(".", parts[parts.Length - 2], parts[parts.Length - 1]));
-            if (File.Exists(fileName))
-            {
-                return VectoCSVFile.Read(fileName);
-            }
+            ////// TODO: MQ 2020-07 Remove in official bus version!
+            //////#if USE_EXTENAL_DECLARATION_DATA
+            //var tmp = resourceId.Replace(DeclarationData.DeclarationDataResourcePrefix + ".", "");
+            //var parts = tmp.Split('.');
+            //var fileName = Path.Combine("Declaration", string.Join(".", parts[parts.Length - 2], parts[parts.Length - 1]));
+            //if (File.Exists(fileName))
+            //{
+            //    return VectoCSVFile.Read(fileName);
+            //}
 
             //#else
             return VectoCSVFile.ReadStream(RessourceHelper.ReadStream(resourceId), source: resourceId);
