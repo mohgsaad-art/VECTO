@@ -372,7 +372,11 @@ namespace VECTOTrailer.ViewModel.Impl
 		public bool CanRunSimulation
 		{
 			get { return _canRunSimulation; }
-			set { SetProperty(ref _canRunSimulation, value); }
+			set {
+				if (SetProperty(ref _canRunSimulation, value)) {
+					OnPropertyChanged(nameof(BrowseOutputDirectory));
+				}
+			}
 		}
 
 		public bool CanStopSimulation
@@ -450,7 +454,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		//}
 		public ICommand BrowseOutputDirectory
 		{
-			get { return _browseOutputDirectory ?? (_browseOutputDirectory = new RelayCommand(() => DoBrowseDirectory(s => _trailerToolSettings.GeneralSettings.SavePathFolder = s))); }
+			get { return _browseOutputDirectory ?? (_browseOutputDirectory = new RelayCommand(() => DoBrowseDirectory(s => _trailerToolSettings.GeneralSettings.SavePathFolder = s), () => CanRunSimulation)); }
 		}
 
 		public ITrailerToolSettings TrailerToolSettings { get => _trailerToolSettings; }

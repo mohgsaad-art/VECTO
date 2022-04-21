@@ -187,9 +187,11 @@
     </ApplicationDefinition>
     <Compile Include="Helper\AvalonEditBehaviour.cs" />
     <Compile Include="Helper\BrowserUtils.cs" />
+    <Compile Include="Helper\Converter\BoolANDMultiValConverter.cs" />
     <Compile Include="Helper\Converter\BoolVisibilityConverter.cs" />
     <Compile Include="Helper\Converter\ComponentTitleConverter.cs" />
     <Compile Include="Helper\Converter\EnumConverter.cs" />
+    <Compile Include="Helper\Converter\InvertBoolConverter.cs" />
     <Compile Include="Helper\EventCommandExecuter.cs" />
     <Compile Include="Helper\Extension.cs" />
     <Compile Include="Helper\FileDialogHelper.cs" />

@@ -7,7 +7,6 @@
              xmlns:interfaces="clr-namespace:VECTOTrailer.ViewModel.Interfaces"
              xmlns:views="clr-namespace:VECTOTrailer.Views"
              xmlns:converter="clr-namespace:VECTOTrailer.Helper.Converter"
-             xmlns:vecto3Gui="clr-namespace:VECTOTrailer"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="600"
              d:DataContext="{d:DesignInstance Type=impl:JoblistViewModel, IsDesignTimeCreatable=False}"
@@ -247,14 +246,24 @@
                                 
                                 <GroupBox Header ="Output Directory">
                                     <DockPanel LastChildFill="True">
-                                        <Button DockPanel.Dock="Right" Width="60" Content="Browse" Command="{Binding BrowseOutputDirectory}" Margin="5,0,0,0"/>
-                                        <TextBox  Text="{Binding TrailerToolSettings.GeneralSettings.SavePathFolder}"/>
+                                        <Button DockPanel.Dock="Right" Width="60" Content="Browse"
+                                                Command="{Binding BrowseOutputDirectory}" Margin="5,0,0,0"/>
+                                        <TextBox IsReadOnly="{Binding CanRunSimulation, Converter={converter:InvertBoolConverter}}" Text="{Binding TrailerToolSettings.GeneralSettings.SavePathFolder}"/>
                                     </DockPanel>
                                 </GroupBox>
                                 <GroupBox Header ="Settings">
                                     <StackPanel>
-                                        <CheckBox Margin="0,0,0,3" IsChecked="{Binding TrailerToolSettings.SimulationSettings.WriteModData}">Write modal results</CheckBox>
-                                        <CheckBox Margin="0,0,0,3" IsEnabled="{Binding WritePdfCanBeEdited}" IsChecked="{Binding TrailerToolSettings.SimulationSettings.WritePDFReport}">Create PDF reports</CheckBox>
+                                        <CheckBox Margin="0,0,0,3" IsEnabled="{Binding CanRunSimulation}" IsChecked="{Binding TrailerToolSettings.SimulationSettings.WriteModData}">Write modal results</CheckBox>
+                                        <CheckBox Margin="0,0,0,3"  IsChecked="{Binding TrailerToolSettings.SimulationSettings.WritePDFReport}">
+                                            <!--IsEnabled="{Binding WritePdfCanBeEdited}"-->
+                                            Create PDF reports
+                                            <CheckBox.IsEnabled>
+                                                <MultiBinding Converter="{ converter:BoolANDMultiValConverter}">
+                                                    <Binding Path="WritePdfCanBeEdited"/>
+                                                    <Binding Path=" CanRunSimulation"></Binding>
+                                                </MultiBinding>
+                                            </CheckBox.IsEnabled>
+                                            </CheckBox>
                                     </StackPanel>
                                 </GroupBox>
                                     <!--<CheckBox Margin="0,0,0,3" IsChecked="{Binding WriteModData1Hz}">Modal results in 1Hz</CheckBox>-->
@@ -262,7 +271,7 @@
                         </GroupBox>
                         <GroupBox Header="Background Worker">
                             <StackPanel>
-                                <TextBlock TextWrapping="Wrap" Margin="5" Visibility="{Binding BackGroundSimulator.AutoSimActive, Converter={converter:BoolVisibilityConverter}}">To change the directories the AutoSimulator must be inactive</TextBlock>
+                                <TextBlock TextWrapping="Wrap" Margin="5" Visibility="{Binding BackGroundSimulator.AutoSimActive, Converter={converter:BoolVisibilityConverter}}">To change the settings the Background Worker must be inactive</TextBlock>
                                 <GroupBox Header="Input Directory">
                                     <DockPanel LastChildFill="True">
                                         <Button Width="60" DockPanel.Dock="Right" Content="Browse" Command="{Binding BrowseAutoSimInputDirectory}" Margin="5,0,0,0"/>
@@ -275,11 +284,22 @@
                                         <TextBox HorizontalAlignment="Stretch" Text="{Binding BackGroundSimulator.OutputDirectory}" IsReadOnly="True" TextWrapping="Wrap"/>
                                     </DockPanel>
                                 </GroupBox>
-                                <GroupBox Header="Background Worker Settings">
+                                <GroupBox Header="Background Worker Settings" >
                                     <StackPanel Orientation="Vertical">
-                                        <CheckBox Margin="0,0,0,3" IsChecked="{Binding TrailerToolSettings.SimulationSettings.BackgroundWriteModData}">Write modal results</CheckBox>
-                                            <CheckBox Margin="0,0,0,3" IsEnabled="{Binding WritePdfCanBeEdited}" IsChecked="{Binding TrailerToolSettings.SimulationSettings.BackgroudWritePDF}">Create PDF reports</CheckBox>
-                                            <!--<CheckBox Margin="0,0,0,3" IsChecked="{Binding AutoSimulator.WriteModData1Hz}">Modal results in 1Hz</CheckBox>-->
+                                        <CheckBox Margin="0,0,0,3" IsEnabled="{Binding BackGroundSimulator.AutoSimActive, Converter={converter:InvertBoolConverter}}" IsChecked="{Binding TrailerToolSettings.SimulationSettings.BackgroundWriteModData}">Write modal results</CheckBox>
+                                        <CheckBox Margin="0,0,0,3"  IsChecked="{Binding TrailerToolSettings.SimulationSettings.BackgroudWritePDF}">
+                                            <!--IsEnabled="{Binding WritePdfCanBeEdited}"-->
+                                                <CheckBox.IsEnabled>
+                                                    <MultiBinding Converter="{ converter:BoolANDMultiValConverter}">
+                                                        <Binding Path="WritePdfCanBeEdited"/>
+                                                        <Binding Path="BackGroundSimulator.AutoSimActive" Converter="{ converter:InvertBoolConverter}"></Binding>
+                                                    </MultiBinding>
+                                            </CheckBox.IsEnabled>
+                                            Create PDF reports
+                                        </CheckBox>
+                                           
+                                        
+                                        <!--<CheckBox Margin="0,0,0,3" IsChecked="{Binding AutoSimulator.WriteModData1Hz}">Modal results in 1Hz</CheckBox>-->
                                     </StackPanel>
                                 </GroupBox>
                             </StackPanel>
