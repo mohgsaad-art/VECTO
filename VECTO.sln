@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30204.135
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32414.318
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VectoCore", "VectoCore\VectoCore\VectoCore.csproj", "{CD36938A-ADD9-4C65-96DA-B397CDEEA90A}"
 EndProject
@@ -36,6 +36,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HashingCmd", "HashingCmd\HashingCmd.csproj", "{33F9848E-9257-4BE2-915F-68E748AEB204}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VECTOTrailer", "VECTOTrailer\VECTOTrailer.csproj", "{6F7981DC-B555-441C-8BAE-6DA21D1CB7BB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E14FC935-30EA-4BE6-AA8A-85CB76FEBA6A} = {E14FC935-30EA-4BE6-AA8A-85CB76FEBA6A}
+		{33F9848E-9257-4BE2-915F-68E748AEB204} = {33F9848E-9257-4BE2-915F-68E748AEB204}
+	EndProjectSection
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "VECTO", "VECTO\VECTO.vbproj", "{AAC0F132-0A9F-45B3-B682-77AC9B24B352}"
 EndProject
@@ -365,7 +369,8 @@ Global
 		{B673E12F-D323-4C4C-8805-9915B2C72D3D}.Deploy|Any CPU.Build.0 = Debug|Any CPU
 		{B673E12F-D323-4C4C-8805-9915B2C72D3D}.Deploy|x64.ActiveCfg = Debug|Any CPU
 		{B673E12F-D323-4C4C-8805-9915B2C72D3D}.Deploy|x86.ActiveCfg = Debug|Any CPU
-		{B673E12F-D323-4C4C-8805-9915B2C72D3D}.DeployTrailer|Any CPU.ActiveCfg = Debug|Any CPU
+		{B673E12F-D323-4C4C-8805-9915B2C72D3D}.DeployTrailer|Any CPU.ActiveCfg = Release|Any CPU
+		{B673E12F-D323-4C4C-8805-9915B2C72D3D}.DeployTrailer|Any CPU.Build.0 = Release|Any CPU
 		{B673E12F-D323-4C4C-8805-9915B2C72D3D}.DeployTrailer|x64.ActiveCfg = DeployTrailer|Any CPU
 		{B673E12F-D323-4C4C-8805-9915B2C72D3D}.DeployTrailer|x64.Build.0 = DeployTrailer|Any CPU
 		{B673E12F-D323-4C4C-8805-9915B2C72D3D}.DeployTrailer|x86.ActiveCfg = DeployTrailer|Any CPU
@@ -424,7 +429,8 @@ Global
 		{E14FC935-30EA-4BE6-AA8A-85CB76FEBA6A}.Deploy|Any CPU.Build.0 = Debug|Any CPU
 		{E14FC935-30EA-4BE6-AA8A-85CB76FEBA6A}.Deploy|x64.ActiveCfg = Debug|Any CPU
 		{E14FC935-30EA-4BE6-AA8A-85CB76FEBA6A}.Deploy|x86.ActiveCfg = Debug|Any CPU
-		{E14FC935-30EA-4BE6-AA8A-85CB76FEBA6A}.DeployTrailer|Any CPU.ActiveCfg = Debug|Any CPU
+		{E14FC935-30EA-4BE6-AA8A-85CB76FEBA6A}.DeployTrailer|Any CPU.ActiveCfg = Release|Any CPU
+		{E14FC935-30EA-4BE6-AA8A-85CB76FEBA6A}.DeployTrailer|Any CPU.Build.0 = Release|Any CPU
 		{E14FC935-30EA-4BE6-AA8A-85CB76FEBA6A}.DeployTrailer|x64.ActiveCfg = DeployTrailer|Any CPU
 		{E14FC935-30EA-4BE6-AA8A-85CB76FEBA6A}.DeployTrailer|x64.Build.0 = DeployTrailer|Any CPU
 		{E14FC935-30EA-4BE6-AA8A-85CB76FEBA6A}.DeployTrailer|x86.ActiveCfg = DeployTrailer|Any CPU
@@ -454,7 +460,8 @@ Global
 		{33F9848E-9257-4BE2-915F-68E748AEB204}.Deploy|Any CPU.Build.0 = Debug|Any CPU
 		{33F9848E-9257-4BE2-915F-68E748AEB204}.Deploy|x64.ActiveCfg = Debug|Any CPU
 		{33F9848E-9257-4BE2-915F-68E748AEB204}.Deploy|x86.ActiveCfg = Debug|Any CPU
-		{33F9848E-9257-4BE2-915F-68E748AEB204}.DeployTrailer|Any CPU.ActiveCfg = Debug|Any CPU
+		{33F9848E-9257-4BE2-915F-68E748AEB204}.DeployTrailer|Any CPU.ActiveCfg = Release|Any CPU
+		{33F9848E-9257-4BE2-915F-68E748AEB204}.DeployTrailer|Any CPU.Build.0 = Release|Any CPU
 		{33F9848E-9257-4BE2-915F-68E748AEB204}.DeployTrailer|x64.ActiveCfg = DeployTrailer|Any CPU
 		{33F9848E-9257-4BE2-915F-68E748AEB204}.DeployTrailer|x64.Build.0 = DeployTrailer|Any CPU
 		{33F9848E-9257-4BE2-915F-68E748AEB204}.DeployTrailer|x86.ActiveCfg = DeployTrailer|Any CPU

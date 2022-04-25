@@ -12,7 +12,7 @@
     <AssemblyName>VECTO</AssemblyName>
     <MyType>WindowsForms</MyType>
     <ApplicationIcon>Resources\Icon2.ico</ApplicationIcon>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>
