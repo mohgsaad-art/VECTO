@@ -5,7 +5,6 @@
   <Import Project="..\packages\CefSharp.Common.99.2.120\build\CefSharp.Common.props" Condition="Exists('..\packages\CefSharp.Common.99.2.120\build\CefSharp.Common.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <CefSharpAnyCpuSupport>true</CefSharpAnyCpuSupport>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{6F7981DC-B555-441C-8BAE-6DA21D1CB7BB}</ProjectGuid>
