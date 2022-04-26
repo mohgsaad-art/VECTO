@@ -17,6 +17,7 @@ using Ninject.Extensions.Factory;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
+using NLog.Targets.Wrappers;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCore;
 using VECTOTrailer.Helper;
@@ -57,8 +58,8 @@ namespace VECTOTrailer
 		private void ConfigurePdfCreator()
 		{
 			_pdfCreator = container.Get<IPdfCreator>();
-			if (!_pdfCreator.Init()) {
-				MessageBox.Show("PDF Creation not supported");
+			if (!_pdfCreator.Init(out var error)) {
+				MessageBox.Show($"PDF Creation not supported {error}");
 			};
 		}
 
@@ -76,8 +77,23 @@ namespace VECTOTrailer
 					Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData, Environment.SpecialFolderOption.Create),
 						Assembly.GetExecutingAssembly().GetName().Name
 					);
+
+				var logTarget = LogManager.Configuration.FindTargetByName<FileTarget>("LogFile");
+				if (logTarget == null) {
+					logTarget =
+						LogManager.Configuration.FindTargetByName<WrapperTargetBase>("LogFile").WrappedTarget as FileTarget;
+				}
+
+				if (logTarget != null) {
+					logTarget.FileName = Path.Combine(Path.GetFullPath(folderName), "log.txt");
+					LogManager.ReconfigExistingLoggers();
+				}
 			}
+
 			LogFileHelper.SetBasePath(Path.GetFullPath(Path.Combine(folderName,"Log")));
+			var logger = LogManager.GetLogger("VECTOTrailer");
+			logger.Warn("hi");
+			
 		}
 
         private void ConfigureContainer()
