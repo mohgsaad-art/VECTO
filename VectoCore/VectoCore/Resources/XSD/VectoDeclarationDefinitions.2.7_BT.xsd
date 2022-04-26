@@ -83,9 +83,21 @@
 		<xs:complexContent>
 			<xs:extension base="v2.7:AbstractTrailerAxleDataType">
 				<xs:sequence>
-					<xs:element name="TwinTyres" type="xs:boolean"/>
-					<xs:element name="Liftable" type="xs:boolean" minOccurs="0"/>
-					<xs:element name="Steered" type="xs:boolean" minOccurs="0"/>
+					<xs:element name="TwinTyres" type="xs:boolean">
+						<xs:annotation>
+							<xs:documentation>T025 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Liftable" type="xs:boolean" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>T027 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Steered" type="xs:boolean" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>T026 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
 					<xs:element name="WheelBearings" minOccurs="0"/>
 					<xs:element name="Tyre">
 						<xs:complexType>
@@ -131,43 +143,131 @@
 		<xs:complexContent>
 			<xs:extension base="v2.0:AbstractVehicleDeclarationType">
 				<xs:sequence>
-					<xs:element name="Manufacturer" type="v1.0:ManufacturerType"/>
-					<xs:element name="ManufacturerAddress" type="v1.0:ManufacturerAddressType"/>
-					<xs:element name="Model_CommercialName" type="v1.0:ModelType"/>
-					<xs:element name="VIN" type="v1.0:VINType"/>
-					<xs:element name="Date" type="v1.0:DateTimeWithTimezone"/>
-					<xs:element name="LegislativeCategory" type="v2.7:TrailerLegislativeCategoryType"/>
-					<xs:element name="AxleCount" type="v2.7:TrailerAxleCountType"/>
-					<xs:element name="TrailerType" type="v2.7:TrailerTypeType"/>
-					<xs:element name="BodyWorkType" type="v2.7:BodyWorkCodeType"/>
-					<xs:element name="TrailerCouplingPoint" type="v2.7:TrailerCouplingPoint" minOccurs="0"/>
+					<xs:element name="Manufacturer" type="v1.0:ManufacturerType">
+						<xs:annotation>
+							<xs:documentation>T001 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ManufacturerAddress" type="v1.0:ManufacturerAddressType">
+						<xs:annotation>
+							<xs:documentation>T002 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Model_CommercialName" type="v1.0:ModelType">
+						<xs:annotation>
+							<xs:documentation>T003 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="VIN" type="v1.0:VINType">
+						<xs:annotation>
+							<xs:documentation>T004 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Date" type="v1.0:DateTimeWithTimezone">
+						<xs:annotation>
+							<xs:documentation>T005 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="LegislativeCategory" type="v2.7:TrailerLegislativeCategoryType">
+						<xs:annotation>
+							<xs:documentation>T006 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="AxleCount" type="v2.7:TrailerAxleCountType">
+						<xs:annotation>
+							<xs:documentation>T007 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="TrailerType" type="v2.7:TrailerTypeType">
+						<xs:annotation>
+							<xs:documentation>T008 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="BodyWorkType" type="v2.7:BodyWorkCodeType">
+						<xs:annotation>
+							<xs:documentation>T009 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="TrailerCouplingPoint" type="v2.7:TrailerCouplingPoint" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>T020 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
 					<xs:element name="Masses">
 						<xs:complexType>
 							<xs:sequence>
-								<xs:element name="CorrectedMassInRunningOrder" type="v2.7:TrailerMassType"/>
-								<xs:element name="TPMLMTrailer" type="v2.7:TrailerMassType"/>
-								<xs:element name="TPMLMAxleAssembly" type="xs:int" minOccurs="0"/>
+								<xs:element name="CorrectedMassInRunningOrder" type="v2.7:TrailerMassType">
+									<xs:annotation>
+										<xs:documentation>T011 - [kg]</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="TPMLMTrailer" type="v2.7:TPMLMTrailer">
+									<xs:annotation>
+										<xs:documentation>T012 - [kg]</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="TPMLMAxleAssembly" type="v2.7:TPMLMAxleAssembly" minOccurs="0">
+									<xs:annotation>
+										<xs:documentation>T013 - [kg]</xs:documentation>
+									</xs:annotation>
+								</xs:element>
 							</xs:sequence>
 						</xs:complexType>
 					</xs:element>
 					<xs:element name="Dimensions">
 						<xs:complexType>
 							<xs:sequence>
-								<xs:element name="ExternalLengthBody" type="v2.7:TrailerLengthType"/>
-								<xs:element name="ExternalWidthBody" type="v2.7:TrailerLengthType"/>
-								<xs:element name="ExternalHeightBody" type="v2.7:TrailerLengthType"/>
-								<xs:element name="TotalHeightTrailer" type="v2.7:TrailerLengthType"/>
-								<xs:element name="LengthFromFrontToFirstAxle" type="v2.7:TrailerLengthType"/>
-								<xs:element name="LengthBetweenCentresOfAxles" type="v2.7:TrailerLengthType"/>
-								<xs:element name="CargoVolume" type="v2.7:TrailerCargoVolumeType"/>
-								<xs:element name="VolumeOrientation" type="xs:boolean"/>
+								<xs:element name="ExternalLengthBody" type="v2.7:TrailerLengthType">
+									<xs:annotation>
+										<xs:documentation>T014 - [m]</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="ExternalWidthBody" type="v2.7:TrailerLengthType">
+									<xs:annotation>
+										<xs:documentation>T015 - [m]</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="ExternalHeightBody" type="v2.7:TrailerLengthType">
+									<xs:annotation>
+										<xs:documentation>T016 - [m]</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="TotalHeightTrailer" type="v2.7:TrailerLengthType">
+									<xs:annotation>
+										<xs:documentation>T017 - [m]</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="LengthFromFrontToFirstAxle" type="v2.7:TrailerLengthType">
+									<xs:annotation>
+										<xs:documentation>T018 - [m]</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="LengthBetweenCentresOfAxles" type="v2.7:TrailerLengthType">
+									<xs:annotation>
+										<xs:documentation>T019 - [m]</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="CargoVolume" type="v2.7:TrailerCargoVolumeType">
+									<xs:annotation>
+										<xs:documentation>T021 - [m³]</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="VolumeOrientation" type="xs:boolean">
+									<xs:annotation>
+										<xs:documentation>T010 - [-]</xs:documentation>
+									</xs:annotation>
+								</xs:element>
 							</xs:sequence>
 						</xs:complexType>
 					</xs:element>
 					<xs:element name="AeroFeatures">
 						<xs:complexType>
 							<xs:choice>
-								<xs:element name="Technology" type="v2.7:TrailerAeroFeatureTechnologyType" maxOccurs="unbounded"/>
+								<xs:element name="Technology" type="v2.7:TrailerAeroFeatureTechnologyType" maxOccurs="unbounded">
+									<xs:annotation>
+										<xs:documentation>T022 - [-]</xs:documentation>
+									</xs:annotation>
+								</xs:element>
 								<xs:element name="CertifiedAeroDevice" type="v2.7:CertifiedAeroComponentDeclarationType"/>
 							</xs:choice>
 						</xs:complexType>
@@ -184,6 +284,14 @@
 		<xs:restriction base="xs:boolean"/>
 	</xs:simpleType>
 	<xs:simpleType name="BodyWorkCodeType">
+		<xs:annotation>
+			<xs:appinfo>
+				<vectoParam:description>
+					<vectoParam:parameterId component="Trailer/Vehicle">009</vectoParam:parameterId>
+					<vectoParam:unit>-</vectoParam:unit>
+				</vectoParam:description>
+			</xs:appinfo>
+		</xs:annotation>
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="dry box"/>
 			<xs:enumeration value="refrigerated"/>
@@ -206,11 +314,11 @@
 			<xs:minInclusive value="0.00"/>
 		</xs:restriction>
 	</xs:simpleType>
-	<xs:simpleType name="CorrectedMassInRunningOrder">
+	<!--	<xs:simpleType name="CorrectedMassInRunningOrder">
 		<xs:restriction base="xs:integer">
 			<xs:minInclusive value="1000"/>
 		</xs:restriction>
-	</xs:simpleType>
+	</xs:simpleType>-->
 	<xs:simpleType name="ExternalWidthBody">
 		<xs:restriction base="xs:double">
 			<xs:minInclusive value="1"/>
@@ -224,16 +332,40 @@
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="TPMLMAxleAssembly">
+		<xs:annotation>
+			<xs:appinfo>
+				<vectoParam:description>
+					<vectoParam:parameterId component="Trailer/Vehicle">013</vectoParam:parameterId>
+					<vectoParam:unit>kg</vectoParam:unit>
+				</vectoParam:description>
+			</xs:appinfo>
+		</xs:annotation>
 		<xs:restriction base="xs:integer">
 			<xs:minInclusive value="1000"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="TPMLMTrailer">
+		<xs:annotation>
+			<xs:appinfo>
+				<vectoParam:description>
+					<vectoParam:parameterId component="Trailer/Vehicle">012</vectoParam:parameterId>
+					<vectoParam:unit>kg</vectoParam:unit>
+				</vectoParam:description>
+			</xs:appinfo>
+		</xs:annotation>
 		<xs:restriction base="xs:integer">
 			<xs:minInclusive value="1000"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="TrailerAeroFeatureTechnologyType">
+		<xs:annotation>
+			<xs:appinfo>
+				<vectoParam:description>
+					<vectoParam:parameterId component="Trailer/Vehicle">012</vectoParam:parameterId>
+					<vectoParam:unit>kg</vectoParam:unit>
+				</vectoParam:description>
+			</xs:appinfo>
+		</xs:annotation>
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="none"/>
 			<xs:enumeration value="short side covers"/>
@@ -243,12 +375,28 @@
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="TrailerAxleCountType">
+		<xs:annotation>
+			<xs:appinfo>
+				<vectoParam:description>
+					<vectoParam:parameterId component="Trailer/Vehicle">007</vectoParam:parameterId>
+					<vectoParam:unit>-</vectoParam:unit>
+				</vectoParam:description>
+			</xs:appinfo>
+		</xs:annotation>
 		<xs:restriction base="xs:int">
 			<xs:minInclusive value="1"/>
 			<xs:maxInclusive value="4"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="TrailerCargoVolumeType">
+		<xs:annotation>
+			<xs:appinfo>
+				<vectoParam:description>
+					<vectoParam:parameterId component="Trailer/Vehicle">021</vectoParam:parameterId>
+					<vectoParam:unit>kg</vectoParam:unit>
+				</vectoParam:description>
+			</xs:appinfo>
+		</xs:annotation>
 		<xs:restriction base="v1.0:Double3">
 			<xs:minInclusive value="0.000"/>
 		</xs:restriction>
@@ -261,20 +409,57 @@
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="TrailerLegislativeCategoryType">
+		<xs:annotation>
+			<xs:appinfo>
+				<vectoParam:description>
+					<vectoParam:parameterId component="Trailer/Vehicle">006</vectoParam:parameterId>
+					<vectoParam:unit>-</vectoParam:unit>
+				</vectoParam:description>
+			</xs:appinfo>
+		</xs:annotation>
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="O3"/>
 			<xs:enumeration value="O4"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="TrailerLengthType">
+		<xs:annotation>
+			<xs:appinfo>
+				<vectoParam:description>
+					<vectoParam:parameterId component="Trailer/Vehicle">014</vectoParam:parameterId>
+					<vectoParam:parameterId component="Trailer/Vehicle">015</vectoParam:parameterId>
+					<vectoParam:parameterId component="Trailer/Vehicle">016</vectoParam:parameterId>
+					<vectoParam:parameterId component="Trailer/Vehicle">017</vectoParam:parameterId>
+					<vectoParam:parameterId component="Trailer/Vehicle">018</vectoParam:parameterId>
+					<vectoParam:parameterId component="Trailer/Vehicle">019</vectoParam:parameterId>
+					<vectoParam:unit>-</vectoParam:unit>
+				</vectoParam:description>
+			</xs:appinfo>
+		</xs:annotation>
 		<xs:restriction base="v1.0:Double3"/>
 	</xs:simpleType>
 	<xs:simpleType name="TrailerMassType">
+		<xs:annotation>
+			<xs:appinfo>
+				<vectoParam:description>
+					<vectoParam:parameterId component="Trailer/Vehicle">011</vectoParam:parameterId>
+					<vectoParam:unit>kg</vectoParam:unit>
+				</vectoParam:description>
+			</xs:appinfo>
+		</xs:annotation>
 		<xs:restriction base="xs:int">
 			<xs:minExclusive value="0"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="TrailerTypeType">
+		<xs:annotation>
+			<xs:appinfo>
+				<vectoParam:description>
+					<vectoParam:parameterId component="Trailer/Vehicle">008</vectoParam:parameterId>
+					<vectoParam:unit>-</vectoParam:unit>
+				</vectoParam:description>
+			</xs:appinfo>
+		</xs:annotation>
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="DA"/>
 			<xs:enumeration value="DB"/>

@@ -53,6 +53,7 @@
 	</xs:element>
 	<xs:simpleType name="ComponentType">
 		<xs:restriction base="xs:token">
+			<xs:enumeration value="Trailer/Vehicle"/>
 			<xs:enumeration value="Engine"/>
 			<xs:enumeration value="Engine/FLD"/>
 			<xs:enumeration value="Engine/FC-map"/>
