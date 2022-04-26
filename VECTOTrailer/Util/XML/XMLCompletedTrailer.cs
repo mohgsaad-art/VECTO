@@ -49,7 +49,7 @@ namespace VECTOTrailer.Util.XML
 
 			_tns = "urn:tugraz:ivt:VectoAPI:DeclarationInput:v2.0";
 			_v27 = _declarationDefinition + ":DEV:v2.7";
-			_v23 = _declarationDefinition + ":DEV:v2.3";
+			_v23 = _declarationDefinition + ":v2.3";
 			_v22 = _declarationDefinition + ":v2.2";
 			_v21 = _declarationDefinition + ":v2.1";
 			_v20 = _declarationDefinition + ":v2.0";
