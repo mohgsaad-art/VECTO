@@ -23,7 +23,7 @@
 		<xs:sequence>
 			<xs:element name="Payload">
 				<xs:annotation>
-					<xs:documentation>I.2.1.2 / #57</xs:documentation>
+					<xs:documentation>II.2.1.3</xs:documentation>
 				</xs:annotation>
 				<xs:complexType>
 					<xs:simpleContent>
@@ -34,6 +34,9 @@
 				</xs:complexType>
 			</xs:element>
 			<xs:element name="TotalVehicleMass">
+				<xs:annotation>
+					<xs:documentation>II.2.2.1</xs:documentation>
+				</xs:annotation>
 				<xs:complexType>
 					<xs:simpleContent>
 						<xs:extension base="xs:double">
@@ -43,6 +46,9 @@
 				</xs:complexType>
 			</xs:element>
 			<xs:element name="AverageSpeed">
+				<xs:annotation>
+					<xs:documentation>II.2.2.2</xs:documentation>
+				</xs:annotation>
 				<xs:complexType>
 					<xs:simpleContent>
 						<xs:extension base="xs:double">
@@ -59,7 +65,7 @@
 				<xs:sequence>
 					<xs:element name="Mission" type="MissionTypeType">
 						<xs:annotation>
-							<xs:documentation>I.2.1.1 / #56</xs:documentation>
+							<xs:documentation>II.2.1.2</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="SimulationParameters" type="SimulationParametersType"/>
@@ -67,6 +73,9 @@
 						<xs:complexType>
 							<xs:sequence>
 								<xs:element name="FuelConsumption" maxOccurs="unbounded">
+									<xs:annotation>
+										<xs:documentation>II.2.2.3.x</xs:documentation>
+									</xs:annotation>
 									<xs:complexType>
 										<xs:simpleContent>
 											<xs:extension base="xs:double">
@@ -80,6 +89,9 @@
 						</xs:complexType>
 					</xs:element>
 					<xs:element name="CO2" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>II.2.2.4.x</xs:documentation>
+						</xs:annotation>
 						<xs:complexType>
 							<xs:simpleContent>
 								<xs:extension base="xs:double">
@@ -89,6 +101,9 @@
 						</xs:complexType>
 					</xs:element>
 					<xs:element name="EfficiencyRatio" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>II.2.2.5.x</xs:documentation>
+						</xs:annotation>
 						<xs:complexType>
 							<xs:simpleContent>
 								<xs:extension base="vdecdef:Double3">
@@ -99,6 +114,9 @@
 						</xs:complexType>
 					</xs:element>
 					<xs:element name="ReferenceRatio" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>2.2.6.x</xs:documentation>
+						</xs:annotation>
 						<xs:complexType>
 							<xs:simpleContent>
 								<xs:extension base="xs:double">
@@ -144,18 +162,21 @@
 					<xs:element name="Results">
 						<xs:complexType>
 							<xs:sequence>
-								<xs:element name="TowingVehicle" type="xs:string"/>
+								<xs:element name="TowingVehicle" type="xs:string">
+									<xs:annotation>
+										<xs:documentation>II.2.1.1</xs:documentation>
+									</xs:annotation>
+								</xs:element>
 								<xs:choice>
 									<xs:sequence>
-										<xs:element name="Result" type="AbstractResultType" maxOccurs="unbounded">
-											<xs:annotation>
-												<xs:documentation>II.2.1, II.2.2</xs:documentation>
-											</xs:annotation>
-										</xs:element>
+										<xs:element name="Result" type="AbstractResultType" maxOccurs="unbounded"/>
 										<xs:element name="WeightedResults" minOccurs="0">
 											<xs:complexType>
 												<xs:sequence>
 													<xs:element name="Payload">
+														<xs:annotation>
+															<xs:documentation>II.3.1</xs:documentation>
+														</xs:annotation>
 														<xs:complexType>
 															<xs:simpleContent>
 																<xs:extension base="xs:double">
@@ -168,6 +189,9 @@
 														<xs:complexType>
 															<xs:sequence>
 																<xs:element name="FuelConsumption" maxOccurs="unbounded">
+																	<xs:annotation>
+																		<xs:documentation>II.3.2.x</xs:documentation>
+																	</xs:annotation>
 																	<xs:complexType>
 																		<xs:simpleContent>
 																			<xs:extension base="xs:double">
@@ -181,6 +205,9 @@
 														</xs:complexType>
 													</xs:element>
 													<xs:element name="CO2" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>II.3.3.x</xs:documentation>
+														</xs:annotation>
 														<xs:complexType>
 															<xs:simpleContent>
 																<xs:extension base="xs:double">
@@ -190,6 +217,9 @@
 														</xs:complexType>
 													</xs:element>
 													<xs:element name="EfficiencyRatio" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>II.3.4.x</xs:documentation>
+														</xs:annotation>
 														<xs:complexType>
 															<xs:simpleContent>
 																<xs:extension base="xs:double">
@@ -212,12 +242,12 @@
 							<xs:sequence>
 								<xs:element name="SimulationToolVersion" type="xs:string">
 									<xs:annotation>
-										<xs:documentation>II.2.5</xs:documentation>
+										<xs:documentation>II.4.1</xs:documentation>
 									</xs:annotation>
 								</xs:element>
 								<xs:element name="Date" type="vdecdef:DateTimeWithTimezone">
 									<xs:annotation>
-										<xs:documentation>II.2.5</xs:documentation>
+										<xs:documentation>II.4.2</xs:documentation>
 									</xs:annotation>
 								</xs:element>
 							</xs:sequence>
@@ -225,7 +255,7 @@
 					</xs:element>
 					<xs:element name="ResultDataSignature" type="vdecdef:SignatureType">
 						<xs:annotation>
-							<xs:documentation>II.3</xs:documentation>
+							<xs:documentation>II.4.3</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 				</xs:sequence>
@@ -239,42 +269,118 @@
 				<xs:sequence>
 					<xs:element name="Manufacturer" type="vdecdef:ManufacturerType">
 						<xs:annotation>
-							<xs:documentation>P235 / II.1.1.6</xs:documentation>
+							<xs:documentation>T001 / II.1.1.1</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="ManufacturerAddress" type="vdecdef:ManufacturerAddressType">
 						<xs:annotation>
-							<xs:documentation>P252 / II.1.1.6</xs:documentation>
+							<xs:documentation>T002 / II.1.1.1</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="Model_CommercialName" type="xs:string"/>
-					<xs:element name="VIN" type="vdecdef:VINType"/>
-					<xs:element name="Date" type="xs:string"/>
-					<xs:element name="LegislativeCategory" type="xs:string"/>
-					<xs:element name="AxleCount" type="xs:string"/>
-					<xs:element name="TrailerType" type="xs:string"/>
-					<xs:element name="BodyWorkType" type="xs:string"/>
-					<xs:element name="TrailerCouplingPoint" type="xs:string" minOccurs="0"/>
+					<xs:element name="Model_CommercialName" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>T003 / II.1.1.2</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="VIN" type="vdecdef:VINType">
+						<xs:annotation>
+							<xs:documentation>T004 / II.1.1.3</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Date" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>T005</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="LegislativeCategory" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>T006 / II.1.1.4</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="AxleCount" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>T007 / II.1.1.5</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="TrailerType" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>T006 / II.1.1.6</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="BodyWorkType" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>T007 / II.1.1.7</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="TrailerCouplingPoint" type="xs:string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>T020 / II.1.1.8</xs:documentation>
+						</xs:annotation>
+					</xs:element>
 					<xs:element name="Masses">
 						<xs:complexType>
 							<xs:sequence>
-								<xs:element name="CorrectedMassInRunningOrder"/>
-								<xs:element name="TPMLMTrailer"/>
-								<xs:element name="TPMLMAxleAssembly"/>
+								<xs:element name="CorrectedMassInRunningOrder">
+									<xs:annotation>
+										<xs:documentation>T011 / II.1.1.10</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="TPMLMTrailer">
+									<xs:annotation>
+										<xs:documentation>T012 / II.1.1.11</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="TPMLMAxleAssembly">
+									<xs:annotation>
+										<xs:documentation>T013 / II.1.1.12</xs:documentation>
+									</xs:annotation>
+								</xs:element>
 							</xs:sequence>
 						</xs:complexType>
 					</xs:element>
-					<xs:element name="VehicleGroupAnnexI" type="xs:string"/>
-					<xs:element name="VehicleGroupToolInternal" type="xs:string"/>
+					<xs:element name="VehicleGroupAnnexI" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>VECTO / II.1.1.13</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="VehicleGroupToolInternal" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>VECTO / II.1.1.14</xs:documentation>
+						</xs:annotation>
+					</xs:element>
 					<xs:element name="Dimensions">
 						<xs:complexType>
 							<xs:sequence>
-								<xs:element name="ExternalLengthBody" type="vdecdef:Double3"/>
-								<xs:element name="ExternalWidthBody" type="vdecdef:Double3"/>
-								<xs:element name="ExternalHeightBody" type="vdecdef:Double3"/>
-								<xs:element name="TotalHeightTrailer" type="vdecdef:Double3"/>
-								<xs:element name="CargoVolume" type="vdecdef:Double3"/>
-								<xs:element name="VolumeOrientation"/>
+								<xs:element name="ExternalLengthBody" type="vdecdef:Double3">
+									<xs:annotation>
+										<xs:documentation>T014 / II.1.2.1</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="ExternalWidthBody" type="vdecdef:Double3">
+									<xs:annotation>
+										<xs:documentation>T015 / II.1.2.2</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="ExternalHeightBody" type="vdecdef:Double3">
+									<xs:annotation>
+										<xs:documentation>T016 / II.1.2.3</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="TotalHeightTrailer" type="vdecdef:Double3">
+									<xs:annotation>
+										<xs:documentation>T017 / II.1.2.4</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="CargoVolume" type="vdecdef:Double3">
+									<xs:annotation>
+										<xs:documentation>T021 / II.1.2.5</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+								<xs:element name="VolumeOrientation">
+									<xs:annotation>
+										<xs:documentation>T010 / II.1.1.9</xs:documentation>
+									</xs:annotation>
+								</xs:element>
 							</xs:sequence>
 						</xs:complexType>
 					</xs:element>
@@ -285,14 +391,22 @@
 									<xs:element name="StandardTechnologies">
 										<xs:complexType>
 											<xs:sequence>
-												<xs:element name="Technology" type="xs:string" maxOccurs="unbounded"/>
+												<xs:element name="Technology" type="xs:string" maxOccurs="unbounded">
+													<xs:annotation>
+														<xs:documentation>T022 / II.1.3.1</xs:documentation>
+													</xs:annotation>
+												</xs:element>
 											</xs:sequence>
 										</xs:complexType>
 									</xs:element>
 									<xs:element name="CertifiedAeroDevice">
 										<xs:complexType>
 											<xs:sequence>
-												<xs:element name="CertificationNumber" type="vdecdef:CertificationNumberType"/>
+												<xs:element name="CertificationNumber" type="vdecdef:CertificationNumberType">
+													<xs:annotation>
+														<xs:documentation>T023 / II.1.3.2</xs:documentation>
+													</xs:annotation>
+												</xs:element>
 											</xs:sequence>
 										</xs:complexType>
 									</xs:element>
@@ -301,6 +415,9 @@
 									<xs:complexType>
 										<xs:sequence>
 											<xs:element name="AeroReductionYawAngle0">
+												<xs:annotation>
+													<xs:documentation>VECTO | T032 / II.1.3.3.1</xs:documentation>
+												</xs:annotation>
 												<xs:complexType>
 													<xs:simpleContent>
 														<xs:extension base="vdecdef:Double2">
@@ -310,6 +427,9 @@
 												</xs:complexType>
 											</xs:element>
 											<xs:element name="AeroReductionYawAngle3">
+												<xs:annotation>
+													<xs:documentation>VECTO | T032 / II.1.3.3.2</xs:documentation>
+												</xs:annotation>
 												<xs:complexType>
 													<xs:simpleContent>
 														<xs:extension base="vdecdef:Double2">
@@ -319,6 +439,9 @@
 												</xs:complexType>
 											</xs:element>
 											<xs:element name="AeroReductionYawAngle6">
+												<xs:annotation>
+													<xs:documentation>VECTO | T032 / II.1.3.3.3</xs:documentation>
+												</xs:annotation>
 												<xs:complexType>
 													<xs:simpleContent>
 														<xs:extension base="vdecdef:Double2">
@@ -328,6 +451,9 @@
 												</xs:complexType>
 											</xs:element>
 											<xs:element name="AeroReductionYawAngle9">
+												<xs:annotation>
+													<xs:documentation>VECTO | T032 / II.1.3.3.4</xs:documentation>
+												</xs:annotation>
 												<xs:complexType>
 													<xs:simpleContent>
 														<xs:extension base="vdecdef:Double2">
@@ -348,18 +474,42 @@
 								<xs:element name="Axle" maxOccurs="unbounded">
 									<xs:complexType>
 										<xs:sequence>
-											<xs:element name="Steered" type="xs:boolean"/>
-											<xs:element name="Liftable" type="xs:boolean"/>
-											<xs:element name="TwinTyres" type="xs:boolean"/>
+											<xs:element name="Steered" type="xs:boolean">
+												<xs:annotation>
+													<xs:documentation>T026 / II.1.4.x.5</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+											<xs:element name="Liftable" type="xs:boolean">
+												<xs:annotation>
+													<xs:documentation>T027 / II.1.4.x.6</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+											<xs:element name="TwinTyres" type="xs:boolean">
+												<xs:annotation>
+													<xs:documentation>T025 / II.1.4.x.4</xs:documentation>
+												</xs:annotation>
+											</xs:element>
 											<xs:element name="Tyre">
 												<xs:complexType>
 													<xs:sequence>
 														<xs:element name="Data">
 															<xs:complexType>
 																<xs:sequence>
-																	<xs:element name="CertificationNumber" type="xs:string"/>
-																	<xs:element name="Dimension" type="xs:string"/>
-																	<xs:element name="FuelEfficiencyClass" type="xs:string" minOccurs="0"/>
+																	<xs:element name="CertificationNumber" type="xs:string">
+																		<xs:annotation>
+																			<xs:documentation>T024 / II.1.4.x.1</xs:documentation>
+																		</xs:annotation>
+																	</xs:element>
+																	<xs:element name="Dimension" type="xs:string">
+																		<xs:annotation>
+																			<xs:documentation>II.4.1.x.2</xs:documentation>
+																		</xs:annotation>
+																	</xs:element>
+																	<xs:element name="FuelEfficiencyClass" type="xs:string" minOccurs="0">
+																		<xs:annotation>
+																			<xs:documentation>II.1.4.x.3</xs:documentation>
+																		</xs:annotation>
+																	</xs:element>
 																</xs:sequence>
 															</xs:complexType>
 														</xs:element>

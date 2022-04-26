@@ -1580,10 +1580,11 @@
 					<vectoParam:parameterId component="Retarder">266</vectoParam:parameterId>
 					<vectoParam:parameterId component="Tyre">267</vectoParam:parameterId>
 					<vectoParam:parameterId component="Airdrag">268</vectoParam:parameterId>
+					<vectoParam:parameterId component="Trailer/AeroDevice">030</vectoParam:parameterId>
 					<vectoParam:unit>-</vectoParam:unit>
 				</vectoParam:description>
 			</xs:appinfo>
-			<xs:documentation>P261, P262, P263, P264, P265, P266, P267, P268</xs:documentation>
+			<xs:documentation>P261, P262, P263, P264, P265, P266, P267, P268, T030</xs:documentation>
 		</xs:annotation>
 		<xs:restriction base="xs:token"/>
 	</xs:simpleType>
@@ -1600,6 +1601,8 @@
 					<vectoParam:parameterId component="Tyre">233</vectoParam:parameterId>
 					<vectoParam:parameterId component="Airdrag">243</vectoParam:parameterId>
 					<vectoParam:parameterId component="Vehicle">239</vectoParam:parameterId>
+					<vectoParam:parameterId component="Trailer/Vehicle">005</vectoParam:parameterId>
+					<vectoParam:parameterId component="Trailer/AeroDevice">031</vectoParam:parameterId>
 					<vectoParam:comment>Date and time when the component-hash is created</vectoParam:comment>
 					<vectoParam:unit>-</vectoParam:unit>
 				</vectoParam:description>
@@ -2088,6 +2091,7 @@ ToDo: -0.00
 			<xs:appinfo>
 				<vectoParam:description>
 					<vectoParam:parameterId component="Vehicle">252</vectoParam:parameterId>
+					<vectoParam:parameterId component="Trailer/Vehicle">002</vectoParam:parameterId>
 					<vectoParam:unit>-</vectoParam:unit>
 				</vectoParam:description>
 			</xs:appinfo>
@@ -2107,6 +2111,8 @@ ToDo: -0.00
 					<vectoParam:parameterId component="Tyre">230</vectoParam:parameterId>
 					<vectoParam:parameterId component="Airdrag">240</vectoParam:parameterId>
 					<vectoParam:parameterId component="Vehicle">235</vectoParam:parameterId>
+					<vectoParam:parameterId component="Trailer/Vehicle">001</vectoParam:parameterId>
+					<vectoParam:parameterId component="Trailer/AeroDevice">028</vectoParam:parameterId>
 					<vectoParam:unit>-</vectoParam:unit>
 				</vectoParam:description>
 			</xs:appinfo>
@@ -2129,6 +2135,8 @@ ToDo: -0.00
 					<vectoParam:parameterId component="Tyre">231</vectoParam:parameterId>
 					<vectoParam:parameterId component="Airdrag">241</vectoParam:parameterId>
 					<vectoParam:parameterId component="Vehicle">236</vectoParam:parameterId>
+					<vectoParam:parameterId component="Trailer/Vehicle">003</vectoParam:parameterId>
+					<vectoParam:parameterId component="Trailer/AeroDevice">029</vectoParam:parameterId>
 					<vectoParam:unit>-</vectoParam:unit>
 				</vectoParam:description>
 			</xs:appinfo>
@@ -2674,6 +2682,7 @@ ToDo: -0.00
 			<xs:appinfo>
 				<vectoParam:description>
 					<vectoParam:parameterId component="Vehicle">238</vectoParam:parameterId>
+					<vectoParam:parameterId component="Trailer/Vehicle">004</vectoParam:parameterId>
 					<vectoParam:unit>-</vectoParam:unit>
 				</vectoParam:description>
 			</xs:appinfo>
