@@ -12,7 +12,7 @@ namespace VECTOTrailer.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.1.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.10.0.0")]
     public sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -49,7 +49,7 @@ namespace VECTOTrailer.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Resources/UserManual.pdf")]
+        [global::System.Configuration.DefaultSettingValueAttribute("User Manual/UserManual.pdf")]
         public string UserGuideFilePath {
             get {
                 return ((string)(this["UserGuideFilePath"]));
@@ -58,7 +58,7 @@ namespace VECTOTrailer.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Resources/help.html")]
+        [global::System.Configuration.DefaultSettingValueAttribute("User Manual/help.html")]
         public string VectoHelpPath {
             get {
                 return ((string)(this["VectoHelpPath"]));
@@ -67,7 +67,7 @@ namespace VECTOTrailer.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Resources/MasterExcel.xlsx")]
+        [global::System.Configuration.DefaultSettingValueAttribute("User Manual/MasterExcel.xlsx")]
         public string MasterExcelPath {
             get {
                 return ((string)(this["MasterExcelPath"]));
