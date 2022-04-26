@@ -49,7 +49,7 @@ namespace VECTOTrailer.ViewModel.Impl
 {
 	public class JoblistViewModel : ObservableObject, IJoblistViewModel
 	{
-		protected const string SETTINGS_FILE = "Config/Settings3.json";
+		
 
 		#region Members
 
@@ -202,7 +202,17 @@ namespace VECTOTrailer.ViewModel.Impl
 			Jobs.CollectionChanged += ((sender, args) => {
 				OnPropertyChanged(nameof(AllJobsChecked));
 			});
+
+			WritePDFReport = TrailerToolSettings.SimulationSettings.WritePDFReport;
+            TrailerToolSettings.SimulationSettings.PropertyChanged += SimulationSettings_PropertyChanged;
 		}
+
+        private void SimulationSettings_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+			if (e.PropertyName == nameof(TrailerToolSettings.SimulationSettings.WritePDFReport)) {
+				WritePDFReport = TrailerToolSettings.SimulationSettings.WritePDFReport;
+			}
+        }
 
         private void Messages_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
@@ -545,7 +555,13 @@ namespace VECTOTrailer.ViewModel.Impl
 		public bool WritePDFReport
 		{
 			get => _writePdfReport && _pdfCreator.Initialized;
-			set => SetProperty(ref _writePdfReport, value);
+			set
+			{
+				if (SetProperty(ref _writePdfReport, value)) {
+					_trailerToolSettings.SimulationSettings.WritePDFReport = value;
+				};
+
+			} 
 		}
 
 		public bool WritePdfCanBeEdited
@@ -721,9 +737,10 @@ namespace VECTOTrailer.ViewModel.Impl
 			{
 				HandleFileOpen(filePath.First());
 			}
-			catch(Exception ex)
-            {
-				MessageBox.Show(ex.Message, "Error opening file", MessageBoxButton.OK);
+			catch(Exception ex) {
+
+
+				MessageBox.Show(ex.Message + ex.StackTrace, "Error opening file", MessageBoxButton.OK);
             }
 		}
 
@@ -860,7 +877,7 @@ namespace VECTOTrailer.ViewModel.Impl
 			
 			try
 			{
-				System.Diagnostics.Process.Start(BrowserUtils.GetDefaultBrowserPath() ?? "explorer.exe", @"file:\\" + VectoHelpPath);
+				System.Diagnostics.Process.Start(BrowserUtils.GetDefaultBrowserPath() ?? "explorer.exe", $"\"file:\\{VectoHelpPath}\"");
 			}
 			catch (Exception ex)
 			{
