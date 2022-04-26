@@ -24,48 +24,51 @@
 				<xs:sequence>
 					<xs:element name="Manufacturer" type="v1.0:ManufacturerType">
 						<xs:annotation>
-							<xs:documentation>T028</xs:documentation>
+							<xs:documentation>T028 - [-]</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="Model" type="v1.0:ModelType">
 						<xs:annotation>
-							<xs:documentation>T029</xs:documentation>
+							<xs:documentation>T029 - [-]</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="CertificationNumber" type="v1.0:CertificationNumberType">
 						<xs:annotation>
-							<xs:documentation>T030</xs:documentation>
+							<xs:documentation>T030 - [-]</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="Date" type="v1.0:DateTimeWithTimezone">
 						<xs:annotation>
-							<xs:documentation>T031</xs:documentation>
+							<xs:documentation>T031 - [-]</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="AeroReductionYawAngle0" type="v2.7:CertifiedAerodynamicReductionType">
 						<xs:annotation>
-							<xs:documentation>T032</xs:documentation>
+							<xs:documentation>T032 - [%]</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="AeroReductionYawAngle3" type="v2.7:CertifiedAerodynamicReductionType">
 						<xs:annotation>
-							<xs:documentation>T032</xs:documentation>
+							<xs:documentation>T032 - [%]</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="AeroReductionYawAngle6" type="v2.7:CertifiedAerodynamicReductionType">
 						<xs:annotation>
-							<xs:documentation>T032</xs:documentation>
+							<xs:documentation>T032 - [%]</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="AeroReductionYawAngle9" type="v2.7:CertifiedAerodynamicReductionType">
 						<xs:annotation>
-							<xs:documentation>T032</xs:documentation>
+							<xs:documentation>T032 - [%]</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="ApplicableVehicleGroups">
 						<xs:complexType>
 							<xs:sequence>
 								<xs:element name="ApplicableVehicleGroup" maxOccurs="unbounded">
+									<xs:annotation>
+										<xs:documentation>T033 - [-]</xs:documentation>
+									</xs:annotation>
 									<xs:simpleType>
 										<xs:restriction base="xs:string">
 											<xs:minLength value="1"/>

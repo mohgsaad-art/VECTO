@@ -101,6 +101,7 @@
 			<xs:enumeration value="CapacitorSystem"/>
 			<xs:enumeration value="IEPC/DragTorque"/>
 			<xs:enumeration value="CertifiedAerodynamicReduction"/>
+			<xs:enumeration value="Trailer/AeroDevice"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="UnitType">
