@@ -627,15 +627,22 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 						steerFactor = (1 + (mission.TrailerSteeredImpact.lowPayLoadImpact * 1.2) / 100);
 					else if (axles.Count(x => x.Steered) > 0) // 1 steered
 						steerFactor = (1 + mission.TrailerSteeredImpact.lowPayLoadImpact / 100);
+
 				} else {
 					//REF loading
 					if (axles.Count(x => x.Liftable) > 0)
 						liftFactor = (1 + mission.TrailerLiftableImpact.repPayLoadImpact / 100);
 
+
 					if (axles.Count(x => x.Steered) > 1) //2 steered
 						steerFactor = (1 + (mission.TrailerSteeredImpact.repPayLoadImpact * 1.2) / 100);
 					else if (axles.Count(x => x.Steered) > 0) // 1 steered
 						steerFactor = (1 + mission.TrailerSteeredImpact.repPayLoadImpact / 100);
+
+				}
+				if (axles.Count(x => x.Liftable) > 1)
+				{
+					steerFactor *= 0.5;
 				}
 			}
 		}
