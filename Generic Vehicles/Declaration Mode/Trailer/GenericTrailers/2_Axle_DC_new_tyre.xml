@@ -1,5 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<tns:VectoInputDeclaration schemaVersion="2.7" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v2.0" xmlns:v2.7="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7" xmlns:v2.2="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.2" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:di="http://www.w3.org/2000/09/xmldsig#" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob F:\Vecto\vecto-dev_bt\VectoCore\VectoCore\Resources\XSD/VectoDeclarationJob.xsd">
+<tns:VectoInputDeclaration schemaVersion="2.7" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v2.0"
+   xmlns:v2.7="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7"
+   xmlns:v2.3="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3"
+    xmlns:v2.2="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.2" 
+    xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:di="http://www.w3.org/2000/09/xmldsig#"
+     xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7"
+      xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob F:\Vecto\vecto-dev_bt\VectoCore\VectoCore\Resources\XSD/VectoDeclarationJob.xsd">
   <v2.0:Vehicle id="CB-379355a4bd234c44b687" xsi:type="VehicleDeclarationType">
     <Manufacturer>Example Manufacturer</Manufacturer>
     <ManufacturerAddress>Example Street 1, Example City XY, Example Country</ManufacturerAddress>

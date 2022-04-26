@@ -1,5 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<tns:VectoInputDeclaration schemaVersion="2.7" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v2.0" xmlns:v2.7="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7" xmlns:v2.2="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.2" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:di="http://www.w3.org/2000/09/xmldsig#" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob F:\Vecto\vecto-dev_bt\VectoCore\VectoCore\Resources\XSD/VectoDeclarationJob.xsd">
+<tns:VectoInputDeclaration schemaVersion="2.7" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v2.0"
+ xmlns:v2.7="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7"
+  xmlns:v2.2="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.2"
+   xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" 
+   xmlns:di="http://www.w3.org/2000/09/xmldsig#"
+    xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7"
+     xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob F:\Vecto\vecto-dev_bt\VectoCore\VectoCore\Resources\XSD/VectoDeclarationJob.xsd">
   <v2.0:Vehicle id="CB-adaa8d232d574ce09d4d" xsi:type="VehicleDeclarationType">
     <Manufacturer>Example Manufacturer</Manufacturer>
     <ManufacturerAddress>Example Street 1, Example City XY, Example Country</ManufacturerAddress>
@@ -27,29 +33,32 @@
       <VolumeOrientation>false</VolumeOrientation>
     </Dimensions>
     <AeroFeatures>
-      <CertifiedAeroReduction>
+      <CertifiedAeroDevice>
         <Data xsi:type="CertifiedAeroDataDeclarationType" id="AERO-asdf">
-          <Manufacturer>Generic Manufacturer</Manufacturer>
-          <Model>Generic Tyre Model</Model>
-          <CertificationNumber>e12*0815/8051*2017/05T0000*00</CertificationNumber>
-          <Date>2017-02-15T11:00:00Z</Date>
-          <CertifiedAerodynamicReduction0>1.00</CertifiedAerodynamicReduction0>
-          <CertifiedAerodynamicReduction3>2.00</CertifiedAerodynamicReduction3>
-          <CertifiedAerodynamicReduction6>3.00</CertifiedAerodynamicReduction6>
-          <CertifiedAerodynamicReduction9>4.00</CertifiedAerodynamicReduction9>
-          <ApplicableVehicleGroup>31102</ApplicableVehicleGroup>
+            <Manufacturer>Generic Manufacturer</Manufacturer>
+            <Model>Generic Aero Device Model</Model>
+            <CertificationNumber>e12*0815/8051*2017/05T0000*00</CertificationNumber>
+            <Date>2022-04-13T11:21:11.8581891Z</Date>
+            <AeroReductionYawAngle0>1.00</AeroReductionYawAngle0>
+            <AeroReductionYawAngle3>2.00</AeroReductionYawAngle3>
+            <AeroReductionYawAngle6>3.00</AeroReductionYawAngle6>
+            <AeroReductionYawAngle9>4.00</AeroReductionYawAngle9>
+            <ApplicableVehicleGroups>
+              <ApplicableVehicleGroup>422</ApplicableVehicleGroup>
+              <ApplicableVehicleGroup>112</ApplicableVehicleGroup>
+            </ApplicableVehicleGroups>
         </Data>
         <Signature>
-          <di:Reference URI="#AERO-asdf">
-            <di:Transforms>
-              <di:Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
-              <di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
-            </di:Transforms>
-            <di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
-            <di:DigestValue>7vbS5FPUgb2ce2NfcDGWMWpV6aZUyjY0SXqE2AP8Oh8=</di:DigestValue>
-          </di:Reference>
+            <di:Reference URI="#AERO-asdf">
+                <di:Transforms>
+                    <di:Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+                    <di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+                </di:Transforms>
+                <di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+                <di:DigestValue>e8QA5O/oeTC4OFt6Xc8xpYe6rUmG+PbKynvnkJvyMrs=</di:DigestValue>
+            </di:Reference>
         </Signature>
-      </CertifiedAeroReduction>
+    </CertifiedAeroDevice>
     </AeroFeatures>
     <AxleWheels>
       <Data xsi:type="v2.7:TrailerAxleWheelsDataDeclarationType">
