@@ -51,7 +51,7 @@ namespace TUGraz.VectoCommon.Models
 		private const string _sideSkirtsShort = "short side covers";
 		private const string _sideSkirtsLong = "long side covers";
 		private const string _boatTailShort = "short rear flaps";
-		private const string _boatTailLong = "long rear flaps";
+		private const string _boatTailLong = "tall rear flaps";
 		private const string _none = "none";
 		public static string GetLabel(this AeroFeatureTechnology ttype)
 		{
