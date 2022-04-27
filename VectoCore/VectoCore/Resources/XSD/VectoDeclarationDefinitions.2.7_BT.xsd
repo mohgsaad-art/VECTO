@@ -374,7 +374,7 @@
 			<xs:enumeration value="short side covers"/>
 			<xs:enumeration value="long side covers"/>
 			<xs:enumeration value="short rear flaps"/>
-			<xs:enumeration value="long rear flaps"/>
+			<xs:enumeration value="tall rear flaps"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="TrailerAxleCountType">
