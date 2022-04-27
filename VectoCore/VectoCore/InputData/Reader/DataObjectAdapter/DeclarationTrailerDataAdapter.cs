@@ -560,6 +560,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				axles[0] = axle;
 			}
 
+			double correctedLiftableImpact = 0;
+			double correctedSteeredImpact = 0;
+			//liftFactor = (1 + (mission.TrailerLiftableImpact.lowPayLoadImpact * 1.5) / 100);
 
 			if (axles.Count(x => x.Steered && x.Liftable) > 0) {
 				//found axle with both steered and liftable
@@ -568,21 +571,25 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 					if (loadingType == LoadingType.LowLoading) {
 						// LOW LOADING
 						if (axles.Count(x => x.Liftable) > 1) //1 both + 1 liftable
-							liftFactor = (1 + (mission.TrailerLiftableImpact.lowPayLoadImpact * 1.5) / 100);
+						{
+							correctedLiftableImpact = mission.TrailerLiftableImpact.lowPayLoadImpact * 1.5;
+						}
 						else if (axles.Count(x => x.Steered) > 1) {
 							//1 both + 1 steered
-							liftFactor = (1 + mission.TrailerLiftableImpact.lowPayLoadImpact / 100);
-							steerFactor = (1 + mission.TrailerSteeredImpact.lowPayLoadImpact / 100);
+							correctedLiftableImpact = mission.TrailerLiftableImpact.lowPayLoadImpact;
+							correctedSteeredImpact = mission.TrailerSteeredImpact.lowPayLoadImpact;
 						} else //1 both
-							liftFactor = (1 + mission.TrailerLiftableImpact.lowPayLoadImpact / 100);
+						{
+							correctedLiftableImpact = mission.TrailerLiftableImpact.lowPayLoadImpact;
+						}
 					} else {
 						//REF LOADING
 						if (axles.Count(x => x.Steered) > 1) {
 							//1 both + 1 steered
-							liftFactor = (1 + mission.TrailerLiftableImpact.repPayLoadImpact / 100);
-							steerFactor = (1 + mission.TrailerSteeredImpact.repPayLoadImpact/ 100);
+							correctedLiftableImpact = mission.TrailerLiftableImpact.repPayLoadImpact;
+							correctedSteeredImpact = mission.TrailerSteeredImpact.repPayLoadImpact;
 						} else //1 both or 1 both + 1 liftable
-							liftFactor = (1 + mission.TrailerLiftableImpact.repPayLoadImpact / 100);
+							correctedLiftableImpact = mission.TrailerLiftableImpact.repPayLoadImpact;
 					}
 				} else {
 					//RD & UD
@@ -590,26 +597,26 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 						//Low lading
 						if (axles.Count(x => x.Liftable) > 1) {
 							//1 both + 1 liftable
-							liftFactor = (1 + mission.TrailerLiftableImpact.lowPayLoadImpact / 100);
-							steerFactor = (1 + mission.TrailerSteeredImpact.lowPayLoadImpact / 100);
+							correctedLiftableImpact = mission.TrailerLiftableImpact.lowPayLoadImpact;
+							correctedSteeredImpact = mission.TrailerSteeredImpact.lowPayLoadImpact;
 						} else if (axles.Count(x => x.Steered) > 1) //1 both + 1 steered
-							steerFactor = (1 + (mission.TrailerSteeredImpact.lowPayLoadImpact * 1.2) / 100);
+							correctedSteeredImpact = mission.TrailerSteeredImpact.lowPayLoadImpact * 1.2;
 						else // 1 both
 						{
-							steerFactor = (1 + mission.TrailerSteeredImpact.lowPayLoadImpact / 100);
+							correctedSteeredImpact = mission.TrailerSteeredImpact.lowPayLoadImpact;
 						}
 					} else {
 						//Ref loading
 						if (axles.Count(x => x.Liftable) > 1) {
 							//1 both + 1 liftable
-							liftFactor = (1 + mission.TrailerLiftableImpact.repPayLoadImpact / 100);
-							steerFactor = (1 + mission.TrailerSteeredImpact.repPayLoadImpact / 100);
+							correctedLiftableImpact = mission.TrailerLiftableImpact.repPayLoadImpact;
+							correctedSteeredImpact = mission.TrailerSteeredImpact.repPayLoadImpact;
 						} else if (axles.Count(x => x.Steered) > 1) //1 both + 1 steered
 						{
-							steerFactor = (1 + (mission.TrailerSteeredImpact.repPayLoadImpact * 1.2) / 100);
+							correctedSteeredImpact = mission.TrailerSteeredImpact.repPayLoadImpact * 1.2;
 						} else // 1 both
 						{
-							steerFactor = (1 + mission.TrailerSteeredImpact.repPayLoadImpact / 100);
+							correctedSteeredImpact = mission.TrailerSteeredImpact.repPayLoadImpact;
 						}
 					}
 				}
@@ -618,33 +625,47 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				if (loadingType == LoadingType.LowLoading) {
 					//LOW loading
 					if (axles.Count(x => x.Liftable) > 1) //if 2 liftable
-						liftFactor = (1 + (mission.TrailerLiftableImpact.lowPayLoadImpact * 1.5) / 100);
-
+					{
+						correctedLiftableImpact = mission.TrailerLiftableImpact.lowPayLoadImpact * 1.5;
+					}
 					else if (axles.Count(x => x.Liftable) > 0) //if 1 liftable
-						liftFactor = (1 + mission.TrailerLiftableImpact.lowPayLoadImpact / 100);
+					{
+						correctedLiftableImpact = mission.TrailerLiftableImpact.lowPayLoadImpact;
 
-					if (axles.Count(x => x.Steered) > 1) // 2 steered
-						steerFactor = (1 + (mission.TrailerSteeredImpact.lowPayLoadImpact * 1.2) / 100);
-					else if (axles.Count(x => x.Steered) > 0) // 1 steered
-						steerFactor = (1 + mission.TrailerSteeredImpact.lowPayLoadImpact / 100);
+						if (axles.Count(x => x.Steered) > 1) {
+							// 2 steered
+							correctedSteeredImpact = mission.TrailerSteeredImpact.lowPayLoadImpact * 1.2;
+						} else if (axles.Count(x => x.Steered) > 0) {
+							// 1 steered
 
+							correctedSteeredImpact = mission.TrailerSteeredImpact.lowPayLoadImpact;
+
+						}
+					}
 				} else {
 					//REF loading
-					if (axles.Count(x => x.Liftable) > 0)
-						liftFactor = (1 + mission.TrailerLiftableImpact.repPayLoadImpact / 100);
-
+					if (axles.Count(x => x.Liftable) > 0) {
+						correctedLiftableImpact = (1 + mission.TrailerLiftableImpact.repPayLoadImpact / 100);
+					}
 
 					if (axles.Count(x => x.Steered) > 1) //2 steered
-						steerFactor = (1 + (mission.TrailerSteeredImpact.repPayLoadImpact * 1.2) / 100);
-					else if (axles.Count(x => x.Steered) > 0) // 1 steered
-						steerFactor = (1 + mission.TrailerSteeredImpact.repPayLoadImpact / 100);
+					{
+						correctedSteeredImpact = mission.TrailerSteeredImpact.repPayLoadImpact * 1.2;
+					} else if (axles.Count(x => x.Steered) > 0) // 1 steered
+					{
+						correctedSteeredImpact = mission.TrailerSteeredImpact.repPayLoadImpact;
+					}
 
-				}
-				if (axles.Count(x => x.Liftable) > 1)
-				{
-					steerFactor *= 0.5;
+
+					if (axles.Count(x => x.Liftable) > 1) {
+						correctedSteeredImpact *= 0.5;
+					}
 				}
 			}
+
+			liftFactor = 1 + correctedLiftableImpact / 100;
+			steerFactor = 1 + correctedSteeredImpact / 100;
+
 		}
 
 		private static WHRData CreateWHRData(IWHRData whrInputData, MissionType missionType, WHRType type)
