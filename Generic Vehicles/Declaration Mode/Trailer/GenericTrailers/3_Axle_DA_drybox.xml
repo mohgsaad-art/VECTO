@@ -46,6 +46,7 @@
             <ApplicableVehicleGroups>
               <ApplicableVehicleGroup>422</ApplicableVehicleGroup>
               <ApplicableVehicleGroup>112</ApplicableVehicleGroup>
+              <v2.7:ApplicableVehicleGroup>132</v2.7:ApplicableVehicleGroup>
             </ApplicableVehicleGroups>
         </Data>
         <Signature>
