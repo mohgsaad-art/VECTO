@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Configuration;
 using System.Linq;
 using System.Net.Mime;
@@ -46,7 +47,7 @@ namespace VECTOTrailer.Helper
         #endregion
     }
 
-	public interface ITrailerToolSettings
+	public interface ITrailerToolSettings: INotifyPropertyChanged
 	{
 		Properties.SimulationSettings SimulationSettings { get; }
 		Properties.Settings GeneralSettings { get; }
