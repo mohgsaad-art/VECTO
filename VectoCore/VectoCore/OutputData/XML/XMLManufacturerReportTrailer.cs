@@ -528,7 +528,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 						}
 						WeightedFcPerFuelType[finalFuelConsumption.Key].WeightedFcLitrePerKilometer = 
 							(entryExists ? prevValue.WeightedFcLitrePerKilometer : 0) 
-							+ (finalFuelConsumption.Value
+							+ (finalFuelConsumption.Value.ConvertToGramm()
 								/ fuelData.FuelDensity 
 								/ resultEntry.Distance.ConvertToKiloMeter()).Value()
 								* resultEntry.WeightingFactor;
