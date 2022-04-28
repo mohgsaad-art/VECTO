@@ -582,7 +582,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 			//Special Case #2  
 			if (axles.Count(x => x.Steered && x.Liftable) == 1) {
-				axleFcFactor = (1 + Math.Max(steeredMissionImpact, liftableMissionImpact) / 100);
+				axleFcFactor = (1 + Math.Min(steeredMissionImpact, liftableMissionImpact) / 100);
 			}
 
 			//Special Case #3
