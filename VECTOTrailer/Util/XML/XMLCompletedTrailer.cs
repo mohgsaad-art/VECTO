@@ -11,6 +11,7 @@ using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.XML;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider;
+using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Utils;
 using VECTOTrailer.ViewModel.Interfaces;
 
@@ -112,7 +113,7 @@ namespace VECTOTrailer.Util.XML
 				vehicle.Add(new XElement(_v27 + "Masses",
 					new XElement(_v27 + XMLNames.Trailer_MassInRunningOrder, trailerData.MassInRunningOrder.ToXMLFormat(0)),
 					new XElement(_v27 + XMLNames.Trailer_TPMLMTotalTrailer, trailerData.TPLMTotalTrailer.ToXMLFormat(0)),
-					trailerData.TPLMAxleAssembly != null 
+					(trailerData.TPLMAxleAssembly != null && trailerData.TrailerType != TypeTrailer.DB)
 						? new XElement(_v27 + XMLNames.Trailer_TPLMAxleAssembly, trailerData.TPLMAxleAssembly.ToXMLFormat(0)) 
 						: null),
 					new XElement(_v27 + "Dimensions",
