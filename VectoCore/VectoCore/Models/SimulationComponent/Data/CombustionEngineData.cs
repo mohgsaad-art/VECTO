@@ -136,8 +136,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 
 		public double FuelConsumptionCorrectionFactor { get; internal set; }
 
-		public double FcLiftCorrectionFactor { get; internal set; }
-		public double FcSteerCorrectionFactor { get; internal set; }
+		public double FcAxleCorrectionFactor { get; internal set; }
+		
 
 		[Required, ValidateObject]
 		public FuelConsumptionMap ConsumptionMap { get; internal set; }
