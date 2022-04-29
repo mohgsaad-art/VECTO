@@ -4,6 +4,7 @@
 1-user-interface/C_settings.md
 1-user-interface/D1_VECTO-Job-Editor.md
 1-user-interface/D2_VTP-Job-Editor.md
+1-user-interface/E_VECTO-Editor_Aux.md
 1-user-interface/F_VEH-Editor.md
 1-user-interface/G_ENG-Editor.md
 1-user-interface/H_GBX-Editor.md
@@ -38,6 +39,7 @@
 3-simulation-models/Gearshift_MT.md
 3-simulation-models/TC.md
 3-simulation-models/Auxiliaries.md
+3-simulation-models/BusAuxiliaries.md
 3-simulation-models/PwheelInput.md
 3-simulation-models/PTO.md
 5-input-and-output-files/input-output.md

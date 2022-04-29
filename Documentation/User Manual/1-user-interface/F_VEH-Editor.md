@@ -75,6 +75,9 @@ Depending on the chosen mode either a [Speed Dependent Cross Wind Correction Inp
 
 In [Engineering Mode](#engineering-mode) this defines the effective (dynamic) wheel radius (in [mm]) used to calculate engine speed. In [Declaration Mode](#declaration-mode) the radius calculated automatically using tyres of the powered axle.
 
+### Vehicle Idling Speed
+
+The idling speed of the combustion engine can be increased in the vehicle settings. This may be necessary due to certain auxiliaries or for other technical reasons. This value is only considered if it is higher than the idling speed defined in the combustion engine.
 
 ### Axles/Wheels
 
@@ -97,48 +100,6 @@ For missions with a trailer predefined wheels and load-shares are added by Vecto
 Doubleclick entries to edit existing axle configurations.
 
 
-### Retarder Losses
-
-If a separate retarder is used in the vehicle a **Retarder Torque Loss Map** can be defined here to consider idling losses caused by the retarder.
-
-Four options are available:
-: -   No retarder
--	Included in Transmission Loss Maps: Use this if the [Transmission Loss Maps](#transmission-loss-map-.vtlm) already include retarder losses.
--   Primary Retarder (before gearbox): The rpm ratio is relative to the engine speed
--   Secondary Retarder (after gearbox): The rpm ratio is relative to the cardan shaft speed
-
-Both, primary and secondary retarders, require an [Retarder Torque Loss Input File (.vrlm)](#retarder-loss-torque-input-file-.vrlm).
-
-The Retarder Ratio defines the ratio between the engine speed/cardan shaft speed and the retarder.
-
-### Angledrive
-
-If an angledrive is used in the vehicle, it can be defined here.
-Three options are available:
-
-- None (**default**)
-- Separate Angledrive: Use this if the angledrive is measured separately. In this case the ratio must be set and the [Transmission Loss Map](#transmission-loss-map-.vtlm) (or an Efficiency value in Engineering mode) must also be given.
-- Included in transmission: Use this if the gearbox already includes the transmission losses for the angledrive in the respective transmission loss maps.
-
-
-### PTO Transmission
-
-If the vehicle has an PTO consumer, a pto transmission and consumer can be defined here. (Only in [Engineering Mode](#engineering-mode))
-
-Three settings can be set:
-
-- PTO Transmission: Here a transmission type can be chosen (adds constant load at all times).
-- PTO Consumer Loss Map (.vptol): Here the [PTO Idle Loss Map](#pto-idle-consumption-map-.vptoi) of the pto consumer can be defined (adds power demand when the pto cycle is not active).
-- PTO Cycle (.vptoc): Defines the [PTO Cycle](#pto-cycle-.vptoc) which is used when the pto-cycle is activated (when the PTO-Flag in the driving cycle is set).
-
-<div class="declaration">
-
-### ADAS
-
-On the ADAS tab, the options for advanced driver assistant systems can be selected. This is only supported in declaration mode. Depending on the mission cycle, vehicle group, and payload a certain benefit is applied to the calcualated fuel consumption. See [ADAS: Overspeed](#driver-overspeed) and [ADAS Technologies](#vehicle-adas-technologies)
-
-</div>
-
 ### Controls
 
 
@@ -159,3 +120,96 @@ On the ADAS tab, the options for advanced driver assistant systems can be select
 : If necessary the file path in the [VECTO Editor](#job-editor) will be updated.
 
 ![](pics/Cancel.png) ***Cancel without saving***
+
+
+
+## Vehicle Editor -- Powertrain Tab
+
+![](pics/VehicleForm_Powertrain.png)
+
+
+### Retarder Losses
+
+If a separate retarder is used in the vehicle a **Retarder Torque Loss Map** can be defined here to consider idling losses caused by the retarder.
+
+The following options are available:
+: -   No retarder
+-	Included in Transmission Loss Maps: Use this if the [Transmission Loss Maps](#transmission-loss-map-.vtlm) already include retarder losses.
+-   Primary Retarder (before gearbox, transmission input retarder): The rpm ratio is relative to the engine speed.
+-   Secondary Retarder (after gearbox, transmission output retarder): The rpm ratio is relative to the cardan shaft speed.
+-   Engine Retarder: Used this if the engine already includes the retarder losses.
+-   Axlegear Input Retarder (after axlegear): The rpm ratio is relative to the axlegear input shaft speed. Only available for battery electric vehicles with E3 motor, serial hybrid with S3 motor, S-IEPC, and E-IEPC.
+
+Primary, secondary and axlegear input retarder require an [Retarder Torque Loss Input File (.vrlm)](#retarder-loss-torque-input-file-.vrlm).
+The retarder ratio defines the ratio between the engine speed/cardan shaft speed and the retarder.
+
+### Angledrive
+
+If an angledrive is used in the vehicle, it can be defined here.
+Three options are available:
+
+- None (**default**)
+- Separate Angledrive: Use this if the angledrive is measured separately. In this case the ratio must be set and the [Transmission Loss Map](#transmission-loss-map-.vtlm) (or an Efficiency value in Engineering mode) must also be given.
+- Included in transmission: Use this if the gearbox already includes the transmission losses for the angledrive in the respective transmission loss maps.
+
+
+## Vehicle Editor -- Torque Limits Tab
+
+![](pics/VehicleForm_TorqueLimits.png)
+
+On this tab different torque limits can be applied at the vehicle level. For details which limits are applicable and who the limits are applied in the simulation [see here](#torque-and-speed-limitations).
+
+First, the maximum torque of the ICE may be limited for certain gears (see [Engine Torque Limitations](#torque-and-speed-limitations)).
+In case that the gearbox' maximum torque is lower than the engine's maximum torque or to model certain features like Top-Torque (where in the highest gear more torque is available) it is possible to limit the engine's maximum torque depending on the engaged gear. 
+
+
+## Vehicle Editor -- ADAS Tab
+
+![](pics/VehicleForm_ADAS.png)
+
+On the ADAS tab, the advanced driver assistant systems present in the vehicle can be selected.  See [ADAS - Engine Stop/Start](#advanced-driver-assistant-systems-engine-stopstart), [ADAS - EcoRoll](#advanced-driver-assistant-systems-eco-roll), and [ADAS - Predictive Cruise Control](#advanced-driver-assistant-systems-predictive-cruise-control)
+
+The following table describes which ADAS technology can be used and is supported for different powertrain architectures (X: supported, O: optional, -: not supported):
+
+| ADAS Technology \ Powertrain Architecture  | Conventional   | HEV   | PEV   |
+| ------------------------------------------ | -------------- | ----- | ----- |
+| Engine Stop/Start                          | X              | X     | -     |
+| EcoRoll Without Engine Stop                | X              | -     | -     |
+| EcoRoll with Engine Stop                   | X              | -     | -     |
+| Predictive Cruise Control                  | X              | X     | X     |
+| APT Gearbox EcoRoll Release Lockup Clutch  | O              | -     | -     |
+
+* Engine Stop/Start not allowed for PEV
+* EcoRoll for HEV always with ICE off
+* For PEV no clutch for disconnecting the EM present, thus no EcoRoll foreseen (very low drag of EM in any case)
+* Inputs for EcoRoll possible in GUI, but no effect in simulation
+
+
+## Vehicle Editor -- PTO Tab
+
+![](pics/Vehicleform_PTO.png)
+
+### PTO Transmission
+
+If the vehicle has an PTO consumer, a pto transmission and consumer can be defined here. (Only in [Engineering Mode](#engineering-mode))
+
+Three settings can be set:
+
+- PTO Transmission: Here a transmission type can be chosen (adds constant load at all times).
+- PTO Consumer Loss Map (.vptol): Here the [PTO Idle Loss Map](#pto-idle-consumption-map-.vptoi) of the pto consumer can be defined (adds power demand when the pto cycle is not active).
+- PTO Cycle (.vptoc): Defines the [PTO Cycle](#pto-cycle-.vptoc) which is used when the pto-cycle is activated (when the PTO-Flag in the driving cycle is set).
+
+<div class="engineering">
+In engineering mode additional PTO activations are available to simulate different types of municipal vehicles. It is possible to add a certain PTO load during driving while the engine speed and gear is fixed (to simulate for example roadsweepers), or to add PTO activation while driving (to simulate side loader refuse trucks for example). In both cases the PTO activation is indicated in the [driving cycle](#driving-cycles-.vdri) (column "PTO").
+
+
+### Roadsweeper operation
+
+PTO activation mode 2 simulates PTO activation while driving at a fixed engine speed and gear. The minimum engine speed and working gear is entered in the PTO tab. For details see [PTO](#pto).
+
+
+### Sideloader operation
+
+PTO activation mode 3 simulates a time-based PTO activation while driving. Therefore, a separate PTO cycle ([.vptor]()) containing the PTO power over time has to be provided. The start of PTO activation is indicated with a '3' in the 'PTO' column of the [driving cycle](#driving-cycles-.vdri). For details see [PTO](#pto).
+
+</div>
