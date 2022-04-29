@@ -1,8 +1,8 @@
-##Electrical Auxiliaries Editor
+## Electrical Auxiliaries Editor
  
 ![](pics/AA_Electrics.jpg)
  
-###Description
+### Description
 
 The "Electrics" tab defines various parameters for electric auxiliaries used on the vehicle:
 
@@ -19,7 +19,7 @@ The "Electrics" tab defines various parameters for electric auxiliaries used on 
 
 * Note: for certain fields the allowable values are also controlled/prescribed according to the requirements of the project steering group.
 
-###Results Cards
+### Results Cards
 
 Upon activation of Smart Electrics using the check box, the user may enter Result Card values according to the methodology proposed by the steering group.  Until the certification procedure to determine the correct values is agreed, it is recommended to use the following default values:
 
@@ -57,7 +57,7 @@ Example Default Results Card values
 
   : Result Card: Overrun
 
-###Default Values
+### Default Values
 
 The following table provides a summary of the default values that are populated whenever a new advanced auxiliaries (.AAUX) file is created from scratch (nominal consumption and % active are always fixed defaults, so are not shown).  The table also indicates the editable/default status of the relevant parameters in the VECTO UI in Engineering mode, and the recommended status in Declaration mode (not currently implemented).  The default values / parameter status has been agreed with the project steering group.
 

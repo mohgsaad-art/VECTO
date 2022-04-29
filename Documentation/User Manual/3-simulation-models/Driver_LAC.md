@@ -1,4 +1,4 @@
-##Driver: Look-Ahead Coasting
+## Driver: Look-Ahead Coasting
 
 Look-Ahead Coasting is a function that aims on modelling real driver behaviour. It is a forward-looking function that detects forthcoming reductions in target speed in the mission profile (e.g. speed limit, etc.) and induces an early deceleration using engine braking before applying mechanical brakes according to the [deceleration limit](#driver-acceleration-limiting).
 
@@ -36,7 +36,7 @@ In engineering mode the parameters can be freely chosen while in declaration mod
 
 ![](pics/Vecto-UI_LAC.svg)
 
-####Decision Factor for target velocity lookup (DF~vel~)
+#### Decision Factor for target velocity lookup (DF~vel~)
 
 ![](pics/Vecto_LAC-DF.png)
 
@@ -50,7 +50,7 @@ v_target [km/h], decision_factor [-]
 100            , 1
 ~~~
 
-####Decision Factor for velocity drop lookup (DF~vdrop~)
+#### Decision Factor for velocity drop lookup (DF~vdrop~)
 
 Example (default values):
 

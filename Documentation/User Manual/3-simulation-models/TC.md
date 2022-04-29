@@ -1,4 +1,4 @@
-##Torque Converter Model
+## Torque Converter Model
 
 The torque converter is defined as (virtual) separate gear. Independent of the chosen AT gearbox type (serial or power split), Vecto uses a powertrain architecture with a serial torque converter. The mechanical gear ratios and gears with torque converter are created by Vecto depending on the gearbox type and gear configuration.
 
@@ -7,7 +7,7 @@ While the torque converter is active engine torque and speed are computed based 
  ![](pics/GBX-TC.svg)
 
 
-###Torque converter characteristics file (.vtcc)
+### Torque converter characteristics file (.vtcc)
 
 The file is described [here](#torque-converter-characteristics-.vtcc).
 

@@ -129,9 +129,9 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 			var whtc = DeclarationData.WHTCCorrection;
 
 			var factors = new {
-				urban = new[] { 0.11, 0.17, 0.69, 0.98, 0.62, 1.0, 1.0, 1.0, 0.45, 0.0 },
+				urban = new[] { 0.0, 0.17, 0.69, 0.98, 0.62, 1.0, 1.0, 1.0, 0.45, 0.0 },
 				rural = new[] { 0.0, 0.3, 0.27, 0.0, 0.32, 0.0, 0.0, 0.0, 0.36, 0.22 },
-				motorway = new[] { 0.89, 0.53, 0.04, 0.02, 0.06, 0.0, 0.0, 0.0, 0.19, 0.78 }
+				motorway = new[] { 1.0, 0.53, 0.04, 0.02, 0.06, 0.0, 0.0, 0.0, 0.19, 0.78 }
 			};
 
 			var r = new Random();
@@ -148,7 +148,7 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 		[TestCase]
 		public void WHTCLookupTestLongHaul()
 		{
-			var expected = 1.015501;
+			var expected = 1.0057;
 
 			var rural = 1.0265;
 			var urban = 1.0948;

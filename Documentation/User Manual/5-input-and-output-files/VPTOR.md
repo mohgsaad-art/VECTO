@@ -1,4 +1,4 @@
-##PTO power demand during drive (.vptor)
+## PTO power demand during drive (.vptor)
 
 
 **Example:**

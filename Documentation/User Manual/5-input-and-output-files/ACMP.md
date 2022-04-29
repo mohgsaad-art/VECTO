@@ -1,13 +1,13 @@
-##Advanced Compressor Map (.acmp)
+## Advanced Compressor Map (.acmp)
 
 
 This file is used to configure the compressor map for pneumatic auxiliaries, and contains data relating to the compressor performance at various engine speeds. 
 
-###File Format
+### File Format
 
 The file uses the VECTO CSV format, with an example provided below.
 
-###Format
+### Format
 
 Example Configuration for Advanced Compressor Map:
 

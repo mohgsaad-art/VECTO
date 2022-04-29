@@ -1,9 +1,9 @@
-##Driving Cycles (.vdri)
+## Driving Cycles (.vdri)
 
 A Driving Cycle defines the parameters of a simulated route in Vecto. It is either time-based or distance-based and has different fields depending on the driving cycle type.
 The basic file format is [Vecto-CSV](#csv) and the file type ending is ".vdri". A Job must have at least one driving cycle (except in Declaration mode, where the driving cycles are predefined).
 
-###Driving Cycle Types
+### Driving Cycle Types
 - **Declaration Mode**: [Target speed, distance-based](#declaration-mode-cycles)
 - **Verification Test Mode**: [Measured driving cycle, time-based](#verification-test-cycle)
 - **Engineering Mode**:
@@ -17,7 +17,7 @@ The basic file format is [Vecto-CSV](#csv) and the file type ending is ".vdri". 
 - Distance-based cycles can be defined in any distance resolution, including variable distance steps.
 - Time-based cycles can be defined in any time resolution, including variable time steps.
 
-###Declaration Mode Cycles
+### Declaration Mode Cycles
 In Declaration Mode driving cycles are automatically chosen depending on vehicle category and cannot be changed by the user. These predefined cycles are of type target-speed, distance-based.
 
 - Coach: 275km
@@ -31,7 +31,7 @@ In Declaration Mode driving cycles are automatically chosen depending on vehicle
 - Urban: 40km
 - Urban Delivery: 28km
 
-###Verification Test Cycle
+### Verification Test Cycle
 This kind of cycle is used for simulating vehicles defined in declaration mode (xml) on a real driving cycle.
 
 Header: **\<t>, \<v>, \<n\_eng>,\<n\_fan>, \<tq\_left>, \<tq\_right>, \<n\_wh\_left>, \<n\_wh\_right>***, \<fc>, \<gear>*
@@ -70,7 +70,7 @@ Units are optional and are enclosed in [square-brackets] after the header-column
 
 
 
-###Engineering Mode: Target-Speed, Distance-Based Cycle
+### Engineering Mode: Target-Speed, Distance-Based Cycle
 This driving cycle defines the target speed over distance. Vecto tries to achieve and maintain this target speed.
 
 Header: **\<s>, \<v>, \<stop>***\[, \<Padd>]\[, \<grad>]\[, \<PTO>]\[, \<vair\_res>, \<vair\_beta>]\[, \<Aux\_ID>]*
@@ -103,7 +103,7 @@ Units are optional and are enclosed in [square-brackets] after the header-column
 |        2 |          35 |           0 |        3.03 |          1.3 |
 |        3 |          50 |           0 |        2.99 |          1.3 |
 
-###Engineering Mode: Measured-Speed, Time-Based Cycle
+### Engineering Mode: Measured-Speed, Time-Based Cycle
 This driving cycle defines the actual measured speed over time. Vecto tries to simulate the vehicle model using this speed as the actual vehicle speed.
 Due to differences in the real and simulated shift strategies a small difference in speed can occur, but Vecto immediately tries to catch up after the gear is engaged again.
 
@@ -132,7 +132,7 @@ Units are optional and are enclosed in [square-brackets] after the header-column
 |        3 |         2.4 |        2.99 |          1.3 |
 
 
-###Engineering Mode: Measured-Speed With Gear, Time-Based Cycle
+### Engineering Mode: Measured-Speed With Gear, Time-Based Cycle
 
 This driving cycle defines the actual measured speed of the vehicle, the gear, and the engine speed over time.
 It overrides the shift strategy of Vecto and also directly sets the engine speed.
@@ -164,7 +164,7 @@ Units are optional and are enclosed in [square-brackets] after the header-column
 |        2 |         1.2 |           3 |        3.03 |          1.3 |
 |        3 |         2.4 |           3 |        2.99 |          1.3 |
 
-###Engineering Mode: Pwheel (SiCo), Time-Based
+### Engineering Mode: Pwheel (SiCo), Time-Based
 This driving cycle defines the power measured at the wheels over time. Vecto tries to simulate the vehicle with this power requirement.
 
 Header: **\<t>, \<Pwheel>, \<gear>, \<n>***\[, \<Padd>]*
@@ -190,7 +190,7 @@ Units are optional and are enclosed in [square-brackets] after the header-column
 |        3 |          50.56 |           3 |       1400 |          1.3 |
 
 
-###Engine Only Mode: Engine Only Driving Cycle
+### Engine Only Mode: Engine Only Driving Cycle
 
 This driving cycle directly defines the engine's power or torque at the output shaft over time. Vecto adds the engine's inertia to the given power demand and simulates the engine.
 

@@ -1,4 +1,4 @@
-#Simulation Models
+# Simulation Models
 
 In this chapter the used component models for the simulation are described.
 
@@ -13,7 +13,7 @@ In this chapter the used component models for the simulation are described.
 * [Engine: Transient Full Load](#engine-transient-full-load)
 * [Engine: WHTC Correction Factors](#engine-correction-factors)
 * [Fuel properties](#fuel-properties)
-* [Engine Torque and Engine Speed Limitations](#engine-torque-and-engine-speed-limitations)
+* [Torque and Speed Limitations](#torque-and-speed-limitations)
 * [Gearbox: Gear Shift Model](#gearbox-gear-shift-model)
 * [Gearbox: MT and AMT Gearshift Rules](#gearbox-mt-and-amt-gearshift-rules)
 * [Gearbox: AT Gearshift Rules](#gearbox-at-gearshift-rules)

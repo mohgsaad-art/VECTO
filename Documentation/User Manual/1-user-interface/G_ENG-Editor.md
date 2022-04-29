@@ -1,19 +1,19 @@
-##Engine Editor
+## Engine Editor
 
 ![](pics/ENG-Editor.PNG)
 
-###Description
+### Description
 
 The [Engine File (.veng)](#engine-file-.veng) defines all engine-related parameters and input files like Fuel Consumption Map and Full Load Curve.
 
-###Relative File Paths
+### Relative File Paths
 
 It is recommended to use relative filepaths. This way the Job File and all input files can be moved without having to update the paths.
 Example: "Demo\\FLD1.vfld" points to the "Demo" subdirectory of the Engine File's directory.
 
 VECTO automatically uses relative paths if the input file (e.g. FC Map) is in the same directory as the Engine File. *Note:* The Engine File must be saved before browsing for input files.)
 
-###Main Engine Parameters
+### Main Engine Parameters
 
 Make and Model \[text]\
 :   Free text defining the engine model, type, etc.
@@ -30,19 +30,19 @@ Fuel Type
 Inertia including Flywheel \[kgm²\]
 :   Inertia for rotating parts including engine flywheel. In [Declaration Mode](#declaration-mode) the inertia is calculated  depending on the engine's displacement and also accounts for the clutch's inertia.
 
-###Full Load and Drag Curves
+### Full Load and Drag Curves
 
 
 The [Engine's Full Load and Drag Curves (.vfld)](#full-load-and-drag-curves-.vfld) limits the engine's maximum torque and drag torque respectively The full-load curve must at least cover the engine-speed range from idling speed up to the speed where the power goes down to 70% of the maximum power. The input file (.vfld) file format is described [here](#full-load-and-drag-curves-.vfld).
 
-###Fuel Consumption Map
+### Fuel Consumption Map
 
 
 The [Fuel Consumption Map](#fuel-consumption-map-.vmap) is used to calculate the base FC value. See [Fuel Consumption Calculation](#engine-fuel-consumption-calculation) for details.
 
 The input file (.vmap) file format is described [here](#fuel-consumption-map-.vmap).
 
-###WHTC Correction Factors
+### WHTC Correction Factors
 
 <div class="declaration">
 The WHTC Correction Factors are required in [Declaration Mode](#declaration-mode) for the [WHTC FC Correction](#engine-fuel-consumption-calculation).
@@ -55,12 +55,12 @@ In engineering a single correction factor for correcting WHTC, Cold/Hot Balancin
 </div>
 
 
-###Chart Area
+### Chart Area
 
 
 The Chart Area shows the fuel consumption map and the selected full load curve.
 
-###Controls
+### Controls
 
 
 ![new](pics/blue-document-icon.png)New file

@@ -1,18 +1,18 @@
-##Gearbox Editor
+## Gearbox Editor
 
 
 
 ![](pics/GBX-Editor.PNG)
 
 
-###Description
+### Description
 
 
 
 The [Gearbox File (.vgbx)](#gearbox-file-.vgbx) defines alls gearbox-related input parameters like gear ratios and transmission loss maps. See [Gear Shift Model](#gearbox-gear-shift-model) for details.
 
 
-###Relative File Paths
+### Relative File Paths
 
 It is recommended to use relative filepaths. This way the Job File and all input files can be moved without having to update the paths. \
 Example: "Gears\\Gear1.vtlm" points to the "Gears" subdirectory of the Gearbox File's directoy.
@@ -20,7 +20,7 @@ Example: "Gears\\Gear1.vtlm" points to the "Gears" subdirectory of the Gearbox F
 VECTO automatically uses relative paths if the input file (e.g. Shift Polygons File) is in the same directory as the Gearbox File. (The Gearbox File must be saved before browsing for input files.)
 
 
-###Main Gearbox Parameters
+### Main Gearbox Parameters
 
 Make and Model
 :   Free text defining the gearbox model, type, etc.
@@ -45,7 +45,7 @@ Traction Interruption \[s\]
 :   Interruption during gear shift event. (Engineering mode only)
 
 
-###Gears
+### Gears
 
 Use the ![add](pics/plus-circle-icon.png) and ![remove](pics/minus-circle-icon.png) buttons to add or remove gears from the vehicle. Doubleclick entries to edit existing gears.
 
@@ -56,7 +56,7 @@ Use the ![add](pics/plus-circle-icon.png) and ![remove](pics/minus-circle-icon.p
 -	 **"Max Torque"** defines the maximum allowed torque (if applicable) for ah gear. It is used for limiting the engine's torque in certain gear. Note: in Declaration mode the [generic shift polygons](#gearbox-gear-shift-model) are computed from the engine's full-load curve. If the maximum torque is limited by the gearbox, the minimum of the gearbox and engine maximum torque will be used to compute the [generic shift polygons](#gearbox-gear-shift-model)!
 
 
-###Gear shift strategy parameters
+### Gear shift strategy parameters
 
 Since version Vecto 3.0.3 the gearshift polygon calculation according to the ACEA White Book 2016 is implemented and since Vecto 3.0.4 the ACEA White Book 2016 shift strategy for AMT and MT is implemented. The AT-S and AT-P strategies are implemented since Version 3.1.0. For details on this topic please see the ACEA White Book 2016.
 
@@ -76,7 +76,7 @@ Minimum shift time \[s\]
 :   Limits the time between two gear shifts. This rule will be ignored if rpms are too high or too low.
 
 
-###Shift Strategy Parameters
+### Shift Strategy Parameters
 
 Downshift after upshift delay \[s\]
 :   Minimal duration between an upshift and a consecutive downshift.
@@ -87,7 +87,7 @@ Upshift after downshift delay \[s\]
 Min. acceleration after upshift \[m/s²\]
 :   Limit for the minimal achievable acceleration to test if an upshift is reasonable.
 
-###Start Gear
+### Start Gear
 
 In order to calculate an appropriate gear for vehicle start (first gear after vehicle standstill) a fictional load case is calculated using a specified **reference vehicle speed** and **reference acceleration** together with the actual road gradient, transmission losses and auxiliary power demand. This way the start gear is independent from the target speed. VECTO uses the highest possible gear which provides the defined **torque reserve**.
 
@@ -102,7 +102,7 @@ Reference acceleration at clutch-in
 
 </div>
 
-###Torque Converter
+### Torque Converter
 
 Torque converter characteristics file
 :   Defines the [Torque converter characteristics file](#torque-converter-characteristics-.vtcc) containing the torque ratio and reference torque over the speed ratio.
@@ -121,7 +121,7 @@ Torque converter shift polygon
 :   Defines the [Shift Polygons InputFile (.vgbs)](#shift-polygons-input-file-.vgbs) separately for the torque converter. For details on shifting from/to the torque converter gear please see [AT Gear Shift Strategy](#gearbox-at-gearshift-rules).
 
 
-###Torque Converter: Minimal acceleration after upshift
+### Torque Converter: Minimal acceleration after upshift
 
 Here the minimal achievable accelerations before upshifts can be defined.
 
@@ -132,7 +132,7 @@ Acc. for C->C \[m/s²\]
 :   The minimal achievable acceleration for shifts from first torque converter gear to second torque converter gear (1C->2C)
 
 
-###Power shift losses
+### Power shift losses
 
 Shift time \[s\]
 :   The shift time for powershift losses.
@@ -141,12 +141,12 @@ Inertia factor \[-\]
 :   The inertia factor for powershift losses.
 
 
-###Chart Area
+### Chart Area
 
 The Chart Area displays the [Shift Polygons Input File(.vgbs)](#shift-polygons-input-file-.vgbs) as well as the declaration mode shift polygons (dashed lines) for the selected gear.
 
 
-###Controls
+### Controls
 
 
 

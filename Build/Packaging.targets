@@ -67,7 +67,7 @@
 		<UserManual Include="$(SolutionDir)Documentation\User Manual\help.html"/>
 		<UserManual Include="$(SolutionDir)Documentation\VectoHashingTool\HashingToolHelp.html"/>
 		<UserManual Include="$(SolutionDir)Documentation\XML\*.png"/>
-		<UserManual Include="$(SolutionDir)Documentation\XML\VectoParameters.html"/>
+		<UserManual Include="$(SolutionDir)Documentation\XML\VectoParameterDocumentation.html"/>
 		<UserManual Include="$(SolutionDir)Documentation\User Manual Source\JIRA Quick Start Guide.pdf"/>
 		<UserManual Include="$(SolutionDir)Documentation\Cdv_Generator_VECTO3.2.xlsx"/>
 		<ReleaseNotes Include="$(SolutionDir)Documentation\User Manual Source\Release Notes Vecto3.x.pdf"/>

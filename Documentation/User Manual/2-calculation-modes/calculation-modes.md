@@ -1,4 +1,4 @@
-#Calculation Modes
+# Calculation Modes
 
 VECTO supports different calculation modes for declaring a vehicle, validation of test-results, or experimenting with different parameters and components. These modes are described here.
 

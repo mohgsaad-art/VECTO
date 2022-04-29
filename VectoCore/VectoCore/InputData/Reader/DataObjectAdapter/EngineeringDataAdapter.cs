@@ -612,7 +612,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			var retVal = new ShiftStrategyParameters {
 				TorqueReserve = gsInputData.TorqueReserve,
 				StartTorqueReserve = gsInputData.StartTorqueReserve,
-				TimeBetweenGearshifts = gsInputData.MinTimeBetweenGearshift,
+				TimeBetweenGearshifts = VectoMath.Max(gsInputData.MinTimeBetweenGearshift, 0.01.SI<Second>()),
 				StartSpeed = gsInputData.StartSpeed,
 				DownshiftAfterUpshiftDelay = gsInputData.DownshiftAfterUpshiftDelay,
 				UpshiftAfterDownshiftDelay = gsInputData.UpshiftAfterDownshiftDelay,

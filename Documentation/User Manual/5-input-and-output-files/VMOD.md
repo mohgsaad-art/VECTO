@@ -1,4 +1,4 @@
-##Modal Results (.vmod)
+## Modal Results (.vmod)
 
 Modal results are only created if enabled in the [Options](#main-form) tab. One file is created for each calculation and stored in the same directory as the .vecto file.
 

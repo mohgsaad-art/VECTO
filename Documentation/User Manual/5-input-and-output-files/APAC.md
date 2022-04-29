@@ -1,4 +1,4 @@
-##Pneumatic Actuations Map (.apac)
+## Pneumatic Actuations Map (.apac)
  
 This file contains data on number of different kinds of pneumatic actuations on different duty cycles. 
 
@@ -12,11 +12,11 @@ Some flexibility in syntax is allowable (the model looks for ‘Bus’, ‘Coach
 
 This file contains also the estimated time required for a cycle which is required to estimate the air demand for certain actuations.
 
-###File Format
+### File Format
 
 The file uses the VECTO CSV format, with an example provided below, with the default values based on the methodology agreed with the European Commission and the project Steering Group.
 
-###Format
+### Format
 
 **Default Configuration for Pneumatic Actuations Map:**
 

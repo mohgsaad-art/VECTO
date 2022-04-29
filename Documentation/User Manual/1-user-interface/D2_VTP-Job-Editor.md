@@ -1,10 +1,10 @@
-##VTP-Job Editor
+## VTP-Job Editor
 
 
 ![](pics/VTP-Job.png)
 
 
-###Description
+### Description
 
 A VTP-Job is intended to verify the declared data of a vehicle through an on-road test. VTP-Jobs can be either simulated in engineering mode or declaration mode. For a VTP simulation the measured driving cycle along with the VECTO job-file is required. The driving cycle has to contain the vehicle's velocity, rotational speed of the driven wheels, torque of the driven wheels, and fuel consumption in a temporal resolution of 2Hz.
 VECTO computes the best matching gear based on the vehicle parameters, the actual vehicle speed and the engine speed.
@@ -25,7 +25,7 @@ In declaration mode only the first given driving cycle is simulated as the resul
 In declaration mode the manufacturer's record file needs to be provided. Furthermore, declaration mode simulations consider correction factors for the net calorific value of the used fuel and the vehicle's mileage. In engineering mode the according input fields are not shown.
 </div>
 
-###Relative File Paths
+### Relative File Paths
 
 It is recommended to use relative filepaths. This way the Job File and all input files can be moved without having to update the paths. Example: "Vehicles\\Vehicle1.xml" points to the "Vehicles" subdirectory of the Job File's directoy.
 
@@ -43,11 +43,11 @@ Cycles
 
 
 
-###Chart Area
+### Chart Area
 
 If a valid Vehicle File is loaded into the Editor the main vehicle parameters like HDV group and axle configuration are shown here. The plot shows the full load curve(s) and sampling points of the fuel consumption map. 
 
-###Controls
+### Controls
 
 ![new](pics/blue-document-icon.png) New Job File
 :	Create a new empty .vecto file

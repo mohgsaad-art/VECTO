@@ -34,6 +34,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Linq;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
@@ -60,6 +61,13 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 	[SuppressMessage("ReSharper", "UnusedMember.Local")]
 	public class ValidationTestClass
 	{
+		[OneTimeSetUp]
+		public void RunBeforeAnyTests()
+		{
+			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
+		}
+
+
 		/// <summary>
 		/// VECTO-107 Check valid range of input parameters
 		/// </summary>

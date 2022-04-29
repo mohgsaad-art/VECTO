@@ -1,4 +1,4 @@
-##Gearbox: AT Gearbox Model
+## Gearbox: AT Gearbox Model
 
 Vecto supports both, AT gearboxes with serial torque converter and AT gearboxes with power split. Internally, both gearbox types are simulated using a power train architecture with the torque converter in series.
 
@@ -14,18 +14,18 @@ For AT gearboxes using power split the torque converter characteristics already 
 
 The .vmod file for vehicles with AT gearboxes contains an additional column that indicates if the torque converter is locked or not.
 
-###Gearshift losses for AT Gearboxes
+### Gearshift losses for AT Gearboxes
 
 For AT gearboxes the losses during a power-shift are modeled according to the following equations
 
-####Basic assumptions
+#### Basic assumptions
 
 + Only power-shifts with positive power at gearbox output side are considered. 
 + Both upshifts and downshifts with positive power at gearbox output side have to be considered.
 + The power at gearbox output side is assumed to be constant during a power-shift
 
 
-####Power-shift loss computation
+#### Power-shift loss computation
 
 Model parameters: shift time ($t_s$), inertia factor ($f_I$)
 

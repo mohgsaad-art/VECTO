@@ -5,11 +5,6 @@
 1-user-interface/D1_VECTO-Job-Editor.md
 1-user-interface/D2_VTP-Job-Editor.md
 1-user-interface/E_VECTO-Editor_Aux.md
-1-user-interface/K0_VECTO-AdvancedAux.md
-1-user-interface/K1_VECTO-AdvancedAux_EL.md
-1-user-interface/K2_VECTO-AdvancedAux_EL-ALT.md
-1-user-interface/K3_VECTO-AdvancedAux_PNEU.md
-1-user-interface/K4_VECTO-AdvancedAux_HVAC.md
 1-user-interface/F_VEH-Editor.md
 1-user-interface/G_ENG-Editor.md
 1-user-interface/H_GBX-Editor.md
@@ -44,6 +39,7 @@
 3-simulation-models/Gearshift_MT.md
 3-simulation-models/TC.md
 3-simulation-models/Auxiliaries.md
+3-simulation-models/BusAuxiliaries.md
 3-simulation-models/PwheelInput.md
 3-simulation-models/PTO.md
 5-input-and-output-files/input-output.md

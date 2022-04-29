@@ -1,4 +1,4 @@
-##Vehicle: Cross Wind Correction
+## Vehicle: Cross Wind Correction
 
 
 VECTO offers three different modes to consider cross wind influence on the drag coefficient. It is configured in the [Vehicle File](#vehicle-file-.vveh).
@@ -8,7 +8,7 @@ $F_{aero}=1/2 \rho_{air}(C_{d,v}A(v_{veh})) v_{veh}^2$
 
 The speed dependecy of the $C_dA$ value allows for consideration of average cross widn conditions.
 
-###Speed dependent correction (Declaration Mode)
+### Speed dependent correction (Declaration Mode)
 
 
 This is the mode which is used in [Declaration Mode](#declaration-mode).
@@ -32,7 +32,7 @@ The following table gives the coefficients per vehicle type:
 
 In a pre-processing step VECTO calculates the function for $C_dA$ value as a function of vehicle speed. This is done by integration of all possible directions of the ambient wind from ground level to maximum vehicle height considering the boundary layer effect based on the following formulas: 
 
-$C_{d,v}A(v_{veh}) = \frac{1}{2 \pi v_{veh}^2 h_{veh}}\int_{\alpha = 0°}^{\alpha = 360°}{\int_{h=0}^{h=h_{veh}}{C_dA(\beta)\cdot v_{air}(h, \alpha)^2} \text{d}h\ \text{d}\alpha}$
+$C_{d,v}A(v_{veh}) = \frac{1}{2 \pi v_{veh}^2 h_{veh}}\int_{\alpha = 0^\circ}^{\alpha = 360^\circ}{\int_{h=0}^{h=h_{veh}}{C_dA(\beta)\cdot v_{air}(h, \alpha)^2} \text{d}h\ \text{d}\alpha}$
 
 $v_{air}(h) = \sqrt{(v_{wind}(h)\cdot\cos\alpha + v_{veh})^2 + (v_{wind}(h)\cdot\sin\alpha)^2}$
 
@@ -54,17 +54,17 @@ $v_{wind} \ldots \text{velocity of ambient wind}$
 
 The generation of the $C_{d,v}A(v_{veh})$ curve is demonstrated in [this Excel sheet](Cdv_Generator_VECTO3.2.xlsx)
 
-###Speed dependent correction (User-defined)
+### Speed dependent correction (User-defined)
 The base C~d~A value (see [Vehicle File](#vehicle-file-.vveh)) is corrected with a user-defined speed dependent scaling function. A [vcdv-File](#speed-dependent-cross-wind-correction-input-file-.vcdv) is needed for this calculation.
 
 The C~d~A value given in the vehicle configuration is corrected depending on the vehicle's speed and the C~d~ scaling factor from the input file as follows:
 
-$C_dA(v_{veh}) = C_dA * F_C_d(v_{veh})$
+$C_dA(v_{veh}) = C_dA * F_Cd(v_{veh})$
 
  ![](pics/VCDV.png)
 
 
-###Correction using Vair & Beta Input
+### Correction using Vair & Beta Input
 
 The actual (measured) air speed and direction can be used to correct cross-wid influence if available. A [vcdb-File](#vair-beta-cross-wind-correction-input-file-.vcdb) is needed for this calculation. This file defines a ΔC~d~A value in \[m²\] depending on the wind angle. The [driving cycle](#driving-cycles-.vdri) must include the air speed relative to the vehicle v~air~ (\<vair\_res\>) and the wind yaw angle (\<vair\_beta\>).
 

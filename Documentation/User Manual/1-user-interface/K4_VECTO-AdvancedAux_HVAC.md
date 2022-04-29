@@ -1,8 +1,8 @@
-##HVAC Auxiliaries Editor
+## HVAC Auxiliaries Editor
  
 ![](pics/AA_HVAC.jpg)
 
-###Description
+### Description
 
 The "HVAC" tab defines various parameters for heating, ventilation and air conditioning (HVAC) auxiliaries used on the vehicle, calculated from the HVAC Steady State Model (HVAC SSM):
 -   Disable HVAC Module [tickbox]
@@ -17,7 +17,7 @@ Outputs from the HVAC SSM include:
 -   Fuelling Litres Per Hour
 
 
-###HVAC Steady-State Model Editor
+### HVAC Steady-State Model Editor
 
 The HVAC Steady-State Model (HVAC SSM) Editor defines various data and parameters for calculation of HVAC auxiliary demands (electrical, mechanical and fuelling) from the vehicle, replicating the key inputs/functionality from the HVAC CO2SIM model developed for ACEA:
 
@@ -32,7 +32,7 @@ At the top of the window, two sets of outputs are presented for electrical, mech
 -   'Base' values: These are the calculated resulting demands from the inputs on the 'Bus Parameters', 'Boundary Conditions' and 'Other' tabs.
 -   'Adjusted' values: these are the final values output from the model, which additionally factor in the HVAC technologies included in the 'Tech List Input' tab.
 
-###Bus Parameters
+### Bus Parameters
 
 ![](pics/HVAC_BusParameters.jpg)
 
@@ -49,13 +49,13 @@ Input bus parameters can be edited directly or imported/calculated from the Bus 
 -   Other fields, that are greyed out, are locked and not editable, containing fixed default values or calculations.
  
 
-###Boundary Conditions
+### Boundary Conditions
 
 ![](pics/HVAC_BoundaryConditions.jpg)
 
 On this tab the various boundary conditions for the HVAC SSM calculations can be set. Certain fields (greyed out) are locked and not editable, containing fixed default values or calculations.
 
-###Other
+### Other
 
 ![](pics/HVAC_Other.jpg)
 
@@ -65,7 +65,7 @@ On this tab a number of other parameters for the HVAC SSM calculations can be se
 -   Ventilation settings
 -   Auxiliary Heater parameters: the power of the fuel fired heater may be included, other fields are provided for information only and are locked. The 'Engine Waste Heat' values are calculated during the actual model runs, which are determined via a pre-run of the model over the selected drive-cycle.
 
-###TechList Input
+### TechList Input
 
 ![](pics/HVAC_TechList.jpg)
 
@@ -76,7 +76,7 @@ To determine energy consumption of a certain bus-HVAC system combination, a cust
 The final 'Diagnostics' tab provides a summary of the resulting outputs from the HVAC Tech List tab.
 
 
-###Default Values
+### Default Values
 
 The following table provides a summary of the default values that are populated whenever a new advanced auxiliaries (.AAUX) file is created from scratch.  The table also indicates the editable/default status of the relevant parameters in the VECTO UI in Engineering mode, and the recommended status in Declaration mode (not currently implemented).  The default values / parameter status has been agreed with the project steering group.
 
@@ -231,7 +231,7 @@ Definition of bins for transmission rates according to ACEA TF5 recommendation:
 | **Ventilation** | High (20x internal volume / h) | Low (7x internal volume / h) | 
 | **Heating** | High (10x internal volume / h) | Low (7x internal volume / h) 
 
-###File Format
+### File Format
 
 The HVAC SSM (.ahsm) and Bus Parameter Database (.abdb) files use the VECTO CSV format.
 

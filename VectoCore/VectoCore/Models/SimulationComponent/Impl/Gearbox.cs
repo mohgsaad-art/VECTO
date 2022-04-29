@@ -259,6 +259,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 											(DataBus.Brakes.BrakePower.IsGreater(0) || inTorque.IsSmaller(0));
 			var vehicleSpeedBelowThreshold =
 				DataBus.VehicleInfo.VehicleSpeed.IsSmaller(ModelData.DisengageWhenHaltingSpeed);
+			if (!dryRun) {
+				CurrentState.DrivingBehavior = DataBus.DriverInfo.DriverBehavior;
+			}
 			if (halted || (driverDeceleratingNegTorque && vehicleSpeedBelowThreshold)) {
 				EngageTime = VectoMath.Max(EngageTime, absTime + dt);
 				_strategy?.Disengage(absTime, dt, outTorque, outAngularVelocity);
@@ -271,9 +274,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				return RequestGearDisengaged(absTime, dt, outTorque, outAngularVelocity, inTorque, dryRun);
 			}
 
-			if (!dryRun) {
-				CurrentState.DrivingBehavior = DataBus.DriverInfo.DriverBehavior;
-			}
+			
 
 			return GearEngaged(absTime)
 				? RequestGearEngaged(absTime, dt, outTorque, outAngularVelocity, inTorque, inTorqueLossResult,
@@ -525,21 +526,21 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				_overrideDisengage = null;
 			}
 
-			if (PreviousState.DrivingBehavior != CurrentState.DrivingBehavior) {
-				Log.Debug("driving action changed...");
-				if (CurrentState.DrivingBehavior == DrivingBehavior.Driving ||
-					CurrentState.DrivingBehavior == DrivingBehavior.Braking) {
-					if (GearEngaged(time)) {
-						Log.Debug("resetting gearshift time interval");
-						LastDownshift = -double.MaxValue.SI<Second>();
-						LastUpshift = -double.MaxValue.SI<Second>();
-					} else {
-						CurrentState.DrivingBehavior = PreviousState.DrivingBehavior;
-					}
-				}
-			}
+            if (PreviousState.DrivingBehavior != CurrentState.DrivingBehavior) {
+                Log.Debug("driving action changed...");
+                if (CurrentState.DrivingBehavior == DrivingBehavior.Driving ||
+                    CurrentState.DrivingBehavior == DrivingBehavior.Braking) {
+                    if (GearEngaged(time)) {
+                        Log.Debug("resetting gearshift time interval");
+                        LastDownshift = -double.MaxValue.SI<Second>();
+                        LastUpshift = -double.MaxValue.SI<Second>();
+                    } else {
+                        CurrentState.DrivingBehavior = PreviousState.DrivingBehavior;
+                    }
+                }
+            }
 
-			base.DoCommitSimulationStep(time, simulationInterval);
+            base.DoCommitSimulationStep(time, simulationInterval);
 		}
 
 		public bool SwitchToNeutral {
