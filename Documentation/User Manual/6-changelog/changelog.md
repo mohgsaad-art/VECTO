@@ -2,6 +2,17 @@
 
 **VECTO-3.3.11**
 
+***Build 2675 (2022-04-29) OFFICIAL RELEASE***
+
+- Bugfixes (compared to 3.3.11.2645)
+    * [VECTO-1557] - Simulation abort Generic Vehicle CityBus APT-S UD
+    * [VECTO-1561] - Simulation abort with AT transmission
+    * [VECTO-1567] - Different CO2 results with VECTO-3.3.11.2645 release candidate
+    * [VECTO-1562] - Adapting WHTC Correction Factor weighting for LH Cycle
+    * [VECTO-1560] - update toolchain for generating user manual
+    * added new VECTO Parameter documentation
+
+
 ***Build 2645 (2022-03-30) RELEASE CANDIDATE***
 
 - Improvements
