@@ -57,7 +57,7 @@ namespace VECTOTrailer.Model.Simulation
 	{
 		private ILogger _logger;
 		private BackgroundWorker worker;
-		private ReaderWriterLockSlim _simSettingsRwLock = new ReaderWriterLockSlim();
+		private ReaderWriterLockSlim _simSettingsRwLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
 		public BackGroundSimulator(IXMLInputDataReader inputDataReader, IPdfCreator pdfCreator, ITrailerToolSettings settings)
 		{
 			_pdfCreator = pdfCreator;
@@ -79,21 +79,22 @@ namespace VECTOTrailer.Model.Simulation
 			OutputDirectory = _trailerToolSettings.GeneralSettings.BackgroundOutputPath;
 			WritePdfReports = _trailerToolSettings.SimulationSettings.BackgroudWritePDF;
 			WriteModData = _trailerToolSettings.SimulationSettings.BackgroundWriteModData;
-			settings.GeneralSettings.PropertyChanged += ((s, e) => {
-				var generalSettings = s as Properties.Settings;
-				var simulationSettings = s as Properties.SimulationSettings;
+			settings.PropertyChanged += ((s, e) => {
+				var trailerToolSettings = s as TrailerToolSettings;
+				var generalSettings = trailerToolSettings?.GeneralSettings;
+				var simulationSettings = trailerToolSettings?.SimulationSettings;
 				switch (e.PropertyName) {
 					case nameof(generalSettings.BackgroundInputPath):
 						InputDirectory = generalSettings?.BackgroundInputPath ?? InputDirectory;
 						break;
 					case nameof(generalSettings.BackgroundOutputPath):
-						OutputDirectory = generalSettings?.BackgroundOutputPath ?? InputDirectory;
+						OutputDirectory = generalSettings?.BackgroundOutputPath ?? OutputDirectory;
 						break;
 					case nameof(simulationSettings.BackgroundWriteModData):
 						WriteModData = simulationSettings?.BackgroundWriteModData ?? WriteModData;
 						break;
-					case nameof(simulationSettings.WritePDFReport):
-						WritePdfReports = simulationSettings?.BackgroundWriteModData ?? WritePdfReports;
+					case nameof(simulationSettings.BackgroudWritePDF):
+						WritePdfReports = simulationSettings?.BackgroudWritePDF ?? WritePdfReports;
 						break;
 					default:
 						break;
@@ -569,7 +570,7 @@ namespace VECTOTrailer.Model.Simulation
 		private JobContainer ReadJobFiles(IList<string> jobFileNames, string outputDirectory, Action<int, VectoSimulationProgress> reportProgress, Func<bool> cancel)
 		{
 			var mode = ExecutionMode.Declaration;
-			var sumFileWriter = new FileOutputWriter(Path.Combine(outputDirectory, $"BackgroundSimulation"));
+			var sumFileWriter = new FileOutputWriter(jobFileNames.First());
 			var sumContainer = new SummaryDataContainer(sumFileWriter);
 			var jobContainer = new JobContainer(sumContainer);
 
