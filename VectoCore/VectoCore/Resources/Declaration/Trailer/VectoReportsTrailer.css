@@ -692,7 +692,7 @@ WeightedResults Fuel >*:before{
 
 
 TotalVehicleMass:before { content: "Total vehicle mass:"; }
-Payload:before { content: "Loading: "; }
+Payload:before { content: "Payload: "; }
 CdxAyawAngle0:before { content: "CdxAyawAngle0: " }
 CdxAyawAngle3:before { content: "CdxAyawAngle3: " }
 CdxAyawAngle6:before { content: "CdxAyawAngle6: " }
