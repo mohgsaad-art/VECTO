@@ -201,6 +201,8 @@ namespace TUGraz.VectoCommon.InputData
 		/// cf. VECTO Input Parameters.xlsx
 		/// </summary>
 		IList<IAxleDeclarationInputData> AxlesDeclaration { get; }
+
+		int? NumSteeredAxles { get; }
 	}
 
 	public interface IAdvancedDriverAssistantSystemDeclarationInputData
@@ -369,6 +371,8 @@ namespace TUGraz.VectoCommon.InputData
 		AxleType AxleType { get; }
 
 		ITyreDeclarationInputData Tyre { get; }
+
+		bool Steered { get; }
 
 		DataSource DataSource { get; }
 	}
