@@ -76,8 +76,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 			if (row == null) {
 				return new StandardTrailerSegment {};
 			}
-
-			return new StandardTrailerSegment
+			var standardTrailerSegment =  new StandardTrailerSegment
 			{
 				//VehicleGroup = (int)row.ParseDouble("Vehicle_group"),
 				MaxGcm = row.ParseDouble("max_gcm"),
@@ -110,7 +109,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 				DeclarationData.GetPayloadForGrossVehicleWeight(Kilogram.Create(grossVehicleWeight), row.Field<string>("payload_lh_low")).Value()
 			};
 
-
+			return standardTrailerSegment;
 		}
 
 		private DataRow GetTrailerDataRow(string code)

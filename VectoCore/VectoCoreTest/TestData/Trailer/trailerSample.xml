@@ -10,7 +10,7 @@
     <AxleCount>1</AxleCount>
     <TrailerType>DA</TrailerType>
     <BodyWorkType>dry box</BodyWorkType>
-    <VolumeOrientation>false</VolumeOrientation>
+
     <TrailerCouplingPoint>n/a</TrailerCouplingPoint>
     <Masses>
       <CorrectedMassInRunningOrder>40000</CorrectedMassInRunningOrder>
@@ -23,33 +23,12 @@
       <ExternalHeightBody>2.000</ExternalHeightBody>
       <TotalHeightTrailer>3.000</TotalHeightTrailer>
       <LengthFromFrontToFirstAxle>2.000</LengthFromFrontToFirstAxle>
-      <LengthBetweenCentersOfAxles>0.000</LengthBetweenCentersOfAxles>
+      <LengthBetweenCentresOfAxles>0.000</LengthBetweenCentresOfAxles>
       <CargoVolume>2.000</CargoVolume>
+      <VolumeOrientation>false</VolumeOrientation>
     </Dimensions>
     <AeroFeatures>
-      <CertifiedAeroReduction>
-        <Data xsi:type="CertifiedAeroDataDeclarationType" id="AERO-asdf">
-          <Manufacturer>Generic Manufacturer</Manufacturer>
-          <Model>Generic Tyre Model</Model>
-          <CertificationNumber>e12*0815/8051*2017/05T0000*00</CertificationNumber>
-          <Date>2017-02-15T11:00:00Z</Date>
-          <CertifiedAerodynamicReduction0>1.00</CertifiedAerodynamicReduction0>
-          <CertifiedAerodynamicReduction3>2.00</CertifiedAerodynamicReduction3>
-          <CertifiedAerodynamicReduction6>3.00</CertifiedAerodynamicReduction6>
-          <CertifiedAerodynamicReduction9>4.00</CertifiedAerodynamicReduction9>
-          <ApplicableVehicleGroup>1123</ApplicableVehicleGroup>
-        </Data>
-        <Signature>
-          <di:Reference URI="#AERO-asdf">
-            <di:Transforms>
-              <di:Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
-              <di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
-            </di:Transforms>
-            <di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
-            <di:DigestValue>7vbS5FPUgb2ce2NfcDGWMWpV6aZUyjY0SXqE2AP8Oh8=</di:DigestValue>
-          </di:Reference>
-        </Signature>
-      </CertifiedAeroReduction>
+      <Technology>none</Technology>
     </AeroFeatures>
     <AxleWheels>
       <Data xsi:type="v2.7:TrailerAxleWheelsDataDeclarationType">

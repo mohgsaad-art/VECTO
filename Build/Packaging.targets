@@ -60,7 +60,8 @@
 		<VectoCoreAssembly Include="$(OutputPath)VectoCore.dll" />  
 		<VectoCommandLine Include="$(SolutionDir)VectoConsole\bin\Release\vectocmd.exe*"/>
 		<VectoTrailer Include="$(SolutionDir)VECTOTrailer\bin\Release\VECTOTrailer.exe*"/>
-		
+		<CefSharpx64 Include="$(SolutionDir)VECTOTrailer\bin\Release\x64\*"/>
+		<CefSharpx86 Include="$(SolutionDir)VECTOTrailer\bin\Release\x86\*"/>
 		<GenericVehicles Include="$(SolutionDir)Generic Vehicles\Declaration Mode\Trailer\**/*.*" Exclude="$(SolutionDir)**\*.vmod;$(SolutionDir)**\*.vsum;$(SolutionDir)**\*RSLT_*.xml;$(SolutionDir)**\*.pdf"/>
 		<MissionProfiles Include="$(SolutionDir)VectoCore\VectoCore\Resources\Declaration\MissionCycles\**\*.*"/>
 		<DeclarationData Include="$(SolutionDir)VectoCore\VectoCore\Resources\Declaration\**/*.csv" Exclude="$(SolutionDir)**\MissionCycles\**\*.*"/>
@@ -72,18 +73,20 @@
 		<DeclarationData Include="$(SolutionDir)VectoCore\VectoCore\Resources\Declaration\**/*.acmp" Exclude="$(SolutionDir)**\MissionCycles\**\*.*"/>
 		<DeclarationData Include="$(SolutionDir)VectoCore\VectoCore\Resources\Declaration\**/*.vmap" Exclude="$(SolutionDir)**\MissionCycles\**\*.*"/>
 		<VectoXSD Include="$(SolutionDir)VectoCore\VectoCore\Resources\XSD\**\*.*" Exclude="$(SolutionDir)**\*Engineering*"/>
-		<VectoXMLExamples Include="$(SolutionDir)VectoCore\VectoCoreTest\TestData\XML\XMLReaderDeclaration\*-sample.xml"/>
+		<!-- <VectoXMLExamples Include="$(SolutionDir)VectoCore\VectoCoreTest\TestData\XML\XMLReaderDeclaration\*-sample.xml"/> -->
 		<UserManual Include="$(SolutionDir)Documentation\User Manual\help.html"/>
-		<!--<UserManual Include="$(SolutionDir)Documentation\VectoHashingTool\HashingToolHelp.html"/>-->
-		<UserManual Include="$(SolutionDir)Documentation\XML\*.png"/>
-		<UserManual Include="$(SolutionDir)Documentation\XML\VectoParameters.html"/>
-		<UserManual Include="$(SolutionDir)Documentation\User Manual Source\JIRA Quick Start Guide.pdf"/>
-		<UserManual Include="$(SolutionDir)Documentation\Cdv_Generator_VECTO3.2.xlsx"/>
-		<ReleaseNotes Include="$(SolutionDir)Documentation\User Manual Source\Release Notes Vecto3.x.pdf"/>
+		<UserManual Include="$(SolutionDir)Documentation\VectoHashingTool\HashingToolHelp.html"/>
+		<!-- <UserManual Include="$(SolutionDir)Documentation\XML\*.png"/> -->
+		<!-- <UserManual Include="$(SolutionDir)Documentation\XML\VectoParameters.html"/> -->
+		<!-- <UserManual Include="$(SolutionDir)Documentation\User Manual Source\JIRA Quick Start Guide.pdf"/> -->
+		<!-- <UserManual Include="$(SolutionDir)Documentation\Cdv_Generator_VECTO3.2.xlsx"/> -->
+		<UserManual Include="$(SolutionDir)Documentation\VectoTrailerTool\*"/>
+		<ReleaseConfig Include="$(SolutionDir)Resources\App.Release.config"/>
+		<!-- <ReleaseNotes Include="$(SolutionDir)Documentation\User Manual Source\Release Notes Vecto3.x.pdf"/> -->
 		
-		<!--<HashingTool Include="$(SolutionDir)HashingTool\bin\Release\HashingTool.exe"/>-->
-		<!--<HashingTool Include="$(SolutionDir)VectoCommon\VectoHashing\bin\Release\VectoHashing.XML"/>-->
-		<!--<HashingTool Include="$(SolutionDir)HashingCmd\bin\Release\hashingcmd.exe"/>-->
+		<HashingTool Include="$(SolutionDir)HashingTool\bin\Release\HashingTool.exe"/>
+		<!-- <HashingTool Include="$(SolutionDir)VectoCommon\VectoHashing\bin\Release\VectoHashing.XML"/> -->
+		<HashingTool Include="$(SolutionDir)HashingCmd\bin\Release\hashingcmd.exe"/>
 		
 		<VectoConfigurationSample Include="$(SolutionDir)VECTO\install.ini"/>
 
@@ -93,23 +96,29 @@
 	<Message Text="@(VectoCommandLine)"/>
 	<Copy SourceFiles="@(VectoCommandLine)" DestinationFolder="$(OutputPath)"/>
 	<Copy SourceFiles="@(VectoTrailer)" DestinationFolder="$(OutputPath)"/>
-	<!--<Copy SourceFiles="@(HashingTool)" DestinationFolder="$(OutputPath)"/>-->
+	<Copy SourceFiles="@(HashingTool)" DestinationFolder="$(OutputPath)"/>
 	<Copy SourceFiles="@(GenericVehicles)" DestinationFiles="@(GenericVehicles->'$(OutputPath)\Generic Vehicles\%(RecursiveDir)%(Filename)%(Extension)')" />
 	<Copy SourceFiles="@(DeclarationData)" DestinationFolder="$(OutputPath)\Declaration" />
 	<Copy SourceFiles="@(MissionProfiles)" DestinationFolder="$(OutputPath)\Mission Profiles" />
-	<Copy SourceFiles="@(VectoXMLExamples)" DestinationFolder="$(OutputPath)\XML\Examples" />
+	<!-- <Copy SourceFiles="@(VectoXMLExamples)" DestinationFolder="$(OutputPath)\XML\Examples" /> -->
 	<Copy SourceFiles="@(VectoXSD)" DestinationFolder="$(OutputPath)\XML\XSD" />
 	<Copy SourceFiles="@(UserManual)" DestinationFolder="$(OutputPath)\User Manual" />
 	<Copy SourceFiles="@(ReleaseNotes)" DestinationFiles="$(OutputPath)\User Manual\Release Notes.pdf" />
 	<Copy SourceFiles="@(VectoConfigurationSample)" DestinationFolder="$(OutputPath)"/>
 	<Copy SourceFiles="$(SolutionDir)\Documentation\User Manual Source\README for Mission Profiles Directory.txt" DestinationFiles="$(OutputPath)\Mission Profiles\!! README !!.TXT"/>
 	<Copy SourceFiles="$(SolutionDir)\Documentation\User Manual Source\README for Declaration Directory.txt" DestinationFiles="$(OutputPath)\Declaration\!! README !!.TXT"/>
+	<Copy SourceFiles="$(ReleaseConfig)" DestinationFiles="$(OutputPath)\VECTOTrailer.exe.config"/>
+	<Copy SourceFiles="$(CefSharpx64)" DestinationFolder="$(OutputPath)\x64\**"/>
+	<Copy SourceFiles="$(CefSharpx86)" DestinationFolder="$(OutputPath)\x86\**"/>
 	<ItemGroup>
 		<ZipFiles Include="$(OutputPath)Declaration\**\*.*" />
 		<ZipFiles Include="$(OutputPath)Generic Vehicles\**\*.*" />
 		<ZipFiles Include="$(OutputPath)Mission Profiles\**\*.*" />
 		<ZipFiles Include="$(OutputPath)User Manual\**\*.*" />
 		<ZipFiles Include="$(OutputPath)XML\**\*.*" />
+		<ZipFiles Include="$(OutputPath)\x64\**"/>
+		<ZipFiles Include="$(OutputPath)\x86\**"/>
+
 		<!--<ZipFiles Include="$(OutputPath)Resources\**\*.*" />-->
 	</ItemGroup>
 
@@ -123,8 +132,8 @@
 		<ZipFiles Include="$(OutputPath)vectocmd.exe*"/>
 		<!--<ZipFiles Include="$(OutputPath)VECTO3.exe*" />-->
 		<ZipFiles Include="$(OutputPath)VECTOTrailer.exe*" />
-		<!--<ZipFiles Include="$(OutputPath)HashingTool.exe*"/>-->
-		<!--<ZipFiles Include="$(OutputPath)hashingcmd.exe*"/>-->
+		<ZipFiles Include="$(OutputPath)HashingTool.exe*"/>
+		<ZipFiles Include="$(OutputPath)hashingcmd.exe*"/>
 	</ItemGroup>
 	<PropertyGroup>
 		<CurrentDate>$([System.DateTime]::Now.ToString(yyy_MM_dd))</CurrentDate>

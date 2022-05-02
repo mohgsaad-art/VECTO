@@ -19,7 +19,7 @@ namespace TUGraz.VectoCommon.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class XMLNames {
@@ -2689,6 +2689,15 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to WeightedResults.
+        /// </summary>
+        public static string Report_Results_WeightedResults {
+            get {
+                return ResourceManager.GetString("Report_Results_WeightedResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to SpecificCO2Emissions.
         /// </summary>
         public static string Report_SpecificCO2Emissions {
@@ -2829,6 +2838,33 @@ namespace TUGraz.VectoCommon.Resources {
         public static string Report_WeightedPayloadTrailer {
             get {
                 return ResourceManager.GetString("Report_WeightedPayloadTrailer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CubicMetre-KiloMetre-Based.
+        /// </summary>
+        public static string Result_RatioType_CubicMetre_KilometreBased {
+            get {
+                return ResourceManager.GetString("Result_RatioType_CubicMetre_KilometreBased", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kilometre-Based.
+        /// </summary>
+        public static string Result_RatioType_KilometreBased {
+            get {
+                return ResourceManager.GetString("Result_RatioType_KilometreBased", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ton-Kilometre-Based.
+        /// </summary>
+        public static string Result_RatioType_TonKilometreBased {
+            get {
+                return ResourceManager.GetString("Result_RatioType_TonKilometreBased", resourceCulture);
             }
         }
         
@@ -3040,6 +3076,15 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ApplicableVehicleGroup.
+        /// </summary>
+        public static string Trailer_AeroDevice_ApplicableVehicleGroup {
+            get {
+                return ResourceManager.GetString("Trailer_AeroDevice_ApplicableVehicleGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to AeroFeatures.
         /// </summary>
         public static string Trailer_AeroFeatures {
@@ -3054,6 +3099,15 @@ namespace TUGraz.VectoCommon.Resources {
         public static string Trailer_AeroFeatureTechnologies {
             get {
                 return ResourceManager.GetString("Trailer_AeroFeatureTechnologies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AeroReduction.
+        /// </summary>
+        public static string Trailer_AeroReduction {
+            get {
+                return ResourceManager.GetString("Trailer_AeroReduction", resourceCulture);
             }
         }
         
@@ -3081,6 +3135,15 @@ namespace TUGraz.VectoCommon.Resources {
         public static string Trailer_CargoVolume {
             get {
                 return ResourceManager.GetString("Trailer_CargoVolume", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CertifiedAeroDevice.
+        /// </summary>
+        public static string Trailer_CertifiedAeroDevice {
+            get {
+                return ResourceManager.GetString("Trailer_CertifiedAeroDevice", resourceCulture);
             }
         }
         
@@ -3157,7 +3220,7 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LengthBetweenCentersOfAxles.
+        ///   Looks up a localized string similar to LengthBetweenCentresOfAxles.
         /// </summary>
         public static string Trailer_LengthBetweenCentersOfAxles {
             get {
@@ -3274,7 +3337,7 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CertifiedAerodynamicReduction0.
+        ///   Looks up a localized string similar to AeroReductionYawAngle0.
         /// </summary>
         public static string Trailer_YawAngle0 {
             get {
@@ -3283,7 +3346,7 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CertifiedAerodynamicReduction3.
+        ///   Looks up a localized string similar to AeroReductionYawAngle3.
         /// </summary>
         public static string Trailer_YawAngle3 {
             get {
@@ -3292,7 +3355,7 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CertifiedAerodynamicReduction6.
+        ///   Looks up a localized string similar to AeroReductionYawAngle6.
         /// </summary>
         public static string Trailer_YawAngle6 {
             get {
@@ -3301,7 +3364,7 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CertifiedAerodynamicReduction9.
+        ///   Looks up a localized string similar to AeroReductionYawAngle9.
         /// </summary>
         public static string Trailer_YawAngle9 {
             get {

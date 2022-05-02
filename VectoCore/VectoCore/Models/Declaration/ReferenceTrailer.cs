@@ -78,7 +78,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 				CargoVolume = CubicMeter.Create(row["cargo_volume_semi_trailer"].ToString() == "---" ? 0 : row.ParseDouble("cargo_volume_semi_trailer")),
 				CurbMass = Kilogram.Create(!row.Field<string>("curb_mass_semi_trailer").Contains("-") ? row.ParseDouble("curb_mass_semi_trailer") : 0),
 				TyreXml = row.Field<string>("tyre_xml"),
-				TwinTyres = row.Field<string>("twin_tyres") == "TRUE",
+				TwinTyres = string.Equals(row.Field<string>("twin_tyres"), "TRUE", StringComparison.InvariantCultureIgnoreCase),
 				ExternalBodyHeight = Meter.Create(row.ParseDouble("external_body_height")),
 				ExternalBodyLength = Meter.Create(row.ParseDouble("external_body_length")),
 				ExternalBodyWidth = Meter.Create(row.ParseDouble("external_body_width")),
@@ -90,6 +90,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 				HeightCorrection = row.Field<string>("height_correction") == "1",
 				VolumeCorrection = row.Field<string>("volume_correction") == "1",
 				AeroCorrection = row.Field<string>("aero_correction") == "1",
+				CouplingPointCorrection = row.Field<string>("coupling_point_correction") == "1",
 			};
 			
 		}

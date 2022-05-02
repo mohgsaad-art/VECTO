@@ -98,6 +98,9 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml" />
@@ -112,6 +115,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Helper\TrailerTool\XDocumentCreator.cs" />
     <Compile Include="Integration\AMTShiftStrategyTests.cs" />
     <Compile Include="Algorithms\CSVDigestValueTest.cs" />
     <Compile Include="Algorithms\MeanShiftClusteringTest.cs" />
@@ -186,6 +190,7 @@
     <Compile Include="Models\Simulation\MeasuredSpeedModeTest.cs" />
     <Compile Include="Models\Simulation\PwheelModeTests.cs" />
     <Compile Include="Reports\SumWriterTest.cs" />
+    <Compile Include="TrailerTool\SegmentationTests.cs" />
     <Compile Include="Utils\GraphWriter.cs" />
     <Compile Include="Integration\EngineOnlyCycle\EngineOnlyCycleTest.cs" />
     <Compile Include="Integration\SimpleDrivingCycles.cs" />
@@ -247,8 +252,8 @@
     <Compile Include="XML\XMLDeclarationReaderVersionsTest.cs" />
     <Compile Include="XML\XMLEngineeringInputRefTest.cs" />
     <Compile Include="XML\XMLEngineeringInputSingleTest.cs" />
-    <Compile Include="XML\XMLReportTrailerTest.cs" />
-    <Compile Include="XML\TrailerReferenceFactors.cs" />
+    <Compile Include="TrailerTool\XMLReportTrailerTest.cs" />
+    <Compile Include="TrailerTool\TrailerReferenceFactors.cs" />
     <Compile Include="XML\XMLTrailerInputDataTest.cs" />
     <Compile Include="XML\XMLPrimaryBusInputDataTest.cs" />
     <Compile Include="XML\XMLReportTest.cs" />
@@ -3692,6 +3697,15 @@
     <EmbeddedResource Include="TestData\Trailer\tyreSample.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
+    <Content Include="TestData\Trailer\2_Axle_DB_drybox.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\Trailer\2_Axle_DB_drybox_standard_aeroDevice.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\Trailer\3_Axle_DA_drybox.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestData\XML\EngineeringJob\SampleJobEngineering1.0.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -80,20 +80,11 @@ namespace VECTOTrailer.Model.TempDataObject
 		public bool Axle1IsNone { get; set; }
 		public bool Axle2IsNone { get; set; }
 		public bool Axle3IsNone { get; set; }
-		public ICommand SelectFirstFileCommand { get; set;  }
-		public ICommand SelectSecondFileCommand { get; set;  }
-		public ICommand SelectThirdFileCommand { get; set;  }
+		public ICommand SelectFirstAxleXmlCommand { get; set;  }
+		public ICommand SelectSecondAxleXmlCommand { get; set;  }
+		public ICommand SelectThirdAxleXmlCommand { get; set;  }
 
 		public ICommand SelectCertifiedAeroDeviceCommand { get; set; }
-		public ICommand DownloadFirstAxle { get; set; }
-		public ICommand DeleteFirstAxle { get; set; }
-		public ICommand DownloadSecondAxle { get; set; }
-		public ICommand DeleteSecondAxle { get; set; }
-		public ICommand DownloadThirdAxle { get; set; }
-		public ICommand DeleteThirdAxle { get; set; }
-
-		public ICommand DownloadCertifiedAeroDevice { get; set; }
-		public ICommand DeleteCertifiedAeroDevice { get; set; }
 		public JobFileType FirstFileType { get; set;  }
 		public JobFileType SecondFileType { get; set;  }
 		public JobFileType ThirdFileType { get; set;  }
@@ -101,12 +92,6 @@ namespace VECTOTrailer.Model.TempDataObject
 		public JobFileType CertifiedAeroDeviceType { get; set; }
 		public ITrailerDeclarationInputData Trailer { get; set; }
 
-		public bool Axle1ButtonsVisibility { get; set; }
-		public bool Axle1NewVisibility { get; set; }
-		public bool Axle2ButtonsVisibility { get; set; }
-		public bool Axle2NewVisibility { get; set; }
-		public bool Axle3ButtonsVisibility { get; set; }
-		public bool Axle3NewVisibility { get; set; }
 
 		public bool CertifiedAeroDeviceButtonsVisibility { get; set; }
 		public bool CertifiedAeroDeviceNewVisibility { get; set; }
@@ -195,12 +180,6 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.YawAngle6 = YawAngle6;
 			viewModel.YawAngle9 = YawAngle9;
 
-			viewModel.Axle1ButtonsVisibility = Axle1ButtonsVisibility;
-			viewModel.Axle1NewVisibility = Axle1NewVisibility;
-			viewModel.Axle2ButtonsVisibility = Axle2ButtonsVisibility;
-			viewModel.Axle2NewVisibility = Axle2NewVisibility;
-			viewModel.Axle3ButtonsVisibility = Axle3ButtonsVisibility;
-			viewModel.Axle3NewVisibility = Axle3NewVisibility;
 
 			viewModel.CertifiedAeroDeviceButtonsVisibility = CertifiedAeroDeviceButtonsVisibility;
 			viewModel.CertifiedAeroDeviceNewVisibility = CertifiedAeroDeviceNewVisibility;
@@ -265,12 +244,6 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.Axle2IsNone = true;
 			viewModel.Axle3IsNone = true;
 
-			viewModel.Axle1ButtonsVisibility = false;
-			viewModel.Axle1NewVisibility = true;
-			viewModel.Axle2ButtonsVisibility = false;
-			viewModel.Axle2NewVisibility = true;
-			viewModel.Axle3ButtonsVisibility = false;
-			viewModel.Axle3NewVisibility = true;
 
 			viewModel.CertifiedAeroDeviceButtonsVisibility = false;
 			viewModel.CertifiedAeroDeviceNewVisibility = true;
@@ -346,15 +319,6 @@ namespace VECTOTrailer.Model.TempDataObject
 
 			CertifiedAeroDeviceFilePath = trailer.CertifiedAeroDeviceFilePath;
 
-			Axle1ButtonsVisibility = trailer.Axle1ButtonsVisibility;
-			Axle1NewVisibility = trailer.Axle1NewVisibility;
-			Axle2ButtonsVisibility = trailer.Axle2ButtonsVisibility;
-			Axle2NewVisibility = trailer.Axle2NewVisibility;
-			Axle3ButtonsVisibility = trailer.Axle3ButtonsVisibility;
-			Axle3NewVisibility = trailer.Axle3NewVisibility;
-
-			CertifiedAeroDeviceButtonsVisibility = trailer.CertifiedAeroDeviceButtonsVisibility;
-			CertifiedAeroDeviceNewVisibility = trailer.CertifiedAeroDeviceNewVisibility;
 
 			TrailerCouplingPoint = trailer.TrailerType == TypeTrailer.DC ? trailer.TrailerCouplingPoint : TrailerCouplingPoint.Unknown;
 		}

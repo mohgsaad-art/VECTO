@@ -112,7 +112,7 @@ namespace VECTOTrailer.Views.CustomControls
 
 		protected static void ValidatePropertyWhenChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
 		{
-			((VectoParameterControl)dependencyObject).NotifyErrorsChanged(dependencyPropertyChangedEventArgs.Property.Name);
+			//((VectoParameterControl)dependencyObject).NotifyErrorsChanged(dependencyPropertyChangedEventArgs.Property.Name);
 		}
 	}
 }

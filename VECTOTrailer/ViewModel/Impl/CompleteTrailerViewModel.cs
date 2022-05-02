@@ -1,21 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 using System.Xml;
+using System.Xml.Linq;
+using System.Xml.Schema;
 using Castle.Core;
 using Castle.Core.Internal;
 using Microsoft.Win32;
 using Ninject;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
+using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.XML;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Factory;
+using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
 using TUGraz.VectoCore.Models.Declaration;
+using TUGraz.VectoCore.Utils;
+using TUGraz.VectoHashing;
 using VECTOTrailer.Helper;
 using VECTOTrailer.Model;
 using VECTOTrailer.Model.TempDataObject;
@@ -28,6 +36,9 @@ namespace VECTOTrailer.ViewModel.Impl
 {
 	public class CompleteTrailerViewModel : AbstractComponentViewModel, ICompleteTrailerViewModel
 	{
+		public CompleteTrailerViewModel()
+		{
+		}
 		#region Members
 
 		private ITrailerDeclarationInputData _trailer;
@@ -106,15 +117,6 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		private ICommand _selectCertifiedAeroDeviceCommand;
 
-		private ICommand _downloadFirstAxle;
-		private ICommand _deleteFirstAxle;
-		private ICommand _downloadSecondAxle;
-		private ICommand _deleteSecondAxle;
-		private ICommand _downloadThirdAxle;
-		private ICommand _deleteThirdAxle;
-
-		private ICommand _downloadCertifiedAeroDevice;
-		private ICommand _deleteCertifiedAeroDevice;
 
 		private JobFileType _firstFileType;
 		private JobFileType _secondFileType;
@@ -126,13 +128,6 @@ namespace VECTOTrailer.ViewModel.Impl
 		private string _secondFilePath;
 		private string _thirdFilePath;
 
-		private bool _axle1ButtonsVisibilty;
-		private bool _axle1NewVisibility;
-		private bool _axle2ButtonsVisibilty;
-		private bool _axle2NewVisibility;
-		private bool _axle3ButtonsVisibilty;
-		private bool _axle3NewVisibility;
-
 		private bool _certifiedAeroDeviceButtonsVisibility;
 		private bool _certifiedAeroDeviceNewVisibility;
 
@@ -141,7 +136,6 @@ namespace VECTOTrailer.ViewModel.Impl
 		private TrailerCouplingPoint _TrailerCouplingPoint;
 
 		private readonly bool _editJob;
-		protected SettingsModel Settings = new SettingsModel();
 		protected JobEntry JobEntry;
 
 		#endregion
@@ -221,9 +215,10 @@ namespace VECTOTrailer.ViewModel.Impl
 			get => _externalLengthOfTheBody;
 			set
 			{
-				if (!SetProperty(ref _externalLengthOfTheBody, value))
-					return;
-				IsDataChanged(_externalLengthOfTheBody, _componentData);
+				if (SetProperty(ref _externalLengthOfTheBody, value)) {
+					IsDataChanged(_externalLengthOfTheBody, _componentData);
+				}
+				
 			}
 		}
 
@@ -232,9 +227,9 @@ namespace VECTOTrailer.ViewModel.Impl
 			get => _externalWidthOfTheBody;
 			set
 			{
-				if (!SetProperty(ref _externalWidthOfTheBody, value))
-					return;
-				IsDataChanged(_externalWidthOfTheBody, _componentData);
+				if (SetProperty(ref _externalWidthOfTheBody, value)) {
+					IsDataChanged(_externalWidthOfTheBody, _componentData);
+				}
 			}
 		}
 
@@ -313,8 +308,13 @@ namespace VECTOTrailer.ViewModel.Impl
 			get => _trailerType;
 			set
 			{
-				if (!SetProperty(ref _trailerType, value))
+				if (!SetProperty(ref _trailerType, value)) {
 					return;
+				}
+
+				if (value == TypeTrailer.DB) {
+					Axle1IsSteered = true;
+				}
 
 				TPMLMAxleAssemblyVisibility = TrailerType != TypeTrailer.DB;
 
@@ -551,6 +551,8 @@ namespace VECTOTrailer.ViewModel.Impl
 			get => _axle1IsSteered;
 			set => SetProperty(ref _axle1IsSteered, value);
 		}
+
+
 		public bool Axle2IsSteered
 		{
 			get => _axle2IsSteered;
@@ -593,37 +595,7 @@ namespace VECTOTrailer.ViewModel.Impl
 			get => _TrailerCouplingPoint;
 			set => SetProperty(ref _TrailerCouplingPoint, value);
 		}
-		public bool Axle1ButtonsVisibility
-		{
-			get => _axle1ButtonsVisibilty;
-			set => SetProperty(ref _axle1ButtonsVisibilty, value);
-		}
-		public bool Axle1NewVisibility
-		{
-			get => _axle1NewVisibility;
-			set => SetProperty(ref _axle1NewVisibility, value);
-		}
-		public bool Axle2ButtonsVisibility
-		{
-			get => _axle2ButtonsVisibilty;
-			set => SetProperty(ref _axle2ButtonsVisibilty, value);
-		}
-		public bool Axle2NewVisibility
-		{
-			get => _axle2NewVisibility;
-			set => SetProperty(ref _axle2NewVisibility, value);
-		}
-		public bool Axle3ButtonsVisibility
-		{
-			get => _axle3ButtonsVisibilty;
-			set => SetProperty(ref _axle3ButtonsVisibilty, value);
-		}
-		public bool Axle3NewVisibility
-		{
-			get => _axle3NewVisibility;
-			set => SetProperty(ref _axle3NewVisibility, value);
-		}
-
+		
 		public bool CertifiedAeroDeviceButtonsVisibility
 		{
 			get => _certifiedAeroDeviceButtonsVisibility;
@@ -650,7 +622,7 @@ namespace VECTOTrailer.ViewModel.Impl
 		public Dictionary<string, string> XmlNamesToPropertyMapping { get; private set; }
 		public AllowedEntry<TypeTrailer>[] AllowedTrailerTypes { get; private set; }
 		public AllowedEntry<BodyWorkCode>[] AllowedBodyCodes { get; private set; }
-		public  AllowedEntry<AeroFeatureTechnology>[] AllowedTechnologies { get; private set; }
+		public AllowedEntry<AeroFeatureTechnology>[] AllowedTechnologies { get; private set; }
 		public AllowedEntry<NumberOfTrailerAxles>[] AllowedNumberOfAxles { get; private set; }
 		public AllowedEntry<string>[] AllowedLegislativeCategory { get; private set; }
 		public AllowedEntry<TrailerCouplingPoint>[] AllowedTrailerCouplingPoint { get; private set; }
@@ -699,6 +671,7 @@ namespace VECTOTrailer.ViewModel.Impl
 				LengthBetweenCentersOfAxles = trailer.LengthBetweenCentersOfAxles;
 				CargoVolume = trailer.CargoVolume;
 				Technologies = trailer.AeroFeatureTechnologies;
+				VolumeOrientation = trailer.VolumeOrientation;
 
 				IsCertified = (trailer.YawAngle0 != 0 || trailer.YawAngle3 != 0 || trailer.YawAngle6 != 0 || trailer.YawAngle9 != 0);
 
@@ -744,13 +717,19 @@ namespace VECTOTrailer.ViewModel.Impl
 				}
 
 				if (IsCertified) {
-					var device = (xmlDoc.GetElementsByTagName("CertifiedAeroReduction") ??
+					var device = (xmlDoc.GetElementsByTagName(XMLNames.Trailer_CertifiedAeroDevice) ??
 								throw new Exception("Cannot parse aero device information")).Cast<XmlNode>().ToList();
 
 					EnableCertifiedAeroDevice(device[0]);
 				}
 
+
+
 				_componentData = new TrailerComponentData(this);
+				var errors = new List<string>() as IList<string>;
+				if(!DeclarationTrailerDataAdapter.ValidateTrailerInput(trailer, ref errors)) {
+					MessageBox.Show(caption: "Invalid input file!", messageBoxText: string.Join("\n", errors),button:MessageBoxButton.OK, icon:MessageBoxImage.Information);
+				}
 			}
 
 			ClearChangedProperties();
@@ -766,9 +745,6 @@ namespace VECTOTrailer.ViewModel.Impl
 			Axle1IsSteered = axle.ChildNodes[2].InnerText == "true";
 
 			Axle1IsNone = axle.ChildNodes[1].InnerText == "false" && axle.ChildNodes[2].InnerText == "false";
-
-			Axle1ButtonsVisibility = true;
-			Axle1NewVisibility = false;
 		}
 
 		private void EnableSecondAxle(XmlNode axle)
@@ -781,9 +757,6 @@ namespace VECTOTrailer.ViewModel.Impl
 			Axle2IsSteered = axle.ChildNodes[2].InnerText == "true";
 
 			Axle2IsNone = axle.ChildNodes[1].InnerText == "false" && axle.ChildNodes[2].InnerText == "false";
-
-			Axle2ButtonsVisibility = true;
-			Axle2NewVisibility = false;
 		}
 
 		private void EnableThirdAxle(XmlNode axle)
@@ -796,9 +769,6 @@ namespace VECTOTrailer.ViewModel.Impl
 			Axle3IsSteered = axle.ChildNodes[2].InnerText == "true";
 
 			Axle3IsNone = axle.ChildNodes[1].InnerText == "false" && axle.ChildNodes[2].InnerText == "false";
-
-			Axle3ButtonsVisibility = true;
-			Axle3NewVisibility = false;
 		}
 
 		private void EnableCertifiedAeroDevice(XmlNode device)
@@ -914,15 +884,15 @@ namespace VECTOTrailer.ViewModel.Impl
 			set => SetProperty(ref _thirdFilePath, value);
 		}
 
-		public ICommand SelectFirstFileCommand =>
+		public ICommand SelectFirstAxleXmlCommand =>
 			_selectFirstFileCommand ??
 			(_selectFirstFileCommand = new RelayCommand<JobFileType>(DoSelectFirstFileCommand));
 
-		public ICommand SelectSecondFileCommand =>
+		public ICommand SelectSecondAxleXmlCommand =>
 			_selectSecondFileCommand ??
 			(_selectSecondFileCommand = new RelayCommand<JobFileType>(DoSelectSecondFileCommand));
 
-		public ICommand SelectThirdFileCommand =>
+		public ICommand SelectThirdAxleXmlCommand =>
 			_selectThirdFileCommand ??
 			(_selectThirdFileCommand = new RelayCommand<JobFileType>(DoSelectThirdFileCommand));
 
@@ -931,168 +901,107 @@ namespace VECTOTrailer.ViewModel.Impl
 			(_selectCertifiedAeroDeviceCommand = new RelayCommand<JobFileType>(DoSelectCertifiedAeroDeviceFileCommand));
 
 
-		public ICommand DownloadFirstAxle =>
-			_downloadFirstAxle ??
-			(_downloadFirstAxle = new RelayCommand(DoDownloadFirstAxle));
-
-		public ICommand DownloadCertifiedAeroDevice =>
-			_downloadCertifiedAeroDevice ??
-			(_downloadCertifiedAeroDevice = new RelayCommand(DoDownloadCertifiedAeroDevice));
-
-		public ICommand DeleteCertifiedAeroDevice =>
-			_deleteCertifiedAeroDevice ??
-			(_deleteCertifiedAeroDevice = new RelayCommand(DoDeleteCertifiedAeroDevice));
-
-		public ICommand DeleteFirstAxle =>
-			_deleteFirstAxle ??
-			(_deleteFirstAxle = new RelayCommand(DoDeleteFirstAxle));
-
-		public ICommand DownloadSecondAxle =>
-			_downloadSecondAxle ??
-			(_downloadSecondAxle = new RelayCommand(DoDownloadSecondAxle));
-
-		public ICommand DeleteSecondAxle =>
-			_deleteSecondAxle ??
-			(_deleteSecondAxle = new RelayCommand(DoDeleteSecondAxle));
-
-		public ICommand DownloadThirdAxle =>
-			_downloadThirdAxle ??
-			(_downloadThirdAxle = new RelayCommand(DoDownloadThirdAxle));
-
-		public ICommand DeleteThirdAxle =>
-			_deleteThirdAxle ??
-			(_deleteThirdAxle = new RelayCommand(DoDeleteThirdAxle));
 
 		private void DoSelectFirstFileCommand(JobFileType jobFileType)
 		{
-			FirstFilePath = OpenFileSelector(jobFileType, nameof(FirstFilePath), FirstFilePath);
-			this.Axle1FilePath = FirstFilePath;
+			SelectFile(jobFileType, "Invalid tyre xml", (result) => {
+				FirstFilePath = result;
+				this.Axle1FilePath = result;
+			});
+			//if (OpenFileSelector(jobFileType, nameof(FirstFilePath), FirstFilePath, out var result))
+			//{
+			//	FirstFilePath = result;
+			//	this.Axle1FilePath = FirstFilePath;
+			//}
 		}
 		private void DoSelectSecondFileCommand(JobFileType jobFileType)
 		{
-			SecondFilePath = OpenFileSelector(jobFileType, nameof(SecondFilePath), SecondFilePath);
-			this.Axle2FilePath = SecondFilePath;
+			SelectFile(jobFileType, "Invalid tyre xml", (result) => { 
+				SecondFilePath = result;
+				this.Axle2FilePath = result;
+			});
+			//if (OpenFileSelector(jobFileType, nameof(SecondFilePath), SecondFilePath, out var result))
+			//{
+			//	SecondFilePath = result;
+			//	this.Axle2FilePath = SecondFilePath;
+			//}
 		}
 		private void DoSelectThirdFileCommand(JobFileType jobFileType)
 		{
-			ThirdFilePath = OpenFileSelector(jobFileType, nameof(ThirdFilePath), ThirdFilePath);
-			this.Axle3FilePath = ThirdFilePath;
+			SelectFile(jobFileType, "Invalid tyre xml", (result) => {
+				ThirdFilePath = result;
+				this.Axle3FilePath = result;
+			});
+			//if (OpenFileSelector(jobFileType, nameof(ThirdFilePath), ThirdFilePath, out var result)) {
+			//	ThirdFilePath = result;
+			//	this.Axle3FilePath = ThirdFilePath;
+			//}
 		}
 
+		private void SelectFile(JobFileType jobFileType, string errorCaption, Action<string> successAction)
+		{
+			if (OpenFileSelector(jobFileType, nameof(CertifiedAeroDeviceFilePath),
+					CertifiedAeroDeviceFilePath, out var result))
+			{
+				var aeroDeviceXDoc = XDocument.Load(result);
+				if (!XmlHelper.ValidateXDocument(aeroDeviceXDoc, validationErrorAction: ValidationErrorAction))
+				{
+					MessageBox.Show(caption: errorCaption,
+						messageBoxText: string.Join("\n", xmlFileErrors),
+						button: MessageBoxButton.OK,
+						icon: MessageBoxImage.Error);
+					xmlFileErrors.Clear();
+				}
+				else
+				{
+					if (!VectoHash.Load(result).ValidateHash()) {
+						MessageBox.Show(caption: "Invalid Hash",
+							messageBoxText: $"Component file {result} has invalid hash\n",
+							icon: MessageBoxImage.Warning,
+							button: MessageBoxButton.OK);
+					}
+					
+					successAction.Invoke(result);
+					//CertifiedAeroDeviceFilePath = result;
+				}
+
+			}
+		}
+
+		private IList<string> xmlFileErrors = new List<string>();
 		private void DoSelectCertifiedAeroDeviceFileCommand(JobFileType jobFileType)
-		{
-			this.CertifiedAeroDeviceFilePath = OpenFileSelector(jobFileType, nameof(CertifiedAeroDeviceFilePath), CertifiedAeroDeviceFilePath);
+		{ 
+			SelectFile(jobFileType, "Invalid aero device xml", (result) => {
+				CertifiedAeroDeviceFilePath = result;
+			});
 		}
 
-		private void DoDownloadFirstAxle()
+		private void ValidationErrorAction(XmlSeverityType type, ValidationEvent validationEvent)
 		{
-			var saveFileDialog = new SaveFileDialog();
-			if (saveFileDialog.ShowDialog() == true)
-				File.WriteAllText(saveFileDialog.FileName, Axle1Xml);
+			var xmlException = validationEvent?.ValidationEventArgs?.Exception as XmlSchemaValidationException;
+			if (xmlException != null) {
+				xmlFileErrors.Add(xmlException.Message);
+			}
+			return;
 		}
 
-		private void DoDeleteFirstAxle()
+		private bool OpenFileSelector(JobFileType jobFileType, string textPropertyName, string initPath, out string selectedFile)
 		{
-			this.Axle1ButtonsVisibility = false;
-			this.Axle1NewVisibility = true;
-			this.Axle1FilePath = string.Empty;
-			this.Axle1IsTwin = false;
-			this.Axle1IsLiftable = false;
-			this.Axle1IsSteered = false;
-		}
+			selectedFile = null;
+			//var folderPath = GetFolderPath(initPath);
 
-		private void DoDownloadSecondAxle()
-		{
-			var saveFileDialog = new SaveFileDialog();
-			if (saveFileDialog.ShowDialog() == true)
-				File.WriteAllText(saveFileDialog.FileName, Axle2Xml);
-		}
-
-		private void DoDeleteSecondAxle()
-		{
-			this.Axle2ButtonsVisibility = false;
-			this.Axle2NewVisibility = true;
-			this.Axle2FilePath = null;
-			this.Axle2IsTwin = false;
-			this.Axle2IsLiftable = false;
-			this.Axle2IsSteered = false;
-		}
-		private void DoDownloadThirdAxle()
-		{
-			var saveFileDialog = new SaveFileDialog();
-			if (saveFileDialog.ShowDialog() == true)
-				File.WriteAllText(saveFileDialog.FileName, Axle3Xml);
-		}
-
-		private void DoDeleteThirdAxle()
-		{
-			this.Axle3ButtonsVisibility = false;
-			this.Axle3NewVisibility = true;
-			this.Axle3FilePath = null;
-			this.Axle3IsTwin = false;
-			this.Axle3IsLiftable = false;
-			this.Axle3IsSteered = false;
-		}
-
-		private void DoDownloadCertifiedAeroDevice()
-		{
-			var saveFileDialog = new SaveFileDialog();
-			if (saveFileDialog.ShowDialog() == true)
-				File.WriteAllText(saveFileDialog.FileName, CertifiedAeroDeviceXml);
-		}
-
-		private void DoDeleteCertifiedAeroDevice()
-		{
-			this.CertifiedAeroDeviceButtonsVisibility = false;
-			this.CertifiedAeroDeviceNewVisibility = true;
-			this.CertifiedAeroDeviceFilePath = null;
-		}
-
-		private string OpenFileSelector(JobFileType jobFileType, string textPropertyName, string filePath)
-		{
-			var folderPath = GetFolderPath(filePath);
-
-			var dialogResult = FileDialogHelper.ShowSelectFilesDialog(false, FileDialogHelper.XMLFilter, folderPath);
+			var dialogResult = FileDialogHelper.ShowSelectFilesDialog(false, FileDialogHelper.XMLFilter, null);
 			if (dialogResult != null) {
 
-				filePath = dialogResult.FirstOrDefault();
+				var result = dialogResult.FirstOrDefault();
 				
 				RemovePropertyError(textPropertyName);
-				return filePath;
-
-				//TODO Enable xml validation on file open
-				/*var validationResult = IsValidXml(jobFileType, filePath);
-
-				if (!validationResult)
-					AddPropertyError(textPropertyName, $"Selected XML-File is not a valid {jobFileType.GetLabel()}!");
-				else
-					RemovePropertyError(textPropertyName);
-
-				return !validationResult ? null : filePath;*/
-			}
-			
-			return filePath;
-		}
-
-		private string GetFolderPath(string filePath)
-		{
-			if (!_editJob || filePath.IsNullOrEmpty())
-				return Settings.XmlFilePathFolder;
-			
-			if (IsFileName(filePath)) {
-				return !JobEntry.JobEntryFilePath.IsNullOrEmpty()
-					? Path.GetDirectoryName(JobEntry.JobEntryFilePath)
-					: Path.GetDirectoryName(Settings.XmlFilePathFolder);
+				selectedFile = result;
+				return true;
 			}
 
-			return filePath;
-		}
-		
-		private bool IsFileName( string filePath)
-		{
-			return !Directory.Exists(filePath);
-		}
 
+			return false;
+		}
 	}
-
 }

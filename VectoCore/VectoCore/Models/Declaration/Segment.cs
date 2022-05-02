@@ -89,6 +89,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 		public SquareMeter A3RefCor { get; set; }
 		public string CodeStandard { get; set; }
 		public TrailerReferenceRatios ReferenceRatios { get; set; }
+		public string TowingVehicle { get; set; }
 	}
 
 	public struct ReferenceTrailerSegment
@@ -110,7 +111,9 @@ namespace TUGraz.VectoCore.Models.Declaration
 		public bool HeightCorrection { get; set; }
 		public bool VolumeCorrection { get; set; }
 		public bool AeroCorrection { get; set; }
-}
+
+		public bool CouplingPointCorrection { get; set; }
+	}
 
 	public struct SpecificTrailerSegment
 	{
@@ -121,6 +124,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 		public bool HeightCorrection  { get; set; }
 		public bool VolumeCorrection { get; set; }
 		public bool AeroCorrection { get; set; }
+		public bool CouplingPointCorrection { get; set; }
 		public double[] Aero0 { get; set; }
 		public double[] Aero1 { get; set; }
 		public double[] Aero2 { get; set; }

@@ -7,7 +7,6 @@
              xmlns:interfaces="clr-namespace:VECTOTrailer.ViewModel.Interfaces"
              xmlns:views="clr-namespace:VECTOTrailer.Views"
              xmlns:converter="clr-namespace:VECTOTrailer.Helper.Converter"
-             xmlns:vecto3Gui="clr-namespace:VECTOTrailer"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="600"
              d:DataContext="{d:DesignInstance Type=impl:JoblistViewModel, IsDesignTimeCreatable=False}"
@@ -19,7 +18,7 @@
     
     <Grid>
        <Grid.RowDefinitions>
-            <RowDefinition Height="*" MinHeight="270"/>
+            <RowDefinition Height="*" MinHeight="200"/>
             <RowDefinition Height="5"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -48,6 +47,12 @@
                                     <TextBlock Text="Stop" Margin="0,0,0,0" />
                                 </StackPanel>
                             </Button>
+                            <ToggleButton VerticalAlignment="Top" Margin="10 10 0 0" Command="{Binding ToggleAutoSim}" IsChecked="{Binding BackGroundSimulator.AutoSimActive, Mode=OneWay}">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="Scan Folder"></TextBlock>
+                                    <ProgressBar Orientation="Horizontal" IsIndeterminate="{Binding BackGroundSimulator.AutoSimBusy, Mode=OneWay}"></ProgressBar>
+                                </StackPanel>
+                            </ToggleButton>
 
                             <StackPanel Orientation="Vertical" HorizontalAlignment="Right" Margin="0,10,0,0">
                                 <Button Width="20" 
@@ -66,12 +71,22 @@
                                     </StackPanel>
                                 </Button>
                             </StackPanel>
+                            <DockPanel LastChildFill="True" HorizontalAlignment="Stretch" Margin="5 5 0 5">
+                                <StackPanel DockPanel.Dock="Right" Width="20">
+                                    <CheckBox  HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding Path=AllJobsChecked, Mode=TwoWay}"/>
+                                </StackPanel>
+                               
+                                    
+                      
+                                <TextBlock DockPanel.Dock="Left">Check All</TextBlock>
+                            </DockPanel>
+                            
                         </StackPanel>
                     </Grid>
 
                     <Grid Grid.Row="0" Grid.Column="1" Margin="10">
 
-                        <DataGrid x:Name="JobList" ItemsSource="{Binding Jobs}" 
+                        <DataGrid x:Name="JobList" ItemsSource="{Binding Jobs}" HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
                       SelectedValue="{Binding DataContext.SelectedJobEntry, RelativeSource={RelativeSource AncestorType=views:JoblistView}}"
                       Style="{DynamicResource AzureDataGrid}" BorderThickness="1" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" 
                       IsReadOnly="False" HeadersVisibility="All"  RowHeaderWidth="5" IsSynchronizedWithCurrentItem="True" 
@@ -80,11 +95,9 @@
                             <DataGrid.InputBindings>
                                 <MouseBinding
                         MouseAction="LeftDoubleClick"
-                        Command="{Binding DoubleClickCommand}"
+                        Command="{Binding EditCompletedFile}"
                         CommandParameter="{Binding Jobs/}"/>
                             </DataGrid.InputBindings>
-
-
 
                             <DataGrid.Resources>
                                 <ContextMenu x:Key="RowMenu">
@@ -133,8 +146,24 @@
                             </DataGrid.ContextMenu>
 
                             <DataGrid.Columns>
-                                <DataGridCheckBoxColumn Binding="{Binding Selected, UpdateSourceTrigger=PropertyChanged}" />
-                                <DataGridTextColumn Header="File Path" Binding="{Binding JobEntryFilePath}" IsReadOnly="True">
+                                <DataGridCheckBoxColumn Binding="{Binding Selected, UpdateSourceTrigger=PropertyChanged}">
+                                    <DataGridCheckBoxColumn.ElementStyle>
+                                        <Style>
+                                            <Setter Property="CheckBox.HorizontalAlignment" Value="Center"/>
+                                            <Setter Property="CheckBox.VerticalAlignment" Value="Center"></Setter>
+                                        </Style>
+                                    </DataGridCheckBoxColumn.ElementStyle>
+                                    <!--<DataGridCheckBoxColumn.Header>
+                                        <CheckBox IsThreeState="True" IsChecked="{Binding Path=AllJobsChecked, Mode=TwoWay}"></CheckBox>
+                                    </DataGridCheckBoxColumn.Header>-->
+                                </DataGridCheckBoxColumn>
+                                <DataGridTextColumn Header="File Path" Binding="{Binding JobEntryFilePath}" IsReadOnly="True" Width="*">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style>
+                                            <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                            <Setter Property="TextBlock.TextAlignment" Value="Left"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
                                     <!-- <DataGridTextColumn.CellStyle>
                                         <Style TargetType= "{x:Type DataGridCell}" BasedOn="{StaticResource MetroDataGridCell}" >
                                             <Setter Property="ContextMenu" Value="{StaticResource RowMenu}"/>
@@ -173,13 +202,18 @@
                             <Button Margin="0,5,0,0"  Content="Remove Job"  
                                     Command="{Binding RemoveJob}" 
                                     CommandParameter="{Binding ElementName=JobList, Path=SelectedItem}"/>
+
+                            <!--<Button Margin="0,5,0,0"  Content="Print PDF (TEST)"  
+                                    Command="{Binding CreatePdfCommand}" />
+                                    --><!--CommandParameter="{Binding ElementName=JobList, Path=SelectedItem}"/>-->
                         </StackPanel>
                     </Grid>
                 </Grid>
             </TabItem>
             <TabItem Header="Options">
-                <StackPanel Orientation="Horizontal" Margin="5,10,5,5">
-                    <StackPanel Orientation="Vertical">
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                <WrapPanel Orientation="Horizontal" Margin="5,10,5,5">
+                    <!--<StackPanel Orientation="Vertical">
                         <GroupBox Header="Output">
                             <StackPanel Orientation="Vertical">
                                 <CheckBox Margin="0,0,0,3" IsChecked="{Binding WriteModData}">Write modal results</CheckBox>
@@ -188,7 +222,7 @@
                         </GroupBox>
                         <GroupBox Header="Misc" Margin="0 5,0,0">
                             <StackPanel Orientation="Vertical">
-                                <CheckBox Margin="0,0,0,3" IsChecked="{Binding ValidateData}">Validate data</CheckBox>
+                                --><!--<CheckBox Margin="0,0,0,3" IsChecked="{Binding ValidateData}">Validate data</CheckBox>--><!--
                                 <CheckBox Margin="0,0,0,3" IsChecked="{Binding WriteActualModData}">
                                     <TextBlock>
                                         <Run> Output values in vmod at</Run><LineBreak/>
@@ -199,44 +233,105 @@
                                 </CheckBox>
                             </StackPanel>
                         </GroupBox>
-                    </StackPanel>
-                    <StackPanel Orientation="Vertical" Margin="5,0,0,0" MaxWidth="300">
-                        <GroupBox Header ="Output Directory">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBox Width="200" Text="{Binding OutputDirectory}"/>
-                                <Button Width="60" Content="Browse" Command="{Binding BrowseOutputDirectory}" Margin="5,0,0,0"/>
-                                
-                            </StackPanel>
-                        </GroupBox>
                         <GroupBox Header="Simulation Data" Margin =" 0,5,0,0">
                             <StackPanel Orientation="Vertical">
                                 <CheckBox IsChecked="{Binding WriteModelData}" Margin="0,0,0,3">Write internal model data (EXPERT!)</CheckBox>
                             </StackPanel>
                         </GroupBox>
-                        <GroupBox Header="Look-Ahead Coasting Override (DEV!)" Margin="0,5,0,0">
+                    </StackPanel>-->
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" MaxWidth="1000" MinWidth="400">
+                        <GroupBox Header="Output">
+
                             <StackPanel Orientation="Vertical">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock>Min. Speed:</TextBlock>
-                                    <TextBox MinWidth="50" Margin="10,0,4,0" Text="{Binding LookAheadMinSpeedOverride}"/>
-                                    <TextBlock>[km/h]</TextBlock>
-                                </StackPanel>
-                                <TextBlock FontStyle="Italic" TextWrapping="Wrap" Margin="0,5,0,0">Overrides Lok-Ahead Coasting in declaration mode. Leave empty to use default behavious.</TextBlock>
+                                
+                                <GroupBox Header ="Output Directory">
+                                    <DockPanel LastChildFill="True">
+                                        <Button DockPanel.Dock="Right" Width="60" Content="Browse"
+                                                Command="{Binding BrowseOutputDirectory}" Margin="5,0,0,0"/>
+                                        <TextBox IsReadOnly="{Binding CanRunSimulation, Converter={converter:InvertBoolConverter}}" Text="{Binding TrailerToolSettings.GeneralSettings.SavePathFolder}"/>
+                                    </DockPanel>
+                                </GroupBox>
+                                <GroupBox Header ="Settings">
+                                    <StackPanel>
+                                        <CheckBox Margin="0,0,0,3" IsEnabled="{Binding CanRunSimulation}" IsChecked="{Binding TrailerToolSettings.SimulationSettings.WriteModData}">Write modal results</CheckBox>
+                                        <CheckBox Margin="0,0,0,3"  IsChecked="{Binding TrailerToolSettings.SimulationSettings.WritePDFReport}">
+                                            <!--IsEnabled="{Binding WritePdfCanBeEdited}"-->
+                                            Create PDF reports
+                                            <CheckBox.IsEnabled>
+                                                <MultiBinding Converter="{ converter:BoolANDMultiValConverter}">
+                                                    <Binding Path="WritePdfCanBeEdited"/>
+                                                    <Binding Path=" CanRunSimulation"></Binding>
+                                                </MultiBinding>
+                                            </CheckBox.IsEnabled>
+                                            </CheckBox>
+                                    </StackPanel>
+                                </GroupBox>
+                                    <!--<CheckBox Margin="0,0,0,3" IsChecked="{Binding WriteModData1Hz}">Modal results in 1Hz</CheckBox>-->
+                            </StackPanel>
+                        </GroupBox>
+                        <GroupBox Header="Background Worker">
+                            <StackPanel>
+                                <TextBlock TextWrapping="Wrap" Margin="5" Visibility="{Binding BackGroundSimulator.AutoSimActive, Converter={converter:BoolVisibilityConverter}}">To change the settings the Background Worker must be inactive</TextBlock>
+                                <GroupBox Header="Input Directory">
+                                    <DockPanel LastChildFill="True">
+                                        <Button Width="60" DockPanel.Dock="Right" Content="Browse" Command="{Binding BrowseAutoSimInputDirectory}" Margin="5,0,0,0"/>
+                                        <TextBox HorizontalAlignment="Stretch" Text="{Binding BackGroundSimulator.InputDirectory}" IsReadOnly="True" TextWrapping="Wrap"/>
+                                    </DockPanel>
+                                </GroupBox>
+                                <GroupBox Header="Output Directory">
+                                    <DockPanel >
+                                        <Button Width="60" DockPanel.Dock="Right" Content="Browse" Command="{Binding BrowseAutoSimOutputDirectory}" Margin="5,0,0,0"/>
+                                        <TextBox HorizontalAlignment="Stretch" Text="{Binding BackGroundSimulator.OutputDirectory}" IsReadOnly="True" TextWrapping="Wrap"/>
+                                    </DockPanel>
+                                </GroupBox>
+                                <GroupBox Header="Background Worker Settings" >
+                                    <StackPanel Orientation="Vertical">
+                                        <CheckBox Margin="0,0,0,3" IsEnabled="{Binding BackGroundSimulator.AutoSimActive, Converter={converter:InvertBoolConverter}}" IsChecked="{Binding TrailerToolSettings.SimulationSettings.BackgroundWriteModData}">Write modal results</CheckBox>
+                                        <CheckBox Margin="0,0,0,3"  IsChecked="{Binding TrailerToolSettings.SimulationSettings.BackgroudWritePDF}">
+                                            <!--IsEnabled="{Binding WritePdfCanBeEdited}"-->
+                                                <CheckBox.IsEnabled>
+                                                    <MultiBinding Converter="{ converter:BoolANDMultiValConverter}">
+                                                        <Binding Path="WritePdfCanBeEdited"/>
+                                                        <Binding Path="BackGroundSimulator.AutoSimActive" Converter="{ converter:InvertBoolConverter}"></Binding>
+                                                    </MultiBinding>
+                                            </CheckBox.IsEnabled>
+                                            Create PDF reports
+                                        </CheckBox>
+                                           
+                                        
+                                        <!--<CheckBox Margin="0,0,0,3" IsChecked="{Binding AutoSimulator.WriteModData1Hz}">Modal results in 1Hz</CheckBox>-->
+                                    </StackPanel>
+                                </GroupBox>
                             </StackPanel>
                         </GroupBox>
                     </StackPanel>
-                </StackPanel>
-               
+                </WrapPanel>
+                </ScrollViewer>
             </TabItem>
         </TabControl>
     
         <GridSplitter Grid.Row="1" Height="5" HorizontalAlignment="Stretch"/>
         
         <Grid Grid.Row="2" Grid.Column="0" Margin="10,10,10,10">
-            <DataGrid ItemsSource="{Binding Messages}" BorderThickness="1" CanUserAddRows="False" AutoGenerateColumns="False" SelectionUnit="FullRow" 
-                      IsReadOnly="True" HeadersVisibility="All"  RowHeaderWidth="5" RowHeight="20" Name="MessageList">
+            <DataGrid ItemsSource="{Binding Messages}" BorderThickness="1"
+                      CanUserAddRows="False" 
+                      AutoGenerateColumns="False"
+                      SelectionUnit="FullRow" 
+                      IsReadOnly="True" 
+                      HeadersVisibility="All"
+                      RowHeaderWidth="5" 
+                      Name="MessageList">
                 
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Message" Binding="{Binding Message}" Width="*" />
+                    <DataGridTextColumn Header="Message" Binding="{Binding Message}" Width="*">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style>
+                                <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                <Setter Property="TextBlock.TextAlignment" Value="Left"/>
+                                <Setter Property="TextBlock.Margin" Value="5"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
                     <!--<DataGridTextColumn Header="Time" Binding="{Binding Time}" Width="130" />-->
                     <!--<DataGridTextColumn Header="Source" Binding="{Binding Source}" Width="150" />-->
                 </DataGrid.Columns>
@@ -245,19 +340,19 @@
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding Type}" Value="{x:Static impl:MessageType.StatusMessage}">
                                 <Setter Property="Background" Value="AliceBlue"/>
-                                <Setter Property="Height" Value="30"/>
+                                <!--<Setter Property="Height" Value="30"/>-->
                             </DataTrigger>
                             <DataTrigger Binding="{Binding Type}" Value="{x:Static impl:MessageType.InfoMessage}">
                                 <Setter Property="Background" Value="LemonChiffon"/>
-                                <Setter Property="Height" Value="30"/>
+                                <!--<Setter Property="Height" Value="30"/>-->
                             </DataTrigger>
                             <DataTrigger Binding="{Binding Type}" Value="{x:Static impl:MessageType.ErrorMessage}">
                                 <Setter Property="Background" Value="Red"/>
-                                <Setter Property="Height" Value="30"/>
+                                <!--<Setter Property="Height" Value="30"/>-->
                             </DataTrigger>
                             <DataTrigger Binding="{Binding Type}" Value="{x:Static impl:MessageType.WarningMessage}">
                                 <Setter Property="Background" Value="Gold"/>
-                                <Setter Property="Height" Value="30"/>
+                                <!--<Setter Property="Height" Value="30"/>-->
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -268,21 +363,21 @@
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding Type}" Value="{x:Static impl:MessageType.StatusMessage}">
                                 <Setter Property="Foreground" Value="Black"/>
-                                <Setter Property="Height" Value="30"/>
+                                <!--<Setter Property="Height" Value="30"/>-->
                             </DataTrigger>
                             <DataTrigger Binding="{Binding Type}" Value="{x:Static impl:MessageType.InfoMessage}">
                                 <Setter Property="Foreground" Value="DimGray"/>
-                                <Setter Property="Height" Value="30"/>
+                                <!--<Setter Property="Height" Value="30"/>-->
                             </DataTrigger>
                             <DataTrigger Binding="{Binding Type}" Value="{x:Static impl:MessageType.ErrorMessage}">
                                 <Setter Property="Foreground" Value="White"/>
                                 <Setter Property="FontWeight" Value="Bold"/>
-                                <Setter Property="Height" Value="30"/>
+                                <!--<Setter Property="Height" Value="30"/>-->
                             </DataTrigger>
                             <DataTrigger Binding="{Binding Type}" Value="{x:Static impl:MessageType.WarningMessage}">
                                 <Setter Property="Foreground" Value="Black"/>
                                 <Setter Property="FontWeight" Value="Bold"/>
-                                <Setter Property="Height" Value="30"/>
+                                <!--<Setter Property="Height" Value="30"/>-->
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>

@@ -130,11 +130,11 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 			retVal.Loading = loading;
 			retVal.PassengerCount = passengerCount;
-			//retVal.DynamicTyreRadius =
-			//	data.Components.AxleWheels.AxlesDeclaration.Where(axle => axle.AxleType == AxleType.VehicleDriven)
-			//		.Select(da => DeclarationData.Wheels.Lookup(da.Tyre.Dimension).DynamicTyreRadius)
-			//		.Average();
-			if (segment.VehicleClass.IsMediumLorry() && segment.VehicleClass.IsVan()) {
+            retVal.DynamicTyreRadius =
+                data.Components.AxleWheels.AxlesDeclaration.Where(axle => axle.AxleType == AxleType.VehicleDriven)
+                    .Select(da => DeclarationData.Wheels.Lookup(da.Tyre.Dimension).DynamicTyreRadius)
+                    .Average();
+            if (segment.VehicleClass.IsMediumLorry() && segment.VehicleClass.IsVan()) {
 				retVal.CargoVolume = data.CargoVolume;
 			} else {
 				retVal.CargoVolume = mission.MissionType != MissionType.Construction
@@ -143,9 +143,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			}
 
 			retVal.VocationalVehicle = data.VocationalVehicle;
-			//retVal.ADAS = CreateADAS(data.ADAS);
+			retVal.ADAS = CreateADAS(data.ADAS);
 
-			/*var axles = data.Components.AxleWheels.AxlesDeclaration;
+			var axles = data.Components.AxleWheels.AxlesDeclaration;
 			if (axles.Count < mission.AxleWeightDistribution.Length) {
 				throw new VectoException(
 					"Vehicle does not contain sufficient axles. {0} axles defined, {1} axles required",
@@ -185,7 +185,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 						}));
 			}
 
-			retVal.AxleData = axleData;*/
+			retVal.AxleData = axleData;
 			return retVal;
 		}
 

@@ -10,11 +10,11 @@ xmlns:v2.7="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7" xmlns:tns="
 			<Model>Generic Tyre Model</Model>
 			<CertificationNumber>e12*0815/8051*2017/05T0000*00</CertificationNumber>
 			<Date>2017-02-15T11:00:00Z</Date>
-			<CertifiedAerodynamicReduction0>1.00</CertifiedAerodynamicReduction0>
-			<CertifiedAerodynamicReduction3>2.00</CertifiedAerodynamicReduction3>
-			<CertifiedAerodynamicReduction6>3.00</CertifiedAerodynamicReduction6>
-			<CertifiedAerodynamicReduction9>4.00</CertifiedAerodynamicReduction9>
-			<ApplicableVehicleGroup>1123</ApplicableVehicleGroup>
+			<AeroReductionYawAngle0>1.00</AeroReductionYawAngle0>
+			<AeroReductionYawAngle3>2.00</AeroReductionYawAngle3>
+			<AeroReductionYawAngle6>3.00</AeroReductionYawAngle6>
+			<AeroReductionYawAngle9>4.00</AeroReductionYawAngle9>
+			<ApplicableVehicleGroupAnnex1>1123</ApplicableVehicleGroupAnnex1>
 		</Data>
 		<Signature>
 			<di:Reference URI="#AERO-asdf">

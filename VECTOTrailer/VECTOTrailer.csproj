@@ -1,7 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\cef.redist.x64.99.2.12\build\cef.redist.x64.props" Condition="Exists('..\packages\cef.redist.x64.99.2.12\build\cef.redist.x64.props')" />
+  <Import Project="..\packages\cef.redist.x86.99.2.12\build\cef.redist.x86.props" Condition="Exists('..\packages\cef.redist.x86.99.2.12\build\cef.redist.x86.props')" />
+  <Import Project="..\packages\CefSharp.Common.99.2.120\build\CefSharp.Common.props" Condition="Exists('..\packages\CefSharp.Common.99.2.120\build\CefSharp.Common.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
+    <CefSharpAnyCpuSupport>true</CefSharpAnyCpuSupport>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{6F7981DC-B555-441C-8BAE-6DA21D1CB7BB}</ProjectGuid>
@@ -9,7 +13,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>VECTOTrailer</RootNamespace>
     <AssemblyName>VECTOTrailer</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -31,6 +35,8 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -109,6 +115,15 @@
       <HintPath>..\packages\Castle.Core.4.2.0\lib\net45\Castle.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="CefSharp, Version=99.2.120.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=MSIL">
+      <HintPath>..\packages\CefSharp.Common.99.2.120\lib\net452\CefSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="CefSharp.Core, Version=99.2.120.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=MSIL">
+      <HintPath>..\packages\CefSharp.Common.99.2.120\lib\net452\CefSharp.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CefSharp.OffScreen, Version=99.2.120.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=MSIL">
+      <HintPath>..\packages\CefSharp.OffScreen.99.2.120\lib\net452\CefSharp.OffScreen.dll</HintPath>
+    </Reference>
     <Reference Include="ControlzEx, Version=3.0.2.4, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\ControlzEx.dll</HintPath>
     </Reference>
@@ -172,16 +187,22 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Helper\AvalonEditBehaviour.cs" />
+    <Compile Include="Helper\BrowserUtils.cs" />
+    <Compile Include="Helper\Converter\BoolANDMultiValConverter.cs" />
     <Compile Include="Helper\Converter\BoolVisibilityConverter.cs" />
     <Compile Include="Helper\Converter\ComponentTitleConverter.cs" />
     <Compile Include="Helper\Converter\EnumConverter.cs" />
+    <Compile Include="Helper\Converter\InvertBoolConverter.cs" />
     <Compile Include="Helper\EventCommandExecuter.cs" />
     <Compile Include="Helper\Extension.cs" />
     <Compile Include="Helper\FileDialogHelper.cs" />
+    <Compile Include="Helper\LogFileNameHelper.cs" />
     <Compile Include="Helper\ObservableCollectionEx.cs" />
     <Compile Include="Helper\OutputWindowHelper.cs" />
     <Compile Include="Helper\Converter\SaveButtonLabelConverter.cs" />
+    <Compile Include="Helper\PDFCreator.cs" />
     <Compile Include="Helper\SerializeHelper.cs" />
+    <Compile Include="Helper\Settings.cs" />
     <Compile Include="Helper\TextBoxInputRegExBehaviour.cs" />
     <Compile Include="Helper\Validation\DoubleValidator.cs" />
     <Compile Include="Helper\Validation\DoubleValidatorConfig.cs" />
@@ -191,9 +212,15 @@
     <Compile Include="Helper\XmlComponentReaderHelper.cs" />
     <Compile Include="Helper\XmlHelper.cs" />
     <Compile Include="Model\JobListModel.cs" />
-    <Compile Include="Model\SettingsModel.cs" />
+    <Compile Include="Model\Simulation\AutoSimulator.cs" />
+    <Compile Include="Model\Simulation\VectoSimulationProgress.cs" />
     <Compile Include="Model\TempDataObject\ITempDataObject.cs" />
     <Compile Include="Model\TempDataObject\TrailerComponentData.cs" />
+    <Compile Include="Properties\SimulationSettings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>SimulationSettings.settings</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Version.cs">
       <DependentUpon>Version.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -226,7 +253,6 @@
     <Compile Include="ViewModel\Impl\NoneViewModel.cs" />
     <Compile Include="ViewModel\Impl\ObservableObject.cs" />
     <Compile Include="ViewModel\Impl\OutputWindowViewModel.cs" />
-    <Compile Include="ViewModel\Impl\SettingsViewModel.cs" />
     <Compile Include="ViewModel\Impl\ValidatingViewModel.cs" />
     <Compile Include="ViewModel\Impl\XMLViewModel.cs" />
     <Compile Include="ViewModel\Interfaces\ITrailerJobViewModel.cs" />
@@ -390,12 +416,27 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="..\Documentation\VectoTrailerTool\MasterExcel.xlsx">
+      <Link>Resources\MasterExcel.xlsx</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Documentation\VectoTrailerTool\UserManual.pdf">
+      <Link>Resources\UserManual.pdf</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="install.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="Properties\SimulationSettings.settings">
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
+      <LastGenOutput>SimulationSettings.Designer.cs</LastGenOutput>
+    </None>
     <None Include="VECTOTrailer_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
@@ -405,6 +446,10 @@
     <ProjectReference Include="..\VectoCommon\VectoCommon\VectoCommon.csproj">
       <Project>{79a066ad-69a9-4223-90f6-6ed5d2d084f4}</Project>
       <Name>VectoCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VectoCommon\VectoHashing\VectoHashing.csproj">
+      <Project>{B673E12F-D323-4C4C-8805-9915B2C72D3D}</Project>
+      <Name>VectoHashing</Name>
     </ProjectReference>
     <ProjectReference Include="..\VectoCore\VectoCore\VectoCore.csproj">
       <Project>{cd36938a-add9-4c65-96da-b397cdeea90a}</Project>
@@ -444,6 +489,12 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Documentation\User Manual\help.html">
+      <Link>Resources\help.html</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -455,4 +506,14 @@
   <Import Project="$(SolutionDir)Build\TextPreProcessing.targets" />
   <Import Project="$(SolutionDir)Build\Packaging.targets" />
   <Import Project="$(SolutionDir)Build\CommonSettings.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\CefSharp.Common.99.2.120\build\CefSharp.Common.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CefSharp.Common.99.2.120\build\CefSharp.Common.targets'))" />
+    <Error Condition="!Exists('..\packages\CefSharp.Common.99.2.120\build\CefSharp.Common.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CefSharp.Common.99.2.120\build\CefSharp.Common.props'))" />
+    <Error Condition="!Exists('..\packages\cef.redist.x86.99.2.12\build\cef.redist.x86.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\cef.redist.x86.99.2.12\build\cef.redist.x86.props'))" />
+    <Error Condition="!Exists('..\packages\cef.redist.x64.99.2.12\build\cef.redist.x64.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\cef.redist.x64.99.2.12\build\cef.redist.x64.props'))" />
+  </Target>
+  <Import Project="..\packages\CefSharp.Common.99.2.120\build\CefSharp.Common.targets" Condition="Exists('..\packages\CefSharp.Common.99.2.120\build\CefSharp.Common.targets')" />
 </Project>

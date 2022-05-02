@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
+using TUGraz.VectoCore.Models.BusAuxiliaries.Interfaces.DownstreamModules;
 
 namespace VECTOTrailer.Views.ComponentViews.Declaration
 {
@@ -23,6 +25,21 @@ namespace VECTOTrailer.Views.ComponentViews.Declaration
 		public CompleteTrailerView()
 		{
 			InitializeComponent();
+		}
+
+		private void ScrollToEnd(object sender, TextChangedEventArgs e)
+		{
+			if (sender is TextBox textBox) {
+				Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+				{
+					textBox.Focus();
+					var caretIndex = textBox.Text.Length;
+					caretIndex = caretIndex < 0 ? 0 : caretIndex;
+					textBox.CaretIndex = caretIndex;
+					Keyboard.ClearFocus();
+				}));
+
+			}
 		}
 	}
 }

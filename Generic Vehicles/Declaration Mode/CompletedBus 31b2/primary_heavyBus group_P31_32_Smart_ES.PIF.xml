@@ -39,9 +39,9 @@
             <RatedPower>200000</RatedPower>
             <MaxEngineTorque>1100</MaxEngineTorque>
             <WHRType>
-              <MechanicalOutputICE xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.3">false</MechanicalOutputICE>
-              <MechanicalOutputDrivetrain xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.3">false</MechanicalOutputDrivetrain>
-              <ElectricalOutput xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.3">false</ElectricalOutput>
+              <MechanicalOutputICE xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">false</MechanicalOutputICE>
+              <MechanicalOutputDrivetrain xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">false</MechanicalOutputDrivetrain>
+              <ElectricalOutput xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">false</ElectricalOutput>
             </WHRType>
             <Mode>
               <IdlingSpeed>700</IdlingSpeed>

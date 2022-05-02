@@ -58,7 +58,7 @@ namespace TUGraz.VectoCore.Tests.XML
 			//Report XML schema
 			var xmlReportTrailerTest = new XMLReportTrailerTest();
 			xmlReportTrailerTest.RunBeforeAnyTests();
-			xmlReportTrailerTest.RunTrailerDeclarationJob();
+			xmlReportTrailerTest.RunTrailerDeclarationJob(SampleTrailer);
 		}
 
 		[TestCase]

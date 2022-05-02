@@ -16,7 +16,6 @@ namespace VECTOTrailer.ViewModel.Impl
 	{
 		protected bool IsDeclarationMode;
 		protected bool WindowAlreadyClosed;
-		protected readonly SettingsModel SettingsModel;
 
 		private IComponentViewModel _currentComponent;
 		private ICommand _saveJobCommand;
@@ -54,7 +53,6 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		public AbstractJobViewModel()
 		{
-			SettingsModel = new SettingsModel();
 		}
 
 		public ICommand SaveJob
@@ -138,9 +136,9 @@ namespace VECTOTrailer.ViewModel.Impl
 		protected bool CloseWindowDialog()
 		{
 
-			var res = MessageBox.Show("","Do you really want to close ?", MessageBoxButton.OK);
+			var res = MessageBox.Show("Do you really want to close ?", "Close", MessageBoxButton.YesNo);
 
-			return res == MessageBoxResult.OK;
+			return res == MessageBoxResult.Yes;
 		}
 	}
 }

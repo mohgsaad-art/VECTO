@@ -1404,20 +1404,20 @@
   <data name="Trailer_AeroFeatureTechnologies" xml:space="preserve">
     <value>Technology</value>
   </data>
-<data name="Trailer_CertifiedAeroReduction" xml:space="preserve">
-    <value>CertifiedAeroReduction</value>
+<data name="Trailer_AeroReduction" xml:space="preserve">
+    <value>AeroReduction</value>
   </data>
 <data name="Trailer_YawAngle0" xml:space="preserve">
-    <value>CertifiedAerodynamicReduction0</value>
+    <value>AeroReductionYawAngle0</value>
   </data>
 <data name="Trailer_YawAngle3" xml:space="preserve">
-    <value>CertifiedAerodynamicReduction3</value>
+    <value>AeroReductionYawAngle3</value>
   </data>
 <data name="Trailer_YawAngle6" xml:space="preserve">
-    <value>CertifiedAerodynamicReduction6</value>
+    <value>AeroReductionYawAngle6</value>
   </data>
 <data name="Trailer_YawAngle9" xml:space="preserve">
-    <value>CertifiedAerodynamicReduction9</value>
+    <value>AeroReductionYawAngle9</value>
   </data>
 <data name="Trailer_AeroFeatures" xml:space="preserve">
     <value>AeroFeatures</value>
@@ -1477,7 +1477,7 @@
     <value>LengthFromFrontToFirstAxle</value>
   </data>
   <data name="Trailer_LengthBetweenCentersOfAxles" xml:space="preserve">
-    <value>LengthBetweenCentersOfAxles</value>
+    <value>LengthBetweenCentresOfAxles</value>
   </data>
   <data name="Trailer_InternalHeightBody" xml:space="preserve">
     <value>InternalHeightBody</value>
@@ -1488,5 +1488,25 @@
 <data name="Trailer_TrailerCouplingPoint" xml:space="preserve">
     <value>TrailerCouplingPoint</value>
   </data>
-
+<data name="Trailer_AeroDevice_ApplicableVehicleGroup" xml:space="preserve">
+	<value>ApplicableVehicleGroup</value>
+</data>
+<data name="Trailer_CertifiedAeroReduction" xml:space="preserve">
+	<value>CertifiedAeroReduction</value>
+</data>
+<data name="Report_Results_WeightedResults" xml:space="preserve">
+	<value>WeightedResults</value>
+</data>
+<data name="Result_RatioType_KilometreBased" xml:space="preserve">
+	<value>Kilometre-Based</value>
+</data>
+<data name="Result_RatioType_TonKilometreBased" xml:space="preserve">
+	<value>Ton-Kilometre-Based</value>
+</data>
+<data name="Result_RatioType_CubicMetre_KilometreBased" xml:space="preserve">
+	<value>CubicMetre-KiloMetre-Based</value>
+</data>
+<data name="Trailer_CertifiedAeroDevice" xml:space="preserve">
+	<value>CertifiedAeroDevice</value>
+</data>
 </root>

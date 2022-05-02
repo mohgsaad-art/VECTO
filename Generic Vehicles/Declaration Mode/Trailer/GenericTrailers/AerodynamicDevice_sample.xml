@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<tns:VectoInputDeclaration xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:v2.1="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1" xmlns:v2.2="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.2" xmlns:v2.7="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7" xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationComponent:DEV:v2.7" xmlns:di="http://www.w3.org/2000/09/xmldsig#" schemaVersion="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationComponent v:\VectoCore\VectoCore\Resources\XSD/VectoDeclarationComponent.xsd">
+    <tns:CertifiedAeroDevice>
+        <v2.7:Data xsi:type="CertifiedAeroDataDeclarationType" id="AERO-asdf">
+            <v2.7:Manufacturer>Generic Manufacturer</v2.7:Manufacturer>
+            <v2.7:Model>Generic Aero Device Model</v2.7:Model>
+            <v2.7:CertificationNumber>e12*0815/8051*2017/05T0000*00</v2.7:CertificationNumber>
+            <v2.7:Date>2022-04-13T11:21:11.8581891Z</v2.7:Date>
+            <v2.7:AeroReductionYawAngle0>1.00</v2.7:AeroReductionYawAngle0>
+            <v2.7:AeroReductionYawAngle3>2.00</v2.7:AeroReductionYawAngle3>
+            <v2.7:AeroReductionYawAngle6>3.00</v2.7:AeroReductionYawAngle6>
+            <v2.7:AeroReductionYawAngle9>4.00</v2.7:AeroReductionYawAngle9>
+            <v2.7:ApplicableVehicleGroups>
+                <v2.7:ApplicableVehicleGroup>422</v2.7:ApplicableVehicleGroup>
+                <v2.7:ApplicableVehicleGroup>112</v2.7:ApplicableVehicleGroup>
+            </v2.7:ApplicableVehicleGroups>
+        </v2.7:Data>
+        <v2.7:Signature>
+            <di:Reference URI="#AERO-asdf">
+                <di:Transforms>
+                    <di:Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+                    <di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+                </di:Transforms>
+                <di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+                <di:DigestValue>e8QA5O/oeTC4OFt6Xc8xpYe6rUmG+PbKynvnkJvyMrs=</di:DigestValue>
+            </di:Reference>
+        </v2.7:Signature>
+    </tns:CertifiedAeroDevice>
+</tns:VectoInputDeclaration>

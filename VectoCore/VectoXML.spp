@@ -77,7 +77,7 @@
 			<File FilePath="VectoCore\Resources\XSD\VectoDeclarationDefinitions.2.0.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoDeclarationDefinitions.2.1.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoDeclarationDefinitions.2.2.xsd" HomeFolder="Yes"/>
-			<File FilePath="VectoCore\Resources\XSD\VectoDeclarationDefinitions.2.3_DEV.xsd" HomeFolder="Yes"/>
+			<File FilePath="VectoCore\Resources\XSD\VectoDeclarationDefinitions.2.3.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoDeclarationDefinitions.2.6_Buses.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoDeclarationDefinitions.2.7_BT.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoDeclarationDefinitions.xsd" HomeFolder="Yes"/>
@@ -110,12 +110,14 @@
 			<File FilePath="VectoCore\Resources\XSD\VectoOutputCustomer.0.5.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoOutputCustomer.0.7.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoOutputCustomer.0.8.xsd" HomeFolder="Yes"/>
+			<File FilePath="VectoCore\Resources\XSD\VectoOutputCustomer.Trailer.0.1.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoOutputCustomer.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoOutputDefinitions.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoOutputManufacturer.0.5.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoOutputManufacturer.0.6.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoOutputManufacturer.0.7.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoOutputManufacturer.0.8.xsd" HomeFolder="Yes"/>
+			<File FilePath="VectoCore\Resources\XSD\VectoOutputManufacturer.Trailer.0.1.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoOutputManufacturer.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoOutputPrimaryBus.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoOutputPrimaryVehicleInformation.xsd" HomeFolder="Yes"/>

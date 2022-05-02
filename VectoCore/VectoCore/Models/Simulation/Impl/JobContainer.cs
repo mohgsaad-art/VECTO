@@ -37,6 +37,7 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using TUGraz.VectoCommon.Models;
+using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.OutputData;
 
@@ -83,22 +84,24 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 		/// <summary>
 		/// Adds the runs from the factory to the job container.
+		/// 
 		/// </summary>
 		/// <returns>A List of Run-Identifiers (unique), int</returns>
-		public List<int> AddRuns(ISimulatorFactory factory)
+		public List<int> AddRuns(ISimulatorFactory factory, Func<VectoRunData, bool> filter = null)
 		{
 			var runIDs = new List<int>();
 
 			factory.SumData = _sumWriter;
 			factory.JobNumber = Interlocked.Increment(ref _jobNumber);
 
-			foreach (var run in factory.SimulationRuns()) {
+			foreach (var run in factory.SimulationRuns(filter)) {
 				var entry = new RunEntry { Run = run, JobContainer = this };
 				Runs.Add(entry);
 				runIDs.Add(entry.Run.RunIdentifier);
 			}
 			return runIDs;
 		}
+
 
 		/// <summary>
 		/// Execute all runs, waits until finished.

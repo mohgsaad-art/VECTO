@@ -1,8 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSpy v2016 rel. 2 sp1 (x64) (http://www.altova.com) by Helmut Eichlseder (TU Graz/Inst. f. VKM und THD) -->
 <xs:schema xmlns="urn:tugraz:ivt:VectoAPI:DeclarationOutput" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:vdecdef="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" xmlns:common="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions" xmlns:mrf="urn:tugraz:ivt:VectoAPI:DeclarationOutput" xmlns:v2.6="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.6" xmlns:ns1="urn:tugraz:ivt:VectoAPI:DeclarationOutputDefinitions" targetNamespace="urn:tugraz:ivt:VectoAPI:DeclarationOutputDefinitions" elementFormDefault="qualified" attributeFormDefault="unqualified" version="0.8">
-	<xs:complexType name="AbstractVTPReportDataType" abstract="true"/>
 	<xs:complexType name="AbstractPrimaryVehicleDataPIFType" abstract="true"/>
-	<xs:complexType name="AbstractVectoOutputManufacturerDataType" abstract="true"/>
 	<xs:complexType name="AbstractVectoOutputCustomerDataType" abstract="true"/>
+	<xs:complexType name="AbstractVectoOutputManufacturerDataType" abstract="true"/>
+	<xs:complexType name="AbstractVTPReportDataType" abstract="true"/>
+	<xs:simpleType name="CalculationType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="Kilometre-Based"/>
+			<xs:enumeration value="Ton-Kilometre-Based"/>
+			<xs:enumeration value="CubicMetre-KiloMetre-Based"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="NoUnitType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="-"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DistanceUnitType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="km"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="MassUnitType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="kg"/>
+			<xs:enumeration value="t"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PercentType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="%"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PowerUnitType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="kW"/>
+			<xs:enumeration value="W"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SpeedUnitType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="km/h"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="StorageCapacityUnitType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="As"/>
+			<xs:enumeration value="Ah"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="VolumeUnitType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="ltr"/>
+		</xs:restriction>
+	</xs:simpleType>
 </xs:schema>
