@@ -29,8 +29,8 @@ In Declaration Mode, the following rules restrict the limitations of engine torq
 ### Vehicle defined Torque Limitations
 
 * For higher 50% of gears (i.e., gears 7 to 12 for a 12-gear transmission):
-    - Torque limit > 95% of engine max torque: max. torque limitation *not* applicable (VECTO extrapolates loss-maps)
-    - Torque limit <= 90% of engine max torque: max. torque limitation applicable
+    - Torque limit > 95% of engine max torque: max. torque limitation *not* applicable
+    - Torque limit <= 95% of engine max torque: max. torque limitation applicable
 * For lower 50% of gears (i.e., gears 1 to 6 for a 12-gear transmission):
     - Torque limit is *not* applicable
 
