@@ -561,8 +561,8 @@ namespace VECTOTrailer.Model.Simulation
 				foreach (var jobFileName in jobFileNames) {
 					var jobPath = Path.Combine(outputDirectory, jobFileName);
 					var w = new FileOutputWriter(jobPath);
-					_pdfCreator.CreatePDFFromXml(w.XMLCustomerReportName, jobPath.Replace(".xml", ".pdf"));
-					_pdfCreator.CreatePDFFromXml(w.XMLFullReportName, jobPath.Replace(".xml", ".pdf"));
+					_pdfCreator.CreatePDFFromXml(w.XMLCustomerReportName, w.XMLCustomerReportName.Replace(".xml", ".pdf"));
+					_pdfCreator.CreatePDFFromXml(w.XMLFullReportName, w.XMLFullReportName.Replace(".xml", ".pdf"));
 				}
 			}
 		}
