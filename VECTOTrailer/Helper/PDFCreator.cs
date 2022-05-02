@@ -32,7 +32,6 @@ namespace VECTOTrailer.Helper
 				_error = ex.Message;
 				_initError = true;
 			}
-
 		}
 
 		[MethodImpl(MethodImplOptions.NoInlining)]

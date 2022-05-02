@@ -144,7 +144,7 @@ namespace VECTOTrailer.Model.Simulation
 				try {
 					_simSettingsRwLock.EnterWriteLock();
 					if (SetProperty(ref _writeModData, value)) {
-						_trailerToolSettings.SimulationSettings.WriteModData = value;
+						_trailerToolSettings.SimulationSettings.BackgroundWriteModData = value;
 					}
 				} finally {
 					_simSettingsRwLock.ExitWriteLock();
