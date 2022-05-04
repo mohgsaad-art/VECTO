@@ -248,13 +248,13 @@
                                     <DockPanel LastChildFill="True">
                                         <Button DockPanel.Dock="Right" Width="60" Content="Browse"
                                                 Command="{Binding BrowseOutputDirectory}" Margin="5,0,0,0"/>
-                                        <TextBox IsReadOnly="{Binding CanRunSimulation, Converter={converter:InvertBoolConverter}}" Text="{Binding TrailerToolSettings.GeneralSettings.SavePathFolder}"/>
+                                        <TextBox IsReadOnly="{Binding CanRunSimulation, Converter={converter:InvertBoolConverter}}" Text="{Binding TrailerToolSettings.GeneralSettings.SavePathFolder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                     </DockPanel>
                                 </GroupBox>
                                 <GroupBox Header ="Settings">
                                     <StackPanel>
-                                        <CheckBox Margin="0,0,0,3" IsEnabled="{Binding CanRunSimulation}" IsChecked="{Binding TrailerToolSettings.SimulationSettings.WriteModData}">Write modal results</CheckBox>
-                                        <CheckBox Margin="0,0,0,3"  IsChecked="{Binding TrailerToolSettings.SimulationSettings.WritePDFReport}">
+                                        <CheckBox Margin="0,0,0,3" IsEnabled="{Binding CanRunSimulation}" IsChecked="{Binding TrailerToolSettings.SimulationSettings.WriteModData, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Write modal results</CheckBox>
+                                            <CheckBox Margin="0,0,0,3"  IsChecked="{Binding TrailerToolSettings.SimulationSettings.WritePDFReport, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                             <!--IsEnabled="{Binding WritePdfCanBeEdited}"-->
                                             Create PDF reports
                                             <CheckBox.IsEnabled>
@@ -286,8 +286,8 @@
                                 </GroupBox>
                                 <GroupBox Header="Background Worker Settings" >
                                     <StackPanel Orientation="Vertical">
-                                        <CheckBox Margin="0,0,0,3" IsEnabled="{Binding BackGroundSimulator.AutoSimActive, Converter={converter:InvertBoolConverter}}" IsChecked="{Binding TrailerToolSettings.SimulationSettings.BackgroundWriteModData}">Write modal results</CheckBox>
-                                        <CheckBox Margin="0,0,0,3"  IsChecked="{Binding TrailerToolSettings.SimulationSettings.BackgroudWritePDF}">
+                                            <CheckBox Margin="0,0,0,3" IsEnabled="{Binding BackGroundSimulator.AutoSimActive, Converter={converter:InvertBoolConverter}}" IsChecked="{Binding TrailerToolSettings.SimulationSettings.BackgroundWriteModData, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Write modal results</CheckBox>
+                                            <CheckBox Margin="0,0,0,3"  IsChecked="{Binding TrailerToolSettings.SimulationSettings.BackgroudWritePDF, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                             <!--IsEnabled="{Binding WritePdfCanBeEdited}"-->
                                                 <CheckBox.IsEnabled>
                                                     <MultiBinding Converter="{ converter:BoolANDMultiValConverter}">

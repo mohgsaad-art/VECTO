@@ -204,6 +204,7 @@ namespace VECTOTrailer.ViewModel.Impl
 			});
 
 			WritePDFReport = TrailerToolSettings.SimulationSettings.WritePDFReport;
+			
             TrailerToolSettings.SimulationSettings.PropertyChanged += SimulationSettings_PropertyChanged;
 		}
 
