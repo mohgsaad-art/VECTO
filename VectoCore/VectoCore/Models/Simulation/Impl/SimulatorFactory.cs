@@ -59,7 +59,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		private readonly ExecutionMode _mode;
 
 		public SimulatorFactory(ExecutionMode mode, IInputDataProvider dataProvider, IOutputDataWriter writer,
-			IDeclarationReport declarationReport = null, IVTPReport vtpReport = null, bool validate = true, bool validateHashes = true)
+			IDeclarationReport declarationReport = null, IVTPReport vtpReport = null, bool validate = true, bool validateHashes = false)
 		{
 			Log.Info("########## VectoCore Version {0} ##########", Assembly.GetExecutingAssembly().GetName().Version);
 			JobNumber = Interlocked.Increment(ref _jobNumberCounter);

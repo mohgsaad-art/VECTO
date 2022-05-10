@@ -407,8 +407,6 @@ Partial Class MainForm
         'cbValidateXMLDeclarationJobs
         '
         Me.cbValidateXMLDeclarationJobs.AutoSize = true
-        Me.cbValidateXMLDeclarationJobs.Checked = true
-        Me.cbValidateXMLDeclarationJobs.CheckState = System.Windows.Forms.CheckState.Checked
         Me.cbValidateXMLDeclarationJobs.Location = New System.Drawing.Point(6, 19)
         Me.cbValidateXMLDeclarationJobs.Name = "cbValidateXMLDeclarationJobs"
         Me.cbValidateXMLDeclarationJobs.Size = New System.Drawing.Size(222, 17)
