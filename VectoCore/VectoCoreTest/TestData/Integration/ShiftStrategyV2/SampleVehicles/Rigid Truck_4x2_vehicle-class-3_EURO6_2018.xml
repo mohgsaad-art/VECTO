@@ -213,11 +213,11 @@
         <Signature>
           <Reference URI="#ENG-N.A." xmlns="http://www.w3.org/2000/09/xmldsig#">
             <Transforms>
-              <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithoutComments" />
+              <Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
               <Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
             </Transforms>
             <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
-            <DigestValue></DigestValue>
+            <DigestValue>G6ea3r0o+7hWv+l1BB5A9RgF1YVuhdjmvb4EO+1a3ew=</DigestValue>
           </Reference>
         </Signature>
       </Engine>
@@ -326,11 +326,11 @@
         <Signature>
           <Reference URI="#GBX-N.A." xmlns="http://www.w3.org/2000/09/xmldsig#">
             <Transforms>
-              <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithoutComments" />
+              <Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
               <Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
             </Transforms>
             <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
-            <DigestValue></DigestValue>
+            <DigestValue>6LHOGDKGZw8xVV2PY8Ay2ZIJfUKzV7XFnNHPVkhMwB8=</DigestValue>
           </Reference>
         </Signature>
       </Gearbox>
@@ -360,11 +360,11 @@
         <Signature>
           <Reference URI="#AXLGEAR-4.000" xmlns="http://www.w3.org/2000/09/xmldsig#">
             <Transforms>
-              <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithoutComments" />
+              <Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
               <Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
             </Transforms>
             <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
-            <DigestValue></DigestValue>
+            <DigestValue>SMq9a5gdmmM8ar0iYiMGE25TS8a1FmLAOUpGzGo4l20=</DigestValue>
           </Reference>
         </Signature>
       </Axlegear>
@@ -389,11 +389,11 @@
                 <Signature>
                   <Reference URI="#TYRE-285_70R19.5" xmlns="http://www.w3.org/2000/09/xmldsig#">
                     <Transforms>
-                      <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithoutComments" />
+                      <Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
                       <Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
                     </Transforms>
                     <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
-                    <DigestValue></DigestValue>
+                    <DigestValue>C1phguXMbFuHRYheY3bhjp40uhFf/3/jOVigiKLtaqo=</DigestValue>
                   </Reference>
                 </Signature>
               </Tyre>
@@ -416,11 +416,11 @@
                 <Signature>
                   <Reference URI="#TYRE-285_70R19.5" xmlns="http://www.w3.org/2000/09/xmldsig#">
                     <Transforms>
-                      <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithoutComments" />
+                      <Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
                       <Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
                     </Transforms>
                     <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
-                    <DigestValue></DigestValue>
+                    <DigestValue>C1phguXMbFuHRYheY3bhjp40uhFf/3/jOVigiKLtaqo=</DigestValue>
                   </Reference>
                 </Signature>
               </Tyre>
@@ -461,11 +461,11 @@
         <Signature>
           <Reference URI="#Airdrag-N.A." xmlns="http://www.w3.org/2000/09/xmldsig#">
             <Transforms>
-              <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithoutComments" />
+              <Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
               <Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
             </Transforms>
             <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
-            <DigestValue></DigestValue>
+            <DigestValue>plyHp97PnpnR7KiBRtuyhoFSTxdX6H9e5iUuyN956M4=</DigestValue>
           </Reference>
         </Signature>
       </AirDrag>
