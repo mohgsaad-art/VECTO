@@ -142,7 +142,8 @@ namespace TUGraz.VectoCore.Tests.Integration
             {
                 WriteModalResults = false,
                 Validate = false,
-            };
+				ValidateComponentHashes = false
+			};
             jobContainer.AddRuns(runsFactory);
 
             // no need to run the simulation, we only check whether the meta-data is correct, no results are considered

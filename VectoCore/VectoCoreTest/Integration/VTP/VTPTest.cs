@@ -102,6 +102,7 @@ namespace TUGraz.VectoCore.Tests.Integration.VTP
 				WriteModalResults = true,
 				ActualModalData = false,
 				Validate = false,
+				ValidateComponentHashes = false
 			};
 
 			jobContainer.AddRuns(runsFactory);
@@ -136,6 +137,7 @@ namespace TUGraz.VectoCore.Tests.Integration.VTP
 				WriteModalResults = true,
 				ActualModalData = false,
 				Validate = false,
+				ValidateComponentHashes = false
 			};
 
 			jobContainer.AddRuns(runsFactory);
@@ -173,6 +175,7 @@ namespace TUGraz.VectoCore.Tests.Integration.VTP
 				WriteModalResults = true,
 				ActualModalData = false,
 				Validate = false,
+				ValidateComponentHashes = false
 			};
 
 			jobContainer.AddRuns(runsFactory);

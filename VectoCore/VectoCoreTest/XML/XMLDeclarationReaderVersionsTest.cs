@@ -133,6 +133,7 @@ namespace TUGraz.VectoCore.Tests.XML
 				WriteModalResults = false,
 				ActualModalData = false,
 				Validate = false,
+				ValidateComponentHashes = false,
 			};
 
 			var runs = runsFactory.SimulationRuns().ToArray();

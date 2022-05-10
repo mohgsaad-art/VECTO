@@ -86,6 +86,7 @@ namespace TUGraz.VectoCore.Tests.XML
 				WriteModalResults = false,
 				ActualModalData = false,
 				Validate = false,
+				ValidateComponentHashes = false
 			};
 			jobContainer.AddRuns(runsFactory);
 			jobContainer.Execute();
