@@ -66,8 +66,12 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 		public IVTPReport Report;
 		protected ShiftStrategyParameters GearshiftData;
 
-		public DeclarationVTPModeVectoRunDataFactory(IVTPDeclarationInputDataProvider ivtpProvider, IVTPReport report) : this(
-			ivtpProvider.JobInputData, report) { }
+		public DeclarationVTPModeVectoRunDataFactory(IVTPDeclarationInputDataProvider ivtpProvider, IVTPReport report) :
+			this(
+				ivtpProvider.JobInputData, report)
+		{
+			DataProvider = ivtpProvider;
+		}
 
 		protected DeclarationVTPModeVectoRunDataFactory(IVTPDeclarationJobInputData job, IVTPReport report)
 		{
@@ -216,6 +220,8 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			yield return vtpRunData;
 			
 		}
+
+		public IInputDataProvider DataProvider { get; }
 
 		protected virtual AuxFanData GetFanData()
 		{

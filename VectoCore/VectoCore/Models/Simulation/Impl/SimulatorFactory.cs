@@ -59,13 +59,14 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		private readonly ExecutionMode _mode;
 
 		public SimulatorFactory(ExecutionMode mode, IInputDataProvider dataProvider, IOutputDataWriter writer,
-			IDeclarationReport declarationReport = null, IVTPReport vtpReport = null, bool validate = true)
+			IDeclarationReport declarationReport = null, IVTPReport vtpReport = null, bool validate = true, bool validateHashes = true)
 		{
 			Log.Info("########## VectoCore Version {0} ##########", Assembly.GetExecutingAssembly().GetName().Version);
 			JobNumber = Interlocked.Increment(ref _jobNumberCounter);
 			_mode = mode;
 			ModWriter = writer;
 			Validate = validate;
+			ValidateComponentHashes = validateHashes;
 
 			int workerThreads;
 			int completionThreads;
@@ -86,6 +87,8 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 					throw new VectoException("Unkown factory mode in SimulatorFactory: {0}", mode);
 			}
 		}
+
+		public bool ValidateComponentHashes { get; set; }
 
 		private void CreateDeclarationDataReader(IInputDataProvider dataProvider, IDeclarationReport declarationReport, IVTPReport vtpReport)
 		{
@@ -145,6 +148,10 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		{
 			var i = 0;
 			var warning1Hz = false;
+
+			if (ValidateComponentHashes && DataReader.DataProvider is IDeclarationInputDataProvider declDataProvider) {
+				declDataProvider.ValidateComponentHashes();
+			}
 
 			foreach (var data in DataReader.NextRun()) {
 				var current = i++;
