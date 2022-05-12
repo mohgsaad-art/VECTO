@@ -110,15 +110,15 @@ namespace VECTOTrailer.Model.Simulation
 
 		private void ConfigureNlog()
 		{
-			var target = new FileTarget(nameof(BackGroundSimulator)) {
-				FileName = LogFileHelper.GetFileNameWithBasePath("BackgroundWorker.log"),
-				Layout = "${longdate} ${level} ${message}  ${exception} ${event-properties:myProperty}"
-			};
-			var loggingRule = new LoggingRule($"{nameof(BackGroundSimulator)}", LogLevel.Trace, target);
-			NLog.LogManager.Configuration.AddTarget(target); 
-			NLog.LogManager.Configuration.LoggingRules.Add(loggingRule);
-			NLog.LogManager.Configuration.Reload();
-			NLog.LogManager.ReconfigExistingLoggers();
+			//var target = new FileTarget(nameof(BackGroundSimulator)) {
+			//	FileName = LogFileHelper.GetFileNameWithBasePath("BackgroundWorker.log"),
+			//	Layout = "${longdate} ${level} ${message}  ${exception} ${event-properties:myProperty}"
+			//};
+			//var loggingRule = new LoggingRule($"{nameof(BackGroundSimulator)}", LogLevel.Trace, target);
+			//NLog.LogManager.Configuration.AddTarget(target); 
+			//NLog.LogManager.Configuration.LoggingRules.Add(loggingRule);
+			//NLog.LogManager.Configuration.Reload();
+			//NLog.LogManager.ReconfigExistingLoggers();
 			_logger = NLog.LogManager.GetLogger(nameof(BackGroundSimulator));
 		}
 		#endregion	
