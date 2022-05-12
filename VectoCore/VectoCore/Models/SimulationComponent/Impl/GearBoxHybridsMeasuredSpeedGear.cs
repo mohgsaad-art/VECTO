@@ -25,7 +25,38 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
         protected internal Second DisengagedTime;
 
-        public override GearshiftPosition NextGear => new GearshiftPosition(DataBus.DrivingCycleInfo.CycleData.LeftSample.Gear);
+        public override GearshiftPosition NextGear {
+        get {
+				//if (DisengagedTime == null) {
+    //                var xxx = GetGearFromCycle();
+				//	return new GearshiftPosition(GetGearFromCycle());
+				//}
+
+				var future = DataBus.DrivingCycleInfo.LookAhead(ModelData.TractionInterruption * 5);
+				var nextGear = 0u;
+				var torqueConverterLocked = false;
+				foreach (var entry in future) {
+					if (entry.VehicleTargetSpeed != null && entry.VehicleTargetSpeed.IsEqual(0)) {
+						// vehicle is stopped, no next gear, engine should go to idle
+						break;
+					}
+					if (entry.WheelAngularVelocity != null && entry.WheelAngularVelocity.IsEqual(0)) {
+						// vehicle is stopped, no next gear, engine should go to idle
+						break;
+					}
+
+					if (entry.Gear == 0) {
+						continue;
+					}
+
+					nextGear = entry.Gear;
+					torqueConverterLocked = !entry.TorqueConverterActive ?? false;
+					break;
+				}
+
+				return new GearshiftPosition(nextGear, GearboxType.ManualTransmission() ? (bool?)null : torqueConverterLocked);
+			}
+        }
 
         public override bool GearEngaged(Second absTime)
         {
@@ -60,11 +91,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
                 throw new VectoSimulationException("Driving cycle does not contain information about TorqueConverter!");
             }
 
-            var inAngularVelocity = DataBus.EngineInfo.EngineIdleSpeed;
+            Gear = Gear ?? new GearshiftPosition(0);
+
+            var inAngularVelocity = outAngularVelocity * ((Gear.Gear == 0) ? 0 : ModelData.Gears[Gear.Gear].Ratio);
             var inTorque = 0.SI<NewtonMeter>();
             IResponse response;
-
-            Gear = Gear ?? new GearshiftPosition(0);
 
             if (Gear.Gear != 0) {
                 var ratio = !Gear.IsLockedGear()
@@ -118,7 +149,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
         protected uint GetGearFromCycle()
         {
-            return DataBus.DrivingCycleInfo.CycleData.RightSample.Gear;
+            return DataBus.DrivingCycleInfo.CycleData.LeftSample.Gear;
         }
 
         /// <summary>
@@ -308,7 +339,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
                 };
             }
 
-            var nextGear = new GearshiftPosition(GetGearFromCycle());
+            var nextGear = NextGear;
 
             IResponse disengagedResponse = !GearboxType.AutomaticTransmission() && (nextGear.Gear > 0)
                 ? NextComponent.Request(absTime, dt, 0.SI<NewtonMeter>(), outAngularVelocity * ModelData.Gears[nextGear.Gear].Ratio, false)

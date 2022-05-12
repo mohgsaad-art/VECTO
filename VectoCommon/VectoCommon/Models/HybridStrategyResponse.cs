@@ -56,21 +56,21 @@ namespace TUGraz.VectoCommon.Models {
 				var gearshift = Cost.IsSmaller(0) ? GearshiftPenalty : 1 / GearshiftPenalty;
 
 				var score = Cost * gearshift;
-				Dictionary<string, object> dict = new Dictionary<string, object>()
-				{
-					["score"] = score,
-					["Cost"] = Cost,
-					["FuelCosts"] = FuelCosts,
-					["BatCosts"] = BatCosts,
-					["ICEStartPenalty1"] = ICEStartPenalty1,
-					["ICEStartPenalty2"] = ICEStartPenalty2,
-					["SoCPenalty"] = SoCPenalty,
-					["RampUpPenalty"] = RampUpPenalty,
-					["GearshiftPenalty"] = GearshiftPenalty
-					//["AbsTime"] = abstime
-				};
+				//Dictionary<string, object> dict = new Dictionary<string, object>()
+				//{
+				//	["score"] = score,
+				//	["Cost"] = Cost,
+				//	["FuelCosts"] = FuelCosts,
+				//	["BatCosts"] = BatCosts,
+				//	["ICEStartPenalty1"] = ICEStartPenalty1,
+				//	["ICEStartPenalty2"] = ICEStartPenalty2,
+				//	["SoCPenalty"] = SoCPenalty,
+				//	["RampUpPenalty"] = RampUpPenalty,
+				//	["GearshiftPenalty"] = GearshiftPenalty
+				//	//["AbsTime"] = abstime
+				//};
 
-				MatRec.NewRow(dict);
+				//MatRec.NewRow(dict);
 				return score;
 			}
 		}

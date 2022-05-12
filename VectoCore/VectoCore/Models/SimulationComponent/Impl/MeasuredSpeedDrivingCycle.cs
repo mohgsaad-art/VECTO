@@ -213,7 +213,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			else if (DriverBehavior == DrivingBehavior.Braking)
 			{
 				DrivingAction = DrivingAction.Brake;
-			} 
+			}
+			else if (DriverBehavior == DrivingBehavior.Driving)
+			{
+				DrivingAction = DrivingAction.Accelerate;
+            }
 			else if (acceleration > 0)
 			{
 				DrivingAction = DrivingAction.Accelerate;

@@ -49,8 +49,8 @@
     },
     "Cycles": [
       "MeasuredSpeedGear_LongHaul.vdri",
-      "MeasuredSpeedGear_LongHaulNoGrad.vdri",
-      "UrbanDeliveryNoGrad_Time_Gear.vdri"
+      "MeasuredSpeedGear_RegionalDelivery.vdri",
+      "MeasuredSpeedGear_UrbanDelivery.vdri"
     ]
   }
 }

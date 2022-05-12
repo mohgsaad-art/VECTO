@@ -48,8 +48,9 @@
       "OverSpeed": 2.5
     },
     "Cycles": [
-      "MeasuredSpeedGear_LongHaulNoGrad.vdri",
-	  "MeasuredSpeedGear_UrbanDeliveryNoGrad.vdri"
+      "MeasuredSpeedGear_LongHaul.vdri",
+	  "MeasuredSpeedGear_RegionalDelivery.vdri",
+	  "MeasuredSpeedGear_UrbanDelivery.vdri"
     ]
   }
 }
