@@ -66,10 +66,12 @@
 		<VectoXMLExamples Include="$(SolutionDir)VectoCore\VectoCoreTest\TestData\XML\XMLReaderDeclaration\*-sample.xml"/>
 		<UserManual Include="$(SolutionDir)Documentation\User Manual\help.html"/>
 		<UserManual Include="$(SolutionDir)Documentation\VectoHashingTool\HashingToolHelp.html"/>
-		<UserManual Include="$(SolutionDir)Documentation\XML\*.png"/>
-		<UserManual Include="$(SolutionDir)Documentation\XML\VectoParameterDocumentation.html"/>
 		<UserManual Include="$(SolutionDir)Documentation\User Manual Source\JIRA Quick Start Guide.pdf"/>
 		<UserManual Include="$(SolutionDir)Documentation\Cdv_Generator_VECTO3.2.xlsx"/>
+		<XMLParamDoc Include="$(SolutionDir)Documentation\XML\*.png"/>
+		<XMLParamDoc Include="$(SolutionDir)Documentation\XML\VectoParameterDocumentation.html"/>
+		<XMLParamDoc Include="$(SolutionDir)Documentation\XML\data.js"/>
+		<XMLParamDocStyle Include="$(SolutionDir)Documentation\XML\CSS\styles.css"/>
 		<ReleaseNotes Include="$(SolutionDir)Documentation\User Manual Source\Release Notes Vecto3.x.pdf"/>
 		
 		<HashingTool Include="$(SolutionDir)HashingTool\bin\Release\HashingTool.exe"/>
@@ -88,6 +90,8 @@
 	<Copy SourceFiles="@(VectoXMLExamples)" DestinationFolder="$(OutputPath)\XML\Examples" />
 	<Copy SourceFiles="@(VectoXSD)" DestinationFolder="$(OutputPath)\XML\XSD" />
 	<Copy SourceFiles="@(UserManual)" DestinationFolder="$(OutputPath)\User Manual" />
+	<Copy SourceFiles="@(XMLParamDoc)" DestinationFolder="$(OutputPath)\User Manual" />
+	<Copy SourceFiles="@(XMLParamDocStyle)" DestinationFolder="$(OutputPath)\User Manual\CSS" />
 	<Copy SourceFiles="@(ReleaseNotes)" DestinationFiles="$(OutputPath)\User Manual\Release Notes.pdf" />
 	<Copy SourceFiles="@(VectoConfigurationSample)" DestinationFolder="$(OutputPath)"/>
 	<Copy SourceFiles="$(SolutionDir)\Documentation\User Manual Source\README for Mission Profiles Directory.txt" DestinationFiles="$(OutputPath)\Mission Profiles\!! README !!.TXT"/>
