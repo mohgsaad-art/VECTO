@@ -1825,8 +1825,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			}
 			if (allowEmergencyDownshift && tmpBest != null && !tmpBest.ICEOff) {
 				var nextGear = GearList.Predecessor(gear);
-				var emOffEntry = EvaluateConfigsForGear(
-					absTime, dt, outTorque, outAngularVelocity, nextGear, allowICEOff, responses, emPos, dryRun);
+				if (nextGear != null) {
+					var emOffEntry = EvaluateConfigsForGear(
+						absTime, dt, outTorque, outAngularVelocity, nextGear, allowICEOff, responses, emPos, dryRun);
+                }
 			}
 
 			return responses;
