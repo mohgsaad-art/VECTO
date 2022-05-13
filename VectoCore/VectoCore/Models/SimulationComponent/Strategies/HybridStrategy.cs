@@ -707,7 +707,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				if ((DataBus.DriverInfo is MeasuredSpeedDrivingCycle) && (DataBus.DriverInfo.DrivingAction == DrivingAction.Accelerate)) {
 					MeasuredSpeedDrivingCycle cycle = DataBus.DriverInfo as MeasuredSpeedDrivingCycle;
 					cycle.DrivingAction = DrivingAction.Roll;
-					cycle.KeepRollAction = true;
 				}
 			}
 

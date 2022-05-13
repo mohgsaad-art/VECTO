@@ -259,9 +259,25 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			else if (RunData.JobType == VectoSimulationJobType.IEPC_E) {
 				DetermineDriverActionForBEV(absTime);
             }
+			else if (RunData.JobType == VectoSimulationJobType.ParallelHybridVehicle) {
+				DetermineDriverActionForPHEV(absTime);
+			}
 			else {
 				DetermineDriverActionForOther();
             }	
+		}
+		
+        private void DetermineDriverActionForPHEV(Second absTime)
+        { 
+			if (DriverBehavior == DrivingBehavior.Halted) {
+				DrivingAction = DrivingAction.Halt;
+			}
+			else if (DriverBehavior == DrivingBehavior.Braking) {
+				DrivingAction = DrivingAction.Brake;
+			} 
+			else if (DriverBehavior == DrivingBehavior.Driving) {
+				DrivingAction = !DataBus.GearboxInfo.GearEngaged(absTime) ? DrivingAction.Roll : DrivingAction.Accelerate;
+            }
 		}
 
         private void DetermineDriverActionForBEV(Second absTime)
