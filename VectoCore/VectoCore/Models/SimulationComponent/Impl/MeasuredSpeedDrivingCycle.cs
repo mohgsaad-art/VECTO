@@ -269,6 +269,16 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		
         private void DetermineDriverActionForPHEV(Second absTime)
         { 
+			//Set DriverBehavior
+			DriverBehavior = (DriverAcceleration < 0) && (DrivingAction != DrivingAction.Roll)
+				? DriverBehavior = DrivingBehavior.Braking
+				: DriverBehavior = DrivingBehavior.Driving;
+			
+			if (DataBus.VehicleInfo.VehicleStopped && DriverAcceleration.IsEqual(0)) {
+				DriverBehavior = DrivingBehavior.Halted;
+			}
+
+			//Set DrivingAction
 			if (DriverBehavior == DrivingBehavior.Halted) {
 				DrivingAction = DrivingAction.Halt;
 			}
