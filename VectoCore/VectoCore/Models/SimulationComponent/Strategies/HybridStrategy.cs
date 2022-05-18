@@ -635,6 +635,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				return tmp;
 			}
 
+			SetDrivingActionToRoll();
 
 			var eval = new List<HybridResultEntry>();
 
@@ -713,9 +714,40 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			DebugData.Add("AHS.R", new { DataBus.DriverInfo.DrivingAction, Evaluations = eval, 
 				Best = best, RetVal = retVal, DryRun = dryRun });
 			return retVal;
+        }
+
+        protected void SetDrivingActionToRoll()
+        { 
+			if (!(DataBus.DriverInfo is MeasuredSpeedDrivingCycle) || (DataBus.DriverInfo.DrivingAction != DrivingAction.Accelerate)) {
+				return;
+			}
+			
+			var currSpeed = DataBus.VehicleInfo.VehicleSpeed;
+			
+			var ls = DataBus.DrivingCycleInfo.CycleData.LeftSample;
+			var rs = DataBus.DrivingCycleInfo.CycleData.RightSample;
+			var deltaT = rs.Time - DataBus.AbsTime;
+
+			var interruptionSpeed = VelocityDropData.Interpolate(currSpeed, DataBus.DrivingCycleInfo.RoadGradient ?? 0.SI<Radian>());
+			var nextSpeed = interruptionSpeed;
+
+			if (ModelData.GearboxData.TractionInterruption > deltaT) {
+				//Linear interpolation: currSpeed, interruptionSpeed
+				//x0: DataBus.AbsTime, y0: currSpeed, x1: interruptionTime, y1: interruptionSpeed, x: rs.Time
+				var interruptionTime = DataBus.AbsTime + ModelData.GearboxData.TractionInterruption;
+				nextSpeed = ( ( currSpeed * (interruptionTime - rs.Time) ) + (interruptionSpeed * deltaT) ) / (interruptionTime - DataBus.AbsTime);
+            }
+
+			var cycleDeltaV = rs.VehicleTargetSpeed - ls.VehicleTargetSpeed;  // or currSpeed instead of ls?
+			var realDeltaV = nextSpeed - currSpeed;
+			
+			if (cycleDeltaV.IsEqual(realDeltaV, 1e-01.SI<MeterPerSecond>())) {
+				MeasuredSpeedDrivingCycle cycle = DataBus.DriverInfo as MeasuredSpeedDrivingCycle;
+				cycle.DrivingAction = DrivingAction.Roll;
+            }
 		}
 
-		public IResponse AmendResponse(IResponse response, Second absTime, Second dt, NewtonMeter outTorque,
+        public IResponse AmendResponse(IResponse response, Second absTime, Second dt, NewtonMeter outTorque,
 			PerSecond outAngularVelocity, bool dryRun)
 		{
 			if (response is ResponseSuccess) {
@@ -1886,6 +1918,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 			IterateEMTorque(
 				absTime, dt, outTorque, outAngularVelocity, nextGear, allowICEOff, emOffEntry.Response, emTqReq, emPos, responses, dryRun);
+
 			return emOffEntry;
 		}
 
