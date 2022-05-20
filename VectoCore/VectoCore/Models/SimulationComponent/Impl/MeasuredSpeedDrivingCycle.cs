@@ -269,7 +269,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		
         private void DetermineDriverActionForPHEV(Second absTime)
         { 
-			//Set DriverBehavior
+			// This code is necessary for vehicles with ATGearbox because VelocitySpeedGearshiftPreprocessor does not support ATGearbox
+			// (which is used in AbstractHybridStrategy.DetermineDriverAction).
+
+			// Set DriverBehavior
 			DriverBehavior = (DriverAcceleration < 0) && (DrivingAction != DrivingAction.Roll)
 				? DriverBehavior = DrivingBehavior.Braking
 				: DriverBehavior = DrivingBehavior.Driving;
@@ -278,7 +281,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				DriverBehavior = DrivingBehavior.Halted;
 			}
 
-			//Set DrivingAction
+			// Set DrivingAction
 			if (DriverBehavior == DrivingBehavior.Halted) {
 				DrivingAction = DrivingAction.Halt;
 			}
@@ -286,6 +289,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				DrivingAction = DrivingAction.Brake;
 			} 
 			else if (DriverBehavior == DrivingBehavior.Driving) {
+				DrivingAction = !DataBus.GearboxInfo.GearEngaged(absTime) ? DrivingAction.Roll : DrivingAction.Accelerate;
+            }
+			else if (DriverBehavior == DrivingBehavior.Accelerating) {
 				DrivingAction = !DataBus.GearboxInfo.GearEngaged(absTime) ? DrivingAction.Roll : DrivingAction.Accelerate;
             }
 		}

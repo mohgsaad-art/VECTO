@@ -635,7 +635,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				return tmp;
 			}
 
-			SetDrivingActionToRoll();
+			DetermineDriverAction();
 
 			var eval = new List<HybridResultEntry>();
 
@@ -717,9 +717,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			return retVal;
         }
 
-        protected void SetDrivingActionToRoll()
+        protected void DetermineDriverAction()
         { 
-			if (!(DataBus.DriverInfo is MeasuredSpeedDrivingCycle)) {
+			if (!(DataBus.DriverInfo is MeasuredSpeedDrivingCycle) || !VelocityDropData.Valid) {
 				return;
 			}
 			
@@ -738,27 +738,26 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				nextSpeed = ( ( currSpeed * (interruptionTime - rs.Time) ) + (interruptionSpeed * deltaT) ) / (interruptionTime - DataBus.AbsTime);
             }
 			
-			var tolerance = 0.001.SI<MeterPerSecond>();
+			var tolerance = (((currSpeed + nextSpeed) / 2) * 0.001).Abs();
 			MeasuredSpeedDrivingCycle cycle = DataBus.DriverInfo as MeasuredSpeedDrivingCycle;
 
 			if (rs.VehicleTargetSpeed.IsEqual(nextSpeed, tolerance)) {
-				cycle.DrivingAction = DrivingAction.Roll;
-				cycle.DriverBehavior = DrivingBehavior.Driving;
+				var mustHalt = (DataBus.VehicleInfo.VehicleStopped && currSpeed.IsEqual(rs.VehicleTargetSpeed));
+
+				cycle.DrivingAction =  mustHalt ? DrivingAction.Halt : DrivingAction.Roll;
+				cycle.DriverBehavior = mustHalt ? DrivingBehavior.Halted : DrivingBehavior.Driving;
             }
 			else if (rs.VehicleTargetSpeed.IsGreater(nextSpeed, tolerance)) {
-				cycle.DrivingAction = DataBus.GearboxInfo.GearEngaged(DataBus.AbsTime) ? DrivingAction.Accelerate : DrivingAction.Roll;
-				cycle.DriverBehavior = DrivingBehavior.Driving;
+				var mustAccelerate = DataBus.GearboxInfo.GearEngaged(DataBus.AbsTime);
+
+				cycle.DrivingAction = mustAccelerate ? DrivingAction.Accelerate : DrivingAction.Roll;
+				cycle.DriverBehavior = mustAccelerate ? DrivingBehavior.Accelerating : DrivingBehavior.Driving;
             }
 			else if (rs.VehicleTargetSpeed.IsSmaller(nextSpeed, tolerance)) {
-				if (cycle.DrivingAction != DrivingAction.Roll) {
-					cycle.DrivingAction = DrivingAction.Brake;
-					cycle.DriverBehavior = DrivingBehavior.Braking;
-                }
-            }
+				var mustBrake = (cycle.DrivingAction != DrivingAction.Roll);
 
-			if (DataBus.VehicleInfo.VehicleStopped && rs.VehicleTargetSpeed.IsEqual(currSpeed, tolerance)) {
-				cycle.DriverBehavior = DrivingBehavior.Halted;
-				cycle.DrivingAction = DrivingAction.Halt;
+				cycle.DrivingAction = mustBrake ? DrivingAction.Brake : DrivingAction.Roll;
+				cycle.DriverBehavior = mustBrake ? DrivingBehavior.Braking : DrivingBehavior.Driving;
             }
 		}
 
