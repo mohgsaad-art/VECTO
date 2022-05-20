@@ -388,6 +388,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 
 		public virtual Watt MaxNetPower2 { get { return null; } }
 
+		public int? NumSteeredAxles => null;
+
 		IVehicleComponentsDeclaration IVehicleDeclarationInputData.Components
 		{
 			get { return this; }

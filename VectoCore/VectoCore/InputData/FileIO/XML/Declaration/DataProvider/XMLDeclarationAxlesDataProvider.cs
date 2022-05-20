@@ -30,6 +30,7 @@
 */
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using TUGraz.VectoCommon.Exceptions;
@@ -48,7 +49,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		public const string XSD_TYPE = "AxleWheelsDataDeclarationType";
 
-		public static readonly string QUALIFIED_XSD_TYPE = XMLHelper.CombineNamespace(NAMESPACE_URI.NamespaceName, XSD_TYPE);
+		public static readonly string QUALIFIED_XSD_TYPE =
+			XMLHelper.CombineNamespace(NAMESPACE_URI.NamespaceName, XSD_TYPE);
 
 		protected IAxleDeclarationInputData[] _axles;
 
@@ -67,7 +69,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		public virtual IList<IAxleDeclarationInputData> AxlesDeclaration
 		{
-			get {
+			get
+			{
 				if (_axles != null) {
 					return _axles;
 				}
@@ -83,6 +86,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 					if (axleNumber < 1 || axleNumber > _axles.Length) {
 						throw new VectoException("Axle #{0} exceeds axle count", axleNumber);
 					}
+
 					if (_axles[axleNumber - 1] != null) {
 						throw new VectoException("Axle #{0} defined multiple times!", axleNumber);
 					}
@@ -92,6 +96,11 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 				return _axles;
 			}
+		}
+
+		public int? NumSteeredAxles
+		{
+			get { return AxlesDeclaration.Count(x => x.Steered); }
 		}
 
 		#endregion

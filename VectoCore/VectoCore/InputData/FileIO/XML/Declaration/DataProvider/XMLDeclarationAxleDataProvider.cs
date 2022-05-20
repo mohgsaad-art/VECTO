@@ -52,6 +52,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		protected ITyreDeclarationInputData _tyre;
 		protected bool? _twinTyre;
 		protected AxleType? _axleType;
+		private bool? _steered;
 
 		public XMLDeclarationAxleDataProviderV10(IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile)
 			: base(componentNode, sourceFile)
@@ -79,6 +80,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		{
 			get { return _tyre ?? (_tyre = Reader.Tyre); }
 		}
+
+		public bool Steered =>
+			_steered ?? (_steered = XmlConvert.ToBoolean(GetString(XMLNames.AxleWheels_Axles_Axle_Steered))).Value;
 
 		#endregion
 

@@ -253,7 +253,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 				AxleGearData = _axlegearData,
 				AngledriveData = _angledriveData,
 				Aux = _dao.CreateAuxiliaryData(vehicle.Components.AuxiliaryInputData, mission.MissionType,
-					_segment.VehicleClass),
+					_segment.VehicleClass, vehicle.Components.AxleWheels.NumSteeredAxles),
 				Cycle = new DrivingCycleProxy(cycle, mission.MissionType.ToString()),
 				Retarder = _retarderData,
 				DriverData = _driverdata,
