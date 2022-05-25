@@ -30,6 +30,7 @@
 */
 
 using System.Linq;
+using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
@@ -67,9 +68,24 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			gearRatios[0] = 1;
 			var axleRatio = RunData.AxleGearData.AxleGear.Ratio;
 
-			foreach (var entry in Data.Entries) {
-				entry.WheelAngularVelocity = entry.AngularVelocity / (axleRatio * gearRatios[entry.Gear]);
-				entry.Torque = entry.PWheel / entry.WheelAngularVelocity;
+			foreach (var entry in Data.Entries)
+			{
+				if (RunData.JobType == VectoCommon.InputData.VectoSimulationJobType.BatteryElectricVehicle)
+				{
+					entry.WheelAngularVelocity = entry.AngularVelocity / (axleRatio * gearRatios[entry.Gear] * 2); // change two for actual ratio value
+				}
+				else
+				{
+					entry.WheelAngularVelocity = entry.AngularVelocity / (axleRatio * gearRatios[entry.Gear]);
+				}
+				if (entry.WheelAngularVelocity.Value() == 0)
+				{
+					entry.Torque = NewtonMeter.Create(0);
+				}
+				else
+				{
+					entry.Torque = entry.PWheel / entry.WheelAngularVelocity;
+				}
 			}
 		}
 
@@ -92,6 +108,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				return new ResponseCycleFinished(this);
 			}
 
+			SetDriverAction();
 			// interval exceeded
 			if (CycleIterator.RightSample != null && (absTime + dt).IsGreater(CycleIterator.RightSample.Time)) {
 				return new ResponseFailTimeInterval(this) {
@@ -108,7 +125,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			container[ModalResultField.P_wheel_in] = CycleIterator.LeftSample.PWheel;
 			base.DoWriteModalResults(time, simulationInterval, container);
 		}
-
 		#region IDriverInfo
 
 		public MeterPerSecond VehicleSpeed { get; private set; }
@@ -142,17 +158,47 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		}
 
 		public MeterPerSecond MaxVehicleSpeed => null;
-
-		/// <summary>
-		/// Always Driving.
-		/// </summary>
-		public DrivingBehavior DriverBehavior => DrivingBehavior.Driving;
-
-		public DrivingAction DrivingAction => DrivingAction.Accelerate;
-
 		public MeterPerSquareSecond DriverAcceleration => 0.SI<MeterPerSquareSecond>();
 		public PCCStates PCCState => PCCStates.OutsideSegment;
 		public MeterPerSecond NextBrakeTriggerSpeed => 0.SI<MeterPerSecond>();
+		public DrivingBehavior DriverBehavior { get; internal set; }
+		public DrivingAction DrivingAction { get; private set; }
+
+		private PerSquareSecond GetCurrentAcceleration()
+		{
+			var targetSpeed = CycleIterator.RightSample.AngularVelocity;
+			if (targetSpeed.Value().IsEqual(0, 0.5))
+			{
+				targetSpeed = PerSecond.Create(0);
+			}
+			var deltaV = targetSpeed - CycleIterator.LeftSample.AngularVelocity;
+			var deltaT = CycleIterator.RightSample.Time - AbsTime;
+			if (deltaT.IsSmaller(0))
+			{
+				throw new VectoSimulationException("deltaT is smaller than zero");
+			}
+
+			return (deltaV / deltaT);
+		}
+		private void SetDriverAction()
+		{
+			var acceleration = GetCurrentAcceleration();
+			if (VehicleStopped)
+			{
+				DrivingAction = DrivingAction.Halt;
+				DriverBehavior = DrivingBehavior.Halted;
+			}
+			else if (acceleration.Value() < 0)
+			{
+				DrivingAction = DrivingAction.Brake;
+				DriverBehavior = DrivingBehavior.Braking;
+			}
+			else
+			{
+				DrivingAction = DrivingAction.Accelerate;
+				DriverBehavior = DrivingBehavior.Accelerating;
+			}
+		}
 
 		#endregion
 	}

@@ -229,6 +229,7 @@ namespace TUGraz.VectoCore.Tests.Integration.RoadSweepers
 			};
 
 			var inputData = new EngineeringJobInputData() {
+				JobType = job.JobInputData.JobType,
 				JobName = job.JobInputData.JobName,
 				Vehicle = job.JobInputData.Vehicle,
 				DriverInputData = job.DriverInputData,
@@ -272,12 +273,10 @@ namespace TUGraz.VectoCore.Tests.Integration.RoadSweepers
 
 			#region Implementation of IDriverDeclarationInputData
 
-			
-
 			public IVehicleEngineeringInputData Vehicle { get; set; }
 			public IHybridStrategyParameters HybridStrategyParameters { get; }
 			public IList<ICycleData> Cycles { get; set; }
-			public VectoSimulationJobType JobType => VectoSimulationJobType.ConventionalVehicle;
+			public VectoSimulationJobType JobType { get; set; }
 			public bool EngineOnlyMode => false;
 			public IEngineEngineeringInputData EngineOnly => null;
 			public TableData PTOCycleWhileDrive { get; set; }

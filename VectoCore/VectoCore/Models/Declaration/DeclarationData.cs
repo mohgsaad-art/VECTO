@@ -105,8 +105,6 @@ namespace TUGraz.VectoCore.Models.Declaration
 		public static readonly ConcurrentDictionary<MissionType, DrivingCycleData> CyclesCache =
 			new ConcurrentDictionary<MissionType, DrivingCycleData>();
 
-
-
 		/// <summary>
 		/// Formula for calculating the payload for a given gross vehicle weight.
 		/// (so called "pc-formula", Whitebook Apr 2016, Part 1, p.187)

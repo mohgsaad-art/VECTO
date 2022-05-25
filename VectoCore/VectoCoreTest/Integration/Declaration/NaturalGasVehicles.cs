@@ -54,7 +54,7 @@ using TUGraz.VectoCore.Utils;
 namespace TUGraz.VectoCore.Tests.Integration.Declaration
 {
 	[TestFixture()]
-	[Parallelizable(ParallelScope.All)]
+	[Parallelizable(ParallelScope.Fixtures)]
 	public class NaturalGasVehicles
 	{
 		const string Class5NG = @"Testdata\Integration\DeclarationMode\Class5_NG\Tractor_4x2_vehicle-class-5_EURO6_2018.xml";

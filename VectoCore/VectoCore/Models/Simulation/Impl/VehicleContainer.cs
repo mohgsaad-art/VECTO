@@ -204,7 +204,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		public virtual void CommitSimulationStep(Second time, Second simulationInterval)
 		{
 			Log.Info("VehicleContainer committing simulation. time: {0}, dist: {1}, speed: {2}", time,
-				MileageCounter.Distance, VehicleInfo?.VehicleSpeed ?? 0.KMPHtoMeterPerSecond());
+				MileageCounter?.Distance, VehicleInfo?.VehicleSpeed ?? 0.KMPHtoMeterPerSecond());
 
 
 			foreach (var component in _components) {
