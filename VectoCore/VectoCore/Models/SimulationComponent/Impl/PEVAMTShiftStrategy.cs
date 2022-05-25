@@ -546,7 +546,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		protected double GetFCRating(ResponseDryRun response)//PerSecond engineSpeed, NewtonMeter tqCurrent)
 		{
 			var currentGear = response.Gearbox.Gear;
-
+			if (currentGear.Gear == 0)
+			{
+				return 0;
+			}
+			// there's no power if the gear is 0.
 			var maxGenTorque = VectoMath.Min(GearboxModelData.Gears[currentGear.Gear].MaxTorque, response.ElectricMotor.MaxRecuperationTorque);
 			var maxDriveTorque = GearboxModelData.Gears[currentGear.Gear].MaxTorque != null
 				? VectoMath.Max(-GearboxModelData.Gears[currentGear.Gear].MaxTorque, response.ElectricMotor.MaxDriveTorque)

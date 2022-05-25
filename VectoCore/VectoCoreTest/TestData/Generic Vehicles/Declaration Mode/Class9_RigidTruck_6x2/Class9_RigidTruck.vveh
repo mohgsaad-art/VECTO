@@ -52,7 +52,8 @@
           "TwinTyres": true,
           "RRCISO": 0.0055,
           "FzISO": 33350.0,
-          "Type": "VehicleDriven"
+          "Type": "VehicleDriven",
+		  "Steered": true
         },
         {
           "Inertia": 14.9,

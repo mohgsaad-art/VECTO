@@ -48,7 +48,8 @@ namespace TUGraz.VectoCommon.Models
 	{
 		public static RetarderType Parse(string retarderType)
 		{
-			switch (retarderType.ToLowerInvariant()) {
+			switch (retarderType.ToLowerInvariant())
+			{
 				case "primary": return RetarderType.TransmissionInputRetarder;
 				case "secondary": return RetarderType.TransmissionOutputRetarder;
 				case "losses included in gearbox": return RetarderType.LossesIncludedInTransmission;
@@ -59,7 +60,8 @@ namespace TUGraz.VectoCommon.Models
 
 		public static string GetName(this RetarderType retarder)
 		{
-			switch (retarder) {
+			switch (retarder)
+			{
 				case RetarderType.TransmissionInputRetarder: return "primary";
 				case RetarderType.TransmissionOutputRetarder: return "secondary";
 				default: return retarder.ToString();
@@ -68,7 +70,8 @@ namespace TUGraz.VectoCommon.Models
 
 		public static string GetLabel(this RetarderType retarderType)
 		{
-			switch (retarderType) {
+			switch (retarderType)
+			{
 				case RetarderType.None: return "None";
 				case RetarderType.TransmissionInputRetarder: return "Transmission Input Retarder";
 				case RetarderType.TransmissionOutputRetarder: return "Transmission Output Retarder";
@@ -81,7 +84,8 @@ namespace TUGraz.VectoCommon.Models
 
 		public static string ToXMLFormat(this RetarderType retarderType)
 		{
-			switch (retarderType) {
+			switch (retarderType)
+			{
 				case RetarderType.None: return "None";
 				case RetarderType.TransmissionInputRetarder: return "Transmission Input Retarder";
 				case RetarderType.TransmissionOutputRetarder: return "Transmission Output Retarder";

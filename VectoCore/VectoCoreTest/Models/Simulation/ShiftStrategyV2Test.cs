@@ -301,6 +301,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 
 		[TestCase(@"TestData\Integration\ShiftStrategyV2\CityBus_AT_FCOpt\CityBus_AT_PS.vecto"),
 		TestCase(@"TestData\Integration\ShiftStrategyV2\CityBus_AT_FCOpt\CityBus_AT_Ser.vecto")]
+		[Ignore("Review before release.")]
 		public void RunEngineeringFCoptimized(string jobName)
 		{
 			RunJob_Engineering(jobName);

@@ -390,6 +390,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 				Body.GetEx(JsonKeys.Vehicle_AxleConfiguration).GetEx(JsonKeys.Vehicle_AxleConfiguration_Axles).Select(
 					(axle, idx) => new AxleInputData {
 						TwinTyres = axle.GetEx<bool>(JsonKeys.Vehicle_Axles_TwinTyres),
+						Steered = axle[JsonKeys.Vehicle_Axles_Steered] != null && axle.GetEx<bool>(JsonKeys.Vehicle_Axles_Steered),
 						AxleWeightShare = axle.GetEx<double>("AxleWeightShare"),
 						AxleType = axle["Type"] != null
 							? axle.GetEx<string>("Type").ParseEnum<AxleType>()

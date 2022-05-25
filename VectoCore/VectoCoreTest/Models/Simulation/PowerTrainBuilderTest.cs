@@ -56,8 +56,10 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 		public const string JobFileDeclNoAngular = @"TestData\Jobs\40t_Long_Haul_Truck_NoAng.vecto";
 		public const string JobFileDeclAngEfficiency = @"TestData\Jobs\40t_Long_Haul_Truck with AngleEfficiency.vecto";
 
+		public const string JobFileBEVE2 = @"TestData\BatteryElectric\GenericVehicleB2\BEV_ENG.vecto";
+		public const string JobFileBEVE3 = @"TestData\BatteryElectric\GenericVehicleB3\BEV_ENG.vecto";
+		public const string JobFileBEVE4 = @"TestData\BatteryElectric\GenericVehicleB4\BEV_ENG.vecto";
 
-		
 		[OneTimeSetUp]
 		public void RunBeforeAnyTests()
 		{
@@ -118,6 +120,28 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			} else {
 				AssertHelper.Exception<VectoException>(() => { reader.NextRun().ToList(); });
 			}
+		}
+
+		[TestCase(JobFileBEVE2),
+		TestCase(JobFileBEVE3),
+		TestCase(JobFileBEVE4)]
+		public void BuildFullPowerTrain_Engineering_BEV(string inputFile)
+		{
+			var dataProvider = JSONInputDataFactory.ReadJsonJob(inputFile);
+			var engineeringProvider = dataProvider as IEngineeringInputDataProvider;
+			if (engineeringProvider == null)
+			{
+				throw new VectoException("Failed to cast to Engineering InputDataProvider");
+			}
+			var reader = new EngineeringModeVectoRunDataFactory(engineeringProvider);
+			var runData = reader.NextRun().First();
+
+			var writer = new MockModalDataContainer();
+			var builder = new PowertrainBuilder(writer);
+
+			var powerTrain = builder.Build(runData) as VehicleContainer;
+
+			Assert.NotNull(powerTrain);
 		}
 	}
 }

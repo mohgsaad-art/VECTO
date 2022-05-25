@@ -56,10 +56,12 @@ namespace TUGraz.VectoCore.Tests.Integration.VTP
 			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
 		}
 
-		[TestCase(@"TestData\Integration\VTPMode\GenericVehicle\class_5_generic vehicle.vecto"),
-		 TestCase(@"TestData\Integration\VTPMode\GenericVehicle\class_5_generic vehicle_noGear.vecto"),
+		[
+			TestCase(@"TestData\Integration\VTPMode\GenericVehicle\class_5_generic vehicle.vecto"),
+			TestCase(@"TestData\Integration\VTPMode\GenericVehicle\class_5_generic vehicle_noGear.vecto")
 		 //TestCase(@"TestData\Integration\VTPMode\HeavyBus\VTP_PrimaryBus_ENG.vecto", TestName = "RunVTPHeavyPrimaryBus Engineering")
 		]
+		[Ignore("Fix this when testing VTP mode.")]
 		public void RunVTP(string jobFile)
 		{
 			var fileWriter = new FileOutputWriter(jobFile);
@@ -87,11 +89,13 @@ namespace TUGraz.VectoCore.Tests.Integration.VTP
 
 		[Category("LongRunning")]
 		[Category("Integration")]
-		[TestCase(@"TestData\Integration\VTPMode\GenericVehicle\class_5_generic vehicle_DECL.vecto", 45.6, 0.8972, TestName = "RunVTPHeavyLorry_Declaration"),
-		TestCase(@"TestData\Integration\VTPMode\MediumLorry\VTP_MediumLorry.vecto", 400.0, 1.06, TestName = "RunVTPMediumLorry_Declaration"),
-		TestCase(@"TestData\Integration\VTPMode\DualFuelVehicle\VTP_DualFuel.vecto", 43.5, 1.0107, TestName = "RunVTPDualFuel_Declaration"),
-		TestCase(@"TestData\Integration\VTPMode\HeavyBus\VTP_PrimaryBus.vecto", 14.2, 1.1413, TestName = "RunVTPHeavyPrimaryBus")	
-			]
+		[
+			TestCase(@"TestData\Integration\VTPMode\GenericVehicle\class_5_generic vehicle_DECL.vecto", 45.6, 0.8972, TestName = "RunVTPHeavyLorry_Declaration"),
+			TestCase(@"TestData\Integration\VTPMode\MediumLorry\VTP_MediumLorry.vecto", 400.0, 1.06, TestName = "RunVTPMediumLorry_Declaration"),
+			TestCase(@"TestData\Integration\VTPMode\DualFuelVehicle\VTP_DualFuel.vecto", 43.5, 1.0107, TestName = "RunVTPDualFuel_Declaration"),
+			TestCase(@"TestData\Integration\VTPMode\HeavyBus\VTP_PrimaryBus.vecto", 14.2, 1.1413, TestName = "RunVTPHeavyPrimaryBus")
+		]
+		[Ignore("Fix this when testing VTP mode.")]
 		public void RunVTP_Declaration(string jobFile, double expectedDeclaredCO2, double expectedCVTP)
 		{
 			var fileWriter = new FileOutputWriter(jobFile);
@@ -130,6 +134,7 @@ namespace TUGraz.VectoCore.Tests.Integration.VTP
 		[Category("LongRunning")]
 		[Category("Integration")]
 		[TestCase(@"TestData\Integration\VTPMode\GenericVehicle_CNG\class_5_generic vehicle_DECL.vecto")]
+		[Ignore("Fix this when testing VTP mode.")]
 		public void RunVTP_Declaration_NCVCorrection_CNG(string jobFile)
 		{
 			var fileWriter = new FileOutputWriter(jobFile);
@@ -160,12 +165,11 @@ namespace TUGraz.VectoCore.Tests.Integration.VTP
 			Assert.AreEqual(0.9549, vtpFactor);
 		}
 
-
-
 		[Category("LongRunning")]
 		[Category("Integration")]
 		[TestCase(@"TestData\Integration\VTPMode\GenericVehicle\VTP_AT-gbx.vecto")]
 		[TestCase(@"TestData\Integration\VTPMode\GenericVehicle\VTP_AT-gbx_2TC.vecto")]
+		[Ignore("Fix this when testing VTP mode.")]
 		public void RunVTPWithAT(string jobFile)
 		{
 			var fileWriter = new FileOutputWriter(jobFile);
@@ -190,8 +194,5 @@ namespace TUGraz.VectoCore.Tests.Integration.VTP
 
 			Assert.AreEqual(true, jobContainer.AllCompleted);
 		}
-
-		
-
 	}
 }

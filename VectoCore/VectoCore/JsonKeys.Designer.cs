@@ -952,6 +952,15 @@ namespace TUGraz.VectoCore {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Steered.
+        /// </summary>
+        internal static string Vehicle_Axles_Steered {
+            get {
+                return ResourceManager.GetString("Vehicle_Axles_Steered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to TwinTyres.
         /// </summary>
         internal static string Vehicle_Axles_TwinTyres {

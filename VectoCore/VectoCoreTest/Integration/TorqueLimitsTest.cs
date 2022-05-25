@@ -222,6 +222,7 @@ namespace TUGraz.VectoCore.Tests.Integration
 		}
 
 		[Category("LongRunning"), TestCase(GearboxSpeedLimitJobDecl)]
+		[Ignore("Too long, run only before release.")]
 		public void TestRunGbxSpeedLimitedSimulations(string file)
 		{
 			var fileWriter = new FileOutputWriter(file);

@@ -31,7 +31,9 @@
           "AxleWeightShare": 0.0,
           "TwinTyres": false,
           "RRCISO": 0.008343465,
-          "FzISO": 20800.0
+          "FzISO": 20800.0,
+		  "Steered": true
+		  
         },
         {
           "Inertia": 6.0,

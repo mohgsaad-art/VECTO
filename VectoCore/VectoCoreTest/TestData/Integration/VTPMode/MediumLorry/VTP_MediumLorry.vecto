@@ -8,7 +8,6 @@
   "Body": {
     "SavedInDeclMode": true,
     "DeclarationVehicle": "vecto_vehicle-medium_lorry_4x2.xml",
-    "ManufacturerRecord": "vecto_vehicle-medium_lorry_4x2.RSLT_MANUFACTURER.xml",
     "Mileage": 30000.0,
     "NCVTestFuel": 42.5,
     "FanPowerCoefficients": [

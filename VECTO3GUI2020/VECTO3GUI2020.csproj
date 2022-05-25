@@ -9,6 +9,7 @@
     <ApplicationIcon>Resources\Icons\Icon2.ico</ApplicationIcon>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
+    <PublishTrimmed >false</PublishTrimmed >
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <TargetFrameworks>net48;net6.0-windows</TargetFrameworks>
     <DefineConstants />

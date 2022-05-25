@@ -30,16 +30,7 @@
       "UnderSpeed": 5.0
     },
     "Cycles": [
-      "LongHaul",
-      "Coach",
-      "Construction",
-      "HeavyUrban",
-      "Interurban",
-      "MunicipalUtility",
-      "RegionalDelivery",
-      "Suburban",
-      "Urban",
-      "UrbanDelivery"
+      "LongHaul"
     ]
   }
 }

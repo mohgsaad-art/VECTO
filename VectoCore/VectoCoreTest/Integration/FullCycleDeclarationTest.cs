@@ -188,12 +188,8 @@ namespace TUGraz.VectoCore.Tests.Integration
 			factory.Validate = false;
 			var sumData = new SummaryDataContainer(fileWriter);
 			var jobContainer = new JobContainer(sumData);
+
 			jobContainer.AddRuns(factory);
-
-			//var i = 2;
-			//jobContainer.Runs[i].Run.Run();
-			//Assert.IsTrue(jobContainer.Runs[i].Run.FinishedWithoutErrors);
-
 			jobContainer.Execute();
 			jobContainer.WaitFinished();
 
