@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Xml;
 using System.Xml.Linq;
+using System.Xml.Schema;
+using Castle.Components.DictionaryAdapter.Xml;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Resources;
@@ -14,6 +18,7 @@ using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Utils;
 using VECTOTrailer.ViewModel.Interfaces;
+using XmlDocumentType = TUGraz.VectoCore.Utils.XmlDocumentType;
 
 
 namespace VECTOTrailer.Util.XML
@@ -35,9 +40,9 @@ namespace VECTOTrailer.Util.XML
 		private XNamespace _tyre;
 		private XNamespace _rootNamespace;
 
-
 		public XMLCompletedTrailer()
 		{
+
 			Init();
 		}
 
@@ -57,6 +62,7 @@ namespace VECTOTrailer.Util.XML
 			_di = "http://www.w3.org/2000/09/xmldsig#";
 			_rootNamespace = "urn:tugraz:ivt:VectoAPI:DeclarationJob";
 		}
+
 
 		public XDocument GenerateCompletedTrailerDocument(Dictionary<Component, object> inputData)
 		{
@@ -235,16 +241,26 @@ namespace VECTOTrailer.Util.XML
 
 			var tyre = new XElement(_v27 + XMLNames.AxleWheels_Axles_Axle_Tyre);
 			try {
+
 				var sourceXml = XDocument.Parse(axleXml.ToString(CultureInfo.InvariantCulture));
-				
-				
-				var nsDeclarations = sourceXml.Root.Attributes().Where(attr => attr.IsNamespaceDeclaration);
-				//tyre.Add(nsDeclarations);
-				
+				sourceXml.Validate(XMLValidator.GetXMLSchema(XmlDocumentType.DeclarationComponentData),
+					((sender, args) => throw new VectoException($"Invalid Tyre XML! \n {args.Message}")), true);
+
+
 				var tyreNode = sourceXml.Root.Elements().Single(e => e.Name.LocalName == XMLNames.AxleWheels_Axles_Axle_Tyre);
 				var tyreData = tyreNode.Elements().Single(e => e.Name.LocalName == XMLNames.ComponentDataWrapper);
-				tyreData.Name = _v27 + XMLNames.ComponentDataWrapper; //Data is in namespace v27
+				var dataType = tyreData.GetSchemaInfo().SchemaType.Name;
+				var defaultNamespace = tyreData.GetDefaultNamespace();
 				
+				//sourceXml.Validate(); // get tyredatadeclarationtype
+
+				
+
+
+				
+				tyreData.Name = _v27 + XMLNames.ComponentDataWrapper; //Data is in namespace v27
+				tyreData.SetAttributeValue(_xsi + "type", dataType);
+				tyreData.SetAttributeValue("xmlns", defaultNamespace);
 
 				var tyreSignature = tyreNode.Elements().Single(e => e.Name.LocalName == XMLNames.DI_Signature);
 				tyreSignature.Name = _v27 + XMLNames.DI_Signature; //Signature element is in namespace v27
