@@ -17,7 +17,6 @@ using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Utils;
-using TUGraz.VectoCommon.Utils.MatrixRecorder;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 {
@@ -723,26 +722,26 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				return;
 			}
 			
-			var currSpeed = DataBus.VehicleInfo.VehicleSpeed;
+			var currentSpeed = DataBus.VehicleInfo.VehicleSpeed;
 			
 			var rs = DataBus.DrivingCycleInfo.CycleData.RightSample;
 			var deltaT = rs.Time - DataBus.AbsTime;
 
-			var interruptionSpeed = VelocityDropData.Interpolate(currSpeed, DataBus.DrivingCycleInfo.RoadGradient ?? 0.SI<Radian>());
+			var interruptionSpeed = VelocityDropData.Interpolate(currentSpeed, DataBus.DrivingCycleInfo.RoadGradient ?? 0.SI<Radian>());
 			var nextSpeed = interruptionSpeed;
 
 			if (ModelData.GearboxData.TractionInterruption > deltaT) {
 				//Linear interpolation: currSpeed, interruptionSpeed
 				//x0: DataBus.AbsTime, y0: currSpeed, x1: interruptionTime, y1: interruptionSpeed, x: rs.Time
 				var interruptionTime = DataBus.AbsTime + ModelData.GearboxData.TractionInterruption;
-				nextSpeed = ( ( currSpeed * (interruptionTime - rs.Time) ) + (interruptionSpeed * deltaT) ) / (interruptionTime - DataBus.AbsTime);
+				nextSpeed = ( ( currentSpeed * (interruptionTime - rs.Time) ) + (interruptionSpeed * deltaT) ) / (interruptionTime - DataBus.AbsTime);
             }
 			
-			var tolerance = (((currSpeed + nextSpeed) / 2) * 0.001).Abs();
+			var tolerance = (((currentSpeed + nextSpeed) / 2) * 0.001).Abs();
 			MeasuredSpeedDrivingCycle cycle = DataBus.DriverInfo as MeasuredSpeedDrivingCycle;
 
 			if (rs.VehicleTargetSpeed.IsEqual(nextSpeed, tolerance)) {
-				var mustHalt = (DataBus.VehicleInfo.VehicleStopped && currSpeed.IsEqual(rs.VehicleTargetSpeed));
+				var mustHalt = (DataBus.VehicleInfo.VehicleStopped && currentSpeed.IsEqual(rs.VehicleTargetSpeed));
 
 				cycle.DrivingAction =  mustHalt ? DrivingAction.Halt : DrivingAction.Roll;
 				cycle.DriverBehavior = mustHalt ? DrivingBehavior.Halted : DrivingBehavior.Driving;
@@ -754,10 +753,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				cycle.DriverBehavior = mustAccelerate ? DrivingBehavior.Accelerating : DrivingBehavior.Driving;
             }
 			else if (rs.VehicleTargetSpeed.IsSmaller(nextSpeed, tolerance)) {
-				var mustBrake = (cycle.DrivingAction != DrivingAction.Roll);
-
-				cycle.DrivingAction = mustBrake ? DrivingAction.Brake : DrivingAction.Roll;
-				cycle.DriverBehavior = mustBrake ? DrivingBehavior.Braking : DrivingBehavior.Driving;
+				cycle.DrivingAction = DrivingAction.Brake;
+				cycle.DriverBehavior = DrivingBehavior.Braking;
             }
 		}
 

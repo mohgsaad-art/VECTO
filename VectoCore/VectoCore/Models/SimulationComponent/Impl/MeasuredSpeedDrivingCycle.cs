@@ -272,6 +272,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			// This code is necessary for vehicles with ATGearbox because VelocitySpeedGearshiftPreprocessor does not support ATGearbox
 			// (which is used in AbstractHybridStrategy.DetermineDriverAction).
 
+			if (!DataBus.GearboxInfo.GearboxType.AutomaticTransmission()) {
+				return;
+            }
+
 			// Set DriverBehavior
 			DriverBehavior = (DriverAcceleration < 0) && (DrivingAction != DrivingAction.Roll)
 				? DriverBehavior = DrivingBehavior.Braking
