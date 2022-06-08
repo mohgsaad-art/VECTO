@@ -30,6 +30,7 @@
 */
 
 using System;
+using System.Collections.Concurrent;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using TUGraz.VectoCommon.Utils;
@@ -402,6 +403,9 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 
 	public static class ModalResultFieldExtensionMethods
 	{
+		private static ConcurrentDictionary<ModalResultField, ModalResultFieldAttribute> _attributeDictionary =
+			new ConcurrentDictionary<ModalResultField, ModalResultFieldAttribute>();
+
 		public static string GetName(this ModalResultField field)
 		{
 			return GetAttribute(field).Name ?? field.ToString();
@@ -425,7 +429,14 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 
 		public static ModalResultFieldAttribute GetAttribute(this ModalResultField field)
 		{
-			return (ModalResultFieldAttribute)Attribute.GetCustomAttribute(ForValue(field), typeof(ModalResultFieldAttribute));
+			var attributeCached = _attributeDictionary.TryGetValue(field, out var attribute);
+			if (attributeCached) {
+				return attribute;
+			} else {
+				attribute = (ModalResultFieldAttribute)Attribute.GetCustomAttribute(ForValue(field), typeof(ModalResultFieldAttribute));
+				_attributeDictionary.TryAdd(field, attribute);
+			}
+			return attribute;
 		}
 
 		private static MemberInfo ForValue(ModalResultField field)
