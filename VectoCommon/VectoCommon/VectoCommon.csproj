@@ -31,4 +31,16 @@
       <LastGenOutput>XMLNames.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+    <PackageReference Include="MongoDB.Bson">
+      <Version>2.15.1</Version>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+    <PackageReference Include="MongoDB.Bson">
+      <Version>2.15.1</Version>
+    </PackageReference>
+  </ItemGroup>
 </Project>

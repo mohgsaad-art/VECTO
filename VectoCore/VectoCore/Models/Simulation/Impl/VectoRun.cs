@@ -38,7 +38,6 @@ using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Connector.Ports;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Utils;
-using TUGraz.VectoCommon.Utils.MatrixRecorder;
 
 namespace TUGraz.VectoCore.Models.Simulation.Impl
 {

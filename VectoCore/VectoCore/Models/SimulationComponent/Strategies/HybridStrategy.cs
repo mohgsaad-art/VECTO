@@ -579,7 +579,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				nextGear = Controller.ShiftStrategy.NextGear;
 			}
 
-			if (DataBus.DriverInfo.DrivingAction == DrivingAction.Accelerate && StrategyParameters.MaxPropulsionTorque?.GetVECTOValueOrDefault(nextGear) != null && DataBus.GearboxInfo.TCLocked) {
+			if (DataBus.DriverInfo.DrivingAction == DrivingAction.Accelerate && (nextGear != null) && StrategyParameters.MaxPropulsionTorque?.GetVECTOValueOrDefault(nextGear) != null && DataBus.GearboxInfo.TCLocked) {
 				
 				var emOff = new HybridStrategyResponse {
 					CombustionEngineOn = DataBus.EngineInfo.EngineOn, // AllowICEOff(absTime), 
@@ -1190,6 +1190,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 						firstEntry.Setting = tmp;
 						eval.Add(firstEntry);
 					}
+				}
+
+				if (response == null) {
+					var responseEmOff = ResponseEmOff;
+					eval.Add(responseEmOff);
+					return;
 				}
 
 				var deltaDragTqFirst = disengaged ?

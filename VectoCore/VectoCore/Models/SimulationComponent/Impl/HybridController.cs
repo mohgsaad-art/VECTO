@@ -180,7 +180,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				var gear = DataBus.GearboxInfo.Gear;
 				var maxSpeed = VectoMath.Min(DataBus.GearboxInfo.GetGearData(gear.Gear).MaxSpeed,
 					DataBus.EngineInfo.EngineN95hSpeed);
-				if (!dryRun && retVal is ResponseSuccess && DataBus.GearboxInfo.GearEngaged(absTime) && retVal.Gearbox.InputSpeed.IsGreater(maxSpeed)) {
+				if (!dryRun && retVal is ResponseSuccess && DataBus.GearboxInfo.GearEngaged(absTime) && ((retVal.Gearbox.InputSpeed != null) && retVal.Gearbox.InputSpeed.IsGreater(maxSpeed))) {
 					Strategy.AllowEmergencyShift = true;
 					retryCount++;
 					retry = true;

@@ -583,11 +583,11 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 			if (data.BatteryData != null)
 			{
-				if (data.BatteryData.InitialSoC < data.BatteryData.MinSOC)
+				if (data.BatteryData.InitialSoC < data.BatteryData.Batteries.Min(x => x.Item2.MinSOC))
 				{
 					throw new VectoException("Battery: Initial SoC has to be higher than min SoC");
 				}
-				var battery = new Battery(container, data.BatteryData);
+				var battery = new BatterySystem(container, data.BatteryData);
 				battery.Initialize(data.BatteryData.InitialSoC);
 				es.Connect(battery);
 			}
@@ -648,7 +648,9 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				.AddComponent(new AxleGear(container, data.AxleGearData))
 				.AddComponent(GetElectricMachine(PowertrainPosition.HybridP3, data.ElectricMachinesData, container, es, ctl))
 				.AddComponent(data.AngledriveData != null ? new Angledrive(container, data.AngledriveData) : null)
-				.AddComponent(gearbox, data.Retarder, container)
+				.AddComponent(GetRetarder(RetarderType.TransmissionOutputRetarder, data.Retarder, container))
+				.AddComponent(gearbox)
+				.AddComponent(GetRetarder(RetarderType.TransmissionInputRetarder, data.Retarder, container))
 				.AddComponent(GetElectricMachine(PowertrainPosition.HybridP2_5, data.ElectricMachinesData, container, es, ctl))
 				.AddComponent(GetElectricMachine(PowertrainPosition.HybridP2, data.ElectricMachinesData, container, es, ctl))
 				.AddComponent(clutch)
@@ -2102,6 +2104,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			switch (runData.GearboxData.Type) {
 				case GearboxType.AMT:
 					switch (runData.JobType) {
+						case VectoSimulationJobType.ParallelHybridVehicle:
 						case VectoSimulationJobType.ConventionalVehicle:
 						case VectoSimulationJobType.ParallelHybridVehicle:
 							runData.ShiftStrategy = AMTShiftStrategyOptimized.Name;
