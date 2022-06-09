@@ -268,7 +268,7 @@ namespace VECTOTrailer.ViewModel.Impl
 					return;
 
 				ShowLengthBetweenCentersOfAxles = NumberOfAxles != NumberOfTrailerAxles.One;
-				LengthBetweenCentersOfAxles = ShowLengthBetweenCentersOfAxles ? LengthBetweenCentersOfAxles : 0.SI<Meter>();
+				LengthBetweenCentersOfAxles = ShowLengthBetweenCentersOfAxles ? LengthBetweenCentersOfAxles : null; //0.SI<Meter>();
 
 				IsDataChanged(_numberOfAxles, _componentData);
 			}
@@ -327,7 +327,15 @@ namespace VECTOTrailer.ViewModel.Impl
 		public bool ShowLengthBetweenCentersOfAxles
 		{
 			get => _showLengthBetweenCentersOfAxles;
-			set => SetProperty(ref _showLengthBetweenCentersOfAxles, value);
+			set
+			{
+				if (SetProperty(ref _showLengthBetweenCentersOfAxles, value)) {
+					////HACK TO TRIGGER CONVERTER
+					//var tmp = LengthBetweenCentersOfAxles;
+					//LengthBetweenCentersOfAxles = 0.SI<Meter>();
+					//LengthBetweenCentersOfAxles = tmp;
+				}
+			}
 		}
 
 		public bool IsStandard
@@ -539,7 +547,7 @@ namespace VECTOTrailer.ViewModel.Impl
 				ExternalHeightOfTheBody = trailer.ExternalBodyHeight;
 				TotalHeightOfTheTrailer = trailer.TotalTrailerHeight;
 				LengthFromFrontToFirstAxle = trailer.LengthFromFrontToFirstAxle;
-				LengthBetweenCentersOfAxles = trailer.LengthBetweenCentersOfAxles;
+				LengthBetweenCentersOfAxles = trailer.LengthBetweenCentersOfAxles == 0.SI<Meter>() ? null : trailer.LengthBetweenCentersOfAxles; //always saved as 0 in XML
 				CargoVolume = trailer.CargoVolume;
 				Technologies = trailer.AeroFeatureTechnologies;
 				VolumeOrientation = trailer.VolumeOrientation;
