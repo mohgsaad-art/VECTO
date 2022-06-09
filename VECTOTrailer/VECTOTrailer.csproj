@@ -193,6 +193,7 @@
     <Compile Include="Helper\Converter\ComponentTitleConverter.cs" />
     <Compile Include="Helper\Converter\EnumConverter.cs" />
     <Compile Include="Helper\Converter\InvertBoolConverter.cs" />
+    <Compile Include="Helper\Converter\NullToVisibilityConverter.cs" />
     <Compile Include="Helper\EventCommandExecuter.cs" />
     <Compile Include="Helper\Extension.cs" />
     <Compile Include="Helper\FileDialogHelper.cs" />
@@ -253,6 +254,7 @@
     <Compile Include="ViewModel\Impl\NoneViewModel.cs" />
     <Compile Include="ViewModel\Impl\ObservableObject.cs" />
     <Compile Include="ViewModel\Impl\OutputWindowViewModel.cs" />
+    <Compile Include="ViewModel\Impl\TrailerAxleViewModel.cs" />
     <Compile Include="ViewModel\Impl\ValidatingViewModel.cs" />
     <Compile Include="ViewModel\Impl\XMLViewModel.cs" />
     <Compile Include="ViewModel\Interfaces\ITrailerJobViewModel.cs" />

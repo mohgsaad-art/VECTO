@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Xml;
+using System.Xml.Linq;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Resources;
@@ -58,6 +59,9 @@ namespace VECTOTrailer.Model.TempDataObject
 		public Kilogram TPLMTotalTrailer { get; set; }
 		public Kilogram TPLMAxleAssembly { get; set; }
 		public bool VolumeOrientation { get; set; }
+
+		public ICollection<TrailerAxleViewModel> Axles { get; set; } =
+			new List<TrailerAxleViewModel>();
 		public string Axle1FilePath { get; set; }
 		public string Axle2FilePath { get; set; }
 		public string Axle3FilePath { get; set; }
@@ -80,7 +84,7 @@ namespace VECTOTrailer.Model.TempDataObject
 		public bool Axle1IsNone { get; set; }
 		public bool Axle2IsNone { get; set; }
 		public bool Axle3IsNone { get; set; }
-		public ICommand SelectFirstAxleXmlCommand { get; set;  }
+		public ICommand SelectAxleXmlCommand { get; set;  }
 		public ICommand SelectSecondAxleXmlCommand { get; set;  }
 		public ICommand SelectThirdAxleXmlCommand { get; set;  }
 
@@ -98,6 +102,9 @@ namespace VECTOTrailer.Model.TempDataObject
 		public bool TPMLMAxleAssemblyVisibility { get; set; }
 		public bool TrailerCouplingPointVisibility { get; set; }
 		public TrailerCouplingPoint TrailerCouplingPoint { get; set; }
+
+		public XDocument SourceDocument { get; }
+
 		public Dictionary<string, string> XmlNamesToPropertyMapping { get;  private set; }
 
 		#endregion
@@ -141,23 +148,29 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.TPLMTotalTrailer = TPLMTotalTrailer;
 			viewModel.TPLMAxleAssembly = TPLMAxleAssembly;
 			viewModel.VolumeOrientation = VolumeOrientation;
-			viewModel.Axle1IsTwin = Axle1IsTwin;
-			viewModel.Axle2IsTwin = Axle2IsTwin;
-			viewModel.Axle3IsTwin = Axle3IsTwin;
-			viewModel.Axle1IsLiftable = Axle1IsLiftable;
-			viewModel.Axle2IsLiftable = Axle2IsLiftable;
-			viewModel.Axle3IsLiftable = Axle3IsLiftable;
-			viewModel.Axle1IsSteered = Axle1IsSteered;
-			viewModel.Axle2IsSteered = Axle2IsSteered;
-			viewModel.Axle3IsSteered = Axle3IsSteered;
+			for (int i = 0; i < viewModel.Axles.Count; i++) {
+				if (i >= Axles.Count) {
+					break;
+				}
+				viewModel.Axles[i] = Axles.ElementAt(i);
+			}
+			//viewModel.Axle1IsTwin = Axle1IsTwin;
+			//viewModel.Axle2IsTwin = Axle2IsTwin;
+			//viewModel.Axle3IsTwin = Axle3IsTwin;
+			//viewModel.Axle1IsLiftable = Axle1IsLiftable;
+			//viewModel.Axle2IsLiftable = Axle2IsLiftable;
+			//viewModel.Axle3IsLiftable = Axle3IsLiftable;
+			//viewModel.Axle1IsSteered = Axle1IsSteered;
+			//viewModel.Axle2IsSteered = Axle2IsSteered;
+			//viewModel.Axle3IsSteered = Axle3IsSteered;
 
-			viewModel.Axle1IsNone = !Axle1IsSteered && !Axle1IsLiftable;
-			viewModel.Axle2IsNone = !Axle2IsSteered && !Axle2IsLiftable;
-			viewModel.Axle3IsNone = !Axle3IsSteered && !Axle3IsLiftable;
+			////viewModel.Axle1IsNone = !Axle1IsSteered && !Axle1IsLiftable;
+			////viewModel.Axle2IsNone = !Axle2IsSteered && !Axle2IsLiftable;
+			////viewModel.Axle3IsNone = !Axle3IsSteered && !Axle3IsLiftable;
 
-			viewModel.Axle1Xml = Axle1Xml;
-			viewModel.Axle2Xml = Axle2Xml;
-			viewModel.Axle3Xml = Axle3Xml;
+			//viewModel.Axle1Xml = Axle1Xml;
+			//viewModel.Axle2Xml = Axle2Xml;
+			//viewModel.Axle3Xml = Axle3Xml;
 
 			viewModel.CertifiedAeroDeviceXml = CertifiedAeroDeviceXml;
 
@@ -230,19 +243,14 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.TPLMTotalTrailer = default;
 			viewModel.TPLMAxleAssembly = default;
 			viewModel.VolumeOrientation = false;
-			viewModel.Axle1IsTwin = false;
-			viewModel.Axle2IsTwin = false;
-			viewModel.Axle3IsTwin = false;
-			viewModel.Axle1IsLiftable = false;
-			viewModel.Axle2IsLiftable = false;
-			viewModel.Axle3IsLiftable = false;
-			viewModel.Axle1IsSteered = false;
-			viewModel.Axle2IsSteered = false;
-			viewModel.Axle3IsSteered = false;
 
-			viewModel.Axle1IsNone = true;
-			viewModel.Axle2IsNone = true;
-			viewModel.Axle3IsNone = true;
+			foreach (var viewModelAxle in viewModel.Axles) {
+				viewModelAxle.TwinTyres = false;
+				viewModelAxle.Liftable = false;
+				viewModelAxle.Steered = false;
+			}
+			
+
 
 
 			viewModel.CertifiedAeroDeviceButtonsVisibility = false;
@@ -278,9 +286,7 @@ namespace VECTOTrailer.Model.TempDataObject
 
 			VolumeOrientation = trailer.VolumeOrientation;
 
-			Axle1IsTwin = trailer.Axle1IsTwin;
-			Axle2IsTwin = trailer.Axle2IsTwin;
-            Axle3IsTwin = trailer.Axle3IsTwin;
+			Axles = trailer.Axles.Take(trailer.NumberOfAxles.ToInt()).ToList();
 
 			ShowLengthBetweenCentersOfAxles = trailer.NumberOfAxles != NumberOfTrailerAxles.One;
 			LengthBetweenCentersOfAxles = ShowLengthBetweenCentersOfAxles ? trailer.LengthBetweenCentersOfAxles : 0.SI<Meter>();
@@ -294,16 +300,6 @@ namespace VECTOTrailer.Model.TempDataObject
 			YawAngle6 = trailer.YawAngle6;
 			YawAngle9 = trailer.YawAngle9;
 
-			Axle1IsLiftable = trailer.Axle1IsLiftable;
-			Axle2IsLiftable = trailer.Axle2IsLiftable;
-			Axle3IsLiftable = trailer.Axle3IsLiftable;
-			Axle1IsSteered = trailer.Axle1IsSteered;
-			Axle2IsSteered = trailer.Axle2IsSteered;
-			Axle3IsSteered = trailer.Axle3IsSteered;
-
-			Axle1Xml = trailer.Axle1Xml;
-			Axle2Xml = trailer.Axle2Xml;
-			Axle3Xml = trailer.Axle3Xml;
 
 			CertifiedAeroDeviceXml = trailer.CertifiedAeroDeviceXml;
 
@@ -313,9 +309,6 @@ namespace VECTOTrailer.Model.TempDataObject
 			BoatTailShort = trailer.BoatTailShort;
 			BoatTailLong = trailer.BoatTailLong;
 
-			Axle1FilePath = trailer.Axle1FilePath;
-			Axle2FilePath = trailer.Axle2FilePath;
-			Axle3FilePath = trailer.Axle3FilePath;
 
 			CertifiedAeroDeviceFilePath = trailer.CertifiedAeroDeviceFilePath;
 

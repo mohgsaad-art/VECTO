@@ -135,9 +135,7 @@ namespace VECTOTrailer.Model
 							}
 						);
 			}
-
-			var trailerToolSettings = new TrailerToolSettings();
-			trailerToolSettings.GeneralSettings.JobList = _jobCollection;
+			_settings.GeneralSettings.JobList = _jobCollection;
 		}
 
 		public IList<JobEntry> GetJobEntries()

@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Schema;
+using System.Xml.XPath;
 using Castle.Core;
 using Castle.Core.Internal;
 using Microsoft.Win32;
@@ -24,6 +25,7 @@ using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Utils;
 using TUGraz.VectoHashing;
+using TUGraz.VectoHashing.Util;
 using VECTOTrailer.Helper;
 using VECTOTrailer.Model;
 using VECTOTrailer.Model.TempDataObject;
@@ -36,8 +38,9 @@ namespace VECTOTrailer.ViewModel.Impl
 {
 	public class CompleteTrailerViewModel : AbstractComponentViewModel, ICompleteTrailerViewModel
 	{
-		public CompleteTrailerViewModel()
+		public CompleteTrailerViewModel(IXMLInputDataReader inputDataReader)
 		{
+			_inputDataReader = inputDataReader;
 		}
 		#region Members
 
@@ -48,7 +51,6 @@ namespace VECTOTrailer.ViewModel.Impl
 		private string _manufacturer;
 		private string _manufacturerAddress;
 		private string _trailerModel;
-		private string _model;
 		private string _vin;
 		private DateTime _date;
 		private string _legislativeCategory;
@@ -85,48 +87,19 @@ namespace VECTOTrailer.ViewModel.Impl
 
 		private bool _volumeOrientation;
 
-		private string _axle1FilePath;
-		private string _axle2FilePath;
-		private string _axle3FilePath;
 
 		private string _certifiedAeroDeviceFilePath;
 
-		private string _axle1Xml;
-		private string _axle2Xml;
-		private string _axle3Xml;
-
 		private string _certifiedAeroDeviceXml;
 
-		private bool _axle1IsTwin;
-		private bool _axle2IsTwin;
-		private bool _axle3IsTwin;
-		private bool _axle1IsLiftable;
-		private bool _axle2IsLiftable;
-		private bool _axle3IsLiftable;
-		private bool _axle1IsSteered;
-		private bool _axle2IsSteered;
-		private bool _axle3IsSteered;
 
-		private bool _axle1IsNone;
-		private bool _axle2IsNone;
-		private bool _axle3IsNone;
+
 
 		private ICommand _selectFirstFileCommand;
-		private ICommand _selectSecondFileCommand;
-		private ICommand _selectThirdFileCommand;
 
 		private ICommand _selectCertifiedAeroDeviceCommand;
 
-
-		private JobFileType _firstFileType;
-		private JobFileType _secondFileType;
-		private JobFileType _thirdFileType;
-
 		private JobFileType _certifiedAeroDeviceType;
-
-		private string _firstFilePath;
-		private string _secondFilePath;
-		private string _thirdFilePath;
 
 		private bool _certifiedAeroDeviceButtonsVisibility;
 		private bool _certifiedAeroDeviceNewVisibility;
@@ -135,8 +108,6 @@ namespace VECTOTrailer.ViewModel.Impl
 		private bool _trailerCouplingPointVisibility;
 		private TrailerCouplingPoint _TrailerCouplingPoint;
 
-		private readonly bool _editJob;
-		protected JobEntry JobEntry;
 
 		#endregion
 
@@ -313,7 +284,7 @@ namespace VECTOTrailer.ViewModel.Impl
 				}
 
 				if (value == TypeTrailer.DB) {
-					Axle1IsSteered = true;
+                    Axles[0].Steered = true;
 				}
 
 				TPMLMAxleAssemblyVisibility = TrailerType != TypeTrailer.DB;
@@ -443,23 +414,19 @@ namespace VECTOTrailer.ViewModel.Impl
 			}
 		}
 
-		public string Axle1FilePath
-		{
-			get => _axle1FilePath;
-			set => SetProperty(ref _axle1FilePath, value);
-		}
 
-		public string Axle2FilePath
-		{
-			get => _axle2FilePath;
-			set => SetProperty(ref _axle2FilePath, value);
-		}
+		private ObservableCollectionEx<TrailerAxleViewModel> _axles = new ObservableCollectionEx<TrailerAxleViewModel>() {
+			new TrailerAxleViewModel(), new TrailerAxleViewModel(), new TrailerAxleViewModel(),
+		};
+		ICollection<TrailerAxleViewModel> ICompleteTrailer.Axles => Axles.Take(NumberOfAxles.ToInt()).ToList();
 
+		public ObservableCollectionEx<TrailerAxleViewModel> Axles => _axles;
 
-		public string Axle3FilePath
+		private string _aeroDeviceInfo;
+		public string AeroDeviceInfo
 		{
-			get => _axle3FilePath;
-			set => SetProperty(ref _axle3FilePath, value);
+			get => _aeroDeviceInfo;
+			set => SetProperty(ref _aeroDeviceInfo, value);
 		}
 
 		public string CertifiedAeroDeviceFilePath
@@ -468,40 +435,7 @@ namespace VECTOTrailer.ViewModel.Impl
 			set => SetProperty(ref _certifiedAeroDeviceFilePath, value);
 		}
 
-		public string Axle1Xml
-		{
-			get
-			{
-				if (string.IsNullOrEmpty(_firstFilePath))
-					return _axle1Xml;
-
-				return File.ReadAllText(_firstFilePath);
-			}
-			set => SetProperty(ref _axle1Xml, value);
-		}
-		public string Axle2Xml
-		{
-			get
-			{
-				if (string.IsNullOrEmpty(_secondFilePath))
-					return _axle2Xml;
-
-				return File.ReadAllText(_secondFilePath);
-			}
-			set => SetProperty(ref _axle2Xml, value);
-		}
-		public string Axle3Xml
-		{
-			get
-			{
-				if (string.IsNullOrEmpty(_thirdFilePath))
-					return _axle3Xml;
-
-				return File.ReadAllText(_thirdFilePath);
-			}
-			set => SetProperty(ref _axle3Xml, value);
-		}
-
+		
 		public string CertifiedAeroDeviceXml
 		{
 			get
@@ -514,71 +448,6 @@ namespace VECTOTrailer.ViewModel.Impl
 			set => SetProperty(ref _certifiedAeroDeviceXml, value);
 		}
 
-		public bool Axle1IsTwin
-		{
-			get => _axle1IsTwin;
-			set => SetProperty(ref _axle1IsTwin, value);
-		}
-		public bool Axle2IsTwin
-		{
-			get => _axle2IsTwin;
-			set => SetProperty(ref _axle2IsTwin, value);
-		}
-		public bool Axle3IsTwin
-		{
-			get => _axle3IsTwin;
-			set => SetProperty(ref _axle3IsTwin, value);
-		}
-
-		public bool Axle1IsLiftable
-		{
-			get => _axle1IsLiftable;
-			set => SetProperty(ref _axle1IsLiftable, value);
-		}
-		public bool Axle2IsLiftable
-		{
-			get => _axle2IsLiftable;
-			set => SetProperty(ref _axle2IsLiftable, value);
-		}
-		public bool Axle3IsLiftable
-		{
-			get => _axle3IsLiftable;
-			set => SetProperty(ref _axle3IsLiftable, value);
-		}
-
-		public bool Axle1IsSteered
-		{
-			get => _axle1IsSteered;
-			set => SetProperty(ref _axle1IsSteered, value);
-		}
-
-
-		public bool Axle2IsSteered
-		{
-			get => _axle2IsSteered;
-			set => SetProperty(ref _axle2IsSteered, value);
-		}
-		public bool Axle3IsSteered
-		{
-			get => _axle3IsSteered;
-			set => SetProperty(ref _axle3IsSteered, value);
-		}
-
-		public bool Axle1IsNone
-		{
-			get => _axle1IsNone;
-			set => SetProperty(ref _axle1IsNone, value);
-		}
-		public bool Axle2IsNone
-		{
-			get => _axle2IsNone;
-			set => SetProperty(ref _axle2IsNone, value);
-		}
-		public bool Axle3IsNone
-		{
-			get => _axle3IsNone;
-			set => SetProperty(ref _axle3IsNone, value);
-		}
 
 		public IList<AeroFeatureTechnology> Technologies
 		{
@@ -595,7 +464,9 @@ namespace VECTOTrailer.ViewModel.Impl
 			get => _TrailerCouplingPoint;
 			set => SetProperty(ref _TrailerCouplingPoint, value);
 		}
-		
+
+		public XDocument SourceDocument { get; }
+
 		public bool CertifiedAeroDeviceButtonsVisibility
 		{
 			get => _certifiedAeroDeviceButtonsVisibility;
@@ -649,8 +520,7 @@ namespace VECTOTrailer.ViewModel.Impl
 			{
 				_componentData = new TrailerComponentData(this, true);
 			}
-			else
-			{
+			else {
 				Manufacturer = trailer.Manufacturer;
 				ManufacturerAddress = trailer.ManufacturerAddress;
 				TrailerModel = trailer.TrailerModel;
@@ -695,37 +565,25 @@ namespace VECTOTrailer.ViewModel.Impl
 
 				Trailer = _trailer;
 
-				var xmlDoc = new XmlDocument();
-				xmlDoc.LoadXml(_trailer.XMLSource.OuterXml.ToString(CultureInfo.InvariantCulture));
+				var xDoc = _trailer.XMLSource.OwnerDocument.ToXDocument();
 
-				var axles = (xmlDoc.GetElementsByTagName("Axles").Item(0) ?? throw new Exception("Cannot parse axle information")).Cast<XmlNode>().ToList();
-
-				switch (axles.Count) {
-					case 0: break;
-					case 1:
-						EnableFirstAxle(axles[0]);
-						break;
-					case 2:
-						EnableFirstAxle(axles[0]);
-						EnableSecondAxle(axles[1]);
-						break;
-					case 3:
-						EnableFirstAxle(axles[0]);
-						EnableSecondAxle(axles[1]);
-						EnableThirdAxle(axles[2]);
-						break;
+				var count = 0;
+				foreach (var trailerAxleDeclarationInputData in trailer.Axles) {
+					EnableAxle(trailerAxleDeclarationInputData, xDoc, count++);
 				}
 
-				if (IsCertified) {
-					var device = (xmlDoc.GetElementsByTagName(XMLNames.Trailer_CertifiedAeroDevice) ??
-								throw new Exception("Cannot parse aero device information")).Cast<XmlNode>().ToList();
+				if (IsCertified)
+                {
+                    var device = (xDoc.XPathSelectElements($"//*[local-name()='{XMLNames.Trailer_CertifiedAeroDevice}']") ??
 
-					EnableCertifiedAeroDevice(device[0]);
-				}
+                                throw new Exception("Cannot parse aero device information")).ToList();
+					
+                    EnableCertifiedAeroDevice(device[0]);
+                }
 
 
 
-				_componentData = new TrailerComponentData(this);
+                _componentData = new TrailerComponentData(this);
 				var errors = new List<string>() as IList<string>;
 				if(!DeclarationTrailerDataAdapter.ValidateTrailerInput(trailer, ref errors)) {
 					MessageBox.Show(caption: "Invalid input file!", messageBoxText: string.Join("\n", errors),button:MessageBoxButton.OK, icon:MessageBoxImage.Information);
@@ -735,53 +593,43 @@ namespace VECTOTrailer.ViewModel.Impl
 			ClearChangedProperties();
 		}
 
-		private void EnableFirstAxle(XmlNode axle)
+		private void EnableAxle(ITrailerAxleDeclarationInputData trailerAxleDeclarationInputData, XDocument sourceDoc,
+			int count)
 		{
-			Axle1Xml = axle.OuterXml.ToString(CultureInfo.InvariantCulture);
-			Axle1FilePath = axle.ChildNodes[3].ChildNodes[0].ChildNodes[1].InnerText + 
-				", " + axle.ChildNodes[3].ChildNodes[0].ChildNodes[5].InnerText;
-			Axle1IsTwin = axle.ChildNodes[0].InnerText == "true";
-			Axle1IsLiftable = axle.ChildNodes[1].InnerText == "true";
-			Axle1IsSteered = axle.ChildNodes[2].InnerText == "true";
+			var tyre = trailerAxleDeclarationInputData.Tyre;
+			var tyreDescription = CreateTyreDescription(tyre);
+			var axle = _axles.ElementAt(count);
+			axle.TwinTyres = trailerAxleDeclarationInputData.TwinTyres;
+			axle.Liftable = trailerAxleDeclarationInputData.Liftable;
+			axle.Steered = trailerAxleDeclarationInputData.Steered;
+			axle.TyreInfo = tyreDescription;
+			axle.SourceDoc = sourceDoc;
 
-			Axle1IsNone = axle.ChildNodes[1].InnerText == "false" && axle.ChildNodes[2].InnerText == "false";
 		}
 
-		private void EnableSecondAxle(XmlNode axle)
+		private static string CreateTyreDescription(ITyreDeclarationInputData tyre)
 		{
-			Axle2Xml = axle.OuterXml.ToString(CultureInfo.InvariantCulture);
-			Axle2FilePath = axle.ChildNodes[3].ChildNodes[0].ChildNodes[1].InnerText +
-							", " + axle.ChildNodes[3].ChildNodes[0].ChildNodes[5].InnerText;
-			Axle2IsTwin = axle.ChildNodes[0].InnerText == "true";
-			Axle2IsLiftable = axle.ChildNodes[1].InnerText == "true";
-			Axle2IsSteered = axle.ChildNodes[2].InnerText == "true";
-
-			Axle2IsNone = axle.ChildNodes[1].InnerText == "false" && axle.ChildNodes[2].InnerText == "false";
+			var tyreDescription = $"{tyre.Manufacturer}, {tyre.Dimension}";
+			return tyreDescription;
 		}
 
-		private void EnableThirdAxle(XmlNode axle)
-		{
-			Axle3Xml = axle.OuterXml.ToString(CultureInfo.InvariantCulture);
-			Axle3FilePath = axle.ChildNodes[3].ChildNodes[0].ChildNodes[1].InnerText +
-							", " + axle.ChildNodes[3].ChildNodes[0].ChildNodes[5].InnerText;
-			Axle3IsTwin = axle.ChildNodes[0].InnerText == "true";
-			Axle3IsLiftable = axle.ChildNodes[1].InnerText == "true";
-			Axle3IsSteered = axle.ChildNodes[2].InnerText == "true";
 
-			Axle3IsNone = axle.ChildNodes[1].InnerText == "false" && axle.ChildNodes[2].InnerText == "false";
-		}
 
-		private void EnableCertifiedAeroDevice(XmlNode device)
+		private void EnableCertifiedAeroDevice(XElement device)
 		{
-			CertifiedAeroDeviceXml = device.OuterXml.ToString(CultureInfo.InvariantCulture);
-			CertifiedAeroDeviceFilePath = device.ChildNodes[0].ChildNodes[0].InnerText +
-										", " + device.ChildNodes[0].ChildNodes[1].InnerText;
-			
+
+			CertifiedAeroDeviceXml = device.ToString();
+
+			var manufacturer = device.XPathSelectElement($"//*[local-name()='{XMLNames.Component_Manufacturer}']")?.Value;
+			var model = device.XPathSelectElement($"//*[local-name()='{XMLNames.Component_Model}']")?.Value;
+
+
+			CertifiedAeroDeviceFilePath = $"{manufacturer}, {model}";
 			CertifiedAeroDeviceButtonsVisibility = true;
-			CertifiedAeroDeviceNewVisibility = false;
-		}
+            CertifiedAeroDeviceNewVisibility = false;
+        }
 
-		private void SetAllowedEntries()
+        private void SetAllowedEntries()
 		{
 
 			AllowedTrailerTypes = EnumHelper.GetValues<TypeTrailer>().Where(x => x != TypeTrailer.Unknown)
@@ -842,59 +690,16 @@ namespace VECTOTrailer.ViewModel.Impl
 			}
 		}
 
-		public JobFileType FirstFileType
-		{
-			get => _firstFileType;
-			set => SetProperty(ref _firstFileType, value);
-		}
-
-		public JobFileType SecondFileType
-		{
-			get => _secondFileType;
-			set => SetProperty(ref _secondFileType, value);
-		}
-
-		public JobFileType ThirdFileType
-		{
-			get => _thirdFileType;
-			set => SetProperty(ref _thirdFileType, value);
-		}
-
 		public JobFileType CertifiedAeroDeviceType
 		{
 			get => _certifiedAeroDeviceType;
 			set => SetProperty(ref _certifiedAeroDeviceType, value);
 		}
 
-		public string FirstFilePath
-		{
-			get => _firstFilePath;
-			set => SetProperty(ref _firstFilePath, value);
-		}
 
-		public string SecondFilePath
-		{
-			get => _secondFilePath;
-			set => SetProperty(ref _secondFilePath, value);
-		}
-
-		public string ThirdFilePath
-		{
-			get => _thirdFilePath;
-			set => SetProperty(ref _thirdFilePath, value);
-		}
-
-		public ICommand SelectFirstAxleXmlCommand =>
+		public ICommand SelectAxleXmlCommand =>
 			_selectFirstFileCommand ??
-			(_selectFirstFileCommand = new RelayCommand<JobFileType>(DoSelectFirstFileCommand));
-
-		public ICommand SelectSecondAxleXmlCommand =>
-			_selectSecondFileCommand ??
-			(_selectSecondFileCommand = new RelayCommand<JobFileType>(DoSelectSecondFileCommand));
-
-		public ICommand SelectThirdAxleXmlCommand =>
-			_selectThirdFileCommand ??
-			(_selectThirdFileCommand = new RelayCommand<JobFileType>(DoSelectThirdFileCommand));
+			(_selectFirstFileCommand = new RelayCommand<string>(DoSelectTyreCommand));
 
 		public ICommand SelectCertifiedAeroDeviceCommand =>
 			_selectCertifiedAeroDeviceCommand ??
@@ -902,51 +707,16 @@ namespace VECTOTrailer.ViewModel.Impl
 
 
 
-		private void DoSelectFirstFileCommand(JobFileType jobFileType)
+		private void DoSelectTyreCommand(string count)
 		{
-			SelectFile(jobFileType, "Invalid tyre xml", (result) => {
-				FirstFilePath = result;
-				this.Axle1FilePath = result;
-			});
-			//if (OpenFileSelector(jobFileType, nameof(FirstFilePath), FirstFilePath, out var result))
-			//{
-			//	FirstFilePath = result;
-			//	this.Axle1FilePath = FirstFilePath;
-			//}
-		}
-		private void DoSelectSecondFileCommand(JobFileType jobFileType)
-		{
-			SelectFile(jobFileType, "Invalid tyre xml", (result) => { 
-				SecondFilePath = result;
-				this.Axle2FilePath = result;
-			});
-			//if (OpenFileSelector(jobFileType, nameof(SecondFilePath), SecondFilePath, out var result))
-			//{
-			//	SecondFilePath = result;
-			//	this.Axle2FilePath = SecondFilePath;
-			//}
-		}
-		private void DoSelectThirdFileCommand(JobFileType jobFileType)
-		{
-			SelectFile(jobFileType, "Invalid tyre xml", (result) => {
-				ThirdFilePath = result;
-				this.Axle3FilePath = result;
-			});
-			//if (OpenFileSelector(jobFileType, nameof(ThirdFilePath), ThirdFilePath, out var result)) {
-			//	ThirdFilePath = result;
-			//	this.Axle3FilePath = ThirdFilePath;
-			//}
-		}
-
-		private void SelectFile(JobFileType jobFileType, string errorCaption, Action<string> successAction)
-		{
-			if (OpenFileSelector(jobFileType, nameof(CertifiedAeroDeviceFilePath),
+			var axleIdx = int.Parse(count);
+			if (OpenFileSelector(nameof(CertifiedAeroDeviceFilePath),
 					CertifiedAeroDeviceFilePath, out var result))
 			{
-				var aeroDeviceXDoc = XDocument.Load(result);
-				if (!XmlHelper.ValidateXDocument(aeroDeviceXDoc, validationErrorAction: ValidationErrorAction))
+				var tyreXml = XDocument.Load(result);
+				if (!XmlHelper.ValidateXDocument(tyreXml, validationErrorAction: ValidationErrorAction))
 				{
-					MessageBox.Show(caption: errorCaption,
+					MessageBox.Show(caption: "Invalid Tyre XML",
 						messageBoxText: string.Join("\n", xmlFileErrors),
 						button: MessageBoxButton.OK,
 						icon: MessageBoxImage.Error);
@@ -954,26 +724,70 @@ namespace VECTOTrailer.ViewModel.Impl
 				}
 				else
 				{
-					if (!VectoHash.Load(result).ValidateHash()) {
+					if (!VectoHash.Load(result).ValidateHash())
+					{
 						MessageBox.Show(caption: "Invalid Hash",
 							messageBoxText: $"Component file {result} has invalid hash\n",
 							icon: MessageBoxImage.Warning,
 							button: MessageBoxButton.OK);
 					}
-					
-					successAction.Invoke(result);
-					//CertifiedAeroDeviceFilePath = result;
+
+                    Axles[axleIdx].TyreInfo = 
+					Axles[axleIdx].TyreXmlPath = result;
+
+					var inputData = _inputDataReader.CreateComponent(tyreXml.CreateReader(ReaderOptions.None)) as ITyreDeclarationInputData;
+					if (inputData == null) {
+						MessageBox.Show(caption: "Invalid Tyre XML",
+							messageBoxText: "Selected File is not a valid tyre XML",
+							button: MessageBoxButton.OK,
+							icon: MessageBoxImage.Error);
+						xmlFileErrors.Clear();
+						return;
+					}
+					Axles[axleIdx].TyreInfo = CreateTyreDescription(inputData);
 				}
 
 			}
 		}
 
+		private void SelectFile(JobFileType jobFileType, string errorCaption, Action<string> successAction, string propertyName)
+		{
+            if (OpenFileSelector(propertyName,
+                    null, out var result))
+            {
+                var xDoc = XDocument.Load(result);
+                if (!XmlHelper.ValidateXDocument(xDoc, validationErrorAction: ValidationErrorAction))
+                {
+                    MessageBox.Show(caption: errorCaption,
+                        messageBoxText: string.Join("\n", xmlFileErrors),
+                        button: MessageBoxButton.OK,
+                        icon: MessageBoxImage.Error);
+                    xmlFileErrors.Clear();
+                }
+                else
+                {
+                    if (!VectoHash.Load(result).ValidateHash())
+                    {
+                        MessageBox.Show(caption: "Invalid Hash",
+                            messageBoxText: $"Component file {result} has invalid hash\n",
+                            icon: MessageBoxImage.Warning,
+                            button: MessageBoxButton.OK);
+                    }
+
+                    successAction.Invoke(result);
+				}
+
+            }
+        }
+
 		private IList<string> xmlFileErrors = new List<string>();
+		private readonly IXMLInputDataReader _inputDataReader;
+
 		private void DoSelectCertifiedAeroDeviceFileCommand(JobFileType jobFileType)
 		{ 
 			SelectFile(jobFileType, "Invalid aero device xml", (result) => {
 				CertifiedAeroDeviceFilePath = result;
-			});
+			}, nameof(CertifiedAeroDeviceFilePath));
 		}
 
 		private void ValidationErrorAction(XmlSeverityType type, ValidationEvent validationEvent)
@@ -985,7 +799,7 @@ namespace VECTOTrailer.ViewModel.Impl
 			return;
 		}
 
-		private bool OpenFileSelector(JobFileType jobFileType, string textPropertyName, string initPath, out string selectedFile)
+		private bool OpenFileSelector(string textPropertyName, string initPath, out string selectedFile)
 		{
 			selectedFile = null;
 			//var folderPath = GetFolderPath(initPath);

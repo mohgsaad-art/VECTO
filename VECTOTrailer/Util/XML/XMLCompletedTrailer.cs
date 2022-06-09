@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Schema;
+using System.Xml.XPath;
 using Castle.Components.DictionaryAdapter.Xml;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
@@ -17,6 +19,7 @@ using TUGraz.VectoCore.InputData.FileIO.XML;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Utils;
+using VECTOTrailer.ViewModel.Impl;
 using VECTOTrailer.ViewModel.Interfaces;
 using XmlDocumentType = TUGraz.VectoCore.Utils.XmlDocumentType;
 
@@ -193,61 +196,91 @@ namespace VECTOTrailer.Util.XML
 				new XElement(_v27 + "Data", new XAttribute(_xsi + "type", "v2.7:TrailerAxleWheelsDataDeclarationType"),
 					new XElement(_v27 + "Axles"))));
 
-			try {
-				var tyre = CreateTyre(trailerData.Axle1Xml);
+			var axleNumber = 1;
+			foreach (var axle in trailerData.Axles) {
+				var tyre = CreateTyre(axle, axleNumber);
 				vehicle.Element(_v27 + "AxleWheels")?.Element(_v27 + "Data")?.Element(_v27 + "Axles")?.Add(
 					new XElement(_v27 + "Axle", new XAttribute(_xsi + "type", "v2.7:TrailerAxleType"),
-						new XAttribute("axleNumber", "1"),
-						new XElement(_v27 + "TwinTyres", trailerData.Axle1IsTwin.ToString().ToLower()),
-						new XElement(_v27 + "Liftable", trailerData.Axle1IsLiftable.ToString().ToLower()),
-						new XElement(_v27 + "Steered", trailerData.Axle1IsSteered.ToString().ToLower()),
+						new XAttribute("axleNumber", axleNumber),
+						new XElement(_v27 + "TwinTyres", axle.TwinTyres.ToString().ToLower()),
+						new XElement(_v27 + "Liftable", axle.Liftable.ToString().ToLower()),
+						new XElement(_v27 + "Steered", axle.Steered.ToString().ToLower()),
 						tyre));
 
-				if (int.Parse(trailerData.NumberOfAxles.GetLabel()) <= 1)
-					return vehicle;
-
-				tyre = CreateTyre(trailerData.Axle2Xml);
-
-				vehicle.Element(_v27 + "AxleWheels")?.Element(_v27 + "Data")?.Element(_v27 + "Axles")?.Add(
-					new XElement(_v27 + "Axle", new XAttribute(_xsi + "type", "v2.7:TrailerAxleType"),
-						new XAttribute("axleNumber", "2"),
-						new XElement(_v27 + "TwinTyres", trailerData.Axle2IsTwin.ToString().ToLower()),
-						new XElement(_v27 + "Liftable", trailerData.Axle2IsLiftable.ToString().ToLower()),
-						new XElement(_v27 + "Steered", trailerData.Axle2IsSteered.ToString().ToLower()),
-						tyre));
-				if (int.Parse(trailerData.NumberOfAxles.GetLabel()) <= 2)
-					return vehicle;
-
-				tyre = CreateTyre(trailerData.Axle3Xml);
-
-				vehicle.Element(_v27 + "AxleWheels")?.Element(_v27 + "Data")?.Element(_v27 + "Axles")?.Add(
-					new XElement(_v27 + "Axle", new XAttribute(_xsi + "type", "v2.7:TrailerAxleType"),
-						new XAttribute("axleNumber", "3"),
-						new XElement(_v27 + "TwinTyres", trailerData.Axle3IsTwin.ToString().ToLower()),
-						new XElement(_v27 + "Liftable", trailerData.Axle3IsLiftable.ToString().ToLower()),
-						new XElement(_v27 + "Steered", trailerData.Axle3IsSteered.ToString().ToLower()),
-						tyre));
-
-			} catch (Exception ex) {
-				throw new VectoException("Error writing XML", ex);
+				axleNumber++;
 			}
+
+
+			//try {
+				
+			//	var tyre = CreateTyre(trailerData.Axle1Xml, trailerData.Axle1FilePath);
+			//	vehicle.Element(_v27 + "AxleWheels")?.Element(_v27 + "Data")?.Element(_v27 + "Axles")?.Add(
+			//		new XElement(_v27 + "Axle", new XAttribute(_xsi + "type", "v2.7:TrailerAxleType"),
+			//			new XAttribute("axleNumber", "1"),
+			//			new XElement(_v27 + "TwinTyres", trailerData.Axle1IsTwin.ToString().ToLower()),
+			//			new XElement(_v27 + "Liftable", trailerData.Axle1IsLiftable.ToString().ToLower()),
+			//			new XElement(_v27 + "Steered", trailerData.Axle1IsSteered.ToString().ToLower()),
+			//			tyre));
+
+			//	if (int.Parse(trailerData.NumberOfAxles.GetLabel()) <= 1) {
+			//		return vehicle;
+			//	}
+
+			//	tyre = CreateTyre(trailerData.Axle2Xml, trailerData.Axle2FilePath);
+
+			//	vehicle.Element(_v27 + "AxleWheels")?.Element(_v27 + "Data")?.Element(_v27 + "Axles")?.Add(
+			//		new XElement(_v27 + "Axle", new XAttribute(_xsi + "type", "v2.7:TrailerAxleType"),
+			//			new XAttribute("axleNumber", "2"),
+			//			new XElement(_v27 + "TwinTyres", trailerData.Axle2IsTwin.ToString().ToLower()),
+			//			new XElement(_v27 + "Liftable", trailerData.Axle2IsLiftable.ToString().ToLower()),
+			//			new XElement(_v27 + "Steered", trailerData.Axle2IsSteered.ToString().ToLower()),
+			//			tyre));
+			//	if (int.Parse(trailerData.NumberOfAxles.GetLabel()) <= 2) {
+			//		return vehicle;
+			//	}
+					
+
+			//	tyre = CreateTyre(trailerData.Axle3Xml, trailerData.Axle3FilePath);
+
+			//	vehicle.Element(_v27 + "AxleWheels")?.Element(_v27 + "Data")?.Element(_v27 + "Axles")?.Add(
+			//		new XElement(_v27 + "Axle", new XAttribute(_xsi + "type", "v2.7:TrailerAxleType"),
+			//			new XAttribute("axleNumber", "3"),
+			//			new XElement(_v27 + "TwinTyres", trailerData.Axle3IsTwin.ToString().ToLower()),
+			//			new XElement(_v27 + "Liftable", trailerData.Axle3IsLiftable.ToString().ToLower()),
+			//			new XElement(_v27 + "Steered", trailerData.Axle3IsSteered.ToString().ToLower()),
+			//			tyre));
+
+			//} catch (Exception ex) {
+			//	throw new VectoException("Error writing XML", ex);
+			//}
 
 			return vehicle;
 		}
 
-		private XElement CreateTyre(string axleXml)
+		private XElement CreateTyre(TrailerAxleViewModel axleViewModel, int count)
 		{
 			
 
 			var tyre = new XElement(_v27 + XMLNames.AxleWheels_Axles_Axle_Tyre);
 			try {
+				XElement tyreNode;
+				//Tyre XML Loaded
+				if (axleViewModel.TyreXmlPath != null) {
+					var sourceXml = XDocument.Load(axleViewModel.TyreXmlPath);
 
-				var sourceXml = XDocument.Parse(axleXml.ToString(CultureInfo.InvariantCulture));
-				sourceXml.Validate(XMLValidator.GetXMLSchema(XmlDocumentType.DeclarationComponentData),
-					((sender, args) => throw new VectoException($"Invalid Tyre XML! \n {args.Message}")), true);
+
+					sourceXml.Validate(XMLValidator.GetXMLSchema(XmlDocumentType.DeclarationComponentData),
+						((sender, args) => throw new VectoException($"Invalid Tyre XML! \n {args.Message}")), true);
 
 
-				var tyreNode = sourceXml.Root.Elements().Single(e => e.Name.LocalName == XMLNames.AxleWheels_Axles_Axle_Tyre);
+					tyreNode = sourceXml.Root.Elements().Single(e => e.Name.LocalName == XMLNames.AxleWheels_Axles_Axle_Tyre);
+				} else {
+					axleViewModel.SourceDoc.Validate(XMLValidator.GetXMLSchema(XmlDocumentType.DeclarationTrailerJobData), 
+						(sender, args) => throw new VectoException($"Invalid Input XML! \n {args.Message}"), true);
+					tyreNode = axleViewModel.SourceDoc.XPathSelectElements($"//*[local-name()='{XMLNames.AxleWheels_Axles_Axle_Tyre}']")
+						.ElementAt(count - 1);
+				}
+				
 				var tyreData = tyreNode.Elements().Single(e => e.Name.LocalName == XMLNames.ComponentDataWrapper);
 				var dataType = tyreData.GetSchemaInfo().SchemaType.Name;
 				var defaultNamespace = tyreData.GetDefaultNamespace();

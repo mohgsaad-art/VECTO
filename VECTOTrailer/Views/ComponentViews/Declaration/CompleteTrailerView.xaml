@@ -50,7 +50,7 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Grid.Column="0" Text="Manufacturer" Margin="0,0,10,0"/>
-                        <TextBox Grid.Column="1" Margin="20,0,0,0" 
+                        <TextBox Grid.Column="1" Margin="20,0,0,0" TextWrapping="Wrap"
                                  Text="{Binding Manufacturer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
                     </Grid>
 
@@ -74,7 +74,7 @@
                             <ColumnDefinition SharedSizeGroup="unitWidth"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Text="Model / CommercialName" Margin="0,0,10,0"/>
-                        <TextBox Grid.Column="1" Margin="20,0,0,0" 
+                        <TextBox Grid.Column="1" Margin="20,0,0,0" TextWrapping="Wrap"
                                  Text="{Binding TrailerModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
                     </Grid>
 
@@ -124,7 +124,7 @@
             </StackPanel>
         </GroupBox>
 
-        <GroupBox Header="Dimensions" Grid.Row="2" Grid.Column="1" Width="400" Height="300" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
+        <GroupBox Header="Dimensions" Grid.Row="2" Grid.Column="1" Width="400" Height="350" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
             <StackPanel Orientation="Vertical" Width="390" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
                 <!--<StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">-->
 
@@ -297,7 +297,7 @@
             </StackPanel>
         </GroupBox>
 
-        <GroupBox Header="Αero feature technologies" Grid.Row="2" Grid.Column="2" Width="330" Height="300" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
+        <GroupBox Header="Αero feature technologies" Grid.Row="2" Grid.Column="2" Width="330" Height="350" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
             <StackPanel Orientation="Vertical" Width="320" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
                 <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
 
@@ -339,32 +339,35 @@
                      
                         </Grid>
                     </GroupBox>
-                    <GroupBox Header="Certified aerodynamic device XML" Visibility="{Binding IsChecked,ElementName=certified,Converter={StaticResource BoolToVisibilityConverter}}">
-                    <DockPanel HorizontalAlignment="Stretch" Margin="5" LastChildFill="True" >
-                        <Button DockPanel.Dock="Right" Name="UploadCertifiedAeroDeviceButton" Grid.Column="3" Content="..." Width="30" Margin="5,0,0,0"
-                                Command="{Binding SelectCertifiedAeroDeviceCommand}"
-                                CommandParameter="{Binding CertifiedAeroDeviceType}" />
-                            <TextBox DockPanel.Dock="Left" HorizontalAlignment="Stretch" IsReadOnly="True" IsReadOnlyCaretVisible="True" TextWrapping="Wrap" TextChanged="ScrollToEnd"
-                                     Text="{Binding CertifiedAeroDeviceFilePath}">
-                                <Validation.ErrorTemplate>
-                                    <ControlTemplate>
-                                        <DockPanel>
-                                            <TextBlock Foreground="Red" DockPanel.Dock="Top" Text="{Binding ErrorContent}" />
-                                            <AdornedElementPlaceholder/>
-                                        </DockPanel>
-                                    </ControlTemplate>
-                                </Validation.ErrorTemplate>
-                                <TextBox.Style>
-                                    <Style>
-                                        <Style.Triggers>
-                                            <Trigger Property="Validation.HasError" Value="true">
-                                                <Setter Property="Border.BorderBrush" Value="Red"/>
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBox.Style>
-                            </TextBox>
-                            </DockPanel>
+                    <GroupBox Header="Certified aerodynamic device XML" Margin="5" HorizontalAlignment="Stretch" Visibility="{Binding IsChecked,ElementName=certified,Converter={StaticResource BoolToVisibilityConverter}}">
+                        <DockPanel HorizontalAlignment="Stretch" Margin="5" LastChildFill="True" >
+                            <Button DockPanel.Dock="Right" Name="UploadCertifiedAeroDeviceButton" Grid.Column="3" Content="..." Width="30" Margin="5,0,0,0"
+                                    Command="{Binding SelectCertifiedAeroDeviceCommand}"
+                                    CommandParameter="{Binding CertifiedAeroDeviceType}" />
+                            <StackPanel Orientation="Vertical">
+                                <!--<TextBlock Margin="5" Text="{Binding AeroDeviceInfo, TargetNullValue='Select aerodevice xml'}"></TextBlock>-->
+                                <TextBox DockPanel.Dock="Left" HorizontalAlignment="Stretch" IsReadOnly="True" IsReadOnlyCaretVisible="True" TextWrapping="Wrap" TextChanged="ScrollToEnd"
+                                         Text="{Binding CertifiedAeroDeviceFilePath}"><!--Visibility="{Binding CertifiedAeroDeviceFilePath, Converter={converter:NullToVisibilityConverter}}">-->
+                                    <Validation.ErrorTemplate>
+                                        <ControlTemplate>
+                                            <DockPanel>
+                                                <TextBlock Foreground="Red" DockPanel.Dock="Top" Text="{Binding ErrorContent}" />
+                                                <AdornedElementPlaceholder/>
+                                            </DockPanel>
+                                        </ControlTemplate>
+                                    </Validation.ErrorTemplate>
+                                    <TextBox.Style>
+                                        <Style>
+                                            <Style.Triggers>
+                                                <Trigger Property="Validation.HasError" Value="true">
+                                                    <Setter Property="Border.BorderBrush" Value="Red"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBox.Style>
+                                </TextBox>
+                            </StackPanel>
+                        </DockPanel>
                     </GroupBox>
 
 
@@ -434,10 +437,11 @@
             </StackPanel>
         </GroupBox>
 
-        <GroupBox Header="Axle and Tyre Features" Grid.Row="2" Grid.Column="3" Width="560" Height="300" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5" HorizontalContentAlignment="Stretch">
+        <GroupBox Header="Axle and Tyre Features" Grid.Row="2" Grid.Column="3" Width="560" Height="350" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5" HorizontalContentAlignment="Stretch">
             <StackPanel Orientation="Vertical" Width="540" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
                 <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
 
+                    <!--#region Axle1 -->
                     <Grid Margin="5">
                         <Grid.Style>
                             <Style>
@@ -463,28 +467,31 @@
                             <StackPanel>
                                 <DockPanel LastChildFill="True">
                                     <Button DockPanel.Dock =" Right" Name="UploadFirstAxleButton" Grid.Column="3" Content="..." HorizontalAlignment="Right" Width="30" Margin="5,0,0,0"
-                                            Command="{Binding SelectFirstAxleXmlCommand}"
-                                            CommandParameter="{Binding FirstFileType}"/>
-                                    <TextBox HorizontalAlignment="Stretch" IsReadOnly="True" DockPanel.Dock="Left"
-                                             Text="{Binding Axle1FilePath}" Name="FilePath1" TextChanged="ScrollToEnd" IsReadOnlyCaretVisible="True">
-                                        <Validation.ErrorTemplate>
-                                            <ControlTemplate>
-                                                <DockPanel>
-                                                    <TextBlock Foreground="Red" DockPanel.Dock="Top" Text="{Binding ErrorContent}" />
-                                                    <AdornedElementPlaceholder/>
-                                                </DockPanel>
-                                            </ControlTemplate>
-                                        </Validation.ErrorTemplate>
-                                        <TextBox.Style>
-                                            <Style>
-                                                <Style.Triggers>
-                                                    <Trigger Property="Validation.HasError" Value="true">
-                                                        <Setter Property="Border.BorderBrush" Value="Red"/>
-                                                    </Trigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBox.Style>
-                                    </TextBox>
+                                            Command="{Binding SelectAxleXmlCommand}"
+                                            CommandParameter="0"/>
+                                    <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
+                                        <TextBlock Text="{Binding Axles[0].TyreInfo, TargetNullValue='Select tyre xml'}" Margin="5"/>
+                                        <TextBox HorizontalAlignment="Stretch" IsReadOnly="True" DockPanel.Dock="Left"
+                                             Text="{Binding Axles[0].TyreXmlPath}" Visibility="{Binding Axles[0].TyreXmlPath, Converter={converter:NullToVisibilityConverter}}" Name="FilePath1" TextChanged="ScrollToEnd" IsReadOnlyCaretVisible="True">
+                                            <Validation.ErrorTemplate>
+                                                <ControlTemplate>
+                                                    <DockPanel>
+                                                        <TextBlock Foreground="Red" DockPanel.Dock="Top" Text="{Binding ErrorContent}" />
+                                                        <AdornedElementPlaceholder/>
+                                                    </DockPanel>
+                                                </ControlTemplate>
+                                            </Validation.ErrorTemplate>
+                                            <TextBox.Style>
+                                                <Style>
+                                                    <Style.Triggers>
+                                                        <Trigger Property="Validation.HasError" Value="true">
+                                                            <Setter Property="Border.BorderBrush" Value="Red"/>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBox.Style>
+                                        </TextBox>
+                                    </StackPanel>
                                 </DockPanel>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -492,24 +499,164 @@
                                         <ColumnDefinition Width="*"></ColumnDefinition>
                                         <ColumnDefinition Width="*"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
-                                        <StackPanel Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
-                                            <TextBlock Grid.Column="5" Text="Twin tyres" Margin="5,0,5,0"/>
-                                            <CheckBox Grid.Column="6" IsChecked="{Binding Axle1IsTwin}" Margin="0,3,0,0"/>
-                                        </StackPanel>
-                                        <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
-                                            <TextBlock Grid.Column="7" Text="Liftable" Margin="5,0,5,0"/>
-                                            <CheckBox Grid.Column="8" IsChecked="{Binding Axle1IsLiftable}" Margin="0,3,0,0"/>
-                                        </StackPanel>
-                                      <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
-                                          <TextBlock Grid.Column="9" Text="Steered" Margin="5,0,5,0"/>
-                                          <CheckBox Grid.Column="10" IsChecked="{Binding Axle1IsSteered}"  Margin="0,3,0,0"/>
+                                    <StackPanel Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
+                                        <TextBlock Grid.Column="5" Text="Twin tyres" Margin="5,0,5,0"/>
+                                        <CheckBox Grid.Column="6" IsChecked="{Binding Axles[0].TwinTyres}" Margin="0,3,0,0"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
+                                        <TextBlock Grid.Column="7" Text="Liftable" Margin="5,0,5,0"/>
+                                        <CheckBox Grid.Column="8" IsChecked="{Binding Axles[0].Liftable}" Margin="0,3,0,0"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
+                                        <TextBlock Grid.Column="9" Text="Steered" Margin="5,0,5,0"/>
+                                        <CheckBox Grid.Column="10" IsChecked="{Binding Axles[0].Steered}"  Margin="0,3,0,0"/>
                                     </StackPanel>
                                 </Grid>
                             </StackPanel>
                         </GroupBox>
                     </Grid>
+                    <!--#endregion-->
 
+                    <!--#region Axle2 -->
                     <Grid Margin="5">
+                        <Grid.Style>
+                            <Style>
+                                <Setter Property="Grid.Visibility" Value="Collapsed"></Setter>
+                                <Style.Triggers>
+                                    <DataTrigger  
+                                        Binding="{Binding ElementName=NumberOfAxles, Path=SelectedItem.Value}" Value="2">
+                                        <Setter Property="Grid.Visibility" Value="Visible"></Setter>
+                                    </DataTrigger>
+                                    <DataTrigger  
+                                        Binding="{Binding ElementName=NumberOfAxles, Path=SelectedItem.Value}" Value="3">
+                                        <Setter Property="Grid.Visibility" Value="Visible"></Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+
+                        <GroupBox Grid.Column="0" Header="Axle 2 - Tyre XML" HorizontalAlignment="Stretch" >
+                            <StackPanel>
+                                <DockPanel LastChildFill="True">
+                                    <Button DockPanel.Dock =" Right" Name="UploadSecondAxleButton" Grid.Column="3" Content="..." HorizontalAlignment="Right" Width="30" Margin="5,0,0,0"
+                                            Command="{Binding SelectAxleXmlCommand}"
+                                            CommandParameter="1"/>
+                                    <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
+                                        <TextBlock Text="{Binding Axles[1].TyreInfo, TargetNullValue='Select tyre xml'}" Margin="5"/>
+                                        <TextBox HorizontalAlignment="Stretch" IsReadOnly="True" DockPanel.Dock="Left"
+                                             Text="{Binding Axles[1].TyreXmlPath}" Visibility="{Binding Axles[1].TyreXmlPath, Converter={converter:NullToVisibilityConverter}}" Name="FilePath2" TextChanged="ScrollToEnd" IsReadOnlyCaretVisible="True">
+                                            <Validation.ErrorTemplate>
+                                                <ControlTemplate>
+                                                    <DockPanel>
+                                                        <TextBlock Foreground="Red" DockPanel.Dock="Top" Text="{Binding ErrorContent}" />
+                                                        <AdornedElementPlaceholder/>
+                                                    </DockPanel>
+                                                </ControlTemplate>
+                                            </Validation.ErrorTemplate>
+                                            <TextBox.Style>
+                                                <Style>
+                                                    <Style.Triggers>
+                                                        <Trigger Property="Validation.HasError" Value="true">
+                                                            <Setter Property="Border.BorderBrush" Value="Red"/>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBox.Style>
+                                        </TextBox>
+                                    </StackPanel>
+                                </DockPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
+                                        <TextBlock Grid.Column="5" Text="Twin tyres" Margin="5,0,5,0"/>
+                                        <CheckBox Grid.Column="6" IsChecked="{Binding Axles[1].TwinTyres}" Margin="0,3,0,0"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
+                                        <TextBlock Grid.Column="7" Text="Liftable" Margin="5,0,5,0"/>
+                                        <CheckBox Grid.Column="8" IsChecked="{Binding Axles[1].Liftable}" Margin="0,3,0,0"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
+                                        <TextBlock Grid.Column="9" Text="Steered" Margin="5,0,5,0"/>
+                                        <CheckBox Grid.Column="10" IsChecked="{Binding Axles[1].Steered}"  Margin="0,3,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </GroupBox>
+                    </Grid>
+                    <!--#endregion-->
+                    <!--#region Axle3 -->
+                    <Grid Margin="5">
+                        <Grid.Style>
+                            <Style>
+                                <Setter Property="Grid.Visibility" Value="Collapsed"></Setter>
+                                <Style.Triggers>
+                                    <DataTrigger  
+                                        Binding="{Binding ElementName=NumberOfAxles, Path=SelectedItem.Value}" Value="3">
+                                        <Setter Property="Grid.Visibility" Value="Visible"></Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+
+                        <GroupBox Grid.Column="0" Header="Axle 3 - Tyre XML" HorizontalAlignment="Stretch" >
+                            <StackPanel>
+                                <DockPanel LastChildFill="True">
+                                    <Button DockPanel.Dock =" Right" Name="UploadThirdAxleButton" Grid.Column="3" Content="..." HorizontalAlignment="Right" Width="30" Margin="5,0,0,0"
+                                            Command="{Binding SelectAxleXmlCommand}"
+                                            CommandParameter="2"/>
+                                    <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
+                                        <TextBlock Text="{Binding Axles[2].TyreInfo, TargetNullValue='Select tyre xml'}" Margin="5"/>
+                                        <TextBox HorizontalAlignment="Stretch" IsReadOnly="True" DockPanel.Dock="Left"
+                                             Text="{Binding Axles[2].TyreXmlPath}" Visibility="{Binding Axles[2].TyreXmlPath, Converter={converter:NullToVisibilityConverter}}" Name="FilePath3" TextChanged="ScrollToEnd" IsReadOnlyCaretVisible="True">
+                                            <Validation.ErrorTemplate>
+                                                <ControlTemplate>
+                                                    <DockPanel>
+                                                        <TextBlock Foreground="Red" DockPanel.Dock="Top" Text="{Binding ErrorContent}" />
+                                                        <AdornedElementPlaceholder/>
+                                                    </DockPanel>
+                                                </ControlTemplate>
+                                            </Validation.ErrorTemplate>
+                                            <TextBox.Style>
+                                                <Style>
+                                                    <Style.Triggers>
+                                                        <Trigger Property="Validation.HasError" Value="true">
+                                                            <Setter Property="Border.BorderBrush" Value="Red"/>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBox.Style>
+                                        </TextBox>
+                                    </StackPanel>
+                                </DockPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
+                                        <TextBlock Grid.Column="5" Text="Twin tyres" Margin="5,0,5,0"/>
+                                        <CheckBox Grid.Column="6" IsChecked="{Binding Axles[2].TwinTyres}" Margin="0,3,0,0"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
+                                        <TextBlock Grid.Column="7" Text="Liftable" Margin="5,0,5,0"/>
+                                        <CheckBox Grid.Column="8" IsChecked="{Binding Axles[2].Liftable}" Margin="0,3,0,0"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
+                                        <TextBlock Grid.Column="9" Text="Steered" Margin="5,0,5,0"/>
+                                        <CheckBox Grid.Column="10" IsChecked="{Binding Axles[2].Steered}"  Margin="0,3,0,0"/>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </GroupBox>
+                    </Grid>
+                    <!--#endregion-->
+
+                    <!--<Grid Margin="5">
                         <Grid.Style>
                             <Style>
                                 <Setter Property="Grid.Visibility" Value="Collapsed"></Setter>
@@ -633,9 +780,9 @@
                                     </StackPanel>
                                 </Grid>
                             </StackPanel>
-                        </GroupBox>
+                        </GroupBox>-->
 
-                    </Grid>
+                    <!--</Grid>-->
                 </StackPanel>
             </StackPanel>
         </GroupBox>

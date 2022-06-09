@@ -40,5 +40,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 			Version = $"VECTO-Trailer {versionNumber}-DEV";
 		}
+
+
 	}
 }

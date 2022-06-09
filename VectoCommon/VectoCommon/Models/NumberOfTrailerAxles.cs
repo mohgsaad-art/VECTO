@@ -37,10 +37,10 @@ namespace TUGraz.VectoCommon.Models
 	public enum NumberOfTrailerAxles
 	{
 		// ReSharper disable InconsistentNaming
-		Unknown,
-		One,
-		Two,
-		Three
+		Unknown = -1,
+		One = 1,
+		Two = 2,
+		Three = 3,
 		// ReSharper restore InconsistentNaming
 	}
 
@@ -58,6 +58,11 @@ namespace TUGraz.VectoCommon.Models
 				default:
 					throw new ArgumentOutOfRangeException("number of axles", ttype, null);
 			}
+		}
+
+		public static int ToInt(this NumberOfTrailerAxles nrOfAxles)
+		{
+			return Convert.ToInt32(nrOfAxles);
 		}
 
 		public static string ToXMLFormat(this NumberOfTrailerAxles ttype)

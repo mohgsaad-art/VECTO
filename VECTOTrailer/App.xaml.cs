@@ -42,6 +42,8 @@ namespace VECTOTrailer
 		private bool _installModeActivated = false;
 		private string _installIni = "install.ini";
 
+		private MainWindow _mainWindow;
+
 		#region Overrides of Application
 
         protected override void OnStartup(StartupEventArgs e)
@@ -132,12 +134,23 @@ namespace VECTOTrailer
 		private void ShowMainWindow()
 		{
 			var mainWindow = container.Get<MainWindow>();
-			mainWindow.Show();
+			mainWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            if (_trailerToolSettings.GeneralSettings.MainWindowStartMaximized)
+            {
+				mainWindow.SourceInitialized += (_, __) => mainWindow.WindowState = WindowState.Maximized;
+			}
+
+			_mainWindow = mainWindow;
+			
+            mainWindow.Show();
+		
 		}
 
 		protected override void OnExit(ExitEventArgs e)
 		{
 			_pdfCreator.ShutDown();
+			_trailerToolSettings.GeneralSettings.MainWindowStartMaximized =
+				_mainWindow.WindowState == WindowState.Maximized ? true : false;
 			_trailerToolSettings.Save();
 			base.OnExit(e);
 		}

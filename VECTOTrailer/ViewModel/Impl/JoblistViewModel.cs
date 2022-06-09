@@ -208,6 +208,7 @@ namespace VECTOTrailer.ViewModel.Impl
             TrailerToolSettings.SimulationSettings.PropertyChanged += SimulationSettings_PropertyChanged;
 		}
 
+
         private void SimulationSettings_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
 			if (e.PropertyName == nameof(TrailerToolSettings.SimulationSettings.WritePDFReport)) {
@@ -679,7 +680,7 @@ namespace VECTOTrailer.ViewModel.Impl
 			if (viewModel == null)
 				return;
 
-			var window = OutputWindowHelper.CreateOutputWindow(Kernel, viewModel);
+			var window = OutputWindowHelper.CreateOutputWindow(Kernel, viewModel, settings:_trailerToolSettings);
 			window.Show();
 		}
 		
@@ -694,7 +695,8 @@ namespace VECTOTrailer.ViewModel.Impl
 		private void DoNewJobCommand()
 		{
 			var jobEditView = new CompleteTrailerJobViewModel(Kernel, null, _trailerToolSettings);
-			var window = OutputWindowHelper.CreateOutputWindow(Kernel, jobEditView, "New File");
+			var window = OutputWindowHelper.CreateOutputWindow(Kernel, jobEditView, "New File", settings:_trailerToolSettings);
+			
 			window.Show();
 		}
 
@@ -716,7 +718,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 			if (xmlViewModel != null)
 			{
-				var window = OutputWindowHelper.CreateOutputWindow(Kernel, xmlViewModel, xmlViewModel.FileName);
+				var window = OutputWindowHelper.CreateOutputWindow(Kernel, xmlViewModel, xmlViewModel.FileName, settings:_trailerToolSettings);
 				window.Show();
 			}
 		}

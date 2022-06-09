@@ -36,6 +36,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML
 
 		public IInputDataProvider Create(XmlReader inputData)
 		{
+			
 			return ReadXmlDoc(inputData, null);
 		}
 

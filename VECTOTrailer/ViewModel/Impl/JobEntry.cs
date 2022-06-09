@@ -78,6 +78,8 @@ namespace VECTOTrailer.ViewModel.Impl
 			set { SetProperty(ref _missing, value); }
 		}
 
+		
+
 		public string GetAbsoluteFilePath(string propertyFilePath)
 		{
 			if (IsFileName(propertyFilePath)) {
