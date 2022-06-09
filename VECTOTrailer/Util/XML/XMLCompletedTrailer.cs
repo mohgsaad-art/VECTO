@@ -134,7 +134,7 @@ namespace VECTOTrailer.Util.XML
 							new XElement(_v27 + XMLNames.Trailer_TotalHeightTrailer.ToString(CultureInfo.InvariantCulture),
 								trailerData.TotalHeightOfTheTrailer?.ToXMLFormat(3).ToString(CultureInfo.InvariantCulture)),
 							new XElement(_v27 + XMLNames.Trailer_LengthFromFrontToFirstAxle, trailerData.LengthFromFrontToFirstAxle?.ToXMLFormat(3).ToString(CultureInfo.InvariantCulture)),
-							new XElement(_v27 + XMLNames.Trailer_LengthBetweenCentersOfAxles, trailerData.LengthBetweenCentersOfAxles?.ToXMLFormat(3).ToString(CultureInfo.InvariantCulture)),
+							new XElement(_v27 + XMLNames.Trailer_LengthBetweenCentersOfAxles, trailerData.LengthBetweenCentersOfAxles?.ToXMLFormat(3).ToString(CultureInfo.InvariantCulture) ?? "0.000"),
 							new XElement(_v27 + XMLNames.Trailer_CargoVolume, trailerData.CargoVolume?.ToXMLFormat(3).ToString(CultureInfo.InvariantCulture)),
 							new XElement(_v27 + XMLNames.Trailer_VolumeOrientation, trailerData.VolumeOrientation)
 				)
