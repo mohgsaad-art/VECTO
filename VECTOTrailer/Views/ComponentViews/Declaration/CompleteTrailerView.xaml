@@ -25,9 +25,9 @@
         
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="400" />
+            <ColumnDefinition Width="400" />
+            <ColumnDefinition Width="400" />
         </Grid.ColumnDefinitions>
 
 
@@ -37,9 +37,9 @@
             <RowDefinition />
             <RowDefinition />
         </Grid.RowDefinitions>
-
-        <GroupBox Header="Documentation" Grid.Row="1" Grid.Column="1" Width="400" Height="200" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
-            <StackPanel Orientation="Vertical" Width="390" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
+    <!--Width="400" Height="200"-->
+        <GroupBox Header="Documentation" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Grid.IsSharedSizeScope="True" VerticalAlignment="Stretch">
                 <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
 
                     <Grid Margin="5">
@@ -123,9 +123,9 @@
                 </StackPanel>
             </StackPanel>
         </GroupBox>
-
-        <GroupBox Header="Dimensions" Grid.Row="2" Grid.Column="1" Width="400" Height="350" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
-            <StackPanel Orientation="Vertical" Width="390" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
+    <!--Width="400" Height="350"-->
+        <GroupBox Header="Dimensions" Grid.Row="2" Grid.Column="1"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Grid.IsSharedSizeScope="True" VerticalAlignment="Stretch">
                 <!--<StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">-->
 
                     <Grid>
@@ -197,9 +197,9 @@
                 <!--</StackPanel>-->
             </StackPanel>
         </GroupBox>
-
-        <GroupBox Header="Classification" Grid.Row="1" Grid.Column="2" Width="330" Height="200" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
-            <StackPanel Orientation="Vertical" Width="320" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
+    <!--Width="330" Height="200"-->
+        <GroupBox Header="Classification" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
                 <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
                 
                     <Grid Margin="5">
@@ -296,9 +296,9 @@
                 </StackPanel>
             </StackPanel>
         </GroupBox>
-
-        <GroupBox Header="Αero feature technologies" Grid.Row="2" Grid.Column="2" Width="330" Height="350" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
-            <StackPanel Orientation="Vertical" Width="320" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
+    <!--Width="330" Height="350"-->
+        <GroupBox Header="Αero feature technologies" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5">
+            <StackPanel Orientation="Vertical"  HorizontalAlignment="Stretch" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
                 <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
 
                     <RadioButton Margin="0,5,0,0" GroupName="features" Name="standard" IsChecked="{Binding IsStandard}">Standard aerodynamic devices</RadioButton>
@@ -402,9 +402,9 @@
                 </StackPanel>
             </StackPanel>
         </GroupBox>
-
-        <GroupBox Header="Masses" Grid.Row="1" Grid.Column="3" Width="560" Height="200" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5">
-            <StackPanel Orientation="Vertical" Width="540" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
+    <!--Width="560" Height="200"-->
+        <GroupBox Header="Masses" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="5">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
                 <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
                 
                     <Grid>
@@ -437,8 +437,8 @@
             </StackPanel>
         </GroupBox>
 
-        <GroupBox Header="Axle and Tyre Features" Grid.Row="2" Grid.Column="3" Width="560" Height="350" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5" HorizontalContentAlignment="Stretch">
-            <StackPanel Orientation="Vertical" Width="540" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
+        <GroupBox Header="Axle and Tyre Features" Grid.Row="2" Grid.Column="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5" HorizontalContentAlignment="Stretch">
+            <StackPanel Orientation="Vertical" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
                 <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
 
                     <!--#region Axle1 -->
