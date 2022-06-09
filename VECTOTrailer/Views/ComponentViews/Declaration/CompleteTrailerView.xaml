@@ -169,6 +169,7 @@
                             Value="{Binding LengthFromFrontToFirstAxle, 
                                 Converter={converter:SIValueConverter}, 
                                 ConverterParameter=AsMeter|double3, 
+                                
                                 UpdateSourceTrigger=LostFocus, 
                                 NotifyOnValidationError=True}" ValueAlign="right"
                             Unit="m" UnitWidthGroup="unitWidth"/>
@@ -178,9 +179,13 @@
                     <Grid>
                         <customControls:VectoParameterControl
                             Caption="Length between centres of axles" CaptionWidthGroup="lblGWidth"
-                            Value="{Binding LengthBetweenCentersOfAxles, Converter={converter:SIValueConverter}, ConverterParameter=AsMeter|double3}" ValueAlign="right"
+                            Value="{Binding LengthBetweenCentersOfAxles, 
+                                Converter={converter:SIValueConverter}, 
+                                ConverterParameter=AsMeter|double3, 
+                                UpdateSourceTrigger=LostFocus, 
+                                NotifyOnValidationError=True}" ValueAlign="right"
                             Unit="m" UnitWidthGroup="unitWidth" Visibility="{Binding ShowLengthBetweenCentersOfAxles,
-                                Converter={StaticResource BoolToVisibilityConverter}, UpdateSourceTrigger=LostFocus, NotifyOnValidationError=True}"/>
+                                Converter={StaticResource BoolToVisibilityConverter}}"/>
                     </Grid>
 
                     
