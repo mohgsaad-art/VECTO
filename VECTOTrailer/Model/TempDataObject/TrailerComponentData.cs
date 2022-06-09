@@ -62,36 +62,13 @@ namespace VECTOTrailer.Model.TempDataObject
 
 		public ICollection<TrailerAxleViewModel> Axles { get; set; } =
 			new List<TrailerAxleViewModel>();
-		public string Axle1FilePath { get; set; }
-		public string Axle2FilePath { get; set; }
-		public string Axle3FilePath { get; set; }
 
 		public string CertifiedAeroDeviceFilePath { get; set; }
-		public string Axle1Xml{ get; set; }
-		public string Axle2Xml { get; set; }
-		public string Axle3Xml { get; set; }
 
 		public string CertifiedAeroDeviceXml { get; set; }
-		public bool Axle1IsTwin { get; set; }
-		public bool Axle2IsTwin { get; set; }
-		public bool Axle3IsTwin { get; set; }
-		public bool Axle1IsLiftable { get; set; }
-		public bool Axle2IsLiftable { get; set; }
-		public bool Axle3IsLiftable { get; set; }
-		public bool Axle1IsSteered { get; set; }
-		public bool Axle2IsSteered { get; set; }
-		public bool Axle3IsSteered { get; set; }
-		public bool Axle1IsNone { get; set; }
-		public bool Axle2IsNone { get; set; }
-		public bool Axle3IsNone { get; set; }
 		public ICommand SelectAxleXmlCommand { get; set;  }
-		public ICommand SelectSecondAxleXmlCommand { get; set;  }
-		public ICommand SelectThirdAxleXmlCommand { get; set;  }
 
 		public ICommand SelectCertifiedAeroDeviceCommand { get; set; }
-		public JobFileType FirstFileType { get; set;  }
-		public JobFileType SecondFileType { get; set;  }
-		public JobFileType ThirdFileType { get; set;  }
 
 		public JobFileType CertifiedAeroDeviceType { get; set; }
 		public ITrailerDeclarationInputData Trailer { get; set; }
@@ -154,23 +131,7 @@ namespace VECTOTrailer.Model.TempDataObject
 				}
 				viewModel.Axles[i] = Axles.ElementAt(i);
 			}
-			//viewModel.Axle1IsTwin = Axle1IsTwin;
-			//viewModel.Axle2IsTwin = Axle2IsTwin;
-			//viewModel.Axle3IsTwin = Axle3IsTwin;
-			//viewModel.Axle1IsLiftable = Axle1IsLiftable;
-			//viewModel.Axle2IsLiftable = Axle2IsLiftable;
-			//viewModel.Axle3IsLiftable = Axle3IsLiftable;
-			//viewModel.Axle1IsSteered = Axle1IsSteered;
-			//viewModel.Axle2IsSteered = Axle2IsSteered;
-			//viewModel.Axle3IsSteered = Axle3IsSteered;
 
-			////viewModel.Axle1IsNone = !Axle1IsSteered && !Axle1IsLiftable;
-			////viewModel.Axle2IsNone = !Axle2IsSteered && !Axle2IsLiftable;
-			////viewModel.Axle3IsNone = !Axle3IsSteered && !Axle3IsLiftable;
-
-			//viewModel.Axle1Xml = Axle1Xml;
-			//viewModel.Axle2Xml = Axle2Xml;
-			//viewModel.Axle3Xml = Axle3Xml;
 
 			viewModel.CertifiedAeroDeviceXml = CertifiedAeroDeviceXml;
 
@@ -216,7 +177,7 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.ExternalWidthOfTheBody = default;
 			viewModel.TotalHeightOfTheTrailer = default;
 			viewModel.LengthFromFrontToFirstAxle = default;
-			viewModel.LengthBetweenCentersOfAxles = default;
+			viewModel.LengthBetweenCentersOfAxles = null;
 			viewModel.CargoVolume = default;
 			viewModel.NumberOfAxles = NumberOfTrailerAxles.One;
 			viewModel.TrailerType = TypeTrailer.DA;
@@ -341,7 +302,7 @@ namespace VECTOTrailer.Model.TempDataObject
 				{XMLNames.Trailer_TPMLMTotalTrailer, nameof(TPLMTotalTrailer)},
 				{XMLNames.Trailer_TPLMAxleAssembly, nameof(TPLMAxleAssembly)},
 				{XMLNames.Trailer_VolumeOrientation, nameof(VolumeOrientation)},
-				{XMLNames.AxleWheels_Axles, nameof(Axle1FilePath)},
+				{XMLNames.AxleWheels_Axles, nameof(Axles)},
 			};
 		}
 
