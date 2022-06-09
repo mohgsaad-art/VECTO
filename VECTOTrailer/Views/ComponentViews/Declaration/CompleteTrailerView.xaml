@@ -403,7 +403,7 @@
             </StackPanel>
         </GroupBox>
     <!--Width="560" Height="200"-->
-        <GroupBox Header="Masses" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="5">
+        <GroupBox Header="Masses" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
                 <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
                 
