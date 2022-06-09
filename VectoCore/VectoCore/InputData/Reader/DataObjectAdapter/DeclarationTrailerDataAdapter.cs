@@ -1252,6 +1252,10 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 			}
 
+			if (trailer.NumberOfAxles != NumberOfTrailerAxles.One && trailer.LengthBetweenCentersOfAxles <= 0) {
+				errors.Add("Invalid length between centers of axles");
+			}
+
 			//var trailerAxles = trailer.Axles;
 			//if ((trailerAxles ?? throw new InvalidOperationException()).Any(x =>
 			//		x.Tyre.Dimension != trailerAxles.FirstOrDefault()?.Tyre.Dimension)) {
