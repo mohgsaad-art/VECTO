@@ -269,10 +269,10 @@ namespace TUGraz.VectoCore.OutputData.XML
 
 					new XElement(tns + XMLNames.Report_Results_FuelConsumption,
 						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/km"),
-						weightedfcTrailerGram.ToXMLFormat(2)),
+						weightedfcTrailerGram.ToXMLFormat(1)),
 					new XElement(tns + XMLNames.Report_Results_FuelConsumption,
 						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/t-km"),
-						weightedFcTrailerGrammTon.ToXMLFormat(2)),
+						weightedFcTrailerGrammTon.ToXMLFormat(1)),
 					new XElement(tns + XMLNames.Report_Results_FuelConsumption,
 						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/m³-km"),
 						weightedFcTrailerGrammPerCubicMeter.ToXMLFormat(2))
@@ -454,7 +454,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 					new XElement(tns + XMLNames.Trailer_LengthBetweenCentersOfAxles, 
 						modelData.VehicleData.InputDataTrailer.LengthBetweenCentersOfAxles.ToXMLFormat(3)),
 					new XElement(tns + XMLNames.Trailer_CargoVolume, 
-						modelData.VehicleData.InputDataTrailer.CargoVolume.ToXMLFormat(3)),
+						modelData.VehicleData.InputDataTrailer.CargoVolume.ToXMLFormat(1)),
 					new XElement(tns + XMLNames.Trailer_VolumeOrientation, modelData.VehicleData.InputDataTrailer.VolumeOrientation)
 				),
 				aeroFeatures
