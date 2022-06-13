@@ -629,13 +629,15 @@ namespace TUGraz.VectoCore.OutputData.XML
 					),
 					XMLReportHelperTrailer.GetFactorWithAttributes(tns + XMLNames.Efficiency_Ratio,
 						(WeightedCo2Trailer / ReferenceWeightedCo2),
-						XMLNames.Result_RatioType_KilometreBased, 4),
+						XMLNames.Result_RatioType_KilometreBased, 3),
+
 					XMLReportHelperTrailer.GetFactorWithAttributes(tns + XMLNames.Efficiency_Ratio,
 						(weightedCo2Ton / weightedReferenceCo2Ton),
-						XMLNames.Result_RatioType_TonKilometreBased, 4),
+						XMLNames.Result_RatioType_TonKilometreBased, 3),
+
 					XMLReportHelperTrailer.GetFactorWithAttributes(tns + XMLNames.Efficiency_Ratio,
 						(weightedCo2CubicMeter / weightedReferenceCo2CubicMeter).Value(),
-						XMLNames.Result_RatioType_CubicMetre_KilometreBased, 4)
+						XMLNames.Result_RatioType_CubicMetre_KilometreBased, 3)
 				) : null;
 			results.Add(summary);
 			var vehicle = new XElement(VehiclePart);
