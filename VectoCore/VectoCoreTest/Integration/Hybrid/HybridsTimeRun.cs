@@ -45,7 +45,7 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
         TestCase(P4_JOB, 1, 578.1415, 3.2344, 3.9599, TestName = "P4 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
         TestCase(P4_JOB, 2, 747.9616, 8.4186, 9.6123, TestName = "P4 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
 
-        TestCase(P2_5_JOB, 0, 859.5821, 0, 0, TestName = "P2_5 Hybrid TimeRun MeasuredSpeed LongHaul"),
+        TestCase(P2_5_JOB, 0, 859.5821, 3.9588, 7.8261, TestName = "P2_5 Hybrid TimeRun MeasuredSpeed LongHaul"),
         TestCase(P2_5_JOB, 1, 0, 0, 0, TestName = "P2_5 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
         TestCase(P2_5_JOB, 2, 0, 0, 0, TestName = "P2_5 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
 
