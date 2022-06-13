@@ -60,19 +60,21 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		private readonly ExecutionMode _mode;
 		private bool _engineOnlyMode;
 
+		public bool ValidateComponentHashes { get; set; }
 		public SimulatorFactory(ExecutionMode mode, IInputDataProvider dataProvider, IOutputDataWriter writer) : this(mode, dataProvider, writer, null, null, true)
 		{
 			
 		}
 
 		public SimulatorFactory(ExecutionMode mode, IInputDataProvider dataProvider, IOutputDataWriter writer,
-			IDeclarationReport declarationReport = null, IVTPReport vtpReport = null, bool validate = true)
+			IDeclarationReport declarationReport = null, IVTPReport vtpReport = null, bool validate = true, bool validateHashes = false)
 		{
 			Log.Info("########## VectoCore Version {0} ##########", Assembly.GetExecutingAssembly().GetName().Version);
 			JobNumber = Interlocked.Increment(ref _jobNumberCounter);
 			_mode = mode;
 			ModWriter = writer;
 			Validate = validate;
+			ValidateComponentHashes = validateHashes;
 
 			int workerThreads;
 			int completionThreads;
@@ -92,12 +94,18 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				default:
 					throw new VectoException("Unkown factory mode in SimulatorFactory: {0}", mode);
 			}
+
+			////if (ValidateComponentHashes && DataReader.DataProvider is IDeclarationInputDataProvider declDataProvider) {
+			////	declDataProvider.ValidateComponentHashes();
+			////}
+			
 		}
 
 		private void CreateDeclarationDataReader(IInputDataProvider dataProvider, IDeclarationReport declarationReport, IVTPReport vtpReport)
 		{
-			if (dataProvider is IVTPDeclarationInputDataProvider) {
-				var vtpProvider = dataProvider as IVTPDeclarationInputDataProvider;
+			
+
+			if (dataProvider is IVTPDeclarationInputDataProvider vtpProvider) {
 				var report = vtpReport ?? new XMLVTPReport(ModWriter);
 				if (vtpProvider.JobInputData.Vehicle.VehicleCategory.IsLorry()) {
 					DataReader = new DeclarationVTPModeVectoRunDataFactoryLorries(vtpProvider, report);
@@ -108,23 +116,21 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				return;
 			}
 
-			if (dataProvider is ISingleBusInputDataProvider) {
-				var singleBus = dataProvider as ISingleBusInputDataProvider;
+			if (dataProvider is ISingleBusInputDataProvider singleBus) {
 				var report = declarationReport ?? new XMLDeclarationReport(ModWriter);
 				DataReader = new DeclarationModeSingleBusVectoRunDataFactory(singleBus, report);
 				return;
 			}
 
-			if (dataProvider is IDeclarationTrailerInputDataProvider) {
-				var declDataProvider = dataProvider as IDeclarationTrailerInputDataProvider;
-
+			if (dataProvider is IDeclarationTrailerInputDataProvider provider) {
 				var report = declarationReport ?? new XMLDeclarationReportTrailer(ModWriter);
-				DataReader = new DeclarationModeTrailerVectoRunDataFactory(declDataProvider, report);
+				DataReader = new DeclarationModeTrailerVectoRunDataFactory(provider, report);
+				provider.ValidateComponentHashes();
 				return;
 			}
 
-			if (dataProvider is IDeclarationInputDataProvider) {
-				var declDataProvider = dataProvider as IDeclarationInputDataProvider;
+			if (dataProvider is IDeclarationInputDataProvider declDataProvider) {
+				declDataProvider.ValidateComponentHashes();
 				if (declDataProvider.JobInputData.Vehicle.VehicleCategory.IsLorry()) {
 					var report = declarationReport ?? new XMLDeclarationReport(ModWriter);
 					DataReader = new DeclarationModeTruckVectoRunDataFactory(declDataProvider, report);

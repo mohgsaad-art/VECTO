@@ -302,5 +302,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 
 			return GetNextRun();
 		}
+
+		public IInputDataProvider DataProvider => TrailerInputDataProvider;
 	}
 }
