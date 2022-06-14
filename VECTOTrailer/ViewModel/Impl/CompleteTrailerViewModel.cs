@@ -286,7 +286,9 @@ namespace VECTOTrailer.ViewModel.Impl
 
 				if (value == TypeTrailer.DB) {
                     Axles[0].Steered = true;
-					NumberOfAxles = NumberOfTrailerAxles.Two;
+					if (NumberOfAxles.ToInt() < 2) {
+						NumberOfAxles = NumberOfTrailerAxles.Two;
+					}
 				}
 
 				TPMLMAxleAssemblyVisibility = TrailerType != TypeTrailer.DB;
