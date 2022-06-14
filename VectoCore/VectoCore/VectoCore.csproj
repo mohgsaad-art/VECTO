@@ -737,7 +737,7 @@
     <Compile Include="Utils\XMLValidator.cs" />
     <Compile Include="Utils\XPathHelper.cs" />
     <Compile Include="Ninject\VectoNinjectModule.cs" />
-    <Compile Include="VersionNumber1.cs">
+    <Compile Include="VersionNumber.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>VersionNumber.t4</DependentUpon>
@@ -1004,7 +1004,7 @@
     </None>
     <None Include="VersionNumber.t4">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>VersionNumber1.cs</LastGenOutput>
+      <LastGenOutput>VersionNumber.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
