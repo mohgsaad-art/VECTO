@@ -740,22 +740,23 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			var tolerance = (((currentSpeed + nextSpeed) / 2) * 0.001).Abs();
 			MeasuredSpeedDrivingCycle cycle = DataBus.DriverInfo as MeasuredSpeedDrivingCycle;
 
-			if (rs.VehicleTargetSpeed.IsEqual(nextSpeed, tolerance)) {
-				var mustHalt = (DataBus.VehicleInfo.VehicleStopped && currentSpeed.IsEqual(rs.VehicleTargetSpeed));
+			if (DataBus.VehicleInfo.VehicleStopped && currentSpeed.IsEqual(rs.VehicleTargetSpeed)) {
+				cycle.DrivingAction =  DrivingAction.Halt;
+				cycle.DriverBehavior = DrivingBehavior.Halted;
+            }
+			else {
+				if (rs.VehicleTargetSpeed.IsGreater(nextSpeed, tolerance)) {
+					var mustAccelerate = DataBus.GearboxInfo.GearEngaged(DataBus.AbsTime);
 
-				cycle.DrivingAction =  mustHalt ? DrivingAction.Halt : DrivingAction.Roll;
-				cycle.DriverBehavior = mustHalt ? DrivingBehavior.Halted : DrivingBehavior.Driving;
+					cycle.DrivingAction = mustAccelerate ? DrivingAction.Accelerate : DrivingAction.Roll;
+					cycle.DriverBehavior = mustAccelerate ? DrivingBehavior.Accelerating : DrivingBehavior.Driving;
+				}
+				else if (rs.VehicleTargetSpeed.IsSmaller(nextSpeed, tolerance)) {
+					cycle.DrivingAction = DrivingAction.Brake;
+					cycle.DriverBehavior = DrivingBehavior.Braking;
+				}
             }
-			else if (rs.VehicleTargetSpeed.IsGreater(nextSpeed, tolerance)) {
-				var mustAccelerate = DataBus.GearboxInfo.GearEngaged(DataBus.AbsTime);
-
-				cycle.DrivingAction = mustAccelerate ? DrivingAction.Accelerate : DrivingAction.Roll;
-				cycle.DriverBehavior = mustAccelerate ? DrivingBehavior.Accelerating : DrivingBehavior.Driving;
-            }
-			else if (rs.VehicleTargetSpeed.IsSmaller(nextSpeed, tolerance)) {
-				cycle.DrivingAction = DrivingAction.Brake;
-				cycle.DriverBehavior = DrivingBehavior.Braking;
-            }
+			
 		}
 
         public IResponse AmendResponse(IResponse response, Second absTime, Second dt, NewtonMeter outTorque,
