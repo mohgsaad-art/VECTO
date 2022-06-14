@@ -77,7 +77,7 @@ namespace VECTOTrailer.Model.TempDataObject
 		public bool CertifiedAeroDeviceButtonsVisibility { get; set; }
 		public bool CertifiedAeroDeviceNewVisibility { get; set; }
 		public bool TPMLMAxleAssemblyVisibility { get; set; }
-		public bool TrailerCouplingPointVisibility { get; set; }
+		public bool ShowTrailerCouplingPoint { get; set; }
 		public TrailerCouplingPoint TrailerCouplingPoint { get; set; }
 
 		public XDocument SourceDocument { get; }
@@ -159,9 +159,8 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.CertifiedAeroDeviceNewVisibility = CertifiedAeroDeviceNewVisibility;
 
 			viewModel.TPMLMAxleAssemblyVisibility = TPMLMAxleAssemblyVisibility;
-			viewModel.TrailerCouplingPointVisibility = TrailerCouplingPointVisibility;
 
-			viewModel.TrailerCouplingPoint = viewModel.TrailerCouplingPoint;
+			viewModel.TrailerCouplingPoint = TrailerCouplingPoint;
 		}
 
 		public void ClearValues(ICompleteTrailerViewModel viewModel)
@@ -179,9 +178,9 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.LengthFromFrontToFirstAxle = default;
 			viewModel.LengthBetweenCentersOfAxles = null;
 			viewModel.CargoVolume = default;
-			viewModel.NumberOfAxles = NumberOfTrailerAxles.One;
-			viewModel.TrailerType = TypeTrailer.DA;
-			viewModel.BodyCode = BodyWorkCode.Drybody;
+			viewModel.NumberOfAxles = NumberOfTrailerAxles.Unknown;
+			viewModel.TrailerType = TypeTrailer.Unknown;
+			viewModel.BodyCode = BodyWorkCode.Unknown;
 			viewModel.TrailerCouplingPoint = TrailerCouplingPoint.Unknown;
 			viewModel.SideSkirtsShort = false;
 			viewModel.SideSkirtsLong = false;
@@ -218,9 +217,8 @@ namespace VECTOTrailer.Model.TempDataObject
 			viewModel.CertifiedAeroDeviceNewVisibility = true;
 
 			TPMLMAxleAssemblyVisibility = true;
-			TrailerCouplingPointVisibility = true;
 
-			viewModel.TrailerCouplingPoint = TrailerCouplingPoint.Low;
+			viewModel.TrailerCouplingPoint = TrailerCouplingPoint.Unknown;
 		}
 
 		

@@ -270,6 +270,9 @@
     <Compile Include="Views\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\CustomControls\DefaultTextComboBox.xaml.cs">
+      <DependentUpon>DefaultTextComboBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\TrailerJobView.xaml.cs">
       <DependentUpon>TrailerJobView.xaml</DependentUpon>
     </Compile>
@@ -345,6 +348,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\AboutView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CustomControls\DefaultTextComboBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

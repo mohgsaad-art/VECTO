@@ -105,8 +105,8 @@ namespace VECTOTrailer.ViewModel.Impl
 		private bool _certifiedAeroDeviceNewVisibility;
 
 		private bool _tPMLMAxleAssemblyVisibility;
-		private bool _trailerCouplingPointVisibility;
-		private TrailerCouplingPoint _TrailerCouplingPoint;
+		private bool _showShowTrailerCouplingPoint;
+		private TrailerCouplingPoint _trailerCouplingPoint;
 
 
 		#endregion
@@ -282,6 +282,7 @@ namespace VECTOTrailer.ViewModel.Impl
 				if (!SetProperty(ref _trailerType, value)) {
 					return;
 				}
+				OnPropertyChanged(nameof(ShowTrailerCouplingPoint));
 
 				if (value == TypeTrailer.DB) {
                     Axles[0].Steered = true;
@@ -290,13 +291,16 @@ namespace VECTOTrailer.ViewModel.Impl
 
 				TPMLMAxleAssemblyVisibility = TrailerType != TypeTrailer.DB;
 
-				TrailerCouplingPointVisibility = TrailerType is TypeTrailer.DC;
+				
 
-				if(TrailerType != TypeTrailer.DC)
+				if (TrailerType != TypeTrailer.DC) {
 					TrailerCouplingPoint = TrailerCouplingPoint.Unknown;
+				}
 
-				if (TrailerType == TypeTrailer.DB)
-					TPLMAxleAssembly = 0.SI<Kilogram>();
+				if (TrailerType == TypeTrailer.DB) {
+					//TPLMAxleAssembly = 0.SI<Kilogram>();
+				}
+					
 
 				IsDataChanged(_trailerType, _componentData);
 			}
@@ -470,8 +474,14 @@ namespace VECTOTrailer.ViewModel.Impl
 		}
 		public TrailerCouplingPoint TrailerCouplingPoint
 		{
-			get => _TrailerCouplingPoint;
-			set => SetProperty(ref _TrailerCouplingPoint, value);
+			get => _trailerCouplingPoint;
+			set
+			{
+
+				if (SetProperty(ref _trailerCouplingPoint, value)) {
+					IsDataChanged(_trailerCouplingPoint, _componentData);
+				}
+			}
 		}
 
 		public XDocument SourceDocument { get; }
@@ -492,10 +502,9 @@ namespace VECTOTrailer.ViewModel.Impl
 			set => SetProperty(ref _tPMLMAxleAssemblyVisibility, value);
 		}
 
-		public bool TrailerCouplingPointVisibility
+		public bool ShowTrailerCouplingPoint
 		{
-			get => _trailerCouplingPointVisibility;
-			set => SetProperty(ref _trailerCouplingPointVisibility, value);
+			get => TrailerType == TypeTrailer.DC;
 		}
 
 

@@ -51,7 +51,7 @@ namespace VECTOTrailer.ViewModel.Interfaces
 		JobFileType CertifiedAeroDeviceType { get; }
 		Dictionary<string,string> XmlNamesToPropertyMapping { get; }
 		bool TPMLMAxleAssemblyVisibility { get; set; }
-		bool TrailerCouplingPointVisibility { get; set; }
+		bool ShowTrailerCouplingPoint { get; }
 		bool CertifiedAeroDeviceButtonsVisibility { get; set; }
 		bool CertifiedAeroDeviceNewVisibility { get; set; }
 		TrailerCouplingPoint TrailerCouplingPoint { get; set; }
