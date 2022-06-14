@@ -16,7 +16,9 @@
                   SelectedValue="{Binding SelectedValue, ElementName=DefaultTextComboBoxUserControl}"
                   SelectedValuePath="{Binding SelectedValuePath, ElementName=DefaultTextComboBoxUserControl}"
                   DisplayMemberPath="{Binding DisplayMemberPath, ElementName=DefaultTextComboBoxUserControl}"
-                  SelectedItem="{Binding SelectedItem, ElementName=DefaultTextComboBoxUserControl}">
+                  SelectedItem="{Binding SelectedItem, ElementName=DefaultTextComboBoxUserControl}"
+                  SelectedIndex="{Binding SelectedIndex, ElementName=DefaultTextComboBoxUserControl}">
+            
         </ComboBox>
         <TextBox HorizontalAlignment="Left" Background="Transparent"
                      VerticalAlignment="Stretch" VerticalContentAlignment="Center" BorderThickness="0"

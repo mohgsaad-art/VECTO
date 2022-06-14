@@ -35,6 +35,7 @@ namespace VECTOTrailer.Views.CustomControls
 		public static readonly DependencyProperty DefaultTextProperty = DependencyProperty.Register("DefaultText", typeof(string), typeof(DefaultTextComboBox), new PropertyMetadata(default(string)));
 		public static readonly DependencyProperty DisplayMemberPathProperty = DependencyProperty.Register("DisplayMemberPath", typeof(string), typeof(DefaultTextComboBox), new PropertyMetadata(default(string)));
 		public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register("SelectedItem", typeof(object), typeof(DefaultTextComboBox), new PropertyMetadata(default(object)));
+		public static readonly DependencyProperty SelectedIndexProperty = DependencyProperty.Register("SelectedIndex", typeof(int), typeof(DefaultTextComboBox), new PropertyMetadata(default(int)));
 
 		public DefaultTextComboBox()
         {
@@ -94,6 +95,12 @@ namespace VECTOTrailer.Views.CustomControls
 		{
 			get { return (object)GetValue(SelectedItemProperty); }
 			set { SetValue(SelectedItemProperty, value); }
+		}
+
+		public int SelectedIndex
+		{
+			get { return (int)GetValue(SelectedIndexProperty); }
+			set { SetValue(SelectedIndexProperty, value); }
 		}
 	}
 }
