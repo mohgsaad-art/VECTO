@@ -805,15 +805,15 @@ ResultDataSignature:before{
 	}
 
 
-Signature { 
+/*Signature { 
 	display: block; 
 	border: 2px solid #1f6032;
 	border-top:0px;
 	padding:5px;
 	margin: 0px 5px 0px 5px; 
 	text-align: center;
-}
-Signature:before{
+}*/
+VectoCustomerInformation > Signature:before{
 	content:
 		"Cryptographic hash customer information file:";
 	font-weight: bold;
@@ -821,6 +821,15 @@ Signature:before{
 	padding: 0px 5px 5px 0px;
 	display: block;
 	text-align: left;
+}
+
+VectoCustomerInformation > Signature, VectoOutput > Signature { 
+	display: block; 
+	border: 2px solid #1f6032;
+	border-top:0px;
+	padding:5px;
+	margin: 0px 5px 0px 5px; 
+	text-align: center;
 }
 
 Signature DigestValue, ResultDataSignature DigestValue {
@@ -831,5 +840,10 @@ Signature DigestValue, ResultDataSignature DigestValue {
 
 VectoOutput > Signature:before {
 	content: "Cryptographic hash manufacturer's records file:";
+	font-weight: bold;
+	color: #1f6032;
+	padding: 0px 5px 5px 0px;
+	display: block;
+	text-align: left;
 }
 
