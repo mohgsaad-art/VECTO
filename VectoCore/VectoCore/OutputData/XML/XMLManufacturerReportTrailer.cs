@@ -484,7 +484,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 										axle.Tyre
 										.FuelEfficiencyClass) : null,
 								new XElement(tns + "Hash",
-										axle.Tyre.GetHashCode())
+										axle.Tyre.DigestValue.DigestValue)
 						))
 					));
 			}
