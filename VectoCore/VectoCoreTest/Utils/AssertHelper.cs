@@ -186,9 +186,9 @@ namespace TUGraz.VectoCore.Tests.Utils
 				double distanceResult;
 				Assert.IsTrue(double.TryParse(distanceRow[metric.Key].ToString(), out distanceResult));
 
-				double deviation = ((Math.Abs(result) - Math.Abs(distanceResult)) / Math.Abs(distanceResult)) * 100;
+				double deviation = ((result - distanceResult) / distanceResult) * 100;
 
-				double expectedDeviation = ((Math.Abs(metric.Value) - Math.Abs(distanceResult)) / Math.Abs(distanceResult)) * 100;
+				double expectedDeviation = ((metric.Value - distanceResult) / distanceResult) * 100;
 
 				TestContext.WriteLine($"Distance run deviation of {metric.Key} = {deviation.ToString("N2")} %   (expected = {expectedDeviation.ToString("N2")} %)");
             }

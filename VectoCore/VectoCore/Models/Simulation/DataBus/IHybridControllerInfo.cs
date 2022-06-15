@@ -24,5 +24,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent
 	public interface IHybridControllerCtl
 	{
 		void RepeatDrivingAction(Second absTime);
+
+		IHybridControlStrategy Strategy { get; }
 	}
 }

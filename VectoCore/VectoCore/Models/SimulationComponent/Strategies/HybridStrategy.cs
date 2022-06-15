@@ -473,8 +473,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 		protected TestPowertrain<T> TestPowertrain;
 
-		protected readonly VelocityRollingLookup VelocityDropData = new VelocityRollingLookup();
-
+		public VelocityRollingLookup VelocityDropData { get; } = new VelocityRollingLookup();
 
 		protected StrategyState CurrentState = new StrategyState();
 		protected StrategyState PreviousState = new StrategyState();
@@ -563,6 +562,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 		public bool AllowEmergencyShift { protected get; set; }
 
+		public event Action GearShiftTriggered;
 
 		public virtual IHybridStrategyResponse Request(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, bool dryRun)
 		{
@@ -634,8 +634,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				return tmp;
 			}
 
-			DetermineDriverAction();
-
 			var eval = new List<HybridResultEntry>();
 
 			switch (DataBus.DriverInfo.DrivingAction) {
@@ -703,61 +701,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				DryRunSolution = null;
 				CurrentState.GearshiftTriggerTstmp = absTime;
 
-				// MeasuredSpeedDrivingCycle: Set driving action to 'Roll' when changing gear. 
-				if ((DataBus.DriverInfo is MeasuredSpeedDrivingCycle) && (DataBus.DriverInfo.DrivingAction == DrivingAction.Accelerate)) {
-					MeasuredSpeedDrivingCycle cycle = DataBus.DriverInfo as MeasuredSpeedDrivingCycle;
-					cycle.DrivingAction = DrivingAction.Roll;
-					cycle.DriverBehavior = DrivingBehavior.Driving;
-				}
+				GearShiftTriggered?.Invoke();
 			}
 
 			DebugData.Add("AHS.R", new { DataBus.DriverInfo.DrivingAction, Evaluations = eval, 
 				Best = best, RetVal = retVal, DryRun = dryRun });
 			return retVal;
         }
-
-        protected void DetermineDriverAction()
-        { 
-			if (!(DataBus.DriverInfo is MeasuredSpeedDrivingCycle) || !VelocityDropData.Valid) {
-				return;
-			}
-			
-			var currentSpeed = DataBus.VehicleInfo.VehicleSpeed;
-			
-			var rs = DataBus.DrivingCycleInfo.CycleData.RightSample;
-			var deltaT = rs.Time - DataBus.AbsTime;
-
-			var interruptionSpeed = VelocityDropData.Interpolate(currentSpeed, DataBus.DrivingCycleInfo.RoadGradient ?? 0.SI<Radian>());
-			var nextSpeed = interruptionSpeed;
-
-			if (ModelData.GearboxData.TractionInterruption > deltaT) {
-				//Linear interpolation: currSpeed, interruptionSpeed
-				//x0: DataBus.AbsTime, y0: currSpeed, x1: interruptionTime, y1: interruptionSpeed, x: rs.Time
-				var interruptionTime = DataBus.AbsTime + ModelData.GearboxData.TractionInterruption;
-				nextSpeed = ( ( currentSpeed * (interruptionTime - rs.Time) ) + (interruptionSpeed * deltaT) ) / (interruptionTime - DataBus.AbsTime);
-            }
-			
-			var tolerance = (((currentSpeed + nextSpeed) / 2) * 0.001).Abs();
-			MeasuredSpeedDrivingCycle cycle = DataBus.DriverInfo as MeasuredSpeedDrivingCycle;
-
-			if (DataBus.VehicleInfo.VehicleStopped && currentSpeed.IsEqual(rs.VehicleTargetSpeed)) {
-				cycle.DrivingAction =  DrivingAction.Halt;
-				cycle.DriverBehavior = DrivingBehavior.Halted;
-            }
-			else {
-				if (rs.VehicleTargetSpeed.IsGreater(nextSpeed, tolerance)) {
-					var mustAccelerate = DataBus.GearboxInfo.GearEngaged(DataBus.AbsTime);
-
-					cycle.DrivingAction = mustAccelerate ? DrivingAction.Accelerate : DrivingAction.Roll;
-					cycle.DriverBehavior = mustAccelerate ? DrivingBehavior.Accelerating : DrivingBehavior.Driving;
-				}
-				else if (rs.VehicleTargetSpeed.IsSmaller(nextSpeed, tolerance)) {
-					cycle.DrivingAction = DrivingAction.Brake;
-					cycle.DriverBehavior = DrivingBehavior.Braking;
-				}
-            }
-			
-		}
 
         public IResponse AmendResponse(IResponse response, Second absTime, Second dt, NewtonMeter outTorque,
 			PerSecond outAngularVelocity, bool dryRun)
