@@ -647,7 +647,7 @@ namespace VECTOTrailer.Model.Simulation
 					}
 
 					var fileWriter = new FileOutputWriter(fullFileName);
-					var runsFactory = new SimulatorFactory(mode, input, fileWriter) {
+					var runsFactory = new SimulatorFactory(mode, input, fileWriter, validateHashes:true) {
 						WriteModalResults = WriteModData,
 						ModalResults1Hz = false,//;WriteModData1Hz,
 						Validate = false, //ValidateData,

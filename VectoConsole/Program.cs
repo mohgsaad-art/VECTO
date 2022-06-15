@@ -230,7 +230,7 @@ Examples:
 					}
 
 					fileWriter = new FileOutputWriter(file);
-					var runsFactory = new SimulatorFactory(mode, dataProvider, fileWriter) {
+					var runsFactory = new SimulatorFactory(mode, dataProvider, fileWriter, validateHashes:true) {
 						ModalResults1Hz = args.Contains("-1Hz"),
 						WriteModalResults = args.Contains("-mod"),
 						ActualModalData = args.Contains("-act"),

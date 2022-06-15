@@ -1197,7 +1197,7 @@ namespace VECTOTrailer.ViewModel.Impl
 					}
 
 					var fileWriter = new FileOutputWriter(GetOutputDirectory(fullFileName));
-					var runsFactory = new SimulatorFactory(mode, input, fileWriter) {
+					var runsFactory = new SimulatorFactory(mode, input, fileWriter, validateHashes:true) {
 						WriteModalResults = _trailerToolSettings.SimulationSettings.WriteModData,
 						//ModalResults1Hz = WriteModData1Hz,
 						//Validate = ValidateData,
