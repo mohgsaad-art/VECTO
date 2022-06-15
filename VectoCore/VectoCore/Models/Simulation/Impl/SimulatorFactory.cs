@@ -61,7 +61,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		private bool _engineOnlyMode;
 
 		public bool ValidateComponentHashes { get; set; }
-		public SimulatorFactory(ExecutionMode mode, IInputDataProvider dataProvider, IOutputDataWriter writer) : this(mode, dataProvider, writer, null, null, true)
+		public SimulatorFactory(ExecutionMode mode, IInputDataProvider dataProvider, IOutputDataWriter writer) : this(mode, dataProvider, writer, null, null, true, false)
 		{
 			
 		}
@@ -125,7 +125,9 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			if (dataProvider is IDeclarationTrailerInputDataProvider provider) {
 				var report = declarationReport ?? new XMLDeclarationReportTrailer(ModWriter);
 				DataReader = new DeclarationModeTrailerVectoRunDataFactory(provider, report);
-				provider.ValidateComponentHashes();
+				if (ValidateComponentHashes) {
+					provider.ValidateComponentHashes();
+				}
 				return;
 			}
 
