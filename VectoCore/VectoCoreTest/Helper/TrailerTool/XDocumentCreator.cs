@@ -88,7 +88,7 @@ namespace TUGraz.VectoCore.Tests.Helper.TrailerTool
 			var lengthBetweenCentresOfAxles = xElements.Single(xElement =>
 				xElement.Name.LocalName == XMLNames.Trailer_LengthBetweenCentersOfAxles);
 			if (numberOfTrailerAxles == NumberOfTrailerAxles.One) {
-				lengthBetweenCentresOfAxles.Remove();
+				//lengthBetweenCentresOfAxles.Remove();
 			} else {
 				lengthBetweenCentresOfAxles.Value = "9.999";
 			}
