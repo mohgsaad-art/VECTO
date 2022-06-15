@@ -132,7 +132,9 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			}
 
 			if (dataProvider is IDeclarationInputDataProvider declDataProvider) {
-				declDataProvider.ValidateComponentHashes();
+				if (ValidateComponentHashes) {
+					declDataProvider.ValidateComponentHashes();
+				}
 				if (declDataProvider.JobInputData.Vehicle.VehicleCategory.IsLorry()) {
 					var report = declarationReport ?? new XMLDeclarationReport(ModWriter);
 					DataReader = new DeclarationModeTruckVectoRunDataFactory(declDataProvider, report);
