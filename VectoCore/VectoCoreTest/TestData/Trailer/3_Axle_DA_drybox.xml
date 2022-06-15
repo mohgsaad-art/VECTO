@@ -38,7 +38,9 @@
           <AeroReductionYawAngle3>2.00</AeroReductionYawAngle3>
           <AeroReductionYawAngle6>3.00</AeroReductionYawAngle6>
           <AeroReductionYawAngle9>4.00</AeroReductionYawAngle9>
-          <ApplicableVehicleGroupAnnex1>31101</ApplicableVehicleGroupAnnex1>
+          <ApplicableVehicleGroups>
+            <ApplicableVehicleGroup>132</ApplicableVehicleGroup>
+          </ApplicableVehicleGroups>
         </Data>
         <Signature>
           <di:Reference URI="#AERO-asdf">

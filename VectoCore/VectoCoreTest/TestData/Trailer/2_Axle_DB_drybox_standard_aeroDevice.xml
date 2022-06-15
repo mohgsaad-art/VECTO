@@ -14,7 +14,6 @@
     <Masses>
       <CorrectedMassInRunningOrder>5100</CorrectedMassInRunningOrder>
       <TPMLMTrailer>18000</TPMLMTrailer>
-      <TPMLMAxleAssembly>0</TPMLMAxleAssembly>
     </Masses>
     <Dimensions>
       <ExternalLengthBody>7.400</ExternalLengthBody>
@@ -28,7 +27,7 @@
     </Dimensions>
     <AeroFeatures>
       <Technology>short side covers</Technology>
-      <Technology>long rear flaps</Technology>
+      <Technology>tall rear flaps</Technology>
     </AeroFeatures>
     <AxleWheels>
       <Data xsi:type="v2.7:TrailerAxleWheelsDataDeclarationType">
