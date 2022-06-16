@@ -571,74 +571,127 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			return container;
 		}
 
-		private IVehicleContainer BuildMeasuredSpeedHybrid(VectoRunData data)
-		{
-			if (data.Cycle.CycleType != CycleType.MeasuredSpeed)
-			{
-				throw new VectoException("CycleType must be MeasuredSpeed");
+		private void VerifyCycleType(VectoRunData data, CycleType cycleType)
+        {
+			if (data.Cycle.CycleType != cycleType) {
+				throw new VectoException("CycleType must be {cycleType}.");
 			}
+		}
 
-			var container = new VehicleContainer(data.ExecutionMode, _modData, _sumWriter) { RunData = data };
-			var es = new ElectricSystem(container);
-
-			if (data.BatteryData != null)
-			{
-				if (data.BatteryData.InitialSoC < data.BatteryData.Batteries.Min(x => x.Item2.MinSOC))
-				{
+		private void AddBatterySystem<TBattery, TBatterySystem>(VectoRunData data, VehicleContainer container, ElectricSystem es) 
+			 where TBattery : Battery where TBatterySystem : GenericBatterySystem<TBattery>
+        {
+			if (data.BatteryData != null) {
+				if (data.BatteryData.InitialSoC < data.BatteryData.Batteries.Min(x => x.Item2.MinSOC)) {
 					throw new VectoException("Battery: Initial SoC has to be higher than min SoC");
 				}
-				var battery = new BatterySystem(container, data.BatteryData);
+
+				var battery = (TBatterySystem) Activator.CreateInstance(typeof(TBatterySystem), new object[] { container,  data.BatteryData });
 				battery.Initialize(data.BatteryData.InitialSoC);
 				es.Connect(battery);
 			}
+		}
 
-			if (data.SuperCapData != null)
-			{
-				if (data.SuperCapData.InitialSoC < data.SuperCapData.MinVoltage / data.SuperCapData.MaxVoltage)
-				{
+		private void AddSuperCapacitor(VectoRunData data, VehicleContainer container, ElectricSystem es)
+		{
+			if (data.SuperCapData != null) {
+				if (data.SuperCapData.InitialSoC < data.SuperCapData.MinVoltage / data.SuperCapData.MaxVoltage) {
 					throw new VectoException("SuperCap: Initial SoC has to be higher than min SoC");
 				}
+
 				var superCap = new SuperCap(container, data.SuperCapData);
 				superCap.Initialize(data.SuperCapData.InitialSoC);
 				es.Connect(superCap);
 			}
+        }
 
-
+		private void AddElectricAuxiliary(VectoRunData data, VehicleContainer container, ElectricSystem es)
+		{
 			var aux = new ElectricAuxiliary(container);
 			aux.AddConstant("P_aux_el", data.ElectricAuxDemand ?? 0.SI<Watt>());
 			es.Connect(aux);
+        }
 
-			HybridController ctl;
+		private SwitchableClutch AddClutch(VectoRunData data, VehicleContainer container)
+		{
 			SwitchableClutch clutch = null;
-			if (data.GearboxData.Type.ManualTransmission())
-			{
-				var strategy = new HybridStrategy(data, container);
+
+			if (data.GearboxData.Type.ManualTransmission()) {
 				clutch = new SwitchableClutch(container, data.EngineData);
-
-				ctl = new HybridController(container, strategy, es);
-			} else {
-				var strategy = new HybridStrategyAT(data, container);
-
-				ctl = new HybridController(container, strategy, es);
+			} 
+			else {
 				new ATClutchInfo(container);
 			}
 
+			return clutch;
+        }
+
+        private void AddBusAuxiliaries(VectoRunData data, VehicleContainer container, ElectricSystem es)
+        {
+			if (data.BusAuxiliaries == null) {
+				return;
+			}
+			
+			if (!(container.BusAux is BusAuxiliariesAdapter busAux)) {
+				throw new VectoException("BusAux data set but no BusAux component found!");
+			}
+			
+			var auxCfg = data.BusAuxiliaries;
+
+			var electricStorage = auxCfg.ElectricalUserInputsConfig.AlternatorType == AlternatorType.Smart
+				? new SimpleBattery(container, auxCfg.ElectricalUserInputsConfig.ElectricStorageCapacity, auxCfg.ElectricalUserInputsConfig.StoredEnergyEfficiency)
+				: (ISimpleBattery)new NoBattery(container);
+
+			busAux.ElectricStorage = electricStorage;
+
+			if (data.BusAuxiliaries.ElectricalUserInputsConfig.ConnectESToREESS) {
+				var dcdc = new DCDCConverter(container, data.BusAuxiliaries.ElectricalUserInputsConfig.DCDCEfficiency);
+				busAux.DCDCConverter = dcdc;
+				es.Connect(dcdc);
+			}
+        }
+
+        private void SetIdleControllerForHybridP1(VectoRunData data, IGearbox gearbox, IIdleController idleController, SwitchableClutch clutch)
+        { 
+			if (data.ElectricMachinesData.Any(x => x.Item1 == PowertrainPosition.HybridP1)) {
+				if (gearbox is ATGearbox atGbx) {
+					atGbx.IdleController = idleController;
+				} 
+				else {
+					clutch.IdleController = idleController;
+				}
+			}
+		}
+
+        private IVehicleContainer BuildMeasuredSpeedHybrid(VectoRunData data)
+		{
+			VerifyCycleType(data, CycleType.MeasuredSpeed);
+
+			var container = new VehicleContainer(data.ExecutionMode, _modData, _sumWriter) { RunData = data };
+			var es = new ElectricSystem(container);
+
+			AddBatterySystem<Battery, BatterySystem>(data, container, es);
+			AddSuperCapacitor(data, container, es);
+			AddElectricAuxiliary(data, container, es);
+
+			SwitchableClutch clutch = AddClutch(data, container);
+
+			var strategy = data.GearboxData.Type.ManualTransmission() 
+				? (IHybridControlStrategy) new HybridStrategy(data, container)
+				: (IHybridControlStrategy) new HybridStrategyAT(data, container);
+			
+			HybridController ctl = new HybridController(container, strategy, es);
+
 			// add engine before gearbox so that gearbox can obtain if an ICE is available already in constructor
 			var engine = new StopStartCombustionEngine(container, data.EngineData);
-
 			var gearbox = GetGearbox(container, ctl.ShiftStrategy);
-			var gbx = gearbox as IHybridControlledGearbox;
-			if (gbx == null)
-			{
-				throw new VectoException("Gearbox can not be used for parallel hybrid");
-			}
-
 			var idleController = GetIdleController(data.PTO, engine, container);
-
-			ctl.Gearbox = gbx;
+			
+			ctl.Gearbox = gearbox as IHybridControlledGearbox;
 			ctl.Engine = engine;
 
 			var cycle = new MeasuredSpeedDrivingCycle(container, data.Cycle);
+
 			cycle
 				.AddComponent(new Vehicle(container, data.VehicleData, data.AirdragData))
 				.AddComponent(new Wheels(container, data.VehicleData.DynamicTyreRadius, data.VehicleData.WheelsInertia))
@@ -658,39 +711,11 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				.AddComponent(engine, idleController)
 				.AddAuxiliaries(container, data);
 
-			if (data.ElectricMachinesData.Any(x => x.Item1 == PowertrainPosition.HybridP1))
-			{
-				if (gearbox is ATGearbox atGbx)
-				{
-					atGbx.IdleController = idleController;
-				} else {
-					clutch.IdleController = idleController;
-				}
-			}
+			SetIdleControllerForHybridP1(data, gearbox, idleController, clutch);
 
 			cycle.IdleController = idleController as IdleControllerSwitcher;
 
-			if (data.BusAuxiliaries != null)
-			{
-				if (container.BusAux is BusAuxiliariesAdapter busAux)
-				{
-					var auxCfg = data.BusAuxiliaries;
-					var electricStorage = auxCfg.ElectricalUserInputsConfig.AlternatorType == AlternatorType.Smart
-						? new SimpleBattery(container, auxCfg.ElectricalUserInputsConfig.ElectricStorageCapacity, auxCfg.ElectricalUserInputsConfig.StoredEnergyEfficiency)
-						: (ISimpleBattery)new NoBattery(container);
-					busAux.ElectricStorage = electricStorage;
-					if (data.BusAuxiliaries.ElectricalUserInputsConfig.ConnectESToREESS)
-					{
-						var dcdc = new DCDCConverter(container,
-							data.BusAuxiliaries.ElectricalUserInputsConfig.DCDCEfficiency);
-						busAux.DCDCConverter = dcdc;
-						es.Connect(dcdc);
-					}
-
-				} else {
-					throw new VectoException("BusAux data set but no BusAux component found!");
-				}
-			}
+			AddBusAuxiliaries(data, container, es);
 
 			return container;
 		}
