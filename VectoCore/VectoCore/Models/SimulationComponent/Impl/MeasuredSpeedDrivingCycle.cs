@@ -101,8 +101,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			};
 			CurrentState = PreviousState.Clone();
 
-			AbsTime = Data.Entries.First().Time;
-
 			RunData = container.RunData;
 		}
 
@@ -274,12 +272,17 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		
         private void DetermineDriverActionForPHEV(Second absTime)
         { 
-			if (DataBus.GearboxInfo.GearboxType.AutomaticTransmission()) {
-				DetermineDriverActionWhenUsingAutomaticTransmission(absTime);	
+			if (DataBus.HybridControllerCtl != null) {
+				if (DataBus.GearboxInfo.GearboxType.AutomaticTransmission()) {
+					DetermineDriverActionWhenUsingAutomaticTransmission(absTime);	
+				}
+				else {
+					DetermineDriverActionWhenUsingManualTransmission(absTime);
+				}
 			}
 			else {
-				DetermineDriverActionWhenUsingManualTransmission(absTime);
-            }
+				DetermineDriverActionForOther();
+            }	
 		}
 
         private void DetermineDriverActionForBEV(Second absTime)
@@ -366,7 +369,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			return nextSpeed;
 		}
-
 
         private IResponse HandleUnderload(Second absTime, Second dt, ResponseUnderload r,
 			Radian gradient, ref MeterPerSquareSecond acceleration)

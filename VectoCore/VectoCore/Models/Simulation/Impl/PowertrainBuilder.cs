@@ -571,6 +571,64 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			return container;
 		}
 
+		
+        private IVehicleContainer BuildMeasuredSpeedHybrid(VectoRunData data)
+		{
+			VerifyCycleType(data, CycleType.MeasuredSpeed);
+
+			var container = new VehicleContainer(data.ExecutionMode, _modData, _sumWriter) { RunData = data };
+			var es = new ElectricSystem(container);
+
+			AddBatterySystem<Battery, BatterySystem>(data, container, es);
+			AddSuperCapacitor(data, container, es);
+			AddElectricAuxiliary(data, container, es);
+
+			SwitchableClutch clutch = AddClutch(data, container);
+
+			var strategy = data.GearboxData.Type.ManualTransmission() 
+				? (IHybridControlStrategy) new HybridStrategy(data, container)
+				: (IHybridControlStrategy) new HybridStrategyAT(data, container);
+			
+			HybridController ctl = new HybridController(container, strategy, es);
+
+			// add engine before gearbox so that gearbox can obtain if an ICE is available already in constructor
+			var engine = new StopStartCombustionEngine(container, data.EngineData);
+			var gearbox = GetGearbox(container, ctl.ShiftStrategy);
+			var idleController = GetIdleController(data.PTO, engine, container);
+			
+			ctl.Gearbox = gearbox as IHybridControlledGearbox;
+			ctl.Engine = engine;
+
+			var cycle = new MeasuredSpeedDrivingCycle(container, data.Cycle);
+
+			cycle
+				.AddComponent(new Vehicle(container, data.VehicleData, data.AirdragData))
+				.AddComponent(new Wheels(container, data.VehicleData.DynamicTyreRadius, data.VehicleData.WheelsInertia))
+				.AddComponent(ctl)
+				.AddComponent(new Brakes(container))
+				.AddComponent(GetElectricMachine(PowertrainPosition.HybridP4, data.ElectricMachinesData, container, es, ctl))
+				.AddComponent(new AxleGear(container, data.AxleGearData))
+				.AddComponent(GetElectricMachine(PowertrainPosition.HybridP3, data.ElectricMachinesData, container, es, ctl))
+				.AddComponent(data.AngledriveData != null ? new Angledrive(container, data.AngledriveData) : null)
+				.AddComponent(GetRetarder(RetarderType.TransmissionOutputRetarder, data.Retarder, container))
+				.AddComponent(gearbox)
+				.AddComponent(GetRetarder(RetarderType.TransmissionInputRetarder, data.Retarder, container))
+				.AddComponent(GetElectricMachine(PowertrainPosition.HybridP2_5, data.ElectricMachinesData, container, es, ctl))
+				.AddComponent(GetElectricMachine(PowertrainPosition.HybridP2, data.ElectricMachinesData, container, es, ctl))
+				.AddComponent(clutch)
+				.AddComponent(GetElectricMachine(PowertrainPosition.HybridP1, data.ElectricMachinesData, container, es, ctl))
+				.AddComponent(engine, idleController)
+				.AddAuxiliaries(container, data);
+
+			SetIdleControllerForHybridP1(data, gearbox, idleController, clutch);
+
+			cycle.IdleController = idleController as IdleControllerSwitcher;
+
+			AddBusAuxiliaries(data, container, es);
+
+			return container;
+		}
+
 		private void VerifyCycleType(VectoRunData data, CycleType cycleType)
         {
 			if (data.Cycle.CycleType != cycleType) {
@@ -663,62 +721,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			}
 		}
 
-        private IVehicleContainer BuildMeasuredSpeedHybrid(VectoRunData data)
-		{
-			VerifyCycleType(data, CycleType.MeasuredSpeed);
-
-			var container = new VehicleContainer(data.ExecutionMode, _modData, _sumWriter) { RunData = data };
-			var es = new ElectricSystem(container);
-
-			AddBatterySystem<Battery, BatterySystem>(data, container, es);
-			AddSuperCapacitor(data, container, es);
-			AddElectricAuxiliary(data, container, es);
-
-			SwitchableClutch clutch = AddClutch(data, container);
-
-			var strategy = data.GearboxData.Type.ManualTransmission() 
-				? (IHybridControlStrategy) new HybridStrategy(data, container)
-				: (IHybridControlStrategy) new HybridStrategyAT(data, container);
-			
-			HybridController ctl = new HybridController(container, strategy, es);
-
-			// add engine before gearbox so that gearbox can obtain if an ICE is available already in constructor
-			var engine = new StopStartCombustionEngine(container, data.EngineData);
-			var gearbox = GetGearbox(container, ctl.ShiftStrategy);
-			var idleController = GetIdleController(data.PTO, engine, container);
-			
-			ctl.Gearbox = gearbox as IHybridControlledGearbox;
-			ctl.Engine = engine;
-
-			var cycle = new MeasuredSpeedDrivingCycle(container, data.Cycle);
-
-			cycle
-				.AddComponent(new Vehicle(container, data.VehicleData, data.AirdragData))
-				.AddComponent(new Wheels(container, data.VehicleData.DynamicTyreRadius, data.VehicleData.WheelsInertia))
-				.AddComponent(ctl)
-				.AddComponent(new Brakes(container))
-				.AddComponent(GetElectricMachine(PowertrainPosition.HybridP4, data.ElectricMachinesData, container, es, ctl))
-				.AddComponent(new AxleGear(container, data.AxleGearData))
-				.AddComponent(GetElectricMachine(PowertrainPosition.HybridP3, data.ElectricMachinesData, container, es, ctl))
-				.AddComponent(data.AngledriveData != null ? new Angledrive(container, data.AngledriveData) : null)
-				.AddComponent(GetRetarder(RetarderType.TransmissionOutputRetarder, data.Retarder, container))
-				.AddComponent(gearbox)
-				.AddComponent(GetRetarder(RetarderType.TransmissionInputRetarder, data.Retarder, container))
-				.AddComponent(GetElectricMachine(PowertrainPosition.HybridP2_5, data.ElectricMachinesData, container, es, ctl))
-				.AddComponent(GetElectricMachine(PowertrainPosition.HybridP2, data.ElectricMachinesData, container, es, ctl))
-				.AddComponent(clutch)
-				.AddComponent(GetElectricMachine(PowertrainPosition.HybridP1, data.ElectricMachinesData, container, es, ctl))
-				.AddComponent(engine, idleController)
-				.AddAuxiliaries(container, data);
-
-			SetIdleControllerForHybridP1(data, gearbox, idleController, clutch);
-
-			cycle.IdleController = idleController as IdleControllerSwitcher;
-
-			AddBusAuxiliaries(data, container, es);
-
-			return container;
-		}
 
 		/// <summary>
 		/// Builds a distance-based serial hybrid powertrain for either E4, E3, or E2.
