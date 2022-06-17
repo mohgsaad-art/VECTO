@@ -196,34 +196,6 @@ namespace TUGraz.VectoCore.Tests.Utils
 			TestContext.WriteLine();
 		}
 
-        public static void ReportDeviations(String distanceSumPath, int distanceSumRow, SimulatorFactory factory, 
-			Dictionary<String, double> metrics)
-        { 
-			String sumFilePath = WriteSumFile(factory);
-
-			var table = VectoCSVFile.Read(sumFilePath, true, true);
-			var row = table.Rows[0];
-
-			var distanceTable = VectoCSVFile.Read(distanceSumPath, true, true);
-			var distanceRow = distanceTable.Rows[distanceSumRow];
-		
-			foreach (var metric in metrics) {
-				double result;
-				Assert.IsTrue(double.TryParse(row[metric.Key].ToString(), out result));
-
-				double distanceResult;
-				Assert.IsTrue(double.TryParse(distanceRow[metric.Key].ToString(), out distanceResult));
-
-				double deviation = ((result - distanceResult) / distanceResult) * 100;
-
-				double expectedDeviation = ((metric.Value - distanceResult) / distanceResult) * 100;
-
-				TestContext.WriteLine($"Distance run deviation of {metric.Key} = {deviation.ToString("N2")} %   (expected = {expectedDeviation.ToString("N2")} %)");
-            }
-
-			TestContext.WriteLine();
-		}
-
         public static void AssertMetrics(SimulatorFactory factory, Dictionary<String, double> metrics)
         {
 			String sumFilePath = WriteSumFile(factory);

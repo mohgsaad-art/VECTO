@@ -50,7 +50,10 @@
     "Cycles": [
       "MeasuredSpeed_LongHaul.vdri",
       "MeasuredSpeed_RegionalDelivery.vdri",
-      "MeasuredSpeed_UrbanDelivery.vdri"
+      "MeasuredSpeed_UrbanDelivery.vdri",
+      "LongHaul",
+      "RegionalDelivery",
+      "UrbanDelivery"
     ]
   }
 }
