@@ -136,7 +136,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			if (gear.Gear == 0) {
 				gear = DataBus.GearboxInfo.NextGear;
 			}
-			var ratio = TransmissionRatioPerGear[gear.Gear - 1];
+			var ratio = (gear.Gear > 0) ? TransmissionRatioPerGear[gear.Gear - 1] : 1;
 			return DoHandleRequest(absTime, dt, outTorque * ratio, outAngularVelocity / ratio, dryRun, ratio);
 		}
 
