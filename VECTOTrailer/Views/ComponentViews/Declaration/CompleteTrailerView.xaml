@@ -303,8 +303,11 @@
                             <ColumnDefinition SharedSizeGroup="unitWidth"/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Column="0" Text="Volume Orientation" Margin="0,0,10,0"/>
-                        <CheckBox Grid.Column="1" IsChecked="{Binding VolumeOrientation}" Margin="20,0,0,0"/>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Grid.Column="0" Text="Volume Orientation" Margin="0,0,0,0"/>
+                            <TextBlock Grid.Column="0" Text="(see Annex I, point 1(6))" Margin="0,0,0,0"/>
+                        </StackPanel>
+                        <CheckBox Grid.Column="1" VerticalAlignment="Center" IsChecked="{Binding VolumeOrientation}" Margin="20,0,0,0"/>
 
                     </Grid>
 
