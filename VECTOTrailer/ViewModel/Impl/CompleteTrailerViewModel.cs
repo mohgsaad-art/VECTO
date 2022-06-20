@@ -644,7 +644,7 @@ namespace VECTOTrailer.ViewModel.Impl
 			var model = device.XPathSelectElement($"//*[local-name()='{XMLNames.Component_Model}']")?.Value;
 
 
-			CertifiedAeroDeviceFilePath = $"{manufacturer}, {model}";
+			CertifiedAeroDeviceFilePath = $"{manufacturer}, {model} ";
 			CertifiedAeroDeviceButtonsVisibility = true;
             CertifiedAeroDeviceNewVisibility = false;
         }
