@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl.Electrics;
-using TUGraz.VectoCore.Models.Connector.Ports.Impl;
-using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation;
@@ -369,10 +366,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
             base(runData, vehicleContainer)
         { }
 
-        protected override void BuildSimplePowertrain(PowertrainBuilder builder, VectoRunData runData, 
-            SimplePowertrainContainer testContainer)
+        protected override void BuildSimplePowertrain(VectoRunData runData, SimplePowertrainContainer testContainer)
 		{
-			builder.BuildSimpleHybridPowertrainGear(runData, testContainer);
+			PowertrainBuilder.BuildSimpleHybridPowertrainGear(runData, testContainer);
         }
 
         protected override void CalculateBatteryDischargeEnergyThreshold()

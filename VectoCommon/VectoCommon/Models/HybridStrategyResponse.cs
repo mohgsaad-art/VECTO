@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Utils;
-using TUGraz.VectoCommon.Utils.MatrixRecorder;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 
 namespace TUGraz.VectoCommon.Models {
@@ -54,24 +53,7 @@ namespace TUGraz.VectoCommon.Models {
 				Cost = (FuelCosts + EquivalenceFactor * (BatCosts + ICEStartPenalty1) * SoCPenalty + ICEStartPenalty2 +
 				RampUpPenalty);
 				var gearshift = Cost.IsSmaller(0) ? GearshiftPenalty : 1 / GearshiftPenalty;
-
-				var score = Cost * gearshift;
-				//Dictionary<string, object> dict = new Dictionary<string, object>()
-				//{
-				//	["score"] = score,
-				//	["Cost"] = Cost,
-				//	["FuelCosts"] = FuelCosts,
-				//	["BatCosts"] = BatCosts,
-				//	["ICEStartPenalty1"] = ICEStartPenalty1,
-				//	["ICEStartPenalty2"] = ICEStartPenalty2,
-				//	["SoCPenalty"] = SoCPenalty,
-				//	["RampUpPenalty"] = RampUpPenalty,
-				//	["GearshiftPenalty"] = GearshiftPenalty
-				//	//["AbsTime"] = abstime
-				//};
-
-				//MatRec.NewRow(dict);
-				return score;
+				return Cost * gearshift;
 			}
 		}
 

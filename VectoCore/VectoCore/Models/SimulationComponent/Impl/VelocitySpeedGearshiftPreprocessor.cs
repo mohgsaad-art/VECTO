@@ -58,14 +58,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var container = Container;
 			var vehicle = container?.VehicleInfo as Vehicle;
 
-			if (vehicle == null)
-			{
+			if (vehicle == null) {
 				throw new VectoException("no vehicle found...");
 			}
 
 			var gearbox = container.GearboxInfo as Gearbox;
-			if (gearbox == null)
-			{
+			if (gearbox == null) {
 				throw new VectoException("no gearbox found...");
 			}
 
@@ -78,10 +76,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var tmp = new List<Entry>();
 			//(Container.DriverInfo as MockDriver).DriverBehavior = DrivingBehavior.Coasting;
 			var maxSpeed = GetVehicleMaxSpeed(runData);
-			foreach (var speed in Speeds)
-			{
-				if (speed > maxSpeed)
-				{
+			foreach (var speed in Speeds) {
+				if (speed > maxSpeed) {
 					continue;
 				}
 
@@ -96,8 +92,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					.OrderBy(x => x.SpeedDiff).FirstOrDefault()?.Gear ?? new GearshiftPosition(0);
 				//var gearForSpeed = runData.GearboxData.Gears.OrderBy(x => Math.Abs((speed * ratio * x.Value.Ratio - targetEngineSpeed).Value()))
 				//	.FirstOrDefault().Key;
-				if (!gearForSpeed.Engaged)
-				{
+				if (!gearForSpeed.Engaged) {
 					continue;
 				}
 
@@ -166,8 +161,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var absTime = 0.SI<Second>();
 			var initialResponse = vehicle.Request(absTime, simulationInterval, acceleration, gradient);
 			var delta = initialResponse.Gearbox.PowerRequest;
-			try
-			{
+			try {
 				var time = absTime;
 				acceleration = SearchAlgorithm.Search(
 					acceleration, delta, Constants.SimulationSettings.OperatingPointInitialSearchIntervalAccelerating,
@@ -177,6 +171,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					},
 					evaluateFunction: acc => {
 						var response = vehicle.Request(time, simulationInterval, acc, gradient, true);
+
 						response.Driver.Acceleration = acc;
 						return response;
 					},
@@ -191,15 +186,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					searcher: this
 				);
 				var step = vehicle.Request(absTime, simulationInterval, acceleration, gradient);
-				if (!(step is ResponseSuccess))
-				{
+				if (!(step is ResponseSuccess)) {
 					throw new VectoSimulationException("failed to find acceleration for rolling");
 				}
 
 				absTime += simulationInterval;
-			}
-			catch (VectoSearchAbortedException)
-			{
+			} catch (VectoSearchAbortedException) {
 				return 0.KMPHtoMeterPerSecond();
 			}
 
@@ -221,8 +213,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		public VelocitySpeedGearshiftPreprocessorE2(VelocityRollingLookup velocityDropData,
 			Second tracktionInterruption, SimplePowertrainContainer simpleContainer, int minGradient = -24,
 			int maxGradient = 24, int gradientStep = 2) : base(velocityDropData, tracktionInterruption, simpleContainer,
-			minGradient, maxGradient, gradientStep)
-		{ }
+			minGradient, maxGradient, gradientStep) { }
 
 		protected override PerSecond GetMotorTargetSpeed(VectoRunData runData)
 		{
@@ -243,6 +234,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				throw new VectoException("E2 EM required for PEV E2 GearshiftPreprocessing");
 			}
 			return em.Item2.EfficiencyData.VoltageLevels.First().FullLoadCurve.MaxSpeed / em.Item2.RatioADC;
-		}
+        }
 	}
 }
