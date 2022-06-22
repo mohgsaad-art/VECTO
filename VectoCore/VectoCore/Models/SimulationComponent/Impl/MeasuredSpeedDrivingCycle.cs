@@ -367,6 +367,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				var nextSpeed = CalculateVehicleSpeedAtNextStep(absTime);
 				var tolerance = (((DataBus.VehicleInfo.VehicleSpeed + nextSpeed) / 2) * 0.001).Abs();
 
+				var previousAction = DrivingAction;
+
 				if (CycleData.RightSample.VehicleTargetSpeed.IsGreater(nextSpeed, tolerance)) {
 					DrivingAction = DataBus.GearboxInfo.GearEngaged(absTime) ? DrivingAction.Accelerate : DrivingAction.Roll;
 					DriverBehavior = (DrivingAction == DrivingAction.Accelerate) ? DrivingBehavior.Accelerating : DrivingBehavior.Driving;
@@ -375,6 +377,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					DrivingAction = DrivingAction.Brake;
 					DriverBehavior = DrivingBehavior.Braking;
 				}
+
+				if (CycleData.RightSample.Gear == 0) {
+					if (previousAction == DrivingAction.Accelerate || previousAction == DrivingAction.Roll) {
+						DrivingAction = DrivingAction.Roll;
+						DriverBehavior = DrivingBehavior.Driving;
+                    }
+                }
 			}
         }
 

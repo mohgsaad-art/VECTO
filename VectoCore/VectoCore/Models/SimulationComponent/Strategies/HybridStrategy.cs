@@ -1090,6 +1090,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 				var endSpeed = DataBus.VehicleInfo.VehicleSpeed +
 								DataBus.DriverInfo.DriverAcceleration * ModelData.GearboxData.TractionInterruption;
+
 				if (EngineSpeedTooLow(response)
 					&& (DataBus.GearboxInfo.GearboxType.ManualTransmission() || DataBus.GearboxInfo.GearboxType == GearboxType.IHPC) 
 					&& endSpeed.IsSmallerOrEqual(disengageSpeedThreshold, 0.1.KMPHtoMeterPerSecond())) {
@@ -1380,7 +1381,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 					? firstResponse.Engine.EngineSpeed.IsSmaller(ModelData.EngineData.IdleSpeed)
 					: (firstResponse.Gearbox.InputSpeed?.IsSmaller(ModelData.EngineData.IdleSpeed) ?? false);
 			}
-			return firstResponse.Clutch.OutputSpeed.IsSmaller(ModelData.EngineData.IdleSpeed); //  firstResponse.Gearbox.InputSpeed.IsSmaller(ModelData.EngineData.IdleSpeed));
+			
+			return !DataBus.GearboxInfo.GearEngaged(DataBus.AbsTime) ? false : firstResponse.Clutch.OutputSpeed.IsSmaller(ModelData.EngineData.IdleSpeed); //  firstResponse.Gearbox.InputSpeed.IsSmaller(ModelData.EngineData.IdleSpeed));
 		}
 
 		private GearshiftPosition FindBestGearForBraking(GearshiftPosition nextGear, IResponse firstResponse)
@@ -2441,7 +2443,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			container[ModalResultField.MaxPropulsionTorqe] = CurrentState.MaxGbxTq ?? 0.SI<NewtonMeter>();
 
 			container.SetDataValue("Driving Action", DataBus.DriverInfo.DrivingAction.ToString());
-			container.SetDataValue("DriverAction", DataBus.DriverInfo.DrivingAction);
+			container.SetDataValue("DriverAction", (int) DataBus.DriverInfo.DrivingAction);
 
 			//if (CurrentState.Evaluations != null) {
 			//    container.SetDataValue(
