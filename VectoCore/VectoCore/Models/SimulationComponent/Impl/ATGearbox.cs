@@ -241,7 +241,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		{
 			IterationStatistics.Increment(this, "Requests");
 
-			//Log.Debug("AT-Gearbox Power Request: torque: {0}, angularVelocity: {1}", outTorque, outAngularVelocity);
+			Log.Debug("AT-Gearbox Power Request: torque: {0}, angularVelocity: {1}", outTorque, outAngularVelocity);
 
 			_strategy?.Request(absTime, dt, outTorque, outAngularVelocity);
 
@@ -497,7 +497,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			};
 
 			if (DataBus.EngineInfo.EngineOn) {
-				//Log.Debug("Invoking IdleController...");
+				Log.Debug("Invoking IdleController...");
 
 				var retval = IdleController.Request(absTime, dt, 0.SI<NewtonMeter>(), null, false);
 				retval.Clutch.PowerRequest = 0.SI<Watt>();

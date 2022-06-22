@@ -206,16 +206,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
 		}
 
-		protected virtual IResponse DoHandleRequest(Second absTime, Second dt, MeterPerSquareSecond accelaration, Radian gradient)
-		{
-			var targetVelocity = 1.SI<MeterPerSecond>();
-			var ds = 1.SI<Meter>();
-			var retVal = DrivingModes[CurrentDrivingMode].Request(
-				absTime, ds, VectoMath.Min(Driver.DataBus.VehicleInfo.MaxVehicleSpeed, targetVelocity), gradient);
-
-			return retVal;
-		}
-
 		protected virtual IResponse DoHandleRequest(Second absTime, Meter ds, MeterPerSecond targetVelocity, Radian gradient)
 		{
 			VehicleHaltTimestamp = null;
@@ -248,7 +238,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					CurrentDrivingMode = DrivingMode.DrivingModeDrive;
 					NextDrivingAction = null;
 					DrivingModes[CurrentDrivingMode].ResetMode();
-					//Log.Debug("Switching to DrivingMode DRIVE");
+					Log.Debug("Switching to DrivingMode DRIVE");
 				}
 
 
@@ -283,13 +273,15 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					if (atTriggerTistance || closeBeforeBraking || brakingIntervalTooShort) {
 						CurrentDrivingMode = DrivingMode.DrivingModeBrake;
 						DrivingModes[CurrentDrivingMode].ResetMode();
-						//Log.Debug("Switching to DrivingMode BRAKE");
+						Log.Debug("Switching to DrivingMode BRAKE");
 
 						BrakeTrigger = NextDrivingAction;
 
 						//break;
 					} else if ((currentDistance + ds).IsGreater(NextDrivingAction.ActionDistance)) {
-						//Log.Debug("Current simulation interval exceeds next action distance at {0}. reducing maxDistance to {1}",NextDrivingAction.ActionDistance, NextDrivingAction.ActionDistance - currentDistance);
+						Log.Debug(
+							"Current simulation interval exceeds next action distance at {0}. reducing maxDistance to {1}",
+							NextDrivingAction.ActionDistance, NextDrivingAction.ActionDistance - currentDistance);
 						return new ResponseDrivingCycleDistanceExceeded(this) {
 							MaxDistance = NextDrivingAction.ActionDistance - currentDistance
 						};
@@ -579,7 +571,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 				SetNextDrivingAction(currentDistance, nextAction);
 			}
-			//Log.Debug("Next Driving Action: {0}", NextDrivingAction);
+			Log.Debug("Next Driving Action: {0}", NextDrivingAction);
 		}
 
 		private void SetNextDrivingAction(Meter currentDistance, DrivingBehaviorEntry nextAction)
@@ -647,7 +639,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			lookaheadDistance = VectoMath.Max(2 * ds, lookaheadDistance, 1.2 * stopDistance + ds);
 			var lookaheadData = DataBus.DrivingCycleInfo.LookAhead(lookaheadDistance);
 
-			//Log.Debug("Lookahead distance: {0} @ current speed {1}", lookaheadDistance, currentSpeed);
+			Log.Debug("Lookahead distance: {0} @ current speed {1}", lookaheadDistance, currentSpeed);
 			var nextActions = new List<DrivingBehaviorEntry>();
 			foreach (var entry in lookaheadData) {
 				var nextTargetSpeed = IsOverspeedAllowed(entry.VehicleTargetSpeed)
@@ -684,14 +676,18 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var brakingDistance = Driver.ComputeDecelerationDistance(nextTargetSpeed) + BrakingSafetyMargin;
 			var coastingDistance = ComputeCoastingDistance(currentSpeed, entry);
 			if (!Driver.DriverData.LookAheadCoasting.Enabled || coastingDistance < 0) {
-				//Log.Debug("adding 'Braking' starting at distance {0}. brakingDistance: {1}, triggerDistance: {2}, nextTargetSpeed: {3}",entry.Distance - brakingDistance, brakingDistance, entry.Distance, nextTargetSpeed);
+				Log.Debug(
+					"adding 'Braking' starting at distance {0}. brakingDistance: {1}, triggerDistance: {2}, nextTargetSpeed: {3}",
+					entry.Distance - brakingDistance, brakingDistance, entry.Distance, nextTargetSpeed);
 				coastingDistance = brakingDistance;
 			} else {
 				//var coastingDistance = ComputeCoastingDistance(currentSpeed, nextTargetSpeed);
 				if (currentSpeed > Driver.DriverData.LookAheadCoasting.MinSpeed) {
 					action = DrivingBehavior.Coasting;
 
-					//Log.Debug("adding 'Coasting' starting at distance {0}. coastingDistance: {1}, triggerDistance: {2}, nextTargetSpeed: {3}",entry.Distance - coastingDistance, coastingDistance, entry.Distance, nextTargetSpeed);
+					Log.Debug(
+						"adding 'Coasting' starting at distance {0}. coastingDistance: {1}, triggerDistance: {2}, nextTargetSpeed: {3}",
+						entry.Distance - coastingDistance, coastingDistance, entry.Distance, nextTargetSpeed);
 				} else {
 					coastingDistance = -1.SI<Meter>();
 				}
@@ -849,7 +845,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				return response;
 			}
 
-			//Log.Debug("Exceeding next ActionDistance at {0}. Reducing max Distance from {2} to {1}",DriverStrategy.NextDrivingAction.ActionDistance, newds, ds);
+			Log.Debug(
+				"Exceeding next ActionDistance at {0}. Reducing max Distance from {2} to {1}",
+				DriverStrategy.NextDrivingAction.ActionDistance, newds, ds);
 			return new ResponseDrivingCycleDistanceExceeded(this) {
 				MaxDistance = newds,
 			};
@@ -1419,17 +1417,19 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				!DriverStrategy.BrakeTrigger.TriggerDistance.IsEqual(nextBrakeAction.TriggerDistance) &&
 				nextBrakeAction.BrakingStartDistance.IsSmaller(DriverStrategy.BrakeTrigger.BrakingStartDistance)) {
 				DriverStrategy.BrakeTrigger = nextBrakeAction;
-				//Log.Debug("setting brake trigger to new trigger: trigger distance: {0}, start braking @ {1}",nextBrakeAction.TriggerDistance, nextBrakeAction.BrakingStartDistance);
+				Log.Debug(
+					"setting brake trigger to new trigger: trigger distance: {0}, start braking @ {1}",
+					nextBrakeAction.TriggerDistance, nextBrakeAction.BrakingStartDistance);
 			}
 
-			//Log.Debug("start braking @ {0}", DriverStrategy.BrakeTrigger.BrakingStartDistance);
+			Log.Debug("start braking @ {0}", DriverStrategy.BrakeTrigger.BrakingStartDistance);
 			var remainingDistanceToBrake = DriverStrategy.BrakeTrigger.BrakingStartDistance - currentDistance;
 			var estimatedTimeInterval = remainingDistanceToBrake / DataBus.VehicleInfo.VehicleSpeed;
 			if (estimatedTimeInterval.IsSmaller(Constants.SimulationSettings.LowerBoundTimeInterval) ||
 				currentDistance + Constants.SimulationSettings.DriverActionDistanceTolerance >
 				DriverStrategy.BrakeTrigger.BrakingStartDistance) {
 				Phase = BrakingPhase.Brake;
-				//Log.Debug("Switching to BRAKE Phase. currentDistance: {0}", currentDistance);
+				Log.Debug("Switching to BRAKE Phase. currentDistance: {0}", currentDistance);
 			} else {
 				if ((currentDistance + ds).IsGreater(DriverStrategy.BrakeTrigger.BrakingStartDistance)) {
 					return new ResponseDrivingCycleDistanceExceeded(this) {
@@ -1440,7 +1440,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			if (DataBus.VehicleInfo.VehicleSpeed < Constants.SimulationSettings.MinVelocityForCoast) {
 				Phase = BrakingPhase.Brake;
-				//Log.Debug("Switching to BRAKE Phase. currentDistance: {0}  v: {1}", currentDistance,DataBus.VehicleInfo.VehicleSpeed);
+				Log.Debug(
+					"Switching to BRAKE Phase. currentDistance: {0}  v: {1}", currentDistance,
+					DataBus.VehicleInfo.VehicleSpeed);
 			}
 			return null;
 		}

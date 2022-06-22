@@ -104,7 +104,7 @@ namespace TUGraz.VectoCore.Utils
 					result = InterpolateSearch(x, y, interval, getYValue, evaluateFunction, criterion, abortCriterion,
 						ref iterationCount, searcher);
 				}
-			} catch (Exception ex) {
+			} catch (VectoException ex) {
 				var log = LogManager.GetLogger(typeof(SearchAlgorithm).FullName);
 				log.Debug("Falling back to LineSearch. Reverse InterpolationSearch failed: " + ex.Message);
 				result = LineSearch(x, y, interval, getYValue, evaluateFunction, criterion, abortCriterion,
@@ -150,7 +150,7 @@ namespace TUGraz.VectoCore.Utils
 							result
 						});
 						LogManager.EnableLogging();
-						//log.Debug("LineSearch aborted due to abortCriterion: {0}", result);
+						log.Debug("LineSearch aborted due to abortCriterion: {0}", result);
 						LogManager.DisableLogging();
 						throw new VectoSearchAbortedException("LineSearch");
 					}
@@ -163,7 +163,7 @@ namespace TUGraz.VectoCore.Utils
 					});
 					if (criterion(result).IsEqual(0, Constants.SimulationSettings.LineSearchTolerance / 2)) {
 						LogManager.EnableLogging();
-						//log.Debug("LineSearch found an operating point after {0} function calls.", count);
+						log.Debug("LineSearch found an operating point after {0} function calls.", count);
 						//iterationCount += count;
 						LogManager.DisableLogging();
 						AppendDebug(debug);
@@ -237,7 +237,7 @@ namespace TUGraz.VectoCore.Utils
 				}
 				if (criterion(result).IsEqual(0, Constants.SimulationSettings.InterpolateSearchTolerance)) {
 					LogManager.EnableLogging();
-					//log.Debug("InterpolateSearch found an operating point after 1 function call.");
+					log.Debug("InterpolateSearch found an operating point after 1 function call.");
 					AppendDebug(debug);
 					LogManager.DisableLogging();
 					iterationCount++;
@@ -272,7 +272,7 @@ namespace TUGraz.VectoCore.Utils
 						debug.Add($"[SA.IS-4-{iterationCount}] - abort",
 							new { x = x2, y = getYValue(result).Value(), delta = criterion(result), result });
 						LogManager.EnableLogging();
-						//log.Debug("InterpolateSearch aborted due to abortCriterion: {0}", result);
+						log.Debug("InterpolateSearch aborted due to abortCriterion: {0}", result);
 						LogManager.DisableLogging();
 						throw new VectoSearchAbortedException("InterpolateLinearSearch: AbortCriterion true");
 					}
@@ -280,7 +280,7 @@ namespace TUGraz.VectoCore.Utils
 						debug.Add($"[SA.IS-5-{iterationCount}] - success",
 							new { x = x2, y = getYValue(result).Value(), delta = criterion(result), result });
 						LogManager.EnableLogging();
-						//log.Debug("InterpolateSearch found an operating point after {0} function calls.", count);
+						log.Debug("InterpolateSearch found an operating point after {0} function calls.", count);
 						LogManager.DisableLogging();
 						AppendDebug(debug);
 						return x2.SI<T>();
@@ -292,7 +292,7 @@ namespace TUGraz.VectoCore.Utils
 				LogManager.EnableLogging();
 			}
 
-			//log.Debug("InterpolateSearch could not find an operating point.");
+			log.Debug("InterpolateSearch could not find an operating point.");
 #if DEBUG
 			log.Error("InterpolateSearch exceeded max iterations when searching for operating point!");
 			log.Error("debug: {0}", debug);

@@ -52,7 +52,7 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 
         TestCase(P4_JOB, 0, 0, 0, 0, TestName = "P4 Hybrid TimeRun MeasuredSpeedGear LongHaul"),
         TestCase(P4_JOB, 1, 0, 0, 0, TestName = "P4 Hybrid TimeRun MeasuredSpeedGear RegionalDelivery"),
-        TestCase(P4_JOB, 1, 0, 0, 0, TestName = "P4 Hybrid TimeRun MeasuredSpeedGear UrbanDelivery")
+        TestCase(P4_JOB, 2, 0, 0, 0, TestName = "P4 Hybrid TimeRun MeasuredSpeedGear UrbanDelivery")
         ]
         public void TestHybridTimerunCycle(string jobFile, int cycleIdx, double CO2, double charge, double discharge)
         {
@@ -63,10 +63,47 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
                 { SummaryDataContainer.Fields.E_REESS_T_dischg, discharge }
 			};
 
-            RunHybridDriveCycle(jobFile, cycleIdx, metrics);
+            RunHybridTimeRunCycle(jobFile, cycleIdx, metrics);
         }
 
-        public void RunHybridDriveCycle(string jobFile, int cycleIdx, Dictionary<String, double> metrics)
+        [Category("TUG-update")]
+        [Category("JRC")]
+        [Category("LongRunning")]
+        [Category("Integration")]
+        [
+        TestCase(P1_JOB, 3, TestName = "P1 Hybrid DistanceRun MeasuredSpeedGear LongHaul"),
+        TestCase(P1_JOB, 4, TestName = "P1 Hybrid DistanceRun MeasuredSpeedGear RegionalDelivery"),
+        TestCase(P1_JOB, 5, TestName = "P1 Hybrid DistanceRun MeasuredSpeedGear UrbanDelivery"),
+
+        TestCase(P2_JOB, 3, TestName = "P2 Hybrid DistanceRun MeasuredSpeedGear LongHaul"),
+        TestCase(P2_JOB, 4, TestName = "P2 Hybrid DistanceRun MeasuredSpeedGear RegionalDelivery"),
+        TestCase(P2_JOB, 5, TestName = "P2 Hybrid DistanceRun MeasuredSpeedGear UrbanDelivery"),
+
+        TestCase(P2_5_JOB, 3, TestName = "P2_5 Hybrid DistanceRun MeasuredSpeedGear LongHaul"),
+        TestCase(P2_5_JOB, 4, TestName = "P2_5 Hybrid DistanceRun MeasuredSpeedGear RegionalDelivery"),
+        TestCase(P2_5_JOB, 5, TestName = "P2_5 Hybrid DistanceRun MeasuredSpeedGear UrbanDelivery"),
+
+        TestCase(P3_JOB, 3, TestName = "P3 Hybrid DistanceRun MeasuredSpeedGear LongHaul"),
+        TestCase(P3_JOB, 4, TestName = "P3 Hybrid DistanceRun MeasuredSpeedGear RegionalDelivery"),
+        TestCase(P3_JOB, 5, TestName = "P3 Hybrid DistanceRun MeasuredSpeedGear UrbanDelivery"),
+
+        TestCase(P4_JOB, 3, TestName = "P4 Hybrid DistanceRun MeasuredSpeedGear LongHaul"),
+        TestCase(P4_JOB, 4, TestName = "P4 Hybrid DistanceRun MeasuredSpeedGear RegionalDelivery"),
+        TestCase(P4_JOB, 5, TestName = "P4 Hybrid DistanceRun MeasuredSpeedGear UrbanDelivery")
+        ]
+        public void TestHybridDistanceRunCycle(string jobFile, int cycleIdx)
+        {
+            Dictionary<string, double> metrics = new Dictionary<string, double>()
+			{
+				{ SummaryDataContainer.Fields.CO2_KM, double.NaN },
+                { SummaryDataContainer.Fields.E_REESS_T_chg, double.NaN },
+                { SummaryDataContainer.Fields.E_REESS_T_dischg, double.NaN }
+			};
+
+            RunHybridDistanceRunCycle(jobFile, cycleIdx, metrics);
+        }
+
+        public void RunHybridTimeRunCycle(string jobFile, int cycleIdx, Dictionary<String, double> metrics)
         {
             var inputProvider = JSONInputDataFactory.ReadJsonJob(jobFile);
 
@@ -87,6 +124,32 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 			AssertHelper.AssertMetrics(factory, metrics);
             
 			Directory.Delete(Path.GetDirectoryName(outputFile), recursive: true);
+        }
+
+        public void RunHybridDistanceRunCycle(string jobFile, int cycleIdx, Dictionary<String, double> metrics)
+        { 
+            var inputProvider = JSONInputDataFactory.ReadJsonJob(jobFile);
+
+			string outputFile = InputDataHelper.CreateUniqueSubfolder(jobFile);
+			var writer = new FileOutputWriter(outputFile);
+
+			var factory = new SimulatorFactoryEngineering(inputProvider, writer, false) { WriteModalResults = true };
+			factory.SumData = new SummaryDataContainer(writer);
+
+			var run = factory.SimulationRuns().ToArray()[cycleIdx];
+			run.Run();
+
+			Assert.IsTrue(run.FinishedWithoutErrors);
+			
+            string distanceSumPath = Path.Combine(Path.GetDirectoryName(jobFile), "distance.vsum");
+
+            const int DISTANCE_RUN_START_POSITION = 3;
+
+            AssertHelper.ReadMetricsFromVSum(distanceSumPath, cycleIdx - DISTANCE_RUN_START_POSITION, metrics);
+
+            AssertHelper.AssertMetrics(factory, metrics);
+
+			//Directory.Delete(Path.GetDirectoryName(outputFile), recursive: true);
         }
     }
 }

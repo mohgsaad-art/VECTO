@@ -135,12 +135,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricMotor
 					return null;
 				}
 			} else {
-				if (elPowerMaxEM.ElectricalPower == null)
-                {
-					elPowerMaxEM.ElectricalPower = 0.SI<Watt>();
-				}
-				if (!elPowerMaxEM.Extrapolated && elPowerMaxEM.ElectricalPower.IsSmallerOrEqual(batPower))
-				{
+				if (!elPowerMaxEM.Extrapolated && elPowerMaxEM.ElectricalPower.IsSmallerOrEqual(batPower)) {
 					// the battery can provide more electric power than the EM  - no limitation here
 					return null;
 				}
@@ -187,8 +182,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricMotor
 				}
 				return retVal;
 			} catch (VectoSearchFailedException vsfe) {
-				Log.Debug(vsfe.ToString());
-				//Log.Error("Failed to find mechanic power for given electric power! n_avg: {0} P_el: {1}; {2}", avgSpeed.AsRPM, batPower, vsfe.Message);
+				Log.Error("Failed to find mechanic power for given electric power! n_avg: {0} P_el: {1}; {2}", avgSpeed.AsRPM, batPower, vsfe.Message);
 			}
 
 			return null;

@@ -380,8 +380,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 				retVal.HybridController.StrategySettings = cfg;
 				return retVal;
-			} catch (Exception ex) {
-				Log.Debug(ex);
+			} catch (Exception e) {
+				Log.Debug(e);
 				return null;
 			}
 		}
@@ -1840,7 +1840,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				}
 				if (nextGear.Equals(gear) && gearRange.Item1 == 0 && (emOffEntry.IgnoreReason & HybridConfigurationIgnoreReason.EngineSpeedTooLow) != 0) {
 					allowEmergencyDownshift = true;
-					// add here extended logging
 				}
 			}
 
@@ -1914,7 +1913,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 			IterateEMTorque(
 				absTime, dt, outTorque, outAngularVelocity, nextGear, allowICEOff, emOffEntry.Response, emTqReq, emPos, responses, dryRun);
-
 			return emOffEntry;
 		}
 
@@ -1952,7 +1950,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			var maxU = allowIceOff
 				? -1.0
 				: Math.Min(maxEmTorque.Value() / emTqReq.Value(), -1.0);
-
 			if (DataBus.DriverInfo.DrivingAction == DrivingAction.Brake || double.IsNaN(maxU)) {
 				maxU = 0;
 			}
@@ -2050,7 +2047,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 							responses.Add(tmp);
 						}
 					} catch (Exception) {
-						//Log.Debug("Failed to find EM torque to compensate drag losses of next components.");
+						Log.Debug("Failed to find EM torque to compensate drag losses of next components.");
 					}
 				}
 
@@ -2090,7 +2087,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 							responses.Add(tmp);
 						}
 					} catch (Exception) {
-						//Log.Debug("Failed to find EM torque to compensate drag losses of next components.");
+						Log.Debug("Failed to find EM torque to compensate drag losses of next components.");
 					}
 				}
 			}
@@ -2147,7 +2144,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 								responses.Add(tmp);
 							}
 						} catch (Exception) {
-							//Log.Debug("Failed to find EM torque to compensate drag losses of next components.");
+							Log.Debug("Failed to find EM torque to compensate drag losses of next components.");
 						}
 					} else {
 						if (maxEmTorqueRecuperate.IsGreater(0) && (-emTqReq).IsBetween(maxEmTorqueRecuperate, 0.SI<NewtonMeter>())) {
@@ -2227,15 +2224,15 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				}
 			}
 
-			if (!iceOff &&
-				(resp.Engine.TotalTorqueDemand.IsSmaller(resp.Engine.DragTorque) || resp.Engine.TotalTorqueDemand.IsGreater(resp.Engine.DynamicFullLoadTorque)))
-			{
+
+			if (!iceOff && /*!resp.Engine.TotalTorqueDemand.IsBetween(resp.Engine.DragTorque, resp.Engine.DynamicFullLoadTorque)*/
+				(resp.Engine.TotalTorqueDemand.IsSmaller(resp.Engine.DragTorque) || resp.Engine.TotalTorqueDemand.IsGreater(resp.Engine.DynamicFullLoadTorque))) {
 				tmp.FuelCosts = double.NaN;
 				tmp.IgnoreReason |= resp.Engine.TotalTorqueDemand.IsGreater(resp.Engine.DynamicFullLoadTorque)
 					? HybridConfigurationIgnoreReason.EngineTorqueDemandTooHigh
 					: HybridConfigurationIgnoreReason.EngineTorqueDemandTooLow;
 			}
-			
+
 			if (resp.Gearbox.Gear.Engaged && resp.Engine.EngineSpeed.IsGreaterOrEqual(
 					VectoMath.Min(
 						ModelData.GearboxData.Gears[resp.Gearbox.Gear.Gear].MaxSpeed,
@@ -2248,7 +2245,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				tmp.FuelCosts = iceOff ? 0 : double.NaN;
 				tmp.IgnoreReason |= HybridConfigurationIgnoreReason.EngineSpeedTooLow;
 			}
-			
+
 			//if (resp.Engine.EngineSpeed != null && resp.Gearbox.Gear.Engaged && GearList.HasSuccessor(resp.Gearbox.Gear) && ModelData.GearboxData.Gears[resp.Gearbox.Gear.Gear].ShiftPolygon.IsAboveUpshiftCurve(resp.Engine.TorqueOutDemand, resp.Engine.EngineSpeed)) {
 			//	//lastShiftTime = absTime;
 			//	//tmp.FuelCosts = double.NaN; // Tuple.Create(true, response.Gearbox.Gear + 1);
@@ -2417,9 +2414,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			PreviousState.GearshiftTriggerTstmp = -double.MaxValue.SI<Second>();
 			CurrentState.GearshiftTriggerTstmp = -double.MaxValue.SI<Second>();
 			return retVal;
-        }
+		}
 
-        public virtual void CommitSimulationStep(Second time, Second simulationInterval)
+		public virtual void CommitSimulationStep(Second time, Second simulationInterval)
 		{
 			var iceStart = PreviousState.ICEStartTStmp;
 			PreviousState = CurrentState;
@@ -2441,7 +2438,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			DebugData = new DebugData();
 			DryRunSolution = null;
 			LimitedGbxTorque = false;
-			// add here extended logging
 		}
 
 		public void WriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
@@ -2451,9 +2447,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 			container[ModalResultField.MaxPropulsionTorqe] = CurrentState.MaxGbxTq ?? 0.SI<NewtonMeter>();
 
-			container.SetDataValue("Driving Action", DataBus.DriverInfo.DrivingAction.ToString()); //MatRec
-			var x = (int) DataBus.DriverInfo.DrivingAction;
-			container.SetDataValue("DriverAction", x); //MatRec
+			container.SetDataValue("Driving Action", DataBus.DriverInfo.DrivingAction.ToString());
+			container.SetDataValue("DriverAction", DataBus.DriverInfo.DrivingAction);
 
 			//if (CurrentState.Evaluations != null) {
 			//    container.SetDataValue(

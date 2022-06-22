@@ -424,7 +424,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				absTime, dt, acceleration, gradient, DataBus.Brakes.BrakePower);
 
 			if (DataBus.Brakes.BrakePower.IsSmaller(0)) {
-				//Log.Info("BrakePower was negative: {4}. Setting to 0 and searching for acceleration operating point. absTime: {0}, dt: {1}, acceleration: {2}, gradient: {3}",absTime, dt, acceleration, gradient, DataBus.Brakes.BrakePower);
+				Log.Info(
+					"BrakePower was negative: {4}. Setting to 0 and searching for acceleration operating point. absTime: {0}, dt: {1}, acceleration: {2}, gradient: {3}",
+					absTime, dt, acceleration, gradient, DataBus.Brakes.BrakePower);
 				DataBus.Brakes.BrakePower = 0.SI<Watt>();
 				acceleration = SearchAlgorithm.Search(acceleration, r.Delta,
 					Constants.SimulationSettings.OperatingPointInitialSearchIntervalAccelerating,
@@ -492,7 +494,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					absTime, dt, acceleration, gradient, DataBus.Brakes.BrakePower);
 
 				if (DataBus.Brakes.BrakePower.IsSmaller(0)) {
-					//Log.Info("BrakePower was negative: {4}. Setting to 0 and searching for acceleration operating point. absTime: {0}, dt: {1}, acceleration: {2}, gradient: {3}",absTime, dt, acceleration, gradient, DataBus.Brakes.BrakePower);
+					Log.Info(
+						"BrakePower was negative: {4}. Setting to 0 and searching for acceleration operating point. absTime: {0}, dt: {1}, acceleration: {2}, gradient: {3}",
+						absTime, dt, acceleration, gradient, DataBus.Brakes.BrakePower);
 					DataBus.Brakes.BrakePower = 0.SI<Watt>();
 					acceleration = SearchAlgorithm.Search(acceleration, r.Delta,
 						Constants.SimulationSettings.OperatingPointInitialSearchIntervalAccelerating,

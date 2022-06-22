@@ -13,8 +13,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
     public class HybridControllerTimerunGear : HybridController
     {
-		protected override int MaxRequestRetries => 20;
-        
 		public HybridControllerTimerunGear(IVehicleContainer container, IHybridControlStrategy strategy, IElectricSystem es) :
             base(container, strategy, es)
         {

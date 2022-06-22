@@ -34,7 +34,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		protected DebugData DebugData = new DebugData();
 
-		protected virtual int MaxRequestRetries => 10;
 
 		public HybridController(IVehicleContainer container, IHybridControlStrategy strategy, IElectricSystem es) : base(container)
 		{
@@ -74,14 +73,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			_electricMotorCtl[pos] = new ElectricMotorController(this, motorData);
 		}
 
-		//public ResponseDryRun RequestDryRun(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, HybridStrategyResponse strategySettings)
-		//{
-		//	ApplyStrategySettings(strategySettings);
-		//	var retVal = NextComponent.Request(absTime, dt, outTorque, outAngularVelocity, true);
-
-		//	return retVal as ResponseDryRun;
-		//}
-
 		protected virtual void ApplyStrategySettings(Second absTime, HybridStrategyResponse strategySettings)
 		{
 			Gearbox.SwitchToNeutral = strategySettings.GearboxInNeutral;
@@ -116,7 +107,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var retryCount = 0;
 			IResponse retVal;
 			do {
-				if (retryCount > MaxRequestRetries) {
+				if (retryCount > 10) {
 					throw new VectoException("HybridStrategy: retry count exceeded! {0}", DebugData);
 				}
 
@@ -261,7 +252,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			return false;
         }
 
-        public IResponse Initialize(NewtonMeter outTorque, PerSecond outAngularVelocity)
+		public IResponse Initialize(NewtonMeter outTorque, PerSecond outAngularVelocity)
 		{
 			PreviousState.SetState(outTorque, outAngularVelocity, outTorque, outAngularVelocity);
 			var strategyResponse = Strategy.Initialize(outTorque, outAngularVelocity);

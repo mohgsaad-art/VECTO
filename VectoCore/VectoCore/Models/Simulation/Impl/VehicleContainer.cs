@@ -221,7 +221,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 		public virtual void FinishSimulationRun(Exception e = null)
 		{
-			//Log.Info("VehicleContainer finishing simulation.");
+			Log.Info("VehicleContainer finishing simulation.");
 			ModData?.Finish(RunStatus, e);
 
 			WriteSumData(ModData);

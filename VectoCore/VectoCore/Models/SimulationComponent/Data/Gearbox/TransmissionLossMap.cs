@@ -100,7 +100,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox
 
 			result.Value = torqueLoss.SI<NewtonMeter>();
 
-			//Log.Debug("GearboxLoss {0}: {1}, outAngularVelocity: {2}, outTorque: {3}", GearName, torqueLoss,outAngularVelocity, outTorque);
+			Log.Debug("GearboxLoss {0}: {1}, outAngularVelocity: {2}, outTorque: {3}", GearName, torqueLoss,
+				outAngularVelocity, outTorque);
 			return result;
 		}
 

@@ -225,12 +225,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var tPulse = PreviousState.PowerDemand.Sign() < 0 // keep on discharging?
 				? PreviousState.PulseDuration
 				: 0.SI<Second>();
-			var result = Batteries.Values.Sum(bs => bs.MaxDischargePower(dt, tPulse)); 
-			if (dt.IsGreaterOrEqual(9545.0797))  //9545.3282
-			{
-				Log.Debug($"MaxDischargePower: {result}");
-			}
-			return result;
+			return Batteries.Values.Sum(bs => bs.MaxDischargePower(dt, tPulse));
 		}
 
 		public double MinSoC => _minSoc ?? (_minSoc = Batteries.Values.Sum(x => x.CapacityMinSoc) / TotalCapacity);

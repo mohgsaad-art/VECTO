@@ -143,7 +143,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		public IResponse Request(Second absTime, Second dt, MeterPerSquareSecond acceleration, Radian gradient,
 			bool dryRun = false)
 		{
-			//Log.Debug("Vehicle: acceleration: {0}", acceleration);
+			Log.Debug("Vehicle: acceleration: {0}", acceleration);
 			CurrentState.SimulationInterval = dt;
 			CurrentState.Acceleration = acceleration;
 			CurrentState.Velocity = PreviousState.Velocity + acceleration * dt;
@@ -158,7 +158,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			try {
 				CurrentState.AirDragResistance = AirDragResistance(PreviousState.Velocity, CurrentState.Velocity);
 			} catch (VectoException ex) {
-				Log.Debug("Exception during calculation of AirDragResistance: absTime: {0}, dist: {1}, v: {2}. {3}", absTime,CurrentState.Distance, CurrentState.Velocity, ex);
+				Log.Warn("Exception during calculation of AirDragResistance: absTime: {0}, dist: {1}, v: {2}. {3}", absTime,
+					CurrentState.Distance, CurrentState.Velocity, ex);
 				CurrentState.AirDragResistance = AirDragResistance(VectoMath.Max(0, PreviousState.Velocity),
 					VectoMath.Max(0, CurrentState.Velocity));
 			}
@@ -207,21 +208,21 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var rollCoefficient = ModelData.TotalRollResistanceCoefficient;
 
 			var retVal = Math.Cos(gradient.Value()) * weight * gravity * rollCoefficient;
-			//Log.Debug("RollingResistance: {0}", retVal);
+			Log.Debug("RollingResistance: {0}", retVal);
 			return retVal;
 		}
 
 		protected internal Newton AccelerationForce(MeterPerSquareSecond accelleration)
 		{
 			var retVal = ModelData.TotalVehicleMass * accelleration;
-			//Log.Debug("DriverAcceleration: {0}", retVal);
+			Log.Debug("DriverAcceleration: {0}", retVal);
 			return retVal;
 		}
 
 		public Newton SlopeResistance(Radian gradient)
 		{
 			var retVal = ModelData.TotalVehicleMass * Physics.GravityAccelleration * Math.Sin(gradient.Value());
-			//Log.Debug("SlopeResistance: {0}", retVal);
+			Log.Debug("SlopeResistance: {0}", retVal);
 			return retVal;
 		}
 
@@ -235,7 +236,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
 			var result = ComputeAirDragPowerLoss(previousVelocity, nextVelocity) / vAverage;
 
-			//Log.Debug("AirDragResistance: {0}", result);
+			Log.Debug("AirDragResistance: {0}", result);
 			return result;
 		}
 

@@ -122,7 +122,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox
 			}
 
 			if (solutions.Count == 0) {
-				//Log.Debug("TorqueConverterData::FindOperatingPoint No solution for input torque/input speed found! n_out: {0}, tq_out: {1}",angularSpeedOut, torqueOut);
+				Log.Debug(
+					"TorqueConverterData::FindOperatingPoint No solution for input torque/input speed found! n_out: {0}, tq_out: {1}",
+					angularSpeedOut, torqueOut);
 			}
 
 			return solutions.Select(sol => {
