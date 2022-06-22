@@ -457,8 +457,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				}
 			}
 
-			cycle.IdleController = idleController as IdleControllerSwitcher;
-
 			if (data.BusAuxiliaries != null)
 			{
 				if (container.BusAux is BusAuxiliariesAdapter busAux)
@@ -676,8 +674,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 					clutch.IdleController = idleController;
 				}
 			}
-
-			cycle.IdleController = idleController as IdleControllerSwitcher;
 
 			if (data.BusAuxiliaries != null)
 			{

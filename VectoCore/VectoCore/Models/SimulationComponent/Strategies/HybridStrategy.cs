@@ -596,7 +596,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				nextGear = Controller.ShiftStrategy.NextGear;
 			}
 
-			if (Accelerating(nextGear)) {
+			if (DataBus.DriverInfo.DrivingAction == DrivingAction.Accelerate && (nextGear != null) 
+				&& StrategyParameters.MaxPropulsionTorque?.GetVECTOValueOrDefault(nextGear) != null && DataBus.GearboxInfo.TCLocked) {
+				
 				var emOff = new HybridStrategyResponse {
 					CombustionEngineOn = DataBus.EngineInfo.EngineOn, // AllowICEOff(absTime), 
 					GearboxInNeutral = false,
@@ -720,14 +722,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			return retVal;
 		}
 
-		protected virtual bool Accelerating(GearshiftPosition nextGear)
-		{
-			return (DataBus.DriverInfo.DrivingAction == DrivingAction.Accelerate) 
-				&& (nextGear != null) 
-				&& (StrategyParameters.MaxPropulsionTorque?.GetVECTOValueOrDefault(nextGear) != null) 
-				&& DataBus.GearboxInfo.TCLocked;
-		}
-
 		protected virtual GearshiftPosition CurrentGear => PreviousState.GearboxEngaged ? DataBus.GearboxInfo.Gear : Controller.ShiftStrategy.NextGear;
 
 		protected virtual void DoEmergencyGearShift(GearshiftPosition currentGear, Second absTime, Second dt, NewtonMeter outTorque, 
@@ -760,7 +754,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			//	}
 			//}
 
-			if (dryRun && DataBus.DriverInfo.DrivingAction == DrivingAction.Accelerate && StrategyParameters.MaxPropulsionTorque?.GetVECTOValueOrDefault(response.Gearbox.Gear) != null) {
+			if (dryRun && DataBus.DriverInfo.DrivingAction == DrivingAction.Accelerate && (response.Gearbox.Gear != null)
+				&& StrategyParameters.MaxPropulsionTorque?.GetVECTOValueOrDefault(response.Gearbox.Gear) != null) {
+
 				var dryRunResponse = response as ResponseDryRun;
 				if (response.Engine.EngineOn && dryRunResponse.DeltaFullLoad.IsSmallerOrEqual(0) &&
 					dryRunResponse.DeltaDragLoad.IsGreaterOrEqual(0) && LimitedGbxTorque) {
@@ -1368,8 +1364,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 		}
 
 		protected virtual GearshiftPosition NextGear => Controller.ShiftStrategy.NextGear;
-
-		protected virtual Second ShiftTimePassed => DataBus.GearboxInfo.LastShift + ModelData.GearshiftParameters.TimeBetweenGearshifts;
 
 		protected virtual bool Disengaged(IResponse response)
 		{

@@ -42,7 +42,7 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
         TestCase(P2_5_JOB, 1, 0, 0, 0, TestName = "P2_5 Hybrid TimeRun MeasuredSpeedGear RegionalDelivery"),
         TestCase(P2_5_JOB, 2, 0, 0, 0, TestName = "P2_5 Hybrid TimeRun MeasuredSpeedGear UrbanDelivery"),
 
-        TestCase(P2_JOB, 0, 581.4683, 6.5757, 5.5439, TestName = "P2 Hybrid TimeRun MeasuredSpeedGear LongHaul"),
+        TestCase(P2_JOB, 0, 575.7346, 9.0877, 8.04, TestName = "P2 Hybrid TimeRun MeasuredSpeedGear LongHaul"),
         TestCase(P2_JOB, 1, 0, 0, 0, TestName = "P2 Hybrid TimeRun MeasuredSpeedGear RegionalDelivery"),
         TestCase(P2_JOB, 2, 0, 0, 0, TestName = "P2 Hybrid TimeRun MeasuredSpeedGear UrbanDelivery"),
 
@@ -149,7 +149,7 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 
             AssertHelper.AssertMetrics(factory, metrics);
 
-			//Directory.Delete(Path.GetDirectoryName(outputFile), recursive: true);
+			Directory.Delete(Path.GetDirectoryName(outputFile), recursive: true);
         }
     }
 }

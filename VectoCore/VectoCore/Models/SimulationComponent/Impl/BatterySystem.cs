@@ -153,19 +153,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
 			var cellVoltage = InternalVoltage;
-			Second tPulse = 0.SI<Second>();
-			if (CurrentState.PowerDemand == null)
-            {
-				CurrentState.PowerDemand = 0.SI<Watt>();
-			}
-			if (CurrentState.TotalCurrent == null)
-            {
-				CurrentState.TotalCurrent = 1.SI<Ampere>();
-			}
-			tPulse = PreviousState.PowerDemand.Sign() == CurrentState.PowerDemand.Sign()
-					? PreviousState.PulseDuration
-					: 0.SI<Second>();
-
+			var tPulse = PreviousState.PowerDemand.Sign() == CurrentState.PowerDemand.Sign()
+				? PreviousState.PulseDuration
+				: 0.SI<Second>();
 			container[ModalResultField.U0_reess] = cellVoltage;
 			container[ModalResultField.U_reess_terminal] =
 				cellVoltage +
@@ -280,10 +270,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				foreach (var bs in Batteries) {
 					if (limitBB.ContainsKey(bs.Key)) {
 						continue;
-					}
-					if (averageSoC == 0)
-                    {
-						averageSoC = 1;
 					}
 					var delta = 1 - Math.Sign(remainingPower.Value()) * (bs.Value.SoC - averageSoC) / averageSoC;
 					var power = bs.Value.Capacity / totalCapacity * delta * remainingPower;

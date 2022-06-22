@@ -57,9 +57,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		IDriverInfo, IDrivingCycleInfo, IMileageCounter, IDriverDemandInProvider, IDriverDemandInPort, ISimulationOutProvider,
 		ISimulationOutPort
 	{
-
-		internal IdleControllerSwitcher IdleController;
-
 		public class DrivingCycleState
 		{
 			public DrivingCycleState Clone()
@@ -92,9 +89,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		{
 			Data = cycle;
 			CycleIterator = new DrivingCycleEnumerator(cycle);
-
-			var first = Data.Entries.First();
-			AbsTime = first.Time;
 
 			PreviousState = new DrivingCycleState {
 				Distance = 0.SI<Meter>(),
