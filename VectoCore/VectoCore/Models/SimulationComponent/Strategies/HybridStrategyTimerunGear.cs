@@ -16,7 +16,24 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
     public class HybridStrategyTimerunGear : AbstractHybridStrategyTimerunGear<GearBoxHybridsMeasuredSpeedGear>
     {
         public HybridStrategyTimerunGear(VectoRunData runData, IVehicleContainer vehicleContainer) : base(runData,vehicleContainer)
-        { }
+        {
+			vehicleContainer.AddPreprocessor(GetGearshiftPreprocessor(runData));
+		}
+
+		protected ISimulationPreprocessor GetGearshiftPreprocessor(VectoRunData runData)
+		{
+			var maxG = runData.Cycle.Entries.Max(x => Math.Abs(x.RoadGradientPercent.Value())) + 1;
+			var grad = Convert.ToInt32(maxG / 2) * 2;
+			if (grad == 0) {
+				grad = 2;
+			}
+
+			var testContainer = new SimplePowertrainContainer(runData);
+			PowertrainBuilder.BuildSimpleHybridPowertrainGear(runData, testContainer);			
+
+			return new VelocitySpeedGearshiftPreprocessor(VelocityDropData, runData.GearboxData.TractionInterruption,
+				testContainer, -grad, grad);
+		}
 
 		protected override IResponse RequestDryRun(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, 
 			GearshiftPosition nextGear, HybridStrategyResponse cfg)

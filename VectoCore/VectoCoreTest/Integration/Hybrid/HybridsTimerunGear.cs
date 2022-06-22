@@ -4,9 +4,7 @@ using System.IO;
 using System.Linq;
 using NUnit.Framework;
 
-using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
-using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Tests.Utils;
@@ -42,7 +40,7 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
         TestCase(P2_5_JOB, 1, 0, 0, 0, TestName = "P2_5 Hybrid TimeRun MeasuredSpeedGear RegionalDelivery"),
         TestCase(P2_5_JOB, 2, 0, 0, 0, TestName = "P2_5 Hybrid TimeRun MeasuredSpeedGear UrbanDelivery"),
 
-        TestCase(P2_JOB, 0, 575.7346, 9.0877, 8.04, TestName = "P2 Hybrid TimeRun MeasuredSpeedGear LongHaul"),
+        TestCase(P2_JOB, 0, 574.2215, 9.1197, 8.0447, TestName = "P2 Hybrid TimeRun MeasuredSpeedGear LongHaul"),
         TestCase(P2_JOB, 1, 0, 0, 0, TestName = "P2 Hybrid TimeRun MeasuredSpeedGear RegionalDelivery"),
         TestCase(P2_JOB, 2, 0, 0, 0, TestName = "P2 Hybrid TimeRun MeasuredSpeedGear UrbanDelivery"),
 

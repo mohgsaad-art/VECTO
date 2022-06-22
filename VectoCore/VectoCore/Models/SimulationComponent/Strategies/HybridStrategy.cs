@@ -652,7 +652,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				return tmp;
 			}
 
-
 			var eval = new List<HybridResultEntry>();
 
 			switch (DataBus.DriverInfo.DrivingAction) {
