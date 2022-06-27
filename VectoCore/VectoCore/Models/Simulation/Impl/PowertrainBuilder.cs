@@ -785,13 +785,13 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			return container;
 		}
 		
-		private IVehicleContainer BuildPWheelBatteryElectric(VectoRunData data)
+		private static IVehicleContainer BuildPWheelBatteryElectric(VectoRunData data, IModalDataContainer modData, WriteSumData sumWriter)
         {
 			if (data.Cycle.CycleType != CycleType.PWheel)
 				throw new VectoException("CycleType must be DistanceBased or MeasuredSpeed");
 			ValidateBatteryElectric(data);
 
-			var container = new VehicleContainer(data.ExecutionMode, _modData, _sumWriter) { RunData = data };
+			var container = new VehicleContainer(data.ExecutionMode, modData, sumWriter) { RunData = data };
 
 			var es = new ElectricSystem(container);
 
@@ -919,13 +919,13 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			return pto;
 		}
 
-		private IVehicleContainer BuildMeasuredSpeedBatteryElectric(VectoRunData data)
+		private static IVehicleContainer BuildMeasuredSpeedBatteryElectric(VectoRunData data, IModalDataContainer modData, WriteSumData sumWriter)
         {
 			if (data.Cycle.CycleType != CycleType.MeasuredSpeed)
 				throw new VectoException("CycleType must be DistanceBased or MeasuredSpeed");
 			ValidateBatteryElectric(data);
 
-			var container = new VehicleContainer(data.ExecutionMode, _modData, _sumWriter) { RunData = data };
+			var container = new VehicleContainer(data.ExecutionMode, modData, sumWriter) { RunData = data };
 
 			var es = new ElectricSystem(container);
 
@@ -1020,13 +1020,13 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			return container;
 
 		}
-		private IVehicleContainer BuildMeasuredSpeedGearBatteryElectric(VectoRunData data)
+		private static IVehicleContainer BuildMeasuredSpeedGearBatteryElectric(VectoRunData data, IModalDataContainer modData, WriteSumData sumWriter)
         {
 			if (data.Cycle.CycleType != CycleType.MeasuredSpeedGear)
 				throw new VectoException("CycleType must be DistanceBased or MeasuredSpeed");
 			ValidateBatteryElectric(data);
 
-			var container = new VehicleContainer(data.ExecutionMode, _modData, _sumWriter) { RunData = data };
+			var container = new VehicleContainer(data.ExecutionMode, modData, sumWriter) { RunData = data };
 
 			var es = new ElectricSystem(container);
 
@@ -1112,7 +1112,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			return container;
 
 		}
-		private void ValidateBatteryElectric(VectoRunData data)
+		private static void ValidateBatteryElectric(VectoRunData data)
         {
 			if (data.ElectricMachinesData.Count > 1)
 			{
