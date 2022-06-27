@@ -675,7 +675,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 				var fullLoadPower = -(response.ElectricMotor.MaxDriveTorque * response.ElectricMotor.AngularVelocity);
 				//.DynamicFullLoadPower; //EnginePowerRequest - response.DeltaFullLoad;
-				var reserve = 1 - response.ElectricMotor.TorqueRequestEmMap / response.ElectricMotor.MaxDriveTorqueEM;
+				var reserve = 1 - (response.ElectricMotor.TorqueRequestEmMap ?? 0.SI<NewtonMeter>()) / response.ElectricMotor.MaxDriveTorqueEM;
 
 				var isBelowDownshift = gear.Gear > 1 &&
 										IsBelowDownshiftCurve(GearboxModelData.Gears[gear.Gear].ShiftPolygon, response.ElectricMotor.TorqueRequest,

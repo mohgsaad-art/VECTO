@@ -12,9 +12,7 @@
     "GearboxFile": "Transmission\\AMT_12.vgbx",
     "TCU": "Transmission\\AMT_12.vgbx",
     "Padd_electric": 3540.0,
-
     "VACC": "Truck.vacc",
-
     "LAC": {
       "Enabled": true,
       "PreviewDistanceFactor": 10.0,
@@ -30,9 +28,18 @@
       "UnderSpeed": 5.0
     },
     "Cycles": [
-      "MeasuredSpeed.vdri",
-	  "MeasuredSpeedGear.vdri",
-	  "PWheel.vdri"
+      "MeasuredSpeed_LongHaul.vdri",
+      "MeasuredSpeed_RegionalDelivery.vdri",
+      "MeasuredSpeed_UrbanDelivery.vdri",
+      "LongHaul",
+      "RegionalDelivery",
+      "UrbanDelivery",
+      "MeasuredSpeedGear_LongHaul.vdri",
+      "MeasuredSpeedGear_RegionalDelivery.vdri",
+      "MeasuredSpeedGear_UrbanDelivery.vdri",
+      "PWheel_LongHaul.vdri",
+      "PWheel_RegionalDelivery.vdri",
+      "PWheel_UrbanDelivery.vdri"
     ]
   }
 }

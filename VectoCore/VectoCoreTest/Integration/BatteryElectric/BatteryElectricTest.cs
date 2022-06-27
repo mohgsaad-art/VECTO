@@ -39,15 +39,12 @@ namespace TUGraz.VectoCore.Tests.Integration.BatteryElectric
 	{
 
 		protected const string BEV_E4_Job = @"TestData\BatteryElectric\GenericVehicleB4\BEV_ENG.vecto";
-		protected const string BEV_E4_Job_Time_Based = @"TestData\BatteryElectric\GenericVehicleB4\BEV_ENG_Time_Based.vecto";
 		protected const string BEV_E4_Job_Cont30kW = @"TestData\BatteryElectric\GenericVehicleB4\BEV_ENG_Cont30kW.vecto";
 
 		protected const string BEV_E3_Job = @"TestData\BatteryElectric\GenericVehicleB3\BEV_ENG.vecto";
-		protected const string BEV_E3_Job_Time_Based = @"TestData\BatteryElectric\GenericVehicleB3\BEV_ENG_Time_Based.vecto";
 		protected const string BEV_E3_Job_Cont30kW = @"TestData\BatteryElectric\GenericVehicleB3\BEV_ENG_Cont30kW.vecto";
 
 		protected const string BEV_E2_Job = @"TestData\BatteryElectric\GenericVehicleB2\BEV_ENG.vecto";
-		protected const string BEV_E2_Job_Time_Based = @"TestData\BatteryElectric\GenericVehicleB2\BEV_ENG_Time_Based.vecto";
 		protected const string BEV_E2_Job_3Speed = @"TestData\BatteryElectric\GenericVehicleB2\BEV_ENG_3speed.vecto";
 		protected const string BEV_E2_Job_BusAux = @"TestData\BatteryElectric\GenericVehicleB2\BEV_ENG_BusAux.vecto";
 		protected const string BEV_E2_Job_Cont30kW = @"TestData\BatteryElectric\GenericVehicleB2\BEV_ENG_Cont30kW.vecto";
@@ -259,8 +256,7 @@ namespace TUGraz.VectoCore.Tests.Integration.BatteryElectric
 
 		[
 			TestCase(BEV_E4_Job, 0, TestName = "PEV E4 Job RD"),
-			TestCase(BEV_E4_Job_Cont30kW, 0, TestName = "PEV E4 Job Cont. 30kW RD"),
-			TestCase(BEV_E4_Job_Time_Based, 0, TestName = "PEV E4 Job Time Based")
+			TestCase(BEV_E4_Job_Cont30kW, 0, TestName = "PEV E4 Job Cont. 30kW RD")
 		]
 		public void B4PEVRunJob(string jobFile, int cycleIdx)
 		{
@@ -453,8 +449,7 @@ namespace TUGraz.VectoCore.Tests.Integration.BatteryElectric
 
 		[
 			TestCase(BEV_E3_Job, 0, TestName = "PEV E3 Job RD"),
-			TestCase(BEV_E3_Job_Cont30kW, 0, TestName = "PEV E3 Job Cont. 30kW RD"),
-			TestCase(BEV_E3_Job_Time_Based, 0, TestName = "PEV E3 Job Time Based")
+			TestCase(BEV_E3_Job_Cont30kW, 0, TestName = "PEV E3 Job Cont. 30kW RD")
 		]
 		public void B3PEVRunJob(string jobFile, int cycleIdx)
 		{
@@ -736,34 +731,6 @@ namespace TUGraz.VectoCore.Tests.Integration.BatteryElectric
 
 			var pt = run.GetContainer();
 
-			Assert.NotNull(pt);
-
-			run.Run();
-			Assert.IsTrue(run.FinishedWithoutErrors);
-		}
-
-		[
-			TestCase(BEV_E2_Job_Time_Based, 0, TestName = "PEV E2 Job MeasuredSpeed"),
-			TestCase(BEV_E2_Job_Time_Based, 1, TestName = "PEV E2 Job MeasuredSpeedGear"),
-			TestCase(BEV_E2_Job_Time_Based, 2, TestName = "PEV E2 Job PWheel")
-		]
-		public void B2_TimeBased_RunJob_Results_Meet_Expectations(string jobFile, int cycleIdx)
-		{
-			var inputProvider = JSONInputDataFactory.ReadJsonJob(jobFile);
-			var writer = new FileOutputWriter(jobFile);
-			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputProvider, writer);
-			factory.Validate = false;
-			factory.WriteModalResults = true;
-
-			var sumContainer = new SummaryDataContainer(writer);
-			var jobContainer = new JobContainer(sumContainer);
-
-			factory.SumData = sumContainer;
-
-			var run = factory.SimulationRuns().ToArray()[cycleIdx];
-			Assert.NotNull(run);
-
-			var pt = run.GetContainer();
 			Assert.NotNull(pt);
 
 			run.Run();

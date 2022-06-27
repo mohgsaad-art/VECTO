@@ -1,0 +1,33 @@
+{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2020-08-21T09:25:38.1210499Z",
+    "AppVersion": "3",
+    "FileVersion": 6
+  },
+  "Body": {
+    "SavedInDeclMode": false,
+    "ModelName": "tractor_12gear_example",
+    "Inertia": 0.0,
+    "TracInt": 1.0,
+    "Gears": [
+      {
+        "Ratio": 2.64,
+        "LossMap": "Axle_4x2_Tractor.vtlm"
+      }
+    ],
+    "TqReserve": 20.0,
+    "ShiftTime": 2.0,
+    "StartTqReserve": 20.0,
+    "StartSpeed": 2.0,
+    "StartAcc": 0.6,
+    "GearboxType": "AMT",
+    "TorqueConverter": {
+      "Enabled": false
+    },
+    "DownshiftAfterUpshiftDelay": 6.0,
+    "UpshiftAfterDownshiftDelay": 6.0,
+    "UpshiftMinAcceleration": 0.1,
+    "PowershiftShiftTime": 0.8
+  }
+}
