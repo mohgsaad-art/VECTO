@@ -597,6 +597,7 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 						AngularVelocity = row.ParseDouble(Fields.EngineSpeed).RPMtoRad(),
 						AdditionalAuxPowerDemand = row.ParseDoubleOrGetDefault(Fields.AdditionalAuxPowerDemand).SI(Unit.SI.Kilo.Watt)
 													.Cast<Watt>(),
+						VehicleTargetSpeed = row.ParseDoubleOrGetDefault(Fields.VehicleSpeed).KMPHtoMeterPerSecond(),
 					}).ToArray();
 
 				return entries;
@@ -615,7 +616,8 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 					Fields.PWheel,
 					Fields.Gear,
 					Fields.EngineSpeed,
-					Fields.AdditionalAuxPowerDemand
+					Fields.AdditionalAuxPowerDemand,
+					Fields.VehicleSpeed
 				};
 
 				return CheckColumns(header, allowedCols, requiredCols, throwExceptions, allowAux: false);

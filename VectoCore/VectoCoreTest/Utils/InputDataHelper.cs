@@ -58,5 +58,16 @@ namespace TUGraz.VectoCore.Tests.Utils
 			var random = Regex.Replace(Convert.ToBase64String(Guid.NewGuid().ToByteArray()), "[^A-Za-z0-9_.]+", "").Substring(0, 5);
 			return Path.Combine(path, $"{filename}-{random}.{extension}");
 		}
+
+		public static string CreateUniqueSubfolder(String inputFile)
+        { 
+			string outputFile = Path.Combine(Path.GetDirectoryName(inputFile), Guid.NewGuid().ToString(), Path.GetFileName(inputFile));
+
+			if (!Directory.Exists(Path.GetDirectoryName(outputFile))) {
+				Directory.CreateDirectory(Path.GetDirectoryName(outputFile));
+            }
+
+			return outputFile;
+		}
 	}
 }

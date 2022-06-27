@@ -1,0 +1,54 @@
+{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2020-11-03T14:19:09.9858299Z",
+    "AppVersion": "3",
+    "FileVersion": 6
+  },
+  "Body": {
+    "SavedInDeclMode": false,
+    "ModelName": "3_speed_AMT",
+    "Inertia": 0.0,
+    "TracInt": 0.8,
+    "Gears": [
+      {
+        "Ratio": 2.64,
+        "LossMap": "Transmission\\Axle_4x2_Tractor.vtlm"
+      },
+      {
+        "Ratio": 17.5,
+        "LossMap": "Transmission\\Gear_1.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": "",
+        "MaxSpeed": ""
+      },
+      {
+        "Ratio": 6.49,
+        "LossMap": "Transmission\\Gear_2.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": "",
+        "MaxSpeed": ""
+      },
+      {
+        "Ratio": 2.48,
+        "LossMap": "Transmission\\Gear_3.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": "",
+        "MaxSpeed": ""
+      }
+    ],
+    "TqReserve": 0.0,
+    "ShiftTime": 2.0,
+    "StartTqReserve": 20.0,
+    "StartSpeed": 2.22222222222222,
+    "StartAcc": 0.8,
+    "GearboxType": "AMT",
+    "TorqueConverter": {
+      "Enabled": false
+    },
+    "DownshiftAfterUpshiftDelay": 6.0,
+    "UpshiftAfterDownshiftDelay": 6.0,
+    "UpshiftMinAcceleration": 0.1,
+    "PowershiftShiftTime": 0.0
+  }
+}

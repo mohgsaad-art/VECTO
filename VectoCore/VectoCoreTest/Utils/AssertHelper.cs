@@ -35,11 +35,16 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using TUGraz.VectoCommon.Utils;
 using NUnit.Framework;
 using TUGraz.VectoCommon.InputData;
+using TUGraz.VectoCore.Models.Simulation.Impl;
+using TUGraz.VectoCore.Utils;
+using TUGraz.VectoCore.OutputData.FileIO;
+using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
 
 namespace TUGraz.VectoCore.Tests.Utils
 {
@@ -161,6 +166,81 @@ namespace TUGraz.VectoCore.Tests.Utils
 				}
 			}
 
+		}
+
+        public static void ReportDeviations(String distanceSumPath, int distanceSumRow, SimulatorFactory factory, 
+			Dictionary<String, double> metrics)
+        { 
+			String sumFilePath = WriteSumFile(factory);
+
+			var table = VectoCSVFile.Read(sumFilePath, true, true);
+			var row = table.Rows[0];
+
+			var distanceTable = VectoCSVFile.Read(distanceSumPath, true, true);
+			var distanceRow = distanceTable.Rows[distanceSumRow];
+		
+			foreach (var metric in metrics) {
+				double result;
+				Assert.IsTrue(double.TryParse(row[metric.Key].ToString(), out result));
+
+				double distanceResult;
+				Assert.IsTrue(double.TryParse(distanceRow[metric.Key].ToString(), out distanceResult));
+
+				double deviation = ((result - distanceResult) / distanceResult) * 100;
+
+				double expectedDeviation = ((metric.Value - distanceResult) / distanceResult) * 100;
+
+				TestContext.WriteLine($"Distance run deviation of {metric.Key} = {deviation.ToString("N2")} %   (expected = {expectedDeviation.ToString("N2")} %)");
+            }
+
+			TestContext.WriteLine();
+		}
+
+        public static void AssertMetrics(SimulatorFactory factory, Dictionary<String, double> metrics)
+        {
+			String sumFilePath = WriteSumFile(factory);
+
+			var table = VectoCSVFile.Read(sumFilePath, true, true);
+			var row = table.Rows[0];
+
+			Dictionary<string, double> results = new Dictionary<string, double>();
+
+			foreach (var kvp in metrics) {
+				double result;
+				Assert.IsTrue(double.TryParse(row[kvp.Key].ToString(), out result));
+
+				results.Add(kvp.Key, result);
+
+				TestContext.WriteLine($"{kvp.Key} = {result}   (expected = {kvp.Value})");
+            }
+
+			foreach (var kvp in metrics) {
+				AreRelativeEqual(kvp.Value.SI<Scalar>(), results[kvp.Key].SI<Scalar>(), $"{kvp.Key} ({results[kvp.Key]}) is other than expected ({kvp.Value})");
+			}
+        }
+
+		public static void ReadMetricsFromVSum(String vsumPath, int vsumRow, Dictionary<String, double> metrics)
+		{
+			var distanceTable = VectoCSVFile.Read(vsumPath, true, true);
+			var distanceRow = distanceTable.Rows[vsumRow];
+		
+			foreach (var metric in metrics) {
+				double distanceResult;
+				Assert.IsTrue(double.TryParse(distanceRow[metric.Key].ToString(), out distanceResult));
+
+				metrics[metric.Key] = distanceResult;
+			}
+        }
+
+		private static string WriteSumFile(SimulatorFactory factory)
+        {
+			String sumFilePath = ((FileOutputWriter) factory.ReportWriter).SumFileName;
+
+			if (!File.Exists(sumFilePath)) {
+				factory.SumData.Finish();
+            }
+
+			return sumFilePath;
 		}
 
 		private static void TableDataEquals(TableData expected, TableData actual)

@@ -10,11 +10,8 @@
     "EngineOnlyMode": false,
     "VehicleFile": "BatteryElectricVehicle.vveh",
     "GearboxFile": "Axle.vgbx",
-
     "Padd_electric": 3540.0,
-
     "VACC": "Truck.vacc",
-
     "LAC": {
       "Enabled": true,
       "PreviewDistanceFactor": 10.0,
@@ -30,7 +27,12 @@
       "UnderSpeed": 5.0
     },
     "Cycles": [
-      "MeasuredSpeed.vdri"
+      "MeasuredSpeed_LongHaul.vdri",
+	    "MeasuredSpeed_RegionalDelivery.vdri",
+	    "MeasuredSpeed_UrbanDelivery.vdri",
+	    "LongHaul",
+	    "RegionalDelivery",
+	    "UrbanDelivery"
     ]
   }
 }
