@@ -1,4 +1,4 @@
-{
+﻿{
   "Header": {
     "CreatedBy": " ()",
     "Date": "2016-10-13T08:55:18.2100810Z",
@@ -9,8 +9,8 @@
     "SavedInDeclMode": false,
     "EngineOnlyMode": false,
     "VehicleFile": "BatteryElectricVehicle.vveh",
-    "GearboxFile": "Transmission\\AMT_12.vgbx",
-    "TCU": "Transmission\\AMT_12.vgbx",
+    "GearboxFile": "AMT.vgbx",
+    "TCU": "AMT.vgbx",
     "Padd_electric": 3540.0,
     "VACC": "Truck.vacc",
     "LAC": {

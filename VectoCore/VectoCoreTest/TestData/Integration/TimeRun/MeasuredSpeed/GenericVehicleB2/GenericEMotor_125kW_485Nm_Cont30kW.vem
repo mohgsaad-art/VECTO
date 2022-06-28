@@ -3,7 +3,7 @@
     "CreatedBy": " ()",
     "Date": "2016-10-13T08:54:28.7387223Z",
     "AppVersion": "3",
-    "FileVersion": 2
+    "FileVersion": 1
   },
   "Body": {
     "SavedInDeclMode": false,
@@ -12,10 +12,8 @@
     "DragCurve": "GenericDrag_125kW_485Nm.vemd",
     "EfficiencyMap": "GenericMap_125kW_485Nm.vemo",
     "Inertia": 0.225,
-    "ContinuousTorque": 145,
-    "ContinuousTorqueSpeed": 2000,
-    "OverloadTorque": 485,
-    "OverloadTorqueSpeed": 2000,
+    "ContinuousPower": 30000,
+    "ContinuousPowerSpeed": 2000,
     "OverloadTime": 30,
     "ThermalOverloadRecoveryFactor": 0.9
   }
