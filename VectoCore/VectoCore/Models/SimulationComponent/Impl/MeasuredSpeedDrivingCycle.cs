@@ -57,9 +57,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		IDriverInfo, IDrivingCycleInfo, IMileageCounter, IDriverDemandInProvider, IDriverDemandInPort, ISimulationOutProvider,
 		ISimulationOutPort
 	{
-
-		internal IdleControllerSwitcher IdleController;
-
 		public class DrivingCycleState
 		{
 			public DrivingCycleState Clone()
@@ -92,9 +89,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		{
 			Data = cycle;
 			CycleIterator = new DrivingCycleEnumerator(cycle);
-
-			var first = Data.Entries.First();
-			AbsTime = first.Time;
 
 			PreviousState = new DrivingCycleState {
 				Distance = 0.SI<Meter>(),
@@ -273,12 +267,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
         private void DetermineDriverActionForPHEV(Second absTime)
         { 
 			if (DataBus.HybridControllerCtl != null) {
-				if (DataBus.GearboxInfo.GearboxType.AutomaticTransmission()) {
-					DetermineDriverActionWhenUsingAutomaticTransmission(absTime);	
-				}
-				else {
-					DetermineDriverActionWhenUsingManualTransmission(absTime);
-				}
+				DetermineDriverActionForHybrid(absTime);
 			}
 			else {
 				DetermineDriverActionForOther();
@@ -301,7 +290,17 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
 		}
 
-        private void DetermineDriverActionWhenUsingAutomaticTransmission(Second absTime)
+        private void DetermineDriverActionForHybrid(Second absTime)
+        { 
+			if (DataBus.GearboxInfo.GearboxType.AutomaticTransmission()) {
+				DetermineDriverActionForAutomaticHybrid(absTime);	
+			}
+			else {
+				DetermineDriverActionForManualHybrid(absTime);
+			}
+		}
+
+        private void DetermineDriverActionForAutomaticHybrid(Second absTime)
         { 
 			if (DataBus.VehicleInfo.VehicleStopped && DriverAcceleration.IsEqual(0)) {
 				DriverBehavior = DrivingBehavior.Halted;
@@ -328,14 +327,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
         }
 
-        private void DetermineDriverActionWhenUsingManualTransmission(Second absTime)
+        private void DetermineDriverActionForManualHybrid(Second absTime)
         {
 			if (DataBus.VehicleInfo.VehicleStopped && DriverAcceleration.IsEqual(0)) {
 				DrivingAction =  DrivingAction.Halt;
 				DriverBehavior = DrivingBehavior.Halted;
             }
 			else {
-				var nextSpeed = CalculateVehicleSpeedAtNextStep(absTime);
+				var nextSpeed = CalculateHybridSpeedAtNextStep(absTime);
 				var tolerance = (((DataBus.VehicleInfo.VehicleSpeed + nextSpeed) / 2) * 0.001).Abs();
 
 				if (CycleData.RightSample.VehicleTargetSpeed.IsGreater(nextSpeed, tolerance)) {
@@ -349,7 +348,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
         }
 
-        private MeterPerSecond CalculateVehicleSpeedAtNextStep(Second absTime)
+        private MeterPerSecond CalculateHybridSpeedAtNextStep(Second absTime)
         {
 			var velocityDropData = DataBus.HybridControllerCtl.Strategy.VelocityDropData;
 
@@ -468,7 +467,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)
 		{
-			if ((CycleIterator.RightSample == null) || AbsTime.IsGreaterOrEqual(CycleIterator.RightSample.Time)) {
+			if ((CycleIterator.RightSample == null) || ((AbsTime != null) && AbsTime.IsGreaterOrEqual(CycleIterator.RightSample.Time))) {
 				CycleIterator.MoveNext();
 			}
 			AdvanceState();

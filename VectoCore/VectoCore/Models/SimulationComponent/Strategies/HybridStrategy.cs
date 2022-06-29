@@ -579,7 +579,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				nextGear = Controller.ShiftStrategy.NextGear;
 			}
 
-			if (DataBus.DriverInfo.DrivingAction == DrivingAction.Accelerate && (nextGear != null) && StrategyParameters.MaxPropulsionTorque?.GetVECTOValueOrDefault(nextGear) != null && DataBus.GearboxInfo.TCLocked) {
+			if (DataBus.DriverInfo.DrivingAction == DrivingAction.Accelerate && (nextGear != null) 
+				&& StrategyParameters.MaxPropulsionTorque?.GetVECTOValueOrDefault(nextGear) != null && DataBus.GearboxInfo.TCLocked) {
 				
 				var emOff = new HybridStrategyResponse {
 					CombustionEngineOn = DataBus.EngineInfo.EngineOn, // AllowICEOff(absTime), 
@@ -1497,27 +1498,15 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			}
 		}
 
-		private int _evalCount; //Matrec
-
 		private HybridResultEntry SelectBestOption(
 			List<HybridResultEntry> eval, Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity,
 			bool dryRun, GearshiftPosition currentGear)
 		{
-			//foreach(var e in eval) {
-			//	try {
-			//		MatRec.NewRow("AbsTime", absTime.Value());
-			//		MatRec.Record("ICE_speed", e.Response.Engine.EngineSpeed.Value());
-   //             }
-			//	catch {}
-   //         }
-			
 			var eval2 = eval.Where(x =>
 					(x.IgnoreReason & HybridConfigurationIgnoreReason.VehicleSpeedBelowMinSpeedAfterGearshift) == 0)
 				.ToList();
 			var prohibitGearshift = eval.Where(x => !x.Gear.Equals(currentGear)).All(x =>
 				(x.IgnoreReason & HybridConfigurationIgnoreReason.VehicleSpeedBelowMinSpeedAfterGearshift) != 0);
-
-			_evalCount = eval.Count; //Matrec
 			var best = DoSelectBestOption(eval2, absTime, dt, outTorque, outAngularVelocity, dryRun, currentGear);
 			if (best == null) {
 				return null;
@@ -1538,7 +1527,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 						newEval,
 						best.Setting.MechanicalAssistPower.First().Key, dryRun);
 					if (newEval.Count > 0) {
-						_evalCount = newEval.Count; //Matrec
 						var newBest = DoSelectBestOption(newEval, absTime, dt, outTorque, outAngularVelocity, dryRun,
 							currentGear);
 						if (!newBest.IgnoreReason.EngineSpeedTooHigh()) {
@@ -1812,7 +1800,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				}
 				if (nextGear.Equals(gear) && gearRange.Item1 == 0 && (emOffEntry.IgnoreReason & HybridConfigurationIgnoreReason.EngineSpeedTooLow) != 0) {
 					allowEmergencyDownshift = true;
-					// add here extended logging
 				}
 			}
 
@@ -1886,7 +1873,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 			IterateEMTorque(
 				absTime, dt, outTorque, outAngularVelocity, nextGear, allowICEOff, emOffEntry.Response, emTqReq, emPos, responses, dryRun);
-
 			return emOffEntry;
 		}
 
@@ -2164,7 +2150,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				return;
 			}
 
-			// Null value in resp.Engine.TotalTorqueDemand does not allow checking if its value is between DragTorque and DynamicFullLoadTorque
 			if (resp.Engine.TotalTorqueDemand == null)
 			{
 				tmp.FuelCosts = double.NaN;
@@ -2200,9 +2185,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				}
 			}
 
-			if (!iceOff &&
-				(resp.Engine.TotalTorqueDemand.IsSmaller(resp.Engine.DragTorque) || resp.Engine.TotalTorqueDemand.IsGreater(resp.Engine.DynamicFullLoadTorque)))
-			{
+
+			if (!iceOff && /*!resp.Engine.TotalTorqueDemand.IsBetween(resp.Engine.DragTorque, resp.Engine.DynamicFullLoadTorque)*/
+				(resp.Engine.TotalTorqueDemand.IsSmaller(resp.Engine.DragTorque) || resp.Engine.TotalTorqueDemand.IsGreater(resp.Engine.DynamicFullLoadTorque))) {
 				tmp.FuelCosts = double.NaN;
 				tmp.IgnoreReason |= resp.Engine.TotalTorqueDemand.IsGreater(resp.Engine.DynamicFullLoadTorque)
 					? HybridConfigurationIgnoreReason.EngineTorqueDemandTooHigh
@@ -2414,7 +2399,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			DebugData = new DebugData();
 			DryRunSolution = null;
 			LimitedGbxTorque = false;
-			// add here extended logging
 		}
 
 		public void WriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
@@ -2424,10 +2408,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 			container[ModalResultField.MaxPropulsionTorqe] = CurrentState.MaxGbxTq ?? 0.SI<NewtonMeter>();
 
-			container.SetDataValue("Combinations", _evalCount); //MatRec
-			container.SetDataValue("Driving Action", DataBus.DriverInfo.DrivingAction.ToString()); //MatRec
-			var x = (int) DataBus.DriverInfo.DrivingAction;
-			container.SetDataValue("DriverAction", x); //MatRec
+			container.SetDataValue("Driving Action", DataBus.DriverInfo.DrivingAction.ToString());
+			container.SetDataValue("DriverAction", DataBus.DriverInfo.DrivingAction);
 
 			//if (CurrentState.Evaluations != null) {
 			//    container.SetDataValue(

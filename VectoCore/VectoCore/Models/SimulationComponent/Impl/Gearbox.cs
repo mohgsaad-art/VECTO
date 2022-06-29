@@ -277,20 +277,19 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				: 0.SI<NewtonMeter>();
 			inTorque += inertiaTorqueLossOut / ModelData.Gears[gear].Ratio;
 
+			var halted = DataBus.DriverInfo.DrivingAction == DrivingAction.Halt;
 			var driverDeceleratingNegTorque = DataBus.DriverInfo.DriverBehavior == DrivingBehavior.Braking &&
 											DataBus.DriverInfo.DrivingAction == DrivingAction.Brake &&
 											(DataBus.DrivingCycleInfo.RoadGradient.IsSmaller(0) ||
 											(ICEAvailable && inAngularVelocity.IsSmaller(DataBus.EngineInfo.EngineIdleSpeed))) &&
 											(DataBus.Brakes.BrakePower.IsGreater(0) || inTorque.IsSmaller(0));
-			var vehiclespeedBelowThreshold =
+			var vehicleSpeedBelowThreshold =
 				DataBus.VehicleInfo.VehicleSpeed.IsSmaller(ModelData.DisengageWhenHaltingSpeed);
 			if (!dryRun) {
 				CurrentState.DrivingBehavior = DataBus.DriverInfo.DriverBehavior;
 			}
 			
-			var halted = DataBus.DriverInfo.DrivingAction == DrivingAction.Halt;
-
-			if (halted || (driverDeceleratingNegTorque && vehiclespeedBelowThreshold)) {
+			if (halted || (driverDeceleratingNegTorque && vehicleSpeedBelowThreshold)) {
 				EngageTime = VectoMath.Max(EngageTime, absTime + dt);
 				_strategy?.Disengage(absTime, dt, outTorque, outAngularVelocity);
 				//if (_strategy != null && DataBus.HybridControllerInfo != null &&

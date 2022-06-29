@@ -164,9 +164,9 @@ namespace TUGraz.VectoCore.Tests.Utils
 				} else {
 					PublicPropertiesEqual(propertyType, expectedVal, actualVal, ignoredProperties);
 				}
-        }
+			}
 
-        }
+		}
 
         public static void ReportDeviations(String distanceSumPath, int distanceSumRow, SimulatorFactory factory, 
 			Dictionary<String, double> metrics)

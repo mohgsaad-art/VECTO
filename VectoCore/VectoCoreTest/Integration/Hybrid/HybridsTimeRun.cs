@@ -88,7 +88,7 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 
         TestCase(P4_JOB, 3, TestName = "P4 Hybrid DistanceRun MeasuredSpeed LongHaul"),
         TestCase(P4_JOB, 4, TestName = "P4 Hybrid DistanceRun MeasuredSpeed RegionalDelivery"),
-        TestCase(P4_JOB, 5, TestName = "P4 Hybrid DistanceRun MeasuredSpeed UrbanDelivery"),
+        TestCase(P4_JOB, 5, TestName = "P4 Hybrid DistanceRun MeasuredSpeed UrbanDelivery")
         ]
         public void TestHybridDistanceRunCycle(string jobFile, int cycleIdx)
         {
@@ -122,7 +122,7 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
             
             AssertHelper.AssertMetrics(factory, metrics);
 
-			Directory.Delete(Path.GetDirectoryName(outputFile), recursive: true);
+			//Directory.Delete(Path.GetDirectoryName(outputFile), recursive: true);
         }
 
         public void RunHybridDistanceRunCycle(string jobFile, int cycleIdx, Dictionary<String, double> metrics)
@@ -148,7 +148,7 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 
             AssertHelper.AssertMetrics(factory, metrics);
 
-			Directory.Delete(Path.GetDirectoryName(outputFile), recursive: true);
+			//Directory.Delete(Path.GetDirectoryName(outputFile), recursive: true);
         }
 
     }

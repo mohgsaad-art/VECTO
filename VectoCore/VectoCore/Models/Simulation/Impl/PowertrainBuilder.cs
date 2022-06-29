@@ -622,8 +622,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 			SetIdleControllerForHybridP1(data, gearbox, idleController, clutch);
 
-			cycle.IdleController = idleController as IdleControllerSwitcher;
-
 			AddBusAuxiliaries(data, container, es);
 
 			return container;
