@@ -22,6 +22,7 @@ using NLog;
 using NLog.Config;
 using NLog.Targets;
 using TUGraz.VectoCommon.BusAuxiliaries;
+using TUGraz.VectoCommon.Hashing;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Resources;
@@ -35,6 +36,7 @@ using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
+using TUGraz.VectoHashing;
 using VECTOTrailer.Util;
 using VECTOTrailer.ViewModel.Interfaces;
 using VECTOTrailer.Helper;
@@ -207,6 +209,7 @@ namespace VECTOTrailer.ViewModel.Impl
 			
             TrailerToolSettings.SimulationSettings.PropertyChanged += SimulationSettings_PropertyChanged;
 		}
+
 
         private void SimulationSettings_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -679,7 +682,7 @@ namespace VECTOTrailer.ViewModel.Impl
 			if (viewModel == null)
 				return;
 
-			var window = OutputWindowHelper.CreateOutputWindow(Kernel, viewModel);
+			var window = OutputWindowHelper.CreateOutputWindow(Kernel, viewModel, settings:_trailerToolSettings);
 			window.Show();
 		}
 		
@@ -694,7 +697,8 @@ namespace VECTOTrailer.ViewModel.Impl
 		private void DoNewJobCommand()
 		{
 			var jobEditView = new CompleteTrailerJobViewModel(Kernel, null, _trailerToolSettings);
-			var window = OutputWindowHelper.CreateOutputWindow(Kernel, jobEditView, "New File");
+			var window = OutputWindowHelper.CreateOutputWindow(Kernel, jobEditView, "New File", settings:_trailerToolSettings);
+			
 			window.Show();
 		}
 
@@ -716,7 +720,7 @@ namespace VECTOTrailer.ViewModel.Impl
 
 			if (xmlViewModel != null)
 			{
-				var window = OutputWindowHelper.CreateOutputWindow(Kernel, xmlViewModel, xmlViewModel.FileName);
+				var window = OutputWindowHelper.CreateOutputWindow(Kernel, xmlViewModel, xmlViewModel.FileName, settings:_trailerToolSettings);
 				window.Show();
 			}
 		}
@@ -1193,7 +1197,7 @@ namespace VECTOTrailer.ViewModel.Impl
 					}
 
 					var fileWriter = new FileOutputWriter(GetOutputDirectory(fullFileName));
-					var runsFactory = new SimulatorFactory(mode, input, fileWriter) {
+					var runsFactory = new SimulatorFactory(mode, input, fileWriter, validateHashes:true) {
 						WriteModalResults = _trailerToolSettings.SimulationSettings.WriteModData,
 						//ModalResults1Hz = WriteModData1Hz,
 						//Validate = ValidateData,

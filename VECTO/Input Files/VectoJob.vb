@@ -31,9 +31,18 @@ Imports TUGraz.VectoCore.Utils
 
 <CustomValidation(GetType(VectoJob), "ValidateJob")>
 Public Class VectoJob
-    Implements IEngineeringInputDataProvider, IDeclarationInputDataProvider, IEngineeringJobInputData,
-                IDeclarationJobInputData, IDriverEngineeringInputData, IDriverDeclarationInputData, IAuxiliariesEngineeringInputData,
-                IAuxiliariesDeclarationInputData, IJSONVehicleComponents, IEngineStopStartEngineeringInputData, IEcoRollEngineeringInputData, IPCCEngineeringInputData
+    Implements IEngineeringInputDataProvider,
+               IDeclarationInputDataProvider,
+               IEngineeringJobInputData,
+               IDeclarationJobInputData,
+               IDriverEngineeringInputData,
+               IDriverDeclarationInputData,
+               IAuxiliariesEngineeringInputData,
+               IAuxiliariesDeclarationInputData,
+               IJSONVehicleComponents,
+               IEngineStopStartEngineeringInputData,
+               IEcoRollEngineeringInputData,
+               IPCCEngineeringInputData
 
     'AA-TB
     'STORES THE Type and version of the chosen or default Auxiliary Type ( Classic/Original or other )
@@ -51,7 +60,7 @@ Public Class VectoJob
     Private ReadOnly _tcuFile As SubPath
 
     Private ReadOnly _lacDfTargetSpeedFile As SubPath
-    Private ReadOnly _lacDfVelocityDropFile as SubPath
+    Private ReadOnly _lacDfVelocityDropFile As SubPath
 
     Private _startStop As Boolean
     Public StartStopDelay As Double
@@ -69,18 +78,18 @@ Public Class VectoJob
     Public LookAheadOn As Boolean
     Public OverSpeedOn As Boolean
     Public OverSpeed As Double
-   
+
 
     Public LookAheadMinSpeed As Double
     Public EngineStopStartActivationThreshold As Double
     Private _shiftStrategy As String
-    public EngineOffTimeLimit As double
-    public EngineStStUtilityFactor As Double
+    Public EngineOffTimeLimit As Double
+    Public EngineStStUtilityFactor As Double
 
-    Public EcoRollMinSpeed As double
+    Public EcoRollMinSpeed As Double
     Public EcoRollUnderspeedThreshold As Double
-    Public EcoRollActivationDelay as double
-    public EcoRollMaxAcceleration as Double
+    Public EcoRollActivationDelay As Double
+    Public EcoRollMaxAcceleration As Double
 
     Public PCCEnableSpeedVal As Double
     Public PCCMinSpeed As Double
@@ -113,7 +122,7 @@ Public Class VectoJob
         _vehicleFile = New SubPath
         _engineFile = New SubPath
         _gearboxFile = New SubPath
-        _tcuFile = new SubPath
+        _tcuFile = New SubPath
         _lacDfTargetSpeedFile = New SubPath()
         _lacDfVelocityDropFile = New SubPath()
 
@@ -139,7 +148,7 @@ Public Class VectoJob
 
         Try
             Dim writer As JSONFileWriter = JSONFileWriter.Instance
-            writer.SaveJob(Me, _sFilePath, cfg.DeclMode)
+            writer.SaveJob(Me, _sFilePath, Cfg.DeclMode)
         Catch ex As Exception
             MsgBox("Failed to save Job file: " + ex.Message)
             Return False
@@ -219,7 +228,7 @@ Public Class VectoJob
             _tcuFile.Init(_myPath, value)
         End Set
     End Property
-    
+
 
     Public ReadOnly Property IDriverDeclarationInputData_SavedInDeclarationMode As Boolean _
         Implements IDriverDeclarationInputData.SavedInDeclarationMode
@@ -240,7 +249,7 @@ Public Class VectoJob
     Public ReadOnly Property OverSpeedData As IOverSpeedEngineeringInputData _
         Implements IDriverEngineeringInputData.OverSpeedData
         Get
-           Return New OverSpeedInputData() With {
+            Return New OverSpeedInputData() With {
                 .Enabled = OverSpeedOn,
                 .MinSpeed = VMin.KMPHtoMeterPerSecond(),
                 .OverSpeed = OverSpeed.KMPHtoMeterPerSecond()
@@ -258,7 +267,7 @@ Public Class VectoJob
                             RessourceHelper.ReadStream(
                                 DeclarationData.DeclarationDataResourcePrefix + ".VACC." + _driverAccelerationFile.OriginalPath +
                                 VectoCore.Configuration.Constants.FileExtensions.DriverAccelerationCurve)
-                    Return  New DriverAccelerationInputData() With{ .AccelerationCurve =
+                    Return New DriverAccelerationInputData() With {.AccelerationCurve =
                         VectoCSVFile.ReadStream(cycleDataRes,
                                                 source:=DeclarationData.DeclarationDataResourcePrefix + ".VACC." + _driverAccelerationFile.OriginalPath +
                                                         VectoCore.Configuration.Constants.FileExtensions.DriverAccelerationCurve)
@@ -267,7 +276,7 @@ Public Class VectoJob
                     Return Nothing
                 End Try
             End If
-            Return New DriverAccelerationInputData() With{ .AccelerationCurve = VectoCSVFile.Read(_driverAccelerationFile.FullPath) }
+            Return New DriverAccelerationInputData() With {.AccelerationCurve = VectoCSVFile.Read(_driverAccelerationFile.FullPath)}
         End Get
     End Property
 
@@ -291,87 +300,87 @@ Public Class VectoJob
 
     Public ReadOnly Property IDriverEngineeringInputData_GearshiftInputData As IGearshiftEngineeringInputData Implements IDriverEngineeringInputData.GearshiftInputData
         Get
-            return new JSONComponentInputData(_tcuFile.FullPath, Me).DriverInputData.GearshiftInputData
+            Return New JSONComponentInputData(_tcuFile.FullPath, Me).DriverInputData.GearshiftInputData
         End Get
     End Property
 
     Public ReadOnly Property EngineStopStartData As IEngineStopStartEngineeringInputData Implements IDriverEngineeringInputData.EngineStopStartData
         Get
-            Return me
+            Return Me
         End Get
     End Property
 
     Public ReadOnly Property EcoRollData As IEcoRollEngineeringInputData Implements IDriverEngineeringInputData.EcoRollData
-    Get
-            Return me
-    End Get
+        Get
+            Return Me
+        End Get
     End Property
 
     Public ReadOnly Property PCCData As IPCCEngineeringInputData Implements IDriverEngineeringInputData.PCCData
-    get
-            return me
-    End Get
+        Get
+            Return Me
+        End Get
     End Property
 
     Public ReadOnly Property PCCEnabledSpeed As MeterPerSecond Implements IPCCEngineeringInputData.PCCEnabledSpeed
-    get
-            return PCCEnableSpeedVal.KMPHtoMeterPerSecond()
-    End Get
+        Get
+            Return PCCEnableSpeedVal.KMPHtoMeterPerSecond()
+        End Get
     End Property
     Public ReadOnly Property IPCCEngineeringInputData_MinSpeed As MeterPerSecond Implements IPCCEngineeringInputData.MinSpeed
-    get
-            return PCCMinSpeed.KMPHtoMeterPerSecond()
-    End Get
+        Get
+            Return PCCMinSpeed.KMPHtoMeterPerSecond()
+        End Get
     End Property
 
     Public ReadOnly Property MinSpeed As MeterPerSecond Implements IEcoRollEngineeringInputData.MinSpeed
-    get
+        Get
             Return EcoRollMinSpeed.KMPHtoMeterPerSecond()
-    End Get
+        End Get
     End Property
 
     Public ReadOnly Property PreviewDistanceUseCase1 As Meter Implements IPCCEngineeringInputData.PreviewDistanceUseCase1
-    get
-            return PCCPrevewiDistance1.SI(of Meter)
-    End Get
+        Get
+            Return PCCPrevewiDistance1.SI(Of Meter)
+        End Get
     End Property
     Public ReadOnly Property PreviewDistanceUseCase2 As Meter Implements IPCCEngineeringInputData.PreviewDistanceUseCase2
-    get
-            return PCCPreviewDistance2.SI(of Meter)
-    End Get
+        Get
+            Return PCCPreviewDistance2.SI(Of Meter)
+        End Get
     End Property
     Public ReadOnly Property Underspeed As MeterPerSecond Implements IPCCEngineeringInputData.Underspeed
-    get
-            return PCCUnderspeed.KMPHtoMeterPerSecond()
-    End Get
+        Get
+            Return PCCUnderspeed.KMPHtoMeterPerSecond()
+        End Get
     End Property
     Public ReadOnly Property OverspeedUseCase3 As MeterPerSecond Implements IPCCEngineeringInputData.OverspeedUseCase3
-    get
+        Get
             Return PCCOverspeedUseCase3.KMPHtoMeterPerSecond()
-    End Get
+        End Get
     End Property
 
     Public ReadOnly Property IEcoRollEngineeringInputData_ActivationDelay As Second Implements IEcoRollEngineeringInputData.ActivationDelay
-    get
+        Get
             Return EcoRollActivationDelay.SI(Of Second)()
-    End Get
+        End Get
     End Property
 
     Public ReadOnly Property ActivationDelay As Second Implements IEngineStopStartEngineeringInputData.ActivationDelay
         Get
-            return EngineStopStartActivationThreshold.SI(Of Second)()
+            Return EngineStopStartActivationThreshold.SI(Of Second)()
         End Get
     End Property
 
     Public ReadOnly Property UnderspeedThreshold As MeterPerSecond Implements IEcoRollEngineeringInputData.UnderspeedThreshold
-    get
+        Get
             Return EcoRollUnderspeedThreshold.KMPHtoMeterPerSecond()
-    End Get
+        End Get
     End Property
 
     Public ReadOnly Property AccelerationUpperLimit As MeterPerSquareSecond Implements IEcoRollEngineeringInputData.AccelerationUpperLimit
         Get
-            Return EcoRollMaxAcceleration.SI(of MeterPerSquareSecond)
+            Return EcoRollMaxAcceleration.SI(Of MeterPerSquareSecond)
         End Get
     End Property
 
@@ -403,24 +412,24 @@ Public Class VectoJob
     Public Property LacPreviewFactor As Double
     Public Property LacDfOffset As Double
     Public Property LacDfScale As Double
-    Public Property LacDfTargetSpeedFile(Optional ByVal original As Boolean = false) As String
+    Public Property LacDfTargetSpeedFile(Optional ByVal original As Boolean = False) As String
         Get
             If original Then
                 Return _lacDfTargetSpeedFile.OriginalPath
-                Else 
-                return _lacDfTargetSpeedFile.FullPath
+            Else
+                Return _lacDfTargetSpeedFile.FullPath
             End If
         End Get
         Set(value As String)
             _lacDfTargetSpeedFile.Init(_myPath, value)
         End Set
     End Property
-    Public Property LacDfVelocityDropFile(optional ByVal original As Boolean = false) As String
+    Public Property LacDfVelocityDropFile(Optional ByVal original As Boolean = False) As String
         Get
             If original Then
                 Return _lacDfVelocityDropFile.OriginalPath
-            Else 
-                return _lacDfVelocityDropFile.FullPath
+            Else
+                Return _lacDfVelocityDropFile.FullPath
             End If
         End Get
         Set(value As String)
@@ -572,13 +581,15 @@ Public Class VectoJob
     '    End Get
     'End Property
 
+    Public Sub ValidateComponentHashes() Implements IDeclarationInputDataProvider.ValidateComponentHashes
+        Throw New NotImplementedException
+    End Sub
 
     Public ReadOnly Property XMLHash As XElement Implements IDeclarationInputDataProvider.XMLHash
         Get
             Return Nothing
         End Get
     End Property
-
 
     Public ReadOnly Property SavedInDeclarationMode As Boolean Implements IDeclarationJobInputData.SavedInDeclarationMode
         Get
@@ -601,6 +612,8 @@ Public Class VectoJob
             Return New JSONComponentInputData(_vehicleFile.FullPath, Me).JobInputData.Vehicle
         End Get
     End Property
+
+
 
     Public ReadOnly Property Cycles As IList(Of ICycleData) Implements IEngineeringJobInputData.Cycles
         Get
@@ -777,12 +790,13 @@ Public Class VectoJob
 
     Public ReadOnly Property DataSource As DataSource Implements IInputDataProvider.DataSource
         Get
-            Dim retVal As DataSource =  New DataSource() 
+            Dim retVal As DataSource = New DataSource()
             retVal.SourceType = DataSourceType.JSONFile
             retVal.SourceFile = FilePath
             Return retVal
         End Get
     End Property
+
 
 End Class
 

@@ -23,7 +23,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl {
 		public DeclarationVTPModeVectoRunDataFactoryHeavyBusPrimary(
 			IVTPDeclarationInputDataProvider ivtpProvider, IVTPReport report) : base(ivtpProvider.JobInputData, report)
 		{
-			
+			DataProvider = ivtpProvider;
 		}
 
 		protected DeclarationVTPModeVectoRunDataFactoryHeavyBusPrimary(IVTPDeclarationJobInputData vtpJob, IVTPReport report): base(vtpJob, report) { }
@@ -228,6 +228,6 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl {
 			yield return vtpRunData;
 		}
 
-		
+		public override IInputDataProvider DataProvider { get; protected set; }
 	}
 }

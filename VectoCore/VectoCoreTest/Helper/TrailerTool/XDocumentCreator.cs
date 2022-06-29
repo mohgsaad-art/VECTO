@@ -36,7 +36,7 @@ namespace TUGraz.VectoCore.Tests.Helper.TrailerTool
 			var numberOfTrailerAxles = NumberOfTrailerAxlesHelper.Parse(row["Number_of_axles"].ToString());
 			var bodyWorkCode = BodyWorkCodeHelper.Parse(row["Bodywork_code"].ToString());
 			var volumeOrientation = row["Volume_orientation"].ToString() == "Yes";
-
+			
 
 			
 			var setTpmlmAxleAssembly = row["TPMLM_axle_assembly"].ToString() != "---" && row["TPMLM_axle_assembly"].ToString() != "all weights";
@@ -82,8 +82,16 @@ namespace TUGraz.VectoCore.Tests.Helper.TrailerTool
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
-			
 
+
+			///For the calculation of the Reference Ratio, the LengthBetweenCentresOfAxles doesn't matter because only reference trailers are simulated
+			var lengthBetweenCentresOfAxles = xElements.Single(xElement =>
+				xElement.Name.LocalName == XMLNames.Trailer_LengthBetweenCentersOfAxles);
+			if (numberOfTrailerAxles == NumberOfTrailerAxles.One) {
+				//lengthBetweenCentresOfAxles.Remove();
+			} else {
+				lengthBetweenCentresOfAxles.Value = "9.999";
+			}
 
 
 			var bodyWorkElement = xElements.Single(xElement => xElement.Name.LocalName == XMLNames.Trailer_BodyCode);

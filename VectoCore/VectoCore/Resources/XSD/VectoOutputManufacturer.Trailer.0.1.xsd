@@ -420,7 +420,7 @@
 										<xs:documentation>T019 / I.1.2.7</xs:documentation>
 									</xs:annotation>
 								</xs:element>
-								<xs:element name="CargoVolume" type="vdecdef:Double3">
+								<xs:element name="CargoVolume" type="vdecdef:Double1">
 									<xs:annotation>
 										<xs:documentation>T020 / I.1.2.5</xs:documentation>
 									</xs:annotation>

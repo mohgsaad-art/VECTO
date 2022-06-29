@@ -1,16 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <tns:VectoInputDeclaration schemaVersion="2.7" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v2.0" xmlns:v2.7="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7" xmlns:v2.2="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.2" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:di="http://www.w3.org/2000/09/xmldsig#" xmlns:v2.3="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob F:\Vecto\vecto-dev_bt\VectoCore\VectoCore\Resources\XSD/VectoDeclarationJob.xsd">
-  <v2.0:Vehicle id="CB-c6909fef2e5a48deb0fd" xsi:type="VehicleDeclarationType">
+  <v2.0:Vehicle id="CB-2cd60e4d62b74a52973f" xsi:type="VehicleDeclarationType">
     <Manufacturer>Example Manufacturer</Manufacturer>
     <ManufacturerAddress>Example Street 1, Example City XY, Example Country</ManufacturerAddress>
     <Model_CommercialName>Example Trailer SuperEco</Model_CommercialName>
     <VIN>Example1234567890</VIN>
-    <Date>2022-03-21T14:12:10.9734918Z</Date>
+    <Date>2022-06-13T09:19:29.9297717Z</Date>
     <LegislativeCategory>O3</LegislativeCategory>
     <AxleCount>1</AxleCount>
     <TrailerType>DA</TrailerType>
     <BodyWorkType>refrigerated</BodyWorkType>
-    <TrailerCouplingPoint>n/a</TrailerCouplingPoint>
     <Masses>
       <CorrectedMassInRunningOrder>7250</CorrectedMassInRunningOrder>
       <TPMLMTrailer>18000</TPMLMTrailer>
@@ -37,7 +36,7 @@
             <Liftable>false</Liftable>
             <Steered>false</Steered>
             <Tyre>
-              <v2.7:Data id="TYR-gooZah3D" xsi:type="v2.3:TyreDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">
+              <v2.7:Data id="TYR-gooZah3D" xsi:type="TyreDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">
                 <Manufacturer>Generic Tyre Manufacturer</Manufacturer>
                 <Model>Generic Tyre Model</Model>
                 <CertificationNumber>e12*0815/8051*2017/05T0000*00</CertificationNumber>
@@ -56,7 +55,7 @@
                     <di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
                   </di:Transforms>
                   <di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
-                  <di:DigestValue>JWEwzKSP0lXvwRgQZTiWJm9dpdtQ72FOX0CC5Vy6f2Y=</di:DigestValue>
+                  <di:DigestValue>6KYs9zUrUTwg7Vie/jQyHhdglVSvRiIt1aXC5ZC94f8=</di:DigestValue>
                 </di:Reference>
               </Signature>
             </Tyre>

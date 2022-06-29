@@ -210,7 +210,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 					new XElement(tns + XMLNames.Trailer_ExternalWidthBody, modelData.VehicleData.InputDataTrailer.ExternalBodyWidth.ToXMLFormat(3)),
 					new XElement(tns + XMLNames.Trailer_ExternalHeightBody, modelData.VehicleData.InputDataTrailer.ExternalBodyHeight.ToXMLFormat(3)),
 					new XElement(tns + XMLNames.Trailer_TotalHeightTrailer, modelData.VehicleData.InputDataTrailer.TotalTrailerHeight.ToXMLFormat(3)),
-					new XElement(tns + XMLNames.Trailer_CargoVolume, modelData.VehicleData.InputDataTrailer.CargoVolume.ToXMLFormat(3)),
+					new XElement(tns + XMLNames.Trailer_CargoVolume, modelData.VehicleData.InputDataTrailer.CargoVolume.ToXMLFormat(1)),
 					new XElement(tns + XMLNames.Trailer_VolumeOrientation, modelData.VehicleData.InputDataTrailer.VolumeOrientation)
 				),
 				aeroFeatures
@@ -445,15 +445,15 @@ namespace TUGraz.VectoCore.OutputData.XML
 
 					new XElement(tns + XMLNames.Report_Results_CO2,
 						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/km"),
-						WeightedCo2Trailer.ToXMLFormat(2)
+						WeightedCo2Trailer.ToMinSignificantDigits(3,0)
 					),
 					new XElement(tns + XMLNames.Report_Results_CO2,
 						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/t-km"),
-						weightedCo2Ton.ToXMLFormat(2)
+						weightedCo2Ton.ToMinSignificantDigits(3, 1)
 					),
 					new XElement(tns + XMLNames.Report_Results_CO2,
 						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/m³-km"),
-						weightedCo2CubicMeter.ToXMLFormat(2)
+						weightedCo2CubicMeter.Value().ToMinSignificantDigits(3, 2)
 					),
 					XMLReportHelperTrailer.GetFactorWithAttributes(tns + XMLNames.Efficiency_Ratio, 
 						(WeightedCo2Trailer/ReferenceWeightedCo2),
@@ -464,19 +464,7 @@ namespace TUGraz.VectoCore.OutputData.XML
                     XMLReportHelperTrailer.GetFactorWithAttributes(tns + XMLNames.Efficiency_Ratio,
                         (weightedCo2CubicMeter / weightedGenericCo2CubicMeter).Value(),
                         XMLNames.Result_RatioType_CubicMetre_KilometreBased, 3)
-
-
-
-                        //new XElement(tns + XMLNames.Efficiency_Ratio, 
-                        //	new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/km"),
-                        //	(WeightedCo2Trailer / ReferenceWeightedCo2).ToXMLFormat(4)),
-                        //new XElement(tns + XMLNames.Efficiency_Ratio,
-                        //	new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/t-km"),
-                    //    (weightedCo2Ton / weightedReferenceCo2Ton).ToXMLFormat(4)),
-                    //new XElement(tns + XMLNames.Efficiency_Ratio,
-                    //    new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/m³-km"),
-                    //    (weightedCo2CubicMeter / weightedGenericCo2CubicMeter).ToXMLFormat(4))
-                )
+				)
 				: null;
 			results.Add(summary);
 			var vehicle = new XElement(VehiclePart);

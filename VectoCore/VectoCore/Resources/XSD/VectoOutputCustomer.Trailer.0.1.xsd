@@ -371,7 +371,7 @@
 										<xs:documentation>T017 / II.1.2.4</xs:documentation>
 									</xs:annotation>
 								</xs:element>
-								<xs:element name="CargoVolume" type="vdecdef:Double3">
+								<xs:element name="CargoVolume" type="vdecdef:Double1">
 									<xs:annotation>
 										<xs:documentation>T021 / II.1.2.5</xs:documentation>
 									</xs:annotation>

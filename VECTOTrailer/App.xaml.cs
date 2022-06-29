@@ -42,6 +42,8 @@ namespace VECTOTrailer
 		private bool _installModeActivated = false;
 		private string _installIni = "install.ini";
 
+		private MainWindow _mainWindow;
+
 		#region Overrides of Application
 
         protected override void OnStartup(StartupEventArgs e)
@@ -70,7 +72,8 @@ namespace VECTOTrailer
 
 		private void ConfigureNLog()
 		{
-			NLog.LogManager.Configuration = new LoggingConfiguration() { };
+			var config = NLog.LogManager.Configuration;
+			
 			var folderName = "";
 			if (_installModeActivated) {
 				folderName = Path.Combine(
@@ -78,21 +81,36 @@ namespace VECTOTrailer
 						Assembly.GetExecutingAssembly().GetName().Name
 					);
 
-				var logTarget = LogManager.Configuration.FindTargetByName<FileTarget>("LogFile");
-				if (logTarget == null) {
-					logTarget =
-						LogManager.Configuration.FindTargetByName<WrapperTargetBase>("LogFile").WrappedTarget as FileTarget;
-				}
+				foreach (var target in LogManager.Configuration.AllTargets) {
+					FileTarget fileTarget = target as FileTarget;
+					if (fileTarget == null) {
+						fileTarget = (target as WrapperTargetBase)?.WrappedTarget as FileTarget;
+					}
 
-				if (logTarget != null) {
-					logTarget.FileName = Path.Combine(Path.GetFullPath(folderName), "log.txt");
-					LogManager.ReconfigExistingLoggers();
+					if (fileTarget != null) {
+						var filePath = fileTarget.FileName.Render(LogEventInfo.CreateNullEvent());
+						var fileName = Path.GetFileName(filePath);
+						fileTarget.FileName = Path.Combine(Path.GetFullPath(folderName), fileName);
+					}
 				}
+				LogManager.ReconfigExistingLoggers();
+
+				//var logTarget = LogManager.Configuration.FindTargetByName<FileTarget>("LogFile");
+				
+				//if (logTarget == null) {
+				//	logTarget =
+				//		LogManager.Configuration.FindTargetByName<WrapperTargetBase>("LogFile")?.WrappedTarget as FileTarget;
+				//}
+
+				//if (logTarget != null) {
+				//	logTarget.FileName = Path.Combine(Path.GetFullPath(folderName), "log.txt");
+				//	LogManager.ReconfigExistingLoggers();
+				//}
 			}
 
 			LogFileHelper.SetBasePath(Path.GetFullPath(Path.Combine(folderName,"Log")));
-			var logger = LogManager.GetLogger("VECTOTrailer");
-			logger.Warn("hi");
+			//var logger = NLog.LogManager.GetLogger("VECTOTrailer");
+			//logger.Warn("hi");
 			
 		}
 
@@ -116,12 +134,23 @@ namespace VECTOTrailer
 		private void ShowMainWindow()
 		{
 			var mainWindow = container.Get<MainWindow>();
-			mainWindow.Show();
+			mainWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            if (_trailerToolSettings.GeneralSettings.MainWindowStartMaximized)
+            {
+				mainWindow.SourceInitialized += (_, __) => mainWindow.WindowState = WindowState.Maximized;
+			}
+
+			_mainWindow = mainWindow;
+			
+            mainWindow.Show();
+		
 		}
 
 		protected override void OnExit(ExitEventArgs e)
 		{
 			_pdfCreator.ShutDown();
+			_trailerToolSettings.GeneralSettings.MainWindowStartMaximized =
+				_mainWindow.WindowState == WindowState.Maximized ? true : false;
 			_trailerToolSettings.Save();
 			base.OnExit(e);
 		}

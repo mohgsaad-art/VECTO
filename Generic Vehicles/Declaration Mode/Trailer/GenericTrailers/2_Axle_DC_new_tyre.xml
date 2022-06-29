@@ -1,18 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<tns:VectoInputDeclaration schemaVersion="2.7" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-  xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v2.0"
-   xmlns:v2.7="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7"
-   xmlns:v2.3="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3"
-    xmlns:v2.2="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.2" 
-    xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:di="http://www.w3.org/2000/09/xmldsig#"
-     xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7"
-      xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob F:\Vecto\vecto-dev_bt\VectoCore\VectoCore\Resources\XSD/VectoDeclarationJob.xsd">
-  <v2.0:Vehicle id="CB-379355a4bd234c44b687" xsi:type="VehicleDeclarationType">
+<tns:VectoInputDeclaration schemaVersion="2.7" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v2.0" xmlns:v2.7="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7" xmlns:v2.2="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.2" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:di="http://www.w3.org/2000/09/xmldsig#" xmlns:v2.3="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob F:\Vecto\vecto-dev_bt\VectoCore\VectoCore\Resources\XSD/VectoDeclarationJob.xsd">
+  <v2.0:Vehicle id="CB-c535f2975e124458bff2" xsi:type="VehicleDeclarationType">
     <Manufacturer>Example Manufacturer</Manufacturer>
     <ManufacturerAddress>Example Street 1, Example City XY, Example Country</ManufacturerAddress>
     <Model_CommercialName>Example Trailer SuperEco</Model_CommercialName>
     <VIN>Example1234567890</VIN>
-    <Date>2022-03-07T09:20:33.146057Z</Date>
+    <Date>2022-06-13T09:21:01.7352774Z</Date>
     <LegislativeCategory>O4</LegislativeCategory>
     <AxleCount>2</AxleCount>
     <TrailerType>DC</TrailerType>
@@ -44,18 +37,18 @@
             <Liftable>false</Liftable>
             <Steered>false</Steered>
             <Tyre>
-              <Data id="TYR-gooZah3D" xsi:type="v2.3:TyreDataDeclarationType">
-                <Manufacturer xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">Generic Tyre Manufacturer</Manufacturer>
-                <Model xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">Generic Tyre Model</Model>
-                <CertificationNumber xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">e12*0815/8051*2017/05T0000*00</CertificationNumber>
-                <Date xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">2017-02-15T11:00:00Z</Date>
-                <AppVersion xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">DemoTyreApp 1.0</AppVersion>
-                <Dimension xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">385/65 R22.5</Dimension>
-                <TyreClass xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">C3</TyreClass>
-                <FuelEfficiencyClass xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">C</FuelEfficiencyClass>
-                <RRCDeclared xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">0.0055</RRCDeclared>
-                <FzISO xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">37500</FzISO>
-              </Data>
+              <v2.7:Data id="TYR-gooZah3D" xsi:type="TyreDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">
+                <Manufacturer>Generic Tyre Manufacturer</Manufacturer>
+                <Model>Generic Tyre Model</Model>
+                <CertificationNumber>e12*0815/8051*2017/05T0000*00</CertificationNumber>
+                <Date>2022-04-13T11:27:30.3110871Z</Date>
+                <AppVersion>DemoTyreApp 1.0</AppVersion>
+                <Dimension>385/65 R22.5</Dimension>
+                <TyreClass>C3</TyreClass>
+                <FuelEfficiencyClass>C</FuelEfficiencyClass>
+                <RRCDeclared>0.0055</RRCDeclared>
+                <FzISO>37500</FzISO>
+              </v2.7:Data>
               <Signature>
                 <di:Reference URI="#TYR-gooZah3D">
                   <di:Transforms>
@@ -63,7 +56,7 @@
                     <di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
                   </di:Transforms>
                   <di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
-                  <di:DigestValue>JWEwzKSP0lXvwRgQZTiWJm9dpdtQ72FOX0CC5Vy6f2Y=</di:DigestValue>
+                  <di:DigestValue>jvaouUKfFYY3SbHc8XYcdC0lShoqtUh22bbnhDJZ+WA=</di:DigestValue>
                 </di:Reference>
               </Signature>
             </Tyre>
@@ -73,7 +66,7 @@
             <Liftable>false</Liftable>
             <Steered>false</Steered>
             <Tyre>
-              <v2.7:Data id="TYR-gooZah3D" xsi:type="v2.2:TyreDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.2">
+              <v2.7:Data id="TYR-gooZah3D" xsi:type="TyreDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.2">
                 <Manufacturer>Generic Tyre Manufacturer</Manufacturer>
                 <Model>Generic Tyre Model</Model>
                 <CertificationNumber>e12*0815/8051*2017/05T0000*00</CertificationNumber>
@@ -90,7 +83,7 @@
                     <di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
                   </di:Transforms>
                   <di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
-                  <di:DigestValue>JWEwzKSP0lXvwRgQZTiWJm9dpdtQ72FOX0CC5Vy6f2Y=</di:DigestValue>
+                  <di:DigestValue>ho7+v2R+6Uarsx18ogsC7xZ4Eekko8hI6/TBGuZpPeY=</di:DigestValue>
                 </di:Reference>
               </Signature>
             </Tyre>

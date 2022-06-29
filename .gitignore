@@ -208,3 +208,6 @@ DISTR/
 EPTP/
 201*-VECTO-*.zip
 Documentation/VehiclesReleaseComparisonDeclarationMode/tmp/
+/.idea/.idea.VECTO/.idea
+/.vs/VECTO/FileContentIndex
+/.vs/VECTO/v17/HierarchyCache.v1.txt

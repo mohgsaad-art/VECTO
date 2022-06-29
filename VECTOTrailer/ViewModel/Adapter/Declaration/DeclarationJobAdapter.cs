@@ -20,6 +20,11 @@ namespace VECTOTrailer.ViewModel.Adapter.Declaration {
 			get { return this; }
 		}
 
+		public void ValidateComponentHashes()
+		{
+			throw new System.NotImplementedException();
+		}
+
 		public XElement XMLHash { get { return null; } }
 
 		#endregion

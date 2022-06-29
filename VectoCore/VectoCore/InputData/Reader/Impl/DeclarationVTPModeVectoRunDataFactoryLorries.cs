@@ -50,9 +50,12 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 	{
 		private DeclarationDataAdapterHeavyLorry _dao;
 
-		public DeclarationVTPModeVectoRunDataFactoryLorries(IVTPDeclarationInputDataProvider ivtpProvider, IVTPReport report) : base(
+		public DeclarationVTPModeVectoRunDataFactoryLorries(IVTPDeclarationInputDataProvider ivtpProvider,
+			IVTPReport report) : base(
 			ivtpProvider.JobInputData, report)
-		{ }
+		{
+			DataProvider = ivtpProvider;
+		}
 
 		protected DeclarationVTPModeVectoRunDataFactoryLorries(IVTPDeclarationJobInputData job, IVTPReport report) : base(job, report)
 		{ }
@@ -183,6 +186,12 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 				CorrectionFactor = mileageCorrection,
 			};
 			yield return vtpRunData;
+		}
+
+		public override IInputDataProvider DataProvider
+		{
+			get;
+			protected set;
 		}
 	}
 }

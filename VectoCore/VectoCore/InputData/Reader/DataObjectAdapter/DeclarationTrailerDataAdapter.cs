@@ -1252,12 +1252,16 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 			}
 
-			var trailerAxles = trailer.Axles;
-			if ((trailerAxles ?? throw new InvalidOperationException()).Any(x =>
-					x.Tyre.Dimension != trailerAxles.FirstOrDefault()?.Tyre.Dimension)) {
-				errors.Add("invalid trailer configurations - different tyre dimensions specified");
-				//throw new Exception("invalid trailer configurations - different tyre dimensions specified");
+			if (trailer.NumberOfAxles != NumberOfTrailerAxles.One && trailer.LengthBetweenCentersOfAxles <= 0) {
+				errors.Add("Invalid length between centers of axles");
 			}
+
+			//var trailerAxles = trailer.Axles;
+			//if ((trailerAxles ?? throw new InvalidOperationException()).Any(x =>
+			//		x.Tyre.Dimension != trailerAxles.FirstOrDefault()?.Tyre.Dimension)) {
+			//	errors.Add("invalid trailer configurations - different tyre dimensions specified");
+			//	//throw new Exception("invalid trailer configurations - different tyre dimensions specified");
+			//}
 
 			if (trailer.NumberOfAxles == NumberOfTrailerAxles.One && trailer.LengthBetweenCentersOfAxles.Value() > 0) {
 				errors.Add("One axle trailers should have Length Between Centers Of Axles = 0");

@@ -14,7 +14,6 @@
     <Masses>
       <CorrectedMassInRunningOrder>5100</CorrectedMassInRunningOrder>
       <TPMLMTrailer>18000</TPMLMTrailer>
-      <TPMLMAxleAssembly>0</TPMLMAxleAssembly>
     </Masses>
     <Dimensions>
       <ExternalLengthBody>7.400</ExternalLengthBody>
