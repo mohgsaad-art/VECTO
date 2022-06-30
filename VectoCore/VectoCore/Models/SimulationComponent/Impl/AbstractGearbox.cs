@@ -29,6 +29,7 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using TUGraz.VectoCommon.Models;
@@ -52,15 +53,23 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		protected GearshiftPosition _gear;
 
+		public event Action GearShiftTriggered;
+
 		protected AbstractGearbox(IVehicleContainer container) : base(container)
 		{
 			ModelData = container.RunData.GearboxData;
 			LastShift = -double.MaxValue.SI<Second>();
+        }
+
+        protected void InvokeGearShiftTriggered()
+        { 
+			GearShiftTriggered?.Invoke();
 		}
 
-		#region ITnOutPort
 
-		public abstract IResponse Request(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity,
+        #region ITnOutPort
+
+        public abstract IResponse Request(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity,
 			bool dryRun = false);
 
 		public abstract IResponse Initialize(NewtonMeter outTorque, PerSecond outAngularVelocity);

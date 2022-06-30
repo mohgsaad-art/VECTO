@@ -38,11 +38,7 @@
       "OverSpeed": 5.0
     },
     "Cycles": [
-      "Interurban.vdri",
-      "Suburban.vdri",
-	  "LongHaul",
-	  "RegionalDelivery",
-	  "UrbanDelivery"
+      "MeasuredSpeed_UrbanDelivery.vdri"
     ]
   }
 }

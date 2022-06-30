@@ -30,6 +30,7 @@
 */
 
 using System.Linq;
+using System;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
@@ -377,6 +378,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			CurrentState.TransmissionTorqueLoss = inTorque * ModelData.Gears[gear.Gear].Ratio - outTorque;
 
 			var response = NextComponent.Request(absTime, dt, inTorque, inAngularVelocity, false);
+
+			InvokeGearShiftTriggered();
 
 			response.Gearbox.PowerRequest = outTorque * avgAngularVelocity;
 			response.Gearbox.Gear = new GearshiftPosition(0);

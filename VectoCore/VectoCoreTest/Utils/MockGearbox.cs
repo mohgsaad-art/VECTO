@@ -48,6 +48,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 		private ITnOutPort _outPort;
 		private bool _clutchClosed;
 
+		public event Action GearShiftTriggered;
+
 		public MockGearbox(IVehicleContainer cockpit) : base(cockpit)
 		{
 			_clutchClosed = true;

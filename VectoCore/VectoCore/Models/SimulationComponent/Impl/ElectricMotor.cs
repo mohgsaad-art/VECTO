@@ -528,6 +528,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			if (NextComponent == null && BusAux != null) {
 				BusAux.DoWriteModalResultsICE(time, simulationInterval, container);
 			}
+
+			container.SetDataValue("Driving Action", DataBus.DriverInfo.DrivingAction.ToString());
+			container.SetDataValue("DriverAction", (int) DataBus.DriverInfo.DrivingAction);
 		}
 
 		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)

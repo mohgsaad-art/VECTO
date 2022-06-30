@@ -86,6 +86,8 @@ namespace TUGraz.VectoCore.Models.Simulation.DataBus
 	{
 		bool DisengageGearbox { set; }
 		void TriggerGearshift(Second absTime, Second dt);
+
+		event Action GearShiftTriggered;
 	}
 
 	public interface ITorqueConverterInfo
