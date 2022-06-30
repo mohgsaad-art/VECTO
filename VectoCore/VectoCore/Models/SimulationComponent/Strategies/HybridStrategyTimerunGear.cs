@@ -447,5 +447,35 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			return responses;
         }
 
+        protected override IResponse RepeatDryRunWithDifferentGear(IResponse response, GearshiftPosition currentGear, Second absTime,
+			Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, HybridStrategyResponse tmp)
+        {
+			if (response.Engine.EngineSpeed <= DataBus.EngineInfo.EngineIdleSpeed) {
+				if (CurrentGear.Gear < NextGear.Gear) {
+					currentGear = new GearshiftPosition((currentGear.Gear > 0) ? currentGear.Gear - 1 : currentGear.Gear);
+					return RequestDryRun(absTime, dt, outTorque, outAngularVelocity, currentGear, tmp);
+                }
+				else if (CurrentGear.Gear > NextGear.Gear) {
+					currentGear = new GearshiftPosition(NextGear.Gear);
+						
+					var q = (NextGear.Gear == 0) ? new HybridStrategyResponse {
+							CombustionEngineOn = DataBus.EngineInfo.EngineOn, 
+							GearboxInNeutral = true,
+							NextGear = currentGear,
+							MechanicalAssistPower = ElectricMotorsOff
+						} : tmp;
+
+					return RequestDryRun(absTime, dt, outTorque, outAngularVelocity, currentGear, q);
+                }
+            } 
+
+			return response;
+        }
+
+        protected override bool DetermineEngineSpeedTooLow(IResponse firstResponse)
+        {
+			return !DataBus.GearboxInfo.GearEngaged(DataBus.AbsTime) ? true : firstResponse.Clutch.OutputSpeed.IsSmaller(ModelData.EngineData.IdleSpeed);
+        }
+
     }
 }

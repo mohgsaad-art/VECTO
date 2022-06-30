@@ -1090,26 +1090,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				var response = RequestDryRun(absTime, dt, outTorque, outAngularVelocity, nextGear, tmp);
 				debug.Add($"[AHS.HBA-0] DryRun Gear={nextGear}", response);
 
-				if (response.Engine.EngineSpeed <= DataBus.EngineInfo.EngineIdleSpeed) {
-					if (CurrentGear.Gear < NextGear.Gear) {
-						currentGear = new GearshiftPosition((currentGear.Gear > 0) ? currentGear.Gear - 1 : currentGear.Gear);
-						//CurrentGear = currentGear;
-						response = RequestDryRun(absTime, dt, outTorque, outAngularVelocity, currentGear, tmp);
-                    }
-					else if (CurrentGear.Gear > NextGear.Gear) {
-						currentGear = new GearshiftPosition(NextGear.Gear);
-						//CurrentGear = currentGear;
-						
-						var q = (NextGear.Gear == 0) ? new HybridStrategyResponse {
-								CombustionEngineOn = DataBus.EngineInfo.EngineOn, 
-								GearboxInNeutral = true,
-								NextGear = currentGear,
-								MechanicalAssistPower = ElectricMotorsOff
-							} : tmp;
-
-						response = RequestDryRun(absTime, dt, outTorque, outAngularVelocity, currentGear, q);
-                    }
-                } 
+				response = RepeatDryRunWithDifferentGear(response, currentGear, absTime, dt, outTorque, outAngularVelocity, tmp);
 
 				var endSpeed = DataBus.VehicleInfo.VehicleSpeed +
 								DataBus.DriverInfo.DriverAcceleration * ModelData.GearboxData.TractionInterruption;
@@ -1386,6 +1367,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			}
 		}
 
+		protected virtual IResponse RepeatDryRunWithDifferentGear(IResponse response, GearshiftPosition currentGear, Second absTime,
+			Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, HybridStrategyResponse tmp)
+		{
+			return response;
+        }
+
 		protected virtual GearshiftPosition NextGear => Controller.ShiftStrategy.NextGear;
 
 		protected virtual bool Disengaged(IResponse response)
@@ -1405,10 +1392,15 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 					: (firstResponse.Gearbox.InputSpeed?.IsSmaller(ModelData.EngineData.IdleSpeed) ?? false);
 			}
 			
-			return !DataBus.GearboxInfo.GearEngaged(DataBus.AbsTime) ? true : firstResponse.Clutch.OutputSpeed.IsSmaller(ModelData.EngineData.IdleSpeed); //  firstResponse.Gearbox.InputSpeed.IsSmaller(ModelData.EngineData.IdleSpeed));
+			return DetermineEngineSpeedTooLow(firstResponse);
+        }
+
+		protected virtual bool DetermineEngineSpeedTooLow(IResponse firstResponse)
+        {
+			return firstResponse.Clutch.OutputSpeed.IsSmaller(ModelData.EngineData.IdleSpeed); //  firstResponse.Gearbox.InputSpeed.IsSmaller(ModelData.EngineData.IdleSpeed));
 		}
 
-		private GearshiftPosition FindBestGearForBraking(GearshiftPosition nextGear, IResponse firstResponse)
+        private GearshiftPosition FindBestGearForBraking(GearshiftPosition nextGear, IResponse firstResponse)
 		{
 			var endSpeed = DataBus.VehicleInfo.VehicleSpeed + 
 							DataBus.DriverInfo.DriverAcceleration * ModelData.GearboxData.TractionInterruption;
@@ -1561,7 +1553,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			List<HybridResultEntry> eval, Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity,
 			bool dryRun, GearshiftPosition currentGear)
 		{
-			var xxx = DataBus;
 			var eval2 = eval.Where(x =>
 					(x.IgnoreReason & HybridConfigurationIgnoreReason.VehicleSpeedBelowMinSpeedAfterGearshift) == 0)
 				.ToList();
