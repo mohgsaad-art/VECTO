@@ -402,9 +402,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
         protected override void WarnGearShiftRange()
         { }
 
-        protected override GearshiftPosition CurrentGear => new GearshiftPosition(DataBus.DrivingCycleInfo.CycleData.LeftSample.Gear, false);
+        protected override GearshiftPosition CurrentGear => new GearshiftPosition(DataBus.DrivingCycleInfo.CycleData.LeftSample.Gear);
 
-		protected override GearshiftPosition NextGear => new GearshiftPosition(DataBus.DrivingCycleInfo.CycleData.RightSample.Gear, false);
+		protected override GearshiftPosition NextGear => new GearshiftPosition(DataBus.DrivingCycleInfo.CycleData.RightSample.Gear);
 
         protected override void DoEmergencyGearShift(GearshiftPosition currentGear, Second absTime, Second dt, NewtonMeter outTorque, 
             PerSecond outAngularVelocity, HybridResultEntry best)
@@ -428,6 +428,21 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			var responses = new List<HybridResultEntry>();
 
 			EvaluateConfigsForGear(absTime, dt, outTorque, outAngularVelocity, NextGear, allowICEOff, responses, emPos, dryRun);
+
+			if (responses.Count(x => x.IgnoreReason == HybridConfigurationIgnoreReason.Evaluated) == 0) {
+				responses = new List<HybridResultEntry>();
+
+				var gearRange = GetGearRange(absTime, dryRun);
+
+				var gear = PreviousState.GearboxEngaged ? CurrentGear : NextGear;
+				
+				var firstGear = GearList.Predecessor(gear, gearRange.Item1);
+				var lastGear = GearList.Successor(gear, gearRange.Item2);
+
+				foreach (var nextGear in GearList.IterateGears(firstGear, lastGear)) {
+					EvaluateConfigsForGear(absTime, dt, outTorque, outAngularVelocity, nextGear, allowICEOff, responses, emPos, dryRun);
+				}
+            }
 
 			return responses;
         }

@@ -1,7 +1,7 @@
 {
   "Header": {
     "CreatedBy": "",
-    "Date": "2022-03-27T13:27:40.2584653Z",
+    "Date": "2022-06-23T11:29:45.3302695Z",
     "AppVersion": "3",
     "FileVersion": 8
   },
@@ -12,7 +12,6 @@
     "EngineFile": "Engine_175kW_6.8l.veng",
     "GearboxFile": "AMT_6.vgbx",
     "TCU": "AMT_6.vgbx",
-    "ShiftStrategy": "",
     "HybridStrategyParams": "HybridStrategyParams.vhctl",
     "Padd": 3540.0,
     "Paux_ICEOff_Driving": 0.0,
@@ -48,7 +47,7 @@
       "OverSpeed": 2.5
     },
     "Cycles": [
-      "MeasuredSpeedGear_LongHaulNoGrad.vdri"
+      "MeasuredSpeedGear_RegionalDelivery.vdri"
     ]
   }
 }
