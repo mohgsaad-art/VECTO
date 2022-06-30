@@ -96,6 +96,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		public IGearboxInfo GearboxInfo => this;
 
+		public event Action GearShiftTriggered;
+
 		public IGearboxControl GearboxCtl => this;
 
 		public IElectricMotorInfo ElectricMotorInfo(PowertrainPosition pos)
