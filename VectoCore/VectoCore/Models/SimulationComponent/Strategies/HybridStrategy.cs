@@ -1562,7 +1562,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 						AllowICEOff(absTime), newEval,
 						best.Setting.MechanicalAssistPower.First().Key, dryRun);
 					if (newEval.Count > 0) {
-						_evalCount = newEval.Count; //Matrec
 						best = DoSelectBestOption(newEval, absTime, dt, outTorque, outAngularVelocity, dryRun,
 							currentGear);
 					}

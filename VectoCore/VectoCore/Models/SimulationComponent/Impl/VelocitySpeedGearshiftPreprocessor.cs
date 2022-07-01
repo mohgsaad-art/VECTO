@@ -171,7 +171,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					},
 					evaluateFunction: acc => {
 						var response = vehicle.Request(time, simulationInterval, acc, gradient, true);
-
 						response.Driver.Acceleration = acc;
 						return response;
 					},

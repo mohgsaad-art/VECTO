@@ -572,11 +572,11 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		}
 
 		
-        private IVehicleContainer BuildMeasuredSpeedHybrid(VectoRunData data)
+        private static IVehicleContainer BuildMeasuredSpeedHybrid(VectoRunData data, IModalDataContainer modData, ISumData sumWriter)
 		{
 			VerifyCycleType(data, CycleType.MeasuredSpeed);
 
-			var container = new VehicleContainer(data.ExecutionMode, _modData, _sumWriter) { RunData = data };
+			var container = new VehicleContainer(data.ExecutionMode, modData, sumWriter) { RunData = data };
 			var es = new ElectricSystem(container);
 
 			AddBatterySystem<Battery, BatterySystem>(data, container, es);
@@ -627,14 +627,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			return container;
 		}
 
-		private void VerifyCycleType(VectoRunData data, CycleType cycleType)
-        {
-			if (data.Cycle.CycleType != cycleType) {
-				throw new VectoException("CycleType must be {cycleType}.");
-			}
-		}
-
-		private void AddBatterySystem<TBattery, TBatterySystem>(VectoRunData data, VehicleContainer container, ElectricSystem es) 
+		private static void AddBatterySystem<TBattery, TBatterySystem>(VectoRunData data, VehicleContainer container, ElectricSystem es) 
 			 where TBattery : Battery where TBatterySystem : GenericBatterySystem<TBattery>
         {
 			if (data.BatteryData != null) {
@@ -648,7 +641,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			}
 		}
 
-		private void AddSuperCapacitor(VectoRunData data, VehicleContainer container, ElectricSystem es)
+		private static void AddSuperCapacitor(VectoRunData data, VehicleContainer container, ElectricSystem es)
 		{
 			if (data.SuperCapData != null) {
 				if (data.SuperCapData.InitialSoC < data.SuperCapData.MinVoltage / data.SuperCapData.MaxVoltage) {
@@ -661,14 +654,14 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			}
         }
 
-		private void AddElectricAuxiliary(VectoRunData data, VehicleContainer container, ElectricSystem es)
+		private static void AddElectricAuxiliary(VectoRunData data, VehicleContainer container, ElectricSystem es)
 		{
 			var aux = new ElectricAuxiliary(container);
 			aux.AddConstant("P_aux_el", data.ElectricAuxDemand ?? 0.SI<Watt>());
 			es.Connect(aux);
         }
 
-		private SwitchableClutch AddClutch(VectoRunData data, VehicleContainer container)
+		private static SwitchableClutch AddClutch(VectoRunData data, VehicleContainer container)
 		{
 			SwitchableClutch clutch = null;
 
@@ -682,7 +675,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			return clutch;
         }
 
-        private void AddBusAuxiliaries(VectoRunData data, VehicleContainer container, ElectricSystem es)
+        private static void AddBusAuxiliaries(VectoRunData data, VehicleContainer container, ElectricSystem es)
         {
 			if (data.BusAuxiliaries == null) {
 				return;
@@ -707,7 +700,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			}
         }
 
-        private void SetIdleControllerForHybridP1(VectoRunData data, IGearbox gearbox, IIdleController idleController, SwitchableClutch clutch)
+        private static void SetIdleControllerForHybridP1(VectoRunData data, IGearbox gearbox, IIdleController idleController, SwitchableClutch clutch)
         { 
 			if (data.ElectricMachinesData.Any(x => x.Item1 == PowertrainPosition.HybridP1)) {
 				if (gearbox is ATGearbox atGbx) {
@@ -1227,13 +1220,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 			return em;
 		}
-
-		private static void AddElectricAuxiliary(VectoRunData data, VehicleContainer container, ElectricSystem es)
-		{
-			var aux = new ElectricAuxiliary(container);
-			aux.AddConstant("P_aux_el", data.ElectricAuxDemand ?? 0.SI<Watt>());
-			es.Connect(aux);
-        }
 
         private static void AddBEVBusAuxiliaries(VectoRunData data, VehicleContainer container, ElectricSystem es, IElectricMotor em)
         {
@@ -2129,7 +2115,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			switch (runData.GearboxData.Type) {
 				case GearboxType.AMT:
 					switch (runData.JobType) {
-						case VectoSimulationJobType.ParallelHybridVehicle:
 						case VectoSimulationJobType.ConventionalVehicle:
 						case VectoSimulationJobType.ParallelHybridVehicle:
 							runData.ShiftStrategy = AMTShiftStrategyOptimized.Name;

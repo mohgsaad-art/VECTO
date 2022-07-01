@@ -96,6 +96,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			CurrentState = PreviousState.Clone();
 
 			RunData = container.RunData;
+			AbsTime = Data.Entries.First().Time;
 		}
 
         public IResponse Initialize()
@@ -467,7 +468,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)
 		{
-			if ((CycleIterator.RightSample == null) || ((AbsTime != null) && AbsTime.IsGreaterOrEqual(CycleIterator.RightSample.Time))) {
+			if ((CycleIterator.RightSample == null) || AbsTime.IsGreaterOrEqual(CycleIterator.RightSample.Time)) {
 				CycleIterator.MoveNext();
 			}
 			AdvanceState();

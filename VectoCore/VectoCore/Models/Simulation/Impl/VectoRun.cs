@@ -117,8 +117,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 							return;
 						}
 						Container.AbsTime = AbsTime;
-						// add here extended logging
-						Log.Info("AbsTime: "+AbsTime.Value());
 					}
 				} while (response is ResponseSuccess);
 				if (!(GetContainer().RunData.Exempted || GetContainer().RunData.MultistageRun)) {
