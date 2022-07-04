@@ -593,7 +593,7 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 					row => new DrivingCycleData.DrivingCycleEntry {
 						Time = row.ParseDouble(Fields.Time).SI<Second>(),
 						PWheel = row.ParseDouble(Fields.PWheel).SI(Unit.SI.Kilo.Watt).Cast<Watt>(),
-						Gear = (uint)row.ParseDouble(Fields.Gear),
+						Gear = (uint)row.ParseDoubleOrGetDefault(Fields.Gear),
 						AngularVelocity = row.ParseDouble(Fields.EngineSpeed).RPMtoRad(),
 						AdditionalAuxPowerDemand = row.ParseDoubleOrGetDefault(Fields.AdditionalAuxPowerDemand).SI(Unit.SI.Kilo.Watt)
 													.Cast<Watt>(),
@@ -608,7 +608,6 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 				var requiredCols = new[] {
 					Fields.Time,
 					Fields.PWheel,
-					Fields.Gear,
 					Fields.EngineSpeed
 				};
 				var allowedCols = new[] {

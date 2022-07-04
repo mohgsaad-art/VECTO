@@ -815,15 +815,19 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			aux.AddConstant("P_aux_el", data.ElectricAuxDemand ?? 0.SI<Watt>());
 			es.Connect(aux);
 
-			IPowerTrainComponent powertrain = new PWheelCycle(container, data.Cycle)
-						.AddComponent(new AxleGear(container, data.AxleGearData))
-						.AddComponent(data.AngledriveData != null ? new Angledrive(container, data.AngledriveData) : null)
-						.AddComponent(GetRetarder(RetarderType.TransmissionOutputRetarder, data.Retarder, container))
-						.AddComponent(new CycleGearbox(container, data))
-						.AddComponent(GetRetarder(RetarderType.TransmissionInputRetarder, data.Retarder, container));
-
-            IElectricMotor em;
 			var position = data.ElectricMachinesData.First().Item1;
+
+			var powertrain = new PWheelCycle(container, data.Cycle);
+						
+			if (position == PowertrainPosition.BatteryElectricE2) {
+				powertrain
+					.AddComponent(GetRetarder(RetarderType.TransmissionOutputRetarder, data.Retarder, container))
+					.AddComponent(new CycleGearbox(container, data))
+					.AddComponent(GetRetarder(RetarderType.TransmissionInputRetarder, data.Retarder, container));
+            }
+	
+            IElectricMotor em;
+			
 			switch (position)
 			{
 				case PowertrainPosition.BatteryElectricE4:
@@ -835,7 +839,9 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 					break;
 				case PowertrainPosition.BatteryElectricE3:
 					em = GetElectricMachine(PowertrainPosition.BatteryElectricE3, data.ElectricMachinesData, container, es, ctl);
-					powertrain.AddComponent(new AxleGear(container, data.AxleGearData))
+					powertrain
+						.AddComponent(new AxleGear(container, data.AxleGearData))
+						.AddComponent(data.AngledriveData != null ? new Angledrive(container, data.AngledriveData) : null)
 						.AddComponent(em);
 					new DummyGearboxInfo(container);
 					new ATClutchInfo(container);
@@ -844,7 +850,10 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				case PowertrainPosition.BatteryElectricE2:
 					em = GetElectricMachine(position, data.ElectricMachinesData, container, es, ctl);
 					new ZeroMileageCounter(container);
-					powertrain.AddComponent(em);
+					powertrain
+						.AddComponent(new AxleGear(container, data.AxleGearData))
+						.AddComponent(data.AngledriveData != null ? new Angledrive(container, data.AngledriveData) : null)
+						.AddComponent(em);
 					new ATClutchInfo(container);
 					new DummyEngineInfo(container);
 					break;

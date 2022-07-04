@@ -32,7 +32,10 @@
 	    "MeasuredSpeed_UrbanDelivery.vdri",
 	    "LongHaul",
 	    "RegionalDelivery",
-	    "UrbanDelivery"
+	    "UrbanDelivery",
+		"PWheel_LongHaul.vdri",
+	    "PWheel_RegionalDelivery.vdri",
+	    "PWheel_UrbanDelivery.vdri",
     ]
   }
 }
