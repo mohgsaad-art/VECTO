@@ -99,7 +99,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			AbsTime = Data.Entries.First().Time;
 		}
 
-        public IResponse Initialize()
+		public IResponse Initialize()
 		{
 			if ((RunData.JobType == VectoSimulationJobType.BatteryElectricVehicle) && (DataBus.GearboxCtl != null)) {
 				DataBus.GearboxCtl.GearShiftTriggered -= GearShiftTriggered;
@@ -370,7 +370,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			return nextSpeed;
 		}
 
-        private IResponse HandleUnderload(Second absTime, Second dt, ResponseUnderload r,
+		private IResponse HandleUnderload(Second absTime, Second dt, ResponseUnderload r,
 			Radian gradient, ref MeterPerSquareSecond acceleration)
 		{
 			MeterPerSquareSecond acc = acceleration;

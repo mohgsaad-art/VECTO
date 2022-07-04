@@ -33,7 +33,6 @@ using System.Linq;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
-using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
@@ -63,10 +62,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		protected internal bool Disengaged { get; set; }
 
 		protected internal GearshiftPosition _nextGear;
-		private Second _overrideDisengage;
+		protected Second _overrideDisengage;
 		private bool postponeEngage;
 
-		private bool ICEAvailable;
+		protected bool ICEAvailable;
 
 		public override Second LastUpshift { get; protected internal set; }
 
@@ -216,16 +215,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				EngageTime = absTime + dt;
 			}
 
-			if ((DataBus.HybridControllerInfo != null)
-				&& (DataBus.PowertrainInfo.ElectricMotorPositions[0] == PowertrainPosition.HybridP3)
-				&& (DataBus.DriverInfo is MeasuredSpeedDrivingCycle)
-				&& (DataBus.DriverInfo.DriverBehavior == DrivingBehavior.Braking)
-				&& Disengaged
-				&& ShouldNotEngage(outTorque, outAngularVelocity, dt)) {
-				
-				EngageTime = absTime + dt;
-				_overrideDisengage = null;
-            }
+			DoNotEngageWhenBraking(outTorque, absTime, dt, outAngularVelocity);
 
 			postponeEngage = false;
 			var reEngaging = false;
@@ -305,55 +295,25 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				return RequestGearEngaged(absTime, dt, outTorque, outAngularVelocity, inTorque, inTorqueLossResult, inertiaTorqueLossOut, dryRun);
 			} else {
 				return RequestGearDisengaged(absTime, dt, outTorque, outAngularVelocity, inTorque, dryRun);
-			}
-		}
-
-		private bool ShouldNotEngage(NewtonMeter outTorque, PerSecond outAngularVelocity, Second dt)
-		{
-			var gear = Disengaged ? NextGear.Gear : Gear.Gear;
-			var avgOutAngularVelocity = (PreviousState.OutAngularVelocity + outAngularVelocity) / 2.0;
-			var inTorqueLossResult = ModelData.Gears[gear].LossMap.GetTorqueLoss(avgOutAngularVelocity, outTorque);
-			if (avgOutAngularVelocity.IsEqual(0, 1e-9)) {
-				inTorqueLossResult.Value = 0.SI<NewtonMeter>();
-			}
-
-			var inAngularVelocity = outAngularVelocity * ModelData.Gears[gear].Ratio;
-			var avgInAngularVelocity = (PreviousState.InAngularVelocity + inAngularVelocity) / 2.0;
-			var inTorque = !avgInAngularVelocity.IsEqual(0)
-				? outTorque * (avgOutAngularVelocity / avgInAngularVelocity)
-				: outTorque / ModelData.Gears[Gear.Gear].Ratio;
-			inTorque += inTorqueLossResult.Value;
-			
-			var inertiaTorqueLossOut = !inAngularVelocity.IsEqual(0)
-				? Formulas.InertiaPower(outAngularVelocity, PreviousState.OutAngularVelocity, ModelData.Inertia, dt) /
-				avgOutAngularVelocity
-				: 0.SI<NewtonMeter>();
-			inTorque += inertiaTorqueLossOut / ModelData.Gears[gear].Ratio;
-
-			var driverDeceleratingNegTorque = DataBus.DriverInfo.DriverBehavior == DrivingBehavior.Braking &&
-											DataBus.DriverInfo.DrivingAction == DrivingAction.Brake &&
-											(DataBus.DrivingCycleInfo.RoadGradient.IsSmaller(0) ||
-											(ICEAvailable && inAngularVelocity.IsSmaller(DataBus.EngineInfo.EngineIdleSpeed))) &&
-											(DataBus.Brakes.BrakePower.IsGreater(0) || inTorque.IsSmaller(0));
-			var vehiclespeedBelowThreshold =
-				DataBus.VehicleInfo.VehicleSpeed.IsSmaller(Constants.SimulationSettings.ClutchDisengageWhenHaltingSpeed);
-
-			return driverDeceleratingNegTorque && vehiclespeedBelowThreshold;
+        }
         }
 
-		/// <summary>
-		/// Requests the Gearbox in Disengaged mode
-		/// </summary>
-		/// <returns>
-		/// <list type="bullet">
-		/// <item><term>ResponseDryRun</term><description>if dryRun, immediate return!</description></item>
-		/// <item><term>ResponseFailTimeInterval</term><description>if shiftTime would be exceeded by current step</description></item>
-		/// <item><term>ResponseOverload</term><description>if torque &gt; 0</description></item>
-		/// <item><term>ResponseUnderload</term><description>if torque &lt; 0</description></item>
-		/// <item><term>else</term><description>Response from NextComponent</description></item>
-		/// </list>
-		/// </returns>
-		private IResponse RequestGearDisengaged(Second absTime, Second dt, NewtonMeter outTorque,
+        protected virtual void DoNotEngageWhenBraking(NewtonMeter outTorque, Second absTime, Second dt, PerSecond outAngularVelocity)
+        { }
+
+        /// <summary>
+        /// Requests the Gearbox in Disengaged mode
+        /// </summary>
+        /// <returns>
+        /// <list type="bullet">
+        /// <item><term>ResponseDryRun</term><description>if dryRun, immediate return!</description></item>
+        /// <item><term>ResponseFailTimeInterval</term><description>if shiftTime would be exceeded by current step</description></item>
+        /// <item><term>ResponseOverload</term><description>if torque &gt; 0</description></item>
+        /// <item><term>ResponseUnderload</term><description>if torque &lt; 0</description></item>
+        /// <item><term>else</term><description>Response from NextComponent</description></item>
+        /// </list>
+        /// </returns>
+        private IResponse RequestGearDisengaged(Second absTime, Second dt, NewtonMeter outTorque,
 			PerSecond outAngularVelocity, NewtonMeter inTorque, bool dryRun)
 		{
 			Disengaged = true;

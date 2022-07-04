@@ -635,6 +635,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				return tmp;
 			}
 
+
 			var eval = new List<HybridResultEntry>();
 
 			switch (DataBus.DriverInfo.DrivingAction) {
@@ -708,9 +709,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			DebugData.Add("AHS.R", new { DataBus.DriverInfo.DrivingAction, Evaluations = eval, 
 				Best = best, RetVal = retVal, DryRun = dryRun });
 			return retVal;
-        }
+		}
 
-        public IResponse AmendResponse(IResponse response, Second absTime, Second dt, NewtonMeter outTorque,
+		public IResponse AmendResponse(IResponse response, Second absTime, Second dt, NewtonMeter outTorque,
 			PerSecond outAngularVelocity, bool dryRun)
 		{
 			if (response is ResponseSuccess) {

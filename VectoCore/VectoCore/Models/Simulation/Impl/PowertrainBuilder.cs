@@ -91,7 +91,8 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			{
 				{ VectoSimulationJobType.ConventionalVehicle, BuildMeasuredSpeedGearConventional },
 				{ VectoSimulationJobType.BatteryElectricVehicle, BuildMeasuredSpeedGearBatteryElectric },
-				{ VectoSimulationJobType.IEPC_E, BuildMeasuredSpeedGearIEPC }
+				{ VectoSimulationJobType.IEPC_E, BuildMeasuredSpeedGearIEPC },
+				{ VectoSimulationJobType.ParallelHybridVehicle, BuildMeasuredSpeedHybrid }
 			};
 			
 			var measuredSpeedBuilders = new Dictionary<VectoSimulationJobType, Func<VectoRunData, IModalDataContainer, WriteSumData, IVehicleContainer>>()
@@ -571,11 +572,8 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			return container;
 		}
 
-		
         private static IVehicleContainer BuildMeasuredSpeedHybrid(VectoRunData data, IModalDataContainer modData, ISumData sumWriter)
 		{
-			VerifyCycleType(data, CycleType.MeasuredSpeed);
-
 			var container = new VehicleContainer(data.ExecutionMode, modData, sumWriter) { RunData = data };
 			var es = new ElectricSystem(container);
 
@@ -2091,10 +2089,14 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		private static IGearbox GetGearbox(IVehicleContainer container, IShiftStrategy strategy = null)
 		{
 			strategy = strategy ?? GetShiftStrategy(container);
+
+			var isMeasuredSpeedHybrid = (container.RunData.JobType == VectoSimulationJobType.ParallelHybridVehicle) 
+										&& (container.RunData.Cycle.CycleType == CycleType.MeasuredSpeed);
+
 			switch (container.RunData.GearboxData.Type) {
 				case GearboxType.AMT:
 				case GearboxType.MT:
-					return new Gearbox(container, strategy);
+					return  isMeasuredSpeedHybrid ? new MeasuredSpeedHybridGearbox(container, strategy) : new Gearbox(container, strategy);
 				case GearboxType.ATPowerSplit:
 				case GearboxType.ATSerial:
 					new ATClutchInfo(container);
@@ -2181,7 +2183,11 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				new ATClutchInfo(container);
 				return new ATGearbox(container, null);
 			}
-			return new Gearbox(container, null);
+
+			var isMeasuredSpeedHybrid = (container.RunData.JobType == VectoSimulationJobType.ParallelHybridVehicle) 
+										&& (container.RunData.Cycle.CycleType == CycleType.MeasuredSpeed);
+
+			return isMeasuredSpeedHybrid ? new MeasuredSpeedHybridGearbox(container, null) :  new Gearbox(container, null);
 		}
 	}
 
