@@ -37,21 +37,21 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
         TestCase(P1_JOB, 1, 497.4313, 14.9897, 15.072, TestName = "P1 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
         TestCase(P1_JOB, 2, 629.491, 44.975, 44.9965, TestName = "P1 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
         
-        TestCase(P2_JOB, 0, 573.9484, 8.7558, 7.7057, TestName = "P2 Hybrid TimeRun MeasuredSpeed LongHaul"),
-        TestCase(P2_JOB, 1, 557.086, 11.5098, 11.466, TestName = "P2 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
-        TestCase(P2_JOB, 2, 607.9833, 30.5553, 31.2926, TestName = "P2 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
+        TestCase(P2_JOB, 0, 573.947, 8.7646, 7.7124, TestName = "P2 Hybrid TimeRun MeasuredSpeed LongHaul"),
+        TestCase(P2_JOB, 1, 557.0464, 11.5103, 11.4645, TestName = "P2 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(P2_JOB, 2, 608.2527, 30.5006, 31.2549, TestName = "P2 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
 
         TestCase(P2_5_JOB, 0, 836.7854, 5.5221, 9.1817, TestName = "P2_5 Hybrid TimeRun MeasuredSpeed LongHaul"),
         TestCase(P2_5_JOB, 1, 946.3114, 6.8857, 11.0556, TestName = "P2_5 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
-        TestCase(P2_5_JOB, 2, 1654.7311, 13.5727, 18.3844, TestName = "P2_5 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
+        TestCase(P2_5_JOB, 2, 1654.5234, 13.5674, 18.3792, TestName = "P2_5 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
 
-        TestCase(P3_JOB, 0, 573.7482, 2.8828, 3.2378, TestName = "P3 Hybrid TimeRun MeasuredSpeed LongHaul"),
-        TestCase(P3_JOB, 1, 558.0545, 7.4795, 8.4148, TestName = "P3 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(P3_JOB, 0, 573.7352, 2.8828, 3.2344, TestName = "P3 Hybrid TimeRun MeasuredSpeed LongHaul"),
+        TestCase(P3_JOB, 1, 558.1513, 7.5458, 8.4801, TestName = "P3 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
         TestCase(P3_JOB, 2, 0, 0, 0, TestName = "P3 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
 
         TestCase(P4_JOB, 0, 573.1148, 1.7022, 1.957, TestName = "P4 Hybrid TimeRun MeasuredSpeed LongHaul"),
-        TestCase(P4_JOB, 1, 568.8591, 3.2322, 3.9305, TestName = "P4 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
-        TestCase(P4_JOB, 2, 712.0876, 8.2827, 9.4678, TestName = "P4 Hybrid TimeRun MeasuredSpeed UrbanDelivery")
+        TestCase(P4_JOB, 1, 568.8524, 3.2313, 3.9296, TestName = "P4 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(P4_JOB, 2, 711.727, 8.2956, 9.4808, TestName = "P4 Hybrid TimeRun MeasuredSpeed UrbanDelivery")
         ]
         public void TestHybridTimeRunCycle(string jobFile, int cycleIdx, double CO2, double charge, double discharge)
         {
