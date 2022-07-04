@@ -63,21 +63,27 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		protected virtual void InitializeCycleData()
 		{
 			FirstRun = false;
-			var gearRatios = RunData.GearboxData.Gears.ToDictionary(g => g.Key, g => g.Value.Ratio);
+			var gearRatios = (RunData.GearboxData != null) 
+				? RunData.GearboxData.Gears.ToDictionary(g => g.Key, g => g.Value.Ratio)
+				: new System.Collections.Generic.Dictionary<uint, double>() { { 0, 1 } };
+
 			// just to ensure that null-gear has ratio 1
 			gearRatios[0] = 1;
 			var axleRatio = RunData.AxleGearData.AxleGear.Ratio;
+
+			var emData = RunData.ElectricMachinesData.First().Item2;
 
 			foreach (var entry in Data.Entries)
 			{
 				if (RunData.JobType == VectoCommon.InputData.VectoSimulationJobType.BatteryElectricVehicle)
 				{
-					entry.WheelAngularVelocity = entry.AngularVelocity / (axleRatio * gearRatios[entry.Gear] * 2); // change two for actual ratio value
+					entry.WheelAngularVelocity = entry.AngularVelocity / (axleRatio * gearRatios[entry.Gear] * emData.RatioADC);
 				}
 				else
 				{
 					entry.WheelAngularVelocity = entry.AngularVelocity / (axleRatio * gearRatios[entry.Gear]);
 				}
+
 				if (entry.WheelAngularVelocity.Value() == 0)
 				{
 					entry.Torque = NewtonMeter.Create(0);
