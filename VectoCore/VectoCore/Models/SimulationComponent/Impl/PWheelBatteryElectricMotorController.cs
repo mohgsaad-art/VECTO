@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TUGraz.VectoCommon.Utils;
+﻿using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Simulation.Impl;
+using TUGraz.VectoCore.Configuration;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
@@ -15,7 +11,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
         protected override bool CannotProvideMechanicalAssistAtLowSpeed(NewtonMeter outTorque)
         {
-            return false;
+           return DataBus.DrivingCycleInfo.CycleData.LeftSample.VehicleTargetSpeed.IsSmallerOrEqual(
+				GearboxModelData?.DisengageWhenHaltingSpeed ?? Constants.SimulationSettings.ClutchDisengageWhenHaltingSpeed)
+					&& outTorque.IsSmaller(0);
         }
     }
 }

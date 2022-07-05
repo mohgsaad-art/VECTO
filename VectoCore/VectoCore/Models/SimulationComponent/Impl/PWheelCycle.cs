@@ -30,9 +30,9 @@
 */
 
 using System.Linq;
-using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
@@ -72,12 +72,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			var axleRatio = (RunData.AxleGearData != null) ? RunData.AxleGearData.AxleGear.Ratio : 1;
 
 			var emData = (RunData.ElectricMachinesData.Count > 0) ? RunData.ElectricMachinesData.First().Item2 : null;
-			var ratioADC = (RunData.JobType == VectoCommon.InputData.VectoSimulationJobType.BatteryElectricVehicle) ? emData.RatioADC : 1;
+			var ratioADC = (RunData.JobType == VectoSimulationJobType.BatteryElectricVehicle) ? emData.RatioADC : 1;
 					
 			foreach (var entry in Data.Entries) {
 				entry.WheelAngularVelocity = entry.AngularVelocity / (axleRatio * gearRatios[entry.Gear] * ratioADC);
+
+				entry.VehicleTargetSpeed = entry.WheelAngularVelocity * RunData.VehicleData.DynamicTyreRadius;
 				
-				entry.Torque = ((entry.WheelAngularVelocity != null) && !entry.WheelAngularVelocity.IsEqual(0)) 
+				entry.Torque = !entry.WheelAngularVelocity.IsEqual(0) 
 					? entry.PWheel / entry.WheelAngularVelocity 
 					: 0.SI<NewtonMeter>();
 			}
@@ -85,6 +87,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		public override IResponse Initialize()
 		{
+			if (DataBus.GearboxCtl != null) {
+				DataBus.GearboxCtl.GearShiftTriggered -= GearShiftTriggered;
+				DataBus.GearboxCtl.GearShiftTriggered += GearShiftTriggered;
+            }
+
 			if (FirstRun) {
 				InitializeCycleData();
 			   
@@ -95,6 +102,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			response.AbsTime = AbsTime;
 			return response;
 		}
+
+		private void GearShiftTriggered()
+        {
+			if (DrivingAction == DrivingAction.Accelerate) {
+				DriverBehavior = DrivingBehavior.Driving;	
+				DrivingAction = DrivingAction.Roll;
+			}
+        }
 
 		public override IResponse Request(Second absTime, Second dt)
 		{
@@ -165,7 +180,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		private void DetermineDriverAction()
 		{
-			if (DataBus.EngineInfo == null)	{
+			if (RunData.JobType == VectoSimulationJobType.BatteryElectricVehicle)	{
 				DetermineDriverActionForBEV();
             }
         }
@@ -176,13 +191,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				DrivingAction = DrivingAction.Halt;
 				DriverBehavior = DrivingBehavior.Halted;
 			}
-			else if (CycleIterator.LeftSample.PWheel.Value() < 0) {
+			else if ((CycleIterator.LeftSample.PWheel.Value() < 0) && (DrivingAction != DrivingAction.Roll)) {
 				DrivingAction = DrivingAction.Brake;
 				DriverBehavior = DrivingBehavior.Braking;
 			}
 			else {
-				DrivingAction = DrivingAction.Accelerate;
-				DriverBehavior = DrivingBehavior.Accelerating;
+				DrivingAction = DataBus.GearboxInfo.GearEngaged(DataBus.AbsTime) ? DrivingAction.Accelerate : DrivingAction.Roll;
+				DriverBehavior = DrivingBehavior.Driving;
 			}
 		}
 

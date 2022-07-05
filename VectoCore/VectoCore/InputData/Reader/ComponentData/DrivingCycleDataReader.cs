@@ -596,8 +596,7 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 						Gear = (uint)row.ParseDoubleOrGetDefault(Fields.Gear),
 						AngularVelocity = row.ParseDouble(Fields.EngineSpeed).RPMtoRad(),
 						AdditionalAuxPowerDemand = row.ParseDoubleOrGetDefault(Fields.AdditionalAuxPowerDemand).SI(Unit.SI.Kilo.Watt)
-													.Cast<Watt>(),
-						VehicleTargetSpeed = row.ParseDoubleOrGetDefault(Fields.VehicleSpeed).KMPHtoMeterPerSecond(),
+													.Cast<Watt>()
 					}).ToArray();
 
 				return entries;

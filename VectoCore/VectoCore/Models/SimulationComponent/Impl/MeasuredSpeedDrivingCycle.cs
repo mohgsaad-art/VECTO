@@ -35,6 +35,7 @@ using System.Linq;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Connector.Ports;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
@@ -72,6 +73,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		protected readonly IDrivingCycleData Data;
 
+		protected readonly VectoRunData RunData;
+
 		protected internal readonly DrivingCycleEnumerator CycleIterator;
 
 		protected Second AbsTime { get; set; }
@@ -93,6 +96,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			CurrentState = PreviousState.Clone();
 
 			AbsTime = Data.Entries.First().Time;
+
+			RunData = container.RunData;
 		}
 
         public IResponse Initialize()
@@ -240,7 +245,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
         private void DetermineDriverAction(Second absTime)
         {
-			if (DataBus.EngineCtl == null) {
+			if (RunData.JobType == VectoSimulationJobType.BatteryElectricVehicle) {
 				DetermineDriverActionForBEV(absTime);
             }
 			else {
