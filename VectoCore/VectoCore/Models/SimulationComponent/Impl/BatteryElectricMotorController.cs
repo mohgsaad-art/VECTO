@@ -43,8 +43,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl {
                 return null;
             }
 			
-            if ((DataBus.VehicleInfo.VehicleSpeed ?? 0.SI<MeterPerSecond>()).IsSmallerOrEqual(GearboxModelData?.DisengageWhenHaltingSpeed ?? Constants.SimulationSettings.ClutchDisengageWhenHaltingSpeed)
-				&& outTorque.IsSmaller(0)) {
+            if (CannotProvideMechanicalAssistAtLowSpeed(outTorque)) {
                 return null;
             }
 
@@ -53,8 +52,16 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl {
 			}
 
 			return (-outTorque).LimitTo(maxDriveTorque, maxRecuperationTorque ?? VectoMath.Max(maxDriveTorque, 0.SI<NewtonMeter>()));
+        }
+
+        #endregion
+
+        protected virtual bool CannotProvideMechanicalAssistAtLowSpeed(NewtonMeter outTorque)
+        { 
+			return (DataBus.VehicleInfo.VehicleSpeed ?? 0.SI<MeterPerSecond>()).IsSmallerOrEqual(
+				GearboxModelData?.DisengageWhenHaltingSpeed ?? Constants.SimulationSettings.ClutchDisengageWhenHaltingSpeed)
+					&& outTorque.IsSmaller(0);
 		}
 
-		#endregion
-	}
+    }
 }
