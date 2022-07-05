@@ -371,6 +371,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			CurrentState.SetState(0.SI<NewtonMeter>(), disengagedResponse.Engine.EngineSpeed, 0.SI<NewtonMeter>(), outAngularVelocity);
 			CurrentState.Gear = Gear;
 
+			InvokeGearShiftTriggered();
+
 			return disengagedResponse;
 		}
 
