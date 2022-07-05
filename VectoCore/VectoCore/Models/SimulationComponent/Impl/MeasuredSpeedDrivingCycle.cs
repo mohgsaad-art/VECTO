@@ -91,6 +91,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				Distance = 0.SI<Meter>(),
 			};
 			CurrentState = PreviousState.Clone();
+
+			AbsTime = Data.Entries.First().Time;
 		}
 
         public IResponse Initialize()
@@ -273,7 +275,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
         }
 
-        private IResponse HandleUnderload(Second absTime, Second dt, ResponseUnderload r,
+		private IResponse HandleUnderload(Second absTime, Second dt, ResponseUnderload r,
 			Radian gradient, ref MeterPerSquareSecond acceleration)
 		{
 			MeterPerSquareSecond acc = acceleration;
@@ -371,9 +373,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)
 		{
-			if ((CycleIterator.RightSample == null) ||
-				(AbsTime != null && AbsTime.IsGreaterOrEqual(CycleIterator.RightSample.Time)))
-			{
+			if ((CycleIterator.RightSample == null) || AbsTime.IsGreaterOrEqual(CycleIterator.RightSample.Time)) {
 				CycleIterator.MoveNext();
 			}
 			AdvanceState();
