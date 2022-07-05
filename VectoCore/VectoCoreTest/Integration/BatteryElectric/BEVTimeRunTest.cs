@@ -141,7 +141,7 @@ namespace TUGraz.VectoCore.Tests.Integration.BatteryElectric
 
             AssertHelper.AssertMetrics(factory, metrics);
 
-			//Directory.Delete(Path.GetDirectoryName(outputFile), recursive: true);
+			Directory.Delete(Path.GetDirectoryName(outputFile), recursive: true);
         }
     }
 }
