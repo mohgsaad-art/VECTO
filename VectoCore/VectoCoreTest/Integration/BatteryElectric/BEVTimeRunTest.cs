@@ -36,21 +36,25 @@ namespace TUGraz.VectoCore.Tests.Integration.BatteryElectric
         TestCase(E2_JOB, 7, 1, 4.3124, 117.0889, TestName = "E2 BEV TimeRun MeasuredSpeedGear RegionalDelivery"),
         TestCase(E2_JOB, 8, 2, 28.7993, 125.4735, TestName = "E2 BEV TimeRun MeasuredSpeedGear UrbanDelivery"),
 
-        TestCase(E2_JOB, 9, 0, 0.0028, 120.269, TestName = "E2 BEV TimeRun MeasuredSpeedPWheel LongHaul"),
-        TestCase(E2_JOB, 10, 1, 0.0226, 117.7803, TestName = "E2 BEV TimeRun MeasuredSpeedPWheel RegionalDelivery"),
-        TestCase(E2_JOB, 11, 2, 0.2723, 130.6771, TestName = "E2 BEV TimeRun MeasuredSpeedPWheel UrbanDelivery"),
+        TestCase(E2_JOB, 9, 0, 1.1661, 120.0129, TestName = "E2 BEV TimeRun MeasuredSpeedPWheel LongHaul"),
+        TestCase(E2_JOB, 10, 1, 4.6925, 117.3748, TestName = "E2 BEV TimeRun MeasuredSpeedPWheel RegionalDelivery"),
+        TestCase(E2_JOB, 11, 2, 31.7336, 127.926, TestName = "E2 BEV TimeRun MeasuredSpeedPWheel UrbanDelivery"),
 
         TestCase(E3_JOB, 0, 0, 0.7916, 101.6194, TestName = "E3 BEV TimeRun MeasuredSpeed LongHaul"),
         TestCase(E3_JOB, 1, 1, 3.3777, 104.792, TestName = "E3 BEV TimeRun MeasuredSpeed RegionalDelivery"),
         TestCase(E3_JOB, 2, 2, 28.1637, 128.3685, TestName = "E3 BEV TimeRun MeasuredSpeed UrbanDelivery"),
 
-        TestCase(E3_JOB, 6, 0, 0, 98.8855, TestName = "E3 BEV TimeRun MeasuredSpeedPWheel LongHaul"),
-        TestCase(E3_JOB, 7, 1, 0, 0, TestName = "E3 BEV TimeRun MeasuredSpeedPWheel RegionalDelivery"),
-        TestCase(E3_JOB, 8, 2, 0, 0, TestName = "E3 BEV TimeRun MeasuredSpeedPWheel UrbanDelivery"),
+        TestCase(E3_JOB, 6, 0, 0.8476, 101.5911, TestName = "E3 BEV TimeRun MeasuredSpeedPWheel LongHaul"),
+        TestCase(E3_JOB, 7, 1, 3.611, 104.7354, TestName = "E3 BEV TimeRun MeasuredSpeedPWheel RegionalDelivery"),
+        TestCase(E3_JOB, 8, 2, 30.5738, 127.6631, TestName = "E3 BEV TimeRun MeasuredSpeedPWheel UrbanDelivery"),
 
         TestCase(E4_JOB, 0, 0, 0.9165, 97.3067, TestName = "E4 BEV TimeRun MeasuredSpeed LongHaul"),
         TestCase(E4_JOB, 1, 1, 3.7896, 100.3712, TestName = "E4 BEV TimeRun MeasuredSpeed RegionalDelivery"),
-        TestCase(E4_JOB, 2, 2, 30.1342, 123.7528, TestName = "E4 BEV TimeRun MeasuredSpeed UrbanDelivery")
+        TestCase(E4_JOB, 2, 2, 30.1342, 123.7528, TestName = "E4 BEV TimeRun MeasuredSpeed UrbanDelivery"),
+
+        TestCase(E4_JOB, 6, 0, 0.9741, 97.2793, TestName = "E4 BEV TimeRun MeasuredSpeedPWheel LongHaul"),
+        TestCase(E4_JOB, 7, 1, 4.0286, 100.3147, TestName = "E4 BEV TimeRun MeasuredSpeedPWheel RegionalDelivery"),
+        TestCase(E4_JOB, 8, 2, 32.6304, 123.0436, TestName = "E4 BEV TimeRun MeasuredSpeedPWheel UrbanDelivery")
         ]
         public void TestBEVTimeRunCycle(string jobFile, int cycleIdx, int distanceCycleIdx, double charge, double discharge)
         {
@@ -111,7 +115,7 @@ namespace TUGraz.VectoCore.Tests.Integration.BatteryElectric
             
             AssertHelper.AssertMetrics(factory, metrics);
 
-			//Directory.Delete(Path.GetDirectoryName(outputFile), recursive: true);
+			Directory.Delete(Path.GetDirectoryName(outputFile), recursive: true);
         }
 
         public void RunBEVDistanceRunCycle(string jobFile, int cycleIdx, Dictionary<String, double> metrics)
@@ -137,7 +141,7 @@ namespace TUGraz.VectoCore.Tests.Integration.BatteryElectric
 
             AssertHelper.AssertMetrics(factory, metrics);
 
-			Directory.Delete(Path.GetDirectoryName(outputFile), recursive: true);
+			//Directory.Delete(Path.GetDirectoryName(outputFile), recursive: true);
         }
     }
 }

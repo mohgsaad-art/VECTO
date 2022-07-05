@@ -27,11 +27,14 @@
     },
     "Cycles": [
       "MeasuredSpeed_LongHaul.vdri",
-	    "MeasuredSpeed_RegionalDelivery.vdri",
-	    "MeasuredSpeed_UrbanDelivery.vdri",
-	    "LongHaul",
-	    "RegionalDelivery",
-	    "UrbanDelivery"
+      "MeasuredSpeed_RegionalDelivery.vdri",
+      "MeasuredSpeed_UrbanDelivery.vdri",
+      "LongHaul",
+      "RegionalDelivery",
+      "UrbanDelivery",
+      "PWheel_LongHaul.vdri",
+      "PWheel_RegionalDelivery.vdri",
+      "PWheel_UrbanDelivery.vdri"
     ]
   }
 }

@@ -809,24 +809,17 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				es.Connect(superCap);
 			}
 
-			var ctl = new BatteryElectricMotorController(container, es);
+			var ctl = new PWheelBatteryElectricMotorController(container, es);
 
 			var aux = new ElectricAuxiliary(container);
 			aux.AddConstant("P_aux_el", data.ElectricAuxDemand ?? 0.SI<Watt>());
 			es.Connect(aux);
 
-			var position = data.ElectricMachinesData.First().Item1;
-
 			var powertrain = new PWheelCycle(container, data.Cycle);
 						
-			if (position == PowertrainPosition.BatteryElectricE2) {
-				powertrain
-					.AddComponent(GetRetarder(RetarderType.TransmissionOutputRetarder, data.Retarder, container))
-					.AddComponent(new CycleGearbox(container, data))
-					.AddComponent(GetRetarder(RetarderType.TransmissionInputRetarder, data.Retarder, container));
-            }
-	
             IElectricMotor em;
+			
+			var position = data.ElectricMachinesData.First().Item1;
 			
 			switch (position)
 			{
@@ -853,6 +846,9 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 					powertrain
 						.AddComponent(new AxleGear(container, data.AxleGearData))
 						.AddComponent(data.AngledriveData != null ? new Angledrive(container, data.AngledriveData) : null)
+						.AddComponent(GetRetarder(RetarderType.TransmissionOutputRetarder, data.Retarder, container))
+						.AddComponent(new CycleGearbox(container, data))
+						.AddComponent(GetRetarder(RetarderType.TransmissionInputRetarder, data.Retarder, container))
 						.AddComponent(em);
 					new ATClutchInfo(container);
 					new DummyEngineInfo(container);

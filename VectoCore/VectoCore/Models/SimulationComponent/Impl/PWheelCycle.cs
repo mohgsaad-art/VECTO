@@ -69,7 +69,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			// just to ensure that null-gear has ratio 1
 			gearRatios[0] = 1;
-			var axleRatio = RunData.AxleGearData.AxleGear.Ratio;
+			var axleRatio = (RunData.AxleGearData != null) ? RunData.AxleGearData.AxleGear.Ratio : 1;
 
 			var emData = RunData.ElectricMachinesData.First().Item2;
 
