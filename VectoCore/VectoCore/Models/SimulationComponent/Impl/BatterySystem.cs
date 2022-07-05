@@ -14,11 +14,12 @@ using TUGraz.VectoCore.OutputData;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
-	public class BatterySystem : StatefulVectoSimulationComponent<BatterySystem.State>, IElectricEnergyStorage, IElectricEnergyStoragePort, IUpdateable
+	public class GenericBatterySystem<TBattery> : StatefulVectoSimulationComponent<GenericBatterySystem<TBattery>.State>, 
+		IElectricEnergyStorage, IElectricEnergyStoragePort, IUpdateable where TBattery : Battery
 	{
 		public class BatteryString: IUpdateable
 		{
-			protected readonly List<Battery> _batteries;
+			protected readonly List<TBattery> _batteries;
 			
 			private AmpereSecond _capacity;
 			private AmpereSecond _capacityMinSoc;
@@ -26,12 +27,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			public BatteryString()
             {
-				_batteries = new List<Battery>();
+				_batteries = new List<TBattery>();
             }
 
-			public IReadOnlyList<Battery> Batteries => _batteries;
+			public IReadOnlyList<TBattery> Batteries => _batteries;
 
-			public void AddBattery(Battery bat)
+			public void AddBattery(TBattery bat)
 			{
 				_batteries.Add(bat);
 				// Todo: update some properties?
@@ -45,6 +46,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			public AmpereSecond Capacity => _capacity ?? (_capacity = _batteries.Min(x => x.Capacity));
 
 			public double SoC => _batteries.Min(x => x.StateOfCharge * x.Capacity) / Capacity;
+
+			public double CalculatedStateOfCharge => _batteries.Min(x => x.CalculatedStateOfCharge * x.Capacity) / Capacity;
+
 			public WattSecond StoredEnergy => _batteries.Min(x => x.StateOfCharge * x.Capacity) * OpenCircuitVoltage;
 
 			public Watt MaxDischargePower(Second dt, Second tPulse)
@@ -130,10 +134,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		private Scalar _minSoc;
 		private Scalar _maxSoc;
 
-		public BatterySystem(IVehicleContainer dataBus, BatterySystemData batterySystemData) : base(dataBus)
+		public GenericBatterySystem(IVehicleContainer dataBus, BatterySystemData batterySystemData) : base(dataBus)
 		{
 			foreach (var entry in batterySystemData.Batteries) {
-				var bat = new Battery(null, entry.Item2);
+				var bat = (TBattery) Activator.CreateInstance(typeof(TBattery), new object[] { null, entry.Item2 });
 				if (!Batteries.ContainsKey(entry.Item1)) {
 					Batteries[entry.Item1] = new BatteryString();
 				}
@@ -394,7 +398,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		#region Implementation of IUpdateable
 
 		public bool UpdateFrom(object other) {
-			if (other is BatterySystem b) {
+			if (other is GenericBatterySystem<TBattery> b) {
 				PreviousState = b.PreviousState.Clone();
 				return Batteries.All(kv => kv.Value.UpdateFrom(b.Batteries[kv.Key]));
 			}
@@ -403,5 +407,31 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		}
 
 		#endregion
+    }
+
+    public class BatterySystem : GenericBatterySystem<Battery>
+    {
+        public BatterySystem(IVehicleContainer dataBus, BatterySystemData batterySystemData) : base(dataBus, batterySystemData)
+        {
+        }
+    }
+
+    public class IdealBatterySystem : GenericBatterySystem<IdealBattery>
+    { 
+		public IdealBatterySystem(IVehicleContainer dataBus, BatterySystemData batterySystemData) : base(dataBus, batterySystemData)
+        {
+        }
+
+		public override void CommitSimulationStep(Second time, Second simulationInterval, IModalDataContainer container)
+		{
+			base.CommitSimulationStep(time, simulationInterval, container);
+			
+			if (container != null) {
+				container[ModalResultField.REESSStateOfCharge] = CalculatedStateOfCharge.SI();
+			}
+		}
+
+		public double CalculatedStateOfCharge => Batteries.Values.Sum(bs => bs.CalculatedStateOfCharge * bs.Capacity) / TotalCapacity;
 	}
+
 }
