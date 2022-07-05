@@ -71,27 +71,15 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			gearRatios[0] = 1;
 			var axleRatio = (RunData.AxleGearData != null) ? RunData.AxleGearData.AxleGear.Ratio : 1;
 
-			var emData = RunData.ElectricMachinesData.First().Item2;
-
-			foreach (var entry in Data.Entries)
-			{
-				if (RunData.JobType == VectoCommon.InputData.VectoSimulationJobType.BatteryElectricVehicle)
-				{
-					entry.WheelAngularVelocity = entry.AngularVelocity / (axleRatio * gearRatios[entry.Gear] * emData.RatioADC);
-				}
-				else
-				{
-					entry.WheelAngularVelocity = entry.AngularVelocity / (axleRatio * gearRatios[entry.Gear]);
-				}
-
-				if (entry.WheelAngularVelocity.Value() == 0)
-				{
-					entry.Torque = NewtonMeter.Create(0);
-				}
-				else
-				{
-					entry.Torque = entry.PWheel / entry.WheelAngularVelocity;
-				}
+			var emData = (RunData.ElectricMachinesData.Count > 0) ? RunData.ElectricMachinesData.First().Item2 : null;
+			var ratioADC = (RunData.JobType == VectoCommon.InputData.VectoSimulationJobType.BatteryElectricVehicle) ? emData.RatioADC : 1;
+					
+			foreach (var entry in Data.Entries) {
+				entry.WheelAngularVelocity = entry.AngularVelocity / (axleRatio * gearRatios[entry.Gear] * ratioADC);
+				
+				entry.Torque = ((entry.WheelAngularVelocity != null) && !entry.WheelAngularVelocity.IsEqual(0)) 
+					? entry.PWheel / entry.WheelAngularVelocity 
+					: 0.SI<NewtonMeter>();
 			}
 		}
 
@@ -114,7 +102,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				return new ResponseCycleFinished(this);
 			}
 
-			SetDriverAction();
+			DetermineDriverAction();
+
 			// interval exceeded
 			if (CycleIterator.RightSample != null && (absTime + dt).IsGreater(CycleIterator.RightSample.Time)) {
 				return new ResponseFailTimeInterval(this) {
@@ -131,6 +120,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			container[ModalResultField.P_wheel_in] = CycleIterator.LeftSample.PWheel;
 			base.DoWriteModalResults(time, simulationInterval, container);
 		}
+
 		#region IDriverInfo
 
 		public MeterPerSecond VehicleSpeed { get; private set; }
@@ -164,48 +154,38 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		}
 
 		public MeterPerSecond MaxVehicleSpeed => null;
+		
+		public DrivingBehavior DriverBehavior { get; internal set; } = DrivingBehavior.Driving;
+		
+		public DrivingAction DrivingAction { get; private set; } = DrivingAction.Accelerate;
+
 		public MeterPerSquareSecond DriverAcceleration => 0.SI<MeterPerSquareSecond>();
 		public PCCStates PCCState => PCCStates.OutsideSegment;
 		public MeterPerSecond NextBrakeTriggerSpeed => 0.SI<MeterPerSecond>();
-		public DrivingBehavior DriverBehavior { get; internal set; }
-		public DrivingAction DrivingAction { get; private set; }
 
-		private PerSquareSecond GetCurrentAcceleration()
+		private void DetermineDriverAction()
 		{
-			var targetSpeed = CycleIterator.RightSample.AngularVelocity;
-			if (targetSpeed.Value().IsEqual(0, 0.5))
-			{
-				targetSpeed = PerSecond.Create(0);
-			}
-			var deltaV = targetSpeed - CycleIterator.LeftSample.AngularVelocity;
-			var deltaT = CycleIterator.RightSample.Time - AbsTime;
-			if (deltaT.IsSmaller(0))
-			{
-				throw new VectoSimulationException("deltaT is smaller than zero");
-			}
+			if (DataBus.EngineInfo == null)	{
+				DetermineDriverActionForBEV();
+            }
+        }
 
-			return (deltaV / deltaT);
-		}
-		private void SetDriverAction()
-		{
-			var acceleration = GetCurrentAcceleration();
-			if (VehicleStopped)
-			{
+        private void DetermineDriverActionForBEV()
+        {
+			if (VehicleStopped) {
 				DrivingAction = DrivingAction.Halt;
 				DriverBehavior = DrivingBehavior.Halted;
 			}
-			else if (acceleration.Value() < 0)
-			{
+			else if (CycleIterator.LeftSample.PWheel.Value() < 0) {
 				DrivingAction = DrivingAction.Brake;
 				DriverBehavior = DrivingBehavior.Braking;
 			}
-			else
-			{
+			else {
 				DrivingAction = DrivingAction.Accelerate;
 				DriverBehavior = DrivingBehavior.Accelerating;
 			}
 		}
 
-		#endregion
-	}
+        #endregion
+    }
 }
