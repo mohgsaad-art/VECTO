@@ -87,7 +87,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		public override IResponse Initialize()
 		{
-			if (DataBus.GearboxCtl != null) {
+			if ((RunData.JobType == VectoSimulationJobType.BatteryElectricVehicle) && (DataBus.GearboxCtl != null)) {
 				DataBus.GearboxCtl.GearShiftTriggered -= GearShiftTriggered;
 				DataBus.GearboxCtl.GearShiftTriggered += GearShiftTriggered;
             }
@@ -117,8 +117,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				return new ResponseCycleFinished(this);
 			}
 
-			DetermineDriverAction();
-
 			// interval exceeded
 			if (CycleIterator.RightSample != null && (absTime + dt).IsGreater(CycleIterator.RightSample.Time)) {
 				return new ResponseFailTimeInterval(this) {
@@ -126,6 +124,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					DeltaT = CycleIterator.RightSample.Time - absTime
 				};
 			}
+
+			DetermineDriverAction();
 
 			return DoHandleRequest(absTime, dt, CycleIterator.LeftSample.WheelAngularVelocity);
 		}
@@ -180,7 +180,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		private void DetermineDriverAction()
 		{
-			if (RunData.JobType == VectoSimulationJobType.BatteryElectricVehicle)	{
+			if (RunData.JobType == VectoSimulationJobType.BatteryElectricVehicle) {
 				DetermineDriverActionForBEV();
             }
         }
