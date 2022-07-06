@@ -620,7 +620,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 			SetIdleControllerForHybridP1(data, gearbox, idleController, clutch);
 
-			AddBusAuxiliaries(data, container, es);
+			AddHybridBusAuxiliaries(data, container, es);
 
 			return container;
 		}
@@ -673,7 +673,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			return clutch;
         }
 
-        private static void AddBusAuxiliaries(VectoRunData data, VehicleContainer container, ElectricSystem es)
+        private static void AddHybridBusAuxiliaries(VectoRunData data, VehicleContainer container, ElectricSystem es)
         {
 			if (data.BusAuxiliaries == null) {
 				return;

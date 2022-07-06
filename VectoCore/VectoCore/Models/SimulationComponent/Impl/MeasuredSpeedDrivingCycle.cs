@@ -97,6 +97,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			RunData = container.RunData;
 			AbsTime = Data.Entries.First().Time;
+
+			RunData = container.RunData;
 		}
 
 		public IResponse Initialize()
@@ -106,7 +108,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				DataBus.GearboxCtl.GearShiftTriggered += GearShiftTriggered;
             }
 
-			if (DataBus.HybridControllerCtl != null) {
+			if (RunData.JobType == VectoSimulationJobType.ParallelHybridVehicle) {
 				DataBus.HybridControllerCtl.Strategy.GearShiftTriggered -= GearShiftTriggered;
 				DataBus.HybridControllerCtl.Strategy.GearShiftTriggered += GearShiftTriggered;
 			}
@@ -264,16 +266,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				DetermineDriverActionForOther();
             }	
 		}
-		
-        private void DetermineDriverActionForPHEV(Second absTime)
-        { 
-			if (DataBus.HybridControllerCtl != null) {
-				DetermineDriverActionForHybrid(absTime);
-			}
-			else {
-				DetermineDriverActionForOther();
-            }	
-		}
 
         private void DetermineDriverActionForBEV(Second absTime)
 		{
@@ -291,7 +283,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
 		}
 
-        private void DetermineDriverActionForHybrid(Second absTime)
+        private void DetermineDriverActionForPHEV(Second absTime)
         { 
 			if (DataBus.GearboxInfo.GearboxType.AutomaticTransmission()) {
 				DetermineDriverActionForAutomaticHybrid(absTime);	

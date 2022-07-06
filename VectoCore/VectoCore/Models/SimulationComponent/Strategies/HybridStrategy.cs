@@ -2408,9 +2408,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 			container[ModalResultField.MaxPropulsionTorqe] = CurrentState.MaxGbxTq ?? 0.SI<NewtonMeter>();
 
-			container.SetDataValue("Driving Action", DataBus.DriverInfo.DrivingAction.ToString());
-			container.SetDataValue("DriverAction", DataBus.DriverInfo.DrivingAction);
-
 			//if (CurrentState.Evaluations != null) {
 			//    container.SetDataValue(
 			//        "HybridStrategyEvaluation",
