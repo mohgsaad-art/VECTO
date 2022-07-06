@@ -346,16 +346,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				};
 			}
 
-			IResponse disengagedResponse;
-			if (GearboxType.AutomaticTransmission()) {
-				disengagedResponse = EngineIdleRequest(absTime, dt);
-			} else {
-				disengagedResponse = NextGear.Gear > 0
-					? NextComponent.Request(
-						absTime, dt, 0.SI<NewtonMeter>(),
-						outAngularVelocity * ModelData.Gears[NextGear.Gear].Ratio, false)
-					: EngineIdleRequest(absTime, dt);
-			}
+			IResponse disengagedResponse = GetDisengagedResponse(absTime, dt, outAngularVelocity);
+			
 			if (TorqueConverter != null) {
 				if (DataBus.VehicleInfo.VehicleStopped) {
 					TorqueConverter.Locked(
@@ -375,6 +367,23 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			return disengagedResponse;
 		}
+
+		protected virtual IResponse GetDisengagedResponse(Second absTime, Second dt, PerSecond outAngularVelocity)
+		{
+			IResponse disengagedResponse;
+
+			if (GearboxType.AutomaticTransmission()) {
+				disengagedResponse = EngineIdleRequest(absTime, dt);
+			} else {
+				disengagedResponse = (NextGear.Gear > 0)
+					? NextComponent.Request(
+						absTime, dt, 0.SI<NewtonMeter>(),
+						outAngularVelocity * ((NextGear.Gear > 0) ? ModelData.Gears[NextGear.Gear].Ratio : 1), false)
+					: EngineIdleRequest(absTime, dt);
+			}
+
+			return disengagedResponse;
+        }
 
 		private IResponse EngineIdleRequest(Second absTime, Second dt)
 		{
