@@ -15,9 +15,9 @@ namespace TUGraz.VectoCore.Tests.Integration.BatteryElectric
     [Parallelizable(ParallelScope.All)]
     public class BEVTimeRunTest 
     {
-        private const string E2_JOB = @"TestData\Integration\TimeRun\MeasuredSpeed\GenericVehicleB2\BEV_ENG.vecto";
-        private const string E3_JOB = @"TestData\Integration\TimeRun\MeasuredSpeed\GenericVehicleB3\BEV_ENG.vecto";
-        private const string E4_JOB = @"TestData\Integration\TimeRun\MeasuredSpeed\GenericVehicleB4\BEV_ENG.vecto";
+        private const string E2_JOB = @"TestData\Integration\TimeRun\MeasuredSpeed\GenericVehicleE2\BEV_ENG.vecto";
+        private const string E3_JOB = @"TestData\Integration\TimeRun\MeasuredSpeed\GenericVehicleE3\BEV_ENG.vecto";
+        private const string E4_JOB = @"TestData\Integration\TimeRun\MeasuredSpeed\GenericVehicleE4\BEV_ENG.vecto";
 
         [OneTimeSetUp]
         public void Init()
@@ -36,9 +36,9 @@ namespace TUGraz.VectoCore.Tests.Integration.BatteryElectric
         TestCase(E2_JOB, 7, 1, 4.3124, 117.0889, TestName = "E2 BEV TimeRun MeasuredSpeedGear RegionalDelivery"),
         TestCase(E2_JOB, 8, 2, 28.8197, 125.4709, TestName = "E2 BEV TimeRun MeasuredSpeedGear UrbanDelivery"),
 
-        TestCase(E2_JOB, 9, 0, 1.1568, 119.989, TestName = "E2 BEV TimeRun PWheel LongHaul"),
-        TestCase(E2_JOB, 10, 1, 4.4741, 116.9733, TestName = "E2 BEV TimeRun PWheel RegionalDelivery"),
-        TestCase(E2_JOB, 11, 2, 30.5471, 124.9811, TestName = "E2 BEV TimeRun PWheel UrbanDelivery"),
+        TestCase(E2_JOB, 9, 0, 1.155, 119.989, TestName = "E2 BEV TimeRun PWheel LongHaul"),
+        TestCase(E2_JOB, 10, 1, 4.4643, 116.9733, TestName = "E2 BEV TimeRun PWheel RegionalDelivery"),
+        TestCase(E2_JOB, 11, 2, 30.4811, 125.033, TestName = "E2 BEV TimeRun PWheel UrbanDelivery"),
 
         TestCase(E3_JOB, 0, 0, 0.7916, 101.6194, TestName = "E3 BEV TimeRun MeasuredSpeed LongHaul"),
         TestCase(E3_JOB, 1, 1, 3.3777, 104.792, TestName = "E3 BEV TimeRun MeasuredSpeed RegionalDelivery"),

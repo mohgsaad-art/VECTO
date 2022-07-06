@@ -102,7 +102,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
         public IResponse Initialize()
 		{
-			if (DataBus.GearboxCtl != null) {
+			if ((RunData.JobType == VectoSimulationJobType.BatteryElectricVehicle) && (DataBus.GearboxCtl != null)) {
 				DataBus.GearboxCtl.GearShiftTriggered -= GearShiftTriggered;
 				DataBus.GearboxCtl.GearShiftTriggered += GearShiftTriggered;
             }
