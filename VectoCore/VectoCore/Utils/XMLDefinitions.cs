@@ -80,6 +80,7 @@ namespace TUGraz.VectoCore.Utils
 
 		public const string DECLARATION_DEFINITIONS_NAMESPACE_URI_V221 = DECLARATION_NAMESPACE + ":v2.2.1";
 
+		public const string DECLARATION_DEFINITIONS_NAMESPACE_URI_V23 = DECLARATION_NAMESPACE + ":v2.3";
 
 		public const string DECLARATION_INPUT_NAMESPACE = "urn:tugraz:ivt:VectoAPI:DeclarationInput";
 

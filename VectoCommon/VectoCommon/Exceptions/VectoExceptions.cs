@@ -66,6 +66,15 @@ namespace TUGraz.VectoCommon.Exceptions
 		}
 	}
 
+	public class VectoXMLException : VectoException
+	{
+		protected VectoXMLException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+		public VectoXMLException(string message) : base(message) { }
+		public VectoXMLException(string message, Exception innerException) : base(message, innerException) { }
+		public VectoXMLException(string message, params object[] args) : base(message, args) { }
+		public VectoXMLException(string message, Exception inner, params object[] args) : base(message, inner, args) { }
+	}
+
 	/// <summary>
 	/// Exception when an Input/Output related error occured.
 	/// </summary>

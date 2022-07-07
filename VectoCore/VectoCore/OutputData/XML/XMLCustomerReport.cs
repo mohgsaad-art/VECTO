@@ -53,7 +53,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 	public class XMLCustomerReport
 	{
 		public const string SCHEMA_VERSION_STRING = "0.7";
-		public const string CURRENT_SCHEMA_VERSION = "0.7.1";
+		public const string CURRENT_SCHEMA_VERSION = "0.7.2";
 
 		protected readonly XElement VehiclePart;
 
@@ -95,6 +95,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(tns + XMLNames.Vehicle_CurbMassChassis, XMLHelper.ValueAsUnit(modelData.VehicleData.CurbMass, XMLNames.Unit_kg)),
 				new XElement(tns + XMLNames.Vehicle_ZeroEmissionVehicle, modelData.VehicleData.ZeroEmissionVehicle),
 				new XElement(tns + XMLNames.Vehicle_HybridElectricHDV, modelData.VehicleData.HybridElectricHDV),
+				new XElement(tns + "WasteHeatRecovery", modelData.EngineData.WHRType != WHRType.None),
 				new XElement(tns + XMLNames.Vehicle_DualFuelVehicle, modelData.VehicleData.DualFuelVehicle),
 
 				exempted ? ExemptedData(modelData) : new[] {

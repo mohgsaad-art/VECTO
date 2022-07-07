@@ -31,9 +31,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using TUGraz.IVT.VectoXML;
+using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Resources;
@@ -249,4 +251,208 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 			get { return NAMESPACE_URI; }
 		}
 	}
+
+	// ---------------------------------------------------------------------------------------
+
+	public class XMLDeclarationEngineDataProviderV23 : XMLDeclarationEngineDataProviderV20
+	{
+		/*
+		 * Support for dual-fuel engines (in different operating modes - either single fuel or dual fuel)
+		 */
+
+		public new static readonly XNamespace NAMESPACE_URI = XMLDefinitions.DECLARATION_DEFINITIONS_NAMESPACE_URI_V23;
+
+		public new static readonly string QUALIFIED_XSD_TYPE =
+			XMLHelper.CombineNamespace(NAMESPACE_URI.NamespaceName, XSD_TYPE);
+
+		public XMLDeclarationEngineDataProviderV23(
+			IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile) : base(
+			vehicle, componentNode, sourceFile)
+		{ }
+
+		protected override XNamespace SchemaNamespace => NAMESPACE_URI;
+
+		#region Overrides of XMLDeclarationEngineDataProviderV10
+
+		public override IList<IEngineModeDeclarationInputData> EngineModes {
+			get {
+				return _engineModes ?? (_engineModes = GetNodes(XMLNames.Engine_FuelModes)
+							.Cast<XmlNode>().Select(x => new XMLDualFuelEngineMode(x)).Cast<IEngineModeDeclarationInputData>().ToList());
+			}
+		}
+
+
+		public override WHRType WHRType {
+			get {
+				var retVal = WHRType.None;
+				if (XmlConvert.ToBoolean(GetString(XMLNames.Engine_WHR_MechanicalOutputICE))) {
+					retVal |= WHRType.MechanicalOutputICE;
+				}
+				if (XmlConvert.ToBoolean(GetString(XMLNames.Engine_WHR_MechanicalOutputIDrivetrain))) {
+					retVal |= WHRType.MechanicalOutputDrivetrain;
+				}
+				if (XmlConvert.ToBoolean(GetString(XMLNames.Engine_WHR_ElectricalOutput))) {
+					retVal |= WHRType.ElectricalOutput;
+				}
+
+				return retVal;
+			}
+		}
+
+		#endregion
+
+		public class XMLDualFuelEngineMode : XMLSingleFuelEngineMode
+		{
+			protected IWHRData WHRData;
+
+			public XMLDualFuelEngineMode(XmlNode baseNode) : base(baseNode) { }
+
+			#region Overrides of XMLSingleFuelEngineMode
+
+			public override IList<IEngineFuelDeclarationInputData> Fuels {
+				get {
+					return FuelsList ?? (FuelsList = GetNodes(XMLNames.Engine_FuelModes_Fuel)
+								.Cast<XmlNode>().Select(x => new XMLDualFuelEngineFuel(x))
+								.Cast<IEngineFuelDeclarationInputData>().ToList());
+				}
+			}
+
+			public override IWHRData WasteHeatRecoveryDataElectrical {
+				get {
+					return WHRData ?? (WHRData = ReadWHRData(
+								GetNodes(
+									new[] {
+										XMLNames.Engine_WHRCorrectionFactors,
+										XMLNames.Engine_WHRCorrectionFactors_Electrical
+									}, GetNode(XMLNames.Engine_FuelModes_Fuel)),
+								XMLNames.Engine_FuelConsumptionMap_WHRElPower_Attr)
+							);
+				}
+			}
+
+			public override IWHRData WasteHeatRecoveryDataMechanical {
+				get {
+					return WHRData ?? (WHRData = ReadWHRData(
+								GetNodes(
+									new[] {
+										XMLNames.Engine_WHRCorrectionFactors,
+										XMLNames.Engine_WHRCorrectionFactors_Mechanical
+									}, GetNode(XMLNames.Engine_FuelModes_Fuel)),
+								XMLNames.Engine_FuelConsumptionMap_WHRMechPower_Attr));
+				}
+			}
+
+			#endregion
+
+			protected virtual IWHRData ReadWHRData(XmlNodeList correctionFactorNodes, string fcMapAttr)
+			{
+				var whrPwrNodes = GetNodes(
+						new[] {
+							XMLNames.Engine_FuelConsumptionMap, XMLNames.Engine_FuelConsumptionMap_Entry
+						}, GetNode(XMLNames.Engine_FuelModes_Fuel))
+					.Cast<XmlNode>().All(x => x.Attributes?[fcMapAttr] != null);
+				if (correctionFactorNodes.Count > 0) {
+					if (!whrPwrNodes) {
+						throw new VectoXMLException("WHR correction factors provided but {0} missing for some entries.", fcMapAttr);
+
+					}
+					//return new XMLDeclarationWHRData();
+				}
+
+				if (correctionFactorNodes.Count > 1) {
+					throw new VectoXMLException("WHRData (correction factors) can only be defined for one fuel!");
+				}
+
+				if (whrPwrNodes) {
+					if (correctionFactorNodes.Count == 0) {
+						throw new VectoXMLException("WHR electric power provided but no correction factors found.");
+					}
+					//return new XMLDeclarationWHRData();
+				}
+
+				var fuelNodes = GetNodes(XMLNames.Engine_FuelModes_Fuel);
+				XmlNode whrFuelNode = null;
+				if (fuelNodes.Count > 1) {
+					for (var i = 0; i < fuelNodes.Count; i++) {
+						var fuel = fuelNodes[i];
+						if (GetNodes(XMLNames.Engine_FuelConsumptionMap_Entry, fuel).Cast<XmlNode>()
+																					.Any(x => x.Attributes?[fcMapAttr] != null)) {
+							if (whrFuelNode != null) {
+								throw new VectoException("WHRData ({0}) can only be defined for one fuel!", fcMapAttr);
+							}
+
+							whrFuelNode = fuel;
+						}
+					}
+				} else {
+					whrFuelNode = fuelNodes[0];
+				}
+
+				if (GetNodes(new[] { XMLNames.Engine_FuelConsumptionMap, XMLNames.Engine_FuelConsumptionMap_Entry }, whrFuelNode)
+					.Cast<XmlNode>().Any(x => x.Attributes?[fcMapAttr] == null)) {
+					var missing = GetNodes(
+							new[] { XMLNames.Engine_FuelConsumptionMap, XMLNames.Engine_FuelConsumptionMap_Entry }, whrFuelNode)
+						.Cast<XmlNode>().Where(x => x.Attributes?[fcMapAttr] == null);
+					throw new VectoException("WHRData has to be provided for every entry in the FC-Map! {0}",
+						missing.Select(x => $"n: {x.Attributes?[XMLNames.Engine_FuelConsumptionMap_EngineSpeed_Attr]?.Value}, " +
+											$"T: {x.Attributes?[XMLNames.Engine_FuelConsumptionMap_Torque_Attr]?.Value}").Join("; "));
+				}
+
+				if (correctionFactorNodes[0].ParentNode.ParentNode != whrFuelNode) {
+					throw new VectoException("Correction Factors and WHR-Map have to be defined for the same fuel!");
+				}
+
+				return new XMLDeclarationWHRData(whrFuelNode, correctionFactorNodes[0]);
+			}
+		}
+
+		public class XMLDualFuelEngineFuel : XMLSingleFuelEngineFuel
+		{
+			public XMLDualFuelEngineFuel(XmlNode baseNode) : base(baseNode) { }
+
+			#region Overrides of XMLSingleFuelEngineFuel
+
+			public override FuelType FuelType => GetAttribute(BaseNode, "type").ParseEnum<FuelType>();
+
+			#endregion
+		}
+
+		public class XMLDeclarationWHRData : AbstractXMLType, IWHRData
+		{
+			protected TableData WHRPower;
+			protected XmlNode CorrectionFactorNode;
+
+			public XMLDeclarationWHRData(XmlNode whrFuelNode, XmlNode correctionFactorNode) : base(whrFuelNode)
+			{
+				CorrectionFactorNode = correctionFactorNode;
+			}
+
+			public XMLDeclarationWHRData() : base(null) { }
+
+			#region Implementation of IWHRData
+
+			public double UrbanCorrectionFactor => GetNode(XMLNames.Engine_WHRCorrectionFactors_Urban, CorrectionFactorNode)?.InnerText.ToDouble() ?? 1;
+
+			public double RuralCorrectionFactor => GetNode(XMLNames.Engine_WHRCorrectionFactors_Rural, CorrectionFactorNode)?.InnerText.ToDouble() ?? 1;
+
+			public double MotorwayCorrectionFactor => GetNode(XMLNames.Engine_WHRCorrectionFactors_Motorway, CorrectionFactorNode)?.InnerText.ToDouble() ?? 1;
+
+			public double BFColdHot => GetNode(XMLNames.Engine_WHRCorrectionFactors_BFColdHot, CorrectionFactorNode)?.InnerText.ToDouble() ?? 1;
+
+			public double CFRegPer => GetNode(XMLNames.Engine_WHRCorrectionFactors_CFRegPer, CorrectionFactorNode)?.InnerText.ToDouble() ?? 1;
+
+			public double EngineeringCorrectionFactor => 1.0;
+
+			public TableData GeneratedPower =>
+				WHRPower ?? (WHRPower = BaseNode == null
+					? null
+					: ReadTableData(
+						XMLNames.Engine_FuelConsumptionMap, XMLNames.Engine_FuelConsumptionMap_Entry,
+						AttributeMappings.WHRPowerMapMapping));
+
+			#endregion
+		}
+	}
+
+
 }
