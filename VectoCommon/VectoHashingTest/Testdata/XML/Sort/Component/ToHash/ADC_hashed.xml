@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<tns:VectoInputDeclaration xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationComponent:v2.1" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:v2.3="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3" xmlns:di="http://www.w3.org/2000/09/xmldsig#" schemaVersion="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationComponent v:\VectoCore\VectoCore\Resources\XSD/VectoDeclarationComponent.xsd">
+    <tns:ADC>
+        <Data xsi:type="ADCDataDeclarationType" id="ADC-123">
+            <Manufacturer>Generic Vendor</Manufacturer>
+            <Model>ADC 20</Model>
+            <CertificationNumber>ADC-20-CERT</CertificationNumber>
+            <Date>2022-03-15T09:44:59.5844849Z</Date>
+            <AppVersion>VectoCore</AppVersion>
+            <Ratio>0.035</Ratio>
+            <CertificationMethod>Option 1</CertificationMethod>
+            <TorqueLossMap>
+                <Entry inputSpeed="5000.00" inputTorque="0.00" torqueLoss="31.00" />
+                <Entry inputSpeed="5000.00" inputTorque="780.00" torqueLoss="31.00" />
+                <Entry inputSpeed="5000.00" inputTorque="50000.00" torqueLoss="2000.00" />
+                <Entry inputSpeed="0.00" inputTorque="-50000.00" torqueLoss="2000.00" />
+                <Entry inputSpeed="4000.00" inputTorque="-680.00" torqueLoss="31.00" />
+                <Entry inputSpeed="4000.00" inputTorque="0.00" torqueLoss="31.00" />
+                <Entry inputSpeed="0.00" inputTorque="-125.00" torqueLoss="5.00" />
+                <Entry inputSpeed="0.00" inputTorque="0.00" torqueLoss="5.00" />
+                <Entry inputSpeed="4000.00" inputTorque="680.00" torqueLoss="31.00" />
+                <Entry inputSpeed="4000.00" inputTorque="60000.00" torqueLoss="2000.00" />
+                <Entry inputSpeed="0.00" inputTorque="125.00" torqueLoss="5.00" />
+                <Entry inputSpeed="0.00" inputTorque="50000.00" torqueLoss="2000.00" />
+                <Entry inputSpeed="4000.00" inputTorque="-60000.00" torqueLoss="2000.00" />
+                <Entry inputSpeed="5000.00" inputTorque="-50000.00" torqueLoss="2000.00" />
+                <Entry inputSpeed="5000.00" inputTorque="-780.00" torqueLoss="31.00" />
+            </TorqueLossMap>
+            <!-- <FooBarElement></FooBarElement> -->
+        </Data>
+        <Signature>
+            <di:Reference URI="#ADC-123">
+                <di:Transforms>
+                    <di:Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+                    <di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+                </di:Transforms>
+                <di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+                <di:DigestValue>EMAHEupP8X1sCjh85U3SZX8pv/gWKvL/GhgRGfr+0xU=</di:DigestValue>
+            </di:Reference>
+        </Signature>
+    </tns:ADC>
+</tns:VectoInputDeclaration>
