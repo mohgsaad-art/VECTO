@@ -86,50 +86,68 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 		static PowertrainBuilder()
 		{
-			var pWheelBuilders = new Dictionary<VectoSimulationJobType, Func<VectoRunData, IModalDataContainer, WriteSumData, IVehicleContainer>>();
-			pWheelBuilders.Add(VectoSimulationJobType.ConventionalVehicle, BuildPWheelConventional);
-			pWheelBuilders.Add(VectoSimulationJobType.BatteryElectricVehicle, BuildPWheelBatteryElectric);
+			var distanceBuilders = new Dictionary<VectoSimulationJobType, Func<VectoRunData, IModalDataContainer, WriteSumData, IVehicleContainer>>()
+			{
+				{ VectoSimulationJobType.ConventionalVehicle, BuildFullPowertrainConventional },
+				{ VectoSimulationJobType.ParallelHybridVehicle, BuildFullPowertrainParallelHybrid },
+				{ VectoSimulationJobType.SerialHybridVehicle, BuildFullPowertrainSerialHybrid },
+				{ VectoSimulationJobType.BatteryElectricVehicle, BuildFulPowertrainBatteryElectric },
+				{ VectoSimulationJobType.EngineOnlySimulation, BuildEngineOnly },
+				{ VectoSimulationJobType.IEPC_E, BuildFullPowertrainIEPCE },
+				{ VectoSimulationJobType.IEPC_S, BuildFullPowertrainIEPCSerial }
+			};
 
-			var measuredSpeedGearBuilders = new Dictionary<VectoSimulationJobType, Func<VectoRunData, IModalDataContainer, WriteSumData, IVehicleContainer>>();
-			measuredSpeedGearBuilders.Add(VectoSimulationJobType.ConventionalVehicle, BuildMeasuredSpeedGearConventional);
-			measuredSpeedGearBuilders.Add(VectoSimulationJobType.BatteryElectricVehicle, BuildMeasuredSpeedGearBatteryElectric);
+			var pWheelBuilders = new Dictionary<VectoSimulationJobType, Func<VectoRunData, IModalDataContainer, WriteSumData, IVehicleContainer>>()
+			{
+				{ VectoSimulationJobType.ConventionalVehicle, BuildPWheelConventional },
+				{ VectoSimulationJobType.BatteryElectricVehicle, BuildPWheelBatteryElectric }
+			};
+			
+			var measuredSpeedGearBuilders = new Dictionary<VectoSimulationJobType, Func<VectoRunData, IModalDataContainer, WriteSumData, IVehicleContainer>>()
+			{
+				{ VectoSimulationJobType.ConventionalVehicle, BuildMeasuredSpeedGearConventional },
+				{ VectoSimulationJobType.BatteryElectricVehicle, BuildMeasuredSpeedGearBatteryElectric }
+			};
+			
+			var measuredSpeedBuilders = new Dictionary<VectoSimulationJobType, Func<VectoRunData, IModalDataContainer, WriteSumData, IVehicleContainer>>()
+			{
+				{ VectoSimulationJobType.ConventionalVehicle, BuildMeasuredSpeedConventional },
+				{ VectoSimulationJobType.BatteryElectricVehicle, BuildMeasuredSpeedBatteryElectric }
+			};
+			
+			var vtpBuilders = new Dictionary<VectoSimulationJobType, Func<VectoRunData, IModalDataContainer, WriteSumData, IVehicleContainer>>()
+			{
+				{ VectoSimulationJobType.ConventionalVehicle, BuildVTPConventional } 
+			};
+			
+			var engineOnlyBuilders =  new Dictionary<VectoSimulationJobType, Func<VectoRunData, IModalDataContainer, WriteSumData, IVehicleContainer>>()
+			{
+				{ VectoSimulationJobType.ConventionalVehicle, BuildEngineOnly }
+			};
+			
+			_builders = new Dictionary<CycleType, Dictionary<VectoSimulationJobType, Func<VectoRunData, IModalDataContainer, WriteSumData, IVehicleContainer>>>()
+			{
+				{ CycleType.DistanceBased, distanceBuilders	},
+				{ CycleType.PWheel, pWheelBuilders },
+				{ CycleType.MeasuredSpeed, measuredSpeedBuilders },
+				{ CycleType.MeasuredSpeedGear, measuredSpeedGearBuilders }, 
+				{ CycleType.VTP, vtpBuilders },
+				{ CycleType.EngineOnly, engineOnlyBuilders }
+			};
 
-			var measuredSpeedBuilders = new Dictionary<VectoSimulationJobType, Func<VectoRunData, IModalDataContainer, WriteSumData, IVehicleContainer>>();
-			measuredSpeedBuilders.Add(VectoSimulationJobType.ConventionalVehicle, BuildMeasuredSpeedConventional);
-			measuredSpeedBuilders.Add(VectoSimulationJobType.BatteryElectricVehicle, BuildMeasuredSpeedBatteryElectric);
-
-			var vtpBuilders = new Dictionary<VectoSimulationJobType, Func<VectoRunData, IModalDataContainer, WriteSumData, IVehicleContainer>>();
-			vtpBuilders.Add(VectoSimulationJobType.ConventionalVehicle, BuildVTPConventional);
-
-			var engineOnlyBuilders =  new Dictionary<VectoSimulationJobType, Func<VectoRunData, IModalDataContainer, WriteSumData, IVehicleContainer>>();
-			engineOnlyBuilders.Add(VectoSimulationJobType.ConventionalVehicle, BuildEngineOnly);
-
-			var distanceBuilders = new Dictionary<VectoSimulationJobType, Func<VectoRunData, IModalDataContainer, WriteSumData, IVehicleContainer>>();
-			distanceBuilders.Add(VectoSimulationJobType.ConventionalVehicle, BuildFullPowertrainConventional);
-			distanceBuilders.Add(VectoSimulationJobType.ParallelHybridVehicle, BuildFullPowertrainParallelHybrid);
-			distanceBuilders.Add(VectoSimulationJobType.SerialHybridVehicle, BuildFullPowertrainSerialHybrid);
-			distanceBuilders.Add(VectoSimulationJobType.BatteryElectricVehicle, BuildFulPowertrainBatteryElectric);
-			distanceBuilders.Add(VectoSimulationJobType.EngineOnlySimulation, BuildEngineOnly);
-			distanceBuilders.Add(VectoSimulationJobType.IEPC_E, BuildFullPowertrainIEPCE);
-			distanceBuilders.Add(VectoSimulationJobType.IEPC_S, BuildFullPowertrainIEPCSerial);
-
-			_builders = new Dictionary<CycleType, Dictionary<VectoSimulationJobType, Func<VectoRunData, IModalDataContainer, WriteSumData, IVehicleContainer>>>();
-			_builders.Add(CycleType.PWheel, pWheelBuilders);
-			_builders.Add(CycleType.MeasuredSpeed, measuredSpeedBuilders);
-			_builders.Add(CycleType.MeasuredSpeedGear, measuredSpeedGearBuilders);
-			_builders.Add(CycleType.VTP, vtpBuilders);
-			_builders.Add(CycleType.EngineOnly, engineOnlyBuilders);
-			_builders.Add(CycleType.DistanceBased, distanceBuilders);
-
-			_MeasuredSpeedBEVBuilders = new Dictionary<PowertrainPosition, Func<VectoRunData, VehicleContainer, ElectricSystem, IPowerTrainComponent, IElectricMotor>>();
-			_MeasuredSpeedBEVBuilders.Add(PowertrainPosition.BatteryElectricE2, BuildMeasuredSpeedForBEV2);
-			_MeasuredSpeedBEVBuilders.Add(PowertrainPosition.BatteryElectricE3, BuildMeasuredSpeedForBEV3);
-			_MeasuredSpeedBEVBuilders.Add(PowertrainPosition.BatteryElectricE4, BuildMeasuredSpeedForBEV4);
-
-			_PWheelBEVBuilders = new Dictionary<PowertrainPosition, Func<VectoRunData, VehicleContainer, ElectricSystem, PWheelCycle, IElectricMotor>>();
-			_PWheelBEVBuilders.Add(PowertrainPosition.BatteryElectricE2, BuildPWheelForBEV2);
-			_PWheelBEVBuilders.Add(PowertrainPosition.BatteryElectricE3, BuildPWheelForBEV3);
-			_PWheelBEVBuilders.Add(PowertrainPosition.BatteryElectricE4, BuildPWheelForBEV4);
+			_MeasuredSpeedBEVBuilders = new Dictionary<PowertrainPosition, Func<VectoRunData, VehicleContainer, ElectricSystem, IPowerTrainComponent, IElectricMotor>>()
+			{
+				{ PowertrainPosition.BatteryElectricE2, BuildMeasuredSpeedForBEV2 },
+				{ PowertrainPosition.BatteryElectricE3, BuildMeasuredSpeedForBEV3 },
+				{ PowertrainPosition.BatteryElectricE4, BuildMeasuredSpeedForBEV4 }
+			};
+			
+			_PWheelBEVBuilders = new Dictionary<PowertrainPosition, Func<VectoRunData, VehicleContainer, ElectricSystem, PWheelCycle, IElectricMotor>>()
+			{
+				{ PowertrainPosition.BatteryElectricE2, BuildPWheelForBEV2 },
+				{ PowertrainPosition.BatteryElectricE3, BuildPWheelForBEV3 },
+				{ PowertrainPosition.BatteryElectricE4, BuildPWheelForBEV4 }
+			};
         }
 
 		public static IVehicleContainer Build(VectoRunData data, IModalDataContainer modData, ISumData sumWriter = null)
