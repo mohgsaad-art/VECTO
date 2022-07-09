@@ -450,7 +450,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
         protected override IResponse RepeatDryRunWithDifferentGear(IResponse response, GearshiftPosition currentGear, Second absTime,
 			Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, HybridStrategyResponse tmp)
         {
-			if (response.Engine.EngineSpeed <= DataBus.EngineInfo.EngineIdleSpeed) {
+			if ((response == null) || (response.Engine.EngineSpeed ?? 0.SI<PerSecond>()) <= DataBus.EngineInfo.EngineIdleSpeed) {
 				if (CurrentGear.Gear < NextGear.Gear) {
 					currentGear = new GearshiftPosition((currentGear.Gear > 0) ? currentGear.Gear - 1 : currentGear.Gear);
 					return RequestDryRun(absTime, dt, outTorque, outAngularVelocity, currentGear, tmp);

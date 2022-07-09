@@ -87,11 +87,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
         public override IResponse Initialize(NewtonMeter outTorque, PerSecond outAngularVelocity)
         {
+            Gear = Gear ?? new GearshiftPosition(DataBus.DrivingCycleInfo.CycleData.LeftSample.Gear, 
+                DataBus.DrivingCycleInfo.CycleData.LeftSample.TorqueConverterActive);
+            
             if ((TorqueConverter != null) && (Gear.TorqueConverterLocked == null)) {
                 throw new VectoSimulationException("Driving cycle does not contain information about TorqueConverter!");
             }
-
-            Gear = Gear ?? new GearshiftPosition(0);
 
             var inAngularVelocity = outAngularVelocity * ((Gear.Gear == 0) ? 0 : ModelData.Gears[Gear.Gear].Ratio);
             var inTorque = 0.SI<NewtonMeter>();
