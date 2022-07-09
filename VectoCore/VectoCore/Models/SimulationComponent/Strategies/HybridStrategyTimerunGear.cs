@@ -17,7 +17,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
     {
         public HybridStrategyTimerunGear(VectoRunData runData, IVehicleContainer vehicleContainer) : base(runData,vehicleContainer)
         {
-			vehicleContainer.AddPreprocessor(GetGearshiftPreprocessor(runData));
+			//DS
+			//vehicleContainer.AddPreprocessor(GetGearshiftPreprocessor(runData));
 		}
 
 		protected ISimulationPreprocessor GetGearshiftPreprocessor(VectoRunData runData)
@@ -39,7 +40,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			GearshiftPosition nextGear, HybridStrategyResponse cfg)
 		{
 			TestPowertrain.Gearbox.Gear = new GearshiftPosition(DataBus.DrivingCycleInfo.CycleData.RightSample.Gear);
-			TestPowertrain.Gearbox.Disengaged = (DataBus.DrivingCycleInfo.CycleData.RightSample.Gear == 0);
+			//DS
+			//TestPowertrain.Gearbox.Disengaged = (DataBus.DrivingCycleInfo.CycleData.RightSample.Gear == 0);
 			TestPowertrain.Gearbox.DisengageGearbox = (DataBus.DrivingCycleInfo.CycleData.RightSample.Gear == 0);
 			TestPowertrain.Container.VehiclePort.Initialize(DataBus.VehicleInfo.VehicleSpeed, DataBus.DrivingCycleInfo.RoadGradient ?? 0.SI<Radian>());
 			TestPowertrain.HybridController.ApplyStrategySettings(cfg);
@@ -77,8 +79,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 					return null;
 				}
 			}
-
-			TestPowertrain.Gearbox._nextGear = Controller.ShiftStrategy.NextGear;
+			//DS
+			//TestPowertrain.Gearbox._nextGear = Controller.ShiftStrategy.NextGear;
 
 			var combustionEngineInfo = DataBus.EngineInfo as CombustionEngine;
 			var enginePrevious = combustionEngineInfo.PreviousState;
@@ -116,7 +118,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			}
 
 			TestPowertrain.Gearbox.PreviousState.InAngularVelocity =
-				(DataBus.GearboxInfo as Gearbox).PreviousState.InAngularVelocity;
+				(DataBus.GearboxInfo as CycleGearbox).PreviousState.InAngularVelocity;
 
 			TestPowertrain.Clutch.PreviousState.InAngularVelocity =
 				(DataBus.ClutchInfo as SwitchableClutch).PreviousState.InAngularVelocity;

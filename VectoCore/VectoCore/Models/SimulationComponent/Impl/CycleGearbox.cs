@@ -101,7 +101,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				throw new VectoSimulationException("Driving cycle does not contain information about TorqueConverter!");
 			}
 
-			var inAngularVelocity = DataBus.EngineInfo.EngineIdleSpeed;
+			var inAngularVelocity = CalculateInAngularSpeed(outAngularVelocity);
 			var inTorque = 0.SI<NewtonMeter>();
 			IResponse response;
 
@@ -136,6 +136,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			response.Gearbox.PowerRequest = inTorque * inAngularVelocity;
 			return response;
+		}
+
+		protected virtual PerSecond CalculateInAngularSpeed(PerSecond outAngularVelocity)
+		{ 
+			return DataBus.EngineInfo.EngineIdleSpeed;
 		}
 
 		public override bool TCLocked => Gear.TorqueConverterLocked ?? false;
@@ -282,7 +287,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
 		}
 
-		private IResponse HandleDryRunRequest(
+		protected virtual IResponse HandleDryRunRequest(
 			Second absTime, Second dt, NewtonMeter inTorque,
 			PerSecond inAngularVelocity)
 		{

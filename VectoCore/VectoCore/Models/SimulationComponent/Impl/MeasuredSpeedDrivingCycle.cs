@@ -270,7 +270,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				DetermineDriverActionForPHEV(absTime);
 			}
 			else if (DataBus.HybridControllerCtl != null) {
-				if (DataBus.GearboxInfo.GearboxType.AutomaticTransmission()) {
+				if (DataBus.GearboxInfo.GearboxType.AutomaticTransmission() || !DataBus.HybridControllerCtl.Strategy.VelocityDropData.Valid) {
 					DetermineDriverActionWhenUsingAutomaticTransmission(absTime);	
 				}
 				else {
