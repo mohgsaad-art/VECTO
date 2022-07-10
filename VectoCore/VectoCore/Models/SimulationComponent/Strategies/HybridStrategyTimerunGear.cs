@@ -40,8 +40,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			GearshiftPosition nextGear, HybridStrategyResponse cfg)
 		{
 			TestPowertrain.Gearbox.Gear = new GearshiftPosition(DataBus.DrivingCycleInfo.CycleData.RightSample.Gear);
-			//DS
-			//TestPowertrain.Gearbox.Disengaged = (DataBus.DrivingCycleInfo.CycleData.RightSample.Gear == 0);
 			TestPowertrain.Gearbox.DisengageGearbox = (DataBus.DrivingCycleInfo.CycleData.RightSample.Gear == 0);
 			TestPowertrain.Container.VehiclePort.Initialize(DataBus.VehicleInfo.VehicleSpeed, DataBus.DrivingCycleInfo.RoadGradient ?? 0.SI<Radian>());
 			TestPowertrain.HybridController.ApplyStrategySettings(cfg);
@@ -79,9 +77,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 					return null;
 				}
 			}
-			//DS
-			//TestPowertrain.Gearbox._nextGear = Controller.ShiftStrategy.NextGear;
-
+			
 			var combustionEngineInfo = DataBus.EngineInfo as CombustionEngine;
 			var enginePrevious = combustionEngineInfo.PreviousState;
 			TestPowertrain.CombustionEngine.Initialize(enginePrevious.EngineTorque, enginePrevious.EngineSpeed);
@@ -165,7 +161,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
     }
 
 	//--------------------------------------------------
-	public class HybridStrategyATTimerunGear : AbstractHybridStrategyTimerunGear<ATGearbox> //ATGearBoxHybridsMeasuredSpeedGear ?
+	public class HybridStrategyATTimerunGear : AbstractHybridStrategyTimerunGear<ATGearbox> //GearBoxHybridsMeasuredSpeedGear ?
 	{
 
 		public HybridStrategyATTimerunGear(VectoRunData runData, IVehicleContainer vehicleContainer) : base(runData,

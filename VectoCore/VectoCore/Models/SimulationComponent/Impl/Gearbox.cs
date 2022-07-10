@@ -567,17 +567,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			_strategy?.WriteModalResults(container);
 		}
 
-		protected virtual bool ShouldCheckLossMapRange => !Disengaged;
-
-        protected virtual void DisengageOnVehicleStopped()
-        { 
-			Disengaged = true;
-		}
-
-        protected override void DoCommitSimulationStep(Second time, Second simulationInterval)
+		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)
 		{
 			postponeEngage = false;
-			if (ShouldCheckLossMapRange) {
+			if (!Disengaged) {
 				if (CurrentState.TorqueLossResult != null && CurrentState.TorqueLossResult.Extrapolated) {
 					Log.Warn(
 						"Gear {0} LossMap data was extrapolated: range for loss map is not sufficient: n:{1}, torque:{2}, ratio:{3}",
@@ -593,7 +586,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
 
 			if (DataBus.VehicleInfo.VehicleStopped) {
-				DisengageOnVehicleStopped();
+				Disengaged = true;
 				EngageTime = -double.MaxValue.SI<Second>();
 			}
 

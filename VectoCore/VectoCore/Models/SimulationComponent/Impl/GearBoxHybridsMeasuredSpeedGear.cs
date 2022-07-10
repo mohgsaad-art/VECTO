@@ -2,6 +2,7 @@
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
+using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
@@ -55,12 +56,34 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
         public override IResponse Request(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, bool dryRun = false)
         {
-            if (Gear < NextGear) {
-                LastUpshift = absTime;
+            if (!DataBus.VehicleInfo.VehicleStopped) {
+                var nextStepGear = new GearshiftPosition(GetGearFromCycle());
+
+                if (Gear < nextStepGear) {
+                    LastUpshift = absTime;
+                }
+                if (Gear > nextStepGear) {
+                    LastDownshift = absTime;
+                }
             }
-            if (Gear > NextGear) {
-                LastDownshift = absTime;
-            }
+            else {
+            	LastDownshift = -double.MaxValue.SI<Second>();
+				LastUpshift = -double.MaxValue.SI<Second>();
+			}
+
+            if (PreviousState.DrivingBehavior != CurrentState.DrivingBehavior) {
+				Log.Debug("driving action changed...");
+				if (CurrentState.DrivingBehavior == DrivingBehavior.Driving ||
+					CurrentState.DrivingBehavior == DrivingBehavior.Braking) {
+					if (GearEngaged(absTime)) {
+						Log.Debug("resetting gearshift time interval");
+						LastDownshift = -double.MaxValue.SI<Second>();
+						LastUpshift = -double.MaxValue.SI<Second>();
+					} else {
+						CurrentState.DrivingBehavior = PreviousState.DrivingBehavior;
+					}
+				}
+			}
 
             return base.Request(absTime, dt, outTorque, outAngularVelocity, dryRun);
         }
