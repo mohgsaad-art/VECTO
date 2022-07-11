@@ -32,7 +32,7 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 		[Category("LongRunning")]
 		[Category("Integration")]
         [
-        TestCase(P1_JOB, 0, 0, 0, 0, TestName = "P1 Hybrid TimeRun MeasuredSpeedGear LongHaul"),
+        TestCase(P1_JOB, 0, 502.3787, 0, 0, TestName = "P1 Hybrid TimeRun MeasuredSpeedGear LongHaul"),
         TestCase(P1_JOB, 1, 0, 0, 0, TestName = "P1 Hybrid TimeRun MeasuredSpeedGear RegionalDelivery"),
         TestCase(P1_JOB, 2, 0, 0, 0, TestName = "P1 Hybrid TimeRun MeasuredSpeedGear UrbanDelivery"),
 

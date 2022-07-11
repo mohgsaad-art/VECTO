@@ -404,10 +404,10 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				ctl = new HybridControllerTimerunGear(container, strategy, es);
 			}
 			else {
-				throw new Exception("HybridStrategy AT timerun Gear: not implemented");
-				//var strategy = new HybridStrategyATTimerunGear(data, container);
-				//ctl = new HybridControllerTimerunGear(container, strategy, es);
-				//new ATClutchInfo(container);
+				//throw new Exception("HybridStrategy AT timerun Gear: not implemented");
+				var strategy = new HybridStrategyATTimerunGear(data, container);
+				ctl = new HybridControllerTimerunGear(container, strategy, es);
+				new ATClutchInfo(container);
 			}
 
 			// add engine before gearbox so that gearbox can obtain if an ICE is available already in constructor
