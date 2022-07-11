@@ -1,4 +1,5 @@
-﻿using TUGraz.VectoCommon.Models;
+﻿using TUGraz.VectoCommon.InputData;
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
@@ -30,6 +31,21 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		{ 
 			return outAngularVelocity * ((Gear.Gear == 0) ? 0 : ModelData.Gears[Gear.Gear].Ratio);
 		}
+
+        protected override IResponse EngineIdleRequest(Second absTime, Second dt)
+        {
+            var pos = DataBus.PowertrainInfo.ElectricMotorPositions[0];
+            var useEMSpeed = (pos == PowertrainPosition.HybridP2_5 || pos == PowertrainPosition.HybridP2 || pos == PowertrainPosition.HybridP1);
+            
+            return NextComponent.Request(
+                absTime, 
+                dt, 
+                0.SI<NewtonMeter>(), 
+                useEMSpeed 
+                    ? DataBus.ElectricMotorInfo(pos).ElectricMotorSpeed * ((NextGear.Gear == 0) ? 0 : ModelData.Gears[NextGear.Gear].Ratio)
+                    : DataBus.EngineInfo.EngineIdleSpeed, 
+                false);
+        }
 
         protected override uint GetGearFromCycle()
         {

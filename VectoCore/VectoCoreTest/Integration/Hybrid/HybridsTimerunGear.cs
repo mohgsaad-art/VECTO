@@ -32,17 +32,17 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 		[Category("LongRunning")]
 		[Category("Integration")]
         [
-        TestCase(P1_JOB, 0, 502.3787, 0, 0, TestName = "P1 Hybrid TimeRun MeasuredSpeedGear LongHaul"),
+        TestCase(P1_JOB, 0, 0, 0, 0, TestName = "P1 Hybrid TimeRun MeasuredSpeedGear LongHaul"),
         TestCase(P1_JOB, 1, 0, 0, 0, TestName = "P1 Hybrid TimeRun MeasuredSpeedGear RegionalDelivery"),
         TestCase(P1_JOB, 2, 0, 0, 0, TestName = "P1 Hybrid TimeRun MeasuredSpeedGear UrbanDelivery"),
 
-        TestCase(P2_JOB, 0, 575.1012, 8.7853, 7.7464, TestName = "P2 Hybrid TimeRun MeasuredSpeedGear LongHaul"),
-        TestCase(P2_JOB, 1, 560.5975, 11.2945, 11.3821, TestName = "P2 Hybrid TimeRun MeasuredSpeedGear RegionalDelivery"),
-        TestCase(P2_JOB, 2, 0, 0, 0, TestName = "P2 Hybrid TimeRun MeasuredSpeedGear UrbanDelivery"),
+        TestCase(P2_JOB, 0, 575.0719, 8.7721, 7.7352, TestName = "P2 Hybrid TimeRun MeasuredSpeedGear LongHaul"),
+        TestCase(P2_JOB, 1, 560.5059, 11.2928, 11.3766, TestName = "P2 Hybrid TimeRun MeasuredSpeedGear RegionalDelivery"),
+        TestCase(P2_JOB, 2, 628.0855, 28.8517, 29.7681, TestName = "P2 Hybrid TimeRun MeasuredSpeedGear UrbanDelivery"),
 
-        TestCase(P2_5_JOB, 0, 848.6588, 5.764, 9.4025, TestName = "P2_5 Hybrid TimeRun MeasuredSpeedGear LongHaul"),
-        TestCase(P2_5_JOB, 1, 0, 0, 0, TestName = "P2_5 Hybrid TimeRun MeasuredSpeedGear RegionalDelivery"),
-        TestCase(P2_5_JOB, 2, 1674.2488, 14.8024, 19.4986, TestName = "P2_5 Hybrid TimeRun MeasuredSpeedGear UrbanDelivery"),
+        TestCase(P2_5_JOB, 0, 848.6733, 5.7681, 9.4071, TestName = "P2_5 Hybrid TimeRun MeasuredSpeedGear LongHaul"),
+        TestCase(P2_5_JOB, 1, 964.9858, 6.8813, 11.1067, TestName = "P2_5 Hybrid TimeRun MeasuredSpeedGear RegionalDelivery"),
+        TestCase(P2_5_JOB, 2, 1675.6298, 14.8031, 19.4996, TestName = "P2_5 Hybrid TimeRun MeasuredSpeedGear UrbanDelivery"),
 
         TestCase(P3_JOB, 0, 573.969, 2.8747, 3.2305, TestName = "P3 Hybrid TimeRun MeasuredSpeedGear LongHaul"),
         TestCase(P3_JOB, 1, 0, 0, 0, TestName = "P3 Hybrid TimeRun MeasuredSpeedGear RegionalDelivery"),

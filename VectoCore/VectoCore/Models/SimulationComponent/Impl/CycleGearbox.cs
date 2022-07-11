@@ -395,7 +395,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			return disengagedResponse;
 		}
 
-		private IResponse EngineIdleRequest(Second absTime, Second dt)
+		protected virtual IResponse EngineIdleRequest(Second absTime, Second dt)
 		{
 			var disengagedResponse = NextComponent.Request(absTime, dt, 0.SI<NewtonMeter>(), DataBus.EngineInfo.EngineIdleSpeed, false);
 			if (disengagedResponse is ResponseSuccess) {

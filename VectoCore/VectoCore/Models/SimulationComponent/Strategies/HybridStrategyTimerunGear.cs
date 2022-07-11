@@ -66,7 +66,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 			TestPowertrain.Brakes.BrakePower = DataBus.Brakes.BrakePower;
 
-			var currentGear = new GearshiftPosition(this.DataBus.DrivingCycleInfo.CycleData.LeftSample.Gear, false);
+			var currentGear = new GearshiftPosition(DataBus.DrivingCycleInfo.CycleData.LeftSample.Gear);
 
 			if (nextGear.Engaged && !nextGear.Equals(currentGear)) {
 				if (!AllowEmergencyShift && ModelData.GearboxData.Gears[nextGear.Gear].Ratio > ModelData.GearshiftParameters.RatioEarlyUpshiftFC) {
