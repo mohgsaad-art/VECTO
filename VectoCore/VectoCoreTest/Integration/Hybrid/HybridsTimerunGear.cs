@@ -50,7 +50,7 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 
         TestCase(P4_JOB, 0, 573.8993, 1.6987, 1.9567, TestName = "P4 Hybrid TimeRun MeasuredSpeedGear LongHaul"),
         TestCase(P4_JOB, 1, 570.5898, 3.1314, 3.8596, TestName = "P4 Hybrid TimeRun MeasuredSpeedGear RegionalDelivery"),
-        TestCase(P4_JOB, 2, 0, 0, 0, TestName = "P4 Hybrid TimeRun MeasuredSpeedGear UrbanDelivery")
+        TestCase(P4_JOB, 2, 708.9572, 7.7111, 8.8806, TestName = "P4 Hybrid TimeRun MeasuredSpeedGear UrbanDelivery")
         ]
         public void TestHybridTimerunCycle(string jobFile, int cycleIdx, double CO2, double charge, double discharge)
         {

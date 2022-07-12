@@ -39,7 +39,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 		protected override IResponse RequestDryRun(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, 
 			GearshiftPosition nextGear, HybridStrategyResponse cfg)
 		{
-			TestPowertrain.Gearbox.Gear = new GearshiftPosition(DataBus.DrivingCycleInfo.CycleData.RightSample.Gear);
+			TestPowertrain.Gearbox.Gear = new GearshiftPosition(
+				DataBus.DrivingCycleInfo.CycleData.RightSample.Gear,
+				!DataBus.DrivingCycleInfo.CycleData.RightSample.TorqueConverterActive);
+
 			TestPowertrain.Gearbox.DisengageGearbox = (DataBus.DrivingCycleInfo.CycleData.RightSample.Gear == 0);
 			TestPowertrain.Container.VehiclePort.Initialize(DataBus.VehicleInfo.VehicleSpeed, DataBus.DrivingCycleInfo.RoadGradient ?? 0.SI<Radian>());
 			TestPowertrain.HybridController.ApplyStrategySettings(cfg);
@@ -66,7 +69,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 			TestPowertrain.Brakes.BrakePower = DataBus.Brakes.BrakePower;
 
-			var currentGear = new GearshiftPosition(DataBus.DrivingCycleInfo.CycleData.LeftSample.Gear);
+			var currentGear = new GearshiftPosition(
+				DataBus.DrivingCycleInfo.CycleData.LeftSample.Gear,
+				!DataBus.DrivingCycleInfo.CycleData.LeftSample.TorqueConverterActive);
 
 			if (nextGear.Engaged && !nextGear.Equals(currentGear)) {
 				if (!AllowEmergencyShift && ModelData.GearboxData.Gears[nextGear.Gear].Ratio > ModelData.GearshiftParameters.RatioEarlyUpshiftFC) {
@@ -423,9 +428,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
         protected override void WarnGearShiftRange()
         { }
 
-        protected override GearshiftPosition CurrentGear => new GearshiftPosition(DataBus.DrivingCycleInfo.CycleData.LeftSample.Gear);
+        protected override GearshiftPosition CurrentGear => new GearshiftPosition(
+			DataBus.DrivingCycleInfo.CycleData.LeftSample.Gear,
+			!DataBus.DrivingCycleInfo.CycleData.LeftSample.TorqueConverterActive);
 
-		protected override GearshiftPosition NextGear => new GearshiftPosition(DataBus.DrivingCycleInfo.CycleData.RightSample.Gear);
+		protected override GearshiftPosition NextGear => new GearshiftPosition(
+			DataBus.DrivingCycleInfo.CycleData.RightSample.Gear,
+			!DataBus.DrivingCycleInfo.CycleData.RightSample.TorqueConverterActive);
 
         protected override void DoEmergencyGearShift(GearshiftPosition currentGear, Second absTime, Second dt, NewtonMeter outTorque, 
             PerSecond outAngularVelocity, HybridResultEntry best)
@@ -479,7 +488,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 					return RequestDryRun(absTime, dt, outTorque, outAngularVelocity, currentGear, tmp);
                 }
 				else if (CurrentGear.Gear > NextGear.Gear) {
-					currentGear = new GearshiftPosition(NextGear.Gear);
+					currentGear = new GearshiftPosition(NextGear.Gear, !NextGear.TorqueConverterLocked);
 						
 					var q = (NextGear.Gear == 0) ? new HybridStrategyResponse {
 							CombustionEngineOn = DataBus.EngineInfo.EngineOn, 
