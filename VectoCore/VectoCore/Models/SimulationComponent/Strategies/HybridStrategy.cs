@@ -581,8 +581,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 		public bool AllowEmergencyShift { protected get; set; }
 
-		public event Action GearShiftTriggered;
-
 		public virtual IHybridStrategyResponse Request(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, bool dryRun)
 		{
 			GearshiftPosition nextGear;
@@ -714,8 +712,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			if (retVal.ShiftRequired) {
 				DryRunSolution = null;
 				CurrentState.GearshiftTriggerTstmp = absTime;
-
-				GearShiftTriggered?.Invoke();
 			}
 
 			DebugData.Add("AHS.R", new { DataBus.DriverInfo.DrivingAction, Evaluations = eval, 

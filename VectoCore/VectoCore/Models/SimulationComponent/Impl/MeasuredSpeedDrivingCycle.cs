@@ -295,17 +295,23 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
         private void DetermineDriverActionWhenUsingAutomaticTransmission(Second absTime)
         { 
+			bool gearShiftStarted = DetectGearShift();
+
 			if (DataBus.VehicleInfo.VehicleStopped && DriverAcceleration.IsEqual(0)) {
 				DriverBehavior = DrivingBehavior.Halted;
 				DrivingAction = DrivingAction.Halt;
 			}
 			else if ((DriverAcceleration < 0) && (DrivingAction != DrivingAction.Roll)) {
-				DriverBehavior = DrivingBehavior.Braking;
-				DrivingAction = DrivingAction.Brake;
+				DriverBehavior = (gearShiftStarted) ? DrivingBehavior.Driving : DrivingBehavior.Braking;
+				DrivingAction = (gearShiftStarted) ? DrivingAction.Roll : DrivingAction.Brake;
             }
 			else {
 				DriverBehavior = DrivingBehavior.Driving;
-				DrivingAction = DataBus.GearboxInfo.GearEngaged(absTime) ? DrivingAction.Accelerate : DrivingAction.Roll;
+				DrivingAction = DataBus.GearboxInfo.GearEngaged(absTime)
+					? (gearShiftStarted 
+						? DrivingAction.Roll 
+						: DrivingAction.Accelerate) 
+					: DrivingAction.Roll;
 			}
         }
 
@@ -352,7 +358,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
         }
 
-		private void DetermineDriverActionWhenUsingManualTransmission(Second absTime)
+		private bool DetectGearShift()
+		{
+			return (Data.CycleType == CycleType.MeasuredSpeedGear) 
+				&& (CycleIterator.LeftSample.Gear > 0) 
+				&& (CycleIterator.RightSample.Gear == 0);
+        }
+
+        private void DetermineDriverActionWhenUsingManualTransmission(Second absTime)
         {
 			if (DataBus.VehicleInfo.VehicleStopped && DriverAcceleration.IsEqual(0)) {
 				DrivingAction =  DrivingAction.Halt;
