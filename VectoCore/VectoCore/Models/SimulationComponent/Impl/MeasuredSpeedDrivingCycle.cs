@@ -296,14 +296,15 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
         private void DetermineDriverActionWhenUsingAutomaticTransmission(Second absTime)
         { 
 			bool gearShiftStarted = DetectGearShift();
+			var oldAction = DrivingAction;
 
 			if (DataBus.VehicleInfo.VehicleStopped && DriverAcceleration.IsEqual(0)) {
 				DriverBehavior = DrivingBehavior.Halted;
 				DrivingAction = DrivingAction.Halt;
 			}
-			else if ((DriverAcceleration < 0) && (DrivingAction != DrivingAction.Roll)) {
-				DriverBehavior = (gearShiftStarted) ? DrivingBehavior.Driving : DrivingBehavior.Braking;
-				DrivingAction = (gearShiftStarted) ? DrivingAction.Roll : DrivingAction.Brake;
+			else if ((DriverAcceleration < 0) && (oldAction != DrivingAction.Roll)) {
+				DriverBehavior = (gearShiftStarted && (oldAction != DrivingAction.Brake)) ? DrivingBehavior.Driving : DrivingBehavior.Braking;
+				DrivingAction = (gearShiftStarted && (oldAction != DrivingAction.Brake)) ? DrivingAction.Roll : DrivingAction.Brake;
             }
 			else {
 				DriverBehavior = DrivingBehavior.Driving;

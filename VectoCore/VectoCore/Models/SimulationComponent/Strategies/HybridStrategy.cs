@@ -680,7 +680,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 			var best = SelectBestOption(eval, absTime, dt, outTorque, outAngularVelocity, dryRun, currentGear);
 
-			if (best == null) {
+			if (best == null || best.Gear == null) {
 				best = ResponseEmOff;
 				best.ICEOff = false;
 				DoEmergencyGearShift(currentGear, absTime, dt, outTorque, outAngularVelocity, best);
@@ -1729,7 +1729,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				if (filtered3.Length == 0) {
 					filtered3 = filtered2;
 				}
-				var filteredCurrentGear = filtered3.Where(x => x.Gear.Equals(currentGear)).ToArray();
+				var filteredCurrentGear = filtered3.Where(x => (x.Gear != null) && x.Gear.Equals(currentGear)).ToArray();
 				if (filteredCurrentGear.Length > 0) {
 					if (DataBus.DriverInfo.DrivingAction == DrivingAction.Brake) {
 						best = filteredCurrentGear.MaxBy(x => x.Setting.MechanicalAssistPower.Sum(e => e.Value?.Item2 ?? 0.SI<NewtonMeter>()));
@@ -1917,8 +1917,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			var emTqReq = emOffEntry.Response.ElectricMotor.TorqueRequest; // +
 																		   //emOffEntry.Response.ElectricMotor.InertiaTorque;
 
-			IterateEMTorque(
-				absTime, dt, outTorque, outAngularVelocity, nextGear, allowICEOff, emOffEntry.Response, emTqReq, emPos, responses, dryRun);
+			if (nextGear != null) {
+				IterateEMTorque(absTime, dt, outTorque, outAngularVelocity, nextGear, allowICEOff, emOffEntry.Response, emTqReq, emPos, responses, dryRun);
+            }
+			
 			return emOffEntry;
 		}
 

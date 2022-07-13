@@ -17,24 +17,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
     public class HybridStrategyTimerunGear : AbstractHybridStrategyTimerunGear<GearBoxHybridsMeasuredSpeedGear>
     {
         public HybridStrategyTimerunGear(VectoRunData runData, IVehicleContainer vehicleContainer) : base(runData,vehicleContainer)
-        {
-			//vehicleContainer.AddPreprocessor(GetGearshiftPreprocessor(runData));
-		}
-
-		protected ISimulationPreprocessor GetGearshiftPreprocessor(VectoRunData runData)
-		{
-			var maxG = runData.Cycle.Entries.Max(x => Math.Abs(x.RoadGradientPercent.Value())) + 1;
-			var grad = Convert.ToInt32(maxG / 2) * 2;
-			if (grad == 0) {
-				grad = 2;
-			}
-
-			var testContainer = new SimplePowertrainContainer(runData);
-			PowertrainBuilder.BuildSimpleHybridPowertrainGear(runData, testContainer);			
-
-			return new VelocitySpeedGearshiftPreprocessor(VelocityDropData, runData.GearboxData.TractionInterruption,
-				testContainer, -grad, grad);
-		}
+        {}
 
 		protected override IResponse RequestDryRun(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, 
 			GearshiftPosition nextGear, HybridStrategyResponse cfg)
@@ -68,33 +51,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			TestPowertrain.SuperCap?.Initialize(DataBus.BatteryInfo.StateOfCharge);
 
 			TestPowertrain.Brakes.BrakePower = DataBus.Brakes.BrakePower;
-
-			var currentGear = new GearshiftPosition(
-				DataBus.DrivingCycleInfo.CycleData.LeftSample.Gear,
-				!DataBus.DrivingCycleInfo.CycleData.LeftSample.TorqueConverterActive);
-
-			if (nextGear.Engaged && !nextGear.Equals(currentGear)) {
-				if (!AllowEmergencyShift && ModelData.GearboxData.Gears[nextGear.Gear].Ratio > ModelData.GearshiftParameters.RatioEarlyUpshiftFC) {
-					return null;
-				}
-
-				if (!AllowEmergencyShift && ModelData.GearboxData.Gears[nextGear.Gear].Ratio >= ModelData.GearshiftParameters.RatioEarlyDownshiftFC) {
-					return null;
-				}
-				//var estimatedVelocityPostShift = !VelocityDropData.Valid ? DataBus.VehicleInfo.VehicleSpeed : VelocityDropData.Interpolate(DataBus.VehicleInfo.VehicleSpeed, DataBus.DrivingCycleInfo.RoadGradient ?? 0.SI<Radian>());
-				//if (!AllowEmergencyShift && !estimatedVelocityPostShift.IsGreater(DeclarationData.GearboxTCU.MIN_SPEED_AFTER_TRACTION_INTERRUPTION)) {
-				//	return null;
-				//}
-
-				//var vDrop = DataBus.VehicleInfo.VehicleSpeed - estimatedVelocityPostShift;
-				//var vehicleSpeedPostShift = estimatedVelocityPostShift; // DataBus.VehicleInfo.VehicleSpeed - vDrop * ModelData.GearshiftParameters.VelocityDropFactor;
-				//TestPowertrain.Gearbox.Gear = nextGear;
-				//var init = TestPowertrain.Container.VehiclePort.Initialize(
-				//	vehicleSpeedPostShift, DataBus.DrivingCycleInfo.RoadGradient ?? 0.SI<Radian>());
-				//if (!AllowEmergencyShift && init.Engine.EngineSpeed.IsSmaller(ModelData.EngineData.IdleSpeed)) {
-				//	return null;
-				//}
-			}
 
 			var combustionEngineInfo = DataBus.EngineInfo as CombustionEngine;
 			var enginePrevious = combustionEngineInfo.PreviousState;
