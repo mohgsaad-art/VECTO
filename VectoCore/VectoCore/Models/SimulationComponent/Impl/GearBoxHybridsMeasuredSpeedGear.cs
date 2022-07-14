@@ -35,7 +35,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
         protected override IResponse EngineIdleRequest(Second absTime, Second dt)
         {
             var pos = DataBus.PowertrainInfo.ElectricMotorPositions[0];
-            var useEMSpeed = (pos == PowertrainPosition.HybridP2_5 || pos == PowertrainPosition.HybridP2 || pos == PowertrainPosition.HybridP1);
+            var useEMSpeed = (pos == PowertrainPosition.HybridP2_5 || pos == PowertrainPosition.HybridP2);
             
             return NextComponent.Request(
                 absTime, 
@@ -101,7 +101,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				}
 			}
 
-            return base.Request(absTime, dt, outTorque, outAngularVelocity, dryRun);
+            var response = base.Request(absTime, dt, outTorque, outAngularVelocity, dryRun);
+
+            response.Gearbox.Gear = Gear;
+            response.Gearbox.InputSpeed = outAngularVelocity * ((Gear.Gear > 0)  ? ModelData.Gears[Gear.Gear].Ratio : 0);
+            response.Gearbox.OutputSpeed = outAngularVelocity;
+            response.Gearbox.OutputTorque = outTorque;
+
+            return response;
         }
 
     }

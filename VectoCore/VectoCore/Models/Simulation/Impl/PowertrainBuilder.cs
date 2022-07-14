@@ -404,7 +404,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				ctl = new HybridControllerTimerunGear(container, strategy, es);
 			}
 			else {
-				//throw new Exception("HybridStrategy AT timerun Gear: not implemented");
 				var strategy = new HybridStrategyATTimerunGear(data, container);
 				ctl = new HybridControllerTimerunGear(container, strategy, es);
 				new ATClutchInfo(container);
@@ -1871,6 +1870,9 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			var ctl = new SimpleHybridController(container, es) { Gearbox = gbx, Engine = engine };
 			var idleController = GetIdleController(data.PTO, engine, container);
 			var clutch = data.GearboxData.Type.ManualTransmission() ? new SwitchableClutch(container, data.EngineData) : null;
+			if (clutch == null) {
+				new ATClutchInfo(container);
+            }
 			
 			var vehicle = new Vehicle(container, data.VehicleData, data.AirdragData);
 
@@ -1909,14 +1911,9 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 			if (data.ElectricMachinesData.Any(x => x.Item1 == PowertrainPosition.HybridP1))
 			{
-				if (gearbox is ATGearbox atGbx) {
-					atGbx.IdleController = idleController;
-					new ATClutchInfo(container);
-				} else {
-					if (clutch != null) {
-						clutch.IdleController = idleController;
-                    }
-				}
+				if (clutch != null) {
+					clutch.IdleController = idleController;
+                }
 			}
 
 			if (data.BusAuxiliaries != null)

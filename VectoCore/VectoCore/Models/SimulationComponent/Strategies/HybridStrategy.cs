@@ -1932,7 +1932,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				GearboxInNeutral = false,
 				MechanicalAssistPower = ElectricMotorsOff
 			};
-			var emOffResponse = RequestDryRun(absTime, dt, outTorque, outAngularVelocity, nextGear, emOffSetting);
+			var emOffResponse = (nextGear != null) ? RequestDryRun(absTime, dt, outTorque, outAngularVelocity, nextGear, emOffSetting) : null;
 
 			if (emOffResponse == null) {
 				return null;

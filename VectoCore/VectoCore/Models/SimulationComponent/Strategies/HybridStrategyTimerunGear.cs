@@ -142,12 +142,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
     }
 
 	//--------------------------------------------------
-	public class HybridStrategyATTimerunGear : AbstractHybridStrategyTimerunGear<GearBoxHybridsMeasuredSpeedGear> //GearBoxHybridsMeasuredSpeedGear instead of ATGearbox
+	public class HybridStrategyATTimerunGear : AbstractHybridStrategyTimerunGear<GearBoxHybridsMeasuredSpeedGear>
 	{
 
 		public HybridStrategyATTimerunGear(VectoRunData runData, IVehicleContainer vehicleContainer) : base(runData,
 			vehicleContainer)
-		{ }
+		{ 
+		}
 
 		protected override IResponse RequestDryRun(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity,
 			GearshiftPosition nextGear, HybridStrategyResponse cfg)
@@ -182,14 +183,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 			var gearboxInfo = DataBus.GearboxInfo as GearBoxHybridsMeasuredSpeedGear;
 			if (nextGear.Engaged && !nextGear.Equals(currentGear)) {
-				if (!AllowEmergencyShift && ModelData.GearboxData.Gears[nextGear.Gear].Ratio > ModelData.GearshiftParameters.RatioEarlyUpshiftFC) {
-					return null;
-				}
-
-				if (!AllowEmergencyShift && ModelData.GearboxData.Gears[nextGear.Gear].Ratio >= ModelData.GearshiftParameters.RatioEarlyDownshiftFC) {
-					return null;
-				}
-
+				
 				var vDrop = DataBus.DriverInfo.DriverAcceleration * ModelData.GearshiftParameters.ATLookAheadTime;
 				var vehicleSpeedPostShift = (DataBus.VehicleInfo.VehicleSpeed + vDrop * ModelData.GearshiftParameters.VelocityDropFactor).LimitTo(
 					0.KMPHtoMeterPerSecond(), DataBus.DrivingCycleInfo.CycleData.LeftSample.VehicleTargetSpeed);
@@ -305,20 +299,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 					DataBus.ElectricMotorInfo(emPos).ElectricMotorSpeed;
 			}
 
-			try {
-				var retVal = TestPowertrain.HybridController.NextComponent.Request(absTime, dt, outTorque,
-					outAngularVelocity, false);
+			var retVal = TestPowertrain.HybridController.NextComponent.Request(absTime, dt, outTorque, outAngularVelocity, false);
+			retVal.HybridController.StrategySettings = cfg;
 
-				//if (retVal.Source is TorqueConverter) {
-				//	return null;
-				//}
-
-				retVal.HybridController.StrategySettings = cfg;
-				return retVal;
-			} catch (Exception e) {
-				Log.Debug(e);
-				return null;
-			}
+			return retVal;
 		}
 
 		protected override void CheckGearshiftLimits(HybridResultEntry tmp, IResponse resp)
