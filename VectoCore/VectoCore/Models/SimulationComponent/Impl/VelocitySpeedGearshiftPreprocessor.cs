@@ -63,8 +63,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
 
 			var gearbox = container.GearboxInfo as Gearbox;
-			var cycleGearbox = container.GearboxInfo as CycleGearbox;
-			if (gearbox == null && cycleGearbox == null) {
+			if (gearbox == null) {
 				throw new VectoException("no gearbox found...");
 			}
 
@@ -99,24 +98,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 				for (var grad = MinGradient; grad <= MaxGradient; grad += GradientStep) {
 					var gradient = VectoMath.InclinationToAngle(grad / 100.0);
+					gearbox.Disengaged = false;
+					gearbox.Gear = gearForSpeed;
+					vehicle.Initialize(speed, gradient);
+					gearbox.Gear = new GearshiftPosition(0);
+					gearbox.Disengaged = true;
+					gearbox.EngageTime = 100.SI<Second>();
+					gearbox._nextGear = gearForSpeed;
 
-					if (gearbox != null) {
-						gearbox.Disengaged = false;
-						gearbox.Gear = gearForSpeed;
-						vehicle.Initialize(speed, gradient);
-						gearbox.Gear = new GearshiftPosition(0);
-						gearbox.Disengaged = true;
-						gearbox.EngageTime = 100.SI<Second>();
-						gearbox._nextGear = gearForSpeed;
-                    }
-					else if (cycleGearbox != null) {
-						cycleGearbox.DisengageGearbox = false;
-						cycleGearbox.Gear = gearForSpeed;
-						vehicle.Initialize(speed, gradient);
-						cycleGearbox.Gear = new GearshiftPosition(0);
-						cycleGearbox.DisengageGearbox = true;
-                    }
-	
 					var vehicleSpeed = SimulateRollingVehicle(vehicle, gradient, container);
 					modData?.Reset();
 					tmp.Add(new Entry { StartVelocity = speed, Gradient = gradient, EndVelocity = vehicleSpeed });

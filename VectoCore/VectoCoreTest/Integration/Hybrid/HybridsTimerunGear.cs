@@ -28,29 +28,40 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
             Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
         }
 
+        /*
+         * How to correct vdri data for time runs
+         * ---------------------------------------
+         * 1. If VECTO fails with retry count exceeded and ResponseOverload, check the vdri at that time step and 
+         * correct the gear by a) "unifying" consecutive gear shifts with the same gear, or b) lowering the gear at the
+         * adjacent steps.
+         * 
+         * 2. If VECTO fails with retry count exceeded and ResponseOverload at the first step(s), check the vdri at the 
+         * beginning for consecutive steps with zeroes in vehicle speed, gear, etc. Leave only one of those steps and 
+         * delete the rest.
+         */
         [Category("JRC")]
 		[Category("LongRunning")]
 		[Category("Integration")]
         [
-        TestCase(P1_JOB, 0, 495.9367, 10.0983, 10.0805, TestName = "P1 Hybrid TimeRun MeasuredSpeedGear LongHaul"),
-        TestCase(P1_JOB, 1, 0, 0, 0, TestName = "P1 Hybrid TimeRun MeasuredSpeedGear RegionalDelivery"),
-        TestCase(P1_JOB, 2, 624.4071, 47.1568, 47.162, TestName = "P1 Hybrid TimeRun MeasuredSpeedGear UrbanDelivery"),
+        TestCase(P1_JOB, 0, 495.9297, 10.0907, 10.0729, TestName = "P1 Hybrid TimeRun MeasuredSpeedGear LongHaul"),
+        TestCase(P1_JOB, 1, 496.4973, 15.023, 15.0955, TestName = "P1 Hybrid TimeRun MeasuredSpeedGear RegionalDelivery"), //corrected (2)
+        TestCase(P1_JOB, 2, 624.3126, 47.5782, 47.5832, TestName = "P1 Hybrid TimeRun MeasuredSpeedGear UrbanDelivery"), //corrected (1)
 
         TestCase(P2_JOB, 0, 575.0719, 8.7721, 7.7352, TestName = "P2 Hybrid TimeRun MeasuredSpeedGear LongHaul"),
         TestCase(P2_JOB, 1, 560.5059, 11.2928, 11.3766, TestName = "P2 Hybrid TimeRun MeasuredSpeedGear RegionalDelivery"),
-        TestCase(P2_JOB, 2, 627.0592, 28.9538, 29.8698, TestName = "P2 Hybrid TimeRun MeasuredSpeedGear UrbanDelivery"),
+        TestCase(P2_JOB, 2, 626.9736, 28.9615, 29.8771, TestName = "P2 Hybrid TimeRun MeasuredSpeedGear UrbanDelivery"), //corrected (1)
 
-        TestCase(P2_5_JOB, 0, 848.6396, 5.7706, 9.4096, TestName = "P2_5 Hybrid TimeRun MeasuredSpeedGear LongHaul"),
-        TestCase(P2_5_JOB, 1, 965.2255, 6.8899, 11.1147, TestName = "P2_5 Hybrid TimeRun MeasuredSpeedGear RegionalDelivery"),
-        TestCase(P2_5_JOB, 2, 1675.0448, 14.8482, 19.5497, TestName = "P2_5 Hybrid TimeRun MeasuredSpeedGear UrbanDelivery"),
+        TestCase(P2_5_JOB, 0, 848.6453, 5.7706, 9.4096, TestName = "P2_5 Hybrid TimeRun MeasuredSpeedGear LongHaul"),
+        TestCase(P2_5_JOB, 1, 965.2296, 6.8907, 11.1147, TestName = "P2_5 Hybrid TimeRun MeasuredSpeedGear RegionalDelivery"), //corrected (1)
+        TestCase(P2_5_JOB, 2, 1675.0363, 14.8485, 19.5503, TestName = "P2_5 Hybrid TimeRun MeasuredSpeedGear UrbanDelivery"),
 
         TestCase(P3_JOB, 0, 573.9547, 2.8769, 3.2305, TestName = "P3 Hybrid TimeRun MeasuredSpeedGear LongHaul"),
         TestCase(P3_JOB, 1, 559.3485, 7.5742, 8.5562, TestName = "P3 Hybrid TimeRun MeasuredSpeedGear RegionalDelivery"),
-        TestCase(P3_JOB, 2, 608.2343, 27.398, 28.4183, TestName = "P3 Hybrid TimeRun MeasuredSpeedGear UrbanDelivery"),
+        TestCase(P3_JOB, 2, 608.1537, 27.3906, 28.4109, TestName = "P3 Hybrid TimeRun MeasuredSpeedGear UrbanDelivery"), //corrected (1)
 
         TestCase(P4_JOB, 0, 573.6356, 1.7025, 1.9567, TestName = "P4 Hybrid TimeRun MeasuredSpeedGear LongHaul"),
         TestCase(P4_JOB, 1, 569.2767, 3.1507, 3.8596, TestName = "P4 Hybrid TimeRun MeasuredSpeedGear RegionalDelivery"),
-        TestCase(P4_JOB, 2, 700.6731, 7.7786, 8.9387, TestName = "P4 Hybrid TimeRun MeasuredSpeedGear UrbanDelivery")
+        TestCase(P4_JOB, 2, 700.6706, 7.7799, 8.9399, TestName = "P4 Hybrid TimeRun MeasuredSpeedGear UrbanDelivery") //corrected (1)
         ]
         public void TestHybridTimerunCycle(string jobFile, int cycleIdx, double CO2, double charge, double discharge)
         {

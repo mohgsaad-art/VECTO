@@ -33,7 +33,6 @@ using System.Linq;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
-using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
@@ -564,7 +563,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 														CurrentState.OutAngularVelocity) / 2.0;
 			container[ModalResultField.T_gbx_out] = CurrentState.OutTorque;
 			container[ModalResultField.T_gbx_in] = CurrentState.InTorque;
-			_strategy?.WriteModalResults(container);
+			_strategy.WriteModalResults(container);
 		}
 
 		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)

@@ -15,8 +15,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
     {
 		public HybridControllerTimerunGear(IVehicleContainer container, IHybridControlStrategy strategy, IElectricSystem es) :
             base(container, strategy, es)
-        {
-        }
+        {}
 
         protected override void ApplyStrategySettings(Second absTime, HybridStrategyResponse strategySettings)
 		{
@@ -25,7 +24,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			Engine.CombustionEngineOn = strategySettings.CombustionEngineOn;
 			_electricMotorTorque = strategySettings.MechanicalAssistPower;
 
-			var nextGear = new GearshiftPosition(DataBus.DrivingCycleInfo.CycleData.RightSample.Gear);
+			var nextGear = new GearshiftPosition(DataBus.DrivingCycleInfo.CycleData.RightSample.Gear,
+				!DataBus.DrivingCycleInfo.CycleData.RightSample.TorqueConverterActive);
 					
 			if (DataBus.VehicleInfo.VehicleStopped && strategySettings.NextGear.Gear != 0) {
 				_shiftStrategy.SetNextGear(nextGear);
@@ -46,7 +46,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
         protected override GearshiftPosition GetNextGear(HybridStrategyResponse strategySettings)
         {
-			return new GearshiftPosition(DataBus.DrivingCycleInfo.CycleData.LeftSample.Gear, false);
+			return new GearshiftPosition(DataBus.DrivingCycleInfo.CycleData.RightSample.Gear,
+				!DataBus.DrivingCycleInfo.CycleData.RightSample.TorqueConverterActive);
 		}
 
 		protected override bool AdjustStrategyWhenExceedingGearMaxSpeed(bool dryRun, IResponse retVal, Second absTime, Second dt, 

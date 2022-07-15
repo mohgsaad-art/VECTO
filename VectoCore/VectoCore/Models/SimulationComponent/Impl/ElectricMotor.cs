@@ -125,7 +125,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		/// <param name="outAngularVelocity"></param>
 		/// <param name="dryRun"></param>
 		/// <returns></returns>
-		public IResponse Request(
+		public virtual IResponse Request(
 			Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, bool dryRun = false)
 		{
 			if (TransmissionRatioPerGear == null) {
@@ -136,7 +136,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			if (gear.Gear == 0) {
 				gear = DataBus.GearboxInfo.NextGear;
 			}
-			var ratio = (gear.Gear > 0) ? TransmissionRatioPerGear[gear.Gear - 1] : 1;
+			var ratio = TransmissionRatioPerGear[gear.Gear - 1];
 			return DoHandleRequest(absTime, dt, outTorque * ratio, outAngularVelocity / ratio, dryRun, ratio);
 		}
 

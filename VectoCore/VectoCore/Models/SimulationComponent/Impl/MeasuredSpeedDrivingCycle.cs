@@ -262,15 +262,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				DetermineDriverActionForBEV(absTime);
             }
 			else if (RunData.JobType == VectoSimulationJobType.ParallelHybridVehicle) {
-				DetermineDriverActionForPHEV(absTime);
-			}
-			else if (DataBus.HybridControllerCtl != null) {
-				if (DataBus.GearboxInfo.GearboxType.AutomaticTransmission() || !DataBus.HybridControllerCtl.Strategy.VelocityDropData.Valid) {
-					DetermineDriverActionWhenUsingAutomaticTransmission(absTime);	
-				}
-				else {
-					DetermineDriverActionWhenUsingManualTransmission(absTime);
-				}
+				DetermineDriverActionForHybrid(absTime);
 			}
 			else {
 				DetermineDriverActionForOther();
@@ -293,7 +285,17 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
 		}
 
-        private void DetermineDriverActionWhenUsingAutomaticTransmission(Second absTime)
+        private void DetermineDriverActionForHybrid(Second absTime)
+        {
+			if (DataBus.GearboxInfo.GearboxType.AutomaticTransmission() || !DataBus.HybridControllerCtl.Strategy.VelocityDropData.Valid) {
+				DetermineDriverActionWithoutVelocityDropData(absTime);	
+			}
+			else {
+				DetermineDriverActionWithVelocityDropData(absTime);
+			}
+        }
+
+        private void DetermineDriverActionWithoutVelocityDropData(Second absTime)
         { 
 			bool gearShiftStarted = DetectGearShift();
 			var oldAction = DrivingAction;
@@ -366,7 +368,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				&& (CycleIterator.RightSample.Gear == 0);
         }
 
-        private void DetermineDriverActionWhenUsingManualTransmission(Second absTime)
+        private void DetermineDriverActionWithVelocityDropData(Second absTime)
         {
 			if (DataBus.VehicleInfo.VehicleStopped && DriverAcceleration.IsEqual(0)) {
 				DrivingAction =  DrivingAction.Halt;
@@ -417,7 +419,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			return nextSpeed;
 		}
 
-        private IResponse HandleUnderload(Second absTime, Second dt, ResponseUnderload r,
+		private IResponse HandleUnderload(Second absTime, Second dt, ResponseUnderload r,
 			Radian gradient, ref MeterPerSquareSecond acceleration)
 		{
 			MeterPerSquareSecond acc = acceleration;
