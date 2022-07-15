@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="VECTOTrailer.Views.CustomControls.DefaultTextComboBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:VECTOTrailer.Views.CustomControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="100" d:DesignWidth="300" Name="DefaultTextComboBoxUserControl">
+    <Grid>
+        <!--IsEditable="{Binding IsEditable, ElementName=DefaultTextComboBoxUserControl}"
+        IsReadOnly="{Binding IsReadOnly, ElementName=DefaultTextComboBoxUserControl}"-->
+        <ComboBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Aqua" Name="ComboBox"
+                  IsEditable="True"
+                  IsReadOnly="True"
+                  ItemsSource="{Binding ItemsSource, ElementName=DefaultTextComboBoxUserControl}"
+                  SelectedValue="{Binding SelectedValue, ElementName=DefaultTextComboBoxUserControl}"
+                  SelectedValuePath="{Binding SelectedValuePath, ElementName=DefaultTextComboBoxUserControl}"
+                  DisplayMemberPath="{Binding DisplayMemberPath, ElementName=DefaultTextComboBoxUserControl}"
+                  SelectedItem="{Binding SelectedItem, ElementName=DefaultTextComboBoxUserControl}"
+                  SelectedIndex="{Binding SelectedIndex, ElementName=DefaultTextComboBoxUserControl}">
+            
+        </ComboBox>
+        <TextBox HorizontalAlignment="Left" Background="Transparent"
+                     VerticalAlignment="Stretch" VerticalContentAlignment="Center" BorderThickness="0"
+                     TextAlignment="Left"
+                     Text="{Binding DefaultText, ElementName=DefaultTextComboBoxUserControl}"
+                     IsHitTestVisible="False" Focusable="False">
+            <TextBox.Style>
+                <Style>
+                    <Setter Property="TextBox.Visibility" Value="Collapsed"></Setter>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=ComboBox, Path=SelectedIndex}" Value="-1">
+                            <Setter Property="TextBox.Visibility" Value="Visible"></Setter>
+                        </DataTrigger>
+                        <!--<DataTrigger Binding="{Binding ElementName=ComboBox, Path=IsFocused}"></DataTrigger>-->
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
+    </Grid>
+</UserControl>

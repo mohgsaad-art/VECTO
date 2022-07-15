@@ -470,13 +470,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				var fcFinal = fcWHTC;
 
 				KilogramPerSecond fcLift = null, fcSteer = null;
-				var fcTrailerFinal = fcFinal;
 
-				if (fuel.FcLiftCorrectionFactor > 0 && fuel.FcSteerCorrectionFactor > 0) {
-					fcLift = fcTrailerFinal * fuel.FcLiftCorrectionFactor;
-					fcSteer = (fcTrailerFinal * fuel.FcLiftCorrectionFactor) * fuel.FcSteerCorrectionFactor;
-					fcTrailerFinal = fcSteer;
+				var fcTrailerFinal = fcFinal;
+				if (fuel.FcAxleCorrectionFactor > 0) {
+					fcTrailerFinal = fcFinal * fuel.FcAxleCorrectionFactor;
 				}
+				
+
 
 
 				container[ModalResultField.FCMap, fuelData] = fc;

@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<tns:VectoInputDeclaration schemaVersion="2.7" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v2.0" xmlns:v2.7="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7" xmlns:v2.2="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.2" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:di="http://www.w3.org/2000/09/xmldsig#" xmlns:v2.3="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob F:\Vecto\vecto-dev_bt\VectoCore\VectoCore\Resources\XSD/VectoDeclarationJob.xsd">
+  <v2.0:Vehicle id="CB-2cd60e4d62b74a52973f" xsi:type="VehicleDeclarationType">
+    <Manufacturer>Example Manufacturer</Manufacturer>
+    <ManufacturerAddress>Example Street 1, Example City XY, Example Country</ManufacturerAddress>
+    <Model_CommercialName>Example Trailer SuperEco</Model_CommercialName>
+    <VIN>Example1234567890</VIN>
+    <Date>2022-06-13T09:19:29.9297717Z</Date>
+    <LegislativeCategory>O3</LegislativeCategory>
+    <AxleCount>1</AxleCount>
+    <TrailerType>DA</TrailerType>
+    <BodyWorkType>refrigerated</BodyWorkType>
+    <Masses>
+      <CorrectedMassInRunningOrder>7250</CorrectedMassInRunningOrder>
+      <TPMLMTrailer>18000</TPMLMTrailer>
+      <TPMLMAxleAssembly>10000</TPMLMAxleAssembly>
+    </Masses>
+    <Dimensions>
+      <ExternalLengthBody>11.300</ExternalLengthBody>
+      <ExternalWidthBody>2.600</ExternalWidthBody>
+      <ExternalHeightBody>2.850</ExternalHeightBody>
+      <TotalHeightTrailer>4.000</TotalHeightTrailer>
+      <LengthFromFrontToFirstAxle>9.385</LengthFromFrontToFirstAxle>
+      <LengthBetweenCentresOfAxles>0.000</LengthBetweenCentresOfAxles>
+      <CargoVolume>67.700</CargoVolume>
+      <VolumeOrientation>false</VolumeOrientation>
+    </Dimensions>
+    <AeroFeatures>
+      <Technology>none</Technology>
+    </AeroFeatures>
+    <AxleWheels>
+      <Data xsi:type="v2.7:TrailerAxleWheelsDataDeclarationType">
+        <Axles>
+          <Axle xsi:type="v2.7:TrailerAxleType" axleNumber="1">
+            <TwinTyres>true</TwinTyres>
+            <Liftable>false</Liftable>
+            <Steered>false</Steered>
+            <Tyre>
+              <v2.7:Data id="TYR-gooZah3D" xsi:type="TyreDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">
+                <Manufacturer>Generic Tyre Manufacturer</Manufacturer>
+                <Model>Generic Tyre Model</Model>
+                <CertificationNumber>e12*0815/8051*2017/05T0000*00</CertificationNumber>
+                <Date>2017-02-15T11:00:00Z</Date>
+                <AppVersion>DemoTyreApp 1.0</AppVersion>
+                <Dimension>275/70 R22.5</Dimension>
+                <TyreClass>C3</TyreClass>
+                <FuelEfficiencyClass>C</FuelEfficiencyClass>
+                <RRCDeclared>0.0065</RRCDeclared>
+                <FzISO>26266</FzISO>
+              </v2.7:Data>
+              <Signature>
+                <di:Reference URI="#TYR-gooZah3D">
+                  <di:Transforms>
+                    <di:Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+                    <di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+                  </di:Transforms>
+                  <di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+                  <di:DigestValue>6KYs9zUrUTwg7Vie/jQyHhdglVSvRiIt1aXC5ZC94f8=</di:DigestValue>
+                </di:Reference>
+              </Signature>
+            </Tyre>
+          </Axle>
+        </Axles>
+      </Data>
+    </AxleWheels>
+  </v2.0:Vehicle>
+</tns:VectoInputDeclaration>

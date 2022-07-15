@@ -123,5 +123,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 				}
 			}
 		}
+
+		public IInputDataProvider DataProvider => InputDataProvider;
 	}
 }

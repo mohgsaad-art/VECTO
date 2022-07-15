@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TUGraz.VectoCore.InputData;
+using TUGraz.VectoCore.Models.Simulation.Data;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.OutputData;
 
 namespace TUGraz.VectoCore.Models.Simulation
@@ -19,6 +22,6 @@ namespace TUGraz.VectoCore.Models.Simulation
 		/// Creates powertrain and initializes it with the component's data.
 		/// </summary>
 		/// <returns>new VectoRun Instance</returns>
-		IEnumerable<IVectoRun> SimulationRuns();
+		IEnumerable<IVectoRun> SimulationRuns(Func<VectoRunData, bool> filter = null);
 	}
 }

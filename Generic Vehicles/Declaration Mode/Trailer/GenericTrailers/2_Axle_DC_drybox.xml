@@ -1,41 +1,43 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<tns:VectoInputDeclaration schemaVersion="2.7" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7" xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v2.0" xmlns:v2.7="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7" xmlns:v2.2="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.2" xmlns:v2.1="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:di="http://www.w3.org/2000/09/xmldsig#" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob F:\Vecto\vecto-dev_bt\VectoCore\VectoCore\Resources\XSD/VectoDeclarationJob.xsd">
-  <v2.0:Vehicle id="CB-5ddcef9f6f344a15a8df" xsi:type="VehicleDeclarationType">
-    <v2.7:Manufacturer>Example Manufacturer</v2.7:Manufacturer>
-    <v2.7:ManufacturerAddress>Example Street 1, Example City XY, Example Country</v2.7:ManufacturerAddress>
-    <v2.7:Model>Example Trailer SuperEco</v2.7:Model>
-    <v2.7:VIN>ExampleVIN1234567890</v2.7:VIN>
-    <v2.7:Date>2021-09-16T07:58:55.5670434Z</v2.7:Date>
-    <v2.7:LegislativeCategory>O4</v2.7:LegislativeCategory>
-    <v2.7:AxleCount>2</v2.7:AxleCount>
-    <v2.7:TrailerType>DC</v2.7:TrailerType>
-    <v2.7:BodyWorkType>dry box</v2.7:BodyWorkType>
-    <v2.7:TrailerCouplingPoint>low</v2.7:TrailerCouplingPoint>
-    <v2.7:Masses>
-      <v2.7:MassInRunningOrder>5600</v2.7:MassInRunningOrder>
-      <v2.7:TPMLMTrailer>18000</v2.7:TPMLMTrailer>
-      <v2.7:TPMLMAxleAssembly>15000</v2.7:TPMLMAxleAssembly>
-    </v2.7:Masses>
-    <v2.7:Dimensions>
-      <v2.7:ExternalLengthBody>7.820</v2.7:ExternalLengthBody>
-      <v2.7:ExternalWidthBody>2.550</v2.7:ExternalWidthBody>
-      <v2.7:ExternalHeightBody>2.730</v2.7:ExternalHeightBody>
-      <v2.7:TotalHeightTrailer>4.000</v2.7:TotalHeightTrailer>
-      <v2.7:LengthFromFrontToFirstAxle>3.695</v2.7:LengthFromFrontToFirstAxle>
-      <v2.7:LengthBetweenCentersOfAxles>1.310</v2.7:LengthBetweenCentersOfAxles>
-      <v2.7:InternalHeightBody>2.600</v2.7:InternalHeightBody>
-      <v2.7:CargoVolume>49.500</v2.7:CargoVolume>
-    </v2.7:Dimensions>
-    <v2.7:AeroFeatures />
-    <v2.7:AxleWheels>
-      <v2.7:Data xsi:type="v2.7:TrailerAxleWheelsDataDeclarationType">
-        <v2.7:Axles>
-          <v2.7:Axle xsi:type="v2.7:TrailerAxleType" axleNumber="1">
-            <v2.7:TwinTyres>false</v2.7:TwinTyres>
-            <v2.7:Liftable>false</v2.7:Liftable>
-            <v2.7:Steered>false</v2.7:Steered>
-            <v2.7:Tyre>
-              <v2.7:Data id="TYR-gooZah3D" xsi:type="v2.2:TyreDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.2">
+<tns:VectoInputDeclaration schemaVersion="2.7" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v2.0" xmlns:v2.7="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7" xmlns:v2.2="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.2" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:di="http://www.w3.org/2000/09/xmldsig#" xmlns:v2.3="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob F:\Vecto\vecto-dev_bt\VectoCore\VectoCore\Resources\XSD/VectoDeclarationJob.xsd">
+  <v2.0:Vehicle id="CB-cce8f282c17340d58152" xsi:type="VehicleDeclarationType">
+    <Manufacturer>Example Manufacturer</Manufacturer>
+    <ManufacturerAddress>Example Street 1, Example City XY, Example Country</ManufacturerAddress>
+    <Model_CommercialName>Example Trailer SuperEco</Model_CommercialName>
+    <VIN>Example1234567890</VIN>
+    <Date>2022-06-13T09:20:45.2006793Z</Date>
+    <LegislativeCategory>O4</LegislativeCategory>
+    <AxleCount>2</AxleCount>
+    <TrailerType>DC</TrailerType>
+    <BodyWorkType>dry box</BodyWorkType>
+    <TrailerCouplingPoint>low</TrailerCouplingPoint>
+    <Masses>
+      <CorrectedMassInRunningOrder>5600</CorrectedMassInRunningOrder>
+      <TPMLMTrailer>18000</TPMLMTrailer>
+      <TPMLMAxleAssembly>15000</TPMLMAxleAssembly>
+    </Masses>
+    <Dimensions>
+      <ExternalLengthBody>7.820</ExternalLengthBody>
+      <ExternalWidthBody>2.550</ExternalWidthBody>
+      <ExternalHeightBody>2.730</ExternalHeightBody>
+      <TotalHeightTrailer>4.000</TotalHeightTrailer>
+      <LengthFromFrontToFirstAxle>3.695</LengthFromFrontToFirstAxle>
+      <LengthBetweenCentresOfAxles>1.310</LengthBetweenCentresOfAxles>
+      <CargoVolume>49.500</CargoVolume>
+      <VolumeOrientation>false</VolumeOrientation>
+    </Dimensions>
+    <AeroFeatures>
+      <Technology>none</Technology>
+    </AeroFeatures>
+    <AxleWheels>
+      <Data xsi:type="v2.7:TrailerAxleWheelsDataDeclarationType">
+        <Axles>
+          <Axle xsi:type="v2.7:TrailerAxleType" axleNumber="1">
+            <TwinTyres>false</TwinTyres>
+            <Liftable>false</Liftable>
+            <Steered>false</Steered>
+            <Tyre>
+              <v2.7:Data id="TYR-gooZah3D" xsi:type="TyreDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.2">
                 <Manufacturer>Generic Tyre Manufacturer</Manufacturer>
                 <Model>Generic Tyre Model</Model>
                 <CertificationNumber>e12*0815/8051*2017/05T0000*00</CertificationNumber>
@@ -45,24 +47,24 @@
                 <RRCDeclared>0.0055</RRCDeclared>
                 <FzISO>37500</FzISO>
               </v2.7:Data>
-              <v2.7:Signature>
-                <di:Reference URI="#TYR-gooZah3D" xmlns:di="http://www.w3.org/2000/09/xmldsig#">
+              <Signature>
+                <di:Reference URI="#TYR-gooZah3D">
                   <di:Transforms>
                     <di:Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
                     <di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
                   </di:Transforms>
                   <di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
-                  <di:DigestValue>JWEwzKSP0lXvwRgQZTiWJm9dpdtQ72FOX0CC5Vy6f2Y=</di:DigestValue>
+                  <di:DigestValue>ho7+v2R+6Uarsx18ogsC7xZ4Eekko8hI6/TBGuZpPeY=</di:DigestValue>
                 </di:Reference>
-              </v2.7:Signature>
-            </v2.7:Tyre>
-          </v2.7:Axle>
-          <v2.7:Axle xsi:type="v2.7:TrailerAxleType" axleNumber="2">
-            <v2.7:TwinTyres>false</v2.7:TwinTyres>
-            <v2.7:Liftable>false</v2.7:Liftable>
-            <v2.7:Steered>false</v2.7:Steered>
-            <v2.7:Tyre>
-              <v2.7:Data id="TYR-gooZah3D" xsi:type="v2.2:TyreDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.2">
+              </Signature>
+            </Tyre>
+          </Axle>
+          <Axle xsi:type="v2.7:TrailerAxleType" axleNumber="2">
+            <TwinTyres>false</TwinTyres>
+            <Liftable>false</Liftable>
+            <Steered>false</Steered>
+            <Tyre>
+              <v2.7:Data id="TYR-gooZah3D" xsi:type="TyreDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.2">
                 <Manufacturer>Generic Tyre Manufacturer</Manufacturer>
                 <Model>Generic Tyre Model</Model>
                 <CertificationNumber>e12*0815/8051*2017/05T0000*00</CertificationNumber>
@@ -72,20 +74,20 @@
                 <RRCDeclared>0.0055</RRCDeclared>
                 <FzISO>37500</FzISO>
               </v2.7:Data>
-              <v2.7:Signature>
-                <di:Reference URI="#TYR-gooZah3D" xmlns:di="http://www.w3.org/2000/09/xmldsig#">
+              <Signature>
+                <di:Reference URI="#TYR-gooZah3D">
                   <di:Transforms>
                     <di:Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
                     <di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
                   </di:Transforms>
                   <di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
-                  <di:DigestValue>JWEwzKSP0lXvwRgQZTiWJm9dpdtQ72FOX0CC5Vy6f2Y=</di:DigestValue>
+                  <di:DigestValue>ho7+v2R+6Uarsx18ogsC7xZ4Eekko8hI6/TBGuZpPeY=</di:DigestValue>
                 </di:Reference>
-              </v2.7:Signature>
-            </v2.7:Tyre>
-          </v2.7:Axle>
-        </v2.7:Axles>
-      </v2.7:Data>
-    </v2.7:AxleWheels>
+              </Signature>
+            </Tyre>
+          </Axle>
+        </Axles>
+      </Data>
+    </AxleWheels>
   </v2.0:Vehicle>
 </tns:VectoInputDeclaration>

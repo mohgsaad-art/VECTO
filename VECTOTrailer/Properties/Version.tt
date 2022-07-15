@@ -33,8 +33,8 @@
 <#@ output extension=".cs"#>
 <#@ include file="../../VectoCore/VectoCore/VersionNumber.t4" once="true" #>
 using System.Reflection;
-[assembly: AssemblyVersion("0.1.0.<#= GetBuildNumber() #>")]
-[assembly: AssemblyFileVersion("0.1.0.<#=  GetBuildNumber() #>")]
+[assembly: AssemblyVersion("0.1.1.<#= GetBuildNumber() #>")]
+[assembly: AssemblyFileVersion("0.1.1.<#=  GetBuildNumber() #>")]
 <#+ 
 	int RevisionNumber = (int)(DateTime.UtcNow - new DateTime(2017, 1, 1)).TotalDays; 
 #>

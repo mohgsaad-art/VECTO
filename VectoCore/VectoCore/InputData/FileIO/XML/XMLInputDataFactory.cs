@@ -36,6 +36,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML
 
 		public IInputDataProvider Create(XmlReader inputData)
 		{
+			
 			return ReadXmlDoc(inputData, null);
 		}
 
@@ -244,7 +245,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML
 				input.Reader = DeclarationFactory.CreateInputReaderTrailer(versionNumber, input, xmlDoc.DocumentElement);
 				return input;
 			} catch (Exception e) {
-				throw new VectoException("Failed to read Declaration job version {0}", e, versionNumber);
+				throw new VectoException($"Failed to read Declaration job version {versionNumber} {e.Message}", e, versionNumber );
 			}
 		}
 

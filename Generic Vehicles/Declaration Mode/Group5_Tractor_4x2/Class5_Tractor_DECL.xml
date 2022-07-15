@@ -6,7 +6,7 @@
 	xmlns:v1.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" 
 	xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" 
 	xmlns:v2.1="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1" 
-	xmlns:v2.3="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.3"
+	xmlns:v2.3="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3"
 	xmlns:di="http://www.w3.org/2000/09/xmldsig#" 
 	xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationInput:v2.0 https://webgate.ec.europa.eu/CITnet/svn/VECTO/trunk/Share/XML/XSD/DEV/VectoInput.2.0.xsd">
   <v2.0:Vehicle id="VEH-NA" xsi:type="VehicleDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1">
@@ -39,7 +39,7 @@
     </v2.1:ADAS>
    <v2.1:Components xsi:type="v2.0:VehicleComponentsType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
 			<Engine  xsi:type="EngineComponentDeclarationType">
-				<v2.0:Data id="ENG-gooZah3D" xsi:type="v2.3:EngineDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.3">
+				<v2.0:Data id="ENG-gooZah3D" xsi:type="v2.3:EngineDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3">
           <Manufacturer>TU Graz, IVT</Manufacturer>
           <Model>325kW 12.7l Engine</Model>
           <CertificationNumber>ENG-325kW 12.7l Engine</CertificationNumber>

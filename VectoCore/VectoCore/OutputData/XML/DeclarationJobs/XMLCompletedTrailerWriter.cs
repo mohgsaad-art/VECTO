@@ -32,7 +32,7 @@ namespace TUGraz.VectoCore.OutputData.XML.DeclarationJobs
 				xmlWriter.Flush();
 			}
 
-			xmlDocument.Save(filePath);
+			xmlDocument.Save(filePath, SaveOptions.OmitDuplicateNamespaces);
 			return true;
 		}
 	}

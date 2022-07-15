@@ -94,6 +94,11 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration
 		public virtual IPrimaryVehicleInformationInputDataProvider PrimaryVehicleData { get { return null; } }
 
 
+		public void ValidateComponentHashes()
+		{
+			VectoHash.ValidateJob(Document);
+		}
+
 		public virtual XElement XMLHash { get; private set; }
 	}
 
@@ -137,6 +142,11 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration
 		protected override XNamespace SchemaNamespace { get { return NAMESPACE_URI; } }
 		protected override DataSourceType SourceType { get; }
 		public IDeclarationTrailerJobInputData JobInputData => JobData ?? (JobData = Reader.JobData);
+		public void ValidateComponentHashes()
+		{
+			VectoHash.ValidateJob(Document);
+		}
+
 		public XElement XMLHash { get; private set; }
 		public IXMLDeclarationTrailerInputDataReader Reader { protected get; set; }
 

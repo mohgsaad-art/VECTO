@@ -282,6 +282,11 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			get { return null; }
 		}
 
+		public void ValidateComponentHashes()
+		{
+			//throw new NotImplementedException();
+		}
+
 		public XElement XMLHash
 		{
 			get { return new XElement(XMLNames.DI_Signature); }
@@ -1115,6 +1120,11 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 
 		public IDeclarationJobInputData JobInputData { get { return this; } }
 		public virtual IPrimaryVehicleInformationInputDataProvider PrimaryVehicleData { get { return null; } }
+		public void ValidateComponentHashes()
+		{
+			//throw new NotImplementedException();
+		}
+
 		public XElement XMLHash { get { return new XElement(XMLNames.DI_Signature); } }
 
 		#endregion
@@ -1169,6 +1179,11 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 
 		public IDeclarationJobInputData JobInputData { get { return this; } }
 		public IPrimaryVehicleInformationInputDataProvider PrimaryVehicleData { get; }
+		public void ValidateComponentHashes()
+		{
+			
+		}
+
 		public XElement XMLHash { get; }
 
 		#endregion

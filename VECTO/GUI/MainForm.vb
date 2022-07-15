@@ -997,7 +997,7 @@ Imports TUGraz.VectoCore.Utils
                 Dim outFile As String = GetOutputDirectory(jobFile)
                 Dim fileWriter As FileOutputWriter = New FileOutputWriter(outFile)
 
-                Dim runsFactory As SimulatorFactory = New SimulatorFactory(mode, input, fileWriter)
+                Dim runsFactory As SimulatorFactory = New SimulatorFactory(mode, input, fileWriter, validateHashes:=True)
                 runsFactory.WriteModalResults = Cfg.ModOut
                 runsFactory.ModalResults1Hz = Cfg.Mod1Hz
                 runsFactory.Validate = cbValidateRunData.Checked

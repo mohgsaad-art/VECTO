@@ -145,6 +145,11 @@ namespace TUGraz.VectoCore.Tests.Integration.CompletedBus
 			get { return this; }
 		}
 		public IPrimaryVehicleInformationInputDataProvider PrimaryVehicleData { get; }
+		public void ValidateComponentHashes()
+		{
+			//throw new System.NotImplementedException();
+		}
+
 		public XElement XMLHash { get; }
 
 		public bool SavedInDeclarationMode

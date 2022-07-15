@@ -41,6 +41,7 @@ using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData;
+using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.InputData.Reader.Impl;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Data;
@@ -59,19 +60,21 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		private readonly ExecutionMode _mode;
 		private bool _engineOnlyMode;
 
-		public SimulatorFactory(ExecutionMode mode, IInputDataProvider dataProvider, IOutputDataWriter writer) : this(mode, dataProvider, writer, null, null, true)
+		public bool ValidateComponentHashes { get; set; }
+		public SimulatorFactory(ExecutionMode mode, IInputDataProvider dataProvider, IOutputDataWriter writer) : this(mode, dataProvider, writer, null, null, true, false)
 		{
 			
 		}
 
 		public SimulatorFactory(ExecutionMode mode, IInputDataProvider dataProvider, IOutputDataWriter writer,
-			IDeclarationReport declarationReport = null, IVTPReport vtpReport = null, bool validate = true)
+			IDeclarationReport declarationReport = null, IVTPReport vtpReport = null, bool validate = true, bool validateHashes = false)
 		{
 			Log.Info("########## VectoCore Version {0} ##########", Assembly.GetExecutingAssembly().GetName().Version);
 			JobNumber = Interlocked.Increment(ref _jobNumberCounter);
 			_mode = mode;
 			ModWriter = writer;
 			Validate = validate;
+			ValidateComponentHashes = validateHashes;
 
 			int workerThreads;
 			int completionThreads;
@@ -91,12 +94,18 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				default:
 					throw new VectoException("Unkown factory mode in SimulatorFactory: {0}", mode);
 			}
+
+			////if (ValidateComponentHashes && DataReader.DataProvider is IDeclarationInputDataProvider declDataProvider) {
+			////	declDataProvider.ValidateComponentHashes();
+			////}
+			
 		}
 
 		private void CreateDeclarationDataReader(IInputDataProvider dataProvider, IDeclarationReport declarationReport, IVTPReport vtpReport)
 		{
-			if (dataProvider is IVTPDeclarationInputDataProvider) {
-				var vtpProvider = dataProvider as IVTPDeclarationInputDataProvider;
+			
+
+			if (dataProvider is IVTPDeclarationInputDataProvider vtpProvider) {
 				var report = vtpReport ?? new XMLVTPReport(ModWriter);
 				if (vtpProvider.JobInputData.Vehicle.VehicleCategory.IsLorry()) {
 					DataReader = new DeclarationVTPModeVectoRunDataFactoryLorries(vtpProvider, report);
@@ -107,23 +116,25 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				return;
 			}
 
-			if (dataProvider is ISingleBusInputDataProvider) {
-				var singleBus = dataProvider as ISingleBusInputDataProvider;
+			if (dataProvider is ISingleBusInputDataProvider singleBus) {
 				var report = declarationReport ?? new XMLDeclarationReport(ModWriter);
 				DataReader = new DeclarationModeSingleBusVectoRunDataFactory(singleBus, report);
 				return;
 			}
 
-			if (dataProvider is IDeclarationTrailerInputDataProvider) {
-				var declDataProvider = dataProvider as IDeclarationTrailerInputDataProvider;
-
+			if (dataProvider is IDeclarationTrailerInputDataProvider provider) {
 				var report = declarationReport ?? new XMLDeclarationReportTrailer(ModWriter);
-				DataReader = new DeclarationModeTrailerVectoRunDataFactory(declDataProvider, report);
+				DataReader = new DeclarationModeTrailerVectoRunDataFactory(provider, report);
+				if (ValidateComponentHashes) {
+					provider.ValidateComponentHashes();
+				}
 				return;
 			}
 
-			if (dataProvider is IDeclarationInputDataProvider) {
-				var declDataProvider = dataProvider as IDeclarationInputDataProvider;
+			if (dataProvider is IDeclarationInputDataProvider declDataProvider) {
+				if (ValidateComponentHashes) {
+					declDataProvider.ValidateComponentHashes();
+				}
 				if (declDataProvider.JobInputData.Vehicle.VehicleCategory.IsLorry()) {
 					var report = declarationReport ?? new XMLDeclarationReport(ModWriter);
 					DataReader = new DeclarationModeTruckVectoRunDataFactory(declDataProvider, report);
@@ -191,17 +202,21 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		/// Creates powertrain and initializes it with the component's data.
 		/// </summary>
 		/// <returns>new VectoRun Instance</returns>
-		public IEnumerable<IVectoRun> SimulationRuns()
+		public IEnumerable<IVectoRun> SimulationRuns(Func<VectoRunData, bool> filter = null)
 		{
 			var i = 0;
 			var warning1Hz = false;
 
-			foreach (var data in DataReader.NextRun()) {
+			
+			
+			foreach (var data in DataReader.NextRun().Where(runData => filter == null || filter.Invoke(runData))) {
 				var current = i++;
 				var d = data;
 				data.JobRunId = current;
 				yield return data.Exempted ? GetExemptedRun(data) : GetNonExemptedRun(data, current, d, ref warning1Hz);
 			}
+
+
 		}
 
 		private IVectoRun GetExemptedRun(VectoRunData data)

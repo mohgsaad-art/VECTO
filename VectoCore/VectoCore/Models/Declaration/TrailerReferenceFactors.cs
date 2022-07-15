@@ -34,14 +34,17 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Xml;
 using Castle.Core.Internal;
+using Microsoft.SqlServer.Server;
 using Ninject;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
+using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.InputData.FileIO.XML;
@@ -56,7 +59,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 	{
 		private DataTable _segmentTable;
 
-		protected override string ResourceId => DeclarationData.DeclarationDataResourcePrefix + ".Trailer.reference_factors.csv";
+		protected override string ResourceId => DeclarationData.DeclarationDataResourcePrefix + ".Trailer.reference_ratios.csv";
 
 		protected override string ErrorMessage => "ERROR: Could not find the vehicle group for trailer. Vehicle Group: {0}";
 
@@ -65,38 +68,57 @@ namespace TUGraz.VectoCore.Models.Declaration
 			_segmentTable = table.Copy();
 		}
 
-		public override TrailerReferenceRatios Lookup(string vehicleGroup)
+		public override TrailerReferenceRatios Lookup(string vehicleGroupAnnex1)
 		{
-			var row = GetTrailerDataRow(vehicleGroup);
+			System.Diagnostics.Debug.WriteLine(vehicleGroupAnnex1);
+			var row = GetTrailerDataRow(vehicleGroupAnnex1);
 			if (row == null) {
 				return new TrailerReferenceRatios();
 			}
 
-			return new TrailerReferenceRatios {
-				LongHaulLow = double.Parse(row[7].ToString().Split('/')[0]),
-				LongHaulRef = double.Parse(row[7].ToString().Split('/')[1]),
-				RegionalDeliveryLow = double.Parse(row[8].ToString().Split('/')[0]),
-				RegionalDeliveryRef = double.Parse(row[8].ToString().Split('/')[1]),
-				UrbanDeliveryLow = double.Parse(row[9].ToString().Split('/')[0]),
-				UrbanDeliveryRef = double.Parse(row[9].ToString().Split('/')[1])
-			};
+			try {
+				return new TrailerReferenceRatios {
+					LongHaulLow = GetDouble(CSVNames.TrailerReferenceFactors_Ref_Ratio_LongHaul, 0, row),
+					LongHaulRef = GetDouble(CSVNames.TrailerReferenceFactors_Ref_Ratio_LongHaul, 1, row),
+					RegionalDeliveryLow = GetDouble(CSVNames.TrailerReferenceFactors_Ref_Ratio_Regional_Delivery, 0, row),
+					RegionalDeliveryRef = GetDouble(CSVNames.TrailerReferenceFactors_Ref_Ratio_Regional_Delivery, 1, row),
+					UrbanDeliveryLow = GetDouble(CSVNames.TrailerReferenceFactors_Ref_Ratio_Urban_Delivery, 0, row),
+					UrbanDeliveryRef = GetDouble(CSVNames.TrailerReferenceFactors_Ref_Ratio_Urban_Delivery, 1, row)
+				};
+			} catch (Exception ex) {
+				Log.Error(ex.Message);
+				//TODO: ignored
+				return new TrailerReferenceRatios();
+			}
+
 
 		}
 
-		private DataRow GetTrailerDataRow(string vehicleGroup)
+		private double GetDouble(string rowName, int elementIndex, DataRow row)
+		{
+			var refRatioString = row[rowName].ToString();
+			if (refRatioString == "---") {
+				return 0;
+			}
+			return double.Parse(refRatioString.Split('/')[elementIndex], NumberStyles.AllowDecimalPoint,
+				NumberFormatInfo.InvariantInfo);
+		}
+
+		private DataRow GetTrailerDataRow(string vehicleGroupAnnex1)
 		{
 			DataRow row;
 			try {
 				row = _segmentTable.AsEnumerable().First(
 					r => {
-						var group = r.Field<string>("Vehicle_Group");
-						return vehicleGroup == group;
+						var group = r.Field<string>(CSVNames.TrailerReferenceFactors_Vehicle_group_annex1);
+						//var group = r.Field<string>("Vehicle_Group");
+						return vehicleGroupAnnex1 == group;
 					});
-			} catch (InvalidOperationException e) {
+			} catch (Exception e) {
 				var errorMessage = string.Format(
-					ErrorMessage, vehicleGroup);
-				Log.Fatal(errorMessage);
-				throw new VectoException(errorMessage, e);
+					ErrorMessage, vehicleGroupAnnex1);
+				Log.Fatal(errorMessage + e.Message);
+				row = null;
 			}
 
 			return row;

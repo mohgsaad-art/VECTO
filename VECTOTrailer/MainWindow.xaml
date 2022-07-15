@@ -41,15 +41,21 @@
                     <MenuItem Header="Tools" VerticalAlignment="Center">
                         <MenuItem Header="Create Trailer Job"
                                   Command="{Binding CurrentViewModel.CreateNewJob}"/>
-                        <Separator HorizontalAlignment="Stretch" Background="Gray"/>
-                        <MenuItem Header="Settings"
-                                  Command="{Binding CurrentViewModel.OpenSettings}"/>
                     </MenuItem>
 
 
                     <MenuItem Header="Help" VerticalAlignment="Center">
-                        <MenuItem Header="About Vecto" 
+                        <MenuItem Header="VECTO Trailer Tool">
+                            <MenuItem Header="User Manual" Command="{Binding CurrentViewModel.ShowUserGuide}"/>
+                            <MenuItem Header="Master Excel" Command="{Binding CurrentViewModel.ShowMasterExcelCommand}"></MenuItem>
+                            <MenuItem Header="Literature" Command="{Binding CurrentViewModel.ShowLiteratureCommand}" IsEnabled="False"></MenuItem>
+                        </MenuItem>
+                        <MenuItem Header="VECTO Core">
+                            <MenuItem Header="Help" Command="{Binding CurrentViewModel.ShowVectoHelp}"/>
+                        </MenuItem>
+                        <MenuItem Header="About VECTO" 
                                   Command="{Binding CurrentViewModel.AboutViewCommand}"/>
+                        
                     </MenuItem>
                 </Menu>
 

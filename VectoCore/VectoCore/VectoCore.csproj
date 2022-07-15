@@ -156,6 +156,9 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -311,6 +314,7 @@
     <Compile Include="InputData\Reader\DataObjectAdapter\DeclarationDataAdapterPrimaryBus.cs" />
     <Compile Include="InputData\Reader\DataObjectAdapter\DeclarationDataAdapterSingleBus.cs" />
     <Compile Include="InputData\Reader\DataObjectAdapter\IDeclarationDataAdapterTrailer.cs" />
+    <Compile Include="InputData\Reader\DataObjectAdapter\TrailerDataHelper.cs" />
     <Compile Include="InputData\Reader\Impl\AbstractVTPModeVectoRunDataFactory.cs" />
     <Compile Include="InputData\Reader\Impl\CombinedBusAuxiliaries.cs" />
     <Compile Include="InputData\Reader\DataObjectAdapter\DeclarationDataAdapterCompletedBusSpecific.cs" />
@@ -733,7 +737,7 @@
     <Compile Include="Utils\XMLValidator.cs" />
     <Compile Include="Utils\XPathHelper.cs" />
     <Compile Include="Ninject\VectoNinjectModule.cs" />
-    <Compile Include="VersionNumber1.cs">
+    <Compile Include="VersionNumber.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>VersionNumber.t4</DependentUpon>
@@ -914,8 +918,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Declaration\ADAS\ADAS_Combinations.csv" />
     <EmbeddedResource Include="Resources\Declaration\VAUX\Fan-Tech-Medium.csv" />
-    <EmbeddedResource Include="Resources\XSD\VectoDeclarationDefinitions.2.3_DEV.xsd">
-    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Declaration\Buses\ElectricConsumers.csv" />
     <EmbeddedResource Include="Resources\Declaration\Buses\SSMTechList.csv" />
     <EmbeddedResource Include="Resources\Declaration\Buses\SSMDefaults.ahsm" />
@@ -963,12 +965,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Declaration\GenericTowingVehicles.csv" />
-    <EmbeddedResource Include="Resources\XSD\VectoOutputManufacturer.0.9.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\XSD\VectoOutputCustomer.0.9.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Declaration\Trailer\reference_trailer.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -990,8 +986,17 @@
     <EmbeddedResource Include="Resources\XSD\VectoComponent.2.7.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Declaration\Trailer\reference_factors.csv">
+    <EmbeddedResource Include="Resources\Declaration\Trailer\reference_ratios.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\XSD\VectoOutputCustomer.Trailer.0.1.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\XSD\VectoOutputManufacturer.Trailer.0.1.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\XSD\VectoDeclarationDefinitions.2.3.xsd">
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="Utils\VectoVersionCore.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -999,7 +1004,7 @@
     </None>
     <None Include="VersionNumber.t4">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>VersionNumber1.cs</LastGenOutput>
+      <LastGenOutput>VersionNumber.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -1025,12 +1030,24 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\A1.xml" />
-    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\A2.xml" />
-    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\A3.xml" />
-    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\R1.xml" />
-    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\R2.xml" />
-    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\R3.xml" />
+    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\A1.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\A2.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\A3.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\R1.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\R2.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\R3.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Declaration\GenericVehicles\235_75_R17.5.xml">
@@ -1045,9 +1062,6 @@
     <EmbeddedResource Include="Resources\Declaration\GenericVehicles\275_70_R22.5.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\385_65_R22.5.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Declaration\GenericVehicles\445_45_R19.5.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -1056,6 +1070,14 @@
     <EmbeddedResource Include="Resources\Declaration\Trailer\VectoReportsTrailer.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\385_65_R22.5.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Declaration\GenericVehicles\215_75_R17.5.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

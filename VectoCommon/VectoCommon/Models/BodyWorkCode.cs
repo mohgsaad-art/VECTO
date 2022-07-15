@@ -48,21 +48,26 @@ namespace TUGraz.VectoCommon.Models
 
 	public static class BodyWorkCodeHelper
 	{
+		private const string _conditioned = "conditioned";
+		private const string _refrigerated = "refrigerated";
+		private const string _dryBox = "dry box";
+		private const string _dropSideTarpaulinBody = "drop-side tarpaulin body";
+		private const string _curtainSided = "curtain-sided";
 
 		public static string GetLabel(this BodyWorkCode ttype)
 		{
 			switch (ttype)
 			{
 				case BodyWorkCode.Drybody:
-					return "dry box";
+					return _dryBox;
 				case BodyWorkCode.Refrigerated:
-					return "refrigerated";
+					return _refrigerated;
 				case BodyWorkCode.Conditioned:
-					return "conditioned";
+					return _conditioned;
 				case BodyWorkCode.CurtainSided:
-					return "curtainsider";
+					return _curtainSided;
 				case BodyWorkCode.DropSide:
-					return "drop-side with tarpaulin body"; 
+					return _dropSideTarpaulinBody; 
 				default:
 					throw new ArgumentOutOfRangeException("trailer bodywork code", ttype, null);
 			}
@@ -76,15 +81,15 @@ namespace TUGraz.VectoCommon.Models
 		public static BodyWorkCode Parse(string vehicleCategory)
 		{
 			switch (vehicleCategory) {
-				case "dry box":
+				case _dryBox:
 					return BodyWorkCode.Drybody;
-				case "refrigerated":
+				case _refrigerated:
 					return BodyWorkCode.Refrigerated;
-				case "conditioned":
+				case _conditioned:
 					return BodyWorkCode.Conditioned;
-				case "curtainsider":
+				case _curtainSided:
 					return BodyWorkCode.CurtainSided;
-				case "drop-side with tarpaulin body":
+				case _dropSideTarpaulinBody:
 					return BodyWorkCode.DropSide;
 				default:
 					return BodyWorkCode.Unknown;

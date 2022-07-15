@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Input;
+using System.Xml.Linq;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using VECTOTrailer.ViewModel.Impl;
@@ -42,60 +43,18 @@ namespace VECTOTrailer.ViewModel.Interfaces
 		Kilogram TPLMTotalTrailer { get; set; }
 		Kilogram TPLMAxleAssembly { get; set; }
 		bool VolumeOrientation { get; set; }
-		string Axle1FilePath { get; set; }
-		string Axle2FilePath { get; set; }
-		string Axle3FilePath { get; set; }
+		ICollection<TrailerAxleViewModel> Axles { get; }
 		string CertifiedAeroDeviceFilePath { get; set; }
-		string Axle1Xml{ get; set; }
-		string Axle2Xml { get; set; }
-		string Axle3Xml { get; set; }
 		string CertifiedAeroDeviceXml { get; set; }
-
-		bool Axle1IsTwin { get; set; }
-		bool Axle2IsTwin { get; set; }
-		bool Axle3IsTwin { get; set; }
-		bool Axle1IsLiftable { get; set; }
-		bool Axle2IsLiftable { get; set; }
-		bool Axle3IsLiftable { get; set; }
-		bool Axle1IsSteered  { get; set; }
-		bool Axle2IsSteered { get; set; }
-		bool Axle3IsSteered { get; set; }
-		bool Axle1IsNone { get; set; }
-		bool Axle2IsNone { get; set; }
-		bool Axle3IsNone { get; set; }
-		ICommand SelectFirstFileCommand { get; }
-		ICommand SelectSecondFileCommand { get; }
-		ICommand SelectThirdFileCommand { get; }
-
+		ICommand SelectAxleXmlCommand { get; }
 		ICommand SelectCertifiedAeroDeviceCommand { get; }
-		ICommand DownloadFirstAxle { get; }
-		ICommand DeleteFirstAxle { get; }
-		ICommand DownloadSecondAxle { get; }
-		ICommand DeleteSecondAxle { get; }
-		ICommand DownloadThirdAxle { get; }
-		ICommand DeleteThirdAxle { get; }
-
-		ICommand DownloadCertifiedAeroDevice { get; }
-		ICommand DeleteCertifiedAeroDevice { get; }
-
-		JobFileType FirstFileType { get; }
-		JobFileType SecondFileType { get; }
-		JobFileType ThirdFileType { get; }
-
 		JobFileType CertifiedAeroDeviceType { get; }
 		Dictionary<string,string> XmlNamesToPropertyMapping { get; }
-
 		bool TPMLMAxleAssemblyVisibility { get; set; }
-		bool TrailerCouplingPointVisibility { get; set; }
-		bool Axle1ButtonsVisibility { get; set; }
-		bool Axle1NewVisibility { get; set; }
-		bool Axle2ButtonsVisibility { get; set; }
-		bool Axle2NewVisibility { get; set; }
-		bool Axle3ButtonsVisibility { get; set; }
-		bool Axle3NewVisibility { get; set; }
-
+		bool ShowTrailerCouplingPoint { get; }
 		bool CertifiedAeroDeviceButtonsVisibility { get; set; }
 		bool CertifiedAeroDeviceNewVisibility { get; set; }
 		TrailerCouplingPoint TrailerCouplingPoint { get; set; }
+		XDocument SourceDocument { get; }
 	}
 }

@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
+using System.Runtime.Serialization;
 using Castle.Core.Internal;
 using VECTOTrailer.Helper;
 using VECTOTrailer.ViewModel.Impl;
@@ -14,90 +17,150 @@ namespace VECTOTrailer.Model
 		public string JobFilePath { get; set; }
 	}
 
+    [System.Configuration.SettingsSerializeAs(SettingsSerializeAs.Xml)]
+    public class JobCollection: IList<JobListEntry>
+	{
+		private IList<JobListEntry> _listImplementation = new List<JobListEntry>();
+
+
+
+		#region Implementation of IEnumerable
+
+		public IEnumerator<JobListEntry> GetEnumerator()
+		{
+			return _listImplementation.GetEnumerator();
+		}
+
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return ((IEnumerable)_listImplementation).GetEnumerator();
+		}
+
+		#endregion
+
+		#region Implementation of ICollection<JobListEntry>
+
+		public void Add(JobListEntry item)
+		{
+			_listImplementation.Add(item);
+		}
+
+		public void Clear()
+		{
+			_listImplementation.Clear();
+		}
+
+		public bool Contains(JobListEntry item)
+		{
+			return _listImplementation.Contains(item);
+		}
+
+		public void CopyTo(JobListEntry[] array, int arrayIndex)
+		{
+			_listImplementation.CopyTo(array, arrayIndex);
+		}
+
+		public bool Remove(JobListEntry item)
+		{
+			return _listImplementation.Remove(item);
+		}
+
+		public int Count => _listImplementation.Count;
+
+		public bool IsReadOnly => _listImplementation.IsReadOnly;
+
+		#endregion
+
+		#region Implementation of IList<JobListEntry>
+
+		public int IndexOf(JobListEntry item)
+		{
+			return _listImplementation.IndexOf(item);
+		}
+
+		public void Insert(int index, JobListEntry item)
+		{
+			_listImplementation.Insert(index, item);
+		}
+
+		public void RemoveAt(int index)
+		{
+			_listImplementation.RemoveAt(index);
+		}
+
+		public JobListEntry this[int index]
+		{
+			get => _listImplementation[index];
+			set => _listImplementation[index] = value;
+		}
+
+		#endregion
+	}
+
+
 	public class JobListModel
 	{
-		private const string ConfigFolderName = "Config";
-		private const string JobListFileName = "JobList.json";
+		private JobCollection _jobCollection;
+		private readonly ITrailerToolSettings _settings;
 
-		private string _jobListFilePath = Path.Combine(".", ConfigFolderName, JobListFileName);
-
-		public List<JobListEntry> JobList { get; set; }
-
-		public JobListModel()
+		public JobListModel(ITrailerToolSettings settings)
 		{
-			SetConfigFolder();
+			_settings = settings;
 			LoadJobList();
 		}
 
-		private void SetConfigFolder()
-		{
-			if (!Directory.Exists($"./{ConfigFolderName}"))
-			{
-				Directory.CreateDirectory($"{ConfigFolderName}");
-			}
-		}
 
 		private void LoadJobList()
 		{
-			var jobList = new List<JobListEntry>();
-			if (File.Exists(_jobListFilePath))
-				jobList = SerializeHelper.DeserializeToObject<List<JobListEntry>>(_jobListFilePath);
-			JobList = jobList;
+			_jobCollection = _settings.GeneralSettings.JobList ?? new JobCollection();
 		}
 
 		public void SaveJobList(IList<JobEntry> jobEntries)
 		{
-			SetJobList(jobEntries);
-			SerializeHelper.SerializeToFile(_jobListFilePath, JobList);
-		}
-
-		private void SetJobList(IList<JobEntry> jobEntries)
-		{
-			if (jobEntries == null)
-				return;
-
-			JobList = new List<JobListEntry>();
-
-			for (int i = 0; i < jobEntries.Count; i++)
-			{
-				JobList.Add
-				(	jobEntries[i].Missing ? new JobListEntry() {
-							JobFilePath = jobEntries[i].JobEntryFilePath,
-							IsSelected = false,
-							JobTypeName = JobType.Unknown.GetLabel(),
-						}: 
-					new JobListEntry
-					{
-						JobTypeName = jobEntries[i].Header.JobType.GetLabel(),
-						IsSelected = jobEntries[i].Selected,
-						JobFilePath = jobEntries[i].JobEntryFilePath
-					}
-				);
+			_jobCollection.Clear();
+			foreach (var jobEntry in jobEntries) {
+				_jobCollection.Add(
+					jobEntry.Missing 
+						? new JobListEntry()
+							{
+								JobFilePath = jobEntry.JobEntryFilePath,
+								IsSelected = false,
+								JobTypeName = JobType.Unknown.GetLabel(),
+							} 
+						: new JobListEntry
+							{
+								JobTypeName = jobEntry.Header.JobType.GetLabel(),
+								IsSelected = jobEntry.Selected,
+								JobFilePath = jobEntry.JobEntryFilePath
+							}
+						);
 			}
+			_settings.GeneralSettings.JobList = _jobCollection;
 		}
 
 		public IList<JobEntry> GetJobEntries()
 		{
 			var jobEntries = new List<JobEntry>();
 
-			if (JobList.IsNullOrEmpty())
+			if (_jobCollection.IsNullOrEmpty()) {
 				return jobEntries;
+			}
 
-			for (int i = 0; i < JobList.Count; i++)
+			foreach (var jobListEntry in _jobCollection)
 			{
-				if (!File.Exists(JobList[i].JobFilePath)) {
+				if (!File.Exists(jobListEntry.JobFilePath)) {
 					jobEntries.Add(new JobEntry() {
-						JobEntryFilePath = JobList[i].JobFilePath,
+						JobEntryFilePath = jobListEntry.JobFilePath,
 						Missing = true
 					});
 					continue;
 				}
-				var jobType = JobTypeHelper.Parse(JobList[i].JobTypeName);
+				var jobType = JobTypeHelper.Parse(jobListEntry.JobTypeName);
 				JobEntry jobEntry;
 
 				if (jobType == JobType.CompletedTrailerJob)
 				{
-					jobEntry = SerializeHelper.DeserializeToObject<JobEntry>(JobList[i].JobFilePath);
+					jobEntry = SerializeHelper.DeserializeToObject<JobEntry>(jobListEntry.JobFilePath);
 				}
 				else
 				{
@@ -105,14 +168,14 @@ namespace VECTOTrailer.Model
 					{
 						Header = new JobHeader { JobType = jobType},
 						Body = new JobBody {
-							CompletedVehicle = JobType.CompletedXml == jobType ? JobList[i].JobFilePath : null
+							CompletedVehicle = JobType.CompletedXml == jobType ? jobListEntry.JobFilePath : null
 						}
 					};
 				}
 				
 				if (jobEntry != null) {
-					jobEntry.JobEntryFilePath = JobList[i].JobFilePath;
-					jobEntry.Selected = JobList[i].IsSelected;
+					jobEntry.JobEntryFilePath = jobListEntry.JobFilePath;
+					jobEntry.Selected = jobListEntry.IsSelected;
 					jobEntries.Add(jobEntry);
 				}
 			}

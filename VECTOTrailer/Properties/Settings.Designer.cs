@@ -12,14 +12,26 @@ namespace VECTOTrailer.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.8.1.0")]
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.2.0.0")]
+    public sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
         
         public static Settings Default {
             get {
                 return defaultInstance;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool MainWindowStartMaximized {
+            get {
+                return ((bool)(this["MainWindowStartMaximized"]));
+            }
+            set {
+                this["MainWindowStartMaximized"] = value;
             }
         }
         
@@ -44,6 +56,77 @@ namespace VECTOTrailer.Properties {
             }
             set {
                 this["XMLFilesPathFolder"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("User Manual/UserManual.pdf")]
+        public string UserGuideFilePath {
+            get {
+                return ((string)(this["UserGuideFilePath"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("User Manual/help.html")]
+        public string VectoHelpPath {
+            get {
+                return ((string)(this["VectoHelpPath"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("User Manual/MasterExcel.xlsx")]
+        public string MasterExcelPath {
+            get {
+                return ((string)(this["MasterExcelPath"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://www.google.at")]
+        public string LiteraturePath {
+            get {
+                return ((string)(this["LiteraturePath"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string BackgroundOutputPath {
+            get {
+                return ((string)(this["BackgroundOutputPath"]));
+            }
+            set {
+                this["BackgroundOutputPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string BackgroundInputPath {
+            get {
+                return ((string)(this["BackgroundInputPath"]));
+            }
+            set {
+                this["BackgroundInputPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::VECTOTrailer.Model.JobCollection JobList {
+            get {
+                return ((global::VECTOTrailer.Model.JobCollection)(this["JobList"]));
+            }
+            set {
+                this["JobList"] = value;
             }
         }
     }

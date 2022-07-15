@@ -82,42 +82,80 @@ namespace TUGraz.VectoCore.Models.Declaration
 				HeightCorrection = row.Field<string>("height_correction") == "1",
 				VolumeCorrection = row.Field<string>("volume_correction") == "1",   
 				AeroCorrection = row.Field<string>("aero_correction") == "1",
+				CouplingPointCorrection = row.Field<string>("coupling_point_correction") == "1",
 
-				Aero0 = new[] { row.ParseDouble("aero0_0"), row.ParseDouble("aero0_3"), row.ParseDouble("aero0_6"), row.ParseDouble("aero0_9") },
-				Aero1 = new[] { row.ParseDouble("aero1_0"), row.ParseDouble("aero1_3"), row.ParseDouble("aero1_6"), row.ParseDouble("aero1_9") },
-				Aero2 = new[] { row.ParseDouble("aero2_0"), row.ParseDouble("aero2_3"), row.ParseDouble("aero2_6"), row.ParseDouble("aero2_9") },
-				Aero3 = new[] { row.ParseDouble("aero3_0"), row.ParseDouble("aero3_3"), row.ParseDouble("aero3_6"), row.ParseDouble("aero3_9") },
-				Aero4 = new[] { row.ParseDouble("aero4_0"), row.ParseDouble("aero4_3"), row.ParseDouble("aero4_6"), row.ParseDouble("aero4_9") },
-				Aero5 = new[] { row.ParseDouble("aero5_0"), row.ParseDouble("aero5_3"), row.ParseDouble("aero5_6"), row.ParseDouble("aero5_9") },
-				Aero6 = new[] { row.ParseDouble("aero6_0"), row.ParseDouble("aero6_3"), row.ParseDouble("aero6_6"), row.ParseDouble("aero6_9") },
-				Aero7 = new[] { row.ParseDouble("aero7_0"), row.ParseDouble("aero7_3"), row.ParseDouble("aero7_6"), row.ParseDouble("aero7_9") },
-				Aero8 = new[] { row.ParseDouble("aero8_0"), row.ParseDouble("aero8_3"), row.ParseDouble("aero8_6"), row.ParseDouble("aero8_9") },
+				Aero0 = new[] {
+					row.ParseDoubleOrGetDefault("aero0_0"),
+					row.ParseDoubleOrGetDefault("aero0_3"),
+					row.ParseDoubleOrGetDefault("aero0_6"), 
+					row.ParseDoubleOrGetDefault("aero0_9")
+				},
+				Aero1 = new[] { 
+					row.ParseDoubleOrGetDefault("aero1_0"), 
+					row.ParseDoubleOrGetDefault("aero1_3"), 
+					row.ParseDoubleOrGetDefault("aero1_6"), 
+					row.ParseDoubleOrGetDefault("aero1_9") },
+				Aero2 = new[] { 
+					row.ParseDoubleOrGetDefault("aero2_0"), 
+					row.ParseDoubleOrGetDefault("aero2_3"), 
+					row.ParseDoubleOrGetDefault("aero2_6"), 
+					row.ParseDoubleOrGetDefault("aero2_9") },
+				Aero3 = new[] { 
+					row.ParseDoubleOrGetDefault("aero3_0"), 
+					row.ParseDoubleOrGetDefault("aero3_3"), 
+					row.ParseDoubleOrGetDefault("aero3_6"), 
+					row.ParseDoubleOrGetDefault("aero3_9") },
+				Aero4 = new[] { 
+					row.ParseDoubleOrGetDefault("aero4_0"), 
+					row.ParseDoubleOrGetDefault("aero4_3"), 
+					row.ParseDoubleOrGetDefault("aero4_6"), 
+					row.ParseDoubleOrGetDefault("aero4_9") },
+				Aero5 = new[] { 
+					row.ParseDoubleOrGetDefault("aero5_0"), 
+					row.ParseDoubleOrGetDefault("aero5_3"), 
+					row.ParseDoubleOrGetDefault("aero5_6"), 
+					row.ParseDoubleOrGetDefault("aero5_9") },
+				Aero6 = new[] { 
+					row.ParseDoubleOrGetDefault("aero6_0"), 
+					row.ParseDoubleOrGetDefault("aero6_3"), 
+					row.ParseDoubleOrGetDefault("aero6_6"), 
+					row.ParseDoubleOrGetDefault("aero6_9") },
+				Aero7 = new[] { 
+					row.ParseDoubleOrGetDefault("aero7_0"), 
+					row.ParseDoubleOrGetDefault("aero7_3"), 
+					row.ParseDoubleOrGetDefault("aero7_6"), 
+					row.ParseDoubleOrGetDefault("aero7_9") },
+				Aero8 = new[] { 
+					row.ParseDoubleOrGetDefault("aero8_0"), 
+					row.ParseDoubleOrGetDefault("aero8_3"), 
+					row.ParseDoubleOrGetDefault("aero8_6"), 
+					row.ParseDoubleOrGetDefault("aero8_9") },
 
 			};
 
 		}
 
-		public KeyValuePair<double, double> GetImpact(int vehicleGroup, string type, MissionType missionType)
+		public Mission.AxleImpact GetImpact(int vehicleGroup, string type, MissionType missionType)
 		{
 			var row = GetTrailerDataRow(vehicleGroup);
 			if (row == null)
 			{
-				return new KeyValuePair<double, double>(0.0, 0.0);
+				return new Mission.AxleImpact();
 			}
 
 			if (type == "Liftable")
 			{
 				switch (missionType) {
 					case MissionType.LongHaul:
-						return new KeyValuePair<double, double>(
+						return new Mission.AxleImpact(
 							double.Parse(row.Field<string>("liftable_lh_payload_low").Replace("%", "").Replace("---", "0"), CultureInfo.InvariantCulture),
 							double.Parse(row.Field<string>("liftable_lh_payload_rep").Replace("%", "").Replace("---", "0"), CultureInfo.InvariantCulture));
 					case MissionType.RegionalDelivery:
-						return new KeyValuePair<double, double>(
+						return new Mission.AxleImpact(
 							double.Parse(row.Field<string>("liftable_r_payload_low").Replace("%", "").Replace("---", "0"), CultureInfo.InvariantCulture),
 							double.Parse(row.Field<string>("liftable_r_payload_rep").Replace("%", "").Replace("---", "0"), CultureInfo.InvariantCulture));
 					case MissionType.UrbanDelivery:
-						return new KeyValuePair<double, double>(
+						return new Mission.AxleImpact(
 							double.Parse(row.Field<string>("liftable_u_payload_low").Replace("%", "").Replace("---", "0"), CultureInfo.InvariantCulture),
 							double.Parse(row.Field<string>("liftable_u_payload_rep").Replace("%", "").Replace("---", "0"), CultureInfo.InvariantCulture));
 				}
@@ -126,22 +164,22 @@ namespace TUGraz.VectoCore.Models.Declaration
 			{
 				switch (missionType) {
 					case MissionType.LongHaul:
-						return new KeyValuePair<double, double>(
+						return new Mission.AxleImpact(
 							double.Parse(row.Field<string>("steered_lh_payload_low").Replace("%", "").Replace("---", "0"), CultureInfo.InvariantCulture),
 							double.Parse(row.Field<string>("steered_lh_payload_rep").Replace("%", "").Replace("---", "0"), CultureInfo.InvariantCulture));
 					case MissionType.RegionalDelivery:
-						return new KeyValuePair<double, double>(
+						return new Mission.AxleImpact(
 							double.Parse(row.Field<string>("steered_r_payload_low").Replace("%", "").Replace("---", "0"), CultureInfo.InvariantCulture),
 							double.Parse(row.Field<string>("steered_r_payload_rep").Replace("%", "").Replace("---", "0"), CultureInfo.InvariantCulture));
 					case MissionType.UrbanDelivery:
-						return new KeyValuePair<double, double>(
+						return new Mission.AxleImpact(
 							double.Parse(row.Field<string>("steered_u_payload_low").Replace("%", "").Replace("---", "0"), CultureInfo.InvariantCulture),
 							double.Parse(row.Field<string>("steered_u_payload_rep").Replace("%", "").Replace("---", "0"), CultureInfo.InvariantCulture));
 				}
 			}
 
 
-			return new KeyValuePair<double, double>(0.0, 0.0);
+			return new Mission.AxleImpact();
 		}
 
 		private DataRow GetTrailerDataRow(int vehicleGroup)

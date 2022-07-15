@@ -34,8 +34,10 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml;
 using Castle.Core.Internal;
 using Ninject;
@@ -85,6 +87,10 @@ namespace TUGraz.VectoCore.Models.Declaration
 			return Enumerable.Select(rows, row => (int)row.ParseDouble("Vehicle_group")).ToList();
 		}
 
+		public DataRow GetRow(string vehicleGroup)
+		{
+			return GetTrailerDataRow(vehicleGroup);
+		}
 		public override TrailerSegment Lookup(NumberOfTrailerAxles numberOfAxles, TypeTrailer typeTrailer, BodyWorkCode bodyWorkCode, bool volumeOrientation, Kilogram tpmlmAxleAssembly)
 		{
 			var group = 0;
@@ -92,18 +98,10 @@ namespace TUGraz.VectoCore.Models.Declaration
 			var rf = new TrailerReferenceFactors();
 			_numberOfAxles = int.Parse(numberOfAxles.GetLabel());
 
-			var rfRun = (Environment.GetEnvironmentVariable("referenceFactorRun") == "true");
-			if (rfRun)
-			{
-				row = GetTrailerDataRow(Environment.GetEnvironmentVariable("vehicleGroup"));
-				int.TryParse(Environment.GetEnvironmentVariable("vehicleGroup"), out group);
-			}
-			else
-			{
-				row = GetTrailerDataRow(numberOfAxles, typeTrailer, bodyWorkCode, volumeOrientation, tpmlmAxleAssembly);
-				group = (int)row.ParseDouble("Vehicle_group");
-			}
-
+			//var rfRun = false;
+			row = GetTrailerDataRow(numberOfAxles, typeTrailer, bodyWorkCode, volumeOrientation, tpmlmAxleAssembly);
+			@group = (int)row.ParseDouble("Vehicle_group");
+			var vehicleGroupAnnex = row.Field<string>("Vehicle_group_acc");
 			if (row == null) {
 				return new TrailerSegment { VehicleGroup = -1 };
 			}
@@ -113,11 +111,12 @@ namespace TUGraz.VectoCore.Models.Declaration
 					RessourceHelper.ReadStream(
 						DeclarationData.DeclarationDataResourcePrefix + ".VACC.Truck.vacc"), //row.Field<string>(".vaccfile")), TODO - CHECK THIS
 				VehicleGroup = group,
-				VehicleGroupAnnex = row.Field<string>("Vehicle_group_acc"),
+				VehicleGroupAnnex = vehicleGroupAnnex,
 				VehicleGroupActive = row.ParseBoolean("Active"),
 				GenericCode = row.Field<string>("Generic_code"),
 				MassBody = Kilogram.Create(!row.Field<string>("generic_mass_body").Contains("-") ? row.ParseDouble("generic_mass_body") : 0),
 				Class = VehicleClassHelper.Parse(row.Field<string>("Generic_vehicle_group").Replace("-RD", "").Replace("-LH", "")),
+				TowingVehicle = row.Field<string>("Generic_vehicle_group"),
 				MaxGcm = row.Field<string>("max_gcm"),
 				Missions = CreateMissions(row),
 				ReferenceTrailerSegment = DeclarationData.ReferenceTrailer.Lookup(group),
@@ -125,7 +124,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 				GenericCadVehicle = DeclarationData.GenericCadVehicle.Lookup(group),
 				DesignSpeed = MeterPerSecond.Create(25), //90km/h
 				CodeStandard = row.Field<string>("ref_code_lh"),
-				ReferenceRatios = rfRun ? new TrailerReferenceRatios() : rf.Lookup(group.ToString())
+				ReferenceRatios = rf.Lookup(vehicleGroupAnnex),
 			};
 		}
 
@@ -134,9 +133,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 			var missionTypes = new List<MissionType>();
 
 			var group = (int)row.ParseDouble("Vehicle_group");
-			var rfRun = (Environment.GetEnvironmentVariable("referenceFactorRun") == "true");
-			if (rfRun)
-				int.TryParse(Environment.GetEnvironmentVariable("vehicleGroup"), out group);
+
 
 			var referenceTrailerSegment = DeclarationData.ReferenceTrailer.Lookup(group);
 
@@ -159,28 +156,16 @@ namespace TUGraz.VectoCore.Models.Declaration
 				double refLoad = 0;
 				double lowLoadRef = 0;
 				double refLoadRef = 0;
-
 				switch (missionType) {
 					case MissionType.LongHaul:
-						if (rfRun) {
-							lowLoad = stdTrailer.PayloadLhLow;
-							refLoad = stdTrailer.PayloadLhRef;
-						} else {
-							lowLoad = row.ParseDouble("specific_lh_semi_payload_low");
-							refLoad = row.ParseDouble("specific_lh_semi_payload_rep");
-						}
+						lowLoad = row.ParseDouble("specific_lh_semi_payload_low");
+						refLoad = row.ParseDouble("specific_lh_semi_payload_rep");
 						lowLoadRef = row.ParseDouble("specific_lh_semi_payload_low");
 						refLoadRef = row.ParseDouble("specific_lh_semi_payload_rep");
 						break;
 					default:
-						if (rfRun)
-						{
-							lowLoad = stdTrailer.PayloadOtherLow;
-							refLoad = stdTrailer.PayloadOtherRef;
-						} else {
-							lowLoad = row.ParseDouble("specific_other_semi_payload_low");
-							refLoad = row.ParseDouble("specific_other_semi_payload_rep");
-						}
+						lowLoad = row.ParseDouble("specific_other_semi_payload_low");
+						refLoad = row.ParseDouble("specific_other_semi_payload_rep");
 						lowLoadRef = row.ParseDouble("specific_other_semi_payload_low");
 						refLoadRef = row.ParseDouble("specific_other_semi_payload_rep");
 						break;
@@ -231,11 +216,6 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 				var curbMass = referenceTrailerSegment.CurbMass;
 
-				/*if (rfRun)
-				{
-					curbMass = (missionType == MissionType.LongHaul ? stdTrailer.CurbMassTrailerLh : stdTrailer.CurbMassTrailerOther);
-					curbMass += (missionType == MissionType.LongHaul ? stdTrailer.CurbMassBodyLh : stdTrailer.CurbMassBodyOther);
-				}*/
 
 				var mission = new Mission
 				{
@@ -276,18 +256,9 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		private static double GetTrailerAxleWeightDistribution(DataRow row, MissionType missionType, bool isSpecific = false)
 		{
-			var rfRun = (Environment.GetEnvironmentVariable("referenceFactorRun") == "true");
-
 			string axleDistributionColumn;
 
-			if (rfRun && isSpecific) {
-				row = DeclarationData.StandardTrailer.GetRow(row.Field<string>("ref_code_lh"));
-
-				axleDistributionColumn = missionType == MissionType.LongHaul ? "trailer_axle_load_lh_" : "trailer_axle_load_o_";
-			}
-			else {
-				axleDistributionColumn = missionType == MissionType.LongHaul ? "semi_lh_axle" : "semi_other_axle";
-			}
+			axleDistributionColumn = missionType == MissionType.LongHaul ? "semi_lh_axle" : "semi_other_axle";
 
 			var axle1 = row.Field<string>(axleDistributionColumn + "1");
 			var axle2 = row.Field<string>(axleDistributionColumn + "2");
@@ -318,10 +289,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		private MissionTrailer CreateTrailer(string trailerValue, double axleWeightShare, bool isSpecific, DataRow row)
 		{
+			var rfRun = false;
 			var group = (int)row.ParseDouble("Vehicle_group");
-			var rfRun = (Environment.GetEnvironmentVariable("referenceFactorRun") == "true");
-			if (rfRun)
-				int.TryParse(Environment.GetEnvironmentVariable("vehicleGroup"), out group);
 
 			Kilogram curbWeight = 0.SI<Kilogram>();
 			Kilogram grossVehicleWeight = GetGenericVehicleData(row.Field<string>("Generic_code")).JobInputData.Vehicle.GrossVehicleMassRating;
@@ -367,7 +336,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 				}
 			}
 
-				var trailerType = TrailerType.T2a;
+			var trailerType = TrailerType.T2a;
 			if (trailerValue != "none" && trailerValue !="T2b") //TODO temporary until "none" values are fixed (this is lookup value for standard trailers)
 				trailerType = TrailerTypeHelper.Parse(trailerValue);
 
@@ -397,17 +366,11 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		private static double[] GetTowingAxleWeightDistribution(DataRow row, MissionType missionType, bool isSpecific = false)
 		{
-			var rfRun = (Environment.GetEnvironmentVariable("referenceFactorRun") == "true");
+			//var rfRun = false;
 
 			string axleDistributionColumn;
 
-			if (rfRun && isSpecific) {
-				row = DeclarationData.StandardTrailer.GetRow(row.Field<string>("ref_code_lh"));
-
-				axleDistributionColumn = missionType == MissionType.LongHaul ? "towing_axle_load_lh_" : "towing_axle_load_o_";
-			}
-            else
-				axleDistributionColumn = missionType == MissionType.LongHaul ? "towing_lh_axle" : "towing_other_axle";
+			axleDistributionColumn = missionType == MissionType.LongHaul ? "towing_lh_axle" : "towing_other_axle";
 
 			var axle1 = row.Field<string>(axleDistributionColumn + "1");
 			axle1 = axle1.Contains("---") || axle1.IsNullOrEmpty() ? "0" : axle1;
@@ -429,6 +392,63 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		}
 
+		public Func<ConvertedSI, bool> getTPMLMAxleAssemblyFunction(string tpmlmAxleAssemblyRestriction)
+		{
+			var numberRegex = new Regex(@"\d\d*([.]\d*)?");
+			double GetDoubleValue(Match match)
+			{
+				
+				var numberMatch = numberRegex.Match(match.Value);
+				var number = double.Parse(numberMatch.Value, NumberStyles.AllowDecimalPoint,
+					NumberFormatInfo.InvariantInfo);
+				return number;
+			}
+
+
+			List<Func<double, bool>> _functionsToCheck = new List<Func<double, bool>>();
+			if (tpmlmAxleAssemblyRestriction == "---" || tpmlmAxleAssemblyRestriction == "all weights") {
+				return kilogram => true;
+			}
+
+			
+
+			//Greater Regex
+			var greaterRegex = new Regex(@">\s*" + numberRegex);
+			if (greaterRegex.Match(tpmlmAxleAssemblyRestriction).Success) {
+				var match = greaterRegex.Match(tpmlmAxleAssemblyRestriction);
+				var number = GetDoubleValue(match);
+				_functionsToCheck.Add(val => val > number);
+			}
+
+			var greaterEqRegex = new Regex(@"(≥\s*" + numberRegex + @")|(>\s*=" + numberRegex + ")");
+			if (greaterRegex.Match(tpmlmAxleAssemblyRestriction).Success)
+			{
+				var match = greaterRegex.Match(tpmlmAxleAssemblyRestriction);
+				var number = GetDoubleValue(match);
+				_functionsToCheck.Add(val => val >= number);
+			}
+			var lessRegex = new Regex(@"<\s*" + numberRegex);
+			if (lessRegex.Match(tpmlmAxleAssemblyRestriction).Success)
+			{
+				var match = lessRegex.Match(tpmlmAxleAssemblyRestriction);
+				var number = GetDoubleValue(match);
+				_functionsToCheck.Add(val => val < number);
+			}
+			var lessEqRegex = new Regex(@"(≤\s*" + numberRegex + @")|(<\s*=\s*" + numberRegex + ")");
+			if (lessEqRegex.Match(tpmlmAxleAssemblyRestriction).Success)
+			{
+				var match = lessEqRegex.Match(tpmlmAxleAssemblyRestriction);
+				var number = GetDoubleValue(match);
+				_functionsToCheck.Add(val => val <= number);
+			}
+
+
+
+
+			return to => {
+				return _functionsToCheck.TrueForAll(func => func.Invoke(to?.Value ?? 0));
+			};
+		}
 
 		private DataRow GetTrailerDataRow(
 			NumberOfTrailerAxles numberOfAxles, TypeTrailer typeTrailer, BodyWorkCode bodyWorkCode, bool volumeOrientation, Kilogram tpmlmAxleAssembly)
@@ -442,20 +462,24 @@ namespace TUGraz.VectoCore.Models.Declaration
 						var bodyWorkCodeRow = r.Field<string>("Bodywork_code");
 						var volumeOrientationRow = r.Field<string>("Volume_orientation");
 						var tpmlmAxleAssemblyRow = r.Field<string>("TPMLM_axle_assembly");
-						var tpmlmMinRow = !string.IsNullOrEmpty(r.Field<string>("TPMLM_min")) ? r.ParseDouble("TPMLM_min") : 0;
-						var tpmlmMaxRow = !string.IsNullOrEmpty(r.Field<string>("TPMLM_max")) ? r.ParseDouble("TPMLM_max"): 0;
 						return numberOfAxlesRow == numberOfAxles.GetLabel()
 								&& typeTrailerRow == typeTrailer.ToString()
 								&& bodyWorkCodeRow.Contains(bodyWorkCode.GetLabel())
-								&& (tpmlmAxleAssemblyRow.Contains("-") ||
-									tpmlmAxleAssemblyRow.Contains("all weights") ||
-									(tpmlmAxleAssembly.ConvertToTon().Value > tpmlmMinRow && tpmlmAxleAssembly.ConvertToTon().Value < tpmlmMaxRow))
+								&& getTPMLMAxleAssemblyFunction(tpmlmAxleAssemblyRow).Invoke(tpmlmAxleAssembly?.ConvertToTon())
+								//&& (tpmlmAxleAssemblyRow.Contains("-") ||
+								//	tpmlmAxleAssemblyRow.Contains("all weights") ||
+								//	(tpmlmAxleAssembly.ConvertToTon().Value > tpmlmMinRow && tpmlmAxleAssembly.ConvertToTon().Value < tpmlmMaxRow))
 								&& (volumeOrientationRow == "Yes" && volumeOrientation || volumeOrientationRow == "No" && !volumeOrientation);
 					});
 			} catch (InvalidOperationException e) {
-				var errorMessage = string.Format(
-					ErrorMessage, numberOfAxles, typeTrailer, bodyWorkCode);
-				Log.Fatal(errorMessage);
+				// No valid trailer configuration found 
+				var errorMessage = $"No valid trailer configuration found! " +
+									$"Trailer type: {typeTrailer.ToString()}, " +
+									$"Number of Axles: {numberOfAxles.ToXMLFormat()}, " +
+									$"Bodywork type: {bodyWorkCode.ToXMLFormat()}, " +
+									$"Volume orientation: {volumeOrientation} " +
+									$"TPMLM axle assembly: {tpmlmAxleAssembly.ToXMLFormat()})";
+				Log.Fatal(errorMessage + ErrorMessage);
 				throw new VectoException(errorMessage, e);
 			}
 
