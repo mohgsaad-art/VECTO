@@ -11,7 +11,7 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:validation="clr-namespace:VECTOTrailer.Helper.Validation"
              mc:Ignorable="d" 
-             d:DesignHeight="800" d:DesignWidth="500">
+             d:DesignHeight="800" d:DesignWidth="1210">
 
     <d:CompleteTrailerViewModel.DataContext>
         <x:Type Type="interfaces:ICompleteTrailerViewModel" />
@@ -21,8 +21,8 @@
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </UserControl.Resources>
 
-<Grid>
-        
+    <Grid>
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10" />
             <ColumnDefinition Width="400" />
@@ -37,7 +37,7 @@
             <RowDefinition />
             <RowDefinition />
         </Grid.RowDefinitions>
-    <!--Width="400" Height="200"-->
+        <!--Width="400" Height="200"-->
         <GroupBox Header="Documentation" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Grid.IsSharedSizeScope="True" VerticalAlignment="Stretch">
                 <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
@@ -123,48 +123,48 @@
                 </StackPanel>
             </StackPanel>
         </GroupBox>
-    <!--Width="400" Height="350"-->
+        <!--Width="400" Height="350"-->
         <GroupBox Header="Dimensions" Grid.Row="2" Grid.Column="1"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Grid.IsSharedSizeScope="True" VerticalAlignment="Stretch">
                 <!--<StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">-->
 
-                    <Grid>
-                        <customControls:VectoParameterControl
+                <Grid>
+                    <customControls:VectoParameterControl
                             Caption="External length of the body" CaptionWidthGroup="lblGWidth"
                             Value="{Binding ExternalLengthOfTheBody, 
                                 Converter={converter:SIValueConverter},
                                 ConverterParameter=AsMeter|double3, UpdateSourceTrigger=LostFocus, NotifyOnValidationError=True}" ValueAlign="right"
                             Unit="m" UnitWidthGroup="unitWidth"/>
-                    </Grid>
+                </Grid>
 
-                    <Grid>
-                        <customControls:VectoParameterControl
+                <Grid>
+                    <customControls:VectoParameterControl
                             Caption="External width of the body" CaptionWidthGroup="lblGWidth"
                             Value="{Binding ExternalWidthOfTheBody, Converter={converter:SIValueConverter}, 
                             ConverterParameter=AsMeter|double3, UpdateSourceTrigger=LostFocus, NotifyOnValidationError=True}" ValueAlign="right"
                             Unit="m" UnitWidthGroup="unitWidth"/>
-                    </Grid>
+                </Grid>
 
-                    <Grid>
-                        <customControls:VectoParameterControl
+                <Grid>
+                    <customControls:VectoParameterControl
                             Caption="External height of the body" CaptionWidthGroup="lblGWidth"
                             Value="{Binding ExternalHeightOfTheBody, 
                                 Converter={converter:SIValueConverter}, 
                                 ConverterParameter=AsMeter|double3, UpdateSourceTrigger=LostFocus, NotifyOnValidationError=True}" ValueAlign="right"
                             Unit="m" UnitWidthGroup="unitWidth"/>
-                    </Grid>
+                </Grid>
 
-                    <Grid>
-                        <customControls:VectoParameterControl
+                <Grid>
+                    <customControls:VectoParameterControl
                             Caption="Total height of the trailer" CaptionWidthGroup="lblGWidth"
                             Value="{Binding TotalHeightOfTheTrailer, 
                                 Converter={converter:SIValueConverter}, 
                                 ConverterParameter=AsMeter|double3, UpdateSourceTrigger=LostFocus, NotifyOnValidationError=True}" ValueAlign="right"
                             Unit="m" UnitWidthGroup="unitWidth"/>
-                    </Grid>
+                </Grid>
 
-                    <Grid>
-                        <customControls:VectoParameterControl
+                <Grid>
+                    <customControls:VectoParameterControl
                             Caption="Length from trailer front end to centre of first axle" CaptionWidthGroup="lblGWidth"
                             Value="{Binding LengthFromFrontToFirstAxle, 
                                 Converter={converter:SIValueConverter}, 
@@ -173,11 +173,11 @@
                                 UpdateSourceTrigger=LostFocus, 
                                 NotifyOnValidationError=True}" ValueAlign="right"
                             Unit="m" UnitWidthGroup="unitWidth"/>
-                    </Grid>
+                </Grid>
 
 
-                    <Grid>
-                        <customControls:VectoParameterControl
+                <Grid>
+                    <customControls:VectoParameterControl
                             Caption="Length between centres of axles" CaptionWidthGroup="lblGWidth"
                             Value="{Binding LengthBetweenCentersOfAxles, 
                                 Converter={converter:SIValueConverter}, 
@@ -186,27 +186,27 @@
                                 NotifyOnValidationError=True}" ValueAlign="right"
                             Unit="m" UnitWidthGroup="unitWidth" Visibility="{Binding ShowLengthBetweenCentersOfAxles,
                                 Converter={StaticResource BoolToVisibilityConverter}}"/>
-                    </Grid>
+                </Grid>
 
-                    
-                    <Grid>
-                        <customControls:VectoParameterControl
+
+                <Grid>
+                    <customControls:VectoParameterControl
                             Caption="Cargo volume" CaptionWidthGroup="lblGWidth"
                             Value="{Binding CargoVolume, 
                                 Converter={converter:SIValueConverter}, 
                                 ConverterParameter=AsCubicMeter|double3, 
                                 UpdateSourceTrigger=LostFocus, NotifyOnValidationError=True}" ValueAlign="right"
                             Unit="m3" UnitWidthGroup="unitWidth"/>
-                    </Grid>
+                </Grid>
 
                 <!--</StackPanel>-->
             </StackPanel>
         </GroupBox>
-    <!--Width="330" Height="200"-->
+        <!--Width="330" Height="200"-->
         <GroupBox Header="Classification" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
                 <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
-                
+
                     <Grid Margin="5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition SharedSizeGroup="vehicleLbl"/>
@@ -263,7 +263,7 @@
 
                         <TextBlock Grid.Column="0" Text="Trailer Coupling Point" Margin="0,0,10,0" Visibility="{Binding ShowTrailerCouplingPoint, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         <Grid Grid.Column="1">
-                        <customControls:DefaultTextComboBox
+                            <customControls:DefaultTextComboBox
                                   Margin="20,0,0,0"
                                   ItemsSource="{Binding AllowedTrailerCouplingPoint}"
                                   SelectedValue="{Binding TrailerCouplingPoint, Mode=TwoWay ,ValidatesOnDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"
@@ -273,7 +273,7 @@
                                   IsReadOnly="True"
                                   DefaultText="Select..."
                                   Visibility="{Binding ShowTrailerCouplingPoint, Converter={StaticResource BoolToVisibilityConverter}}">
-                        </customControls:DefaultTextComboBox>
+                            </customControls:DefaultTextComboBox>
                         </Grid>
                     </Grid>
 
@@ -307,7 +307,7 @@
                             <TextBlock Grid.Column="0" Text="Volume Orientation" Margin="0,0,0,0"/>
                             <TextBlock Grid.Column="0" Text="(see Annex I, point 1(6))" Margin="0,0,0,0"/>
                         </StackPanel>
-                        <CheckBox Grid.Column="1" VerticalAlignment="Center" IsChecked="{Binding VolumeOrientation}" Margin="20,0,0,0"/>
+                        <CheckBox Grid.Column="1" VerticalAlignment="Center" IsChecked="{Binding VolumeOrientation}" Margin="20,0,7.5,0" Height="15" HorizontalAlignment="Right"/>
 
                     </Grid>
 
@@ -315,47 +315,47 @@
                 </StackPanel>
             </StackPanel>
         </GroupBox>
-    <!--Width="330" Height="350"-->
+        <!--Width="330" Height="350"-->
         <GroupBox Header="Αero feature technologies" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5">
             <StackPanel Orientation="Vertical"  HorizontalAlignment="Stretch" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
                 <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
 
-                    <RadioButton Margin="0,5,0,0" GroupName="features" Name="standard" IsChecked="{Binding IsStandard}">Standard aerodynamic devices</RadioButton>
-                    <RadioButton Margin="0,5,0,0" GroupName="features" Name="certified" IsChecked="{Binding IsCertified}">Certified aerodynamic device</RadioButton>
-                    <RadioButton Margin="0,5,0,0" GroupName="features" Name="none" IsChecked="{Binding IsNone}">None</RadioButton>
+                    <RadioButton Margin="0,5,0,0" GroupName="features" Name="standard" IsChecked="{Binding IsStandard}" HorizontalAlignment="Left">Standard aerodynamic devices</RadioButton>
+                    <RadioButton Margin="0,5,0,0" GroupName="features" Name="certified" IsChecked="{Binding IsCertified}" HorizontalAlignment="Left">Certified aerodynamic device</RadioButton>
+                    <RadioButton Margin="0,5,0,0" GroupName="features" Name="none" IsChecked="{Binding IsNone}" HorizontalAlignment="Left">None</RadioButton>
 
                     <GroupBox Header="Side covers"  Visibility="{Binding IsChecked,ElementName=standard,Converter={StaticResource BoolToVisibilityConverter}}">
-                    <Grid Margin="5" >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="20"/>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
+                        <Grid Margin="5" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
 
-                        <TextBlock Grid.Column="0" Text="Short side covers"/>
-                        <CheckBox Grid.Column="1" IsChecked="{Binding SideSkirtsShort}"/>
-                        <TextBlock Grid.Column="3" Text="Long side covers"/>
-                        <CheckBox Grid.Column="4" IsChecked="{Binding SideSkirtsLong}"/>
+                            <TextBlock Grid.Column="0" Text="Short side covers"/>
+                            <CheckBox Grid.Column="1" IsChecked="{Binding SideSkirtsShort}"/>
+                            <TextBlock Grid.Column="3" Text="Long side covers"/>
+                            <CheckBox Grid.Column="4" IsChecked="{Binding SideSkirtsLong}"/>
 
-                    </Grid>
+                        </Grid>
                     </GroupBox>
                     <GroupBox Header="Rear flaps" Visibility="{Binding IsChecked,ElementName=standard,Converter={StaticResource BoolToVisibilityConverter}}">
-                    <Grid Margin="5" >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="20"/>
-                            <ColumnDefinition Width="100"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="Short rear flaps" />
-                        <CheckBox Grid.Column="1" IsChecked="{Binding BoatTailShort}"/>
+                        <Grid Margin="5" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Short rear flaps" />
+                            <CheckBox Grid.Column="1" IsChecked="{Binding BoatTailShort}"/>
 
                             <TextBlock Grid.Column="3" Text="Tall rear flaps"/>
-                        <CheckBox Grid.Column="4" IsChecked="{Binding BoatTailLong}"/>
-                     
+                            <CheckBox Grid.Column="4" IsChecked="{Binding BoatTailLong}"/>
+
                         </Grid>
                     </GroupBox>
                     <GroupBox Header="Certified aerodynamic device XML" Margin="5" HorizontalAlignment="Stretch" Visibility="{Binding IsChecked,ElementName=certified,Converter={StaticResource BoolToVisibilityConverter}}">
@@ -421,11 +421,11 @@
                 </StackPanel>
             </StackPanel>
         </GroupBox>
-    <!--Width="560" Height="200"-->
+        <!--Width="560" Height="200"-->
         <GroupBox Header="Masses" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Grid.IsSharedSizeScope="True" VerticalAlignment="Top">
                 <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
-                
+
                     <Grid>
                         <customControls:VectoParameterControl
                             Caption="Corrected mass in running order" CaptionWidthGroup="lblGWidth"
@@ -473,7 +473,7 @@
                             </Style>
                         </TextBlock.Style>
                     </TextBlock>
-                    
+
                     <!--#region Axle1 -->
                     <Grid Margin="5">
                         <Grid.Style>
