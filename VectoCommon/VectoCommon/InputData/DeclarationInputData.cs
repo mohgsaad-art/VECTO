@@ -128,6 +128,10 @@ namespace TUGraz.VectoCommon.InputData
 		///// </summary>
 		//string Rim { get; }  // deprecated
 
+		/// <summary>
+		/// P196, P197  TorqueLimits: Gear [-], MaxTorque [Nm]
+		/// cf. VECTO Input Parameters.xlsx
+		/// </summary>
 		IList<ITorqueLimitInputData> TorqueLimits { get; }
 
 		/// <summary>
