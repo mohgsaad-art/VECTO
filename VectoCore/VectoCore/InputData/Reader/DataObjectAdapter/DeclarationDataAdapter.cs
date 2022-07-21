@@ -422,7 +422,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 
 		public IList<VectoRunData.AuxData> CreateAuxiliaryData(IAuxiliariesDeclarationInputData auxInputData,
-			MissionType mission, VehicleClass hvdClass)
+			MissionType mission, VehicleClass hvdClass, int? numSteeredAxles)
 		{
 			if (!auxInputData.SavedInDeclarationMode) {
 				WarnDeclarationMode("AuxiliariesData");
@@ -453,6 +453,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 						aux.ID = Constants.Auxiliaries.IDs.Fan;
 						break;
 					case AuxiliaryType.SteeringPump:
+						if (numSteeredAxles.HasValue && auxData.Technology.Count != numSteeredAxles.Value) {
+							throw new VectoException($"Number of steering pump technologies does not match number of steered axles ({numSteeredAxles.Value}, {auxData.Technology.Count})");
+						}
 						aux.PowerDemand = DeclarationData.SteeringPump.Lookup(mission, hvdClass, auxData.Technology);
 						aux.ID = Constants.Auxiliaries.IDs.SteeringPump;
 						break;

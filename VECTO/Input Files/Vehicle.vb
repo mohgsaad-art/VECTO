@@ -802,6 +802,12 @@ Public Class Vehicle
 
     Public Property EcoRollReleaseLockupClutch As Boolean
 
+    Public ReadOnly Property NumSteeredAxles As Integer? Implements IAxlesDeclarationInputData.NumSteeredAxles
+        get
+            return nothing
+        End Get
+    End Property
+
     Public ReadOnly Property IAxlesEngineeringInputData_DataSource As DataSource Implements IAxlesEngineeringInputData.DataSource
 	get
 		Return New DataSource() With {.SourceType = DataSourceType.JSONFile}
