@@ -1,6 +1,4 @@
-﻿using System;
-
-using TUGraz.VectoCommon.Models;
+﻿using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Strategies;

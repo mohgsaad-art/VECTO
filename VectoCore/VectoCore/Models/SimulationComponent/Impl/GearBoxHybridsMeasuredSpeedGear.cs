@@ -73,7 +73,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
         public override IResponse Request(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, bool dryRun = false)
         {
             if (!DataBus.VehicleInfo.VehicleStopped) {
-                var nextStepGear = new GearshiftPosition(GetGearFromCycle());
+                var nextStepGear = new GearshiftPosition(
+                    DataBus.DrivingCycleInfo.CycleData.RightSample.Gear,
+                    !DataBus.DrivingCycleInfo.CycleData.RightSample.TorqueConverterActive);
 
                 if (Gear < nextStepGear) {
                     LastUpshift = absTime;

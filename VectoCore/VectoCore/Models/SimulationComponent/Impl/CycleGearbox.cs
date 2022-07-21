@@ -94,8 +94,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		{
 			var dt = Constants.SimulationSettings.TargetTimeInterval;
 
-			var tcLocked = !DataBus.DrivingCycleInfo.CycleData.LeftSample.TorqueConverterActive;
-			Gear = new GearshiftPosition(GetGearFromCycle(), tcLocked);
+			Gear = new GearshiftPosition(GetGearFromCycle(), !GetTCActiveFromCycle());
 
 			if (TorqueConverter != null && Gear.TorqueConverterLocked == null) {
 				throw new VectoSimulationException("Driving cycle does not contain information about TorqueConverter!");
@@ -183,9 +182,16 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			retVal.Gearbox.PowerRequest = outTorque * (PreviousState.OutAngularVelocity + outAngularVelocity) / 2;
 			return retVal;
+        }
+
+        protected virtual bool? GetTCActiveFromCycle()
+        { 
+			return DataBus.DriverInfo.DriverBehavior == DrivingBehavior.Braking
+				? DataBus.DrivingCycleInfo.CycleData.LeftSample.TorqueConverterActive
+				: DataBus.DrivingCycleInfo.CycleData.RightSample.TorqueConverterActive;
 		}
 
-		protected virtual uint GetGearFromCycle()
+        protected virtual uint GetGearFromCycle()
 		{
 			return DataBus.DriverInfo.DriverBehavior == DrivingBehavior.Braking
 				? DataBus.DrivingCycleInfo.CycleData.LeftSample.Gear
@@ -214,9 +220,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		{
 			Disengaged = null;
 
-			var tcLocked = !DataBus.DrivingCycleInfo.CycleData.LeftSample.TorqueConverterActive;
-			Gear = new GearshiftPosition(GetGearFromCycle(), tcLocked);
-
+			Gear = new GearshiftPosition(GetGearFromCycle(), !GetTCActiveFromCycle());
 
 			var effectiveRatio = ModelData.Gears[Gear.Gear].Ratio;
 			var effectiveLossMap = ModelData.Gears[Gear.Gear].LossMap;
