@@ -256,7 +256,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 		/// Filters the gears based on disabling rule: If the last (or the second last) torque limit on vehicle level is 0, then the gear should be disabled.
 		/// </summary>
 		/// <remarks>VECTO-1628</remarks>
-		private static IList<ITransmissionInputData> FilterDisabledGears(IList<ITransmissionInputData> gears, Dictionary<int, ITorqueLimitInputData> limits) {
+		internal static IList<ITransmissionInputData> FilterDisabledGears(IList<ITransmissionInputData> gears, Dictionary<int, ITorqueLimitInputData> limits) {
 			var lastGear = gears.Last().Gear;
 			if (limits.ContainsKey(lastGear) && limits[lastGear].MaxTorque.IsEqual(0)) {
 				gears.Remove(gears.Last());
@@ -272,7 +272,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				if (l.Value.MaxTorque.IsEqual(0))
 					throw new VectoException($"Vehicle TorqueLimits: MaxTorque for Gear {l.Key} must not be 0.");
 			}
-			
+
 			return gears;
 		}
 
