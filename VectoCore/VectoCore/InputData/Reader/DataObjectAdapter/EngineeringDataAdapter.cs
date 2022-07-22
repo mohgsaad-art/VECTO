@@ -181,7 +181,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			retVal.Inertia = engine.Inertia +
 							(gbx != null && gbx.Type.AutomaticTransmission() ? torqueConverter.Inertia : 0.SI<KilogramSquareMeter>());
 			retVal.EngineStartTime = engine.EngineStartTime ?? DeclarationData.Engine.DefaultEngineStartTime;
-			var limits = vehicle.TorqueLimits.ToDictionary(e => e.Gear);
+			var limits = vehicle.TorqueLimits?.ToDictionary(e => e.Gear) ?? new Dictionary<int, ITorqueLimitInputData>();
 			IList<ITransmissionInputData> gears = null;
 			if (gbx != null){
 				 gears = DeclarationDataAdapter.FilterDisabledGears(gbx.Gears, limits);

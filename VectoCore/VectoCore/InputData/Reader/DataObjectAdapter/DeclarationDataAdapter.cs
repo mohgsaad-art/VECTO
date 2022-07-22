@@ -257,20 +257,22 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 		/// </summary>
 		/// <remarks>VECTO-1628</remarks>
 		internal static IList<ITransmissionInputData> FilterDisabledGears(IList<ITransmissionInputData> gears, Dictionary<int, ITorqueLimitInputData> limits) {
-			var lastGear = gears.Last().Gear;
-			if (limits.ContainsKey(lastGear) && limits[lastGear].MaxTorque.IsEqual(0)) {
-				gears.Remove(gears.Last());
-				limits.Remove(lastGear);
-				lastGear = gears.Last().Gear;
+			if (gears != null && gears.Count > 0) {
+				var lastGear = gears.Last().Gear;
 				if (limits.ContainsKey(lastGear) && limits[lastGear].MaxTorque.IsEqual(0)) {
 					gears.Remove(gears.Last());
 					limits.Remove(lastGear);
+					lastGear = gears.Last().Gear;
+					if (limits.ContainsKey(lastGear) && limits[lastGear].MaxTorque.IsEqual(0)) {
+						gears.Remove(gears.Last());
+						limits.Remove(lastGear);
+					}
 				}
-			}
 
-			foreach (var l in limits) {
-				if (l.Value.MaxTorque.IsEqual(0))
-					throw new VectoException($"Vehicle TorqueLimits: MaxTorque for Gear {l.Key} must not be 0.");
+				foreach (var l in limits) {
+					if (l.Value.MaxTorque.IsEqual(0))
+						throw new VectoException($"Vehicle TorqueLimits: MaxTorque for Gear {l.Key} must not be 0.");
+				}
 			}
 
 			return gears;
@@ -333,7 +335,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				throw new VectoSimulationException("Unsupported gearbox type: {0}!", retVal.Type);
 			}
 
-			var limits = inputData.TorqueLimits.ToDictionary(e => e.Gear);
+			var limits = inputData.TorqueLimits?.ToDictionary(e => e.Gear) ?? new Dictionary<int, ITorqueLimitInputData>();
 			var gearsInput = FilterDisabledGears(gearbox.Gears, limits);
 			if (gearsInput.Count < 1) {
 				throw new VectoSimulationException(
