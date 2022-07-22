@@ -46,6 +46,7 @@
 <Target Name="GenerateReleasenotesPDF" BeforeTargets="AfterBuild"  Condition="$(Configuration) == 'DeployTrailer'">  
 	<Message Text="Generating Release Notes PDF"/>
 	<Exec Command="cscript &quot;$(solutiondir)documentation\user manual source\convertpptxtopdf.vbs&quot; &quot;$(solutiondir)documentation\user manual source\release notes vecto3.x.pptx&quot; &quot;$(solutiondir)documentation\user manual source\release notes vecto3.x.pdf&quot;"/>  
+	<Exec Command="cscript &quot;$(solutiondir)documentation\user manual source\convertpptxtopdf.vbs&quot; &quot;$(solutiondir)documentation\user manual source\VECTOTrailerTool_UserManual.pptx&quot; &quot;$(solutiondir)documentation\VectoTrailerTool\UserManual.pdf&quot;"/>  
 </Target>  
 <!--
 <Target Name="GenerateHelpHTML" BeforeTargets="AfterBuild"  Condition="$(Configuration) == 'DeployTrailer'">  
