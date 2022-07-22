@@ -160,7 +160,6 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 		{
 			var engine = vehicle.Components.EngineInputData;
 			var gbx = vehicle.Components.GearboxInputData;
-			var torqueLimits = vehicle.TorqueLimits;
 			var torqueConverter = vehicle.Components.TorqueConverterInputData;
 			var tankSystem = vehicle.TankSystem;
 
@@ -182,13 +181,17 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			retVal.Inertia = engine.Inertia +
 							(gbx != null && gbx.Type.AutomaticTransmission() ? torqueConverter.Inertia : 0.SI<KilogramSquareMeter>());
 			retVal.EngineStartTime = engine.EngineStartTime ?? DeclarationData.Engine.DefaultEngineStartTime;
-			var limits = torqueLimits.ToDictionary(e => e.Gear);
-			var numGears = gbx == null ? 0 : gbx.Gears.Count;
+			var limits = vehicle.TorqueLimits?.ToDictionary(e => e.Gear) ?? new Dictionary<int, ITorqueLimitInputData>();
+			IList<ITransmissionInputData> gears = null;
+			if (gbx != null){
+				 gears = DeclarationDataAdapter.FilterDisabledGears(gbx.Gears, limits);
+			}
+			var numGears = gbx == null ? 0 : gears.Count;
 			var fullLoadCurves = new Dictionary<uint, EngineFullLoadCurve>(numGears + 1);
 			fullLoadCurves[0] = FullLoadCurveReader.Create(engine.EngineModes.First().FullLoadCurve);
 			fullLoadCurves[0].EngineData = retVal;
 			if (gbx != null) {
-				foreach (var gear in gbx.Gears) {
+				foreach (var gear in gears) {
 					var maxTorque = VectoMath.Min(gear.MaxTorque, limits.ContainsKey(gear.Gear) ? limits[gear.Gear].MaxTorque : null);
 					fullLoadCurves[(uint)gear.Gear] = IntersectFullLoadCurves(fullLoadCurves[0], maxTorque);
 				}
@@ -278,15 +281,20 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			}
 			retVal.ATEcoRollReleaseLockupClutch = adas != null && adas.EcoRoll != EcoRollType.None && retVal.Type.AutomaticTransmission() ? adas.ATEcoRollReleaseLockupClutch.Value : false;
 
-			//var gears = gearbox.Gears;
-			if (gearbox.Gears.Count < 2) {
+			var limits = inputData.JobInputData.Vehicle.TorqueLimits.ToDictionary(e => e.Gear);
+			var gearsInput = DeclarationDataAdapter.FilterDisabledGears(gearbox.Gears, limits);
+			if (gearsInput.Count < 2) {
+				throw new VectoSimulationException("At least two Gear-Entries must be defined in Gearbox!");
+			}
+			
+			if (gearsInput.Count < 2) {
 				throw new VectoSimulationException("At least two Gear-Entries must be defined in Gearbox!");
 			}
 
 			SetEngineeringData(gearbox, gearshiftData, retVal);
 
-			var gearDifferenceRatio = gearbox.Type.AutomaticTransmission() && gearbox.Gears.Count > 2
-				? gearbox.Gears[0].Ratio / gearbox.Gears[1].Ratio
+			var gearDifferenceRatio = gearbox.Type.AutomaticTransmission() && gearsInput.Count > 2
+				? gearsInput[0].Ratio / gearsInput[1].Ratio
 				: 1.0;
 
 			var gears = new Dictionary<uint, GearData>();
@@ -296,19 +304,19 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 					? ShiftPolygonReader.Create(torqueConverter.ShiftPolygon)
 					: DeclarationData.TorqueConverter.ComputeShiftPolygon(engineData.FullLoadCurves[0]);
 			}
-			for (uint i = 0; i < gearbox.Gears.Count; i++) {
-				var gear = gearbox.Gears[(int)i];
+			for (uint i = 0; i < gearsInput.Count; i++) {
+				var gear = gearsInput[(int)i];
 				var lossMap = CreateGearLossMap(gear, i, true, VehicleCategory.Unknown, gearbox.Type);
 
 				var shiftPolygon = gear.ShiftPolygon != null && gear.ShiftPolygon.SourceType != DataSourceType.Missing
 					? ShiftPolygonReader.Create(gear.ShiftPolygon)
 					: shiftPolygonCalc != null
 						? shiftPolygonCalc.ComputeDeclarationShiftPolygon(
-							gearbox.Type, (int)i, engineData?.FullLoadCurves[i + 1], gearbox.Gears,
+							gearbox.Type, (int)i, engineData?.FullLoadCurves[i + 1], gearsInput,
 							engineData,
 							axlegearRatio, dynamicTyreRadius)
 						: DeclarationData.Gearbox.ComputeShiftPolygon(
-							gearbox.Type, (int)i, engineData?.FullLoadCurves[i + 1], gearbox.Gears,
+							gearbox.Type, (int)i, engineData?.FullLoadCurves[i + 1], gearsInput,
 							engineData,
 							axlegearRatio, dynamicTyreRadius);
 				var gearData = new GearData {
