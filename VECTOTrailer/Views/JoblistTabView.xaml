@@ -85,24 +85,20 @@
                 <Grid>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,15,0">
                         <Button HorizontalAlignment="Right" MinWidth="80" Margin="0,0,10,0"
-                                Content="Save As..." Visibility="{Binding SaveAsButtonVisible, Converter={converter:BoolVisibilityConverter}}"
+                                Content="Save As..." 
                                 Command="{Binding SaveAsJob}"
                                 CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
 
                         <Button HorizontalAlignment="Right" MinWidth="80" Margin="0,0,10,0"
-                                Content="Save" Visibility="{Binding SaveButtonVisibility, Converter={converter:BoolVisibilityConverter}}"
+                                Content="Save" 
                                 Command="{Binding SaveJob}" 
                                 CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
 
-                        <Button HorizontalAlignment="Right" MinWidth="140" 
-                                Content="{Binding ElementName=ComponentsTab, Path=SelectedItem, 
-                                Converter={converter:SaveButtonLabelConverter}, ConverterParameter='Commit'}" 
-                                Command="{Binding CommitComponent}" CommandParameter="{Binding ElementName=ComponentsTab, Path=SelectedItem}"/>
+                        
                     </StackPanel>
 
 
-                    <Button Content="Reset" HorizontalAlignment="Left" Margin="15,0,0,0"  MinWidth="80"
-                            Command="{Binding ResetComponent}" CommandParameter="{Binding ElementName=ComponentsTab, Path=SelectedItem}"/>
+                    
                 </Grid>
             </StackPanel>
         </Grid>

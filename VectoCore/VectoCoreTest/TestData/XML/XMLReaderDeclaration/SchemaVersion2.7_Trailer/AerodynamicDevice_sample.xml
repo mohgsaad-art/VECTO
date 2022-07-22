@@ -14,7 +14,10 @@ xmlns:v2.7="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7" xmlns:tns="
 			<CertifiedAerodynamicReduction3>2.00</CertifiedAerodynamicReduction3>
 			<CertifiedAerodynamicReduction6>3.00</CertifiedAerodynamicReduction6>
 			<CertifiedAerodynamicReduction9>4.00</CertifiedAerodynamicReduction9>
-			<ApplicableVehicleGroup>1123</ApplicableVehicleGroup>
+			<ApplicableVehicleGroups>
+				<ApplicableVehicleGroup>1123</ApplicableVehicleGroup>
+				<ApplicableVehicleGroup>2356</ApplicableVehicleGroup>
+			</ApplicableVehicleGroups>
 		</Data>
 		<Signature>
 			<di:Reference URI="#AERO-asdf">
