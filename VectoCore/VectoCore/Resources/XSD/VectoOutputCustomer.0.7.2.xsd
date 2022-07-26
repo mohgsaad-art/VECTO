@@ -46,7 +46,7 @@
 							</xs:simpleContent>
 						</xs:complexType>
 					</xs:element>
-					<xs:element name="FuelType" type="xs:string"/>
+					<xs:element name="FuelType" type="xs:string" maxOccurs="unbounded"/>
 					<xs:element name="AverageSpeed">
 						<xs:complexType>
 							<xs:simpleContent>
@@ -301,7 +301,7 @@
 							</xs:simpleContent>
 						</xs:complexType>
 					</xs:element>
-					<xs:element name="FuelType" type="vdecdef:FuelTypeType">
+					<xs:element name="FuelType" type="vdecdef:FuelTypeType" maxOccurs="unbounded">
 						<xs:annotation>
 							<xs:documentation>P193 / II.1.2.3</xs:documentation>
 						</xs:annotation>
