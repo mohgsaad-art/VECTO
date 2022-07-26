@@ -9,6 +9,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.NinjectModules
 		public override void Load() {
 			Bind<IXMLEngineDeclarationInputData>().To<XMLDeclarationEngineDataProviderV23>().Named(
 				XMLDeclarationEngineDataProviderV23.QUALIFIED_XSD_TYPE);
+
+			Bind<IXMLTyreDeclarationInputData>().To<XMLDeclarationTyreDataProviderV23>().Named(
+				XMLDeclarationTyreDataProviderV23.QUALIFIED_XSD_TYPE);
 		}
 	}
 }
