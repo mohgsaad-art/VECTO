@@ -975,7 +975,67 @@
   <data name="Vehicle_MaxNetPower2" xml:space="preserve">
     <value>MaxNetPower2</value>
   </data>
-  <data name="Vehicle_ADAS" xml:space="preserve">
+<data name="Engine_FuelModes" xml:space="preserve">
+    <value>Mode</value>
+  </data>
+<data name="Engine_FuelModes_Fuel" xml:space="preserve">
+    <value>Fuel</value>
+  </data>
+<data name="Engine_WHRCorrectionFactors_Urban" xml:space="preserve">
+    <value>Urban</value>
+  </data>
+<data name="Engine_WHRCorrectionFactors_Rural" xml:space="preserve">
+    <value>Rural</value>
+  </data>
+<data name="Engine_WHRCorrectionFactors_Motorway" xml:space="preserve">
+    <value>Motorway</value>
+  </data>
+<data name="Engine_WHRCorrectionFactors_BFColdHot" xml:space="preserve">
+    <value>BFColdHot</value>
+  </data>
+<data name="Engine_WHRCorrectionFactors_CFRegPer" xml:space="preserve">
+    <value>CFRegPer</value>
+  </data>
+<data name="Engine_WHRType" xml:space="preserve">
+    <value>WHRType</value>
+  </data>
+<data name="Engine_WHRCorrectionFactors_Mechanical" xml:space="preserve">
+    <value>Mechanical</value>
+  </data>
+<data name="Engine_FuelConsumptionMap_WHRMechPower_Attr" xml:space="preserve">
+    <value>mechanicalPower</value>
+  </data>
+<data name="Engine_WHR_MechanicalOutputICE" xml:space="preserve">
+    <value>MechanicalOutputICE</value>
+  </data>
+<data name="Engine_WHR_MechanicalOutputIDrivetrain" xml:space="preserve">
+    <value>MechanicalOutputDrivetrain</value>
+  </data>
+<data name="Engine_WHR_ElectricalOutput" xml:space="preserve">
+    <value>ElectricalOutput</value>
+  </data>
+<data name="Engine_WHRCorrectionFactors" xml:space="preserve">
+    <value>WHRCorrectionFactors</value>
+  </data>
+<data name="Engine_WHRCorrectionFactors_Electrical" xml:space="preserve">
+    <value>Electrical</value>
+  </data>
+<data name="Engine_FuelConsumptionMap_WHRElPower_Attr" xml:space="preserve">
+    <value>electricPower</value>
+  </data>
+<data name="Vehicle_ADAS_EcoRoll" xml:space="preserve">
+    <value>EcoRoll</value>
+  </data>
+<data name="Engine_WHRCorrectionFactor" xml:space="preserve">
+    <value>WHRCorrection</value>
+  </data>
+<data name="Engine_WHRMap_Entry" xml:space="preserve">
+    <value>Entry</value>
+  </data>
+<data name="Engine_WHRMap" xml:space="preserve">
+    <value>WHRMap</value>
+  </data>
+<data name="Vehicle_ADAS" xml:space="preserve">
     <value>ADAS</value>
   </data>
   <data name="Vehicle_ADAS_PCC" xml:space="preserve">

@@ -133,11 +133,13 @@
 			<File FilePath="VectoCore\Resources\XSD\VectoOutputCustomer.0.4.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoOutputCustomer.0.5.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoOutputCustomer.0.7.1.xsd" HomeFolder="Yes"/>
+			<File FilePath="VectoCore\Resources\XSD\VectoOutputCustomer.0.7.2.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoOutputCustomer.0.7.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoOutputCustomer.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoOutputManufacturer.0.5.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoOutputManufacturer.0.6.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoOutputManufacturer.0.7.1.xsd" HomeFolder="Yes"/>
+			<File FilePath="VectoCore\Resources\XSD\VectoOutputManufacturer.0.7.2.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoOutputManufacturer.0.7.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoOutputManufacturer.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VTPReport.0.1.xsd" HomeFolder="Yes"/>

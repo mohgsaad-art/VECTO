@@ -46,6 +46,13 @@ namespace TUGraz.IVT.VectoXML
 			{ FuelConsumptionMapReader.Fields.FuelConsumption, XMLNames.Engine_FuelConsumptionMap_FuelConsumption_Attr }
 		};
 
+		public static readonly Dictionary<string, string> WHRPowerMapMapping = new Dictionary<string, string> {
+			{ WHRPowerReader.Fields.EngineSpeed, XMLNames.Engine_FuelConsumptionMap_EngineSpeed_Attr },
+			{ WHRPowerReader.Fields.Torque, XMLNames.Engine_FuelConsumptionMap_Torque_Attr },
+			{ WHRPowerReader.Fields.ElectricPower, XMLNames.Engine_FuelConsumptionMap_WHRElPower_Attr },
+			{ WHRPowerReader.Fields.MechanicalPower, XMLNames.Engine_FuelConsumptionMap_WHRMechPower_Attr }
+		};
+
 		public static readonly Dictionary<string, string> EngineFullLoadCurveMapping = new Dictionary<string, string> {
 			{ FullLoadCurveReader.Fields.EngineSpeed, XMLNames.Engine_EngineFullLoadCurve_EngineSpeed_Attr },
 			{ FullLoadCurveReader.Fields.TorqueFullLoad, XMLNames.Engine_FullLoadCurve_MaxTorque_Attr },

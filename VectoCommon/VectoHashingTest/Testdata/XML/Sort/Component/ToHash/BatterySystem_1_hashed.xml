@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<tns:VectoInputDeclaration xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3" xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationComponent:v2.1" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:v2.3="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3" xmlns:di="http://www.w3.org/2000/09/xmldsig#" schemaVersion="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationComponent v:\VectoCore\VectoCore\Resources\XSD/VectoDeclarationComponent.xsd">
+    <tns:BatterySystem>
+        <v2.3:Data xsi:type="BatterySystemDataType" id="BAT-asdf">
+            <v2.3:Manufacturer>a</v2.3:Manufacturer>
+            <v2.3:Model>a</v2.3:Model>
+            <v2.3:CertificationNumber>token</v2.3:CertificationNumber>
+            <v2.3:Date>2022-03-15T08:08:02.3716173Z</v2.3:Date>
+            <v2.3:AppVersion>aaaaa</v2.3:AppVersion>
+            <v2.3:CertificationMethod>Measured</v2.3:CertificationMethod>
+            <v2.3:BatteryType>HPBS</v2.3:BatteryType>
+            <v2.3:RatedCapacity>72.00</v2.3:RatedCapacity>
+            <v2.3:ConnectorsSubsystemsIncluded>true</v2.3:ConnectorsSubsystemsIncluded>
+            <v2.3:JunctionboxIncluded>true</v2.3:JunctionboxIncluded>
+            <v2.3:TestingTemperature>20</v2.3:TestingTemperature>
+            <v2.3:OCV>
+                <v2.3:Entry SoC="88" OCV="640.00" />
+                <v2.3:Entry SoC="89" OCV="641.00" />
+                <v2.3:Entry SoC="0" OCV="620.00" />
+                <v2.3:Entry SoC="100" OCV="640.00" />
+            </v2.3:OCV>
+            <v2.3:InternalResistance>
+                <v2.3:Entry SoC="88" R_2="14.00" R_10="14.00" R_20="16.00" />
+                <v2.3:Entry SoC="0" R_2="10.00" R_10="11.00" R_20="12.00" />
+                <v2.3:Entry SoC="100" R_2="12.00" R_10="14.00" R_20="16.00" />
+                <v2.3:Entry SoC="88" R_2="13.00" R_10="14.00" R_20="16.00" />
+            </v2.3:InternalResistance>
+            <v2.3:CurrentLimits>
+                <v2.3:Entry SoC="88" maxChargingCurrent="21.00" maxDischargingCurrent="50.00" />
+                <v2.3:Entry SoC="0" maxChargingCurrent="50.00" maxDischargingCurrent="0.00" />
+                <v2.3:Entry SoC="88" maxChargingCurrent="20.00" maxDischargingCurrent="50.00" />
+                <v2.3:Entry SoC="100" maxChargingCurrent="0.00" maxDischargingCurrent="50.00" />
+            </v2.3:CurrentLimits>
+        </v2.3:Data>
+        <v2.3:Signature>
+            <di:Reference URI="#BAT-asdf">
+                <di:Transforms>
+                    <di:Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+                    <di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+                </di:Transforms>
+                <di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+                <di:DigestValue>BQ4EAWXDJzzw5Vg2DvTKN4PP/gXDBwuFUdPuRnFoVZc=</di:DigestValue>
+            </di:Reference>
+        </v2.3:Signature>
+    </tns:BatterySystem>
+</tns:VectoInputDeclaration>

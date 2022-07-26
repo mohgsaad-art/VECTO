@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<tns:VectoInputDeclaration xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" schemaVersion="1.0" xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationComponent:v2.1" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationComponent:v2.1 v:\VectoCore\VectoCore\Resources\XSD\VectoComponent.2.1.xsd">
+    <tns:Tyre>
+        <v2.0:Data id="CON_123456" xsi:type="TyreDataDeclarationType">
+            <Manufacturer>Continental</Manufacturer>
+            <Model>CONTINENTAL CONTIVANCONTACT 100</Model>
+            <CertificationNumber>e4*2017/2400*2019/318*T*0799*00</CertificationNumber>
+            <Date>2022-04-21T16:29:52.9428139Z</Date>
+            <AppVersion>not available</AppVersion>
+            <Dimension>205/70 R17C</Dimension>
+            <TyreClass>C2</TyreClass>
+            <FuelEfficiencyClass>C</FuelEfficiencyClass>
+            <RRCDeclared>0.0075</RRCDeclared>
+            <FzISO>10131</FzISO>
+        </v2.0:Data>
+        <v2.0:Signature>
+            <Reference URI="#CON_123456" xmlns="http://www.w3.org/2000/09/xmldsig#">
+                <Transforms>
+                    <Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+                    <Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+                </Transforms>
+                <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+                <DigestValue>plljfjf0kzIAy19CMI2xu30AHfMcB5VlqLlmTKiSkKA=</DigestValue>
+            </Reference>
+        </v2.0:Signature>
+    </tns:Tyre>
+</tns:VectoInputDeclaration>

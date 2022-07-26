@@ -39,6 +39,9 @@ namespace TUGraz.VectoCommon.Utils
 {
 	public static class EnumerableExtensionMethods
 	{
+		public static string Join<T>(this IEnumerable<T> list, string separator = ", ") =>
+			string.Join(separator, list ?? Enumerable.Empty<T>());
+
 		public static T[] Slice<T>(this T[] source, int start, int end)
 		{
 			if (start < 0)

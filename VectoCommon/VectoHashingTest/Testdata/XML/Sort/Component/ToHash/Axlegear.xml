@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tns:VectoInputDeclaration xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationComponent:v2.1" 
+xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:v2.3="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3" 
+xmlns:di="http://www.w3.org/2000/09/xmldsig#" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" schemaVersion="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationComponent v:\VectoCore\VectoCore\Resources\XSD/VectoDeclarationComponent.xsd">
+    <tns:Axlegear>
+        <v2.0:Data xsi:type="AxlegearDataDeclarationType" id="AXL-asdf">            
+         <Manufacturer>Generic Vendor</Manufacturer>
+         <Model>Generic Model</Model>
+         <CertificationNumber>AXL-AXL_12</CertificationNumber>
+         <Date>2021-11-18T14:23:31.4958567Z</Date>
+         <AppVersion>VectoCore</AppVersion>
+         <LineType>Single portal axle</LineType>
+         <Ratio>1.000</Ratio>
+         <CertificationMethod>Measured</CertificationMethod>
+         <TorqueLossMap>
+		 	<Entry inputSpeed="4000.00" inputTorque="-788.10" torqueLoss="31.10" />
+			<Entry inputSpeed="4000.00" inputTorque="0.11" torqueLoss="31.10" />
+			<Entry inputSpeed="0.00" inputTorque="-50000.10" torqueLoss="2000.10" />
+			<Entry inputSpeed="0.00" inputTorque="50000.10" torqueLoss="2000.10" />
+			<Entry inputSpeed="4000.00" inputTorque="-60000.10" torqueLoss="2000.10" />
+			<Entry inputSpeed="5000.00" inputTorque="-50000.10" torqueLoss="2000.10" />
+			<Entry inputSpeed="4000.00" inputTorque="788.10" torqueLoss="31.10" />
+			<Entry inputSpeed="5000.00" inputTorque="780.10" torqueLoss="31.10" />
+			<Entry inputSpeed="5000.00" inputTorque="50000.10" torqueLoss="2000.10" />
+			<Entry inputSpeed="0.00" inputTorque="-125.10" torqueLoss="5.10" />
+			<Entry inputSpeed="0.00" inputTorque="0.10" torqueLoss="5.10" />
+			<Entry inputSpeed="0.00" inputTorque="125.10" torqueLoss="5.10" />
+			<Entry inputSpeed="5000.00" inputTorque="-780.10" torqueLoss="31.10" />
+			<Entry inputSpeed="5000.00" inputTorque="0.10" torqueLoss="31.10" />
+			<Entry inputSpeed="4000.00" inputTorque="60000.10" torqueLoss="2000.10" />
+		</TorqueLossMap>
+        </v2.0:Data>
+    </tns:Axlegear>
+</tns:VectoInputDeclaration>
