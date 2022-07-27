@@ -8,4 +8,5 @@
  -->
 	<xs:import namespace="urn:tugraz:ivt:VectoAPI:MonitoringOutput:v0.7" schemaLocation="VectoMonitoring.0.7.xsd"/>
 	<xs:import namespace="urn:tugraz:ivt:VectoAPI:MonitoringOutput:v0.7.1" schemaLocation="VectoMonitoring.0.7.1.xsd"/>
+	<xs:import namespace="urn:tugraz:ivt:VectoAPI:MonitoringOutput:v0.7.2" schemaLocation="VectoMonitoring.0.7.2.xsd"/>
 </xs:schema>
