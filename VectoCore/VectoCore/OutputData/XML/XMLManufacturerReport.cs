@@ -91,7 +91,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(tns + XMLNames.Vehicle_CurbMassChassis, XMLHelper.ValueAsUnit(modelData.VehicleData.CurbMass, XMLNames.Unit_kg)),
 				new XElement(tns + XMLNames.Vehicle_ZeroEmissionVehicle, modelData.VehicleData.ZeroEmissionVehicle),
 				new XElement(tns + XMLNames.Vehicle_HybridElectricHDV, modelData.VehicleData.HybridElectricHDV),
-				new XElement(tns + XMLNames.Vehicle_DualFuelVehicle, modelData.EngineData.Fuels.Count > 1),
+				new XElement(tns + XMLNames.Vehicle_DualFuelVehicle, exempted ? modelData.VehicleData.DualFuelVehicle : modelData.EngineData.Fuels.Count > 1),
 				exempted 
 					? ExemptedData(modelData) 
 					: new[] {
