@@ -33,33 +33,36 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 		[Category("LongRunning")]
 		[Category("Integration")]
         [
-        TestCase(P1_JOB, 0, 496.8873, 10.2371, 10.2191, TestName = "P1 Hybrid TimeRun MeasuredSpeed LongHaul"),
-        TestCase(P1_JOB, 1, 497.4313, 14.9897, 15.072, TestName = "P1 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
-        TestCase(P1_JOB, 2, 629.491, 44.975, 44.9965, TestName = "P1 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
+        TestCase(P1_JOB, 0, 496.8873, 10.2371, 10.2191, 51.3803, 49.0392, TestName = "P1 Hybrid TimeRun MeasuredSpeed LongHaul"),
+        TestCase(P1_JOB, 1, 497.431, 15.0404, 15.1223, 39.3974, 33.9238, TestName = "P1 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(P1_JOB, 2, 629.9087, 45.0032, 45.0246, 20.7733, 8.9985, TestName = "P1 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
         
-        TestCase(P2_JOB, 0, 573.947, 8.7646, 7.7124, TestName = "P2 Hybrid TimeRun MeasuredSpeed LongHaul"),
-        TestCase(P2_JOB, 1, 557.0464, 11.5103, 11.4645, TestName = "P2 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
-        TestCase(P2_JOB, 2, 608.2527, 30.5006, 31.2549, TestName = "P2 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
+        TestCase(P2_JOB, 0, 573.9052, 8.7047, 7.6549, 56.8495, 54.8095, TestName = "P2 Hybrid TimeRun MeasuredSpeed LongHaul"),
+        TestCase(P2_JOB, 1, 557.342, 11.4929, 11.4449, 42.7555, 37.8328, TestName = "P2 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(P2_JOB, 2, 608.0294, 30.607, 31.4384, 20.7954, 9.3377, TestName = "P2 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
 
-        TestCase(P2_5_JOB, 0, 836.7854, 5.5221, 9.1817, TestName = "P2_5 Hybrid TimeRun MeasuredSpeed LongHaul"),
-        TestCase(P2_5_JOB, 1, 946.3114, 6.8857, 11.0556, TestName = "P2_5 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
-        TestCase(P2_5_JOB, 2, 1654.5234, 13.5674, 18.3792, TestName = "P2_5 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
+        TestCase(P2_5_JOB, 0, 836.8542, 5.4472, 9.1129, 97.6207, 82.1965, TestName = "P2_5 Hybrid TimeRun MeasuredSpeed LongHaul"),
+        TestCase(P2_5_JOB, 1, 948.4517, 6.8962, 11.0601, 82.857, 58.0923, TestName = "P2_5 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(P2_5_JOB, 2, 1653.1938, 13.5281, 18.2762, 55.0623, 17.108, TestName = "P2_5 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
 
-        TestCase(P3_JOB, 0, 573.7352, 2.8828, 3.2344, TestName = "P3 Hybrid TimeRun MeasuredSpeed LongHaul"),
-        TestCase(P3_JOB, 1, 558.1513, 7.5458, 8.4801, TestName = "P3 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
-        TestCase(P3_JOB, 2, 0, 0, 0, TestName = "P3 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
+        TestCase(P3_JOB, 0, 573.7034, 2.8792, 3.2346, 56.8521, 54.8135, TestName = "P3 Hybrid TimeRun MeasuredSpeed LongHaul"),
+        TestCase(P3_JOB, 1, 557.9873, 7.5073, 8.4417, 42.8139, 37.9032, TestName = "P3 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(P3_JOB, 2, 0, 0, 0, 0, 0, TestName = "P3 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
 
-        TestCase(P4_JOB, 0, 573.1148, 1.7022, 1.957, TestName = "P4 Hybrid TimeRun MeasuredSpeed LongHaul"),
-        TestCase(P4_JOB, 1, 568.8524, 3.2313, 3.9296, TestName = "P4 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
-        TestCase(P4_JOB, 2, 711.727, 8.2956, 9.4808, TestName = "P4 Hybrid TimeRun MeasuredSpeed UrbanDelivery")
+        TestCase(P4_JOB, 0, 573.5137, 1.733, 1.9888, 56.5505, 54.5212, TestName = "P4 Hybrid TimeRun MeasuredSpeed LongHaul"),
+        TestCase(P4_JOB, 1, 569.1214, 3.2957, 3.9781, 42.3031, 37.4575, TestName = "P4 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(P4_JOB, 2, 712.0098, 8.3069, 9.4837, 20.3732, 9.1137, TestName = "P4 Hybrid TimeRun MeasuredSpeed UrbanDelivery")
         ]
-        public void TestHybridTimeRunCycle(string jobFile, int cycleIdx, double CO2, double charge, double discharge)
+        public void TestHybridTimeRunCycle(string jobFile, int cycleIdx, double CO2, double charge, double discharge, double pWheelpos,
+            double pWheel)
         {
             Dictionary<string, double> metrics = new Dictionary<string, double>()
 			{
 				{ SummaryDataContainer.Fields.CO2_KM, CO2 },
                 { SummaryDataContainer.Fields.E_REESS_T_chg, charge },
-                { SummaryDataContainer.Fields.E_REESS_T_dischg, discharge }
+                { SummaryDataContainer.Fields.E_REESS_T_dischg, discharge },
+                { SummaryDataContainer.Fields.P_WHEEL_POS, pWheelpos },
+                { SummaryDataContainer.Fields.P_WHEEL, pWheel }
 			};
 
             RunHybridTimeRunCycle(jobFile, cycleIdx, metrics);
