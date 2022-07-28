@@ -90,7 +90,7 @@
 		<HashingTool Include="$(SolutionDir)HashingCmd\bin\Release\hashingcmd.exe"/>
 		
 		<VectoConfigurationSample Include="$(SolutionDir)VECTO\install.ini"/>
-
+		<Readme Include="$(SolutionDir)README.txt"/>
 
 	</ItemGroup>
 	
@@ -106,6 +106,7 @@
 	<Copy SourceFiles="@(UserManual)" DestinationFolder="$(OutputPath)\User Manual" />
 	<Copy SourceFiles="@(ReleaseNotes)" DestinationFiles="$(OutputPath)\User Manual\Release Notes.pdf" />
 	<Copy SourceFiles="@(VectoConfigurationSample)" DestinationFolder="$(OutputPath)"/>
+	<Copy SourceFiles="@(Readme)" DestinationFolder="$(OutputPath)"/>
 	<Copy SourceFiles="$(SolutionDir)\Documentation\User Manual Source\README for Mission Profiles Directory.txt" DestinationFiles="$(OutputPath)\Mission Profiles\!! README !!.TXT"/>
 	<Copy SourceFiles="$(SolutionDir)\Documentation\User Manual Source\README for Declaration Directory.txt" DestinationFiles="$(OutputPath)\Declaration\!! README !!.TXT"/>
 	<Copy SourceFiles="$(ReleaseConfig)" DestinationFiles="$(OutputPath)\VECTOTrailer.exe.config"/>
@@ -119,6 +120,7 @@
 		<ZipFiles Include="$(OutputPath)XML\**\*.*" />
 		<ZipFiles Include="$(OutputPath)\x64\**"/>
 		<ZipFiles Include="$(OutputPath)\x86\**"/>
+		<ZipFiles Include="$(OutputPath)\*.txt"/>
 
 		<!--<ZipFiles Include="$(OutputPath)Resources\**\*.*" />-->
 	</ItemGroup>
