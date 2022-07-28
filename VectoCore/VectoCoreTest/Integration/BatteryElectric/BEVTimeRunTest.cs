@@ -29,16 +29,16 @@ namespace TUGraz.VectoCore.Tests.Integration.BatteryElectric
 		[Category("Integration")]
         [
         TestCase(E2_JOB, 0, 0, 1.1667, 120.2219, TestName = "E2 BEV TimeRun MeasuredSpeed LongHaul"),
-        TestCase(E2_JOB, 1, 1, 3.9969, 120.1189, TestName = "E2 BEV TimeRun MeasuredSpeed RegionalDelivery"),
-        TestCase(E2_JOB, 2, 2, 26.2759, 143.7661, TestName = "E2 BEV TimeRun MeasuredSpeed UrbanDelivery"),
+        TestCase(E2_JOB, 1, 1, 4.0362, 120.1075, TestName = "E2 BEV TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(E2_JOB, 2, 2, 26.2752, 143.7675, TestName = "E2 BEV TimeRun MeasuredSpeed UrbanDelivery"),
 
         TestCase(E2_JOB, 6, 0, 1.128, 120.0309, TestName = "E2 BEV TimeRun MeasuredSpeedGear LongHaul"),
-        TestCase(E2_JOB, 7, 1, 4.3124, 117.0313, TestName = "E2 BEV TimeRun MeasuredSpeedGear RegionalDelivery"),
-        TestCase(E2_JOB, 8, 2, 28.8197, 125.1797, TestName = "E2 BEV TimeRun MeasuredSpeedGear UrbanDelivery"),
+        TestCase(E2_JOB, 7, 1, 4.309, 117.0281, TestName = "E2 BEV TimeRun MeasuredSpeedGear RegionalDelivery"),
+        TestCase(E2_JOB, 8, 2, 28.8188, 125.1815, TestName = "E2 BEV TimeRun MeasuredSpeedGear UrbanDelivery"),
 
         TestCase(E2_JOB, 9, 0, 1.155, 119.9847, TestName = "E2 BEV TimeRun PWheel LongHaul"),
-        TestCase(E2_JOB, 10, 1, 4.4643, 116.9218, TestName = "E2 BEV TimeRun PWheel RegionalDelivery"),
-        TestCase(E2_JOB, 11, 2, 30.4811, 124.8204, TestName = "E2 BEV TimeRun PWheel UrbanDelivery"),
+        TestCase(E2_JOB, 10, 1, 4.4591, 116.936, TestName = "E2 BEV TimeRun PWheel RegionalDelivery"),
+        TestCase(E2_JOB, 11, 2, 30.4812, 124.8283, TestName = "E2 BEV TimeRun PWheel UrbanDelivery"),
 
         TestCase(E3_JOB, 0, 0, 0.7916, 101.6194, TestName = "E3 BEV TimeRun MeasuredSpeed LongHaul"),
         TestCase(E3_JOB, 1, 1, 3.3777, 104.792, TestName = "E3 BEV TimeRun MeasuredSpeed RegionalDelivery"),
