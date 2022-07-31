@@ -17,7 +17,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
             base(container, strategy, es)
         {}
 
-        protected override void ApplyStrategySettings(Second absTime, HybridStrategyResponse strategySettings)
+        protected override void ApplyStrategySettings(HybridStrategyResponse strategySettings)
 		{
 			Gearbox.SwitchToNeutral = strategySettings.GearboxInNeutral;
 
@@ -31,7 +31,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				_shiftStrategy.SetNextGear(nextGear);
 			}
 			
-			strategySettings.ShiftRequired = DataBus.GearboxInfo.GearEngaged(absTime) && 
+			strategySettings.ShiftRequired = DataBus.GearboxInfo.GearEngaged(DataBus.AbsTime) && 
 				(DataBus.DrivingCycleInfo.CycleData.LeftSample.Gear != DataBus.DrivingCycleInfo.CycleData.RightSample.Gear);
 			
 			if (strategySettings.ShiftRequired) {

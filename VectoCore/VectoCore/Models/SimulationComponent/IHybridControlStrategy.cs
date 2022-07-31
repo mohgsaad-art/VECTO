@@ -17,8 +17,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent
 
 		
 		void CommitSimulationStep(Second time, Second simulationInterval);
-
-		VelocityRollingLookup VelocityDropData { get; }
 		
 		IHybridController Controller { set; }
 		PerSecond MinICESpeed { get; }

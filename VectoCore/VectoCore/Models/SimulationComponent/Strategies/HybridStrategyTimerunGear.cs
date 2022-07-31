@@ -408,5 +408,17 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				|| firstResponse.Clutch.OutputSpeed.IsSmaller(ModelData.EngineData.IdleSpeed);
         }
 
+        protected override bool HandleTotalTorqueDemandNull(IResponse resp, HybridResultEntry tmp)
+        {
+			if (resp.Engine.TotalTorqueDemand == null) {
+				tmp.FuelCosts = double.NaN;
+				tmp.IgnoreReason |= HybridConfigurationIgnoreReason.NoResponseAvailable;
+				return true;
+			}
+			else {
+				return false;
+            }
+        }
+
     }
 }

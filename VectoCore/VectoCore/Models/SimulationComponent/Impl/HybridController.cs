@@ -73,7 +73,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			_electricMotorCtl[pos] = new ElectricMotorController(this, motorData);
 		}
 
-		protected virtual void ApplyStrategySettings(Second absTime, HybridStrategyResponse strategySettings)
+		protected virtual void ApplyStrategySettings(HybridStrategyResponse strategySettings)
 		{
 			Gearbox.SwitchToNeutral = strategySettings.GearboxInNeutral;
 			Engine.CombustionEngineOn = strategySettings.CombustionEngineOn;
@@ -139,7 +139,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				}
 
 				var strategySettings = strategyResponse as HybridStrategyResponse;
-				ApplyStrategySettings(absTime, strategySettings);
+				ApplyStrategySettings(strategySettings);
 				if (!dryRun) {
 					CurrentState.SetState(outTorque, outAngularVelocity, outTorque, outAngularVelocity);
 					CurrentState.StrategyResponse = strategySettings;
