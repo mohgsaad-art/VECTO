@@ -39,6 +39,6 @@ namespace TUGraz.VectoCore.Models.Simulation
 	{
 		ISimulatorFactory Factory(
 			ExecutionMode mode, IInputDataProvider dataProvider, IOutputDataWriter writer,
-			IDeclarationReport declarationReport = null, IVTPReport vtpReport = null, bool validate = true);
+			IDeclarationReport declarationReport = null, IVTPReport vtpReport = null, bool validate = true, bool validateHashes = false);
 	}
 }
