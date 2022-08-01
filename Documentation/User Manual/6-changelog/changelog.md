@@ -1,5 +1,25 @@
 # Changelog
 
+**VECTO-3.3.12**
+
+***Build 2769 (2022-08-01) RELEASE CANDIDATE***
+
+- Improvement
+    * [VECTO-1584] - Hashing library uses constructor that is deprecated in newer .net versions
+    * [VECTO-1619] - Adaptations of XML Results in transition period
+    * [VECTO-1619] - Reading Engine and Tyre component according to 2nd amendment (schema version 2.3)
+    * [VECTO-1461] - Alignment of Steering Pump Technology and Steered Axles not checked by VECTO
+    * [VECTO-1571] - Help file: Vehicle defined Torque Limitations
+    * [VECTO-1585] - Validate component hashes in declaration mode (disabled by default)
+    * [VECTO-1587] - update build script to include files required for xml parameter documentation
+    * [VECTO-1598] - Execution time in latest official release
+    * [VECTO-1608] - Adaptation of Reports (MRF/CIF) for transition in official VECTO Release
+
+- Bugfixes
+    * [VECTO-1622] - Unexpected response: Response Underload in LH LowLoad
+    * [VECTO-1623] - Unexpected response: Response Underload in LH EMS RefLoad
+
+
 **VECTO-3.3.11**
 
 ***Build 2675 (2022-04-29) OFFICIAL RELEASE***
