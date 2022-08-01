@@ -292,7 +292,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 			var inputData = xmlInputReader.CreateDeclaration(jobFile);
 			var factory = new SimulatorFactory(ExecutionMode.Declaration, inputData, writer) {
 				WriteModalResults = true,
-				ActualModalData = true
+				ActualModalData = true,
+				ValidateComponentHashes = false
 			};
 			var sumWriter = new SummaryDataContainer(writer);
 			var jobContainer = new JobContainer(sumWriter);
@@ -324,7 +325,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 			var inputData = xmlInputReader.CreateDeclaration(jobFile);
 			var factory = new SimulatorFactory(ExecutionMode.Declaration, inputData, writer) {
 				WriteModalResults = true,
-				ActualModalData = true
+				ActualModalData = true,
+				ValidateComponentHashes = false
 			};
 			var sumWriter = new SummaryDataContainer(writer);
 			var jobContainer = new JobContainer(sumWriter);

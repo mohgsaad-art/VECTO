@@ -37,6 +37,7 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml;
 using System.Xml.Linq;
+using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Hashing;
 using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCommon.Utils;
@@ -458,6 +459,31 @@ namespace TUGraz.VectoHashing
 				throw new Exception("Multiple DigestValue elements found!");
 			}
 			return nodes[0].InnerText;
+		}
+
+		public static void ValidateJob(XmlDocument doc)
+		{
+			var h = VectoHash.Load(doc);
+			var components = h.GetContainigComponents().GroupBy(s => s)
+				.Select(g => new { Entry = g.Key, Count = g.Count() });
+			var invalid = new List<string>();
+			foreach (var component in components) {
+				if (component.Entry == VectoComponents.Vehicle) {
+					continue;
+				}
+				for (var i = 0; i < component.Count; i++) {
+					//var readHash = h.ReadHash(component.Entry, i);
+					if (!h.ValidateHash(component.Entry, i)) {
+						var read = h.ReadHash(component.Entry, i);
+						var computed = h.ComputeHash(component.Entry, i);
+						invalid.Add($"Hash for component {component.Entry} ({i + 1}) invalid. Read: '{read}', Computed: '{computed}'");
+					}
+				}
+			}
+
+			if (invalid.Count > 0) {
+				throw new VectoException(invalid.JoinString(System.Environment.NewLine));
+			}
 		}
 	}
 }

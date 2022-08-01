@@ -104,7 +104,8 @@ namespace TUGraz.VectoCore.Tests.Integration.Declaration
 			var inputData = xmlInputReader.CreateDeclaration(modified); //.ReadJsonJob(relativeJobPath);
 			var factory = new SimulatorFactory(ExecutionMode.Declaration, inputData, writer) {
 				WriteModalResults = true,
-				ActualModalData = true
+				ActualModalData = true,
+				ValidateComponentHashes = false
 			};
 			var jobContainer = new JobContainer(new MockSumWriter());
 

@@ -95,7 +95,9 @@ namespace TUGraz.VectoCore.Tests.Integration.Declaration
 			}
 			var inputDataProvider = xmlInputReader.CreateDeclaration(modified);
 			
-			var factory = new SimulatorFactory(ExecutionMode.Declaration, inputDataProvider, null, validate: false);
+			var factory = new SimulatorFactory(ExecutionMode.Declaration, inputDataProvider, null, validate: false) {
+				ValidateComponentHashes = false
+			};
 			var first = factory.SimulationRuns().ToArray().First();
 
 			var modData = ((ModalDataContainer)first.GetContainer().ModalData).Data;

@@ -602,6 +602,10 @@ Public Class VectoJob
         End Get
     End Property
 
+    Public Sub ValidateComponentHashes() Implements IDeclarationInputDataProvider.ValidateComponentHashes
+        Throw New NotImplementedException
+    End Sub
+
     Public ReadOnly Property XMLHash As XElement Implements IDeclarationInputDataProvider.XMLHash
         Get
             Return Nothing
