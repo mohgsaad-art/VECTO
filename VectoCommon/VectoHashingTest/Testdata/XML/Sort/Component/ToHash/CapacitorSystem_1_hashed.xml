@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<tns:VectoInputDeclaration xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3" xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationComponent:v2.1" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:v2.3="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3" xmlns:di="http://www.w3.org/2000/09/xmldsig#" schemaVersion="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationComponent v:\VectoCore\VectoCore\Resources\XSD/VectoDeclarationComponent.xsd">
+    <tns:CapacitorSystem>
+        <v2.3:Data xsi:type="v2.3:CapacitorSystemDataType" id="CAP-asdf">
+            <v2.3:Manufacturer>a</v2.3:Manufacturer>
+            <v2.3:Model>a</v2.3:Model>
+            <v2.3:CertificationNumber>token</v2.3:CertificationNumber>
+            <v2.3:Date>2022-03-15T08:08:17.841244Z</v2.3:Date>
+            <v2.3:AppVersion>aaaaa</v2.3:AppVersion>
+            <v2.3:CertificationMethod>Measured</v2.3:CertificationMethod>
+            <v2.3:Capacitance>1.00</v2.3:Capacitance>
+            <v2.3:InternalResistance>23.45</v2.3:InternalResistance>
+            <v2.3:MinVoltage>3.55</v2.3:MinVoltage>
+            <v2.3:MaxVoltage>30.45</v2.3:MaxVoltage>
+            <v2.3:MaxChargingCurrent>100.00</v2.3:MaxChargingCurrent>
+            <v2.3:MaxDischargingCurrent>99.45</v2.3:MaxDischargingCurrent>
+            <v2.3:TestingTemperature>30</v2.3:TestingTemperature>
+        </v2.3:Data>
+        <v2.3:Signature>
+            <di:Reference URI="#CAP-asdf">
+                <di:Transforms>
+                    <di:Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+                    <di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+                </di:Transforms>
+                <di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+                <di:DigestValue>eyp7l0REvKF7yJKRvv9O8jR2xi0ozKYtWjYSNCwkJN0=</di:DigestValue>
+            </di:Reference>
+        </v2.3:Signature>
+    </tns:CapacitorSystem>
+</tns:VectoInputDeclaration>

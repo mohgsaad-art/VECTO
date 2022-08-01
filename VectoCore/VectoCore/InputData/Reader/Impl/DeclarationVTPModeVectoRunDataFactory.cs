@@ -66,8 +66,12 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 		public IVTPReport Report;
 		protected ShiftStrategyParameters GearshiftData;
 
-		public DeclarationVTPModeVectoRunDataFactory(IVTPDeclarationInputDataProvider ivtpProvider, IVTPReport report) : this(
-			ivtpProvider.JobInputData, report) { }
+		public DeclarationVTPModeVectoRunDataFactory(IVTPDeclarationInputDataProvider ivtpProvider, IVTPReport report) :
+			this(
+				ivtpProvider.JobInputData, report)
+		{
+			DataProvider = ivtpProvider;
+		}
 
 		protected DeclarationVTPModeVectoRunDataFactory(IVTPDeclarationJobInputData job, IVTPReport report)
 		{
@@ -100,7 +104,8 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 					Dao.CreateAuxiliaryData(
 						JobInputData.Vehicle.Components.AuxiliaryInputData,
 						Segment.Missions.First().MissionType,
-						Segment.VehicleClass),
+						Segment.VehicleClass, 
+						JobInputData.Vehicle.Components.AxleWheels.NumSteeredAxles),
 			};
 			powertrainConfig.VehicleData.VehicleClass = Segment.VehicleClass;
 			Report.InputDataHash = JobInputData.VectoJobHash;
@@ -181,7 +186,8 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			runData.Cycle = new DrivingCycleProxy(cycle, mission.MissionType.ToString());
 			runData.DriverData = Driverdata;
 			runData.Aux = Dao.CreateAuxiliaryData(
-				JobInputData.Vehicle.Components.AuxiliaryInputData, mission.MissionType, Segment.VehicleClass);
+				JobInputData.Vehicle.Components.AuxiliaryInputData, mission.MissionType, Segment.VehicleClass,
+				JobInputData.Vehicle.Components.AxleWheels.NumSteeredAxles);
 			runData.ExecutionMode = ExecutionMode.Declaration;
 			runData.SimulationType = SimulationType.DistanceCycle;
 			runData.Mission = mission;
@@ -216,6 +222,8 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			yield return vtpRunData;
 			
 		}
+
+		public IInputDataProvider DataProvider { get; }
 
 		protected virtual AuxFanData GetFanData()
 		{
@@ -258,22 +266,23 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 
 		protected virtual List<VectoRunData.AuxData> CreateVTPAuxData(IVehicleDeclarationInputData vehicle)
 		{
+			var numSteered = vehicle.Components.AxleWheels.NumSteeredAxles;
 			var auxRD = Dao.CreateAuxiliaryData(
-								vehicle.Components.AuxiliaryInputData, MissionType.RegionalDelivery, Segment.VehicleClass)
+								vehicle.Components.AuxiliaryInputData, MissionType.RegionalDelivery, Segment.VehicleClass, numSteered)
 							.ToList();
 			foreach (var entry in auxRD) {
 				entry.MissionType = MissionType.RegionalDelivery;
 			}
 
 			var auxLH = Dao.CreateAuxiliaryData(
-								vehicle.Components.AuxiliaryInputData, MissionType.LongHaul, Segment.VehicleClass)
+								vehicle.Components.AuxiliaryInputData, MissionType.LongHaul, Segment.VehicleClass, numSteered)
 							.ToList();
 			foreach (var entry in auxLH) {
 				entry.MissionType = MissionType.LongHaul;
 			}
 
 			var auxUD = Dao.CreateAuxiliaryData(
-								vehicle.Components.AuxiliaryInputData, MissionType.UrbanDelivery, Segment.VehicleClass)
+								vehicle.Components.AuxiliaryInputData, MissionType.UrbanDelivery, Segment.VehicleClass, numSteered)
 							.ToList();
 			foreach (var entry in auxUD) {
 				entry.MissionType = MissionType.UrbanDelivery;

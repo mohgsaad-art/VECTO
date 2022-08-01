@@ -273,6 +273,11 @@ namespace TUGraz.VectoCore.Configuration
 
 			public static readonly Meter BrakeNextTargetDistance = 2.5.SI<Meter>();
 
+			/// <summary>
+			/// used in DriverModeBrake to detect if a vehicle is already below the speed of the brake trigger.
+			/// </summary>
+			public static readonly MeterPerSecond BrakeTriggerSpeedTolerance = 0.1.KMPHtoMeterPerSecond();
+			
 			public static readonly MeterPerSecond MinVelocityForCoast = 5.KMPHtoMeterPerSecond();
 
 			/// <summary>

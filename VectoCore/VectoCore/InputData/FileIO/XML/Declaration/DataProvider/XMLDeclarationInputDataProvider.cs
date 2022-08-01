@@ -91,6 +91,11 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration
 		}
 
 
+		public void ValidateComponentHashes()
+		{
+			VectoHash.ValidateJob(Document);
+		}
+
 		public virtual XElement XMLHash { get; private set; }
 	}
 

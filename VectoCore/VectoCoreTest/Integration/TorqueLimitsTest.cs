@@ -35,6 +35,7 @@ using System.IO;
 using System.Linq;
 using Ninject;
 using NUnit.Framework;
+using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
@@ -43,6 +44,7 @@ using TUGraz.VectoCore.InputData.FileIO.XML.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
+using TUGraz.VectoCore.Tests.Utils;
 using Assert = NUnit.Framework.Assert;
 
 namespace TUGraz.VectoCore.Tests.Integration
@@ -75,6 +77,13 @@ namespace TUGraz.VectoCore.Tests.Integration
 
 		private const string DeclarationVehicle9GearsFord =
 			@"TestData\Integration\DeclarationMode\EngineSpeedTooHigh\vecto_vehicle-sample_9gears.xml";
+
+		const string VehicleLimitJobDecl_disableGear6 = @"Testdata\Integration\DeclarationMode\Class2_RigidTruck_4x2_VehTorqueLimits\Class2_RigidTruck_vehTqLimit-disableGear6.vecto";
+		const string VehicleLimitJobDecl_disableGear6and5 = @"Testdata\Integration\DeclarationMode\Class2_RigidTruck_4x2_VehTorqueLimits\Class2_RigidTruck_vehTqLimit-disableGear6and5.vecto";
+		const string VehicleLimitJobDecl_disableGear5invalid = @"Testdata\Integration\DeclarationMode\Class2_RigidTruck_4x2_VehTorqueLimits\Class2_RigidTruck_vehTqLimit-disableGear5invalid.vecto";
+		const string VehicleLimitJobDecl_disableGear4invalid = @"Testdata\Integration\DeclarationMode\Class2_RigidTruck_4x2_VehTorqueLimits\Class2_RigidTruck_vehTqLimit-disableGear4invalid.vecto";
+		const string VehicleLimitJobDecl_disableGear6and4invalid = @"Testdata\Integration\DeclarationMode\Class2_RigidTruck_4x2_VehTorqueLimits\Class2_RigidTruck_vehTqLimit-disableGear6and4invalid.vecto";
+		const string VehicleLimitJobDecl_disableGear1invalid = @"Testdata\Integration\DeclarationMode\Class2_RigidTruck_4x2_VehTorqueLimits\Class2_RigidTruck_vehTqLimit-disableGear1invalid.vecto";
 
 		protected IXMLInputDataReader xmlInputReader;
 		private IKernel _kernel;
@@ -220,6 +229,45 @@ namespace TUGraz.VectoCore.Tests.Integration
 			Assert.IsTrue(jobContainer.Runs.All(r => r.Success), string.Concat(jobContainer.Runs.Select(r => r.ExecException)));
 		}
 
+
+		[Category("LongRunning"),
+		TestCase(VehicleLimitJobDecl_disableGear6),
+		TestCase(VehicleLimitJobDecl_disableGear6and5)]
+		public void TestRunDisableGearsWithTorqueLimitSimulations(string file)
+		{
+			var fileWriter = new FileOutputWriter(file);
+			var sumData = new SummaryDataContainer(fileWriter);
+			var inputDataProvider = JSONInputDataFactory.ReadJsonJob(file);
+			var factory = new SimulatorFactory(ExecutionMode.Declaration, inputDataProvider, fileWriter) {
+				WriteModalResults = true
+			};
+
+
+			var jobContainer = new JobContainer(sumData);
+			jobContainer.AddRuns(factory);
+
+			jobContainer.Execute();
+			jobContainer.WaitFinished();
+
+			Assert.IsTrue(jobContainer.Runs.All(r => r.Success), string.Concat(jobContainer.Runs.Select(r => r.ExecException)));
+		}
+
+
+		[TestCase(VehicleLimitJobDecl_disableGear5invalid),
+		TestCase(VehicleLimitJobDecl_disableGear4invalid),
+		TestCase(VehicleLimitJobDecl_disableGear6and4invalid),
+		TestCase(VehicleLimitJobDecl_disableGear1invalid)]
+		public void TestRunDisableGearsInvalid(string file)
+		{
+			var fileWriter = new FileOutputWriter(file);
+			var sumData = new SummaryDataContainer(fileWriter);
+			var inputDataProvider = JSONInputDataFactory.ReadJsonJob(file);
+			var factory = new SimulatorFactory(ExecutionMode.Declaration, inputDataProvider, fileWriter);
+			
+			var jobContainer = new JobContainer(sumData);
+			AssertHelper.Exception<VectoException>(() => jobContainer.AddRuns(factory), messageContains:"Vehicle TorqueLimits: MaxTorque for Gear ");
+		}
+		
 		[Category("LongRunning"), TestCase(GearboxSpeedLimitJobDecl)]
 		public void TestRunGbxSpeedLimitedSimulations(string file)
 		{
@@ -267,11 +315,11 @@ namespace TUGraz.VectoCore.Tests.Integration
 
             var view = new DataView(sumData.Table, "", SummaryDataContainer.Fields.SORT, DataViewRowState.CurrentRows).ToTable();
 			Console.WriteLine(string.Join("; ", view.AsEnumerable().Select(x => x[string.Format(SummaryDataContainer.Fields.FCMAP_KM, "")].ToString().ToDouble())));
-			// 199.779681154496; 235.831828578043; 170.183547928341; 183.057641066642; 224.451311308811; 254.598763466144
+			// 199.779681154496; 235.831828578043; 170.183547928341; 183.068317674634; 224.451407199477; 254.598828936689
 			Assert.AreEqual(199.779681154496, view.Rows[0][string.Format(SummaryDataContainer.Fields.FCMAP_KM, "")].ToString().ToDouble(), 1e-3);
 			Assert.AreEqual(235.831828578043, view.Rows[1][string.Format(SummaryDataContainer.Fields.FCMAP_KM, "")].ToString().ToDouble(), 1e-3);
 			Assert.AreEqual(170.183547928341, view.Rows[2][string.Format(SummaryDataContainer.Fields.FCMAP_KM, "")].ToString().ToDouble(), 1e-3);
-			Assert.AreEqual(183.057641066642, view.Rows[3][string.Format(SummaryDataContainer.Fields.FCMAP_KM, "")].ToString().ToDouble(), 1e-3);
+			Assert.AreEqual(183.068317674634, view.Rows[3][string.Format(SummaryDataContainer.Fields.FCMAP_KM, "")].ToString().ToDouble(), 1e-3);
 			Assert.AreEqual(224.451311308811, view.Rows[4][string.Format(SummaryDataContainer.Fields.FCMAP_KM, "")].ToString().ToDouble(), 1e-3);
 			Assert.AreEqual(254.598763466144, view.Rows[5][string.Format(SummaryDataContainer.Fields.FCMAP_KM, "")].ToString().ToDouble(), 1e-3);
 		}
@@ -305,7 +353,8 @@ namespace TUGraz.VectoCore.Tests.Integration
 			var fileWriter = new FileOutputWriter(jobFile);
 			var factory = new SimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter) {
 				WriteModalResults = true,
-				Validate = false
+				Validate = false,
+				ValidateComponentHashes = false
 			};
 			var sumData = new SummaryDataContainer(fileWriter);
 			var jobContainer = new JobContainer(sumData);

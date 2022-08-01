@@ -236,29 +236,55 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			retVal.Inertia = DeclarationData.Engine.EngineInertia(retVal.Displacement, gearbox.Type);
 			retVal.EngineStartTime = DeclarationData.Engine.DefaultEngineStartTime;
 			var limits = vehicle.TorqueLimits.ToDictionary(e => e.Gear);
-			var numGears = gearbox.Gears.Count;
+			var gears = FilterDisabledGears(gearbox.Gears, limits);
+			var numGears = gears.Count;
 			var fullLoadCurves = new Dictionary<uint, EngineFullLoadCurve>(numGears + 1);
 			fullLoadCurves[0] = FullLoadCurveReader.Create(mode.FullLoadCurve, true);
 			fullLoadCurves[0].EngineData = retVal;
-			foreach (var gear in gearbox.Gears) {
+			foreach (var gear in gears) {
 				var maxTorque = VectoMath.Min(
 					GbxMaxTorque(gear, numGears, fullLoadCurves[0].MaxTorque),
-					VehMaxTorque(gear, numGears, limits, fullLoadCurves[0].MaxTorque));
+					VehMaxTorque(gear, numGears, vehicle.TorqueLimits.FirstOrDefault(e => e.Gear == gear.Gear)?.MaxTorque, 
+						fullLoadCurves[0].MaxTorque));
 				fullLoadCurves[(uint)gear.Gear] = IntersectFullLoadCurves(fullLoadCurves[0], maxTorque);
 			}
 			retVal.FullLoadCurves = fullLoadCurves;
 			return retVal;
 		}
 
-		private static NewtonMeter VehMaxTorque(ITransmissionInputData gear, int numGears,
-			Dictionary<int, ITorqueLimitInputData> limits,
+		/// <summary>
+		/// Filters the gears based on disabling rule: If the last (or the second last) torque limit on vehicle level is 0, then the gear should be disabled.
+		/// </summary>
+		/// <remarks>VECTO-1628</remarks>
+		internal static IList<ITransmissionInputData> FilterDisabledGears(IList<ITransmissionInputData> gears, Dictionary<int, ITorqueLimitInputData> limits) {
+			if (gears != null && gears.Count > 0) {
+				var lastGear = gears.Last().Gear;
+				if (limits.ContainsKey(lastGear) && limits[lastGear].MaxTorque.IsEqual(0)) {
+					gears.Remove(gears.Last());
+					limits.Remove(lastGear);
+					lastGear = gears.Last().Gear;
+					if (limits.ContainsKey(lastGear) && limits[lastGear].MaxTorque.IsEqual(0)) {
+						gears.Remove(gears.Last());
+						limits.Remove(lastGear);
+					}
+				}
+
+				foreach (var l in limits) {
+					if (l.Value.MaxTorque.IsEqual(0))
+						throw new VectoException($"Vehicle TorqueLimits: MaxTorque for Gear {l.Key} must not be 0.");
+				}
+			}
+
+			return gears;
+		}
+
+		private static NewtonMeter VehMaxTorque(ITransmissionInputData gear, int numGears, NewtonMeter maxGearTorque,
 			NewtonMeter maxEngineTorque)
 		{
 			if (gear.Gear - 1 >= numGears / 2) {
 				// only upper half of gears can limit if max-torque <= 0.95 of engine max torque
-				if (limits.ContainsKey(gear.Gear) &&
-					limits[gear.Gear].MaxTorque <= DeclarationData.Engine.TorqueLimitVehicleFactor * maxEngineTorque) {
-					return limits[gear.Gear].MaxTorque;
+				if (maxGearTorque != null && maxGearTorque <= DeclarationData.Engine.TorqueLimitVehicleFactor * maxEngineTorque) {
+					return maxGearTorque;
 				}
 			}
 			return null;
@@ -308,7 +334,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			if (!SupportedGearboxTypes.Contains(gearbox.Type)) {
 				throw new VectoSimulationException("Unsupported gearbox type: {0}!", retVal.Type);
 			}
-			var gearsInput = gearbox.Gears;
+
+			var limits = inputData.TorqueLimits?.ToDictionary(e => e.Gear) ?? new Dictionary<int, ITorqueLimitInputData>();
+			var gearsInput = FilterDisabledGears(gearbox.Gears, limits);
 			if (gearsInput.Count < 1) {
 				throw new VectoSimulationException(
 					"At least one Gear-Entry must be defined in Gearbox!");
@@ -316,8 +344,8 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 			SetDeclarationData(retVal);
 
-			var gearDifferenceRatio = gearbox.Type.AutomaticTransmission() && gearbox.Gears.Count > 2
-				? gearbox.Gears[0].Ratio / gearbox.Gears[1].Ratio
+			var gearDifferenceRatio = gearbox.Type.AutomaticTransmission() && gearsInput.Count > 2
+				? gearsInput[0].Ratio / gearsInput[1].Ratio
 				: 1.0;
 
 			var gears = new Dictionary<uint, GearData>();
@@ -332,7 +360,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 				var shiftPolygon = shiftPolygonCalc != null
 					? shiftPolygonCalc.ComputeDeclarationShiftPolygon(
-						gearbox.Type, (int)i, engine.FullLoadCurves[i + 1], gearbox.Gears, engine, axlegearRatio, dynamicTyreRadius)
+						gearbox.Type, (int)i, engine.FullLoadCurves[i + 1], gearsInput, engine, axlegearRatio, dynamicTyreRadius)
 					: DeclarationData.Gearbox.ComputeShiftPolygon(
 						gearbox.Type, (int)i, engine.FullLoadCurves[i + 1],
 						gearsInput, engine,
@@ -422,7 +450,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 
 
 		public IList<VectoRunData.AuxData> CreateAuxiliaryData(IAuxiliariesDeclarationInputData auxInputData,
-			MissionType mission, VehicleClass hvdClass)
+			MissionType mission, VehicleClass hvdClass, int? numSteeredAxles)
 		{
 			if (!auxInputData.SavedInDeclarationMode) {
 				WarnDeclarationMode("AuxiliariesData");
@@ -453,6 +481,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 						aux.ID = Constants.Auxiliaries.IDs.Fan;
 						break;
 					case AuxiliaryType.SteeringPump:
+						if (numSteeredAxles.HasValue && auxData.Technology.Count != numSteeredAxles.Value) {
+							throw new VectoException($"Number of steering pump technologies does not match number of steered axles ({numSteeredAxles.Value}, {auxData.Technology.Count})");
+						}
 						aux.PowerDemand = DeclarationData.SteeringPump.Lookup(mission, hvdClass, auxData.Technology);
 						aux.ID = Constants.Auxiliaries.IDs.SteeringPump;
 						break;

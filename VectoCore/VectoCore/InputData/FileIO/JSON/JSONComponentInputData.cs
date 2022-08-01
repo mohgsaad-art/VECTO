@@ -102,6 +102,11 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			get { return this; }
 		}
 
+		public void ValidateComponentHashes()
+		{
+			throw new NotImplementedException();
+		}
+
 		public XElement XMLHash
 		{
 			get { return new XElement(XMLNames.DI_Signature); }

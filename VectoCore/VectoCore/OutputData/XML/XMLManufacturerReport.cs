@@ -54,7 +54,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 	public class XMLManufacturerReport
 	{
 		public const string SCHEMA_VERSION_STRING = "0.7";
-		public const string CURRENT_SCHEMA_VERSION = "0.7.1";
+		public const string CURRENT_SCHEMA_VERSION = "0.7.2";
 		
 		protected XElement VehiclePart;
 		
@@ -91,7 +91,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(tns + XMLNames.Vehicle_CurbMassChassis, XMLHelper.ValueAsUnit(modelData.VehicleData.CurbMass, XMLNames.Unit_kg)),
 				new XElement(tns + XMLNames.Vehicle_ZeroEmissionVehicle, modelData.VehicleData.ZeroEmissionVehicle),
 				new XElement(tns + XMLNames.Vehicle_HybridElectricHDV, modelData.VehicleData.HybridElectricHDV),
-				new XElement(tns + XMLNames.Vehicle_DualFuelVehicle, modelData.VehicleData.DualFuelVehicle),
+				new XElement(tns + XMLNames.Vehicle_DualFuelVehicle, exempted ? modelData.VehicleData.DualFuelVehicle : modelData.EngineData.Fuels.Count > 1),
 				exempted 
 					? ExemptedData(modelData) 
 					: new[] {
@@ -198,14 +198,28 @@ namespace TUGraz.VectoCore.OutputData.XML
 
 		private XElement GetEngineDescription(CombustionEngineData engineData)
 		{
-			return new XElement(tns + XMLNames.Component_Engine,
+			var retVal = new XElement(tns + XMLNames.Component_Engine,
 				GetCommonDescription(engineData),
 				new XElement(tns + XMLNames.Engine_RatedPower, XMLHelper.ValueAsUnit(engineData.RatedPowerDeclared, XMLNames.Unit_kW)),
 				new XElement(tns + XMLNames.Engine_IdlingSpeed, XMLHelper.ValueAsUnit(engineData.IdleSpeed, XMLNames.Unit_RPM)),
 				new XElement(tns + XMLNames.Engine_RatedSpeed, XMLHelper.ValueAsUnit(engineData.RatedSpeedDeclared, XMLNames.Unit_RPM)),
 				new XElement(tns + XMLNames.Engine_Displacement, XMLHelper.ValueAsUnit(engineData.Displacement, XMLNames.Unit_ltr, 1)),
-				new XElement(tns + XMLNames.Engine_FuelType, engineData.Fuels.First().FuelData.FuelType.ToXMLFormat())
-				);
+				new XElement(tns + "FuelTypes",
+					engineData.Fuels.Select(x => new XElement(tns + XMLNames.Engine_FuelType, x.FuelData.FuelType.ToXMLFormat()))
+					),
+				new XElement(tns + "WasteHeatRecoverySystem", engineData.WHRType != WHRType.None)
+			);
+
+			foreach (WHRType whrType in Enum.GetValues(typeof(WHRType))) {
+				if (whrType == WHRType.None) {
+					continue;
+				}
+
+				if ((whrType & engineData.WHRType) == whrType) {
+					retVal.Add(new XElement(tns + "WasteHeatRecoverySystemType", whrType.ToXMLFormat()));
+				}
+			}
+			return retVal;
 		}
 
 		private XElement GetGearboxDescription(GearboxData gearboxData)
@@ -377,7 +391,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(tns + XMLNames.Report_ResultEntry_SimulationParameters,
 					new XElement(tns + XMLNames.Report_ResultEntry_TotalVehicleMass, XMLHelper.ValueAsUnit(result.TotalVehicleWeight, XMLNames.Unit_kg)),
 					new XElement(tns + XMLNames.Report_ResultEntry_Payload, XMLHelper.ValueAsUnit(result.Payload, XMLNames.Unit_kg)),
-					new XElement(tns + XMLNames.Report_ResultEntry_FuelType, XMLHelper.ToXmlStr(DeclarationData.FuelData.Lookup(result.FuelData.First().FuelType, result.FuelData.First().TankSystem)))
+					result.FuelData.Select(x => new XElement(tns + XMLNames.Report_ResultEntry_FuelType, XMLHelper.ToXmlStr(DeclarationData.FuelData.Lookup(x.FuelType, x.TankSystem))))
 					),
 				new XElement(tns + XMLNames.Report_ResultEntry_VehiclePerformance,
 					new XElement(tns + XMLNames.Report_ResultEntry_AverageSpeed, XMLHelper.ValueAsUnit(result.AverageSpeed, XMLNames.Unit_kmph, 1)),

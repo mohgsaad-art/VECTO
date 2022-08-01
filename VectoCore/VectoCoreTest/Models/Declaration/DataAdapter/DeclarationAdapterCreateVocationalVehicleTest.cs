@@ -67,6 +67,7 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration.DataAdapter
 			var runsFactory = new SimulatorFactory(ExecutionMode.Declaration, dataProvider, null, xmlReport) {
 				WriteModalResults = false,
 				Validate = false,
+				ValidateComponentHashes = false
 			};
 			jobContainer.AddRuns(runsFactory);
 

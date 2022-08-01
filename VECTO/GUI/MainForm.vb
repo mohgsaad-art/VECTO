@@ -1005,6 +1005,7 @@ Imports TUGraz.VectoCore.Utils
                 runsFactory.ModalResults1Hz = Cfg.Mod1Hz
                 runsFactory.Validate = cbValidateRunData.Checked
                 runsFactory.ActualModalData = cbActVmod.Checked
+                runsFactory.ValidateComponentHashes = cbValidateXMLDeclarationJobs.Checked
 
                 For Each runId As Integer In jobContainer.AddRuns(runsFactory)
                     fileWriters.Add(runId, fileWriter)

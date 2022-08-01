@@ -53,7 +53,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 	public class XMLCustomerReport
 	{
 		public const string SCHEMA_VERSION_STRING = "0.7";
-		public const string CURRENT_SCHEMA_VERSION = "0.7.1";
+		public const string CURRENT_SCHEMA_VERSION = "0.7.2";
 
 		protected readonly XElement VehiclePart;
 
@@ -95,7 +95,8 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(tns + XMLNames.Vehicle_CurbMassChassis, XMLHelper.ValueAsUnit(modelData.VehicleData.CurbMass, XMLNames.Unit_kg)),
 				new XElement(tns + XMLNames.Vehicle_ZeroEmissionVehicle, modelData.VehicleData.ZeroEmissionVehicle),
 				new XElement(tns + XMLNames.Vehicle_HybridElectricHDV, modelData.VehicleData.HybridElectricHDV),
-				new XElement(tns + XMLNames.Vehicle_DualFuelVehicle, modelData.VehicleData.DualFuelVehicle),
+				new XElement(tns + "WasteHeatRecovery", exempted ? false : modelData.EngineData.WHRType != WHRType.None),
+				new XElement(tns + XMLNames.Vehicle_DualFuelVehicle, exempted ? modelData.VehicleData.DualFuelVehicle : modelData.EngineData.Fuels.Count > 1),
 
 				exempted ? ExemptedData(modelData) : new[] {
 					new XElement(tns + XMLNames.Vehicle_AxleConfiguration, modelData.VehicleData.AxleConfiguration.GetName()),
@@ -133,7 +134,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 
 		private XElement[] ComponentData(VectoRunData modelData)
 		{
-			return new[] {
+			var retVal = new List<XElement>() {
 				new XElement(
 					tns + XMLNames.Report_Vehicle_EngineRatedPower,
 					XMLHelper.ValueAsUnit(modelData.EngineData.RatedPowerDeclared, XMLNames.Unit_kW)),
@@ -146,7 +147,10 @@ namespace TUGraz.VectoCore.OutputData.XML
 				//	fuelModes.SelectMany(x => x.Select(f => f.FuelType.ToXMLFormat())).Distinct()
 				//		.Select(x => new XElement(tns + XMLNames.Engine_FuelType, x))
 				//),
-				new XElement(tns + XMLNames.Engine_FuelType, modelData.EngineData.Fuels.First().FuelData.FuelType.ToXMLFormat()),
+			};
+			retVal.AddRange(modelData.EngineData.Fuels.Select(x =>
+				new XElement(tns + XMLNames.Engine_FuelType, x.FuelData.FuelType.ToXMLFormat())));
+			retVal.AddRange(new [] {
 				new XElement(
 					tns + XMLNames.Report_Vehicle_TransmissionCertificationMethod,
 					modelData.GearboxData.CertificationMethod.ToXMLFormat()),
@@ -159,8 +163,8 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(
 					tns + XMLNames.Report_Vehicle_AverageRRCLabel,
 					DeclarationData.Wheels.TyreClass.Lookup(modelData.VehicleData.AverageRollingResistanceTruck))
-			};
-
+				});
+			return retVal.ToArray();
 		}
 
 		private XElement CreateDummySig()
@@ -209,7 +213,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 		{
 			return new object[] {
 				new XElement(tns + XMLNames.Report_Result_Payload, XMLHelper.ValueAsUnit(result.Payload, XMLNames.Unit_kg, 0)),
-				new XElement(tns + XMLNames.Report_Results_FuelType, XMLHelper.ToXmlStr(DeclarationData.FuelData.Lookup(result.FuelData.First().FuelType, result.FuelData.First().TankSystem))),
+				result.FuelData.Select(x => new XElement(tns + XMLNames.Report_Results_FuelType, XMLHelper.ToXmlStr(DeclarationData.FuelData.Lookup(x.FuelType, x.TankSystem)))),
 				new XElement(tns + XMLNames.Report_Results_AverageSpeed, XMLHelper.ValueAsUnit(result.AverageSpeed, XMLNames.Unit_kmph, 1)),
 				XMLDeclarationReport.GetResults(result, tns, false).Cast<object>().ToArray()
 			};

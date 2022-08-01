@@ -176,6 +176,7 @@ namespace TUGraz.VectoCore.Tests.Reports
 			var inputData = xmlInputReader.CreateDeclaration(filename);
 			var factory = new SimulatorFactory(ExecutionMode.Declaration, inputData, writer) {
 				WriteModalResults = true,
+				ValidateComponentHashes = false
 			};
 			var jobContainer = new JobContainer(new MockSumWriter());
 

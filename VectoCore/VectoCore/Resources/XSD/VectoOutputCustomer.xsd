@@ -9,4 +9,5 @@
 	<xs:import namespace="urn:tugraz:ivt:VectoAPI:CustomerOutput:v0.5" schemaLocation="VectoOutputCustomer.0.5.xsd"/>
 	<xs:import namespace="urn:tugraz:ivt:VectoAPI:CustomerOutput:v0.7" schemaLocation="VectoOutputCustomer.0.7.xsd"/>
 	<xs:import namespace="urn:tugraz:ivt:VectoAPI:CustomerOutput:v0.7.1" schemaLocation="VectoOutputCustomer.0.7.1.xsd"/>
+	<xs:import namespace="urn:tugraz:ivt:VectoAPI:CustomerOutput:v0.7.2" schemaLocation="VectoOutputCustomer.0.7.2.xsd"/>
 </xs:schema>
