@@ -240,7 +240,8 @@ namespace TUGraz.VectoCore.Tests.Integration.ADAS
 			var factory = new SimulatorFactory(ExecutionMode.Declaration, inputData, writer) {
 				WriteModalResults = true,
 				//ActualModalData = true,
-				Validate = false
+				Validate = false,
+				ValidateComponentHashes = false
 			};
 			var sumContainer = new SummaryDataContainer(writer);
 			var jobContainer = new JobContainer(sumContainer);
@@ -267,7 +268,8 @@ namespace TUGraz.VectoCore.Tests.Integration.ADAS
 			var factory = new SimulatorFactory(ExecutionMode.Declaration, inputData, writer) {
 				WriteModalResults = true,
 				//ActualModalData = true,
-				Validate = false
+				Validate = false,
+				ValidateComponentHashes = false
 			};
 			var sumContainer = new SummaryDataContainer(writer);
 			var jobContainer = new JobContainer(sumContainer);

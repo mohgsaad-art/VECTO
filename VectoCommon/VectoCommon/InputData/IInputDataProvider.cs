@@ -44,6 +44,8 @@ namespace TUGraz.VectoCommon.InputData
 	{
 		IDeclarationJobInputData JobInputData { get; }
 
+		void ValidateComponentHashes();
+
 		XElement XMLHash { get; }
 	}
 
