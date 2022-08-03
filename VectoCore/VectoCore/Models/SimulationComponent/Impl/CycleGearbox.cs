@@ -383,7 +383,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
 
 			return disengagedResponse;
-        }
+		}
 
 		private IResponse EngineIdleRequest(Second absTime, Second dt)
 		{
