@@ -66,6 +66,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				return;
 			}
 
+			if (ModelData.Type == GearboxType.APTN) {
+				return;
+            }
+
 			var strategy = new CycleShiftStrategy(container);
 
 			

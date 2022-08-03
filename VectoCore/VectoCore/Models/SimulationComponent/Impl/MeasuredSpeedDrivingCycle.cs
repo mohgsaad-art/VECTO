@@ -377,6 +377,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			container[ModalResultField.grad] = CycleIterator.LeftSample.RoadGradientPercent;
 			container[ModalResultField.altitude] = CycleIterator.LeftSample.Altitude;
 			container[ModalResultField.acc] = CurrentState.Acceleration;
+
+			container.SetDataValue("DriverAction", (int) DataBus.DriverInfo.DrivingAction);
 		}
 
 		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)
