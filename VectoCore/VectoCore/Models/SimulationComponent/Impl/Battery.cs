@@ -34,7 +34,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		#region Implementation of IElectricEnergyStoragePort
 
-		public virtual void Initialize(double initialSoC)
+		public void Initialize(double initialSoC)
 		{
 			CurrentState.PulseDuration = 0.SI<Second>();
 			PreviousState.PulseDuration = 0.SI<Second>();
@@ -47,7 +47,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			PreviousState.StateOfCharge = initialSoC;
 		}
 
-		public virtual IRESSResponse Request(Second absTime, Second dt, Watt powerDemand, bool dryRun = false)
+		public IRESSResponse Request(Second absTime, Second dt, Watt powerDemand, bool dryRun = false)
 		{
 			var tPulse = PreviousState.PowerDemand.Sign() == powerDemand.Sign()
 				? PreviousState.PulseDuration
@@ -106,7 +106,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			};
 		}
 
-        protected Ampere SelectSolution(double[] solutions, double sign)
+		private Ampere SelectSolution(double[] solutions, double sign)
 		{
 			var maxCurrent = Math.Sign(sign) < 0
 				? ModelData.MaxCurrent.LookupMaxDischargeCurrent(PreviousState.StateOfCharge)
@@ -114,7 +114,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			return solutions.Where(x => Math.Sign(sign) == Math.Sign(x) && Math.Abs(x).IsSmallerOrEqual(Math.Abs(maxCurrent.Value()), 1e-3)).Min().SI<Ampere>();
 		}
 
-		protected IRESSResponse PowerDemandExceeded(Second absTime, Second dt, Watt powerDemand, Watt maxDischargePower,
+		private IRESSResponse PowerDemandExceeded(Second absTime, Second dt, Watt powerDemand, Watt maxDischargePower,
 			Watt maxChargePower, Second tPulse, bool dryRun)
 		{
 			var maxPower = powerDemand < 0 ? maxDischargePower : maxChargePower;
@@ -192,8 +192,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		public double StateOfCharge => PreviousState.StateOfCharge;
 
-		public double CalculatedStateOfCharge => PreviousState.CalculatedStateOfCharge;
-
 		public WattSecond StoredEnergy => PreviousState.StateOfCharge * ModelData.Capacity * ModelData.SOCMap.Lookup(PreviousState.StateOfCharge);
 
 		public Watt MaxChargePower(Second dt)
@@ -262,7 +260,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		public class State
 		{
 			public double StateOfCharge;
-			public double CalculatedStateOfCharge;
 
 			public Second SimulationInterval;
 

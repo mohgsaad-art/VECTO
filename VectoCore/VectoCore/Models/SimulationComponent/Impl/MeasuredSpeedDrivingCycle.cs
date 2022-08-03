@@ -248,6 +248,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			if (RunData.JobType == VectoSimulationJobType.BatteryElectricVehicle) {
 				DetermineDriverActionForBEV(absTime);
             }
+			else if (RunData.JobType == VectoSimulationJobType.IEPC_E) {
+				DetermineDriverActionForBEV(absTime);
+            }
 			else {
 				DetermineDriverActionForOther();
             }	
