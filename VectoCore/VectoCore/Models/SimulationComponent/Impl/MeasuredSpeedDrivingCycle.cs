@@ -438,7 +438,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		public void FinishSimulation() => Data.Finish();
 
-		public DrivingBehavior DriverBehavior { get; internal set; }
+		public DrivingBehavior DriverBehavior { get; internal set; } = DrivingBehavior.Driving;
 
 		public DrivingAction DrivingAction { get; internal set; } = DrivingAction.Accelerate;
 
