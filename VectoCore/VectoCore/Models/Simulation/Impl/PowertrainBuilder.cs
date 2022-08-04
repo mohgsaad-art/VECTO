@@ -583,7 +583,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 			SwitchableClutch clutch = AddClutch(data, container);
 
-			var strategy = data.GearboxData.Type.ManualTransmission() 
+			var strategy = (data.GearboxData.Type.ManualTransmission() || data.GearboxData.Type == GearboxType.IHPC)
 				? (IHybridControlStrategy) new HybridStrategy(data, container)
 				: (IHybridControlStrategy) new HybridStrategyAT(data, container);
 			
@@ -613,6 +613,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				.AddComponent(GetRetarder(RetarderType.TransmissionInputRetarder, data.Retarder, container))
 				.AddComponent(GetElectricMachine(PowertrainPosition.HybridP2_5, data.ElectricMachinesData, container, es, ctl))
 				.AddComponent(GetElectricMachine(PowertrainPosition.HybridP2, data.ElectricMachinesData, container, es, ctl))
+				.AddComponent(GetElectricMachine(PowertrainPosition.IHPC, data.ElectricMachinesData, container, es, ctl))
 				.AddComponent(clutch)
 				.AddComponent(GetElectricMachine(PowertrainPosition.HybridP1, data.ElectricMachinesData, container, es, ctl))
 				.AddComponent(engine, idleController)

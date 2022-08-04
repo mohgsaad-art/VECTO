@@ -22,6 +22,8 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
         private const string P4_JOB = @"TestData\Integration\TimeRun\MeasuredSpeed\GenericVehicle_Group2_P4_EM\Class2_RigidTruck_ParHyb_ENG.vecto";
         private const string P2_5_JOB = @"TestData\Integration\TimeRun\MeasuredSpeed\GenericVehicle_Group5_P2.5\P2.5 Group 5 2.vecto";
         private const string P1_JOB = @"TestData\Integration\TimeRun\MeasuredSpeed\GenericVehicle_P1-APT\CityBus_AT_PS.vecto";
+        private const string IHPC_6SPEED_JOB= @"TestData\Integration\TimeRun\MeasuredSpeed\GenericIHPC\6SpeedGbx\IHPC Group 5.vecto";
+        private const string IHPC_12SPEED_JOB= @"TestData\Integration\TimeRun\MeasuredSpeed\GenericIHPC\12SpeedGbx\IHPC Group 5.vecto";
 
         [OneTimeSetUp]
         public void Init()
@@ -51,7 +53,15 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 
         TestCase(P4_JOB, 0, 573.5101, 1.733, 1.9888, 56.5505, 54.5212, TestName = "P4 Hybrid TimeRun MeasuredSpeed LongHaul"),
         TestCase(P4_JOB, 1, 569.1177, 3.2957, 3.9781, 42.3031, 37.4575, TestName = "P4 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
-        TestCase(P4_JOB, 2, 712.0062, 8.3069, 9.4837, 20.3732, 9.1137, TestName = "P4 Hybrid TimeRun MeasuredSpeed UrbanDelivery")
+        TestCase(P4_JOB, 2, 712.0062, 8.3069, 9.4837, 20.3732, 9.1137, TestName = "P4 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
+
+        TestCase(IHPC_6SPEED_JOB, 0, 0, 0, 0, 0, 0, TestName = "IHPC_6SPEED Hybrid TimeRun MeasuredSpeed LongHaul"),
+        TestCase(IHPC_6SPEED_JOB, 1, 0, 0, 0, 0, 0, TestName = "IHPC_6SPEED Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(IHPC_6SPEED_JOB, 2, 0, 0, 0, 0, 0, TestName = "IHPC_6SPEED Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
+
+        TestCase(IHPC_12SPEED_JOB, 0, 0, 0, 0, 0, 0, TestName = "IHPC_12SPEED Hybrid TimeRun MeasuredSpeed LongHaul"),
+        TestCase(IHPC_12SPEED_JOB, 1, 0, 0, 0, 0, 0, TestName = "IHPC_12SPEED Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(IHPC_12SPEED_JOB, 2, 0, 0, 0, 0, 0, TestName = "IHPC_12SPEED Hybrid TimeRun MeasuredSpeed UrbanDelivery")
         ]
         public void TestHybridTimeRunCycle(string jobFile, int cycleIdx, double CO2, double charge, double discharge, double pWheelpos,
             double pWheel)
