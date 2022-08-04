@@ -32,9 +32,9 @@ namespace TUGraz.VectoCore.Tests.Integration.BatteryElectric
         [Category("JRC")]
 		[Category("Integration")]
         [
-        TestCase(E2_JOB, 0, 0, 1.1667, 120.2219, TestName = "E2 BEV TimeRun MeasuredSpeed LongHaul"),
-        TestCase(E2_JOB, 1, 1, 4.0362, 120.1075, TestName = "E2 BEV TimeRun MeasuredSpeed RegionalDelivery"),
-        TestCase(E2_JOB, 2, 2, 26.2752, 143.7675, TestName = "E2 BEV TimeRun MeasuredSpeed UrbanDelivery"),
+        TestCase(E2_JOB, 0, 0, 1.1278, 120.0339, TestName = "E2 BEV TimeRun MeasuredSpeed LongHaul"),
+        TestCase(E2_JOB, 1, 1, 4.2989, 117.0439, TestName = "E2 BEV TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(E2_JOB, 2, 2, 28.742, 125.2617, TestName = "E2 BEV TimeRun MeasuredSpeed UrbanDelivery"),
 
         TestCase(E2_JOB, 6, 0, 1.128, 120.0309, TestName = "E2 BEV TimeRun MeasuredSpeedGear LongHaul"),
         TestCase(E2_JOB, 7, 1, 4.309, 117.0281, TestName = "E2 BEV TimeRun MeasuredSpeedGear RegionalDelivery"),
@@ -60,9 +60,9 @@ namespace TUGraz.VectoCore.Tests.Integration.BatteryElectric
         TestCase(E4_JOB, 7, 1, 3.9236, 100.3755, TestName = "E4 BEV TimeRun PWheel RegionalDelivery"),
         TestCase(E4_JOB, 8, 2, 31.6158, 123.6378, TestName = "E4 BEV TimeRun PWheel UrbanDelivery"),
 
-        TestCase(IEPC3X_JOB, 0, 0, 1.6048, 94.2878, TestName = "IEPC3X BEV TimeRun MeasuredSpeed LongHaul"),
-        TestCase(IEPC3X_JOB, 1, 1, 4.8926, 94.471, TestName = "IEPC3X BEV TimeRun MeasuredSpeed RegionalDelivery"),
-        TestCase(IEPC3X_JOB, 2, 2, 31.5841, 119.2956, TestName = "IEPC3X BEV TimeRun MeasuredSpeed UrbanDelivery"),
+        TestCase(IEPC3X_JOB, 0, 0, 1.5963, 94.1169, TestName = "IEPC3X BEV TimeRun MeasuredSpeed LongHaul"),
+        TestCase(IEPC3X_JOB, 1, 1, 5.2793, 92.2062, TestName = "IEPC3X BEV TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(IEPC3X_JOB, 2, 2, 33.9595, 105.0117, TestName = "IEPC3X BEV TimeRun MeasuredSpeed UrbanDelivery"),
 
         TestCase(IEPC3X_JOB, 6, 0, 1.594, 94.1353, TestName = "IEPC3X BEV TimeRun MeasuredSpeedGear LongHaul"),
         TestCase(IEPC3X_JOB, 7, 1, 5.272, 92.2526, TestName = "IEPC3X BEV TimeRun MeasuredSpeedGear RegionalDelivery"),
@@ -72,9 +72,9 @@ namespace TUGraz.VectoCore.Tests.Integration.BatteryElectric
         TestCase(IEPC3X_JOB, 10, 1, 5.3745, 92.1815, TestName = "IEPC3X BEV TimeRun PWheel RegionalDelivery"),
         TestCase(IEPC3X_JOB, 11, 2, 35.0582, 104.9996, TestName = "IEPC3X BEV TimeRun PWheel UrbanDelivery"),
 
-        TestCase(IEPC3X_AXLE_JOB, 0, 0, 1.7003, 90.9084, TestName = "IEPC3X_AXLE BEV TimeRun MeasuredSpeed LongHaul"),
-        TestCase(IEPC3X_AXLE_JOB, 1, 1, 5.1366, 91.2809, TestName = "IEPC3X_AXLE BEV TimeRun MeasuredSpeed RegionalDelivery"),
-        TestCase(IEPC3X_AXLE_JOB, 2, 2, 32.541, 117.0557, TestName = "IEPC3X_AXLE BEV TimeRun MeasuredSpeed UrbanDelivery"),
+        TestCase(IEPC3X_AXLE_JOB, 0, 0, 1.691, 90.7354, TestName = "IEPC3X_AXLE BEV TimeRun MeasuredSpeed LongHaul"),
+        TestCase(IEPC3X_AXLE_JOB, 1, 1, 5.549, 89.0315, TestName = "IEPC3X_AXLE BEV TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(IEPC3X_AXLE_JOB, 2, 2, 35.0967, 102.9804, TestName = "IEPC3X_AXLE BEV TimeRun MeasuredSpeed UrbanDelivery"),
 
         TestCase(IEPC3X_AXLE_JOB, 6, 0, 1.6886, 90.7538, TestName = "IEPC3X_AXLE BEV TimeRun MeasuredSpeedGear LongHaul"),
         TestCase(IEPC3X_AXLE_JOB, 7, 1, 5.5414, 89.0777, TestName = "IEPC3X_AXLE BEV TimeRun MeasuredSpeedGear RegionalDelivery"),
@@ -84,9 +84,9 @@ namespace TUGraz.VectoCore.Tests.Integration.BatteryElectric
         TestCase(IEPC3X_AXLE_JOB, 10, 1, 5.6428, 89.0134, TestName = "IEPC3X_AXLE BEV TimeRun PWheel RegionalDelivery"),
         TestCase(IEPC3X_AXLE_JOB, 11, 2, 36.1883, 102.9508, TestName = "IEPC3X_AXLE BEV TimeRun PWheel UrbanDelivery"),
 
-        TestCase(IEPC3X_WHEEL1_JOB, 0, 0, 1.7813, 90.9945, TestName = "IEPC3X_WHEEL1 BEV TimeRun MeasuredSpeed LongHaul"),
-        TestCase(IEPC3X_WHEEL1_JOB, 1, 1, 5.3954, 91.5846, TestName = "IEPC3X_WHEEL1 BEV TimeRun MeasuredSpeed RegionalDelivery"),
-        TestCase(IEPC3X_WHEEL1_JOB, 2, 2, 34.6291, 119.5231, TestName = "IEPC3X_WHEEL1 BEV TimeRun MeasuredSpeed UrbanDelivery"),
+        TestCase(IEPC3X_WHEEL1_JOB, 0, 0, 1.709, 90.7583, TestName = "IEPC3X_WHEEL1 BEV TimeRun MeasuredSpeed LongHaul"),
+        TestCase(IEPC3X_WHEEL1_JOB, 1, 1, 5.5985, 89.0938, TestName = "IEPC3X_WHEEL1 BEV TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(IEPC3X_WHEEL1_JOB, 2, 2, 35.4083, 103.3546, TestName = "IEPC3X_WHEEL1 BEV TimeRun MeasuredSpeed UrbanDelivery"),
 
         TestCase(IEPC3X_WHEEL1_JOB, 6, 0, 1.7066, 90.7762, TestName = "IEPC3X_WHEEL1 BEV TimeRun MeasuredSpeedGear LongHaul"),
         TestCase(IEPC3X_WHEEL1_JOB, 7, 1, 5.591, 89.1389, TestName = "IEPC3X_WHEEL1 BEV TimeRun MeasuredSpeedGear RegionalDelivery"),
@@ -96,9 +96,9 @@ namespace TUGraz.VectoCore.Tests.Integration.BatteryElectric
         TestCase(IEPC3X_WHEEL1_JOB, 10, 1, 5.6898, 89.0766, TestName = "IEPC3X_WHEEL1 BEV TimeRun PWheel RegionalDelivery"),
         TestCase(IEPC3X_WHEEL1_JOB, 11, 2, 36.49, 103.2827, TestName = "IEPC3X_WHEEL1 BEV TimeRun PWheel UrbanDelivery"),
 
-        TestCase(IEPC3X_WHEEL2_JOB, 0, 0, 1.7003, 90.9084, TestName = "IEPC3X_WHEEL2 BEV TimeRun MeasuredSpeed LongHaul"),
-        TestCase(IEPC3X_WHEEL2_JOB, 1, 1, 5.1366, 91.2809, TestName = "IEPC3X_WHEEL2 BEV TimeRun MeasuredSpeed RegionalDelivery"),
-        TestCase(IEPC3X_WHEEL2_JOB, 2, 2, 32.541, 117.0557, TestName = "IEPC3X_WHEEL2 BEV TimeRun MeasuredSpeed UrbanDelivery"),
+        TestCase(IEPC3X_WHEEL2_JOB, 0, 0, 1.691, 90.7354, TestName = "IEPC3X_WHEEL2 BEV TimeRun MeasuredSpeed LongHaul"),
+        TestCase(IEPC3X_WHEEL2_JOB, 1, 1, 5.549, 89.0315, TestName = "IEPC3X_WHEEL2 BEV TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(IEPC3X_WHEEL2_JOB, 2, 2, 35.0967, 102.9804, TestName = "IEPC3X_WHEEL2 BEV TimeRun MeasuredSpeed UrbanDelivery"),
 
         TestCase(IEPC3X_WHEEL2_JOB, 6, 0, 1.6886, 90.7538, TestName = "IEPC3X_WHEEL2 BEV TimeRun MeasuredSpeedGear LongHaul"),
         TestCase(IEPC3X_WHEEL2_JOB, 7, 1, 5.5414, 89.0777, TestName = "IEPC3X_WHEEL2 BEV TimeRun MeasuredSpeedGear RegionalDelivery"),
