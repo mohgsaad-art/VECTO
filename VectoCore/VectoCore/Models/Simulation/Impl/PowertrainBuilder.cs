@@ -148,7 +148,8 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				{ PowertrainPosition.HybridP2, BuildTimerunGearHybridForP2 },
 				{ PowertrainPosition.HybridP2_5, BuildTimerunGearHybridForP2 },
 				{ PowertrainPosition.HybridP3, BuildTimerunGearHybridForP3 },
-				{ PowertrainPosition.HybridP4, BuildTimerunGearHybridForP4 }
+				{ PowertrainPosition.HybridP4, BuildTimerunGearHybridForP4 },
+				{ PowertrainPosition.IHPC, BuildTimerunGearHybridForP2 }
             };
         }
 
@@ -378,7 +379,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			var es = ConnectREESS(data, container);
 			AddElectricAuxiliary(data, container, es);
 			
-			var strategy = (data.GearboxData.Type.ManualTransmission()) 
+			var strategy = (data.GearboxData.Type.ManualTransmission() || data.GearboxData.Type == GearboxType.IHPC) 
 				? (IHybridControlStrategy) new HybridStrategyTimerunGear(data, container)
 				: (IHybridControlStrategy) new HybridStrategyATTimerunGear(data, container);
 
@@ -500,7 +501,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		{
 			SwitchableClutch clutch = null;
 
-			if (data.GearboxData.Type.ManualTransmission()) {
+			if (data.GearboxData.Type.ManualTransmission() || (data.GearboxData.Type == GearboxType.IHPC)) {
 				clutch = new SwitchableClutch(container, data.EngineData);
 			} else {
 				new ATClutchInfo(container);

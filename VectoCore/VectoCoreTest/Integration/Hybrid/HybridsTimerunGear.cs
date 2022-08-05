@@ -21,6 +21,8 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
         private const string P4_JOB = @"TestData\Integration\TimeRun\MeasuredSpeedGear\GenericVehicle_Group2_P4_EM\Class2_RigidTruck_ParHyb_ENG.vecto";
         private const string P2_5_JOB = @"TestData\Integration\TimeRun\MeasuredSpeedGear\GenericVehicle_Group5_P2.5\P2.5 Group 5 2.vecto";
         private const string P1_JOB = @"TestData\Integration\TimeRun\MeasuredSpeedGear\GenericVehicle_P1-APT\CityBus_AT_PS.vecto";
+        private const string IHPC_6SPEED_JOB= @"TestData\Integration\TimeRun\MeasuredSpeedGear\GenericIHPC\6SpeedGbx\IHPC Group 5.vecto";
+        private const string IHPC_12SPEED_JOB= @"TestData\Integration\TimeRun\MeasuredSpeedGear\GenericIHPC\12SpeedGbx\IHPC Group 5.vecto";
         
         [OneTimeSetUp]
         public void Init()
@@ -61,9 +63,17 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 
         TestCase(P4_JOB, 0, 573.613, 1.7104, 1.9642, 56.5541, 54.5304, TestName = "P4 Hybrid TimeRun MeasuredSpeedGear LongHaul"),
         TestCase(P4_JOB, 1, 569.8255, 3.1632, 3.8582, 42.3671, 37.5376, TestName = "P4 Hybrid TimeRun MeasuredSpeedGear RegionalDelivery"),
-        TestCase(P4_JOB, 2, 701.2659, 7.8066, 8.9675, 20.5767, 9.3336, TestName = "P4 Hybrid TimeRun MeasuredSpeedGear UrbanDelivery")
+        TestCase(P4_JOB, 2, 701.2659, 7.8066, 8.9675, 20.5767, 9.3336, TestName = "P4 Hybrid TimeRun MeasuredSpeedGear UrbanDelivery"),
+
+        TestCase(IHPC_6SPEED_JOB, 0, 782.1167, 33.9944, 32.7456, 101.6309, 86.5873, TestName = "IHPC_6SPEED IHPC Hybrid TimeRun MeasuredSpeedGear LongHaul"),
+        TestCase(IHPC_6SPEED_JOB, 1, 835.1911, 46.3719, 44.8218, 88.4838, 62.5003, TestName = "IHPC_6SPEED IHPC Hybrid TimeRun MeasuredSpeedGear RegionalDelivery"),
+        TestCase(IHPC_6SPEED_JOB, 2, 1237.9412, 114.4095, 107.3087, 64.9372, 20.13, TestName = "IHPC_6SPEED IHPC Hybrid TimeRun MeasuredSpeedGear UrbanDelivery"),
+
+        TestCase(IHPC_12SPEED_JOB, 0, 812.8371, 21.4298, 21.4595, 101.4736, 86.4456, TestName = "IHPC_12SPEED IHPC Hybrid TimeRun MeasuredSpeedGear LongHaul"),
+        TestCase(IHPC_12SPEED_JOB, 1, 0, 0, 0, 0, 0, TestName = "IHPC_12SPEED IHPC Hybrid TimeRun MeasuredSpeedGear RegionalDelivery"),
+        TestCase(IHPC_12SPEED_JOB, 2, 1503.9847, 71.9527, 70.3088, 63.7561, 19.8885, TestName = "IHPC_12SPEED IHPC Hybrid TimeRun MeasuredSpeedGear UrbanDelivery")
         ]
-        public void TestHybridTimerunCycle(string jobFile, int cycleIdx, double CO2, double charge, double discharge, double pWheelpos,
+        public void TestHybridTimeRunCycle(string jobFile, int cycleIdx, double CO2, double charge, double discharge, double pWheelpos,
             double pWheel)
         {
             Dictionary<string, double> metrics = new Dictionary<string, double>()
@@ -129,12 +139,12 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 			run.Run();
 
 			Assert.IsTrue(run.FinishedWithoutErrors);
-
+			
             string distanceSumPath = Path.Combine(Path.GetDirectoryName(jobFile), "distance.vsum");
             AssertHelper.ReportDeviations(distanceSumPath, cycleIdx, factory, metrics);
-
-			AssertHelper.AssertMetrics(factory, metrics);
             
+            AssertHelper.AssertMetrics(factory, metrics);
+
 			Directory.Delete(Path.GetDirectoryName(outputFile), recursive: true);
         }
 
@@ -163,5 +173,6 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 
 			Directory.Delete(Path.GetDirectoryName(outputFile), recursive: true);
         }
+
     }
 }

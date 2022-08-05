@@ -104,7 +104,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 		{
 			var gearList = new List<GearshiftPosition>();
 			foreach (var gear in Gears) {
-				if (Type.AutomaticTransmission()) {
+				if (Type.AutomaticTransmission() && (Type != GearboxType.IHPC)) {
 					if (gear.Value.HasTorqueConverter) {
 						gearList.Add(new GearshiftPosition(gear.Key, false));
 					}

@@ -35,7 +35,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
         protected override IResponse EngineIdleRequest(Second absTime, Second dt)
         {
             var pos = DataBus.PowertrainInfo.ElectricMotorPositions[0];
-            var useEMSpeed = (pos == PowertrainPosition.HybridP2_5 || pos == PowertrainPosition.HybridP2);
+            var useEMSpeed = (pos == PowertrainPosition.HybridP2_5 || pos == PowertrainPosition.HybridP2 || pos == PowertrainPosition.IHPC);
             
             return NextComponent.Request(
                 absTime, 
