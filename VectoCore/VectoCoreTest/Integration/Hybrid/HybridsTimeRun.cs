@@ -55,13 +55,13 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
         TestCase(P4_JOB, 1, 569.1177, 3.2957, 3.9781, 42.3031, 37.4575, TestName = "P4 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
         TestCase(P4_JOB, 2, 712.0062, 8.3069, 9.4837, 20.3732, 9.1137, TestName = "P4 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
 
-        TestCase(IHPC_6SPEED_JOB, 0, 0, 0, 0, 0, 0, TestName = "IHPC_6SPEED Hybrid TimeRun MeasuredSpeed LongHaul"),
-        TestCase(IHPC_6SPEED_JOB, 1, 0, 0, 0, 0, 0, TestName = "IHPC_6SPEED Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
-        TestCase(IHPC_6SPEED_JOB, 2, 0, 0, 0, 0, 0, TestName = "IHPC_6SPEED Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
+        TestCase(IHPC_6SPEED_JOB, 0, 0, 0, 0, 0, 0, TestName = "IHPC_6SPEED IHPC Hybrid TimeRun MeasuredSpeed LongHaul"),
+        TestCase(IHPC_6SPEED_JOB, 1, 0, 0, 0, 0, 0, TestName = "IHPC_6SPEED IHPC Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(IHPC_6SPEED_JOB, 2, 0, 0, 0, 0, 0, TestName = "IHPC_6SPEED IHPC Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
 
-        TestCase(IHPC_12SPEED_JOB, 0, 0, 0, 0, 0, 0, TestName = "IHPC_12SPEED Hybrid TimeRun MeasuredSpeed LongHaul"),
-        TestCase(IHPC_12SPEED_JOB, 1, 0, 0, 0, 0, 0, TestName = "IHPC_12SPEED Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
-        TestCase(IHPC_12SPEED_JOB, 2, 0, 0, 0, 0, 0, TestName = "IHPC_12SPEED Hybrid TimeRun MeasuredSpeed UrbanDelivery")
+        TestCase(IHPC_12SPEED_JOB, 0, 821.4707, 20.9355, 21.0193, 101.4646, 86.4355, TestName = "IHPC_12SPEED IHPC Hybrid TimeRun MeasuredSpeed LongHaul"),
+        TestCase(IHPC_12SPEED_JOB, 1, 923.0115, 29.3624, 29.7706, 87.8053, 62.2202, TestName = "IHPC_12SPEED IHPC Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(IHPC_12SPEED_JOB, 2, 1514.0605, 66.2361, 65.141, 63.7059, 19.8768, TestName = "IHPC_12SPEED IHPC Hybrid TimeRun MeasuredSpeed UrbanDelivery")
         ]
         public void TestHybridTimeRunCycle(string jobFile, int cycleIdx, double CO2, double charge, double discharge, double pWheelpos,
             double pWheel)
@@ -135,7 +135,7 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
             
             AssertHelper.AssertMetrics(factory, metrics);
 
-			//Directory.Delete(Path.GetDirectoryName(outputFile), recursive: true);
+			Directory.Delete(Path.GetDirectoryName(outputFile), recursive: true);
         }
 
         public void RunHybridDistanceRunCycle(string jobFile, int cycleIdx, Dictionary<String, double> metrics)
@@ -161,7 +161,7 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 
             AssertHelper.AssertMetrics(factory, metrics);
 
-			//Directory.Delete(Path.GetDirectoryName(outputFile), recursive: true);
+			Directory.Delete(Path.GetDirectoryName(outputFile), recursive: true);
         }
 
     }

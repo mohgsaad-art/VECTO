@@ -664,7 +664,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		{
 			SwitchableClutch clutch = null;
 
-			if (data.GearboxData.Type.ManualTransmission()) {
+			if (data.GearboxData.Type.ManualTransmission() || (data.GearboxData.Type == GearboxType.IHPC)) {
 				clutch = new SwitchableClutch(container, data.EngineData);
 			} 
 			else {
