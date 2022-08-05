@@ -128,6 +128,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		private void GearShiftTriggered()
         {
+			if (DataBus.GearboxInfo.GearboxType == GearboxType.IHPC) {
+				return;
+            }
+
 			/* Set driving action to roll, on gear change trigger, in order to replicate distance-based mode driver signals. */
 
 			if (DrivingAction == DrivingAction.Accelerate) {
@@ -305,7 +309,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
             }
 			else {
 				DriverBehavior = DrivingBehavior.Driving;
-				DrivingAction = DataBus.GearboxInfo.GearEngaged(absTime) ? DrivingAction.Accelerate : DrivingAction.Roll;
+				DrivingAction = DataBus.GearboxInfo.GearEngaged(absTime) || (DataBus.GearboxInfo.GearboxType == GearboxType.IHPC)
+					? DrivingAction.Accelerate 
+					: DrivingAction.Roll;
 			}
         }
 
@@ -331,7 +337,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				var tolerance = (((DataBus.VehicleInfo.VehicleSpeed + nextSpeed) / 2) * 0.001).Abs();
 
 				if (CycleData.RightSample.VehicleTargetSpeed.IsGreater(nextSpeed, tolerance)) {
-					DrivingAction = DataBus.GearboxInfo.GearEngaged(absTime) ? DrivingAction.Accelerate : DrivingAction.Roll;
+					DrivingAction = DataBus.GearboxInfo.GearEngaged(absTime) || (DataBus.GearboxInfo.GearboxType == GearboxType.IHPC) 
+						? DrivingAction.Accelerate 
+						: DrivingAction.Roll;
+
 					DriverBehavior = (DrivingAction == DrivingAction.Accelerate) ? DrivingBehavior.Accelerating : DrivingBehavior.Driving;
 				}
 				else if (CycleData.RightSample.VehicleTargetSpeed.IsSmaller(nextSpeed, tolerance)) {
