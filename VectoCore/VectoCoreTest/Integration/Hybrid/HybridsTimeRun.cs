@@ -55,13 +55,13 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
         TestCase(P4_JOB, 1, 569.1177, 3.2957, 3.9781, 42.3031, 37.4575, TestName = "P4 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
         TestCase(P4_JOB, 2, 712.0062, 8.3069, 9.4837, 20.3732, 9.1137, TestName = "P4 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
 
-        TestCase(IHPC_6SPEED_JOB, 0, 0, 0, 0, 0, 0, TestName = "IHPC_6SPEED IHPC Hybrid TimeRun MeasuredSpeed LongHaul"),
-        TestCase(IHPC_6SPEED_JOB, 1, 0, 0, 0, 0, 0, TestName = "IHPC_6SPEED IHPC Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(IHPC_6SPEED_JOB, 0, 790.6421, 32.1541, 31.1325, 100.9479, 85.8894, TestName = "IHPC_6SPEED IHPC Hybrid TimeRun MeasuredSpeed LongHaul"),
+        TestCase(IHPC_6SPEED_JOB, 1, 863.537, 43.8841, 42.6963, 88.3449, 62.3554, TestName = "IHPC_6SPEED IHPC Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
         TestCase(IHPC_6SPEED_JOB, 2, 0, 0, 0, 0, 0, TestName = "IHPC_6SPEED IHPC Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
 
-        TestCase(IHPC_12SPEED_JOB, 0, 821.4707, 20.9355, 21.0193, 101.4646, 86.4355, TestName = "IHPC_12SPEED IHPC Hybrid TimeRun MeasuredSpeed LongHaul"),
-        TestCase(IHPC_12SPEED_JOB, 1, 923.0115, 29.3624, 29.7706, 87.8053, 62.2202, TestName = "IHPC_12SPEED IHPC Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
-        TestCase(IHPC_12SPEED_JOB, 2, 1514.0605, 66.2361, 65.141, 63.7059, 19.8768, TestName = "IHPC_12SPEED IHPC Hybrid TimeRun MeasuredSpeed UrbanDelivery")
+        TestCase(IHPC_12SPEED_JOB, 0, 821.4219, 21.1183, 21.1915, 101.4752, 86.4461, TestName = "IHPC_12SPEED IHPC Hybrid TimeRun MeasuredSpeed LongHaul"),
+        TestCase(IHPC_12SPEED_JOB, 1, 923.018, 29.4124, 29.8088, 87.8133, 62.2285, TestName = "IHPC_12SPEED IHPC Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(IHPC_12SPEED_JOB, 2, 1515.2522, 66.0117, 64.9061, 63.7084, 19.8786, TestName = "IHPC_12SPEED IHPC Hybrid TimeRun MeasuredSpeed UrbanDelivery")
         ]
         public void TestHybridTimeRunCycle(string jobFile, int cycleIdx, double CO2, double charge, double discharge, double pWheelpos,
             double pWheel)

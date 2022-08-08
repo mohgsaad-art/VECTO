@@ -45,9 +45,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			public AmpereSecond Capacity => _capacity ?? (_capacity = _batteries.Min(x => x.Capacity));
 
 			public double SoC => _batteries.Min(x => x.StateOfCharge * x.Capacity) / Capacity;
-
-			public double CalculatedStateOfCharge => _batteries.Min(x => x.CalculatedStateOfCharge * x.Capacity) / Capacity;
-
 			public WattSecond StoredEnergy => _batteries.Min(x => x.StateOfCharge * x.Capacity) * OpenCircuitVoltage;
 
 			public Watt MaxDischargePower(Second dt, Second tPulse)
@@ -382,5 +379,4 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			public Second PulseDuration;
 		}
 	}
-
 }

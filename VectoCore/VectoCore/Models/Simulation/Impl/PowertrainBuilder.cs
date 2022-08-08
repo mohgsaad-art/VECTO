@@ -91,15 +91,15 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			{
 				{ VectoSimulationJobType.ConventionalVehicle, BuildMeasuredSpeedGearConventional },
 				{ VectoSimulationJobType.BatteryElectricVehicle, BuildMeasuredSpeedGearBatteryElectric },
-				{ VectoSimulationJobType.IEPC_E, BuildMeasuredSpeedGearIEPC },
-				{ VectoSimulationJobType.ParallelHybridVehicle, BuildMeasuredSpeedHybrid }
+				{ VectoSimulationJobType.IEPC_E, BuildMeasuredSpeedGearIEPC }
 			};
 			
 			var measuredSpeedBuilders = new Dictionary<VectoSimulationJobType, Func<VectoRunData, IModalDataContainer, WriteSumData, IVehicleContainer>>()
 			{
 				{ VectoSimulationJobType.ConventionalVehicle, BuildMeasuredSpeedConventional },
 				{ VectoSimulationJobType.BatteryElectricVehicle, BuildMeasuredSpeedBatteryElectric },
-				{ VectoSimulationJobType.IEPC_E, BuildMeasuredSpeedBatteryElectric }
+				{ VectoSimulationJobType.IEPC_E, BuildMeasuredSpeedBatteryElectric },
+				{ VectoSimulationJobType.ParallelHybridVehicle, BuildMeasuredSpeedHybrid }
 			};
 			
 			var vtpBuilders = new Dictionary<VectoSimulationJobType, Func<VectoRunData, IModalDataContainer, WriteSumData, IVehicleContainer>>()
@@ -574,11 +574,11 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
         private static IVehicleContainer BuildMeasuredSpeedHybrid(VectoRunData data, IModalDataContainer modData, ISumData sumWriter)
 		{
-			var container = new VehicleContainer(data.ExecutionMode, modData, sumWriter) { RunData = data };
-			var es = new ElectricSystem(container);
+			VerifyCycleType(data, CycleType.MeasuredSpeed);
 
-			AddBatterySystem<Battery, BatterySystem>(data, container, es);
-			AddSuperCapacitor(data, container, es);
+			var container = new VehicleContainer(data.ExecutionMode, modData, sumWriter) { RunData = data };
+			var es = ConnectREESS(data, container);
+
 			AddElectricAuxiliary(data, container, es);
 
 			SwitchableClutch clutch = AddClutch(data, container);
@@ -592,6 +592,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			// add engine before gearbox so that gearbox can obtain if an ICE is available already in constructor
 			var engine = new StopStartCombustionEngine(container, data.EngineData);
 			var gearbox = GetGearbox(container, ctl.ShiftStrategy);
+
 			var idleController = GetIdleController(data.PTO, engine, container);
 			
 			ctl.Gearbox = gearbox as IHybridControlledGearbox;
@@ -625,33 +626,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 			return container;
 		}
-
-		private static void AddBatterySystem<TBattery, TBatterySystem>(VectoRunData data, VehicleContainer container, ElectricSystem es) 
-			 where TBattery : Battery where TBatterySystem : GenericBatterySystem<TBattery>
-        {
-			if (data.BatteryData != null) {
-				if (data.BatteryData.InitialSoC < data.BatteryData.Batteries.Min(x => x.Item2.MinSOC)) {
-					throw new VectoException("Battery: Initial SoC has to be higher than min SoC");
-				}
-
-				var battery = (TBatterySystem) Activator.CreateInstance(typeof(TBatterySystem), new object[] { container,  data.BatteryData });
-				battery.Initialize(data.BatteryData.InitialSoC);
-				es.Connect(battery);
-			}
-		}
-
-		private static void AddSuperCapacitor(VectoRunData data, VehicleContainer container, ElectricSystem es)
-		{
-			if (data.SuperCapData != null) {
-				if (data.SuperCapData.InitialSoC < data.SuperCapData.MinVoltage / data.SuperCapData.MaxVoltage) {
-					throw new VectoException("SuperCap: Initial SoC has to be higher than min SoC");
-				}
-
-				var superCap = new SuperCap(container, data.SuperCapData);
-				superCap.Initialize(data.SuperCapData.InitialSoC);
-				es.Connect(superCap);
-			}
-        }
 
 		private static void AddElectricAuxiliary(VectoRunData data, VehicleContainer container, ElectricSystem es)
 		{
@@ -2504,5 +2478,22 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		public MeterPerSecond MaxVehicleSpeed => throw new NotImplementedException();
 
 		#endregion
+	}
+
+	public class TimeRunHybridComponents
+    {
+		internal MeasuredSpeedDrivingCycle Cycle { get; set; }
+
+		public StopStartCombustionEngine Engine { get; set; }
+
+		public IGearbox Gearbox { get; set; }
+
+		public SwitchableClutch Clutch { get; set; }
+
+		public IIdleController IdleController { get; set; }
+
+		public IElectricMotor ElectricMotor	{ get; set; }
+
+		public IHybridController HybridController { get; set; }
 	}
 }
