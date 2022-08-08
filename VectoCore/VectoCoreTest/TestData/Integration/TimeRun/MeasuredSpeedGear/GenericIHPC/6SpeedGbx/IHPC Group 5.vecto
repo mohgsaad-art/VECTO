@@ -1,0 +1,58 @@
+{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2022-08-04T13:24:08.5530580Z",
+    "AppVersion": "3",
+    "FileVersion": 13
+  },
+  "Body": {
+    "SavedInDeclMode": false,
+    "EngineOnlyMode": false,
+    "VehicleFile": "Group5_HEV.vveh",
+    "EngineFile": "Engine_325kW_12.7l.veng",
+    "GearboxFile": "IHPC-Gbx_6.vgbx",
+    "TCU": "IHPC-Gbx_6.vgbx",
+    "HybridStrategyParams": "Hybrid_Parameters.vhctl",
+    "Padd": 3000.0,
+    "Paux_ICEOff_Driving": 0.0,
+    "Paux_ICEOff_Standstill": 0.0,
+    "Padd_electric": 0.0,
+    "VACC": "Truck.vacc",
+    "EngineStopStartAtVehicleStopThreshold": 0.0,
+    "EngineStopStartMaxOffTimespan": 1000.0,
+    "EngineStopStartUtilityFactor": 0.0,
+    "EngineStopStartUtilityFactorDriving": 0.0,
+    "EcoRollMinSpeed": 0.0,
+    "EcoRollActivationDelay": 0.0,
+    "EcoRollUnderspeedThreshold": 0.0,
+    "EcoRollMaxAcceleration": 0.0,
+    "PCCEnableSpeed": 0.0,
+    "PCCMinSpeed": 0.0,
+    "PCCUnderspeed": 0.0,
+    "PCCOverSpeed": 5.0,
+    "PCCPreviewDistanceUC1": 0.0,
+    "PCCPreviewDistanceUC2": 0.0,
+    "LAC": {
+      "Enabled": true,
+      "PreviewDistanceFactor": 10.0,
+      "DF_offset": 2.5,
+      "DF_scaling": 1.5,
+      "DF_targetSpeedLookup": "",
+      "Df_velocityDropLookup": "",
+      "MinSpeed": 50.0
+    },
+    "OverSpeedEcoRoll": {
+      "Mode": "Overspeed",
+      "MinSpeed": 50.0,
+      "OverSpeed": 2.5
+    },
+    "Cycles": [
+      "MeasuredSpeedGear_LongHaul.vdri",
+      "MeasuredSpeedGear_RegionalDelivery.vdri",
+      "MeasuredSpeedGear_UrbanDelivery.vdri",
+      "LongHaul",
+      "RegionalDelivery",
+      "UrbanDelivery"
+    ]
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2020-09-07T15:26:44.5653903Z",
+    "AppVersion": "3",
+    "FileVersion": 6
+  },
+  "Body": {
+    "SavedInDeclMode": false,
+    "ModelName": "tractor_12gear_example",
+    "Inertia": 0.0,
+    "TracInt": 1.0,
+    "Gears": [
+      {
+        "Ratio": 2.64,
+        "LossMap": "Axle_4x2_Tractor.vtlm"
+      },
+      {
+        "Ratio": 9.15,
+        "LossMap": "Gear_1.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": "",
+        "MaxSpeed": ""
+      },
+      {
+        "Ratio": 5.46,
+        "LossMap": "Gear_2.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": "",
+        "MaxSpeed": ""
+      },
+      {
+        "Ratio": 3.69,
+        "LossMap": "Gear_3.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": "",
+        "MaxSpeed": ""
+      },
+      {
+        "Ratio": 2.15,
+        "LossMap": "Gear_4.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": "",
+        "MaxSpeed": ""
+      },
+      {
+        "Ratio": 1.05,
+        "LossMap": "Gear_5.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": "",
+        "MaxSpeed": ""
+      },
+      {
+        "Ratio": 0.95,
+        "LossMap": "Gear_6.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": "",
+        "MaxSpeed": ""
+      }
+    ],
+    "TqReserve": 20.0,
+    "ShiftTime": 2.0,
+    "StartTqReserve": 20.0,
+    "StartSpeed": 2.0,
+    "StartAcc": 0.6,
+    "GearboxType": "IHPC",
+    "TorqueConverter": {
+      "Enabled": false
+    },
+    "DownshiftAfterUpshiftDelay": 6.0,
+    "UpshiftAfterDownshiftDelay": 6.0,
+    "UpshiftMinAcceleration": 0.1,
+    "PowershiftShiftTime": 0.8
+  }
+}

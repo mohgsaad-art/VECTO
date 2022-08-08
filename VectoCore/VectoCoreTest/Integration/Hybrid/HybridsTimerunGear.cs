@@ -70,7 +70,7 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
         TestCase(IHPC_6SPEED_JOB, 2, 1237.9412, 114.4095, 107.3087, 64.9372, 20.13, TestName = "IHPC_6SPEED IHPC Hybrid TimeRun MeasuredSpeedGear UrbanDelivery"),
 
         TestCase(IHPC_12SPEED_JOB, 0, 812.8371, 21.4298, 21.4595, 101.4736, 86.4456, TestName = "IHPC_12SPEED IHPC Hybrid TimeRun MeasuredSpeedGear LongHaul"),
-        TestCase(IHPC_12SPEED_JOB, 1, 0, 0, 0, 0, 0, TestName = "IHPC_12SPEED IHPC Hybrid TimeRun MeasuredSpeedGear RegionalDelivery"),
+        TestCase(IHPC_12SPEED_JOB, 1, 901.6363, 29.6849, 30.099, 87.7325, 62.1546, TestName = "IHPC_12SPEED IHPC Hybrid TimeRun MeasuredSpeedGear RegionalDelivery"), // corrected (1)
         TestCase(IHPC_12SPEED_JOB, 2, 1503.9847, 71.9527, 70.3088, 63.7561, 19.8885, TestName = "IHPC_12SPEED IHPC Hybrid TimeRun MeasuredSpeedGear UrbanDelivery")
         ]
         public void TestHybridTimeRunCycle(string jobFile, int cycleIdx, double CO2, double charge, double discharge, double pWheelpos,
