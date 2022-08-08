@@ -314,6 +314,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				DrivingAction = DataBus.GearboxInfo.GearEngaged(absTime) || (DataBus.GearboxInfo.GearboxType == GearboxType.IHPC)
 					? DrivingAction.Accelerate 
 					: DrivingAction.Roll;
+
+				DataBus.GearboxCtl.DisengageGearbox = false;
 			}
         }
 
@@ -346,6 +348,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 						: DrivingAction.Roll;
 
 					DriverBehavior = (DrivingAction == DrivingAction.Accelerate) ? DrivingBehavior.Accelerating : DrivingBehavior.Driving;
+
+					DataBus.GearboxCtl.DisengageGearbox = false;
 				}
 				else if (CycleData.RightSample.VehicleTargetSpeed.IsSmaller(nextSpeed, tolerance)) {
 					DrivingAction = DrivingAction.Brake;
