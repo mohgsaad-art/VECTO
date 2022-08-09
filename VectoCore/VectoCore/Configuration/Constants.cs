@@ -49,6 +49,8 @@ namespace TUGraz.VectoCore.Configuration
 			public const string Prefix = "AUX_";
 			public const string PowerPrefix = "P_";
 
+			public const double FanElectricToMechanicalEfficiency = 0.7;
+
 			public static class IDs
 			{
 				public const string PTOTransmission = "PTO_TRANSM";

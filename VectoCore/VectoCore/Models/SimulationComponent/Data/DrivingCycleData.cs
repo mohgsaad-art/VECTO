@@ -251,6 +251,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 
 			public PerSecond FanSpeed;
 
+			public Watt FanElectricalPower;
+
 			// required for VTP Mode (validation of cycle data in declaration mode)
 			public NewtonMeter TorqueWheelLeft;
 

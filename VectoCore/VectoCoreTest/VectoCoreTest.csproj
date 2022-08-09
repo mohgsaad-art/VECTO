@@ -2571,6 +2571,9 @@
     <None Include="TestData\Integration\VTPMode\GenericVehicle\class_3_generic vehicle_DECL.vecto">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="TestData\Integration\VTPMode\GenericVehicle\class_5_generic vehicle_DECL_FanPel.vecto">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="TestData\Integration\VTPMode\GenericVehicle\VTP cycle_RD_2Hz.vdri">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -2578,6 +2581,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="TestData\Integration\VTPMode\GenericVehicle\vtp_cycle_citybus_atser_2TC.vdri">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\Integration\VTPMode\GenericVehicle\VTP_rural_2Hz_FanPel.vdri">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="TestData\Integration\VTPMode\GenericVehicle_CNG\class_5_generic vehicle_DECL.vecto">

@@ -183,7 +183,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 			var aux = CreateSpeedDependentAuxiliaries(data, container);
 			var engineFan = new EngineFanAuxiliary(data.FanData.FanCoefficients, data.FanData.FanDiameter);
-			aux.AddCycle(Constants.Auxiliaries.IDs.Fan, cycleEntry => engineFan.PowerDemand(cycleEntry.FanSpeed));
+			aux.AddCycle(Constants.Auxiliaries.IDs.Fan, cycleEntry => engineFan.PowerDemand(cycleEntry));
 			container.ModalData.AddAuxiliary(Constants.Auxiliaries.IDs.Fan);
 
             if (data.PTO != null) {

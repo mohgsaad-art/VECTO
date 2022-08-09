@@ -361,6 +361,7 @@ namespace TUGraz.VectoCore.InputData.Reader
 			public const string PTOActive = "PTO";
 			public const string PTODuringDrivePower = "PTO_Power";
 			public const string Highway = "HW";
+			public const string FanElectricalPower = "Pel_fan";
 		}
 
 		#region DataParser
@@ -434,6 +435,22 @@ namespace TUGraz.VectoCore.InputData.Reader
 
 				return true;
 			}
+
+			protected static bool CheckExclusiveColumns(DataColumnCollection header, string[] cols, bool throwExceptions)
+			{
+				var colCount = header.Cast<DataColumn>().Count(col => cols.Select(x => x.ToLowerInvariant())
+					.Contains(col.ColumnName.ToLowerInvariant()));
+
+				if (colCount != 1) {
+					if (throwExceptions) {
+						throw new VectoException("Exactly one of these columns have to be defined: {0}", string.Join(", ", cols));
+					}
+
+					return false;
+                }
+
+				return true;
+            }
 
 			public abstract IEnumerable<DrivingCycleData.DrivingCycleEntry> Parse(DataTable table, bool crossWindRequired);
 		}
@@ -789,7 +806,7 @@ namespace TUGraz.VectoCore.InputData.Reader
 							AdditionalAuxPowerDemand =
 								row.ParseDoubleOrGetDefault(Fields.AdditionalAuxPowerDemand).SI(Unit.SI.Kilo.Watt).Cast<Watt>(),
 							EngineSpeed = row.ParseDouble(Fields.EngineSpeedSuffix).RPMtoRad(),
-							FanSpeed = row.ParseDouble(Fields.FanSpeed).RPMtoRad(),
+							FanSpeed = row.ParseDoubleOrGetDefault(Fields.FanSpeed).RPMtoRad(),
 							Gear = (uint)row.ParseDoubleOrGetDefault(Fields.Gear),
 							Fuelconsumption = row.ParseDoubleOrGetDefault(Fields.FuelConsumption).SI(Unit.SI.Gramm.Per.Hour)
 												.Cast<KilogramPerSecond>(),
@@ -797,7 +814,10 @@ namespace TUGraz.VectoCore.InputData.Reader
 							TorqueWheelLeft = tqLeft,
 							TorqueWheelRight = tqRight,
 							WheelSpeedLeft = speedLeft,
-							WheelSpeedRight = speedRight
+							WheelSpeedRight = speedRight,
+							FanElectricalPower = table.Columns.Contains(Fields.FanElectricalPower) 
+								? row.ParseDouble(Fields.FanElectricalPower).SI<Watt>() 
+								: null
 						};
 					}).ToArray();
 
@@ -810,7 +830,6 @@ namespace TUGraz.VectoCore.InputData.Reader
 					Fields.Time,
 					Fields.VehicleSpeed,
 					Fields.EngineSpeedSuffix,
-					Fields.FanSpeed,
 					Fields.WheelSpeedLeft,
 					Fields.WheelSpeedRight,
 					Fields.WheelTorqueLeft,
@@ -828,13 +847,17 @@ namespace TUGraz.VectoCore.InputData.Reader
 					Fields.WheelTorqueRight,
 					Fields.Gear,
 					Fields.TorqueConverterActive,
-					Fields.FuelConsumption
+					Fields.FuelConsumption,
+					Fields.FanElectricalPower
 				};
 
 				const bool allowAux = true;
 
-				return CheckColumns(header, allowedCols, requiredCols, throwExceptions, allowAux) &&
-						CheckComboColumns(header, new[] { Fields.AirSpeedRelativeToVehicle, Fields.WindYawAngle }, throwExceptions);
+				throwExceptions = true;
+
+				return CheckColumns(header, allowedCols, requiredCols, throwExceptions, allowAux) 
+					&& CheckComboColumns(header, new[] { Fields.AirSpeedRelativeToVehicle, Fields.WindYawAngle }, throwExceptions)
+					&& CheckExclusiveColumns(header, new[] { Fields.FanSpeed, Fields.FanElectricalPower}, throwExceptions);
 			}
 		}
 
