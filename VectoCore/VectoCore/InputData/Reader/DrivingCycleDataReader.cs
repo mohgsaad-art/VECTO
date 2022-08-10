@@ -806,7 +806,9 @@ namespace TUGraz.VectoCore.InputData.Reader
 							AdditionalAuxPowerDemand =
 								row.ParseDoubleOrGetDefault(Fields.AdditionalAuxPowerDemand).SI(Unit.SI.Kilo.Watt).Cast<Watt>(),
 							EngineSpeed = row.ParseDouble(Fields.EngineSpeedSuffix).RPMtoRad(),
-							FanSpeed = row.ParseDoubleOrGetDefault(Fields.FanSpeed).RPMtoRad(),
+							FanSpeed = table.Columns.Contains(Fields.FanSpeed)
+								? row.ParseDoubleOrGetDefault(Fields.FanSpeed).RPMtoRad()
+								: null,
 							Gear = (uint)row.ParseDoubleOrGetDefault(Fields.Gear),
 							Fuelconsumption = row.ParseDoubleOrGetDefault(Fields.FuelConsumption).SI(Unit.SI.Gramm.Per.Hour)
 												.Cast<KilogramPerSecond>(),
