@@ -145,6 +145,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 				EngineSpeed = entry.EngineSpeed;
 				FanSpeed = entry.FanSpeed;
 				PTOPowerDemandDuringDrive = entry.PTOPowerDemandDuringDrive;
+				FanElectricalPower = entry.FanElectricalPower;
+				CombustionEngineTorque = entry.CombustionEngineTorque;
+				CH4MassFlow = entry.CH4MassFlow;
+				COMassFlow = entry.COMassFlow;
+				NMHCMassFlow = entry.NMHCMassFlow;
+				NOxMassFlow = entry.NOxMassFlow;
+				THCMassFlow = entry.THCMassFlow;
+				CO2MassFlow	= entry.CO2MassFlow;
 			}
 
 			/// <summary>
@@ -252,6 +260,22 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 			public PerSecond FanSpeed;
 
 			public Watt FanElectricalPower;
+
+			public NewtonMeter CombustionEngineTorque;
+
+			public KilogramPerSecond CH4MassFlow;
+
+			public KilogramPerSecond COMassFlow;
+
+			public KilogramPerSecond NMHCMassFlow;
+
+			public KilogramPerSecond NOxMassFlow;
+
+			public KilogramPerSecond THCMassFlow;
+
+			public KilogramPerSecond CO2MassFlow;
+
+			//public 
 
 			// required for VTP Mode (validation of cycle data in declaration mode)
 			public NewtonMeter TorqueWheelLeft;

@@ -362,6 +362,13 @@ namespace TUGraz.VectoCore.InputData.Reader
 			public const string PTODuringDrivePower = "PTO_Power";
 			public const string Highway = "HW";
 			public const string FanElectricalPower = "Pel_fan";
+			public const string CombustionEngineTorque = "tq_eng";
+			public const string CH4MassFlow = "CH4";
+			public const string COMassFlow = "CO";
+			public const string NMHCMassFlow = "NMHC";
+			public const string NOxMassFlow = "NOx";
+			public const string THCMassFlow = "THC";
+			public const string CO2MassFlow = "CO2";
 		}
 
 		#region DataParser
@@ -794,6 +801,8 @@ namespace TUGraz.VectoCore.InputData.Reader
 			{
 				ValidateHeader(table.Columns);
 
+				const uint GRAMS_PER_KILO = 1000;
+
 				var entries = table.Rows.Cast<DataRow>().Select(
 					row => {
 						var tqLeft = row.ParseDouble(Fields.WheelTorqueLeft).SI<NewtonMeter>();
@@ -819,7 +828,16 @@ namespace TUGraz.VectoCore.InputData.Reader
 							WheelSpeedRight = speedRight,
 							FanElectricalPower = table.Columns.Contains(Fields.FanElectricalPower) 
 								? row.ParseDouble(Fields.FanElectricalPower).SI<Watt>() 
-								: null
+								: null,
+							CombustionEngineTorque = table.Columns.Contains(Fields.CombustionEngineTorque)
+								? row.ParseDouble(Fields.CombustionEngineTorque).SI<NewtonMeter>()
+								: null,
+							CH4MassFlow = (row.ParseDoubleOrGetDefault(Fields.CH4MassFlow) / GRAMS_PER_KILO).SI<KilogramPerSecond>(),
+							COMassFlow = (row.ParseDoubleOrGetDefault(Fields.COMassFlow) / GRAMS_PER_KILO).SI<KilogramPerSecond>(),
+							NMHCMassFlow = (row.ParseDoubleOrGetDefault(Fields.NMHCMassFlow) / GRAMS_PER_KILO).SI<KilogramPerSecond>(),
+							NOxMassFlow = (row.ParseDoubleOrGetDefault(Fields.NOxMassFlow) / GRAMS_PER_KILO).SI<KilogramPerSecond>(),
+							THCMassFlow = (row.ParseDoubleOrGetDefault(Fields.THCMassFlow) / GRAMS_PER_KILO).SI<KilogramPerSecond>(),
+							CO2MassFlow = (row.ParseDoubleOrGetDefault(Fields.CO2MassFlow) / GRAMS_PER_KILO).SI<KilogramPerSecond>(),
 						};
 					}).ToArray();
 
@@ -850,12 +868,17 @@ namespace TUGraz.VectoCore.InputData.Reader
 					Fields.Gear,
 					Fields.TorqueConverterActive,
 					Fields.FuelConsumption,
-					Fields.FanElectricalPower
+					Fields.FanElectricalPower,
+					Fields.CombustionEngineTorque,
+					Fields.CH4MassFlow,
+					Fields.COMassFlow,
+					Fields.NMHCMassFlow,
+					Fields.NOxMassFlow,
+					Fields.THCMassFlow,
+					Fields.CO2MassFlow
 				};
 
 				const bool allowAux = true;
-
-				throwExceptions = true;
 
 				return CheckColumns(header, allowedCols, requiredCols, throwExceptions, allowAux) 
 					&& CheckComboColumns(header, new[] { Fields.AirSpeedRelativeToVehicle, Fields.WindYawAngle }, throwExceptions)
