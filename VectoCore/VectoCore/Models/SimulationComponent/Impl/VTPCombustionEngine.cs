@@ -44,11 +44,11 @@ using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
-    public class VTPCombustionEngine : CombustionEngine
+    public class VTPCombustionEngine : StopStartCombustionEngine
     {
 		private bool firstInit = true;
 
-        public VTPCombustionEngine(IVehicleContainer container, CombustionEngineData modelData, bool pt1Disabled = false) : base(container, modelData, pt1Disabled) { }
+		public VTPCombustionEngine(IVehicleContainer container, CombustionEngineData modelData, bool pt1Disabled = false) : base(container, modelData, pt1Disabled) { }
 
 		public override IResponse Initialize(NewtonMeter outTorque, PerSecond outAngularVelocity)
 		{
@@ -74,6 +74,17 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					EngineSpeed = outAngularVelocity
 				}
 			};
+		}
+
+		public override IResponse Request(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, bool dryRun)
+		{
+			// Engine speed and fuel consumption determine whether we consider the engine is on or off.
+			// This cut-off point affects calculations and Response (stop-start functionality, see base.Request)
+			var fuelConsumption = DataBus.DrivingCycleInfo.CycleData.LeftSample.Fuelconsumption;
+			
+			CombustionEngineOn = (DataBus.DrivingCycleInfo.CycleData.LeftSample.EngineSpeed >= EngineIdleSpeed) || fuelConsumption.IsGreater(0);
+
+			return base.Request(absTime, dt, outTorque, outAngularVelocity, dryRun);
 		}
 
 		protected override IResponse DoHandleRequest(Second absTime, Second dt, NewtonMeter torqueReq,
@@ -195,10 +206,16 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			};
 		}
 
-
-		protected override PerSecond GetEngineSpeed(PerSecond angularSpeed)
+		protected bool IsSpeedBelowIdle()
         {
-            return DataBus.DrivingCycleInfo.CycleData.LeftSample.EngineSpeed;
+			return DataBus.DrivingCycleInfo.CycleData.LeftSample.EngineSpeed < EngineIdleSpeed;
+		}
+
+        protected override PerSecond GetEngineSpeed(PerSecond angularSpeed)
+        {
+			// Clip to idle to avoid crashing.
+			// Returning zero would crash torque interpolations (divide by zero).
+			return IsSpeedBelowIdle() ? EngineIdleSpeed : DataBus.DrivingCycleInfo.CycleData.LeftSample.EngineSpeed;
         }
 
 		protected override double WHTCCorrectionFactor(IFuelProperties fuel)

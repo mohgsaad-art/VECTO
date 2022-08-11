@@ -90,6 +90,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			foreach (var entry in Data.Entries) {
 				VerifyWheelSpeeds(entry);
+
 				VerifyFanSpeed(hasElectricFan, entry);
 			}
 

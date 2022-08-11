@@ -406,7 +406,6 @@ namespace TUGraz.VectoCore.OutputData
 				}
 			}
 
-			//we can do these calculations in the vtp cycle (?)
 			var energy = runData.Cycle.Entries.Pairwise()
 				.Sum(x => (x.Item1.EngineSpeed * x.Item1.CombustionEngineTorque) * (x.Item2.Time - x.Item1.Time)).ConvertToKiloWattHour();
 
@@ -424,7 +423,6 @@ namespace TUGraz.VectoCore.OutputData
 			row[Fields.POLLUTANT_THC] = (ConvertedSI) (THC / energy).SI<Scalar>();
 			row[Fields.POLLUTANT_CO2] = (ConvertedSI) (CO2 / energy).SI<Scalar>();
 
-			//row[Fields.E_FCMAP_POS] = modData.TotalEngineWorkPositive().ConvertToKiloWattHour();
 			var simulatedEnergy = modData.TotalEngineWorkPositive().ConvertToKiloWattHour();
 
 			row[Fields.ENGINE_ENERGY_RATIO] = (ConvertedSI) (energy / simulatedEnergy).SI<Scalar>();

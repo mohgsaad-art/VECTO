@@ -90,6 +90,7 @@ namespace TUGraz.VectoCore.Tests.Integration.VTP
 		[TestCase(@"TestData\Integration\VTPMode\GenericVehicle\class_5_generic vehicle_DECL.vecto", 0.8972, TestName = "Generic Group 5 VTP Test Declaration Mode"),
 		 TestCase(@"TestData\Integration\VTPMode\GenericVehicle XMLJob PTO\class_5_generic vehicle_DECL.vecto", 0.8925, TestName = "Generic Group 5 VTP Test Declaration Mode with PTO"),
 		TestCase(@"TestData\Integration\VTPMode\GenericVehicle\class_3_generic vehicle_DECL.vecto", 1.0068, TestName = "Generic Group 3 VTP Test Declaration Mode"),
+		TestCase(@"TestData\Integration\VTPMode\Group2_RigidTruck_4x2\Class2_RigidTruck_DECL_SS_VTP.vecto", 1.0099, TestName = "Class 2 RigidTruck VTP StopStart"),
 		TestCase(@"TestData\Integration\VTPMode\GenericVehicle\class_5_generic vehicle_DECL_FanPel.vecto", 0.8968, TestName = "Generic Group 5 VTP Test Declaration Mode Fan Electrical Power"),
 		TestCase(@"TestData\Integration\VTPMode\GenericVehicle\class_5_generic vehicle_DECL_pollutants.vecto", 0.8972, TestName = "Generic Group 5 VTP Test Declaration Mode Pollutnats")
 		]
