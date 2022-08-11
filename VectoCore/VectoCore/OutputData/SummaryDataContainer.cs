@@ -407,6 +407,7 @@ namespace TUGraz.VectoCore.OutputData
 			}
 
 			var energy = runData.Cycle.Entries.Pairwise()
+				.Where(x => x.Item1.CombustionEngineTorque.IsGreaterOrEqual(0))
 				.Sum(x => (x.Item1.EngineSpeed * x.Item1.CombustionEngineTorque) * (x.Item2.Time - x.Item1.Time)).ConvertToKiloWattHour();
 
 			var CH4 = runData.Cycle.Entries.Pairwise().Sum(x => (x.Item1.CH4MassFlow) * (x.Item2.Time - x.Item1.Time)).ConvertToGramm();
