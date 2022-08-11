@@ -377,11 +377,60 @@ namespace TUGraz.VectoCore.OutputData
 			if (gearCount > 0)
 				WriteGearshiftStats(modData, row, gearCount);
 
+			WriteVTPPollutants(modData, row, runData);
+
 			lock (Table)
 				Table.Rows.Add(row);
+        }
+
+        private void WriteVTPPollutants(IModalDataContainer modData, DataRow row, VectoRunData runData)
+        { 
+			if ((runData.SimulationType != SimulationType.VerificationTest) 
+				|| (runData.Cycle.Entries[0].CombustionEngineTorque == null)) {
+				return;
+			}
+
+			foreach (var field in new[] { 
+				Fields.POLLUTANT_CH4, 
+				Fields.POLLUTANT_CO, 
+				Fields.POLLUTANT_NMHC, 
+				Fields.POLLUTANT_NOX, 
+				Fields.POLLUTANT_THC, 
+				Fields.POLLUTANT_CO2,
+				Fields.ENGINE_ENERGY_RATIO
+			}) {
+				lock (Table) {
+					if (!Table.Columns.Contains(field)) {
+						Table.Columns.Add(field, typeof(ConvertedSI));
+					}
+				}
+			}
+
+			//we can do these calculations in the vtp cycle (?)
+			var energy = runData.Cycle.Entries.Pairwise()
+				.Sum(x => (x.Item1.EngineSpeed * x.Item1.CombustionEngineTorque) * (x.Item2.Time - x.Item1.Time)).ConvertToKiloWattHour();
+
+			var CH4 = runData.Cycle.Entries.Pairwise().Sum(x => (x.Item1.CH4MassFlow) * (x.Item2.Time - x.Item1.Time)).ConvertToGramm();
+			var CO = runData.Cycle.Entries.Pairwise().Sum(x => (x.Item1.COMassFlow) * (x.Item2.Time - x.Item1.Time)).ConvertToGramm();
+			var NMHC = runData.Cycle.Entries.Pairwise().Sum(x => (x.Item1.NMHCMassFlow) * (x.Item2.Time - x.Item1.Time)).ConvertToGramm();
+			var NOx = runData.Cycle.Entries.Pairwise().Sum(x => (x.Item1.NOxMassFlow) * (x.Item2.Time - x.Item1.Time)).ConvertToGramm();
+			var THC = runData.Cycle.Entries.Pairwise().Sum(x => (x.Item1.THCMassFlow) * (x.Item2.Time - x.Item1.Time)).ConvertToGramm();
+			var CO2 = runData.Cycle.Entries.Pairwise().Sum(x => (x.Item1.CO2MassFlow) * (x.Item2.Time - x.Item1.Time)).ConvertToGramm();
+
+			row[Fields.POLLUTANT_CH4] = (ConvertedSI) (CH4 / energy).SI<Scalar>();
+			row[Fields.POLLUTANT_CO] = (ConvertedSI) (CO / energy).SI<Scalar>();
+			row[Fields.POLLUTANT_NMHC] = (ConvertedSI) (NMHC / energy).SI<Scalar>();
+			row[Fields.POLLUTANT_NOX] = (ConvertedSI) (NOx / energy).SI<Scalar>();
+			row[Fields.POLLUTANT_THC] = (ConvertedSI) (THC / energy).SI<Scalar>();
+			row[Fields.POLLUTANT_CO2] = (ConvertedSI) (CO2 / energy).SI<Scalar>();
+
+			//row[Fields.E_FCMAP_POS] = modData.TotalEngineWorkPositive().ConvertToKiloWattHour();
+			var simulatedEnergy = modData.TotalEngineWorkPositive().ConvertToKiloWattHour();
+
+			row[Fields.ENGINE_ENERGY_RATIO] = (ConvertedSI) (energy / simulatedEnergy).SI<Scalar>();
 		}
 
-		private void WriteFuelConsumptionEntries(
+        private void WriteFuelConsumptionEntries(
 			IModalDataContainer modData, DataRow row, Kilogram vehicleLoading,
 			CubicMeter cargoVolume, double? passengers, VectoRunData runData)
 		{
@@ -1184,6 +1233,14 @@ namespace TUGraz.VectoCore.OutputData
 			public const string AIRDRAG_CERTIFICATION_METHOD = "AirDrag certification option";
 
 			public const string AVERAGE_POS_ACC = "a_avg_acc";
+
+			public const string POLLUTANT_CH4 = "CH4 [g/kWh]";
+			public const string POLLUTANT_CO = "CO [g/kWh]";
+			public const string POLLUTANT_NMHC = "NMHC [g/kWh]";
+			public const string POLLUTANT_NOX = "NOx [g/kWh]";
+			public const string POLLUTANT_THC = "THC [g/kWh]";
+			public const string POLLUTANT_CO2 = "CO2 [g/kWh]";
+			public const string ENGINE_ENERGY_RATIO = "E_ICE_RATIO";
 
 			//public const string E_EM_DRIVE_FORMAT = "E_EM_{0}_drive [kWh]";
 			//public const string E_EM_GENERATE_FORMAT = "E_EM_{0}_gen [kWh]";

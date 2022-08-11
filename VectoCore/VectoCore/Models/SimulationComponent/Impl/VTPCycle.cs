@@ -90,10 +90,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			foreach (var entry in Data.Entries) {
 				VerifyWheelSpeeds(entry);
-
-				if (entry.FanSpeed != null) {
-					VerifyFanSpeed(hasElectricFan, entry);
-                }
+				VerifyFanSpeed(hasElectricFan, entry);
 			}
 
 			VerifyFCInput();
@@ -135,6 +132,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		private void VerifyFanSpeed(bool hasElectricFan, DrivingCycleData.DrivingCycleEntry entry)
 		{
+			if (entry.FanSpeed == null) {
+				return;
+			}
+
 			if (hasElectricFan) {
 				if (entry.FanSpeed.IsSmaller(0)) {
 					Log.Error("Fan speed (electric) below zero! t: {0}, n_fan: {1}", entry.Time, entry.FanSpeed);
