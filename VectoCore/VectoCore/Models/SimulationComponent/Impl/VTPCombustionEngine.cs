@@ -37,9 +37,7 @@ using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
-using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
-using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
@@ -48,7 +46,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
     {
 		private bool firstInit = true;
 
-		public VTPCombustionEngine(IVehicleContainer container, CombustionEngineData modelData, bool pt1Disabled = false) : base(container, modelData, pt1Disabled) { }
+        public VTPCombustionEngine(IVehicleContainer container, CombustionEngineData modelData, bool pt1Disabled = false) : base(container, modelData, pt1Disabled) { }
 
 		public override IResponse Initialize(NewtonMeter outTorque, PerSecond outAngularVelocity)
 		{
@@ -68,6 +66,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				};
 				PreviousState.DynamicFullLoadTorque = PreviousState.StationaryFullLoadTorque;
 			}
+
 			return new ResponseSuccess(this) {
 				Engine = {
 					PowerRequest = PreviousState.EnginePower,
@@ -80,7 +79,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		{
 			// Engine speed and fuel consumption determine whether we consider the engine is on or off.
 			// This cut-off point affects calculations and Response (stop-start functionality, see base.Request)
-			var fuelConsumption = DataBus.DrivingCycleInfo.CycleData.LeftSample.Fuelconsumption;
+			var fuelConsumption = DataBus.DrivingCycleInfo.CycleData.LeftSample.VTPFuelconsumption.Sum(c => c.Value);
 			
 			CombustionEngineOn = (DataBus.DrivingCycleInfo.CycleData.LeftSample.EngineSpeed >= EngineIdleSpeed) || fuelConsumption.IsGreater(0);
 
@@ -206,22 +205,19 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			};
 		}
 
-		protected bool IsSpeedBelowIdle()
+		protected override PerSecond GetEngineSpeed(PerSecond angularSpeed)
         {
-			return DataBus.DrivingCycleInfo.CycleData.LeftSample.EngineSpeed < EngineIdleSpeed;
-		}
-
-        protected override PerSecond GetEngineSpeed(PerSecond angularSpeed)
-        {
-			// Clip to idle to avoid crashing.
-			// Returning zero would crash torque interpolations (divide by zero).
-			return IsSpeedBelowIdle() ? EngineIdleSpeed : DataBus.DrivingCycleInfo.CycleData.LeftSample.EngineSpeed;
+			// When speed is below idle, clip to idle to avoid crashing.
+			// Returning zero causes crashes (divide by zero, etc).
+			return (DataBus.DrivingCycleInfo.CycleData.LeftSample.EngineSpeed < EngineIdleSpeed) 
+				? EngineIdleSpeed 
+				: DataBus.DrivingCycleInfo.CycleData.LeftSample.EngineSpeed;
         }
 
 		protected override double WHTCCorrectionFactor(IFuelProperties fuel)
 		{
 			var selected = ModelData.Fuels.First(x => x.FuelData.FuelType == fuel.FuelType);
-
+			
 			if (DataBus.DrivingCycleInfo.CycleData.LeftSample.VehicleTargetSpeed >= Constants.SimulationSettings.HighwaySpeedThreshold) {
 				return selected.WHTCMotorway;
 			}
@@ -230,5 +226,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
 			return selected.WHTCUrban;
 		}
+		
 	}
 }

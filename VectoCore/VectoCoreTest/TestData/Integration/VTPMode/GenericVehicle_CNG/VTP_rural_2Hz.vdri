@@ -1,4 +1,4 @@
-<t> [s],<v> [km/h],<n_eng> [rpm],<n_fan> [rpm],<tq_left> [Nm],<tq_right> [Nm],<n_wh_left> [rpm],<n_wh_right> [rpm],<fc> [g/h],<gear>
+<t> [s],<v> [km/h],<n_eng> [rpm],<n_fan> [rpm],<tq_left> [Nm],<tq_right> [Nm],<n_wh_left> [rpm],<n_wh_right> [rpm],<fc_NG PI> [g/h],<gear>
 0,0,599.72,727.3,319.1147826,429.8065217,0.78,0.78,836,3
 0.5,0,600.29,727.3,316.7856522,430.0626087,0.7832,0.78,836,3
 1,0,600.1,726.912,319.9513043,430.8052174,0.78,0.78,836,3

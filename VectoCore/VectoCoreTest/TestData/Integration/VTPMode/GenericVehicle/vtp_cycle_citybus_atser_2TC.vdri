@@ -1,4 +1,4 @@
-t         , v       , gear , tc_active , n_eng     , n_fan , fc         , n_wh_left   , n_wh_right  , tq_left      , tq_right
+t         , v       , gear , tc_active , n_eng     , n_fan , fc_Diesel CI, n_wh_left   , n_wh_right  , tq_left      , tq_right
 0.25      , 0       , 0    , 1         , 600       , 1000  , 1278.2425  , 0           , 0           , 0            , 0
 1         , 0       , 0    , 1         , 600       , 1000  , 1278.2425  , 0           , 0           , 0            , 0
 1.75      , 0       , 0    , 1         , 600       , 1000  , 1278.2425  , 0           , 0           , 0            , 0

@@ -80,11 +80,12 @@ namespace TUGraz.VectoCore.OutputData.XML
 		public class ResultEntry : XMLDeclarationReport.ResultEntry
 		{
 			public Watt AverageFanPower;
-			public Kilogram VTPFcFinalSimulated;
+			public Dictionary<FuelType, Kilogram> VTPFcFinalSimulated = new Dictionary<FuelType, Kilogram>();
 			public WattSecond VTPWorkPWheelPos;
 			public double VTPFcCorrectionFactor;
-			public Kilogram VTPFcMeasured;
+			public Dictionary<FuelType, Kilogram> VTPFcMeasured = new Dictionary<FuelType, Kilogram>();
 			public WattSecond VTPWorPWheelSimPos;
+			public TankSystem? TankSystem;
 
 			#region Overrides of ResultEntry
 
@@ -96,18 +97,29 @@ namespace TUGraz.VectoCore.OutputData.XML
 					return;
 				}
 
+				TankSystem = runData.VehicleData.InputData.TankSystem;
 				var aux = data.Auxiliaries.FirstOrDefault(x => x.Key == Constants.Auxiliaries.IDs.Fan);
 				AverageFanPower = data.AuxiliaryWork(aux.Value) / data.Duration;
 				var cycleEntries = runData.Cycle.Entries.Pairwise().Select(
 					x => new {
 						PWheel = x.Item1.PWheel > 0 ? x.Item1.PWheel : 0.SI<Watt>(),
 						dt = x.Item2.Time - x.Item1.Time,
-						FC = x.Item1.Fuelconsumption
+						FC = x.Item1.VTPFuelconsumption
 					}).ToArray();
 				VTPWorPWheelSimPos = data.WorkWheelsPos();
 				VTPWorkPWheelPos = cycleEntries.Sum(x => x.PWheel * x.dt).Cast<WattSecond>();
-				VTPFcMeasured = cycleEntries.Sum(x => x.FC * x.dt).Cast<Kilogram>();
-				VTPFcFinalSimulated = data.TimeIntegral<Kilogram>(ModalResultField.FCFinal);
+				foreach (var fuel in cycleEntries.First().FC.Keys) {
+					VTPFcMeasured[fuel] = cycleEntries.Sum(x => x.FC[fuel] * x.dt);
+				}
+				//VTPFcMeasured = cycleEntries.Sum(x => x.FC * x.dt).Cast<Kilogram>();
+
+				foreach (var entry in data.FuelData) {
+					var col = data.GetColumnName(entry, ModalResultField.FCFinal);
+					var fcSum = data.TimeIntegral<Kilogram>(col);
+					VTPFcFinalSimulated[entry.FuelType] = fcSum;
+				}
+
+				//VTPFcFinalSimulated = data.TimeIntegral<Kilogram>(ModalResultField.FCFinal);
 				VTPFcCorrectionFactor = runData.VTPData.CorrectionFactor;
 			}
 
@@ -186,12 +198,21 @@ namespace TUGraz.VectoCore.OutputData.XML
 			const LoadingType selectedLoading = DeclarationData.VTPMode.SelectedLoading;
 			var result = Missions.FirstOrDefault(x => x.Key != MissionType.VerificationTest).Value.ResultEntry
 								.FirstOrDefault(x => x.Key == selectedLoading).Value;
-			var vtpFcMeasured = vtpResult.VTPFcMeasured / vtpResult.VTPWorkPWheelPos;
-			var vtpFcMeasuredCorr = vtpResult.VTPFcMeasured / vtpResult.VTPWorkPWheelPos * vtpResult.VTPFcCorrectionFactor;
-			var vtpFcSimulated = vtpResult.VTPFcFinalSimulated / fuel.HeatingValueCorrection / vtpResult.VTPWorPWheelSimPos;
-			var cVtp = vtpFcMeasuredCorr / vtpFcSimulated;
+			var vtpFcMeasured = vtpResult.VTPFcMeasured.Select(x => Tuple.Create(x.Key, x.Value / vtpResult.VTPWorkPWheelPos)).ToDictionary(x => x.Item1, x => x.Item2);
+			var vtpFcMeasuredCorr = vtpResult.VTPFcMeasured
+				.Select(x =>
+					Tuple.Create(x.Key, x.Value / vtpResult.VTPWorkPWheelPos * vtpResult.VTPFcCorrectionFactor))
+				.ToDictionary(x => x.Item1, x => x.Item2);
+			var vtpFcSimulated = vtpResult.VTPFcFinalSimulated
+				.Select(x => Tuple.Create(x.Key, x.Value / vtpResult.VTPWorPWheelSimPos))
+				.ToDictionary(x => x.Item1, x => x.Item2);
+			var fuels = DeclarationData.FuelData;
+			var cVtp =
+				vtpFcMeasuredCorr.Sum(e => e.Value * fuels.Lookup(e.Key, vtpResult.TankSystem).CO2PerFuelWeightVTP) /
+				vtpFcSimulated.Sum(e => e.Value * fuels.Lookup(e.Key, vtpResult.TankSystem).CO2PerFuelWeightVTP);
 			var declaredCO2 = result.FuelConsumptionFinal[fuel.FuelType].TotalFuelConsumptionCorrected * fuel.CO2PerFuelWeight / result.Distance / result.Payload;
 			var verifiedCO2 = declaredCO2 * cVtp;
+			var key = "g/t-km";
 
 			Results.Add(
 				new XElement(tns + "Status", cVtp < 1.075 ? "Passed" : "Failed"),
@@ -202,24 +223,26 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(
 					tns + "WorkPosVT", new XAttribute(XMLNames.Report_Results_Unit_Attr, "kWh"),
 					vtpResult.VTPWorkPWheelPos.ConvertToKiloWattHour().ToXMLFormat(3)),
+				vtpFcMeasured.Select(x =>
 				new XElement(
 					tns + "FuelConsumption",
+					new XAttribute("fuelType", x.Key.ToXMLFormat()),
 					new XElement(
 						tns + "Measured",
 						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/kWh"),
-						vtpFcMeasured.ConvertToGramPerKiloWattHour().ToXMLFormat(3)
+						vtpFcMeasured[x.Key].ConvertToGramPerKiloWattHour().ToXMLFormat(3)
 					),
 					new XElement(
 						tns + "MeasuredCorrected",
 						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/kWh"),
-						vtpFcMeasuredCorr.ConvertToGramPerKiloWattHour().ToXMLFormat(3)
+						vtpFcMeasuredCorr[x.Key].ConvertToGramPerKiloWattHour().ToXMLFormat(3)
 					),
 					new XElement(
 						tns + "Simulated",
 						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/kWh"),
-						vtpFcSimulated.ConvertToGramPerKiloWattHour().ToXMLFormat(3)
+						vtpFcSimulated[x.Key].ConvertToGramPerKiloWattHour().ToXMLFormat(3)
 					)
-				),
+				)),
 				new XElement(
 					tns + "CO2",
 					new XElement(
@@ -227,15 +250,15 @@ namespace TUGraz.VectoCore.OutputData.XML
 						string.Format("{0}, {1}", Missions.FirstOrDefault(x => x.Key != MissionType.VerificationTest).Key.ToXMLFormat(), selectedLoading.ToString())
 					),
 					new XElement(
-						tns + "Declared", new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/t-km"),
-						declaredCO2.ConvertToGrammPerTonKilometer().ToMinSignificantDigits(3, 1)
+						tns + "Declared", new XAttribute(XMLNames.Report_Results_Unit_Attr, key),
+						new ConvertedSI(declaredCO2.Value(), declaredCO2.UnitString).ToMinSignificantDigits(3, 2)
 					),
 					new XElement(
-						tns + "Verified", new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/t-km"),
-						verifiedCO2.ConvertToGrammPerTonKilometer().ToMinSignificantDigits(3, 1)
+						tns + "Verified", new XAttribute(XMLNames.Report_Results_Unit_Attr, key),
+						new ConvertedSI(declaredCO2.Value(), verifiedCO2.UnitString).ToMinSignificantDigits(3, 2)
 					)
 				),
-				new XElement(tns + "VTRatio", cVtp.ToXMLFormat(4)));
+				new XElement(tns + "C_VTP", cVtp.ToXMLFormat(4)));
 			if (LogList.Any()) {
 				Results.Add(new XElement(tns + "Warnings", LogList.Select(x => new XElement(tns + "Warning", x))));
 			}

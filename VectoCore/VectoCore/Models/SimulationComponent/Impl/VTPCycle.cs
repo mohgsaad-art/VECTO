@@ -108,9 +108,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			
 			foreach (var entry in Data.Entries.Pairwise()) {
 				var dt = entry.Item2.Time - entry.Item1.Time;
-				var fc = entry.Item1.Fuelconsumption * dt;
 				var eWheel = entry.Item1.PWheel > 0 ? entry.Item1.PWheel * dt : 0.SI<WattSecond>();
-				window[idx % count] = new {FC= fc, EWheel = eWheel};
 				sumFC += window[idx % count].FC;
 				sumFC -= window[(idx + 1) % count].FC;
 				sumEWheel += window[idx % count].EWheel;
@@ -180,7 +178,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
                 return;
             }
             var transmissionRatio = RunData.AxleGearData.AxleGear.Ratio *
-									(RunData.AngledriveData == null ? 1.0 : RunData.AngledriveData.Angledrive.Ratio) /
+									(RunData.AngledriveData?.Angledrive.Ratio ?? 1.0) /
 									RunData.VehicleData.DynamicTyreRadius;
 			var cardanStartSpeed = (RunData.GearshiftParameters.StartSpeed * transmissionRatio).Cast<PerSecond>();
 			var minEngineSpeed = (RunData.EngineData.FullLoadCurves[0].RatedSpeed - RunData.EngineData.IdleSpeed) *
@@ -208,7 +206,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				var response = Initialize(gear, wheelStartTorque, wheelStartSpeed);
 
 				var fullLoadPower = response.Engine.DynamicFullLoadPower; //EnginePowerRequest - response.DeltaFullLoad;
-				var reserve = 1 - response.Engine.PowerRequest / fullLoadPower;
+				var reserve = fullLoadPower.IsEqual(0) ? 0.SI<Scalar>() : 1 - response.Engine.PowerRequest / fullLoadPower;
 
 				if (response.Engine.EngineSpeed > DataBus.EngineInfo.EngineIdleSpeed && reserve >= RunData.GearshiftParameters.StartTorqueReserve) {
 					StartGear = gear;
