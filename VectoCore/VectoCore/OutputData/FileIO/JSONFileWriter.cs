@@ -18,7 +18,7 @@ public class JSONFileWriter : IOutputFileWriter
 
 	public const int GearboxFormatVersion = 6;
 
-	public const int VehicleFormatVersion = 8;
+	public const int VehicleFormatVersion = 9;
 
 	//public const int BusVehicleFormatVersion = 9;
 	
