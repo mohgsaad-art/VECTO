@@ -85,13 +85,16 @@ namespace TUGraz.VectoCore.OutputData.XML {
 				OutputReports();
 			}
 
-			var writer = (FileOutputWriter)Writer;
+			var writer = Writer as FileOutputWriter;
 			WriteStyleSheet(writer?.BasePath);
 		}
 
 		private static void WriteStyleSheet(string basePath)
 		{
 			//write stylesheet file
+			if (basePath == null) {
+				return;
+			}
 			var assembly = Assembly.GetExecutingAssembly();
 			const string resourceName = DeclarationData.DeclarationDataResourcePrefix + ".Trailer.VectoReportsTrailer.css";
 			var styleSheet = string.Empty;
