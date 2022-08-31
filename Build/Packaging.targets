@@ -60,9 +60,9 @@
 	<ItemGroup>  
 		<VectoCoreAssembly Include="$(OutputPath)VectoCore.dll" />  
 		<VectoCommandLine Include="$(SolutionDir)VectoConsole\bin\Release\vectocmd.exe*"/>
-		<VectoTrailer Include="$(SolutionDir)VECTOTrailer\bin\Release\VECTOTrailer.exe*"/>
-		<CefSharpx64 Include="$(SolutionDir)VECTOTrailer\bin\Release\x64\*"/>
-		<CefSharpx86 Include="$(SolutionDir)VECTOTrailer\bin\Release\x86\*"/>
+		<VectoTrailer Include="$(SolutionDir)VECTOTrailer\bin\DeployTrailer\VECTOTrailer.exe*"/>
+		<CefSharpx64 Include="$(SolutionDir)VECTOTrailer\bin\DeployTrailer\x64\*"/>
+		<CefSharpx86 Include="$(SolutionDir)VECTOTrailer\bin\DeployTrailer\x86\*"/>
 		<GenericVehicles Include="$(SolutionDir)Generic Vehicles\Declaration Mode\Trailer\**/*.*" Exclude="$(SolutionDir)**\*.vmod;$(SolutionDir)**\*.vsum;$(SolutionDir)**\*RSLT_*.xml;$(SolutionDir)**\*.pdf"/>
 		<MissionProfiles Include="$(SolutionDir)VectoCore\VectoCore\Resources\Declaration\MissionCycles\**\*.*"/>
 		<DeclarationData Include="$(SolutionDir)VectoCore\VectoCore\Resources\Declaration\**/*.csv" Exclude="$(SolutionDir)**\MissionCycles\**\*.*"/>
@@ -142,7 +142,7 @@
 		<CurrentDate>$([System.DateTime]::Now.ToString(yyy_MM_dd))</CurrentDate>
 	</PropertyGroup>
 	<Message Text="Creating ZIP, CurrentDate: $(CurrentDate)"/>
-	<Zip OutputFilename="$(SolutionDir)$(CurrentDate)-VECTOTrailer-%(VectoAssemblyIdentities.Version).zip" Files="@(ZipFiles)" SourcePath="$(OutputPath)" DestinationPath="$(CurrentDate)-VECTO-%(VectoAssemblyIdentities.Version)\"/>
+	<Zip OutputFilename="$(SolutionDir)$(CurrentDate)-VECTOTrailer-%(VectoAssemblyIdentities.Version).zip" Files="@(ZipFiles)" SourcePath="$(OutputPath)" DestinationPath="$(CurrentDate)-VECTOTrailer-%(VectoAssemblyIdentities.Version)\"/>
 </Target>
 
 <Target Name="CleanVectoDeploy" Condition="$(Configuration) == 'DeployTrailer'">
