@@ -2,11 +2,17 @@
 
 **VECTO-3.3.12**
 
+***Build 2800 (2022-09-01) OFFICIAL RELEASE***
+
+- Bugfixes (compared to 3.3.12.2769)
+    * [VECTO-1635] - Reading / Writing the ADAS Parameter ATEcoRollReleaseLockupClutch does not work
+
 ***Build 2769 (2022-08-01) RELEASE CANDIDATE***
 
 - Improvement
     * [VECTO-1584] - Hashing library uses constructor that is deprecated in newer .net versions
-    * [VECTO-1619] - Adaptations of XML Results in transition period
+    * [VECTO-1619] - Adaptations of XML Results in transition 
+
     * [VECTO-1619] - Reading Engine and Tyre component according to 2nd amendment (schema version 2.3)
     * [VECTO-1461] - Alignment of Steering Pump Technology and Steered Axles not checked by VECTO
     * [VECTO-1571] - Help file: Vehicle defined Torque Limitations

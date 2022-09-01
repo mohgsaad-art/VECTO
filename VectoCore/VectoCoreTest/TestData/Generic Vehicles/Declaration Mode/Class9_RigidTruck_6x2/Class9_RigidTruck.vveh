@@ -3,7 +3,7 @@
     "CreatedBy": "",
     "Date": "2017-07-03T14:48:16.7076880Z",
     "AppVersion": "3",
-    "FileVersion": 7
+    "FileVersion": 9
   },
   "Body": {
     "SavedInDeclMode": true,
@@ -65,6 +65,10 @@
         }
       ]
     },
+    "EngineStopStart": false,
+    "EcoRoll": "None",
+    "PredictiveCruiseControl": "None",
+    "ATEcoRollReleaseLockupClutch": false,
     "CdA": 5.2
   }
 }
