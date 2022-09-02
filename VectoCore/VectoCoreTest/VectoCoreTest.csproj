@@ -2646,6 +2646,15 @@
     <None Include="TestData\Integration\VTPMode\Group2_RigidTruck_4x2\Class2_RigidTruck_DECL_SS_VTP.vecto">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="TestData\Integration\VTPMode\Group2_RigidTruck_4x2\Class2_RigidTruck_VTP_pollutants.vecto">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\Integration\VTPMode\Group2_RigidTruck_4x2\VTP_LongHaulReferenceLoad.vdri">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\Integration\VTPMode\Group2_RigidTruck_4x2\VTP_RegionalDeliveryReferenceLoad.vdri">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="TestData\Jobs\12t Delivery Truck Engineering Efficiency.vecto">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

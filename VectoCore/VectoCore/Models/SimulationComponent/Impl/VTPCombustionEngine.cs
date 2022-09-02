@@ -38,6 +38,7 @@ using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
+using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
@@ -214,7 +215,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				: DataBus.DrivingCycleInfo.CycleData.LeftSample.EngineSpeed;
         }
 
-		protected override double WHTCCorrectionFactor(IFuelProperties fuel)
+        protected override double WHTCCorrectionFactor(IFuelProperties fuel)
 		{
 			var selected = ModelData.Fuels.First(x => x.FuelData.FuelType == fuel.FuelType);
 			
