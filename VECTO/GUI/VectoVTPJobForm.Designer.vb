@@ -92,12 +92,12 @@ Partial Class VectoVTPJobForm
         Me.tbManufacturerRecord = New System.Windows.Forms.TextBox()
         Me.ButtonManR = New System.Windows.Forms.Button()
         Me._ncvGrpBox = New System.Windows.Forms.GroupBox()
-        Me._ncvFuel1Lbl = New System.Windows.Forms.Label()
-        Me._ncvFuel2Lbl = New System.Windows.Forms.Label()
-        Me._ncvFuel1Txtbox = New System.Windows.Forms.TextBox()
-        Me._ncvFuel2Txtbox = New System.Windows.Forms.TextBox()
-        Me._nvcFuel1UnitLbl = New System.Windows.Forms.Label()
         Me._ncvFuel2UnitLbl = New System.Windows.Forms.Label()
+        Me._ncvFuel1UnitLbl = New System.Windows.Forms.Label()
+        Me._ncvFuel2Txtbox = New System.Windows.Forms.TextBox()
+        Me._ncvFuel1Txtbox = New System.Windows.Forms.TextBox()
+        Me._ncvFuel2Lbl = New System.Windows.Forms.Label()
+        Me._ncvFuel1Lbl = New System.Windows.Forms.Label()
         Me.GrCycles.SuspendLayout()
         Me.GrAux.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
@@ -123,9 +123,9 @@ Partial Class VectoVTPJobForm
         Me.GrCycles.Controls.Add(Me.BtDRIrem)
         Me.GrCycles.Controls.Add(Me.BtDRIadd)
         Me.GrCycles.Location = New System.Drawing.Point(15, 399)
-        Me.GrCycles.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GrCycles.Margin = New System.Windows.Forms.Padding(4)
         Me.GrCycles.Name = "GrCycles"
-        Me.GrCycles.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GrCycles.Padding = New System.Windows.Forms.Padding(4)
         Me.GrCycles.Size = New System.Drawing.Size(687, 204)
         Me.GrCycles.TabIndex = 10
         Me.GrCycles.TabStop = False
@@ -168,7 +168,7 @@ Partial Class VectoVTPJobForm
         Me.LvCycles.HideSelection = False
         Me.LvCycles.LabelEdit = True
         Me.LvCycles.Location = New System.Drawing.Point(8, 49)
-        Me.LvCycles.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.LvCycles.Margin = New System.Windows.Forms.Padding(4)
         Me.LvCycles.MultiSelect = False
         Me.LvCycles.Name = "LvCycles"
         Me.LvCycles.Size = New System.Drawing.Size(669, 117)
@@ -188,7 +188,7 @@ Partial Class VectoVTPJobForm
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.BtDRIrem.Image = Global.TUGraz.VECTO.My.Resources.Resources.minus_circle_icon
         Me.BtDRIrem.Location = New System.Drawing.Point(39, 169)
-        Me.BtDRIrem.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.BtDRIrem.Margin = New System.Windows.Forms.Padding(4)
         Me.BtDRIrem.Name = "BtDRIrem"
         Me.BtDRIrem.Size = New System.Drawing.Size(32, 30)
         Me.BtDRIrem.TabIndex = 2
@@ -200,7 +200,7 @@ Partial Class VectoVTPJobForm
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.BtDRIadd.Image = Global.TUGraz.VECTO.My.Resources.Resources.plus_circle_icon
         Me.BtDRIadd.Location = New System.Drawing.Point(7, 169)
-        Me.BtDRIadd.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.BtDRIadd.Margin = New System.Windows.Forms.Padding(4)
         Me.BtDRIadd.Name = "BtDRIadd"
         Me.BtDRIadd.Size = New System.Drawing.Size(32, 30)
         Me.BtDRIadd.TabIndex = 1
@@ -212,9 +212,9 @@ Partial Class VectoVTPJobForm
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.GrAux.Controls.Add(Me.LvAux)
         Me.GrAux.Location = New System.Drawing.Point(15, 219)
-        Me.GrAux.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GrAux.Margin = New System.Windows.Forms.Padding(4)
         Me.GrAux.Name = "GrAux"
-        Me.GrAux.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GrAux.Padding = New System.Windows.Forms.Padding(4)
         Me.GrAux.Size = New System.Drawing.Size(687, 172)
         Me.GrAux.TabIndex = 9
         Me.GrAux.TabStop = False
@@ -230,7 +230,7 @@ Partial Class VectoVTPJobForm
         Me.LvAux.GridLines = True
         Me.LvAux.HideSelection = False
         Me.LvAux.Location = New System.Drawing.Point(5, 23)
-        Me.LvAux.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.LvAux.Margin = New System.Windows.Forms.Padding(4)
         Me.LvAux.MultiSelect = False
         Me.LvAux.Name = "LvAux"
         Me.LvAux.Size = New System.Drawing.Size(669, 141)
@@ -259,7 +259,7 @@ Partial Class VectoVTPJobForm
         Me.TbVEH.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.TbVEH.Location = New System.Drawing.Point(171, 106)
-        Me.TbVEH.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TbVEH.Margin = New System.Windows.Forms.Padding(4)
         Me.TbVEH.Name = "TbVEH"
         Me.TbVEH.Size = New System.Drawing.Size(496, 22)
         Me.TbVEH.TabIndex = 1
@@ -269,7 +269,7 @@ Partial Class VectoVTPJobForm
         Me.ButtonVEH.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ButtonVEH.Image = CType(resources.GetObject("ButtonVEH.Image"), System.Drawing.Image)
         Me.ButtonVEH.Location = New System.Drawing.Point(669, 103)
-        Me.ButtonVEH.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.ButtonVEH.Margin = New System.Windows.Forms.Padding(4)
         Me.ButtonVEH.Name = "ButtonVEH"
         Me.ButtonVEH.Size = New System.Drawing.Size(32, 30)
         Me.ButtonVEH.TabIndex = 2
@@ -298,7 +298,7 @@ Partial Class VectoVTPJobForm
         '
         Me.ButOK.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ButOK.Location = New System.Drawing.Point(1037, 748)
-        Me.ButOK.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.ButOK.Margin = New System.Windows.Forms.Padding(4)
         Me.ButOK.Name = "ButOK"
         Me.ButOK.Size = New System.Drawing.Size(100, 28)
         Me.ButOK.TabIndex = 0
@@ -310,7 +310,7 @@ Partial Class VectoVTPJobForm
         Me.ButCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ButCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.ButCancel.Location = New System.Drawing.Point(1145, 748)
-        Me.ButCancel.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.ButCancel.Margin = New System.Windows.Forms.Padding(4)
         Me.ButCancel.Name = "ButCancel"
         Me.ButCancel.Size = New System.Drawing.Size(100, 28)
         Me.ButCancel.TabIndex = 1
@@ -404,7 +404,7 @@ Partial Class VectoVTPJobForm
         Me.PictureBox1.BackColor = System.Drawing.Color.White
         Me.PictureBox1.Image = Global.TUGraz.VECTO.My.Resources.Resources.VECTO_VECTO
         Me.PictureBox1.Location = New System.Drawing.Point(0, 34)
-        Me.PictureBox1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.PictureBox1.Margin = New System.Windows.Forms.Padding(4)
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.Size = New System.Drawing.Size(1259, 49)
         Me.PictureBox1.TabIndex = 21
@@ -435,7 +435,7 @@ Partial Class VectoVTPJobForm
         Me.PicVehicle.BackColor = System.Drawing.Color.LightGray
         Me.PicVehicle.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.PicVehicle.Location = New System.Drawing.Point(723, 98)
-        Me.PicVehicle.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.PicVehicle.Margin = New System.Windows.Forms.Padding(4)
         Me.PicVehicle.Name = "PicVehicle"
         Me.PicVehicle.Size = New System.Drawing.Size(399, 108)
         Me.PicVehicle.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -447,7 +447,7 @@ Partial Class VectoVTPJobForm
         Me.PicBox.BackColor = System.Drawing.Color.LightGray
         Me.PicBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.PicBox.Location = New System.Drawing.Point(723, 270)
-        Me.PicBox.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.PicBox.Margin = New System.Windows.Forms.Padding(4)
         Me.PicBox.Name = "PicBox"
         Me.PicBox.Size = New System.Drawing.Size(519, 364)
         Me.PicBox.TabIndex = 36
@@ -456,7 +456,7 @@ Partial Class VectoVTPJobForm
         'TbEngTxt
         '
         Me.TbEngTxt.Location = New System.Drawing.Point(723, 210)
-        Me.TbEngTxt.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TbEngTxt.Margin = New System.Windows.Forms.Padding(4)
         Me.TbEngTxt.Name = "TbEngTxt"
         Me.TbEngTxt.ReadOnly = True
         Me.TbEngTxt.Size = New System.Drawing.Size(519, 22)
@@ -465,7 +465,7 @@ Partial Class VectoVTPJobForm
         'TbVehCat
         '
         Me.TbVehCat.Location = New System.Drawing.Point(1131, 103)
-        Me.TbVehCat.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TbVehCat.Margin = New System.Windows.Forms.Padding(4)
         Me.TbVehCat.Name = "TbVehCat"
         Me.TbVehCat.ReadOnly = True
         Me.TbVehCat.Size = New System.Drawing.Size(115, 22)
@@ -474,7 +474,7 @@ Partial Class VectoVTPJobForm
         'TbAxleConf
         '
         Me.TbAxleConf.Location = New System.Drawing.Point(1205, 139)
-        Me.TbAxleConf.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TbAxleConf.Margin = New System.Windows.Forms.Padding(4)
         Me.TbAxleConf.Name = "TbAxleConf"
         Me.TbAxleConf.ReadOnly = True
         Me.TbAxleConf.Size = New System.Drawing.Size(40, 22)
@@ -483,7 +483,7 @@ Partial Class VectoVTPJobForm
         'TbHVCclass
         '
         Me.TbHVCclass.Location = New System.Drawing.Point(1131, 175)
-        Me.TbHVCclass.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TbHVCclass.Margin = New System.Windows.Forms.Padding(4)
         Me.TbHVCclass.Name = "TbHVCclass"
         Me.TbHVCclass.ReadOnly = True
         Me.TbHVCclass.Size = New System.Drawing.Size(115, 22)
@@ -492,7 +492,7 @@ Partial Class VectoVTPJobForm
         'TbGbxTxt
         '
         Me.TbGbxTxt.Location = New System.Drawing.Point(723, 239)
-        Me.TbGbxTxt.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TbGbxTxt.Margin = New System.Windows.Forms.Padding(4)
         Me.TbGbxTxt.Name = "TbGbxTxt"
         Me.TbGbxTxt.ReadOnly = True
         Me.TbGbxTxt.Size = New System.Drawing.Size(519, 22)
@@ -501,7 +501,7 @@ Partial Class VectoVTPJobForm
         'TbMass
         '
         Me.TbMass.Location = New System.Drawing.Point(1131, 139)
-        Me.TbMass.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TbMass.Margin = New System.Windows.Forms.Padding(4)
         Me.TbMass.Name = "TbMass"
         Me.TbMass.ReadOnly = True
         Me.TbMass.Size = New System.Drawing.Size(65, 22)
@@ -521,7 +521,7 @@ Partial Class VectoVTPJobForm
         Me.PictureBox2.Image = Global.TUGraz.VECTO.My.Resources.Resources.P_fan_eqn
         Me.PictureBox2.InitialImage = CType(resources.GetObject("PictureBox2.InitialImage"), System.Drawing.Image)
         Me.PictureBox2.Location = New System.Drawing.Point(9, 23)
-        Me.PictureBox2.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.PictureBox2.Margin = New System.Windows.Forms.Padding(4)
         Me.PictureBox2.Name = "PictureBox2"
         Me.PictureBox2.Size = New System.Drawing.Size(369, 133)
         Me.PictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
@@ -536,9 +536,9 @@ Partial Class VectoVTPJobForm
         Me.GroupBox1.Controls.Add(Me.PictureBox2)
         Me.GroupBox1.Controls.Add(Me.Label6)
         Me.GroupBox1.Location = New System.Drawing.Point(13, 610)
-        Me.GroupBox1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GroupBox1.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GroupBox1.Padding = New System.Windows.Forms.Padding(4)
         Me.GroupBox1.Size = New System.Drawing.Size(689, 166)
         Me.GroupBox1.TabIndex = 39
         Me.GroupBox1.TabStop = False
@@ -547,7 +547,7 @@ Partial Class VectoVTPJobForm
         'tbFanDiameter
         '
         Me.tbFanDiameter.Location = New System.Drawing.Point(495, 16)
-        Me.tbFanDiameter.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.tbFanDiameter.Margin = New System.Windows.Forms.Padding(4)
         Me.tbFanDiameter.Name = "tbFanDiameter"
         Me.tbFanDiameter.Size = New System.Drawing.Size(113, 22)
         Me.tbFanDiameter.TabIndex = 46
@@ -574,7 +574,7 @@ Partial Class VectoVTPJobForm
         Me.pnFanParameters.Controls.Add(Me.tbC2)
         Me.pnFanParameters.Controls.Add(Me.Label4)
         Me.pnFanParameters.Location = New System.Drawing.Point(387, 48)
-        Me.pnFanParameters.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.pnFanParameters.Margin = New System.Windows.Forms.Padding(4)
         Me.pnFanParameters.Name = "pnFanParameters"
         Me.pnFanParameters.Size = New System.Drawing.Size(291, 108)
         Me.pnFanParameters.TabIndex = 48
@@ -622,7 +622,7 @@ Partial Class VectoVTPJobForm
         'tbC1
         '
         Me.tbC1.Location = New System.Drawing.Point(108, 10)
-        Me.tbC1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.tbC1.Margin = New System.Windows.Forms.Padding(4)
         Me.tbC1.Name = "tbC1"
         Me.tbC1.Size = New System.Drawing.Size(113, 22)
         Me.tbC1.TabIndex = 40
@@ -640,7 +640,7 @@ Partial Class VectoVTPJobForm
         'tbC3
         '
         Me.tbC3.Location = New System.Drawing.Point(108, 74)
-        Me.tbC3.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.tbC3.Margin = New System.Windows.Forms.Padding(4)
         Me.tbC3.Name = "tbC3"
         Me.tbC3.Size = New System.Drawing.Size(113, 22)
         Me.tbC3.TabIndex = 44
@@ -648,7 +648,7 @@ Partial Class VectoVTPJobForm
         'tbC2
         '
         Me.tbC2.Location = New System.Drawing.Point(108, 42)
-        Me.tbC2.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.tbC2.Margin = New System.Windows.Forms.Padding(4)
         Me.tbC2.Name = "tbC2"
         Me.tbC2.Size = New System.Drawing.Size(113, 22)
         Me.tbC2.TabIndex = 42
@@ -692,7 +692,7 @@ Partial Class VectoVTPJobForm
         Me.pnManufacturerRecord.Controls.Add(Me.tbManufacturerRecord)
         Me.pnManufacturerRecord.Controls.Add(Me.ButtonManR)
         Me.pnManufacturerRecord.Location = New System.Drawing.Point(15, 138)
-        Me.pnManufacturerRecord.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.pnManufacturerRecord.Margin = New System.Windows.Forms.Padding(4)
         Me.pnManufacturerRecord.Name = "pnManufacturerRecord"
         Me.pnManufacturerRecord.Size = New System.Drawing.Size(700, 81)
         Me.pnManufacturerRecord.TabIndex = 41
@@ -712,7 +712,7 @@ Partial Class VectoVTPJobForm
         Me.tbMileage.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.tbMileage.Location = New System.Drawing.Point(156, 49)
-        Me.tbMileage.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.tbMileage.Margin = New System.Windows.Forms.Padding(4)
         Me.tbMileage.Name = "tbMileage"
         Me.tbMileage.Size = New System.Drawing.Size(100, 22)
         Me.tbMileage.TabIndex = 48
@@ -742,7 +742,7 @@ Partial Class VectoVTPJobForm
         Me.tbManufacturerRecord.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.tbManufacturerRecord.Location = New System.Drawing.Point(156, 10)
-        Me.tbManufacturerRecord.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.tbManufacturerRecord.Margin = New System.Windows.Forms.Padding(4)
         Me.tbManufacturerRecord.Name = "tbManufacturerRecord"
         Me.tbManufacturerRecord.Size = New System.Drawing.Size(497, 22)
         Me.tbManufacturerRecord.TabIndex = 41
@@ -752,7 +752,7 @@ Partial Class VectoVTPJobForm
         Me.ButtonManR.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ButtonManR.Image = CType(resources.GetObject("ButtonManR.Image"), System.Drawing.Image)
         Me.ButtonManR.Location = New System.Drawing.Point(656, 7)
-        Me.ButtonManR.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.ButtonManR.Margin = New System.Windows.Forms.Padding(4)
         Me.ButtonManR.Name = "ButtonManR"
         Me.ButtonManR.Size = New System.Drawing.Size(32, 30)
         Me.ButtonManR.TabIndex = 42
@@ -762,7 +762,7 @@ Partial Class VectoVTPJobForm
         '_ncvGrpBox
         '
         Me._ncvGrpBox.Controls.Add(Me._ncvFuel2UnitLbl)
-        Me._ncvGrpBox.Controls.Add(Me._nvcFuel1UnitLbl)
+        Me._ncvGrpBox.Controls.Add(Me._ncvFuel1UnitLbl)
         Me._ncvGrpBox.Controls.Add(Me._ncvFuel2Txtbox)
         Me._ncvGrpBox.Controls.Add(Me._ncvFuel1Txtbox)
         Me._ncvGrpBox.Controls.Add(Me._ncvFuel2Lbl)
@@ -774,14 +774,37 @@ Partial Class VectoVTPJobForm
         Me._ncvGrpBox.TabStop = False
         Me._ncvGrpBox.Text = "Net Calorific Values"
         '
-        '_ncvFuel1Lbl
+        '_ncvFuel2UnitLbl
         '
-        Me._ncvFuel1Lbl.AutoSize = True
-        Me._ncvFuel1Lbl.Location = New System.Drawing.Point(18, 34)
-        Me._ncvFuel1Lbl.Name = "_ncvFuel1Lbl"
-        Me._ncvFuel1Lbl.Size = New System.Drawing.Size(71, 16)
-        Me._ncvFuel1Lbl.TabIndex = 0
-        Me._ncvFuel1Lbl.Text = "<fuel type>"
+        Me._ncvFuel2UnitLbl.AutoSize = True
+        Me._ncvFuel2UnitLbl.Location = New System.Drawing.Point(205, 68)
+        Me._ncvFuel2UnitLbl.Name = "_ncvFuel2UnitLbl"
+        Me._ncvFuel2UnitLbl.Size = New System.Drawing.Size(52, 16)
+        Me._ncvFuel2UnitLbl.TabIndex = 5
+        Me._ncvFuel2UnitLbl.Text = "[MJ/kg]"
+        '
+        '_ncvFuel1UnitLbl
+        '
+        Me._ncvFuel1UnitLbl.AutoSize = True
+        Me._ncvFuel1UnitLbl.Location = New System.Drawing.Point(205, 34)
+        Me._ncvFuel1UnitLbl.Name = "_ncvFuel1UnitLbl"
+        Me._ncvFuel1UnitLbl.Size = New System.Drawing.Size(52, 16)
+        Me._ncvFuel1UnitLbl.TabIndex = 4
+        Me._ncvFuel1UnitLbl.Text = "[MJ/kg]"
+        '
+        '_ncvFuel2Txtbox
+        '
+        Me._ncvFuel2Txtbox.Location = New System.Drawing.Point(93, 62)
+        Me._ncvFuel2Txtbox.Name = "_ncvFuel2Txtbox"
+        Me._ncvFuel2Txtbox.Size = New System.Drawing.Size(100, 22)
+        Me._ncvFuel2Txtbox.TabIndex = 3
+        '
+        '_ncvFuel1Txtbox
+        '
+        Me._ncvFuel1Txtbox.Location = New System.Drawing.Point(93, 31)
+        Me._ncvFuel1Txtbox.Name = "_ncvFuel1Txtbox"
+        Me._ncvFuel1Txtbox.Size = New System.Drawing.Size(100, 22)
+        Me._ncvFuel1Txtbox.TabIndex = 2
         '
         '_ncvFuel2Lbl
         '
@@ -792,37 +815,14 @@ Partial Class VectoVTPJobForm
         Me._ncvFuel2Lbl.TabIndex = 1
         Me._ncvFuel2Lbl.Text = "<fuel type>"
         '
-        '_ncvFuel1Txtbox
+        '_ncvFuel1Lbl
         '
-        Me._ncvFuel1Txtbox.Location = New System.Drawing.Point(93, 31)
-        Me._ncvFuel1Txtbox.Name = "_ncvFuel1Txtbox"
-        Me._ncvFuel1Txtbox.Size = New System.Drawing.Size(100, 22)
-        Me._ncvFuel1Txtbox.TabIndex = 2
-        '
-        '_ncvFuel2Txtbox
-        '
-        Me._ncvFuel2Txtbox.Location = New System.Drawing.Point(93, 62)
-        Me._ncvFuel2Txtbox.Name = "_ncvFuel2Txtbox"
-        Me._ncvFuel2Txtbox.Size = New System.Drawing.Size(100, 22)
-        Me._ncvFuel2Txtbox.TabIndex = 3
-        '
-        '_nvcFuel1UnitLbl
-        '
-        Me._nvcFuel1UnitLbl.AutoSize = True
-        Me._nvcFuel1UnitLbl.Location = New System.Drawing.Point(205, 34)
-        Me._nvcFuel1UnitLbl.Name = "_nvcFuel1UnitLbl"
-        Me._nvcFuel1UnitLbl.Size = New System.Drawing.Size(52, 16)
-        Me._nvcFuel1UnitLbl.TabIndex = 4
-        Me._nvcFuel1UnitLbl.Text = "[MJ/kg]"
-        '
-        '_ncvFuel2UnitLbl
-        '
-        Me._ncvFuel2UnitLbl.AutoSize = True
-        Me._ncvFuel2UnitLbl.Location = New System.Drawing.Point(205, 68)
-        Me._ncvFuel2UnitLbl.Name = "_ncvFuel2UnitLbl"
-        Me._ncvFuel2UnitLbl.Size = New System.Drawing.Size(52, 16)
-        Me._ncvFuel2UnitLbl.TabIndex = 5
-        Me._ncvFuel2UnitLbl.Text = "[MJ/kg]"
+        Me._ncvFuel1Lbl.AutoSize = True
+        Me._ncvFuel1Lbl.Location = New System.Drawing.Point(18, 34)
+        Me._ncvFuel1Lbl.Name = "_ncvFuel1Lbl"
+        Me._ncvFuel1Lbl.Size = New System.Drawing.Size(71, 16)
+        Me._ncvFuel1Lbl.TabIndex = 0
+        Me._ncvFuel1Lbl.Text = "<fuel type>"
         '
         'VectoVTPJobForm
         '
@@ -855,7 +855,7 @@ Partial Class VectoVTPJobForm
         Me.Controls.Add(Me.StatusStrip1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "VectoVTPJobForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
@@ -951,7 +951,7 @@ End Sub
     Friend WithEvents _ncvGrpBox As GroupBox
     Friend WithEvents _ncvFuel1Lbl As Label
     Friend WithEvents _ncvFuel2Lbl As Label
-    Friend WithEvents _nvcFuel1UnitLbl As Label
+    Friend WithEvents _ncvFuel1UnitLbl As Label
     Friend WithEvents _ncvFuel2Txtbox As TextBox
     Friend WithEvents _ncvFuel1Txtbox As TextBox
     Friend WithEvents _ncvFuel2UnitLbl As Label

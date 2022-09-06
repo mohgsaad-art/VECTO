@@ -21,6 +21,7 @@ Imports TUGraz.VECTO.Input_Files
 Imports TUGraz.VectoCommon.InputData
 Imports TUGraz.VectoCommon.Models
 Imports TUGraz.VectoCommon.Utils
+Imports TUGraz.VectoCommon.BusAuxiliaries
 Imports TUGraz.VectoCore
 Imports TUGraz.VectoCore.InputData.FileIO.JSON
 Imports TUGraz.VectoCore.InputData.FileIO.XML
@@ -371,8 +372,12 @@ Public Class VectoVTPJobForm
     End Sub
 
     Private Sub UpdateNCVs()
-        ' TODO:   Reset to default 
-
+        _ncvFuel1Lbl.Visible = False
+        _ncvFuel1Txtbox.Visible = False
+        _ncvFuel1UnitLbl.Visible = False
+        _ncvFuel2Lbl.Visible = False
+        _ncvFuel2Txtbox.Visible = False
+        _ncvFuel2UnitLbl.Visible = False
 
         Dim vehicleFile As String =
                 If _
@@ -390,8 +395,28 @@ Public Class VectoVTPJobForm
                 Dim entry As IEngineFuelDeclarationInputData
 
                 For Each entry In fuels
-                    Console.WriteLine("FuelType = " & entry.FuelType)
-                    Console.WriteLine("CFNCV = " & entry.NetCalorificValueCorrectionFactor)
+                    Dim fueldata As IFuelProperties =
+                            DeclarationData.FuelData.Lookup(entry.FuelType, inputData.JobInputData.Vehicle.TankSystem)
+
+                    Console.WriteLine("Fuel type = " & fueldata.FuelType.ToString())
+                    Console.WriteLine("Fuel type = " & fueldata.HeatingValueCorrection)
+
+                    If (Not _ncvFuel1Lbl.Visible) Then
+                        _ncvFuel1Lbl.Text = entry.FuelType.GetLabel()
+                        _ncvFuel1Lbl.Visible = True
+
+
+                        _ncvFuel1Txtbox.Text = (entry.NetCalorificValueCorrectionFactor).ToString()
+                        _ncvFuel1Txtbox.Visible = True
+                        _ncvFuel1UnitLbl.Visible = True
+                    ElseIf (Not _ncvFuel2Lbl.Visible) Then
+                        _ncvFuel2Lbl.Text = entry.FuelType.GetLabel()
+                        _ncvFuel2Lbl.Visible = True
+
+                        _ncvFuel2Txtbox.Text = (entry.NetCalorificValueCorrectionFactor).ToString()
+                        _ncvFuel2Txtbox.Visible = True
+                        _ncvFuel2UnitLbl.Visible = True
+                    End If
                 Next
 
             Catch
