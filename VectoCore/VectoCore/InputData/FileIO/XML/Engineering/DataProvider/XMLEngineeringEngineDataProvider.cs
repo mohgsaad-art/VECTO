@@ -117,7 +117,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider
 			}
 		}
 
-		public virtual double CorrectionFactorNCV
+		public virtual double NetCalorificValueCorrectionFactor
 		{
 			get { return 1; }
 		}

@@ -582,6 +582,8 @@ namespace TUGraz.VectoCommon.InputData
 
 		double CorrectionFactorRegPer { get; }
 
+		double NetCalorificValueCorrectionFactor { get; }
+
 		/// <summary>
 		/// P067
 		/// P072, P073, P074

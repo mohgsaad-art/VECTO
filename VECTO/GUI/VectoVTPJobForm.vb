@@ -10,6 +10,7 @@
 ' See the LICENSE.txt for the specific language governing permissions and limitations.
 'Option Infer On
 
+Imports System.Collections.Generic
 Imports System.Drawing.Imaging
 Imports System.IO
 Imports System.Linq
@@ -365,7 +366,38 @@ Public Class VectoVTPJobForm
         Handles TbVEH.TextChanged
         UpdateAuxList()
         UpdatePic()
+        UpdateNCVs()
         Change()
+    End Sub
+
+    Private Sub UpdateNCVs()
+        ' TODO:   Reset to default 
+
+
+        Dim vehicleFile As String =
+                If _
+                (Not String.IsNullOrWhiteSpace(VectoFile), Path.Combine(Path.GetDirectoryName(VectoFile), TbVEH.Text),
+                 TbVEH.Text)
+
+        If File.Exists(vehicleFile) Then
+            Try
+                Dim inputData As IDeclarationInputDataProvider =
+                        _xmlInputReader.CreateDeclaration(XmlReader.Create(vehicleFile))
+
+                Dim fuels As IList(Of IEngineFuelDeclarationInputData) =
+                    inputData.JobInputData.Vehicle.Components.EngineInputData.EngineModes.First().Fuels
+
+                Dim entry As IEngineFuelDeclarationInputData
+
+                For Each entry In fuels
+                    Console.WriteLine("FuelType = " & entry.FuelType)
+                    Console.WriteLine("CFNCV = " & entry.NetCalorificValueCorrectionFactor)
+                Next
+
+            Catch
+            End Try
+        End If
+
     End Sub
 
     Private Sub UpdateAuxList()
@@ -757,6 +789,10 @@ Public Class VectoVTPJobForm
         If ManRXMLFileBrowser.OpenDialog(FileRepl(tbManufacturerRecord.Text, GetPath(VectoFile))) Then
             tbManufacturerRecord.Text = GetFilenameWithoutDirectory(ManRXMLFileBrowser.Files(0), GetPath(VectoFile))
         End If
+    End Sub
+
+    Private Sub Label13_Click(sender As Object, e As EventArgs) Handles _ncvFuel1Lbl.Click
+
     End Sub
 End Class
 

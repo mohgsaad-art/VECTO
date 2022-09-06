@@ -122,6 +122,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 			WHTCRural = 1;
 			CorrectionFactorRegPer = 1;
 			FuelConsumptionCorrectionFactor = 1;
+			NetCalorificValueCorrectionFactor = 1;
 		}
 
 		[Required, Range(0.9, 2)]
@@ -138,6 +139,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 
 		[Required, Range(double.MinValue, double.MaxValue)]
 		public double CorrectionFactorRegPer { get; internal set; }
+
+		public double NetCalorificValueCorrectionFactor { get; internal set; }
 
 		public double FuelConsumptionCorrectionFactor { get; internal set; }
 
