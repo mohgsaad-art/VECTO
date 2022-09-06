@@ -399,21 +399,21 @@ Public Class VectoVTPJobForm
                             DeclarationData.FuelData.Lookup(entry.FuelType, inputData.JobInputData.Vehicle.TankSystem)
 
                     Console.WriteLine("Fuel type = " & fueldata.FuelType.ToString())
-                    Console.WriteLine("Fuel type = " & fueldata.HeatingValueCorrection)
+                    Console.WriteLine("Fuel type = " & fueldata.LowerHeatingValueVecto.Value)
 
                     If (Not _ncvFuel1Lbl.Visible) Then
                         _ncvFuel1Lbl.Text = entry.FuelType.GetLabel()
                         _ncvFuel1Lbl.Visible = True
 
 
-                        _ncvFuel1Txtbox.Text = (entry.NetCalorificValueCorrectionFactor).ToString()
+                        _ncvFuel1Txtbox.Text = (entry.NetCalorificValueCorrectionFactor * fueldata.LowerHeatingValueVecto.Value / 1000000).ToString()
                         _ncvFuel1Txtbox.Visible = True
                         _ncvFuel1UnitLbl.Visible = True
                     ElseIf (Not _ncvFuel2Lbl.Visible) Then
                         _ncvFuel2Lbl.Text = entry.FuelType.GetLabel()
                         _ncvFuel2Lbl.Visible = True
 
-                        _ncvFuel2Txtbox.Text = (entry.NetCalorificValueCorrectionFactor).ToString()
+                        _ncvFuel2Txtbox.Text = (entry.NetCalorificValueCorrectionFactor * fueldata.LowerHeatingValueVecto.Value / 1000000).ToString()
                         _ncvFuel2Txtbox.Visible = True
                         _ncvFuel2UnitLbl.Visible = True
                     End If
