@@ -777,7 +777,7 @@ Partial Class VectoVTPJobForm
         '_ncvFuel2UnitLbl
         '
         Me._ncvFuel2UnitLbl.AutoSize = True
-        Me._ncvFuel2UnitLbl.Location = New System.Drawing.Point(205, 68)
+        Me._ncvFuel2UnitLbl.Location = New System.Drawing.Point(205, 65)
         Me._ncvFuel2UnitLbl.Name = "_ncvFuel2UnitLbl"
         Me._ncvFuel2UnitLbl.Size = New System.Drawing.Size(52, 16)
         Me._ncvFuel2UnitLbl.TabIndex = 5

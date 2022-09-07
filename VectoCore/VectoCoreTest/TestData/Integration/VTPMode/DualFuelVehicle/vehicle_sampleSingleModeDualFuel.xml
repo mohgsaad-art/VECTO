@@ -70,7 +70,7 @@
 							<WHTCMotorway>1.0200</WHTCMotorway>
 							<BFColdHot>1.0000</BFColdHot>
 							<CFRegPer>1.0000</CFRegPer>
-							<CFNCV>1.1000</CFNCV>
+							<CFNCV>1.0000</CFNCV>
 							<FuelConsumptionMap>
 								<Entry engineSpeed="560.00" torque="-149.00" fuelConsumption="0.00" />
 								<Entry engineSpeed="560.00" torque="0.00" fuelConsumption="125.60" />
@@ -192,7 +192,7 @@
 							<WHTCMotorway>1.0200</WHTCMotorway>
 							<BFColdHot>1.0000</BFColdHot>
 							<CFRegPer>1.0000</CFRegPer>
-							<CFNCV>1.2000</CFNCV>
+							<CFNCV>1.0000</CFNCV>
 							<FuelConsumptionMap>
 								<Entry engineSpeed="560.00" torque="-149.00" fuelConsumption="0.00" />
 								<Entry engineSpeed="560.00" torque="0.00" fuelConsumption="1256.00" />

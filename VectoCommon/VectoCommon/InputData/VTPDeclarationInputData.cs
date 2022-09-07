@@ -62,6 +62,8 @@ namespace TUGraz.VectoCommon.InputData
 		bool SavedInDeclarationMode { get; }
 
 		Meter FanDiameter { get; }
+
+		IList<IFuelNCVData> FuelNCVs { get; }
 	}
 
 	public interface IManufacturerReport

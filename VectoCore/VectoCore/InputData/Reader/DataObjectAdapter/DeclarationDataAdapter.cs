@@ -226,7 +226,6 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 						WHTCMotorway = fuel.WHTCMotorway,
 						ColdHotCorrectionFactor = fuel.ColdHotBalancingFactor,
 						CorrectionFactorRegPer = fuel.CorrectionFactorRegPer,
-						NetCalorificValueCorrectionFactor = fuel.NetCalorificValueCorrectionFactor,
 						FuelData = DeclarationData.FuelData.Lookup(fuel.FuelType, vehicle.TankSystem),
 						ConsumptionMap = FuelConsumptionMapReader.Create(fuel.FuelConsumptionMap),
 						FuelConsumptionCorrectionFactor = DeclarationData.WHTCCorrection.Lookup(

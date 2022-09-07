@@ -508,7 +508,6 @@ Public Class EngineFuel
 
 
     Public ColdHotBalancingFactorInput As Double
-    Public NetCalorificValueCorrectionFactorInput As Double
     Public correctionFactorRegPerInput As Double
 	Public FuelTypeInput As FuelType
 	Private engineData As Engine
@@ -557,12 +556,6 @@ Public Class EngineFuel
 			Return ColdHotBalancingFactorInput
 		End Get
 	End Property
-
-    Public ReadOnly Property NetCalorificValueCorrectionFactor As Double Implements IEngineFuelDeclarationInputData.NetCalorificValueCorrectionFactor
-        Get
-            Return NetCalorificValueCorrectionFactorInput
-        End Get
-    End Property
 
     Public ReadOnly Property CorrectionFactorRegPer As Double Implements IEngineFuelDeclarationInputData.CorrectionFactorRegPer
         Get

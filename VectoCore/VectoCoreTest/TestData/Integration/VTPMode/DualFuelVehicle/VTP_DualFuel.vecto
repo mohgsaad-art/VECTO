@@ -10,13 +10,23 @@
     "DeclarationVehicle": "vehicle_sampleSingleModeDualFuel.xml",
     "ManufacturerRecord": "vehicle_sampleSingleModeDualFuel.RSLT_MANUFACTURER.xml",
     "Mileage": 30000.0,
-    "NCVTestFuel": 42.5,
     "FanPowerCoefficients": [
       0.0,
       1.0,
       1.0
     ],
     "FanDiameter": 0.3,
+	"FuelNCVs": [
+	  {
+	    "Type": "Diesel CI",
+		"NCV": 12
+	  },
+	  {
+		"Type": "NG CI",
+		"TankSystem": "compressed",
+		"NCV": 23
+	  }
+	],
     "Cycles": [
       "vtp_cycle_2Hz.vdri"
     ]

@@ -375,4 +375,7 @@
   <data name="Vehicle_PTO_CycleDriving" xml:space="preserve">
     <value>CycleDriving</value>
   </data>
+  <data name="Job_FuelNCVs" xml:space="preserve">
+    <value>FuelNCVs</value>
+  </data>
 </root>

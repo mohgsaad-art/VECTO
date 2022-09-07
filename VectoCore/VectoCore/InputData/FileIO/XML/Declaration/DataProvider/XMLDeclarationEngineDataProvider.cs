@@ -184,8 +184,6 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 			public virtual double ColdHotBalancingFactor => GetDouble(XMLNames.Engine_ColdHotBalancingFactor);
 
 			public virtual double CorrectionFactorRegPer => GetDouble(XMLNames.Engine_CorrectionFactor_RegPer);
-
-			public virtual double NetCalorificValueCorrectionFactor => GetDouble(XMLNames.Engine_CorrecionFactor_NCV);
 		}
 
 		#endregion

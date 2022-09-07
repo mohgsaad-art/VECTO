@@ -886,6 +886,32 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			get { return Body.GetEx<double>("FanDiameter").SI<Meter>(); }
 		}
 
+		public IList<IFuelNCVData> FuelNCVs
+		{
+			get 
+			{
+				var fuelNCVs = new List<IFuelNCVData>();
+
+				if (Body[JsonKeys.Job_FuelNCVs] == null) {
+					return fuelNCVs;
+                }
+
+				foreach (var fuelNCV in Body.GetEx(JsonKeys.Job_FuelNCVs)) {
+					var typeData = fuelNCV.GetEx<string>("Type"); //TODO: add to JsonKeys
+					var ncvData = fuelNCV.GetEx<double>("NCV");
+					var tankSystemData = fuelNCV.GetEx<string>("TankSystem");
+
+					FuelType fuelType = Enum.GetValues(typeof(FuelType)).Cast<FuelType>().First(x => x.GetLabel().Equals(typeData));
+					TankSystem tankSystem = Enum.GetValues(typeof(TankSystem)).Cast<TankSystem>().First(x => x.ToString().Equals(tankSystemData));
+
+					//if fueltype is null throw exception
+					//if tanksystem is null -> OK
+                }
+
+				return fuelNCVs;
+            }
+        }
+
 		#region Implementation of IVTPDeclarationInputDataProvider
 
 		IVTPDeclarationJobInputData IVTPDeclarationInputDataProvider.JobInputData

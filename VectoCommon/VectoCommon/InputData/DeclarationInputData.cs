@@ -582,8 +582,6 @@ namespace TUGraz.VectoCommon.InputData
 
 		double CorrectionFactorRegPer { get; }
 
-		double NetCalorificValueCorrectionFactor { get; }
-
 		/// <summary>
 		/// P067
 		/// P072, P073, P074
@@ -610,6 +608,15 @@ namespace TUGraz.VectoCommon.InputData
 		/// </summary>
 		TableData CycleData { get; }
 	}
+
+	public interface IFuelNCVData
+	{
+		FuelType Type { get; }
+
+		double NCV { get; }
+
+		TankSystem TankSystem { get; }
+    }
 
 	public interface IDriverDeclarationInputData : IDriverModelData
 	{

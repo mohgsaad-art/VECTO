@@ -126,7 +126,6 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 					FuelType = jsonFuel.GetEx<string>("FuelType").ParseEnum<FuelType>(),
 					ColdHotBalancingFactor = jsonFuel.GetEx<double>("ColdHotBalancingFactor"),
 					CorrectionFactorRegPer = jsonFuel.GetEx<double>("CFRegPer"),
-					NetCalorificValueCorrectionFactor = jsonFuel.GetEx<double>("CFNCV"),
 					WHTCUrban = jsonFuel.GetEx<double>(JsonKeys.Engine_WHTC_Urban),
 					WHTCRural = jsonFuel.GetEx<double>(JsonKeys.Engine_WHTC_Rural),
 					WHTCMotorway = jsonFuel.GetEx<double>(JsonKeys.Engine_WHTC_Motorway),
@@ -170,7 +169,6 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			public double WHTCUrban { get; set; }
 			public double ColdHotBalancingFactor { get; set; }
 			public double CorrectionFactorRegPer { get; set; }
-			public double NetCalorificValueCorrectionFactor { get; set; }
 			public TableData FuelConsumptionMap { get; set; }
 
 			#endregion
@@ -394,16 +392,6 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 		{
 			get { return 1; }
 		}
-
-		public double NetCalorificValueCorrectionFactor
-		{
-			get {
-				if (Body["CFNCV"] == null) {
-					return 1.0;
-				}
-				return Body.GetEx<double>("CFNCV");
-            }
-        }
 		
 		public string Manufacturer
 		{
@@ -414,7 +402,6 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 		{
 			get { return Body.GetEx<string>(JsonKeys.Engine_ModelName); }
 		}
-
 
 		public string Date
 		{
