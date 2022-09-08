@@ -137,7 +137,7 @@ Public Class VectoVTPJob
 
     Public ReadOnly Property VectoManufacturerReportHash As IVectoHash Implements IVTPDeclarationJobInputData.VectoManufacturerReportHash
     Public Property Mileage As Meter Implements IVTPDeclarationJobInputData.Mileage
-   
+
     Public ReadOnly Property Cycles As IList(Of ICycleData) Implements IVTPEngineeringJobInputData.Cycles
         Get
             Dim retVal As ICycleData() = New ICycleData(CycleFiles.Count - 1) {}
@@ -152,7 +152,7 @@ Public Class VectoVTPJob
                                                      cycleFile.OriginalPath +
                                                      TUGraz.VectoCore.Configuration.Constants.FileExtensions.CycleFile
                         Dim cycleDataRes As Stream = RessourceHelper.ReadStream(resourceName)
-                        cycleData = VectoCSVFile.ReadStream(cycleDataRes, source := resourceName)
+                        cycleData = VectoCSVFile.ReadStream(cycleDataRes, source:=resourceName)
                     Catch ex As Exception
                         Throw New VectoException("Driving Cycle could not be read: " + cycleFile.OriginalPath)
                     End Try
@@ -166,6 +166,15 @@ Public Class VectoVTPJob
             Return retVal
         End Get
     End Property
+
+    Public ReadOnly Property FuelNCVs As IList(Of IFuelNCVData) _
+        Implements IVTPEngineeringJobInputData.FuelNCVs
+        Get
+            Return New IFuelNCVData() {}
+        End Get
+    End Property
+
+
 
     Public ReadOnly Property FanPowerCoefficents As IEnumerable(Of Double) _
         Implements IVTPEngineeringJobInputData.FanPowerCoefficents

@@ -23,8 +23,7 @@
 	  },
 	  {
 		"Type": "NG CI",
-		"TankSystem": "compressed",
-		"NCV": 23
+		"NCV": 45
 	  }
 	],
     "Cycles": [

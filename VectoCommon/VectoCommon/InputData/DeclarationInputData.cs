@@ -614,8 +614,6 @@ namespace TUGraz.VectoCommon.InputData
 		FuelType Type { get; }
 
 		double NCV { get; }
-
-		TankSystem TankSystem { get; }
     }
 
 	public interface IDriverDeclarationInputData : IDriverModelData

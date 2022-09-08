@@ -44,7 +44,9 @@ Public Class VectoVTPJobForm
 
     Private _auxDialog As VehicleAuxiliariesDialog
 
-    Dim _xmlInputReader as IXMLInputDataReader
+    Dim _xmlInputReader As IXMLInputDataReader
+
+    Dim _vectoJob As IVTPEngineeringJobInputData
 
     Enum AuxViewColumns
         AuxID = 0
@@ -178,6 +180,7 @@ Public Class VectoVTPJobForm
             inputData = TryCast(JSONInputDataFactory.ReadComponentData(file),
                                 IVTPEngineeringInputDataProvider)
             vectoJob = inputData.JobInputData()
+            _vectoJob = vectoJob
         Catch ex As Exception
             MsgBox("Failed to read Job-File" + Environment.NewLine + ex.Message)
             Return
@@ -402,7 +405,6 @@ Public Class VectoVTPJobForm
                         _ncvFuel1Lbl.Text = entry.FuelType.GetLabel()
                         _ncvFuel1Lbl.Visible = True
 
-
                         _ncvFuel1Txtbox.Text = (fueldata.LowerHeatingValueVecto.Value / 1000000).ToString()
                         _ncvFuel1Txtbox.Visible = True
                         _ncvFuel1UnitLbl.Visible = True
@@ -419,6 +421,17 @@ Public Class VectoVTPJobForm
             Catch
             End Try
         End If
+
+        Dim jobFuelNCV As IFuelNCVData
+
+        For Each jobFuelNCV In _vectoJob.FuelNCVs
+            If (_ncvFuel1Lbl.Visible And (_ncvFuel1Lbl.Text.Equals(jobFuelNCV.Type.GetLabel()))) Then
+                _ncvFuel1Txtbox.Text = jobFuelNCV.NCV.ToString()
+            End If
+            If (_ncvFuel2Lbl.Visible And (_ncvFuel2Lbl.Text.Equals(jobFuelNCV.Type.GetLabel()))) Then
+                _ncvFuel2Txtbox.Text = jobFuelNCV.NCV.ToString()
+            End If
+        Next
 
     End Sub
 

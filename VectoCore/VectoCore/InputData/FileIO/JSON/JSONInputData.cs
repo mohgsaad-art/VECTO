@@ -897,15 +897,17 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
                 }
 
 				foreach (var fuelNCV in Body.GetEx(JsonKeys.Job_FuelNCVs)) {
-					var typeData = fuelNCV.GetEx<string>("Type"); //TODO: add to JsonKeys
-					var ncvData = fuelNCV.GetEx<double>("NCV");
-					var tankSystemData = fuelNCV.GetEx<string>("TankSystem");
+					var type = fuelNCV.GetEx<string>("Type"); //TODO: add to JsonKeys
+					var ncv = fuelNCV.GetEx<double>("NCV"); //TODO: add to JsonKeys
 
-					FuelType fuelType = Enum.GetValues(typeof(FuelType)).Cast<FuelType>().First(x => x.GetLabel().Equals(typeData));
-					TankSystem tankSystem = Enum.GetValues(typeof(TankSystem)).Cast<TankSystem>().First(x => x.ToString().Equals(tankSystemData));
+					IEnumerable<FuelType> matches = Enum.GetValues(typeof(FuelType)).Cast<FuelType>().Where(x => x.GetLabel().Equals(type));
+					if (matches.Count() == 0) {
+						throw new Exception($"{JsonKeys.Job_FuelNCVs}: invalid fuel type: {type}");
+                    }
 
-					//if fueltype is null throw exception
-					//if tanksystem is null -> OK
+					FuelType fuelType = matches.First();
+
+					fuelNCVs.Add(new FuelNCVData() { Type = fuelType, NCV = ncv });
                 }
 
 				return fuelNCVs;
