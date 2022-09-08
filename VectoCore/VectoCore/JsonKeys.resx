@@ -378,4 +378,10 @@
   <data name="Job_FuelNCVs" xml:space="preserve">
     <value>FuelNCVs</value>
   </data>
+  <data name="Job_FuelNCV_NCV" xml:space="preserve">
+    <value>NCV</value>
+  </data>
+  <data name="Job_FuelNCV_Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
 </root>

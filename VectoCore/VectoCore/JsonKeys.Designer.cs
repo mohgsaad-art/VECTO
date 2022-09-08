@@ -493,6 +493,24 @@ namespace TUGraz.VectoCore {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to NCV.
+        /// </summary>
+        internal static string Job_FuelNCV_NCV {
+            get {
+                return ResourceManager.GetString("Job_FuelNCV_NCV", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        internal static string Job_FuelNCV_Type {
+            get {
+                return ResourceManager.GetString("Job_FuelNCV_Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to FuelNCVs.
         /// </summary>
         internal static string Job_FuelNCVs {

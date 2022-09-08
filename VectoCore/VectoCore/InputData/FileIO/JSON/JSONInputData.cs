@@ -897,8 +897,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
                 }
 
 				foreach (var fuelNCV in Body.GetEx(JsonKeys.Job_FuelNCVs)) {
-					var type = fuelNCV.GetEx<string>("Type"); //TODO: add to JsonKeys
-					var ncv = fuelNCV.GetEx<double>("NCV"); //TODO: add to JsonKeys
+					var type = fuelNCV.GetEx<string>(JsonKeys.Job_FuelNCV_Type);
+					var ncv = fuelNCV.GetEx<double>(JsonKeys.Job_FuelNCV_NCV);
 
 					IEnumerable<FuelType> matches = Enum.GetValues(typeof(FuelType)).Cast<FuelType>().Where(x => x.GetLabel().Equals(type));
 					if (matches.Count() == 0) {

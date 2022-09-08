@@ -198,6 +198,6 @@ namespace TUGraz.VectoCore.InputData.Impl
 		public FuelType Type { get; internal set; }
 
 		public double NCV { get; internal set; }
-	}
+    }
 
 }

@@ -34,6 +34,7 @@ Public Class VectoVTPJob
     Public ReadOnly CycleFiles As List(Of SubPath)
     Public FanCoefficients As Double()
     Private _fanDiameter As Meter
+    Private _fuelNCVData As List(Of IFuelNCVData)
 
     Private _xmlInputReader As IXMLInputDataReader
 
@@ -41,6 +42,7 @@ Public Class VectoVTPJob
         CycleFiles = New List(Of SubPath)
         _vehicleFile = New SubPath
         _manufacturerRecord = New SubPath()
+        _fuelNCVData = New List(Of IFuelNCVData)
 
         Dim kernel as IKernel = New StandardKernel(new VectoNinjectModule)
         _xmlInputReader = kernel.Get(Of IXMLInputDataReader)
@@ -170,7 +172,7 @@ Public Class VectoVTPJob
     Public ReadOnly Property FuelNCVs As IList(Of IFuelNCVData) _
         Implements IVTPEngineeringJobInputData.FuelNCVs
         Get
-            Return New IFuelNCVData() {}
+            Return _fuelNCVData
         End Get
     End Property
 
