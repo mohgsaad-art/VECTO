@@ -75,6 +75,8 @@ Public Class VectoVTPJobForm
         GrCycles.Enabled = True
 
         _changed = False
+
+        HideGUIComponentsOfNCV()
     End Sub
 
     'Close - Check for unsaved changes
@@ -255,6 +257,8 @@ Public Class VectoVTPJobForm
 
         UpdatePic()
 
+        ReadWheelTorqueDriftsFromVectoJob()
+
         '-------------------------------------------------------------
     End Sub
 
@@ -313,6 +317,18 @@ Public Class VectoVTPJobForm
 
         ReadFuelNCVFromGUIComponents(_ncvFuel1Lbl, _ncvFuel1Txtbox, vectoJob)
         ReadFuelNCVFromGUIComponents(_ncvFuel2Lbl, _ncvFuel2Txtbox, vectoJob)
+
+        Dim torqueLeft As Double
+        If (Not Double.TryParse(_tqDriftLeftTextbox.Text, torqueLeft)) Then
+            Throw New Exception($"Torque Drift for left wheel has invalid value")
+        End If
+        vectoJob.TorqueDriftLeftWheel = torqueLeft.SI(Of NewtonMeter)
+
+        Dim torqueRight As Double
+        If (Not Double.TryParse(_tqDriftRightTextbox.Text, torqueRight)) Then
+            Throw New Exception($"Torque Drift for right wheel has invalid value")
+        End If
+        vectoJob.TorqueDriftRightWheel = torqueRight.SI(Of NewtonMeter)
 
         'SAVE
         If Not vectoJob.SaveFile Then
@@ -401,13 +417,30 @@ Public Class VectoVTPJobForm
         Change()
     End Sub
 
-    Private Sub UpdateNCVs()
+    Private Sub ReadWheelTorqueDriftsFromVectoJob()
+        Dim leftInput As NewtonMeter = _vectoJob.TorqueDriftLeftWheel
+        Dim rightInput As NewtonMeter = _vectoJob.TorqueDriftRightWheel
+
+        If (Not (leftInput Is Nothing)) Then
+            _tqDriftLeftTextbox.Text = leftInput.Value.ToString()
+        End If
+
+        If (Not (rightInput Is Nothing)) Then
+            _tqDriftRightTextbox.Text = rightInput.Value.ToString()
+        End If
+    End Sub
+
+    Private Sub HideGUIComponentsOfNCV()
         _ncvFuel1Lbl.Visible = False
         _ncvFuel1Txtbox.Visible = False
         _ncvFuel1UnitLbl.Visible = False
         _ncvFuel2Lbl.Visible = False
         _ncvFuel2Txtbox.Visible = False
         _ncvFuel2UnitLbl.Visible = False
+    End Sub
+
+    Private Sub UpdateNCVs()
+        HideGUIComponentsOfNCV()
 
         Dim vehicleFile As String =
                 If _
@@ -853,9 +886,6 @@ Public Class VectoVTPJobForm
         End If
     End Sub
 
-    Private Sub Label13_Click(sender As Object, e As EventArgs) Handles _ncvFuel1Lbl.Click
-
-    End Sub
 End Class
 
 

@@ -98,6 +98,13 @@ Partial Class VectoVTPJobForm
         Me._ncvFuel1Txtbox = New System.Windows.Forms.TextBox()
         Me._ncvFuel2Lbl = New System.Windows.Forms.Label()
         Me._ncvFuel1Lbl = New System.Windows.Forms.Label()
+        Me._wheelTorqueDriftGrpbox = New System.Windows.Forms.GroupBox()
+        Me._tqDriftLeftUnitsLbl = New System.Windows.Forms.Label()
+        Me._tqDriftRightTextbox = New System.Windows.Forms.TextBox()
+        Me._tqDriftLeftTextbox = New System.Windows.Forms.TextBox()
+        Me._tqDriftRightLbl = New System.Windows.Forms.Label()
+        Me._tqDriftLeftLbl = New System.Windows.Forms.Label()
+        Me._tqdriftRightUnitsLbl = New System.Windows.Forms.Label()
         Me.GrCycles.SuspendLayout()
         Me.GrAux.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
@@ -111,6 +118,7 @@ Partial Class VectoVTPJobForm
         Me.pnFanParameters.SuspendLayout()
         Me.pnManufacturerRecord.SuspendLayout()
         Me._ncvGrpBox.SuspendLayout()
+        Me._wheelTorqueDriftGrpbox.SuspendLayout()
         Me.SuspendLayout()
         '
         'GrCycles
@@ -280,7 +288,7 @@ Partial Class VectoVTPJobForm
         '
         Me.StatusStrip1.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabelGEN})
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 783)
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 803)
         Me.StatusStrip1.Name = "StatusStrip1"
         Me.StatusStrip1.Padding = New System.Windows.Forms.Padding(1, 0, 19, 0)
         Me.StatusStrip1.Size = New System.Drawing.Size(1259, 26)
@@ -297,7 +305,7 @@ Partial Class VectoVTPJobForm
         'ButOK
         '
         Me.ButOK.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.ButOK.Location = New System.Drawing.Point(1037, 748)
+        Me.ButOK.Location = New System.Drawing.Point(1037, 768)
         Me.ButOK.Margin = New System.Windows.Forms.Padding(4)
         Me.ButOK.Name = "ButOK"
         Me.ButOK.Size = New System.Drawing.Size(100, 28)
@@ -309,7 +317,7 @@ Partial Class VectoVTPJobForm
         '
         Me.ButCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ButCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.ButCancel.Location = New System.Drawing.Point(1145, 748)
+        Me.ButCancel.Location = New System.Drawing.Point(1145, 768)
         Me.ButCancel.Margin = New System.Windows.Forms.Padding(4)
         Me.ButCancel.Name = "ButCancel"
         Me.ButCancel.Size = New System.Drawing.Size(100, 28)
@@ -324,7 +332,7 @@ Partial Class VectoVTPJobForm
         Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripBtNew, Me.ToolStripBtOpen, Me.ToolStripBtSave, Me.ToolStripBtSaveAs, Me.ToolStripSeparator1, Me.ToolStripBtSendTo, Me.ToolStripSeparator2, Me.ToolStripButton1})
         Me.ToolStrip1.Location = New System.Drawing.Point(0, 0)
         Me.ToolStrip1.Name = "ToolStrip1"
-        Me.ToolStrip1.Size = New System.Drawing.Size(1259, 27)
+        Me.ToolStrip1.Size = New System.Drawing.Size(1259, 31)
         Me.ToolStrip1.TabIndex = 20
         Me.ToolStrip1.Text = "ToolStrip1"
         '
@@ -767,9 +775,9 @@ Partial Class VectoVTPJobForm
         Me._ncvGrpBox.Controls.Add(Me._ncvFuel1Txtbox)
         Me._ncvGrpBox.Controls.Add(Me._ncvFuel2Lbl)
         Me._ncvGrpBox.Controls.Add(Me._ncvFuel1Lbl)
-        Me._ncvGrpBox.Location = New System.Drawing.Point(723, 668)
+        Me._ncvGrpBox.Location = New System.Drawing.Point(723, 670)
         Me._ncvGrpBox.Name = "_ncvGrpBox"
-        Me._ncvGrpBox.Size = New System.Drawing.Size(270, 97)
+        Me._ncvGrpBox.Size = New System.Drawing.Size(270, 90)
         Me._ncvGrpBox.TabIndex = 42
         Me._ncvGrpBox.TabStop = False
         Me._ncvGrpBox.Text = "Net Calorific Values"
@@ -777,7 +785,7 @@ Partial Class VectoVTPJobForm
         '_ncvFuel2UnitLbl
         '
         Me._ncvFuel2UnitLbl.AutoSize = True
-        Me._ncvFuel2UnitLbl.Location = New System.Drawing.Point(205, 65)
+        Me._ncvFuel2UnitLbl.Location = New System.Drawing.Point(203, 60)
         Me._ncvFuel2UnitLbl.Name = "_ncvFuel2UnitLbl"
         Me._ncvFuel2UnitLbl.Size = New System.Drawing.Size(52, 16)
         Me._ncvFuel2UnitLbl.TabIndex = 5
@@ -786,7 +794,7 @@ Partial Class VectoVTPJobForm
         '_ncvFuel1UnitLbl
         '
         Me._ncvFuel1UnitLbl.AutoSize = True
-        Me._ncvFuel1UnitLbl.Location = New System.Drawing.Point(205, 34)
+        Me._ncvFuel1UnitLbl.Location = New System.Drawing.Point(203, 28)
         Me._ncvFuel1UnitLbl.Name = "_ncvFuel1UnitLbl"
         Me._ncvFuel1UnitLbl.Size = New System.Drawing.Size(52, 16)
         Me._ncvFuel1UnitLbl.TabIndex = 4
@@ -794,14 +802,14 @@ Partial Class VectoVTPJobForm
         '
         '_ncvFuel2Txtbox
         '
-        Me._ncvFuel2Txtbox.Location = New System.Drawing.Point(93, 62)
+        Me._ncvFuel2Txtbox.Location = New System.Drawing.Point(93, 57)
         Me._ncvFuel2Txtbox.Name = "_ncvFuel2Txtbox"
         Me._ncvFuel2Txtbox.Size = New System.Drawing.Size(100, 22)
         Me._ncvFuel2Txtbox.TabIndex = 3
         '
         '_ncvFuel1Txtbox
         '
-        Me._ncvFuel1Txtbox.Location = New System.Drawing.Point(93, 31)
+        Me._ncvFuel1Txtbox.Location = New System.Drawing.Point(93, 25)
         Me._ncvFuel1Txtbox.Name = "_ncvFuel1Txtbox"
         Me._ncvFuel1Txtbox.Size = New System.Drawing.Size(100, 22)
         Me._ncvFuel1Txtbox.TabIndex = 2
@@ -809,7 +817,7 @@ Partial Class VectoVTPJobForm
         '_ncvFuel2Lbl
         '
         Me._ncvFuel2Lbl.AutoSize = True
-        Me._ncvFuel2Lbl.Location = New System.Drawing.Point(18, 65)
+        Me._ncvFuel2Lbl.Location = New System.Drawing.Point(18, 60)
         Me._ncvFuel2Lbl.Name = "_ncvFuel2Lbl"
         Me._ncvFuel2Lbl.Size = New System.Drawing.Size(71, 16)
         Me._ncvFuel2Lbl.TabIndex = 1
@@ -818,11 +826,76 @@ Partial Class VectoVTPJobForm
         '_ncvFuel1Lbl
         '
         Me._ncvFuel1Lbl.AutoSize = True
-        Me._ncvFuel1Lbl.Location = New System.Drawing.Point(18, 34)
+        Me._ncvFuel1Lbl.Location = New System.Drawing.Point(18, 28)
         Me._ncvFuel1Lbl.Name = "_ncvFuel1Lbl"
         Me._ncvFuel1Lbl.Size = New System.Drawing.Size(71, 16)
         Me._ncvFuel1Lbl.TabIndex = 0
         Me._ncvFuel1Lbl.Text = "<fuel type>"
+        '
+        '_wheelTorqueDriftGrpbox
+        '
+        Me._wheelTorqueDriftGrpbox.Controls.Add(Me._tqdriftRightUnitsLbl)
+        Me._wheelTorqueDriftGrpbox.Controls.Add(Me._tqDriftLeftUnitsLbl)
+        Me._wheelTorqueDriftGrpbox.Controls.Add(Me._tqDriftRightTextbox)
+        Me._wheelTorqueDriftGrpbox.Controls.Add(Me._tqDriftLeftTextbox)
+        Me._wheelTorqueDriftGrpbox.Controls.Add(Me._tqDriftRightLbl)
+        Me._wheelTorqueDriftGrpbox.Controls.Add(Me._tqDriftLeftLbl)
+        Me._wheelTorqueDriftGrpbox.Location = New System.Drawing.Point(1011, 670)
+        Me._wheelTorqueDriftGrpbox.Name = "_wheelTorqueDriftGrpbox"
+        Me._wheelTorqueDriftGrpbox.Size = New System.Drawing.Size(230, 90)
+        Me._wheelTorqueDriftGrpbox.TabIndex = 43
+        Me._wheelTorqueDriftGrpbox.TabStop = False
+        Me._wheelTorqueDriftGrpbox.Text = "Wheel Torque Drift"
+        '
+        '_tqDriftLeftUnitsLbl
+        '
+        Me._tqDriftLeftUnitsLbl.AutoSize = True
+        Me._tqDriftLeftUnitsLbl.Location = New System.Drawing.Point(180, 28)
+        Me._tqDriftLeftUnitsLbl.Name = "_tqDriftLeftUnitsLbl"
+        Me._tqDriftLeftUnitsLbl.Size = New System.Drawing.Size(36, 16)
+        Me._tqDriftLeftUnitsLbl.TabIndex = 4
+        Me._tqDriftLeftUnitsLbl.Text = "[Nm]"
+        '
+        '_tqDriftRightTextbox
+        '
+        Me._tqDriftRightTextbox.Location = New System.Drawing.Point(70, 57)
+        Me._tqDriftRightTextbox.Name = "_tqDriftRightTextbox"
+        Me._tqDriftRightTextbox.Size = New System.Drawing.Size(100, 22)
+        Me._tqDriftRightTextbox.TabIndex = 3
+        '
+        '_tqDriftLeftTextbox
+        '
+        Me._tqDriftLeftTextbox.Location = New System.Drawing.Point(70, 25)
+        Me._tqDriftLeftTextbox.Name = "_tqDriftLeftTextbox"
+        Me._tqDriftLeftTextbox.Size = New System.Drawing.Size(100, 22)
+        Me._tqDriftLeftTextbox.TabIndex = 2
+        '
+        '_tqDriftRightLbl
+        '
+        Me._tqDriftRightLbl.AutoSize = True
+        Me._tqDriftRightLbl.Location = New System.Drawing.Point(18, 60)
+        Me._tqDriftRightLbl.Name = "_tqDriftRightLbl"
+        Me._tqDriftRightLbl.Size = New System.Drawing.Size(38, 16)
+        Me._tqDriftRightLbl.TabIndex = 1
+        Me._tqDriftRightLbl.Text = "Right"
+        '
+        '_tqDriftLeftLbl
+        '
+        Me._tqDriftLeftLbl.AutoSize = True
+        Me._tqDriftLeftLbl.Location = New System.Drawing.Point(18, 28)
+        Me._tqDriftLeftLbl.Name = "_tqDriftLeftLbl"
+        Me._tqDriftLeftLbl.Size = New System.Drawing.Size(28, 16)
+        Me._tqDriftLeftLbl.TabIndex = 0
+        Me._tqDriftLeftLbl.Text = "Left"
+        '
+        '_tqdriftRightUnitsLbl
+        '
+        Me._tqdriftRightUnitsLbl.AutoSize = True
+        Me._tqdriftRightUnitsLbl.Location = New System.Drawing.Point(180, 60)
+        Me._tqdriftRightUnitsLbl.Name = "_tqdriftRightUnitsLbl"
+        Me._tqdriftRightUnitsLbl.Size = New System.Drawing.Size(36, 16)
+        Me._tqdriftRightUnitsLbl.TabIndex = 5
+        Me._tqdriftRightUnitsLbl.Text = "[Nm]"
         '
         'VectoVTPJobForm
         '
@@ -830,7 +903,8 @@ Partial Class VectoVTPJobForm
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.ButCancel
-        Me.ClientSize = New System.Drawing.Size(1259, 809)
+        Me.ClientSize = New System.Drawing.Size(1259, 829)
+        Me.Controls.Add(Me._wheelTorqueDriftGrpbox)
         Me.Controls.Add(Me._ncvGrpBox)
         Me.Controls.Add(Me.pnManufacturerRecord)
         Me.Controls.Add(Me.Label5)
@@ -880,6 +954,8 @@ Partial Class VectoVTPJobForm
         Me.pnManufacturerRecord.PerformLayout()
         Me._ncvGrpBox.ResumeLayout(False)
         Me._ncvGrpBox.PerformLayout()
+        Me._wheelTorqueDriftGrpbox.ResumeLayout(False)
+        Me._wheelTorqueDriftGrpbox.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout
 
@@ -955,4 +1031,11 @@ End Sub
     Friend WithEvents _ncvFuel2Txtbox As TextBox
     Friend WithEvents _ncvFuel1Txtbox As TextBox
     Friend WithEvents _ncvFuel2UnitLbl As Label
+    Friend WithEvents _wheelTorqueDriftGrpbox As GroupBox
+    Friend WithEvents _tqDriftLeftLbl As Label
+    Friend WithEvents _tqDriftLeftUnitsLbl As Label
+    Friend WithEvents _tqDriftRightTextbox As TextBox
+    Friend WithEvents _tqDriftLeftTextbox As TextBox
+    Friend WithEvents _tqDriftRightLbl As Label
+    Friend WithEvents _tqdriftRightUnitsLbl As Label
 End Class

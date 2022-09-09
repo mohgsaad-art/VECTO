@@ -176,7 +176,9 @@ Public Class VectoVTPJob
         End Get
     End Property
 
+    Public Property TorqueDriftLeftWheel As NewtonMeter Implements IVTPEngineeringJobInputData.TorqueDriftLeftWheel
 
+    Public Property TorqueDriftRightWheel As NewtonMeter Implements IVTPEngineeringJobInputData.TorqueDriftRightWheel
 
     Public ReadOnly Property FanPowerCoefficents As IEnumerable(Of Double) _
         Implements IVTPEngineeringJobInputData.FanPowerCoefficents

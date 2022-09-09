@@ -384,4 +384,10 @@
   <data name="Job_FuelNCV_Type" xml:space="preserve">
     <value>Type</value>
   </data>
+  <data name="Job_TorqueDriftLeftWheel" xml:space="preserve">
+    <value>TorqueDriftLeftWheel</value>
+  </data>
+  <data name="Job_TorqueDriftRightWheel" xml:space="preserve">
+    <value>TorqueDriftRightWheel</value>
+  </data>
 </root>

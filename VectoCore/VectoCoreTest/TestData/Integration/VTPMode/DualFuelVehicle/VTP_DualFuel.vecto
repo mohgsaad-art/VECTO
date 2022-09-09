@@ -1,7 +1,7 @@
-﻿{
+{
   "Header": {
     "CreatedBy": "",
-    "Date": "2018-06-12T11:24:10.6066876Z",
+    "Date": "2022-09-09T14:41:31.5292729Z",
     "AppVersion": "3",
     "FileVersion": 4
   },
@@ -11,21 +11,23 @@
     "ManufacturerRecord": "vehicle_sampleSingleModeDualFuel.RSLT_MANUFACTURER.xml",
     "Mileage": 30000.0,
     "FanPowerCoefficients": [
-      0.0,
-      1.0,
-      1.0
+      7.32,
+      1200.0,
+      810.0
     ],
     "FanDiameter": 0.3,
-	"FuelNCVs": [
-	  {
-	    "Type": "Diesel CI",
-		"NCV": 12
-	  },
-	  {
-		"Type": "NG CI",
-		"NCV": 45
-	  }
-	],
+    "FuelNCVs": [
+      {
+        "Type": "Diesel CI",
+        "NCV": 12.0
+      },
+      {
+        "Type": "NG CI",
+        "NCV": 45.0
+      }
+    ],
+    "TorqueDriftLeftWheel": 4.0,
+    "TorqueDriftRightWheel": 5.0,
     "Cycles": [
       "vtp_cycle_2Hz.vdri"
     ]

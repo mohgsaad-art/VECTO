@@ -64,6 +64,10 @@ namespace TUGraz.VectoCommon.InputData
 		Meter FanDiameter { get; }
 
 		IList<IFuelNCVData> FuelNCVs { get; }
+
+		NewtonMeter TorqueDriftLeftWheel { get; }
+
+		NewtonMeter TorqueDriftRightWheel { get; }
 	}
 
 	public interface IManufacturerReport

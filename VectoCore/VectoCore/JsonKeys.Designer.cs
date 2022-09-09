@@ -520,6 +520,24 @@ namespace TUGraz.VectoCore {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to TorqueDriftLeftWheel.
+        /// </summary>
+        internal static string Job_TorqueDriftLeftWheel {
+            get {
+                return ResourceManager.GetString("Job_TorqueDriftLeftWheel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TorqueDriftRightWheel.
+        /// </summary>
+        internal static string Job_TorqueDriftRightWheel {
+            get {
+                return ResourceManager.GetString("Job_TorqueDriftRightWheel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Body.
         /// </summary>
         internal static string JsonBody {

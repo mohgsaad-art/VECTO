@@ -914,9 +914,30 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
             }
         }
 
-		#region Implementation of IVTPDeclarationInputDataProvider
+		public NewtonMeter TorqueDriftLeftWheel
+		{
+			get 
+			{ 
+				return (Body.SelectToken(JsonKeys.Job_TorqueDriftLeftWheel) != null)
+					? Body.GetEx<double>(JsonKeys.Job_TorqueDriftLeftWheel).SI<NewtonMeter>()
+					: null; 
+			}
+        }
 
-		IVTPDeclarationJobInputData IVTPDeclarationInputDataProvider.JobInputData
+		public NewtonMeter TorqueDriftRightWheel
+		{
+			get 
+			{ 
+				return (Body.SelectToken(JsonKeys.Job_TorqueDriftRightWheel) != null)  
+					? Body.GetEx<double>(JsonKeys.Job_TorqueDriftRightWheel).SI<NewtonMeter>()
+					: null;
+			}		
+		}
+
+
+        #region Implementation of IVTPDeclarationInputDataProvider
+
+        IVTPDeclarationJobInputData IVTPDeclarationInputDataProvider.JobInputData
 		{
 			get { return JobInputData; }
 		}
