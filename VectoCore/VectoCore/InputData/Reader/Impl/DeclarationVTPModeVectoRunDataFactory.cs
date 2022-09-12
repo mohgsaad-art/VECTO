@@ -219,8 +219,11 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			vtpRunData.VTPData = new VTPData() {
 				CorrectionFactor = mileageCorrection,
 			};
+
+			vtpRunData.TorqueDriftLeftWheel = JobInputData.TorqueDriftLeftWheel;
+			vtpRunData.TorqueDriftRightWheel = JobInputData.TorqueDriftRightWheel;
+
 			yield return vtpRunData;
-			
 		}
 
 		public IInputDataProvider DataProvider { get; }

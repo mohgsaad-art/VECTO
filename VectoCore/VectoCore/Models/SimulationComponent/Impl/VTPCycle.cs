@@ -65,7 +65,15 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		protected internal void PrepareCycleData()
 		{
+			Second timeDriftZero = Data.Entries.First().Time;
+			Second timeDriftCheck = Data.Entries.Last().Time;
+			
 			foreach (var entry in Data.Entries) {
+				var timeFactor = (entry.Time - timeDriftZero) / (timeDriftCheck - timeDriftZero);
+
+				entry.TorqueWheelLeft = entry.TorqueWheelLeft - (RunData.TorqueDriftLeftWheel * timeFactor);
+                entry.TorqueWheelRight = entry.TorqueWheelRight - (RunData.TorqueDriftRightWheel * timeFactor);
+
 				var wheelSpeed = (entry.WheelSpeedLeft + entry.WheelSpeedRight) / 2;
 				var wheelPower = entry.TorqueWheelLeft * entry.WheelSpeedLeft + entry.TorqueWheelRight * entry.WheelSpeedRight;
 				entry.PWheel = wheelPower;

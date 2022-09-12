@@ -138,6 +138,10 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 
 		public Watt ElectricAuxDemand { get; internal set; }
 
+		public NewtonMeter TorqueDriftLeftWheel { get; internal set; }
+
+		public NewtonMeter TorqueDriftRightWheel { get; internal set; }
+
 		public class AuxData
 		{
 			// ReSharper disable once InconsistentNaming
