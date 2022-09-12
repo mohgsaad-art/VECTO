@@ -63,7 +63,7 @@
 		<VectoTrailer Include="$(SolutionDir)VECTOTrailer\bin\DeployTrailer\VECTOTrailer.exe*"/>
 		<CefSharpx64 Include="$(SolutionDir)VECTOTrailer\bin\DeployTrailer\x64\*"/>
 		<CefSharpx86 Include="$(SolutionDir)VECTOTrailer\bin\DeployTrailer\x86\*"/>
-		<GenericVehicles Include="$(SolutionDir)Generic Vehicles\Declaration Mode\Trailer\**/*.*" Exclude="$(SolutionDir)**\*.vmod;$(SolutionDir)**\*.vsum;$(SolutionDir)**\*RSLT_*.xml;$(SolutionDir)**\*.pdf"/>
+		<GenericVehicles Include="$(SolutionDir)Generic Vehicles\Declaration Mode\Trailer\**/*.*" Exclude="$(SolutionDir)**\*.vmod;$(SolutionDir)**\*.vsum;$(SolutionDir)**\*RSLT_*.xml;$(SolutionDir)**\*.pdf;$(SolutionDir)**\GenericTyresTrailer_Old\**\*.*"/>
 		<MissionProfiles Include="$(SolutionDir)VectoCore\VectoCore\Resources\Declaration\MissionCycles\**\*.*"/>
 		<DeclarationData Include="$(SolutionDir)VectoCore\VectoCore\Resources\Declaration\**/*.csv" Exclude="$(SolutionDir)**\MissionCycles\**\*.*"/>
 		<DeclarationData Include="$(SolutionDir)VectoCore\VectoCore\Resources\Declaration\**/*.vacc" Exclude="$(SolutionDir)**\MissionCycles\**\*.*"/>
