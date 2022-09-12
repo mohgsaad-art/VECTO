@@ -14,6 +14,14 @@
       108.5
     ],
     "FanDiameter": 0.225,
+	"FuelNCVs": [
+      {
+        "Type": "Diesel CI",
+        "NCV": 42.7
+      }
+    ],
+    "TorqueDriftLeftWheel": 0.0,
+    "TorqueDriftRightWheel": 0.0,
     "Cycles": [
       "..\\Cycles\\Coach.vdri"
     ]

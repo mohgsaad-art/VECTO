@@ -1,7 +1,7 @@
 {
   "Header": {
     "CreatedBy": "",
-    "Date": "2022-09-09T14:41:31.5292729Z",
+    "Date": "2022-09-12T13:30:50.8149043Z",
     "AppVersion": "3",
     "FileVersion": 4
   },
@@ -19,15 +19,15 @@
     "FuelNCVs": [
       {
         "Type": "Diesel CI",
-        "NCV": 12.0
+        "NCV": 42.7
       },
       {
         "Type": "NG CI",
-        "NCV": 45.0
+        "NCV": 48.0
       }
     ],
-    "TorqueDriftLeftWheel": 4.0,
-    "TorqueDriftRightWheel": 5.0,
+    "TorqueDriftLeftWheel": 0.0,
+    "TorqueDriftRightWheel": 0.0,
     "Cycles": [
       "vtp_cycle_2Hz.vdri"
     ]

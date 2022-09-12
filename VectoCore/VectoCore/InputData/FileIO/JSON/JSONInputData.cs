@@ -916,22 +916,12 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 
 		public NewtonMeter TorqueDriftLeftWheel
 		{
-			get 
-			{ 
-				return (Body.SelectToken(JsonKeys.Job_TorqueDriftLeftWheel) != null)
-					? Body.GetEx<double>(JsonKeys.Job_TorqueDriftLeftWheel).SI<NewtonMeter>()
-					: null; 
-			}
+			get { return Body.GetEx<double>(JsonKeys.Job_TorqueDriftLeftWheel).SI<NewtonMeter>(); }
         }
 
 		public NewtonMeter TorqueDriftRightWheel
 		{
-			get 
-			{ 
-				return (Body.SelectToken(JsonKeys.Job_TorqueDriftRightWheel) != null)  
-					? Body.GetEx<double>(JsonKeys.Job_TorqueDriftRightWheel).SI<NewtonMeter>()
-					: null;
-			}		
+			get { return Body.GetEx<double>(JsonKeys.Job_TorqueDriftRightWheel).SI<NewtonMeter>(); }		
 		}
 
 
