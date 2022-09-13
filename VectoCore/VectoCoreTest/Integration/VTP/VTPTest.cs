@@ -104,7 +104,7 @@ namespace TUGraz.VectoCore.Tests.Integration.VTP
 		TestCase(POLLUTANTS_JOB, 7.89E-08, 1.0082, TestName = "VTP Pollutants"),
 		TestCase(DUAL_FUEL_JOB, 4.71E-09, 1.0107, TestName = "VTP Dual Fuel"),
 		TestCase(DUAL_FUEL_STOP_START_JOB, 4.71E-09, 1.0105, TestName = "VTP Dual Fuel StopStart"),
-		TestCase(TORQUE_DRIFT_JOB, 7.89E-08, 1.007, TestName = "VTP Torque Drift")
+		TestCase(TORQUE_DRIFT_JOB, 7.89E-08, 1.0082, TestName = "VTP Torque Drift")
 		]
 		public void RunVTP_Declaration(string jobFile, double expectedDeclaredCO2, double expectedCVTP)
 		{
