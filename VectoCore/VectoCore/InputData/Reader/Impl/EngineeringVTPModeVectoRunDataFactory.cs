@@ -72,6 +72,8 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 						MissionType = MissionType.VerificationTest
 					};
 					runData.DriverData = Driverdata;
+					runData.TorqueDriftLeftWheel = JobInputData.TorqueDriftLeftWheel;
+					runData.TorqueDriftRightWheel = JobInputData.TorqueDriftRightWheel;
 					return runData;
 				});
 		}
