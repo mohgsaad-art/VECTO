@@ -216,8 +216,16 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			//var ncvStd = DeclarationData.FuelData.Lookup(JobInputData.Vehicle.Components.EngineInputData.FuelType).LowerHeatingValueVecto;
 			//var ncvCorrection = ncvStd / JobInputData.NetCalorificValueTestFuel;
 			var mileageCorrection = GetMileagecorrectionFactor(JobInputData.Mileage);
+			
+			var correctionFactors = JobInputData.FuelNCVs.ToDictionary(
+				keySelector: f => f.Type, 
+				elementSelector: f => (f.NCV / DeclarationData.FuelData.Lookup(
+					f.Type, 
+					JobInputData.Vehicle.TankSystem).LowerHeatingValueVecto
+				).Value() * mileageCorrection);
+
 			vtpRunData.VTPData = new VTPData() {
-				CorrectionFactor = mileageCorrection,
+				CorrectionFactors = correctionFactors,
 			};
 
 			vtpRunData.TorqueDriftLeftWheel = JobInputData.TorqueDriftLeftWheel;

@@ -370,7 +370,7 @@ Public Class VectoVTPJobForm
             End If
         Next
 
-        vectoJob.FuelNCVs.Add(New FuelNCVData With {.Type = ftype, .NCV = ncv})
+        vectoJob.FuelNCVs.Add(New FuelNCVData With {.Type = ftype, .NCV = (ncv * 1000000).SI(Of JoulePerKilogramm)})
     End Sub
 
     'New file
@@ -486,10 +486,10 @@ Public Class VectoVTPJobForm
 
         For Each jobFuelNCV In _vectoJob.FuelNCVs
             If (_ncvFuel1Lbl.Visible And (_ncvFuel1Lbl.Text.Equals(jobFuelNCV.Type.GetLabel()))) Then
-                _ncvFuel1Txtbox.Text = jobFuelNCV.NCV.ToString()
+                _ncvFuel1Txtbox.Text = jobFuelNCV.NCV.ConvertToMegaJoulePerKilogram().Value.ToString()
             End If
             If (_ncvFuel2Lbl.Visible And (_ncvFuel2Lbl.Text.Equals(jobFuelNCV.Type.GetLabel()))) Then
-                _ncvFuel2Txtbox.Text = jobFuelNCV.NCV.ToString()
+                _ncvFuel2Txtbox.Text = jobFuelNCV.NCV.ConvertToMegaJoulePerKilogram().Value.ToString()
             End If
         Next
 

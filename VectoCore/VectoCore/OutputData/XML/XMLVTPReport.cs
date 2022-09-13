@@ -82,7 +82,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 			public Watt AverageFanPower;
 			public Dictionary<FuelType, Kilogram> VTPFcFinalSimulated = new Dictionary<FuelType, Kilogram>();
 			public WattSecond VTPWorkPWheelPos;
-			public double VTPFcCorrectionFactor;
+			public Dictionary<FuelType, double> VTPFcCorrectionFactors;
 			public Dictionary<FuelType, Kilogram> VTPFcMeasured = new Dictionary<FuelType, Kilogram>();
 			public WattSecond VTPWorPWheelSimPos;
 			public TankSystem? TankSystem;
@@ -120,7 +120,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 				}
 
 				//VTPFcFinalSimulated = data.TimeIntegral<Kilogram>(ModalResultField.FCFinal);
-				VTPFcCorrectionFactor = runData.VTPData.CorrectionFactor;
+				VTPFcCorrectionFactors = runData.VTPData.CorrectionFactors;
 			}
 
 			#endregion
@@ -201,7 +201,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 			var vtpFcMeasured = vtpResult.VTPFcMeasured.Select(x => Tuple.Create(x.Key, x.Value / vtpResult.VTPWorkPWheelPos)).ToDictionary(x => x.Item1, x => x.Item2);
 			var vtpFcMeasuredCorr = vtpResult.VTPFcMeasured
 				.Select(x =>
-					Tuple.Create(x.Key, x.Value / vtpResult.VTPWorkPWheelPos * vtpResult.VTPFcCorrectionFactor))
+					Tuple.Create(x.Key, x.Value / vtpResult.VTPWorkPWheelPos * vtpResult.VTPFcCorrectionFactors[x.Key]))
 				.ToDictionary(x => x.Item1, x => x.Item2);
 			var vtpFcSimulated = vtpResult.VTPFcFinalSimulated
 				.Select(x => Tuple.Create(x.Key, x.Value / vtpResult.VTPWorPWheelSimPos))

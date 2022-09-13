@@ -907,7 +907,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 
 					FuelType fuelType = matches.First();
 
-					fuelNCVs.Add(new FuelNCVData() { Type = fuelType, NCV = ncv });
+					fuelNCVs.Add(new FuelNCVData() { Type = fuelType, NCV = (ncv * 1000000).SI<JoulePerKilogramm>() });
                 }
 
 				return fuelNCVs;
