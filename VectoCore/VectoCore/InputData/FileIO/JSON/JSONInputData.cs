@@ -893,7 +893,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 				var fuelNCVs = new List<IFuelNCVData>();
 
 				if (Body[JsonKeys.Job_FuelNCVs] == null) {
-					return fuelNCVs;
+					throw new Exception($"Job input data: missing input field: {JsonKeys.Job_FuelNCVs}");
                 }
 
 				foreach (var fuelNCV in Body.GetEx(JsonKeys.Job_FuelNCVs)) {
@@ -902,12 +902,18 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 
 					IEnumerable<FuelType> matches = Enum.GetValues(typeof(FuelType)).Cast<FuelType>().Where(x => x.GetLabel().Equals(type));
 					if (matches.Count() == 0) {
-						throw new Exception($"{JsonKeys.Job_FuelNCVs}: invalid fuel type: {type}");
+						throw new Exception($"Job input data: {JsonKeys.Job_FuelNCVs}: invalid {JsonKeys.Job_FuelNCV_Type}: {type}");
                     }
 
-					FuelType fuelType = matches.First();
+					fuelNCVs.Add(new FuelNCVData() { Type = matches.First(), NCV = (ncv * 1000000).SI<JoulePerKilogramm>() });
+                }
 
-					fuelNCVs.Add(new FuelNCVData() { Type = fuelType, NCV = (ncv * 1000000).SI<JoulePerKilogramm>() });
+				var fuels = JobInputData.Vehicle.Components.EngineInputData.EngineModes.First().Fuels;
+
+				foreach (var fuel in fuels) {
+					if (fuelNCVs.Count(x => x.Type == fuel.FuelType) == 0) {
+						throw new Exception($"Job input data: {JsonKeys.Job_FuelNCVs}: missing {JsonKeys.Job_FuelNCV_Type}: {fuel.FuelType.GetLabel()}");
+                    }
                 }
 
 				return fuelNCVs;
