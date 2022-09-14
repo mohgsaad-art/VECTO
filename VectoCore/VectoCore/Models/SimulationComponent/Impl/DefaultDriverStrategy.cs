@@ -1381,6 +1381,15 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				Log.Debug("Switching to BRAKE Phase. currentDistance: {0}", currentDistance);
 			} else {
 				if ((currentDistance + ds).IsGreater(DriverStrategy.BrakeTrigger.BrakingStartDistance)) {
+					var remainingDistance = DriverStrategy.BrakeTrigger.TriggerDistance -
+											DriverStrategy.BrakeTrigger.BrakingStartDistance;
+					var remainingTime = remainingDistance / DataBus.VehicleInfo.VehicleSpeed;
+					var brakingIntervalTooShort = remainingTime.IsSmaller(
+						Constants.SimulationSettings.LowerBoundTimeInterval / 2);
+					if (brakingIntervalTooShort) {
+						Phase = BrakingPhase.Brake;
+						return null;
+					}
 					return new ResponseDrivingCycleDistanceExceeded(this) {
 						MaxDistance = DriverStrategy.BrakeTrigger.BrakingStartDistance - currentDistance
 					};
