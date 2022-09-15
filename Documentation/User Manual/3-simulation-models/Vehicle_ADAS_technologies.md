@@ -1,10 +1,7 @@
 ## Vehicle: ADAS Technologies
 
-<div class="declaration">
-Advanced Driver Assistant Systems are considered in Declaration Mode via a technology dependent and vehicle group specific bonus on the fuel cosumption as described in the followin.
-</div>		
 
-In Declaration mode VECTO applies a correction factor to take into account certain Advanced Driver Assistant System technologies. The following Technologies are currently considered:
+VECTO simulates certain Advanced Driver Assistant System technologies in-the-loop (see [Engine Stop/Start](#advanced-driver-assistant-systems-engine-stopstart), [Eco-Roll](#advanced-driver-assistant-systems-eco-roll), [Predictive Cruise Control](#advanced-driver-assistant-systems-predictive-cruise-control). The following Technologies are currently considered:
 
 - Engine stop start
 - EcoRoll without engine stop
@@ -19,9 +16,7 @@ For predictive cruise control three different options are considered:
 
 A PCC system can be declared as input to the simulation tool if either the functionalities set out in points 1) and 2) or points 1), 2) and 3) are covered.
 
-Out of this four technologies as listed above only 11 combinations are valid. For every valid ADAS technology combination VECTO reduces the final fuel consumtion by a certain percentage depending on the vehicle group, driving cycle, and payload.
-
-The following table maps the valid combinations of ADAS systems to a so-called "ADAS Combination".
+Out of this four technologies as listed above only 11 combinations are valid. The following table maps the valid combinations of ADAS systems to a so-called "ADAS Combination".
 
 | Engine Stop Start   | EcoRoll without Engine Stop   | EcoRoll with Engine Stop   | Predictive Cruise Control   | ADAS Combination  |
 | ------------------- | ----------------------------- | -------------------------- | --------------------------- | ----------------- |
