@@ -444,7 +444,7 @@ namespace TUGraz.VectoCore.InputData.Reader
 				return true;
 			}
 
-			protected static bool CheckExclusiveColumns(DataColumnCollection header, string[] cols, bool throwExceptions)
+			protected static bool CheckMutuallyExclusiveColumns(DataColumnCollection header, string[] cols, bool throwExceptions)
 			{
 				var colCount = header.Cast<DataColumn>().Count(col => cols.Select(x => x.ToLowerInvariant())
 					.Contains(col.ColumnName.ToLowerInvariant()));
@@ -864,6 +864,11 @@ namespace TUGraz.VectoCore.InputData.Reader
 					Fields.WheelSpeedRight,
 					Fields.WheelTorqueLeft,
 					Fields.WheelTorqueRight,
+					Fields.CombustionEngineTorque,
+					Fields.COMassFlow,
+					Fields.NOxMassFlow,
+					Fields.THCMassFlow,
+					Fields.CO2MassFlow
 				};
 
 				var allowedCols = new[] {
@@ -892,7 +897,7 @@ namespace TUGraz.VectoCore.InputData.Reader
 
 				return CheckColumns(header, allowedCols, requiredCols, throwExceptions, allowAux) 
 					&& CheckComboColumns(header, new[] { Fields.AirSpeedRelativeToVehicle, Fields.WindYawAngle }, throwExceptions)
-					&& CheckExclusiveColumns(header, new[] { Fields.FanSpeed, Fields.FanElectricalPower}, throwExceptions);
+					&& CheckMutuallyExclusiveColumns(header, new[] { Fields.FanSpeed, Fields.FanElectricalPower}, throwExceptions);
 			}
 		}
 
