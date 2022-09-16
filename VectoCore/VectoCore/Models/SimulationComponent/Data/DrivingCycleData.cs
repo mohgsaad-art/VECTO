@@ -153,6 +153,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 				NOxMassFlow = entry.NOxMassFlow;
 				THCMassFlow = entry.THCMassFlow;
 				CO2MassFlow	= entry.CO2MassFlow;
+				PMNumberFlow = entry.PMNumberFlow;
 			}
 
 			/// <summary>
@@ -275,7 +276,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 
 			public KilogramPerSecond CO2MassFlow;
 
-			//public 
+			public PerSecond PMNumberFlow;
 
 			// required for VTP Mode (validation of cycle data in declaration mode)
 			public NewtonMeter TorqueWheelLeft;

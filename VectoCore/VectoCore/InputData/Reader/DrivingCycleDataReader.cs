@@ -370,6 +370,7 @@ namespace TUGraz.VectoCore.InputData.Reader
 			public const string NOxMassFlow = "NOx";
 			public const string THCMassFlow = "THC";
 			public const string CO2MassFlow = "CO2";
+			public const string PMNumberFlow = "PN";
 		}
 
 		#region DataParser
@@ -864,13 +865,14 @@ namespace TUGraz.VectoCore.InputData.Reader
 							CH4MassFlow = table.Columns.Contains(Fields.CH4MassFlow)
 								? (row.ParseDouble(Fields.CH4MassFlow) / GRAMS_PER_KILO).SI<KilogramPerSecond>()
 								: null,
-							COMassFlow = (row.ParseDoubleOrGetDefault(Fields.COMassFlow) / GRAMS_PER_KILO).SI<KilogramPerSecond>(),
+							COMassFlow = (row.ParseDouble(Fields.COMassFlow) / GRAMS_PER_KILO).SI<KilogramPerSecond>(),
 							NMHCMassFlow = table.Columns.Contains(Fields.NMHCMassFlow)
-								? (row.ParseDoubleOrGetDefault(Fields.NMHCMassFlow) / GRAMS_PER_KILO).SI<KilogramPerSecond>()
+								? (row.ParseDouble(Fields.NMHCMassFlow) / GRAMS_PER_KILO).SI<KilogramPerSecond>()
 								: null,
-							NOxMassFlow = (row.ParseDoubleOrGetDefault(Fields.NOxMassFlow) / GRAMS_PER_KILO).SI<KilogramPerSecond>(),
-							THCMassFlow = (row.ParseDoubleOrGetDefault(Fields.THCMassFlow) / GRAMS_PER_KILO).SI<KilogramPerSecond>(),
-							CO2MassFlow = (row.ParseDoubleOrGetDefault(Fields.CO2MassFlow) / GRAMS_PER_KILO).SI<KilogramPerSecond>()
+							NOxMassFlow = (row.ParseDouble(Fields.NOxMassFlow) / GRAMS_PER_KILO).SI<KilogramPerSecond>(),
+							THCMassFlow = (row.ParseDouble(Fields.THCMassFlow) / GRAMS_PER_KILO).SI<KilogramPerSecond>(),
+							CO2MassFlow = (row.ParseDouble(Fields.CO2MassFlow) / GRAMS_PER_KILO).SI<KilogramPerSecond>(),
+							PMNumberFlow = row.ParseDouble(Fields.PMNumberFlow).SI<PerSecond>()
 						};
 					}).ToArray();
 
@@ -891,7 +893,8 @@ namespace TUGraz.VectoCore.InputData.Reader
 					Fields.COMassFlow,
 					Fields.NOxMassFlow,
 					Fields.THCMassFlow,
-					Fields.CO2MassFlow
+					Fields.CO2MassFlow,
+					Fields.PMNumberFlow
 				};
 
 				var allowedCols = new[] {
@@ -913,7 +916,8 @@ namespace TUGraz.VectoCore.InputData.Reader
 					Fields.NMHCMassFlow,
 					Fields.NOxMassFlow,
 					Fields.THCMassFlow,
-					Fields.CO2MassFlow
+					Fields.CO2MassFlow,
+					Fields.PMNumberFlow
 				}.Concat(EnumHelper.GetValues<FuelType>().Select(x => "fc_" + x.ToXMLFormat()));
 
 				const bool allowAux = true;
