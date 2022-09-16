@@ -48,6 +48,15 @@ namespace TUGraz.VectoCommon.Models
 
 	public static class FuelTypeHelper
 	{
+		public static string[] GetLabelsForNonGaseous(string prefix)
+		{
+			return new string[] { 
+				$"{prefix}{FuelType.LPGPI.GetLabel()}",  
+				$"{prefix}{FuelType.NGPI.GetLabel()}",
+				$"{prefix}{FuelType.NGCI.GetLabel()}"
+			};
+        }
+
 		public static string GetLabel(this FuelType ftype)
 		{
 			switch (ftype) {

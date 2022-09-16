@@ -235,7 +235,14 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			TestCase("x", CycleType.EngineOnly),
 			TestCase("", CycleType.MeasuredSpeed),
 			TestCase("<t>,<v>,<gear>,<Pwheel>,<s>,<grad>,<Padd>,<n>,<gear>,<vair_res>,<vair_beta>,<Aux_HVAC>,<Aux_HP>",
-				CycleType.MeasuredSpeedGear),]
+				CycleType.MeasuredSpeedGear),
+			TestCase("<t>,<v>,<n_eng>,<n_fan>,<tq_left>,<tq_right>,<n_wh_left>,<n_wh_right>,<fc_DIESEL CI>,<CO>,<NOx>,<THC>,<CO2>", 
+				CycleType.VTP),
+			TestCase("<t>,<v>,<n_eng>,<n_fan>,<tq_left>,<tq_right>,<n_wh_left>,<n_wh_right>,<fc_NG CI>,<tq_eng>,<CH4>,<CO>,<NOx>,<THC>,<CO2>", 
+				CycleType.VTP),
+			TestCase("<t>,<v>,<n_eng>,<n_fan>,<tq_left>,<tq_right>,<n_wh_left>,<n_wh_right>,<fc_NG CI>,<tq_eng>,<NMHC>,<CO>,<NOx>,<THC>,<CO2>", 
+				CycleType.VTP),
+		]
 		public void DrivingCycle_AutoDetect_Exception(string cycle, CycleType type)
 		{
 			AssertHelper.Exception<VectoException>(() => TestCycleDetect(cycle, type));

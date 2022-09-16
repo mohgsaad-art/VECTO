@@ -460,7 +460,28 @@ namespace TUGraz.VectoCore.InputData.Reader
 				return true;
             }
 
-			public abstract IEnumerable<DrivingCycleData.DrivingCycleEntry> Parse(DataTable table, bool crossWindRequired);
+            protected static bool CheckColumnsPredicatedOnAnother(DataColumnCollection header, string[] cols, string[] others, bool throwExceptions)
+            { 
+				var otherCount = header.Cast<DataColumn>().Count(other => others.Select(x => x.ToLowerInvariant())
+					.Contains(other.ColumnName.ToLowerInvariant()));
+
+				if (otherCount > 0)	{
+					var headerStr = header.Cast<DataColumn>().Select(col => col.ColumnName.ToLowerInvariant()).ToArray();
+					var diff = cols.Select(x => x.ToLowerInvariant()).Except(headerStr).ToList();
+					
+					if (diff.Any()) {
+						if (throwExceptions) {
+							throw new VectoException("Column(s) required: " + string.Join(", ", diff));
+						}
+
+						return false;
+					}
+                }
+
+				return true;
+			}
+
+            public abstract IEnumerable<DrivingCycleData.DrivingCycleEntry> Parse(DataTable table, bool crossWindRequired);
 		}
 
 		private class DistanceBasedCycleDataParser : AbstractCycleDataParser
@@ -897,7 +918,12 @@ namespace TUGraz.VectoCore.InputData.Reader
 
 				return CheckColumns(header, allowedCols, requiredCols, throwExceptions, allowAux) 
 					&& CheckComboColumns(header, new[] { Fields.AirSpeedRelativeToVehicle, Fields.WindYawAngle }, throwExceptions)
-					&& CheckMutuallyExclusiveColumns(header, new[] { Fields.FanSpeed, Fields.FanElectricalPower}, throwExceptions);
+					&& CheckMutuallyExclusiveColumns(header, new[] { Fields.FanSpeed, Fields.FanElectricalPower}, throwExceptions)
+					&& CheckColumnsPredicatedOnAnother(
+						header, 
+						new[] { Fields.CH4MassFlow, Fields.NMHCMassFlow }, 
+						FuelTypeHelper.GetLabelsForNonGaseous("fc_"), 
+						throwExceptions);
 			}
 		}
 
