@@ -390,15 +390,23 @@ namespace TUGraz.VectoCore.OutputData
 				return;
 			}
 
-			foreach (var field in new[] { 
-				Fields.POLLUTANT_CH4, 
+			var fields = new List<string> { 
 				Fields.POLLUTANT_CO, 
-				Fields.POLLUTANT_NMHC, 
 				Fields.POLLUTANT_NOX, 
 				Fields.POLLUTANT_THC, 
 				Fields.POLLUTANT_CO2,
 				Fields.ENGINE_ENERGY_RATIO
-			}) {
+			};
+			
+			if (runData.Cycle.Entries.First().CH4MassFlow != null) {
+				fields.Add(Fields.POLLUTANT_CH4);
+            }
+
+			if (runData.Cycle.Entries.First().NMHCMassFlow != null) {
+				fields.Add(Fields.POLLUTANT_NMHC);
+            }
+
+			foreach (var field in fields) {
 				lock (Table) {
 					if (!Table.Columns.Contains(field)) {
 						Table.Columns.Add(field, typeof(ConvertedSI));
@@ -410,18 +418,26 @@ namespace TUGraz.VectoCore.OutputData
 				.Where(x => x.Item1.CombustionEngineTorque.IsGreaterOrEqual(0))
 				.Sum(x => (x.Item1.EngineSpeed * x.Item1.CombustionEngineTorque) * (x.Item2.Time - x.Item1.Time)).ConvertToKiloWattHour();
 
-			var CH4 = runData.Cycle.Entries.Pairwise().Sum(x => (x.Item1.CH4MassFlow) * (x.Item2.Time - x.Item1.Time)).ConvertToGramm();
-			var CO = runData.Cycle.Entries.Pairwise().Sum(x => (x.Item1.COMassFlow) * (x.Item2.Time - x.Item1.Time)).ConvertToGramm();
-			var NMHC = runData.Cycle.Entries.Pairwise().Sum(x => (x.Item1.NMHCMassFlow) * (x.Item2.Time - x.Item1.Time)).ConvertToGramm();
-			var NOx = runData.Cycle.Entries.Pairwise().Sum(x => (x.Item1.NOxMassFlow) * (x.Item2.Time - x.Item1.Time)).ConvertToGramm();
-			var THC = runData.Cycle.Entries.Pairwise().Sum(x => (x.Item1.THCMassFlow) * (x.Item2.Time - x.Item1.Time)).ConvertToGramm();
-			var CO2 = runData.Cycle.Entries.Pairwise().Sum(x => (x.Item1.CO2MassFlow) * (x.Item2.Time - x.Item1.Time)).ConvertToGramm();
+			if (runData.Cycle.Entries.First().CH4MassFlow != null) {
+				var CH4 = runData.Cycle.Entries.Pairwise().Sum(x => (x.Item1.CH4MassFlow) * (x.Item2.Time - x.Item1.Time)).ConvertToGramm();
+				row[Fields.POLLUTANT_CH4] = (ConvertedSI) (CH4 / energy).SI<Scalar>();
+			}
 
-			row[Fields.POLLUTANT_CH4] = (ConvertedSI) (CH4 / energy).SI<Scalar>();
+			var CO = runData.Cycle.Entries.Pairwise().Sum(x => (x.Item1.COMassFlow) * (x.Item2.Time - x.Item1.Time)).ConvertToGramm();
 			row[Fields.POLLUTANT_CO] = (ConvertedSI) (CO / energy).SI<Scalar>();
-			row[Fields.POLLUTANT_NMHC] = (ConvertedSI) (NMHC / energy).SI<Scalar>();
+			
+			if (runData.Cycle.Entries.First().NMHCMassFlow != null) {
+				var NMHC = runData.Cycle.Entries.Pairwise().Sum(x => (x.Item1.NMHCMassFlow) * (x.Item2.Time - x.Item1.Time)).ConvertToGramm();
+				row[Fields.POLLUTANT_NMHC] = (ConvertedSI) (NMHC / energy).SI<Scalar>();
+			}
+
+			var NOx = runData.Cycle.Entries.Pairwise().Sum(x => (x.Item1.NOxMassFlow) * (x.Item2.Time - x.Item1.Time)).ConvertToGramm();
 			row[Fields.POLLUTANT_NOX] = (ConvertedSI) (NOx / energy).SI<Scalar>();
+			
+			var THC = runData.Cycle.Entries.Pairwise().Sum(x => (x.Item1.THCMassFlow) * (x.Item2.Time - x.Item1.Time)).ConvertToGramm();
 			row[Fields.POLLUTANT_THC] = (ConvertedSI) (THC / energy).SI<Scalar>();
+			
+			var CO2 = runData.Cycle.Entries.Pairwise().Sum(x => (x.Item1.CO2MassFlow) * (x.Item2.Time - x.Item1.Time)).ConvertToGramm();
 			row[Fields.POLLUTANT_CO2] = (ConvertedSI) (CO2 / energy).SI<Scalar>();
 
 			var simulatedEnergy = modData.TotalEngineWorkPositive().ConvertToKiloWattHour();

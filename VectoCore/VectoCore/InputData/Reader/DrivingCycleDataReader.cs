@@ -860,15 +860,17 @@ namespace TUGraz.VectoCore.InputData.Reader
 							FanElectricalPower = table.Columns.Contains(Fields.FanElectricalPower) 
 								? row.ParseDouble(Fields.FanElectricalPower).SI<Watt>() 
 								: null,
-							CombustionEngineTorque = table.Columns.Contains(Fields.CombustionEngineTorque)
-								? row.ParseDouble(Fields.CombustionEngineTorque).SI<NewtonMeter>()
+							CombustionEngineTorque = row.ParseDouble(Fields.CombustionEngineTorque).SI<NewtonMeter>(),
+							CH4MassFlow = table.Columns.Contains(Fields.CH4MassFlow)
+								? (row.ParseDouble(Fields.CH4MassFlow) / GRAMS_PER_KILO).SI<KilogramPerSecond>()
 								: null,
-							CH4MassFlow = (row.ParseDoubleOrGetDefault(Fields.CH4MassFlow) / GRAMS_PER_KILO).SI<KilogramPerSecond>(),
 							COMassFlow = (row.ParseDoubleOrGetDefault(Fields.COMassFlow) / GRAMS_PER_KILO).SI<KilogramPerSecond>(),
-							NMHCMassFlow = (row.ParseDoubleOrGetDefault(Fields.NMHCMassFlow) / GRAMS_PER_KILO).SI<KilogramPerSecond>(),
+							NMHCMassFlow = table.Columns.Contains(Fields.NMHCMassFlow)
+								? (row.ParseDoubleOrGetDefault(Fields.NMHCMassFlow) / GRAMS_PER_KILO).SI<KilogramPerSecond>()
+								: null,
 							NOxMassFlow = (row.ParseDoubleOrGetDefault(Fields.NOxMassFlow) / GRAMS_PER_KILO).SI<KilogramPerSecond>(),
 							THCMassFlow = (row.ParseDoubleOrGetDefault(Fields.THCMassFlow) / GRAMS_PER_KILO).SI<KilogramPerSecond>(),
-							CO2MassFlow = (row.ParseDoubleOrGetDefault(Fields.CO2MassFlow) / GRAMS_PER_KILO).SI<KilogramPerSecond>(),
+							CO2MassFlow = (row.ParseDoubleOrGetDefault(Fields.CO2MassFlow) / GRAMS_PER_KILO).SI<KilogramPerSecond>()
 						};
 					}).ToArray();
 
