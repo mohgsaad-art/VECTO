@@ -134,7 +134,23 @@ namespace TUGraz.VectoCore.Tests.Integration.BatteryElectric
 
         TestCase(E4_JOB, 3, TestName = "E4 BEV DistanceRun MeasuredSpeed LongHaul"),
         TestCase(E4_JOB, 4, TestName = "E4 BEV DistanceRun MeasuredSpeed RegionalDelivery"),
-        TestCase(E4_JOB, 5, TestName = "E4 BEV DistanceRun MeasuredSpeed UrbanDelivery")
+        TestCase(E4_JOB, 5, TestName = "E4 BEV DistanceRun MeasuredSpeed UrbanDelivery"),
+
+        TestCase(IEPC3X_JOB, 3, TestName = "IEPC3X BEV DistanceRun MeasuredSpeed LongHaul"),
+        TestCase(IEPC3X_JOB, 4, TestName = "IEPC3X BEV DistanceRun MeasuredSpeed RegionalDelivery"),
+        TestCase(IEPC3X_JOB, 5, TestName = "IEPC3X BEV DistanceRun MeasuredSpeed UrbanDelivery"),
+
+        TestCase(IEPC3X_AXLE_JOB, 3, TestName = "IEPC3X_AXLE BEV DistanceRun MeasuredSpeed LongHaul"),
+        TestCase(IEPC3X_AXLE_JOB, 4, TestName = "IEPC3X_AXLE BEV DistanceRun MeasuredSpeed RegionalDelivery"),
+        TestCase(IEPC3X_AXLE_JOB, 5, TestName = "IEPC3X_AXLE BEV DistanceRun MeasuredSpeed UrbanDelivery"),
+
+        TestCase(IEPC3X_WHEEL1_JOB, 3, TestName = "IEPC3X_WHEEL1 BEV DistanceRun MeasuredSpeed LongHaul"),
+        TestCase(IEPC3X_WHEEL1_JOB, 4, TestName = "IEPC3X_WHEEL1 BEV DistanceRun MeasuredSpeed RegionalDelivery"),
+        TestCase(IEPC3X_WHEEL1_JOB, 5, TestName = "IEPC3X_WHEEL1 BEV DistanceRun MeasuredSpeed UrbanDelivery"),
+
+        TestCase(IEPC3X_WHEEL2_JOB, 3, TestName = "IEPC3X_WHEEL2 BEV DistanceRun MeasuredSpeed LongHaul"),
+        TestCase(IEPC3X_WHEEL2_JOB, 4, TestName = "IEPC3X_WHEEL2 BEV DistanceRun MeasuredSpeed RegionalDelivery"),
+        TestCase(IEPC3X_WHEEL2_JOB, 5, TestName = "IEPC3X_WHEEL2 BEV DistanceRun MeasuredSpeed UrbanDelivery"),
         ]
         public void TestBEVDistanceRunCycle(string jobFile, int cycleIdx)
         {
