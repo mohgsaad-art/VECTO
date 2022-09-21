@@ -112,8 +112,8 @@ namespace TUGraz.VectoCore.Tests.Integration.BatteryElectric
         {
             Dictionary<string, double> metrics = new Dictionary<string, double>()
 			{
-                { SummaryDataContainer.Fields.E_REESS_T_chg, charge },
-                { SummaryDataContainer.Fields.E_REESS_T_dischg, discharge }
+                { SumDataFields.E_REESS_T_chg, charge },
+                { SumDataFields.E_REESS_T_dischg, discharge }
 			};
 
             RunBEVTimeRunCycle(jobFile, cycleIdx, distanceCycleIdx, metrics);
@@ -140,8 +140,8 @@ namespace TUGraz.VectoCore.Tests.Integration.BatteryElectric
         {
             Dictionary<string, double> metrics = new Dictionary<string, double>()
 			{
-				{ SummaryDataContainer.Fields.E_REESS_T_chg, double.NaN },
-                { SummaryDataContainer.Fields.E_REESS_T_dischg, double.NaN }
+				{ SumDataFields.E_REESS_T_chg, double.NaN },
+                { SumDataFields.E_REESS_T_dischg, double.NaN }
 			};
 
             RunBEVDistanceRunCycle(jobFile, cycleIdx, metrics);
