@@ -665,6 +665,17 @@ namespace TUGraz.VectoCore.OutputData
 			});
 			cols.AddRange(GearColumns.OrderBy(x => x));
 
+			cols.AddRange(new[] {
+				SumDataFields.REESS_StartSoC,
+				SumDataFields.REESS_EndSoC,
+				SumDataFields.REESS_DeltaEnergy,
+				SumDataFields.E_REESS_LOSS,
+				SumDataFields.E_REESS_T_chg,
+				SumDataFields.E_REESS_T_dischg,
+				SumDataFields.E_REESS_int_chg,
+				SumDataFields.E_REESS_int_dischg,
+			});
+
 			return cols.Where(x => Table.Columns.Contains(x)).ToArray();
 		}
 

@@ -80,14 +80,14 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 	/// </summary>
 	public static class PowertrainBuilder
 	{
-		private static readonly Dictionary<CycleType, Dictionary<VectoSimulationJobType, Func<VectoRunData, IModalDataContainer, WriteSumData, IVehicleContainer>>> _builders;
+		private static readonly Dictionary<CycleType, Dictionary<VectoSimulationJobType, Func<VectoRunData, IModalDataContainer, ISumData, IVehicleContainer>>> _builders;
 		
 		private static readonly Dictionary<PowertrainPosition, Func<VectoRunData, VehicleContainer, ElectricSystem, IPowerTrainComponent, IElectricMotor>> _MeasuredSpeedBEVBuilders;
 		private static readonly Dictionary<PowertrainPosition, Func<VectoRunData, VehicleContainer, ElectricSystem, PWheelCycle, IElectricMotor>> _PWheelBEVBuilders;
 
 		static PowertrainBuilder()
 		{
-			var distanceBuilders = new Dictionary<VectoSimulationJobType, Func<VectoRunData, IModalDataContainer, WriteSumData, IVehicleContainer>>()
+			var distanceBuilders = new Dictionary<VectoSimulationJobType, Func<VectoRunData, IModalDataContainer, ISumData, IVehicleContainer>>()
 			{
 				{ VectoSimulationJobType.ConventionalVehicle, BuildFullPowertrainConventional },
 				{ VectoSimulationJobType.ParallelHybridVehicle, BuildFullPowertrainParallelHybrid },
@@ -98,38 +98,38 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				{ VectoSimulationJobType.IEPC_S, BuildFullPowertrainIEPCSerial }
 			};
 
-			var pWheelBuilders = new Dictionary<VectoSimulationJobType, Func<VectoRunData, IModalDataContainer, WriteSumData, IVehicleContainer>>()
+			var pWheelBuilders = new Dictionary<VectoSimulationJobType, Func<VectoRunData, IModalDataContainer, ISumData, IVehicleContainer>>()
 			{
 				{ VectoSimulationJobType.ConventionalVehicle, BuildPWheelConventional },
 				{ VectoSimulationJobType.BatteryElectricVehicle, BuildPWheelBatteryElectric },
 				{ VectoSimulationJobType.IEPC_E, BuildPWheelBatteryElectric }
 			};
 			
-			var measuredSpeedGearBuilders = new Dictionary<VectoSimulationJobType, Func<VectoRunData, IModalDataContainer, WriteSumData, IVehicleContainer>>()
+			var measuredSpeedGearBuilders = new Dictionary<VectoSimulationJobType, Func<VectoRunData, IModalDataContainer, ISumData, IVehicleContainer>>()
 			{
 				{ VectoSimulationJobType.ConventionalVehicle, BuildMeasuredSpeedGearConventional },
 				{ VectoSimulationJobType.BatteryElectricVehicle, BuildMeasuredSpeedGearBatteryElectric },
 				{ VectoSimulationJobType.IEPC_E, BuildMeasuredSpeedGearIEPC }
 			};
 			
-			var measuredSpeedBuilders = new Dictionary<VectoSimulationJobType, Func<VectoRunData, IModalDataContainer, WriteSumData, IVehicleContainer>>()
+			var measuredSpeedBuilders = new Dictionary<VectoSimulationJobType, Func<VectoRunData, IModalDataContainer, ISumData, IVehicleContainer>>()
 			{
 				{ VectoSimulationJobType.ConventionalVehicle, BuildMeasuredSpeedConventional },
 				{ VectoSimulationJobType.BatteryElectricVehicle, BuildMeasuredSpeedBatteryElectric },
 				{ VectoSimulationJobType.IEPC_E, BuildMeasuredSpeedBatteryElectric }
 			};
 			
-			var vtpBuilders = new Dictionary<VectoSimulationJobType, Func<VectoRunData, IModalDataContainer, WriteSumData, IVehicleContainer>>()
+			var vtpBuilders = new Dictionary<VectoSimulationJobType, Func<VectoRunData, IModalDataContainer, ISumData, IVehicleContainer>>()
 			{
 				{ VectoSimulationJobType.ConventionalVehicle, BuildVTPConventional } 
 			};
 			
-			var engineOnlyBuilders =  new Dictionary<VectoSimulationJobType, Func<VectoRunData, IModalDataContainer, WriteSumData, IVehicleContainer>>()
+			var engineOnlyBuilders =  new Dictionary<VectoSimulationJobType, Func<VectoRunData, IModalDataContainer, ISumData, IVehicleContainer>>()
 			{
 				{ VectoSimulationJobType.ConventionalVehicle, BuildEngineOnly }
 			};
 			
-			_builders = new Dictionary<CycleType, Dictionary<VectoSimulationJobType, Func<VectoRunData, IModalDataContainer, WriteSumData, IVehicleContainer>>>()
+			_builders = new Dictionary<CycleType, Dictionary<VectoSimulationJobType, Func<VectoRunData, IModalDataContainer, ISumData, IVehicleContainer>>>()
 			{
 				{ CycleType.DistanceBased, distanceBuilders	},
 				{ CycleType.PWheel, pWheelBuilders },
@@ -832,7 +832,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			return container;
 		}
 		
-		private static IVehicleContainer BuildPWheelBatteryElectric(VectoRunData data, IModalDataContainer modData, WriteSumData sumWriter)
+		private static IVehicleContainer BuildPWheelBatteryElectric(VectoRunData data, IModalDataContainer modData, ISumData sumWriter)
         {
 			VerifyCycleType(data, CycleType.PWheel);
 			ValidateBatteryElectric(data);
@@ -985,7 +985,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			return pto;
 		}
 
-		private static IVehicleContainer BuildMeasuredSpeedBatteryElectric(VectoRunData data, IModalDataContainer modData, WriteSumData sumWriter)
+		private static IVehicleContainer BuildMeasuredSpeedBatteryElectric(VectoRunData data, IModalDataContainer modData, ISumData sumWriter)
         {
 			VerifyCycleType(data, CycleType.MeasuredSpeed);
 			ValidateBatteryElectric(data);
@@ -1117,7 +1117,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			em.BusAux = busAux;
 		}
 
-        private static IVehicleContainer BuildMeasuredSpeedGearBatteryElectric(VectoRunData data, IModalDataContainer modData, WriteSumData sumWriter)
+        private static IVehicleContainer BuildMeasuredSpeedGearBatteryElectric(VectoRunData data, IModalDataContainer modData, ISumData sumWriter)
         {
 			VerifyCycleType(data, CycleType.MeasuredSpeedGear);
 			ValidateBatteryElectric(data);
@@ -1157,7 +1157,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			return container;
 		}
 
-		private static IVehicleContainer BuildMeasuredSpeedGearIEPC(VectoRunData data, IModalDataContainer modData, WriteSumData sumWriter)
+		private static IVehicleContainer BuildMeasuredSpeedGearIEPC(VectoRunData data, IModalDataContainer modData, ISumData sumWriter)
         {
 			VerifyCycleType(data, CycleType.MeasuredSpeedGear);
 			ValidateBatteryElectric(data);

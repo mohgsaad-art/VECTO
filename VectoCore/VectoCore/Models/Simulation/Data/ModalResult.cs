@@ -378,6 +378,10 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 						? GearboxSignals_AT
 						: GearboxSignals);
 					break;
+				case IGearbox g when g is BEVCycleGearbox && runData.JobType == VectoSimulationJobType.IEPC_E:
+					CreateColumns(GearboxSignals_AT);
+					CreateColumns(TorqueConverterSignals);
+					break;
 				case IGearbox _ when runData.JobType == VectoSimulationJobType.IEPC_E:
 				case IGearbox _ when runData.JobType == VectoSimulationJobType.IEPC_S:
 					CreateColumns(IEPCTransmissionSignals);
