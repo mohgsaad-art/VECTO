@@ -35,33 +35,33 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 		[Category("LongRunning")]
 		[Category("Integration")]
         [
-        TestCase(P1_JOB, 0, 496.8873, 10.2371, 10.2191, 51.3803, 49.0392, TestName = "P1 Hybrid TimeRun MeasuredSpeed LongHaul"),
-        TestCase(P1_JOB, 1, 497.431, 15.0404, 15.1223, 39.3974, 33.9238, TestName = "P1 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
-        TestCase(P1_JOB, 2, 629.9087, 45.0032, 45.0246, 20.7733, 8.9985, TestName = "P1 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
+        TestCase(P1_JOB, 0, 496.8756, 10.1923, 10.1745, 51.3798, 49.0388, TestName = "P1 Hybrid TimeRun MeasuredSpeed LongHaul"),
+        TestCase(P1_JOB, 1, 497.4272, 15.0003, 15.0825, 39.3949, 33.9218, TestName = "P1 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(P1_JOB, 2, 630.0769, 44.916, 44.9378, 20.7742, 8.998, TestName = "P1 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
         
-        TestCase(P2_JOB, 0, 573.9052, 8.7047, 7.6549, 56.8495, 54.8095, TestName = "P2 Hybrid TimeRun MeasuredSpeed LongHaul"),
-        TestCase(P2_JOB, 1, 557.3382, 11.4929, 11.4449, 42.7555, 37.8328, TestName = "P2 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
-        TestCase(P2_JOB, 2, 608.0294, 30.607, 31.4384, 20.7954, 9.3377, TestName = "P2 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
+        TestCase(P2_JOB, 0, 573.8802, 8.708, 7.6547, 56.8497, 54.8098, TestName = "P2 Hybrid TimeRun MeasuredSpeed LongHaul"),
+        TestCase(P2_JOB, 1, 557.427, 11.5132, 11.4639, 42.7538, 37.8312, TestName = "P2 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(P2_JOB, 2, 610.4948, 30.6064, 31.4296, 20.7994, 9.3408, TestName = "P2 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
 
-        TestCase(P2_5_JOB, 0, 836.8522, 5.4472, 9.1129, 97.6207, 82.1965, TestName = "P2_5 Hybrid TimeRun MeasuredSpeed LongHaul"),
-        TestCase(P2_5_JOB, 1, 948.4517, 6.8962, 11.0601, 82.857, 58.0923, TestName = "P2_5 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
-        TestCase(P2_5_JOB, 2, 1653.1918, 13.5281, 18.2762, 55.0623, 17.108, TestName = "P2_5 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
+        TestCase(P2_5_JOB, 0, 836.1743, 5.5229, 9.1872, 96.8081, 81.5287, TestName = "P2_5 Hybrid TimeRun MeasuredSpeed LongHaul"),
+        TestCase(P2_5_JOB, 1, 946.8806, 6.7719, 10.9654, 81.7536, 57.6873, TestName = "P2_5 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(P2_5_JOB, 2, 1643.2916, 11.7918, 16.4455, 53.3112, 16.591, TestName = "P2_5 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
 
-        TestCase(P3_JOB, 0, 573.6998, 2.8792, 3.2346, 56.8521, 54.8135, TestName = "P3 Hybrid TimeRun MeasuredSpeed LongHaul"),
-        TestCase(P3_JOB, 1, 557.9835, 7.5073, 8.4417, 42.8139, 37.9032, TestName = "P3 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(P3_JOB, 0, 573.7057, 2.8913, 3.2429, 56.8516, 54.8131, TestName = "P3 Hybrid TimeRun MeasuredSpeed LongHaul"),
+        TestCase(P3_JOB, 1, 557.9404, 7.5087, 8.443, 42.8131, 37.9026, TestName = "P3 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
         TestCase(P3_JOB, 2, 0, 0, 0, 0, 0, TestName = "P3 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
 
-        TestCase(P4_JOB, 0, 573.5101, 1.733, 1.9888, 56.5505, 54.5212, TestName = "P4 Hybrid TimeRun MeasuredSpeed LongHaul"),
-        TestCase(P4_JOB, 1, 569.1177, 3.2957, 3.9781, 42.3031, 37.4575, TestName = "P4 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
-        TestCase(P4_JOB, 2, 712.0062, 8.3069, 9.4837, 20.3732, 9.1137, TestName = "P4 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
+        TestCase(P4_JOB, 0, 572.5051, 1.7167, 1.9718, 56.365, 54.331, TestName = "P4 Hybrid TimeRun MeasuredSpeed LongHaul"),
+        TestCase(P4_JOB, 1, 568.7838, 3.2977, 4.0094, 42.2992, 37.4581, TestName = "P4 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(P4_JOB, 2, 711.7185, 8.2921, 9.4681, 20.3727, 9.1141, TestName = "P4 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
 
-        TestCase(IHPC_6SPEED_JOB, 0, 790.6421, 32.1541, 31.1325, 100.9479, 85.8894, TestName = "IHPC_6SPEED IHPC Hybrid TimeRun MeasuredSpeed LongHaul"),
-        TestCase(IHPC_6SPEED_JOB, 1, 863.537, 43.8841, 42.6963, 88.3449, 62.3554, TestName = "IHPC_6SPEED IHPC Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
-        TestCase(IHPC_6SPEED_JOB, 2, 1234.7652, 110.005, 103.3746, 64.8899, 20.0716, TestName = "IHPC_6SPEED IHPC Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
+        TestCase(IHPC_6SPEED_JOB, 0, 789.4683, 31.611, 30.6306, 100.8837, 85.7417, TestName = "IHPC_6SPEED IHPC Hybrid TimeRun MeasuredSpeed LongHaul"),
+        TestCase(IHPC_6SPEED_JOB, 1, 858.1059, 44.0771, 42.8824, 88.1826, 62.2659, TestName = "IHPC_6SPEED IHPC Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(IHPC_6SPEED_JOB, 2, 1238.5376, 109.9816, 103.3343, 64.9494, 20.1109, TestName = "IHPC_6SPEED IHPC Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
 
-        TestCase(IHPC_12SPEED_JOB, 0, 821.4219, 21.1183, 21.1915, 101.4752, 86.4461, TestName = "IHPC_12SPEED IHPC Hybrid TimeRun MeasuredSpeed LongHaul"),
-        TestCase(IHPC_12SPEED_JOB, 1, 923.018, 29.4124, 29.8088, 87.8133, 62.2285, TestName = "IHPC_12SPEED IHPC Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
-        TestCase(IHPC_12SPEED_JOB, 2, 1515.2522, 66.0117, 64.9061, 63.7084, 19.8786, TestName = "IHPC_12SPEED IHPC Hybrid TimeRun MeasuredSpeed UrbanDelivery")
+        TestCase(IHPC_12SPEED_JOB, 0, 823.8629, 20.1096, 20.2614, 101.152, 86.1182, TestName = "IHPC_12SPEED IHPC Hybrid TimeRun MeasuredSpeed LongHaul"),
+        TestCase(IHPC_12SPEED_JOB, 1, 921.1086, 29.1406, 29.5595, 87.7955, 62.2168, TestName = "IHPC_12SPEED IHPC Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(IHPC_12SPEED_JOB, 2, 1517.1778, 65.9818, 64.9079, 63.7205, 19.8704, TestName = "IHPC_12SPEED IHPC Hybrid TimeRun MeasuredSpeed UrbanDelivery")
         ]
         public void TestHybridTimeRunCycle(string jobFile, int cycleIdx, double CO2, double charge, double discharge, double pWheelpos,
             double pWheel)
