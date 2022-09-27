@@ -68,11 +68,11 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
         {
             Dictionary<string, double> metrics = new Dictionary<string, double>()
 			{
-				{ SummaryDataContainer.Fields.CO2_KM, CO2 },
-                { SummaryDataContainer.Fields.E_REESS_T_chg, charge },
-                { SummaryDataContainer.Fields.E_REESS_T_dischg, discharge },
-                { SummaryDataContainer.Fields.P_WHEEL_POS, pWheelpos },
-                { SummaryDataContainer.Fields.P_WHEEL, pWheel }
+				{ SumDataFields.CO2_KM, CO2 },
+                { SumDataFields.E_REESS_T_chg, charge },
+                { SumDataFields.E_REESS_T_dischg, discharge },
+                { SumDataFields.P_WHEEL_POS, pWheelpos },
+                { SumDataFields.P_WHEEL, pWheel }
 			};
 
             RunHybridTimeRunCycle(jobFile, cycleIdx, metrics);
@@ -101,15 +101,23 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 
         TestCase(P4_JOB, 3, TestName = "P4 Hybrid DistanceRun MeasuredSpeed LongHaul"),
         TestCase(P4_JOB, 4, TestName = "P4 Hybrid DistanceRun MeasuredSpeed RegionalDelivery"),
-        TestCase(P4_JOB, 5, TestName = "P4 Hybrid DistanceRun MeasuredSpeed UrbanDelivery")
+        TestCase(P4_JOB, 5, TestName = "P4 Hybrid DistanceRun MeasuredSpeed UrbanDelivery"),
+
+        TestCase(IHPC_6SPEED_JOB, 3, TestName = "IHPC_6SPEED IHPC Hybrid DistanceRun MeasuredSpeed LongHaul"),
+        TestCase(IHPC_6SPEED_JOB, 4, TestName = "IHPC_6SPEED IHPC Hybrid DistanceRun MeasuredSpeed RegionalDelivery"),
+        TestCase(IHPC_6SPEED_JOB, 5, TestName = "IHPC_6SPEED IHPC Hybrid DistanceRun MeasuredSpeed UrbanDelivery"),
+
+        TestCase(IHPC_12SPEED_JOB, 3, TestName = "IHPC_12SPEED IHPC Hybrid DistanceRun MeasuredSpeed LongHaul"),
+        TestCase(IHPC_12SPEED_JOB, 4, TestName = "IHPC_12SPEED IHPC Hybrid DistanceRun MeasuredSpeed RegionalDelivery"),
+        TestCase(IHPC_12SPEED_JOB, 5, TestName = "IHPC_12SPEED IHPC Hybrid DistanceRun MeasuredSpeed UrbanDelivery")
         ]
         public void TestHybridDistanceRunCycle(string jobFile, int cycleIdx)
         {
             Dictionary<string, double> metrics = new Dictionary<string, double>()
 			{
-				{ SummaryDataContainer.Fields.CO2_KM, double.NaN },
-                { SummaryDataContainer.Fields.E_REESS_T_chg, double.NaN },
-                { SummaryDataContainer.Fields.E_REESS_T_dischg, double.NaN }
+				{ SumDataFields.CO2_KM, double.NaN },
+                { SumDataFields.E_REESS_T_chg, double.NaN },
+                { SumDataFields.E_REESS_T_dischg, double.NaN }
 			};
 
             RunHybridDistanceRunCycle(jobFile, cycleIdx, metrics);
