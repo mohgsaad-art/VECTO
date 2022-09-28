@@ -53,12 +53,16 @@ using TUGraz.VectoHashing;
 using NLog;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using LogManager = NLog.LogManager;
+using static TUGraz.VectoCore.Models.Simulation.Data.VectoRunData;
+using static TUGraz.VectoCore.Models.Declaration.PT1;
 
 namespace TUGraz.VectoCore.OutputData.XML
 {
 	internal class XMLVTPReport : DeclarationReport<XMLVTPReport.ResultEntry>, IVTPReport
 	{
 		public const string CURRENT_SCHEMA_VERSION = "0.1";
+
+		private const double ENERGY_THRESHOLD_RANGE = 0.005;
 
 		private const string VTPReportTartetName = "VTPReportTarget";
 
@@ -86,6 +90,16 @@ namespace TUGraz.VectoCore.OutputData.XML
 			public Dictionary<FuelType, Kilogram> VTPFcMeasured = new Dictionary<FuelType, Kilogram>();
 			public WattSecond VTPWorPWheelSimPos;
 			public TankSystem? TankSystem;
+
+			private const int MILLIGRAMS_PER_GRAM = 1000;
+			public Scalar CH4Emissions { protected set; get; } = null;
+			public Scalar COEmissions { protected set; get; } = null;
+			public Scalar NMHCEmissions { protected set; get; } = null;
+			public Scalar NOxEmissions { protected set; get; } = null;
+			public Scalar THCEmissions { protected set; get; } = null;
+			public Scalar CO2Emissions { protected set; get; } = null;
+			public Scalar PMFlow { protected set; get; } = null;
+			public Scalar ICEEnergyRatio { protected set; get; } = null;
 
 			#region Overrides of ResultEntry
 
@@ -121,6 +135,43 @@ namespace TUGraz.VectoCore.OutputData.XML
 
 				//VTPFcFinalSimulated = data.TimeIntegral<Kilogram>(ModalResultField.FCFinal);
 				VTPFcCorrectionFactors = runData.VTPData.CorrectionFactors;
+
+				CalculateEmissions(runData, data);
+			}
+
+			private void CalculateEmissions(VectoRunData runData, IModalDataContainer data)
+			{
+				var energy = runData.Cycle.Entries.Pairwise()
+					.Where(x => x.Item1.CombustionEngineTorque.IsGreaterOrEqual(0))
+					.Sum(x => (x.Item1.EngineSpeed * x.Item1.CombustionEngineTorque) * (x.Item2.Time - x.Item1.Time)).ConvertToKiloWattHour();
+
+				if (runData.Cycle.Entries.First().CH4MassFlow != null) {
+					var CH4 = runData.Cycle.Entries.Pairwise().Sum(x => (x.Item1.CH4MassFlow) * (x.Item2.Time - x.Item1.Time)).ConvertToGramm();
+					CH4Emissions = ((CH4 / energy) * MILLIGRAMS_PER_GRAM).SI<Scalar>();
+				}
+
+				var CO = runData.Cycle.Entries.Pairwise().Sum(x => x.Item1.COMassFlow * (x.Item2.Time - x.Item1.Time)).ConvertToGramm();
+				COEmissions = ((CO / energy) * MILLIGRAMS_PER_GRAM).SI<Scalar>();
+
+				if (runData.Cycle.Entries.First().NMHCMassFlow != null) {
+					var NMHC = runData.Cycle.Entries.Pairwise().Sum(x => x.Item1.NMHCMassFlow * (x.Item2.Time - x.Item1.Time)).ConvertToGramm();
+					NMHCEmissions = ((NMHC / energy) * MILLIGRAMS_PER_GRAM).SI<Scalar>();
+				}
+
+				var NOx = runData.Cycle.Entries.Pairwise().Sum(x => x.Item1.NOxMassFlow * (x.Item2.Time - x.Item1.Time)).ConvertToGramm();
+				NOxEmissions = ((NOx / energy) * MILLIGRAMS_PER_GRAM).SI<Scalar>();
+
+				var THC = runData.Cycle.Entries.Pairwise().Sum(x => x.Item1.THCMassFlow * (x.Item2.Time - x.Item1.Time)).ConvertToGramm();
+				THCEmissions = ((THC / energy) * MILLIGRAMS_PER_GRAM).SI<Scalar>();
+
+				var CO2 = runData.Cycle.Entries.Pairwise().Sum(x => x.Item1.CO2MassFlow * (x.Item2.Time - x.Item1.Time)).ConvertToGramm();
+				CO2Emissions = ((CO2 / energy) * MILLIGRAMS_PER_GRAM).SI<Scalar>();
+
+				var PN = runData.Cycle.Entries.Pairwise().Sum(x => (x.Item1.PMNumberFlow * (x.Item2.Time - x.Item1.Time)).Value()).SI<Scalar>();
+				PMFlow = PN / energy;
+
+				var simulatedEnergy = data.TotalEngineWorkPositive().ConvertToKiloWattHour();
+				ICEEnergyRatio = (energy / simulatedEnergy).SI<Scalar>();
 			}
 
 			#endregion
@@ -258,10 +309,59 @@ namespace TUGraz.VectoCore.OutputData.XML
 						new ConvertedSI(declaredCO2.Value(), verifiedCO2.UnitString).ToMinSignificantDigits(3, 2)
 					)
 				),
-				new XElement(tns + "C_VTP", cVtp.ToXMLFormat(4)));
+				new XElement(tns + "C_VTP", cVtp.ToXMLFormat(4)),
+				CreatePollutantsElement(vtpResult));
+
+			if ((vtpResult.ICEEnergyRatio > 1 + ENERGY_THRESHOLD_RANGE) || (vtpResult.ICEEnergyRatio < 1 - ENERGY_THRESHOLD_RANGE)) {
+				LogList.Add($"Positive energy work differs too much from VECTO. ratio = {vtpResult.ICEEnergyRatio}");
+			}
+
 			if (LogList.Any()) {
 				Results.Add(new XElement(tns + "Warnings", LogList.Select(x => new XElement(tns + "Warning", x))));
 			}
+		}
+
+		private XElement CreatePollutantsElement(ResultEntry vtpResult)
+		{ 
+			var pollutantsElement = new XElement(
+				tns + "Pollutants",
+				new XElement(tns + "CO", new XAttribute(XMLNames.Report_Results_Unit_Attr, "mg/kWh"),
+					vtpResult.CO2Emissions.ToXMLFormat(3)
+				),
+				new XElement(tns + "NOx", new XAttribute(XMLNames.Report_Results_Unit_Attr, "mg/kWh"),
+					vtpResult.NOxEmissions.ToXMLFormat(3)
+				),
+				new XElement(tns + "THC", new XAttribute(XMLNames.Report_Results_Unit_Attr, "mg/kWh"),
+					vtpResult.THCEmissions.ToXMLFormat(3)
+				),
+				new XElement(tns + "CO2", new XAttribute(XMLNames.Report_Results_Unit_Attr, "mg/kWh"),
+					vtpResult.CO2Emissions.ToXMLFormat(3)
+				)
+			);
+
+			if (vtpResult.CH4Emissions != null) {
+				pollutantsElement.Add(
+					new XElement(tns + "CH4", new XAttribute(XMLNames.Report_Results_Unit_Attr, "mg/kWh"),
+						vtpResult.CH4Emissions.ToXMLFormat(3)
+					)
+				);
+			}
+
+			if (vtpResult.NMHCEmissions != null) {
+				pollutantsElement.Add(
+					new XElement(tns + "NMHC", new XAttribute(XMLNames.Report_Results_Unit_Attr, "mg/kWh"),
+						vtpResult.NMHCEmissions.ToXMLFormat(3)
+					)
+				);
+			}
+
+			pollutantsElement.Add(
+				new XElement(tns + "PM", new XAttribute(XMLNames.Report_Results_Unit_Attr, "#/kWh"),
+					vtpResult.PMFlow.ToXMLFormat(3)
+				)
+			);
+
+			return pollutantsElement;
 		}
 
 		private XDocument GenerateReport()
