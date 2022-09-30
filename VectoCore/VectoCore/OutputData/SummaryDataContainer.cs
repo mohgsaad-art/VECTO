@@ -379,9 +379,9 @@ namespace TUGraz.VectoCore.OutputData
 
 			lock (Table)
 				Table.Rows.Add(row);
-        }
+		}
 
-        private void WriteFuelConsumptionEntries(
+		private void WriteFuelConsumptionEntries(
 			IModalDataContainer modData, DataRow row, Kilogram vehicleLoading,
 			CubicMeter cargoVolume, double? passengers, VectoRunData runData)
 		{

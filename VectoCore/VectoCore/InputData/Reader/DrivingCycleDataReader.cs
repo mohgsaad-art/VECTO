@@ -824,8 +824,6 @@ namespace TUGraz.VectoCore.InputData.Reader
 			{
 				ValidateHeader(table.Columns);
 
-				const uint GRAMS_PER_KILO = 1000;
-				
 				var fuels = table.Columns.Cast<DataColumn>().Where(x => x.ColumnName.StartsWith("fc_"))
 					.Select(x => x.ColumnName.Replace("fc_", "").ParseEnum<FuelType>()).ToArray();
 				var entries = table.Rows.Cast<DataRow>().Select(
@@ -852,7 +850,6 @@ namespace TUGraz.VectoCore.InputData.Reader
 								: null,
 							Gear = (uint)row.ParseDoubleOrGetDefault(Fields.Gear),
 							VTPFuelconsumption = fc,
-							VTPPSCompressorActive = row.ParseBooleanOrGetDefault(Fields.VTPPSCompressorActive) ?? false,
 							TorqueConverterActive = row.ParseBooleanOrGetDefault(Fields.TorqueConverterActive),
 							TorqueWheelLeft = tqLeft,
 							TorqueWheelRight = tqRight,
@@ -863,15 +860,15 @@ namespace TUGraz.VectoCore.InputData.Reader
 								: null,
 							CombustionEngineTorque = row.ParseDouble(Fields.CombustionEngineTorque).SI<NewtonMeter>(),
 							CH4MassFlow = table.Columns.Contains(Fields.CH4MassFlow)
-								? (row.ParseDouble(Fields.CH4MassFlow) / GRAMS_PER_KILO).SI<KilogramPerSecond>()
+								? (row.ParseDouble(Fields.CH4MassFlow) / Constants.Kilo).SI<KilogramPerSecond>()
 								: null,
-							COMassFlow = (row.ParseDouble(Fields.COMassFlow) / GRAMS_PER_KILO).SI<KilogramPerSecond>(),
+							COMassFlow = (row.ParseDouble(Fields.COMassFlow) / Constants.Kilo).SI<KilogramPerSecond>(),
 							NMHCMassFlow = table.Columns.Contains(Fields.NMHCMassFlow)
-								? (row.ParseDouble(Fields.NMHCMassFlow) / GRAMS_PER_KILO).SI<KilogramPerSecond>()
+								? (row.ParseDouble(Fields.NMHCMassFlow) / Constants.Kilo).SI<KilogramPerSecond>()
 								: null,
-							NOxMassFlow = (row.ParseDouble(Fields.NOxMassFlow) / GRAMS_PER_KILO).SI<KilogramPerSecond>(),
-							THCMassFlow = (row.ParseDouble(Fields.THCMassFlow) / GRAMS_PER_KILO).SI<KilogramPerSecond>(),
-							CO2MassFlow = (row.ParseDouble(Fields.CO2MassFlow) / GRAMS_PER_KILO).SI<KilogramPerSecond>(),
+							NOxMassFlow = (row.ParseDouble(Fields.NOxMassFlow) / Constants.Kilo).SI<KilogramPerSecond>(),
+							THCMassFlow = (row.ParseDouble(Fields.THCMassFlow) / Constants.Kilo).SI<KilogramPerSecond>(),
+							CO2MassFlow = (row.ParseDouble(Fields.CO2MassFlow) / Constants.Kilo).SI<KilogramPerSecond>(),
 							PMNumberFlow = row.ParseDouble(Fields.PMNumberFlow).SI<PerSecond>()
 						};
 					}).ToArray();

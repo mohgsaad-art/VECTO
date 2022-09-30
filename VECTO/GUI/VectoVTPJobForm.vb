@@ -49,6 +49,8 @@ Public Class VectoVTPJobForm
 
     Dim _vectoJob As IVTPEngineeringJobInputData
 
+    Private Const Mega As Integer = 1000000
+
     Enum AuxViewColumns
         AuxID = 0
         AuxType = 1
@@ -370,7 +372,7 @@ Public Class VectoVTPJobForm
             End If
         Next
 
-        vectoJob.FuelNCVs.Add(New FuelNCVData With {.Type = ftype, .NCV = (ncv * 1000000).SI(Of JoulePerKilogramm)})
+        vectoJob.FuelNCVs.Add(New FuelNCVData With {.Type = ftype, .NCV = (ncv * Mega).SI(Of JoulePerKilogramm)})
     End Sub
 
     'New file
@@ -465,14 +467,14 @@ Public Class VectoVTPJobForm
                         _ncvFuel1Lbl.Text = entry.FuelType.GetLabel()
                         _ncvFuel1Lbl.Visible = True
 
-                        _ncvFuel1Txtbox.Text = (fueldata.LowerHeatingValueVecto.Value / 1000000).ToString()
+                        _ncvFuel1Txtbox.Text = (fueldata.LowerHeatingValueVecto.Value / Mega).ToString()
                         _ncvFuel1Txtbox.Visible = True
                         _ncvFuel1UnitLbl.Visible = True
                     ElseIf (Not _ncvFuel2Lbl.Visible) Then
                         _ncvFuel2Lbl.Text = entry.FuelType.GetLabel()
                         _ncvFuel2Lbl.Visible = True
 
-                        _ncvFuel2Txtbox.Text = (fueldata.LowerHeatingValueVecto.Value / 1000000).ToString()
+                        _ncvFuel2Txtbox.Text = (fueldata.LowerHeatingValueVecto.Value / Mega).ToString()
                         _ncvFuel2Txtbox.Visible = True
                         _ncvFuel2UnitLbl.Visible = True
                     End If

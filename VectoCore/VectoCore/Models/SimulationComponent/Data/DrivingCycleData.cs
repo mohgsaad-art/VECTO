@@ -287,8 +287,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 
 			public PerSecond WheelSpeedRight;
 
-			public bool VTPPSCompressorActive;
-
 			// road sweeper application
 			public Watt PTOPowerDemandDuringDrive;
 		}

@@ -905,7 +905,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 						throw new Exception($"Job input data: {JsonKeys.Job_FuelNCVs}: invalid {JsonKeys.Job_FuelNCV_Type}: {type}");
                     }
 
-					fuelNCVs.Add(new FuelNCVData() { Type = matches.First(), NCV = (ncv * 1000000).SI<JoulePerKilogramm>() });
+					fuelNCVs.Add(new FuelNCVData() { Type = matches.First(), NCV = (ncv * Constants.Mega).SI<JoulePerKilogramm>() });
                 }
 
 				var fuels = JobInputData.Vehicle.Components.EngineInputData.EngineModes.First().Fuels;
