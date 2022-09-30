@@ -215,8 +215,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			// Verification test simulation
 			TestCase("<t>,<v>,<n_eng>,<n_fan>,<tq_left>,<tq_right>,<n_wh_left>,<n_wh_right>,<fc_DIESEL CI>,<tq_eng>,<CO>,<NOx>,<THC>,<CO2>,<PN>", CycleType.VTP),
 			TestCase("<t>,<v>,<n_eng>,<n_fan>,<tq_left>,<tq_right>,<n_wh_left>,<n_wh_right>,<fc_DIESEL CI>,<gear>,<tq_eng>,<CO>,<NOx>,<THC>,<CO2>,<PN>", CycleType.VTP),
-			TestCase("<t>,<v>,<n_eng>,<Pel_fan>,<tq_left>,<tq_right>,<n_wh_left>,<n_wh_right>,<fc_DIESEL CI>,<gear>,<tq_eng>,<CH4>,<CO>,<NMHC>,<NOx>,<THC>,<CO2>,<PN>", CycleType.VTP),
-			TestCase("<t>,<v>,<n_eng>,<n_fan>,<tq_left>,<tq_right>,<n_wh_left>,<n_wh_right>,<fc_NG CI>,<tq_eng>,<CH4>,<CO>,<NMHC>,<NOx>,<THC>,<CO2>,<PN>", CycleType.VTP),
+			TestCase("<t>,<v>,<n_eng>,<Pel_fan>,<tq_left>,<tq_right>,<n_wh_left>,<n_wh_right>,<fc_DIESEL CI>,<gear>,<tq_eng>,<CH4>,<CO>,<NMHC>,<NOx>,<CO2>,<PN>", CycleType.VTP),
+			TestCase("<t>,<v>,<n_eng>,<n_fan>,<tq_left>,<tq_right>,<n_wh_left>,<n_wh_right>,<fc_NG CI>,<tq_eng>,<CH4>,<CO>,<NMHC>,<NOx>,<CO2>,<PN>", CycleType.VTP),
 			TestCase("<t>,<v>,<n_eng>,<n_fan>,<tq_left>,<tq_right>,<n_wh_left>,<n_wh_right>,<fc_NG CI>,<fc_DIESEL CI>,<tq_eng>,<CH4>,<CO>,<NMHC>,<NOx>,<THC>,<CO2>,<PN>", CycleType.VTP)
 		]
 		public void DrivingCycle_AutoDetect(string cycle, CycleType type)
@@ -243,6 +243,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			TestCase("<t>,<v>,<n_eng>,<n_fan>,<tq_left>,<tq_right>,<n_wh_left>,<n_wh_right>,<fc_NG CI>,<tq_eng>,<NMHC>,<CO>,<NOx>,<THC>,<CO2>,<PN>", 
 				CycleType.VTP),
 			TestCase("<t>,<v>,<n_eng>,<n_fan>,<tq_left>,<tq_right>,<n_wh_left>,<n_wh_right>,<fc_NG CI>,<tq_eng>,<CH4>,<NMHC>,<CO>,<NOx>,<THC>,<CO2>", 
+				CycleType.VTP),
+			TestCase("<t>,<v>,<n_eng>,<n_fan>,<tq_left>,<tq_right>,<n_wh_left>,<n_wh_right>,<fc_NG CI>,<tq_eng>,<CO>,<NOx>,<CO2>,<PN>", 
 				CycleType.VTP),
 		]
 		public void DrivingCycle_AutoDetect_Exception(string cycle, CycleType type)

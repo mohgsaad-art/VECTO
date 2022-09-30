@@ -482,7 +482,28 @@ namespace TUGraz.VectoCore.InputData.Reader
 				return true;
 			}
 
-            public abstract IEnumerable<DrivingCycleData.DrivingCycleEntry> Parse(DataTable table, bool crossWindRequired);
+			protected static bool CheckColumnsPredicatedOnAnotherMissing(DataColumnCollection header, string[] cols, string[] others, bool throwExceptions)
+			{ 
+				var otherCount = header.Cast<DataColumn>().Count(other => others.Select(x => x.ToLowerInvariant())
+					.Contains(other.ColumnName.ToLowerInvariant()));
+
+				if (otherCount < others.Count()) {
+					var headerStr = header.Cast<DataColumn>().Select(col => col.ColumnName.ToLowerInvariant()).ToArray();
+					var diff = cols.Select(x => x.ToLowerInvariant()).Except(headerStr).ToList();
+					
+					if (diff.Any()) {
+						if (throwExceptions) {
+							throw new VectoException("Column(s) required: " + string.Join(", ", diff));
+						}
+
+						return false;
+					}
+				}
+
+				return true;
+			}
+
+			public abstract IEnumerable<DrivingCycleData.DrivingCycleEntry> Parse(DataTable table, bool crossWindRequired);
 		}
 
 		private class DistanceBasedCycleDataParser : AbstractCycleDataParser
@@ -889,7 +910,6 @@ namespace TUGraz.VectoCore.InputData.Reader
 					Fields.CombustionEngineTorque,
 					Fields.COMassFlow,
 					Fields.NOxMassFlow,
-					Fields.THCMassFlow,
 					Fields.CO2MassFlow,
 					Fields.PMNumberFlow
 				};
@@ -926,7 +946,13 @@ namespace TUGraz.VectoCore.InputData.Reader
 						header, 
 						new[] { Fields.CH4MassFlow, Fields.NMHCMassFlow }, 
 						FuelTypeHelper.GetLabelsForNonGaseous("fc_"), 
-						throwExceptions);
+						throwExceptions)
+					&& CheckColumnsPredicatedOnAnotherMissing(
+						header,
+						new[] { Fields.THCMassFlow },
+						new[] { Fields.CH4MassFlow, Fields.NMHCMassFlow },
+						throwExceptions
+					);
 			}
 		}
 
