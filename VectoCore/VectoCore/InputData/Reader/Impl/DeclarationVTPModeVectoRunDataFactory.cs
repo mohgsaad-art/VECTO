@@ -226,6 +226,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 
 			vtpRunData.VTPData = new VTPData() {
 				CorrectionFactors = correctionFactors,
+				FuelNCVs = JobInputData.FuelNCVs
 			};
 
 			vtpRunData.TorqueDriftLeftWheel = JobInputData.TorqueDriftLeftWheel;

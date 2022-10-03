@@ -97,13 +97,16 @@ namespace TUGraz.VectoCore.OutputData.XML
 			public Scalar CO2Emissions { protected set; get; } = null;
 			public Scalar PMFlow { protected set; get; } = null;
 			public Scalar PositiveEngineWorkDeviation { protected set; get; } = null;
+			public ConvertedSI MeasuredPositiveEngineWork { protected set; get; } = null;
+			public ConvertedSI SimulatedPositiveEngineWork { protected set; get; } = null;
+			public IList<IFuelNCVData> FuelNCVs { protected set; get; } = null;
 
 			#region Overrides of ResultEntry
 
 			public override void SetResultData(VectoRunData runData, IModalDataContainer data, double factor)
 			{
 				base.SetResultData(runData, data, factor);
-
+				
 				if (runData.SimulationType != SimulationType.VerificationTest) {
 					return;
 				}
@@ -132,11 +135,10 @@ namespace TUGraz.VectoCore.OutputData.XML
 
 				//VTPFcFinalSimulated = data.TimeIntegral<Kilogram>(ModalResultField.FCFinal);
 				VTPFcCorrectionFactors = runData.VTPData.CorrectionFactors;
+				FuelNCVs = runData.VTPData.FuelNCVs;
 
-				var measuredPositiveEngineWork = CalculateMeasuredPositiveEngineWork(runData);
-
-				CalculateEmissions(runData, measuredPositiveEngineWork);
-				CalculatePositiveEngineWorkDeviation(data, measuredPositiveEngineWork);
+				CalculatePositiveEngineWorkData(runData, data);
+				CalculateEmissions(runData, MeasuredPositiveEngineWork);
 			}
 
 			private ConvertedSI CalculateMeasuredPositiveEngineWork(VectoRunData runData)
@@ -147,10 +149,12 @@ namespace TUGraz.VectoCore.OutputData.XML
 					.ConvertToKiloWattHour();
 			}
 
-			private void CalculatePositiveEngineWorkDeviation(IModalDataContainer data, ConvertedSI measuredWork)
+			private void CalculatePositiveEngineWorkData(VectoRunData runData, IModalDataContainer data)
 			{ 
-				var simulatedWork = data.TotalEngineWorkPositive().ConvertToKiloWattHour();
-				PositiveEngineWorkDeviation = ((measuredWork - simulatedWork) / measuredWork).SI<Scalar>();
+				MeasuredPositiveEngineWork = CalculateMeasuredPositiveEngineWork(runData);
+				SimulatedPositiveEngineWork = data.TotalEngineWorkPositive().ConvertToKiloWattHour();
+				PositiveEngineWorkDeviation = 
+					((MeasuredPositiveEngineWork - SimulatedPositiveEngineWork) / MeasuredPositiveEngineWork).SI<Scalar>();
 			}
 
 			private void CalculateEmissions(VectoRunData runData, ConvertedSI measuredPositiveEngineWork)
@@ -275,7 +279,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 			var declaredCO2 = result.FuelConsumptionFinal[fuel.FuelType].TotalFuelConsumptionCorrected * fuel.CO2PerFuelWeight / result.Distance / result.Payload;
 			var verifiedCO2 = declaredCO2 * cVtp;
 			var key = "g/t-km";
-
+			
 			Results.Add(
 				new XElement(tns + "Status", cVtp < 1.075 ? "Passed" : "Failed"),
 				new XElement(
@@ -285,6 +289,13 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(
 					tns + "WorkPosVT", new XAttribute(XMLNames.Report_Results_Unit_Attr, "kWh"),
 					vtpResult.VTPWorkPWheelPos.ConvertToKiloWattHour().ToXMLFormat(3)),
+				vtpResult.FuelNCVs.Select(x => 
+				new XElement(
+					tns + "FuelNCV",
+					new XAttribute("fuelType", x.Type.ToXMLFormat()),
+					new XAttribute(XMLNames.Report_Results_Unit_Attr, x.NCV.ConvertToMegaJoulePerKilogram().Units),
+					x.NCV.ConvertToMegaJoulePerKilogram().ToXMLFormat(3)
+				)),
 				vtpFcMeasured.Select(x =>
 				new XElement(
 					tns + "FuelConsumption",
@@ -375,6 +386,16 @@ namespace TUGraz.VectoCore.OutputData.XML
 			pollutantsElement.Add(
 				new XElement(tns + "PM", new XAttribute(XMLNames.Report_Results_Unit_Attr, "#/kWh"),
 					vtpResult.PMFlow.ToXMLFormat(3)
+				));
+
+			pollutantsElement.Add(
+				new XElement(tns + "PositiveEngineWork",
+					new XElement(tns + "Measured", new XAttribute(XMLNames.Report_Results_Unit_Attr, "kWh"),
+						vtpResult.MeasuredPositiveEngineWork.ToXMLFormat(3)
+					),
+					new XElement(tns + "Simulated", new XAttribute(XMLNames.Report_Results_Unit_Attr, "kWh"),
+						vtpResult.SimulatedPositiveEngineWork.ToXMLFormat(3)
+					)
 				));
 
 			return pollutantsElement;

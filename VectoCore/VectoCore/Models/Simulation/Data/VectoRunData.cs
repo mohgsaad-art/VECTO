@@ -306,6 +306,8 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 	public class VTPData
 	{
 		public Dictionary<FuelType, double> CorrectionFactors;
+
+		public IList<IFuelNCVData> FuelNCVs;
 	}
 
 	public class AuxFanData

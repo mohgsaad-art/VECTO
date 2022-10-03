@@ -332,7 +332,7 @@ namespace TUGraz.VectoCore.Configuration
 			/// When the simulated (in VTP) positive engine work deviates more than this threshold
 			/// from the measured positive energy of the vdri, a warning is issued.
 			/// </summary>
-			public const double VTPEngineWorkDeviationThreshold = 0.005;
+			public const double VTPEngineWorkDeviationThreshold = 0.01;
 		}
 
 		public static class XML
