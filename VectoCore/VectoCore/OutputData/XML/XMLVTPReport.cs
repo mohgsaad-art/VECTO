@@ -469,6 +469,8 @@ namespace TUGraz.VectoCore.OutputData.XML
 				return;
 			}
 
+			ManufacturerRecord.ValidateSimulationToolVersion();
+
 			var allSuccess = true;
 
 			var componentChecks = ComponentIntegrityChecks(ref allSuccess);

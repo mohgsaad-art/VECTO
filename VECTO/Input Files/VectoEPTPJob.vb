@@ -240,6 +240,10 @@ Public Class VectoVTPJob
     Public ReadOnly Property ComponentDigests As IDictionary(Of VectoComponents,IList(Of String)) Implements IManufacturerReport.ComponentDigests
     Public ReadOnly Property JobDigest As DigestData Implements IManufacturerReport.JobDigest
 
+    Public Sub ValidateSimulationToolVersion() Implements IManufacturerReport.ValidateSimulationToolVersion
+
+    End Sub
+
     Public ReadOnly Property DataSource As DataSource Implements IInputDataProvider.DataSource
         Get
             Dim retVal As DataSource =  New DataSource() 

@@ -962,8 +962,23 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			}
 		}
 
-		#endregion
+		public void ValidateSimulationToolVersion()
+		{
+			var xmlDoc = new XmlDocument();
+			xmlDoc.Load(Path.Combine(Path.GetFullPath(BasePath), Body["ManufacturerRecord"].Value<string>()));
+			
+			string simToolVersionStr = XMLManufacturerReportReader.ReadElementValue(xmlDoc, "SimulationToolVersion");
+			string vectoVersionStr = VectoSimulationCore.VersionNumber;
 
+			bool xmlVersionOlder = true;
+			
+			if (!xmlVersionOlder) {
+				throw new VectoException($"Not allowed to run simulation with MRF having newer simulation tool version");
+			}
+		}
+
+		#endregion
+		
 		private void ReadManufacturerReport()
 		{
 			var xmlDoc = new XmlDocument();

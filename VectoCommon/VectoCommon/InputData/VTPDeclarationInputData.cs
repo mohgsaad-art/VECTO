@@ -77,5 +77,7 @@ namespace TUGraz.VectoCommon.InputData
 		IDictionary<VectoComponents,IList<string>> ComponentDigests { get; }
 
 		DigestData JobDigest { get; }
+
+		void ValidateSimulationToolVersion();
 	}
 }
