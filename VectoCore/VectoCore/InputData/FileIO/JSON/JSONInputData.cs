@@ -970,15 +970,15 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			string simToolVersionStr = XMLManufacturerReportReader.ReadElementValue(xmlDoc, "SimulationToolVersion");
 			string vectoVersionStr = VectoSimulationCore.VersionNumber;
 
-			bool xmlVersionOlder = true;
+			bool xmlVersionNewer = VectoSimulationCore.CompareVersions(simToolVersionStr, vectoVersionStr) > 0;
 			
-			if (!xmlVersionOlder) {
-				throw new VectoException($"Not allowed to run simulation with MRF having newer simulation tool version");
+			if (xmlVersionNewer) {
+				throw new VectoException($"Not allowed to run simulation with MRF having newer simulation tool version ({simToolVersionStr})");
 			}
 		}
 
 		#endregion
-		
+
 		private void ReadManufacturerReport()
 		{
 			var xmlDoc = new XmlDocument();

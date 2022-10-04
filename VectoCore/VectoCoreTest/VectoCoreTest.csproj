@@ -206,6 +206,7 @@
     <Compile Include="Algorithms\DelaunayMapTest.cs" />
     <Compile Include="Utils\MockModalDataContainer.cs" />
     <Compile Include="Utils\DoubleExtensionMethodTest.cs" />
+    <Compile Include="Utils\VectoVersionTest.cs" />
     <Compile Include="Utils\VectoMathTest.cs" />
     <Compile Include="XML\XMLDeclarationInputTest.cs" />
     <Compile Include="XML\XMLDeclarationReaderVersionsTest.cs" />
