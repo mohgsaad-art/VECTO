@@ -272,10 +272,14 @@ namespace TUGraz.VectoCore.OutputData.XML
 			var vtpFcSimulated = vtpResult.VTPFcFinalSimulated
 				.Select(x => Tuple.Create(x.Key, x.Value / vtpResult.VTPWorPWheelSimPos))
 				.ToDictionary(x => x.Item1, x => x.Item2);
+
 			var fuels = DeclarationData.FuelData;
-			var cVtp =
-				vtpFcMeasuredCorr.Sum(e => e.Value * fuels.Lookup(e.Key, vtpResult.TankSystem).CO2PerFuelWeightVTP) /
-				vtpFcSimulated.Sum(e => e.Value * fuels.Lookup(e.Key, vtpResult.TankSystem).CO2PerFuelWeightVTP);
+	
+			var CO2Measured = vtpFcMeasured.Sum(e => e.Value * fuels.Lookup(e.Key, vtpResult.TankSystem).CO2PerFuelWeightVTP);
+			var CO2MeasuredCorrected = vtpFcMeasuredCorr.Sum(e => e.Value * fuels.Lookup(e.Key, vtpResult.TankSystem).CO2PerFuelWeightVTP);
+			var CO2Simulated = vtpFcSimulated.Sum(e => e.Value * fuels.Lookup(e.Key, vtpResult.TankSystem).CO2PerFuelWeightVTP);
+
+			var cVtp = CO2MeasuredCorrected / CO2Simulated;
 			var declaredCO2 = result.FuelConsumptionFinal[fuel.FuelType].TotalFuelConsumptionCorrected * fuel.CO2PerFuelWeight / result.Distance / result.Payload;
 			var verifiedCO2 = declaredCO2 * cVtp;
 			var key = "g/t-km";
@@ -289,6 +293,9 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(
 					tns + "WorkPosVT", new XAttribute(XMLNames.Report_Results_Unit_Attr, "kWh"),
 					vtpResult.VTPWorkPWheelPos.ConvertToKiloWattHour().ToXMLFormat(3)),
+				new XElement(
+					tns + "SimulatedWorkPosVT", new XAttribute(XMLNames.Report_Results_Unit_Attr, "kWh"),
+					vtpResult.VTPWorPWheelSimPos.ConvertToKiloWattHour().ToXMLFormat(3)),
 				vtpResult.FuelNCVs.Select(x => 
 				new XElement(
 					tns + "FuelNCV",
@@ -329,6 +336,18 @@ namespace TUGraz.VectoCore.OutputData.XML
 					new XElement(
 						tns + "Verified", new XAttribute(XMLNames.Report_Results_Unit_Attr, key),
 						new ConvertedSI(declaredCO2.Value(), verifiedCO2.UnitString).ToMinSignificantDigits(3, 2)
+					),
+					new XElement(
+						tns + "Measured",  new XAttribute(XMLNames.Report_Results_Unit_Attr, CO2Measured.ConvertToGramPerKiloWattHour().Units),
+						CO2Measured.ConvertToGramPerKiloWattHour().Value.ToXMLFormat(3)
+					),
+					new XElement(
+						tns + "MeasuredCorrected",  new XAttribute(XMLNames.Report_Results_Unit_Attr, CO2MeasuredCorrected.ConvertToGramPerKiloWattHour().Units),
+						CO2MeasuredCorrected.ConvertToGramPerKiloWattHour().Value.ToXMLFormat(3)
+					),
+					new XElement(
+						tns + "Simulated",  new XAttribute(XMLNames.Report_Results_Unit_Attr, CO2Simulated.ConvertToGramPerKiloWattHour().Units),
+						CO2Simulated.ConvertToGramPerKiloWattHour().Value.ToXMLFormat(3)
 					)
 				),
 				new XElement(tns + "C_VTP", cVtp.ToXMLFormat(4)),
