@@ -480,7 +480,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 					GetAxlegearDescription(modelData.AxleGearData),
 					GetAirDragDescription(modelData.AirdragData),
 					GetAxleWheelsDescription(modelData.VehicleData),
-					GetAuxiliariesDescription(modelData.Aux)
+					GetAuxiliariesDescription(modelData.Aux, modelData.FanData)
 				)
 			);
 
@@ -751,7 +751,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(tns + XMLNames.AxleWheels_Axles_Axle_TwinTyres, axle.TwinTyres));
 		}
 
-		private XElement GetAuxiliariesDescription(IEnumerable<VectoRunData.AuxData> aux)
+		private XElement GetAuxiliariesDescription(IEnumerable<VectoRunData.AuxData> aux, AuxFanData fanData)
 		{
 			var auxData = aux.ToDictionary(a => a.ID);
 			var auxList = new[] {
@@ -764,6 +764,12 @@ namespace TUGraz.VectoCore.OutputData.XML
 					retVal.Add(new XElement(tns + GetTagName(auxId), entry));
 				}
 			}
+
+			retVal.Add(new XElement(
+				tns + "FanDiameter", 
+				new XAttribute(XMLNames.Report_Results_Unit_Attr, fanData.FanDiameter.ConvertToMilliMeter().Units),
+				fanData.FanDiameter.ConvertToMilliMeter().Value)
+			);
 
 			return retVal;
 		}

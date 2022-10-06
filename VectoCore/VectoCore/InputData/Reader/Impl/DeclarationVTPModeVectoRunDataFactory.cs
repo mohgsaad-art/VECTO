@@ -58,6 +58,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 		protected RetarderData RetarderData;
 		protected PTOData PTOTransmissionData;
 		protected List<VectoRunData.AuxData> AuxVTP;
+		protected AuxFanData AuxFanData;
 		protected Segment Segment;
 		protected bool allowVocational;
 		protected DeclarationDataAdapter Dao;
@@ -106,6 +107,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 						Segment.Missions.First().MissionType,
 						Segment.VehicleClass, 
 						JobInputData.Vehicle.Components.AxleWheels.NumSteeredAxles),
+				FanData = AuxFanData
 			};
 			powertrainConfig.VehicleData.VehicleClass = Segment.VehicleClass;
 			Report.InputDataHash = JobInputData.VectoJobHash;
@@ -161,6 +163,11 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 				GearboxData, AxlegearData.AxleGear.Ratio * (AngledriveData?.Angledrive.Ratio ?? 1.0), EngineData.IdleSpeed);
 
 			AuxVTP = CreateVTPAuxData(vehicle);
+
+			AuxFanData = new AuxFanData() { 
+				FanDiameter = JobInputData.FanDiameter,
+				FanCoefficients = JobInputData.FanPowerCoefficents.ToArray()
+			};
 		}
 
 		#region Implementation of IVectoRunDataFactory
