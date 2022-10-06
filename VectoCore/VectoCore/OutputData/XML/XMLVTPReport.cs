@@ -60,7 +60,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 {
 	internal class XMLVTPReport : DeclarationReport<XMLVTPReport.ResultEntry>, IVTPReport
 	{
-		public const string CURRENT_SCHEMA_VERSION = "0.1";
+		public const string CURRENT_SCHEMA_VERSION = "0.1.1";
 
 		private const string VTPReportTartetName = "VTPReportTarget";
 		
@@ -326,28 +326,34 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(
 					tns + "CO2",
 					new XElement(
-						tns + "Mission",
-						string.Format("{0}, {1}", Missions.FirstOrDefault(x => x.Key != MissionType.VerificationTest).Key.ToXMLFormat(), selectedLoading.ToString())
+						tns + "Certification",
+						new XElement(
+							tns + "Mission",
+							string.Format("{0}, {1}", Missions.FirstOrDefault(x => x.Key != MissionType.VerificationTest).Key.ToXMLFormat(), selectedLoading.ToString())
+						),
+						new XElement(
+							tns + "Declared", new XAttribute(XMLNames.Report_Results_Unit_Attr, key),
+							new ConvertedSI(declaredCO2.Value(), declaredCO2.UnitString).ToMinSignificantDigits(3, 2)
+						),
+						new XElement(
+							tns + "Verified", new XAttribute(XMLNames.Report_Results_Unit_Attr, key),
+							new ConvertedSI(declaredCO2.Value(), verifiedCO2.UnitString).ToMinSignificantDigits(3, 2)
+						)
 					),
 					new XElement(
-						tns + "Declared", new XAttribute(XMLNames.Report_Results_Unit_Attr, key),
-						new ConvertedSI(declaredCO2.Value(), declaredCO2.UnitString).ToMinSignificantDigits(3, 2)
-					),
-					new XElement(
-						tns + "Verified", new XAttribute(XMLNames.Report_Results_Unit_Attr, key),
-						new ConvertedSI(declaredCO2.Value(), verifiedCO2.UnitString).ToMinSignificantDigits(3, 2)
-					),
-					new XElement(
-						tns + "Measured",  new XAttribute(XMLNames.Report_Results_Unit_Attr, CO2Measured.ConvertToGramPerKiloWattHour().Units),
-						CO2Measured.ConvertToGramPerKiloWattHour().Value.ToXMLFormat(3)
-					),
-					new XElement(
-						tns + "MeasuredCorrected",  new XAttribute(XMLNames.Report_Results_Unit_Attr, CO2MeasuredCorrected.ConvertToGramPerKiloWattHour().Units),
-						CO2MeasuredCorrected.ConvertToGramPerKiloWattHour().Value.ToXMLFormat(3)
-					),
-					new XElement(
-						tns + "Simulated",  new XAttribute(XMLNames.Report_Results_Unit_Attr, CO2Simulated.ConvertToGramPerKiloWattHour().Units),
-						CO2Simulated.ConvertToGramPerKiloWattHour().Value.ToXMLFormat(3)
+						tns + "VTP",
+						new XElement(
+							tns + "Measured",  new XAttribute(XMLNames.Report_Results_Unit_Attr, CO2Measured.ConvertToGramPerKiloWattHour().Units),
+							CO2Measured.ConvertToGramPerKiloWattHour().Value.ToXMLFormat(3)
+						),
+						new XElement(
+							tns + "MeasuredCorrected",  new XAttribute(XMLNames.Report_Results_Unit_Attr, CO2MeasuredCorrected.ConvertToGramPerKiloWattHour().Units),
+							CO2MeasuredCorrected.ConvertToGramPerKiloWattHour().Value.ToXMLFormat(3)
+						),
+						new XElement(
+							tns + "Simulated",  new XAttribute(XMLNames.Report_Results_Unit_Attr, CO2Simulated.ConvertToGramPerKiloWattHour().Units),
+							CO2Simulated.ConvertToGramPerKiloWattHour().Value.ToXMLFormat(3)
+						)
 					)
 				),
 				new XElement(tns + "C_VTP", cVtp.ToXMLFormat(4)),
@@ -453,7 +459,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 			return retVal;
 		}
 
-		public override void InitializeReport(VectoRunData modelData)
+		public override void InitializeReport(VectoRunData modelData, List<List<FuelData.Entry>> fuelModes)
 		{
 			GeneralPart.Add(
 				new XElement(tns + XMLNames.Component_Manufacturer, modelData.VehicleData.Manufacturer),
@@ -472,7 +478,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(tns + XMLNames.Vehicle_PTO, modelData.PTO != null),
 				new XElement(
 					tns + XMLNames.Vehicle_Components,
-					GetEngineDescription(modelData.EngineData),
+					GetEngineDescription(modelData.EngineData, fuelModes),
 					GetGearboxDescription(modelData.GearboxData),
 					GetTorqueConverterDescription(modelData.GearboxData.TorqueConverterData),
 					GetRetarderDescription(modelData.Retarder),
@@ -640,7 +646,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 					XmlConvert.ToString(DateTime.Now, XmlDateTimeSerializationMode.Utc)));
 		}
 
-		private XElement GetEngineDescription(CombustionEngineData engineData)
+		private XElement GetEngineDescription(CombustionEngineData engineData, List<List<FuelData.Entry>> fuelModes)
 		{
 			return new XElement(
 				tns + XMLNames.Component_Engine,
@@ -649,7 +655,8 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(
 					tns + XMLNames.Engine_Displacement,
 					engineData.Displacement.ConvertToCubicCentiMeter().ToXMLFormat(0)),
-				new XElement(tns + XMLNames.Engine_FuelType, engineData.Fuels.First().FuelData.FuelType.ToXMLFormat())
+				fuelModes.SelectMany(x => x.Select(f => f.FuelType.ToXMLFormat())).Distinct().Select(
+					x => new XElement(tns + XMLNames.Engine_FuelType, x))
 			);
 		}
 
