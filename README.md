@@ -9,7 +9,7 @@
 |  **copyright:** | [2012-2022 European Commission, DG_CLIMA](https://climate.ec.europa.eu/index_en) <br> consider also other copyright mentions present in sub-components. |
 |    **license:** | [EUPL 1.2+](https://joinup.ec.europa.eu/software/page/eupl) |
 
-<img src="Documentation/User Manual/pics/VECTOlarge.png" alt="Vecto banner" width="400"/> <img src="Documentation/User Manual/pics/EuropeanCommission.jpg" alt="EC logo" width="247"/>
+<img src="Documentation/User Manual/pics/VECTOlarge.png" alt="Vecto banner" height="120"/> <img src="Documentation/User Manual/pics/JRClogo.jpg" alt="JRC logo" height="120"/>
 
 ## What is VECTO?
 
