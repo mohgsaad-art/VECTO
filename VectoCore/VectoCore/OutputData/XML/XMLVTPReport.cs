@@ -60,7 +60,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 {
 	internal class XMLVTPReport : DeclarationReport<XMLVTPReport.ResultEntry>, IVTPReport
 	{
-		public const string CURRENT_SCHEMA_VERSION = "0.1.1";
+		public const string CURRENT_SCHEMA_VERSION = "0.11";
 
 		private const string VTPReportTartetName = "VTPReportTarget";
 		
@@ -486,7 +486,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 					GetAxlegearDescription(modelData.AxleGearData),
 					GetAirDragDescription(modelData.AirdragData),
 					GetAxleWheelsDescription(modelData.VehicleData),
-					GetAuxiliariesDescription(modelData.Aux, modelData.FanData)
+					GetAuxiliariesDescription(modelData.Aux)
 				)
 			);
 
@@ -758,7 +758,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(tns + XMLNames.AxleWheels_Axles_Axle_TwinTyres, axle.TwinTyres));
 		}
 
-		private XElement GetAuxiliariesDescription(IEnumerable<VectoRunData.AuxData> aux, AuxFanData fanData)
+		private XElement GetAuxiliariesDescription(IEnumerable<VectoRunData.AuxData> aux)
 		{
 			var auxData = aux.ToDictionary(a => a.ID);
 			var auxList = new[] {
@@ -771,12 +771,6 @@ namespace TUGraz.VectoCore.OutputData.XML
 					retVal.Add(new XElement(tns + GetTagName(auxId), entry));
 				}
 			}
-
-			retVal.Add(new XElement(
-				tns + "FanDiameter", 
-				new XAttribute(XMLNames.Report_Results_Unit_Attr, fanData.FanDiameter.ConvertToMilliMeter().Units),
-				fanData.FanDiameter.ConvertToMilliMeter().Value)
-			);
 
 			return retVal;
 		}

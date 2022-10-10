@@ -838,10 +838,7 @@
     <EmbeddedResource Include="Resources\XSD\VectoOutputManufacturer.0.7.2.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\XSD\VectoDeclarationDefinitions.1.1.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\XSD\VTPReport.0.1.1.xsd">
+    <EmbeddedResource Include="Resources\XSD\VTPReport.0.11.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="Utils\VectoVersionCore.tt">
