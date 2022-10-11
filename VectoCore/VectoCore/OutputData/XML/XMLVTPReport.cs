@@ -118,14 +118,13 @@ namespace TUGraz.VectoCore.OutputData.XML
 					x => new {
 						PWheel = x.Item1.PWheel > 0 ? x.Item1.PWheel : 0.SI<Watt>(),
 						dt = x.Item2.Time - x.Item1.Time,
-						FC = x.Item1.VTPFuelconsumption
+						FC = x.Item1.Fuelconsumption
 					}).ToArray();
 				VTPWorPWheelSimPos = data.WorkWheelsPos();
 				VTPWorkPWheelPos = cycleEntries.Sum(x => x.PWheel * x.dt).Cast<WattSecond>();
 				foreach (var fuel in cycleEntries.First().FC.Keys) {
 					VTPFcMeasured[fuel] = cycleEntries.Sum(x => x.FC[fuel] * x.dt);
 				}
-				//VTPFcMeasured = cycleEntries.Sum(x => x.FC * x.dt).Cast<Kilogram>();
 
 				foreach (var entry in data.FuelData) {
 					var col = data.GetColumnName(entry, ModalResultField.FCFinal);
@@ -133,7 +132,6 @@ namespace TUGraz.VectoCore.OutputData.XML
 					VTPFcFinalSimulated[entry.FuelType] = fcSum;
 				}
 
-				//VTPFcFinalSimulated = data.TimeIntegral<Kilogram>(ModalResultField.FCFinal);
 				VTPFcCorrectionFactors = runData.VTPData.CorrectionFactors;
 				FuelNCVs = runData.VTPData.FuelNCVs;
 

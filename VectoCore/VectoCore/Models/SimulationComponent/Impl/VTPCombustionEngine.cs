@@ -80,7 +80,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		{
 			// Engine speed and fuel consumption determine whether we consider the engine is on or off.
 			// This cut-off point affects calculations and Response (stop-start functionality, see base.Request)
-			var fuelConsumption = DataBus.DrivingCycleInfo.CycleData.LeftSample.VTPFuelconsumption.Sum(c => c.Value);
+			var fuelConsumption = DataBus.DrivingCycleInfo.CycleData.LeftSample.Fuelconsumption.Sum(c => c.Value);
 			
 			CombustionEngineOn = (DataBus.DrivingCycleInfo.CycleData.LeftSample.EngineSpeed >= EngineIdleSpeed) || fuelConsumption.IsGreater(0);
 

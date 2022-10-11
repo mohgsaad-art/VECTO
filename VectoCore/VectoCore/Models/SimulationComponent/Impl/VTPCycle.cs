@@ -116,7 +116,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			
 			foreach (var entry in Data.Entries.Pairwise()) {
 				var dt = entry.Item2.Time - entry.Item1.Time;
+				var fc = entry.Item1.Fuelconsumption.Sum(x => x.Value) * dt;
 				var eWheel = entry.Item1.PWheel > 0 ? entry.Item1.PWheel * dt : 0.SI<WattSecond>();
+				window[idx % count] = new {FC= fc, EWheel = eWheel};
 				sumFC += window[idx % count].FC;
 				sumFC -= window[(idx + 1) % count].FC;
 				sumEWheel += window[idx % count].EWheel;

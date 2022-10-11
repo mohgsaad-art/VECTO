@@ -361,7 +361,6 @@ namespace TUGraz.VectoCore.InputData.Reader
 			public const string PTOActive = "PTO";
 			public const string PTODuringDrivePower = "PTO_Power";
 			public const string Highway = "HW";
-			public const string VTPPSCompressorActive = "PS_comp_active";
 			public const string FanElectricalPower = "Pel_fan";
 			public const string CombustionEngineTorque = "tq_eng";
 			public const string CH4MassFlow = "CH4";
@@ -870,7 +869,7 @@ namespace TUGraz.VectoCore.InputData.Reader
 								? row.ParseDoubleOrGetDefault(Fields.FanSpeed).RPMtoRad()
 								: null,
 							Gear = (uint)row.ParseDoubleOrGetDefault(Fields.Gear),
-							VTPFuelconsumption = fc,
+							Fuelconsumption = fc,
 							TorqueConverterActive = row.ParseBooleanOrGetDefault(Fields.TorqueConverterActive),
 							TorqueWheelLeft = tqLeft,
 							TorqueWheelRight = tqRight,
@@ -925,7 +924,6 @@ namespace TUGraz.VectoCore.InputData.Reader
 					Fields.WheelTorqueRight,
 					Fields.Gear,
 					Fields.TorqueConverterActive,
-					Fields.VTPPSCompressorActive,
 					Fields.FanElectricalPower,
 					Fields.CombustionEngineTorque,
 					Fields.CH4MassFlow,

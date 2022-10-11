@@ -92,7 +92,6 @@ namespace TUGraz.VectoCore.Tests.Integration.VTP
 		private const string DUAL_FUEL_STOP_START_JOB = @"TestData\Integration\VTPMode\DualFuelVehicle\VTP_StopStart_DualFuel.vecto";
 		private const string TORQUE_DRIFT_JOB = @"TestData\Integration\VTPMode\Group2_RigidTruck_4x2\Class2_RigidTruck_VTP_TorqueDrift.vecto";
 
-		[Category("JRC")]
 		[Category("LongRunning")]
 		[Category("Integration")]
 		[

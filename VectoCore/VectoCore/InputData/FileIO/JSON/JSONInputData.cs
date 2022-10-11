@@ -933,7 +933,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 
         #region Implementation of IVTPDeclarationInputDataProvider
 
-        IVTPDeclarationJobInputData IVTPDeclarationInputDataProvider.JobInputData
+		IVTPDeclarationJobInputData IVTPDeclarationInputDataProvider.JobInputData
 		{
 			get { return JobInputData; }
 		}

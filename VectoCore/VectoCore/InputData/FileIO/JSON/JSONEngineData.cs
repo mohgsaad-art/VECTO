@@ -392,6 +392,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 		{
 			get { return 1; }
 		}
+
 		
 		public string Manufacturer
 		{
@@ -402,6 +403,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 		{
 			get { return Body.GetEx<string>(JsonKeys.Engine_ModelName); }
 		}
+
 
 		public string Date
 		{
