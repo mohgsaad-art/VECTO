@@ -940,11 +940,6 @@ namespace TUGraz.VectoCore.InputData.Reader
 				return CheckColumns(header, allowedCols, requiredCols, throwExceptions, allowAux) 
 					&& CheckComboColumns(header, new[] { Fields.AirSpeedRelativeToVehicle, Fields.WindYawAngle }, throwExceptions)
 					&& CheckMutuallyExclusiveColumns(header, new[] { Fields.FanSpeed, Fields.FanElectricalPower}, throwExceptions)
-					&& CheckColumnsPredicatedOnAnother(
-						header, 
-						new[] { Fields.CH4MassFlow, Fields.NMHCMassFlow }, 
-						FuelTypeHelper.GetLabelsForNonGaseous("fc_"), 
-						throwExceptions)
 					&& CheckColumnsPredicatedOnAnotherMissing(
 						header,
 						new[] { Fields.THCMassFlow },

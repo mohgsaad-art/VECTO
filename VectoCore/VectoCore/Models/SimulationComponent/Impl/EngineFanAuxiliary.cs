@@ -65,7 +65,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
         public Watt PowerDemand(Watt fanElectricalPower)
         { 
-			return fanElectricalPower / Constants.Auxiliaries.FanElectricToMechanicalEfficiency;
+			return fanElectricalPower * Constants.Auxiliaries.FanElectricToMechanicalEfficiency;
 		}
 
     }

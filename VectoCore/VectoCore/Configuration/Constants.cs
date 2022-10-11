@@ -51,7 +51,7 @@ namespace TUGraz.VectoCore.Configuration
 			public const string Prefix = "AUX_";
 			public const string PowerPrefix = "P_";
 
-			public const double FanElectricToMechanicalEfficiency = 0.7;
+			public const double FanElectricToMechanicalEfficiency = 1.05;
 
 			public static class IDs
 			{
@@ -332,7 +332,7 @@ namespace TUGraz.VectoCore.Configuration
 			/// When the simulated (in VTP) positive engine work deviates more than this threshold
 			/// from the measured positive energy of the vdri, a warning is issued.
 			/// </summary>
-			public const double VTPEngineWorkDeviationThreshold = 0.01;
+			public const double VTPEngineWorkDeviationThreshold = 0.1;
 		}
 
 		public static class XML
