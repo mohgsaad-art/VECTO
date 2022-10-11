@@ -246,6 +246,28 @@
       </xs:element>
     </xs:sequence> 
 	</xs:complexType>
+  <xs:complexType name="PositiveEngineWorkType">
+    <xs:sequence>
+      <xs:element name="Measured">
+        <xs:complexType>
+          <xs:simpleContent>
+            <xs:extension base="xs:double">
+              <xs:attribute name="unit" type="WorkUnitType" use="required"/>
+            </xs:extension>
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Simulated">
+        <xs:complexType>
+          <xs:simpleContent>
+            <xs:extension base="xs:double">
+              <xs:attribute name="unit" type="WorkUnitType" use="required"/>
+            </xs:extension>
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
 	<xs:complexType name="DataIntegrityCheckType">
 		<xs:sequence>
 			<xs:element name="Components">
@@ -355,6 +377,20 @@
 			</xs:simpleType>
 		</xs:attribute>
 	</xs:complexType>
+  <xs:complexType name="PollutantType">
+    <xs:simpleContent>
+      <xs:extension base="xs:double">
+        <xs:attribute name="unit" type="PollutantUnitType" use="required"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="ParticleType">
+    <xs:simpleContent>
+      <xs:extension base="xs:double">
+        <xs:attribute name="unit" type="ParticleUnitType" use="required"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
 	<xs:complexType name="GearboxType">
 		<xs:sequence>
 			<xs:element name="Model" type="vdecdef:ModelType">
@@ -443,6 +479,20 @@
 			<xs:element name="FuelConsumption" type="FuelConsumptionResultType" maxOccurs="unbounded"/>
 			<xs:element name="CO2" type="CO2ResultType"/>
 			<xs:element name="C_VTP" type="xs:double"/>
+      <xs:element name="Pollutants">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="CO" type="PollutantType"/>
+            <xs:element name="NOx" type="PollutantType"/>
+            <xs:element name="CO2" type="PollutantType"/>
+            <xs:element name="THC" type="PollutantType"/>
+            <xs:element name="CH4" type="PollutantType"/>
+            <xs:element name="NMHC" type="PollutantType"/>
+            <xs:element name="PM" type="ParticleType"/>
+            <xs:element name="PositiveEngineWork" type="PositiveEngineWorkType"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
 			<xs:element name="Warnings" minOccurs="0">
 				<xs:complexType>
 					<xs:sequence>
@@ -588,6 +638,16 @@
 			<xs:enumeration value="MJ/kg"/>
 		</xs:restriction>
 	</xs:simpleType>
+  <xs:simpleType name="PollutantUnitType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="mg/kWh"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ParticleUnitType">
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="#/kWh"/>
+    </xs:restriction>
+  </xs:simpleType>
 	<xs:simpleType name="PowerUnitType">
 		<xs:restriction base="xs:token">
 			<xs:enumeration value="kW"/>
