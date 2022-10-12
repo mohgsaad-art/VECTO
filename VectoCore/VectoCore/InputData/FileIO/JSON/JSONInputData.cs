@@ -973,7 +973,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			bool xmlVersionNewer = VectoSimulationCore.CompareVersions(simToolVersionStr, vectoVersionStr) > 0;
 			
 			if (xmlVersionNewer) {
-				throw new VectoException($"Not allowed to run simulation with MRF having newer simulation tool version ({simToolVersionStr})");
+				throw new VectoException($"Not allowed to run simulation because VECTO version is older than <SimulationToolVersion> in Manufacturer Report ({simToolVersionStr}).");
 			}
 		}
 

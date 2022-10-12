@@ -416,7 +416,37 @@ Public Class VectoVTPJobForm
         UpdateAuxList()
         UpdatePic()
         UpdateNCVs()
+        UpdateFanDiameterGUIComponent()
         Change()
+    End Sub
+
+    Private Sub UpdateFanDiameterGUIComponent()
+        Dim vehicleFile As String =
+            If _
+            (Not String.IsNullOrWhiteSpace(VectoFile), Path.Combine(Path.GetDirectoryName(VectoFile), TbVEH.Text),
+                TbVEH.Text)
+
+        Label6.Enabled = True
+        Label7.Enabled = True
+        tbFanDiameter.Enabled = True
+
+        If File.Exists(vehicleFile) Then
+            Try
+                Dim inputData As IDeclarationInputDataProvider =
+                        _xmlInputReader.CreateDeclaration(XmlReader.Create(vehicleFile))
+
+                Dim auxiliaries As IList(Of IAuxiliaryDeclarationInputData) = inputData.JobInputData.Vehicle.Components.AuxiliaryInputData.Auxiliaries
+
+                Dim fan As IAuxiliaryDeclarationInputData = auxiliaries.First(Function(aux) aux.Type = AuxiliaryType.Fan)
+
+                Dim fullyElectric As Boolean = DeclarationData.Fan.FullyElectricTechnologies().Contains(fan.Technology.First)
+
+                Label6.Enabled = Not fullyElectric
+                Label7.Enabled = Not fullyElectric
+                tbFanDiameter.Enabled = Not fullyElectric
+            Catch
+            End Try
+        End If
     End Sub
 
     Private Sub ReadWheelTorqueDriftsFromVectoJob()
@@ -486,14 +516,16 @@ Public Class VectoVTPJobForm
 
         Dim jobFuelNCV As IFuelNCVData
 
-        For Each jobFuelNCV In _vectoJob.FuelNCVs
-            If (_ncvFuel1Lbl.Visible And (_ncvFuel1Lbl.Text.Equals(jobFuelNCV.Type.GetLabel()))) Then
-                _ncvFuel1Txtbox.Text = jobFuelNCV.NCV.ConvertToMegaJoulePerKilogram().Value.ToString()
-            End If
-            If (_ncvFuel2Lbl.Visible And (_ncvFuel2Lbl.Text.Equals(jobFuelNCV.Type.GetLabel()))) Then
-                _ncvFuel2Txtbox.Text = jobFuelNCV.NCV.ConvertToMegaJoulePerKilogram().Value.ToString()
-            End If
-        Next
+        If (_vectoJob IsNot Nothing) Then
+            For Each jobFuelNCV In _vectoJob.FuelNCVs
+                If (_ncvFuel1Lbl.Visible And (_ncvFuel1Lbl.Text.Equals(jobFuelNCV.Type.GetLabel()))) Then
+                    _ncvFuel1Txtbox.Text = jobFuelNCV.NCV.ConvertToMegaJoulePerKilogram().Value.ToString()
+                End If
+                If (_ncvFuel2Lbl.Visible And (_ncvFuel2Lbl.Text.Equals(jobFuelNCV.Type.GetLabel()))) Then
+                    _ncvFuel2Txtbox.Text = jobFuelNCV.NCV.ConvertToMegaJoulePerKilogram().Value.ToString()
+                End If
+            Next
+        End If
 
     End Sub
 
