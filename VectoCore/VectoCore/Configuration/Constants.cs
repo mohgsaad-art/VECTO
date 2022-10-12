@@ -333,6 +333,12 @@ namespace TUGraz.VectoCore.Configuration
 			/// from the measured positive energy of the vdri, a warning is issued.
 			/// </summary>
 			public const double VTPEngineWorkDeviationThreshold = 0.1;
+
+			/// <summary>
+			/// When the engine speed (in VTP) is higher than idle speed times this factor,
+			/// the combustion engine is set to on.
+			/// </summary>
+			public const double VTPIdleSpeedDetectionFactor = 0.85;
 		}
 
 		public static class XML

@@ -356,7 +356,6 @@
     <Compile Include="Models\SimulationComponent\Impl\StopStartCombustionEngine.cs" />
     <Compile Include="Models\SimulationComponent\Impl\VelocityRollingLookup.cs" />
     <Compile Include="Models\SimulationComponent\Impl\VelocitySpeedGearshiftPreprocessor.cs" />
-    <Compile Include="Models\SimulationComponent\Impl\VTPnoSScombustionEngine.cs" />
     <Compile Include="Models\Simulation\DataBus\IEngineControl.cs" />
     <Compile Include="Models\Simulation\DataBus\IGearboxControl.cs" />
     <Compile Include="Models\Simulation\Data\ShiftStrategyParameters.cs" />

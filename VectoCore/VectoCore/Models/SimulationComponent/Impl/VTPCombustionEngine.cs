@@ -78,11 +78,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		public override IResponse Request(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, bool dryRun)
 		{
-			// Engine speed and fuel consumption determine whether we consider the engine is on or off.
+			// Engine speed determines whether we consider the engine is on or off.
 			// This cut-off point affects calculations and Response (stop-start functionality, see base.Request)
-			var fuelConsumption = DataBus.DrivingCycleInfo.CycleData.LeftSample.Fuelconsumption.Sum(c => c.Value);
-			
-			CombustionEngineOn = (DataBus.DrivingCycleInfo.CycleData.LeftSample.EngineSpeed >= EngineIdleSpeed) || fuelConsumption.IsGreater(0);
+
+			CombustionEngineOn = DataBus.DrivingCycleInfo.CycleData.LeftSample.EngineSpeed >= 
+				(EngineIdleSpeed * Constants.SimulationSettings.VTPIdleSpeedDetectionFactor);
 
 			return base.Request(absTime, dt, outTorque, outAngularVelocity, dryRun);
 		}
@@ -208,11 +208,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		protected override PerSecond GetEngineSpeed(PerSecond angularSpeed)
         {
-			// When speed is below idle, clip to idle to avoid crashing.
-			// Returning zero causes crashes (divide by zero, etc).
-			return (DataBus.DrivingCycleInfo.CycleData.LeftSample.EngineSpeed < EngineIdleSpeed) 
-				? EngineIdleSpeed 
-				: DataBus.DrivingCycleInfo.CycleData.LeftSample.EngineSpeed;
+			return DataBus.DrivingCycleInfo.CycleData.LeftSample.EngineSpeed;
         }
 
         protected override double WHTCCorrectionFactor(IFuelProperties fuel)
