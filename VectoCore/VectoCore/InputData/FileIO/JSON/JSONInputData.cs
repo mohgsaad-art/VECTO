@@ -908,13 +908,16 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 					fuelNCVs.Add(new FuelNCVData() { Type = matches.First(), NCV = (ncv * Constants.Mega).SI<JoulePerKilogramm>() });
                 }
 
-				var fuels = JobInputData.Vehicle.Components.EngineInputData.EngineModes.First().Fuels;
+				var fuelsPerMode = JobInputData.Vehicle.Components.EngineInputData.EngineModes.Select(
+					x => x.Fuels.Select(f => DeclarationData.FuelData.Lookup(f.FuelType, JobInputData.Vehicle.TankSystem)));
 
-				foreach (var fuel in fuels) {
-					if (fuelNCVs.Count(x => x.Type == fuel.FuelType) == 0) {
-						throw new Exception($"Job input data: {JsonKeys.Job_FuelNCVs}: missing {JsonKeys.Job_FuelNCV_Type}: {fuel.FuelType.GetLabel()}");
-                    }
-                }
+				foreach (var fuels in fuelsPerMode) {
+					foreach (var fuel in fuels) {
+						if (fuelNCVs.Count(x => x.Type == fuel.FuelType) == 0) {
+							throw new Exception($"Job input data: {JsonKeys.Job_FuelNCVs}: missing {JsonKeys.Job_FuelNCV_Type}: {fuel.FuelType.GetLabel()}");
+						}
+					}
+				}
 
 				return fuelNCVs;
             }
