@@ -29,6 +29,7 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using Ninject.Activation.Caching;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -207,6 +208,8 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 				throw new VectoException("no VTP-Cycle provided!");
 			}
 			var drivingCycle = DrivingCycleDataReader.ReadFromDataTable(vtpCycle.CycleData, vtpCycle.Name, false);
+			
+			ValidateFanTypeMatchesInputData(drivingCycle);
 
 			// Loading is not relevant as we use P_wheel
 			var vtpRunData = CreateVectoRunData(Segment, Segment.Missions.First(), 0.SI<Kilogram>());
@@ -225,10 +228,9 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			
 			var correctionFactors = JobInputData.FuelNCVs.ToDictionary(
 				keySelector: f => f.Type, 
-				elementSelector: f => (f.NCV / DeclarationData.FuelData.Lookup(
+				elementSelector: f => (DeclarationData.FuelData.Lookup(
 					f.Type, 
-					JobInputData.Vehicle.TankSystem).LowerHeatingValueVecto
-				).Value() * mileageCorrection);
+					JobInputData.Vehicle.TankSystem).LowerHeatingValueVecto / f.NCV).Value() * mileageCorrection);
 
 			vtpRunData.VTPData = new VTPData() {
 				CorrectionFactors = correctionFactors,
@@ -239,6 +241,17 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			vtpRunData.TorqueDriftRightWheel = JobInputData.TorqueDriftRightWheel;
 
 			yield return vtpRunData;
+		}
+
+		protected void ValidateFanTypeMatchesInputData(DrivingCycleData cycle)
+		{
+			var fan = JobInputData.Vehicle.Components.AuxiliaryInputData.Auxiliaries.First(x => x.Type == AuxiliaryType.Fan);
+			var fanFullyElectric = DeclarationData.Fan.FullyElectricTechnologies().Contains(fan.Technology.First());
+			var cycleHasFanElectricalPower = cycle.Entries.First().FanElectricalPower != null;
+
+			if (fanFullyElectric ^ cycleHasFanElectricalPower) {
+				throw new VectoException($"Fan is{(fanFullyElectric ? "" : " not")} electric, while cycle has{(cycleHasFanElectricalPower ? "" : " no")} input for fan electrical power");
+			}
 		}
 
 		public IInputDataProvider DataProvider { get; }

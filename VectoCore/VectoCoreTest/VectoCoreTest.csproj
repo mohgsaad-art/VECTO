@@ -2587,9 +2587,6 @@
     <None Include="TestData\Integration\VTPMode\GenericVehicle\class_5_generic vehicle_DECL_FanPel.vecto">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="TestData\Integration\VTPMode\GenericVehicle\class_5_generic vehicle_DECL_pollutants.vecto">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="TestData\Integration\VTPMode\GenericVehicle\VTP cycle_RD_2Hz.vdri">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -2600,9 +2597,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="TestData\Integration\VTPMode\GenericVehicle\VTP_rural_2Hz_FanPel.vdri">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="TestData\Integration\VTPMode\GenericVehicle\VTP_rural_2Hz_pollutants.vdri">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="TestData\Integration\VTPMode\GenericVehicle_CNG\class_5_generic vehicle_DECL.vecto">
@@ -3812,6 +3806,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\Integration\VTPMode\GenericVehicle\Rigid Truck_4x2_vehicle-class-3_EURO6_2018.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\Integration\VTPMode\GenericVehicle\Tractor_4x2_vehicle-class-5_Generic vehicle_FanPel.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\Integration\VTPMode\GenericVehicle_CNG\Tractor_4x2_vehicle-class-5_Generic vehicle.RSLT_MANUFACTURER.xml">

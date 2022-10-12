@@ -7,7 +7,7 @@
   },
   "Body": {
     "SavedInDeclMode": true,
-    "DeclarationVehicle": "Tractor_4x2_vehicle-class-5_Generic vehicle.xml",
+    "DeclarationVehicle": "Tractor_4x2_vehicle-class-5_Generic vehicle_FanPel.xml",
     "ManufacturerRecord": "Tractor_4x2_vehicle-class-5_Generic vehicle.RSLT_MANUFACTURER.xml",
     "Mileage": 10000.0,
     "FanPowerCoefficients": [
