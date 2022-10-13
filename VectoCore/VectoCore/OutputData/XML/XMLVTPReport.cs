@@ -493,6 +493,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 			}
 
 			ManufacturerRecord.ValidateSimulationToolVersion();
+			ManufacturerRecord.ValidateHash();
 
 			var allSuccess = true;
 

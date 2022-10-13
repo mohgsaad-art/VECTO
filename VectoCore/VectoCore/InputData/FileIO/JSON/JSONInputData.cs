@@ -52,6 +52,8 @@ using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Utils;
 using TUGraz.VectoHashing;
+using TUGraz.VectoHashing.Impl;
+using System.Globalization;
 
 namespace TUGraz.VectoCore.InputData.FileIO.JSON
 {
@@ -977,6 +979,25 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			
 			if (xmlVersionNewer) {
 				throw new VectoException($"Not allowed to run simulation because VECTO version is older than <SimulationToolVersion> in Manufacturer Report ({simToolVersionStr}).");
+			}
+		}
+
+		public void ValidateHash()
+		{
+			var xmlDoc = new XmlDocument();
+			xmlDoc.Load(Path.Combine(Path.GetFullPath(BasePath), Body["ManufacturerRecord"].Value<string>()));
+			
+			var signatureNode = xmlDoc.SelectSingleNode("//*[local-name()='Signature']");
+			var signatureDigest = new DigestData(signatureNode);
+
+			var parent = signatureNode.ParentNode;
+			parent.RemoveChild(signatureNode);
+
+			var hash = XMLHashProvider.ComputeHash(xmlDoc, signatureDigest.Reference.Remove(0, 1), signatureDigest.CanonicalizationMethods,
+				signatureDigest.DigestMethod);
+			
+			if (!hash.InnerText.Equals(signatureDigest.DigestValue)) {
+				throw new VectoException($"Manufacturer Report hash: {signatureDigest.DigestValue} differs from calculated hash: {hash.InnerText}");
 			}
 		}
 

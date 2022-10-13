@@ -79,5 +79,7 @@ namespace TUGraz.VectoCommon.InputData
 		DigestData JobDigest { get; }
 
 		void ValidateSimulationToolVersion();
+
+		void ValidateHash();
 	}
 }

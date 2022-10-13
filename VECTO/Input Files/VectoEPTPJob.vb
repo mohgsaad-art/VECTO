@@ -244,6 +244,10 @@ Public Class VectoVTPJob
 
     End Sub
 
+    Public Sub ValidateHash() Implements IManufacturerReport.ValidateHash
+
+    End Sub
+
     Public ReadOnly Property DataSource As DataSource Implements IInputDataProvider.DataSource
         Get
             Dim retVal As DataSource =  New DataSource() 
