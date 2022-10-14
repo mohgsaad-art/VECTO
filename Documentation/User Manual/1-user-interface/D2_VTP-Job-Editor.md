@@ -6,11 +6,11 @@
 
 ### Description
 
-A VTP-Job is intended to verify the declared data of a vehicle through an on-road test. VTP-Jobs can be either simulated in engineering mode or declaration mode. For a VTP simulation the measured driving cycle along with the VECTO job-file is required. The driving cycle has to contain the vehicle's velocity, rotational speed of the driven wheels, torque of the driven wheels, and fuel consumption in a temporal resolution of 2Hz.
+A VTP-Job is intended to verify the declared data of a vehicle through an on-road test. VTP-Jobs can be either simulated in engineering mode or declaration mode. For a VTP simulation the measured driving cycle along with the VECTO job-file is required. The driving cycle has to contain the vehicle's velocity, rotational speed of the driven wheels, torque of the driven wheels, fuel consumption, engine speed, engine torque, engine fan speed or power, and pollutants flow in a temporal resolution of 2Hz.
 VECTO computes the best matching gear based on the vehicle parameters, the actual vehicle speed and the engine speed.
 Next, VECTO re-computes the fuel consumption based for the given driving cycle. For a VTP-test the re-computed fuel consumption has to be within certain limits of the real fuel consumption.
 
-The [VTP job file (.vecto)](#vtp-job-file) includes all informations to run a VECTO calculation. It defines the vehicle and the driving cycle(s) to be used for calculation. In summary it defines:
+The [VTP job file (.vecto)](#vtp-job-file) includes all the necessary information to run a VECTO calculation. It defines the vehicle and the driving cycle(s) to be used for the calculations. In summary, it defines:
 
 -   Filepath to the Vehicle File (.xml)](#vehicle-editor which defines all relevant parameters, including all components
 -   Driving Cycles
@@ -22,7 +22,7 @@ The [VTP job file (.vecto)](#vtp-job-file) includes all informations to run a VE
 <div class="declaration">
 In declaration mode only the first given driving cycle is simulated as the results are further compared with the re-simulated Long-Haul results.
 
-In declaration mode the manufacturer's record file needs to be provided. Furthermore, declaration mode simulations consider correction factors for the net calorific value of the used fuel and the vehicle's mileage. In engineering mode the according input fields are not shown.
+In declaration mode the manufacturer's record file needs to be provided. Furthermore, declaration mode simulations consider correction factors for the net calorific value of the used fuel(s) and the vehicle's mileage. In engineering mode the according input fields are not shown. The fields for the net calorific values are shown only after the vehicle XML has been loaded, because it defines the fuel types used.
 </div>
 
 ### Relative File Paths

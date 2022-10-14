@@ -94,7 +94,6 @@ namespace TUGraz.VectoCore.OutputData.XML
 			public Scalar NMHCEmissions { protected set; get; } = null;
 			public Scalar NOxEmissions { protected set; get; } = null;
 			public Scalar THCEmissions { protected set; get; } = null;
-			public Scalar CO2Emissions { protected set; get; } = null;
 			public Scalar PMFlow { protected set; get; } = null;
 			public Scalar PositiveEngineWorkDeviation { protected set; get; } = null;
 			public ConvertedSI MeasuredPositiveEngineWork { protected set; get; } = null;
@@ -180,9 +179,6 @@ namespace TUGraz.VectoCore.OutputData.XML
 					THCEmissions = ((THC / measuredPositiveEngineWork) * Constants.GramsToMilligrams).SI<Scalar>();
 				}
 	
-				var CO2 = entries.Pairwise().Sum(x => x.Item1.CO2MassFlow * (x.Item2.Time - x.Item1.Time)).ConvertToGramm();
-				CO2Emissions = ((CO2 / measuredPositiveEngineWork) * Constants.GramsToMilligrams).SI<Scalar>();
-
 				var PN = entries.Pairwise().Sum(x => (x.Item1.PMNumberFlow * (x.Item2.Time - x.Item1.Time)).Value()).SI<Scalar>();
 				PMFlow = PN / measuredPositiveEngineWork;
 			}
@@ -355,7 +351,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 					)
 				),
 				new XElement(tns + "C_VTP", cVtp.ToXMLFormat(4)),
-				CreatePollutantsElement(vtpResult));
+				CreatePollutantsElement(vtpResult, CO2MeasuredCorrected));
 
 			var threshold = Constants.SimulationSettings.VTPEngineWorkDeviationThreshold;
 
@@ -370,18 +366,18 @@ namespace TUGraz.VectoCore.OutputData.XML
 			}
 		}
 
-		private XElement CreatePollutantsElement(ResultEntry vtpResult)
+		private XElement CreatePollutantsElement(ResultEntry vtpResult, SpecificFuelConsumption CO2MeasuredCorrected)
 		{ 
 			var pollutantsElement = new XElement(
 				tns + "Pollutants",
 				new XElement(tns + "CO", new XAttribute(XMLNames.Report_Results_Unit_Attr, "mg/kWh"),
-					vtpResult.CO2Emissions.ToXMLFormat(3)
+					vtpResult.COEmissions.ToXMLFormat(3)
 				),
 				new XElement(tns + "NOx", new XAttribute(XMLNames.Report_Results_Unit_Attr, "mg/kWh"),
 					vtpResult.NOxEmissions.ToXMLFormat(3)
 				),
 				new XElement(tns + "CO2", new XAttribute(XMLNames.Report_Results_Unit_Attr, "mg/kWh"),
-					vtpResult.CO2Emissions.ToXMLFormat(3)
+					(CO2MeasuredCorrected.ConvertToGramPerKiloWattHour() * Constants.GramsToMilligrams).ToXMLFormat(3)
 				)
 			);
 

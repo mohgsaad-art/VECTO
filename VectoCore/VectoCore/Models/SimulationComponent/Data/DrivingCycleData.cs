@@ -152,7 +152,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 				NMHCMassFlow = entry.NMHCMassFlow;
 				NOxMassFlow = entry.NOxMassFlow;
 				THCMassFlow = entry.THCMassFlow;
-				CO2MassFlow	= entry.CO2MassFlow;
 				PMNumberFlow = entry.PMNumberFlow;
 			}
 
@@ -273,8 +272,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 			public KilogramPerSecond NOxMassFlow;
 
 			public KilogramPerSecond THCMassFlow;
-
-			public KilogramPerSecond CO2MassFlow;
 
 			public PerSecond PMNumberFlow;
 

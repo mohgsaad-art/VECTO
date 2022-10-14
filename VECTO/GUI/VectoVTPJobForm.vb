@@ -73,6 +73,13 @@ Public Class VectoVTPJobForm
 
         pnManufacturerRecord.Visible = Cfg.DeclMode
         pnFanParameters.Enabled = Not Cfg.DeclMode
+        _ncvGrpBox.Visible = Cfg.DeclMode
+        _ncvFuel1Lbl.Visible = Cfg.DeclMode
+        _ncvFuel1Txtbox.Visible = Cfg.DeclMode
+        _ncvFuel1UnitLbl.Visible = Cfg.DeclMode
+        _ncvFuel2Lbl.Visible = Cfg.DeclMode
+        _ncvFuel2Txtbox.Visible = Cfg.DeclMode
+        _ncvFuel2UnitLbl.Visible = Cfg.DeclMode
 
         GrCycles.Enabled = True
 

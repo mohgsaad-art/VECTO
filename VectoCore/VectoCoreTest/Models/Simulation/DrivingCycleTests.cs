@@ -213,11 +213,11 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			TestCase("t,v,grad,Padd,n,gear", CycleType.MeasuredSpeedGear),
 
 			// Verification test simulation
-			TestCase("<t>,<v>,<n_eng>,<n_fan>,<tq_left>,<tq_right>,<n_wh_left>,<n_wh_right>,<fc_DIESEL CI>,<tq_eng>,<CO>,<NOx>,<THC>,<CO2>,<PN>", CycleType.VTP),
-			TestCase("<t>,<v>,<n_eng>,<n_fan>,<tq_left>,<tq_right>,<n_wh_left>,<n_wh_right>,<fc_DIESEL CI>,<gear>,<tq_eng>,<CO>,<NOx>,<THC>,<CO2>,<PN>", CycleType.VTP),
-			TestCase("<t>,<v>,<n_eng>,<Pel_fan>,<tq_left>,<tq_right>,<n_wh_left>,<n_wh_right>,<fc_DIESEL CI>,<gear>,<tq_eng>,<CH4>,<CO>,<NMHC>,<NOx>,<CO2>,<PN>", CycleType.VTP),
-			TestCase("<t>,<v>,<n_eng>,<n_fan>,<tq_left>,<tq_right>,<n_wh_left>,<n_wh_right>,<fc_NG CI>,<tq_eng>,<CH4>,<CO>,<NMHC>,<NOx>,<CO2>,<PN>", CycleType.VTP),
-			TestCase("<t>,<v>,<n_eng>,<n_fan>,<tq_left>,<tq_right>,<n_wh_left>,<n_wh_right>,<fc_NG CI>,<fc_DIESEL CI>,<tq_eng>,<CH4>,<CO>,<NMHC>,<NOx>,<THC>,<CO2>,<PN>", CycleType.VTP)
+			TestCase("<t>,<v>,<n_eng>,<n_fan>,<tq_left>,<tq_right>,<n_wh_left>,<n_wh_right>,<fc_DIESEL CI>,<tq_eng>,<CO>,<NOx>,<THC>,<PN>", CycleType.VTP),
+			TestCase("<t>,<v>,<n_eng>,<n_fan>,<tq_left>,<tq_right>,<n_wh_left>,<n_wh_right>,<fc_DIESEL CI>,<gear>,<tq_eng>,<CO>,<NOx>,<THC>,<PN>", CycleType.VTP),
+			TestCase("<t>,<v>,<n_eng>,<Pel_fan>,<tq_left>,<tq_right>,<n_wh_left>,<n_wh_right>,<fc_DIESEL CI>,<gear>,<tq_eng>,<CH4>,<CO>,<NMHC>,<NOx>,<PN>", CycleType.VTP),
+			TestCase("<t>,<v>,<n_eng>,<n_fan>,<tq_left>,<tq_right>,<n_wh_left>,<n_wh_right>,<fc_NG CI>,<tq_eng>,<CH4>,<CO>,<NMHC>,<NOx>,<PN>", CycleType.VTP),
+			TestCase("<t>,<v>,<n_eng>,<n_fan>,<tq_left>,<tq_right>,<n_wh_left>,<n_wh_right>,<fc_NG CI>,<fc_DIESEL CI>,<tq_eng>,<CH4>,<CO>,<NMHC>,<NOx>,<THC>,<PN>", CycleType.VTP)
 		]
 		public void DrivingCycle_AutoDetect(string cycle, CycleType type)
 		{
@@ -236,11 +236,11 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			TestCase("", CycleType.MeasuredSpeed),
 			TestCase("<t>,<v>,<gear>,<Pwheel>,<s>,<grad>,<Padd>,<n>,<gear>,<vair_res>,<vair_beta>,<Aux_HVAC>,<Aux_HP>",
 				CycleType.MeasuredSpeedGear),
-			TestCase("<t>,<v>,<n_eng>,<n_fan>,<tq_left>,<tq_right>,<n_wh_left>,<n_wh_right>,<fc_DIESEL CI>,<CO>,<NOx>,<THC>,<CO2>,<PN>", 
+			TestCase("<t>,<v>,<n_eng>,<n_fan>,<tq_left>,<tq_right>,<n_wh_left>,<n_wh_right>,<fc_DIESEL CI>,<CO>,<NOx>,<THC>,<PN>", 
 				CycleType.VTP),
-			TestCase("<t>,<v>,<n_eng>,<n_fan>,<tq_left>,<tq_right>,<n_wh_left>,<n_wh_right>,<fc_NG CI>,<tq_eng>,<CH4>,<NMHC>,<CO>,<NOx>,<THC>,<CO2>", 
+			TestCase("<t>,<v>,<n_eng>,<n_fan>,<tq_left>,<tq_right>,<n_wh_left>,<n_wh_right>,<fc_NG CI>,<tq_eng>,<CH4>,<NMHC>,<CO>,<NOx>,<THC>", 
 				CycleType.VTP),
-			TestCase("<t>,<v>,<n_eng>,<n_fan>,<tq_left>,<tq_right>,<n_wh_left>,<n_wh_right>,<fc_NG CI>,<tq_eng>,<CO>,<NOx>,<CO2>,<PN>", 
+			TestCase("<t>,<v>,<n_eng>,<n_fan>,<tq_left>,<tq_right>,<n_wh_left>,<n_wh_right>,<fc_NG CI>,<tq_eng>,<CO>,<NOx>,<PN>", 
 				CycleType.VTP),
 		]
 		public void DrivingCycle_AutoDetect_Exception(string cycle, CycleType type)

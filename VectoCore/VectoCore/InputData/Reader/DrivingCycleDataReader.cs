@@ -368,7 +368,6 @@ namespace TUGraz.VectoCore.InputData.Reader
 			public const string NMHCMassFlow = "NMHC";
 			public const string NOxMassFlow = "NOx";
 			public const string THCMassFlow = "THC";
-			public const string CO2MassFlow = "CO2";
 			public const string PMNumberFlow = "PN";
 		}
 
@@ -880,15 +879,16 @@ namespace TUGraz.VectoCore.InputData.Reader
 								: null,
 							CombustionEngineTorque = row.ParseDouble(Fields.CombustionEngineTorque).SI<NewtonMeter>(),
 							CH4MassFlow = table.Columns.Contains(Fields.CH4MassFlow)
-								? (row.ParseDouble(Fields.CH4MassFlow) / Constants.Kilo).SI<KilogramPerSecond>()
+								? row.ParseDouble(Fields.CH4MassFlow).SI(Unit.SI.Gramm.Per.Second).Cast<KilogramPerSecond>()
 								: null,
-							COMassFlow = (row.ParseDouble(Fields.COMassFlow) / Constants.Kilo).SI<KilogramPerSecond>(),
+							COMassFlow = row.ParseDouble(Fields.COMassFlow).SI(Unit.SI.Gramm.Per.Second).Cast<KilogramPerSecond>(),
 							NMHCMassFlow = table.Columns.Contains(Fields.NMHCMassFlow)
-								? (row.ParseDouble(Fields.NMHCMassFlow) / Constants.Kilo).SI<KilogramPerSecond>()
+								? row.ParseDouble(Fields.NMHCMassFlow).SI(Unit.SI.Gramm.Per.Second).Cast<KilogramPerSecond>()
 								: null,
-							NOxMassFlow = (row.ParseDouble(Fields.NOxMassFlow) / Constants.Kilo).SI<KilogramPerSecond>(),
-							THCMassFlow = (row.ParseDouble(Fields.THCMassFlow) / Constants.Kilo).SI<KilogramPerSecond>(),
-							CO2MassFlow = (row.ParseDouble(Fields.CO2MassFlow) / Constants.Kilo).SI<KilogramPerSecond>(),
+							NOxMassFlow = row.ParseDouble(Fields.NOxMassFlow).SI(Unit.SI.Gramm.Per.Second).Cast<KilogramPerSecond>(),
+							THCMassFlow = table.Columns.Contains(Fields.THCMassFlow)
+								? row.ParseDouble(Fields.THCMassFlow).SI(Unit.SI.Gramm.Per.Second).Cast<KilogramPerSecond>()
+								: null,
 							PMNumberFlow = row.ParseDouble(Fields.PMNumberFlow).SI<PerSecond>()
 						};
 					}).ToArray();
@@ -909,7 +909,6 @@ namespace TUGraz.VectoCore.InputData.Reader
 					Fields.CombustionEngineTorque,
 					Fields.COMassFlow,
 					Fields.NOxMassFlow,
-					Fields.CO2MassFlow,
 					Fields.PMNumberFlow
 				};
 
@@ -931,7 +930,6 @@ namespace TUGraz.VectoCore.InputData.Reader
 					Fields.NMHCMassFlow,
 					Fields.NOxMassFlow,
 					Fields.THCMassFlow,
-					Fields.CO2MassFlow,
 					Fields.PMNumberFlow
 				}.Concat(EnumHelper.GetValues<FuelType>().Select(x => "fc_" + x.ToXMLFormat()));
 
