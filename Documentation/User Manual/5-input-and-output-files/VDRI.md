@@ -102,6 +102,7 @@ s [m]              , v [km/h]    , stop [s]    , grad [%]    , Padd [kW] |
 ### Engineering Mode: Measured-Speed, Time-Based Cycle
 This driving cycle defines the actual measured speed over time. Vecto tries to simulate the vehicle model using this speed as the actual vehicle speed.
 Due to differences in the real and simulated shift strategies a small difference in speed can occur, but Vecto immediately tries to catch up after the gear is engaged again.
+This type of cycle is now supported for BEVs (E2, E3, E4, IEPC) also.
 
 Header: **t, v***\[, grad]\[, Padd]\[, vair\_res, vair\_beta\]*
 
@@ -131,7 +132,7 @@ t [s]     v [km/h] , grad [%]    , Padd [kW]
 
 This driving cycle defines the actual measured speed of the vehicle, the gear, and the engine speed over time.
 It overrides the shift strategy of VECTO and also directly sets the engine speed.
-
+This type of cycle is now supported for BEVs (E2, IEPC) also.
 
 Header: **t, v, gear***\[, tc\_active, grad]\[, Padd]\[, vair\_res, vair\_beta]\[, Aux\_ID\]*
 
@@ -161,6 +162,7 @@ t [s]              , v [km/h]    , gear [-]    , grad [%]    , Padd [kW]
 
 ### Engineering Mode: Pwheel (SiCo), Time-Based
 This driving cycle defines the power measured at the wheels over time. VECTO tries to simulate the vehicle with this power requirement.
+This type of cycle is now supported for BEVs (E2, E3, E4, IEPC) also.
 
 Header: **t, Pwheel, gear, n***\[, Padd]*
 
@@ -172,7 +174,7 @@ Units are optional and are enclosed in [square-brackets] after the header-column
 | **t**      | [s]   | The absolute time. Must always be increasing.                                                                     |
 | **Pwheel** | [kW]  | Power at the wheels.                                                                                              |
 | **gear**   | [-]   | The current gear. Must be >= 0 (0 is neutral).                                                                    |
-| **n**      | [rpm] | The actual engine speed. Must be >= 0 rpm.                                                                        |
+| **n**      | [rpm] | The actual engine speed for conventionals or the electric motor speed for BEVs. Must be >= 0 rpm.                                                                        |
 | *Padd*     | [kW]  | Additional auxiliary power demand. This power demand will be directly added to the engine power. Must be >= 0 kW. |
 
 **Example:**

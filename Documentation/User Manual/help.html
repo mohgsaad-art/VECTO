@@ -6,76 +6,81 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <title>VECTO xEV User Manual</title>
   <style>
-    code{white-space: pre-wrap;}
-    span.smallcaps{font-variant: small-caps;}
-    span.underline{text-decoration: underline;}
-    div.column{display: inline-block; vertical-align: top; width: 50%;}
-    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-    ul.task-list{list-style: none;}
-    pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-    pre > code.sourceCode > span:empty { height: 1.2em; }
-    .sourceCode { overflow: visible; }
-    code.sourceCode > span { color: inherit; text-decoration: inherit; }
-    div.sourceCode { margin: 1em 0; }
-    pre.sourceCode { margin: 0; }
-    @media screen {
-    div.sourceCode { overflow: auto; }
-    }
-    @media print {
-    pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-    }
-    pre.numberSource code
-      { counter-reset: source-line 0; }
-    pre.numberSource code > span
-      { position: relative; left: -4em; counter-increment: source-line; }
-    pre.numberSource code > span > a:first-child::before
-      { content: counter(source-line);
-        position: relative; left: -1em; text-align: right; vertical-align: baseline;
-        border: none; display: inline-block;
-        -webkit-touch-callout: none; -webkit-user-select: none;
-        -khtml-user-select: none; -moz-user-select: none;
-        -ms-user-select: none; user-select: none;
-        padding: 0 4px; width: 4em;
-        color: #aaaaaa;
-      }
-    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-    div.sourceCode
-      {   }
-    @media screen {
-    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-    }
-    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-    code span.at { color: #7d9029; } /* Attribute */
-    code span.bn { color: #40a070; } /* BaseN */
-    code span.bu { } /* BuiltIn */
-    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-    code span.ch { color: #4070a0; } /* Char */
-    code span.cn { color: #880000; } /* Constant */
-    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-    code span.dt { color: #902000; } /* DataType */
-    code span.dv { color: #40a070; } /* DecVal */
-    code span.er { color: #ff0000; font-weight: bold; } /* Error */
-    code span.ex { } /* Extension */
-    code span.fl { color: #40a070; } /* Float */
-    code span.fu { color: #06287e; } /* Function */
-    code span.im { } /* Import */
-    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-    code span.op { color: #666666; } /* Operator */
-    code span.ot { color: #007020; } /* Other */
-    code span.pp { color: #bc7a00; } /* Preprocessor */
-    code span.sc { color: #4070a0; } /* SpecialChar */
-    code span.ss { color: #bb6688; } /* SpecialString */
-    code span.st { color: #4070a0; } /* String */
-    code span.va { color: #19177c; } /* Variable */
-    code span.vs { color: #4070a0; } /* VerbatimString */
-    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-  </style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
   <style type="text/css">body {height: 100%;min-height: 100%;font-family: Calibri, sans-serif;}.section.level1 {padding-left:336px}nav, #TOC {position: fixed;width: 21em;left: 0px;top: 3.5em;bottom: 2em;background-color: #eee;overflow: scroll;}#HEADER{top: 0px;left: 1px;border-bottom-style: solid;border-bottom-width: thin;border-bottom-color: #aaa;height: 2.5em;}#FOOTER {border-top-style: solid;border-top-width: thin;border-top-color: #aaa;bottom: 0px;left: 1px;}#HEADER, #FOOTER {width: auto;position: fixed;width: 99%;background: white;padding: 5px;}body > div:not(#TOC):not(#HEADER):not(#FOOTER) {display: none;padding-left: 21em;padding-top: 2em;padding-bottom: 2em;margin-left: 1em;width: 50em;}table {border-collapse: collapse;border-spacing: 0;}nav ul {line-height: 1.7em;list-style-type: none;list-style-position: inside;}th {font-weight: bold;}th, td {padding: 6px;border-width: 1px;border-style: solid;border-color: #aaa;}h1, h2, h3 {padding-bottom: 3px;border-bottom-width: 1px;border-bottom-style: solid;border-bottom-color: #aaa;}dt {font-style: italic;font-weight: bold;}.ui-resizable-handle {position: absolute;width: 20px;cursor: ew-resize;right: 0px;height: 100%;top: 0px;}div.vecto2 {border-left: 3px solid gray;padding-left: 5px;margin-top: 2em;background: rgba(128,128,128,0.05);}div.vecto2:before {content: 'Note: Vecto 2.2!';background: gray;color: white;padding: 5px 5px 5px 5px;margin-left: -8px;font-weight: bold;display: inline-block;font-size: smaller;}div.vecto3 {border-left: 3px solid green;padding-left: 5px;margin-top: 2em;background: rgba(0,128,0,0.05);}div.vecto3:before {content: 'Note: Vecto 3.x!';background: green;color: white;padding: 5px 5px 5px 5px;margin-left: -8px;font-weight: bold;display: inline-block;font-size: smaller;}div.engineering{border-right: 5px solid #d51000;margin-right: -50px;background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+DQo8IS0tIENyZWF0ZWQgd2l0aCBJbmtzY2FwZSAoaHR0cDovL3d3dy5pbmtzY2FwZS5vcmcvKSAtLT4NCg0KPHN2Zw0KICAgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIg0KICAgeG1sbnM6Y2M9Imh0dHA6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL25zIyINCiAgIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyINCiAgIHhtbG5zOnN2Zz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciDQogICB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciDQogICB4bWxuczpzb2RpcG9kaT0iaHR0cDovL3NvZGlwb2RpLnNvdXJjZWZvcmdlLm5ldC9EVEQvc29kaXBvZGktMC5kdGQiDQogICB4bWxuczppbmtzY2FwZT0iaHR0cDovL3d3dy5pbmtzY2FwZS5vcmcvbmFtZXNwYWNlcy9pbmtzY2FwZSINCiAgIHdpZHRoPSI0NS4xNTU1NTZtbSINCiAgIGhlaWdodD0iNDQuMDI2NjY5bW0iDQogICB2aWV3Qm94PSIwIDAgMTYwIDE1Ni4wMDAwMSINCiAgIGlkPSJzdmc0MTY3Ig0KICAgdmVyc2lvbj0iMS4xIg0KICAgaW5rc2NhcGU6dmVyc2lvbj0iMC45MSByMTM3MjUiDQogICBzb2RpcG9kaTpkb2NuYW1lPSJpY29uX2VuZ2luZWVyaW5nLW1vZGUuc3ZnIj4NCiAgPGRlZnMNCiAgICAgaWQ9ImRlZnM0MTY5IiAvPg0KICA8c29kaXBvZGk6bmFtZWR2aWV3DQogICAgIGlkPSJiYXNlIg0KICAgICBwYWdlY29sb3I9IiNmZmZmZmYiDQogICAgIGJvcmRlcmNvbG9yPSIjNjY2NjY2Ig0KICAgICBib3JkZXJvcGFjaXR5PSIxLjAiDQogICAgIGlua3NjYXBlOnBhZ2VvcGFjaXR5PSIwLjAiDQogICAgIGlua3NjYXBlOnBhZ2VzaGFkb3c9IjIiDQogICAgIGlua3NjYXBlOnpvb209IjIuOCINCiAgICAgaW5rc2NhcGU6Y3g9IjE4LjI1ODUwNCINCiAgICAgaW5rc2NhcGU6Y3k9Ijk3LjIzNzM3NCINCiAgICAgaW5rc2NhcGU6ZG9jdW1lbnQtdW5pdHM9InB4Ig0KICAgICBpbmtzY2FwZTpjdXJyZW50LWxheWVyPSJsYXllcjEiDQogICAgIHNob3dncmlkPSJmYWxzZSINCiAgICAgZml0LW1hcmdpbi10b3A9IjAiDQogICAgIGZpdC1tYXJnaW4tbGVmdD0iMCINCiAgICAgZml0LW1hcmdpbi1yaWdodD0iMCINCiAgICAgZml0LW1hcmdpbi1ib3R0b209IjAiDQogICAgIGlua3NjYXBlOndpbmRvdy13aWR0aD0iMTkyMCINCiAgICAgaW5rc2NhcGU6d2luZG93LWhlaWdodD0iMTEzOCINCiAgICAgaW5rc2NhcGU6d2luZG93LXg9Ii04Ig0KICAgICBpbmtzY2FwZTp3aW5kb3cteT0iLTgiDQogICAgIGlua3NjYXBlOndpbmRvdy1tYXhpbWl6ZWQ9IjEiIC8+DQogIDxtZXRhZGF0YQ0KICAgICBpZD0ibWV0YWRhdGE0MTcyIj4NCiAgICA8cmRmOlJERj4NCiAgICAgIDxjYzpXb3JrDQogICAgICAgICByZGY6YWJvdXQ9IiI+DQogICAgICAgIDxkYzpmb3JtYXQ+aW1hZ2Uvc3ZnK3htbDwvZGM6Zm9ybWF0Pg0KICAgICAgICA8ZGM6dHlwZQ0KICAgICAgICAgICByZGY6cmVzb3VyY2U9Imh0dHA6Ly9wdXJsLm9yZy9kYy9kY21pdHlwZS9TdGlsbEltYWdlIiAvPg0KICAgICAgICA8ZGM6dGl0bGU+PC9kYzp0aXRsZT4NCiAgICAgIDwvY2M6V29yaz4NCiAgICA8L3JkZjpSREY+DQogIDwvbWV0YWRhdGE+DQogIDxnDQogICAgIGlua3NjYXBlOmxhYmVsPSJMYXllciAxIg0KICAgICBpbmtzY2FwZTpncm91cG1vZGU9ImxheWVyIg0KICAgICBpZD0ibGF5ZXIxIg0KICAgICB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMjM0LjI4NTcxLC0zNDUuNzkwNzgpIj4NCiAgICA8cGF0aA0KICAgICAgIGlua3NjYXBlOmNvbm5lY3Rvci1jdXJ2YXR1cmU9IjAiDQogICAgICAgZD0ibSAyNTQuMjg1NzEsMzQ1Ljc5MDc4IC0yLDQgMjEsMTIgYyAwLDEwIC00LDE4IC0xMywyMyBsIC0yMSwtMTIgLTEsMiBjIDUsMTUgMTUsMjUgMzUsMjUgNSwwIDIwLDE1IDI4LDIzIGwgMTYsLTE2IGMgLTgsLTggLTI2LC0yNiAtMjYsLTMxIDAsLTE4IC01LC0zMCAtMzcsLTMwIHogbSAxMjUsNSAtMjAsMTQgLTIsOCAtNTgsNTggLTgsLTUgLTQsNCBjIDAsMTIgLTE0LDE4IC0yMCwxOCBsIC0zMywzMyBjIDAsMTAgMTEsMjEgMjEsMjEgbCAzMywtMzMgYyAwLC02IDYsLTIwIDE4LC0yMCBsIDQsLTQgLTUsLTggNTgsLTU4IDgsLTIgMTQsLTIwIC02LC02IHogbSAtNTAsNjggLTE2LDE2IGMgMTIsMTIgMjgsMjggMjgsMzMgMCwxOCA1LDMwIDM3LDMwIGwgMiwtNCAtMjEsLTEyIGMgMCwtMTAgNCwtMTggMTMsLTIzIGwgMjEsMTIgMSwtMiBjIC01LC0xNSAtMTUsLTI1IC0zNSwtMjUgLTUsMCAtMTgsLTEzIC0zMCwtMjUgeiINCiAgICAgICBpZD0iaW1hZ2Vib3RfMy0wIg0KICAgICAgIHN0eWxlPSJmaWxsOiNkNTEwMDA7ZmlsbC1vcGFjaXR5OjEiIC8+DQogIDwvZz4NCjwvc3ZnPg0K);background-color: rgba(255,0,0,0.2);padding: 2px 50px 2px 5px;margin-bottom: 0.5em;background-repeat: no-repeat;background-size: 38px;background-position: top right;}div.declaration {border-right: 5px solid #08c300;margin-right: -50px;background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+DQo8IS0tIENyZWF0ZWQgd2l0aCBJbmtzY2FwZSAoaHR0cDovL3d3dy5pbmtzY2FwZS5vcmcvKSAtLT4NCg0KPHN2Zw0KICAgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIg0KICAgeG1sbnM6Y2M9Imh0dHA6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL25zIyINCiAgIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyINCiAgIHhtbG5zOnN2Zz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciDQogICB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciDQogICB4bWxuczpzb2RpcG9kaT0iaHR0cDovL3NvZGlwb2RpLnNvdXJjZWZvcmdlLm5ldC9EVEQvc29kaXBvZGktMC5kdGQiDQogICB4bWxuczppbmtzY2FwZT0iaHR0cDovL3d3dy5pbmtzY2FwZS5vcmcvbmFtZXNwYWNlcy9pbmtzY2FwZSINCiAgIHdpZHRoPSI0OS43OTY4MjJtbSINCiAgIGhlaWdodD0iNDkuNzk2ODIybW0iDQogICB2aWV3Qm94PSIwIDAgMTc2LjQ0NTQzIDE3Ni40NDU0MyINCiAgIGlkPSJzdmcyIg0KICAgdmVyc2lvbj0iMS4xIg0KICAgaW5rc2NhcGU6dmVyc2lvbj0iMC45MSByMTM3MjUiDQogICBzb2RpcG9kaTpkb2NuYW1lPSJpY29uX2RlY2xhcmF0aW9uLW1vZGUuc3ZnIj4NCiAgPGRlZnMNCiAgICAgaWQ9ImRlZnM0IiAvPg0KICA8c29kaXBvZGk6bmFtZWR2aWV3DQogICAgIGlkPSJiYXNlIg0KICAgICBwYWdlY29sb3I9IiNmZmZmZmYiDQogICAgIGJvcmRlcmNvbG9yPSIjNjY2NjY2Ig0KICAgICBib3JkZXJvcGFjaXR5PSIxLjAiDQogICAgIGlua3NjYXBlOnBhZ2VvcGFjaXR5PSIwLjAiDQogICAgIGlua3NjYXBlOnBhZ2VzaGFkb3c9IjIiDQogICAgIGlua3NjYXBlOnpvb209IjEuOTc5ODk5Ig0KICAgICBpbmtzY2FwZTpjeD0iMTcuMjkyOTMzIg0KICAgICBpbmtzY2FwZTpjeT0iNDYuODI4NzU0Ig0KICAgICBpbmtzY2FwZTpkb2N1bWVudC11bml0cz0icHgiDQogICAgIGlua3NjYXBlOmN1cnJlbnQtbGF5ZXI9ImxheWVyMSINCiAgICAgc2hvd2dyaWQ9ImZhbHNlIg0KICAgICBmaXQtbWFyZ2luLXRvcD0iMCINCiAgICAgZml0LW1hcmdpbi1sZWZ0PSIwIg0KICAgICBmaXQtbWFyZ2luLXJpZ2h0PSIwIg0KICAgICBmaXQtbWFyZ2luLWJvdHRvbT0iMCINCiAgICAgaW5rc2NhcGU6d2luZG93LXdpZHRoPSIxOTIwIg0KICAgICBpbmtzY2FwZTp3aW5kb3ctaGVpZ2h0PSIxMTM4Ig0KICAgICBpbmtzY2FwZTp3aW5kb3cteD0iLTgiDQogICAgIGlua3NjYXBlOndpbmRvdy15PSItOCINCiAgICAgaW5rc2NhcGU6d2luZG93LW1heGltaXplZD0iMSIgLz4NCiAgPG1ldGFkYXRhDQogICAgIGlkPSJtZXRhZGF0YTciPg0KICAgIDxyZGY6UkRGPg0KICAgICAgPGNjOldvcmsNCiAgICAgICAgIHJkZjphYm91dD0iIj4NCiAgICAgICAgPGRjOmZvcm1hdD5pbWFnZS9zdmcreG1sPC9kYzpmb3JtYXQ+DQogICAgICAgIDxkYzp0eXBlDQogICAgICAgICAgIHJkZjpyZXNvdXJjZT0iaHR0cDovL3B1cmwub3JnL2RjL2RjbWl0eXBlL1N0aWxsSW1hZ2UiIC8+DQogICAgICAgIDxkYzp0aXRsZT48L2RjOnRpdGxlPg0KICAgICAgPC9jYzpXb3JrPg0KICAgIDwvcmRmOlJERj4NCiAgPC9tZXRhZGF0YT4NCiAgPGcNCiAgICAgaW5rc2NhcGU6bGFiZWw9IkxheWVyIDEiDQogICAgIGlua3NjYXBlOmdyb3VwbW9kZT0ibGF5ZXIiDQogICAgIGlkPSJsYXllcjEiDQogICAgIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0yNjYuMzQwODMsLTUzLjQ4Njk3NCkiPg0KICAgIDxwYXRoDQogICAgICAgc29kaXBvZGk6dHlwZT0ic3RhciINCiAgICAgICBzdHlsZT0iZmlsbDojMDhjMzAwO2ZpbGwtb3BhY2l0eToxO3N0cm9rZTpub25lO3N0cm9rZS13aWR0aDoyO3N0cm9rZS1taXRlcmxpbWl0OjQ7c3Ryb2tlLWRhc2hhcnJheTpub25lO3N0cm9rZS1vcGFjaXR5OjEiDQogICAgICAgaWQ9InBhdGg0MTQzIg0KICAgICAgIHNvZGlwb2RpOnNpZGVzPSIxMiINCiAgICAgICBzb2RpcG9kaTpjeD0iMzU0LjU2MzU0Ig0KICAgICAgIHNvZGlwb2RpOmN5PSIxNDEuNzA5NjkiDQogICAgICAgc29kaXBvZGk6cjE9Ijc3LjY4MDA4NCINCiAgICAgICBzb2RpcG9kaTpyMj0iODguMjcyODI3Ig0KICAgICAgIHNvZGlwb2RpOmFyZzE9IjAuNzQ4OTc3MDMiDQogICAgICAgc29kaXBvZGk6YXJnMj0iMS4wMTA3NzY0Ig0KICAgICAgIGlua3NjYXBlOmZsYXRzaWRlZD0iZmFsc2UiDQogICAgICAgaW5rc2NhcGU6cm91bmRlZD0iMC40Ig0KICAgICAgIGlua3NjYXBlOnJhbmRvbWl6ZWQ9IjAiDQogICAgICAgZD0ibSA0MTEuNDU1MzMsMTk0LjYwMTI3IGMgLTYuNTU2MzksNy4wNTIyNSAtMS44NDI3NiwxNi43ODIwNiAtMTAuMDAwOTksMjEuODk3MDkgLTguMTU4MjQsNS4xMTUwMyAtMTQuODYyNzQsLTMuMzY2NTUgLTI0LjA2Njg2LC0wLjUzNzMyIC05LjIwNDEyLDIuODI5MjMgLTkuOTg2OSwxMy42MTIzMSAtMTkuNjA5NjYsMTMuOTYyOTMgLTkuNjIyNzUsMC4zNTA2MyAtMTEuMTg4MjMsLTEwLjM0Njg4IC0yMC41NzM4NCwtMTIuNDk4NzYgLTkuMzg1NjIsLTIuMTUxODcgLTE1LjQ1NTA3LDYuNzk1MTYgLTIzLjk2MzkzLDIuMjg3NDMgLTguNTA4ODcsLTQuNTA3NzIgLTQuNTE1ODUsLTE0LjU1NDc4IC0xMS41NjgxLC0yMS4xMTExNiAtNy4wNTIyNCwtNi41NTYzOSAtMTYuNzgyMDUsLTEuODQyNzYgLTIxLjg5NzA4LC0xMC4wMDEgLTUuMTE1MDMsLTguMTU4MjMgMy4zNjY1NSwtMTQuODYyNzMgMC41MzczMiwtMjQuMDY2ODUgLTIuODI5MjQsLTkuMjA0MTIgLTEzLjYxMjMxLC05Ljk4NjkgLTEzLjk2Mjk0LC0xOS42MDk2NiAtMC4zNTA2MywtOS42MjI3NSAxMC4zNDY4OSwtMTEuMTg4MjMgMTIuNDk4NzYsLTIwLjU3Mzg1IDIuMTUxODcsLTkuMzg1NjEgLTYuNzk1MTUsLTE1LjQ1NTA2IC0yLjI4NzQzLC0yMy45NjM5MiA0LjUwNzczLC04LjUwODg2NyAxNC41NTQ3OCwtNC41MTU4NTMgMjEuMTExMTcsLTExLjU2ODA5OSA2LjU1NjM4LC03LjA1MjI0NiAxLjg0Mjc1LC0xNi43ODIwNTYgMTAuMDAwOTksLTIxLjg5NzA4NCA4LjE1ODI0LC01LjExNTAzIDE0Ljg2Mjc0LDMuMzY2NTUgMjQuMDY2ODYsMC41MzczMTggOS4yMDQxMSwtMi44MjkyMzIgOS45ODY5LC0xMy42MTIzMDkgMTkuNjA5NjUsLTEzLjk2MjkzNSA5LjYyMjc2LC0wLjM1MDYyNyAxMS4xODgyMywxMC4zNDY4ODYgMjAuNTczODUsMTIuNDk4NzU5IDkuMzg1NjIsMi4xNTE4NzIgMTUuNDU1MDYsLTYuNzk1MTU1IDIzLjk2MzkzLC0yLjI4NzQzIDguNTA4ODYsNC41MDc3MjcgNC41MTU4NSwxNC41NTQ3ODMgMTEuNTY4MDksMjEuMTExMTY4IDcuMDUyMjUsNi41NTYzODQgMTYuNzgyMDYsMS44NDI3NTUgMjEuODk3MDksMTAuMDAwOTkyIDUuMTE1MDMsOC4xNTgyNDEgLTMuMzY2NTUsMTQuODYyNzQxIC0wLjUzNzMyLDI0LjA2Njg1MSAyLjgyOTIzLDkuMjA0MTIgMTMuNjEyMzEsOS45ODY5IDEzLjk2MjkzLDE5LjYwOTY2IDAuMzUwNjMsOS42MjI3NSAtMTAuMzQ2ODgsMTEuMTg4MjMgLTEyLjQ5ODc1LDIwLjU3Mzg1IC0yLjE1MTg4LDkuMzg1NjEgNi43OTUxNSwxNS40NTUwNiAyLjI4NzQyLDIzLjk2MzkzIC00LjUwNzcyLDguNTA4ODYgLTE0LjU1NDc4LDQuNTE1ODUgLTIxLjExMTE2LDExLjU2ODA5IHoiDQogICAgICAgaW5rc2NhcGU6dHJhbnNmb3JtLWNlbnRlci14PSI1LjI0NTM5ODgiDQogICAgICAgaW5rc2NhcGU6dHJhbnNmb3JtLWNlbnRlci15PSItMy4yODMzMTg2IiAvPg0KICAgIDxjaXJjbGUNCiAgICAgICBzdHlsZT0iZmlsbDojZmZmZmZmO2ZpbGwtb3BhY2l0eToxO3N0cm9rZTpub25lO3N0cm9rZS13aWR0aDoyO3N0cm9rZS1taXRlcmxpbWl0OjQ7c3Ryb2tlLWRhc2hhcnJheTpub25lO3N0cm9rZS1vcGFjaXR5OjEiDQogICAgICAgaWQ9InBhdGg0MTQ1Ig0KICAgICAgIGN4PSIzNTQuNTYzNTQiDQogICAgICAgY3k9IjE0MS43MDk2OSINCiAgICAgICByPSI1MC41MDc2MjkiIC8+DQogICAgPGNpcmNsZQ0KICAgICAgIHN0eWxlPSJmaWxsOm5vbmU7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlOiNmZmZmZmY7c3Ryb2tlLXdpZHRoOjcuMDE2MDIxNzM7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSINCiAgICAgICBpZD0icGF0aDQxNTAiDQogICAgICAgY3g9IjM1NC41NjM1NCINCiAgICAgICBjeT0iMTQxLjcwOTY5Ig0KICAgICAgIHI9IjYyLjg5OTM2OCIgLz4NCiAgICA8Zw0KICAgICAgIHN0eWxlPSJmb250LXN0eWxlOm5vcm1hbDtmb250LXdlaWdodDpub3JtYWw7Zm9udC1zaXplOjQwcHg7bGluZS1oZWlnaHQ6MTI1JTtmb250LWZhbWlseTpTYW5zO2xldHRlci1zcGFjaW5nOjBweDt3b3JkLXNwYWNpbmc6MHB4O2ZpbGw6IzA4YzMwMDtmaWxsLW9wYWNpdHk6MTtzdHJva2U6IzA4YzMwMDtzdHJva2Utd2lkdGg6MS4wNTc1NDUxOTtzdHJva2UtbGluZWNhcDpidXR0O3N0cm9rZS1saW5lam9pbjptaXRlcjtzdHJva2UtbWl0ZXJsaW1pdDo0O3N0cm9rZS1kYXNoYXJyYXk6bm9uZTtzdHJva2Utb3BhY2l0eToxIg0KICAgICAgIGlkPSJ0ZXh0NDEzNiINCiAgICAgICB0cmFuc2Zvcm09Im1hdHJpeCgxLjg5MTE3MjEsMCwwLDEuODkxMTcyMSw2LjExNzM1MzQsLTQ4LjY5NDQ2MikiPg0KICAgICAgPHBhdGgNCiAgICAgICAgIGQ9Im0gMjAwLjM5NzA1LDg1LjI0NTY4OSAwLjczMjQyLDEuMjY5NTMyIHEgLTcuMTUzMzIsNS4wNTM3MTEgLTEzLjI1Njg0LDEyLjc5Mjk2OCAtNi4xMDM1MSw3LjczOTI2MSAtOC44MTM0NywxNS4xNjExMzEgbCAtMS4wNzQyMiwwLjcwODAxIHEgLTEuMzkxNiwwLjkwMzMyIC0yLjM5MjU4LDEuODA2NjQgLTAuMTcwOSwtMC44Nzg5MSAtMC45NTIxNSwtMi44MzIwMyBsIC0wLjU2MTUyLC0xLjM5MTYgcSAtMS44MzEwNiwtNC41MTY2IC0zLjEwMDU5LC02LjI5ODgzIC0xLjI0NTExLC0xLjgwNjY0IC0yLjcwOTk2LC0xLjk1MzEzIDEuOTc3NTQsLTEuODA2NjQgMy40NDIzOSwtMS44MDY2NCAyLjAyNjM2LDAgNC40NDMzNSw1LjQ0NDM0IGwgMC44Nzg5MSwxLjk1MzEzIHEgNC4zMjEyOSwtNy43MzkyNiAxMC40MjQ4MSwtMTQuMjU3ODE3IDYuMTI3OTMsLTYuNTE4NTU1IDEyLjkzOTQ1LC0xMC41OTU3MDQgeiINCiAgICAgICAgIHN0eWxlPSJmb250LXN0eWxlOm5vcm1hbDtmb250LXZhcmlhbnQ6bm9ybWFsO2ZvbnQtd2VpZ2h0Om5vcm1hbDtmb250LXN0cmV0Y2g6bm9ybWFsO2ZvbnQtc2l6ZTo1MHB4O2xpbmUtaGVpZ2h0OjEyNSU7Zm9udC1mYW1pbHk6J1dpbmdkaW5ncyAyJzstaW5rc2NhcGUtZm9udC1zcGVjaWZpY2F0aW9uOidXaW5nZGluZ3MgMiwgTm9ybWFsJzt0ZXh0LWFsaWduOnN0YXJ0O3dyaXRpbmctbW9kZTpsci10Yjt0ZXh0LWFuY2hvcjpzdGFydDtmaWxsOiMwOGMzMDA7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlOiMwOGMzMDA7c3Ryb2tlLXdpZHRoOjEuMDU3NTQ1MTk7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSINCiAgICAgICAgIGlkPSJwYXRoNDE0MSINCiAgICAgICAgIGlua3NjYXBlOmNvbm5lY3Rvci1jdXJ2YXR1cmU9IjAiIC8+DQogICAgPC9nPg0KICA8L2c+DQo8L3N2Zz4NCg==);background-color: rgba(0,255,0,0.2);padding: 2px 50px 2px 5px;margin-bottom: 0.5em;background-repeat: no-repeat;background-size: 38px;background-position: top right;}pre {padding: 2px;border: 1px solid #EEEEEE;}.aaux_locked { background: gray;color: white;}</style>
   <style type="text/css">@media print {#CONTENT {display: none;}#HEADER {display: none;}body > div {display: block;padding-left: 2em;}.section.level2 {page-break-before: always;}a, a:visited, a:link {color: blue;}}</style>
   <script type="text/javascript">/*! jQuery v3.2.1 | (c) JS Foundation and other contributors | jquery.org/license */
@@ -8438,7 +8443,8 @@ drive, PTO demand defined in cycle)</td>
 tries to simulate the vehicle model using this speed as the actual
 vehicle speed. Due to differences in the real and simulated shift
 strategies a small difference in speed can occur, but Vecto immediately
-tries to catch up after the gear is engaged again.</p>
+tries to catch up after the gear is engaged again. This type of cycle is
+now supported for BEVs (E2, E3, E4, IEPC) also.</p>
 <p>Header: <strong>t, v</strong><em>[, grad][, Padd][, vair_res,
 vair_beta]</em></p>
 <p><strong>Bold columns</strong> are mandatory. <em>Italic columns</em>
@@ -8510,7 +8516,8 @@ Input</strong>.</td>
 <h3>Engineering Mode: Measured-Speed With Gear, Time-Based Cycle</h3>
 <p>This driving cycle defines the actual measured speed of the vehicle,
 the gear, and the engine speed over time. It overrides the shift
-strategy of VECTO and also directly sets the engine speed.</p>
+strategy of VECTO and also directly sets the engine speed. This type of
+cycle is now supported for BEVs (E2, IEPC) also.</p>
 <p>Header: <strong>t, v, gear</strong><em>[, tc_active, grad][, Padd][,
 vair_res, vair_beta][, Aux_ID]</em></p>
 <p><strong>Bold columns</strong> are mandatory. <em>Italic columns</em>
@@ -8593,8 +8600,9 @@ Input</strong>.</td>
 <section id="engineering-mode-pwheel-sico-time-based" class="level3">
 <h3>Engineering Mode: Pwheel (SiCo), Time-Based</h3>
 <p>This driving cycle defines the power measured at the wheels over
-time. VECTO tries to simulate the vehicle with this power
-requirement.</p>
+time. VECTO tries to simulate the vehicle with this power requirement.
+This type of cycle is now supported for BEVs (E2, E3, E4, IEPC)
+also.</p>
 <p>Header: <strong>t, Pwheel, gear, n</strong><em>[, Padd]</em></p>
 <p><strong>Bold columns</strong> are mandatory. <em>Italic columns</em>
 are optional. Only the listed columns are allowed (no other
@@ -8633,7 +8641,8 @@ a preceding hash-sign “#”.</p>
 <tr class="even">
 <td><strong>n</strong></td>
 <td>[rpm]</td>
-<td>The actual engine speed. Must be &gt;= 0 rpm.</td>
+<td>The actual engine speed for conventionals or the electric motor
+speed for BEVs. Must be &gt;= 0 rpm.</td>
 </tr>
 <tr class="odd">
 <td><em>Padd</em></td>
@@ -8781,14 +8790,16 @@ columns are present for each fuel (e.g., FC-Map_Diesel CI, FC-Map_NG
 CI).</p>
 <table>
 <colgroup>
-<col style="width: 9%" />
+<col style="width: 8%" />
 <col style="width: 4%" />
-<col style="width: 86%" />
+<col style="width: 6%" />
+<col style="width: 80%" />
 </colgroup>
 <thead>
 <tr class="header">
 <th><strong>Name</strong></th>
 <th><strong>Unit</strong></th>
+<th><strong>Component</strong></th>
 <th><strong>Description</strong></th>
 </tr>
 </thead>
@@ -8796,60 +8807,71 @@ CI).</p>
 <tr class="odd">
 <td>time</td>
 <td>[s]</td>
+<td>DrivingCycle</td>
 <td>Absolute time. Timestamp at the middle of the current simulation
 interval [time - dt/2, time + dt/2]</td>
 </tr>
 <tr class="even">
 <td>dt</td>
 <td>[s]</td>
+<td>DrivingCycle</td>
 <td>Length of the current simulation interval</td>
 </tr>
 <tr class="odd">
 <td>dist</td>
 <td>[m]</td>
+<td>DrivingCycle</td>
 <td>Distance the vehicle traveled at the end of the current simulation
 interval</td>
 </tr>
 <tr class="even">
 <td>v_act</td>
 <td>[km/h]</td>
+<td>Vehicle</td>
 <td>Average vehicle speed in the current simulation interval</td>
 </tr>
 <tr class="odd">
 <td>v_targ</td>
 <td>[km/h]</td>
+<td>DrivingCycle</td>
 <td>Target speed</td>
 </tr>
 <tr class="even">
 <td>acc</td>
 <td>[m/s^2]</td>
+<td>Driver</td>
 <td>Vehicle’s acceleration, constant during the current simulation
 interval</td>
 </tr>
 <tr class="odd">
 <td>grad</td>
 <td>[%]</td>
+<td>DrivingCycle</td>
 <td>Road gradient</td>
 </tr>
 <tr class="even">
 <td>Gear</td>
 <td>[-]</td>
+<td>Transmission</td>
 <td>Gear. “0” = clutch opened / neutral</td>
 </tr>
 <tr class="odd">
 <td>TC locked</td>
 <td>0/1</td>
+<td>TorqueConverter</td>
 <td>For AT-Gearboxes: if the torque converter is locked or not</td>
 </tr>
 <tr class="even">
 <td>n_ice_avg</td>
 <td>[1/min]</td>
+<td>CombustionEngine</td>
 <td>Average engine speed in the current simulation interval. Used for
 interpolation of the engine’s fuel consumption</td>
 </tr>
 <tr class="odd">
 <td>T_ice_fcmap</td>
 <td>[Nm]</td>
+<td>CombustionEngine</td>
 <td>Engine torque used for interpolation of the engine’s fuel
 consumption. T_eng_fcmap is the sum of torque demand on the output
 shaft, torque demand of the auxiliaries , and engine’s inertia
@@ -8858,102 +8880,122 @@ torque</td>
 <tr class="even">
 <td>Tq_full</td>
 <td>[Nm]</td>
+<td>CombustionEngine</td>
 <td>Engine’s transient maximum torque (see <a href="#engine-transient-full-load">transient full load</a>)</td>
 </tr>
 <tr class="odd">
 <td>Tq_drag</td>
 <td>[Nm]</td>
+<td>CombustionEngine</td>
 <td>Engine’s drag torque, interpolated from the full-load curve</td>
 </tr>
 <tr class="even">
 <td>P_ice_fcmap</td>
 <td>[kW]</td>
+<td>CombustionEngine</td>
 <td>Total power the engine has to provide, computed from n_eng_avg and
 T_eng_fcmap</td>
 </tr>
 <tr class="odd">
 <td>P_ice_full</td>
 <td>[kW]</td>
+<td>CombustionEngine</td>
 <td>Engine’s transient maximum power (see <a href="#engine-transient-full-load">transient full load</a>)</td>
 </tr>
 <tr class="even">
 <td>P_ice_full_stat</td>
 <td>[kW]</td>
+<td>CombustionEngine</td>
 <td>Engine’s stationary maximum power</td>
 </tr>
 <tr class="odd">
 <td>P_ice_drag</td>
 <td>[kW]</td>
+<td>CombustionEngine</td>
 <td>Engine’s drag power</td>
 </tr>
 <tr class="even">
 <td>P_ice_inertia</td>
 <td>[kW]</td>
+<td>CombustionEngine</td>
 <td>Power loss/gain due to the engine’s inertia</td>
 </tr>
 <tr class="odd">
 <td>P_ice_out</td>
 <td>[kW]</td>
+<td>CombustionEngine</td>
 <td>Power provided at the engine’s output shaft</td>
 </tr>
 <tr class="even">
 <td>P_REESS_T</td>
 <td>[kW]</td>
+<td>REESS</td>
 <td>Electric power provided at the battery’s connector</td>
 </tr>
 <tr class="odd">
 <td>P_REESS_int</td>
 <td>[kW]</td>
+<td>REESS</td>
 <td>Internal battery power</td>
 </tr>
 <tr class="even">
 <td>P_REESS_loss</td>
 <td>[kW]</td>
+<td>REESS</td>
 <td>Losses of the battery due to its internal resistance.</td>
 </tr>
 <tr class="odd">
 <td>P_REESS_charge_max</td>
 <td>[kW]</td>
+<td>REESS</td>
 <td>Maximum power the battery can be charged with</td>
 </tr>
 <tr class="even">
 <td>P_REESS_discharge_max</td>
 <td>[kW]</td>
+<td>REESS</td>
 <td>Maximum power the battery can provide</td>
 </tr>
 <tr class="odd">
 <td>REESS SOC</td>
 <td>[%]</td>
+<td>REESS</td>
 <td>The battery’s current state of charge</td>
 </tr>
 <tr class="even">
 <td>U_REESS_T</td>
 <td>[V]</td>
+<td>REESS</td>
 <td>Voltage at the battery’s connector</td>
 </tr>
 <tr class="odd">
 <td>U_0_REESS</td>
 <td>[V]</td>
+<td>REESS</td>
 <td>Battery’s internal voltage</td>
 </tr>
 <tr class="even">
 <td>I_REESS</td>
 <td>[A]</td>
+<td>REESS</td>
 <td>Current charging/discharging the battery.</td>
 </tr>
 <tr class="odd">
 <td>i_&lt;POS&gt;-em</td>
 <td>[-]</td>
+<td>ElectricMachine</td>
 <td>Ratio between drivetrain and electric motor shaft</td>
 </tr>
 <tr class="even">
 <td>P_&lt;POS&gt;_out</td>
 <td>[kW]</td>
+<td>ElectricMachine</td>
 <td>Power at the electric machine’s output shaft (drivetrain)</td>
 </tr>
 <tr class="odd">
 <td>P_&lt;POS&gt;_mech</td>
 <td>[kW]</td>
+<td>ElectricMachine</td>
 <td>Mechanical power the electric machine applies to the drivetrain.
 Positive values mean that electric energy is generated while negative
 values mean that the electric machine drives the vehicle.</td>
@@ -8961,57 +9003,67 @@ values mean that the electric machine drives the vehicle.</td>
 <tr class="even">
 <td>P_&lt;POS&gt;_in</td>
 <td>[kW]</td>
+<td>ElectricMachine</td>
 <td>Power at the electric machine’s input shaft (drivetrain)</td>
 </tr>
 <tr class="odd">
 <td>P_&lt;POS&gt;_transm_loss</td>
 <td>[kW]</td>
+<td>ElectricMachine</td>
 <td>Losses of the transmission stage inside the electric motor
 component</td>
 </tr>
 <tr class="even">
 <td>P_&lt;POS&gt;-em_mech</td>
 <td>[kW]</td>
+<td>ElectricMachine</td>
 <td>Power at the shaft of the electric motor at position
 <em>POS</em></td>
 </tr>
 <tr class="odd">
 <td>P_&lt;POS&gt;-em_inertia_loss</td>
 <td>[kW]</td>
+<td>ElectricMachine</td>
 <td>Inertia loses of the electric machine</td>
 </tr>
 <tr class="even">
 <td>P_&lt;POS&gt;-em_mech_map</td>
 <td>[kW]</td>
+<td>ElectricMachine</td>
 <td>Mechanical powerthe electric motor at position <em>POS</em> applies
 for driving or recuperation, including the electric motor’s inertia</td>
 </tr>
 <tr class="odd">
 <td>P_&lt;POS&gt;-em_loss</td>
 <td>[kW]</td>
+<td>ElectricMachine</td>
 <td>Losses in the electric machine due to converting electric power to
 mechanical power</td>
 </tr>
 <tr class="even">
 <td>P_&lt;POS&gt;-em_el</td>
 <td>[kW]</td>
+<td>ElectricMachine</td>
 <td>Electric power generated or consumed by the electric machine</td>
 </tr>
 <tr class="odd">
 <td>P_&lt;POS&gt;_loss</td>
 <td>[kW]</td>
+<td>ElectricMachine</td>
 <td>The total sum of losses of the electric motor at position
-<em>POS</em>. Calculated as the difference of mechanical power applied
-at the drivetrain and the electrical power drawn from the REESS.</td>
+<em>POS</em>. Calcualted as the difference of mecanical power applied at
+the drivetrain and the electrical power drawn from the REESS.</td>
 </tr>
 <tr class="even">
 <td>n_&lt;POS&gt;-em_avg</td>
 <td>[rpm]</td>
+<td>ElectricMachine</td>
 <td>Angular speed of the electric motor at position <em>POS</em></td>
 </tr>
 <tr class="odd">
 <td>T_&lt;POS&gt;-em</td>
 <td>[Nm]</td>
+<td>ElectricMachine</td>
 <td>Torque at the shaft of electric motor at position <em>POS</em>.
 Positive values mean that the electric motor acts as generator, negative
 torque values mean that the electric motor propels the vehicle</td>
@@ -9019,20 +9071,23 @@ torque values mean that the electric motor propels the vehicle</td>
 <tr class="even">
 <td>T_&lt;POS&gt;-em_map</td>
 <td>[Nm]</td>
+<td>ElectricMachine</td>
 <td>Torque internal torque of the electric motor at position
-<em>POS</em>. Takes into account the electric motor’s inertia. Positive
+<em>POS</em>. Takes into account the electric motor’s intertia. Positive
 values mean that the electric motor acts as generator, negative torque
 values mean that the electric motor propels the vehicle</td>
 </tr>
 <tr class="odd">
 <td>T_&lt;POS&gt;-em_drive_max</td>
 <td>[Nm]</td>
+<td>ElectricMachine</td>
 <td>Maximum torque the electric machine can apply to propel the vehicle.
 This already considers the maximum current the battery can provide</td>
 </tr>
 <tr class="even">
 <td>T_&lt;POS&gt;-em_gen_max</td>
 <td>[Nm]</td>
+<td>ElectricMachine</td>
 <td>Maximum torque the electric machine can apply to generate electric
 power. This already considers the maximum charge current the battery can
 handle.</td>
@@ -9040,6 +9095,7 @@ handle.</td>
 <tr class="odd">
 <td>P_&lt;POS&gt;-em_drive_max</td>
 <td>[kW]</td>
+<td>ElectricMachine</td>
 <td>Maximum power the electric motor can provide to drive the vehicle.
 This already considers the maximum electric power the battery can
 provide.</td>
@@ -9047,112 +9103,132 @@ provide.</td>
 <tr class="even">
 <td>P_&lt;POS&gt;-em_gen_max</td>
 <td>[kW]</td>
+<td>ElectricMachine</td>
 <td>Maximum power the electric machine can generate. This already
 considers the maximum charge power the battery can handle.</td>
 </tr>
 <tr class="odd">
 <td>EM_OVL-&lt;POS&gt;-em</td>
 <td>[%]</td>
+<td>ElectricMachine</td>
 <td>Used capacity of the thermal overload buffer of the thermal derating
 model</td>
 </tr>
 <tr class="even">
 <td>EM_&lt;POS&gt;_off</td>
 <td>[-]</td>
+<td>ElectricMachine</td>
 <td>Indicates if the electric motor at position <em>POS</em> is
 energized or not.</td>
 </tr>
 <tr class="odd">
 <td>P_clutch_loss</td>
 <td>[kW]</td>
+<td>Clutch</td>
 <td>Power loss in the clutch due to slipping when driving off</td>
 </tr>
 <tr class="even">
 <td>P_clutch_out</td>
 <td>[kW]</td>
+<td>Clutch</td>
 <td>Power at the clutch’s out shaft. P_clutch_out = P_eng_out -
 P_clutch_loss</td>
 </tr>
 <tr class="odd">
 <td>P_TC_out</td>
 <td>[kW]</td>
+<td>TorqueConverter</td>
 <td>Power at the torque converter’s out shaft. P_TC_out = P_eng_out -
 P_TC_loss</td>
 </tr>
 <tr class="even">
 <td>P_TC_loss</td>
 <td>[kW]</td>
+<td>TorqueConverter</td>
 <td>Power loss in the torque converter</td>
 </tr>
 <tr class="odd">
 <td>P_aux_mech</td>
 <td>[kW]</td>
+<td>Auxiliaries</td>
 <td>Total power demand from the mechanical auxiliaries</td>
 </tr>
 <tr class="even">
 <td>P_aux_el</td>
 <td>[kW]</td>
+<td>ElectricSystem</td>
 <td>Total power demand from the electric auxiliaries connected to the
 REESS</td>
 </tr>
 <tr class="odd">
 <td>P_gbx_in</td>
 <td>[kW]</td>
+<td>Transmission</td>
 <td>Power at the gearbox’ input shaft</td>
 </tr>
 <tr class="even">
 <td>P_gbx_loss</td>
 <td>[kW]</td>
+<td>Transmission</td>
 <td>Power loss at the gearbox, interpolated from the loss-map + shift
 losses + inertia losses</td>
 </tr>
 <tr class="odd">
 <td>P_gbx_shift</td>
 <td>[kW]</td>
+<td>Transmission</td>
 <td>Power loss due to gearshifts (AT gearbox)</td>
 </tr>
 <tr class="even">
 <td>P_gbx_inertia</td>
 <td>[kW]</td>
+<td>Transmission</td>
 <td>Power loss due to the gearbox’ inertia</td>
 </tr>
 <tr class="odd">
 <td>P_ret_in</td>
 <td>[kW]</td>
+<td>Retarder</td>
 <td>Power at the retarder’s input shaft. P_ret_in = P_gbx_in -
 P_gbx_loss - P_gbx_inertia</td>
 </tr>
 <tr class="even">
 <td>P_ret_loss</td>
 <td>[kW]</td>
+<td>Retarder</td>
 <td>Power loss at the retarder, interpolated from the loss-map.</td>
 </tr>
 <tr class="odd">
 <td>P_angle_in</td>
 <td>[kW]</td>
-<td>Power at the angle gear’s input shaft. Empty if no angle gear is
+<td>Angledrive</td>
+<td>Power at the anglegear’s input shaft. Empty if no anglegear is
 used.</td>
 </tr>
 <tr class="even">
 <td>P_angle_loss</td>
 <td>[kW]</td>
-<td>Power loss at the angle gear, interpolated from the loss-map. Empty
-if no angle gear is used.</td>
+<td>Angledrive</td>
+<td>Power loss at the anglegear, interpolated from the loss-map. Empty
+if no anglegear is used.</td>
 </tr>
 <tr class="odd">
 <td>P_axle_in</td>
 <td>[kW]</td>
+<td>Axlegear</td>
 <td>Power at the axle-gear input shaft. P_axle_in = P_ret_in -
-P_ret_loss ( - P_angle_loss if an Angulargear is used).</td>
+P_ret_loss ( - P_angle_loss if an anglegear is used).</td>
 </tr>
 <tr class="even">
 <td>P_axle_loss</td>
 <td>[kW]</td>
+<td>Axlegear</td>
 <td>Power loss at the axle gear, interpolated from the loss-map.</td>
 </tr>
 <tr class="odd">
 <td>P_brake_in</td>
 <td>[kW]</td>
+<td>Brake</td>
 <td>Power at the brake input shaft (definition: serially mounted into
 the drive train between wheels and axle). P_brake_in = P_axle_in -
 P_axle_loss</td>
@@ -9160,62 +9236,74 @@ P_axle_loss</td>
 <tr class="even">
 <td>P_brake_loss</td>
 <td>[kW]</td>
+<td>Brake</td>
 <td>Power loss due to braking.</td>
 </tr>
 <tr class="odd">
 <td>P_wheel_in</td>
 <td>[kW]</td>
+<td>Wheels</td>
 <td>Power at the driven wheels. P_wheel_in = P_brake_in -
 P_brake_loss</td>
 </tr>
 <tr class="even">
 <td>P_wheel_inertia</td>
 <td>[kW]</td>
+<td>Wheels</td>
 <td>Power loss due to the wheels’ inertia</td>
 </tr>
 <tr class="odd">
 <td>P_trac</td>
 <td>[kW]</td>
+<td>Vehicle</td>
 <td>Vehicle’s traction power. P_trac = P_wheel_in - P_wheel_inertia</td>
 </tr>
 <tr class="even">
 <td>P_slope</td>
 <td>[kW]</td>
+<td>Vehicle</td>
 <td>Power loss/gain due to the road’s slope</td>
 </tr>
 <tr class="odd">
 <td>P_air</td>
 <td>[kW]</td>
+<td>Vehicle</td>
 <td>Power loss due to air drag.</td>
 </tr>
 <tr class="even">
 <td>P_roll</td>
 <td>[kW]</td>
+<td>Vehicle</td>
 <td>Rolling resistance power loss.</td>
 </tr>
 <tr class="odd">
 <td>P_veh_inertia</td>
 <td>[kW]</td>
+<td>Vehicle</td>
 <td>Power loss due to the vehicle’s inertia</td>
 </tr>
 <tr class="even">
 <td>n_gbx_out_avg</td>
 <td>[rpm]</td>
+<td>Transmission</td>
 <td>Average angular speed at gearbox out shaft</td>
 </tr>
 <tr class="odd">
 <td>T_gbx_out</td>
 <td>[Nm]</td>
+<td>Transmission</td>
 <td>Torque at gearbox out shaft</td>
 </tr>
 <tr class="even">
 <td>T_gbx_in</td>
 <td>[Nm]</td>
+<td>Transmission</td>
 <td>Torque at gearbox in shaft</td>
 </tr>
 <tr class="odd">
 <td>P_busAux_ES_HVAC</td>
 <td>[kW]</td>
+<td>BusAuxiliaries</td>
 <td>(Average) electric power demand for the HVAC system (mainly
 ventilation power) <em>(only in .vmod file if bus auxiliaries are
 used)</em></td>
@@ -9223,6 +9311,7 @@ used)</em></td>
 <tr class="even">
 <td>P_busAux_ES_other</td>
 <td>[kW]</td>
+<td>BusAuxiliaries</td>
 <td>(Average) electric power demand for all other electric consumers
 (lights, radio, kitchen, …) <em>(only in .vmod file if bus auxiliaries
 are used)</em></td>
@@ -9230,12 +9319,14 @@ are used)</em></td>
 <tr class="odd">
 <td>P_busAux_ES_consumer_sum</td>
 <td>[kW]</td>
+<td>BusAuxiliaries</td>
 <td>(Average) total electric power demand of all electric consumers
 <em>(only in .vmod file if bus auxiliaries are used)</em></td>
 </tr>
 <tr class="even">
 <td>P_busAux_ES_mech</td>
 <td>[kW]</td>
+<td>BusAuxiliaries</td>
 <td>(Average) mechanical power demand of all electric consumers
 (considering alternator efficiency and pulley efficiency) <em>(only in
 .vmod file if bus auxiliaries are used)</em></td>
@@ -9243,6 +9334,7 @@ are used)</em></td>
 <tr class="odd">
 <td>P_busAux_ES_gen</td>
 <td>[kW]</td>
+<td>BusAuxiliaries</td>
 <td>Generated electrical power. May be higher than the electric power
 demand in case of smart electrics or lower if engine stop/start is
 enabled. Fuel consumption is corrected in the <a href="#engine-fuel-consumption-correction">post-processing</a>.
@@ -9251,6 +9343,7 @@ enabled. Fuel consumption is corrected in the <a href="#engine-fuel-consumption-
 <tr class="even">
 <td>Battery SoC</td>
 <td>[%]</td>
+<td>BusAuxiliaries</td>
 <td>State of Charge of the battery (only used in case smart electric
 system is enabled) <em>(only in .vmod file if bus auxiliaries are
 used)</em></td>
@@ -9258,12 +9351,14 @@ used)</em></td>
 <tr class="odd">
 <td>P_busAux_HVACmech_consumer</td>
 <td>[kW]</td>
+<td>BusAuxiliaries</td>
 <td>(Average) mechanical power demand for the HVAC system. <em>(only in
 .vmod file if bus auxiliaries are used)</em></td>
 </tr>
 <tr class="even">
 <td>P_busAux_HVACmech_gen</td>
 <td>[kW]</td>
+<td>BusAuxiliaries</td>
 <td>Generated mechanical power for the HVAC system. May be 0 in case of
 engine stop/start. the total fuel consumption is corrected in the <a href="#engine-fuel-consumption-correction">post-processing</a>.
 <em>(only in .vmod file if bus auxiliaries are used)</em></td>
@@ -9271,6 +9366,7 @@ engine stop/start. the total fuel consumption is corrected in the <a href="#engi
 <tr class="odd">
 <td>Nl_busAux_consumer</td>
 <td>[Nl]</td>
+<td>BusAuxiliaries</td>
 <td>(Average) air demand of all consumers (air suspension, kneeling,
 brakes, pneumatic doors, …). <em>(only in .vmod file if bus auxiliaries
 are used)</em></td>
@@ -9278,6 +9374,7 @@ are used)</em></td>
 <tr class="even">
 <td>Nl_busAux_gen</td>
 <td>[Nl]</td>
+<td>BusAuxiliaries</td>
 <td>Generated air (assuming the compressor runs only a fraction of the
 simulation interval). <em>(only in .vmod file if bus auxiliaries are
 used)</em></td>
@@ -9285,6 +9382,7 @@ used)</em></td>
 <tr class="odd">
 <td>Nl_busAux_gen_max</td>
 <td>[Nl]</td>
+<td>BusAuxiliaries</td>
 <td>Maximum air that can be generated if the compressor runs the whole
 simulation interval. <em>(only in .vmod file if bus auxiliaries are
 used)</em></td>
@@ -9292,6 +9390,7 @@ used)</em></td>
 <tr class="even">
 <td>P_busAux_PS_gen</td>
 <td>[kW]</td>
+<td>BusAuxiliaries</td>
 <td>Mechanical power demand for the air compressor to produce
 Nl_busAux_gen air. <em>(only in .vmod file if bus auxiliaries are
 used)</em></td>
@@ -9299,6 +9398,7 @@ used)</em></td>
 <tr class="odd">
 <td>P_busAux_PS_gen_max</td>
 <td>[kW]</td>
+<td>BusAuxiliaries</td>
 <td>Mechanical power demand for the air compressor to produce the
 maximum air volume. (Used for correcting the total fuel consumption in
 case of smart pneumatic system) <em>(only in .vmod file if bus
@@ -9307,6 +9407,7 @@ auxiliaries are used)</em></td>
 <tr class="even">
 <td>P_busAux_PS_gen_drag</td>
 <td>[kW]</td>
+<td>BusAuxiliaries</td>
 <td>Mechanical power demand for the air compressor if no air is produced
 (compressor is in drag only, used for correcting the total fuel
 consumption in case of smart pneumatic system) <em>(only in .vmod file
@@ -9315,6 +9416,7 @@ if bus auxiliaries are used)</em></td>
 <tr class="odd">
 <td>P_DC/DC_In</td>
 <td>[kW]</td>
+<td>DCDCConverter</td>
 <td>Electrical power at the input (REESS side) of the DC/DC converter.
 <em>(only applicable in case the electric auxiliaries are connected to
 the high-voltage REESS, output is delayed by one simulation
@@ -9323,6 +9425,7 @@ step)</em></td>
 <tr class="even">
 <td>P_DC/DC_Out</td>
 <td>[kW]</td>
+<td>DCDCConverter</td>
 <td>Electrical power at the output (REESS side) of the DC/DC converter.
 <em>(only applicable in case the electric auxiliaries are connected to
 the high-voltage REESS, output is delayed by one simulation
@@ -9331,6 +9434,7 @@ step)</em></td>
 <tr class="odd">
 <td>P_DC/DC_missing</td>
 <td>[kW]</td>
+<td>DCDCConverter</td>
 <td>Electrical power the DC/DC converter could not provide to the
 low-voltage auxiliaries because the REESS was already at its minimum
 SoC. This column is used in post-processing.</td>
@@ -9338,6 +9442,7 @@ SoC. This column is used in post-processing.</td>
 <tr class="even">
 <td>P_aux_<XXX></td>
 <td>[kW]</td>
+<td>EngineAuxiliaries</td>
 <td>Mechanical power demand for every individual auxiliary. Only if the
 run has auxiliaries. In case of fully electrical auxiliaries for trucks
 the electrical power demand is converted to mechanical power using the
@@ -9348,33 +9453,39 @@ column reports 0 power demand.</td>
 <tr class="odd">
 <td>T_max_propulsion</td>
 <td>[Nm]</td>
+<td>HybridStrategy</td>
 <td>Maximum allowed propulsion torque at gearbox input shaft</td>
 </tr>
 <tr class="even">
 <td>P_WHR_el</td>
 <td>[kW]</td>
+<td>CombustionEngine</td>
 <td>Power generated by an electric WHR system, interpolated from WHR
 map.</td>
 </tr>
 <tr class="odd">
 <td>P_WHR_el_corr</td>
 <td>[kW]</td>
+<td>CombustionEngine</td>
 <td>Power generated by an electric WHR system after applying</td>
 </tr>
 <tr class="even">
 <td>P_WHR_mech</td>
 <td>[kW]</td>
+<td>CombustionEngine</td>
 <td>Power generated by an mechanical WHR system, interpolated from WHR
 map.</td>
 </tr>
 <tr class="odd">
 <td>P_WHR_mech_corr</td>
 <td>[kW]</td>
+<td>CombustionEngine</td>
 <td>Power generated by an mechanical WHR system after applying</td>
 </tr>
 <tr class="even">
 <td>P_aux_ESS_mech_ICE_off</td>
 <td>[kW]</td>
+<td>CombustionEngine</td>
 <td>Power demand of the auxiliaries ‘missing’ if the ICE is off.T he
 final fuel consumption (.vsum) is corrected for this power demand in a
 <a href="#engine-fuel-consumption-correction">post-processing step</a>.
@@ -9383,6 +9494,7 @@ This power demand has no influence on FC-Map.</td>
 <tr class="odd">
 <td>P_aux_ESS_mech_ICE_on</td>
 <td>[kW]</td>
+<td>CombustionEngine</td>
 <td>Power demand of the auxiliaries ‘missing’ in case the ICE would be
 on during actual ICE off periods. The final fuel consumption (.vsum) is
 corrected for this power demand in a <a href="#engine-fuel-consumption-correction">post-processing step</a>.
@@ -9391,6 +9503,7 @@ This power demand has no influence on FC-Map.</td>
 <tr class="even">
 <td>P_ice_start</td>
 <td>[kW]</td>
+<td>CombustionEngine</td>
 <td>Power demand for starting the engine after an engine-off period
 multiplied by the engine start/stop utility factor. P_ice_start = <a href="#advanced-driver-assistant-systems-engine-stopstart">E_ice_start</a>
 / dt. The final fuel consumption (.vmod) is corrected for this power
@@ -9400,66 +9513,78 @@ This power demand has no influence on FC-Map.</td>
 <tr class="odd">
 <td>P_PTO_consum</td>
 <td>[kW]</td>
+<td>Auxiliaries</td>
 <td>Power demand from the PTO consumer. Only if the vehicle has a PTO
 consumer.</td>
 </tr>
 <tr class="even">
 <td>P_PTO_transmission</td>
 <td>[kW]</td>
+<td>Auxiliaries</td>
 <td>Power demand from the PTO transmission. Only if the vehicle has a
 PTO consumer.</td>
 </tr>
 <tr class="odd">
 <td>P_PTO_RoadSweeping</td>
 <td>[kW]</td>
+<td>Auxiliaries</td>
 <td>Power demand from the PTO in PTO mode 2. Only in engineering mode if
 PTO mode 2 is activated.</td>
 </tr>
 <tr class="even">
 <td>P_PTO_DuringDrive</td>
 <td>[kW]</td>
+<td>Auxiliaries</td>
 <td>Power demand from the PTO cycle in PTO mode 3. Only in engineering
 mode if PTO mode 3 is activated.</td>
 </tr>
 <tr class="odd">
 <td>TCnu</td>
 <td>[-]</td>
+<td>TorqueConverter</td>
 <td>Torque converter operating point: speed ratio</td>
 </tr>
 <tr class="even">
 <td>TCmu</td>
 <td>[-]</td>
+<td>TorqueConverter</td>
 <td>Torque converter operating point: torque ratio</td>
 </tr>
 <tr class="odd">
 <td>T_TC_out</td>
 <td>[Nm]</td>
+<td>TorqueConverter</td>
 <td>Torque converter operating point: output torque</td>
 </tr>
 <tr class="even">
 <td>n_TC_out</td>
 <td>[rpm]</td>
+<td>TorqueConverter</td>
 <td>Torque converter operating point: output speed</td>
 </tr>
 <tr class="odd">
 <td>T_TC_in</td>
 <td>[Nm]</td>
+<td>TorqueConverter</td>
 <td>Torque converter operating point: input torque</td>
 </tr>
 <tr class="even">
 <td>n_TC_in</td>
 <td>[rpm]</td>
+<td>TorqueConverter</td>
 <td>Torque converter operating point: input speed</td>
 </tr>
 <tr class="odd">
 <td>FC-Map&lt;_FuelName&gt;</td>
 <td>[g/h]</td>
+<td>CombustionEngine</td>
 <td>Fuel consumption interpolated from FC map. <em>Note:</em> The fuel
 name is only stated in case of duel fuel engines.</td>
 </tr>
 <tr class="even">
 <td>FC-NCVc&lt;_FuelName&gt;</td>
 <td>[g/h]</td>
+<td>CombustionEngine</td>
 <td>Fuel consumption corrected for different NCV values in VECTO and
 VECTO Engine (FC-NCVc = FC-Map * LowerHeatingValueVectoEngine(fuel) /
 LowerHeatingValueVecto(fuel) )</td>
@@ -9467,18 +9592,21 @@ LowerHeatingValueVecto(fuel) )</td>
 <tr class="odd">
 <td>FC-WHTCc&lt;_FuelName&gt;</td>
 <td>[g/h]</td>
+<td>CombustionEngine</td>
 <td>Fuel consumption after <a href="#engine-fuel-consumption-calculation">WHTC Correction</a>
 (FC-WHTCc = FC-NCVc * WHTCCorrectionFactor(cycle, fuel) )</td>
 </tr>
 <tr class="even">
 <td>FC-Final_mod&lt;_FuelName&gt;</td>
 <td>[g/h]</td>
+<td>CombustionEngine</td>
 <td>Instantaneous final fuel consumption value after all applicable
 corrections. (FC-Final_mod = FC-ESS)</td>
 </tr>
 <tr class="odd">
 <td>EcoRollConditionsMet</td>
 <td></td>
+<td>Driver</td>
 <td>0 if the conditions for switching to eco-roll are <em>not</em> met,
 1 if the conditions for eco-roll are met - eco roll is activated after
 the activation delay (2s in declaration mode)</td>
@@ -9486,6 +9614,7 @@ the activation delay (2s in declaration mode)</td>
 <tr class="even">
 <td>PCCSegment</td>
 <td></td>
+<td>Driver</td>
 <td>1 if a PCC segment was identified in the pre-processing (gradient
 below threshold where vehicle accelerates on its own without engine
 power) , 0 otherwise</td>
@@ -9493,12 +9622,14 @@ power) , 0 otherwise</td>
 <tr class="odd">
 <td>PCCState</td>
 <td></td>
+<td>Driver</td>
 <td>0: not inside PCC segment, 1: inside PCC segment, 2: PCC use-case 1
 active, 3: PCC use-case 2 active</td>
 </tr>
 <tr class="even">
 <td>ICE On</td>
 <td></td>
+<td>CombustionEngine</td>
 <td>0 if the combustion engine is switched off (either during
 stand-still or eco-roll), 1 otherwise</td>
 </tr>
@@ -9514,6 +9645,37 @@ P_gbx_inertia + P_angle_loss + P_axle_loss + P_brake_loss +
 P_wheel_inertia + P_air + P_roll + P_grad + P_veh_inertia (+
 P_PTOconsumer + P_PTO_transm)</p>
 <p>P_trac = P_veh_inertia + P_roll + P_air + P_slope</p>
+<p><strong>Driving Action:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>DrivingAction</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Halt</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>Roll</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td>Coast</td>
+<td>4</td>
+</tr>
+<tr class="even">
+<td>Accelerate</td>
+<td>6</td>
+</tr>
+<tr class="odd">
+<td>Brake</td>
+<td>-5</td>
+</tr>
+</tbody>
+</table>
 </section>
 </section>
 <section id="summary-results-.vsum" class="level2">
