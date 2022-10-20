@@ -8444,7 +8444,9 @@ tries to simulate the vehicle model using this speed as the actual
 vehicle speed. Due to differences in the real and simulated shift
 strategies a small difference in speed can occur, but Vecto immediately
 tries to catch up after the gear is engaged again. This type of cycle is
-now supported for BEVs (E2, E3, E4, IEPC) also.</p>
+now supported for BEVs (E2, E3, E4, IEPC) also, and it was tested with
+the following input fields: <strong>t</strong>, <strong>v</strong>,
+<em>grad</em>.</p>
 <p>Header: <strong>t, v</strong><em>[, grad][, Padd][, vair_res,
 vair_beta]</em></p>
 <p><strong>Bold columns</strong> are mandatory. <em>Italic columns</em>
@@ -8517,7 +8519,9 @@ Input</strong>.</td>
 <p>This driving cycle defines the actual measured speed of the vehicle,
 the gear, and the engine speed over time. It overrides the shift
 strategy of VECTO and also directly sets the engine speed. This type of
-cycle is now supported for BEVs (E2, IEPC) also.</p>
+cycle is now supported for BEVs (E2, IEPC) also, and it was tested with
+the following input fields: <strong>t</strong>, <strong>v</strong>,
+<strong>gear</strong>, <em>grad</em>.</p>
 <p>Header: <strong>t, v, gear</strong><em>[, tc_active, grad][, Padd][,
 vair_res, vair_beta][, Aux_ID]</em></p>
 <p><strong>Bold columns</strong> are mandatory. <em>Italic columns</em>
@@ -8601,8 +8605,9 @@ Input</strong>.</td>
 <h3>Engineering Mode: Pwheel (SiCo), Time-Based</h3>
 <p>This driving cycle defines the power measured at the wheels over
 time. VECTO tries to simulate the vehicle with this power requirement.
-This type of cycle is now supported for BEVs (E2, E3, E4, IEPC)
-also.</p>
+This type of cycle is now supported for BEVs (E2, E3, E4, IEPC) also,
+and it was tested with the following input fields: <strong>t</strong>,
+<strong>Pwheel</strong>, <strong>gear</strong>, <strong>n</strong>.</p>
 <p>Header: <strong>t, Pwheel, gear, n</strong><em>[, Padd]</em></p>
 <p><strong>Bold columns</strong> are mandatory. <em>Italic columns</em>
 are optional. Only the listed columns are allowed (no other
