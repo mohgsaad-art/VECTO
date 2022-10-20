@@ -50,7 +50,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 	// ###################################################################
 	// ###################################################################
 
-	public class JSONVehicleDataV9 : JSONVehicleDataV7
+	public class JSONVehicleDataV9 : JSONVehicleDataV8
 	{
 		//protected IBusAuxiliariesDeclarationData _busAuxiliariesData;
 
