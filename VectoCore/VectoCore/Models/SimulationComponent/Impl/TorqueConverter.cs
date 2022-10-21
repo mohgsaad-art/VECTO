@@ -145,6 +145,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		private NewtonMeter CalculateAverageInTorque(TorqueConverterOperatingPoint operatingPoint)
 		{
 			var avgEngineSpeed = (PreviousState.InAngularVelocity + operatingPoint.InAngularVelocity) / 2;
+			if (!DataBus.EngineInfo.EngineOn) {
+				avgEngineSpeed = (DataBus.EngineInfo.EngineSpeed+operatingPoint.InAngularVelocity) / 2;
+			}
 
 			//var prevInSpeed = PreviousState.OperatingPoint?.InAngularVelocity ?? PreviousState.InAngularVelocity;
 			//var prevInTorque = PreviousState.OperatingPoint?.InTorque ?? PreviousState.InTorque;
