@@ -30,7 +30,6 @@
 */
 
 using System.Linq;
-using System;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;

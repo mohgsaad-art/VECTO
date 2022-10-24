@@ -141,17 +141,17 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 			_MeasuredSpeedBEVBuilders = new Dictionary<PowertrainPosition, Func<VectoRunData, VehicleContainer, ElectricSystem, IPowerTrainComponent, IElectricMotor>>()
 			{
-				{ PowertrainPosition.BatteryElectricE2, BuildMeasuredSpeedForBEV2 },
-				{ PowertrainPosition.BatteryElectricE3, BuildMeasuredSpeedForBEV3 },
-				{ PowertrainPosition.BatteryElectricE4, BuildMeasuredSpeedForBEV4 },
+				{ PowertrainPosition.BatteryElectricE2, BuildMeasuredSpeedForE2 },
+				{ PowertrainPosition.BatteryElectricE3, BuildMeasuredSpeedForE3 },
+				{ PowertrainPosition.BatteryElectricE4, BuildMeasuredSpeedForE4 },
 				{ PowertrainPosition.IEPC, BuildMeasuredSpeedForIEPC }
 			};
 			
 			_PWheelBEVBuilders = new Dictionary<PowertrainPosition, Func<VectoRunData, VehicleContainer, ElectricSystem, PWheelCycle, IElectricMotor>>()
 			{
-				{ PowertrainPosition.BatteryElectricE2, BuildPWheelForBEV2 },
-				{ PowertrainPosition.BatteryElectricE3, BuildPWheelForBEV3 },
-				{ PowertrainPosition.BatteryElectricE4, BuildPWheelForBEV4 },
+				{ PowertrainPosition.BatteryElectricE2, BuildPWheelForE2 },
+				{ PowertrainPosition.BatteryElectricE3, BuildPWheelForE3 },
+				{ PowertrainPosition.BatteryElectricE4, BuildPWheelForE4 },
 				{ PowertrainPosition.IEPC, BuildPWheelForIEPC }
 			};
         }
@@ -847,7 +847,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			
 			IElectricMotor em = _PWheelBEVBuilders[position].Invoke(data, container, es, powertrain);
 			
-
 			AddBEVBusAuxiliaries(data, container, es, em);
 
 			return container;
@@ -881,7 +880,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			return em;
 		}
 
-        private static IElectricMotor BuildPWheelForBEV2(VectoRunData data, VehicleContainer container, ElectricSystem es, PWheelCycle powertrain)
+        private static IElectricMotor BuildPWheelForE2(VectoRunData data, VehicleContainer container, ElectricSystem es, PWheelCycle powertrain)
 		{
 			var ctl = new PWheelBatteryElectricMotorController(container, es);
 			
@@ -903,7 +902,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			return em;
         }
 
-		private static IElectricMotor BuildPWheelForBEV3(VectoRunData data, VehicleContainer container, ElectricSystem es, PWheelCycle powertrain)
+		private static IElectricMotor BuildPWheelForE3(VectoRunData data, VehicleContainer container, ElectricSystem es, PWheelCycle powertrain)
 		{
 			var ctl = new PWheelBatteryElectricMotorController(container, es);
 
@@ -921,7 +920,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			return em;
         }
 
-		private static IElectricMotor BuildPWheelForBEV4(VectoRunData data, VehicleContainer container, ElectricSystem es, PWheelCycle powertrain)
+		private static IElectricMotor BuildPWheelForE4(VectoRunData data, VehicleContainer container, ElectricSystem es, PWheelCycle powertrain)
 		{
 			var ctl = new PWheelBatteryElectricMotorController(container, es);
 
@@ -1033,7 +1032,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			return em;
 		}
 
-        private static IElectricMotor BuildMeasuredSpeedForBEV2(VectoRunData data, VehicleContainer container, ElectricSystem es, IPowerTrainComponent powertrain)
+        private static IElectricMotor BuildMeasuredSpeedForE2(VectoRunData data, VehicleContainer container, ElectricSystem es, IPowerTrainComponent powertrain)
         { 
 			var ctl = new BatteryElectricMotorController(container, es);
 			
@@ -1058,7 +1057,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			return em;
         }
 
-        private static IElectricMotor BuildMeasuredSpeedForBEV3(VectoRunData data, VehicleContainer container, ElectricSystem es, IPowerTrainComponent powertrain)
+        private static IElectricMotor BuildMeasuredSpeedForE3(VectoRunData data, VehicleContainer container, ElectricSystem es, IPowerTrainComponent powertrain)
         { 
 			var ctl = new BatteryElectricMotorController(container, es);
 			
@@ -1075,7 +1074,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			return em;
         }
 
-        private static IElectricMotor BuildMeasuredSpeedForBEV4(VectoRunData data, VehicleContainer container, ElectricSystem es, IPowerTrainComponent powertrain)
+        private static IElectricMotor BuildMeasuredSpeedForE4(VectoRunData data, VehicleContainer container, ElectricSystem es, IPowerTrainComponent powertrain)
         {
 			var ctl = new BatteryElectricMotorController(container, es);
 			
