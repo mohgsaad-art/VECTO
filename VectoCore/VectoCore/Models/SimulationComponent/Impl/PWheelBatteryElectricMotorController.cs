@@ -9,7 +9,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
         public PWheelBatteryElectricMotorController(VehicleContainer container, ElectricSystem es) : base(container, es)
         {}
 
-        protected override bool CannotProvideMechanicalAssistAtLowSpeed(NewtonMeter outTorque)
+        protected override bool CannotProvideRecuperationAtLowSpeed(NewtonMeter outTorque)
         {
            return DataBus.DrivingCycleInfo.CycleData.LeftSample.VehicleTargetSpeed.IsSmallerOrEqual(
 				GearboxModelData?.DisengageWhenHaltingSpeed ?? Constants.SimulationSettings.ClutchDisengageWhenHaltingSpeed)

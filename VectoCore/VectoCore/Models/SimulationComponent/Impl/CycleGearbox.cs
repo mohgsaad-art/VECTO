@@ -66,6 +66,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				return;
 			}
 
+			// Because APTN gearbox does not have a torque converter.
 			if (ModelData.Type == GearboxType.APTN) {
 				return;
             }

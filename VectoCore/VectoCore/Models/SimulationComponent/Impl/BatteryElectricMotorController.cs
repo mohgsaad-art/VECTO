@@ -43,7 +43,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl {
                 return null;
             }
 			
-            if (CannotProvideMechanicalAssistAtLowSpeed(outTorque)) {
+            if (CannotProvideRecuperationAtLowSpeed(outTorque)) {
                 return null;
             }
 
@@ -56,7 +56,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl {
 
         #endregion
 
-        protected virtual bool CannotProvideMechanicalAssistAtLowSpeed(NewtonMeter outTorque)
+        protected virtual bool CannotProvideRecuperationAtLowSpeed(NewtonMeter outTorque)
         { 
 			return (DataBus.VehicleInfo.VehicleSpeed ?? 0.SI<MeterPerSecond>()).IsSmallerOrEqual(
 				GearboxModelData?.DisengageWhenHaltingSpeed ?? Constants.SimulationSettings.ClutchDisengageWhenHaltingSpeed)

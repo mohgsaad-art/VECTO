@@ -614,8 +614,7 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 					Fields.PWheel,
 					Fields.Gear,
 					Fields.EngineSpeed,
-					Fields.AdditionalAuxPowerDemand,
-					Fields.VehicleSpeed
+					Fields.AdditionalAuxPowerDemand
 				};
 
 				return CheckColumns(header, allowedCols, requiredCols, throwExceptions, allowAux: false);

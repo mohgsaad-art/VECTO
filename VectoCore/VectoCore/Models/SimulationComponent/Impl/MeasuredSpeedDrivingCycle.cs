@@ -122,6 +122,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		private void GearShiftTriggered()
         {
+			/* Set driving action to roll, on gear change trigger, in order to replicate distance-based mode driver signals. */
+
 			if (DrivingAction == DrivingAction.Accelerate) {
 				DriverBehavior = DrivingBehavior.Driving;	
 				DrivingAction = DrivingAction.Roll;

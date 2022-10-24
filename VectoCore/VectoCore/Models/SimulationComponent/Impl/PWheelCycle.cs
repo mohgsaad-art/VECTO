@@ -71,6 +71,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			gearRatios[0] = 1;
 			var axleRatio = (RunData.AxleGearData != null) ? RunData.AxleGearData.AxleGear.Ratio : 1;
 
+			/* For BEVs, ratioADC must participate in the calculation of the wheel angular velocity. */
 			var emData = (RunData.ElectricMachinesData.Count > 0) ? RunData.ElectricMachinesData.First().Item2 : null;
 			var ratioADC = (RunData.JobType == VectoSimulationJobType.BatteryElectricVehicle) ? emData.RatioADC : 1;
 					
@@ -105,6 +106,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		private void GearShiftTriggered()
         {
+			/* Set driving action to roll, on gear change trigger, in order to replicate distance-based mode driver signals. */
+
 			if (DrivingAction == DrivingAction.Accelerate) {
 				DriverBehavior = DrivingBehavior.Driving;	
 				DrivingAction = DrivingAction.Roll;
@@ -133,6 +136,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
 			container[ModalResultField.P_wheel_in] = CycleIterator.LeftSample.PWheel;
+			container.SetDataValue("DriverAction", (int) DataBus.DriverInfo.DrivingAction);
 			base.DoWriteModalResults(time, simulationInterval, container);
 		}
 
