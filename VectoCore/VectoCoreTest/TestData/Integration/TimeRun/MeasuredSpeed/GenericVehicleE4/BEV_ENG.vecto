@@ -9,7 +9,7 @@
     "SavedInDeclMode": false,
     "EngineOnlyMode": false,
     "VehicleFile": "BatteryElectricVehicle.vveh",
-    "Padd_electric":  3540.0, 
+    "Padd_electric":  0.0, 
     "VACC": "Truck.vacc",
     "LAC": {
       "Enabled": true,

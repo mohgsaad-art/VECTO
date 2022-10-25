@@ -30,9 +30,15 @@
       "UnderSpeed": 5.0
     },
     "Cycles": [
-      "MeasuredSpeed_LongHaul.vdri",
-	  "MeasuredSpeedGear_LongHaul.vdri",
-	  "PWheel_LongHaul.vdri"
+      "LongHaul",
+      "Coach",
+      "Construction",
+      "HeavyUrban",
+      "Interurban",
+      "RegionalDelivery",
+      "Suburban",
+      "Urban",
+      "UrbanDelivery"
     ]
   }
 }
