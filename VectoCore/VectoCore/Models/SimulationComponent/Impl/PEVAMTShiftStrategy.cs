@@ -686,7 +686,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					//return gear;
 					emSpeeds[gear] = Tuple.Create(response.ElectricMotor.AngularVelocity,
 						(GearshiftParams.StartSpeed * TransmissionRatio * GearboxModelData.Gears[gear.Gear].Ratio)
-						.Cast<PerSecond>(), (response.ElectricMotor.ElectricMotorPowerMech / response.ElectricSystem.RESSPowerDemand).Value());
+						.Cast<PerSecond>(), 
+						!response.ElectricSystem.RESSPowerDemand.IsEqual(0) 
+							? (response.ElectricMotor.ElectricMotorPowerMech / response.ElectricSystem.RESSPowerDemand).Value()
+							: 0
+						);
 				}
 			}
 

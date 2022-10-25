@@ -3,17 +3,17 @@
     "CreatedBy": " ()",
     "Date": "2016-10-13T08:55:18.2100810Z",
     "AppVersion": "3",
-    "FileVersion": 12
+    "FileVersion": 9
   },
   "Body": {
     "SavedInDeclMode": false,
     "EngineOnlyMode": false,
-    "VehicleFile": "IEPCVehicle_Gbx1Whl2.vveh",
-    "GearboxFile": "",
-    "TCU": "../Common/ShiftParameters.vtcu",
-    "Padd_electric": 3540.0,
+    "VehicleFile": "BatteryElectricVehicle.vveh",
+    "GearboxFile": "AMT.vgbx",
+    "TCU": "AMT.vgbx",
+    "Padd_electric": 0.0,
 
-    "VACC": "../Common/Truck.vacc",
+    "VACC": "Truck.vacc",
 
     "LAC": {
       "Enabled": true,
@@ -30,15 +30,9 @@
       "UnderSpeed": 5.0
     },
     "Cycles": [
-      "LongHaul",
-      "Coach",
-      "Construction",
-      "HeavyUrban",
-      "Interurban",
-      "RegionalDelivery",
-      "Suburban",
-      "Urban",
-      "UrbanDelivery"
+      "MeasuredSpeed_LongHaul.vdri",
+	  "MeasuredSpeedGear_LongHaul.vdri",
+	  "PWheel_LongHaul.vdri"
     ]
   }
 }

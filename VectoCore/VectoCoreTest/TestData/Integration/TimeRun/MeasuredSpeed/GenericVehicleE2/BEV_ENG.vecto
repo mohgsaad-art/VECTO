@@ -11,7 +11,7 @@
     "VehicleFile": "BatteryElectricVehicle.vveh",
     "GearboxFile": "AMT.vgbx",
     "TCU": "AMT.vgbx",
-    "Padd_electric": 3540.0,
+    "Padd_electric": 0.0,
     "VACC": "Truck.vacc",
     "LAC": {
       "Enabled": true,

@@ -10,7 +10,7 @@
     "EngineOnlyMode": false,
     "VehicleFile": "BatteryElectricVehicle.vveh",
     "GearboxFile": "Axle.vgbx",
-    "Padd_electric": 3540.0,
+    "Padd_electric": 0.0,
     "VACC": "Truck.vacc",
     "LAC": {
       "Enabled": true,
