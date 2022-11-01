@@ -1374,3 +1374,31 @@ cycle
 * Bugfix: Traction interruption failed in distance corrected time steps
 * Removed unused parameters from .vecto file. OLD FILES ARE NOT SUPPORTED!!!
 * Added JRC contact data in "About" form.
+
+# VECTO Development Release Changelog
+
+## 2022-11-01: Vecto 0.7.9-2848 JRC Development Release
+- Improvements
+  - [VECTO-1575] - Improve setting the Hybrid State in Testpowertrain
+  - [VECTO-1572] - Mockup Vecto
+  - [VECTO-1630] - Gear Disabling Feature for xEVs
+  - [VECTO-1606] - Modal Data Results: only provide necessary columns in output
+  - Implementation of measured speed cycle for BEVs (E2, E3, E4, IEPC)
+  - Implementation of measured speed with gear for BEVs (E2, IEPC)
+  - Implementation of Pwheel mode for BEVs (E2, E3, E4, IEPC)
+ 
+- Bugfixes
+  - [VECTO-1616] - Distance Run got an unexpected response: Response Underload in Long Haul Low Loading
+  - [VECTO-1618] - Multiplatform Working Directory and Starting Problems
+  - [VECTO-1620] - XML ConventionalPrimaryBus Schema: Optional Retarder and AngleDrive
+  - [VECTO-1621] - LOG not working in .NET 6.0 and inresponsive GUI on frequent log messages
+  - [VECTO-1644] - Error in running IEPC job
+  - AbstractHybridStrategy.HandleRequestExceedsMaxPower: corrected object-reference not found exception
+  - setting electric aux power (high voltage) to 0 for all generic vehicles
+  - electric motor efficiency map: adding fallback search when interpolate search leads to an operating point beyond the limits. issue line-search in this case
+  - bugfix calculating inertia torque of EM, bugfix searching electric power for torque
+  - propagate serialize job data to consecutive factories
+  - bugfix writing interim step input xml (correcting namespace) bugfix reading gui-attribute
+  - set input data in vecto run data instance, correct writing airdrag in vif
+  - make input parameter to run simulation in multistep-bus simulation optional. default: run simulation
+  - disabling vehicle groups 51 and 52 in segment table
