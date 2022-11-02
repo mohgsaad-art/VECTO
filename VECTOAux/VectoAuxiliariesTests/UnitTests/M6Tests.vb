@@ -1,11 +1,13 @@
-﻿Imports VectoAuxiliaries.Electrics
-Imports VectoAuxiliaries.Pneumatics
-Imports VectoAuxiliaries.Hvac
-Imports VectoAuxiliaries.DownstreamModules
-Imports NUnit.Framework
-Imports VectoAuxiliaries
+﻿
 Imports Moq
+Imports NUnit.Framework
+Imports TUGraz.VectoCommon.BusAuxiliaries
+Imports TUGraz.VectoCommon.Models
 Imports TUGraz.VectoCommon.Utils
+Imports TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl
+Imports TUGraz.VectoCore.Models.BusAuxiliaries.Interfaces
+Imports TUGraz.VectoCore.Models.BusAuxiliaries.Interfaces.DownstreamModules
+
 
 Namespace UnitTests
 	<TestFixture()>
@@ -17,6 +19,18 @@ Namespace UnitTests
 		Private M5 As New M5_Mock(200, 50, 80)
 		Private Signals As New Signals()
 
+        Private Function GetAuxConfigDummy() As IAuxiliaryConfig
+            Dim auxCfg As New Mock(Of IAuxiliaryConfig)
+            Dim elecCfg = New Mock(Of IElectricsUserInputsConfig)
+            elecCfg.Setup(Function(x) x.AlternatorType()).Returns(AlternatorType.Conventional)
+            Dim psconfig = New Mock(Of IPneumaticUserInputsConfig)
+            psconfig.Setup(Function(x) x.SmartAirCompression).Returns(False)
+            auxCfg.Setup(Function(x) x.ElectricalUserInputsConfig).Returns(elecCfg.Object)
+            auxCfg.Setup(Function(x) x.PneumaticUserInputsConfig).Returns(psconfig.Object)
+
+            return auxCfg.Object
+        End Function
+
 		Private Function GetStandardInstanceM6() As IM6
 
 			M1 = New M1_Mock(100, 200, 300, 50)
@@ -25,7 +39,7 @@ Namespace UnitTests
 			M4 = New M4_Mock(100, 2, 200, 100, 100)
 			M5 = New M5_Mock(200, 50, 80)
 
-			Return New M6(M1, M2, M3, M4, M5, Signals)
+			Return New M06Impl(GetAuxConfigDummy().ElectricalUserInputsConfig, M1, M2, M3, M4, M5, Signals)
 		End Function
 
 		Public Sub New()
@@ -100,10 +114,11 @@ Namespace UnitTests
 			signals.InternalEnginePower = 0.SI(Of Watt)()
 			signals.PreExistingAuxPower = (AUX * 1000).SI(Of Watt)()
 			signals.EngineDrivelinePower = (EDP * 1000).SI(Of Watt)()
-			signals.SmartElectrics = SM
+			'signals.SmartElectrics = SM
+            signals.ExcessiveDragPower = ((EMP - EDP) * 1000).SI(of Watt)
 
 
-			Dim target As New M6(M1, M2, M3, M4, M5, signals)
+			Dim target As New M06Impl(GetAuxConfigDummy().ElectricalUserInputsConfig, M1, M2, M3, M4, M5, signals)
 
 			Assert.AreEqual(OUT1, target.OverrunFlag)
 			Assert.AreEqual(OUT2, target.SmartElecAndPneumaticsCompressorFlag)

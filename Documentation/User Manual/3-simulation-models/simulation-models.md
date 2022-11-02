@@ -1,22 +1,26 @@
-#Simulation Models
+# Simulation Models
 
 In this chapter the used component models for the simulation are described.
 
+* [Supported Powertrain Architectures](#supported-powertrain-architectures)
 * [Powertrain and Components Structure](#powertrain-and-components-structure)
 * [Driver: Acceleration Limiting](#driver-acceleration-limiting)
 * [Driver: Look-Ahead Coasting](#driver-look-ahead-coasting)
 * [ADAS: Overspeed](#driver-overspeed)
-* [ADAS Technologies](#vehicle-adas-technologies)
+* [ADAS: Engine Stop/Start](#advanced-driver-assistant-systems-engine-stopstart)
+* [ADAS: Eco Roll](#advanced-driver-assistant-systems-eco-roll)
+* [ADAS: Predictive Cruise Control](#advanced-driver-assistant-systems-predictive-cruise-control)
 * [Vehicle: Cross Wind Correction](#vehicle-cross-wind-correction)
 * [Vehicle: Rolling Resistance Coefficient](#vehicle-rolling-resistance-coefficient)
 * [Engine: Fuel Consumption Calculation](#engine-fuel-consumption-calculation)
 * [Engine: Transient Full Load](#engine-transient-full-load)
 * [Engine: WHTC Correction Factors](#engine-correction-factors)
 * [Fuel properties](#fuel-properties)
-* [Engine Torque and Engine Speed Limitations](#engine-torque-and-engine-speed-limitations)
-* [Gearbox: Gear Shift Model](#gearbox-gear-shift-model)
-* [Gearbox: MT and AMT Gearshift Rules](#gearbox-mt-and-amt-gearshift-rules)
-* [Gearbox: AT Gearshift Rules](#gearbox-at-gearshift-rules)
+* [Torque and Speed Limitations](#torque-and-speed-limitations)
+* [Gear Shift Model](#gear-shift-model)
+* [Gearbox: AMT Gearshift Rules](#shift-strategy-amt-gearshift-rules)
+* [Gearbox: APT Gearshift Rules](#shift-strategy-apt-gearshift-rules)
+* [Gearbox: MT Gearshift Rules](#shift-strategy-mt-gearshift-rules)
 * [Torque Converter Model](#torque-converter-model)
 * [Auxiliaries](#auxiliaries)
 * [Engine Only Mode](#engine-only-mode)

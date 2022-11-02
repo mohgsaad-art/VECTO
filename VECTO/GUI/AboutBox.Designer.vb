@@ -10,7 +10,6 @@
 ' See the LICENSE.txt for the specific language governing permissions and limitations.
 Imports System.ComponentModel
 Imports Microsoft.VisualBasic.CompilerServices
-Imports TUGraz.VECTO.My.Resources
 
 <DesignerGenerated()> _
 Partial Class AboutBox

@@ -1,7 +1,10 @@
 ﻿Imports System.IO
 Imports NUnit.Framework
 Imports TUGraz.VectoCommon.Utils
-Imports VectoAuxiliaries
+Imports TUGraz.VectoCore.InputData.FileIO.JSON
+Imports TUGraz.VectoCore.InputData.Reader.ComponentData
+Imports TUGraz.VectoCore.Models.BusAuxiliaries
+Imports TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl.Electrics
 
 Namespace IntegrationTests
     <TestFixture>
@@ -22,35 +25,39 @@ Namespace IntegrationTests
             Dim engineFCMapFilePath = "TestFiles\Integration\24t Coach.vmap"
             Dim auxFilePath = "TestFiles\Integration\AdvAuxTest.aaux"
 
-            Dim aux As AdvancedAuxiliaries = New AdvancedAuxiliaries
+            Dim aux As BusAuxiliaries = New BusAuxiliaries(new NoBattery(Nothing))
 
-            aux.VectoInputs.Cycle = "Coach"
-            aux.VectoInputs.VehicleWeightKG = vehicleWeight.SI(Of Kilogram)()
-            aux.VectoInputs.FuelDensity = 832.SI(Of KilogramPerCubicMeter)()
-            Dim fuelMap As cMAP = New cMAP()
-            fuelMap.FilePath = engineFCMapFilePath
-            fuelMap.ReadFile(False)
-            fuelMap.Triangulate()
+            'aux.VectoInputs.Cycle = "Coach"
+            'aux.VectoInputs.VehicleWeightKG = vehicleWeight.SI(Of Kilogram)()
+            'aux.VectoInputs.FuelDensity = 832.SI(Of KilogramPerCubicMeter)()
+            Dim fuelMap = FuelConsumptionMapReader.ReadFromFile(engineFCMapFilePath)
 
-            aux.VectoInputs.FuelMap = fuelMap
+            'aux.VectoInputs.FuelMap = fuelMap
 
 
-            aux.Signals.TotalCycleTimeSeconds = 15000
+            'aux.Signals.TotalCycleTimeSeconds = 15000
             aux.Signals.EngineIdleSpeed = 560.RPMtoRad()
 
-            aux.Initialise(Path.GetFileName(auxFilePath), Path.GetDirectoryName(Path.GetFullPath(auxFilePath)) + "\")
+            dim auxConfig = BusAuxiliaryInputData.ReadBusAuxiliaries(auxFilePath, Utils.GetDefaultVehicleData(vehicleWeight.SI(Of Kilogram)))
+            
+            aux.Initialise(auxConfig) ', Path.GetDirectoryName(Path.GetFullPath(auxFilePath)) + "\")
 
             aux.Signals.ClutchEngaged = True
-            aux.Signals.EngineDrivelinePower = (driveLinePower * 1000).SI(Of Watt)()  'kW
+            'aux.Signals.EngineDrivelinePower = (driveLinePower * 1000).SI(Of Watt)()  'kW
             aux.Signals.EngineSpeed = engineSpeed.RPMtoRad() 'rpm
             aux.Signals.EngineDrivelineTorque = (driveLinePower * 1000).SI(Of Watt)() / (engineSpeed.RPMtoRad())
-            aux.Signals.EngineMotoringPower = (24 * 1000).SI(Of Watt)()     'kW - has to be positive
+            'aux.Signals.EngineMotoringPower = (24 * 1000).SI(Of Watt)()     'kW - has to be positive
+            Dim engineMotoringPower = (24 * 1000).SI(Of Watt)()     'kW - has to be positive
 
             aux.Signals.PreExistingAuxPower = (6.1 * 1000).SI(Of Watt)()
             aux.Signals.Idle = False
             aux.Signals.InNeutral = False
-            aux.Signals.RunningCalc = True
-            aux.Signals.InternalEnginePower = (internalPower * 1000).SI(Of Watt)()        'kW
+            aux.Signals.SimulationInterval = 1.SI(of Second)
+            'aux.Signals.RunningCalc = True
+            'aux.Signals.InternalEnginePower = (internalPower * 1000).SI(Of Watt)()        'kW
+            Dim internalEnginePower = (internalPower * 1000).SI(Of Watt)()        'kW
+
+            aux.Signals.ExcessiveDragPower = engineMotoringPower + internalEnginePower
 
             Dim power As Watt = aux.AuxiliaryPowerAtCrankWatts()
 
@@ -68,67 +75,80 @@ Namespace IntegrationTests
             Dim engineFCMapFilePath = "TestFiles\Integration\24t Coach.vmap"
             Dim auxFilePath = "TestFiles\Integration\AdvAuxTest.aaux"
 
-            Dim aux As AdvancedAuxiliaries = New AdvancedAuxiliaries
+            Dim aux As BusAuxiliaries = New BusAuxiliaries(New NoBattery(Nothing))
 
-            aux.VectoInputs.Cycle = "Coach"
-            aux.VectoInputs.VehicleWeightKG = 12000.SI(Of Kilogram)()
-            aux.VectoInputs.FuelDensity = 832.SI(Of KilogramPerCubicMeter)()
-            Dim fuelMap As cMAP = New cMAP()
-            fuelMap.FilePath = engineFCMapFilePath
-            fuelMap.ReadFile(False)
-            fuelMap.Triangulate()
+            'aux.VectoInputs.Cycle = "Coach"
+            'aux.VectoInputs.VehicleWeightKG = 12000.SI(Of Kilogram)()
+            'aux.VectoInputs.FuelDensity = 832.SI(Of KilogramPerCubicMeter)()
+            Dim fuelMap = FuelConsumptionMapReader.ReadFromFile(engineFCMapFilePath)
 
-            aux.VectoInputs.FuelMap = fuelMap
+            'aux.VectoInputs.FuelMap = fuelMap
 
 
-            aux.Signals.TotalCycleTimeSeconds = 15000
+            'aux.Signals.TotalCycleTimeSeconds = 15000
             aux.Signals.EngineIdleSpeed = 560.RPMtoRad()
 
-            aux.Initialise(Path.GetFileName(auxFilePath), Path.GetDirectoryName(Path.GetFullPath(auxFilePath)) + "\")
+            Dim auxCfg = BusAuxiliaryInputData.ReadBusAuxiliaries(auxFilePath, Utils.GetDefaultVehicleData(12000.SI(Of Kilogram)()))
+            'CType(auxCfg, AuxiliaryConfig).FuelMap = fuelMap
+
+            CType(aux, BusAuxiliaries).Initialise(auxCfg) ', Path.GetDirectoryName(Path.GetFullPath(auxFilePath)) + "\")
 
             aux.Signals.ClutchEngaged = True
-            aux.Signals.EngineDrivelinePower = (driveLinePower * 1000).SI(Of Watt)() 'kW
+            'aux.Signals.EngineDrivelinePower = (driveLinePower * 1000).SI(Of Watt)() 'kW
             aux.Signals.EngineSpeed = engineSpeed.RPMtoRad() 'rpm
             aux.Signals.EngineDrivelineTorque = (driveLinePower * 1000).SI(Of Watt)() / (1256.RPMtoRad())
-            aux.Signals.EngineMotoringPower = (24 * 1000).SI(Of Watt)()    'kW - has to be positive
+            'aux.Signals.EngineMotoringPower = (24 * 1000).SI(Of Watt)()    'kW - has to be positive
+            Dim engineMotoringPower = (24 * 1000).SI(Of Watt)()    'kW - has to be positive
 
             aux.Signals.PreExistingAuxPower = 0.SI(Of Watt)()
             aux.Signals.Idle = False
             aux.Signals.InNeutral = False
-            aux.Signals.RunningCalc = True
-            aux.Signals.InternalEnginePower = (internalPower * 1000).SI(Of Watt)()       'kW
+            'aux.Signals.RunningCalc = True
+            'aux.Signals.InternalEnginePower = (internalPower * 1000).SI(Of Watt)()       'kW
+            Dim internalEnginePower = (internalPower * 1000).SI(Of Watt)()       'kW
+            aux.Signals.ExcessiveDragPower = engineMotoringPower + internalEnginePower
+            aux.Signals.SimulationInterval = 1.SI(of Second)
 
-            Dim msg As String = String.Empty
+            'Dim msg As String = String.Empty
             For i As Integer = 0 To 9
+                aux.ResetCalculations()
                 Assert.AreEqual(6087.0317, aux.AuxiliaryPowerAtCrankWatts().Value(), 0.001)
-                aux.CycleStep(1.SI(Of Second), msg)
-                Debug.Print("{0}", aux.AA_TotalCycleFC_Grams)
+                aux.CycleStep(1.SI(Of Second))
+                'Console.WriteLine("{0}", aux.AA_TotalCycleFC_Grams)
             Next
 
-            Assert.AreEqual(79.303.SI(Unit.SI.Gramm).Value(), aux.AA_TotalCycleFC_Grams().Value(), 0.0001)
+            'Assert.AreEqual(79.303.SI(Unit.SI.Gramm).Value(), aux.AA_TotalCycleFC_Grams().Value(), 0.0001)
 
-            aux.Signals.EngineDrivelinePower = (-15 * 1000).SI(Of Watt)()
-            aux.Signals.EngineDrivelineTorque = aux.Signals.EngineDrivelinePower / (1256.RPMtoRad())
-            aux.Signals.InternalEnginePower = (-50 * 1000).SI(Of Watt)()
+            'aux.Signals.EngineDrivelinePower = (-15 * 1000).SI(Of Watt)()
+            aux.Signals.EngineDrivelineTorque =  (-15 * 1000).SI(Of Watt)() / (1256.RPMtoRad())
+            'aux.Signals.InternalEnginePower = (-50 * 1000).SI(Of Watt)()
+            internalEnginePower = (-50 * 1000).SI(Of Watt)()
+            aux.Signals.ExcessiveDragPower = engineMotoringPower + internalEnginePower
 
             For i As Integer = 0 To 9
+                aux.ResetCalculations()
                 Assert.AreEqual(8954.1435, aux.AuxiliaryPowerAtCrankWatts().Value(), 0.001)
-                aux.CycleStep(1.SI(Of Second), msg)
-                Debug.Print("{0}", aux.AA_TotalCycleFC_Grams)
+                aux.CycleStep(1.SI(Of Second))
+                'Console.WriteLine("{0}", aux.AA_TotalCycleFC_Grams)
             Next
 
-            Assert.AreEqual(82.5783.SI(Unit.SI.Gramm).Value(), aux.AA_TotalCycleFC_Grams().Value(), 0.0001)
+            'Assert.AreEqual(82.5783.SI(Unit.SI.Gramm).Value(), aux.AA_TotalCycleFC_Grams().Value(), 0.0001)
 
-            aux.Signals.EngineDrivelinePower = (driveLinePower * 1000).SI(Of Watt)()
-            aux.Signals.EngineDrivelineTorque = aux.Signals.EngineDrivelinePower / (1256.RPMtoRad())
-            aux.Signals.InternalEnginePower = (internalPower * 1000).SI(Of Watt)()       'kW
+            'aux.Signals.EngineDrivelinePower = (driveLinePower * 1000).SI(Of Watt)()
+            aux.Signals.EngineDrivelineTorque = (driveLinePower * 1000).SI(Of Watt)() / (1256.RPMtoRad())
+            'aux.Signals.InternalEnginePower = (internalPower * 1000).SI(Of Watt)()       'kW
+            internalEnginePower = (internalPower * 1000).SI(Of Watt)()       'kW
+            aux.Signals.ExcessiveDragPower = engineMotoringPower + internalEnginePower
 
             For i As Integer = 0 To 9
+                aux.ResetCalculations()
                 Assert.AreEqual(6087.0317, aux.AuxiliaryPowerAtCrankWatts().Value(), 0.001)
-                aux.CycleStep(1.SI(Of Second), msg)
+                aux.CycleStep(1.SI(Of Second))
+                'Console.WriteLine("{0}", aux.AA_TotalCycleFC_Grams)
             Next
 
-            Assert.AreEqual(162.4655.SI(Unit.SI.Gramm).Value(), aux.AA_TotalCycleFC_Grams().Value(), 0.0001)
+            Assert.Inconclusive()
+            'Assert.AreEqual(162.4655.SI(Unit.SI.Gramm).Value(), aux.AA_TotalCycleFC_Grams().Value(), 0.0001)
         End Sub
     End Class
 End Namespace

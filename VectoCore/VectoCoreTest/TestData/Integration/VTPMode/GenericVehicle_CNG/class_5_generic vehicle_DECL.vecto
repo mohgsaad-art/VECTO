@@ -1,0 +1,24 @@
+﻿{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2018-05-02T11:40:41.8847449Z",
+    "AppVersion": "3",
+    "FileVersion": 4
+  },
+  "Body": {
+    "SavedInDeclMode": true,
+    "DeclarationVehicle": "Tractor_4x2_vehicle-class-5_Generic vehicle.xml",
+    "ManufacturerRecord": "Tractor_4x2_vehicle-class-5_Generic vehicle.RSLT_MANUFACTURER.xml",
+    "Mileage": 10000.0,
+    "NCVTestFuel": 41.0,
+    "FanPowerCoefficients": [
+      5.5E-07,
+      15.0,
+      108.5
+    ],
+    "FanDiameter": 0.225,
+    "Cycles": [
+      "VTP_rural_2Hz.vdri"
+    ]
+  }
+}

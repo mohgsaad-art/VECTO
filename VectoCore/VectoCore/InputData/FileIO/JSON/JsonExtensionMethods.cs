@@ -63,5 +63,18 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 		{
 			return GetEx(value, property).Value<T>();
 		}
+
+
+		//public static T GetValueOrDefault<T>(this JToken jtoken, string property, T defaultVal = null) where T : class 
+		//{
+		//	var val = jtoken[property];
+		//	return val == null ? defaultVal : val.Value<T>();
+		//}
+
+		public static T? GetValueOrDefault<T>(this JToken jtoken, string property) where T : struct 
+		{
+			var val = jtoken[property];
+			return val?.Value<T>();
+		}
 	}
 }

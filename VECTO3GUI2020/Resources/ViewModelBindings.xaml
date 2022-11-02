@@ -1,0 +1,246 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:VECTO3GUI2020"
+                    xmlns:interfaces="clr-namespace:VECTO3GUI2020.ViewModel.Interfaces"
+                    xmlns:views="clr-namespace:VECTO3GUI2020.Views"
+                    xmlns:jobeditviews="clr-namespace:VECTO3GUI2020.Views.JobEditViews"
+                    xmlns:impl="clr-namespace:VECTO3GUI2020.ViewModel.Implementation"
+                    xmlns:jobeditimpl="clr-namespace:VECTO3GUI2020.ViewModel.Implementation.JobEdit"
+                    xmlns:vehicleimpl="clr-namespace:VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle"
+                    xmlns:vehicleviews="clr-namespace:VECTO3GUI2020.Views.JobEditViews.Vehicle"
+                    xmlns:multistageviews="clr-namespace:VECTO3GUI2020.Views.Multistage"
+                    xmlns:additionaljobInfoViews="clr-namespace:VECTO3GUI2020.Views.Multistage.AdditionalJobInfoViews"
+                    xmlns:componentimpl="clr-namespace:VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components"
+                    xmlns:componentviews="clr-namespace:VECTO3GUI2020.Views.JobEditViews.Vehicle.Components"
+                    xmlns:multistageimpl="clr-namespace:VECTO3GUI2020.ViewModel.MultiStage.Implementation"
+                    xmlns:viewModel="clr-namespace:VECTO3GUI2020.ViewModel"
+                    xmlns:common="clr-namespace:VECTO3GUI2020.ViewModel.Implementation.Common">
+    <DataTemplate x:Shared="False" DataType="{x:Type impl:JobListViewModel}">
+        <views:JobListView />
+    </DataTemplate>
+    <DataTemplate x:Shared="False" DataType="{x:Type viewModel:OutputViewModel}">
+        <views:OutputView />
+    </DataTemplate>
+
+    <DataTemplate x:Shared="False" DataType="{x:Type impl:MainWindowViewModel}">
+        <local:MainWindow />
+    </DataTemplate>
+
+    <DataTemplate x:Shared="False" DataType="{x:Type impl:SettingsViewModel}">
+        <views:SettingsView/>
+    </DataTemplate>
+
+    <DataTemplate x:Shared="False" DataType="{x:Type impl:AboutViewModel}">
+        <views:AboutView></views:AboutView>
+    </DataTemplate>
+
+
+
+
+    <DataTemplate x:Shared="False" DataType="{x:Type jobeditimpl:DeclarationJobEditViewModel_v1_0}">
+        <jobeditviews:DeclarationJobEditView/>
+    </DataTemplate>
+    <DataTemplate x:Shared="False" DataType="{x:Type jobeditimpl:DeclarationJobEditViewModel_v2_0}">
+        <jobeditviews:DeclarationJobEditView/>
+    </DataTemplate>
+
+
+
+    <!--#region HeavyLorry -->
+    <DataTemplate x:Shared="False" DataType="{x:Type vehicleimpl:VehicleViewModel_v1_0 }">
+        <vehicleviews:VehicleView_v2_0/>
+    </DataTemplate>
+
+    <DataTemplate x:Shared="False" DataType="{x:Type vehicleimpl:VehicleViewModel_v2_0}">
+        <vehicleviews:VehicleView_v2_0/>
+    </DataTemplate>
+
+    <DataTemplate x:Shared="False" DataType="{x:Type componentimpl:CommonComponentViewModel}">
+        <componentviews:CommonComponentView/>
+    </DataTemplate>
+
+    <DataTemplate x:Shared="False" DataType="{x:Type componentimpl:EngineViewModel_v2_0}">
+        <componentviews:EngineView_v2_0/>
+    </DataTemplate>
+
+    <DataTemplate  x:Shared="False" DataType="{x:Type componentimpl:EngineViewModel_v1_0}">
+        <componentviews:EngineView_v2_0/>
+    </DataTemplate>
+
+    <DataTemplate x:Shared="False"  DataType="{x:Type componentimpl:AirDragViewModel_v2_0}">
+        <componentviews:AirDragView_v2_0/>
+    </DataTemplate>
+
+    <DataTemplate x:Shared="False"  DataType="{x:Type componentimpl:AirDragViewModel_v1_0}">
+        <componentviews:AirDragView_v2_0/>
+    </DataTemplate>
+
+    <DataTemplate x:Shared="False"  DataType="{x:Type componentimpl:AxleWheelsViewModel_v1_0}">
+        <componentviews:AxleWheelsView_v2_0/>
+    </DataTemplate>
+
+    <DataTemplate x:Shared="False"  DataType="{x:Type componentimpl:AxleWheelsViewModel_v2_0}">
+        <componentviews:AxleWheelsView_v2_0/>
+    </DataTemplate>
+
+    <DataTemplate x:Shared="False"  DataType="{x:Type componentimpl:AxleGearViewModel_v1_0}">
+        <componentviews:AxleGearView_v2_0/>
+    </DataTemplate>
+
+    <DataTemplate x:Shared="False"  DataType="{x:Type componentviews:AxleGearView_v2_0}">
+        <componentviews:AxleGearView_v2_0/>
+    </DataTemplate>
+
+    <DataTemplate x:Shared="False"  DataType="{x:Type componentimpl:RetarderViewModel_v1_0}">
+        <componentviews:RetarderView_v2_0/>
+    </DataTemplate>
+
+    <DataTemplate x:Shared="False"  DataType="{x:Type componentimpl:RetarderViewModel_v2_0}">
+        <componentviews:RetarderView_v2_0/>
+    </DataTemplate>
+
+    <DataTemplate x:Shared="False"  DataType="{x:Type componentimpl:GearboxViewModel_v1_0}">
+        <componentviews:GearboxView_v2_0/>
+    </DataTemplate>
+
+    <DataTemplate x:Shared="False"  DataType="{x:Type componentimpl:GearboxViewModel_v2_0}">
+        <componentviews:GearboxView_v2_0/>
+    </DataTemplate>
+
+    <DataTemplate x:Shared="False"  DataType="{x:Type componentimpl:AuxiliariesViewModel_v1_0}">
+        <componentviews:AuxiliariesView_v2_0/>
+    </DataTemplate>
+
+    <DataTemplate x:Shared="False"  DataType="{x:Type componentimpl:AuxiliariesViewModel_v2_0}">
+        <componentviews:AuxiliariesView_v2_0/>
+    </DataTemplate>
+
+    <DataTemplate x:Shared="False"  DataType="{x:Type componentimpl:AxleViewModel_v1_0}">
+        <componentviews:AxleView_v2_0/>
+    </DataTemplate>
+
+    <DataTemplate x:Shared="False"  DataType="{x:Type componentimpl:AxleViewModel_v2_0}">
+        <componentviews:AxleView_v2_0/>
+    </DataTemplate>
+
+    <DataTemplate x:Shared="False"  DataType="{x:Type componentimpl:TyreViewModel_v1_0}">
+        <componentviews:TyreView_v2_0/>
+    </DataTemplate>
+
+    <DataTemplate x:Shared="False"  DataType="{x:Type componentimpl:TyreViewModel_v2_0}">
+        <componentviews:TyreView_v2_0/>
+    </DataTemplate>
+
+    <DataTemplate x:Shared="False"  DataType="{x:Type componentimpl:TyreViewModel_v2_2}">
+        <componentviews:TyreView_v2_0/>
+    </DataTemplate>
+
+    <DataTemplate x:Shared="False"  DataType="{x:Type componentimpl:TyreViewModel_v2_3}">
+        <componentviews:TyreView_v2_3/>
+    </DataTemplate>
+
+    <DataTemplate x:Shared="False"  DataType="{x:Type componentimpl:GearViewModel_v1_0}">
+        <componentviews:GearView_v2_0/>
+    </DataTemplate>
+
+    <DataTemplate  x:Shared="False" DataType="{x:Type componentimpl:GearViewModel_v2_0}">
+        <componentviews:GearView_v2_0/>
+    </DataTemplate>
+
+
+    <DataTemplate x:Shared="False"  DataType="{x:Type componentimpl:PTOViewModel_V1_0}">
+        <componentviews:PTOView_v2_0/>
+    </DataTemplate>
+
+    <DataTemplate x:Shared="False"  DataType="{x:Type componentimpl:PTOViewModel_V2_0}">
+        <componentviews:PTOView_v2_0/>
+    </DataTemplate>
+
+    <DataTemplate x:Shared="False"  DataType="{x:Type componentimpl:AngleDriveViewModel_v1_0}">
+        <componentviews:AngleDriveView_v2_0/>
+    </DataTemplate>
+    <DataTemplate x:Shared="False"  DataType="{x:Type componentimpl:AngleDriveViewModel_v2_0}">
+        <componentviews:AngleDriveView_v2_0/>
+    </DataTemplate>
+
+    <DataTemplate x:Shared="False"  DataType="{x:Type componentimpl:AuxiliaryViewModel_v1_0}">
+        <componentviews:AuxiliaryView_v2_0/>
+    </DataTemplate>
+
+    <DataTemplate x:Shared="False"  DataType="{x:Type componentimpl:AuxiliaryViewModel_v2_0}">
+        <componentviews:AuxiliaryView_v2_0/>
+    </DataTemplate>
+
+    <DataTemplate x:Shared="False"  DataType="{x:Type componentimpl:AuxiliaryViewModel_v2_3}">
+        <componentviews:AuxiliaryView_v2_0/>
+    </DataTemplate>
+
+    <DataTemplate x:Shared="False"  DataType="{x:Type componentimpl:ADASViewModel_v1_0}">
+        <componentviews:ADASView_v2_3/>
+    </DataTemplate>
+
+    <DataTemplate x:Shared="False"  DataType="{x:Type componentimpl:ADASViewModel_v2_1}">
+        <componentviews:ADASView_v2_3/>
+    </DataTemplate>
+
+    <DataTemplate x:Shared="False"  DataType="{x:Type  componentimpl:EngineModeViewModelSingleFuel}">
+        <componentviews:EngineModeViewSingleFuel/>
+    </DataTemplate>
+
+    <DataTemplate x:Shared="False"  DataType="{x:Type componentimpl:EngineFuelViewModel}">
+        <componentviews:EngineFuelView/>
+    </DataTemplate>
+    <!--#endregion-->
+    
+    <DataTemplate x:Shared="False" DataType="{x:Type componentimpl:AirDragViewModel_v2_4}">
+        <multistageviews:AirDragView_v2_8></multistageviews:AirDragView_v2_8>
+    </DataTemplate>
+
+    <!--#region Multistage -->
+    <DataTemplate x:Shared="False" DataType="{x:Type multistageimpl:NewMultiStageJobViewModel}">
+        <multistageviews:NewMultistageFileView/>
+    </DataTemplate>
+
+    <DataTemplate x:Shared="False" DataType="{x:Type multistageimpl:ManufacturingStageViewModel_v0_1}">
+        <multistageviews:ManufacturingStageView></multistageviews:ManufacturingStageView>
+    </DataTemplate>
+
+    <DataTemplate x:Shared="False" DataType="{x:Type multistageimpl:InterimStageBusVehicleViewModel_v2_8}">
+        <multistageviews:VehicleView_v2_8/>
+    </DataTemplate>
+
+    <DataTemplate x:Shared="False" DataType="{x:Type multistageimpl:MultiStageJobViewModel_v0_1}">
+        <multistageviews:MultiStageView/>
+    </DataTemplate>
+
+    <DataTemplate x:Shared="False" DataType="{x:Type multistageimpl:MultistageAirdragViewModel}">
+        <multistageviews:MultistageAirDragView/>
+    </DataTemplate>
+
+    <DataTemplate x:Shared="False" DataType="{x:Type multistageimpl:MultistageAuxiliariesViewModel}">
+        <multistageviews:ManufacturingStageAuxiliariesView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type multistageimpl:StageInputViewModel}">
+        <multistageviews:ManufacturingStageView></multistageviews:ManufacturingStageView>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type multistageimpl:CreateVifViewModel}">
+        <multistageviews:CreateVifView/>
+    </DataTemplate>
+    <!--#endregion-->
+
+    <DataTemplate DataType="{x:Type common:AdditionalJobInfoViewModelMultiStage}">
+        <additionaljobInfoViews:AdditionalJobInfoViewMultiStage/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type common:AdditionalJobInfoViewModelNewVif}">
+        <additionaljobInfoViews:AdditionalJobInfoViewNewVIF/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type common:AdditionalJobInfoViewModelStageInput}">
+        <additionaljobInfoViews:AdditionalJobInfoStageInput/>
+    </DataTemplate>
+
+
+</ResourceDictionary>

@@ -36,20 +36,18 @@ using System.Xml;
 using Ninject;
 using NUnit.Framework;
 using TUGraz.VectoCommon.Models;
-using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCommon.Utils;
-using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.InputData.FileIO.XML;
-using TUGraz.VectoCore.InputData.FileIO.XML.Declaration;
-using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
+using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Tests.Integration.Declaration
 {
 	[TestFixture]
+	[Parallelizable(ParallelScope.All)]
 	public class EngineInputDataTests
 	{
 		const string SampleVehicleDecl = "TestData/XML/XMLReaderDeclaration/vecto_vehicle-sample.xml";
@@ -65,10 +63,10 @@ namespace TUGraz.VectoCore.Tests.Integration.Declaration
 			xmlInputReader = _kernel.Get<IXMLInputDataReader>();
 		}
 
-		[TestCase(null, 1.0, 45.542369, TestName = "Engine CF - NONE"),
-		TestCase("CFRegPer", 1.2, 45.542369 * 1.2, TestName = "Engine CF - CFRegPer"),
-		TestCase("BFColdHot", 1.2, 45.542369 * 1.2, TestName = "Engine CF - BFColdHod"),
-		TestCase("CFNCV", 1.2, 45.542369, TestName = "Engine CF - CFNCV")  // has no influence - only for documentation purpose
+		[TestCase(null, 1.0, 44.959295, TestName = "Engine CF - NONE"),
+		TestCase("CFRegPer", 1.2, 44.959295 * 1.2, TestName = "Engine CF - CFRegPer"),
+		TestCase("BFColdHot", 1.2, 44.959295 * 1.2, TestName = "Engine CF - BFColdHod"),
+		TestCase("CFNCV", 1.2, 44.959295, TestName = "Engine CF - CFNCV")  // has no influence - only for documentation purpose
 			]
 		public void TestEngineCorrectionFactors(string correctionFactor, double value, double expectedFc)
 		{
@@ -93,15 +91,14 @@ namespace TUGraz.VectoCore.Tests.Integration.Declaration
 
 			}
 			var inputDataProvider = xmlInputReader.CreateDeclaration(modified);
-			
-			var factory = new SimulatorFactory(ExecutionMode.Declaration, inputDataProvider, null, validate: false);
-			var first = factory.SimulationRuns().First();
+
+			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputDataProvider, null, validate: false);
+			var first = factory.SimulationRuns().ToArray().First();
 
 			var modData = ((ModalDataContainer)first.GetContainer().ModalData).Data;
 			first.Run();
 
-			Assert.AreEqual(expectedFc, modData.AsEnumerable().Sum(r => r.Field<SI>((int)ModalResultField.FCFinal).Value()), 1e-3);
-
+			Assert.AreEqual(expectedFc, modData.Sum(r => ((SI)r[ModalResultField.FCFinal.GetName()]).Value()), 1e-3);
 		}
 	}
 }

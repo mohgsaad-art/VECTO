@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>hashingcmd</AssemblyName>
+    <RootNamespace>TUGraz.VECTO</RootNamespace>
+    <TargetFrameworks>net45</TargetFrameworks>
+    <DefineConstants />
+  </PropertyGroup>
+
+</Project>

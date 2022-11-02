@@ -31,33 +31,42 @@
 
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading;
 
 namespace TUGraz.VectoCore.Utils
 {
 	public class DebugData
 	{
-		internal readonly List<dynamic> Data;
+		private const int Capacity = 128;
 
-		public DebugData()
-		{
-#if DEBUG
-			Data = new List<dynamic>();
-#endif
-		}
+		private static readonly ThreadLocal<Queue<dynamic>> _data = new ThreadLocal<Queue<dynamic>>(
+			() => new Queue<dynamic>(Capacity));
 
+		internal static Queue<dynamic> GlobalData => _data.Value;
+
+		internal Queue<dynamic> LocalData { get; } = new Queue<dynamic>();
+
+		[Conditional("DEBUG")]
+		public static void Clear() => GlobalData.Clear();
+		
 		[Conditional("DEBUG")]
 		public void Add(dynamic value)
 		{
-			Data.Add(value);
+			while (GlobalData.Count >= Capacity) {
+				GlobalData.Dequeue();
+			}
+			GlobalData.Enqueue(value);
+
+			LocalData.Enqueue(value);
 		}
 
-		public override string ToString()
-		{
-#if DEBUG
-			return string.Join("\n", Data);
-#else
-				return "-";
-			#endif
-		}
+		[Conditional("DEBUG")]
+		public void Add(dynamic a, dynamic b) => Add(new { a, b });
+
+		[Conditional("DEBUG")]
+		public void Add(dynamic a, dynamic b, dynamic c) => Add(new { a, b, c });
+
+		[Conditional("DEBUG")]
+		public void Add(dynamic a, dynamic b, dynamic c, dynamic d) => Add(new { a, b, c, d });
 	}
 }

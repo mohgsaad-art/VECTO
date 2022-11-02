@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSpy v2016 rel. 2 sp1 (x64) (http://www.altova.com) by Helmut Eichlseder (TU Graz/Inst. f. VKM und THD) -->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:v1.0="urn:tugraz:ivt:VectoAPI:EngineeringDefinitions:v1.0" xmlns:v1.0TEST="urn:tugraz:ivt:VectoAPI:EngineeringDefinitions:v1.0TEST" xmlns:ns1="urn:tugraz:ivt:VectoAPI:EngineeringDefinitions" targetNamespace="urn:tugraz:ivt:VectoAPI:EngineeringDefinitions" elementFormDefault="qualified" attributeFormDefault="unqualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:v1.0="urn:tugraz:ivt:VectoAPI:EngineeringDefinitions:v1.0" xmlns:v1.0TEST="urn:tugraz:ivt:VectoAPI:EngineeringDefinitions:v1.0TEST" xmlns:veng="urn:tugraz:ivt:VectoAPI:EngineeringDefinitions" xmlns:ve1.1="urn:tugraz:ivt:VectoAPI:EngineeringDefinitions:v1.1" targetNamespace="urn:tugraz:ivt:VectoAPI:EngineeringDefinitions" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<!-- 
 
          This is a convienience file that imports all supported declaration definitions
 
  -->
 	<xs:import namespace="urn:tugraz:ivt:VectoAPI:EngineeringDefinitions:v1.0" schemaLocation="VectoEngineeringDefinitions.1.0.xsd"/>
+	<xs:import namespace="urn:tugraz:ivt:VectoAPI:EngineeringDefinitions:v1.1" schemaLocation="VectoEngineeringDefinitions.1.1.xsd"/>
 	<xs:import namespace="urn:tugraz:ivt:VectoAPI:EngineeringDefinitions:v1.0TEST" schemaLocation="VectoEngineeringDefinitions.1.0.TEST.xsd"/>
 </xs:schema>

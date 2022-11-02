@@ -36,10 +36,12 @@ using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Tests.Utils;
 using System.IO;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 
 namespace TUGraz.VectoCore.Tests.Integration.BusAuxiliaries
 {
 	[TestFixture]
+	[Parallelizable(ParallelScope.All)]
 	public class BusAdapterTest
 	{
 		[OneTimeSetUp]
@@ -49,82 +51,76 @@ namespace TUGraz.VectoCore.Tests.Integration.BusAuxiliaries
 		}
 
 
-		[Test]
-		[TestCase(12000, 1256, 148, 148, 6086.9321)]
-		[TestCase(12000, 1256, -48, -148, 6086.9321)]
-		[TestCase(12000, 1256, 48, -148, 6086.9321)]
-		[TestCase(12000, 800, 148, 148, 6377.0923)]
-		[TestCase(12000, 800, -48, -148, 6377.0923)]
-		[TestCase(12000, 800, 48, -148, 6377.0923)]
+		[TestCase(12000, 1256, 148, 148, 6087.03221)]
+		[TestCase(12000, 1256, -48, -148, 6087.03221)]
+		[TestCase(12000, 1256, 48, -148, 6087.03221)]
+		[TestCase(12000, 800, 148, 148, 6377.2027)]
+		[TestCase(12000, 800, -48, -148, 6377.2027)]
+		[TestCase(12000, 800, 48, -148, 6377.2027)]
 		public void TestNoSmartAuxDuringDrive(double vehicleWeight, double engineSpeedRpm, double driveLinePower,
 			double internalPower, double expectedPowerDemand)
 		{
-			MockDriver driver;
-			var busAux = AuxDemandTest.CreateBusAuxAdapterForTesting(vehicleWeight, out driver);
+			var busAux = AuxDemandTest.CreateBusAuxAdapterForTesting(vehicleWeight, out var driver);
 
 			driver.DriverBehavior = DrivingBehavior.Driving;
+			driver.DrivingAction = DrivingAction.Accelerate;
 
 			var engineDrivelinePower = (driveLinePower * 1000).SI<Watt>();
 			var engineSpeed = engineSpeedRpm.RPMtoRad();
 			busAux.Initialize(engineDrivelinePower / engineSpeed, engineSpeed);
 
-			var torque = busAux.TorqueDemand(0.SI<Second>(), 1.SI<Second>(), engineDrivelinePower / engineSpeed,
-				(internalPower * 1000).SI<Watt>() / engineSpeed, engineSpeed);
+			var torque = busAux.TorqueDemand(0.SI<Second>(), 1.SI<Second>(), engineDrivelinePower / engineSpeed, engineSpeed);
 
 			Assert.AreEqual(expectedPowerDemand, (torque * engineSpeed).Value(), 1e-2);
 		}
 
-		[Test]
-		[TestCase(12000, 1256, 148, 148, 6086.9321)]
-		[TestCase(12000, 1256, -28, -27, 6086.9321)]
-		[TestCase(12000, 1256, -28, -29, 6086.9321)]
-		[TestCase(12000, 1256, -128, -28, 6086.9321)]
-		[TestCase(12000, 1256, 28, -28, 6086.9321)]
-		[TestCase(12000, 800, 148, 148, 6377.0923)]
-		[TestCase(12000, 800, -14, -13, 6377.0923)]
-		[TestCase(12000, 800, -14, -15, 6377.0923)]
-		[TestCase(12000, 800, -35, -14, 6377.0923)]
-		[TestCase(12000, 800, 35, -14, 6377.0923)]
+		[TestCase(12000, 1256, 148, 148, 6087.0322)]
+		[TestCase(12000, 1256, -28, -27, 6087.0322)]
+		[TestCase(12000, 1256, -28, -29, 6087.0322)]
+		[TestCase(12000, 1256, -128, -28, 6087.03221)]
+		[TestCase(12000, 1256, 28, -28, 6087.0322)]
+		[TestCase(12000, 800, 148, 148, 6377.2027)]
+		[TestCase(12000, 800, -14, -13, 6377.2027)]
+		[TestCase(12000, 800, -14, -15, 6377.2027)]
+		[TestCase(12000, 800, -35, -14, 6377.2027)]
+		[TestCase(12000, 800, 35, -14, 6377.2027)]
 		public void TestNoSmartAuxDuringCoasting(double vehicleWeight, double engineSpeedRpm, double driveLinePower,
 			double internalPower, double expectedPowerDemand)
 		{
 			// this test is to make sure that the aux power-demand does not jump between average and smart power demand
 			// when searching for the operating point for coasting (i.e. power demand (internal Power) is close to the motoring curve, 
 			// intependent of power demand of power train)
-			MockDriver driver;
-			var busAux = AuxDemandTest.CreateBusAuxAdapterForTesting(vehicleWeight, out driver);
+			var busAux = AuxDemandTest.CreateBusAuxAdapterForTesting(vehicleWeight, out var driver);
 
 			driver.DriverBehavior = DrivingBehavior.Coasting;
+			driver.DrivingAction = DrivingAction.Coast;
 
 			var engineDrivelinePower = (driveLinePower * 1000).SI<Watt>();
 			var engineSpeed = engineSpeedRpm.RPMtoRad();
 			busAux.Initialize(engineDrivelinePower / engineSpeed, engineSpeed);
 
-			var torque = busAux.TorqueDemand(0.SI<Second>(), 1.SI<Second>(), engineDrivelinePower / engineSpeed,
-				(internalPower * 1000).SI<Watt>() / engineSpeed, engineSpeed);
+			var torque = busAux.TorqueDemand(0.SI<Second>(), 1.SI<Second>(), engineDrivelinePower / engineSpeed, engineSpeed);
 
 			Assert.AreEqual(expectedPowerDemand, (torque * engineSpeed).Value(), 1e-2);
 		}
 
-		[Test]
-		[TestCase(12000, 1256, -48, -148, 8954.1396)]
-		[TestCase(12000, 1256, 48, -148, 8954.1396)]
-		[TestCase(12000, 800, -48, -148, 8281.5088)]
-		[TestCase(12000, 800, 48, -148, 8281.5088)]
+		[TestCase(12000, 1256, -48, -28, 8954.1429)] // smart PS active - power demand below engine drag
+		[TestCase(12000, 1256, 48, -28, 6087.0322)] // no smart aux active - positive power demand
+		[TestCase(12000, 800, -48, -28, 8281.5129)] // smart PS active - power demand below engine drag
+		[TestCase(12000, 800, 48, -28, 6377.2027)] // no smart aux active - positive power demand
 		public void TestSmartAuxDuringBrake(double vehicleWeight, double engineSpeedRpm, double driveLinePower,
 			double internalPower, double expectedPowerDemand)
 		{
-			MockDriver driver;
-			var busAux = AuxDemandTest.CreateBusAuxAdapterForTesting(vehicleWeight, out driver);
+			var busAux = AuxDemandTest.CreateBusAuxAdapterForTesting(vehicleWeight, out var driver);
 
 			driver.DriverBehavior = DrivingBehavior.Braking;
+			driver.DrivingAction = DrivingAction.Brake;
 
 			var engineDrivelinePower = (driveLinePower * 1000).SI<Watt>();
 			var engineSpeed = engineSpeedRpm.RPMtoRad();
 			busAux.Initialize(engineDrivelinePower / engineSpeed, engineSpeed);
 
-			var torque = busAux.TorqueDemand(0.SI<Second>(), 1.SI<Second>(), engineDrivelinePower / engineSpeed,
-				(internalPower * 1000).SI<Watt>() / engineSpeed, engineSpeed);
+			var torque = busAux.TorqueDemand(0.SI<Second>(), 1.SI<Second>(), engineDrivelinePower / engineSpeed, engineSpeed);
 
 			Assert.AreEqual(expectedPowerDemand, (torque * engineSpeed).Value(), 1e-3);
 		}
@@ -133,8 +129,7 @@ namespace TUGraz.VectoCore.Tests.Integration.BusAuxiliaries
 		TestCase(19000)]
 		public void AuxDemandContinuityTest(double vehicleWeight)
 		{
-			MockDriver driver;
-			var busAux = AuxDemandTest.CreateBusAuxAdapterForTesting(vehicleWeight, out driver);
+			var busAux = AuxDemandTest.CreateBusAuxAdapterForTesting(vehicleWeight, out var driver);
 
 			driver.DriverBehavior = DrivingBehavior.Driving;
 
@@ -152,8 +147,7 @@ namespace TUGraz.VectoCore.Tests.Integration.BusAuxiliaries
 				var engineSpeed = engineSpeedRpm.RPMtoRad();
 				busAux.Initialize(engineDrivelinePower / engineSpeed, engineSpeed);
 
-				var torque = busAux.TorqueDemand(0.SI<Second>(), 1.SI<Second>(), engineDrivelinePower / engineSpeed,
-					(internalPower).SI<Watt>() / engineSpeed, engineSpeed);
+				var torque = busAux.TorqueDemand(0.SI<Second>(), 1.SI<Second>(), engineDrivelinePower / engineSpeed, engineSpeed);
 
 				var row = table.NewRow();
 				row["engineSpeed"] = engineSpeed.Value() / Constants.RPMToRad;

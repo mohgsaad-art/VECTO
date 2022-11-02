@@ -33,7 +33,6 @@ using System;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
-using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.OutputData;
 
 namespace TUGraz.VectoCore.Models.Simulation.Impl {
@@ -48,22 +47,25 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl {
 
 		#region Overrides of VectoRun
 
-		public override double Progress { get { return 1; } }
+		public override double Progress => 1;
 
-		public override string CycleName { get { return "ExemptedVehicle"; } }
+		public override string CycleName => "ExemptedVehicle";
 
-		public override string RunSuffix { get { return ""; } }
+		public override string RunSuffix => "";
 
 		protected override IResponse DoSimulationStep()
 		{
 			CheckValidInput();
 			FinishedWithoutErrors = true;
 			_writeSumData(null);
-			return new ResponseCycleFinished();
+			return new ResponseCycleFinished(this);
 		}
 
 		private void CheckValidInput()
 		{
+			if (Container.RunData.MultistageRun) {
+				return;
+			}
 			var vehicleData = Container.RunData.VehicleData;
 			if (vehicleData.ZeroEmissionVehicle && vehicleData.DualFuelVehicle) {
 				throw new VectoException("Invalid input: ZE-HDV and DualFuelVehicle are mutually exclusive!");
@@ -80,7 +82,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl {
 
 		protected override IResponse Initialize()
 		{
-			return new ResponseSuccess();
+			return new ResponseSuccess(this);
 		}
 
 		#endregion

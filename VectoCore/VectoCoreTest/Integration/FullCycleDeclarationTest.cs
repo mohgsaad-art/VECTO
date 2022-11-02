@@ -42,10 +42,12 @@ using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Tests.Utils;
 using TUGraz.VectoCore.Utils;
 using NUnit.Framework;
+using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
 
 namespace TUGraz.VectoCore.Tests.Integration
 {
 	[TestFixture]
+	[Parallelizable(ParallelScope.All)]
 	public class FullCycleDeclarationTest
 	{
 		public const string LongHaulTruckDeclarationJob =
@@ -181,10 +183,9 @@ namespace TUGraz.VectoCore.Tests.Integration
 		{
 			var inputData = JSONInputDataFactory.ReadJsonJob(LongHaulTruckDeclarationJob);
 			var fileWriter = new FileOutputWriter(LongHaulTruckDeclarationJob);
-			var factory = new SimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter) {
-				WriteModalResults = true,
-				Validate = false
-			};
+			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter);
+			factory.WriteModalResults = true;
+			factory.Validate = false;
 			var sumData = new SummaryDataContainer(fileWriter);
 			var jobContainer = new JobContainer(sumData);
 			jobContainer.AddRuns(factory);
@@ -215,14 +216,12 @@ namespace TUGraz.VectoCore.Tests.Integration
 
 			var inputData = JSONInputDataFactory.ReadJsonJob(LongHaulTruckDeclarationJob);
 			var fileWriter = new FileOutputWriter("Truck40t_Mod1Hz_Test.vecto");
-			var factory = new SimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter) {
-				WriteModalResults = true,
-				ModalResults1Hz = false
-			};
-			var factory1Hz = new SimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter) {
-				WriteModalResults = true,
-				ModalResults1Hz = true
-			};
+			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter);
+			factory.WriteModalResults = true;
+			factory.ModalResults1Hz = false;
+			var factory1Hz = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter);
+			factory1Hz.WriteModalResults = true;
+			factory1Hz.ModalResults1Hz = true;
 			var sumData = new SummaryDataContainer(fileWriter);
 			var jobContainer = new JobContainer(sumData);
 			jobContainer.AddRuns(factory);
@@ -230,14 +229,14 @@ namespace TUGraz.VectoCore.Tests.Integration
 			var i = 5;
 			jobContainer.Runs[i].Run.Run();
 			Assert.IsTrue(jobContainer.Runs[i].Run.FinishedWithoutErrors,
-				string.Format("{0}", jobContainer.Runs[i].ExecException));
+				$"{jobContainer.Runs[i].ExecException}");
 
 			jobContainer = new JobContainer(sumData);
 			jobContainer.AddRuns(factory1Hz);
 
 			jobContainer.Runs[i].Run.Run();
 			Assert.IsTrue(jobContainer.Runs[i].Run.FinishedWithoutErrors,
-				string.Format("{0}", jobContainer.Runs[i].ExecException));
+				$"{jobContainer.Runs[i].ExecException}");
 
 			var modFile = VectoCSVFile.Read(modFileName);
 			var modFile1Hz = VectoCSVFile.Read(modFileName1Hz);
@@ -247,8 +246,7 @@ namespace TUGraz.VectoCore.Tests.Integration
 			var lineCount1Hz = modFile1Hz.Rows.Count;
 
 			AssertHelper.AreRelativeEqual(lineCount1Hz, maxSeconds,
-				string.Format("LineCount must equal max seconds. Lines={0}, MaxSeconds={1}", lineCount1Hz,
-					maxSeconds), 1);
+				$"LineCount must equal max seconds. Lines={lineCount1Hz}, MaxSeconds={maxSeconds}", 1);
 
 			// test max distance
 			var maxDistance = modFile.Rows.Cast<DataRow>().Last().ParseDouble(ModalResultField.dist.GetShortCaption());
@@ -286,12 +284,12 @@ namespace TUGraz.VectoCore.Tests.Integration
 			// test fuel consumption not negative
 			Assert.IsTrue(
 				modFile1Hz.Rows.Cast<DataRow>()
-					.All(r => r.ParseDouble(ModalResultField.FCWHTCc.GetShortCaption()).IsGreaterOrEqual(0)),
+					.All(r => r.ParseDouble(string.Format(ModalResultField.FCWHTCc.GetShortCaption(), "")).IsGreaterOrEqual(0)),
 				"fuel consumption must not be negative.");
 
 			// last v_act entry must be the same as original
-			var vAct = modFile.Rows.Cast<DataRow>().Last().ParseDouble((int)ModalResultField.v_act).SI<MeterPerSecond>();
-			var vAct1Hz = modFile1Hz.Rows.Cast<DataRow>().Last().ParseDouble((int)ModalResultField.v_act).SI<MeterPerSecond>();
+			var vAct = modFile.Rows.Cast<DataRow>().Last().ParseDouble(ModalResultField.v_act.GetName()).SI<MeterPerSecond>();
+			var vAct1Hz = modFile1Hz.Rows.Cast<DataRow>().Last().ParseDouble(ModalResultField.v_act.GetName()).SI<MeterPerSecond>();
 			AssertHelper.AreRelativeEqual(vAct, vAct1Hz, 1e-4, "end velocity is not equal");
 		}
 
@@ -300,10 +298,9 @@ namespace TUGraz.VectoCore.Tests.Integration
 		{
 			var inputData = JSONInputDataFactory.ReadJsonJob(DeliveryTruckDeclarationJob);
 			var fileWriter = new FileOutputWriter(DeliveryTruckDeclarationJob);
-			var factory = new SimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter) {
-				WriteModalResults = true,
-				Validate = false
-			};
+			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter);
+			factory.WriteModalResults = true;
+			factory.Validate = false;
 			var sumData = new SummaryDataContainer(fileWriter);
 			var jobContainer = new JobContainer(sumData);
 			jobContainer.AddRuns(factory);
@@ -322,9 +319,8 @@ namespace TUGraz.VectoCore.Tests.Integration
 			jobContainer.Execute();
 			jobContainer.WaitFinished();
 			Assert.IsTrue(jobContainer.Runs.All(r => r.Success),
-				string.Format("folowing runs failed: {0}\n{1}",
-					string.Concat(jobContainer.Runs.Where(r => !r.Success).Select(r => r.Run.RunName + " - " + r.Run.CycleName)),
-					string.Concat(jobContainer.Runs.Select(r => r.ExecException))));
+				$"folowing runs failed: {string.Concat(jobContainer.Runs.Where(r => !r.Success).Select(r => r.Run.RunName + " - " + r.Run.CycleName))}\n" +
+				$"{string.Concat(jobContainer.Runs.Select(r => r.ExecException))}");
 		}
 
 		[TestCase, Category("LongRunning")]
@@ -332,10 +328,9 @@ namespace TUGraz.VectoCore.Tests.Integration
 		{
 			var inputData = JSONInputDataFactory.ReadJsonJob(DeliveryTruck8GearDeclarationJob);
 			var fileWriter = new FileOutputWriter(DeliveryTruck8GearDeclarationJob);
-			var factory = new SimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter) {
-				WriteModalResults = true,
-				Validate = false
-			};
+			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter);
+			factory.WriteModalResults = true;
+			factory.Validate = false;
 			var sumData = new SummaryDataContainer(fileWriter);
 			var jobContainer = new JobContainer(sumData);
 			jobContainer.AddRuns(factory);
@@ -356,9 +351,8 @@ namespace TUGraz.VectoCore.Tests.Integration
 		{
 			var inputData = JSONInputDataFactory.ReadJsonJob(Class9RigidTruckPTOJob);
 			var fileWriter = new FileOutputWriter(Class9RigidTruckPTOJob);
-			var factory = new SimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter) {
-				WriteModalResults = true
-			};
+			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter);
+			factory.WriteModalResults = true;
 			var sumData = new SummaryDataContainer(fileWriter);
 			var jobContainer = new JobContainer(sumData);
 			jobContainer.AddRuns(factory);
@@ -378,9 +372,8 @@ namespace TUGraz.VectoCore.Tests.Integration
 		{
 			var inputData = JSONInputDataFactory.ReadJsonJob(Class5TractorDeclPrimaryRetarder);
 			var fileWriter = new FileOutputWriter(Class5TractorDeclPrimaryRetarder);
-			var factory = new SimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter) {
-				WriteModalResults = true
-			};
+			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter);
+			factory.WriteModalResults = true;
 			var sumData = new SummaryDataContainer(fileWriter);
 			var jobContainer = new JobContainer(sumData);
 			jobContainer.AddRuns(factory);

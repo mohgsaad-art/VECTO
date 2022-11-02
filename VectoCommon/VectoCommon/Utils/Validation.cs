@@ -36,6 +36,7 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 
 namespace TUGraz.VectoCommon.Utils
@@ -51,20 +52,23 @@ namespace TUGraz.VectoCommon.Utils
 		/// <typeparam name="T"></typeparam>
 		/// <param name="entity">The entity.</param>
 		/// <param name="mode">validate the entity for the given execution mode</param>
+		/// <param name="jobType"></param>
+		/// <param name="emPosition"></param>
 		/// <param name="gbxType"></param>
 		/// <param name="emsCycle"></param>
 		/// <returns>Null, if the validation was successfull. Otherwise a list of ValidationResults with the ErrorMessages.</returns>
-		public static IList<ValidationResult> Validate<T>(this T entity, ExecutionMode mode, GearboxType? gbxType,
+		public static IList<ValidationResult> Validate<T>(this T entity, ExecutionMode mode,
+			VectoSimulationJobType jobType, PowertrainPosition? emPosition, GearboxType? gbxType,
 			bool emsCycle)
 		{
 			if (entity == null) {
-				return new[] { new ValidationResult(string.Format("null value given for {0}", typeof(T))) };
+				return new[] { new ValidationResult($"null value given for {typeof(T)}") };
 			}
-			var context = new ValidationContext(entity);
-			context.ServiceContainer.AddService(typeof(VectoValidationModeServiceContainer),
-				new VectoValidationModeServiceContainer(mode, gbxType, emsCycle));
-
 			var results = new List<ValidationResult>();
+			var context = new ValidationContext(entity);
+
+			context.InitializeServiceProvider(type => new VectoValidationModeServiceContainer(mode, jobType, emPosition, gbxType, emsCycle));
+
 			Validator.TryValidateObject(entity, context, results, true);
 
 			const BindingFlags flags =
@@ -110,19 +114,31 @@ namespace TUGraz.VectoCommon.Utils
 			const BindingFlags flags =
 				BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public |
 				BindingFlags.FlattenHierarchy;
-			var prop = obj.GetProperty(m.Name, flags);
-			if (prop != null) {
-				attributes = prop.GetCustomAttributes(typeof(T))
-					.Cast<T>()
-					.Concat(obj.GetInterfaces().SelectMany(m.GetAttributes<T>));
+
+			if (m.MemberType == MemberTypes.Property) {
+				PropertyInfo prop = m as PropertyInfo ?? obj.GetProperty(m.Name, flags);
+				//var prop = obj.GetProperty(m.Name, flags);
+				if (prop != null)
+				{
+					//if (m is PropertyInfo prop) {
+					attributes = prop.GetCustomAttributes(typeof(T))
+						.Cast<T>()
+						.Concat(obj.GetInterfaces().SelectMany(m.GetAttributes<T>));
+				}
 			}
 
-			var field = obj.GetField(m.Name, flags);
-			if (field != null) {
-				attributes =
-					attributes.Concat(
-						field.GetCustomAttributes(typeof(T)).Cast<T>().Concat(obj.GetInterfaces().SelectMany(m.GetAttributes<T>)));
+			if (m.MemberType == MemberTypes.Field) {
+				FieldInfo field = m as FieldInfo ?? obj.GetField(m.Name, flags);
+				//var field = obj.GetField(m.Name, flags);
+				if (field != null)
+				{
+					//if (m is FieldInfo field) {
+					attributes =
+						attributes.Concat(
+							field.GetCustomAttributes(typeof(T)).Cast<T>().Concat(obj.GetInterfaces().SelectMany(m.GetAttributes<T>))).Distinct();
+				}
 			}
+            
 
 			return attributes;
 		}
@@ -142,14 +158,20 @@ namespace TUGraz.VectoCommon.Utils
 	public class VectoValidationModeServiceContainer
 	{
 		public ExecutionMode Mode { get; protected set; }
+
+		public VectoSimulationJobType JobType { get; protected set; }
+
+		public PowertrainPosition EMPowertrainPosition { get; protected set; }
 		public GearboxType? GearboxType { get; protected set; }
 		public bool IsEMSCycle { get; protected set; }
 
-		public VectoValidationModeServiceContainer(ExecutionMode mode, GearboxType? gbxType, bool isEMSCycle = false)
+		public VectoValidationModeServiceContainer(ExecutionMode mode, VectoSimulationJobType jobType, PowertrainPosition? emPosition, GearboxType? gbxType, bool isEMSCycle = false)
 		{
 			Mode = mode;
 			GearboxType = gbxType;
 			IsEMSCycle = isEMSCycle;
+			JobType = jobType;
+			EMPowertrainPosition = emPosition ?? PowertrainPosition.HybridPositionNotSet;
 		}
 	}
 
@@ -175,9 +197,11 @@ namespace TUGraz.VectoCommon.Utils
 
 			var validationService =
 				validationContext.GetService(typeof(VectoValidationModeServiceContainer)) as VectoValidationModeServiceContainer;
-			var mode = validationService != null ? validationService.Mode : ExecutionMode.Declaration;
+			var mode = validationService?.Mode ?? ExecutionMode.Declaration;
 			var gbxType = validationService != null ? validationService.GearboxType : GearboxType.MT;
 			var isEmsCycle = validationService != null && validationService.IsEMSCycle;
+			var jobType = validationService?.JobType ?? VectoSimulationJobType.ConventionalVehicle;
+			var emPos = validationService?.EMPowertrainPosition;
 
 			var enumerable = value as IEnumerable;
 			if (enumerable != null) {
@@ -189,37 +213,35 @@ namespace TUGraz.VectoCommon.Utils
 							var baseType = valueType.GetGenericTypeDefinition();
 							if (baseType == typeof(KeyValuePair<,>)) {
 								var kvResults = new List<ValidationResult>();
-								kvResults.AddRange(valueType.GetProperty("Key").GetValue(element).Validate(mode, gbxType, isEmsCycle));
-								kvResults.AddRange(valueType.GetProperty("Value").GetValue(element).Validate(mode, gbxType, isEmsCycle));
+								kvResults.AddRange(valueType.GetProperty("Key").GetValue(element).Validate(mode, jobType, emPos, gbxType, isEmsCycle));
+								kvResults.AddRange(valueType.GetProperty("Value").GetValue(element).Validate(mode, jobType, emPos, gbxType, isEmsCycle));
 								if (kvResults.Any()) {
 									return new ValidationResult(
 										string.Format("{1}[{0}] in {1} invalid: {2}", valueType.GetProperty("Key").GetValue(element),
-											validationContext.DisplayName,
-											string.Join("\n", kvResults)));
+											validationContext.DisplayName, kvResults.Join("\n")));
 								}
 							}
 						}
 
-						var results = element.Validate(mode, gbxType, isEmsCycle);
+						var results = element.Validate(mode, jobType, emPos, gbxType, isEmsCycle);
 						if (results.Any()) {
 							return new ValidationResult(
-								string.Format("{1}[{0}] in {1} invalid: {2}", i, validationContext.DisplayName,
-									string.Join("\n", results)));
+								$"{validationContext.DisplayName}[{i}] in {validationContext.DisplayName} invalid: {results.Join("\n")}");
 						}
 					}
 					i++;
 				}
 			} else {
-				var results = value.Validate(mode, gbxType, isEmsCycle);
+				var results = value.Validate(mode, jobType, emPos, gbxType, isEmsCycle);
 				if (!results.Any()) {
 					return ValidationResult.Success;
 				}
-				var messages = results.Select(r => String.Join(", ", r.MemberNames.Distinct()));
+				var messages = results.Select(r => r.MemberNames.Distinct().Join());
 				if (validationContext.MemberName == "Container" || validationContext.MemberName == "RunData") {
-					return new ValidationResult(string.Join("\n", results), messages);
+					return new ValidationResult(results.Join("\n"), messages);
 				}
 				return new ValidationResult(
-					string.Format("{{{0}}} invalid: {1}", validationContext.DisplayName, string.Join("\n", results)), messages);
+					$"{{{validationContext.DisplayName}}} invalid: {results.Join("\n")}", messages);
 			}
 
 			return ValidationResult.Success;
@@ -399,7 +421,7 @@ namespace TUGraz.VectoCommon.Utils
 			}
 			var validationService =
 				validationContext.GetService(typeof(VectoValidationModeServiceContainer)) as VectoValidationModeServiceContainer;
-			var mode = validationService != null ? validationService.Mode : (ExecutionMode?)null;
+			var mode = validationService?.Mode;
 			var emsMode = validationService != null && validationService.IsEMSCycle;
 
 			if (!_emsMission.HasValue || _emsMission.Value == emsMode) {

@@ -31,10 +31,8 @@
 
 using System.Collections.Generic;
 using TUGraz.VectoCommon.Resources;
-using TUGraz.VectoCore.InputData.Reader;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.Models.Declaration;
-using TUGraz.VectoCore.Models.SimulationComponent.Data.Engine;
 
 namespace TUGraz.IVT.VectoXML
 {
@@ -44,6 +42,13 @@ namespace TUGraz.IVT.VectoXML
 			{ FuelConsumptionMapReader.Fields.EngineSpeed, XMLNames.Engine_FuelConsumptionMap_EngineSpeed_Attr },
 			{ FuelConsumptionMapReader.Fields.Torque, XMLNames.Engine_FuelConsumptionMap_Torque_Attr },
 			{ FuelConsumptionMapReader.Fields.FuelConsumption, XMLNames.Engine_FuelConsumptionMap_FuelConsumption_Attr }
+		};
+
+		public static readonly Dictionary<string, string> WHRPowerMapMapping = new Dictionary<string, string> {
+			{ WHRPowerReader.Fields.EngineSpeed, XMLNames.Engine_FuelConsumptionMap_EngineSpeed_Attr },
+			{ WHRPowerReader.Fields.Torque, XMLNames.Engine_FuelConsumptionMap_Torque_Attr },
+			{ WHRPowerReader.Fields.ElectricPower, XMLNames.Engine_FuelConsumptionMap_WHRElPower_Attr },
+			{ WHRPowerReader.Fields.MechanicalPower, XMLNames.Engine_FuelConsumptionMap_WHRMechPower_Attr }
 		};
 
 		public static readonly Dictionary<string, string> EngineFullLoadCurveMapping = new Dictionary<string, string> {
@@ -57,12 +62,6 @@ namespace TUGraz.IVT.VectoXML
 			{ ShiftPolygonReader.Fields.Torque, XMLNames.Gear_ShiftPolygon_EngineTorque_Attr },
 			{ ShiftPolygonReader.Fields.AngularSpeedDown, XMLNames.Gear_ShiftPolygonMapping_DownshiftSpeed_Attr },
 			{ ShiftPolygonReader.Fields.AngularSpeedUp, XMLNames.Gear_ShiftPolygonMapping_UpshiftSpeed_Attr }
-		};
-
-		public static readonly Dictionary<string, string> AuxMapMapping = new Dictionary<string, string>() {
-			{ AuxiliaryDataReader.Fields.AuxSpeed, XMLNames.Aux_AuxMap_AuxiliarySpeed_Attr },
-			{ AuxiliaryDataReader.Fields.MechPower, XMLNames.Aux_AuxMap_MechanicalPower_Attr },
-			{ AuxiliaryDataReader.Fields.SupplyPower, XMLNames.Auxr_AuxMapMapping_SupplyPower_Attr }
 		};
 
 		public static readonly Dictionary<string, string> RetarderLossmapMapping = new Dictionary<string, string> {

@@ -1,0 +1,122 @@
+﻿<UserControl x:Class="VECTO3GUI2020.Views.OutputView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:impl="clr-namespace:VECTO3GUI2020.ViewModel.Implementation"
+             xmlns:helper="clr-namespace:VECTO3GUI2020.Helper" 
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800" d:DataContext="{d:DesignData Type=viewModel:IOutputViewModel}"
+             xmlns:behavior="clr-namespace:VECTO3GUI2020.Behaviours"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors">
+
+    <Grid>
+        <DockPanel LastChildFill="False">
+            <ProgressBar DockPanel.Dock="Top" 
+                         Minimum="0" 
+                         Maximum="100" 
+                         Value="{Binding Progress}"/>
+            <StatusBar DockPanel.Dock="Bottom" MinHeight="30">
+                <TextBlock Text="{Binding StatusMessage}" TextWrapping="Wrap"/>
+            </StatusBar>
+            <DataGrid 
+                VerticalAlignment="Stretch"
+                VerticalScrollBarVisibility="Auto"
+                DockPanel.Dock="Top" 
+                ItemsSource="{Binding Messages, IsAsync=True}" 
+                BorderThickness="0 0 0 1" 
+                CanUserAddRows="False" 
+                AutoGenerateColumns="False" 
+                SelectionUnit="FullRow" 
+                IsReadOnly="True" 
+                HeadersVisibility="All"  
+                RowHeaderWidth="0.1" 
+                Name="MessageList"
+                ColumnHeaderStyle="{StaticResource JobListDataGridHeaderStyle}"
+                ColumnHeaderHeight="30"
+                AlternationCount="2"
+                Background="White">
+
+                <i:Interaction.Behaviors>
+                    <behavior:AutoScrollDataGridBehaviour>
+                    </behavior:AutoScrollDataGridBehaviour>
+                </i:Interaction.Behaviors>
+                <DataGrid.Columns>
+                        <DataGridTemplateColumn Header="Message" Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate DataType="impl:MessageEntry">
+                                    <StackPanel Margin="10">
+                                        <TextBlock Text="{Binding Message}" Visibility="{Binding Message, Converter={StaticResource NullToVisibilityConverter}}"
+                                                   TextWrapping="Wrap"/>
+
+                                        <TextBlock Visibility="{Binding Link, Converter={StaticResource NullToVisibilityConverter}}">
+                                            <Hyperlink Command="{Binding Path=DataContext.OpenFolderCommand, 
+                                                             RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" 
+                                                       CommandParameter="{Binding Link}">
+                                                Open Folder 
+                                            </Hyperlink>
+                                            
+                                            <Hyperlink Command="{Binding Path=DataContext.OpenFileCommand, 
+                                                             RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}}" 
+                                                       CommandParameter="{Binding Link}">
+                                                Open File
+                                            </Hyperlink>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="Time" Binding="{Binding Time, StringFormat=HH:mm:ss dd.MM.yyyy}" Width="150" />
+                    </DataGrid.Columns>
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Style.Triggers>
+
+
+
+
+                            <DataTrigger Binding="{Binding Type}" Value="{x:Static impl:MessageType.StatusMessage}">
+                                <Setter Property="Background" Value="{StaticResource SemiTransparentWhite}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Type}" Value="{x:Static impl:MessageType.InfoMessage}">
+                                <Setter Property="Background" Value="LemonChiffon"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Type}" Value="{x:Static impl:MessageType.ErrorMessage}">
+                                <Setter Property="Background" Value="OrangeRed"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Type}" Value="{x:Static impl:MessageType.WarningMessage}">
+                                <Setter Property="Background" Value="{StaticResource SemiTransparentYellow}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>
+                <DataGrid.CellStyle>
+                    <Style TargetType="DataGridCell" BasedOn="{StaticResource DataGridCellStyle1}">
+                        <Setter Property="FontFamily" Value="Courier New"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Type}" Value="{x:Static impl:MessageType.StatusMessage}">
+                                <Setter Property="Foreground" Value="Black"/>
+                               
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Type}" Value="{x:Static impl:MessageType.InfoMessage}">
+                                <Setter Property="Foreground" Value="Black"/>
+                               
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Type}" Value="{x:Static impl:MessageType.ErrorMessage}">
+                                <Setter Property="Foreground" Value="LightGray"/>
+                            
+                                <Setter Property="FontWeight" Value="Bold"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Type}" Value="{x:Static impl:MessageType.WarningMessage}">
+                                <Setter Property="Foreground" Value="Black"/>
+
+                                <Setter Property="FontWeight" Value="Bold"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.CellStyle>
+            </DataGrid>
+
+        </DockPanel>
+    </Grid>
+</UserControl>

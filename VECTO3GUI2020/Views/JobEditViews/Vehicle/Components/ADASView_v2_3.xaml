@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="VECTO3GUI2020.Views.JobEditViews.Vehicle.Components.ADASView_v2_3"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:VECTO3GUI2020.Views.JobEditViews.Vehicle.Components"
+             xmlns:custom="clr-namespace:VECTO3GUI2020.Views.CustomControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+
+    <Grid>
+        <StackPanel>
+            <Label Content="Advanced Driving Assistant Systems" Style="{StaticResource LabelStyleSubView}"></Label>
+            <custom:ComboParameter Content="{Binding EcoRoll}"></custom:ComboParameter>
+            <custom:ComboParameter Content="{Binding PredictiveCruiseControl}"></custom:ComboParameter>
+            <custom:LabledCheckBoxAutomatic Content="{Binding EngineStopStart}"/>
+
+
+            <!-- https://stackoverflow.com/questions/9893825/mvvm-hiding-a-control-when-bound-property-is-not-present -->
+
+            <custom:LabledCheckBoxAutomatic Content="{Binding ATEcoRollReleaseLockupClutch}"
+                                            Visibility="{Binding ATEcoRollReleaseLockupClutch, 
+                                                Converter={StaticResource AlwaysVisibleConverter}, 
+                                                FallbackValue=Collapsed}"/>
+
+            <!--
+            <CheckBox Content="Eco Roll Release Lockup Clutch" 
+                      IsChecked="{Binding ATEcoRollReleaseLockupClutch, FallbackValue=true}"
+                      Visibility="{Binding ATEcoRollReleaseLockupClutch, Converter={StaticResource AlwaysVisibleConverter}, 
+                        FallbackValue=Collapsed}"/> -->
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -1,7 +1,7 @@
 ﻿/*
 * This file is part of VECTO.
 *
-* Copyright © 2012-2017 European Union
+* Copyright © 2012-2019 European Union
 *
 * Developed by Graz University of Technology,
 *              Institute of Internal Combustion Engines and Thermodynamics,
@@ -59,19 +59,12 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider
 		}
 
 
-		public virtual double Ratio
-		{
-			get { return GetDouble(XMLNames.Axlegear_Ratio); }
-		}
+		public virtual double Ratio => GetDouble(XMLNames.Axlegear_Ratio);
 
-		public virtual TableData LossMap
-		{
-			get {
-				return XMLHelper.ReadEntriesOrResource(
-					BaseNode, DataSource.SourcePath, XMLNames.Axlegear_TorqueLossMap, XMLNames.Axlegear_TorqueLossMap_Entry,
-					AttributeMappings.TransmissionLossmapMapping);
-			}
-		}
+		public virtual TableData LossMap =>
+			XMLHelper.ReadEntriesOrResource(
+				BaseNode, DataSource.SourcePath, XMLNames.Axlegear_TorqueLossMap, XMLNames.Axlegear_TorqueLossMap_Entry,
+				AttributeMappings.TransmissionLossmapMapping);
 
 
 		public virtual double Efficiency
@@ -79,14 +72,11 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider
 			get { return GetDouble(new[] { XMLNames.Axlegear_TorqueLossMap, XMLNames.Axlegear_Efficiency }, double.NaN); }
 		}
 
-		public virtual AxleLineType LineType
-		{
-			get { return AxleLineType.SinglePortalAxle; }
-		}
+		public virtual AxleLineType LineType => AxleLineType.SinglePortalAxle;
 
 		#region Overrides of AbstractXMLResource
 
-		protected override XNamespace SchemaNamespace { get { return NAMESPACE_URI; } }
+		protected override XNamespace SchemaNamespace => NAMESPACE_URI;
 		protected override DataSourceType SourceType { get; }
 
 		#endregion
@@ -108,14 +98,10 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider
 			XmlNode axlegearNode, string fsBasePath)
 			: base(vehicle, axlegearNode, fsBasePath) { }
 
-		public override AxleLineType LineType
-		{
-			get {
-				return GetNode(XMLNames.Axlegear_LineType, required: false)?.InnerText.ParseEnum<AxleLineType>() ??
-						AxleLineType.SinglePortalAxle;
-			}
-		}
+		public override AxleLineType LineType =>
+			GetNode(XMLNames.Axlegear_LineType, required: false)?.InnerText.ParseEnum<AxleLineType>() ??
+			AxleLineType.SinglePortalAxle;
 
-		protected override XNamespace SchemaNamespace { get { return NAMESPACE_URI; } }
+		protected override XNamespace SchemaNamespace => NAMESPACE_URI;
 	}
 }

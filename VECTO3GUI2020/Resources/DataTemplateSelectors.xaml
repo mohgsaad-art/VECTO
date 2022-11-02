@@ -1,0 +1,7 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:templateSelector="clr-namespace:VECTO3GUI2020.Helper.TemplateSelector">
+    <templateSelector:MultistageParameterDataTemplateSelector x:Key="MultistageParameterTemplateSelector"/>
+    <templateSelector:MultistageVehicleDataTemplateSelector x:Key="MultistageVehicleDataTemplateSelector"/>
+
+</ResourceDictionary>

@@ -1,0 +1,59 @@
+﻿<UserControl x:Class="VECTO3GUI2020.Views.JobEditViews.Vehicle.Components.GearboxView_v2_0"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:VECTO3GUI2020.Views.JobEditViews.Vehicle.Components"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             xmlns:custom="clr-namespace:VECTO3GUI2020.Views.CustomControls">
+
+    <Grid>
+        <DockPanel>
+            <Label HorizontalAlignment="Stretch"
+                   Content="{Binding Name}"
+                   Background="Aquamarine"
+                   FontSize="20"
+                   Height="40" 
+                   FontWeight="DemiBold"
+                   Padding="10 5 5 5"
+                   DockPanel.Dock="Top"/>
+            <ScrollViewer DockPanel.Dock="Top" VerticalScrollBarVisibility="Visible" Padding="0 10 30 10">
+                <StackPanel DockPanel.Dock="Top">
+                    <ContentControl Content="{Binding CommonComponentViewModel}"/>
+                    <Separator/>
+                    <!--custom:LabledTextBoxAutomatic Content="{Binding AxlegearRatio}"/-->
+                    <!--custom:LabledCheckBoxAutomatic Content="{Binding DifferentialIncluded}"/-->
+                    <custom:ComboParameter Content="{Binding Type}"/>
+                    <Separator/>
+                    <ItemsControl ItemsSource="{Binding GearViewModels}" Name="GearsList" AlternationCount="2">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Vertical" x:Name="GearStackPanel">
+                                    <ContentControl Margin="5 5 5 5" Content="{Binding .}"/>
+                                    <Rectangle HorizontalAlignment="Stretch" Height="10" x:Name="Separator"/>
+                                </StackPanel>
+                                <DataTemplate.Triggers>
+                                    <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                                        <Setter TargetName="GearStackPanel" Property="Background">
+                                            <Setter.Value>
+                                                <SolidColorBrush Color="White" Opacity="0.7"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Trigger>
+                                    <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                                        <Setter TargetName="GearStackPanel" Property="Background">
+                                            <Setter.Value>
+                                                <SolidColorBrush Color="White" Opacity="0.1"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Trigger>
+                                </DataTemplate.Triggers>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </ScrollViewer>
+        </DockPanel>
+    </Grid>
+</UserControl>

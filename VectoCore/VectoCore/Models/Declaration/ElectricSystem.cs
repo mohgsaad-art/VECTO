@@ -32,6 +32,7 @@
 using System;
 using System.Data;
 using System.Linq;
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Utils;
 
@@ -41,15 +42,9 @@ namespace TUGraz.VectoCore.Models.Declaration
 	{
 		private readonly Alternator _alternator = new Alternator();
 
-		protected override string ResourceId
-		{
-			get { return DeclarationData.DeclarationDataResourcePrefix + ".VAUX.ES-Tech.csv"; }
-		}
+		protected override string ResourceId => DeclarationData.DeclarationDataResourcePrefix + ".VAUX.ES-Tech.csv";
 
-		protected override string ErrorMessage
-		{
-			get { return "Auxiliary Lookup Error: No value found for Electric System. Mission: '{0}', Technology: '{1}'"; }
-		}
+		protected override string ErrorMessage => "Auxiliary Lookup Error: No value found for Electric System. Mission: '{0}', Technology: '{1}'";
 
 		protected override void ParseData(DataTable table)
 		{
@@ -75,15 +70,9 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		internal sealed class Alternator : LookupData<MissionType, string, double>
 		{
-			protected override string ResourceId
-			{
-				get { return DeclarationData.DeclarationDataResourcePrefix + ".VAUX.ALT-Tech.csv"; }
-			}
+			protected override string ResourceId => DeclarationData.DeclarationDataResourcePrefix + ".VAUX.ALT-Tech.csv";
 
-			protected override string ErrorMessage
-			{
-				get { return "Auxiliary Lookup Error: No value found for Alternator. Mission: '{0}', Technology: '{1}'"; }
-			}
+			protected override string ErrorMessage => "Auxiliary Lookup Error: No value found for Alternator. Mission: '{0}', Technology: '{1}'";
 
 			protected override void ParseData(DataTable table)
 			{

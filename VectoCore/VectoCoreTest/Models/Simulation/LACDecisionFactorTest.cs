@@ -37,6 +37,7 @@ using TUGraz.VectoCore.Tests.Utils;
 namespace TUGraz.VectoCore.Tests.Models.Simulation
 {
 	[TestFixture]
+	[Parallelizable(ParallelScope.All)]
 	public class LACDecisionFactorTest
 	{
 		[TestCase]
@@ -48,15 +49,15 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 				for (var vTarget = vVehicle; vTarget > 0; vTarget -= 1.KMPHtoMeterPerSecond()) {
 					var df_coast = new LACDecisionFactor().Lookup(vTarget, vVehicle - vTarget);
 					if (vTarget < 48.KMPHtoMeterPerSecond()) {
-						AssertHelper.AreRelativeEqual(df_coast, 2.5, string.Format("vVehicle: {0}, vTarget: {1}", vVehicle, vTarget));
+						AssertHelper.AreRelativeEqual(df_coast, 2.5, $"vVehicle: {vVehicle}, vTarget: {vTarget}");
 					}
 
 					if (vVehicle - vTarget > 11) {
-						AssertHelper.AreRelativeEqual(df_coast, 2.5, string.Format("vVehicle: {0}, vTarget: {1}", vVehicle, vTarget));
+						AssertHelper.AreRelativeEqual(df_coast, 2.5, $"vVehicle: {vVehicle}, vTarget: {vTarget}");
 					}
 
 					if (vTarget > 52.KMPHtoMeterPerSecond() && vVehicle - vTarget < 9.KMPHtoMeterPerSecond()) {
-						AssertHelper.AreRelativeEqual(df_coast, 1.0, string.Format("vVehicle: {0}, vTarget: {1}", vVehicle, vTarget));
+						AssertHelper.AreRelativeEqual(df_coast, 1.0, $"vVehicle: {vVehicle}, vTarget: {vTarget}");
 					}
 				}
 			}

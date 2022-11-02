@@ -38,6 +38,7 @@ using TUGraz.VectoCore.Tests.Utils;
 namespace TUGraz.VectoCore.Tests.Models.Simulation
 {
 	[TestFixture]
+	[Parallelizable(ParallelScope.All)]
 	public class VechicleContainerTests
 	{
 		private const string EngineFile = @"TestData\Components\24t Coach.veng";
@@ -49,7 +50,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			var engineData = MockSimulationDataFactory.CreateEngineDataFromFile(EngineFile, 0);
 			var engine = new CombustionEngine(vehicle, engineData);
 
-			Assert.IsNotNull(vehicle.EngineSpeed);
+			Assert.IsNotNull(vehicle.EngineInfo.EngineSpeed);
 		}
 	}
 }

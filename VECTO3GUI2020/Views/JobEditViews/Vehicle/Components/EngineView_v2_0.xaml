@@ -1,0 +1,54 @@
+﻿<UserControl x:Class="VECTO3GUI2020.Views.JobEditViews.Vehicle.Components.EngineView_v2_0"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:VECTO3GUI2020.Views.JobEditViews.Vehicle.Components"
+             xmlns:custom="clr-namespace:VECTO3GUI2020.Views.CustomControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+            HorizontalAlignment="Stretch">
+    <Grid>
+        <DockPanel>
+            <Label HorizontalAlignment="Stretch" DockPanel.Dock="Top" 
+                   Content="{Binding Name}" 
+                   Background="Aquamarine" 
+                   FontSize="20" Height="40" FontWeight="DemiBold"  Padding="10 5 5 5"></Label>
+            <ScrollViewer DockPanel.Dock="Top" VerticalScrollBarVisibility="Auto" Padding="0 10 30 10">
+                <StackPanel>
+                        <StackPanel HorizontalAlignment="Stretch" DockPanel.Dock="Top">
+                        
+                        <ContentControl Content="{Binding CommonComponentViewModel}"/>
+                        <Separator/>
+                        <custom:LabledTextBoxAutomatic Content="{Binding RatedPowerDeclared}"/>
+                        <custom:LabledTextBoxAutomatic Content="{Binding Displacement}"/>
+                        <custom:LabledTextBoxAutomatic Content="{Binding IdlingSpeed}"/>
+                        <custom:LabledTextBoxAutomatic Content="{Binding RatedSpeedDeclared}"/>
+                        <custom:LabledTextBoxAutomatic Content="{Binding MaxTorqueDeclared}"/>
+                        <custom:ComboParameter Content="{Binding WHRType}"/>
+                        <Separator/>
+                    </StackPanel>
+                
+                    <ItemsControl ItemsSource="{Binding EngineModeViewModels}" Name="EngineMode" AlternationCount="2">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Vertical" x:Name="EngineModeStackpanel">
+                                    <ContentControl Margin="5 5 5 5" Content="{Binding .}"/>
+                                    <Rectangle HorizontalAlignment="Stretch" Height="10" x:Name="Separator"/>
+                                </StackPanel>
+                                <DataTemplate.Triggers>
+                                    <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                                        <Setter Property="Background" TargetName="EngineModeStackpanel" Value="Transparent"/>
+                                    </Trigger>
+                                    <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                                        <Setter Property="Background" TargetName="EngineModeStackpanel" Value="Transparent"/>
+                                    </Trigger>
+                                </DataTemplate.Triggers>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </ScrollViewer>
+        </DockPanel>
+    </Grid>
+</UserControl>

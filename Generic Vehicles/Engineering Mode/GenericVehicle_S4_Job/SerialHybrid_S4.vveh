@@ -1,0 +1,79 @@
+{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2022-02-08T08:23:19.3752854Z",
+    "AppVersion": "3",
+    "FileVersion": 10
+  },
+  "Body": {
+    "SavedInDeclMode": false,
+    "VehCat": "CityBus",
+    "LegislativeClass": "Unknown",
+    "CurbWeight": 12841.5,
+    "CurbWeightExtra": 0.0,
+    "MassMax": 19.5,
+    "Loading": 5618.16,
+    "rdyn": 465.0,
+    "CdCorrMode": "CdofVdecl",
+    "CdCorrFile": "",
+    "AxleConfig": {
+      "Type": "4x2",
+      "Axles": [
+        {
+          "Inertia": 11.9,
+          "Wheels": "275/70 R22.5",
+          "AxleWeightShare": 0.375,
+          "TwinTyres": false,
+          "RRCISO": 0.0034,
+          "FzISO": 31300.0,
+          "Type": "VehicleNonDriven"
+        },
+        {
+          "Inertia": 11.9,
+          "Wheels": "275/70 R22.5",
+          "AxleWeightShare": 0.625,
+          "TwinTyres": true,
+          "RRCISO": 0.004,
+          "FzISO": 31300.0,
+          "Type": "VehicleDriven"
+        }
+      ]
+    },
+    "EngineStopStart": false,
+    "EcoRoll": "None",
+    "PredictiveCruiseControl": "Option_1_2_3",
+    "ATEcoRollReleaseLockupClutch": false,
+    "CdA": 4.9,
+    "VehicleHeight": 3.1,
+    "Retarder": {
+      "Type": "None",
+      "Ratio": 1.0,
+      "File": ""
+    },
+    "InitialSoC": 80,
+    "PowertrainConfiguration": "SerialHybrid",
+    "ElectricMotors": [
+      {
+        "Count": 2,
+        "Ratio": 12.47,
+        "Position": "E4",
+        "MotorFile": "GenericEM.vem",
+        "MechanicalEfficiency": 0.98
+      },
+      {
+        "Count": 1,
+        "Ratio": 1,
+        "Position": "GEN",
+        "MotorFile": "GenericGen.vem",
+        "MechanicalEfficiency": 1
+      }
+    ],
+    "Batteries": [
+      {
+        "NumPacks": 1,
+        "BatteryFile": "GenericBattery.vreess",
+        "StreamId": 0
+      }
+    ]
+  }
+}

@@ -75,7 +75,7 @@ namespace TUGraz.VectoCore.Models.Connector.Ports
 		/// <summary>
 		/// Requests the Outport with the given torque [Nm] and angularVelocity [rad/s].
 		/// </summary>
-		IResponse Request(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, bool dryRun = false);
+		IResponse Request(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, bool dryRun);
 
 		IResponse Initialize(NewtonMeter outTorque, PerSecond outAngularVelocity);
 	}

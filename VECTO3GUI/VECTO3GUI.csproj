@@ -1,0 +1,694 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A17C6067-4DD9-41FC-B335-39F3DE1DE6B3}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>VECTO3GUI</RootNamespace>
+    <AssemblyName>VECTO3</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\Icon2.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Castle.Core.4.2.0\lib\net45\Castle.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ControlzEx, Version=3.0.2.4, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\ControlzEx.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.AvalonEdit, Version=6.0.1.278, Culture=neutral, PublicKeyToken=9cc39be672370310, processorArchitecture=MSIL">
+      <HintPath>..\packages\AvalonEdit.6.0.1\lib\net45\ICSharpCode.AvalonEdit.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro, Version=1.6.5.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.1.6.5\lib\net45\MahApps.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks, Version=3.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.3.7.0\lib\net45\MahApps.Metro.IconPacks.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.BoxIcons, Version=3.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.3.7.0\lib\net45\MahApps.Metro.IconPacks.BoxIcons.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.3.7.0\lib\net45\MahApps.Metro.IconPacks.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.Entypo, Version=3.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.3.7.0\lib\net45\MahApps.Metro.IconPacks.Entypo.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.EvaIcons, Version=3.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.3.7.0\lib\net45\MahApps.Metro.IconPacks.EvaIcons.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.FeatherIcons, Version=3.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.3.7.0\lib\net45\MahApps.Metro.IconPacks.FeatherIcons.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.FontAwesome, Version=3.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.3.7.0\lib\net45\MahApps.Metro.IconPacks.FontAwesome.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.Ionicons, Version=3.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.3.7.0\lib\net45\MahApps.Metro.IconPacks.Ionicons.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.JamIcons, Version=3.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.3.7.0\lib\net45\MahApps.Metro.IconPacks.JamIcons.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.Material, Version=3.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.3.7.0\lib\net45\MahApps.Metro.IconPacks.Material.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.MaterialDesign, Version=3.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.3.7.0\lib\net45\MahApps.Metro.IconPacks.MaterialDesign.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.MaterialLight, Version=3.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.3.7.0\lib\net45\MahApps.Metro.IconPacks.MaterialLight.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.Microns, Version=3.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.3.7.0\lib\net45\MahApps.Metro.IconPacks.Microns.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.Modern, Version=3.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.3.7.0\lib\net45\MahApps.Metro.IconPacks.Modern.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.Octicons, Version=3.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.3.7.0\lib\net45\MahApps.Metro.IconPacks.Octicons.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.PicolIcons, Version=3.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.3.7.0\lib\net45\MahApps.Metro.IconPacks.PicolIcons.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.RPGAwesome, Version=3.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.3.7.0\lib\net45\MahApps.Metro.IconPacks.RPGAwesome.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.SimpleIcons, Version=3.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.3.7.0\lib\net45\MahApps.Metro.IconPacks.SimpleIcons.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.Typicons, Version=3.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.3.7.0\lib\net45\MahApps.Metro.IconPacks.Typicons.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.Unicons, Version=3.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.3.7.0\lib\net45\MahApps.Metro.IconPacks.Unicons.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.WeatherIcons, Version=3.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.3.7.0\lib\net45\MahApps.Metro.IconPacks.WeatherIcons.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks.Zondicons, Version=3.0.0.0, Culture=neutral, PublicKeyToken=0c0d510f9915137a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.3.7.0\lib\net45\MahApps.Metro.IconPacks.Zondicons.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\Microsoft.Expression.Interactions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WindowsAPICodePack-Core.1.1.2\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAPICodePack.Shell, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WindowsAPICodePack-Shell.1.1.1\lib\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ninject.Extensions.Factory, Version=3.3.3.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Extensions.Factory.3.3.3\lib\net45\Ninject.Extensions.Factory.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.5.11\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Helper\AvalonEditBehaviour.cs" />
+    <Compile Include="Helper\Converter\BoolVisibilityConverter.cs" />
+    <Compile Include="Helper\Converter\ComponentTitleConverter.cs" />
+    <Compile Include="Helper\Converter\EnumConverter.cs" />
+    <Compile Include="Helper\EventCommandExecuter.cs" />
+    <Compile Include="Helper\Extension.cs" />
+    <Compile Include="Helper\FileDialogHelper.cs" />
+    <Compile Include="Helper\MetroDialogHelper.cs" />
+    <Compile Include="Helper\ObservableCollectionEx.cs" />
+    <Compile Include="Helper\OutputWindowHelper.cs" />
+    <Compile Include="Helper\Converter\SaveButtonLabelConverter.cs" />
+    <Compile Include="Helper\SerializeHelper.cs" />
+    <Compile Include="Helper\TextBoxInputRegExBehaviour.cs" />
+    <Compile Include="Helper\Validation\DoubleValidator.cs" />
+    <Compile Include="Helper\Validation\DoubleValidatorConfig.cs" />
+    <Compile Include="Helper\Validation\IntegerValidatorConfig.cs" />
+    <Compile Include="Helper\Validation\IntegerValidator.cs" />
+    <Compile Include="Helper\ViewModelBase.cs" />
+    <Compile Include="Helper\XmlComponentReaderHelper.cs" />
+    <Compile Include="Helper\XmlHelper.cs" />
+    <Compile Include="Model\AlternatorTechnologyModel.cs" />
+    <Compile Include="Model\JobListModel.cs" />
+    <Compile Include="Model\SettingsModel.cs" />
+    <Compile Include="Model\TempDataObject\AirdragComponentData.cs" />
+    <Compile Include="Model\TempDataObject\AuxiliariesBusComponentData.cs" />
+    <Compile Include="Model\TempDataObject\ITempDataObject.cs" />
+    <Compile Include="Model\TempDataObject\VehicleBusComponentData.cs" />
+    <Compile Include="Properties\Version.cs">
+      <DependentUpon>Version.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Util\AllowedEntry.cs" />
+    <Compile Include="Util\Component.cs" />
+    <Compile Include="Util\RelayCommand.cs" />
+    <Compile Include="Util\SIUtils.cs" />
+    <Compile Include="Util\TableDataConverter.cs" />
+    <Compile Include="Util\VectoParameterAttribute.cs" />
+    <Compile Include="Util\ViewModelFactory.cs" />
+    <Compile Include="Util\XML\XMLCompletedBus.cs" />
+    <Compile Include="ViewModel\Adapter\Declaration\AbstractDeclarationAdapter.cs" />
+    <Compile Include="ViewModel\Adapter\Declaration\AirdragDeclarationAdapter.cs" />
+    <Compile Include="ViewModel\Adapter\Declaration\AngledriveDeclarationAdapter.cs" />
+    <Compile Include="ViewModel\Adapter\Declaration\AuxiliariesDeclarationAdapter.cs" />
+    <Compile Include="ViewModel\Adapter\Declaration\AxleDeclarationAdapter.cs" />
+    <Compile Include="ViewModel\Adapter\Declaration\AxlegearDeclarationAdapter.cs" />
+    <Compile Include="ViewModel\Adapter\Declaration\DeclarationJobAdapter.cs" />
+    <Compile Include="ViewModel\Adapter\Declaration\EngineDeclarationAdapter.cs" />
+    <Compile Include="ViewModel\Adapter\Declaration\GearboxDeclarationAdapter.cs" />
+    <Compile Include="ViewModel\Adapter\Declaration\RetarderDeclarationAdapter.cs" />
+    <Compile Include="ViewModel\Adapter\Declaration\TorqueConverterDeclarationAdapter.cs" />
+    <Compile Include="ViewModel\Adapter\Declaration\TyreDeclarationAdapter.cs" />
+    <Compile Include="ViewModel\Adapter\Declaration\VehicleDeclarationAdapter.cs" />
+    <Compile Include="ViewModel\Adapter\IAdapterFactory.cs" />
+    <Compile Include="ViewModel\Impl\AboutViewModel.cs" />
+    <Compile Include="ViewModel\Impl\AbstractBusJobViewModel.cs" />
+    <Compile Include="ViewModel\Impl\AbstractComponentViewModel.cs" />
+    <Compile Include="ViewModel\Impl\AbstractJobViewModel.cs" />
+    <Compile Include="ViewModel\Impl\AbstractViewModel.cs" />
+    <Compile Include="ViewModel\Impl\AirdragViewModel.cs" />
+    <Compile Include="ViewModel\Impl\AngledriveViewModel.cs" />
+    <Compile Include="ViewModel\Impl\AuxiliariesViewModel.cs" />
+    <Compile Include="ViewModel\Impl\AxlegearViewModel.cs" />
+    <Compile Include="ViewModel\Impl\AxlesViewModel.cs" />
+    <Compile Include="ViewModel\Impl\AxleViewModel.cs" />
+    <Compile Include="ViewModel\Impl\CompletedBusJobViewModel.cs" />
+    <Compile Include="ViewModel\Impl\CompleteVehicleBusJobViewModel.cs" />
+    <Compile Include="ViewModel\Impl\CompleteVehicleBusViewModel.cs" />
+    <Compile Include="ViewModel\Impl\CyclesViewModel.cs" />
+    <Compile Include="ViewModel\Impl\DeclarationJobViewModel.cs" />
+    <Compile Include="ViewModel\Impl\EngineOnlyJobViewModel.cs" />
+    <Compile Include="ViewModel\Impl\EngineViewModel.cs" />
+    <Compile Include="ViewModel\Impl\GearboxViewModel.cs" />
+    <Compile Include="ViewModel\Impl\JobEntry.cs" />
+    <Compile Include="ViewModel\Impl\JoblistViewModel.cs" />
+    <Compile Include="ViewModel\Impl\MainWindowViewModel.cs" />
+    <Compile Include="ViewModel\Impl\MessageEntry.cs" />
+    <Compile Include="ViewModel\Impl\NoneViewModel.cs" />
+    <Compile Include="ViewModel\Impl\ObservableObject.cs" />
+    <Compile Include="ViewModel\Impl\OutputWindowViewModel.cs" />
+    <Compile Include="ViewModel\Impl\PrimaryVehicleBusJobViewModel.cs" />
+    <Compile Include="ViewModel\Impl\PrimaryVehicleBusViewModel.cs" />
+    <Compile Include="ViewModel\Impl\RetarderViewModel.cs" />
+    <Compile Include="ViewModel\Impl\SettingsViewModel.cs" />
+    <Compile Include="ViewModel\Impl\SingleBusJobViewModel.cs" />
+    <Compile Include="ViewModel\Impl\TorqueConverterViewModel.cs" />
+    <Compile Include="ViewModel\Impl\TyreViewModel.cs" />
+    <Compile Include="ViewModel\Impl\ValidatingViewModel.cs" />
+    <Compile Include="ViewModel\Impl\VehicleViewModel.cs" />
+    <Compile Include="ViewModel\Impl\XMLViewModel.cs" />
+    <Compile Include="ViewModel\Interfaces\FuelConsumptionEntry.cs" />
+    <Compile Include="ViewModel\Interfaces\FullLoadEntry.cs" />
+    <Compile Include="ViewModel\Interfaces\Gear.cs" />
+    <Compile Include="ViewModel\Interfaces\GearLossMapEntry.cs" />
+    <Compile Include="ViewModel\Interfaces\IAirdrag.cs" />
+    <Compile Include="ViewModel\Interfaces\IAirdragViewModel.cs" />
+    <Compile Include="ViewModel\Interfaces\IAngledriveViewModel.cs" />
+    <Compile Include="ViewModel\Interfaces\IAuxiliariesBus.cs" />
+    <Compile Include="ViewModel\Interfaces\IAuxiliariesViewModel.cs" />
+    <Compile Include="ViewModel\Interfaces\IAxlegearViewModel.cs" />
+    <Compile Include="ViewModel\Interfaces\IAxlesViewModel.cs" />
+    <Compile Include="ViewModel\Interfaces\IAxleViewModel.cs" />
+    <Compile Include="ViewModel\Interfaces\IBusJobViewModel.cs" />
+    <Compile Include="ViewModel\Interfaces\ICommonComponentParameters.cs" />
+    <Compile Include="ViewModel\Interfaces\ICompleteVehicleBus.cs" />
+    <Compile Include="ViewModel\Interfaces\ICompleteVehicleBusViewModel.cs" />
+    <Compile Include="ViewModel\Interfaces\IComponentViewModel.cs" />
+    <Compile Include="ViewModel\Interfaces\ICyclesViewModel.cs" />
+    <Compile Include="ViewModel\Interfaces\IEngineViewModel.cs" />
+    <Compile Include="ViewModel\Interfaces\IGearboxViewModel.cs" />
+    <Compile Include="ViewModel\Interfaces\IJobEditViewModel.cs" />
+    <Compile Include="ViewModel\Interfaces\IJoblistViewModel.cs" />
+    <Compile Include="ViewModel\Interfaces\IMainView.cs" />
+    <Compile Include="ViewModel\Interfaces\IMainWindowViewModel.cs" />
+    <Compile Include="ViewModel\Interfaces\INoneViewModel.cs" />
+    <Compile Include="ViewModel\Interfaces\IPrimaryVehicleBusViewModel.cs" />
+    <Compile Include="ViewModel\Interfaces\IRetarderViewModel.cs" />
+    <Compile Include="ViewModel\Interfaces\ITorqueConverterViewModel.cs" />
+    <Compile Include="ViewModel\Interfaces\ITyreViewModel.cs" />
+    <Compile Include="ViewModel\Interfaces\IVehicleViewModel.cs" />
+    <Compile Include="ViewModel\Interfaces\RetarderLossMapEntry.cs" />
+    <Compile Include="ViewModel\Interfaces\SteeringPumpEntry.cs" />
+    <Compile Include="ViewModel\Interfaces\TorqueConverterCharacteristics.cs" />
+    <Compile Include="ViewModel\Interfaces\TorqueEntry.cs" />
+    <Compile Include="Views\AboutView.xaml.cs">
+      <DependentUpon>AboutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BusJobView.xaml.cs">
+      <DependentUpon>BusJobView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ComponentViews\Declaration\AirdragDeclarationView.xaml.cs">
+      <DependentUpon>AirdragDeclarationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ComponentViews\Declaration\AngledriveDeclarationView.xaml.cs">
+      <DependentUpon>AngledriveDeclarationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ComponentViews\Declaration\AuxiliariesDeclarationView.xaml.cs">
+      <DependentUpon>AuxiliariesDeclarationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ComponentViews\Declaration\AxleDeclarationView.xaml.cs">
+      <DependentUpon>AxleDeclarationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ComponentViews\Declaration\AxlegearDeclarationView.xaml.cs">
+      <DependentUpon>AxlegearDeclarationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ComponentViews\Declaration\AxlesDeclarationView.xaml.cs">
+      <DependentUpon>AxlesDeclarationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ComponentViews\Declaration\CompleteVehicleBusView.xaml.cs">
+      <DependentUpon>CompleteVehicleBusView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ComponentViews\Declaration\CyclesDeclarationView.xaml.cs">
+      <DependentUpon>CyclesDeclarationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ComponentViews\Declaration\EngineDeclarationView.xaml.cs">
+      <DependentUpon>EngineDeclarationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ComponentViews\Declaration\GearboxDeclarationView.xaml.cs">
+      <DependentUpon>GearboxDeclarationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ComponentViews\Declaration\PrimaryVehicleBusView.xaml.cs">
+      <DependentUpon>PrimaryVehicleBusView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ComponentViews\Declaration\RetarderDeclarationView.xaml.cs">
+      <DependentUpon>RetarderDeclarationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ComponentViews\Declaration\TorqueConverterDeclarationView.xaml.cs">
+      <DependentUpon>TorqueConverterDeclarationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ComponentViews\Declaration\TyreDeclarationView.xaml.cs">
+      <DependentUpon>TyreDeclarationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ComponentViews\Declaration\VehicleDeclarationView.xaml.cs">
+      <DependentUpon>VehicleDeclarationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ComponentViews\EditComponentNoneView.xaml.cs">
+      <DependentUpon>EditComponentNoneView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ComponentViews\Engineering\AirdragEngineeringView.xaml.cs">
+      <DependentUpon>AirdragEngineeringView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ComponentViews\Engineering\AngledriveEngineeringView.xaml.cs">
+      <DependentUpon>AngledriveEngineeringView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ComponentViews\Engineering\AuxiliariesEngineerngView.xaml.cs">
+      <DependentUpon>AuxiliariesEngineerngView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ComponentViews\Engineering\AxleEngineeringView.xaml.cs">
+      <DependentUpon>AxleEngineeringView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ComponentViews\Engineering\AxlegearEngineeringView.xaml.cs">
+      <DependentUpon>AxlegearEngineeringView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ComponentViews\Engineering\AxlesEngineeringView.xaml.cs">
+      <DependentUpon>AxlesEngineeringView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ComponentViews\Engineering\CyclesEngineeringView.xaml.cs">
+      <DependentUpon>CyclesEngineeringView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ComponentViews\Engineering\EngineEngineeringView.xaml.cs">
+      <DependentUpon>EngineEngineeringView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ComponentViews\Engineering\GearboxEngineeringView.xaml.cs">
+      <DependentUpon>GearboxEngineeringView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ComponentViews\Engineering\RetarderEngineeringView.xaml.cs">
+      <DependentUpon>RetarderEngineeringView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ComponentViews\Engineering\TorqueConverterEngineeringView.xaml.cs">
+      <DependentUpon>TorqueConverterEngineeringView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ComponentViews\Engineering\TyreEngineeringView.xaml.cs">
+      <DependentUpon>TyreEngineeringView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ComponentViews\Engineering\VehicleEngineeringView.xaml.cs">
+      <DependentUpon>VehicleEngineeringView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CustomControls\CheckboxParameter.xaml.cs">
+      <DependentUpon>CheckboxParameter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CustomControls\ComboParameter.xaml.cs">
+      <DependentUpon>ComboParameter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CustomControls\CommonDeclarationComponentData.xaml.cs">
+      <DependentUpon>CommonDeclarationComponentData.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CustomControls\IntegerVectoParameterControl.xaml.cs">
+      <DependentUpon>IntegerVectoParameterControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CustomControls\VectoParameterControl.xaml.cs">
+      <DependentUpon>VectoParameterControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EngineeringEngineView.xaml.cs">
+      <DependentUpon>EngineeringEngineView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\JobEditView.xaml.cs">
+      <DependentUpon>JobEditView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\JoblistTabView.xaml.cs">
+      <DependentUpon>JoblistTabView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\JoblistView.xaml.cs">
+      <DependentUpon>JoblistView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\JobView.xaml.cs">
+      <DependentUpon>JobView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\OutputWindow.xaml.cs">
+      <DependentUpon>OutputWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\XMLView.xaml.cs">
+      <DependentUpon>XMLView.xaml</DependentUpon>
+    </Compile>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Helper\Converter\BaseConverter.cs" />
+    <Compile Include="Helper\DataContextBaseExtension.cs" />
+    <Compile Include="Helper\SIUnit.cs" />
+    <Compile Include="Helper\Converter\SIValueConverter.cs" />
+    <Compile Include="Helper\Converter\VehicleClassConverter.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Resources\GlobalStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\StringResources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\ViewModelMappings.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AboutView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\BusJobView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ComponentViews\Declaration\AirdragDeclarationView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ComponentViews\Declaration\AngledriveDeclarationView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ComponentViews\Declaration\AuxiliariesDeclarationView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ComponentViews\Declaration\AxleDeclarationView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ComponentViews\Declaration\AxlegearDeclarationView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ComponentViews\Declaration\AxlesDeclarationView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ComponentViews\Declaration\CompleteVehicleBusView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ComponentViews\Declaration\CyclesDeclarationView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ComponentViews\Declaration\EngineDeclarationView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ComponentViews\Declaration\GearboxDeclarationView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ComponentViews\Declaration\PrimaryVehicleBusView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ComponentViews\Declaration\RetarderDeclarationView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ComponentViews\Declaration\TorqueConverterDeclarationView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ComponentViews\Declaration\TyreDeclarationView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ComponentViews\Declaration\VehicleDeclarationView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ComponentViews\EditComponentNoneView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ComponentViews\Engineering\AirdragEngineeringView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ComponentViews\Engineering\AngledriveEngineeringView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ComponentViews\Engineering\AuxiliariesEngineerngView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ComponentViews\Engineering\AxleEngineeringView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ComponentViews\Engineering\AxlegearEngineeringView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ComponentViews\Engineering\AxlesEngineeringView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ComponentViews\Engineering\CyclesEngineeringView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ComponentViews\Engineering\EngineEngineeringView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ComponentViews\Engineering\GearboxEngineeringView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ComponentViews\Engineering\RetarderEngineeringView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ComponentViews\Engineering\TorqueConverterEngineeringView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ComponentViews\Engineering\TyreEngineeringView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ComponentViews\Engineering\VehicleEngineeringView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CustomControls\CheckboxParameter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CustomControls\ComboParameter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CustomControls\CommonDeclarationComponentData.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\CustomControls\IntegerVectoParameterControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CustomControls\VectoParameterControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\EngineeringEngineView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\JobEditView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\JoblistTabView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\JoblistView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\JobView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\OutputWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\XMLView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\VectoCommon\VectoCommon\VectoCommon.csproj">
+      <Project>{79a066ad-69a9-4223-90f6-6ed5d2d084f4}</Project>
+      <Name>VectoCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VectoCore\VectoCore\VectoCore.csproj">
+      <Project>{cd36938a-add9-4c65-96da-b397cdeea90a}</Project>
+      <Name>VectoCore</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\AirdragLoadTestFile.xml">
+      <SubType>Designer</SubType>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon2.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Version.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Version.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\VECTO-About.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\JRC-About.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

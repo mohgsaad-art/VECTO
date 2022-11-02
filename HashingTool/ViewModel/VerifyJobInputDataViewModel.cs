@@ -40,14 +40,8 @@ namespace HashingTool.ViewModel
 		public VerifyJobInputDataViewModel() : base("Verify VECTO Job", HashingHelper.IsJobFile, HashingHelper.HashJobFile) {}
 
 
-		public ICommand ShowHomeViewCommand
-		{
-			get { return ApplicationViewModel.HomeView; }
-		}
+		public ICommand ShowHomeViewCommand => ApplicationViewModel.HomeView;
 
-		public XMLFileSelector JobFile
-		{
-			get { return _xmlFile; }
-		}
+		public XMLFileSelector JobFile => _xmlFile;
 	}
 }

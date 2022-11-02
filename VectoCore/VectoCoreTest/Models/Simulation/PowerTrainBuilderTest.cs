@@ -45,6 +45,7 @@ using TUGraz.VectoCore.Tests.Utils;
 namespace TUGraz.VectoCore.Tests.Models.Simulation
 {
 	[TestFixture]
+	[Parallelizable(ParallelScope.All)]
 	public class PowerTrainBuilderTest
 	{
 		public const string JobFile = @"TestData\Jobs\24t Coach.vecto";
@@ -77,18 +78,16 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			var reader = new EngineeringModeVectoRunDataFactory(engineeringProvider);
 			var runData = reader.NextRun().First();
 
-			var writer = new MockModalDataContainer();
-			var builder = new PowertrainBuilder(writer);
+			var powerTrain = PowertrainBuilder.Build(runData, new MockModalDataContainer()) as VehicleContainer;
 
-			var powerTrain = builder.Build(runData);
-
+			Assert.NotNull(powerTrain);
 			Assert.IsInstanceOf<IVehicleContainer>(powerTrain);
 			Assert.AreEqual(componentCount, powerTrain.SimulationComponents().Count);
 
-			Assert.IsInstanceOf<CombustionEngine>(powerTrain.Engine);
-			Assert.IsInstanceOf<Gearbox>(powerTrain.Gearbox);
+			Assert.IsInstanceOf<CombustionEngine>(powerTrain.EngineInfo);
+			Assert.IsInstanceOf<Gearbox>(powerTrain.GearboxInfo);
 			Assert.IsInstanceOf<ISimulationOutPort>(powerTrain.Cycle);
-			Assert.IsInstanceOf<Vehicle>(powerTrain.Vehicle);
+			Assert.IsInstanceOf<Vehicle>(powerTrain.VehicleInfo);
 		}
 
 		[TestCase(JobFileDeclNoAngular, 11, false),
@@ -101,23 +100,21 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			if (provider == null) {
 				throw new VectoException("Failed to cast to Declaration InputDataProvider");
 			}
-			var reader = new DeclarationModeVectoRunDataFactory(provider, null);
+			var reader = new DeclarationModeTruckVectoRunDataFactory(provider, null);
 
 			if (!shouldFail) {
 				var runData = reader.NextRun().First();
 
-				var writer = new MockModalDataContainer();
-				var builder = new PowertrainBuilder(writer);
+				var powerTrain = PowertrainBuilder.Build(runData, new MockModalDataContainer()) as VehicleContainer;
 
-				var powerTrain = builder.Build(runData);
-
+				Assert.NotNull(powerTrain);
 				Assert.IsInstanceOf<IVehicleContainer>(powerTrain);
 				Assert.AreEqual(componentCount, powerTrain.SimulationComponents().Count);
 
-				Assert.IsInstanceOf<CombustionEngine>(powerTrain.Engine);
-				Assert.IsInstanceOf<Gearbox>(powerTrain.Gearbox);
+				Assert.IsInstanceOf<CombustionEngine>(powerTrain.EngineInfo);
+				Assert.IsInstanceOf<Gearbox>(powerTrain.GearboxInfo);
 				Assert.IsInstanceOf<ISimulationOutPort>(powerTrain.Cycle);
-				Assert.IsInstanceOf<Vehicle>(powerTrain.Vehicle);
+				Assert.IsInstanceOf<Vehicle>(powerTrain.VehicleInfo);
 			} else {
 				AssertHelper.Exception<VectoException>(() => { reader.NextRun().ToList(); });
 			}

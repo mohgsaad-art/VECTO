@@ -16,20 +16,56 @@ Refers to other files:
 ~~~json
 {
   "Header": {
-    "CreatedBy": "Michael Krisper (Graz University of Technology",
-    "Date": "2016-10-03T15:25:00+01:00",
-    "AppVersion": "3.1.0",
-    "FileVersion": 3
+    "CreatedBy": "",
+    "Date": "2019-12-03T16:57:31.6048929Z",
+    "AppVersion": "3",
+    "FileVersion": 5
   },
   "Body": {
     "SavedInDeclMode": false,
-    "ModelName": "Engine",
-    "Displacement": 7700.0,
+    "ModelName": "325kW 12.7l Engine",
+    "Displacement": "12740",
     "IdlingSpeed": 600.0,
-    "Inertia": 3.789,
-    "FullLoadCurve": "EngineFullLoadCurve.vfld",
-    "FuelMap": "FuelConsumptionMap.vmap",
-    "WHTC-Engineering": 1.03
+    "Inertia": 5.1498,
+    "Fuels": [
+      {
+        "WHTC-Urban": 0.0,
+        "WHTC-Rural": 0.0,
+        "WHTC-Motorway": 0.0,
+        "WHTC-Engineering": 1.0,
+        "ColdHotBalancingFactor": 0.0,
+        "CFRegPer": 1.0,
+        "FuelMap": "325kW_WHR.vmap",
+        "FuelType": "EthanolPI"
+      },
+      {
+        "WHTC-Urban": 1.0,
+        "WHTC-Rural": 1.0,
+        "WHTC-Motorway": 1.0,
+        "WHTC-Engineering": 1.024,
+        "ColdHotBalancingFactor": 1.0,
+        "CFRegPer": 1.0,
+        "FuelMap": "325kW_DF.vmap",
+        "FuelType": "DieselCI"
+      }
+    ],
+    "RatedPower": 0.0,
+    "RatedSpeed": 0.0,
+    "MaxTorque": 0.0,
+    "FullLoadCurve": "325kW.vfld",
+    "WHRType": [
+      "ElectricalOutput"
+    ],
+    "WHRCorrectionFactors": {
+      "Electrical": {
+        "Urban": 0.0,
+        "Rural": 0.0,
+        "Motorway": 0.0,
+        "ColdHotBalancingFactor": 0.0,
+        "CFRegPer": 0.0,
+        "EngineeringCorrectionFactor": 1.02
+      }
+    }
   }
 }
 ~~~

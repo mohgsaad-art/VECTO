@@ -1,0 +1,33 @@
+{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2020-08-26T07:42:03.1976151Z",
+    "AppVersion": "3",
+    "FileVersion": 6
+  },
+  "Body": {
+    "SavedInDeclMode": false,
+    "ModelName": "axle_only_example",
+    "Inertia": 0.128373626,
+    "TracInt": 1.0,
+    "Gears": [
+      {
+        "Ratio": 3.73,
+        "LossMap": "Axle.vtlm"
+      }
+    ],
+    "TqReserve": 20.0,
+    "ShiftTime": 2.0,
+    "StartTqReserve": 20.0,
+    "StartSpeed": 2.0,
+    "StartAcc": 0.6,
+    "GearboxType": "AMT",
+    "TorqueConverter": {
+      "Enabled": false
+    },
+    "DownshiftAfterUpshiftDelay": 6.0,
+    "UpshiftAfterDownshiftDelay": 6.0,
+    "UpshiftMinAcceleration": 0.1,
+    "PowershiftShiftTime": 0.8
+  }
+}

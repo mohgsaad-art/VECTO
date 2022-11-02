@@ -1,0 +1,24 @@
+﻿{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2018-06-12T11:24:10.6066876Z",
+    "AppVersion": "3",
+    "FileVersion": 4
+  },
+  "Body": {
+    "SavedInDeclMode": true,
+    "DeclarationVehicle": "CityBus_AT_Ser_2TC.xml",
+    "ManufacturerRecord": "CityBus_AT_Ser.RSLT_MANUFACTURER.xml",
+    "Mileage": 30000.0,
+    "NCVTestFuel": 42.5,
+    "FanPowerCoefficients": [
+      0.0,
+      1.0,
+      1.0
+    ],
+    "FanDiameter": 0.5,
+    "Cycles": [
+      "vtp_cycle_citybus_atser_2TC.vdri"
+    ]
+  }
+}

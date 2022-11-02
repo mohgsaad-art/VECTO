@@ -40,10 +40,23 @@ namespace TUGraz.VectoCommon.Models
 		public MeterPerSquareSecond Acceleration;
 		public Meter SimulationDistance;
 		public Second SimulationInterval;
+		
+
+		public OperatingPoint(OperatingPoint operatingPoint)
+		{
+			Acceleration = operatingPoint.Acceleration;
+			SimulationDistance = operatingPoint.SimulationDistance;
+			SimulationInterval = operatingPoint.SimulationInterval;
+		}
+
+		public OperatingPoint()
+		{
+		}
 
 		public override string ToString()
 		{
-			return string.Format("a: {0}, dt: {1}, ds: {2}", Acceleration, SimulationInterval, SimulationDistance);
+			return $"a: {Acceleration}, dt: {SimulationInterval}, ds: {SimulationDistance}";
 		}
+
 	}
 }

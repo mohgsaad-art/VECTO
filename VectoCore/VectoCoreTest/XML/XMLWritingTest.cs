@@ -34,17 +34,15 @@ using System.Xml;
 using Ninject;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
-using TUGraz.VectoCore.InputData.FileIO.XML.Declaration;
-using TUGraz.VectoCore.InputData.FileIO.XML.Engineering;
 using TUGraz.VectoCore.OutputData.XML;
 using NUnit.Framework;
 using TUGraz.VectoCore.InputData.FileIO.XML;
-using TUGraz.VectoCore.OutputData.XML.Engineering;
 using TUGraz.VectoCore.OutputData.XML.Engineering.Interfaces;
 
 namespace TUGraz.VectoCore.Tests.XML
 {
 	[TestFixture]
+	//[Parallelizable(ParallelScope.All)]
 	public class XMLWritingTests
 	{
 		const string EngineOnlyJob = @"TestData\XML\EngineOnlyJob\EngineOnly.vecto";

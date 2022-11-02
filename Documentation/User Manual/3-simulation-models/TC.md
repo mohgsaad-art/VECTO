@@ -1,4 +1,4 @@
-##Torque Converter Model
+## Torque Converter Model
 
 The torque converter is defined as (virtual) separate gear. Independent of the chosen AT gearbox type (serial or power split), Vecto uses a powertrain architecture with a serial torque converter. The mechanical gear ratios and gears with torque converter are created by Vecto depending on the gearbox type and gear configuration.
 
@@ -7,19 +7,19 @@ While the torque converter is active engine torque and speed are computed based 
  ![](pics/GBX-TC.svg)
 
 
-###Torque converter characteristics file (.vtcc)
+### Torque converter characteristics file (.vtcc)
 
 The file is described [here](#torque-converter-characteristics-.vtcc).
 
 This file defines the torque converter characteristics as described in VDI 2153:
 
--   **Speed Ratio** (ν) = Output Speed / Input Speed
--   **Torque Ratio** (μ) = Output Torque / Input Torque
--   **Input Torque** (T~ref(ν)~) is the input torque (over ν) for a specific reference engine speed (see below).
+-   **Speed Ratio** ($\nu$) = Output Speed / Input Speed
+-   **Torque Ratio** ($\mu$) = Output Torque / Input Torque
+-   **Input Torque** ($T_{ref}(\nu)$) is the input torque (over ν) for a specific reference engine speed (see below).
 
 The Input Torque at  reference engine speed is needed to calculate the actual engine torque using this formula:
 
-$T_{in} = T_{ref}(v) \cdot ( \frac{n_{in}}{n_{ref}} )^{2}$
+$T_{in} = T_{ref}(\nu) \cdot ( \frac{n_{in}}{n_{ref}} )^{2}$
 
 $\mu(\nu) = \frac{T_{out}}{T_{in}}$
 
@@ -37,7 +37,7 @@ The torque converter characteristics must also be defined for speed ratios  grea
 <div class="declaration">
 In declaration mode, the torque converter for drag points is automatically appended by VECTO. Input data with a speed ratio &geq; 1 are skipped.
 
-For Power Split transmissions, where the torque converter characteristics already contains the gearbox losses and transmission ratio, the generic drag points are adapted according to the following equations:
+For Power Split transmissions, where the torque converter characteristics already includes the gearbox losses and transmission ratio, the generic drag points are adapted according to the following equations:
 
 $\nu_{PS} = \nu / ratio_i$
 

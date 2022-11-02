@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2016 rel. 2 sp1 (x64) (http://www.altova.com) by Helmut Eichlseder (TU Graz/Inst. f. VKM und THD) -->
+<xs:schema xmlns:tns="urn:tugraz:ivt:VectoAPI:EngineeringDefinitions:v1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:vectoParam="urn:tugraz:ivt:VectoAPI:ParameterDocumentation" xmlns:vdecdef="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" xmlns:ve1.0="urn:tugraz:ivt:VectoAPI:EngineeringDefinitions:v1.0" targetNamespace="urn:tugraz:ivt:VectoAPI:EngineeringDefinitions:v1.1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.1" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:ParameterDocumentation ParameterDocumentation.xsd">
+	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" schemaLocation="VectoDeclarationDefinitions.1.0.xsd"/>
+	<xs:import namespace="urn:tugraz:ivt:VectoAPI:EngineeringDefinitions:v1.0" schemaLocation="VectoEngineeringDefinitions.1.0.xsd"/>
+	<xs:complexType name="EngineDataEngineeringType">
+		<xs:complexContent>
+			<xs:extension base="ve1.0:AbstractEngineDataEngineeringType">
+				<xs:sequence>
+					<xs:element name="Displacement" type="vdecdef:EngineDisplacementType"/>
+					<xs:element name="Inertia" type="ve1.0:EngineInertiaType" minOccurs="0"/>
+					<xs:element name="WHRType" type="tns:WHRTypeType"/>
+					<xs:element name="Mode" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:sequence>
+									<xs:element name="IdlingSpeed" type="vdecdef:EngineDeclaredSpeedType"/>
+									<xs:element name="FullLoadAndDragCurve">
+										<xs:complexType>
+											<xs:choice>
+												<xs:sequence>
+													<xs:element name="Entry" minOccurs="2" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:complexContent>
+																<xs:extension base="vdecdef:FullLoadAndDragCurveEntryType">
+																	<xs:attribute name="PT1" type="ve1.0:EngineFLDEntryPT1Type"/>
+																</xs:extension>
+															</xs:complexContent>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+												<xs:element name="Resource" type="ve1.0:ExtResourceEngineeringType">
+													<xs:annotation>
+														<xs:documentation>P144 - ext. Resource</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+											</xs:choice>
+										</xs:complexType>
+									</xs:element>
+									<xs:element name="Fuel" maxOccurs="unbounded">
+										<xs:complexType>
+											<xs:sequence>
+												<xs:element name="FuelType" type="vdecdef:FuelTypeType"/>
+												<xs:element name="FCCorrection" type="ve1.0:WHTCEngineeringType">
+													<xs:annotation>
+														<xs:documentation>P170 - [-]</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element name="WasteHeatRecovery" minOccurs="0">
+													<xs:complexType>
+														<xs:sequence>
+															<xs:element name="Electrical" minOccurs="0">
+																<xs:complexType>
+																	<xs:sequence>
+																		<xs:element name="WHRCorrection">
+																			<xs:simpleType>
+																				<xs:restriction base="xs:double">
+																					<xs:minExclusive value="0"/>
+																				</xs:restriction>
+																			</xs:simpleType>
+																		</xs:element>
+																		<xs:element name="WHRMap">
+																			<xs:complexType>
+																				<xs:choice>
+																					<xs:element name="Entry" type="tns:WHREngryEngineeringType" minOccurs="4" maxOccurs="unbounded"/>
+																					<xs:element name="Resource" type="ve1.0:ExtResourceEngineeringType"/>
+																				</xs:choice>
+																			</xs:complexType>
+																		</xs:element>
+																	</xs:sequence>
+																</xs:complexType>
+															</xs:element>
+															<xs:element name="Mechanical" minOccurs="0">
+																<xs:complexType>
+																	<xs:sequence>
+																		<xs:element name="WHRCorrection">
+																			<xs:simpleType>
+																				<xs:restriction base="xs:double">
+																					<xs:minExclusive value="0"/>
+																				</xs:restriction>
+																			</xs:simpleType>
+																		</xs:element>
+																		<xs:element name="WHRMap">
+																			<xs:complexType>
+																				<xs:choice>
+																					<xs:element name="Entry" type="tns:WHREngryEngineeringType" minOccurs="4" maxOccurs="unbounded"/>
+																					<xs:element name="Resource" type="ve1.0:ExtResourceEngineeringType"/>
+																				</xs:choice>
+																			</xs:complexType>
+																		</xs:element>
+																	</xs:sequence>
+																</xs:complexType>
+															</xs:element>
+														</xs:sequence>
+													</xs:complexType>
+												</xs:element>
+												<xs:element name="FuelConsumptionMap">
+													<xs:complexType>
+														<xs:choice>
+															<xs:sequence>
+																<xs:element name="Entry" type="vdecdef:FuelConsumptionEntryType" minOccurs="4" maxOccurs="unbounded"/>
+															</xs:sequence>
+															<xs:element name="Resource" type="ve1.0:ExtResourceEngineeringType">
+																<xs:annotation>
+																	<xs:documentation>P067 - ext. Resource</xs:documentation>
+																</xs:annotation>
+															</xs:element>
+														</xs:choice>
+													</xs:complexType>
+												</xs:element>
+											</xs:sequence>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="WHREngryEngineeringType">
+		<xs:attribute name="engineSpeed" type="vdecdef:EngineSpeedType" use="required">
+			<xs:annotation>
+				<xs:documentation>P072 - [1/min]</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="torque" type="vdecdef:EngineFuelConsumptionMapTorqueType" use="required">
+			<xs:annotation>
+				<xs:documentation>P073 - [Nm]</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="electricPower" type="vdecdef:Double2" use="required">
+			<xs:annotation>
+				<xs:documentation>Pxxx - [W]</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="WHRTypeType">
+		<xs:sequence>
+			<xs:element name="MechanicalOutputICE" type="xs:boolean"/>
+			<xs:element name="MechanicalOutputDrivetrain" type="xs:boolean"/>
+			<xs:element name="ElectricalOutput" type="xs:boolean"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

@@ -79,7 +79,7 @@
 
 					<Label Grid.Row="3" Grid.Column="0" Content="Digest Value computed:"
 							Style="{StaticResource DigestValueLabelStyle}" />
-					<TextBox Grid.Row="3" Grid.Column="1" Text="{Binding DigestValueComputed}" Margin="10,2"
+					<TextBox Grid.Row="3" Grid.Column="1" Text="{Binding DigestValueComputed, Mode=OneWay}" Margin="10,2"
 							IsReadOnly="True" Style="{StaticResource DigestValueTextboxStyle}" />
 					<ContentControl Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="0,10,0,0"
 									VerticalAlignment="Top" Width="50" Height="50">

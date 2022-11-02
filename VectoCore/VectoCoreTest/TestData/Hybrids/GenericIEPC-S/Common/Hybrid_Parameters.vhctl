@@ -1,0 +1,18 @@
+{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2020-09-07T15:28:08.3781385Z",
+    "AppVersion": "3",
+    "FileVersion": 2
+  },
+  "Body": {
+    "----EquivalenceFactor": 2.0,
+    "MinSoC": 24.0,
+    "----MaxSoC": 80.0,
+    "TargetSoC": 70.0,
+    "----AuxBufferTime": 5.0,
+    "----AuxBufferChgTime": 5.0,
+    "----MinICEOnTime": 10.0,
+    "GensetMinOptPowerFactor": 0.2 
+  }
+}

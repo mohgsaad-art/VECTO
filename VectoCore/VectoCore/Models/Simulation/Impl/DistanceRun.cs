@@ -47,9 +47,11 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			IterationStatistics.StartIteration();
 
 			// estimate distance to be traveled within the next TargetTimeInterval
-			var ds = Container.VehicleSpeed.IsEqual(0)
+			var ds = Container.VehicleInfo.VehicleSpeed.IsEqual(0.KMPHtoMeterPerSecond(), 0.01.SI<MeterPerSecond>())
 				? Constants.SimulationSettings.DriveOffDistance
-				: Constants.SimulationSettings.TargetTimeInterval * Container.VehicleSpeed;
+				: VectoMath.Max(
+				Constants.SimulationSettings.TargetTimeInterval * Container.VehicleInfo.VehicleSpeed,
+					Constants.SimulationSettings.DriveOffDistance);
 
 			var loopCount = 0;
 			IResponse response;
@@ -57,28 +59,36 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			do {
 				IterationStatistics.Increment(this, "Iterations");
 
-				Container.BrakePower = 0.SI<Watt>();
+				Container.Brakes.BrakePower = 0.SI<Watt>();
 				response = CyclePort.Request(AbsTime, ds);
-				response.Switch().
-					Case<ResponseSuccess>(r => { dt = r.SimulationInterval; }).
-					Case<ResponseDrivingCycleDistanceExceeded>(r => {
+				switch (response) {
+					case ResponseSuccess r: 
+						dt = r.SimulationInterval;
+						break;
+					case ResponseDrivingCycleDistanceExceeded r:
 						if (r.MaxDistance.IsSmallerOrEqual(0)) {
 							throw new VectoSimulationException("DistanceExceeded, MaxDistance is invalid: {0}", r.MaxDistance);
 						}
 						ds = r.MaxDistance;
-					}).
-					Case<ResponseCycleFinished>(r => {
+						break;
+					case ResponseCycleFinished _:
 						FinishedWithoutErrors = true;
 						Log.Info("========= Driving Cycle Finished");
-					}).
-					Default(r => { throw new VectoException("DistanceRun got an unexpected response: {0}", r); });
+						break;
+					case ResponseBatteryEmpty _:
+						FinishedWithoutErrors = true;
+						Log.Info("========= REESS empty");
+						break;
+					default:
+						throw new VectoException("DistanceRun got an unexpected response: {0}", response);
+				}
 				if (loopCount++ > Constants.SimulationSettings.MaximumIterationCountForSimulationStep) {
 					throw new VectoSimulationException("Maximum iteration count for a single simulation interval reached! Aborting!");
 				}
-				debug.Add(new {Response = response});
-			} while (!(response is ResponseSuccess || response is ResponseCycleFinished));
+				debug.Add($"[DR.DST-{loopCount}]", response);
+			} while (!(response is ResponseSuccess || response is ResponseCycleFinished || response is ResponseBatteryEmpty));
 
-			IterationStatistics.Increment(this, "Distance", Container.Distance.Value());
+			IterationStatistics.Increment(this, "Distance", Container.MileageCounter.Distance.Value());
 			IterationStatistics.Increment(this, "Time", AbsTime.Value());
 			IterationStatistics.FinishIteration(AbsTime);
 			response.AbsTime = AbsTime;

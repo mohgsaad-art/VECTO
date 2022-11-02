@@ -1,0 +1,35 @@
+{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2021-06-16T09:32:40.9429545Z",
+    "AppVersion": "3",
+    "FileVersion": 5
+  },
+  "Body": {
+    "SavedInDeclMode": false,
+    "ModelName": "350kW 12.7l Engine",
+    "Displacement": "12740",
+    "IdlingSpeed": 550.0,
+    "Inertia": 5.1498,
+    "Fuels": [
+      {
+        "WHTC-Urban": 1.055,
+        "WHTC-Rural": 1.02,
+        "WHTC-Motorway": 1.0,
+        "WHTC-Engineering": 1.005,
+        "ColdHotBalancingFactor": 1.005,
+        "CFRegPer": 1.0,
+        "FuelMap": "Group5_ICE_Map.vmap",
+        "FuelType": "DieselCI"
+      }
+    ],
+    "RatedPower": 350000,
+    "RatedSpeed": 1750.0,
+    "MaxTorque": 2134,
+    "FullLoadCurve": "Group5_ICE_fld.vfld",
+    "WHRType": [
+      "None"
+    ],
+    "WHRCorrectionFactors": {}
+  }
+}

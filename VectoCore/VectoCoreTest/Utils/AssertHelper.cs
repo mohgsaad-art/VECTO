@@ -59,7 +59,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 					Assert.AreEqual(message, ex.Message);
 				}
 				if (messageContains != null) {
-					Assert.IsTrue(ex.Message.Contains(messageContains));
+					Assert.IsTrue(ex.Message.Contains(messageContains), "Exception message does not contain expected text. Expected: '{1}', Message: '{0}'", ex.Message, messageContains);
 				}
 			}
 		}
@@ -68,8 +68,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 		public static void AreRelativeEqual(SI expected, SI actual,
 			double toleranceFactor = DoubleExtensionMethods.ToleranceFactor, string message = null)
 		{
-			Assert.IsTrue(actual.HasEqualUnit(expected),
-				string.Format("Wrong SI Units: expected: {0}, actual: {1}", expected.ToBasicUnits(), actual.ToBasicUnits()));
+			if (!actual.HasEqualUnit(expected))
+				Assert.IsTrue(actual.HasEqualUnit(expected), "Wrong SI Units: expected: {0}, actual: {1}", expected.ToBasicUnits(), actual.ToBasicUnits());
 			AreRelativeEqual(expected.Value(), actual.Value(), toleranceFactor: toleranceFactor, message: message);
 		}
 
@@ -104,15 +104,12 @@ namespace TUGraz.VectoCore.Tests.Utils
 			Assert.IsFalse(expected.HasValue ^ actual.HasValue, "Both Values have to be null or not null.");
 
 			if (double.IsNaN(expected.Value)) {
-				Assert.IsTrue(double.IsNaN(actual.Value),
-					string.Format("Actual value is not NaN. Expected: {0}, Actual: {1}{2}", expected, actual, message));
+				Assert.IsTrue(double.IsNaN(actual.Value), "Actual value is not NaN. Expected: {0}, Actual: {1}{2}", expected, actual, message);
 				return;
 			}
 
 			var ratio = expected == 0 ? Math.Abs(actual.Value) : Math.Abs(actual.Value / expected.Value - 1);
-			Assert.IsTrue(ratio < toleranceFactor, string.Format(CultureInfo.InvariantCulture,
-				"Given values are not equal. Expected: {0}, Actual: {1}, Difference: {3} (Tolerance Factor: {2}){4}",
-				expected, actual, toleranceFactor, expected - actual, message));
+				Assert.IsTrue(ratio < toleranceFactor, "Given values are not equal. Expected: {0}, Actual: {1}, Difference: {3} (Tolerance Factor: {2}){4}", expected, actual, toleranceFactor, expected - actual, message);
 		}
 
 		public static void PublicPropertiesEqual(Type t, object expected, object actual, string[] ignoredProperties = null)
@@ -121,7 +118,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 				BindingFlags.Instance | BindingFlags.Public |
 				BindingFlags.FlattenHierarchy;
 			var properties = t.GetProperties(flags);
-			
+
 			foreach (var prop in properties) {
 				if (ignoredProperties != null && ignoredProperties.Contains(prop.Name)) {
 					continue;
@@ -157,7 +154,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 					if (expectedEnumerable.Length > 0) {
 						IterateElements(expectedEnumerable, actualEnumerable, ignoredProperties);
 					}
-				} else if(propertyType == typeof(TableData)) {
+				} else if (propertyType == typeof(TableData)) {
 					TableDataEquals(expectedVal as TableData, actualVal as TableData);
 				} else {
 					PublicPropertiesEqual(propertyType, expectedVal, actualVal, ignoredProperties);
@@ -179,7 +176,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 			}
 
 			//foreach (DataRow row in expected.Rows) {
-			for (var i = 0 ; i< expected.Rows.Count; i++) {
+			for (var i = 0; i < expected.Rows.Count; i++) {
 				var expectedRow = expected.Rows[i];
 				var actualRow = actual.Rows[i];
 				foreach (DataColumn col in expected.Columns) {
@@ -197,7 +194,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 		private static void IterateElements(IEnumerable<object> expected, IEnumerable<object> actual, string[] ignoredProperties = null)
 		{
 			foreach (var entry in expected.Zip(actual, Tuple.Create)) {
-				PublicPropertiesEqual(entry.Item1.GetType() ,entry.Item1, entry.Item2, ignoredProperties);
+				PublicPropertiesEqual(entry.Item1.GetType(), entry.Item1, entry.Item2, ignoredProperties);
 			}
 		}
 	}

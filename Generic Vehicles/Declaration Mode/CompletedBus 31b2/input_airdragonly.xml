@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tns:VectoInputDeclaration xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v2.0" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.4" schemaVersion="2.8" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:di="http://www.w3.org/2000/09/xmldsig#" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob V:\VectoCore\VectoCore\Resources\XSD\VectoDeclarationJob.xsd">
+  <v2.0:Vehicle id="TODO_ADDIDENTIFIER" xsi:type="Vehicle_Conventional_CompletedBusDeclarationType">
+    <Manufacturer>TUG</Manufacturer>
+    <ManufacturerAddress>Inffeldgasse 19</ManufacturerAddress>
+    <VIN>VIN-1234</VIN>
+    <Date>2021-06-06T22:00:00Z</Date>
+    <HeightIntegratedBody>3000</HeightIntegratedBody>
+    <VehicleLength>12000</VehicleLength>
+    <VehicleWidth>2550</VehicleWidth>
+    <EntranceHeight>250</EntranceHeight>
+    <VehicleDeclarationType>interim</VehicleDeclarationType>
+    <Components xsi:type="Components_Conventional_CompletedBusType">
+      <AirDrag>
+        <Data id="CabinX23h" xsi:type="v2.0:AirDragDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
+          <Manufacturer>Generic Manufacturer</Manufacturer>
+          <Model>Generic Model</Model>
+          <CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+          <Date>2017-03-24T15:00:00Z</Date>
+          <AppVersion>Vecto AirDrag x.y</AppVersion>
+          <CdxA_0>4.90</CdxA_0>
+          <TransferredCdxA>4.90</TransferredCdxA>
+          <DeclaredCdxA>4.90</DeclaredCdxA>
+        </Data>
+        <v2.0:Signature>
+          <di:Reference URI="#CabinX23h">
+            <di:Transforms>
+              <di:Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+              <di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+            </di:Transforms>
+            <di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+            <di:DigestValue>b9SHCfOoVrBxFQ8wwDK32OO+9bd85DuaUdgs6j/29N8=</di:DigestValue>
+          </di:Reference>
+        </v2.0:Signature>
+      </AirDrag>
+    </Components>
+  </v2.0:Vehicle>
+</tns:VectoInputDeclaration>

@@ -41,12 +41,14 @@ using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.OutputData;
+using TUGraz.VectoCore.Tests.Integration.BatteryElectric;
 using TUGraz.VectoCore.Tests.Utils;
 using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 {
 	[TestFixture]
+	[Parallelizable(ParallelScope.All)]
 	public class ClutchTest
 	{
 		private const string CoachEngine = @"TestData\Components\24t Coach.veng";
@@ -76,10 +78,13 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var container = new VehicleContainer(ExecutionMode.Engineering);
 			var engineData = MockSimulationDataFactory.CreateEngineDataFromFile(CoachEngine, 1);
 			var gearbox = new MockGearbox(container);
-			gearbox.Gear = (uint)gear;
+			gearbox.Gear = new GearshiftPosition((uint)gear);
 			var clutch = new Clutch(container, engineData) { IdleController = new MockIdleController() };
 			var brakes = new Brakes(container) { BrakePower = 0.SI<Watt>() };
 			var vehicle = new MockVehicle(container) { MyVehicleSpeed = 50.KMPHtoMeterPerSecond() };
+			var engine  = new MockEngineInfo(container) {
+				EngineSpeed = 800.RPMtoRad()
+			};
 
 			var inPort = clutch.InPort();
 			var outPort = new MockTnOutPort();
@@ -92,19 +97,19 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 			driver.DriverBehavior = drivingBehavior;
 
-			clutchOutPort.Request(0.SI<Second>(), 0.SI<Second>(), torque.SI<NewtonMeter>(), angularSpeed.SI<PerSecond>());
+			clutchOutPort.Request(0.SI<Second>(), 0.SI<Second>(), torque.SI<NewtonMeter>(), angularSpeed.SI<PerSecond>(), false);
 
 			Assert.AreEqual(expectedTorque, outPort.Torque.Value(), 0.001);
 			Assert.AreEqual(expectedEngineSpeed, outPort.AngularVelocity.Value(), 0.001);
 		}
 
-		//[Test] // this test is just to make sure the clutch characteristic has no unsteadiness
+		//[TestCase] // this test is just to make sure the clutch characteristic has no unsteadiness
 		public void ClutchContinuityTest()
 		{
 			var container = new VehicleContainer(ExecutionMode.Engineering);
 			var engineData = MockSimulationDataFactory.CreateEngineDataFromFile(CoachEngine, 1);
 			var gearbox = new MockGearbox(container);
-			gearbox.Gear = 1;
+			gearbox.Gear = new GearshiftPosition(1);
 			var engine = new MockEngine(container);
 			var clutch = new Clutch(container, engineData) { IdleController = new MockIdleController() };
 
@@ -142,7 +147,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 				var tq = mass * accel * rDyn / ratio;
 				var angularVelocity = (accel * dt / rDyn * ratio).Cast<PerSecond>();
 
-				clutchOutPort.Request(0.SI<Second>(), 0.SI<Second>(), tq, angularVelocity);
+				clutchOutPort.Request(0.SI<Second>(), 0.SI<Second>(), tq, angularVelocity, false);
 
 				var row = data.NewRow();
 				row["a"] = a;
@@ -159,7 +164,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 		}
 	}
 
-	public class MockEngine : VectoSimulationComponent, IEngineInfo
+	public class MockEngine : VectoSimulationComponent, IEngineInfo, IEngineControl
 	{
 		public MockEngine(IVehicleContainer container) : base(container) {}
 
@@ -171,7 +176,17 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			throw new System.NotImplementedException();
 		}
 
+		public Watt EngineDynamicFullLoadPower(PerSecond avgEngineSpeed, Second dt)
+		{
+			throw new System.NotImplementedException();
+		}
+
 		public Watt EngineDragPower(PerSecond angularSpeed)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public Watt EngineAuxDemand(PerSecond avgEngineSpeed, Second dt)
 		{
 			throw new System.NotImplementedException();
 		}
@@ -181,27 +196,35 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 		public PerSecond EngineN95hSpeed { get; set; }
 		public PerSecond EngineN80hSpeed { get; set; }
 
-		protected override void DoWriteModalResults(IModalDataContainer container)
+		public bool EngineOn { get; set; }
+
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
-			container[ModalResultField.P_eng_fcmap] = 0.SI<Watt>();
-			container[ModalResultField.P_eng_out] = 0.SI<Watt>();
-			container[ModalResultField.P_eng_inertia] = 0.SI<Watt>();
+			container[ModalResultField.P_ice_fcmap] = 0.SI<Watt>();
+			container[ModalResultField.P_ice_out] = 0.SI<Watt>();
+			container[ModalResultField.P_ice_inertia] = 0.SI<Watt>();
 
-			container[ModalResultField.n_eng_avg] = 0.SI<PerSecond>();
-			container[ModalResultField.T_eng_fcmap] = 0.SI<NewtonMeter>();
+			container[ModalResultField.n_ice_avg] = 0.SI<PerSecond>();
+			container[ModalResultField.T_ice_fcmap] = 0.SI<NewtonMeter>();
 
-			container[ModalResultField.P_eng_full] = 0.SI<Watt>();
-			container[ModalResultField.P_eng_drag] = 0.SI<Watt>();
-			container[ModalResultField.Tq_full] = 0.SI<NewtonMeter>();
-			container[ModalResultField.Tq_drag] = 0.SI<NewtonMeter>();
+			container[ModalResultField.P_ice_full] = 0.SI<Watt>();
+			container[ModalResultField.P_ice_drag] = 0.SI<Watt>();
+			container[ModalResultField.T_ice_full] = 0.SI<NewtonMeter>();
+			container[ModalResultField.T_ice_drag] = 0.SI<NewtonMeter>();
 
 			container[ModalResultField.FCMap] = 0.SI<KilogramPerSecond>();
 			container[ModalResultField.FCNCVc] = 0.SI<KilogramPerSecond>();
 			container[ModalResultField.FCWHTCc] = 0.SI<KilogramPerSecond>();
-			container[ModalResultField.FCAAUX] = 0.SI<KilogramPerSecond>();
+			//container[ModalResultField.FCAAUX] = 0.SI<KilogramPerSecond>();
 			container[ModalResultField.FCFinal] = 0.SI<KilogramPerSecond>();
 		}
 
-		protected override void DoCommitSimulationStep() {}
+		protected override void DoCommitSimulationStep(Second time, Second simulationInterval) {}
+
+		#region Implementation of IEngineControl
+
+		public bool CombustionEngineOn { get; set; }
+
+		#endregion
 	}
 }

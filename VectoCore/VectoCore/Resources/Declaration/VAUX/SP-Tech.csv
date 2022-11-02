@@ -1,7 +1,9 @@
-Technology                             , UF   , B    , S
-Fixed displacement                     , 1    , 1    , 1
-Fixed displacement with elec. control  , 0.95 , 1    , 1
-Dual displacement                      , 0.85 , 0.85 , 0.85
-Variable displacement mech. controlled , 0.75 , 0.75 , 0.75
-Variable displacement elec. controlled , 0.6  , 0.6  , 0.6
-Electric                               , 0    , 1.5  , 1
+Technology                             , UF    , B     , S
+Fixed displacement                     , 1     , 1     , 1
+Fixed displacement with elec. control  , 0.95  , 1     , 1
+Dual displacement                      , 0.85  , 0.85  , 0.85
+Variable displacement mech. controlled , 0.75  , 0.75  , 0.75
+Variable displacement elec. controlled , 0.6   , 0.6   , 0.6
+Electric                               , 0     , 2.143 , 1.429
+Electric driven pump                   , 0.857 , 0.857 , 0.857
+Full electric steering gear            , 0     , 0.143 , 1.429

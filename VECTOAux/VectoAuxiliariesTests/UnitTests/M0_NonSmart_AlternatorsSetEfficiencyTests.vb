@@ -1,11 +1,13 @@
 ﻿Imports NUnit.Framework
 Imports TUGraz.VectoCommon.Utils
-Imports VectoAuxiliaries
-Imports VectoAuxiliaries.Pneumatics
-Imports VectoAuxiliariesTests.Mocks
-Imports VectoAuxiliaries.Electrics
-Imports VectoAuxiliaries.Hvac
 Imports System.IO
+Imports TUGraz.VectoCommon.BusAuxiliaries
+Imports TUGraz.VectoCore.InputData.Reader.ComponentData
+Imports TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl.Electrics
+Imports TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl.HVAC
+Imports TUGraz.VectoCore.Models.BusAuxiliaries.Interfaces.DownstreamModules
+Imports TUGraz.VectoCore.Models.BusAuxiliaries.Interfaces.DownstreamModules.HVAC
+Imports Signals = TUGraz.VectoCore.Models.BusAuxiliaries.Interfaces.Signals
 
 Namespace UnitTests
     <TestFixture()>
@@ -14,19 +16,22 @@ Namespace UnitTests
         Private Const cstrHVACMapLocation As String = "TestFiles\TestHvacMap.csv"
         Private Const cstrAlternatorMap As String = "TestFiles\testAlternatorMap.aalt"
 
-        Private elecConsumers As IElectricalConsumerList
+        'Private elecConsumers As IElectricalConsumerList
 
         Private alternatorMap As IAlternatorMap
         Private signals As Signals = New Signals
-        Private powernetVoltage As Volt = 26.3.SI(Of Volt)()
-        Private ssm As IHVACSteadyStateModel = New HVACSteadyStateModel(100, 100, 100)
+        Private powernetVoltage As Volt = 26.3.SI (Of Volt)()
 
         Private Function GetSSM() As ISSMTOOL
 
             Const _SSMMAP As String = "TestFiles\ssm.Ahsm"
 
-            Dim ssm As ISSMTOOL = New SSMTOOL(_SSMMAP, New HVACConstants())
-            ssm.Load(_SSMMAP)
+            Dim auxconfig = Utils.GetAuxTestConfig()
+
+            Dim ssm As SSMTOOL = New SSMTOOL(auxconfig.SSMInputs) _
+            ', New HVACConstants())
+            'CType(CType(ssm.SSMInputs, SSMInputs).Vehicle, VehicleData).Height=  0.SI (Of Meter)
+            'ssm.Load(_SSMMAP)
 
             Return ssm
         End Function
@@ -38,13 +43,15 @@ Namespace UnitTests
             signals.EngineSpeed = 2000.RPMtoRad()
 
             'Setup consumers and HVAC ( 1 Consumer in Test Category )
-            elecConsumers = CType(New ElectricalConsumerList(0.096, 26.3), IElectricalConsumerList)
-            elecConsumers.AddConsumer(New ElectricalConsumer(False, "TEST", "CONSUMER1", 20, 0.5,
-                                                            26.3, 1, ""))
+
+            'Dim list = New List(Of IElectricalConsumer)()
+            'Dim consumer = New ElectricalConsumer(False, "TEST", "CONSUMER1", 0.5, 1)
+            'list.Add(consumer)
+            'elecConsumers = CType(New ElectricalConsumerList(list), IElectricalConsumerList)
 
             'Alternator Map
-            alternatorMap = CType(New AlternatorMap(cstrAlternatorMap), IAlternatorMap)
-            alternatorMap.Initialise()
+            alternatorMap = AlternatorReader.ReadMap(cstrAlternatorMap)
+            'alternatorMap.Initialise()
         End Sub
 
         <OneTimeSetUp>
@@ -54,30 +61,59 @@ Namespace UnitTests
 
         <Test()>
         Public Sub CreateNewTest()
-            Dim target As M0_NonSmart_AlternatorsSetEfficiency = New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers,
-                                                                                                        alternatorMap, powernetVoltage, signals, GetSSM())
+
+            Dim auxConfig = utils.GetAuxTestConfig()
+            'CType(CType(auxConfig.SSMInputs, SSMInputs).Vehicle, VehicleData).Height=  0.SI (Of Meter)
+            CType(auxConfig.ElectricalUserInputsConfig, ElectricsUserInputsConfig).PowerNetVoltage = powernetVoltage
+            CType(auxConfig.ElectricalUserInputsConfig, ElectricsUserInputsConfig).AlternatorMap =alternatorMap
+
+            Dim target As IM0_NonSmart_AlternatorsSetEfficiency = New M00Impl(auxConfig.ElectricalUserInputsConfig,
+                                                                              signals,  New SSMTOOL(auxconfig.SSMInputs).ElectricalWAdjusted)
             Assert.IsNotNull(target)
         End Sub
 
-        <Test()>
-        Public Sub CreateNew_MissingElecConsumers_ThrowArgumentExceptionTest()
+        '<Test()>
+        'Public Sub CreateNew_MissingElecConsumers_ThrowArgumentExceptionTest()
 
-            Dim target As M0_NonSmart_AlternatorsSetEfficiency
-            Assert.That(Sub() target = New M0_NonSmart_AlternatorsSetEfficiency(Nothing, alternatorMap, powernetVoltage, signals, GetSSM()), Throws.InstanceOf(Of ArgumentException))
-        End Sub
+        '    Dim target As IM0_NonSmart_AlternatorsSetEfficiency
+        '    Dim auxConfig = utils.GetAuxTestConfig()
+        '    'CType(CType(auxConfig.SSMInputs, SSMInputs).Vehicle, VehicleData).Height=  0.SI (Of Meter)
+        '    CType(auxConfig.ElectricalUserInputsConfig, ElectricsUserInputsConfig).PowerNetVoltage = powernetVoltage
+        '    CType(auxConfig.ElectricalUserInputsConfig, ElectricsUserInputsConfig).AlternatorMap =alternatorMap
+
+        '    Assert.That(Sub() target = New M00Impl(auxConfig.ElectricalUserInputsConfig, signals, New SSMTOOL(auxconfig.SSMInputs)),
+        '                Throws.InstanceOf (Of ArgumentException))
+        'End Sub
 
         <Test()>
         Public Sub CreateNew_MissingAlternatorMap_ThrowArgumentExceptionTest()
-            Dim target As M0_NonSmart_AlternatorsSetEfficiency
-            Assert.That(Sub() target = New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers, Nothing, powernetVoltage, signals, GetSSM()), Throws.InstanceOf(Of ArgumentException))
+            Dim target As IM0_NonSmart_AlternatorsSetEfficiency
+            Dim auxConfig = utils.GetAuxTestConfig()
+            'CType(CType(auxConfig.SSMInputs, SSMInputs).Vehicle, VehicleData).Height=  0.SI (Of Meter)
+            CType(auxConfig.ElectricalUserInputsConfig, ElectricsUserInputsConfig).PowerNetVoltage = powernetVoltage
+            CType(auxConfig.ElectricalUserInputsConfig, ElectricsUserInputsConfig).AlternatorMap = Nothing
+
+            Assert.That(Sub() target = New M00Impl(auxConfig.ElectricalUserInputsConfig, signals, New SSMTOOL(auxconfig.SSMInputs).ElectricalWAdjusted),
+                        Throws.InstanceOf (Of ArgumentException))
         End Sub
 
         <Test()>
         Public Sub EfficiencyValueTest()
-            Dim target As M0_NonSmart_AlternatorsSetEfficiency = New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers,
-                                                                                                        alternatorMap, powernetVoltage, signals, GetSSM())
 
-            Dim actual As Single = target.AlternatorsEfficiency
+            Dim auxConfig = utils.GetAuxTestConfig()
+
+            'CType(auxConfig.ElectricalUserInputsConfig, ElectricsUserInputsConfig).ElectricalConsumers = elecConsumers
+            'CType(auxConfig.ElectricalUserInputsConfig, ElectricsUserInputsConfig).AverageCurrentDemandInclBaseLoad = 0.5.SI(Of Ampere)
+            'CType(auxConfig.ElectricalUserInputsConfig, ElectricsUserInputsConfig).AverageCurrentDemandInclBaseLoad = 0.5.SI(Of Ampere)
+            'CType(CType(auxConfig.SSMInputs, SSMInputs).Vehicle, VehicleData).Height=  0.SI (Of Meter)
+
+            CType(auxConfig.ElectricalUserInputsConfig, ElectricsUserInputsConfig).PowerNetVoltage = powernetVoltage
+            CType(auxConfig.ElectricalUserInputsConfig, ElectricsUserInputsConfig).AlternatorMap =alternatorMap
+
+
+            Dim target As M00Impl = New M00Impl(auxConfig.ElectricalUserInputsConfig, signals, New SSMTOOL(auxconfig.SSMInputs).ElectricalWAdjusted)
+
+            Dim actual As Double = target.AlternatorsEfficiency
 
             Dim expected As Single = 0.62
 
@@ -86,14 +122,18 @@ Namespace UnitTests
 
         <Test()>
         Public Sub HVAC_PowerDemandAmpsTest()
+            Dim auxConfig = utils.GetAuxTestConfig()
+            'CType(CType(auxConfig.SSMInputs, SSMInputs).Vehicle, VehicleData).Height=  0.SI (Of Meter)
+            CType(auxConfig.ElectricalUserInputsConfig, ElectricsUserInputsConfig).PowerNetVoltage = powernetVoltage
+            CType(auxConfig.ElectricalUserInputsConfig, ElectricsUserInputsConfig).AlternatorMap =alternatorMap
 
-            Dim target As M0_NonSmart_AlternatorsSetEfficiency = New M0_NonSmart_AlternatorsSetEfficiency(elecConsumers,
-                                                                                                        alternatorMap, powernetVoltage, signals, GetSSM())
+
+            Dim target As IM0_NonSmart_AlternatorsSetEfficiency = New M00Impl(auxConfig.ElectricalUserInputsConfig, signals, New SSMTOOL(auxconfig.SSMInputs).ElectricalWAdjusted)
 
             Dim actual As Ampere
             Dim expected As Single = 0
 
-            actual = target.GetHVACElectricalPowerDemandAmps()
+            actual = target.GetHVACElectricalCurrentDemand()
 
             Assert.AreEqual(expected, actual.Value(), 0.001)
         End Sub

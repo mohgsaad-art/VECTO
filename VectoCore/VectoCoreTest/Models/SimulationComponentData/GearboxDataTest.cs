@@ -30,30 +30,22 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Data;
 using NUnit.Framework;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
-using TUGraz.VectoCore.InputData.Reader;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
-using TUGraz.VectoCore.Models.SimulationComponent.Data.Engine;
-using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 using TUGraz.VectoCore.Tests.Utils;
 using TUGraz.VectoCore.Utils;
 using System.IO;
-using System.Linq;
-using System.Windows.Forms;
-using System.Xml;
-using System.Xml.Linq;
-using System.Xml.XPath;
-using TUGraz.VectoCore.Tests.Reports;
+using TUGraz.VectoCommon.InputData;
 
 namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 {
 	[TestFixture]
+	[Parallelizable(ParallelScope.All)]
 	public class GearboxDataTest
 	{
 		protected const string GearboxFile = @"Testdata\Components\24t Coach.vgbx";
@@ -167,49 +159,49 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 			AssertHelper.AreRelativeEqual(10, map.GetTorqueLoss(120.RPMtoRad(), 50.SI<NewtonMeter>()).Value);
 		}
 
-		[TestCase]
-		public void TestLossMap_OUT_10_CONST_Interpolation_Extrapolation()
-		{
-			var data = new DataTable();
-			data.Columns.Add("");
-			data.Columns.Add("");
-			data.Columns.Add("");
-			data.Rows.Add("0", "0", "10"); //         (0,100):10 --  (100,100):10
-			data.Rows.Add("0", "100", "10"); //        |      \          |
-			data.Rows.Add("100", "0", "10"); //        |       \         |
-			data.Rows.Add("100", "100", "10"); //    (0,0):10  ----- (100,10):10
+		//[TestCase]
+		//public void TestLossMap_OUT_10_CONST_Interpolation_Extrapolation()
+		//{
+		//	var data = new DataTable();
+		//	data.Columns.Add("");
+		//	data.Columns.Add("");
+		//	data.Columns.Add("");
+		//	data.Rows.Add("0", "0", "10"); //         (0,100):10 --  (100,100):10
+		//	data.Rows.Add("0", "100", "10"); //        |      \          |
+		//	data.Rows.Add("100", "0", "10"); //        |       \         |
+		//	data.Rows.Add("100", "100", "10"); //    (0,0):10  ----- (100,10):10
 
-			var map = TransmissionLossMapReader.Create(data, 1.0, "1");
+		//	var map = TransmissionLossMapReader.Create(data, 1.0, "1");
 
-			// test inside the triangles
-			AssertHelper.AreRelativeEqual(15, map.GetOutTorque(25.RPMtoRad(), 25.SI<NewtonMeter>(), true));
-			AssertHelper.AreRelativeEqual(40, map.GetOutTorque(75.RPMtoRad(), 50.SI<NewtonMeter>(), true));
+		//	// test inside the triangles
+		//	AssertHelper.AreRelativeEqual(15, map.GetOutTorque(25.RPMtoRad(), 25.SI<NewtonMeter>(), true));
+		//	AssertHelper.AreRelativeEqual(40, map.GetOutTorque(75.RPMtoRad(), 50.SI<NewtonMeter>(), true));
 
-			// test interpolation on edges
-			AssertHelper.AreRelativeEqual(-15, map.GetOutTorque(50.RPMtoRad(), -5.SI<NewtonMeter>(), true));
-			AssertHelper.AreRelativeEqual(35, map.GetOutTorque(0.RPMtoRad(), 45.SI<NewtonMeter>(), true));
-			AssertHelper.AreRelativeEqual(30, map.GetOutTorque(50.RPMtoRad(), 40.SI<NewtonMeter>(), true));
-			AssertHelper.AreRelativeEqual(65, map.GetOutTorque(50.RPMtoRad(), 75.SI<NewtonMeter>(), true));
-			AssertHelper.AreRelativeEqual(15, map.GetOutTorque(100.RPMtoRad(), 25.SI<NewtonMeter>(), true));
+		//	// test interpolation on edges
+		//	AssertHelper.AreRelativeEqual(-15, map.GetOutTorque(50.RPMtoRad(), -5.SI<NewtonMeter>(), true));
+		//	AssertHelper.AreRelativeEqual(35, map.GetOutTorque(0.RPMtoRad(), 45.SI<NewtonMeter>(), true));
+		//	AssertHelper.AreRelativeEqual(30, map.GetOutTorque(50.RPMtoRad(), 40.SI<NewtonMeter>(), true));
+		//	AssertHelper.AreRelativeEqual(65, map.GetOutTorque(50.RPMtoRad(), 75.SI<NewtonMeter>(), true));
+		//	AssertHelper.AreRelativeEqual(15, map.GetOutTorque(100.RPMtoRad(), 25.SI<NewtonMeter>(), true));
 
-			// test interpolation on corner points
-			AssertHelper.AreRelativeEqual(-10, map.GetOutTorque(0.RPMtoRad(), 0.SI<NewtonMeter>(), true));
-			AssertHelper.AreRelativeEqual(80, map.GetOutTorque(0.RPMtoRad(), 90.SI<NewtonMeter>(), true));
-			AssertHelper.AreRelativeEqual(-20, map.GetOutTorque(100.RPMtoRad(), -10.SI<NewtonMeter>(), true));
-			AssertHelper.AreRelativeEqual(50, map.GetOutTorque(100.RPMtoRad(), 60.SI<NewtonMeter>(), true));
+		//	// test interpolation on corner points
+		//	AssertHelper.AreRelativeEqual(-10, map.GetOutTorque(0.RPMtoRad(), 0.SI<NewtonMeter>(), true));
+		//	AssertHelper.AreRelativeEqual(80, map.GetOutTorque(0.RPMtoRad(), 90.SI<NewtonMeter>(), true));
+		//	AssertHelper.AreRelativeEqual(-20, map.GetOutTorque(100.RPMtoRad(), -10.SI<NewtonMeter>(), true));
+		//	AssertHelper.AreRelativeEqual(50, map.GetOutTorque(100.RPMtoRad(), 60.SI<NewtonMeter>(), true));
 
-			// test outside the corners
-			AssertHelper.AreRelativeEqual(-30, map.GetOutTorque(-20.RPMtoRad(), -20.SI<NewtonMeter>(), true));
-			AssertHelper.AreRelativeEqual(110, map.GetOutTorque(-20.RPMtoRad(), 120.SI<NewtonMeter>(), true));
-			AssertHelper.AreRelativeEqual(-30, map.GetOutTorque(120.RPMtoRad(), -20.SI<NewtonMeter>(), true));
-			AssertHelper.AreRelativeEqual(110, map.GetOutTorque(120.RPMtoRad(), 120.SI<NewtonMeter>(), true));
+		//	// test outside the corners
+		//	AssertHelper.AreRelativeEqual(-30, map.GetOutTorque(-20.RPMtoRad(), -20.SI<NewtonMeter>(), true));
+		//	AssertHelper.AreRelativeEqual(110, map.GetOutTorque(-20.RPMtoRad(), 120.SI<NewtonMeter>(), true));
+		//	AssertHelper.AreRelativeEqual(-30, map.GetOutTorque(120.RPMtoRad(), -20.SI<NewtonMeter>(), true));
+		//	AssertHelper.AreRelativeEqual(110, map.GetOutTorque(120.RPMtoRad(), 120.SI<NewtonMeter>(), true));
 
-			// test outside the edges
-			AssertHelper.AreRelativeEqual(40, map.GetOutTorque(-20.RPMtoRad(), 50.SI<NewtonMeter>(), true));
-			AssertHelper.AreRelativeEqual(110, map.GetOutTorque(50.RPMtoRad(), 120.SI<NewtonMeter>(), true));
-			AssertHelper.AreRelativeEqual(-30, map.GetOutTorque(50.RPMtoRad(), -20.SI<NewtonMeter>(), true));
-			AssertHelper.AreRelativeEqual(40, map.GetOutTorque(120.RPMtoRad(), 50.SI<NewtonMeter>(), true));
-		}
+		//	// test outside the edges
+		//	AssertHelper.AreRelativeEqual(40, map.GetOutTorque(-20.RPMtoRad(), 50.SI<NewtonMeter>(), true));
+		//	AssertHelper.AreRelativeEqual(110, map.GetOutTorque(50.RPMtoRad(), 120.SI<NewtonMeter>(), true));
+		//	AssertHelper.AreRelativeEqual(-30, map.GetOutTorque(50.RPMtoRad(), -20.SI<NewtonMeter>(), true));
+		//	AssertHelper.AreRelativeEqual(40, map.GetOutTorque(120.RPMtoRad(), 50.SI<NewtonMeter>(), true));
+		//}
 
 		[TestCase]
 		public void TestLossMap_IN_Interpolation_Extrapolation()
@@ -255,52 +247,52 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 			AssertHelper.AreRelativeEqual(25, map.GetTorqueLoss(120.RPMtoRad(), 50.SI<NewtonMeter>()).Value);
 		}
 
-		[TestCase]
-		public void TestLossMap_OUT_Interpolation_Extrapolation()
-		{
-			var data = new DataTable();
-			data.Columns.Add("");
-			data.Columns.Add("");
-			data.Columns.Add("");
-			data.Rows.Add("0", "0", "0"); //         (0,100):10 -- (100,100):40
-			data.Rows.Add("0", "100", "10"); //        |      \        |
-			data.Rows.Add("100", "0", "10"); //        |       \       |
-			data.Rows.Add("100", "100", "40"); //    (0,0):0 ----- (100,0):10
+		//[TestCase]
+		//public void TestLossMap_OUT_Interpolation_Extrapolation()
+		//{
+		//	var data = new DataTable();
+		//	data.Columns.Add("");
+		//	data.Columns.Add("");
+		//	data.Columns.Add("");
+		//	data.Rows.Add("0", "0", "0"); //         (0,100):10 -- (100,100):40
+		//	data.Rows.Add("0", "100", "10"); //        |      \        |
+		//	data.Rows.Add("100", "0", "10"); //        |       \       |
+		//	data.Rows.Add("100", "100", "40"); //    (0,0):0 ----- (100,0):10
 
-			var map = TransmissionLossMapReader.Create(data, 1.0, "1");
+		//	var map = TransmissionLossMapReader.Create(data, 1.0, "1");
 
-			// test inside the triangles
-			AssertHelper.AreRelativeEqual(20, map.GetOutTorque(25.RPMtoRad(), 25.SI<NewtonMeter>()));
-			AssertHelper.AreRelativeEqual(32.5, map.GetOutTorque(75.RPMtoRad(), 50.SI<NewtonMeter>()));
+		//	// test inside the triangles
+		//	AssertHelper.AreRelativeEqual(20, map.GetOutTorque(25.RPMtoRad(), 25.SI<NewtonMeter>()));
+		//	AssertHelper.AreRelativeEqual(32.5, map.GetOutTorque(75.RPMtoRad(), 50.SI<NewtonMeter>()));
 
-			// test interpolation on edges
-			AssertHelper.AreRelativeEqual(-5, map.GetOutTorque(50.RPMtoRad(), 0.SI<NewtonMeter>()));
-			AssertHelper.AreRelativeEqual(40.5, map.GetOutTorque(0.RPMtoRad(), 45.SI<NewtonMeter>()));
-			AssertHelper.AreRelativeEqual(31, map.GetOutTorque(50.RPMtoRad(), 40.SI<NewtonMeter>()));
-			AssertHelper.AreRelativeEqual(57.5, map.GetOutTorque(50.RPMtoRad(), 75.SI<NewtonMeter>()));
-			AssertHelper.AreRelativeEqual(7.5, map.GetOutTorque(100.RPMtoRad(), 25.SI<NewtonMeter>()));
+		//	// test interpolation on edges
+		//	AssertHelper.AreRelativeEqual(-5, map.GetOutTorque(50.RPMtoRad(), 0.SI<NewtonMeter>()));
+		//	AssertHelper.AreRelativeEqual(40.5, map.GetOutTorque(0.RPMtoRad(), 45.SI<NewtonMeter>()));
+		//	AssertHelper.AreRelativeEqual(31, map.GetOutTorque(50.RPMtoRad(), 40.SI<NewtonMeter>()));
+		//	AssertHelper.AreRelativeEqual(57.5, map.GetOutTorque(50.RPMtoRad(), 75.SI<NewtonMeter>()));
+		//	AssertHelper.AreRelativeEqual(7.5, map.GetOutTorque(100.RPMtoRad(), 25.SI<NewtonMeter>()));
 
-			// test interpolation on corner points
-			AssertHelper.AreRelativeEqual(0, map.GetTorqueLoss(0.RPMtoRad(), 0.SI<NewtonMeter>()).Value);
-			AssertHelper.AreRelativeEqual(10, map.GetTorqueLoss(0.RPMtoRad(), 90.SI<NewtonMeter>()).Value);
-			AssertHelper.AreRelativeEqual(10, map.GetTorqueLoss(100.RPMtoRad(), -10.SI<NewtonMeter>()).Value);
-			AssertHelper.AreRelativeEqual(40, map.GetTorqueLoss(100.RPMtoRad(), 60.SI<NewtonMeter>()).Value);
+		//	// test interpolation on corner points
+		//	AssertHelper.AreRelativeEqual(0, map.GetTorqueLoss(0.RPMtoRad(), 0.SI<NewtonMeter>()).Value);
+		//	AssertHelper.AreRelativeEqual(10, map.GetTorqueLoss(0.RPMtoRad(), 90.SI<NewtonMeter>()).Value);
+		//	AssertHelper.AreRelativeEqual(10, map.GetTorqueLoss(100.RPMtoRad(), -10.SI<NewtonMeter>()).Value);
+		//	AssertHelper.AreRelativeEqual(40, map.GetTorqueLoss(100.RPMtoRad(), 60.SI<NewtonMeter>()).Value);
 
-			// test outside the corners
-			AssertHelper.AreRelativeEqual(-20, map.GetOutTorque(-20.RPMtoRad(), -20.SI<NewtonMeter>(), true));
-			AssertHelper.AreRelativeEqual(110, map.GetOutTorque(-20.RPMtoRad(), 120.SI<NewtonMeter>(), true));
-			AssertHelper.AreRelativeEqual(-30, map.GetOutTorque(120.RPMtoRad(), -20.SI<NewtonMeter>(), true));
-			AssertHelper.AreRelativeEqual(80, map.GetOutTorque(120.RPMtoRad(), 120.SI<NewtonMeter>(), true));
+		//	// test outside the corners
+		//	AssertHelper.AreRelativeEqual(-20, map.GetOutTorque(-20.RPMtoRad(), -20.SI<NewtonMeter>(), true));
+		//	AssertHelper.AreRelativeEqual(110, map.GetOutTorque(-20.RPMtoRad(), 120.SI<NewtonMeter>(), true));
+		//	AssertHelper.AreRelativeEqual(-30, map.GetOutTorque(120.RPMtoRad(), -20.SI<NewtonMeter>(), true));
+		//	AssertHelper.AreRelativeEqual(80, map.GetOutTorque(120.RPMtoRad(), 120.SI<NewtonMeter>(), true));
 
-			// test outside the edges
-			AssertHelper.AreRelativeEqual(45, map.GetOutTorque(-20.RPMtoRad(), 50.SI<NewtonMeter>(), true));
-			AssertHelper.AreRelativeEqual(95, map.GetOutTorque(50.RPMtoRad(), 120.SI<NewtonMeter>(), true));
-			AssertHelper.AreRelativeEqual(-25, map.GetOutTorque(50.RPMtoRad(), -20.SI<NewtonMeter>(), true));
-			AssertHelper.AreRelativeEqual(25, map.GetOutTorque(120.RPMtoRad(), 50.SI<NewtonMeter>(), true));
+		//	// test outside the edges
+		//	AssertHelper.AreRelativeEqual(45, map.GetOutTorque(-20.RPMtoRad(), 50.SI<NewtonMeter>(), true));
+		//	AssertHelper.AreRelativeEqual(95, map.GetOutTorque(50.RPMtoRad(), 120.SI<NewtonMeter>(), true));
+		//	AssertHelper.AreRelativeEqual(-25, map.GetOutTorque(50.RPMtoRad(), -20.SI<NewtonMeter>(), true));
+		//	AssertHelper.AreRelativeEqual(25, map.GetOutTorque(120.RPMtoRad(), 50.SI<NewtonMeter>(), true));
 
-			// test extrapolation not allowed
-			AssertHelper.Exception<VectoException>(() => { map.GetOutTorque(120.RPMtoRad(), 50.SI<NewtonMeter>()); });
-		}
+		//	// test extrapolation not allowed
+		//	AssertHelper.Exception<VectoException>(() => { map.GetOutTorque(120.RPMtoRad(), 50.SI<NewtonMeter>()); });
+		//}
 
 		[TestCase]
 		public void TestFullLoadCurveIntersection()
@@ -435,7 +427,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 			
 			var lossMap = TransmissionLossMapReader.Create(VectoCSVFile.ReadStream(mstream), 1.0, "TestGear", true);
 
-			var validation = lossMap.Validate(ExecutionMode.Declaration, GearboxType.AMT, false);
+			var validation = lossMap.Validate(ExecutionMode.Declaration, VectoSimulationJobType.ConventionalVehicle, null, GearboxType.AMT, false);
 
 			Assert.AreEqual(0, validation.Count);
 

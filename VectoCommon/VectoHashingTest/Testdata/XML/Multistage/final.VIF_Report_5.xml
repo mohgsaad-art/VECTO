@@ -1,0 +1,861 @@
+<?xml version="1.0" encoding="utf-8"?>
+<VectoOutputMultistep xmlns="urn:tugraz:ivt:VectoAPI:DeclarationOutput:VehicleInterimFile:v0.1" xmlns:di="http://www.w3.org/2000/09/xmldsig#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:v2.1="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1" xmlns:v2.3="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.3" xmlns:v2.6="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.6" 
+xmlns:vif="urn:tugraz:ivt:VectoAPI:DeclarationOutput:VehicleInterimFile:v0.1" xmlns:v2.10="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.10.2" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationOutput:VehicleInterimFile:v0.1 V:\VectoCore\VectoCore\Resources\XSD/VectoOutputMultistage.0.1.xsd">
+  <PrimaryVehicle xmlns="urn:tugraz:ivt:VectoAPI:DeclarationOutput:VehicleInterimFile:v0.1">
+    <Data id="VEH-88dcf76d37a64b5eaf70" xsi:type="PrimaryVehicleDataType">
+      <Vehicle xsi:type="VehiclePIFType">
+        <ManufacturerPrimaryVehicle>Generic Bus Manufacturer</ManufacturerPrimaryVehicle>
+        <ManufacturerAddressPrimaryVehicle>Street, ZIP City</ManufacturerAddressPrimaryVehicle>
+        <Model>Generic Model</Model>
+        <VIN>VEH-1234567890_nonSmart</VIN>
+        <Date>2017-02-15T11:00:00Z</Date>
+        <LegislativeCategory>M3</LegislativeCategory>
+        <ChassisConfiguration>Bus</ChassisConfiguration>
+        <AxleConfiguration>4x2</AxleConfiguration>
+        <Articulated>false</Articulated>
+        <TechnicalPermissibleMaximumLadenMass>20000</TechnicalPermissibleMaximumLadenMass>
+        <IdlingSpeed>700</IdlingSpeed>
+        <RetarderType>Transmission Output Retarder</RetarderType>
+        <RetarderRatio>1.000</RetarderRatio>
+        <AngledriveType>None</AngledriveType>
+        <ZeroEmissionVehicle>false</ZeroEmissionVehicle>
+        <ADAS xmlns:adas="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1" xsi:type="adas:AdvancedDriverAssistantSystemsType">
+          <adas:EngineStopStart>false</adas:EngineStopStart>
+          <adas:EcoRollWithoutEngineStop>false</adas:EcoRollWithoutEngineStop>
+          <adas:EcoRollWithEngineStop>false</adas:EcoRollWithEngineStop>
+          <adas:PredictiveCruiseControl>none</adas:PredictiveCruiseControl>
+        </ADAS>
+        <TorqueLimits xmlns:tcl="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xsi:type="tcl:TorqueLimitsType">
+          <tcl:Entry gear="6" maxTorque="1800" />
+          <tcl:Entry gear="1" maxTorque="2500" />
+        </TorqueLimits>
+        <Components xsi:type="VehicleComponentsPIFType">
+          <Engine>
+            <Data xsi:type="EngineDataPIFType">
+              <Manufacturer>Generic Engine Manufacturer</Manufacturer>
+              <Model>Generic primary bus 41 Engine</Model>
+              <CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+              <Date>2017-02-15T11:00:00Z</Date>
+              <AppVersion>VectoEngine x.y</AppVersion>
+              <Displacement>7700</Displacement>
+              <RatedSpeed>2200</RatedSpeed>
+              <RatedPower>200000</RatedPower>
+              <MaxEngineTorque>1100</MaxEngineTorque>
+              <WHRType>
+                <MechanicalOutputICE>false</MechanicalOutputICE>
+                <MechanicalOutputDrivetrain>false</MechanicalOutputDrivetrain>
+                <ElectricalOutput>false</ElectricalOutput>
+              </WHRType>
+              <Mode>
+                <IdlingSpeed>700</IdlingSpeed>
+                <FullLoadAndDragCurve>
+                  <Entry engineSpeed="600.00" maxTorque="546.02" dragTorque="-39.66" />
+                  <Entry engineSpeed="800.00" maxTorque="760.78" dragTorque="-48.83" />
+                  <Entry engineSpeed="1000.00" maxTorque="973.29" dragTorque="-56.44" />
+                  <Entry engineSpeed="1200.00" maxTorque="1092.03" dragTorque="-67.29" />
+                  <Entry engineSpeed="1400.00" maxTorque="1092.03" dragTorque="-77.58" />
+                  <Entry engineSpeed="1600.00" maxTorque="1092.03" dragTorque="-87.88" />
+                  <Entry engineSpeed="1800.00" maxTorque="1022.52" dragTorque="-94.11" />
+                  <Entry engineSpeed="2000.00" maxTorque="944.17" dragTorque="-100.76" />
+                  <Entry engineSpeed="2200.00" maxTorque="868.12" dragTorque="-113.36" />
+                  <Entry engineSpeed="2400.00" maxTorque="741.99" dragTorque="-122.60" />
+                  <Entry engineSpeed="2500.00" maxTorque="647.29" dragTorque="-126.66" />
+                  <Entry engineSpeed="2600.00" maxTorque="0.00" dragTorque="-132.07" />
+                </FullLoadAndDragCurve>
+                <Fuels>
+                  <FuelType>Diesel CI</FuelType>
+                </Fuels>
+              </Mode>
+            </Data>
+          </Engine>
+          <Transmission>
+            <Data xsi:type="TransmissionDataPIFType">
+              <Manufacturer>Generic Gearbox Manufacturer</Manufacturer>
+              <Model>AT 6 Gear</Model>
+              <MainCertificationMethod>Standard values</MainCertificationMethod>
+              <Date>2017-01-11T11:00:00Z</Date>
+              <AppVersion>3.0.1</AppVersion>
+              <TransmissionType>APT-S</TransmissionType>
+              <Gears xsi:type="TransmissionGearsPIFType">
+                <Gear number="1">
+                  <Ratio>3.364</Ratio>
+                  <MaxTorque>1900</MaxTorque>
+                  <MaxSpeed>2500</MaxSpeed>
+                </Gear>
+                <Gear number="2">
+                  <Ratio>1.909</Ratio>
+                  <MaxTorque>1900</MaxTorque>
+                  <MaxSpeed>2500</MaxSpeed>
+                </Gear>
+                <Gear number="3">
+                  <Ratio>1.421</Ratio>
+                  <MaxSpeed>2500</MaxSpeed>
+                </Gear>
+                <Gear number="4">
+                  <Ratio>1.000</Ratio>
+                  <MaxSpeed>2500</MaxSpeed>
+                </Gear>
+                <Gear number="5">
+                  <Ratio>0.720</Ratio>
+                  <MaxSpeed>2500</MaxSpeed>
+                </Gear>
+                <Gear number="6">
+                  <Ratio>0.615</Ratio>
+                  <MaxSpeed>2500</MaxSpeed>
+                </Gear>
+              </Gears>
+            </Data>
+          </Transmission>
+          <TorqueConverter>
+            <Data xsi:type="TorqueConverterDataPIFType">
+              <Manufacturer>Some Manufacturer</Manufacturer>
+              <Model>Some Model</Model>
+              <CertificationMethod>Standard values</CertificationMethod>
+              <Date>2017-02-15T11:00:00Z</Date>
+              <AppVersion>TC CalcApp 123</AppVersion>
+            </Data>
+          </TorqueConverter>
+          <Axlegear>
+            <Data xsi:type="AxlegearDataPIFType">
+              <Manufacturer>Generic Gearbox Manufacturer</Manufacturer>
+              <Model>Generic primary bus 41 AxleGear</Model>
+              <CertificationMethod>Standard values</CertificationMethod>
+              <Date>2017-01-11T11:00:00Z</Date>
+              <AppVersion>3.0.1</AppVersion>
+              <LineType>Single portal axle</LineType>
+              <Ratio>6.500</Ratio>
+            </Data>
+          </Axlegear>
+          <AxleWheels>
+            <Data xsi:type="AxleWheelsDataPIFType">
+              <Axles>
+                <Axle axleNumber="1" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xsi:type="v2.0:AxleDataDeclarationType">
+                  <v2.0:AxleType>VehicleNonDriven</v2.0:AxleType>
+                  <v2.0:TwinTyres>false</v2.0:TwinTyres>
+                  <v2.0:Steered>true</v2.0:Steered>
+                  <v2.0:Tyre>
+                    <v2.0:Data id="WHL-5432198760-315-70-R22.5" xsi:type="v2.0:TyreDataDeclarationType">
+                      <v2.0:Manufacturer>Generic Wheels Manufacturer</v2.0:Manufacturer>
+                      <v2.0:Model>Generic Wheel</v2.0:Model>
+                      <v2.0:CertificationNumber>e12*0815/8051*2017/05E0000*00</v2.0:CertificationNumber>
+                      <v2.0:Date>2017-01-11T14:00:00Z</v2.0:Date>
+                      <v2.0:AppVersion>Tyre Generation App 1.0</v2.0:AppVersion>
+                      <v2.0:Dimension>315/70 R22.5</v2.0:Dimension>
+                      <v2.0:RRCDeclared>0.0055</v2.0:RRCDeclared>
+                      <v2.0:FzISO>31300</v2.0:FzISO>
+                    </v2.0:Data>
+                    <v2.0:Signature>
+                      <di:Reference URI="#WHL-5432198760-315-70-R22.5" xmlns:di="http://www.w3.org/2000/09/xmldsig#">
+                        <di:Transforms>
+                          <di:Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+                          <di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+                        </di:Transforms>
+                        <di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+                        <di:DigestValue>4TkUGQTX8tevHOU9Cj9uyCFuI/aqcEYlo/gyVjVQmv0=</di:DigestValue>
+                      </di:Reference>
+                    </v2.0:Signature>
+                  </v2.0:Tyre>
+                </Axle>
+                <Axle axleNumber="2" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xsi:type="v2.0:AxleDataDeclarationType">
+                  <v2.0:AxleType>VehicleDriven</v2.0:AxleType>
+                  <v2.0:TwinTyres>true</v2.0:TwinTyres>
+                  <v2.0:Steered>false</v2.0:Steered>
+                  <v2.0:Tyre>
+                    <v2.0:Data id="WHL-5432198760-315-70-R22.5" xsi:type="v2.0:TyreDataDeclarationType">
+                      <v2.0:Manufacturer>Generic Wheels Manufacturer</v2.0:Manufacturer>
+                      <v2.0:Model>Generic Wheel</v2.0:Model>
+                      <v2.0:CertificationNumber>e12*0815/8051*2017/05E0000*00</v2.0:CertificationNumber>
+                      <v2.0:Date>2017-01-11T14:00:00Z</v2.0:Date>
+                      <v2.0:AppVersion>Tyre Generation App 1.0</v2.0:AppVersion>
+                      <v2.0:Dimension>315/70 R22.5</v2.0:Dimension>
+                      <v2.0:RRCDeclared>0.0063</v2.0:RRCDeclared>
+                      <v2.0:FzISO>31300</v2.0:FzISO>
+                    </v2.0:Data>
+                    <v2.0:Signature>
+                      <di:Reference URI="#WHL-5432198760-315-70-R22.5" xmlns:di="http://www.w3.org/2000/09/xmldsig#">
+                        <di:Transforms>
+                          <di:Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+                          <di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+                        </di:Transforms>
+                        <di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+                        <di:DigestValue>KljvtvGUUQ/L7MiLVAqU+bckL5PNDNNwdeLH9kUVrfM=</di:DigestValue>
+                      </di:Reference>
+                    </v2.0:Signature>
+                  </v2.0:Tyre>
+                </Axle>
+              </Axles>
+            </Data>
+          </AxleWheels>
+          <Auxiliaries>
+            <Data xsi:type="AuxiliaryDataPIFType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationOutput:VehicleInterimFile:v0.1">
+              <Fan>
+                <Technology>Hydraulic driven - Constant displacement pump</Technology>
+              </Fan>
+              <SteeringPump>
+                <Technology axleNumber="1">Variable displacement elec. controlled</Technology>
+              </SteeringPump>
+              <ElectricSystem>
+                <AlternatorTechnology>smart</AlternatorTechnology>
+                <SmartAlternator>
+                  <RatedCurrent>310</RatedCurrent>
+                  <RatedVoltage>48</RatedVoltage>
+                </SmartAlternator>
+                <Battery>
+                  <BatteryTechnology>li-ion battery - high power</BatteryTechnology>
+                  <RatedCapacity>1</RatedCapacity>
+                  <NominalVoltage>48</NominalVoltage>
+                </Battery>
+                <SupplyFromHEVPossible>false</SupplyFromHEVPossible>
+              </ElectricSystem>
+              <PneumaticSystem>
+                <SizeOfAirSupply>Large Supply 2-stage</SizeOfAirSupply>
+                <CompressorDrive>electrically</CompressorDrive>
+                <Clutch>none</Clutch>
+                <CompressorRatio>1.000</CompressorRatio>
+                <SmartCompressionSystem>false</SmartCompressionSystem>
+                <SmartRegenerationSystem>false</SmartRegenerationSystem>
+                <AirsuspensionControl>electronically</AirsuspensionControl>
+                <PneumaticSCRReagentDosing>true</PneumaticSCRReagentDosing>
+              </PneumaticSystem>
+              <HVAC>
+                <AdjustableCoolantThermostat>true</AdjustableCoolantThermostat>
+                <EngineWasteGasHeatExchanger>true</EngineWasteGasHeatExchanger>
+              </HVAC>
+            </Data>
+          </Auxiliaries>
+        </Components>
+      </Vehicle>
+      <InputDataSignature>
+        <di:Reference URI="#VEH-PrimaryBus_nonSmart">
+          <di:Transforms>
+            <di:Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+            <di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+          </di:Transforms>
+          <di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+          <di:DigestValue>Z4frlN/8ioSA2aLbZJXxA9KFpZc+K8LhrmLwah9iQT4=</di:DigestValue>
+        </di:Reference>
+      </InputDataSignature>
+      <ManufacturerRecordSignature>
+        <di:Reference URI="#RESULT-60d49d82f57045a08a3b">
+          <di:Transforms>
+            <di:Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+            <di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+          </di:Transforms>
+          <di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+          <di:DigestValue>TV0NKLdUGs3PIv1mOYSjH5AU/VfV6sajVEjYO0VUSIM=</di:DigestValue>
+        </di:Reference>
+      </ManufacturerRecordSignature>
+      <Results>
+        <Status>success</Status>
+        <Result status="success">
+          <VehicleGroup>P31SD</VehicleGroup>
+          <Mission>Heavy Urban</Mission>
+          <SimulationParameters>
+            <TotalVehicleMass unit="kg">13098.63</TotalVehicleMass>
+            <Payload unit="kg">1123.63</Payload>
+            <PassengerCount>16.52</PassengerCount>
+            <FuelMode>single fuel mode</FuelMode>
+          </SimulationParameters>
+          <Fuel type="Diesel CI">
+            <EnergyConsumption unit="MJ/km">19.23442</EnergyConsumption>
+          </Fuel>
+          <CO2 unit="g/km">1409.92</CO2>
+        </Result>
+        <Result status="success">
+          <VehicleGroup>P31SD</VehicleGroup>
+          <Mission>Heavy Urban</Mission>
+          <SimulationParameters>
+            <TotalVehicleMass unit="kg">17593.16</TotalVehicleMass>
+            <Payload unit="kg">5618.16</Payload>
+            <PassengerCount>82.62</PassengerCount>
+            <FuelMode>single fuel mode</FuelMode>
+          </SimulationParameters>
+          <Fuel type="Diesel CI">
+            <EnergyConsumption unit="MJ/km">23.33702</EnergyConsumption>
+          </Fuel>
+          <CO2 unit="g/km">1710.65</CO2>
+        </Result>
+        <Result status="success">
+          <VehicleGroup>P31SD</VehicleGroup>
+          <Mission>Urban</Mission>
+          <SimulationParameters>
+            <TotalVehicleMass unit="kg">13098.63</TotalVehicleMass>
+            <Payload unit="kg">1123.63</Payload>
+            <PassengerCount>16.52</PassengerCount>
+            <FuelMode>single fuel mode</FuelMode>
+          </SimulationParameters>
+          <Fuel type="Diesel CI">
+            <EnergyConsumption unit="MJ/km">15.80994</EnergyConsumption>
+          </Fuel>
+          <CO2 unit="g/km">1158.90</CO2>
+        </Result>
+        <Result status="success">
+          <VehicleGroup>P31SD</VehicleGroup>
+          <Mission>Urban</Mission>
+          <SimulationParameters>
+            <TotalVehicleMass unit="kg">17593.16</TotalVehicleMass>
+            <Payload unit="kg">5618.16</Payload>
+            <PassengerCount>82.62</PassengerCount>
+            <FuelMode>single fuel mode</FuelMode>
+          </SimulationParameters>
+          <Fuel type="Diesel CI">
+            <EnergyConsumption unit="MJ/km">19.20267</EnergyConsumption>
+          </Fuel>
+          <CO2 unit="g/km">1407.60</CO2>
+        </Result>
+        <Result status="success">
+          <VehicleGroup>P31SD</VehicleGroup>
+          <Mission>Suburban</Mission>
+          <SimulationParameters>
+            <TotalVehicleMass unit="kg">13098.63</TotalVehicleMass>
+            <Payload unit="kg">1123.63</Payload>
+            <PassengerCount>16.52</PassengerCount>
+            <FuelMode>single fuel mode</FuelMode>
+          </SimulationParameters>
+          <Fuel type="Diesel CI">
+            <EnergyConsumption unit="MJ/km">14.19937</EnergyConsumption>
+          </Fuel>
+          <CO2 unit="g/km">1040.84</CO2>
+        </Result>
+        <Result status="success">
+          <VehicleGroup>P31SD</VehicleGroup>
+          <Mission>Suburban</Mission>
+          <SimulationParameters>
+            <TotalVehicleMass unit="kg">17593.16</TotalVehicleMass>
+            <Payload unit="kg">5618.16</Payload>
+            <PassengerCount>82.62</PassengerCount>
+            <FuelMode>single fuel mode</FuelMode>
+          </SimulationParameters>
+          <Fuel type="Diesel CI">
+            <EnergyConsumption unit="MJ/km">17.27415</EnergyConsumption>
+          </Fuel>
+          <CO2 unit="g/km">1266.23</CO2>
+        </Result>
+        <Result status="success">
+          <VehicleGroup>P31SD</VehicleGroup>
+          <Mission>Interurban</Mission>
+          <SimulationParameters>
+            <TotalVehicleMass unit="kg">13050.44</TotalVehicleMass>
+            <Payload unit="kg">1075.44</Payload>
+            <PassengerCount>15.15</PassengerCount>
+            <FuelMode>single fuel mode</FuelMode>
+          </SimulationParameters>
+          <Fuel type="Diesel CI">
+            <EnergyConsumption unit="MJ/km">12.65024</EnergyConsumption>
+          </Fuel>
+          <CO2 unit="g/km">927.29</CO2>
+        </Result>
+        <Result status="success">
+          <VehicleGroup>P31SD</VehicleGroup>
+          <Mission>Interurban</Mission>
+          <SimulationParameters>
+            <TotalVehicleMass unit="kg">15494.61</TotalVehicleMass>
+            <Payload unit="kg">3519.61</Payload>
+            <PassengerCount>49.57</PassengerCount>
+            <FuelMode>single fuel mode</FuelMode>
+          </SimulationParameters>
+          <Fuel type="Diesel CI">
+            <EnergyConsumption unit="MJ/km">13.97487</EnergyConsumption>
+          </Fuel>
+          <CO2 unit="g/km">1024.39</CO2>
+        </Result>
+        <Result status="success">
+          <VehicleGroup>P31DD</VehicleGroup>
+          <Mission>Heavy Urban</Mission>
+          <SimulationParameters>
+            <TotalVehicleMass unit="kg">13543.34</TotalVehicleMass>
+            <Payload unit="kg">1193.34</Payload>
+            <PassengerCount>17.55</PassengerCount>
+            <FuelMode>single fuel mode</FuelMode>
+          </SimulationParameters>
+          <Fuel type="Diesel CI">
+            <EnergyConsumption unit="MJ/km">20.30637</EnergyConsumption>
+          </Fuel>
+          <CO2 unit="g/km">1488.50</CO2>
+        </Result>
+        <Result status="success">
+          <VehicleGroup>P31DD</VehicleGroup>
+          <Mission>Heavy Urban</Mission>
+          <SimulationParameters>
+            <TotalVehicleMass unit="kg">18316.69</TotalVehicleMass>
+            <Payload unit="kg">5966.69</Payload>
+            <PassengerCount>87.75</PassengerCount>
+            <FuelMode>single fuel mode</FuelMode>
+          </SimulationParameters>
+          <Fuel type="Diesel CI">
+            <EnergyConsumption unit="MJ/km">24.96878</EnergyConsumption>
+          </Fuel>
+          <CO2 unit="g/km">1830.26</CO2>
+        </Result>
+        <Result status="success">
+          <VehicleGroup>P31DD</VehicleGroup>
+          <Mission>Urban</Mission>
+          <SimulationParameters>
+            <TotalVehicleMass unit="kg">13543.34</TotalVehicleMass>
+            <Payload unit="kg">1193.34</Payload>
+            <PassengerCount>17.55</PassengerCount>
+            <FuelMode>single fuel mode</FuelMode>
+          </SimulationParameters>
+          <Fuel type="Diesel CI">
+            <EnergyConsumption unit="MJ/km">16.70173</EnergyConsumption>
+          </Fuel>
+          <CO2 unit="g/km">1224.27</CO2>
+        </Result>
+        <Result status="success">
+          <VehicleGroup>P31DD</VehicleGroup>
+          <Mission>Urban</Mission>
+          <SimulationParameters>
+            <TotalVehicleMass unit="kg">18316.69</TotalVehicleMass>
+            <Payload unit="kg">5966.69</Payload>
+            <PassengerCount>87.75</PassengerCount>
+            <FuelMode>single fuel mode</FuelMode>
+          </SimulationParameters>
+          <Fuel type="Diesel CI">
+            <EnergyConsumption unit="MJ/km">20.52533</EnergyConsumption>
+          </Fuel>
+          <CO2 unit="g/km">1504.55</CO2>
+        </Result>
+        <Result status="success">
+          <VehicleGroup>P31DD</VehicleGroup>
+          <Mission>Suburban</Mission>
+          <SimulationParameters>
+            <TotalVehicleMass unit="kg">13543.34</TotalVehicleMass>
+            <Payload unit="kg">1193.34</Payload>
+            <PassengerCount>17.55</PassengerCount>
+            <FuelMode>single fuel mode</FuelMode>
+          </SimulationParameters>
+          <Fuel type="Diesel CI">
+            <EnergyConsumption unit="MJ/km">14.81161</EnergyConsumption>
+          </Fuel>
+          <CO2 unit="g/km">1085.72</CO2>
+        </Result>
+        <Result status="success">
+          <VehicleGroup>P31DD</VehicleGroup>
+          <Mission>Suburban</Mission>
+          <SimulationParameters>
+            <TotalVehicleMass unit="kg">18316.69</TotalVehicleMass>
+            <Payload unit="kg">5966.69</Payload>
+            <PassengerCount>87.75</PassengerCount>
+            <FuelMode>single fuel mode</FuelMode>
+          </SimulationParameters>
+          <Fuel type="Diesel CI">
+            <EnergyConsumption unit="MJ/km">18.21263</EnergyConsumption>
+          </Fuel>
+          <CO2 unit="g/km">1335.02</CO2>
+        </Result>
+        <Result status="success">
+          <VehicleGroup>P32SD</VehicleGroup>
+          <Mission>Interurban</Mission>
+          <SimulationParameters>
+            <TotalVehicleMass unit="kg">14225.44</TotalVehicleMass>
+            <Payload unit="kg">1075.44</Payload>
+            <PassengerCount>15.15</PassengerCount>
+            <FuelMode>single fuel mode</FuelMode>
+          </SimulationParameters>
+          <Fuel type="Diesel CI">
+            <EnergyConsumption unit="MJ/km">12.83860</EnergyConsumption>
+          </Fuel>
+          <CO2 unit="g/km">941.10</CO2>
+        </Result>
+        <Result status="success">
+          <VehicleGroup>P32SD</VehicleGroup>
+          <Mission>Interurban</Mission>
+          <SimulationParameters>
+            <TotalVehicleMass unit="kg">16669.61</TotalVehicleMass>
+            <Payload unit="kg">3519.61</Payload>
+            <PassengerCount>49.57</PassengerCount>
+            <FuelMode>single fuel mode</FuelMode>
+          </SimulationParameters>
+          <Fuel type="Diesel CI">
+            <EnergyConsumption unit="MJ/km">14.16752</EnergyConsumption>
+          </Fuel>
+          <CO2 unit="g/km">1038.51</CO2>
+        </Result>
+        <Result status="success">
+          <VehicleGroup>P32SD</VehicleGroup>
+          <Mission>Coach</Mission>
+          <SimulationParameters>
+            <TotalVehicleMass unit="kg">14244.99</TotalVehicleMass>
+            <Payload unit="kg">1094.99</Payload>
+            <PassengerCount>15.42</PassengerCount>
+            <FuelMode>single fuel mode</FuelMode>
+          </SimulationParameters>
+          <Fuel type="Diesel CI">
+            <EnergyConsumption unit="MJ/km">11.07040</EnergyConsumption>
+          </Fuel>
+          <CO2 unit="g/km">811.48</CO2>
+        </Result>
+        <Result status="success">
+          <VehicleGroup>P32SD</VehicleGroup>
+          <Mission>Coach</Mission>
+          <SimulationParameters>
+            <TotalVehicleMass unit="kg">15887.48</TotalVehicleMass>
+            <Payload unit="kg">2737.48</Payload>
+            <PassengerCount>38.56</PassengerCount>
+            <FuelMode>single fuel mode</FuelMode>
+          </SimulationParameters>
+          <Fuel type="Diesel CI">
+            <EnergyConsumption unit="MJ/km">11.52049</EnergyConsumption>
+          </Fuel>
+          <CO2 unit="g/km">844.48</CO2>
+        </Result>
+        <Result status="success">
+          <VehicleGroup>P32DD</VehicleGroup>
+          <Mission>Interurban</Mission>
+          <SimulationParameters>
+            <TotalVehicleMass unit="kg">14662.82</TotalVehicleMass>
+            <Payload unit="kg">1262.82</Payload>
+            <PassengerCount>17.79</PassengerCount>
+            <FuelMode>single fuel mode</FuelMode>
+          </SimulationParameters>
+          <Fuel type="Diesel CI">
+            <EnergyConsumption unit="MJ/km">13.24338</EnergyConsumption>
+          </Fuel>
+          <CO2 unit="g/km">970.77</CO2>
+        </Result>
+        <Result status="success">
+          <VehicleGroup>P32DD</VehicleGroup>
+          <Mission>Interurban</Mission>
+          <SimulationParameters>
+            <TotalVehicleMass unit="kg">17609.41</TotalVehicleMass>
+            <Payload unit="kg">4209.41</Payload>
+            <PassengerCount>59.29</PassengerCount>
+            <FuelMode>single fuel mode</FuelMode>
+          </SimulationParameters>
+          <Fuel type="Diesel CI">
+            <EnergyConsumption unit="MJ/km">14.85369</EnergyConsumption>
+          </Fuel>
+          <CO2 unit="g/km">1088.81</CO2>
+        </Result>
+        <Result status="success">
+          <VehicleGroup>P32DD</VehicleGroup>
+          <Mission>Coach</Mission>
+          <SimulationParameters>
+            <TotalVehicleMass unit="kg">14747.01</TotalVehicleMass>
+            <Payload unit="kg">1347.01</Payload>
+            <PassengerCount>18.97</PassengerCount>
+            <FuelMode>single fuel mode</FuelMode>
+          </SimulationParameters>
+          <Fuel type="Diesel CI">
+            <EnergyConsumption unit="MJ/km">11.54684</EnergyConsumption>
+          </Fuel>
+          <CO2 unit="g/km">846.41</CO2>
+        </Result>
+        <Result status="success">
+          <VehicleGroup>P32DD</VehicleGroup>
+          <Mission>Coach</Mission>
+          <SimulationParameters>
+            <TotalVehicleMass unit="kg">16767.53</TotalVehicleMass>
+            <Payload unit="kg">3367.53</Payload>
+            <PassengerCount>47.43</PassengerCount>
+            <FuelMode>single fuel mode</FuelMode>
+          </SimulationParameters>
+          <Fuel type="Diesel CI">
+            <EnergyConsumption unit="MJ/km">12.09233</EnergyConsumption>
+          </Fuel>
+          <CO2 unit="g/km">886.39</CO2>
+        </Result>
+      </Results>
+      <ApplicationInformation>
+        <SimulationToolVersion>0.7.3.2247-DEV !!NOT FOR CERTIFICATION!!</SimulationToolVersion>
+        <Date>2021-06-08T18:59:03.7698542Z</Date>
+      </ApplicationInformation>
+    </Data>
+    <Signature>
+      <di:Reference URI="#VEH-88dcf76d37a64b5eaf70">
+        <di:Transforms>
+          <di:Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+          <di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+        </di:Transforms>
+        <di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+        <di:DigestValue>4MFxDdYDnYyRrUdyIPFhEYwbyqqJl3MlYtXMaB/RQis=</di:DigestValue>
+      </di:Reference>
+    </Signature>
+  </PrimaryVehicle>
+  <ManufacturingStep stepCount="2">
+    <Data xsi:type="BusManufacturingStepDataType" id="MST-bdbd4d15937b460bac07">
+      <HashPreviousStep>
+        <di:Reference URI="#VEH-88dcf76d37a64b5eaf70">
+          <di:Transforms>
+            <di:Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+            <di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+          </di:Transforms>
+          <di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+          <di:DigestValue>4MFxDdYDnYyRrUdyIPFhEYwbyqqJl3MlYtXMaB/RQis=</di:DigestValue>
+        </di:Reference>
+      </HashPreviousStep>
+      <vif:Vehicle xsi:type="v2.10:Vehicle_Conventional_CompletedBusDeclarationType" id="VEH-75e3023cd8384f3c9895" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.10.2">
+        <Manufacturer>IVT</Manufacturer>
+        <ManufacturerAddress>Inffeldgasse 19</ManufacturerAddress>
+        <VIN>VIN-1234</VIN>
+        <Date>2021-06-07T22:00:00Z</Date>
+        <VehicleDeclarationType>interim</VehicleDeclarationType>
+        <Components xsi:type="Components_Conventional_CompletedBusType">
+          <Auxiliaries>
+            <Data xsi:type="AUX_Conventional_CompletedBusType">
+              <ElectricSystem>
+                <LEDLights>
+                  <Interiorlights>false</Interiorlights>
+                  <Positionlights>false</Positionlights>
+                  <Headlights>false</Headlights>
+                </LEDLights>
+              </ElectricSystem>
+              <HVAC>
+                <SystemConfiguration>0</SystemConfiguration>
+                <HeatPumpTypeDriverCompartment>
+                <Cooling>non R-744 2-stage</Cooling>
+                <Heating>none</Heating>
+                </HeatPumpTypeDriverCompartment>
+                <HeatPumpTypePassengerCompartment>
+                <Cooling>non R-744 2-stage</Cooling>
+                <Heating>none</Heating>
+                </HeatPumpTypePassengerCompartment>
+              </HVAC>
+            </Data>
+          </Auxiliaries>
+        </Components>
+      </vif:Vehicle>
+      <ApplicationInformation>
+        <SimulationToolVersion>0.7.3.2247-DEV</SimulationToolVersion>
+        <Date>2021-06-08T19:16:37.2732909Z</Date>
+      </ApplicationInformation>
+    </Data>
+    <Signature>
+      <di:Reference URI="#MST-bdbd4d15937b460bac07">
+        <di:Transforms>
+          <di:Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+          <di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+        </di:Transforms>
+        <di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+        <di:DigestValue>ZwduOHBrWk8hYhDvEzXNmjr/nWhhdx98Gl7a2qhYmFk=</di:DigestValue>
+      </di:Reference>
+    </Signature>
+  </ManufacturingStep>
+  <ManufacturingStep stepCount="3">
+    <Data xsi:type="BusManufacturingStepDataType" id="MST-853f372b8a2f4acaa8d2">
+      <HashPreviousStep>
+        <di:Reference URI="#MST-bdbd4d15937b460bac07">
+          <di:Transforms>
+            <di:Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+            <di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+          </di:Transforms>
+          <di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+          <di:DigestValue>ZwduOHBrWk8hYhDvEzXNmjr/nWhhdx98Gl7a2qhYmFk=</di:DigestValue>
+        </di:Reference>
+      </HashPreviousStep>
+      <vif:Vehicle xsi:type="v2.10:Vehicle_Conventional_CompletedBusDeclarationType" id="VEH-3a0b04069aee4b10b8dd" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.10.2">
+        <Manufacturer>TUG</Manufacturer>
+        <ManufacturerAddress>Inffeldgasse 19</ManufacturerAddress>
+        <VIN>VIN-1234</VIN>
+        <Date>2021-06-07T22:00:00Z</Date>
+        <HeightIntegratedBody>3000</HeightIntegratedBody>
+        <VehicleLength>12000</VehicleLength>
+        <VehicleWidth>2550</VehicleWidth>
+        <EntranceHeight>250</EntranceHeight>
+        <VehicleDeclarationType>interim</VehicleDeclarationType>
+        <Components xsi:type="Components_Conventional_CompletedBusType">
+          <AirDrag>
+            <v2.0:Data id="CabinX23h" xsi:type="v2.0:AirDragDataDeclarationType" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
+              <v2.0:Manufacturer>Generic Manufacturer</v2.0:Manufacturer>
+              <v2.0:Model>Generic Model</v2.0:Model>
+              <v2.0:CertificationNumber>e12*0815/8051*2017/05E0000*00</v2.0:CertificationNumber>
+              <v2.0:Date>2017-03-24T15:00:00Z</v2.0:Date>
+              <v2.0:AppVersion>Vecto AirDrag x.y</v2.0:AppVersion>
+              <v2.0:CdxA_0>4.90</v2.0:CdxA_0>
+              <v2.0:TransferredCdxA>4.90</v2.0:TransferredCdxA>
+              <v2.0:DeclaredCdxA>4.90</v2.0:DeclaredCdxA>
+            </v2.0:Data>
+            <v2.0:Signature xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
+              <di:Reference URI="#CabinX23h" xmlns:di="http://www.w3.org/2000/09/xmldsig#">
+                <di:Transforms>
+                  <di:Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+                  <di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+                </di:Transforms>
+                <di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+                <di:DigestValue>b9SHCfOoVrBxFQ8wwDK32OO+9bd85DuaUdgs6j/29N8=</di:DigestValue>
+              </di:Reference>
+            </v2.0:Signature>
+          </AirDrag>
+        </Components>
+      </vif:Vehicle>
+      <ApplicationInformation>
+        <SimulationToolVersion>0.7.3.2247-DEV</SimulationToolVersion>
+        <Date>2021-06-08T19:17:10.0533609Z</Date>
+      </ApplicationInformation>
+    </Data>
+    <Signature>
+      <di:Reference URI="#MST-853f372b8a2f4acaa8d2">
+        <di:Transforms>
+          <di:Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+          <di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+        </di:Transforms>
+        <di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+        <di:DigestValue>uNSPX5uJ1VVA/5aaibqX/S+yeMthh5Fbq73kCNi8b5E=</di:DigestValue>
+      </di:Reference>
+    </Signature>
+  </ManufacturingStep>
+  <ManufacturingStep stepCount="4">
+    <Data xsi:type="BusManufacturingStepDataType" id="MST-4e4b3629643e459d9c2c">
+      <HashPreviousStep>
+        <di:Reference URI="#MST-853f372b8a2f4acaa8d2">
+          <di:Transforms>
+            <di:Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+            <di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+          </di:Transforms>
+          <di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+          <di:DigestValue>uNSPX5uJ1VVA/5aaibqX/S+yeMthh5Fbq73kCNi8b5E=</di:DigestValue>
+        </di:Reference>
+      </HashPreviousStep>
+      <vif:Vehicle xsi:type="Vehicle_Conventional_CompletedBusDeclarationType" id="VEH-5a6a0d735e1d4eb88b87"  xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.10.2">
+        <Manufacturer>Some Manufacturer</Manufacturer>
+        <ManufacturerAddress>Infinite Loop 1</ManufacturerAddress>
+        <VIN>VEH-1234567890</VIN>
+        <Date>2021-06-07T22:00:00Z</Date>
+        <LegislativeCategory>M3</LegislativeCategory>
+        <CorrectedActualMass>10680</CorrectedActualMass>
+        <TechnicalPermissibleMaximumLadenMass>18000</TechnicalPermissibleMaximumLadenMass>
+        <AirdragModifiedMultistage>true</AirdragModifiedMultistage>
+        <ClassBus>II</ClassBus>
+        <NgTankSystem>Compressed</NgTankSystem>
+        <NumberPassengerSeatsLowerDeck>86</NumberPassengerSeatsLowerDeck>
+        <NumberPassengersStandingLowerDeck>0</NumberPassengersStandingLowerDeck>
+        <NumberPassengerSeatsUpperDeck>0</NumberPassengerSeatsUpperDeck>
+        <NumberPassengersStandingUpperDeck>0</NumberPassengersStandingUpperDeck>
+        <BodyworkCode>CE</BodyworkCode>
+        <LowEntry>true</LowEntry>
+        <HeightIntegratedBody>3000</HeightIntegratedBody>
+        <VehicleLength>10633</VehicleLength>
+        <VehicleWidth>2550</VehicleWidth>
+        <EntranceHeight>270</EntranceHeight>
+        <DoorDriveTechnology>pneumatic</DoorDriveTechnology>
+        <VehicleDeclarationType>final</VehicleDeclarationType>
+        <Components xsi:type="Components_Conventional_CompletedBusType" >
+          <AirDrag>
+            <Data id="CabinX23h" xsi:type="AirDragDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
+              <Manufacturer>Generic Manufacturer</Manufacturer>
+              <Model>Generic Model</Model>
+              <CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
+              <Date>2017-03-24T15:00:00Z</Date>
+              <AppVersion>Vecto AirDrag x.y</AppVersion>
+              <CdxA_0>4.90</CdxA_0>
+              <TransferredCdxA>4.90</TransferredCdxA>
+              <DeclaredCdxA>4.90</DeclaredCdxA>
+            </Data>
+            <v2.0:Signature xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
+              <di:Reference URI="#CabinX23h" xmlns:di="http://www.w3.org/2000/09/xmldsig#">
+                <di:Transforms>
+                  <di:Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+                  <di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+                </di:Transforms>
+                <di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+                <di:DigestValue>b9SHCfOoVrBxFQ8wwDK32OO+9bd85DuaUdgs6j/29N8=</di:DigestValue>
+              </di:Reference>
+            </v2.0:Signature>
+          </AirDrag>
+          <Auxiliaries>
+            <Data xsi:type="AUX_Conventional_CompletedBusType">
+              <ElectricSystem>
+                <LEDLights>
+                  <Interiorlights>true</Interiorlights>
+                  <Dayrunninglights>true</Dayrunninglights>
+                  <Positionlights>true</Positionlights>
+                  <Brakelights>true</Brakelights>
+                  <Headlights>true</Headlights>
+                </LEDLights>
+              </ElectricSystem>
+              <HVAC>
+                <SystemConfiguration>6</SystemConfiguration>
+                <HeatPumpTypeDriverCompartment>
+                <Cooling>none</Cooling>
+                <Heating>not applicable</Heating>
+                </HeatPumpTypeDriverCompartment>
+                <HeatPumpTypePassengerCompartment>
+                <Cooling>non R-744 2-stage</Cooling>
+                <Heating>none</Heating>
+                </HeatPumpTypePassengerCompartment>
+                <AuxiliaryHeaterPower>15000</AuxiliaryHeaterPower>
+                <DoubleGlazing>true</DoubleGlazing>
+                <AdjustableAuxiliaryHeater>false</AdjustableAuxiliaryHeater>
+                <SeparateAirDistributionDucts>false</SeparateAirDistributionDucts>
+              </HVAC>
+            </Data>
+          </Auxiliaries>
+        </Components>
+      </vif:Vehicle>
+      <ApplicationInformation>
+        <SimulationToolVersion>0.7.3.2247-DEV</SimulationToolVersion>
+        <Date>2021-06-08T19:17:34.7076217Z</Date>
+      </ApplicationInformation>
+    </Data>
+    <Signature>
+      <di:Reference URI="#MST-4e4b3629643e459d9c2c">
+        <di:Transforms>
+          <di:Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+          <di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+        </di:Transforms>
+        <di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+        <di:DigestValue>HLykOvb1YHr6fg3CpZLY9TuJhyT6xiRO8WhjdWITnBk=</di:DigestValue>
+      </di:Reference>
+    </Signature>
+  </ManufacturingStep>
+  <ManufacturingStep stepCount="5">
+    <Data xsi:type="BusManufacturingStepDataType" id="MST-67c850fef6ac40c8be1f">
+      <HashPreviousStep>
+        <di:Reference URI="#MST-4e4b3629643e459d9c2c">
+          <di:Transforms>
+            <di:Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+            <di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+          </di:Transforms>
+          <di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+          <di:DigestValue>HLykOvb1YHr6fg3CpZLY9TuJhyT6xiRO8WhjdWITnBk=</di:DigestValue>
+        </di:Reference>
+      </HashPreviousStep>
+      <vif:Vehicle xsi:type="Vehicle_Conventional_CompletedBusDeclarationType" id="VEH-2d3ccda8f72345568864"  xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.10.2">
+        <Manufacturer>Somebody</Manufacturer>
+        <ManufacturerAddress>Address</ManufacturerAddress>
+        <VIN>VIN-1234</VIN>
+        <Date>2021-06-07T22:00:00Z</Date>
+        <AirdragModifiedMultistage>true</AirdragModifiedMultistage>
+        <VehicleDeclarationType>final</VehicleDeclarationType>
+        <Components xsi:type="Components_Conventional_CompletedBusType">
+          <AirDrag>
+            <v2.0:Data id="CabinX23h" xsi:type="AirDragDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
+              <v2.0:Manufacturer>Generic Manufacturer</v2.0:Manufacturer>
+              <v2.0:Model>Generic Model</v2.0:Model>
+              <v2.0:CertificationNumber>e12*0815/8051*2017/05E0000*00</v2.0:CertificationNumber>
+              <v2.0:Date>2017-03-24T15:00:00Z</v2.0:Date>
+              <v2.0:AppVersion>Vecto AirDrag x.y</v2.0:AppVersion>
+              <v2.0:CdxA_0>4.90</v2.0:CdxA_0>
+              <v2.0:TransferredCdxA>4.90</v2.0:TransferredCdxA>
+              <v2.0:DeclaredCdxA>4.90</v2.0:DeclaredCdxA>
+            </v2.0:Data>
+            <v2.0:Signature xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0">
+              <di:Reference URI="#CabinX23h" xmlns:di="http://www.w3.org/2000/09/xmldsig#">
+                <di:Transforms>
+                  <di:Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+                  <di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+                </di:Transforms>
+                <di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+                <di:DigestValue>b9SHCfOoVrBxFQ8wwDK32OO+9bd85DuaUdgs6j/29N8=</di:DigestValue>
+              </di:Reference>
+            </v2.0:Signature>
+          </AirDrag>
+        </Components>
+      </vif:Vehicle>
+      <ApplicationInformation>
+        <SimulationToolVersion>0.7.3.2247-DEV</SimulationToolVersion>
+        <Date>2021-06-08T19:18:29.4586936Z</Date>
+      </ApplicationInformation>
+    </Data>
+    <Signature>
+      <di:Reference URI="#MST-67c850fef6ac40c8be1f">
+        <di:Transforms>
+          <di:Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+          <di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+        </di:Transforms>
+        <di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+        <di:DigestValue>XaMrkmy7yiWYS1BSOtq5UulfM+7c70oCyWi4oasX8Pw=</di:DigestValue>
+      </di:Reference>
+    </Signature>
+  </ManufacturingStep>
+</VectoOutputMultistep>

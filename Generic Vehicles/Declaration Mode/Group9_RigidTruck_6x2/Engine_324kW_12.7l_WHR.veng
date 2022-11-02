@@ -1,0 +1,44 @@
+﻿{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2019-12-03T17:04:44.5660016Z",
+    "AppVersion": "3",
+    "FileVersion": 5
+  },
+  "Body": {
+    "SavedInDeclMode": true,
+    "ModelName": "324kW 7l Engine",
+    "Displacement": "7000",
+    "IdlingSpeed": 600.0,
+    "Inertia": 3.6,
+    "Fuels": [
+      {
+        "WHTC-Urban": 1.0,
+        "WHTC-Rural": 1.0,
+        "WHTC-Motorway": 1.0,
+        "WHTC-Engineering": 1.0,
+        "ColdHotBalancingFactor": 1.0,
+        "CFRegPer": 1.0,
+        "FuelMap": "350kW_WHR.vmap",
+        "FuelType": "DieselCI"
+      }
+    ],
+    "RatedPower": 324000.0,
+    "RatedSpeed": 1600.0,
+    "MaxTorque": 2300.0,
+    "FullLoadCurve": "324kW.vfld",
+    "WHRType": [
+      "ElectricalOutput"
+    ],
+    "WHRCorrectionFactors": {
+      "Electrical": {
+        "Urban": 1.0,
+        "Rural": 1.0,
+        "Motorway": 1.0,
+        "ColdHotBalancingFactor": 1.0,
+        "CFRegPer": 1.0,
+        "EngineeringCorrectionFactor": 0.0
+      }
+    }
+  }
+}

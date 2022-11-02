@@ -32,6 +32,7 @@
 using System.Linq;
 using System.Xml;
 using TUGraz.VectoCommon.Models;
+using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 
 namespace TUGraz.VectoCore.Utils
@@ -49,12 +50,9 @@ namespace TUGraz.VectoCore.Utils
 				: Constants.XML.EngineeringNSPrefix;
 		}
 
-		public string Query(params string[] xpathSections)
-		{
-			return string.Join("/",
-				xpathSections.Select(
-					x => string.IsNullOrWhiteSpace(x) || x.StartsWith("..") || x.Contains(":") || x.StartsWith("@") ? x : NSPrefix(x)))
-				;
+		public string Query(params string[] xpathSections) {
+			return xpathSections.Select(
+				x => string.IsNullOrWhiteSpace(x) || x.StartsWith("..") || x.Contains(":") || x.StartsWith("@") ? x : NSPrefix(x)).Join("/");
 		}
 
 		public string QueryConstraint(string elementName, string name, string value,
@@ -67,7 +65,7 @@ namespace TUGraz.VectoCore.Utils
 
 		public string QueryAbs(params string[] xPathSections)
 		{
-			return string.Format("/{0}", Query(xPathSections));
+			return $"/{Query(xPathSections)}";
 		}
 
 		public string NSPrefix(string element, string prefix = null)

@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2021 (x64) (http://www.altova.com) by Markus Quaritsch (Technische Universität Graz) -->
+<xs:schema xmlns="urn:tugraz:ivt:VectoAPI:MonitoringOutput:v0.7" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:vmrf="urn:tugraz:ivt:VectoAPI:DeclarationOutput:v0.7.1" xmlns:ns1="urn:tugraz:ivt:VectoAPI:MonitoringOutput:v0.7.1" targetNamespace="urn:tugraz:ivt:VectoAPI:MonitoringOutput:v0.7.1" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationOutput:v0.7.1" schemaLocation="VectoOutputManufacturer.0.7.1.xsd"/>
+	<xs:element name="VectoMonitoring">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ManufacturerRecord" type="vmrf:VectoOutputManufacturerType"/>
+				<xs:element name="AdditionalData">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Vehicle">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Make" type="xs:string">
+											<xs:annotation>
+												<xs:documentation>#15</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:sequence minOccurs="0">
+								<xs:element name="Engine">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="WHTC">
+												<xs:complexType>
+													<xs:sequence>
+														<xs:element name="CO2">
+															<xs:annotation>
+																<xs:documentation>#75</xs:documentation>
+															</xs:annotation>
+															<xs:complexType>
+																<xs:simpleContent>
+																	<xs:extension base="xs:double">
+																		<xs:attribute name="unit" use="required">
+																			<xs:simpleType>
+																				<xs:restriction base="xs:string">
+																					<xs:enumeration value="g/kWh"/>
+																				</xs:restriction>
+																			</xs:simpleType>
+																		</xs:attribute>
+																	</xs:extension>
+																</xs:simpleContent>
+															</xs:complexType>
+														</xs:element>
+														<xs:element name="FuelConsumption">
+															<xs:annotation>
+																<xs:documentation>#76</xs:documentation>
+															</xs:annotation>
+															<xs:complexType>
+																<xs:simpleContent>
+																	<xs:extension base="xs:double">
+																		<xs:attribute name="unit" use="required">
+																			<xs:simpleType>
+																				<xs:restriction base="xs:string">
+																					<xs:enumeration value="g/kWh"/>
+																				</xs:restriction>
+																			</xs:simpleType>
+																		</xs:attribute>
+																	</xs:extension>
+																</xs:simpleContent>
+															</xs:complexType>
+														</xs:element>
+													</xs:sequence>
+												</xs:complexType>
+											</xs:element>
+											<xs:element name="WHSC">
+												<xs:complexType>
+													<xs:sequence>
+														<xs:element name="CO2">
+															<xs:annotation>
+																<xs:documentation>#77</xs:documentation>
+															</xs:annotation>
+															<xs:complexType>
+																<xs:simpleContent>
+																	<xs:extension base="xs:double">
+																		<xs:attribute name="unit" use="required">
+																			<xs:simpleType>
+																				<xs:restriction base="xs:string">
+																					<xs:enumeration value="g/kWh"/>
+																				</xs:restriction>
+																			</xs:simpleType>
+																		</xs:attribute>
+																	</xs:extension>
+																</xs:simpleContent>
+															</xs:complexType>
+														</xs:element>
+														<xs:element name="FuelConsumption">
+															<xs:annotation>
+																<xs:documentation>#78</xs:documentation>
+															</xs:annotation>
+															<xs:complexType>
+																<xs:simpleContent>
+																	<xs:extension base="xs:double">
+																		<xs:attribute name="unit" use="required">
+																			<xs:simpleType>
+																				<xs:restriction base="xs:string">
+																					<xs:enumeration value="g/kWh"/>
+																				</xs:restriction>
+																			</xs:simpleType>
+																		</xs:attribute>
+																	</xs:extension>
+																</xs:simpleContent>
+															</xs:complexType>
+														</xs:element>
+													</xs:sequence>
+												</xs:complexType>
+											</xs:element>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="Gearbox">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="Manufacturer" type="xs:string">
+												<xs:annotation>
+													<xs:documentation>#24</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+											<xs:element name="ManufacturerAddress" type="xs:string">
+												<xs:annotation>
+													<xs:documentation>#24</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+											<xs:element name="Make" type="xs:string">
+												<xs:annotation>
+													<xs:documentation>#25</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="Axlegear">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="Manufacturer" type="xs:string">
+												<xs:annotation>
+													<xs:documentation>#32</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+											<xs:element name="ManufacturerAddress" type="xs:string">
+												<xs:annotation>
+													<xs:documentation>#32</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+											<xs:element name="Make" type="xs:string">
+												<xs:annotation>
+													<xs:documentation>#33</xs:documentation>
+												</xs:annotation>
+											</xs:element>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="AxleWheels">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="Axle" minOccurs="2" maxOccurs="4">
+												<xs:complexType>
+													<xs:sequence>
+														<xs:element name="Tyre">
+															<xs:complexType>
+																<xs:sequence>
+																	<xs:element name="Manufacturer" type="xs:string">
+																		<xs:annotation>
+																			<xs:documentation>#39</xs:documentation>
+																		</xs:annotation>
+																	</xs:element>
+																	<xs:element name="ManufacturerAddress" type="xs:string">
+																		<xs:annotation>
+																			<xs:documentation>#39</xs:documentation>
+																		</xs:annotation>
+																	</xs:element>
+																	<xs:element name="Make" type="xs:string">
+																		<xs:annotation>
+																			<xs:documentation>#40</xs:documentation>
+																		</xs:annotation>
+																	</xs:element>
+																</xs:sequence>
+															</xs:complexType>
+														</xs:element>
+													</xs:sequence>
+													<xs:attribute name="axleNumber" use="required">
+														<xs:simpleType>
+															<xs:restriction base="xs:int">
+																<xs:minInclusive value="1"/>
+																<xs:maxInclusive value="4"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:attribute>
+												</xs:complexType>
+											</xs:element>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+							<xs:element name="AdvancedReducingTechnologies">
+								<xs:annotation>
+									<xs:documentation>#74</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Entry" minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:simpleContent>
+													<xs:extension base="xs:string">
+														<xs:attribute name="category" use="required">
+															<xs:simpleType>
+																<xs:restriction base="xs:string">
+																	<xs:enumeration value="advanced aerodynamic measures"/>
+																	<xs:enumeration value="advanced rolling resistance measures"/>
+																	<xs:enumeration value="advanced drivetrain technologies"/>
+																	<xs:enumeration value="advanced engine technologies"/>
+																	<xs:enumeration value="advanced auxiliary technologies"/>
+																	<xs:enumeration value="additional ADAS technologies"/>
+																	<xs:enumeration value="advanced powertrain integration and hybridisation"/>
+																	<xs:enumeration value="other"/>
+																</xs:restriction>
+															</xs:simpleType>
+														</xs:attribute>
+													</xs:extension>
+												</xs:simpleContent>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="VectoLicenseNbr" type="xs:string">
+								<xs:annotation>
+									<xs:documentation>#72</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="schemaVersion" type="xs:decimal" use="required"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

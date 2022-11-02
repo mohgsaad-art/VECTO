@@ -1,0 +1,74 @@
+﻿<UserControl x:Class="VECTO3GUI2020.Views.JobEditViews.Vehicle.Components.GearView_v2_0"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:VECTO3GUI2020.Views.JobEditViews.Vehicle.Components"
+             xmlns:custom="clr-namespace:VECTO3GUI2020.Views.CustomControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="1600" d:DesignWidth="800">
+
+    <Grid>
+        <StackPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Orientation="Horizontal" Grid.RowSpan="3" VerticalAlignment="Center">
+                    <Label Grid.RowSpan="3" Content="Gear:" DockPanel.Dock="Left" Style="{StaticResource LabelStyleSubView}"/>
+                    <Label Content="{Binding Gear}" DockPanel.Dock="Left" Style="{StaticResource LabelStyleSubView}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Grid.Column="1">
+                    <Label Content="Torque Loss: " DockPanel.Dock="Left" Padding="0 0 0 0" />
+                    <Label Content="{Binding MinTorqueLossCalculated}" Padding="0 0 0 0"/>
+                    <Label Content=" - " Padding="0 0 0 0" />
+                    <Label Content="{Binding MaxTorqueLossCalculated}" Padding="0 0 0 0"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="1">
+                    <Label Content="Input Speed: " Padding="0 0 0 0"/>
+                    <Label Content="{Binding MinInputSpeedCalculated}" Padding="0 0 0 0"/>
+                    <Label Content=" - " Padding="0 0 0 0"/>
+                    <Label Content="{Binding MaxInputSpeedCalculated}" Padding="0 0 0 0"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="2">
+                    <Label Content="Input Speed: " Padding="0 0 0 0"/>
+                    <Label Content="{Binding MinInputSpeedCalculated}" Padding="0 0 0 0"/>
+                    <Label Content=" - " Padding="0 0 0 0"/>
+                    <Label Content="{Binding MaxInputSpeedCalculated}" Padding="0 0 0 0"/>
+                </StackPanel>
+
+                <CheckBox Grid.Column="3" Grid.RowSpan="3" VerticalAlignment="Center"
+                              Name="btn_toggletableview"
+                              Content="Show Details"
+                              IsChecked="False" HorizontalAlignment="Right" Width="87.898"/>
+            </Grid>
+
+
+            <DockPanel Visibility="{Binding IsChecked,
+                ElementName=btn_toggletableview,
+                Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="20">
+
+                <custom:ScatterPlot DockPanel.Dock="Top" MyDataTable="{Binding LossMap}" Height="300"></custom:ScatterPlot>
+                <DataGrid ItemsSource="{Binding LossMapDataView}" 
+                          DockPanel.Dock="Top" 
+                          Width="Auto"  
+                          VerticalScrollBarVisibility="Visible"
+                          IsReadOnly="True" 
+                          Height="200"
+                          HorizontalContentAlignment="Stretch" ColumnWidth="*">
+                </DataGrid>
+            </DockPanel>
+
+        </StackPanel>
+
+    </Grid>
+</UserControl>

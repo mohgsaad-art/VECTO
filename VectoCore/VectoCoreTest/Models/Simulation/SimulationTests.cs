@@ -40,10 +40,12 @@ using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Tests.Utils;
 using NUnit.Framework;
+using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
 
 namespace TUGraz.VectoCore.Tests.Models.Simulation
 {
 	[TestFixture]
+	[Parallelizable(ParallelScope.All)]
 	public class SimulationTests
 	{
 		private const string EngineOnlyJob = @"TestData\Jobs\EngineOnlyJob.vecto";
@@ -64,7 +66,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 
 			var container = job.GetContainer();
 
-			Assert.AreEqual(560.RPMtoRad(), container.EngineSpeed);
+			Assert.AreEqual(560.RPMtoRad(), container.EngineInfo.EngineSpeed);
 		}
 
 		[TestCase]
@@ -95,7 +97,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			jobContainer.WaitFinished();
 
 			foreach (var r in jobContainer.Runs) {
-				Assert.IsTrue(r.Run.FinishedWithoutErrors, string.Format("{0}", r.ExecException));
+				Assert.IsTrue(r.Run.FinishedWithoutErrors, $"{r.ExecException}");
 			}
 
 			ResultFileHelper.TestModFile(expected, actual);
@@ -107,9 +109,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			var sumWriter = new SummaryDataContainer(fileWriter);
 
 			var inputData = JSONInputDataFactory.ReadJsonJob(EngineOnlyJob);
-			var factory = new SimulatorFactory(ExecutionMode.Engineering, inputData, fileWriter) {
-				SumData = sumWriter
-			};
+			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputData, fileWriter);
+			factory.SumData = sumWriter;
 
 			return factory.SimulationRuns().First();
 		}
@@ -123,7 +124,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			var jobContainer = new JobContainer(sumWriter);
 
 			var inputData = JSONInputDataFactory.ReadJsonJob(jobFile);
-			var runsFactory = new SimulatorFactory(ExecutionMode.Engineering, inputData, fileWriter);
+			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputData, fileWriter);
 
 			jobContainer.AddRuns(runsFactory);
 			jobContainer.Execute();
@@ -131,7 +132,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			jobContainer.WaitFinished();
 
 			foreach (var run in jobContainer.Runs) {
-				Assert.IsTrue(run.Run.FinishedWithoutErrors, string.Format("{0}", run.ExecException));
+				Assert.IsTrue(run.Run.FinishedWithoutErrors, $"{run.ExecException}");
 			}
 
 			ResultFileHelper.TestSumFile(@"TestData\Results\EngineOnlyCycles\24t Coach EngineOnly.vsum",

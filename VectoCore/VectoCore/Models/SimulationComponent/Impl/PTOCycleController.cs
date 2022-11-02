@@ -29,7 +29,6 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
-using System;
 using System.Linq;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
@@ -48,7 +47,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 	{
 		public ITnOutPort RequestPort
 		{
-			set { NextComponent = value; }
+			set => NextComponent = value;
 		}
 
 		public readonly Second Duration;
@@ -74,14 +73,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
 			if (IdleStart == null) {
 				IdleStart = absTime;
-				PreviousState.InAngularVelocity = DataBus.EngineSpeed;
+				PreviousState.InAngularVelocity = DataBus.EngineInfo.EngineSpeed;
 			}
 			return base.Request(absTime - IdleStart, dt);
 		}
 
 		public IResponse Initialize(NewtonMeter outTorque, PerSecond outAngularVelocity)
 		{
-			return new ResponseSuccess { Source = this };
+			return new ResponseSuccess(this);
 		}
 
 		public void Reset()
@@ -99,12 +98,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			return CycleIterator.RightSample.Time - CycleIterator.LeftSample.Time;
 		}
 
-		protected override void DoWriteModalResults(IModalDataContainer container)
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
-			base.DoWriteModalResults(container);
+			base.DoWriteModalResults(time, simulationInterval, container);
 			container[Constants.Auxiliaries.IDs.PTOConsumer] = CurrentState.InTorque *
 																(PreviousState.InAngularVelocity + CurrentState.InAngularVelocity) / 2;
-			container[ModalResultField.P_eng_out] = 0.SI<Watt>();
+			container[ModalResultField.P_ice_out] = 0.SI<Watt>();
 		}
 	}
 }

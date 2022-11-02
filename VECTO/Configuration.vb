@@ -30,7 +30,7 @@ Public Class Configuration
 	Public FirstRun As Boolean
 	Public DeclMode As Boolean
 
-    Public ValidateRunData As Boolean
+	Public ValidateRunData As Boolean
 
     public OutputFolder As String
 
@@ -59,7 +59,7 @@ Public Class Configuration
 		Co2PerFc = DeclarationData.FuelData.Lookup(DefaultFuelType).CO2PerFuelWeight
 		FirstRun = True
 		DeclMode = True
-        ValidateRunData = True
+		ValidateRunData = True
         OutputFolder = ""
 	End Sub
 
@@ -88,7 +88,7 @@ Public Class Configuration
 				OpenCmdName = body.GetEx(Of String)("OpenCmdName")
 				FirstRun = body.GetEx(Of Boolean)("FirstRun")
 				DeclMode = body.GetEx(Of Boolean)("DeclMode")
-                ValidateRunData = IsNothing(body("ValidateRunData")) OrElse body.GetEx(Of Boolean)("ValidateRunData")
+				ValidateRunData = IsNothing(body("ValidateRunData")) OrElse body.GetEx(Of Boolean)("ValidateRunData")
                 OutputFolder = If(body("OutputFolder") Is Nothing, "", body("OutputFolder").Value(of string)())
 			End Using
 		Catch ex As Exception
@@ -114,7 +114,7 @@ Public Class Configuration
 		body.Add("OpenCmdName", OpenCmdName)
 		body.Add("FirstRun", FirstRun)
 		body.Add("DeclMode", DeclMode)
-        body.Add("ValidateRunData", ValidateRunData)
+		body.Add("ValidateRunData", ValidateRunData)
         body.Add("OutputFolder", OutputFolder)
 
 		JSONFileWriter.WriteFile(New Dictionary(Of String, Object) From {{"Header", header}, {"Body", body}}, FilePath)

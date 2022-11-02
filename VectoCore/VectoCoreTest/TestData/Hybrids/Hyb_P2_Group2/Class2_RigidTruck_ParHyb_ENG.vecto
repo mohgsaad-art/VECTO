@@ -1,0 +1,64 @@
+{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2020-08-25T16:36:24.0489384Z",
+    "AppVersion": "3",
+    "FileVersion": 8
+  },
+  "Body": {
+    "SavedInDeclMode": false,
+    "EngineOnlyMode": false,
+    "VehicleFile": "Class2_RigidTruck.vveh",
+    "EngineFile": "Engine_175kW_6.8l.veng",
+    "GearboxFile": "AMT_6.vgbx",
+    "TCU": "AMT_6.vgbx",
+    "ShiftStrategy": "",
+    "HybridStrategyParams": "HybridStrategyParams.vhctl",
+    "AuxiliaryAssembly": "Classic",
+    "AuxiliaryVersion": "CLASSIC",
+    "AdvancedAuxiliaryFilePath": "",
+    "Aux": [],
+    "Padd": 3540.0,
+    "Padd_electric": 0,
+    "VACC": "Truck.vacc",
+    "EngineStopStartAtVehicleStopThreshold": 2.0,
+    "EngineStopStartMaxOffTimespan": 120.0,
+    "EngineStopStartUtilityFactor": 0.8,
+    "EcoRollMinSpeed": 60.000000000000007,
+    "EcoRollActivationDelay": 2.0,
+    "EcoRollUnderspeedThreshold": 0.0,
+    "EcoRollMaxAcceleration": 0.1,
+    "PCCEnableSpeed": 80.0,
+    "PCCMinSpeed": 50.0,
+    "PCCUnderspeed": 8.0,
+    "PCCOverSpeed": 5.0,
+    "PCCPreviewDistanceUC1": 1500.0,
+    "PCCPreviewDistanceUC2": 1000.0,
+    "LAC": {
+      "Enabled": true,
+      "PreviewDistanceFactor": 10.0,
+      "DF_offset": 2.5,
+      "DF_scaling": 1.5,
+      "DF_targetSpeedLookup": "",
+      "Df_velocityDropLookup": "",
+      "MinSpeed": 50.0
+    },
+    "OverSpeedEcoRoll": {
+      "Mode": "Off",
+      "MinSpeed": 50.0,
+      "OverSpeed": 5.0
+    },
+    "Cycles": [
+      "LongHaul",
+      "RegionalDelivery",
+      "UrbanDelivery",
+      "Coach",
+      "Construction",
+      "HeavyUrban",
+      "Interurban",
+      "MunicipalUtility",
+      "Suburban",
+      "Urban"
+    ]
+  }
+}

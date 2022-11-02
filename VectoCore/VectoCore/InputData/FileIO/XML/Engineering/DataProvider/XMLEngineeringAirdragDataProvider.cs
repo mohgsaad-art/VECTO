@@ -1,7 +1,7 @@
 ﻿/*
 * This file is part of VECTO.
 *
-* Copyright © 2012-2017 European Union
+* Copyright © 2012-2019 European Union
 *
 * Developed by Graz University of Technology,
 *              Institute of Internal Combustion Engines and Thermodynamics,
@@ -59,38 +59,22 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider
 			SourceType = (vehicle as IXMLResource).DataSource.SourceFile == fsBasePath ? DataSourceType.XMLEmbedded : DataSourceType.XMLFile;
 		}
 
-		public virtual SquareMeter AirDragArea
-		{
-			get { return GetDouble(XMLNames.Vehicle_AirDragArea).SI<SquareMeter>(); }
-		}
+		public virtual SquareMeter AirDragArea => GetDouble(XMLNames.Vehicle_AirDragArea).SI<SquareMeter>();
 
-		public virtual SquareMeter TransferredAirDragArea
-		{
-			get { return AirDragArea; }
-		}
+		public virtual SquareMeter TransferredAirDragArea => AirDragArea;
 
-		public virtual SquareMeter AirdragArea_0
-		{
-			get { return AirDragArea; }
-		}
+		public virtual SquareMeter AirDragArea_0 => AirDragArea;
 
-		public virtual CrossWindCorrectionMode CrossWindCorrectionMode
-		{
-			get { return GetString(XMLNames.Vehicle_CrossWindCorrectionMode).ParseEnum<CrossWindCorrectionMode>(); }
-		}
+		public virtual CrossWindCorrectionMode CrossWindCorrectionMode => GetString(XMLNames.Vehicle_CrossWindCorrectionMode).ParseEnum<CrossWindCorrectionMode>();
 
-		public virtual TableData CrosswindCorrectionMap
-		{
-			get {
-				return XMLHelper.ReadEntriesOrResource(
-					BaseNode, DataSource.SourcePath, XMLNames.Vehicle_CrosswindCorrectionData, XMLNames.Vehicle_CrosswindCorrectionData_Entry,
-					AttributeMappings.CrossWindCorrectionMapping);
-			}
-		}
+		public virtual TableData CrosswindCorrectionMap =>
+			XMLHelper.ReadEntriesOrResource(
+				BaseNode, DataSource.SourcePath, XMLNames.Vehicle_CrosswindCorrectionData, XMLNames.Vehicle_CrosswindCorrectionData_Entry,
+				AttributeMappings.CrossWindCorrectionMapping);
 
 		#region Overrides of AbstractXMLResource
 
-		protected override XNamespace SchemaNamespace { get { return NAMESPACE_URI; } }
+		protected override XNamespace SchemaNamespace => NAMESPACE_URI;
 
 		protected override DataSourceType SourceType { get; }
 
@@ -101,7 +85,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider
 	{
 		public new static readonly XNamespace NAMESPACE_URI = XMLDefinitions.ENGINEERING_DEFINITONS_NAMESPACE_V10;
 
-		public new const string XSD_TYPE = "AirDragComponentEngineeringType";
+		public new const string XSD_TYPE = "AirDragDataEngineeringType";
 
 		public new static readonly string QUALIFIED_XSD_TYPE = XMLHelper.CombineNamespace(NAMESPACE_URI, XSD_TYPE);
 
@@ -110,6 +94,6 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider
 			IXMLEngineeringVehicleData vehicle, XmlNode axlegearNode, string fsBasePath) : base(
 			vehicle, axlegearNode, fsBasePath) { }
 
-		protected override XNamespace SchemaNamespace { get { return NAMESPACE_URI; } }
+		protected override XNamespace SchemaNamespace => NAMESPACE_URI;
 	}
 }

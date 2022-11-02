@@ -68,8 +68,8 @@ namespace TUGraz.VectoCommon.Models
 
 		public static bool LogEnabled
 		{
-			get { return _logEnabled.Value; }
-			set { _logEnabled.Value = value; }
+			get => _logEnabled.Value;
+			set => _logEnabled.Value = value;
 		}
 
 		private readonly Logger _log;
@@ -189,9 +189,6 @@ namespace TUGraz.VectoCommon.Models
 			}
 		}
 
-		protected LoggingObject Log
-		{
-			get { return this; }
-		}
+		protected LoggingObject Log => this;
 	}
 }

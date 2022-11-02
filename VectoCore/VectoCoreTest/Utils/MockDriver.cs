@@ -53,9 +53,9 @@ namespace TUGraz.VectoCore.Tests.Utils
 			DrivingAction = DrivingAction.Accelerate;
 		}
 
-		protected override void DoWriteModalResults(IModalDataContainer container) {}
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container) {}
 
-		protected override void DoCommitSimulationStep() {}
+		protected override void DoCommitSimulationStep(Second time, Second simulationInterval) {}
 
 		public IDrivingCycleOutPort OutPort()
 		{
@@ -72,14 +72,14 @@ namespace TUGraz.VectoCore.Tests.Utils
 			LastRequest = new RequestData { AbsTime = absTime, ds = ds, Gradient = gradient, TargetVelocity = targetVelocity };
 			var acc = 0.SI<MeterPerSquareSecond>();
 			var dt = 1.SI<Second>();
-			return new ResponseSuccess { SimulationInterval = dt, SimulationDistance = ds, Source = this };
+			return new ResponseSuccess(this) { SimulationInterval = dt, SimulationDistance = ds, };
 		}
 
 		public IResponse Request(Second absTime, Second dt, MeterPerSecond targetVelocity, Radian gradient)
 		{
 			LastRequest = new RequestData { AbsTime = absTime, dt = dt, Gradient = gradient, TargetVelocity = targetVelocity };
 			var acc = 0.SI<MeterPerSquareSecond>();
-			return new ResponseSuccess { SimulationInterval = dt, Source = this };
+			return new ResponseSuccess(this) { SimulationInterval = dt, };
 		}
 
 		public IResponse Initialize(MeterPerSecond vehicleSpeed, Radian roadGradient)
@@ -88,7 +88,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 				return _next.Initialize(vehicleSpeed, roadGradient);
 			}
 
-			return new ResponseSuccess { Source = this };
+			return new ResponseSuccess(this);
 		}
 
 		public IResponse Initialize(MeterPerSecond vehicleSpeed, Radian roadGradient, MeterPerSquareSecond startAcceleration)
@@ -97,7 +97,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 				return _next.Initialize(vehicleSpeed, roadGradient, startAcceleration);
 			}
 
-			return new ResponseSuccess { Source = this };
+			return new ResponseSuccess(this);
 		}
 
 		public void Connect(IDriverDemandOutPort other)
@@ -123,5 +123,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 		public DrivingAction DrivingAction { get; set; }
 
 		public MeterPerSquareSecond DriverAcceleration { get; set; }
+		public PCCStates PCCState => PCCStates.OutsideSegment;
+		public MeterPerSecond NextBrakeTriggerSpeed => 0.SI<MeterPerSecond>();
 	}
 }

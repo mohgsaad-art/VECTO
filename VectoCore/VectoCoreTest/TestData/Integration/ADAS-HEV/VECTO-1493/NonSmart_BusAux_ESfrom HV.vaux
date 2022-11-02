@@ -1,0 +1,34 @@
+{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2021-11-17T15:08:01.2732788Z",
+    "AppVersion": "3",
+    "FileVersion": 1
+  },
+  "Body": {
+    "PneumaticSystem": {
+      "CompressorMap": "DEFAULT_2-Cylinder_2-Stage_398ccm.ACMP",
+      "AverageAirDemand": 1.4,
+      "SmartAirCompression": false,
+      "GearRatio": 1.2
+    },
+    "ElectricSystem": {
+      "AlternatorEfficiency": 0.7,
+      "CurrentDemand": 65.77,
+      "CurrentDemandEngineOffDriving": 65.77,
+      "CurrentDemandEngineOffStandstill": 56.46,
+      "AlternatorType": "None",
+      "ElectricStorageCapacity": 540.0,
+      "BatteryEfficiency": 0.93,
+      "MaxAlternatorPower": 12735.0,
+      "DCDCConverterEfficiency": 0.97,
+      "ESSupplyFromHEVREESS": true
+    },
+    "HVAC": {
+      "ElectricPowerDemand": 765.0,
+      "MechanicalPowerDemand": 500.0,
+      "AuxHeaterPower": 0.0,
+      "AverageHeatingDemand": 0.0
+    }
+  }
+}

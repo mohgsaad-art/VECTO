@@ -35,8 +35,10 @@ using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Connector.Ports;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
+using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.OutputData;
 
 namespace TUGraz.VectoCore.Tests.Utils
@@ -62,31 +64,19 @@ namespace TUGraz.VectoCore.Tests.Utils
 		}
 
 		public GearboxType GearboxType { get; set; }
-		public uint Gear { get; set; }
+		public GearshiftPosition Gear { get; set; }
 		public bool TCLocked { get; set; }
-		public GearInfo NextGear { get; private set; }
+		public GearshiftPosition NextGear { get; private set; }
 
-		public Second TractionInterruption
-		{
-			get { return 1.SI<Second>(); }
-		}
+		public Second TractionInterruption => 1.SI<Second>();
 
 		public uint NumGears { get; set; }
 
-		public MeterPerSecond StartSpeed
-		{
-			get { return 2.SI<MeterPerSecond>(); }
-		}
+		public MeterPerSecond StartSpeed => 2.SI<MeterPerSecond>();
 
-		public MeterPerSquareSecond StartAcceleration
-		{
-			get { return 0.6.SI<MeterPerSquareSecond>(); }
-		}
+		public MeterPerSquareSecond StartAcceleration => 0.6.SI<MeterPerSquareSecond>();
 
-		public NewtonMeter GearMaxTorque
-		{
-			get { return null; }
-		}
+		public NewtonMeter GearMaxTorque => null;
 
 		public Watt GearboxLoss()
 		{
@@ -95,9 +85,13 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 		public Second LastShift { get; private set; }
 
+		public Second LastUpshift => throw new NotImplementedException();
+
+		public Second LastDownshift => throw new NotImplementedException();
+
 		public GearData GetGearData(uint gear)
 		{
-			return new GearData();
+			return new GearData() { Ratio = 1.0 };
 		}
 
 		public void Connect(ITnOutPort other)
@@ -125,17 +119,24 @@ namespace TUGraz.VectoCore.Tests.Utils
 			throw new NotImplementedException();
 		}
 
-		protected override void DoWriteModalResults(IModalDataContainer container)
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
 			// nothing to write
 		}
 
-		protected override void DoCommitSimulationStep() {}
+		protected override void DoCommitSimulationStep(Second time, Second simulationInterval) {}
+
+		public bool GearEngaged(Second absTime)
+		{
+			return _clutchClosed;
+		}
 
 		public bool ClutchClosed(Second absTime)
 		{
 			return _clutchClosed;
 		}
+
+		public Watt ClutchLosses => throw new NotImplementedException();
 
 		public void SetClutch(bool closed)
 		{
@@ -145,6 +146,49 @@ namespace TUGraz.VectoCore.Tests.Utils
 		public void Connect(IAuxPort aux)
 		{
 			throw new NotImplementedException();
+		}
+
+
+		public bool DisengageGearbox { get; set; }
+		public void TriggerGearshift(Second absTime, Second dt)
+		{
+			throw new NotImplementedException();
+		}
+	}
+
+	public class MockAxlegear : VectoSimulationComponent, IAxlegear
+	{
+		public MockAxlegear(VehicleContainer vehicleContainer) : base(vehicleContainer)
+		{
+			
+		}
+
+		public ITnInPort InPort()
+		{
+			throw new NotImplementedException();
+		}
+
+		public ITnOutPort OutPort()
+		{
+			throw new NotImplementedException();
+		}
+
+		public Watt AxlegearLoss()
+		{
+			throw new NotImplementedException();
+		}
+
+		public Tuple<PerSecond, NewtonMeter> CurrentAxleDemand { get; }
+		public double Ratio => 1;
+
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
+		{
+			
+		}
+
+		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)
+		{
+			
 		}
 	}
 }

@@ -1,0 +1,24 @@
+{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2020-05-27T12:05:01.1639053Z",
+    "AppVersion": "3",
+    "FileVersion": 4
+  },
+  "Body": {
+    "SavedInDeclMode": true,
+    "DeclarationVehicle": "primary_heavyBus group P33_34_non_Smart.xml",
+    "ManufacturerRecord": "CompletedBus_33c.MRF.xml",
+    "Mileage": 30000.0,
+    "FanPowerCoefficients": [
+      7.32,
+      1200.0,
+      810.0,
+      1.0
+    ],
+    "FanDiameter": 0.5,
+    "Cycles": [
+      "VTP cycle 2Hz.vdri"
+    ]
+  }
+}

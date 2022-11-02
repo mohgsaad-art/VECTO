@@ -1,4 +1,4 @@
-##Driver: Acceleration Limiting
+## Driver: Acceleration Limiting
 
 VECTO limits the vehicle acceleration and deceleration depending on current vehicle speed, to model a realistic driver behavior. These limits are defined in the [Acceleration Limiting Input File (.vacc)](#acceleration-limiting-input-file-.vacc), which can be set in the [Job File](#job-file). In Declaration mode this is already predefined.
 

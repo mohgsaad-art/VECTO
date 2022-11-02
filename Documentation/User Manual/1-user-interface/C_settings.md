@@ -1,14 +1,14 @@
-##Settings
+## Settings
 
 
 ![](pics/Settings.PNG)
 
 
-###Description
+### Description
 
 In the Settings dialog controls general application settings. The settings are saved in the [settings.json](#application-files) file.
 
-###Interface Settings
+### Interface Settings
 
 File Open Command
 :	This command will be used to open CSV Input Files like Driving Cycles (.vdri). See: [Run command![](pics/external-icon%2012x12.png)](http://en.wikipedia.org/wiki/Run_command)\
@@ -18,16 +18,16 @@ File Open Command
 :	***Example*** *: If the command is* ***excel*** *and the file is* ***C:\\VECTO\\cycle1.vdri*** *then VECTO will run:* ***excel "C:\\VECTO\\cycle1.vdri"***
 
 
-###Calculation Settings
+### Calculation Settings
 
 <div class="engineering">
 Air Density \[kg/m³\]
-:	The Air Density is needed to calculate the air resistance together with the **Drag Coefficient** and the **Cross Sectional Area** (see [Vehicle Editor](#vehicle-editor)).
+:	The Air Density is needed to calculate the air resistance together with the **Drag Coefficient** and the **Cross Sectional Area** (see [Vehicle Editor](#vehicle-editor-general-tab)).
 
 This  setting is only used in Engineering mode. In Declaration mode the default value of 1.188 \[kg/m³\] is used.
 </div>
 
-###Controls
+### Controls
 
 
 Reset All Settings

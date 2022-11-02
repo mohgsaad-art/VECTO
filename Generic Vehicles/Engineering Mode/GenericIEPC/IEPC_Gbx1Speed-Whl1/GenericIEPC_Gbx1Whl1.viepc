@@ -1,0 +1,51 @@
+﻿{
+  "Header": {
+    "CreatedBy": " ()",
+    "Date": "2016-10-13T08:54:28.7387223Z",
+    "AppVersion": "3",
+    "FileVersion": 1
+  },
+  "Body": {
+    "SavedInDeclMode": false,
+    "Model": "Generic IEPC",
+    "Inertia": 0.5,
+    "DifferentialIncluded": false,
+    "DesignTypeWheelMotor": true,
+    "NrOfDesignTypeWheelMotorMeasured": 1,
+    "ThermalOverloadRecoveryFactor": 0.9,
+    "Gears": [
+      {
+        "Ratio": 12.276
+      }
+    ],
+    "VoltageLevels": [
+      {
+        "Voltage": 500,
+        "ContinuousTorque": 6930.29,
+        "ContinuousTorqueSpeed": 166.99,
+        "OverloadTorque": 8258.60,
+        "OverloadTorqueSpeed": 166.01,
+        "OverloadTime": 312,
+        "FullLoadCurve": "IEPC_Gbx1Whl1_FLD_min.viepcp",
+        "PowerMaps": {
+          "1": "IEPC_Gbx1Whl1.viepco"
+        }
+      },
+      {
+        "Voltage": 900,
+        "ContinuousTorque": 7507.82,
+        "ContinuousTorqueSpeed": 168.62,
+        "OverloadTorque": 8662.87,
+        "OverloadTorqueSpeed": 170.17,
+        "OverloadTime": 345,
+        "FullLoadCurve": "IEPC_Gbx1Whl1_FLD_max.viepcp",
+        "PowerMaps": {
+          "1": "IEPC_Gbx1Whl1.viepco"
+        }
+      }
+    ],
+    "DragCurves": {
+      "1": "IEPC_Gbx1Whl1_drag.viepcd"
+    }
+  }
+}

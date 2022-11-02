@@ -1,0 +1,45 @@
+﻿<UserControl x:Class="VECTO3GUI2020.Views.JobEditViews.Vehicle.Components.AxleWheelsView_v2_0"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:VECTO3GUI2020.Views.JobEditViews.Vehicle.Components"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             >
+    <Grid>
+        <DockPanel>
+            <Label HorizontalAlignment="Stretch" DockPanel.Dock="Top" Content="{Binding Name}" Background="Aquamarine" FontSize="20" Height="40" FontWeight="DemiBold"  Padding="10 5 5 5"></Label>
+            <ScrollViewer DockPanel.Dock="Top" VerticalScrollBarVisibility="Auto" Padding="0 10 30 10">
+                <ItemsControl ItemsSource="{Binding AxleViewModels}" Name="AxleList" AlternationCount="2">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical" x:Name="AxleStackPanel">
+                                <ContentControl Margin="5 5 5 5" Content="{Binding .}"/>
+                                <Rectangle HorizontalAlignment="Stretch" Height="10" x:Name="Separator"/>
+                            </StackPanel>
+                            <DataTemplate.Triggers>
+                                <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                                    <Setter TargetName="AxleStackPanel" Property="Background">
+                                        <Setter.Value>
+                                            <SolidColorBrush Color="White" Opacity="0.9"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                                <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                                    <Setter TargetName="AxleStackPanel" Property="Background">
+                                        <Setter.Value>
+                                            <SolidColorBrush Color="White" Opacity="0.0"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </DockPanel>
+        
+
+    </Grid>
+</UserControl>

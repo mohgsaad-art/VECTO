@@ -33,6 +33,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Utils;
 
@@ -43,17 +44,9 @@ namespace TUGraz.VectoCore.Models.Declaration
 	{
 		private List<string> Technologies;
 
-		protected override string ResourceId
-		{
-			get { return DeclarationData.DeclarationDataResourcePrefix + ".VAUX.HVAC-Table.csv"; }
-		}
+		protected override string ResourceId => DeclarationData.DeclarationDataResourcePrefix + ".VAUX.HVAC-Table.csv";
 
-		protected override string ErrorMessage
-		{
-			get {
-				return "Auxiliary Lookup Error: No value found for HVAC. Mission: '{0}', Technology: '{1}' , HDVClass: '{2}'";
-			}
-		}
+		protected override string ErrorMessage => "Auxiliary Lookup Error: No value found for HVAC. Mission: '{0}', Technology: '{1}' , HDVClass: '{2}'";
 
 		protected override void ParseData(DataTable table)
 		{

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:VectoInputEngineering schemaVersion="1.0"
+	xmlns="urn:tugraz:ivt:VectoAPI:EngineeringDefinitions:v1.0" 
+	xmlns:tns="urn:tugraz:ivt:VectoAPI:EngineeringInput:v1.0"
+	xmlns:vdecdef="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:EngineeringInput https://webgate.ec.europa.eu/CITnet/svn/VECTO/trunk/Share/XML/XSD/VectoEngineeringJob.xsd">
+	<EngineOnlyMode>false</EngineOnlyMode>
+	<Vehicle>
+		<Resource type="xml" file="engineering_vehicle_ref_DF_WHR.xml"/>
+	</Vehicle>
+	<DriverModel xsi:type="DriverModelEngineeringType">
+		<LookAheadCoasting xsi:type="LookAheadCoastingEngineeringType">
+			<Enabled>true</Enabled>
+			<MinSpeed>50</MinSpeed>
+			<PreviewDistanceFactor>8</PreviewDistanceFactor>
+			<DecisionFactorOffset>3.22</DecisionFactorOffset>
+			<DecisionFactorScaling>2.11</DecisionFactorScaling>
+			<SpeedDependentDecisionFactor>
+				<Resource type="csv" file="lac_speedDependent.csv"/>
+			</SpeedDependentDecisionFactor>
+			<VelocityDropDecisionFactor>
+				<Resource type="csv" file="lac_velocityDrop.csv"/>
+			</VelocityDropDecisionFactor>
+		</LookAheadCoasting>
+		<Overspeed xsi:type="OverspeedEngineeringType">
+			<Enabled>true</Enabled>
+			<MinSpeed>50</MinSpeed>
+			<AllowedOverspeed>5</AllowedOverspeed>
+		</Overspeed>
+		<DriverAccelerationCurve xsi:type="DriverAccelerationCurveEngineeringType">
+			<Entry vehicleSpeed="0" maxAcceleration="1" maxDeceleration="-1"/>
+			<Entry vehicleSpeed="100" maxAcceleration="1" maxDeceleration="-1"/>
+		</DriverAccelerationCurve>
+		<!--<EngineStopStartParameters xsi:type="EngineStartStopParametersEngineeringType">
+			<ActivationDelay>2</ActivationDelay>
+			<MaxEngineOffTime>120</MaxEngineOffTime>
+			<UtilityFactor>0.8</UtilityFactor>
+		</EngineStopStartParameters>-->
+	</DriverModel>
+	<MissionCycles>
+		<Cycle type="csv" file="Long_Haul+FAN+ES.vdri"/>
+	</MissionCycles>
+</tns:VectoInputEngineering>

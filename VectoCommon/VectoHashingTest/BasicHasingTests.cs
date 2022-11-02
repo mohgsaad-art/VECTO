@@ -40,6 +40,7 @@ using NUnit.Framework;
 namespace VectoHashingTest
 {
 	[TestFixture]
+	//[Parallelizable(ParallelScope.All)]
 	public class BasicHasingTests
 	{
 		public const string SimpleXML = @"Testdata\XML\simple_document.xml";

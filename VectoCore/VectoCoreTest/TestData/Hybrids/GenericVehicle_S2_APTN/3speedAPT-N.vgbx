@@ -1,0 +1,54 @@
+{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2021-12-13T10:08:24.0568805Z",
+    "AppVersion": "3",
+    "FileVersion": 6
+  },
+  "Body": {
+    "SavedInDeclMode": false,
+    "ModelName": "3_speed_APT-N",
+    "Inertia": 0.0,
+    "TracInt": 0.1,
+    "Gears": [
+      {
+        "Ratio": 2.64,
+        "LossMap": "Axle_4x2_LH.vtlm"
+      },
+      {
+        "Ratio": 8.31,
+        "LossMap": "Gear_indirect.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": "",
+        "MaxSpeed": ""
+      },
+      {
+        "Ratio": 4.65,
+        "LossMap": "Gear_indirect.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": "",
+        "MaxSpeed": ""
+      },
+      {
+        "Ratio": 2.75,
+        "LossMap": "Gear_indirect.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": "",
+        "MaxSpeed": ""
+      }
+    ],
+    "TqReserve": 0.0,
+    "ShiftTime": 2.0,
+    "StartTqReserve": 20.0,
+    "StartSpeed": 2.0,
+    "StartAcc": 0.8,
+    "GearboxType": "APTN",
+    "TorqueConverter": {
+      "Enabled": false
+    },
+    "DownshiftAfterUpshiftDelay": 6.0,
+    "UpshiftAfterDownshiftDelay": 6.0,
+    "UpshiftMinAcceleration": 0.1,
+    "PowershiftShiftTime": 0.8
+  }
+}

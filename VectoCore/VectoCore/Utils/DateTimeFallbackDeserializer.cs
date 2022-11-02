@@ -48,12 +48,11 @@ namespace TUGraz.VectoCore.Utils
 	{
 		public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
 		{
-			DateTime dateTime;
 			if (reader.TokenType == JsonToken.Date) {
 				return reader.Value;
 			}
 			if (DateTime.TryParseExact((string)reader.Value, new[] { "d.M.yyyy HH:mm:ss", "M/d/yyyy HH:mm:ss tt" },
-				CultureInfo.InvariantCulture, DateTimeStyles.None, out dateTime)) {
+				CultureInfo.InvariantCulture, DateTimeStyles.None, out var dateTime)) {
 				return DateTime.SpecifyKind(dateTime, DateTimeKind.Utc);
 			}
 

@@ -33,7 +33,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Xml;
 using Newtonsoft.Json.Linq;
+using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
@@ -41,42 +43,224 @@ using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.InputData.Impl;
 using TUGraz.VectoCore.Models.Declaration;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 
 namespace TUGraz.VectoCore.InputData.FileIO.JSON
 {
-
-	public class JSONVehicleDataV8 : JSONVehicleDataV7
+	public class JSONVehicleDataV11_IEPC : JSONVehicleDataV10_HEV_BEV
 	{
-		public JSONVehicleDataV8(JObject data, string fileName, IJSONVehicleComponents job, bool tolerateMissing = false) : base(data, fileName, job, tolerateMissing) { }
+		public JSONVehicleDataV11_IEPC(JObject data, string fileName, IJSONVehicleComponents job, bool tolerateMissing = false) :
+			base(data, fileName, job, tolerateMissing)
+		{ }
+
+		public override IIEPCEngineeringInputData IEPCEngineeringInputData => JSONInputDataFactory.ReadIEPCEngineeringInputData(
+			Path.Combine(BasePath, Body.GetEx<string>("IEPC")), false);
+
+		public override IIEPCDeclarationInputData IEPC => JSONInputDataFactory.ReadIEPCEngineeringInputData(
+			Path.Combine(BasePath, Body.GetEx<string>("IEPC")), false);
+
+		#region Overrides of JSONVehicleDataV10_HEV_BEV
+
+		public override TableData BoostingLimitations => null;
+		
+		#endregion
+	}
+
+	public class JSONVehicleDataV10_HEV_BEV : JSONVehicleDataV9
+	{
+		private JSONElectricStorageSystemEngineeringInputData _batteries;
+		private JSONElectricMotors _electricMotors;
+
+		public JSONVehicleDataV10_HEV_BEV(JObject data, string fileName, IJSONVehicleComponents job, bool tolerateMissing = false) :
+			base(data, fileName, job, tolerateMissing)
+		{ }
 
 		#region Overrides of JSONVehicleDataV7
 
-		public override bool EngineStopStart { get { return Body.GetEx<bool>("EngineStopStart"); } }
-		public override EcoRollType EcoRoll { get { return EcorollTypeHelper.Parse(Body.GetEx<string>("EcoRoll")); } }
+		public override double InitialSOC => Body.GetEx<double>("InitialSoC") / 100.0;
 
-		public override PredictiveCruiseControlType PredictiveCruiseControl
+		protected override IRetarderInputData GetRetarder => _retarderInputData ?? (_retarderInputData = new JSONRetarderInputData(this));
+
+		protected override IElectricMachinesEngineeringInputData GetElectricMachines()
+		{
+			return _electricMotors ?? (_electricMotors = ReadMotors());
+		}
+
+		protected override IElectricStorageSystemEngineeringInputData GetElectricStorage()
+		{
+			return _batteries ?? (_batteries = ReadBatteries());
+		}
+
+		public override VectoSimulationJobType VehicleType
 		{
 			get {
-				return Body.GetEx<string>("PredictiveCruiseControl").ParseEnum<PredictiveCruiseControlType>();
+				switch (Body.GetEx<String>("PowertrainConfiguration")) {
+					case "ParallelHybrid": return VectoSimulationJobType.ParallelHybridVehicle;
+					case "BatteryElectric": return VectoSimulationJobType.BatteryElectricVehicle;
+					case "SerialHybrid": return VectoSimulationJobType.SerialHybridVehicle;
+					case "IEPC_E":
+					case "IEPC": return VectoSimulationJobType.IEPC_E;
+					case "IEPC_S":
+					case "IEPC-S": return VectoSimulationJobType.IEPC_S;
+					case "IHPC": return VectoSimulationJobType.IHPC;
+					default: throw new VectoException("Invalid parameter value {0}", Body.GetEx<String>("PowertrainConfiguration"));
+				}
 			}
 		}
 
-		
-
-		public override TankSystem? TankSystem
+		protected virtual JSONElectricMotors ReadMotors()
 		{
-			get {
-				return Body["TankSystem"]?.ToString().ParseEnum<TankSystem>();
+			var retVal = new List<ElectricMachineEntry<IElectricMotorEngineeringInputData>>();
+			foreach (var entry in Body["ElectricMotors"]) {
+				var tmp = new ElectricMachineEntry<IElectricMotorEngineeringInputData> {
+					Position = PowertrainPositionHelper.Parse(entry.GetEx<string>("Position")),
+					RatioADC = entry.GetEx<double>("Ratio"),
+					RatioPerGear = entry["RatioPerGear"] != null
+						? entry["RatioPerGear"].Select(x => x.Value<double>()).ToArray()
+						: new double[] { },
+					MechanicalTransmissionEfficiency = entry["MechanicalEfficiency"] != null
+						? entry.GetEx<double>("MechanicalEfficiency")
+						: double.NaN,
+					MechanicalTransmissionLossMap = entry["MechanicalTransmissionLossMap"] != null
+						? ReadTableData(Path.Combine(BasePath, entry.GetEx<string>("MechanicalTransmissionLossMap")),
+							"EM ADC LossMap")
+						: null,
+					Count = entry.GetEx<int>("Count"),
+					ElectricMachine = 
+						JSONInputDataFactory.ReadElectricMotorData(
+							Path.Combine(BasePath, entry.GetEx<string>("MotorFile")), false)
+				};
+				retVal.Add(tmp);
 			}
+
+			return new JSONElectricMotors(retVal);
+		}
+
+		protected override IAdvancedDriverAssistantSystemsEngineering GetADS()
+		{
+			if (_adasInputData != null)
+				return _adasInputData;
+
+			switch (VehicleType) {
+				case VectoSimulationJobType.BatteryElectricVehicle:
+				case VectoSimulationJobType.IEPC_E:
+					return _adasInputData = new JSONADASInputDataV10BEV(this);
+				case VectoSimulationJobType.ParallelHybridVehicle:
+				case VectoSimulationJobType.IHPC:
+				case VectoSimulationJobType.SerialHybridVehicle:
+				case VectoSimulationJobType.IEPC_S:
+					return _adasInputData = new JSONADASInputDataV10HEV(this);
+				default:
+					return base.GetADS();
+			}
+		}
+
+
+		protected virtual JSONElectricStorageSystemEngineeringInputData ReadBatteries()
+		{
+			var entries = new List<IElectricStorageEngineeringInputData>();
+			if (Body["Batteries"] != null) {
+				foreach (var entry in Body["Batteries"]) {
+					entries.Add(new JSONElectricStorageEngineeringInputData {
+						Count = entry.GetEx<int>("NumPacks"),
+						StringId = entry.GetEx<int>("StreamId"),
+						REESSPack = JSONInputDataFactory.ReadREESSData(
+							Path.Combine(BasePath, entry.GetEx<string>("BatteryFile")), false)
+					});
+				}
+			} else {
+				entries.Add(new JSONElectricStorageEngineeringInputData {
+					Count = Body["Battery"].GetEx<int>("NumPacks"),
+					StringId = 0,
+					REESSPack = JSONInputDataFactory.ReadREESSData(Path.Combine(BasePath, Body["Battery"].GetEx<string>("BatteryFile")), false)
+				});
+			}
+
+			return new JSONElectricStorageSystemEngineeringInputData(entries);
+		}
+
+		//public override Dictionary<PowertrainPosition, List<Tuple<Volt, TableData>>> ElectricMotorTorqueLimits =>
+		//	throw new NotImplementedException();
+		public override Dictionary<PowertrainPosition, List<Tuple<Volt, TableData>>> ElectricMotorTorqueLimits =>
+			Body["EMTorqueLimits"] == null
+				? null
+				: new Dictionary<PowertrainPosition, List<Tuple<Volt, TableData>>>() {
+					{
+						GetElectricMachines().Entries.First().Position,
+						new List<Tuple<Volt, TableData>>() {
+							Tuple.Create((Volt)null, ReadTableData(
+								Path.Combine(BasePath, Body.GetEx<string>("EMTorqueLimits")),
+								"ElectricMotorTorqueLimits"))
+						}
+					}
+				};
+
+        public override TableData BoostingLimitations =>
+			Body["MaxPropulsionTorque"] == null
+				? null
+				: ReadTableData(Path.Combine(BasePath, Body.GetEx<string>("MaxPropulsionTorque")),
+					"MaxPropulsionTorque");
+
+		#endregion
+	}
+
+
+	// ###################################################################
+	// ###################################################################
+
+	public class JSONVehicleDataV9 : JSONVehicleDataV7
+	{
+		protected IBusAuxiliariesDeclarationData _busAuxiliariesData;
+
+		public JSONVehicleDataV9(JObject data, string fileName, IJSONVehicleComponents job, bool tolerateMissing = false) :
+			base(data, fileName, job, tolerateMissing)
+		{ }
+
+		#region Overrides of JSONVehicleDataV7
+
+		public override IBusAuxiliariesDeclarationData BusAuxiliaries => _busAuxiliariesData ?? (_busAuxiliariesData = new JSONBusAuxiliariesData(this));
+
+		#region Overrides of JSONVehicleDataV7
+
+		public override bool Articulated => Body.GetEx<bool>("Articulated");
+
+		protected override IAdvancedDriverAssistantSystemsEngineering GetADS()
+		{
+			return _adasInputData ?? (_adasInputData = new JSONADASInputDataV9(this));
 		}
 
 		#endregion
 
+		#endregion
 	}
 
+	// ###################################################################
+	// ###################################################################
 
-	public class JSONVehicleDataV7 : JSONFile, IVehicleEngineeringInputData, IRetarderInputData, IAngledriveInputData,
-		IPTOTransmissionInputData, IAirdragEngineeringInputData, IAdvancedDriverAssistantSystemDeclarationInputData, IVehicleComponentsDeclaration, IVehicleComponentsEngineering, IAxlesEngineeringInputData, IAxlesDeclarationInputData
+	public class JSONVehicleDataV8 : JSONVehicleDataV7
+	{
+		public JSONVehicleDataV8(JObject data, string fileName, IJSONVehicleComponents job, bool tolerateMissing = false) :
+			base(data, fileName, job, tolerateMissing)
+		{ }
+
+
+
+		public override TankSystem? TankSystem => Body["TankSystem"]?.ToString().ParseEnum<TankSystem>();
+
+		protected override IAdvancedDriverAssistantSystemsEngineering GetADS()
+		{
+			return _adasInputData ?? (_adasInputData = new JSONADASInputDataV8(this));
+		}
+	}
+
+	// ###################################################################
+	// ###################################################################
+
+
+	public class JSONVehicleDataV7 : JSONFile, IVehicleEngineeringInputData,
+		IVehicleComponentsDeclaration, IVehicleComponentsEngineering, IAxlesEngineeringInputData, IAxlesDeclarationInputData
+	//IAdvancedDriverAssistantSystemsEngineering, IAdvancedDriverAssistantSystemDeclarationInputData
+
 	{
 		public JSONVehicleDataV7(JObject data, string fileName, IJSONVehicleComponents job, bool tolerateMissing = false)
 			: base(data, fileName, tolerateMissing)
@@ -85,49 +269,30 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 		}
 
 		private IJSONVehicleComponents Job;
+		protected IRetarderInputData _retarderInputData;
+		protected IAngledriveInputData _angledriveData;
+		protected IAirdragEngineeringInputData _airdragInputData;
+		protected IPTOTransmissionInputData _ptoInputData;
+		protected IAdvancedDriverAssistantSystemsEngineering _adasInputData;
 
 		#region IVehicleInputData
 
-		public virtual string Identifier { get { return Path.GetFileNameWithoutExtension(_sourceFile); } }
+		public virtual string Identifier => Path.GetFileNameWithoutExtension(_sourceFile);
 
-		public virtual bool ExemptedVehicle { get { return false; } }
+		public virtual bool ExemptedVehicle => false;
 
-		public virtual string VIN
-		{
-			get { return Constants.NOT_AVailABLE; }
-		}
+		public virtual string VIN => Constants.NOT_AVAILABLE;
 
-		public virtual LegislativeClass LegislativeClass
-		{
-			get {
-				return Body["LegislativeClass"] != null
-					? Body["LegislativeClass"].Value<string>().ParseEnum<LegislativeClass>()
-					: LegislativeClass.Unknown;
-			}
-		}
+		public virtual LegislativeClass? LegislativeClass =>
+			Body["LegislativeClass"]?.Value<string>().ParseEnum<LegislativeClass>() ?? VectoCommon.Models.LegislativeClass.Unknown;
 
-		public virtual VehicleCategory VehicleCategory
-		{
-			get {
-				return
-					(VehicleCategory)Enum.Parse(typeof(VehicleCategory), Body[JsonKeys.Vehicle_VehicleCategory].Value<string>(), true);
-			}
-		}
+		public virtual VehicleCategory VehicleCategory => (VehicleCategory)Enum.Parse(typeof(VehicleCategory), Body[JsonKeys.Vehicle_VehicleCategory].Value<string>(), true);
 
-		public virtual Kilogram CurbMassChassis
-		{
-			get { return Body.GetEx<double>(JsonKeys.Vehicle_CurbWeight).SI<Kilogram>(); }
-		}
+		public virtual Kilogram CurbMassChassis => Body.GetEx<double>(JsonKeys.Vehicle_CurbWeight).SI<Kilogram>();
 
-		public virtual Kilogram CurbMassExtra
-		{
-			get { return Body.GetEx<double>(JsonKeys.Vehicle_CurbWeightExtra).SI<Kilogram>(); }
-		}
+		public virtual Kilogram CurbMassExtra => Body.GetEx<double>(JsonKeys.Vehicle_CurbWeightExtra).SI<Kilogram>();
 
-		public virtual Kilogram GrossVehicleMassRating
-		{
-		    get { return Body.GetEx<double>(JsonKeys.Vehicle_GrossVehicleMassRating).SI(Unit.SI.Ton).Cast<Kilogram>(); }
-		}
+		public virtual Kilogram GrossVehicleMassRating => Body.GetEx<double>(JsonKeys.Vehicle_GrossVehicleMassRating).SI(Unit.SI.Ton).Cast<Kilogram>();
 
 		public virtual IList<ITorqueLimitInputData> TorqueLimits
 		{
@@ -136,69 +301,76 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 				if (Body["TorqueLimits"] == null) {
 					return retVal;
 				}
+
 				foreach (var entry in (JObject)Body["TorqueLimits"]) {
-					retVal.Add(new TorqueLimitInputData() {
-						Gear = entry.Key.ToInt(),
-						MaxTorque = entry.Value.ToString().ToDouble(0).SI<NewtonMeter>()
-					});
+					retVal.Add(
+						new TorqueLimitInputData {
+							Gear = entry.Key.ToInt(),
+							MaxTorque = entry.Value.ToString().ToDouble(0).SI<NewtonMeter>()
+						});
 				}
+
 				return retVal;
 			}
 		}
 
-		public virtual Kilogram Loading
+		public virtual Kilogram Loading => Body.GetEx<double>(JsonKeys.Vehicle_Loading).SI<Kilogram>();
+
+		public virtual Meter DynamicTyreRadius => Body.GetEx<double>(JsonKeys.Vehicle_DynamicTyreRadius).SI(Unit.SI.Milli.Meter).Cast<Meter>();
+
+		public virtual bool Articulated => false;
+
+		public virtual Meter Height => Body["VehicleHeight"] == null ? null : Body.GetEx<double>("VehicleHeight").SI<Meter>();
+		
+		public virtual Dictionary<PowertrainPosition, List<Tuple<Volt, TableData>>> ElectricMotorTorqueLimits => null;
+		
+		public virtual TableData BoostingLimitations => null;
+		
+		public virtual Meter Length => null;
+
+		public virtual Meter Width => null;
+
+		public virtual Meter EntranceHeight => null;
+		public virtual ConsumerTechnology? DoorDriveTechnology => ConsumerTechnology.Unknown;
+		public virtual VehicleDeclarationType VehicleDeclarationType { get; }
+
+		IVehicleComponentsEngineering IVehicleEngineeringInputData.Components => this;
+
+		public int? NumSteeredAxles => null;
+		XmlNode IVehicleDeclarationInputData.XMLSource => null;
+		public virtual string VehicleTypeApprovalNumber { get; }
+		public ArchitectureID ArchitectureID { get; }
+		public bool OvcHev { get; }
+		public Watt MaxChargingPower { get; }
+
+		public GearshiftPosition PTO_DriveGear => Body["GearDuringPTODrive"] != null ? new GearshiftPosition(Body["GearDuringPTODrive"].Value<uint>()) : null;
+
+		public PerSecond PTO_DriveEngineSpeed => Body["EngineSpeedDuringPTODrive"] != null ? Body.GetEx<double>("EngineSpeedDuringPTODrive").RPMtoRad() : null;
+
+		IAdvancedDriverAssistantSystemsEngineering IVehicleEngineeringInputData.ADAS => GetADS();
+
+		public virtual IAdvancedDriverAssistantSystemDeclarationInputData ADAS => GetADS();
+
+		protected virtual IAdvancedDriverAssistantSystemsEngineering GetADS()
 		{
-			get { return Body.GetEx<double>(JsonKeys.Vehicle_Loading).SI<Kilogram>(); }
+			return _adasInputData ?? (_adasInputData = new JSONADASInputDataV7(this));
 		}
 
-		public virtual Meter DynamicTyreRadius
-		{
-		    get { return Body.GetEx<double>(JsonKeys.Vehicle_DynamicTyreRadius).SI(Unit.SI.Milli.Meter).Cast<Meter>(); }
-		}
+		public virtual double InitialSOC => double.NaN;
 
-		public virtual Meter Height
-		{
-			get { return Body["VehicleHeight"] == null ? null : Body.GetEx<double>("VehicleHeight").SI<Meter>(); }
-		}
+		public virtual VectoSimulationJobType VehicleType => VectoSimulationJobType.ConventionalVehicle;
 
-		IVehicleComponentsEngineering IVehicleEngineeringInputData.Components
-		{
-			get { return this; }
-		}
+		public virtual AxleConfiguration AxleConfiguration =>
+			AxleConfigurationHelper.Parse(
+				Body.GetEx(JsonKeys.Vehicle_AxleConfiguration).GetEx<string>(JsonKeys.Vehicle_AxleConfiguration_Type));
 
-		IAdvancedDriverAssistantSystemsEngineering IVehicleEngineeringInputData.ADAS
-		{
-			get { return null; }
-		}
+		public virtual IList<IAxleEngineeringInputData> AxlesEngineering => AxleWheels().Cast<IAxleEngineeringInputData>().ToList();
 
-		public virtual AxleConfiguration AxleConfiguration
-		{
-			get {
-				return
-					AxleConfigurationHelper.Parse(
-						Body.GetEx(JsonKeys.Vehicle_AxleConfiguration).GetEx<string>(JsonKeys.Vehicle_AxleConfiguration_Type));
-			}
-		}
+		public virtual string ManufacturerAddress => Constants.NOT_AVAILABLE;
 
-		public virtual IList<IAxleEngineeringInputData> AxlesEngineering
-		{
-			get { return AxleWheels().Cast<IAxleEngineeringInputData>().ToList(); }
-		}
+		public virtual PerSecond EngineIdleSpeed => Body["IdlingSpeed"] != null ? Body.GetEx<double>("IdlingSpeed").RPMtoRad() : null;
 
-		public virtual string ManufacturerAddress
-		{
-			get { return Constants.NOT_AVailABLE; }
-		}
-
-		public virtual PerSecond EngineIdleSpeed
-		{
-			get { return Body["IdlingSpeed"] != null ? Body.GetEx<double>("IdlingSpeed").RPMtoRad() : null; }
-		}
-
-		IList<IAxleDeclarationInputData> IAxlesDeclarationInputData.AxlesDeclaration
-		{
-			get { return AxleWheels().Cast<IAxleDeclarationInputData>().ToList(); }
-		}
+		IList<IAxleDeclarationInputData> IAxlesDeclarationInputData.AxlesDeclaration => AxleWheels().Cast<IAxleDeclarationInputData>().ToList();
 
 		private IEnumerable<AxleInputData> AxleWheels()
 		{
@@ -208,15 +380,16 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 						TwinTyres = axle.GetEx<bool>(JsonKeys.Vehicle_Axles_TwinTyres),
 						AxleWeightShare = axle.GetEx<double>("AxleWeightShare"),
 						AxleType = axle["Type"] != null
-								? axle.GetEx<string>("Type").ParseEnum<AxleType>()
-								: (idx == 1 ? AxleType.VehicleDriven : AxleType.VehicleNonDriven),
-						Tyre = new TyreInputData() {
+							? axle.GetEx<string>("Type").ParseEnum<AxleType>()
+							: (idx == 1 ? AxleType.VehicleDriven : AxleType.VehicleNonDriven),
+						Tyre = new TyreInputData {
 							DataSource = new DataSource {
 								SourceType = DataSourceType.JSONFile,
 								SourceFile = Source,
 								SourceVersion = Version,
 							},
 							Source = Source,
+							AppVersion = AppVersion,
 							Inertia = axle.GetEx<double>(JsonKeys.Vehicle_Axles_Inertia).SI<KilogramSquareMeter>(),
 							Dimension = axle.GetEx<string>(JsonKeys.Vehicle_Axles_Wheels),
 							RollResistanceCoefficient = axle.GetEx<double>(JsonKeys.Vehicle_Axles_RollResistanceCoefficient),
@@ -229,300 +402,105 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 
 		#region "VehicleComponents"
 
-		IAirdragDeclarationInputData IVehicleComponentsDeclaration.AirdragInputData
+		IAirdragDeclarationInputData IVehicleComponentsDeclaration.AirdragInputData => _airdragInputData ?? (_airdragInputData = new JSONAirdragInputData(this));
+
+		IAirdragEngineeringInputData IVehicleComponentsEngineering.AirdragInputData => _airdragInputData ?? (_airdragInputData = new JSONAirdragInputData(this));
+
+		IGearboxDeclarationInputData IVehicleComponentsDeclaration.GearboxInputData => Job.Gearbox;
+
+		public virtual ITorqueConverterDeclarationInputData TorqueConverter => Job.TorqueConverter;
+
+		IGearboxEngineeringInputData IVehicleComponentsEngineering.GearboxInputData => Job.Gearbox;
+
+		ITorqueConverterDeclarationInputData IVehicleComponentsDeclaration.TorqueConverterInputData => Job.TorqueConverter;
+
+		ITorqueConverterEngineeringInputData IVehicleComponentsEngineering.TorqueConverterInputData => Job.TorqueConverter;
+
+		IAxleGearInputData IVehicleComponentsEngineering.AxleGearInputData => Job.AxleGear;
+
+		IAngledriveInputData IVehicleComponentsEngineering.AngledriveInputData => _angledriveData ?? (_angledriveData = new JSONAngledriveInputData(this));
+
+		public virtual IEngineEngineeringInputData EngineInputData => Job.Engine;
+
+		IAxleGearInputData IVehicleComponentsDeclaration.AxleGearInputData => Job.AxleGear;
+
+		IAngledriveInputData IVehicleComponentsDeclaration.AngledriveInputData => _angledriveData ?? (_angledriveData = new JSONAngledriveInputData(this));
+
+		IEngineDeclarationInputData IVehicleComponentsDeclaration.EngineInputData => Job.Engine;
+
+		IAuxiliariesDeclarationInputData IVehicleComponentsDeclaration.AuxiliaryInputData => Job.DeclarationAuxiliaries;
+
+		IRetarderInputData IVehicleComponentsEngineering.RetarderInputData => GetRetarder;
+
+		IRetarderInputData IVehicleComponentsDeclaration.RetarderInputData => GetRetarder;
+
+		protected virtual IRetarderInputData GetRetarder => _retarderInputData ?? (_retarderInputData = new JSONRetarderInputData(this));
+
+		IPTOTransmissionInputData IVehicleComponentsEngineering.PTOTransmissionInputData => _ptoInputData ?? (_ptoInputData = new JSONPTOTransmissioninputData(this));
+
+		IPTOTransmissionInputData IVehicleComponentsDeclaration.PTOTransmissionInputData => _ptoInputData ?? (_ptoInputData = new JSONPTOTransmissioninputData(this));
+
+
+		IAxlesEngineeringInputData IVehicleComponentsEngineering.AxleWheels => this;
+
+		IElectricStorageSystemEngineeringInputData IVehicleComponentsEngineering.ElectricStorage => GetElectricStorage();
+
+		protected virtual IElectricStorageSystemEngineeringInputData GetElectricStorage()
 		{
-			get { return this; }
+			return null;
 		}
 
-		IAirdragEngineeringInputData IVehicleComponentsEngineering.AirdragInputData
+		IElectricMachinesEngineeringInputData IVehicleComponentsEngineering.ElectricMachines => GetElectricMachines();
+		public virtual IIEPCEngineeringInputData IEPCEngineeringInputData => null;
+		public virtual IIEPCDeclarationInputData IEPC => null;
+
+		protected virtual IElectricMachinesEngineeringInputData GetElectricMachines()
 		{
-			get { return this; }
+			return null;
 		}
 
-		IGearboxDeclarationInputData IVehicleComponentsDeclaration.GearboxInputData
-		{
-			get { return Job.Gearbox; }
-		}
+		public virtual IBusAuxiliariesDeclarationData BusAuxiliaries => null;
 
-		public virtual ITorqueConverterDeclarationInputData TorqueConverter { get { return Job.TorqueConverter; } }
+		IElectricStorageSystemDeclarationInputData IVehicleComponentsDeclaration.ElectricStorage => GetElectricStorage();
 
-		IGearboxEngineeringInputData IVehicleComponentsEngineering.GearboxInputData
-		{
-			get { return Job.Gearbox; }
-		}
+		IElectricMachinesDeclarationInputData IVehicleComponentsDeclaration.ElectricMachines => GetElectricMachines();
 
-		ITorqueConverterDeclarationInputData IVehicleComponentsDeclaration.TorqueConverterInputData
-		{
-			get { return Job.TorqueConverter; }
-		}
+		IAxlesDeclarationInputData IVehicleComponentsDeclaration.AxleWheels => this;
 
-		ITorqueConverterEngineeringInputData IVehicleComponentsEngineering.TorqueConverterInputData
-		{
-			get { return Job.TorqueConverter; }
-		}
+		public virtual bool VocationalVehicle => DeclarationData.Vehicle.VocationalVehicleDefault;
 
-		IAxleGearInputData IVehicleComponentsEngineering.AxleGearInputData
-		{
-			get { return Job.AxleGear; }
-		}
+		public virtual bool? SleeperCab => DeclarationData.Vehicle.SleeperCabDefault;
 
-		IAngledriveInputData IVehicleComponentsEngineering.AngledriveInputData
-		{
-			get { return this; }
-		}
+		public virtual bool? AirdragModifiedMultistep { get; }
 
-		public virtual IEngineEngineeringInputData EngineInputData
-		{
-			get { return Job.Engine; }
-		}
-
-		IAxleGearInputData IVehicleComponentsDeclaration.AxleGearInputData
-		{
-			get { return Job.AxleGear; }
-		}
-
-		IAngledriveInputData IVehicleComponentsDeclaration.AngledriveInputData
-		{
-			get { return this; }
-		}
-
-		IEngineDeclarationInputData IVehicleComponentsDeclaration.EngineInputData
-		{
-			get { return Job.Engine; }
-		}
-
-		IAuxiliariesDeclarationInputData IVehicleComponentsDeclaration.AuxiliaryInputData
-		{
-			get { return Job.DeclarationAuxiliaries; }
-		}
-
-		IRetarderInputData IVehicleComponentsEngineering.RetarderInputData
-		{
-			get { return this; }
-		}
-
-		IPTOTransmissionInputData IVehicleComponentsEngineering.PTOTransmissionInputData
-		{
-			get { return this; }
-		}
-
-		IAxlesEngineeringInputData IVehicleComponentsEngineering.AxleWheels
-		{
-			get { return this; }
-		}
-
-		IAxlesDeclarationInputData IVehicleComponentsDeclaration.AxleWheels
-		{
-			get { return this; }
-		}
-
-		public virtual bool VocationalVehicle { get { return DeclarationData.Vehicle.VocationalVehicleDefault; } }
-
-		public virtual bool SleeperCab { get { return DeclarationData.Vehicle.SleeperCabDefault; } }
-
-		public virtual TankSystem? TankSystem { get { return DeclarationData.Vehicle.TankSystemDefault; } }
-		public virtual IAdvancedDriverAssistantSystemDeclarationInputData ADAS { get { return this; } }
-
-		public virtual bool ZeroEmissionVehicle { get { return DeclarationData.Vehicle.ZeroEmissionVehicleDefault; } }
-
-		public virtual bool HybridElectricHDV { get { return DeclarationData.Vehicle.HybridElectricHDVDefault; } }
-
-		public virtual bool DualFuelVehicle { get { return DeclarationData.Vehicle.DualFuelVehicleDefault; } }
-
-		public virtual Watt MaxNetPower1 { get { return null; } }
-
-		public virtual Watt MaxNetPower2 { get { return null; } }
-
-		IVehicleComponentsDeclaration IVehicleDeclarationInputData.Components
-		{
-			get { return this; }
-		}
-
-		IAuxiliariesEngineeringInputData IVehicleComponentsEngineering.AuxiliaryInputData
-		{
-			get { return Job.EngineeringAuxiliaries; }
-		}
-
-		IRetarderInputData IVehicleComponentsDeclaration.RetarderInputData
-		{
-			get { return this; }
-		}
+		public virtual TankSystem? TankSystem => DeclarationData.Vehicle.TankSystemDefault;
 
 
-		IPTOTransmissionInputData IVehicleComponentsDeclaration.PTOTransmissionInputData
-		{
-			get { return this; }
-		}
+		public virtual bool ZeroEmissionVehicle => DeclarationData.Vehicle.ZeroEmissionVehicleDefault;
 
+		public virtual bool HybridElectricHDV => DeclarationData.Vehicle.HybridElectricHDVDefault;
 
+		public virtual bool DualFuelVehicle => DeclarationData.Vehicle.DualFuelVehicleDefault;
 
-		#endregion
+		public virtual Watt MaxNetPower1 => null;
 
-		#region Airdrag
+		public virtual Watt MaxNetPower2 => null;
 
-		public virtual SquareMeter AirDragArea
-		{
-			get {
-				return Body[JsonKeys.Vehicle_DragCoefficient] == null
-					? null
-					: Body.GetEx<double>(JsonKeys.Vehicle_DragCoefficient).SI<SquareMeter>();
-			}
-		}
+		public virtual string ExemptedTechnology => null;
 
-		public virtual CrossWindCorrectionMode CrossWindCorrectionMode
-		{
-			get { return CrossWindCorrectionModeHelper.Parse(Body.GetEx<string>("CdCorrMode")); }
-		}
+		public virtual RegistrationClass? RegisteredClass => RegistrationClass.unknown;
 
-		public virtual TableData CrosswindCorrectionMap
-		{
-			get {
-				try {
-					return ReadTableData(Body.GetEx<string>("CdCorrFile"), "CrosswindCorrection File");
-				} catch (Exception) {
-					if (!TolerateMissing) {
-						throw;
-					}
-					return new TableData(Path.Combine(BasePath, Body["CdCorrFile"].ToString()) + MissingFileSuffix,
-						DataSourceType.Missing);
-				}
-			}
-		}
+		public virtual int? NumberPassengerSeatsUpperDeck => 0;
 
-		#endregion
+		public virtual int? NumberPassengerSeatsLowerDeck => 0;
 
-		#region IRetarderInputData
+		public int? NumberPassengersStandingLowerDeck => 0;
 
-		RetarderType IRetarderInputData.Type
-		{
-			get {
-				var retarderType = Body.GetEx(JsonKeys.Vehicle_Retarder).GetEx<string>(JsonKeys.Vehicle_Retarder_Type);
-				return RetarderTypeHelper.Parse(retarderType);
-			}
-		}
+		public int? NumberPassengersStandingUpperDeck => 0;
 
-		double IRetarderInputData.Ratio
-		{
-			get { return Body.GetEx(JsonKeys.Vehicle_Retarder).GetEx<double>(JsonKeys.Vehicle_Retarder_Ratio); }
-		}
+		public virtual CubicMeter CargoVolume => 0.SI<CubicMeter>();
 
-		TableData IRetarderInputData.LossMap
-		{
-			get {
-				if (Body[JsonKeys.Vehicle_Retarder] != null &&
-					Body.GetEx(JsonKeys.Vehicle_Retarder)[JsonKeys.Vehicle_Retarder_LossMapFile] != null) {
-					var lossmapFile = Body.GetEx(JsonKeys.Vehicle_Retarder)[JsonKeys.Vehicle_Retarder_LossMapFile];
-					if (string.IsNullOrWhiteSpace(lossmapFile.Value<string>())) {
-						return null;
-					}
-					try {
-						return ReadTableData(lossmapFile.Value<string>(), "LossMap");
-					} catch (Exception) {
-						if (!TolerateMissing) {
-							throw;
-						}
-						return new TableData(Path.Combine(BasePath, lossmapFile.Value<string>()) + MissingFileSuffix,
-							DataSourceType.Missing);
-					}
-				}
-				return null;
-			}
-		}
-
-		#endregion
-
-		#region IAngledriveInputData
-
-		AngledriveType IAngledriveInputData.Type
-		{
-			get {
-				var angleDrive = Body[JsonKeys.Vehicle_Angledrive];
-				if (angleDrive == null) {
-					return AngledriveType.None;
-				}
-
-				return angleDrive.GetEx<string>(JsonKeys.Vehicle_Angledrive_Type).ParseEnum<AngledriveType>();
-			}
-		}
-
-		double IAngledriveInputData.Ratio
-		{
-			get {
-				var angleDrive = Body[JsonKeys.Vehicle_Angledrive];
-				if (angleDrive == null) {
-					return double.NaN;
-				}
-				return Body.GetEx(JsonKeys.Vehicle_Angledrive).GetEx<double>(JsonKeys.Vehicle_Angledrive_Ratio);
-			}
-		}
-
-		TableData IAngledriveInputData.LossMap
-		{
-			get {
-				var angleDrive = Body[JsonKeys.Vehicle_Angledrive];
-				if (angleDrive == null || angleDrive[JsonKeys.Vehicle_Angledrive_LossMapFile] == null) {
-					return null;
-				}
-				var lossmapFile = angleDrive[JsonKeys.Vehicle_Angledrive_LossMapFile];
-				if (string.IsNullOrWhiteSpace(lossmapFile.Value<string>())) {
-					return null;
-				}
-				try {
-					return ReadTableData(lossmapFile.Value<string>(), "LossMap");
-				} catch (Exception) {
-					if (!TolerateMissing) {
-						throw;
-					}
-					return new TableData(Path.Combine(BasePath, lossmapFile.Value<string>()) + MissingFileSuffix,
-						DataSourceType.Missing);
-				}
-			}
-		}
-
-		double IAngledriveInputData.Efficiency
-		{
-			get { return Body.GetEx(JsonKeys.Vehicle_Angledrive).GetEx<double>(JsonKeys.Vehicle_Angledrive_Efficiency); }
-		}
-
-		#endregion
-
-		#region IPTOTransmissionInputData
-
-		string IPTOTransmissionInputData.PTOTransmissionType
-		{
-			get {
-				var pto = Body[JsonKeys.Vehicle_PTO];
-				if (pto == null) {
-					return "None";
-				}
-				return pto[JsonKeys.Vehicle_PTO_Type].Value<string>();
-			}
-		}
-
-		TableData IPTOTransmissionInputData.PTOLossMap
-		{
-			get {
-				var pto = Body[JsonKeys.Vehicle_PTO];
-				if (pto == null || pto[JsonKeys.Vehicle_PTO_LossMapFile] == null) {
-					return null;
-				}
-				var lossmapFile = pto[JsonKeys.Vehicle_PTO_LossMapFile];
-				if (string.IsNullOrWhiteSpace(lossmapFile.Value<string>())) {
-					return null;
-				}
-				try {
-					return ReadTableData(Body.GetEx(JsonKeys.Vehicle_PTO).GetEx<string>(JsonKeys.Vehicle_PTO_LossMapFile), "LossMap");
-				} catch (Exception) {
-					if (!TolerateMissing) {
-						throw;
-					}
-					return new TableData(Path.Combine(BasePath, lossmapFile.Value<string>()) + MissingFileSuffix,
-						DataSourceType.Missing);
-				}
-			}
-		}
-
-		public virtual TableData PTOCycle
+		public virtual TableData PTOCycleDuringStop
 		{
 			get {
 				var pto = Body[JsonKeys.Vehicle_PTO];
@@ -534,7 +512,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 					return null;
 				}
 				try {
-					return ReadTableData(Body.GetEx(JsonKeys.Vehicle_PTO).GetEx<string>(JsonKeys.Vehicle_PTO_Cycle), "Cycle");
+					return ReadTableData(Body.GetEx(JsonKeys.Vehicle_PTO).GetEx<string>(JsonKeys.Vehicle_PTO_Cycle), "PTO Cycle Standstill");
 				} catch (Exception) {
 					if (!TolerateMissing) {
 						throw;
@@ -544,50 +522,53 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			}
 		}
 
+		public virtual TableData PTOCycleWhileDriving
+		{
+			get {
+				var pto = Body[JsonKeys.Vehicle_PTO];
+				if (pto == null || pto[JsonKeys.Vehicle_PTO_CycleDriving] == null) {
+					return null;
+				}
+				var cycle = pto[JsonKeys.Vehicle_PTO_CycleDriving];
+				if (string.IsNullOrWhiteSpace(cycle.Value<string>())) {
+					return null;
+				}
+				try {
+					return ReadTableData(Body.GetEx(JsonKeys.Vehicle_PTO).GetEx<string>(JsonKeys.Vehicle_PTO_CycleDriving), "PTO Cycle Driving");
+				} catch (Exception) {
+					if (!TolerateMissing) {
+						throw;
+					}
+					return new TableData(Path.Combine(BasePath, cycle.Value<string>()) + MissingFileSuffix, DataSourceType.Missing);
+				}
+			}
+		}
+		public virtual VehicleCode? VehicleCode => VectoCommon.Models.VehicleCode.NOT_APPLICABLE;
+
+		public virtual bool? LowEntry => false;
+
+		IVehicleComponentsDeclaration IVehicleDeclarationInputData.Components => this;
+
+		IAuxiliariesEngineeringInputData IVehicleComponentsEngineering.AuxiliaryInputData => Job.EngineeringAuxiliaries;
+
 		#endregion
 
-		public virtual string Manufacturer
-		{
-			get { return Constants.NOT_AVailABLE; }
-		}
 
-		public virtual string Model
-		{
-			get { return Constants.NOT_AVailABLE; }
-		}
+		public virtual string Manufacturer => Constants.NOT_AVAILABLE;
 
-		public virtual string Date
-		{
-			get { return Constants.NOT_AVailABLE; }
-		}
+		public virtual string Model => Constants.NOT_AVAILABLE;
 
-		public CertificationMethod CertificationMethod
-		{
-			get { return CertificationMethod.NotCertified; }
-		}
+		public virtual DateTime Date => DateTime.MinValue;
 
-		public virtual string CertificationNumber
-		{
-			get { return Constants.NOT_AVailABLE; }
-		}
+		public CertificationMethod CertificationMethod => CertificationMethod.NotCertified;
 
-		public virtual DigestData DigestValue
-		{
-			get { return null; }
-		}
+		public virtual string CertificationNumber => Constants.NOT_AVAILABLE;
 
-		#region Implementation of IAdvancedDriverAssistantSystemDeclarationInputData
+		public virtual DigestData DigestValue => null;
 
-		public virtual bool EngineStopStart { get { return DeclarationData.Vehicle.ADAS.EngineStopStartDefault; } }
-		public virtual EcoRollType EcoRoll { get { return DeclarationData.Vehicle.ADAS.EcoRoll; } }
-
-		public virtual PredictiveCruiseControlType PredictiveCruiseControl { get {
-			return DeclarationData.Vehicle.ADAS.PredictiveCruiseControlDefault;
-		} }
-
-		#endregion
-	
+		public virtual XmlNode XMLSource => null;
 	}
 
-	
+
+
 }

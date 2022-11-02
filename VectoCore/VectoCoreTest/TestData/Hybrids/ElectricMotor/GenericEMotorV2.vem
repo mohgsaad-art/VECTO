@@ -1,0 +1,22 @@
+﻿{
+  "Header": {
+    "CreatedBy": " ()",
+    "Date": "2016-10-13T08:54:28.7387223Z",
+    "AppVersion": "3",
+    "FileVersion": 2
+  },
+  "Body": {
+    "SavedInDeclMode": false,
+    "Model": "Generic Electric Motor",
+    "FullLoadCurve": "GenericEMotor.vemp",
+    "DragCurve": "GenericDrag.vemd",
+    "EfficiencyMap": "GenericMap.vemo",
+    "Inertia": 0.15,
+    "ContinuousTorque": 100,
+    "ContinuousTorqueSpeed": 2000,
+    "OverloadTorque":  300,
+    "OverloadTorqueSpeed": 2000, 
+    "OverloadTime": 10,
+    "ThermalOverloadRecoveryFactor": 0.9
+  }
+}

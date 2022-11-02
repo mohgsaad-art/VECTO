@@ -50,8 +50,9 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		#region Overrides of LookupData
 
-		protected override string ResourceId { get { return DeclarationData.DeclarationDataResourcePrefix + ".TyreLabeling.csv"; } }
-		protected override string ErrorMessage { get { return "No Tyre class found for RRC {0}"; } }
+		protected override string ResourceId => DeclarationData.DeclarationDataResourcePrefix + ".TyreLabeling.csv";
+		protected override string ErrorMessage => "No Tyre class found for RRC {0}";
+
 		protected override void ParseData(DataTable table)
 		{
 			foreach (DataRow row in table.Rows) {

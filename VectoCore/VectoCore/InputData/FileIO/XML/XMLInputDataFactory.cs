@@ -1,4 +1,35 @@
-﻿using System;
+﻿/*
+* This file is part of VECTO.
+*
+* Copyright © 2012-2019 European Union
+*
+* Developed by Graz University of Technology,
+*              Institute of Internal Combustion Engines and Thermodynamics,
+*              Institute of Technical Informatics
+*
+* VECTO is licensed under the EUPL, Version 1.1 or - as soon they will be approved
+* by the European Commission - subsequent versions of the EUPL (the "Licence");
+* You may not use VECTO except in compliance with the Licence.
+* You may obtain a copy of the Licence at:
+*
+* https://joinup.ec.europa.eu/community/eupl/og_page/eupl
+*
+* Unless required by applicable law or agreed to in writing, VECTO
+* distributed under the Licence is distributed on an "AS IS" basis,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the Licence for the specific language governing permissions and
+* limitations under the Licence.
+*
+* Authors:
+*   Stefan Hausberger, hausberger@ivt.tugraz.at, IVT, Graz University of Technology
+*   Christian Kreiner, christian.kreiner@tugraz.at, ITI, Graz University of Technology
+*   Michael Krisper, michael.krisper@tugraz.at, ITI, Graz University of Technology
+*   Raphael Luz, luz@ivt.tugraz.at, IVT, Graz University of Technology
+*   Markus Quaritsch, markus.quaritsch@tugraz.at, IVT, Graz University of Technology
+*   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
+*/
+
+using System;
 using System.IO;
 using System.Xml;
 using Ninject;
@@ -19,30 +50,38 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML
 		[Inject]
 		public IEngineeringInjectFactory EngineeringFactory { protected get; set; }
 
-		public IInputDataProvider Create(string filename, bool verifyXML)
+		public IInputDataProvider Create(string filename)
 		{
-			return ReadXmlDoc(XmlReader.Create(filename), filename);
+			using (var reader = XmlReader.Create(filename)) {
+				return ReadXmlDoc(reader, filename);
+			}
 		}
 
-		public IInputDataProvider Create(Stream inputData, bool verifyXML)
+		public IInputDataProvider Create(Stream inputData)
 		{
-			return ReadXmlDoc(XmlReader.Create(inputData), null);
+			using (var reader = XmlReader.Create(inputData)) {
+				return ReadXmlDoc(reader, null);
+			}
 		}
 
-		public IInputDataProvider Create(XmlReader inputData, bool verifyXML)
+		public IInputDataProvider Create(XmlReader inputData)
 		{
 			return ReadXmlDoc(inputData, null);
 		}
 
 		public IEngineeringInputDataProvider CreateEngineering(string filename)
 		{
-			return DoCreateEngineering(XmlReader.Create(filename), filename);
+			using (var reader = XmlReader.Create(filename)) {
+				return DoCreateEngineering(reader, filename);
+			}
 		}
 
 
 		public IEngineeringInputDataProvider CreateEngineering(Stream inputData)
 		{
-			return DoCreateEngineering(XmlReader.Create(inputData), null);
+			using (var reader = XmlReader.Create(inputData)) {
+				return DoCreateEngineering(reader, null);
+			}
 		}
 
 		public IEngineeringInputDataProvider CreateEngineering(XmlReader inputData)
@@ -53,7 +92,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML
 
 		public IDeclarationInputDataProvider CreateDeclaration(string filename)
 		{
-			return DoCreateDeclaration(XmlReader.Create(filename), filename);
+			using (var reader = XmlReader.Create(filename)) {
+				return DoCreateDeclaration(reader, filename);
+			}
 		}
 
 		public IDeclarationInputDataProvider CreateDeclaration(XmlReader inputData)
@@ -95,17 +136,34 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML
 				throw new VectoException("unknown xml file! {0}", xmlDoc.DocumentElement.LocalName);
 			}
 
+
+
 			new XMLValidator(xmlDoc, null, XMLValidator.CallBackExceptionOnError).ValidateXML(documentType.Value);
 
-			switch (documentType.Value) {
+			switch (documentType.Value)
+			{
 				case XmlDocumentType.DeclarationJobData: return ReadDeclarationJob(xmlDoc, source);
 				case XmlDocumentType.EngineeringJobData: return ReadEngineeringJob(xmlDoc, source);
+				//case XmlDocumentType.PrimaryVehicleBusOutputData: return ReadPrimaryVehicleDeclarationJob(xmlDoc, source);
+				case XmlDocumentType.MultistepOutputData: return ReadMultistageDeclarationJob(xmlDoc, source);
 				case XmlDocumentType.EngineeringComponentData:
 				case XmlDocumentType.DeclarationComponentData:
 				case XmlDocumentType.ManufacturerReport:
 				case XmlDocumentType.CustomerReport:
 					throw new VectoException("XML Document {0} not supported as simulation input!", documentType.Value);
 				default: throw new ArgumentOutOfRangeException();
+			}
+		}
+
+		private IMultistageBusInputDataProvider ReadMultistageDeclarationJob(XmlDocument xmlDoc, string source)
+		{
+			var versionNumber = XMLHelper.GetXsdType(xmlDoc.DocumentElement?.SchemaInfo.SchemaType);
+			try {
+				var input = DeclarationFactory.CreateMultistageInputProvider(versionNumber, xmlDoc, source);
+				input.Reader = DeclarationFactory.CreateMultistageInputReader(versionNumber, input, xmlDoc.DocumentElement);
+				return input;
+			} catch (Exception e) {
+				throw new VectoException("Failed to read Declaration job version {0}", e, versionNumber);
 			}
 		}
 
@@ -129,5 +187,20 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML
 				throw new VectoException("Failed to read Declaration job version {0}", e, versionNumber);
 			}
 		}
+
+		private IPrimaryVehicleInformationInputDataProvider ReadPrimaryVehicleDeclarationJob(XmlDocument xmlDoc, string source)
+		{
+			var versionNumber = XMLHelper.GetXsdType(xmlDoc.DocumentElement?.SchemaInfo.SchemaType);
+			try {
+				var input = DeclarationFactory.CreatePrimaryVehicleBusInputProvider(versionNumber, xmlDoc, source);
+				input.Reader = DeclarationFactory.CreatePrimaryVehicleBusInputReader(versionNumber, input, xmlDoc.DocumentElement);
+				return input;
+			}
+			catch (Exception e) {
+				throw new VectoException("Failed to read Declaration job version {0}", e, versionNumber);
+			}
+		}
+
+
 	}
 }

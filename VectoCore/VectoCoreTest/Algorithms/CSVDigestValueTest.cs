@@ -35,12 +35,12 @@ using System.IO;
 using System.Linq;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
-using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Tests.Algorithms
 {
 	[TestFixture]
+	[Parallelizable(ParallelScope.All)]
 	public class CSVDigestValueTest
 	{
 
@@ -95,7 +95,7 @@ namespace TUGraz.VectoCore.Tests.Algorithms
 
 			var digest = DataIntegrityHelper.ComputeDigestValue(otherLines);
 
-			Assert.AreEqual(string.Format("#@ {0}", digest), last);
+			Assert.AreEqual($"#@ {digest}", last);
 		}
 
 		private static DataTable CreateDataTable(string[] cols, int numRows)

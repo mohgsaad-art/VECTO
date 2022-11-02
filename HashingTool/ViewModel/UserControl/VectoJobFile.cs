@@ -62,7 +62,7 @@ namespace HashingTool.ViewModel.UserControl
 
 		public bool? JobDataValid
 		{
-			get { return _componentDataValid; }
+			get => _componentDataValid;
 			set {
 				if (_componentDataValid == value) {
 					return;
@@ -77,7 +77,7 @@ namespace HashingTool.ViewModel.UserControl
 
 		public string JobValidToolTip
 		{
-			get { return _jobValidToolTip; }
+			get => _jobValidToolTip;
 			set {
 				if (_jobValidToolTip == value) {
 					return;
@@ -89,7 +89,7 @@ namespace HashingTool.ViewModel.UserControl
 
 		public string VehicleIdentificationNumber
 		{
-			get { return _vin; }
+			get => _vin;
 			set {
 				if (_vin == value) {
 					return;
@@ -101,7 +101,7 @@ namespace HashingTool.ViewModel.UserControl
 
 		public DateTime? JobCreationDate
 		{
-			get { return _jobDate; }
+			get => _jobDate;
 			set {
 				if (_jobDate == value) {
 					return;
@@ -129,7 +129,7 @@ namespace HashingTool.ViewModel.UserControl
 				!_xmlFile.ContentValid.Value) {
 				return null;
 			}
-			var nodes = _xmlFile.Document.SelectNodes(string.Format("//*[local-name()='{0}']", XMLNames.Component_Date));
+			var nodes = _xmlFile.Document.SelectNodes($"//*[local-name()='{XMLNames.Component_Date}']");
 			if (nodes == null || nodes.Count == 0) {
 				return null;
 			}
@@ -142,7 +142,7 @@ namespace HashingTool.ViewModel.UserControl
 				!_xmlFile.ContentValid.Value) {
 				return "";
 			}
-			var node = _xmlFile.Document.SelectSingleNode(string.Format("//*[local-name()='{0}']", XMLNames.Vehicle_VIN));
+			var node = _xmlFile.Document.SelectSingleNode($"//*[local-name()='{XMLNames.Vehicle_VIN}']");
 			if (node == null) {
 				return "";
 			}
@@ -175,7 +175,7 @@ namespace HashingTool.ViewModel.UserControl
 						var entry = new ComponentEntry();
 						entry.Component = component.Count == 1
 							? component.Entry.XMLElementName()
-							: string.Format("{0} ({1})", component.Entry.XMLElementName(), i + 1);
+							: $"{component.Entry.XMLElementName()} ({i + 1})";
 						entry.Valid = h.ValidateHash(component.Entry, i);
 						entry.CanonicalizationMethod = h.GetCanonicalizationMethods(component.Entry, i).ToArray();
 						entry.DigestMethod = h.GetDigestMethod(component.Entry, i);
@@ -184,10 +184,9 @@ namespace HashingTool.ViewModel.UserControl
 						entry.CertificationNumber = h.GetCertificationNumber(component.Entry, i);
 						entry.CertificationDate = h.GetCertificationDate(component.Entry, i);
 						if (!entry.Valid) {
-							_xmlFile.LogError(
-								string.Format(
-									"Digest Value mismatch for component \"{0}\". Read digest value: \"{1}\", computed digest value \"{2}\"",
-									entry.Component, entry.DigestValueRead, entry.DigestValueComputed));
+							_xmlFile.LogError($"Digest Value mismatch for component \"{entry.Component}\". " +
+											$"Read digest value: \"{entry.DigestValueRead}\", " +
+											$"computed digest value \"{entry.DigestValueComputed}\"");
 						}
 						Components.Add(entry);
 						allValid &= entry.Valid;

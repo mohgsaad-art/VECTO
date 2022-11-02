@@ -1,0 +1,75 @@
+﻿{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2019-12-03T16:39:20.8991433Z",
+    "AppVersion": "3",
+    "FileVersion": 8
+  },
+  "Body": {
+    "SavedInDeclMode": false,
+    "VehCat": "RigidTruck",
+    "LegislativeClass": "Unknown",
+    "CurbWeight": 9300.0,
+    "CurbWeightExtra": 2200.0,
+    "Loading": 7100.0,
+    "MassMax": 26.0,
+    "rdyn": 492.0,
+    "CdCorrMode": "CdofVdecl",
+    "CdCorrFile": "",
+    "Retarder": {
+      "Type": "secondary",
+      "Ratio": 1.0,
+      "File": "Retarder.vrlm"
+    },
+    "Angledrive": {
+      "Type": "None",
+      "Ratio": "NaN",
+      "LossMap": ""
+    },
+    "PTO": {
+      "Type": "only the drive shaft of the PTO - multi-disc clutch",
+      "LossMap": "PTO-idle.vptol",
+      "Cycle": "PTO-cycle.vptoc"
+    },
+    "TorqueLimits": {},
+    "IdlingSpeed": 0.0,
+    "AxleConfig": {
+      "Type": "6x2",
+      "Axles": [
+        {
+          "Inertia": 14.9,
+          "Wheels": "315/70 R22.5",
+          "AxleWeightShare": 0.35,
+          "TwinTyres": false,
+          "RRCISO": 0.0055,
+          "FzISO": 33350.0,
+          "Type": "VehicleNonDriven"
+        },
+        {
+          "Inertia": 14.9,
+          "Wheels": "315/70 R22.5",
+          "AxleWeightShare": 0.4,
+          "TwinTyres": true,
+          "RRCISO": 0.0055,
+          "FzISO": 33350.0,
+          "Type": "VehicleDriven"
+        },
+        {
+          "Inertia": 14.9,
+          "Wheels": "315/70 R22.5",
+          "AxleWeightShare": 0.25,
+          "TwinTyres": false,
+          "RRCISO": 0.0055,
+          "FzISO": 33350.0,
+          "Type": "VehicleNonDriven"
+        }
+      ]
+    },
+    "EngineStopStart": false,
+    "EcoRoll": "None",
+    "PredictiveCruiseControl": "None",
+    "ATEcoRollReleaseLockupClutch": false,
+    "CdA": 5.2,
+    "VehicleHeight": 0.0
+  }
+}

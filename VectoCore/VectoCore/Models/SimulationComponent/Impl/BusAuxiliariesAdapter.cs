@@ -30,91 +30,79 @@
 */
 
 using System;
-using System.IO;
+using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
-using TUGraz.VectoCore.Models.Declaration;
+using TUGraz.VectoCore.Models.BusAuxiliaries;
+using TUGraz.VectoCore.Models.BusAuxiliaries.Interfaces;
+using TUGraz.VectoCore.Models.BusAuxiliaries.Interfaces.DownstreamModules.Electrics;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
-using TUGraz.VectoCore.Models.SimulationComponent.Data.Engine;
 using TUGraz.VectoCore.OutputData;
-using VectoAuxiliaries;
-using VectoAuxiliaries.Pneumatics;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
-	public class BusAuxiliariesAdapter : LoggingObject, IAuxInProvider, IAuxPort
+	public class BusAuxiliariesAdapter : VectoSimulationComponent, IAuxInProvider, IAuxPort
 	{
-		protected readonly IDataBus DataBus;
 		protected internal BusAuxState CurrentState;
 		protected internal BusAuxState PreviousState;
 
-		protected internal readonly IAuxPort AdditionalAux;
+		protected internal IAuxPort AdditionalAux;
 
-		protected IAdvancedAuxiliaries Auxiliaries;
-		private readonly FuelConsumptionAdapter _fcMapAdapter;
+		protected IBusAuxiliaries Auxiliaries;
 
-		public BusAuxiliariesAdapter(IDataBus container, string aauxFile, string cycleName, Kilogram vehicleWeight,
-			FuelConsumptionMap fcMap, PerSecond engineIdleSpeed, IAuxPort additionalAux = null)
+		private bool SmartElectricSystem;
+		private IAuxiliaryConfig AuxCfg;
+
+		//private readonly FuelConsumptionAdapter _fcMapAdapter;
+
+		public BusAuxiliariesAdapter(
+			IVehicleContainer container, IAuxiliaryConfig auxiliaryConfig, IAuxPort additionalAux = null) : base(container)
 		{
-			//	mAAUX_Global.advancedAuxModel.Signals.DeclarationMode = Cfg.DeclMode
-			//	mAAUX_Global.advancedAuxModel.Signals.WHTC = Declaration.WHTCcorrFactor
+			container.AddComponent(this);
+
 			CurrentState = new BusAuxState();
-			PreviousState = new BusAuxState { AngularSpeed = engineIdleSpeed };
+			PreviousState = new BusAuxState { AngularSpeed = container.EngineInfo.EngineIdleSpeed };
 
 			AdditionalAux = additionalAux;
-
+			AuxCfg = auxiliaryConfig;
 			DataBus = container;
-			var tmpAux = new AdvancedAuxiliaries {
-				VectoInputs = {
-					Cycle = DetermineCycle(cycleName),
-					VehicleWeightKG = vehicleWeight
-				}
-			};
 
-			_fcMapAdapter = new FuelConsumptionAdapter() { FcMap = fcMap };
-			tmpAux.VectoInputs.FuelMap = _fcMapAdapter;
-			tmpAux.VectoInputs.FuelDensity = FuelData.Instance().Lookup(container.FuelType).FuelDensity;
+			if (container.ModalData != null) {
+				container.ModalData.AuxHeaterDemandCalc = AuxHeaterDemandCalculation;
+			}
+
+			var electricStorage =
+				AuxCfg.ElectricalUserInputsConfig.AlternatorType == AlternatorType.Smart &&
+				AuxCfg.ElectricalUserInputsConfig.ConnectESToREESS
+					// in case of smat alternator with Px hybrid take electric power from P0 REESS first, then from HEV REESS.
+					// do not use alternator to generate demanded power if P0 REESS is empty. so trick busaux that there is always
+					// energy in the battery.
+					? (ISimpleBatteryInfo)new InfinityBattery(AuxCfg.ElectricalUserInputsConfig.ElectricStorageCapacity, new ElectricStorageWrapper(this)) 
+					: new ElectricStorageWrapper(this);
+			var tmpAux = AuxCfg.ElectricalUserInputsConfig.AlternatorType == AlternatorType.None
+				? new BusAuxiliariesNoAlternator(electricStorage)
+				: new BusAuxiliaries.BusAuxiliaries(electricStorage);
+
 
 			//'Set Signals
-			tmpAux.Signals.EngineIdleSpeed = engineIdleSpeed;
-			tmpAux.Initialise(Path.GetFileName(aauxFile), Path.GetDirectoryName(Path.GetFullPath(aauxFile)) + @"\");
+			tmpAux.Signals.EngineIdleSpeed = DataBus.EngineInfo.EngineIdleSpeed;
+			tmpAux.Initialise(AuxCfg);
 
-			tmpAux.Signals.TotalCycleTimeSeconds =
-				tmpAux.actuationsMap.GetNumActuations(new ActuationsKey("CycleTime", tmpAux.VectoInputs.Cycle));
-
-			// call initialize again _after_ setting the cycle time to get the correct consumtions
-			tmpAux.Initialise(Path.GetFileName(aauxFile), Path.GetDirectoryName(Path.GetFullPath(aauxFile)) + @"\");
-
+			SmartElectricSystem = AuxCfg.ElectricalUserInputsConfig.AlternatorType == AlternatorType.Smart;
 
 			Auxiliaries = tmpAux;
 		}
 
-		private static string DetermineCycle(string cycleName)
-		{
-			var cycle = cycleName.ToLower();
+		
+		public IDCDCConverter DCDCConverter { get; set; }
 
-			if (cycle.Contains("bus")) {
-				if (cycle.Contains("heavy_urban")) {
-					return "Heavy urban";
-				}
-				if (cycle.Contains("suburban")) {
-					return "Suburban";
-				}
-				if (cycle.Contains("interurban")) {
-					return "Interurban";
-				}
-				if (cycle.Contains("urban")) {
-					return "Urban";
-				}
-			}
-			if (cycle.Contains("coach")) {
-				return "Coach";
-			}
-			Logger<BusAuxiliariesAdapter>()
-				.Warn("UnServiced Cycle Name '{0}' in Pneumatics Actuations Map 0 Actuations returned", cycleName);
-			return cycleName;
-		}
+		public ISimpleBattery ElectricStorage { get; set; }
+
+		public virtual Joule AuxHeaterDemandCalculation(Second cycleTime, Joule engineWasteHeatTotal)
+		{
+			return Auxiliaries.AuxHeaterDemandCalculation(cycleTime, engineWasteHeatTotal);}
 
 		public IAuxPort Port()
 		{
@@ -126,158 +114,324 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			//PreviousState.TotalFuelConsumption = 0.SI<Kilogram>();
 			PreviousState.AngularSpeed = angularSpeed;
 			CurrentState.AngularSpeed = angularSpeed;
-			if (AdditionalAux != null) {
-				AdditionalAux.Initialize(torque, angularSpeed);
+			AdditionalAux?.Initialize(torque, angularSpeed);
+			DCDCConverter?.Initialize();
+			PreviousState.PowerDemand = GetBusAuxPowerDemand(0.SI<Second>(), 1.SI<Second>(), torque, angularSpeed) +
+										(AdditionalAux?.PowerDemandESSEngineOn(0.SI<Second>(), 1.SI<Second>(), angularSpeed) ?? 0.SI<Watt>());
+			if (angularSpeed.IsEqual(0)) {
+				return 0.SI<NewtonMeter>();
 			}
-			PreviousState.PowerDemand = GetBusAuxPowerDemand(0.SI<Second>(), 1.SI<Second>(), torque, torque, angularSpeed);
+
 			return PreviousState.PowerDemand / angularSpeed;
 		}
 
 
-		public NewtonMeter TorqueDemand(Second absTime, Second dt, NewtonMeter torquePowerTrain, NewtonMeter torqueEngine,
-			PerSecond angularSpeed, bool dryRun = false)
+		public virtual NewtonMeter TorqueDemand(Second absTime, Second dt, NewtonMeter torquePowerTrain, PerSecond angularSpeed, bool dryRun = false)
 		{
 			CurrentState.AngularSpeed = angularSpeed;
 			CurrentState.dt = dt;
-			CurrentState.PowerDemand = GetBusAuxPowerDemand(absTime, dt, torquePowerTrain, torqueEngine, angularSpeed, dryRun);
+
+			var signals = Auxiliaries.Signals;
+			// trick bus auxiliaries that ice is on - all auxiliaries are considered. ESS is corrected in post-processing
+			signals.EngineStopped = !DataBus.EngineCtl.CombustionEngineOn; //false;
+			signals.InNeutral = !DataBus.EngineCtl.CombustionEngineOn;																		   
+			signals.VehicleStopped = DataBus.VehicleInfo.VehicleStopped; // false; 
+
+			CurrentState.PowerDemand = GetBusAuxPowerDemand(absTime, dt, torquePowerTrain, angularSpeed, dryRun) +
+										(AdditionalAux?.PowerDemandESSEngineOn(0.SI<Second>(), 1.SI<Second>(), angularSpeed) ?? 0.SI<Watt>());
 
 			var avgAngularSpeed = (CurrentState.AngularSpeed + PreviousState.AngularSpeed) / 2.0;
+			if (avgAngularSpeed.IsEqual(0)) {
+				return 0.SI<NewtonMeter>();
+            }
 			return CurrentState.PowerDemand / avgAngularSpeed;
 		}
 
-
-		protected internal void DoWriteModalResults(IModalDataContainer container)
+		public virtual Watt PowerDemandESSEngineOn(Second time, Second simulationInterval, PerSecond engineSpeed)
 		{
-			_fcMapAdapter.AllowExtrapolation = true;
-			// cycleStep has to be called here and not in DoCommit, write is called before Commit!
-			var message = String.Empty;
-			Auxiliaries.CycleStep(CurrentState.dt, ref message);
-			Log.Warn(message);
+			var signals = Auxiliaries.Signals;
+			signals.EngineStopped = false;
+			signals.VehicleStopped = DataBus.VehicleInfo.VehicleStopped;
 
-			CurrentState.TotalFuelConsumption = Auxiliaries.TotalFuelGRAMS;
-			container[ModalResultField.P_aux] = CurrentState.PowerDemand;
+			var busAuxPwrICEOn = GetBusAuxPowerDemand(time, simulationInterval, 0.SI<NewtonMeter>(), engineSpeed, true);
+			var esICEOnLoad = Auxiliaries.ElectricPowerConsumerSum;
 
-			container[ModalResultField.AA_NonSmartAlternatorsEfficiency] = Auxiliaries.AA_NonSmartAlternatorsEfficiency;
-			if (Auxiliaries.AA_SmartIdleCurrent_Amps != null) {
-				container[ModalResultField.AA_SmartIdleCurrent_Amps] = Auxiliaries.AA_SmartIdleCurrent_Amps;
-			}
-			container[ModalResultField.AA_SmartIdleAlternatorsEfficiency] = Auxiliaries.AA_SmartIdleAlternatorsEfficiency;
-			if (Auxiliaries.AA_SmartTractionCurrent_Amps != null) {
-				container[ModalResultField.AA_SmartTractionCurrent_Amps] =
-					Auxiliaries.AA_SmartTractionCurrent_Amps;
-			}
-			container[ModalResultField.AA_SmartTractionAlternatorEfficiency] = Auxiliaries.AA_SmartTractionAlternatorEfficiency;
-			if (Auxiliaries.AA_SmartOverrunCurrent_Amps != null) {
-				container[ModalResultField.AA_SmartOverrunCurrent_Amps] = Auxiliaries.AA_SmartOverrunCurrent_Amps;
-			}
-			container[ModalResultField.AA_SmartOverrunAlternatorEfficiency] = Auxiliaries.AA_SmartOverrunAlternatorEfficiency;
-			if (Auxiliaries.AA_CompressorFlowRate_LitrePerSec != null) {
-				container[ModalResultField.AA_CompressorFlowRate_LitrePerSec] =
-					Auxiliaries.AA_CompressorFlowRate_LitrePerSec;
-			}
-			container[ModalResultField.AA_OverrunFlag] = Auxiliaries.AA_OverrunFlag;
-			container[ModalResultField.AA_EngineIdleFlag] = Auxiliaries.AA_EngineIdleFlag;
-			container[ModalResultField.AA_CompressorFlag] = Auxiliaries.AA_CompressorFlag;
-			if (Auxiliaries.AA_TotalCycleFC_Grams != null) {
-				container[ModalResultField.AA_TotalCycleFC_Grams] = Auxiliaries.AA_TotalCycleFC_Grams;
-			}
-			if (Auxiliaries.AA_TotalCycleFC_Litres != null) {
-				container[ModalResultField.AA_TotalCycleFC_Litres] = Auxiliaries.AA_TotalCycleFC_Litres;
-			}
-			if (Auxiliaries.AA_AveragePowerDemandCrankHVACMechanicals != null) {
-				container[ModalResultField.AA_AveragePowerDemandCrankHVACMechanicals] =
-					Auxiliaries.AA_AveragePowerDemandCrankHVACMechanicals;
-			}
-			if (Auxiliaries.AA_AveragePowerDemandCrankHVACElectricals != null) {
-				container[ModalResultField.AA_AveragePowerDemandCrankHVACElectricals] =
-					Auxiliaries.AA_AveragePowerDemandCrankHVACElectricals;
-			}
-			if (Auxiliaries.AA_AveragePowerDemandCrankElectrics != null) {
-				container[ModalResultField.AA_AveragePowerDemandCrankElectrics] =
-					Auxiliaries.AA_AveragePowerDemandCrankElectrics;
-			}
-			if (Auxiliaries.AA_AveragePowerDemandCrankPneumatics != null) {
-				container[ModalResultField.AA_AveragePowerDemandCrankPneumatics] =
-					Auxiliaries.AA_AveragePowerDemandCrankPneumatics;
-			}
-			if (Auxiliaries.AA_TotalCycleFuelConsumptionCompressorOff != null) {
-				container[ModalResultField.AA_TotalCycleFuelConsumptionCompressorOff] =
-					Auxiliaries.AA_TotalCycleFuelConsumptionCompressorOff;
-			}
-			container[ModalResultField.AA_TotalCycleFuelConsumptionCompressorOn] =
-				Auxiliaries.AA_TotalCycleFuelConsumptionCompressorOn;
+			signals.EngineStopped = true;
+			var busAuxPwrICEOff = GetBusAuxPowerDemand(time, simulationInterval, 0.SI<NewtonMeter>(), engineSpeed, true);
+			var esICEOffLoad = Auxiliaries.ElectricPowerConsumerSum;
+
+			// if busAuxPwrICEOn and busAuxPwrICEOff are different the battery is empty and the mechanical power is the difference
+			// if both are equal we need to add the difference between ES ICE On and ES ICE Off power demand (the latter is corrected by ES correction) 
+
+			var esSupplyNotFromICE = AuxCfg.ElectricalUserInputsConfig.AlternatorType == AlternatorType.None ||
+									(AuxCfg.ElectricalUserInputsConfig.ConnectESToREESS);
+
+			var esMech = (busAuxPwrICEOn - busAuxPwrICEOff).IsEqual(0) && !esSupplyNotFromICE
+				? (esICEOnLoad - esICEOffLoad) / AuxCfg.ElectricalUserInputsConfig.AlternatorGearEfficiency /
+				AuxCfg.ElectricalUserInputsConfig.AlternatorMap.GetEfficiency(0.RPMtoRad(), 0.SI<Ampere>())
+				: 0.SI<Watt>();
+
+			return busAuxPwrICEOff - Auxiliaries.PSPowerDemandAirGenerated + esMech - Auxiliaries.ElectricPowerDemandMech + (busAuxPwrICEOn - busAuxPwrICEOff) +
+					(AdditionalAux?.PowerDemandESSEngineOn(0.SI<Second>(), 1.SI<Second>(), engineSpeed) ??
+					0.SI<Watt>());
 		}
 
-		protected internal void DoCommitSimulationStep()
+		protected virtual Watt ComputePowerDemand(Second time, Second simulationInterval, PerSecond engineSpeed, bool includeESBaseLoad = true)
 		{
+			var signals = Auxiliaries.Signals;
+			//signals.EngineStopped = true;
+			//signals.VehicleStopped = DataBus.VehicleInfo.VehicleStopped;
+			var esBaseLoad = Auxiliaries.ElectricPowerConsumerSum;
+
+			//signals.EngineStopped = false; 
+			//signals.VehicleStopped = false;
+			var retVal =  GetBusAuxPowerDemand(time, simulationInterval, 0.SI<NewtonMeter>(), engineSpeed, true) +
+						(AdditionalAux?.PowerDemandESSEngineOn(0.SI<Second>(), 1.SI<Second>(), engineSpeed) ?? 0.SI<Watt>());
+
+			if (!SmartElectricSystem) {
+				return retVal;
+			}
+
+			//var batteryPwr = ElectricStorage.SOC * AuxCfg.ElectricalUserInputsConfig.ElectricStorageCapacity / simulationInterval;
+			var esSum = Auxiliaries.ElectricPowerConsumerSum - esBaseLoad;
+			//if (batteryPwr < esSum) {
+				retVal += (esSum ) / AuxCfg.ElectricalUserInputsConfig.AlternatorGearEfficiency /
+						AuxCfg.ElectricalUserInputsConfig.AlternatorMap.GetEfficiency(0.RPMtoRad(), 0.SI<Ampere>());
+			//}
+
+			return retVal;
+		}
+
+		public virtual Watt PowerDemandESSEngineOff(Second absTime, Second dt)
+		{
+			
+			//CurrentState.AngularSpeed = DataBus.EngineInfo.EngineIdleSpeed;
+			//CurrentState.dt = dt;
+
+			var signals = Auxiliaries.Signals;
+
+			signals.EngineStopped = !DataBus.EngineCtl.CombustionEngineOn;
+			signals.InNeutral = !DataBus.EngineCtl.CombustionEngineOn;
+			signals.VehicleStopped = DataBus.VehicleInfo.VehicleStopped;
+
+			var busAuxPowerDemand  = GetBusAuxPowerDemand(
+				absTime, dt, 0.SI<NewtonMeter>(), DataBus.EngineInfo.EngineIdleSpeed, true) - Auxiliaries.ElectricPowerDemandMech;
+            //AdditionalAux = conventionalAux;
+
+            CurrentState.PowerDemand = 0.SI<Watt>();
+            //CurrentState.ESPowerGeneratedICE_On = Auxiliaries.ElectricPowerGenerated;
+            //CurrentState.ESPowerMech = Auxiliaries.ElectricPowerDemandMech;
+            // 
+
+
+            //busAuxPowerDemand = GetBusAuxPowerDemand(
+            //	absTime, dt, 0.SI<NewtonMeter>(), DataBus.EngineInfo.EngineIdleSpeed);
+            //AdditionalAux = conventionalAux;
+
+            return (busAuxPowerDemand - Auxiliaries.PSPowerDemandAirGenerated + (AdditionalAux?.PowerDemandESSEngineOff(absTime, dt) ?? 0.SI<Watt>()));
+		}
+
+
+
+		protected internal virtual void DoWriteModalResultsICE(Second absTime, Second dt, IModalDataContainer container)
+		{
+			// called from ICE - write modal results there
+
+			var essUtilityFactor = 1.0;
+			if (!DataBus.EngineCtl.CombustionEngineOn) {
+				essUtilityFactor = 0.0;
+			}
+
+            var signals = Auxiliaries.Signals;
+            signals.EngineStopped = !DataBus.EngineCtl.CombustionEngineOn;
+			signals.InNeutral = !DataBus.EngineCtl.CombustionEngineOn;
+            signals.VehicleStopped = DataBus.VehicleInfo.VehicleStopped;
+
+            // cycleStep has to be called here and not in DoCommit, write is called before Commit!
+            //var oldSOC = Auxiliaries.BatterySOC;
+            Auxiliaries.CycleStep(CurrentState.dt);
+			//var newSOC = Auxiliaries.BatterySOC;
+
+			//CurrentState.TotalFuelConsumption = Auxiliaries.TotalFuel;
+			container[ModalResultField.P_aux_mech] = CurrentState.PowerDemand;
+
+			container[ModalResultField.P_busAux_ES_HVAC] = /*essUtilityFactor **/ Auxiliaries.HVACElectricalPowerConsumer;
+			container[ModalResultField.P_busAux_ES_other] = /*essUtilityFactor **/ Auxiliaries.ElectricPowerConsumer;
+			container[ModalResultField.P_busAux_ES_consumer_sum] = /*essUtilityFactor **/ Auxiliaries.ElectricPowerConsumerSum;
+			container[ModalResultField.P_busAux_ES_sum_mech] = essUtilityFactor * Auxiliaries.ElectricPowerDemandMech;
+			container[ModalResultField.P_busAux_ES_generated] = essUtilityFactor * Auxiliaries.ElectricPowerGenerated;
+
+			if (AuxCfg.ElectricalUserInputsConfig.ConnectESToREESS) {
+				container[ModalResultField.P_busAux_ES_HVAC] = Auxiliaries.HVACElectricalPowerConsumer;
+				container[ModalResultField.P_busAux_ES_other] = Auxiliaries.ElectricPowerConsumer;
+				container[ModalResultField.P_busAux_ES_consumer_sum] = Auxiliaries.ElectricPowerConsumerSum;
+				container[ModalResultField.P_busAux_ES_sum_mech] = Auxiliaries.ElectricPowerDemandMech;
+				container[ModalResultField.P_busAux_ES_generated] = Auxiliaries.ElectricPowerGenerated;
+				if (SmartElectricSystem) {
+					container[ModalResultField.BatterySOC] = ElectricStorage.SOC * 100.0;
+					container[ModalResultField.P_busAux_bat] = ElectricStorage.ConsumedEnergy / dt;
+				}
+			} else {
+				if (SmartElectricSystem) {
+					var batteryPwr = ElectricStorage.ConsumedEnergy / dt;
+
+					container[ModalResultField.BatterySOC] = ElectricStorage.SOC * 100.0;
+					container[ModalResultField.P_busAux_bat] = ElectricStorage.ConsumedEnergy / dt;
+
+					container[ModalResultField.P_busAux_ES_generated] = essUtilityFactor *
+																		(DataBus.VehicleInfo.VehicleStopped &&
+																		!DataBus.EngineCtl.CombustionEngineOn
+																			? Auxiliaries.ElectricPowerConsumerSum
+																			: Auxiliaries.ElectricPowerGenerated);
+					container[ModalResultField.P_busAux_ES_sum_mech] =
+						essUtilityFactor * (Auxiliaries.ElectricPowerConsumerSum + batteryPwr) /
+						AuxCfg.ElectricalUserInputsConfig.AlternatorGearEfficiency /
+						AuxCfg.ElectricalUserInputsConfig.AlternatorMap.GetEfficiency(0.RPMtoRad(), 0.SI<Ampere>());
+
+				}
+			}
+
+			container[ModalResultField.Nl_busAux_PS_consumer] = Auxiliaries.PSDemandConsumer;
+			container[ModalResultField.Nl_busAux_PS_generated] = essUtilityFactor * Auxiliaries.PSAirGenerated;
+			container[ModalResultField.Nl_busAux_PS_generated_alwaysOn] = essUtilityFactor * Auxiliaries.PSAirGeneratedAlwaysOn;
+			//container[ModalResultField.Nl_busAux_PS_generated_dragOnly] = Auxiliaries.PSAirGeneratedDrag;
+			container[ModalResultField.P_busAux_PS_generated] = essUtilityFactor * Auxiliaries.PSPowerDemandAirGenerated;
+			container[ModalResultField.P_busAux_PS_generated_alwaysOn] = essUtilityFactor * Auxiliaries.PSPowerCompressorAlwaysOn;
+			container[ModalResultField.P_busAux_PS_generated_dragOnly] = essUtilityFactor * Auxiliaries.PSPowerCompressorDragOnly;
+
+			container[ModalResultField.P_busAux_HVACmech_consumer] = essUtilityFactor * Auxiliaries.HVACMechanicalPowerConsumer;
+			container[ModalResultField.P_busAux_HVACmech_gen] = essUtilityFactor *  Auxiliaries.HVACMechanicalPowerGenerated;
+		}
+
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
+		{
+			// called from base class - do nothing here
+		}
+
+		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)
+		{
+			// called from base class - do nothing here
+		}
+
+		protected internal virtual void DoCommitSimulationStep()
+		{
+			// called from combustion engine - do commit here
 			PreviousState = CurrentState;
 			CurrentState = new BusAuxState();
 		}
 
-		protected internal KilogramPerSecond AAuxFuelConsumption
+		protected virtual Watt GetBusAuxPowerDemand(Second absTime, Second dt, NewtonMeter torquePowerTrain, PerSecond angularSpeed, bool dryRun = false)
 		{
-			get { return (CurrentState.TotalFuelConsumption - PreviousState.TotalFuelConsumption) / CurrentState.dt; }
-		}
+			Auxiliaries.ResetCalculations();
 
-		private Watt GetBusAuxPowerDemand(Second absTime, Second dt, NewtonMeter torquePowerTrain, NewtonMeter torqueEngine,
-			PerSecond angularSpeed, bool dryRun = false)
-		{
-			_fcMapAdapter.AllowExtrapolation = true;
+			var signals = Auxiliaries.Signals;
 
-			Auxiliaries.Signals.ClutchEngaged = DataBus.ClutchClosed(absTime);
-			Auxiliaries.Signals.EngineDrivelinePower = torquePowerTrain * angularSpeed;
-			Auxiliaries.Signals.EngineDrivelineTorque = torquePowerTrain;
-			Auxiliaries.Signals.InternalEnginePower = torqueEngine * angularSpeed - DataBus.BrakePower;
-			if (DataBus.DriverBehavior == DrivingBehavior.Coasting) {
-				// make sure smart aux are _not_ enabled for now
-				// set internal_engine_power a little bit lower so there is no excessive power for smart aux
-				Auxiliaries.Signals.InternalEnginePower = 0.9 * torqueEngine * angularSpeed /*- DataBus.BrakePower*/;
-				// if smart aux should be on during coasting use the following line
-				// set internal_engine_power to a large value (*10) so that there's excessive power for smart aux (alreadin during search operating point)
-				//(float)DataBus.EngineDragPower(angularSpeed).Value() / 100;
+			signals.SimulationInterval = dt;
+			signals.ClutchEngaged = DataBus.ClutchInfo.ClutchClosed(absTime) && DataBus.GearboxInfo.GearEngaged(absTime);
+			signals.EngineDrivelineTorque = torquePowerTrain;
+			
+			signals.EngineSpeed = angularSpeed;
+			var avgAngularSpeed = (PreviousState.AngularSpeed + CurrentState.AngularSpeed) / 2;
+
+
+			var preExistingAuxPower = AdditionalAux != null
+				? AdditionalAux.TorqueDemand(absTime, dt, torquePowerTrain, angularSpeed, dryRun) * avgAngularSpeed
+				: 0.SI<Watt>();
+
+			var drivetrainPower = torquePowerTrain * avgAngularSpeed;
+			if (!dryRun && !DataBus.IsTestPowertrain && DataBus.DriverInfo.DrivingAction == DrivingAction.Brake && CurrentState.ExcessiveDragPower.IsEqual(0)) {
+				CurrentState.ExcessiveDragPower = drivetrainPower -
+												(DataBus.EngineInfo.EngineDragPower(avgAngularSpeed) - preExistingAuxPower) - DataBus.Brakes.BrakePower;
+			}
+
+			if (!dryRun && DataBus.DriverInfo.DrivingAction == DrivingAction.Brake && torquePowerTrain.IsGreater(0) &&
+				DataBus.GearboxInfo.Gear.TorqueConverterLocked.HasValue &&
+				!DataBus.GearboxInfo.Gear.TorqueConverterLocked.Value) {
+				CurrentState.ExcessiveDragPower = 0.SI<Watt>();
+			}
+			if (!dryRun && DataBus.DriverInfo.DrivingAction != DrivingAction.Brake) {
+				CurrentState.ExcessiveDragPower = 0.SI<Watt>();
+			}
+
+			
+			signals.ExcessiveDragPower = CurrentState.ExcessiveDragPower;
+			signals.Idle = DataBus.VehicleInfo.VehicleStopped;
+			signals.InNeutral = DataBus.GearboxInfo.Gear.Gear == 0 || !DataBus.EngineCtl.CombustionEngineOn;
+
+
+
+			var maxChg = ElectricStorage.MaxChargeEnergy();
+			var maxDischg = ElectricStorage.MaxDischargeEnergy();
+			
+			var essFactor = DataBus.EngineCtl.CombustionEngineOn ? 0.0 : 1.0;
+			var elPwrGen = Auxiliaries.ElectricPowerGenerated;
+			var elPwrConsumed = Auxiliaries.ElectricPowerConsumerSum;
+
+			var energyDemand = (elPwrGen * (1 - essFactor) - elPwrConsumed)  * dt;
+
+			var batEnergy = energyDemand.LimitTo(maxDischg, maxChg);
+
+			if (SmartElectricSystem) {
+				ElectricStorage.ConsumeEnergy(batEnergy, dryRun);
+			}
+
+			var missingEnergy = energyDemand - batEnergy;
+
+			if (AuxCfg.ElectricalUserInputsConfig.ConnectESToREESS) {
+				DCDCConverter.ConsumerEnergy(-missingEnergy, dryRun);
 			} else {
-				if (DataBus.DriverBehavior != DrivingBehavior.Braking) {
-					Auxiliaries.Signals.InternalEnginePower = 0.SI<Watt>();
-					//(float)((0.9 * torqueEngine * angularSpeed - DataBus.BrakePower) / 1000).Value();
-				} else {
-					// smart aux should be on during braking
+				if (!dryRun) {
+					CurrentState.MissingElectricEnergy = missingEnergy;
 				}
 			}
-			Auxiliaries.Signals.EngineMotoringPower = -DataBus.EngineDragPower(angularSpeed);
-			Auxiliaries.Signals.EngineSpeed = angularSpeed;
-			var avgAngularSpeed = (PreviousState.AngularSpeed + CurrentState.AngularSpeed) / 2;
-			Auxiliaries.Signals.PreExistingAuxPower = AdditionalAux != null
-				? AdditionalAux.TorqueDemand(absTime, dt, torquePowerTrain, torqueEngine, angularSpeed, dryRun) * avgAngularSpeed
-				: 0.SI<Watt>();
-			//mAAUX_Global.PreExistingAuxPower;
-			Auxiliaries.Signals.Idle = DataBus.VehicleStopped;
-			Auxiliaries.Signals.InNeutral = DataBus.Gear == 0;
-			Auxiliaries.Signals.RunningCalc = true;
 
-			//mAAUX_Global.Internal_Engine_Power;
-			//'Power coming out of Advanced Model is in Watts.
-
-			return Auxiliaries.AuxiliaryPowerAtCrankWatts + Auxiliaries.Signals.PreExistingAuxPower;
-		}
-
-		protected class FuelConsumptionAdapter : IFuelConsumptionMap
-		{
-			protected internal FuelConsumptionMap FcMap;
-
-			public bool AllowExtrapolation { get; set; }
-
-			public KilogramPerSecond GetFuelConsumption(NewtonMeter torque, PerSecond angularVelocity)
-			{
-				return FcMap.GetFuelConsumption(torque, angularVelocity, AllowExtrapolation).Value;
-			}
+			return Auxiliaries.AuxiliaryPowerAtCrankWatts;
 		}
 
 		public class BusAuxState
 		{
 			public Second dt;
 			public PerSecond AngularSpeed;
-			public Watt PowerDemand;
-			public Kilogram TotalFuelConsumption = 0.SI<Kilogram>();
+			public Watt PowerDemand { get; set; }
+			public WattSecond MissingElectricEnergy { get; set; }
+
+			public Watt ExcessiveDragPower = 0.SI<Watt>();
+		}
+
+		public class ElectricStorageWrapper : ISimpleBatteryInfo
+		{
+			private BusAuxiliariesAdapter busAuxAdapter;
+
+			public ElectricStorageWrapper(BusAuxiliariesAdapter busAuxiliariesAdapter)
+			{
+				busAuxAdapter = busAuxiliariesAdapter;
+			}
+
+			#region Implementation of ISimpleBatteryInfo
+
+			public double SOC => busAuxAdapter.ElectricStorage.SOC;
+
+			public WattSecond Capacity => busAuxAdapter.ElectricStorage.Capacity;
+
+			#endregion
+		}
+
+		public class InfinityBattery : ISimpleBatteryInfo
+		{
+			private ISimpleBatteryInfo ElectricStorage;
+
+			public InfinityBattery(WattSecond electricStorageCapacity, ElectricStorageWrapper electricStorageWrapper)
+			{
+				Capacity = electricStorageCapacity;
+				ElectricStorage = electricStorageWrapper;
+			}
+
+			#region Implementation of ISimpleBatteryInfo
+
+			public double SOC => ElectricStorage.SOC.IsEqual(1, 1e-2) ? 1 : 0.5;
+			public WattSecond Capacity { get; }
+
+			#endregion
 		}
 	}
 }

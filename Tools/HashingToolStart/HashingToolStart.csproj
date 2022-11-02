@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <AssemblyName>HashingTool</AssemblyName>
+    <ApplicationIcon>HashingIcon.ico</ApplicationIcon>
+    <RootNamespace>TUGraz.VECTO</RootNamespace>
+    <TargetFrameworks>net45</TargetFrameworks>
+    <DefineConstants />
+  </PropertyGroup>
+</Project>

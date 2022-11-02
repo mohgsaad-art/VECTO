@@ -4,9 +4,9 @@
 													xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationComponent:v1.0"
 													xmlns:di="http://www.w3.org/2000/09/xmldsig#" schemaVersion="1.0"
 													xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-													xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationComponent:v1.0 https://webgate.ec.europa.eu/CITnet/svn/VECTO/trunk/Share/XML/XSD/VectoComponent.xsd">
+													xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationComponent:v1.0 https://citnet.tech.ec.europa.eu/CITnet/svn/VECTO/trunk/Share/XML/XSD/VectoComponent.xsd">
 	<tns:Engine>
-		<Data id="">
+		<Data id="asdf">
 			<Manufacturer>Generic Engine Manufacturer</Manufacturer>
 			<Model>Generic 40t Long Haul Truck Engine</Model>
 			<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>

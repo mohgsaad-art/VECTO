@@ -79,14 +79,11 @@ namespace HashingTool.ViewModel.UserControl
 		}
 
 
-		public XMLFileSelector XMLFile
-		{
-			get { return _xmlFile; }
-		}
+		public XMLFileSelector XMLFile => _xmlFile;
 
 		public string Name
 		{
-			get { return _name; }
+			get => _name;
 			private set {
 				if (_name == value) {
 					return;
@@ -109,7 +106,7 @@ namespace HashingTool.ViewModel.UserControl
 
 		public string DigestMethod
 		{
-			get { return _digestMethod; }
+			get => _digestMethod;
 			set {
 				if (_digestMethod == value) {
 					return;
@@ -122,7 +119,7 @@ namespace HashingTool.ViewModel.UserControl
 
 		public string DigestValueComputed
 		{
-			get { return _digestValueComputed; }
+			get => _digestValueComputed;
 			internal set {
 				if (_digestValueComputed == value) {
 					return;
@@ -135,7 +132,7 @@ namespace HashingTool.ViewModel.UserControl
 
 		public bool? FileIntegrityValid
 		{
-			get { return _fileIntegrityValid; }
+			get => _fileIntegrityValid;
 			internal set {
 				if (_fileIntegrityValid == value) {
 					return;
@@ -147,7 +144,7 @@ namespace HashingTool.ViewModel.UserControl
 
 		public string FileIntegrityTooltip
 		{
-			get { return _tooltip; }
+			get => _tooltip;
 			set {
 				if (_tooltip == value) {
 					return;
@@ -159,7 +156,7 @@ namespace HashingTool.ViewModel.UserControl
 
 		public string Component
 		{
-			get { return _componentType; }
+			get => _componentType;
 			set {
 				if (_componentType == value) {
 					return;

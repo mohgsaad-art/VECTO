@@ -1,0 +1,30 @@
+﻿{
+  "Header": {
+    "CreatedBy": " ()",
+    "Date": "2016-10-13T08:54:28.7387223Z",
+    "AppVersion": "3",
+    "FileVersion": 1
+  },
+  "Body": {
+    "SavedInDeclMode": false,
+	"Model": "Generic Battery",
+	"InternalResistance": 0.04,
+	"SOC_min": 10,
+	"SOC_max": 90,
+    "MaxCurrentFactor": 5,
+    "Capacity": 324,
+    "SOC": [
+      [ 0, 673.5 ],
+      [ 10, 700.2 ],
+      [ 20, 715.4 ],
+      [ 30, 723.6 ],
+      [ 40, 727.7 ],
+      [ 50, 730.0 ],
+      [ 60, 731.6 ],
+      [ 70, 733.8 ],
+      [ 80, 737.1 ],
+      [ 90, 742.2 ],
+      [ 100, 750.2 ]
+    ]
+	}
+}

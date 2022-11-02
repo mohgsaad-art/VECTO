@@ -1,577 +1,103 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.50727</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{AAC0F132-0A9F-45B3-B682-77AC9B24B352}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
-    <StartupObject>TUGraz.VECTO.My.MyApplication</StartupObject>
-    <RootNamespace>TUGraz.VECTO</RootNamespace>
-    <AssemblyName>VECTO</AssemblyName>
-    <MyType>WindowsForms</MyType>
-    <ApplicationIcon>Resources\Icon2.ico</ApplicationIcon>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>2.0</OldToolsVersion>
-    <UpgradeBackupLocation />
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <TargetFrameworkProfile />
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <PublishUrl>C:\Users\tb28\Documents\VectoOut\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <PublishWizardCompleted>true</PublishWizardCompleted>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
+	<OutputType>WinExe</OutputType>
+	<StartupObject>Sub Main</StartupObject>
+	<RootNamespace>TUGraz.VECTO</RootNamespace>
+	<AssemblyName>VECTO</AssemblyName>
+	<ApplicationIcon>Resources\Icon2.ico</ApplicationIcon>
+	<OptionStrict>On</OptionStrict>
+	<UseWindowsForms>true</UseWindowsForms>
+	<MyType>WindowsForms</MyType>
+	<TargetFrameworks>net48</TargetFrameworks>
+	<TargetFrameworks Condition="'$(Configuration)' == 'Release'">net45;net48;net6.0-windows</TargetFrameworks>
+	<TargetFrameworks Condition="'$(Configuration)' == 'Deploy'">net45;net48;net6.0-windows</TargetFrameworks>
+	<DefineTrace>false</DefineTrace>
+	<DefineConstants />
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>false</DefineTrace>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>VECTO.xml</DocumentationFile>
-    <NoWarn>
-    </NoWarn>
-    <Prefer32Bit>false</Prefer32Bit>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <WarningLevel>1</WarningLevel>
-    <UseVSHostingProcess>true</UseVSHostingProcess>
-    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
-    <DefineConstants>RELEASE_CANDIDATE</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>None</DebugType>
-    <DefineDebug>false</DefineDebug>
-    <DefineTrace>false</DefineTrace>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>VECTO.xml</DocumentationFile>
-    <NoWarn>
-    </NoWarn>
-    <RemoveIntegerChecks>false</RemoveIntegerChecks>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <Prefer32Bit>false</Prefer32Bit>
-    <WarningLevel>1</WarningLevel>
-    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
-    <DefineConstants>RELEASE_CANDIDATE</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\x86\Debug\</OutputPath>
-    <DocumentationFile>VECTO.xml</DocumentationFile>
-    <NoWarn>
-    </NoWarn>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
-    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
-    <Prefer32Bit>false</Prefer32Bit>
-    <WarningLevel>1</WarningLevel>
-    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\x86\Release\</OutputPath>
-    <DocumentationFile>VECTO.xml</DocumentationFile>
-    <NoWarn>
-    </NoWarn>
-    <DebugType>None</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
-    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
-    <Prefer32Bit>false</Prefer32Bit>
-    <WarningLevel>1</WarningLevel>
-    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ManifestCertificateThumbprint>B392FDC8053AEBCC6B0860DD32DEC702EB46BD4A</ManifestCertificateThumbprint>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ManifestKeyFile>VECTO_TemporaryKey.pfx</ManifestKeyFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <GenerateManifests>false</GenerateManifests>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignManifests>false</SignManifests>
-  </PropertyGroup>
-  <PropertyGroup>
-    <TargetZone>LocalIntranet</TargetZone>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <OptionStrict>On</OptionStrict>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Deploy|AnyCPU'">
-    <OutputPath>bin\Deploy\</OutputPath>
-    <DocumentationFile>VECTO.xml</DocumentationFile>
-    <Optimize>true</Optimize>
-    <WarningLevel>1</WarningLevel>
-    <DebugType>None</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <DefineConstants>CERTIFICATION_RELEASE</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Deploy|x86'">
-    <DefineTrace>true</DefineTrace>
-    <OutputPath>bin\x86\Deploy\</OutputPath>
-    <DocumentationFile>VECTO.xml</DocumentationFile>
-    <WarningLevel>1</WarningLevel>
-    <DebugType>None</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
-  </PropertyGroup>
+ 
   <ItemGroup>
-    <Reference Include="Microsoft.Build.Framework" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.5.11\lib\net45\NLog.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.Design" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.IO.Compression" />
-    <Reference Include="System.Management" />
-    <Reference Include="System.Runtime.Remoting" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Transactions" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Windows.Forms.DataVisualization" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
+	<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+	<PackageReference Include="NLog" Version="4.7.13" />
+	<PackageReference Include="Ninject" Version="3.3.3">
+	  <PrivateAssets>all</PrivateAssets>
+	</PackageReference>
   </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
+	<Reference Include="System.ComponentModel.DataAnnotations" />
+	<Reference Include="System.Windows.Forms.DataVisualization" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+	<Reference Include="System.ComponentModel.DataAnnotations" />
+	<Reference Include="System.Windows.Forms.DataVisualization" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0-windows'">
+	<PackageReference Include="System.Data.SqlClient">
+	  <Version>4.8.3</Version>
+	</PackageReference>
+	<PackageReference Include="System.Windows.Forms.DataVisualization">
+	  <Version>1.0.0-prerelease.20110.1</Version>
+	</PackageReference>
+  </ItemGroup>
+
   <ItemGroup>
-    <Import Include="Microsoft.VisualBasic" />
-    <Import Include="System" />
-    <Import Include="System.Collections" />
-    <Import Include="System.Data" />
-    <Import Include="System.Drawing" />
-    <Import Include="System.Diagnostics" />
-    <Import Include="System.Windows.Forms" />
+	<ProjectReference Include="..\VectoCommon\VectoCommon\VectoCommon.csproj" />
+	<ProjectReference Include="..\VectoCore\VectoCore\VectoCore.csproj" />
   </ItemGroup>
+  
   <ItemGroup>
-    <Compile Include="ApplicationEvents.vb" />
-    <Compile Include="GUI\VectoVTPJobForm.Designer.vb">
-      <DependentUpon>VectoVTPJobForm.vb</DependentUpon>
-    </Compile>
-    <Compile Include="GUI\VectoVTPJobForm.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Input Files\BrowserUtils.vb" />
-    <Compile Include="GUI\VehicleTorqueLimitsDialog.Designer.vb">
-      <DependentUpon>VehicleTorqueLimitsDialog.vb</DependentUpon>
-    </Compile>
-    <Compile Include="GUI\VehicleTorqueLimitsDialog.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GUI\XMLExportJobDialog.Designer.vb">
-      <DependentUpon>XMLExportJobDialog.vb</DependentUpon>
-    </Compile>
-    <Compile Include="GUI\XMLExportJobDialog.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GUI\XMLImportJobDialog.Designer.vb">
-      <DependentUpon>XMLImportJobDialog.vb</DependentUpon>
-    </Compile>
-    <Compile Include="GUI\XMLImportJobDialog.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Input Files\AdvancedAuxiliary.vb" />
-    <Compile Include="GUI\GraphForm.Designer.vb">
-      <DependentUpon>GraphForm.vb</DependentUpon>
-    </Compile>
-    <Compile Include="GUI\GraphForm.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GUI\GraphEditChannelDialog.Designer.vb">
-      <DependentUpon>GraphEditChannelDialog.vb</DependentUpon>
-    </Compile>
-    <Compile Include="GUI\GraphEditChannelDialog.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GUI\JiraDialog.Designer.vb">
-      <DependentUpon>JiraDialog.vb</DependentUpon>
-    </Compile>
-    <Compile Include="GUI\JiraDialog.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GUI\WelcomeDialog.Designer.vb">
-      <DependentUpon>WelcomeDialog.vb</DependentUpon>
-    </Compile>
-    <Compile Include="GUI\WelcomeDialog.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GUI\EngineForm.Designer.vb">
-      <DependentUpon>EngineForm.vb</DependentUpon>
-    </Compile>
-    <Compile Include="GUI\EngineForm.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GUI\GearboxForm.Designer.vb">
-      <DependentUpon>GearboxForm.vb</DependentUpon>
-    </Compile>
-    <Compile Include="GUI\GearboxForm.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GUI\VehicleAuxiliariesDialog.Designer.vb">
-      <DependentUpon>VehicleAuxiliariesDialog.vb</DependentUpon>
-    </Compile>
-    <Compile Include="GUI\VehicleAuxiliariesDialog.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GUI\VehicleAxleDialog.Designer.vb">
-      <DependentUpon>VehicleAxleDialog.vb</DependentUpon>
-    </Compile>
-    <Compile Include="GUI\VehicleAxleDialog.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Input Files\Engine.vb" />
-    <Compile Include="Input Files\Gearbox.vb" />
-    <Compile Include="Configuration.vb" />
-    <Compile Include="File Browser\FileBrowser.vb" />
-    <Compile Include="AdvancedAuxiliariesModule.vb" />
-    <Compile Include="File Browser\FileBrowserDialog.designer.vb">
-      <DependentUpon>FileBrowserDialog.vb</DependentUpon>
-    </Compile>
-    <Compile Include="File Browser\FileBrowserDialog.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="File Browser\FileBrowserFavoritesDialog.designer.vb">
-      <DependentUpon>FileBrowserFavoritesDialog.vb</DependentUpon>
-    </Compile>
-    <Compile Include="File Browser\FileBrowserFavoritesDialog.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Input Files\VectoEPTPJob.vb" />
-    <Compile Include="Input Files\VectoJob.vb" />
-    <Compile Include="Input Files\Vehicle.vb" />
-    <Compile Include="GUI\GearboxGearDialog.Designer.vb">
-      <DependentUpon>GearboxGearDialog.vb</DependentUpon>
-    </Compile>
-    <Compile Include="GUI\GearboxGearDialog.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Input Files\SubPath.vb" />
-    <Compile Include="GUI\VectoJobForm.Designer.vb">
-      <DependentUpon>VectoJobForm.vb</DependentUpon>
-    </Compile>
-    <Compile Include="GUI\VectoJobForm.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="OutputData\JSONFileWriter.vb" />
-    <Compile Include="VECTO_Global.vb" />
-    <Compile Include="VECTO_Types.vb" />
-    <Compile Include="GUI\GUI_Subs.vb" />
-    <Compile Include="GUI\VehicleForm.Designer.vb">
-      <DependentUpon>VehicleForm.vb</DependentUpon>
-    </Compile>
-    <Compile Include="GUI\VehicleForm.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GUI\Settings.Designer.vb">
-      <DependentUpon>Settings.vb</DependentUpon>
-    </Compile>
-    <Compile Include="GUI\Settings.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GUI\AboutBox.Designer.vb">
-      <DependentUpon>AboutBox.vb</DependentUpon>
-    </Compile>
-    <Compile Include="GUI\AboutBox.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainModule.vb" />
-    <Compile Include="GUI\MainForm.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GUI\MainForm.Designer.vb">
-      <DependentUpon>MainForm.vb</DependentUpon>
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="File Browser\FileBrowserModule.vb" />
-    <Compile Include="My Project\AssemblyInfo.vb" />
-    <Compile Include="My Project\Application.Designer.vb">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Application.myapp</DependentUpon>
-    </Compile>
-    <Compile Include="My Project\Resources.Designer.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="My Project\Settings.Designer.vb">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
+	<Import Include="Microsoft.VisualBasic" />
+	<Import Include="System" />
+	<Import Include="System.Collections" />
+	<Import Include="System.Data" />
+	<Import Include="System.Drawing" />
+	<Import Include="System.Diagnostics" />
+	<Import Include="System.Windows.Forms" />
   </ItemGroup>
+
   <ItemGroup>
-    <EmbeddedResource Include="File Browser\FileBrowserDialog.resx">
-      <DependentUpon>FileBrowserDialog.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="File Browser\FileBrowserFavoritesDialog.resx">
-      <DependentUpon>FileBrowserFavoritesDialog.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\GraphForm.resx">
-      <DependentUpon>GraphForm.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\GraphEditChannelDialog.resx">
-      <DependentUpon>GraphEditChannelDialog.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\JiraDialog.resx">
-      <DependentUpon>JiraDialog.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\VectoVTPJobForm.resx">
-      <DependentUpon>VectoVTPJobForm.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\VehicleTorqueLimitsDialog.resx">
-      <DependentUpon>VehicleTorqueLimitsDialog.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\WelcomeDialog.resx">
-      <DependentUpon>WelcomeDialog.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\EngineForm.resx">
-      <DependentUpon>EngineForm.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\GearboxForm.resx">
-      <DependentUpon>GearboxForm.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\MainForm.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>MainForm.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\VectoJobForm.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>VectoJobForm.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\VehicleForm.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>VehicleForm.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Settings.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>Settings.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\AboutBox.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>AboutBox.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\VehicleAuxiliariesDialog.resx">
-      <DependentUpon>VehicleAuxiliariesDialog.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\VehicleAxleDialog.resx">
-      <DependentUpon>VehicleAxleDialog.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\GearboxGearDialog.resx">
-      <DependentUpon>GearboxGearDialog.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\XMLExportJobDialog.resx">
-      <DependentUpon>XMLExportJobDialog.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\XMLImportJobDialog.resx">
-      <DependentUpon>XMLImportJobDialog.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="My Project\Resources.resx">
-      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
-      <CustomToolNamespace>My.Resources</CustomToolNamespace>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
+	<Compile Update="My Project\Application.Designer.vb">
+	  <DesignTime>True</DesignTime>
+	  <AutoGen>True</AutoGen>
+	  <DependentUpon>Application.myapp</DependentUpon>
+	</Compile>
+	<Compile Update="My Project\Resources.Designer.vb">
+	  <DesignTime>True</DesignTime>
+	  <AutoGen>True</AutoGen>
+	  <DependentUpon>Resources.resx</DependentUpon>
+	</Compile>
+	<EmbeddedResource Update="My Project\Resources.resx">
+	  <CustomToolNamespace>My.Resources</CustomToolNamespace>
+	  <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+	  <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+	</EmbeddedResource>
+	<Compile Update="My Project\Settings.Designer.vb">
+	  <DesignTimeSharedInput>True</DesignTimeSharedInput>
+	  <AutoGen>True</AutoGen>
+	  <DependentUpon>Settings.settings</DependentUpon>
+	</Compile>
+	<None Update="My Project\Application.myapp">
+	  <Generator>MyApplicationCodeGenerator</Generator>
+	  <LastGenOutput>Application.Designer.vb</LastGenOutput>
+	</None>
+	<None Update="My Project\Settings.settings">
+	  <CustomToolNamespace>My</CustomToolNamespace>
+	  <Generator>SettingsSingleFileGenerator</Generator>
+	  <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+	</None>
   </ItemGroup>
+
   <ItemGroup>
-    <None Include="My Project\app.manifest">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="My Project\Application.myapp">
-      <Generator>MyApplicationCodeGenerator</Generator>
-      <LastGenOutput>Application.Designer.vb</LastGenOutput>
-    </None>
-    <None Include="My Project\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <CustomToolNamespace>My</CustomToolNamespace>
-      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
-    </None>
-    <None Include="Resources\Icons.xcf" />
-    <None Include="VECTO_TemporaryKey.pfx" />
+	<EmbeddedResource Update="Resources\4x2r.png" />
+	<EmbeddedResource Update="Resources\4x2rt.png" />
+	<EmbeddedResource Update="Resources\4x2tt.png" />
+	<EmbeddedResource Update="Resources\6x2r.png" />
+	<EmbeddedResource Update="Resources\6x2rt.png" />
+	<EmbeddedResource Update="Resources\6x2tt.png" />
+	<EmbeddedResource Update="Resources\Undef.png" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-    <None Include="Resources\TUG-About.png" />
-    <None Include="Resources\VECTO-About.png" />
-    <None Include="Resources\VECTO-VEH.png" />
-    <None Include="Resources\VECTO-GBX.png" />
-    <None Include="Resources\VECTO-ENG.png" />
-    <None Include="Resources\VECTO-VECTO.png" />
-    <None Include="Resources\VECTO-Mainform.png" />
-    <None Include="Resources\Play-icon-gray.png" />
-    <None Include="Resources\Stop-icon.png" />
-    <None Include="Resources\Play-icon.png" />
-    <None Include="Resources\plus-circle-icon.png" />
-    <None Include="Resources\IVT_91x44.png" />
-    <None Include="Resources\Actions-document-save-as-icon.png" />
-    <None Include="Resources\Actions-document-save-icon.png" />
-    <None Include="Resources\minus-circle-icon.png" />
-    <None Include="Resources\Open-icon.png" />
-    <None Include="Resources\Actions-arrow-up-icon.png" />
-    <None Include="Resources\Actions-arrow-down-icon.png" />
-    <None Include="Resources\blue-document-icon.png" />
-    <None Include="Resources\Misc-Tools-icon.png" />
-    <None Include="Resources\export-icon.png" />
-    <None Include="Resources\Information-icon.png" />
-    <None Include="Resources\JRC-About.png" />
-    <None Include="Resources\Icon.png" />
-    <None Include="Resources\Icon2.ico" />
-    <None Include="Resources\IVT_About.png" />
-    <None Include="Resources\Help-icon.png" />
-    <None Include="app.config" />
-    <None Include="Resources\TUG_91x34.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\application-export-icon-small.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Status-dialog-password-icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Refresh-icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\application-add-icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\F_Graph.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\F_ENG.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\F_GBX.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\F_VEH.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\F_VECTO.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\VectoCommon\AdvancedAuxiliaryInterfaces\AdvancedAuxiliaryInterfaces.vbproj">
-      <Project>{b4b9bd2f-fd8f-4bb8-82fa-e2154d2c7fbd}</Project>
-      <Name>AdvancedAuxiliaryInterfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\VectoCommon\VectoCommon\VectoCommon.csproj">
-      <Project>{79a066ad-69a9-4223-90f6-6ed5d2d084f4}</Project>
-      <Name>VectoCommon</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\VectoCore\VectoCore\VectoCore.csproj">
-      <Project>{cd36938a-add9-4c65-96da-b397cdeea90a}</Project>
-      <Name>VectoCore</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Libraries\vectolic.dll" />
-    <None Include="Resources\Up.bmp" />
-    <None Include="Resources\up-directory.png" />
-    <None Include="Resources\up-directory16x16.png" />
-    <None Include="Resources\new_dir.png" />
-    <None Include="Resources\desktop.png" />
-    <None Include="Resources\favorites.png" />
-    <None Include="Resources\file-history.png" />
-    <EmbeddedResource Include="Resources\4x2r.png" />
-    <EmbeddedResource Include="Resources\4x2rt.png" />
-    <EmbeddedResource Include="Resources\4x2tt.png" />
-    <EmbeddedResource Include="Resources\6x2r.png" />
-    <EmbeddedResource Include="Resources\6x2rt.png" />
-    <EmbeddedResource Include="Resources\6x2tt.png" />
-    <Content Include="Resources\F_ENG.ico" />
-    <Content Include="Resources\F_GBX.ico" />
-    <Content Include="Resources\F_VECTO.ico" />
-    <Content Include="Resources\F_VEH.ico" />
-    <Content Include="Resources\Graph.ico" />
-    <None Include="Resources\P_fan_eqn.png" />
-    <Content Include="Resources\Status-dialog-password-icon.ico" />
-    <EmbeddedResource Include="Resources\Undef.png" />
-    <Content Include="Resources\up.ico" />
-    <Content Include="Resources\up.png" />
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
-  <Import Project="$(SolutionDir)Build\TextPreProcessing.targets" />
-  <Import Project="$(SolutionDir)Build\Packaging.targets" />
-  <Import Project="$(SolutionDir)Build\CommonSettings.targets" />
+
+  
 </Project>

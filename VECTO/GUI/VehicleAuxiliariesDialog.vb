@@ -13,7 +13,6 @@ Option Infer On
 Imports System.Linq
 Imports System.Windows.Forms
 Imports TUGraz.VectoCommon.Models
-Imports TUGraz.VectoCommon.Utils
 Imports TUGraz.VectoCore.Models.Declaration
 
 
@@ -40,7 +39,6 @@ Public Class VehicleAuxiliariesDialog
 		'CbType.Items.Add("HVAC")
 		'CbType.Items.Add("Electric System")
 		PnTech.Visible = Cfg.DeclMode
-		PnFile.Visible = Not Cfg.DeclMode
 
 		CbTech.DisplayMember = "Caption"
 		CbTech.ValueMember = "Value"
@@ -60,6 +58,7 @@ Public Class VehicleAuxiliariesDialog
 	'Set generic values for Declaration mode
 	Private Sub DeclInit()
 
+		CbType.Enabled = false
 		CbTech2.Visible = NumAxles > 1
 		CbTech3.Visible = NumAxles > 2
 		CbTech4.Visible = NumAxles > 3
@@ -133,11 +132,6 @@ Public Class VehicleAuxiliariesDialog
 		'End If
 	End Sub
 
-	'Browse for .vaux files
-	Private Sub BtBrowse_Click(sender As Object, e As EventArgs) Handles BtBrowse.Click
-		If AuxFileBrowser.OpenDialog(FileRepl(TbPath.Text, VehPath)) Then _
-			TbPath.Text = GetFilenameWithoutDirectory(AuxFileBrowser.Files(0), VehPath)
-	End Sub
 
 	'Update ID when Aux Type was changed
 	Private Sub CbType_TextChanged(sender As Object, e As EventArgs) Handles CbType.TextChanged
@@ -146,33 +140,13 @@ Public Class VehicleAuxiliariesDialog
 			TbID.Text = ""
 		Else
 			TbID.Text = CbType.SelectedValue.ToString()
-			'If Cfg.DeclMode Then
-			'	'Select Case CbType.SelectedIndex
-			'	'	Case 0
-			'	'		TbID.Text = VectoCore.Configuration.Constants.Auxiliaries.IDs.Fan
-			'	'	Case 1
-			'	'		TbID.Text = VectoCore.Configuration.Constants.Auxiliaries.IDs.SteeringPump
-
-			'	'	Case Else '2
-			'	'		TbID.Text = VectoCore.Configuration.Constants.Auxiliaries.IDs.HeatingVentilationAirCondition
-
-			'	'End Select
-			'Else
-			'	'TbID.Text = Trim(UCase(CbType.Text.Substring(0, CInt(Math.Min(CbType.Text.Length, 3)))))
-			'End If
 		End If
 	End Sub
 
-	'Update help label if ID was changed
 	Private Sub TbID_TextChanged(sender As Object, e As EventArgs) Handles TbID.TextChanged
 
 		DeclInit()
 
-		If Trim(TbID.Text) = "" Or Cfg.DeclMode Then
-			LbIDhelp.Text = ""
-		Else
-			LbIDhelp.Text = String.Format("Header in Driving cycle: <AUX_{0}>", Trim(TbID.Text))
-		End If
 	End Sub
 
 	Private Sub CbTech_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CbTech.SelectedIndexChanged

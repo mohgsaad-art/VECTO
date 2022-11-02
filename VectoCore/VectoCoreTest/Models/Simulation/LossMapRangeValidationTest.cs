@@ -36,14 +36,15 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using TUGraz.VectoCommon.Exceptions;
+using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
-using TUGraz.VectoCore.InputData.Reader;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
+using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 using TUGraz.VectoCore.OutputData.FileIO;
@@ -52,6 +53,7 @@ using TUGraz.VectoCore.Tests.Utils;
 namespace TUGraz.VectoCore.Tests.Models.Simulation
 {
 	[TestFixture]
+	[Parallelizable(ParallelScope.All)]
 	public class LossMapRangeValidationTest
 	{
 		public const string ShiftPolygonFile = @"TestData\Components\ShiftPolygons.vgbs";
@@ -83,7 +85,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			var vehicleData = new VehicleData {
 				DynamicTyreRadius = 0.85.SI<Meter>(),
 				Loading = 0.SI<Kilogram>(),
-				CurbWeight = 2000.SI<Kilogram>(),
+				CurbMass = 2000.SI<Kilogram>(),
 				AxleData =
 					new List<Axle> {
 						new Axle {
@@ -147,7 +149,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			var vehicleData = new VehicleData {
 				DynamicTyreRadius = 0.85.SI<Meter>(),
 				Loading = 0.SI<Kilogram>(),
-				CurbWeight = 2000.SI<Kilogram>(),
+				CurbMass = 2000.SI<Kilogram>(),
 				AxleData =
 					new List<Axle> {
 						new Axle {
@@ -181,9 +183,14 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			var runData = new VectoRunData {
 				EngineData = engineData,
 				AxleGearData = axleGearData,
-				Cycle = new DrivingCycleData { Entries = new List<DrivingCycleData.DrivingCycleEntry>() }
+				Cycle = new DrivingCycleData { Entries = new List<DrivingCycleData.DrivingCycleEntry>() },
+				JobType = VectoSimulationJobType.EngineOnlySimulation
 			};
-			var result = VectoRunData.ValidateRunData(runData, new ValidationContext(runData));
+			var context = new ValidationContext(runData);
+			context.InitializeServiceProvider(type => 
+				new VectoValidationModeServiceContainer(ExecutionMode.Declaration, VectoSimulationJobType.EngineOnlySimulation, PowertrainPosition.HybridPositionNotSet, GearboxType.AMT, false));
+
+			var result = VectoRunData.ValidateRunData(runData, context);
 			Assert.IsTrue(ValidationResult.Success == result);
 			Assert.IsFalse(runData.IsValid());
 		}
@@ -197,7 +204,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 						new GearData {
 //								MaxTorque = 2300.SI<NewtonMeter>(),
 							LossMap = TransmissionLossMapReader.ReadFromFile(!ratio.IsEqual(1.0) ? directlossMap : indirectLossMap, ratio,
-								string.Format("Gear {0}", i)),
+								$"Gear {i}"),
 							Ratio = ratio,
 							ShiftPolygon = ShiftPolygonReader.ReadFromFile(ShiftPolygonFile)
 						}))
@@ -256,7 +263,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 		public void CreateJobWithLossMapEfficiency_Engineering()
 		{
 			var dataProvider = JSONInputDataFactory.ReadJsonJob(@"TestData\Jobs\12t Delivery Truck Engineering Efficiency.vecto");
-			var runsFactory = new SimulatorFactory(ExecutionMode.Engineering, dataProvider, null);
+			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, dataProvider, null);
 			var jobContainer = new JobContainer(null);
 			jobContainer.AddRuns(runsFactory);
 		}
@@ -271,14 +278,14 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			var fileWriter = new FileOutputWriter(jobFileName);
 
 			var dataProvider = JSONInputDataFactory.ReadJsonJob(jobFileName);
-			var factory = new SimulatorFactory(ExecutionMode.Engineering, dataProvider, fileWriter);
+			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, dataProvider, fileWriter);
 			var jobContainer = new JobContainer(new MockSumWriter());
 			jobContainer.AddRuns(factory);
 			jobContainer.Execute();
 			jobContainer.WaitFinished();
 
 			foreach (var r in jobContainer.Runs) {
-				Assert.IsTrue(r.Run.FinishedWithoutErrors, string.Format("{0}", r.ExecException));
+				Assert.IsTrue(r.Run.FinishedWithoutErrors, $"{r.ExecException}");
 			}
 		}
 
@@ -289,7 +296,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 		public void CreateJobWith_Axle_LossMapEfficiency_Declaration()
 		{
 			var dataProvider = JSONInputDataFactory.ReadJsonJob(@"TestData\Jobs\40t_Long_Haul_Truck with AxleEfficiency.vecto");
-			var runsFactory = new SimulatorFactory(ExecutionMode.Declaration, dataProvider, null);
+			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, dataProvider, null);
 			var jobContainer = new JobContainer(null);
 
 			AssertHelper.Exception<InvalidFileFormatException>(() => jobContainer.AddRuns(runsFactory));
@@ -302,7 +309,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 		public void CreateJobWith_Gear_LossMapEfficiency_Declaration()
 		{
 			var dataProvider = JSONInputDataFactory.ReadJsonJob(@"TestData\Jobs\40t_Long_Haul_Truck with GearEfficiency.vecto");
-			var runsFactory = new SimulatorFactory(ExecutionMode.Declaration, dataProvider, null);
+			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, dataProvider, null);
 			var jobContainer = new JobContainer(null);
 
 			AssertHelper.Exception<InvalidFileFormatException>(() => jobContainer.AddRuns(runsFactory));

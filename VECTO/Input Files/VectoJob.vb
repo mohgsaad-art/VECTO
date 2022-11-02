@@ -15,7 +15,6 @@ Imports System.Collections.Generic
 Imports System.ComponentModel.DataAnnotations
 Imports System.IO
 Imports System.Linq
-Imports System.Text
 Imports System.Xml.Linq
 Imports TUGraz.VECTO.Input_Files
 Imports TUGraz.VectoCommon.Exceptions
@@ -32,15 +31,11 @@ Imports TUGraz.VectoCore.Utils
 <CustomValidation(GetType(VectoJob), "ValidateJob")>
 Public Class VectoJob
     Implements IEngineeringInputDataProvider, IDeclarationInputDataProvider, IEngineeringJobInputData,
-                IDeclarationJobInputData, IDriverEngineeringInputData, IDriverDeclarationInputData, IAuxiliariesEngineeringInputData,
-                IAuxiliariesDeclarationInputData, IJSONVehicleComponents
+                IDeclarationJobInputData, IDriverEngineeringInputData, IDriverDeclarationInputData, IAuxiliariesEngineeringInputData, IAuxiliaryEngineeringInputData,
+                IAuxiliariesDeclarationInputData, IJSONVehicleComponents, IEngineStopStartEngineeringInputData, IEcoRollEngineeringInputData, IPCCEngineeringInputData
 
-    'AA-TB
-    'STORES THE Type and version of the chosen or default Auxiliary Type ( Classic/Original or other )
-    Public AuxiliaryAssembly As String
-    Public AuxiliaryVersion As String
-    Public AdvancedAuxiliaryFilePath As String
 
+    
     Private _sFilePath As String
     Private _myPath As String
 
@@ -48,34 +43,56 @@ Public Class VectoJob
     Private ReadOnly _vehicleFile As SubPath
     Private ReadOnly _engineFile As SubPath
     Private ReadOnly _gearboxFile As SubPath
+    Private ReadOnly _tcuFile As SubPath
+    Private ReadOnly _hcuFile As SubPath
+    Private ReadOnly _busAuxFile As SubPath
 
     Private ReadOnly _lacDfTargetSpeedFile As SubPath
     Private ReadOnly _lacDfVelocityDropFile as SubPath
+    Private ReadOnly _ptoCycleWhileDriveFile as SubPath
 
     Private _startStop As Boolean
     Public StartStopDelay As Double
 
+    public UseBusAux as Boolean
+
     Private ReadOnly _driverAccelerationFile As SubPath
 
-    Public ReadOnly AuxPaths As Dictionary(Of String, AuxEntry)
     'Alle Nebenverbraucher die in der Veh-Datei UND im Zyklus definiert sind
 
     Public ReadOnly CycleFiles As List(Of SubPath)
 
-    Public EngineOnly As Boolean
+    'Public EngineOnly As Boolean
 
     Public VMin As Double
     Public LookAheadOn As Boolean
     Public OverSpeedOn As Boolean
     Public OverSpeed As Double
-    Public UnderSpeed As Double
-    Public EcoRollOn As Boolean
+   
 
     Public LookAheadMinSpeed As Double
+    Public EngineStopStartActivationThreshold As Double
+    public EngineOffTimeLimit As double
+    public EngineStStUtilityFactor As Double
+    public EngineStStUtilityFactorDriving as Double
 
-    Public Property StartStopMaxSpeed As Double
+    Public EcoRollMinSpeed As double
+    Public EcoRollUnderspeedThreshold As Double
+    Public EcoRollActivationDelay as double
+    public EcoRollMaxAcceleration as Double
 
-    Public Property StartStopTime As Double
+    Public PCCEnableSpeedVal As Double
+    Public PCCMinSpeed As Double
+    Public PCCPrevewiDistance1 As Double
+    Public PCCPreviewDistance2 As Double
+    Public PCCUnderspeed As Double
+    Public PCCOverspeedUseCase3 As Double
+    Private _accelerationUpperLimit As MeterPerSquareSecond
+    Public AuxElPadd As Double
+    Public AuxPwrDrivingICEOff As Double
+    Public AuxPwrStandstillICEOff As Double
+
+    Public AuxEntries As Dictionary(Of String, AuxEntry )
 
     'Private _vehicleInputData As JSONComponentInputData
     'Private _engineInputData As JSONComponentInputData
@@ -100,20 +117,30 @@ Public Class VectoJob
         _vehicleFile = New SubPath
         _engineFile = New SubPath
         _gearboxFile = New SubPath
+        _tcuFile = New SubPath
+        _hcuFile = New SubPath()
+        _busAuxFile = new SubPath()
         _lacDfTargetSpeedFile = New SubPath()
         _lacDfVelocityDropFile = New SubPath()
+        _ptoCycleWhileDriveFile = new SubPath()
 
         _driverAccelerationFile = New SubPath
 
-        AuxPaths = New Dictionary(Of String, AuxEntry)
-
         CycleFiles = New List(Of SubPath)
+
+        AuxEntries = new Dictionary(Of String,AuxEntry)
     End Sub
 
     Public Function SaveFile() As Boolean
+        dim emPos As PowertrainPosition? = Nothing
+        if (IEngineeringJobInputData_Vehicle?.VehicleType <> VectoSimulationJobType.ConventionalVehicle) then
+            if (IEngineeringJobInputData_Vehicle.VehicleType <> VectoSimulationJobType.IEPC_E) Then
+                emPos =  IEngineeringJobInputData_Vehicle?.Components.ElectricMachines?.Entries.FirstOrDefault()?.Position
+            End If
+        end if
+
         Dim validationResults As IList(Of ValidationResult) =
-                Validate(If(Cfg.DeclMode, ExecutionMode.Declaration, ExecutionMode.Engineering),
-                        Nothing, False)
+                Validate(If(Cfg.DeclMode, ExecutionMode.Declaration, ExecutionMode.Engineering), JobType, emPos, Nothing, False)
 
         If validationResults.Count > 0 Then
             Dim messages As IEnumerable(Of String) =
@@ -125,7 +152,7 @@ Public Class VectoJob
 
         Try
             Dim writer As JSONFileWriter = JSONFileWriter.Instance
-            writer.SaveJob(Me, _sFilePath)
+            writer.SaveJob(Me, _sFilePath, cfg.DeclMode)
         Catch ex As Exception
             MsgBox("Failed to save Job file: " + ex.Message)
             Return False
@@ -193,6 +220,45 @@ Public Class VectoJob
         End Set
     End Property
 
+    Public Property PathBusAux(Optional ByVal original As Boolean = False) As String
+        Get
+            If original Then
+                Return _busAuxFile.OriginalPath
+            Else
+                Return _busAuxFile.FullPath
+            End If
+        End Get
+        Set(value As String)
+            _busAuxFile.Init(_myPath, value)
+        End Set
+    End Property
+
+    Public Property PathShiftParams(Optional ByVal original As Boolean = False) As String
+        Get
+            If original Then
+                Return _tcuFile.OriginalPath
+            Else
+                Return _tcuFile.FullPath
+            End If
+        End Get
+        Set(value As String)
+            _tcuFile.Init(_myPath, value)
+        End Set
+    End Property
+
+    Public Property PathHybridStrategyParams(Optional ByVal original As Boolean = False) As String
+        Get
+            If original Then
+                Return _hcuFile.OriginalPath
+            Else
+                Return _hcuFile.FullPath
+            End If
+        End Get
+        Set(value As String)
+            _hcuFile.Init(_myPath, value)
+        End Set
+    End Property
+
 
     Public ReadOnly Property IDriverDeclarationInputData_SavedInDeclarationMode As Boolean _
         Implements IDriverDeclarationInputData.SavedInDeclarationMode
@@ -210,21 +276,13 @@ Public Class VectoJob
     '	End Set
     'End Property
 
-    Public ReadOnly Property IDriverEngineeringInputData_OverSpeedEcoRoll As IOverSpeedEcoRollEngineeringInputData _
-        Implements IDriverEngineeringInputData.OverSpeedEcoRoll
+    Public ReadOnly Property OverSpeedData As IOverSpeedEngineeringInputData _
+        Implements IDriverEngineeringInputData.OverSpeedData
         Get
-            Dim mode As DriverMode = DriverMode.Off
-            If EcoRollOn Then
-                mode = DriverMode.EcoRoll
-            ElseIf OverSpeedOn Then
-                mode = DriverMode.Overspeed
-            End If
-
-            Return New OverSpeedEcoRollInputData() With {
-                .Mode = mode,
+           Return New OverSpeedInputData() With {
+                .Enabled = OverSpeedOn,
                 .MinSpeed = VMin.KMPHtoMeterPerSecond(),
-                .OverSpeed = OverSpeed.KMPHtoMeterPerSecond(),
-                .UnderSpeed = UnderSpeed.KMPHtoMeterPerSecond()
+                .OverSpeed = OverSpeed.KMPHtoMeterPerSecond()
                 }
         End Get
     End Property
@@ -270,10 +328,108 @@ Public Class VectoJob
         End Get
     End Property
 
-    Public ReadOnly Property GearshiftInputData As IGearshiftEngineeringInputData Implements IDriverEngineeringInputData.GearshiftInputData
-        get
-            Return TryCast( New JSONComponentInputData(_gearboxFile.FullPath, Me).JobInputData.Vehicle.Components.GearboxInputData, IGearshiftEngineeringInputData)
+    Public ReadOnly Property IDriverEngineeringInputData_GearshiftInputData As IGearshiftEngineeringInputData Implements IDriverEngineeringInputData.GearshiftInputData
+        Get
+            return new JSONComponentInputData(_tcuFile.FullPath, Me).DriverInputData.GearshiftInputData
         End Get
+    End Property
+
+    Public ReadOnly Property EngineStopStartData As IEngineStopStartEngineeringInputData Implements IDriverEngineeringInputData.EngineStopStartData
+        Get
+            Return me
+        End Get
+    End Property
+
+    Public ReadOnly Property EcoRollData As IEcoRollEngineeringInputData Implements IDriverEngineeringInputData.EcoRollData
+    Get
+            Return me
+    End Get
+    End Property
+
+    Public ReadOnly Property PCCData As IPCCEngineeringInputData Implements IDriverEngineeringInputData.PCCData
+    get
+            return me
+    End Get
+    End Property
+
+    Public ReadOnly Property PCCEnabledSpeed As MeterPerSecond Implements IPCCEngineeringInputData.PCCEnabledSpeed
+    get
+            return PCCEnableSpeedVal.KMPHtoMeterPerSecond()
+    End Get
+    End Property
+    Public ReadOnly Property IPCCEngineeringInputData_MinSpeed As MeterPerSecond Implements IPCCEngineeringInputData.MinSpeed
+    get
+            return PCCMinSpeed.KMPHtoMeterPerSecond()
+    End Get
+    End Property
+
+    Public ReadOnly Property MinSpeed As MeterPerSecond Implements IEcoRollEngineeringInputData.MinSpeed
+    get
+            Return EcoRollMinSpeed.KMPHtoMeterPerSecond()
+    End Get
+    End Property
+
+    Public ReadOnly Property PreviewDistanceUseCase1 As Meter Implements IPCCEngineeringInputData.PreviewDistanceUseCase1
+    get
+            return PCCPrevewiDistance1.SI(of Meter)
+    End Get
+    End Property
+    Public ReadOnly Property PreviewDistanceUseCase2 As Meter Implements IPCCEngineeringInputData.PreviewDistanceUseCase2
+    get
+            return PCCPreviewDistance2.SI(of Meter)
+    End Get
+    End Property
+    Public ReadOnly Property Underspeed As MeterPerSecond Implements IPCCEngineeringInputData.Underspeed
+    get
+            return PCCUnderspeed.KMPHtoMeterPerSecond()
+    End Get
+    End Property
+    Public ReadOnly Property OverspeedUseCase3 As MeterPerSecond Implements IPCCEngineeringInputData.OverspeedUseCase3
+    get
+            Return PCCOverspeedUseCase3.KMPHtoMeterPerSecond()
+    End Get
+    End Property
+
+    Public ReadOnly Property IEcoRollEngineeringInputData_ActivationDelay As Second Implements IEcoRollEngineeringInputData.ActivationDelay
+    get
+            Return EcoRollActivationDelay.SI(Of Second)()
+    End Get
+    End Property
+
+    Public ReadOnly Property ActivationDelay As Second Implements IEngineStopStartEngineeringInputData.ActivationDelay
+        Get
+            return EngineStopStartActivationThreshold.SI(Of Second)()
+        End Get
+    End Property
+
+    Public ReadOnly Property UnderspeedThreshold As MeterPerSecond Implements IEcoRollEngineeringInputData.UnderspeedThreshold
+    get
+            Return EcoRollUnderspeedThreshold.KMPHtoMeterPerSecond()
+    End Get
+    End Property
+
+    Public ReadOnly Property AccelerationUpperLimit As MeterPerSquareSecond Implements IEcoRollEngineeringInputData.AccelerationUpperLimit
+        Get
+            Return EcoRollMaxAcceleration.SI(of MeterPerSquareSecond)
+        End Get
+    End Property
+
+    Public ReadOnly Property MaxEngineOffTimespan As Second Implements IEngineStopStartEngineeringInputData.MaxEngineOffTimespan
+        Get
+            Return EngineOffTimeLimit.SI(Of Second)()
+        End Get
+    End Property
+
+    Public ReadOnly Property UtilityFactorStandstill As Double Implements IEngineStopStartEngineeringInputData.UtilityFactorStandstill
+        Get
+            Return EngineStStUtilityFactor
+        End Get
+    End Property
+
+    Public ReadOnly Property UtilityFactorDriving As Double Implements IEngineStopStartEngineeringInputData.UtilityFactorDriving
+    get
+        Return EngineStStUtilityFactorDriving
+    End Get
     End Property
 
     Public Property DesMaxFile(Optional ByVal original As Boolean = False) As String
@@ -320,6 +476,7 @@ Public Class VectoJob
 
 #End Region
 
+
     ' ReSharper disable once UnusedMember.Global -- used by Validation
     Public Shared Function ValidateJob(vectoJob As VectoJob, validationContext As ValidationContext) As ValidationResult
         Dim modeService As VectoValidationModeServiceContainer =
@@ -327,7 +484,7 @@ Public Class VectoJob
                         VectoValidationModeServiceContainer)
         Dim mode As ExecutionMode = If(modeService Is Nothing, ExecutionMode.Declaration, modeService.Mode)
 
-        If mode = ExecutionMode.Engineering AndAlso vectoJob.EngineOnly Then
+        If mode = ExecutionMode.Engineering AndAlso vectoJob.JobType = VectoSimulationJobType.EngineOnlySimulation Then
             Return ValidateEngineOnlyJob(vectoJob, mode)
         End If
 
@@ -356,15 +513,29 @@ Public Class VectoJob
         Dim result As IList(Of ValidationResult) = New List(Of ValidationResult)
 
         Dim vehicleInputData As IVehicleEngineeringInputData = vectoJob.JobInputData.Vehicle
+        If vehicleInputData Is Nothing Then
+            result.Add(New ValidationResult("Vehicle File is missing or invalid"))
+            Return New ValidationResult("Vecto Job Configuration is invalid. ", result.Select(Function(r) r.ErrorMessage).ToList())
+        End If
+
         Dim engineInputData As IEngineDeclarationInputData = vectoJob.JobInputData.Vehicle.Components.EngineInputData
         Dim gearboxInputData As IGearboxDeclarationInputData = vectoJob.Vehicle.Components.GearboxInputData
+        Dim gearshiftInputData As IGearshiftEngineeringInputData = vectoJob.DriverInputData.GearshiftInputData
 
-        If vehicleInputData Is Nothing Then _
-            result.Add(New ValidationResult("Vehicle File is missing or invalid"))
-        If engineInputData Is Nothing Then _
+        If (vehicleInputData.VehicleType <> vectoJob.JobType) Then
+            result.Add(New ValidationResult($"Vehicle type ""{vehicleInputData.VehicleType}"" differs from job type ""{vectoJob.JobType}""."))
+        End If
+        If vectoJob.JobType.IsOneOf(VectoSimulationJobType.BatteryElectricVehicle, VectoSimulationJobType.ParallelHybridVehicle, VectoSimulationJobType.SerialHybridVehicle) _
+           AndAlso (vehicleInputData.Components.ElectricMachines Is Nothing OrElse vehicleInputData.Components.ElectricMachines.Entries.Count = 0) Then _
+            result.Add(New ValidationResult("Electric machine is missing in vehicle"))
+        If Not (vectoJob.JobType = VectoSimulationJobType.BatteryElectricVehicle OrElse vectoJob.JobType = VectoSimulationJobType.IEPC_E) AndAlso engineInputData Is Nothing Then _
             result.Add(New ValidationResult("Engine File is missing or invalid"))
-        If gearboxInputData Is Nothing Then _
+        If (vectoJob.JobType = VectoSimulationJobType.ConventionalVehicle OrElse vectoJob.JobType = VectoSimulationJobType.ParallelHybridVehicle) _
+             AndAlso gearboxInputData Is Nothing Then _
             result.Add(New ValidationResult("Gearbox File is missing or invalid"))
+        If (mode = ExecutionMode.Engineering andalso vectoJob.JobType = VectoSimulationJobType.ConventionalVehicle OrElse vectoJob.JobType = VectoSimulationJobType.ParallelHybridVehicle) _
+             AndAlso gearshiftInputData Is Nothing Then _
+            result.Add(New ValidationResult("Gearshift File is missing or invalid"))
 
         If result.Any() Then
             Return _
@@ -386,18 +557,22 @@ Public Class VectoJob
                         New ValidationResult("Vecto Job Configuration is invalid. ", result.Select(Function(r) r.ErrorMessage).ToList())
                 End If
 
-                Dim dataFactory As DeclarationModeVectoRunDataFactory = New DeclarationModeVectoRunDataFactory(vectoJob, Nothing)
+                Dim dataFactory As DeclarationModeTruckVectoRunDataFactory = New DeclarationModeTruckVectoRunDataFactory(vectoJob, Nothing)
 
                 jobData = dataFactory.NextRun().First()
             Else
                 If vehicleInputData.SavedInDeclarationMode Then
                     result.Add(New ValidationResult("Vehicle File is not in Engineering Mode"))
                 End If
-                If engineInputData.SavedInDeclarationMode Then
+                If Not (vectoJob.JobType = VectoSimulationJobType.BatteryElectricVehicle OrElse vectoJob.JobType = VectoSimulationJobType.IEPC_E) AndAlso engineInputData.SavedInDeclarationMode Then
                     result.Add(New ValidationResult("Engine File is not in Engineering Mode"))
                 End If
-                If gearboxInputData.SavedInDeclarationMode Then
+                If Not vectoJob.JobType = VectoSimulationJobType.BatteryElectricVehicle _ 
+                    AndAlso gearboxInputData IsNot Nothing AndAlso gearboxInputData.SavedInDeclarationMode Then
                     result.Add(New ValidationResult("Gearbox File is not in Engineering Mode"))
+                End If
+                If vectoJob.CycleFiles.Count = 0 Then
+                    result.Add(New ValidationResult("At least one cycle must be defined."))
                 End If
                 If result.Any() Then
                     Return _
@@ -410,9 +585,13 @@ Public Class VectoJob
                 End If
             End If
 
-
-            result = jobData.Validate(If(Cfg.DeclMode, ExecutionMode.Declaration, ExecutionMode.Engineering),
-                                    jobData.GearboxData.Type, False)
+            dim emPos As PowertrainPosition? = Nothing
+            if (vehicleInputData?.VehicleType <> VectoSimulationJobType.ConventionalVehicle) then
+                if (vehicleInputData.VehicleType <> VectoSimulationJobType.IEPC_E) Then
+                    emPos =  vehicleInputData?.Components.ElectricMachines?.Entries.FirstOrDefault()?.Position
+                End If
+            end if
+            result = jobData.Validate(If(Cfg.DeclMode, ExecutionMode.Declaration, ExecutionMode.Engineering), vehicleInputData.VehicleType, empos, If(jobData.GearboxData?.Type, GearboxType.NoGearbox), False)
             If result.Any() Then
                 Return _
                     New ValidationResult("Vecto Job Configuration is invalid. ", result.Select(Function(r) r.ErrorMessage).ToList())
@@ -439,6 +618,8 @@ Public Class VectoJob
         End Get
     End Property
 
+    Public ReadOnly Property PrimaryVehicleData As IPrimaryVehicleInformationInputDataProvider Implements IDeclarationInputDataProvider.PrimaryVehicleData
+
     Public ReadOnly Property IDeclarationInputDataProvider_JobInputData As IDeclarationJobInputData _
         Implements IDeclarationInputDataProvider.JobInputData
         Get
@@ -452,6 +633,13 @@ Public Class VectoJob
             Return Me
         End Get
     End Property
+
+    'Public ReadOnly Property GearshiftInputData As IGearshiftEngineeringInputData Implements IDriverEngineeringInputData.GearshiftInputData
+    '    get
+    '        Return TryCast( New JSONComponentInputData(_gearboxFile.FullPath, Me).JobInputData.Vehicle.Components.GearboxInputData, IGearshiftEngineeringInputData)
+    '    End Get
+    'End Property
+
 
     Public ReadOnly Property XMLHash As XElement Implements IDeclarationInputDataProvider.XMLHash
         Get
@@ -479,6 +667,13 @@ Public Class VectoJob
         Get
             If Not File.Exists(_vehicleFile.FullPath) Then Return Nothing
             Return New JSONComponentInputData(_vehicleFile.FullPath, Me).JobInputData.Vehicle
+        End Get
+    End Property
+
+    Public ReadOnly Property HybridStrategyParameters As IHybridStrategyParameters Implements IEngineeringJobInputData.HybridStrategyParameters
+        Get
+            If Not File.Exists(_hcuFile.FullPath) Then Return Nothing
+            Return New JSONComponentInputData(_hcuFile.FullPath, Me).JobInputData.HybridStrategyParameters
         End Get
     End Property
 
@@ -510,12 +705,10 @@ Public Class VectoJob
         End Get
     End Property
 
-    Public ReadOnly Property EngineOnlyMode As Boolean Implements IEngineeringJobInputData.EngineOnlyMode
-        Get
-            Return EngineOnly
-        End Get
-    End Property
+    Public Property JobType As VectoSimulationJobType Implements IEngineeringJobInputData.JobType
 
+
+ 
     Public ReadOnly Property IEngineeringJobInputData_EngineOnly As IEngineEngineeringInputData Implements IEngineeringJobInputData.EngineOnly
         Get
             If Not File.Exists(_engineFile.FullPath) Then Return Nothing
@@ -529,7 +722,8 @@ Public Class VectoJob
         End Get
     End Property
 
-    Public Property AuxPAdd As Double
+    
+    Public Property AuxPwrICEOn As Double
 
     Public ReadOnly Property IAuxiliariesDeclarationInputData_SavedInDeclarationMode As Boolean _
         Implements IAuxiliariesDeclarationInputData.SavedInDeclarationMode
@@ -538,33 +732,22 @@ Public Class VectoJob
         End Get
     End Property
 
-    Public ReadOnly Property Auxiliaries As IList(Of IAuxiliaryEngineeringInputData) _
+    Public ReadOnly Property Auxiliaries As IAuxiliaryEngineeringInputData _
         Implements IAuxiliariesEngineeringInputData.Auxiliaries
         Get
-            Return AuxData().Cast(Of IAuxiliaryEngineeringInputData).ToList()
+            Return  Me 'AuxData().Cast(Of IAuxiliariesEngineeringInputData).ToList()
         End Get
     End Property
 
-    Public ReadOnly Property IAuxiliariesEngineeringInputData_AdvancedAuxiliaryFilePath As String _
-        Implements IAuxiliariesEngineeringInputData.AdvancedAuxiliaryFilePath
-        Get
-            Return AdvancedAuxiliaryFilePath
-        End Get
+    Public ReadOnly Property BusAuxiliariesData As IBusAuxiliariesEngineeringData Implements IAuxiliariesEngineeringInputData.BusAuxiliariesData
+    get
+        If (not UseBusAux) Then
+            Return Nothing
+        End If
+        Return New JSONComponentInputData(_busAuxFile.FullPath, Me).JobInputData.Vehicle.Components.AuxiliaryInputData.BusAuxiliariesData
+    End Get
     End Property
 
-    Public ReadOnly Property IAuxiliariesEngineeringInputData_AuxiliaryVersion As String _
-        Implements IAuxiliariesEngineeringInputData.AuxiliaryVersion
-        Get
-            Return AuxiliaryVersion
-        End Get
-    End Property
-
-    Public ReadOnly Property IAuxiliariesEngineeringInputData_AuxiliaryAssembly As AuxiliaryModel _
-        Implements IAuxiliariesEngineeringInputData.AuxiliaryAssembly
-        Get
-            Return AuxiliaryModelHelper.Parse(AuxiliaryAssembly)
-        End Get
-    End Property
 
     Public ReadOnly Property IAuxiliariesDeclarationInputData_Auxiliaries As IList(Of IAuxiliaryDeclarationInputData) _
         Implements IAuxiliariesDeclarationInputData.Auxiliaries
@@ -573,36 +756,12 @@ Public Class VectoJob
         End Get
     End Property
 
-    Protected Function AuxData() As IList(Of AuxiliaryDataInputData)
-        Dim retVal As List(Of AuxiliaryDataInputData) = New List(Of AuxiliaryDataInputData)
+    Protected Function AuxData() As IList(Of DeclarationAuxiliaryDataInputData)
 
-        If AuxPAdd > 0 Then
-            retVal.Add(New AuxiliaryDataInputData() With {
-                        .ID = "ConstantAux",
-                        .AuxiliaryType = AuxiliaryDemandType.Constant,
-                        .ConstantPowerDemand = AuxPAdd.SI(Of Watt)()
-                        })
-        End If
-        For Each auxEntry As KeyValuePair(Of String, AuxEntry) In AuxPaths
-            Dim theAuxData As AuxiliaryDataInputData = New AuxiliaryDataInputData() With {
-                    .Type = auxEntry.Value.Type,
-                    .Technology = auxEntry.Value.TechnologyList,
-                    .ID = auxEntry.Key
-                    }
-            retVal.Add(theAuxData)
-            If Not File.Exists(auxEntry.Value.Path.FullPath) Then Continue For
-
-            Dim stream As StreamReader = New StreamReader(auxEntry.Value.Path.FullPath)
-            stream.ReadLine() ' skip header "Transmission ration to engine rpm [-]"
-            theAuxData.TransmissionRatio = stream.ReadLine().IndulgentParse()
-            stream.ReadLine() ' skip header "Efficiency to engine [-]"
-            theAuxData.EfficiencyToEngine = stream.ReadLine().IndulgentParse()
-            stream.ReadLine() ' skip header "Efficiency auxiliary to supply [-]"
-            theAuxData.EfficiencyToSupply = stream.ReadLine().IndulgentParse()
-            theAuxData.DemandMap = VectoCSVFile.ReadStream(New MemoryStream(Encoding.UTF8.GetBytes(stream.ReadToEnd())),
-                                                            source:=auxEntry.Value.Path.FullPath)
+        Dim retVal As List(Of DeclarationAuxiliaryDataInputData) = New List(Of DeclarationAuxiliaryDataInputData)
+        For Each entry As KeyValuePair(Of string, AuxEntry) In AuxEntries
+            retVal.Add(New DeclarationAuxiliaryDataInputData() With{ .ID = entry.Key, .Technology = entry.Value.TechnologyList, .Type = AuxiliaryTypeHelper.ParseKey(entry.Key)})
         Next
-
         Return retVal
     End Function
 
@@ -654,6 +813,28 @@ Public Class VectoJob
             Return retVal
         End Get
     End Property
+
+    Public ReadOnly Property ConstantPowerDemand As Watt Implements IAuxiliaryEngineeringInputData.ConstantPowerDemand
+    get
+        Return AuxPwrICEOn.SI(of Watt)
+    End Get
+    End Property
+    Public ReadOnly Property PowerDemandICEOffDriving As Watt Implements IAuxiliaryEngineeringInputData.PowerDemandICEOffDriving
+    get
+        Return AuxPwrDrivingICEOff.SI(of Watt)
+    End Get
+    End Property
+    Public ReadOnly Property PowerDemandICEOffStandstill As Watt Implements IAuxiliaryEngineeringInputData.PowerDemandICEOffStandstill
+    get
+        Return AuxPwrStandstillICEOff.SI(Of Watt)
+    End Get
+    End Property
+    Public ReadOnly Property ElectricPowerDemand As Watt Implements IAuxiliaryEngineeringInputData.ElectricPowerDemand
+    get
+            Return AuxElPadd.SI(of Watt)
+    End Get
+    End Property
+
 
 End Class
 

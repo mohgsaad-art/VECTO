@@ -1,6 +1,5 @@
 ﻿Imports System.ComponentModel
 Imports Microsoft.VisualBasic.CompilerServices
-Imports TUGraz.VECTO.My.Resources
 
 <DesignerGenerated()> _
 Partial Class Settings

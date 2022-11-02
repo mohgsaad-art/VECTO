@@ -77,7 +77,7 @@ namespace TUGraz.VectoCommon.Utils
 		[DebuggerStepThrough]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool IsRelativeEqual(this double expected, double actual,
-			double toleranceFactor = DoubleExtensionMethods.ToleranceFactor)
+			double toleranceFactor = ToleranceFactor)
 		{
 			if (double.IsNaN(expected)) {
 				return double.IsNaN(actual);
@@ -156,13 +156,25 @@ namespace TUGraz.VectoCommon.Utils
 		}
 
 		/// <summary>
+		/// Determines whether the specified tolerance is positive within tolerance.
+		/// </summary>
+		/// <param name="self">The self.</param>
+		/// <param name="tolerance">The tolerance.</param>
+		[DebuggerStepThrough]
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool IsNegative(this double self, double tolerance = Tolerance)
+		{
+			return self <= tolerance;
+		}
+
+		/// <summary>
 		/// Checks if a value is between min and max (min &lt;= value &lt;= max)
 		/// </summary>
 		[DebuggerStepThrough]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool IsBetween(this double self, double min, double max)
 		{
-			return min <= self && self <= max;
+			return Math.Min(min, max) <= self && self <= Math.Max(min, max);
 		}
 
 		/// <summary>
@@ -172,7 +184,7 @@ namespace TUGraz.VectoCommon.Utils
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool IsBetween(this double self, SI min, SI max)
 		{
-			return min <= self && self <= max;
+			return VectoMath.Min(min, max) <= self && self <= VectoMath.Max(min, max);
 		}
 
 		/// <summary>
@@ -184,6 +196,11 @@ namespace TUGraz.VectoCommon.Utils
 		public static PerSecond RPMtoRad(this double self)
 		{
 			return SI<PerSecond>(self * 2 * Math.PI / 60.0);
+		}
+
+		public static Kelvin DegCelsiusToKelvin(this double self)
+		{
+			return SI<Kelvin>(self + 273.16);
 		}
 
 		/// <summary>
@@ -237,9 +254,9 @@ namespace TUGraz.VectoCommon.Utils
 			return SIBase<Scalar>.Create(value);
 		}
 
-	    public static SI SI(this double value, UnitInstance si)
-	    {
-	        return new SI(si, value);
+		public static SI SI(this double value, UnitInstance si)
+		{
+			return new SI(si, value);
 		}
 
 		/// <summary>
@@ -261,9 +278,9 @@ namespace TUGraz.VectoCommon.Utils
 
 		[DebuggerStepThrough]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static string ToGUIFormat(this double self)
+		public static string ToGUIFormat(this double self, int decimals = 12)
 		{
-			return self.ToString(CultureInfo.InvariantCulture);
+			return Math.Round(self, decimals).ToString(CultureInfo.InvariantCulture);
 		}
 
 		[DebuggerStepThrough]
@@ -274,17 +291,17 @@ namespace TUGraz.VectoCommon.Utils
 			return self.ToString("F" + decimals.Value, CultureInfo.InvariantCulture);
 		}
 
-        public static string ToXMLFormat(this ConvertedSI self, uint? decimals = null)
-        {
-            decimals = decimals ?? 2;
-            return ((double)self).ToString("F" + decimals.Value, CultureInfo.InvariantCulture);
-        }
+		public static string ToXMLFormat(this ConvertedSI self, uint? decimals = null)
+		{
+			decimals = decimals ?? 2;
+			return ((double)self).ToString("F" + decimals.Value, CultureInfo.InvariantCulture);
+		}
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string ToMinSignificantDigits(this ConvertedSI self, uint? significant = null, uint? decimals = null)
-        {
-            return ToMinSignificantDigits((double)self, significant, decimals);
-        }
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static string ToMinSignificantDigits(this ConvertedSI self, uint? significant = null, uint? decimals = null)
+		{
+			return ToMinSignificantDigits((double)self, significant, decimals);
+		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string ToMinSignificantDigits(this double self, uint? significant = null, uint? decimals = null)
@@ -299,6 +316,9 @@ namespace TUGraz.VectoCommon.Utils
 
 			return self.ToString("F" + Math.Max(significant.Value - scale, decimals.Value), CultureInfo.InvariantCulture);
 		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool IsNaN(this double self) => double.IsNaN(self);
 	}
 
 	public static class FloatExtensionMethods

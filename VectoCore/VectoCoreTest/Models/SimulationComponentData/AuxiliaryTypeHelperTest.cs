@@ -37,6 +37,7 @@ using TUGraz.VectoCore.Models.Declaration;
 namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 {
     [TestFixture]
+	[Parallelizable(ParallelScope.All)]
 	public class AuxiliaryTypeHelperTest
 	{
 		[TestCase]

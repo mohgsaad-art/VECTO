@@ -33,6 +33,10 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Xml;
+using System.Xml.Linq;
+using Newtonsoft.Json;
+using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
@@ -53,6 +57,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 
 		public SquareMeter DeclaredAirdragArea { get; internal set; }
 
+		public SquareMeter DeclaredAirdragAreaInput { get; internal set; }
+
 		// ReSharper disable once UnusedMember.Global  -- used via Validation
 		public static ValidationResult ValidateAirDragData(AirdragData airDragData, ValidationContext validationContext)
 		{
@@ -70,11 +76,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 	/// Data Class for the Vehicle
 	/// </summary>
 	[CustomValidation(typeof(VehicleData), "ValidateVehicleData")]
-	public class VehicleData : SimulationComponentData
+	public class VehicleData : SimulationComponentData, IVehicleData
 	{
 		public string VIN { get; internal set; }
 
-		public LegislativeClass LegislativeClass { get; internal set; }
+		public LegislativeClass? LegislativeClass { get; internal set; }
 
 		public VehicleCategory VehicleCategory { get; internal set; }
 
@@ -94,7 +100,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 
 		public List<Axle> AxleData
 		{
-			get { return _axleData; }
+			get => _axleData;
 			internal set {
 				_axleData = value;
 				_wheelsInertia = null;
@@ -103,42 +109,45 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 		}
 
 		/// <summary>
-		/// The Curb Weight of the vehicle 
-		/// (+ Curb Weight of Standard-Body if it has one)
-		/// (+ Curb Weight of Trailer if it has one)
+		/// The Curb mass of the vehicle 
+		/// (+ Curb mass of Standard-Body if it has one)
+		/// (+ Curb mass of Trailer if it has one)
 		/// </summary>
 		[Required, SIRange(500, 40000, emsMission: false),
 		SIRange(0, 60000, emsMission: true)]
-		public Kilogram CurbWeight { get; internal set; }
+		public Kilogram CurbMass { get; internal set; }
 
 		/// <summary>
-		/// Curb Weight of Standard-Body (if it has one)
-		/// + Curb Weight of Trailer (if it has one)
+		/// Curb mass of Standard-Body (if it has one)
+		/// + Curb mass of Trailer (if it has one)
 		/// </summary>
-		public Kilogram BodyAndTrailerWeight { get; internal set; }
+		public Kilogram BodyAndTrailerMass { get; internal set; }
 
 		[Required, SIRange(0, 40000, emsMission: false),
 		SIRange(0, 60000, emsMission: true)]
 		public Kilogram Loading { get; internal set; }
 
+		public double? PassengerCount { get; internal set; }
+
+
 		[SIRange(0, 500)]
 		public CubicMeter CargoVolume { get; internal set; }
 
 		/// <summary>
-		/// The Gross Vehicle Weight of the Vehicle.
+		/// The Gross Vehicle mass of the Vehicle.
 		/// </summary>
 		[Required,
 		SIRange(3500, 40000, ExecutionMode.Declaration, emsMission: false),
 		SIRange(0, 60000, ExecutionMode.Declaration, emsMission: true),
 		SIRange(0, 1000000, ExecutionMode.Engineering)]
-		public Kilogram GrossVehicleWeight { get; internal set; }
+		public Kilogram GrossVehicleMass { get; internal set; }
 
 		/// <summary>
-		/// The Gross Vehicle Weight of the Trailer (if the vehicle has one).
+		/// The Gross Vehicle mass of the Trailer (if the vehicle has one).
 		/// </summary>
 		[Required, SIRange(0, 40000, emsMission: false),
 		SIRange(0, 60000, emsMission: true)]
-		public Kilogram TrailerGrossVehicleWeight { get; internal set; }
+		public Kilogram TrailerGrossVehicleMass { get; internal set; }
 
 		[Required, SIRange(0.1, 2)]
 		public Meter DynamicTyreRadius { get; internal set; }
@@ -154,7 +163,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 				}
 				return _wheelsInertia;
 			}
-			internal set { _wheelsInertia = value; }
+			internal set => _wheelsInertia = value;
 		}
 
 		//[Required, SIRange(0, 1E12)]
@@ -166,7 +175,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 				}
 				return _totalRollResistanceCoefficient.GetValueOrDefault();
 			}
-			protected internal set { _totalRollResistanceCoefficient = value; }
+			protected internal set => _totalRollResistanceCoefficient = value;
 		}
 
 		public double RollResistanceCoefficientWithoutTrailer
@@ -177,24 +186,33 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 				}
 				return _rollResistanceCoefficientWithoutTrailer.GetValueOrDefault();
 			}
-			protected internal set { _rollResistanceCoefficientWithoutTrailer = value; }
+			protected internal set => _rollResistanceCoefficientWithoutTrailer = value;
 		}
 
-		public Kilogram TotalVehicleWeight
+		public Kilogram TotalVehicleMass
 		{
 			get {
 				var retVal = 0.0.SI<Kilogram>();
-				retVal += CurbWeight ?? 0.SI<Kilogram>();
-				retVal += BodyAndTrailerWeight ?? 0.SI<Kilogram>();
+				retVal += CurbMass ?? 0.SI<Kilogram>();
+				retVal += BodyAndTrailerMass ?? 0.SI<Kilogram>();
 				retVal += Loading ?? 0.SI<Kilogram>();
 				return retVal;
 			}
 		}
 
-		public Kilogram TotalCurbWeight
+		public Kilogram TotalCurbMass => (CurbMass ?? 0.SI<Kilogram>()) + (BodyAndTrailerMass ?? 0.SI<Kilogram>());
+
+		public Kilogram MinimumVehicleMass
 		{
-			get { return (CurbWeight ?? 0.SI<Kilogram>()) + (BodyAndTrailerWeight ?? 0.SI<Kilogram>()); }
+			get {
+				var retVal = 0.0.SI<Kilogram>();
+				retVal += CurbMass ?? 0.SI<Kilogram>();
+				retVal += BodyAndTrailerMass ?? 0.SI<Kilogram>();
+				return retVal;
+			}
 		}
+
+		public Kilogram MaximumVehicleMass => GrossVehicleMass;
 
 		public double AverageRollingResistanceTruck
 		{
@@ -204,7 +222,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 				}
 				return _averageRollingResistanceTruck.GetValueOrDefault();
 			}
-			protected internal set { _averageRollingResistanceTruck = value; }
+			protected internal set => _averageRollingResistanceTruck = value;
 		}
 
 		public bool ZeroEmissionVehicle { get; internal set; }
@@ -212,7 +230,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 		public bool DualFuelVehicle { get; internal set; }
 		public Watt MaxNetPower1 { get; internal set; }
 		public Watt MaxNetPower2 { get; internal set; }
-		public bool SleeperCab { get; internal set; }
+		public bool? SleeperCab { get; internal set; }
 		public ADASData ADAS { get; internal set; }
 		public bool VocationalVehicle { get; internal set; }
 
@@ -221,11 +239,37 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 			public bool EngineStopStart { get; internal set; }
 			public EcoRollType EcoRoll { get; internal set; }
 			public PredictiveCruiseControlType PredictiveCruiseControl { get; internal set; }
+
+			[JsonIgnore]
+			public IAdvancedDriverAssistantSystemDeclarationInputData InputData { get; internal set; }
 		}
+
+		[JsonIgnore]
+		public IVehicleDeclarationInputData InputData { get; internal set; }
+
+		public RegistrationClass? RegisteredClass { get; internal set; }
+		public VehicleCode? VehicleCode { get; internal  set; }
+
+
+		//		#region "Bus Parameters"
+//		public double PassengerCount { get; internal set; }
+
+//		public FloorType FloorType { get; internal set; }
+
+//		public bool DoubleDecker { get; internal set; }
+
+//		public Meter Length { get;internal set; }
+		 
+//		public Meter Width { get; internal set; }
+
+//		public Meter Height { get; internal set; }
+
+//#endregion
+
 
 		protected void ComputeRollResistanceAndReducedMassWheels()
 		{
-			if (TotalVehicleWeight == 0.SI<Kilogram>()) {
+			if (TotalVehicleMass == 0.SI<Kilogram>()) {
 				throw new VectoException("Total vehicle weight must be greater than 0! Set CurbWeight and Loading before!");
 			}
 			if (DynamicTyreRadius == null) {
@@ -245,7 +289,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 					continue;
 				}
 				var nrWheels = axle.TwinTyres ? 4 : 2;
-				var baseValue = (axle.AxleWeightShare * TotalVehicleWeight * g / axle.TyreTestLoad / nrWheels).Value();
+				var baseValue = (axle.AxleWeightShare * TotalVehicleMass * g / axle.TyreTestLoad / nrWheels).Value();
 
 				var rrcShare = axle.AxleWeightShare * axle.RollResistanceCoefficient *
 								Math.Pow(baseValue, Physics.RollResistanceExponent - 1);
@@ -277,26 +321,24 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 			var weightShareSum = vehicleData.AxleData.Sum(axle => axle.AxleWeightShare);
 			if (!weightShareSum.IsEqual(1.0, 1E-10)) {
 				return new ValidationResult(
-					string.Format("Sum of axle weight share is not 1! sum: {0}, difference: {1}",
-						weightShareSum, 1 - weightShareSum));
+					$"Sum of axle weight share is not 1! sum: {weightShareSum}, difference: {1 - weightShareSum}");
 			}
 			for (var i = 0; i < vehicleData.AxleData.Count; i++) {
 				if (vehicleData.AxleData[i].TyreTestLoad.IsSmallerOrEqual(0)) {
-					return new ValidationResult(string.Format("Tyre test load (FzISO) for axle {0} must be greater than 0.", i));
+					return new ValidationResult($"Tyre test load (FzISO) for axle {i} must be greater than 0.");
 				}
 			}
 
 			if (vehicleData.TotalRollResistanceCoefficient <= 0) {
 				return
-					new ValidationResult(string.Format("Total rolling resistance must be greater than 0! {0}",
-						vehicleData.TotalRollResistanceCoefficient));
+					new ValidationResult($"Total rolling resistance must be greater than 0! {vehicleData.TotalRollResistanceCoefficient}");
 			}
 
 			// total gvw is limited by max gvw (40t)
-			var gvwTotal = VectoMath.Min(vehicleData.GrossVehicleWeight + vehicleData.TrailerGrossVehicleWeight,
+			var gvwTotal = VectoMath.Min(vehicleData.GrossVehicleMass + vehicleData.TrailerGrossVehicleMass,
 				emsCycle
-					? Constants.SimulationSettings.MaximumGrossVehicleWeightEMS
-					: Constants.SimulationSettings.MaximumGrossVehicleWeight);
+					? Constants.SimulationSettings.MaximumGrossVehicleMassEMS
+					: Constants.SimulationSettings.MaximumGrossVehicleMass);
 			if (mode != ExecutionMode.Declaration) {
 				return ValidationResult.Success;
 			}
@@ -309,10 +351,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 			//				vehicleData.AxleConfiguration.GetName(), vehicleData.AxleConfiguration.NumAxles(), vehicleData.AxleData.Count));
 			//}
 
-			if (vehicleData.TotalVehicleWeight > gvwTotal) {
+			if (vehicleData.TotalVehicleMass > gvwTotal) {
 				return new ValidationResult(
-					string.Format("Total Vehicle Weight is greater than GrossVehicleWeight! Weight: {0},  GVW: {1}",
-						vehicleData.TotalVehicleWeight, gvwTotal));
+					$"Total Vehicle mass is greater than GrossVehicleMass! Mass: {vehicleData.TotalVehicleMass},  GVM: {gvwTotal}");
 			}
 
 			var numDrivenAxles = vehicleData._axleData.Count(x => x.AxleType == AxleType.VehicleDriven);

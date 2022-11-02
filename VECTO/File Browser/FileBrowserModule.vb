@@ -26,15 +26,33 @@ Public Module FileBrowserModule
 	Public VehicleXMLFileBrowser As FileBrowser
     public ManRXMLFileBrowser As FileBrowser
 	Public DrivingCycleFileBrowser As FileBrowser
-	Public PTODrivingCycleFileBrowser As FileBrowser
+	Public PTODrivingCycleStandstillFileBrowser As FileBrowser
+    Public PTODrivingCycleDrivingFileBrowser As FileBrowser
 	Public FuelConsumptionMapFileBrowser As FileBrowser
-	Public FullLoadCurveFileBrowser As FileBrowser
+    Public FullLoadCurveFileBrowser As FileBrowser
 
-	Public EngineFileBrowser As FileBrowser
+    Public ElectricMachineMaxTorqueFileBrowser As FileBrowser
+    Public ElectricMachineDragTorqueFileBrowser As FileBrowser
+    Public ElectricMachineEfficiencyMapFileBrowser As FileBrowser
+
+	public PropulsionTorqueLimitFileBrowser as FileBrowser
+
+    Public BatteryMaxCurrentCurveFileBrowser As FileBrowser
+    Public BatteryInternalResistanceCurveFileBrowser As FileBrowser
+    Public BatterySoCCurveFileBrowser As FileBrowser
+
+    Public HCUFileBrowser As FileBrowser
+
+	public BusAuxFileBrowser As FileBrowser
+	public BusAuxCompressorMapFileBrowser As FileBrowser
+
+    Public EngineFileBrowser As FileBrowser
 	Public GearboxFileBrowser As FileBrowser
+    Public TCUFileBrowser As FileBrowser
 	Public DriverAccelerationFileBrowser As FileBrowser
 	Public DriverDecisionFactorTargetSpeedFileBrowser As FileBrowser
 	Public DriverDecisionFactorVelocityDropFileBrowser As FileBrowser
+    'public PTOSideloadCycleBrowser As FileBrowser
 	Public AuxFileBrowser As FileBrowser
 
 	Public GearboxShiftPolygonFileBrowser As FileBrowser
@@ -45,5 +63,20 @@ Public Module FileBrowserModule
 	Public TorqueConverterShiftPolygonFileBrowser As FileBrowser
 	Public CrossWindCorrectionFileBrowser As FileBrowser
 
-	Public ModalResultsFileBrowser As FileBrowser
+    Public ModalResultsFileBrowser As FileBrowser
+
+    Public ElectricMotorFileBrowser As FileBrowser
+    Public REESSFileBrowser As FileBrowser
+
+	public EmADCLossMapFileBrowser As FileBrowser
+	Public IEPCFileBrowser As FileBrowser
+	Public IEPCFLCFileBrowser As FileBrowser
+	Public IEPCDragFileBrowser As FileBrowser
+	Public IEPCPowerMapFileBrowser As FileBrowser
+
+	Public IHPCFileBrowser As FileBrowser
+	Public IHPCPowerMapFileBrowser As FileBrowser
+	Public IHPCFullLoadCurveFileBrowser As FileBrowser
+	public IHPCDragCurveFileBrowser As FileBrowser
+
 End Module

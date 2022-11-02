@@ -29,14 +29,8 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
-using System;
-using System.IO;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
 using HashingTool.ViewModel;
-using Microsoft.Win32;
 
 namespace HashingTool.Views
 {

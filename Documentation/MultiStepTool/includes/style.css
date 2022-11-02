@@ -1,0 +1,165 @@
+body {
+  height: 100%;
+  min-height: 100%;
+  font-family: Calibri, sans-serif;
+}
+
+.section.level1 {padding-left:336px}
+
+nav, #TOC {
+  position: fixed;
+  width: 21em;
+  left: 0px;
+  top: 3.5em;
+  bottom: 2em;
+  background-color: #eee;
+  overflow: scroll;
+}
+
+#HEADER{
+  top: 0px;
+  left: 1px;
+  border-bottom-style: solid;
+  border-bottom-width: thin;
+  border-bottom-color: #aaa;
+  height: 2.5em;
+}
+
+#FOOTER {
+  border-top-style: solid;
+  border-top-width: thin;
+  border-top-color: #aaa;
+  bottom: 0px;
+  left: 1px;
+}
+
+#HEADER, #FOOTER {
+  width: auto;
+  position: fixed;
+  width: 99%;
+  background: white;
+  padding: 5px;
+}
+
+body > div:not(#TOC):not(#HEADER):not(#FOOTER)  {
+	display: none;
+	padding-left: 21em;
+	padding-top: 2em;
+  padding-bottom: 2em;
+	margin-left: 1em;
+  width: 50em;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+nav ul {
+	line-height: 1.7em;
+  list-style-type: none;
+  list-style-position: inside;
+}
+
+th {
+  font-weight: bold;
+}
+
+th, td {
+  padding: 6px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #aaa;
+}
+
+h1, h2, h3 {
+  padding-bottom: 3px;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: #aaa;
+}
+
+dt {
+  font-style: italic;
+  font-weight: bold;
+}
+
+.ui-resizable-handle {
+	position: absolute;
+	width: 20px;
+	cursor: ew-resize;
+	right: 0px;
+	height: 100%;
+	top: 0px;
+}
+
+div.vecto2 {
+  border-left: 3px solid gray;
+  padding-left: 5px;
+  margin-top: 2em;
+  background: rgba(128,128,128,0.05);
+}
+div.vecto2:before {
+  content: 'Note: Vecto 2.2!';
+  background: gray;
+  color: white;
+  padding: 5px 5px 5px 5px;
+  margin-left: -8px;
+  font-weight: bold;
+  display: inline-block;
+  font-size: smaller;
+}
+
+
+div.vecto3 {
+  border-left: 3px solid green;
+  padding-left: 5px;
+  margin-top: 2em;
+  background: rgba(0,128,0,0.05);
+}
+div.vecto3:before {
+  content: 'Note: Vecto 3.x!';
+  background: green;
+  color: white;
+  padding: 5px 5px 5px 5px;
+  margin-left: -8px;
+  font-weight: bold;
+  display: inline-block;
+  font-size: smaller;
+}
+
+
+div.engineering{
+ border-right: 5px solid #d51000;
+  margin-right: -50px;
+  background-image: url("../pics/icon_engineering-mode.svg");
+  background-color: rgba(255,0,0,0.2);
+    padding: 2px 50px 2px 5px;
+        margin-bottom: 0.5em;
+    background-repeat: no-repeat;
+    background-size: 38px;
+    background-position: top right;
+}
+
+div.declaration {
+   border-right: 5px solid #08c300;
+  margin-right: -50px;
+  background-image: url("../pics/icon_declaration-mode.svg");
+  background-color: rgba(0,255,0,0.2);
+    padding: 2px 50px 2px 5px;
+        margin-bottom: 0.5em;
+    background-repeat: no-repeat;
+    background-size: 38px;
+    background-position: top right;
+}
+
+pre {
+  padding: 2px;
+  border: 1px solid #EEEEEE;
+}
+
+
+.aaux_locked { 
+  background: gray;
+  color: white;
+ }

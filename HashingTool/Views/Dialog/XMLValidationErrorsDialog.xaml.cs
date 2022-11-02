@@ -31,20 +31,8 @@
 
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using HashingTool.ViewModel.UserControl;
 
 namespace HashingTool.Views
 {
@@ -67,8 +55,8 @@ namespace HashingTool.Views
 
 		public ICollection XMLErrors
 		{
-			get { return (ICollection)GetValue(XMLErrorsProperty); }
-			set { SetValue(XMLErrorsProperty, value); }
+			get => (ICollection)GetValue(XMLErrorsProperty);
+			set => SetValue(XMLErrorsProperty, value);
 		}
 
 		public int ErrorCount
@@ -80,7 +68,7 @@ namespace HashingTool.Views
 				}
 				return 0;
 			}
-			set { SetValue(ErrorCountProperty, value); }
+			set => SetValue(ErrorCountProperty, value);
 		}
 
 		private void btnCopy_Click(object sender, RoutedEventArgs e)

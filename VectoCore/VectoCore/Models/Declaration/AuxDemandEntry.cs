@@ -36,5 +36,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 	public struct AuxDemandEntry
 	{
 		public Watt PowerDemand;
+
+		public NewtonMeter TorqueLoss;
 	}
 }

@@ -57,7 +57,7 @@ namespace HashingTool.ViewModel.UserControl
 
 		public ManufacturerReportXMLFile ManufacturerReport
 		{
-			get { return _manufacturerReport; }
+			get => _manufacturerReport;
 			set {
 				if (_manufacturerReport == value) {
 					return;
@@ -69,7 +69,7 @@ namespace HashingTool.ViewModel.UserControl
 
 		public string[] ManufacturerReportCanonicalizationMethodRead
 		{
-			get { return _manufacturerReportCanonicalizationMethodRead; }
+			get => _manufacturerReportCanonicalizationMethodRead;
 			set
 			{
 				if (_manufacturerReportCanonicalizationMethodRead == value) {
@@ -82,7 +82,7 @@ namespace HashingTool.ViewModel.UserControl
 
 		public string ManufacturerReportDigestMethodRead
 		{
-			get { return _manufacturerReportDigestMethodRead; }
+			get => _manufacturerReportDigestMethodRead;
 			set
 			{
 				if (_manufacturerReportDigestMethodRead == value) {
@@ -95,7 +95,7 @@ namespace HashingTool.ViewModel.UserControl
 
 		public string ManufacturerReportDigestValueRead
 		{
-			get { return _manufacturerReportDigestValueRead; }
+			get => _manufacturerReportDigestValueRead;
 			set
 			{
 				if (_manufacturerReportDigestValueRead == value) {
@@ -108,7 +108,7 @@ namespace HashingTool.ViewModel.UserControl
 
 		public bool ManufacturerReportMatchesReport
 		{
-			get { return _manufacturerReportMatchesReport; }
+			get => _manufacturerReportMatchesReport;
 			set
 			{
 				if (_manufacturerReportMatchesReport == value) {
@@ -121,7 +121,7 @@ namespace HashingTool.ViewModel.UserControl
 
 		public string ManufacturerReportDigestValueComputed
 		{
-			get { return _manufacturerReportDigestValueComputed; }
+			get => _manufacturerReportDigestValueComputed;
 			set
 			{
 				if (_manufacturerReportDigestValueComputed == value) {
@@ -134,7 +134,7 @@ namespace HashingTool.ViewModel.UserControl
 		
 		public bool ManufacturerReportDigestValid
 		{
-			get { return _manufacturerReportDigestValid; }
+			get => _manufacturerReportDigestValid;
 			set {
 				if (_manufacturerReportDigestValid == value) {
 					return;

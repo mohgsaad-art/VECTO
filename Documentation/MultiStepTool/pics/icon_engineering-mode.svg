@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="45.155556mm"
+   height="44.026669mm"
+   viewBox="0 0 160 156.00001"
+   id="svg4167"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="icon_engineering-mode.svg">
+  <defs
+     id="defs4169" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2.8"
+     inkscape:cx="18.258504"
+     inkscape:cy="97.237374"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:window-width="1920"
+     inkscape:window-height="1138"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata4172">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-234.28571,-345.79078)">
+    <path
+       inkscape:connector-curvature="0"
+       d="m 254.28571,345.79078 -2,4 21,12 c 0,10 -4,18 -13,23 l -21,-12 -1,2 c 5,15 15,25 35,25 5,0 20,15 28,23 l 16,-16 c -8,-8 -26,-26 -26,-31 0,-18 -5,-30 -37,-30 z m 125,5 -20,14 -2,8 -58,58 -8,-5 -4,4 c 0,12 -14,18 -20,18 l -33,33 c 0,10 11,21 21,21 l 33,-33 c 0,-6 6,-20 18,-20 l 4,-4 -5,-8 58,-58 8,-2 14,-20 -6,-6 z m -50,68 -16,16 c 12,12 28,28 28,33 0,18 5,30 37,30 l 2,-4 -21,-12 c 0,-10 4,-18 13,-23 l 21,12 1,-2 c -5,-15 -15,-25 -35,-25 -5,0 -18,-13 -30,-25 z"
+       id="imagebot_3-0"
+       style="fill:#d51000;fill-opacity:1" />
+  </g>
+</svg>

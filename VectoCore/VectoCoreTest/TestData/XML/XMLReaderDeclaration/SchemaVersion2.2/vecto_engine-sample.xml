@@ -6,7 +6,8 @@
 	xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationComponent:v2.0"
 	xmlns:di="http://www.w3.org/2000/09/xmldsig#" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationComponent  E:\QUAM\Workspace\VECTO_quam\VectoCore\VectoCore\Resources\XSD/VectoDeclarationComponent.xsd">
+	xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationComponent v:\VectoCore\VectoCore\Resources\XSD/VectoDeclarationComponent.xsd"
+	>
 	<tns:Engine xsi:type="v2.0:EngineComponentDeclarationType">
 		<v2.0:Data id="ENG-gooZah3D" xsi:type="v2.1:EngineDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1">
 			<Manufacturer>Generic Engine Manufacturer</Manufacturer>

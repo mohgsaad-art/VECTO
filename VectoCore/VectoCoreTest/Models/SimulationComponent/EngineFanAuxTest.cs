@@ -36,6 +36,7 @@ using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 {
 	[TestFixture]
+	[Parallelizable(ParallelScope.All)]
 	public class EngineFanAuxTest
 	{
 

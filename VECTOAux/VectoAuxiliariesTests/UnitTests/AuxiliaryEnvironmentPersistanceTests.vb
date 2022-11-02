@@ -1,86 +1,87 @@
-﻿Imports System.Text
+﻿
+Imports System.IO
 Imports NUnit.Framework
-Imports NUnit
-Imports VectoAuxiliaries
-Imports VectoAuxiliaries.Electrics
-Imports VectoAuxiliaries.Pneumatics
-Imports VectoAuxiliaries.Hvac
+Imports TUGraz.VectoCommon.BusAuxiliaries
+Imports TUGraz.VectoCore.InputData.FileIO.JSON
+Imports TUGraz.VectoCore.OutputData.FileIO
+
 
 Namespace UnitTests
+    <TestFixture()>
+    Public Class AuxiliaryPersistanceTests
+        'Simply, with this test we create one Aux of default and save the config.
+        'We create an Empty but initialised Aux 
+        'We load the previously saved config into the Emptu Aux
+        'We then compare the two Aux's, if they are the same persistance has worked and they are the same.
 
-<TestFixture()>
-Public Class AuxiliaryPersistanceTests
-
-    'Simply, with this test we create one Aux of default and save the config.
-    'We create an Empty but initialised Aux 
-    'We load the previously saved config into the Emptu Aux
-    'We then compare the two Aux's, if they are the same persistance has worked and they are the same.
     
+        Public Sub SaveDefaultFile()
 
-     Public Sub SaveDefaultFile()
+            dim auxDefault = AuxiliaryComparisonTests.GetDefaultAuxiliaryConfig() ' New AuxiliaryConfig("")
+            BusAuxWriter.SaveAuxConfig(auxDefault, "TestFiles\auxiliaryConfigKEEP.json")
+        End Sub
 
-      dim auxDefault  = New AuxiliaryConfig("")
-      auxDefault.Save("TestFiles\auxiliaryConfigKEEP.json")
+        <OneTimeSetUp>
+        Public Sub RunBeforeAnyTests()
+            Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory)
+        End Sub
 
-     End Sub
+        <Test()>
+        Public Sub Persistance_A_BasicLoad()
 
-    <Test()>
-    Public Sub Persistance_A_BasicLoad()
+            'Arrange
+            Dim auxEmpty = AuxiliaryComparisonTests.GetDefaultAuxiliaryConfig()
+            Dim auxDefault = AuxiliaryComparisonTests.GetDefaultAuxiliaryConfig()
 
-    'Arrange
-    Dim auxEmpty = New AuxiliaryConfig("EMPTY")
-    Dim auxDefault  = New AuxiliaryConfig("")
-    
-    Dim actual        As Boolean =false
-    Dim expected      As Boolean = true
+            Dim actual As Boolean = false
+            Dim expected As Boolean = true
 
-    'Act
-    SaveDefaultFile()
-    actual=auxEmpty.Load("TestFiles\auxiliaryConfigKEEP.json")
- 
-    Assert.AreEqual( expected,actual )
+            'Act
+            SaveDefaultFile()
+            BusAuxiliaryInputData.ReadBusAuxiliaries("TestFiles\auxiliaryConfigKEEP.json", utils.GetDefaultVehicleData())
+            'actual=auxEmpty.Load("TestFiles\auxiliaryConfigKEEP.json")
 
-    End Sub
+            Assert.AreEqual(auxDefault, auxEmpty)
+        End Sub
 
-    <Test()>
-    Public Sub Persistance_Load_NameNotExist_Test()
+        <Test()>
+        Public Sub Persistance_Load_NameNotExist_Test()
 
-    'Arrange
-    Dim auxDefault  = New AuxiliaryConfig("")
-    Dim expected As boolean = false
-    Dim actual   As Boolean = False
+            'Arrange
+            Dim auxDefault = AuxiliaryComparisonTests.GetDefaultAuxiliaryConfig()
+            Dim expected As boolean = false
+            Dim actual As Boolean = False
 
-    'Act
-    actual = auxDefault.Load("ThisFileDoesNotExist.NoExtEverKnown")
+            'Act
 
-
-    Assert.AreEqual( expected,actual )
-
-
-    End Sub
-
-
-    <Test()>
-    Public Sub Persistance_LoadThroughInstantiationPlusConfigFile_Test()
-
-    'Arrange
-    Dim expected As boolean = true
-    Dim actual   As Boolean = False
-    Dim auxDefault As AuxiliaryConfig
-    Dim auxTest As AuxiliaryConfig =  New AuxiliaryConfig("")
-
-    'Act
-    SaveDefaultFile()
-    auxDefault  = New AuxiliaryConfig("TestFiles\auxiliaryConfigKEEP.json")    
-    actual = auxTest.ConfigValuesAreTheSameAs( auxDefault)
-    'Assert
-    Assert.AreEqual( expected,actual )
+            Assert.Throws (Of FileNotFoundException)(
+                sub() _
+                                                        auxDefault =
+                                                        BusAuxiliaryInputData.ReadBusAuxiliaries(
+                                                            "ThisFileDoesNotExist.NoExtEverKnown",
+                                                            Utils.GetDefaultVehicleData()))
 
 
-    End Sub
+            Assert.AreEqual(expected, actual)
+        End Sub
 
 
-End Class
+        <Test()>
+        Public Sub Persistance_LoadThroughInstantiationPlusConfigFile_Test()
 
+            'Arrange
+            
+            Dim auxDefault As IAuxiliaryConfig
+            Dim auxTest As IAuxiliaryConfig = AuxiliaryComparisonTests.GetDefaultAuxiliaryConfig()
+
+            'Act
+            SaveDefaultFile()
+            auxDefault = BusAuxiliaryInputData.ReadBusAuxiliaries("TestFiles\auxiliaryConfigKEEP.json",
+                                                                  Utils.GetDefaultVehicleData())
+            Dim areEqual = auxTest.ConfigValuesAreTheSameAs(auxDefault)
+            'Assert
+            Assert.IsTrue(areEqual)
+        End Sub
+    End Class
 End Namespace
 

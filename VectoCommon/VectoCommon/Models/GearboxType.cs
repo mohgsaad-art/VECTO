@@ -31,20 +31,21 @@
 
 using System;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using TUGraz.VectoCommon.Utils;
 
 namespace TUGraz.VectoCommon.Models
 {
-	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	public enum GearboxType
 	{
 		MT, // Manual Transmission
 		AMT, // Automated Manual Transmission
 		ATSerial, // Automatic Transmission
 		ATPowerSplit,
-		//Custom,
-		DrivingCycle
+		APTN, // Automatic Power Transmission - No Torque Converter
+		IHPC, // Integrated Hybrid Powertrain Component - Transmission part
+		IEPC, // not a real gearbox type, only used for GUI and validation
+		DrivingCycle,
+		NoGearbox
 	}
 
 	public static class GearBoxTypeHelper
@@ -52,68 +53,49 @@ namespace TUGraz.VectoCommon.Models
 		public static string GetLabel(this GearboxType type)
 		{
 			switch (type) {
-				case GearboxType.MT:
-					return "Manual Transmission (MT)";
-				case GearboxType.AMT:
-					return "Automated Transmission (AMT)";
-				case GearboxType.ATSerial:
-					return "Automatic Transmission - Serial (AT-S)";
-				case GearboxType.ATPowerSplit:
-					return "Automatic Transmission - PowerSplit (AT-P)";
-				case GearboxType.DrivingCycle:
-					return "Gear from Driving Cycle";
-				default:
-					throw new ArgumentOutOfRangeException("GearboxType", type, null);
+				case GearboxType.MT:           return "Manual Transmission (MT)";
+				case GearboxType.AMT:          return "Automated Transmission (AMT)";
+				case GearboxType.ATSerial:     return "Automatic Transmission - Serial (AT-S)"; //todo mk20211210 shouldn't we call it APT-S?
+				case GearboxType.ATPowerSplit: return "Automatic Transmission - PowerSplit (AT-P)";//todo mk20211210 shouldn't we call it APT-P?
+				case GearboxType.APTN:         return "Automatic Transmission - No Torque Converter (APT-N)";
+				case GearboxType.IHPC:         return "IHPC Transmission";
+				case GearboxType.IEPC:         return "IEPC Transmission - dummy entry";
+				case GearboxType.DrivingCycle: return "Gear from Driving Cycle";
+				default: throw new ArgumentOutOfRangeException("GearboxType", type, null);
 			}
 		}
 
 		[DebuggerStepThrough]
-		public static string ShortName(this GearboxType type)
-		{
-			return type.ToString();
-		}
+		public static string ShortName(this GearboxType type) => type.ToString();
 
 		[DebuggerStepThrough]
-		public static bool AutomaticTransmission(this GearboxType type)
-		{
-			return type == GearboxType.ATPowerSplit || type == GearboxType.ATSerial;
-		}
+		public static bool AutomaticTransmission(this GearboxType type) =>
+			type == GearboxType.ATPowerSplit || type == GearboxType.ATSerial || type == GearboxType.APTN || type == GearboxType.IHPC;
 
 		[DebuggerStepThrough]
-		public static bool ManualTransmission(this GearboxType type)
-		{
-			return type == GearboxType.MT || type == GearboxType.AMT;
-		}
+		public static bool ManualTransmission(this GearboxType type) =>
+			type == GearboxType.MT || type == GearboxType.AMT;
 
 		public static Second TractionInterruption(this GearboxType type)
 		{
 			switch (type) {
-				case GearboxType.MT:
-					return 2.SI<Second>();
-				case GearboxType.AMT:
-					return 1.SI<Second>();
-				case GearboxType.ATSerial:
-				case GearboxType.ATPowerSplit:
-					return 0.0.SI<Second>();
+				case GearboxType.MT: return 2.SI<Second>();
+				case GearboxType.AMT: return 1.SI<Second>();
+				default: return 0.SI<Second>();
 			}
-			return 0.SI<Second>();
 		}
 
 		public static string ToXMLFormat(this GearboxType type)
 		{
 			switch (type) {
-				case GearboxType.MT:
-					return "SMT";
-				case GearboxType.AMT:
-					return "AMT";
-				case GearboxType.DrivingCycle:
-					return type.ToString();
-				case GearboxType.ATSerial:
-					return "APT-S";
-				case GearboxType.ATPowerSplit:
-					return "APT-P";
-				default:
-					throw new ArgumentOutOfRangeException("GearboxType", type, null);
+				case GearboxType.MT:           return "SMT";
+				case GearboxType.AMT:          return "AMT";
+				case GearboxType.DrivingCycle: return "DrivingCycle";
+				case GearboxType.ATSerial:     return "APT-S";
+				case GearboxType.ATPowerSplit: return "APT-P";
+				case GearboxType.APTN:         return "APT-N";
+				case GearboxType.IHPC:         return "IHPC";
+				default: throw new ArgumentOutOfRangeException("GearboxType", type, null);
 			}
 		}
 	}

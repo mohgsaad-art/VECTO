@@ -1,0 +1,93 @@
+AuxiliaryConfig
+  +--- ElectricUserInputConfig
+  |      +--- PowerNetVoltage   => const
+  |      +--- AlternatorMap  (IAlternatorMap)  -> to be replaced by fixed efficiency (function of technology, size (=0.7))
+  |      +--- AlternatorGearEfficiency => const
+  |      +--- ElectricalConsumerList (IElectricalConsumerList)  => fix, which consumers are applied from segment table, or input (bool), doors: 2
+  |      +--- DoorActuationTime => const 
+  |      +--- ResultCardIdle (IResultCard)  => input (?)
+  |      |        +--- Results (IReadonlyList<SmartResult>)   ==> Not needed in Interface? XX
+  |      |        +--- GetSmartCurrentResult
+  |      +--- ResultCardTraction
+  |      |        +--- Results (IReadonlyList<SmartResult>)   ==> Not needed in Interface?  XX
+  |      |        +--- GetSmartCurrentResult
+  |      +--- ResultCardOverrun
+  |      |        +--- Results (IReadonlyList<SmartResult>)   ==> Not needed in Interface?  XX
+  |      |        +--- GetSmartCurrentResult
+  |      +--- SmartElectrical  => input
+  |      +--- StoredEnergyEfficiency => const
+  +--- PneumaticAuxiliariesConfig  => const
+  |      +--- OverrunUtilisationForComressionFraction
+  |      +--- BrakingWithRetarderNIperKg
+  |      +--- BrakingNoRetarderNIperKg
+  |      +--- PerDoorOpeningNI
+  |      +--- PerStopBrakeActuationNIperKG
+  |      +--- AirControlledSuspensionNIperMinute
+  |      +--- AdBlueNIperMinute
+  |      +--- NonSmartRegenFractionTotalAirDemand
+  |      +--- SmartRegenFractionTotalAirDemand
+  |      +--- DeadVolumeLiters
+  |      +--- DeadVolBlowOutsPerLitresperHour
+  +--- PneumaticUserInputsconfig
+  |      +--- CompressorMap (ICompressorMap) => input (size of air supply) defines compressor map to be used (available in test project!)
+  |      +--- CompressorGearEfficiency => const
+  |      +--- CompressorGearRatio => input
+  |      X    ActuationsMap (Dictionary<ActuationsKey, int>)  (XXX)
+  |      +--- SmartAirCompression => input (?)
+  |      +--- SmartRegeneration => input (?)
+  |      +--- RetartderBrake  => input vehicle data
+  |      +--- KneelingHeight  => calculate: entrance height - 270mm, primary vehicle fix 80mm
+  |      +--- AirSuspensionControlTechnology => input
+  |      +--- AdBlueDosingTechnology => yes -> pneumatic, no electric
+  |      +--- DoorsTechnology => input
+  +--- HVACUserInputsConfig
+  |      +--- HVACConstants
+  |               +--- FuelProperties
+  +--- SSMInputs
+  |      +--- SSMDisabled => false
+  |      +--- BusParameters => vehicle data
+  |      |        +--- BusModel
+  |      |        +--- NumberOfPassengers
+  |      |        +--- BusFloorType
+  |      |        +--- BusLength
+  |      |        +--- BusWidth
+  |      |        +--- BusHeight
+  |      |        +--- ... further derived parameters
+  |      +--- Technologies (List<TechBenefitLine) => input
+  |      +--- BoundaryConditions => const
+  |      |        +--- GFactor
+  |      |        +--- SolarClouding
+  |      |        +--- HeatPerPassengerIntoCabin
+  |      |        +--- UValue
+  |      |        +--- HeatingBoundaryTemp
+  |      |        +--- CoolingBoundaryTemp
+  |      |        +--- HighVentilation
+  |      |        +--- LowVentilation
+  |      |        +---  ... further constant values
+  |      +--- EnvironmentalConditions
+  |      |        +--- DefaultConditions (IEnvironmentalContitionsMapEntry)  --> not relevant
+  |      |        |        +--- Temperature
+  |      |        |        +--- Solar
+  |      |        |        +--- Weighting ( = 1)
+  |      |        +--- EnvironmentalConditionsMap (IEnvironmentalConditionsMap) ==> const
+  |      |        |        +--- GetEnvironmentalConditions (IReadonlyList<IEnvironmentalContitionsMapEntry>)
+  |      |        +--- BatchMode => true
+  |      +--- ACSystem
+  |      |        +--- CompressorType  -> input parameter
+  |      |        +--- CompressorTypeDerived -> calculated
+  |      |        +--- CompressorCapacity -> calculated (excel)
+  |      |        +--- COP -> generic
+  |      +--- Ventilation
+  |      |        +--- VentilationDuringHeating => const
+  |      |        +--- VentilationWhenBothHeatingAndACInactive => const
+  |      |        +--- VentilationDuringAC => const
+  |      |        +--- VentilationFlowSettingsWhenHeatingAndACInactive => const
+  |      |        +--- VentilationDuringHeating => const
+  |      |        +--- VentilationDuringCooling => const
+  |      +--- AuxHeater
+  |               +--- FuelFiredHeaterKw => derived fom input parameter
+  |               +--- FuelEnergyToHeatToCoolant => const
+  |               +--- CoolantHeatTransferredToAirCondition => const
+  +--- ActuationsMap (??)  => update
+  +--- VehicleData
+  +--- FuelMap

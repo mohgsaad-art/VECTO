@@ -1,0 +1,13 @@
+﻿{
+  "Header": {
+    "CreatedBy": " ()",
+    "Date": "2016-10-13T15:52:04.0766564Z",
+    "AppVersion": "3",
+    "FileVersion": 1
+  },
+  "Body": {
+    "LoadStageShiftLines": "GearshiftLinesVoith.vgsv",
+    "LoadStageThresoldsUp": "19.7;36.34;53.01;69.68;86.35",
+    "LoadStageThresoldsDown": "13.7;30.34;47.01;63.68;80.35",
+  }
+}

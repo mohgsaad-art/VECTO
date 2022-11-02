@@ -35,19 +35,19 @@ namespace TUGraz.VectoCommon.OutputData
 {
 	public interface IOutputFileWriter
 	{
-		void SaveEngine(IEngineEngineeringInputData eng, string filename);
+		void SaveEngine(IEngineEngineeringInputData eng, string filename, bool declMode);
 
-		void SaveGearbox(IGearboxEngineeringInputData gbx, IAxleGearInputData axl, ITorqueConverterEngineeringInputData torqueConverter, IGearshiftEngineeringInputData gshift, string filename);
+		void SaveGearbox(IGearboxEngineeringInputData gbx, IAxleGearInputData axl, ITorqueConverterEngineeringInputData torqueConverter, IGearshiftEngineeringInputData gshift, string filename, bool declMode);
 
 		void SaveVehicle(IVehicleEngineeringInputData vehicle, IAirdragEngineeringInputData airdrag,
 			IRetarderInputData retarder,
-			IPTOTransmissionInputData pto, IAngledriveInputData angledrive, string filename);
+			IPTOTransmissionInputData pto, IAngledriveInputData angledrive, string filename, bool declMode);
 
-		void SaveJob(IEngineeringInputDataProvider input, string filename);
+		void SaveJob(IEngineeringInputDataProvider input, string filename, bool declMode);
 
-		void SaveJob(IVTPEngineeringInputDataProvider input, string filename);
+		void SaveJob(IVTPEngineeringInputDataProvider input, string filename, bool declMode);
 
-		void SaveJob(IVTPDeclarationInputDataProvider input, string filename);
+		void SaveJob(IVTPDeclarationInputDataProvider input, string filename, bool declMode);
 
 		void ExportJob(IEngineeringInputDataProvider input, string filename, bool separateFiles);
 	}

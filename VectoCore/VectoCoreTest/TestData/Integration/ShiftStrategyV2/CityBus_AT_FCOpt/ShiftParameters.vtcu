@@ -1,0 +1,18 @@
+﻿{
+  "Header": {
+    "CreatedBy": " ()",
+    "Date": "2016-10-13T15:52:04.0766564Z",
+    "AppVersion": "3",
+    "FileVersion": 1
+  },
+  "Body": {
+    "TqReserve": 0.0,
+    "ShiftTime": 1.0,
+    "StartTqReserve": 0.0,
+    "StartSpeed": 2.0,
+    "StartAcc": 0.6,
+    "Rating_current_gear": 0.99,
+    "RatioEarlyUpshiftFC": 10,
+    "RatioEarlyDownshiftFC": 5
+  }
+}

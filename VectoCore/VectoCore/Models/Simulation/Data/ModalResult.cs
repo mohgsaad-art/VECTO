@@ -34,6 +34,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Runtime.Serialization;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.OutputData;
 
 // ReSharper disable InconsistentNaming
 
@@ -54,7 +55,14 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 
 		public ModalResults()
 		{
+		}
+
+		public ModalResults(bool createFcColumns = true)
+		{
 			foreach (var value in EnumHelper.GetValues<ModalResultField>()) {
+				if (!createFcColumns  && ModalDataContainer.FuelConsumptionSignals.Contains(value)) {
+					continue;
+				}
 				var col = new DataColumn(value.GetName(), value.GetAttribute().DataType) { Caption = value.GetCaption() };
 				col.ExtendedProperties[ExtendedPropertyNames.Decimals] = value.GetAttribute().Decimals;
 				col.ExtendedProperties[ExtendedPropertyNames.OutputFactor] = value.GetAttribute().OutputFactor;

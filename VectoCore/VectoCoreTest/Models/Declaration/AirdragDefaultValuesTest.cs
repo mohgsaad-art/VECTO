@@ -30,15 +30,13 @@
 */
 
 using System.IO;
-using System.Linq;
-using TUGraz.VectoCore.InputData.FileIO.JSON;
-using TUGraz.VectoCore.InputData.Reader.Impl;
 using TUGraz.VectoCore.Tests.Models.Declaration.DataAdapter;
 using NUnit.Framework;
 
 namespace TUGraz.VectoCore.Tests.Models.Declaration
 {
 	[TestFixture]
+	[Parallelizable(ParallelScope.All)]
 	public class AirdragDefaultValuesTest
 	{
 		[OneTimeSetUp]

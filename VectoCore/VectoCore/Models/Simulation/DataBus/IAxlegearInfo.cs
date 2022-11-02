@@ -29,6 +29,7 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using System;
 using TUGraz.VectoCommon.Utils;
 
 namespace TUGraz.VectoCore.Models.Simulation.DataBus
@@ -36,5 +37,14 @@ namespace TUGraz.VectoCore.Models.Simulation.DataBus
 	public interface IAxlegearInfo
 	{
 		Watt AxlegearLoss();
+
+		Tuple<PerSecond, NewtonMeter> CurrentAxleDemand { get; }
+		
+		double Ratio { get; }
+	}
+
+	public interface IAngledriveInfo
+	{
+		double Ratio { get; }
 	}
 }

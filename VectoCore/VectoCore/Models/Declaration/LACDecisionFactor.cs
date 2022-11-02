@@ -71,15 +71,9 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		public sealed class LACDecisionFactorVdrop : LookupData<MeterPerSecond, double>
 		{
-			protected override string ResourceId
-			{
-				get { return DeclarationData.DeclarationDataResourcePrefix + ".LAC-DF-Vdrop.csv"; }
-			}
+			protected override string ResourceId => DeclarationData.DeclarationDataResourcePrefix + ".LAC-DF-Vdrop.csv";
 
-			protected override string ErrorMessage
-			{
-				get { throw new System.NotImplementedException(); }
-			}
+			protected override string ErrorMessage => throw new System.NotImplementedException();
 
 			public LACDecisionFactorVdrop() {}
 
@@ -125,15 +119,9 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		public sealed class LACDecisionFactorVTarget : LookupData<MeterPerSecond, double>
 		{
-			protected override string ResourceId
-			{
-				get { return DeclarationData.DeclarationDataResourcePrefix + ".LAC-DF-Vtarget.csv"; }
-			}
+			protected override string ResourceId => DeclarationData.DeclarationDataResourcePrefix + ".LAC-DF-Vtarget.csv";
 
-			protected override string ErrorMessage
-			{
-				get { throw new System.NotImplementedException(); }
-			}
+			protected override string ErrorMessage => throw new System.NotImplementedException();
 
 			public LACDecisionFactorVTarget() {}
 

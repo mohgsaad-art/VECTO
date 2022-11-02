@@ -69,14 +69,11 @@ namespace HashingTool.ViewModel
 		}
 
 
-		public ICommand ShowHomeViewCommand
-		{
-			get { return ApplicationViewModel.HomeView; }
-		}
+		public ICommand ShowHomeViewCommand => ApplicationViewModel.HomeView;
 
 		public string DigestValue
 		{
-			get { return _digestValue; }
+			get => _digestValue;
 			set {
 				if (_digestValue == value) {
 					return;
@@ -86,10 +83,7 @@ namespace HashingTool.ViewModel
 			}
 		}
 
-		public ICommand SaveHashedDocument
-		{
-			get { return _saveCommand; }
-		}
+		public ICommand SaveHashedDocument => _saveCommand;
 
 		private void SourceChanged(object sender, PropertyChangedEventArgs e)
 		{
@@ -100,8 +94,7 @@ namespace HashingTool.ViewModel
 
 		private void SaveDocument()
 		{
-			string filename;
-			var stream = IoService.SaveData(null, ".xml", "VECTO XML file|*.xml", out filename);
+			var stream = IoService.SaveData(null, ".xml", "VECTO XML file|*.xml", out var filename);
 			if (stream == null) {
 				return;
 			}
@@ -117,7 +110,7 @@ namespace HashingTool.ViewModel
 
 		public bool? ComponentDataValid
 		{
-			get { return _componentDataValid; }
+			get => _componentDataValid;
 			private set {
 				if (_componentDataValid == value) {
 					return;
@@ -163,14 +156,14 @@ namespace HashingTool.ViewModel
 					var validator = new AsyncXMLValidator(XmlReader.Create(ms), r => { ComponentDataValid = r; },
 						(s, e) => {
 							Application.Current.Dispatcher.Invoke(() => _xmlFile.LogError(
-								string.Format("Validation {0} Line {2}: {1}", s == XmlSeverityType.Warning ? "WARNING" : "ERROR",
+								string.Format("Validation {0} Line {2}: {1}", 
+									s == XmlSeverityType.Warning ? "WARNING" : "ERROR",
 									e.ValidationEventArgs == null
-										? e.Exception.Message +
-										(e.Exception.InnerException != null ? Environment.NewLine + e.Exception.InnerException.Message : "")
+										? e.Exception.Message + (e.Exception.InnerException != null ? Environment.NewLine + e.Exception.InnerException.Message : "")
 										: e.ValidationEventArgs.Message,
-									e.ValidationEventArgs == null ? 0 : e.ValidationEventArgs.Exception.LineNumber)));
+									e.ValidationEventArgs?.Exception.LineNumber ?? 0)));
 						});
-					await validator.ValidateXML(TUGraz.VectoCore.Utils.XmlDocumentType.DeclarationComponentData);
+					await validator.ValidateXML(XmlDocumentType.DeclarationComponentData);
 				}
 				if (ComponentDataValid != null && ComponentDataValid.Value) {
 					//var c14N = XMLHashProvider.DefaultCanonicalizationMethod.ToArray();
@@ -204,7 +197,7 @@ namespace HashingTool.ViewModel
 
 		public DateTime? Date
 		{
-			get { return _date; }
+			get => _date;
 			set
 			{
 				if (_date == value) {

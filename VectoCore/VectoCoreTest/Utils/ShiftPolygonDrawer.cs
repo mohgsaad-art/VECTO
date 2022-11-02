@@ -30,12 +30,12 @@
 */
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.InteropServices;
+#if !NET5_0_OR_GREATER
 using System.Windows.Forms.DataVisualization.Charting;
+#endif
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Engine;
@@ -46,17 +46,20 @@ namespace TUGraz.VectoCore.Tests.Utils
 {
 	public class ShiftPolygonDrawer
 	{
+#if !NET5_0_OR_GREATER
 		private static readonly Font AxisLabelFont = new Font("Consolas", 10);
 		private static readonly Font AxisTitleFont = new Font("Verdana", 12);
 		private static readonly Font LegendFont = new Font("Verdana", 14);
-
+#endif
 		private static Size _diagramSize = new Size(1000, 800);
+
 
 		public static void DrawShiftPolygons(string title, Dictionary<uint, EngineFullLoadCurve> engineFld,
 			List<ShiftPolygon> polygons,
 			string imageFileName, PerSecond speed85kmh, List<List<Point>> upshiftOrig = null,
 			List<List<Point>> downshiftTransformed = null, List<List<Point>> downshiftOrig = null)
 		{
+#if !NET5_0_OR_GREATER
 			var numRows = Math.Ceiling(polygons.Count / 4.0);
 			var numCols = Math.Ceiling(polygons.Count / numRows);
 
@@ -72,7 +75,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 				var chartArea = AddChartArea(chart, "Gear " + (i + 1), "Engine Speed", "Torque", 0, maxX);
 
 				PlotPower(engineFld[(uint)(i + 1)], chartArea, chart, "engine power " + i);
-				PlotFLD(engineFld[(uint)(i +1)], speed85kmh, chartArea, chart, "Engine Full Load " + i);
+				PlotFLD(engineFld[(uint)(i + 1)], speed85kmh, chartArea, chart, "Engine Full Load " + i);
 
 				if (upshiftOrig != null && i < upshiftOrig.Count) {
 					PlotShiftLine("UpshiftOrig " + i, chartArea, chart, Color.Gray,
@@ -101,8 +104,10 @@ namespace TUGraz.VectoCore.Tests.Utils
 			AddTitle(chart, title);
 			chart.Invalidate();
 			chart.SaveImage(imageFileName, ChartImageFormat.Png);
+#endif
 		}
 
+#if !NET5_0_OR_GREATER
 		private static void PlotPower(EngineFullLoadCurve engineFld, ChartArea chartArea, Chart chart, string name)
 		{
 			var series = new Series {
@@ -204,14 +209,14 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 			PlotDragLoad(engineFld, chartArea, chart, name);
 
-			PlotEngineSpeedLine(engineFld, chartArea, chart, "nPref " + name, Color.DeepSkyBlue,
-				engineFld.PreferredSpeed.Value() / Constants.RPMToRad);
+			//PlotEngineSpeedLine(engineFld, chartArea, chart, "nPref " + name, Color.DeepSkyBlue,
+			//	engineFld.PreferredSpeed.Value() / Constants.RPMToRad);
 
-			PlotEngineSpeedLine(engineFld, chartArea, chart, "n95h " + name, Color.Red,
-				engineFld.N95hSpeed.Value() / Constants.RPMToRad);
+			//PlotEngineSpeedLine(engineFld, chartArea, chart, "n95h " + name, Color.Red,
+			//	engineFld.N95hSpeed.Value() / Constants.RPMToRad);
 
-			PlotEngineSpeedLine(engineFld, chartArea, chart, "n85kmh " + name, Color.LimeGreen,
-				speed85kmh.Value() / Constants.RPMToRad);
+			//PlotEngineSpeedLine(engineFld, chartArea, chart, "n85kmh " + name, Color.LimeGreen,
+			//	speed85kmh.Value() / Constants.RPMToRad);
 
 			PlotEngineSpeedLine(engineFld, chartArea, chart, "nPmax " + name, Color.Coral,
 				engineFld.RatedSpeed.Value() / Constants.RPMToRad);
@@ -391,5 +396,6 @@ namespace TUGraz.VectoCore.Tests.Utils
 			});
 			chart.Legends.Add(legend);
 		}
+#endif
 	}
 }

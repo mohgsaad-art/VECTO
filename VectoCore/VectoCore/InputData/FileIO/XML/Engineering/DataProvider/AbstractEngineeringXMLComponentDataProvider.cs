@@ -1,7 +1,7 @@
 ﻿/*
 * This file is part of VECTO.
 *
-* Copyright © 2012-2017 European Union
+* Copyright © 2012-2019 European Union
 *
 * Developed by Graz University of Technology,
 *              Institute of Internal Combustion Engines and Thermodynamics,
@@ -49,19 +49,10 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider
 		}
 
 
-		public override DigestData DigestValue
-		{
-			get { return null; }
-		}
+		public override DigestData DigestValue => null;
 
-		public override string CertificationNumber
-		{
-			get { return "N.A."; }
-		}
+		public override string CertificationNumber => "N.A.";
 
-		public override CertificationMethod CertificationMethod
-		{
-			get { return CertificationMethod.NotCertified; }
-		}
+		public override CertificationMethod CertificationMethod => CertificationMethod.NotCertified;
 	}
 }

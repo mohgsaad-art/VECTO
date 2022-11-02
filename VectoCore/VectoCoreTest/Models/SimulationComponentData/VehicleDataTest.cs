@@ -34,6 +34,7 @@ using NUnit.Framework;
 namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 {
 	[TestFixture]
+	[Parallelizable(ParallelScope.All)]
 	public class VehicleDataTest
 	{
 		private const string VehicleDataFile = @"TestData\Components\24t Coach.vveh";

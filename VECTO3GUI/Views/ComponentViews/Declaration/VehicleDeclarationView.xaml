@@ -1,0 +1,142 @@
+﻿<UserControl x:Class="VECTO3GUI.Views.ComponentViews.Declaration.VehicleDeclarationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewModel="clr-namespace:VECTO3GUI.ViewModel"
+             xmlns:helper="clr-namespace:VECTO3GUI.Helper"
+             xmlns:customControls="clr-namespace:VECTO3GUI.Views.CustomControls"
+             xmlns:interfaces="clr-namespace:VECTO3GUI.ViewModel.Interfaces"
+             xmlns:impl="clr-namespace:VECTO3GUI.ViewModel.Impl"
+             xmlns:converter="clr-namespace:VECTO3GUI.Helper.Converter"
+             mc:Ignorable="d"
+             d:DesignHeight="800" d:DesignWidth="800">
+    <d:VehicleDeclarationView.DataContext>
+        <x:Type Type="interfaces:IVehicleViewModel" />
+    </d:VehicleDeclarationView.DataContext>
+    
+    <StackPanel Orientation="Vertical" Width="400" HorizontalAlignment="Left"  Grid.IsSharedSizeScope="True">
+        <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
+            <customControls:VectoParameterControl
+                Caption="Manufacturer" Unit="" CaptionWidthGroup="vehicleLbl" UnitWidthGroup="unitWidth"
+                Value="{Binding Manufacturer}" />
+            <customControls:VectoParameterControl
+                Caption="Manufacturer Address" Unit="" CaptionWidthGroup="vehicleLbl" UnitWidthGroup="unitWidth"
+                Value="{Binding ManufacturerAddress}" />
+            <customControls:VectoParameterControl
+                Caption="Model" Unit="" CaptionWidthGroup="vehicleLbl" UnitWidthGroup="unitWidth"
+                Value="{Binding Model}" />
+            <customControls:VectoParameterControl
+                Caption="VIN" Unit="" CaptionWidthGroup="vehicleLbl" UnitWidthGroup="unitWidth"
+                Value="{Binding VIN}" />
+            <customControls:VectoParameterControl
+                Caption="Date" Unit="" CaptionWidthGroup="vehicleLbl" UnitWidthGroup="unitWidth"
+                Value="{Binding Date}" />
+        </StackPanel>
+        <DockPanel Margin="0, 10, 0, 0" Grid.IsSharedSizeScope="True">
+            <StackPanel Orientation="Vertical" DockPanel.Dock="top" Grid.IsSharedSizeScope="True">
+                <customControls:ComboParameter
+                    Caption="Legislative Class"
+                    CaptionWidthGroup="vehicleLbl"
+                    UnitWidthGroup="unitWidth"
+                    Value="{Binding LegislativeClass}" 
+                    AllowedValues="{Binding AllowedLegislativeClasses}"/>
+                <customControls:ComboParameter
+                    Caption="Vehicle Category"
+                    CaptionWidthGroup="vehicleLbl" UnitWidthGroup="unitWidth"
+                    Value="{Binding VehicleCategory}"
+                    AllowedValues="{Binding AllowedVehicleCategories}" />
+                <customControls:ComboParameter
+                    Caption="Axle Configuration"
+                    CaptionWidthGroup="vehicleLbl" UnitWidthGroup="unitWidth"
+                    Value="{Binding AxleConfiguration}"
+                    AllowedValues="{Binding AllowedAxleConfigurations}" />
+                
+            </StackPanel>
+            <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
+                <customControls:VectoParameterControl ValueAlign="right" CaptionWidthGroup="vehicleLbl"
+                                                      UnitWidthGroup="unitWidth"
+                                                      Caption="Gross Vehicle Mass"
+                                                      Unit="{helper:SIUnit GrossVehicleMass}"
+                                                      Value="{Binding GrossVehicleMass, Converter={converter:SIValueConverter}, ConverterParameter=int}" />
+                <customControls:VectoParameterControl ValueAlign="center" CaptionWidthGroup="vehicleLbl"
+                                                      UnitWidthGroup="unitWidth"
+                                                      Caption="HDV Group"
+                                                      Value="{Binding VehicleClass, Converter={converter:VehicleClassConverter}}" IsEnabled="False" />
+                <customControls:VectoParameterControl ValueAlign="right" CaptionWidthGroup="vehicleLbl"
+                                                      UnitWidthGroup="unitWidth"
+                                                      Caption="Curb Mass Chassis"
+                                                      Unit="{helper:SIUnit CurbMassChassis}"
+                                                      Value="{Binding CurbMassChassis, Converter={converter:SIValueConverter}, ConverterParameter=int}" />
+                <customControls:VectoParameterControl
+                    Caption="Engine Idling Speed" Unit="rpm" ValueAlign="right" CaptionWidthGroup="vehicleLbl"
+                    UnitWidthGroup="unitWidth"
+                    Value="{Binding IdlingSpeed, Converter={converter:SIValueConverter}, ConverterParameter=AsRPM|int}" />
+
+
+            </StackPanel>
+            <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
+                <customControls:ComboParameter
+                    Caption="Retarder Type"
+                    CaptionWidthGroup="vehicleLbl" UnitWidthGroup="unitWidth"
+                    Value="{Binding RetarderType}"
+                    AllowedValues="{Binding AllowedRetarderTypes}"/>
+                <customControls:VectoParameterControl ValueAlign="right" CaptionWidthGroup="vehicleLbl"
+                                                      UnitWidthGroup="unitWidth"
+                                                      Caption="Retarder Ratio"
+                                                      Value="{Binding RetarderRatio}"
+                                                      IsEnabled="{Binding HasDedicatedRetarder}"/>
+                <customControls:ComboParameter
+                    Caption="Power Take Off"
+                    CaptionWidthGroup="vehicleLbl" UnitWidthGroup="unitWidth"
+                    Value="{Binding PTOTechnology}"
+                    AllowedValues="{Binding AllowedPTOTechnologies}"
+                />
+                <customControls:ComboParameter
+                    Caption="Angledrive"
+                    CaptionWidthGroup="vehicleLbl" UnitWidthGroup="unitWidth"
+                    Value="{Binding AngledriveType}"
+                    AllowedValues="{Binding AllowedAngledriveTypes}"/>
+            </StackPanel>
+            <StackPanel Orientation="Vertical">
+                <ListView Height="156" Margin="10,10,10,0" VerticalAlignment="Top" Name="TorqueLimitList"
+                          ItemsSource="{Binding TorqueLimits}" >
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Width="auto">
+                                <GridViewColumnHeader MinWidth="80" IsEnabled="False" Foreground="Black">Gear</GridViewColumnHeader>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate DataType="interfaces:TorqueEntry">
+                                        <DockPanel>
+                                            <TextBox Margin="20,0,0,0" Text="{Binding Gear, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" BorderThickness="0" Background="Transparent" TextAlignment="Center"/>
+                                        </DockPanel>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn Width="auto">
+                                <GridViewColumnHeader MinWidth="130" IsEnabled="False" Foreground="Black">Max. Torque</GridViewColumnHeader>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate DataType="interfaces:TorqueEntry">
+                                        <DockPanel>
+                                            <TextBlock DockPanel.Dock="Right" Text="{helper:SIUnit MaxTorque}" Margin="5,0,0,0"/>
+                                            <TextBox DockPanel.Dock="Right" Margin="20,0,0,0" Text="{Binding MaxTorque, Converter={converter:SIValueConverter}, ConverterParameter=int, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" BorderThickness="0" Background="Transparent" TextAlignment="Right"/>
+                                        </DockPanel>   
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                <StackPanel Orientation="Horizontal" Margin="10,7">
+                    <Button DockPanel.Dock="Left" Margin="0,0,10,0" Padding="5,2" Command="{Binding AddTorqueLimit}">Add</Button>
+                    <Button DockPanel.Dock="Left" Margin="0,0,10,0" Padding="5,2" Command="{Binding RemoveTorqueLimit}" CommandParameter="{Binding SelectedItems, ElementName=TorqueLimitList}">Remove</Button>
+                </StackPanel>
+            </StackPanel>
+        </DockPanel>
+    </StackPanel>
+</UserControl>

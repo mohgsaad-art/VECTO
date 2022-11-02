@@ -29,7 +29,6 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using NUnit.Framework;
@@ -38,6 +37,7 @@ using TUGraz.VectoCommon.Utils;
 namespace TUGraz.VectoCore.Tests.Models.Simulation
 {
 	[TestFixture]
+	[Parallelizable(ParallelScope.All)]
 	public class GetSectionTests
 	{
 		public class Entry
@@ -52,7 +52,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			}
 		}
 
-		[Test]
+		[TestCase]
 		public void TestGetSection()
 		{
 			var entries = new List<Entry>();

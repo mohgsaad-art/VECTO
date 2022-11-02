@@ -1,0 +1,51 @@
+﻿<mah:MetroWindow x:Class="VECTO3GUI.Views.OutputWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VECTO3GUI.Views"
+        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:impl="clr-namespace:VECTO3GUI.ViewModel.Impl"
+        xmlns:interfaces="clr-namespace:VECTO3GUI.ViewModel.Interfaces"
+        xmlns:converters="http://metro.mahapps.com/winfx/xaml/shared"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:helper="clr-namespace:VECTO3GUI.Helper"
+        mc:Ignorable="d"
+        Title="{Binding WindowTitle}" Icon="../Resources/Icon2.ico" Height="450" Width="800" WindowStartupLocation="CenterScreen" TitleCharacterCasing="Normal" 
+        d:DataContext="{d:DesignInstance Type=impl:OutputWindowViewModel, IsDesignTimeCreatable=False}">
+
+    <mah:MetroWindow.TitleTemplate>
+        <DataTemplate>
+            <TextBlock Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Left"
+                       Margin="12,0,0,0"
+                       FontWeight="Bold" 
+                       FontSize="12"
+                       FontFamily="{DynamicResource HeaderFontFamily}"/>
+        </DataTemplate>
+    </mah:MetroWindow.TitleTemplate>
+
+
+    <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="10"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <ContentControl Content="{Binding ViewModel}" />
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <StatusBar/>
+        </Grid>
+    </Grid>
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closing">
+            <helper:EventCommandExecuter Command="{Binding Path=ViewModel.CloseWindowCommand, Mode=OneTime}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+</mah:MetroWindow>

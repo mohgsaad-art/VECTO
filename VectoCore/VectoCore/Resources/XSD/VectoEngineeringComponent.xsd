@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSpy v2016 rel. 2 sp1 (x64) (http://www.altova.com) by Helmut Eichlseder (TU Graz/Inst. f. VKM und THD) -->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="urn:tugraz:ivt:VectoAPI:EngineeringComponent:v1.0" xmlns:ns2="urn:tugraz:ivt:VectoAPI:EngineeringDefinitions" elementFormDefault="qualified" attributeFormDefault="unqualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="urn:tugraz:ivt:VectoAPI:EngineeringComponent:v1.0" xmlns:ns2="urn:tugraz:ivt:VectoAPI:EngineeringDefinitions" xmlns:ns3="urn:tugraz:ivt:VectoAPI:EngineeringComponent" targetNamespace="urn:tugraz:ivt:VectoAPI:EngineeringComponent" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<!-- 
 
          This is a convienience file that imports the schema for declaration input (i.e., job data) and all supported declaration definitions

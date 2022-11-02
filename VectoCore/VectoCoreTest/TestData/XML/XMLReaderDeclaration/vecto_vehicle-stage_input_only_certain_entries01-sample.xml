@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:VectoInputDeclaration schemaVersion="2.8" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.4"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v2.0" 
+xmlns:v2.3="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3" 
+xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" 
+xmlns:di="http://www.w3.org/2000/09/xmldsig#"
+xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob v:\VectoCore\VectoCore\Resources\XSD/VectoDeclarationJob.xsd">
+	<v2.0:Vehicle id="VEH-1234567890" xsi:type="Vehicle_Conventional_CompletedBusDeclarationType" >
+		<Manufacturer>Some Manufacturer 1</Manufacturer>
+		<ManufacturerAddress>Some Manufacturer Address 1</ManufacturerAddress>
+		<VIN>VEH-1234567891</VIN>
+		<Date>2021-01-09T11:00:00Z</Date>
+		<Model>Sample Bus Model 2</Model>
+		<LegislativeCategory>M3</LegislativeCategory>
+		<CorrectedActualMass>5000</CorrectedActualMass>
+		<TechnicalPermissibleMaximumLadenMass>10000</TechnicalPermissibleMaximumLadenMass>
+		<AirdragModifiedMultistep>false</AirdragModifiedMultistep>
+		<ClassBus>A</ClassBus>
+		<NgTankSystem>Compressed</NgTankSystem>
+		<BodyworkCode>CG</BodyworkCode>
+		<LowEntry>true</LowEntry>
+		<HeightIntegratedBody>2500</HeightIntegratedBody>
+		<VehicleLength>10000</VehicleLength>
+		<VehicleWidth>2600</VehicleWidth>
+		<EntranceHeight>2000</EntranceHeight>
+		<DoorDriveTechnology>pneumatic</DoorDriveTechnology>
+		<VehicleDeclarationType>interim</VehicleDeclarationType>
+		<ADAS xsi:type="ADAS_Conventional_Type">
+			<EngineStopStart>true</EngineStopStart>
+			<EcoRollWithoutEngineStop>false</EcoRollWithoutEngineStop>
+			<EcoRollWithEngineStop>false</EcoRollWithEngineStop>
+			<PredictiveCruiseControl>none</PredictiveCruiseControl>
+			<APTEcoRollReleaseLockupClutch>true</APTEcoRollReleaseLockupClutch>
+		</ADAS>
+		<Components xsi:type="Components_Conventional_CompletedBusType">
+			<Auxiliaries>
+				<Data xsi:type="AUX_Conventional_CompletedBusType">
+					<ElectricSystem>
+						<LEDLights>
+							<Interiorlights>false</Interiorlights>
+							<Dayrunninglights>true</Dayrunninglights>
+							<Headlights>false</Headlights>
+						</LEDLights>		
+					</ElectricSystem>
+					<HVAC>
+						<AuxiliaryHeaterPower>50</AuxiliaryHeaterPower>
+						<DoubleGlazing>false</DoubleGlazing>
+						<SeparateAirDistributionDucts>false</SeparateAirDistributionDucts>
+					</HVAC>
+				</Data>
+			</Auxiliaries>
+		</Components>
+	</v2.0:Vehicle>
+</tns:VectoInputDeclaration>

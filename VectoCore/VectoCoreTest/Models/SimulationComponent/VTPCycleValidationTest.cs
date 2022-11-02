@@ -32,32 +32,33 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
 using NLog;
 using NLog.Config;
+using NLog.Fluent;
 using NLog.Targets;
 using NUnit.Framework;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
-using TUGraz.VectoCore.InputData.Reader;
+using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
-using TUGraz.VectoCore.Tests.Integration;
-using TUGraz.VectoCore.Tests.Models.SimulationComponentData;
 using TUGraz.VectoCore.Tests.Utils;
 using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 {
 	[TestFixture]
+	//[Parallelizable(ParallelScope.All)]
 	public class VTPCycleValidationTest
 	{
-		public static List<string> LogList = new List<string>();
+		public static ThreadLocal<List<string>> LogList = new ThreadLocal<List<string>>();
 
-		const string Header = "<t> [s],<v> [km/h],<n_eng> [rpm],<n_fan> [rpm],<tq_left> [Nm],<tq_right> [Nm],<n_wh_left> [rpm],<n_wh_right> [rpm],<fc> [g/h],<gear>";
+		const string Header = "<t> [s],<v> [km/h],<n_eng> [rpm],<n_fan> [rpm],<tq_left> [Nm],<tq_right> [Nm],<n_wh_left> [rpm],<n_wh_right> [rpm],<fc_Diesel CI> [g/h],<gear>";
 
 
 		[TestCase()]
@@ -85,8 +86,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 			vtpCycle.VerifyInputData();
 
-			Assert.AreEqual(1, LogList.Count);
-			Assert.IsTrue(LogList[0].Contains("Wheel-speed difference rel."));
+			Assert.AreEqual(1, LogList.Value.Count);
+			Assert.IsTrue(LogList.Value[0].Contains("Wheel-speed difference rel."));
 		}
 
 		[TestCase()]
@@ -105,6 +106,9 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 			var container = new VehicleContainer(ExecutionMode.Declaration) {
 				RunData = new VectoRunData() {
+					VehicleData = new VehicleData() {
+						VehicleCategory = VehicleCategory.RigidTruck,
+					},
 					Aux = new List<VectoRunData.AuxData>()
 				}
 			};
@@ -114,8 +118,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 			vtpCycle.VerifyInputData();
 
-			Assert.AreEqual(1, LogList.Count);
-			Assert.IsTrue(LogList[0].Contains("Wheel-speed difference rel."));
+			Assert.AreEqual(1, LogList.Value.Count);
+			Assert.IsTrue(LogList.Value[0].Contains("Wheel-speed difference rel."));
 		}
 
 		[TestCase()]
@@ -142,8 +146,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var vtpCycle = new VTPCycle(container, cycleData);
 			vtpCycle.VerifyInputData();
 
-			Assert.AreEqual(1, LogList.Count);
-			Assert.IsTrue(LogList[0].Contains("Wheel-speed difference abs."));
+			Assert.AreEqual(1, LogList.Value.Count);
+			Assert.IsTrue(LogList.Value[0].Contains("Wheel-speed difference abs."));
 		}
 
 		[TestCase()]
@@ -171,8 +175,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 			vtpCycle.VerifyInputData();
 
-			Assert.AreEqual(1, LogList.Count);
-			Assert.IsTrue(LogList[0].Contains("Wheel-speed difference abs."));
+			Assert.AreEqual(1, LogList.Value.Count);
+			Assert.IsTrue(LogList.Value[0].Contains("Wheel-speed difference abs."));
 		}
 
 
@@ -205,8 +209,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var vtpCycle = new VTPCycle(container, cycleData);
 			vtpCycle.VerifyInputData();
 
-			Assert.AreEqual(1, LogList.Count);
-			Assert.IsTrue(LogList[0].Contains("Fan speed (non-electric) exceeds range"));
+			Assert.AreEqual(1, LogList.Value.Count);
+			Assert.IsTrue(LogList.Value[0].Contains("Fan speed (non-electric) exceeds range"));
 		}
 
 		[TestCase()]
@@ -238,8 +242,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var vtpCycle = new VTPCycle(container, cycleData);
 			vtpCycle.VerifyInputData();
 
-			Assert.AreEqual(1, LogList.Count);
-			Assert.IsTrue(LogList[0].Contains("Fan speed (non-electric) exceeds range"));
+			Assert.AreEqual(1, LogList.Value.Count);
+			Assert.IsTrue(LogList.Value[0].Contains("Fan speed (non-electric) exceeds range"));
 		}
 
 
@@ -272,7 +276,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var vtpCycle = new VTPCycle(container, cycleData);
 			vtpCycle.VerifyInputData();
 
-			Assert.AreEqual(0, LogList.Count);
+			Assert.AreEqual(0, LogList.Value.Count);
 		}
 
 		[TestCase()]
@@ -304,11 +308,11 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var vtpCycle = new VTPCycle(container, cycleData);
 			vtpCycle.VerifyInputData();
 
-			Assert.AreEqual(0, LogList.Count);
+			Assert.AreEqual(0, LogList.Value.Count);
 			
 		}
 
-		[TestCase()]
+		[TestCase(), Ignore("FC-Checks disabled (dual fuel)")]
 		public void TestFuelConsumptionTooLow()
 		{
 			SetupLogging();
@@ -320,7 +324,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			
 			var cycleEntries = "";
 			for (var i = 0; i < 2000; i++)
-				cycleEntries += string.Format("  {0} ,    0,  600, 400, 500 , 500 , 100 , 100 , {1}, 3 \n", (i / 2.0).ToString(CultureInfo.InvariantCulture), ((fcLimit * 1.01 * (1 - i/100000.0)).ConvertToGrammPerHour().Value).ToString(CultureInfo.InvariantCulture));
+				cycleEntries += $"  {(i / 2.0).ToString(CultureInfo.InvariantCulture)} ,    0,  600, 400, 500 , 500 , 100 , 100 , {((fcLimit * 1.01 * (1 - i / 100000.0)).ConvertToGrammPerHour().Value).ToString(CultureInfo.InvariantCulture)}, 3 \n";
 
 			var container = new VehicleContainer(ExecutionMode.Declaration) {
 				RunData = new VectoRunData() {
@@ -333,8 +337,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			vtpCycle.PrepareCycleData();
 			vtpCycle.VerifyInputData();
 
-			Assert.Greater(LogList.Count, 1);
-			Assert.IsTrue(LogList.Any(x => x.StartsWith("Fuel consumption for the previous 10 [min] below threshold")));
+			Assert.Greater(LogList.Value.Count, 1);
+			Assert.IsTrue(LogList.Value.Any(x => x.StartsWith("Fuel consumption for the previous 10 [min] below threshold")));
 
 		}
 
@@ -350,7 +354,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 			var cycleEntries = "";
 			for (var i = 0; i < 2000; i++)
-				cycleEntries += string.Format("  {0} ,    0,  600, 400, 500 , 500 , 100 , 100 , {1}, 3 \n", (i / 2.0).ToString(CultureInfo.InvariantCulture), ((fcLimit * 1.0001).ConvertToGrammPerHour().Value).ToString(CultureInfo.InvariantCulture));
+				cycleEntries += $"  {(i / 2.0).ToString(CultureInfo.InvariantCulture)} ,    0,  600, 400, 500 , 500 , 100 , 100 , {((fcLimit * 1.0001).ConvertToGrammPerHour().Value).ToString(CultureInfo.InvariantCulture)}, 3 \n";
 
 			var container = new VehicleContainer(ExecutionMode.Declaration) {
 				RunData = new VectoRunData() {
@@ -363,11 +367,11 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			vtpCycle.PrepareCycleData();
 			vtpCycle.VerifyInputData();
 
-			Assert.AreEqual(0, LogList.Count);
+			Assert.AreEqual(0, LogList.Value.Count);
 
 		}
 
-		[TestCase()]
+		[TestCase(), Ignore("FC-Checks disabled (dual fuel")]
 		public void TestFuelConsumptionTooHigh()
 		{
 			SetupLogging();
@@ -379,7 +383,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 			var cycleEntries = "";
 			for (var i = 0; i < 2000; i++)
-				cycleEntries += string.Format("  {0} ,    0,  600, 400, 500 , 500 , 100 , 100 , {1}, 3 \n", (i / 2.0).ToString(CultureInfo.InvariantCulture), ((fcLimit * 0.99 * (1 + i / 100000.0)).ConvertToGrammPerHour().Value).ToString(CultureInfo.InvariantCulture));
+				cycleEntries += $"  {(i / 2.0).ToString(CultureInfo.InvariantCulture)} ,    0,  600, 400, 500 , 500 , 100 , 100 , {((fcLimit * 0.99 * (1 + i / 100000.0)).ConvertToGrammPerHour().Value).ToString(CultureInfo.InvariantCulture)}, 3 \n";
 
 			var container = new VehicleContainer(ExecutionMode.Declaration) {
 				RunData = new VectoRunData() {
@@ -392,8 +396,8 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			vtpCycle.PrepareCycleData();
 			vtpCycle.VerifyInputData();
 
-			Assert.Greater(LogList.Count, 1);
-			Assert.IsTrue(LogList.Any(x => x.StartsWith("Fuel consumption for the previous 10 [min] above threshold")));
+			Assert.Greater(LogList.Value.Count, 1);
+			Assert.IsTrue(LogList.Value.Any(x => x.StartsWith("Fuel consumption for the previous 10 [min] above threshold")));
 		}
 
 		[TestCase()]
@@ -408,7 +412,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 			var cycleEntries = "";
 			for (var i = 0; i < 2000; i++)
-				cycleEntries += string.Format("  {0} ,    0,  600, 400, 500 , 500 , 100 , 100 , {1}, 3 \n", (i / 2.0).ToString(CultureInfo.InvariantCulture), ((fcLimit * 0.9999).ConvertToGrammPerHour().Value).ToString(CultureInfo.InvariantCulture));
+				cycleEntries += $"  {(i / 2.0).ToString(CultureInfo.InvariantCulture)} ,    0,  600, 400, 500 , 500 , 100 , 100 , {((fcLimit * 0.9999).ConvertToGrammPerHour().Value).ToString(CultureInfo.InvariantCulture)}, 3 \n";
 
 			var container = new VehicleContainer(ExecutionMode.Declaration) {
 				RunData = new VectoRunData() {
@@ -421,13 +425,14 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			vtpCycle.PrepareCycleData();
 			vtpCycle.VerifyInputData();
 
-			Assert.AreEqual(0, LogList.Count);
+			Assert.AreEqual(0, LogList.Value.Count);
 
 		}
 
-		private static void SetupLogging()
+		private void SetupLogging()
 		{
-			LogList.Clear();
+			LogList.Value = new List<string>();
+			LogList.Value.Clear();
 			var target = new MethodCallTarget {
 				ClassName = typeof(VTPCycleValidationTest).AssemblyQualifiedName,
 				MethodName = "LogMethod"
@@ -441,7 +446,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 		// ReSharper disable once UnusedMember.Global -- used by logging framework, see SetupLogging method
 		public static void LogMethod(string level, string message)
 		{
-			LogList.Add(message);
+			LogList.Value.Add(message);
 		}
 	}
 }

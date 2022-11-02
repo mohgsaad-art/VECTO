@@ -45,17 +45,11 @@ namespace TUGraz.VectoCore.Utils
 		private static readonly ThreadLocal<List<DataEntry>> DataLocal =
 			new ThreadLocal<List<DataEntry>>(() => new List<DataEntry>());
 
-		public static List<DataEntry> Data
-		{
-			get { return DataLocal.Value; }
-		}
+		public static List<DataEntry> Data => DataLocal.Value;
 
 		private static readonly ThreadLocal<Stopwatch> TimerLocal = new ThreadLocal<Stopwatch>(Stopwatch.StartNew);
 
-		private static Stopwatch Timer
-		{
-			get { return TimerLocal.Value; }
-		}
+		private static Stopwatch Timer => TimerLocal.Value;
 
 		private static readonly ThreadLocal<Dictionary<string, Dictionary<string, double>>> CurrentLocal =
 			new ThreadLocal<Dictionary<string, Dictionary<string, double>>>(
@@ -63,32 +57,19 @@ namespace TUGraz.VectoCore.Utils
 
 		private static Dictionary<string, Dictionary<string, double>> Current
 		{
-			get { return CurrentLocal.Value; }
-			set { CurrentLocal.Value = value; }
+			get => CurrentLocal.Value;
+			set => CurrentLocal.Value = value;
 		}
 
 		[Conditional("TRACE")]
 		public static void Increment<T>(T o, string key, double? value = null)
 		{
 			var t = typeof(T).Name;
-
-			if (!Current.ContainsKey(t))
-				Current[t] = new Dictionary<string, double>();
-
-			if (Current[t].ContainsKey(key))
-				if (value.HasValue)
-					Current[t][key] += value.Value;
-				else
-					Current[t][key]++;
-
-			else {
-				if (value.HasValue)
-					Current[t][key] = value.Value;
-				else
-					Current[t][key] = 1;
-			}
+			var c = Current.GetOrAdd(t, _ => new Dictionary<string, double>());
+			c[key] = c.GetVECTOValueOrDefault(key, 0) + value ?? 1;
 		}
 
+		[Conditional("TRACE")]
 		public static void StartIteration()
 		{
 			Timer.Restart();
@@ -125,24 +106,24 @@ namespace TUGraz.VectoCore.Utils
 				row["StepDuration"] = entry.Duration.TotalMilliseconds;
 
 				if (entry.Values.ContainsKey("DistanceRun")) {
-					row["Distance"] = entry.Values["DistanceRun"].GetValueOrNull("Distance");
-					row["Time"] = entry.Values["DistanceRun"].GetValueOrNull("Time");
-					row["StepIterationCount"] = entry.Values["DistanceRun"].GetValueOrNull("Iterations");
+					row["Distance"] = entry.Values["DistanceRun"].GetValueOrDBNull("Distance");
+					row["Time"] = entry.Values["DistanceRun"].GetValueOrDBNull("Time");
+					row["StepIterationCount"] = entry.Values["DistanceRun"].GetValueOrDBNull("Iterations");
 				}
 				if (entry.Values.ContainsKey("Driver")) {
-					row["NumDriverRequests"] = entry.Values["Driver"].GetValueOrNull("Requests");
-					row["NumAccelActions"] = entry.Values["Driver"].GetValueOrNull("Accelerate");
-					row["NumBrakeActions"] = entry.Values["Driver"].GetValueOrNull("Brake");
-					row["NumCoastActions"] = entry.Values["Driver"].GetValueOrNull("Coast");
-					row["NumRollActions"] = entry.Values["Driver"].GetValueOrNull("Roll");
-					row["SearchOPIterations"] = entry.Values["Driver"].GetValueOrNull("SearchOperatingPoint");
-					row["SearchBrakeIterations"] = entry.Values["Driver"].GetValueOrNull("SearchBrakingPower");
+					row["NumDriverRequests"] = entry.Values["Driver"].GetValueOrDBNull("Requests");
+					row["NumAccelActions"] = entry.Values["Driver"].GetValueOrDBNull("Accelerate");
+					row["NumBrakeActions"] = entry.Values["Driver"].GetValueOrDBNull("Brake");
+					row["NumCoastActions"] = entry.Values["Driver"].GetValueOrDBNull("Coast");
+					row["NumRollActions"] = entry.Values["Driver"].GetValueOrDBNull("Roll");
+					row["SearchOPIterations"] = entry.Values["Driver"].GetValueOrDBNull("SearchOperatingPoint");
+					row["SearchBrakeIterations"] = entry.Values["Driver"].GetValueOrDBNull("SearchBrakingPower");
 				}
 				if (entry.Values.ContainsKey("Gearbox")) {
-					row["NumGearboxRequests"] = entry.Values["Gearbox"].GetValueOrNull("Requests");
+					row["NumGearboxRequests"] = entry.Values["Gearbox"].GetValueOrDBNull("Requests");
 				}
 				if (entry.Values.ContainsKey("CombustionEngine")) {
-					row["NumEngineRequests"] = entry.Values["CombustionEngine"].GetValueOrNull("Requests");
+					row["NumEngineRequests"] = entry.Values["CombustionEngine"].GetValueOrDBNull("Requests");
 				}
 				table.Rows.Add(row);
 			}

@@ -30,16 +30,24 @@
 */
 
 using System.IO;
+using System.Xml;
+using System.Xml.Linq;
+using System.Xml.XPath;
 using NUnit.Framework;
 using TUGraz.VectoCommon.Models;
+using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
 using TUGraz.VectoCore.Models.Simulation.Impl;
+using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
+using TUGraz.VectoCore.Utils;
+using XmlDocumentType = TUGraz.VectoCore.Utils.XmlDocumentType;
 
 namespace TUGraz.VectoCore.Tests.Integration.VTP
 {
 	[TestFixture]
+	[Parallelizable(ParallelScope.All)]
 	public class VTPTest
 	{
 		[OneTimeSetUp]
@@ -49,20 +57,21 @@ namespace TUGraz.VectoCore.Tests.Integration.VTP
 		}
 
 		[TestCase(@"TestData\Integration\VTPMode\GenericVehicle\class_5_generic vehicle.vecto"),
-		 TestCase(@"TestData\Integration\VTPMode\GenericVehicle\class_5_generic vehicle_noGear.vecto")]
+		 TestCase(@"TestData\Integration\VTPMode\GenericVehicle\class_5_generic vehicle_noGear.vecto"),
+		 //TestCase(@"TestData\Integration\VTPMode\HeavyBus\VTP_PrimaryBus_ENG.vecto", TestName = "RunVTPHeavyPrimaryBus Engineering")
+		]
 		public void RunVTP(string jobFile)
 		{
 			var fileWriter = new FileOutputWriter(jobFile);
 			var sumWriter = new SummaryDataContainer(fileWriter);
 			var jobContainer = new JobContainer(sumWriter);
 			var dataProvider = JSONInputDataFactory.ReadJsonJob(jobFile);
-			var runsFactory = new SimulatorFactory(ExecutionMode.Engineering, dataProvider, fileWriter) {
-				ModalResults1Hz = false,
-				WriteModalResults = true,
-				ActualModalData = false,
-				Validate = false,
-			};
-			
+			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, dataProvider, fileWriter);
+			runsFactory.ModalResults1Hz = false;
+			runsFactory.WriteModalResults = true;
+			runsFactory.ActualModalData = false;
+			runsFactory.Validate = false;
+
 			jobContainer.AddRuns(runsFactory);
 
 			Assert.AreEqual(1, jobContainer.Runs.Count);
@@ -74,28 +83,30 @@ namespace TUGraz.VectoCore.Tests.Integration.VTP
 			jobContainer.WaitFinished();
 
 			Assert.AreEqual(true, jobContainer.AllCompleted);
-			
 		}
 
 		[Category("LongRunning")]
 		[Category("Integration")]
-		[TestCase(@"TestData\Integration\VTPMode\GenericVehicle\class_5_generic vehicle_DECL.vecto")]
-		public void RunVTP_Declaration(string jobFile)
+		[TestCase(@"TestData\Integration\VTPMode\GenericVehicle\class_5_generic vehicle_DECL.vecto", 45.6, 0.8972, TestName = "RunVTPHeavyLorry_Declaration"),
+		TestCase(@"TestData\Integration\VTPMode\MediumLorry\VTP_MediumLorry.vecto", 400.0, 1.06, TestName = "RunVTPMediumLorry_Declaration"),
+		TestCase(@"TestData\Integration\VTPMode\DualFuelVehicle\VTP_DualFuel.vecto", 43.5, 1.0107, TestName = "RunVTPDualFuel_Declaration"),
+		TestCase(@"TestData\Integration\VTPMode\HeavyBus\VTP_PrimaryBus.vecto", 14.2, 1.1413, TestName = "RunVTPHeavyPrimaryBus")	
+			]
+		public void RunVTP_Declaration(string jobFile, double expectedDeclaredCO2, double expectedCVTP)
 		{
 			var fileWriter = new FileOutputWriter(jobFile);
 			var sumWriter = new SummaryDataContainer(fileWriter);
 			var jobContainer = new JobContainer(sumWriter);
 			var dataProvider = JSONInputDataFactory.ReadJsonJob(jobFile);
-			var runsFactory = new SimulatorFactory(ExecutionMode.Declaration, dataProvider, fileWriter) {
-				ModalResults1Hz = false,
-				WriteModalResults = true,
-				ActualModalData = false,
-				Validate = false,
-			};
+			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, dataProvider, fileWriter);
+			runsFactory.ModalResults1Hz = false;
+			runsFactory.WriteModalResults = true;
+			runsFactory.ActualModalData = false;
+			runsFactory.Validate = false;
 
 			jobContainer.AddRuns(runsFactory);
 
-			Assert.AreEqual(2, jobContainer.Runs.Count);
+			Assert.AreEqual(1, jobContainer.Runs.Count);
 			//var i = 0;
 			//jobContainer.Runs[i].Run.Run();
 			//Assert.IsTrue(jobContainer.Runs[i].Run.FinishedWithoutErrors);
@@ -104,27 +115,72 @@ namespace TUGraz.VectoCore.Tests.Integration.VTP
 			jobContainer.WaitFinished();
 
 			Assert.AreEqual(true, jobContainer.AllCompleted);
+
+			var vtpReport = fileWriter.XMLVTPReportName;
+			var validator = new XMLValidator(XmlReader.Create(vtpReport));
+			validator.ValidateXML(XmlDocumentType.VTPReport);
+			Assert.IsNull(validator.ValidationError);
+
+			var vtpXml = XDocument.Load(vtpReport);
+
+			Assert.AreEqual(expectedDeclaredCO2, vtpXml.Document?.XPathSelectElement("//*[local-name()='Declared']")?.Value.ToDouble(), 1e-1);
+			Assert.AreEqual(expectedCVTP, vtpXml.Document?.XPathSelectElement("//*[local-name()='C_VTP']")?.Value.ToDouble(), 1e-4);
 		}
 
 		[Category("LongRunning")]
 		[Category("Integration")]
+		[TestCase(@"TestData\Integration\VTPMode\GenericVehicle_CNG\class_5_generic vehicle_DECL.vecto")]
+		public void RunVTP_Declaration_NCVCorrection_CNG(string jobFile)
+		{
+			var fileWriter = new FileOutputWriter(jobFile);
+			var sumWriter = new SummaryDataContainer(fileWriter);
+			var jobContainer = new JobContainer(sumWriter);
+			var dataProvider = JSONInputDataFactory.ReadJsonJob(jobFile);
+			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, dataProvider, fileWriter);
+			runsFactory.ModalResults1Hz = false;
+			runsFactory.WriteModalResults = true;
+			runsFactory.ActualModalData = false;
+			runsFactory.Validate = false;
+
+			jobContainer.AddRuns(runsFactory);
+
+			Assert.AreEqual(1, jobContainer.Runs.Count);
+			//var i = 0;
+			//jobContainer.Runs[i].Run.Run();
+			//Assert.IsTrue(jobContainer.Runs[i].Run.FinishedWithoutErrors);
+
+			jobContainer.Execute();
+			jobContainer.WaitFinished();
+
+			Assert.AreEqual(true, jobContainer.AllCompleted);
+
+			var vtpReport = XDocument.Load(XmlReader.Create(fileWriter.XMLVTPReportName));
+			var vtpFactor = vtpReport.XPathSelectElement("//*[local-name() = 'Results']/*[local-name() = 'C_VTP']")?.Value.ToDouble(0);
+
+			Assert.AreEqual(0.9549, vtpFactor);
+		}
+
+
+
+		[Category("LongRunning")]
+		[Category("Integration")]
 		[TestCase(@"TestData\Integration\VTPMode\GenericVehicle\VTP_AT-gbx.vecto")]
+		[TestCase(@"TestData\Integration\VTPMode\GenericVehicle\VTP_AT-gbx_2TC.vecto")]
 		public void RunVTPWithAT(string jobFile)
 		{
 			var fileWriter = new FileOutputWriter(jobFile);
 			var sumWriter = new SummaryDataContainer(fileWriter);
 			var jobContainer = new JobContainer(sumWriter);
 			var dataProvider = JSONInputDataFactory.ReadJsonJob(jobFile);
-			var runsFactory = new SimulatorFactory(ExecutionMode.Declaration, dataProvider, fileWriter) {
-				ModalResults1Hz = false,
-				WriteModalResults = true,
-				ActualModalData = false,
-				Validate = false,
-			};
+			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, dataProvider, fileWriter);
+			runsFactory.ModalResults1Hz = false;
+			runsFactory.WriteModalResults = true;
+			runsFactory.ActualModalData = false;
+			runsFactory.Validate = false;
 
 			jobContainer.AddRuns(runsFactory);
 
-			Assert.AreEqual(2, jobContainer.Runs.Count);
+			Assert.AreEqual(1, jobContainer.Runs.Count);
 			var i = 0;
 			jobContainer.Runs[i].Run.Run();
 			Assert.IsTrue(jobContainer.Runs[i].Run.FinishedWithoutErrors);
@@ -134,5 +190,8 @@ namespace TUGraz.VectoCore.Tests.Integration.VTP
 
 			Assert.AreEqual(true, jobContainer.AllCompleted);
 		}
+
+		
+
 	}
 }

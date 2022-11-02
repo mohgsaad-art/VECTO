@@ -1,0 +1,172 @@
+﻿<UserControl x:Class="VECTO3GUI2020.Views.JobListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:VECTO3GUI2020.Views"
+             xmlns:converter="clr-namespace:VECTO3GUI2020.Helper.Converter" xmlns:implementation="clr-namespace:VECTO3GUI2020.ViewModel.Implementation"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:behavior="clr-namespace:VECTO3GUI2020.Behaviours"
+             xmlns:document="clr-namespace:VECTO3GUI2020.ViewModel.Interfaces.Document"
+             d:DataContext="{d:DesignInstance Type=implementation:JobListViewModel}"
+             mc:Ignorable="d" 
+             AutomationProperties.Name="JobListView"
+             d:DesignHeight="450" d:DesignWidth="1000">
+
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="1*" MinHeight="65"/>
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="140"/>
+                <ColumnDefinition />
+                <ColumnDefinition Width="140"/>
+            </Grid.ColumnDefinitions>
+
+            <Border>
+                <Grid>
+                    <StackPanel>
+                        <Button x:Name="button" Style="{StaticResource MultiStageButtonStyle1}" Command="{Binding SimulationCommand}">Simulation</Button>
+                        <Button Style="{StaticResource MultiStageButtonStyle1}" Command="{Binding CancelSimulation}">Stop</Button>
+                        <Button x:Name="button1" Style="{StaticResource MultiStageButtonStyle1}"  Command="{Binding moveJobUp}" CommandParameter="{Binding ElementName=JobDataGrid, Path=SelectedItem}">Up</Button>
+                        <Button x:Name="button2" Style="{StaticResource MultiStageButtonStyle1}" Command="{Binding moveJobDown}" CommandParameter="{Binding ElementName=JobDataGrid, Path=SelectedItem}">Down</Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+            <Grid Grid.Column="1">
+                <Border BorderBrush="{StaticResource AccentColorButton}" BorderThickness="0" >
+                    <DataGrid ItemsSource="{Binding Jobs}"
+                          BorderBrush ="{StaticResource AccentColorButton}" 
+                          BorderThickness="1 0 1 1"
+                          Name="JobDataGrid"
+                          HorizontalAlignment="Stretch"
+                          CanUserReorderColumns="False" 
+                          AutoGenerateColumns="False"
+                          SelectionMode="Single"
+                          GridLinesVisibility="All" 
+                          RowHeaderWidth="0"
+                          ColumnHeaderHeight="30"     
+                          VerticalAlignment="Stretch"
+                          VerticalContentAlignment="Stretch"
+                          AllowDrop="True"  Drop="JobDataGrid_OnDrop"
+                          PreviewDrop = "JobDataGrid_OnPreviewDrop"
+                          ColumnHeaderStyle="{StaticResource JobListDataGridHeaderStyle}"
+                          RowHeight="30"
+                          AlternatingRowBackground="WhiteSmoke" 
+                          CellStyle="{DynamicResource DataGridCellStyle1}"
+                          SelectedItem = "{Binding SelectedJob}"
+                >
+                        <i:Interaction.Behaviors>
+                            <behavior:AutoScrollDataGridBehaviour>
+                            </behavior:AutoScrollDataGridBehaviour>
+                        </i:Interaction.Behaviors>
+
+                        <!--CONTEXT MENU-->
+
+                        <!--<DataGrid.Resources>
+                                <ContextMenu x:Key="RowMenu">
+                                    <MenuItem Header="Edit WIP" Command="{Binding RowCopyCommand}" />
+                                    <MenuItem Header="Show Source File">
+                                        <MenuItem Header="Show in Explorer"></MenuItem>
+                                    </MenuItem>
+                                </ContextMenu>
+                            </DataGrid.Resources>
+                            <DataGrid.RowStyle>
+                                <Style TargetType="DataGridRow" >
+                                    <Setter Property="ContextMenu" Value="{StaticResource RowMenu}" />
+                                </Style>
+                            </DataGrid.RowStyle>-->
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn CanUserResize="False" IsReadOnly="False">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate DataType="document:IDocumentViewModel">
+                                        <Grid>
+                                            <CheckBox 
+                                                HorizontalAlignment="Center" 
+                                                VerticalAlignment ="Center"
+                                                IsEnabled="{Binding CanBeSimulated}" 
+                                                Visibility="{Binding CanBeSimulated, 
+                                                Converter={StaticResource BooleanToVisibilityConverter}}" 
+                                                IsChecked="{Binding Selected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                            <Button 
+                                                Margin="0" 
+                                                Padding="5" 
+                                                Background="Transparent" 
+                                                HorizontalAlignment="Center" 
+                                                VerticalAlignment ="Center"
+                                                BorderThickness="0"
+                                                Command="{Binding RelativeSource={RelativeSource AncestorType=DataGrid}, 
+                                                Path=DataContext.OpenAdditionalJobInformationCommand}"
+                                                CommandParameter="{Binding }"
+                                                ContentTemplate="{DynamicResource InformationIcon}"
+                                                Visibility="{Binding CanBeSimulated, Converter={StaticResource InvertedBoolToVisibilityConverter}}">
+                                            </Button>
+                                        </Grid>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn IsReadOnly="True" Header="Name" Binding="{Binding DocumentName}"></DataGridTextColumn>
+                            <DataGridTextColumn IsReadOnly ="True" Header="Type" Binding="{Binding DocumentTypeName}"></DataGridTextColumn>
+                            <DataGridTextColumn IsReadOnly ="True" Header="File" Binding="{Binding DataSource.SourceFile}"></DataGridTextColumn>
+                        </DataGrid.Columns>
+
+                        <DataGrid.InputBindings>
+                            <MouseBinding
+                        MouseAction="LeftDoubleClick"
+                        Command="{Binding EditDocument}"
+                        CommandParameter="{Binding ElementName=JobDataGrid, Path=SelectedItem}"></MouseBinding>
+                        </DataGrid.InputBindings>
+                    </DataGrid>
+                    <!--<Label x:Name="label" Content="Loading . . ." Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"/>-->
+                </Border>
+            </Grid>
+            <Grid Grid.Column="2">
+                <Border BorderBrush="Transparent" BorderThickness="1">
+                    <StackPanel >
+                        <Button x:Name="button3" HorizontalAlignment="Stretch" 
+                                Style="{StaticResource MultiStageButtonStyle1}"
+                                Command="{Binding AddJobAsyncCommand, IsAsync=True}" Background="#FFDDDDDD">
+                            Load File</Button>
+                        <Button x:Name="button4" HorizontalAlignment="Stretch" 
+                                Style="{StaticResource MultiStageButtonStyle1}"
+                                Command="{Binding EditDocument}"
+                                CommandParameter="{Binding ElementName=JobDataGrid, Path=SelectedItem}">Edit Job</Button>
+                        <!--<Button x:Name="newFileButton" Margin="4" HorizontalAlignment="Stretch" 
+                                Style="{StaticResource MultiStageButtonStyle1}"
+                                Command="{Binding OpenPopUpCommand}">New File</Button>
+                        <Popup HorizontalAlignment="Center" 
+                               x:Name="newFilePopup"
+                               PlacementTarget="{Binding ElementName=newFileButton, Path=.}" 
+                               Margin="{Binding ElementName=newFileButton, Path=Margin}" 
+                               MinWidth="{Binding ElementName=newFileButton, Path=ActualWidth}" 
+                               IsOpen="{Binding NewFilePopUpIsOpen, Mode=TwoWay}" 
+                               StaysOpen="False" PreviewMouseLeftButtonUp="NewFilePopup_OnPreviewMouseLeftButtonDown">
+                            <Border BorderThickness="1px" BorderBrush="{StaticResource AccentColorButton}">
+                                <StackPanel Background="White">
+                                    <Button Style="{StaticResource MultiStageButtonStyle1}" Command="{Binding NewManufacturingStageFileCommand}">New Manufacturing Stage</Button>
+                                    <Button Style="{StaticResource MultiStageButtonStyle1}" Command="{Binding NewVifCommand}">New VIF</Button>
+                                    <Button Style="{StaticResource MultiStageButtonStyle1}" Command="{Binding NewCompletedInputCommand}">New Completed Input</Button>
+                                    <Button Style="{StaticResource MultiStageButtonStyle1}" Command="{Binding NewExemptedCompletedInputCommand}">New Exempted Completed Input</Button>
+                                </StackPanel>
+                            </Border>
+                        </Popup>-->
+                        <Button x:Name="button6" HorizontalAlignment="Stretch" 
+                                Style="{StaticResource MultiStageButtonStyle1}"
+                                Command="{Binding RemoveJob, IsAsync=True}"
+                                CommandParameter="{Binding ElementName=JobDataGrid, Path=SelectedItem}">Remove Job</Button>
+
+
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Grid>
+        <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" Height="5"/>
+        <ContentControl Grid.Row="2" Name="ContentControlBottom" Content="{Binding OutputViewModel }"/>
+    </Grid>
+
+</UserControl>

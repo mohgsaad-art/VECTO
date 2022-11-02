@@ -55,7 +55,7 @@ namespace LicenceHeader
 			Console.Error.WriteLine("Excluded Dirs: \\obj, \\bin");
 			Console.Error.WriteLine("Header-File: {0}", Path.GetFullPath("header.txt"));
 
-			var licence = File.ReadAllText("header.txt", Encoding.UTF8);
+			var licence = File.ReadAllText("header.txt", Encoding.UTF8).Replace("[currentyear]", DateTime.Today.Year.ToString());
 			var re = new Regex("^.*?(?=using|namespace)", RegexOptions.Singleline);
 
 			var updatedFiles = Directory.EnumerateFiles(SolutionRootDirectory, "*.cs", SearchOption.AllDirectories)

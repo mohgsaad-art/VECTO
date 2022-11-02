@@ -55,10 +55,7 @@ namespace TUGraz.VectoHashing.Impl
 			}
 		}
 
-		public static string DefaultDigestMethod
-		{
-			get { return DigestMethodSha256; }
-		}
+		public static string DefaultDigestMethod => DigestMethodSha256;
 
 		public static ICollection<string> SupportedCanonicalizationMethods
 		{
@@ -89,13 +86,15 @@ namespace TUGraz.VectoHashing.Impl
 			var c14N = (canonicalization ?? DefaultCanonicalizationMethod).ToArray();
 			digestMethod = digestMethod ?? DefaultDigestMethod;
 			if (!SupportedDigestMethods.Contains(digestMethod)) {
-				throw new Exception(string.Format("DigestMethod '{0}' not supported.", digestMethod));
+				throw new Exception($"DigestMethod '{digestMethod}' not supported.");
 			}
 			var unsupported = c14N.Where(c => !SupportedCanonicalizationMethods.Contains(c)).ToArray();
 			if (unsupported.Any()) {
-				throw new Exception(string.Format("CanonicalizationMethod(s) {0} not supported!", string.Join(", ", unsupported)));
+				throw new Exception($"CanonicalizationMethod(s) {string.Join(", ", unsupported)} not supported!");
 			}
 
+			// load any HMAC algorithm so that the key is also available. the HVAC algorithm used is the one set in the Reference object below
+			var hmac = HMAC.Create("HMACSHA256"); 
 			var signedXml = new SignedXml(doc);
 			var reference = new Reference("#" + elementId) {
 				DigestMethod = digestMethod
@@ -105,7 +104,7 @@ namespace TUGraz.VectoHashing.Impl
 			}
 
 			signedXml.AddReference(reference);
-			signedXml.ComputeSignature(HMAC.Create());
+			signedXml.ComputeSignature(hmac);
 			var xmlDigitalSignature = reference.GetXml();
 
 			var sigdoc = new XmlDocument();
@@ -123,7 +122,7 @@ namespace TUGraz.VectoHashing.Impl
 				case DsigExcC14NTransform:
 					return new XmlDsigExcC14NTransform();
 			}
-			throw new Exception(string.Format("Unsupported CanonicalizationMethod {0}", transformUrn));
+			throw new Exception($"Unsupported CanonicalizationMethod {transformUrn}");
 		}
 	}
 }

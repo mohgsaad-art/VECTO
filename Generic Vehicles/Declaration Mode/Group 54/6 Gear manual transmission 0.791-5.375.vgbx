@@ -1,0 +1,75 @@
+﻿{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2020-01-14T15:22:49.5816520Z",
+    "AppVersion": "3",
+    "FileVersion": 6
+  },
+  "Body": {
+    "SavedInDeclMode": true,
+    "ModelName": "6 Gear manual transmisson 0.791-5.375",
+    "Inertia": 0.0,
+    "TracInt": 2.0,
+    "Gears": [
+      {
+        "Ratio": 4.3,
+        "LossMap": "Axle_4x2_orig.vtlm"
+      },
+      {
+        "Ratio": 5.375,
+        "LossMap": "Gear_1.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": "",
+        "MaxSpeed": ""
+      },
+      {
+        "Ratio": 3.154,
+        "LossMap": "Gear_2.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": "",
+        "MaxSpeed": ""
+      },
+      {
+        "Ratio": 2.041,
+        "LossMap": "Gear_3.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": "",
+        "MaxSpeed": ""
+      },
+      {
+        "Ratio": 1.365,
+        "LossMap": "Gear_4.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": "",
+        "MaxSpeed": ""
+      },
+      {
+        "Ratio": 1.0,
+        "LossMap": "Gear_5.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": "",
+        "MaxSpeed": ""
+      },
+      {
+        "Ratio": 0.791,
+        "LossMap": "Gear_6.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": "",
+        "MaxSpeed": ""
+      }
+    ],
+    "TqReserve": 20.0,
+    "ShiftTime": 1.5,
+    "StartTqReserve": 20.0,
+    "StartSpeed": 1.3,
+    "StartAcc": 0.6,
+    "GearboxType": "MT",
+    "TorqueConverter": {
+      "Enabled": false
+    },
+    "DownshiftAfterUpshiftDelay": 6.0,
+    "UpshiftAfterDownshiftDelay": 6.0,
+    "UpshiftMinAcceleration": 0.1,
+    "PowershiftShiftTime": 0.0
+  }
+}

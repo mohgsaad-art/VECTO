@@ -38,6 +38,7 @@ using NUnit.Framework;
 namespace TUGraz.VectoCore.Tests.Exceptions
 {
 	[TestFixture]
+	[Parallelizable(ParallelScope.All)]
 	public class ExceptionTests
 	{
 		[TestCase]

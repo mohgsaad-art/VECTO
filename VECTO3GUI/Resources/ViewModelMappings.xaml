@@ -1,0 +1,319 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:impl="clr-namespace:VECTO3GUI.ViewModel.Impl"
+                    xmlns:views="clr-namespace:VECTO3GUI.Views"
+                    xmlns:engineering="clr-namespace:VECTO3GUI.Views.ComponentViews.Engineering"
+                    xmlns:declaration="clr-namespace:VECTO3GUI.Views.ComponentViews.Declaration"
+                    xmlns:interfaces="clr-namespace:VECTO3GUI.ViewModel.Interfaces">
+
+    <DataTemplate DataType="{x:Type impl:JoblistViewModel}">
+        <views:JoblistView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type impl:DeclarationJobViewModel}">
+        <views:JobEditView/>
+    </DataTemplate>
+
+
+    <DataTemplate DataType="{x:Type impl:XMLViewModel}">
+        <views:XMLView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type impl:SettingsViewModel}">
+        <views:SettingsView/>
+    </DataTemplate>
+   
+    <DataTemplate DataType="{x:Type impl:AbstractBusJobViewModel}">
+        <views:BusJobView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type impl:EngineOnlyJobViewModel}">
+        <views:JobEditView/>
+    </DataTemplate>
+
+
+    <DataTemplate DataType="{x:Type impl:NoneViewModel}">
+        <views:EditComponentNoneView/>
+    </DataTemplate>
+
+    <!--New defined DataTemplates-->
+    <DataTemplate DataType="{x:Type impl:PrimaryVehicleBusJobViewModel}">
+        <views:JobEditView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type impl:AboutViewModel}">
+        <views:AboutView/>
+    </DataTemplate>
+
+
+    <!--<DataTemplate DataType="{x:Type impl:CompleteVehicleBusJobViewModel}">
+        <views:JobEditView/>
+    </DataTemplate>-->
+    
+<!--some test-->
+
+
+    <DataTemplate DataType="{x:Type impl:CompleteVehicleBusJobViewModel}">
+        <views:JoblistTabView/>
+    </DataTemplate>
+
+
+<!--end test-->
+
+
+
+
+    <DataTemplate DataType="{x:Type impl:PrimaryVehicleBusViewModel}">
+        <declaration:PrimaryVehicleBusView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type impl:CompleteVehicleBusViewModel}">
+        <declaration:CompleteVehicleBusView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type impl:AirdragViewModel}">
+        <declaration:AirdragDeclarationView/>
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type impl:AuxiliariesViewModel}">
+        <declaration:AuxiliariesDeclarationView/>
+    </DataTemplate>
+
+    <!--***************************************************-->
+
+    <!--<DataTemplate x:Key="EditAirdragDeclaration">
+        <declaration:AirdragDeclarationView/>
+    </DataTemplate>
+    <DataTemplate x:Key="EditAirdragEngineering">
+        <engineering:AirdragEngineeringView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type impl:AirdragViewModel}">
+        <ContentPresenter x:Name="EditAirdrag"></ContentPresenter>
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding DeclarationMode}" Value="true">
+                <Setter TargetName="EditAirdrag" Property="ContentTemplate" Value="{StaticResource EditAirdragDeclaration}"></Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DeclarationMode}" Value="false">
+                <Setter TargetName="EditAirdrag" Property="ContentTemplate" Value="{StaticResource EditAirdragEngineering}"></Setter>
+            </DataTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>-->
+
+    <DataTemplate x:Key="EditAngledriveDeclaration">
+        <declaration:AngledriveDeclarationView/>
+    </DataTemplate>
+    <DataTemplate x:Key="EditAngledriveEngineering">
+        <engineering:AngledriveEngineeringView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type impl:AngledriveViewModel}">
+        <ContentPresenter x:Name="EditAngledrive"></ContentPresenter>
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding DeclarationMode}" Value="true">
+                <Setter TargetName="EditAngledrive" Property="ContentTemplate" Value="{StaticResource EditAngledriveDeclaration}"></Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DeclarationMode}" Value="false">
+                <Setter TargetName="EditAngledrive" Property="ContentTemplate" Value="{StaticResource EditAngledriveEngineering}"></Setter>
+            </DataTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+
+    <DataTemplate x:Key="EditAxlegearDeclaration">
+        <declaration:AxlegearDeclarationView/>
+    </DataTemplate>
+    <DataTemplate x:Key="EditAxlegearEngineering">
+        <engineering:AxlegearEngineeringView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type impl:AxlegearViewModel}">
+        <ContentPresenter x:Name="EditAxlegear"></ContentPresenter>
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding DeclarationMode}" Value="true">
+                <Setter TargetName="EditAxlegear" Property="ContentTemplate" Value="{StaticResource EditAxlegearDeclaration}"></Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DeclarationMode}" Value="false">
+                <Setter TargetName="EditAxlegear" Property="ContentTemplate" Value="{StaticResource EditAxlegearEngineering}"></Setter>
+            </DataTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+
+    <DataTemplate x:Key="EditCyclesDeclaration">
+        <declaration:CyclesDeclarationView/>
+    </DataTemplate>
+    <DataTemplate x:Key="EditCyclesEngineering">
+        <engineering:CyclesEngineeringView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type impl:CyclesViewModel}">
+        <ContentPresenter x:Name="EditCycles"></ContentPresenter>
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding DeclarationMode}" Value="true">
+                <Setter TargetName="EditCycles" Property="ContentTemplate" Value="{StaticResource EditCyclesDeclaration}"></Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DeclarationMode}" Value="false">
+                <Setter TargetName="EditCycles" Property="ContentTemplate" Value="{StaticResource EditCyclesEngineering}"></Setter>
+            </DataTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+
+    <DataTemplate x:Key="EditEngineDeclaration">
+        <declaration:EngineDeclarationView/>
+    </DataTemplate>
+    <DataTemplate x:Key="EditEngineEngineering">
+        <engineering:EngineEngineeringView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type impl:EngineViewModel}">
+        <ContentPresenter x:Name="EditEngine"></ContentPresenter>
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding DeclarationMode}" Value="true">
+                <Setter TargetName="EditEngine" Property="ContentTemplate" Value="{StaticResource EditEngineDeclaration}"></Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DeclarationMode}" Value="false">
+                <Setter TargetName="EditEngine" Property="ContentTemplate" Value="{StaticResource EditEngineEngineering}"></Setter>
+            </DataTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+
+    <DataTemplate x:Key="EditGearboxDeclaration">
+        <declaration:GearboxDeclarationView/>
+    </DataTemplate>
+    <DataTemplate x:Key="EditGearboxEngineering">
+        <engineering:GearboxEngineeringView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type impl:GearboxViewModel}">
+        <ContentPresenter x:Name="EditGearbox"></ContentPresenter>
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding DeclarationMode}" Value="true">
+                <Setter TargetName="EditGearbox" Property="ContentTemplate" Value="{StaticResource EditGearboxDeclaration}"></Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DeclarationMode}" Value="false">
+                <Setter TargetName="EditGearbox" Property="ContentTemplate" Value="{StaticResource EditGearboxEngineering}"></Setter>
+            </DataTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+
+    <DataTemplate x:Key="EditRetarderDeclaration">
+        <declaration:RetarderDeclarationView/>
+    </DataTemplate>
+    <DataTemplate x:Key="EditRetarderEngineering">
+        <engineering:RetarderEngineeringView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type impl:RetarderViewModel}">
+        <ContentPresenter x:Name="EditRetarder"></ContentPresenter>
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding DeclarationMode}" Value="true">
+                <Setter TargetName="EditRetarder" Property="ContentTemplate" Value="{StaticResource EditRetarderDeclaration}"></Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DeclarationMode}" Value="false">
+                <Setter TargetName="EditRetarder" Property="ContentTemplate" Value="{StaticResource EditRetarderEngineering}"></Setter>
+            </DataTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+
+    <DataTemplate x:Key="EditTorqueConverterDeclaration">
+        <declaration:TorqueConverterDeclarationView/>
+    </DataTemplate>
+    <DataTemplate x:Key="EditTorqueConverterEngineering">
+        <engineering:TorqueConverterEngineeringView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type impl:TorqueConverterViewModel}">
+        <ContentPresenter x:Name="EditTorqueConverter"></ContentPresenter>
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding DeclarationMode}" Value="true">
+                <Setter TargetName="EditTorqueConverter" Property="ContentTemplate" Value="{StaticResource EditTorqueConverterDeclaration}"></Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DeclarationMode}" Value="false">
+                <Setter TargetName="EditTorqueConverter" Property="ContentTemplate" Value="{StaticResource EditTorqueConverterEngineering}"></Setter>
+            </DataTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+
+
+
+    <DataTemplate x:Key="EditVehicleDeclaration">
+        <declaration:VehicleDeclarationView/>
+    </DataTemplate>
+    <DataTemplate x:Key="EditVehicleEngineering">
+        <engineering:VehicleEngineeringView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type impl:VehicleViewModel}">
+        <ContentPresenter x:Name="EditVehicle"></ContentPresenter>
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding DeclarationMode}" Value="true">
+                <Setter TargetName="EditVehicle" Property="ContentTemplate" Value="{StaticResource EditVehicleDeclaration}"></Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DeclarationMode}" Value="false">
+                <Setter TargetName="EditVehicle" Property="ContentTemplate" Value="{StaticResource EditVehicleEngineering}"></Setter>
+            </DataTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+
+    <!--<DataTemplate x:Key="EditAuxiliariesDeclaration">
+        <declaration:AuxiliariesDeclarationView/>
+    </DataTemplate>
+    <DataTemplate x:Key="EditAuxiliariesEngineering">
+        <engineering:AuxiliariesEngineerngView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type impl:AuxiliariesViewModel}">
+        <ContentPresenter x:Name="EditAuxiliaries"></ContentPresenter>
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding DeclarationMode}" Value="true">
+                <Setter TargetName="EditAuxiliaries" Property="ContentTemplate" Value="{StaticResource EditAuxiliariesDeclaration}"></Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DeclarationMode}" Value="false">
+                <Setter TargetName="EditAuxiliaries" Property="ContentTemplate" Value="{StaticResource EditAuxiliariesEngineering}"></Setter>
+            </DataTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>-->
+
+    <DataTemplate x:Key="EditAxlesDeclaration">
+        <declaration:AxlesDeclarationView/>
+    </DataTemplate>
+    <DataTemplate x:Key="EditAxlesEngineering">
+        <engineering:AxlesEngineeringView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type impl:AxlesViewModel}">
+        <ContentPresenter x:Name="EditAxles"></ContentPresenter>
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding DeclarationMode}" Value="true">
+                <Setter TargetName="EditAxles" Property="ContentTemplate" Value="{StaticResource EditAxlesDeclaration}"></Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DeclarationMode}" Value="false">
+                <Setter TargetName="EditAxles" Property="ContentTemplate" Value="{StaticResource EditAxlesEngineering}"></Setter>
+            </DataTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+
+    <DataTemplate x:Key="EditAxleDeclaration">
+        <declaration:AxleDeclarationView/>
+    </DataTemplate>
+    <DataTemplate x:Key="EditAxleEngineering">
+        <engineering:AxleEngineeringView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type interfaces:AxleViewModel}">
+        <ContentPresenter x:Name="EditAxle"></ContentPresenter>
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding DeclarationMode}" Value="true">
+                <Setter TargetName="EditAxle" Property="ContentTemplate" Value="{StaticResource EditAxleDeclaration}"></Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DeclarationMode}" Value="false">
+                <Setter TargetName="EditAxle" Property="ContentTemplate" Value="{StaticResource EditAxleEngineering}"></Setter>
+            </DataTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+
+    <DataTemplate x:Key="EditTyreDeclaration">
+        <declaration:TyreDeclarationView/>
+    </DataTemplate>
+    <DataTemplate x:Key="EditTyreEngineering">
+        <engineering:TyreEngineeringView/>
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type impl:TyreViewModel}">
+        <ContentPresenter x:Name="EditTyre"></ContentPresenter>
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding DeclarationMode}" Value="true">
+                <Setter TargetName="EditTyre" Property="ContentTemplate" Value="{StaticResource EditTyreDeclaration}"></Setter>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding DeclarationMode}" Value="false">
+                <Setter TargetName="EditTyre" Property="ContentTemplate" Value="{StaticResource EditTyreEngineering}"></Setter>
+            </DataTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+</ResourceDictionary>

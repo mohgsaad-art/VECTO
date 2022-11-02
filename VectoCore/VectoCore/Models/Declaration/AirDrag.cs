@@ -39,15 +39,9 @@ namespace TUGraz.VectoCore.Models.Declaration
 {
 	public sealed class AirDrag : LookupData<string, AirDrag.Entry>
 	{
-		protected override string ResourceId
-		{
-			get { return DeclarationData.DeclarationDataResourcePrefix + ".VCDV.VCDV_parameters.csv"; }
-		}
+		protected override string ResourceId => DeclarationData.DeclarationDataResourcePrefix + ".VCDV.VCDV_parameters.csv";
 
-		protected override string ErrorMessage
-		{
-			get { return "AirDrag Lookup Error: no value found. Key: '{0}'"; }
-		}
+		protected override string ErrorMessage => "AirDrag Lookup Error: no value found. Key: '{0}'";
 
 		protected override void ParseData(DataTable table)
 		{

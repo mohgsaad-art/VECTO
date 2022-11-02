@@ -34,7 +34,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Xml;
 using System.Xml.Linq;
 using TUGraz.VectoCommon.Hashing;
@@ -91,42 +90,33 @@ namespace TUGraz.VectoHashing
 		/// <summary>
 		/// Get a list of all supported digest methods
 		/// </summary>
-		public static ICollection<string> SupportedDigestMehods
-		{
-			get { return XMLHashProvider.SupportedDigestMethods; }
-		}
+		public static ICollection<string> SupportedDigestMehods => XMLHashProvider.SupportedDigestMethods;
 
 		/// <summary>
 		/// get the identifier of the default digest method
 		/// </summary>
-		public static string DefaultDigestMethod
-		{
-			get { return XMLHashProvider.DefaultDigestMethod; }
-		}
+		public static string DefaultDigestMethod => XMLHashProvider.DefaultDigestMethod;
 
 		/// <summary>
 		/// get a list of all supported canonicalization methods
 		/// </summary>
-		public static ICollection<string> SupportedCanonicalizationMethods
-		{
-			get { return XMLHashProvider.SupportedCanonicalizationMethods; }
-		}
+		public static ICollection<string> SupportedCanonicalizationMethods => XMLHashProvider.SupportedCanonicalizationMethods;
 
 		/// <summary>
 		/// get the sequence of the default canonicalization methods
 		/// </summary>
-		public static IEnumerable<string> DefaultCanonicalizationMethod
-		{
-			get { return XMLHashProvider.DefaultCanonicalizationMethod; }
-		}
+		public static IEnumerable<string> DefaultCanonicalizationMethod => XMLHashProvider.DefaultCanonicalizationMethod;
 
 		public IList<VectoComponents> GetContainigComponents()
 		{
 			var retVal = new List<VectoComponents>();
 			foreach (var component in EnumHelper.GetValues<VectoComponents>()) {
-				var nodes = Document.SelectNodes(string.Format("//*[local-name()='{0}']//*[local-name()='{1}']",
-					XMLNames.VectoInputDeclaration, component.XMLElementName()));
-				var count = nodes == null ? 0 : nodes.Count;
+				// special treatment for REESS: can be either supercap or multiple batteries where the component node may contain several sub-components
+				var select = component == VectoComponents.ElectricEnergyStorage
+					? $"//*[local-name()='{XMLNames.VectoInputDeclaration}']//*[local-name()='{component.XMLElementName()}']//*[local-name()='Data']"
+					: $"//*[local-name()='{XMLNames.VectoInputDeclaration}']//*[local-name()='{component.XMLElementName()}']";
+                var nodes = Document.SelectNodes(select);
+				var count = nodes?.Count ?? 0;
 				for (var i = 0; i < count; i++) {
 					retVal.Add(component);
 				}
@@ -162,14 +152,14 @@ namespace TUGraz.VectoHashing
 			var nodes = Document.SelectNodes(GetComponentQueryString(component));
 
 			if (nodes == null || nodes.Count == 0) {
-				throw new Exception(string.Format("Component {0} not found", component.XMLElementName()));
+				throw new Exception($"Component {component.XMLElementName()} not found");
 			}
 			if (index >= nodes.Count) {
-				throw new Exception(string.Format("index exceeds number of components found! index: {0}, #components: {1}", index,
-					nodes.Count));
+				throw new Exception($"index exceeds number of components found! index: {index}, #components: {nodes.Count}");
 			}
-			var componentId = nodes[index].Attributes[XMLNames.Component_ID_Attr].Value;
-			return GetHashValueFromSig(DoComputeHash(nodes[index], canonicalization, digestMethod), componentId);
+			var sortedNodes = SortComponentNodes(component, nodes);
+			var componentId = sortedNodes[index].Attributes[XMLNames.Component_ID_Attr].Value;
+			return GetHashValueFromSig(DoComputeHash(sortedNodes[index], canonicalization, digestMethod), componentId);
 		}
 
 		private static XmlDocument DoComputeHash(XmlNode dataNode, IEnumerable<string> canonicalization, string digestMethod)
@@ -226,12 +216,12 @@ namespace TUGraz.VectoHashing
 		public XDocument AddHash()
 		{
 			var component = GetComponentToHash();
-			var query = string.Format("//*[local-name()='{0}']/*[local-name()='Data']", component.XMLElementName());
+			var query = $"//*[local-name()='{component.XMLElementName()}']/*[local-name()='Data']";
 			var node = Document.SelectSingleNode(query);
 			if (node == null) {
-				throw new Exception(string.Format("'Data' element for component '{0}' not found!", component.XMLElementName()));
+				throw new Exception($"'Data' element for component '{component.XMLElementName()}' not found!");
 			}
-			query = string.Format("//*[local-name()='{0}']/*[local-name()='Signature']", component.XMLElementName());
+			query = $"//*[local-name()='{component.XMLElementName()}']/*[local-name()='Signature']";
 			var sigNodes = Document.SelectNodes(query);
 			if (sigNodes != null && sigNodes.Count > 0) {
 				throw new Exception("input data already contains a signature element");
@@ -257,9 +247,9 @@ namespace TUGraz.VectoHashing
 				node.Attributes.Append(attr);
 			}
 
-			query = component == VectoComponents.VectoCustomerInformation || component == VectoComponents.VectoOutput
-				? string.Format("*/*[local-name()='Data']/*[local-name()='ApplicationInformation']/*[local-name()='Date']")
-				: string.Format("*/*[local-name()='{0}']/*/*[local-name()='Date']", component.XMLElementName());
+			query = component.IsReport()
+				? "*/*[local-name()='Data']/*[local-name()='ApplicationInformation']/*[local-name()='Date']"
+				: $"*/*[local-name()='{component.XMLElementName()}']/*/*[local-name()='Date']";
 			var dateNode = Document.SelectSingleNode(query);
 			if (dateNode == null) {
 				throw new Exception("Date-Element not found in input!");
@@ -302,6 +292,12 @@ namespace TUGraz.VectoHashing
 			}
 			if (Document.DocumentElement.LocalName.Equals("VectoCustomerInformation")) {
 				return VectoComponents.VectoCustomerInformation;
+			}
+			if (Document.DocumentElement.LocalName.Equals("VectoOutputPrimaryVehicle")) {
+				return VectoComponents.VectoPrimaryVehicleInformation;
+			}
+			if (Document.DocumentElement.LocalName.Equals(XMLNames.ManufacturingStep)) {
+				return VectoComponents.VectoManufacturingStep;
 			}
 			throw new Exception("unknown document structure! neither input data nor output data format");
 		}
@@ -368,9 +364,9 @@ namespace TUGraz.VectoHashing
 
 		private string ReadElementValue(XmlNode xmlNode, string elementName)
 		{
-			var node = xmlNode.SelectSingleNode(string.Format("./*[local-name()='{0}']", elementName));
+			var node = xmlNode.SelectSingleNode($"./*[local-name()='{elementName}']");
 			if (node == null) {
-				throw new Exception(string.Format("Node '{0}' not found!", elementName));
+				throw new Exception($"Node '{elementName}' not found!");
 			}
 			return node.InnerText;
 		}
@@ -381,21 +377,37 @@ namespace TUGraz.VectoHashing
 			return ReadHashValue(nodes[index]);
 		}
 
-		private XmlNodeList GetNodes(VectoComponents? component, int index)
+		private XmlNode[] GetNodes(VectoComponents? component, int index)
 		{
 			var nodes = Document.SelectNodes(GetComponentQueryString(component));
 			if (nodes == null || nodes.Count == 0) {
 				throw new Exception(component == null
 					? "No component found"
-					: string.Format("Component {0} not found", component.Value.XMLElementName()));
+					: $"Component {component.Value.XMLElementName()} not found");
 			}
 			if (index >= nodes.Count) {
-				throw new Exception(string.Format("index exceeds number of components found! index: {0}, #components: {1}", index,
-					nodes.Count));
+				throw new Exception($"index exceeds number of components found! index: {index}, #components: {nodes.Count}");
 			}
-			return nodes;
+			return SortComponentNodes(component, nodes);
 		}
 
+		private XmlNode[] SortComponentNodes(VectoComponents? component, XmlNodeList nodes)
+		{
+			switch (component) {
+				case VectoComponents.Tyre:
+					return nodes.Cast<XmlNode>()
+						.OrderBy(x => x.SelectSingleNode("./ancestor-or-self::*[@axleNumber]/@axleNumber")?.Value.ToInt() ?? 0).ToArray();
+				case VectoComponents.ElectricEnergyStorage:
+					return nodes.Cast<XmlNode>()
+						.OrderBy(x => x.SelectSingleNode("./ancestor-or-self::*[local-name()='Battery']/*[local-name()='StringID']")?.InnerText.ToInt() ?? 0)
+						.ThenBy(x => x.SelectSingleNode("./*[local-name()='Model']")?.InnerText ?? "")
+						.ThenBy(x => x.SelectSingleNode("./*[local-name()='BatteryType']")?.InnerText ?? "")
+						.ThenBy(x => x.SelectSingleNode("./*[local-name()='RatedCapacity']")?.InnerText ?? "")
+						.ToArray();
+				default:
+					return nodes.Cast<XmlNode>().ToArray();
+			}
+		}
 
 		public bool ValidateHash()
 		{
@@ -411,12 +423,16 @@ namespace TUGraz.VectoHashing
 
 		protected static string GetComponentQueryString(VectoComponents? component = null)
 		{
-			if (component == null) {
-				return "(//*[@id])[1]";
+			switch (component) {
+				case null:
+					return "(//*[@id])[1]";
+				case VectoComponents.Vehicle:
+					return $"//*[local-name()='{component.Value.XMLElementName()}']";
+				case VectoComponents.ElectricEnergyStorage:
+					return $"//*[local-name()='{component.Value.XMLElementName()}']//*[local-name()='Data']";
+				default:
+					return $"//*[local-name()='{component.Value.XMLElementName()}']/*[local-name()='Data']";
 			}
-			return component == VectoComponents.Vehicle
-				? string.Format("//*[local-name()='{0}']", component.Value.XMLElementName())
-				: string.Format("//*[local-name()='{0}']/*[local-name()='Data']", component.Value.XMLElementName());
 		}
 
 		private static string GetHashValueFromSig(XmlDocument hashed, string elementId)

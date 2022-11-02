@@ -15,9 +15,9 @@ Option Explicit On
 Imports System.Collections.Generic
 Imports System.ComponentModel.DataAnnotations
 Imports System.Linq
+Imports TUGraz.VectoCommon.InputData
 Imports TUGraz.VectoCommon.Models
 Imports TUGraz.VectoCommon.Utils
-Imports TUGraz.VectoCore.InputData.Impl
 Imports TUGraz.VectoCore.Models.Declaration
 
 
@@ -65,11 +65,12 @@ Public Class VehicleAxleDialog
 				.TyreTestLoad = TbFzISO.Text.ToDouble(0).SI(Of Newton)(),
 				.TwinTyres = CbTwinT.Checked,
 				.WheelsDimension = If(IsNothing(CbWheels.SelectedItem), "", CbWheels.SelectedItem.ToString()),
-				.Inertia = TbI_wheels.Text.ToDouble(0).SI(Of KilogramSquareMeter)()
+				.Inertia = TbI_wheels.Text.ToDouble(0).SI(Of KilogramSquareMeter)(),
+                .AxleType = CType(if(IsNothing(cbAxleType.SelectedValue), AxleType.VehicleNonDriven, cbAxleType.SelectedValue), AxleType) 
 				}
 
 		Dim results As IList(Of ValidationResult) =
-				axleData.Validate(If(Cfg.DeclMode, ExecutionMode.Declaration, ExecutionMode.Engineering), Nothing, False)
+				axleData.Validate(If(Cfg.DeclMode, ExecutionMode.Declaration, ExecutionMode.Engineering), VectoSimulationJobType.ConventionalVehicle, Nothing, Nothing, False)
 
 		If results.Any() Then
 			Dim messages As IEnumerable(Of String) =

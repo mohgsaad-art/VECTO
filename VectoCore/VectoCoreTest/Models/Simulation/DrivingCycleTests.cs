@@ -34,7 +34,7 @@ using NUnit.Framework;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
-using TUGraz.VectoCore.InputData.Reader;
+using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.Models.Connector.Ports.Impl;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
@@ -45,9 +45,17 @@ using TUGraz.VectoCore.Utils;
 namespace TUGraz.VectoCore.Tests.Models.Simulation
 {
 	[TestFixture]
+	[Parallelizable(ParallelScope.All)]
 	public class DrivingCycleTests
 	{
+		[OneTimeSetUp]
+		public void Init()
+		{
+			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
+		}
+
 		[TestCase()]
+		//[Parallelizable(ParallelScope.All)]
 		public void TestEngineOnly()
 		{
 			var dataWriter = new MockModalDataContainer();
@@ -56,6 +64,9 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			var cycleData = DrivingCycleDataReader.ReadFromFile(@"TestData\Cycles\Coach Engine Only.vdri", CycleType.EngineOnly,
 				false);
 			var cycle = new PowertrainDrivingCycle(container, cycleData);
+			new EngineOnlyGearboxInfo(container);
+			new ZeroMileageCounter(container);
+			new DummyDriverInfo(container);
 
 			var outPort = new MockTnOutPort();
 			var inPort = cycle.InPort();
@@ -87,7 +98,9 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			var cycleData = DrivingCycleDataReader.ReadFromFile(@"TestData\Cycles\Coach Engine Only Paux_var-dt.vdri",
 				CycleType.EngineOnly, false);
 			var cycle = new PowertrainDrivingCycle(container, cycleData);
-
+			new EngineOnlyGearboxInfo(container);
+			new ZeroMileageCounter(container);
+			new DummyDriverInfo(container);
 			var outPort = new MockTnOutPort();
 			var inPort = cycle.InPort();
 
@@ -126,9 +139,11 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 
 			for (var i = 0; i < 100; i++) {
 				response = cycle.OutPort().Request(absTime, dt);
-				response.Switch()
-					.Case<ResponseFailTimeInterval>(r => dt = r.DeltaT)
-					.Case<ResponseSuccess>(r => {
+				switch (response) {
+					case ResponseFailTimeInterval r: 
+						dt = r.DeltaT; 
+						break;
+					case ResponseSuccess _:
 						container.CommitSimulationStep(absTime, dt);
 						Assert.AreEqual(absTime, outPort.AbsTime);
 						Assert.AreEqual(dt, outPort.Dt);
@@ -146,8 +161,10 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 
 						absTime += dt;
 						dt = 1.SI<Second>();
-					})
-					.Default(r => { throw new UnexpectedResponseException("Got an unexpected response", r); });
+						break;
+					default:
+						throw new UnexpectedResponseException("Got an unexpected response", response);
+				}
 			}
 		}
 
@@ -207,7 +224,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			// Verification test simulation
 			TestCase("<t>,<v>,<n_eng>,<n_fan>,<tq_left>,<tq_right>,<n_wh_left>,<n_wh_right>", CycleType.VTP),
 			TestCase("<t>,<v>,<n_eng>,<n_fan>,<tq_left>,<tq_right>,<n_wh_left>,<n_wh_right>,<gear>", CycleType.VTP),
-			TestCase("<t>,<v>,<n_eng>,<n_fan>,<tq_left>,<tq_right>,<n_wh_left>,<n_wh_right>,<fc>,<gear>", CycleType.VTP),
+			TestCase("<t>,<v>,<n_eng>,<n_fan>,<tq_left>,<tq_right>,<n_wh_left>,<n_wh_right>,<fc_Diesel CI>,<gear>", CycleType.VTP),
 		]
 		public void DrivingCycle_AutoDetect(string cycle, CycleType type)
 		{
@@ -329,7 +346,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			TestCycleDetect(File.ReadAllText(filename), type);
 		}
 
-		[TestCase(@"TestData\Cycles\Coach.vdri", CycleType.DistanceBased, 6116),
+		[TestCase(@"TestData\Cycles\Coach.vdri", CycleType.DistanceBased, 6036),
 		TestCase(@"TestData\Cycles\Engine Only1.vdri", CycleType.EngineOnly, 696),
 		TestCase(@"TestData\Pwheel\RD_#1_Pwheel_AuxStd.vdri", CycleType.PWheel, 3917),
 		TestCase(@"TestData\MeasuredSpeed\MeasuredSpeedVairAux.vdri", CycleType.MeasuredSpeed, 1300),

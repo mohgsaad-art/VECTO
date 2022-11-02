@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vif0.1:VectoOutputMultistep xmlns="urn:tugraz:ivt:VectoAPI:DeclarationOutput:VehicleInterimFile:v0.1" xmlns:di="http://www.w3.org/2000/09/xmldsig#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:vif0.1="urn:tugraz:ivt:VectoAPI:DeclarationOutput:VehicleInterimFile:v0.1" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:v2.1="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1" xmlns:v2.3="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.3" xmlns:v2.4="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.4" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationOutput:VehicleInterimFile:v0.1 V:\VectoCore\VectoCore\Resources\XSD/VectoOutputMultistep.0.1.xsd">
+  <PrimaryVehicle xmlns="urn:tugraz:ivt:VectoAPI:DeclarationOutput:VehicleInterimFile:v0.1">
+    <Data id="VEH-4cb168560c0d4b3d886d" xsi:type="PrimaryVehicleDataType">
+      <Vehicle xsi:type="VehicleExemptedPrimaryBusType">
+        <ManufacturerPrimaryVehicle>Some Manufacturer</ManufacturerPrimaryVehicle>
+        <ManufacturerAddressPrimaryVehicle>Infinite Loop 1</ManufacturerAddressPrimaryVehicle>
+        <Model>Sample Bus Model</Model>
+        <VIN>VEH-1234567890</VIN>
+        <Date>2017-02-15T11:00:00Z</Date>
+        <LegislativeCategory>N2</LegislativeCategory>
+        <ChassisConfiguration>Bus</ChassisConfiguration>
+        <AxleConfiguration>6x2</AxleConfiguration>
+        <Articulated>false</Articulated>
+        <TechnicalPermissibleMaximumLadenMass unit="kg">15400.0</TechnicalPermissibleMaximumLadenMass>
+        <ZeroEmissionVehicle>true</ZeroEmissionVehicle>
+        <SumNetPower unit="W">350000</SumNetPower>
+        <Technology>Fuel cell vehicle</Technology>
+      </Vehicle>
+      <InputDataSignature>
+        <di:Reference URI="#VEH-1234567890">
+          <di:Transforms>
+            <di:Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+            <di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+          </di:Transforms>
+          <di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+          <di:DigestValue>sYhNx2MDHaOAMTlPflP/qQbEkazmRDxY0Vw6yzwwcJc=</di:DigestValue>
+        </di:Reference>
+      </InputDataSignature>
+      <ManufacturerRecordSignature>
+        <di:Reference URI="#RESULT-4c4c52e522874a398b3a">
+          <di:Transforms>
+            <di:Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+            <di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+          </di:Transforms>
+          <di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+          <di:DigestValue>guwkv90jOyWgDpgQwAEbLRkq7pWGeVaGA+dHizLYufQ=</di:DigestValue>
+        </di:Reference>
+      </ManufacturerRecordSignature>
+      <Results>
+        <Status>success</Status>
+        <ExemptedVehicle />
+      </Results>
+      <ApplicationInformation>
+        <SimulationToolVersion>0.7.3.2247-DEV !!NOT FOR CERTIFICATION!!</SimulationToolVersion>
+        <Date>2021-06-15T16:00:43.6769906Z</Date>
+      </ApplicationInformation>
+    </Data>
+    <Signature>
+      <di:Reference URI="#VEH-4cb168560c0d4b3d886d">
+        <di:Transforms>
+          <di:Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+          <di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+        </di:Transforms>
+        <di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+        <di:DigestValue>KeeEnRNO5Gjm7XB+YYx542ujYbE0k7a9SkWe/BWo7bI=</di:DigestValue>
+      </di:Reference>
+    </Signature>
+  </PrimaryVehicle>
+  <vif0.1:ManufacturingStep stepCount="2">
+    <Data xsi:type="BusManufacturingStepDataType" id="MST-b0420da682c648adac83" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationOutput:VehicleInterimFile:v0.1">
+      <HashPreviousStep>
+        <di:Reference URI="#VEH-4cb168560c0d4b3d886d">
+          <di:Transforms>
+            <di:Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+            <di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+          </di:Transforms>
+          <di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+          <di:DigestValue>KeeEnRNO5Gjm7XB+YYx542ujYbE0k7a9SkWe/BWo7bI=</di:DigestValue>
+        </di:Reference>
+      </HashPreviousStep>
+      <vif0.1:Vehicle id="VEH-4e462a2a8acc408eb908" xsi:type="Vehicle_Exempted_CompletedBusDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.4">
+        <Manufacturer>Manufacturer</Manufacturer>
+        <ManufacturerAddress>Address </ManufacturerAddress>
+        <VIN>123456789</VIN>
+        <Date>2021-08-23T22:00:00Z</Date>
+        <Model>Model</Model>
+        <LegislativeCategory>M3</LegislativeCategory>
+        <CorrectedActualMass>12000</CorrectedActualMass>
+        <TechnicalPermissibleMaximumLadenMass>13000</TechnicalPermissibleMaximumLadenMass>
+        <ClassBus>I+II</ClassBus>
+        <NumberPassengerSeatsLowerDeck>1</NumberPassengerSeatsLowerDeck>
+        <NumberPassengersStandingLowerDeck>0</NumberPassengersStandingLowerDeck>
+        <NumberPassengerSeatsUpperDeck>0</NumberPassengerSeatsUpperDeck>
+        <NumberPassengersStandingUpperDeck>0</NumberPassengersStandingUpperDeck>
+        <BodyworkCode>CE</BodyworkCode>
+        <LowEntry>true</LowEntry>
+        <HeightIntegratedBody>2000</HeightIntegratedBody>
+      </vif0.1:Vehicle>
+      <ApplicationInformation>
+        <SimulationToolVersion>0.7.5.2380-DEV</SimulationToolVersion>
+        <Date>2021-08-24T09:29:02.5917498Z</Date>
+      </ApplicationInformation>
+    </Data>
+    <vif0.1:Signature>
+      <di:Reference URI="#MST-b0420da682c648adac83">
+        <di:Transforms>
+          <di:Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+          <di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+        </di:Transforms>
+        <di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+        <di:DigestValue>khdPY14l0WRVUuF9LOyO8XNRJQSYmL1PtvmCNSQcVSc=</di:DigestValue>
+      </di:Reference>
+    </vif0.1:Signature>
+  </vif0.1:ManufacturingStep>
+</vif0.1:VectoOutputMultistep>

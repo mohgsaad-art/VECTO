@@ -41,6 +41,7 @@ using TUGraz.VectoCore.Utils;
 namespace TUGraz.VectoCore.Tests.FileIO
 {
 	[TestFixture]
+	[Parallelizable(ParallelScope.All)]
 	public class VectoCSVFileTest
 	{
 		[OneTimeSetUp]
@@ -49,7 +50,7 @@ namespace TUGraz.VectoCore.Tests.FileIO
 			Directory.SetCurrentDirectory(TestContext.CurrentContext.TestDirectory);
 		}
 
-		[Test]
+		[TestCase]
 		public void VectoCSVFile_Read()
 		{
 			var table = VectoCSVFile.Read(@"TestData\test.csv");
@@ -61,7 +62,7 @@ namespace TUGraz.VectoCore.Tests.FileIO
 			CollectionAssert.AreEqual(new[] { "4", "5", "6" }, table.Rows[1].ItemArray);
 		}
 
-		[Test]
+		[TestCase]
 		public void VectoCSVFile_Read_RealLossMap()
 		{
 			var table = VectoCSVFile.Read(@"TestData\Components\Axle.vtlm");
@@ -71,7 +72,7 @@ namespace TUGraz.VectoCore.Tests.FileIO
 			Assert.AreEqual(285, table.Rows.Count);
 		}
 
-		[Test]
+		[TestCase]
 		public void VectoCSVFile_ReadStream_Normal()
 		{
 			var stream = "a,b,c\n1,2,3\n4,5,6".ToStream();
@@ -84,7 +85,7 @@ namespace TUGraz.VectoCore.Tests.FileIO
 			CollectionAssert.AreEqual(new[] { "4", "5", "6" }, table.Rows[1].ItemArray);
 		}
 
-		[Test]
+		[TestCase]
 		public void VectoCSVFile_ReadStream_Escaped()
 		{
 			var stream = "a,b,c\n\"1,1\",2,3\n4,5,6".ToStream();
@@ -97,7 +98,7 @@ namespace TUGraz.VectoCore.Tests.FileIO
 			CollectionAssert.AreEqual(new[] { "4", "5", "6" }, table.Rows[1].ItemArray);
 		}
 
-		[Test]
+		[TestCase]
 		public void VectoCSVFile_ReadStream_Comment()
 		{
 			var stream = "a,b,c\n\"1,1\",2,3#asdf\n4,5,6".ToStream();
@@ -110,7 +111,7 @@ namespace TUGraz.VectoCore.Tests.FileIO
 			CollectionAssert.AreEqual(new[] { "4", "5", "6" }, table.Rows[1].ItemArray);
 		}
 
-		[Test]
+		[TestCase]
 		public void VectoCSVFile_ReadStream_EscapedComment()
 		{
 			var stream = "a,b,c\n\"1,1\",2,\"3#asdf\"\n4,5,6".ToStream();
@@ -123,7 +124,7 @@ namespace TUGraz.VectoCore.Tests.FileIO
 			CollectionAssert.AreEqual(new[] { "4", "5", "6" }, table.Rows[1].ItemArray);
 		}
 
-		[Test]
+		[TestCase]
 		public void VectoCSVFile_ReadStream_No_Header()
 		{
 			var stream = "1,2,3\n4,5,6".ToStream();
@@ -136,7 +137,7 @@ namespace TUGraz.VectoCore.Tests.FileIO
 			CollectionAssert.AreEqual(new[] { "4", "5", "6" }, table.Rows[1].ItemArray);
 		}
 
-		[Test]
+		[TestCase]
 		public void VectoCSVFile_ReadStream_No_Content()
 		{
 			var stream = "a,b,c".ToStream();
@@ -147,13 +148,13 @@ namespace TUGraz.VectoCore.Tests.FileIO
 			Assert.AreEqual(0, table.Rows.Count);
 		}
 
-		[Test]
+		[TestCase]
 		public void VectoCSVFile_ReadStream_Empty()
 		{
 			AssertHelper.Exception<VectoException>(() => VectoCSVFile.ReadStream("".ToStream()));
 		}
 
-		[Test]
+		[TestCase]
 		public void VectoCSVFile_ReadStream_Comments()
 		{
 			var stream = @"#a,b,c
@@ -172,7 +173,7 @@ namespace TUGraz.VectoCore.Tests.FileIO
 			CollectionAssert.AreEqual(new[] { "4", "5", "6" }, table.Rows[1].ItemArray);
 		}
 
-		[Test]
+		[TestCase]
 		public void VectoCSVFile_Write_Filename()
 		{
 			const string fileName = "out_test.csv";
@@ -192,7 +193,7 @@ namespace TUGraz.VectoCore.Tests.FileIO
 			Assert.AreEqual("a,b\r\n1,2\r\n", text);
 		}
 
-		[Test]
+		[TestCase]
 		public void VectoCSVFile_Write_StreamWriter()
 		{
 			var table = new DataTable();

@@ -33,7 +33,6 @@ using System;
 using System.Collections.Generic;
 using System.Xml;
 using TUGraz.VectoCommon.Hashing;
-using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCommon.Utils;
 
@@ -47,7 +46,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration
 			foreach (var component in EnumHelper.GetValues<VectoComponents>()) {
 				var nodes = xmlDocument.SelectNodes(string.Format("//*[local-name()='{0}']//*[local-name()='{1}']/*[local-name()='Model']",
 																XMLNames.VectoManufacturerReport, component.XMLElementName()));
-				var count = nodes == null ? 0 : nodes.Count;
+				var count = nodes?.Count ?? 0;
 				for (var i = 0; i < count; i++) {
 					retVal.Add(component);
 				}
@@ -55,7 +54,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration
 			foreach (var component in new[] { XMLNames.AxleWheels_Axles_Axle }) {
 				var nodes = xmlDocument.SelectNodes(string.Format("//*[local-name()='{0}']//*[local-name()='{1}']",
 																XMLNames.VectoManufacturerReport, component));
-				var count = nodes == null ? 0 : nodes.Count;
+				var count = nodes?.Count ?? 0;
 				for (var i = 0; i < count; i++) {
 					retVal.Add(VectoComponents.Tyre);
 				}
@@ -74,11 +73,11 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration
 		{
 			var nodes = xmlDocument.SelectNodes(GetComponentQueryString(component == VectoComponents.Tyre ? "Axle" : component.XMLElementName()));
 			if (nodes == null || nodes.Count == 0) {
-				throw new Exception(string.Format("Component {0} not found", component));
+				throw new Exception($"Component {component} not found");
 			}
 			if (index >= nodes.Count) {
-				throw new Exception(string.Format("index exceeds number of components found! index: {0}, #components: {1}", index,
-												nodes.Count));
+				throw new Exception($"index exceeds number of components found! index: {index}, " +
+									$"#components: {nodes.Count}");
 			}
 			return nodes[index];
 		}
@@ -88,12 +87,12 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration
 			if (component == null) {
 				return "(//*[@id])[1]";
 			}
-			return string.Format("//*[local-name()='{0}']", component);
+			return $"//*[local-name()='{component}']";
 		}
 
 		static string ReadElementValue(XmlNode xmlNode, string elementName)
 		{
-			var node = xmlNode.SelectSingleNode(string.Format("./*[local-name()='{0}']", elementName));
+			var node = xmlNode.SelectSingleNode($"./*[local-name()='{elementName}']");
 			if (node == null) {
 				return null;
 			}

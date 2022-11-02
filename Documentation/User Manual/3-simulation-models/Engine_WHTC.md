@@ -1,4 +1,4 @@
-##Engine: Correction Factors
+## Engine: Correction Factors
 
 <div class="declaration">
 In declaration mode the fuel consumption is corrected as follows:
@@ -28,7 +28,7 @@ with the correction factor CF~urb~, CF~rur~, CF~mot~ coming from the [Engine](#e
 
 In order to balance the trade-off between emissions and fuel consumption during cold and hot starting conditions an additional balancing factor $CF_{C/H}$ is determined from the overall specific fuel consumption over the cold start and hot start WHTC test. Additional correction factors considered are regarding the net calorific value of the fuel ($CF_{NCV}$) and exhaust after-treatment systems ($CF_{RegPer}$). This values are part of the output from the engine component tool.
 
-$NCV_{stdEngine}$: Net calorific value as defined as refernce value for engine testing (Pt. 5.3.3.1 of Annex V), see [Fuel properties](#fuel-properties)
+$NCV_{stdEngine}$: Net calorific value as defined as reference value for engine testing (Pt. 5.3.3.1 of Annex V), see [Fuel properties](#fuel-properties)
 
 $NCV_{stdVECTO}$: Net calorific value defined as reference value for vehicle CO2 certification, see [Fuel properties](#fuel-properties)
 

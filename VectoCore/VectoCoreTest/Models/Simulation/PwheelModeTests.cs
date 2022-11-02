@@ -36,7 +36,6 @@ using System.Linq;
 using System.Collections.Generic;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Tests.Utils;
-using TUGraz.VectoCore.InputData.Reader;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
 using TUGraz.VectoCore.Models.Simulation.Impl;
@@ -48,10 +47,14 @@ using TUGraz.VectoCore.Models.SimulationComponent.Data.Engine;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using NUnit.Framework;
+using TUGraz.VectoCore.InputData.Reader.ComponentData;
+using TUGraz.VectoCore.Models.Declaration;
+using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
 
 namespace TUGraz.VectoCore.Tests.Models.Simulation
 {
 	[TestFixture]
+	[Parallelizable(ParallelScope.All)]
 	public class PwheelModeTests
 	{
 
@@ -103,23 +106,23 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 
 			cycle.Initialize();
 			
-			Assert.AreEqual(container.CycleData.LeftSample.Time, 1.SI<Second>());
-			Assert.AreEqual(container.CycleData.RightSample.Time, 2.SI<Second>());
+			Assert.AreEqual(container.DrivingCycleInfo.CycleData.LeftSample.Time, 1.SI<Second>());
+			Assert.AreEqual(container.DrivingCycleInfo.CycleData.RightSample.Time, 2.SI<Second>());
 
-			Assert.AreEqual(1748.RPMtoRad() / (2.3 * 3.5), container.CycleData.LeftSample.WheelAngularVelocity);
-			Assert.AreEqual(1400.RPMtoRad() / (2.3 * 3.5), container.CycleData.RightSample.WheelAngularVelocity);
+			Assert.AreEqual(1748.RPMtoRad() / (2.3 * 3.5), container.DrivingCycleInfo.CycleData.LeftSample.WheelAngularVelocity);
+			Assert.AreEqual(1400.RPMtoRad() / (2.3 * 3.5), container.DrivingCycleInfo.CycleData.RightSample.WheelAngularVelocity);
 
-			Assert.AreEqual(89.SI(Unit.SI.Kilo.Watt), container.CycleData.LeftSample.PWheel);
-			Assert.AreEqual(120.SI(Unit.SI.Kilo.Watt), container.CycleData.RightSample.PWheel);
+			Assert.AreEqual(89.SI(Unit.SI.Kilo.Watt), container.DrivingCycleInfo.CycleData.LeftSample.PWheel);
+			Assert.AreEqual(120.SI(Unit.SI.Kilo.Watt), container.DrivingCycleInfo.CycleData.RightSample.PWheel);
 
-			Assert.AreEqual(2u, container.CycleData.LeftSample.Gear);
-			Assert.AreEqual(2u, container.CycleData.RightSample.Gear);
+			Assert.AreEqual(2u, container.DrivingCycleInfo.CycleData.LeftSample.Gear);
+			Assert.AreEqual(2u, container.DrivingCycleInfo.CycleData.RightSample.Gear);
 
-			Assert.AreEqual(1300.SI<Watt>(), container.CycleData.LeftSample.AdditionalAuxPowerDemand);
-			Assert.AreEqual(400.SI<Watt>(), container.CycleData.RightSample.AdditionalAuxPowerDemand);
+			Assert.AreEqual(1300.SI<Watt>(), container.DrivingCycleInfo.CycleData.LeftSample.AdditionalAuxPowerDemand);
+			Assert.AreEqual(400.SI<Watt>(), container.DrivingCycleInfo.CycleData.RightSample.AdditionalAuxPowerDemand);
 
-			Assert.AreEqual(89.SI(Unit.SI.Kilo.Watt) / (1748.RPMtoRad() / (2.3 * 3.5)), container.CycleData.LeftSample.Torque);
-			Assert.AreEqual(120.SI(Unit.SI.Kilo.Watt) / (1400.RPMtoRad() / (2.3 * 3.5)), container.CycleData.RightSample.Torque);
+			Assert.AreEqual(89.SI(Unit.SI.Kilo.Watt) / (1748.RPMtoRad() / (2.3 * 3.5)), container.DrivingCycleInfo.CycleData.LeftSample.Torque);
+			Assert.AreEqual(120.SI(Unit.SI.Kilo.Watt) / (1400.RPMtoRad() / (2.3 * 3.5)), container.DrivingCycleInfo.CycleData.RightSample.Torque);
 		}
 
 		/// <summary>
@@ -160,15 +163,23 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 				EngineData =
 					new CombustionEngineData {
 						IdleSpeed = 560.RPMtoRad(),
+						Inertia = 1.SI<KilogramSquareMeter>(),
+						EngineStartTime = DeclarationData.Engine.DefaultEngineStartTime,
 						FullLoadCurves = new Dictionary<uint, EngineFullLoadCurve>() { { 0, fullLoadCurve }, { 1, fullLoadCurve } }
 					},
 				GearboxData = new GearboxData { Gears = new Dictionary<uint, GearData> { { 2, new GearData { Ratio = 3.5 } } } },
-				Retarder = new RetarderData()
+				Retarder = new RetarderData(),
+				DriverData = new DriverData() {
+					EngineStopStart = new DriverData.EngineStopStartData() {
+						UtilityFactorStandstill = DeclarationData.Driver.EngineStopStart.UtilityFactor,
+						EngineOffStandStillActivationDelay = DeclarationData.Driver.EngineStopStart.ActivationDelay,
+						MaxEngineOffTimespan = DeclarationData.Driver.EngineStopStart.MaxEngineOffTimespan
+					}
+				}
 			};
 
 			// call builder (actual test)
-			var builder = new PowertrainBuilder(new MockModalDataContainer());
-			var jobContainer = builder.Build(data);
+			var jobContainer = PowertrainBuilder.Build(data, new MockModalDataContainer(), container => {});
 		}
 
 		/// <summary>
@@ -184,7 +195,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			var jobContainer = new JobContainer(sumWriter);
 
 			var inputData = JSONInputDataFactory.ReadJsonJob(jobFile);
-			var runsFactory = new SimulatorFactory(ExecutionMode.Engineering, inputData, fileWriter);
+			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputData, fileWriter);
 
 			jobContainer.AddRuns(runsFactory);
 			jobContainer.Execute();
@@ -213,7 +224,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			var jobContainer = new JobContainer(sumWriter);
 
 			var inputData = JSONInputDataFactory.ReadJsonJob(jobFile);
-			var runsFactory = new SimulatorFactory(ExecutionMode.Engineering, inputData, fileWriter);
+			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputData, fileWriter);
 
 			jobContainer.AddRuns(runsFactory);
 			jobContainer.Execute();

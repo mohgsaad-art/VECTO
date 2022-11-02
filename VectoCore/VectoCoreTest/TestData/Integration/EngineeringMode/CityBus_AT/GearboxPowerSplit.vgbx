@@ -35,7 +35,7 @@
       }
     ],
     "TqReserve": 0.0,
-    "ShiftTime": 0.0,
+    "ShiftTime": 1.0,
     "StartTqReserve": 0.0,
     "StartSpeed": 2.0,
     "StartAcc": 0.6,
@@ -47,8 +47,8 @@
       "Inertia": 0.0,
       "ShiftPolygon": "AT-Shift.vgbs"
     },
-    "DownshiftAferUpshiftDelay": 0.0,
-    "UpshiftAfterDownshiftDelay": 0.0,
+    "DownshiftAferUpshiftDelay": 1.0,
+    "UpshiftAfterDownshiftDelay": 1.0,
     "UpshiftMinAcceleration": 0.0
   }
 }

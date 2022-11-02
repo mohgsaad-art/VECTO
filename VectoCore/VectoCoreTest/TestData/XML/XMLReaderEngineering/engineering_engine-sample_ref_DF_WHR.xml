@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:VectoComponentEngineering  schemaVersion="1.0"
+	xmlns="urn:tugraz:ivt:VectoAPI:EngineeringDefinitions:v1.0" 
+	xmlns:tns="urn:tugraz:ivt:VectoAPI:EngineeringComponent:v1.0" 
+	xmlns:ve1.0="urn:tugraz:ivt:VectoAPI:EngineeringDefinitions:v1.0" 
+	xmlns:ve1.1="urn:tugraz:ivt:VectoAPI:EngineeringDefinitions:v1.1" 
+	xmlns:vdecdef="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0"  
+	xmlns:vecomp="urn:tugraz:ivt:VectoAPI:EngineeringComponent"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:EngineeringComponent E:\QUAM\Workspace\VECTO_DEV_ADAS\VectoCore\VectoCore\Resources\XSD/VectoEngineeringComponent.xsd"
+	xsi:type="VectoComponentEngineeringType">
+	<Engine>
+		<ve1.0:Data id="ENG-gooZah3D" xsi:type="ve1.1:EngineDataEngineeringType" xmlns="urn:tugraz:ivt:VectoAPI:EngineeringDefinitions:v1.1">
+			<ve1.0:Manufacturer>Generic Engine Vendor</ve1.0:Manufacturer>
+			<ve1.0:Model>Generic 40t Long Haul Truck Engine</ve1.0:Model>
+			<ve1.0:Date>2017-02-15T11:00:00Z</ve1.0:Date>
+			<ve1.0:AppVersion>XMLSpy</ve1.0:AppVersion>
+			<Displacement>12730</Displacement>
+			<Inertia>0.77</Inertia>
+			<WHRType>
+						<MechanicalOutputICE>false</MechanicalOutputICE>
+						<MechanicalOutputDrivetrain>false</MechanicalOutputDrivetrain>
+						<ElectricalOutput>true</ElectricalOutput>
+					</WHRType>
+			<Mode>
+				<IdlingSpeed>560</IdlingSpeed>
+				<FullLoadAndDragCurve>
+					<Resource type="csv" file="engine.vfld"/>
+				</FullLoadAndDragCurve>
+				<Fuel>
+					<FuelType>NG CI</FuelType>
+					<FCCorrection>1.004</FCCorrection>
+					<WasteHeatRecovery>
+						<Electrical>
+							<WHRCorrection>1.02</WHRCorrection>
+							<WHRMap>
+							<Resource type="csv" file="engine_WHR.vmap"/>
+						</WHRMap>
+						</Electrical>
+					</WasteHeatRecovery>
+					<FuelConsumptionMap>
+						<Resource type="csv" file="engine.vmap"/>
+					</FuelConsumptionMap>
+				</Fuel>
+				<Fuel>
+					<FuelType>Diesel CI</FuelType>
+					<FCCorrection>1.002</FCCorrection>
+					<FuelConsumptionMap>
+						<Resource type="csv" file="engine_df.vmap"/>
+					</FuelConsumptionMap>
+				</Fuel>
+			</Mode>
+		</ve1.0:Data>
+	</Engine>
+</tns:VectoComponentEngineering>

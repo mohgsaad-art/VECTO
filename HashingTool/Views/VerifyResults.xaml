@@ -124,7 +124,7 @@
 						Margin="10,2" IsReadOnly="True" />
 
 				<Label Grid.Row="3" Grid.Column="0" Content="Digest Value computed:" Style="{StaticResource DigestValueLabelStyle}" />
-				<TextBox Grid.Row="3" Grid.Column="1" Text="{Binding DigestValueComputed}"
+				<TextBox Grid.Row="3" Grid.Column="1" Text="{Binding DigestValueComputed, Mode=OneWay}"
 						Margin="10,2" IsReadOnly="True" Style="{StaticResource DigestValueTextboxStyle}" />
 
 				<!--<Expander Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Margin="4" Header="Components">-->
@@ -181,7 +181,7 @@
 												Margin="10,2" IsReadOnly="True" />
 
 										<Label Grid.Row="1" Grid.Column="1" Content="Digest Value:" />
-										<TextBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="3" Text="{Binding DigestValueRead}"
+										<TextBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="3" Text="{Binding DigestValueRead, Mode=OneWay}"
 												Margin="10,2">
 											<TextBox.Style>
 												<Style TargetType="TextBox" BasedOn="{StaticResource DigestValueTextboxStyle}">
@@ -245,7 +245,7 @@
 						</Grid.RowDefinitions>
 
 						<Label Grid.Row="0" Grid.Column="0" Content="Creation Date:" />
-						<TextBox Grid.Row="0" Grid.Column="1" Text="{helper:CultureAwareBinding Path=Date, StringFormat='g'}"
+						<TextBox Grid.Row="0" Grid.Column="1" Text="{helper:CultureAwareBinding Path=Date, Mode=OneWay, StringFormat='g'}"
 								Margin="10,2" MinWidth="150" />
 
 						<Label Grid.Row="1" Grid.Column="0" Content="Canonicalization methods:" />
@@ -257,7 +257,7 @@
 						<TextBox Grid.Row="2" Grid.Column="1" Text="{Binding DigestMethod, Mode=OneWay}" Margin="10,2" IsReadOnly="True" />
 
 						<Label Grid.Row="3" Grid.Column="0" Content="Digest Value read:" Style="{StaticResource DigestValueLabelStyle}" />
-						<TextBox Grid.Row="3" Grid.Column="1" Text="{Binding DigestValueRead}" Margin="10,2" IsReadOnly="True">
+						<TextBox Grid.Row="3" Grid.Column="1" Text="{Binding DigestValueRead, Mode=OneWay}" Margin="10,2" IsReadOnly="True">
 							<TextBox.Style>
 								<Style TargetType="TextBox" BasedOn="{StaticResource DigestValueTextboxStyle}">
 									<Style.Triggers>
@@ -274,7 +274,7 @@
 
 						<Label Grid.Row="4" Grid.Column="0" Content="Digest Value computed:"
 								Style="{StaticResource DigestValueLabelStyle}" />
-						<TextBox Grid.Row="4" Grid.Column="1" Text="{Binding DigestValueComputed}" Margin="10,2" IsReadOnly="True">
+						<TextBox Grid.Row="4" Grid.Column="1" Text="{Binding DigestValueComputed, Mode=OneWay}" Margin="10,2" IsReadOnly="True">
 							<TextBox.Style>
 								<Style TargetType="TextBox" BasedOn="{StaticResource DigestValueTextboxStyle}">
 									<Style.Triggers>
@@ -429,7 +429,7 @@
 						</Grid.RowDefinitions>
 
 						<Label Grid.Row="0" Grid.Column="0" Content="Creation Date:" />
-						<TextBox Grid.Row="0" Grid.Column="1" Text="{helper:CultureAwareBinding Path=Date, StringFormat='g'}"
+						<TextBox Grid.Row="0" Grid.Column="1" Text="{helper:CultureAwareBinding Path=Date, Mode=OneWay, StringFormat='g'}"
 								Margin="10,2" MinWidth="150" />
 
 						<Label Grid.Row="1" Grid.Column="0" Content="Canonicalization methods:" />
@@ -441,7 +441,7 @@
 						<TextBox Grid.Row="2" Grid.Column="1" Text="{Binding DigestMethod, Mode=OneWay}" Margin="10,2" IsReadOnly="True" />
 
 						<Label Grid.Row="3" Grid.Column="0" Content="Digest Value read:" Style="{StaticResource DigestValueLabelStyle}" />
-						<TextBox Grid.Row="3" Grid.Column="1" Text="{Binding DigestValueRead}" Margin="10,2" IsReadOnly="True">
+						<TextBox Grid.Row="3" Grid.Column="1" Text="{Binding DigestValueRead, Mode=OneWay}" Margin="10,2" IsReadOnly="True">
 							<TextBox.Style>
 								<Style TargetType="TextBox" BasedOn="{StaticResource DigestValueTextboxStyle}">
 									<Style.Triggers>
@@ -458,7 +458,7 @@
 
 						<Label Grid.Row="4" Grid.Column="0" Content="Digest Value computed:"
 								Style="{StaticResource DigestValueLabelStyle}" />
-						<TextBox Grid.Row="4" Grid.Column="1" Text="{Binding DigestValueComputed}" Margin="10,2" IsReadOnly="True">
+						<TextBox Grid.Row="4" Grid.Column="1" Text="{Binding DigestValueComputed, Mode=OneWay}" Margin="10,2" IsReadOnly="True">
 							<TextBox.Style>
 								<Style TargetType="TextBox" BasedOn="{StaticResource DigestValueTextboxStyle}">
 									<Style.Triggers>

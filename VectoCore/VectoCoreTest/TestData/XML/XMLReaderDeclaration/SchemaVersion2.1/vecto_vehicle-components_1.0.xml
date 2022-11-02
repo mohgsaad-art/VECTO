@@ -7,7 +7,7 @@
 	xmlns:v1.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0"
 	xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0"
 	xmlns:di="http://www.w3.org/2000/09/xmldsig#"
-	xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob E:\QUAM\Workspace\VECTO_quam\VectoCore\VectoCore\Resources\XSD/VectoDeclarationJob.xsd"
+	xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob v:\VectoCore\VectoCore\Resources\XSD/VectoDeclarationJob.xsd"
 	>
 	<Vehicle id="VEH-1234567890" xsi:type="VehicleDeclarationType">
 		<Manufacturer>Generic Truck Manufacturer</Manufacturer>
@@ -3283,7 +3283,7 @@
 				</Data>
 			</Auxiliaries>
 			<AirDrag>
-				<Data id="CabinX23h" xsi:type="AirDragDataDeclarationType">
+				<v2.0:Data id="CabinX23h" xsi:type="v1.0:AirDragDataDeclarationType" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0">
 					<Manufacturer>Generic Manufacturer</Manufacturer>
 					<Model>Generic Model</Model>
 					<CertificationNumber>e12*0815/8051*2017/05E0000*00</CertificationNumber>
@@ -3292,7 +3292,7 @@
 					<CdxA_0>6.31</CdxA_0>
 					<TransferredCdxA>6.32</TransferredCdxA>
 					<DeclaredCdxA>6.34</DeclaredCdxA>
-				</Data>
+				</v2.0:Data>
 				<Signature>
 					<di:Reference URI="#CabinX23h">
 						<di:Transforms>

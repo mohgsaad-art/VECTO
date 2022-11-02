@@ -11,7 +11,6 @@
 Option Infer On
 
 Imports System.IO
-Imports System.Linq
 Imports System.Text
 Imports Microsoft.VisualBasic.FileIO
 Imports System.Runtime.InteropServices
@@ -72,17 +71,24 @@ Public Class FileBrowserDialog
 	'Shown
 	Private Sub FileBrowser_Shown(sender As Object, e As EventArgs) Handles Me.Shown
 		Resized()
+		ListViewFiles.ListViewItemSorter = currentSorter
 		TextBoxPath.Focus()
 		TextBoxPath.SelectAll()
 	End Sub
 
 	'Resized ListView Format
 	Private Sub Resized()
-		'To autosize to the width of the column heading, set the Width property to -2
-		ListViewFolder.Columns(0).Width = -2
-		'ListViewFolder.Columns(0).Width -= 1
-		ListViewFiles.Columns(0).Width = -2
-		'ListViewFiles.Columns(0).Width -= 1
+		
+		ListViewFolder.Columns(0).Width = ListViewFolder.Width - 4
+		ListViewFiles.AutoResizeColumn(1, ColumnHeaderAutoResizeStyle.ColumnContent)
+		ListViewFiles.AutoResizeColumn(2, ColumnHeaderAutoResizeStyle.ColumnContent)
+		ListViewFiles.AutoResizeColumn(3, ColumnHeaderAutoResizeStyle.ColumnContent)
+		
+		if ColumnType.Width < 41 Then ColumnType.Width = 41
+		if ColumnSize.Width < 33 Then ColumnSize.Width = 33
+		if ColumnChangedOn.Width < 73 Then ColumnChangedOn.Width = 73
+
+		ColumnFileName.Width = ListViewFiles.Width - ColumnType.Width - ColumnSize.Width - ColumnChangedOn.Width - 21
 	End Sub
 
 	'SplitterMoved
@@ -499,7 +505,7 @@ Public Class FileBrowserDialog
 			TextBoxPath.Text = ""
 		Else
 			If ListViewFiles.SelectedItems.Count > 1 Then
-				TextBoxPath.Text = String.Format("<{0} Files selected>", ListViewFiles.SelectedItems.Count)
+				TextBoxPath.Text = $"<{ListViewFiles.SelectedItems.Count} Files selected>"
 			Else
 				TextBoxPath.Text = ListViewFiles.SelectedItems.Item(0).Text
 				TextBoxPath.SelectionStart = TextBoxPath.Text.Length
@@ -801,16 +807,14 @@ Public Class FileBrowserDialog
 				SHGetFileInfo(Path.Combine(_myFolder, fi.ToString()), 0, shinfo, Marshal.SizeOf(shinfo), SHGFI_ICON Or SHGFI_SMALLICON)
 				Dim myIcon = Icon.FromHandle(shinfo.hIcon)
 				ImageList1.Images.Add(myIcon)
-				'For Each fi In aryFi
-				ListViewFolder.Items.Add(fi.ToString, x)
+				ListViewFolder.Items.Add(fi.Name, x)
 			Next
 		Catch ex As Exception
 			ListViewFolder.Items.Add("<ERROR: " & ex.Message.ToString & ">")
 		End Try
 		_directorySortColumn = 0
-	    
 	    ListViewFolder.Sorting = SortOrder.Ascending
-	    ListViewFolder.ListViewItemSorter = new ListViewFilesItemComparer(_directorySortColumn, ListViewFolder.Sorting)
+	    ListViewFolder.ListViewItemSorter = new ListViewFilesItemComparer(_directorySortColumn, ListViewFolder.Sorting, CompareType.AsString)
 
 	End Sub
 
@@ -851,18 +855,32 @@ Public Class FileBrowserDialog
 								SHGFI_ICON Or SHGFI_SMALLICON)
 					Dim myIcon = Icon.FromHandle(shinfo.hIcon)
 					ImageList1.Images.Add(myIcon)
-					ListViewFiles.Items.Add(fi.ToString, x)
+
+					Dim item = New ListViewItem(fi.Name, fi.Extension)
+					item.SubItems.Add(fi.Extension.Substring(1))
+					item.SubItems.Add(fnFileSize(fi.Length)).Tag = fi.Length
+					item.SubItems.Add(fi.LastWriteTime.ToString()).Tag = fi.LastWriteTime
+					item.ImageIndex = x
+					ListViewFiles.Items.Add(item)
 				Next
 			Next
 		Catch ex As Exception
 			ListViewFiles.Items.Add("<ERROR: " & ex.Message.ToString & ">")
 		End Try
+		Resized()
 
 		ListViewFiles.EndUpdate()
-		_filesSortColumn = 0
-	    ListViewFiles.Sorting = SortOrder.Ascending
-        ListViewFiles.ListViewItemSorter = new ListViewFilesItemComparer(_filesSortColumn, ListViewFiles.Sorting)
 	End Sub
+
+	<DllImport("shlwapi", CharSet:=CharSet.Auto)>
+	Private Shared Function StrFormatByteSize(fileSize As Long, buffer As StringBuilder, bufferSize As Integer) As long
+	End Function
+
+	Private Function fnFileSize(size1 As Long) As String
+		Dim sb As New StringBuilder(20)
+		StrFormatByteSize(size1, sb, sb.Capacity)
+		Return sb.ToString()
+	End Function
 
 	'Rename File
 	Private Sub RenameFileToolStripMenuItem_Click(sender As Object, e As EventArgs) _
@@ -963,68 +981,60 @@ lb10:
 		End Set
 	End Property
 
-	Private Sub ListViewFiles_ColumnClick(sender As Object, e As ColumnClickEventArgs) Handles ListViewFiles.ColumnClick
-		If e.Column <> _filesSortColumn Then
-			_filesSortColumn = e.Column
-			ListViewFiles.Sorting = SortOrder.Ascending
-		Else
-			If ListViewFiles.Sorting = SortOrder.Ascending Then
-				ListViewFiles.Sorting = SortOrder.Descending
-			Else
-				ListViewFiles.Sorting = SortOrder.Ascending
-			End If
-		End If 
+	ReadOnly currentSorter As New ListViewFilesItemComparer(0, SortOrder.Ascending, CompareType.AsString)
 
-		ListViewFiles.ListViewItemSorter = new ListViewFilesItemComparer(e.Column, ListViewFiles.Sorting)
+	Private Sub ListViewFiles_ColumnClick(sender As Object, e As ColumnClickEventArgs) Handles ListViewFiles.ColumnClick
+		If currentSorter.col = e.Column Then
+			If currentSorter.sortOrder = SortOrder.Ascending Then
+				currentSorter.sortOrder = SortOrder.Descending
+			Else
+				currentSorter.sortOrder = SortOrder.Ascending
+			End If
+		Else
+			currentSorter.col = e.Column
+			currentSorter.sortOrder = SortOrder.Ascending
+			If e.Column = 0 Or e.Column = 1 Then
+				currentSorter.compareType = CompareType.AsString
+			ElseIf e.Column = 3 Then
+				currentSorter.compareType = CompareType.AsDate
+			Else
+				currentSorter.compareType = CompareType.AsNumber
+			End If
+		End If
 		ListViewFiles.Sort()
 	End Sub
 
-	Private Sub ListViewFolder_ColumnClick(sender As Object, e As ColumnClickEventArgs) Handles ListViewFolder.ColumnClick
-		if e.Column <> _directorySortColumn Then
-			_directorySortColumn = e.Column
-			ListViewFolder.Sorting = SortOrder.Ascending
-		Else 
-			if ListViewFolder.Sorting = SortOrder.Ascending Then
-				ListViewFolder.Sorting = SortOrder.Descending
-			Else 
-				ListViewFolder.Sorting=SortOrder.Ascending
-			End If
-		End If
-		ListViewFolder.ListViewItemSorter = new ListViewFilesItemComparer(e.Column, ListViewFolder.Sorting)
-		ListViewFolder.Sort()
-	End Sub
+	Public Enum CompareType
+		AsString
+		AsNumber
+		AsDate
+	End Enum
 
-	Private Class ListViewFilesItemComparer
+	Private Class ListViewFilesItemComparer 
 		Implements IComparer
 
-		Private _col As Integer
-		Private _order As SortOrder
+		public col As Integer
+		public compareType As CompareType
+		public sortOrder As SortOrder
 
-		Public Sub New()
-			_col = 0
+		Sub New(column As Integer, sortOrder As SortOrder, compareType As CompareType)
+			col = column
+			Me.sortOrder = sortOrder
+			Me.compareType = compareType
 		End Sub
 
-		Public Sub New(column As Integer, sortOrder As SortOrder)
-			_col = column
-			_order = sortOrder
-		End Sub
-
-		Public Function Compare(x As Object, y As Object) As Integer _ 
-			Implements IComparer.Compare
-			Dim returnVal as Integer = -1
-			returnVal = [String].Compare(CType(x, ListViewItem).SubItems(_col).Text, _
-										 CType(y, ListViewItem).SubItems(_col).Text)
-			' Determine whether the sort order is descending.
-			If _order = SortOrder.Descending Then
-				' Invert the value returned by String.Compare.
-				returnVal *= -1
+		Function Compare(x1 As Object, y1 As Object) As Integer Implements IComparer.Compare
+			Dim x = CType(x1, ListViewItem)
+			Dim y = CType(y1, ListViewItem)
+			If compareType = CompareType.AsString Then
+				Return String.Compare(x.SubItems(col).Text, y.SubItems(col).Text) * (sortOrder * -2 + 3)
+			ElseIf compareType = CompareType.AsDate Then
+				Return CType(x.SubItems(col).Tag, Date).CompareTo(CType(y.SubItems(col).Tag, Date)) * (sortOrder * -2 + 3)
+			Else
+				Return CType(x.SubItems(col).Tag, integer).CompareTo(CType(y.SubItems(col).Tag, integer)) * (sortOrder * -2 + 3)
 			End If
-
-			Return returnVal
 		End Function
 	End Class
-
-
 End Class
 
 

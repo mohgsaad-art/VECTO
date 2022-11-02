@@ -23,13 +23,7 @@ Namespace Hvac
 		Public Sub New()
 		End Sub
 
-		Public Sub New(elecPowerW As Single, mechPowerW As Single, fuellingLPH As Single)
-
-			HVACElectricalLoadPowerWatts = elecPowerW
-			HVACFuellingLitresPerHour = mechPowerW
-			HVACMechanicalLoadPowerWatts = fuellingLPH
-		End Sub
-
+		
 		'Implementation
 		Public Function SetValuesFromMap(ByVal filePath As String, byref message As String) As Boolean _
 			Implements IHVACSteadyStateModel.SetValuesFromMap

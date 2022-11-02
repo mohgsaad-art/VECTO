@@ -1,0 +1,16 @@
+﻿Category                  , Consumer                               , Base Vehicle , Default Consumer , Bonus , Heavy Urban , Urban , Suburban , Interurban , Coach , PhaseIdle , Number in Vehicle , Comment
+Veh. Electronics & Engine , controllers & valves                   , 1            , 1                , 0     , 25.0        , 25.0  , 25.0     , 25.0       , 25.0  , 1.0       , 1.0               ,
+Vehicle basic equipment   , Radio                                  , 0            , 1                , 0     , 1.0         , 1.0   , 1.0      , 4.0        , 9.0   , 0.8       , 1.0               ,
+Vehicle basic equipment   , Fridge                                 , 0            , 0                , 0     , 4.0         , 4.0   , 4.0      , 4.0        , 4.0   , 0.5       , 1.0               ,
+Vehicle basic equipment   , Kitchen Standard                       , 0            , 0                , 0     , 67.0        , 67.0  , 67.0     , 67.0       , 67.0  , 0.05      , 1.0               ,
+Vehicle basic equipment   , Interior lights per meter              , 0            , 1                , 0     , 1.0         , 1.0   , 1.0      , 1.0        , 1.1   , 0.7       , f_IntLight(L_CoC) , per meter vehicle length
+Vehicle basic equipment   , Interior lights LED bonus              , 0            , 0                , 1     , -0.4        , -0.4  , -0.4     , -0.4       , -0.4  , 0.7       , f_IntLight(L_CoC) , per meter vehicle length
+Customer specific equipm. , External displays                      , 0            , 0                , 0     , 2.7         , 2.7   , 2.7      , 2.7        , 2.7   , 1.0       , 2.0               ,
+Customer specific equipm. , Internal displays                      , 0            , 0                , 0     , 1.1         , 1.1   , 1.1      , 1.1        , 1.1   , 1.0       , 1.0               ,
+Customer specific equipm. , Citybus customer specific value (EBSF) , 0            , 1                , 0     , 9.3         , 9.3   , 9.3      , 0.0        , 0.0   , 1.0       , 1.0               ,
+Lights                    , Exterior lights (bulb)                 , 1            , 1                , 0     , 7.4         , 7.4   , 7.4      , 7.4        , 7.4   , 1.0       , 1.0               ,
+Lights                    , Day running lights LED bonus           , 0            , 0                , 1     , -0.7        , -0.7  , -0.7     , -0.7       , -0.7  , 1.0       , 1.0               ,
+Lights                    , Position lights LED bonus              , 0            , 0                , 1     , -1.2        , -1.2  , -1.2     , -1.2       , -1.2  , 1.0       , 1.0               ,
+Lights                    , Brake lights LED bonus                 , 0            , 0                , 1     , -1.2        , -1.2  , -1.2     , -1.2       , -1.2  , 1.0       , 1.0               ,
+Lights                    , Headlights LED bonus                   , 0            , 0                , 1     , -1.5        , -1.5  , -1.5     , -1.5       , -1.5  , 1.0       , 1.0               ,
+Doors                     , Doors per vehicle                      , 0            , 0                , 0     , 3.0         , 3.0   , 3.0      , 3.0        , 3.0   , 0.0       , 2.0               ,

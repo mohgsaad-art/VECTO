@@ -1,4 +1,4 @@
-[AlternatorName],[RPM],[Amps],[Efficiency],[PulleyRatio]
+AlternatorName,RPM,Amps,Efficiency,PulleyRatio
 Alt1,2000,10,50,3
 Alt1,2000,40,50,3
 Alt1,2000,60,50,3
@@ -35,8 +35,3 @@ Alt4,4000,60,23,2
 Alt4,6000,10,34,2
 Alt4,6000,40,67,2
 Alt4,6000,60,35,2
-[MODELSOURCE]
-
-
-
-

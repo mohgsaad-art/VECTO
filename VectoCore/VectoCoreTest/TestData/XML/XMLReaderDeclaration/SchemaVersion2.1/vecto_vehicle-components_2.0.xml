@@ -7,7 +7,7 @@
 	xmlns:v1.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0"
 	xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0"
 	xmlns:di="http://www.w3.org/2000/09/xmldsig#"
-	xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob E:\QUAM\Workspace\VECTO_quam\VectoCore\VectoCore\Resources\XSD/VectoDeclarationJob.xsd"
+	xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob v:\VectoCore\VectoCore\Resources\XSD/VectoDeclarationJob.xsd"
 	>
 	<Vehicle id="VEH-1234567890" xsi:type="VehicleDeclarationType">
 		<Manufacturer>Generic Truck Manufacturer</Manufacturer>
@@ -200,7 +200,7 @@
 					<AppVersion>3.0.1</AppVersion>
 					<TransmissionType>AMT</TransmissionType>
 					<MainCertificationMethod>Standard values</MainCertificationMethod>
-					<Gears>
+					<Gears xsi:type="GearsDeclarationType">
 						<Gear number="1">
 							<Ratio>14.930</Ratio>
 							<MaxTorque>1900</MaxTorque>

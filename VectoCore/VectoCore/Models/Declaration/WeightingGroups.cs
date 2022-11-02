@@ -33,19 +33,21 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Net.NetworkInformation;
+using TUGraz.VectoCommon.Models;
+using System.Text.RegularExpressions;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.Declaration
 {
 	public enum WeightingGroup
 	{
-		Group1 = 1,
+		Group1s = 1,
+		Group1,
 		Group2,
 		Group3,
-		
-		Group4UD,
+        Group4UD,
 		Group4RD,
 		Group4LH,
 		Group5RD,
@@ -59,15 +61,48 @@ namespace TUGraz.VectoCore.Models.Declaration
 		Group12,
 		Group16,
 
-		Unknown
-	}
+		Group51,
+		Group52,
+		Group53,
+		Group54,
+		Group55,
+		Group56,
 
-	public class WeightingGroupHelper
+        Unknown
+    }
+
+	public static class WeightingGroupHelper
 	{
 		public const string Prefix = "Group";
 		public static WeightingGroup Parse(string groupStr)
 		{
 			return (Prefix + groupStr.Replace("-", "")).ParseEnum<WeightingGroup>();
+		}
+
+		public static string ToXMLFormat(this WeightingGroup group)
+		{
+			switch (group) {
+				case WeightingGroup.Group1:
+				case WeightingGroup.Group2:
+				case WeightingGroup.Group3:
+				case WeightingGroup.Group11:
+				case WeightingGroup.Group12:
+				case WeightingGroup.Group16:
+				case WeightingGroup.Unknown:
+					return Constants.NOT_AVAILABLE;
+				case WeightingGroup.Group4UD:
+				case WeightingGroup.Group4RD:
+				case WeightingGroup.Group4LH:
+				case WeightingGroup.Group5RD:
+				case WeightingGroup.Group5LH:
+				case WeightingGroup.Group9RD:
+				case WeightingGroup.Group9LH:
+				case WeightingGroup.Group10RD:
+				case WeightingGroup.Group10LH:
+					return Regex.Split(group.ToString().Replace(Prefix, ""), @"(\d+|\w+)").Where(x => !string.IsNullOrWhiteSpace(x)).Join("-");
+				default:
+					return Constants.NOT_AVAILABLE;
+			}
 		}
 	}
 
@@ -77,10 +112,10 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		#region Overrides of LookupData
 
-		protected override string ResourceId { get { return DeclarationData.DeclarationDataResourcePrefix + ".CO2Standards.WeightingGroups.csv"; } }
-		protected override string ErrorMessage { get {
-			return "WeightingGroup Lookup Error: no entry found for group {0}, sleeper cab: {1}, engine rated power {2}";
-		} }
+		protected override string ResourceId => DeclarationData.DeclarationDataResourcePrefix + ".CO2Standards.WeightingGroups.csv";
+
+		protected override string ErrorMessage => "WeightingGroup Lookup Error: no entry found for group {0}, sleeper cab: {1}, engine rated power {2}";
+
 		protected override void ParseData(DataTable table)
 		{
 			foreach (DataRow row in table.Rows) {

@@ -41,12 +41,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		protected override uint GetGearFromCycle()
 		{
-			return DataBus.CycleData.LeftSample.Gear;
+			return DataBus.DrivingCycleInfo.CycleData.LeftSample.Gear;
 		}
 
-		public override bool ClutchClosed(Second absTime)
+		public override bool GearEngaged(Second absTime)
 		{
-			return DataBus.CycleData.LeftSample.Gear != 0;
+			return DataBus.DrivingCycleInfo.CycleData.LeftSample.Gear != 0;
 		}
 	}
 }

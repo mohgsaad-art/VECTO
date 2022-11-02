@@ -39,7 +39,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 {
 	public class TimeRun : VectoRun
 	{
-		public TimeRun(IVehicleContainer container) : base(container) {}
+		public TimeRun(IVehicleContainer container) : base(container) { }
 
 		protected override IResponse DoSimulationStep()
 		{
@@ -50,16 +50,21 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			IResponse response;
 			do {
 				response = CyclePort.Request(AbsTime, dt);
-				debug.Add(response);
-
-				response.Switch().
-					Case<ResponseSuccess>(r => { dt = r.SimulationInterval; }).
-					Case<ResponseFailTimeInterval>(r => { dt = r.DeltaT; }).
-					Case<ResponseCycleFinished>(r => {
+				debug.Add("[TR.DST]", response);
+				switch (response) {
+					case ResponseSuccess r:
+						dt = r.SimulationInterval;
+						break;
+					case ResponseFailTimeInterval r:
+						dt = r.DeltaT;
+						break;
+					case ResponseCycleFinished r:
 						FinishedWithoutErrors = true;
 						Log.Info("========= Driving Cycle Finished");
-					}).
-					Default(r => { throw new VectoException("TimeRun got an unexpected response: {0}", r); });
+						break;
+					default:
+						throw new VectoException("TimeRun got an unexpected response: {0}", response);
+				}
 				if (loopCount++ > Constants.SimulationSettings.MaximumIterationCountForSimulationStep) {
 					throw new VectoSimulationException("Maximum iteration count for a single simulation interval reached! Aborting!");
 				}

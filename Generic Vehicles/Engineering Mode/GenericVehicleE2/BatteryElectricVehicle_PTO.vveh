@@ -1,0 +1,90 @@
+{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2022-05-30T15:23:54.1506819Z",
+    "AppVersion": "3",
+    "FileVersion": 10
+  },
+  "Body": {
+    "SavedInDeclMode": false,
+    "VehCat": "RigidTruck",
+    "LegislativeClass": "Unknown",
+    "CurbWeight": 4670.0,
+    "CurbWeightExtra": 1900.0,
+    "MassMax": 11.99,
+    "Loading": 3020.0,
+    "rdyn": 421.0,
+    "CdCorrMode": "CdofVdecl",
+    "CdCorrFile": "",
+    "AxleConfig": {
+      "Type": "4x2",
+      "Axles": [
+        {
+          "Inertia": 6.5,
+          "Wheels": "265/70 R19.5",
+          "AxleWeightShare": 0.2,
+          "TwinTyres": false,
+          "RRCISO": 0.0065,
+          "FzISO": 20850.0,
+          "Type": "VehicleNonDriven"
+        },
+        {
+          "Inertia": 6.5,
+          "Wheels": "265/70 R19.5",
+          "AxleWeightShare": 0.3,
+          "TwinTyres": true,
+          "RRCISO": 0.0075,
+          "FzISO": 20850.0,
+          "Type": "VehicleDriven"
+        },
+        {
+          "Inertia": 4.5,
+          "Wheels": "235/75 R17.5",
+          "AxleWeightShare": 0.25,
+          "TwinTyres": false,
+          "RRCISO": 0.0055,
+          "FzISO": 16680.0,
+          "Type": "VehicleNonDriven"
+        },
+        {
+          "Inertia": 4.5,
+          "Wheels": "235/75 R17.5",
+          "AxleWeightShare": 0.25,
+          "TwinTyres": false,
+          "RRCISO": 0.0055,
+          "FzISO": 16680.0,
+          "Type": "VehicleNonDriven"
+        }
+      ]
+    },
+    "EngineStopStart": false,
+    "EcoRoll": "None",
+    "PredictiveCruiseControl": "None",
+    "ATEcoRollReleaseLockupClutch": false,
+    "VehicleHeight": 3.0,
+    "InitialSoC": 80.0,
+    "PowertrainConfiguration": "BatteryElectric",
+    "ElectricMotors": [
+      {
+        "Count": 2,
+        "Ratio": 2.0,
+        "Position": "E2",
+        "MotorFile": "GenericEMotor_125kW_485Nm.vem",
+        "MechanicalEfficiency": 0.97
+      }
+    ],
+    "Batteries": [
+      {
+        "NumPacks": 2,
+        "BatteryFile": "GenericBattery_243kWh_750V.vbat",
+        "StreamId": 0
+      }
+    ],
+    "PTO": {
+      "Type": "drive shaft and/or up to 2 gear wheels - multi-disc clutch, oil pump",
+      "LossMap": "PTO-idle.vptol",
+      "Cycle": "",
+      "CycleDriving": ""
+    }
+  }
+}

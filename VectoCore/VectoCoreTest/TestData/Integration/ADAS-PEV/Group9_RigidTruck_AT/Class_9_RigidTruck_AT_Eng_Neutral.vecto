@@ -1,0 +1,68 @@
+﻿{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2017-07-03T12:21:05.6496880Z",
+    "AppVersion": "3",
+    "FileVersion": 3
+  },
+  "Body": {
+    "SavedInDeclMode": false,
+    "EngineOnlyMode": false,
+    "VehicleFile": "RigidTruck_6x2_Neutral.vveh",
+    "EngineFile": "Engine_220kW.veng",
+    "GearboxFile": "APT-S Generic TqMax1200.vgbx",
+    "TCU": "APT-S Generic TqMax1200.vgbx",
+    "AuxiliaryAssembly": "Classic",
+    "AuxiliaryVersion": "CLASSIC",
+    "AdvancedAuxiliaryFilePath": "",
+    "Aux": [],
+    "Padd": 3500.0,
+    "EngineStopStartAtVehicleStopThreshold": 2.0,
+    "EngineStopStartMaxOffTimespan": 120.0,
+    "EngineStopStartUtilityFactor": 0.8,
+    "EcoRollMinSpeed": 60.000000000000007,
+    "EcoRollActivationDelay": 2.0,
+    "EcoRollUnderspeedThreshold": 0.0,
+    "EcoRollMaxAcceleration": 0.1,
+    "PCCEnableSpeed": 80.0,
+    "PCCMinSpeed": 50.0,
+    "PCCUnderspeed": 8.0,
+    "PCCOverSpeed": 5.0,
+    "PCCPreviewDistanceUC1": 1500.0,
+    "PCCPreviewDistanceUC2": 1000.0,
+    "VACC": "Truck.vacc",
+    "StartStop": {
+      "Enabled": false,
+      "MaxSpeed": 5.0,
+      "MinTime": 5.0,
+      "Delay": 0.0
+    },
+    "LAC": {
+      "Enabled": true,
+      "PreviewDistanceFactor": 10.0,
+      "DF_offset": 2.5,
+      "DF_scaling": 1.5,
+      "DF_targetSpeedLookup": "",
+      "Df_velocityDropLookup": ""
+    },
+    "OverSpeedEcoRoll": {
+      "Mode": "Overspeed",
+      "MinSpeed": 50.0,
+      "OverSpeed": 5.0,
+      "UnderSpeed": 5.0
+    },
+    "Cycles": [
+      "DriveDHSl1.8.vdri",
+      "DriveDHSl1.8_Uh0.1.vdri",
+      "DriveDHSl1.9.vdri",
+      "DriveDhSl1.2.vdri",
+      "DriveDhSl2.5.vdri",
+      "DriveDHSl1.9_Stop.vdri",
+      "DriveDHSl1.9_TS--.vdri",
+      "DriveDHSl1.9_TS-.vdri",
+      "DriveDHSl1.9_TS+.vdri",
+      "DriveDHSl1.9_TS++.vdri",
+      "DriveDHSl1.2.vdri"
+    ]
+  }
+}

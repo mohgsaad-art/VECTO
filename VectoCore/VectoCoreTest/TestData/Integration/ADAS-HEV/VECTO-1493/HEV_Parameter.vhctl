@@ -1,0 +1,20 @@
+{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2021-06-16T09:26:18.2012105Z",
+    "AppVersion": "3",
+    "FileVersion": 1
+  },
+  "Body": {
+    "EquivalenceFactorDischarge": 2.53529411764706,
+    "EquivalenceFactorCharge": 1.83175,
+    "MinSoC": 25,
+    "MaxSoC": 75,
+    "TargetSoC": 50.0,
+    "AuxBufferTime": 5.0,
+    "AuxBufferChgTime": 5.0,
+    "MinICEOnTime": 3.0,
+    "ICEStartPenaltyFactor": 0.1,
+    "CostFactorSOCExponent": 1
+  }
+}

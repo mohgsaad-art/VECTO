@@ -1,0 +1,110 @@
+﻿<UserControl x:Class="VECTO3GUI2020.Views.SettingsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VECTO3GUI2020.Views"
+        xmlns:customControls="clr-namespace:VECTO3GUI2020.Views.Multistage.CustomControls"
+        xmlns:implementation="clr-namespace:VECTO3GUI2020.ViewModel.Implementation"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:behaviour="clr-namespace:VECTO3GUI2020.Behaviours"
+        mc:Ignorable="d" d:DataContext="{d:DesignInstance implementation:SettingsViewModel }"
+        MinHeight="200" MinWidth="400">
+    <UserControl.Resources>
+        <Style TargetType="Label">
+            <Setter Property="Margin" Value="4 4 4 4"></Setter>
+            <Setter Property="Padding" Value="4 4 4 4"></Setter>
+        </Style>
+        <Style TargetType="CheckBox">
+            <Setter Property="Margin" Value="4 4 4 4"></Setter>
+            <Setter Property="Padding" Value="4 4 4 4"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <DockPanel VerticalAlignment="Stretch" LastChildFill="False">
+            <Label DockPanel.Dock="Top" Style="{StaticResource LabelStyle1}">File I/O</Label>
+            <Border DockPanel.Dock="Top" BorderBrush="{StaticResource ButtonHighlightColor}" BorderThickness="1">
+                <Grid DockPanel.Dock="Top" IsSharedSizeScope="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                    <Label Grid.Row="0" Grid.Column="0" DockPanel.Dock="Left">Default Input Path</Label>
+                <customControls:FilePicker Grid.Row="0" 
+                                           Grid.Column="1" 
+                                           DockPanel.Dock="Right"
+                                           Text="{Binding DefaultFilePath}"
+                                           HorizontalAlignment="Stretch" Command="{Binding ChangeFilePath}"
+                                           ButtonContentTemplate="{DynamicResource FolderIcon}"/>
+
+
+                <Label Grid.Column="0" Grid.Row="1">Default Output Path</Label>
+                <customControls:FilePicker Grid.Row="1" 
+                                           Grid.Column="1" 
+                                           Text="{Binding DefaultOutputPath}"
+                                           Command="{Binding ChangeOutputPath}"
+                                           ButtonContentTemplate="{DynamicResource FolderIcon}"/>
+                </Grid>
+            </Border>
+            <Border BorderBrush="{DynamicResource ButtonHighlightColor}" BorderThickness="1" DockPanel.Dock="Top">
+                <StackPanel>
+
+                <Label Style="{DynamicResource LabelStyle1}" HorizontalAlignment="Stretch">Simulation Settings</Label>
+
+                    <Grid HorizontalAlignment="Left" MaxWidth="500" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0">Serialize Vecto Run Data</Label>
+                    <CheckBox Grid.Row="0" Grid.Column="1" IsChecked="{Binding SerializeVectoRunData}"></CheckBox>
+
+                    <Label Grid.Row="1" Grid.Column="2">Write Modal Results</Label>
+                    <CheckBox Grid.Row="1" Grid.Column="3" IsChecked="{Binding WriteModalResults}"></CheckBox>
+
+                    <Label Grid.Row="2" Grid.Column="0">Validate</Label>
+                    <CheckBox Grid.Row="2" Grid.Column="1" IsChecked="{Binding Validate}"></CheckBox>
+
+                    <Label Grid.Row="0" Grid.Column="2">Actual Modal Data</Label>
+                    <CheckBox Grid.Row="0" Grid.Column="3" IsChecked="{Binding ActualModalData}"></CheckBox>
+
+                    <Label Grid.Row="1" Grid.Column="0">ModalResults1Hz</Label>
+                    <CheckBox Grid.Row="1" Grid.Column="1" IsChecked="{Binding ModalResults1Hz}"></CheckBox>
+
+
+
+
+                    </Grid>
+
+                </StackPanel>
+            </Border>
+
+
+
+
+       
+            <!--</Grid>-->
+            <DockPanel DockPanel.Dock="Bottom" LastChildFill="False">
+                <Button DockPanel.Dock="Right"
+                        Width="100"
+                        Command="{Binding CloseWindowCommand}" 
+                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}"
+                        Style="{DynamicResource MultiStageButtonStyle1}">Close</Button>
+            </DockPanel>
+        </DockPanel>
+    </Grid>
+</UserControl>

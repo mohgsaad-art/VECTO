@@ -1,0 +1,94 @@
+{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2021-10-14T09:18:59.2920725Z",
+    "AppVersion": "3",
+    "FileVersion": 10
+  },
+  "Body": {
+    "SavedInDeclMode": false,
+    "VehCat": "RigidTruck",
+    "LegislativeClass": "Unknown",
+    "CurbWeight": 9000.0,
+    "CurbWeightExtra": 7500.0,
+    "MassMax": 40.0,
+    "Loading": 2600.0,
+    "rdyn": 492.0,
+    "CdCorrMode": "CdofVdecl",
+    "CdCorrFile": "",
+    "AxleConfig": {
+      "Type": "4x2",
+      "Axles": [
+        {
+          "Inertia": 14.9,
+          "Wheels": "315/70 R22.5",
+          "AxleWeightShare": 0.2,
+          "TwinTyres": false,
+          "RRCISO": 0.0052,
+          "FzISO": 33350.0,
+          "Type": "VehicleNonDriven"
+        },
+        {
+          "Inertia": 14.9,
+          "Wheels": "315/70 R22.5",
+          "AxleWeightShare": 0.25,
+          "TwinTyres": true,
+          "RRCISO": 0.0057,
+          "FzISO": 33350.0,
+          "Type": "VehicleDriven"
+        },
+        {
+          "Inertia": 19.2,
+          "Wheels": "385/65 R22.5",
+          "AxleWeightShare": 0.18333,
+          "TwinTyres": false,
+          "RRCISO": 0.0055,
+          "FzISO": 41690.0,
+          "Type": "Trailer"
+        },
+        {
+          "Inertia": 19.2,
+          "Wheels": "385/65 R22.5",
+          "AxleWeightShare": 0.18333,
+          "TwinTyres": false,
+          "RRCISO": 0.0055,
+          "FzISO": 41690.0,
+          "Type": "Trailer"
+        },
+        {
+          "Inertia": 19.2,
+          "Wheels": "385/65 R22.5",
+          "AxleWeightShare": 0.18334,
+          "TwinTyres": false,
+          "RRCISO": 0.0055,
+          "FzISO": 41690.0,
+          "Type": "Trailer"
+        }
+      ]
+    },
+    "EngineStopStart": false,
+    "EcoRoll": "None",
+    "PredictiveCruiseControl": "Option_1_2_3",
+    "ATEcoRollReleaseLockupClutch": false,
+    "CdA": 5.62,
+    "VehicleHeight": 4.0,
+    "InitialSoC": 90.0,
+    "PowertrainConfiguration": "BatteryElectric",
+    "ElectricMotors": [
+      {
+        "Count": 2,
+        "Ratio": 22.6,
+        "Position": "E4",
+        "MotorFile": "GenericEMotor_157kW_500Nm.vem",
+        "MechanicalEfficiency": 0.98
+      }
+    ],
+    "Batteries": [
+      {
+        "NumPacks": 1,
+        "BatteryFile": "Generic Battery 700V_1000kWh.vreess",
+        "StreamId": 0
+      }
+    ]
+  }
+}

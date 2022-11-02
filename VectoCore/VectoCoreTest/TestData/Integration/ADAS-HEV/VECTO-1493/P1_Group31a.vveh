@@ -1,0 +1,86 @@
+{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2021-08-05T14:50:38.8085781Z",
+    "AppVersion": "3",
+    "FileVersion": 10
+  },
+  "Body": {
+    "SavedInDeclMode": false,
+    "VehCat": "CityBus",
+    "LegislativeClass": "Unknown",
+    "CurbWeight": 11975,
+    "CurbWeightExtra": 0.0,
+    "MassMax": 19.5,
+    "Loading": 1123.632,
+    "rdyn": 465,
+    "CdCorrMode": "CdofVdecl",
+    "CdCorrFile": "",
+    "AxleConfig": {
+      "Type": "4x2",
+      "Axles": [
+        {
+          "Inertia": 11.9,
+          "Wheels": "275/70 R22.5",
+          "AxleWeightShare": 0.375,
+          "TwinTyres": false,
+          "RRCISO": 0.0034,
+          "FzISO": 31300.0,
+          "Type": "VehicleNonDriven"
+        },
+        {
+          "Inertia": 11.9,
+          "Wheels": "275/70 R22.5",
+          "AxleWeightShare": 0.625,
+          "TwinTyres": true,
+          "RRCISO": 0.004,
+          "FzISO": 31300.0,
+          "Type": "VehicleDriven"
+        }
+      ]
+    },
+    "EngineStopStart": true,
+    "EcoRoll": "None",
+    "PredictiveCruiseControl": "None",
+    "ATEcoRollReleaseLockupClutch": false,
+    "CdA": 4.9,
+    "VehicleHeight": 3.10,
+    "IdlingSpeed": 700.0,
+    "Retarder": {
+      "Type": "None",
+      "Ratio": 0.0,
+      "File": ""
+    },
+    "Angledrive": {
+      "Type": "None",
+      "Ratio": 0.0,
+      "LossMap": ""
+    },
+    "PTO": {
+      "Type": "None",
+      "LossMap": "",
+      "Cycle": "",
+      "CycleDriving": ""
+    },
+    "TorqueLimits": {},
+    "MaxPropulsionTorque": "Torque_limit_1250Nm.vtqp",
+    "InitialSoC": 50.0,
+    "PowertrainConfiguration": "ParallelHybrid",
+    "ElectricMotors": [
+      {
+        "Count": 1,
+        "Ratio": 1.6,
+        "Position": "P1",
+        "MotorFile": "GenericEMotor.vem",
+        "MechanicalEfficiency": 0.98
+      }
+	],
+    "Batteries": [
+      {
+        "NumPacks": 1,
+        "BatteryFile": "GenericBattery.vreess",
+        "StreamId": 0
+      }
+    ]
+  }
+}

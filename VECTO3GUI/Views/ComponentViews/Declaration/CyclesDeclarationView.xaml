@@ -1,0 +1,39 @@
+﻿<UserControl x:Class="VECTO3GUI.Views.ComponentViews.Declaration.CyclesDeclarationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:interfaces="clr-namespace:VECTO3GUI.ViewModel.Interfaces"
+             xmlns:customControls="clr-namespace:VECTO3GUI.Views.CustomControls"
+             xmlns:helper="clr-namespace:VECTO3GUI.Helper"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="800">
+    <d:EditCyclesView.DataContext>
+        <x:Type Type="interfaces:ICyclesViewModel"/>
+    </d:EditCyclesView.DataContext>
+    <StackPanel Orientation="Vertical" Width="400" HorizontalAlignment="Left"  Grid.IsSharedSizeScope="True">
+        <ListView ItemsSource="{Binding Cycles}" Margin="10" MinHeight="150" MaxHeight="300">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Width="auto">
+                        <GridViewColumnHeader MinWidth="300" IsEnabled="False" Foreground="Black">Cycle Name</GridViewColumnHeader>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <DockPanel>
+                                    <TextBlock DockPanel.Dock="Right" Text="{Binding }"/>
+                                </DockPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+    </StackPanel>
+</UserControl>

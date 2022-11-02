@@ -29,10 +29,17 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Models.Declaration;
+
+[assembly: InternalsVisibleTo("VECTO3GUI2020")]
 
 namespace TUGraz.VectoCore.InputData.Impl
 {
@@ -58,15 +65,14 @@ namespace TUGraz.VectoCore.InputData.Impl
 		public TableData CoastingDecisionFactorVelocityDropLookup { get; internal set; }
 	}
 
-	public class OverSpeedEcoRollInputData : IOverSpeedEcoRollEngineeringInputData
+	public class OverSpeedInputData : IOverSpeedEngineeringInputData
 	{
-		public DriverMode Mode { get; internal set; }
+		public bool Enabled { get; internal set; }
 
 		public MeterPerSecond MinSpeed { get; internal set; }
 
 		public MeterPerSecond OverSpeed { get; internal set; }
 
-		public MeterPerSecond UnderSpeed { get; internal set; }
 	}
 
 	public class DriverAccelerationInputData : IDriverAccelerationData
@@ -105,10 +111,7 @@ namespace TUGraz.VectoCore.InputData.Impl
 
 		public AxleType AxleType { get; internal set; }
 
-		ITyreDeclarationInputData IAxleDeclarationInputData.Tyre
-		{
-			get { return Tyre; }
-		}
+		ITyreDeclarationInputData IAxleDeclarationInputData.Tyre => Tyre;
 
 		public ITyreEngineeringInputData Tyre { get; internal set; }
 
@@ -132,7 +135,8 @@ namespace TUGraz.VectoCore.InputData.Impl
 
 		public string Model { get; internal set; }
 
-		public string Date { get; internal set; }
+		public DateTime Date { get; internal set; }
+		public string AppVersion { get; internal set; }
 
 		public CertificationMethod CertificationMethod { get; internal set; }
 
@@ -145,18 +149,18 @@ namespace TUGraz.VectoCore.InputData.Impl
 		public double RollResistanceCoefficient { get; internal set; }
 
 		public Newton TyreTestLoad { get; internal set; }
+		public string FuelEfficiencyClass { get; internal set; }
 
 		public KilogramSquareMeter Inertia { get; internal set; }
 
-		public Meter DynamicTyreRadius { get; }
+		public Meter DynamicTyreRadius { get; internal set; }
 	}
 
-	public class AuxiliaryDataInputData : IAuxiliaryEngineeringInputData, IAuxiliaryDeclarationInputData
+	public class DeclarationAuxiliaryDataInputData : IAuxiliaryDeclarationInputData
 	{
-		public AuxiliaryDataInputData()
+		public DeclarationAuxiliaryDataInputData()
 		{
-			AuxiliaryType = AuxiliaryDemandType.Mapping;
-			ConstantPowerDemand = 0.SI<Watt>();
+			AuxiliaryType = AuxiliaryDemandType.Constant;
 		}
 
 		public AuxiliaryDemandType AuxiliaryType { get; internal set; }
@@ -167,22 +171,142 @@ namespace TUGraz.VectoCore.InputData.Impl
 
 		public IList<string> Technology { get; set; }
 
-		public double TransmissionRatio { get; internal set; }
 
-		public double EfficiencyToEngine { get; internal set; }
+	}
 
-		public double EfficiencyToSupply { get; internal set; }
+	public class EngineeringAuxiliaryDataInputData : IAuxiliaryEngineeringInputData
+	{
+		public EngineeringAuxiliaryDataInputData()
+		{
+			AuxiliaryType = AuxiliaryDemandType.Constant;
+			ConstantPowerDemand = 0.SI<Watt>();
+		}
 
-		public TableData DemandMap { get; internal set; }
+		public AuxiliaryDemandType AuxiliaryType { get; internal set; }
+
+		public string ID { get; internal set; }
 
 		public Watt ConstantPowerDemand { get; internal set; }
-
-		public DataSource DataSource { get; internal set; }
+		public Watt PowerDemandICEOffDriving { get; internal set; }
+		public Watt PowerDemandICEOffStandstill { get; internal set; }
+		public Watt ElectricPowerDemand { get; internal set; }
 	}
+
 
 	public class TorqueLimitInputData : ITorqueLimitInputData
 	{
 		public int Gear { get; internal set; }
 		public NewtonMeter MaxTorque { get; internal set; }
+	}
+
+	public class AlternatorInputData : IAlternatorDeclarationInputData
+	{
+		public AlternatorInputData(Volt ratedVoltage, Ampere ratedCurrent)
+		{
+			RatedCurrent = ratedCurrent;
+			RatedVoltage = ratedVoltage;
+
+		}
+
+		#region Implementation of IAlternatorDeclarationInputData
+		
+		public Ampere RatedCurrent { get; }
+		public Volt RatedVoltage { get; }
+
+		#endregion
+	}
+
+	public class BusAuxBatteryInputData : IBusAuxElectricStorageDeclarationInputData
+	{
+		public BusAuxBatteryInputData(string technology, Volt voltage, AmpereSecond ratedCapacity)
+		{
+			Technology = technology;
+			Voltage = voltage;
+			Capacity = ratedCapacity;
+		}
+
+		public Volt Voltage { get; set; }
+
+		public AmpereSecond Capacity { get; set; }
+
+		#region Implementation of IBusAuxElectricStorageDeclarationInputData
+
+		public string Technology { get; }
+
+		public WattSecond ElectricStorageCapacity => Capacity * Voltage;
+
+		#endregion
+	}
+
+	public class BusAuxCapacitorInputData : IBusAuxElectricStorageDeclarationInputData
+	{
+		public BusAuxCapacitorInputData(string technology, Volt voltage, Farad ratedCapacity)
+		{
+			Technology = technology;
+			Voltage = voltage;
+			Capacity = ratedCapacity;
+		}
+
+		public Volt Voltage { get; set; }
+
+		public Farad Capacity { get; set; }
+
+		#region Implementation of IBusAuxElectricStorageDeclarationInputData
+
+		public string Technology { get; }
+		public WattSecond ElectricStorageCapacity => Capacity * Voltage * Voltage / 2.0;
+
+		#endregion
+	}
+
+
+
+	public class ResultInputData : IResultsInputData
+	{
+		public string Status { get; internal set; }
+
+		public IList<IResult> Results { get; internal set; }
+	}
+	
+	[DebuggerDisplay("{ResultStatus} | {VehicleGroup} {Mission}")]
+	public class Result : IResult
+	{
+		public string ResultStatus { get; internal set; }
+		public VehicleClass VehicleGroup { get; internal set; }
+		public MissionType Mission { get; internal set; }
+		public ISimulationParameter SimulationParameter { get; internal set; }
+		public Dictionary<FuelType, JoulePerMeter> EnergyConsumption { get; set; }
+		public Dictionary<string, double> CO2 { get; set; }
+	}
+
+	public class SimulationParameter : ISimulationParameter
+	{
+		public Kilogram TotalVehicleMass { get; internal set; }
+		public Kilogram Payload { get; internal set; }
+		public double PassengerCount { get; internal set; }
+		public string FuelMode { get; internal set; }
+	}
+
+	public class ApplicationInformation : IApplicationInformation
+	{
+		public string SimulationToolVersion { get; internal set; }
+		public DateTime Date { get; internal set; }
+	}
+
+	public class ElectricMotorVoltageLevel : IElectricMotorVoltageLevel
+	{
+		#region Implementation of IElectricMotorVoltageLevel
+
+		public Volt VoltageLevel { get; internal set; }
+		public NewtonMeter ContinuousTorque { get; internal set; }
+		public PerSecond ContinuousTorqueSpeed { get; internal set; }
+		public NewtonMeter OverloadTorque { get; internal set; }
+		public PerSecond OverloadTestSpeed { get; internal set; }
+		public Second OverloadTime { get; internal set; }
+		public TableData FullLoadCurve { get; internal set; }
+		//public TableData EfficiencyMap { get; internal set; }
+		public IList<IElectricMotorPowerMap> PowerMap { get; internal set; }
+
+		#endregion
 	}
 }

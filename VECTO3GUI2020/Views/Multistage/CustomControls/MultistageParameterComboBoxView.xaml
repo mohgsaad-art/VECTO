@@ -1,0 +1,67 @@
+﻿<UserControl x:Class="VECTO3GUI2020.Views.Multistage.CustomControls.MultistageParameterComboBoxView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:VECTO3GUI2020.Views.Multistage.CustomControls"
+             xmlns:helper="clr-namespace:VECTO3GUI2020.Helper"
+             xmlns:implementation="clr-namespace:VECTO3GUI2020.ViewModel.MultiStage.Implementation"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" d:DataContext="{d:DesignInstance implementation:MultistageParameterViewModel }" x:Name="ComboboxView">
+    <Grid>
+        <UniformGrid Rows="1" Margin="0 0 10 2">
+            <DockPanel Margin="5 0">
+            <Label x:Name="label1" DockPanel.Dock="Left">
+                <PriorityBinding>
+                    <Binding Path="Label" Converter="{StaticResource NullToUnsetValue}"></Binding>
+                    <!--<Binding Path="GeneratedLabelText"></Binding>-->
+                </PriorityBinding>
+            </Label>
+            <CheckBox DockPanel.Dock="Right"  HorizontalAlignment="Right" VerticalAlignment="Center" Name="CheckBoxCombo"
+                  Visibility="{Binding ShowCheckBox, 
+                    Converter={StaticResource BooleanToVisibilityConverter}}"
+                  IsChecked="{Binding EditingEnabled, 
+            Mode=TwoWay}" Checked="CheckBoxCombo_OnChecked"/>
+            </DockPanel>
+            <ComboBox x:Name="comboBox"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="2 0 2 0" IsTabStop="False" 
+                      Visibility="{Binding ShowConsolidatedData, 
+                        Converter={StaticResource BooleanToVisibilityConverter}}" IsHitTestVisible="False" Focusable="False" IsEditable="False"
+                      SelectedValue="{Binding PreviousContent, Mode=TwoWay}"
+                      ItemsSource="{Binding GeneratedListItems}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock x:Name="textBlock" Text="{Binding Converter={StaticResource EnumConverter}}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <DockPanel LastChildFill="True">
+                <Label DockPanel.Dock="Right" x:Name="label2" Grid.Column="4"
+                       Content="{Binding DummyContent, Converter={StaticResource SIToUnitStringConverter}}">
+                </Label>
+                <ComboBox DockPanel.Dock="Left" x:Name="comboBoxCurrent"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="2 0 0 0" 
+                          SelectedValue="{Binding CurrentContent,
+                                Mode=TwoWay, 
+                                ValidatesOnExceptions=True, 
+                                ValidatesOnDataErrors=True, 
+                                UpdateSourceTrigger=PropertyChanged}"
+                          IsEnabled="{Binding ValueFieldIsEditable}"
+                          IsEditable="False">
+                    <ComboBox.ItemsSource>
+                        <PriorityBinding>
+                            <Binding Path="AllowedItems" Converter="{StaticResource NullToUnsetValue}" UpdateSourceTrigger="PropertyChanged"/>
+                            <Binding Path="GeneratedListItems" UpdateSourceTrigger="PropertyChanged"/>
+                        </PriorityBinding>
+                    </ComboBox.ItemsSource>
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock x:Name="textBlock" Text="{Binding Converter={StaticResource EnumConverter}}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </DockPanel>
+        </UniformGrid>
+    </Grid>
+    
+    <!--</Grid>-->
+</UserControl>

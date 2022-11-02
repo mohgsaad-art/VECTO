@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="VECTO3GUI2020.Views.JobEditViews.Vehicle.VehicleView_v2_0"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:VECTO3GUI2020.Views.JobEditViews.Vehicle"
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
+             xmlns:custom="clr-namespace:VECTO3GUI2020.Views.CustomControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <Grid>
+        <DockPanel>
+            <Label DockPanel.Dock="Top" HorizontalAlignment="Stretch" Content="{Binding Name}" Background="Aquamarine" FontSize="20" Height="40" FontWeight="DemiBold"  Padding="10 5 5 5"/>
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" DockPanel.Dock="Top" Padding="0 10 30 10">
+            <DockPanel>
+
+
+                <ContentControl Content="{Binding CommonComponentViewModel}" DockPanel.Dock="Top"/>
+                <Separator DockPanel.Dock="Top"></Separator>
+                        <StackPanel DockPanel.Dock="Top">
+                            <custom:LabledTextBoxAutomatic Content="{Binding ManufacturerAddress}"/>
+                            <custom:LabledTextBoxAutomatic Content="{Binding VIN}" />
+                            <custom:ComboParameter Content="{Binding LegislativeClass}" />
+                            <custom:ComboParameter Content="{Binding VehicleCategory}" />
+                            <custom:ComboParameter Content="{Binding AxleConfiguration}" />
+                            <custom:LabledTextBoxAutomatic Content="{Binding CurbMassChassis}"/>
+                            <custom:LabledTextBoxAutomatic Content="{Binding GrossVehicleMassRating}"/>
+                            <custom:LabledTextBoxAutomatic Content="{Binding EngineIdleSpeed}" />
+                            <custom:ComboParameter Content="{Binding AngledriveType}"></custom:ComboParameter>
+                            <custom:ComboParameter Content="{Binding RetarderType}"></custom:ComboParameter>
+                        <custom:LabledTextBoxAutomatic Content="{Binding RetarderRatio}"></custom:LabledTextBoxAutomatic>
+                        <Separator/>
+                    </StackPanel>
+
+                <!--ContentControl Content="{Binding ADASViewModel}" DockPanel.Dock="Top"/>
+                <Separator DockPanel.Dock="Top"/>
+                <ContentControl Content="{Binding PTOViewModel}" DockPanel.Dock="Top"/>
+                <Separator DockPanel.Dock="Top"/-->
+                <!--Label Content="Torque Limits" DockPanel.Dock="Top" Style="{StaticResource LabelStyleSubView}"/>
+                <DataGrid ItemsSource="{Binding TorqueLimits}" DockPanel.Dock="Top" IsReadOnly="True" CanUserAddRows="False" CanUserResizeColumns="False" Margin="10 10 20 10" ColumnWidth="*" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch"/ -->
+            </DockPanel>
+        </ScrollViewer>
+        </DockPanel>
+    </Grid>
+</UserControl>

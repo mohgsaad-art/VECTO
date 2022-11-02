@@ -2,19 +2,15 @@
 Imports System.Drawing.Imaging
 Imports System.IO
 Imports System.Linq
-Imports System.Text.RegularExpressions
 Imports System.Windows.Forms.DataVisualization.Charting
-Imports System.Xml.Linq
 Imports TUGraz.VectoCommon.InputData
 Imports TUGraz.VectoCommon.Models
 Imports TUGraz.VectoCommon.Utils
 Imports TUGraz.VectoCore.InputData.FileIO.JSON
-Imports TUGraz.VectoCore.InputData.Reader
+Imports TUGraz.VectoCore.InputData.Reader.ComponentData
 Imports TUGraz.VectoCore.Models.Declaration
-Imports TUGraz.VectoCore.Models.SimulationComponent.Data
 Imports TUGraz.VectoCore.Models.SimulationComponent.Data.Engine
 Imports TUGraz.VectoCore.Utils
-Imports VectoAuxiliaries
 ' Copyright 2017 European Union.
 ' Licensed under the EUPL (the 'Licence');
 '
@@ -36,6 +32,12 @@ Public Class EngineForm
 	Public JobDir As String = ""
 	Private _changed As Boolean = False
 
+    Private _contextMenuFiles As String()
+    Private SecondFuelTab As TabPage
+    private MechanicalWhrTab as TabPage
+    private ElectricalWhrTab as TabPage
+
+
 
 	'Before closing Editor: Check if file was changed and ask to save.
 	Private Sub F_ENG_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
@@ -51,14 +53,41 @@ Public Class EngineForm
 		PnWhtcDeclaration.Enabled = Cfg.DeclMode
 		PnWhtcEngineering.Enabled = Not Cfg.DeclMode
 
+		pnElWHRDeclaration.Enabled = Cfg.DeclMode
+		pnElWhrEngineering.Enabled = Not Cfg.DeclMode
+
+	    pnMechWHRDeclaration.Enabled = Cfg.DeclMode
+	    pnMechWhrEngineering.Enabled = Not Cfg.DeclMode
+
+        pnWhtcFuel2.Enabled = cfg.DeclMode
+        pnEngCFFuel2.Enabled = not cfg.DeclMode
+
+	    ElectricalWhrTab = tbWHR.TabPages(1)
+	    MechanicalWhrTab = tbWHR.TabPages(2)
+	    tbWHR.TabPages.Remove(ElectricalWhrTab)
+	    tbWHR.TabPages.Remove(MechanicalWhrTab)
+
 		cbFuelType.Items.Clear()
 		cbFuelType.ValueMember = "Value"
 		cbFuelType.DisplayMember = "Label"
 		cbFuelType.DataSource =
-			[Enum].GetValues(GetType(TUGraz.VectoCommon.Models.FuelType)).Cast (Of TUGraz.VectoCommon.Models.FuelType).Select(
+			[Enum].GetValues(GetType(FuelType)).Cast (Of FuelType).Select(
+				Function(type) New With {Key .Value = type, .Label = type.GetLabel()}).ToList()
+
+		cbFuelType2.Items.Clear()
+		cbFuelType2.ValueMember = "Value"
+		cbFuelType2.DisplayMember = "Label"
+		cbFuelType2.DataSource =
+			[Enum].GetValues(GetType(FuelType)).Cast (Of FuelType).Select(
 				Function(type) New With {Key .Value = type, .Label = type.GetLabel()}).ToList()
 
 		_changed = False
+
+        SecondFuelTab = tbDualFuel.TabPages(1)
+        tbDualFuel.TabPages.Remove(SecondFuelTab)
+
+        
+
 		NewEngine()
 	End Sub
 
@@ -72,14 +101,14 @@ Public Class EngineForm
 		Dim jobFile As String = VectoJobForm.VectoFile
 		If Not jobFile Is Nothing AndAlso File.Exists(jobFile) Then
 
-			Dim inputData As IEngineeringInputDataProvider = TryCast(JSONInputDataFactory.ReadJsonJob(jobFile), 
+			Dim inputData As IEngineeringInputDataProvider = TryCast(JSONInputDataFactory.ReadJsonJob(jobFile, true), 
 																	 IEngineeringInputDataProvider)
 			If (not inputData Is Nothing) Then
 				Dim gbx as IGearboxDeclarationInputData = inputData.JobInputData.Vehicle.Components.GearboxInputData
 				gbxType = gbx.Type
 			End If
 		End If
-	    
+		
 		TbInertia.Text = DeclarationData.Engine.EngineInertia((TbDispl.Text.ToDouble(0.0)/1000.0/1000.0).SI (Of CubicMeter),
 															gbxType).ToGUIFormat()
 	End Sub
@@ -136,7 +165,7 @@ Public Class EngineForm
 		If File.Exists(Path.Combine(MyAppPath, "User Manual\help.html")) Then
 			Dim defaultBrowserPath As String = BrowserUtils.GetDefaultBrowserPath()
 			Process.Start(defaultBrowserPath,
-						String.Format("""file://{0}""", path.Combine(MyAppPath, "User Manual\help.html#engine-editor")))
+						$"""file://{path.Combine(MyAppPath, "User Manual\help.html#engine-editor")}""")
 		Else
 			MsgBox("User Manual not found!", MsgBoxStyle.Critical)
 		End If
@@ -152,13 +181,26 @@ Public Class EngineForm
 		TbName.Text = ""
 		TbDispl.Text = ""
 		TbInertia.Text = ""
-		TbNleerl.Text = ""
+		TbIdleSpeed.Text = ""
 		TbMAP.Text = ""
 		TbFLD.Text = ""
 		TbWHTCurban.Text = ""
 		TbWHTCrural.Text = ""
 		TbWHTCmw.Text = ""
 
+		tbElWHREngineering.Text = ""
+		tbElWHRColdHot.Text = ""
+		tbElWHRRegPer.Text = ""
+		tbElWHRRural.Text = ""
+		tbElWHRUrban.Text = ""
+		tbElWHRMotorway.Text = ""
+
+	    tbMechWHREngineering.Text = ""
+	    tbMechWHRBFColdHot.Text = ""
+	    tbMechWHRRegPerCF.Text = ""
+	    tbMechWHRRural.Text = ""
+	    tbMechWHRUrban.Text = ""
+	    tbMechWHRMotorway.Text = ""
 		DeclInit()
 
 		_engFile = ""
@@ -195,23 +237,86 @@ Public Class EngineForm
 
 		Dim basePath As String = Path.GetDirectoryName(file)
 		TbName.Text = engine.Model
-		TbDispl.Text = (engine.Displacement*1000*1000).ToGUIFormat()
+		TbDispl.Text = (engine.Displacement.Value() * 1000.0 * 1000).ToGUIFormat()
 		TbInertia.Text = engine.Inertia.ToGUIFormat()
-		TbNleerl.Text = engine.IdleSpeed.AsRPM.ToGUIFormat()
+		
 
-		TbMAP.Text = GetRelativePath(engine.FuelConsumptionMap.Source, basePath)
-		TbFLD.Text = GetRelativePath(engine.FullLoadCurve.Source, basePath)
-		TbWHTCurban.Text = engine.WHTCUrban.ToGUIFormat()
-		TbWHTCrural.Text = engine.WHTCRural.ToGUIFormat()
-		TbWHTCmw.Text = engine.WHTCMotorway.ToGUIFormat()
-		TbWHTCEngineering.Text = engine.WHTCEngineering.ToGUIFormat()
-		TbColdHotFactor.Text = engine.ColdHotBalancingFactor.ToGUIFormat()
-		tbRegPerCorrFactor.Text = engine.CorrectionFactorRegPer.ToGUIFormat()
+		Dim enginemode As IEngineModeEngineeringInputData = engine.engineModes.First()
+
+		TbIdleSpeed.Text = enginemode.IdleSpeed.AsRPM.ToGUIFormat()
+		TbFLD.Text = GetRelativePath(enginemode.FullLoadCurve.Source, basePath)
+
 		tbMaxTorque.Text = engine.MaxTorqueDeclared.ToGUIFormat()
 		tbRatedPower.Text = (engine.RatedPowerDeclared.Value()/1000).ToGUIFormat()
 		tbRatedSpeed.Text = engine.RatedSpeedDeclared.AsRPM.ToGUIFormat()
+		
+		dim fuel1 As IEngineFuelEngineeringInputData = enginemode.Fuels.First()
 
-		cbFuelType.SelectedValue = engine.FuelType
+		TbMAP.Text = GetRelativePath(fuel1.FuelConsumptionMap.Source, basePath)
+		TbWHTCurban.Text = fuel1.WHTCUrban.ToGUIFormat()
+		TbWHTCrural.Text = fuel1.WHTCRural.ToGUIFormat()
+		TbWHTCmw.Text = fuel1.WHTCMotorway.ToGUIFormat()
+		TbWHTCEngineering.Text = fuel1.WHTCEngineering.ToGUIFormat()
+		TbColdHotFactor.Text = fuel1.ColdHotBalancingFactor.ToGUIFormat()
+		tbRegPerCorrFactor.Text = fuel1.CorrectionFactorRegPer.ToGUIFormat()
+		cbFuelType.SelectedValue = fuel1.FuelType
+
+		If (enginemode.Fuels.Count > 1) Then
+			cbDualFuel.Checked = True
+            If (tbDualFuel.TabPages.Count < 2) then
+			    tbDualFuel.TabPages.Add(SecondFuelTab)
+            End If
+			
+			Dim fuel2 As IEngineFuelEngineeringInputData = enginemode.Fuels(1)
+
+			tbMapFuel2.Text = GetRelativePath(fuel2.FuelConsumptionMap.Source, basePath)
+			tbWhtcUrbanFuel2.Text = fuel2.WHTCUrban.ToGUIFormat()
+			tbWhtcRuralFuel2.Text = fuel2.WHTCRural.ToGUIFormat()
+			tbWhtcMotorwayFuel2.Text = fuel2.WHTCMotorway.ToGUIFormat()
+			tbEngineeringCFFuel2.Text = fuel2.WHTCEngineering.ToGUIFormat()
+			tbColdHotFuel2.Text = fuel2.ColdHotBalancingFactor.ToGUIFormat()
+			tbRegPerFuel2.Text = fuel2.CorrectionFactorRegPer.ToGUIFormat()
+			cbFuelType2.SelectedValue = fuel2.FuelType
+		Else 
+			cbDualFuel.Checked = False
+		    If (tbDualFuel.TabPages.Count >1) then
+		        tbDualFuel.TabPages.Remove(SecondFuelTab)
+		    End If
+		End If
+
+        cbMechWHRInMap.Checked = (engine.WHRType and WHRType.MechanicalOutputICE) <> 0
+	    cbMechWHRNotConnectedCrankshaft.Checked = (engine.WHRType and WHRType.MechanicalOutputDrivetrain) <> 0
+	    cbElWHR.Checked = (engine.WHRType and WHRType.ElectricalOutput) <> 0
+        
+		If (engine.WHRType.IsElectrical()) Then
+			Dim whr As IWHRData = enginemode.WasteHeatRecoveryDataElectrical
+			If (Cfg.DeclMode) then
+				tbElWHRRural.Text = whr.RuralCorrectionFactor.ToGUIFormat()
+				tbElWHRUrban.Text = whr.UrbanCorrectionFactor.ToGUIFormat()
+				tbElWHRMotorway.Text = whr.MotorwayCorrectionFactor.ToGUIFormat()
+				tbElWHRColdHot.Text = whr.BFColdHot.ToGUIFormat()
+				tbElWHRRegPer.Text = whr.CFRegPer.ToGUIFormat()
+			Else
+				tbElWHREngineering.Text = whr.EngineeringCorrectionFactor.ToGUIFormat() 
+			end if
+		End If
+
+	    If (engine.WHRType and WHRType.MechanicalOutputDrivetrain) <> 0 Then
+	        Dim whr As IWHRData = enginemode.WasteHeatRecoveryDataMechanical
+	        If (Cfg.DeclMode) then
+	            tbMechWHRRural.Text = whr.RuralCorrectionFactor.ToGUIFormat()
+	            tbMechWHRUrban.Text = whr.UrbanCorrectionFactor.ToGUIFormat()
+	            tbMechWHRMotorway.Text = whr.MotorwayCorrectionFactor.ToGUIFormat()
+	            tbMechWHRBFColdHot.Text = whr.BFColdHot.ToGUIFormat()
+	            tbMechWHRRegPerCF.Text = whr.CFRegPer.ToGUIFormat()
+	        Else
+	            tbMechWHREngineering.Text = whr.EngineeringCorrectionFactor.ToGUIFormat() 
+	        end if
+        Else 
+            if (tbWHR.TabPages.Count > 1) then
+                tbWHR.TabPages.Remove(tbMechanicalWHR)
+            End If
+	    End If
 
 		DeclInit()
 
@@ -247,29 +352,60 @@ Public Class EngineForm
 		If Trim(engine.ModelName) = "" Then engine.ModelName = "Undefined"
 		engine.Displacement = TbDispl.Text.ToDouble(0)
 		engine.EngineInertia = TbInertia.Text.ToDouble(0)
-		engine.IdleSpeed = TbNleerl.Text.ToDouble(0)
+		engine.IdleSpeed = TbIdleSpeed.Text.ToDouble(0)
 
 		engine.PathFld = TbFLD.Text
-		engine.PathMap = TbMAP.Text
 
+        engine.PrimaryEngineFuel.PathMap = TbMAP.Text
+        engine.PrimaryEngineFuel.WHTCUrbanInput = TbWHTCurban.Text.ToDouble(0)
+		engine.PrimaryEngineFuel.WHTCRuralInput = TbWHTCrural.Text.ToDouble(0)
+		engine.PrimaryEngineFuel.WHTCMotorwayInput = TbWHTCmw.Text.ToDouble(0)
+		engine.PrimaryEngineFuel.WHTCEngineeringInput = TbWHTCEngineering.Text.ToDouble(0)
+		engine.PrimaryEngineFuel.correctionFactorRegPerInput = tbRegPerCorrFactor.Text.ToDouble(0)
+        engine.PrimaryEngineFuel.ColdHotBalancingFactorInput = TbColdHotFactor.Text.ToDouble(0)
+        engine.PrimaryEngineFuel.FuelTypeInput = CType(cbFuelType.SelectedValue, FuelType)
 
-		engine.WHTCUrbanInput = TbWHTCurban.Text.ToDouble(0)
-		engine.WHTCRuralInput = TbWHTCrural.Text.ToDouble(0)
-		engine.WHTCMotorwayInput = TbWHTCmw.Text.ToDouble(0)
-		engine.WHTCEngineeringInput = TbWHTCEngineering.Text.ToDouble(0)
-		engine.correctionFactorRegPerInput = tbRegPerCorrFactor.Text.ToDouble(0)
+        If (cbDualFuel.Checked) Then
+            engine.DualFuelInput = True
 
-		engine.ColdHotBalancingFactorInput = TbColdHotFactor.Text.ToDouble(0)
+            engine.SecondaryEngineFuel.PathMap = tbMapFuel2.Text
+            engine.SecondaryEngineFuel.WHTCUrbanInput = tbWhtcUrbanFuel2.Text.ToDouble(0)
+            engine.SecondaryEngineFuel.WHTCRuralInput = tbWhtcRuralFuel2.Text.ToDouble(0)
+            engine.SecondaryEngineFuel.WHTCMotorwayInput = tbWhtcMotorwayFuel2.Text.ToDouble(0)
+            engine.SecondaryEngineFuel.WHTCEngineeringInput = tbEngineeringCFFuel2.Text.ToDouble(0)
+            engine.SecondaryEngineFuel.correctionFactorRegPerInput = tbRegPerFuel2.Text.ToDouble(0)
+            engine.SecondaryEngineFuel.ColdHotBalancingFactorInput = tbColdHotFuel2.Text.ToDouble(0)
+            engine.SecondaryEngineFuel.FuelTypeInput = CType(cbFuelType2.SelectedValue, FuelType)
+        End If
+
+        engine.WHRTypeInput = GetWHRSelection()
+        if (engine.WHRType.IsElectrical()) then
+            engine.ElectricalWHRData = new WHRData(engine)
+            engine.ElectricalWHRData.WHRUrbanInput = tbElWHRUrban.Text.ToDouble(0)
+		    engine.ElectricalWHRData.WHRRuralInput = tbElWHRRural.Text.ToDouble(0)
+		    engine.ElectricalWHRData.WHRMotorwayInput = tbElWHRMotorway.Text.ToDouble(0)
+		    engine.ElectricalWHRData.WHRColdHotInput = tbElWHRColdHot.Text.ToDouble(0)
+		    engine.ElectricalWHRData.WHRRegPerInput = tbElWHRRegPer.Text.ToDouble(0)
+		    engine.ElectricalWHRData.WHREngineeringInput = tbElWHREngineering.Text.ToDouble(0)
+        End If
+
+        if (engine.WHRType and WHRType.MechanicalOutputDrivetrain) <> 0
+            engine.MechanicalWHRData = new WHRData(engine)
+            engine.MechanicalWHRData.WHRUrbanInput = tbMechWHRUrban.Text.ToDouble(0)
+            engine.MechanicalWHRData.WHRRuralInput = tbMechWHRRural.Text.ToDouble(0)
+            engine.MechanicalWHRData.WHRMotorwayInput = tbMechWHRMotorway.Text.ToDouble(0)
+            engine.MechanicalWHRData.WHRColdHotInput = tbMechWHRBFColdHot.Text.ToDouble(0)
+            engine.MechanicalWHRData.WHRRegPerInput = tbMechWHRRegPerCF.Text.ToDouble(0)
+            engine.MechanicalWHRData.WHREngineeringInput = tbMechWHREngineering.Text.ToDouble(0)
+        End If
 
 		engine.ratedPowerInput = (tbRatedPower.Text.ToDouble(0)*1000).SI (Of Watt)()
 		engine.ratedSpeedInput = tbRatedSpeed.Text.ToDouble(0).RPMtoRad()
 		engine.maxTorqueInput = tbMaxTorque.Text.ToDouble(0).SI (Of NewtonMeter)()
 
-		engine.FuelTypeInput = CType(cbFuelType.SelectedValue, TUGraz.VectoCommon.Models.FuelType)
-
 		If Not engine.SaveFile Then
-			MsgBox("Cannot safe to " & file, MsgBoxStyle.Critical)
-			Return False
+            MsgBox("Cannot save to " & file, MsgBoxStyle.Critical)
+            Return False
 		End If
 
 		If AutoSendTo Then
@@ -335,7 +471,7 @@ Public Class EngineForm
 		Change()
 	End Sub
 
-	Private Sub TbNleerl_TextChanged(sender As Object, e As EventArgs) Handles TbNleerl.TextChanged
+	Private Sub TbNleerl_TextChanged(sender As Object, e As EventArgs) Handles TbIdleSpeed.TextChanged
 		UpdatePic()
 		Change()
 	End Sub
@@ -395,6 +531,7 @@ Public Class EngineForm
 	Private Sub UpdatePic()
 		Dim fullLoadCurve As EngineFullLoadCurve = Nothing
 		Dim fcMap As FuelConsumptionMap = Nothing
+        Dim fcMap2 As FuelConsumptionMap = Nothing
 
 		Dim engineCharacteristics As String = ""
 
@@ -417,7 +554,17 @@ Public Class EngineForm
 		Catch ex As Exception
 		End Try
 
-		If fullLoadCurve Is Nothing AndAlso fcMap Is Nothing Then Exit Sub
+        Try 
+            If (cbDualFuel.Checked) then
+                Dim fcFile As String =
+                        If(Not String.IsNullOrWhiteSpace(_engFile), Path.Combine(Path.GetDirectoryName(_engFile), tbMapFuel2.Text), tbMapFuel2.Text)
+                If File.Exists(fcFile) Then fcMap2 = FuelConsumptionMapReader.Create(VectoCSVFile.Read(fcFile))
+            End if
+        Catch ex As Exception
+
+        End Try
+
+		If fullLoadCurve Is Nothing AndAlso fcMap Is Nothing AndAlso fcmap2 Is nothing Then Exit Sub
 
 
 		'Create plot
@@ -446,11 +593,19 @@ Public Class EngineForm
 			series.Name = "Motoring (" & Path.GetFileNameWithoutExtension(TbMAP.Text) & ")"
 			chart.Series.Add(series)
 
-			engineCharacteristics +=
-				String.Format("Max. Torque: {0:F0} Nm; Max. Power: {1:F1} kW; n_rated: {2:F0} rpm; n_95h: {3:F0} rpm",
-							fullLoadCurve.MaxTorque.Value(), fullLoadCurve.MaxPower.Value() / 1000, fullLoadCurve.RatedSpeed.AsRPM,
-							fullLoadCurve.N95hSpeed.AsRPM)
+			engineCharacteristics += $"Max. Torque: {fullLoadCurve.MaxTorque.Value():F0} Nm; Max. Power: {(fullLoadCurve.MaxPower.Value()/1000):F1} kW; n_rated: {fullLoadCurve.RatedSpeed.AsRPM:F0} rpm; n_95h: {fullLoadCurve.N95hSpeed.AsRPM:F0} rpm"
 		End If
+
+	    If Not fcMap2 Is Nothing Then
+	        Dim series As Series = New Series
+	        series.Points.DataBindXY(fcMap2.Entries.Select(Function(x) x.EngineSpeed.AsRPM).ToArray(),
+                                     fcMap2.Entries.Select(Function(x) x.Torque.Value()).ToArray())
+	        series.ChartType = SeriesChartType.Point
+	        series.MarkerSize = 3
+	        series.Color = Color.Green
+	        series.Name = "Map 2"
+	        chart.Series.Add(series)
+	    End If
 
 		If Not fcMap Is Nothing Then
 			Dim series As Series = New Series
@@ -498,9 +653,8 @@ Public Class EngineForm
 
 #Region "Open File Context Menu"
 
-	Private _contextMenuFiles As String()
 
-	Private Sub OpenFiles(ParamArray files() As String)
+    Private Sub OpenFiles(ParamArray files() As String)
 
 		If files.Length = 0 Then Exit Sub
 
@@ -547,4 +701,73 @@ Public Class EngineForm
 		End If
 	End Sub
 
+	Private Sub btMapFuel2_Click(sender As Object, e As EventArgs) Handles btMapFuel2.Click
+		If FuelConsumptionMapFileBrowser.OpenDialog(FileRepl(tbMapFuel2.Text, GetPath(_engFile))) Then _
+			tbMapFuel2.Text = GetFilenameWithoutDirectory(FuelConsumptionMapFileBrowser.Files(0), GetPath(_engFile))
+
+	End Sub
+
+	Private Sub btMapOpenFuel2_Click(sender As Object, e As EventArgs) Handles btMapOpenFuel2.Click
+		Dim fldfile As String
+
+		fldfile = FileRepl(TbFLD.Text, GetPath(_engFile))
+
+		If fldfile <> NoFile AndAlso File.Exists(fldfile) Then
+			OpenFiles(FileRepl(tbMapFuel2.Text, GetPath(_engFile)), fldfile)
+		Else
+			OpenFiles(FileRepl(tbMapFuel2.Text, GetPath(_engFile)))
+		End If
+	End Sub
+
+    Private Sub cbDuaFuel_CheckedChanged(sender As Object, e As EventArgs) Handles cbDualFuel.CheckedChanged
+        If (cbDualFuel.Checked) Then
+            If (not tbDualFuel.TabPages.Contains(SecondFuelTab)) then
+                tbDualFuel.TabPages.Add(SecondFuelTab)
+            End If
+        Else 
+            If (tbDualFuel.TabPages.Contains(SecondFuelTab)) then
+                tbDualFuel.TabPages.Remove(SecondFuelTab)
+            End If
+        End If
+    End Sub
+
+    Private Sub cbMechWHRNotConnectedCrankshaft_CheckedChanged(sender As Object, e As EventArgs) Handles cbMechWHRNotConnectedCrankshaft.CheckedChanged
+       UpdateWHRTabs()
+    End Sub
+
+    Private Sub cbElWHR_CheckedChanged(sender As Object, e As EventArgs) Handles cbElWHR.CheckedChanged
+        UpdateWHRTabs()
+    End Sub
+
+    Private Sub UpdateWHRTabs()
+        dim whrType as WHRType = GetWHRSelection()
+       
+
+        tbWHR.TabPages.Remove(tbElectricalWHR)
+        tbWHR.TabPages.Remove(tbMechanicalWHR)
+        if ( whrtype and WHRType.MechanicalOutputDrivetrain) <> 0 Then
+            if (not tbWHR.TabPages.Contains(tbMechanicalWHR)) then
+                tbWHR.TabPages.Add(MechanicalWhrTab)
+            End If
+        End If
+        If (whrtype and WHRType.ElectricalOutput) <> 0 Then
+            if (Not tbWHR.TabPages.Contains(tbElectricalWHR)) then
+                tbWHR.TabPages.Add(ElectricalWhrTab)
+            End If
+        End If
+    End Sub
+
+    private Function GetWHRSelection() As WHRType
+        dim whrType as WHRType = WHRType.None
+        if (cbMechWHRInMap.Checked)
+            whrType = whrType or whrType.MechanicalOutputICE
+        End If
+        if (cbMechWHRNotConnectedCrankshaft.Checked)
+            whrType = whrType or whrType.MechanicalOutputDrivetrain
+        End If
+        if (cbElWHR.Checked)
+            whrType = whrType or whrType.ElectricalOutput
+        End If
+        return whrType
+    End Function
 End Class

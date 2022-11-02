@@ -31,13 +31,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Windows;
 using System.Windows.Input;
-using HashingTool.Views;
 
 namespace HashingTool.ViewModel
 {
@@ -78,14 +75,11 @@ namespace HashingTool.ViewModel
 			}
 		}
 
-		public List<IMainView> MainViewModels
-		{
-			get { return AvailableViews ?? (AvailableViews = new List<IMainView>()); }
-		}
+		public List<IMainView> MainViewModels => AvailableViews ?? (AvailableViews = new List<IMainView>());
 
 		public IMainView CurrentViewModel
 		{
-			get { return _currentView; }
+			get => _currentView;
 			set {
 				if (_currentView == value) {
 					return;
@@ -95,15 +89,9 @@ namespace HashingTool.ViewModel
 			}
 		}
 
-		public ICommand ChangeViewCommand
-		{
-			get { return _changeViewCommand ?? (_changeViewCommand = new RelayCommand<IMainView>(ChangeViewModel)); }
-		}
+		public ICommand ChangeViewCommand => _changeViewCommand ?? (_changeViewCommand = new RelayCommand<IMainView>(ChangeViewModel));
 
-		public ICommand ShowHomeViewCommand
-		{
-			get { return HomeView; }
-		}
+		public ICommand ShowHomeViewCommand => HomeView;
 
 
 		private void ChangeViewModel(IMainView mainView)
@@ -115,9 +103,6 @@ namespace HashingTool.ViewModel
 			CurrentViewModel = MainViewModels.FirstOrDefault(mv => mv == mainView);
 		}
 
-		public string VersionInformation
-		{
-			get { return string.Format("Vecto Hashing Tool {0} / Hashing Library {1}", _myVersion, _hashingLib); }
-		}
+		public string VersionInformation => $"Vecto Hashing Tool {_myVersion} / Hashing Library {_hashingLib}";
 	}
 }

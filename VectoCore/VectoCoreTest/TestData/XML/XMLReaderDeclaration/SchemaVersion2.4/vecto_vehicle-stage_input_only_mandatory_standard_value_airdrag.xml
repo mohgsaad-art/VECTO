@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:VectoInputDeclaration schemaVersion="2.0" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.4"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v2.0" 
+xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" 
+xmlns:di="http://www.w3.org/2000/09/xmldsig#" 
+xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob V:\\VectoCore\VectoCore\Resources\XSD/VectoDeclarationJob.xsd">
+	<v2.0:Vehicle id="VEH-1234567890" xsi:type="Vehicle_Conventional_CompletedBusDeclarationType" >
+		<Manufacturer>Some Manufacturer 3</Manufacturer>
+		<ManufacturerAddress>Some Manufacturer Address 3</ManufacturerAddress>
+		<VIN>VEH-1234567890</VIN>
+		<Date>2020-01-09T11:00:00Z</Date>
+		<VehicleDeclarationType>final</VehicleDeclarationType>
+		<Components xsi:type="Components_Conventional_CompletedBusType">
+			<AirDrag>
+				<v2.0:Data xsi:type="AirDragModifiedUseStandardValueType" id="std"/>
+				<v2.0:Signature>
+					<di:Reference URI="#std">
+						<di:Transforms>
+							<di:Transform Algorithm="urn:vecto:xml:2017:canonicalization"/>
+							<di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+						</di:Transforms>
+						<di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+						<di:DigestValue>b9SHCfOoVrBxFQ8wwDK32OO+9bd85DuaUdgs6j/29N8=</di:DigestValue>
+					</di:Reference>
+				</v2.0:Signature>
+			</AirDrag>
+			<Auxiliaries>
+				<Data xsi:type="AUX_Conventional_CompletedBusType"></Data>
+			</Auxiliaries>
+		</Components>
+	</v2.0:Vehicle>
+</tns:VectoInputDeclaration>

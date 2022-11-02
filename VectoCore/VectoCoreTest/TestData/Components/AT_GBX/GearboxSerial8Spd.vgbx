@@ -1,0 +1,89 @@
+﻿{
+  "Header": {
+	"CreatedBy": " ()",
+	"Date": "03.08.2016 14:16:58",
+	"AppVersion": "2.2",
+	"FileVersion": 6
+  },
+  "Body": {
+	"SavedInDeclMode": false,
+	"ModelName": "AT Serial",
+	"Inertia": 0.0,
+	"TracInt": 0.0,
+	"Gears": [
+	  {
+		"Ratio": 6.2,
+		"Efficiency": "GearLossMap.vtlm"
+	  },
+	  {
+		"Ratio": 3.4,
+		"LossMap": "GearLossMap.vtlm",
+		"ShiftPolygon": "AT-Shift.vgbs",
+		"FullLoadCurve": "<NOFILE>"
+	  },
+	  {
+		"Ratio": 1.9,
+		"LossMap": "GearLossMap.vtlm",
+		"ShiftPolygon": "AT-Shift.vgbs",
+		"FullLoadCurve": "<NOFILE>"
+	  },
+	  {
+		"Ratio": 1.42,
+		"LossMap": "GearLossMap.vtlm",
+		"ShiftPolygon": "AT-Shift.vgbs",
+		"FullLoadCurve": "<NOFILE>"
+	  },
+	  {
+		"Ratio": 1.0,
+		"LossMap": "GearLossMap.vtlm",
+		"ShiftPolygon": "AT-Shift.vgbs",
+		"FullLoadCurve": "<NOFILE>"
+	  },
+	  {
+		"Ratio": 0.7,
+		"LossMap": "GearLossMap.vtlm",
+		"ShiftPolygon": "AT-Shift.vgbs",
+		"FullLoadCurve": "<NOFILE>"
+	  },
+	  {
+		"Ratio": 0.62,
+		"LossMap": "GearLossMap.vtlm",
+		"ShiftPolygon": "AT-Shift.vgbs",
+		"FullLoadCurve": "<NOFILE>"
+	  },
+    {
+      "Ratio": 0.62,
+      "LossMap": "GearLossMap.vtlm",
+      "ShiftPolygon": "AT-Shift.vgbs",
+      "FullLoadCurve": "<NOFILE>"
+    }
+    ,
+    {
+      "Ratio": 0.62,
+      "LossMap": "GearLossMap.vtlm",
+      "ShiftPolygon": "AT-Shift.vgbs",
+      "FullLoadCurve": "<NOFILE>"
+    }
+
+	],
+	"TqReserve": 0.0,
+	"SkipGears": false,
+	"ShiftTime": 0,
+	"EaryShiftUp": false,
+	"StartTqReserve": 0.0,
+	"StartSpeed": 0.0,
+	"StartAcc": 0.0,
+	"GearboxType": "ATSerial",
+	"TorqueConverter": {
+	  "Enabled": true,
+	  "File": "TorqueConverter.vtcc",
+	  "RefRPM": 1000.0,
+        "Inertia": 0.0,
+        "MaxTCSpeed": 1800.0, 
+	  "ShiftPolygon": "AT-Shift.vgbs"
+	},
+	"DownshiftAferUpshiftDelay": 0.0,
+	"UpshiftAfterDownshiftDelay": 0.0,
+	"UpshiftMinAcceleration": 0.0
+  }
+}

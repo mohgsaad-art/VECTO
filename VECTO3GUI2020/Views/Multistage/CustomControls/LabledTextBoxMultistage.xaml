@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="VECTO3GUI2020.Views.Multistage.CustomControls.LabledTextBoxMultistage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:VECTO3GUI2020.Views.Multistage.CustomControls"
+             mc:Ignorable="d" 
+             Name="labledTextBoxMultistage"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="4*" SharedSizeGroup="W"/>
+            <ColumnDefinition Width="4*" SharedSizeGroup="W"/>
+            <ColumnDefinition Width="1*" SharedSizeGroup="N"/>
+        </Grid.ColumnDefinitions>
+
+        <Label>
+            <PriorityBinding>
+                <Binding Path="Label" ElementName="labledTextBoxMultistage" Converter="{StaticResource NullToUnsetValue}"></Binding>
+                <Binding Path="GeneratedLabelText" ElementName="labledTextBoxMultistage"></Binding>
+            </PriorityBinding>
+        </Label>
+        
+        <TextBox Grid.Column="1" Name ="TextBoxContent" VerticalAlignment="Center" Margin="2 0 2 0" 
+                 Text="{Binding ElementName=labledTextBoxMultistage, Path=Content,
+                    Converter={StaticResourceExtension SIValueToStringConverter}, 
+                     ValidatesOnExceptions=True, 
+                    UpdateSourceTrigger=PropertyChanged}"
+                 Style="{DynamicResource TextBoxStyle1}"
+                 IsReadOnly="{Binding ElementName=labledTextBoxMultistage, Path=ReadOnly}"/>
+        <Label Grid.Column="2" x:Name="AutoUnitLabel"
+               Content="{Binding DummyContent, ElementName=labledTextBoxMultistage, Converter={StaticResource SIToUnitStringConverter}}">
+        </Label>
+    </Grid>
+</UserControl>

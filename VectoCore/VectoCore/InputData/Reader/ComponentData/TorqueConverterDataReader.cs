@@ -90,16 +90,16 @@ namespace TUGraz.VectoCore.InputData.Reader.ComponentData
 						}).ToArray();
 			}
 			if (mode == ExecutionMode.Declaration) {
-				var tcDrag = DeclarationData.TorqueConverter.GetTorqueConverterDragCurve(ratio).Last();
+				var tcDrag = DeclarationData.TorqueConverter.GetTorqueConverterDragCurve(ratio, characteristicTorque.First(), characteristicTorque.Last(x => x.SpeedRatio < ratio));
 				characteristicTorque =
-					characteristicTorque.Where(x => x.SpeedRatio < tcDrag.SpeedRatio)
-						.Concat(new[] { tcDrag })
+					characteristicTorque.Where(x => x.SpeedRatio < ratio)
+						.Concat(tcDrag)
 						.ToArray();
 			} else {
 				if (!characteristicTorque.Any(x => x.SpeedRatio > ratio)) {
 					characteristicTorque =
 						characteristicTorque.Where(x => x.SpeedRatio < ratio)
-							.Concat(DeclarationData.TorqueConverter.GetTorqueConverterDragCurve(ratio))
+							.Concat(DeclarationData.TorqueConverter.GetTorqueConverterDragCurve(ratio, characteristicTorque.First(), characteristicTorque.Last()))
 							.ToArray();
 				}
 			}

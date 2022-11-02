@@ -1,4 +1,35 @@
-﻿using System.Collections.Generic;
+﻿/*
+* This file is part of VECTO.
+*
+* Copyright © 2012-2019 European Union
+*
+* Developed by Graz University of Technology,
+*              Institute of Internal Combustion Engines and Thermodynamics,
+*              Institute of Technical Informatics
+*
+* VECTO is licensed under the EUPL, Version 1.1 or - as soon they will be approved
+* by the European Commission - subsequent versions of the EUPL (the "Licence");
+* You may not use VECTO except in compliance with the Licence.
+* You may obtain a copy of the Licence at:
+*
+* https://joinup.ec.europa.eu/community/eupl/og_page/eupl
+*
+* Unless required by applicable law or agreed to in writing, VECTO
+* distributed under the Licence is distributed on an "AS IS" basis,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the Licence for the specific language governing permissions and
+* limitations under the Licence.
+*
+* Authors:
+*   Stefan Hausberger, hausberger@ivt.tugraz.at, IVT, Graz University of Technology
+*   Christian Kreiner, christian.kreiner@tugraz.at, ITI, Graz University of Technology
+*   Michael Krisper, michael.krisper@tugraz.at, ITI, Graz University of Technology
+*   Raphael Luz, luz@ivt.tugraz.at, IVT, Graz University of Technology
+*   Markus Quaritsch, markus.quaritsch@tugraz.at, IVT, Graz University of Technology
+*   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
+*/
+
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -7,6 +38,7 @@ using Ninject;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Resources;
+using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.OutputData.XML.Engineering.Factory;
 using TUGraz.VectoCore.OutputData.XML.Engineering.Interfaces;
 using TUGraz.VectoCore.Utils;
@@ -82,7 +114,7 @@ namespace TUGraz.VectoCore.OutputData.XML.Engineering
 				new XElement(
 					v10Inp + XMLNames.VectoComponentEngineering,
 					new XAttribute(
-						xsns + "type", string.Format("{0}:VectoComponentEngineeringType", GetNSPrefix(v10Def.NamespaceName))),
+						xsns + "type", $"{GetNSPrefix(v10Def.NamespaceName)}:VectoComponentEngineeringType"),
 					GetNamespaceAttributes(),
 					GetSchemaLocations(),
 					new XElement(
@@ -96,10 +128,8 @@ namespace TUGraz.VectoCore.OutputData.XML.Engineering
 		private XAttribute GetSchemaLocations()
 		{
 			var xsns = RegisterNamespace(XMLDefinitions.XML_SCHEMA_NAMESPACE);
-
-			return new XAttribute(
-				xsns + "schemaLocation",
-				string.Join(" ", NamespaceLocationMap.Where(x => _namespaces.ContainsKey(x.Key)).Select(x => $"{x.Key} {x.Value}")));
+			return new XAttribute(xsns + "schemaLocation", 
+				NamespaceLocationMap.Where(x => _namespaces.ContainsKey(x.Key)).Select(x => $"{x.Key} {x.Value}").Join(" "));
 		}
 
 		public WriterConfiguration Configuration { get; set; }
@@ -118,16 +148,7 @@ namespace TUGraz.VectoCore.OutputData.XML.Engineering
 		}
 
 
-		public XNamespace RegisterNamespace(string namespaceUri)
-		{
-			if (_namespaces.ContainsKey(namespaceUri)) {
-				return _namespaces[namespaceUri];
-			}
-
-			var ns = XNamespace.Get(namespaceUri);
-			_namespaces.Add(namespaceUri, ns);
-			return ns;
-		}
+		public XNamespace RegisterNamespace(string namespaceUri) => _namespaces.GetOrAdd(namespaceUri, XNamespace.Get);
 
 		#region Implementation of IXMLEngineeringWriter
 
@@ -159,17 +180,14 @@ namespace TUGraz.VectoCore.OutputData.XML.Engineering
 
 		public string GetComponentFilename(IComponentInputData component)
 		{
-			string formatString = null;
-			component.Switch()
-					.Case<IEngineEngineeringInputData>(c => formatString = "ENG_{0}.xml");
-
-			return RemoveInvalidFileCharacters(string.Format(formatString ?? "{0}", component.Model));
+			var formatString = component is IEngineEngineeringInputData ? "ENG_{0}.xml" : "{0}";
+			return RemoveInvalidFileCharacters(string.Format(formatString, component.Model));
 		}
 
 		public string RemoveInvalidFileCharacters(string filename)
 		{
-			string regexSearch = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
-			Regex r = new Regex(string.Format("[{0}]", Regex.Escape(regexSearch)));
+			var regexSearch = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
+			var r = new Regex($"[{Regex.Escape(regexSearch)}]");
 			return r.Replace(filename, "");
 		}
 	}

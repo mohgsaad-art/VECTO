@@ -1,0 +1,24 @@
+﻿{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2018-05-02T11:40:41.8847449Z",
+    "AppVersion": "3",
+    "FileVersion": 4
+  },
+  "Body": {
+    "SavedInDeclMode": true,
+    "DeclarationVehicle": "Rigid Truck_4x2_vehicle-class-3_EURO6_2018.xml",
+    "ManufacturerRecord": "Rigid Truck_4x2_vehicle-class-3_EURO6_2018.MANUFACTURER.xml",
+    "Mileage": 10000.0,
+    "NCVTestFuel": 41.0,
+    "FanPowerCoefficients": [
+      5.5E-07,
+      15.0,
+      108.5
+    ],
+    "FanDiameter": 0.225,
+    "Cycles": [
+      "VTP cycle_RD_2Hz.vdri"
+    ]
+  }
+}

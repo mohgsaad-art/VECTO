@@ -46,18 +46,24 @@ namespace TUGraz.VectoCore.ModelbasedTests.DriverStrategy
 		public void Init()
 		{
 			//LogManager.DisableLogging();
-#if TRACE
-			GraphWriter.Enable();
-#else
-			GraphWriter.Disable();
-#endif
-			GraphWriter.Xfields = new[] { ModalResultField.time, ModalResultField.dist };
+		}
 
-			GraphWriter.Yfields = new[] {
-				ModalResultField.v_act, ModalResultField.acc, ModalResultField.n_eng_avg, ModalResultField.Gear,
-				ModalResultField.P_eng_out, ModalResultField.T_eng_fcmap, ModalResultField.FCMap
+		public GraphWriter GetGraphWriter() 
+		{
+			var graphWriter = new GraphWriter();
+#if TRACE
+			graphWriter.Enable();
+#else
+			graphWriter.Disable();
+#endif
+			graphWriter.Xfields = new[] { ModalResultField.time, ModalResultField.dist };
+
+			graphWriter.Yfields = new[] {
+				ModalResultField.v_act, ModalResultField.acc, ModalResultField.n_ice_avg, ModalResultField.Gear,
+				ModalResultField.P_ice_out, ModalResultField.T_ice_fcmap, ModalResultField.FCMap
 			};
-			GraphWriter.Series1Label = "Vecto 3";
+			graphWriter.Series1Label = "Vecto 3";
+			return graphWriter;
 		}
 
 		private static string GetSlopeString(double slope)
@@ -93,7 +99,7 @@ namespace TUGraz.VectoCore.ModelbasedTests.DriverStrategy
 					run.Run();
 
 					Assert.IsTrue(run.FinishedWithoutErrors, "Truck Run (v1: {0}, v2: {1}, slope: {2}) failed.", v1, v2, slope);
-					GraphWriter.Write(modFileName);
+					GetGraphWriter().Write(modFileName);
 				} catch (Exception ex) {
 					Assert.Fail("Truck Run (v1: {0}, v2: {1}, slope: {2}) failed: {3}", v1, v2, slope, ex);
 				}
@@ -123,7 +129,7 @@ namespace TUGraz.VectoCore.ModelbasedTests.DriverStrategy
 					run.Run();
 
 					Assert.IsTrue(run.FinishedWithoutErrors, "Truck Run (v1: {0}, v2: {1}, slope: {2}) failed.", v1, v2, slope);
-					GraphWriter.Write(modFileName);
+					GetGraphWriter().Write(modFileName);
 				} catch (Exception ex) {
 					Assert.Fail("Truck Run (v1: {0}, v2: {1}, slope: {2}) failed: {3}", v1, v2, slope, ex);
 				}

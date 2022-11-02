@@ -41,15 +41,9 @@ namespace TUGraz.VectoCore.Models.Declaration
 {
 	public sealed class PT1 : LookupData<PerSecond, PT1.PT1Result>
 	{
-		protected override string ResourceId
-		{
-			get { return DeclarationData.DeclarationDataResourcePrefix + ".PT1.csv"; }
-		}
+		protected override string ResourceId => DeclarationData.DeclarationDataResourcePrefix + ".PT1.csv";
 
-		protected override string ErrorMessage
-		{
-			get { throw new InvalidOperationException("ErrorMessage not applicable."); }
-		}
+		protected override string ErrorMessage => throw new InvalidOperationException("ErrorMessage not applicable.");
 
 		private List<KeyValuePair<PerSecond, Second>> _entries;
 

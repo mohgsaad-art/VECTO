@@ -1,4 +1,34 @@
-﻿using System.Collections.Generic;
+﻿/*
+* This file is part of VECTO.
+*
+* Copyright © 2012-2019 European Union
+*
+* Developed by Graz University of Technology,
+*              Institute of Internal Combustion Engines and Thermodynamics,
+*              Institute of Technical Informatics
+*
+* VECTO is licensed under the EUPL, Version 1.1 or - as soon they will be approved
+* by the European Commission - subsequent versions of the EUPL (the "Licence");
+* You may not use VECTO except in compliance with the Licence.
+* You may obtain a copy of the Licence at:
+*
+* https://joinup.ec.europa.eu/community/eupl/og_page/eupl
+*
+* Unless required by applicable law or agreed to in writing, VECTO
+* distributed under the Licence is distributed on an "AS IS" basis,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the Licence for the specific language governing permissions and
+* limitations under the Licence.
+*
+* Authors:
+*   Stefan Hausberger, hausberger@ivt.tugraz.at, IVT, Graz University of Technology
+*   Christian Kreiner, christian.kreiner@tugraz.at, ITI, Graz University of Technology
+*   Michael Krisper, michael.krisper@tugraz.at, ITI, Graz University of Technology
+*   Raphael Luz, luz@ivt.tugraz.at, IVT, Graz University of Technology
+*   Markus Quaritsch, markus.quaritsch@tugraz.at, IVT, Graz University of Technology
+*   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
+*/
+
 using System.IO;
 using System.Linq;
 using System.Xml;
@@ -8,14 +38,14 @@ using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCore.InputData.FileIO.XML;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Impl;
+using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
-using TUGraz.VectoCore.Utils;
-using XmlDocumentType = System.Xml.XmlDocumentType;
 
 namespace TUGraz.VectoCore.Tests.XML
 {
 	[TestFixture]
+	[Parallelizable(ParallelScope.All)]
 	public class XMLDeclarationReaderVersionsTest
 	{
 		protected IXMLInputDataReader xmlInputReader;
@@ -87,6 +117,40 @@ namespace TUGraz.VectoCore.Tests.XML
 
 		}
 
+		
+		[TestCase(@"TestData\Integration\MediumLorries\vecto_vehicle-medium_lorry-Van.xml", TestName = "Medium Lorry Van"),
+		TestCase(@"TestData\Integration\MediumLorries\vecto_vehicle-medium_lorry.xml", TestName = "Medium Lorry"),
+		//TestCase(@"TestData\Integration\MediumLorries\vecto_vehicle-medium_lorryFWD.xml", TestName = "Medium Lorry FWD"), // FWD no longer supported / required
+        ]
+		public void CreateRunDataMediumLorry(string jobFile)
+		{
+			//var jobFile = @"TestData\XML\XMLReaderDeclaration\SchemaVersion2.6_Buses\vecto_vehicle-medium_lorry-sample.xml";
+
+			var writer = new FileOutputWriter(jobFile);
+			var inputData = xmlInputReader.CreateDeclaration(jobFile);
+			
+			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, writer);
+			factory.WriteModalResults = true; //ActualModalData = true,
+			factory.Validate = false;
+			var jobContainer = new JobContainer(new SummaryDataContainer(writer));
+			jobContainer.AddRuns(factory);
+			jobContainer.Execute();
+			jobContainer.WaitFinished();
+			//var runs = factory.SimulationRuns().ToArray();
+			//jobContainer.AddRun(runs[runIdx]);
+			//runs[runIdx].Run();
+
+			Assert.IsTrue(jobContainer.AllCompleted);
+			Assert.IsTrue(jobContainer.GetProgress().All(x => x.Value.Success));
+
+			var xml = new XmlDocument();
+			xml.Load(writer.XMLCustomerReportName);
+			var volumeResults =
+				xml.SelectNodes(
+					".//*[local-name()='Result']/*[local-name()='Fuel']/*[local-name()='FuelConsumption' and @unit='l/m³-km']");
+			Assert.IsTrue(volumeResults.Count > 0);
+		}
+
 
 		public IVectoRun[] ReadDeclarationJob(string jobfile)
 		{
@@ -96,12 +160,11 @@ namespace TUGraz.VectoCore.Tests.XML
 			//var sumWriter = new SummaryDataContainer(fileWriter);
 			//var jobContainer = new JobContainer(sumWriter);
 			var dataProvider = xmlInputReader.CreateDeclaration(XmlReader.Create(filename));
-			var runsFactory = new SimulatorFactory(ExecutionMode.Declaration, dataProvider, fileWriter) {
-				ModalResults1Hz = false,
-				WriteModalResults = false,
-				ActualModalData = false,
-				Validate = false,
-			};
+			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, dataProvider, fileWriter);
+			runsFactory.ModalResults1Hz = false;
+			runsFactory.WriteModalResults = false;
+			runsFactory.ActualModalData = false;
+			runsFactory.Validate = false;
 
 			var runs = runsFactory.SimulationRuns().ToArray();
 			Assert.IsTrue(runs.Length > 0);

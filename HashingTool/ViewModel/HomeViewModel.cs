@@ -38,22 +38,11 @@ namespace HashingTool.ViewModel
 	{
 		
 		
-		public string Name
-		{
-			get { return "Home"; }
-		}
+		public string Name => "Home";
 
-		public List<IMainView> MainViewModels
-		{
-			get { return ApplicationViewModel.AvailableViews; }
-		}
+		public List<IMainView> MainViewModels => ApplicationViewModel.AvailableViews;
 
-		
 
-		public ICommand ShowHomeViewCommand
-		{
-			get { return ApplicationViewModel.HomeView; }
-		}
-
+		public ICommand ShowHomeViewCommand => ApplicationViewModel.HomeView;
 	}
 }

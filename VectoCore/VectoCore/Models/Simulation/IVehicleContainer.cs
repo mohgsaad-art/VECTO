@@ -30,6 +30,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Connector.Ports;
@@ -56,6 +57,8 @@ namespace TUGraz.VectoCore.Models.Simulation
 
 		VectoRun.Status RunStatus { get; set; }
 
+		
+
 		/// <summary>
 		/// Adds a component to the vehicle container.
 		/// </summary>
@@ -72,5 +75,10 @@ namespace TUGraz.VectoCore.Models.Simulation
 		/// </summary>
 		/// <param name="exception"></param>
 		void FinishSimulationRun(Exception exception = null);
+
+		void StartSimulationRun();
+
+		IEnumerable<ISimulationPreprocessor> GetPreprocessingRuns { get; }
+		void AddPreprocessor(ISimulationPreprocessor simulationPreprocessor);
 	}
 }

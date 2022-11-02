@@ -19,7 +19,7 @@ namespace TUGraz.VectoCommon.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class XMLNames {
@@ -61,11 +61,110 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ratio.
+        /// </summary>
+        public static string ADC_Ratio {
+            get {
+                return ResourceManager.GetString("ADC_Ratio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TorqueLossMap.
+        /// </summary>
+        public static string ADC_TorqueLossMap {
+            get {
+                return ResourceManager.GetString("ADC_TorqueLossMap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Entry.
+        /// </summary>
+        public static string ADC_TorqueLossMap_Entry {
+            get {
+                return ResourceManager.GetString("ADC_TorqueLossMap_Entry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to inputSpeed.
+        /// </summary>
+        public static string ADC_TorqueLossMap_InputSpeed {
+            get {
+                return ResourceManager.GetString("ADC_TorqueLossMap_InputSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to inputTorque.
+        /// </summary>
+        public static string ADC_TorqueLossMap_InputTorque {
+            get {
+                return ResourceManager.GetString("ADC_TorqueLossMap_InputTorque", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to torqueLoss.
+        /// </summary>
+        public static string ADC_TorqueLossMap_TorqueLoss {
+            get {
+                return ResourceManager.GetString("ADC_TorqueLossMap_TorqueLoss", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CdxA_0.
+        /// </summary>
+        public static string AirDrag_CdxA_0 {
+            get {
+                return ResourceManager.GetString("AirDrag_CdxA_0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AirDragDataDeclarationType.
+        /// </summary>
+        public static string AirDrag_Data_Type_Attr {
+            get {
+                return ResourceManager.GetString("AirDrag_Data_Type_Attr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to DeclaredCdxA.
         /// </summary>
         public static string AirDrag_DeclaredCdxA {
             get {
                 return ResourceManager.GetString("AirDrag_DeclaredCdxA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DeclaredCdxA.
+        /// </summary>
+        public static string AirDrag_DeclaredCdxA1 {
+            get {
+                return ResourceManager.GetString("AirDrag_DeclaredCdxA1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TransferredCdxA.
+        /// </summary>
+        public static string AirDrag_TransferredCDxA {
+            get {
+                return ResourceManager.GetString("AirDrag_TransferredCDxA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TransferredCdxA.
+        /// </summary>
+        public static string AirDragArea_TransferredCdxA {
+            get {
+                return ResourceManager.GetString("AirDragArea_TransferredCdxA", resourceCulture);
             }
         }
         
@@ -102,6 +201,15 @@ namespace TUGraz.VectoCommon.Resources {
         public static string AngleDrive_TorqueLossMap {
             get {
                 return ResourceManager.GetString("AngleDrive_TorqueLossMap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to type.
+        /// </summary>
+        public static string Attr_Type {
+            get {
+                return ResourceManager.GetString("Attr_Type", resourceCulture);
             }
         }
         
@@ -205,11 +313,29 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AuxiliariesDataDeclarationType.
+        /// </summary>
+        public static string Auxiliaries_Type_Attr_DataDeclarationType {
+            get {
+                return ResourceManager.GetString("Auxiliaries_Type_Attr_DataDeclarationType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to supplyPower.
         /// </summary>
         public static string Auxr_AuxMapMapping_SupplyPower_Attr {
             get {
                 return ResourceManager.GetString("Auxr_AuxMapMapping_SupplyPower_Attr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AxleDataDeclarationType.
+        /// </summary>
+        public static string Axle_Type_Attr_AxleDataDeclarationType {
+            get {
+                return ResourceManager.GetString("Axle_Type_Attr_AxleDataDeclarationType", resourceCulture);
             }
         }
         
@@ -255,6 +381,15 @@ namespace TUGraz.VectoCommon.Resources {
         public static string Axlegear_TorqueLossMap_Entry {
             get {
                 return ResourceManager.GetString("Axlegear_TorqueLossMap_Entry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AxlegearDataDeclarationType.
+        /// </summary>
+        public static string AxleGear_Type_Attr {
+            get {
+                return ResourceManager.GetString("AxleGear_Type_Attr", resourceCulture);
             }
         }
         
@@ -403,6 +538,951 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AxleWheelsDataDeclarationType.
+        /// </summary>
+        public static string AxleWheels_Type_Attr_AxleWheelsDeclarationType {
+            get {
+                return ResourceManager.GetString("AxleWheels_Type_Attr_AxleWheelsDeclarationType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SOCmax.
+        /// </summary>
+        public static string Battery_SOCmax {
+            get {
+                return ResourceManager.GetString("Battery_SOCmax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SOCmin.
+        /// </summary>
+        public static string Battery_SOCmin {
+            get {
+                return ResourceManager.GetString("Battery_SOCmin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to StringID.
+        /// </summary>
+        public static string Battery_StringID {
+            get {
+                return ResourceManager.GetString("Battery_StringID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to boostingTorque.
+        /// </summary>
+        public static string BoostingLimitation_BoostingTorque {
+            get {
+                return ResourceManager.GetString("BoostingLimitation_BoostingTorque", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Entry.
+        /// </summary>
+        public static string BoostingLimitation_Entry {
+            get {
+                return ResourceManager.GetString("BoostingLimitation_Entry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to rotationalSpeed.
+        /// </summary>
+        public static string BoostingLimitation_RotationalSpeed {
+            get {
+                return ResourceManager.GetString("BoostingLimitation_RotationalSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AdBlueDosing.
+        /// </summary>
+        public static string Bus_AdBlueDosing {
+            get {
+                return ResourceManager.GetString("Bus_AdBlueDosing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AdjustableAuxiliaryHeater.
+        /// </summary>
+        public static string Bus_AdjustableAuxiliaryHeater {
+            get {
+                return ResourceManager.GetString("Bus_AdjustableAuxiliaryHeater", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AdjustableCoolantThermostat.
+        /// </summary>
+        public static string Bus_AdjustableCoolantThermostat {
+            get {
+                return ResourceManager.GetString("Bus_AdjustableCoolantThermostat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AirdragModifiedMultistep.
+        /// </summary>
+        public static string Bus_AirdragModifiedMultistep {
+            get {
+                return ResourceManager.GetString("Bus_AirdragModifiedMultistep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AirElectricHeater.
+        /// </summary>
+        public static string Bus_AirElectricHeater {
+            get {
+                return ResourceManager.GetString("Bus_AirElectricHeater", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AirsuspensionControl.
+        /// </summary>
+        public static string Bus_AirsuspensionControl {
+            get {
+                return ResourceManager.GetString("Bus_AirsuspensionControl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AlternatorTechnology.
+        /// </summary>
+        public static string Bus_AlternatorTechnology {
+            get {
+                return ResourceManager.GetString("Bus_AlternatorTechnology", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AuxiliaryHeaterPower.
+        /// </summary>
+        public static string Bus_AuxiliaryHeaterPower {
+            get {
+                return ResourceManager.GetString("Bus_AuxiliaryHeaterPower", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Brakelights.
+        /// </summary>
+        public static string Bus_Brakelights {
+            get {
+                return ResourceManager.GetString("Bus_Brakelights", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CompressorRatio.
+        /// </summary>
+        public static string Bus_CompressorRatio {
+            get {
+                return ResourceManager.GetString("Bus_CompressorRatio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CompressorType.
+        /// </summary>
+        public static string Bus_CompressorType {
+            get {
+                return ResourceManager.GetString("Bus_CompressorType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dayrunninglights.
+        /// </summary>
+        public static string Bus_Dayrunninglights {
+            get {
+                return ResourceManager.GetString("Bus_Dayrunninglights", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DeclarationType.
+        /// </summary>
+        public static string Bus_DeclarationType {
+            get {
+                return ResourceManager.GetString("Bus_DeclarationType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DoorDriveTechnology.
+        /// </summary>
+        public static string Bus_DoorDriveTechnology {
+            get {
+                return ResourceManager.GetString("Bus_DoorDriveTechnology", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DoubleGlazing.
+        /// </summary>
+        public static string Bus_DoubleGlazing {
+            get {
+                return ResourceManager.GetString("Bus_DoubleGlazing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DriverAC.
+        /// </summary>
+        public static string Bus_DriverAC {
+            get {
+                return ResourceManager.GetString("Bus_DriverAC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EngineWasteGasHeatExchanger.
+        /// </summary>
+        public static string Bus_EngineWasteGasHeatExchanger {
+            get {
+                return ResourceManager.GetString("Bus_EngineWasteGasHeatExchanger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EntranceHeight.
+        /// </summary>
+        public static string Bus_EntranceHeight {
+            get {
+                return ResourceManager.GetString("Bus_EntranceHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Headlights.
+        /// </summary>
+        public static string Bus_Headlights {
+            get {
+                return ResourceManager.GetString("Bus_Headlights", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HeatPump.
+        /// </summary>
+        public static string Bus_HeatPump {
+            get {
+                return ResourceManager.GetString("Bus_HeatPump", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HeatPumpModeDriverCompartment.
+        /// </summary>
+        public static string Bus_HeatPumpModeDriver {
+            get {
+                return ResourceManager.GetString("Bus_HeatPumpModeDriver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HeatPumpModePassengerCompartment.
+        /// </summary>
+        public static string Bus_HeatPumpModePassenger {
+            get {
+                return ResourceManager.GetString("Bus_HeatPumpModePassenger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HeatPumpTypeDriverCompartment.
+        /// </summary>
+        public static string Bus_HeatPumpTypeDriver {
+            get {
+                return ResourceManager.GetString("Bus_HeatPumpTypeDriver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HeatPumpTypePassengerCompartment.
+        /// </summary>
+        public static string Bus_HeatPumpTypePassenger {
+            get {
+                return ResourceManager.GetString("Bus_HeatPumpTypePassenger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HeightIntegratedBody.
+        /// </summary>
+        public static string Bus_HeightIntegratedBody {
+            get {
+                return ResourceManager.GetString("Bus_HeightIntegratedBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Interiorlights.
+        /// </summary>
+        public static string Bus_Interiorlights {
+            get {
+                return ResourceManager.GetString("Bus_Interiorlights", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LowEntry.
+        /// </summary>
+        public static string Bus_LowEntry {
+            get {
+                return ResourceManager.GetString("Bus_LowEntry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LowerDeck.
+        /// </summary>
+        public static string Bus_LowerDeck {
+            get {
+                return ResourceManager.GetString("Bus_LowerDeck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NumberPassengerSeatsLowerDeck.
+        /// </summary>
+        public static string Bus_NumberPassengerSeatsLowerDeck {
+            get {
+                return ResourceManager.GetString("Bus_NumberPassengerSeatsLowerDeck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NumberPassengerSeatsUpperDeck.
+        /// </summary>
+        public static string Bus_NumberPassengerSeatsUpperDeck {
+            get {
+                return ResourceManager.GetString("Bus_NumberPassengerSeatsUpperDeck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NumberPassengersLowerDeck.
+        /// </summary>
+        public static string Bus_NumberPassengersLowerDeck {
+            get {
+                return ResourceManager.GetString("Bus_NumberPassengersLowerDeck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NumberPassengersStandingLowerDeck.
+        /// </summary>
+        public static string Bus_NumberPassengersStandingLowerDeck {
+            get {
+                return ResourceManager.GetString("Bus_NumberPassengersStandingLowerDeck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NumberPassengersStandingUpperDeck.
+        /// </summary>
+        public static string Bus_NumberPassengersStandingUpperDeck {
+            get {
+                return ResourceManager.GetString("Bus_NumberPassengersStandingUpperDeck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NumberPassengersUpperDeck.
+        /// </summary>
+        public static string Bus_NumberPassengersUpperDeck {
+            get {
+                return ResourceManager.GetString("Bus_NumberPassengersUpperDeck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OtherHeatingTechnology.
+        /// </summary>
+        public static string Bus_OtherHeatingTechnology {
+            get {
+                return ResourceManager.GetString("Bus_OtherHeatingTechnology", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PassengerAC.
+        /// </summary>
+        public static string Bus_PassengerAC {
+            get {
+                return ResourceManager.GetString("Bus_PassengerAC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PassengerCount.
+        /// </summary>
+        public static string Bus_PassengerCount {
+            get {
+                return ResourceManager.GetString("Bus_PassengerCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Positionlights.
+        /// </summary>
+        public static string Bus_Positionlights {
+            get {
+                return ResourceManager.GetString("Bus_Positionlights", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PrimaryVehicle.
+        /// </summary>
+        public static string Bus_PrimaryVehicle {
+            get {
+                return ResourceManager.GetString("Bus_PrimaryVehicle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ResultCards.
+        /// </summary>
+        public static string Bus_ResultCards {
+            get {
+                return ResourceManager.GetString("Bus_ResultCards", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SeparateAirDistributionDucts.
+        /// </summary>
+        public static string Bus_SeparateAirDistributionDucts {
+            get {
+                return ResourceManager.GetString("Bus_SeparateAirDistributionDucts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SizeOfAirSupply.
+        /// </summary>
+        public static string Bus_SizeOfAirSupply {
+            get {
+                return ResourceManager.GetString("Bus_SizeOfAirSupply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SmartElectrics.
+        /// </summary>
+        public static string Bus_Smart_Electrics {
+            get {
+                return ResourceManager.GetString("Bus_Smart_Electrics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SmartCompressionSystem.
+        /// </summary>
+        public static string Bus_SmartCompressionSystem {
+            get {
+                return ResourceManager.GetString("Bus_SmartCompressionSystem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SmartRegenerationSystem.
+        /// </summary>
+        public static string Bus_SmartRegenerationSystem {
+            get {
+                return ResourceManager.GetString("Bus_SmartRegenerationSystem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        public static string Bus_Status {
+            get {
+                return ResourceManager.GetString("Bus_Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SystemConfiguration.
+        /// </summary>
+        public static string Bus_SystemConfiguration {
+            get {
+                return ResourceManager.GetString("Bus_SystemConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UpperDeck.
+        /// </summary>
+        public static string Bus_UpperDeck {
+            get {
+                return ResourceManager.GetString("Bus_UpperDeck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to VehicleDeclarationType.
+        /// </summary>
+        public static string Bus_VehicleDeclarationType {
+            get {
+                return ResourceManager.GetString("Bus_VehicleDeclarationType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to VehicleLength.
+        /// </summary>
+        public static string Bus_VehicleLength {
+            get {
+                return ResourceManager.GetString("Bus_VehicleLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to VehicleWidth.
+        /// </summary>
+        public static string Bus_VehicleWidth {
+            get {
+                return ResourceManager.GetString("Bus_VehicleWidth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WaterElectricHeater.
+        /// </summary>
+        public static string Bus_WaterElectricHeater {
+            get {
+                return ResourceManager.GetString("Bus_WaterElectricHeater", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ElectricSystem.
+        /// </summary>
+        public static string BusAux_ElectricSystem {
+            get {
+                return ResourceManager.GetString("BusAux_ElectricSystem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ratio.
+        /// </summary>
+        public static string BusAux_ElectricSystem_Alternator_Ratio_Attr {
+            get {
+                return ResourceManager.GetString("BusAux_ElectricSystem_Alternator_Ratio_Attr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AlternatorTechnology.
+        /// </summary>
+        public static string BusAux_ElectricSystem_AlternatorTechnology {
+            get {
+                return ResourceManager.GetString("BusAux_ElectricSystem_AlternatorTechnology", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Battery.
+        /// </summary>
+        public static string BusAux_ElectricSystem_Battery {
+            get {
+                return ResourceManager.GetString("BusAux_ElectricSystem_Battery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BatteryTechnology.
+        /// </summary>
+        public static string BusAux_ElectricSystem_BatteryTechnology {
+            get {
+                return ResourceManager.GetString("BusAux_ElectricSystem_BatteryTechnology", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Capacitor.
+        /// </summary>
+        public static string BusAux_ElectricSystem_Capacitor {
+            get {
+                return ResourceManager.GetString("BusAux_ElectricSystem_Capacitor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CapacitorTechnology.
+        /// </summary>
+        public static string BusAux_ElectricSystem_CapacitorTechnology {
+            get {
+                return ResourceManager.GetString("BusAux_ElectricSystem_CapacitorTechnology", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NominalVoltage.
+        /// </summary>
+        public static string BusAux_ElectricSystem_NominalVoltage {
+            get {
+                return ResourceManager.GetString("BusAux_ElectricSystem_NominalVoltage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RatedCapacitance.
+        /// </summary>
+        public static string BusAux_ElectricSystem_RatedCapacitance {
+            get {
+                return ResourceManager.GetString("BusAux_ElectricSystem_RatedCapacitance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RatedCapacity.
+        /// </summary>
+        public static string BusAux_ElectricSystem_RatedCapacity {
+            get {
+                return ResourceManager.GetString("BusAux_ElectricSystem_RatedCapacity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RatedCurrent.
+        /// </summary>
+        public static string BusAux_ElectricSystem_RatedCurrent {
+            get {
+                return ResourceManager.GetString("BusAux_ElectricSystem_RatedCurrent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RatedVoltage.
+        /// </summary>
+        public static string BusAux_ElectricSystem_RatedRatedVoltage {
+            get {
+                return ResourceManager.GetString("BusAux_ElectricSystem_RatedRatedVoltage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RatedVoltage.
+        /// </summary>
+        public static string BusAux_ElectricSystem_RatedVoltage {
+            get {
+                return ResourceManager.GetString("BusAux_ElectricSystem_RatedVoltage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ResultCards.
+        /// </summary>
+        public static string BusAux_ElectricSystem_ResultCards {
+            get {
+                return ResourceManager.GetString("BusAux_ElectricSystem_ResultCards", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SmartAlternator.
+        /// </summary>
+        public static string BusAux_ElectricSystem_SmartAlternator {
+            get {
+                return ResourceManager.GetString("BusAux_ElectricSystem_SmartAlternator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SmartElectrics.
+        /// </summary>
+        public static string BusAux_ElectricSystem_SmartElectrics {
+            get {
+                return ResourceManager.GetString("BusAux_ElectricSystem_SmartElectrics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SupplyFromHEVPossible.
+        /// </summary>
+        public static string BusAux_ElectricSystem_SupplyFromHEVPossible {
+            get {
+                return ResourceManager.GetString("BusAux_ElectricSystem_SupplyFromHEVPossible", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fan.
+        /// </summary>
+        public static string BusAux_Fan {
+            get {
+                return ResourceManager.GetString("BusAux_Fan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HVAC.
+        /// </summary>
+        public static string BusAux_HVAC {
+            get {
+                return ResourceManager.GetString("BusAux_HVAC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LEDLights.
+        /// </summary>
+        public static string BusAux_LEDLights {
+            get {
+                return ResourceManager.GetString("BusAux_LEDLights", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PneumaticSystem.
+        /// </summary>
+        public static string BusAux_PneumaticSystem {
+            get {
+                return ResourceManager.GetString("BusAux_PneumaticSystem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AdBlueDosing.
+        /// </summary>
+        public static string BusAux_PneumaticSystem_AdBlueDosing {
+            get {
+                return ResourceManager.GetString("BusAux_PneumaticSystem_AdBlueDosing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AirsuspensionControl.
+        /// </summary>
+        public static string BusAux_PneumaticSystem_AirsuspensionControl {
+            get {
+                return ResourceManager.GetString("BusAux_PneumaticSystem_AirsuspensionControl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CompressorRatio.
+        /// </summary>
+        public static string BusAux_PneumaticSystem_CompressorRatio {
+            get {
+                return ResourceManager.GetString("BusAux_PneumaticSystem_CompressorRatio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SizeOfAirSupply.
+        /// </summary>
+        public static string BusAux_PneumaticSystem_CompressorSize {
+            get {
+                return ResourceManager.GetString("BusAux_PneumaticSystem_CompressorSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DoorDriveTechnology.
+        /// </summary>
+        public static string BusAux_PneumaticSystem_DoorDriveTechnology {
+            get {
+                return ResourceManager.GetString("BusAux_PneumaticSystem_DoorDriveTechnology", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PneumaticSCRReagentDosing.
+        /// </summary>
+        public static string BusAux_PneumaticSystem_SCRReagentDosing {
+            get {
+                return ResourceManager.GetString("BusAux_PneumaticSystem_SCRReagentDosing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SmartCompressionSystem.
+        /// </summary>
+        public static string BusAux_PneumaticSystem_SmartcompressionSystem {
+            get {
+                return ResourceManager.GetString("BusAux_PneumaticSystem_SmartcompressionSystem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SmartRegenerationSystem.
+        /// </summary>
+        public static string BusAux_PneumaticSystem_SmartRegenerationSystem {
+            get {
+                return ResourceManager.GetString("BusAux_PneumaticSystem_SmartRegenerationSystem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Entry.
+        /// </summary>
+        public static string BusAux_ResultCard_Entry {
+            get {
+                return ResourceManager.GetString("BusAux_ResultCard_Entry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Idle.
+        /// </summary>
+        public static string BusAux_ResultCard_Idle {
+            get {
+                return ResourceManager.GetString("BusAux_ResultCard_Idle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overrun.
+        /// </summary>
+        public static string BusAux_ResultCard_Overrun {
+            get {
+                return ResourceManager.GetString("BusAux_ResultCard_Overrun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Traction.
+        /// </summary>
+        public static string BusAux_ResultCard_Traction {
+            get {
+                return ResourceManager.GetString("BusAux_ResultCard_Traction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SteeringPump.
+        /// </summary>
+        public static string BusAux_SteeringPump {
+            get {
+                return ResourceManager.GetString("BusAux_SteeringPump", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Technology.
+        /// </summary>
+        public static string BusAux_Technology {
+            get {
+                return ResourceManager.GetString("BusAux_Technology", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cooling.
+        /// </summary>
+        public static string BusHVACHeatPumpCooling {
+            get {
+                return ResourceManager.GetString("BusHVACHeatPumpCooling", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Heating.
+        /// </summary>
+        public static string BusHVACHeatPumpHeating {
+            get {
+                return ResourceManager.GetString("BusHVACHeatPumpHeating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BusManufacturingStepDataType.
+        /// </summary>
+        public static string BusManufacturingStepDataType {
+            get {
+                return ResourceManager.GetString("BusManufacturingStepDataType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Capacitance.
+        /// </summary>
+        public static string Capacitor_Capacitance {
+            get {
+                return ResourceManager.GetString("Capacitor_Capacitance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to InternalResistance.
+        /// </summary>
+        public static string Capacitor_InternalResistance {
+            get {
+                return ResourceManager.GetString("Capacitor_InternalResistance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MaxChargingCurrent.
+        /// </summary>
+        public static string Capacitor_MaxChargingCurrent {
+            get {
+                return ResourceManager.GetString("Capacitor_MaxChargingCurrent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MaxDischargingCurrent.
+        /// </summary>
+        public static string Capacitor_MaxDischargingCurrent {
+            get {
+                return ResourceManager.GetString("Capacitor_MaxDischargingCurrent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MaxVoltage.
+        /// </summary>
+        public static string Capacitor_MaxVoltage {
+            get {
+                return ResourceManager.GetString("Capacitor_MaxVoltage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MinVoltage.
+        /// </summary>
+        public static string Capacitor_MinVoltage {
+            get {
+                return ResourceManager.GetString("Capacitor_MinVoltage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ChassisConfiguration.
+        /// </summary>
+        public static string ChassisConfiguration {
+            get {
+                return ResourceManager.GetString("ChassisConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ADC.
+        /// </summary>
+        public static string Component_ADC {
+            get {
+                return ResourceManager.GetString("Component_ADC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to AirDrag.
         /// </summary>
         public static string Component_AirDrag {
@@ -457,6 +1537,24 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to BatterySystem.
+        /// </summary>
+        public static string Component_BatterySystem {
+            get {
+                return ResourceManager.GetString("Component_BatterySystem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CapacitorSystem.
+        /// </summary>
+        public static string Component_CapacitorSystem {
+            get {
+                return ResourceManager.GetString("Component_CapacitorSystem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CertificationMethod.
         /// </summary>
         public static string Component_CertificationMethod {
@@ -471,6 +1569,15 @@ namespace TUGraz.VectoCommon.Resources {
         public static string Component_CertificationNumber {
             get {
                 return ResourceManager.GetString("Component_CertificationNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CertifiedAeroReduction.
+        /// </summary>
+        public static string Component_CertifiedAeroReduction {
+            get {
+                return ResourceManager.GetString("Component_CertifiedAeroReduction", resourceCulture);
             }
         }
         
@@ -498,6 +1605,42 @@ namespace TUGraz.VectoCommon.Resources {
         public static string Component_DriverModel {
             get {
                 return ResourceManager.GetString("Component_DriverModel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ElectricEnergyStorage.
+        /// </summary>
+        public static string Component_ElectricEnergyStorage {
+            get {
+                return ResourceManager.GetString("Component_ElectricEnergyStorage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ElectricMachine.
+        /// </summary>
+        public static string Component_ElectricMachine {
+            get {
+                return ResourceManager.GetString("Component_ElectricMachine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ElectricMachineGEN.
+        /// </summary>
+        public static string Component_ElectricMachineGEN {
+            get {
+                return ResourceManager.GetString("Component_ElectricMachineGEN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ElectricMachineSystem.
+        /// </summary>
+        public static string Component_ElectricMachineSystem {
+            get {
+                return ResourceManager.GetString("Component_ElectricMachineSystem", resourceCulture);
             }
         }
         
@@ -534,6 +1677,15 @@ namespace TUGraz.VectoCommon.Resources {
         public static string Component_ID_Attr {
             get {
                 return ResourceManager.GetString("Component_ID_Attr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IEPC.
+        /// </summary>
+        public static string Component_IEPC {
+            get {
+                return ResourceManager.GetString("Component_IEPC", resourceCulture);
             }
         }
         
@@ -592,6 +1744,33 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Transmission.
+        /// </summary>
+        public static string Component_Transmission {
+            get {
+                return ResourceManager.GetString("Component_Transmission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to type.
+        /// </summary>
+        public static string Component_Type_Attr {
+            get {
+                return ResourceManager.GetString("Component_Type_Attr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PTOType.
+        /// </summary>
+        public static string Component_Type_Attr_PTO {
+            get {
+                return ResourceManager.GetString("Component_Type_Attr_PTO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Vehicle.
         /// </summary>
         public static string Component_Vehicle {
@@ -606,6 +1785,69 @@ namespace TUGraz.VectoCommon.Resources {
         public static string ComponentDataWrapper {
             get {
                 return ResourceManager.GetString("ComponentDataWrapper", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to VehicleComponentsType.
+        /// </summary>
+        public static string Components_type_attr {
+            get {
+                return ResourceManager.GetString("Components_type_attr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CompressorDrive.
+        /// </summary>
+        public static string CompressorDrive {
+            get {
+                return ResourceManager.GetString("CompressorDrive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Conditioning.
+        /// </summary>
+        public static string Conditioning {
+            get {
+                return ResourceManager.GetString("Conditioning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to coolantTempInlet.
+        /// </summary>
+        public static string Conditioning_CoolantTempInlet {
+            get {
+                return ResourceManager.GetString("Conditioning_CoolantTempInlet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to coolingPower.
+        /// </summary>
+        public static string Conditioning_CoolingPower {
+            get {
+                return ResourceManager.GetString("Conditioning_CoolingPower", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Entry.
+        /// </summary>
+        public static string Conditioning_Entry {
+            get {
+                return ResourceManager.GetString("Conditioning_Entry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CorrectedActualMass.
+        /// </summary>
+        public static string CorrectedActualMass {
+            get {
+                return ResourceManager.GetString("CorrectedActualMass", resourceCulture);
             }
         }
         
@@ -682,6 +1924,51 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DragCurve.
+        /// </summary>
+        public static string DragCurve {
+            get {
+                return ResourceManager.GetString("DragCurve", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to dragTorque.
+        /// </summary>
+        public static string DragCurve_DragTorque {
+            get {
+                return ResourceManager.GetString("DragCurve_DragTorque", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Entry.
+        /// </summary>
+        public static string DragCurve_Entry {
+            get {
+                return ResourceManager.GetString("DragCurve_Entry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to gear.
+        /// </summary>
+        public static string DragCurve_Gear {
+            get {
+                return ResourceManager.GetString("DragCurve_Gear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to outShaftSpeed.
+        /// </summary>
+        public static string DragCurve_OutShaftSpeed {
+            get {
+                return ResourceManager.GetString("DragCurve_OutShaftSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to decisionFactorVel.
         /// </summary>
         public static string Driver_CoastingDFTargetSpeedLookupMapping_DecisionFactor_Attr {
@@ -732,6 +2019,33 @@ namespace TUGraz.VectoCommon.Resources {
         public static string DriverModel_DriverAccelerationCurve_Entry {
             get {
                 return ResourceManager.GetString("DriverModel_DriverAccelerationCurve_Entry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EcoRoll.
+        /// </summary>
+        public static string DriverModel_EcoRoll {
+            get {
+                return ResourceManager.GetString("DriverModel_EcoRoll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EngineStopStart.
+        /// </summary>
+        public static string DriverModel_EngineStopStart {
+            get {
+                return ResourceManager.GetString("DriverModel_EngineStopStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EngineStopStartParameters.
+        /// </summary>
+        public static string DriverModel_EngineStopStartParameters {
+            get {
+                return ResourceManager.GetString("DriverModel_EngineStopStartParameters", resourceCulture);
             }
         }
         
@@ -831,6 +2145,15 @@ namespace TUGraz.VectoCommon.Resources {
         public static string DriverModel_Overspeed_AllowedUnderspeed {
             get {
                 return ResourceManager.GetString("DriverModel_Overspeed_AllowedUnderspeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enabled.
+        /// </summary>
+        public static string DriverModel_Overspeed_Enabled {
+            get {
+                return ResourceManager.GetString("DriverModel_Overspeed_Enabled", resourceCulture);
             }
         }
         
@@ -943,6 +2266,195 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Battery.
+        /// </summary>
+        public static string ElectricEnergyStorage_Battery {
+            get {
+                return ResourceManager.GetString("ElectricEnergyStorage_Battery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Capacitor.
+        /// </summary>
+        public static string ElectricEnergyStorage_Capacitor {
+            get {
+                return ResourceManager.GetString("ElectricEnergyStorage_Capacitor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ContinuousTorque.
+        /// </summary>
+        public static string ElectricMachine_ContinuousTorque {
+            get {
+                return ResourceManager.GetString("ElectricMachine_ContinuousTorque", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Count.
+        /// </summary>
+        public static string ElectricMachine_Count {
+            get {
+                return ResourceManager.GetString("ElectricMachine_Count", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DcDcConverterIncluded.
+        /// </summary>
+        public static string ElectricMachine_DcDcConverterIncluded {
+            get {
+                return ResourceManager.GetString("ElectricMachine_DcDcConverterIncluded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ElectricMachineType.
+        /// </summary>
+        public static string ElectricMachine_ElectricMachineType {
+            get {
+                return ResourceManager.GetString("ElectricMachine_ElectricMachineType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IHPCType.
+        /// </summary>
+        public static string ElectricMachine_IHPCType {
+            get {
+                return ResourceManager.GetString("ElectricMachine_IHPCType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OverloadDuration.
+        /// </summary>
+        public static string ElectricMachine_OverloadDuration {
+            get {
+                return ResourceManager.GetString("ElectricMachine_OverloadDuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OverloadTorque.
+        /// </summary>
+        public static string ElectricMachine_OverloadTorque {
+            get {
+                return ResourceManager.GetString("ElectricMachine_OverloadTorque", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to P2.5GearRatios.
+        /// </summary>
+        public static string ElectricMachine_P2_5GearRatios {
+            get {
+                return ResourceManager.GetString("ElectricMachine_P2.5GearRatios", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Position.
+        /// </summary>
+        public static string ElectricMachine_Position {
+            get {
+                return ResourceManager.GetString("ElectricMachine_Position", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PowertrainPosition.
+        /// </summary>
+        public static string ElectricMachine_PowertrainPosition {
+            get {
+                return ResourceManager.GetString("ElectricMachine_PowertrainPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to R85RatedPower.
+        /// </summary>
+        public static string ElectricMachine_R85RatedPower {
+            get {
+                return ResourceManager.GetString("ElectricMachine_R85RatedPower", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RotationalInertia.
+        /// </summary>
+        public static string ElectricMachine_RotationalInertia {
+            get {
+                return ResourceManager.GetString("ElectricMachine_RotationalInertia", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TestSpeedContinuousTorque.
+        /// </summary>
+        public static string ElectricMachine_TestSpeedContinuousTorque {
+            get {
+                return ResourceManager.GetString("ElectricMachine_TestSpeedContinuousTorque", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TestSpeedOverloadTorque.
+        /// </summary>
+        public static string ElectricMachine_TestSpeedOverloadTorque {
+            get {
+                return ResourceManager.GetString("ElectricMachine_TestSpeedOverloadTorque", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TestVoltageOverload.
+        /// </summary>
+        public static string ElectricMachine_TestVoltageOverload {
+            get {
+                return ResourceManager.GetString("ElectricMachine_TestVoltageOverload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to VoltageLevel.
+        /// </summary>
+        public static string ElectricMachine_VoltageLevel {
+            get {
+                return ResourceManager.GetString("ElectricMachine_VoltageLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ElectricMachineSystem.
+        /// </summary>
+        public static string ElectricMachineSystem {
+            get {
+                return ResourceManager.GetString("ElectricMachineSystem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ElectricMachine.
+        /// </summary>
+        public static string ElectricMotorTorqueLimit_ElectricMachine {
+            get {
+                return ResourceManager.GetString("ElectricMotorTorqueLimit_ElectricMachine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ElectricMotorTorqueLimits.
+        /// </summary>
+        public static string ElectricMotorTorqueLimits {
+            get {
+                return ResourceManager.GetString("ElectricMotorTorqueLimits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to BFColdHot.
         /// </summary>
         public static string Engine_ColdHotBalancingFactor {
@@ -1042,6 +2554,42 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to electricPower.
+        /// </summary>
+        public static string Engine_FuelConsumptionMap_WHRElPower_Attr {
+            get {
+                return ResourceManager.GetString("Engine_FuelConsumptionMap_WHRElPower_Attr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to mechanicalPower.
+        /// </summary>
+        public static string Engine_FuelConsumptionMap_WHRMechPower_Attr {
+            get {
+                return ResourceManager.GetString("Engine_FuelConsumptionMap_WHRMechPower_Attr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mode.
+        /// </summary>
+        public static string Engine_FuelModes {
+            get {
+                return ResourceManager.GetString("Engine_FuelModes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fuel.
+        /// </summary>
+        public static string Engine_FuelModes_Fuel {
+            get {
+                return ResourceManager.GetString("Engine_FuelModes_Fuel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to FuelType.
         /// </summary>
         public static string Engine_FuelType {
@@ -1132,6 +2680,150 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to EngineDataDeclarationType.
+        /// </summary>
+        public static string Engine_Type_Attr {
+            get {
+                return ResourceManager.GetString("Engine_Type_Attr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ElectricalOutput.
+        /// </summary>
+        public static string Engine_WHR_ElectricalOutput {
+            get {
+                return ResourceManager.GetString("Engine_WHR_ElectricalOutput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MechanicalOutputICE.
+        /// </summary>
+        public static string Engine_WHR_MechanicalOutputICE {
+            get {
+                return ResourceManager.GetString("Engine_WHR_MechanicalOutputICE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MechanicalOutputDrivetrain.
+        /// </summary>
+        public static string Engine_WHR_MechanicalOutputIDrivetrain {
+            get {
+                return ResourceManager.GetString("Engine_WHR_MechanicalOutputIDrivetrain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WHRCorrection.
+        /// </summary>
+        public static string Engine_WHRCorrectionFactor {
+            get {
+                return ResourceManager.GetString("Engine_WHRCorrectionFactor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WHRCorrectionFactors.
+        /// </summary>
+        public static string Engine_WHRCorrectionFactors {
+            get {
+                return ResourceManager.GetString("Engine_WHRCorrectionFactors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BFColdHot.
+        /// </summary>
+        public static string Engine_WHRCorrectionFactors_BFColdHot {
+            get {
+                return ResourceManager.GetString("Engine_WHRCorrectionFactors_BFColdHot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CFRegPer.
+        /// </summary>
+        public static string Engine_WHRCorrectionFactors_CFRegPer {
+            get {
+                return ResourceManager.GetString("Engine_WHRCorrectionFactors_CFRegPer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Electrical.
+        /// </summary>
+        public static string Engine_WHRCorrectionFactors_Electrical {
+            get {
+                return ResourceManager.GetString("Engine_WHRCorrectionFactors_Electrical", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mechanical.
+        /// </summary>
+        public static string Engine_WHRCorrectionFactors_Mechanical {
+            get {
+                return ResourceManager.GetString("Engine_WHRCorrectionFactors_Mechanical", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Motorway.
+        /// </summary>
+        public static string Engine_WHRCorrectionFactors_Motorway {
+            get {
+                return ResourceManager.GetString("Engine_WHRCorrectionFactors_Motorway", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rural.
+        /// </summary>
+        public static string Engine_WHRCorrectionFactors_Rural {
+            get {
+                return ResourceManager.GetString("Engine_WHRCorrectionFactors_Rural", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Urban.
+        /// </summary>
+        public static string Engine_WHRCorrectionFactors_Urban {
+            get {
+                return ResourceManager.GetString("Engine_WHRCorrectionFactors_Urban", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WHRMap.
+        /// </summary>
+        public static string Engine_WHRMap {
+            get {
+                return ResourceManager.GetString("Engine_WHRMap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Entry.
+        /// </summary>
+        public static string Engine_WHRMap_Entry {
+            get {
+                return ResourceManager.GetString("Engine_WHRMap_Entry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WHRType.
+        /// </summary>
+        public static string Engine_WHRType {
+            get {
+                return ResourceManager.GetString("Engine_WHRType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to WHTCEngineering.
         /// </summary>
         public static string Engine_WHTCEngineering {
@@ -1164,6 +2856,24 @@ namespace TUGraz.VectoCommon.Resources {
         public static string Engine_WHTCUrban {
             get {
                 return ResourceManager.GetString("Engine_WHTCUrban", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SumNetPower.
+        /// </summary>
+        public static string Exempted_SumNetPower {
+            get {
+                return ResourceManager.GetString("Exempted_SumNetPower", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Technology.
+        /// </summary>
+        public static string Exempted_Technology {
+            get {
+                return ResourceManager.GetString("Exempted_Technology", resourceCulture);
             }
         }
         
@@ -1222,6 +2932,51 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Gear.
+        /// </summary>
+        public static string Gear_EntryName {
+            get {
+                return ResourceManager.GetString("Gear_EntryName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to number.
+        /// </summary>
+        public static string Gear_GearNumber_Attr {
+            get {
+                return ResourceManager.GetString("Gear_GearNumber_Attr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MaxOutShaftSpeed.
+        /// </summary>
+        public static string Gear_MaxOutputShaftSpeed {
+            get {
+                return ResourceManager.GetString("Gear_MaxOutputShaftSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MaxOutShaftTorque.
+        /// </summary>
+        public static string Gear_MaxOutputShaftTorque {
+            get {
+                return ResourceManager.GetString("Gear_MaxOutputShaftTorque", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ratio.
+        /// </summary>
+        public static string Gear_Ratio {
+            get {
+                return ResourceManager.GetString("Gear_Ratio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to engineTorque.
         /// </summary>
         public static string Gear_ShiftPolygon_EngineTorque_Attr {
@@ -1245,6 +3000,33 @@ namespace TUGraz.VectoCommon.Resources {
         public static string Gear_ShiftPolygonMapping_UpshiftSpeed_Attr {
             get {
                 return ResourceManager.GetString("Gear_ShiftPolygonMapping_UpshiftSpeed_Attr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GearboxDataDeclarationType.
+        /// </summary>
+        public static string Gearbox_attr_GearboxDataDeclarationType {
+            get {
+                return ResourceManager.GetString("Gearbox_attr_GearboxDataDeclarationType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AxlegearRatio.
+        /// </summary>
+        public static string Gearbox_AxlegearRatio {
+            get {
+                return ResourceManager.GetString("Gearbox_AxlegearRatio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DifferentialIncluded.
+        /// </summary>
+        public static string Gearbox_DifferentialIncluded {
+            get {
+                return ResourceManager.GetString("Gearbox_DifferentialIncluded", resourceCulture);
             }
         }
         
@@ -1312,6 +3094,15 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to GearsDeclarationType.
+        /// </summary>
+        public static string Gearbox_Gears_Attr_GearsDeclarationType {
+            get {
+                return ResourceManager.GetString("Gearbox_Gears_Attr_GearsDeclarationType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gear.
         /// </summary>
         public static string Gearbox_Gears_Gear {
@@ -1375,6 +3166,51 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ratio.
+        /// </summary>
+        public static string GearRatio_Ratio {
+            get {
+                return ResourceManager.GetString("GearRatio_Ratio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IEPC.
+        /// </summary>
+        public static string IEPC_Component {
+            get {
+                return ResourceManager.GetString("IEPC_Component", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DesignTypeWheelMotor.
+        /// </summary>
+        public static string IEPC_DesignTypeWheelMotor {
+            get {
+                return ResourceManager.GetString("IEPC_DesignTypeWheelMotor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DifferentialIncluded.
+        /// </summary>
+        public static string IEPC_DifferentialIncluded {
+            get {
+                return ResourceManager.GetString("IEPC_DifferentialIncluded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NrOfDesignTypeWheelMotorMeasured.
+        /// </summary>
+        public static string IEPC_NrOfDesignTypeWheelMotorMeasured {
+            get {
+                return ResourceManager.GetString("IEPC_NrOfDesignTypeWheelMotorMeasured", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Entry.
         /// </summary>
         public static string LookAheadCoasting_SpeedDependentDecisionFactor_Entry {
@@ -1393,11 +3229,371 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ManufacturerAddressCompletedVehicle.
+        /// </summary>
+        public static string ManufacturerAddressCompletedVehicle {
+            get {
+                return ResourceManager.GetString("ManufacturerAddressCompletedVehicle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ManufacturerAddressPrimaryVehicle.
+        /// </summary>
+        public static string ManufacturerAddressPrimaryVehicle {
+            get {
+                return ResourceManager.GetString("ManufacturerAddressPrimaryVehicle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ManufacturerCompletedVehicle.
+        /// </summary>
+        public static string ManufacturerCompletedVehicle {
+            get {
+                return ResourceManager.GetString("ManufacturerCompletedVehicle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ManufacturerPrimaryVehicle.
+        /// </summary>
+        public static string ManufacturerPrimaryVehicle {
+            get {
+                return ResourceManager.GetString("ManufacturerPrimaryVehicle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ManufacturingStep.
+        /// </summary>
+        public static string ManufacturingStep {
+            get {
+                return ResourceManager.GetString("ManufacturingStep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BusManufacturingStepDataType.
+        /// </summary>
+        public static string ManufacturingStep_Bus_DataType {
+            get {
+                return ResourceManager.GetString("ManufacturingStep_Bus_DataType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HashPreviousStep.
+        /// </summary>
+        public static string ManufacturingStep_HashPreviousStep {
+            get {
+                return ResourceManager.GetString("ManufacturingStep_HashPreviousStep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to stepCount.
+        /// </summary>
+        public static string ManufacturingStep_StepCount {
+            get {
+                return ResourceManager.GetString("ManufacturingStep_StepCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to stepCount.
+        /// </summary>
+        public static string ManufacturingStep_stepCount_Attr {
+            get {
+                return ResourceManager.GetString("ManufacturingStep_stepCount_Attr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MaxTorqueCurve.
+        /// </summary>
+        public static string MaxTorqueCurve {
+            get {
+                return ResourceManager.GetString("MaxTorqueCurve", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Entry.
+        /// </summary>
+        public static string MaxTorqueCurve_Entry {
+            get {
+                return ResourceManager.GetString("MaxTorqueCurve_Entry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to maxTorque.
+        /// </summary>
+        public static string MaxTorqueCurve_MaxTorque {
+            get {
+                return ResourceManager.GetString("MaxTorqueCurve_MaxTorque", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to minTorque.
+        /// </summary>
+        public static string MaxTorqueCurve_MinTorque {
+            get {
+                return ResourceManager.GetString("MaxTorqueCurve_MinTorque", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to outShaftSpeed.
+        /// </summary>
+        public static string MaxTorqueCurve_OutShaftSpeed {
+            get {
+                return ResourceManager.GetString("MaxTorqueCurve_OutShaftSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cycle.
         /// </summary>
         public static string Missions_Cycle {
             get {
                 return ResourceManager.GetString("Missions_Cycle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PowerMap.
+        /// </summary>
+        public static string PowerMap {
+            get {
+                return ResourceManager.GetString("PowerMap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to electricPower.
+        /// </summary>
+        public static string PowerMap_ElectricPower {
+            get {
+                return ResourceManager.GetString("PowerMap_ElectricPower", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Entry.
+        /// </summary>
+        public static string PowerMap_Entry {
+            get {
+                return ResourceManager.GetString("PowerMap_Entry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to gear.
+        /// </summary>
+        public static string PowerMap_Gear {
+            get {
+                return ResourceManager.GetString("PowerMap_Gear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to outShaftSpeed.
+        /// </summary>
+        public static string PowerMap_OutShaftSpeed {
+            get {
+                return ResourceManager.GetString("PowerMap_OutShaftSpeed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to torque.
+        /// </summary>
+        public static string PowerMap_Torque {
+            get {
+                return ResourceManager.GetString("PowerMap_Torque", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ElectricEnergyStorage.
+        /// </summary>
+        public static string REESS {
+            get {
+                return ResourceManager.GetString("REESS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BatteryType.
+        /// </summary>
+        public static string REESS_BatteryType {
+            get {
+                return ResourceManager.GetString("REESS_BatteryType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ConnectorsSubsystemsIncluded.
+        /// </summary>
+        public static string REESS_ConnectorsSubsystemsIncluded {
+            get {
+                return ResourceManager.GetString("REESS_ConnectorsSubsystemsIncluded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CurrentLimits.
+        /// </summary>
+        public static string REESS_CurrentLimits {
+            get {
+                return ResourceManager.GetString("REESS_CurrentLimits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to maxChargingCurrent.
+        /// </summary>
+        public static string REESS_CurrentLimits_MaxChargingCurrent {
+            get {
+                return ResourceManager.GetString("REESS_CurrentLimits_MaxChargingCurrent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to maxDischargingCurrent.
+        /// </summary>
+        public static string REESS_CurrentLimits_MaxDischargingCurrent {
+            get {
+                return ResourceManager.GetString("REESS_CurrentLimits_MaxDischargingCurrent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SoC.
+        /// </summary>
+        public static string REESS_CurrentLimits_SoC {
+            get {
+                return ResourceManager.GetString("REESS_CurrentLimits_SoC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to InternalResistance.
+        /// </summary>
+        public static string REESS_InternalResistanceCurve {
+            get {
+                return ResourceManager.GetString("REESS_InternalResistanceCurve", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to R_10.
+        /// </summary>
+        public static string REESS_InternalResistanceCurve_R10 {
+            get {
+                return ResourceManager.GetString("REESS_InternalResistanceCurve_R10", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to R_120.
+        /// </summary>
+        public static string REESS_InternalResistanceCurve_R120 {
+            get {
+                return ResourceManager.GetString("REESS_InternalResistanceCurve_R120", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to R_2.
+        /// </summary>
+        public static string REESS_InternalResistanceCurve_R2 {
+            get {
+                return ResourceManager.GetString("REESS_InternalResistanceCurve_R2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to R_20.
+        /// </summary>
+        public static string REESS_InternalResistanceCurve_R20 {
+            get {
+                return ResourceManager.GetString("REESS_InternalResistanceCurve_R20", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SoC.
+        /// </summary>
+        public static string REESS_InternalResistanceCurve_SoC {
+            get {
+                return ResourceManager.GetString("REESS_InternalResistanceCurve_SoC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to JunctionboxIncluded.
+        /// </summary>
+        public static string REESS_JunctionboxIncluded {
+            get {
+                return ResourceManager.GetString("REESS_JunctionboxIncluded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Entry.
+        /// </summary>
+        public static string REESS_MapEntry {
+            get {
+                return ResourceManager.GetString("REESS_MapEntry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OCV.
+        /// </summary>
+        public static string REESS_OCV {
+            get {
+                return ResourceManager.GetString("REESS_OCV", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OCV.
+        /// </summary>
+        public static string REESS_OCV_OCV {
+            get {
+                return ResourceManager.GetString("REESS_OCV_OCV", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SoC.
+        /// </summary>
+        public static string REESS_OCV_SoC {
+            get {
+                return ResourceManager.GetString("REESS_OCV_SoC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RatedCapacity.
+        /// </summary>
+        public static string REESS_RatedCapacity {
+            get {
+                return ResourceManager.GetString("REESS_RatedCapacity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TestingTemperature.
+        /// </summary>
+        public static string REESS_TestingTemperature {
+            get {
+                return ResourceManager.GetString("REESS_TestingTemperature", resourceCulture);
             }
         }
         
@@ -1447,6 +3643,15 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CO2StandardsGroup.
+        /// </summary>
+        public static string Report_CO2StandardsGroup {
+            get {
+                return ResourceManager.GetString("Report_CO2StandardsGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CertificationMethod.
         /// </summary>
         public static string Report_Component_CertificationMethod {
@@ -1470,6 +3675,15 @@ namespace TUGraz.VectoCommon.Resources {
         public static string Report_DataWrap {
             get {
                 return ResourceManager.GetString("Report_DataWrap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mode.
+        /// </summary>
+        public static string Report_Engine_FuelMode {
+            get {
+                return ResourceManager.GetString("Report_Engine_FuelMode", resourceCulture);
             }
         }
         
@@ -1519,11 +3733,65 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to EnergyConsumption.
+        /// </summary>
+        public static string Report_Result_EnergyConsumption {
+            get {
+                return ResourceManager.GetString("Report_Result_EnergyConsumption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FuelMode.
+        /// </summary>
+        public static string Report_Result_FuelMode {
+            get {
+                return ResourceManager.GetString("Report_Result_FuelMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to dual fuel mode.
+        /// </summary>
+        public static string Report_Result_FuelMode_Val_Dual {
+            get {
+                return ResourceManager.GetString("Report_Result_FuelMode_Val_Dual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to single fuel mode.
+        /// </summary>
+        public static string Report_Result_FuelMode_Val_Single {
+            get {
+                return ResourceManager.GetString("Report_Result_FuelMode_Val_Single", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MassPassengers.
+        /// </summary>
+        public static string Report_Result_MassPassengers {
+            get {
+                return ResourceManager.GetString("Report_Result_MassPassengers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mission.
         /// </summary>
         public static string Report_Result_Mission {
             get {
                 return ResourceManager.GetString("Report_Result_Mission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PassengerCount.
+        /// </summary>
+        public static string Report_Result_PassengerCount {
+            get {
+                return ResourceManager.GetString("Report_Result_PassengerCount", resourceCulture);
             }
         }
         
@@ -1699,6 +3967,15 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PassengerCount.
+        /// </summary>
+        public static string Report_ResultEntry_PassengerCount {
+            get {
+                return ResourceManager.GetString("Report_ResultEntry_PassengerCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Payload.
         /// </summary>
         public static string Report_ResultEntry_Payload {
@@ -1794,6 +4071,24 @@ namespace TUGraz.VectoCommon.Resources {
         public static string Report_Results_ErrorDetails {
             get {
                 return ResourceManager.GetString("Report_Results_ErrorDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fuel.
+        /// </summary>
+        public static string Report_Results_Fuel {
+            get {
+                return ResourceManager.GetString("Report_Results_Fuel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to type.
+        /// </summary>
+        public static string Report_Results_Fuel_Type_Attr {
+            get {
+                return ResourceManager.GetString("Report_Results_Fuel_Type_Attr", resourceCulture);
             }
         }
         
@@ -1915,6 +4210,15 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to FuelTypes.
+        /// </summary>
+        public static string Report_Vehicle_FuelTypes {
+            get {
+                return ResourceManager.GetString("Report_Vehicle_FuelTypes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Retarder.
         /// </summary>
         public static string Report_Vehicle_Retarder {
@@ -1938,6 +4242,42 @@ namespace TUGraz.VectoCommon.Resources {
         public static string Report_Vehicle_VehicleGroup {
             get {
                 return ResourceManager.GetString("Report_Vehicle_VehicleGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to status.
+        /// </summary>
+        public static string Result_Status {
+            get {
+                return ResourceManager.GetString("Result_Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to current.
+        /// </summary>
+        public static string ResultCard_Entry_CurrentAttr {
+            get {
+                return ResourceManager.GetString("ResultCard_Entry_CurrentAttr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to smartCurrent.
+        /// </summary>
+        public static string ResultCard_Entry_SmartCurrent_Attr {
+            get {
+                return ResourceManager.GetString("ResultCard_Entry_SmartCurrent_Attr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RetarderDataDeclarationType.
+        /// </summary>
+        public static string Retarder_Attr_DataDeclarationType {
+            get {
+                return ResourceManager.GetString("Retarder_Attr_DataDeclarationType", resourceCulture);
             }
         }
         
@@ -1974,6 +4314,42 @@ namespace TUGraz.VectoCommon.Resources {
         public static string Retarder_RetarderLossmap_TorqueLoss_Attr {
             get {
                 return ResourceManager.GetString("Retarder_RetarderLossmap_TorqueLoss_Attr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Component_Type_Attr.
+        /// </summary>
+        public static string String {
+            get {
+                return ResourceManager.GetString("String", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ApplicationInformation.
+        /// </summary>
+        public static string Tag_ApplicationInformation {
+            get {
+                return ResourceManager.GetString("Tag_ApplicationInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ResultDataSignature.
+        /// </summary>
+        public static string Tag_ResultDataSignatureNode {
+            get {
+                return ResourceManager.GetString("Tag_ResultDataSignatureNode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vehicle.
+        /// </summary>
+        public static string Tag_Vehicle {
+            get {
+                return ResourceManager.GetString("Tag_Vehicle", resourceCulture);
             }
         }
         
@@ -2086,6 +4462,15 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to TechnicalPermissibleMaximumLadenMass.
+        /// </summary>
+        public static string TPMLM {
+            get {
+                return ResourceManager.GetString("TPMLM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to inputSpeed.
         /// </summary>
         public static string TransmissionLossmap_InputSpeed_Attr {
@@ -2109,6 +4494,15 @@ namespace TUGraz.VectoCommon.Resources {
         public static string TransmissionLossmap_TorqueLoss_Attr {
             get {
                 return ResourceManager.GetString("TransmissionLossmap_TorqueLoss_Attr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TyreDataDeclarationType.
+        /// </summary>
+        public static string Tyre_Type_Attr_TyreDataDeclarationType {
+            get {
+                return ResourceManager.GetString("Tyre_Type_Attr_TyreDataDeclarationType", resourceCulture);
             }
         }
         
@@ -2284,6 +4678,24 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to VectoOutputMultistep.
+        /// </summary>
+        public static string VectoOutputMultistep {
+            get {
+                return ResourceManager.GetString("VectoOutputMultistep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to VectoOutputPrimaryVehicle.
+        /// </summary>
+        public static string VectoPrimaryVehicleReport {
+            get {
+                return ResourceManager.GetString("VectoPrimaryVehicleReport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to maxAcceleration.
         /// </summary>
         public static string Vehicle_AccelerationCurve_MaxAcceleration_Attr {
@@ -2316,6 +4728,24 @@ namespace TUGraz.VectoCommon.Resources {
         public static string Vehicle_ADAS {
             get {
                 return ResourceManager.GetString("Vehicle_ADAS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to APTEcoRollReleaseLockupClutch.
+        /// </summary>
+        public static string Vehicle_ADAS_ATEcoRollReleaseLockupClutch {
+            get {
+                return ResourceManager.GetString("Vehicle_ADAS_ATEcoRollReleaseLockupClutch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EcoRoll.
+        /// </summary>
+        public static string Vehicle_ADAS_EcoRoll {
+            get {
+                return ResourceManager.GetString("Vehicle_ADAS_EcoRoll", resourceCulture);
             }
         }
         
@@ -2428,11 +4858,65 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ArchitectureID.
+        /// </summary>
+        public static string Vehicle_ArchitectureID {
+            get {
+                return ResourceManager.GetString("Vehicle_ArchitectureID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Articulated.
+        /// </summary>
+        public static string Vehicle_Articulated {
+            get {
+                return ResourceManager.GetString("Vehicle_Articulated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to AxleConfiguration.
         /// </summary>
         public static string Vehicle_AxleConfiguration {
             get {
                 return ResourceManager.GetString("Vehicle_AxleConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BodyworkCode.
+        /// </summary>
+        public static string Vehicle_BodyworkCode {
+            get {
+                return ResourceManager.GetString("Vehicle_BodyworkCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BoostingLimitations.
+        /// </summary>
+        public static string Vehicle_BoostingLimitation {
+            get {
+                return ResourceManager.GetString("Vehicle_BoostingLimitation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CargoVolume.
+        /// </summary>
+        public static string Vehicle_CargoVolume {
+            get {
+                return ResourceManager.GetString("Vehicle_CargoVolume", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clutch.
+        /// </summary>
+        public static string Vehicle_Clutch {
+            get {
+                return ResourceManager.GetString("Vehicle_Clutch", resourceCulture);
             }
         }
         
@@ -2581,6 +5065,15 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to LegislativeCategory.
+        /// </summary>
+        public static string Vehicle_LegislativeCategory {
+            get {
+                return ResourceManager.GetString("Vehicle_LegislativeCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to LegislativeClass.
         /// </summary>
         public static string Vehicle_LegislativeClass {
@@ -2595,6 +5088,15 @@ namespace TUGraz.VectoCommon.Resources {
         public static string Vehicle_Loading {
             get {
                 return ResourceManager.GetString("Vehicle_Loading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MaxChargingPower.
+        /// </summary>
+        public static string Vehicle_MaxChargingPower {
+            get {
+                return ResourceManager.GetString("Vehicle_MaxChargingPower", resourceCulture);
             }
         }
         
@@ -2622,6 +5124,15 @@ namespace TUGraz.VectoCommon.Resources {
         public static string Vehicle_NgTankSystem {
             get {
                 return ResourceManager.GetString("Vehicle_NgTankSystem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OvcHev.
+        /// </summary>
+        public static string Vehicle_OvcHev {
+            get {
+                return ResourceManager.GetString("Vehicle_OvcHev", resourceCulture);
             }
         }
         
@@ -2743,6 +5254,15 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ClassBus.
+        /// </summary>
+        public static string Vehicle_RegisteredClass {
+            get {
+                return ResourceManager.GetString("Vehicle_RegisteredClass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to RetarderRatio.
         /// </summary>
         public static string Vehicle_RetarderRatio {
@@ -2815,11 +5335,38 @@ namespace TUGraz.VectoCommon.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to TechnicalPermissibleMaximumLadenMass.
+        /// </summary>
+        public static string Vehicle_TPMLM {
+            get {
+                return ResourceManager.GetString("Vehicle_TPMLM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to VehicleTypeApprovalNumber.
+        /// </summary>
+        public static string Vehicle_TypeApprovalNumber {
+            get {
+                return ResourceManager.GetString("Vehicle_TypeApprovalNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to VehicleCategory.
         /// </summary>
         public static string Vehicle_VehicleCategory {
             get {
                 return ResourceManager.GetString("Vehicle_VehicleCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to VehicleCode.
+        /// </summary>
+        public static string Vehicle_VehicleCode {
+            get {
+                return ResourceManager.GetString("Vehicle_VehicleCode", resourceCulture);
             }
         }
         
@@ -2847,6 +5394,33 @@ namespace TUGraz.VectoCommon.Resources {
         public static string Vehicle_ZeroEmissionVehicle {
             get {
                 return ResourceManager.GetString("Vehicle_ZeroEmissionVehicle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to VehicleDeclarationType.
+        /// </summary>
+        public static string VehicleAttr_VehicleDeclarationType {
+            get {
+                return ResourceManager.GetString("VehicleAttr_VehicleDeclarationType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to VehicleTypeApprovalNumber.
+        /// </summary>
+        public static string VehicleTypeApprovalNumber {
+            get {
+                return ResourceManager.GetString("VehicleTypeApprovalNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Voltage.
+        /// </summary>
+        public static string VoltageLevel_Voltage {
+            get {
+                return ResourceManager.GetString("VoltageLevel_Voltage", resourceCulture);
             }
         }
         

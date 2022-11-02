@@ -29,7 +29,9 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using System;
 using System.ComponentModel.DataAnnotations;
+using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 
@@ -43,7 +45,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 
 		public string ModelName { get; internal set; }
 
-		public string Date { get; internal set; }
+		public DateTime Date { get; internal set; }
 
 		public CertificationMethod CertificationMethod { get; internal set; }
 
@@ -55,7 +57,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 		{
 			var validationService =
 				context.GetService(typeof(VectoValidationModeServiceContainer)) as VectoValidationModeServiceContainer;
-			return validationService == null ? ExecutionMode.Declaration : validationService.Mode;
+			return validationService?.Mode ?? ExecutionMode.Declaration;
 		}
 
 		protected static bool GetEmsMode(ValidationContext context)
@@ -64,5 +66,21 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 				context.GetService(typeof(VectoValidationModeServiceContainer)) as VectoValidationModeServiceContainer;
 			return validationService != null && validationService.IsEMSCycle;
 		}
+
+		protected static VectoSimulationJobType GetSimulationJobType(ValidationContext context)
+		{
+			var validationService =
+				context.GetService(typeof(VectoValidationModeServiceContainer)) as VectoValidationModeServiceContainer;
+			return validationService?.JobType ?? VectoSimulationJobType.ConventionalVehicle;
+
+		}
+
+		protected static PowertrainPosition? GetEMPosition(ValidationContext context)
+		{
+			var validationService =
+				context.GetService(typeof(VectoValidationModeServiceContainer)) as VectoValidationModeServiceContainer;
+			return validationService?.EMPowertrainPosition;
+		}
+
 	}
 }

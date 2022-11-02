@@ -30,6 +30,7 @@
 */
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -47,10 +48,90 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 	/// </summary>
 	public class JobContainer : LoggingObject
 	{
-		internal readonly List<RunEntry> Runs = new List<RunEntry>();
-		private readonly SummaryDataContainer _sumWriter;
+		private class RunContainer
+		{
+			private readonly ISimulatorFactory _simulatorFactory;
+			private IOutputDataWriter _outputWriter;
 
+			public IOutputDataWriter OutputWriter => _outputWriter;
+
+			private bool followUpSimulatorFactoryFetched = false;
+
+			private readonly ConcurrentDictionary<int, byte> _unfinishedRuns = new ConcurrentDictionary<int, byte>();
+			//private readonly HashSet<int> _unfinishedRuns = new HashSet<int>();
+			private readonly ReaderWriterLockSlim _unfinishedRunsRwLock = new ReaderWriterLockSlim();
+
+
+			public RunContainer(ISimulatorFactory simulatorFactory, IList<int> runIds)
+			{
+				_simulatorFactory = simulatorFactory;
+				foreach (var runId in runIds) {
+					_unfinishedRuns[runId] = Byte.MinValue;
+				}
+			}
+
+			public void JobCompleted(int runId)
+			{
+				try {
+					_unfinishedRunsRwLock.EnterWriteLock();
+					_unfinishedRuns.TryRemove(runId, out var tmpByte);
+					if (AllCompletedUnsafe()) {
+						_outputWriter = _simulatorFactory.ReportWriter;
+					}
+				} finally {
+					_unfinishedRunsRwLock.ExitWriteLock();
+				}
+			}
+
+			private bool AllCompletedUnsafe()
+			{
+				return _unfinishedRuns.Count == 0;
+			}
+
+			private bool AllCompleted()
+			{
+				try {
+					_unfinishedRunsRwLock.EnterReadLock();
+					return AllCompletedUnsafe();
+				} finally {
+					_unfinishedRunsRwLock.ExitReadLock();
+				}
+			}
+
+			[MethodImpl(MethodImplOptions.Synchronized)]
+			public ISimulatorFactory GetFollowUpSimulatorFactory()
+			{
+				try {
+					if (followUpSimulatorFactoryFetched || !AllCompleted()) {
+						return null;
+					}
+
+					followUpSimulatorFactoryFetched = true;
+					return _simulatorFactory.FollowUpSimulatorFactory;
+				} catch (Exception e){
+					LogManager.GetLogger(typeof(JobContainer).FullName).Error(e);
+					throw;
+				}finally {
+
+				}
+			}
+		}
+
+		
+
+		private readonly SummaryDataContainer _sumWriter;
+		internal readonly List<RunEntry> Runs = new List<RunEntry>();
+		private readonly ConcurrentDictionary<int, byte> _unfinishedRuns = new ConcurrentDictionary<int, byte>(); //only key is used 
+		private ReaderWriterLockSlim _runsRwLock = new ReaderWriterLockSlim();
+		private ConcurrentDictionary<int, RunContainer> _runContainerMap  = new ConcurrentDictionary<int, RunContainer>();
 		private static int _jobNumber;
+		private bool _multithreaded = true;
+		private bool _canceled = false;
+		private ReaderWriterLockSlim _cancelLock = new ReaderWriterLockSlim();
+
+		private ConcurrentDictionary<int, ProgressEntry> _progressDictionary =
+			new ConcurrentDictionary<int, ProgressEntry>();
+
 
 		/// <summary>
 		/// Initializes a new empty instance of the <see cref="JobContainer"/> class.
@@ -61,10 +142,40 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			_sumWriter = sumWriter;
 		}
 
+		
+		public IEnumerable<IOutputDataWriter> GetOutputDataWriters()
+		{
+			IList<IOutputDataWriter> outputDataWriters = new List<IOutputDataWriter>();
+			foreach (var runContainer in _runContainerMap.Values) {
+				if (runContainer.OutputWriter != null) {
+					outputDataWriters.Add(runContainer.OutputWriter);
+				}
+			}
+
+			return outputDataWriters.Distinct();
+		}
+
 		public void AddRun(IVectoRun run)
 		{
-			Interlocked.Increment(ref _jobNumber);
-			Runs.Add(new RunEntry { Run = run, JobContainer = this });
+			try {
+				_cancelLock.EnterReadLock();
+				if (_canceled) {
+					return;
+				}
+
+				Interlocked.Increment(ref _jobNumber);
+
+				try {
+					_runsRwLock.EnterWriteLock();
+					Runs.Add(new RunEntry(run, this));
+					_unfinishedRuns[run.RunIdentifier] = Byte.MinValue;
+				} finally {
+					_runsRwLock.ExitWriteLock();
+				}
+			} finally {
+				_cancelLock.ExitReadLock();
+			}
+
 		}
 
 		public struct CycleTypeDescription
@@ -73,12 +184,18 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			public CycleType CycleType;
 		}
 
-		public IEnumerable<CycleTypeDescription> GetCycleTypes()
-		{
-			return
-				Runs.Select(
-					r => new CycleTypeDescription { Name = r.Run.CycleName, CycleType = r.Run.GetContainer().RunData.Cycle?.CycleType ?? CycleType.None })
+		public IEnumerable<CycleTypeDescription> GetCycleTypes(){
+			try {
+				_runsRwLock.EnterReadLock();
+				return Runs.Select(
+						r => new CycleTypeDescription {
+							Name = r.Run.CycleName,
+							CycleType = r.Run.GetContainer().RunData.Cycle?.CycleType ?? CycleType.None
+						})
 					.Distinct();
+			} finally {
+				_runsRwLock.ExitReadLock();
+			}
 		}
 
 		/// <summary>
@@ -87,17 +204,40 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		/// <returns>A List of Run-Identifiers (unique), int</returns>
 		public List<int> AddRuns(ISimulatorFactory factory)
 		{
-			var runIDs = new List<int>();
+			try {
+				_cancelLock.EnterReadLock();
+				var runIDs = new List<int>();
+				if (_canceled) {
+					return runIDs;
+				}
 
-			factory.SumData = _sumWriter;
-			factory.JobNumber = Interlocked.Increment(ref _jobNumber);
+				factory.SumData = _sumWriter;
+				factory.JobNumber = Interlocked.Increment(ref _jobNumber);
 
-			foreach (var run in factory.SimulationRuns()) {
-				var entry = new RunEntry { Run = run, JobContainer = this };
-				Runs.Add(entry);
-				runIDs.Add(entry.Run.RunIdentifier);
+				try
+				{
+					_runsRwLock.EnterWriteLock();
+					foreach (var run in factory.SimulationRuns())
+					{
+						var entry = new RunEntry(run, this, factory.JobNumber);
+						Runs.Add(entry);
+						_unfinishedRuns[run.RunIdentifier] = Byte.MinValue;
+						//_unfinishedRuns.Add(run.RunIdentifier);
+						runIDs.Add(entry.RunId);
+					}
+				}
+				finally
+				{
+					_runsRwLock.ExitWriteLock();
+				}
+
+				var added = _runContainerMap.TryAdd(factory.JobNumber, new RunContainer(factory, runIDs));
+				System.Diagnostics.Debug.Assert(added);
+				return runIDs;
 			}
-			return runIDs;
+			finally {
+				_cancelLock.ExitReadLock();
+			}
 		}
 
 		/// <summary>
@@ -105,71 +245,203 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		/// </summary>
 		public void Execute(bool multithreaded = true)
 		{
-			Log.Info("VectoRun started running. Executing Runs.");
-			if (multithreaded) {
-				Runs.ForEach(r => r.RunWorkerAsync());
-			} else {
-				var first = new Task(() => { });
-				var task = first;
-				// ReSharper disable once LoopCanBeConvertedToQuery
-				foreach (var run in Runs) {
-					var r = run;
-					task = task.ContinueWith(t => r.RunWorkerAsync().Wait(), TaskContinuationOptions.OnlyOnRanToCompletion);
+			try {
+				_cancelLock.EnterReadLock();
+				_multithreaded = multithreaded;
+				Log.Info("VectoRun started running. Executing Runs.");
+				if (_canceled) {
+					Log.Info("JobContainer already cancelled\n");
+					return;
 				}
-				first.Start();
+
+
+				try {
+					_runsRwLock.EnterWriteLock();
+					if (multithreaded) {
+						Runs.ForEach(r => { r.RunWorkerAsync(); });
+					} else {
+						var first = new Task(() => { });
+						var task = first;
+						// ReSharper disable once LoopCanBeConvertedToQuery
+						foreach (var run in Runs) {
+							var r = run;
+							task = task.ContinueWith(t => r.RunWorkerAsync().Wait(),
+								TaskContinuationOptions.OnlyOnRanToCompletion);
+						}
+
+						first.Start();
+					}
+				} finally {
+					_runsRwLock.ExitWriteLock();
+				}
+
+
+			} finally {
+				_cancelLock.ExitReadLock();
 			}
+			
 		}
 
 		public void Cancel()
 		{
-			foreach (var job in Runs) {
-				job.CancelAsync();
-			}
+			CancelCurrent();
 			WaitFinished();
 		}
 
 		public void CancelCurrent()
 		{
-			foreach (var job in Runs) {
-				job.CancelAsync();
+			try
+			{
+				_cancelLock.EnterWriteLock();
+				_canceled = true;
+				_runsRwLock.EnterReadLock();
+				foreach (var job in Runs)
+				{
+					job.CancelAsync();
+				}
+			}
+			finally
+			{
+				_runsRwLock.ExitReadLock();
+				_cancelLock.ExitWriteLock();
 			}
 		}
 
 		public void WaitFinished()
 		{
-			Task.WaitAll(Runs.Select(r => r.RunTask).ToArray());
+			Task[] prevTasks;
+			Task[] tasks = {};
+			for (var i = 0; i < 5; i++) {
+				try {
+					prevTasks = tasks;
+					_runsRwLock.EnterReadLock();
+					tasks = Runs.Select(r => r.RunTask).ToArray();
+				} finally {
+					_runsRwLock.ExitReadLock();
+				}
+
+				if (prevTasks.Length != tasks.Length) {
+					Task.WaitAll(tasks);
+				} else {
+					return;
+				}
+			}
 		}
 
-		[MethodImpl(MethodImplOptions.Synchronized)]
-		private void JobCompleted()
+		//[MethodImpl(MethodImplOptions.Synchronized)]
+		private void JobCompleted(int runId, int runContainerId)
 		{
-			if (AllCompleted) {
-				_sumWriter.Finish();
+			try {
+				_cancelLock.EnterReadLock();
+				if (_canceled) {
+					return;
+				}
+			} finally {
+				_cancelLock.ExitReadLock();
 			}
+
+			_runContainerMap.TryGetValue(runContainerId, out var runContainer);
+			
+			runContainer?.JobCompleted(runId);
+			AddFollowUpSimulatorFactories(runContainerId);
+
+			try {
+				_runsRwLock.EnterWriteLock();
+				//_unfinishedRuns.Remove(runId);
+				_unfinishedRuns.TryRemove(runId, out var tmpVal);
+				if (AllCompletedUnsafe()) {
+					_sumWriter.Finish();
+				}
+			} finally {
+				_runsRwLock.ExitWriteLock();
+			}
+		}
+
+		private void AddFollowUpSimulatorFactories(int runContainerId)
+		{
+			try {
+				_runContainerMap.TryGetValue(runContainerId, out var runContainer);
+				var additionalSimulatorFactory = runContainer?.GetFollowUpSimulatorFactory();
+				if (additionalSimulatorFactory == null)
+					return;
+
+				AddRuns(additionalSimulatorFactory);
+				Execute(_multithreaded);
+			} catch (Exception ex) {
+				Log.Error(ex.Message);
+			}
+			
+		}
+
+		private bool AllCompletedUnsafe()
+		{
+			return _unfinishedRuns.Count == 0;
 		}
 
 		public bool AllCompleted
 		{
-			get { return Runs.All(r => r.Done); }
+			get
+			{
+				return _unfinishedRuns.Count == 0;
+
+			}
 		}
 
-		public Dictionary<int, ProgressEntry> GetProgress()
+		public IDictionary<int, ProgressEntry> GetProgress()
 		{
-			return Runs.ToDictionary(
-				r => r.Run.RunIdentifier,
-				r => new ProgressEntry {
-					RunId = r.Run.RunIdentifier,
-					JobRunId = r.Run.JobRunIdentifier,
-					RunName = r.Run.RunName,
-					CycleName = r.Run.CycleName,
-					RunSuffix = r.Run.RunSuffix,
-					Progress = r.Run.Progress,
-					Done = r.Done,
-					ExecTime = r.ExecTime,
-					Success = r.Success,
-					Canceled = r.Canceled,
-					Error = r.ExecException
-				});
+			try {
+				_runsRwLock.EnterReadLock();
+				foreach (var runEntry in Runs) {
+					var key = runEntry.Run.RunIdentifier;
+					//Update existing entry
+					if(_progressDictionary.ContainsKey(key))
+					{
+						var entry = _progressDictionary[key];
+						entry.Progress = runEntry.Run.Progress;
+						entry.Done = runEntry.Done;
+						entry.ExecTime = runEntry.ExecTime;
+						entry.Success = runEntry.Success;
+						entry.Canceled = runEntry.Canceled;
+						entry.Error = runEntry.ExecException;
+					} else {
+						var progressEntry = new ProgressEntry {
+							RunId = runEntry.Run.RunIdentifier,
+							JobRunId = runEntry.Run.JobRunIdentifier,
+							RunName = runEntry.Run.RunName,
+							CycleName = runEntry.Run.CycleName,
+							RunSuffix = runEntry.Run.RunSuffix,
+							Progress = runEntry.Run.Progress,
+							Done = runEntry.Done,
+							ExecTime = runEntry.ExecTime,
+							Success = runEntry.Success,
+							Canceled = runEntry.Canceled,
+							Error = runEntry.ExecException
+						};
+						_progressDictionary[key] = progressEntry;
+					}
+				}
+				return _progressDictionary;
+				//return Runs.ToDictionary(
+				//	r => r.Run.RunIdentifier,
+				//	r => new ProgressEntry
+				//	{
+				//		RunId = r.Run.RunIdentifier,
+				//		JobRunId = r.Run.JobRunIdentifier,
+				//		RunName = r.Run.RunName,
+				//		CycleName = r.Run.CycleName,
+				//		RunSuffix = r.Run.RunSuffix,
+				//		Progress = r.Run.Progress,
+				//		Done = r.Done,
+				//		ExecTime = r.ExecTime,
+				//		Success = r.Success,
+				//		Canceled = r.Canceled,
+				//		Error = r.ExecException
+				//	});
+			} finally {
+				_runsRwLock.ExitReadLock();
+			}
+			
+
 		}
 
 		public class ProgressEntry
@@ -203,18 +475,31 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		{
 			public IVectoRun Run;
 			public JobContainer JobContainer;
-			public bool Done;
+			private readonly ReaderWriterLockSlim _doneLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
+			private bool _done = false;
+			public bool Done => _done;
+
+			volatile public bool Running;
 			public bool Success;
+			public bool Started = false;
 			public bool Canceled;
 			public double ExecTime;
 			public Exception ExecException;
 			public readonly Task RunTask;
+			private readonly int _runContainerId;
 
-			public RunEntry()
+			public int RunId => Run.RunIdentifier;
+			public int JobRunId => Run.JobRunIdentifier;
+
+			public RunEntry(IVectoRun run, JobContainer jobContainer, int runContainerId = -1)
 			{
+				Run = run;
+				JobContainer = jobContainer;
+				_runContainerId = runContainerId;
 				RunTask = new Task(() => {
 					var stopWatch = Stopwatch.StartNew();
 					try {
+						Running = true;
 						Run.Run();
 					} catch (Exception ex) {
 						Log.Error(ex, "Error during simulation run!");
@@ -223,16 +508,20 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 					} finally {
 						stopWatch.Stop();
 						Success = Run.FinishedWithoutErrors && ExecException == null;
-						Done = true;
 						ExecTime = stopWatch.Elapsed.TotalMilliseconds;
-						JobContainer.JobCompleted();
+						JobContainer.JobCompleted(RunId, _runContainerId);
+						_done = true;
 					}
-				});
+				}, TaskCreationOptions.LongRunning);
 			}
 
 			public Task RunWorkerAsync()
 			{
-				RunTask.Start();
+				
+				if (!Running && !Started) {
+					Started = true;
+					RunTask.Start(TaskScheduler.Current);
+				}
 				return RunTask;
 			}
 

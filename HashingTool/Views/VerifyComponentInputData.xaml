@@ -74,7 +74,7 @@
 								Margin="10,2" IsReadOnly="True" />
 					
 					<Label Grid.Row="0" Grid.Column="2" Content="Date:" />
-					<TextBox Grid.Row="0" Grid.Column="3" Text="{helper:CultureAwareBinding Path=Date, StringFormat='g'}" Margin="10,2" IsReadOnly="True" />
+					<TextBox Grid.Row="0" Grid.Column="3" Text="{helper:CultureAwareBinding Path=Date, StringFormat='g', Mode=OneWay}" Margin="10,2" IsReadOnly="True" />
 
 					<Label Grid.Row="1" Grid.Column="0" Content="Component:" />
 					<TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding Component}" Margin="10,2" IsReadOnly="True" />
@@ -90,7 +90,7 @@
 							Margin="10,2" IsReadOnly="True" />
 
 					<Label Grid.Row="4" Grid.Column="0" Content="Digest Value read:" Style="{StaticResource DigestValueLabelStyle}" />
-					<TextBox Grid.Row="4" Grid.Column="1"  Grid.ColumnSpan="3" Text="{Binding DigestValueRead}" Margin="10,2" IsReadOnly="True">
+					<TextBox Grid.Row="4" Grid.Column="1"  Grid.ColumnSpan="3" Text="{Binding DigestValueRead, Mode=OneWay}" Margin="10,2" IsReadOnly="True">
 						<TextBox.Style>
 							<Style TargetType="TextBox" BasedOn="{StaticResource DigestValueTextboxStyle}">
 								<Style.Triggers>
@@ -107,7 +107,7 @@
 
 					<Label Grid.Row="5" Grid.Column="0" Content="Digest Value computed:"
 							Style="{StaticResource DigestValueLabelStyle}" />
-					<TextBox Grid.Row="5" Grid.Column="1"  Grid.ColumnSpan="3" Text="{Binding DigestValueComputed}" Margin="10,2" IsReadOnly="True">
+					<TextBox Grid.Row="5" Grid.Column="1"  Grid.ColumnSpan="3" Text="{Binding DigestValueComputed, Mode=OneWay}" Margin="10,2" IsReadOnly="True">
 						<TextBox.Style>
 							<Style TargetType="TextBox" BasedOn="{StaticResource DigestValueTextboxStyle}">
 								<Style.Triggers>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tns:VectoInputDeclaration xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationComponent:v2.0" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:v2.3="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3" xmlns:di="http://www.w3.org/2000/09/xmldsig#" schemaVersion="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationComponent v:\VectoCore\VectoCore\Resources\XSD/VectoDeclarationComponent.xsd">
+	<tns:Angledrive>
+		<v2.0:Data xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xsi:type="AngledriveDataDeclarationType" id="ANGL-asdf">
+			<Manufacturer>Generic Vendor</Manufacturer>
+			<Model>Generic Model</Model>
+			<CertificationNumber>ANGL-1234</CertificationNumber>
+			<Date>2021-11-18T14:09:17.2810263Z</Date>
+			<AppVersion>aaaaa</AppVersion>
+			<Ratio>1.123</Ratio>
+			<CertificationMethod>Option 1</CertificationMethod>
+			<TorqueLossMap>
+				<Entry inputSpeed="0.00" inputTorque="-10000.00" torqueLoss="100.00"/>
+				<Entry inputSpeed="0.00" inputTorque="0.00" torqueLoss="10.00"/>
+				<Entry inputSpeed="0.00" inputTorque="10000.00" torqueLoss="100.00"/>
+				<Entry inputSpeed="800.00" inputTorque="-1200.00" torqueLoss="100.00"/>
+				<Entry inputSpeed="800.00" inputTorque="0.00" torqueLoss="10.00"/>
+				<Entry inputSpeed="800.00" inputTorque="1200.00" torqueLoss="100.00"/>
+				<Entry inputSpeed="1000.00" inputTorque="-1000.00" torqueLoss="100.00"/>
+				<Entry inputSpeed="1000.00" inputTorque="0.00" torqueLoss="10.00"/>
+				<Entry inputSpeed="1000.00" inputTorque="1000.00" torqueLoss="100.00"/>
+			</TorqueLossMap>
+		</v2.0:Data>
+		<v2.0:Signature>
+			<di:Reference URI="#ANGL-asdf">
+				<di:Transforms>
+					<di:Transform Algorithm="urn:vecto:xml:2017:canonicalization"/>
+					<di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+				</di:Transforms>
+				<di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+				<di:DigestValue>lFLmCC4J39gaYU+VNw4q6ScyWOBzKoeVqmQ8/mQizBQ=</di:DigestValue>
+			</di:Reference>
+		</v2.0:Signature>
+	</tns:Angledrive>
+</tns:VectoInputDeclaration>

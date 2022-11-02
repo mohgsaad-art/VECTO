@@ -31,10 +31,13 @@
 
 using System.IO;
 using NUnit.Framework;
+using System;
 using TUGraz.VectoCommon.Exceptions;
+using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
+using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.Tests.Utils;
@@ -43,6 +46,7 @@ using TUGraz.VectoCore.Utils;
 namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 {
 	[TestFixture]
+	[Parallelizable(ParallelScope.All)]
 	public class RetarderTest
 	{
 		private const string RetarderLossMapFile = @"TestData\Components\Retarder.vrlm";
@@ -73,7 +77,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 			// --------
 			outPort.Initialize(cardanTorque.SI<NewtonMeter>(), cardanSpeed.RPMtoRad());
-			outPort.Request(absTime, dt, cardanTorque.SI<NewtonMeter>(), cardanSpeed.RPMtoRad());
+			outPort.Request(absTime, dt, cardanTorque.SI<NewtonMeter>(), cardanSpeed.RPMtoRad(), false);
 
 			Assert.AreEqual(cardanSpeed.RPMtoRad().Value(), nextRequest.AngularVelocity.Value(), Delta);
 			Assert.AreEqual(cardanTorque + expectedRetarderLoss, nextRequest.Torque.Value(), Delta);
@@ -102,15 +106,15 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var dt = 0.SI<Second>();
 			// --------
 			outPort.Initialize(50.SI<NewtonMeter>(), 650.RPMtoRad());
-			outPort.Request(absTime, dt, 50.SI<NewtonMeter>(), 1550.RPMtoRad());
-			retarder.CommitSimulationStep(new MockModalDataContainer());
+			outPort.Request(absTime, dt, 50.SI<NewtonMeter>(), 1550.RPMtoRad(), false);
+			retarder.CommitSimulationStep(absTime, dt, new MockModalDataContainer());
 			Assert.AreEqual(1550.RPMtoRad().Value(), nextRequest.AngularVelocity.Value(), Delta);
 
 			// (650+1550)/2 = 1100 => 12.42Nm
 			Assert.AreEqual(50 + 12.42, nextRequest.Torque.Value(), Delta);
 
 			//VECTO-307: added an additional request after a commit
-			outPort.Request(absTime, dt, 50.SI<NewtonMeter>(), 450.RPMtoRad());
+			outPort.Request(absTime, dt, 50.SI<NewtonMeter>(), 450.RPMtoRad(), false);
 			Assert.AreEqual(450.RPMtoRad().Value(), nextRequest.AngularVelocity.Value(), Delta);
 			// avg: (1550+450)/2 = 1000 rpm => 12Nm
 			Assert.AreEqual(50 + 12, nextRequest.Torque.Value(), Delta);
@@ -135,7 +139,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var dt = 0.SI<Second>();
 
 			outPort.Initialize(cardanTorque.SI<NewtonMeter>(), cardanSpeed.RPMtoRad());
-			outPort.Request(absTime, dt, cardanTorque.SI<NewtonMeter>(), cardanSpeed.RPMtoRad());
+			outPort.Request(absTime, dt, cardanTorque.SI<NewtonMeter>(), cardanSpeed.RPMtoRad(), false);
 
 			Assert.AreEqual(cardanSpeed.RPMtoRad().Value(), nextRequest.AngularVelocity.Value(), Delta);
 			Assert.AreEqual(cardanTorque + expectedRetarderLoss, nextRequest.Torque.Value(), Delta);
@@ -154,9 +158,9 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var outPort = retarder.OutPort();
 
 			outPort.Initialize(50.SI<NewtonMeter>(), 2550.RPMtoRad());
-			outPort.Request(0.SI<Second>(), 0.SI<Second>(), 50.SI<NewtonMeter>(), 2550.RPMtoRad());
-			AssertHelper.Exception<VectoException>(() => retarder.CommitSimulationStep(new MockModalDataContainer()),
-				"Retarder LossMap data was extrapolated in Declaration mode: range for loss map is not sufficient: n:2550 (min:0, max:2300), ratio:2");
+			outPort.Request(0.SI<Second>(), 0.SI<Second>(), 50.SI<NewtonMeter>(), 2550.RPMtoRad(), false);
+			AssertHelper.Exception<VectoException>(() => retarder.CommitSimulationStep(0.SI<Second>(), 0.SI<Second>(), new MockModalDataContainer()),
+				"Retarder LossMap data was extrapolated in Declaration mode: range for loss map is not sufficient: n:5100 (min:0, max:2300), ratio:2");
 		}
 
 		[TestCase]
@@ -187,10 +191,105 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 			// --------
 			outPort.Initialize(100.SI<NewtonMeter>(), 125.RPMtoRad());
-			outPort.Request(absTime, dt, 100.SI<NewtonMeter>(), 125.RPMtoRad());
+			outPort.Request(absTime, dt, 100.SI<NewtonMeter>(), 125.RPMtoRad(), false);
 
 			Assert.AreEqual(125.RPMtoRad().Value(), nextRequest.AngularVelocity.Value(), Delta);
 			Assert.AreEqual(100 + 20.26, nextRequest.Torque.Value(), Delta);
+		}
+
+
+		private class RetarderInputData : IRetarderInputData
+		{
+			#region Implementation of IRetarderInputData
+
+			public RetarderType Type { get; set; }
+			public double Ratio { get; set; }
+			public TableData LossMap { get; set; }
+
+			#endregion
+
+			#region Implementation of IComponentInputData
+
+			public DataSource DataSource { get; }
+			public bool SavedInDeclarationMode { get; }
+			public string Manufacturer { get; }
+			public string Model { get; }
+			public DateTime Date { get; }
+			public string AppVersion { get; }
+			public CertificationMethod CertificationMethod { get; }
+			public string CertificationNumber { get; }
+			public DigestData DigestValue { get; }
+
+			#endregion
+		}
+
+		[TestCase]
+		public void CreateRetarderTest()
+		{
+			var adapter = new EngineeringDataAdapter();
+			var lossMap = VectoCSVFile.ReadStream(InputDataHelper.InputDataAsStream("Retarder Speed [rpm],Loss Torque [Nm]",
+				new[] { "0, 10", "1000, 12", "2000, 18", "2300, 20.58" }));
+
+			//----------------------------------
+			var pos = PowertrainPosition.HybridPositionNotSet;
+
+			adapter.CreateRetarderData(new RetarderInputData { Type = RetarderType.None }, pos);
+
+			Assert.Throws<VectoException>(() =>
+				adapter.CreateRetarderData(new RetarderInputData { Type = RetarderType.TransmissionInputRetarder }, pos));
+
+			Assert.Throws<VectoException>(() =>
+				adapter.CreateRetarderData(new RetarderInputData { Type = RetarderType.AxlegearInputRetarder }, pos));
+
+			adapter.CreateRetarderData(new RetarderInputData { Type = RetarderType.EngineRetarder }, pos);
+			adapter.CreateRetarderData(new RetarderInputData { Type = RetarderType.LossesIncludedInTransmission }, pos);
+
+			//----------------------------------
+			pos = PowertrainPosition.BatteryElectricE3;
+			adapter.CreateRetarderData(new RetarderInputData { Type = RetarderType.None }, pos);
+			Assert.Throws<VectoException>(() =>
+			adapter.CreateRetarderData(new RetarderInputData { Type = RetarderType.TransmissionInputRetarder, LossMap = lossMap }, pos));
+			adapter.CreateRetarderData(new RetarderInputData { Type = RetarderType.AxlegearInputRetarder, LossMap = lossMap }, pos);
+			adapter.CreateRetarderData(new RetarderInputData { Type = RetarderType.EngineRetarder }, pos);
+			adapter.CreateRetarderData(new RetarderInputData { Type = RetarderType.LossesIncludedInTransmission }, pos);
+
+			//----------------------------------
+			pos = PowertrainPosition.BatteryElectricE2;
+			adapter.CreateRetarderData(new RetarderInputData { Type = RetarderType.None }, pos);
+
+			Assert.Throws<VectoException>(() =>
+				adapter.CreateRetarderData(new RetarderInputData { Type = RetarderType.TransmissionInputRetarder }, pos));
+
+			Assert.Throws<VectoException>(() =>
+				adapter.CreateRetarderData(new RetarderInputData { Type = RetarderType.AxlegearInputRetarder }, pos));
+
+			adapter.CreateRetarderData(new RetarderInputData { Type = RetarderType.EngineRetarder }, pos);
+			adapter.CreateRetarderData(new RetarderInputData { Type = RetarderType.LossesIncludedInTransmission }, pos);
+
+			//----------------------------------
+			pos = PowertrainPosition.HybridP3;
+
+			adapter.CreateRetarderData(new RetarderInputData { Type = RetarderType.None }, pos);
+
+			Assert.Throws<VectoException>(() =>
+				adapter.CreateRetarderData(new RetarderInputData { Type = RetarderType.TransmissionInputRetarder }, pos));
+
+			Assert.Throws<VectoException>(() =>
+				adapter.CreateRetarderData(new RetarderInputData { Type = RetarderType.AxlegearInputRetarder }, pos));
+
+			adapter.CreateRetarderData(new RetarderInputData { Type = RetarderType.EngineRetarder }, pos);
+			adapter.CreateRetarderData(new RetarderInputData { Type = RetarderType.LossesIncludedInTransmission }, pos);
+
+			//----------------------------------
+			pos = PowertrainPosition.HybridP2;
+			adapter.CreateRetarderData(new RetarderInputData { Type = RetarderType.None }, pos);
+			adapter.CreateRetarderData(new RetarderInputData { Type = RetarderType.TransmissionInputRetarder, LossMap = lossMap }, pos);
+			
+			Assert.Throws<VectoException>(() =>
+			adapter.CreateRetarderData(new RetarderInputData { Type = RetarderType.AxlegearInputRetarder }, pos));
+			
+			adapter.CreateRetarderData(new RetarderInputData { Type = RetarderType.EngineRetarder }, pos);
+			adapter.CreateRetarderData(new RetarderInputData { Type = RetarderType.LossesIncludedInTransmission }, pos);
 		}
 	}
 }

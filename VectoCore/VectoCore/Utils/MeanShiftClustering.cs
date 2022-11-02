@@ -116,17 +116,15 @@ namespace TUGraz.VectoCore.Utils
 				_count++;
 			}
 
-			public double? Mean { get { return _count > 0 ? _sum / _count : (double?)null; } }
+			public double? Mean => _count > 0 ? _sum / _count : (double?)null;
 
-			public override string ToString()
-			{
-				return string.Format("[{0},{2}]", Center, Mean);
-			}
+			public override string ToString() => $"[{Center},{Mean}]";
 
 			public bool Update(double tolerance)
 			{
 				if (Mean == null)
 					return false;
+
 				var retVal = Math.Abs(Center - Mean.Value) > tolerance;
 				Center = Mean.Value;
 				_count = 0;

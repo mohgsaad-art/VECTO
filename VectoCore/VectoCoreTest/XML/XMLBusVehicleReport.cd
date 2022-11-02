@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationFile.XMLExemptedPrimaryBusVehicleReport">
+    <Position X="4" Y="5.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationFile.XMLMultistageExemptedBusReport">
+    <Position X="6.75" Y="5.75" Width="2.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationFile.XMLMultistageBusReport">
+    <Position X="6.75" Y="0.75" Width="2.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationFile.XMLPrimaryBusVehicleReport">
+    <Position X="0.5" Y="1" Width="2" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="TUGraz.VectoCore.OutputData.XML.XMLDeclarationReportMultistageBusVehicle">
+    <Position X="9.75" Y="7.5" Width="3.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="TUGraz.VectoCore.OutputData.XML.XMLDeclarationReportPrimaryVehicle">
+    <Position X="14.5" Y="7.5" Width="3" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="TUGraz.VectoCore.OutputData.XML.XMLDeclarationReport">
+    <Position X="12.25" Y="0.75" Width="2.75" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="TUGraz.VectoCore.OutputData.XML.XMLDeclarationReport.ResultEntry" Collapsed="true">
+        <TypeIdentifier />
+        <Lollipop Position="0.2" />
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="TUGraz.VectoCore.OutputData.DeclarationReport&lt;T&gt;">
+    <Position X="15.5" Y="2.25" Width="2.5" />
+    <NestedTypes>
+      <Class Name="TUGraz.VectoCore.OutputData.DeclarationReport&lt;T&gt;.ResultContainer&lt;TEntry&gt;" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationFile.IXMLMultistageReport">
+    <Position X="9.75" Y="0.75" Width="2.25" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="TUGraz.VectoCore.OutputData.XML.DeclarationReports.VehicleInformationFile.IXMLPrimaryVehicleReport">
+    <Position X="3" Y="1.5" Width="2.75" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="TUGraz.VectoCore.OutputData.IDeclarationReport">
+    <Position X="15.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

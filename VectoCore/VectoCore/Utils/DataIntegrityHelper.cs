@@ -29,9 +29,9 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using TUGraz.VectoCommon.Utils;
 
 namespace TUGraz.VectoCore.Utils
 {
@@ -39,9 +39,8 @@ namespace TUGraz.VectoCore.Utils
 	{
 		public static string ComputeDigestValue(string[] lines)
 		{
-			var hash = System.Convert.ToBase64String(GetHash(string.Join("\n", lines)));
-
-			return string.Format("SHA256: {0}", hash);
+			var hash = System.Convert.ToBase64String(GetHash(lines.Join("\n")));
+			return $"SHA256: {hash}";
 		}
 
 		public static byte[] GetHash(string inputString)

@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.VehicleViewModel">
+    <Position X="2" Y="1.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>QAKIJABEEkggAkAAACAAAAUAAAAQAIIAAAAAAIAIAwA=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\VehicleViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.VehicleViewModel_v1_0" Collapsed="true">
+    <Position X="5.5" Y="5.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\VehicleViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.VehicleViewModel_v2_0" Collapsed="true">
+    <Position X="5.5" Y="6.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\VehicleViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="VECTO3GUI2020.ViewModel.Interfaces.JobEdit.IVehicleViewModel">
+    <Position X="4.75" Y="1.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>ViewModel\Interfaces\JobEdit\Vehicle\IVehicleViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

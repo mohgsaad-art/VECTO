@@ -7,7 +7,7 @@
 	xmlns:v1.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0"
 	xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0"
 	xmlns:di="http://www.w3.org/2000/09/xmldsig#"
-	xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob E:\QUAM\Workspace\VECTO_quam\VectoCore\VectoCore\Resources\XSD/VectoDeclarationJob.xsd"
+	xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob v:\VectoCore\VectoCore\Resources\XSD/VectoDeclarationJob.xsd"
 	>
 	<Vehicle id="VEH-1234567890" xsi:type="VehicleDeclarationType">
 		<Manufacturer>Generic Truck Manufacturer</Manufacturer>
@@ -2592,7 +2592,7 @@
 				</Signature>
 				</Gearbox>
 			<TorqueConverter>
-				<Data id="tc-123xyz" xsi:type="v1.0:TorqueConverterDeclarationDataType">
+				<Data id="tc-123xyz" xsi:type="v1.0:TorqueConverterDataDeclarationType">
 					<v1.0:Manufacturer>Some Manufacturer</v1.0:Manufacturer>
 					<v1.0:Model>Some Model</v1.0:Model>
 					<v1.0:CertificationNumber>e12*0815/8051*2017/05E0000*00</v1.0:CertificationNumber>

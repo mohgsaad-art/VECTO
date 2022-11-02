@@ -8,34 +8,27 @@
 '   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 '
 ' See the LICENSE.txt for the specific language governing permissions and limitations.
-
+Imports TUGraz.VectoCore.Utils
 
 ''' <summary>
 ''' About Dialog. Shows Licence and contact/support information
 ''' </summary>
-''' <remarks></remarks>
 Public Class AboutBox
-	'Initialize
-	Private Sub F10_AboutBox_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
-		Text = "VECTO " & VECTOvers & " / VectoCore " & COREvers
+	Private Sub F10_AboutBox_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+		Text = "VECTO " & VECTOvers & " / VectoCore" & VectoSimulationCore.BranchSuffix & " " & COREvers
 	End Sub
 
-	'e-mail links----------------------------------------------------------------
 	Private Sub LinkLabel1_LinkClicked_1(sender As Object, e As LinkLabelLinkClickedEventArgs) _
 		Handles LinkLabel1.LinkClicked
-		Process.Start("mailto:jrc-vecto@ec.europa.eu")
+		Process.Start(New ProcessStartInfo("mailto:jrc-vecto@ec.europa.eu") With {.UseShellExecute = True})
 	End Sub
 
-	'----------------------------------------------------------------------------
-
-	'Picture Links------------------------------------------------------------------
 	Private Sub PictureBoxJRC_Click(sender As Object, e As EventArgs) Handles PictureBoxJRC.Click
-		Process.Start("http://ec.europa.eu/dgs/jrc/index.cfm")
+		Process.Start(New ProcessStartInfo("http://ec.europa.eu/dgs/jrc/index.cfm") With {.UseShellExecute = True})
 	End Sub
-
-
+	
 	Private Sub LinkLabel2_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) _
 		Handles LinkLabel2.LinkClicked
-		Process.Start("https://joinup.ec.europa.eu/community/eupl/og_page/eupl")
+		Process.Start(New ProcessStartInfo("https://joinup.ec.europa.eu/community/eupl/og_page/eupl") With {.UseShellExecute = True})
 	End Sub
 End Class

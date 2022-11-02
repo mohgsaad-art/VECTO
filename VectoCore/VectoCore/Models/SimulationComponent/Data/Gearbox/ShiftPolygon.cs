@@ -35,6 +35,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
+using Newtonsoft.Json;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 
@@ -52,18 +53,26 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox
 			_downShiftPolygon = downshift;
 		}
 
-		public ReadOnlyCollection<ShiftPolygonEntry> Upshift
+		[JsonIgnore]
+		public ReadOnlyCollection<ShiftPolygonEntry> Upshift => _upShiftPolygon.AsReadOnly();
+
+		[JsonIgnore]
+		public ReadOnlyCollection<ShiftPolygonEntry> Downshift => _downShiftPolygon.AsReadOnly();
+
+		public string[] DownshiftSerialized
 		{
-			get { return _upShiftPolygon.AsReadOnly(); }
+			get { return _downShiftPolygon.Select(x => $"{x.AngularSpeed.AsRPM} [rpm], {x.Torque}").ToArray(); }
 		}
 
-		public ReadOnlyCollection<ShiftPolygonEntry> Downshift
+		public string[] UpshiftSerialized
 		{
-			get { return _downShiftPolygon.AsReadOnly(); }
+			get { return _upShiftPolygon.Select(x => $"{x.AngularSpeed.AsRPM} [rpm], {x.Torque}").ToArray(); }
 		}
 
 		public bool IsBelowDownshiftCurve(NewtonMeter inTorque, PerSecond inAngularVelocity)
 		{
+			if (!Downshift.Any()) {
+				return false;}
 			var section = Downshift.GetSection(entry => entry.AngularSpeed < inAngularVelocity);
 			if (section.Item2.AngularSpeed < inAngularVelocity) {
 				return false;
@@ -92,6 +101,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox
 
 		public bool IsAboveUpshiftCurve(NewtonMeter inTorque, PerSecond inAngularVelocity)
 		{
+			if (!Upshift.Any()) {
+				return false;
+			}
 			var section = Upshift.GetSection(entry => entry.AngularSpeed < inAngularVelocity);
 
 			if (section.Item2.AngularSpeed < inAngularVelocity) {
@@ -110,7 +122,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox
 		/// <remarks>Computes a simplified cross product for the vectors: from--X, from--to and checks
 		/// if the z-component is positive (which means that X was on the right side of from--to).</remarks>
 		public static bool IsLeftOf(PerSecond angularSpeed, NewtonMeter torque,
-			Tuple<ShiftPolygonEntry, ShiftPolygonEntry> segment)
+			(ShiftPolygonEntry, ShiftPolygonEntry) segment)
 		{
 			if (segment.Item1.AngularSpeed < angularSpeed && segment.Item2.AngularSpeed < angularSpeed)
 				return false;
@@ -133,7 +145,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox
 		/// <remarks>Computes a simplified cross product for the vectors: from--X, from--to and checks
 		/// if the z-component is negative (which means that X was on the left side of from--to).</remarks>
 		public static bool IsRightOf(PerSecond angularSpeed, NewtonMeter torque,
-			Tuple<ShiftPolygonEntry, ShiftPolygonEntry> segment)
+			(ShiftPolygonEntry, ShiftPolygonEntry) segment)
 		{
 			if (segment.Item1.AngularSpeed > angularSpeed && segment.Item2.AngularSpeed > angularSpeed)
 				return false;
@@ -151,13 +163,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox
 		{
 			var validationService =
 				validationContext.GetService(typeof(VectoValidationModeServiceContainer)) as VectoValidationModeServiceContainer;
-			var gbxType = validationService != null ? validationService.GearboxType : null;
+			var gbxType = validationService?.GearboxType;
 
 			if (gbxType == null || gbxType.Value.AutomaticTransmission()) {
 				return ValidationResult.Success;
 			}
 
-			return shiftPolygon.Downshift.Pairwise(Tuple.Create).Any(downshiftLine =>
+			return shiftPolygon.Downshift.Pairwise().Any(downshiftLine =>
 				shiftPolygon.Upshift.Any(upshiftEntry => IsLeftOf(upshiftEntry.AngularSpeed, upshiftEntry.Torque, downshiftLine)))
 				? new ValidationResult("upshift line has to be right of the downshift line!")
 				: ValidationResult.Success;

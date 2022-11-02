@@ -29,29 +29,39 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
-using System;
-using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCore.Models.Connector.Ports;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent;
-using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 
 namespace TUGraz.VectoCore.Utils
 {
 	public static class ProviderExtensions
 	{
-		public static void AddAuxiliaries(this CombustionEngine engine, VehicleContainer container,
+		public static void AddAuxiliaries(this CombustionEngine engine, IVehicleContainer container,
 			VectoRunData data)
 		{
 			// aux --> engine
-			if (data.AdvancedAux != null && data.AdvancedAux.AuxiliaryAssembly == AuxiliaryModel.Advanced) {
+			if (data.BusAuxiliaries != null) {
 				engine.Connect(PowertrainBuilder.CreateAdvancedAuxiliaries(data, container).Port());
 			} else {
 				if (data.Aux != null) {
 					engine.Connect(PowertrainBuilder.CreateAuxiliaries(data, container).Port());
+				}
+			}
+		}
+
+		public static void AddAuxiliariesSerialHybrid(this CombustionEngine engine, IVehicleContainer container,
+			VectoRunData data)
+		{
+			// aux --> engine
+			if (data.BusAuxiliaries != null) {
+				engine.Connect(PowertrainBuilder.CreateAdvancedAuxiliaries(data, container).Port());
+			} else {
+				if (data.Aux != null) {
+					engine.Connect(PowertrainBuilder.CreateAuxiliariesSerialHybrid(data, container).Port());
 				}
 			}
 		}
@@ -99,35 +109,15 @@ namespace TUGraz.VectoCore.Utils
 				idleController = next.IdleController;
 			}
 
-			var clutch = prev as IClutch;
-			if (clutch != null) {
+			if (prev is IClutch clutch) {
 				clutch.IdleController = idleController;
 			}
-			var atGbx = prev as ATGearbox;
-			if (atGbx != null) {
+
+			if (prev is ATGearbox atGbx) {
 				atGbx.IdleController = idleController;
 			}
 
 			return next;
-		}
-
-		public static IPowerTrainComponent AddComponent(this IPowerTrainComponent prev, IGearbox gearbox, RetarderData data,
-			IVehicleContainer container)
-		{
-			switch (data.Type) {
-				case RetarderType.TransmissionOutputRetarder:
-					return prev.AddComponent(new Retarder(container, data.LossMap, data.Ratio)).AddComponent(gearbox);
-				case RetarderType.TransmissionInputRetarder:
-					return prev.AddComponent(gearbox).AddComponent(new Retarder(container, data.LossMap, data.Ratio));
-				case RetarderType.None:
-				case RetarderType.LossesIncludedInTransmission:
-				case RetarderType.EngineRetarder:
-					return prev.AddComponent(new DummyRetarder(container)).AddComponent(gearbox);
-				default:
-					// ReSharper disable once NotResolvedInText
-					// ReSharper disable once LocalizableElement
-					throw new ArgumentOutOfRangeException("retarderdata.Type", data.Type.ToString(), "Retardertype unknown");
-			}
 		}
 	}
 }

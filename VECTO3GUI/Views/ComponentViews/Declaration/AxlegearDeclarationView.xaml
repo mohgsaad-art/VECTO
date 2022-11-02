@@ -1,0 +1,82 @@
+﻿<UserControl x:Class="VECTO3GUI.Views.ComponentViews.Declaration.AxlegearDeclarationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:interfaces="clr-namespace:VECTO3GUI.ViewModel.Interfaces"
+             xmlns:helper="clr-namespace:VECTO3GUI.Helper"
+             xmlns:customControls="clr-namespace:VECTO3GUI.Views.CustomControls"
+             xmlns:converter="clr-namespace:VECTO3GUI.Helper.Converter"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="800">
+    <d:AxlegearDeclarationView.DataContext>
+        <x:Type Type="interfaces:IAxlegearViewModel"/>
+    </d:AxlegearDeclarationView.DataContext>
+    <StackPanel Orientation="Vertical" Width="400" HorizontalAlignment="Left"  Grid.IsSharedSizeScope="True">
+        <customControls:CommonDeclarationComponentData 
+            Model="{Binding Model}"
+            Manufacturer="{Binding Manufacturer}"
+            Date="{Binding Date, StringFormat=G}"
+            CertificationNumber="{Binding CertificationNumber}"/>
+        <customControls:ComboParameter 
+            Caption="Certification Method" CaptionWidthGroup="lblWidth"
+            Unit="" UnitWidthGroup="unitWidth"
+            Value="{Binding CertificationMethod}" AllowedValues="{Binding AllowedCertificationMethods}"
+        />
+        <customControls:ComboParameter
+            Caption="Line Type" CaptionWidthGroup="lblWidth"
+            Unit="" UnitWidthGroup="unitWidth"
+            Value="{Binding LineType}"
+            AllowedValues="{Binding AllowedLineTypes}"/>
+        <customControls:VectoParameterControl
+            Caption="Ratio" CaptionWidthGroup="lblWidth"
+            Unit="-" UnitWidthGroup="unitWidth"
+            Value="{Binding Ratio}"
+            />
+        <ListView ItemsSource="{Binding LossMap}" Margin="10" MinHeight="150" MaxHeight="300">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Width="auto">
+                        <GridViewColumnHeader MinWidth="100" IsEnabled="False" Foreground="Black">Input Speed</GridViewColumnHeader>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate DataType="interfaces:GearLossMapEntry">
+                                <DockPanel>
+                                    <TextBlock DockPanel.Dock="Right" Text="rpm"/>
+                                    <TextBox DockPanel.Dock="Right" Text="{Binding InputSpeed, Converter={converter:SIValueConverter}, ConverterParameter=AsRPM|double2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" BorderThickness="0" Background="Transparent" TextAlignment="Right"/>
+                                </DockPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Width="auto">
+                        <GridViewColumnHeader MinWidth="100" IsEnabled="False" Foreground="Black">Input Torque</GridViewColumnHeader>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate DataType="interfaces:GearLossMapEntry">
+                                <DockPanel>
+                                    <TextBlock DockPanel.Dock="Right" Text="Nm"/>
+                                    <TextBox DockPanel.Dock="Right" Text="{Binding InputTorque, Converter={converter:SIValueConverter}, ConverterParameter=double2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" BorderThickness="0" Background="Transparent" TextAlignment="Right"/>
+                                </DockPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Width="auto">
+                        <GridViewColumnHeader MinWidth="100" IsEnabled="False" Foreground="Black">Torque Loss</GridViewColumnHeader>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate DataType="interfaces:GearLossMapEntry">
+                                <DockPanel>
+                                    <TextBlock DockPanel.Dock="Right" Text="Nm"/>
+                                    <TextBox DockPanel.Dock="Right" Text="{Binding TorqueLoss, Converter={converter:SIValueConverter}, ConverterParameter=double2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}" BorderThickness="0" Background="Transparent" TextAlignment="Right"/>
+                                </DockPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+    </StackPanel>
+</UserControl>

@@ -30,27 +30,12 @@
 */
 
 using System;
+using TUGraz.VectoCommon.Models;
+using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Configuration;
 
 namespace TUGraz.VectoCore.Models.Declaration
 {
-	public enum MissionType
-	{
-		LongHaul,
-		LongHaulEMS,
-		RegionalDelivery,
-		RegionalDeliveryEMS,
-		UrbanDelivery,
-		MunicipalUtility,
-		Construction,
-		HeavyUrban,
-		Urban,
-		Suburban,
-		Interurban,
-		Coach,
-		VerificationTest,
-		ExemptedMission
-	}
-
 	public static class MissionTypeHelper
 	{
 		public static string GetName(this MissionType self)
@@ -79,6 +64,11 @@ namespace TUGraz.VectoCore.Models.Declaration
 			return self;
 		}
 
+		public static string GetLabel(this MissionType self)
+		{
+			return self.ToXMLFormat();
+		}
+
 		public static string ToXMLFormat(this MissionType self)
 		{
 			switch (self) {
@@ -96,18 +86,58 @@ namespace TUGraz.VectoCore.Models.Declaration
 					return "Municipal Utility";
 				case MissionType.Construction:
 					return "Construction";
-				//case MissionType.HeavyUrban:
-				//	return "";
-				//case MissionType.Urban:
-				//	return "";
-				//case MissionType.Suburban:
-				//	return "";
-				//case MissionType.Interurban:
-				//	return "";
-				//case MissionType.Coach:
-				//	return "";
+				case MissionType.HeavyUrban:
+					return "Heavy Urban";
+				case MissionType.Urban:
+					return "Urban";
+				case MissionType.Suburban:
+					return "Suburban";
+				case MissionType.Interurban:
+					return "Interurban";
+				case MissionType.Coach:
+					return "Coach";
+				case MissionType.VerificationTest:
+					return "Verification Test";
+				case MissionType.ExemptedMission:
+					return "Exempted";
 				default:
 					throw new ArgumentOutOfRangeException("MissionType", self, null);
+			}
+		}
+
+		public static Kilogram GetAveragePassengerMass(this MissionType self)
+		{
+			switch (self) {
+				case MissionType.LongHaul:
+				case MissionType.LongHaulEMS: 
+				case MissionType.RegionalDelivery: 
+				case MissionType.RegionalDeliveryEMS: 
+				case MissionType.UrbanDelivery: 
+				case MissionType.MunicipalUtility: 
+				case MissionType.Construction:
+				case MissionType.VerificationTest: 
+				case MissionType.ExemptedMission:
+					return 0.SI<Kilogram>();
+				case MissionType.HeavyUrban: 
+				case MissionType.Urban: 
+				case MissionType.Suburban: 
+					return Constants.BusParameters.PassengerWeightLow;
+				case MissionType.Interurban: 
+				case MissionType.Coach:
+					return Constants.BusParameters.PassengerWeightHigh;
+				default: throw new ArgumentOutOfRangeException(nameof(self), self, null);
+			}
+		}
+
+		public static double GetLowLoadFactorBus(this MissionType self)
+		{
+			switch (self) {
+				case MissionType.HeavyUrban:
+				case MissionType.Urban:
+				case MissionType.Suburban: return 0.2;
+				case MissionType.Interurban: return 0.25;
+				case MissionType.Coach: return 0.4;
+				default: return 0.1;
 			}
 		}
 	}

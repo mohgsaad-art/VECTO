@@ -29,6 +29,8 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using Newtonsoft.Json;
+using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
@@ -40,6 +42,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 		[ValidateObject] public TransmissionData AxleGear;
 
 		public AxleLineType LineType;
+
+		[JsonIgnore]
+		public IAxleGearInputData InputData { get; internal set; }
 	}
 
 	

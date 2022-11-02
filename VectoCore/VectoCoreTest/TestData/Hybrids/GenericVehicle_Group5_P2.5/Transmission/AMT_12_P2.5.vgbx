@@ -1,0 +1,117 @@
+{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2020-08-21T09:25:38.1210499Z",
+    "AppVersion": "3",
+    "FileVersion": 6
+  },
+  "Body": {
+    "SavedInDeclMode": false,
+    "ModelName": "tractor_12gear_example",
+    "Inertia": 0.0,
+    "TracInt": 1.0,
+    "Gears": [
+      {
+        "Ratio": 2.64,
+        "LossMap": "Axle_4x2_Tractor.vtlm"
+      },
+      {
+        "Ratio": 16.688,
+        "LossMap": "Gear_1.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": "",
+        "MaxSpeed": ""
+      },
+      {
+        "Ratio": 12.924,
+        "LossMap": "Gear_2.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": "",
+        "MaxSpeed": ""
+      },
+      {
+        "Ratio": 9.926,
+        "LossMap": "Gear_3.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": "",
+        "MaxSpeed": ""
+      },
+      {
+        "Ratio": 7.688,
+        "LossMap": "Gear_4.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": "",
+        "MaxSpeed": ""
+      },
+      {
+        "Ratio": 5.895,
+        "LossMap": "Gear_5.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": "",
+        "MaxSpeed": ""
+      },
+      {
+        "Ratio": 4.565,
+        "LossMap": "Gear_6.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": "",
+        "MaxSpeed": ""
+      },
+      {
+        "Ratio": 3.655,
+        "LossMap": "Gear_7.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": "",
+        "MaxSpeed": ""
+      },
+      {
+        "Ratio": 2.831,
+        "LossMap": "Gear_8.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": "",
+        "MaxSpeed": ""
+      },
+      {
+        "Ratio": 2.174,
+        "LossMap": "Gear_9.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": "",
+        "MaxSpeed": ""
+      },
+      {
+        "Ratio": 1.684,
+        "LossMap": "Gear_10.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": "",
+        "MaxSpeed": ""
+      },
+      {
+        "Ratio": 1.291,
+        "LossMap": "Gear_11.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": "",
+        "MaxSpeed": ""
+      },
+      {
+        "Ratio": 1.0,
+        "LossMap": "Gear_12.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": "",
+        "MaxSpeed": ""
+      }
+    ],
+    "TqReserve": 20.0,
+    "ShiftTime": 2.0,
+    "StartTqReserve": 20.0,
+    "StartSpeed": 2.0,
+    "StartAcc": 0.6,
+    "GearboxType": "AMT",
+    "TorqueConverter": {
+      "Enabled": false
+    },
+    "DownshiftAfterUpshiftDelay": 6.0,
+    "UpshiftAfterDownshiftDelay": 6.0,
+    "UpshiftMinAcceleration": 0.1,
+    "PowershiftShiftTime": 0.8
+  }
+}

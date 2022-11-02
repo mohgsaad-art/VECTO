@@ -46,23 +46,24 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 {
 	public class JSONGearboxDataV6 : JSONGearboxDataV5
 	{
+		private IList<ITransmissionInputData> resultGears;
+
 		public JSONGearboxDataV6(JObject data, string filename, bool tolerateMissing = false)
 			: base(data, filename, tolerateMissing) {}
 
-		public override GearboxType Type
-		{
-			get { return Body.GetEx<string>(JsonKeys.Gearbox_GearboxType).ParseEnum<GearboxType>(); }
-		}
+		public override GearboxType Type => Body.GetEx<string>(JsonKeys.Gearbox_GearboxType).ParseEnum<GearboxType>();
 
 		public override IList<ITransmissionInputData> Gears
 		{
 			get {
-				var resultGears = new List<ITransmissionInputData>();
-				var gears = Body.GetEx(JsonKeys.Gearbox_Gears);
-				for (var i = 1; i < gears.Count(); i++) {
-					var gear = gears[i];
+				if (resultGears == null) { 
+					resultGears = new List<ITransmissionInputData>();
+					var gears = Body.GetEx(JsonKeys.Gearbox_Gears);
+					for (var i = 1; i < gears.Count(); i++) {
+						var gear = gears[i];
 
-					resultGears.Add(CreateGear(i, gear));
+						resultGears.Add(CreateGear(i, gear));
+					}
 				}
 				return resultGears;
 			}
@@ -86,6 +87,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 				return null;
 			}
 		}
+
+		public override double AxlegearRatio => Ratio;
 	}
 
 	/// <summary>
@@ -118,6 +121,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 	public class JSONGearboxDataV5 : JSONFile, IGearboxEngineeringInputData, IAxleGearInputData,
 		ITorqueConverterEngineeringInputData, IGearshiftEngineeringInputData
 	{
+
 		public JSONGearboxDataV5(JObject data, string filename, bool tolerateMissing = false)
 			: base(data, filename, tolerateMissing) {}
 
@@ -173,10 +177,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			}
 		}
 
-		public AxleLineType LineType
-		{
-			get { return AxleLineType.SingleReductionAxle; }
-		}
+		public AxleLineType LineType => AxleLineType.SingleReductionAxle;
 
 		#endregion
 
@@ -199,10 +200,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			}
 		}
 
-		public virtual KilogramSquareMeter Inertia
-		{
-			get { return Body.GetEx<double>(JsonKeys.Gearbox_Inertia).SI<KilogramSquareMeter>(); }
-		}
+		public virtual KilogramSquareMeter Inertia => Body.GetEx<double>(JsonKeys.Gearbox_Inertia).SI<KilogramSquareMeter>();
 
 		public virtual TableData ShiftPolygon
 		{
@@ -221,10 +219,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			}
 		}
 
-		public Second TractionInterruption
-		{
-			get { return Body.GetEx<double>(JsonKeys.Gearbox_TractionInterruption).SI<Second>(); }
-		}
+		public Second TractionInterruption => Body.GetEx<double>(JsonKeys.Gearbox_TractionInterruption).SI<Second>();
 
 		public virtual IList<ITransmissionInputData> Gears
 		{
@@ -248,6 +243,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			}
 		}
 
+		public bool DifferentialIncluded => false;
+		public virtual double AxlegearRatio => double.NaN;
+
 		private TransmissionInputData CreateTorqueConverterGear(int gearNr, JToken gear, JToken nextGear)
 		{
 			var ratio = gear.GetEx<double>(JsonKeys.Gearbox_Gear_Ratio);
@@ -268,12 +266,12 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 				Ratio = nextRatio,
 				LossMap = nextGear[JsonKeys.Gearbox_Gear_LossMapFile] != null
 					? ReadTableData(nextGear.GetEx<string>(JsonKeys.Gearbox_Gear_LossMapFile),
-						string.Format("Gear {0} LossMap", gearNr))
+						$"Gear {gearNr} LossMap")
 					: null,
 				Efficiency = nextEfficiency,
-				MaxTorque = gear["MaxTorque"] != null ? gear["MaxTorque"].Value<double>().SI<NewtonMeter>() : null,
+				MaxTorque = gear["MaxTorque"]?.Value<double>().SI<NewtonMeter>(),
 				ShiftPolygon = ReadTableData(gear.GetEx<string>(JsonKeys.Gearbox_Gear_ShiftPolygonFile),
-					string.Format("Gear {0} shiftPolygon", gearNr), false),
+					$"Gear {gearNr} shiftPolygon", false),
 			};
 		}
 
@@ -294,7 +292,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			if (lossMap != null) {
 				try {
 					retVal.LossMap = ReadTableData(gear.GetEx<string>(JsonKeys.Gearbox_Gear_LossMapFile),
-						string.Format("Gear {0} LossMap", gearNumber));
+						$"Gear {gearNumber} LossMap");
 				} catch (Exception) {
 					if (!TolerateMissing) {
 						throw;
@@ -311,7 +309,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			if (shiftPolygonFile != null && !string.IsNullOrWhiteSpace(shiftPolygonFile.Value<string>())) {
 				try {
 					retVal.ShiftPolygon = ReadTableData(gear.GetEx<string>(JsonKeys.Gearbox_Gear_ShiftPolygonFile),
-						string.Format("Gear {0} shiftPolygon", gearNumber));
+						$"Gear {gearNumber} shiftPolygon");
 				} catch (Exception) {
 					retVal.ShiftPolygon = new TableData(Path.Combine(BasePath, shiftPolygonFile.Value<string>()) + MissingFileSuffix,
 						DataSourceType.Missing);
@@ -324,118 +322,106 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			return retVal;
 		}
 
-		public virtual Second MinTimeBetweenGearshift
-		{
-			get { return Body.GetEx<double>(JsonKeys.Gearbox_ShiftTime).SI<Second>(); }
-		}
+		public virtual Second MinTimeBetweenGearshift => Body.GetEx<double>(JsonKeys.Gearbox_ShiftTime).SI<Second>();
 
-		public virtual double TorqueReserve
-		{
-			get { return Body.GetEx<double>(JsonKeys.Gearbox_TorqueReserve) / 100.0; }
-		}
+		public virtual double TorqueReserve => Body.GetEx<double>(JsonKeys.Gearbox_TorqueReserve) / 100.0;
 
-		public virtual MeterPerSecond StartSpeed
-		{
-			get { return Body.GetEx<double>(JsonKeys.Gearbox_StartSpeed).SI<MeterPerSecond>(); }
-		}
+		public virtual MeterPerSecond StartSpeed => Body.GetEx<double>(JsonKeys.Gearbox_StartSpeed).SI<MeterPerSecond>();
 
-		public virtual MeterPerSquareSecond StartAcceleration
-		{
-			get { return Body.GetEx<double>(JsonKeys.Gearbox_StartAcceleration).SI<MeterPerSquareSecond>(); }
-		}
+		public virtual MeterPerSquareSecond StartAcceleration => Body.GetEx<double>(JsonKeys.Gearbox_StartAcceleration).SI<MeterPerSquareSecond>();
 
-		public virtual double StartTorqueReserve
-		{
-			get { return Body.GetEx<double>(JsonKeys.Gearbox_StartTorqueReserve) / 100.0; }
-		}
+		public virtual double StartTorqueReserve => Body.GetEx<double>(JsonKeys.Gearbox_StartTorqueReserve) / 100.0;
 
-		
-		public virtual ITorqueConverterEngineeringInputData TorqueConverter
-		{
-			get { return this; }
-		}
 
-		public Second DownshiftAfterUpshiftDelay
-		{
-			get {
-				return Body["DownshiftAfterUpshiftDelay"] == null
-					? DeclarationData.Gearbox.DownshiftAfterUpshiftDelay
-					: Body.GetEx<double>("DownshiftAfterUpshiftDelay").SI<Second>();
-			}
-		}
+		public virtual ITorqueConverterEngineeringInputData TorqueConverter => this;
 
-		public Second UpshiftAfterDownshiftDelay
-		{
-			get {
-				return Body["UpshiftAfterDownshiftDelay"] == null
-					? DeclarationData.Gearbox.UpshiftAfterDownshiftDelay
-					: Body.GetEx<double>("UpshiftAfterDownshiftDelay").SI<Second>();
-			}
-		}
+		public Second DownshiftAfterUpshiftDelay =>
+			Body["DownshiftAfterUpshiftDelay"] == null
+				? DeclarationData.Gearbox.DownshiftAfterUpshiftDelay
+				: Body.GetEx<double>("DownshiftAfterUpshiftDelay").SI<Second>();
 
-		public MeterPerSquareSecond UpshiftMinAcceleration
-		{
-			get {
-				return Body["UpshiftMinAcceleration"] == null
-					? DeclarationData.Gearbox.UpshiftMinAcceleration
-					: Body.GetEx<double>("UpshiftMinAcceleration").SI<MeterPerSquareSecond>();
-			}
-		}
+		public Second UpshiftAfterDownshiftDelay =>
+			Body["UpshiftAfterDownshiftDelay"] == null
+				? DeclarationData.Gearbox.UpshiftAfterDownshiftDelay
+				: Body.GetEx<double>("UpshiftAfterDownshiftDelay").SI<Second>();
 
-		public Second PowershiftShiftTime
-		{
-			get {
-				return Body["PowershiftShiftTime"] == null
-					? Constants.DefaultPowerShiftTime
-					: Body.GetEx<double>("PowershiftShiftTime").SI<Second>();
-			}
-		}
+		public MeterPerSquareSecond UpshiftMinAcceleration =>
+			Body["UpshiftMinAcceleration"] == null
+				? DeclarationData.Gearbox.UpshiftMinAcceleration
+				: Body.GetEx<double>("UpshiftMinAcceleration").SI<MeterPerSquareSecond>();
+
+		public Second GearResidenceTime => null;
+		public double? DnT99LHMin1 => null;
+		public double? DnT99LHMin2 => null;
+		public int? AllowedGearRangeUp => null;
+		public int? AllowedGearRangeDown => null;
+		public Second LookBackInterval => null;
+		public Watt AvgCardanPowerThresholdPropulsion => null;
+		public Watt CurrCardanPowerThresholdPropulsion => null;
+		public double? TargetSpeedDeviationFactor => null;
+		public double? EngineSpeedHighDriveOffFactor => null;
+		public double? RatingFactorCurrentGear => null;
+		public TableData AccelerationReserveLookup => null;
+		public TableData ShareTorque99L => null;
+		public TableData PredictionDurationLookup => null;
+		public TableData ShareIdleLow => null;
+		public TableData ShareEngineHigh => null;
+		public Second DriverAccelerationLookBackInterval => null;
+		public MeterPerSquareSecond DriverAccelerationThresholdLow => null;
+		public double? RatioEarlyUpshiftFC => null;
+		public double? RatioEarlyDownshiftFC => null;
+		public int? AllowedGearRangeFC => null;
+
+		public PerSecond MinEngineSpeedPostUpshift => null;
+		public Second ATLookAheadTime => null;
+		public double[][] ShiftSpeedsTCToLocked => null;
+		public double? PEV_TargetSpeedBrakeNorm => null;
+		public double? PEV_DownshiftSpeedFactor => null;
+		public double? PEV_DeRatingDownshiftSpeedFactor => null;
+		public double? PEV_DownshiftMinSpeedFactor => null;
+
+		public double? VeloictyDropFactor => null;
+
+		public double? AccelerationFactor => null;
+
+		public TableData LoadStageShiftLines => null;
+		public IList<double> LoadStageThresholdsUp => null;
+		public IList<double> LoadStageThresholdsDown => null;
+
+		public Second PowershiftShiftTime =>
+			Body["PowershiftShiftTime"] == null
+				? Constants.DefaultPowerShiftTime
+				: Body.GetEx<double>("PowershiftShiftTime").SI<Second>();
 
 		#endregion
 
 		#region ITorqueConverterInputData
 
-		public MeterPerSquareSecond CLUpshiftMinAcceleration
-		{
-			get {
-				return Body[JsonKeys.Gearbox_TorqueConverter] != null &&
-						Body[JsonKeys.Gearbox_TorqueConverter]["CLUpshiftMinAcceleration"] != null
-					? Body.GetEx(JsonKeys.Gearbox_TorqueConverter).GetEx<double>("CLUpshiftMinAcceleration").SI<MeterPerSquareSecond>()
-					: UpshiftMinAcceleration;
-			}
-		}
+		public MeterPerSquareSecond CLUpshiftMinAcceleration =>
+			Body[JsonKeys.Gearbox_TorqueConverter] != null &&
+			Body[JsonKeys.Gearbox_TorqueConverter]["CLUpshiftMinAcceleration"] != null
+				? Body.GetEx(JsonKeys.Gearbox_TorqueConverter).GetEx<double>("CLUpshiftMinAcceleration").SI<MeterPerSquareSecond>()
+				: UpshiftMinAcceleration;
 
-		public MeterPerSquareSecond CCUpshiftMinAcceleration
-		{
-			get {
-				return Body[JsonKeys.Gearbox_TorqueConverter] != null &&
-						Body[JsonKeys.Gearbox_TorqueConverter]["CCUpshiftMinAcceleration"] != null
-					? Body.GetEx(JsonKeys.Gearbox_TorqueConverter).GetEx<double>("CCUpshiftMinAcceleration").SI<MeterPerSquareSecond>()
-					: UpshiftMinAcceleration;
-			}
-		}
+		public MeterPerSquareSecond CCUpshiftMinAcceleration =>
+			Body[JsonKeys.Gearbox_TorqueConverter] != null &&
+			Body[JsonKeys.Gearbox_TorqueConverter]["CCUpshiftMinAcceleration"] != null
+				? Body.GetEx(JsonKeys.Gearbox_TorqueConverter).GetEx<double>("CCUpshiftMinAcceleration").SI<MeterPerSquareSecond>()
+				: UpshiftMinAcceleration;
 
-		public virtual PerSecond ReferenceRPM
-		{
-			get {
-				return Body[JsonKeys.Gearbox_TorqueConverter] != null &&
-						Body[JsonKeys.Gearbox_TorqueConverter][JsonKeys.Gearbox_TorqueConverter_ReferenceRPM] != null
-					? Body.GetEx(JsonKeys.Gearbox_TorqueConverter)
-						.GetEx<double>(JsonKeys.Gearbox_TorqueConverter_ReferenceRPM)
-						.RPMtoRad()
-					: null;
-			}
-		}
+		public virtual PerSecond ReferenceRPM =>
+			Body[JsonKeys.Gearbox_TorqueConverter] != null &&
+			Body[JsonKeys.Gearbox_TorqueConverter][JsonKeys.Gearbox_TorqueConverter_ReferenceRPM] != null
+				? Body.GetEx(JsonKeys.Gearbox_TorqueConverter)
+					.GetEx<double>(JsonKeys.Gearbox_TorqueConverter_ReferenceRPM)
+					.RPMtoRad()
+				: null;
 
-		public PerSecond MaxInputSpeed
-		{
-			get {
-				return Body[JsonKeys.Gearbox_TorqueConverter] != null &&
-						Body[JsonKeys.Gearbox_TorqueConverter]["MaxTCSpeed"] != null
-					? Body.GetEx(JsonKeys.Gearbox_TorqueConverter).GetEx<double>("MaxTCSpeed").RPMtoRad()
-					: 5000.RPMtoRad();
-			}
-		}
+		public PerSecond MaxInputSpeed =>
+			Body[JsonKeys.Gearbox_TorqueConverter] != null &&
+			Body[JsonKeys.Gearbox_TorqueConverter]["MaxTCSpeed"] != null
+				? Body.GetEx(JsonKeys.Gearbox_TorqueConverter).GetEx<double>("MaxTCSpeed").RPMtoRad()
+				: 5000.RPMtoRad();
 
 		public virtual TableData TCData
 		{
@@ -457,48 +443,26 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			}
 		}
 
-		KilogramSquareMeter ITorqueConverterEngineeringInputData.Inertia
-		{
-			get {
-				return Body[JsonKeys.Gearbox_TorqueConverter] != null &&
-						Body[JsonKeys.Gearbox_TorqueConverter][JsonKeys.Gearbox_TorqueConverter_Inertia] != null
-					? Body.GetEx(JsonKeys.Gearbox_TorqueConverter)
-						.GetEx<double>(JsonKeys.Gearbox_TorqueConverter_Inertia)
-						.SI<KilogramSquareMeter>()
-					: null;
-			}
-		}
+		KilogramSquareMeter ITorqueConverterEngineeringInputData.Inertia =>
+			Body[JsonKeys.Gearbox_TorqueConverter] != null &&
+			Body[JsonKeys.Gearbox_TorqueConverter][JsonKeys.Gearbox_TorqueConverter_Inertia] != null
+				? Body.GetEx(JsonKeys.Gearbox_TorqueConverter)
+					.GetEx<double>(JsonKeys.Gearbox_TorqueConverter_Inertia)
+					.SI<KilogramSquareMeter>()
+				: null;
 
 		#endregion
 
-		public string Manufacturer
-		{
-			get { return Constants.NOT_AVailABLE; }
-		}
+		public string Manufacturer => Constants.NOT_AVAILABLE;
 
-		public string Model
-		{
-			get { return Body.GetEx<string>(JsonKeys.Gearbox_ModelName); }
-		}
+		public string Model => Body.GetEx<string>(JsonKeys.Gearbox_ModelName);
 
-		public string Date
-		{
-			get { return Constants.NOT_AVailABLE; }
-		}
+		public DateTime Date => DateTime.MinValue;
 
-		public CertificationMethod CertificationMethod
-		{
-			get { return CertificationMethod.NotCertified; }
-		}
+		public CertificationMethod CertificationMethod => CertificationMethod.NotCertified;
 
-		public string CertificationNumber
-		{
-			get { return Constants.NOT_AVailABLE; }
-		}
+		public string CertificationNumber => Constants.NOT_AVAILABLE;
 
-		public DigestData DigestValue
-		{
-			get { return null; }
-		}
+		public DigestData DigestValue => null;
 	}
 }

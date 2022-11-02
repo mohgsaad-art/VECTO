@@ -31,13 +31,16 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using NUnit.Framework;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
 using TUGraz.VectoCore.Models.Declaration;
+using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
+using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Tests.Utils;
@@ -45,6 +48,7 @@ using TUGraz.VectoCore.Tests.Utils;
 namespace TUGraz.VectoCore.Tests.Integration
 {
 	[TestFixture]
+	[Parallelizable(ParallelScope.All)]
 	public class FuelTypesTest
 	{
 
@@ -59,41 +63,41 @@ namespace TUGraz.VectoCore.Tests.Integration
 		[Category("Integration")]
 		[TestCase(FuelType.DieselCI, null,
 			@"TestData\Integration\DeclarationMode\Class2_RigidTruck_4x2\Class2_RigidTruck_DECL.vecto", 0,
-			0.000219921110821829, 0.000219921110821829, 26.3063529691184, 0.000688353076872326, 9390.63143209212,
-			TestName = "Diesel LH Low"),
+			0.00021674714805162135, 0.00021674714805162135, 25.926692350672408, 0.0006784185734015748, 9255.103221804231,
+			TestName = "TestFuelTypesCO2 Diesel LH Low"),
 		TestCase(FuelType.EthanolCI, null,
 			@"TestData\Integration\DeclarationMode\Class2_RigidTruck_4x2\Class2_RigidTruck_DECL.vecto", 0,
-			0.000219921110821829, 0.000222518604256733, 27.1364151532601, 0.000402758673704687, 5651.97254812102,
-			TestName = "Ethanol/CI LH Low"),
+			0.00021674714805162135, 0.00021930715373727074, 26.74477484600863, 0.00039694594826446007, 5570.401704926677,
+			TestName = "TestFuelTypesCO2 Ethanol/CI LH Low"),
 
 		TestCase(FuelType.DieselCI, null,
 			@"TestData\Integration\DeclarationMode\Class2_RigidTruck_4x2\Class2_RigidTruck_DECL.vecto", 1,
-			0.000254735249582656, 0.000254735249582656, 30.4707236342891, 0.000797321331193715, 10877.1951571794,
-			TestName = "Diesel LH Ref"),
+			0.00024815363205920937, 0.00024815363205920937, 29.683448810910214, 0.0007767208683453253, 10596.16008892824,
+			TestName = "TestFuelTypesCO2 Diesel LH Ref"),
 		TestCase(FuelType.EthanolCI, null,
 			@"TestData\Integration\DeclarationMode\Class2_RigidTruck_4x2\Class2_RigidTruck_DECL.vecto", 1,
-			0.000254735249582656, 0.000257743933632844, 31.4321870283957, 0.000466516519875449, 6546.69591427425,
-			TestName = "Ethanol/CI LH Ref"),
+			0.00024815363205920937, 0.00025108458046935726, 30.620070788946006, 0.00045446309064953665, 6377.548343921674,
+			TestName = "TestFuelTypesCO2 Ethanol/CI LH Ref"),
 		TestCase(FuelType.EthanolPI, null,
 			@"TestData\Integration\DeclarationMode\Class2_RigidTruck_4x2\Class2_RigidTruck_DECL.vecto", 1,
-			0.000254735249582656, 0.00025299644241827, 32.1878425468536, 0.000531292529078366, 7412.7957628553,
-			TestName = "Ethanol/PI LH Ref"),
+			0.00024815363205920937, 0.00024645975061170444, 31.356202367901332, 0.0005175654762845794, 7221.27069292294,
+			TestName = "TestFuelTypesCO2 Ethanol/PI LH Ref"),
 		TestCase(FuelType.PetrolPI, null,
 			@"TestData\Integration\DeclarationMode\Class2_RigidTruck_4x2\Class2_RigidTruck_DECL.vecto", 1,
-			0.000254735249582656, 0.000254735249582656, 34.0555146500878, 0.000774395158731276, 10571.5128576802,
-			TestName = "Petrol/PI LH Ref"),
+			0.00024815363205920937, 0.00024815363205920937, 33.17561925925259, 0.0007543870414599965, 10298.375730457188,
+			TestName = "TestFuelTypesCO2 Petrol/PI LH Ref"),
 		TestCase(FuelType.LPGPI, null,
 			@"TestData\Integration\DeclarationMode\Class2_RigidTruck_4x2\Class2_RigidTruck_DECL.vecto", 1,
-			0.000254735249582656, 0.000254735249582656, null, 0.000769300453739622, 11717.8214808022,
-			TestName = "LPG/PI LH Ref"),
+			0.00024815363205920937, 0.00024815363205920937, null, 0.0007494239688188123, 11415.06707472363,
+			TestName = "TestFuelTypesCO2 LPG/PI LH Ref"),
 		TestCase(FuelType.NGPI, TankSystem.Liquefied,
 			@"TestData\Integration\DeclarationMode\Class2_RigidTruck_4x2\Class2_RigidTruck_DECL.vecto", 1,
-			0.000254735249582656, 0.000233982887091198, null, 0.000648132597242618, 11488.5597561778,
-			TestName = "LNG/PI LH Ref"),
+			0.00024815363205920937, 0.00022793745022139266, null, 0.0006313867371132576, 11191.72880587038,
+			TestName = "TestFuelTypesCO2 LNG/PI LH Ref"),
 		TestCase(FuelType.NGPI, TankSystem.Compressed,
 			@"TestData\Integration\DeclarationMode\Class2_RigidTruck_4x2\Class2_RigidTruck_DECL.vecto", 1,
-			0.000254735249582656, 0.000239344994920373, null, 0.000643838036335802, 11488.5597561779,
-			TestName = "CNG/PI LH Ref"),
+			0.00024815363205920937, 0.00023316101678896636, null, 0.0006272031351623195, 11191.728805870385,
+			TestName = "TestFuelTypesCO2 CNG/PI LH Ref"),
 			]
 		public void TestFuelTypesCO2(FuelType fuelType, TankSystem? tankSystem, string jobName, int runIdx, 
 			double expectedFCMap, double expectedFCFinal, double? expectedFCperkm, double expectedCo2, double expectedMJ)
@@ -105,10 +109,9 @@ namespace TUGraz.VectoCore.Tests.Integration
 			var jobContainer = new JobContainer(sumData);
 			var inputData = JSONInputDataFactory.ReadJsonJob(jobName);
 
-			var runsFactory = new SimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter) {
-				WriteModalResults = true,
-				Validate = false
-			};
+			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter);
+			runsFactory.WriteModalResults = true;
+			runsFactory.Validate = false;
 
 			jobContainer.AddRuns(runsFactory);
 
@@ -118,28 +121,40 @@ namespace TUGraz.VectoCore.Tests.Integration
 			var modData = modContainer.Data;
 
 			var fuelData = FuelData.Instance().Lookup(fuelType, tankSystem);
-			modContainer.FuelData = fuelData;
-			((VehicleContainer)run.Run.GetContainer()).RunData.EngineData.FuelData = fuelData;
+			
+			// change the fuel entry in mod data and engine data
+			var origFuel = modContainer.FuelColumns.Keys.First();
+			modContainer.FuelColumns[fuelData] = modContainer.FuelColumns[origFuel];
+			if (fuelData.FuelType != origFuel.FuelType) {
+				modContainer.FuelColumns.Remove(origFuel);
+			}
+			((VehicleContainer)run.Run.GetContainer()).RunData.EngineData.Fuels.First().FuelData = fuelData;
 
 			run.Run.Run();
 
 			// restore data table before assertions
 			modContainer.Data = modData;
-			
+			var fuel = modContainer.FuelData.First();
+			var distance = modContainer.Distance;
+			var fcFinal = modContainer.FuelConsumptionPerMeter(ModalResultField.FCFinal, fuel);
+			var fcVolumePerMeter = fuel.FuelDensity == null ? null :
+				(fcFinal / fuel.FuelDensity)
+				.Cast<VolumePerMeter>();
+			var co2PerMeter = distance == null ? null : fcFinal * fuel.CO2PerFuelWeight;
+			var energyPerMeter = distance == null ? null : fcFinal * fuel.LowerHeatingValueVecto;
+
 //			Console.WriteLine("FC-Map g/m: {0}, FC-Final g/m {1}, FC-Final l/100km: {2}, CO2 g/m: {3}, Energy J/m: {4}",
 			Console.WriteLine("{0}, {1}, {2}, {3}, {4}",
-				modContainer.FCMapPerMeter().Value(),
-				modContainer.FuelConsumptionFinal().Value(), 
-				modContainer.FuelConsumptionFinalVolumePerMeter()?.ConvertToLiterPer100Kilometer().Value ?? double.NaN,
-				modContainer.CO2PerMeter().Value(), 
-				modContainer.EnergyPerMeter().Value());
+				modContainer.FuelConsumptionPerMeter(ModalResultField.FCMap, fuel).Value(),
+				fcFinal.Value(), fcVolumePerMeter?.ConvertToLiterPer100Kilometer().Value ?? double.NaN,
+				co2PerMeter?.Value(), energyPerMeter?.Value());
 
-			AssertHelper.AreRelativeEqual(expectedFCMap, modContainer.FCMapPerMeter(), 1e-6);
-			AssertHelper.AreRelativeEqual(expectedFCFinal, modContainer.FuelConsumptionFinal(), 1e-3);
-			AssertHelper.AreRelativeEqual(expectedFCperkm, modContainer.FuelConsumptionFinalVolumePerMeter()?.ConvertToLiterPer100Kilometer().Value.SI() ?? null, 1e-6);
+			AssertHelper.AreRelativeEqual(expectedFCMap, modContainer.FuelConsumptionPerMeter(ModalResultField.FCMap, fuel), 1e-3);
+			AssertHelper.AreRelativeEqual(expectedFCFinal, fcFinal, 1e-3);
+			AssertHelper.AreRelativeEqual(expectedFCperkm, fcVolumePerMeter?.ConvertToLiterPer100Kilometer().Value.SI(), 1e-3);
 
-			AssertHelper.AreRelativeEqual(expectedCo2, modContainer.CO2PerMeter(), 1e-6);
-			AssertHelper.AreRelativeEqual(expectedMJ, modContainer.EnergyPerMeter(), 1e-3);
+			AssertHelper.AreRelativeEqual(expectedCo2, co2PerMeter, 1e-3);
+			AssertHelper.AreRelativeEqual(expectedMJ, energyPerMeter, 1e-3);
 		}
 	}
 }

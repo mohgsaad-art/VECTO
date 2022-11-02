@@ -29,9 +29,11 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using TUGraz.VectoCore.Models.Simulation.DataBus;
+
 namespace TUGraz.VectoCore.Models.SimulationComponent
 {
-	public interface IClutch : IPowerTrainComponent
+	public interface IClutch : IPowerTrainComponent, IClutchInfo
 	{
 		//ITnOutPort IdleControlPort { get; }
 		IIdleController IdleController { get; set; }

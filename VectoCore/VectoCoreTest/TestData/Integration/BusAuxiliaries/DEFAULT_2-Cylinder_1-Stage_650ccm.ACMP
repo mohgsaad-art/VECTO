@@ -1,4 +1,4 @@
-rpm,flowRate [l/min],power [on] [W],power [off] [W]
+rpm,flowRate [l/min],power on [W],power off [W]
 800,250.5365596,3139.5,524.3
 1200,374.3533986,4609.5,1027.2
 1600,508.4123859,6205.5,1572.9

@@ -34,18 +34,17 @@ using System.IO;
 using System.Linq;
 using Ninject;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 using TUGraz.VectoCommon.Models;
-using TUGraz.VectoCore.InputData.FileIO.JSON;
 using TUGraz.VectoCore.InputData.FileIO.XML;
-using TUGraz.VectoCore.InputData.FileIO.XML.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Impl;
+using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Tests.Models.Simulation;
 
 namespace TUGraz.VectoCore.Tests.Integration
 {
 	[TestFixture]
+	[Parallelizable(ParallelScope.All)]
 	public class VocationalVehicleTest
 	{
 		const string Class4Vocational = @"Testdata\Integration\DeclarationMode\Class4_Vocational\Rigid Truck_4x2_vehicle-class-4_EURO6_2018.xml";
@@ -71,10 +70,9 @@ namespace TUGraz.VectoCore.Tests.Integration
 		{
 			var writer = new FileOutputWriter(filename);
 			var inputData = xmlInputReader.CreateDeclaration(filename);
-			var factory = new SimulatorFactory(ExecutionMode.Declaration, inputData, writer) {
-				WriteModalResults = true,
-				ActualModalData = true
-			};
+			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, writer);
+			factory.WriteModalResults = true;
+			factory.ActualModalData = true;
 			var jobContainer = new JobContainer(new MockSumWriter());
 
 			var runs = factory.SimulationRuns().ToList();
@@ -87,7 +85,7 @@ namespace TUGraz.VectoCore.Tests.Integration
 			jobContainer.Execute();
 			jobContainer.WaitFinished();
 			var progress = jobContainer.GetProgress();
-			Assert.IsTrue(progress.All(r => r.Value.Success), string.Concat<Exception>(progress.Select(r => r.Value.Error)));
+			Assert.IsTrue(progress.All(r => r.Value.Success), string.Concat(progress.Select(r => r.Value.Error)));
 		}
 	}
 }

@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="VECTO3GUI2020.Views.JobEditViews.Vehicle.Components.PTOView_v2_0"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:VECTO3GUI2020.Views.JobEditViews.Vehicle.Components"
+             xmlns:custom="clr-namespace:VECTO3GUI2020.Views.CustomControls"             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <StackPanel>
+            <Label Content="Power-take-off" Style="{StaticResource LabelStyleSubView}"></Label>
+            <custom:LabledTextBoxAutomatic Content="{Binding PTOTransmissionType}"/>
+            <DataGrid ItemsSource="{Binding PTOCycleDataView}" 
+                    Visibility="{Binding PTOCycleDataView, 
+                         Converter={StaticResource NullToVisibilityConverter}}"
+                          IsReadOnly="True" />
+            <DataGrid ItemsSource="{Binding PTOLossMapDataView}" 
+                      Visibility="{Binding PTOLossMapDataView, 
+                Converter={StaticResource NullToVisibilityConverter}}" IsReadOnly="True"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

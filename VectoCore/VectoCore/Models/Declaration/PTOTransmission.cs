@@ -40,21 +40,18 @@ namespace TUGraz.VectoCore.Models.Declaration
 	{
 		public const string NoPTO = "None";
 
-		protected override string ResourceId
-		{
-			get { return DeclarationData.DeclarationDataResourcePrefix + ".VAUX.PTO-tech.csv"; }
-		}
+		protected override string ResourceId => DeclarationData.DeclarationDataResourcePrefix + ".VAUX.PTO-tech.csv";
 
-		protected override string ErrorMessage
-		{
-			get { return "PTO Transmission Lookup Error: No value found for PTO Transmission. Technology: '{0}'"; }
-		}
+		protected override string ErrorMessage => "PTO Transmission Lookup Error: No value found for PTO Transmission. Technology: '{0}'";
 
 		protected override void ParseData(DataTable table)
 		{
 			Data = table.Rows.Cast<DataRow>().ToDictionary(
 				r => r.Field<string>("technology"),
-				r => new AuxDemandEntry { PowerDemand = r.ParseDouble("powerloss").SI<Watt>() });
+				r => new AuxDemandEntry {
+					PowerDemand = r.ParseDouble("powerloss").SI<Watt>(),
+					TorqueLoss = r.ParseDouble("torqueloss").SI<NewtonMeter>()
+				});
 		}
 
 		public string[] GetTechnologies()

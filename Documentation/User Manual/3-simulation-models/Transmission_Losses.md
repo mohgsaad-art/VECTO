@@ -1,4 +1,4 @@
-##Transmission Losses
+## Transmission Losses
 
 Every transmission component (gearbox, angledrive, axlegear, ...) uses the following formula for calculating the torques at input and output side of the component:
 
@@ -16,5 +16,5 @@ The following components are accounted as transmission components (see [Powertra
 
 * [Gearbox](#gearbox-editor)
 * Axle Gear (see [Gearbox](#gearbox-editor))
-* Angledrive (see [Vehicle](#vehicle-editor))
+* Angledrive (see [Vehicle](#vehicle-editor-powertrain-tab))
 

@@ -1,0 +1,65 @@
+﻿<UserControl x:Class="VECTO3GUI2020.Views.Multistage.ManufacturingStageAuxiliariesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:VECTO3GUI2020.Views.Multistage"
+             xmlns:customControls="clr-namespace:VECTO3GUI2020.Views.Multistage.CustomControls"
+             xmlns:impl="clr-namespace:VECTO3GUI2020.ViewModel.MultiStage.Implementation"
+             xmlns:properties="clr-namespace:VECTO3GUI2020.Properties"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" BorderBrush="{DynamicResource ButtonHighlightColor}" BorderThickness="3" Margin="4"
+             d:DataContext="{d:DesignInstance impl:MultistageAuxiliariesViewModel}">
+    <UserControl.Resources>
+        <Style TargetType="customControls:MultiStageParameter">
+            <Setter Property="NameLookUpResourceManager" Value="{x:Static properties:BusStrings.ResourceManager}"/>
+            <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource multistageParameterControlErrorTemplate}"/>
+        </Style>
+        <Style TargetType="ContentControl">
+            <Setter Property="ContentTemplateSelector" Value="{DynamicResource MultistageParameterTemplateSelector}"/>
+            <Setter Property="IsTabStop" Value="False"/>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <ScrollViewer>
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Top">
+                    <Label Style="{DynamicResource LabelStyle1}" FontSize="15" HorizontalAlignment="Stretch">AUXILIARIES</Label>
+                    <Label Style="{DynamicResource LabelStyle1}">LED Lights</Label>
+
+                    <ContentControl Content="{Binding ParameterViewModels[InteriorLightsLED]}"/>
+                    <ContentControl Content="{Binding ParameterViewModels[DayrunninglightsLED]}"/>
+                    <ContentControl Content="{Binding ParameterViewModels[PositionlightsLED]}"/>
+                    <ContentControl Content="{Binding ParameterViewModels[BrakelightsLED]}"/>
+                    <ContentControl Content="{Binding ParameterViewModels[HeadlightsLED]}"/>
+                    
+
+                    <Label  Style="{DynamicResource LabelStyle1}">Heating, Ventilation and Air Conditioning</Label>
+                    <ContentControl Content="{Binding ParameterViewModels[SystemConfiguration]}"/>
+                    <Border Margin="5" BorderThickness="2" BorderBrush="{DynamicResource ButtonHighlightColor}">
+                        <StackPanel>
+                            <Label  Style="{DynamicResource LabelStyle1}">Driver Compartment Heat Pumps</Label>
+                            <ContentControl Content="{Binding ParameterViewModels[HeatPumpTypeCoolingDriverCompartment]}"/>
+                            <ContentControl Content="{Binding ParameterViewModels[HeatPumpTypeHeatingDriverCompartment]}"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Margin="5" BorderThickness="2" BorderBrush="{DynamicResource ButtonHighlightColor}">
+                        <StackPanel>
+                            <Label  Style="{DynamicResource LabelStyle1}">Passenger Compartment Heat Pumps</Label>
+                            <ContentControl Content="{Binding ParameterViewModels[HeatPumpTypeCoolingPassengerCompartment]}"/>
+                            <ContentControl Content="{Binding ParameterViewModels[HeatPumpTypeHeatingPassengerCompartment]}"/>
+                        </StackPanel>
+                    </Border>
+
+
+
+
+                    <ContentControl Content="{Binding ParameterViewModels[AuxHeaterPower]}"/>
+                    <ContentControl Content="{Binding ParameterViewModels[DoubleGlazing]}"/>
+                    <ContentControl Content="{Binding ParameterViewModels[AdjustableAuxiliaryHeater]}"/>
+                    <ContentControl Content="{Binding ParameterViewModels[SeparateAirDistributionDucts]}"/>
+                </StackPanel>
+            </DockPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

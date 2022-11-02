@@ -39,5 +39,7 @@ namespace TUGraz.VectoCore.Models.Simulation.DataBus
 		/// Returns if the clutch is closed in the current interval.
 		/// </summary>
 		bool ClutchClosed(Second absTime);
+
+		Watt ClutchLosses { get; }
 	}
 }

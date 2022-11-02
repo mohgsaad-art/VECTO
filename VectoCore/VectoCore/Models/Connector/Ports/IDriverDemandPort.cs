@@ -77,7 +77,7 @@ namespace TUGraz.VectoCore.Models.Connector.Ports
 	/// </summary>
 	public interface IDriverDemandOutPort
 	{
-		IResponse Request(Second absTime, Second dt, MeterPerSquareSecond acceleration, Radian gradient, bool dryRun = false);
+		IResponse Request(Second absTime, Second dt, MeterPerSquareSecond acceleration, Radian gradient, bool dryRun);
 
 		/// <summary>
 		/// Initialize the powertrain component to drive at the given steady state

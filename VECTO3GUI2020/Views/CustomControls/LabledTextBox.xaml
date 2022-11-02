@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="VECTO3GUI2020.Views.CustomControls.LabledTextBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:VECTO3GUI2020.Views.CustomControls"
+             mc:Ignorable="d" 
+             Name="labledtextbox"
+             d:DesignHeight="30" d:DesignWidth="200">
+    <Grid>
+        <!-- https://www.youtube.com/watch?v=h7ZrdGiOm3E Toskers Corner -->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="0"
+               Content="{Binding Label, ElementName=labledtextbox}" />
+            <TextBox Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                 Text="{Binding Text, ElementName=labledtextbox}" />
+            </Grid>
+        </Grid>
+</UserControl>

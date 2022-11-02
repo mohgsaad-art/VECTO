@@ -1,0 +1,22 @@
+﻿{
+  "Header": {
+    "CreatedBy": " ()",
+    "Date": "2016-10-13T08:52:20.2515417Z",
+    "AppVersion": "3",
+    "FileVersion": 3
+  },
+  "Body": {
+    "SavedInDeclMode": false,
+    "ModelName": "325kW 12.7l Engine",
+    "Displacement": "12740",
+    "IdlingSpeed": 600.0,
+    "Inertia": 5.1498,
+    "FullLoadCurve": "325kW.vfld",
+    "FuelMap": "325kW.vmap",
+    "WHTC-Urban": 0.0,
+    "WHTC-Rural": 0.0,
+    "WHTC-Motorway": 0.0,
+    "WHTC-Engineering": 1.0,
+    "ColdHotBalancingFactor": 0.0
+  }
+}

@@ -37,9 +37,7 @@ using System.Xml;
 using TUGraz.VectoCommon.Hashing;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Resources;
-using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration;
-using TUGraz.VectoHashing;
 using XmlDocumentType = TUGraz.VectoCore.Utils.XmlDocumentType;
 
 namespace HashingTool.ViewModel.UserControl
@@ -102,7 +100,7 @@ namespace HashingTool.ViewModel.UserControl
 					var entry = new ComponentEntry {
 						Component = component.Count == 1
 							? component.Entry.XMLElementName()
-							: string.Format("{0} ({1})", component.Entry.XMLElementName(), i + 1),
+							: $"{component.Entry.XMLElementName()} ({i + 1})",
 						DigestValue = ReadElementValue(node, XMLNames.DI_Signature_Reference_DigestValue),
 						CertificationMethod = ReadElementValue(node, XMLNames.Report_Component_CertificationMethod),
 					};
@@ -139,16 +137,16 @@ namespace HashingTool.ViewModel.UserControl
 			var digestMismatch = componentData.Where(x => x.DigestValueMatchesJobComponent == null || !x.DigestValueMatchesJobComponent.Value).ToArray();
 			if (jobComponents.Any()) {
 				foreach (var entry in certificationNumberMismatch) {
-					_validationErrors.Add(
-						string.Format(
-							"Verifying Manufacturer Report: Certification number for component '{0}' does not match! Job-file: '{1}', Report: '{2}'",
-							entry.Component, entry.CertificationNumberExpected, entry.CertificationNumber));
+					_validationErrors.Add("Verifying Manufacturer Report: " +
+										$"Certification number for component '{entry.Component}' does not match! " +
+										$"Job-file: '{entry.CertificationNumberExpected}', " +
+										$"Report: '{entry.CertificationNumber}'");
 				}
 				foreach (var entry in digestMismatch) {
-					_validationErrors.Add(
-						string.Format(
-							"Verifying Manufacturer Report: Digest Value for component '{0}' does not match! Job-file: '{1}', Report: '{2}'",
-							entry.Component, entry.DigestValueExpected, entry.DigestValue));
+					_validationErrors.Add("Verifying Manufacturer Report: " +
+										$"Digest Value for component '{entry.Component}' does not match! " +
+										$"Job-file: '{entry.DigestValueExpected}', " +
+										$"Report: '{entry.DigestValue}'");
 				}
 			}
 
@@ -157,7 +155,7 @@ namespace HashingTool.ViewModel.UserControl
 
 		public bool ManufacturerReportValid
 		{
-			get { return _manufacturerReportValid; }
+			get => _manufacturerReportValid;
 			set {
 				if (_manufacturerReportValid == value) {
 					return;
@@ -169,7 +167,7 @@ namespace HashingTool.ViewModel.UserControl
 
 		private string ReadElementValue(XmlNode xmlNode, string elementName)
 		{
-			var node = xmlNode.SelectSingleNode(string.Format("./*[local-name()='{0}']", elementName));
+			var node = xmlNode.SelectSingleNode($"./*[local-name()='{elementName}']");
 			if (node == null) {
 				return null;
 			}

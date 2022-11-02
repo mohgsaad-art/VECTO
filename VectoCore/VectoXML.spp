@@ -2,12 +2,16 @@
 <Project>
 	<Folder FolderName="XML Files" ExtStr="xml;cml;math;rdf;smil;svg;wml">
 		<Folder FolderName="Schema 2.0">
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.3\engineSample.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.3\engineSampleDualModeDualFuel.xml" HomeFolder="Yes"/>
 			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.0\Tractor_4x2_vehicle-class-5_5_t_0.xml" HomeFolder="Yes"/>
 			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.0\vecto_engine-sample.xml" HomeFolder="Yes"/>
 			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.0\vecto_tyre-sample.xml" HomeFolder="Yes"/>
 			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.0\vecto_vehicle-components_1.0.xml" HomeFolder="Yes"/>
 			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.0\vecto_vehicle-new_parameters-sample.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\vecto_vehicle-primary_heavyBus.xml" HomeFolder="Yes"/>
 			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.0\vecto_vehicle-sample_LNG.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.3\vehicle_sampleDualModeDualFuel.xml" HomeFolder="Yes"/>
 		</Folder>
 		<Folder FolderName="Examples 1.0">
 			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderEngineering\engineering_axlegear-sample_ref.xml" HomeFolder="Yes"/>
@@ -47,10 +51,458 @@
 			<File FilePath="VectoCoreTest\TestData\XML\EngineeringJob\SampleJobEngineering1.0.xml" HomeFolder="Yes"/>
 			<File FilePath="VectoCoreTest\TestData\XML\EngineeringJob\SampleJobEngineering1.1.xml" HomeFolder="Yes"/>
 		</Folder>
+		<Folder FolderName="Schema 2.4 DEV Buses ML">
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\PIF-heavyBus-sample.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\vecto_vehicle-completed_heavyBus-sample.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\vecto_vehicle-primary_heavyBus-sample.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\vecto_vehicle-primary_heavyBusSmartES-sample.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\vecto_vehicle-primary_heavyBusSmartES_invalid_testdata.xml" HomeFolder="Yes"/>
+		</Folder>
+		<Folder FolderName="Schema 2.4 stage input">
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\vecto_vehicle-exempted_input_full-sample.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\vecto_vehicle-exempted_input_only_certain_entries01-sample.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\vecto_vehicle-exempted_input_only_certain_entries02-sample.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\vecto_vehicle-exempted_input_only_mandatory_entries.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\vecto_vehicle-stage_input_full-sample.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\vecto_vehicle-stage_input_only_certain_entries01-sample.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\vecto_vehicle-stage_input_only_certain_entries02-sample.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\vecto_vehicle-stage_input_only_component_nullable_entries.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\vecto_vehicle-stage_input_only_mandatory_entries.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\vecto_vehicle-stage_input_only_mandatory_standard_value_airdrag.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\vecto_vehicle-stage_vif_input.xml" HomeFolder="Yes"/>
+		</Folder>
+		<Folder FolderName="Schema 2.4_Components">
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\ComponentData\ADC.xml"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\ComponentData\BatterySystem_1.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\ComponentData\CapacitorSystem_1.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\ComponentData\ElectricMachineSystem-IHPC_1.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\ComponentData\ElectricMachineSystem_1.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\ComponentData\ElectricMachineSystem_StdValues.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\ComponentData\Gearbox_APT-N.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\ComponentData\Gearbox_IHPC.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\ComponentData\IEPC_1.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\ComponentData\IEPC_StdValues.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\ComponentData\Tyre.xml" HomeFolder="Yes"/>
+		</Folder>
+		<Folder FolderName="Schema 2.4_Jobs">
+			<Folder FolderName="HeavyLorry">
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\HeavyLorry\Conventional_heavyLorry_AMT.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\HeavyLorry\HEV-S_heavyLorry_AMT_S2.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\HeavyLorry\HEV-S_heavyLorry_IEPC-S.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\HeavyLorry\HEV-S_heavyLorry_S3.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\HeavyLorry\HEV-S_heavyLorry_S4.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\HeavyLorry\HEV_heavyLorry_AMT_Px.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\HeavyLorry\HEV_heavyLorry_AMT_Px_IHPC.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\HeavyLorry\IEPC_heavyLorry.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\HeavyLorry\PEV_heavyLorry_AMT_E2.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\HeavyLorry\PEV_heavyLorry_APT-N_E2.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\HeavyLorry\PEV_heavyLorry_E3.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\HeavyLorry\PEV_heavyLorry_E4.xml" HomeFolder="Yes"/>
+			</Folder>
+			<Folder FolderName="MediumLorry">
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\MediumLorry\Conventional_MediumLorry_AMT.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\MediumLorry\HEV-S_mediumLorry_AMT_S2.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\MediumLorry\HEV-S_mediumLorry_IEPC-S.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\MediumLorry\HEV-S_mediumLorry_S3.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\MediumLorry\HEV-S_mediumLorry_S4.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\MediumLorry\HEV_mediumLorry_AMT_Px.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\MediumLorry\IEPC_mediumLorry.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\MediumLorry\PEV_mediumLorry_AMT_E2.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\MediumLorry\PEV_mediumLorry_AMT_E2_EM_Std.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\MediumLorry\PEV_mediumLorry_APT-N_E2.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\MediumLorry\PEV_mediumLorry_E3.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\MediumLorry\PEV_mediumLorry_E4.xml" HomeFolder="Yes"/>
+			</Folder>
+			<Folder FolderName="PrimaryBus">
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\PrimaryBus\Conventional_primaryBus_AMT.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\PrimaryBus\HEV-S_primaryBus_AMT_S2.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\PrimaryBus\HEV-S_primaryBus_IEPC-S.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\PrimaryBus\HEV-S_primaryBus_S3.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\PrimaryBus\HEV-S_primaryBus_S4.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\PrimaryBus\HEV_primaryBus_AMT_Px.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\PrimaryBus\IEPC_primaryBus.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\PrimaryBus\PEV_primaryBus_AMT_E2.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\PrimaryBus\PEV_primaryBus_E3.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\PrimaryBus\PEV_primaryBus_E4.xml" HomeFolder="Yes"/>
+			</Folder>
+			<Folder FolderName="CompletedBus">
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\CompletedBus\Conventional_completedBus_1.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\CompletedBus\HEV_completedBus_1.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\CompletedBus\IEPC_completedBus_1.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\CompletedBus\PEV_completedBus_1.xml" HomeFolder="Yes"/>
+			</Folder>
+			<Folder FolderName="Exempted">
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\ExemptedVehicles\exempted_completedBus_input_full.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\ExemptedVehicles\exempted_completedBus_input_only_mandatory_entries.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\ExemptedVehicles\exempted_heavyLorry.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\ExemptedVehicles\exempted_mediumLorry.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\ExemptedVehicles\exempted_primaryBus.xml" HomeFolder="Yes"/>
+			</Folder>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\HEV_heavyLorry_AMT_Px_Capacitor.xml" HomeFolder="Yes"/>
+		</Folder>
+		<Folder FolderName="Schema Multistage 0.1">
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersionMultistage.0.1\vecto_multistage_consolidated_multiple_stages.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersionMultistage.0.1\vecto_multistage_consolidated_multiple_stages_airdrag.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersionMultistage.0.1\vecto_multistage_consolidated_multiple_stages_heatPump.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersionMultistage.0.1\vecto_multistage_consolidated_multiple_stages_hev.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersionMultistage.0.1\vecto_multistage_consolidated_multiple_stages_NGTankSystem.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersionMultistage.0.1\vecto_multistage_consolidated_multiple_stages_vif.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersionMultistage.0.1\vecto_multistage_consolidated_one_stage.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersionMultistage.0.1\vecto_multistage_consolidated_two_stages.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersionMultistage.0.1\vecto_multistage_primary_vehicle_only.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersionMultistage.0.1\vecto_multistage_primary_vehicle_stage_2_3.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersionMultistage.0.1\vecto_multistage_primary_vehicle_stage_2_full.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersionMultistage.0.1\vecto_multistage_primary_vehicle_stage_2_mandatory.xml" HomeFolder="Yes"/>
+		</Folder>
+	</Folder>
+	<Folder FolderName="XML Files Vecto Testcases">
+		<Folder FolderName="SchemaVersion2.4" ExtStr=".xml">
+			<Folder FolderName="Distributed">
+				<Folder FolderName="CompletedBus">
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\CompletedBus\Conventional_completedBus_1.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\CompletedBus\HEV_completedBus_1.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\CompletedBus\IEPC_completedBus_1.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\CompletedBus\PEV_completedBus_1.xml"/>
+				</Folder>
+				<Folder FolderName="ComponentData">
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\ComponentData\ADC.xml" HomeFolder="Yes"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\ComponentData\BatterySystem_1.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\ComponentData\CapacitorSystem_1.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\ComponentData\ElectricMachineSystem-IHPC_1.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\ComponentData\ElectricMachineSystem_1.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\ComponentData\ElectricMachineSystem_StdValues.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\ComponentData\Gearbox_APT-N.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\ComponentData\Gearbox_IHPC.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\ComponentData\IEPC_1.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\ComponentData\IEPC_StdValues.xml"/>
+				</Folder>
+				<Folder FolderName="ExemptedVehicles">
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\ExemptedVehicles\exempted_completedBus_input_full.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\ExemptedVehicles\exempted_completedBus_input_only_mandatory_entries.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\ExemptedVehicles\exempted_heavyLorry.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\ExemptedVehicles\exempted_mediumLorry.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\ExemptedVehicles\exempted_primaryBus.xml"/>
+				</Folder>
+				<Folder FolderName="HeavyLorry">
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\HeavyLorry\Conventional_heavyLorry_AMT.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\HeavyLorry\HEV-S_heavyLorry_AMT_S2.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\HeavyLorry\HEV-S_heavyLorry_IEPC-S.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\HeavyLorry\HEV-S_heavyLorry_S3.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\HeavyLorry\HEV-S_heavyLorry_S4.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\HeavyLorry\HEV_heavyLorry_AMT_Px.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\HeavyLorry\HEV_heavyLorry_AMT_Px_IHPC.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\HeavyLorry\IEPC_heavyLorry.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\HeavyLorry\PEV_heavyLorry_AMT_E2.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\HeavyLorry\PEV_heavyLorry_APT-N_E2.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\HeavyLorry\PEV_heavyLorry_E3.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\HeavyLorry\PEV_heavyLorry_E4.xml"/>
+				</Folder>
+				<Folder FolderName="MediumLorry">
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\MediumLorry\Conventional_mediumLorry_AMT.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\MediumLorry\HEV-S_mediumLorry_AMT_S2.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\MediumLorry\HEV-S_mediumLorry_IEPC-S.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\MediumLorry\HEV-S_mediumLorry_S3.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\MediumLorry\HEV-S_mediumLorry_S4.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\MediumLorry\HEV_mediumLorry_AMT_Px.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\MediumLorry\IEPC_mediumLorry.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\MediumLorry\PEV_mediumLorry_AMT_E2.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\MediumLorry\PEV_mediumLorry_APT-N_E2.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\MediumLorry\PEV_mediumLorry_E3.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\MediumLorry\PEV_mediumLorry_E4.xml"/>
+				</Folder>
+				<Folder FolderName="PrimaryBus">
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\PrimaryBus\Conventional_primaryBus_AMT.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\PrimaryBus\HEV-S_primaryBus_AMT_S2.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\PrimaryBus\HEV-S_primaryBus_IEPC-S.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\PrimaryBus\HEV-S_primaryBus_S3.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\PrimaryBus\HEV-S_primaryBus_S4.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\PrimaryBus\HEV_primaryBus_AMT_Px.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\PrimaryBus\IEPC_primaryBus.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\PrimaryBus\PEV_primaryBus_AMT_E2.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\PrimaryBus\PEV_primaryBus_E3.xml"/>
+					<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\Distributed\PrimaryBus\PEV_primaryBus_E4.xml"/>
+				</Folder>
+			</Folder>
+			<Folder FolderName="WithoutOptionalEntries">
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\WithoutOptionalEntries\Conventional_heavyLorry_AMT_n_opt.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\WithoutOptionalEntries\Conventional_mediumLorry_AMT_n_opt.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\WithoutOptionalEntries\Conventional_primaryBus_AMT_n_opt.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\WithoutOptionalEntries\HEV-S_heavyLorry_AMT_S2_n_opt.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\WithoutOptionalEntries\HEV-S_heavyLorry_IEPC-S_n_opt.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\WithoutOptionalEntries\HEV-S_heavyLorry_S3_n_opt.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\WithoutOptionalEntries\HEV-S_heavyLorry_S4_n_opt.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\WithoutOptionalEntries\HEV-S_mediumLorry_AMT_S2_n_opt.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\WithoutOptionalEntries\HEV-S_mediumLorry_IEPC-S_n_opt.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\WithoutOptionalEntries\HEV-S_mediumLorry_S3_n_opt.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\WithoutOptionalEntries\HEV-S_mediumLorry_S4_n_opt.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\WithoutOptionalEntries\HEV-S_primaryBus_AMT_S2_n_opt.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\WithoutOptionalEntries\HEV-S_primaryBus_IEPC-S_n_opt.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\WithoutOptionalEntries\HEV-S_primaryBus_S3_n_opt.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\WithoutOptionalEntries\HEV-S_primaryBus_S4_n_opt.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\WithoutOptionalEntries\HEV_heavyLorry_AMT_Px_n_opt.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\WithoutOptionalEntries\HEV_mediumLorry_AMT_Px_n_opt.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\WithoutOptionalEntries\HEV_primaryBus_AMT_Px_n_opt.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\WithoutOptionalEntries\IEPC_heavyLorry_n_opt.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\WithoutOptionalEntries\IEPC_mediumLorry_n_opt.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\WithoutOptionalEntries\IEPC_primaryBus_n_opt.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\WithoutOptionalEntries\PEV_heavyLorry_AMT_E2_n_opt.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\WithoutOptionalEntries\PEV_heavyLorry_APT-N_E2_n_opt.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\WithoutOptionalEntries\PEV_heavyLorry_E3_n_opt.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\WithoutOptionalEntries\PEV_heavyLorry_E4_n_opt.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\WithoutOptionalEntries\PEV_mediumLorry_AMT_E2_n_opt.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\WithoutOptionalEntries\PEV_mediumLorry_APT-N_E2_n_opt.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\WithoutOptionalEntries\PEV_mediumLorry_E3_n_opt.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\WithoutOptionalEntries\PEV_mediumLorry_E4_n_opt.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\WithoutOptionalEntries\PEV_primaryBus_AMT_E2_n_opt.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\WithoutOptionalEntries\PEV_primaryBus_E3_n_opt.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\WithoutOptionalEntries\PEV_primaryBus_E4_n_opt.xml" HomeFolder="Yes"/>
+			</Folder>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\exempted_primary_heavyBus.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\HEV-S_heavyLorry_AMT_S2_ADC.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\vecto_vehicle-completed_heavyBus-sample.xml"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\vecto_vehicle-exempted_input_completewithoutTMPLM.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\vecto_vehicle-exempted_input_full-sample.xml"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\vecto_vehicle-exempted_input_interim-sample.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\vecto_vehicle-exempted_input_only_certain_entries01-sample.xml"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\vecto_vehicle-exempted_input_only_certain_entries02-sample.xml"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\vecto_vehicle-exempted_input_only_mandatory_entries.xml"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\vecto_vehicle-medium_lorry-sample.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\vecto_vehicle-primary_heavyBus-sample.xml"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\vecto_vehicle-primary_heavyBusSmartES-sample.xml"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\vecto_vehicle-primary_heavyBusSmartES_invalid_testdata.xml"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\vecto_vehicle-stage_input_full-sample-final-noADAS.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\vecto_vehicle-stage_input_full-sample-final.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\vecto_vehicle-stage_input_full-sample.xml"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\vecto_vehicle-stage_input_full-sample_group41.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\vecto_vehicle-stage_input_only_certain_entries01-sample.xml"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\vecto_vehicle-stage_input_only_certain_entries02-sample.xml"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\vecto_vehicle-stage_input_only_component_nullable_entries.xml"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\vecto_vehicle-stage_input_only_mandatory_entries.xml"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\vecto_vehicle-stage_input_only_mandatory_standard_value_airdrag.xml"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.4\vecto_vehicle-stage_vif_input.xml"/>
+		</Folder>
+		<Folder FolderName="SchemaVersion2.3">
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.3\engineSample.xml"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.3\engineSample_WHR.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.3\engineSampleDualModeDualFuel.xml"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.3\vecto_tyre-sample.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.3\vehicle_sampleDualModeDualFuel.xml"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.3\vehicle_sampleDualModeDualFuel_WHR.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.3\vehicle_sampleSingleModeDualFuel.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.3\vehicle_sampleSingleModeDualFuel_WHR.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.3\vehicle_sampleSingleModeSingleFuel_WHR.xml" HomeFolder="Yes"/>
+		</Folder>
+		<Folder FolderName="SchemaVersion2.2">
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.2\Tractor_4x2_vehicle-class-5_5_t_0.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.2\vecto_engine-sample.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.2\vecto_tyre-sample.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.2\vecto_vehicle-exempted-sample.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.2\vecto_vehicle-new_parameters-sample.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.2\vecto_vehicle-sample_LNG.xml" HomeFolder="Yes"/>
+		</Folder>
+		<Folder FolderName="SchemaVersion2.1">
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.1\Tractor_4x2_vehicle-class-5_5_t_0.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.1\vecto_engine-sample.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.1\vecto_tyre-sample.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.1\vecto_vehicle-components_1.0.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.1\vecto_vehicle-components_2.0.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.1\vecto_vehicle-engine_2.0.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.1\vecto_vehicle-exempted-sample.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.1\vecto_vehicle-new_parameters-sample.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.1\vecto_vehicle-sample_LNG.xml" HomeFolder="Yes"/>
+		</Folder>
+		<Folder FolderName="SchemaVersion2.0">
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.0\Tractor_4x2_vehicle-class-5_5_t_0.xml"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.0\vecto_engine-sample.xml"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.0\vecto_tyre-sample.xml"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.0\vecto_vehicle-components_1.0.xml"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.0\vecto_vehicle-new_parameters-sample.xml"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion2.0\vecto_vehicle-sample_LNG.xml"/>
+		</Folder>
+		<Folder FolderName="SchemaVersion1.0">
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion1.0\test.VIF_Report_2.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion1.0\Tractor_4x2_vehicle-class-5_5_t_0.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion1.0\vecto_engine-sample.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion1.0\vecto_vehicle-exempted-sample.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion1.0\vecto_vehicle-new_parameters-sample.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersion1.0\vecto_vehicle-sample_LNG.xml" HomeFolder="Yes"/>
+		</Folder>
+		<Folder FolderName="Integration">
+			<Folder FolderName="DeclarationMode">
+				<File FilePath="VectoCoreTest\TestData\Integration\DeclarationMode\Class4_Vocational\Rigid Truck_4x2_vehicle-class-4_EURO6_2018.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\DeclarationMode\Class5_ADAS\Tractor_4x2_vehicle-class-5_EURO6_2018.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\DeclarationMode\Class5_NG\Tractor_4x2_vehicle-class-5_EURO6_2018.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\DeclarationMode\Class5_Vocational\Tractor_4x2_vehicle-class-5_EURO6_2018.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\DeclarationMode\EngineSpeedTooHigh\vecto_vehicle-sample_9gears.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\DeclarationMode\ExemptedVehicle\vecto_vehicle-sample_exempted.xml" HomeFolder="Yes"/>
+			</Folder>
+			<Folder FolderName="Buses">
+				<File FilePath="VectoCoreTest\TestData\Integration\Buses\FactorMethod\CompletedHeavyBus_33b1.RSLT_VIF.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\Buses\primary_heavyBus group P39_40_nonSmart_ESS.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\Buses\FactorMethod\primary_heavyBus group41.RSLT_VIF.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\Buses\FactorMethod\primary_heavyBus group41_AT-P.RSLT_VIF.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\Buses\FactorMethod\primary_heavyBus group41_nonSmart.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\Buses\FactorMethod\primary_heavyBus group41_nonSmart_AT-P.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\Buses\FactorMethod\primary_heavyBus group42_SmartPS.RSLT_VIF.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\Buses\FactorMethod\primary_heavyBus group42_SmartPS.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\Buses\vecto_vehicle-completed_heavyBus.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\Buses\FactorMethod\vecto_vehicle-completed_heavyBus_41.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\Buses\FactorMethod\vecto_vehicle-completed_heavyBus_41_mixed.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\Buses\FactorMethod\vecto_vehicle-completed_heavyBus_42.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\Buses\vecto_vehicle-primary_heavyBus.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\Buses\FactorMethod\vecto_vehicle-primary_heavyBus_ESS_electricFanSTP.RSLT_VIF.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\Buses\FactorMethod\vecto_vehicle-primary_heavyBus_ESS_electricFanSTP.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\Buses\vecto_vehicle-primary_heavyBus_nonSmart.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\Buses\vecto_vehicle-primary_heavyBus_nonSmart_ESS.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\Buses\vecto_vehicle-primary_heavyBus_SmartES.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\Buses\vecto_vehicle-primary_heavyBus_SmartES_PS.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\Buses\vecto_vehicle-primary_heavyBus_SmartPS.xml" HomeFolder="Yes"/>
+			</Folder>
+			<Folder FolderName="ADAS">
+				<File FilePath="VectoCoreTest\TestData\Integration\ADAS\Group5_EcoRoll.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\ADAS\Group5_EcoRollEngineStop.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\ADAS\Group5_EngineStopStart.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\ADAS\Group9_AT_EcoRoll.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\ADAS\Group9_AT_EcoRoll_missingParam.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\ADAS\Group9_AT_EngineStopStart.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\ADAS\Group9_AT_PCC.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\ADAS\Group9_AT_PCCEcoRoll.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\ADAS\Group5PCCDecl\Tractor_4x2_vehicle-class-5_5_t_0.xml" HomeFolder="Yes"/>
+			</Folder>
+			<Folder FolderName="MediumLorries">
+				<File FilePath="VectoCoreTest\TestData\Integration\MediumLorries\vecto_vehicle-medium_lorry-Van.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\MediumLorries\vecto_vehicle-medium_lorry.xml" HomeFolder="Yes"/>
+			</Folder>
+			<Folder FolderName="ShiftStrategy_SampleVehicles">
+				<File FilePath="VectoCoreTest\TestData\Integration\ShiftStrategyV2\SampleVehicles\Rigid Truck_4x2_vehicle-class-1_EURO6_2018.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\ShiftStrategyV2\SampleVehicles\Rigid Truck_4x2_vehicle-class-2_EURO6_2018.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\ShiftStrategyV2\SampleVehicles\Rigid Truck_4x2_vehicle-class-3_EURO6_2018.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\ShiftStrategyV2\SampleVehicles\Rigid Truck_4x2_vehicle-class-4_EURO6_2018.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\ShiftStrategyV2\SampleVehicles\Rigid Truck_6x2_vehicle-class-9_EURO6_2018.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\ShiftStrategyV2\SampleVehicles\Rigid Truck_6x4_vehicle-class-11_EURO6_2018.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\ShiftStrategyV2\SampleVehicles\Rigid Truck_8x4_vehicle-class-16_EURO6_2018.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\ShiftStrategyV2\SampleVehicles\Tractor_4x2_vehicle-class-5_EURO6_2018.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\ShiftStrategyV2\SampleVehicles\Tractor_4x2_vehicle-class-5_EURO6_2018_FlatFCMap.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\ShiftStrategyV2\SampleVehicles\Tractor_4x2_vehicle-class-5_EURO6_2018_IncreasingFCMap.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\ShiftStrategyV2\SampleVehicles\Tractor_6x2_vehicle-class-10_EURO6_2018.xml" HomeFolder="Yes"/>
+				<File FilePath="VectoCoreTest\TestData\Integration\ShiftStrategyV2\SampleVehicles\Tractor_6x4_vehicle-class-12_EURO6_2018.xml" HomeFolder="Yes"/>
+			</Folder>
+			<Folder FolderName="VTPMode">
+				<Folder FolderName="DualFuelVehicle">
+					<File FilePath="VectoCoreTest\TestData\Integration\VTPMode\DualFuelVehicle\vehicle_sampleSingleModeDualFuel.RSLT_MANUFACTURER.xml" HomeFolder="Yes"/>
+					<File FilePath="VectoCoreTest\TestData\Integration\VTPMode\DualFuelVehicle\vehicle_sampleSingleModeDualFuel.xml" HomeFolder="Yes"/>
+				</Folder>
+				<Folder FolderName="GenericVehicle">
+					<File FilePath="VectoCoreTest\TestData\Integration\VTPMode\GenericVehicle\CityBus_AT_Ser.RSLT_MANUFACTURER.xml" HomeFolder="Yes"/>
+					<File FilePath="VectoCoreTest\TestData\Integration\VTPMode\GenericVehicle\CityBus_AT_Ser.xml" HomeFolder="Yes"/>
+					<File FilePath="VectoCoreTest\TestData\Integration\VTPMode\GenericVehicle\CityBus_AT_Ser_2TC.xml" HomeFolder="Yes"/>
+					<File FilePath="VectoCoreTest\TestData\Integration\VTPMode\GenericVehicle\GB_12-gear.xml" HomeFolder="Yes"/>
+					<File FilePath="VectoCoreTest\TestData\Integration\VTPMode\GenericVehicle\Generic Engine.xml" HomeFolder="Yes"/>
+					<File FilePath="VectoCoreTest\TestData\Integration\VTPMode\GenericVehicle\Rigid Truck_4x2_vehicle-class-3_EURO6_2018.MANUFACTURER.xml" HomeFolder="Yes"/>
+					<File FilePath="VectoCoreTest\TestData\Integration\VTPMode\GenericVehicle\Rigid Truck_4x2_vehicle-class-3_EURO6_2018.xml" HomeFolder="Yes"/>
+					<File FilePath="VectoCoreTest\TestData\Integration\VTPMode\GenericVehicle\Tractor_4x2_vehicle-class-5_Generic vehicle.RSLT_MANUFACTURER.xml" HomeFolder="Yes"/>
+					<File FilePath="VectoCoreTest\TestData\Integration\VTPMode\GenericVehicle\Tractor_4x2_vehicle-class-5_Generic vehicle.xml" HomeFolder="Yes"/>
+				</Folder>
+				<Folder FolderName="GenericVehicle XMLJob PTO">
+					<File FilePath="VectoCoreTest\TestData\Integration\VTPMode\GenericVehicle XMLJob PTO\Tractor_4x2_vehicle-class-5_Generic vehicle.RSLT_MANUFACTURER.xml" HomeFolder="Yes"/>
+					<File FilePath="VectoCoreTest\TestData\Integration\VTPMode\GenericVehicle XMLJob PTO\Tractor_4x2_vehicle-class-5_Generic vehicle.xml" HomeFolder="Yes"/>
+				</Folder>
+				<Folder FolderName="GenericVehicle_CNG">
+					<File FilePath="VectoCoreTest\TestData\Integration\VTPMode\GenericVehicle_CNG\Tractor_4x2_vehicle-class-5_Generic vehicle.RSLT_MANUFACTURER.xml" HomeFolder="Yes"/>
+					<File FilePath="VectoCoreTest\TestData\Integration\VTPMode\GenericVehicle_CNG\Tractor_4x2_vehicle-class-5_Generic vehicle.xml" HomeFolder="Yes"/>
+				</Folder>
+				<Folder FolderName="HeavyBus">
+					<File FilePath="VectoCoreTest\TestData\Integration\VTPMode\HeavyBus\CompletedBus_34f.RSLT_MANUFACTURER.xml" HomeFolder="Yes"/>
+					<File FilePath="VectoCoreTest\TestData\Integration\VTPMode\HeavyBus\primary_heavyBus group 42_non_Smart.RSLT_MANUFACTURER.xml" HomeFolder="Yes"/>
+					<File FilePath="VectoCoreTest\TestData\Integration\VTPMode\HeavyBus\primary_heavyBus group 42_non_Smart.xml" HomeFolder="Yes"/>
+					<File FilePath="VectoCoreTest\TestData\Integration\VTPMode\HeavyBus\vecto_vehicle-completed_heavyBus_34f.xml" HomeFolder="Yes"/>
+				</Folder>
+				<Folder FolderName="MediumLorry">
+					<File FilePath="VectoCoreTest\TestData\Integration\VTPMode\MediumLorry\vecto_vehicle-medium_lorry_4x2.RSLT_CUSTOMER.xml" HomeFolder="Yes"/>
+					<File FilePath="VectoCoreTest\TestData\Integration\VTPMode\MediumLorry\vecto_vehicle-medium_lorry_4x2.RSLT_MANUFACTURER.xml" HomeFolder="Yes"/>
+					<File FilePath="VectoCoreTest\TestData\Integration\VTPMode\MediumLorry\vecto_vehicle-medium_lorry_4x2.xml" HomeFolder="Yes"/>
+				</Folder>
+			</Folder>
+		</Folder>
+		<Folder FolderName="SampleVehilces">
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\Tractor_4x2_vehicle-class-5_5_t_0.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\vecto_engine-input_sample.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\vecto_engine-sample.xml"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\vecto_gearbox-sample.xml"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\vecto_vehicle-exempted-sample.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\vecto_vehicle-exempted_input_full-sample.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\vecto_vehicle-exempted_input_only_certain_entries01-sample.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\vecto_vehicle-exempted_input_only_certain_entries02-sample.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\vecto_vehicle-exempted_input_only_mandatory_entries.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\vecto_vehicle-new_parameters-sample.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\vecto_vehicle-sample.xml"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\vecto_vehicle-sample_AT.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\vecto_vehicle-sample_certificationOptions.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\vecto_vehicle-sample_exempted.xml"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\vecto_vehicle-sample_FULL.xml"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\vecto_vehicle-sample_FULL_updated.xml"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\vecto_vehicle-sample_LNG.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\vecto_vehicle-sample_noAirdrag.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\vecto_vehicle-sample_torqueLimits.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\vecto_vehicle-stage_input_full-sample.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\vecto_vehicle-stage_input_only_certain_entries01-sample.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\vecto_vehicle-stage_input_only_certain_entries02-sample.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\vecto_vehicle-stage_input_only_mandatory_entries.xml" HomeFolder="Yes"/>
+		</Folder>
+		<Folder FolderName="Multistage_0.1">
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersionMultistage.0.1\AidragComponent.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersionMultistage.0.1\AirdragLoadTestFile.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersionMultistage.0.1\AirdragLoadTestFilev2.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersionMultistage.0.1\exempted_completed.VIF_Report_2.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersionMultistage.0.1\exempted_primary_heavyBus.VIF.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersionMultistage.0.1\vecto_multistage_consolidated_multiple_stages.xml"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersionMultistage.0.1\vecto_multistage_consolidated_multiple_stages_airdrag.xml"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersionMultistage.0.1\vecto_multistage_consolidated_multiple_stages_heatPump.xml"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersionMultistage.0.1\vecto_multistage_consolidated_multiple_stages_hev.xml"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersionMultistage.0.1\vecto_multistage_consolidated_multiple_stages_NGTankSystem.xml"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersionMultistage.0.1\vecto_multistage_consolidated_multiple_stages_vif.xml"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersionMultistage.0.1\vecto_multistage_consolidated_one_stage.xml"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersionMultistage.0.1\vecto_multistage_consolidated_two_stages.xml"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersionMultistage.0.1\vecto_multistage_conventional_final_vif.VIF_Report_1.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersionMultistage.0.1\vecto_multistage_primary_vehicle_only.xml"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersionMultistage.0.1\vecto_multistage_primary_vehicle_stage_2_3.xml"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersionMultistage.0.1\vecto_multistage_primary_vehicle_stage_2_3_group41.xml" HomeFolder="Yes"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersionMultistage.0.1\vecto_multistage_primary_vehicle_stage_2_full.xml"/>
+			<File FilePath="VectoCoreTest\TestData\XML\XMLReaderDeclaration\SchemaVersionMultistage.0.1\vecto_multistage_primary_vehicle_stage_2_mandatory.xml"/>
+		</Folder>
+	</Folder>
+	<Folder FolderName="XML Files Generic Vehicles">
+		<Folder FolderName="SingleBus">
+			<File FilePath="V:\Generic Vehicles\Declaration Mode\SingleBus_31b\primary_heavyBus group_P31_32_Smart_ES.xml" HomeFolder="Yes"/>
+			<File FilePath="V:\Generic Vehicles\Declaration Mode\SingleBus_34f\primary_heavyBus group_P33_34_SmartPS.xml" HomeFolder="Yes"/>
+			<File FilePath="V:\Generic Vehicles\Declaration Mode\SingleBus_31b\vecto_vehicle-completed_heavyBus_31b.xml" HomeFolder="Yes"/>
+			<File FilePath="V:\Generic Vehicles\Declaration Mode\SingleBus_34f\vecto_vehicle-completed_heavyBus_34f.xml" HomeFolder="Yes"/>
+		</Folder>
+		<Folder FolderName="CompletedBus">
+			<File FilePath="V:\Generic Vehicles\Declaration Mode\CompletedBus 31b2\airdrag.xml" HomeFolder="Yes"/>
+			<File FilePath="V:\Generic Vehicles\Declaration Mode\CompletedBus 31b2\completed_heavyBus_31b.VIF_Report_2.xml" HomeFolder="Yes"/>
+			<File FilePath="V:\Generic Vehicles\Declaration Mode\CompletedBus 34f\completed_heavyBus_34f.VIF_Report_2.xml" HomeFolder="Yes"/>
+			<File FilePath="V:\Generic Vehicles\Declaration Mode\CompletedBus 31b2\input_airdragonly.xml" HomeFolder="Yes"/>
+			<File FilePath="V:\Generic Vehicles\Declaration Mode\CompletedBus 31b2\input_aux.xml" HomeFolder="Yes"/>
+			<File FilePath="V:\Generic Vehicles\Declaration Mode\CompletedBus 31b2\primary_heavyBus group_P31_32_Smart_ES.VIF.xml" HomeFolder="Yes"/>
+			<File FilePath="V:\Generic Vehicles\Declaration Mode\CompletedBus 31b2\primary_heavyBus group_P31_32_Smart_ES.VIF_incl TC.xml" HomeFolder="Yes"/>
+			<File FilePath="V:\Generic Vehicles\Declaration Mode\CompletedBus 34f\primary_heavyBus group_P33_34_SmartPS.VIF.xml" HomeFolder="Yes"/>
+			<File FilePath="V:\Generic Vehicles\Declaration Mode\CompletedBus 31b2\vecto_vehicle-completed_heavyBus_31b.xml" HomeFolder="Yes"/>
+			<File FilePath="V:\Generic Vehicles\Declaration Mode\CompletedBus 34f\vecto_vehicle-completed_heavyBus_34f.xml" HomeFolder="Yes"/>
+		</Folder>
+		<File FilePath="V:\Generic Vehicles\Declaration Mode\Group5_Tractor_4x2\Class5_Tractor_DECL.xml" HomeFolder="Yes"/>
+		<File FilePath="V:\Generic Vehicles\Declaration Mode\Group5_Tractor_4x2\Class5_Tractor_DECL_DF-DM_WHR.xml" HomeFolder="Yes"/>
+		<File FilePath="V:\Generic Vehicles\Declaration Mode\Group5_Tractor_4x2\Class5_Tractor_DECL_DF.xml" HomeFolder="Yes"/>
+		<File FilePath="V:\Generic Vehicles\Declaration Mode\Group5_Tractor_4x2\Class5_Tractor_DECL_WHR.xml" HomeFolder="Yes"/>
+		<File FilePath="V:\Generic Vehicles\Declaration Mode\Group P39_40\primary_heavyBus group P39_40_nonSmart_ESS.xml" HomeFolder="Yes"/>
+		<File FilePath="V:\Generic Vehicles\Declaration Mode\Group P31_32\primary_heavyBus group_P31_32_Smart_ES.xml" HomeFolder="Yes"/>
+		<File FilePath="V:\Generic Vehicles\Declaration Mode\Group P33_34\primary_heavyBus group_P33_34_SmartPS.xml" HomeFolder="Yes"/>
+		<File FilePath="V:\Generic Vehicles\Declaration Mode\Group P35_36\primary_heavyBus group_P35_36_nonSmart.xml" HomeFolder="Yes"/>
+		<File FilePath="V:\Generic Vehicles\Declaration Mode\Group P37_38\primary_heavyBus group_P37_38_SmartES_PS.xml" HomeFolder="Yes"/>
 	</Folder>
 	<Folder FolderName="XSL Files" ExtStr="xsl;xslt">
 		<File FilePath="E:\QUAM\Workspace\VECTO_quam\Documentation\XML\RenderTable.xslt" HomeFolder="Yes"/>
-		<File FilePath="E:\QUAM\Workspace\VECTO_quam\VectoCommon\VectoHashing\Resources\XSLT\SortInputData.xslt" HomeFolder="Yes"/>
+		<File FilePath="V:\VectoCommon\VectoHashing\Resources\XSLT\SortInputData.xslt" HomeFolder="Yes"/>
 	</Folder>
 	<Folder FolderName="XQuery Files" ExtStr="xq;xql;xquery;xqu"/>
 	<Folder FolderName="HTML Files" ExtStr="html;htm;xhtml;asp"/>
@@ -58,13 +510,15 @@
 		<Folder FolderName="Declaration">
 			<File FilePath="VectoCore\Resources\XSD\VectoComponent.1.0.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoComponent.2.0.xsd" HomeFolder="Yes"/>
+			<File FilePath="VectoCore\Resources\XSD\VectoComponent.2.1.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoDeclarationComponent.xsd" HomeFolder="Yes"/>
-			<File FilePath="VectoCore\Resources\XSD\VectoDeclarationDefinitions.0.6.xsd" HomeFolder="Yes"/>
-			<File FilePath="VectoCore\Resources\XSD\VectoDeclarationDefinitions.0.8.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoDeclarationDefinitions.1.0.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoDeclarationDefinitions.2.0.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoDeclarationDefinitions.2.1.xsd" HomeFolder="Yes"/>
+			<File FilePath="VectoCore\Resources\XSD\VectoDeclarationDefinitions.2.2.1.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoDeclarationDefinitions.2.2.xsd" HomeFolder="Yes"/>
+			<File FilePath="VectoCore\Resources\XSD\VectoDeclarationDefinitions.2.3.xsd" HomeFolder="Yes"/>
+			<File FilePath="VectoCore\Resources\XSD\VectoDeclarationDefinitions.2.4.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoDeclarationDefinitions.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoDeclarationJob.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoInput.1.0.xsd" HomeFolder="Yes"/>
@@ -76,24 +530,39 @@
 		</Folder>
 		<Folder FolderName="Engineering">
 			<File FilePath="VectoCore\Resources\XSD\VectoEngineeringComponent.1.0.xsd" HomeFolder="Yes"/>
+			<File FilePath="VectoCore\Resources\XSD\VectoEngineeringComponent.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoEngineeringDefinitions.0.6.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoEngineeringDefinitions.0.7.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoEngineeringDefinitions.1.0.TEST.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoEngineeringDefinitions.1.0.xsd" HomeFolder="Yes"/>
+			<File FilePath="VectoCore\Resources\XSD\VectoEngineeringDefinitions.1.1.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoEngineeringDefinitions.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoEngineeringInput.0.7.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoEngineeringInput.1.0.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoEngineeringJob.xsd" HomeFolder="Yes"/>
 		</Folder>
 		<Folder FolderName="Reports">
+			<File FilePath="VectoCore\Resources\XSD\VectoMonitoring.0.7.1.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoMonitoring.0.7.xsd" HomeFolder="Yes"/>
+			<File FilePath="VectoCore\Resources\XSD\VectoMonitoring.0.8.xsd" HomeFolder="Yes"/>
+			<File FilePath="VectoCore\Resources\XSD\VectoMonitoring.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoOutputCustomer.0.4.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoOutputCustomer.0.5.xsd" HomeFolder="Yes"/>
+			<File FilePath="VectoCore\Resources\XSD\VectoOutputCustomer.0.7.1.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoOutputCustomer.0.7.xsd" HomeFolder="Yes"/>
+			<File FilePath="VectoCore\Resources\XSD\VectoOutputCustomer.0.8.xsd" HomeFolder="Yes"/>
+			<File FilePath="VectoCore\Resources\XSD\VectoOutputCustomer.xsd" HomeFolder="Yes"/>
+			<File FilePath="VectoCore\Resources\XSD\VectoOutputDefinitions.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoOutputManufacturer.0.5.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoOutputManufacturer.0.6.xsd" HomeFolder="Yes"/>
+			<File FilePath="VectoCore\Resources\XSD\VectoOutputManufacturer.0.7.1.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VectoOutputManufacturer.0.7.xsd" HomeFolder="Yes"/>
+			<File FilePath="VectoCore\Resources\XSD\VectoOutputManufacturer.0.8.xsd" HomeFolder="Yes"/>
+			<File FilePath="VectoCore\Resources\XSD\VectoOutputManufacturer.xsd" HomeFolder="Yes"/>
+			<File FilePath="VectoCore\Resources\XSD\VectoOutputMultistep.0.1.xsd" HomeFolder="Yes"/>
 			<File FilePath="VectoCore\Resources\XSD\VTPReport.0.1.xsd" HomeFolder="Yes"/>
+			<File FilePath="VectoCore\Resources\XSD\VTPReport.0.2.xsd" HomeFolder="Yes"/>
+			<File FilePath="VectoCore\Resources\XSD\VTPReport.xsd" HomeFolder="Yes"/>
 		</Folder>
 	</Folder>
 	<Folder FolderName="Entities" ExtStr="ent"/>

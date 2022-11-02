@@ -1,0 +1,33 @@
+{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2021-08-03T12:03:48.2599489Z",
+    "AppVersion": "3",
+    "FileVersion": 3
+  },
+  "Body": {
+    "SavedInDeclMode": false,
+    "Model": "Generic_EM_325kW_2170Nm",
+    "Inertia": 1.275,
+    "ContinuousTorque": 2170.0,
+    "ContinuousTorqueSpeed": 1399.9999999999998,
+    "OverloadTorque": 2170.0,
+    "OverloadTorqueSpeed": 1399.9999999999998,
+    "OverloadTime": 0.0,
+    "ThermalOverloadRecoveryFactor": 0.9,
+    "VoltageLevels": [
+      {
+        "Voltage": 0.0,
+        "FullLoadCurve": "generic_e_flc_325kW_2170Nm.vemp",
+        "DragCurve": "GenericDrag.vemd",
+        "EfficiencyMap": "generic_e_mot_325kW_2172Nm.vemo"
+      },
+      {
+        "Voltage": 10000.0,
+        "FullLoadCurve": "generic_e_flc_325kW_2170Nm.vemp",
+        "DragCurve": "GenericDrag.vemd",
+        "EfficiencyMap": "generic_e_mot_325kW_2172Nm.vemo"
+      }
+    ]
+  }
+}

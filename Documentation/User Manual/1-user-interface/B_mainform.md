@@ -1,11 +1,11 @@
-##Main Form
+## Main Form
 
 
 
 ![](pics/mainform.svg)
 
 
-###Description
+### Description
 
 
 The Main Form is loaded when starting VECTO. Closing this form will close VECTO even if other dialogs are still open. In this form all global settings can be controlled and all other application dialogs can be opened.
@@ -18,10 +18,10 @@ The Main Form includes two tabs as described below:
 * Options Tab
 
 
-###Job Files Tab
+### Job Files Tab
 
 
-####Job Files List#
+#### Job Files List#
 
 Job files (.vecto) listed here will be used for calculation. Unchecked files will be ignored!
 Doubleclick entries to edit job files with the [VECTO Editor](#job-editor).
@@ -35,7 +35,7 @@ Doubleclick entries to edit job files with the [VECTO Editor](#job-editor).
 
 ![up](pics/Actions-arrow-up-icon.png)![down](pics/Actions-arrow-down-icon.png) ***Move selected files up or down in list***
 
-#####List Options#
+##### List Options#
 
 - **Save/Load List**
     - Save or load Job List to text file
@@ -50,13 +50,13 @@ Doubleclick entries to edit job files with the [VECTO Editor](#job-editor).
 
 
 
-####![START](pics/Play-icon.png) ***START Button***
+#### ![START](pics/Play-icon.png) ***START Button***
 
 Start VECTO in the selected mode (see [Options](#options-tab)).
 
 
 
-###Options Tab
+### Options Tab
 
 ![](pics/VECTO_OptionsTab.png)
 
@@ -81,15 +81,15 @@ In this tab the global calculation settings can be changed.
 **MISC**
 
 Validate Data
-:    Enables or disables internal checks if the model parameters are within a reasonable range. When simulating a new vehicle model it is good to have this option enabled. If the model parameters are from certified components or the model data has been modified slightly this check may be disabled. The VECTO simulation will abort anyways if there is an error in the model parameters. Enabling this option increases the simulation time by a few seconds.
+:    Enables or disables internal checks if the model parameters are within a reasonable range. When simulating a new vehicle model it is good to have this option enabled. If the model parameters are from certified components or the model data has only been modified slightly this check may be disabled. The VECTO simulation will abort anyways if there is an error in the model parameters. Enabling this option increases the simulation time by a few seconds.
 
 Output values in vmod at beginning and end of simulation iterval
-:    By defaul VECTO writes the simulation results at the middle of every simulation interval. If this option is enabled, the .vmod file will contain two entries for every simulation interval, one at the beginning and one at the end of the simulation interval. Enabling this option may be helpful for analysing the trace of certain signals but can not be used for quantitative analyses of the fuel consumption, average power losses, etc. The generated modal result file has the suffix '_sim'. The picture below shows the difference in the output (top: conventional, bottom: if this option is checked)
+:    By default VECTO writes the simulation results at the middle of every simulation interval. If this option is enabled, the .vmod file will contain two entries for every simulation interval, one at the beginning and one at the end of the simulation interval. Enabling this option may be helpful for analysing the trace of certain signals but can not be used for quantitative analyses of the fuel consumption, average power losses, etc. The generated modal result file has the suffix '_sim'. The picture below shows the difference in the output (top: conventional, bottom: if this option is checked)
 
-![](pics/VECTO_vmod_vgl.png)
+![Regular VECTO .vmod output (top) vs. beginning and end of simulation interval (bottom)](pics/VECTO_vmod_vgl.png)
 
 
-###Controls
+### Controls
 
 ![new](pics/blue-document-icon.png) New Job File
 : Create a new .vecto file using the [VECTO Editor](#job-editor)
@@ -101,7 +101,7 @@ Output values in vmod at beginning and end of simulation iterval
 
 ![tools](pics/Misc-Tools-icon.png) ***Tools***
 
-- **[Job](#job-editor), [Vehicle](#vehicle-editor), [Engine](#engine-editor), [Gearbox](#gearbox-editor) Editor**
+- **[Job](#job-editor), [Vehicle](#vehicle-editor-general-tab), [Engine](#engine-editor), [Gearbox](#gearbox-editor) Editor**
     - Opens the respective Editor
 - **Graph**
     -   Open a new [Graph Window](#graph-window)
@@ -139,4 +139,4 @@ Note that the [message log](#application-files) can be opened in the ![](pics/Mi
 In addition to the log messages shown in the message list, Vecto writes more elaborate messages in the subdirectory logs. If multiple simulations are run in parallel (e.g., in declartion mode a vehicle is simulated on different cycles with different loadings) a separate log-file is created for every simulation run.
 
 Statusbar
-: Displays current status and progress of active simulations. When no simulation is executed the current mode is displayed (Standard, Batch or Declaration Mode).
+: Displays current status and progress of active simulations. When no simulation is executed the current mode is displayed (Engineering or Declaration Mode).

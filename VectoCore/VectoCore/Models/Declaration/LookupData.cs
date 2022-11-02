@@ -32,6 +32,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
@@ -47,6 +48,11 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		protected LookupData()
 		{
+			ReadData();
+		}
+
+		protected void ReadData()
+		{
 			if (!string.IsNullOrWhiteSpace(ResourceId)) {
 				var table = ReadCsvResource(ResourceId);
 				NormalizeTable(table);
@@ -56,7 +62,18 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		protected static DataTable ReadCsvResource(string resourceId)
 		{
+// TODO: MQ 2020-07 Remove in official bus version!
+//#if USE_EXTENAL_DECLARATION_DATA
+			var tmp = resourceId.Replace(DeclarationData.DeclarationDataResourcePrefix + ".", "");
+			var parts = tmp.Split('.');
+			var fileName = Path.Combine("Declaration", string.Join(".", parts[parts.Length - 2], parts[parts.Length - 1]));
+			if (File.Exists(fileName)) {
+				return VectoCSVFile.Read(fileName);
+			}
+
+			//#else
 			return VectoCSVFile.ReadStream(RessourceHelper.ReadStream(resourceId), source: resourceId);
+			//#endif
 		}
 
 		protected static void NormalizeTable(DataTable table)
@@ -71,7 +88,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 	{
 		protected Dictionary<TKey, TValue> Data = new Dictionary<TKey, TValue>();
 
-		protected override string ErrorMessage {  get { return "key {0} not found in lookup data"; } }
+		protected override string ErrorMessage => "key {0} not found in lookup data";
 
 		public virtual TValue Lookup(TKey key)
 		{
@@ -81,6 +98,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 				throw new VectoException(string.Format(ErrorMessage, key));
 			}
 		}
+
+		public Dictionary<TKey, TValue> Entries => Data;
 	}
 
 	public abstract class LookupData<TKey1, TKey2, TValue> : LookupData where TValue : struct
@@ -124,4 +143,13 @@ namespace TUGraz.VectoCore.Models.Declaration
 		public abstract TValue Lookup(TKey1 key1, TKey2 key2, TKey3 key3, TKey4 key4, TKey5 key5);
 	}
 
+	public abstract class LookupData<TKey1, TKey2, TKey3, TKey4, TKey5, TKey6, TValue> : LookupData where TValue : struct
+	{
+		public abstract TValue Lookup(TKey1 key1, TKey2 key2, TKey3 key3, TKey4 key4, TKey5 key5, TKey6 key6);
+	}
+
+	public abstract class LookupData<TKey1, TKey2, TKey3, TKey4, TKey5, TKey6, TKey7, TValue> : LookupData where TValue : struct
+	{
+		public abstract TValue Lookup(TKey1 key1, TKey2 key2, TKey3 key3, TKey4 key4, TKey5 key5, TKey6 key6, TKey7 key7);
+	}
 }

@@ -35,19 +35,14 @@ namespace TUGraz.VectoCommon.Models
 	{
 		Unknown,
 		N2,
-		N3
+		N3,
+		M3
 	}
 
 	public static class LegislativeClassHelper
 	{
-		public static string GetLabel(this LegislativeClass self)
-		{
-			return self.ToString();
-		}
+		public static string GetLabel(this LegislativeClass self) => self.ToString();
 
-		public static string ToXMLFormat(this LegislativeClass self)
-		{
-			return self.ToString();
-		}
+		public static string ToXMLFormat(this LegislativeClass? self) => self.ToString();
 	}
 }

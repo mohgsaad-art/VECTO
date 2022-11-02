@@ -1,0 +1,13 @@
+{
+  "Header": {
+    "CreatedBy": "Harry",
+    "Date": "2021-08-25T00:00:00+02:00",
+    "AppVersion": "Vecto3GUI2020",
+    "FileVersion": 10
+  },
+  "Body": {
+    "PrimaryVehicle": "..\\..\\XML\\XMLReaderDeclaration\\SchemaVersion2.4\\exempted_primary_heavyBus.xml",
+    "InterimStep": "..\\..\\XML\\XMLReaderDeclaration\\SchemaVersion2.4\\vecto_vehicle-exempted_input_completewithoutTMPLM.xml",
+    "Completed": false
+  }
+}

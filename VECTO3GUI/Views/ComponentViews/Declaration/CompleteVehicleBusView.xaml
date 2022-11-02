@@ -1,0 +1,442 @@
+﻿<UserControl x:Class="VECTO3GUI.Views.ComponentViews.Declaration.CompleteVehicleBusView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:VECTO3GUI.Views.ComponentViews.Declaration"
+             xmlns:interfaces="clr-namespace:VECTO3GUI.ViewModel.Interfaces"
+             xmlns:customControls="clr-namespace:VECTO3GUI.Views.CustomControls"
+             xmlns:helper="clr-namespace:VECTO3GUI.Helper"
+             xmlns:converter="clr-namespace:VECTO3GUI.Helper.Converter"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:validation="clr-namespace:VECTO3GUI.Helper.Validation"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="500">
+
+    <d:PrimaryVehicleBusView.DataContext>
+        <x:Type Type="interfaces:ICompleteVehicleBusViewModel" />
+    </d:PrimaryVehicleBusView.DataContext>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <GroupBox Header="Vehicle Data" Grid.Row="1" Grid.Column="1" Width="420" Height="680" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <StackPanel Orientation="Vertical" Width="400" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True" VerticalAlignment="Center">
+                <StackPanel Orientation="Vertical" DockPanel.Dock="Top" Grid.IsSharedSizeScope="True">
+
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition SharedSizeGroup="vehicleLbl"/>
+                            <ColumnDefinition />
+                            <ColumnDefinition SharedSizeGroup="unitWidth"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Text="Manufacturer" Margin="0,0,10,0"/>
+                        <TextBox Grid.Column="1" Margin="20,0,0,0" 
+                                 Text="{Binding Manufacturer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+                    </Grid>
+                    <!--<customControls:VectoParameterControl
+                        Caption="Manufacturer" Unit="" CaptionWidthGroup="vehicleLbl" UnitWidthGroup="unitWidth"
+                        Value="{Binding Manufacturer}" />-->
+
+
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition SharedSizeGroup="vehicleLbl"/>
+                            <ColumnDefinition />
+                            <ColumnDefinition SharedSizeGroup="unitWidth"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Manufacturer Address" Margin="0,0,10,0"/>
+                        <TextBox Grid.Column="1" Margin="20,0,0,0" 
+                                 Text="{Binding ManufacturerAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+                    </Grid>
+                    <!--<customControls:VectoParameterControl
+                        Caption="Manufacturer Address" Unit="" CaptionWidthGroup="vehicleLbl" UnitWidthGroup="unitWidth"
+                        Value="{Binding ManufacturerAddress}" />-->
+
+
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition SharedSizeGroup="vehicleLbl"/>
+                            <ColumnDefinition />
+                            <ColumnDefinition SharedSizeGroup="unitWidth"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Model" Margin="0,0,10,0"/>
+                        <TextBox Grid.Column="1" Margin="20,0,0,0" 
+                                 Text="{Binding Model, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+                    </Grid>
+
+
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition SharedSizeGroup="vehicleLbl"/>
+                            <ColumnDefinition />
+                            <ColumnDefinition SharedSizeGroup="unitWidth"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="VIN" Margin="0,0,10,0"/>
+                        <TextBox Grid.Column="1" Margin="20,0,0,0" 
+                                 Text="{Binding VIN, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+                    </Grid>
+                    <!--<customControls:VectoParameterControl
+                        Caption="VIN" Unit="" CaptionWidthGroup="vehicleLbl" UnitWidthGroup="unitWidth"
+                        Value="{Binding VIN}" />-->
+
+
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition SharedSizeGroup="vehicleLbl"/>
+                            <ColumnDefinition />
+                            <ColumnDefinition SharedSizeGroup="unitWidth"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Legislative Class" Margin="0,0,10,0"/>
+                        <ComboBox Grid.Column="1" 
+                                  Margin="20,0,0,0"
+                                  ItemsSource="{Binding AllowedLegislativeClasses}"
+                                  SelectedValue="{Binding LegislativeClass, Mode=TwoWay ,ValidatesOnDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"
+                                  SelectedValuePath="Value"
+                                  DisplayMemberPath="Label"
+                                  IsEditable="True"
+                                  IsReadOnly="True"
+                                  Text="Select..."/>
+                    </Grid>
+                    <!--<customControls:ComboParameter
+                        Caption="Legislative Class"
+                        CaptionWidthGroup="vehicleLbl" UnitWidthGroup="unitWidth"
+                        Value="{Binding LegislativeClass}"
+                        AllowedValues="{Binding AllowedLegislativeClasses}" />-->
+
+
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition SharedSizeGroup="vehicleLbl"/>
+                            <ColumnDefinition />
+                            <ColumnDefinition SharedSizeGroup="unitWidth"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Registered Class" Margin="0,0,10,0"/>
+                        <ComboBox Grid.Column="1" 
+                                  Margin="20,0,0,0"
+                                  ItemsSource="{Binding AllowedRegisteredClasses}"
+                                  SelectedValue="{Binding RegisteredClass, Mode=TwoWay ,ValidatesOnDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"
+                                  SelectedValuePath="Value"
+                                  DisplayMemberPath="Label"
+                                  IsEditable="True"
+                                  IsReadOnly="True"
+                                  Text="Select..."/>
+                    </Grid>
+                    <!--<customControls:ComboParameter
+                        Caption="Registered Class"
+                        CaptionWidthGroup="vehicleLbl" UnitWidthGroup="unitWidth"
+                        Value="{Binding RegisteredClass}"
+                        AllowedValues="{Binding AllowedRegisteredClasses}" />-->
+
+
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition SharedSizeGroup="vehicleLbl"/>
+                            <ColumnDefinition />
+                            <ColumnDefinition SharedSizeGroup="unitWidth"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Vehicle Code" Margin="0,0,10,0"/>
+                        <ComboBox Grid.Column="1" 
+                                  Margin="20,0,0,0"
+                                  ItemsSource="{Binding AllowedVehicleCodes}"
+                                  SelectedValue="{Binding VehicleCode, Mode=TwoWay ,ValidatesOnDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"
+                                  SelectedValuePath="Value"
+                                  DisplayMemberPath="Label"
+                                  IsEditable="True"
+                                  IsReadOnly="True"
+                                  Text="Select..."/>
+                    </Grid>
+                    <!--<customControls:ComboParameter
+                        Caption="Vehicle Code"
+                        CaptionWidthGroup="vehicleLbl" UnitWidthGroup="unitWidth"
+                        Value="{Binding VehicleCode}"
+                        AllowedValues="{Binding AllowedVehicleCodes}" />-->
+
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition SharedSizeGroup="vehicleLbl"/>
+                            <ColumnDefinition />
+                            <ColumnDefinition SharedSizeGroup="unitWidth"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Text="Curb Mass Chassis" Margin="0,0,10,0"/>
+                        <TextBox Grid.Column="1" Margin="20,0,0,0">
+                            <TextBox.Resources>
+                                <validation:IntegerValidatorConfig x:Key="IntValidator" MinValue="500" />
+                            </TextBox.Resources>
+                            <TextBox.Text>
+                                <Binding ValidatesOnDataErrors="True" NotifyOnValidationError="True" Path="CurbMassChassis"
+                                         Converter="{converter:SIValueConverter}" ConverterParameter="int" UpdateSourceTrigger="PropertyChanged">
+                                        <Binding.ValidationRules>
+                                            <validation:IntegerValidator ValidatorConfig="{StaticResource IntValidator}"/>
+                                        </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <TextBlock Grid.Column="2" Text="{helper:SIUnit CurbMassChassis}" Margin="5,0,5,0"/>
+                    </Grid>
+
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition SharedSizeGroup="vehicleLbl"/>
+                            <ColumnDefinition />
+                            <ColumnDefinition SharedSizeGroup="unitWidth"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <TextBlock Grid.Column="0" Text="Permissible Maximum Laden Mass" Margin="0,0,10,0"/>
+                        <TextBox Grid.Column="1" Margin="20,0,0,0">
+                            <TextBox.Resources>
+                                <validation:IntegerValidatorConfig x:Key="IntValidator" MinValue="3500" />
+                            </TextBox.Resources>
+                            <TextBox.Text>
+                                <Binding ValidatesOnDataErrors="True" NotifyOnValidationError="True" Path="TechnicalPermissibleMaximumLadenMass"
+                                         Converter="{converter:SIValueConverter}" ConverterParameter="int" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <validation:IntegerValidator ValidatorConfig="{StaticResource IntValidator}"/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <TextBlock Grid.Row="0" Grid.Column="2" Text="{helper:SIUnit TechnicalPermissibleMaximumLadenMass}" Margin="5,0,5,0"/>
+                    </Grid>
+                    <!--<customControls:VectoParameterControl
+                        Caption="Permissible Maximum Laden Mass" Unit="{helper:SIUnit TechnicalPermissibleMaximumLadenMass}" CaptionWidthGroup="vehicleLbl" UnitWidthGroup="unitWidth"
+                        Value="{Binding TechnicalPermissibleMaximumLadenMass, Converter={converter:SIValueConverter}, ConverterParameter=int}" />-->
+
+
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition SharedSizeGroup="vehicleLbl"/>
+                            <ColumnDefinition />
+                            <ColumnDefinition SharedSizeGroup="unitWidth"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="NG Tank System" Margin="0,0,10,0"/>
+                        <ComboBox Grid.Column="1" 
+                                  Margin="20,0,0,0"
+                                  ItemsSource="{Binding AllowedTankSystems}"
+                                  SelectedValue="{Binding NgTankSystem, Mode=TwoWay ,ValidatesOnDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"
+                                  SelectedValuePath="Value"
+                                  DisplayMemberPath="Label"
+                                  IsEditable="True"
+                                  IsReadOnly="True"
+                                  Text="Select..."/>
+                    </Grid>
+                    <!--<customControls:ComboParameter
+                        Caption="NG Tank System"
+                        CaptionWidthGroup="vehicleLbl" UnitWidthGroup="unitWidth"
+                        Value="{Binding NgTankSystem}"
+                        AllowedValues="{Binding AllowedTankSystems}" />-->
+
+
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition SharedSizeGroup="vehicleLbl"/>
+                            <ColumnDefinition />
+                            <ColumnDefinition SharedSizeGroup="unitWidth"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Passengers Lower Deck" Margin="0,0,10,0"/>
+                        <TextBox Grid.Column="1" Margin="20,0,0,0">
+                            <TextBox.Resources>
+                                <validation:IntegerValidatorConfig x:Key="IntValidator" MinValue="0" />
+                            </TextBox.Resources>
+                            <TextBox.Text>
+                                <Binding ValidatesOnDataErrors="True" NotifyOnValidationError="True" Path="NumberOfPassengersLowerDeck"
+                                          UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <validation:IntegerValidator ValidatorConfig="{StaticResource IntValidator}"/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                    </Grid>
+                    <!--<customControls:VectoParameterControl
+                        Caption="Passengers Lower Deck" Unit="" CaptionWidthGroup="vehicleLbl" UnitWidthGroup="unitWidth"
+                        Value="{Binding NumberOfPassengersLowerDeck}" />-->
+
+
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition SharedSizeGroup="vehicleLbl"/>
+                            <ColumnDefinition />
+                            <ColumnDefinition SharedSizeGroup="unitWidth"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Passengers Upper Deck" Margin="0,0,10,0"/>
+                        <TextBox Grid.Column="1" Margin="20,0,0,0">
+                            <TextBox.Resources>
+                                <validation:IntegerValidatorConfig x:Key="IntValidator" MinValue="0" />
+                            </TextBox.Resources>
+                            <TextBox.Text>
+                                <Binding ValidatesOnDataErrors="True" NotifyOnValidationError="True" Path="NumberOfPassengersUpperDeck"
+                                          UpdateSourceTrigger="PropertyChanged">                                    <Binding.ValidationRules>
+                                        <validation:IntegerValidator ValidatorConfig="{StaticResource IntValidator}"/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                    </Grid>
+                    <!--<customControls:VectoParameterControl
+                        Caption="Passengers Upper Deck" Unit="" CaptionWidthGroup="vehicleLbl" UnitWidthGroup="unitWidth"
+                        Value="{Binding NumberOfPassengersUpperDeck}" />-->
+
+                    <customControls:CheckboxParameter
+                        Caption="Low Entry" CaptionWidthGroup="vehicleLbl"
+                        Unit="" UnitWidthGroup="unitWidth"
+                        Value="{Binding LowEntry}"/>
+
+
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition SharedSizeGroup="vehicleLbl"/>
+                            <ColumnDefinition />
+                            <ColumnDefinition SharedSizeGroup="unitWidth"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Height Integrated Body" Margin="0,0,10,0"/>
+                        <TextBox Grid.Column="1" Margin="20,0,0,0">
+                            <TextBox.Resources>
+                                <validation:DoubleValidatorConfig x:Key="DoubleValidator" MinValue="0" />
+                            </TextBox.Resources>
+                            <TextBox.Text>
+                                <Binding ValidatesOnDataErrors="True" NotifyOnValidationError="True" Path="HeightIntegratedBody"
+                                         Converter="{converter:SIValueConverter}" ConverterParameter="double3" UpdateSourceTrigger="LostFocus">
+                                    <Binding.ValidationRules>
+                                        <validation:DoubleValidator ValidatorConfig="{StaticResource DoubleValidator}"/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <TextBlock Grid.Row="0" Grid.Column="2" Text="{helper:SIUnit HeightIntegratedBody}" Margin="5,0,5,0"/>
+                    </Grid>
+                    <!--<customControls:VectoParameterControl
+                        Caption="Height Integrated Body" Unit="{helper:SIUnit HeightIntegratedBody}" CaptionWidthGroup="vehicleLbl" UnitWidthGroup="unitWidth"
+                        Value="{Binding HeightIntegratedBody, Converter={converter:SIValueConverter}, ConverterParameter=double}" />-->
+
+
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition SharedSizeGroup="vehicleLbl"/>
+                            <ColumnDefinition />
+                            <ColumnDefinition SharedSizeGroup="unitWidth"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Vehicle Length" Margin="0,0,10,0"/>
+                        <TextBox Grid.Column="1" Margin="20,0,0,0">
+                            <TextBox.Resources>
+                                <validation:DoubleValidatorConfig x:Key="DoubleValidator" MinValue="0" Decimals="3" />
+                            </TextBox.Resources>
+                            <TextBox.Text>
+                                <Binding ValidatesOnDataErrors="True" NotifyOnValidationError="True" Path="VehicleLength"
+                                         Converter="{converter:SIValueConverter}" ConverterParameter="double3" UpdateSourceTrigger="LostFocus">
+                                    <Binding.ValidationRules>
+                                        <validation:DoubleValidator ValidatorConfig="{StaticResource DoubleValidator}"/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <TextBlock Grid.Row="0" Grid.Column="2" Text="{helper:SIUnit VehicleLength}" Margin="5,0,5,0"/>
+                    </Grid>
+                    <!--<customControls:VectoParameterControl
+                        Caption="Vehicle Length" Unit="{helper:SIUnit VehicleLength}" CaptionWidthGroup="vehicleLbl" UnitWidthGroup="unitWidth"
+                        Value="{Binding VehicleLength, Converter={converter:SIValueConverter}, ConverterParameter=double}" />-->
+
+
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition SharedSizeGroup="vehicleLbl"/>
+                            <ColumnDefinition />
+                            <ColumnDefinition SharedSizeGroup="unitWidth"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Vehicle Width" Margin="0,0,10,0"/>
+
+                        <TextBox Grid.Column="1" Margin="20,0,0,0">
+                            <TextBox.Resources>
+                                <validation:DoubleValidatorConfig x:Key="DoubleValidator" MinValue="0" Decimals="3" />
+                            </TextBox.Resources>
+                            <TextBox.Text>
+                                <Binding ValidatesOnDataErrors="True" NotifyOnValidationError="True" Path="VehicleWidth"
+                                         Converter="{converter:SIValueConverter}" ConverterParameter="double3" UpdateSourceTrigger="LostFocus">
+                                    <Binding.ValidationRules>
+                                        <validation:DoubleValidator ValidatorConfig="{StaticResource DoubleValidator}"/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <TextBlock Grid.Row="0" Grid.Column="2" Text="{helper:SIUnit VehicleWidth}" Margin="5,0,5,0"/>
+                    </Grid>
+                    <!--<customControls:VectoParameterControl
+                        Caption="Vehicle Width" Unit="{helper:SIUnit VehicleWidth}" CaptionWidthGroup="vehicleLbl" UnitWidthGroup="unitWidth"
+                        Value="{Binding VehicleWidth, Converter={converter:SIValueConverter}, ConverterParameter=double}" />-->
+
+
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition SharedSizeGroup="vehicleLbl"/>
+                            <ColumnDefinition />
+                            <ColumnDefinition SharedSizeGroup="unitWidth"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Entrance Height" Margin="0,0,10,0"/>
+                        <TextBox Grid.Column="1" Margin="20,0,0,0">
+                            <TextBox.Resources>
+                                <validation:DoubleValidatorConfig x:Key="DoubleValidator" MinValue="0" Decimals="3" />
+                            </TextBox.Resources>
+                            <TextBox.Text>
+                                <Binding ValidatesOnDataErrors="True" NotifyOnValidationError="True" Path="EntranceHeight"
+                                         Converter="{converter:SIValueConverter}" ConverterParameter="double3" UpdateSourceTrigger="LostFocus">
+                                    <Binding.ValidationRules>
+                                        <validation:DoubleValidator ValidatorConfig="{StaticResource DoubleValidator}"/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+
+
+
+                        <!--<TextBox Grid.Column="1" Margin="20,0,0,0" 
+                                 Text="{Binding EntranceHeight, Converter={converter:SIValueConverter}, ConverterParameter=double,
+                                    Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>-->
+                        <TextBlock Grid.Row="0" Grid.Column="2" Text="{helper:SIUnit EntranceHeight}" Margin="5,0,5,0"/>
+                    </Grid>
+
+                    <!--<customControls:VectoParameterControl
+                        Caption="Entrance Height" Unit="{helper:SIUnit EntranceHeight}" CaptionWidthGroup="vehicleLbl" UnitWidthGroup="unitWidth"
+                        Value="{Binding EntranceHeight, Converter={converter:SIValueConverter}, ConverterParameter=double}" />-->
+
+
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition SharedSizeGroup="vehicleLbl"/>
+                            <ColumnDefinition />
+                            <ColumnDefinition SharedSizeGroup="unitWidth"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Door Drive Technology" Margin="0,0,10,0"/>
+                        <ComboBox Grid.Column="1" 
+                                  Margin="20,0,0,0"
+                                  ItemsSource="{Binding AllowedDoorDriveTechnologies}"
+                                  SelectedValue="{Binding DoorDriveTechnology, Mode=TwoWay ,ValidatesOnDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"
+                                  SelectedValuePath="Value"
+                                  DisplayMemberPath="Label"
+                                  IsEditable="True"
+                                  IsReadOnly="True"
+                                  Text="Select..."/>
+                    </Grid>
+                    <!--<customControls:ComboParameter
+                            Caption="Door Drive Technology"
+                            CaptionWidthGroup="vehicleLbl" UnitWidthGroup="unitWidth"
+                            Value="{Binding DoorDriveTechnology}"
+                            AllowedValues="{Binding AllowedDoorDriveTechnologies}" />-->
+
+                </StackPanel>
+            </StackPanel>
+        </GroupBox>
+    </Grid>
+</UserControl>

@@ -1,6 +1,6 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet href="https://webgate.ec.europa.eu/CITnet/svn/VECTO/trunk/Share/XML/CSS/VectoReports.css"?>
-<VectoOutput schemaVersion="0.5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationOutput:v0.5" xmlns:di="http://www.w3.org/2000/09/xmldsig#" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationOutput:v0.5 https://webgate.ec.europa.eu/CITnet/svn/VECTO/trunk/Share/XML/XSD/VectoOutputManufacturer.0.5.xsd">
+<VectoOutput schemaVersion="0.5" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:tugraz:ivt:VectoAPI:DeclarationOutput:v0.5" xmlns:di="http://www.w3.org/2000/09/xmldsig#" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationOutput:v0.5 https://citnet.tech.ec.europa.eu/CITnet/svn/VECTO/trunk/Share/XML/XSD/VectoOutputManufacturer.0.5.xsd">
   <Data id="RESULT-bf220343fe634daa8708">
     <Vehicle>
       <VIN>1234</VIN>
@@ -15,7 +15,7 @@
           <Model>175kW 6.8l Engine</Model>
           <CertificationNumber>1234</CertificationNumber>
           <DigestValue>JZmOioDqDbJWb3SWfxl/wSaxs9/WN5mLPh8vtJjs8Vs=</DigestValue>
-          <RatedPower unit="kW">0</RatedPower>
+          <RatedPower unit="kW">10</RatedPower>
           <IdlingSpeed unit="rpm">650</IdlingSpeed>
           <RatedSpeed unit="rpm">2200</RatedSpeed>
           <Displacement unit="ltr">6.9</Displacement>
@@ -29,11 +29,11 @@
           <GearsCount>6</GearsCount>
           <TransmissionRatioFinalGear>0.620</TransmissionRatioFinalGear>
         </Gearbox>
-        <TorqueConverter>
-          <Model />
+        <Torqueconverter>
+          <Model >asdf</Model>
           <CertificationMethod>Standard values</CertificationMethod>
           <DigestValue />
-        </TorqueConverter>
+        </Torqueconverter>
         <Retarder>
           <RetarderType>None</RetarderType>
         </Retarder>

@@ -30,8 +30,8 @@
 */
 
 using System.Collections.Generic;
-using System.Linq;
 using TUGraz.VectoCommon.Hashing;
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoHashing;
 
@@ -68,8 +68,13 @@ namespace TUGraz.VectoCommon.InputData
 	{
 		string Source { get; }
 
+		IResultsInputData Results { get; }
+
 		IDictionary<VectoComponents,IList<string>> ComponentDigests { get; }
 
 		DigestData JobDigest { get; }
+		Meter VehicleLength { get; }
+		VehicleClass VehicleClass { get; }
+		VehicleCode VehicleCode { get; }
 	}
 }

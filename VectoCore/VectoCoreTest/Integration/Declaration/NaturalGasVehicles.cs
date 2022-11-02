@@ -44,8 +44,8 @@ using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.InputData.FileIO.XML;
-using TUGraz.VectoCore.InputData.FileIO.XML.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Impl;
+using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Tests.Models.Simulation;
@@ -53,6 +53,8 @@ using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Tests.Integration.Declaration
 {
+	[TestFixture()]
+	[Parallelizable(ParallelScope.All)]
 	public class NaturalGasVehicles
 	{
 		const string Class5NG = @"Testdata\Integration\DeclarationMode\Class5_NG\Tractor_4x2_vehicle-class-5_EURO6_2018.xml";
@@ -71,10 +73,10 @@ namespace TUGraz.VectoCore.Tests.Integration.Declaration
 
 
 		[
-		 TestCase(Class5NG, 2, TankSystem.Liquefied, 253.8, 703.0, TestName = "Class5 LNG 2"),
-		 TestCase(Class5NG, 2, TankSystem.Compressed, 259.6, 698.3, TestName = "Class5 CNG 2"),
-		TestCase(Class5NG, 6, TankSystem.Liquefied, 253.2, 701.3, TestName = "Class5 LNG 6"),
-		TestCase(Class5NG, 6, TankSystem.Compressed, 259.0, 696.7, TestName = "Class5 CNG 6"),
+		 TestCase(Class5NG, 2, TankSystem.Liquefied, 249.8, 691.93, TestName = "Class5 LNG 2"),
+		 TestCase(Class5NG, 2, TankSystem.Compressed, 255.5, 687.35, TestName = "Class5 CNG 2"),
+		TestCase(Class5NG, 6, TankSystem.Liquefied, 253.2, 701.46, TestName = "Class5 LNG 6"),
+		TestCase(Class5NG, 6, TankSystem.Compressed, 259.0, 696.81, TestName = "Class5 CNG 6"),
 			]
 		public void NaturalGasTankSystemTest(string filename, int runIdx, TankSystem tankSystem, double expectedFc, double expectedCo2)
 		{
@@ -97,19 +99,18 @@ namespace TUGraz.VectoCore.Tests.Integration.Declaration
 			tankSystemNode.SetValue(tankSystem.ToString());
 			var modified = XmlReader.Create(new StringReader(nav.OuterXml));
 
-			var writer = new MockDeclarationWriter(filename);
+			var writer = new FileOutputWriter(filename); // new MockDeclarationWriter(filename);
 			var inputData = xmlInputReader.CreateDeclaration(modified);
-			var factory = new SimulatorFactory(ExecutionMode.Declaration, inputData, writer) {
-				WriteModalResults = true,
-				ActualModalData = true
-			};
+			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, writer);
+			factory.WriteModalResults = true;
+			factory.ActualModalData = true;
 			var jobContainer = new JobContainer(new MockSumWriter());
 
 			jobContainer.AddRuns(factory);
 
 			jobContainer.Execute();
 			jobContainer.WaitFinished();
-			var manufacturerReport = writer.GetReport(ReportType.DeclarationReportManufacturerXML);
+			var manufacturerReport = XDocument.Load(XmlReader.Create(writer.XMLFullReportName)); // writer.GetReport(ReportType.DeclarationReportManufacturerXML);
 
 			var fuelTypeResultNodes = manufacturerReport.XPathSelectElements("//*[local-name()='Results']//*[local-name()='FuelType']");
 			foreach (var node in fuelTypeResultNodes) {
@@ -117,9 +118,9 @@ namespace TUGraz.VectoCore.Tests.Integration.Declaration
 			}
 
 			var fcNode = manufacturerReport.XPathSelectElement(
-				string.Format("//*[local-name()='Results']/*[local-name()='Result'][{0}]//*[local-name()='FuelConsumption' and @unit='g/km']", runIdx));
+				$"//*[local-name()='Results']/*[local-name()='Result'][{runIdx}]//*[local-name()='FuelConsumption' and @unit='g/km']");
 			var co2Node = manufacturerReport.XPathSelectElement(
-				string.Format("//*[local-name()='Results']/*[local-name()='Result'][{0}]//*[local-name()='CO2' and @unit='g/km']", runIdx));
+				$"//*[local-name()='Results']/*[local-name()='Result'][{runIdx}]//*[local-name()='CO2' and @unit='g/km']");
 
 			Console.WriteLine("fc: {0}  co2: {1}", fcNode.Value, co2Node.Value);
 
@@ -134,9 +135,11 @@ namespace TUGraz.VectoCore.Tests.Integration.Declaration
 
 		private readonly Dictionary<ReportType, XDocument> _reports = new Dictionary<ReportType, XDocument>();
 
+		
+
 		public MockDeclarationWriter(string filename)
 		{
-			
+			JobFile = filename;
 		}
 
 		public XDocument GetReport(ReportType type)
@@ -164,6 +167,18 @@ namespace TUGraz.VectoCore.Tests.Integration.Declaration
 		{
 		}
 
+		public IDictionary<ReportType, string> GetWrittenFiles()
+		{
+			throw new NotImplementedException();
+		}
+
+		public int NumberOfManufacturingStages
+		{
+			set => throw new NotImplementedException();
+		}
+
+		public XDocument MultistageXmlReport { get; }
+
 		#endregion
 
 		#region Implementation of ISummaryWriter
@@ -171,6 +186,16 @@ namespace TUGraz.VectoCore.Tests.Integration.Declaration
 		public void WriteSumData(DataTable sortedAndFilteredTable)
 		{
 			SumData = sortedAndFilteredTable;
+		}
+
+		#endregion
+
+		#region Implementation of IOutputDataWriter
+
+		public string JobFile
+		{
+			get;
+			private set;
 		}
 
 		#endregion

@@ -49,9 +49,9 @@ using TUGraz.VectoCore;
 using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
 using TUGraz.VectoCore.InputData.FileIO.XML;
-using TUGraz.VectoCore.InputData.FileIO.XML.Declaration;
-using TUGraz.VectoCore.InputData.FileIO.XML.Engineering;
+using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Impl;
+using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Utils;
@@ -107,6 +107,7 @@ Examples:
 
 		private static int Main(string[] args)
 		{
+
 			_kernel = new StandardKernel(new VectoNinjectModule());
 			try {
 				// on -h display help and terminate.
@@ -144,6 +145,12 @@ Examples:
 				}
 
 				var config = LogManager.Configuration;
+				if (config is null) {
+					// in .net6.0 the app is exported as dll, therefore the default config lookup of nlog doesn't work.
+					LogManager.LoadConfiguration($"{Assembly.GetExecutingAssembly().GetName().Name}.dll.config");
+					config = LogManager.Configuration;
+				}
+
 				config.LoggingRules.Add(new LoggingRule("*", logLevel, config.FindTargetByName("LogFile")));
 
 				if (logLevel > LogLevel.Warn) {
@@ -211,7 +218,7 @@ Examples:
 							break;
 						case ".xml":
 							var xDocument = XDocument.Load(file);
-							var rootNode = xDocument == null ? "" : xDocument.Root.Name.LocalName;
+							var rootNode = xDocument?.Root.Name.LocalName ?? "";
 							switch (rootNode) {
 								case "VectoInputEngineering":
 									dataProvider = inputReader.CreateEngineering(file);
@@ -224,17 +231,17 @@ Examples:
 					}
 
 					if (dataProvider == null) {
-						WriteLine(string.Format(@"failed to read job: '{0}'", file));
+						WriteLine($@"failed to read job: '{file}'");
 						continue;
 					}
 
 					fileWriter = new FileOutputWriter(file);
-					var runsFactory = new SimulatorFactory(mode, dataProvider, fileWriter) {
-						ModalResults1Hz = args.Contains("-1Hz"),
-						WriteModalResults = args.Contains("-mod"),
-						ActualModalData = args.Contains("-act"),
-						Validate = !args.Contains("-nv"),
-					};
+					var runsFactory = _kernel.Get<ISimulatorFactoryFactory>().Factory(mode, dataProvider, fileWriter);
+					//var runsFactory = SimulatorFactory.CreateSimulatorFactory(mode, dataProvider, fileWriter);
+					runsFactory.ModalResults1Hz = args.Contains("-1Hz");
+					runsFactory.WriteModalResults = args.Contains("-mod");
+					runsFactory.ActualModalData = args.Contains("-act");
+					runsFactory.Validate = !args.Contains("-nv");
 
 					_jobContainer.AddRuns(runsFactory);
 				}
@@ -243,7 +250,7 @@ Examples:
 				WriteLine(@"Detected cycles:", ConsoleColor.White);
 
 				foreach (var cycle in _jobContainer.GetCycleTypes()) {
-					WriteLineStdOut(string.Format(@"  {0}: {1}", cycle.Name, cycle.CycleType));
+					WriteLineStdOut($@"  {cycle.Name}: {cycle.CycleType}");
 				}
 				WriteLine();
 
@@ -357,11 +364,11 @@ Examples:
 
 		private static void ShowVersionInformation()
 		{
-			WriteLine(string.Format(@"VectoConsole: {0}", Assembly.GetExecutingAssembly().GetName().Version));
-			WriteLine(string.Format(@"VectoCore: {0}", VectoSimulationCore.VersionNumber));
+			WriteLine($@"VectoConsole: {Assembly.GetExecutingAssembly().GetName().Version}");
+			WriteLine($@"VectoCore: {VectoSimulationCore.VersionNumber}");
 		}
 
-		private static void PrintProgress(Dictionary<int, JobContainer.ProgressEntry> progessData,
+		private static void PrintProgress(IDictionary<int, JobContainer.ProgressEntry> progessData,
 			bool showTiming = true, bool force = false)
 		{
 			try {
@@ -383,10 +390,9 @@ Examples:
 					}
 					var timingString = "";
 					if (showTiming && progressEntry.Value.ExecTime > 0) {
-						timingString = string.Format("{0,9:F2}s", progressEntry.Value.ExecTime / 1000.0);
+						timingString = $"{progressEntry.Value.ExecTime / 1000.0,9:F2}s";
 					}
-					var runName = string.Format("{0} {1} {2}", progressEntry.Value.RunName, progressEntry.Value.CycleName,
-						progressEntry.Value.RunSuffix);
+					var runName = $"{progressEntry.Value.RunName} {progressEntry.Value.CycleName} {progressEntry.Value.RunSuffix}";
 					Console.WriteLine(@"{0,-60} {1,8:P}{2}", runName, progressEntry.Value.Progress, timingString);
 					Console.ResetColor();
 					sumProgress += progressEntry.Value.Progress;

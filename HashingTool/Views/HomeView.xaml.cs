@@ -29,8 +29,6 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
-using System.Windows.Controls;
-
 namespace HashingTool.Views
 {
 	/// <summary>

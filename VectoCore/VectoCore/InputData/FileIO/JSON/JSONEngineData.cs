@@ -30,12 +30,15 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json.Linq;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
+using TUGraz.VectoCore.Models.Declaration;
 
 namespace TUGraz.VectoCore.InputData.FileIO.JSON
 {
@@ -69,60 +72,180 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 	///  }
 	/// }
 	/// </code>
-	public class JSONEngineDataV4 : JSONEngineDataV3
+	public class JSONEngineDataV5 : JSONEngineDataV4, IEngineModeEngineeringInputData
 	{
-		public JSONEngineDataV4(JObject data, string fileName, bool tolerateMissing = false)
-			: base(data, fileName, tolerateMissing) {}
+		protected IWHRData _elWHRData;
+		protected IWHRData _mechWHRData;
 
-		public override Watt RatedPowerDeclared
+		
+		public JSONEngineDataV5(JObject data, string fileName, bool tolerateMissing = false) : base(
+			data, fileName, tolerateMissing) { }
+
+		#region Overrides of JSONEngineDataV3
+
+		public override IWHRData WasteHeatRecoveryDataElectrical => _elWHRData ?? (_elWHRData = ReadWHRData(Body["WHRCorrectionFactors"]?["Electrical"]));
+
+
+		public override IWHRData WasteHeatRecoveryDataMechanical => _mechWHRData ?? (_mechWHRData = ReadWHRData(Body["WHRCorrectionFactors"]?["Mechanical"]));
+
+		public override WHRType WHRType
 		{
-			get { return Body.GetEx<double>("RatedPower").SI<Watt>(); }
+			get {
+				var whr = Body["WHRType"];
+				var retVal = WHRType.None;
+				if (whr == null) {
+					return retVal;
+				}
+
+				foreach (var entry in whr) {
+					retVal |= entry.ToString().ParseEnum<WHRType>(); 
+				}
+				return retVal;
+			}
 		}
 
-		public override PerSecond RatedSpeedDeclared
+		protected override IList<IEngineFuelEngineeringInputData> ReadFuels()
 		{
-			get { return Body.GetEx<double>("RatedSpeed").RPMtoRad(); }
+			var retVal = new List<IEngineFuelEngineeringInputData>();
+			foreach (var jsonFuel in Body["Fuels"]) {
+				TableData fuelMap;
+				try {
+					fuelMap = ReadTableData(jsonFuel.GetEx<string>(JsonKeys.Engine_FuelConsumptionMap), "FuelConsumptionMap");
+				} catch (Exception) {
+					if (!TolerateMissing) {
+						throw;
+					}
+
+					fuelMap = new TableData(
+							Path.Combine(BasePath, jsonFuel[JsonKeys.Engine_FuelConsumptionMap].ToString()) + MissingFileSuffix,
+							DataSourceType.Missing);
+				}
+
+				retVal.Add(new JSONFuelInputData {
+					FuelType = jsonFuel.GetEx<string>("FuelType").ParseEnum<FuelType>(),
+					ColdHotBalancingFactor = jsonFuel.GetEx<double>("ColdHotBalancingFactor"),
+					CorrectionFactorRegPer = jsonFuel.GetEx<double>("CFRegPer"),
+					WHTCUrban = jsonFuel.GetEx<double>(JsonKeys.Engine_WHTC_Urban),
+					WHTCRural = jsonFuel.GetEx<double>(JsonKeys.Engine_WHTC_Rural),
+					WHTCMotorway = jsonFuel.GetEx<double>(JsonKeys.Engine_WHTC_Motorway),
+					WHTCEngineering = jsonFuel.GetEx<double>("WHTC-Engineering"),
+					FuelConsumptionMap = fuelMap
+				});
+			}
+
+			return retVal;
 		}
 
-		public override NewtonMeter MaxTorqueDeclared
+		#endregion
+
+		private IWHRData ReadWHRData(JToken correctionFactors)
 		{
-			get { return Body.GetEx<double>("MaxTorque").SI<NewtonMeter>(); }
+			TableData whrMap;
+			try {
+				whrMap = ReadTableData(Body["Fuels"][0].GetEx<string>(JsonKeys.Engine_FuelConsumptionMap), "FuelConsumptionMap");
+			} catch (Exception) {
+				if (!TolerateMissing) {
+					throw;
+				}
+
+				whrMap =
+					new TableData(
+						Path.Combine(BasePath, Body[JsonKeys.Engine_FuelConsumptionMap].ToString()) + MissingFileSuffix,
+						DataSourceType.Missing);
+			}
+
+			var retVal = new JSonWHRData(correctionFactors, whrMap);
+			return retVal;
 		}
 
-		public override double CorrectionFactorRegPer
+		public class JSONFuelInputData : IEngineFuelEngineeringInputData {
+			#region Implementation of IEngineFuelDelcarationInputData
+
+			public FuelType FuelType { get; set; }
+			public double WHTCMotorway { get; set; }
+			public double WHTCRural { get; set; }
+			public double WHTCUrban { get; set; }
+			public double ColdHotBalancingFactor { get; set; }
+			public double CorrectionFactorRegPer { get; set; }
+			public TableData FuelConsumptionMap { get; set; }
+
+			#endregion
+
+			#region Implementation of IEngineFuelEngineeringInputData
+
+			public double WHTCEngineering { get; set; }
+
+			#endregion
+		}
+
+		private class JSonWHRData : IWHRData
 		{
-			get { return Body.GetEx<double>("CFRegPer"); }
+			protected JToken CorrectionFactors;
+			protected TableData WHRMap;
+
+			public JSonWHRData(JToken correctionFactors, TableData whrMap)
+			{
+				CorrectionFactors = correctionFactors;
+				WHRMap = whrMap;
+			}
+
+			#region Implementation of IWHRData
+
+			public double UrbanCorrectionFactor => CorrectionFactors?["Urban"]?.ToString().ToDouble() ?? 1.0;
+
+			public double RuralCorrectionFactor => CorrectionFactors?["Rural"]?.ToString().ToDouble() ?? 1.0;
+
+			public double MotorwayCorrectionFactor => CorrectionFactors?["Motorway"]?.ToString().ToDouble() ?? 1.0;
+
+			public double BFColdHot => CorrectionFactors?["ColdHotBalancingFactor"]?.ToString().ToDouble() ?? 1.0;
+
+			public double CFRegPer => CorrectionFactors?["CFRegPer"]?.ToString().ToDouble() ?? 1.0;
+
+			public double EngineeringCorrectionFactor => CorrectionFactors?["EngineeringCorrectionFactor"]?.ToString().ToDouble() ?? 1.0;
+
+			public TableData GeneratedPower => WHRMap;
+
+			#endregion
 		}
 
 
-		public override FuelType FuelType
-		{
-			get { return Body.GetEx<string>("FuelType").ParseEnum<FuelType>(); }
-		}
+
 	}
 
 
-	public class JSONEngineDataV3 : JSONFile, IEngineEngineeringInputData
+	public class JSONEngineDataV4 : JSONEngineDataV3
 	{
+		public JSONEngineDataV4(JObject data, string fileName, bool tolerateMissing = false)
+			: base(data, fileName, tolerateMissing) { }
+
+		public override Watt RatedPowerDeclared => Body.GetEx<double>("RatedPower").SI<Watt>();
+
+		public override PerSecond RatedSpeedDeclared => Body.GetEx<double>("RatedSpeed").RPMtoRad();
+
+		public override NewtonMeter MaxTorqueDeclared => Body.GetEx<double>("MaxTorque").SI<NewtonMeter>();
+
+		public override double CorrectionFactorRegPer => Body.GetEx<double>("CFRegPer");
+
+
+		public override FuelType FuelType => Body.GetEx<string>("FuelType").ParseEnum<FuelType>();
+	}
+
+
+	public class JSONEngineDataV3 : JSONFile, IEngineEngineeringInputData, IEngineModeEngineeringInputData,
+		IEngineFuelEngineeringInputData
+	{
+		protected IList<IEngineFuelEngineeringInputData> _fuels;
+
 		public JSONEngineDataV3(JObject data, string fileName, bool tolerateMissing = false)
-			: base(data, fileName, tolerateMissing) {}
+			: base(data, fileName, tolerateMissing) { }
 
-		public virtual CubicMeter Displacement
-		{
-		    get { return Body.GetEx<double>(JsonKeys.Engine_Displacement).SI(Unit.SI.Cubic.Centi.Meter).Cast<CubicMeter>(); }
-			// convert vom ccm to m^3}
-		}
+		public virtual CubicMeter Displacement => Body.GetEx<double>(JsonKeys.Engine_Displacement).SI(Unit.SI.Cubic.Centi.Meter).Cast<CubicMeter>();
 
-		public virtual PerSecond IdleSpeed
-		{
-			get { return Body.GetEx<double>(JsonKeys.Engine_IdleSpeed).RPMtoRad(); }
-		}
+		// convert vom ccm to m^3}
+		public virtual PerSecond IdleSpeed => Body.GetEx<double>(JsonKeys.Engine_IdleSpeed).RPMtoRad();
 
 
-		public virtual FuelType FuelType
-		{
-			get { return FuelType.DieselCI; }
-		}
+		public virtual FuelType FuelType => FuelType.DieselCI;
 
 		public virtual TableData FuelConsumptionMap
 		{
@@ -133,8 +256,10 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 					if (!TolerateMissing) {
 						throw;
 					}
+
 					return
-						new TableData(Path.Combine(BasePath, Body[JsonKeys.Engine_FuelConsumptionMap].ToString()) + MissingFileSuffix,
+						new TableData(
+							Path.Combine(BasePath, Body[JsonKeys.Engine_FuelConsumptionMap].ToString()) + MissingFileSuffix,
 							DataSourceType.Missing);
 				}
 			}
@@ -149,6 +274,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 					if (!TolerateMissing) {
 						throw;
 					}
+
 					return new TableData(
 						Path.Combine(BasePath, Body[JsonKeys.Engine_FullLoadCurveFile].ToString()) + MissingFileSuffix,
 						DataSourceType.Missing);
@@ -156,25 +282,38 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			}
 		}
 
-		public virtual Watt RatedPowerDeclared
+		IList<IEngineFuelEngineeringInputData> IEngineModeEngineeringInputData.Fuels => _fuels ?? (_fuels = ReadFuels());
+
+		public virtual IList<IEngineFuelDeclarationInputData> Fuels => (_fuels ?? (_fuels = ReadFuels())).Cast<IEngineFuelDeclarationInputData>().ToList();
+
+		protected virtual IList<IEngineFuelEngineeringInputData> ReadFuels()
 		{
-			get { return 0.SI<Watt>(); }
+			return new IEngineFuelEngineeringInputData[] { this };
 		}
 
-		public virtual PerSecond RatedSpeedDeclared
+		public virtual IWHRData WasteHeatRecoveryDataElectrical => null;
+
+		public virtual IWHRData WasteHeatRecoveryDataMechanical => null;
+
+		public virtual Watt RatedPowerDeclared => 0.SI<Watt>();
+
+		public virtual PerSecond RatedSpeedDeclared => 0.RPMtoRad();
+
+		public virtual NewtonMeter MaxTorqueDeclared => 0.SI<NewtonMeter>();
+
+		IList<IEngineModeEngineeringInputData> IEngineEngineeringInputData.EngineModes
 		{
-			get { return 0.RPMtoRad(); }
+			get { return new IEngineModeEngineeringInputData[] { this }; }
 		}
 
-		public virtual NewtonMeter MaxTorqueDeclared
+		public virtual IList<IEngineModeDeclarationInputData> EngineModes
 		{
-			get { return 0.SI<NewtonMeter>(); }
+			get { return new IEngineModeDeclarationInputData[] { this }; }
 		}
 
-		public virtual KilogramSquareMeter Inertia
-		{
-			get { return Body.GetEx<double>(JsonKeys.Engine_Inertia).SI<KilogramSquareMeter>(); }
-		}
+		public virtual WHRType WHRType => WHRType.None;
+
+		public virtual KilogramSquareMeter Inertia => Body.GetEx<double>(JsonKeys.Engine_Inertia).SI<KilogramSquareMeter>();
 
 		public virtual double WHTCEngineering
 		{
@@ -182,24 +321,18 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 				if (Body["WHTC-Engineering"] == null) {
 					return 1;
 				}
+
 				return Body.GetEx<double>("WHTC-Engineering");
 			}
 		}
 
-		public virtual double WHTCMotorway
-		{
-			get { return Body.GetEx<double>(JsonKeys.Engine_WHTC_Motorway); }
-		}
+		public virtual Second EngineStartTime => null;
 
-		public virtual double WHTCRural
-		{
-			get { return Body.GetEx<double>(JsonKeys.Engine_WHTC_Rural); }
-		}
+		public virtual double WHTCMotorway => Body.GetEx<double>(JsonKeys.Engine_WHTC_Motorway);
 
-		public virtual double WHTCUrban
-		{
-			get { return Body.GetEx<double>(JsonKeys.Engine_WHTC_Urban); }
-		}
+		public virtual double WHTCRural => Body.GetEx<double>(JsonKeys.Engine_WHTC_Rural);
+
+		public virtual double WHTCUrban => Body.GetEx<double>(JsonKeys.Engine_WHTC_Urban);
 
 		public double ColdHotBalancingFactor
 		{
@@ -207,45 +340,25 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 				if (Body["ColdHotBalancingFactor"] == null) {
 					return 1.0;
 				}
+
 				return Body.GetEx<double>("ColdHotBalancingFactor");
 			}
 		}
 
-		public virtual double CorrectionFactorRegPer
-		{
-			get { return 1; }
-		}
-
-		
-		public string Manufacturer
-		{
-			get { return Constants.NOT_AVailABLE; }
-		}
-
-		public string Model
-		{
-			get { return Body.GetEx<string>(JsonKeys.Engine_ModelName); }
-		}
+		public virtual double CorrectionFactorRegPer => 1;
 
 
-		public string Date
-		{
-			get { return Constants.NOT_AVailABLE; }
-		}
+		public virtual string Manufacturer => Constants.NOT_AVAILABLE;
 
-		public CertificationMethod CertificationMethod
-		{
-			get { return CertificationMethod.NotCertified; }
-		}
+		public virtual string Model => Body.GetEx<string>(JsonKeys.Engine_ModelName);
 
-		public string CertificationNumber
-		{
-			get { return Constants.NOT_AVailABLE; }
-		}
 
-		public DigestData DigestValue
-		{
-			get { return null; }
-		}
+		public virtual DateTime Date => DateTime.MinValue;
+
+		public virtual CertificationMethod CertificationMethod => CertificationMethod.NotCertified;
+
+		public virtual string CertificationNumber => Constants.NOT_AVAILABLE;
+
+		public virtual DigestData DigestValue => null;
 	}
 }

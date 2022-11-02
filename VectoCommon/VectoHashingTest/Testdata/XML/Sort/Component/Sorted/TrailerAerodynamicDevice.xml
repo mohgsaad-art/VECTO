@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:VectoInputDeclaration xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" 
+xmlns:v2.1="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1" xmlns:v2.2="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.2" 
+xmlns:v2.7="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.7" xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationComponent:DEV:v2.7"
+ xmlns:di="http://www.w3.org/2000/09/xmldsig#" schemaVersion="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+ xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationComponent v:\VectoCore\VectoCore\Resources\XSD/VectoDeclarationComponent.xsd">
+	<tns:CertifiedAeroReduction >
+		<Data xsi:type="CertifiedAeroDataDeclarationType" id="AERO-asdf">
+			<Manufacturer>Generic Manufacturer</Manufacturer>
+			<Model>Generic Tyre Model</Model>
+			<CertificationNumber>e12*0815/8051*2017/05T0000*00</CertificationNumber>
+			<Date>2017-02-15T11:00:00Z</Date>
+			<CertifiedAerodynamicReduction0>1.00</CertifiedAerodynamicReduction0>
+			<CertifiedAerodynamicReduction3>2.00</CertifiedAerodynamicReduction3>
+			<CertifiedAerodynamicReduction6>3.00</CertifiedAerodynamicReduction6>
+			<CertifiedAerodynamicReduction9>4.00</CertifiedAerodynamicReduction9>
+			<ApplicableVehicleGroups>
+				<ApplicableVehicleGroup>1123</ApplicableVehicleGroup>
+				<ApplicableVehicleGroup>2356</ApplicableVehicleGroup>
+				<ApplicableVehicleGroup>4356</ApplicableVehicleGroup>
+			</ApplicableVehicleGroups>
+		</Data>
+		<Signature>
+			<di:Reference URI="#AERO-asdf">
+				<di:Transforms>
+					<di:Transform Algorithm="urn:vecto:xml:2017:canonicalization"/>
+					<di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+				</di:Transforms>
+				<di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+				<di:DigestValue>3YVNlu+1souB/4IwePLPoBwhiJormfqMNRxQaZ75wvM=</di:DigestValue>
+			</di:Reference>
+		</Signature>
+	</tns:CertifiedAeroReduction>
+</tns:VectoInputDeclaration>

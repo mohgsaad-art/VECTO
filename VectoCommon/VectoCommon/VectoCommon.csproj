@@ -1,141 +1,34 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{79A066AD-69A9-4223-90F6-6ED5D2D084F4}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TUGraz.VectoCommon</RootNamespace>
     <AssemblyName>VectoCommon</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <TargetFrameworks>net45;net48;net6.0</TargetFrameworks>
+    <DefineConstants />
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>
-    </DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NLog.4.5.11\lib\net45\NLog.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.IO.Compression" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Transactions" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="NLog" Version="4.7.13" />
   </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)'=='net45'">
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)'=='net48'">
+    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+  </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="Hashing\IVectoHash.cs" />
-    <Compile Include="Hashing\VectoComponents.cs" />
-    <Compile Include="InputData\DataSourceType.cs" />
-    <Compile Include="InputData\DigestData.cs" />
-    <Compile Include="InputData\TableData.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="InputData\VTPDeclarationInputData.cs" />
-    <Compile Include="InputData\VTPEngineeringInputData.cs" />
-    <Compile Include="Models\AuxiliaryType.cs" />
-    <Compile Include="Exceptions\VectoExceptions.cs" />
-    <Compile Include="Exceptions\VectoSimulationException.cs" />
-    <Compile Include="InputData\DeclarationInputData.cs" />
-    <Compile Include="InputData\EngineeringInputData.cs" />
-    <Compile Include="InputData\IInputDataProvider.cs" />
-    <Compile Include="InputData\IntegrityStatus.cs" />
-    <Compile Include="Models\AuxiliaryDemandType.cs" />
-    <Compile Include="Models\AngledriveType.cs" />
-    <Compile Include="Models\AuxiliaryModel.cs" />
-    <Compile Include="Models\AxleConfiguration.cs" />
-    <Compile Include="Models\AxleLineType.cs" />
-    <Compile Include="Models\CertificationMethod.cs" />
-    <Compile Include="Models\CrossWindCorrectionMode.cs" />
-    <Compile Include="Models\DriverMode.cs" />
-    <Compile Include="Models\ExecutionMode.cs" />
-    <Compile Include="Models\FuelType.cs" />
-    <Compile Include="Models\GearboxType.cs" />
-    <Compile Include="Models\IResponse.cs" />
-    <Compile Include="Models\LegislativeClass.cs" />
-    <Compile Include="Models\LoggingObject.cs" />
-    <Compile Include="Models\OperatingPoint.cs" />
-    <Compile Include="Models\RetarderType.cs" />
-    <Compile Include="Models\SimulationType.cs" />
-    <Compile Include="Models\VehicleCategory.cs" />
-    <Compile Include="OutputData\IOutputFileWriter.cs" />
-    <Compile Include="OutputData\IOutputPlugin.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Version.cs">
-      <DependentUpon>Version.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
+    <Compile Update="Resources\XMLNames.Designer.cs">
       <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Resources\XMLNames.Designer.cs">
+      <AutoGen>True</AutoGen>
       <DependentUpon>XMLNames.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Utils\DoubleExtensionMethods.cs" />
-    <Compile Include="Utils\EnumerableExtensionMethods.cs" />
-    <Compile Include="Utils\EnumHelper.cs" />
-    <Compile Include="Utils\IntExtensionMethods.cs" />
-    <Compile Include="Utils\SI.cs" />
-    <Compile Include="Utils\SIConvertExtensionMethods.cs" />
-    <Compile Include="Utils\SIUtils.cs" />
-    <Compile Include="Utils\StringExtensionMethods.cs" />
-    <Compile Include="Utils\Validation.cs" />
-    <Compile Include="Utils\VectoMath.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-    <None Include="Properties\Version.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Version.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\XMLNames.resx">
+    <EmbeddedResource Update="Resources\XMLNames.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>XMLNames.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
-  <Import Project="$(SolutionDir)Build\TextPreProcessing.targets" />
-  <PropertyGroup Condition="'$(SolutionDir)' == '' or '$(SolutionDir)' == '*undefined*'">
-    <SolutionDir>..\..\</SolutionDir>
-  </PropertyGroup>
-  <Import Project="$(SolutionDir)Build\CommonSettings.targets" />
 </Project>

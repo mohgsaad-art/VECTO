@@ -36,7 +36,6 @@ using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
-using TUGraz.VectoCore.InputData.FileIO.XML.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.OutputData;
@@ -44,10 +43,12 @@ using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Utils;
 using NUnit.Framework;
 using TUGraz.VectoCore.InputData.FileIO.XML;
+using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
 
 namespace TUGraz.VectoCore.Tests.Integration
 {
 	[TestFixture]
+	[Parallelizable(ParallelScope.All)]
 	public class TestVehicleIdlingSpeed
 	{
 		const string SampleVehicleDecl = "TestData/XML/XMLReaderDeclaration/vecto_vehicle-sample.xml";
@@ -88,7 +89,7 @@ namespace TUGraz.VectoCore.Tests.Integration
 
 			var inputDataProvider = xmlInputReader.CreateDeclaration(modified);
 			
-			var factory = new SimulatorFactory(ExecutionMode.Declaration, inputDataProvider, new FileOutputWriter("Idle900"));
+			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputDataProvider, new FileOutputWriter("Idle900"));
 			//factory.WriteModalResults = true;
 
 			var jobContainer = new JobContainer(null);
@@ -102,7 +103,7 @@ namespace TUGraz.VectoCore.Tests.Integration
 			run.Run.Run();
 
 			modContainer.Data = modData;
-			Assert.IsTrue(modContainer.Min<PerSecond>(ModalResultField.n_eng_avg).IsGreaterOrEqual(VehicleEngineIdleSpeed));
+			Assert.IsTrue(modContainer.Min<PerSecond>(ModalResultField.n_ice_avg).IsGreaterOrEqual(VehicleEngineIdleSpeed));
 
 
 			//jobContainer.Execute();

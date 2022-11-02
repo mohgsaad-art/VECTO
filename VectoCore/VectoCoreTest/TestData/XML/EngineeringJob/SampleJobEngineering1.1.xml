@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tns:VectoInputEngineering schemaVersion="1.0" xmlns="urn:tugraz:ivt:VectoAPI:EngineeringDefinitions:v1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="urn:tugraz:ivt:VectoAPI:EngineeringInput:v1.0" xmlns:ve1.0="urn:tugraz:ivt:VectoAPI:EngineeringDefinitions:v1.0" xmlns:ve1.0TEST="urn:tugraz:ivt:VectoAPI:EngineeringDefinitions:v1.0TEST" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:EngineeringInput:v1.0 file:///E:/QUAM/Workspace/VECTO_quam/VectoCore/VectoCore/Resources/XSD/VectoEngineeringInput.1.0.xsd urn:tugraz:ivt:VectoAPI:EngineeringDefinitions:v1.0TEST file:///E:/QUAM/Workspace/VECTO_quam/VectoCore/VectoCore/Resources/XSD/VectoEngineeringDefinitions.1.0.TEST.xsd">
+<tns:VectoInputEngineering schemaVersion="1.0"
+	xmlns="urn:tugraz:ivt:VectoAPI:EngineeringDefinitions:v1.0" 
+	xmlns:ve1.0="urn:tugraz:ivt:VectoAPI:EngineeringDefinitions:v1.0" 
+	xmlns:ve1.0TEST="urn:tugraz:ivt:VectoAPI:EngineeringDefinitions:v1.0TEST"
+	xmlns:tns="urn:tugraz:ivt:VectoAPI:EngineeringInput:v1.0"
+	xmlns:vdecdef="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:EngineeringInput https://webgate.ec.europa.eu/CITnet/svn/VECTO/trunk/Share/XML/XSD/VectoEngineeringJob.xsd">
 	<EngineOnlyMode>false</EngineOnlyMode>
 	<Vehicle xsi:type="ve1.0:VehicleEngineeringType">
-	
 			<Manufacturer>Generic Manufacturer</Manufacturer>
 			<ManufacturerAddress/>
 			<Model>Generic Truck</Model>
@@ -17,9 +23,9 @@
 			<CurbMassExtra>0</CurbMassExtra>
 			<Loading>0</Loading>
 			<AdvancedDriverAssist xsi:type="ve1.0:AdvancedDriverAssistEngineeringType">
-				<EngineStartStop xsi:type="ve1.0:EngineStartStopEngineeringType">
-					<Enabled>false</Enabled>
-				</EngineStartStop>
+				<EngineStopStart>true</EngineStopStart>
+				<EcoRoll>none</EcoRoll>
+				<PredictiveCruiseControl>none</PredictiveCruiseControl>
 			</AdvancedDriverAssist>
 			<Components xsi:type="VehicleComponentsType">
 				<Engine>
@@ -141,7 +147,7 @@
 			<Enabled>false</Enabled>
 		</LookAheadCoasting>
 		<Overspeed xsi:type="ve1.0:OverspeedEngineeringType">
-			<Mode>Off</Mode>
+			<Enabled>false</Enabled>
 		</Overspeed>
 	</DriverModel>
 	<MissionCycles>

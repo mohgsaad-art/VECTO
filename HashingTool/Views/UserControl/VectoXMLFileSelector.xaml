@@ -7,12 +7,12 @@
 	xmlns:userControl="clr-namespace:HashingTool.ViewModel.UserControl"
 	x:Class="HashingTool.Views.VectoXMLFileSelector"
 	mc:Ignorable="d" d:DesignWidth="456" MinHeight="32"
-	d:DataContext="{d:DesignInstance views:VectoXMLFileSelector}">
+	d:DataContext="{d:DesignInstance views:VectoXMLFileSelector}" >
 	<UserControl.Resources>
 		<BooleanToVisibilityConverter x:Key="BoolToVis" />
 	</UserControl.Resources>
 	<StackPanel Margin="0,5" HorizontalAlignment="Stretch">
-		<DockPanel HorizontalAlignment="Stretch" Height="Auto" Margin="0" VerticalAlignment="Top">
+        <DockPanel HorizontalAlignment="Stretch" Height="Auto" Margin="0" VerticalAlignment="Top" AllowDrop="True" Drop="XMLFileBrowser_Drop">
 
 			<!--<ContentControl DockPanel.Dock="Right"
 							Visibility="{Binding XMLFile.HasContentValidation, Converter={StaticResource BoolToVis}}" Width="40" Height="40"
@@ -75,7 +75,7 @@
 					VerticalAlignment="Top" HorizontalAlignment="Right" Width="75" />
 
 			<TextBox DockPanel.Dock="Left" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="23"
-					Margin="0,0,10,0" TextWrapping="NoWrap" Text="{Binding XMLFile.Source, UpdateSourceTrigger=PropertyChanged}">
+					Margin="0,0,10,0" TextWrapping="NoWrap" Text="{Binding XMLFile.Source, Mode=OneWay}" IsReadOnly="True" PreviewDragOver="XMLFileBrowser_DragOver">
 				<TextBox.InputBindings>
 					<KeyBinding Command="{Binding XMLFile.SetXMLFileCommnd}" Key="Return" />
 				</TextBox.InputBindings>

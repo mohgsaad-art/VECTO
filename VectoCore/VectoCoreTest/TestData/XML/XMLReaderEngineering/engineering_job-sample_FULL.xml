@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tns:VectoInputEngineering xmlns="urn:tugraz:ivt:VectoAPI:EngineeringDefinitions:v0.7" xmlns:tns="urn:tugraz:ivt:VectoAPI:EngineeringInput:v0.7" xmlns:vdecdef="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v0.8" schemaVersion="0.7" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:EngineeringInput:v0.7 E:\QUAM\Workspace\VECTO_quam\VectoCore\VectoCore\Resources\XSD/VectoEngineeringInput.0.7.xsd">
+<tns:VectoInputEngineering schemaVersion="1.0"
+	xmlns="urn:tugraz:ivt:VectoAPI:EngineeringDefinitions:v1.0" 
+	xmlns:tns="urn:tugraz:ivt:VectoAPI:EngineeringInput:v1.0"
+	xmlns:vdecdef="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:EngineeringInput E:\QUAM\Workspace\VECTO_DEV_ADAS\VectoCore\VectoCore\Resources\XSD/VectoEngineeringJob.xsd">
 	<EngineOnlyMode>false</EngineOnlyMode>
 	<Vehicle id="VEH-1234567890">
 		<Manufacturer>Generic Truck Manufacturer</Manufacturer>
-		<Model>Generic LongHaul Truck</Model>
-		<Creator>Markus Quaritsch, TUG IVT</Creator>
+			<ManufacturerAddress>somewhere</ManufacturerAddress>
+			<Model>Generic LongHaul Truck</Model>
+			<VIN>xyz</VIN>
 		<Date>2017-02-15T11:00:00Z</Date>
 		<VehicleCategory>Tractor</VehicleCategory>
 		<AxleConfiguration>4x2</AxleConfiguration>
@@ -26,25 +32,22 @@
 		</PTOCycle>
 		<CurbMassExtra>500</CurbMassExtra>
 		<Loading>1500</Loading>
-		<AdvancedDriverAssist>
-			<EngineStartStop>
-				<Enabled>false</Enabled>
-				<MaxSpeed>8</MaxSpeed>
-				<MinOnTime>8</MinOnTime>
-				<ActivationDelay>8</ActivationDelay>
-			</EngineStartStop>
+		<AdvancedDriverAssist xsi:type="AdvancedDriverAssistEngineeringType">
+			<EngineStopStart>true</EngineStopStart>
+			<EcoRoll>with engine stop</EcoRoll>
+			<PredictiveCruiseControl>1,2,3</PredictiveCruiseControl>
 		</AdvancedDriverAssist>
-		<Components>
+		<Components xsi:type="VehicleComponentsType">
 			<Engine>
-				<Data id="ENG-gooZah3D">
+				<Data id="ENG-gooZah3D" xsi:type="EngineDataEngineeringType">
 					<Manufacturer>Generic Engine Manufacturer</Manufacturer>
 					<Model>Generic 40t Long Haul Truck Engine</Model>
-					<Creator>Markus Quaritsch, TUG IVT</Creator>
 					<Date>2017-02-15T11:00:00Z</Date>
 					<Displacement>12730</Displacement>
 					<IdlingSpeed>560</IdlingSpeed>
 					<Inertia>0.77</Inertia>
-					<WHTCEngineering>1</WHTCEngineering>
+					<FCCorrection>1</FCCorrection>
+					<FuelType>Diesel CI</FuelType>
 					<FuelConsumptionMap>
 						<Entry engineSpeed="560.00" torque="-149.00" fuelConsumption="0.00"/>
 						<Entry engineSpeed="560.00" torque="0.00" fuelConsumption="1256.00"/>
@@ -177,19 +180,17 @@
 				</Signature>
 			</Engine>
 			<Gearbox>
-				<Data id="gbx-vi2Oak2N">
+				<Data id="gbx-vi2Oak2N" xsi:type="GearboxDataEngineeringType">
 					<Manufacturer>Generic Gearbox Manufacturer</Manufacturer>
 					<Model>Generic 40t Long Haul Truck Gearbox</Model>
-					<Creator>Markus Quaritsch, TUG ITI</Creator>
 					<Date>2017-01-11T11:00:00Z</Date>
 					<AppVersion>3.0.1</AppVersion>
 					<TransmissionType>AMT</TransmissionType>
 					<Inertia>0.6</Inertia>
 					<TractionInterruption>1.5</TractionInterruption>
 					<Gears>
-						<Gear number="1">
+						<Gear number="1" xsi:type="GearEngineeringType">
 							<Ratio>14.930</Ratio>
-							<MaxTorque>5000</MaxTorque>
 							<TorqueLossMap>
 								<Entry inputSpeed="0.00" inputTorque="-350.00" torqueLoss="12.06"/>
 								<Entry inputSpeed="0.00" inputTorque="-150.00" torqueLoss="8.06"/>
@@ -384,10 +385,10 @@
 								<Entry inputSpeed="1900.00" inputTorque="-1000.00" torqueLoss="34.67"/>
 								<Entry inputSpeed="2100.00" inputTorque="-1000.00" torqueLoss="35.69"/>
 							</TorqueLossMap>
+							<MaxTorque>5000</MaxTorque>
 						</Gear>
-						<Gear number="2">
+						<Gear number="2" xsi:type="GearEngineeringType">
 							<Ratio>11.640</Ratio>
-							<MaxTorque>5000</MaxTorque>
 							<TorqueLossMap>
 								<Entry inputSpeed="0.00" inputTorque="-350.00" torqueLoss="12.06"/>
 								<Entry inputSpeed="0.00" inputTorque="-150.00" torqueLoss="8.06"/>
@@ -582,8 +583,9 @@
 								<Entry inputSpeed="1900.00" inputTorque="-1000.00" torqueLoss="34.67"/>
 								<Entry inputSpeed="2100.00" inputTorque="-1000.00" torqueLoss="35.69"/>
 							</TorqueLossMap>
+							<MaxTorque>5000</MaxTorque>
 						</Gear>
-						<Gear number="3">
+						<Gear number="3" xsi:type="GearEngineeringType">
 							<Ratio>9.020</Ratio>
 							<TorqueLossMap>
 								<Entry inputSpeed="0.00" inputTorque="-350.00" torqueLoss="12.06"/>
@@ -780,7 +782,7 @@
 								<Entry inputSpeed="2100.00" inputTorque="-1000.00" torqueLoss="35.69"/>
 							</TorqueLossMap>
 						</Gear>
-						<Gear number="4">
+						<Gear number="4" xsi:type="GearEngineeringType">
 							<Ratio>7.040</Ratio>
 							<TorqueLossMap>
 								<Entry inputSpeed="0.00" inputTorque="-350.00" torqueLoss="12.06"/>
@@ -977,7 +979,7 @@
 								<Entry inputSpeed="2100.00" inputTorque="-1000.00" torqueLoss="35.69"/>
 							</TorqueLossMap>
 						</Gear>
-						<Gear number="5">
+						<Gear number="5" xsi:type="GearEngineeringType">
 							<Ratio>5.640</Ratio>
 							<TorqueLossMap>
 								<Entry inputSpeed="0.00" inputTorque="-350.00" torqueLoss="12.06"/>
@@ -1174,7 +1176,7 @@
 								<Entry inputSpeed="2100.00" inputTorque="-1000.00" torqueLoss="35.69"/>
 							</TorqueLossMap>
 						</Gear>
-						<Gear number="6">
+						<Gear number="6" xsi:type="GearEngineeringType">
 							<Ratio>4.400</Ratio>
 							<TorqueLossMap>
 								<Entry inputSpeed="0.00" inputTorque="-350.00" torqueLoss="12.06"/>
@@ -1371,7 +1373,7 @@
 								<Entry inputSpeed="2100.00" inputTorque="-1000.00" torqueLoss="35.69"/>
 							</TorqueLossMap>
 						</Gear>
-						<Gear number="7">
+						<Gear number="7" xsi:type="GearEngineeringType">
 							<Ratio>3.390</Ratio>
 							<TorqueLossMap>
 								<Entry inputSpeed="0.00" inputTorque="-350.00" torqueLoss="12.06"/>
@@ -1568,7 +1570,7 @@
 								<Entry inputSpeed="2100.00" inputTorque="-1000.00" torqueLoss="35.69"/>
 							</TorqueLossMap>
 						</Gear>
-						<Gear number="8">
+						<Gear number="8" xsi:type="GearEngineeringType">
 							<Ratio>2.650</Ratio>
 							<TorqueLossMap>
 								<Entry inputSpeed="0.00" inputTorque="-350.00" torqueLoss="12.06"/>
@@ -1765,7 +1767,7 @@
 								<Entry inputSpeed="2100.00" inputTorque="-1000.00" torqueLoss="35.69"/>
 							</TorqueLossMap>
 						</Gear>
-						<Gear number="9">
+						<Gear number="9" xsi:type="GearEngineeringType">
 							<Ratio>2.050</Ratio>
 							<TorqueLossMap>
 								<Entry inputSpeed="0.00" inputTorque="-350.00" torqueLoss="12.06"/>
@@ -1962,7 +1964,7 @@
 								<Entry inputSpeed="2100.00" inputTorque="-1000.00" torqueLoss="35.69"/>
 							</TorqueLossMap>
 						</Gear>
-						<Gear number="10">
+						<Gear number="10" xsi:type="GearEngineeringType">
 							<Ratio>1.600</Ratio>
 							<TorqueLossMap>
 								<Entry inputSpeed="0.00" inputTorque="-350.00" torqueLoss="12.06"/>
@@ -2159,7 +2161,7 @@
 								<Entry inputSpeed="2100.00" inputTorque="-1000.00" torqueLoss="35.69"/>
 							</TorqueLossMap>
 						</Gear>
-						<Gear number="11">
+						<Gear number="11" xsi:type="GearEngineeringType">
 							<Ratio>1.280</Ratio>
 							<TorqueLossMap>
 								<Entry inputSpeed="0.00" inputTorque="-350.00" torqueLoss="12.06"/>
@@ -2356,7 +2358,7 @@
 								<Entry inputSpeed="2100.00" inputTorque="-1000.00" torqueLoss="35.69"/>
 							</TorqueLossMap>
 						</Gear>
-						<Gear number="12">
+						<Gear number="12" xsi:type="GearEngineeringType">
 							<Ratio>1.000</Ratio>
 							<TorqueLossMap>
 								<Entry inputSpeed="0.00" inputTorque="-350.00" torqueLoss="6.81"/>
@@ -2560,30 +2562,28 @@
 				</Signature>
 			</Gearbox>
 			<TorqueConverter>
-				<Data>
+				<Data id="TC-adsf123" xsi:type="TorqueConverterDataEngineeringType">
 					<Manufacturer>Generic Torqueconverter Manufacturer</Manufacturer>
 					<Model>Generic Torqueconverter</Model>
-					<Creator>Markus Quaritsch, TUG ITI</Creator>
 					<Date>2017-01-11T11:00:00Z</Date>
 					<ReferenceRPM>1000</ReferenceRPM>
+					<Inertia>1.1</Inertia>
+					<MaxInputSpeed>1700</MaxInputSpeed>
 					<Characteristics>
 						<Entry speedRatio="0.0000" inputTorqueRef="300.00" torqueRatio="1.80"/>
 						<Entry speedRatio="1.0000" inputTorqueRef="10.00" torqueRatio="1.00"/>
 						<Entry speedRatio="2.0000" inputTorqueRef="-10.00" torqueRatio="0.90"/>
 					</Characteristics>
-					<Inertia>1.1</Inertia>
 					<ShiftPolygon>
 						<Entry engineTorque="-200" downshiftSpeed="700" upshiftSpeed="800"/>
 						<Entry engineTorque="1600" downshiftSpeed="700" upshiftSpeed="800"/>
 					</ShiftPolygon>
-					<MaxInputSpeed>1700</MaxInputSpeed>
 				</Data>
 			</TorqueConverter>
 			<Angledrive>
-				<Data>
+				<Data id="ANG-123as" xsi:type="AngledriveDataEngineeringType">
 					<Manufacturer>Generic Angledrive Manufacturer</Manufacturer>
 					<Model>Generic Angledrive</Model>
-					<Creator>Markus Quaritsch, TUG ITI</Creator>
 					<Date>2017-01-11T11:00:00Z</Date>
 					<Ratio>1.200</Ratio>
 					<TorqueLossMap>
@@ -2597,10 +2597,9 @@
 				</Data>
 			</Angledrive>
 			<Retarder>
-				<Data id="RET-Shai9imi">
+				<Data id="RET-Shai9imi" xsi:type="RetarderDataEngineeringType">
 					<Manufacturer>Generic Retarder Manufacturer</Manufacturer>
 					<Model>Generic Retarder</Model>
-					<Creator>Markus Quaritsch, TUG ITI</Creator>
 					<Date>2017-01-11T11:00:00Z</Date>
 					<AppVersion>3.0.1</AppVersion>
 					<RetarderLossMap>
@@ -2635,10 +2634,9 @@
 				</Signature>
 			</Retarder>
 			<Axlegear>
-				<Data id="AXL-EC3ohnoh">
+				<Data id="AXL-EC3ohnoh" xsi:type="AxlegearDataEngineeringType">
 					<Manufacturer>Generic Gearbox Manufacturer</Manufacturer>
 					<Model>Generic 40t Long Haul Truck AxleGear</Model>
-					<Creator>Markus Quaritsch, TUG ITI</Creator>
 					<Date>2017-01-11T11:00:00Z</Date>
 					<AppVersion>3.0.1</AppVersion>
 					<Ratio>2.590</Ratio>
@@ -3142,43 +3140,45 @@
 				</Signature>
 			</Axlegear>
 			<AxleWheels>
-				<Data id="WHL-mi3ooviM">
-					<Axles>
-						<Axle axleNumber="1">
-							<Manufacturer>Generic Wheels Manufacturer</Manufacturer>
-							<Model>Generic Wheel</Model>
-							<Creator>Markus Quaritsch, TUG ITI</Creator>
-							<Date>2017-01-11T14:00:00Z</Date>
-							<AxleType>VehicleNonDriven</AxleType>
-							<TwinTyres>false</TwinTyres>
-							<Steered>true</Steered>
-							<Dimension>315/70 R22.5</Dimension>
-							<RRCISO>0.0055</RRCISO>
-							<FzISO>31300</FzISO>
-							<WeightShare>0.4</WeightShare>
-							<Inertia>0</Inertia>
-						</Axle>
-						<Axle axleNumber="2">
-							<Manufacturer>Generic Wheels Manufacturer</Manufacturer>
-							<Model>Generic Wheel</Model>
-							<Creator>Markus Quaritsch, TUG ITI</Creator>
-							<Date>2017-01-11T14:00:00Z</Date>
-							<AxleType>VehicleDriven</AxleType>
-							<TwinTyres>true</TwinTyres>
-							<Steered>true</Steered>
-							<Dimension>315/70 R22.5</Dimension>
-							<RRCISO>0.0063</RRCISO>
-							<FzISO>31300</FzISO>
-							<WeightShare>0.4</WeightShare>
-							<Inertia>0</Inertia>
-							<DynamicTyreRadius>488.822</DynamicTyreRadius>
-						</Axle>
-					</Axles>
-				</Data>
-			</AxleWheels>
+<Data xsi:type="AxleWheelsDataEngineeringType">
+						<Axles>
+							<Axle xsi:type="AxleDataEngineeringType" axleNumber="1">
+								<AxleType>VehicleNonDriven</AxleType>
+								<TwinTyres>false</TwinTyres>
+								<Steered>true</Steered>
+								<WeightShare>0.4</WeightShare>
+								<Tyre xsi:type="TyreComponentEngineeringType">
+									<Data xsi:type="TyreDataEngineeringType">
+										<Manufacturer>Generic Wheels Manufacturer</Manufacturer>
+										<Model>Generic Wheel</Model>
+										<Date>2017-01-11T14:00:00Z</Date>
+										<Dimension>315/70 R22.5</Dimension>
+										<RRCISO>0.0055</RRCISO>
+										<FzISO>31300</FzISO>
+									</Data>
+								</Tyre>
+							</Axle>
+							<Axle xsi:type="AxleDataEngineeringType" axleNumber="2">
+								<AxleType>VehicleDriven</AxleType>
+								<TwinTyres>true</TwinTyres>
+								<Steered>false</Steered>
+								<WeightShare>0.6</WeightShare>
+								<Tyre>
+									<Data xsi:type="TyreDataEngineeringType">
+										<Manufacturer>Generic Wheels Manufacturer</Manufacturer>
+										<Model>Generic Wheel</Model>
+										<Date>2017-01-11T14:00:00Z</Date>
+										<Dimension>315/70 R22.5</Dimension>
+										<RRCISO>0.0063</RRCISO>
+										<FzISO>31300</FzISO>
+									</Data>
+								</Tyre>
+							</Axle>
+						</Axles>
+					</Data>			</AxleWheels>
 			<Auxiliaries>
-				<Data>
-					<Auxiliary id="ES">
+				<Data xsi:type="AuxiliariesDataEngineeringType">
+					<Auxiliary id="ES" xsi:type="AuxiliaryEntryEngineeringType">
 						<TransmissionRatioToEngine>4.078</TransmissionRatioToEngine>
 						<EfficiencyToEngine>0.96</EfficiencyToEngine>
 						<EfficiencyAuxSupply>1</EfficiencyAuxSupply>
@@ -3316,7 +3316,7 @@
 							<Entry auxiliarySpeed="12000" mechanicalPower="5.74" supplyPower="3.19"/>
 						</AuxMap>
 					</Auxiliary>
-					<Auxiliary id="FAN">
+					<Auxiliary id="FAN" xsi:type="AuxiliaryEntryEngineeringType">
 						<TransmissionRatioToEngine>4.078</TransmissionRatioToEngine>
 						<EfficiencyToEngine>0.96</EfficiencyToEngine>
 						<EfficiencyAuxSupply>1</EfficiencyAuxSupply>
@@ -3457,10 +3457,9 @@
 				</Data>
 			</Auxiliaries>
 			<AirDrag>
-				<Data>
+				<Data id="AD-asdf123asdf" xsi:type="AirDragDataEngineeringType">
 					<Manufacturer>Generic Gearbox Manufacturer</Manufacturer>
 					<Model>Generic 40t Long Haul Truck Gearbox</Model>
-					<Creator>Markus Quaritsch, TUG IVT</Creator>
 					<Date>2017-01-11T11:00:00Z</Date>
 					<AppVersion>3.0.1</AppVersion>
 					<CrossWindCorrectionMode>Speed Dependent Correction Factor</CrossWindCorrectionMode>
@@ -3473,8 +3472,8 @@
 			</AirDrag>
 		</Components>
 	</Vehicle>
-	<DriverModel>
-		<LookAheadCoasting>
+	<DriverModel xsi:type="DriverModelEngineeringType">
+		<LookAheadCoasting xsi:type="LookAheadCoastingEngineeringType">
 			<Enabled>true</Enabled>
 			<MinSpeed>60</MinSpeed>
 			<PreviewDistanceFactor>3</PreviewDistanceFactor>
@@ -3489,17 +3488,16 @@
 				<Entry velocityDrop="100" decisionFactorDrop="1"/>
 			</VelocityDropDecisionFactor>
 		</LookAheadCoasting>
-		<Overspeed>
-			<Mode>Overspeed</Mode>
-			<MinSpeed>50</MinSpeed>
-			<AllowedOverspeed>5</AllowedOverspeed>
-			<AllowedUnderspeed>5</AllowedUnderspeed>
+		<Overspeed xsi:type="OverspeedEngineeringType">
+			<Enabled>true</Enabled>
+			<MinSpeed>52</MinSpeed>
+			<AllowedOverspeed>2.6</AllowedOverspeed>
 		</Overspeed>
-		<DriverAccelerationCurve>
+		<DriverAccelerationCurve xsi:type="DriverAccelerationCurveEngineeringType">
 			<Entry vehicleSpeed="0" maxAcceleration="1" maxDeceleration="-1"/>
 			<Entry vehicleSpeed="100" maxAcceleration="1" maxDeceleration="-1"/>
 		</DriverAccelerationCurve>
-		<ShiftStrategyParameters>
+		<ShiftStrategyParameters xsi:type="ShiftStrategyParametersEngineeringType">
 			<UpshiftMinAcceleration>0.133</UpshiftMinAcceleration>
 			<DownshiftAfterUpshiftDelay>12</DownshiftAfterUpshiftDelay>
 			<UpshiftAfterDownshiftDelay>13</UpshiftAfterDownshiftDelay>
@@ -3508,10 +3506,27 @@
 			<StartSpeed>2.11</StartSpeed>
 			<StartAcceleration>0.211</StartAcceleration>
 			<StartTorqueReserve>0.212</StartTorqueReserve>
-			<PowershiftShiftTime>0.811</PowershiftShiftTime>
 			<CLUpshiftMinAcceleration>0.133</CLUpshiftMinAcceleration>
 			<CCUpshiftMinAcceleration>0.134</CCUpshiftMinAcceleration>
 		</ShiftStrategyParameters>
+		<EngineStopStartParameters xsi:type="EngineStartStopParametersEngineeringType">
+			<ActivationDelay>2</ActivationDelay>
+			<MaxEngineOffTime>120</MaxEngineOffTime>
+			<UtilityFactor>0.8</UtilityFactor>
+		</EngineStopStartParameters>
+		<EcoRoll xsi:type="EcoRollEngineeringType">
+			<ActivationDelay>2</ActivationDelay>			
+			<MinSpeed>50</MinSpeed>
+			<Underspeed>5</Underspeed>
+		</EcoRoll>
+		<PCCParameters xsi:type="PCCParametersType">
+		<EnablingSpeed>80</EnablingSpeed>
+		<MinSpeed>50</MinSpeed>
+		<AllowedUnderspeed>8</AllowedUnderspeed>
+		<AllowedOverspeed>5</AllowedOverspeed>
+		<PreviewDistanceUseCase1>1500</PreviewDistanceUseCase1>
+		<PreviewDistanceUseCase2>1000</PreviewDistanceUseCase2>
+		</PCCParameters>
 	</DriverModel>
 	<MissionCycles>
 		<Cycle type="csv" file="Long_Haul+FAN+ES.vdri"/>

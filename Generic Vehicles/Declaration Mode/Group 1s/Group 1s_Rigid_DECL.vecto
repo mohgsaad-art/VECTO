@@ -1,0 +1,60 @@
+﻿{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2020-01-16T12:33:28.2896291Z",
+    "AppVersion": "3",
+    "FileVersion": 5
+  },
+  "Body": {
+    "SavedInDeclMode": true,
+    "EngineOnlyMode": false,
+    "VehicleFile": "Group_1s_Rigid.vveh",
+    "EngineFile": "Engine_175kW_6.8l.veng",
+    "GearboxFile": "MT_6.vgbx",
+    "AuxiliaryAssembly": "Classic",
+    "AuxiliaryVersion": "CLASSIC",
+    "AdvancedAuxiliaryFilePath": "",
+    "Aux": [
+      {
+        "ID": "FAN",
+        "Type": "Fan",
+        "Technology": [
+          "Belt driven or driven via transm. - Electronically controlled visco clutch"
+        ]
+      },
+      {
+        "ID": "STP",
+        "Type": "Steering pump",
+        "Technology": [
+          "Fixed displacement with elec. control"
+        ]
+      },
+      {
+        "ID": "AC",
+        "Type": "HVAC",
+        "Technology": [
+          "Default"
+        ]
+      },
+      {
+        "ID": "ES",
+        "Type": "Electric System",
+        "Technology": [
+          "Standard technology"
+        ]
+      },
+      {
+        "ID": "PS",
+        "Type": "Pneumatic System",
+        "Technology": [
+          "Small"
+        ]
+      }
+    ],
+    "OverSpeedEcoRoll": {
+      "Mode": "Overspeed",
+      "MinSpeed": 50.0,
+      "OverSpeed": 2.5
+    }
+  }
+}

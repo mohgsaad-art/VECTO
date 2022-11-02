@@ -32,7 +32,9 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Utils;
 
@@ -72,15 +74,9 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		private sealed class SteeringPumpBaseLine : LookupData<MissionType, VehicleClass, SteeringPumpValues<Watt>>
 		{
-			protected override string ResourceId
-			{
-				get { return DeclarationData.DeclarationDataResourcePrefix + ".VAUX.SP-Table.csv"; }
-			}
+			protected override string ResourceId => DeclarationData.DeclarationDataResourcePrefix + ".VAUX.SP-Table.csv";
 
-			protected override string ErrorMessage
-			{
-				get { return "Auxiliary Lookup Error: No value found for Steering Pump. Mission: '{0}', HDVClass: '{1}'"; }
-			}
+			protected override string ErrorMessage => "Auxiliary Lookup Error: No value found for Steering Pump. Mission: '{0}', HDVClass: '{1}'";
 
 			protected override void ParseData(DataTable table)
 			{
@@ -101,15 +97,9 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		private sealed class SteeringPumpTechnologies : LookupData<string, SteeringPumpValues<double>>
 		{
-			protected override string ResourceId
-			{
-				get { return DeclarationData.DeclarationDataResourcePrefix + ".VAUX.SP-Tech.csv"; }
-			}
+			protected override string ResourceId => DeclarationData.DeclarationDataResourcePrefix + ".VAUX.SP-Tech.csv";
 
-			protected override string ErrorMessage
-			{
-				get { return "Auxiliary Lookup Error: No value found for SteeringPump Technology. Key: '{0}'"; }
-			}
+			protected override string ErrorMessage => "Auxiliary Lookup Error: No value found for SteeringPump Technology. Key: '{0}'";
 
 			protected override void ParseData(DataTable table)
 			{
@@ -132,11 +122,6 @@ namespace TUGraz.VectoCore.Models.Declaration
 			public SteeringPumpValues<double> Lookup(string tech, MissionType mission)
 			{
 				var values = base.Lookup(tech);
-				if (tech == "Electric") {
-					var alternator = new ElectricSystem.Alternator();
-					values.Banking /= alternator.Lookup(mission);
-					values.Steering /= alternator.Lookup(mission);
-				}
 				return values;
 			}
 
@@ -148,15 +133,9 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		private sealed class SteeringPumpAxles : LookupData<MissionType, int, SteeringPumpValues<double>>
 		{
-			protected override string ResourceId
-			{
-				get { return DeclarationData.DeclarationDataResourcePrefix + ".VAUX.SP-Axles.csv"; }
-			}
+			protected override string ResourceId => DeclarationData.DeclarationDataResourcePrefix + ".VAUX.SP-Axles.csv";
 
-			protected override string ErrorMessage
-			{
-				get { return "Auxiliary Lookup Error: No value found for SteeringPump Axle. Mission: '{0}', Axle Count: '{1}'"; }
-			}
+			protected override string ErrorMessage => "Auxiliary Lookup Error: No value found for SteeringPump Axle. Mission: '{0}', Axle Count: '{1}'";
 
 			protected override void ParseData(DataTable table)
 			{
@@ -178,6 +157,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 			}
 		}
 
+		[DebuggerDisplay("UnloadedFriction = {UnloadedFriction,nq}, Banking = {Banking,nq}, Steering = {Steering,nq}")]
 		private struct SteeringPumpValues<T>
 		{
 			public T UnloadedFriction;

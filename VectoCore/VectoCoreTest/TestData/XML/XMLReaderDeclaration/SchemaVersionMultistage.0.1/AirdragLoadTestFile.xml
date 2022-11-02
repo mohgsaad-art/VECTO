@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tns:VectoInputDeclaration xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationComponent:v1.0" xmlns:di="http://www.w3.org/2000/09/xmldsig#" schemaVersion="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationComponent:v1.0 https://citnet.tech.ec.europa.eu/CITnet/svn/VECTO/trunk/Share/XML/XSD/VectoComponent.xsd">
+    <tns:AirDrag>
+        <Data id="TestAirDrag1234" xsi:type="AirDragDataDeclarationType">
+            <Manufacturer>Test AirDrag Manufacturer</Manufacturer>
+            <Model>Test AirDrag Model</Model>
+            <CertificationNumber>e12*0815/8051*2020/05E0000*66</CertificationNumber>
+            <Date>2020-04-28T09:16:15.1270795Z</Date>
+            <AppVersion>Vecto AirDrag Test Load</AppVersion>
+            <CdxA_0>6.12</CdxA_0>
+            <TransferredCdxA>7.12</TransferredCdxA>
+            <DeclaredCdxA>8.12</DeclaredCdxA>
+        </Data>
+        <Signature>
+            <di:Reference URI="#TestAirDrag1234">
+                <di:Transforms>
+                    <di:Transform Algorithm="urn:vecto:xml:2017:canonicalization" />
+                    <di:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" />
+                </di:Transforms>
+                <di:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" />
+                <di:DigestValue>Yd3UDJ/zKPhsmPadJeC4Ez/q7o3G82Zbq3mX3tSqLDw=</di:DigestValue>
+            </di:Reference>
+        </Signature>
+    </tns:AirDrag>
+</tns:VectoInputDeclaration>

@@ -85,7 +85,7 @@ namespace TUGraz.VectoCore.Models.Connector.Ports
 		/// <param name="force">[N]</param>
 		/// <param name="velocity">[m/s]</param>
 		/// <param name="dryRun"></param>
-		IResponse Request(Second absTime, Second dt, Newton force, MeterPerSecond velocity, bool dryRun = false);
+		IResponse Request(Second absTime, Second dt, Newton force, MeterPerSecond velocity, bool dryRun);
 
 		IResponse Initialize(Newton vehicleForce, MeterPerSecond vehicleSpeed);
 	}

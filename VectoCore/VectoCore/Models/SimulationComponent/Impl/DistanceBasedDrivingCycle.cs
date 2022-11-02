@@ -31,6 +31,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
@@ -58,22 +59,22 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		internal readonly DrivingCycleEnumerator CycleIntervalIterator;
 		private bool _intervalProlonged;
 		internal IdleControllerSwitcher IdleController;
+		private Meter CycleEndDistance;
 
-		private DrivingCycleData.DrivingCycleEntry Left
-		{
-			get { return CycleIntervalIterator.LeftSample; }
-		}
+		
+		private MeterPerSquareSecond StartAcceleration;
+		private MeterPerSecond StartSpeed;
 
-		private DrivingCycleData.DrivingCycleEntry Right
-		{
-			get { return CycleIntervalIterator.RightSample; }
-		}
+		private DrivingCycleData.DrivingCycleEntry Left => CycleIntervalIterator.LeftSample;
+
+		private DrivingCycleData.DrivingCycleEntry Right => CycleIntervalIterator.RightSample;
 
 		public DistanceBasedDrivingCycle(IVehicleContainer container, IDrivingCycleData cycle) : base(container)
 		{
 			Data = cycle;
 			CycleIntervalIterator = new DrivingCycleEnumerator(Data);
 			CycleStartDistance = Data.Entries.Count > 0 ? Data.Entries.First().Distance : 0.SI<Meter>();
+			CycleEndDistance = Data.Entries.Count > 0 ? Data.Entries.Last().Distance : 0.SI<Meter>();
 
 			var first = Data.Entries.First();
 			PreviousState = new DrivingCycleState {
@@ -81,19 +82,38 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				WaitTime = 0.SI<Second>(),
 				Distance = first.Distance,
 				Altitude = first.Altitude,
+				VehicleTargetSpeed = Data.Entries.First().VehicleTargetSpeed
 			};
 			CurrentState = PreviousState.Clone();
+			
+			StartSpeed = container.RunData.GearshiftParameters?.StartSpeed;
+			StartAcceleration = container.RunData.GearshiftParameters?.StartAcceleration;
+			
 		}
 
 		public IResponse Initialize()
 		{
+			CycleStartDistance = Data.Entries.Count > 0 ? Data.Entries.First().Distance : 0.SI<Meter>();
+			CycleEndDistance = Data.Entries.Count > 0 ? Data.Entries.Last().Distance : 0.SI<Meter>();
+			var first = Data.Entries.First();
+			PreviousState = new DrivingCycleState {
+				AbsTime = 0.SI<Second>(),
+				WaitTime = 0.SI<Second>(),
+				Distance = first.Distance,
+				Altitude = first.Altitude,
+				VehicleTargetSpeed = Data.Entries.First().VehicleTargetSpeed
+			};
+			CurrentState = PreviousState.Clone();
+
 			if (Left.VehicleTargetSpeed.IsEqual(0)) {
-				var retVal = NextComponent.Initialize(DataBus.StartSpeed,
-					Left.RoadGradient, DataBus.StartAcceleration);
+				var retVal = NextComponent.Initialize(StartSpeed,
+					Left.RoadGradient, StartAcceleration);
 				if (!(retVal is ResponseSuccess)) {
 					throw new UnexpectedResponseException("DistanceBasedDrivingCycle.Initialize: Couldn't find start gear.", retVal);
 				}
 			}
+
+			LastTargetspeedChange = SetLastTargetspeedChange(PreviousState.AbsTime, PreviousState, Left);
 
 			return NextComponent.Initialize(Left.VehicleTargetSpeed,
 				Left.RoadGradient);
@@ -107,24 +127,25 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		public IResponse Request(Second absTime, Meter ds)
 		{
 			if (Left.Distance.IsEqual(PreviousState.Distance.Value())) {
+				LastTargetspeedChange = SetLastTargetspeedChange(absTime, PreviousState, Left);
 				var response = DoFirstSimulationInterval(absTime);
 				if (response != null) {
 					return response;
 				}
 			}
 			if (CycleIntervalIterator.LastEntry && PreviousState.Distance.IsEqual(Right.Distance)) {
-				CurrentState.Response = new ResponseCycleFinished();
+				CurrentState.Response = new ResponseCycleFinished(this);
 				return CurrentState.Response;
 			}
 
 			var nextSpeedChange = GetSpeedChangeWithinSimulationInterval(ds);
 			if (nextSpeedChange == null || ds.IsSmallerOrEqual(nextSpeedChange - PreviousState.Distance)) {
-				if (nextSpeedChange == null || DataBus.VehicleSpeed.IsEqual(0.SI<MeterPerSecond>())) {
+				if (nextSpeedChange == null || DataBus.VehicleInfo.VehicleSpeed.IsEqual(0.SI<MeterPerSecond>())) {
 					CurrentState.Response = DriveDistance(absTime, ds);
 					return CurrentState.Response;
 				}
 				var remainingDistance = nextSpeedChange - PreviousState.Distance - ds;
-				var estimatedRemainingTime = remainingDistance / DataBus.VehicleSpeed;
+				var estimatedRemainingTime = remainingDistance / DataBus.VehicleInfo.VehicleSpeed;
 				if (_intervalProlonged || remainingDistance.IsEqual(0.SI<Meter>()) ||
 					estimatedRemainingTime.IsGreater(Constants.SimulationSettings.LowerBoundTimeInterval)) {
 					CurrentState.Response = DriveDistance(absTime, ds);
@@ -133,26 +154,47 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				Log.Debug("Extending distance by {0} to next sample point. ds: {1} new ds: {2}", remainingDistance, ds,
 					nextSpeedChange - PreviousState.Distance);
 				_intervalProlonged = true;
-				CurrentState.Response = new ResponseDrivingCycleDistanceExceeded {
-					Source = this,
+				CurrentState.Response = new ResponseDrivingCycleDistanceExceeded(this) {
 					MaxDistance = nextSpeedChange - PreviousState.Distance
 				};
 				return CurrentState.Response;
 			}
+
+			if (DataBus.VehicleInfo.VehicleSpeed.IsGreater(0) && Right.Distance.IsSmaller(CycleEndDistance)) {
+				var distanceToSpeedChange = nextSpeedChange - PreviousState.Distance;
+				var estimatedTimeToSpeedChange = distanceToSpeedChange / DataBus.VehicleInfo.VehicleSpeed;
+				if (estimatedTimeToSpeedChange.IsSmaller(Constants.SimulationSettings.LowerBoundTimeInterval / 2) &&
+					DataBus.VehicleInfo.VehicleSpeed.IsSmaller(Left.VehicleTargetSpeed, 1.KMPHtoMeterPerSecond()) &&
+					DataBus.VehicleInfo.VehicleSpeed.IsSmaller(Right.VehicleTargetSpeed, 1.KMPHtoMeterPerSecond())) {
+					CurrentState.Response = DriveDistance(absTime, ds);
+					return CurrentState.Response;
+				}
+			}
+
 			// only drive until next sample point in cycle with speed change
 			Log.Debug("Limiting distance to next sample point {0}",
 				Right.Distance - PreviousState.Distance);
-			CurrentState.Response = new ResponseDrivingCycleDistanceExceeded {
-				Source = this,
+			CurrentState.Response = new ResponseDrivingCycleDistanceExceeded(this) {
 				MaxDistance = nextSpeedChange - PreviousState.Distance
 			};
 			return CurrentState.Response;
 		}
 
+		private SpeedChangeEntry SetLastTargetspeedChange(Second absTime, DrivingCycleState previousState, DrivingCycleData.DrivingCycleEntry left)
+		{
+			return new SpeedChangeEntry {
+				PreviousTargetSpeed = previousState.VehicleTargetSpeed,
+				AbsTime = absTime,
+				Altitude = left.Altitude,
+				NewTargetSpeed = left.VehicleTargetSpeed,
+				Distance = left.Distance
+			};
+		}
+
 		private IResponse DoFirstSimulationInterval(Second absTime)
 		{
 // we are exactly on an entry in the cycle.
-			var stopTime = Left.PTOActive && IdleController != null
+			var stopTime = Left.PTOActive == PTOActivity.PTOActivityDuringStop && IdleController != null
 				? Left.StoppingTime + IdleController.Duration
 				: Left.StoppingTime;
 
@@ -178,7 +220,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		private Second GetStopTimeInterval()
 		{
-			if (!Left.PTOActive || IdleController == null) {
+			if (Left.PTOActive != PTOActivity.PTOActivityDuringStop || IdleController == null) {
 				if ((Left.StoppingTime - PreviousState.WaitTime).IsGreater(2 * Constants.SimulationSettings.TargetTimeInterval,
 					0.1 * Constants.SimulationSettings.TargetTimeInterval)) {
 					return 2 * Constants.SimulationSettings.TargetTimeInterval;
@@ -257,8 +299,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				CurrentState.RequestToNextSamplePointDone = true;
 				Log.Debug("current distance is close to the next speed change: {0}",
 					nextSpeedChanges.First().Distance - PreviousState.Distance);
-				return new ResponseDrivingCycleDistanceExceeded {
-					Source = this,
+				return new ResponseDrivingCycleDistanceExceeded(this) {
 					MaxDistance = Constants.SimulationSettings.BrakeNextTargetDistance
 				};
 			}
@@ -270,12 +311,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			CurrentState.Gradient = ComputeGradient(ds);
 
 			var retVal = NextComponent.Request(absTime, ds, CurrentState.VehicleTargetSpeed, CurrentState.Gradient);
-			retVal.Switch()
-				.Case<ResponseFailTimeInterval>(
-					r => {
-						retVal = NextComponent.Request(absTime, r.DeltaT, 0.SI<MeterPerSecond>(), CurrentState.Gradient);
-						retVal = NextComponent.Request(absTime, ds, CurrentState.VehicleTargetSpeed, CurrentState.Gradient);
-					});
+			if (retVal is ResponseFailTimeInterval r) { 
+				var debugRetVal = NextComponent.Request(absTime, r.DeltaT, 0.SI<MeterPerSecond>(), CurrentState.Gradient);
+				retVal = NextComponent.Request(absTime, ds, CurrentState.VehicleTargetSpeed, CurrentState.Gradient);
+			}
 			CurrentState.AbsTime = absTime;
 			if (retVal is ResponseSuccess) {
 				CurrentState.Distance = PreviousState.Distance + retVal.SimulationDistance;
@@ -283,22 +322,27 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			return retVal;
 		}
 
-		protected override void DoWriteModalResults(IModalDataContainer container)
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
+			if (CurrentState == null) {
+				return;
+			}
 			container[ModalResultField.dist] = CurrentState.Distance; // (CurrentState.Distance + PreviousState.Distance) / 2.0;
 			container[ModalResultField.simulationDistance] = CurrentState.SimulationDistance;
 			container[ModalResultField.v_targ] = CurrentState.VehicleTargetSpeed;
-			container[ModalResultField.grad] = (Math.Tan(CurrentState.Gradient.Value()) * 100).SI<Scalar>();
+			container[ModalResultField.grad] = CurrentState.Gradient != null
+				? (Math.Tan(CurrentState.Gradient.Value()) * 100).SI<Scalar>()
+				: null;
 			container[ModalResultField.altitude] = CurrentState.Altitude;
 
 			if (IdleController != null) {
-				IdleController.CommitSimulationStep(container);
+				IdleController.CommitSimulationStep(time, simulationInterval, container);
 			}
 		}
 
-		protected override void DoCommitSimulationStep()
+		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)
 		{
-			if (!(CurrentState.Response is ResponseSuccess)) {
+			if (CurrentState.Response != null && !(CurrentState.Response is ResponseSuccess)) {
 				throw new VectoSimulationException("Previous request did not succeed!");
 			}
 
@@ -307,7 +351,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			_intervalProlonged = false;
 
 
-			var stopTime = Left.PTOActive && IdleController != null
+			var stopTime = Left.PTOActive == PTOActivity.PTOActivityDuringStop && IdleController != null
 				? Left.StoppingTime + IdleController.Duration
 				: Left.StoppingTime;
 
@@ -318,7 +362,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					// we have reached the end of the current interval in the cycle, move on...
 					CycleIntervalIterator.MoveNext();
 
-					stopTime = Left.PTOActive && IdleController != null
+					stopTime = Left.PTOActive == PTOActivity.PTOActivityDuringStop && IdleController != null
 						? Left.StoppingTime + IdleController.Duration
 						: Left.StoppingTime;
 				}
@@ -376,15 +420,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		/// <summary>
 		/// Progress of the distance in the driving cycle.
 		/// </summary>
-		public double Progress
-		{
-			get {
-				return Data.Entries.Count > 0
-					? (CurrentState.Distance.Value() - Data.Entries.First().Distance.Value()) /
-					(Data.Entries.Last().Distance.Value() - Data.Entries.First().Distance.Value())
-					: 0;
-			}
-		}
+		public double Progress =>
+			Data.Entries.Count > 0
+				? (CurrentState.Distance.Value() - Data.Entries.First().Distance.Value()) /
+				(Data.Entries.Last().Distance.Value() - Data.Entries.First().Distance.Value())
+				: 0;
+
+		public Second StopTime => CycleIntervalIterator.LeftSample.StoppingTime;
 
 		public Meter CycleStartDistance { get; internal set; }
 
@@ -425,25 +467,23 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		public IReadOnlyList<DrivingCycleData.DrivingCycleEntry> LookAhead(Second time)
 		{
-			return LookAhead(LookaheadTimeSafetyMargin * DataBus.VehicleSpeed * time);
+			return LookAhead(LookaheadTimeSafetyMargin * DataBus.VehicleInfo.VehicleSpeed * time);
 		}
+
+		public SpeedChangeEntry LastTargetspeedChange { get; private set; }
 
 		public void FinishSimulation()
 		{
 			Data.Finish();
 		}
 
-		public CycleData CycleData
-		{
-			get {
-				return new CycleData {
-					AbsTime = CurrentState.AbsTime,
-					AbsDistance = CurrentState.Distance,
-					LeftSample = Left,
-					RightSample = CycleIntervalIterator.RightSample
-				};
-			}
-		}
+		public CycleData CycleData =>
+			new CycleData {
+				AbsTime = CurrentState.AbsTime,
+				AbsDistance = CurrentState.Distance,
+				LeftSample = Left,
+				RightSample = CycleIntervalIterator.RightSample
+			};
 
 		public bool PTOActive { get; private set; }
 
@@ -459,20 +499,20 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				myIterator.MoveNext();
 			}
 
-			return InterpolateCycleEntry(absDistance, myIterator.RightSample);
+			return InterpolateCycleEntry(absDistance, myIterator);
 		}
 
 		private DrivingCycleData.DrivingCycleEntry InterpolateCycleEntry(Meter absDistance,
-			DrivingCycleData.DrivingCycleEntry lookahead)
+			DrivingCycleEnumerator lookahead)
 		{
-			var retVal = new DrivingCycleData.DrivingCycleEntry(lookahead) {
+			var retVal = new DrivingCycleData.DrivingCycleEntry(lookahead.RightSample) {
 				Distance = absDistance,
-				Altitude = VectoMath.Interpolate(CurrentState.Distance, lookahead.Distance, CurrentState.Altitude,
-					lookahead.Altitude, absDistance)
+				Altitude = VectoMath.Interpolate(lookahead.LeftSample.Distance, lookahead.RightSample.Distance, lookahead.LeftSample.Altitude,
+					lookahead.RightSample.Altitude, absDistance)
 			};
 
-			retVal.RoadGradient =
-				((retVal.Altitude - CurrentState.Altitude) / (absDistance - CurrentState.Distance)).Value().SI<Radian>();
+			//retVal.RoadGradient =
+			//	((retVal.Altitude - CurrentState.Altitude) / (absDistance - CurrentState.Distance)).Value().SI<Radian>();
 
 			return retVal;
 		}
@@ -491,12 +531,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			return retVal;
 		}
 
-		public Meter Altitude
-		{
-			get { return PreviousState.Altitude; }
-		}
+		public Meter Altitude => PreviousState.Altitude;
 
-		public Radian RoadGradient { get { return CurrentState.Gradient; } }
+		public Radian RoadGradient => CurrentState.Gradient;
+
+		public MeterPerSecond TargetSpeed => CurrentState.VehicleTargetSpeed;
 
 
 		public sealed class DrivingCycleState

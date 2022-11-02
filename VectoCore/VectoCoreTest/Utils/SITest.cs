@@ -33,12 +33,12 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Utils;
-using TUGraz.VectoCore.Utils;
 using NUnit.Framework;
 
 namespace TUGraz.VectoCore.Tests.Utils
 {
 	[TestFixture]
+	[Parallelizable(ParallelScope.All)]
 	public class SITest
 	{
 		[TestCase]

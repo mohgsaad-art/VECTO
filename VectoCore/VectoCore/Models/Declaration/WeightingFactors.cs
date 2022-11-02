@@ -35,7 +35,9 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using TUGraz.VectoCommon.Exceptions;
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.Declaration
 {
@@ -54,8 +56,9 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		#region Overrides of LookupData
 
-		protected override string ResourceId { get { return DeclarationData.DeclarationDataResourcePrefix + ".CO2Standards.MissionProfileWeights.csv"; } }
-		protected override string ErrorMessage { get { return "No Weighting Factors found for Weighting Group {0}"; } }
+		protected override string ResourceId => DeclarationData.DeclarationDataResourcePrefix + ".CO2Standards.MissionProfileWeights.csv";
+		protected override string ErrorMessage => "No Weighting Factors found for Weighting Group {0}";
+
 		protected override void ParseData(DataTable table)
 		{
 			var loadingTypes = new[] { LoadingType.LowLoading, LoadingType.ReferenceLoad };
@@ -65,9 +68,8 @@ namespace TUGraz.VectoCore.Models.Declaration
 			};
 			foreach (DataRow row in table.Rows) {
 				var weightingGroup = WeightingGroupHelper.Parse(row.Field<string>("weightinggroup"));
-				if (!Data.ContainsKey(weightingGroup)) {
-					Data[weightingGroup] = new Dictionary<Tuple<MissionType, LoadingType>, double>();
-				}
+				var weightingGroupValues = Data.GetOrAdd(weightingGroup, _=>new Dictionary<Tuple<MissionType, LoadingType>, double>());
+				
 				foreach (var missionType in missions) {
 					var factors = row.Field<string>(missionType.GetName());
 					if (string.IsNullOrWhiteSpace(factors)) {
@@ -80,7 +82,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 					}
 					for (var i = 0; i < loadingTypes.Length; i++) {
 						var cycleAndPayload = Tuple.Create(missionType, loadingTypes[i]);
-						Data[weightingGroup][cycleAndPayload] = factorsPerLoading[i].ToDouble(0);
+						weightingGroupValues[cycleAndPayload] = factorsPerLoading[i].ToDouble(0);
 					}
 				}
 			}

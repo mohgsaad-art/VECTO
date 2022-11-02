@@ -30,7 +30,6 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
@@ -41,7 +40,6 @@ using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.OutputData;
-using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
@@ -108,9 +106,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			
 			foreach (var entry in Data.Entries.Pairwise()) {
 				var dt = entry.Item2.Time - entry.Item1.Time;
-				var fc = entry.Item1.Fuelconsumption * dt;
+				//var fc = entry.Item1.VTPFuelconsumption * dt;
 				var eWheel = entry.Item1.PWheel > 0 ? entry.Item1.PWheel * dt : 0.SI<WattSecond>();
-				window[idx % count] = new {FC= fc, EWheel = eWheel};
+				//window[idx % count] = new {FC= fc, EWheel = eWheel};
 				sumFC += window[idx % count].FC;
 				sumFC -= window[(idx + 1) % count].FC;
 				sumEWheel += window[idx % count].EWheel;
@@ -171,18 +169,22 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		private void SelectStartGear()
 		{
-			var transmissionRatio = RunData.AxleGearData.AxleGear.Ratio *
-									(RunData.AngledriveData == null ? 1.0 : RunData.AngledriveData.Angledrive.Ratio) /
+            if (RunData.GearboxData.Type.AutomaticTransmission()) {
+                StartGear = 1;
+                return;
+            }
+            var transmissionRatio = RunData.AxleGearData.AxleGear.Ratio *
+									(RunData.AngledriveData?.Angledrive.Ratio ?? 1.0) /
 									RunData.VehicleData.DynamicTyreRadius;
-			var cardanStartSpeed = (RunData.GearboxData.StartSpeed * transmissionRatio).Cast<PerSecond>();
+			var cardanStartSpeed = (RunData.GearshiftParameters.StartSpeed * transmissionRatio).Cast<PerSecond>();
 			var minEngineSpeed = (RunData.EngineData.FullLoadCurves[0].RatedSpeed - RunData.EngineData.IdleSpeed) *
 								Constants.SimulationSettings.ClutchClosingSpeedNorm + RunData.EngineData.IdleSpeed;
 			var wheelStartTorque =
 				(RunData.VehicleData.VehicleCategory == VehicleCategory.Tractor
 					? 40000.SI<Kilogram>()
-					: RunData.VehicleData.GrossVehicleWeight) * RunData.GearboxData.StartAcceleration *
+					: RunData.VehicleData.GrossVehicleMass) * RunData.GearshiftParameters.StartAcceleration *
 				RunData.VehicleData.DynamicTyreRadius;
-			var wheelStartSpeed = RunData.GearboxData.StartSpeed / RunData.VehicleData.DynamicTyreRadius;
+			var wheelStartSpeed = RunData.GearshiftParameters.StartSpeed / RunData.VehicleData.DynamicTyreRadius;
 			CycleIterator.LeftSample.WheelAngularVelocity = wheelStartSpeed;
 			var maxStartGear = 1u;
 			foreach (var gearData in RunData.GearboxData.Gears.Reverse())
@@ -193,16 +195,16 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			for (var gear = maxStartGear; gear > 1; gear--) {
 				var inAngularSpeed = cardanStartSpeed * RunData.GearboxData.Gears[gear].Ratio;
 
-				var ratedSpeed = DataBus.EngineRatedSpeed;
+				var ratedSpeed = DataBus.EngineInfo.EngineRatedSpeed;
 				if (inAngularSpeed > ratedSpeed || inAngularSpeed.IsEqual(0))
 					continue;
 
 				var response = Initialize(gear, wheelStartTorque, wheelStartSpeed);
 
-				var fullLoadPower = response.DynamicFullLoadPower; //EnginePowerRequest - response.DeltaFullLoad;
-				var reserve = 1 - response.EnginePowerRequest / fullLoadPower;
+				var fullLoadPower = response.Engine.DynamicFullLoadPower; //EnginePowerRequest - response.DeltaFullLoad;
+				var reserve = 1 - response.Engine.PowerRequest / fullLoadPower;
 
-				if (response.EngineSpeed > DataBus.EngineIdleSpeed && reserve >= RunData.GearboxData.StartTorqueReserve) {
+				if (response.Engine.EngineSpeed > DataBus.EngineInfo.EngineIdleSpeed && reserve >= RunData.GearshiftParameters.StartTorqueReserve) {
 					StartGear = gear;
 					return;
 				}
@@ -224,13 +226,18 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			//var fullLoad = DataBus.EngineStationaryFullPower(inAngularVelocity);
 
-			return new ResponseDryRun {
-				Source = this,
-				EnginePowerRequest = response.EnginePowerRequest,
-				EngineSpeed = response.EngineSpeed,
-				DynamicFullLoadPower = response.DynamicFullLoadPower,
-				ClutchPowerRequest = response.ClutchPowerRequest,
-				GearboxPowerRequest = outTorque * outAngularVelocity,
+			return new ResponseDryRun(this) {
+				Engine = {
+					PowerRequest = response.Engine.PowerRequest,
+					EngineSpeed = response.Engine.EngineSpeed,
+					DynamicFullLoadPower = response.Engine.DynamicFullLoadPower,
+				},
+				Clutch = {
+					PowerRequest = response.Clutch.PowerRequest,
+				},
+				Gearbox = {
+					PowerRequest = outTorque * outAngularVelocity,
+				}
 				//DeltaFullLoad = response.EnginePowerRequest - fullLoad
 			};
 		}
@@ -288,14 +295,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		public override IResponse Request(Second absTime, Second dt)
 		{
 			if (CycleIterator.LastEntry && CycleIterator.RightSample.Time == absTime) {
-				return new ResponseCycleFinished { Source = this };
+				return new ResponseCycleFinished(this);
 			}
 
 			// interval exceeded
 			if (CycleIterator.RightSample != null && (absTime + dt).IsGreater(CycleIterator.RightSample.Time)) {
-				return new ResponseFailTimeInterval {
+				return new ResponseFailTimeInterval(this) {
 					AbsTime = absTime,
-					Source = this,
 					DeltaT = CycleIterator.RightSample.Time - absTime
 				};
 			}
@@ -309,16 +315,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			return DoHandleRequest(absTime, dt, CycleIterator.LeftSample.WheelAngularVelocity);
 		}
 
-		public override bool VehicleStopped
-		{
-			get
-			{
-				return CycleIterator.Previous().LeftSample.VehicleTargetSpeed
-					.IsEqual(0.KMPHtoMeterPerSecond(), 0.3.KMPHtoMeterPerSecond());
-			}
-		}
+		public override bool VehicleStopped =>
+			CycleIterator.Previous().LeftSample.VehicleTargetSpeed
+				.IsEqual(0.KMPHtoMeterPerSecond(), 0.3.KMPHtoMeterPerSecond());
 
-		protected override void DoCommitSimulationStep()
+		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)
 		{
 			if (SimulationIntervalEndTime.IsGreaterOrEqual(CycleIterator.RightSample.Time)) {
 				CycleIterator.MoveNext();
@@ -326,9 +327,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			AdvanceState();
 		}
 
-		protected override void DoWriteModalResults(IModalDataContainer container)
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
-			base.DoWriteModalResults(container);
+			base.DoWriteModalResults(time, simulationInterval, container);
 			container[ModalResultField.P_wheel_in] = CurrentState.InTorque * CurrentState.InAngularVelocity;
 			container[ModalResultField.v_act] = CycleIterator.LeftSample.VehicleTargetSpeed;
 		}

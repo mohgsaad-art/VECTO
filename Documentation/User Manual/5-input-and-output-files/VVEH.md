@@ -1,6 +1,6 @@
-##Vehicle File (.vveh)
+## Vehicle File (.vveh)
 
-File for the definition of a vehicle in vecto. Can be created with the [Vehicle Editor](#vehicle-editor).
+File for the definition of a vehicle in vecto. Can be created with the [Vehicle Editor](#vehicle-editor-general-tab).
 
 - File format is [JSON](#json).
 - Filetype ending is ".vveh"
@@ -16,53 +16,110 @@ Refers to other files:
 ~~~json
 {
   "Header": {
-    "CreatedBy": "Michael Krisper (Graz University of Technology)",
-    "Date": "2016-03-18T14:42:45+01:00",
-    "AppVersion": "3.0.2",
-    "FileVersion": 7
+    "CreatedBy": "",
+    "Date": "2020-09-07T15:36:11.4469594Z",
+    "AppVersion": "3",
+    "FileVersion": 10
   },
   "Body": {
     "SavedInDeclMode": false,
-    "VehCat": "RigidTruck",
-    "CurbWeight": 6000.0,
-    "CurbWeightExtra": 0.0,
-    "Loading": 0.0,
-    "MassMax": 11.9,
-    "CdA": 4.5,
-    "rdyn": 450,
-    "Rim": "15° DC Rims",
-    "CdCorrMode": "CdOfVeng",
-    "CdCorrFile": "CrossWindCorrection.vcdv",
-    "Retarder": {
-      "Type": "Secondary",
-      "Ratio": 1.0,
-      "File": "Retarder.vrlm"
-    },
-    "AngularGear": {
-      "Type" : "SeparateAngularGear",
-      "Ratio": 1.0,
-      "LossMap": "AngularGear.vtlm"
-    },
+    "VehCat": "Tractor",
+    "LegislativeClass": "Unknown",
+    "CurbWeight": 8229.0,
+    "CurbWeightExtra": 7500.0,
+    "MassMax": 18.0,
+    "Loading": 19300.0,
+    "rdyn": 492.0,
+    "CdCorrMode": "CdofVdecl",
+    "CdCorrFile": "",
     "AxleConfig": {
       "Type": "4x2",
       "Axles": [
         {
-          "Inertia": 6.0,
-          "Wheels": "245/70 R19.5",
-          "AxleWeightShare": 0.0,
+          "Inertia": 14.9,
+          "Wheels": "315/70 R22.5",
+          "AxleWeightShare": 0.2,
           "TwinTyres": false,
-          "RRCISO": 0.008343465,
-          "FzISO": 20800.0
+          "RRCISO": 0.0055,
+          "FzISO": 33350.0,
+          "Type": "VehicleNonDriven"
         },
         {
-          "Inertia": 6.0,
-          "Wheels": "245/70 R19.5",
-          "AxleWeightShare": 0.0,
+          "Inertia": 14.9,
+          "Wheels": "315/70 R22.5",
+          "AxleWeightShare": 0.25,
           "TwinTyres": true,
-          "RRCISO": 0.00943769,
-          "FzISO": 20800.0
+          "RRCISO": 0.0065,
+          "FzISO": 33350.0,
+          "Type": "VehicleDriven"
+        },
+        {
+          "Inertia": 19.2,
+          "Wheels": "385/65 R22.5",
+          "AxleWeightShare": 0.18333,
+          "TwinTyres": false,
+          "RRCISO": 0.0055,
+          "FzISO": 41690.0,
+          "Type": "Trailer"
+        },
+        {
+          "Inertia": 19.2,
+          "Wheels": "385/65 R22.5",
+          "AxleWeightShare": 0.18333,
+          "TwinTyres": false,
+          "RRCISO": 0.0055,
+          "FzISO": 41690.0,
+          "Type": "Trailer"
+        },
+        {
+          "Inertia": 19.2,
+          "Wheels": "385/65 R22.5",
+          "AxleWeightShare": 0.18334,
+          "TwinTyres": false,
+          "RRCISO": 0.0055,
+          "FzISO": 41690.0,
+          "Type": "Trailer"
         }
       ]
+    },
+    "EngineStopStart": true,
+    "EcoRoll": "None",
+    "PredictiveCruiseControl": "None",
+    "ATEcoRollReleaseLockupClutch": false,
+    "CdA": 5.3,
+    "VehicleHeight": 4.0,
+    "IdlingSpeed": 600.0,
+    "Retarder": {
+      "Type": "None",
+      "Ratio": 1.0,
+      "File": ""
+    },
+    "Angledrive": {
+      "Type": "None",
+      "Ratio": 0.0,
+      "LossMap": ""
+    },
+    "PTO": {
+      "Type": "None",
+      "LossMap": "",
+      "Cycle": ""
+    },
+    "TorqueLimits": {},
+    "MaxDrivetrainPower": 1000.0,
+    "InitialSoC": 50.0,
+    "PowertrainConfiguration": "ParallelHybrid",
+    "ElectricMotors": [
+      {
+        "Count": 1,
+        "Ratio": 1.0,
+        "MechanicalEfficiency": 1.0,
+        "Position": "P2",
+        "MotorFile": "GenericEMotor_140kW_936Nm.vem"
+      }
+    ],
+    "Battery": {
+      "NumPacks": 1,
+      "BatteryFile": "GenericBattery_10kWh_658V.vbat"
     }
   }
 }

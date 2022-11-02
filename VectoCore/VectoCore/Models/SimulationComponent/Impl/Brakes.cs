@@ -52,7 +52,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		{
 			BrakePower = 0.SI<Watt>();
 			PreviousState.SetState(torque, angularVelocity, torque, angularVelocity);
-			return DataBus.DriverBehavior == DrivingBehavior.Halted && DataBus.VehicleStopped
+			return DataBus.DriverInfo.DriverBehavior == DrivingBehavior.Halted && DataBus.VehicleInfo.VehicleStopped
 				? NextComponent.Initialize(0.SI<NewtonMeter>(), 0.SI<PerSecond>())
 				: NextComponent.Initialize(torque, angularVelocity);
 		}
@@ -71,27 +71,27 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				}
 			}
 
-			if (!dryRun && BrakePower < 0) {
+			if (!dryRun && !DataBus.IsTestPowertrain && BrakePower < 0) {
 				throw new VectoSimulationException("Negative Braking Power is not allowed! P_br: {0}", BrakePower);
 			}
 			CurrentState.SetState(outTorque + brakeTorque, outAngularVelocity, outTorque, outAngularVelocity);
 
 			var retVal = NextComponent.Request(absTime, dt, outTorque + brakeTorque, outAngularVelocity, dryRun);
-			retVal.BrakePower = brakeTorque * avgAngularSpeed;
+			retVal.Brakes.BrakePower = brakeTorque * avgAngularSpeed;
 			return retVal;
 		}
 
-		protected override void DoWriteModalResults(IModalDataContainer container)
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
 			container[ModalResultField.P_brake_loss] = BrakePower;
 			container[ModalResultField.P_brake_in] = CurrentState.InTorque *
 													(PreviousState.InAngularVelocity + CurrentState.InAngularVelocity) / 2.0;
 		}
 
-		protected override void DoCommitSimulationStep()
+		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)
 		{
 			BrakePower = 0.SI<Watt>();
-			base.DoCommitSimulationStep();
+			base.DoCommitSimulationStep(time, simulationInterval);
 		}
 	}
 }

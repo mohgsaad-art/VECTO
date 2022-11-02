@@ -1,0 +1,136 @@
+﻿{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2017-07-03T14:47:35.9436880Z",
+    "AppVersion": "3",
+    "FileVersion": 9
+  },
+  "Body": {
+    "SavedInDeclMode": true,
+    "VehCat": "HeavyBusPrimaryVehicle",
+    "LegislativeClass": "N3",
+    "CurbWeight": 8229.0,
+    "CurbWeightExtra": 0.0,
+    "Loading": 0.0,
+    "MassMax": 18.0,
+    "rdyn": 0.0,
+    "CdCorrMode": "CdofVdecl",
+    "CdCorrFile": "",
+    "Retarder": {
+      "Type": "secondary",
+      "Ratio": 1.0,
+      "File": "Default.vrlm"
+    },
+    "Angledrive": {
+      "Type": "None",
+      "Ratio": 0.0,
+      "LossMap": ""
+    },
+    "PTO": {
+      "Type": "None",
+      "LossMap": "",
+      "Cycle": ""
+    },
+    "TorqueLimits": {},
+    "IdlingSpeed": 600.0,
+    "AxleConfig": {
+      "Type": "4x2",
+      "Axles": [
+        {
+          "Inertia": 14.9,
+          "Wheels": "315/70 R22.5",
+          "AxleWeightShare": 0.0,
+          "TwinTyres": false,
+          "RRCISO": 0.0055,
+          "FzISO": 33350.0,
+          "Type": "VehicleNonDriven"
+        },
+        {
+          "Inertia": 14.9,
+          "Wheels": "315/70 R22.5",
+          "AxleWeightShare": 0.0,
+          "TwinTyres": true,
+          "RRCISO": 0.0065,
+          "FzISO": 33350.0,
+          "Type": "VehicleDriven"
+        }
+      ]
+    },
+    "CdA": 5.3,
+	"Aux":  {
+		"FanTechnology": "Electrically driven - Electronically controlled",
+		"SteeringPumpTechnology": [
+			"Dual displacement with mech. control"
+		],
+    "ElectricSupply": {
+      "Alternators": [
+        {
+          "Technology": "standard alternator",
+          "Ratio": 1.0
+        }
+      ],
+      "MaxAlternatorPower": 0,
+      "Technology":  "conventional", 
+      "ResultCards": {
+        "Idle": [
+          {
+            "Current": 0,
+            "SmartCurrent": 0
+          },
+          {
+            "Current": 20,
+            "SmartCurrent": 25
+          },
+          {
+            "Current": 50,
+            "SmartCurrent": 60
+          }
+        ],
+        "Traction": [
+          {
+            "Current": 0,
+            "SmartCurrent": 0
+          },
+          {
+            "Current": 20,
+            "SmartCurrent": 25
+          },
+          {
+            "Current": 50,
+            "SmartCurrent": 60
+          }
+        ],
+        "Overrun": [
+          {
+            "Current": 0,
+            "SmartCurrent": 0
+          },
+          {
+            "Current": 20,
+            "SmartCurrent": 25
+          },
+          {
+            "Current": 50,
+            "SmartCurrent": 60
+          }
+        ]
+      },
+      "SmartElectrics": false
+    },
+		"ElectricConsumers": {
+		},
+		"PneumaticSupply": {
+			"CompressorSize": "",
+			"Ratio": 1.0
+		},
+		"PneumaticConsumers": {
+			"AirsuspensionControl": "mechanically",
+			"AdBlueDosing": "pneumatically"
+		},
+		"HVAC": {
+			"AdjustableCoolantThermostat": true,
+			"EngineWasteGasHeatExchanger": true
+		}
+	}
+  }
+}

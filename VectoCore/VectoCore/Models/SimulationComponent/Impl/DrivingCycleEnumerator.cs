@@ -62,27 +62,15 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			};
 		}
 
-		public DrivingCycleData.DrivingCycleEntry Current
-		{
-			get { return LeftSample; }
-		}
+		public DrivingCycleData.DrivingCycleEntry Current => LeftSample;
 
-		public DrivingCycleData.DrivingCycleEntry LeftSample
-		{
-			get { return _data.Entries[_currentCycleIndex]; }
-		}
+		public DrivingCycleData.DrivingCycleEntry LeftSample => _data.Entries[_currentCycleIndex];
 
-		public DrivingCycleData.DrivingCycleEntry RightSample
-		{
-			get { return _currentCycleIndex + 1 >= _data.Entries.Count ? null : _data.Entries[_currentCycleIndex + 1]; }
-		}
+		public DrivingCycleData.DrivingCycleEntry RightSample => _currentCycleIndex + 1 >= _data.Entries.Count ? null : _data.Entries[_currentCycleIndex + 1];
 
 		public bool LastEntry { get; private set; }
 
-		object System.Collections.IEnumerator.Current
-		{
-			get { return LeftSample; }
-		}
+		object System.Collections.IEnumerator.Current => LeftSample;
 
 		public bool MoveNext()
 		{

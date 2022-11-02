@@ -1,0 +1,19 @@
+﻿{
+  "Header": {
+    "CreatedBy": " ()",
+    "Date": "2016-10-13T08:54:28.7387223Z",
+    "AppVersion": "3",
+    "FileVersion": 1
+  },
+  "Body": {
+    "SavedInDeclMode": false,
+	"Model": "Generic Battery",
+	"CellsParallel": 80,
+	"CellsSeries": 200,
+	"InternalResistanceFactor": 1.1,
+	"CellFile": "GenericCell.vcell",
+	"SOC_min": 20,
+    "SOC_max": 80,
+    "Initial_SOC": 80 
+	}
+}

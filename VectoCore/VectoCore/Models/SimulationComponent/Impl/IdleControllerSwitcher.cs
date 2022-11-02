@@ -60,7 +60,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		public IResponse Initialize(NewtonMeter outTorque, PerSecond outAngularVelocity)
 		{
-			throw new InvalidOperationException(string.Format("{0} cannot initialize.", GetType().FullName));
+			throw new InvalidOperationException($"{GetType().FullName} cannot initialize.");
 		}
 
 		public ITnOutPort RequestPort
@@ -93,10 +93,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			return _ptoController.GetNextCycleTime();
 		}
 
-		public void CommitSimulationStep(IModalDataContainer container)
+		public void CommitSimulationStep(Second time, Second simulationInterval, IModalDataContainer container)
 		{
 			if (_currentController == _ptoController) {
-				_ptoController.CommitSimulationStep(container);
+				_ptoController.CommitSimulationStep(time, simulationInterval, container);
 			}
 		}
 

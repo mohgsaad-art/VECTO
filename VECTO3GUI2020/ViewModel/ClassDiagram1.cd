@@ -1,0 +1,566 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.Common.ViewModelBase" Collapsed="true">
+    <Position X="33.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAIAAAAAAAgAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModel\Implementation\Common\ViewModelBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.Document.DeclarationJobViewModel" Collapsed="true">
+    <Position X="66.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAABBAAAIAAABAAAAgAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>ViewModel\Implementation\Document\DeclarationJobViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.Document.DeclarationTrailerJobDocumentViewModel" Collapsed="true">
+    <Position X="68.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAJAABBAAAAAAABAAAAgAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>ViewModel\Implementation\Document\DeclarationTrailerJobDocumentViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.DeclarationJobViewModel" Collapsed="true">
+    <Position X="26" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAMAAkAAAAIAABUwAAgAAAQAAAACAAAAAAI=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\DeclarationJobViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.DeclarationJobViewModel_v1_0" Collapsed="true">
+    <Position X="26" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\DeclarationJobViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.DeclarationJobViewModel_v2_0" Collapsed="true">
+    <Position X="26" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\DeclarationJobViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Trailer.DeclarationTrailerJobEditViewModel" Collapsed="true">
+    <Position X="44" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAAAAAAUAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Trailer\DeclarationTrailerJobEditViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Trailer.DeclarationTrailerJobEditViewModel_v2_7" Collapsed="true">
+    <Position X="44" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Trailer\DeclarationTrailerJobEditViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Trailer.TrailerViewModel" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Trailer\TrailerViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Trailer.TrailerViewModel_v2_7" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Trailer\TrailerViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.ADASViewModel" Collapsed="true">
+    <Position X="5.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAIAIFAAAQAAAAAAjCAQAAAAAAAAAAAACAAAAAAI=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\ADASViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.ADASViewModel_v1_0" Collapsed="true">
+    <Position X="5.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAAgCAAAAAAAAAAAAAACAAAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\ADASViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.ADASViewModel_v2_1" Collapsed="true">
+    <Position X="5.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\ADASViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.ADASViewModel_v2_3" Collapsed="true">
+    <Position X="5.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\ADASViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.AirDragViewModel" Collapsed="true">
+    <Position X="41.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAIYAAEgABEkAABkAEAQUAAAAiAAABAAiAREAAEAI=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\AirDragViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.AirDragViewModel_v1_0" Collapsed="true">
+    <Position X="41.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\AirDragViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.AirDragViewModel_v2_0" Collapsed="true">
+    <Position X="41.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\AirDragViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.AngleDriveViewModel" Collapsed="true">
+    <Position X="57.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgABYAAGgABEkQABkAEAAUAAAAiACCBAQiARFAAEAI=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\AngleDriveViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.AngleDriveViewModel_v1_0" Collapsed="true">
+    <Position X="57.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAACAAAAAAAAAAAAAAAAAAgACAAAQAAAAAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\AngleDriveViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.AngleDriveViewModel_v2_0" Collapsed="true">
+    <Position X="57.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\AngleDriveViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.AuxiliariesViewModel" Collapsed="true">
+    <Position X="19.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACIAAAEAAhUAAAAAAABAQEAAAAAAAAAAAAAEAAIAI=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\AuxiliariesViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.AuxiliariesViewModel_v1_0" Collapsed="true">
+    <Position X="19.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\AuxiliariesViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.AuxiliariesViewModel_v2_0" Collapsed="true">
+    <Position X="19.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\AuxiliariesViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.AuxiliariesViewModel_v2_3" Collapsed="true">
+    <Position X="19.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\AuxiliariesViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.AuxiliaryViewModel" Collapsed="true">
+    <Position X="46.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAIAAAEAAAAAwAACAAAAQICAAAgAAAAQAAEAAAAAI=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\AuxiliaryViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.AuxiliaryViewModel_v1_0" Collapsed="true">
+    <Position X="46.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\AuxiliaryViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.AuxiliaryViewModel_v2_0" Collapsed="true">
+    <Position X="46.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\AuxiliaryViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.AuxiliaryViewModel_v2_3" Collapsed="true">
+    <Position X="46.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\AuxiliaryViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.AxleGearViewModel" Collapsed="true">
+    <Position X="8" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgIJYAAGgABEkAABkAEAAUAAAIiACCBAAiARFAAEAI=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\AxleGearViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.AxleGearViewModel_v1_0" Collapsed="true">
+    <Position X="8" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\AxleGearViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.AxleGearViewModel_v2_0" Collapsed="true">
+    <Position X="8" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgIAIAACgAAAAAAAAAAAAAAAAAgACABAAiAAEAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\AxleGearViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.AxleViewModel" Collapsed="true">
+    <Position X="32.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ICAAAAAAEAAAAggEAEQAAAQAAAQAAAAAGAAIAACAAAY=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\AxleViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.AxleViewModel_v1_0" Collapsed="true">
+    <Position X="32.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\AxleViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.AxleViewModel_v2_0" Collapsed="true">
+    <Position X="32.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\AxleViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.AxleViewModel_v2_7" Collapsed="true">
+    <Position X="32.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\AxleViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.AxleWheelsViewModel" Collapsed="true">
+    <Position X="60.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAIAAAFAAAEAAABAABAAQAAAAAAAAAACAAAAAAAAI=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\AxleWheelsViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.AxleWheelsViewModel_v1_0" Collapsed="true">
+    <Position X="59.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\AxleWheelsViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.AxleWheelsViewModel_v2_0" Collapsed="true">
+    <Position X="62" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\AxleWheelsViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.CommonComponentViewModel" Collapsed="true">
+    <Position X="21.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAQAAAgABAgAABkAEAAAAAAACAAABAAiAREAAEAA=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\CommonComponentViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.ComponentsViewModel" Collapsed="true">
+    <Position X="28.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAEAAAABAMKBQCIAAAABhABAAAACAABAIyQKBIAI=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\ComponentsViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.ComponentsViewModel_v1_0" Collapsed="true">
+    <Position X="28.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAECBACAAAAABBAAAAAACAAAAAgACAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\ComponentsViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.ComponentsViewModel_v2_0" Collapsed="true">
+    <Position X="28.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\ComponentsViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.EngineFuelViewModel" Collapsed="true">
+    <Position X="48.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAAIAAAYAAAAAAAABAEAAAAQAAAAI=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\EngineFuelViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.SingleFuelEngineFuelViewModel" Collapsed="true">
+    <Position X="48.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAABAAIAAIAAAAAAAIAAAYCAAAAQAABEEACAAQAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\EngineFuelViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.EngineModeViewModel" Collapsed="true">
+    <Position X="64.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAASAAAAAAAAAAQAAAAAAAAAAAAAAAggAAAAI=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\EngineModeViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.EngineModeViewModelSingleFuel" Collapsed="true">
+    <Position X="64.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAQAAAAAAAAAARgAEAEAAAAAAAAAAggAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\EngineModeViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.EngineViewModel" Collapsed="true">
+    <Position X="10.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAgAIZBQEgABEkAAB0AkAIUAABACBAADAAiAREAAEAI=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\EngineViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.EngineViewModel_v1_0" Collapsed="true">
+    <Position X="10.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\EngineViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.EngineViewModel_v2_0" Collapsed="true">
+    <Position X="10.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAgAAIBgAAAAAAAAAwAAAIAAAAABBAABAAiAAAAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\EngineViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.GearboxViewModel" Collapsed="true">
+    <Position X="36" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAIYAAEgABEkQABkAEAEUIABACAQQBAQiARECBEAI=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\GearboxViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.GearboxViewModel_v1_0" Collapsed="true">
+    <Position X="35" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\GearboxViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.GearboxViewModel_v2_0" Collapsed="true">
+    <Position X="37.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAIAAAgAAAAAAAAAAAEAAAAACAQABAQiAAACAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\GearboxViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.GearViewModel" Collapsed="true">
+    <Position X="53" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAALoAAGMAAggAQgEQQBAwoAA4hACCkCABAABAAIQI=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\GearViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.GearViewModel_v1_0" Collapsed="true">
+    <Position X="53" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\GearViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.GearViewModel_v2_0" Collapsed="true">
+    <Position X="53" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAACAAAAAAAgAAAAAgAAAAgACAEAAAAAAAAAQg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\GearViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.PTOViewModel" Collapsed="true">
+    <Position X="12.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIoAAEAAAEEAAAAAAAAQAgAAAAQAAgAAAACAAAAI=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\PTOViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.PTOViewModel_V1_0" Collapsed="true">
+    <Position X="12.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAoAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAACAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\PTOViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.PTOViewModel_V2_0" Collapsed="true">
+    <Position X="12.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\PTOViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.RetarderViewModel" Collapsed="true">
+    <Position X="39.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAJYAAGgABAkQABkAEAAUAAAQCACABAQiARFAAEAI=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\RetarderViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.RetarderViewModel_v1_0" Collapsed="true">
+    <Position X="39.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAACAAAAAAAAAAAAAAAAAAAACAAAQAAAAAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\RetarderViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.RetarderViewModel_v2_0" Collapsed="true">
+    <Position X="39.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\RetarderViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.TorqueConverterViewModel" Collapsed="true">
+    <Position X="55.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAACAEkAAFgAAAEAAAAUAAAAAAAABAAiAAEAAEAI=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\TorqueConverterViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.TorqueConverterViewModel_v1_0" Collapsed="true">
+    <Position X="55.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\TorqueConverterViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.TorqueConverterViewModel_v2_0" Collapsed="true">
+    <Position X="55.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\TorqueConverterViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.TyreViewModel" Collapsed="true">
+    <Position X="14.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAkBAYAAEiADAkAABkIMAAUAAAACSAABAgiAREAAEAI=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\TyreViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.TyreViewModel_v1_0" Collapsed="true">
+    <Position X="14.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAIAAAAAAAAAQAAAAAAAAAAAAAo=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\TyreViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.TyreViewModel_v2_0" Collapsed="true">
+    <Position X="14.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\TyreViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.TyreViewModel_v2_2" Collapsed="true">
+    <Position X="14.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\TyreViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components.TyreViewModel_v2_3" Collapsed="true">
+    <Position X="14.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAIAAAAACAAAAAAAAAAAAAAAAAAAAAAACAAAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\Components\TyreViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.VehicleViewModel" Collapsed="true">
+    <Position X="50.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EIqCLYIMVmCRMoIODuMVgEfEEBCCAIIBB3iAVcMIPzo=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\VehicleViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.VehicleViewModel_v1_0" Collapsed="true">
+    <Position X="50.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\VehicleViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.VehicleViewModel_v2_0" Collapsed="true">
+    <Position X="50.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BIoAAAAEAgAgAMAAACAAIAIACAAAAIAFAAgARMEAAhg=</HashCode>
+      <FileName>ViewModel\Implementation\JobEdit\Vehicle\VehicleViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.JobListViewModel" Collapsed="true">
+    <Position X="3.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAIAFAARACQAAAAhGAQGAADIBAgECAAEJCIAIAgADI=</HashCode>
+      <FileName>ViewModel\Implementation\JobListViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.MainWindowViewModel" Collapsed="true">
+    <Position X="17" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAIQAAAAAAAAwAAAAAAAACABAACAAAAAAAAACA=</HashCode>
+      <FileName>ViewModel\Implementation\MainWindowViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.MessageViewModel" Collapsed="true">
+    <Position X="23.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModel\Implementation\MessageViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="VECTO3GUI2020.ViewModel.Implementation.SettingsViewModel" Collapsed="true">
+    <Position X="30.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAgAAAIAAAAAAAAAAAAAAAAEAAAAQ=</HashCode>
+      <FileName>ViewModel\Implementation\SettingsViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

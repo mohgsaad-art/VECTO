@@ -1,0 +1,56 @@
+﻿<UserControl x:Class="VECTO3GUI2020.Views.Multistage.CreateVifView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:VECTO3GUI2020.Views.Multistage"
+             xmlns:customControls="clr-namespace:VECTO3GUI2020.Views.Multistage.CustomControls"
+             xmlns:implementation="clr-namespace:VECTO3GUI2020.ViewModel.Implementation"
+             xmlns:implementation1="clr-namespace:VECTO3GUI2020.ViewModel.MultiStage.Implementation"
+             mc:Ignorable="d"
+             Width="600"
+             MinWidth="600" d:DataContext="{d:DesignInstance implementation1:CreateVifViewModel}">
+    <Grid>
+        <DockPanel LastChildFill="False" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+            <!--<Label HorizontalAlignment="Center" DockPanel.Dock="Top"
+                   Visibility="{Binding UnsavedChanges,
+                Converter={StaticResource BooleanToVisibilityConverter}}">
+                There are unsaved changes
+            </Label>-->
+            <Grid DockPanel.Dock="Top" VerticalAlignment="Top">
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Label Style="{DynamicResource LabelStyle1}">Select Primary Input</Label>
+
+                <DockPanel Grid.Row="1" HorizontalAlignment="Stretch" DockPanel.Dock="Top">
+                    <Button DockPanel.Dock="Right"
+                            Command="{Binding RemovePrimaryCommand}"
+                            ContentTemplate="{StaticResource TrashIcon}"
+                            Width="30" 
+                            Padding="4" 
+                            Margin="2 4">
+
+                    </Button>
+                    <customControls:FilePicker  DockPanel.Dock="Left"  HorizontalAlignment="Stretch" Text="{Binding PrimaryInputPath}" Command="{Binding SelectPrimaryInputFileCommand}"/>
+
+                </DockPanel>
+                <Label Grid.Row="2" Style="{DynamicResource LabelStyle1}" Visibility="{Binding Completed, Converter={StaticResource InvertedBoolToVisibilityConverter}}">Select Interim Input</Label>
+                <Label Grid.Row="2" Style="{DynamicResource LabelStyle1}" Visibility="{Binding Completed, Converter={StaticResource BooleanToVisibilityConverter}}">Select Completed Input</Label>
+                <DockPanel Grid.Row="3">
+                    <!--<Button DockPanel.Dock="Right" Command="{Binding EditStageInputCommand}" Width="30" Padding="4" Margin="4">Edit</Button>-->
+                    <Button DockPanel.Dock="Right" Command="{Binding RemoveStageInputCommand}" ContentTemplate="{StaticResource TrashIcon}" Width="30" Padding="4" Margin="4"/>
+                    <customControls:FilePicker DockPanel.Dock="Left" Text="{Binding StageInputPath}" Command="{Binding SelectCompletedInputFileCommand}" />
+                </DockPanel>
+            </Grid>
+            <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Width="100" Style="{StaticResource MultiStageButtonStyle1}" Command="{Binding SaveJobAsCommand}">Save Job as ...</Button>
+                <Button Width="100" Style="{StaticResource MultiStageButtonStyle1}" Command="{Binding SaveJobCommand}">Save Job</Button>
+                <Button Width="100" Style="{StaticResource MultiStageButtonStyle1}" Command="{Binding CloseWindowCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}">Close</Button>
+            </StackPanel>
+        </DockPanel>
+    </Grid>
+</UserControl>

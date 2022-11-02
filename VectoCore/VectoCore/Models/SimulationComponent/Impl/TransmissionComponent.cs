@@ -72,7 +72,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		}
 
 		public virtual IResponse Request(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity,
-			bool dryRun = false)
+			bool dryRun)
 		{
 			Log.Debug("request: torque: {0}, angularVelocity: {1}", outTorque, outAngularVelocity);
 
@@ -85,12 +85,16 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
 			var inTorque = outTorque / ModelData.Ratio + torqueLossResult.Value;
 
-			CurrentState.SetState(inTorque, inAngularVelocity, outTorque, outAngularVelocity);
-			CurrentState.TorqueLossResult = torqueLossResult;
-
+			if (!dryRun) {
+				CurrentState.SetState(inTorque, inAngularVelocity, outTorque, outAngularVelocity);
+				CurrentState.TorqueLossResult = torqueLossResult;
+			}
+			InTorque = inTorque;
 			var retVal = NextComponent.Request(absTime, dt, inTorque, inAngularVelocity, dryRun);
 			return retVal;
 		}
+
+		protected NewtonMeter InTorque { get; private set; }
 
 		public virtual IResponse Initialize(NewtonMeter outTorque, PerSecond outAngularVelocity)
 		{
@@ -104,15 +108,15 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			return NextComponent.Initialize(inTorque, inAngularVelocity);
 		}
 
-		protected override void DoCommitSimulationStep()
+		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)
 		{
 			if (CurrentState.TorqueLossResult.Extrapolated) {
-				Log.Warn("{2} LossMap data was extrapolated: range for loss map is not sufficient: n:{0}, torque:{1}",
+				Log.Warn("{2} LossMap data was extrapolated: range for loss map is not sufficient: n_out:{0}, torque_out:{1}",
 					CurrentState.OutAngularVelocity.ConvertToRoundsPerMinute(), CurrentState.OutTorque, GetType().Name);
 
 				if (DataBus.ExecutionMode == ExecutionMode.Declaration) {
 					throw new VectoException(
-						"{2} LossMap data was extrapolated in Declaration Mode: range for loss map is not sufficient: n:{0}, torque:{1}",
+						"{2} LossMap data was extrapolated in Declaration Mode: range for loss map is not sufficient: n_out:{0}, torque_out:{1}",
 						CurrentState.OutAngularVelocity.ConvertToRoundsPerMinute(), CurrentState.OutTorque, GetType().Name);
 				}
 			}

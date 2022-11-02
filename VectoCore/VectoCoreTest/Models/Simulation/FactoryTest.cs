@@ -39,11 +39,13 @@ using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.OutputData.FileIO;
 using NUnit.Framework;
 using TUGraz.VectoCommon.Exceptions;
+using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
 using TUGraz.VectoCore.Tests.Utils;
 
 namespace TUGraz.VectoCore.Tests.Models.Simulation
 {
 	[TestFixture]
+	[Parallelizable(ParallelScope.All)]
 	public class FactoryTest
 	{
 		public const string DeclarationJobFile = @"Testdata\Jobs\12t Delivery Truck.vecto";
@@ -63,20 +65,20 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			var fileWriter = new FileOutputWriter(DeclarationJobFile);
 
 			var inputData = JSONInputDataFactory.ReadJsonJob(DeclarationJobFile);
-			var factory = new SimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter);
+			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter);
 
 			//factory.DataReader.SetJobFile(DeclarationJobFile);
 
 			var run = factory.SimulationRuns().First();
 			var vehicleContainer = (VehicleContainer)run.GetContainer();
 
-			Assert.AreEqual(11, vehicleContainer.SimulationComponents().Count);
+			Assert.AreEqual(10, vehicleContainer.SimulationComponents().Count);
 
-			Assert.IsInstanceOf<Gearbox>(vehicleContainer.Gearbox, "gearbox not installed");
-			Assert.IsInstanceOf<CombustionEngine>(vehicleContainer.Engine, "engine not installed");
-			Assert.IsInstanceOf<Vehicle>(vehicleContainer.Vehicle, "vehicle not installed");
+			Assert.IsInstanceOf<Gearbox>(vehicleContainer.GearboxInfo, "gearbox not installed");
+			Assert.IsInstanceOf<CombustionEngine>(vehicleContainer.EngineInfo, "engine not installed");
+			Assert.IsInstanceOf<Vehicle>(vehicleContainer.VehicleInfo, "vehicle not installed");
 
-			var gearbox = vehicleContainer.Gearbox as Gearbox;
+			var gearbox = vehicleContainer.GearboxInfo as Gearbox;
 			Assert.IsNotNull(gearbox);
 
 			// -- shiftpolygon downshift 
@@ -88,28 +90,24 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 
 			Assert.AreEqual(660.RPMtoRad().Value(), gearbox.ModelData.Gears[2].ShiftPolygon.Downshift[1].AngularSpeed.Value(),
 				0.0001);
-			Assert.AreEqual(257.9742, gearbox.ModelData.Gears[2].ShiftPolygon.Downshift[1].Torque.Value(), 0.1);
+			Assert.AreEqual(623.966, gearbox.ModelData.Gears[2].ShiftPolygon.Downshift[1].Torque.Value(), 0.1);
 
-			Assert.AreEqual(1679.9982.RPMtoRad().Value(),
+			Assert.AreEqual(800.RPMtoRad().Value(),
 				gearbox.ModelData.Gears[2].ShiftPolygon.Downshift[2].AngularSpeed.Value(),
 				0.1);
-			Assert.AreEqual(988.9, gearbox.ModelData.Gears[2].ShiftPolygon.Downshift[2].Torque.Value(), 0.0001);
+			Assert.AreEqual(725.102, gearbox.ModelData.Gears[2].ShiftPolygon.Downshift[2].Torque.Value(), 0.0001);
 
 			// -- shiftpolygon upshift
 
-			Assert.AreEqual(1889.66433.RPMtoRad().Value(),
+			Assert.AreEqual(2318.2812.RPMtoRad().Value(),
 				gearbox.ModelData.Gears[1].ShiftPolygon.Upshift[0].AngularSpeed.Value(),
 				0.1);
 			Assert.AreEqual(-163.9, gearbox.ModelData.Gears[1].ShiftPolygon.Upshift[0].Torque.Value(), 0.0001);
 
-			Assert.AreEqual(1889.66433.RPMtoRad().Value(),
+			Assert.AreEqual(2318.2812.RPMtoRad().Value(),
 				gearbox.ModelData.Gears[1].ShiftPolygon.Upshift[1].AngularSpeed.Value(),
 				0.1);
-			Assert.AreEqual(245.3663, gearbox.ModelData.Gears[1].ShiftPolygon.Upshift[1].Torque.Value(), 0.1);
-
-			Assert.AreEqual(5793.0409.RPMtoRad().Value(), gearbox.ModelData.Gears[1].ShiftPolygon.Upshift[2].AngularSpeed.Value(),
-				0.1);
-			Assert.AreEqual(988.9, gearbox.ModelData.Gears[1].ShiftPolygon.Upshift[2].Torque.Value(), 0.1);
+			Assert.AreEqual(988.9, gearbox.ModelData.Gears[1].ShiftPolygon.Upshift[1].Torque.Value(), 0.1);
 		}
 
 		[TestCase]
@@ -118,16 +116,16 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			var fileWriter = new FileOutputWriter(EngineeringJobFile);
 
 			var inputData = JSONInputDataFactory.ReadJsonJob(EngineeringJobFile);
-			var factory = new SimulatorFactory(ExecutionMode.Engineering, inputData, fileWriter);
+			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputData, fileWriter);
 
 			var run = factory.SimulationRuns().First();
 
 			var vehicleContainer = (VehicleContainer)run.GetContainer();
 			Assert.AreEqual(12, vehicleContainer.SimulationComponents().Count);
 
-			Assert.IsInstanceOf<Gearbox>(vehicleContainer.Gearbox, "gearbox not installed");
-			Assert.IsInstanceOf<CombustionEngine>(vehicleContainer.Engine,  "engine not installed");
-			Assert.IsInstanceOf<Vehicle>(vehicleContainer.Vehicle,  "vehicle not installed");
+			Assert.IsInstanceOf<Gearbox>(vehicleContainer.GearboxInfo, "gearbox not installed");
+			Assert.IsInstanceOf<CombustionEngine>(vehicleContainer.EngineInfo,  "engine not installed");
+			Assert.IsInstanceOf<Vehicle>(vehicleContainer.VehicleInfo,  "vehicle not installed");
 		}
 
 		[Category("LongRunning")]
@@ -135,7 +133,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 		public void TestDistanceCycleInVTPEngineering()
 		{
 			var inputData = JSONInputDataFactory.ReadJsonJob(@"TestData\Jobs\VTPModeWithDistanceCycle.vecto");
-			var factory = new SimulatorFactory(ExecutionMode.Engineering, inputData, null);
+			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputData, null);
 
 			AssertHelper.Exception<VectoException>(() => factory.SimulationRuns().ToArray(), "Distance-based cycle can not be simulated in VerificationTest mode");
 		}
@@ -145,7 +143,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 		public void TestDistanceCycleInEngineOnly()
 		{
 			var inputData = JSONInputDataFactory.ReadJsonJob(@"TestData\Jobs\EngineOnlyJobWithDistanceCycle.vecto");
-			var factory = new SimulatorFactory(ExecutionMode.Engineering, inputData, null);
+			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputData, null);
 
 			AssertHelper.Exception<VectoException>(() => factory.SimulationRuns().ToArray(), "Distance-based cycle can not be simulated in EngineOnly mode");
 		}
@@ -154,7 +152,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 		public void TestMeasuredSpeedCycleInEngineOnly()
 		{
 			var inputData = JSONInputDataFactory.ReadJsonJob(@"TestData\Jobs\EngineOnlyJobWithMeasuredCycle.vecto");
-			var factory = new SimulatorFactory(ExecutionMode.Engineering, inputData, null);
+			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputData, null);
 
 			AssertHelper.Exception<VectoException>(() => {
 				var container = new JobContainer(null);

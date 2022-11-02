@@ -34,6 +34,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
+using Newtonsoft.Json;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 
@@ -48,7 +49,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 		MeasuredSpeedGear,
 		PTO,
 		VTP,
-		None
+		None,
+		PTODuringDrive
 	}
 
 	public static class CycleTypeHelper
@@ -72,6 +74,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 	{
 		internal DrivingCycleData() {}
 
+		[JsonIgnore]
 		public List<DrivingCycleEntry> Entries { get; internal set; }
 
 		public string Name { get; internal set; }
@@ -111,7 +114,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 				}
 			}
 			if (result.Any()) {
-				return new ValidationResult(string.Format("Validation of Cycle {0} failed", cycleData.Name), result);
+				return new ValidationResult($"Validation of Cycle {cycleData.Name} failed", result);
 			}
 			return ValidationResult.Success;
 		}
@@ -141,6 +144,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 				AuxiliarySupplyPower = new Dictionary<string, Watt>(entry.AuxiliarySupplyPower);
 				EngineSpeed = entry.EngineSpeed;
 				FanSpeed = entry.FanSpeed;
+				PTOPowerDemandDuringDrive = entry.PTOPowerDemandDuringDrive;
+				Highway = entry.Highway;
 			}
 
 			/// <summary>
@@ -166,17 +171,19 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 			/// <summary>
 			/// [%] Optional.
 			/// </summary>
-			public Scalar RoadGradientPercent
-			{
-				get { return (Math.Tan(RoadGradient.Value()) * 100).SI<Scalar>(); }
-			}
+			public Scalar RoadGradientPercent => (Math.Tan(RoadGradient.Value()) * 100).SI<Scalar>();
 
-			public KilogramPerSecond Fuelconsumption;
+			public Dictionary<FuelType, KilogramPerSecond> VTPFuelconsumption;
 
 			/// <summary>
 			/// relative altitude of the driving cycle over distance
 			/// </summary>
 			public Meter Altitude;
+
+			/// <summary>
+			/// this section of the cycle is considered to be highway driving (used for PCC atm)
+			/// </summary>
+			public bool Highway;
 
 			/// <summary>
 			/// Required for distance-based cycles. Not used in time based cycles. "stop" defines the time the vehicle spends in stop phases.
@@ -236,7 +243,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 			/// <summary>
 			/// Flag if PTO Cycle is active or not.
 			/// </summary>
-			public bool PTOActive;
+			public PTOActivity PTOActive;
 
 			public PerSecond EngineSpeed;
 
@@ -251,6 +258,18 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 
 			public PerSecond WheelSpeedRight;
 
+			public bool VTPPSCompressorActive;
+
+			// road sweeper application
+			public Watt PTOPowerDemandDuringDrive;
 		}
+	}
+
+	public enum PTOActivity
+	{
+		Inactive = 0,
+		PTOActivityDuringStop = 1,
+		PTOActivityRoadSweeping = 2,
+		PTOActivityWhileDrive = 3,
 	}
 }

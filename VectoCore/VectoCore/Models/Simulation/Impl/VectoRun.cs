@@ -47,9 +47,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 	public abstract class VectoRun : LoggingObject, IVectoRun
 	{
 		private static int _runIdCounter;
-
 		protected Second AbsTime = 0.SI<Second>();
-		// ReSharper disable once InconsistentNaming
 		protected Second dt = 1.SI<Second>();
 		private bool _cancelled;
 		protected ISimulationOutPort CyclePort { get; set; }
@@ -61,30 +59,15 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 		public int RunIdentifier { get; protected set; }
 
-		public virtual string RunName
-		{
-			get { return Container.RunData.JobName; }
-		}
+		public virtual string RunName => Container.RunData.JobName;
 
-		public virtual string CycleName
-		{
-			get { return Container.RunData.Cycle.Name; }
-		}
+		public virtual string CycleName => Container.RunData.Cycle.Name;
 
-		public virtual string RunSuffix
-		{
-			get { return Container.RunData.ModFileSuffix; }
-		}
+		public virtual string RunSuffix => Container.RunData.ModFileSuffix;
 
-		public int JobRunIdentifier
-		{
-			get { return Container.RunData.JobRunId; }
-		}
+		public int JobRunIdentifier => Container.RunData.JobRunId;
 
-		public virtual double Progress
-		{
-			get { return CyclePort.Progress; }
-		}
+		public virtual double Progress => CyclePort.Progress * (PostProcessingDone ? 1.0 : 0.99) * (WritingResultsDone ? 1.0 : 0.99);
 
 		protected VectoRun(IVehicleContainer container)
 		{
@@ -92,12 +75,11 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			RunIdentifier = Interlocked.Increment(ref _runIdCounter);
 			Container.RunStatus = Status.Pending;
 			CyclePort = container.GetCycleOutPort();
+			PostProcessingDone = false;
+			WritingResultsDone = false;
 		}
 
-		public IVehicleContainer GetContainer()
-		{
-			return Container;
-		}
+		public IVehicleContainer GetContainer() => Container;
 
 		public void Run()
 		{
@@ -106,16 +88,25 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			}
 			var debug = new DebugData();
 
+			Log.Info("VectoJob preprocessing.");
+
+			foreach (var preprocessing in Container.GetPreprocessingRuns) {
+				preprocessing.RunPreprocessing();
+			}
+
+			Container.StartSimulationRun();
 			Log.Info("VectoJob started running.");
 
 			Container.AbsTime = AbsTime;
 
 			Initialize();
+			IResponse response;
+			var iterationCount = 0;
+
 			try {
-				IResponse response;
 				do {
 					response = DoSimulationStep();
-					debug.Add(response);
+					debug.Add($"[VR.R] ---- ITERATION {iterationCount++} ---- ", response);
 					if (response is ResponseSuccess) {
 						Container.CommitSimulationStep(AbsTime, dt);
 						AbsTime += dt;
@@ -128,13 +119,23 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 						Container.AbsTime = AbsTime;
 					}
 				} while (response is ResponseSuccess);
+				if (!(GetContainer().RunData.Exempted || GetContainer().RunData.MultistageRun)) {
+					//foreach (var fuel in GetContainer().RunData.EngineData.Fuels) {
+						// calculate vehicleline correction here in local thread context because writing sum-data and
+						// report afterwards is synchronized
+						//var cf = GetContainer().ModalData.VehicleLineCorrectionFactor(fuel.FuelData);
+						GetContainer().ModalData.CalculateAggregateValues();
+					//}
+				}
+
+				PostProcessingDone = true;
 			} catch (VectoSimulationException vse) {
 				Log.Error("SIMULATION RUN ABORTED! ========================");
 				Log.Error(vse);
 				Container.RunStatus = Status.Aborted;
 				var ex = new VectoSimulationException("{6} ({7} {8}) - absTime: {0}, distance: {1}, dt: {2}, v: {3}, Gear: {4} | {5}",
-						vse, AbsTime, Container.Distance, dt, Container.VehicleSpeed, TryCatch(() => Container.Gear),
-						vse.Message, RunIdentifier, CycleName, RunSuffix);
+					vse, AbsTime, Container.MileageCounter.Distance, dt, Container.VehicleInfo.VehicleSpeed, 
+					TryCatch(() => Container.GearboxInfo.Gear), vse.Message, RunIdentifier, CycleName, RunSuffix);
 				Container.FinishSimulationRun(ex);
 				throw ex;
 			} catch (VectoException ve) {
@@ -142,9 +143,8 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				Log.Error(ve);
 				Container.RunStatus = Status.Aborted;
 				var ex = new VectoSimulationException("{6} ({7} {8}) - absTime: {0}, distance: {1}, dt: {2}, v: {3}, Gear: {4} | {5}",
-						ve,
-						AbsTime, Container.Distance, dt, Container.VehicleSpeed, TryCatch(() => Container.Gear), ve.Message,
-						RunIdentifier, CycleName, RunSuffix);
+					ve, AbsTime, Container.MileageCounter.Distance, dt, Container.VehicleInfo.VehicleSpeed, 
+					TryCatch(() => Container.GearboxInfo.Gear), ve.Message, RunIdentifier, CycleName, RunSuffix);
 				try {
 					Container.FinishSimulationRun(ex);
 				} catch (Exception ve2) {
@@ -159,29 +159,40 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				Container.RunStatus = Status.Aborted;
 
 				var ex = new VectoSimulationException("{6} ({7} {8}) - absTime: {0}, distance: {1}, dt: {2}, v: {3}, Gear: {4} | {5}",
-						e, AbsTime,
-						Container.Distance, dt, Container.VehicleSpeed, TryCatch(() => Container.Gear), e.Message,
-						RunIdentifier, CycleName, RunSuffix);
+					e, AbsTime, Container.MileageCounter.Distance, dt, Container.VehicleInfo.VehicleSpeed, 
+					TryCatch(() => Container.GearboxInfo.Gear), e.Message, RunIdentifier, CycleName, RunSuffix);
 				Container.FinishSimulationRun(ex);
 				throw ex;
 			}
-			Container.RunStatus = Progress < 1 ? Status.Aborted : Status.Success;
+
+			if (Container.RunData.Exempted || Container.RunData.MultistageRun)
+				Container.RunStatus = Status.Success;
+			else if (CyclePort.Progress < 1)
+				Container.RunStatus = response is ResponseBatteryEmpty ? Status.REESSEmpty : Status.Aborted;
+			else
+				Container.RunStatus = Status.Success;
 			Container.FinishSimulationRun();
+			WritingResultsDone = true;
 			if (Progress.IsSmaller(1, 1e-9)) {
-				throw new VectoSimulationException(
-					"{5} ({6} {7}) Progress: {8} - absTime: {0}, distance: {1}, dt: {2}, v: {3}, Gear: {4}",
-					AbsTime, Container.Distance, dt, Container.VehicleSpeed, TryCatch(() => Container.Gear), RunIdentifier, CycleName,
-					RunSuffix, Progress);
+				if (response is ResponseBatteryEmpty) {
+					throw new VectoSimulationException("{3} ({4} {5}) REESS was empty before cycle could be finished. Progress: {6:P1} - absTime: {0:F1}, distance: {1:F1}, dt: {2:F1}",
+						AbsTime, Container.MileageCounter.Distance, dt, RunIdentifier, CycleName, RunSuffix, Progress);
+
+				} else {
+					throw new VectoSimulationException("{5} ({6} {7}) Driving Cycle could not be finished. Progress: {8:P1} - absTime: {0:F1}, distance: {1:F1}, dt: {2:F1}, v: {3:F1}, Gear: {4}",
+						AbsTime, Container.MileageCounter.Distance, dt, Container.VehicleInfo.VehicleSpeed,
+						TryCatch(() => Container.GearboxInfo.Gear), RunIdentifier, CycleName, RunSuffix, Progress);
+				}
 			}
 			IterationStatistics.FinishSimulation(RunName + CycleName + RunSuffix + RunIdentifier);
-
 			Log.Info("VectoJob finished.");
 		}
 
-		public void Cancel()
-		{
-			_cancelled = true;
-		}
+		public bool PostProcessingDone { get; protected set; }
+
+		public bool WritingResultsDone { get; protected set; }
+
+		public void Cancel() => _cancelled = true;
 
 		private static object TryCatch(Func<object> action)
 		{
@@ -204,6 +215,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			Success,
 			Canceled,
 			Aborted,
+			REESSEmpty
 		}
 	}
 }

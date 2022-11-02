@@ -31,9 +31,13 @@
 
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
+using TUGraz.VectoCommon.BusAuxiliaries;
+using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
+using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Engine;
 
@@ -42,6 +46,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 	[CustomValidation(typeof(CombustionEngineData), "ValidateData")]
 	public class CombustionEngineData : SimulationComponentData
 	{
+		[Required, SIRange(1, 5)] public Second EngineStartTime;
+
+
+		
 		[Required, SIRange(1000 * 1E-6, 20000 * 1E-6)]
 		public CubicMeter Displacement { get; internal set; }
 
@@ -50,6 +58,71 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 
 		[Required, SIRange(0, 10)]
 		public KilogramSquareMeter Inertia { get; internal set; }
+
+		[Required, ValidateObject]
+		
+		public Dictionary<uint, EngineFullLoadCurve> FullLoadCurves { get; internal set; }
+
+		public PerSecond RatedSpeedDeclared { get; internal set; }
+
+		public Watt RatedPowerDeclared { get; internal set; }
+
+		public NewtonMeter MaxTorqueDeclared { get; internal set; }
+
+		public bool MultipleEngineFuelModes { get; internal set; }
+
+		public int FuelMode { get; internal set; }
+
+		[Required, ValidateObject]
+		public List<CombustionEngineFuelData> Fuels { get; internal set; }
+
+		public PerSecond PTORoadSweepEngineSpeed { get; internal set; }
+
+		[JsonIgnore]
+		public IEngineDeclarationInputData InputData { get; set; }
+
+		public WHRData ElectricalWHR;
+
+		public WHRData MechanicalWHR;
+
+		public WHRType WHRType;
+
+
+		// ReSharper disable once UnusedMember.Global -- used in CustomValidation
+		public static ValidationResult ValidateData(CombustionEngineData data, ValidationContext context)
+		{
+			if (data.Inertia.IsEqual(0)) {
+				LogManager.GetLogger(typeof(CombustionEngineData).FullName).Error("Warning: Engine Inertia is 0!");
+			}
+			return ValidationResult.Success;
+		}
+	}
+
+	public class WHRData
+	{
+		public double CFUrban { get; internal set; }
+		public double CFRural { get; internal set; }
+		public double CFMotorway { get;internal set; }
+
+		public double CFColdHot { get; internal set; }
+		public double CFRegPer { get; internal set; }
+		public double WHRCorrectionFactor { get; internal set; }
+
+		public WHRPowerMap WHRMap { get; internal set; }
+	}
+		
+
+
+	public class CombustionEngineFuelData
+	{
+		public CombustionEngineFuelData()
+		{
+			WHTCUrban = 1;
+			WHTCMotorway = 1;
+			WHTCRural = 1;
+			CorrectionFactorRegPer = 1;
+			FuelConsumptionCorrectionFactor = 1;
+		}
 
 		[Required, Range(0.9, 2)]
 		public double WHTCUrban { get; internal set; }
@@ -60,12 +133,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 		[Required, Range(0.9, 2)]
 		public double WHTCMotorway { get; internal set; }
 
-		[Required, ValidateObject]
-		public FuelConsumptionMap ConsumptionMap { get; internal set; }
-
-		[Required, ValidateObject]
-		public Dictionary<uint, EngineFullLoadCurve> FullLoadCurves { get; internal set; }
-
 		[Required, Range(double.MinValue, double.MaxValue)]
 		public double ColdHotCorrectionFactor { get; internal set; }
 
@@ -74,59 +141,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 
 		public double FuelConsumptionCorrectionFactor { get; internal set; }
 
-		public double ADASCorrectionFactor { get; internal set; }
+		[Required, ValidateObject]
+		public FuelConsumptionMap ConsumptionMap { get; internal set; }
 
-		public PerSecond RatedSpeedDeclared { get; internal set; }
-
-		public Watt RatedPowerDeclared { get; internal set; }
-
-		public NewtonMeter MaxTorqueDeclared { get; internal set; }
-
-		public FuelData.Entry FuelData { get; internal set; }
-		
-		public CombustionEngineData()
-		{
-			WHTCUrban = 1;
-			WHTCMotorway = 1;
-			WHTCRural = 1;
-			CorrectionFactorRegPer = 1;
-			FuelConsumptionCorrectionFactor = 1;
-			ADASCorrectionFactor = 1;
-		}
-
-		public CombustionEngineData Copy()
-		{
-			return new CombustionEngineData {
-				Manufacturer = Manufacturer,
-				ModelName = ModelName,
-				Displacement = Displacement,
-				IdleSpeed = IdleSpeed,
-				Inertia = Inertia,
-				WHTCUrban = WHTCUrban,
-				WHTCRural = WHTCRural,
-				WHTCMotorway = WHTCMotorway,
-				ConsumptionMap = ConsumptionMap,
-				FullLoadCurves = FullLoadCurves,
-				CorrectionFactorRegPer = CorrectionFactorRegPer,
-				ColdHotCorrectionFactor = ColdHotCorrectionFactor,
-				FuelConsumptionCorrectionFactor = FuelConsumptionCorrectionFactor,
-				RatedPowerDeclared = RatedPowerDeclared,
-				RatedSpeedDeclared = RatedSpeedDeclared,
-				MaxTorqueDeclared = MaxTorqueDeclared,
-				FuelData = FuelData,
-				ADASCorrectionFactor = ADASCorrectionFactor,
-				CertificationNumber = CertificationNumber,
-				CertificationMethod = CertificationMethod,
-			};
-		}
-
-		// ReSharper disable once UnusedMember.Global -- used in CustomValidation
-		public static ValidationResult ValidateData(CombustionEngineData data, ValidationContext context)
-		{
-			if (data.Inertia.IsEqual(0)) {
-				LogManager.GetLogger(typeof(CombustionEngineData).FullName).Error("Warning: Engine Inertia is 0!");
-			}
-			return ValidationResult.Success;
-		}
+		public IFuelProperties FuelData { get; internal set; }
 	}
 }

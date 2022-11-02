@@ -1,12 +1,12 @@
-﻿Imports VectoAuxiliaries.Electrics
-Imports VectoAuxiliaries.Pneumatics
-Imports VectoAuxiliaries.Hvac
-Imports VectoAuxiliaries.DownstreamModules
+﻿
 Imports NUnit.Framework
-Imports VectoAuxiliaries
 Imports Moq
+Imports TUGraz.VectoCommon.BusAuxiliaries
+Imports TUGraz.VectoCommon.Models
 Imports TUGraz.VectoCommon.Utils
-
+Imports TUGraz.VectoCore.Models.BusAuxiliaries.DownstreamModules.Impl
+Imports TUGraz.VectoCore.Models.BusAuxiliaries.Interfaces
+Imports TUGraz.VectoCore.Models.BusAuxiliaries.Interfaces.DownstreamModules
 
 Namespace UnitTests
 	<TestFixture()>
@@ -45,18 +45,26 @@ Namespace UnitTests
 			m10.Setup(Function(x) x.FuelConsumptionSmartPneumaticsAndAverageElectricalPowerDemand).Returns(
 				(IP3 / 1000).SI(Of Kilogram))
 			m11.Setup(Function(x) x.TotalCycleFuelConsuptionAverageLoads).Returns((0 / 1000).SI(Of Kilogram))
-			Signals.Setup(Function(x) x.SmartPneumatics).Returns(IP4)
-			Signals.Setup(Function(x) x.SmartElectrics).Returns(IP5)
+			'Signals.Setup(Function(x) x.SmartPneumatics).Returns(IP4)
+			'Signals.Setup(Function(x) x.SmartElectrics).Returns(IP5)
 			Signals.Setup(Function(x) x.WHTC).Returns(IP7)
-			Signals.Setup(Function(x) x.DeclarationMode).Returns(IP8)
-			Signals.Setup(Function(x) x.TotalCycleTimeSeconds).Returns(3114)
+			'Signals.Setup(Function(x) x.DeclarationMode).Returns(IP8)
+			'Signals.Setup(Function(x) x.TotalCycleTimeSeconds).Returns(3114)
 			Signals.Setup(Function(x) x.CurrentCycleTimeInSeconds).Returns(3114)
 
-			'Act
-			Dim target = New M13(m10.Object, m11.Object, m12.Object, Signals.Object)
+            Dim auxCfg As New Mock(Of IAuxiliaryConfig)
+            Dim elecCfg = New Mock(Of IElectricsUserInputsConfig)
+            elecCfg.Setup(Function(x) x.AlternatorType()).Returns(If(IP5, AlternatorType.Smart, AlternatorType.Conventional))
+            Dim psconfig = New Mock(Of IPneumaticUserInputsConfig)
+            psconfig.Setup(Function(x) x.SmartAirCompression).Returns(IP4)
+            auxCfg.Setup(Function(x) x.ElectricalUserInputsConfig).Returns(elecCfg.Object)
+            auxCfg.Setup(Function(x) x.PneumaticUserInputsConfig).Returns(psconfig.Object)
+
+		    'Act
+			Dim target = New M13Impl(auxCfg.Object, m10.Object, m11.Object, m12.Object, Signals.Object)
 
 			'Assert
-            		Assert.AreEqual(OUT1.SI(Unit.SI.Gramm).Value(), target.WHTCTotalCycleFuelConsumptionGrams.Value(), 0.001)
+            		Assert.AreEqual(OUT1.SI(Unit.SI.Gramm).Value(), target.WHTCTotalCycleFuelConsumption.Value(), 0.001)
 		End Sub
 	End Class
 End Namespace

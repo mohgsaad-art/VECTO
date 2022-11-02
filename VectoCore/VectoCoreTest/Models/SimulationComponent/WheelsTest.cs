@@ -40,6 +40,7 @@ using TUGraz.VectoCore.Tests.Utils;
 namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 {
 	[TestFixture]
+	[Parallelizable(ParallelScope.All)]
 	public class WheelsTest
 	{
 		private const string VehicleDataFile = @"TestData\Components\24t Coach.vveh";
@@ -66,7 +67,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 
 			requestPort.Initialize(force, velocity);
 
-			var retVal = requestPort.Request(absTime, dt, force, velocity);
+			var retVal = requestPort.Request(absTime, dt, force, velocity, false);
 
 			Assert.AreEqual(2600.0, mockPort.Torque.Value(), 0.0001);
 			Assert.AreEqual(38.4615384615, mockPort.AngularVelocity.Value(), 0.0001);

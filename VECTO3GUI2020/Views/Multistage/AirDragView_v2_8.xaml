@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="VECTO3GUI2020.Views.Multistage.AirDragView_v2_8"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:VECTO3GUI2020.Views.Multistage"
+             xmlns:customControls="clr-namespace:VECTO3GUI2020.Views.Multistage.CustomControls" 
+             xmlns:implementation="clr-namespace:VECTO3GUI2020.ViewModel.Implementation.JobEdit.Vehicle.Components" d:DataContext="{d:DesignInstance Type=implementation:AirDragViewModel_v2_4}"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <StackPanel>
+        <Label 
+            Visibility="{Binding LabelVisible, Converter={StaticResourceExtension BooleanToVisibilityConverter}}">Airdrag</Label>
+        <customControls:LabledTextBoxMultistage 
+            Content="{Binding Manufacturer}" 
+            ReadOnly="{Binding IsReadOnly}"/>
+        <customControls:LabledTextBoxMultistage 
+            Content="{Binding Model}" 
+            ReadOnly="{Binding IsReadOnly}"/>
+        <customControls:LabledTextBoxMultistage 
+            Content="{Binding CertificationNumber}" 
+            ReadOnly="{Binding IsReadOnly}"/>
+        <customControls:LabledTextBoxMultistage 
+            Content="{Binding AirDragArea}" 
+            ReadOnly="{Binding IsReadOnly}"/>
+        <customControls:LabledTextBoxMultistage 
+            Content="{Binding AirDragArea_0}" 
+            ReadOnly="{Binding IsReadOnly}"/>
+        <customControls:LabledTextBoxMultistage 
+            Content="{Binding TransferredAirDragArea}" 
+            ReadOnly="{Binding IsReadOnly}"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -33,12 +33,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
+using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Tests.Algorithms
 {
 	[TestFixture]
+	[Parallelizable(ParallelScope.All)]
 	public class MeanShiftClusteringTest
 	{
 		
@@ -60,14 +61,14 @@ namespace TUGraz.VectoCore.Tests.Algorithms
 
 			//Console.WriteLine(string.Join(", ", entries));
 
-			var clusterer = new MeanShiftClustering() {
+			var clusterer = new MeanShiftClustering {
 				ClusterCount = 8
 			};
 			var clusters = clusterer.FindClusters(entries.ToArray(), 10);
 
 			//Console.WriteLine(clusterer.IterationCount);
-			Console.WriteLine(string.Join(", ", centers));
-			Console.WriteLine(string.Join(", ", clusters));
+			Console.WriteLine(centers.Join());
+			Console.WriteLine(clusters.Join());
 
 			Assert.AreEqual(centers.Length, clusters.Length);
 			foreach (var center in centers) {
@@ -87,7 +88,7 @@ namespace TUGraz.VectoCore.Tests.Algorithms
 			var clusterer = new MeanShiftClustering();
 			var clusters = clusterer.FindClusters(entries.ToArray(), 0.1);
 
-			Console.WriteLine(string.Join(", ", clusters));
+			Console.WriteLine(clusters.Join());
 		}
 	}
 }

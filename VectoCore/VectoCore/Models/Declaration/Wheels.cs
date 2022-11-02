@@ -42,15 +42,9 @@ namespace TUGraz.VectoCore.Models.Declaration
 		private string[] _dimensions;
 		public TyreClass TyreClass = new TyreClass();
 
-		protected override string ResourceId
-		{
-			get { return DeclarationData.DeclarationDataResourcePrefix + ".Wheels.csv"; }
-		}
+		protected override string ResourceId => DeclarationData.DeclarationDataResourcePrefix + ".Wheels.csv";
 
-		protected override string ErrorMessage
-		{
-			get { return "Wheels Lookup Error: No value found for Wheels. Key: '{0}'"; }
-		}
+		protected override string ErrorMessage => "Wheels Lookup Error: No value found for Wheels. Key: '{0}'";
 
 		public override Entry Lookup(string key)
 		{
@@ -76,10 +70,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 			public Meter WheelsDiameter;
 			public double CircumferenceFactor;
 
-			public Meter DynamicTyreRadius
-			{
-				get { return WheelsDiameter * CircumferenceFactor / (2 * Math.PI); }
-			}
+			public Meter DynamicTyreRadius => WheelsDiameter * CircumferenceFactor / (2 * Math.PI);
 		}
 
 		public string[] GetWheelsDimensions()

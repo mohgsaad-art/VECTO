@@ -65,6 +65,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 			get { return _maxSpeed ?? (_maxSpeed = _entries.Max(e => e.RetarderSpeed)); }
 		}
 
+		public string[] LossMapSerialized
+		{
+			get { return _entries.Select(x => $"{x.RetarderSpeed.AsRPM} [rpm], {x.TorqueLoss}").ToArray(); }
+		}
+
 		/// <summary>
 		/// Calculates the retarder losses.
 		/// </summary>

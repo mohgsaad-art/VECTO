@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSpy v2016 rel. 2 sp1 (x64) (http://www.altova.com) by Helmut Eichlseder (TU Graz/Inst. f. VKM und THD) -->
+<!-- edited with XMLSpy v2021 (x64) (http://www.altova.com) by Markus Quaritsch (Technische Universität Graz) -->
 <xs:schema xmlns:tns="urn:tugraz:ivt:VectoAPI:ParameterDocumentation" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:tugraz:ivt:VectoAPI:ParameterDocumentation" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xs:element name="description">
 		<xs:complexType>
@@ -8,40 +8,7 @@
 					<xs:complexType>
 						<xs:simpleContent>
 							<xs:extension base="xs:int">
-								<xs:attribute name="component" use="required">
-									<xs:simpleType>
-										<xs:restriction base="xs:token">
-											<xs:enumeration value="Engine"/>
-											<xs:enumeration value="Engine/FLD"/>
-											<xs:enumeration value="Engine/FC-map"/>
-											<xs:enumeration value="Airdrag"/>
-											<xs:enumeration value="Angledrive"/>
-											<xs:enumeration value="Angledrive/Lossmap"/>
-											<xs:enumeration value="Auxiliaries"/>
-											<xs:enumeration value="Axlegear"/>
-											<xs:enumeration value="Axlegear/Lossmap"/>
-											<xs:enumeration value="Driver"/>
-											<xs:enumeration value="Engine"/>
-											<xs:enumeration value="ADAS"/>
-											<xs:enumeration value="Gearbox"/>
-											<xs:enumeration value="Gearbox/Gear"/>
-											<xs:enumeration value="Gearbox/Gear/Lossmap"/>
-											<xs:enumeration value="Gearbox/Gear/Shiftpolygon"/>
-											<xs:enumeration value="Job"/>
-											<xs:enumeration value="Retarder"/>
-											<xs:enumeration value="Retarder/Lossmap"/>
-											<xs:enumeration value="Torqueconverter"/>
-											<xs:enumeration value="Torqueconverter/Characteristics"/>
-											<xs:enumeration value="Tyre"/>
-											<xs:enumeration value="Vehicle"/>
-											<xs:enumeration value="Vehicle/Auxiliaries"/>
-											<xs:enumeration value="Vehicle/Axle"/>
-											<xs:enumeration value="Vehicle/TorqueLimits"/>
-											<xs:enumeration value="Gearshiftstrategy"/>
-											<xs:enumeration value="Vehicle/ADAS"/>
-										</xs:restriction>
-									</xs:simpleType>
-								</xs:attribute>
+								<xs:attribute name="component" type="tns:ComponentType" use="required"/>
 								<xs:attribute name="status">
 									<xs:simpleType>
 										<xs:restriction base="xs:string">
@@ -63,30 +30,7 @@
 						</xs:simpleContent>
 					</xs:complexType>
 				</xs:element>
-				<xs:element name="unit">
-					<xs:simpleType>
-						<xs:restriction base="xs:string">
-							<xs:enumeration value="kg"/>
-							<xs:enumeration value="m"/>
-							<xs:enumeration value="s"/>
-							<xs:enumeration value="m/s²"/>
-							<xs:enumeration value="1/min"/>
-							<xs:enumeration value="°"/>
-							<xs:enumeration value="kgm²"/>
-							<xs:enumeration value="m²"/>
-							<xs:enumeration value="-"/>
-							<xs:enumeration value="N"/>
-							<xs:enumeration value="W"/>
-							<xs:enumeration value="cm³"/>
-							<xs:enumeration value="Nm"/>
-							<xs:enumeration value="g/h"/>
-							<xs:enumeration value="%"/>
-							<xs:enumeration value="km/h"/>
-							<xs:enumeration value="m/s"/>
-							<xs:enumeration value="mm"/>
-						</xs:restriction>
-					</xs:simpleType>
-				</xs:element>
+				<xs:element name="unit" type="tns:UnitType"/>
 				<xs:element name="genericValueType" minOccurs="0">
 					<xs:simpleType>
 						<xs:restriction base="xs:string">
@@ -107,4 +51,82 @@
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
+	<xs:simpleType name="ComponentType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="Engine"/>
+			<xs:enumeration value="Engine/FLD"/>
+			<xs:enumeration value="Engine/FC-map"/>
+			<xs:enumeration value="Airdrag"/>
+			<xs:enumeration value="Angledrive"/>
+			<xs:enumeration value="Angledrive/Lossmap"/>
+			<xs:enumeration value="Auxiliaries"/>
+			<xs:enumeration value="Axlegear"/>
+			<xs:enumeration value="Axlegear/Lossmap"/>
+			<xs:enumeration value="Driver"/>
+			<xs:enumeration value="Engine"/>
+			<xs:enumeration value="ADAS"/>
+			<xs:enumeration value="Gearbox"/>
+			<xs:enumeration value="Gearbox/Gear"/>
+			<xs:enumeration value="Gearbox/Gear/Lossmap"/>
+			<xs:enumeration value="Gearbox/Gear/Shiftpolygon"/>
+			<xs:enumeration value="Job"/>
+			<xs:enumeration value="Retarder"/>
+			<xs:enumeration value="Retarder/Lossmap"/>
+			<xs:enumeration value="Torqueconverter"/>
+			<xs:enumeration value="Torqueconverter/Characteristics"/>
+			<xs:enumeration value="Tyre"/>
+			<xs:enumeration value="Vehicle"/>
+			<xs:enumeration value="Vehicle/Auxiliaries"/>
+			<xs:enumeration value="Vehicle/Axle"/>
+			<xs:enumeration value="Vehicle/TorqueLimits"/>
+			<xs:enumeration value="Gearshiftstrategy"/>
+			<xs:enumeration value="Vehicle/ADAS"/>
+			<xs:enumeration value="ElectricMachine"/>
+			<xs:enumeration value="ElectricMachine/VoltageLevel"/>
+			<xs:enumeration value="ElectricMachine/MaxMinTorque"/>
+			<xs:enumeration value="ElectricMachine/DragTorque"/>
+			<xs:enumeration value="ElectricMachine/PowerMap"/>
+			<xs:enumeration value="ElectricMachine/Conditioning"/>
+			<xs:enumeration value="IEPC"/>
+			<xs:enumeration value="IEPC/Gear"/>
+			<xs:enumeration value="IEPC/VoltageLevel"/>
+			<xs:enumeration value="IEPC/MaxMinTorque"/>
+			<xs:enumeration value="IEPC/PowerMap"/>
+			<xs:enumeration value="IEPC/Conditioning"/>
+			<xs:enumeration value="BatterySystem"/>
+			<xs:enumeration value="BatterySystem/OCV"/>
+			<xs:enumeration value="BatterySystem/DCIR"/>
+			<xs:enumeration value="BatterySystem/CurrentLimits"/>
+			<xs:enumeration value="CapacitorSystem"/>
+			<xs:enumeration value="IEPC/DragTorque"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="UnitType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="kg"/>
+			<xs:enumeration value="m"/>
+			<xs:enumeration value="s"/>
+			<xs:enumeration value="m/s²"/>
+			<xs:enumeration value="1/min"/>
+			<xs:enumeration value="°"/>
+			<xs:enumeration value="kgm²"/>
+			<xs:enumeration value="m²"/>
+			<xs:enumeration value="-"/>
+			<xs:enumeration value="N"/>
+			<xs:enumeration value="W"/>
+			<xs:enumeration value="cm³"/>
+			<xs:enumeration value="Nm"/>
+			<xs:enumeration value="g/h"/>
+			<xs:enumeration value="%"/>
+			<xs:enumeration value="km/h"/>
+			<xs:enumeration value="m/s"/>
+			<xs:enumeration value="mm"/>
+			<xs:enumeration value="V"/>
+			<xs:enumeration value="A"/>
+			<xs:enumeration value="°C"/>
+			<xs:enumeration value="F"/>
+			<xs:enumeration value="mOhm"/>
+			<xs:enumeration value="Ah"/>
+		</xs:restriction>
+	</xs:simpleType>
 </xs:schema>

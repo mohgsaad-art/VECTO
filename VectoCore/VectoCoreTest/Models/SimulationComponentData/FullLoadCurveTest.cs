@@ -35,7 +35,6 @@ using NLog.Config;
 using NLog.Targets;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Utils;
-using TUGraz.VectoCore.InputData.Reader;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
@@ -49,6 +48,7 @@ using System.IO;
 namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 {
 	[TestFixture]
+	[Parallelizable(ParallelScope.All)]
 	public class FullLoadCurveTest
 	{
 		private const string CoachEngineFLD = @"TestData\Components\24t Coach.vfld";
@@ -132,9 +132,49 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponentData
 				fldCurve.ComputeArea(fldCurve.EngineData.IdleSpeed, fldCurve.PreferredSpeed).Value(), 1E-3);
 			AssertHelper.AreRelativeEqual(194.515816596908.SI<PerSecond>(), fldCurve.N95hSpeed);
 			AssertHelper.AreRelativeEqual(94.24639.SI<PerSecond>(), fldCurve.LoSpeed);
-			AssertHelper.AreRelativeEqual(219.084329211505.SI<PerSecond>(), fldCurve.HiSpeed);
+			//AssertHelper.AreRelativeEqual(219.084329211505.SI<PerSecond>(), fldCurve.HiSpeed);
 			AssertHelper.AreRelativeEqual(2300.SI<NewtonMeter>(), fldCurve.MaxTorque);
 			AssertHelper.AreRelativeEqual(-320.SI<NewtonMeter>(), fldCurve.MaxDragTorque);
+		}
+
+		[TestCase()]
+		public void TestP99HighSpeed()
+		{
+			var fldCurve = FullLoadCurveReader.ReadFromFile(CoachEngineFLD);
+			fldCurve.EngineData = new CombustionEngineData() {IdleSpeed = 560.RPMtoRad()};
+
+			var nP99h = fldCurve.NP99hSpeed;
+
+			Assert.IsTrue(nP99h > fldCurve.PreferredSpeed);
+			Assert.AreEqual(fldCurve.MaxPower.Value() * 0.99, (fldCurve.FullLoadStationaryTorque(nP99h) * nP99h).Value(), 1e-3);
+			Assert.AreEqual(1810.67898, nP99h.AsRPM, 1e-3);
+		}
+
+		[TestCase()]
+		public void TestTq99HighSpeed()
+		{
+			var fldCurve = FullLoadCurveReader.ReadFromFile(CoachEngineFLD);
+			fldCurve.EngineData = new CombustionEngineData() { IdleSpeed = 560.RPMtoRad() };
+
+			var nTq99h = fldCurve.NTq99hSpeed;
+
+			Assert.IsTrue(nTq99h > fldCurve.PreferredSpeed);
+			Assert.AreEqual(fldCurve.MaxTorque.Value() * 0.99, fldCurve.FullLoadStationaryTorque(nTq99h).Value(), 1e-3);
+			Assert.AreEqual(1420.8144, nTq99h.AsRPM, 1e-3);
+		}
+
+
+		[TestCase()]
+		public void TestTq99LowSpeed()
+		{
+			var fldCurve = FullLoadCurveReader.ReadFromFile(CoachEngineFLD);
+			fldCurve.EngineData = new CombustionEngineData() { IdleSpeed = 560.RPMtoRad() };
+
+			var nTq99l = fldCurve.NTq99lSpeed;
+
+			Assert.IsTrue(nTq99l < fldCurve.PreferredSpeed);
+			Assert.AreEqual(fldCurve.MaxTorque.Value() * 0.99, fldCurve.FullLoadStationaryTorque(nTq99l).Value(), 1e-3);
+			Assert.AreEqual(990.9626, nTq99l.AsRPM, 1e-3);
 		}
 
 		[TestCase]

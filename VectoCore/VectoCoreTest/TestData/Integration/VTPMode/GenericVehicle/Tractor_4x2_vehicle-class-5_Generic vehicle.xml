@@ -1,9 +1,9 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <tns:VectoInputDeclaration schemaVersion="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" 
 	xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v1.0" 
 	xmlns:di="http://www.w3.org/2000/09/xmldsig#"
-	xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationInput:v1.0 https://webgate.ec.europa.eu/CITnet/svn/VECTO/trunk/Share/XML/XSD/VectoInput.xsd">
+	xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob v:\VectoCore\VectoCore\Resources\XSD/VectoDeclarationJob.xsd">
   <Vehicle id="VEH-Tabelle1_Class-5_Genericvehicle">
     <Manufacturer>Generic Vendor</Manufacturer>
     <ManufacturerAddress>N.A.</ManufacturerAddress>

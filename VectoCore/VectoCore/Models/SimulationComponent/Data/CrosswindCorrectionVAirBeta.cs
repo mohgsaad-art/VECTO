@@ -60,18 +60,15 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 			DataBus = dataBus;
 		}
 
-		public CrossWindCorrectionMode CorrectionMode
-		{
-			get { return CrossWindCorrectionMode.VAirBetaLookupTable; }
-		}
+		public CrossWindCorrectionMode CorrectionMode => CrossWindCorrectionMode.VAirBetaLookupTable;
 
 		public Watt AverageAirDragPowerLoss(MeterPerSecond v1, MeterPerSecond v2, KilogramPerCubicMeter airDensity)
 		{
 			if (DataBus == null) {
 				throw new VectoException("Databus is not set - can't access vAir, beta!");
 			}
-			var vAir = DataBus.CycleData.LeftSample.AirSpeedRelativeToVehicle;
-			var beta = DataBus.CycleData.LeftSample.WindYawAngle;
+			var vAir = DataBus.DrivingCycleInfo.CycleData.LeftSample.AirSpeedRelativeToVehicle;
+			var beta = DataBus.DrivingCycleInfo.CycleData.LeftSample.WindYawAngle;
 
 			// F_air(t) = k * CdA_korr * v_air^2   // assumption: v_air = const for the current interval
 			// P(t) = F_air(t) * v(t) , v(t) = v1 + a * t
@@ -85,12 +82,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 
 		protected SquareMeter DeltaCdxA(double beta)
 		{
-			var idx = FindIndex(beta);
-			return VectoMath.Interpolate(AirDragEntries[idx - 1].Beta, AirDragEntries[idx].Beta, AirDragEntries[idx - 1].DeltaCdA,
-				AirDragEntries[idx].DeltaCdA, beta);
+			var (first, second) = FindIndex(beta);
+            return VectoMath.Interpolate(first.Beta, second.Beta, first.DeltaCdA,
+                second.DeltaCdA, beta);
 		}
 
-		protected int FindIndex(double beta)
+		protected (CrossWindCorrectionCurveReader.AirDragBetaEntry, CrossWindCorrectionCurveReader.AirDragBetaEntry) FindIndex(double beta)
 		{
 			if (beta < AirDragEntries.First().Beta) {
 				throw new VectoSimulationException("Beta / CdxA Lookup table does not cover beta={0}", beta);
@@ -98,9 +95,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 			if (beta > AirDragEntries.Last().Beta) {
 				throw new VectoSimulationException("Beta / CdxA Lookup table does not cover beta={0}", beta);
 			}
-			int index;
-			AirDragEntries.GetSection(x => x.Beta < beta, out index);
-			return index + 1;
+
+			return AirDragEntries.GetSection(x => x.Beta < beta);
+			
 		}
 	}
 }

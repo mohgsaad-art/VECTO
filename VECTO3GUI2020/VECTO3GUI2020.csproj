@@ -1,0 +1,81 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <!-- Version Information (only needed if it differs from Global VECTO Version)-->
+    <MainProductVersion>0.2.0</MainProductVersion>
+    <VersionPrefix>$(MainProductVersion).$([System.DateTime]::UtcNow.Subtract($([System.DateTime]::new(2015,1,1))).Days)</VersionPrefix>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>VECTO3GUI2020</RootNamespace>
+    <AssemblyName>VECTOMultistage</AssemblyName>
+    <ApplicationIcon>Resources\Icons\Icon2.ico</ApplicationIcon>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <TargetFrameworks>net48;net6.0-windows</TargetFrameworks>
+    <DefineConstants />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="InteractiveDataDisplay.WPF" Version="1.0.0" NoWarn="NU1701" />
+    <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" NoWarn="NU1701" />
+    <PackageReference Include="PresentationFramework.Aero2" Version="1.0.1" NoWarn="NU1701" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VectoCommon\VectoCommon\VectoCommon.csproj" />
+    <ProjectReference Include="..\VectoCore\VectoCore\VectoCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Vecto3GUI2020Test" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\GUILabels.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GUILabels.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\BusStrings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BusStrings.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Strings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Settings.cs" />
+    <Compile Update="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Update="Properties\BusStrings.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>BusStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\GUILabels.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>GUILabels.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Strings.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Icons\Icon2.ico" />
+    <Resource Include="Resources\Icons\folderpicker.ico" />
+    <Resource Include="Resources\Icons\Trash_16x.ico" />
+    <Resource Include="Resources\Images\JRC-About.png" />
+    <Resource Include="Resources\Images\VECTO-About.png" />
+  </ItemGroup>
+</Project>

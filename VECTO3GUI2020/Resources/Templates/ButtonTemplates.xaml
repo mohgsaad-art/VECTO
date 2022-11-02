@@ -1,0 +1,11 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+   
+    <ControlTemplate x:Key="multistageParameterControlErrorTemplate">
+        <Grid>
+            <AdornedElementPlaceholder x:Name="placeHolder"></AdornedElementPlaceholder>
+            <TextBlock Text="!" Height="Auto" FontWeight="ExtraBold" Foreground="OrangeRed" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 0 -10 0"></TextBlock>
+        </Grid>
+
+    </ControlTemplate>
+</ResourceDictionary>

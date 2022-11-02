@@ -1,3 +1,34 @@
+﻿/*
+* This file is part of VECTO.
+*
+* Copyright © 2012-2019 European Union
+*
+* Developed by Graz University of Technology,
+*              Institute of Internal Combustion Engines and Thermodynamics,
+*              Institute of Technical Informatics
+*
+* VECTO is licensed under the EUPL, Version 1.1 or - as soon they will be approved
+* by the European Commission - subsequent versions of the EUPL (the "Licence");
+* You may not use VECTO except in compliance with the Licence.
+* You may obtain a copy of the Licence at:
+*
+* https://joinup.ec.europa.eu/community/eupl/og_page/eupl
+*
+* Unless required by applicable law or agreed to in writing, VECTO
+* distributed under the Licence is distributed on an "AS IS" basis,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the Licence for the specific language governing permissions and
+* limitations under the Licence.
+*
+* Authors:
+*   Stefan Hausberger, hausberger@ivt.tugraz.at, IVT, Graz University of Technology
+*   Christian Kreiner, christian.kreiner@tugraz.at, ITI, Graz University of Technology
+*   Michael Krisper, michael.krisper@tugraz.at, ITI, Graz University of Technology
+*   Raphael Luz, luz@ivt.tugraz.at, IVT, Graz University of Technology
+*   Markus Quaritsch, markus.quaritsch@tugraz.at, IVT, Graz University of Technology
+*   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
+*/
+
 using System;
 using System.Xml;
 using Ninject;
@@ -59,81 +90,35 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.Reader
 
 		#region Implementation of IEngineeringComponentsFactory
 
-		public virtual IAxleGearInputData AxleGearInputData
-		{
-			get {
-				return _axleGearInputData ?? (_axleGearInputData = CreateComponent(XMLNames.Component_Axlegear, AxlegearCreator));
-			}
-		}
+		public virtual IAxleGearInputData AxleGearInputData => _axleGearInputData ?? (_axleGearInputData = CreateComponent(XMLNames.Component_Axlegear, AxlegearCreator));
 
-		public virtual IAngledriveInputData AngularGearInputData
-		{
-			get {
-				return _angularGearInputData ?? (_angularGearInputData = CreateComponent(
-							XMLNames.Component_Angledrive, AngledriveCreator, false, true));
-			}
-		}
+		public virtual IAngledriveInputData AngularGearInputData =>
+			_angularGearInputData ?? (_angularGearInputData = CreateComponent(
+				XMLNames.Component_Angledrive, AngledriveCreator, false, true));
 
-		public virtual IEngineEngineeringInputData EngineInputData
-		{
-			get { return _engineInputData ?? (_engineInputData = CreateComponent(XMLNames.Component_Engine, EngineCreator)); }
-		}
+		public virtual IEngineEngineeringInputData EngineInputData => _engineInputData ?? (_engineInputData = CreateComponent(XMLNames.Component_Engine, EngineCreator));
 
-		public virtual IRetarderInputData RetarderInputData
-		{
-			get {
-				return _retarderInputData ?? (_retarderInputData = CreateComponent(
-							XMLNames.Component_Retarder, RetarderCreator, false, true));
-			}
-		}
+		public virtual IRetarderInputData RetarderInputData =>
+			_retarderInputData ?? (_retarderInputData = CreateComponent(
+				XMLNames.Component_Retarder, RetarderCreator, false, true));
 
-		public virtual IAuxiliariesEngineeringInputData AuxiliaryData
-		{
-			get {
-				return _auxiliaryData ?? (_auxiliaryData = CreateComponent(XMLNames.Component_Auxiliaries, AuxiliariesCreator));
-			}
-		}
+		public virtual IAuxiliariesEngineeringInputData AuxiliaryData => _auxiliaryData ?? (_auxiliaryData = CreateComponent(XMLNames.Component_Auxiliaries, AuxiliariesCreator));
 
-		public virtual IGearboxEngineeringInputData GearboxData
-		{
-			get { return _gearboxData ?? (_gearboxData = CreateComponent(XMLNames.Component_Gearbox, GearboxCreator)); }
-		}
+		public virtual IGearboxEngineeringInputData GearboxData => _gearboxData ?? (_gearboxData = CreateComponent(XMLNames.Component_Gearbox, GearboxCreator));
 
-		public virtual IPTOTransmissionInputData PTOData
-		{
-			get { return Vehicle; }
-		}
+		public virtual IPTOTransmissionInputData PTOData => Vehicle;
 
-		public virtual IAirdragEngineeringInputData AirdragInputData
-		{
-			get {
-				return _airdragInputData ?? (_airdragInputData = CreateComponent(XMLNames.Component_AirDrag, AirdragCreator));
-			}
-		}
+		public virtual IAirdragEngineeringInputData AirdragInputData => _airdragInputData ?? (_airdragInputData = CreateComponent(XMLNames.Component_AirDrag, AirdragCreator));
 
-		public virtual IAxlesEngineeringInputData AxlesEngineeringInputData
-		{
-			get { return _axlesInputData ?? (_axlesInputData = CreateComponent(XMLNames.Component_AxleWheels, AxlesCreator)); }
-		}
+		public virtual IAxlesEngineeringInputData AxlesEngineeringInputData => _axlesInputData ?? (_axlesInputData = CreateComponent(XMLNames.Component_AxleWheels, AxlesCreator));
 
-		public virtual ITorqueConverterEngineeringInputData TorqueConverter
-		{
-			get {
-				return _torqueConverterInputData ?? (_torqueConverterInputData = CreateComponent(
-							XMLNames.Component_TorqueConverter, TorqueConverterCreator, true, true));
-			}
-		}
+		public virtual ITorqueConverterEngineeringInputData TorqueConverter =>
+			_torqueConverterInputData ?? (_torqueConverterInputData = CreateComponent(
+				XMLNames.Component_TorqueConverter, TorqueConverterCreator, true, true));
 
-		public virtual ITyreEngineeringInputData Tyre
-		{
-			get { return _tyre ?? (_tyre = CreateComponent(XMLNames.AxleWheels_Axles_Axle_Tyre, TyreCreator)); }
-		}
+		public virtual ITyreEngineeringInputData Tyre => _tyre ?? (_tyre = CreateComponent(XMLNames.AxleWheels_Axles_Axle_Tyre, TyreCreator));
 
-		public virtual IVehicleComponentsEngineering ComponentInputData { get {
-			return _components ?? (_components = CreateComponent(XMLNames.Vehicle_Components, ComponentsCreator, requireDataNode:false));
-		} }
-
-
+		public virtual IVehicleComponentsEngineering ComponentInputData => _components ?? (_components = CreateComponent(XMLNames.Vehicle_Components, ComponentsCreator, requireDataNode:false));
 
 
 		public IAxleEngineeringInputData CreateAxle(XmlNode axleNode)
@@ -296,9 +281,6 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.Reader
 
 		public XMLComponentsEngineeringReaderV10TEST(IXMLEngineeringVehicleData vehicle, XmlNode componentsNode) : base(vehicle, componentsNode) { }
 
-		public override ITyreEngineeringInputData Tyre
-		{
-			get { return _tyre ?? (_tyre = CreateComponent("Tire", TyreCreator)); }
-		}
+		public override ITyreEngineeringInputData Tyre => _tyre ?? (_tyre = CreateComponent("Tire", TyreCreator));
 	}
 }

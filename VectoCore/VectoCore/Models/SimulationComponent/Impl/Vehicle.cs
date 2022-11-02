@@ -32,6 +32,7 @@
 using System;
 using System.Linq;
 using TUGraz.VectoCommon.Exceptions;
+using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
@@ -62,19 +63,16 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				AirdragData.CrossWindCorrectionCurve.SetDataBus(container);
 			}
 			var model = container.RunData;
-			if (model?.GearboxData == null || model.AxleGearData == null) {
-				return;
-			}
-			MaxVehicleSpeed = model.EngineData.FullLoadCurves[0].N95hSpeed /
-							model.GearboxData.Gears[model.GearboxData.Gears.Keys.Max()].Ratio / model.AxleGearData.AxleGear.Ratio /
-							(model.AngledriveData?.Angledrive.Ratio ?? 1.0) * model.VehicleData.DynamicTyreRadius * 0.995;
+			
+			
 		}
 
 
 		public IResponse Initialize(MeterPerSecond vehicleSpeed, Radian roadGradient)
 		{
+			SetMaxVehicleSpeed();
 			PreviousState = new VehicleState {
-				Distance = DataBus.CycleStartDistance,
+				Distance = DataBus.DrivingCycleInfo.CycleStartDistance,
 				Velocity = vehicleSpeed,
 				RollingResistance = RollingResistance(roadGradient),
 				SlopeResistance = SlopeResistance(roadGradient),
@@ -84,13 +82,54 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 												+ PreviousState.AirDragResistance
 												+ PreviousState.SlopeResistance;
 
-			return NextComponent.Initialize(PreviousState.VehicleTractionForce, vehicleSpeed);
+			return NextComponent?.Initialize(PreviousState.VehicleTractionForce, vehicleSpeed);
+		}
+
+		protected virtual void SetMaxVehicleSpeed()
+		{
+			if (DataBus.PowertrainInfo.VehicleArchitecutre != VectoSimulationJobType.SerialHybridVehicle && DataBus.PowertrainInfo.HasCombustionEngine) {
+				if (DataBus.GearboxInfo == null || DataBus.AxlegearInfo == null) {
+					throw new VectoException("Powertrain with combustion engine requires gearbox and axlegear!");
+					//return;
+				}
+				MaxVehicleSpeed = DataBus.EngineInfo.EngineN95hSpeed /
+					DataBus.GearboxInfo.GetGearData(DataBus.GearboxInfo.NumGears).Ratio /
+					DataBus.AxlegearInfo.Ratio /
+					(DataBus.AngledriveInfo?.Ratio ?? 1.0) * 
+					DataBus.WheelsInfo.DynamicTyreRadius * 0.995;
+			}
+
+			
+			if (DataBus.PowertrainInfo.HasElectricMotor) {
+				var positions = DataBus.PowertrainInfo.ElectricMotorPositions.Where(x => x != PowertrainPosition.GEN).ToArray();
+				;
+				if (positions.Length > 1) {
+					throw new VectoException("Multiple electrical machines are currently not supported");
+				}
+
+				var pos = positions.First();
+				if (pos.IsBatteryElectric()) {
+					var maxEMSpeed = DataBus.ElectricMotorInfo(pos).MaxSpeed;
+
+					var ratio = 1.0;
+					if (pos == PowertrainPosition.BatteryElectricE3) {
+						ratio = DataBus.AxlegearInfo.Ratio;
+					}
+
+					if (pos == PowertrainPosition.BatteryElectricE2 || pos == PowertrainPosition.IEPC) {
+						ratio = DataBus.GearboxInfo.GetGearData(DataBus.GearboxInfo.NumGears).Ratio *
+								(DataBus.AxlegearInfo?.Ratio ?? 1.0) *
+								(DataBus.AngledriveInfo?.Ratio ?? 1.0);
+					}
+					MaxVehicleSpeed = maxEMSpeed / ratio * DataBus.WheelsInfo.DynamicTyreRadius * 0.995;
+				}
+			}
 		}
 
 		public IResponse Initialize(MeterPerSecond vehicleSpeed, Radian roadGradient, MeterPerSquareSecond startAcceleration)
 		{
 			//CurrentState.Velocity = vehicleSpeed + startAcceleration * Constants.SimulationSettings.TargetTimeInterval;
-			var vehicleAccelerationForce = DriverAcceleration(startAcceleration)
+			var vehicleAccelerationForce = AccelerationForce(startAcceleration)
 											+ RollingResistance(roadGradient)
 											+
 											AirDragResistance(vehicleSpeed,
@@ -114,7 +153,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
 			CurrentState.Distance = PreviousState.Distance + PreviousState.Velocity * dt + acceleration * dt * dt / 2;
 
-			CurrentState.DriverAcceleration = DriverAcceleration(acceleration);
+			CurrentState.DriverAcceleration = AccelerationForce(acceleration);
 			CurrentState.RollingResistance = (PreviousState.Velocity + CurrentState.Velocity).IsEqual(0, 1e-9) ? 0.SI<Newton>() : RollingResistance(gradient);
 			try {
 				CurrentState.AirDragResistance = AirDragResistance(PreviousState.Velocity, CurrentState.Velocity);
@@ -134,10 +173,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 			var retval = NextComponent.Request(absTime, dt, CurrentState.VehicleTractionForce,
 				CurrentState.Velocity, dryRun);
+			retval.Vehicle.VehicleSpeed = CurrentState.Velocity;
 			return retval;
 		}
 
-		protected override void DoWriteModalResults(IModalDataContainer container)
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
 			var averageVelocity = (PreviousState.Velocity + CurrentState.Velocity) / 2.0;
 
@@ -163,7 +203,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		public Newton RollingResistance(Radian gradient)
 		{
-			var weight = ModelData.TotalVehicleWeight;
+			var weight = ModelData.TotalVehicleMass;
 			var gravity = Physics.GravityAccelleration;
 			var rollCoefficient = ModelData.TotalRollResistanceCoefficient;
 
@@ -172,21 +212,21 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			return retVal;
 		}
 
-		protected internal Newton DriverAcceleration(MeterPerSquareSecond accelleration)
+		protected internal Newton AccelerationForce(MeterPerSquareSecond accelleration)
 		{
-			var retVal = ModelData.TotalVehicleWeight * accelleration;
+			var retVal = ModelData.TotalVehicleMass * accelleration;
 			Log.Debug("DriverAcceleration: {0}", retVal);
 			return retVal;
 		}
 
 		public Newton SlopeResistance(Radian gradient)
 		{
-			var retVal = ModelData.TotalVehicleWeight * Physics.GravityAccelleration * Math.Sin(gradient.Value());
+			var retVal = ModelData.TotalVehicleMass * Physics.GravityAccelleration * Math.Sin(gradient.Value());
 			Log.Debug("SlopeResistance: {0}", retVal);
 			return retVal;
 		}
 
-		public MeterPerSecond MaxVehicleSpeed { get; }
+		public MeterPerSecond MaxVehicleSpeed { get; set; }
 
 		public Newton AirDragResistance(MeterPerSecond previousVelocity, MeterPerSecond nextVelocity)
 		{
@@ -205,40 +245,19 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			return AirdragData.CrossWindCorrectionCurve.AverageAirDragPowerLoss(v1, v2, ModelData.AirDensity);
 		}
 
-		public Meter Distance
-		{
-			get { return PreviousState.Distance; }
-		}
+		public Meter Distance => PreviousState.Distance;
 
-		public MeterPerSecond VehicleSpeed
-		{
-			get { return PreviousState.Velocity; }
-		}
+		public MeterPerSecond VehicleSpeed => PreviousState.Velocity;
 
-		public bool VehicleStopped
-		{
-			get { return PreviousState.Velocity.IsEqual(0.SI<MeterPerSecond>(), 0.01.SI<MeterPerSecond>()); }
-		}
+		public bool VehicleStopped => PreviousState.Velocity.IsEqual(0.SI<MeterPerSecond>(), 0.01.SI<MeterPerSecond>());
 
-		public Kilogram VehicleMass
-		{
-			get { return ModelData.TotalCurbWeight; }
-		}
+		public Kilogram VehicleMass => ModelData.TotalCurbMass;
 
-		public Kilogram VehicleLoading
-		{
-			get { return ModelData.Loading; }
-		}
+		public Kilogram VehicleLoading => ModelData.Loading;
 
-		public Kilogram TotalMass
-		{
-			get { return ModelData.TotalVehicleWeight; }
-		}
+		public Kilogram TotalMass => ModelData.TotalVehicleMass;
 
-		public CubicMeter CargoVolume
-		{
-			get { return ModelData.CargoVolume; }
-		}
+		public CubicMeter CargoVolume => ModelData.CargoVolume;
 
 		public class VehicleState
 		{
@@ -252,15 +271,15 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			public MeterPerSecond Velocity = 0.SI<MeterPerSecond>();
 			public MeterPerSquareSecond Acceleration = 0.SI<MeterPerSquareSecond>();
 
-			public override string ToString()
-			{
-				return
-					string.Format(
-						"v: {0}  a: {1}, dt: {2}, driver_acc: {3}, roll_res: {4}, slope_res: {5}, air_drag: {6}, traction force: {7}",
-						Velocity, Acceleration, SimulationInterval, DriverAcceleration, RollingResistance, SlopeResistance,
-						AirDragResistance,
-						VehicleTractionForce);
-			}
+			public override string ToString() =>
+				$"v: {Velocity}  " +
+				$"a: {Acceleration}, " +
+				$"dt: {SimulationInterval}, " +
+				$"driver_acc: {DriverAcceleration}, " +
+				$"roll_res: {RollingResistance}, " +
+				$"slope_res: {SlopeResistance}, " +
+				$"air_drag: {AirDragResistance}, " +
+				$"traction force: {VehicleTractionForce}";
 		}
 	}
 }

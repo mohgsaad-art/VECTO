@@ -1,0 +1,68 @@
+﻿{
+  "Header": {
+    "CreatedBy": " ()",
+    "Date": "2016-10-13T08:57:53.6836213Z",
+    "AppVersion": "3",
+    "FileVersion": 6
+  },
+  "Body": {
+    "SavedInDeclMode": false,
+    "ModelName": "Undefined",
+    "Inertia": 0.0,
+    "TracInt": 1.0,
+    "Gears": [
+      {
+        "Ratio": 6.5,
+        "LossMap": "Axle_Coach.vtlm"
+      },
+      {
+        "Ratio": 3.36,
+        "LossMap": "Gear_1.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": ""
+      },
+      {
+        "Ratio": 1.91,
+        "LossMap": "Gear_2.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": ""
+      },
+      {
+        "Ratio": 1.42,
+        "LossMap": "Gear_3.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": ""
+      },
+      {
+        "Ratio": 1.0,
+        "LossMap": "Gear_4.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": ""
+      },
+      {
+        "Ratio": 0.72,
+        "LossMap": "Gear_5.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": ""
+      },
+      {
+        "Ratio": 0.62,
+        "LossMap": "Gear_6.vtlm",
+        "ShiftPolygon": "",
+        "MaxTorque": ""
+      }
+    ],
+    "TqReserve": 0.2,
+    "ShiftTime": 3.0,
+    "StartTqReserve": 0.2,
+    "StartSpeed": 2.0,
+    "StartAcc": 0.6,
+    "GearboxType": "AMT",
+    "TorqueConverter": {
+      "Enabled": false
+    },
+    "DownshiftAferUpshiftDelay": 10.0,
+    "UpshiftAfterDownshiftDelay": 10.0,
+    "UpshiftMinAcceleration": 0.1
+  }
+}

@@ -1,0 +1,19 @@
+@media print {
+	#CONTENT {
+		display: none;
+
+	}
+	#HEADER {
+		display: none;
+	}
+	body > div  {
+		display: block;
+		padding-left: 2em;
+	}
+	.section.level2 {
+		page-break-before: always;
+	}
+	a, a:visited, a:link {
+		color: blue;
+	}
+}

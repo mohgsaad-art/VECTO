@@ -1,356 +1,486 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-	<!-- 
-		Microsoft ResX Schema
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
 
-		Version 1.3
-
-		The primary goals of this format is to allow a simple XML format 
-		that is mostly human readable. The generation and parsing of the 
-		various data types are done through the TypeConverter classes 
-		associated with the data types.
-
-		Example:
-
-		... ado.net/XML headers & schema ...
-		<resheader name="resmimetype">text/microsoft-resx</resheader>
-		<resheader name="version">1.3</resheader>
-		<resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-		<resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-		<data name="Name1">this is my long string</data>
-		<data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-		<data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-			[base64 mime encoded serialized .NET Framework object]
-		</data>
-		<data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-			[base64 mime encoded string representing a byte array form of the .NET Framework object]
-		</data>
-
-		There are any number of "resheader" rows that contain simple 
-		name/value pairs.
-
-		Each data row contains a name, and value. The row also contains a 
-		type or mimetype. Type corresponds to a .NET class that support 
-		text/value conversion through the TypeConverter architecture. 
-		Classes that don't support this are serialized and stored with the 
-		mimetype set.
-
-		The mimetype is used for serialized objects, and tells the 
-		ResXResourceReader how to depersist the object. This is currently not 
-		extensible. For a given mimetype the value must be set accordingly:
-
-		Note - application/x-microsoft.net.object.binary.base64 is the format 
-		that the ResXResourceWriter will generate, however the reader can 
-		read any of the formats listed below.
-
-		mimetype: application/x-microsoft.net.object.binary.base64
-		value   : The object must be serialized with 
-			: System.Serialization.Formatters.Binary.BinaryFormatter
-			: and then encoded with base64 encoding.
-
-		mimetype: application/x-microsoft.net.object.soap.base64
-		value   : The object must be serialized with 
-			: System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-			: and then encoded with base64 encoding.
-
-		mimetype: application/x-microsoft.net.object.bytearray.base64
-		value   : The object must be serialized into a byte array 
-			: using a System.ComponentModel.TypeConverter
-			: and then encoded with base64 encoding.
-	-->
-	
-	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-		<xsd:element name="root" msdata:IsDataSet="true">
-			<xsd:complexType>
-				<xsd:choice maxOccurs="unbounded">
-					<xsd:element name="data">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
-							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="resheader">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" />
-						</xsd:complexType>
-					</xsd:element>
-				</xsd:choice>
-			</xsd:complexType>
-		</xsd:element>
-	</xsd:schema>
-	<resheader name="resmimetype">
-		<value>text/microsoft-resx</value>
-	</resheader>
-	<resheader name="version">
-		<value>1.3</value>
-	</resheader>
-	<resheader name="reader">
-		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<resheader name="writer">
-		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<data name="JsonHeader" xml:space="preserve">
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="JsonHeader" xml:space="preserve">
     <value>Header</value>
   </data>
-	<data name="JsonHeader_FileVersion" xml:space="preserve">
+  <data name="JsonHeader_FileVersion" xml:space="preserve">
     <value>FileVersion</value>
   </data>
-	<data name="Vehicle_GearboxFile" xml:space="preserve">
+  <data name="Vehicle_GearboxFile" xml:space="preserve">
     <value>GearboxFile</value>
   </data>
-	<data name="Vehicle_EngineFile" xml:space="preserve">
+  <data name="Vehicle_EngineFile" xml:space="preserve">
     <value>EngineFile</value>
   </data>
-	<data name="Vehicle_VehicleFile" xml:space="preserve">
+  <data name="Vehicle_VehicleFile" xml:space="preserve">
     <value>VehicleFile</value>
   </data>
-	<data name="SavedInDeclMode" xml:space="preserve">
+  <data name="SavedInDeclMode" xml:space="preserve">
     <value>SavedInDeclMode</value>
   </data>
-	<data name="Vehicle_VehicleCategory" xml:space="preserve">
+  <data name="Vehicle_VehicleCategory" xml:space="preserve">
     <value>VehCat</value>
   </data>
-	<data name="Vehicle_CurbWeight" xml:space="preserve">
+  <data name="Vehicle_CurbWeight" xml:space="preserve">
     <value>CurbWeight</value>
   </data>
-	<data name="Vehicle_GrossVehicleMassRating" xml:space="preserve">
+  <data name="Vehicle_GrossVehicleMassRating" xml:space="preserve">
     <value>MassMax</value>
   </data>
-	<data name="JsonBody" xml:space="preserve">
+  <data name="JsonBody" xml:space="preserve">
     <value>Body</value>
   </data>
-	<data name="Vehicle_DragCoefficient" xml:space="preserve">
+  <data name="Vehicle_DragCoefficient" xml:space="preserve">
     <value>CdA</value>
   </data>
-	<data name="Vehicle_DragCoefficientRigidTruck" xml:space="preserve">
+  <data name="Vehicle_DragCoefficientRigidTruck" xml:space="preserve">
     <value>CdA2</value>
   </data>
-	<data name="Vehicle_Rim" xml:space="preserve">
+  <data name="Vehicle_Rim" xml:space="preserve">
     <value>Rim</value>
   </data>
-	<data name="Vehicle_AxleConfiguration" xml:space="preserve">
+  <data name="Vehicle_AxleConfiguration" xml:space="preserve">
     <value>AxleConfig</value>
   </data>
-	<data name="Vehicle_AxleConfiguration_Type" xml:space="preserve">
+  <data name="Vehicle_AxleConfiguration_Type" xml:space="preserve">
     <value>Type</value>
   </data>
-	<data name="Vehicle_AxleConfiguration_Axles" xml:space="preserve">
+  <data name="Vehicle_AxleConfiguration_Axles" xml:space="preserve">
     <value>Axles</value>
   </data>
-	<data name="Vehicle_Axles_Inertia" xml:space="preserve">
+  <data name="Vehicle_Axles_Inertia" xml:space="preserve">
     <value>Inertia</value>
   </data>
-	<data name="Vehicle_Axles_Wheels" xml:space="preserve">
+  <data name="Vehicle_Axles_Wheels" xml:space="preserve">
     <value>Wheels</value>
   </data>
-	<data name="Vehicle_Axles_TwinTyres" xml:space="preserve">
+  <data name="Vehicle_Axles_TwinTyres" xml:space="preserve">
     <value>TwinTyres</value>
   </data>
-	<data name="Vehicle_Axles_RollResistanceCoefficient" xml:space="preserve">
+  <data name="Vehicle_Axles_RollResistanceCoefficient" xml:space="preserve">
     <value>RRCISO</value>
   </data>
-	<data name="Vehicle_Axles_TyreTestLoad" xml:space="preserve">
+  <data name="Vehicle_Axles_TyreTestLoad" xml:space="preserve">
     <value>FzISO</value>
   </data>
-	<data name="Vehicle_Retarder" xml:space="preserve">
+  <data name="Vehicle_Retarder" xml:space="preserve">
     <value>Retarder</value>
   </data>
-	<data name="Vehicle_Retarder_Type" xml:space="preserve">
+  <data name="Vehicle_Retarder_Type" xml:space="preserve">
     <value>Type</value>
   </data>
-	<data name="Vehicle_Retarder_Ratio" xml:space="preserve">
+  <data name="Vehicle_Retarder_Ratio" xml:space="preserve">
     <value>Ratio</value>
   </data>
-	<data name="Vehicle_Retarder_LossMapFile" xml:space="preserve">
+  <data name="Vehicle_Retarder_LossMapFile" xml:space="preserve">
     <value>File</value>
   </data>
-	<data name="Vehicle_PTO" xml:space="preserve">
+  <data name="Vehicle_PTO" xml:space="preserve">
     <value>PTO</value>
   </data>
-	<data name="Vehicle_PTO_LossMapFile" xml:space="preserve">
+  <data name="Vehicle_PTO_LossMapFile" xml:space="preserve">
     <value>LossMap</value>
   </data>
-	<data name="Vehicle_PTO_Cycle" xml:space="preserve">
+  <data name="Vehicle_PTO_Cycle" xml:space="preserve">
     <value>Cycle</value>
   </data>
-	<data name="Vehicle_PTO_Type" xml:space="preserve">
+  <data name="Vehicle_PTO_Type" xml:space="preserve">
     <value>Type</value>
   </data>
-	<data name="Vehicle_Angledrive" xml:space="preserve">
+  <data name="Vehicle_Angledrive" xml:space="preserve">
     <value>Angledrive</value>
   </data>
-	<data name="Vehicle_Angledrive_Type" xml:space="preserve">
+  <data name="Vehicle_Angledrive_Type" xml:space="preserve">
     <value>Type</value>
   </data>
-	<data name="Vehicle_Angledrive_Ratio" xml:space="preserve">
+  <data name="Vehicle_Angledrive_Ratio" xml:space="preserve">
     <value>Ratio</value>
   </data>
-	<data name="Vehicle_Angledrive_LossMapFile" xml:space="preserve">
+  <data name="Vehicle_Angledrive_LossMapFile" xml:space="preserve">
     <value>LossMap</value>
   </data>
-	<data name="Vehicle_Angledrive_Efficiency" xml:space="preserve">
+  <data name="Vehicle_Angledrive_Efficiency" xml:space="preserve">
     <value>Efficiency</value>
   </data>
-	<data name="Engine_ModelName" xml:space="preserve">
+  <data name="Engine_ModelName" xml:space="preserve">
     <value>ModelName</value>
   </data>
-	<data name="Engine_Displacement" xml:space="preserve">
+  <data name="Engine_Displacement" xml:space="preserve">
     <value>Displacement</value>
   </data>
-	<data name="Engine_IdleSpeed" xml:space="preserve">
+  <data name="Engine_IdleSpeed" xml:space="preserve">
     <value>IdlingSpeed</value>
   </data>
-	<data name="Engine_FullLoadCurveFile" xml:space="preserve">
+  <data name="Engine_FullLoadCurveFile" xml:space="preserve">
     <value>FullLoadCurve</value>
   </data>
-	<data name="Engine_Inertia" xml:space="preserve">
+  <data name="Engine_Inertia" xml:space="preserve">
     <value>Inertia</value>
   </data>
-	<data name="Engine_WHTC_Motorway" xml:space="preserve">
+  <data name="Engine_WHTC_Motorway" xml:space="preserve">
     <value>WHTC-Motorway</value>
   </data>
-	<data name="Engine_WHTC_Rural" xml:space="preserve">
+  <data name="Engine_WHTC_Rural" xml:space="preserve">
     <value>WHTC-Rural</value>
   </data>
-	<data name="Engine_WHTC_Urban" xml:space="preserve">
+  <data name="Engine_WHTC_Urban" xml:space="preserve">
     <value>WHTC-Urban</value>
   </data>
-	<data name="Gearbox_Gears" xml:space="preserve">
+  <data name="Gearbox_Gears" xml:space="preserve">
     <value>Gears</value>
   </data>
-	<data name="Gearbox_Gear_Ratio" xml:space="preserve">
+  <data name="Gearbox_Gear_Ratio" xml:space="preserve">
     <value>Ratio</value>
   </data>
-	<data name="Gearbox_Gear_LossMapFile" xml:space="preserve">
+  <data name="Gearbox_Gear_LossMapFile" xml:space="preserve">
     <value>LossMap</value>
   </data>
-	<data name="Gearbox_Gear_Efficiency" xml:space="preserve">
+  <data name="Gearbox_Gear_Efficiency" xml:space="preserve">
     <value>Efficiency</value>
   </data>
-	<data name="Gearbox_ModelName" xml:space="preserve">
+  <data name="Gearbox_ModelName" xml:space="preserve">
     <value>ModelName</value>
   </data>
-	<data name="Gearbox_GearboxType" xml:space="preserve">
+  <data name="Gearbox_GearboxType" xml:space="preserve">
     <value>GearboxType</value>
   </data>
-	<data name="Gearbox_Inertia" xml:space="preserve">
+  <data name="Gearbox_Inertia" xml:space="preserve">
     <value>Inertia</value>
   </data>
-	<data name="Gearbox_TractionInterruption" xml:space="preserve">
+  <data name="Gearbox_TractionInterruption" xml:space="preserve">
     <value>TracInt</value>
   </data>
-	<data name="Gearbox_Gear_FullLoadCurveFile" xml:space="preserve">
+  <data name="Gearbox_Gear_FullLoadCurveFile" xml:space="preserve">
     <value>FullLoadCurve</value>
   </data>
-	<data name="Gearbox_Gear_ShiftPolygonFile" xml:space="preserve">
+  <data name="Gearbox_Gear_ShiftPolygonFile" xml:space="preserve">
     <value>ShiftPolygon</value>
   </data>
-	<data name="Gearbox_Gear_TCactive" xml:space="preserve">
+  <data name="Gearbox_Gear_TCactive" xml:space="preserve">
     <value>TCactive</value>
   </data>
-	<data name="Gearbox_SkipGears" xml:space="preserve">
+  <data name="Gearbox_SkipGears" xml:space="preserve">
     <value>SkipGears</value>
   </data>
-	<data name="Gearbox_ShiftTime" xml:space="preserve">
+  <data name="Gearbox_ShiftTime" xml:space="preserve">
     <value>ShiftTime</value>
   </data>
-	<data name="Gearbox_EarlyShiftUp" xml:space="preserve">
+  <data name="Gearbox_EarlyShiftUp" xml:space="preserve">
     <value>EaryShiftUp</value>
   </data>
-	<data name="Gearbox_TorqueReserve" xml:space="preserve">
+  <data name="Gearbox_TorqueReserve" xml:space="preserve">
     <value>TqReserve</value>
   </data>
-	<data name="Gearbox_StartSpeed" xml:space="preserve">
+  <data name="Gearbox_StartSpeed" xml:space="preserve">
     <value>StartSpeed</value>
   </data>
-	<data name="Gearbox_StartAcceleration" xml:space="preserve">
+  <data name="Gearbox_StartAcceleration" xml:space="preserve">
     <value>StartAcc</value>
   </data>
-	<data name="Gearbox_StartTorqueReserve" xml:space="preserve">
+  <data name="Gearbox_StartTorqueReserve" xml:space="preserve">
     <value>StartTqReserve</value>
   </data>
-	<data name="Gearbox_TorqueConverter" xml:space="preserve">
+  <data name="Gearbox_TorqueConverter" xml:space="preserve">
     <value>TorqueConverter</value>
   </data>
-	<data name="Gearbox_TorqueConverter_ReferenceRPM" xml:space="preserve">
+  <data name="Gearbox_TorqueConverter_ReferenceRPM" xml:space="preserve">
     <value>RefRPM</value>
   </data>
-	<data name="Gearbox_TorqueConverter_TCMap" xml:space="preserve">
+  <data name="Gearbox_TorqueConverter_TCMap" xml:space="preserve">
     <value>File</value>
   </data>
-	<data name="Gearbox_TorqueConverter_Inertia" xml:space="preserve">
+  <data name="Gearbox_TorqueConverter_Inertia" xml:space="preserve">
     <value>Inertia</value>
   </data>
-	<data name="Engine_FuelConsumptionMap" xml:space="preserve">
+  <data name="Engine_FuelConsumptionMap" xml:space="preserve">
     <value>FuelMap</value>
   </data>
-	<data name="Job_Cycles" xml:space="preserve">
+  <data name="Job_Cycles" xml:space="preserve">
     <value>Cycles</value>
   </data>
-	<data name="Job_EngineOnlyMode" xml:space="preserve">
+  <data name="Job_EngineOnlyMode" xml:space="preserve">
     <value>EngineOnlyMode</value>
   </data>
-	<data name="DriverData_StartStop" xml:space="preserve">
+  <data name="DriverData_StartStop" xml:space="preserve">
     <value>StartStop</value>
   </data>
-	<data name="DriverData_StartStop_Enabled" xml:space="preserve">
+  <data name="DriverData_StartStop_Enabled" xml:space="preserve">
     <value>Enabled</value>
   </data>
-	<data name="DriverData_StartStop_Delay" xml:space="preserve">
+  <data name="DriverData_StartStop_Delay" xml:space="preserve">
     <value>Delay</value>
   </data>
-	<data name="DriverData_StartStop_MaxSpeed" xml:space="preserve">
+  <data name="DriverData_StartStop_MaxSpeed" xml:space="preserve">
     <value>MaxSpeed</value>
   </data>
-	<data name="DriverData_StartStop_MinTime" xml:space="preserve">
+  <data name="DriverData_StartStop_MinTime" xml:space="preserve">
     <value>MinTime</value>
   </data>
-	<data name="DriverData_LookaheadCoasting" xml:space="preserve">
+  <data name="DriverData_LookaheadCoasting" xml:space="preserve">
     <value>LAC</value>
   </data>
-	<data name="DriverData_Lookahead_Enabled" xml:space="preserve">
+  <data name="DriverData_Lookahead_Enabled" xml:space="preserve">
     <value>Enabled</value>
   </data>
-	<data name="DriverData_Lookahead_Deceleration" xml:space="preserve">
+  <data name="DriverData_Lookahead_Deceleration" xml:space="preserve">
     <value>Dec</value>
   </data>
-	<data name="DriverData_Lookahead_MinSpeed" xml:space="preserve">
+  <data name="DriverData_Lookahead_MinSpeed" xml:space="preserve">
     <value>MinSpeed</value>
   </data>
-	<data name="DriverData_OverspeedEcoRoll" xml:space="preserve">
+  <data name="DriverData_OverspeedEcoRoll" xml:space="preserve">
     <value>OverSpeedEcoRoll</value>
   </data>
-	<data name="DriverData_OverspeedEcoRoll_Mode" xml:space="preserve">
+  <data name="DriverData_OverspeedEcoRoll_Mode" xml:space="preserve">
     <value>Mode</value>
   </data>
-	<data name="DriverData_OverspeedEcoRoll_MinSpeed" xml:space="preserve">
+  <data name="DriverData_OverspeedEcoRoll_MinSpeed" xml:space="preserve">
     <value>MinSpeed</value>
   </data>
-	<data name="DriverData_OverspeedEcoRoll_OverSpeed" xml:space="preserve">
+  <data name="DriverData_OverspeedEcoRoll_OverSpeed" xml:space="preserve">
     <value>OverSpeed</value>
   </data>
-	<data name="DriverData_OverspeedEcoRoll_UnderSpeed" xml:space="preserve">
+  <data name="DriverData_OverspeedEcoRoll_UnderSpeed" xml:space="preserve">
     <value>UnderSpeed</value>
   </data>
-	<data name="DriverData_AccelerationCurve" xml:space="preserve">
+  <data name="DriverData_AccelerationCurve" xml:space="preserve">
     <value>VACC</value>
   </data>
-	<data name="Vehicle_CurbWeightExtra" xml:space="preserve">
+  <data name="Vehicle_CurbWeightExtra" xml:space="preserve">
     <value>CurbWeightExtra</value>
   </data>
-	<data name="Vehicle_Loading" xml:space="preserve">
+  <data name="Vehicle_Loading" xml:space="preserve">
     <value>Loading</value>
   </data>
-	<data name="Vehicle_DynamicTyreRadius" xml:space="preserve">
+  <data name="Vehicle_DynamicTyreRadius" xml:space="preserve">
     <value>rdyn</value>
+  </data>
+  <data name="Vehicle_PTO_CycleDriving" xml:space="preserve">
+    <value>CycleDriving</value>
+  </data>
+  <data name="HEV_Vehicle_MaxDrivetrainPower" xml:space="preserve">
+    <value>MaxDrivetrainPower</value>
+  </data>
+  <data name="PrimaryVehicle" xml:space="preserve">
+    <value>PrimaryVehicle</value>
+  </data>
+  <data name="InterimStep" xml:space="preserve">
+    <value>InterimStep</value>
+  </data>
+  <data name="Completed" xml:space="preserve">
+    <value>Completed</value>
+  </data>
+  <data name="AppVersion" xml:space="preserve">
+    <value>AppVersion</value>
+  </data>
+  <data name="Component_Model" xml:space="preserve">
+    <value>Model</value>
+  </data>
+  <data name="Gearbox_Gear_MaxOutShaftSpeed" xml:space="preserve">
+    <value>MaxOutShaftSpeed</value>
+  </data>
+  <data name="Gearbox_Gear_MaxOutShaftTorque" xml:space="preserve">
+    <value>MaxOutShaftTorque</value>
+  </data>
+  <data name="IEPC_ContinuousTorque" xml:space="preserve">
+    <value>ContinuousTorque</value>
+  </data>
+  <data name="IEPC_ContinuousTorqueSpeed" xml:space="preserve">
+    <value>ContinuousTorqueSpeed</value>
+  </data>
+  <data name="IEPC_DesignTypeWheelMotor" xml:space="preserve">
+    <value>DesignTypeWheelMotor</value>
+  </data>
+  <data name="IEPC_DifferentialIncluded" xml:space="preserve">
+    <value>DifferentialIncluded</value>
+  </data>
+  <data name="IEPC_DragCurves" xml:space="preserve">
+    <value>DragCurves</value>
+  </data>
+  <data name="IEPC_FullLoadCurve" xml:space="preserve">
+    <value>FullLoadCurve</value>
+  </data>
+  <data name="IEPC_Inertia" xml:space="preserve">
+    <value>Inertia</value>
+  </data>
+  <data name="IEPC_NrOfDesignTypeWheelMotorMeasured" xml:space="preserve">
+    <value>NrOfDesignTypeWheelMotorMeasured</value>
+  </data>
+  <data name="IEPC_OverloadTime" xml:space="preserve">
+    <value>OverloadTime</value>
+  </data>
+  <data name="IEPC_OverloadTorque" xml:space="preserve">
+    <value>OverloadTorque</value>
+  </data>
+  <data name="IEPC_OverloadTorqueSpeed" xml:space="preserve">
+    <value>OverloadTorqueSpeed</value>
+  </data>
+  <data name="IEPC_PowerMaps" xml:space="preserve">
+    <value>PowerMaps</value>
+  </data>
+  <data name="IEPC_ThermalOverloadRecoveryFactor" xml:space="preserve">
+    <value>ThermalOverloadRecoveryFactor</value>
+  </data>
+  <data name="IEPC_Voltage" xml:space="preserve">
+    <value>Voltage</value>
+  </data>
+  <data name="IEPC_VoltageLevels" xml:space="preserve">
+    <value>VoltageLevels</value>
+  </data>
+  <data name="EM_ContinuousTorque" xml:space="preserve">
+    <value>ContinuousTorque</value>
+  </data>
+  <data name="EM_ContinuousTorqueSpeed" xml:space="preserve">
+    <value>ContinuousTorqueSpeed</value>
+  </data>
+  <data name="EM_DragCurve" xml:space="preserve">
+    <value>DragCurve</value>
+  </data>
+  <data name="EM_EfficiencyMap" xml:space="preserve">
+    <value>EfficiencyMap</value>
+  </data>
+  <data name="EM_FullLoadCurve" xml:space="preserve">
+    <value>FullLoadCurve</value>
+  </data>
+  <data name="EM_OverloadTime" xml:space="preserve">
+    <value>OverloadTime</value>
+  </data>
+  <data name="EM_OverloadTorque" xml:space="preserve">
+    <value>OverloadTorque</value>
+  </data>
+  <data name="EM_OverloadTorqueSpeed" xml:space="preserve">
+    <value>OverloadTorqueSpeed</value>
+  </data>
+  <data name="EM_ThermalOverloadRecoveryFactor" xml:space="preserve">
+    <value>ThermalOverloadRecoveryFactor</value>
+  </data>
+  <data name="EM_Voltage" xml:space="preserve">
+    <value>Voltage</value>
+  </data>
+  <data name="EM_VoltageLevels" xml:space="preserve">
+    <value>VoltageLevels</value>
+  </data>
+  <data name="JsonHeader_CreatedBy" xml:space="preserve">
+    <value>CreatedBy</value>
+  </data>
+  <data name="JsonHeader_Date" xml:space="preserve">
+    <value>Date</value>
   </data>
 </root>

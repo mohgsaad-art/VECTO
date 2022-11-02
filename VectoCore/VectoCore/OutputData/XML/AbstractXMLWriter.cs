@@ -36,13 +36,14 @@ using System.Xml.Linq;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.IVT.VectoXML.Writer
 {
 	public abstract class AbstractXMLWriter
 	{
 		//protected const string SchemaLocationBaseUrl = "http://markus.quaritsch.at/VECTO/";
-		public const string SchemaLocationBaseUrl = "https://webgate.ec.europa.eu/CITnet/svn/VECTO/trunk/Share/XML/XSD/";
+		public const string SchemaLocationBaseUrl = "https://citnet.tech.ec.europa.eu/CITnet/svn/VECTO/trunk/Share/XML/XSD/";
 
 		protected string SchemaVersion; // = "1.0";
 
@@ -87,10 +88,8 @@ namespace TUGraz.IVT.VectoXML.Writer
 					new XElement(tns + tagName,
 						table.Columns.Cast<DataColumn>()
 							.Where(c => mapping.ContainsKey(c.ColumnName))
-							.Select(c => {
-								var p = precision != null && precision.ContainsKey(c.ColumnName) ? precision[c.ColumnName] : 2;
-								return new XAttribute(mapping[c.ColumnName], row.Field<string>(c).ToDouble().ToXMLFormat(p));
-							})))
+							.Select(c => new XAttribute(mapping[c.ColumnName], 
+								row.Field<string>(c).ToDouble().ToXMLFormat(precision?.GetVECTOValueOrDefault(c.ColumnName, 2u) ?? 2u)))))
 				.Cast<object>().ToArray();
 		}
 	}

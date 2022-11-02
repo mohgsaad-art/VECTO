@@ -45,7 +45,12 @@ namespace TUGraz.VectoCommon.Utils
 			Units = units;
 		}
 
-		public double Value { get { return _value; } }
+		public string GetUnitString()
+		{
+			return Units;
+		}
+
+		public double Value => _value;
 
 		protected bool Equals(ConvertedSI other)
 		{
@@ -58,7 +63,7 @@ namespace TUGraz.VectoCommon.Utils
 				return false;
 			if (ReferenceEquals(this, obj))
 				return true;
-			if (obj.GetType() != this.GetType())
+			if (obj.GetType() != GetType())
 				return false;
 			return Equals((ConvertedSI)obj);
 		}
@@ -128,11 +133,21 @@ namespace TUGraz.VectoCommon.Utils
 			return value == null ? null : new ConvertedSI(value.Value() * Kilo * Kilo, "g/km");
 		}
 
-		public static ConvertedSI ConvertToGramPerKiloWattHour(this SpecificFuelConsumption value)
+		public static ConvertedSI ConvertToKiloWattHourPerKiloMeter(this JoulePerMeter value)
+		{
+			return new ConvertedSI(value.Value() / 3600, "kWh/km");
+		}
+
+
+        public static ConvertedSI ConvertToGramPerKiloWattHour(this SpecificFuelConsumption value)
 		{
 			return new ConvertedSI(value.Value() * 3600e6, "g/kWh");
 		}
 
+		public static ConvertedSI ConvertToGramPerKiloWattHour(this KilogramPerWattSecond value)
+		{
+			return new ConvertedSI(value.Value() * 3600e6, "g/kWh");
+		}
 
 		public static ConvertedSI ConvertToLiterPer100Kilometer(this VolumePerMeter value)
 		{
@@ -184,6 +199,10 @@ namespace TUGraz.VectoCommon.Utils
 		{
 			return new ConvertedSI(value.Value() / Kilo / SecondsPerHour, "kWh");
 		}
+		public static ConvertedSI ConvertToWattHour(this WattSecond value)
+		{
+			return new ConvertedSI(value.Value() / SecondsPerHour, "Wh");
+		}
 		public static ConvertedSI ConvertToKiloWatt(this Watt value)
 		{
 			return new ConvertedSI(value.Value() / Kilo, "kW");
@@ -193,6 +212,17 @@ namespace TUGraz.VectoCommon.Utils
 		{
 			return new ConvertedSI(value.AsRPM, "rpm");
 		}
+
+		public static ConvertedSI ConvertToPerHour(this PerSecond value)
+		{
+			return new ConvertedSI(value.Value() * SecondsPerHour, "1/h");
+		}
+
+		public static ConvertedSI ConvertToWattHourPerCubicMeter(this JoulePerCubicMeter value)
+		{
+			return new ConvertedSI(value.Value() / SecondsPerHour, "Wh/m^3");
+		}
+
 		public static ConvertedSI ConvertToCubicDeziMeter(this CubicMeter value)
 		{
 			return new ConvertedSI(value.Value() * 10 * 10 * 10, "dm^3");
@@ -207,9 +237,36 @@ namespace TUGraz.VectoCommon.Utils
 			return new ConvertedSI(value.Value() / Kilo / Kilo, "MJ/kg");
 		}
 
+		public static ConvertedSI ConvertToKiloWattHourPerKilogram(this JoulePerKilogramm value)
+		{
+			return new ConvertedSI(value.Value() / SecondsPerHour / Kilo, "kWh/kg");
+		}
+
 		public static ConvertedSI ConvertToMinutes(this Second sec)
 		{
 			return new ConvertedSI(sec.Value() / 60.0, "min");
+		}
+
+		public static ConvertedSI ConvertToNlPerMin(this NormLiterPerSecond nlps)
+		{
+			return new ConvertedSI(nlps.Value() * 60.0, "Nl/min");
+		}
+
+		public static ConvertedSI ConvertToMegaJoulePerKilometer(this JoulePerMeter jpm)
+		{
+			return new ConvertedSI(jpm.Value() * 1e-3, "MJ/km");
+		}
+
+		public static Meter ConvertToMeter(this ConvertedSI mm)
+		{
+			if (mm.Units != "mm") {
+				return null;
+			}
+			//return ElementExists(XMLNames.Bus_HeighIntegratedBody)
+			//	? GetDouble(XMLNames.Bus_HeighIntegratedBody).SI(Unit.SI.Milli.Meter).Cast<Meter>()
+			//	: null;
+
+			return mm.Value.SI(Unit.SI.Milli.Meter).Cast<Meter>();
 		}
 	}
 }

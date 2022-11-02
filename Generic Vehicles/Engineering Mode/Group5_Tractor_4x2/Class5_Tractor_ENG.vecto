@@ -1,0 +1,51 @@
+{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2022-01-26T09:00:21.8597275Z",
+    "AppVersion": "3",
+    "FileVersion": 5
+  },
+  "Body": {
+    "SavedInDeclMode": false,
+    "EngineOnlyMode": false,
+    "VehicleFile": "Class5_Tractor.vveh",
+    "EngineFile": "Engine_325kW_12.7l.veng",
+    "GearboxFile": "AMT_12.vgbx",
+    "TCU": "AMT_12.vgbx",
+    "Padd": 5000.0,
+    "Paux_ICEOff_Driving": 3000.0,
+    "Paux_ICEOff_Standstill": 2000.0,
+    "VACC": "Truck.vacc",
+    "EngineStopStartAtVehicleStopThreshold": 2.0,
+    "EngineStopStartMaxOffTimespan": 120.0,
+    "EngineStopStartUtilityFactor": 0.8,
+    "EngineStopStartUtilityFactorDriving": 0.8,
+    "EcoRollMinSpeed": 60.000000000000007,
+    "EcoRollActivationDelay": 2.0,
+    "EcoRollUnderspeedThreshold": 0.0,
+    "EcoRollMaxAcceleration": 0.1,
+    "PCCEnableSpeed": 80.0,
+    "PCCMinSpeed": 50.0,
+    "PCCUnderspeed": 8.0,
+    "PCCOverSpeed": 5.0,
+    "PCCPreviewDistanceUC1": 1500.0,
+    "PCCPreviewDistanceUC2": 1000.0,
+    "LAC": {
+      "Enabled": true,
+      "PreviewDistanceFactor": 10.0,
+      "DF_offset": 2.5,
+      "DF_scaling": 1.5,
+      "DF_targetSpeedLookup": "",
+      "Df_velocityDropLookup": "",
+      "MinSpeed": 50.0
+    },
+    "OverSpeedEcoRoll": {
+      "Mode": "Off",
+      "MinSpeed": 50.0,
+      "OverSpeed": 5.0
+    },
+    "Cycles": [
+      "E:\\QUAM\\Downloads\\CoachCycle\\Coach_short_HW.vdri"
+    ]
+  }
+}

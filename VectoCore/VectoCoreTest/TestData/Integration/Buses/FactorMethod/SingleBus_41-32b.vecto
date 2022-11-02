@@ -1,0 +1,12 @@
+﻿{
+  "Header": {
+	"CreatedBy": "Markus Quaritsch, IVT, Graz University of Technology",
+	"Date": "2020-02-07T15:06:30.9725917Z",
+	"AppVersion": "2.2",
+	"FileVersion": 6
+  },
+  "Body": {
+	"PrimaryVehicle":  "primary_heavyBus group41_nonSmart.xml",
+	"CompletedVehicle": "vecto_vehicle-completed_heavyBus_41.xml"
+  }
+}

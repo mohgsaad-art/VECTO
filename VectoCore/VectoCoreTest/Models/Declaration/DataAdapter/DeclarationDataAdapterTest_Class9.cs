@@ -31,11 +31,11 @@
 
 using NUnit.Framework;
 using TUGraz.VectoCommon.Models;
-using TUGraz.VectoCore.Models.Declaration;
 
 namespace TUGraz.VectoCore.Tests.Models.Declaration.DataAdapter
 {
 	[TestFixture]
+	[Parallelizable(ParallelScope.All)]
 	public class DeclarationDataAdapterTest_Class9
 	{
 		public const string Class9RigidTruckJob =

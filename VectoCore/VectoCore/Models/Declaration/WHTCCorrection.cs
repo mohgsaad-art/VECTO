@@ -32,6 +32,7 @@
 using System;
 using System.Data;
 using System.Linq;
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Utils;
 
@@ -49,15 +50,9 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		private sealed class WHTCCorrectionData : LookupData<MissionType, Entry>
 		{
-			protected override string ResourceId
-			{
-				get { return DeclarationData.DeclarationDataResourcePrefix + ".WHTC-Weighting-Factors.csv"; }
-			}
+			protected override string ResourceId => DeclarationData.DeclarationDataResourcePrefix + ".WHTC-Weighting-Factors.csv";
 
-			protected override string ErrorMessage
-			{
-				get { return "WHTC Correction Lookup Error: no value found. Mission: '{0}'"; }
-			}
+			protected override string ErrorMessage => "WHTC Correction Lookup Error: no value found. Mission: '{0}'";
 
 			protected override void ParseData(DataTable table)
 			{

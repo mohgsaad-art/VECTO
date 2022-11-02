@@ -1,0 +1,75 @@
+{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2021-03-12T08:16:49.9931966Z",
+    "AppVersion": "3",
+    "FileVersion": 8
+  },
+  "Body": {
+    "SavedInDeclMode": false,
+    "VehCat": "CityBus",
+    "LegislativeClass": "Unknown",
+    "CurbWeight": 14800.0,
+    "CurbWeightExtra": 0.0,
+    "MassMax": 25.0,
+    "Loading": 5170.0,
+    "rdyn": 507.0,
+    "CdCorrMode": "CdofVdecl",
+    "CdCorrFile": "",
+    "AxleConfig": {
+      "Type": "6x2",
+      "Axles": [
+        {
+          "Inertia": 15.5,
+          "Wheels": "295/80 R22.5",
+          "AxleWeightShare": 0.2725,
+          "TwinTyres": false,
+          "RRCISO": 0.0065,
+          "FzISO": 31270.0,
+          "Type": "VehicleNonDriven"
+        },
+        {
+          "Inertia": 15.5,
+          "Wheels": "295/80 R22.5",
+          "AxleWeightShare": 0.455,
+          "TwinTyres": true,
+          "RRCISO": 0.0065,
+          "FzISO": 31270.0,
+          "Type": "VehicleDriven"
+        },
+        {
+          "Inertia": 15.5,
+          "Wheels": "295/80 R22.5",
+          "AxleWeightShare": 0.2725,
+          "TwinTyres": false,
+          "RRCISO": 0.0065,
+          "FzISO": 31270.0,
+          "Type": "VehicleNonDriven"
+        }
+      ]
+    },
+    "EngineStopStart": true,
+    "EcoRoll": "WithEngineStop",
+    "PredictiveCruiseControl": "None",
+    "ATEcoRollReleaseLockupClutch": false,
+    "CdA": 4.115,
+    "VehicleHeight": 0.0,
+    "IdlingSpeed": 0.0,
+    "Retarder": {
+      "Type": "secondary",
+      "Ratio": 1.0,
+      "File": "Default.vrlm"
+    },
+    "Angledrive": {
+      "Type": "None",
+      "Ratio": 0.0,
+      "LossMap": ""
+    },
+    "PTO": {
+      "Type": "None",
+      "LossMap": "",
+      "Cycle": ""
+    },
+    "TorqueLimits": {}
+  }
+}

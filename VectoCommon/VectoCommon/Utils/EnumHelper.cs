@@ -38,15 +38,25 @@ namespace TUGraz.VectoCommon.Utils
 {
 	public static class EnumHelper
 	{
-		public static T ParseEnum<T>(this string s, bool ignoreCase = true)
-		{
-			var r = new Regex("[^a-zA-Z0-9_]");
-			return (T)Enum.Parse(typeof(T), r.Replace(s, ""), ignoreCase);
-		}
+		public static T ParseEnum<T>(this string s, bool ignoreCase = true) =>
+			(T)Enum.Parse(typeof(T),
+				s.StartsWith("-")
+					? Regex.Replace(s, "[^a-zA-Z0-9_-]", "")
+					: Regex.Replace(s, "[^a-zA-Z0-9_]", ""), ignoreCase);
 
-		public static IEnumerable<T> GetValues<T>()
-		{
-			return Enum.GetValues(typeof(T)).Cast<T>();
+		public static T ParseEnum<T>(this object o, bool ignoreCase = true) =>
+			o is string s ? ParseEnum<T>(s, ignoreCase) : (T)o;
+
+
+		public static T[] GetValues<T>() =>
+			Enum.GetValues(typeof(T)).Cast<T>().ToArray();
+
+	    public static KeyValuePair<T, string>[] GetKeyValuePairs<T>(Func<T, string> displaySelector = null, Func<T, bool> predicate = null) {
+			if (displaySelector is null)
+				displaySelector = x => x.ToString();
+			if (predicate is null)
+				predicate = x => true;
+			return GetValues<T>().Where(predicate).Select(t => new KeyValuePair<T, string>(t, displaySelector(t))).ToArray();
 		}
 	}
 }

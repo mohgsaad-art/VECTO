@@ -1,4 +1,5 @@
-﻿/*
+﻿
+/*
 * This file is part of VECTO.
 *
 * Copyright © 2012-2019 European Union

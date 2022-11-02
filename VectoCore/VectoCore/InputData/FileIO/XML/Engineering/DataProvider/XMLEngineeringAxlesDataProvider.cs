@@ -1,3 +1,34 @@
+﻿/*
+* This file is part of VECTO.
+*
+* Copyright © 2012-2019 European Union
+*
+* Developed by Graz University of Technology,
+*              Institute of Internal Combustion Engines and Thermodynamics,
+*              Institute of Technical Informatics
+*
+* VECTO is licensed under the EUPL, Version 1.1 or - as soon they will be approved
+* by the European Commission - subsequent versions of the EUPL (the "Licence");
+* You may not use VECTO except in compliance with the Licence.
+* You may obtain a copy of the Licence at:
+*
+* https://joinup.ec.europa.eu/community/eupl/og_page/eupl
+*
+* Unless required by applicable law or agreed to in writing, VECTO
+* distributed under the Licence is distributed on an "AS IS" basis,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the Licence for the specific language governing permissions and
+* limitations under the Licence.
+*
+* Authors:
+*   Stefan Hausberger, hausberger@ivt.tugraz.at, IVT, Graz University of Technology
+*   Christian Kreiner, christian.kreiner@tugraz.at, ITI, Graz University of Technology
+*   Michael Krisper, michael.krisper@tugraz.at, ITI, Graz University of Technology
+*   Raphael Luz, luz@ivt.tugraz.at, IVT, Graz University of Technology
+*   Markus Quaritsch, markus.quaritsch@tugraz.at, IVT, Graz University of Technology
+*   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
+*/
+
 using System;
 using System.Collections.Generic;
 using System.Xml;
@@ -8,6 +39,7 @@ using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.XML.Engineering.Interfaces;
+using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider
@@ -61,7 +93,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider
 
 		#region Overrides of AbstractXMLResource
 
-		protected override XNamespace SchemaNamespace { get { return NAMESPACE_URI; } }
+		protected override XNamespace SchemaNamespace => NAMESPACE_URI;
 		protected override DataSourceType SourceType { get; }
 
 
@@ -72,7 +104,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider
 	{
 		public new static readonly XNamespace NAMESPACE_URI = XMLDefinitions.ENGINEERING_DEFINITONS_NAMESPACE_V10;
 
-		public new const string XSD_TYPE = "AxleWheelsComponentEngineeringType";
+		public new const string XSD_TYPE = "AxleWheelsDataEngineeringType";
 
 		public new static readonly string QUALIFIED_XSD_TYPE = XMLHelper.CombineNamespace(NAMESPACE_URI, XSD_TYPE);
 
@@ -83,7 +115,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider
 
 		#region Overrides of XMLEngineeringAxlesDataProviderV07
 
-		protected override XNamespace SchemaNamespace { get { return NAMESPACE_URI; } }
+		protected override XNamespace SchemaNamespace => NAMESPACE_URI;
 
 		#endregion
 	}
@@ -105,68 +137,37 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider
 
 		#region Implementation of IAxleDeclarationInputData
 
-		public virtual bool TwinTyres
-		{
-			get { return XmlConvert.ToBoolean(GetNode(XMLNames.AxleWheels_Axles_Axle_TwinTyres)?.InnerText ?? ""); }
-		}
+		public virtual bool TwinTyres => XmlConvert.ToBoolean(GetNode(XMLNames.AxleWheels_Axles_Axle_TwinTyres)?.InnerText ?? "");
 
-		public virtual bool Steered
-		{
-			get { return XmlConvert.ToBoolean(GetNode(XMLNames.AxleWheels_Axles_Axle_Steered)?.InnerText ?? ""); }
-		}
+		public virtual bool Steered => XmlConvert.ToBoolean(GetNode(XMLNames.AxleWheels_Axles_Axle_Steered)?.InnerText ?? "");
 
-		public virtual AxleType AxleType
-		{
-			get { return (GetNode(XMLNames.AxleWheels_Axles_Axle_AxleType)?.InnerText ?? "").ParseEnum<AxleType>(); }
-		}
+		public virtual AxleType AxleType => (GetNode(XMLNames.AxleWheels_Axles_Axle_AxleType)?.InnerText ?? "").ParseEnum<AxleType>();
 
-		public virtual double AxleWeightShare
-		{
-			get { return GetNode(XMLNames.AxleWheels_Axles_Axle_WeightShare)?.InnerText.ToDouble() ?? 0; }
-		}
+		public virtual double AxleWeightShare => GetNode(XMLNames.AxleWheels_Axles_Axle_WeightShare)?.InnerText.ToDouble() ?? 0;
 
-		public virtual ITyreEngineeringInputData Tyre
-		{
-			get { return this; }
-		}
+		public virtual ITyreEngineeringInputData Tyre => this;
 
-		ITyreDeclarationInputData IAxleDeclarationInputData.Tyre
-		{
-			get { throw new NotImplementedException(); }
-		}
+		ITyreDeclarationInputData IAxleDeclarationInputData.Tyre => throw new NotImplementedException();
 
 		#endregion
 
 		#region Implementation of ITyreDeclarationInputData
 
-		public virtual string Dimension
-		{
-			get { return GetNode(XMLNames.AxleWheels_Axles_Axle_Dimension)?.InnerText; }
-		}
+		public virtual string Dimension => GetNode(XMLNames.AxleWheels_Axles_Axle_Dimension)?.InnerText;
 
-		public virtual double RollResistanceCoefficient
-		{
-			get { return GetNode(XMLNames.AxleWheels_Axles_Axle_RRCISO)?.InnerText.ToDouble() ?? double.NaN; }
-		}
+		public virtual double RollResistanceCoefficient => GetNode(XMLNames.AxleWheels_Axles_Axle_RRCISO)?.InnerText.ToDouble() ?? double.NaN;
 
-		public virtual Newton TyreTestLoad
-		{
-			get { return GetNode(XMLNames.AxleWheels_Axles_Axle_FzISO)?.InnerText.ToDouble().SI<Newton>(); }
-		}
+		public virtual Newton TyreTestLoad => GetNode(XMLNames.AxleWheels_Axles_Axle_FzISO)?.InnerText.ToDouble().SI<Newton>();
+
+		public virtual string FuelEfficiencyClass => DeclarationData.Wheels.TyreClass.Lookup(RollResistanceCoefficient);
 
 		#endregion
 
 		#region Implementation of ITyreEngineeringInputData
 
-		public virtual KilogramSquareMeter Inertia
-		{
-			get { return GetNode(XMLNames.AxleWheels_Axles_Axle_Inertia)?.InnerText.ToDouble().SI<KilogramSquareMeter>(); }
-		}
+		public virtual KilogramSquareMeter Inertia => GetNode(XMLNames.AxleWheels_Axles_Axle_Inertia)?.InnerText.ToDouble().SI<KilogramSquareMeter>();
 
-		public virtual Meter DynamicTyreRadius
-		{
-			get { return GetNode(XMLNames.AxleWheels_Axles_Axle_DynamicTyreRadius)?.InnerText.ToDouble().SI(Unit.SI.Milli.Meter).Cast<Meter>(); }
-		}
+		public virtual Meter DynamicTyreRadius => GetNode(XMLNames.AxleWheels_Axles_Axle_DynamicTyreRadius)?.InnerText.ToDouble().SI(Unit.SI.Milli.Meter).Cast<Meter>();
 
 		#endregion
 
@@ -174,7 +175,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider
 
 		#region Overrides of AbstractXMLResource
 
-		protected override XNamespace SchemaNamespace { get { return NAMESPACE_URI; } }
+		protected override XNamespace SchemaNamespace => NAMESPACE_URI;
 
 		protected override DataSourceType SourceType { get; }
 
@@ -199,36 +200,18 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider
 
 		#region Implementation of IAxleDeclarationInputData
 
-		public virtual bool TwinTyres
-		{
-			get { return XmlConvert.ToBoolean(GetNode(XMLNames.AxleWheels_Axles_Axle_TwinTyres)?.InnerText ?? ""); }
-		}
+		public virtual bool TwinTyres => XmlConvert.ToBoolean(GetNode(XMLNames.AxleWheels_Axles_Axle_TwinTyres)?.InnerText ?? "");
 
-		public virtual bool Steered
-		{
-			get { return XmlConvert.ToBoolean(GetNode(XMLNames.AxleWheels_Axles_Axle_Steered)?.InnerText ?? ""); }
-		}
+		public virtual bool Steered => XmlConvert.ToBoolean(GetNode(XMLNames.AxleWheels_Axles_Axle_Steered)?.InnerText ?? "");
 
-		public virtual AxleType AxleType
-		{
-			get { return (GetNode(XMLNames.AxleWheels_Axles_Axle_AxleType)?.InnerText ?? "").ParseEnum<AxleType>(); }
-		}
+		public virtual AxleType AxleType => (GetNode(XMLNames.AxleWheels_Axles_Axle_AxleType)?.InnerText ?? "").ParseEnum<AxleType>();
 
-		public virtual ITyreEngineeringInputData Tyre
-		{
-			get { return _tyre ?? (_tyre = Reader.Tyre); }
-		}
+		public virtual ITyreEngineeringInputData Tyre => _tyre ?? (_tyre = Reader.Tyre);
 
 
-		public virtual double AxleWeightShare
-		{
-			get { return GetNode(XMLNames.AxleWheels_Axles_Axle_WeightShare)?.InnerText.ToDouble() ?? 0; }
-		}
+		public virtual double AxleWeightShare => GetNode(XMLNames.AxleWheels_Axles_Axle_WeightShare)?.InnerText.ToDouble() ?? 0;
 
-		ITyreDeclarationInputData IAxleDeclarationInputData.Tyre
-		{
-			get { return Tyre; }
-		}
+		ITyreDeclarationInputData IAxleDeclarationInputData.Tyre => Tyre;
 
 		#endregion
 
@@ -236,7 +219,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider
 
 		#region Overrides of AbstractXMLResource
 
-		protected override XNamespace SchemaNamespace { get { return NAMESPACE_URI; } }
+		protected override XNamespace SchemaNamespace => NAMESPACE_URI;
 		protected override DataSourceType SourceType { get; }
 
 		#endregion
@@ -252,11 +235,8 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider
 
 		public XMLAxleEngineeringDataV10TEST(XmlNode node, IXMLEngineeringVehicleData vehicle) : base(node, vehicle) { }
 
-		public override bool TwinTyres
-		{
-			get { return XmlConvert.ToBoolean(GetNode("TwinTires")?.InnerText ?? ""); }
-		}
+		public override bool TwinTyres => XmlConvert.ToBoolean(GetNode("TwinTires")?.InnerText ?? "");
 
-		protected override XNamespace SchemaNamespace { get { return NAMESPACE_URI; } }
+		protected override XNamespace SchemaNamespace => NAMESPACE_URI;
 	}
 }

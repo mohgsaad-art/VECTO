@@ -3,7 +3,7 @@
 	xmlns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationInput:v2.0" 
-	xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob E:\QUAM\Workspace\VECTO_quam\VectoCore\VectoCore\Resources\XSD/VectoDeclarationJob.xsd">
+	xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob v:\VectoCore\VectoCore\Resources\XSD/VectoDeclarationJob.xsd">
   <Vehicle id="VEH-class5_Class-5_5t0" xsi:type="VehicleDeclarationType">
     <Manufacturer>Generic Vendor</Manufacturer>
     <ManufacturerAddress>N.A.</ManufacturerAddress>
@@ -198,7 +198,7 @@
           <AppVersion>VectoCore</AppVersion>
           <TransmissionType>AMT</TransmissionType>
           <MainCertificationMethod>Standard values</MainCertificationMethod>
-          <Gears>
+          <Gears xsi:type="GearsDeclarationType">
             <Gear number="1">
               <Ratio>14.930</Ratio>
               <TorqueLossMap>

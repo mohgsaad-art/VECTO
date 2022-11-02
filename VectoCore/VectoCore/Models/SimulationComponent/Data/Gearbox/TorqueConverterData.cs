@@ -32,10 +32,13 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using TUGraz.VectoCommon.Exceptions;
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
-using TUGraz.VectoCore.Models.Declaration;
+
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox
 {
@@ -43,6 +46,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox
 	public class TorqueConverterData : SimulationComponentData
 	{
 		protected internal readonly TorqueConverterEntry[] TorqueConverterEntries;
+
+		public string AppVersion { get; protected internal set; }
 
 		[Required, SIRange(0, double.MaxValue)]
 		public PerSecond ReferenceSpeed { get; protected internal set; }
@@ -55,6 +60,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox
 
 		[Required, SIRange(0, double.MaxValue)]
 		public PerSecond TorqueConverterSpeedLimit { get; protected internal set; }
+
+		public string[] CharacteristicCurve
+		{
+			get { return TorqueConverterEntries.Select(x => $"{x.SpeedRatio}, {x.TorqueRatio}, {x.Torque}").ToArray(); }
+		}
 
 		internal double RequiredSpeedRatio; // only used for validation!
 
@@ -347,25 +357,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox
 
 	}
 
-	public class TorqueConverterOperatingPoint
-	{
-		public PerSecond OutAngularVelocity;
-		public NewtonMeter OutTorque;
+	
 
-		public PerSecond InAngularVelocity;
-		public NewtonMeter InTorque;
-
-		public double SpeedRatio;
-		public double TorqueRatio;
-		public bool Creeping;
-
-		public override string ToString()
-		{
-			return string.Format("n_out: {0}, n_in: {1}, tq_out: {2}, tq_in {3}, nu: {4}, my: {5}", OutAngularVelocity,
-				InAngularVelocity, OutTorque, InTorque, SpeedRatio, TorqueRatio);
-		}
-	}
-
+	[DebuggerDisplay("nu: {SpeedRatio}, mu: {TorqueRatio}, T_ref: {Torque}")]
 	public class TorqueConverterEntry
 	{
 		public double SpeedRatio;

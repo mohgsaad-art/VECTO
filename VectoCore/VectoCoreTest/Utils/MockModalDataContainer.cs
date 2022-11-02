@@ -33,11 +33,17 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using TUGraz.VectoCommon.BusAuxiliaries;
+using TUGraz.VectoCommon.Exceptions;
+using TUGraz.VectoCommon.InputData;
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.OutputData;
+using TUGraz.VectoCore.Utils;
+
 
 namespace TUGraz.VectoCore.Tests.Utils
 {
@@ -46,25 +52,113 @@ namespace TUGraz.VectoCore.Tests.Utils
 	/// </summary>
 	internal class MockModalDataContainer : IModalDataContainer
 	{
+		protected Dictionary<IFuelProperties, Dictionary<ModalResultField, DataColumn>> FuelColumns =
+			new Dictionary<IFuelProperties, Dictionary<ModalResultField, DataColumn>>();
+
+		protected Dictionary<int, Dictionary<ModalResultField, DataColumn>> BatteryColumns =
+			new Dictionary<int, Dictionary<ModalResultField, DataColumn>>();
+
 		public MockModalDataContainer()
 		{
 			Data = new ModalResults();
+
+			foreach (var value in EnumHelper.GetValues<ModalResultField>()) {
+				if (ModalDataContainer.FuelConsumptionSignals.Contains(value)) {
+					continue;
+				}
+
+				var col = new DataColumn(value.GetName(), value.GetAttribute().DataType) { Caption = value.GetCaption() };
+				col.ExtendedProperties[ModalResults.ExtendedPropertyNames.Decimals] = value.GetAttribute().Decimals;
+				col.ExtendedProperties[ModalResults.ExtendedPropertyNames.OutputFactor] = value.GetAttribute().OutputFactor;
+				col.ExtendedProperties[ModalResults.ExtendedPropertyNames.ShowUnit] = value.GetAttribute().ShowUnit;
+				Data.Columns.Add(col);
+			}
+
 			CurrentRow = Data.NewRow();
 			Auxiliaries = new Dictionary<string, DataColumn>();
+
+			AddFuels(new IFuelProperties[] { VectoCore.Models.Declaration.FuelData.Diesel }.ToList());
+		}
+
+		protected void AddFuels(List<IFuelProperties> fuels)
+		{
+			foreach (var entry in fuels) {
+				if (FuelColumns.ContainsKey(entry)) {
+					throw new VectoException("Fuel {0} already added!", entry.FuelType.GetLabel());
+				}
+
+				FuelColumns[entry] = new Dictionary<ModalResultField, DataColumn>();
+				foreach (var fcCol in ModalDataContainer.FuelConsumptionSignals) {
+					var col = Data.Columns.Add(
+						fuels.Count == 1 ? fcCol.GetName() : $"{fcCol.GetName()}_{entry.FuelType.GetLabel()}",
+						typeof(SI));
+					col.ExtendedProperties[ModalResults.ExtendedPropertyNames.Decimals] =
+						fcCol.GetAttribute().Decimals;
+					col.ExtendedProperties[ModalResults.ExtendedPropertyNames.OutputFactor] =
+						fcCol.GetAttribute().OutputFactor;
+					col.ExtendedProperties[ModalResults.ExtendedPropertyNames.ShowUnit] =
+						fcCol.GetAttribute().ShowUnit;
+					FuelColumns[entry][fcCol] = col;
+				}
+			}
 		}
 
 		public ModalResults Data { get; set; }
 		public DataRow CurrentRow { get; set; }
 
-		public string ModFileName
+		public string ModFileName => "";
+
+		public object this[ModalResultField key, IFuelProperties fuel]
 		{
-			get { return ""; }
+			get {
+				try {
+					return CurrentRow[FuelColumns[fuel][key]];
+				} catch (KeyNotFoundException e) {
+					throw new VectoException($"unknown fuel {fuel.GetLabel()} for key {key.GetName()}", e);
+				}
+
+			}
+			set {
+				try {
+					CurrentRow[FuelColumns[fuel][key]] = value;
+				} catch (KeyNotFoundException e) {
+					throw new VectoException($"unknown fuel {fuel.GetLabel()} for key {key.GetName()}", e);
+				}
+			}
+		}
+
+		public object this[ModalResultField key, PowertrainPosition pos]
+		{
+			get => throw new NotImplementedException();
+			set => throw new NotImplementedException();
+		}
+
+		public object this[ModalResultField key, int? pos]
+		{
+			get {
+				if (pos == null) {
+					return CurrentRow[key.GetName()];
+				}
+
+				return BatteryColumns.TryGetValue(pos.Value, out var entry) && entry.TryGetValue(key, out var col)
+					? CurrentRow[col]
+					: null;
+			}
+			set {
+				if (pos == null) {
+					CurrentRow[key.GetName()] = value;
+				} else {
+					var entry = BatteryColumns.GetOrAdd(pos.Value, _ => new Dictionary<ModalResultField, DataColumn>());
+					var col = entry.GetOrAdd(key, _ => Data.Columns.Add($"{key.GetName()}_{pos.Value}", typeof(SI)));
+					CurrentRow[col] = value;
+				}
+			}
 		}
 
 		public object this[string auxId]
 		{
-			get { return CurrentRow[Auxiliaries[auxId]]; }
-			set { CurrentRow[Auxiliaries[auxId]] = value; }
+			get => CurrentRow[Auxiliaries[auxId]];
+			set => CurrentRow[Auxiliaries[auxId]] = value;
 		}
 
 		public bool HasTorqueConverter { get; set; }
@@ -75,56 +169,39 @@ namespace TUGraz.VectoCore.Tests.Utils
 			CurrentRow = Data.NewRow();
 		}
 
-		public FuelData.Entry FuelData
-		{
-			get { return VectoCore.Models.Declaration.FuelData.Diesel; }
-		}
+		IList<IFuelProperties> IModalDataContainer.FuelData => FuelColumns.Keys.ToList();
 
-		public VectoRun.Status RunStatus
-		{
-			get { return VectoRun.Status.Success; }
-		}
+		public FuelData.Entry FuelData => VectoCore.Models.Declaration.FuelData.Diesel;
 
-		public string Error
-		{
-			get { return null; }
-		}
+		public VectoRun.Status RunStatus => VectoRun.Status.Success;
 
-		public string StackTrace
-		{
-			get { return null; }
-		}
+		public string Error => null;
 
-		public void Finish(VectoRun.Status runStatus, Exception exception = null) {}
+		public string StackTrace => null;
+
+		public void Finish(VectoRun.Status runStatus, Exception exception = null) { }
 
 		public bool WriteModalResults { get; set; }
 
-		public IEnumerable<T> GetValues<T>(ModalResultField key)
-		{
-			return Data.Rows.Cast<DataRow>().Select(x => x.Field<T>((int)key));
-		}
+		public IEnumerable<T> GetValues<T>(ModalResultField key) => 
+			Data.Rows.Cast<DataRow>().Select(x => (T)x[(int)key]);
 
-		public IEnumerable<T> GetValues<T>(DataColumn col)
-		{
-			return Data.Rows.Cast<DataRow>().Select(x => x.Field<T>(col));
-		}
+		public IEnumerable<T> GetValues<T>(DataColumn col) => 
+			Data.Rows.Cast<DataRow>().Select(x => (T)x[col]);
 
-		public IEnumerable<T> GetValues<T>(Func<DataRow, T> selectorFunc)
-		{
+		public IEnumerable<T> GetValues<T>(Func<DataRow, T> selectorFunc) => 
 			throw new NotImplementedException();
-		}
 
-		public T TimeIntegral<T>(ModalResultField field, Func<SI, bool> filter = null) where T : SIBase<T>
-		{
+		public T TimeIntegral<T>(ModalResultField field, Func<SI, bool> filter = null) where T : SIBase<T> => 
 			throw new NotImplementedException();
-		}
+
+		public T TimeIntegral<T>(string field, Func<SI, bool> filter = null) where T : SIBase<T> => 
+			throw new NotImplementedException();
 
 		public Dictionary<string, DataColumn> Auxiliaries { get; set; }
 
-		public void SetDataValue(string fieldName, object value)
-		{
-			throw new System.NotImplementedException();
-		}
+		public void SetDataValue(string fieldName, object value) => 
+			throw new NotImplementedException();
 
 		public void AddAuxiliary(string id, string columnName = null)
 		{
@@ -145,14 +222,142 @@ namespace TUGraz.VectoCore.Tests.Utils
 			Data.Rows.Clear();
 		}
 
+		public string GetColumnName(IFuelProperties fuelData, ModalResultField mrf)
+		{
+			try {
+				return FuelColumns[fuelData][mrf].ColumnName;
+			} catch (KeyNotFoundException e) {
+				throw new VectoException($"unknown fuel {fuelData.GetLabel()} for key {mrf.GetName()}", e);
+			}
+		}
+
+		public void Reset()
+		{
+
+		}
+
+		public Second Duration => null;
+
+		public Meter Distance => null;
+
+		public Func<Second, Joule, Joule> AuxHeaterDemandCalc { get; set; }
+
+		public KilogramPerWattSecond EngineLineCorrectionFactor(IFuelProperties fuel)
+		{
+			return 0.SI<KilogramPerWattSecond>();
+		}
+
+		public void CalculateAggregateValues()
+		{
+
+		}
+
+		public void AddElectricMotor(PowertrainPosition pos)
+		{
+
+		}
+
+		public KilogramPerWattSecond VehicleLineSlope(IFuelProperties fuel)
+		{
+			return 0.SI<KilogramPerWattSecond>();
+		}
+
+		public bool HasCombustionEngine { get; set; }
+		public WattSecond TotalElectricMotorWorkDrive(PowertrainPosition emPos)
+		{
+			throw new NotImplementedException();
+		}
+
+		public WattSecond TotalElectricMotorWorkRecuperate(PowertrainPosition emPos)
+		{
+			throw new NotImplementedException();
+		}
+
+		public WattSecond TotalElectricMotorMotWorkDrive(PowertrainPosition emPos)
+		{
+			throw new NotImplementedException();
+		}
+
+		public WattSecond TotalElectricMotorMotWorkRecuperate(PowertrainPosition emPos)
+		{
+			throw new NotImplementedException();
+		}
+
+		public PerSecond ElectricMotorAverageSpeed(PowertrainPosition emPos)
+		{
+			throw new NotImplementedException();
+		}
+
+		public double ElectricMotorEfficiencyDrive(PowertrainPosition emPos)
+		{
+			throw new NotImplementedException();
+		}
+
+		public double ElectricMotorEfficiencyGenerate(PowertrainPosition emPos)
+		{
+			throw new NotImplementedException();
+		}
+
+		public double ElectricMotorMotEfficiencyDrive(PowertrainPosition emPos)
+		{
+			throw new NotImplementedException();
+		}
+
+		public double ElectricMotorMotEfficiencyGenerate(PowertrainPosition emPos)
+		{
+			throw new NotImplementedException();
+		}
+
+		public WattSecond ElectricMotorOffLosses(PowertrainPosition emPos)
+		{
+			throw new NotImplementedException();
+		}
+
+		public WattSecond ElectricMotorLosses(PowertrainPosition emPos)
+		{
+			throw new NotImplementedException();
+		}
+
+		public WattSecond ElectricMotorMotLosses(PowertrainPosition emPos)
+		{
+			throw new NotImplementedException();
+		}
+
+		public WattSecond ElectricMotorTransmissionLosses(PowertrainPosition emPos)
+		{
+			throw new NotImplementedException();
+		}
+
+		public double REESSStartSoC()
+		{
+			throw new NotImplementedException();
+		}
+
+		public double REESSEndSoC()
+		{
+			throw new NotImplementedException();
+		}
+
+		public WattSecond REESSLoss()
+		{
+			throw new NotImplementedException();
+		}
+
+		public ICorrectedModalData CorrectedModalData { get; }
+
+		public WattSecond REESSEnergyEnd()
+		{
+			throw new NotImplementedException();
+		}
+
 		public string RunName { get; set; }
 		public string CycleName { get; set; }
 		public string RunSuffix { get; set; }
 
 		public object this[ModalResultField key]
 		{
-			get { return CurrentRow[key.GetName()]; }
-			set { CurrentRow[key.GetName()] = value; }
+			get => CurrentRow[key.GetName()];
+			set => CurrentRow[key.GetName()] = value;
 		}
 
 		public void CommitSimulationStep(Second absTime, Second simulationInterval)

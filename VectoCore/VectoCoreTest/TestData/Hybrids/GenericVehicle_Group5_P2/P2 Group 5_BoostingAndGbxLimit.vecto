@@ -1,0 +1,64 @@
+{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2020-08-24T13:41:04.1591616Z",
+    "AppVersion": "3",
+    "FileVersion": 8
+  },
+  "Body": {
+    "SavedInDeclMode": false,
+    "EngineOnlyMode": false,
+    "VehicleFile": "Vehicle\\Group5_HEV_LimitVehiclePropTq_2.vveh",
+    "EngineFile": "VKM\\Engine_325kW_12.7l.veng",
+    "GearboxFile": "Transmission\\AMT_12_TqLimit2500.vgbx",
+    "TCU": "Transmission\\AMT_12.vgbx",
+    "ShiftStrategy": "TUGraz.VectoCore.Models.SimulationComponent.Impl.AMTShiftStrategy",
+    "HybridStrategyParams": "ElectricMotor\\Inputdaten P2 Group 5\\Electric components\\Hybrid_Parameters.vhctl",
+    "AuxiliaryAssembly": "Classic",
+    "AuxiliaryVersion": "CLASSIC",
+    "AdvancedAuxiliaryFilePath": "",
+    "Aux": [],
+    "Padd": 3000.0,
+    "Padd_electric": 0.0,
+    "VACC": "Vehicle\\Truck.vacc",
+    "EngineStopStartAtVehicleStopThreshold": 0.0,
+    "EngineStopStartMaxOffTimespan": 1000.0,
+    "EngineStopStartUtilityFactor": 0.0,
+    "EcoRollMinSpeed": 0.0,
+    "EcoRollActivationDelay": 0.0,
+    "EcoRollUnderspeedThreshold": 0.0,
+    "EcoRollMaxAcceleration": 0.0,
+    "PCCEnableSpeed": 0.0,
+    "PCCMinSpeed": 0.0,
+    "PCCUnderspeed": 0.0,
+    "PCCOverSpeed": 5.0,
+    "PCCPreviewDistanceUC1": 0.0,
+    "PCCPreviewDistanceUC2": 0.0,
+    "LAC": {
+      "Enabled": true,
+      "PreviewDistanceFactor": 10.0,
+      "DF_offset": 2.5,
+      "DF_scaling": 1.5,
+      "DF_targetSpeedLookup": "",
+      "Df_velocityDropLookup": "",
+      "MinSpeed": 50.0
+    },
+    "OverSpeedEcoRoll": {
+      "Mode": "Overspeed",
+      "MinSpeed": 50.0,
+      "OverSpeed": 2.5
+    },
+    "Cycles": [
+      "LongHaul",
+      "Coach",
+      "Construction",
+      "HeavyUrban",
+      "Interurban",
+      "MunicipalUtility",
+      "RegionalDelivery",
+      "Suburban",
+      "Urban",
+      "UrbanDelivery"
+    ]
+  }
+}

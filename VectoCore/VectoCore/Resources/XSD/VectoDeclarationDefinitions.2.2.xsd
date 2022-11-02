@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSpy v2016 rel. 2 sp1 (x64) (http://www.altova.com) by Helmut Eichlseder (TU Graz/Inst. f. VKM und THD) -->
-<xs:schema xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.2" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:vectoParam="urn:tugraz:ivt:VectoAPI:ParameterDocumentation" xmlns:di="http://www.w3.org/2000/09/xmldsig#" xmlns:v1.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:v2.1="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1" targetNamespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.2" elementFormDefault="qualified" attributeFormDefault="unqualified" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:ParameterDocumentation ParameterDocumentation.xsd">
+<xs:schema xmlns:v2.2="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.2" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:vectoParam="urn:tugraz:ivt:VectoAPI:ParameterDocumentation" xmlns:di="http://www.w3.org/2000/09/xmldsig#" xmlns:v1.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:v2.1="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1" targetNamespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.2" elementFormDefault="qualified" attributeFormDefault="unqualified" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:ParameterDocumentation ParameterDocumentation.xsd">
 	<xs:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="xmldsig-core-schema.xsd"/>
 	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" schemaLocation="VectoDeclarationDefinitions.1.0.xsd"/>
 	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" schemaLocation="VectoDeclarationDefinitions.2.0.xsd"/>
@@ -11,30 +11,30 @@
 				<xs:sequence>
 					<xs:element name="Manufacturer" type="v1.0:ManufacturerType">
 						<xs:annotation>
-							<xs:documentation>P230</xs:documentation>
+							<xs:documentation>P230 - [-]</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="Model" type="v1.0:ModelType">
 						<xs:annotation>
-							<xs:documentation>P231</xs:documentation>
+							<xs:documentation>P231 - [-]</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="CertificationNumber" type="v1.0:CertificationNumberType">
 						<xs:annotation>
-							<xs:documentation>P267</xs:documentation>
+							<xs:documentation>P267 - [-]</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="Date" type="v1.0:DateTimeWithTimezone">
 						<xs:annotation>
-							<xs:documentation>P233</xs:documentation>
+							<xs:documentation>P233 - [-]</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="AppVersion" type="v1.0:AppVersionType">
 						<xs:annotation>
-							<xs:documentation>P234</xs:documentation>
+							<xs:documentation>P234 - [-]</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="Dimension" type="tns:TyreDimensionType">
+					<xs:element name="Dimension" type="v2.2:TyreDimensionType">
 						<xs:annotation>
 							<xs:documentation>P108 - enum</xs:documentation>
 						</xs:annotation>
@@ -150,7 +150,7 @@
 			<xs:enumeration value="8.5 R17.5"/>
 			<xs:enumeration value="8 R17.5"/>
 			<xs:enumeration value="LT265/75 R16"/>
-			<xs:enumeration value="385/55 R19.5"/>	
+			<xs:enumeration value="385/55 R19.5"/>
 			<xs:enumeration value="24 R21"/>
 			<xs:enumeration value="205/70 R15C"/>
 			<xs:enumeration value="215/70 R15C"/>

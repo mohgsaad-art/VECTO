@@ -89,14 +89,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		public override IResponse Request(Second absTime, Second dt)
 		{
 			if (CycleIterator.LastEntry && CycleIterator.RightSample.Time == absTime) {
-				return new ResponseCycleFinished { Source = this };
+				return new ResponseCycleFinished(this);
 			}
 
 			// interval exceeded
 			if (CycleIterator.RightSample != null && (absTime + dt).IsGreater(CycleIterator.RightSample.Time)) {
-				return new ResponseFailTimeInterval {
+				return new ResponseFailTimeInterval(this) {
 					AbsTime = absTime,
-					Source = this,
 					DeltaT = CycleIterator.RightSample.Time - absTime
 				};
 			}
@@ -104,10 +103,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			return DoHandleRequest(absTime, dt, CycleIterator.LeftSample.WheelAngularVelocity);
 		}
 
-		protected override void DoWriteModalResults(IModalDataContainer container)
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
 			container[ModalResultField.P_wheel_in] = CycleIterator.LeftSample.PWheel;
-			base.DoWriteModalResults(container);
+			base.DoWriteModalResults(time, simulationInterval, container);
 		}
 
 		#region IDriverInfo
@@ -117,30 +116,15 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		/// <summary>
 		/// True if the angularVelocity at the wheels is 0.
 		/// </summary>
-		public virtual bool VehicleStopped
-		{
-			get { return CycleIterator.LeftSample.WheelAngularVelocity.IsEqual(0); }
-		}
+		public virtual bool VehicleStopped => CycleIterator.LeftSample.WheelAngularVelocity.IsEqual(0);
 
-		public Kilogram VehicleMass
-		{
-			get { return RunData.VehicleData.TotalCurbWeight; }
-		}
+		public Kilogram VehicleMass => RunData.VehicleData.TotalCurbMass;
 
-		public Kilogram VehicleLoading
-		{
-			get { return RunData.VehicleData.Loading; }
-		}
+		public Kilogram VehicleLoading => RunData.VehicleData.Loading;
 
-		public Kilogram TotalMass
-		{
-			get { return RunData.VehicleData.TotalVehicleWeight; }
-		}
+		public Kilogram TotalMass => RunData.VehicleData.TotalVehicleMass;
 
-		public CubicMeter CargoVolume
-		{
-			get { return RunData.VehicleData.CargoVolume; }
-		}
+		public CubicMeter CargoVolume => RunData.VehicleData.CargoVolume;
 
 		public Newton AirDragResistance(MeterPerSecond previousVelocity, MeterPerSecond nextVelocity)
 		{
@@ -157,25 +141,18 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			throw new System.NotImplementedException();
 		}
 
-		public MeterPerSecond MaxVehicleSpeed { get { return null; } }
+		public MeterPerSecond MaxVehicleSpeed => null;
 
 		/// <summary>
 		/// Always Driving.
 		/// </summary>
-		public DrivingBehavior DriverBehavior
-		{
-			get { return DrivingBehavior.Driving; }
-		}
+		public DrivingBehavior DriverBehavior => DrivingBehavior.Driving;
 
-		public DrivingAction DrivingAction
-		{
-			get { return DrivingAction.Accelerate; }
-		}
+		public DrivingAction DrivingAction => DrivingAction.Accelerate;
 
-		public MeterPerSquareSecond DriverAcceleration
-		{
-			get { return 0.SI<MeterPerSquareSecond>(); }
-		}
+		public MeterPerSquareSecond DriverAcceleration => 0.SI<MeterPerSquareSecond>();
+		public PCCStates PCCState => PCCStates.OutsideSegment;
+		public MeterPerSecond NextBrakeTriggerSpeed => 0.SI<MeterPerSecond>();
 
 		#endregion
 	}

@@ -29,10 +29,8 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
-using System.Runtime.Remoting.Contexts;
 using System.Windows;
 using HashingTool.ViewModel;
-using HashingTool.Views;
 
 namespace HashingTool
 {

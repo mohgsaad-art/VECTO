@@ -39,8 +39,8 @@ using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
 using TUGraz.VectoCore.InputData.FileIO.XML;
-using TUGraz.VectoCore.InputData.FileIO.XML.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Impl;
+using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using Assert = NUnit.Framework.Assert;
@@ -48,6 +48,7 @@ using Assert = NUnit.Framework.Assert;
 namespace TUGraz.VectoCore.Tests.Integration
 {
 	[TestFixture]
+	[Parallelizable(ParallelScope.All)]
 	public class TorqueLimitsTest
 	{
 		const string GearboxLimitJobDecl_865 =
@@ -92,7 +93,7 @@ namespace TUGraz.VectoCore.Tests.Integration
 		public void TestGearboxTorqueLimitsAbove90FLD()
 		{
 			var inputDataProvider = JSONInputDataFactory.ReadJsonJob(GearboxLimitJobDecl_865);
-			var factory = new SimulatorFactory(ExecutionMode.Declaration, inputDataProvider, null);
+			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputDataProvider, null);
 
 			var run = factory.DataReader.NextRun().First();
 
@@ -119,7 +120,7 @@ namespace TUGraz.VectoCore.Tests.Integration
 		public void TestGearboxTorqueLimitsBelow90FLD()
 		{
 			var inputDataProvider = JSONInputDataFactory.ReadJsonJob(GearboxLimitJobDecl_800);
-			var factory = new SimulatorFactory(ExecutionMode.Declaration, inputDataProvider, null);
+			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputDataProvider, null);
 
 			var run = factory.DataReader.NextRun().First();
 
@@ -146,7 +147,7 @@ namespace TUGraz.VectoCore.Tests.Integration
 		public void TestVehicleTorqueLimitsAbove95FLD()
 		{
 			var inputDataProvider = JSONInputDataFactory.ReadJsonJob(VehicleLimitJobDecl_910);
-			var factory = new SimulatorFactory(ExecutionMode.Declaration, inputDataProvider, null);
+			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputDataProvider, null);
 
 			var run = factory.DataReader.NextRun().First();
 
@@ -173,7 +174,7 @@ namespace TUGraz.VectoCore.Tests.Integration
 		public void TestVehicleTorqueLimitsBelow95FLD()
 		{
 			var inputDataProvider = JSONInputDataFactory.ReadJsonJob(VehicleLimitJobDecl_850);
-			var factory = new SimulatorFactory(ExecutionMode.Declaration, inputDataProvider, null);
+			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputDataProvider, null);
 
 			var run = factory.DataReader.NextRun().First();
 
@@ -205,9 +206,8 @@ namespace TUGraz.VectoCore.Tests.Integration
 			var fileWriter = new FileOutputWriter(file);
 			var sumData = new SummaryDataContainer(fileWriter);
 			var inputDataProvider = JSONInputDataFactory.ReadJsonJob(file);
-			var factory = new SimulatorFactory(ExecutionMode.Declaration, inputDataProvider, fileWriter) {
-				WriteModalResults = true
-			};
+			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputDataProvider, fileWriter);
+			factory.WriteModalResults = true;
 
 
 			var jobContainer = new JobContainer(sumData);
@@ -225,10 +225,9 @@ namespace TUGraz.VectoCore.Tests.Integration
 			var fileWriter = new FileOutputWriter(file);
 			var sumData = new SummaryDataContainer(fileWriter);
 			var inputDataProvider = JSONInputDataFactory.ReadJsonJob(file);
-			var factory = new SimulatorFactory(ExecutionMode.Declaration, inputDataProvider, fileWriter) {
-				WriteModalResults = true,
-				ActualModalData = true
-			};
+			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputDataProvider, fileWriter);
+			factory.WriteModalResults = true;
+			factory.ActualModalData = true;
 
 
 			var jobContainer = new JobContainer(sumData);
@@ -246,10 +245,8 @@ namespace TUGraz.VectoCore.Tests.Integration
 			var fileWriter = new FileOutputWriter(file);
 			var sumData = new SummaryDataContainer(fileWriter);
 			var inputDataProvider = JSONInputDataFactory.ReadJsonJob(file);
-			var factory = new SimulatorFactory(ExecutionMode.Declaration, inputDataProvider, fileWriter) {
-				WriteModalResults = true,
-				//ActualModalData = true
-			};
+			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputDataProvider, fileWriter);
+			factory.WriteModalResults = true; //ActualModalData = true
 
 
 			var jobContainer = new JobContainer(sumData);
@@ -261,14 +258,15 @@ namespace TUGraz.VectoCore.Tests.Integration
 			jobContainer.WaitFinished();
 
 			Assert.IsTrue(jobContainer.Runs.All(r => r.Success), string.Concat(jobContainer.Runs.Select(r => r.ExecException)));
-			var view = new DataView(sumData.Table, "", SummaryDataContainer.SORT, DataViewRowState.CurrentRows).ToTable();
-			Console.WriteLine(string.Join("; ", view.AsEnumerable().Select(x => x[SummaryDataContainer.FCMAP_KM].ToString().ToDouble())));
-			Assert.AreEqual(201.39195, view.Rows[0][SummaryDataContainer.FCMAP_KM].ToString().ToDouble(), 1e-3);
-			Assert.AreEqual(239.50432, view.Rows[1][SummaryDataContainer.FCMAP_KM].ToString().ToDouble(), 1e-3);
-			Assert.AreEqual(170.18354, view.Rows[2][SummaryDataContainer.FCMAP_KM].ToString().ToDouble(), 1e-3);
-			Assert.AreEqual(183.06159, view.Rows[3][SummaryDataContainer.FCMAP_KM].ToString().ToDouble(), 1e-3);
-			Assert.AreEqual(224.78226, view.Rows[4][SummaryDataContainer.FCMAP_KM].ToString().ToDouble(), 1e-3);
-			Assert.AreEqual(255.02202, view.Rows[5][SummaryDataContainer.FCMAP_KM].ToString().ToDouble(), 1e-3);
+			var view = new DataView(sumData.Table, "", SummaryDataContainer.Fields.SORT, DataViewRowState.CurrentRows).ToTable();
+			Console.WriteLine(string.Join("; ", view.Rows.Cast<DataRow>().Select(x => x[string.Format(SummaryDataContainer.Fields.FCMAP_KM, "")].ToString().ToDouble())));
+			//199.78724745793005; 235.80023117081666; 169.7345262485087; 182.825905694444; 219.40786682729086; 250.54711559861258
+			Assert.AreEqual(199.78724745793005, view.Rows[0][string.Format(SummaryDataContainer.Fields.FCMAP_KM, "")].ToString().ToDouble(), 1e-3);
+			Assert.AreEqual(235.80023117081666, view.Rows[1][string.Format(SummaryDataContainer.Fields.FCMAP_KM, "")].ToString().ToDouble(), 1e-3);
+			Assert.AreEqual(169.7345262485087, view.Rows[2][string.Format(SummaryDataContainer.Fields.FCMAP_KM, "")].ToString().ToDouble(), 1e-3);
+			Assert.AreEqual(182.825905694444, view.Rows[3][string.Format(SummaryDataContainer.Fields.FCMAP_KM, "")].ToString().ToDouble(), 1e-3);
+			Assert.AreEqual(219.40786682729086, view.Rows[4][string.Format(SummaryDataContainer.Fields.FCMAP_KM, "")].ToString().ToDouble(), 1e-3);
+			Assert.AreEqual(250.54711559861258, view.Rows[5][string.Format(SummaryDataContainer.Fields.FCMAP_KM, "")].ToString().ToDouble(), 1e-3);
 		}
 
 		[TestCase(EngineSpeedLimitJobATDecl)]
@@ -276,10 +274,9 @@ namespace TUGraz.VectoCore.Tests.Integration
 		{
 			var inputData = JSONInputDataFactory.ReadJsonJob(jobFile);
 			var fileWriter = new FileOutputWriter(jobFile);
-			var factory = new SimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter) {
-				WriteModalResults = true,
-				Validate = false
-			};
+			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter);
+			factory.WriteModalResults = true;
+			factory.Validate = false;
 			var sumData = new SummaryDataContainer(fileWriter);
 			var jobContainer = new JobContainer(sumData);
 			jobContainer.AddRuns(factory);
@@ -298,10 +295,9 @@ namespace TUGraz.VectoCore.Tests.Integration
 		{
 			var inputData = xmlInputReader.CreateDeclaration(jobFile);
 			var fileWriter = new FileOutputWriter(jobFile);
-			var factory = new SimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter) {
-				WriteModalResults = true,
-				Validate = false
-			};
+			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter);
+			factory.WriteModalResults = true;
+			factory.Validate = false;
 			var sumData = new SummaryDataContainer(fileWriter);
 			var jobContainer = new JobContainer(sumData);
 			jobContainer.AddRuns(factory);

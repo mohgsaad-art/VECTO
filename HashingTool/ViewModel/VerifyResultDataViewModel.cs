@@ -29,17 +29,14 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
-using System;
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Linq;
 using System.Windows.Data;
 using System.Windows.Input;
 using HashingTool.Helper;
 using HashingTool.ViewModel.UserControl;
-using TUGraz.VectoHashing;
 
 namespace HashingTool.ViewModel
 {
@@ -90,31 +87,16 @@ namespace HashingTool.ViewModel
 		}
 
 
-		public string Name
-		{
-			get { return "Verify Result Data"; }
-		}
+		public string Name => "Verify Result Data";
 
-		public ICommand ShowHomeViewCommand
-		{
-			get { return ApplicationViewModel.HomeView; }
-		}
+		public ICommand ShowHomeViewCommand => ApplicationViewModel.HomeView;
 
-		public VectoJobFile JobFile
-		{
-			get { return _jobFile; }
-		}
+		public VectoJobFile JobFile => _jobFile;
 
 
-		public CustomerReportXMLFile CustomerReport
-		{
-			get { return _customerReport; }
-		}
+		public CustomerReportXMLFile CustomerReport => _customerReport;
 
-		public ManufacturerReportXMLFile ManufacturerReport
-		{
-			get { return _manufacturerReport; }
-		}
+		public ManufacturerReportXMLFile ManufacturerReport => _manufacturerReport;
 
 		public ObservableCollection<VectoXMLFile> Files { get; private set; }
 

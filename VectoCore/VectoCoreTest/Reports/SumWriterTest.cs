@@ -29,7 +29,10 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml;
 using Ninject;
 using TUGraz.VectoCommon.Models;
@@ -44,12 +47,17 @@ using TUGraz.VectoCore.OutputData.XML;
 using TUGraz.VectoCore.Tests.Utils;
 using TUGraz.VectoCore.Utils;
 using NUnit.Framework;
+using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCore.InputData.FileIO.XML;
+using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.Models.Declaration;
+using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
+using TUGraz.VectoCore.Models.SimulationComponent.Data;
 
 namespace TUGraz.VectoCore.Tests.Reports
 {
 	[TestFixture]
+	[Parallelizable(ParallelScope.All)]
 	public class SumWriterTest
 	{
 
@@ -71,14 +79,30 @@ namespace TUGraz.VectoCore.Tests.Reports
 		{
 			var writer = new FileOutputWriter("testsumcalc_fixed");
 			var sumWriter = new SummaryDataContainer(writer);
-
-			var modData = new ModalDataContainer("testsumcalc_fixed", FuelData.Diesel, writer);
+			var rundata = new VectoRunData() {
+				JobName = "AuxWriteModFileSumFile",
+				EngineData = new CombustionEngineData() {
+					Fuels = new[] {new CombustionEngineFuelData {
+						FuelData = FuelData.Diesel,
+						ConsumptionMap = FuelConsumptionMapReader.ReadFromFile(@"TestData\Components\12t Delivery Truck.vmap")
+					}}.ToList(),
+					IdleSpeed = 600.RPMtoRad()
+				},
+				ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
+				Cycle = new DrivingCycleData() {
+					Name = "MockCycle",
+				},
+				DriverData = new DriverData() {
+					EngineStopStart = new DriverData.EngineStopStartData()
+				}
+            };
+			var modData = new ModalDataContainer(rundata, writer, null);
 
 			modData.AddAuxiliary("FAN");
 
 			for (var i = 0; i < 500; i++) {
 				modData[ModalResultField.simulationInterval] = 1.SI<Second>();
-				modData[ModalResultField.n_eng_avg] = 600.RPMtoRad();
+				modData[ModalResultField.n_ice_avg] = 600.RPMtoRad();
 				modData[ModalResultField.v_act] = 1.SI<MeterPerSecond>(); //20.KMPHtoMeterPerSecond();
 				modData[ModalResultField.drivingBehavior] = DrivingBehavior.Driving;
 				modData[ModalResultField.time] = i.SI<Second>();
@@ -87,21 +111,22 @@ namespace TUGraz.VectoCore.Tests.Reports
 				modData[ModalResultField.P_air] = 3000.SI<Watt>();
 				modData[ModalResultField.P_roll] = 3000.SI<Watt>();
 				modData[ModalResultField.P_slope] = 3000.SI<Watt>();
-				modData[ModalResultField.P_aux] = 3000.SI<Watt>();
+				modData[ModalResultField.P_aux_mech] = 3000.SI<Watt>();
 				modData[ModalResultField.P_brake_loss] = 3000.SI<Watt>();
 
 				modData[ModalResultField.FCMap] = 1e-4.SI<KilogramPerSecond>();
-
+				modData[ModalResultField.FCFinal] = 1e-4.SI<KilogramPerSecond>();
+				modData[ModalResultField.ICEOn] = false;
 				modData[ModalResultField.altitude] = 0.SI<Meter>();
 				modData[ModalResultField.acc] = 0.SI<MeterPerSquareSecond>();
-				modData[ModalResultField.P_eng_out] = (i % 2 == 0 ? 1 : -1) * 3000.SI<Watt>();
+				modData[ModalResultField.P_ice_out] = (i % 2 == 0 ? 1 : -1) * 3000.SI<Watt>();
 
-				modData[ModalResultField.P_eng_fcmap] = 0.SI<Watt>();
+				modData[ModalResultField.P_ice_fcmap] = 0.SI<Watt>();
 
 				modData.CommitSimulationStep();
 			}
 
-			sumWriter.Write(modData, 0, 0, new MockRunData());
+			sumWriter.Write(modData, 0, 0, rundata);
 
 			modData.Finish(VectoRun.Status.Success);
 			sumWriter.Finish();
@@ -109,8 +134,8 @@ namespace TUGraz.VectoCore.Tests.Reports
 			var sumData = VectoCSVFile.Read("testsumcalc_fixed.vsum", false, true);
 
 			// duration: 500s, distance: 500m
-			Assert.AreEqual(500, modData.Duration().Value());
-			Assert.AreEqual(500, modData.Distance().Value());
+			Assert.AreEqual(500, modData.Duration.Value());
+			Assert.AreEqual(500, modData.Distance.Value());
 
 			// 3kW * 500s => to kWh
 			Assert.AreEqual(500.0 * 3000.0 / 1000 / 3600, sumData.Rows[0].ParseDouble("E_air [kWh]"), 1e-3);
@@ -131,8 +156,24 @@ namespace TUGraz.VectoCore.Tests.Reports
 		{
 			var writer = new FileOutputWriter("testsumcalc_var");
 			var sumWriter = new SummaryDataContainer(writer);
-
-			var modData = new ModalDataContainer("testsumcalc_var", FuelData.Diesel, writer);
+			var rundata = new VectoRunData() {
+				JobName = "testsumcalc_var",
+				EngineData = new CombustionEngineData() {
+					Fuels = new[] {new CombustionEngineFuelData {
+						FuelData = FuelData.Diesel,
+						ConsumptionMap = FuelConsumptionMapReader.ReadFromFile(@"TestData\Components\12t Delivery Truck.vmap")
+					}}.ToList(),
+					IdleSpeed = 600.RPMtoRad()
+				},
+				ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>(),
+				Cycle = new DrivingCycleData() {
+					Name = "MockCycle",
+				},
+				DriverData = new DriverData() {
+					EngineStopStart = new DriverData.EngineStopStartData()
+				}
+			};
+			var modData = new ModalDataContainer(rundata, writer, null);
 			modData.AddAuxiliary("FAN");
 
 			var timeSteps = new[]
@@ -144,26 +185,27 @@ namespace TUGraz.VectoCore.Tests.Reports
 				modData[ModalResultField.simulationInterval] = timeSteps[i % timeSteps.Length];
 				modData[ModalResultField.time] = i.SI<Second>();
 				modData[ModalResultField.dist] = i.SI<Meter>();
-				modData[ModalResultField.n_eng_avg] = 600.RPMtoRad();
+				modData[ModalResultField.n_ice_avg] = 600.RPMtoRad();
 				modData[ModalResultField.v_act] = 20.KMPHtoMeterPerSecond();
 				modData[ModalResultField.drivingBehavior] = DrivingBehavior.Driving;
 				modData["FAN"] = powerDemand[i % powerDemand.Length];
 				modData[ModalResultField.P_air] = powerDemand[i % powerDemand.Length];
 				modData[ModalResultField.P_roll] = powerDemand[i % powerDemand.Length];
 				modData[ModalResultField.P_slope] = powerDemand[i % powerDemand.Length];
-				modData[ModalResultField.P_aux] = powerDemand[i % powerDemand.Length];
+				modData[ModalResultField.P_aux_mech] = powerDemand[i % powerDemand.Length];
 				modData[ModalResultField.P_brake_loss] = powerDemand[i % powerDemand.Length];
 
 				modData[ModalResultField.altitude] = 0.SI<Meter>();
 				modData[ModalResultField.acc] = 0.SI<MeterPerSquareSecond>();
-				modData[ModalResultField.P_eng_out] = (i % 2 == 0 ? 1 : -1) * powerDemand[i % powerDemand.Length];
+				modData[ModalResultField.P_ice_out] = (i % 2 == 0 ? 1 : -1) * powerDemand[i % powerDemand.Length];
 
-				modData[ModalResultField.P_eng_fcmap] = 0.SI<Watt>();
-
+				modData[ModalResultField.P_ice_fcmap] = 0.SI<Watt>();
+				modData[ModalResultField.FCFinal] = 0.SI<KilogramPerSecond>();
+				modData[ModalResultField.ICEOn] = false;
 				modData.CommitSimulationStep();
 			}
 
-			sumWriter.Write(modData, 0, 0, new MockRunData());
+			sumWriter.Write(modData, 0, 0, rundata);
 
 			modData.Finish(VectoRun.Status.Success);
 			sumWriter.Finish();
@@ -194,46 +236,47 @@ namespace TUGraz.VectoCore.Tests.Reports
 				File.Delete(writer.SumFileName);
 			}
 
-			var runsFactory = new SimulatorFactory(ExecutionMode.Declaration, dataProvider, writer, xmlReport) {
-				WriteModalResults = false,
-				Validate = false,
-			};
+			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, dataProvider, writer, xmlReport);
+			runsFactory.WriteModalResults = false;
+			runsFactory.Validate = false;
 			jobContainer.AddRuns(runsFactory);
 			jobContainer.Execute();
 			jobContainer.WaitFinished();
 
 			var sumRow = sumData.Table.Rows[1];
-			Assert.AreEqual(dataProvider.JobInputData.Vehicle.Manufacturer, sumRow[SummaryDataContainer.VEHICLE_MANUFACTURER]);
-			Assert.AreEqual(dataProvider.JobInputData.Vehicle.Model, sumRow[SummaryDataContainer.VEHICLE_MODEL]);
-			Assert.AreEqual(dataProvider.JobInputData.Vehicle.VIN, sumRow[SummaryDataContainer.VIN_NUMBER]);
+			Assert.AreEqual(dataProvider.JobInputData.Vehicle.Manufacturer, sumRow[SummaryDataContainer.Fields.VEHICLE_MANUFACTURER]);
+			Assert.AreEqual(dataProvider.JobInputData.Vehicle.Model, sumRow[SummaryDataContainer.Fields.VEHICLE_MODEL]);
+			Assert.AreEqual(dataProvider.JobInputData.Vehicle.VIN, sumRow[SummaryDataContainer.Fields.VIN_NUMBER]);
 			Assert.AreEqual(dataProvider.JobInputData.Vehicle.Components.EngineInputData.Manufacturer,
-				sumRow[SummaryDataContainer.ENGINE_MANUFACTURER]);
-			Assert.AreEqual(dataProvider.JobInputData.Vehicle.Components.EngineInputData.Model, sumRow[SummaryDataContainer.ENGINE_MODEL]);
-			Assert.AreEqual(dataProvider.JobInputData.Vehicle.Components.EngineInputData.FuelType.ToXMLFormat(),
-				sumRow[SummaryDataContainer.ENGINE_FUEL_TYPE]);
+				sumRow[SummaryDataContainer.Fields.ENGINE_MANUFACTURER]);
+			Assert.AreEqual(dataProvider.JobInputData.Vehicle.Components.EngineInputData.Model, sumRow[SummaryDataContainer.Fields.ENGINE_MODEL]);
+			Assert.AreEqual(dataProvider.JobInputData.Vehicle.Components.EngineInputData.EngineModes.First().Fuels.First().FuelType.ToXMLFormat(),
+				sumRow[SummaryDataContainer.Fields.ENGINE_FUEL_TYPE]);
+			Assert.AreEqual(dataProvider.JobInputData.Vehicle.Components.EngineInputData.EngineModes.First().Fuels.First().FuelType.ToXMLFormat(),
+				sumRow[SummaryDataContainer.Fields.VEHICLE_FUEL_TYPE]);
 			Assert.AreEqual((dataProvider.JobInputData.Vehicle.Components.EngineInputData.RatedPowerDeclared.ConvertToKiloWatt()),
-				((ConvertedSI)sumRow[SummaryDataContainer.ENGINE_RATED_POWER]));
+				((ConvertedSI)sumRow[SummaryDataContainer.Fields.ENGINE_RATED_POWER]));
 			Assert.AreEqual(dataProvider.JobInputData.Vehicle.Components.EngineInputData.RatedSpeedDeclared.AsRPM,
-				(double)((ConvertedSI)sumRow[SummaryDataContainer.ENGINE_RATED_SPEED]));
+				(double)((ConvertedSI)sumRow[SummaryDataContainer.Fields.ENGINE_RATED_SPEED]));
 			Assert.AreEqual(dataProvider.JobInputData.Vehicle.Components.EngineInputData.Displacement.ConvertToCubicCentiMeter(),
-				((ConvertedSI)sumRow[SummaryDataContainer.ENGINE_DISPLACEMENT]));
+				((ConvertedSI)sumRow[SummaryDataContainer.Fields.ENGINE_DISPLACEMENT]));
 			Assert.AreEqual(dataProvider.JobInputData.Vehicle.Components.GearboxInputData.Manufacturer,
-				sumRow[SummaryDataContainer.GEARBOX_MANUFACTURER]);
-			Assert.AreEqual(dataProvider.JobInputData.Vehicle.Components.GearboxInputData.Model, sumRow[SummaryDataContainer.GEARBOX_MODEL]);
+				sumRow[SummaryDataContainer.Fields.GEARBOX_MANUFACTURER]);
+			Assert.AreEqual(dataProvider.JobInputData.Vehicle.Components.GearboxInputData.Model, sumRow[SummaryDataContainer.Fields.GEARBOX_MODEL]);
 			Assert.AreEqual(dataProvider.JobInputData.Vehicle.Components.AxleGearInputData.Manufacturer,
-				sumRow[SummaryDataContainer.AXLE_MANUFACTURER]);
-			Assert.AreEqual(dataProvider.JobInputData.Vehicle.Components.AxleGearInputData.Model, sumRow[SummaryDataContainer.AXLE_MODEL]);
+				sumRow[SummaryDataContainer.Fields.AXLE_MANUFACTURER]);
+			Assert.AreEqual(dataProvider.JobInputData.Vehicle.Components.AxleGearInputData.Model, sumRow[SummaryDataContainer.Fields.AXLE_MODEL]);
 
-			Assert.AreEqual(dataProvider.JobInputData.Vehicle.Components.EngineInputData.ColdHotBalancingFactor,
-				sumRow[SummaryDataContainer.ENGINE_BF_COLD_HOT]);
-			Assert.AreEqual(dataProvider.JobInputData.Vehicle.Components.EngineInputData.CorrectionFactorRegPer,
-				sumRow[SummaryDataContainer.ENGINE_CF_REG_PER]);
-			Assert.AreEqual(dataProvider.JobInputData.Vehicle.Components.EngineInputData.WHTCRural,
-				sumRow[SummaryDataContainer.ENGINE_WHTC_RURAL]);
-			Assert.AreEqual(dataProvider.JobInputData.Vehicle.Components.EngineInputData.WHTCUrban,
-				sumRow[SummaryDataContainer.ENGINE_WHTC_URBAN]);
-			Assert.AreEqual(dataProvider.JobInputData.Vehicle.Components.EngineInputData.WHTCMotorway,
-				sumRow[SummaryDataContainer.ENGINE_WHTC_MOTORWAY]);
+			Assert.AreEqual(dataProvider.JobInputData.Vehicle.Components.EngineInputData.EngineModes.First().Fuels.First().ColdHotBalancingFactor,
+				sumRow[SummaryDataContainer.Fields.ENGINE_BF_COLD_HOT].ToString().ToDouble());
+			Assert.AreEqual(dataProvider.JobInputData.Vehicle.Components.EngineInputData.EngineModes.First().Fuels.First().CorrectionFactorRegPer,
+				sumRow[SummaryDataContainer.Fields.ENGINE_CF_REG_PER].ToString().ToDouble());
+			Assert.AreEqual(dataProvider.JobInputData.Vehicle.Components.EngineInputData.EngineModes.First().Fuels.First().WHTCRural,
+				sumRow[SummaryDataContainer.Fields.ENGINE_WHTC_RURAL].ToString().ToDouble());
+			Assert.AreEqual(dataProvider.JobInputData.Vehicle.Components.EngineInputData.EngineModes.First().Fuels.First().WHTCUrban,
+				sumRow[SummaryDataContainer.Fields.ENGINE_WHTC_URBAN].ToString().ToDouble());
+			Assert.AreEqual(dataProvider.JobInputData.Vehicle.Components.EngineInputData.EngineModes.First().Fuels.First().WHTCMotorway,
+				sumRow[SummaryDataContainer.Fields.ENGINE_WHTC_MOTORWAY].ToString().ToDouble());
 		}
 
 
@@ -251,10 +294,9 @@ namespace TUGraz.VectoCore.Tests.Reports
 
 			var writer = new FileOutputWriter(jobFile);
 			var inputData = xmlInputReader.CreateDeclaration(jobFile);
-			var factory = new SimulatorFactory(ExecutionMode.Declaration, inputData, writer) {
-				WriteModalResults = true,
-				ActualModalData = true
-			};
+			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, writer);
+			factory.WriteModalResults = true;
+			factory.ActualModalData = true;
 			var sumWriter = new SummaryDataContainer(writer);
 			var jobContainer = new JobContainer(sumWriter);
 
@@ -283,10 +325,9 @@ namespace TUGraz.VectoCore.Tests.Reports
 
 			var writer = new FileOutputWriter(jobFile);
 			var inputData = xmlInputReader.CreateDeclaration(jobFile);
-			var factory = new SimulatorFactory(ExecutionMode.Declaration, inputData, writer) {
-				WriteModalResults = true,
-				ActualModalData = true
-			};
+			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, writer);
+			factory.WriteModalResults = true;
+			factory.ActualModalData = true;
 			var sumWriter = new SummaryDataContainer(writer);
 			var jobContainer = new JobContainer(sumWriter);
 

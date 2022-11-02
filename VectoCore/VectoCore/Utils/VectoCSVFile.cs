@@ -75,7 +75,7 @@ namespace TUGraz.VectoCore.Utils
 		public static TableData Read(string fileName, bool ignoreEmptyColumns = false, bool fullHeader = false)
 		{
 			try {
-				using (var fs = new StreamReader(File.OpenRead(fileName))) {
+				using (var fs = File.OpenText(fileName)) {
 					var retVal = new TableData(fileName);
 					ReadCSV(retVal, fs, ignoreEmptyColumns, fullHeader);
 					return retVal;
@@ -120,11 +120,10 @@ namespace TUGraz.VectoCore.Utils
 				.Select(l => l.Contains(Comment) ? l.Substring(0, l.IndexOf(Comment, StringComparison.Ordinal)) : l)
 				.ToArray();
 
-			double tmp;
 			var columns = colsWithoutComment
 				.Select(l => fullHeader ? l : HeaderFilter.Replace(l, ""))
 				.Select(l => l.Trim())
-				.Where(col => !double.TryParse(col, NumberStyles.Any, CultureInfo.InvariantCulture, out tmp))
+				.Where(col => !double.TryParse(col, NumberStyles.Any, CultureInfo.InvariantCulture, out _))
 				.Distinct()
 				.ToList();
 
@@ -155,8 +154,8 @@ namespace TUGraz.VectoCore.Utils
 				firstLineIsData = false;
 				if (table.Columns.Count != cells.Length && !ignoreEmptyColumns) {
 					throw new CSVReadException(
-						string.Format("Line {0}: The number of values is not correct. Expected {1} Columns, Got {2} Columns",
-							lineNumber, table.Columns.Count, cells.Length));
+						$"Line {lineNumber}: The number of values is not correct. " +
+						$"Expected {table.Columns.Count} Columns, Got {cells.Length} Columns");
 				}
 
 				try {
@@ -164,7 +163,7 @@ namespace TUGraz.VectoCore.Utils
 					table.Rows.Add(cells);
 				} catch (InvalidCastException e) {
 					throw new CSVReadException(
-						string.Format("Line {0}: The data format of a value is not correct. {1}", lineNumber, e.Message), e);
+						$"Line {lineNumber}: The data format of a value is not correct. {e.Message}", e);
 				}
 				lineNumber++;
 			}
@@ -203,14 +202,13 @@ namespace TUGraz.VectoCore.Utils
 			var entries = new List<string>();
 			if (addVersionHeader) {
 				try {
-					entries.Add(string.Format("# VECTO {0} - {1}", VectoSimulationCore.VersionNumber,
-						DateTime.Now.ToString("dd.MM.yyyy HH:mm")));
+					entries.Add($"# VECTO{VectoSimulationCore.BranchSuffix} {VectoSimulationCore.VersionNumber} - {DateTime.Now:dd.MM.yyyy HH:mm}");
 				} catch (Exception) {
-					entries.Add(string.Format("# VECTO {0} - {1}", "Unknown", DateTime.Now.ToString("dd.MM.yyyy HH:mm")));
+					entries.Add($"# VECTO Unknown - {DateTime.Now:dd.MM.yyyy HH:mm}");
 				}
 			}
 			var header = table.Columns.Cast<DataColumn>().Select(col => col.Caption ?? col.ColumnName);
-			entries.Add(string.Join(Delimiter, header));
+			entries.Add(header.Join(Delimiter));
 
 			var columnFormatter = new Func<ConvertedSI, string>[table.Columns.Count];
 			for (var i = 0; i < table.Columns.Count; i++) {
@@ -232,21 +230,23 @@ namespace TUGraz.VectoCore.Utils
 					} else if (items[i] is ConvertedSI) {
 						// todo mk-2017-10-02: maybe we also have to use decimals and showUnit from columnFormatter here?
 						formattedList[i] = columnFormatter[i]((ConvertedSI)items[i]);
+					} else if(items[i] is bool) {
+						formattedList[i] = (bool)items[i] ? "1" : "0";
 					} else {
 						formattedList[i] = string.Format(CultureInfo.InvariantCulture, "{0}", items[i]);
 					}
 
 					// if a string contains a "," then it has to be contained in quotes in order to be correctly recognized in a CSV file.
 					if (formattedList[i].Contains(Delimiter)) {
-						formattedList[i] = string.Format("\"{0}\"", formattedList[i]);
+						formattedList[i] = $"\"{formattedList[i]}\"";
 					}
 				}
-				entries.Add(string.Join(Delimiter, formattedList));
+				entries.Add(formattedList.Join(Delimiter));
 			}
 
 			if (addDigest) {
 				var digest = DataIntegrityHelper.ComputeDigestValue(entries.Where(x => !x.StartsWith(DigestValuePrefix)).ToArray());
-				entries.Add(string.Format("{0} {1}", DigestValuePrefix, digest));
+				entries.Add($"{DigestValuePrefix} {digest}");
 			}
 
 			foreach (var entry in entries) {

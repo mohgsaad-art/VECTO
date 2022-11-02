@@ -29,21 +29,29 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using System.IO;
+using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
+using TUGraz.VectoCore.Models.Simulation.Data;
+using TUGraz.VectoCore.Models.SimulationComponent.Data;
+using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
 using TUGraz.VectoCore.Tests.Utils;
+
 
 namespace TUGraz.VectoCore.Tests.FileIO
 {
 	[TestFixture]
+	[Parallelizable(ParallelScope.All)]
 	public class JsonReadTest
 	{
 		private const string TestJobFile = @"Testdata\Jobs\40t_Long_Haul_Truck.vecto";
@@ -111,8 +119,11 @@ namespace TUGraz.VectoCore.Tests.FileIO
 			((JObject)json["Body"]).Property("Aux").Remove();
 
 			// MK,2016-01-20: Changed for PWheel: aux entry may be missing, and that is ok.
+			// MQ,2021-03-02: refactoring aux: remove mapping and only have 3 fixed values
 			var tmp = new JSONInputDataV2(json, TestJobFile).JobInputData.Vehicle.Components.AuxiliaryInputData.Auxiliaries;
-			Assert.IsTrue(tmp.Count == 0);
+			Assert.AreEqual(0, tmp.ConstantPowerDemand.Value());
+			Assert.AreEqual(0, tmp.PowerDemandICEOffDriving.Value());
+			Assert.AreEqual(0, tmp.PowerDemandICEOffStandstill.Value());
 		}
 
 		[TestCase]
@@ -156,7 +167,7 @@ namespace TUGraz.VectoCore.Tests.FileIO
 
 			AssertHelper.Exception<VectoException>(
 				() => {
-					var tmp = ((IEngineeringInputDataProvider)new JSONInputDataV2(json, TestJobFile)).DriverInputData.OverSpeedEcoRoll;
+					var tmp = ((IEngineeringInputDataProvider)new JSONInputDataV2(json, TestJobFile)).DriverInputData.OverSpeedData;
 				},
 				"Key OverSpeedEcoRoll not found");
 		}
@@ -171,10 +182,26 @@ namespace TUGraz.VectoCore.Tests.FileIO
 			for (int i = 0; i < ratios.Length; i++) {
 				Assert.AreEqual(ratios[i], inputProvider.Gears[i].Ratio);
 			}
-			var gbxData = new EngineeringDataAdapter().CreateGearboxData(inputProvider,
-				MockSimulationDataFactory.CreateEngineDataFromFile(@"TestData\Components\AT_GBX\Engine.veng", 0),
-				(IGearshiftEngineeringInputData)inputProvider, 2.1,
-				0.5.SI<Meter>(), VehicleCategory.RigidTruck, (ITorqueConverterEngineeringInputData)inputProvider);
+
+			var gbxData = new EngineeringDataAdapter().CreateGearboxData(
+				new MockEngineeringInputProvider() {
+					DriverInputData = new MockDriverTestInputData() {
+						GearshiftInputData = (IGearshiftEngineeringInputData)inputProvider
+					},
+					JobInputData = new MockJobTestInputData() {
+						Vehicle = new MockEngineeringVehicleInputData() {
+							GearboxInputData = inputProvider,
+							TorqueConverterInputData = (ITorqueConverterEngineeringInputData)inputProvider,
+						}
+					}
+				}, new VectoRunData() {
+					EngineData = MockSimulationDataFactory.CreateEngineDataFromFile(@"TestData\Components\AT_GBX\Engine.veng", 0),
+					VehicleData = new VehicleData() {
+						VehicleCategory = VehicleCategory.RigidTruck,
+						DynamicTyreRadius = 0.5.SI<Meter>()
+					},
+					AxleGearData = new AxleGearData() { AxleGear = new TransmissionData() { Ratio = 2.1} }
+				}, null);
 			Assert.AreEqual(ratios.Length, gbxData.Gears.Count);
 
 			// interpreted as gearbox with first and second gear using TC (due to gear ratios)
@@ -196,10 +223,31 @@ namespace TUGraz.VectoCore.Tests.FileIO
 			for (int i = 0; i < ratios.Length; i++) {
 				Assert.AreEqual(ratios[i], inputProvider.Gears[i].Ratio);
 			}
-			var gbxData = new EngineeringDataAdapter().CreateGearboxData(inputProvider,
-				MockSimulationDataFactory.CreateEngineDataFromFile(@"TestData\Components\AT_GBX\Engine.veng", 0),
-				(IGearshiftEngineeringInputData)inputProvider, 2.1,
-				0.5.SI<Meter>(), VehicleCategory.RigidTruck, (ITorqueConverterEngineeringInputData)inputProvider);
+
+			var gbxData = new EngineeringDataAdapter().CreateGearboxData(
+				new MockEngineeringInputProvider() {
+					DriverInputData = new MockDriverTestInputData() {
+						GearshiftInputData = (IGearshiftEngineeringInputData)inputProvider
+					},
+					JobInputData = new MockJobTestInputData() {
+						Vehicle = new MockEngineeringVehicleInputData() {
+							GearboxInputData = inputProvider,
+							TorqueConverterInputData = (ITorqueConverterEngineeringInputData)inputProvider,
+						}
+					}
+				}, new VectoRunData() {
+					EngineData = MockSimulationDataFactory.CreateEngineDataFromFile(@"TestData\Components\AT_GBX\Engine.veng", 0),
+					VehicleData = new VehicleData() {
+						VehicleCategory = VehicleCategory.RigidTruck,
+						DynamicTyreRadius = 0.5.SI<Meter>()
+					},
+					AxleGearData = new AxleGearData() { AxleGear = new TransmissionData() { Ratio = 2.1 } }
+				}, null);
+
+				//inputProvider,
+				//MockSimulationDataFactory.CreateEngineDataFromFile(@"TestData\Components\AT_GBX\Engine.veng", 0),
+				//(IGearshiftEngineeringInputData)inputProvider, 2.1,
+				//0.5.SI<Meter>(), VehicleCategory.RigidTruck, (ITorqueConverterEngineeringInputData)inputProvider, null, null);
 			Assert.AreEqual(ratios.Length, gbxData.Gears.Count);
 
 			Assert.IsTrue(gbxData.Gears[1].HasLockedGear);
@@ -223,10 +271,31 @@ namespace TUGraz.VectoCore.Tests.FileIO
 			for (int i = 0; i < ratios.Length; i++) {
 				Assert.AreEqual(ratios[i], inputProvider.Gears[i].Ratio);
 			}
-			var gbxData = new EngineeringDataAdapter().CreateGearboxData(inputProvider,
-				MockSimulationDataFactory.CreateEngineDataFromFile(@"TestData\Components\AT_GBX\Engine.veng", 0),
-				(IGearshiftEngineeringInputData)inputProvider, 2.1,
-				0.5.SI<Meter>(), VehicleCategory.RigidTruck, (ITorqueConverterEngineeringInputData)inputProvider);
+
+			var gbxData = new EngineeringDataAdapter().CreateGearboxData(
+				new MockEngineeringInputProvider() {
+					DriverInputData = new MockDriverTestInputData() {
+						GearshiftInputData = (IGearshiftEngineeringInputData)inputProvider
+					},
+					JobInputData = new MockJobTestInputData() {
+						Vehicle = new MockEngineeringVehicleInputData() {
+							GearboxInputData = inputProvider,
+							TorqueConverterInputData = (ITorqueConverterEngineeringInputData)inputProvider,
+						}
+					}
+				}, new VectoRunData() {
+					EngineData = MockSimulationDataFactory.CreateEngineDataFromFile(@"TestData\Components\AT_GBX\Engine.veng", 0),
+					VehicleData = new VehicleData() {
+						VehicleCategory = VehicleCategory.RigidTruck,
+						DynamicTyreRadius = 0.5.SI<Meter>()
+					},
+					AxleGearData = new AxleGearData() { AxleGear = new TransmissionData() { Ratio = 2.1 } }
+				}, null);
+
+				//inputProvider,
+				//MockSimulationDataFactory.CreateEngineDataFromFile(@"TestData\Components\AT_GBX\Engine.veng", 0),
+				//(IGearshiftEngineeringInputData)inputProvider, 2.1,
+				//0.5.SI<Meter>(), VehicleCategory.RigidTruck, (ITorqueConverterEngineeringInputData)inputProvider, null, null);
 			Assert.AreEqual(ratios.Length, gbxData.Gears.Count);
 
 			Assert.IsTrue(gbxData.Gears[1].HasLockedGear);
@@ -249,10 +318,30 @@ namespace TUGraz.VectoCore.Tests.FileIO
 			for (int i = 0; i < ratios.Length; i++) {
 				Assert.AreEqual(ratios[i], inputProvider.Gears[i].Ratio);
 			}
-			var gbxData = new EngineeringDataAdapter().CreateGearboxData(inputProvider,
-				MockSimulationDataFactory.CreateEngineDataFromFile(@"TestData\Components\AT_GBX\Engine.veng", 0),
-				(IGearshiftEngineeringInputData)inputProvider, 2.1,
-				0.5.SI<Meter>(), VehicleCategory.RigidTruck, (ITorqueConverterEngineeringInputData)inputProvider);
+
+			var gbxData = new EngineeringDataAdapter().CreateGearboxData(
+				new MockEngineeringInputProvider() {
+					DriverInputData = new MockDriverTestInputData() {
+						GearshiftInputData = (IGearshiftEngineeringInputData)inputProvider
+					},
+					JobInputData = new MockJobTestInputData() {
+						Vehicle = new MockEngineeringVehicleInputData() {
+							GearboxInputData = inputProvider,
+							TorqueConverterInputData = (ITorqueConverterEngineeringInputData)inputProvider,
+						}
+					}
+				}, new VectoRunData() {
+					EngineData = MockSimulationDataFactory.CreateEngineDataFromFile(@"TestData\Components\AT_GBX\Engine.veng", 0),
+					VehicleData = new VehicleData() {
+						VehicleCategory = VehicleCategory.RigidTruck,
+						DynamicTyreRadius = 0.5.SI<Meter>()
+					},
+					AxleGearData = new AxleGearData() { AxleGear = new TransmissionData() { Ratio = 2.1 } }
+				}, null);
+				//inputProvider,
+				//MockSimulationDataFactory.CreateEngineDataFromFile(@"TestData\Components\AT_GBX\Engine.veng", 0),
+				//(IGearshiftEngineeringInputData)inputProvider, 2.1,
+				//0.5.SI<Meter>(), VehicleCategory.RigidTruck, (ITorqueConverterEngineeringInputData)inputProvider, null, null);
 			Assert.AreEqual(ratios.Length, gbxData.Gears.Count);
 
 			Assert.IsFalse(gbxData.Gears[1].HasLockedGear);
@@ -277,10 +366,30 @@ namespace TUGraz.VectoCore.Tests.FileIO
 			for (int i = 0; i < ratios.Length; i++) {
 				Assert.AreEqual(ratios[i], inputProvider.Gears[i].Ratio);
 			}
-			var gbxData = new EngineeringDataAdapter().CreateGearboxData(inputProvider,
-				MockSimulationDataFactory.CreateEngineDataFromFile(@"TestData\Components\AT_GBX\Engine.veng", 0),
-				(IGearshiftEngineeringInputData)inputProvider, 2.1,
-				0.5.SI<Meter>(), VehicleCategory.InterurbanBus, (ITorqueConverterEngineeringInputData)inputProvider);
+
+			var gbxData = new EngineeringDataAdapter().CreateGearboxData(
+				new MockEngineeringInputProvider() {
+					DriverInputData = new MockDriverTestInputData() {
+						GearshiftInputData = (IGearshiftEngineeringInputData)inputProvider
+					},
+					JobInputData = new MockJobTestInputData() {
+						Vehicle = new MockEngineeringVehicleInputData() {
+							GearboxInputData = inputProvider,
+							TorqueConverterInputData = (ITorqueConverterEngineeringInputData)inputProvider,
+						}
+					}
+				}, new VectoRunData() {
+					EngineData = MockSimulationDataFactory.CreateEngineDataFromFile(@"TestData\Components\AT_GBX\Engine.veng", 0),
+					VehicleData = new VehicleData() {
+						VehicleCategory = VehicleCategory.HeavyBusPrimaryVehicle,
+						DynamicTyreRadius = 0.5.SI<Meter>()
+					},
+					AxleGearData = new AxleGearData() { AxleGear = new TransmissionData() { Ratio = 2.1 } }
+				}, null);
+				//inputProvider,
+				//MockSimulationDataFactory.CreateEngineDataFromFile(@"TestData\Components\AT_GBX\Engine.veng", 0),
+				//(IGearshiftEngineeringInputData)inputProvider, 2.1,
+				//0.5.SI<Meter>(), VehicleCategory.InterurbanBus, (ITorqueConverterEngineeringInputData)inputProvider, null, null);
 			Assert.AreEqual(ratios.Length, gbxData.Gears.Count);
 
 			Assert.IsTrue(gbxData.Gears[1].HasLockedGear);
@@ -305,10 +414,31 @@ namespace TUGraz.VectoCore.Tests.FileIO
 			for (int i = 0; i < ratios.Length; i++) {
 				Assert.AreEqual(ratios[i], inputProvider.Gears[i].Ratio);
 			}
-			var gbxData = new EngineeringDataAdapter().CreateGearboxData(inputProvider,
-				MockSimulationDataFactory.CreateEngineDataFromFile(@"TestData\Components\AT_GBX\Engine.veng", 0),
-				(IGearshiftEngineeringInputData)inputProvider, 2.1,
-				0.5.SI<Meter>(), VehicleCategory.InterurbanBus, (ITorqueConverterEngineeringInputData)inputProvider);
+
+			var gbxData = new EngineeringDataAdapter().CreateGearboxData(
+				new MockEngineeringInputProvider() {
+					DriverInputData = new MockDriverTestInputData() {
+						GearshiftInputData = (IGearshiftEngineeringInputData)inputProvider
+					},
+					JobInputData = new MockJobTestInputData() {
+						Vehicle = new MockEngineeringVehicleInputData() {
+							GearboxInputData = inputProvider,
+							TorqueConverterInputData = (ITorqueConverterEngineeringInputData)inputProvider,
+						}
+					}
+				}, new VectoRunData() {
+					EngineData = MockSimulationDataFactory.CreateEngineDataFromFile(@"TestData\Components\AT_GBX\Engine.veng", 0),
+					VehicleData = new VehicleData() {
+						VehicleCategory = VehicleCategory.RigidTruck,
+						DynamicTyreRadius = 0.5.SI<Meter>()
+					},
+					AxleGearData = new AxleGearData() { AxleGear = new TransmissionData() { Ratio = 2.1 } }
+				}, null);
+				
+				//inputProvider,
+				//MockSimulationDataFactory.CreateEngineDataFromFile(@"TestData\Components\AT_GBX\Engine.veng", 0),
+				//(IGearshiftEngineeringInputData)inputProvider, 2.1,
+				//0.5.SI<Meter>(), VehicleCategory.InterurbanBus, (ITorqueConverterEngineeringInputData)inputProvider, null, null);
 			Assert.AreEqual(ratios.Length, gbxData.Gears.Count);
 
 			Assert.IsFalse(gbxData.Gears[1].HasLockedGear);
@@ -349,6 +479,189 @@ namespace TUGraz.VectoCore.Tests.FileIO
 			Assert.AreEqual(3.5, angleGear["Ratio"].Value<double>());
 			Assert.AreEqual("AngleGear.vtlm", angleGear["LossMap"].Value<string>());
 		}
+
+
+		[TestCase]
+		public void JSON_Read_HeavyBus()
+		{
+			var inputProvider = (IDeclarationInputDataProvider)JSONInputDataFactory.ReadJsonJob(@"TestData\Generic Vehicles\Engineering Mode\HeavyBusPrimary\HeavyBusPrimary_DECL.vecto");
+			var busAux = inputProvider.JobInputData.Vehicle.Components.BusAuxiliaries;
+
+			Assert.AreEqual("Electrically driven - Electronically controlled", busAux.FanTechnology);
+
+			Assert.AreEqual(1, busAux.SteeringPumpTechnology.Count);
+			Assert.AreEqual("Dual displacement with mech. control", busAux.SteeringPumpTechnology[0]);
+
+
+			Assert.AreEqual(1, busAux.ElectricSupply.Alternators.Count);
+			//Assert.AreEqual("standard alternator", busAux.ElectricSupply.Alternators[0].Technology);
+			Assert.AreEqual(AlternatorType.Conventional, busAux.ElectricSupply.AlternatorTechnology);
+
+			Assert.AreEqual("", busAux.PneumaticSupply.CompressorSize);
+			Assert.AreEqual(1.0, busAux.PneumaticSupply.Ratio);
+
+			Assert.AreEqual(ConsumerTechnology.Mechanically, busAux.PneumaticConsumers.AirsuspensionControl);
+			Assert.AreEqual(ConsumerTechnology.Pneumatically, busAux.PneumaticConsumers.AdBlueDosing);
+
+			Assert.AreEqual(true, busAux.HVACAux.AdjustableCoolantThermostat);
+			Assert.AreEqual(true, busAux.HVACAux.EngineWasteGasHeatExchanger);
+		}
+
+		[TestCase()]
+		public void JSON_Read_IEPC()
+		{
+			var inputProvider = new JSONComponentInputData(@"TestData\BatteryElectric\IEPC\GenericIEPC.viepc", null);
+			var iepcData = (IIEPCEngineeringInputData)inputProvider.IEPC;
+
+			Assert.AreEqual("3", iepcData.AppVersion);
+			Assert.AreEqual(DateTime.MinValue, iepcData.Date);
+
+			Assert.AreEqual(false, iepcData.SavedInDeclarationMode);
+			Assert.AreEqual("Generic IEPC", iepcData.Model);
+			Assert.AreEqual(0.15.SI<KilogramSquareMeter>(), iepcData.Inertia);
+			Assert.AreEqual(false, iepcData.DifferentialIncluded);
+			Assert.AreEqual(false, iepcData.DesignTypeWheelMotor);
+			Assert.AreEqual(1, iepcData.NrOfDesignTypeWheelMotorMeasured);
+			Assert.AreEqual(0.9, iepcData.OverloadRecoveryFactor);
+
+			TestIEPCGears(iepcData.Gears);
+			TestIEPCVoltageLevel(iepcData.VoltageLevels);
+			TestDragCurve(iepcData.DragCurves);
+		}
+
+		private void TestDragCurve(IList<IDragCurve> dragCurvesData)
+		{
+			Assert.AreEqual(3, dragCurvesData.Count);
+
+			var dragCurve = dragCurvesData[0];
+			Assert.AreEqual(1, dragCurve.Gear);
+			Assert.IsNotNull(dragCurve.DragCurve);
+
+			dragCurve = dragCurvesData[1];
+			Assert.AreEqual(2, dragCurve.Gear);
+			Assert.IsNotNull(dragCurve.DragCurve);
+
+			dragCurve = dragCurvesData[2];
+			Assert.AreEqual(3, dragCurve.Gear);
+			Assert.IsNotNull(dragCurve.DragCurve);
+		}
+
+		private void TestIEPCGears(IList<IGearEntry> gears)
+		{
+			Assert.AreEqual(3, gears.Count);
+
+			var gear = gears[0];
+			Assert.AreEqual(1, gear.GearNumber);
+			Assert.AreEqual(3.2, gear.Ratio);
+			Assert.AreEqual(10000.SI<NewtonMeter>(), gear.MaxOutputShaftTorque);
+			Assert.AreEqual(5000.SI<PerSecond>(), gear.MaxOutputShaftSpeed);
+
+			gear = gears[1];
+			Assert.AreEqual(2, gear.GearNumber);
+			Assert.AreEqual(1.6, gear.Ratio);
+			Assert.AreEqual(10000.SI<NewtonMeter>(), gear.MaxOutputShaftTorque);
+			Assert.AreEqual(5000.SI<PerSecond>(), gear.MaxOutputShaftSpeed);
+
+			gear = gears[2];
+			Assert.AreEqual(3, gear.GearNumber);
+			Assert.AreEqual(1.6, gear.Ratio);
+			Assert.AreEqual(10000.SI<NewtonMeter>(), gear.MaxOutputShaftTorque);
+			Assert.AreEqual(5000.SI<PerSecond>(), gear.MaxOutputShaftSpeed);
+		}
+		
+		private void TestIEPCVoltageLevel(IList<IElectricMotorVoltageLevel> voltageLevels)
+		{
+			Assert.AreEqual(2, voltageLevels.Count);
+			
+			var voltageLevel = voltageLevels[0];
+			Assert.AreEqual(400.SI<Volt>(), voltageLevel.VoltageLevel);
+			Assert.AreEqual(200.SI<NewtonMeter>(), voltageLevel.ContinuousTorque);
+			Assert.AreEqual(2000.RPMtoRad(), voltageLevel.ContinuousTorqueSpeed);
+			Assert.AreEqual(500.SI<NewtonMeter>(), voltageLevel.OverloadTorque);
+			Assert.AreEqual(2000.RPMtoRad(), voltageLevel.OverloadTestSpeed);
+			Assert.AreEqual(60.SI<Second>(), voltageLevel.OverloadTime);
+			Assert.IsNotNull(voltageLevel.FullLoadCurve);
+			TestPowerMap(voltageLevel.PowerMap);
+
+			voltageLevel = voltageLevels[1];
+			Assert.AreEqual(800.SI<Volt>(), voltageLevel.VoltageLevel);
+			Assert.AreEqual(200.SI<NewtonMeter>(), voltageLevel.ContinuousTorque);
+			Assert.AreEqual(2000.RPMtoRad(), voltageLevel.ContinuousTorqueSpeed);
+			Assert.AreEqual(500.SI<NewtonMeter>(), voltageLevel.OverloadTorque);
+			Assert.AreEqual(2000.RPMtoRad(), voltageLevel.OverloadTestSpeed);
+			Assert.AreEqual(60.SI<Second>(), voltageLevel.OverloadTime);
+			Assert.IsNotNull(voltageLevel.FullLoadCurve);
+			TestPowerMap(voltageLevel.PowerMap);
+		}
+
+		private void TestPowerMap(IList<IElectricMotorPowerMap> powerMapData)
+		{
+			Assert.AreEqual(3, powerMapData.Count);
+
+			var powerMap = powerMapData[0];
+			Assert.AreEqual(1, powerMap.Gear);
+			Assert.IsNotNull(powerMap.PowerMap);
+
+			powerMap = powerMapData[1];
+			Assert.AreEqual(2, powerMap.Gear);
+			Assert.IsNotNull(powerMap.PowerMap);
+
+			powerMap = powerMapData[2];
+			Assert.AreEqual(3, powerMap.Gear);
+			Assert.IsNotNull(powerMap.PowerMap);
+		}
+	}
+
+	public class MockDriverTestInputData : IDriverEngineeringInputData {
+		#region Implementation of IDriverDeclarationInputData
+
+		public bool SavedInDeclarationMode { get; }
+
+		#endregion
+
+		#region Implementation of IDriverEngineeringInputData
+
+		public IOverSpeedEngineeringInputData OverSpeedData { get; set; }
+		public IDriverAccelerationData AccelerationCurve { get; set; }
+		public ILookaheadCoastingInputData Lookahead { get; set; }
+		public IGearshiftEngineeringInputData GearshiftInputData { get; set; }
+		public IEngineStopStartEngineeringInputData EngineStopStartData { get; set; }
+		public IEcoRollEngineeringInputData EcoRollData { get; set; }
+		public IPCCEngineeringInputData PCCData { get; set; }
+
+		#endregion
+	}
+
+	public class MockJobTestInputData : IEngineeringJobInputData {
+		#region Implementation of IDeclarationJobInputData
+
+		public bool SavedInDeclarationMode { get; set; }
+		public IVehicleEngineeringInputData Vehicle { get; set; }
+		public IHybridStrategyParameters HybridStrategyParameters { get; }
+		public IList<ICycleData> Cycles { get; set; }
+		public VectoSimulationJobType JobType { get; set; }
+		public IEngineEngineeringInputData EngineOnly { get; set; }
+
+		IVehicleDeclarationInputData IDeclarationJobInputData.Vehicle => Vehicle;
+
+		public string JobName { get; set; }
+		
+		#endregion
+	}
+
+	public class MockEngineeringInputProvider : IEngineeringInputDataProvider {
+		#region Implementation of IInputDataProvider
+
+		public DataSource DataSource { get; }
+
+		#endregion
+
+		#region Implementation of IEngineeringInputDataProvider
+
+		public IEngineeringJobInputData JobInputData { get; set; }
+		public IDriverEngineeringInputData DriverInputData { get; set; }
+
+		#endregion
 	}
 
 	//	[TestFixture]

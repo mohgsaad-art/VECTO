@@ -1,0 +1,63 @@
+{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2020-10-09T08:18:42.8238326Z",
+    "AppVersion": "3",
+    "FileVersion": 5
+  },
+  "Body": {
+    "SavedInDeclMode": false,
+    "Model": "Generic IHPC",
+    "DragCurve": "GenericIHPCDrag.vemd",
+    "Inertia": 0.5,
+    "ThermalOverloadRecoveryFactor": 0.9,
+    "VoltageLevels": [
+      {
+        "Voltage": 500,
+        "ContinuousTorque": 600.00,
+        "ContinuousTorqueSpeed": 1485.00,
+        "OverloadTorque": 900.00,
+        "OverloadTorqueSpeed": 1485.00,
+        "OverloadTime": 180,
+        "FullLoadCurve": "GenericEMotor_140kW_900Nm.vemp",
+        "EfficiencyMap": {
+          "1": "GenericMap_140kW_936Nm.vemo",
+          "2": "GenericMap_140kW_936Nm.vemo",
+          "3": "GenericMap_140kW_936Nm.vemo",
+          "4": "GenericMap_140kW_936Nm.vemo",
+          "5": "GenericMap_140kW_936Nm.vemo",
+          "6": "GenericMap_140kW_936Nm.vemo",
+          "7": "GenericMap_140kW_936Nm.vemo",
+          "8": "GenericMap_140kW_936Nm.vemo",
+          "9": "GenericMap_140kW_936Nm.vemo",
+          "10": "GenericMap_140kW_936Nm.vemo",
+          "11": "GenericMap_140kW_936Nm.vemo",
+          "12": "GenericMap_140kW_936Nm.vemo"
+        }
+      },
+      {
+        "Voltage": 900,
+        "ContinuousTorque": 600.00,
+        "ContinuousTorqueSpeed": 1485.00,
+        "OverloadTorque": 900.00,
+        "OverloadTorqueSpeed": 1485.00,
+        "OverloadTime": 200,
+        "FullLoadCurve": "GenericEMotor_140kW_900Nm.vemp",
+        "EfficiencyMap": {
+          "1": "GenericMap_140kW_936Nm.vemo",
+          "2": "GenericMap_140kW_936Nm.vemo",
+          "3": "GenericMap_140kW_936Nm.vemo",
+          "4": "GenericMap_140kW_936Nm.vemo",
+          "5": "GenericMap_140kW_936Nm.vemo",
+          "6": "GenericMap_140kW_936Nm.vemo",
+          "7": "GenericMap_140kW_936Nm.vemo",
+          "8": "GenericMap_140kW_936Nm.vemo",
+          "9": "GenericMap_140kW_936Nm.vemo",
+          "10": "GenericMap_140kW_936Nm.vemo",
+          "11": "GenericMap_140kW_936Nm.vemo",
+          "12": "GenericMap_140kW_936Nm.vemo"
+        }
+      }
+    ]
+  }
+}

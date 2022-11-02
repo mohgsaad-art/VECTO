@@ -32,6 +32,7 @@
 using System;
 using System.Data;
 using System.Linq;
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Utils;
 
@@ -39,15 +40,9 @@ namespace TUGraz.VectoCore.Models.Declaration
 {
 	public sealed class PneumaticSystem : LookupData<MissionType, string, AuxDemandEntry>, IDeclarationAuxiliaryTable
 	{
-		protected override string ResourceId
-		{
-			get { return DeclarationData.DeclarationDataResourcePrefix + ".VAUX.PS-Table.csv"; }
-		}
+		protected override string ResourceId => DeclarationData.DeclarationDataResourcePrefix + ".VAUX.PS-Table.csv";
 
-		protected override string ErrorMessage
-		{
-			get { return "Auxiliary Lookup Error: No value found for Pneumatic System. Mission: '{0}', Technology: '{1}'"; }
-		}
+		protected override string ErrorMessage => "Auxiliary Lookup Error: No value found for Pneumatic System. Mission: '{0}', Technology: '{1}'";
 
 		protected override void ParseData(DataTable table)
 		{

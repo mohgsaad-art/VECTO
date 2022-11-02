@@ -33,12 +33,13 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using TUGraz.VectoCommon.Utils;
-using TUGraz.VectoCore.InputData.Reader;
 using NUnit.Framework;
+using TUGraz.VectoCore.InputData.Reader.ComponentData;
 
 namespace TUGraz.VectoCore.Tests.Dummy
 {
 	[TestFixture]
+	[Parallelizable(ParallelScope.All)]
 	public class EngineFLDTest
 	{
 		[OneTimeSetUp]

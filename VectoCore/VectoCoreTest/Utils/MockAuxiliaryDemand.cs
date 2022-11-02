@@ -34,7 +34,6 @@ using System.Linq;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
-using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.OutputData;
@@ -61,17 +60,13 @@ namespace TUGraz.VectoCore.Tests.Utils
 		}
 
 
-		public CycleData CycleData
-		{
-			get {
-				return new CycleData {
-					AbsTime = 0.SI<Second>(),
-					AbsDistance = 0.SI<Meter>(),
-					LeftSample = _left.Current,
-					RightSample = _right.Current
-				};
-			}
-		}
+		public CycleData CycleData =>
+			new CycleData {
+				AbsTime = 0.SI<Second>(),
+				AbsDistance = 0.SI<Meter>(),
+				LeftSample = _left.Current,
+				RightSample = _right.Current
+			};
 
 		public bool PTOActive { get; set; }
 
@@ -83,14 +78,13 @@ namespace TUGraz.VectoCore.Tests.Utils
 			};
 		}
 
-		public Meter Altitude
-		{
-			get { return 0.SI<Meter>(); }
-		}
+		public Meter Altitude => 0.SI<Meter>();
 
-		public Radian RoadGradient { get { return 0.SI<Radian>(); } }
+		public Radian RoadGradient => 0.SI<Radian>();
+		public MeterPerSecond TargetSpeed { get; set; }
+		public Second StopTime { get; set; }
 
-		protected override void DoWriteModalResults(IModalDataContainer container)
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
 			container[ModalResultField.dist] = 0.SI<Meter>();
 			container[ModalResultField.v_targ] = 0.KMPHtoMeterPerSecond();
@@ -98,16 +92,13 @@ namespace TUGraz.VectoCore.Tests.Utils
 			container[ModalResultField.altitude] = 0.SI<Meter>();
 		}
 
-		protected override void DoCommitSimulationStep()
+		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)
 		{
 			_left.MoveNext();
 			_right.MoveNext();
 		}
 
-		public Meter CycleStartDistance
-		{
-			get { return 0.SI<Meter>(); }
-		}
+		public Meter CycleStartDistance => 0.SI<Meter>();
 
 		public IReadOnlyList<DrivingCycleData.DrivingCycleEntry> LookAhead(Meter lookaheadDistance)
 		{
@@ -118,6 +109,8 @@ namespace TUGraz.VectoCore.Tests.Utils
 		{
 			return new List<DrivingCycleData.DrivingCycleEntry>();
 		}
+
+		public SpeedChangeEntry LastTargetspeedChange { get; set; }
 
 		public void FinishSimulation() {}
 	}

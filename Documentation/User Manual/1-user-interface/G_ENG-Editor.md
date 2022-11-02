@@ -1,19 +1,19 @@
-##Engine Editor
+## Engine Editor
 
-![](pics/ENG-Editor.PNG)
+![](pics/EngineForm.png)
 
-###Description
+### Description
 
 The [Engine File (.veng)](#engine-file-.veng) defines all engine-related parameters and input files like Fuel Consumption Map and Full Load Curve.
 
-###Relative File Paths
+### Relative File Paths
 
 It is recommended to use relative filepaths. This way the Job File and all input files can be moved without having to update the paths.
 Example: "Demo\\FLD1.vfld" points to the "Demo" subdirectory of the Engine File's directory.
 
 VECTO automatically uses relative paths if the input file (e.g. FC Map) is in the same directory as the Engine File. *Note:* The Engine File must be saved before browsing for input files.)
 
-###Main Engine Parameters
+### Main Engine Parameters
 
 Make and Model \[text]\
 :   Free text defining the engine model, type, etc.
@@ -24,25 +24,35 @@ Idling Engine Speed \[rpm\]
 Displacement \[ccm\]
 :   Used in [Declaration Mode](#declaration-mode) to calculate inertia.
 
-Fuel Type
-:   Used to compute derived results such as fuel consumption in liters and CO2 values. This parameter influences the CO2-to-fuel ratio and fuel density. The actual values can be looked up in [FuelTypes.csv](../Declaration/FuelTypes.csv).
-
 Inertia including Flywheel \[kgm²\]
 :   Inertia for rotating parts including engine flywheel. In [Declaration Mode](#declaration-mode) the inertia is calculated  depending on the engine's displacement and also accounts for the clutch's inertia.
 
-###Full Load and Drag Curves
+Rated Speed \[rpm\]
+: This value represents the characteristic rated speed of the engine. It is not used in the simulation as the rated speed is derived from the full-load curve
 
+Rated Power \[rpm\]
+: This value represents the characteristic rated power of the engine. It is not used in the simulation as the rated power is derived from the full-load curve
 
-The [Engine's Full Load and Drag Curves (.vfld)](#full-load-and-drag-curves-.vfld) limits the engine's maximum torque and drag torque respectively The full-load curve must at least cover the engine-speed range from idling speed up to the speed where the power goes down to 70% of the maximum power. The input file (.vfld) file format is described [here](#full-load-and-drag-curves-.vfld).
+Max Torque \[rpm\]
+: This value represents the characteristic maximum torque of the engine. It is not used in the simulation as the maximum torque is derived from the full-load curve
 
-###Fuel Consumption Map
+Dual Fuel
+: If enabled, a secondary fuel can be specified. 
 
+### Primary/Secondary Fuel
 
-The [Fuel Consumption Map](#fuel-consumption-map-.vmap) is used to calculate the base FC value. See [Fuel Consumption Calculation](#engine-fuel-consumption-calculation) for details.
+Fuel Type
+:   Used to compute derived results such as fuel consumption in liters and CO2 values. This parameter influences the CO2-to-fuel ratio and fuel density. The actual values can be looked up in [FuelTypes.csv](../Declaration/FuelTypes.csv).
 
+Full Load and Drag Curves
+: The [Engine's Full Load and Drag Curves (.vfld)](#full-load-and-drag-curves-.vfld) limits the engine's maximum torque and drag torque respectively The full-load curve must at least cover the engine-speed range from idling speed up to the speed where the power goes down to 70% of the maximum power. The input file (.vfld) file format is described [here](#full-load-and-drag-curves-.vfld).
+
+Fuel Consumption Map
+: The [Fuel Consumption Map](#fuel-consumption-map-.vmap) is used to calculate the base FC value. See [Fuel Consumption Calculation](#engine-fuel-consumption-calculation) for details.
 The input file (.vmap) file format is described [here](#fuel-consumption-map-.vmap).
 
-###WHTC Correction Factors
+WHTC Correction Factors
+: 
 
 <div class="declaration">
 The WHTC Correction Factors are required in [Declaration Mode](#declaration-mode) for the [WHTC FC Correction](#engine-fuel-consumption-calculation).
@@ -54,13 +64,29 @@ The Cold/Hot Emission Balancing Factor is an additional correction factor that i
 In engineering a single correction factor for correcting WHTC, Cold/Hot Balancing, ... can be specified. 
 </div>
 
+### Dual Fuel Engines
 
-###Chart Area
+If the engine is operated in dual-fuel mode, enabling the checkbox "Dual Fuel Engine" shows an additional tab for providing the fuel type, fuel consumption map, and fuelconsumption correction factors for the second fuel. For dual-fuel engines the result files (.vmod, .vsum, XML reports) contain the fuel consumption for each fuel separately and the total CO2 emissions.
+
+### Waste Heat Recovery
+
+![](pics/EngineForm_WHR.png)
+
+In case the engine is equipped with a waste heat recovery system (WHR) the WHR type can be selected in the lower right part of the window. For WHR systems that generate mechanical power that is directly delivered to the engine's crankshaft no further input is required - the WHR shall be considered in the fuel consumption map already. 
+
+For WHR systems with electrical power output the generated electrical power needs to be provided in the [Fuel Consumption Map](#fuel-consumption-map-.vmap) of the primary fuel. 
+
+For WHR systems with mechanical power output to the drivetrain the generated mechanical power needs to be provided in the [Fuel Consumption Map](#fuel-consumption-map-.vmap) of the primary fuel. 
+
+The final fuel consumption is at the end corrected for the electric and mechanical energy generated by the WHR system (see [fuel consumption correction](#engine-fuel-consumption-correction))
+Similar correction factors as applied for the fuel consumption (WHR Correction factors) have to be provided for the WHR system. The weighting of these correction factors is the same as for the WHTC correction factors.
+
+### Chart Area
 
 
-The Chart Area shows the fuel consumption map and the selected full load curve.
+The Chart Area shows the fuel consumption map and the selected full load curve. The fuel consumption map of the primary fuel is plotted in red and if provided the secondary fuel is plotted in green.
 
-###Controls
+### Controls
 
 
 ![new](pics/blue-document-icon.png)New file
@@ -86,3 +112,4 @@ The Chart Area shows the fuel consumption map and the selected full load curve.
 :   If necessary the file path in the [VECTO Editor](#job-editor) will be updated.
 
 ![Cancel](pics/Cancel.png)***Cancel without saving***
+

@@ -1,0 +1,64 @@
+﻿{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2020-01-15T13:44:27.3683502Z",
+    "AppVersion": "3",
+    "FileVersion": 8
+  },
+  "Body": {
+    "SavedInDeclMode": true,
+    "VehCat": "RigidTruck",
+    "LegislativeClass": "N2",
+    "CurbWeight": 2500.0,
+    "CurbWeightExtra": 0.0,
+    "Loading": 0.0,
+    "MassMax": 7.0,
+    "rdyn": 0.0,
+    "CdCorrMode": "CdofVdecl",
+    "CdCorrFile": "",
+    "Retarder": {
+      "Type": "None",
+      "Ratio": 0.0,
+      "File": ""
+    },
+    "Angledrive": {
+      "Type": "None",
+      "Ratio": 0.0,
+      "LossMap": ""
+    },
+    "PTO": {
+      "Type": "None",
+      "LossMap": "",
+      "Cycle": ""
+    },
+    "TorqueLimits": {},
+    "IdlingSpeed": 800.0,
+    "AxleConfig": {
+      "Type": "4x2",
+      "Axles": [
+        {
+          "Inertia": 2.12,
+          "Wheels": "235/65 R16C",
+          "AxleWeightShare": 0.0,
+          "TwinTyres": false,
+          "RRCISO": 0.0074,
+          "FzISO": 10150.0,
+          "Type": "VehicleNonDriven"
+        },
+        {
+          "Inertia": 2.12,
+          "Wheels": "235/65 R16C",
+          "AxleWeightShare": 0.0,
+          "TwinTyres": true,
+          "RRCISO": 0.0074,
+          "FzISO": 10150.0,
+          "Type": "VehicleDriven"
+        }
+      ]
+    },
+    "EngineStopStart": false,
+    "EcoRoll": "None",
+    "PredictiveCruiseControl": "None",
+    "VehicleHeight": 0.0
+  }
+}

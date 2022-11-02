@@ -1,0 +1,64 @@
+﻿{
+  "Header": {
+    "CreatedBy": " ()",
+    "Date": "2016-10-13T08:57:32.3951093Z",
+    "AppVersion": "3",
+    "FileVersion": 7
+  },
+  "Body": {
+    "SavedInDeclMode": false,
+    "VehCat": "CityBus",
+    "CurbWeight": 14800.0,
+    "CurbWeightExtra": 0.0,
+    "Loading": 5170.0,
+    "MassMax": 25.0,
+    "CdA": 4.115,
+    "rdyn": 507.0,
+    "CdCorrMode": "CdofVdecl",
+    "CdCorrFile": "",
+    "Retarder": {
+      "Type": "secondary",
+      "Ratio": 1.0,
+      "File": "Default.vrlm"
+    },
+    "Angledrive": {
+      "Type": "None",
+      "Ratio": 0.0,
+      "LossMap": ""
+    },
+    "PTO": {
+      "Type": "None",
+      "LossMap": "",
+      "Cycle": ""
+    },
+    "AxleConfig": {
+      "Type": "6x2",
+      "Axles": [
+        {
+          "Inertia": 15.5,
+          "Wheels": "295/80 R22.5",
+          "AxleWeightShare": 0.2725,
+          "TwinTyres": false,
+          "RRCISO": 0.0065,
+          "FzISO": 31270.0
+        },
+        {
+          "Inertia": 15.5,
+          "Wheels": "295/80 R22.5",
+          "AxleWeightShare": 0.455,
+          "TwinTyres": true,
+          "RRCISO": 0.0065,
+          "FzISO": 31270.0
+        },
+        {
+          "Inertia": 15.5,
+          "Wheels": "295/80 R22.5",
+          "AxleWeightShare": 0.2725,
+          "TwinTyres": false,
+          "RRCISO": 0.0065,
+          "FzISO": 31270.0
+        }
+      ]
+    }
+  }
+}

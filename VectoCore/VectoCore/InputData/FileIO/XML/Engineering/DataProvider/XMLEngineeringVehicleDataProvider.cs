@@ -1,13 +1,47 @@
+﻿/*
+* This file is part of VECTO.
+*
+* Copyright © 2012-2019 European Union
+*
+* Developed by Graz University of Technology,
+*              Institute of Internal Combustion Engines and Thermodynamics,
+*              Institute of Technical Informatics
+*
+* VECTO is licensed under the EUPL, Version 1.1 or - as soon they will be approved
+* by the European Commission - subsequent versions of the EUPL (the "Licence");
+* You may not use VECTO except in compliance with the Licence.
+* You may obtain a copy of the Licence at:
+*
+* https://joinup.ec.europa.eu/community/eupl/og_page/eupl
+*
+* Unless required by applicable law or agreed to in writing, VECTO
+* distributed under the Licence is distributed on an "AS IS" basis,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the Licence for the specific language governing permissions and
+* limitations under the Licence.
+*
+* Authors:
+*   Stefan Hausberger, hausberger@ivt.tugraz.at, IVT, Graz University of Technology
+*   Christian Kreiner, christian.kreiner@tugraz.at, ITI, Graz University of Technology
+*   Michael Krisper, michael.krisper@tugraz.at, ITI, Graz University of Technology
+*   Raphael Luz, luz@ivt.tugraz.at, IVT, Graz University of Technology
+*   Markus Quaritsch, markus.quaritsch@tugraz.at, IVT, Graz University of Technology
+*   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Linq;
 using TUGraz.IVT.VectoXML;
+using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.XML.Engineering.Interfaces;
 using TUGraz.VectoCore.InputData.Impl;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider
@@ -36,27 +70,15 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider
 
 		public IXMLComponentsReader ComponentReader { protected get; set; }
 
-		public virtual XmlElement ComponentNode
-		{
-			get { return _componentNode ?? (_componentNode = GetNode(XMLNames.Vehicle_Components) as XmlElement); }
-		}
+		public virtual XmlElement ComponentNode => _componentNode ?? (_componentNode = GetNode(XMLNames.Vehicle_Components) as XmlElement);
 
 		#region Implementation of IComponentInputData
 
-		public override CertificationMethod CertificationMethod
-		{
-			get { return CertificationMethod.NotCertified; }
-		}
+		public override CertificationMethod CertificationMethod => CertificationMethod.NotCertified;
 
-		public override string CertificationNumber
-		{
-			get { return "N.A."; }
-		}
+		public override string CertificationNumber => "N.A.";
 
-		public override DigestData DigestValue
-		{
-			get { return null; }
-		}
+		public override DigestData DigestValue => null;
 
 		#endregion
 
@@ -64,124 +86,91 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider
 
 		public string Identifier { get; }
 
-		public bool ExemptedVehicle
-		{
-			get { return false; }
-		}
+		public bool ExemptedVehicle => false;
 
-		public virtual string VIN
-		{
-			get { return GetString(XMLNames.Vehicle_VIN); }
-		}
+		public virtual string VIN => GetString(XMLNames.Vehicle_VIN);
 
-		public virtual LegislativeClass LegislativeClass
-		{
-			get { return GetString(XMLNames.Vehicle_LegislativeClass).ParseEnum<LegislativeClass>(); }
-		}
+		public virtual LegislativeClass? LegislativeClass => GetString(XMLNames.Vehicle_LegislativeClass).ParseEnum<LegislativeClass>();
 
-		public virtual VehicleCategory VehicleCategory
-		{
-			get {
-				return GetNode(XMLNames.Vehicle_VehicleCategory, required: false)?.InnerText.ParseEnum<VehicleCategory>() ??
-						VehicleCategory.Unknown;
-			}
-		}
+		public virtual VehicleCategory VehicleCategory =>
+			GetNode(XMLNames.Vehicle_VehicleCategory, required: false)?.InnerText.ParseEnum<VehicleCategory>() ??
+			VehicleCategory.Unknown;
 
-		public virtual AxleConfiguration AxleConfiguration
-		{
-			get { return AxleConfigurationHelper.Parse(GetString(XMLNames.Vehicle_AxleConfiguration)); }
-		}
+		public virtual AxleConfiguration AxleConfiguration => AxleConfigurationHelper.Parse(GetString(XMLNames.Vehicle_AxleConfiguration));
 
-		public virtual Kilogram CurbMassChassis
-		{
-			get { return GetDouble(XMLNames.Vehicle_CurbMassChassis).SI<Kilogram>(); }
-		}
+		public virtual Kilogram CurbMassChassis => GetDouble(XMLNames.Vehicle_CurbMassChassis).SI<Kilogram>();
 
-		public virtual Kilogram CurbMassExtra
-		{
-			get { return GetDouble(XMLNames.Vehicle_CurbMassExtra).SI<Kilogram>(); }
-		}
+		public virtual Kilogram CurbMassExtra => GetDouble(XMLNames.Vehicle_CurbMassExtra).SI<Kilogram>();
 
-		public virtual Kilogram GrossVehicleMassRating
-		{
-			get { return GetDouble(XMLNames.Vehicle_GrossVehicleMass).SI<Kilogram>(); }
-		}
+		public virtual Kilogram GrossVehicleMassRating => GetDouble(XMLNames.Vehicle_GrossVehicleMass).SI<Kilogram>();
 
-		public virtual string ManufacturerAddress
-		{
-			get { return GetString(XMLNames.Component_ManufacturerAddress); }
-		}
+		public virtual string ManufacturerAddress => GetString(XMLNames.Component_ManufacturerAddress);
 
-		public virtual PerSecond EngineIdleSpeed
-		{
-			get { return GetDouble(XMLNames.Vehicle_IdlingSpeed).RPMtoRad(); }
-		}
+		public virtual PerSecond EngineIdleSpeed => GetDouble(XMLNames.Vehicle_IdlingSpeed).RPMtoRad();
 
-		public bool VocationalVehicle
-		{
-			get { return false; }
-		}
+		public bool VocationalVehicle => false;
 
-		public bool SleeperCab
-		{
-			get { return false; }
-		}
+		public bool? SleeperCab => false;
 
-		public TankSystem? TankSystem
-		{
-			get {
-				return ElementExists(XMLNames.Vehicle_NgTankSystem)
-					? EnumHelper.ParseEnum<TankSystem>(GetString(XMLNames.Vehicle_NgTankSystem))
-					: (TankSystem?)null;
-			}
-		}
+		public virtual bool? AirdragModifiedMultistep => null;
 
-		
-		public bool ZeroEmissionVehicle
-		{
-			get { return false; }
-		}
-
-		public bool HybridElectricHDV
-		{
-			get { return false; }
-		}
-
-		public bool DualFuelVehicle
-		{
-			get { return false; }
-		}
-
-		public Watt MaxNetPower1
-		{
-			get { return null; }
-		}
-
-		public Watt MaxNetPower2
-		{
-			get { return null; }
-		}
-
-		IVehicleComponentsDeclaration IVehicleDeclarationInputData.Components
-		{
-			get { return null; }
-		}
-
-		IAdvancedDriverAssistantSystemDeclarationInputData IVehicleDeclarationInputData.ADAS
-		{
-			get { return null; }
-		}
+		public TankSystem? TankSystem =>
+			ElementExists(XMLNames.Vehicle_NgTankSystem)
+				? EnumHelper.ParseEnum<TankSystem>(GetString(XMLNames.Vehicle_NgTankSystem))
+				: (TankSystem?)null;
 
 
-		public IAdvancedDriverAssistantSystemsEngineering ADAS
-		{
-			get { return null; }
-		}
+		public bool ZeroEmissionVehicle => false;
 
-		public virtual Kilogram Loading
-		{
-			get { return GetDouble(XMLNames.Vehicle_Loading).SI<Kilogram>(); }
-		}
+		public bool HybridElectricHDV => false;
+
+		public bool DualFuelVehicle => false;
+
+		public Watt MaxNetPower1 => null;
+
+		public Watt MaxNetPower2 => null;
+
+		public string ExemptedTechnology { get; }
+
+		public virtual RegistrationClass? RegisteredClass => RegistrationClass.unknown;
+		public virtual int? NumberPassengerSeatsUpperDeck => 0;
+		public virtual int? NumberPassengerSeatsLowerDeck => 0;
+		public int? NumberPassengersStandingLowerDeck => 0;
+		public int? NumberPassengersStandingUpperDeck => 0;
+		public CubicMeter CargoVolume { get; }
+		public virtual VehicleCode? VehicleCode => VectoCommon.Models.VehicleCode.NOT_APPLICABLE;
+		public virtual bool? LowEntry => false;
+		public virtual bool Articulated => false;
+
+
+		public virtual Meter Width => null;
+		public virtual Meter EntranceHeight => null;
+		public ConsumerTechnology? DoorDriveTechnology => ConsumerTechnology.Unknown;
+		public virtual VehicleDeclarationType VehicleDeclarationType { get; }
+
+		public Dictionary<PowertrainPosition, List<Tuple<Volt, TableData>>> ElectricMotorTorqueLimits => null;
+
+		public TableData BoostingLimitations => null;
+
+		IVehicleComponentsDeclaration IVehicleDeclarationInputData.Components => null;
+		public string VehicleTypeApprovalNumber => null;
+		public ArchitectureID ArchitectureID { get; }
+		public bool OvcHev { get; }
+		public Watt MaxChargingPower { get; }
+
+		IAdvancedDriverAssistantSystemDeclarationInputData IVehicleDeclarationInputData.ADAS => null;
+
+		public virtual GearshiftPosition PTO_DriveGear => null;
+		public virtual PerSecond PTO_DriveEngineSpeed => null;
+
+		public double InitialSOC => double.NaN;
+
+		public VectoSimulationJobType VehicleType => VectoSimulationJobType.ConventionalVehicle;
+
+
+		public IAdvancedDriverAssistantSystemsEngineering ADAS => null;
+
+		public virtual Kilogram Loading => GetDouble(XMLNames.Vehicle_Loading).SI<Kilogram>();
 
 		public virtual Meter DynamicTyreRadius
 		{
@@ -226,70 +215,47 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider
 		}
 
 
-		public virtual Meter Height
-		{
-			get { return GetNode("VehicleHeight")?.InnerText.ToDouble().SI<Meter>(); }
-		}
+		public virtual Meter Height => GetNode("VehicleHeight")?.InnerText.ToDouble().SI<Meter>();
 
-		public IVehicleComponentsEngineering Components
-		{
-			get { return _components ?? (_components = ComponentReader.ComponentInputData); }
-		}
+
+
+		public virtual Meter Length => null;
+
+		public IVehicleComponentsEngineering Components => _components ?? (_components = ComponentReader.ComponentInputData);
 
 		#endregion
 
 
-		public virtual RetarderType RetarderType
-		{
-			get { return GetString(XMLNames.Vehicle_RetarderType).ParseEnum<RetarderType>(); }
-		}
+		public virtual RetarderType RetarderType => GetString(XMLNames.Vehicle_RetarderType).ParseEnum<RetarderType>();
 
-		public virtual double RetarderRatio
-		{
-			get { return GetDouble(XMLNames.Vehicle_RetarderRatio); }
-		}
+		public virtual double RetarderRatio => GetDouble(XMLNames.Vehicle_RetarderRatio);
 
 
-		public virtual AngledriveType AngledriveType
-		{
-			get { return GetString(XMLNames.Vehicle_AngledriveType).ParseEnum<AngledriveType>(); }
-		}
+		public virtual AngledriveType AngledriveType => GetString(XMLNames.Vehicle_AngledriveType).ParseEnum<AngledriveType>();
 
 		public virtual IXMLEngineeringJobInputData Job { get; }
 
 		#region Implementation of IPTOTransmissionInputData
 
-		public virtual string PTOTransmissionType
-		{
-			get { return GetString(XMLNames.Vehicle_PTOType); }
-		}
+		public virtual string PTOTransmissionType => GetString(XMLNames.Vehicle_PTOType);
 
-		public virtual TableData PTOLossMap
-		{
-			get {
-				return XMLHelper.ReadEntriesOrResource(
-					BaseNode, DataSource.SourcePath, XMLNames.Vehicle_PTOIdleLossMap, XMLNames.Vehicle_PTOIdleLossMap_Entry,
-					AttributeMappings.PTOLossMap);
-			}
-		}
+		public virtual TableData PTOLossMap =>
+			XMLHelper.ReadEntriesOrResource(
+				BaseNode, DataSource.SourcePath, XMLNames.Vehicle_PTOIdleLossMap, XMLNames.Vehicle_PTOIdleLossMap_Entry,
+				AttributeMappings.PTOLossMap);
 
-		public virtual TableData PTOCycle
-		{
-			get {
-				return XMLHelper.ReadEntriesOrResource(
-					BaseNode, DataSource.SourcePath, XMLNames.Vehicle_PTOCycle, XMLNames.Vehicle_PTOCycle_Entry,
-					AttributeMappings.PTOCycleMap);
-			}
-		}
+		public virtual TableData PTOCycleDuringStop =>
+			XMLHelper.ReadEntriesOrResource(
+				BaseNode, DataSource.SourcePath, XMLNames.Vehicle_PTOCycle, XMLNames.Vehicle_PTOCycle_Entry,
+				AttributeMappings.PTOCycleMap);
 
+		public virtual TableData PTOCycleWhileDriving => null;
+		
 		#endregion
 
 		#region Overrides of AbstractXMLResource
 
-		protected override XNamespace SchemaNamespace
-		{
-			get { return NAMESPACE_URI; }
-		}
+		protected override XNamespace SchemaNamespace => NAMESPACE_URI;
 
 		protected override DataSourceType SourceType { get; }
 
@@ -311,10 +277,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider
 
 		#region Overrides of XMLEngineeringVehicleDataProviderV07
 
-		protected override XNamespace SchemaNamespace
-		{
-			get { return NAMESPACE_URI; }
-		}
+		protected override XNamespace SchemaNamespace => NAMESPACE_URI;
 
 		#endregion
 	}

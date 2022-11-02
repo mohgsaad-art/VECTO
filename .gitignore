@@ -1,6 +1,4 @@
-VECTO/bin/
-VECTO/obj/
-
+Deploy/
 ## From github on 15/5/2014: https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
 ## Ignore Visual Studio temporary files, build results, and
@@ -202,4 +200,24 @@ Coverage/
 Documentation/VehiclesReleaseComparisonDeclarationMode/*.vmod
 Documentation/VehiclesReleaseComparisonDeclarationMode/*.vsum
 
+HashingTool/TestData/
 DISTR/
+[0-9][0-9][0-9][0-9]_[0-9][0-9]_[0-9][0-9]-VECTO-*.zip
+Documentation/VehiclesReleaseComparisonDeclarationMode/tmp/
+EPTP/
+201*-VECTO-*.zip
+Documentation/VehiclesReleaseComparisonDeclarationMode/tmp/
+Documentation/VehiclesReleaseComparisonDeclarationMode/**/*.vmod
+Documentation/VehiclesReleaseComparisonDeclarationMode/**/*.vsum
+.vs/
+**/dev/*.vmod
+**/dev/*.vsum
+/VectoCore/VectoCoreTest/TestData/XML/XMLReaderDeclaration/testVif.VIF_Report_5.xml
+/VectoCore/VectoCoreTest/TestData/XML/XMLReaderDeclaration/final.VIF_Report_5.xml
+/VectoCore/VectoCoreTest/TestData/XML/XMLReaderDeclaration/test+.xml
+/VectoCore/VectoCoreTest/TestData/XML/XMLReaderDeclaration/test.VIF_Report_5.xml
+/VectoCore/VectoCoreTest/TestData/XML/XMLReaderDeclaration/tests.xml
+/VectoCore/VectoCoreTest/TestData/XML/XMLReaderDeclaration/finalGroup41.VIF_Report_4.xml
+/VectoCore/VectoCoreTest/TestData/XML/XMLReaderDeclaration/output
+/Vecto3GUI2020Test/TestData/output
+/VectoCommon/VectoCommon/InputData/BusInputData.cd

@@ -30,8 +30,10 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using NUnit.Framework;
+using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
@@ -39,13 +41,16 @@ using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Models.Simulation.Impl;
+using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
+using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.Tests.Utils;
 
 namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 {
 	[TestFixture]
+	[Parallelizable(ParallelScope.All)]
 	public class VehicleTest
 	{
 		private const string VehicleDataFileCoach = @"TestData\Components\24t Coach.vveh";
@@ -59,18 +64,27 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
         }
 
 
-        [Test]
+        [TestCase]
 		public void VehiclePortTest()
 		{
-			var container = new VehicleContainer(ExecutionMode.Engineering);
+			
 
 			//var reader = new EngineeringModeSimulationDataReader();
 			var vehicleData = MockSimulationDataFactory.CreateVehicleDataFromFile(VehicleDataFileCoach);
 			var airdragData = MockSimulationDataFactory.CreateAirdragDataFromFile(VehicleDataFileCoach);
 			//VehicleData.ReadFromFile(VehicleDataFile);
 			//vehicleData.CrossWindCorrectionMode = CrossWindCorrectionMode.NoCorrection;
+
+			var container = new VehicleContainer(ExecutionMode.Engineering) {
+				RunData = new VectoRunData() {
+					VehicleData = vehicleData,
+					AirdragData = airdragData,
+					ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>()
+				}
+			};
 			var vehicle = new Vehicle(container, vehicleData, airdragData);
 			var driver = new MockDriver(container) { DriverBehavior = DrivingBehavior.Driving };
+			new DummyCycle(container);
 			var mockPort = new MockFvOutPort();
 			vehicle.InPort().Connect(mockPort);
 
@@ -84,7 +98,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var accell = -0.256231159.SI<MeterPerSquareSecond>();
 			var gradient = Math.Atan(0.00366547048).SI<Radian>();
 
-			requestPort.Request(absTime, dt, accell, gradient);
+			requestPort.Request(absTime, dt, accell, gradient, false);
 
 			Assert.AreEqual(-2332.5362, mockPort.Force.Value(), 0.0001);
 			Assert.AreEqual(16.954303841, mockPort.Velocity.Value(), 0.0001);
@@ -103,13 +117,17 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			double expected)
 		{
 			var container = new VehicleContainer(ExecutionMode.Declaration);
+			container.RunData = new VectoRunData() {
+				ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>()
+			};
 
 			var vehicleData = MockSimulationDataFactory.CreateVehicleDataFromFile(VehicleDataFileTruck);
 			var airdragData = MockSimulationDataFactory.CreateAirdragDataFromFile(VehicleDataFileTruck);
 			airdragData.CrossWindCorrectionCurve = new CrosswindCorrectionCdxALookup(6.46.SI<SquareMeter>(),
-				DeclarationDataAdapter.GetDeclarationAirResistanceCurve("TractorSemitrailer",
+				DeclarationDataAdapterHeavyLorry.GetDeclarationAirResistanceCurve("TractorSemitrailer",
 					6.46.SI<SquareMeter>(), height.SI<Meter>()), CrossWindCorrectionMode.DeclarationModeCorrection);
 			var vehicle = new Vehicle(container, vehicleData,airdragData);
+			new DummyCycle(container);
 
 			var mockPort = new MockFvOutPort();
 			vehicle.InPort().Connect(mockPort);
@@ -123,7 +141,7 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			Assert.AreEqual(expected, avgForce.Value(), Tolerance);
 		}
 
-		[Test]
+		[TestCase]
 		public void VehicleAirDragPowerLossDeclarationTest()
 		{
 			var container = new VehicleContainer(ExecutionMode.Declaration);
@@ -131,11 +149,17 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var vehicleData = MockSimulationDataFactory.CreateVehicleDataFromFile(VehicleDataFileTruck);
 			var airdragData = MockSimulationDataFactory.CreateAirdragDataFromFile(VehicleDataFileTruck);
 			airdragData.CrossWindCorrectionCurve = new CrosswindCorrectionCdxALookup(6.2985.SI<SquareMeter>(),
-				DeclarationDataAdapter.GetDeclarationAirResistanceCurve("TractorSemitrailer",
+				DeclarationDataAdapterHeavyLorry.GetDeclarationAirResistanceCurve("TractorSemitrailer",
 					6.2985.SI<SquareMeter>(), 3.SI<Meter>()), CrossWindCorrectionMode.DeclarationModeCorrection);
+			container.RunData = new VectoRunData() {
+				VehicleData = vehicleData,
+				AirdragData = airdragData,
+				ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>()
+			};
 
 			var vehicle = new Vehicle(container, vehicleData,airdragData);
 			var driver = new MockDriver(container) { DriverBehavior = DrivingBehavior.Driving };
+			new DummyCycle(container);
 			var mockPort = new MockFvOutPort();
 			vehicle.InPort().Connect(mockPort);
 
@@ -147,12 +171,12 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var dt = 0.5.SI<Second>();
 
 			vehicle.Request(absTime, dt, 0.SI<MeterPerSquareSecond>(), 0.SI<Radian>());
-			vehicle.CommitSimulationStep(writer);
+			vehicle.CommitSimulationStep(absTime, dt, writer);
 
 			Assert.AreEqual(45956.3024, ((SI)writer[ModalResultField.P_air]).Value(), 0.1);
 
 			vehicle.Request(absTime, dt, 1.SI<MeterPerSquareSecond>(), 0.SI<Radian>());
-			vehicle.CommitSimulationStep(writer);
+			vehicle.CommitSimulationStep(absTime, dt, writer);
 			Assert.AreEqual(47448.0989, ((SI)writer[ModalResultField.P_air]).Value(), 0.1);
 		}
 
@@ -207,5 +231,67 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 				cwcc.EffectiveAirDragArea(velocity.KMPHtoMeterPerSecond()).Value(),
 				Tolerance);
 		}
+	}
+
+	public class DummyCycle : VectoSimulationComponent, IDrivingCycleInfo
+	{
+		public DummyCycle(VehicleContainer container) :base(container)
+		{
+			
+		}
+
+		#region Overrides of VectoSimulationComponent
+
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
+		{
+			
+		}
+
+		protected override void DoCommitSimulationStep(Second time, Second simulationInterval)
+		{
+			
+		}
+
+		#endregion
+
+		#region Implementation of IDrivingCycleInfo
+
+		public CycleData CycleData => throw new NotImplementedException();
+
+		public bool PTOActive => throw new NotImplementedException();
+
+		public DrivingCycleData.DrivingCycleEntry CycleLookAhead(Meter distance)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Meter Altitude => throw new NotImplementedException();
+
+		public Radian RoadGradient => throw new NotImplementedException();
+
+		public MeterPerSecond TargetSpeed => throw new NotImplementedException();
+
+		public Second StopTime => throw new NotImplementedException();
+
+		public Meter CycleStartDistance => 0.SI<Meter>();
+
+		public IReadOnlyList<DrivingCycleData.DrivingCycleEntry> LookAhead(Meter lookaheadDistance)
+		{
+			throw new NotImplementedException();
+		}
+
+		public IReadOnlyList<DrivingCycleData.DrivingCycleEntry> LookAhead(Second time)
+		{
+			throw new NotImplementedException();
+		}
+
+		public SpeedChangeEntry LastTargetspeedChange => throw new NotImplementedException();
+
+		public void FinishSimulation()
+		{
+			throw new NotImplementedException();
+		}
+
+		#endregion
 	}
 }

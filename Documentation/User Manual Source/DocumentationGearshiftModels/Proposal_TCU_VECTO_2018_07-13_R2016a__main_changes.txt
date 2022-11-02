@@ -1,0 +1,55 @@
+An introduction to the Transmission Control Unit (TCU) is given in the slides from 2018-06-20.
+
+
+********************************************************************************
+Main changes in comparison to the last version from 2018-06-29
+********************************************************************************
+
+
+ADDITIONAL RATING LEVEL FOR THE ESTIMATED RESIDENCE TIME IN UPPER GEARS.
+
+See block <Proposal_TCU_VECTO_2018_07_13_R2016a/Transmission Control Unit/Gear rating preprocessing/Case c) Estimate residence time in next gear>
+
+The future acceleration of the vehicle model is estimated with the balance of forces at the wheels. For this purpose the average road gradient during the next 5 s in the driving cycle is looked up from a table, which was generated in the pre processing.
+If the estimated acceleration would lead to a residence time in an upper gear below 5 s, this gear is skipped. 
+
+The rating levels are now four instead of three:
+
+Case a), inside accept. speed range, and below torque limit
+The minimum of the low range of rating factors is the min. specific fuel consumption, referred to the power at the cardan shaft (typically around 200 g/kWh_card). The upper limit for the low range of rating factor is penalty_medium = 100'000
+
+Case b), inside accept. speed range, and above torque limit
+This rating is the missing torque at the cardan shaft, plus a medium penalty.
+The lower limit for the medium range of rating factors is penalty_medium = 100'000.
+The upper limit for the medium range of rating factors is penalty_high = 200'000.
+
+Case c) Estimate residence time in next gear
+The new rating level, which enables gear-skipping.
+If the estimated residence time for an upper gear (Dt_res_upper) gets below 5 s, the rating factor becomes
+( 5 s - Dt_res_upper ) + penalty_high.
+The lower limit for the high range of rating factors is penalty_high = 200'000.
+The upper limit for the high range of rating factors is penalty_very_high = 300'000.
+
+Case d), outside accept. speed range
+This is the /old/, high rating level, which was re-labelled to very-high.
+The lower limit for the very high range of rating factors is penalty_very_high = 300'000.
+The upper limit for the very high range of rating factors is the highest distance from the predicted to the min. or max. accepted engine speed.
+
+
+
+VARIABLE LOWER AND UPPER SPEED LIMITS, INDIVIDUAL FOR EVERY GEAR
+
+The basic upper speed limit is around n_Tq99high, which is usually between 40 to 50 % of the distance from n_Tq99low to n_P99high.
+
+
+The max. speed of the current gear is increased based on the ratio of
+(demanded cardan torque for constant driving at the predicted road gradient) to
+(predicted max. possible cardan from the current gear).
+If this ratio gets high close to 1, the engine needs to rev up higher to provide sufficient power.
+If this ratio is below 0.5, one does not need high engine speed.
+
+The max. acceptable speed of the gears below the current one is only increased up to n_P99high if the HDV model is slowing down at positive road gradients, and if the above described ratio of cardan torques for the current is high.
+In addition the engine speed in the current gear needs to decrease below n_Tg99high. The max. accepted speed for the lower gears is increasing antiproportionally to the distance from the engine speed in the current gear to n_Tg99high (=> The lower the current engine speed, the steeper the hill, the higher the permitted speed in the lower gears).
+
+This measure /replaces/ the share of the inertia force at the wheel as decisive factor for low or high engine speed.
+

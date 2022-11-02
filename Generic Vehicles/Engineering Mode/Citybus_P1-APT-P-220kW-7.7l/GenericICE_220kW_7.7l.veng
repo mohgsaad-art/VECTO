@@ -1,0 +1,35 @@
+{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2021-01-18T16:15:30.8161241Z",
+    "AppVersion": "3",
+    "FileVersion": 5
+  },
+  "Body": {
+    "SavedInDeclMode": false,
+    "ModelName": "Generic 220kW 7.7l",
+    "Displacement": "7700",
+    "IdlingSpeed": 600.0,
+    "Inertia": 3.789,
+    "Fuels": [
+      {
+        "WHTC-Urban": 0.0,
+        "WHTC-Rural": 0.0,
+        "WHTC-Motorway": 0.0,
+        "WHTC-Engineering": 1.02,
+        "ColdHotBalancingFactor": 0.0,
+        "CFRegPer": 0.0,
+        "FuelMap": "Engine map_7.7l.vmap",
+        "FuelType": "DieselCI"
+      }
+    ],
+    "RatedPower": 220000.0,
+    "RatedSpeed": 2200.0,
+    "MaxTorque": 1295.0,
+    "FullLoadCurve": "Full-load curve 220kW.vfld",
+    "WHRType": [
+      "None"
+    ],
+    "WHRCorrectionFactors": {}
+  }
+}

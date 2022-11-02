@@ -11,7 +11,6 @@ Refers to other files:
 * [Engine (VENG)](#engine-file-.veng)
 * [Gearbox (VGBX)](#gearbox-file-.vgbx)
 * [Driving Cycle (VDRI)](#driving-cycles-.vdri)
-* [Auxiliary Input File (VAUX)](#auxiliary-input-file-.vaux)
 * [Acceleration Limiting (VACC)](#acceleration-limiting-input-file-.vacc)
 
 
@@ -20,59 +19,59 @@ Refers to other files:
 ~~~json
 {
   "Header": {
-    "CreatedBy": "Michael Krisper (Graz University of Technology)",
-    "Date": "2016-03-18T14:37:05+01:00",
-    "AppVersion": "3.0.2",
-    "FileVersion": 2
+    "CreatedBy": "",
+    "Date": "2020-09-07T15:36:16.4539236Z",
+    "AppVersion": "3",
+    "FileVersion": 8
   },
   "Body": {
     "SavedInDeclMode": false,
-    "VehicleFile": "Vehicle.vveh",
-    "EngineFile": "Engine.veng",
-    "GearboxFile": "Gearbox.vgbx",
-    "Cycles": [
-      "DrivingCycle_Rural.vdri",
-      "DrivingCycle_Urban.vdri"
-    ],
-    "Aux": [
-      {
-        "ID": "ALT",
-        "Type": "Alternator",
-        "Path": "Alternator.vaux",
-        "Technology": ""
-      },
-      {
-        "ID": "PN",
-        "Type": "PneumaticSystem",
-        "Path": "Pneumatic System.vaux",
-        "Technology": ""
-      },
-      {
-        "ID": "HVAC",
-        "Type": "HVAC",
-        "Path": "AirCondition.vaux",
-        "Technology": ""
-      }
-    ],
-    "VACC": "Driver.vacc",
-    "EngineOnlyMode": true,
-    "StartStop": {
-      "Enabled": false,
-      "MaxSpeed": 5.0,
-      "MinTime": 0.0,
-      "Delay": 0
-    },
+    "EngineOnlyMode": false,
+    "VehicleFile": "Group5_HEV.vveh",
+    "EngineFile": "Engine_325kW_12.7l.veng",
+    "GearboxFile": "AMT_12.vgbx",
+    "TCU": "AMT_12.vgbx",
+    "ShiftStrategy": "TUGraz.VectoCore.Models.SimulationComponent.Impl.AMTShiftStrategy",
+    "HybridStrategyParams": "Hybrid_Parameters.vhctl",
+    "AuxiliaryAssembly": "Classic",
+    "AuxiliaryVersion": "CLASSIC",
+    "AdvancedAuxiliaryFilePath": "",
+    "Aux": [],
+    "Padd": 5000.0,
+    "Padd_electric": 0.0,
+    "VACC": "Truck.vacc",
+    "EngineStopStartAtVehicleStopThreshold": 2.0,
+    "EngineStopStartMaxOffTimespan": 120.0,
+    "EngineStopStartUtilityFactor": 1.0,
+    "EcoRollMinSpeed": 0.0,
+    "EcoRollActivationDelay": 0.0,
+    "EcoRollUnderspeedThreshold": 0.0,
+    "EcoRollMaxAcceleration": 0.0,
+    "PCCEnableSpeed": 0.0,
+    "PCCMinSpeed": 0.0,
+    "PCCUnderspeed": 0.0,
+    "PCCOverSpeed": 5.0,
+    "PCCPreviewDistanceUC1": 0.0,
+    "PCCPreviewDistanceUC2": 0.0,
     "LAC": {
       "Enabled": true,
-      "Dec": -0.5,
+      "PreviewDistanceFactor": 10.0,
+      "DF_offset": 2.5,
+      "DF_scaling": 1.5,
+      "DF_targetSpeedLookup": "",
+      "Df_velocityDropLookup": "",
       "MinSpeed": 50.0
     },
     "OverSpeedEcoRoll": {
-      "Mode": "OverSpeed",
-      "MinSpeed": 70.0,
-      "OverSpeed": 5.0,
-      "UnderSpeed": 5.0
-    }
+      "Mode": "Overspeed",
+      "MinSpeed": 50.0,
+      "OverSpeed": 2.5
+    },
+    "Cycles": [
+      "LongHaul.vdri",
+      "RegionalDelivery.vdri",
+      "UrbanDelivery.vdri"
+    ]
   }
 }
 ~~~

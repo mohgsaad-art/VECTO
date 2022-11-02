@@ -1,0 +1,245 @@
+﻿<UserControl x:Class="VECTO3GUI.Views.ComponentViews.Declaration.AuxiliariesDeclarationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:interfaces="clr-namespace:VECTO3GUI.ViewModel.Interfaces"
+             xmlns:customControls="clr-namespace:VECTO3GUI.Views.CustomControls"
+             xmlns:helper="clr-namespace:VECTO3GUI.Helper"
+             xmlns:converter="clr-namespace:VECTO3GUI.Helper.Converter"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:views="clr-namespace:VECTO3GUI.Views"
+             xmlns:local="clr-namespace:VECTO3GUI.Views.ComponentViews.Declaration"
+             xmlns:validation="clr-namespace:VECTO3GUI.Helper.Validation"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="800">
+
+    <d:EditCyclesView.DataContext>
+        <x:Type Type="interfaces:IAuxiliariesViewModel"/>
+    </d:EditCyclesView.DataContext>
+
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="450"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="200"/>
+            <RowDefinition Height="200"/>
+            <RowDefinition Height="320"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+
+        <GroupBox Header="Alternators Technology" Grid.Row="1" Grid.Column="1" Width="450" HorizontalAlignment="Left">
+            <StackPanel Orientation="Vertical" Width="400" HorizontalAlignment="Center"  Grid.IsSharedSizeScope="True">
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Content="Add" HorizontalAlignment="Left" Grid.Column="0" Width="100" Margin="0,5,0,0"
+                            Command="{Binding AddAlternatorCommand}"/>
+                    <Button Content="Remove All" HorizontalAlignment="Right" Grid.Column="1" Width="100" Margin="0,5,0,0"
+                            Command="{Binding RemoveAllAlternatorCommand}"/>
+                </Grid>
+
+
+                <DataGrid x:Name="AlternatorDataGrid" AutoGenerateColumns="False" ColumnWidth="*" IsReadOnly="False" CanUserAddRows="False" VerticalAlignment="Top"
+                          HeadersVisibility="All" RowHeaderWidth="10"  Height="120" Margin="0,10,0,0" BorderThickness="1"
+                          ItemsSource="{Binding AlternatorTechnologies}">
+
+                    <DataGrid.Resources>
+                        <DataTemplate x:Key="EntryDeleteControl">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <Button Width="30" 
+                                        Command="{Binding DataContext.RemoveAlternatorCommand, 
+                                        RelativeSource={RelativeSource AncestorType=local:AuxiliariesDeclarationView}}"
+                                        CommandParameter="{Binding ElementName=AlternatorDataGrid, Path=SelectedIndex}">
+                                    <iconPacks:PackIconModern  Width="30" Height="15" Kind="Delete" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Button>
+                            </StackPanel>
+                        </DataTemplate>
+
+                        <DataTemplate x:Key="AlternatorTechCombobox">
+                            <ComboBox DisplayMemberPath="Label" SelectedValuePath="Value"
+                                    ItemsSource="{Binding DataContext.AllowedAlternatorTechnology,  
+                                    RelativeSource={RelativeSource AncestorType=local:AuxiliariesDeclarationView}}"
+                                    SelectedValue="{Binding AlternatorTechnology, UpdateSourceTrigger=PropertyChanged}">
+                            </ComboBox>
+                        </DataTemplate>
+
+                    </DataGrid.Resources>
+
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Header="Alternator Technology" CellTemplate="{StaticResource AlternatorTechCombobox}"/>
+                        <DataGridTemplateColumn CellTemplate="{StaticResource EntryDeleteControl}" Width="40" />
+                    </DataGrid.Columns>
+
+                </DataGrid>
+
+            </StackPanel>
+        </GroupBox>
+
+        <GroupBox Header="Electric Systems" Grid.Row="2" Grid.Column="1" Margin="0,10,0,0" Width="450" HorizontalAlignment="Left">
+
+            <StackPanel Orientation="Vertical" Width="400" HorizontalAlignment="Left"  Grid.IsSharedSizeScope="True" VerticalAlignment="Center" >
+
+                <customControls:CheckboxParameter
+                            Caption="Dayrunniglights LED" CaptionWidthGroup="lblWidth"
+                            Unit="" UnitWidthGroup="unitWidth"
+                            Value="{Binding DayrunninglightsLED}"/>
+
+                <customControls:CheckboxParameter
+                            Caption="Headlights LED" CaptionWidthGroup="lblWidth"
+                            Unit="" UnitWidthGroup="unitWidth"
+                            Value="{Binding HeadlightsLED}"/>
+
+                <customControls:CheckboxParameter
+                            Caption="Positionlights LED" CaptionWidthGroup="lblWidth"
+                            Unit="" UnitWidthGroup="unitWidth"
+                            Value="{Binding PositionlightsLED}"/>
+
+                <customControls:CheckboxParameter
+                            Caption="Brakelights LED" CaptionWidthGroup="lblWidth"
+                            Unit="" UnitWidthGroup="unitWidth"
+                            Value="{Binding BrakelightsLED}"/>
+
+                <customControls:CheckboxParameter
+                            Caption="Interiorlights LED" CaptionWidthGroup="lblWidth"
+                            Unit="" UnitWidthGroup="unitWidth"
+                            Value="{Binding InteriorLightsLED}"/>
+
+            </StackPanel>
+        </GroupBox>
+
+
+        <GroupBox Header="HVAC" Grid.Row="3" Grid.Column="1" Margin="0,10,0,0" Width="450" HorizontalAlignment="Left">
+            <StackPanel Orientation="Vertical" Width="400" HorizontalAlignment="Left"  Grid.IsSharedSizeScope="True" VerticalAlignment="Center" >
+
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition SharedSizeGroup="lblWidth"/>
+                        <ColumnDefinition />
+                        <ColumnDefinition SharedSizeGroup="unitWidth"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="System Configuration" Margin="0,0,10,0"/>
+                    <ComboBox Grid.Column="1" 
+                              Margin="20,0,0,0"
+                              ItemsSource="{Binding AllowedSystemConfigurations}"
+                              SelectedValue="{Binding SystemConfiguration, Mode=TwoWay ,ValidatesOnDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"
+                              SelectedValuePath="Value"
+                              DisplayMemberPath="Label"
+                              IsEditable="True"
+                              IsReadOnly="True"
+                              Text="Select..."/>
+                </Grid>
+                <!--<customControls:ComboParameter
+                            Caption="System Configuration"
+                            CaptionWidthGroup="lblWidth" UnitWidthGroup="unitWidth"
+                            Value="{Binding SystemConfiguration}"
+                            AllowedValues="{Binding AllowedSystemConfigurations}" />-->
+
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition SharedSizeGroup="lblWidth"/>
+                        <ColumnDefinition />
+                        <ColumnDefinition SharedSizeGroup="unitWidth"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Compressor Type Driver" Margin="0,0,10,0"/>
+                    <ComboBox Grid.Column="1" 
+                              Margin="20,0,0,0"
+                              ItemsSource="{Binding AllowedDriverACCompressorTypes}"
+                              SelectedValue="{Binding CompressorTypeDriver, Mode=TwoWay ,ValidatesOnDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"
+                              SelectedValuePath="Value"
+                              DisplayMemberPath="Label"
+                              IsEditable="True"
+                              IsReadOnly="True"
+                              Text="Select..."/>
+                </Grid>
+                <!--<customControls:ComboParameter
+                            Caption="Compressor Type Driver"
+                            CaptionWidthGroup="lblWidth" UnitWidthGroup="unitWidth"
+                            Value="{Binding CompressorTypeDriver}"
+                            AllowedValues="{Binding AllowedDriverACCompressorTypes}" />-->
+
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition SharedSizeGroup="lblWidth"/>
+                        <ColumnDefinition />
+                        <ColumnDefinition SharedSizeGroup="unitWidth"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Compressor Type Passenger" Margin="0,0,10,0"/>
+                    <ComboBox Grid.Column="1" 
+                              Margin="20,0,0,0"
+                              ItemsSource="{Binding AllowedPassengerACCompressorTypes}"
+                              SelectedValue="{Binding CompressorTypePassenger, Mode=TwoWay ,ValidatesOnDataErrors=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"
+                              SelectedValuePath="Value"
+                              DisplayMemberPath="Label"
+                              IsEditable="True"
+                              IsReadOnly="True"
+                              Text="Select..."/>
+                </Grid>
+                <!--<customControls:ComboParameter
+                            Caption="Compressor Type Passenger"
+                            CaptionWidthGroup="lblWidth" UnitWidthGroup="unitWidth"
+                            Value="{Binding CompressorTypePassenger}"
+                            AllowedValues="{Binding AllowedPassengerACCompressorTypes}" />-->
+
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition SharedSizeGroup="lblWidth"/>
+                        <ColumnDefinition />
+                        <ColumnDefinition SharedSizeGroup="unitWidth"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="Aux Heater Power" Margin="0,0,10,0"/>
+
+                    <TextBox Grid.Column="1" Margin="20,0,0,0">
+                        <TextBox.Resources>
+                            <validation:IntegerValidatorConfig x:Key="IntValidator" MinValue="0" />
+                        </TextBox.Resources>
+                        <TextBox.Text>
+                            <Binding ValidatesOnDataErrors="True" NotifyOnValidationError="True" Path="AuxHeaterPower"
+                                     Converter="{converter:SIValueConverter}" ConverterParameter="int" UpdateSourceTrigger="PropertyChanged">
+
+                                <Binding.ValidationRules>
+                                    <validation:IntegerValidator ValidatorConfig="{StaticResource IntValidator}"/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                    <TextBlock Grid.Row="0" Grid.Column="2" Text="{helper:SIUnit AuxHeaterPower}" Margin="5,0,5,0"/>
+                </Grid>
+                <!--<customControls:VectoParameterControl
+                            Caption="Aux Heater Power" Unit="{helper:SIUnit AuxHeaterPower}" CaptionWidthGroup="lblWidth" UnitWidthGroup="unitWidth"
+                            Value="{Binding AuxHeaterPower, Converter={converter:SIValueConverter}, ConverterParameter=double}" />-->
+
+                <customControls:CheckboxParameter
+                            Caption="Double Glasing" CaptionWidthGroup="lblWidth"
+                            Unit="" UnitWidthGroup="unitWidth"
+                            Value="{Binding DoubleGlasing}"/>
+
+                <customControls:CheckboxParameter
+                            Caption="Heat Pump" CaptionWidthGroup="lblWidth"
+                            Unit="" UnitWidthGroup="unitWidth"
+                            Value="{Binding HeatPump}"/>
+
+                <customControls:CheckboxParameter
+                            Caption="Adjustable Auxiliary Heater" CaptionWidthGroup="lblWidth"
+                            Unit="" UnitWidthGroup="unitWidth"
+                            Value="{Binding AdjustableAuxiliaryHeater}"/>
+
+                <customControls:CheckboxParameter
+                            Caption="Separate Air Distribution Ducts" CaptionWidthGroup="lblWidth"
+                            Unit="" UnitWidthGroup="unitWidth"
+                            Value="{Binding SeparateAirDistributionDucts}"/>
+            </StackPanel>
+        </GroupBox>
+
+    </Grid>
+</UserControl>

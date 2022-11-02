@@ -1,0 +1,6 @@
+﻿CycleName        , Brakes , Park brake + 2 doors , Kneeling , CycleTime
+Heavy urban      , 191    , 82                   , 68       , 8912
+Urban            , 153    , 75                   , 58       , 8149
+Suburban         , 49     , 25                   , 6        , 3283
+Interurban       , 190    , 9                    , 0        , 12962
+Coach            , 27     , 6                    , 0        , 15086

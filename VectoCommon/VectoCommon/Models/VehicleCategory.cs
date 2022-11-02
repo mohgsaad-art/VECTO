@@ -36,11 +36,16 @@ namespace TUGraz.VectoCommon.Models
 	public enum VehicleCategory
 	{
 		Unknown,
+        Van,
 		RigidTruck,
 		Tractor,
 		CityBus,
-		InterurbanBus,
-		Coach
+		//InterurbanBus,
+		Coach,
+		HeavyBusPrimaryVehicle,
+		HeavyBusCompletedVehicle,
+		GenericBusVehicle,
+		HeavyBusInterimVehicle
 	}
 
 	public static class VehicleCategoryHelper
@@ -48,16 +53,22 @@ namespace TUGraz.VectoCommon.Models
 		public static string GetLabel(this VehicleCategory category)
 		{
 			switch (category) {
-				case VehicleCategory.RigidTruck:
+                case VehicleCategory.Van:
+                    return "Van";
+                case VehicleCategory.RigidTruck:
 					return "Rigid Truck";
 				case VehicleCategory.Tractor:
 					return "Tractor";
-				case VehicleCategory.CityBus:
-					return "City Bus";
-				case VehicleCategory.InterurbanBus:
-					return "Interurban Bus";
-				case VehicleCategory.Coach:
-					return "Coach";
+				//case VehicleCategory.CityBus:
+				//	return "City Bus";
+				//case VehicleCategory.InterurbanBus:
+				//	return "Interurban Bus";
+				//case VehicleCategory.Coach:
+				//	return "Coach";
+				case VehicleCategory.HeavyBusPrimaryVehicle:
+					return "Heavy Bus, Primary Vehicle";
+				case VehicleCategory.HeavyBusCompletedVehicle:
+					return "Heavy Bus, Completed Vehicle";
 				default:
 					return category.ToString();
 			}
@@ -66,16 +77,22 @@ namespace TUGraz.VectoCommon.Models
 		public static string GetCategoryName(this VehicleCategory category)
 		{
 			switch (category) {
-				case VehicleCategory.RigidTruck:
+                case VehicleCategory.Van:
+                    return "Van";
+                case VehicleCategory.RigidTruck:
 					return "Rigid Truck";
 				case VehicleCategory.Tractor:
 					return "Semitrailer Truck";
-				case VehicleCategory.CityBus:
-					return "Citybus";
-				case VehicleCategory.InterurbanBus:
-					return "Interurban Bus";
-				case VehicleCategory.Coach:
-					return "Coach";
+				//case VehicleCategory.CityBus:
+				//	return "Citybus";
+				//case VehicleCategory.InterurbanBus:
+				//	return "Interurban Bus";
+				//case VehicleCategory.Coach:
+				//	return "Coach";
+				case VehicleCategory.HeavyBusPrimaryVehicle:
+					return "Heavy Bus, Primary Vehicle";
+				case VehicleCategory.HeavyBusCompletedVehicle:
+					return "Heavy Bus, Completed Vehicle";
 				default:
 					return category.ToString();
 			}
@@ -84,32 +101,63 @@ namespace TUGraz.VectoCommon.Models
 		public static string ToXMLFormat(this VehicleCategory vehicleCategory)
 		{
 			switch (vehicleCategory) {
-				case VehicleCategory.Coach:
+				//case VehicleCategory.Coach:
 				case VehicleCategory.Tractor:
 					return vehicleCategory.ToString();
-				case VehicleCategory.CityBus:
-					return "City Bus";
-				case VehicleCategory.InterurbanBus:
-					return "Interurban Bus";
+				//case VehicleCategory.CityBus:
+				//	return "City Bus";
+				//case VehicleCategory.InterurbanBus:
+				//	return "Interurban Bus";
 				case VehicleCategory.RigidTruck:
 					return "Rigid Lorry";
+				case VehicleCategory.HeavyBusPrimaryVehicle:
+					return "Bus";
+				case VehicleCategory.HeavyBusCompletedVehicle:
+					return "Bus";
 				default:
 					throw new ArgumentOutOfRangeException("vehicleCategory", vehicleCategory, null);
 			}
 		}
 
-		public static bool IsTruck(this VehicleCategory category)
+		public static bool IsLorry(this VehicleCategory category)
 		{
 			switch (category) {
-				case VehicleCategory.RigidTruck:
+                case VehicleCategory.Van:
+                case VehicleCategory.RigidTruck:
 				case VehicleCategory.Tractor:
 					return true;
-				case VehicleCategory.CityBus:
-				case VehicleCategory.InterurbanBus:
-				case VehicleCategory.Coach:
-					return false;
+				case VehicleCategory.HeavyBusCompletedVehicle:
+				case VehicleCategory.GenericBusVehicle:
 				default:
-					throw new ArgumentOutOfRangeException("VehicleCategory", category, null);
+					return false;
+			}
+		}
+
+		public static bool IsBus(this VehicleCategory category)
+		{
+			switch (category) {
+				case VehicleCategory.Coach:
+				case VehicleCategory.CityBus:
+				case VehicleCategory.HeavyBusPrimaryVehicle:
+				case VehicleCategory.HeavyBusCompletedVehicle:
+				case VehicleCategory.GenericBusVehicle: return true;
+				default: return false;
+			}
+		}
+
+		public static VehicleCategory Parse(string vehicleCategory)
+		{
+			switch (vehicleCategory) {
+				case "Bus":
+					return VehicleCategory.HeavyBusPrimaryVehicle;
+				case "Tractor":
+					return VehicleCategory.Tractor;
+				case "Rigid Lorry":
+					return VehicleCategory.RigidTruck;
+				case "Van":
+					return VehicleCategory.Van;
+				default:
+					return VehicleCategory.Unknown;
 			}
 		}
 	}

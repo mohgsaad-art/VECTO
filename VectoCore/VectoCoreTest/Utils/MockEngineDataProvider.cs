@@ -29,14 +29,17 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
-using System.Data;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Models.Declaration;
 
 namespace TUGraz.VectoCore.Tests.Utils
 {
-	public class MockEngineDataProvider : IEngineEngineeringInputData
+	public class MockEngineDataProvider : IEngineEngineeringInputData, IEngineModeEngineeringInputData, IEngineFuelEngineeringInputData
 	{
 		public DataSource DataSource { get; set; }
 		public string Source { get; set; }
@@ -44,9 +47,10 @@ namespace TUGraz.VectoCore.Tests.Utils
 		public string Manufacturer { get; set; }
 		public string Model { get; set; }
 		public string Creator { get; set; }
-		public string Date { get; set; }
+		public DateTime Date { get; set; }
+		public string AppVersion => "Mock-Class";
 		public string TechnicalReportId { get; set; }
-		public CertificationMethod CertificationMethod { get{return CertificationMethod.NotCertified;} }
+		public CertificationMethod CertificationMethod => CertificationMethod.NotCertified;
 		public string CertificationNumber { get; set; }
 		public DigestData DigestValue { get; set; }
 		public CubicMeter Displacement { get; set; }
@@ -59,10 +63,36 @@ namespace TUGraz.VectoCore.Tests.Utils
 		public FuelType FuelType { get; set; }
 		public TableData FuelConsumptionMap { get; set; }
 		public TableData FullLoadCurve { get; set; }
+
+		IList<IEngineFuelEngineeringInputData> IEngineModeEngineeringInputData.Fuels
+		{
+			get { return new[] { this }.Cast<IEngineFuelEngineeringInputData>().ToList(); }
+		}
+
+		public IList<IEngineFuelDeclarationInputData> Fuels
+		{
+			get { return new[] { this }.Cast<IEngineFuelDeclarationInputData>().ToList(); }
+		}
+
+		public IWHRData WasteHeatRecoveryDataElectrical { get; }
+
+		public IWHRData WasteHeatRecoveryDataMechanical { get; }
+
 		public Watt RatedPowerDeclared { get; set; }
 		public PerSecond RatedSpeedDeclared { get; set; }
 		public NewtonMeter MaxTorqueDeclared { get; set; }
+
+		IList<IEngineModeEngineeringInputData> IEngineEngineeringInputData.EngineModes
+		{
+			get { return  new[] { this }.Cast<IEngineModeEngineeringInputData>().ToList(); }
+		}
+
+		public IList<IEngineModeDeclarationInputData> EngineModes { get { return new[] { this }.Cast<IEngineModeDeclarationInputData>().ToList(); } }
+		public WHRType WHRType { get; }
+
 		public KilogramSquareMeter Inertia { get; set; }
 		public double WHTCEngineering { get; set; }
+
+		public Second EngineStartTime => DeclarationData.Engine.DefaultEngineStartTime;
 	}
 }

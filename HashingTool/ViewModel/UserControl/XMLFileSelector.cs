@@ -31,7 +31,6 @@
 
 using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
@@ -40,7 +39,6 @@ using System.Xml;
 using System.Xml.Schema;
 using HashingTool.Helper;
 using HashingTool.Util;
-using TUGraz.VectoCore.Utils;
 using XmlDocumentType = TUGraz.VectoCore.Utils.XmlDocumentType;
 
 namespace HashingTool.ViewModel.UserControl
@@ -92,7 +90,7 @@ namespace HashingTool.ViewModel.UserControl
 
 		public XmlDocument Document
 		{
-			get { return _document; }
+			get => _document;
 			private set {
 				if (_document == value) {
 					return;
@@ -104,7 +102,7 @@ namespace HashingTool.ViewModel.UserControl
 
 		public string Source
 		{
-			get { return _source; }
+			get => _source;
 			private set {
 				if (_source == value) {
 					return;
@@ -115,14 +113,11 @@ namespace HashingTool.ViewModel.UserControl
 			}
 		}
 
-		public bool ValidateInput
-		{
-			get { return _validate; }
-		}
+		public bool ValidateInput => _validate;
 
 		public XmlFileStatus IsValid
 		{
-			get { return _isValid; }
+			get => _isValid;
 			private set {
 				if (_isValid == value) {
 					return;
@@ -164,10 +159,7 @@ namespace HashingTool.ViewModel.UserControl
 
 		public ObservableCollection<string> XMLValidationErrors { get; set; }
 
-		public ICommand BrowseFileCommand
-		{
-			get { return _browseFileCommand; }
-		}
+		public ICommand BrowseFileCommand => _browseFileCommand;
 
 		public ICommand SetXMLFileCommnd
 		{
@@ -185,6 +177,8 @@ namespace HashingTool.ViewModel.UserControl
 			}
 
 			try {
+				_source = fileName;
+				RaisePropertyChanged("Source");
 				using (var stream = File.OpenRead(fileName)) {
 					await LoadXMLFile(stream);
 				}
@@ -196,9 +190,8 @@ namespace HashingTool.ViewModel.UserControl
 
 		private async void BrowseXMLFile()
 		{
-			string filename;
 			try {
-				using (var stream = IoService.OpenFileDialog(null, ".xml", "VECTO XML file|*.xml", out filename)) {
+				using (var stream = IoService.OpenFileDialog(null, ".xml", "VECTO XML file|*.xml", out var filename)) {
 					if (stream == null) {
 						return;
 					}
@@ -260,14 +253,14 @@ namespace HashingTool.ViewModel.UserControl
 
 		public void LogError(string message) 
 		{
-			XMLValidationErrors.Add(String.Format("{0}: {1}", _prefix, message));
+			XMLValidationErrors.Add($"{_prefix}: {message}");
 		}
 
 		public bool HasContentValidation { get; private set; }
 
 		public bool? ContentValid
 		{
-			get { return _contentValid; }
+			get => _contentValid;
 			set {
 				if (_contentValid == value) {
 					return;
@@ -287,9 +280,7 @@ namespace HashingTool.ViewModel.UserControl
 															() => {
 																if (e.ValidationEventArgs == null) {
 																	LogError(
-																		string.Format(
-																			"XML file does not validate against a supported version of {0}",
-																			_expectedDocumentType.ToString()));
+																		$"XML file does not validate against a supported version of {_expectedDocumentType.ToString()}");
 																} else {
 																	LogError(
 																		string.Format(
@@ -301,7 +292,7 @@ namespace HashingTool.ViewModel.UserControl
 																					? Environment.NewLine + e.Exception.InnerException.Message
 																					: "")
 																				: e.ValidationEventArgs.Message,
-																			e.ValidationEventArgs == null ? 0 : e.ValidationEventArgs.Exception.LineNumber));
+																			e.ValidationEventArgs?.Exception.LineNumber ?? 0));
 																}
 															}
 														);

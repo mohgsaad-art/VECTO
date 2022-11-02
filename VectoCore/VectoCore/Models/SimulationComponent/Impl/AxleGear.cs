@@ -29,6 +29,7 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using System;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Simulation;
@@ -40,17 +41,29 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
 	public class AxleGear : TransmissionComponent, IAxlegear
 	{
-		public AxleGear(IVehicleContainer container, AxleGearData modelData) : base(container, modelData.AxleGear) {}
+		public AxleGear(IVehicleContainer container, AxleGearData modelData) : base(container, modelData.AxleGear) { }
 
-		public override IResponse Request(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity,
-			bool dryRun = false)
+		public override IResponse Initialize(NewtonMeter outTorque, PerSecond outAngularVelocity)
 		{
-			var retVal = base.Request(absTime, dt, outTorque, outAngularVelocity, dryRun);
-			retVal.AxlegearPowerRequest = outTorque * (PreviousState.OutAngularVelocity + CurrentState.OutAngularVelocity) / 2.0;
+			var retVal = base.Initialize(outTorque, outAngularVelocity);
+			retVal.Axlegear.PowerRequest = outTorque * outAngularVelocity;
+			retVal.Axlegear.CardanTorque = PreviousState.InTorque;
 			return retVal;
 		}
 
-		protected override void DoWriteModalResults(IModalDataContainer container)
+		public override IResponse Request(
+			Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity,
+			bool dryRun)
+		{
+			var retVal = base.Request(absTime, dt, outTorque, outAngularVelocity, dryRun);
+			retVal.Axlegear.PowerRequest = outTorque * (PreviousState.OutAngularVelocity + outAngularVelocity) / 2.0;
+			retVal.Axlegear.CardanTorque = InTorque;
+			retVal.Axlegear.OutputTorque = outTorque;
+			retVal.Axlegear.OutputSpeed = outAngularVelocity;
+			return retVal;
+		}
+
+		protected override void DoWriteModalResults(Second time, Second simulationInterval, IModalDataContainer container)
 		{
 			var avgAngularVelocity = (PreviousState.InAngularVelocity + CurrentState.InAngularVelocity) / 2.0;
 			container[ModalResultField.P_axle_loss] = (CurrentState.InTorque - CurrentState.OutTorque / ModelData.Ratio) *
@@ -62,5 +75,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		{
 			return PreviousState.TorqueLossResult.Value * PreviousState.InAngularVelocity;
 		}
+
+		public Tuple<PerSecond, NewtonMeter> CurrentAxleDemand =>
+			Tuple.Create(
+				(PreviousState.InAngularVelocity + CurrentState.InAngularVelocity) / 2.0, CurrentState.InTorque);
+
+		public double Ratio => ModelData.Ratio;
 	}
 }

@@ -33,7 +33,6 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Security.Cryptography.Xml;
-using System.Text;
 using System.Xml;
 
 namespace TUGraz.VectoHashing
@@ -79,15 +78,9 @@ namespace TUGraz.VectoHashing
 			return _transform.GetOutput(type);
 		}
 
-		public override Type[] InputTypes
-		{
-			get { return _transform.InputTypes; }
-		}
+		public override Type[] InputTypes => _transform.InputTypes;
 
-		public override Type[] OutputTypes
-		{
-			get { return _transform.OutputTypes; }
-		}
+		public override Type[] OutputTypes => _transform.OutputTypes;
 
 		private static Stream ReadStream(string resourceName)
 		{

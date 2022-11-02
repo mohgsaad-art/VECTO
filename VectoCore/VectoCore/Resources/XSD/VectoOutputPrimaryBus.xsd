@@ -1,0 +1,694 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2021 (x64) (http://www.altova.com) by Markus Quaritsch (Technische Universität Graz) -->
+<xs:schema xmlns="urn:tugraz:ivt:VectoAPI:DeclarationOutput:PrimaryVehicleInformation:HeavyBus:v0.1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:v1.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:v2.1="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1" xmlns:v2.3="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.3" xmlns:v2.6="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.6" xmlns:common="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions" xmlns:pif="urn:tugraz:ivt:VectoAPI:DeclarationOutput:PrimaryVehicleInformation" xmlns:out="urn:tugraz:ivt:VectoAPI:DeclarationOutputDefinitions" targetNamespace="urn:tugraz:ivt:VectoAPI:DeclarationOutput:PrimaryVehicleInformation:HeavyBus:v0.1" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationOutputDefinitions" schemaLocation="VectoOutputDefinitions.xsd"/>
+	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions" schemaLocation="VectoDeclarationDefinitions.xsd"/>
+	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" schemaLocation="VectoDeclarationDefinitions.1.0.xsd"/>
+	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" schemaLocation="VectoDeclarationDefinitions.2.0.xsd"/>
+	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1" schemaLocation="VectoDeclarationDefinitions.2.1.xsd"/>
+	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.3" schemaLocation="VectoDeclarationDefinitions.2.3_DEV.xsd"/>
+	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:DEV:v2.6" schemaLocation="VectoDeclarationDefinitions.2.6_Buses.xsd"/>
+	<xs:complexType name="AbstractAngledriveDataPIFType" abstract="true"/>
+	<xs:complexType name="AbstractAxlegearDataPIFType" abstract="true"/>
+	<xs:complexType name="AbstractEngineDataPIFType" abstract="true"/>
+	<xs:complexType name="AbstractTorqueConverterDataPIFType" abstract="true"/>
+	<xs:complexType name="AbstractTransmissionDataPIFType" abstract="true"/>
+	<xs:complexType name="AbstractTransmissionGearsPIFType" abstract="true"/>
+	<xs:complexType name="AbstractVehicleComponentsPIFType" abstract="true"/>
+	<xs:complexType name="AbstractPrimaryVehicleType" abstract="true"/>
+	<xs:complexType name="AngledriveDataPIFType">
+		<xs:complexContent>
+			<xs:extension base="AbstractAngledriveDataPIFType">
+				<xs:sequence>
+					<xs:element name="Manufacturer" type="v1.0:ManufacturerType">
+						<xs:annotation>
+							<xs:documentation>P220</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Model" type="v1.0:ModelType">
+						<xs:annotation>
+							<xs:documentation>P221</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="CertificationMethod" type="v1.0:AngledriveCertificationOptionType">
+						<xs:annotation>
+							<xs:documentation>P258 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="CertificationNumber" type="v1.0:CertificationNumberType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>P265</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Date" type="v1.0:DateTimeWithTimezone">
+						<xs:annotation>
+							<xs:documentation>P223</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="AppVersion" type="v1.0:AppVersionType">
+						<xs:annotation>
+							<xs:documentation>P224</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Ratio"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="AngledrivePIFType">
+		<xs:sequence>
+			<xs:element name="Data" type="AbstractAngledriveDataPIFType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ApplicationInformationPIFType">
+		<xs:sequence>
+			<xs:element name="SimulationToolVersion" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>II.2.5</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Date" type="v1.0:DateTimeWithTimezone">
+				<xs:annotation>
+					<xs:documentation>II.2.5</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AuxiliariesPIFType">
+		<xs:sequence>
+			<xs:element name="Data" type="v2.6:AbstractPrimaryVehicleAuxiliaryDataDeclarationType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="AxlegearDataPIFType">
+		<xs:complexContent>
+			<xs:extension base="AbstractAxlegearDataPIFType">
+				<xs:sequence>
+					<xs:element name="Manufacturer" type="v1.0:ManufacturerType">
+						<xs:annotation>
+							<xs:documentation>P215</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Model" type="v1.0:ModelType">
+						<xs:annotation>
+							<xs:documentation>P216</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="CertificationMethod" type="v1.0:AxlegearCertificationOptionType">
+						<xs:annotation>
+							<xs:documentation>P256 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="CertificationNumber" type="v1.0:CertificationNumberType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>P264</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Date" type="v1.0:DateTimeWithTimezone">
+						<xs:annotation>
+							<xs:documentation>P218</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="AppVersion" type="v1.0:AppVersionType">
+						<xs:annotation>
+							<xs:documentation>P219</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="LineType"/>
+					<xs:element name="Ratio"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="AxlegearPIFType">
+		<xs:sequence>
+			<xs:element name="Data" type="AbstractAxlegearDataPIFType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CO2Type">
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="unit" type="CO2UnitType" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="EngineComponentPIFType">
+		<xs:sequence>
+			<xs:element name="Data" type="AbstractEngineDataPIFType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="EngineDataPIFType">
+		<xs:complexContent>
+			<xs:extension base="AbstractEngineDataPIFType">
+				<xs:sequence>
+					<xs:element name="Manufacturer" type="v1.0:ManufacturerType">
+						<xs:annotation>
+							<xs:documentation>P200</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Model" type="v1.0:ModelType">
+						<xs:annotation>
+							<xs:documentation>P201</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="CertificationNumber" type="v1.0:CertificationNumberType">
+						<xs:annotation>
+							<xs:documentation>P261</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Date" type="v1.0:DateTimeWithTimezone">
+						<xs:annotation>
+							<xs:documentation>P203</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="AppVersion" type="v1.0:AppVersionType">
+						<xs:annotation>
+							<xs:documentation>P204</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Displacement" type="v1.0:EngineDisplacementType" nillable="false">
+						<xs:annotation>
+							<xs:documentation>P061 - [cm³]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="RatedSpeed" type="v1.0:EngineDeclaredSpeedType">
+						<xs:annotation>
+							<xs:documentation>P249 - [1/min]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="RatedPower" type="v1.0:EngineRatedPower">
+						<xs:annotation>
+							<xs:documentation>P250 - [W]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MaxEngineTorque" type="v1.0:EngineMaxTorque">
+						<xs:annotation>
+							<xs:documentation>P259 - [Nm]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="WHRType" type="v2.3:WHRTypeType"/>
+					<xs:element name="Mode" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="IdlingSpeed" type="v1.0:EngineDeclaredSpeedType"/>
+								<xs:element name="FullLoadAndDragCurve">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="Entry" type="v1.0:FullLoadAndDragCurveEntryType" minOccurs="2" maxOccurs="unbounded"/>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="Fuels">
+									<xs:complexType>
+										<xs:sequence>
+											<xs:element name="FuelType" type="v1.0:FuelTypeType" maxOccurs="unbounded"/>
+										</xs:sequence>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="EngineSpeedDrivingType">
+		<xs:sequence>
+			<xs:element name="Min">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="unit" type="AngularVelocityUnitType" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Average">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="unit" type="AngularVelocityUnitType" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Max">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="unit" type="AngularVelocityUnitType" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FuelConsumptionType">
+		<xs:simpleContent>
+			<xs:extension base="xs:double">
+				<xs:attribute name="unit" type="EnergyConsumptionUnitType" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:complexType name="PrimaryVehicleDataType">
+		<xs:complexContent>
+			<xs:extension base="out:AbstractPrimaryVehicleDataPIFType">
+				<xs:sequence>
+					<xs:element name="Vehicle" type="AbstractPrimaryVehicleType"/>
+					<xs:element name="InputDataSignature" type="v1.0:SignatureType"/>
+					<xs:element name="ManufacturerRecordSignature" type="v1.0:SignatureType"/>
+					<xs:element name="Results" type="ResultsPrimaryVehicleType"/>
+					<xs:element name="ApplicationInformation" type="ApplicationInformationPIFType"/>
+				</xs:sequence>
+				<xs:attribute name="id" use="required"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ResultPrimaryVehicleType">
+		<xs:sequence>
+			<xs:element name="VehicleGroup">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Mission" type="MissionTypeType">
+				<xs:annotation>
+					<xs:documentation>I.2.1.1 / #56</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SimulationParameters" type="SimulationParametersType"/>
+			<xs:choice>
+				<xs:sequence>
+					<xs:element name="Fuel" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="EnergyConsumption" type="FuelConsumptionType" maxOccurs="unbounded">
+									<xs:annotation>
+										<xs:documentation>I.2.3.1 - I.2.3.12 / #69</xs:documentation>
+									</xs:annotation>
+								</xs:element>
+							</xs:sequence>
+							<xs:attribute name="type" type="xs:string" use="required"/>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="CO2" type="CO2Type" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>I.2.3.13 - I.2.3.16 / #68</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+				<xs:sequence>
+					<xs:element name="Error" type="xs:string"/>
+					<xs:element name="ErrorDetails" type="xs:string"/>
+				</xs:sequence>
+			</xs:choice>
+		</xs:sequence>
+		<xs:attribute name="status" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="ResultsPrimaryVehicleType">
+		<xs:sequence>
+			<xs:element name="Status"/>
+			<xs:element name="Result" type="ResultPrimaryVehicleType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SimulationParametersType">
+		<xs:sequence>
+			<xs:element name="TotalVehicleMass">
+				<xs:annotation>
+					<xs:documentation>I.2.1.4 / #59</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="unit" type="MassUnitType" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Payload">
+				<xs:annotation>
+					<xs:documentation>I.2.1.2 / #57</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="unit" type="MassUnitType" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="PassengerCount">
+				<xs:simpleType>
+					<xs:restriction base="xs:double">
+						<xs:minExclusive value="0"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="FuelMode">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="dual fuel mode"/>
+						<xs:enumeration value="single fuel mode"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TorqueConverterDataPIFType">
+		<xs:complexContent>
+			<xs:extension base="AbstractTorqueConverterDataPIFType">
+				<xs:sequence>
+					<xs:element name="Manufacturer" type="v1.0:ManufacturerType">
+						<xs:annotation>
+							<xs:documentation>P205</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Model" type="v1.0:ModelType">
+						<xs:annotation>
+							<xs:documentation>P206</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="CertificationMethod" type="v1.0:TorqueConverterCertificationOptionType">
+						<xs:annotation>
+							<xs:documentation>P254 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="CertificationNumber" type="v1.0:CertificationNumberType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>P262</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Date" type="v1.0:DateTimeWithTimezone">
+						<xs:annotation>
+							<xs:documentation>P208</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="AppVersion" type="v1.0:AppVersionType">
+						<xs:annotation>
+							<xs:documentation>P209</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Characteristics">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Entry" type="v1.0:TorqueConverterCharacteristicsEntryType" minOccurs="2" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="TorqueConverterPIFType">
+		<xs:sequence>
+			<xs:element name="Data" type="AbstractTorqueConverterDataPIFType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TransmissionComponentPIFType">
+		<xs:sequence>
+			<xs:element name="Data" type="AbstractTransmissionDataPIFType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TransmissionDataPIFType">
+		<xs:complexContent>
+			<xs:extension base="AbstractTransmissionDataPIFType">
+				<xs:sequence>
+					<xs:element name="Manufacturer" type="v1.0:ManufacturerType">
+						<xs:annotation>
+							<xs:documentation>P205</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Model" type="v1.0:ModelType">
+						<xs:annotation>
+							<xs:documentation>P206</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="MainCertificationMethod" type="v1.0:GearboxCertificationOptionType">
+						<xs:annotation>
+							<xs:documentation>P254 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="CertificationNumber" type="v1.0:CertificationNumberType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>P262</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Date" type="v1.0:DateTimeWithTimezone">
+						<xs:annotation>
+							<xs:documentation>P208</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="AppVersion" type="v1.0:AppVersionType">
+						<xs:annotation>
+							<xs:documentation>P209</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="TransmissionType"/>
+					<xs:element name="Gears" type="AbstractTransmissionGearsPIFType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="TransmissionGearPIFType">
+		<xs:sequence>
+			<xs:element name="Ratio"/>
+			<xs:element name="MaxTorque" type="v1.0:GearboxGearMaxTorqueType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>P157 - [Nm]</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MaxSpeed" type="v1.0:GearboxGearMaxSpeedType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>P194 - [1/min]</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="number" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="TransmissionGearsPIFType">
+		<xs:complexContent>
+			<xs:extension base="AbstractTransmissionGearsPIFType">
+				<xs:sequence>
+					<xs:element name="Gear" type="TransmissionGearPIFType" maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="VehicleComponentsPIFType">
+		<xs:complexContent>
+			<xs:extension base="AbstractVehicleComponentsPIFType">
+				<xs:sequence>
+					<xs:element name="Engine" type="EngineComponentPIFType"/>
+					<xs:element name="Transmission" type="TransmissionComponentPIFType"/>
+					<xs:element name="TorqueConverter" type="TorqueConverterPIFType" minOccurs="0"/>
+					<xs:element name="Angledrive" type="AngledrivePIFType" minOccurs="0"/>
+					<xs:element name="Axlegear" type="AxlegearPIFType"/>
+					<xs:element name="AxleWheels" type="v2.0:AbstractAxleWheelsComponentDeclarationType"/>
+					<xs:element name="Auxiliaries" type="AuxiliariesPIFType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="VehiclePerformanceType">
+		<xs:sequence>
+			<xs:element name="AverageSpeed">
+				<xs:annotation>
+					<xs:documentation>I.2.2.1 / #60</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="unit" type="SpeedUnitType" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="AverageDrivingSpeed">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="unit" type="SpeedUnitType" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="MinSpeed">
+				<xs:annotation>
+					<xs:documentation>I.2.2.2 / #61</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="unit" type="SpeedUnitType" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="MaxSpeed">
+				<xs:annotation>
+					<xs:documentation>I.2.2.3 / #62</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="unit" type="SpeedUnitType" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="MaxDeceleration">
+				<xs:annotation>
+					<xs:documentation>I.2.2.4 / #63</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="unit" type="AccelerationUnitType" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="MaxAcceleration">
+				<xs:annotation>
+					<xs:documentation>I.2.2.5 / #64</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="unit" type="AccelerationUnitType" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="FullLoadDrivingtimePercentage">
+				<xs:annotation>
+					<xs:documentation>I.2.2.6 / #65</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:double">
+						<xs:minInclusive value="0"/>
+						<xs:maxInclusive value="100"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="GearshiftCount" type="xs:int">
+				<xs:annotation>
+					<xs:documentation>I.2.2.7 / #66</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EngineSpeedDriving" type="EngineSpeedDrivingType"/>
+			<xs:element name="AverageGearboxEfficiency">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="unit" type="PercentType" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="AverageAxlegearEfficiency">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:double">
+							<xs:attribute name="unit" type="PercentType" use="required"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="VehiclePIFType">
+		<xs:complexContent>
+			<xs:extension base="AbstractPrimaryVehicleType">
+				<xs:sequence>
+					<xs:element name="ManufacturerPrimaryVehicle" type="v1.0:ManufacturerType"/>
+					<xs:element name="ManufacturerAddressPrimaryVehicle" type="v1.0:ManufacturerAddressType"/>
+					<xs:element name="Model" type="v1.0:ModelType"/>
+					<xs:element name="VIN" type="v1.0:VINType"/>
+					<xs:element name="Date" type="v1.0:DateTimeWithTimezone"/>
+					<xs:element name="VehicleCategory" type="v2.6:VehicleCategoryDeclarationType"/>
+					<xs:element name="AxleConfiguration" type="v2.6:VehicleAxleConfigurationDeclarationType"/>
+					<xs:element name="Articulated" type="xs:boolean"/>
+					<xs:element name="TechnicalPermissibleMaximumLadenMass" type="v1.0:VehicleGrossVehicleMassType"/>
+					<xs:element name="IdlingSpeed" type="v1.0:EngineDeclaredSpeedType"/>
+					<xs:element name="RetarderType" type="v1.0:RetarderTypeType"/>
+					<xs:element name="RetarderRatio" type="v1.0:RetarderRatioType" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>P053 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="AngledriveType" type="v1.0:AngledriveTypeType">
+						<xs:annotation>
+							<xs:documentation>P180 - enum</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ZeroEmissionVehicle" type="xs:boolean"/>
+					<xs:element name="ADAS" type="v2.1:AbstractAdvancedDriverAssistantSystemsType"/>
+					<xs:element name="TorqueLimits" type="v2.0:AbstractTorqueLimitsType" minOccurs="0"/>
+					<xs:element name="Components" type="AbstractVehicleComponentsPIFType"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:simpleType name="AccelerationUnitType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="m/s²"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="AngularVelocityUnitType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="rpm"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CO2UnitType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="g/km"/>
+			<xs:enumeration value="g/t-km"/>
+			<xs:enumeration value="g/p-km"/>
+			<xs:enumeration value="g/m³-km"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DistanceUnitType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="km"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="EnergyConsumptionUnitType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="MJ/km"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="MassUnitType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="kg"/>
+			<xs:enumeration value="t"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="MissionTypeType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="Long Haul EMS"/>
+			<xs:enumeration value="Long Haul"/>
+			<xs:enumeration value="Regional Delivery EMS"/>
+			<xs:enumeration value="Regional Delivery"/>
+			<xs:enumeration value="Urban Delivery"/>
+			<xs:enumeration value="Municipal Utility"/>
+			<xs:enumeration value="Construction"/>
+			<xs:enumeration value="Heavy Urban"/>
+			<xs:enumeration value="Urban"/>
+			<xs:enumeration value="Suburban"/>
+			<xs:enumeration value="Interurban"/>
+			<xs:enumeration value="Coach"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PercentType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="%"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SpeedUnitType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="km/h"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

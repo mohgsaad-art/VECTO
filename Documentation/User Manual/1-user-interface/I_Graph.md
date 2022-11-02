@@ -1,10 +1,10 @@
-##Graph Window
+## Graph Window
 
 
 ![](pics/Graph.svg)
 
 
-###Description
+### Description
 
 
 The Graph Window allows to visualise [modal results files (.vmod)](#modal-results-.vmod). Multiple windows can be open at the same time to display different files.
@@ -12,7 +12,7 @@ The Graph Window allows to visualise [modal results files (.vmod)](#modal-result
 Note that the graph does **not** update automatically if the results file has changed.
 
 
-###Channels
+### Channels
 
 
 Use the ![add](pics/plus-circle-icon.png) and ![remove](pics/minus-circle-icon.png) buttons to add or remove channels. Doubleclick entries to edit existing channels.
@@ -20,7 +20,7 @@ Use the ![add](pics/plus-circle-icon.png) and ![remove](pics/minus-circle-icon.p
 Each channel can be plotted either on the left or on the right Y Axis. Use the checkbox to disable channels in the graph.
 
 
-###X Axis Controls
+### X Axis Controls
 
 
 The X Axis can either show distance or time.
@@ -38,7 +38,7 @@ Reset button
 :   Move the x axis range left/right.
 
 
-###Controls
+### Controls
 
 ![open](pics/Open-icon.png) ***Open a .vmod file***
 

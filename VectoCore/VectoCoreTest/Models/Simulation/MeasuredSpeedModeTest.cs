@@ -29,20 +29,22 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using System;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
 using TUGraz.VectoCommon.Exceptions;
+using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
-using TUGraz.VectoCore.InputData.Reader;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Models.Simulation.Impl;
+using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Engine;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
@@ -59,6 +61,7 @@ using TUGraz.VectoCore.Utils;
 namespace TUGraz.VectoCore.Tests.Models.Simulation
 {
 	[TestFixture]
+	[Parallelizable(ParallelScope.All)]
 	public class MeasuredSpeedModeTest
 	{
 
@@ -239,8 +242,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 				VehicleData =
 					new VehicleData {
 						VehicleCategory = VehicleCategory.RigidTruck,
-						GrossVehicleWeight = 12000.SI<Kilogram>(),
-						CurbWeight = 3400.SI<Kilogram>(),
+						GrossVehicleMass = 12000.SI<Kilogram>(),
+						CurbMass = 3400.SI<Kilogram>(),
 						DynamicTyreRadius = 0.5.SI<Meter>(),
 						AxleData =
 							new List<Axle> {
@@ -257,15 +260,24 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 				EngineData =
 					new CombustionEngineData {
 						IdleSpeed = 560.RPMtoRad(),
+						EngineStartTime = DeclarationData.Engine.DefaultEngineStartTime,
+						Inertia = 1.SI<KilogramSquareMeter>(),
 						FullLoadCurves = new Dictionary<uint, EngineFullLoadCurve>() { { 0, fullLoadCurve }, { 1, fullLoadCurve } }
 					},
 				GearboxData = new GearboxData { Gears = new Dictionary<uint, GearData> { { 1, new GearData { Ratio = 6.2 } } } },
-				Retarder = new RetarderData()
+				Retarder = new RetarderData(),
+				DriverData = new DriverData() {
+					EngineStopStart = new DriverData.EngineStopStartData() {
+						UtilityFactorStandstill = DeclarationData.Driver.EngineStopStart.UtilityFactor,
+						EngineOffStandStillActivationDelay = DeclarationData.Driver.EngineStopStart.ActivationDelay,
+						MaxEngineOffTimespan =  DeclarationData.Driver.EngineStopStart.MaxEngineOffTimespan
+					}
+				},
+				ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>()
 			};
 
 			// call builder (actual test)
-			var builder = new PowertrainBuilder(new MockModalDataContainer());
-			builder.Build(data);
+			PowertrainBuilder.Build(data, new MockModalDataContainer());
 		}
 
 		/// <summary>
@@ -319,6 +331,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 				AxleGearData = new AxleGearData { AxleGear = new GearData { Ratio = 2.3 } },
 				EngineData = new CombustionEngineData {
 					IdleSpeed = 560.RPMtoRad(),
+					Inertia = 1.SI<KilogramSquareMeter>(),
+					EngineStartTime = DeclarationData.Engine.DefaultEngineStartTime,
 					FullLoadCurves = new Dictionary<uint, EngineFullLoadCurve> {
 						{ 0, fullLoadCurve },
 						{ 1, fullLoadCurve },
@@ -332,14 +346,23 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 						{ 2, new GearData { Ratio = 3.806 } },
 						{ 3, new GearData { Ratio = 2.289 } }
 					},
+				},
+				GearshiftParameters = new ShiftStrategyParameters() {
 					StartSpeed = 2.SI<MeterPerSecond>()
 				},
-				Retarder = new RetarderData()
+				Retarder = new RetarderData(),
+				DriverData = new DriverData() {
+					EngineStopStart = new DriverData.EngineStopStartData() {
+						EngineOffStandStillActivationDelay = DeclarationData.Driver.EngineStopStart.ActivationDelay,
+						UtilityFactorStandstill = DeclarationData.Driver.EngineStopStart.UtilityFactor,
+						MaxEngineOffTimespan = DeclarationData.Driver.EngineStopStart.MaxEngineOffTimespan,
+					}
+				},
+				ElectricMachinesData = new List<Tuple<PowertrainPosition, ElectricMotorData>>()
 			};
 
 			// call builder (actual test)
-			var builder = new PowertrainBuilder(new MockModalDataContainer());
-			var jobContainer = builder.Build(data);
+			var jobContainer = PowertrainBuilder.Build(data, new MockModalDataContainer());
 		}
 
 		private static void RunJob(string jobFile, string expectedModFile, string actualModFile, string expectedSumFile,
@@ -350,7 +373,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			var jobContainer = new JobContainer(sumWriter);
 
 			var inputData = JSONInputDataFactory.ReadJsonJob(jobFile);
-			var runsFactory = new SimulatorFactory(ExecutionMode.Engineering, inputData, fileWriter);
+			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Engineering, inputData, fileWriter);
 			runsFactory.ActualModalData = actualModData;
 			runsFactory.WriteModalResults = true;
 

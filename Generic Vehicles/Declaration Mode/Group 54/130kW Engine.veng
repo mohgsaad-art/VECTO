@@ -1,0 +1,35 @@
+{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2020-02-27T14:58:36.6681488Z",
+    "AppVersion": "3",
+    "FileVersion": 5
+  },
+  "Body": {
+    "SavedInDeclMode": true,
+    "ModelName": "generic Engine",
+    "Displacement": "3000",
+    "IdlingSpeed": 800.0,
+    "Inertia": 2.52,
+    "Fuels": [
+      {
+        "WHTC-Urban": 1.07,
+        "WHTC-Rural": 1.03,
+        "WHTC-Motorway": 1.01,
+        "WHTC-Engineering": 0.0,
+        "ColdHotBalancingFactor": 1.0,
+        "CFRegPer": 1.0,
+        "FuelMap": "130kW_D_Engine_ML.vmap",
+        "FuelType": "DieselCI"
+      }
+    ],
+    "RatedPower": 130000.0,
+    "RatedSpeed": 3600.0,
+    "MaxTorque": 410.0,
+    "FullLoadCurve": "Volllastkurve 130kW.vfld",
+    "WHRType": [
+      "None"
+    ],
+    "WHRCorrectionFactors": {}
+  }
+}

@@ -1,4 +1,4 @@
-##XML Job-File (Declaration Mode)
+## XML Job-File (Declaration Mode)
 
 <div class="declaration">
 For vehicle certification the input data (vehicle data) has to be provided in XML format. Please see the following resources for more information:

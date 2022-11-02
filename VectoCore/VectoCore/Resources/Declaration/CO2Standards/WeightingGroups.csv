@@ -1,4 +1,6 @@
 Vehicle Group , Cabin Type , Engine Rated Power Min [kw] , Engine Rated Power Max [kW] , Weighting Group
+1s            , DayCab     , 0                           , 999999                      , 1s
+1s            , SleeperCab , 0                           , 999999                      , 1s
 1             , DayCab     , 0                           , 999999                      , 1
 1             , SleeperCab , 0                           , 999999                      , 1
 2             , DayCab     , 0                           , 999999                      , 2
@@ -23,3 +25,16 @@ Vehicle Group , Cabin Type , Engine Rated Power Min [kw] , Engine Rated Power Ma
 12            , SleeperCab , 0                           , 999999                      , 12
 16            , DayCab     , 0                           , 999999                      , 16
 16            , SleeperCab , 0                           , 999999                      , 16
+#
+51            , DayCab     , 0                           , 999999                      , 51
+51            , SleeperCab , 0                           , 999999                      , 51
+52            , DayCab     , 0                           , 999999                      , 52
+52            , SleeperCab , 0                           , 999999                      , 52
+53            , DayCab     , 0                           , 999999                      , 53
+53            , SleeperCab , 0                           , 999999                      , 53
+54            , DayCab     , 0                           , 999999                      , 54
+54            , SleeperCab , 0                           , 999999                      , 54
+55            , DayCab     , 0                           , 999999                      , 55
+55            , SleeperCab , 0                           , 999999                      , 55
+56            , DayCab     , 0                           , 999999                      , 56
+56            , SleeperCab , 0                           , 999999                      , 56

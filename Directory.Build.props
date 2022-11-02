@@ -1,0 +1,53 @@
+<Project>
+  <PropertyGroup>
+    <DefineConstants />
+    <!-- For a Release-Candidate uncomment the following line: -->
+    <!--<DefineConstants>RELEASE_CANDIDATE</DefineConstants>-->
+
+    <!-- For a Release uncomment the following line: -->
+    <!--<DefineConstants>CERTIFICATION_RELEASE</DefineConstants>-->
+
+    <!-- Global VECTO Version -->
+    <MainProductVersion>0.7.9</MainProductVersion>
+    <VersionSuffix>DEV</VersionSuffix>
+
+    <!-- The following settings are used as default values for ALL projects -->
+    <VersionPrefix>$(MainProductVersion).$([System.DateTime]::UtcNow.Subtract($([System.DateTime]::new(2015,1,1))).Days)</VersionPrefix>
+    <Authors>Graz University of Technology</Authors>
+    <Company>European Union</Company>
+    <Copyright>Copyright © 2012-$([System.DateTime]::UtcNow.Year)</Copyright>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Deterministic>true</Deterministic>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+	  <DefineTrace>false</DefineTrace>
+    <RemoveIntegerChecks>true</RemoveIntegerChecks>
+    <DebugType>none</DebugType>
+    <WarningLevel>5</WarningLevel>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(DefineConstants.Contains('RELEASE_CANDIDATE'))">
+    <VersionSuffix>RC</VersionSuffix>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(DefineConstants.Contains('CERTIFICATION_RELEASE'))">
+    <VersionSuffix></VersionSuffix>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <WarningLevel>5</WarningLevel>
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Release' Or '$(Configuration)'=='Deploy'">
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <RemoveIntegerChecks>true</RemoveIntegerChecks>
+    <WarningLevel>1</WarningLevel>
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+  </PropertyGroup>
+</Project>

@@ -1,48 +1,51 @@
-##Gearbox: Gear Shift Model
+## Gear Shift Model
+
+This VECTO version contains a new shift strategy called EffShift.
+
+The shift strategy is on a first level based on gearshift lines for upshift and downshift (similar to the classic VECTO gearshift strategy). Additionally “Efficiency shifts” can be triggered between the shift lines, if the fuel efficiency (g/kWh cardan) in a candidate gear is better than in the current gear. In order to cover a large range of the engine map with the “Efficiency shifts”, the area between the downshift and upshift line has to be of sufficient size. Hence, the shift lines are defined as shown in the figure below, with the downshift line (green) to the left and the up-shift line (red) to the right. Due to the superposition of the gear-shift lines with the EffShift algorithm as described below the upshift line is not relevant for upshifts in most cases. 
 
 
-The Gear Shift Model is based on shift curves that define the engine speed for up- and down- shifting as a function of engine torque. As soon as the engine operation point passes one of the shift curves a gear change is initiated.
+![](pics/EffShift.jpg)
+
+The points P1 to P4 are calculated according as follows:
+
+  * P1 (upshift line)	$n_1 = n_{idle} * 1.1 / T_1 = 0$
+  * P2 (upshift line)	$n_2 = n_{idle} * 1.1  / T_2 = 0.98 * T_{@ n2}$   
+  * P3 (upshift line)	$n_3 = n_{T99,low}  / T_3 = T_{99 low}$
+  * n4 (downshift line) $n_4 = n_{P98,high}$ / (vertical line)
+  * n5 (left boundary for engine speed range with reduced target acceleration demand in next gear) $n_4 = n_{T98,high}$ / 	(vertical line)
 
 
-![](pics/Shift.svg)
+The definition of the upshift line depends on the transmission type: for AMT, the pre-shift engine speed is considered for the upshift line and for AT the post-shift engine speed is used.
+Additionally, the demanded acceleration to be available after a gearshift is reduced compared to the current acceleration: This is done for engine speeds between $n_{T98h}$ and $n_{P98h}$. This shall reduce reving up the engine during full-load accelerations. The demanded acceleration is calculated as follows:
 
-*Example shift polygons*
+$a_{demand} = a_{act} * a_{red}$   for $(n_{act} > n_{T98h})$
 
-- **Down-shift:**
-   		
-   	- As soon as the current engine speed falls below the down-shift cuve a down-shift is initiated
-
--  **Up-shift:**
-  	 	
-  	- MT and AMT transmissions: Up-shift is initiated when the current engine speed is above the up-shift curve
-   	- AT transmissions: Up-shift is initiated when the next-gear engine speed is above the up-shift curve
+$a_{red} = 1+ (\textrm{AccelerationFactorNP98h} - 1) / (n_{P98h} - n_{T98h}) * (n - n_{T98h})$  for $(n_{act} > n_{T98h})$
 
 
+## PEV Gear Shift Model
 
-The shift polygons are saved in the [Shift Polygons Input File (.vgbs)](#shift-polygons-input-file-.vgbs) and have to be added to the [Gearbox File](#gearbox-file-.vgbx) when not in [Declaration Mode](#declaration-mode).
+The gear shift lines for pure electric vehicles is different than for conventional vehicles and HEV as the shape of maximum torque curve is typically very different.
 
-In [Declaration Mode](#declaration-mode) the generic shift polygons are computed from the engine's full-load curve. If the maximum torque is limited by the gearbox, the minimum of the current gear and engine maximum torque will be used to compute the [generic shift polygons](#gearbox-gear-shift-model). Note: the computation of the shift polygons uses characteristic values from the engine such as n~95h~, n~pref~, etc. which are also derived from the full-load curve.
+The figure below depicts a typical maximum torque curve (orange) and maximum power curve (blue) for an electric motor. The downshift and upshift lines are plotted with a dot-dashed green line.
 
+**Basics:**
 
-In the Gearbox File two additional parameters are defined:
+  * Downshift for operation point left of green dot-dashed downshift lines
+  * Upshift for operation point right of green dot-dashed upshift line
+  * EffShift method applied for operation point between downshift and upshift lines (refer to user manual) 
 
--   **Torque Reserve** \[%\] - Required for the "**Early Upshift**" and "**Skip Gears**" options, see below.
--   **Minimum shift time** \[s\] - Limits the time between two gear shifts in whole seconds. This rule will be ignored if rpms are too high or too low. Note that high values may cause high rpms during acceleration.
+**Driving:**
 
+  * Maximum downshift speed always located at n_P80low (where 80% of max power is available)
+  * For EM in de-rating n_P80low is calculated from the de-rated power curve
 
-###Gear Skipping
+**Braking:**
 
-
-Gear Skipping  is active for AMT and MT. Whenever a gear change is initiated (by crossing the up- or down-shift line) VECTO may skip one or several gears as long as the required torque reserve is provided.
-
-![](pics/GBX-Editor-shift3.svg)
-
-
-###Early Upshift
-Early Upshift (allow upshifts inside the shift polygons) is enabled for AMT only. If the next higher gear provides the required torque reserve and it's rpm is still above down-shift-rpm VECTO will shift up.
-
-
-![](pics/GBX-Editor-shift2.svg)
+  * EffShift is suppressed for operation point within red shaded area(2% below max recuperation power)
+  * New gear after downshift is selected so that operation point is closest to and above n_brake_target_norm (or only closest to n_brake_target_norm in case no operation point with higher speed exists)
 
 
+![](pics/PEV_Gearshift.png)
 

@@ -31,6 +31,7 @@
 
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 
@@ -41,7 +42,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox
 		[ValidateObject]
 		public TransmissionLossMap LossMap { get; internal set; }
 
-		[Required, RangeOrNaN(double.Epsilon, 25)]
+		[Required, RangeOrNaN(double.Epsilon, 100)]
 		public double Ratio { get; internal set; }
 	}
 
@@ -53,15 +54,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox
 			TorqueConverterRatio = double.NaN;
 		}
 
-		public bool HasTorqueConverter
-		{
-			get { return !double.IsNaN(TorqueConverterRatio) && TorqueConverterGearLossMap != null; }
-		}
+		public bool HasTorqueConverter => !double.IsNaN(TorqueConverterRatio) && TorqueConverterGearLossMap != null;
 
-		public bool HasLockedGear
-		{
-			get { return !double.IsNaN(Ratio) && LossMap != null; }
-		}
+		public bool HasLockedGear => !double.IsNaN(Ratio) && LossMap != null;
 
 		[ValidateObject]
 		public ShiftPolygon ShiftPolygon { get; internal set; }
@@ -72,6 +67,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox
 
 		public PerSecond MaxSpeed { get; internal set; }
 
+		public NewtonMeter MaxTorque { get; internal set; }
+
 		public ShiftPolygon TorqueConverterShiftPolygon { get; set; }
 
 		// ReSharper disable once UnusedMember.Global -- used via validation
@@ -79,15 +76,17 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox
 		{
 			var validationService =
 				context.GetService(typeof(VectoValidationModeServiceContainer)) as VectoValidationModeServiceContainer;
-			var mode = validationService != null ? validationService.Mode : ExecutionMode.Declaration;
+			var mode = validationService?.Mode ?? ExecutionMode.Declaration;
 			var gbxType = validationService != null ? validationService.GearboxType : GearboxType.MT;
 			var emsMission = validationService != null && validationService.IsEMSCycle;
+			var jobType = validationService?.JobType ?? VectoSimulationJobType.ConventionalVehicle;
+			var emPos = validationService?.EMPowertrainPosition;
 
 			if (gearData.HasTorqueConverter) {
 				if (gearData.TorqueConverterShiftPolygon == null) {
 					return new ValidationResult("Shift Polygon for Torque Converter Gear required!");
 				}
-				var result = gearData.TorqueConverterShiftPolygon.Validate(mode, gbxType, emsMission);
+				var result = gearData.TorqueConverterShiftPolygon.Validate(mode, jobType, emPos, gbxType, emsMission);
 				if (result.Any()) {
 					return new ValidationResult("Validation of GearData failed", result.Select(x => x.ErrorMessage));
 				}

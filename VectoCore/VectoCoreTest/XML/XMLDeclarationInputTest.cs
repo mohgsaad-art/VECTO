@@ -41,12 +41,9 @@ using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
-using TUGraz.VectoCore.InputData.FileIO.XML.Declaration;
-using TUGraz.VectoCore.InputData.Reader;
 using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Impl;
-using TUGraz.VectoCore.Models.SimulationComponent.Data.Engine;
 using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Tests.Utils;
@@ -55,10 +52,12 @@ using NUnit.Framework;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCore.InputData.FileIO.XML;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
+using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
 
 namespace TUGraz.VectoCore.Tests.XML
 {
 	[TestFixture]
+	[Parallelizable(ParallelScope.All)]
 	public class XMLDeclarationInputTest
 	{
 		const string SampleVehicleDecl = "TestData/XML/XMLReaderDeclaration/vecto_vehicle-sample.xml";
@@ -95,10 +94,10 @@ namespace TUGraz.VectoCore.Tests.XML
 
 			Assert.AreEqual("Generic 40t Long Haul Truck Engine", engineDataProvider.Model);
 			Assert.AreEqual(0.012730, engineDataProvider.Displacement.Value());
-			Assert.AreEqual(1.0097, engineDataProvider.WHTCUrban);
+			Assert.AreEqual(1.0097, engineDataProvider.EngineModes.First().Fuels.First().WHTCUrban);
 			//AssertHelper.Exception<VectoException>(() => { var tmp = engineDataProvider.Inertia; });
 
-			var fcMapTable = engineDataProvider.FuelConsumptionMap;
+			var fcMapTable = engineDataProvider.EngineModes.First().Fuels.First().FuelConsumptionMap;
 			Assert.AreEqual(112, fcMapTable.Rows.Count);
 			Assert.AreEqual("engine speed", fcMapTable.Columns[0].Caption);
 			Assert.AreEqual("torque", fcMapTable.Columns[1].Caption);
@@ -107,9 +106,9 @@ namespace TUGraz.VectoCore.Tests.XML
 			Assert.AreEqual("560.00", fcMapTable.Rows[0][0]);
 			var fcMap = FuelConsumptionMapReader.Create(fcMapTable);
 			Assert.AreEqual(1256.SI(Unit.SI.Gramm.Per.Hour).Value(),
-				fcMap.GetFuelConsumption(0.SI<NewtonMeter>(), 560.RPMtoRad()).Value.Value());
+				fcMap.GetFuelConsumption(0.SI<NewtonMeter>(), 560.RPMtoRad(), false).Value.Value());
 
-			var fldTable = engineDataProvider.FullLoadCurve;
+			var fldTable = engineDataProvider.EngineModes.First().FullLoadCurve;
 			Assert.AreEqual(10, fldTable.Rows.Count);
 			Assert.AreEqual("engine speed", fldTable.Columns[0].Caption);
 			Assert.AreEqual("full load torque", fldTable.Columns[1].Caption);
@@ -127,10 +126,6 @@ namespace TUGraz.VectoCore.Tests.XML
 					continue;
 				}
 
-				if (fuel.Equals("NG CI")) {
-					// not supported at the moment - can't be certified for engines
-					continue;
-				}
 				var reader = XmlReader.Create(SampleVehicleDecl);
 
 				var doc = new XmlDocument();
@@ -151,46 +146,14 @@ namespace TUGraz.VectoCore.Tests.XML
 				var modified = XmlReader.Create(new StringReader(nav.OuterXml));
 
 				var inputDataProvider = xmlInputReader.CreateDeclaration(modified);
-				var fuelTyle = inputDataProvider.JobInputData.Vehicle.Components.EngineInputData.FuelType;
+				var fuelTyle = inputDataProvider.JobInputData.Vehicle.Components.EngineInputData.EngineModes.First().Fuels.First().FuelType;
 				Assert.AreEqual(fuel, fuelTyle.ToXMLFormat());
 				var tankSystem = fuelTyle == FuelType.NGPI || fuelTyle == FuelType.NGCI ? TankSystem.Liquefied : (TankSystem?)null;
 				Assert.NotNull(DeclarationData.FuelData.Lookup(fuelTyle, tankSystem));
 			}
 		}
 
-		[TestCase("NG CI", TankSystem.Liquefied),
-		TestCase("NG CI", TankSystem.Compressed),]
-		public void TestUnsupportedEngineFuelTypes(string fuel, TankSystem? tankSystem)
-		{
-			
-			var reader = XmlReader.Create(SampleVehicleDecl);
-
-			var doc = new XmlDocument();
-			doc.Load(reader);
-			var nav = doc.CreateNavigator();
-			var manager = new XmlNamespaceManager(nav.NameTable);
-			var helper = new XPathHelper(ExecutionMode.Declaration);
-			helper.AddNamespaces(manager);
-
-			var engineFuelType = nav.SelectSingleNode(helper.QueryAbs(
-														helper.NSPrefix(XMLNames.VectoInputDeclaration,
-																		Constants.XML.RootNSPrefix),
-														XMLNames.Component_Vehicle,
-														XMLNames.Vehicle_Components,
-														XMLNames.Component_Engine, XMLNames.ComponentDataWrapper, XMLNames.Engine_FuelType),
-													manager);
-			engineFuelType.SetValue(fuel);
-			var modified = XmlReader.Create(new StringReader(nav.OuterXml));
-
-			var inputDataProvider = xmlInputReader.CreateDeclaration(modified);
-			var fuelTyle = inputDataProvider.JobInputData.Vehicle.Components.EngineInputData.FuelType;
-			Assert.AreEqual(fuel, fuelTyle.ToXMLFormat());
-			AssertHelper.Exception<VectoException>(
-				() => {
-					DeclarationData.FuelData.Lookup(fuelTyle, tankSystem);
-				});			
-		}
-
+		
 		[TestCase]
 		public void TestXMLInputGbx()
 		{
@@ -451,7 +414,7 @@ namespace TUGraz.VectoCore.Tests.XML
 			var jobContainer = new JobContainer(sumData);
 			var dataProvider = xmlInputReader.CreateDeclaration(reader);
 
-			var runsFactory = new SimulatorFactory(ExecutionMode.Declaration, dataProvider, fileWriter);
+			var runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, dataProvider, fileWriter);
 			runsFactory.WriteModalResults = true;
 
 			jobContainer.AddRuns(runsFactory);
@@ -612,7 +575,7 @@ namespace TUGraz.VectoCore.Tests.XML
 
 			var inputDataProvider = xmlInputReader.CreateDeclaration(modified);
 
-			var factory = new SimulatorFactory(ExecutionMode.Declaration, inputDataProvider, new FileOutputWriter("dummy"));
+			var factory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputDataProvider, new FileOutputWriter("dummy"));
 			var jobContainer = new JobContainer(null);
 			jobContainer.AddRuns(factory);
 			jobContainer.Execute();
@@ -680,7 +643,7 @@ namespace TUGraz.VectoCore.Tests.XML
 		public void TestVehicleCategoryTypes()
 		{
 			var vehicleCategories = GetEnumOptions("VehicleCategoryDeclarationType", "1.0");
-			var allowedCategories = DeclarationData.Segments.GetVehicleCategories();
+			var allowedCategories = DeclarationData.TruckSegments.GetVehicleCategories();
 			foreach (var vehicleCategory in vehicleCategories) {
 				if (vehicleCategory.Equals("Rigid Truck")) {
 					continue; // Rigid Truck has been renamed to Rigid Lorry. The XML contains this entry for backward compatibility (separate testcase)
@@ -800,7 +763,7 @@ namespace TUGraz.VectoCore.Tests.XML
 						Assert.AreEqual(ptoGearWheel,
 							inputDataProvider.JobInputData.Vehicle.Components.PTOTransmissionInputData.PTOTransmissionType);
 					} else {
-						Assert.AreEqual(string.Format("{0} - {1}", ptoGearWheel, ptoOther),
+						Assert.AreEqual($"{ptoGearWheel} - {ptoOther}",
 							inputDataProvider.JobInputData.Vehicle.Components.PTOTransmissionInputData.PTOTransmissionType);
 					}
 					Assert.NotNull(DeclarationData.PTOTransmission.Lookup(inputDataProvider.JobInputData.Vehicle.Components
@@ -871,7 +834,7 @@ namespace TUGraz.VectoCore.Tests.XML
 
 				var gbxType = inputDataProvider.JobInputData.Vehicle.Components.GearboxInputData.Type;
 				Assert.AreEqual(gearboxType, gbxType.ToXMLFormat());
-				Assert.IsTrue(DeclarationDataAdapter.SupportedGearboxTypes.Contains(gbxType));
+				Assert.IsTrue(DeclarationDataAdapterHeavyLorry.SupportedGearboxTypes.Contains(gbxType));
 			}
 		}
 
@@ -896,7 +859,7 @@ namespace TUGraz.VectoCore.Tests.XML
 			var lookup = DeclarationData.PTOTransmission.Lookup(ptoDataProvider.PTOTransmissionType);
 
 			Assert.AreEqual("only the drive shaft of the PTO - multi-disc clutch", ptoDataProvider.PTOTransmissionType);
-			Assert.AreEqual(1000, lookup.PowerDemand.Value());
+			Assert.AreEqual(350, lookup.PowerDemand.Value());
 		}
 
 		[TestCase]
@@ -1071,7 +1034,7 @@ namespace TUGraz.VectoCore.Tests.XML
 
 			var inputDataProvider = xmlInputReader.CreateDeclaration(modified);
 
-			var fuelType = inputDataProvider.JobInputData.Vehicle.Components.EngineInputData.FuelType;
+			var fuelType = inputDataProvider.JobInputData.Vehicle.Components.EngineInputData.EngineModes.First().Fuels.First().FuelType;
 
 			Assert.AreEqual(expectedFuelType, fuelType);
 		}
@@ -1079,16 +1042,16 @@ namespace TUGraz.VectoCore.Tests.XML
 		public static string[] GetEnumOptions(string xmlType, string schemaVersion)
 		{
 			Stream resource;
-			var schemaFile = string.Format("VectoDeclarationDefinitions{0}.xsd", "." + schemaVersion);
+			var schemaFile = $"VectoDeclarationDefinitions{"." + schemaVersion}.xsd";
 			try {
 				resource = RessourceHelper.LoadResourceAsStream(RessourceHelper.ResourceType.XMLSchema, schemaFile);
 			} catch (Exception e) {
-				throw new Exception(string.Format("Unknown XML schema! version: {0}, xsd: {1}", schemaVersion, schemaFile), e);
+				throw new Exception($"Unknown XML schema! version: {schemaVersion}, xsd: {schemaFile}", e);
 			}
 			var reader = new XPathDocument(resource);
 			var nav = reader.CreateNavigator();
 			var nodes = nav.Select(
-				string.Format("//*[local-name()='simpleType' and @name='{0}']//*[local-name()='enumeration']/@value", xmlType));
+				$"//*[local-name()='simpleType' and @name='{xmlType}']//*[local-name()='enumeration']/@value");
 			var retVal = new List<string>();
 			foreach (var node in nodes) {
 				retVal.Add(node.ToString());
@@ -1127,6 +1090,25 @@ namespace TUGraz.VectoCore.Tests.XML
 				Assert.IsTrue(auxLookup.GetTechnologies().Contains(techInput), "technology '{0}' for aux type '{1}' not known!",
 					techInput, aux);
 			}
+		}
+
+		[TestCase(@"TestData\XML\XMLReaderDeclaration\SchemaVersion2.3\vecto_vehicle-fullElectricSP.xml")]
+		public void TestReadingNewSteeringPumpTechnologies(string file)
+		{
+			var reader = XmlReader.Create(file);
+
+			var inputDataProvider = xmlInputReader.CreateDeclaration(reader);
+			var vehicle = inputDataProvider.JobInputData.Vehicle;
+
+			var steeringPump = vehicle.Components.AuxiliaryInputData.Auxiliaries.Where(x => x.Type == AuxiliaryType.SteeringPump)
+									.FirstOrDefault();
+			Assert.NotNull(steeringPump);
+
+			Assert.AreEqual("Full electric steering gear", steeringPump.Technology[0]);
+			Assert.AreEqual("Electric driven pump", steeringPump.Technology[1]);
+
+			Assert.AreEqual(
+				616.2, DeclarationData.SteeringPump.Lookup(MissionType.LongHaul, VehicleClass.Class5, steeringPump.Technology).Value());
 		}
 	}
 }

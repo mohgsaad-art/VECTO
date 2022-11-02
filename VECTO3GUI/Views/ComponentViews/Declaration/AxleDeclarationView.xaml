@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="VECTO3GUI.Views.ComponentViews.Declaration.AxleDeclarationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:interfaces="clr-namespace:VECTO3GUI.ViewModel.Interfaces"
+             xmlns:customControls="clr-namespace:VECTO3GUI.Views.CustomControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <d:AxleDeclarationView.DataContext>
+        <x:Type Type="interfaces:IAxleViewModel"/>
+    </d:AxleDeclarationView.DataContext>
+    <StackPanel Orientation="Vertical" Width="400" HorizontalAlignment="Left"  Grid.IsSharedSizeScope="True">
+        <customControls:VectoParameterControl 
+            Caption="Axle Number" CaptionWidthGroup="lblWidth"
+            Value="{Binding AxleIndex}" Unit="" UnitWidthGroup="unitWidth"
+            ValueAlign="center" IsEnabled="False"
+            /> 
+        <customControls:ComboParameter 
+            Caption="Axle Type" Value="{Binding AxleType}" AllowedValues="{Binding AllowedAxleTypes}"
+            CaptionWidthGroup="lblWidth" UnitWidthGroup="unitWidth"
+            />
+        <customControls:CheckboxParameter
+            Caption="Steered" CaptionWidthGroup="lblWidth"
+            Unit="" UnitWidthGroup="unitWidth"
+            Value="{Binding Steered}"
+            />
+        <customControls:CheckboxParameter
+            Caption="Twin Tyres" CaptionWidthGroup="lblWidth"
+            Unit="" UnitWidthGroup="unitWidth"
+            Value="{Binding TwinTyres}"
+            />
+        <ContentControl Content="{Binding Tyre}" MinHeight="100"/>
+    </StackPanel>
+</UserControl>

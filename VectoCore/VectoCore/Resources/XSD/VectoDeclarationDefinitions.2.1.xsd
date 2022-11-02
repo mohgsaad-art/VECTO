@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSpy v2016 rel. 2 sp1 (x64) (http://www.altova.com) by Helmut Eichlseder (TU Graz/Inst. f. VKM und THD) -->
-<xs:schema xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:vectoParam="urn:tugraz:ivt:VectoAPI:ParameterDocumentation" xmlns:di="http://www.w3.org/2000/09/xmldsig#" xmlns:v1.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" targetNamespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1" elementFormDefault="qualified" attributeFormDefault="unqualified" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:ParameterDocumentation ParameterDocumentation.xsd">
+<xs:schema xmlns:v2.1="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:vectoParam="urn:tugraz:ivt:VectoAPI:ParameterDocumentation" xmlns:di="http://www.w3.org/2000/09/xmldsig#" xmlns:v1.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" targetNamespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1" elementFormDefault="qualified" attributeFormDefault="unqualified" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:ParameterDocumentation ParameterDocumentation.xsd">
 	<xs:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="xmldsig-core-schema.xsd"/>
 	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" schemaLocation="VectoDeclarationDefinitions.1.0.xsd"/>
 	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" schemaLocation="VectoDeclarationDefinitions.2.0.xsd"/>
 	<xs:complexType name="AbstractAdvancedDriverAssistantSystemsType" abstract="true"/>
 	<xs:complexType name="AdvancedDriverAssistantSystemsType">
 		<xs:complexContent>
-			<xs:extension base="tns:AbstractAdvancedDriverAssistantSystemsType">
+			<xs:extension base="v2.1:AbstractAdvancedDriverAssistantSystemsType">
 				<xs:sequence>
-					<xs:element name="EngineStopStart" type="tns:EngineStopStartType"/>
-					<xs:element name="EcoRollWithoutEngineStop" type="tns:EcoRollWithoutEngineStopType"/>
-					<xs:element name="EcoRollWithEngineStop" type="tns:EcoRollWithEngineStopType"/>
-					<xs:element name="PredictiveCruiseControl" type="tns:PredictiveCruiseControlType"/>
+					<xs:element name="EngineStopStart" type="v2.1:EngineStopStartType"/>
+					<xs:element name="EcoRollWithoutEngineStop" type="v2.1:EcoRollWithoutEngineStopType"/>
+					<xs:element name="EcoRollWithEngineStop" type="v2.1:EcoRollWithEngineStopType"/>
+					<xs:element name="PredictiveCruiseControl" type="v2.1:PredictiveCruiseControlType"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -101,7 +101,7 @@
 							<xs:documentation>P260 - [-]</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="FuelType" type="tns:FuelTypeType">
+					<xs:element name="FuelType" type="v2.1:FuelTypeType">
 						<xs:annotation>
 							<xs:documentation>P193 [enum]</xs:documentation>
 						</xs:annotation>
@@ -218,7 +218,7 @@
 							<xs:documentation>P251 - enum</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="VehicleCategory" type="tns:VehicleCategoryType">
+					<xs:element name="VehicleCategory" type="v2.1:VehicleCategoryType">
 						<xs:annotation>
 							<xs:documentation>P036 - enum</xs:documentation>
 						</xs:annotation>
@@ -261,9 +261,9 @@
 					<xs:element name="PTO" type="v2.0:AbstractPTODataType"/>
 					<xs:element name="ZeroEmissionVehicle" type="xs:boolean"/>
 					<xs:element name="VocationalVehicle" type="xs:boolean"/>
-					<xs:element name="NgTankSystem" type="tns:NgTankSystemType" minOccurs="0"/>
+					<xs:element name="NgTankSystem" type="v2.1:NgTankSystemType" minOccurs="0"/>
 					<xs:element name="SleeperCab" type="xs:boolean"/>
-					<xs:element name="ADAS" type="tns:AbstractAdvancedDriverAssistantSystemsType"/>
+					<xs:element name="ADAS" type="v2.1:AbstractAdvancedDriverAssistantSystemsType"/>
 					<xs:element name="TorqueLimits" type="v2.0:AbstractTorqueLimitsType" minOccurs="0"/>
 					<xs:element name="Components" type="v2.0:AbstractVehicleComponentsDeclarationType"/>
 				</xs:sequence>

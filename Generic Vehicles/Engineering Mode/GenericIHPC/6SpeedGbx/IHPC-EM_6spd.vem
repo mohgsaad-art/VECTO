@@ -1,0 +1,51 @@
+{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2022-09-29T07:36:33.1687475Z",
+    "AppVersion": "3",
+    "FileVersion": 5
+  },
+  "Body": {
+    "SavedInDeclMode": false,
+    "Model": "Generic IHPC",
+    "DragCurve": "IHPC-EM_Drag.vemd",
+    "Inertia": 0.5,
+    "ThermalOverloadRecoveryFactor": 0.9,
+    "VoltageLevels": [
+      {
+        "Voltage": 500.0,
+        "ContinuousTorque": 600.0,
+        "ContinuousTorqueSpeed": 1485.0000000000002,
+        "OverloadTorque": 900.0,
+        "OverloadTorqueSpeed": 1485.0000000000002,
+        "OverloadTime": 200.0,
+        "FullLoadCurve": "IHPC-EM_FLD_min.vemp",
+        "EfficiencyMap": {
+          "1": "IHPC-EM_Map_G1.vemo",
+          "2": "IHPC-EM_Map_G2.vemo",
+          "3": "IHPC-EM_Map_G3.vemo",
+          "4": "IHPC-EM_Map_G4.vemo",
+          "5": "IHPC-EM_Map_G5.vemo",
+          "6": "IHPC-EM_Map_G6.vemo"
+        }
+      },
+      {
+        "Voltage": 900.0,
+        "ContinuousTorque": 600.0,
+        "ContinuousTorqueSpeed": 1485.0000000000002,
+        "OverloadTorque": 900.0,
+        "OverloadTorqueSpeed": 1485.0000000000002,
+        "OverloadTime": 230.0,
+        "FullLoadCurve": "IHPC-EM_FLD_max.vemp",
+        "EfficiencyMap": {
+          "1": "IHPC-EM_Map_G1.vemo",
+          "2": "IHPC-EM_Map_G2.vemo",
+          "3": "IHPC-EM_Map_G3.vemo",
+          "4": "IHPC-EM_Map_G4.vemo",
+          "5": "IHPC-EM_Map_G5.vemo",
+          "6": "IHPC-EM_Map_G6.vemo"
+        }
+      }
+    ]
+  }
+}

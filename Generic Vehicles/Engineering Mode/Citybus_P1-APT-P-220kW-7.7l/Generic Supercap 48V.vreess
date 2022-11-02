@@ -1,0 +1,19 @@
+{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2021-01-18T15:17:57.4852109Z",
+    "AppVersion": "3",
+    "FileVersion": 1
+  },
+  "Body": {
+    "SavedInDeclMode": false,
+    "REESSType": "SuperCap",
+    "Model": "Generic Supercap 48V",
+    "Capacity": 166.0,
+    "InternalResistance": 0.005,
+    "U_min": 5.0,
+    "U_max": 48.6,
+    "I_maxCharge": 2200.0,
+    "I_maxDischarge": 2200.0
+  }
+}

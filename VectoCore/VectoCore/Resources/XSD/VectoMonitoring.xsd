@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSpy v2016 rel. 2 sp1 (x64) (http://www.altova.com) by Helmut Eichlseder (TU Graz/Inst. f. VKM und THD) -->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" targetNamespace="urn:tugraz:ivt:VectoAPI:MonitoringOutput" elementFormDefault="qualified" attributeFormDefault="unqualified" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:ParameterDocumentation ParameterDocumentation.xsd">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:all_mon="urn:tugraz:ivt:VectoAPI:MonitoringOutput" xmlns:mon0.7="urn:tugraz:ivt:VectoAPI:MonitoringOutput:v0.7" targetNamespace="urn:tugraz:ivt:VectoAPI:MonitoringOutput" elementFormDefault="qualified" attributeFormDefault="unqualified" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:ParameterDocumentation ParameterDocumentation.xsd">
 	<!-- 
 
          This is a convienience file that imports the schema for all supported versions of customer information file and all supported declaration definitions
 
  -->
 	<xs:import namespace="urn:tugraz:ivt:VectoAPI:MonitoringOutput:v0.7" schemaLocation="VectoMonitoring.0.7.xsd"/>
+	<xs:import namespace="urn:tugraz:ivt:VectoAPI:MonitoringOutput:v0.7.1" schemaLocation="VectoMonitoring.0.7.1.xsd"/>
+	<xs:import namespace="urn:tugraz:ivt:VectoAPI:MonitoringOutput:v0.8" schemaLocation="VectoMonitoring.0.8.xsd"/>
+	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationOutput" schemaLocation="VectoOutputManufacturer.xsd"/>
 </xs:schema>

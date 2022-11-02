@@ -1,0 +1,135 @@
+﻿<UserControl x:Class="VECTO3GUI2020.Views.Multistage.VehicleView_v2_8"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:VECTO3GUI2020.Views.Multistage"
+             xmlns:custom="clr-namespace:VECTO3GUI2020.Views.Multistage.CustomControls" xmlns:implementation="clr-namespace:VECTO3GUI2020.ViewModel.MultiStage.Implementation"
+             xmlns:properties="clr-namespace:VECTO3GUI2020.Properties"
+             xmlns:resources="clr-namespace:System.Resources;assembly=mscorlib"
+             d:DataContext="{d:DesignInstance Type=implementation:InterimStageBusVehicleViewModel_v2_8}"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" BorderBrush="{DynamicResource ButtonHighlightColor}" BorderThickness="2px" Margin="4px">
+    <UserControl.Resources>
+        <Style TargetType="ContentControl">
+            <Setter Property="ContentTemplateSelector" Value="{DynamicResource MultistageParameterTemplateSelector}"/>
+            <Setter Property="IsTabStop" Value="False"></Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <ScrollViewer>
+            <DockPanel>
+            <StackPanel>
+                <Label Content="VEHICLE DATA" HorizontalAlignment="Stretch" FontSize="15" VerticalAlignment="Stretch"
+                       Style="{DynamicResource LabelStyle1}"/>
+
+
+                <ContentControl Content="{Binding ParameterViewModels[Manufacturer]}"/>
+                <ContentControl Content="{Binding ParameterViewModels[ManufacturerAddress]}"/>
+                <ContentControl Content="{Binding ParameterViewModels[VIN]}"/>
+
+
+                <ContentControl Content="{Binding ParameterViewModels[Model]}"/>
+
+
+                <ContentControl Content="{Binding ParameterViewModels[LegislativeClass]}"/>
+
+                <!-- Corrected Actual Mass -->
+                <ContentControl 
+                    Content="{Binding ParameterViewModels[CurbMassChassis]}"/>
+
+                <!-- Technical Permissable Maximum Laden Mass -->
+                <ContentControl Content="{Binding 
+                    ParameterViewModels[GrossVehicleMassRating]}"></ContentControl>
+
+
+                <ContentControl Visibility="{Binding AirdragModifiedMultistepMandatory, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    Content="{Binding ParameterViewModels[AirdragModifiedEnum]}"/>
+
+                <ContentControl 
+                    Content="{Binding ParameterViewModels[TankSystem]}"/>
+
+                <ContentControl 
+                    Content="{Binding ParameterViewModels[RegisteredClass]}"/>
+
+                <Label Style="{DynamicResource LabelStyle1}" Margin="0">Number of Passengers</Label>
+                    <Border BorderThickness="2px" BorderBrush="{StaticResource ButtonHighlightColor}">
+                    <StackPanel>
+                       
+
+                        <ContentControl 
+                            Content="{Binding ParameterViewModels[NumberPassengerSeatsLowerDeck]}"/>
+
+                        <ContentControl 
+                            Content="{Binding ParameterViewModels[NumberPassengersStandingLowerDeck]}"/>
+
+                        <ContentControl 
+                            Content="{Binding ParameterViewModels[NumberPassengerSeatsUpperDeck]}"/>
+
+                        <ContentControl 
+                            Content="{Binding ParameterViewModels[NumberPassengersStandingUpperDeck]}"/>
+                    </StackPanel>
+
+                </Border>
+
+                <ContentControl 
+                    Content="{Binding ParameterViewModels[VehicleCode]}"/>
+
+                <ContentControl 
+                    Content="{Binding ParameterViewModels[LowEntry]}"/>
+
+                <Label Style="{DynamicResource LabelStyle1}"> Dimensions </Label>
+                <Border BorderBrush="{StaticResource ButtonHighlightColor}" BorderThickness="2">
+                    <StackPanel>
+                    <ContentControl 
+                        Content="{Binding ParameterViewModels[HeightInMm]}"/>
+
+
+
+                    <ContentControl 
+                        Content="{Binding ParameterViewModels[WidthInMm]}"/>
+
+                    <ContentControl 
+                        Content="{Binding ParameterViewModels[LengthInMm]}"/>
+
+
+
+
+                    <ContentControl 
+                        Content="{Binding ParameterViewModels[EntranceHeightInMm]}"/>
+
+                    </StackPanel>
+
+
+                    </Border>
+
+
+                <ContentControl 
+                    Content="{Binding ParameterViewModels[DoorDriveTechnology]}"/>
+
+                <ContentControl 
+                    Content="{Binding ParameterViewModels[VehicleDeclarationType]}"/>
+
+                <ContentControl Content="{Binding ParameterViewModels[VehicleTypeApprovalNumber]}"/>
+                    <Label Content="Advanced Driver Assistant Systems" Style="{DynamicResource LabelStyle1}"/>
+
+                <ContentControl 
+                    Content="{Binding ParameterViewModels[EngineStopStartNullable]}"/>
+
+
+
+                <ContentControl 
+                    Content="{Binding ParameterViewModels[EcoRollTypeNullable]}"/>
+
+
+                <ContentControl 
+                    Content="{Binding ParameterViewModels[PredictiveCruiseControlNullable]}"/>
+
+                <ContentControl 
+                    Content="{Binding ParameterViewModels[ATEcoRollReleaseLockupClutch]}"/>
+                </StackPanel>
+        </DockPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

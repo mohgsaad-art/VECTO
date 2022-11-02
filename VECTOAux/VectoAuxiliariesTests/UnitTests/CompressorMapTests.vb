@@ -1,7 +1,10 @@
 ﻿Imports System.IO
 Imports NUnit.Framework
+Imports TUGraz.VectoCommon.BusAuxiliaries
+Imports TUGraz.VectoCommon.Exceptions
 Imports TUGraz.VectoCommon.Utils
-Imports VectoAuxiliaries.Pneumatics
+Imports TUGraz.VectoCore.InputData.Reader.ComponentData
+
 
 Namespace UnitTests
     <TestFixture()>
@@ -17,15 +20,10 @@ Namespace UnitTests
 
 #Region "Helpers"
 
-        Private Function GetInitialiseMap() As CompressorMap
-            Dim target As CompressorMap = GetMap()
-            target.Initialise()
-            Return target
-        End Function
-
-        Private Function GetMap() As CompressorMap
+        Private Function GetInitialiseMap() As ICompressorMap
             Dim path As String = GOODMAP
-            Dim target As CompressorMap = New CompressorMap(path)
+            Dim target As ICompressorMap = CompressorMapReader.ReadFile(path, 1.0, "")
+            'target.Initialise()
             Return target
         End Function
 
@@ -39,97 +37,114 @@ Namespace UnitTests
         <Test()>
         Public Sub CreateNewCompressorMapInstanceTest()
             Dim pat As String = "test"
-            Dim target As CompressorMap = New CompressorMap(pat)
+            Assert.That(Sub()
+                Dim target As ICompressorMap = CompressorMapReader.ReadFile(pat, 1.0, "")
+            end sub, throws.instanceof(of Vectoexception))
         End Sub
 
 
-        <Test()>
-        Public Sub InitialisationTest()
-            Dim target As CompressorMap = GetMap()
-            Assert.IsTrue(target.Initialise())
-        End Sub
+        '<Test()>
+        'Public Sub InitialisationTest()
+        '    Dim target As CompressorMap = GetMap()
+        '    Assert.IsTrue(target.Initialise())
+        'End Sub
 
         <Test()>
         Public Sub InitialisationNoFileSuppliedThrowsExceptionTest()
             Dim path As String = ""
-            Dim target As CompressorMap = New CompressorMap(path)
-            Assert.That(Sub() target.Initialise(), Throws.InstanceOf(Of System.ArgumentException))
+            'Dim target As ICompressorMap = CompressorMapReader.ReadFile(path)
+
+            Assert.That(sub() 
+                dim tmp = CompressorMapReader.ReadFile(path, 1.0, "")
+            end sub, Throws.InstanceOf (of VectoException))
         End Sub
 
         <Test()>
         Public Sub InitialisationWrongNumberOfColumnsThrowsExceptionTest()
             Dim path As String = INVALIDNUMBEROFCOLUMNS
-            Dim target As CompressorMap = New CompressorMap(path)
-            Assert.That(Sub() target.Initialise(), Throws.InstanceOf(Of System.ArgumentException))
+
+            Assert.That(Sub()
+                Dim target = CompressorMapReader.ReadFile(path, 1.0, "")
+            End Sub, Throws.InstanceOf (Of VectoException))
         End Sub
 
         <Test()>
         Public Sub InitialisationInvalidRpmThrowsExceptionTest()
             Dim path As String = INVALIDRPMMAP
-            Dim target As CompressorMap = New CompressorMap(path)
-            Assert.That(Sub() target.Initialise(), Throws.InstanceOf(Of System.InvalidCastException))
+
+            Assert.That(Sub()
+                Dim target As ICompressorMap = CompressorMapReader.ReadFile(path, 1.0, "")
+            End Sub, Throws.InstanceOf (Of VectoException))
         End Sub
 
         <Test()>
         Public Sub InitialisationInvalidFlowRateThrowsExceptionTest()
             Dim path As String = INVALIDFLOWRATEMAP
-            Dim target As CompressorMap = New CompressorMap(path)
-            Assert.That(Sub() target.Initialise(), Throws.InstanceOf(Of System.InvalidCastException))
+            
+            Assert.That(Sub()
+                Dim target As ICompressorMap = CompressorMapReader.ReadFile(path, 1.0, "")
+                        End Sub, Throws.InstanceOf (Of VectoException))
         End Sub
 
         <Test()>
         Public Sub InitialisationInvalidPowerCompressorOnThrowsExceptionTest()
             Dim path As String = INVALIDPOWERCOMPRESSORONMAP
-            Dim target As CompressorMap = New CompressorMap(path)
-            Assert.That(Sub() target.Initialise(), Throws.InstanceOf(Of System.InvalidCastException))
+            
+            Assert.That(Sub()
+                Dim target As ICompressorMap = CompressorMapReader.ReadFile(path, 1.0, "")
+                        End Sub, Throws.InstanceOf (Of VectoException))
         End Sub
 
         <Test()>
         Public Sub InitialisationInvalidPowerCompressorOffThrowsExceptionTest()
             Dim path As String = INVALIDPOWERCOMPRESSOROFFMAP
-            Dim target As CompressorMap = New CompressorMap(path)
-            Assert.That(Sub() target.Initialise(), Throws.InstanceOf(Of System.InvalidCastException))
+           
+            Assert.That(Sub()
+                Dim target As ICompressorMap = CompressorMapReader.ReadFile(path, 1.0, "")
+                        End Sub, Throws.InstanceOf (Of VectoException))
         End Sub
 
         <Test()>
         Public Sub InitialisationInsufficientRowsThrowsExceptionTest()
             Dim path As String = INSSUFICIENTROWSMAP
-            Dim target As CompressorMap = New CompressorMap(path)
-            Assert.That(Sub() target.Initialise(), Throws.InstanceOf(Of System.ArgumentException))
+            
+            Assert.That(Sub()
+                Dim target As ICompressorMap = CompressorMapReader.ReadFile(path, 1.0, "")
+                        End Sub, Throws.InstanceOf (Of VectoException))
         End Sub
 
 
         <Test()>
         Public Sub GetFlowRateKeyPassedTest()
-            Dim target As CompressorMap = GetInitialiseMap()
-            Dim expected As Single = 400
-            Dim value As NormLiterPerSecond = target.GetFlowRate(2000)
-            Assert.AreEqual(expected, value.Value(), 0.001)
+            Dim target As ICompressorMap = GetInitialiseMap()
+            Dim expected As double = 400
+            Dim value As NormLiterPerSecond = target.Interpolate(2000.RPMtoRad()).FlowRate
+            Assert.AreEqual(expected.SI(Unit.SI.Liter.Per.Minute).cast(of NormLiterPerSecond).value(), value.Value(), 0.001)
         End Sub
 
         <Test()>
         Public Sub GetFlowRateInterpolaitionTest()
-            Dim target As CompressorMap = GetInitialiseMap()
-            Dim expected As Single = 500
-            Dim value As NormLiterPerSecond = target.GetFlowRate(2500)
-            Assert.AreEqual(expected, value.Value(), 0.001)
+            Dim target As ICompressorMap = GetInitialiseMap()
+            Dim expected As Double = 500
+            Dim value As NormLiterPerSecond = target.Interpolate(2500.RPMtoRad()).FlowRate
+            Assert.AreEqual(expected.SI(Unit.SI.Liter.Per.Minute).cast(of NormLiterPerSecond).value(), value.Value(), 0.001)
         End Sub
 
 
         <Test()>
         Public Sub GetPowerCompressorOnInterpolaitionTest()
-            Dim target As CompressorMap = GetInitialiseMap()
-            Dim expected As Single = 5000
-            Dim value As Watt = target.GetPowerCompressorOn(2500)
+            Dim target As ICompressorMap = GetInitialiseMap()
+            Dim expected As Double = 5000
+            Dim value As Watt = target.Interpolate(2500.RPMtoRad()).PowerOn
             Assert.AreEqual(expected, value.Value(), 0.001)
         End Sub
 
 
         <Test()>
         Public Sub GetPowerCompressorOffInterpolaitionTest()
-            Dim target As CompressorMap = GetInitialiseMap()
-            Dim expected As Single = 2500
-            Dim value As Watt = target.GetPowerCompressorOff(2500)
+            Dim target As ICompressorMap = GetInitialiseMap()
+            Dim expected As Double = 2500
+            Dim value As Watt = target.Interpolate(2500.RPMtoRad()).PowerOff
             Assert.AreEqual(expected, value.Value(), 0.001)
         End Sub
 
@@ -137,12 +152,12 @@ Namespace UnitTests
         <Test()>
         Public Sub InterpMiddle()
 
-            Dim target As CompressorMap = New CompressorMap(GOODMAP)
-            Assert.IsTrue(target.Initialise())
+            Dim target As ICompressorMap = CompressorMapReader.ReadFile(GOODMAP, 1.0, "")
+            'Assert.IsTrue(target.Initialise())
 
-            Dim actual = target.GetFlowRate(1750)
+            Dim actual = target.Interpolate(1750.RPMtoRad()).FlowRate
 
-            Assert.AreEqual(300, actual.Value(), 0.001)
+            Assert.AreEqual(300.SI(Unit.SI.liter.Per.Minute).Cast(Of NormLiterPerSecond).Value(), actual.Value(), 0.001)
         End Sub
     End Class
 End Namespace

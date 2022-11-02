@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2021 (x64) (http://www.altova.com) by Markus Quaritsch (Technische Universität Graz) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:vectoParam="urn:tugraz:ivt:VectoAPI:ParameterDocumentation" xmlns:vdecdef1.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" xmlns:vdecdef2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationComponent:v2.0" xmlns:vdecdef="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions" xmlns:v2.3="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3" xmlns:ns1="urn:tugraz:ivt:VectoAPI:DeclarationComponent:v2.1" targetNamespace="urn:tugraz:ivt:VectoAPI:DeclarationComponent:v2.1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.0" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:ParameterDocumentation ParameterDocumentation.xsd">
+	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions" schemaLocation="VectoDeclarationDefinitions.xsd"/>
+	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" schemaLocation="VectoDeclarationDefinitions.2.0.xsd"/>
+	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.3" schemaLocation="VectoDeclarationDefinitions.2.3.xsd"/>
+	<xs:element name="VectoInputDeclaration">
+		<xs:annotation>
+			<xs:documentation>Root Node Declaration Data</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="Engine" type="vdecdef2.0:EngineComponentDeclarationType"/>
+				<xs:element name="Gearbox" type="vdecdef2.0:GearboxComponentDeclarationType"/>
+				<xs:element name="TorqueConverter" type="vdecdef2.0:TorqueConverterComponentDeclarationType"/>
+				<xs:element name="Retarder" type="vdecdef2.0:RetarderComponentDeclarationType"/>
+				<xs:element name="Axlegear" type="vdecdef2.0:AxlegearComponentDeclarationType"/>
+				<xs:element name="Tyre" type="vdecdef2.0:TyreComponentDeclarationType"/>
+				<xs:element name="Angledrive" type="vdecdef2.0:AngledriveComponentDeclarationType"/>
+				<xs:element name="AirDrag" type="vdecdef2.0:AirDragComponentDeclarationType"/>
+				<xs:element name="ElectricMachineSystem" type="v2.3:ElectricMachineSystemComponentDeclarationType"/>
+				<xs:element name="IEPC" type="v2.3:IEPCComponentDeclarationType"/>
+				<xs:element name="BatterySystem" type="v2.3:BatteryComponentDeclarationType"/>
+				<xs:element name="CapacitorSystem" type="v2.3:CapacitorSystemComponentDeclarationType"/>
+				<xs:element name="ADC" type="v2.3:ADCComponentDeclarationType"/>
+			</xs:choice>
+			<xs:attribute name="schemaVersion" use="required">
+				<xs:simpleType>
+					<xs:restriction base="xs:decimal">
+						<xs:minExclusive value="0"/>
+						<xs:fractionDigits value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

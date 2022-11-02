@@ -29,7 +29,9 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using System;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace TUGraz.VectoCore.Tests.Utils
 {
@@ -46,6 +48,15 @@ namespace TUGraz.VectoCore.Tests.Utils
 			writer.Flush();
 			cycleData.Seek(0, SeekOrigin.Begin);
 			return cycleData;
+		}
+
+		public static string GetRandomFilename(string jobFile)
+		{
+			var path = Path.GetDirectoryName(Path.GetFullPath(jobFile));
+			var filename = Path.GetFileNameWithoutExtension(jobFile);
+			var extension = Path.GetExtension(jobFile);
+			var random = Regex.Replace(Convert.ToBase64String(Guid.NewGuid().ToByteArray()), "[^A-Za-z0-9_.]+", "").Substring(0, 5);
+			return Path.Combine(path, $"{filename}-{random}.{extension}");
 		}
 	}
 }

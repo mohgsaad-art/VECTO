@@ -1,4 +1,4 @@
-##XML Declaration Report
+## XML Declaration Report
 
 <div class="declaration">
 In Declaration Mode VECTO generates two reports according to the Technical Annex for vehicle certification:

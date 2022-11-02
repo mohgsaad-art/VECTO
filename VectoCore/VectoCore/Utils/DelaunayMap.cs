@@ -31,16 +31,18 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Windows.Forms.DataVisualization.Charting;
 using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using Point = TUGraz.VectoCommon.Utils.Point;
+#if !NET5_0_OR_GREATER
+using System.Diagnostics;
+using System.Drawing;
+using System.IO;
+using System.Windows.Forms.DataVisualization.Charting;
+#endif
 
 namespace TUGraz.VectoCore.Utils
 {
@@ -61,6 +63,8 @@ namespace TUGraz.VectoCore.Utils
 			_mapName = name;
 		}
 
+		public string Name => _mapName;
+
 		public void AddPoint(double x, double y, double z)
 		{
 			_points.Add(new Point(x, y, z));
@@ -68,8 +72,7 @@ namespace TUGraz.VectoCore.Utils
 
 		public IReadOnlyCollection<Point> Entries
 		{
-			get
-			{
+			get {
 				var retVal = new Point[_points.Count];
 				var i = 0;
 				foreach (var pt in _points) {
@@ -89,8 +92,7 @@ namespace TUGraz.VectoCore.Utils
 		public void Triangulate()
 		{
 			if (_points.Count < 3) {
-				throw new ArgumentException(string.Format("{0}: Triangulation needs at least 3 Points. Got {1} Points.", _mapName,
-					_points.Count));
+				throw new ArgumentException($"{_mapName}: Triangulation needs at least 3 Points. Got {_points.Count} Points.");
 			}
 
 			SanitycheckInputPoints();
@@ -139,7 +141,7 @@ namespace TUGraz.VectoCore.Utils
 				// k...points on convex hull (exactly 3 --> supertriangle)
 				if (triangles.Count != 2 * (pointCount + 3) - 2 - 3) {
 					throw new VectoException(
-						"Delaunay-Triangulation invariant violated! Triangle count and point count doesn't fit together.");
+						"{0} Delaunay-Triangulation invariant violated! Triangle count and point count doesn't fit together.", _mapName);
 				}
 			}
 
@@ -162,7 +164,7 @@ namespace TUGraz.VectoCore.Utils
 			}
 			if (duplicates.Any()) {
 				throw new VectoException("{0}: Input Data for Delaunay map contains duplicates! \n{1}", _mapName,
-					string.Join("\n", duplicates.Select(pt => string.Format("{0} / {1}", pt.Key.X, pt.Key.Y))));
+					duplicates.Select(pt => $"{pt.Key.X} / {pt.Key.Y}").Join("\n"));
 			}
 		}
 
@@ -178,12 +180,15 @@ namespace TUGraz.VectoCore.Utils
 		private static void DrawGraph(int i, IEnumerable<Triangle> triangles, Triangle superTriangle, Point[] points,
 			Point lastPoint = null)
 		{
-			var xmin = Math.Min(points.Min(p => p.X), lastPoint != null ? lastPoint.X : double.NaN);
-			var xmax = Math.Max(points.Max(p => p.X), lastPoint != null ? lastPoint.X : double.NaN);
-			var ymin = Math.Min(points.Min(p => p.Y), lastPoint != null ? lastPoint.Y : double.NaN);
-			var ymax = Math.Max(points.Max(p => p.Y), lastPoint != null ? lastPoint.Y : double.NaN);
+#if !NET5_0_OR_GREATER
+			var xmin = Math.Min(points.Min(p => p.X), lastPoint?.X ?? double.NaN);
+			var xmax = Math.Max(points.Max(p => p.X), lastPoint?.X ?? double.NaN);
+			var ymin = Math.Min(points.Min(p => p.Y), lastPoint?.Y ?? double.NaN);
+			var ymax = Math.Max(points.Max(p => p.Y), lastPoint?.Y ?? double.NaN);
 
-			using (var chart = new Chart { Width = 1000, Height = 1000 }) {
+
+			using (var chart = new Chart()) {
+				chart.Size = new Size(1000, 1000);
 				chart.ChartAreas.Add(new ChartArea("main") {
 					AxisX = new Axis { Minimum = Math.Min(xmin, xmin), Maximum = Math.Max(xmax, xmax) },
 					AxisY = new Axis { Minimum = Math.Min(ymin, ymin), Maximum = Math.Max(ymax, ymax) }
@@ -219,15 +224,17 @@ namespace TUGraz.VectoCore.Utils
 				var frame = new StackFrame(2);
 				var method = frame.GetMethod();
 				System.Diagnostics.Debug.Assert(method.DeclaringType != null, "method.DeclaringType != null");
-				var type = string.Join("", method.DeclaringType.Name.Split(Path.GetInvalidFileNameChars()));
-				var methodName = string.Join("", method.Name.Split(Path.GetInvalidFileNameChars()));
+				var type = method.DeclaringType.Name.Split(Path.GetInvalidFileNameChars()).Join("");
+				var methodName = method.Name.Split(Path.GetInvalidFileNameChars()).Join("");
 				Directory.CreateDirectory("delaunay");
-				chart.SaveImage(string.Format("delaunay\\{0}_{1}_{2}_{3}.png", type, methodName, superTriangle.GetHashCode(), i),
+				chart.SaveImage($"delaunay\\{type}_{methodName}_{superTriangle.GetHashCode()}_{i}.png",
 					ChartImageFormat.Png);
 			}
+#endif
 		}
 
-		public double? Interpolate(SI x, SI y)
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public double Interpolate(SI x, SI y)
 		{
 			return Interpolate(x.Value(), y.Value());
 		}
@@ -240,7 +247,7 @@ namespace TUGraz.VectoCore.Utils
 		/// <returns>a value if interpolation is successfull, 
 		///          null if interpolation has failed.</returns>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public double? Interpolate(double x, double y)
+		public double Interpolate(double x, double y)
 		{
 			if (_triangles == null) {
 				throw new VectoException("Interpolation not possible. Call DelaunayMap.Triangulate first.");
@@ -261,7 +268,7 @@ namespace TUGraz.VectoCore.Utils
 			}
 
 			if (i == _triangles.Length) {
-				return null;
+				return double.NaN;
 			}
 
 			var tr = _triangles[i];

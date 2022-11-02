@@ -1,10 +1,10 @@
-FuelType   , Tanksystem , FuelDensity [kg/m3] , CO2 per FuelWeight [kgCo2/kgFuel] , NCV_stdEngine [kJ/kg] , NCV_stdVecto [kJ/kg]
-Diesel CI  ,            , 836                 , 3.13                              , 42700                 , 42700
-Ethanol CI ,            , 820                 , 1.81                              , 25700                 , 25400
-Petrol PI  ,            , 748                 , 3.04                              , 41500                 , 41500
-Ethanol PI ,            , 786                 , 2.10                              , 29100                 , 29300
-LPG PI     ,            ,                     , 3.02                              , 46000                 , 46000
-NG PI      , compressed ,                     , 2.69                              , 45100                 , 48000
-NG PI      , liquefied  ,                     , 2.77                              , 45100                 , 49100
-##NG CI      , compressed ,                     , 1000                              , 100000                , 100000
-##NG CI      , liquefied  ,                     , 1000                              , 100000                , 100000
+FuelType   , Tanksystem , FuelDensity [kg/m3] , CO2 per FuelWeight [kgCo2/kgFuel] , CO2 per FuelWeight VTP [kgCO2/kgFuel] , NCV_stdEngine [kJ/kg] , NCV_stdVecto [kJ/kg]
+Diesel CI  ,            , 836                 , 3.13                              , 3.13                                  , 42700                 , 42700
+Ethanol CI ,            , 820                 , 1.81                              , 1.81                                  , 25700                 , 25400
+Petrol PI  ,            , 748                 , 3.04                              , 3.04                                  , 41500                 , 41500
+Ethanol PI ,            , 786                 , 2.10                              , 2.10                                  , 29100                 , 29300
+LPG PI     ,            ,                     , 3.02                              , 3.02                                  , 46000                 , 46000
+NG PI      , compressed ,                     , 2.69                              , 2.51                                  , 45100                 , 48000
+NG PI      , liquefied  ,                     , 2.77                              , 2.51                                  , 45100                 , 49100
+NG CI      , compressed ,                     , 2.69                              , 2.51                                  , 45100                 , 48000
+NG CI      , liquefied  ,                     , 2.77                              , 2.51                                  , 45100                 , 49100

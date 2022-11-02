@@ -1,0 +1,33 @@
+{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2021-09-03T12:17:47.2280443Z",
+    "AppVersion": "3",
+    "FileVersion": 3
+  },
+  "Body": {
+    "SavedInDeclMode": false,
+    "Model": "Generic Electric Motor",
+    "Inertia": 0.225,
+    "ContinuousTorque": 333.0,
+    "ContinuousTorqueSpeed": 3000.0,
+    "OverloadTorque": 500.0,
+    "OverloadTorqueSpeed": 3000.0,
+    "OverloadTime": 120.0,
+    "ThermalOverloadRecoveryFactor": 0.9,
+    "VoltageLevels": [
+      {
+        "Voltage": 0.0,
+        "FullLoadCurve": "GenericEMotor_157kW_500Nm.vemp",
+        "DragCurve": "GenericDrag_157W_500Nm.vemd",
+        "EfficiencyMap": "GenericMap_157kW_500Nm.vemo"
+      },
+      {
+        "Voltage": 10000.0,
+        "FullLoadCurve": "GenericEMotor_157kW_500Nm.vemp",
+        "DragCurve": "GenericDrag_157W_500Nm.vemd",
+        "EfficiencyMap": "GenericMap_157kW_500Nm.vemo"
+      }
+    ]
+  }
+}

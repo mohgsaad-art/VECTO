@@ -53,6 +53,8 @@ namespace TUGraz.VectoCore.Utils
 				case "VectoInputDeclaration": return XmlDocumentType.DeclarationJobData;
 				case "VectoInputEngineering": return XmlDocumentType.EngineeringJobData;
 				case "VectoComponentEngineering": return XmlDocumentType.EngineeringComponentData;
+				//case "VectoOutputPrimaryVehicle": return XmlDocumentType.PrimaryVehicleBusOutputData;
+				case "VectoOutputMultistep": return XmlDocumentType.MultistepOutputData;
 			}
 
 			return null;
@@ -71,7 +73,8 @@ namespace TUGraz.VectoCore.Utils
 		public static string GetVersionFromNamespaceUri(XNamespace namespaceUri)
 		{
 			const string versionPrefix = "v";
-			return namespaceUri.NamespaceName.Split(':').Last(x => x.StartsWith(versionPrefix)).Replace(versionPrefix, string.Empty);
+			return namespaceUri.NamespaceName.Split(':').Last(x => x.StartsWith(versionPrefix))
+				.Replace(versionPrefix, string.Empty);
 		}
 
 		public static object[] ValueAsUnit(Kilogram mass, string unit, uint? decimals = 0)
@@ -81,7 +84,7 @@ namespace TUGraz.VectoCore.Utils
 				case "kg": return GetValueAsUnit(mass.Value(), unit, decimals);
 			}
 
-			throw new NotImplementedException(string.Format("unknown unit '{0}'", unit));
+			throw new NotImplementedException($"unknown unit '{unit}'");
 		}
 
 		public static object[] ValueAsUnit(Watt power, string unit, uint? decimals = 0)
@@ -91,7 +94,7 @@ namespace TUGraz.VectoCore.Utils
 				case "W": return GetValueAsUnit(power?.Value(), unit, decimals);
 			}
 
-			throw new NotImplementedException(string.Format("unknown unit '{0}'", unit));
+			throw new NotImplementedException($"unknown unit '{unit}'");
 		}
 
 		public static object[] ValueAsUnit(CubicMeter volume, string unit, uint? decimals = 0)
@@ -102,7 +105,7 @@ namespace TUGraz.VectoCore.Utils
 				case "m3": return GetValueAsUnit(volume.Value(), unit, decimals);
 			}
 
-			throw new NotImplementedException(string.Format("unknown unit '{0}'", unit));
+			throw new NotImplementedException($"unknown unit '{unit}'");
 		}
 
 		public static object[] ValueAsUnit(PerSecond angSpeed, string unit, uint? decimals = 0)
@@ -111,7 +114,7 @@ namespace TUGraz.VectoCore.Utils
 				case "rpm": return GetValueAsUnit(angSpeed.ConvertToRoundsPerMinute(), unit, decimals);
 			}
 
-			throw new NotImplementedException(string.Format("unknown unit '{0}'", unit));
+			throw new NotImplementedException($"unknown unit '{unit}'");
 		}
 
 
@@ -121,7 +124,7 @@ namespace TUGraz.VectoCore.Utils
 				case "km/h": return GetValueAsUnit(speed.ConvertToKiloMeterPerHour(), unit, decimals);
 			}
 
-			throw new NotImplementedException(string.Format("unknown unit '{0}'", unit));
+			throw new NotImplementedException($"unknown unit '{unit}'");
 		}
 
 		public static object[] ValueAsUnit(MeterPerSquareSecond acc, string unit, uint? decimals)
@@ -130,7 +133,17 @@ namespace TUGraz.VectoCore.Utils
 				case "m/s²": return GetValueAsUnit(acc.Value(), unit, decimals);
 			}
 
-			throw new NotImplementedException(string.Format("unknown unit '{0}'", unit));
+			throw new NotImplementedException($"unknown unit '{unit}'");
+		}
+
+		public static object[] ValueAsUnit(Meter m, string unit, uint? decimals)
+		{
+			switch (unit) {
+				case "m": return GetValueAsUnit(m.Value(), unit, decimals);
+				case "km": return GetValueAsUnit(m.ConvertToKiloMeter(), unit, decimals);
+			}
+
+			throw new NotImplementedException($"unknown unit '{unit}'");
 		}
 
 		public static object[] ValueAsUnit(double value, string unit, uint? decimals)
@@ -168,14 +181,20 @@ namespace TUGraz.VectoCore.Utils
 			return prefix + fuelData.FuelType.ToXMLFormat();
 		}
 
+		public static string ToXmlFormat(this DateTime dateTime)
+		{
+			return XmlConvert.ToString(dateTime, XmlDateTimeSerializationMode.Utc);
+		}
+
 		public static string QueryLocalName(string nodeName)
 		{
-			return string.Format(".//*[local-name()='{0}']", nodeName);
+			return $".//*[local-name()='{nodeName}']";
 		}
 
 		public static string QueryLocalName(params string[] nodePath)
 		{
-			return "./" + string.Join("/", nodePath.Where(x => x != null).Select(x => $"/*[local-name()='{x}']").ToArray());
+			return "./" + string.Join("/",
+				nodePath.Where(x => x != null).Select(x => $"/*[local-name()='{x}']").ToArray());
 		}
 
 
@@ -188,6 +207,7 @@ namespace TUGraz.VectoCore.Utils
 					table.Columns.Add(mapping.Key);
 				}
 			}
+
 			foreach (var entry in entries) {
 				var row = table.NewRow();
 				foreach (var mapping in attributeMapping) {
@@ -202,7 +222,8 @@ namespace TUGraz.VectoCore.Utils
 			return table;
 		}
 
-		public static TableData ReadEntriesOrResource(XmlNode baseNode, string basePath, string baseElement, string entryElement, Dictionary<string, string> mapping)
+		public static TableData ReadEntriesOrResource(XmlNode baseNode, string basePath, string baseElement,
+			string entryElement, Dictionary<string, string> mapping)
 		{
 			var entries = baseNode.SelectNodes(
 				QueryLocalName(baseElement, entryElement));
@@ -216,7 +237,7 @@ namespace TUGraz.VectoCore.Utils
 		public static TableData ReadCSVResource(XmlNode baseNode, string xmlElement, string basePath)
 		{
 			var resourceNode = baseNode.SelectSingleNode(
-				XMLHelper.QueryLocalName(xmlElement) + ExtCSVResourceQuery);
+				QueryLocalName(xmlElement) + ExtCSVResourceQuery);
 			var filename = string.Empty;
 			if (resourceNode != null) {
 				filename = resourceNode.Attributes?.GetNamedItem(XMLNames.ExtResource_File_Attr).InnerText;
@@ -236,17 +257,11 @@ namespace TUGraz.VectoCore.Utils
 				return VectoCSVFile.Read(fullFilename);
 			}
 
-			return null;// new TableData(Path.Combine(basePath ?? "", filename), DataSourceType.Missing);
+			return null; // new TableData(Path.Combine(basePath ?? "", filename), DataSourceType.Missing);
 		}
 
-		private static string ExtCSVResourceQuery
-		{
-			get {
-				return string.Format(
-					"/*[local-name()='{0}' and @{1}='{2}']", XMLNames.ExternalResource, XMLNames.ExtResource_Type_Attr,
-					XMLNames.ExtResource_Type_Value_CSV);
-			}
-		}
+		private static string ExtCSVResourceQuery =>
+			$"/*[local-name()='{XMLNames.ExternalResource}' and @{XMLNames.ExtResource_Type_Attr}='{XMLNames.ExtResource_Type_Value_CSV}']";
 
 		private static IEnumerable<T> Shim<T>(XmlNodeList nodes)
 		{
@@ -263,7 +278,56 @@ namespace TUGraz.VectoCore.Utils
 
 		public static string GetXsdType(XmlSchemaType schemaInfoSchemaType)
 		{
-			return string.Join(":", schemaInfoSchemaType.QualifiedName.Namespace, schemaInfoSchemaType.QualifiedName.Name);
+			return string.Join(":", schemaInfoSchemaType.QualifiedName.Namespace,
+				schemaInfoSchemaType.QualifiedName.Name);
+		}
+
+		public static double GetVersion(XmlNode node)
+		{
+			const string versionPrefix = "v";
+			var namesp = node.SchemaInfo.SchemaType.QualifiedName.Namespace;
+			var versionPart = namesp.Split(':').Last(x => x.StartsWith(versionPrefix))
+				.Replace(versionPrefix, string.Empty);
+			if (versionPart.Split('.').Length > 2) {
+				versionPart = string.Join(".", versionPart.Split('.').Take(2));
+			}
+
+			return versionPart.ToDouble();
+		}
+
+		public static XElement CreateDummySig(XNamespace di)
+		{
+			return new XElement(di + XMLNames.DI_Signature_Reference,
+				new XElement(di + XMLNames.DI_Signature_Reference_DigestMethod,
+					new XAttribute(XMLNames.DI_Signature_Algorithm_Attr, "null")),
+				new XElement(di + XMLNames.DI_Signature_Reference_DigestValue, "NOT AVAILABLE")
+			);
+		}
+
+		public static bool IsAnyNull(this IComponentInputData inputData, params object[] checkForNull)
+		{
+			foreach (var o in checkForNull) {
+				if (o == null) {
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+
+		public static void AddIfContentNotNull(this XElement xElement, XElement xElementToAdd)
+		{
+			if (!string.IsNullOrEmpty(xElementToAdd.Value)){
+				xElement.Add(xElementToAdd);
+			}
+		}
+
+		public static void AddIfContentNotNull(this XElement xElement, params XElement[] xElementsToAdd)
+		{
+			foreach (var element in xElementsToAdd) {
+				xElement.AddIfContentNotNull(element);
+			}
 		}
 	}
 }

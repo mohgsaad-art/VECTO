@@ -30,21 +30,23 @@
 */
 
 using NUnit.Framework;
-using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
-using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.OutputData;
 
 namespace TUGraz.VectoCore.Tests.Reports
 {
 	[TestFixture]
+	[Parallelizable(ParallelScope.All)]
 	public class GearshiftCountTest
 	{
 		[TestCase()]
 		public void TestGearshiftCountTractionInterruptionShiftup()
 		{
-			var modData = new ModalDataContainer("GearshiftRun", FuelData.Diesel, null);
+			var rundata = new VectoRunData() {
+				JobName = "GearshiftRun"
+            };
+			var modData = new ModalDataContainer(rundata, null, null);
 
 			var entries = new[] {
 				new DummyEntry { v = 34, gear = 4u },
@@ -66,9 +68,13 @@ namespace TUGraz.VectoCore.Tests.Reports
 		[TestCase()]
 		public void TestGearshiftCountTractionInterruption()
 		{
-			var modData = new ModalDataContainer("GearshiftRun", FuelData.Diesel, null);
+			var rundata = new VectoRunData()
+			{
+				JobName = "GearshiftRun"
+			};
+			var modData = new ModalDataContainer(rundata, null, null);
 
-			var entries = new[] {
+            var entries = new[] {
 				new DummyEntry { v = 34, gear = 4u },
 				new DummyEntry { v = 34.5, gear = 4u },
 				new DummyEntry { v = 33.3, gear = 0 },
@@ -88,9 +94,13 @@ namespace TUGraz.VectoCore.Tests.Reports
 		[TestCase()]
 		public void TestGearshiftCountTractionInterruptionShiftDown()
 		{
-			var modData = new ModalDataContainer("GearshiftRun", FuelData.Diesel, null);
+			var rundata = new VectoRunData()
+			{
+				JobName = "GearshiftRun"
+			};
+			var modData = new ModalDataContainer(rundata, null, null);
 
-			var entries = new[] {
+            var entries = new[] {
 				new DummyEntry { v = 34, gear = 4u },
 				new DummyEntry { v = 34.5, gear = 4u },
 				new DummyEntry { v = 33.3, gear = 0 },
@@ -111,9 +121,13 @@ namespace TUGraz.VectoCore.Tests.Reports
 		[TestCase()]
 		public void TestGearshiftCountTractionInterruptionStop()
 		{
-			var modData = new ModalDataContainer("GearshiftRun", FuelData.Diesel, null);
+			var rundata = new VectoRunData()
+			{
+				JobName = "GearshiftRun"
+			};
+			var modData = new ModalDataContainer(rundata, null, null);
 
-			var entries = new[] {
+            var entries = new[] {
 				new DummyEntry { v = 4, gear = 4u },
 				new DummyEntry { v = 3.5, gear = 4u },
 				new DummyEntry { v = 0, gear = 0 },
@@ -133,9 +147,13 @@ namespace TUGraz.VectoCore.Tests.Reports
 		[TestCase()]
 		public void TestGearshiftCountTractionInterruptionStopDriveOff()
 		{
-			var modData = new ModalDataContainer("GearshiftRun", FuelData.Diesel, null);
+			var rundata = new VectoRunData()
+			{
+				JobName = "GearshiftRun"
+			};
+			var modData = new ModalDataContainer(rundata, null, null);
 
-			var entries = new[] {
+            var entries = new[] {
 				new DummyEntry { v = 4, gear = 4u },
 				new DummyEntry { v = 3.5, gear = 4u },
 				new DummyEntry { v = 0, gear = 0 },
@@ -157,9 +175,13 @@ namespace TUGraz.VectoCore.Tests.Reports
 		[TestCase()]
 		public void TestGearshiftCountTractionInterruptionShiftupAT()
 		{
-			var modData = new ModalDataContainer("GearshiftRun", FuelData.Diesel, null);
+			var rundata = new VectoRunData()
+			{
+				JobName = "GearshiftRun"
+			};
+			var modData = new ModalDataContainer(rundata, null, null);
 
-			var entries = new[] {
+            var entries = new[] {
 				new DummyEntry { v = 34, gear = 4u },
 				new DummyEntry { v = 34.5, gear = 4u },
 				new DummyEntry { v = 33.3, gear = 5 },
@@ -180,9 +202,13 @@ namespace TUGraz.VectoCore.Tests.Reports
 		[TestCase()]
 		public void TestGearshiftCountTractionInterruptionShiftDownAT()
 		{
-			var modData = new ModalDataContainer("GearshiftRun", FuelData.Diesel, null);
+			var rundata = new VectoRunData()
+			{
+				JobName = "GearshiftRun"
+			};
+			var modData = new ModalDataContainer(rundata, null, null);
 
-			var entries = new[] {
+            var entries = new[] {
 				new DummyEntry { v = 34, gear = 4u },
 				new DummyEntry { v = 34.5, gear = 4u },
 				new DummyEntry { v = 33.3, gear = 4 },

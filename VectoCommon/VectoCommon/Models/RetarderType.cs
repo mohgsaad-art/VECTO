@@ -40,7 +40,8 @@ namespace TUGraz.VectoCommon.Models
 		TransmissionInputRetarder,
 		TransmissionOutputRetarder,
 		EngineRetarder,
-		LossesIncludedInTransmission
+		LossesIncludedInTransmission,
+		AxlegearInputRetarder
 	}
 
 	public static class RetarderTypeHelper
@@ -48,66 +49,53 @@ namespace TUGraz.VectoCommon.Models
 		public static RetarderType Parse(string retarderType)
 		{
 			switch (retarderType.ToLowerInvariant()) {
-				case "primary":
-					return RetarderType.TransmissionInputRetarder;
-				case "secondary":
-					return RetarderType.TransmissionOutputRetarder;
-				default:
-					return retarderType.ParseEnum<RetarderType>();
+				case "primary": return RetarderType.TransmissionInputRetarder;
+				case "secondary": return RetarderType.TransmissionOutputRetarder;
+				case "losses included in gearbox": return RetarderType.LossesIncludedInTransmission;
+				case "axlegear input retarder": return RetarderType.AxlegearInputRetarder;
+				default: return retarderType.ParseEnum<RetarderType>();
 			}
 		}
 
 		public static string GetName(this RetarderType retarder)
 		{
 			switch (retarder) {
-				case RetarderType.TransmissionInputRetarder:
-					return "primary";
-				case RetarderType.TransmissionOutputRetarder:
-					return "secondary";
-				default:
-					return retarder.ToString();
+				case RetarderType.TransmissionInputRetarder: return "primary";
+				case RetarderType.TransmissionOutputRetarder: return "secondary";
+				default: return retarder.ToString();
 			}
 		}
 
-		public static string GetLabel(this RetarderType retarder)
+		public static string GetLabel(this RetarderType retarderType)
 		{
-			switch (retarder) {
-				case RetarderType.None:
-					return "None";
-				case RetarderType.TransmissionInputRetarder:
-					return "Primary Retarder";
-				case RetarderType.TransmissionOutputRetarder:
-					return "Secondary Retarder";
-				case RetarderType.EngineRetarder:
-					return "Engine Retarder";
-				case RetarderType.LossesIncludedInTransmission:
-					return "Included in Transmission Loss Maps";
-				default:
-					throw new ArgumentOutOfRangeException("RetarderType", retarder, null);
+			switch (retarderType) {
+				case RetarderType.None: return "None";
+				case RetarderType.TransmissionInputRetarder: return "Transmission Input Retarder";
+				case RetarderType.TransmissionOutputRetarder: return "Transmission Output Retarder";
+				case RetarderType.EngineRetarder: return "Engine Retarder";
+				case RetarderType.LossesIncludedInTransmission: return "Included in Transmission Loss Maps";
+				case RetarderType.AxlegearInputRetarder: return "Axlegear Input Retarder";
+				default: throw new ArgumentOutOfRangeException(nameof(retarderType), retarderType, null);
 			}
 		}
 
-		public static string ToXMLFormat(this RetarderType type)
+		public static string ToXMLFormat(this RetarderType retarderType)
 		{
-			switch (type) {
-				case RetarderType.None:
-					return "None";
-				case RetarderType.TransmissionInputRetarder:
-					return "Transmission Input Retarder";
-				case RetarderType.TransmissionOutputRetarder:
-					return "Transmission Output Retarder";
-				case RetarderType.EngineRetarder:
-					return "Engine Retarder";
-				case RetarderType.LossesIncludedInTransmission:
-					return "Losses included in Gearbox";
-				default:
-					throw new ArgumentOutOfRangeException("RetarderType", type, null);
+			switch (retarderType) {
+				case RetarderType.None: return "None";
+				case RetarderType.TransmissionInputRetarder: return "Transmission Input Retarder";
+				case RetarderType.TransmissionOutputRetarder: return "Transmission Output Retarder";
+				case RetarderType.EngineRetarder: return "Engine Retarder";
+				case RetarderType.LossesIncludedInTransmission: return "Losses included in Gearbox";
+				case RetarderType.AxlegearInputRetarder: return "Axlegear Input Retarder";
+				default: throw new ArgumentOutOfRangeException(nameof(retarderType), retarderType, null);
 			}
 		}
 
-		public static bool IsDedicatedComponent(this RetarderType retarder)
-		{
-			return retarder == RetarderType.TransmissionInputRetarder || retarder == RetarderType.TransmissionOutputRetarder;
-		}
+		public static bool IsDedicatedComponent(this RetarderType retarder) =>
+			retarder.IsOneOf(
+				RetarderType.TransmissionInputRetarder,
+				RetarderType.TransmissionOutputRetarder,
+				RetarderType.AxlegearInputRetarder);
 	}
 }

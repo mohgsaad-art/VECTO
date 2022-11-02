@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSpy v2016 rel. 2 sp1 (x64) (http://www.altova.com) by Helmut Eichlseder (TU Graz/Inst. f. VKM und THD) -->
+<!-- edited with XMLSpy v2021 (x64) (http://www.altova.com) by Markus Quaritsch (Technische Universität Graz) -->
 <?xml-stylesheet type="text/xsl" href="../RenderTable.xslt"?>
-<xs:schema xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:vectoParam="urn:tugraz:ivt:VectoAPI:ParameterDocumentation" xmlns:di="http://www.w3.org/2000/09/xmldsig#" targetNamespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:ParameterDocumentation ParameterDocumentation.xsd">
+<xs:schema xmlns:v1.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:vectoParam="urn:tugraz:ivt:VectoAPI:ParameterDocumentation" xmlns:di="http://www.w3.org/2000/09/xmldsig#" targetNamespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:ParameterDocumentation ParameterDocumentation.xsd">
 	<xs:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="xmldsig-core-schema.xsd"/>
 	<xs:complexType name="AbstractAirdragDataDeclarationType" abstract="true">
 		<xs:complexContent>
-			<xs:extension base="tns:VectoSimulationComponent"/>
+			<xs:extension base="v1.0:VectoSimulationComponent"/>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="AbstractAngledriveDataDeclarationType" abstract="true">
 		<xs:complexContent>
-			<xs:extension base="tns:VectoSimulationComponent"/>
+			<xs:extension base="v1.0:VectoSimulationComponent"/>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="AbstractAxlegearDataDeclarationType" abstract="true">
 		<xs:complexContent>
-			<xs:extension base="tns:VectoSimulationComponent"/>
+			<xs:extension base="v1.0:VectoSimulationComponent"/>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="AbstractCombustionEngineDataDeclarationType" abstract="true">
@@ -23,47 +23,47 @@
 			<xs:documentation>Engine Component</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
-			<xs:extension base="tns:VectoSimulationComponent"/>
+			<xs:extension base="v1.0:VectoSimulationComponent"/>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="AbstractRetarderDataDeclarationType" abstract="true">
 		<xs:complexContent>
-			<xs:extension base="tns:VectoSimulationComponent"/>
+			<xs:extension base="v1.0:VectoSimulationComponent"/>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="AbstractTorqueConverterDataDeclarationType" abstract="true">
 		<xs:complexContent>
-			<xs:extension base="tns:VectoSimulationComponent"/>
+			<xs:extension base="v1.0:VectoSimulationComponent"/>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="AbstractTransmissionDataDeclarationType" abstract="true">
 		<xs:complexContent>
-			<xs:extension base="tns:VectoSimulationComponent"/>
+			<xs:extension base="v1.0:VectoSimulationComponent"/>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="AbstractTyreDataDeclarationType" abstract="true">
 		<xs:complexContent>
-			<xs:extension base="tns:VectoSimulationComponent"/>
+			<xs:extension base="v1.0:VectoSimulationComponent"/>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="AbstractVehicleType" abstract="true">
 		<xs:complexContent>
-			<xs:extension base="tns:VectoSimulationComponent"/>
+			<xs:extension base="v1.0:VectoSimulationComponent"/>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="ADASType">
 		<xs:sequence>
-			<xs:element name="EngineStopStart" type="tns:EngineStopStartType">
+			<xs:element name="EngineStopStart" type="v1.0:EngineStopStartType">
 				<xs:annotation>
 					<xs:documentation>P271 - bool</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="EcoRollWithoutEngineStop" type="tns:EcoRollWithoutEngineStopType">
+			<xs:element name="EcoRollWithoutEngineStop" type="v1.0:EcoRollWithoutEngineStopType">
 				<xs:annotation>
 					<xs:documentation>P272 - bool</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="EcoRollWithEngineStop" type="tns:EcoRollWithEngineStopType">
+			<xs:element name="EcoRollWithEngineStop" type="v1.0:EcoRollWithEngineStopType">
 				<xs:annotation>
 					<xs:documentation>P273 - bool</xs:documentation>
 				</xs:annotation>
@@ -73,103 +73,106 @@
 					<xs:documentation>P274 - enum</xs:documentation>
 				</xs:annotation>
 				<xs:simpleType>
-					<xs:restriction base="tns:PredictiveCruiseControlType"/>
+					<xs:restriction base="v1.0:PredictiveCruiseControlType"/>
 				</xs:simpleType>
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="AirDragComponentDeclarationType">
 		<xs:sequence>
-			<xs:element name="Data" type="tns:AirDragDataDeclarationType"/>
-			<xs:element name="Signature" type="tns:SignatureType"/>
+			<xs:element name="Data" type="v1.0:AirDragDataDeclarationType"/>
+			<xs:element name="Signature" type="v1.0:SignatureType"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="AirDragDataDeclarationType">
-		<xs:sequence>
-			<xs:element name="Manufacturer" type="tns:ManufacturerType">
-				<xs:annotation>
-					<xs:documentation>P240</xs:documentation>
-				</xs:annotation>
-			</xs:element>
-			<xs:element name="Model" type="tns:ModelType">
-				<xs:annotation>
-					<xs:documentation>P241</xs:documentation>
-				</xs:annotation>
-			</xs:element>
-			<xs:element name="CertificationNumber" type="tns:CertificationNumberType">
-				<xs:annotation>
-					<xs:documentation>P268</xs:documentation>
-				</xs:annotation>
-			</xs:element>
-			<xs:element name="Date" type="tns:DateTimeWithTimezone">
-				<xs:annotation>
-					<xs:documentation>P243</xs:documentation>
-				</xs:annotation>
-			</xs:element>
-			<xs:element name="AppVersion" type="tns:AppVersionType">
-				<xs:annotation>
-					<xs:documentation>P244</xs:documentation>
-				</xs:annotation>
-			</xs:element>
-			<xs:element name="CdxA_0" type="tns:AirdragCdxAType">
-				<xs:annotation>
-					<xs:documentation>P245 - [m²]</xs:documentation>
-				</xs:annotation>
-			</xs:element>
-			<xs:element name="TransferredCdxA" type="tns:AirdragCdxAType">
-				<xs:annotation>
-					<xs:documentation>P246 - [m²]</xs:documentation>
-				</xs:annotation>
-			</xs:element>
-			<xs:element name="DeclaredCdxA" type="tns:AirdragCdxAType">
-				<xs:annotation>
-					<xs:documentation>P146 - [m²]  Drag coefficient * Cross Sectional Area (Truck &amp; Trailer)</xs:documentation>
-				</xs:annotation>
-			</xs:element>
-		</xs:sequence>
-		<xs:attribute name="id"/>
+		<xs:complexContent>
+			<xs:extension base="v1.0:AbstractAirdragDataDeclarationType">
+				<xs:sequence>
+					<xs:element name="Manufacturer" type="v1.0:ManufacturerType">
+						<xs:annotation>
+							<xs:documentation>P240</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Model" type="v1.0:ModelType">
+						<xs:annotation>
+							<xs:documentation>P241</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="CertificationNumber" type="v1.0:CertificationNumberType">
+						<xs:annotation>
+							<xs:documentation>P268</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Date" type="v1.0:DateTimeWithTimezone">
+						<xs:annotation>
+							<xs:documentation>P243</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="AppVersion" type="v1.0:AppVersionType">
+						<xs:annotation>
+							<xs:documentation>P244</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="CdxA_0" type="v1.0:AirdragCdxAType">
+						<xs:annotation>
+							<xs:documentation>P245 - [m²]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="TransferredCdxA" type="v1.0:AirdragCdxAType">
+						<xs:annotation>
+							<xs:documentation>P246 - [m²]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="DeclaredCdxA" type="v1.0:AirdragCdxAType">
+						<xs:annotation>
+							<xs:documentation>P146 - [m²]  Drag coefficient * Cross Sectional Area (Truck &amp; Trailer)</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="AngledriveComponentDeclarationType">
 		<xs:sequence>
-			<xs:element name="Data" type="tns:AngledriveDataDeclarationType"/>
-			<xs:element name="Signature" type="tns:SignatureType"/>
+			<xs:element name="Data" type="v1.0:AngledriveDataDeclarationType"/>
+			<xs:element name="Signature" type="v1.0:SignatureType"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="AngledriveDataDeclarationType">
 		<xs:complexContent>
-			<xs:extension base="tns:AbstractAngledriveDataDeclarationType">
+			<xs:extension base="v1.0:AbstractAngledriveDataDeclarationType">
 				<xs:sequence>
-					<xs:element name="Manufacturer" type="tns:ManufacturerType">
+					<xs:element name="Manufacturer" type="v1.0:ManufacturerType">
 						<xs:annotation>
 							<xs:documentation>P220</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="Model" type="tns:ModelType">
+					<xs:element name="Model" type="v1.0:ModelType">
 						<xs:annotation>
 							<xs:documentation>P221</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="CertificationNumber" type="tns:CertificationNumberType">
+					<xs:element name="CertificationNumber" type="v1.0:CertificationNumberType">
 						<xs:annotation>
 							<xs:documentation>P265</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="Date" type="tns:DateTimeWithTimezone">
+					<xs:element name="Date" type="v1.0:DateTimeWithTimezone">
 						<xs:annotation>
 							<xs:documentation>P223</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="AppVersion" type="tns:AppVersionType">
+					<xs:element name="AppVersion" type="v1.0:AppVersionType">
 						<xs:annotation>
 							<xs:documentation>P224</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="Ratio" type="tns:AngledriveRatioType">
+					<xs:element name="Ratio" type="v1.0:AngledriveRatioType">
 						<xs:annotation>
 							<xs:documentation>P176 - [-]</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="CertificationMethod" type="tns:AngledriveCertificationOptionType">
+					<xs:element name="CertificationMethod" type="v1.0:AngledriveCertificationOptionType">
 						<xs:annotation>
 							<xs:documentation>P258 - [-]</xs:documentation>
 						</xs:annotation>
@@ -177,7 +180,7 @@
 					<xs:element name="TorqueLossMap">
 						<xs:complexType>
 							<xs:sequence minOccurs="4" maxOccurs="unbounded">
-								<xs:element name="Entry" type="tns:AngledriveLossMapEntryType"/>
+								<xs:element name="Entry" type="v1.0:AngledriveLossMapEntryType"/>
 							</xs:sequence>
 						</xs:complexType>
 					</xs:element>
@@ -186,17 +189,17 @@
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="AngledriveLossMapEntryType">
-		<xs:attribute name="inputSpeed" type="tns:AngledriveInputSpeedType" use="required">
+		<xs:attribute name="inputSpeed" type="v1.0:AngledriveInputSpeedType" use="required">
 			<xs:annotation>
 				<xs:documentation>P173 - [1/min]</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="inputTorque" type="tns:AngledriveInputTorqueType" use="required">
+		<xs:attribute name="inputTorque" type="v1.0:AngledriveInputTorqueType" use="required">
 			<xs:annotation>
 				<xs:documentation>P174 - [Nm]</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="torqueLoss" type="tns:AngledriveTorqueLossType" use="required">
+		<xs:attribute name="torqueLoss" type="v1.0:AngledriveTorqueLossType" use="required">
 			<xs:annotation>
 				<xs:documentation>P175 - [Nm]</xs:documentation>
 			</xs:annotation>
@@ -209,17 +212,17 @@
 	</xs:complexType>
 	<xs:complexType name="AuxiliariesComponentDeclarationType">
 		<xs:sequence>
-			<xs:element name="Data" type="tns:AuxiliariesDataDeclarationType"/>
+			<xs:element name="Data" type="v1.0:AuxiliariesDataDeclarationType"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="AuxiliariesDataDeclarationType">
 		<xs:complexContent>
-			<xs:extension base="tns:AuxiliariesBaseType">
+			<xs:extension base="v1.0:AuxiliariesBaseType">
 				<xs:sequence>
 					<xs:element name="Fan">
 						<xs:complexType>
 							<xs:sequence>
-								<xs:element name="Technology" type="tns:AuxFanTechnologyType">
+								<xs:element name="Technology" type="v1.0:AuxFanTechnologyType">
 									<xs:annotation>
 										<xs:documentation>P181</xs:documentation>
 									</xs:annotation>
@@ -230,7 +233,7 @@
 					<xs:element name="SteeringPump">
 						<xs:complexType>
 							<xs:sequence>
-								<xs:element name="Technology" type="tns:AuxSPTechnologyType" maxOccurs="4">
+								<xs:element name="Technology" type="v1.0:AuxSPTechnologyType" maxOccurs="4">
 									<xs:annotation>
 										<xs:documentation>P182</xs:documentation>
 									</xs:annotation>
@@ -241,7 +244,7 @@
 					<xs:element name="ElectricSystem">
 						<xs:complexType>
 							<xs:sequence>
-								<xs:element name="Technology" type="tns:AuxESTechnologyType">
+								<xs:element name="Technology" type="v1.0:AuxESTechnologyType">
 									<xs:annotation>
 										<xs:documentation>P183</xs:documentation>
 									</xs:annotation>
@@ -252,7 +255,7 @@
 					<xs:element name="PneumaticSystem">
 						<xs:complexType>
 							<xs:sequence>
-								<xs:element name="Technology" type="tns:AuxPSTechnologyType">
+								<xs:element name="Technology" type="v1.0:AuxPSTechnologyType">
 									<xs:annotation>
 										<xs:documentation>P184</xs:documentation>
 									</xs:annotation>
@@ -263,7 +266,7 @@
 					<xs:element name="HVAC">
 						<xs:complexType>
 							<xs:sequence>
-								<xs:element name="Technology" type="tns:AuxHVACTechnologyType">
+								<xs:element name="Technology" type="v1.0:AuxHVACTechnologyType">
 									<xs:annotation>
 										<xs:documentation>P185</xs:documentation>
 									</xs:annotation>
@@ -277,22 +280,22 @@
 	</xs:complexType>
 	<xs:complexType name="AxleDeclarationType">
 		<xs:sequence>
-			<xs:element name="AxleType" type="tns:AxleTypeDeclarationType">
+			<xs:element name="AxleType" type="v1.0:AxleTypeDeclarationType">
 				<xs:annotation>
 					<xs:documentation>P154 - enum</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="TwinTyres" type="tns:AxleTwinTyresType">
+			<xs:element name="TwinTyres" type="v1.0:AxleTwinTyresType">
 				<xs:annotation>
 					<xs:documentation>P045 - bool</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="Steered" type="tns:AxleSteeredType">
+			<xs:element name="Steered" type="v1.0:AxleSteeredType">
 				<xs:annotation>
 					<xs:documentation>P195 - bool</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="Tyre" type="tns:TyreComponentDeclarationType"/>
+			<xs:element name="Tyre" type="v1.0:TyreComponentDeclarationType"/>
 		</xs:sequence>
 		<xs:attribute name="axleNumber" use="required">
 			<xs:simpleType>
@@ -305,8 +308,8 @@
 	</xs:complexType>
 	<xs:complexType name="AxlegearComponentDeclarationType">
 		<xs:sequence>
-			<xs:element name="Data" type="tns:AxlegearDataDeclarationType"/>
-			<xs:element name="Signature" type="tns:SignatureType"/>
+			<xs:element name="Data" type="v1.0:AxlegearDataDeclarationType"/>
+			<xs:element name="Signature" type="v1.0:SignatureType"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="AxlegearDataDeclarationType">
@@ -314,44 +317,44 @@
 			<xs:documentation>Axlegear Component</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
-			<xs:extension base="tns:AbstractAxlegearDataDeclarationType">
+			<xs:extension base="v1.0:AbstractAxlegearDataDeclarationType">
 				<xs:sequence>
-					<xs:element name="Manufacturer" type="tns:ManufacturerType">
+					<xs:element name="Manufacturer" type="v1.0:ManufacturerType">
 						<xs:annotation>
 							<xs:documentation>P215</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="Model" type="tns:ModelType">
+					<xs:element name="Model" type="v1.0:ModelType">
 						<xs:annotation>
 							<xs:documentation>P216</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="CertificationNumber" type="tns:CertificationNumberType">
+					<xs:element name="CertificationNumber" type="v1.0:CertificationNumberType">
 						<xs:annotation>
 							<xs:documentation>P264</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="Date" type="tns:DateTimeWithTimezone">
+					<xs:element name="Date" type="v1.0:DateTimeWithTimezone">
 						<xs:annotation>
 							<xs:documentation>P218</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="AppVersion" type="tns:AppVersionType">
+					<xs:element name="AppVersion" type="v1.0:AppVersionType">
 						<xs:annotation>
 							<xs:documentation>P219</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="LineType" type="tns:AxlegearLineTypeType">
+					<xs:element name="LineType" type="v1.0:AxlegearLineTypeType">
 						<xs:annotation>
 							<xs:documentation>P253 - [-]</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="Ratio" type="tns:AxlegearRatioType">
+					<xs:element name="Ratio" type="v1.0:AxlegearRatioType">
 						<xs:annotation>
 							<xs:documentation>P150 - [-]</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="CertificationMethod" type="tns:AxlegearCertificationOptionType">
+					<xs:element name="CertificationMethod" type="v1.0:AxlegearCertificationOptionType">
 						<xs:annotation>
 							<xs:documentation>P256 - [-]</xs:documentation>
 						</xs:annotation>
@@ -359,7 +362,7 @@
 					<xs:element name="TorqueLossMap">
 						<xs:complexType>
 							<xs:sequence minOccurs="4" maxOccurs="unbounded">
-								<xs:element name="Entry" type="tns:AxlegearTorqueLossMapEntryType"/>
+								<xs:element name="Entry" type="v1.0:AxlegearTorqueLossMapEntryType"/>
 							</xs:sequence>
 						</xs:complexType>
 					</xs:element>
@@ -368,17 +371,17 @@
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="AxlegearTorqueLossMapEntryType">
-		<xs:attribute name="inputSpeed" type="tns:AxlegearInputSpeedType" use="required">
+		<xs:attribute name="inputSpeed" type="v1.0:AxlegearInputSpeedType" use="required">
 			<xs:annotation>
 				<xs:documentation>P151 - [1/min]</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="inputTorque" type="tns:AxlegearInputTorqueType" use="required">
+		<xs:attribute name="inputTorque" type="v1.0:AxlegearInputTorqueType" use="required">
 			<xs:annotation>
 				<xs:documentation>P152 - [Nm]</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="torqueLoss" type="tns:AxlegearTorqueLossType" use="required">
+		<xs:attribute name="torqueLoss" type="v1.0:AxlegearTorqueLossType" use="required">
 			<xs:annotation>
 				<xs:documentation>P153 - [Nm]</xs:documentation>
 			</xs:annotation>
@@ -387,7 +390,7 @@
 	<xs:complexType name="AxlegearTorqueLossMapType"/>
 	<xs:complexType name="AxleWheelsComponentDeclarationType">
 		<xs:sequence>
-			<xs:element name="Data" type="tns:AxleWheelsDataDeclarationType"/>
+			<xs:element name="Data" type="v1.0:AxleWheelsDataDeclarationType"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="AxleWheelsDataDeclarationType">
@@ -398,7 +401,7 @@
 			<xs:element name="Axles">
 				<xs:complexType>
 					<xs:sequence>
-						<xs:element name="Axle" type="tns:AxleDeclarationType" minOccurs="2" maxOccurs="4"/>
+						<xs:element name="Axle" type="v1.0:AxleDeclarationType" minOccurs="2" maxOccurs="4"/>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
@@ -406,95 +409,95 @@
 	</xs:complexType>
 	<xs:complexType name="EngineComponentDeclarationType">
 		<xs:sequence>
-			<xs:element name="Data" type="tns:EngineDataDeclarationType"/>
-			<xs:element name="Signature" type="tns:SignatureType"/>
+			<xs:element name="Data" type="v1.0:EngineDataDeclarationType"/>
+			<xs:element name="Signature" type="v1.0:SignatureType"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="EngineDataDeclarationType">
 		<xs:complexContent>
-			<xs:extension base="tns:AbstractCombustionEngineDataDeclarationType">
+			<xs:extension base="v1.0:AbstractCombustionEngineDataDeclarationType">
 				<xs:sequence>
-					<xs:element name="Manufacturer" type="tns:ManufacturerType">
+					<xs:element name="Manufacturer" type="v1.0:ManufacturerType">
 						<xs:annotation>
 							<xs:documentation>P200</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="Model" type="tns:ModelType">
+					<xs:element name="Model" type="v1.0:ModelType">
 						<xs:annotation>
 							<xs:documentation>P201</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="CertificationNumber" type="tns:CertificationNumberType">
+					<xs:element name="CertificationNumber" type="v1.0:CertificationNumberType">
 						<xs:annotation>
 							<xs:documentation>P261</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="Date" type="tns:DateTimeWithTimezone">
+					<xs:element name="Date" type="v1.0:DateTimeWithTimezone">
 						<xs:annotation>
 							<xs:documentation>P203</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="AppVersion" type="tns:AppVersionType">
+					<xs:element name="AppVersion" type="v1.0:AppVersionType">
 						<xs:annotation>
 							<xs:documentation>P204</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="Displacement" type="tns:EngineDisplacementType" nillable="false">
+					<xs:element name="Displacement" type="v1.0:EngineDisplacementType" nillable="false">
 						<xs:annotation>
 							<xs:documentation>P061 - [cm³]</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="IdlingSpeed" type="tns:EngineDeclaredSpeedType">
+					<xs:element name="IdlingSpeed" type="v1.0:EngineDeclaredSpeedType">
 						<xs:annotation>
 							<xs:documentation>P063 - [1/min]</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="RatedSpeed" type="tns:EngineDeclaredSpeedType">
+					<xs:element name="RatedSpeed" type="v1.0:EngineDeclaredSpeedType">
 						<xs:annotation>
 							<xs:documentation>P249 - [1/min]</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="RatedPower" type="tns:EngineRatedPower">
+					<xs:element name="RatedPower" type="v1.0:EngineRatedPower">
 						<xs:annotation>
 							<xs:documentation>P250 - [W]</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="MaxEngineTorque" type="tns:EngineMaxTorque">
+					<xs:element name="MaxEngineTorque" type="v1.0:EngineMaxTorque">
 						<xs:annotation>
 							<xs:documentation>P259 - [Nm]</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="WHTCUrban" type="tns:EngineWHTCType">
+					<xs:element name="WHTCUrban" type="v1.0:EngineWHTCType">
 						<xs:annotation>
 							<xs:documentation>P109 - [-]</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="WHTCRural" type="tns:EngineWHTCType">
+					<xs:element name="WHTCRural" type="v1.0:EngineWHTCType">
 						<xs:annotation>
 							<xs:documentation>P110 - [-]</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="WHTCMotorway" type="tns:EngineWHTCType">
+					<xs:element name="WHTCMotorway" type="v1.0:EngineWHTCType">
 						<xs:annotation>
 							<xs:documentation>P111 - [-]</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="BFColdHot" type="tns:EngineColdHotBalancingFactorType">
+					<xs:element name="BFColdHot" type="v1.0:EngineColdHotBalancingFactorType">
 						<xs:annotation>
 							<xs:documentation>P159 - [-]</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="CFRegPer" type="tns:EngineCFRegPerType">
+					<xs:element name="CFRegPer" type="v1.0:EngineCFRegPerType">
 						<xs:annotation>
 							<xs:documentation>P192 [-]</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="CFNCV" type="tns:EngineNCVCFType">
+					<xs:element name="CFNCV" type="v1.0:EngineNCVCFType">
 						<xs:annotation>
 							<xs:documentation>P260 - [-]</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="FuelType" type="tns:FuelTypeType">
+					<xs:element name="FuelType" type="v1.0:FuelTypeType">
 						<xs:annotation>
 							<xs:documentation>P193 [enum]</xs:documentation>
 						</xs:annotation>
@@ -502,14 +505,14 @@
 					<xs:element name="FuelConsumptionMap">
 						<xs:complexType>
 							<xs:sequence>
-								<xs:element name="Entry" type="tns:FuelConsumptionEntryType" minOccurs="4" maxOccurs="unbounded"/>
+								<xs:element name="Entry" type="v1.0:FuelConsumptionEntryType" minOccurs="4" maxOccurs="unbounded"/>
 							</xs:sequence>
 						</xs:complexType>
 					</xs:element>
 					<xs:element name="FullLoadAndDragCurve">
 						<xs:complexType>
 							<xs:sequence>
-								<xs:element name="Entry" type="tns:FullLoadAndDragCurveEntryType" minOccurs="2" maxOccurs="unbounded"/>
+								<xs:element name="Entry" type="v1.0:FullLoadAndDragCurveEntryType" minOccurs="2" maxOccurs="unbounded"/>
 							</xs:sequence>
 						</xs:complexType>
 					</xs:element>
@@ -519,7 +522,7 @@
 	</xs:complexType>
 	<xs:complexType name="EngineStartStopDeclarationType">
 		<xs:sequence>
-			<xs:element name="Enabled" type="tns:ADASEngineStartStopEnabled">
+			<xs:element name="Enabled" type="v1.0:ADASEngineStartStopEnabled">
 				<xs:annotation>
 					<xs:documentation>P010 </xs:documentation>
 				</xs:annotation>
@@ -527,34 +530,34 @@
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="FuelConsumptionEntryType">
-		<xs:attribute name="engineSpeed" type="tns:EngineSpeedType" use="required">
+		<xs:attribute name="engineSpeed" type="v1.0:EngineSpeedType" use="required">
 			<xs:annotation>
 				<xs:documentation>P072 - [1/min]</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="torque" type="tns:EngineFuelConsumptionMapTorqueType" use="required">
+		<xs:attribute name="torque" type="v1.0:EngineFuelConsumptionMapTorqueType" use="required">
 			<xs:annotation>
 				<xs:documentation>P073 - [Nm]</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="fuelConsumption" type="tns:EngineFuelConsumptionMapFuelConsumptionType" use="required">
+		<xs:attribute name="fuelConsumption" type="v1.0:EngineFuelConsumptionMapFuelConsumptionType" use="required">
 			<xs:annotation>
 				<xs:documentation>P074 - [g/h]</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>
 	<xs:complexType name="FullLoadAndDragCurveEntryType">
-		<xs:attribute name="engineSpeed" type="tns:EngineSpeedType" use="required">
+		<xs:attribute name="engineSpeed" type="v1.0:EngineSpeedType" use="required">
 			<xs:annotation>
 				<xs:documentation>P068 - [1/min]</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="maxTorque" type="tns:EngineFLDMaxTorqueType" use="required">
+		<xs:attribute name="maxTorque" type="v1.0:EngineFLDMaxTorqueType" use="required">
 			<xs:annotation>
 				<xs:documentation>P069 - [N]</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="dragTorque" type="tns:EngineFLDDragTorqueType" use="required">
+		<xs:attribute name="dragTorque" type="v1.0:EngineFLDDragTorqueType" use="required">
 			<xs:annotation>
 				<xs:documentation>P070 - [N]</xs:documentation>
 			</xs:annotation>
@@ -563,13 +566,13 @@
 	<xs:complexType name="FullLoadCurveType"/>
 	<xs:complexType name="GearBaseType">
 		<xs:sequence>
-			<xs:element name="Ratio" type="tns:GearboxGearRatioType">
+			<xs:element name="Ratio" type="v1.0:GearboxGearRatioType">
 				<xs:annotation>
 					<xs:documentation>P078 - [-]</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 		</xs:sequence>
-		<xs:attribute name="number" type="tns:GearboxGearNumberType" use="required">
+		<xs:attribute name="number" type="v1.0:GearboxGearNumberType" use="required">
 			<xs:annotation>
 				<xs:documentation>P199 - [-]</xs:documentation>
 				<xs:appinfo>
@@ -579,9 +582,9 @@
 	</xs:complexType>
 	<xs:complexType name="GearboxComponentDeclarationType">
 		<xs:sequence>
-			<xs:element name="Data" type="tns:GearboxDataDeclarationType"/>
-			<xs:element name="Signature" type="tns:SignatureType"/>
-			<xs:element name="TorqueConverter" type="tns:TorqueConverterComponentDeclarationType" minOccurs="0"/>
+			<xs:element name="Data" type="v1.0:GearboxDataDeclarationType"/>
+			<xs:element name="Signature" type="v1.0:SignatureType"/>
+			<xs:element name="TorqueConverter" type="v1.0:TorqueConverterComponentDeclarationType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="GearboxDataDeclarationType">
@@ -589,39 +592,39 @@
 			<xs:documentation>Gearbox Component</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
-			<xs:extension base="tns:AbstractTransmissionDataDeclarationType">
+			<xs:extension base="v1.0:AbstractTransmissionDataDeclarationType">
 				<xs:sequence>
-					<xs:element name="Manufacturer" type="tns:ManufacturerType">
+					<xs:element name="Manufacturer" type="v1.0:ManufacturerType">
 						<xs:annotation>
 							<xs:documentation>P205</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="Model" type="tns:ModelType">
+					<xs:element name="Model" type="v1.0:ModelType">
 						<xs:annotation>
 							<xs:documentation>P206</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="CertificationNumber" type="tns:CertificationNumberType">
+					<xs:element name="CertificationNumber" type="v1.0:CertificationNumberType">
 						<xs:annotation>
 							<xs:documentation>P262</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="Date" type="tns:DateTimeWithTimezone">
+					<xs:element name="Date" type="v1.0:DateTimeWithTimezone">
 						<xs:annotation>
 							<xs:documentation>P208</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="AppVersion" type="tns:AppVersionType">
+					<xs:element name="AppVersion" type="v1.0:AppVersionType">
 						<xs:annotation>
 							<xs:documentation>P209</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="TransmissionType" type="tns:GearboxTransmissionTypeType">
+					<xs:element name="TransmissionType" type="v1.0:GearboxTransmissionTypeType">
 						<xs:annotation>
 							<xs:documentation>P076 - [-]</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="MainCertificationMethod" type="tns:GearboxCertificationOptionType">
+					<xs:element name="MainCertificationMethod" type="v1.0:GearboxCertificationOptionType">
 						<xs:annotation>
 							<xs:documentation>P254 - [-]</xs:documentation>
 						</xs:annotation>
@@ -629,7 +632,7 @@
 					<xs:element name="Gears">
 						<xs:complexType>
 							<xs:sequence>
-								<xs:element name="Gear" type="tns:GearDeclarationType" maxOccurs="99"/>
+								<xs:element name="Gear" type="v1.0:GearDeclarationType" maxOccurs="99"/>
 							</xs:sequence>
 						</xs:complexType>
 					</xs:element>
@@ -639,14 +642,14 @@
 	</xs:complexType>
 	<xs:complexType name="GearDeclarationType">
 		<xs:complexContent>
-			<xs:extension base="tns:GearBaseType">
+			<xs:extension base="v1.0:GearBaseType">
 				<xs:sequence>
-					<xs:element name="MaxTorque" type="tns:GearboxGearMaxTorqueType" minOccurs="0">
+					<xs:element name="MaxTorque" type="v1.0:GearboxGearMaxTorqueType" minOccurs="0">
 						<xs:annotation>
 							<xs:documentation>P157 - [Nm]</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="MaxSpeed" type="tns:GearboxGearMaxSpeedType" minOccurs="0">
+					<xs:element name="MaxSpeed" type="v1.0:GearboxGearMaxSpeedType" minOccurs="0">
 						<xs:annotation>
 							<xs:documentation>P194 - [1/min]</xs:documentation>
 						</xs:annotation>
@@ -654,9 +657,9 @@
 					<xs:element name="TorqueLossMap">
 						<xs:complexType>
 							<xs:complexContent>
-								<xs:extension base="tns:TorqueLossMapType">
+								<xs:extension base="v1.0:TorqueLossMapType">
 									<xs:sequence>
-										<xs:element name="Entry" type="tns:TorqueLossMapEntryType" minOccurs="4" maxOccurs="unbounded"/>
+										<xs:element name="Entry" type="v1.0:TorqueLossMapEntryType" minOccurs="4" maxOccurs="unbounded"/>
 									</xs:sequence>
 								</xs:extension>
 							</xs:complexContent>
@@ -668,12 +671,12 @@
 	</xs:complexType>
 	<xs:complexType name="PTOType">
 		<xs:sequence>
-			<xs:element name="PTOShaftsGearWheels" type="tns:PTOShaftsGearWheelsType">
+			<xs:element name="PTOShaftsGearWheels" type="v1.0:PTOShaftsGearWheelsType">
 				<xs:annotation>
 					<xs:documentation>P247 - enum</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="PTOOtherElements" type="tns:PTOOtherElementsType">
+			<xs:element name="PTOOtherElements" type="v1.0:PTOOtherElementsType">
 				<xs:annotation>
 					<xs:documentation>P248 - enum</xs:documentation>
 				</xs:annotation>
@@ -682,8 +685,8 @@
 	</xs:complexType>
 	<xs:complexType name="RetarderComponentDeclarationType">
 		<xs:sequence>
-			<xs:element name="Data" type="tns:RetarderDataDeclarationType"/>
-			<xs:element name="Signature" type="tns:SignatureType"/>
+			<xs:element name="Data" type="v1.0:RetarderDataDeclarationType"/>
+			<xs:element name="Signature" type="v1.0:SignatureType"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="RetarderDataDeclarationType">
@@ -691,34 +694,34 @@
 			<xs:documentation>Retarder Component</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
-			<xs:extension base="tns:AbstractRetarderDataDeclarationType">
+			<xs:extension base="v1.0:AbstractRetarderDataDeclarationType">
 				<xs:sequence>
-					<xs:element name="Manufacturer" type="tns:ManufacturerType">
+					<xs:element name="Manufacturer" type="v1.0:ManufacturerType">
 						<xs:annotation>
 							<xs:documentation>P225</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="Model" type="tns:ModelType">
+					<xs:element name="Model" type="v1.0:ModelType">
 						<xs:annotation>
 							<xs:documentation>P226</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="CertificationNumber" type="tns:CertificationNumberType">
+					<xs:element name="CertificationNumber" type="v1.0:CertificationNumberType">
 						<xs:annotation>
 							<xs:documentation>P266</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="Date" type="tns:DateTimeWithTimezone">
+					<xs:element name="Date" type="v1.0:DateTimeWithTimezone">
 						<xs:annotation>
 							<xs:documentation>P228</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="AppVersion" type="tns:AppVersionType">
+					<xs:element name="AppVersion" type="v1.0:AppVersionType">
 						<xs:annotation>
 							<xs:documentation>P229</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="CertificationMethod" type="tns:RetarderCertificationOptionType">
+					<xs:element name="CertificationMethod" type="v1.0:RetarderCertificationOptionType">
 						<xs:annotation>
 							<xs:documentation>P255 - [-]</xs:documentation>
 						</xs:annotation>
@@ -726,7 +729,7 @@
 					<xs:element name="RetarderLossMap">
 						<xs:complexType>
 							<xs:sequence>
-								<xs:element name="Entry" type="tns:RetarderLossmapEntryType" minOccurs="2" maxOccurs="unbounded"/>
+								<xs:element name="Entry" type="v1.0:RetarderLossmapEntryType" minOccurs="2" maxOccurs="unbounded"/>
 							</xs:sequence>
 						</xs:complexType>
 					</xs:element>
@@ -735,12 +738,12 @@
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="RetarderLossmapEntryType">
-		<xs:attribute name="retarderSpeed" type="tns:RetarderSpeedType" use="required">
+		<xs:attribute name="retarderSpeed" type="v1.0:RetarderSpeedType" use="required">
 			<xs:annotation>
 				<xs:documentation>P057 - [1/min]</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="torqueLoss" type="tns:RetarderTorqueLossType" use="required">
+		<xs:attribute name="torqueLoss" type="v1.0:RetarderTorqueLossType" use="required">
 			<xs:annotation>
 				<xs:documentation>P058 - [Nm]</xs:documentation>
 			</xs:annotation>
@@ -755,17 +758,17 @@
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="TorqueConverterCharacteristicsEntryType">
-		<xs:attribute name="speedRatio" type="tns:TorqueConverterSpeedRatioType" use="required">
+		<xs:attribute name="speedRatio" type="v1.0:TorqueConverterSpeedRatioType" use="required">
 			<xs:annotation>
 				<xs:documentation>P099 - [-]</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="torqueRatio" type="tns:TorqueConverterTorqueRatioType" use="required">
+		<xs:attribute name="torqueRatio" type="v1.0:TorqueConverterTorqueRatioType" use="required">
 			<xs:annotation>
 				<xs:documentation>P100 - [-]</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="inputTorqueRef" type="tns:TorqueConverterInputTorqueRefType" use="required">
+		<xs:attribute name="inputTorqueRef" type="v1.0:TorqueConverterInputTorqueRefType" use="required">
 			<xs:annotation>
 				<xs:documentation>P101 - [-]</xs:documentation>
 			</xs:annotation>
@@ -773,40 +776,40 @@
 	</xs:complexType>
 	<xs:complexType name="TorqueConverterComponentDeclarationType">
 		<xs:sequence>
-			<xs:element name="Data" type="tns:TorqueConverterDataDeclarationType"/>
-			<xs:element name="Signature" type="tns:SignatureType"/>
+			<xs:element name="Data" type="v1.0:TorqueConverterDataDeclarationType"/>
+			<xs:element name="Signature" type="v1.0:SignatureType"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="TorqueConverterDataDeclarationType">
 		<xs:complexContent>
-			<xs:extension base="tns:AbstractTorqueConverterDataDeclarationType">
+			<xs:extension base="v1.0:AbstractTorqueConverterDataDeclarationType">
 				<xs:sequence>
-					<xs:element name="Manufacturer" type="tns:ManufacturerType">
+					<xs:element name="Manufacturer" type="v1.0:ManufacturerType">
 						<xs:annotation>
 							<xs:documentation>P210</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="Model" type="tns:ModelType">
+					<xs:element name="Model" type="v1.0:ModelType">
 						<xs:annotation>
 							<xs:documentation>P211</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="CertificationNumber" type="tns:CertificationNumberType">
+					<xs:element name="CertificationNumber" type="v1.0:CertificationNumberType">
 						<xs:annotation>
 							<xs:documentation>P263</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="Date" type="tns:DateTimeWithTimezone">
+					<xs:element name="Date" type="v1.0:DateTimeWithTimezone">
 						<xs:annotation>
 							<xs:documentation>P213</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="AppVersion" type="tns:AppVersionType">
+					<xs:element name="AppVersion" type="v1.0:AppVersionType">
 						<xs:annotation>
 							<xs:documentation>P214</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="CertificationMethod" type="tns:TorqueConverterCertificationOptionType">
+					<xs:element name="CertificationMethod" type="v1.0:TorqueConverterCertificationOptionType">
 						<xs:annotation>
 							<xs:documentation>P257 - [-]</xs:documentation>
 						</xs:annotation>
@@ -814,7 +817,7 @@
 					<xs:element name="Characteristics">
 						<xs:complexType>
 							<xs:sequence>
-								<xs:element name="Entry" type="tns:TorqueConverterCharacteristicsEntryType" minOccurs="2" maxOccurs="unbounded"/>
+								<xs:element name="Entry" type="v1.0:TorqueConverterCharacteristicsEntryType" minOccurs="2" maxOccurs="unbounded"/>
 							</xs:sequence>
 						</xs:complexType>
 					</xs:element>
@@ -823,12 +826,12 @@
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="TorqueLimitsEntryType">
-		<xs:attribute name="gear" type="tns:GearboxGearNumberType" use="required">
+		<xs:attribute name="gear" type="v1.0:GearboxGearNumberType" use="required">
 			<xs:annotation>
 				<xs:documentation>P196 - [-]</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="maxTorque" type="tns:TorqueLimitEntryMaxTorqueType" use="required">
+		<xs:attribute name="maxTorque" type="v1.0:TorqueLimitEntryMaxTorqueType" use="required">
 			<xs:annotation>
 				<xs:documentation>P197 - [Nm]</xs:documentation>
 			</xs:annotation>
@@ -836,21 +839,21 @@
 	</xs:complexType>
 	<xs:complexType name="TorqueLimitsType">
 		<xs:sequence maxOccurs="unbounded">
-			<xs:element name="Entry" type="tns:TorqueLimitsEntryType"/>
+			<xs:element name="Entry" type="v1.0:TorqueLimitsEntryType"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="TorqueLossMapEntryType">
-		<xs:attribute name="inputSpeed" type="tns:GearboxGearInputSpeedType" use="required">
+		<xs:attribute name="inputSpeed" type="v1.0:GearboxGearInputSpeedType" use="required">
 			<xs:annotation>
 				<xs:documentation>P096 - [1/min]</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="inputTorque" type="tns:GearboxGearInputTorqueType" use="required">
+		<xs:attribute name="inputTorque" type="v1.0:GearboxGearInputTorqueType" use="required">
 			<xs:annotation>
 				<xs:documentation>P097 - [Nm]</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="torqueLoss" type="tns:GearboxGearTorqueLossType" use="required">
+		<xs:attribute name="torqueLoss" type="v1.0:GearboxGearTorqueLossType" use="required">
 			<xs:annotation>
 				<xs:documentation>P098 - [Nm]</xs:documentation>
 			</xs:annotation>
@@ -859,50 +862,50 @@
 	<xs:complexType name="TorqueLossMapType"/>
 	<xs:complexType name="TyreComponentDeclarationType">
 		<xs:sequence>
-			<xs:element name="Data" type="tns:TyreDataDeclarationType"/>
-			<xs:element name="Signature" type="tns:SignatureType"/>
+			<xs:element name="Data" type="v1.0:TyreDataDeclarationType"/>
+			<xs:element name="Signature" type="v1.0:SignatureType"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="TyreDataDeclarationType">
 		<xs:complexContent>
-			<xs:extension base="tns:AbstractTyreDataDeclarationType">
+			<xs:extension base="v1.0:AbstractTyreDataDeclarationType">
 				<xs:sequence>
-					<xs:element name="Manufacturer" type="tns:ManufacturerType">
+					<xs:element name="Manufacturer" type="v1.0:ManufacturerType">
 						<xs:annotation>
 							<xs:documentation>P230</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="Model" type="tns:ModelType">
+					<xs:element name="Model" type="v1.0:ModelType">
 						<xs:annotation>
 							<xs:documentation>P231</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="CertificationNumber" type="tns:CertificationNumberType">
+					<xs:element name="CertificationNumber" type="v1.0:CertificationNumberType">
 						<xs:annotation>
 							<xs:documentation>P267</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="Date" type="tns:DateTimeWithTimezone">
+					<xs:element name="Date" type="v1.0:DateTimeWithTimezone">
 						<xs:annotation>
 							<xs:documentation>P233</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="AppVersion" type="tns:AppVersionType">
+					<xs:element name="AppVersion" type="v1.0:AppVersionType">
 						<xs:annotation>
 							<xs:documentation>P234</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="Dimension" type="tns:TyreDimensionType">
+					<xs:element name="Dimension" type="v1.0:TyreDimensionType">
 						<xs:annotation>
 							<xs:documentation>P108 - enum</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="RRCDeclared" type="tns:TyreRRCISOType">
+					<xs:element name="RRCDeclared" type="v1.0:TyreRRCISOType">
 						<xs:annotation>
 							<xs:documentation>P046 - [-]</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="FzISO" type="tns:TyreFzISOType">
+					<xs:element name="FzISO" type="v1.0:TyreFzISOType">
 						<xs:annotation>
 							<xs:documentation>P047 - [N]</xs:documentation>
 						</xs:annotation>
@@ -913,7 +916,7 @@
 	</xs:complexType>
 	<xs:complexType name="VectoDeclarationJobType">
 		<xs:sequence>
-			<xs:element name="Vehicle" type="tns:VehicleDeclarationType"/>
+			<xs:element name="Vehicle" type="v1.0:VehicleDeclarationType"/>
 		</xs:sequence>
 		<xs:attribute name="schemaVersion" use="required">
 			<xs:simpleType>
@@ -935,54 +938,54 @@
 	</xs:complexType>
 	<xs:complexType name="VehicleBaseType" abstract="true">
 		<xs:complexContent>
-			<xs:extension base="tns:AbstractVehicleType">
+			<xs:extension base="v1.0:AbstractVehicleType">
 				<xs:sequence>
-					<xs:element name="Manufacturer" type="tns:ManufacturerType">
+					<xs:element name="Manufacturer" type="v1.0:ManufacturerType">
 						<xs:annotation>
 							<xs:documentation>P235</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="ManufacturerAddress" type="tns:ManufacturerAddressType">
+					<xs:element name="ManufacturerAddress" type="v1.0:ManufacturerAddressType">
 						<xs:annotation>
 							<xs:documentation>P252</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="Model" type="tns:ModelType">
+					<xs:element name="Model" type="v1.0:ModelType">
 						<xs:annotation>
 							<xs:documentation>P236</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="VIN" type="tns:VINType">
+					<xs:element name="VIN" type="v1.0:VINType">
 						<xs:annotation>
 							<xs:documentation>P238</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="Date" type="tns:DateTimeWithTimezone">
+					<xs:element name="Date" type="v1.0:DateTimeWithTimezone">
 						<xs:annotation>
 							<xs:documentation>P239</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="LegislativeClass" type="tns:LegislativeClassDeclarationType">
+					<xs:element name="LegislativeClass" type="v1.0:LegislativeClassDeclarationType">
 						<xs:annotation>
 							<xs:documentation>P251 - enum</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="VehicleCategory" type="tns:VehicleCategoryDeclarationType">
+					<xs:element name="VehicleCategory" type="v1.0:VehicleCategoryDeclarationType">
 						<xs:annotation>
 							<xs:documentation>P036 - enum</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="AxleConfiguration" type="tns:VehicleAxleConfigurationDeclarationType" minOccurs="0">
+					<xs:element name="AxleConfiguration" type="v1.0:VehicleAxleConfigurationDeclarationType" minOccurs="0">
 						<xs:annotation>
 							<xs:documentation>P037 - enum</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="CurbMassChassis" type="tns:VehicleCurbMassChassisType">
+					<xs:element name="CurbMassChassis" type="v1.0:VehicleCurbMassChassisType">
 						<xs:annotation>
 							<xs:documentation>P038 - [kg]</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="GrossVehicleMass" type="tns:VehicleGrossVehicleMassType">
+					<xs:element name="GrossVehicleMass" type="v1.0:VehicleGrossVehicleMassType">
 						<xs:annotation>
 							<xs:documentation>P041 - [kg]</xs:documentation>
 						</xs:annotation>
@@ -993,93 +996,98 @@
 	</xs:complexType>
 	<xs:complexType name="VehicleComponentsType">
 		<xs:sequence>
-			<xs:element name="Engine" type="tns:EngineComponentDeclarationType"/>
-			<xs:element name="Gearbox" type="tns:GearboxComponentDeclarationType"/>
-			<xs:element name="Angledrive" type="tns:AngledriveComponentDeclarationType" minOccurs="0"/>
-			<xs:element name="Retarder" type="tns:RetarderComponentDeclarationType" minOccurs="0"/>
-			<xs:element name="Axlegear" type="tns:AxlegearComponentDeclarationType"/>
-			<xs:element name="AxleWheels" type="tns:AxleWheelsComponentDeclarationType"/>
-			<xs:element name="Auxiliaries" type="tns:AuxiliariesComponentDeclarationType"/>
-			<xs:element name="AirDrag" type="tns:AirDragComponentDeclarationType" minOccurs="0"/>
+			<xs:element name="Engine" type="v1.0:EngineComponentDeclarationType"/>
+			<xs:element name="Gearbox" type="v1.0:GearboxComponentDeclarationType"/>
+			<xs:element name="Angledrive" type="v1.0:AngledriveComponentDeclarationType" minOccurs="0"/>
+			<xs:element name="Retarder" type="v1.0:RetarderComponentDeclarationType" minOccurs="0"/>
+			<xs:element name="Axlegear" type="v1.0:AxlegearComponentDeclarationType"/>
+			<xs:element name="AxleWheels" type="v1.0:AxleWheelsComponentDeclarationType"/>
+			<xs:element name="Auxiliaries" type="v1.0:AuxiliariesComponentDeclarationType"/>
+			<xs:element name="AirDrag" type="v1.0:AirDragComponentDeclarationType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="VehicleDeclarationType">
 		<xs:complexContent>
-			<xs:extension base="tns:VehicleBaseType">
+			<xs:extension base="v1.0:VehicleBaseType">
 				<xs:sequence>
 					<xs:choice>
 						<xs:sequence>
-							<xs:element name="IdlingSpeed" type="tns:EngineDeclaredSpeedType">
+							<xs:element name="IdlingSpeed" type="v1.0:EngineDeclaredSpeedType">
 								<xs:annotation>
 									<xs:documentation>P198 - [1/min]</xs:documentation>
 								</xs:annotation>
 							</xs:element>
-							<xs:element name="RetarderType" type="tns:RetarderTypeType">
+							<xs:element name="RetarderType" type="v1.0:RetarderTypeType">
 								<xs:annotation>
 									<xs:documentation>P052 - enum</xs:documentation>
 								</xs:annotation>
 							</xs:element>
-							<xs:element name="RetarderRatio" type="tns:RetarderRatioType" minOccurs="0">
+							<xs:element name="RetarderRatio" type="v1.0:RetarderRatioType" minOccurs="0">
 								<xs:annotation>
 									<xs:documentation>P053 - [-]</xs:documentation>
 								</xs:annotation>
 							</xs:element>
-							<xs:element name="AngledriveType" type="tns:AngledriveTypeType">
+							<xs:element name="AngledriveType" type="v1.0:AngledriveTypeType">
 								<xs:annotation>
 									<xs:documentation>P180 - enum</xs:documentation>
 								</xs:annotation>
 							</xs:element>
-							<xs:element name="PTO" type="tns:PTOType"/>
+							<xs:element name="PTO" type="v1.0:PTOType"/>
 							<xs:sequence>
-								<xs:element name="ZeroEmissionVehicle" type="tns:ZeroEmissionVehicleType">
+								<xs:element name="ZeroEmissionVehicle" type="v1.0:ZeroEmissionVehicleType">
 									<xs:annotation>
 										<xs:documentation>P269 - bool</xs:documentation>
 									</xs:annotation>
 								</xs:element>
-								<xs:element name="VocationalVehicle" type="tns:VocationalVehicleType">
+								<xs:element name="VocationalVehicle" type="v1.0:VocationalVehicleType">
 									<xs:annotation>
 										<xs:documentation>P270 - bool</xs:documentation>
 									</xs:annotation>
 								</xs:element>
-								<xs:element name="NgTankSystem" type="tns:NgTankSystemType" minOccurs="0">
+								<xs:element name="NgTankSystem" type="v1.0:NgTankSystemType" minOccurs="0">
 									<xs:annotation>
 										<xs:documentation>P275 - enum</xs:documentation>
 									</xs:annotation>
 								</xs:element>
-								<xs:element name="SleeperCab" type="tns:SleeperCabType">
+								<xs:element name="SleeperCab" type="v1.0:SleeperCabType">
 									<xs:annotation>
 										<xs:documentation>P276 - bool</xs:documentation>
 									</xs:annotation>
 								</xs:element>
-								<xs:element name="ADAS" type="tns:ADASType"/>
+								<xs:element name="ADAS" type="v1.0:ADASType"/>
 							</xs:sequence>
 							<xs:sequence>
-								<xs:element name="TorqueLimits" type="tns:TorqueLimitsType" minOccurs="0"/>
-								<xs:element name="Components" type="tns:VehicleComponentsType"/>
+								<xs:element name="TorqueLimits" type="v1.0:TorqueLimitsType" minOccurs="0"/>
+								<xs:element name="Components" type="v1.0:VehicleComponentsType"/>
 							</xs:sequence>
 						</xs:sequence>
 						<xs:sequence>
-							<xs:element name="ZeroEmissionVehicle" type="tns:ZeroEmissionVehicleType">
+							<xs:element name="ZeroEmissionVehicle" type="v1.0:ZeroEmissionVehicleType">
 								<xs:annotation>
 									<xs:documentation>P269 - bool</xs:documentation>
 								</xs:annotation>
 							</xs:element>
-							<xs:element name="MaxNetPower1" type="tns:PowerType" minOccurs="0">
+							<xs:element name="SleeperCab" type="v1.0:SleeperCabType" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>P276 - bool</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="MaxNetPower1" type="v1.0:PowerType" minOccurs="0">
 								<xs:annotation>
 									<xs:documentation>P277 - [W]</xs:documentation>
 								</xs:annotation>
 							</xs:element>
-							<xs:element name="MaxNetPower2" type="tns:PowerType" minOccurs="0">
+							<xs:element name="MaxNetPower2" type="v1.0:PowerType" minOccurs="0">
 								<xs:annotation>
 									<xs:documentation>P278 - [W]</xs:documentation>
 								</xs:annotation>
 							</xs:element>
-							<xs:element name="HybridElectricHDV" type="tns:HybridElectricHDVType">
+							<xs:element name="HybridElectricHDV" type="v1.0:HybridElectricHDVType">
 								<xs:annotation>
 									<xs:documentation>P279 - bool</xs:documentation>
 								</xs:annotation>
 							</xs:element>
-							<xs:element name="DualFuelVehicle" type="tns:DualFuelType">
+							<xs:element name="DualFuelVehicle" type="v1.0:DualFuelType">
 								<xs:annotation>
 									<xs:documentation>P280 - bool</xs:documentation>
 								</xs:annotation>
@@ -1131,7 +1139,7 @@
 			</xs:appinfo>
 			<xs:documentation>P146, 147 - [m²]  Drag Coefficient * Cross Sectional Area</xs:documentation>
 		</xs:annotation>
-		<xs:restriction base="tns:Double2">
+		<xs:restriction base="v1.0:Double2">
 			<xs:minExclusive value="0.00"/>
 		</xs:restriction>
 	</xs:simpleType>
@@ -1162,7 +1170,7 @@
 			</xs:appinfo>
 			<xs:documentation>P173</xs:documentation>
 		</xs:annotation>
-		<xs:restriction base="tns:Double2">
+		<xs:restriction base="v1.0:Double2">
 			<xs:minInclusive value="0.00"/>
 		</xs:restriction>
 	</xs:simpleType>
@@ -1176,7 +1184,7 @@
 			</xs:appinfo>
 			<xs:documentation>P174</xs:documentation>
 		</xs:annotation>
-		<xs:restriction base="tns:Double2"/>
+		<xs:restriction base="v1.0:Double2"/>
 	</xs:simpleType>
 	<xs:simpleType name="AngledriveRatioType">
 		<xs:annotation>
@@ -1188,7 +1196,7 @@
 			</xs:appinfo>
 			<xs:documentation>P176</xs:documentation>
 		</xs:annotation>
-		<xs:restriction base="tns:Double3">
+		<xs:restriction base="v1.0:Double3">
 			<xs:minExclusive value="0.000"/>
 		</xs:restriction>
 	</xs:simpleType>
@@ -1202,7 +1210,7 @@
 			</xs:appinfo>
 			<xs:documentation>P175</xs:documentation>
 		</xs:annotation>
-		<xs:restriction base="tns:Double2">
+		<xs:restriction base="v1.0:Double2">
 			<xs:minInclusive value="0.00"/>
 		</xs:restriction>
 	</xs:simpleType>
@@ -1446,7 +1454,7 @@
 			</xs:appinfo>
 			<xs:documentation>P151 - [1/min]</xs:documentation>
 		</xs:annotation>
-		<xs:restriction base="tns:Double2">
+		<xs:restriction base="v1.0:Double2">
 			<xs:minInclusive value="0.00"/>
 		</xs:restriction>
 	</xs:simpleType>
@@ -1460,7 +1468,7 @@
 			</xs:appinfo>
 			<xs:documentation>P152 - [Nm]</xs:documentation>
 		</xs:annotation>
-		<xs:restriction base="tns:Double2"/>
+		<xs:restriction base="v1.0:Double2"/>
 	</xs:simpleType>
 	<xs:simpleType name="AxlegearLineTypeType">
 		<xs:annotation>
@@ -1490,7 +1498,7 @@
 			</xs:appinfo>
 			<xs:documentation>P150 - [-]</xs:documentation>
 		</xs:annotation>
-		<xs:restriction base="tns:Double3">
+		<xs:restriction base="v1.0:Double3">
 			<xs:minExclusive value="0.000"/>
 		</xs:restriction>
 	</xs:simpleType>
@@ -1504,7 +1512,7 @@
 			</xs:appinfo>
 			<xs:documentation>P153 - [Nm]</xs:documentation>
 		</xs:annotation>
-		<xs:restriction base="tns:Double2">
+		<xs:restriction base="v1.0:Double2">
 			<xs:minInclusive value="0.00"/>
 		</xs:restriction>
 	</xs:simpleType>
@@ -1543,7 +1551,7 @@
 			</xs:appinfo>
 			<xs:documentation>P154 - enum</xs:documentation>
 		</xs:annotation>
-		<xs:restriction base="tns:AxleTypeType">
+		<xs:restriction base="v1.0:AxleTypeType">
 			<xs:enumeration value="VehicleNonDriven"/>
 			<xs:enumeration value="VehicleDriven"/>
 		</xs:restriction>
@@ -1681,7 +1689,7 @@ ToDo: -0.00
 				</vectoParam:description>
 			</xs:appinfo>
 		</xs:annotation>
-		<xs:restriction base="tns:Double4">
+		<xs:restriction base="v1.0:Double4">
 			<xs:minInclusive value="1.0000"/>
 		</xs:restriction>
 	</xs:simpleType>
@@ -1695,7 +1703,7 @@ ToDo: -0.00
 			</xs:appinfo>
 			<xs:documentation>P159 - [-]</xs:documentation>
 		</xs:annotation>
-		<xs:restriction base="tns:Double4">
+		<xs:restriction base="v1.0:Double4">
 			<xs:minInclusive value="1.0000"/>
 		</xs:restriction>
 	</xs:simpleType>
@@ -1739,7 +1747,7 @@ ToDo: -0.00
 			</xs:appinfo>
 			<xs:documentation>P070 - [Nm]</xs:documentation>
 		</xs:annotation>
-		<xs:restriction base="tns:Double2">
+		<xs:restriction base="v1.0:Double2">
 			<xs:maxInclusive value="0.00"/>
 		</xs:restriction>
 	</xs:simpleType>
@@ -1754,7 +1762,7 @@ ToDo: -0.00
 			</xs:appinfo>
 			<xs:documentation>P069 - [Nm]</xs:documentation>
 		</xs:annotation>
-		<xs:restriction base="tns:Double2">
+		<xs:restriction base="v1.0:Double2">
 			<xs:minInclusive value="0.00"/>
 		</xs:restriction>
 	</xs:simpleType>
@@ -1768,7 +1776,7 @@ ToDo: -0.00
 			</xs:appinfo>
 			<xs:documentation>P074 - [g/h]</xs:documentation>
 		</xs:annotation>
-		<xs:restriction base="tns:Double2">
+		<xs:restriction base="v1.0:Double2">
 			<xs:minInclusive value="0.00"/>
 		</xs:restriction>
 	</xs:simpleType>
@@ -1782,7 +1790,7 @@ ToDo: -0.00
 			</xs:appinfo>
 			<xs:documentation>P073 - [Nm]</xs:documentation>
 		</xs:annotation>
-		<xs:restriction base="tns:Double2"/>
+		<xs:restriction base="v1.0:Double2"/>
 	</xs:simpleType>
 	<xs:simpleType name="EngineMaxTorque">
 		<xs:annotation>
@@ -1808,7 +1816,7 @@ ToDo: -0.00
 			</xs:appinfo>
 			<xs:documentation>P260</xs:documentation>
 		</xs:annotation>
-		<xs:restriction base="tns:Double4"/>
+		<xs:restriction base="v1.0:Double4"/>
 	</xs:simpleType>
 	<xs:simpleType name="EngineRatedPower">
 		<xs:annotation>
@@ -1835,7 +1843,7 @@ ToDo: -0.00
 			</xs:appinfo>
 			<xs:documentation>P068, P072 - [1/min]</xs:documentation>
 		</xs:annotation>
-		<xs:restriction base="tns:Double2">
+		<xs:restriction base="v1.0:Double2">
 			<xs:minExclusive value="0.00"/>
 		</xs:restriction>
 	</xs:simpleType>
@@ -1862,7 +1870,7 @@ ToDo: -0.00
 			</xs:appinfo>
 			<xs:documentation>P109 - [-]</xs:documentation>
 		</xs:annotation>
-		<xs:restriction base="tns:Double4">
+		<xs:restriction base="v1.0:Double4">
 			<xs:minInclusive value="1.0000"/>
 		</xs:restriction>
 	</xs:simpleType>
@@ -1947,7 +1955,7 @@ ToDo: -0.00
 			</xs:appinfo>
 			<xs:documentation>P096 - [1/min]</xs:documentation>
 		</xs:annotation>
-		<xs:restriction base="tns:Double2">
+		<xs:restriction base="v1.0:Double2">
 			<xs:minInclusive value="0.00"/>
 		</xs:restriction>
 	</xs:simpleType>
@@ -1961,7 +1969,7 @@ ToDo: -0.00
 			</xs:appinfo>
 			<xs:documentation>P097 - [Nm]</xs:documentation>
 		</xs:annotation>
-		<xs:restriction base="tns:Double2"/>
+		<xs:restriction base="v1.0:Double2"/>
 	</xs:simpleType>
 	<xs:simpleType name="GearboxGearMaxSpeedType">
 		<xs:annotation>
@@ -2018,7 +2026,7 @@ ToDo: -0.00
 			</xs:appinfo>
 			<xs:documentation>P078 - [-]</xs:documentation>
 		</xs:annotation>
-		<xs:restriction base="tns:Double3">
+		<xs:restriction base="v1.0:Double3">
 			<xs:minExclusive value="0.000"/>
 		</xs:restriction>
 	</xs:simpleType>
@@ -2032,7 +2040,7 @@ ToDo: -0.00
 			</xs:appinfo>
 			<xs:documentation>P098 - [Nm]</xs:documentation>
 		</xs:annotation>
-		<xs:restriction base="tns:Double2">
+		<xs:restriction base="v1.0:Double2">
 			<xs:minInclusive value="0.00"/>
 		</xs:restriction>
 	</xs:simpleType>
@@ -2277,7 +2285,7 @@ ToDo: -0.00
 			</xs:appinfo>
 			<xs:documentation>P053 - [-]</xs:documentation>
 		</xs:annotation>
-		<xs:restriction base="tns:Double3">
+		<xs:restriction base="v1.0:Double3">
 			<xs:minExclusive value="0.000"/>
 		</xs:restriction>
 	</xs:simpleType>
@@ -2291,7 +2299,7 @@ ToDo: -0.00
 			</xs:appinfo>
 			<xs:documentation>P057 - [1/min]</xs:documentation>
 		</xs:annotation>
-		<xs:restriction base="tns:Double2">
+		<xs:restriction base="v1.0:Double2">
 			<xs:minInclusive value="0.00"/>
 		</xs:restriction>
 	</xs:simpleType>
@@ -2305,7 +2313,7 @@ ToDo: -0.00
 			</xs:appinfo>
 			<xs:documentation>P058 - [Nm]</xs:documentation>
 		</xs:annotation>
-		<xs:restriction base="tns:Double2">
+		<xs:restriction base="v1.0:Double2">
 			<xs:minInclusive value="0.00"/>
 		</xs:restriction>
 	</xs:simpleType>
@@ -2377,7 +2385,7 @@ ToDo: -0.00
 				</vectoParam:description>
 			</xs:appinfo>
 		</xs:annotation>
-		<xs:restriction base="tns:Double2"/>
+		<xs:restriction base="v1.0:Double2"/>
 	</xs:simpleType>
 	<xs:simpleType name="TorqueConverterSpeedRatioType">
 		<xs:annotation>
@@ -2389,7 +2397,7 @@ ToDo: -0.00
 				</vectoParam:description>
 			</xs:appinfo>
 		</xs:annotation>
-		<xs:restriction base="tns:Double4">
+		<xs:restriction base="v1.0:Double4">
 			<xs:minInclusive value="0.0000"/>
 		</xs:restriction>
 	</xs:simpleType>
@@ -2403,7 +2411,7 @@ ToDo: -0.00
 				</vectoParam:description>
 			</xs:appinfo>
 		</xs:annotation>
-		<xs:restriction base="tns:Double2">
+		<xs:restriction base="v1.0:Double2">
 			<xs:minInclusive value="0.00"/>
 		</xs:restriction>
 	</xs:simpleType>
@@ -2518,7 +2526,7 @@ ToDo: -0.00
 			<xs:enumeration value="8.5 R17.5"/>
 			<xs:enumeration value="8 R17.5"/>
 			<xs:enumeration value="LT265/75 R16"/>
-			<xs:enumeration value="385/55 R19.5"/>	
+			<xs:enumeration value="385/55 R19.5"/>
 			<xs:enumeration value="24 R21"/>
 			<xs:enumeration value="205/70 R15C"/>
 			<xs:enumeration value="215/70 R15C"/>
@@ -2560,7 +2568,7 @@ ToDo: -0.00
 			</xs:appinfo>
 			<xs:documentation>P046 - [-]</xs:documentation>
 		</xs:annotation>
-		<xs:restriction base="tns:Double4">
+		<xs:restriction base="v1.0:Double4">
 			<xs:minInclusive value="0.0000"/>
 		</xs:restriction>
 	</xs:simpleType>
@@ -2574,7 +2582,7 @@ ToDo: -0.00
 			</xs:appinfo>
 			<xs:documentation>P037</xs:documentation>
 		</xs:annotation>
-		<xs:restriction base="tns:VehicleAxleConfigurationType">
+		<xs:restriction base="v1.0:VehicleAxleConfigurationType">
 			<xs:enumeration value="4x2"/>
 			<xs:enumeration value="6x2"/>
 			<xs:enumeration value="6x4"/>
@@ -2613,7 +2621,7 @@ ToDo: -0.00
 			</xs:appinfo>
 			<xs:documentation>P036 - enum (Declaration)</xs:documentation>
 		</xs:annotation>
-		<xs:restriction base="tns:VehicleCategoryType">
+		<xs:restriction base="v1.0:VehicleCategoryType">
 			<xs:enumeration value="Rigid Truck"/>
 			<xs:enumeration value="Tractor"/>
 			<xs:enumeration value="Rigid Lorry"/>

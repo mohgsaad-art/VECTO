@@ -1,0 +1,60 @@
+{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2020-02-27T14:58:38.9801200Z",
+    "AppVersion": "3",
+    "FileVersion": 5
+  },
+  "Body": {
+    "SavedInDeclMode": true,
+    "EngineOnlyMode": false,
+    "VehicleFile": "ML3van vehicle.vveh",
+    "EngineFile": "130kW Engine.veng",
+    "GearboxFile": "6 Gear manual transmission 0.791-5.375.vgbx",
+    "AuxiliaryAssembly": "Classic",
+    "AuxiliaryVersion": "CLASSIC",
+    "AdvancedAuxiliaryFilePath": "",
+    "Aux": [
+      {
+        "ID": "FAN",
+        "Type": "Fan",
+        "Technology": [
+          "Crankshaft mounted - Bimetallic controlled visco clutch"
+        ]
+      },
+      {
+        "ID": "STP",
+        "Type": "Steering pump",
+        "Technology": [
+          "Fixed displacement"
+        ]
+      },
+      {
+        "ID": "AC",
+        "Type": "HVAC",
+        "Technology": [
+          "Default"
+        ]
+      },
+      {
+        "ID": "ES",
+        "Type": "Electric System",
+        "Technology": [
+          "Standard technology - LED headlights, all"
+        ]
+      },
+      {
+        "ID": "PS",
+        "Type": "Pneumatic System",
+        "Technology": [
+          "Vacuum pump"
+        ]
+      }
+    ],
+    "OverSpeedEcoRoll": {
+      "Mode": "Overspeed",
+      "MinSpeed": 50.0,
+      "OverSpeed": 2.5
+    }
+  }
+}

@@ -1,0 +1,36 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:VECTO3GUI2020.Views.CustomControls"
+             xmlns:wpf="clr-namespace:InteractiveDataDisplay.WPF;assembly=InteractiveDataDisplay.WPF"
+             xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="VECTO3GUI2020.Views.CustomControls.ScatterPlot"
+             mc:Ignorable="d" 
+             x:Name="scatter"
+             d:DesignHeight="450" d:DesignWidth="800" Height="300" Width="auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+             Background="White">
+
+
+    <Grid >
+        <DockPanel>
+            <wpf:Chart IsVerticalNavigationEnabled="False"
+                   IsAutoFitEnabled="True"
+                   IsHorizontalNavigationEnabled="False"
+                   x:Name="chart"
+                   LegendVisibility="Collapsed"
+                   Title="{Binding Title, ElementName=scatter}"
+                   BottomTitle="{Binding BottomTitle, ElementName=scatter}"
+                   LeftTitle="{Binding LeftTitle, ElementName=scatter}"
+                   RightTitle=" "
+                  
+                   Margin="20" Padding="20" Foreground="Black" Background="White"
+                   DockPanel.Dock="Top" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ClipToBounds="False">
+                <wpf:Plot x:Name="plot" IsAutoFitEnabled="True" >
+                    <wpf:CircleMarkerGraph IsAutoFitEnabled="True" x:Name="circles"  Stroke="Black" StrokeThickness="0.3"
+                                    ColorDescription="{Binding ColorDescription, ElementName=scatter}"/>
+                </wpf:Plot>
+            </wpf:Chart>
+        </DockPanel>
+    </Grid>
+</UserControl>

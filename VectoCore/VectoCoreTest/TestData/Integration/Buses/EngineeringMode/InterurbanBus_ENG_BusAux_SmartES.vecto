@@ -1,0 +1,46 @@
+﻿{
+  "Header": {
+    "CreatedBy": " ()",
+    "Date": "2016-10-13T10:28:40.9616564Z",
+    "AppVersion": "3",
+    "FileVersion": 3
+  },
+  "Body": {
+    "SavedInDeclMode": false,
+    "EngineOnlyMode": false,
+    "VehicleFile": "InterurbanBus.vveh",
+    "EngineFile": "Engine_250kW_7.7l.veng",
+    "GearboxFile": "MT_6_Bus.vgbx",
+	"BusAux": "BusAuxData_SmartES.vaux",
+    "Aux": [],
+    "Padd": 5000.0,
+    "VACC": "Driver.vacc",
+    "StartStop": {
+      "Enabled": false,
+      "MaxSpeed": 5.0,
+      "MinTime": 5.0,
+      "Delay": 5.0
+    },
+    "LAC": {
+      "Enabled": true,
+      "PreviewDistanceFactor": 10.0,
+      "DF_offset": 2.5,
+      "DF_scaling": 1.5,
+      "DF_targetSpeedLookup": "",
+      "Df_velocityDropLookup": ""
+    },
+    "OverSpeedEcoRoll": {
+      "Mode": "Off",
+      "MinSpeed": 50.0,
+      "OverSpeed": 5.0,
+      "UnderSpeed": 5.0
+    },
+    "Cycles": [
+      "Interurban",
+	  "Coach",
+	  "Urban",
+	  "Suburban",
+	  "HeavyUrban"
+    ]
+  }
+}

@@ -34,12 +34,14 @@ using System.Linq;
 using NUnit.Framework;
 using TUGraz.VectoCommon.Utils;
 
+
 namespace TUGraz.VectoCore.Tests.Utils
 {
 	[TestFixture]
+	[Parallelizable(ParallelScope.All)]
 	public class VectoMathTest
 	{
-		[Test]
+		[TestCase]
 		public void VectoMath_Min()
 		{
 			var smaller = 0.SI();
@@ -104,23 +106,23 @@ namespace TUGraz.VectoCore.Tests.Utils
 			}
 		}
 
-		[TestCase(1, 6, 18, 30, 25, new double[] {  }),  // only complex-valued solutions
+		[TestCase(1, 6, 18, 30, 25, new double[] { }),  // only complex-valued solutions
 		TestCase(1, 6, -18, 30, -25, new[] { 1.31684387048749, -8.55416218029519 }), // two complex, two real-valued
-		TestCase(1, 11, 41, 61, 30, new double[] {-5, -3, -2, -1}),
+		TestCase(1, 11, 41, 61, 30, new double[] { -5, -3, -2, -1 }),
 		TestCase(1, 0, -4, 0, 3, new[] { 1.73205080756888, 1, -1.73205080756888, -1 }), // biquadratic
 		TestCase(5, 0, -20, 0, 15, new[] { 1.73205080756888, 1, -1.73205080756888, -1 }),
 		TestCase(1, 1, 1, 1, 1, new double[] { }), // only complex solutions
-		TestCase(1, 2, -14, 2, 1, new[] { 2.76090563295441601 , 0.362199992663244539, -0.203258341626567109 , -4.91984728399109344 }),
-		TestCase(16, 8,-16,-8,1, new[] { 0.1045284632676534713998341548025, 0.9781476007338056379285667478696, -0.91354545764260089550212757198532, -0.66913060635885821382627333068678 })
+		TestCase(1, 2, -14, 2, 1, new[] { 2.76090563295441601, 0.362199992663244539, -0.203258341626567109, -4.91984728399109344 }),
+		TestCase(16, 8, -16, -8, 1, new[] { 0.1045284632676534713998341548025, 0.9781476007338056379285667478696, -0.91354545764260089550212757198532, -0.66913060635885821382627333068678 })
 			]
 		public void Polynom4SolverTest(double a, double b, double c, double d, double e, double[] expected)
 		{
 			var results = VectoMath.Polynom4Solver(a, b, c, d, e);
 
-			Console.WriteLine(string.Join(", ", results));
+			Console.WriteLine(results.Join());
 
 			Assert.AreEqual(expected.Length, results.Length);
-			
+
 			Array.Sort(expected);
 			Array.Sort(results);
 			var comparison = expected.Zip(results, (exp, result) => exp - result);
@@ -139,36 +141,33 @@ namespace TUGraz.VectoCore.Tests.Utils
 				new { X = 20, Y = 12 }
 			};
 
-			double k, d, r;
-			VectoMath.LeastSquaresFitting(entries, x => x.X, x => x.Y, out k, out d, out r);
+			var (k, d) = VectoMath.LeastSquaresFitting(entries, x => x.X, x => x.Y);
 
 			Assert.AreEqual(4, d, 1e-6);
 			Assert.AreEqual(0.4, k, 1e-6);
-			Assert.AreEqual(1, r, 1e-6);
 		}
 
 		[TestCase()]
 		public void TestLeastSquaresFittingEx1()
 		{
 			var entries = new[] {
-				new { X = 12, Y = 34.12 },
-				new { X = 19, Y = 40.94 },
-				new { X = 23, Y = 33.58 },
-				new { X = 30, Y = 38.95 },
-				new { X = 22, Y = 35.42 },
-				new { X = 11, Y = 32.12 },
-				new { X = 13, Y = 28.57 },
-				new { X = 28, Y = 40.97 },
-				new { X = 10, Y = 32.06 },
-				new { X = 11, Y = 30.55 },
+				new Point(12, 34.12),
+				new Point(19, 40.94),
+				new Point(23, 33.58),
+				new Point(30, 38.95),
+				new Point(22, 35.42),
+				new Point(11, 32.12),
+				new Point(13, 28.57),
+				new Point(28, 40.97),
+				new Point(10, 32.06),
+				new Point(11, 30.55),
 			};
 
-			double k, d, r;
-			VectoMath.LeastSquaresFitting(entries, x => x.X, x => x.Y, out k, out d, out r);
+			var (k, d) = VectoMath.LeastSquaresFitting(entries);
 
 			Assert.AreEqual(27.003529, d, 1e-6);
 			Assert.AreEqual(0.431535, k, 1e-6);
-			//Assert.AreEqual(1, r, 1e-3);
+
 		}
 	}
 }

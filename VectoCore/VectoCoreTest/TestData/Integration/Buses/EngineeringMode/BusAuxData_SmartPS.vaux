@@ -1,0 +1,33 @@
+{
+  "Header": {
+    "CreatedBy": " ()",
+    "Date": "2016-10-13T10:28:40.9616564Z",
+    "AppVersion": "3",
+    "FileVersion": 1
+  },
+  "Body": {
+    "PneumaticSystem": {
+		"CompressorMap": "DEFAULT_3-Cylinder_2-Stage_598ccm.acmp",
+		"AverageAirDemand": 0.7663,
+		"SmartAirCompression": true,
+		"GearRatio": 1
+    },
+		"ElectricSystem": {
+			"AlternatorEfficiency": 0.7,
+			"CurrentDemand": 54.181,
+			"CurrentDemandEngineOffDriving": 54.181,
+			"CurrentDemandEngineOffStandstill": 54.181,
+			"ElectricStorageCapacity": 0,
+			"MaxAlternatorPower": 10000,
+      "AlternatorType": "conventional",
+      "ESSupplyFromHEVREESS": false,
+      "DCDCConverterEfficiency": 1.0
+		},
+    "HVAC": {
+		"ElectricPowerDemand": 469.76,
+		"MechanicalPowerDemand": 181.28,
+		"AuxHeaterPower": 5000,
+		"AverageHeatingDemand": 0
+	}
+  }
+}

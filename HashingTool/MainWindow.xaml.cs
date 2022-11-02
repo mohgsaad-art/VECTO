@@ -34,7 +34,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
-using HashingTool.Helper;
 using HashingTool.ViewModel;
 using HashingTool.Views;
 
@@ -53,8 +52,7 @@ namespace HashingTool
 		private void About_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
 		{
 			var dialog = new AboutDialog();
-			var applicationViewModel = DataContext as ApplicationViewModel;
-			if (applicationViewModel != null) {
+			if (DataContext is ApplicationViewModel applicationViewModel) {
 				dialog.Title = applicationViewModel.VersionInformation;
 			}
 			dialog.ShowDialog();
@@ -62,10 +60,9 @@ namespace HashingTool
 
 		private void Help_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
 		{
-			var myAppPath = AppDomain.CurrentDomain.BaseDirectory;
-			if (File.Exists(myAppPath + @"User Manual\HashingToolHelp.html")) {
-				var defaultBrowserPath = BrowserHelper.GetDefaultBrowserPath();
-				Process.Start(defaultBrowserPath, string.Format("\"file://{0}{1}\"", myAppPath, @"User Manual\HashingToolHelp.html"));
+			var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", @"User Manual\HashingToolHelp.html");
+			if (File.Exists(path)) {
+				Process.Start(new ProcessStartInfo(path) { UseShellExecute = true});
 			} else {
 				MessageBox.Show("User Manual not found!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 			}

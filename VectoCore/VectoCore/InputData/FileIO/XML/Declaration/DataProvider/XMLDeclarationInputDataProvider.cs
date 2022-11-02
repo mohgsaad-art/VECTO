@@ -29,19 +29,13 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
-using System;
-using System.IO;
 using System.Xml;
 using System.Xml.Linq;
-using System.Xml.Schema;
-using System.Xml.XPath;
-using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.InputData;
-using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider;
+using TUGraz.VectoCore.InputData.FileIO.XML.Common;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Interfaces;
 using TUGraz.VectoCore.Utils;
 using TUGraz.VectoHashing;
-using XmlDocumentType = TUGraz.VectoCore.Utils.XmlDocumentType;
 
 namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration
 {
@@ -69,10 +63,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration
 
 		#region Overrides of AbstractXMLResource
 
-		protected override XNamespace SchemaNamespace
-		{
-			get { return NAMESPACE_URI; }
-		}
+		protected override XNamespace SchemaNamespace => NAMESPACE_URI;
 
 		protected override DataSourceType SourceType { get; }
 
@@ -85,10 +76,9 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration
 		#endregion
 
 
-		public virtual IDeclarationJobInputData JobInputData
-		{
-			get { return JobData ?? (JobData = Reader.JobData); }
-		}
+		public virtual IDeclarationJobInputData JobInputData => JobData ?? (JobData = Reader.JobData);
+
+		public virtual IPrimaryVehicleInformationInputDataProvider PrimaryVehicleData => null;
 
 
 		public virtual XElement XMLHash { get; private set; }
@@ -106,6 +96,6 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration
 
 		public XMLDeclarationInputDataProviderV20(XmlDocument xmlDoc, string fileName) : base(xmlDoc, fileName) { }
 
-		
+
 	}
 }

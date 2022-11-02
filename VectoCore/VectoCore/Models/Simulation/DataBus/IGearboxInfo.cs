@@ -29,10 +29,12 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using System;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 
 namespace TUGraz.VectoCore.Models.Simulation.DataBus
 {
@@ -47,26 +49,52 @@ namespace TUGraz.VectoCore.Models.Simulation.DataBus
 		/// Returns the current gear.
 		/// </summary>
 		/// <returns></returns>
-		uint Gear { get; }
+		GearshiftPosition Gear { get; }
 
 		bool TCLocked { get; }
 
-		MeterPerSecond StartSpeed { get; }
+		//MeterPerSecond StartSpeed { get; }
 
-		MeterPerSquareSecond StartAcceleration { get; }
+		//MeterPerSquareSecond StartAcceleration { get; }
 
 		Watt GearboxLoss();
 
 		Second LastShift { get; }
+
+		Second LastUpshift { get; }
+
+		Second LastDownshift { get; }
 
 		GearData GetGearData(uint gear);
 
 		/// <summary>
 		/// Returns the next gear during shifting operations
 		/// </summary>
-		GearInfo NextGear { get; }
+		GearshiftPosition NextGear { get; }
 
 		Second TractionInterruption { get; }
 		uint NumGears { get; }
+
+		bool DisengageGearbox { get; }
+
+		bool GearEngaged(Second absTime);
+	}
+
+	public interface IGearboxControl
+	{
+		bool DisengageGearbox { set; }
+		void TriggerGearshift(Second absTime, Second dt);
+	}
+
+	public interface ITorqueConverterInfo
+	{
+		Tuple<TorqueConverterOperatingPoint, NewtonMeter> CalculateOperatingPoint(PerSecond inSpeed, PerSecond outSpeed);
+
+	}
+
+	public interface ITorqueConverterControl
+	{
+		
+		TorqueConverterOperatingPoint SetOperatingPoint { get; set; }
 	}
 }

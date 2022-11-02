@@ -47,8 +47,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 			_entries = entries;
 			var smallValues = _entries.Where(e => e.Key < 5.KMPHtoMeterPerSecond()).OrderBy(e => e.Key).ToList();
 			if (smallValues.Count >= 2) {
-				Log.Error("Found small velocity entries in Driver-Acceleration/Deceleration file. Values dismissed:" +
-						string.Join(", ", smallValues.Skip(1).Select(e => e.Key.AsKmph.ToString("F1"))));
+				Log.Error(
+					"Found small velocity entries in Driver-Acceleration/Deceleration file. Values dismissed:" +
+					smallValues.Skip(1).Select(e => e.Key.AsKmph.ToString("F1")).Join());
 				foreach (var kv in smallValues.Skip(1)) {
 					_entries.Remove(kv);
 				}
@@ -61,11 +62,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 
 			return new AccelerationEntry {
 				Acceleration =
-					VectoMath.Interpolate(_entries[index - 1].Key, _entries[index].Key,
+					VectoMath.Interpolate(
+						_entries[index - 1].Key, _entries[index].Key,
 						_entries[index - 1].Value.Acceleration,
 						_entries[index].Value.Acceleration, key),
 				Deceleration =
-					VectoMath.Interpolate(_entries[index - 1].Key, _entries[index].Key,
+					VectoMath.Interpolate(
+						_entries[index - 1].Key, _entries[index].Key,
 						_entries[index - 1].Value.Deceleration,
 						_entries[index].Value.Deceleration, key)
 			};
@@ -75,8 +78,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 		{
 			var index = 1;
 			if (key < _entries[0].Key) {
-				Log.Error("requested velocity below minimum - extrapolating. velocity: {0}, min: {1}",
-                    key.ConvertToKiloMeterPerHour(), _entries[0].Key.ConvertToKiloMeterPerHour());
+				Log.Error(
+					"requested velocity below minimum - extrapolating. velocity: {0}, min: {1}",
+					key.ConvertToKiloMeterPerHour(), _entries[0].Key.ConvertToKiloMeterPerHour());
 			} else {
 				index = _entries.FindIndex(x => x.Key > key);
 				if (index <= 0) {
@@ -112,7 +116,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 		/// <param name="v1">current speed of the vehicle</param>
 		/// <param name="v2">desired speed of the vehicle at the end of acceleration/deceleration phase</param>
 		/// <returns>distance required to accelerate/decelerate the vehicle from v1 to v2 according to the acceleration curve</returns>
-		public Meter ComputeAccelerationDistance(MeterPerSecond v1, MeterPerSecond v2)
+		public Meter ComputeDecelerationDistance(MeterPerSecond v1, MeterPerSecond v2)
 		{
 			var index1 = FindIndex(v1);
 			var index2 = FindIndex(v2);
@@ -121,6 +125,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 			for (var i = index2; i <= index1; i++) {
 				distance += ComputeAccelerationSegmentDistance(i, v1, v2);
 			}
+
 			return distance;
 		}
 
@@ -155,14 +160,58 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 			var k = (leftEntry.Value.Deceleration - rightEntry.Value.Deceleration) / (leftEntry.Key - rightEntry.Key);
 			var d = leftEntry.Value.Deceleration - k * leftEntry.Key;
 			if (v2 > v1) {
+				if (leftEntry.Value.Acceleration.IsEqual(rightEntry.Value.Acceleration)) {
+					var acceleration =  leftEntry.Value.Acceleration;
+					return ((v2 - v1) * (v2 - v1) / 2.0 / acceleration + v1 * (v2 - v1) / acceleration).Cast<Meter>();
+				}
 				k = (leftEntry.Value.Acceleration - rightEntry.Value.Acceleration) / (leftEntry.Key - rightEntry.Key);
 				d = leftEntry.Value.Acceleration - k * leftEntry.Key;
+				
 			}
 			var m = v1 + d / k;
 			var b = -d / k;
 			var c = 0.SI<Meter>() - m / k;
 			var t = Math.Log(((v2 * k + d) / (v1 * k + d)).Cast<Scalar>()) / k;
 			return m / k * Math.Exp((k * t).Value()) + b * t + c;
+		}
+
+		public MeterPerSecond ComputeEndVelocityAccelerate(MeterPerSecond startSpeed, Second accelerationTime)
+		{
+			while (true) {
+				var index1 = FindIndex(startSpeed);
+
+				var leftEntry = _entries[index1 - 1];
+				var rightEntry = _entries[index1];
+
+				if (leftEntry.Value.Acceleration.IsEqual(rightEntry.Value.Acceleration)) {
+					// v(t) = a * t + v1  => t = (v2 - v1) / a
+					var accTime = (rightEntry.Key - startSpeed) / leftEntry.Value.Acceleration;
+					if (accTime > accelerationTime) {
+						return startSpeed + leftEntry.Value.Acceleration * accelerationTime;
+					}
+
+					startSpeed = rightEntry.Key;
+					accelerationTime = accelerationTime - accTime;
+				} else {
+					// a(v) = k * v + d
+					// dv/dt = a(v) = d * v + d  ==> v(t) = sgn(k * v1 + d) * exp(-k * c) / k * exp(t * k) - d / k 
+					// v(0) = v1  => c = - ln(|v1 * k + d|) / k
+					// v(t) = (v1 + d / k) * exp(t * k) - d / k   => t = 1 / k * ln((v2 * k + d) / (v1 * k + d))
+					var k = (leftEntry.Value.Acceleration - rightEntry.Value.Acceleration) / (leftEntry.Key - rightEntry.Key);
+					var d = leftEntry.Value.Acceleration - k * leftEntry.Key;
+					var t = Math.Log(((rightEntry.Key * k + d) / (startSpeed * k + d)).Cast<Scalar>()) / k;
+					if (t > accelerationTime) {
+						return (startSpeed + d / k) * Math.Exp((accelerationTime * k).Value()) - d / k;
+					}
+
+					startSpeed = rightEntry.Key;
+					accelerationTime = accelerationTime - t;
+				}
+
+				if (index1 == _entries.Count - 1) {
+					return _entries[index1].Key;
+				}
+			}
 		}
 	}
 }

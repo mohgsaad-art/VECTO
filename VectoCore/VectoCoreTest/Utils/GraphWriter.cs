@@ -35,48 +35,53 @@ using System.Data;
 using System.IO;
 using System.Drawing;
 using System.Linq;
+#if !NET5_0_OR_GREATER
 using System.Windows.Forms.DataVisualization.Charting;
+#endif
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Simulation.Data;
 using TUGraz.VectoCore.Utils;
 
-// ReSharper disable UnusedVariable
-
 namespace TUGraz.VectoCore.Tests.Utils
 {
-	public static class GraphWriter
+	public class GraphWriter
 	{
-		private static bool _enabled = true;
+		private bool _enabled = true;
 
-		private static Size _diagramSize = new Size(2000, 440);
+		private Size _diagramSize = new Size(2000, 440);
 
-		private static readonly Font AxisLabelFont = new Font("Consolas", 10);
-		private static readonly Font AxisTitleFont = new Font("Verdana", 12);
-		private static readonly Font LegendFont = new Font("Verdana", 14);
+#if !NET5_0_OR_GREATER
+		private readonly Font AxisLabelFont = new Font("Consolas", 10);
+		private readonly Font AxisTitleFont = new Font("Verdana", 12);
+		private readonly Font LegendFont = new Font("Verdana", 14);
+#endif
 
-		public static string Series2Label { get; set; }
+		public string Series2Label { get; set; }
 
-		public static string Series1Label { get; set; }
+		public string Series1Label { get; set; }
 
-		public static ModalResultField[] Yfields { get; set; }
+		public ModalResultField[] Yfields { get; set; }
 
-		public static ModalResultField[] Xfields { get; set; }
+		public ModalResultField[] Xfields { get; set; }
 
-		public static bool PlotDrivingMode = false;
+		public bool PlotDrivingMode = false;
 
-		public static void Enable()
+		public bool PlotIgnitionState = false;
+
+		public void Enable()
 		{
 			_enabled = true;
 		}
 
-		public static void Disable()
+		public void Disable()
 		{
 			_enabled = false;
 		}
 
-		public static void Write(string fileNameV3, string fileNameV22 = null)
+		public void Write(string fileNameV3, string fileNameV22 = null)
 		{
+#if !NET5_0_OR_GREATER
 			if (!_enabled) {
 				return;
 			}
@@ -94,8 +99,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 			var titleHeight = (50 * 100.0f) / (_diagramSize.Height * Yfields.Length);
 
 			foreach (var xfield in Xfields) {
-				var fileName = string.Format("{0}_{1}.png", Path.GetFileNameWithoutExtension(fileNameV3),
-					xfield.GetName());
+				var fileName = $"{Path.GetFileNameWithoutExtension(fileNameV3)}_{xfield.GetName()}.png";
 
 				var x = LoadData(modDataV3, xfield.GetName());
 				var x2 = new[] { double.NegativeInfinity };
@@ -109,7 +113,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 				for (var i = 0; i < Yfields.Length; i++) {
 					var yfield = Yfields[i];
-					var y = LoadData(modDataV3, yfield.GetName());
+					var y = LoadData(modDataV3, yfield.GetShortCaption());
 
 					var chartArea = AddChartArea(chart, yfield.ToString(), xfield.GetCaption(), maxX, minX,
 						yfield.GetCaption(), yfield == ModalResultField.Gear);
@@ -117,10 +121,19 @@ namespace TUGraz.VectoCore.Tests.Utils
 					var legend = CreateLegend(chart, yfield.ToString());
 
 					if (yfield == ModalResultField.v_act) {
-						var y3 = LoadData(modDataV3, ModalResultField.v_targ.GetName());
+						var y3 = LoadData(modDataV3, ModalResultField.v_targ.GetShortCaption());
 						var series3 = CreateSeries("v_target", legend, chartArea, chart, Color.Green, x, y3);
+						var min = Math.Min(y3.Min(), y.Min());
+						var max = Math.Max(y3.Max(), y.Max());
+						chartArea.AxisY.Minimum = Math.Floor(min - (max - min) * 0.1 - 1);
+						chartArea.AxisY.Maximum = Math.Ceiling(max + (max - min) * 0.1 + 1);
+					}
 
-						var grad = LoadData(modDataV3, ModalResultField.grad.GetName());
+
+					if ((Yfields.Contains(ModalResultField.altitude) && yfield == ModalResultField.altitude) ||
+						(!Yfields.Contains(ModalResultField.altitude) && yfield == ModalResultField.v_act)) {
+
+						var grad = LoadData(modDataV3, ModalResultField.grad.GetShortCaption());
 
 						chartArea.AxisY2.Enabled = AxisEnabled.True;
 						chartArea.AxisY2.Title = "gradient [%]";
@@ -167,6 +180,20 @@ namespace TUGraz.VectoCore.Tests.Utils
 							//seriesAction.YAxisType = AxisType;
 						}
 					}
+					if (PlotIgnitionState && yfield == ModalResultField.P_ice_out) {
+						var ignition = LoadData(modDataV3, ModalResultField.ICEOn.GetShortCaption());
+
+						chartArea.AxisY2.Enabled = AxisEnabled.True;
+						chartArea.AxisY2.Title = "Engine On [0/1]";
+						chartArea.AxisY2.TitleFont = AxisTitleFont;
+						chartArea.AxisY2.LabelStyle.Font = AxisLabelFont;
+						chartArea.AxisY2.LabelAutoFitStyle = LabelAutoFitStyles.None;
+						chartArea.AxisY2.MinorGrid.Enabled = false;
+						chartArea.AxisY2.MajorGrid.Enabled = false;
+
+						var seriesIgnition = CreateSeries("Engine On", legend, chartArea, chart, Color.Crimson, x, ignition);
+						seriesIgnition.YAxisType = AxisType.Secondary;
+					}
 
 					var series1 = CreateSeries(string.Format("{1} - {0}", yfield, Series1Label), legend, chartArea, chart,
 						Color.Blue, x, y);
@@ -190,18 +217,19 @@ namespace TUGraz.VectoCore.Tests.Utils
 				chart.Invalidate();
 				chart.SaveImage(Path.Combine(Path.GetDirectoryName(fileNameV3) ?? "", fileName), ChartImageFormat.Png);
 			}
+#endif
 		}
 
-		private static string TranslateFieldname(ModalResultField modalResultField)
+		private string TranslateFieldname(ModalResultField modalResultField)
 		{
 			switch (modalResultField) {
-				case ModalResultField.n_eng_avg:
+				case ModalResultField.n_ice_avg:
 					return "n";
-				case ModalResultField.P_eng_out:
+				case ModalResultField.P_ice_out:
 					return "Pe_eng";
-				case ModalResultField.T_eng_fcmap:
+				case ModalResultField.T_ice_fcmap:
 					return "Tq_eng";
-				case ModalResultField.P_aux:
+				case ModalResultField.P_aux_mech:
 					return "Paux";
 				//case ModalResultField.AA_TotalCycleFC_Grams:
 				//	return "AA_TotalCycleFC_Grams []";
@@ -210,8 +238,9 @@ namespace TUGraz.VectoCore.Tests.Utils
 			}
 		}
 
-		public static bool WriteDistanceSlice(string fileNameV3, string fileNameV22, double start, double end)
+		public bool WriteDistanceSlice(string fileNameV3, string fileNameV22, double start, double end)
 		{
+#if !NET5_0_OR_GREATER
 			if (!_enabled) {
 				return true;
 			}
@@ -221,10 +250,10 @@ namespace TUGraz.VectoCore.Tests.Utils
 			//    RowFilter = string.Format(@"dist > {0} AND dist < {1}", start, end)
 			//};
 			//var modDataV3 = modDataV3View.ToTable();
-			var modDataV3Tmp = modDataV3Iput.AsEnumerable().Where(row => {
+			var modDataV3Tmp = modDataV3Iput.Rows.Cast<DataRow>().Where(row => {
 				var s = row.ParseDouble("dist");
 				return s >= start && s <= end;
-			});
+			}).ToList();
 
 			if (!File.Exists(fileNameV22)) {
 				//LogManager.GetCurrentClassLogger().Error("Modfile V2.2 not found: " + fileNameV22);
@@ -237,33 +266,37 @@ namespace TUGraz.VectoCore.Tests.Utils
 				//var modDataV22View = new DataView(modDataV22Input) {
 				//    RowFilter = string.Format(@"dist > {0} AND dist < {1}", start, end)
 				//};
-				var modDataV22Tmp = modDataV22Input.AsEnumerable().Where(row => {
+				var modDataV22Tmp = modDataV22Input.Rows.Cast<DataRow>().Where(row => {
 					var s = row.ParseDouble("dist");
 					return s >= start && s <= end;
-				});
+				}).ToList();
 				if (!(modDataV3Tmp.Any() || modDataV22Tmp.Any())) {
 					return false;
 				}
-				modDataV22 = modDataV22Tmp.CopyToDataTable();
+
+				var d = new DataTable();
+				modDataV22Tmp.ForEach(r => d.Rows.Add(r));
+				modDataV22 = d;
 			} else {
 				if (!modDataV3Tmp.Any()) {
 					return false;
 				}
 			}
-			var modDataV3 = modDataV3Tmp.CopyToDataTable();
+
+			var modDataV3 = new DataTable();
+			modDataV3Tmp.ForEach(r => modDataV3.Rows.Add(r));
 
 			//var xfields = new[] { ModalResultField.dist };
 			var xfield = ModalResultField.dist;
 			var yfields = new[] {
-				ModalResultField.v_act, ModalResultField.acc, ModalResultField.n_eng_avg, ModalResultField.Gear,
-				ModalResultField.P_eng_out, ModalResultField.T_eng_fcmap, ModalResultField.FCMap
+				ModalResultField.v_act, ModalResultField.acc, ModalResultField.n_ice_avg, ModalResultField.Gear,
+				ModalResultField.P_ice_out, ModalResultField.T_ice_fcmap, ModalResultField.FCMap
 			};
 
 			var titleHeight = (50 * 100.0f) / (_diagramSize.Height * yfields.Length);
 
 			//foreach (var xfield in xfields) {
-			var fileName = string.Format("{0}_{1}-{2:D3}_{3:D3}.png", Path.GetFileNameWithoutExtension(fileNameV3),
-				xfield.GetName(), (int)(start / 1000), (int)(end / 1000));
+			var fileName = $"{Path.GetFileNameWithoutExtension(fileNameV3)}_{xfield.GetName()}-{(int)(start / 1000):D3}_{(int)(end / 1000):D3}.png";
 
 			var x = LoadData(modDataV3, xfield.GetName());
 			var x2 = new[] { double.NegativeInfinity };
@@ -307,12 +340,12 @@ namespace TUGraz.VectoCore.Tests.Utils
 					seriesGrad.YAxisType = AxisType.Secondary;
 				}
 
-				var series1 = CreateSeries(string.Format("Vecto 3 - {0}", yfield), legend, chartArea, chart,
+				var series1 = CreateSeries($"Vecto 3 - {yfield}", legend, chartArea, chart,
 					Color.Blue, x, y);
 
 				if (fileNameV22 != null) {
 					var y2 = LoadData(modDataV22, yfield.GetName());
-					var series2 = CreateSeries(string.Format("Vecto 2.2 - {0}", yfield), legend, chartArea, chart,
+					var series2 = CreateSeries($"Vecto 2.2 - {yfield}", legend, chartArea, chart,
 						Color.Red, x2, y2);
 				}
 
@@ -328,9 +361,11 @@ namespace TUGraz.VectoCore.Tests.Utils
 				chart.Invalidate();
 				chart.SaveImage(fileName, ChartImageFormat.Png);
 			}
+#endif
 			return true;
 		}
 
+#if !NET5_0_OR_GREATER
 		private static void AddTitle(Chart chart, string titleText, string dockToChartArea)
 		{
 			var title = new Title {
@@ -342,15 +377,18 @@ namespace TUGraz.VectoCore.Tests.Utils
 			chart.Titles.Add(title);
 		}
 
-		private static double[] LoadData(DataTable modDataV3, string field)
+		private static double[] LoadData(DataTable modDataV3, string fieldA)
 		{
+			var field = string.Format(fieldA, "");
 			return modDataV3.Rows.Cast<DataRow>()
-				.Select(v => v.Field<string>(field).Length == 0
+				.Select(v => ((string)v[field]).Length == 0
 					? double.NaN
-					: v.Field<string>(field).ToDouble())
+					: ((string)v[field]).ToDouble())
 				.ToArray();
 		}
 
+		//private static double[] LoadDataMapped(DataTable modDataV3, string field, Dictionary<string, double> mapping) =>
+		//	modDataV3.Rows.Cast<DataRow>().Select(x => mapping.GetValueOrDefault(((string)x[field]), double.NaN)).ToArray();
 		private static double[] LoadDataMapped(DataTable modDataV3, string field, Dictionary<string, double> mapping)
 		{
 			return (from x in modDataV3.Rows.Cast<DataRow>()
@@ -374,7 +412,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 			chartArea.Position.Y = (i * (100.0f - titleHeight)) / numCharts + titleHeight;
 		}
 
-		private static ChartArea AddChartArea(Chart chart, string name, string axisXTitle, int xMax, int xMin,
+		private ChartArea AddChartArea(Chart chart, string name, string axisXTitle, int xMax, int xMin,
 			string axisYTitle, bool discreteValues)
 		{
 			var chartArea = new ChartArea { Name = name };
@@ -410,7 +448,7 @@ namespace TUGraz.VectoCore.Tests.Utils
 			return chartArea;
 		}
 
-		private static Legend CreateLegend(Chart chart, string dockToChartArea)
+		private Legend CreateLegend(Chart chart, string dockToChartArea)
 		{
 			var legend = new Legend(dockToChartArea) {
 				Docking = Docking.Right,
@@ -440,5 +478,6 @@ namespace TUGraz.VectoCore.Tests.Utils
 			chart.Series[series1.Name].Points.DataBindXY(x, y);
 			return series1;
 		}
+#endif
 	}
 }

@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:VectoComponentEngineering  schemaVersion="1.0"
+	xmlns="urn:tugraz:ivt:VectoAPI:EngineeringDefinitions:v1.0" 
+	xmlns:tns="urn:tugraz:ivt:VectoAPI:EngineeringComponent:v1.0" 
+	xmlns:vdecdef="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0"  
+	xmlns:vecomp="urn:tugraz:ivt:VectoAPI:EngineeringComponent"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:EngineeringComponent https://webgate.ec.europa.eu/CITnet/svn/VECTO/trunk/Share/XML/XSD/VectoEngineeringComponent.xsd"
+	xsi:type="VectoComponentEngineeringType">
+	<Vehicle id="VEH-1234567890" xsi:type="VehicleEngineeringType">
+			<Manufacturer>Generic Truck Manufacturer</Manufacturer>
+			<ManufacturerAddress>somewhere</ManufacturerAddress>
+			<Model>Generic LongHaul Truck</Model>
+			<VIN>xyz</VIN>
+			<Date>2017-02-15T11:00:00Z</Date>
+			<VehicleCategory>Tractor</VehicleCategory>
+			<AxleConfiguration>4x2</AxleConfiguration>
+			<CurbMassChassis>7100</CurbMassChassis>
+			<GrossVehicleMass>18000</GrossVehicleMass>
+			<RetarderType>Transmission Output Retarder</RetarderType>
+			<RetarderRatio>1.000</RetarderRatio>
+			<AngledriveType>None</AngledriveType>
+			<PTOType>None</PTOType>
+			<PTOIdleLossMap>
+				<Resource type="csv" file="pto_idlelosses.vptol"/>
+			</PTOIdleLossMap>
+			<PTOCycle>
+				<Resource type="csv" file="pto_cycle.vptoc"/>
+			</PTOCycle>
+			<CurbMassExtra>500</CurbMassExtra>
+			<Loading>1500</Loading>
+			<NgTankSystem>Liquefied</NgTankSystem>
+			<AdvancedDriverAssist xsi:type="AdvancedDriverAssistEngineeringType">
+				<EngineStopStart>true</EngineStopStart>
+				<EcoRoll>none</EcoRoll>
+				<PredictiveCruiseControl>none</PredictiveCruiseControl>
+			</AdvancedDriverAssist>
+			<Components xsi:type="VehicleComponentsType">
+				<Engine>
+					<Resource type="xml" file="engineering_engine-sample_ref_DF_WHR.xml"/>
+				</Engine>
+				<Gearbox>
+					<Resource type="xml" file="engineering_gearbox-sample_ref.xml"/>
+				</Gearbox>
+				<TorqueConverter>
+					<Resource component="TorqueConverter" type="xml" file="engineering_torqueconverter-sample_ref.xml"/>
+				</TorqueConverter>
+				<Angledrive>
+					<Data xsi:type="AngledriveDataEngineeringType" id="ANGL-asdf">
+						<Manufacturer>Generic Angledrive Manufacturer</Manufacturer>
+						<Model>Generic Angledrive</Model>
+						<Date>2017-01-11T11:00:00Z</Date>
+						<Ratio>1.200</Ratio>
+						<TorqueLossMap>
+							<Resource type="csv" file="angledrive.vtlm"/>
+						</TorqueLossMap>
+					</Data>
+				</Angledrive>
+				<Retarder>
+					<Data xsi:type="RetarderDataEngineeringType" id="RET-adsf">
+						<Manufacturer>Generic Retarder Manufacturer</Manufacturer>
+						<Model>Generic Retarder</Model>
+						<Date>2017-01-11T11:00:00Z</Date>
+						<AppVersion>3.0.1</AppVersion>
+						<RetarderLossMap>
+							<Resource type="csv" file="Retarder.vrlm"/>
+						</RetarderLossMap>
+					</Data>
+				</Retarder>
+				<Axlegear>
+					<Resource type="xml" file="engineering_axlegear-sample_ref.xml"/>
+				</Axlegear>
+				<AxleWheels>
+					<Data xsi:type="AxleWheelsDataEngineeringType">
+						<Axles>
+							<Axle xsi:type="AxleDataEngineeringType" axleNumber="1">
+								<AxleType>VehicleNonDriven</AxleType>
+								<TwinTyres>false</TwinTyres>
+								<Steered>true</Steered>
+								<WeightShare>0.4</WeightShare>
+								<Tyre xsi:type="TyreComponentEngineeringType">
+									<Data xsi:type="TyreDataEngineeringType">
+										<Manufacturer>Generic Wheels Manufacturer</Manufacturer>
+										<Model>Generic Wheel</Model>
+										<Date>2017-01-11T14:00:00Z</Date>
+										<Dimension>315/70 R22.5</Dimension>
+										<RRCISO>0.0055</RRCISO>
+										<FzISO>31300</FzISO>
+									</Data>
+								</Tyre>
+							</Axle>
+							<Axle xsi:type="AxleDataEngineeringType" axleNumber="2">
+								<AxleType>VehicleDriven</AxleType>
+								<TwinTyres>true</TwinTyres>
+								<Steered>false</Steered>
+								<WeightShare>0.6</WeightShare>
+								<Tyre>
+									<Data xsi:type="TyreDataEngineeringType">
+										<Manufacturer>Generic Wheels Manufacturer</Manufacturer>
+										<Model>Generic Wheel</Model>
+										<Date>2017-01-11T14:00:00Z</Date>
+										<Dimension>315/70 R22.5</Dimension>
+										<RRCISO>0.0063</RRCISO>
+										<FzISO>31300</FzISO>
+									</Data>
+								</Tyre>
+							</Axle>
+						</Axles>
+					</Data>
+				</AxleWheels>
+				<Auxiliaries>
+					<Data xsi:type="AuxiliariesDataEngineeringType">
+						<Auxiliary id="ES" xsi:type="AuxiliaryEntryEngineeringType">
+							<TransmissionRatioToEngine>4.078</TransmissionRatioToEngine>
+							<EfficiencyToEngine>0.96</EfficiencyToEngine>
+							<EfficiencyAuxSupply>1</EfficiencyAuxSupply>
+							<AuxMap>
+								<Entry auxiliarySpeed="1415" mechanicalPower="70" supplyPower="0.0"/>
+								<Entry auxiliarySpeed="1415" mechanicalPower="870" supplyPower="530"/>
+								<Entry auxiliarySpeed="1415" mechanicalPower="1030" supplyPower="640"/>
+								<Entry auxiliarySpeed="1415" mechanicalPower="1.17" supplyPower="0.75"/>
+								<Entry auxiliarySpeed="1416" mechanicalPower="1.36" supplyPower="0.84"/>
+								<Entry auxiliarySpeed="1416" mechanicalPower="2.4" supplyPower="1.4"/>
+								<Entry auxiliarySpeed="1887" mechanicalPower="0.07" supplyPower="0"/>
+								<Entry auxiliarySpeed="1887" mechanicalPower="0.68" supplyPower="0.41"/>
+								<Entry auxiliarySpeed="1887" mechanicalPower="0.87" supplyPower="0.54"/>
+								<Entry auxiliarySpeed="1887" mechanicalPower="0.99" supplyPower="0.64"/>
+								<Entry auxiliarySpeed="1887" mechanicalPower="1.1" supplyPower="0.74"/>
+								<Entry auxiliarySpeed="1887" mechanicalPower="2.11" supplyPower="1.47"/>
+								<Entry auxiliarySpeed="1887" mechanicalPower="2.55" supplyPower="1.74"/>
+								<Entry auxiliarySpeed="2358" mechanicalPower="0.07" supplyPower="0"/>
+								<Entry auxiliarySpeed="2358" mechanicalPower="0.65" supplyPower="0.38"/>
+								<Entry auxiliarySpeed="2358" mechanicalPower="0.79" supplyPower="0.49"/>
+								<Entry auxiliarySpeed="2358" mechanicalPower="0.99" supplyPower="0.64"/>
+								<Entry auxiliarySpeed="2358" mechanicalPower="1.12" supplyPower="0.75"/>
+								<Entry auxiliarySpeed="2358" mechanicalPower="1.59" supplyPower="1.12"/>
+								<Entry auxiliarySpeed="2358" mechanicalPower="1.99" supplyPower="1.42"/>
+								<Entry auxiliarySpeed="2358" mechanicalPower="2.41" supplyPower="1.68"/>
+								<Entry auxiliarySpeed="2358" mechanicalPower="2.86" supplyPower="1.95"/>
+								<Entry auxiliarySpeed="2358" mechanicalPower="3.19" supplyPower="2.12"/>
+								<Entry auxiliarySpeed="2358" mechanicalPower="3.51" supplyPower="2.3"/>
+								<Entry auxiliarySpeed="2830" mechanicalPower="0.08" supplyPower="0"/>
+								<Entry auxiliarySpeed="2830" mechanicalPower="0.7" supplyPower="0.41"/>
+								<Entry auxiliarySpeed="2830" mechanicalPower="0.83" supplyPower="0.51"/>
+								<Entry auxiliarySpeed="2830" mechanicalPower="1.02" supplyPower="0.66"/>
+								<Entry auxiliarySpeed="2830" mechanicalPower="1.12" supplyPower="0.75"/>
+								<Entry auxiliarySpeed="2830" mechanicalPower="1.6" supplyPower="1.13"/>
+								<Entry auxiliarySpeed="2830" mechanicalPower="2.45" supplyPower="1.71"/>
+								<Entry auxiliarySpeed="2830" mechanicalPower="2.96" supplyPower="2.02"/>
+								<Entry auxiliarySpeed="2830" mechanicalPower="3.38" supplyPower="2.24"/>
+								<Entry auxiliarySpeed="2830" mechanicalPower="3.8" supplyPower="2.46"/>
+								<Entry auxiliarySpeed="2830" mechanicalPower="4.14" supplyPower="2.63"/>
+								<Entry auxiliarySpeed="3302" mechanicalPower="0.08" supplyPower="0"/>
+								<Entry auxiliarySpeed="3302" mechanicalPower="0.74" supplyPower="0.44"/>
+								<Entry auxiliarySpeed="3302" mechanicalPower="0.88" supplyPower="0.54"/>
+								<Entry auxiliarySpeed="3302" mechanicalPower="1.07" supplyPower="0.69"/>
+								<Entry auxiliarySpeed="3302" mechanicalPower="1.19" supplyPower="0.79"/>
+								<Entry auxiliarySpeed="3302" mechanicalPower="2.45" supplyPower="1.71"/>
+								<Entry auxiliarySpeed="3302" mechanicalPower="2.98" supplyPower="2.03"/>
+								<Entry auxiliarySpeed="3302" mechanicalPower="3.44" supplyPower="2.28"/>
+								<Entry auxiliarySpeed="3302" mechanicalPower="3.88" supplyPower="2.51"/>
+								<Entry auxiliarySpeed="3302" mechanicalPower="4.46" supplyPower="2.8"/>
+								<Entry auxiliarySpeed="3773" mechanicalPower="0.09" supplyPower="0"/>
+								<Entry auxiliarySpeed="3773" mechanicalPower="0.8" supplyPower="0.47"/>
+								<Entry auxiliarySpeed="3773" mechanicalPower="0.93" supplyPower="0.57"/>
+								<Entry auxiliarySpeed="3773" mechanicalPower="1.15" supplyPower="0.74"/>
+								<Entry auxiliarySpeed="3773" mechanicalPower="1.27" supplyPower="0.85"/>
+								<Entry auxiliarySpeed="3773" mechanicalPower="2.44" supplyPower="1.69"/>
+								<Entry auxiliarySpeed="3773" mechanicalPower="2.98" supplyPower="2.02"/>
+								<Entry auxiliarySpeed="3773" mechanicalPower="3.46" supplyPower="2.29"/>
+								<Entry auxiliarySpeed="3773" mechanicalPower="3.96" supplyPower="2.55"/>
+								<Entry auxiliarySpeed="3773" mechanicalPower="4.47" supplyPower="2.8"/>
+								<Entry auxiliarySpeed="3773" mechanicalPower="4.69" supplyPower="2.91"/>
+								<Entry auxiliarySpeed="4245" mechanicalPower="0.11" supplyPower="0"/>
+								<Entry auxiliarySpeed="4245" mechanicalPower="0.88" supplyPower="0.51"/>
+								<Entry auxiliarySpeed="4245" mechanicalPower="1.02" supplyPower="0.62"/>
+								<Entry auxiliarySpeed="4245" mechanicalPower="1.22" supplyPower="0.78"/>
+								<Entry auxiliarySpeed="4245" mechanicalPower="1.47" supplyPower="0.98"/>
+								<Entry auxiliarySpeed="4245" mechanicalPower="2.36" supplyPower="1.62"/>
+								<Entry auxiliarySpeed="4245" mechanicalPower="2.98" supplyPower="2.01"/>
+								<Entry auxiliarySpeed="4245" mechanicalPower="3.46" supplyPower="2.28"/>
+								<Entry auxiliarySpeed="4245" mechanicalPower="4" supplyPower="2.57"/>
+								<Entry auxiliarySpeed="4245" mechanicalPower="4.47" supplyPower="2.79"/>
+								<Entry auxiliarySpeed="4245" mechanicalPower="4.94" supplyPower="3"/>
+								<Entry auxiliarySpeed="4716" mechanicalPower="0.12" supplyPower="0"/>
+								<Entry auxiliarySpeed="4716" mechanicalPower="0.97" supplyPower="0.56"/>
+								<Entry auxiliarySpeed="4716" mechanicalPower="1.11" supplyPower="0.67"/>
+								<Entry auxiliarySpeed="4716" mechanicalPower="1.32" supplyPower="0.84"/>
+								<Entry auxiliarySpeed="4716" mechanicalPower="1.91" supplyPower="1.29"/>
+								<Entry auxiliarySpeed="4716" mechanicalPower="2.96" supplyPower="1.99"/>
+								<Entry auxiliarySpeed="4716" mechanicalPower="3.46" supplyPower="2.27"/>
+								<Entry auxiliarySpeed="4716" mechanicalPower="4" supplyPower="2.56"/>
+								<Entry auxiliarySpeed="4716" mechanicalPower="4.52" supplyPower="2.81"/>
+								<Entry auxiliarySpeed="4716" mechanicalPower="4.97" supplyPower="3"/>
+								<Entry auxiliarySpeed="4716" mechanicalPower="5.12" supplyPower="3.08"/>
+								<Entry auxiliarySpeed="5188" mechanicalPower="0.14" supplyPower="0"/>
+								<Entry auxiliarySpeed="5188" mechanicalPower="1.08" supplyPower="0.62"/>
+								<Entry auxiliarySpeed="5188" mechanicalPower="1.21" supplyPower="0.73"/>
+								<Entry auxiliarySpeed="5188" mechanicalPower="1.47" supplyPower="0.93"/>
+								<Entry auxiliarySpeed="5188" mechanicalPower="2.89" supplyPower="1.92"/>
+								<Entry auxiliarySpeed="5188" mechanicalPower="3.45" supplyPower="2.25"/>
+								<Entry auxiliarySpeed="5188" mechanicalPower="3.99" supplyPower="2.54"/>
+								<Entry auxiliarySpeed="5188" mechanicalPower="4.54" supplyPower="2.82"/>
+								<Entry auxiliarySpeed="5188" mechanicalPower="4.98" supplyPower="3"/>
+								<Entry auxiliarySpeed="5188" mechanicalPower="5.19" supplyPower="3.11"/>
+								<Entry auxiliarySpeed="5660" mechanicalPower="0.17" supplyPower="0"/>
+								<Entry auxiliarySpeed="5660" mechanicalPower="1.19" supplyPower="0.67"/>
+								<Entry auxiliarySpeed="5660" mechanicalPower="1.32" supplyPower="0.79"/>
+								<Entry auxiliarySpeed="5660" mechanicalPower="1.69" supplyPower="1.07"/>
+								<Entry auxiliarySpeed="5660" mechanicalPower="2.54" supplyPower="1.66"/>
+								<Entry auxiliarySpeed="5660" mechanicalPower="3.37" supplyPower="2.18"/>
+								<Entry auxiliarySpeed="5660" mechanicalPower="3.98" supplyPower="2.52"/>
+								<Entry auxiliarySpeed="5660" mechanicalPower="4.55" supplyPower="2.8"/>
+								<Entry auxiliarySpeed="5660" mechanicalPower="5.02" supplyPower="3.01"/>
+								<Entry auxiliarySpeed="5660" mechanicalPower="5.27" supplyPower="3.14"/>
+								<Entry auxiliarySpeed="6131" mechanicalPower="0.19" supplyPower="0"/>
+								<Entry auxiliarySpeed="6131" mechanicalPower="1.28" supplyPower="0.72"/>
+								<Entry auxiliarySpeed="6131" mechanicalPower="1.49" supplyPower="0.88"/>
+								<Entry auxiliarySpeed="6131" mechanicalPower="2.15" supplyPower="1.37"/>
+								<Entry auxiliarySpeed="6131" mechanicalPower="3.19" supplyPower="2.04"/>
+								<Entry auxiliarySpeed="6131" mechanicalPower="3.92" supplyPower="2.46"/>
+								<Entry auxiliarySpeed="6131" mechanicalPower="4.48" supplyPower="2.75"/>
+								<Entry auxiliarySpeed="6131" mechanicalPower="5.44" supplyPower="3.16"/>
+								<Entry auxiliarySpeed="6603" mechanicalPower="0.22" supplyPower="0"/>
+								<Entry auxiliarySpeed="6603" mechanicalPower="1.42" supplyPower="0.79"/>
+								<Entry auxiliarySpeed="6603" mechanicalPower="1.81" supplyPower="1.08"/>
+								<Entry auxiliarySpeed="6603" mechanicalPower="2.92" supplyPower="1.84"/>
+								<Entry auxiliarySpeed="6603" mechanicalPower="3.75" supplyPower="2.33"/>
+								<Entry auxiliarySpeed="6603" mechanicalPower="4.38" supplyPower="2.66"/>
+								<Entry auxiliarySpeed="6603" mechanicalPower="4.94" supplyPower="2.92"/>
+								<Entry auxiliarySpeed="6603" mechanicalPower="5.51" supplyPower="3.19"/>
+								<Entry auxiliarySpeed="7075" mechanicalPower="0.25" supplyPower="0"/>
+								<Entry auxiliarySpeed="7075" mechanicalPower="1.63" supplyPower="0.91"/>
+								<Entry auxiliarySpeed="7075" mechanicalPower="2.35" supplyPower="1.43"/>
+								<Entry auxiliarySpeed="7075" mechanicalPower="3.43" supplyPower="2.1"/>
+								<Entry auxiliarySpeed="7075" mechanicalPower="4.24" supplyPower="2.55"/>
+								<Entry auxiliarySpeed="7075" mechanicalPower="4.82" supplyPower="2.83"/>
+								<Entry auxiliarySpeed="7075" mechanicalPower="5.54" supplyPower="3.19"/>
+								<Entry auxiliarySpeed="7546" mechanicalPower="0.28" supplyPower="0"/>
+								<Entry auxiliarySpeed="7546" mechanicalPower="1.93" supplyPower="1.09"/>
+								<Entry auxiliarySpeed="7546" mechanicalPower="3.04" supplyPower="1.82"/>
+								<Entry auxiliarySpeed="7546" mechanicalPower="4.09" supplyPower="2.43"/>
+								<Entry auxiliarySpeed="7546" mechanicalPower="4.69" supplyPower="2.73"/>
+								<Entry auxiliarySpeed="7546" mechanicalPower="5.7" supplyPower="3.19"/>
+								<Entry auxiliarySpeed="9150" mechanicalPower="0.42" supplyPower="0"/>
+								<Entry auxiliarySpeed="9150" mechanicalPower="5.74" supplyPower="3.19"/>
+								<Entry auxiliarySpeed="12000" mechanicalPower="0.42" supplyPower="0"/>
+								<Entry auxiliarySpeed="12000" mechanicalPower="5.74" supplyPower="3.19"/>
+							</AuxMap>
+						</Auxiliary>
+						<Auxiliary xsi:type="AuxiliaryEntryEngineeringType" id="FAN">
+							<Resource type="csv" file="dummy.vaux"/>
+						</Auxiliary>
+					</Data>
+				</Auxiliaries>
+				<AirDrag>
+					<Data xsi:type="AirDragDataEngineeringType">
+						<Manufacturer>Generic Gearbox Manufacturer</Manufacturer>
+						<Model>Generic 40t Long Haul Truck Gearbox</Model>
+						<Date>2017-01-11T11:00:00Z</Date>
+						<AppVersion>3.0.1</AppVersion>
+						<CrossWindCorrectionMode>No Correction</CrossWindCorrectionMode>
+						<CdxA>6.29</CdxA>
+					</Data>
+				</AirDrag>
+			</Components>
+	</Vehicle>
+</tns:VectoComponentEngineering>

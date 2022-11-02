@@ -30,7 +30,6 @@
 */
 
 using System.Windows;
-using System.Windows.Automation.Peers;
 using HashingTool.ViewModel.UserControl;
 
 namespace HashingTool.Views
@@ -53,8 +52,8 @@ namespace HashingTool.Views
 
 		public XMLFileSelector XMLFile
 		{
-			get { return (XMLFileSelector)GetValue(XMLFileProperty); }
-			set { SetValue(XMLFileProperty, value); }
+			get => (XMLFileSelector)GetValue(XMLFileProperty);
+			set => SetValue(XMLFileProperty, value);
 		}
 
 		private void btnDetails_Click(object sender, RoutedEventArgs e)
@@ -63,6 +62,20 @@ namespace HashingTool.Views
 			dialog.XMLErrors = XMLFile.XMLValidationErrors;
 			dialog.ErrorCount = XMLFile.XMLValidationErrors.Count;
 			dialog.ShowDialog();
+		}
+		
+		private void XMLFileBrowser_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop)) {
+                var files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                XMLFile.SetXMLFileCommnd.Execute(files?[0]);
+            }
+		}
+
+        private void XMLFileBrowser_DragOver(object sender, DragEventArgs e)
+		{
+			if (e.Data.GetDataPresent(DataFormats.FileDrop))
+				e.Handled = true;
 		}
 	}
 }

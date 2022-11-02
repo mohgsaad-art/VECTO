@@ -60,8 +60,7 @@ namespace TUGraz.VectoCore.Models.Declaration
 
 		public static AuxiliaryType Parse(string s)
 		{
-			AuxiliaryType aux;
-			return StrToAux.TryGetValue(s, out aux) ? aux : AuxiliaryType.Fan;
+			return StrToAux.TryGetValue(s, out var aux) ? aux : AuxiliaryType.Fan;
 		}
 
 		public static AuxiliaryType ParseKey(string s)

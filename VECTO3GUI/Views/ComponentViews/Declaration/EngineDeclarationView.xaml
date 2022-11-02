@@ -1,0 +1,78 @@
+﻿<UserControl x:Class="VECTO3GUI.Views.ComponentViews.Declaration.EngineDeclarationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:interfaces="clr-namespace:VECTO3GUI.ViewModel.Interfaces"
+             xmlns:customControls="clr-namespace:VECTO3GUI.Views.CustomControls"
+             xmlns:helper="clr-namespace:VECTO3GUI.Helper"
+             xmlns:converter="clr-namespace:VECTO3GUI.Helper.Converter"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="600">
+    <d:EngineDeclarationView.DataContext>
+        <x:Type Type="interfaces:IEngineViewModel"/>
+    </d:EngineDeclarationView.DataContext>
+    
+    <StackPanel Orientation="Vertical" Width="400" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True">
+        <customControls:CommonDeclarationComponentData 
+            Model="{Binding Model}"
+            Manufacturer="{Binding Manufacturer}"
+            Date="{Binding Date}"
+            CertificationNumber="{Binding CertificationNumber}" />
+        <customControls:VectoParameterControl
+            Caption="Displacement" CaptionWidthGroup="lblWidth"
+            Value="{Binding Displacement, Converter={converter:SIValueConverter}, ConverterParameter=AsCubicCentimeter|int}" 
+            ValueAlign="right"
+            Unit="cm³" UnitWidthGroup="unitWidth"/>
+        <customControls:VectoParameterControl
+            Caption="Idling Speed" CaptionWidthGroup="lblWidth"
+            Value="{Binding IdlingSpeed, Converter={converter:SIValueConverter}, ConverterParameter=AsRPM|int}"
+            ValueAlign="right"
+            Unit="rpm" UnitWidthGroup="unitWidth"/>
+        <customControls:VectoParameterControl
+            Caption="Rated Speed" CaptionWidthGroup="lblWidth"
+            Value="{Binding RatedSpeed, Converter={converter:SIValueConverter}, ConverterParameter=AsRPM|int}"
+            ValueAlign="right"
+            Unit="rpm"  UnitWidthGroup="unitWidth"/>
+        <customControls:VectoParameterControl
+            Caption="Rated Power" CaptionWidthGroup="lblWidth"
+            Value="{Binding RatedPower, Converter={converter:SIValueConverter}, ConverterParameter=int}"
+            ValueAlign="right"
+            Unit="{helper:SIUnit RatedPower}" UnitWidthGroup="unitWidth"/>
+        <customControls:VectoParameterControl
+            Caption="Max. Engine Torque" CaptionWidthGroup="lblWidth"
+            Value="{Binding MaxEngineTorque, Converter={converter:SIValueConverter}, ConverterParameter=int}"
+            ValueAlign="right"
+            Unit="{helper:SIUnit MaxEngineTorque}" UnitWidthGroup="unitWidth"/>
+        <customControls:VectoParameterControl
+            Caption="WHTC Urban" CaptionWidthGroup="lblWidth"
+            Value="{Binding WHTCUrban}" ValueAlign="right"
+            Unit="" UnitWidthGroup="unitWidth" />
+        <customControls:VectoParameterControl
+            Caption="WHTC Rural" CaptionWidthGroup="lblWidth"
+            Value="{Binding WHTCRural}" ValueAlign="right"
+            Unit="" UnitWidthGroup="unitWidth" />
+        <customControls:VectoParameterControl
+            Caption="WHTC Motorway" CaptionWidthGroup="lblWidth"
+            Value="{Binding WHTCMotorway}" ValueAlign="right"
+            Unit="" UnitWidthGroup="unitWidth" />
+        <customControls:VectoParameterControl
+            Caption="Cold/Hot Balancing Factor" CaptionWidthGroup="lblWidth"
+            Value="{Binding BFColdHot}" ValueAlign="right"
+            Unit="" UnitWidthGroup="unitWidth" />
+        <customControls:VectoParameterControl
+            Caption="Correction Factor Reg. Per." CaptionWidthGroup="lblWidth"
+            Value="{Binding CFRegPer}" ValueAlign="right"
+            Unit="" UnitWidthGroup="unitWidth" />
+        <customControls:VectoParameterControl
+            Caption="Correction Factor NCV" CaptionWidthGroup="lblWidth"
+            Value="{Binding CFNCV}" ValueAlign="right"
+            Unit="" UnitWidthGroup="unitWidth" />
+        <customControls:ComboParameter
+            Caption="Fuel Type" CaptionWidthGroup="lblWidth"
+            UnitWidthGroup="unitWidth" 
+            Value="{Binding FuelType}"
+            AllowedValues="{Binding AllowedFuelTypes}"
+            />
+    </StackPanel>
+</UserControl>

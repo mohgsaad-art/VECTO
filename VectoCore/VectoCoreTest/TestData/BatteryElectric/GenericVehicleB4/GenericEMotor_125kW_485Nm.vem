@@ -1,0 +1,20 @@
+﻿{
+  "Header": {
+    "CreatedBy": " ()",
+    "Date": "2016-10-13T08:54:28.7387223Z",
+    "AppVersion": "3",
+    "FileVersion": 1
+  },
+  "Body": {
+    "SavedInDeclMode": false,
+    "Model": "Generic Electric Motor",
+    "FullLoadCurve": "GenericEMotor_125kW_485Nm.vemp",
+    "DragCurve": "GenericDrag_125kW_485Nm.vemd",
+    "EfficiencyMap": "GenericMap_125kW_485Nm.vemo",
+    "Inertia": 0.225,
+    "ContinuousPower": 5000000,
+    "ContinuousPowerSpeed": 2000,
+    "OverloadTime": 30, 
+    "ThermalOverloadRecoveryFactor": 0.9
+  }
+}

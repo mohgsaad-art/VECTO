@@ -1,0 +1,34 @@
+{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2021-08-06T13:05:34.7950328Z",
+    "AppVersion": "3",
+    "FileVersion": 1
+  },
+  "Body": {
+    "PneumaticSystem": {
+      "CompressorMap": "",
+      "AverageAirDemand": 0.0,
+      "SmartAirCompression": false,
+      "GearRatio": 0.0
+    },
+    "ElectricSystem": {
+      "AlternatorEfficiency": 0.0,
+      "CurrentDemand": 0.0,
+      "CurrentDemandEngineOffDriving": 172.85,
+      "CurrentDemandEngineOffStandstill": 128.21,
+      "AlternatorType": "Conventional",
+      "ElectricStorageCapacity": 0.0,
+      "BatteryEfficiency": 1.0,
+      "MaxAlternatorPower": 0.0,
+      "DCDCConverterEfficiency": 0.98,
+      "ESSupplyFromHEVREESS": true
+    },
+    "HVAC": {
+      "ElectricPowerDemand": 0.0,
+      "MechanicalPowerDemand": 0.0,
+      "AuxHeaterPower": 0.0,
+      "AverageHeatingDemand": 0.0
+    }
+  }
+}

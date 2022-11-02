@@ -35,9 +35,10 @@ namespace TUGraz.VectoCommon.Utils
 {
 	public struct SIUtils
 	{
+		private const int UnitCount = 7;
 		public static bool CompareUnits(int[] units1, int[] units2)
 		{
-			for (var i = 0; i < units1.Length; i++) {
+			for (var i = 0; i < UnitCount; i++) {
 				if (units1[i] != units2[i]) {
 					return false;
 				}
@@ -47,8 +48,8 @@ namespace TUGraz.VectoCommon.Utils
 
 		public static int[] CombineUnits(int[] units1, int[] units2)
 		{
-			var units = new int[units1.Length];
-			for (var i = 0; i < units1.Length; i++) {
+			var units = new int[UnitCount];
+			for (var i = 0; i < UnitCount; i++) {
 				units[i] = units1[i] + units2[i];
 			}
 			return units;
@@ -56,8 +57,8 @@ namespace TUGraz.VectoCommon.Utils
 
 		public static int[] MultiplyUnits(int[] units, int factor)
 		{
-			var result = new int[units.Length];
-			for (var i = 0; i < units.Length; i++) {
+			var result = new int[UnitCount];
+			for (var i = 0; i < UnitCount; i++) {
 				if (units[i] != 0) {
 					result[i] = units[i] * factor;
 				}
@@ -101,25 +102,13 @@ namespace TUGraz.VectoCommon.Utils
 					}
 				}
 			}
-			string result;
-			if (numerator == "" && denominator == "") {
+			if (numerator == "" && denominator == "")
 				return "-";
-			}
-			if (numerator == "") {
-				if (denominator == "") {
-					result = "-";
-				} else {
-					result = "1/" + denominator;
-				}
-			} else {
-				if (denominator == "") {
-					result = numerator;
-				} else {
-					result = numerator + "/" + denominator;
-				}
-			}
-
-			return result;
+			if (numerator == "")
+				return "1/" + denominator;
+			if (denominator == "")
+				return numerator;
+			return numerator + "/" + denominator;
 		}
 	}
 
@@ -312,10 +301,7 @@ namespace TUGraz.VectoCommon.Utils
 		/// <summary>
 		/// [-]. Defines radian. Only virtual. Has no real SI unit.
 		/// </summary>
-		public UnitInstance Radian
-		{
-			get { return this; }
-		}
+		public UnitInstance Radian => this;
 
 		/// <summary>
 		/// [-]. Converts to/from Radiant. Internally everything is stored in radian.
@@ -337,6 +323,15 @@ namespace TUGraz.VectoCommon.Utils
 			get
 			{
 				_units[2] += 1 * _reciproc * _exponent;
+				return this;
+			}
+		}
+
+		public UnitInstance Ampere
+		{
+			get
+			{
+				_units[3] += 1 * _reciproc * _exponent;
 				return this;
 			}
 		}

@@ -29,18 +29,26 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Xml.Linq;
+using Newtonsoft.Json;
+using TUGraz.VectoCommon.BusAuxiliaries;
 using TUGraz.VectoCommon.Exceptions;
+using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
+using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.InputData.Reader.Impl;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
+using TUGraz.VectoCore.Models.SimulationComponent.Data.Battery;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.Gearbox;
+using TUGraz.VectoCore.Models.SimulationComponent.Impl;
+using TUGraz.VectoCore.Models.SimulationComponent.Strategies;
 using TUGraz.VectoCore.OutputData;
 using DriverData = TUGraz.VectoCore.Models.SimulationComponent.Data.DriverData;
 
@@ -49,10 +57,15 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 	[CustomValidation(typeof(VectoRunData), "ValidateRunData")]
 	public class VectoRunData : SimulationComponentData
 	{
+
 		public VectoRunData()
 		{
 			Exempted = false;
+			JobType = VectoSimulationJobType.ConventionalVehicle;
 		}
+
+		public VectoSimulationJobType JobType { get; internal set; }
+		public MeterPerSecond VehicleDesignSpeed { get; internal set; }
 
 		[ValidateObject]
 		public VehicleData VehicleData { get; internal set; }
@@ -73,12 +86,13 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 		public AngledriveData AngledriveData { get; internal set; }
 
 		[Required, ValidateObject]
+		[JsonIgnore]
 		public IDrivingCycleData Cycle { get; internal set; }
 
 		[ValidateObject]
 		public IEnumerable<AuxData> Aux { get; internal set; }
 
-		public AdvancedAuxData AdvancedAux { get; internal set; }
+		public IAuxiliaryConfig BusAuxiliaries { get; internal set; }
 
 		[ValidateObject]
 		public RetarderData Retarder { get; internal set; }
@@ -97,25 +111,55 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 		public string ModFileSuffix { get; internal set; }
 
 		[ValidateObject]
+		[JsonIgnore]
 		public IDeclarationReport Report { get; internal set; }
 
 		[Required, ValidateObject]
 		public LoadingType Loading { get; internal set; }
 
 		[ValidateObject]
+		[JsonIgnore]
 		public Mission Mission { get; internal set; }
 
+		[JsonIgnore]
 		public XElement InputDataHash { get; internal set; }
 
 		public int JobRunId { get; internal set; }
 
-		public AuxFanData FanData { get; internal set; }
+		public AuxFanData FanDataVTP { get; internal set; }
 
-		public SimulationType SimulationType { get; set; }
+		public List<Tuple<PowertrainPosition, ElectricMotorData>> ElectricMachinesData { get; internal set; }
 
-		public VTPData VTPData { get; set; }
+		public BatterySystemData BatteryData { get; internal set; }
 
-		public bool Exempted { get; set; }
+		public SuperCapData SuperCapData { get; internal set; }
+
+
+		public SimulationType SimulationType { get; internal set; }
+
+		public VTPData VTPData { get; internal set; }
+
+		public ShiftStrategyParameters GearshiftParameters { get; internal set; }
+		public bool Exempted { get; internal set; }
+
+		public bool MultistageRun { get; internal set; }
+
+		public IDrivingCycleData PTOCycleWhileDrive { get; internal set; }
+
+		public string ShiftStrategy { get; set; }
+
+		// only used for factor method
+		public IResult PrimaryResult { get; set; }
+
+		public HybridStrategyParameters HybridStrategyParameters { get; internal set; }
+
+		public Watt ElectricAuxDemand { get; internal set; }
+
+		[JsonIgnore]
+		public IMultistageVIFInputData MultistageVIFInputData { get; internal set; }
+
+		// container to pass genset data from powertrain to post-processing, not filled by dataadapter/rundatafactory
+		public GenSetData GenSet { get; set; }
 
 		public class AuxData
 		{
@@ -126,11 +170,19 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 
 			[SIRange(0, 100 * Constants.Kilo)] public Watt PowerDemand;
 
+			[JsonIgnore]
+			public Func<DrivingCycleData.DrivingCycleEntry, Watt> PowerDemandFunc;
+
 			[Required] public AuxiliaryDemandType DemandType;
 
-			[ValidateObject] public AuxiliaryData Data;
 
 			public MissionType? MissionType;
+		}
+
+		// container to pass genset data from powertrain to post-processing, not filled by dataadapter/rundatafactory
+		public class GenSetData
+		{
+			public GenSetCharacteristics GenSetCharacteristics { get; set; }
 		}
 
 		public static ValidationResult ValidateRunData(VectoRunData runData, ValidationContext validationContext)
@@ -138,46 +190,98 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 			var gearboxData = runData.GearboxData;
 			var engineData = runData.EngineData;
 
-			if (gearboxData != null) {
-				var validationResult = CheckPowertrainLossMapsSize(runData, gearboxData, engineData);
+			var jobType = GetSimulationJobType(validationContext);
+			var emPos = GetEMPosition(validationContext);
+
+
+			if (jobType == VectoSimulationJobType.ConventionalVehicle || jobType == VectoSimulationJobType.ParallelHybridVehicle) {
+				if (gearboxData == null) {
+					return new ValidationResult("Gearbox data is required for conventional and parallel hybrid vehicles!");
+				}
+
+				if (engineData == null) {
+					return new ValidationResult("Combustion engine data is required for conventional and parallel hybrid vehicles!");
+				}
+
+				var validationResult = CheckPowertrainLossMapsSizeConventionalPT(runData, gearboxData, engineData);
 				if (validationResult != null) {
 					return validationResult;
 				}
 			}
 
-			if (runData.Cycle != null && runData.Cycle.Entries.Any(e => e.PTOActive)) {
+			if (runData.Cycle != null && runData.Cycle.Entries.Any(e => e.PTOActive == PTOActivity.PTOActivityDuringStop)) {
+				if (jobType == VectoSimulationJobType.BatteryElectricVehicle) {
+					// TODO: MQ 20201020 - validate depending on EM position!?
+				}
+
 				if (runData.PTO == null || runData.PTO.PTOCycle == null) {
 					return new ValidationResult("PTOCycle is used in DrivingCycle, but is not defined in Vehicle-Data.");
 				}
 			}
 
+			if (runData.Cycle != null && runData.Cycle.Entries.Any(x => x.PTOActive == PTOActivity.PTOActivityRoadSweeping)) {
+				if (runData.EngineData.PTORoadSweepEngineSpeed == null) {
+					return new ValidationResult("RoadSweeping PTO activity detected in cycle but no min. engine speed during road sweeping provided");
+				}
+
+				if (runData.DriverData.PTODriveRoadsweepingGear == null || runData.DriverData.PTODriveRoadsweepingGear.Equals(new GearshiftPosition(0))) {
+					return new ValidationResult("RoadSweeping PTO activity detected in cycle but no gear during road sweeping provided");
+				}
+			}
+
+			if (runData.Cycle != null && runData.Cycle.Entries.Any(x => x.PTOActive == PTOActivity.PTOActivityWhileDrive)) {
+				if (runData.PTOCycleWhileDrive == null || runData.PTOCycleWhileDrive.Entries.Count == 0) {
+					return new ValidationResult("PTO activity while driving detected in cycle but PTO cycle provided");
+				}
+			}
+
+			if ((jobType == VectoSimulationJobType.ConventionalVehicle || jobType == VectoSimulationJobType.ParallelHybridVehicle) && runData.EngineData.PTORoadSweepEngineSpeed != null) {
+				if (runData.EngineData.IdleSpeed.IsGreater(runData.EngineData.PTORoadSweepEngineSpeed)) {
+					return new ValidationResult("PTO Operating enginespeed is below engine idling speed");
+				}
+
+				if (runData.EngineData.FullLoadCurves[0].N95hSpeed.IsSmaller(runData.EngineData.PTORoadSweepEngineSpeed)) {
+					return new ValidationResult("PTO operating enginespeed is above n_95h");
+				}
+			}
+
+			if (runData.ElectricMachinesData?.Any(e => e.Item1 == PowertrainPosition.HybridP0) ?? false){
+				return new ValidationResult("P0 Hybrids are modeled as SmartAlternator in the BusAuxiliary model.");
+			}
+
 			return ValidationResult.Success;
 		}
 
-		private static ValidationResult CheckPowertrainLossMapsSize(VectoRunData runData, GearboxData gearboxData,
+		private static ValidationResult CheckPowertrainLossMapsSizeConventionalPT(VectoRunData runData, GearboxData gearboxData,
 			CombustionEngineData engineData)
 		{
-			var maxSpeed = 95.KMPHtoMeterPerSecond();
+			
 			var axleGearData = runData.AxleGearData;
 			var angledriveData = runData.AngledriveData;
 			var hasAngleDrive = angledriveData != null && angledriveData.Angledrive != null;
 			var angledriveRatio = hasAngleDrive && angledriveData.Type == AngledriveType.SeparateAngledrive
 				? angledriveData.Angledrive.Ratio
 				: 1.0;
-			var axlegearRatio = axleGearData != null ? axleGearData.AxleGear.Ratio : 1.0;
+			var axlegearRatio = axleGearData?.AxleGear.Ratio ?? 1.0;
 			var dynamicTyreRadius = runData.VehicleData != null ? runData.VehicleData.DynamicTyreRadius : 0.0.SI<Meter>();
+
+			var vehicleMaxSpeed = runData.EngineData.FullLoadCurves[0].N95hSpeed /
+								runData.GearboxData.Gears[runData.GearboxData.Gears.Keys.Max()].Ratio / axlegearRatio /
+								angledriveRatio * dynamicTyreRadius;
+			var maxSpeed = VectoMath.Min(vehicleMaxSpeed, (runData.VehicleDesignSpeed ?? 90.KMPHtoMeterPerSecond()) + (runData.DriverData?.OverSpeed?.OverSpeed ?? 0.KMPHtoMeterPerSecond()));
 
 			if (gearboxData.Gears.Count + 1 != engineData.FullLoadCurves.Count) {
 				return
 					new ValidationResult(
-						string.Format("number of full-load curves in engine does not match gear count. engine fld: {0}, gears: {1}",
-							engineData.FullLoadCurves.Count, gearboxData.Gears.Count));
+						$"number of full-load curves in engine does not match gear count. " +
+						$"engine fld: {engineData.FullLoadCurves.Count}, gears: {gearboxData.Gears.Count}");
 			}
 
 			foreach (var gear in gearboxData.Gears) {
+				var maxEngineSpeed = VectoMath.Min(engineData.FullLoadCurves[gear.Key].RatedSpeed, gear.Value.MaxSpeed);
 				for (var angularVelocity = engineData.IdleSpeed;
-					angularVelocity < engineData.FullLoadCurves[gear.Key].RatedSpeed;
-					angularVelocity += 2.0 / 3.0 * (engineData.FullLoadCurves[gear.Key].RatedSpeed - engineData.IdleSpeed) / 10.0) {
+					angularVelocity < maxEngineSpeed;
+					angularVelocity += 2.0 / 3.0 * (maxEngineSpeed - engineData.IdleSpeed) / 10.0) {
 					if (!gear.Value.HasLockedGear) {
 						continue;
 					}
@@ -201,43 +305,45 @@ namespace TUGraz.VectoCore.Models.Simulation.Data
 			return null;
 		}
 
-		private static ValidationResult CheckLossMapsEntries(KeyValuePair<uint, GearData> gear, PerSecond angularVelocity,
-			NewtonMeter inTorque, AngledriveData angledriveData, AxleGearData axleGearData, SI velocity)
+		private static ValidationResult CheckLossMapsEntries(KeyValuePair<uint, GearData> gear, PerSecond engineSpeed,
+			NewtonMeter inTorque, AngledriveData angledriveData, AxleGearData axleGearData, MeterPerSecond velocity)
 		{
 			var hasAngleDrive = angledriveData != null && angledriveData.Angledrive != null;
 			var angledriveRatio = hasAngleDrive && angledriveData.Type == AngledriveType.SeparateAngledrive
 				? angledriveData.Angledrive.Ratio
 				: 1.0;
-			NewtonMeter angledriveTorque;
-			try {
-				angledriveTorque = gear.Value.LossMap.GetOutTorque(angularVelocity, inTorque);
-			} catch (VectoException) {
-				return new ValidationResult(
-					string.Format("Interpolation of Gear-{0}-LossMap failed with torque={1} and angularSpeed={2}", gear.Key,
-						inTorque, angularVelocity.ConvertToRoundsPerMinute()));
+
+			var tqLoss = gear.Value.LossMap.GetTorqueLoss(engineSpeed / gear.Value.Ratio, inTorque * gear.Value.Ratio);
+			if (tqLoss.Extrapolated) {
+				return new ValidationResult($"Interpolation of Gear-{gear.Key}-LossMap failed " +
+											$"with torque={inTorque} " +
+											$"and angularSpeed={engineSpeed.ConvertToRoundsPerMinute()}");
+
 			}
+			var angledriveTorque = (inTorque - tqLoss.Value) / gear.Value.Ratio;
+
+
 			var axlegearTorque = angledriveTorque;
-			try {
-				if (hasAngleDrive) {
-					axlegearTorque = angledriveData.Angledrive.LossMap.GetOutTorque(angularVelocity / gear.Value.Ratio,
-						angledriveTorque);
+			if (hasAngleDrive) {
+				var anglTqLoss = angledriveData.Angledrive.LossMap.GetTorqueLoss(
+					engineSpeed / gear.Value.Ratio / angledriveRatio,
+					angledriveTorque * angledriveRatio);
+				if (anglTqLoss.Extrapolated) {
+					return new ValidationResult("Interpolation of Angledrive-LossMap failed " +
+												$"with torque={angledriveTorque} " +
+												$"and angularSpeed={(engineSpeed / gear.Value.Ratio).ConvertToRoundsPerMinute()}");
 				}
-			} catch (VectoException) {
-				return new ValidationResult(
-					string.Format("Interpolation of Angledrive-LossMap failed with torque={0} and angularSpeed={1}",
-						angledriveTorque, (angularVelocity / gear.Value.Ratio).ConvertToRoundsPerMinute()));
 			}
 
 			if (axleGearData != null) {
-				var axleAngularVelocity = angularVelocity / gear.Value.Ratio / angledriveRatio;
-				try {
-					axleGearData.AxleGear.LossMap.GetOutTorque(axleAngularVelocity, axlegearTorque);
-				} catch (VectoException) {
-					return
-						new ValidationResult(
-							string.Format(
-								"Interpolation of AxleGear-LossMap failed with torque={0} and angularSpeed={1} (gear={2}, velocity={3})",
-								axlegearTorque, axleAngularVelocity.ConvertToRoundsPerMinute(), gear.Key, velocity));
+				var axleAngularVelocity = engineSpeed / gear.Value.Ratio / angledriveRatio / axleGearData.AxleGear.Ratio;
+				
+				var axlTqLoss = axleGearData.AxleGear.LossMap.GetTorqueLoss(axleAngularVelocity, axlegearTorque * axleGearData.AxleGear.Ratio);
+				if (axlTqLoss.Extrapolated) { 
+				return new ValidationResult("Interpolation of AxleGear-LossMap failed " +
+											$"with torque={axlegearTorque} " +
+											$"and angularSpeed={axleAngularVelocity.ConvertToRoundsPerMinute()} " +
+											$"(gear={gear.Key}, velocity={velocity})");
 				}
 			}
 			return null;

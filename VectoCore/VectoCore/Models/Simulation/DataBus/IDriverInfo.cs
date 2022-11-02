@@ -50,5 +50,9 @@ namespace TUGraz.VectoCore.Models.Simulation.DataBus
 		DrivingAction DrivingAction { get; }
 
 		MeterPerSquareSecond DriverAcceleration { get; }
+
+		PCCStates PCCState { get; }
+
+		MeterPerSecond NextBrakeTriggerSpeed { get; }
 	}
 }

@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="VECTO3GUI.Views.CustomControls.IntegerVectoParameterControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:VECTO3GUI.Views.CustomControls"
+             xmlns:validation="clr-namespace:VECTO3GUI.Helper.Validation"
+             mc:Ignorable="d" 
+             d:DesignHeight="40" d:DesignWidth="300" d:DataContext="{d:DesignInstance {x:Type local:IntegerVectoParameterControl}}">
+    
+    <Grid Margin="5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" SharedSizeGroup="{Binding CaptionWidthGroup}"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto" SharedSizeGroup="{Binding UnitWidthGroup}"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="0" Margin="0,0,10,0" Text="{Binding Caption}"  />
+        <TextBox Grid.Row="0" Grid.Column="1" Margin="20,0,0,0" TextAlignment="{Binding ValueAlign}"  x:Name="txtName" >
+            <TextBox.Resources>
+                <validation:IntegerValidatorConfig x:Key="IntValidator" MinValue="{Binding MinValue}" MaxValue="{Binding MaxValue}"/>
+            </TextBox.Resources>
+            <!--http://geekswithblogs.net/NewThingsILearned/archive/2008/01/15/binding-to-an-attached-property.aspx-->
+            <TextBox.Text >
+                <Binding Delay="100"
+                         Mode="TwoWay"
+                         NotifyOnSourceUpdated="True"
+                         NotifyOnTargetUpdated="True"
+                         NotifyOnValidationError="True"
+                         Path="Value"
+                         UpdateSourceTrigger="PropertyChanged"
+                         ValidatesOnDataErrors="True"
+                         ValidatesOnExceptions="True">
+                    <Binding.ValidationRules>
+                        <validation:IntegerValidator ValidatorConfig="{StaticResource IntValidator}" />
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+
+        <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Unit}" Margin="5,0,5,0"/>
+    </Grid>
+</UserControl>
