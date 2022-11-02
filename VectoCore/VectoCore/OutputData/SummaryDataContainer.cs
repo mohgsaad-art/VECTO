@@ -387,7 +387,7 @@ namespace TUGraz.VectoCore.OutputData
 			if (modData.HasCombustionEngine) {
 				WriteFuelConsumptionEntries(modData, row, vehicleLoading, cargoVolume, passengerCount, runData);
 			} else {
-				if (runData.ElectricMachinesData.Count > 0) {
+				if ((runData.ElectricMachinesData.Count > 0) && !modData.Distance.IsEqual(0)) {
 					lock (Table) {
 						if (!Table.Columns.Contains(Fields.ElectricEnergyConsumptionPerKm)) {
 							lock (_tableLock) {

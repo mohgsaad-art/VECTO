@@ -1374,3 +1374,12 @@ cycle
 * Bugfix: Traction interruption failed in distance corrected time steps
 * Removed unused parameters from .vecto file. OLD FILES ARE NOT SUPPORTED!!!
 * Added JRC contact data in "About" form.
+
+# VECTO Development Release Changelog
+
+## 2022-11-01: Vecto 0.7.9-2862 JRC Development Release
+- Improvements
+  - Implementation of measured speed cycle for BEVs (E2, E3, E4, IEPC)
+  - Implementation of measured speed with gear for BEVs (E2, IEPC)
+  - Implementation of Pwheel mode for BEVs (E2, E3, E4, IEPC)
+ 
