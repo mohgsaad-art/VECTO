@@ -1377,7 +1377,7 @@ cycle
 
 # VECTO Development Release Changelog
 
-## 2022-11-01: Vecto 0.7.9-2862 JRC Development Release
+## 2022-11-01: Vecto 0.7.9-2864 JRC Development Release
 - Improvements
   - Implementation of measured speed cycle for BEVs (E2, E3, E4, IEPC)
   - Implementation of measured speed with gear for BEVs (E2, IEPC)
