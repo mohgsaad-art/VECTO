@@ -840,6 +840,9 @@
     <EmbeddedResource Include="Resources\XSD\VectoMonitoring.0.7.2.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\XSD\VectoDeclarationDefinitions.2.5.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <None Include="Utils\VectoVersionCore.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>VectoVersionCore.cs</LastGenOutput>

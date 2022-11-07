@@ -3902,6 +3902,9 @@
     <Content Include="TestData\XML\XMLReaderDeclaration\SchemaVersion2.2\vecto_vehicle-sample_LNG.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TestData\XML\XMLReaderDeclaration\SchemaVersion2.5\TyreSample.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestData\XML\XMLReaderDeclaration\Tractor_4x2_vehicle-class-5_5_t_0.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
