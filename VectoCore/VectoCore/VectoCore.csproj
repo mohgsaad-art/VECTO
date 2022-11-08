@@ -622,6 +622,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>VectoVersionCore.tt</DependentUpon>
     </Compile>
+    <Compile Include="Utils\VersioningUtil.cs" />
     <Compile Include="Utils\XMLDefinitions.cs" />
     <Compile Include="Utils\XMLHelper.cs" />
     <Compile Include="Utils\XmlResourceResolver.cs" />

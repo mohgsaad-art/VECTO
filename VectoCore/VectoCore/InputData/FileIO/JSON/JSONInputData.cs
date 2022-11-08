@@ -975,7 +975,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			string simToolVersionStr = XMLManufacturerReportReader.ReadElementValue(xmlDoc, "SimulationToolVersion");
 			string vectoVersionStr = VectoSimulationCore.VersionNumber;
 
-			bool xmlVersionNewer = VectoSimulationCore.CompareVersions(simToolVersionStr, vectoVersionStr) > 0;
+			bool xmlVersionNewer = VersioningUtil.CompareVersions(simToolVersionStr, vectoVersionStr) > 0;
 			
 			if (xmlVersionNewer) {
 				throw new VectoException($"Not allowed to run simulation because VECTO version is older than <SimulationToolVersion> in Manufacturer Report ({simToolVersionStr}).");
