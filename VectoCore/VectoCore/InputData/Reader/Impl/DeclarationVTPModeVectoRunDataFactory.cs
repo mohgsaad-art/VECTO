@@ -229,9 +229,9 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			
 			var correctionFactors = JobInputData.FuelNCVs.ToDictionary(
 				keySelector: f => f.Type, 
-				elementSelector: f => (DeclarationData.FuelData.Lookup(
+				elementSelector: f => (f.NCV / DeclarationData.FuelData.Lookup(
 					f.Type, 
-					JobInputData.Vehicle.TankSystem).LowerHeatingValueVecto / f.NCV).Value() * mileageCorrection);
+					JobInputData.Vehicle.TankSystem).LowerHeatingValueVecto).Value() * mileageCorrection);
 
 			vtpRunData.VTPData = new VTPData() {
 				CorrectionFactors = correctionFactors,

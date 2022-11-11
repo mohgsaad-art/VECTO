@@ -1,7 +1,7 @@
 ﻿using System;
 using TUGraz.VectoCommon.Utils;
 using NUnit.Framework;
-using static TUGraz.VectoCore.Utils.VectoSimulationCore;
+using static TUGraz.VectoCore.Utils.VersioningUtil;
 
 namespace TUGraz.VectoCore.Tests.Utils
 {

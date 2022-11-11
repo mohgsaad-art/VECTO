@@ -22,7 +22,7 @@
     <VocationalVehicle>false</VocationalVehicle>
     <SleeperCab>true</SleeperCab>
     <ADAS>
-      <EngineStopStart>false</EngineStopStart>
+      <EngineStopStart>true</EngineStopStart>
       <EcoRollWithoutEngineStop>false</EcoRollWithoutEngineStop>
       <EcoRollWithEngineStop>false</EcoRollWithEngineStop>
       <PredictiveCruiseControl>none</PredictiveCruiseControl>
