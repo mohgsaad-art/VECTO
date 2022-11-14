@@ -236,7 +236,8 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			retVal.Inertia = DeclarationData.Engine.EngineInertia(retVal.Displacement, gearbox.Type);
 			retVal.EngineStartTime = DeclarationData.Engine.DefaultEngineStartTime;
 			var limits = vehicle.TorqueLimits.ToDictionary(e => e.Gear);
-			var gears = FilterDisabledGears(gearbox.Gears, limits);
+			var gearsCopy = new List<ITransmissionInputData>(gearbox.Gears);
+			var gears = FilterDisabledGears(gearsCopy, limits);
 			var numGears = gears.Count;
 			var fullLoadCurves = new Dictionary<uint, EngineFullLoadCurve>(numGears + 1);
 			fullLoadCurves[0] = FullLoadCurveReader.Create(mode.FullLoadCurve, true);
@@ -336,7 +337,8 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 			}
 
 			var limits = inputData.TorqueLimits?.ToDictionary(e => e.Gear) ?? new Dictionary<int, ITorqueLimitInputData>();
-			var gearsInput = FilterDisabledGears(gearbox.Gears, limits);
+			var gearscopy = new List<ITransmissionInputData>(gearbox.Gears);
+			var gearsInput = FilterDisabledGears(gearscopy, limits);
 			if (gearsInput.Count < 1) {
 				throw new VectoSimulationException(
 					"At least one Gear-Entry must be defined in Gearbox!");
