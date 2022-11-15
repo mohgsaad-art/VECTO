@@ -245,7 +245,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			}
 
 			var container = new VehicleContainer(data.ExecutionMode, modData, sumWriter) { RunData = data };
-			var engine = new VTPCombustionEngine(container, data.EngineData, pt1Disabled: true);
+			var engine = new VTPCombustionEngine(container, data, pt1Disabled: true);
 
 			new VTPCycle(container, data.Cycle)
 				.AddComponent(new AxleGear(container, data.AxleGearData))
