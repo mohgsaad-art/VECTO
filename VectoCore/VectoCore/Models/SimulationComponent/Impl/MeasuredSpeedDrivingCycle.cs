@@ -106,10 +106,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				DataBus.GearboxCtl.GearShiftTriggered -= GearShiftTriggered;
 				DataBus.GearboxCtl.GearShiftTriggered += GearShiftTriggered;
             }
-			if ((RunData.JobType == VectoSimulationJobType.ParallelHybridVehicle) && (DataBus.HybridControllerCtl != null)) {
-				DataBus.HybridControllerCtl.Strategy.GearShiftTriggered -= GearShiftTriggered;
-				DataBus.HybridControllerCtl.Strategy.GearShiftTriggered += GearShiftTriggered;
-			}
             
 			var first = Data.Entries.First();
 
