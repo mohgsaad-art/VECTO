@@ -29,6 +29,7 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using Ninject.Activation.Caching;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,6 +42,7 @@ using TUGraz.VectoCore.InputData.Reader.ComponentData;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
 using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Data;
+using TUGraz.VectoCore.Models.SimulationComponent;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.OutputData;
 
@@ -111,7 +113,13 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			Report.InputDataHash = JobInputData.VectoJobHash;
 			Report.ManufacturerRecord = JobInputData.ManufacturerReportInputData;
 			Report.ManufacturerRecordHash = JobInputData.VectoManufacturerReportHash;
-			Report.InitializeReport(powertrainConfig);
+
+			var fuels = JobInputData.Vehicle.Components.EngineInputData.EngineModes.Select(
+					x => x.Fuels.Select(f => DeclarationData.FuelData.Lookup(f.FuelType, JobInputData.Vehicle.TankSystem))
+						.ToList())
+				.ToList();
+
+			Report.InitializeReport(powertrainConfig, fuels);
 		}
 
 
@@ -201,6 +209,8 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 				throw new VectoException("no VTP-Cycle provided!");
 			}
 			var drivingCycle = DrivingCycleDataReader.ReadFromDataTable(vtpCycle.CycleData, vtpCycle.Name, false);
+			ValidateFanTypeMatchesCycleData(drivingCycle);
+			ValidateFuelTypesMatchCycleData(drivingCycle);
 
 			// Loading is not relevant as we use P_wheel
 			var vtpRunData = CreateVectoRunData(Segment, Segment.Missions.First(), 0.SI<Kilogram>());
@@ -216,11 +226,49 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			//var ncvStd = DeclarationData.FuelData.Lookup(JobInputData.Vehicle.Components.EngineInputData.FuelType).LowerHeatingValueVecto;
 			//var ncvCorrection = ncvStd / JobInputData.NetCalorificValueTestFuel;
 			var mileageCorrection = GetMileagecorrectionFactor(JobInputData.Mileage);
-			vtpRunData.VTPData = new VTPData() {
-				CorrectionFactor = mileageCorrection,
-			};
-			yield return vtpRunData;
 			
+			var correctionFactors = JobInputData.FuelNCVs.ToDictionary(
+				keySelector: f => f.Type, 
+				elementSelector: f => (f.NCV / DeclarationData.FuelData.Lookup(
+					f.Type, 
+					JobInputData.Vehicle.TankSystem).LowerHeatingValueVecto).Value() * mileageCorrection);
+
+			vtpRunData.VTPData = new VTPData() {
+				CorrectionFactors = correctionFactors,
+				FuelNCVs = JobInputData.FuelNCVs
+			};
+
+			vtpRunData.TorqueDriftLeftWheel = JobInputData.TorqueDriftLeftWheel;
+			vtpRunData.TorqueDriftRightWheel = JobInputData.TorqueDriftRightWheel;
+
+			yield return vtpRunData;
+		}
+
+		protected void ValidateFuelTypesMatchCycleData(DrivingCycleData drivingCycle)
+		{ 
+			var fuelsPerMode = JobInputData.Vehicle.Components.EngineInputData.EngineModes.Select(
+					x => x.Fuels.Select(f => DeclarationData.FuelData.Lookup(f.FuelType, JobInputData.Vehicle.TankSystem)));
+
+			foreach (var fuels in fuelsPerMode) {
+				foreach (var fuel in fuels) {
+					if ((drivingCycle.Entries.First().Fuelconsumption != null)
+						&& !drivingCycle.Entries.First().Fuelconsumption.ContainsKey(fuel.FuelType)) {
+						
+						throw new VectoException($"Cycle {drivingCycle.Name} is missing {fuel.FuelType} input data.");
+					}
+				}
+			}
+		}
+
+		protected void ValidateFanTypeMatchesCycleData(DrivingCycleData drivingCycle)
+		{
+			var fan = JobInputData.Vehicle.Components.AuxiliaryInputData.Auxiliaries.First(x => x.Type == AuxiliaryType.Fan);
+			var fanFullyElectric = DeclarationData.Fan.FullyElectricTechnologies().Contains(fan.Technology.First());
+			var cycleHasFanElectricalPower = drivingCycle.Entries.First().FanElectricalPower != null;
+
+			if (fanFullyElectric ^ cycleHasFanElectricalPower) {
+				throw new VectoException($"Fan is{(fanFullyElectric ? "" : " not")} electric, while cycle has{(cycleHasFanElectricalPower ? "" : " no")} input for fan electrical power.");
+			}
 		}
 
 		public IInputDataProvider DataProvider { get; }

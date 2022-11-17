@@ -61,6 +61,9 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 			return JobInputData.Cycles.Select(
 				cycle => {
 					var drivingCycle = DrivingCycleDataReader.ReadFromDataTable(cycle.CycleData, cycle.Name, false);
+					ValidateFanTypeMatchesCycleData(drivingCycle);
+					ValidateFuelTypesMatchCycleData(drivingCycle);
+
 					// loading is not relevant as we use P_wheel
 					var runData = CreateVectoRunData(Segment, Segment.Missions.First(), 0.SI<Kilogram>());
 					runData.Cycle = new DrivingCycleProxy(drivingCycle, cycle.Name);
@@ -72,6 +75,8 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 						MissionType = MissionType.VerificationTest
 					};
 					runData.DriverData = Driverdata;
+					runData.TorqueDriftLeftWheel = JobInputData.TorqueDriftLeftWheel;
+					runData.TorqueDriftRightWheel = JobInputData.TorqueDriftRightWheel;
 					return runData;
 				});
 		}

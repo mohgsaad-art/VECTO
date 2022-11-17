@@ -206,6 +206,7 @@
     <Compile Include="Algorithms\DelaunayMapTest.cs" />
     <Compile Include="Utils\MockModalDataContainer.cs" />
     <Compile Include="Utils\DoubleExtensionMethodTest.cs" />
+    <Compile Include="Utils\VectoVersionTest.cs" />
     <Compile Include="Utils\VectoMathTest.cs" />
     <Compile Include="XML\XMLDeclarationInputTest.cs" />
     <Compile Include="XML\XMLDeclarationReaderVersionsTest.cs" />
@@ -2562,6 +2563,12 @@
     <None Include="TestData\Integration\TotalMassExceededInMU\Gear_9.vtlm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="TestData\Integration\VTPMode\DualFuelVehicle\vtp_cycle_2Hz.vdri">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\Integration\VTPMode\DualFuelVehicle\VTP_DualFuel.vecto">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="TestData\Integration\VTPMode\GenericVehicle XMLJob PTO\class_5_generic vehicle_DECL.vecto">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -2571,6 +2578,9 @@
     <None Include="TestData\Integration\VTPMode\GenericVehicle\class_3_generic vehicle_DECL.vecto">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="TestData\Integration\VTPMode\GenericVehicle\class_5_generic vehicle_DECL_FanPel.vecto">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="TestData\Integration\VTPMode\GenericVehicle\VTP cycle_RD_2Hz.vdri">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -2578,6 +2588,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="TestData\Integration\VTPMode\GenericVehicle\vtp_cycle_citybus_atser_2TC.vdri">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\Integration\VTPMode\GenericVehicle\VTP_rural_2Hz_FanPel.vdri">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="TestData\Integration\VTPMode\GenericVehicle_CNG\class_5_generic vehicle_DECL.vecto">
@@ -2614,6 +2627,27 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="TestData\Integration\VTPMode\GenericVehicle\VTP_rural_2Hz.vdri">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\Integration\VTPMode\Group2_RigidTruck_4x2\Class2_RigidTruck_DECL_LongHaulLowLoading_VTP_SS.vdri">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\Integration\VTPMode\Group2_RigidTruck_4x2\Class2_RigidTruck_DECL_SS_VTP.vecto">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\Integration\VTPMode\Group2_RigidTruck_4x2\Class2_RigidTruck_VTP_pollutants.vecto">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\Integration\VTPMode\Group2_RigidTruck_4x2\Class2_RigidTruck_VTP_TorqueDrift.vecto">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\Integration\VTPMode\Group2_RigidTruck_4x2\VTP_LongHaulReferenceLoad.vdri">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\Integration\VTPMode\Group2_RigidTruck_4x2\VTP_LongHaulReferenceLoad_TorqueDrift.vdri">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\Integration\VTPMode\Group2_RigidTruck_4x2\VTP_RegionalDeliveryReferenceLoad.vdri">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="TestData\Jobs\12t Delivery Truck Engineering Efficiency.vecto">
@@ -3746,6 +3780,13 @@
     <Content Include="TestData\Integration\ShiftStrategyV2\SampleVehicles\Tractor_6x4_vehicle-class-12_EURO6_2018.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TestData\Integration\VTPMode\DualFuelVehicle\dev\vehicle_sampleSingleModeDualFuel.RSLT_CUSTOMER.xml" />
+    <Content Include="TestData\Integration\VTPMode\DualFuelVehicle\vehicle_sampleSingleModeDualFuel.RSLT_MANUFACTURER.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\Integration\VTPMode\DualFuelVehicle\vehicle_sampleSingleModeDualFuel.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestData\Integration\VTPMode\GenericVehicle XMLJob PTO\Tractor_4x2_vehicle-class-5_Generic vehicle.RSLT_MANUFACTURER.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -3759,6 +3800,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\Integration\VTPMode\GenericVehicle\Rigid Truck_4x2_vehicle-class-3_EURO6_2018.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\Integration\VTPMode\GenericVehicle\Tractor_4x2_vehicle-class-5_Generic vehicle_FanPel.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\Integration\VTPMode\GenericVehicle_CNG\Tractor_4x2_vehicle-class-5_Generic vehicle.RSLT_MANUFACTURER.xml">
@@ -3783,6 +3827,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\Integration\VTPMode\GenericVehicle\Tractor_4x2_vehicle-class-5_Generic vehicle.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\Integration\VTPMode\Group2_RigidTruck_4x2\Class2_RigidTruck_DECL_SS.RSLT_MANUFACTURER.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\Integration\VTPMode\Group2_RigidTruck_4x2\Class2_RigidTruck_DECL_SS.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\Jobs\Tractor_4x2_vehicle-class-5_Generic vehicle.xml">

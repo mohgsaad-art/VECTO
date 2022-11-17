@@ -129,7 +129,10 @@ namespace TUGraz.VectoCore.Tests.Integration
 		//TestCase(@"TestData\XML\XMLReaderDeclaration\GroupTest\Tractor_6x2_vehicle-class-10_EURO6_2018.xml"),
 		//TestCase(@"TestData\XML\XMLReaderDeclaration\GroupTest\Rigid Truck_6x4_vehicle-class-11_EURO6_2018.xml"),
 		//TestCase(@"TestData\XML\XMLReaderDeclaration\GroupTest\Tractor_6x4_vehicle-class-12_EURO6_2018.xml"),
-		TestCase(@"TestData\XML\XMLReaderDeclaration\GroupTest\Rigid Truck_8x4_vehicle-class-16_EURO6_2018.xml")]
+		TestCase(@"TestData\XML\XMLReaderDeclaration\GroupTest\Rigid Truck_8x4_vehicle-class-16_EURO6_2018.xml"),
+		TestCase(@"TestData\Integration\VTPMode\DualFuelVehicle\vehicle_sampleSingleModeDualFuel.xml", TestName = "MRF report Dual-Fuel"),
+		TestCase(@"TestData\Integration\VTPMode\Group2_RigidTruck_4x2\Class2_RigidTruck_DECL_SS.xml", TestName = "MRF report RigidTruck 4x2"),
+		]
         public void TestXMLSummaryReportExists(string jobfile)
         {
 			var dataProvider = xmlInputReader.CreateDeclaration(jobfile);

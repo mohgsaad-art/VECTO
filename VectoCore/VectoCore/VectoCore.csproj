@@ -622,6 +622,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>VectoVersionCore.tt</DependentUpon>
     </Compile>
+    <Compile Include="Utils\VersioningUtil.cs" />
     <Compile Include="Utils\XMLDefinitions.cs" />
     <Compile Include="Utils\XMLHelper.cs" />
     <Compile Include="Utils\XmlResourceResolver.cs" />
@@ -837,7 +838,7 @@
     <EmbeddedResource Include="Resources\XSD\VectoOutputManufacturer.0.7.2.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\XSD\VectoMonitoring.0.7.2.xsd">
+    <EmbeddedResource Include="Resources\XSD\VTPReport.0.11.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="Utils\VectoVersionCore.tt">

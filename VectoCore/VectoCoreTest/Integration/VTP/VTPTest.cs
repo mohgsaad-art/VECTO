@@ -85,13 +85,25 @@ namespace TUGraz.VectoCore.Tests.Integration.VTP
 			
 		}
 
+		private const string STOP_START_JOB = @"TestData\Integration\VTPMode\Group2_RigidTruck_4x2\Class2_RigidTruck_DECL_SS_VTP.vecto";
+		private const string POLLUTANTS_JOB = @"TestData\Integration\VTPMode\Group2_RigidTruck_4x2\Class2_RigidTruck_VTP_pollutants.vecto";
+		private const string PEL_FAN_JOB = @"TestData\Integration\VTPMode\GenericVehicle\class_5_generic vehicle_DECL_FanPel.vecto";
+		private const string DUAL_FUEL_JOB = @"TestData\Integration\VTPMode\DualFuelVehicle\VTP_DualFuel.vecto";
+		private const string TORQUE_DRIFT_JOB = @"TestData\Integration\VTPMode\Group2_RigidTruck_4x2\Class2_RigidTruck_VTP_TorqueDrift.vecto";
+
 		[Category("LongRunning")]
 		[Category("Integration")]
-		[TestCase(@"TestData\Integration\VTPMode\GenericVehicle\class_5_generic vehicle_DECL.vecto", 0.8972, TestName = "Generic Group 5 VTP Test Declaration Mode"),
-		 TestCase(@"TestData\Integration\VTPMode\GenericVehicle XMLJob PTO\class_5_generic vehicle_DECL.vecto", 0.8925, TestName = "Generic Group 5 VTP Test Declaration Mode with PTO"),
-		TestCase(@"TestData\Integration\VTPMode\GenericVehicle\class_3_generic vehicle_DECL.vecto", 1.0068, TestName = "Generic Group 3 VTP Test Declaration Mode")
+		[
+		TestCase(@"TestData\Integration\VTPMode\GenericVehicle\class_5_generic vehicle_DECL.vecto", 4.44E-08, 0.8972, TestName = "Generic Group 5 VTP Test Declaration Mode"),
+		TestCase(@"TestData\Integration\VTPMode\GenericVehicle XMLJob PTO\class_5_generic vehicle_DECL.vecto", 4.45E-08, 0.8925, TestName = "Generic Group 5 VTP Test Declaration Mode with PTO"),
+		TestCase(@"TestData\Integration\VTPMode\GenericVehicle\class_3_generic vehicle_DECL.vecto", 1.26E-07, 1.0068, TestName = "Generic Group 3 VTP Test Declaration Mode"),
+		TestCase(STOP_START_JOB, 7.89E-08, 1.0099, TestName = "VTP StopStart"),
+		TestCase(PEL_FAN_JOB, 4.44E-08, 0.8968, TestName = "VTP Fan Electrical Power"),
+		TestCase(POLLUTANTS_JOB, 7.89E-08, 1.0082, TestName = "VTP Pollutants"),
+		TestCase(DUAL_FUEL_JOB, 4.71E-09, 1.0107, TestName = "VTP Dual Fuel"),
+		TestCase(TORQUE_DRIFT_JOB, 7.89E-08, 1.0082, TestName = "VTP Torque Drift")
 		]
-		public void RunVTP_Declaration(string jobFile, double expectedVTPFactor)
+		public void RunVTP_Declaration(string jobFile, double expectedDeclaredCO2, double expectedCVTP)
 		{
 			var fileWriter = new FileOutputWriter(jobFile);
 			var sumWriter = new SummaryDataContainer(fileWriter);
@@ -108,19 +120,21 @@ namespace TUGraz.VectoCore.Tests.Integration.VTP
 			jobContainer.AddRuns(runsFactory);
 
 			Assert.AreEqual(2, jobContainer.Runs.Count);
-			//var i = 0;
-			//jobContainer.Runs[i].Run.Run();
-			//Assert.IsTrue(jobContainer.Runs[i].Run.FinishedWithoutErrors);
-
+			
 			jobContainer.Execute();
 			jobContainer.WaitFinished();
 
 			Assert.AreEqual(true, jobContainer.AllCompleted);
 
-			var vtpReport = XDocument.Load(XmlReader.Create(fileWriter.XMLVTPReportName));
-			var vtpFactor = vtpReport.XPathSelectElement("//*[local-name() = 'Results']/*[local-name() = 'VTRatio']")?.Value.ToDouble(0);
+			var vtpXml = XDocument.Load(fileWriter.XMLVTPReportName);
 
-			Assert.AreEqual(expectedVTPFactor, vtpFactor);
+			var declared = vtpXml.Document?.XPathSelectElement("//*[local-name()='Declared']")?.Value.ToDouble();
+			var cvtp = vtpXml.Document?.XPathSelectElement("//*[local-name()='C_VTP']")?.Value.ToDouble();
+
+			TestContext.WriteLine($"declared CO2 = {declared}, cvtp = {cvtp}");
+
+			Assert.AreEqual(expectedDeclaredCO2, declared, 1e-8);
+			Assert.AreEqual(expectedCVTP, cvtp, 1e-4);
 		}
 
 		[Category("LongRunning")]
@@ -153,9 +167,9 @@ namespace TUGraz.VectoCore.Tests.Integration.VTP
 			Assert.AreEqual(true, jobContainer.AllCompleted);
 
 			var vtpReport = XDocument.Load(XmlReader.Create(fileWriter.XMLVTPReportName));
-			var vtpFactor = vtpReport.XPathSelectElement("//*[local-name() = 'Results']/*[local-name() = 'VTRatio']")?.Value.ToDouble(0);
+			var vtpFactor = vtpReport.XPathSelectElement("//*[local-name() = 'Results']/*[local-name() = 'C_VTP']")?.Value.ToDouble(0);
 
-			Assert.AreEqual(0.8972, vtpFactor);
+			Assert.AreEqual(0.9549, vtpFactor);
 		}
 
 

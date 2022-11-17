@@ -599,6 +599,13 @@ public class JSONFileWriter : IOutputFileWriter
 		WriteFile(header, body, filename);
 	}
 
+	public class FuelNCVOutput
+    {
+		public string Type { get; internal set; }
+
+		public double NCV { get; internal set; }
+	}
+
 	private Dictionary<string, object> SaveVTPJob(IVTPDeclarationJobInputData job, string filename, bool declarationmode)
 	{
 		// Body
@@ -612,8 +619,17 @@ public class JSONFileWriter : IOutputFileWriter
 		}
 		body.Add("FanPowerCoefficients", job.FanPowerCoefficents);
 		body.Add("FanDiameter", job.FanDiameter.Value());
+		body.Add(JsonKeys.Job_FuelNCVs, job.FuelNCVs.Select(x => new FuelNCVOutput() 
+			{ 
+				Type = x.Type.GetLabel(), 
+				NCV = x.NCV.ConvertToMegaJoulePerKilogram().Value 
+			}).ToArray());
+
+		body.Add(JsonKeys.Job_TorqueDriftLeftWheel, job.TorqueDriftLeftWheel.Value());
+		body.Add(JsonKeys.Job_TorqueDriftRightWheel, job.TorqueDriftRightWheel.Value());
 		body.Add(
 			"Cycles", job.Cycles.Select(x => GetRelativePath(x.CycleData.Source, Path.GetDirectoryName(filename))).ToArray());
+		
 		return body;
 	}
 

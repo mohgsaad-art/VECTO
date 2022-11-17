@@ -18,22 +18,36 @@ Refers to other files:
 ~~~json
 {
   "Header": {
-    "CreatedBy": "VECTO 3.2",
-    "Date": "2017-11-14T13:16:31.7337506Z",
+    "CreatedBy": "VECTO 3.3.11",
+    "Date": "2022-09-12T13:30:50.8149043Z",
     "AppVersion": "3",
     "FileVersion": 4
   },
   "Body": {
-    "SavedInDeclMode": false,
-    "DeclarationVehicle": "SampleVehicle.xml",
+    "SavedInDeclMode": true,
+    "DeclarationVehicle": "vehicle_sampleSingleModeDualFuel.xml",
+    "ManufacturerRecord": "vehicle_sampleSingleModeDualFuel.RSLT_MANUFACTURER.xml",
+    "Mileage": 30000.0,
     "FanPowerCoefficients": [
-      0.00000055,
-      14.62,
-      108.5
+      7.32,
+      1200.0,
+      810.0
     ],
-    "FanDiameter": 0.225,
+    "FanDiameter": 0.3,
+    "FuelNCVs": [
+      {
+        "Type": "Diesel CI",
+        "NCV": 42.7
+      },
+      {
+        "Type": "NG CI",
+        "NCV": 48.0
+      }
+    ],
+    "TorqueDriftLeftWheel": 0.0,
+    "TorqueDriftRightWheel": 0.0,
     "Cycles": [
-      "VTP-cycle.vdri"
+      "vtp_cycle_2Hz.vdri"
     ]
   }
 }

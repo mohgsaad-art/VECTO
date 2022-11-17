@@ -145,6 +145,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 				EngineSpeed = entry.EngineSpeed;
 				FanSpeed = entry.FanSpeed;
 				PTOPowerDemandDuringDrive = entry.PTOPowerDemandDuringDrive;
+				FanElectricalPower = entry.FanElectricalPower;
+				CombustionEngineTorque = entry.CombustionEngineTorque;
+				CH4MassFlow = entry.CH4MassFlow;
+				COMassFlow = entry.COMassFlow;
+				NMHCMassFlow = entry.NMHCMassFlow;
+				NOxMassFlow = entry.NOxMassFlow;
+				THCMassFlow = entry.THCMassFlow;
+				PMNumberFlow = entry.PMNumberFlow;
 			}
 
 			/// <summary>
@@ -175,7 +183,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 				get { return (Math.Tan(RoadGradient.Value()) * 100).SI<Scalar>(); }
 			}
 
-			public KilogramPerSecond Fuelconsumption;
+			public Dictionary<FuelType, KilogramPerSecond> Fuelconsumption;
 
 			/// <summary>
 			/// relative altitude of the driving cycle over distance
@@ -250,6 +258,22 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 			public PerSecond EngineSpeed;
 
 			public PerSecond FanSpeed;
+
+			public Watt FanElectricalPower;
+
+			public NewtonMeter CombustionEngineTorque;
+
+			public KilogramPerSecond CH4MassFlow;
+
+			public KilogramPerSecond COMassFlow;
+
+			public KilogramPerSecond NMHCMassFlow;
+
+			public KilogramPerSecond NOxMassFlow;
+
+			public KilogramPerSecond THCMassFlow;
+
+			public PerSecond PMNumberFlow;
 
 			// required for VTP Mode (validation of cycle data in declaration mode)
 			public NewtonMeter TorqueWheelLeft;

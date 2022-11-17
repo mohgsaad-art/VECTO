@@ -229,7 +229,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 		}
 
 
-		public override void InitializeReport(VectoRunData modelData)
+		public override void InitializeReport(VectoRunData modelData, List<List<FuelData.Entry>> fuelModes)
 		{
 			if (modelData.Exempted) {
 				WeightingGroup = WeightingGroup.Unknown;

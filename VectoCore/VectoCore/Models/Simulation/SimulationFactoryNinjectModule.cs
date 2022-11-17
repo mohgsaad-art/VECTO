@@ -29,6 +29,7 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+using System.Collections.Generic;
 using Ninject.Extensions.Factory;
 using Ninject.Modules;
 using TUGraz.VectoCommon.InputData;
@@ -65,7 +66,7 @@ namespace TUGraz.VectoCore.Models.Simulation
 	{
 		#region Implementation of IDeclarationReport
 
-		public void InitializeReport(VectoRunData modelData)
+		public void InitializeReport(VectoRunData modelData, List<List<FuelData.Entry>> fuelModes)
 		{
 
 		}
@@ -87,7 +88,7 @@ namespace TUGraz.VectoCore.Models.Simulation
 	{
 		#region Implementation of IDeclarationReport
 
-		public void InitializeReport(VectoRunData modelData)
+		public void InitializeReport(VectoRunData modelData, List<List<FuelData.Entry>> fuelModes)
 		{
 
 		}

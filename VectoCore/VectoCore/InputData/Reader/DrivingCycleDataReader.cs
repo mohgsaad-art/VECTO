@@ -361,6 +361,14 @@ namespace TUGraz.VectoCore.InputData.Reader
 			public const string PTOActive = "PTO";
 			public const string PTODuringDrivePower = "PTO_Power";
 			public const string Highway = "HW";
+			public const string FanElectricalPower = "Pel_fan";
+			public const string CombustionEngineTorque = "tq_eng";
+			public const string CH4MassFlow = "CH4";
+			public const string COMassFlow = "CO";
+			public const string NMHCMassFlow = "NMHC";
+			public const string NOxMassFlow = "NOx";
+			public const string THCMassFlow = "THC";
+			public const string PMNumberFlow = "PN";
 		}
 
 		#region DataParser
@@ -430,6 +438,64 @@ namespace TUGraz.VectoCore.InputData.Reader
 					}
 
 					return false;
+				}
+
+				return true;
+			}
+
+			protected static bool CheckMutuallyExclusiveColumns(DataColumnCollection header, string[] cols, bool throwExceptions)
+			{
+				var colCount = header.Cast<DataColumn>().Count(col => cols.Select(x => x.ToLowerInvariant())
+					.Contains(col.ColumnName.ToLowerInvariant()));
+
+				if (colCount != 1) {
+					if (throwExceptions) {
+						throw new VectoException("Exactly one of these columns have to be defined: {0}", string.Join(", ", cols));
+					}
+
+					return false;
+                }
+
+				return true;
+            }
+
+            protected static bool CheckColumnsPredicatedOnAnother(DataColumnCollection header, string[] cols, string[] others, bool throwExceptions)
+            { 
+				var otherCount = header.Cast<DataColumn>().Count(other => others.Select(x => x.ToLowerInvariant())
+					.Contains(other.ColumnName.ToLowerInvariant()));
+
+				if (otherCount > 0)	{
+					var headerStr = header.Cast<DataColumn>().Select(col => col.ColumnName.ToLowerInvariant()).ToArray();
+					var diff = cols.Select(x => x.ToLowerInvariant()).Except(headerStr).ToList();
+					
+					if (diff.Any()) {
+						if (throwExceptions) {
+							throw new VectoException("Column(s) required: " + string.Join(", ", diff));
+						}
+
+						return false;
+					}
+                }
+
+				return true;
+			}
+
+			protected static bool CheckColumnsPredicatedOnAnotherMissing(DataColumnCollection header, string[] cols, string[] others, bool throwExceptions)
+			{ 
+				var otherCount = header.Cast<DataColumn>().Count(other => others.Select(x => x.ToLowerInvariant())
+					.Contains(other.ColumnName.ToLowerInvariant()));
+
+				if (otherCount < others.Count()) {
+					var headerStr = header.Cast<DataColumn>().Select(col => col.ColumnName.ToLowerInvariant()).ToArray();
+					var diff = cols.Select(x => x.ToLowerInvariant()).Except(headerStr).ToList();
+					
+					if (diff.Any()) {
+						if (throwExceptions) {
+							throw new VectoException("Column(s) required: " + string.Join(", ", diff));
+						}
+
+						return false;
+					}
 				}
 
 				return true;
@@ -777,27 +843,53 @@ namespace TUGraz.VectoCore.InputData.Reader
 			{
 				ValidateHeader(table.Columns);
 
+				var fuels = table.Columns.Cast<DataColumn>().Where(x => x.ColumnName.StartsWith("fc_"))
+					.Select(x => x.ColumnName.Replace("fc_", "").ParseEnum<FuelType>()).ToArray();
 				var entries = table.Rows.Cast<DataRow>().Select(
 					row => {
 						var tqLeft = row.ParseDouble(Fields.WheelTorqueLeft).SI<NewtonMeter>();
 						var tqRight = row.ParseDouble(Fields.WheelTorqueRight).SI<NewtonMeter>();
 						var speedLeft = row.ParseDouble(Fields.WheelSpeedLeft).RPMtoRad();
 						var speedRight = row.ParseDouble(Fields.WheelSpeedRight).RPMtoRad();
+						var fc = new Dictionary<FuelType, KilogramPerSecond>();
+						foreach (var fuelType in fuels) {
+							fc[fuelType] = row.ParseDoubleOrGetDefault("fc_" + fuelType.ToXMLFormat())
+								.SI(Unit.SI.Gramm.Per.Hour)
+								.Cast<KilogramPerSecond>();
+						}
+
 						return new DrivingCycleData.DrivingCycleEntry {
 							Time = row.ParseDouble(Fields.Time).SI<Second>(),
 							VehicleTargetSpeed = row.ParseDouble(Fields.VehicleSpeed).KMPHtoMeterPerSecond(),
 							AdditionalAuxPowerDemand =
 								row.ParseDoubleOrGetDefault(Fields.AdditionalAuxPowerDemand).SI(Unit.SI.Kilo.Watt).Cast<Watt>(),
 							EngineSpeed = row.ParseDouble(Fields.EngineSpeedSuffix).RPMtoRad(),
-							FanSpeed = row.ParseDouble(Fields.FanSpeed).RPMtoRad(),
+							FanSpeed = table.Columns.Contains(Fields.FanSpeed)
+								? row.ParseDoubleOrGetDefault(Fields.FanSpeed).RPMtoRad()
+								: null,
 							Gear = (uint)row.ParseDoubleOrGetDefault(Fields.Gear),
-							Fuelconsumption = row.ParseDoubleOrGetDefault(Fields.FuelConsumption).SI(Unit.SI.Gramm.Per.Hour)
-												.Cast<KilogramPerSecond>(),
+							Fuelconsumption = fc,
 							TorqueConverterActive = row.ParseBooleanOrGetDefault(Fields.TorqueConverterActive),
 							TorqueWheelLeft = tqLeft,
 							TorqueWheelRight = tqRight,
 							WheelSpeedLeft = speedLeft,
-							WheelSpeedRight = speedRight
+							WheelSpeedRight = speedRight,
+							FanElectricalPower = table.Columns.Contains(Fields.FanElectricalPower) 
+								? row.ParseDouble(Fields.FanElectricalPower).SI<Watt>() 
+								: null,
+							CombustionEngineTorque = row.ParseDouble(Fields.CombustionEngineTorque).SI<NewtonMeter>(),
+							CH4MassFlow = table.Columns.Contains(Fields.CH4MassFlow)
+								? row.ParseDouble(Fields.CH4MassFlow).SI(Unit.SI.Gramm.Per.Second).Cast<KilogramPerSecond>()
+								: null,
+							COMassFlow = row.ParseDouble(Fields.COMassFlow).SI(Unit.SI.Gramm.Per.Second).Cast<KilogramPerSecond>(),
+							NMHCMassFlow = table.Columns.Contains(Fields.NMHCMassFlow)
+								? row.ParseDouble(Fields.NMHCMassFlow).SI(Unit.SI.Gramm.Per.Second).Cast<KilogramPerSecond>()
+								: null,
+							NOxMassFlow = row.ParseDouble(Fields.NOxMassFlow).SI(Unit.SI.Gramm.Per.Second).Cast<KilogramPerSecond>(),
+							THCMassFlow = table.Columns.Contains(Fields.THCMassFlow)
+								? row.ParseDouble(Fields.THCMassFlow).SI(Unit.SI.Gramm.Per.Second).Cast<KilogramPerSecond>()
+								: null,
+							PMNumberFlow = row.ParseDouble(Fields.PMNumberFlow).SI<PerSecond>()
 						};
 					}).ToArray();
 
@@ -810,11 +902,14 @@ namespace TUGraz.VectoCore.InputData.Reader
 					Fields.Time,
 					Fields.VehicleSpeed,
 					Fields.EngineSpeedSuffix,
-					Fields.FanSpeed,
 					Fields.WheelSpeedLeft,
 					Fields.WheelSpeedRight,
 					Fields.WheelTorqueLeft,
 					Fields.WheelTorqueRight,
+					Fields.CombustionEngineTorque,
+					Fields.COMassFlow,
+					Fields.NOxMassFlow,
+					Fields.PMNumberFlow
 				};
 
 				var allowedCols = new[] {
@@ -828,13 +923,27 @@ namespace TUGraz.VectoCore.InputData.Reader
 					Fields.WheelTorqueRight,
 					Fields.Gear,
 					Fields.TorqueConverterActive,
-					Fields.FuelConsumption
-				};
+					Fields.FanElectricalPower,
+					Fields.CombustionEngineTorque,
+					Fields.CH4MassFlow,
+					Fields.COMassFlow,
+					Fields.NMHCMassFlow,
+					Fields.NOxMassFlow,
+					Fields.THCMassFlow,
+					Fields.PMNumberFlow
+				}.Concat(EnumHelper.GetValues<FuelType>().Select(x => "fc_" + x.ToXMLFormat()));
 
 				const bool allowAux = true;
 
-				return CheckColumns(header, allowedCols, requiredCols, throwExceptions, allowAux) &&
-						CheckComboColumns(header, new[] { Fields.AirSpeedRelativeToVehicle, Fields.WindYawAngle }, throwExceptions);
+				return CheckColumns(header, allowedCols, requiredCols, throwExceptions, allowAux) 
+					&& CheckComboColumns(header, new[] { Fields.AirSpeedRelativeToVehicle, Fields.WindYawAngle }, throwExceptions)
+					&& CheckMutuallyExclusiveColumns(header, new[] { Fields.FanSpeed, Fields.FanElectricalPower}, throwExceptions)
+					&& CheckColumnsPredicatedOnAnotherMissing(
+						header,
+						new[] { Fields.THCMassFlow },
+						new[] { Fields.CH4MassFlow, Fields.NMHCMassFlow },
+						throwExceptions
+					);
 			}
 		}
 

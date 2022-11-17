@@ -32,6 +32,7 @@
 using System;
 using System.Linq;
 using TUGraz.VectoCommon.BusAuxiliaries;
+using TUGraz.VectoCommon.Exceptions;
 using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
@@ -44,11 +45,16 @@ using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
-    public class VTPCombustionEngine : CombustionEngine
+    public class VTPCombustionEngine : StopStartCombustionEngine
     {
 		private bool firstInit = true;
 
-        public VTPCombustionEngine(IVehicleContainer container, CombustionEngineData modelData, bool pt1Disabled = false) : base(container, modelData, pt1Disabled) { }
+		public VectoRunData RunData { get; protected set; }
+
+        public VTPCombustionEngine(IVehicleContainer container, VectoRunData runData, bool pt1Disabled = false) : base(container, runData.EngineData, pt1Disabled) 
+		{
+			RunData = runData;
+		}
 
 		public override IResponse Initialize(NewtonMeter outTorque, PerSecond outAngularVelocity)
 		{
@@ -68,12 +74,28 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				};
 				PreviousState.DynamicFullLoadTorque = PreviousState.StationaryFullLoadTorque;
 			}
+
 			return new ResponseSuccess(this) {
 				Engine = {
 					PowerRequest = PreviousState.EnginePower,
 					EngineSpeed = outAngularVelocity
 				}
 			};
+		}
+
+		public override IResponse Request(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, bool dryRun)
+		{
+			// Engine speed determines whether we consider the engine is on or off.
+			// This cut-off point affects calculations and Response (stop-start functionality, see base.Request)
+
+			CombustionEngineOn = DataBus.DrivingCycleInfo.CycleData.LeftSample.EngineSpeed >= 
+				(EngineIdleSpeed * Constants.SimulationSettings.VTPIdleSpeedDetectionFactor);
+
+			if (!CombustionEngineOn && !RunData.VehicleData.ADAS.EngineStopStart) {
+				throw new VectoException($"Vehicle does not feature EngineStopStart, but engine is off in step: {absTime}");
+			}
+
+			return base.Request(absTime, dt, outTorque, outAngularVelocity, dryRun);
 		}
 
 		protected override IResponse DoHandleRequest(Second absTime, Second dt, NewtonMeter torqueReq,
@@ -195,16 +217,15 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			};
 		}
 
-
 		protected override PerSecond GetEngineSpeed(PerSecond angularSpeed)
         {
-            return DataBus.DrivingCycleInfo.CycleData.LeftSample.EngineSpeed;
+			return DataBus.DrivingCycleInfo.CycleData.LeftSample.EngineSpeed;
         }
 
-		protected override double WHTCCorrectionFactor(IFuelProperties fuel)
+        protected override double WHTCCorrectionFactor(IFuelProperties fuel)
 		{
 			var selected = ModelData.Fuels.First(x => x.FuelData.FuelType == fuel.FuelType);
-
+			
 			if (DataBus.DrivingCycleInfo.CycleData.LeftSample.VehicleTargetSpeed >= Constants.SimulationSettings.HighwaySpeedThreshold) {
 				return selected.WHTCMotorway;
 			}
@@ -213,5 +234,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
 			return selected.WHTCUrban;
 		}
+		
 	}
 }

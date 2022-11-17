@@ -191,5 +191,13 @@ namespace TUGraz.VectoCore.InputData.Impl
 	{
 		public int Gear { get; internal set; }
 		public NewtonMeter MaxTorque { get; internal set; }
-	}
+    }
+
+    public class FuelNCVData : IFuelNCVData
+    {
+		public FuelType Type { get; internal set; }
+
+		public JoulePerKilogramm NCV { get; internal set; }
+    }
+
 }
