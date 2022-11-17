@@ -28,7 +28,6 @@ Partial Class VectoVTPJobForm
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(VectoVTPJobForm))
         Me.GrCycles = New System.Windows.Forms.GroupBox()
-        Me.Label12 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.LvCycles = New System.Windows.Forms.ListView()
         Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -125,7 +124,6 @@ Partial Class VectoVTPJobForm
         '
         Me.GrCycles.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.GrCycles.Controls.Add(Me.Label12)
         Me.GrCycles.Controls.Add(Me.Label2)
         Me.GrCycles.Controls.Add(Me.LvCycles)
         Me.GrCycles.Controls.Add(Me.BtDRIrem)
@@ -138,19 +136,6 @@ Partial Class VectoVTPJobForm
         Me.GrCycles.TabIndex = 10
         Me.GrCycles.TabStop = False
         Me.GrCycles.Text = "Cycles"
-        '
-        'Label12
-        '
-        Me.Label12.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label12.AutoSize = True
-        Me.Label12.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label12.Location = New System.Drawing.Point(8, 25)
-        Me.Label12.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
-        Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(541, 17)
-        Me.Label12.TabIndex = 4
-        Me.Label12.Text = "The fuel cocnsumption in the cycle has to be corrected for standard NCV!"
         '
         'Label2
         '
@@ -175,11 +160,11 @@ Partial Class VectoVTPJobForm
         Me.LvCycles.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
         Me.LvCycles.HideSelection = False
         Me.LvCycles.LabelEdit = True
-        Me.LvCycles.Location = New System.Drawing.Point(8, 49)
+        Me.LvCycles.Location = New System.Drawing.Point(8, 23)
         Me.LvCycles.Margin = New System.Windows.Forms.Padding(4)
         Me.LvCycles.MultiSelect = False
         Me.LvCycles.Name = "LvCycles"
-        Me.LvCycles.Size = New System.Drawing.Size(669, 117)
+        Me.LvCycles.Size = New System.Drawing.Size(669, 143)
         Me.LvCycles.TabIndex = 0
         Me.LvCycles.TabStop = False
         Me.LvCycles.UseCompatibleStateImageBehavior = False
@@ -1023,7 +1008,6 @@ End Sub
     Friend WithEvents Label11 As Label
     Friend WithEvents Label10 As Label
     Friend WithEvents Label9 As Label
-    Friend WithEvents Label12 As Label
     Friend WithEvents _ncvGrpBox As GroupBox
     Friend WithEvents _ncvFuel1Lbl As Label
     Friend WithEvents _ncvFuel2Lbl As Label
