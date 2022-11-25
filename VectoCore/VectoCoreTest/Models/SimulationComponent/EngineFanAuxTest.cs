@@ -53,9 +53,9 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
         }
 
         [
-        TestCase(14, 14.7),
-        TestCase(28, 29.4),
-        TestCase(7, 7.35)
+        TestCase(14, 20),
+        TestCase(28, 40),
+        TestCase(7, 10)
         ]
         public void TestEngineFanPowerDemandWithElectricalPower(double fanElectricalPower, double expectedPowerDemand)
         {
