@@ -32,6 +32,7 @@
 using System;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Configuration;
+using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
@@ -64,8 +65,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
         }
 
         public Watt PowerDemand(Watt fanElectricalPower)
-        { 
-			return fanElectricalPower * Constants.Auxiliaries.FanElectricToMechanicalEfficiency;
+		{
+			return fanElectricalPower / DeclarationData.AlternatorEfficiency;
 		}
 
     }
