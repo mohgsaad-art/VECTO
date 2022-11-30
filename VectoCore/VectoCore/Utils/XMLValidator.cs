@@ -129,7 +129,7 @@ namespace TUGraz.VectoCore.Utils
 		public static void CallBackExceptionOnError(XmlSeverityType severity, ValidationEvent evt)
 		{
 			if (severity == XmlSeverityType.Error) {
-				throw new VectoException("Validation error: {0}", evt.ValidationEventArgs.Message);
+				throw new VectoException("Validation error: {0}", evt.ValidationEventArgs?.Message ?? evt.Exception?.Message);
 			}
 		}
 
