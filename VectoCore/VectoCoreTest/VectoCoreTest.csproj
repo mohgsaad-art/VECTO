@@ -3878,6 +3878,9 @@
     <Content Include="TestData\XML\XMLReaderDeclaration\SchemaVersion2.1\vecto_vehicle-exempted-sample.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TestData\XML\XMLReaderDeclaration\SchemaVersion2.1\vecto_vehicle-tyre25.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestData\XML\XMLReaderDeclaration\SchemaVersion2.1\vecto_vehicle-new_parameters-sample.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
