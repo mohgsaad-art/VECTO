@@ -123,7 +123,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		{
 			var idx = 0;
 			foreach (var entry in batterySystemData.Batteries) {
-				var bat = new Battery(null, entry.Item2);
+				var bat = new Battery(null, entry.Item2, idx++);
 				if (!Batteries.ContainsKey(entry.Item1)) {
 					Batteries[entry.Item1] = new BatteryString();
 				}
