@@ -1377,9 +1377,12 @@ cycle
 
 # VECTO Development Release Changelog
 
+## 2022-11-30: Vecto 0.7.9-2890 JRC Bugfix Release
+- Bugfixes
+  - [VECTO-1673] - Incorrect results for battery energy/power in .vsum and .vmod in version VECTO-0.7.9.2864-DEV
+
 ## 2022-11-01: Vecto 0.7.9-2864 JRC Development Release
 - Improvements
   - Implementation of measured speed cycle for BEVs (E2, E3, E4, IEPC)
   - Implementation of measured speed with gear for BEVs (E2, IEPC)
   - Implementation of Pwheel mode for BEVs (E2, E3, E4, IEPC)
- 
