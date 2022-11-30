@@ -183,8 +183,12 @@ hashingcmd.exe
 		{
 			var args = evt.ValidationEventArgs;
 			if (severity == XmlSeverityType.Error) {
+				if (args == null) {
+					throw new Exception(string.Format("Validation error: {0}", evt.Exception.Message), evt.Exception.InnerException);
+				}
+
 				throw new Exception(string.Format("Validation error: {0}" + Environment.NewLine +
-										"Line: {1}", args.Message, args.Exception.LineNumber), evt.Exception);
+												"Line: {1}", args.Message, args.Exception.LineNumber), evt.Exception);
 			} else {
 				Console.Error.WriteLine("Validation warning: {0}" + Environment.NewLine +
 										"Line: {1}", args.Message, args.Exception.LineNumber);
