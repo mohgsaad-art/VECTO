@@ -3928,6 +3928,9 @@
     <Content Include="TestData\XML\XMLReaderDeclaration\SchemaVersion2.1\vecto_vehicle-exempted-sample.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TestData\XML\XMLReaderDeclaration\SchemaVersion2.1\vecto_vehicle-tyre25.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestData\XML\XMLReaderDeclaration\SchemaVersion2.1\vecto_vehicle-new_parameters-sample.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -3950,6 +3953,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\XML\XMLReaderDeclaration\SchemaVersion2.2\vecto_vehicle-sample_LNG.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\XML\XMLReaderDeclaration\SchemaVersion2.5\TyreSample.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestData\XML\XMLReaderDeclaration\Tractor_4x2_vehicle-class-5_5_t_0.xml">

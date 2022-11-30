@@ -33,6 +33,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Xml;
 using System.Xml.XPath;
 using Ninject;
@@ -54,7 +55,9 @@ using TUGraz.VectoCore.Utils;
 using NUnit.Framework;
 using TUGraz.VectoCommon.InputData;
 using TUGraz.VectoCore.InputData.FileIO.XML;
+using TUGraz.VectoCore.InputData.FileIO.XML.Declaration.Reader.Impl;
 using TUGraz.VectoCore.InputData.Reader.DataObjectAdapter;
+using XmlDocumentType = TUGraz.VectoCore.Utils.XmlDocumentType;
 
 namespace TUGraz.VectoCore.Tests.XML
 {
@@ -747,6 +750,62 @@ namespace TUGraz.VectoCore.Tests.XML
 					tyreDimension);
 			}
 		}
+
+		public const string SampleTyreXML = @"TestData\XML\XMLReaderDeclaration\SchemaVersion2.5\TyreSample.xml";
+
+		[TestCase()]
+		public void TestWheelsSupportedInXML()
+		{
+			var tyreDimensions = DeclarationData.Wheels.GetWheelsDimensions();
+			foreach (var tyreDimension in tyreDimensions) {
+				var reader = XmlReader.Create(SampleTyreXML);
+				var doc = new XmlDocument();
+				doc.Load(reader);
+				var nav = doc.CreateNavigator();
+				var manager = new XmlNamespaceManager(nav.NameTable);
+				var helper = new XPathHelper(ExecutionMode.Declaration);
+				helper.AddNamespaces(manager);
+				var tyredimensionNode = nav.SelectSingleNode(XMLHelper.QueryLocalName(XMLNames.AxleWheels_Axles_Axle_Dimension));
+				tyredimensionNode.SetValue(tyreDimension);
+
+				var modified = XmlReader.Create(new StringReader(nav.OuterXml));
+				var validator = new XMLValidator(modified, null, XMLValidator.CallBackExceptionOnError);
+				var valid = validator.ValidateXML(XmlDocumentType.DeclarationComponentData);
+				Assert.IsTrue(valid, $"error validating XML with dimension {tyreDimension}");
+			}
+		}
+
+		[
+		TestCase("285/55R16C"), // invalid space
+		//TestCase("285/55  R16C"), // allowed, as xs:token already combines multiple whitespaces
+		TestCase("85/55 R16C"), // invalid section width
+		TestCase("285/1231 R16C"), // invalid aspect ratio width
+		TestCase("285/55 X16C"), // invalid construction type
+		TestCase("85/55 R16112C"), // invalid rim diameter
+		TestCase("85/55 R16x"), // invalid suffix
+		TestCase("1.0001 R12"), // 
+		TestCase("9 R12111"), // invalid rim diameter
+		TestCase("9 R12x"), // invalid suffix
+		TestCase("9R12"), // invalid space
+		//TestCase("9  R12"), // allowed, as xs:token already combines multiple whitespaces
+		]
+		public void TestInvalidWheelsDimensionString(string dim)
+		{
+			var reader = XmlReader.Create(SampleTyreXML);
+			var doc = new XmlDocument();
+			doc.Load(reader);
+			var nav = doc.CreateNavigator();
+			var manager = new XmlNamespaceManager(nav.NameTable);
+			var helper = new XPathHelper(ExecutionMode.Declaration);
+			helper.AddNamespaces(manager);
+			var tyredimensionNode = nav.SelectSingleNode(XMLHelper.QueryLocalName(XMLNames.AxleWheels_Axles_Axle_Dimension));
+			tyredimensionNode.SetValue(dim);
+
+			var modified = XmlReader.Create(new StringReader(nav.OuterXml));
+			var validator = new XMLValidator(modified, null, XMLValidator.CallBackExceptionOnError);
+			AssertHelper.Exception<VectoException>(() => validator.ValidateXML(XmlDocumentType.DeclarationComponentData), messageContains: "Validation error:");
+		}
+
 
 		[TestCase]
 		public void TestPTOTypeTypes()

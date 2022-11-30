@@ -178,6 +178,9 @@
     <Content Include="Testdata\XML\ToHash\multiple_components.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Testdata\XML\ToHash\Tyre_v25.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Testdata\XML\ToHash\vecto_engine-input_emptyDate.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

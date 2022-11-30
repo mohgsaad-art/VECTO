@@ -285,12 +285,12 @@ namespace HashingTool.ViewModel.UserControl
 													(s, e) => {
 														Application.Current.Dispatcher.Invoke(
 															() => {
-																if (e.ValidationEventArgs == null) {
-																	LogError(
-																		string.Format(
-																			"XML file does not validate against a supported version of {0}",
-																			_expectedDocumentType.ToString()));
-																} else {
+																//if (e.ValidationEventArgs == null) {
+																//	LogError(
+																//		string.Format(
+																//			"XML file does not validate against a supported version of {0}",
+																//			_expectedDocumentType.ToString()));
+																//} else {
 																	LogError(
 																		string.Format(
 																			"Validation {0} Line {2}: {1}",
@@ -302,7 +302,7 @@ namespace HashingTool.ViewModel.UserControl
 																					: "")
 																				: e.ValidationEventArgs.Message,
 																			e.ValidationEventArgs == null ? 0 : e.ValidationEventArgs.Exception.LineNumber));
-																}
+																//}
 															}
 														);
 													}
