@@ -558,12 +558,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				// update action distance for current 'next action'
 				UpdateDistancesForCurrentNextAction();
 
-				SetNextDrivingAction(currentDistance, nextAction);
+				SetNextDrivingAction(currentDistance, nextAction, ds);
 			}
 			Log.Debug("Next Driving Action: {0}", NextDrivingAction);
 		}
 
-		private void SetNextDrivingAction(Meter currentDistance, DrivingBehaviorEntry nextAction)
+		private void SetNextDrivingAction(Meter currentDistance, DrivingBehaviorEntry nextAction, Meter ds)
 		{
 			if (nextAction != null) {
 				if (nextAction.HasEqualTrigger(NextDrivingAction)) {
@@ -575,6 +575,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				} else {
 					// hmm, we've got a new action that is closer to what we got before?
 					if (nextAction.ActionDistance < NextDrivingAction.ActionDistance) {
+						NextDrivingAction = nextAction;
+					}
+					
+					if ((currentDistance + ds).IsEqual(NextDrivingAction.TriggerDistance) && Driver.DataBus.VehicleInfo.VehicleSpeed < NextDrivingAction.NextTargetSpeed) {
+						// the currently active NextDrivingAction already reached the target speed - ignore it.
 						NextDrivingAction = nextAction;
 					}
 				}
