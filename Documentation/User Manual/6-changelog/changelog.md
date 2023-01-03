@@ -2,6 +2,11 @@
 
 **VECTO-3.3.13**
 
+***Build 2924 (2023-01-03) OFFICIAL RELEASE***
+
+ - Bugfixes (compared to 3.3.13.2891)
+    * [VECTO-1692] - Unexpected Response: Response Overload. UD RefLoad
+
 ***Build 2891 (2022-12-01) RELEASE CANDIDATE***
 
 - Improvements
