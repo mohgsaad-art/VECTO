@@ -53,15 +53,17 @@ using TUGraz.VectoHashing;
 using NLog;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using LogManager = NLog.LogManager;
+using static TUGraz.VectoCore.Models.Simulation.Data.VectoRunData;
+using static TUGraz.VectoCore.Models.Declaration.PT1;
 
 namespace TUGraz.VectoCore.OutputData.XML
 {
 	internal class XMLVTPReport : DeclarationReport<XMLVTPReport.ResultEntry>, IVTPReport
 	{
-		public const string CURRENT_SCHEMA_VERSION = "0.1";
+		public const string CURRENT_SCHEMA_VERSION = "0.11";
 
 		private const string VTPReportTartetName = "VTPReportTarget";
-
+		
 		protected XElement VehiclePart;
 		protected XElement GeneralPart;
 		protected XElement DataIntegrityPart;
@@ -80,22 +82,35 @@ namespace TUGraz.VectoCore.OutputData.XML
 		public class ResultEntry : XMLDeclarationReport.ResultEntry
 		{
 			public Watt AverageFanPower;
-			public Kilogram VTPFcFinalSimulated;
+			public Dictionary<FuelType, Kilogram> VTPFcFinalSimulated = new Dictionary<FuelType, Kilogram>();
 			public WattSecond VTPWorkPWheelPos;
-			public double VTPFcCorrectionFactor;
-			public Kilogram VTPFcMeasured;
+			public Dictionary<FuelType, double> VTPFcCorrectionFactors;
+			public Dictionary<FuelType, Kilogram> VTPFcMeasured = new Dictionary<FuelType, Kilogram>();
 			public WattSecond VTPWorPWheelSimPos;
+			public TankSystem? TankSystem;
+
+			public Scalar CH4Emissions { protected set; get; } = null;
+			public Scalar COEmissions { protected set; get; } = null;
+			public Scalar NMHCEmissions { protected set; get; } = null;
+			public Scalar NOxEmissions { protected set; get; } = null;
+			public Scalar THCEmissions { protected set; get; } = null;
+			public Scalar PMFlow { protected set; get; } = null;
+			public Scalar PositiveEngineWorkDeviation { protected set; get; } = null;
+			public ConvertedSI MeasuredPositiveEngineWork { protected set; get; } = null;
+			public ConvertedSI SimulatedPositiveEngineWork { protected set; get; } = null;
+			public IList<IFuelNCVData> FuelNCVs { protected set; get; } = null;
 
 			#region Overrides of ResultEntry
 
 			public override void SetResultData(VectoRunData runData, IModalDataContainer data, double factor)
 			{
 				base.SetResultData(runData, data, factor);
-
+				
 				if (runData.SimulationType != SimulationType.VerificationTest) {
 					return;
 				}
 
+				TankSystem = runData.VehicleData.InputData.TankSystem;
 				var aux = data.Auxiliaries.FirstOrDefault(x => x.Key == Constants.Auxiliaries.IDs.Fan);
 				AverageFanPower = data.AuxiliaryWork(aux.Value) / data.Duration;
 				var cycleEntries = runData.Cycle.Entries.Pairwise().Select(
@@ -106,9 +121,66 @@ namespace TUGraz.VectoCore.OutputData.XML
 					}).ToArray();
 				VTPWorPWheelSimPos = data.WorkWheelsPos();
 				VTPWorkPWheelPos = cycleEntries.Sum(x => x.PWheel * x.dt).Cast<WattSecond>();
-				VTPFcMeasured = cycleEntries.Sum(x => x.FC * x.dt).Cast<Kilogram>();
-				VTPFcFinalSimulated = data.TimeIntegral<Kilogram>(ModalResultField.FCFinal);
-				VTPFcCorrectionFactor = runData.VTPData.CorrectionFactor;
+				foreach (var fuel in cycleEntries.First().FC.Keys) {
+					VTPFcMeasured[fuel] = cycleEntries.Sum(x => x.FC[fuel] * x.dt);
+				}
+
+				foreach (var entry in data.FuelData) {
+					var col = data.GetColumnName(entry, ModalResultField.FCFinal);
+					var fcSum = data.TimeIntegral<Kilogram>(col);
+					VTPFcFinalSimulated[entry.FuelType] = fcSum;
+				}
+
+				VTPFcCorrectionFactors = runData.VTPData.CorrectionFactors;
+				FuelNCVs = runData.VTPData.FuelNCVs;
+
+				CalculatePositiveEngineWorkData(runData, data);
+				CalculateEmissions(runData, MeasuredPositiveEngineWork);
+			}
+
+			private ConvertedSI CalculateMeasuredPositiveEngineWork(VectoRunData runData)
+			{
+				return runData.Cycle.Entries.Pairwise()
+					.Where(x => x.Item1.CombustionEngineTorque.IsGreaterOrEqual(0))
+					.Sum(x => (x.Item1.EngineSpeed * x.Item1.CombustionEngineTorque) * (x.Item2.Time - x.Item1.Time))
+					.ConvertToKiloWattHour();
+			}
+
+			private void CalculatePositiveEngineWorkData(VectoRunData runData, IModalDataContainer data)
+			{ 
+				MeasuredPositiveEngineWork = CalculateMeasuredPositiveEngineWork(runData);
+				SimulatedPositiveEngineWork = data.TotalEngineWorkPositive().ConvertToKiloWattHour();
+				PositiveEngineWorkDeviation = 
+					((MeasuredPositiveEngineWork - SimulatedPositiveEngineWork) / MeasuredPositiveEngineWork).SI<Scalar>();
+			}
+
+			private void CalculateEmissions(VectoRunData runData, ConvertedSI measuredPositiveEngineWork)
+			{
+				var entries = runData.Cycle.Entries;
+
+				if (runData.Cycle.Entries.First().CH4MassFlow != null) {
+					var CH4 = entries.Pairwise().Sum(x => (x.Item1.CH4MassFlow) * (x.Item2.Time - x.Item1.Time)).ConvertToGramm();
+					CH4Emissions = ((CH4 / measuredPositiveEngineWork) * Constants.GramsToMilligrams).SI<Scalar>();
+				}
+
+				var CO = entries.Pairwise().Sum(x => x.Item1.COMassFlow * (x.Item2.Time - x.Item1.Time)).ConvertToGramm();
+				COEmissions = ((CO / measuredPositiveEngineWork) * Constants.GramsToMilligrams).SI<Scalar>();
+
+				if (entries.First().NMHCMassFlow != null) {
+					var NMHC = entries.Pairwise().Sum(x => x.Item1.NMHCMassFlow * (x.Item2.Time - x.Item1.Time)).ConvertToGramm();
+					NMHCEmissions = ((NMHC / measuredPositiveEngineWork) * Constants.GramsToMilligrams).SI<Scalar>();
+				}
+
+				var NOx = entries.Pairwise().Sum(x => x.Item1.NOxMassFlow * (x.Item2.Time - x.Item1.Time)).ConvertToGramm();
+				NOxEmissions = ((NOx / measuredPositiveEngineWork) * Constants.GramsToMilligrams).SI<Scalar>();
+
+				if (entries.First().THCMassFlow != null) {
+					var THC = entries.Pairwise().Sum(x => x.Item1.THCMassFlow * (x.Item2.Time - x.Item1.Time)).ConvertToGramm();
+					THCEmissions = ((THC / measuredPositiveEngineWork) * Constants.GramsToMilligrams).SI<Scalar>();
+				}
+	
+				var PN = entries.Pairwise().Sum(x => (x.Item1.PMNumberFlow * (x.Item2.Time - x.Item1.Time)).Value()).SI<Scalar>();
+				PMFlow = PN / measuredPositiveEngineWork;
 			}
 
 			#endregion
@@ -186,13 +258,26 @@ namespace TUGraz.VectoCore.OutputData.XML
 			const LoadingType selectedLoading = DeclarationData.VTPMode.SelectedLoading;
 			var result = Missions.FirstOrDefault(x => x.Key != MissionType.VerificationTest).Value.ResultEntry
 								.FirstOrDefault(x => x.Key == selectedLoading).Value;
-			var vtpFcMeasured = vtpResult.VTPFcMeasured / vtpResult.VTPWorkPWheelPos;
-			var vtpFcMeasuredCorr = vtpResult.VTPFcMeasured / vtpResult.VTPWorkPWheelPos * vtpResult.VTPFcCorrectionFactor;
-			var vtpFcSimulated = vtpResult.VTPFcFinalSimulated / fuel.HeatingValueCorrection / vtpResult.VTPWorPWheelSimPos;
-			var cVtp = vtpFcMeasuredCorr / vtpFcSimulated;
+			var vtpFcMeasured = vtpResult.VTPFcMeasured.Select(x => Tuple.Create(x.Key, x.Value / vtpResult.VTPWorkPWheelPos)).ToDictionary(x => x.Item1, x => x.Item2);
+			var vtpFcMeasuredCorr = vtpResult.VTPFcMeasured
+				.Select(x =>
+					Tuple.Create(x.Key, x.Value / vtpResult.VTPWorkPWheelPos * vtpResult.VTPFcCorrectionFactors[x.Key]))
+				.ToDictionary(x => x.Item1, x => x.Item2);
+			var vtpFcSimulated = vtpResult.VTPFcFinalSimulated
+				.Select(x => Tuple.Create(x.Key, x.Value / vtpResult.VTPWorPWheelSimPos))
+				.ToDictionary(x => x.Item1, x => x.Item2);
+
+			var fuels = DeclarationData.FuelData;
+	
+			var CO2Measured = vtpFcMeasured.Sum(e => e.Value * fuels.Lookup(e.Key, vtpResult.TankSystem).CO2PerFuelWeightVTP);
+			var CO2MeasuredCorrected = vtpFcMeasuredCorr.Sum(e => e.Value * fuels.Lookup(e.Key, vtpResult.TankSystem).CO2PerFuelWeightVTP);
+			var CO2Simulated = vtpFcSimulated.Sum(e => e.Value * fuels.Lookup(e.Key, vtpResult.TankSystem).CO2PerFuelWeightVTP);
+
+			var cVtp = CO2MeasuredCorrected / CO2Simulated;
 			var declaredCO2 = result.FuelConsumptionFinal[fuel.FuelType].TotalFuelConsumptionCorrected * fuel.CO2PerFuelWeight / result.Distance / result.Payload;
 			var verifiedCO2 = declaredCO2 * cVtp;
-
+			var key = "g/t-km";
+			
 			Results.Add(
 				new XElement(tns + "Status", cVtp < 1.075 ? "Passed" : "Failed"),
 				new XElement(
@@ -203,42 +288,136 @@ namespace TUGraz.VectoCore.OutputData.XML
 					tns + "WorkPosVT", new XAttribute(XMLNames.Report_Results_Unit_Attr, "kWh"),
 					vtpResult.VTPWorkPWheelPos.ConvertToKiloWattHour().ToXMLFormat(3)),
 				new XElement(
+					tns + "SimulatedWorkPosVT", new XAttribute(XMLNames.Report_Results_Unit_Attr, "kWh"),
+					vtpResult.VTPWorPWheelSimPos.ConvertToKiloWattHour().ToXMLFormat(3)),
+				vtpResult.FuelNCVs.Select(x => 
+				new XElement(
+					tns + "FuelNCV",
+					new XAttribute("fuelType", x.Type.ToXMLFormat()),
+					new XAttribute(XMLNames.Report_Results_Unit_Attr, x.NCV.ConvertToMegaJoulePerKilogram().Units),
+					x.NCV.ConvertToMegaJoulePerKilogram().ToXMLFormat(3)
+				)),
+				vtpFcMeasured.Select(x =>
+				new XElement(
 					tns + "FuelConsumption",
+					new XAttribute("fuelType", x.Key.ToXMLFormat()),
 					new XElement(
 						tns + "Measured",
 						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/kWh"),
-						vtpFcMeasured.ConvertToGramPerKiloWattHour().ToXMLFormat(3)
+						vtpFcMeasured[x.Key].ConvertToGramPerKiloWattHour().ToXMLFormat(3)
 					),
 					new XElement(
 						tns + "MeasuredCorrected",
 						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/kWh"),
-						vtpFcMeasuredCorr.ConvertToGramPerKiloWattHour().ToXMLFormat(3)
+						vtpFcMeasuredCorr[x.Key].ConvertToGramPerKiloWattHour().ToXMLFormat(3)
 					),
 					new XElement(
 						tns + "Simulated",
 						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/kWh"),
-						vtpFcSimulated.ConvertToGramPerKiloWattHour().ToXMLFormat(3)
+						vtpFcSimulated[x.Key].ConvertToGramPerKiloWattHour().ToXMLFormat(3)
 					)
-				),
+				)),
 				new XElement(
 					tns + "CO2",
 					new XElement(
-						tns + "Mission",
-						string.Format("{0}, {1}", Missions.FirstOrDefault(x => x.Key != MissionType.VerificationTest).Key.ToXMLFormat(), selectedLoading.ToString())
+						tns + "Certification",
+						new XElement(
+							tns + "Mission",
+							string.Format("{0}, {1}", Missions.FirstOrDefault(x => x.Key != MissionType.VerificationTest).Key.ToXMLFormat(), selectedLoading.ToString())
+						),
+						new XElement(
+							tns + "Declared", new XAttribute(XMLNames.Report_Results_Unit_Attr, key),
+							new ConvertedSI(declaredCO2.Value(), declaredCO2.UnitString).ToMinSignificantDigits(3, 2)
+						),
+						new XElement(
+							tns + "Verified", new XAttribute(XMLNames.Report_Results_Unit_Attr, key),
+							new ConvertedSI(declaredCO2.Value(), verifiedCO2.UnitString).ToMinSignificantDigits(3, 2)
+						)
 					),
 					new XElement(
-						tns + "Declared", new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/t-km"),
-						declaredCO2.ConvertToGrammPerTonKilometer().ToMinSignificantDigits(3, 1)
-					),
-					new XElement(
-						tns + "Verified", new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/t-km"),
-						verifiedCO2.ConvertToGrammPerTonKilometer().ToMinSignificantDigits(3, 1)
+						tns + "VTP",
+						new XElement(
+							tns + "Measured",  new XAttribute(XMLNames.Report_Results_Unit_Attr, CO2Measured.ConvertToGramPerKiloWattHour().Units),
+							CO2Measured.ConvertToGramPerKiloWattHour().Value.ToXMLFormat(3)
+						),
+						new XElement(
+							tns + "MeasuredCorrected",  new XAttribute(XMLNames.Report_Results_Unit_Attr, CO2MeasuredCorrected.ConvertToGramPerKiloWattHour().Units),
+							CO2MeasuredCorrected.ConvertToGramPerKiloWattHour().Value.ToXMLFormat(3)
+						),
+						new XElement(
+							tns + "Simulated",  new XAttribute(XMLNames.Report_Results_Unit_Attr, CO2Simulated.ConvertToGramPerKiloWattHour().Units),
+							CO2Simulated.ConvertToGramPerKiloWattHour().Value.ToXMLFormat(3)
+						)
 					)
 				),
-				new XElement(tns + "VTRatio", cVtp.ToXMLFormat(4)));
+				new XElement(tns + "C_VTP", cVtp.ToXMLFormat(4)),
+				CreatePollutantsElement(vtpResult, CO2MeasuredCorrected));
+
+			var threshold = Constants.SimulationSettings.VTPEngineWorkDeviationThreshold;
+
+			if (Math.Abs(vtpResult.PositiveEngineWorkDeviation) > threshold) {
+				LogList.Add($@"Simulated positive engine work is deviating more than {threshold * 100}% 
+					from measured positive engine work through the vdri. 
+					Deviation = {(vtpResult.PositiveEngineWorkDeviation * 100).ToXMLFormat(2)}%");
+			}
+
 			if (LogList.Any()) {
 				Results.Add(new XElement(tns + "Warnings", LogList.Select(x => new XElement(tns + "Warning", x))));
 			}
+		}
+
+		private XElement CreatePollutantsElement(ResultEntry vtpResult, SpecificFuelConsumption CO2MeasuredCorrected)
+		{ 
+			var pollutantsElement = new XElement(
+				tns + "Pollutants",
+				new XElement(tns + "CO", new XAttribute(XMLNames.Report_Results_Unit_Attr, "mg/kWh"),
+					vtpResult.COEmissions.ToXMLFormat(3)
+				),
+				new XElement(tns + "NOx", new XAttribute(XMLNames.Report_Results_Unit_Attr, "mg/kWh"),
+					vtpResult.NOxEmissions.ToXMLFormat(3)
+				),
+				new XElement(tns + "CO2", new XAttribute(XMLNames.Report_Results_Unit_Attr, "mg/kWh"),
+					(CO2MeasuredCorrected.ConvertToGramPerKiloWattHour() * Constants.GramsToMilligrams).ToXMLFormat(3)
+				)
+			);
+
+			if (vtpResult.THCEmissions != null) {
+				pollutantsElement.Add(
+					new XElement(tns + "THC", new XAttribute(XMLNames.Report_Results_Unit_Attr, "mg/kWh"),
+						vtpResult.THCEmissions.ToXMLFormat(3)
+					));
+			}
+
+			if (vtpResult.CH4Emissions != null) {
+				pollutantsElement.Add(
+					new XElement(tns + "CH4", new XAttribute(XMLNames.Report_Results_Unit_Attr, "mg/kWh"),
+						vtpResult.CH4Emissions.ToXMLFormat(3)
+					));
+			}
+
+			if (vtpResult.NMHCEmissions != null) {
+				pollutantsElement.Add(
+					new XElement(tns + "NMHC", new XAttribute(XMLNames.Report_Results_Unit_Attr, "mg/kWh"),
+						vtpResult.NMHCEmissions.ToXMLFormat(3)
+					));
+			}
+
+			pollutantsElement.Add(
+				new XElement(tns + "PM", new XAttribute(XMLNames.Report_Results_Unit_Attr, "#/kWh"),
+					vtpResult.PMFlow.ToXMLFormat(3)
+				));
+
+			pollutantsElement.Add(
+				new XElement(tns + "PositiveEngineWork",
+					new XElement(tns + "Measured", new XAttribute(XMLNames.Report_Results_Unit_Attr, "kWh"),
+						vtpResult.MeasuredPositiveEngineWork.ToXMLFormat(3)
+					),
+					new XElement(tns + "Simulated", new XAttribute(XMLNames.Report_Results_Unit_Attr, "kWh"),
+						vtpResult.SimulatedPositiveEngineWork.ToXMLFormat(3)
+					)
+				));
+
+			return pollutantsElement;
 		}
 
 		private XDocument GenerateReport()
@@ -274,7 +453,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 			return retVal;
 		}
 
-		public override void InitializeReport(VectoRunData modelData)
+		public override void InitializeReport(VectoRunData modelData, List<List<FuelData.Entry>> fuelModes)
 		{
 			GeneralPart.Add(
 				new XElement(tns + XMLNames.Component_Manufacturer, modelData.VehicleData.Manufacturer),
@@ -293,7 +472,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(tns + XMLNames.Vehicle_PTO, modelData.PTO != null),
 				new XElement(
 					tns + XMLNames.Vehicle_Components,
-					GetEngineDescription(modelData.EngineData),
+					GetEngineDescription(modelData.EngineData, fuelModes),
 					GetGearboxDescription(modelData.GearboxData),
 					GetTorqueConverterDescription(modelData.GearboxData.TorqueConverterData),
 					GetRetarderDescription(modelData.Retarder),
@@ -308,6 +487,9 @@ namespace TUGraz.VectoCore.OutputData.XML
 			if (InputDataHash == null) {
 				return;
 			}
+
+			ManufacturerRecord.ValidateSimulationToolVersion();
+			ManufacturerRecord.ValidateHash();
 
 			var allSuccess = true;
 
@@ -459,7 +641,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 					XmlConvert.ToString(DateTime.Now, XmlDateTimeSerializationMode.Utc)));
 		}
 
-		private XElement GetEngineDescription(CombustionEngineData engineData)
+		private XElement GetEngineDescription(CombustionEngineData engineData, List<List<FuelData.Entry>> fuelModes)
 		{
 			return new XElement(
 				tns + XMLNames.Component_Engine,
@@ -468,7 +650,8 @@ namespace TUGraz.VectoCore.OutputData.XML
 				new XElement(
 					tns + XMLNames.Engine_Displacement,
 					engineData.Displacement.ConvertToCubicCentiMeter().ToXMLFormat(0)),
-				new XElement(tns + XMLNames.Engine_FuelType, engineData.Fuels.First().FuelData.FuelType.ToXMLFormat())
+				fuelModes.SelectMany(x => x.Select(f => f.FuelType.ToXMLFormat())).Distinct().Select(
+					x => new XElement(tns + XMLNames.Engine_FuelType, x))
 			);
 		}
 

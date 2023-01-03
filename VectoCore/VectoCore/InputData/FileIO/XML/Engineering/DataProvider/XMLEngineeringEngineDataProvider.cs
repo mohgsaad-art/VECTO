@@ -117,11 +117,6 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Engineering.DataProvider
 			}
 		}
 
-		public virtual double CorrectionFactorNCV
-		{
-			get { return 1; }
-		}
-
 		public virtual FuelType FuelType
 		{
 			get {

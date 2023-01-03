@@ -105,6 +105,12 @@ namespace TUGraz.VectoCore.Tests.XML
 			ReadDeclarationJob(jobFile);
 		}
 
+		[TestCase(@"SchemaVersion2.1\vecto_vehicle-tyre25.xml")]
+		public void TestReadingJobVersion_V21_Tyre25(string jobFile)
+		{
+			ReadDeclarationJob(jobFile);
+		}
+
 		[TestCase(@"SchemaVersion2.2\Tractor_4x2_vehicle-class-5_5_t_0.xml")]
 		public void TestReadingJobVersion_V22(string jobFile)
 		{

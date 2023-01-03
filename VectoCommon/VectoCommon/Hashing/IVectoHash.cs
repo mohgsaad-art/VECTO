@@ -157,7 +157,7 @@ namespace TUGraz.VectoHashing
 		/// <summary>
 		/// Computes the hash-value of the outer Data element and adds the according Signature element 
 		/// after the Data element.
-		/// The default CaonocalizationMethods and DigestMethod are used.
+		/// The default CanocalizationMethods and DigestMethod are used.
 		/// Note: the id attribute is added to the Data element automatically. if an id attribute is already
 		/// present its value is overwritten unless its lenth is more than 5 characters.
 		/// </summary>

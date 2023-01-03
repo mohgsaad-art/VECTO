@@ -179,6 +179,7 @@
     <Compile Include="InputData\FileIO\XML\Declaration\NinjectModules\XMLDeclarationInputDataV221InjectModule.cs" />
     <Compile Include="InputData\FileIO\XML\Declaration\NinjectModules\XMLDeclarationInputDataV22InjectModule.cs" />
     <Compile Include="InputData\FileIO\XML\Declaration\NinjectModules\XMLDeclarationInputDataV23InjectModule.cs" />
+    <Compile Include="InputData\FileIO\XML\Declaration\NinjectModules\XMLDeclarationInputDataV25InjectModule.cs" />
     <Compile Include="InputData\FileIO\XML\Declaration\Reader\Impl\AbstractComponentReader.cs" />
     <Compile Include="InputData\FileIO\XML\Declaration\Reader\Impl\XMLADASReader.cs" />
     <Compile Include="InputData\FileIO\XML\Declaration\Reader\Impl\XMLComponentReader.cs" />
@@ -622,6 +623,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>VectoVersionCore.tt</DependentUpon>
     </Compile>
+    <Compile Include="Utils\VersioningUtil.cs" />
     <Compile Include="Utils\XMLDefinitions.cs" />
     <Compile Include="Utils\XMLHelper.cs" />
     <Compile Include="Utils\XmlResourceResolver.cs" />
@@ -838,6 +840,12 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\XSD\VectoMonitoring.0.7.2.xsd">
+	<SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\XSD\VTPReport.0.11.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\XSD\VectoDeclarationDefinitions.2.5.xsd">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="Utils\VectoVersionCore.tt">

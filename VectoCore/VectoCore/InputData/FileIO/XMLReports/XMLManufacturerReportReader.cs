@@ -31,6 +31,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Xml;
 using TUGraz.VectoCommon.Hashing;
 using TUGraz.VectoCommon.InputData;
@@ -81,6 +82,15 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration
 												nodes.Count));
 			}
 			return nodes[index];
+		}
+
+		public static string ReadElementValue(XmlDocument xmlDocument, string elementName)
+		{
+			var node = xmlDocument.SelectSingleNode(string.Format("//*[local-name()='{0}']", elementName));
+			if (node == null) {
+				throw new Exception(string.Format("Element {0} not found", elementName));
+			}
+			return node.InnerText;
 		}
 
 		static string GetComponentQueryString(string component = null)

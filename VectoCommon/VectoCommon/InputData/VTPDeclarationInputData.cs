@@ -62,6 +62,12 @@ namespace TUGraz.VectoCommon.InputData
 		bool SavedInDeclarationMode { get; }
 
 		Meter FanDiameter { get; }
+
+		IList<IFuelNCVData> FuelNCVs { get; }
+
+		NewtonMeter TorqueDriftLeftWheel { get; }
+
+		NewtonMeter TorqueDriftRightWheel { get; }
 	}
 
 	public interface IManufacturerReport
@@ -71,5 +77,9 @@ namespace TUGraz.VectoCommon.InputData
 		IDictionary<VectoComponents,IList<string>> ComponentDigests { get; }
 
 		DigestData JobDigest { get; }
+
+		void ValidateSimulationToolVersion();
+
+		void ValidateHash();
 	}
 }

@@ -38,7 +38,9 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Schema;
 using TUGraz.VectoCommon.Exceptions;
+using TUGraz.VectoCommon.Resources;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Models.Declaration;
 
 namespace TUGraz.VectoCore.Utils
 {
@@ -74,6 +76,7 @@ namespace TUGraz.VectoCore.Utils
 		public bool ValidateXML(XmlDocumentType docType)
 		{
 			_valid = true;
+			InternalValidationMessage = "";
 			if (_doc.DocumentElement == null) {
 				throw new Exception("empty XML document");
 			}
@@ -84,24 +87,49 @@ namespace TUGraz.VectoCore.Utils
 
 			if (_doc.SchemaInfo.Validity != XmlSchemaValidity.Valid || _doc.DocumentElement?.SchemaInfo == null ||
 				_doc.DocumentElement.SchemaInfo.SchemaType == null) {
-				ValidationCallBack(null, null);
+				InternalValidationMessage = string.Format("XML file does not validate against a supported version of {0}", docType);
+				ValidationCallBack(this, null);
 				_valid = false;
+			}
+
+			var tyreNodes = _doc.SelectNodes(XMLHelper.QueryLocalName(XMLNames.AxleWheels_Axles_Axle_Tyre,
+				XMLNames.ComponentDataWrapper, XMLNames.AxleWheels_Axles_Axle_Dimension));
+
+			if (tyreNodes != null) {
+				foreach (XmlNode tyreNode in tyreNodes) {
+					var dimension = tyreNode.InnerText;
+					var validDimension = DeclarationData.Wheels.GetWheelsDimensions().Contains(dimension.Trim());
+					if (validDimension) {
+						continue;
+					}
+
+					InternalValidationMessage =
+						$"Invalid tyre dimension '{dimension.Trim()}'. Please check Wheels.csv for valid tyre dimensions.";
+					ValidationCallBack(this, null);
+				}
 			}
 
 			return _valid;
 		}
 
+		protected string InternalValidationMessage { get; set; }
+
 		private void ValidationCallBack(object sender, ValidationEventArgs args)
 		{
 			_resultAction(false);
 			_valid = false;
-			_validationErrorAction(args?.Severity ?? XmlSeverityType.Error, new ValidationEvent { ValidationEventArgs = args });
+			var validationEvent = new ValidationEvent { ValidationEventArgs = args };
+			if (sender == this) {
+				validationEvent = new ValidationEvent()
+					{ Exception = new VectoXMLException(InternalValidationMessage) };
+			}
+			_validationErrorAction(args?.Severity ?? XmlSeverityType.Error, validationEvent);
 		}
 
 		public static void CallBackExceptionOnError(XmlSeverityType severity, ValidationEvent evt)
 		{
 			if (severity == XmlSeverityType.Error) {
-				throw new VectoException("Validation error: {0}", evt.ValidationEventArgs.Message);
+				throw new VectoException("Validation error: {0}", evt.ValidationEventArgs?.Message ?? evt.Exception?.Message);
 			}
 		}
 

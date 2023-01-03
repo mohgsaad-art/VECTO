@@ -156,6 +156,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 		private void InitializeReport()
 		{
 			VectoRunData powertrainConfig;
+			List<List<FuelData.Entry>> fuels;
 			var vehicle = InputDataProvider.JobInputData.Vehicle;
 			if (InputDataProvider.JobInputData.Vehicle.ExemptedVehicle) {
 				powertrainConfig = new VectoRunData() {
@@ -164,13 +165,18 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 					InputDataHash = InputDataProvider.XMLHash
 				};
 				powertrainConfig.VehicleData.VehicleClass = _segment.Found ? _segment.VehicleClass : VehicleClass.Class0;
+				fuels = new List<List<FuelData.Entry>>();
 			} else {
 				powertrainConfig = _segment.Missions.Select(
 						mission => CreateVectoRunData(
 							vehicle, 0, mission, mission.Loadings.First()))
 					.FirstOrDefault(x => x != null);
+
+				fuels = vehicle.Components.EngineInputData.EngineModes.Select(x => x.Fuels.Select(f => DeclarationData.FuelData.Lookup(f.FuelType, vehicle.TankSystem)).ToList())
+								.ToList();
 			}
-			Report.InitializeReport(powertrainConfig);
+
+			Report.InitializeReport(powertrainConfig, fuels);
 		}
 
 		public IEnumerable<VectoRunData> NextRun()

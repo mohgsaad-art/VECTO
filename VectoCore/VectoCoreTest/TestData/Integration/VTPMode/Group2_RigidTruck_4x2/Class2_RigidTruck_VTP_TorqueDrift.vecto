@@ -1,0 +1,31 @@
+{
+  "Header": {
+    "CreatedBy": "",
+    "Date": "2022-09-12T13:35:21.0160091Z",
+    "AppVersion": "3",
+    "FileVersion": 4
+  },
+  "Body": {
+    "SavedInDeclMode": true,
+    "DeclarationVehicle": "Class2_RigidTruck_DECL_SS.xml",
+    "ManufacturerRecord": "Class2_RigidTruck_DECL_SS.RSLT_MANUFACTURER.xml",
+    "Mileage": 20000.0,
+    "FanPowerCoefficients": [
+      7.32,
+      1200.0,
+      810.0
+    ],
+    "FanDiameter": 0.225,
+    "FuelNCVs": [
+      {
+        "Type": "Diesel CI",
+        "NCV": 42.7
+      }
+    ],
+    "TorqueDriftLeftWheel": 2.0,
+    "TorqueDriftRightWheel": 3.0,
+    "Cycles": [
+      "VTP_LongHaulReferenceLoad_TorqueDrift.vdri"
+    ]
+  }
+}

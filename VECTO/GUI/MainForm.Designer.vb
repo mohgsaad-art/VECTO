@@ -238,6 +238,7 @@ Partial Class MainForm
         Me.btnExportXML.TabIndex = 22
         Me.btnExportXML.Text = "Export as XML"
         Me.btnExportXML.UseVisualStyleBackColor = true
+        Me.btnExportXML.Visible = false
         '
         'Label6
         '

@@ -52,6 +52,8 @@ using TUGraz.VectoCore.Models.Declaration;
 using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Utils;
 using TUGraz.VectoHashing;
+using TUGraz.VectoHashing.Impl;
+using System.Globalization;
 
 namespace TUGraz.VectoCore.InputData.FileIO.JSON
 {
@@ -886,7 +888,55 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 			get { return Body.GetEx<double>("FanDiameter").SI<Meter>(); }
 		}
 
-		#region Implementation of IVTPDeclarationInputDataProvider
+		public IList<IFuelNCVData> FuelNCVs
+		{
+			get 
+			{
+				var fuelNCVs = new List<IFuelNCVData>();
+
+				if (Body[JsonKeys.Job_FuelNCVs] == null) {
+					throw new Exception($"Job input data: missing input field: {JsonKeys.Job_FuelNCVs}");
+                }
+
+				foreach (var fuelNCV in Body.GetEx(JsonKeys.Job_FuelNCVs)) {
+					var type = fuelNCV.GetEx<string>(JsonKeys.Job_FuelNCV_Type);
+					var ncv = fuelNCV.GetEx<double>(JsonKeys.Job_FuelNCV_NCV);
+
+					IEnumerable<FuelType> matches = Enum.GetValues(typeof(FuelType)).Cast<FuelType>().Where(x => x.GetLabel().Equals(type));
+					if (matches.Count() == 0) {
+						throw new Exception($"Job input data: {JsonKeys.Job_FuelNCVs}: invalid {JsonKeys.Job_FuelNCV_Type}: {type}");
+                    }
+
+					fuelNCVs.Add(new FuelNCVData() { Type = matches.First(), NCV = (ncv * Constants.Mega).SI<JoulePerKilogramm>() });
+                }
+
+				var fuelsPerMode = JobInputData.Vehicle.Components.EngineInputData.EngineModes.Select(
+					x => x.Fuels.Select(f => DeclarationData.FuelData.Lookup(f.FuelType, JobInputData.Vehicle.TankSystem)));
+
+				foreach (var fuels in fuelsPerMode) {
+					foreach (var fuel in fuels) {
+						if (fuelNCVs.Count(x => x.Type == fuel.FuelType) == 0) {
+							throw new Exception($"Job input data: {JsonKeys.Job_FuelNCVs}: missing {JsonKeys.Job_FuelNCV_Type}: {fuel.FuelType.GetLabel()}");
+						}
+					}
+				}
+
+				return fuelNCVs;
+            }
+        }
+
+		public NewtonMeter TorqueDriftLeftWheel
+		{
+			get { return Body.GetEx<double>(JsonKeys.Job_TorqueDriftLeftWheel).SI<NewtonMeter>(); }
+        }
+
+		public NewtonMeter TorqueDriftRightWheel
+		{
+			get { return Body.GetEx<double>(JsonKeys.Job_TorqueDriftRightWheel).SI<NewtonMeter>(); }		
+		}
+
+
+        #region Implementation of IVTPDeclarationInputDataProvider
 
 		IVTPDeclarationJobInputData IVTPDeclarationInputDataProvider.JobInputData
 		{
@@ -914,6 +964,40 @@ namespace TUGraz.VectoCore.InputData.FileIO.JSON
 					ReadManufacturerReport();
 				}
 				return _jobDigest;
+			}
+		}
+
+		public void ValidateSimulationToolVersion()
+		{
+			var xmlDoc = new XmlDocument();
+			xmlDoc.Load(Path.Combine(Path.GetFullPath(BasePath), Body["ManufacturerRecord"].Value<string>()));
+			
+			string simToolVersionStr = XMLManufacturerReportReader.ReadElementValue(xmlDoc, "SimulationToolVersion");
+			string vectoVersionStr = VectoSimulationCore.VersionNumber;
+
+			bool xmlVersionNewer = VersioningUtil.CompareVersions(simToolVersionStr, vectoVersionStr) > 0;
+			
+			if (xmlVersionNewer) {
+				throw new VectoException($"Not allowed to run simulation because VECTO version is older than <SimulationToolVersion> in Manufacturer Report ({simToolVersionStr}).");
+			}
+		}
+
+		public void ValidateHash()
+		{
+			var xmlDoc = new XmlDocument();
+			xmlDoc.Load(Path.Combine(Path.GetFullPath(BasePath), Body["ManufacturerRecord"].Value<string>()));
+			
+			var signatureNode = xmlDoc.SelectSingleNode("//*[local-name()='Signature']");
+			var signatureDigest = new DigestData(signatureNode);
+
+			var parent = signatureNode.ParentNode;
+			parent.RemoveChild(signatureNode);
+
+			var hash = XMLHashProvider.ComputeHash(xmlDoc, signatureDigest.Reference.Remove(0, 1), signatureDigest.CanonicalizationMethods,
+				signatureDigest.DigestMethod);
+			
+			if (!hash.InnerText.Equals(signatureDigest.DigestValue)) {
+				throw new VectoException($"Manufacturer Report hash: {signatureDigest.DigestValue} differs from calculated hash: {hash.InnerText}");
 			}
 		}
 

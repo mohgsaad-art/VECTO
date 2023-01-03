@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2021 (x64) (http://www.altova.com) by Markus Quaritsch (Technische Universität Graz) -->
+<xs:schema xmlns:tns="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.5" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:vectoParam="urn:tugraz:ivt:VectoAPI:ParameterDocumentation" xmlns:di="http://www.w3.org/2000/09/xmldsig#" xmlns:v1.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" xmlns:v2.0="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" xmlns:v2.1="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1" xmlns:ns1="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.5" targetNamespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.5" elementFormDefault="qualified" attributeFormDefault="unqualified" xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:ParameterDocumentation ParameterDocumentation.xsd">
+	<xs:import namespace="http://www.w3.org/2000/09/xmldsig#" schemaLocation="xmldsig-core-schema.xsd"/>
+	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v1.0" schemaLocation="VectoDeclarationDefinitions.1.0.xsd"/>
+	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.0" schemaLocation="VectoDeclarationDefinitions.2.0.xsd"/>
+	<xs:import namespace="urn:tugraz:ivt:VectoAPI:DeclarationDefinitions:v2.1" schemaLocation="VectoDeclarationDefinitions.2.1.xsd"/>
+	<xs:complexType name="TyreDataDeclarationType">
+		<xs:complexContent>
+			<xs:extension base="v1.0:AbstractTyreDataDeclarationType">
+				<xs:sequence>
+					<xs:element name="Manufacturer" type="v1.0:ManufacturerType">
+						<xs:annotation>
+							<xs:documentation>P230 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Model" type="v1.0:ModelType">
+						<xs:annotation>
+							<xs:documentation>P231 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="CertificationNumber" type="v1.0:CertificationNumberType">
+						<xs:annotation>
+							<xs:documentation>P267 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Date" type="v1.0:DateTimeWithTimezone">
+						<xs:annotation>
+							<xs:documentation>P233 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="AppVersion" type="v1.0:AppVersionType">
+						<xs:annotation>
+							<xs:documentation>P234 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Dimension" type="tns:TyreDimensionType">
+						<xs:annotation>
+							<xs:documentation>P108 - enum</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="TyreClass">
+						<xs:annotation>
+							<xs:documentation>P370 - enum</xs:documentation>
+							<xs:appinfo>
+								<vectoParam:description>
+									<vectoParam:parameterId component="Tyre">370</vectoParam:parameterId>
+									<vectoParam:unit>-</vectoParam:unit>
+								</vectoParam:description>
+							</xs:appinfo>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:minLength value="1"/>
+								<xs:enumeration value="C1"/>
+								<xs:enumeration value="C2"/>
+								<xs:enumeration value="C3"/>
+								<xs:enumeration value="N/A"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="FuelEfficiencyClass">
+						<xs:annotation>
+							<xs:documentation>P371 - enum</xs:documentation>
+							<xs:appinfo>
+								<vectoParam:description>
+									<vectoParam:parameterId component="Tyre">371</vectoParam:parameterId>
+									<vectoParam:unit>-</vectoParam:unit>
+								</vectoParam:description>
+							</xs:appinfo>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:enumeration value="A"/>
+								<xs:enumeration value="B"/>
+								<xs:enumeration value="C"/>
+								<xs:enumeration value="D"/>
+								<xs:enumeration value="E"/>
+								<xs:enumeration value="F"/>
+								<xs:enumeration value="G"/>
+								<xs:enumeration value="N/A"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="RRCDeclared" type="v1.0:TyreRRCISOType">
+						<xs:annotation>
+							<xs:documentation>P046 - [-]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="FzISO" type="v1.0:TyreFzISOType">
+						<xs:annotation>
+							<xs:documentation>P047 - [N]</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:simpleType name="TyreDimensionType">
+		<xs:restriction base="xs:token"/>
+	</xs:simpleType>
+</xs:schema>

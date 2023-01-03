@@ -609,6 +609,13 @@ namespace TUGraz.VectoCommon.InputData
 		TableData CycleData { get; }
 	}
 
+	public interface IFuelNCVData
+	{
+		FuelType Type { get; }
+
+		JoulePerKilogramm NCV { get; }
+    }
+
 	public interface IDriverDeclarationInputData : IDriverModelData
 	{
 		bool SavedInDeclarationMode { get; }

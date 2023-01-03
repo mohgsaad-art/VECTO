@@ -50,6 +50,19 @@ namespace TUGraz.VectoCore.Tests.Models.SimulationComponent
 			var engineFan = new EngineFanAuxiliary(new[] { 5.5e-7, 14.62, 108.5 }, 0.225.SI<Meter>());
 
 			Assert.AreEqual(expectedPowerDemand, engineFan.PowerDemand(fanSpeedRPM.RPMtoRad()).Value(), 1e-3);
+        }
+
+        [
+        TestCase(14, 20),
+        TestCase(28, 40),
+        TestCase(7, 10)
+        ]
+        public void TestEngineFanPowerDemandWithElectricalPower(double fanElectricalPower, double expectedPowerDemand)
+        {
+			var engineFan = new EngineFanAuxiliary(new[] { 5.5e-7, 14.62, 108.5 }, 0.225.SI<Meter>());
+
+			Assert.AreEqual(expectedPowerDemand, engineFan.PowerDemand(fanElectricalPower.SI<Watt>()).Value(), 1e-3);
 		}
-	}
+
+    }
 }

@@ -1,7 +1,7 @@
-﻿{
+{
   "Header": {
     "CreatedBy": "",
-    "Date": "2017-11-20T13:22:33.6138904Z",
+    "Date": "2022-09-12T13:28:56.7486106Z",
     "AppVersion": "3",
     "FileVersion": 4
   },
@@ -14,6 +14,14 @@
       108.5
     ],
     "FanDiameter": 0.225,
+    "FuelNCVs": [
+      {
+        "Type": "Diesel CI",
+        "NCV": 42.7
+      }
+    ],
+    "TorqueDriftLeftWheel": 0.0,
+    "TorqueDriftRightWheel": 0.0,
     "Cycles": [
       "VTP_rural_2Hz.vdri"
     ]

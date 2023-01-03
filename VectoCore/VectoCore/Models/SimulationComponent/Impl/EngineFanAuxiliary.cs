@@ -31,6 +31,9 @@
 
 using System;
 using TUGraz.VectoCommon.Utils;
+using TUGraz.VectoCore.Configuration;
+using TUGraz.VectoCore.Models.Declaration;
+using TUGraz.VectoCore.Models.SimulationComponent.Data;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
@@ -51,8 +54,20 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 		public Watt PowerDemand(PerSecond fanSpeed)
 		{
-
 			return (FanCoefficients[0] * Math.Pow(fanSpeed.AsRPM / FanCoefficients[1], 3) * Math.Pow(FanDiameter / FanCoefficients[2], 5) * 1000).SI<Watt>();
+        }
+
+        public Watt PowerDemand(DrivingCycleData.DrivingCycleEntry entry)
+        { 
+			return (entry.FanElectricalPower != null)
+				? PowerDemand(entry.FanElectricalPower)
+				: PowerDemand(entry.FanSpeed);
+        }
+
+        public Watt PowerDemand(Watt fanElectricalPower)
+		{
+			return fanElectricalPower / DeclarationData.AlternatorEfficiency;
 		}
-	}
+
+    }
 }

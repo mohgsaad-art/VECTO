@@ -1,7 +1,6 @@
 ## Driver: Overspeed
 
-
-Both functions control the vehicle's behaviour on uneven road sections (slope ≠ 0) and can be configured in the [Job File](#job-file)'s Driver Assist Tab. Overspeed is designed to model an average driver's behaviour without the aid of driver assistance systems. Eco-Roll  represents an optional driver assistance feature. For this reason vehicles without Eco-Roll should always have the Overspeed function enabled.
+Overspeed controls the vehicle's behaviour on uneven road sections (slope ≠ 0) and can be configured in the [Job File](#job-file)'s Driver Assist Tab. Overspeed is designed to model an average driver's behaviour without the aid of driver assistance systems. Eco-Roll represents an optional driver assistance feature. For this reason vehicles without Eco-Roll should always have the Overspeed function enabled.
 
 
 ### Overspeed
@@ -141,7 +140,7 @@ During downhill driving when the vehicle is braking at the overspeed velocity, P
 
 In VECTO a vehicle may either support use cases 1 and 2 or all three use cases.
 
-Predictive cruise control is only considered on highway sections of the simulated driving cycle (see [sistance-based driving cycle](#engineering-mode-target-speed-distance-based-cycle).
+Predictive cruise control is only considered on highway sections of the simulated driving cycle (see [distance-based driving cycle](#engineering-mode-target-speed-distance-based-cycle).
 
 <div class="declaration">
 In declaration mode, the whole long-haul cycle is considered as highway. Moreover, the section from 29760m to 96753m of the regional delivery cycle is considered as highway.

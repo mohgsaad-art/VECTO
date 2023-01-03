@@ -507,8 +507,8 @@ Public Class EngineFuel
 	Friend ReadOnly _fuelConsumptionMapPath As SubPath
 
 
-	Public ColdHotBalancingFactorInput As Double
-	Public correctionFactorRegPerInput As Double
+    Public ColdHotBalancingFactorInput As Double
+    Public correctionFactorRegPerInput As Double
 	Public FuelTypeInput As FuelType
 	Private engineData As Engine
 
@@ -557,13 +557,13 @@ Public Class EngineFuel
 		End Get
 	End Property
 
-	Public ReadOnly Property CorrectionFactorRegPer As Double Implements IEngineFuelDeclarationInputData.CorrectionFactorRegPer
-		Get
-			Return correctionFactorRegPerInput
-		End Get
-	End Property
+    Public ReadOnly Property CorrectionFactorRegPer As Double Implements IEngineFuelDeclarationInputData.CorrectionFactorRegPer
+        Get
+            Return correctionFactorRegPerInput
+        End Get
+    End Property
 
-	Public ReadOnly Property FuelType As FuelType Implements IEngineFuelDeclarationInputData.FuelType
+    Public ReadOnly Property FuelType As FuelType Implements IEngineFuelDeclarationInputData.FuelType
 		Get
 			Return FuelTypeInput
 		End Get

@@ -1,5 +1,25 @@
 # Changelog
 
+**VECTO-3.3.13**
+
+***Build 2924 (2023-01-03) OFFICIAL RELEASE***
+
+ - Bugfixes (compared to 3.3.13.2891)
+    * [VECTO-1692] - Unexpected Response: Response Overload. UD RefLoad
+
+***Build 2891 (2022-12-01) RELEASE CANDIDATE***
+
+- Improvements
+   * [VECTO-1554] - VTP Mode according to 2nd amendment
+   * [VECTO-1652] - Additional Tyre Dimension
+   * [VECTO-1647] - Update user manual
+- Bugfixes (compared to VECTO 3.3.12.2769)
+   * [VECTO-1655] - Not possible to set Tank System to Liquefied (changes it back to compressed) in .vveh file
+   * [VECTO-1656] - Simulation run aborted - TC & ESS
+   * [VECTO-1661] - Gear disabling not functioning in 3.3.12.2800.
+   * [VECTO-1643] - Error: Gear 6L LossMap data was extrapolated in Declaration Mode
+
+
 **VECTO-3.3.12**
 
 ***Build 2800 (2022-09-01) OFFICIAL RELEASE***

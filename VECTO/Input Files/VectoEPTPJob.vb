@@ -34,6 +34,7 @@ Public Class VectoVTPJob
     Public ReadOnly CycleFiles As List(Of SubPath)
     Public FanCoefficients As Double()
     Private _fanDiameter As Meter
+    Private _fuelNCVData As List(Of IFuelNCVData)
 
     Private _xmlInputReader As IXMLInputDataReader
 
@@ -41,6 +42,7 @@ Public Class VectoVTPJob
         CycleFiles = New List(Of SubPath)
         _vehicleFile = New SubPath
         _manufacturerRecord = New SubPath()
+        _fuelNCVData = New List(Of IFuelNCVData)
 
         Dim kernel as IKernel = New StandardKernel(new VectoNinjectModule)
         _xmlInputReader = kernel.Get(Of IXMLInputDataReader)
@@ -137,7 +139,7 @@ Public Class VectoVTPJob
 
     Public ReadOnly Property VectoManufacturerReportHash As IVectoHash Implements IVTPDeclarationJobInputData.VectoManufacturerReportHash
     Public Property Mileage As Meter Implements IVTPDeclarationJobInputData.Mileage
-   
+
     Public ReadOnly Property Cycles As IList(Of ICycleData) Implements IVTPEngineeringJobInputData.Cycles
         Get
             Dim retVal As ICycleData() = New ICycleData(CycleFiles.Count - 1) {}
@@ -152,7 +154,7 @@ Public Class VectoVTPJob
                                                      cycleFile.OriginalPath +
                                                      TUGraz.VectoCore.Configuration.Constants.FileExtensions.CycleFile
                         Dim cycleDataRes As Stream = RessourceHelper.ReadStream(resourceName)
-                        cycleData = VectoCSVFile.ReadStream(cycleDataRes, source := resourceName)
+                        cycleData = VectoCSVFile.ReadStream(cycleDataRes, source:=resourceName)
                     Catch ex As Exception
                         Throw New VectoException("Driving Cycle could not be read: " + cycleFile.OriginalPath)
                     End Try
@@ -166,6 +168,17 @@ Public Class VectoVTPJob
             Return retVal
         End Get
     End Property
+
+    Public ReadOnly Property FuelNCVs As IList(Of IFuelNCVData) _
+        Implements IVTPEngineeringJobInputData.FuelNCVs
+        Get
+            Return _fuelNCVData
+        End Get
+    End Property
+
+    Public Property TorqueDriftLeftWheel As NewtonMeter Implements IVTPEngineeringJobInputData.TorqueDriftLeftWheel
+
+    Public Property TorqueDriftRightWheel As NewtonMeter Implements IVTPEngineeringJobInputData.TorqueDriftRightWheel
 
     Public ReadOnly Property FanPowerCoefficents As IEnumerable(Of Double) _
         Implements IVTPEngineeringJobInputData.FanPowerCoefficents
@@ -226,6 +239,14 @@ Public Class VectoVTPJob
 
     Public ReadOnly Property ComponentDigests As IDictionary(Of VectoComponents,IList(Of String)) Implements IManufacturerReport.ComponentDigests
     Public ReadOnly Property JobDigest As DigestData Implements IManufacturerReport.JobDigest
+
+    Public Sub ValidateSimulationToolVersion() Implements IManufacturerReport.ValidateSimulationToolVersion
+
+    End Sub
+
+    Public Sub ValidateHash() Implements IManufacturerReport.ValidateHash
+
+    End Sub
 
     Public ReadOnly Property DataSource As DataSource Implements IInputDataProvider.DataSource
         Get

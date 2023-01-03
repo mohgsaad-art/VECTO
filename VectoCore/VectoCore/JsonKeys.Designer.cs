@@ -19,7 +19,7 @@ namespace TUGraz.VectoCore {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class JsonKeys {
@@ -489,6 +489,51 @@ namespace TUGraz.VectoCore {
         internal static string Job_EngineOnlyMode {
             get {
                 return ResourceManager.GetString("Job_EngineOnlyMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NCV.
+        /// </summary>
+        internal static string Job_FuelNCV_NCV {
+            get {
+                return ResourceManager.GetString("Job_FuelNCV_NCV", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        internal static string Job_FuelNCV_Type {
+            get {
+                return ResourceManager.GetString("Job_FuelNCV_Type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FuelNCVs.
+        /// </summary>
+        internal static string Job_FuelNCVs {
+            get {
+                return ResourceManager.GetString("Job_FuelNCVs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TorqueDriftLeftWheel.
+        /// </summary>
+        internal static string Job_TorqueDriftLeftWheel {
+            get {
+                return ResourceManager.GetString("Job_TorqueDriftLeftWheel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TorqueDriftRightWheel.
+        /// </summary>
+        internal static string Job_TorqueDriftRightWheel {
+            get {
+                return ResourceManager.GetString("Job_TorqueDriftRightWheel", resourceCulture);
             }
         }
         
