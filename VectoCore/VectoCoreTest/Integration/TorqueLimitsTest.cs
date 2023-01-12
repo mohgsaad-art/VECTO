@@ -219,8 +219,7 @@ namespace TUGraz.VectoCore.Tests.Integration
 			Assert.IsTrue(jobContainer.Runs.All(r => r.Success), string.Concat(jobContainer.Runs.Select(r => r.ExecException)));
 		}
 
-		[Category("LongRunning"), TestCase(GearboxSpeedLimitJobDecl)]
-		[Ignore("Too long, run only before release.")]
+		[Category("LongRunning"), Category("CICD_TooLong"), TestCase(GearboxSpeedLimitJobDecl)]
 		public void TestRunGbxSpeedLimitedSimulations(string file)
 		{
 			var fileWriter = new FileOutputWriter(file);
