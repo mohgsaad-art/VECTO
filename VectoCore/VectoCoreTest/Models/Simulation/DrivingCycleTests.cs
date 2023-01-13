@@ -235,8 +235,8 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 			// wrong cycles
 			TestCase("v,grad,Padd,n,gear", CycleType.MeasuredSpeedGear),
 			TestCase("<t>,<grad>", CycleType.MeasuredSpeed),
-			TestCase("<t>,<Pwheel>,<n>,<Padd>", CycleType.PWheel),
-			TestCase("<t>,<Pwheel>,<Pwheel>,<n>,<Padd>", CycleType.PWheel),
+			TestCase("<t>,<Pwheel>,<Padd>", CycleType.PWheel),
+			TestCase("<t>,<Pwheel>,<Pwheel>,<Padd>", CycleType.PWheel),
 			TestCase("<t>,<n>,<torque>,<>,<Padd>", CycleType.EngineOnly),
 			TestCase("x,y,z", CycleType.EngineOnly),
 			TestCase("x", CycleType.EngineOnly),

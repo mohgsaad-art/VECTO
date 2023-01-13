@@ -458,7 +458,8 @@ public class JSONFileWriter : IOutputFileWriter
 							{ "TwinTyres", axle.TwinTyres },
 							{ "RRCISO", axle.Tyre.RollResistanceCoefficient },
 							{ "FzISO", axle.Tyre.TyreTestLoad.Value() },
-							{ "Type", axle.AxleType.ToString() }
+							{ "Type", axle.AxleType.ToString() },
+							{ "Steered", axle.Steered }
 						}
 					}
 				}

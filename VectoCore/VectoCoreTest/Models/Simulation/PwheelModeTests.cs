@@ -80,7 +80,7 @@ namespace TUGraz.VectoCore.Tests.Models.Simulation
 					}
 				},
 				VehicleData = new VehicleData {
-					//DynamicTyreRadius = 
+					DynamicTyreRadius = 1.SI<Meter>()
 				},
 				AxleGearData = new AxleGearData {
 					AxleGear = new TransmissionData {
