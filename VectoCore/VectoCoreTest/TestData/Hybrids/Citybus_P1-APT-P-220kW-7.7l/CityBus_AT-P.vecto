@@ -11,7 +11,7 @@
     "VehicleFile": "CityBus_AT-P.vveh",
     "EngineFile": "GenericICE_220kW_7.7l.veng",
     "GearboxFile": "GearboxAT-P.vgbx",
-    "TCU": "ShiftPArameters.vtcu",
+    "TCU": "ShiftParameters.vtcu",
     "ShiftStrategy": "TUGraz.VectoCore.Models.SimulationComponent.Impl.ATShiftStrategyOptimized",
     "HybridStrategyParams": "HybridStrategyParams.vhctl",
     "AuxiliaryAssembly": "Classic",

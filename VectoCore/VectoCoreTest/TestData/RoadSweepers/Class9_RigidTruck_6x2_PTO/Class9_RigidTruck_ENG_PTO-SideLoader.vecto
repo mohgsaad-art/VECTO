@@ -8,7 +8,7 @@
   "Body": {
     "SavedInDeclMode": false,
     "EngineOnlyMode": false,
-    "VehicleFile": "Class9_RigidTruck_Sideloader.vveh",
+    "VehicleFile": "Class9_RigidTruck_SideLoader.vveh",
     "EngineFile": "Engine_324kW_12.7l.veng",
     "GearboxFile": "AMT_12.vgbx",
     "AuxiliaryAssembly": "Classic",

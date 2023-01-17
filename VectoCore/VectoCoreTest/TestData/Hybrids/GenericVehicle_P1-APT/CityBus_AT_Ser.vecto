@@ -11,7 +11,7 @@
     "VehicleFile": "CityBus_AT_Ser.vveh",
     "EngineFile": "Engine_175kW_6.8l.veng",
     "GearboxFile": "GearboxSerial.vgbx",
-    "TCU": "ShiftPArameters.vtcu",
+    "TCU": "ShiftParameters.vtcu",
     "ShiftStrategy": "",
     "HybridStrategyParams": "HybridStrategyParams.vhctl",
     "AuxiliaryAssembly": "Classic",

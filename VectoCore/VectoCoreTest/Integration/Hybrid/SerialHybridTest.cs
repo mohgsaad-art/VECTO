@@ -49,13 +49,13 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 
 		public const string EngineFile = @"TestData\Hybrids\GenericVehicle_Sx\Group2_6l.veng";
 
-		public const string SerialHybrid_S2_3Speed_Job = @"TestData\Hybrids\GenericVehicle_S2_Job\SerialHybrid_S2_3speed.vecto";
+		public const string SerialHybrid_S2_3Speed_Job = @"TestData\Hybrids\GenericVehicle_S2_Job\SerialHybrid_S2_3Speed.vecto";
 		public const string SerialHybrid_S2_12Speed_Job = @"TestData\Hybrids\GenericVehicle_S2_Job\SerialHybrid_S2.vecto";
 		public const string SerialHybrid_S2_APTN_Job = @"TestData\Hybrids\GenericVehicle_S2_APTN\HEV_S2_Group5LH_rl_APTN.vecto";
 		public const string SerialHybrid_S2_APTS_Job = @"TestData\Hybrids\GenericVehicle_S2_AT\HEV_S2_Group5LH_rl_APTS.vecto";
 		public const string SerialHybrid_S2_APTP_Job = @"TestData\Hybrids\GenericVehicle_S2_AT\HEV_S2_Group5LH_rl_APTP.vecto";
 
-		public const string SerialHybrid_S2_3Speed_PTO_Job = @"TestData\Hybrids\GenericVehicle_S2_Job\SerialHybrid_S2_3speed_PTO.vecto";
+		public const string SerialHybrid_S2_3Speed_PTO_Job = @"TestData\Hybrids\GenericVehicle_S2_Job\SerialHybrid_S2_3Speed_PTO.vecto";
 
 		public const bool PlotGraphs = true;
 
