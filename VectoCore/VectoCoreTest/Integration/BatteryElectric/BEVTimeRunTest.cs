@@ -15,13 +15,13 @@ namespace TUGraz.VectoCore.Tests.Integration.BatteryElectric
     [Parallelizable(ParallelScope.All)]
     public class BEVTimeRunTest 
     {
-        private const string E2_JOB = @"TestData\Integration\TimeRun\MeasuredSpeed\GenericVehicleE2\BEV_ENG.vecto";
-        private const string E3_JOB = @"TestData\Integration\TimeRun\MeasuredSpeed\GenericVehicleE3\BEV_ENG.vecto";
-        private const string E4_JOB = @"TestData\Integration\TimeRun\MeasuredSpeed\GenericVehicleE4\BEV_ENG.vecto";
-        private const string IEPC3X_JOB = @"TestData\Integration\TimeRun\MeasuredSpeed\GenericIEPC\IEPC_Gbx3Speed\IEPC_ENG_Gbx3.vecto";
-        private const string IEPC3X_AXLE_JOB = @"TestData\Integration\TimeRun\MeasuredSpeed\GenericIEPC\IEPC_Gbx3Speed+Axle\IEPC_ENG_Gbx3Axl.vecto";
-        private const string IEPC3X_WHEEL1_JOB = @"TestData\Integration\TimeRun\MeasuredSpeed\GenericIEPC\IEPC_Gbx3Speed-Whl1\IEPC_ENG_Gbx3Whl1.vecto";
-        private const string IEPC3X_WHEEL2_JOB = @"TestData\Integration\TimeRun\MeasuredSpeed\GenericIEPC\IEPC_Gbx3Speed-Whl2\IEPC_ENG_Gbx3Whl2.vecto";
+        private const string E2_JOB = @"TestData/Integration/TimeRun/MeasuredSpeed/GenericVehicleE2/BEV_ENG.vecto";
+        private const string E3_JOB = @"TestData/Integration/TimeRun/MeasuredSpeed/GenericVehicleE3/BEV_ENG.vecto";
+        private const string E4_JOB = @"TestData/Integration/TimeRun/MeasuredSpeed/GenericVehicleE4/BEV_ENG.vecto";
+        private const string IEPC3X_JOB = @"TestData/Integration/TimeRun/MeasuredSpeed/GenericIEPC/IEPC_Gbx3Speed/IEPC_ENG_Gbx3.vecto";
+        private const string IEPC3X_AXLE_JOB = @"TestData/Integration/TimeRun/MeasuredSpeed/GenericIEPC/IEPC_Gbx3Speed+Axle/IEPC_ENG_Gbx3Axl.vecto";
+        private const string IEPC3X_WHEEL1_JOB = @"TestData/Integration/TimeRun/MeasuredSpeed/GenericIEPC/IEPC_Gbx3Speed-Whl1/IEPC_ENG_Gbx3Whl1.vecto";
+        private const string IEPC3X_WHEEL2_JOB = @"TestData/Integration/TimeRun/MeasuredSpeed/GenericIEPC/IEPC_Gbx3Speed-Whl2/IEPC_ENG_Gbx3Whl2.vecto";
 
         [OneTimeSetUp]
         public void Init()
