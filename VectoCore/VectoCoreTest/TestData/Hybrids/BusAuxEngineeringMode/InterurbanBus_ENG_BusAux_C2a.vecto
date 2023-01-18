@@ -11,7 +11,7 @@
     "VehicleFile": "InterurbanBus_P1.vveh",
     "EngineFile": "Engine_250kW_7.7l.veng",
     "GearboxFile": "MT_6_Bus.vgbx",
-    "TCU": "ShiftPArameters.vtcu",
+    "TCU": "ShiftParameters.vtcu",
     "ShiftStrategy": "",
     "HybridStrategyParams": "HybridStrategyParams.vhctl",
     "BusAux": "BusAuxData_C2a.vaux",
