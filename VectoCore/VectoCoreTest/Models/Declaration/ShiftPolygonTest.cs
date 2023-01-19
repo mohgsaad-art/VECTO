@@ -928,9 +928,9 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 		}
 
 		[TestCase(@"TestData\BatteryElectric\GenericVehicleB2\BEV_ENG.vecto", null),
-		TestCase(@"TestData\BatteryElectric\GenericVehicleB2\BEV_ENG_cont30kW.vecto", null),
-		TestCase(@"TestData\BatteryElectric\GenericVehicleB2\BEV_ENG_cont30kW.vecto", 0.9),
-		TestCase(@"TestData\BatteryElectric\GenericVehicleB2\BEV_ENG_cont30kW.vecto", 1.1),
+		TestCase(@"TestData\BatteryElectric\GenericVehicleB2\BEV_ENG_Cont30kW.vecto", null),
+		TestCase(@"TestData\BatteryElectric\GenericVehicleB2\BEV_ENG_Cont30kW.vecto", 0.9),
+		TestCase(@"TestData\BatteryElectric\GenericVehicleB2\BEV_ENG_Cont30kW.vecto", 1.1),
 		]
 		public void ComputePEVShiftLines(string pevE2Job, double? factorDownshiftSpeed)
 		{
@@ -983,7 +983,7 @@ namespace TUGraz.VectoCore.Tests.Models.Declaration
 		TestCase(0.9)]
 		public void ComputePEVShiftLinesDeRated(double? factorDownshiftSpeed)
 		{
-			var pevE2Job = @"TestData\BatteryElectric\GenericVehicleB2\BEV_ENG_cont30kW.vecto";
+			var pevE2Job = @"TestData\BatteryElectric\GenericVehicleB2\BEV_ENG_Cont30kW.vecto";
 
 			var inputData = JSONInputDataFactory.ReadJsonJob(pevE2Job) as IEngineeringInputDataProvider;
 			var gearboxData = inputData.JobInputData.Vehicle.Components.GearboxInputData;
