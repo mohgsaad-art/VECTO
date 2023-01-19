@@ -48,16 +48,16 @@
       "OverSpeed": 2.5
     },
     "Cycles": [
-      "DriveDHSl1.1.vdri",
-      "DriveDHSl1.1_Uh0.1.vdri",
-      "DriveDHSl1.4.vdri",
+      "DriveDhSl1.1.vdri",
+      "DriveDhSl1.1_Uh0.1.vdri",
+      "DriveDhSl1.4.vdri",
       "DriveDhSl0.8.vdri",
       "DriveDhSl1.7.vdri",
-      "DriveDHSl1.1_Stop.vdri",
-      "DriveDHSl1.1_TS--.vdri",
-      "DriveDHSl1.1_TS-.vdri",
-      "DriveDHSl1.1_TS+.vdri",
-      "DriveDHSl1.1_TS++.vdri"
+      "DriveDhSl1.1_Stop.vdri",
+      "DriveDhSl1.1_TS--.vdri",
+      "DriveDhSl1.1_TS-.vdri",
+      "DriveDhSl1.1_TS+.vdri",
+      "DriveDhSl1.1_TS++.vdri"
     ]
   }
 }
