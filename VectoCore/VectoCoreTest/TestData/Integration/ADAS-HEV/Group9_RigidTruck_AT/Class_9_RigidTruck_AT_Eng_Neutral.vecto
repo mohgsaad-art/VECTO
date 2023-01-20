@@ -39,17 +39,17 @@
       "UnderSpeed": 5.0
     },
     "Cycles": [
-      "DriveDHSl1.8.vdri",
-      "DriveDHSl1.8_Uh0.1.vdri",
-      "DriveDHSl1.9.vdri",
+      "DriveDhSl1.8.vdri",
+      "DriveDhSl1.8_Uh0.1.vdri",
+      "DriveDhSl1.9.vdri",
       "DriveDhSl1.2.vdri",
       "DriveDhSl2.5.vdri",
-      "DriveDHSl1.9_Stop.vdri",
-      "DriveDHSl1.9_TS--.vdri",
-      "DriveDHSl1.9_TS-.vdri",
-      "DriveDHSl1.9_TS+.vdri",
-      "DriveDHSl1.9_TS++.vdri",
-      "DriveDHSl1.2.vdri"
+      "DriveDhSl1.9_Stop.vdri",
+      "DriveDhSl1.9_TS--.vdri",
+      "DriveDhSl1.9_TS-.vdri",
+      "DriveDhSl1.9_TS+.vdri",
+      "DriveDhSl1.9_TS++.vdri",
+      "DriveDhSl1.2.vdri"
     ]
   }
 }

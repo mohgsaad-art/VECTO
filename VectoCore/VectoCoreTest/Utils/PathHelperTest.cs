@@ -42,7 +42,11 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 			var result = PathHelper.GetRelativePath(relativeTo, path);
 
-			Assert.AreEqual("PrimaryAndStageInput\\file1.file", result);
+			var compareTo = (Environment.OSVersion.Platform == PlatformID.Win32NT)
+				? "PrimaryAndStageInput\\file1.file"
+				: "PrimaryAndStageInput/file1.file";
+
+			Assert.AreEqual(compareTo, result);
 
 			Assert.AreEqual(path, PathHelper.GetAbsolutePath(relativeTo, result));
 		}

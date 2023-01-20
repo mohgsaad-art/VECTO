@@ -110,6 +110,7 @@ namespace TUGraz.VectoCore.Tests.Integration.Multistage
 			ShowWrittenFiles(writtenFiles);
 
 			Assert.IsTrue(writtenFiles.Contains(_tempFileOutputWriter.XMLFullReportName));
+			TestContext.WriteLine("ExemptedPrimaryAndInterimTest: " + _fileoutputWriter.XMLFullReportName);
 			Assert.IsFalse(writtenFiles.Contains(_fileoutputWriter.XMLFullReportName));
 			Assert.IsFalse(writtenFiles.Contains(_fileoutputWriter.XMLCustomerReportName));
 			Assert.IsTrue(writtenFiles.Contains(_fileoutputWriter.XMLMultistageReportFileName));
