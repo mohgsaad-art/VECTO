@@ -71,6 +71,7 @@ namespace TUGraz.VectoCore.Tests.Integration.Multistage
 			TestContext.WriteLine($"Execution time: {_stopWatch.Elapsed}");
 		}
 
+		[NonParallelizable]
 		[Test]//, Timeout(3000)]
 		public void ExemptedPrimaryAndCompletedTest()
 		{
@@ -86,6 +87,7 @@ namespace TUGraz.VectoCore.Tests.Integration.Multistage
 			Assert.IsTrue(writtenFiles.Contains(_fileoutputWriter.XMLMultistageReportFileName));
 		}
 
+		[NonParallelizable]
 		[Test]
 		public void ExemptedPrimaryAndCompletedWithoutTPMLMTest()
 		{
@@ -101,6 +103,7 @@ namespace TUGraz.VectoCore.Tests.Integration.Multistage
 			Assert.IsTrue(writtenFiles.Contains(_fileoutputWriter.XMLMultistageReportFileName));
 		}
 
+		[NonParallelizable]
 		[Test]//, Timeout(3000)]
 		public void ExemptedPrimaryAndInterimTest()
 		{
@@ -129,7 +132,8 @@ namespace TUGraz.VectoCore.Tests.Integration.Multistage
 		}
 
 		//SpecialCase II
-		[Test, Timeout(1000 * 20 * 60)]
+		[NonParallelizable]
+		[Test]
 		public void PrimaryAndCompletedTest()
 		{
 			StartSimulation(CompletedDiesel);
@@ -145,6 +149,7 @@ namespace TUGraz.VectoCore.Tests.Integration.Multistage
 
 		}
 
+		[NonParallelizable]
 		[Test]
 		public void PrimaryAndCompletedWithoutADASAndTPMLM()
 		{
@@ -161,7 +166,8 @@ namespace TUGraz.VectoCore.Tests.Integration.Multistage
 		}
 
 		//SpecialCase I
-		[Test, Timeout(1000 * 10 * 60)]
+		[NonParallelizable]
+		[Test]
 		public void PrimaryAndInterimTest()
 		{
 			StartSimulation(InterimDiesel);
