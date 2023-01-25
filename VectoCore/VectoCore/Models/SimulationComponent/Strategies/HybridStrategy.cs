@@ -2150,8 +2150,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				return;
 			}
 
-			if (resp.Engine.TotalTorqueDemand == null)
-			{
+			if (resp.Engine.TotalTorqueDemand == null) {
 				tmp.FuelCosts = double.NaN;
 				tmp.IgnoreReason |= HybridConfigurationIgnoreReason.NoResponseAvailable;
 				return;

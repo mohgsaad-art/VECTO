@@ -295,8 +295,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				return RequestGearEngaged(absTime, dt, outTorque, outAngularVelocity, inTorque, inTorqueLossResult, inertiaTorqueLossOut, dryRun);
 			} else {
 				return RequestGearDisengaged(absTime, dt, outTorque, outAngularVelocity, inTorque, dryRun);
-        }
-        }
+			}
+		}
 
         protected virtual void DoNotEngageWhenBraking(NewtonMeter outTorque, Second absTime, Second dt, PerSecond outAngularVelocity)
         { }

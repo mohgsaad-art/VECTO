@@ -68,11 +68,11 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
         {
             Dictionary<string, double> metrics = new Dictionary<string, double>()
 			{
-				{ SumDataFields.CO2_KM, CO2 },
-                { SumDataFields.E_REESS_T_chg, charge },
-                { SumDataFields.E_REESS_T_dischg, discharge },
-                { SumDataFields.P_WHEEL_POS, pWheelpos },
-                { SumDataFields.P_WHEEL, pWheel }
+				{ SummaryDataContainer.Fields.CO2_KM, CO2 },
+                { SummaryDataContainer.Fields.E_REESS_T_chg, charge },
+                { SummaryDataContainer.Fields.E_REESS_T_dischg, discharge },
+                { SummaryDataContainer.Fields.P_WHEEL_POS, pWheelpos },
+                { SummaryDataContainer.Fields.P_WHEEL, pWheel }
 			};
 
             RunHybridTimeRunCycle(jobFile, cycleIdx, metrics);
@@ -115,9 +115,9 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
         {
             Dictionary<string, double> metrics = new Dictionary<string, double>()
 			{
-				{ SumDataFields.CO2_KM, double.NaN },
-                { SumDataFields.E_REESS_T_chg, double.NaN },
-                { SumDataFields.E_REESS_T_dischg, double.NaN }
+				{ SummaryDataContainer.Fields.CO2_KM, double.NaN },
+                { SummaryDataContainer.Fields.E_REESS_T_chg, double.NaN },
+                { SummaryDataContainer.Fields.E_REESS_T_dischg, double.NaN }
 			};
 
             RunHybridDistanceRunCycle(jobFile, cycleIdx, metrics);

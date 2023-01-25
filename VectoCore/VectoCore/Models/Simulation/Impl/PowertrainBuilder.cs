@@ -572,7 +572,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			return container;
 		}
 
-        private static IVehicleContainer BuildMeasuredSpeedHybrid(VectoRunData data, IModalDataContainer modData, ISumData sumWriter)
+        private static IVehicleContainer BuildMeasuredSpeedHybrid(VectoRunData data, IModalDataContainer modData, WriteSumData sumWriter)
 		{
 			VerifyCycleType(data, CycleType.MeasuredSpeed);
 
@@ -626,13 +626,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 			return container;
 		}
-
-		private static void AddElectricAuxiliary(VectoRunData data, VehicleContainer container, ElectricSystem es)
-		{
-			var aux = new ElectricAuxiliary(container);
-			aux.AddConstant("P_aux_el", data.ElectricAuxDemand ?? 0.SI<Watt>());
-			es.Connect(aux);
-        }
 
 		private static SwitchableClutch AddClutch(VectoRunData data, VehicleContainer container)
 		{
@@ -1193,6 +1186,13 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 			return em;
 		}
+
+		private static void AddElectricAuxiliary(VectoRunData data, VehicleContainer container, ElectricSystem es)
+		{
+			var aux = new ElectricAuxiliary(container);
+			aux.AddConstant("P_aux_el", data.ElectricAuxDemand ?? 0.SI<Watt>());
+			es.Connect(aux);
+        }
 
         private static void AddBEVBusAuxiliaries(VectoRunData data, VehicleContainer container, ElectricSystem es, IElectricMotor em)
         {

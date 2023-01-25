@@ -28,7 +28,7 @@ xsi:schemaLocation="urn:tugraz:ivt:VectoAPI:DeclarationJob v:\VectoCore\VectoCor
 		<ZeroEmissionVehicle>false</ZeroEmissionVehicle>
 		<VehicleTypeApprovalNumber>a</VehicleTypeApprovalNumber>
 		<ADAS xsi:type="ADAS_Conventional_Type">
-			<EngineStopStart>true</EngineStopStart>
+			<EngineStopStart>false</EngineStopStart>
 			<EcoRollWithoutEngineStop>false</EcoRollWithoutEngineStop>
 			<EcoRollWithEngineStop>false</EcoRollWithEngineStop>
 			<PredictiveCruiseControl>none</PredictiveCruiseControl>

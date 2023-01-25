@@ -95,7 +95,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			};
 			CurrentState = PreviousState.Clone();
 
-			RunData = container.RunData;
 			AbsTime = Data.Entries.First().Time;
 
 			RunData = container.RunData;
@@ -272,7 +271,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		}
 
         private void DetermineDriverActionForBEV(Second absTime)
-		{
+        { 
 			if (DataBus.VehicleInfo.VehicleStopped && DriverAcceleration.IsEqual(0)) {
 				DriverBehavior = DrivingBehavior.Halted;
 				DrivingAction = DrivingAction.Halt;
@@ -285,7 +284,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				DriverBehavior = DrivingBehavior.Driving;
 				DrivingAction = DataBus.GearboxInfo.GearEngaged(absTime) ? DrivingAction.Accelerate : DrivingAction.Roll;
 			}
-		}
+        }
 
         private void DetermineDriverActionForPHEV(Second absTime)
         { 
