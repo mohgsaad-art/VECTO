@@ -17,13 +17,13 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
     [Parallelizable(ParallelScope.All)]
     public class HybridsTimeRunTest
     {
-        private const string P2_JOB = @"TestData\Integration\TimeRun\MeasuredSpeed\GenericVehicle_Group2_P2_EM\Class2_RigidTruck_ParHyb_ENG.vecto";
-        private const string P3_JOB = @"TestData\Integration\TimeRun\MeasuredSpeed\GenericVehicle_Group2_P3_EM\Class2_RigidTruck_ParHyb_ENG.vecto";
-        private const string P4_JOB = @"TestData\Integration\TimeRun\MeasuredSpeed\GenericVehicle_Group2_P4_EM\Class2_RigidTruck_ParHyb_ENG.vecto";
-        private const string P2_5_JOB = @"TestData\Integration\TimeRun\MeasuredSpeed\GenericVehicle_Group5_P2.5\P2.5 Group 5 2.vecto";
-        private const string P1_JOB = @"TestData\Integration\TimeRun\MeasuredSpeed\GenericVehicle_P1-APT\CityBus_AT_PS.vecto";
-        private const string IHPC_6SPEED_JOB= @"TestData\Integration\TimeRun\MeasuredSpeed\GenericIHPC\6SpeedGbx\IHPC Group 5.vecto";
-        private const string IHPC_12SPEED_JOB= @"TestData\Integration\TimeRun\MeasuredSpeed\GenericIHPC\12SpeedGbx\IHPC Group 5.vecto";
+        private const string P2_JOB = @"TestData/Integration/TimeRun/MeasuredSpeed/GenericVehicle_Group2_P2_EM/Class2_RigidTruck_ParHyb_ENG.vecto";
+        private const string P3_JOB = @"TestData/Integration/TimeRun/MeasuredSpeed/GenericVehicle_Group2_P3_EM/Class2_RigidTruck_ParHyb_ENG.vecto";
+        private const string P4_JOB = @"TestData/Integration/TimeRun/MeasuredSpeed/GenericVehicle_Group2_P4_EM/Class2_RigidTruck_ParHyb_ENG.vecto";
+        private const string P2_5_JOB = @"TestData/Integration/TimeRun/MeasuredSpeed/GenericVehicle_Group5_P2.5/P2.5 Group 5 2.vecto";
+        private const string P1_JOB = @"TestData/Integration/TimeRun/MeasuredSpeed/GenericVehicle_P1-APT/CityBus_AT_PS.vecto";
+        private const string IHPC_6SPEED_JOB= @"TestData/Integration/TimeRun/MeasuredSpeed/GenericIHPC/6SpeedGbx/IHPC Group 5.vecto";
+        private const string IHPC_12SPEED_JOB= @"TestData/Integration/TimeRun/MeasuredSpeed/GenericIHPC/12SpeedGbx/IHPC Group 5.vecto";
 
         [OneTimeSetUp]
         public void Init()
@@ -35,33 +35,33 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
 		[Category("LongRunning")]
 		[Category("Integration")]
         [
-        TestCase(P1_JOB, 0, 496.8756, 10.1923, 10.1745, 51.3798, 49.0388, TestName = "P1 Hybrid TimeRun MeasuredSpeed LongHaul"),
-        TestCase(P1_JOB, 1, 497.4272, 15.0003, 15.0825, 39.3949, 33.9218, TestName = "P1 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
-        TestCase(P1_JOB, 2, 630.0769, 44.916, 44.9378, 20.7742, 8.998, TestName = "P1 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
+        TestCase(P1_JOB, 0, 496.8873, 10.2371, 10.2191, 51.3803, 49.0392, TestName = "P1 Hybrid TimeRun MeasuredSpeed LongHaul"),
+        TestCase(P1_JOB, 1, 497.4313, 14.9897, 15.072, 39.3967, 33.9238, TestName = "P1 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(P1_JOB, 2, 629.491, 44.975, 44.9965, 20.7555, 8.9994, TestName = "P1 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
         
-        TestCase(P2_JOB, 0, 573.8802, 8.708, 7.6547, 56.8497, 54.8098, TestName = "P2 Hybrid TimeRun MeasuredSpeed LongHaul"),
-        TestCase(P2_JOB, 1, 557.427, 11.5132, 11.4639, 42.7538, 37.8312, TestName = "P2 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
-        TestCase(P2_JOB, 2, 610.4948, 30.6064, 31.4296, 20.7994, 9.3408, TestName = "P2 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
+        TestCase(P2_JOB, 0, 573.947, 8.7646, 7.7124, 56.8413, 54.8021, TestName = "P2 Hybrid TimeRun MeasuredSpeed LongHaul"),
+        TestCase(P2_JOB, 1, 557.0427, 11.5103, 11.4645, 42.7029, 37.7794, TestName = "P2 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(P2_JOB, 2, 608.2527, 30.5006, 31.2549, 20.789, 9.3313, TestName = "P2 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
 
-        TestCase(P2_5_JOB, 0, 836.1743, 5.5229, 9.1872, 96.8081, 81.5287, TestName = "P2_5 Hybrid TimeRun MeasuredSpeed LongHaul"),
-        TestCase(P2_5_JOB, 1, 946.8806, 6.7719, 10.9654, 81.7536, 57.6873, TestName = "P2_5 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
-        TestCase(P2_5_JOB, 2, 1643.2916, 11.7918, 16.4455, 53.3112, 16.591, TestName = "P2_5 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
+        TestCase(P2_5_JOB, 0, 836.7834, 5.5221, 9.1817, 97.6105, 82.1992, TestName = "P2_5 Hybrid TimeRun MeasuredSpeed LongHaul"),
+        TestCase(P2_5_JOB, 1, 946.3114, 6.8857, 11.0556, 82.4354, 57.6871, TestName = "P2_5 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(P2_5_JOB, 2, 1654.5214, 13.5674, 18.3792, 55.1309, 17.1532, TestName = "P2_5 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
 
-        TestCase(P3_JOB, 0, 573.7057, 2.8913, 3.2429, 56.8516, 54.8131, TestName = "P3 Hybrid TimeRun MeasuredSpeed LongHaul"),
-        TestCase(P3_JOB, 1, 557.9404, 7.5087, 8.443, 42.8131, 37.9026, TestName = "P3 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(P3_JOB, 0, 573.7316, 2.8828, 3.2344, 56.8513, 54.8142, TestName = "P3 Hybrid TimeRun MeasuredSpeed LongHaul"),
+        TestCase(P3_JOB, 1, 558.1475, 7.5458, 8.4801, 42.8088, 37.8984, TestName = "P3 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
         TestCase(P3_JOB, 2, 0, 0, 0, 0, 0, TestName = "P3 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
 
-        TestCase(P4_JOB, 0, 572.5051, 1.7167, 1.9718, 56.365, 54.331, TestName = "P4 Hybrid TimeRun MeasuredSpeed LongHaul"),
-        TestCase(P4_JOB, 1, 568.7838, 3.2977, 4.0094, 42.2992, 37.4581, TestName = "P4 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
-        TestCase(P4_JOB, 2, 711.7185, 8.2921, 9.4681, 20.3727, 9.1141, TestName = "P4 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
+        TestCase(P4_JOB, 0, 573.1113, 1.7022, 1.957, 56.5289, 54.4965, TestName = "P4 Hybrid TimeRun MeasuredSpeed LongHaul"),
+        TestCase(P4_JOB, 1, 568.8486, 3.2313, 3.9296, 42.349, 37.4994, TestName = "P4 Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(P4_JOB, 2, 711.7234, 8.2956, 9.4808, 20.3771, 9.1163, TestName = "P4 Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
 
-        TestCase(IHPC_6SPEED_JOB, 0, 789.4683, 31.611, 30.6306, 100.8837, 85.7417, TestName = "IHPC_6SPEED IHPC Hybrid TimeRun MeasuredSpeed LongHaul"),
-        TestCase(IHPC_6SPEED_JOB, 1, 858.1059, 44.0771, 42.8824, 88.1826, 62.2659, TestName = "IHPC_6SPEED IHPC Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
-        TestCase(IHPC_6SPEED_JOB, 2, 1238.5376, 109.9816, 103.3343, 64.9494, 20.1109, TestName = "IHPC_6SPEED IHPC Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
+        TestCase(IHPC_6SPEED_JOB, 0, 791.3489, 32.2891, 31.2579, 100.9517, 85.8919, TestName = "IHPC_6SPEED IHPC Hybrid TimeRun MeasuredSpeed LongHaul"),
+        TestCase(IHPC_6SPEED_JOB, 1, 861.6339, 43.5531, 42.3948, 88.29, 62.3502, TestName = "IHPC_6SPEED IHPC Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(IHPC_6SPEED_JOB, 2, 1233.2673, 110.0654, 103.4252, 64.8424, 20.0724, TestName = "IHPC_6SPEED IHPC Hybrid TimeRun MeasuredSpeed UrbanDelivery"),
 
-        TestCase(IHPC_12SPEED_JOB, 0, 823.8629, 20.1096, 20.2614, 101.152, 86.1182, TestName = "IHPC_12SPEED IHPC Hybrid TimeRun MeasuredSpeed LongHaul"),
-        TestCase(IHPC_12SPEED_JOB, 1, 921.1086, 29.1406, 29.5595, 87.7955, 62.2168, TestName = "IHPC_12SPEED IHPC Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
-        TestCase(IHPC_12SPEED_JOB, 2, 1517.1778, 65.9818, 64.9079, 63.7205, 19.8704, TestName = "IHPC_12SPEED IHPC Hybrid TimeRun MeasuredSpeed UrbanDelivery")
+        TestCase(IHPC_12SPEED_JOB, 0, 821.4219, 21.1183, 21.1915, 101.4752, 86.4461, TestName = "IHPC_12SPEED IHPC Hybrid TimeRun MeasuredSpeed LongHaul"),
+        TestCase(IHPC_12SPEED_JOB, 1, 921.6429, 29.1447, 29.5643, 87.8293, 62.2116, TestName = "IHPC_12SPEED IHPC Hybrid TimeRun MeasuredSpeed RegionalDelivery"),
+        TestCase(IHPC_12SPEED_JOB, 2, 1518.4682, 66.2813, 65.1601, 63.7544, 19.8701, TestName = "IHPC_12SPEED IHPC Hybrid TimeRun MeasuredSpeed UrbanDelivery")
         ]
         public void TestHybridTimeRunCycle(string jobFile, int cycleIdx, double CO2, double charge, double discharge, double pWheelpos,
             double pWheel)

@@ -330,12 +330,6 @@ namespace TUGraz.VectoCore.Configuration
 
 			public static readonly Second ThresholdStandstillOff = 10.SI<Second>();
 
-			/// <summary>
-			/// When the engine speed (in VTP) is higher than idle speed times this factor,
-			/// the combustion engine is set to on.
-			/// </summary>
-			public const double VTPIdleSpeedDetectionFactor = 0.85;
-
 			public static class CrosswindCorrection
 			{
 				public const int MinVehicleSpeed = 60; // km/h
