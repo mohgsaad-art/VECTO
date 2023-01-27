@@ -16,13 +16,13 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
     [Parallelizable(ParallelScope.All)]
     public class HybridsTimerunGear
     {
-        private const string P2_JOB = @"TestData\Integration\TimeRun\MeasuredSpeedGear\GenericVehicle_Group2_P2_EM\Class2_RigidTruck_ParHyb_ENG.vecto";
-        private const string P3_JOB = @"TestData\Integration\TimeRun\MeasuredSpeedGear\GenericVehicle_Group2_P3_EM\Class2_RigidTruck_ParHyb_ENG.vecto";
-        private const string P4_JOB = @"TestData\Integration\TimeRun\MeasuredSpeedGear\GenericVehicle_Group2_P4_EM\Class2_RigidTruck_ParHyb_ENG.vecto";
-        private const string P2_5_JOB = @"TestData\Integration\TimeRun\MeasuredSpeedGear\GenericVehicle_Group5_P2.5\P2.5 Group 5 2.vecto";
-        private const string P1_JOB = @"TestData\Integration\TimeRun\MeasuredSpeedGear\GenericVehicle_P1-APT\CityBus_AT_PS.vecto";
-        private const string IHPC_6SPEED_JOB= @"TestData\Integration\TimeRun\MeasuredSpeedGear\GenericIHPC\6SpeedGbx\IHPC Group 5.vecto";
-        private const string IHPC_12SPEED_JOB= @"TestData\Integration\TimeRun\MeasuredSpeedGear\GenericIHPC\12SpeedGbx\IHPC Group 5.vecto";
+        private const string P2_JOB = @"TestData/Integration/TimeRun/MeasuredSpeedGear/GenericVehicle_Group2_P2_EM/Class2_RigidTruck_ParHyb_ENG.vecto";
+        private const string P3_JOB = @"TestData/Integration/TimeRun/MeasuredSpeedGear/GenericVehicle_Group2_P3_EM/Class2_RigidTruck_ParHyb_ENG.vecto";
+        private const string P4_JOB = @"TestData/Integration/TimeRun/MeasuredSpeedGear/GenericVehicle_Group2_P4_EM/Class2_RigidTruck_ParHyb_ENG.vecto";
+        private const string P2_5_JOB = @"TestData/Integration/TimeRun/MeasuredSpeedGear/GenericVehicle_Group5_P2.5/P2.5 Group 5 2.vecto";
+        private const string P1_JOB = @"TestData/Integration/TimeRun/MeasuredSpeedGear/GenericVehicle_P1-APT/CityBus_AT_PS.vecto";
+        private const string IHPC_6SPEED_JOB= @"TestData/Integration/TimeRun/MeasuredSpeedGear/GenericIHPC/6SpeedGbx/IHPC Group 5.vecto";
+        private const string IHPC_12SPEED_JOB= @"TestData/Integration/TimeRun/MeasuredSpeedGear/GenericIHPC/12SpeedGbx/IHPC Group 5.vecto";
         
         [OneTimeSetUp]
         public void Init()
