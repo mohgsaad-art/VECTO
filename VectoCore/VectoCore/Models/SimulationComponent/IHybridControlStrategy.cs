@@ -1,4 +1,6 @@
-﻿using TUGraz.VectoCommon.Models;
+﻿using System;
+
+using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.Models.SimulationComponent.Strategies;
@@ -17,6 +19,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent
 
 		
 		void CommitSimulationStep(Second time, Second simulationInterval);
+
+		VelocityRollingLookup VelocityDropData { get; }
+
+		event Action GearShiftTriggered;
 		
 		IHybridController Controller { set; }
 		PerSecond MinICESpeed { get; }

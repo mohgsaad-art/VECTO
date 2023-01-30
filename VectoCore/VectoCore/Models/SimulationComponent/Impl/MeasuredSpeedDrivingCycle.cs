@@ -106,7 +106,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				DataBus.GearboxCtl.GearShiftTriggered -= GearShiftTriggered;
 				DataBus.GearboxCtl.GearShiftTriggered += GearShiftTriggered;
             }
-            
+
+			if (RunData.JobType == VectoSimulationJobType.ParallelHybridVehicle) {
+				DataBus.HybridControllerCtl.Strategy.GearShiftTriggered -= GearShiftTriggered;
+				DataBus.HybridControllerCtl.Strategy.GearShiftTriggered += GearShiftTriggered;
+			}
+
 			var first = Data.Entries.First();
 
 			AbsTime = first.Time;
@@ -258,7 +263,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				DetermineDriverActionForBEV(absTime);
             }
 			else if (RunData.JobType == VectoSimulationJobType.ParallelHybridVehicle) {
-				DetermineDriverActionForHybrid(absTime);
+				DetermineDriverActionForPHEV(absTime);
 			}
 			else {
 				DetermineDriverActionForOther();
@@ -266,7 +271,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		}
 
         private void DetermineDriverActionForBEV(Second absTime)
-		{
+        { 
 			if (DataBus.VehicleInfo.VehicleStopped && DriverAcceleration.IsEqual(0)) {
 				DriverBehavior = DrivingBehavior.Halted;
 				DrivingAction = DrivingAction.Halt;
@@ -279,13 +284,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				DriverBehavior = DrivingBehavior.Driving;
 				DrivingAction = DataBus.GearboxInfo.GearEngaged(absTime) ? DrivingAction.Accelerate : DrivingAction.Roll;
 			}
-		}
-
-        private void DetermineDriverActionForHybrid(Second absTime)
-        {
-			if (Data.CycleType == CycleType.MeasuredSpeedGear) {
-				DetermineDriverActionWithoutVelocityDropData(absTime);
-            }
         }
 
         private void DetermineDriverActionWithoutVelocityDropData(Second absTime)
@@ -313,11 +311,16 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
         private void DetermineDriverActionForPHEV(Second absTime)
         { 
-			if (DataBus.GearboxInfo.GearboxType.AutomaticTransmission()) {
-				DetermineDriverActionForAutomaticHybrid(absTime);	
-			}
-			else {
-				DetermineDriverActionForManualHybrid(absTime);
+			if (Data.CycleType == CycleType.MeasuredSpeedGear) {
+				DetermineDriverActionWithoutVelocityDropData(absTime);
+            }
+			else if (Data.CycleType == CycleType.MeasuredSpeed) {
+				if (DataBus.GearboxInfo.GearboxType.AutomaticTransmission()) {
+					DetermineDriverActionForAutomaticHybrid(absTime);	
+				}
+				else {
+					DetermineDriverActionForManualHybrid(absTime);
+				}
 			}
 		}
 
@@ -354,6 +357,55 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
         }
 
+        private void DetermineDriverActionForManualHybrid(Second absTime)
+        {
+			if (DataBus.VehicleInfo.VehicleStopped && DriverAcceleration.IsEqual(0)) {
+				DrivingAction =  DrivingAction.Halt;
+				DriverBehavior = DrivingBehavior.Halted;
+				
+				DataBus.GearboxCtl.DisengageGearbox = false;
+            }
+			else {
+				var nextSpeed = CalculateHybridSpeedAtNextStep(absTime);
+				var tolerance = (((DataBus.VehicleInfo.VehicleSpeed + nextSpeed) / 2) * 0.001).Abs();
+
+				if (CycleData.RightSample.VehicleTargetSpeed.IsGreater(nextSpeed, tolerance)) {
+					DrivingAction = DataBus.GearboxInfo.GearEngaged(absTime) || (DataBus.GearboxInfo.GearboxType == GearboxType.IHPC) 
+						? DrivingAction.Accelerate 
+						: DrivingAction.Roll;
+
+					DriverBehavior = (DrivingAction == DrivingAction.Accelerate) ? DrivingBehavior.Accelerating : DrivingBehavior.Driving;
+
+					DataBus.GearboxCtl.DisengageGearbox = false;
+				}
+				else if (CycleData.RightSample.VehicleTargetSpeed.IsSmaller(nextSpeed, tolerance)) {
+					DrivingAction = DrivingAction.Brake;
+					DriverBehavior = DrivingBehavior.Braking;
+				}
+			}
+        }
+
+        private MeterPerSecond CalculateHybridSpeedAtNextStep(Second absTime)
+        {
+			var velocityDropData = DataBus.HybridControllerCtl.Strategy.VelocityDropData;
+
+			var currentSpeed = DataBus.VehicleInfo.VehicleSpeed;
+			var interruptionSpeed = velocityDropData.Interpolate(currentSpeed, RoadGradient ?? 0.SI<Radian>());
+			var nextSpeed = interruptionSpeed;
+
+			var deltaTime = CycleData.RightSample.Time - absTime;
+			
+			if (DataBus.GearboxInfo.TractionInterruption > deltaTime) {
+				//Linear interpolation: currSpeed, interruptionSpeed
+				var interruptionTime = absTime + DataBus.GearboxInfo.TractionInterruption;
+
+				nextSpeed = ((currentSpeed * (interruptionTime - CycleData.RightSample.Time)) + (interruptionSpeed * deltaTime)) 
+							/ (interruptionTime - absTime);
+            }
+
+			return nextSpeed;
+		}
+		
 		private bool DetectGearShift()
 		{
 			return (Data.CycleType == CycleType.MeasuredSpeedGear) 

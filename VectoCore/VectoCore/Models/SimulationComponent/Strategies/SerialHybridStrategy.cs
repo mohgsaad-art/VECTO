@@ -256,8 +256,11 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 		protected DryRunSolutionState DryRunSolution { get; set; }
 
+		public VelocityRollingLookup VelocityDropData { get; }
 
-		public AbstractSerialHybridStrategy(VectoRunData runData, IVehicleContainer container)
+		public event Action GearShiftTriggered;
+
+		public AbstractSerialHybridStrategy (VectoRunData runData, IVehicleContainer container)
 		{
 			DataBus = container;
 			ModelData = runData;

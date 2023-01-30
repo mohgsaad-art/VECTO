@@ -81,6 +81,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl {
 			_electricMotorCtl[pos] = new ElectricMotorController(this, motorData);
 		}
 
+		public IHybridControlStrategy Strategy => null;
+
 		//public ResponseDryRun RequestDryRun(
 		//	Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity,
 		//	HybridStrategyResponse strategySettings)

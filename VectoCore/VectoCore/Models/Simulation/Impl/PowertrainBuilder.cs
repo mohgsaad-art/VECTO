@@ -258,7 +258,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			}
 
 			var container = new VehicleContainer(data.ExecutionMode, modData, sumWriter) { RunData = data };
-			var engine = new VTPCombustionEngine(container, data, pt1Disabled: true);
+			var engine = new VTPCombustionEngine(container, data.EngineData, pt1Disabled: true);
 
 			new VTPCycle(container, data.Cycle)
 				.AddComponent(new AxleGear(container, data.AxleGearData))
@@ -370,7 +370,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			return container;
         }
 
-		private static IVehicleContainer BuildMeasuredSpeedGearHybrid(VectoRunData data, IModalDataContainer modData, ISumData sumWriter)
+		private static IVehicleContainer BuildMeasuredSpeedGearHybrid(VectoRunData data, IModalDataContainer modData, WriteSumData sumWriter)
 		{
 			VerifyCycleType(data, CycleType.MeasuredSpeedGear);
 			
@@ -483,33 +483,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				.AddAuxiliaries(container, data);
         }
 
-		private static void VerifyCycleType(VectoRunData data, CycleType cycleType)
-        {
-			if (data.Cycle.CycleType != cycleType) {
-				throw new VectoException($"CycleType must be {cycleType}.");
-			}
-		}
-
-		private static void AddElectricAuxiliary(VectoRunData data, VehicleContainer container, ElectricSystem es)
-		{
-			var aux = new ElectricAuxiliary(container);
-			aux.AddConstant("P_aux_el", data.ElectricAuxDemand ?? 0.SI<Watt>());
-			es.Connect(aux);
-        }
-
-		private static SwitchableClutch AddClutch(VectoRunData data, VehicleContainer container)
-		{
-			SwitchableClutch clutch = null;
-
-			if (data.GearboxData.Type.ManualTransmission() || (data.GearboxData.Type == GearboxType.IHPC)) {
-				clutch = new SwitchableClutch(container, data.EngineData);
-			} else {
-				new ATClutchInfo(container);
-			}
-
-			return clutch;
-        }
-
 		private static void SetIdleControllerForHybridP1(VectoRunData data, IIdleController idleController, SwitchableClutch clutch)
         { 
 			if (data.ElectricMachinesData.Any(x => x.Item1 == PowertrainPosition.HybridP1)) {
@@ -518,31 +491,6 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				}
 			}
 		}
-
-		private static void AddHybridBusAuxiliaries(VectoRunData data, VehicleContainer container, ElectricSystem es)
-        {
-			if (data.BusAuxiliaries == null) {
-				return;
-			}
-			
-			if (!(container.BusAux is BusAuxiliariesAdapter busAux)) {
-				throw new VectoException("BusAux data set but no BusAux component found!");
-			}
-			
-			var auxCfg = data.BusAuxiliaries;
-
-			var electricStorage = auxCfg.ElectricalUserInputsConfig.AlternatorType == AlternatorType.Smart
-				? new SimpleBattery(container, auxCfg.ElectricalUserInputsConfig.ElectricStorageCapacity, auxCfg.ElectricalUserInputsConfig.StoredEnergyEfficiency)
-				: (ISimpleBattery)new NoBattery(container);
-
-			busAux.ElectricStorage = electricStorage;
-
-			if (data.BusAuxiliaries.ElectricalUserInputsConfig.ConnectESToREESS) {
-				var dcdc = new DCDCConverter(container, data.BusAuxiliaries.ElectricalUserInputsConfig.DCDCEfficiency);
-				busAux.DCDCConverter = dcdc;
-				es.Connect(dcdc);
-			}
-        }
 
 		/// <summary>
 		/// Builds a measured speed (with gear) powertrain.
@@ -561,7 +509,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		///       └(Aux)
 		/// </code>
 		/// </summary>
-		private static IVehicleContainer BuildMeasuredSpeedGearConventional(VectoRunData data, IModalDataContainer modData, ISumData sumWriter)
+		private static IVehicleContainer BuildMeasuredSpeedGearConventional(VectoRunData data, IModalDataContainer modData, WriteSumData sumWriter)
 		{
 			if (data.Cycle.CycleType != CycleType.MeasuredSpeedGear) {
 				throw new VectoException("CycleType must be MeasuredSpeed with Gear.");
@@ -1219,6 +1167,13 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			return em;
         }
 
+		private static void VerifyCycleType(VectoRunData data, CycleType cycleType)
+        {
+			if (data.Cycle.CycleType != cycleType) {
+				throw new VectoException($"CycleType must be {cycleType}.");
+			}
+		}
+
 		private static IPowerTrainComponent GetPEVPTO(VehicleContainer container, VectoRunData data)
 		{
 			if (data.PTO == null) {
@@ -1366,6 +1321,13 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 			return em;
 		}
+
+		private static void AddElectricAuxiliary(VectoRunData data, VehicleContainer container, ElectricSystem es)
+		{
+			var aux = new ElectricAuxiliary(container);
+			aux.AddConstant("P_aux_el", data.ElectricAuxDemand ?? 0.SI<Watt>());
+			es.Connect(aux);
+        }
 
         private static void AddBEVBusAuxiliaries(VectoRunData data, VehicleContainer container, ElectricSystem es, IElectricMotor em)
         {
