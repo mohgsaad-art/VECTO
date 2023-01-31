@@ -2109,8 +2109,9 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				return null;
 			}
 
+			container.ModData?.AddElectricMotor(pos);
 			ctl.AddElectricMotor(pos, motorData.Item2);
-
+			
 			var motor = (TElectricMotor) Activator.CreateInstance(typeof(TElectricMotor), 
 				new object[] { container, motorData.Item2, ctl.ElectricMotorControl(pos), pos });
 			
