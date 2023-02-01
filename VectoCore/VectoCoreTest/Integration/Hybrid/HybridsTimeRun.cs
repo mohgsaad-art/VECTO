@@ -78,7 +78,6 @@ namespace TUGraz.VectoCore.Tests.Integration.Hybrid
             RunHybridTimeRunCycle(jobFile, cycleIdx, metrics);
         }
 
-        [Category("TUG-update")]
         [Category("JRC")]
         [Category("LongRunning")]
         [Category("Integration")]

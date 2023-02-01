@@ -119,7 +119,6 @@ namespace TUGraz.VectoCore.Tests.Integration.BatteryElectric
             RunBEVTimeRunCycle(jobFile, cycleIdx, distanceCycleIdx, metrics);
         }
 
-        [Category("TUG-update")]
         [Category("JRC")]
         [Category("LongRunning")]
         [Category("Integration")]
