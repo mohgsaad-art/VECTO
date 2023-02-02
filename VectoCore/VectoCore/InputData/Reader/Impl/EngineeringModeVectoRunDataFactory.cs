@@ -514,7 +514,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 					if (InputDataProvider.JobInputData.JobType != VectoSimulationJobType.ConventionalVehicle) {
 						driver.EngineStopStart.UtilityFactorDriving = 1;
 					}
-
+					
 					var vehicle = InputDataProvider.JobInputData.Vehicle;
 					var engineData = dao.CreateEngineData(vehicle, engineMode);
 					engineData.FuelMode = modeIdx;
@@ -528,15 +528,21 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 						}
 					};
 					var tmpStrategy = PowertrainBuilder.GetShiftStrategy(new SimplePowertrainContainer(tmpRunData));
+					
+					var crossWindRequired = vehicle.Components.AirdragInputData.CrossWindCorrectionMode ==
+											CrossWindCorrectionMode.VAirBetaLookupTable;
+
+					var drivingCycle = GetDrivingCycle(cycle, crossWindRequired);
+					var drivingCycleProxy = new DrivingCycleProxy(drivingCycle, cycle.Name);
+
 					var gearboxData = dao.CreateGearboxData(
 						InputDataProvider, new VectoRunData() {
 							EngineData = engineData,
 							VehicleData = tempVehicle,
-							AxleGearData = axlegearData
+							AxleGearData = axlegearData,
+							Cycle = drivingCycleProxy
 						}, tmpStrategy);
 
-					var crossWindRequired = vehicle.Components.AirdragInputData.CrossWindCorrectionMode ==
-											CrossWindCorrectionMode.VAirBetaLookupTable;
 					var angledriveData = dao.CreateAngledriveData(vehicle.Components.AngledriveInputData);
 					var ptoTransmissionData =
 						dao.CreatePTOTransmissionData(vehicle.Components.PTOTransmissionInputData);
@@ -560,9 +566,6 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 									.PTOCycleWhileDriving,
 								"PTO During Drive", false)
 							: null;
-
-
-					var drivingCycle = GetDrivingCycle(cycle, crossWindRequired);
 
 					var battery = dao.CreateBatteryData(vehicle.Components.ElectricStorage, vehicle.InitialSOC);
 					var superCap = dao.CreateSuperCapData(vehicle.Components.ElectricStorage, vehicle.InitialSOC);
@@ -617,7 +620,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 							dao.CreateBusAuxiliariesData(vehicle.Components.AuxiliaryInputData, vehicleData, jobType),
 						Retarder = dao.CreateRetarderData(vehicle.Components.RetarderInputData, powertrainPosition),
 						PTO = ptoTransmissionData,
-						Cycle = new DrivingCycleProxy(drivingCycle, cycle.Name),
+						Cycle = drivingCycleProxy,
 						ExecutionMode = ExecutionMode.Engineering,
 						PTOCycleWhileDrive = ptoCycleWhileDrive,
 
