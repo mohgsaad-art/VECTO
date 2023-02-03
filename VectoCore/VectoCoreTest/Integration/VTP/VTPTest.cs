@@ -94,14 +94,14 @@ namespace TUGraz.VectoCore.Tests.Integration.VTP
 		[Category("LongRunning")]
 		[Category("Integration")]
 		[
-		TestCase(@"TestData\Integration\VTPMode\GenericVehicle\class_5_generic vehicle_DECL.vecto", 4.44E-08, 0.8972, TestName = "Generic Group 5 VTP Test Declaration Mode"),
-		TestCase(@"TestData\Integration\VTPMode\GenericVehicle XMLJob PTO\class_5_generic vehicle_DECL.vecto", 4.45E-08, 0.8925, TestName = "Generic Group 5 VTP Test Declaration Mode with PTO"),
-		TestCase(@"TestData\Integration\VTPMode\GenericVehicle\class_3_generic vehicle_DECL.vecto", 1.26E-07, 1.0068, TestName = "Generic Group 3 VTP Test Declaration Mode"),
-		TestCase(STOP_START_JOB, 7.89E-08, 1.0099, TestName = "VTP StopStart"),
-		TestCase(PEL_FAN_JOB, 4.44E-08, 0.8968, TestName = "VTP Fan Electrical Power"),
-		TestCase(POLLUTANTS_JOB, 7.89E-08, 1.0082, TestName = "VTP Pollutants"),
-		TestCase(DUAL_FUEL_JOB, 4.71E-09, 1.0107, TestName = "VTP Dual Fuel"),
-		TestCase(TORQUE_DRIFT_JOB, 7.89E-08, 1.0082, TestName = "VTP Torque Drift")
+		TestCase(@"TestData\Integration\VTPMode\GenericVehicle\class_5_generic vehicle_DECL.vecto", 44.4, 0.8972, TestName = "Generic Group 5 VTP Test Declaration Mode"),
+		TestCase(@"TestData\Integration\VTPMode\GenericVehicle XMLJob PTO\class_5_generic vehicle_DECL.vecto", 44.5, 0.8925, TestName = "Generic Group 5 VTP Test Declaration Mode with PTO"),
+		TestCase(@"TestData\Integration\VTPMode\GenericVehicle\class_3_generic vehicle_DECL.vecto", 126, 1.0068, TestName = "Generic Group 3 VTP Test Declaration Mode"),
+		TestCase(STOP_START_JOB, 78.9, 1.0099, TestName = "VTP StopStart"),
+		TestCase(PEL_FAN_JOB, 44.4, 0.8968, TestName = "VTP Fan Electrical Power"),
+		TestCase(POLLUTANTS_JOB, 78.9, 1.0082, TestName = "VTP Pollutants"),
+		TestCase(DUAL_FUEL_JOB, 4.71, 1.0107, TestName = "VTP Dual Fuel"),
+		TestCase(TORQUE_DRIFT_JOB, 78.9, 1.0082, TestName = "VTP Torque Drift")
 		]
 		public void RunVTP_Declaration(string jobFile, double expectedDeclaredCO2, double expectedCVTP)
 		{
