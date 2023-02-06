@@ -1,20 +1,41 @@
 {
   "Header": {
     "CreatedBy": "",
-    "Date": "2020-10-09T08:12:58.0193337Z",
+    "Date": "2022-09-29T09:07:11.2177069Z",
     "AppVersion": "3",
-    "FileVersion": 1
+    "FileVersion": 5
   },
   "Body": {
     "SavedInDeclMode": false,
     "Model": "Generic EM 47kW",
-    "FullLoadCurve": "GenericEM_47kW.vemp",
-    "DragCurve": "GenericEM_47kW.vemd",
-    "EfficiencyMap": "GenericEM_47kW.vemo",
     "Inertia": 0.1,
-    "ContinuousPower": 100000.0,
-    "ContinuousPowerSpeed": 999.99999999999989,
-    "OverloadTime": 30.0,
-    "ThermalOverloadRecoveryFactor": 0.9
+    "ThermalOverloadRecoveryFactor": 0.9,
+    "DragCurve": "GenericEM_47kW.vemd",
+    "VoltageLevels": [
+      {
+        "Voltage": 0.0,
+        "ContinuousTorque": 300.0,
+        "ContinuousTorqueSpeed": 999.99999999999989,
+        "OverloadTorque": 450.0,
+        "OverloadTorqueSpeed": 999.99999999999989,
+        "OverloadTime": 30.0,
+        "FullLoadCurve": "GenericEM_47kW.vemp",
+        "EfficiencyMap": {
+          "0": "GenericEM_47kW.vemo"
+        }
+      },
+      {
+        "Voltage": 1000000000.0,
+        "ContinuousTorque": 300.0,
+        "ContinuousTorqueSpeed": 999.99999999999989,
+        "OverloadTorque": 450.0,
+        "OverloadTorqueSpeed": 999.99999999999989,
+        "OverloadTime": 30.0,
+        "FullLoadCurve": "GenericEM_47kW.vemp",
+        "EfficiencyMap": {
+          "0": "GenericEM_47kW.vemo"
+        }
+      }
+    ]
   }
 }

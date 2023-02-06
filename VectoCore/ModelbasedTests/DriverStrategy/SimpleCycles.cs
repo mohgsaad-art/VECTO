@@ -62,6 +62,7 @@ namespace TUGraz.VectoCore.ModelbasedTests.DriverStrategy
 				ModalResultField.v_act, ModalResultField.acc, ModalResultField.n_ice_avg, ModalResultField.Gear,
 				ModalResultField.P_ice_out, ModalResultField.T_ice_fcmap, ModalResultField.FCMap
 			};
+
 			graphWriter.Series1Label = "Vecto 3";
 			return graphWriter;
 		}

@@ -1377,7 +1377,10 @@ cycle
 
 # VECTO Development Release Changelog
 
-## 2022-11-30: Vecto 0.7.9-2890 JRC Bugfix Release
+## 2022-11-30: Vecto 0.7.9-2958 JRC Development Release
+- Improvements
+  - Implementation of measured speed cycle for PHEVs (P1, P2, P2.5, P3, P4, IHPC)
+  - Implementation of measured speed with gear for PHEVs (P1, P2, P2.5, P3, P4, IHPC)
 - Bugfixes
   - [VECTO-1673] - Incorrect results for battery energy/power in .vsum and .vmod in version VECTO-0.7.9.2864-DEV
 

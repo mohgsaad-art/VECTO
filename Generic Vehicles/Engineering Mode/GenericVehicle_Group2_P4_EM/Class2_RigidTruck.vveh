@@ -1,7 +1,7 @@
 {
   "Header": {
     "CreatedBy": "",
-    "Date": "2022-06-10T12:47:43.6197341Z",
+    "Date": "2020-09-07T14:50:19.3122627Z",
     "AppVersion": "3",
     "FileVersion": 10
   },
@@ -69,23 +69,32 @@
       "Ratio": 1.0,
       "File": ""
     },
+    "Angledrive": {
+      "Type": "None",
+      "Ratio": 0.0,
+      "LossMap": ""
+    },
+    "PTO": {
+      "Type": "None",
+      "LossMap": "",
+      "Cycle": ""
+    },
+    "TorqueLimits": {},
+    "MaxDrivetrainPower": 500.0,
     "InitialSoC": 50.0,
     "PowertrainConfiguration": "ParallelHybrid",
     "ElectricMotors": [
       {
         "Count": 1,
         "Ratio": 1.0,
+        "MechanicalEfficiency": 1.0,
         "Position": "P4",
-        "MotorFile": "GenericEM_47kW.vem",
-        "MechanicalEfficiency": 1.0
+        "MotorFile": "GenericEM_47kW.vem"
       }
     ],
-    "Batteries": [
-      {
-        "NumPacks": 1,
-        "BatteryFile": "GenericBat_3kWh.vbat",
-        "StreamId": 0
-      }
-    ]
+    "Battery": {
+      "NumPacks": 1,
+      "BatteryFile": "GenericBat_3kWh.vbat"
+    }
   }
 }
