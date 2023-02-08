@@ -380,14 +380,14 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			AddElectricAuxiliary(data, container, es);
 			
 			var strategy = (data.GearboxData.Type.ManualTransmission() || data.GearboxData.Type == GearboxType.IHPC) 
-				? (IHybridControlStrategy) new HybridStrategyTimerunGear(data, container)
+				? (IHybridControlStrategy) new MeasuredSpeedGearHybridStrategy(data, container)
 				: (IHybridControlStrategy) new HybridStrategyATTimerunGear(data, container);
 
 			// add engine before gearbox so that gearbox can obtain if an ICE is available already in constructor
 			var engine = new StopStartCombustionEngine(container, data.EngineData);
-			var gearbox = new GearBoxHybridsMeasuredSpeedGear(container, data);
+			var gearbox = new MeasuredSpeedHybridsCycleGearbox(container, data);
 			
-			var ctl = new HybridControllerTimerunGear(container, strategy, es) { Gearbox = gearbox, Engine = engine };
+			var ctl = new MeasuredSpeedGearHybridController(container, strategy, es) { Gearbox = gearbox, Engine = engine };
 
 			var position = data.ElectricMachinesData[0].Item1;
 
@@ -398,7 +398,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				Gearbox =  gearbox,
 				Clutch = AddClutch(data, container),
 				IdleController = GetIdleController(data.PTO, engine, container),
-				ElectricMotor = GetElectricMachine<TimerunGearHybridElectricMotor>(position, data.ElectricMachinesData, container, es, ctl),
+				ElectricMotor = GetElectricMachine<MeasuredSpeedGearHybridsElectricMotor>(position, data.ElectricMachinesData, container, es, ctl),
 				HybridController = ctl
 			};
 
@@ -1735,7 +1735,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			
 			// add engine before gearbox so that gearbox can obtain if an ICE is available already in constructor
 			var engine = new StopStartCombustionEngine(container, data.EngineData);
-			var gearbox = new GearBoxHybridsMeasuredSpeedGear(container, data);
+			var gearbox = new MeasuredSpeedHybridsCycleGearbox(container, data);
 			
 			var ctl = new SimpleHybridController(container, es) { Gearbox = gearbox, Engine = engine };
 			
@@ -1748,7 +1748,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 				Gearbox =  gearbox,
 				Clutch = AddClutch(data, container),
 				IdleController = GetIdleController(data.PTO, engine, container),
-				ElectricMotor = GetElectricMachine<TimerunGearHybridElectricMotor>(position, data.ElectricMachinesData, container, es, ctl),
+				ElectricMotor = GetElectricMachine<MeasuredSpeedGearHybridsElectricMotor>(position, data.ElectricMachinesData, container, es, ctl),
 				HybridController = ctl
 			};
 
@@ -2257,7 +2257,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			switch (container.RunData.GearboxData.Type) {
 				case GearboxType.AMT:
 				case GearboxType.MT:
-					return  isMeasuredSpeedHybrid ? new MeasuredSpeedHybridGearbox(container, strategy) : new Gearbox(container, strategy);
+					return  isMeasuredSpeedHybrid ? new MeasuredSpeedHybridsGearbox(container, strategy) : new Gearbox(container, strategy);
 				case GearboxType.ATPowerSplit:
 				case GearboxType.ATSerial:
 					new ATClutchInfo(container);
@@ -2348,7 +2348,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			var isMeasuredSpeedHybrid = (container.RunData.JobType == VectoSimulationJobType.ParallelHybridVehicle) 
 										&& (container.RunData.Cycle.CycleType == CycleType.MeasuredSpeed);
 
-			return isMeasuredSpeedHybrid ? new MeasuredSpeedHybridGearbox(container, null) :  new Gearbox(container, null);
+			return isMeasuredSpeedHybrid ? new MeasuredSpeedHybridsGearbox(container, null) :  new Gearbox(container, null);
 		}
 	}
 

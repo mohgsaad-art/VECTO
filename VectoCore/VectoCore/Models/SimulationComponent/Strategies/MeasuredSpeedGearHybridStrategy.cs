@@ -14,9 +14,9 @@ using TUGraz.VectoCore.Models.Declaration;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 {
-    public class HybridStrategyTimerunGear : AbstractHybridStrategyTimerunGear<GearBoxHybridsMeasuredSpeedGear>
+    public class MeasuredSpeedGearHybridStrategy : AbstractMeasuredSpeedGearHybridStrategy<MeasuredSpeedHybridsCycleGearbox>
     {
-        public HybridStrategyTimerunGear(VectoRunData runData, IVehicleContainer vehicleContainer) : base(runData,vehicleContainer)
+        public MeasuredSpeedGearHybridStrategy(VectoRunData runData, IVehicleContainer vehicleContainer) : base(runData,vehicleContainer)
         {}
 
 		protected override IResponse RequestDryRun(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, 
@@ -138,7 +138,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
     }
 
 	//--------------------------------------------------
-	public class HybridStrategyATTimerunGear : AbstractHybridStrategyTimerunGear<GearBoxHybridsMeasuredSpeedGear>
+	public class HybridStrategyATTimerunGear : AbstractMeasuredSpeedGearHybridStrategy<MeasuredSpeedHybridsCycleGearbox>
 	{
 
 		public HybridStrategyATTimerunGear(VectoRunData runData, IVehicleContainer vehicleContainer) : base(runData,
@@ -178,7 +178,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 			var currentGear = PreviousState.GearboxEngaged ? CurrentGear : NextGear;
 
-			var gearboxInfo = DataBus.GearboxInfo as GearBoxHybridsMeasuredSpeedGear;
+			var gearboxInfo = DataBus.GearboxInfo as MeasuredSpeedHybridsCycleGearbox;
 			if (nextGear.Engaged && !nextGear.Equals(currentGear)) {
 				
 				var vDrop = DataBus.DriverInfo.DriverAcceleration * ModelData.GearshiftParameters.ATLookAheadTime;
@@ -317,10 +317,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 	}
 
     //--------------------------------------------------
-    public abstract class AbstractHybridStrategyTimerunGear<T> : AbstractHybridStrategy<T> 
+    public abstract class AbstractMeasuredSpeedGearHybridStrategy<T> : AbstractHybridStrategy<T> 
         where T : class, IHybridControlledGearbox, IGearbox
     {
-        public AbstractHybridStrategyTimerunGear(VectoRunData runData, IVehicleContainer vehicleContainer) : 
+        public AbstractMeasuredSpeedGearHybridStrategy(VectoRunData runData, IVehicleContainer vehicleContainer) : 
             base(runData, vehicleContainer)
         {}
 
@@ -380,6 +380,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
         protected override IResponse RepeatDryRunWithDifferentGear(IResponse response, GearshiftPosition currentGear, Second absTime,
 			Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, HybridStrategyResponse tmp)
         {
+			//Repeat dry run with lower gear if engine speed is under idle.
 			if ((response == null) || (response.Engine.EngineSpeed ?? 0.SI<PerSecond>()) <= DataBus.EngineInfo.EngineIdleSpeed) {
 				if (CurrentGear.Gear < NextGear.Gear) {
 					currentGear = new GearshiftPosition((currentGear.Gear > 0) ? currentGear.Gear - 1 : currentGear.Gear);

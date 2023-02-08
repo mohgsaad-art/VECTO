@@ -514,7 +514,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl
 					if (InputDataProvider.JobInputData.JobType != VectoSimulationJobType.ConventionalVehicle) {
 						driver.EngineStopStart.UtilityFactorDriving = 1;
 					}
-					
+
 					var vehicle = InputDataProvider.JobInputData.Vehicle;
 					var engineData = dao.CreateEngineData(vehicle, engineMode);
 					engineData.FuelMode = modeIdx;

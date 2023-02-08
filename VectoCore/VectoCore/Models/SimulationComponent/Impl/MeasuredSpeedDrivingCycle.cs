@@ -263,7 +263,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				DetermineDriverActionForBEV(absTime);
             }
 			else if (RunData.JobType == VectoSimulationJobType.ParallelHybridVehicle) {
-				DetermineDriverActionForPHEV(absTime);
+				DetermineDriverActionForParallelHEV(absTime);
 			}
 			else {
 				DetermineDriverActionForOther();
@@ -309,7 +309,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
         }
 
-        private void DetermineDriverActionForPHEV(Second absTime)
+        private void DetermineDriverActionForParallelHEV(Second absTime)
         { 
 			if (Data.CycleType == CycleType.MeasuredSpeedGear) {
 				DetermineDriverActionWithoutVelocityDropData(absTime);

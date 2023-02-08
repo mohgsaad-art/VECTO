@@ -6,9 +6,9 @@ using TUGraz.VectoCore.Models.SimulationComponent.Data;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
-    public class TimerunGearHybridElectricMotor : ElectricMotor
+    public class MeasuredSpeedGearHybridsElectricMotor : ElectricMotor
     {
-        public TimerunGearHybridElectricMotor(IVehicleContainer container, ElectricMotorData data, IElectricMotorControl control, 
+        public MeasuredSpeedGearHybridsElectricMotor(IVehicleContainer container, ElectricMotorData data, IElectricMotorControl control, 
             PowertrainPosition position) : base(container, data, control, position)
         {}
 

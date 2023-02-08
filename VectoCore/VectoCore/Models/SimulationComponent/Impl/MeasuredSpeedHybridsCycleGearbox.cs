@@ -8,9 +8,9 @@ using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
-    public class GearBoxHybridsMeasuredSpeedGear : CycleGearbox, IHybridControlledGearbox
+    public class MeasuredSpeedHybridsCycleGearbox : CycleGearbox, IHybridControlledGearbox
     {
-        public GearBoxHybridsMeasuredSpeedGear(IVehicleContainer container, VectoRunData runData) : base(container, runData)
+        public MeasuredSpeedHybridsCycleGearbox(IVehicleContainer container, VectoRunData runData) : base(container, runData)
         {
             LastDownshift = -double.MaxValue.SI<Second>();
 			LastUpshift = -double.MaxValue.SI<Second>();
@@ -29,11 +29,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
         protected override PerSecond CalculateInAngularSpeed(PerSecond outAngularVelocity)
 		{ 
+            //Since the engine can be off, we back-calculate in angular speed from out angular speed and ratio, instead of setting it to engine idle speed.
 			return outAngularVelocity * ((Gear.Gear == 0) ? 0 : ModelData.Gears[Gear.Gear].Ratio);
 		}
 
         protected override IResponse EngineIdleRequest(Second absTime, Second dt)
         {
+            //For EM positions: P2.5, P2, IHPC, the next component is the electric motor, so we use the EM speed in the request.
             var pos = DataBus.PowertrainInfo.ElectricMotorPositions[0];
             var useEMSpeed = (pos == PowertrainPosition.HybridP2_5 || pos == PowertrainPosition.HybridP2 || pos == PowertrainPosition.IHPC);
             

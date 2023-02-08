@@ -7,9 +7,9 @@ using TUGraz.VectoCore.Configuration;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
-    public class MeasuredSpeedHybridGearbox : Gearbox
+    public class MeasuredSpeedHybridsGearbox : Gearbox
     {
-        public MeasuredSpeedHybridGearbox(IVehicleContainer container, IShiftStrategy strategy) : base(container, strategy) 
+        public MeasuredSpeedHybridsGearbox(IVehicleContainer container, IShiftStrategy strategy) : base(container, strategy) 
         {}
 
         protected override void DoNotEngageWhenBraking(NewtonMeter outTorque, Second absTime, Second dt, PerSecond outAngularVelocity)
@@ -26,6 +26,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
         private bool ShouldNotEngage(NewtonMeter outTorque, PerSecond outAngularVelocity, Second dt)
 		{
+			//Do not allow gear engagement below idle speed and below clutch disengage threshold.
+
 			var gear = Disengaged ? NextGear.Gear : Gear.Gear;
 			var avgOutAngularVelocity = (PreviousState.OutAngularVelocity + outAngularVelocity) / 2.0;
 			var inTorqueLossResult = ModelData.Gears[gear].LossMap.GetTorqueLoss(avgOutAngularVelocity, outTorque);

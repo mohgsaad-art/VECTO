@@ -11,9 +11,9 @@ using TUGraz.VectoCommon.Models;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 {
-    public class HybridControllerTimerunGear : HybridController
+    public class MeasuredSpeedGearHybridController : HybridController
     {
-		public HybridControllerTimerunGear(IVehicleContainer container, IHybridControlStrategy strategy, IElectricSystem es) :
+		public MeasuredSpeedGearHybridController(IVehicleContainer container, IHybridControlStrategy strategy, IElectricSystem es) :
             base(container, strategy, es)
         {}
 

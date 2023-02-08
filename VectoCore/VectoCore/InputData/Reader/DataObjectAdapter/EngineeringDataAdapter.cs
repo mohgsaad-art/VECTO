@@ -417,6 +417,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				}
 				if (i == 1) {
 					if ((cycle != null) && ((cycle.CycleType == CycleType.MeasuredSpeedGear) || (cycle.CycleType == CycleType.VTP))) {
+						//Allow both torque converter states for this gear (2nd), by filling up torque converter data.
 						CreateTCSecondGearATSerial(gearData, tcShiftPolygon);
 					}	
 					else if (gearDifferenceRatio >= DeclarationData.Gearbox.TorqueConverterSecondGearThreshold(vehicleCategory)) {
@@ -431,6 +432,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter
 				}
 				else {
 					if ((cycle != null) && ((cycle.CycleType == CycleType.MeasuredSpeedGear) || (cycle.CycleType == CycleType.VTP))) {
+						//Allow both torque converter states for all gears, by filling up torque converter data.
 						CreateTCSecondGearATSerial(gearData, tcShiftPolygon);
 					}
 				}

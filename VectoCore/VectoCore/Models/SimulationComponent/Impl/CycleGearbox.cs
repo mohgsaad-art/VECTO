@@ -71,6 +71,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				return;
 			}
 			
+			// Because IHPC gearbox does not have a torque converter.
 			if (ModelData.Type == GearboxType.IHPC) {
 				return;
             }
