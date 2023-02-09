@@ -3,7 +3,6 @@ using TUGraz.VectoCommon.Models;
 using TUGraz.VectoCommon.Utils;
 using TUGraz.VectoCore.Models.Simulation;
 using TUGraz.VectoCore.Models.Simulation.Data;
-using TUGraz.VectoCore.Models.Simulation.DataBus;
 using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
@@ -13,12 +12,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
         public MeasuredSpeedHybridsCycleGearbox(IVehicleContainer container, VectoRunData runData) : base(container, runData)
         {
             LastDownshift = -double.MaxValue.SI<Second>();
-			LastUpshift = -double.MaxValue.SI<Second>();
+            LastUpshift = -double.MaxValue.SI<Second>();
         }
 
         public override Second LastUpshift { get; protected internal set; }
 
-		public override Second LastDownshift { get; protected internal set; }
+        public override Second LastDownshift { get; protected internal set; }
 
         public override bool DisengageGearbox { get; set; }
 
@@ -74,41 +73,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
         public override IResponse Request(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, bool dryRun = false)
         {
-            if (!DataBus.VehicleInfo.VehicleStopped) {
-                var nextStepGear = new GearshiftPosition(
-                    DataBus.DrivingCycleInfo.CycleData.RightSample.Gear,
-                    !DataBus.DrivingCycleInfo.CycleData.RightSample.TorqueConverterActive);
-
-                if (Gear < nextStepGear) {
-                    LastUpshift = absTime;
-                }
-                if (Gear > nextStepGear) {
-                    LastDownshift = absTime;
-                }
-            }
-            else {
-            	LastDownshift = -double.MaxValue.SI<Second>();
-				LastUpshift = -double.MaxValue.SI<Second>();
-			}
-
-            if (PreviousState.DrivingBehavior != CurrentState.DrivingBehavior) {
-				Log.Debug("driving action changed...");
-				if (CurrentState.DrivingBehavior == DrivingBehavior.Driving ||
-					CurrentState.DrivingBehavior == DrivingBehavior.Braking) {
-					if (GearEngaged(absTime)) {
-						Log.Debug("resetting gearshift time interval");
-						LastDownshift = -double.MaxValue.SI<Second>();
-						LastUpshift = -double.MaxValue.SI<Second>();
-					} else {
-						CurrentState.DrivingBehavior = PreviousState.DrivingBehavior;
-					}
-				}
-			}
-
             var response = base.Request(absTime, dt, outTorque, outAngularVelocity, dryRun);
 
             response.Gearbox.Gear = Gear;
-            response.Gearbox.InputSpeed = outAngularVelocity * ((Gear.Gear > 0)  ? ModelData.Gears[Gear.Gear].Ratio : 0);
+            response.Gearbox.InputSpeed = CalculateInAngularSpeed(outAngularVelocity);
             response.Gearbox.OutputSpeed = outAngularVelocity;
             response.Gearbox.OutputTorque = outTorque;
 

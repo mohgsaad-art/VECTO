@@ -381,7 +381,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			
 			var strategy = (data.GearboxData.Type.ManualTransmission() || data.GearboxData.Type == GearboxType.IHPC) 
 				? (IHybridControlStrategy) new MeasuredSpeedGearHybridStrategy(data, container)
-				: (IHybridControlStrategy) new HybridStrategyATTimerunGear(data, container);
+				: (IHybridControlStrategy) new MeasuredSpeedGearATHybridStrategy(data, container);
 
 			// add engine before gearbox so that gearbox can obtain if an ICE is available already in constructor
 			var engine = new StopStartCombustionEngine(container, data.EngineData);

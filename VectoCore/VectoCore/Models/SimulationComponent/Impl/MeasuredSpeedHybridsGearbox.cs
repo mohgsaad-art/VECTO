@@ -14,7 +14,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
         protected override void DoNotEngageWhenBraking(NewtonMeter outTorque, Second absTime, Second dt, PerSecond outAngularVelocity)
         {
-            if ((DataBus.PowertrainInfo.ElectricMotorPositions[0] == PowertrainPosition.HybridP3)
+            if ((DataBus.PowertrainInfo.ElectricMotorPositions[0] == PowertrainPosition.HybridP3 || 
+				DataBus.PowertrainInfo.ElectricMotorPositions[0] == PowertrainPosition.HybridP4)
 				&& (DataBus.DriverInfo.DriverBehavior == DrivingBehavior.Braking)
 				&& Disengaged
 				&& ShouldNotEngage(outTorque, outAngularVelocity, dt)) {

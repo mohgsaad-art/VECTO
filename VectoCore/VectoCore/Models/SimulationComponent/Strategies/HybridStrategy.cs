@@ -543,22 +543,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 				shiftStrategyParameters.AllowedGearRangeFC = shiftStrategyParameters.AllowedGearRangeFC.LimitTo(1, 2);
 			}
 
-			CalculateBatteryDischargeEnergyThreshold();
-			
-			AllowEmergencyShift = false;
-		}
-
-		protected virtual void BuildSimplePowertrain(VectoRunData runData, SimplePowertrainContainer testContainer)
-		{
-			PowertrainBuilder.BuildSimpleHybridPowertrain(runData, testContainer);
-        }
-
-		protected virtual void CalculateBatteryDischargeEnergyThreshold()
-		{
 			// TODO: MQ 20210712 how to handle with batterysystem
-			BatteryDischargeEnergyThreshold = 0.SI<WattSecond>();
-
 			//var auxEnergyReserve = ModelData.ElectricAuxDemand * StrategyParameters.AuxReserveTime;
+			BatteryDischargeEnergyThreshold = 0.SI<WattSecond>();
 			//if (auxEnergyReserve > 0) {
 			//	var minSoc = Math.Max(ModelData.BatteryData?.MinSOC ?? ModelData.SuperCapData.MinVoltage / ModelData.SuperCapData.MaxVoltage,
 			//		StrategyParameters.MinSoC);
@@ -566,6 +553,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 			//		ModelData.BatteryData.Capacity * minSoc * ModelData.BatteryData.SOCMap.Lookup(minSoc) +
 			//		auxEnergyReserve;
 			//}
+			AllowEmergencyShift = false;
+		}
+
+		protected virtual void BuildSimplePowertrain(VectoRunData runData, SimplePowertrainContainer testContainer)
+		{
+			PowertrainBuilder.BuildSimpleHybridPowertrain(runData, testContainer);
         }
 
 		protected virtual void WarnGearShiftRange()

@@ -22,6 +22,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 		protected override IResponse RequestDryRun(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, 
 			GearshiftPosition nextGear, HybridStrategyResponse cfg)
 		{
+			//This is based on the corresponding method of the HybridStrategy class.
+
 			TestPowertrain.Gearbox.Gear = new GearshiftPosition(
 				DataBus.DrivingCycleInfo.CycleData.RightSample.Gear,
 				!DataBus.DrivingCycleInfo.CycleData.RightSample.TorqueConverterActive);
@@ -138,10 +140,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
     }
 
 	//--------------------------------------------------
-	public class HybridStrategyATTimerunGear : AbstractMeasuredSpeedGearHybridStrategy<MeasuredSpeedHybridsCycleGearbox>
+	public class MeasuredSpeedGearATHybridStrategy : AbstractMeasuredSpeedGearHybridStrategy<MeasuredSpeedHybridsCycleGearbox>
 	{
 
-		public HybridStrategyATTimerunGear(VectoRunData runData, IVehicleContainer vehicleContainer) : base(runData,
+		public MeasuredSpeedGearATHybridStrategy(VectoRunData runData, IVehicleContainer vehicleContainer) : base(runData,
 			vehicleContainer)
 		{}
 
@@ -327,17 +329,6 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
         protected override void BuildSimplePowertrain(VectoRunData runData, SimplePowertrainContainer testContainer)
 		{
 			PowertrainBuilder.BuildSimpleHybridPowertrainGear(runData, testContainer);
-        }
-
-        protected override void CalculateBatteryDischargeEnergyThreshold()
-        {
-            var auxEnergyReserve = ModelData.ElectricAuxDemand * StrategyParameters.AuxReserveTime;
-			
-			var minSoc = Math.Max(DataBus.BatteryInfo.MinSoC, StrategyParameters.MinSoC);
-
-			BatteryDischargeEnergyThreshold = (auxEnergyReserve > 0)
-				? (DataBus.BatteryInfo.Capacity * minSoc * DataBus.BatteryInfo.NominalVoltage) + auxEnergyReserve
-				: 0.SI<WattSecond>();
         }
 
         protected override void WarnGearShiftRange()
