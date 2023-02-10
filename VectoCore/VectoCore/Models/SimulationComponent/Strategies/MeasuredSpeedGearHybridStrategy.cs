@@ -122,6 +122,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 		protected override void CheckGearshiftLimits(HybridResultEntry tmp, IResponse resp)
 		{
+			//This is based on the corresponding method of the HybridStrategy class.
+			
 			if (resp.Engine.EngineSpeed != null && resp.Gearbox.Gear.Engaged &&
 				GearList.HasSuccessor(resp.Gearbox.Gear) && ModelData.GearboxData.Gears[resp.Gearbox.Gear.Gear]
 					.ShiftPolygon.IsAboveUpshiftCurve(resp.Engine.TorqueOutDemand, resp.Engine.EngineSpeed)) {
@@ -150,6 +152,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 		protected override IResponse RequestDryRun(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity,
 			GearshiftPosition nextGear, HybridStrategyResponse cfg)
 		{
+			//This is based on the corresponding method of the HybridStrategyAT class.
+
 			TestPowertrain.Gearbox.Gear = PreviousState.GearboxEngaged ? CurrentGear : NextGear;
 			TestPowertrain.Gearbox.DisengageGearbox = !nextGear.Engaged;
 			TestPowertrain.Container.VehiclePort.Initialize(DataBus.VehicleInfo.VehicleSpeed, DataBus.DrivingCycleInfo.RoadGradient ?? 0.SI<Radian>());
@@ -284,6 +288,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
 
 		protected override void CheckGearshiftLimits(HybridResultEntry tmp, IResponse resp)
 		{
+			//This is based on the corresponding method of the HybridStrategyAT class.
+
 			if (resp.Engine.EngineSpeed == null) {
 				return;
 			}
@@ -354,6 +360,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Strategies
         protected override List<HybridResultEntry> FindSolution(Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, 
             bool dryRun)
         {
+			//Evaluate configs only for input gear instead of a range of gears (corresponding method in AbstractHybridStrategy class)
+
             var duringTractionInterruption = (PreviousState.GearshiftTriggerTstmp + ModelData.GearboxData.TractionInterruption)
                 .IsGreaterOrEqual(absTime, ModelData.GearboxData.TractionInterruption / 20);
 
