@@ -102,7 +102,7 @@ s [m]              , v [km/h]    , stop [s]    , grad [%]    , Padd [kW] |
 ### Engineering Mode: Measured-Speed, Time-Based Cycle
 This driving cycle defines the actual measured speed over time. Vecto tries to simulate the vehicle model using this speed as the actual vehicle speed.
 Due to differences in the real and simulated shift strategies a small difference in speed can occur, but Vecto immediately tries to catch up after the gear is engaged again.
-This type of cycle is now supported for BEVs (E2, E3, E4, IEPC) and PHEVs (P1, P2, P2.5, P3, P4, IHPC) also, and it was tested with the following input fields: **t**, **v**, *grad*.
+This type of cycle is now supported for BEVs (E2, E3, E4, IEPC) and parallel HEVs (P1, P2, P2.5, P3, P4, IHPC) also, and it was tested with the following input fields: **t**, **v**, *grad*.
 
 Header: **t, v***\[, grad]\[, Padd]\[, vair\_res, vair\_beta\]*
 
@@ -132,7 +132,7 @@ t [s]     v [km/h] , grad [%]    , Padd [kW]
 
 This driving cycle defines the actual measured speed of the vehicle, the gear, and the engine speed over time.
 It overrides the shift strategy of VECTO and also directly sets the engine speed.
-This type of cycle is now supported for BEVs (E2, IEPC) and PHEVs (P1, P2, P2.5, P3, P4, IHPC) also, and it was tested with the following input fields: **t**, **v**, **gear**, *grad*.
+This type of cycle is now supported for BEVs (E2, IEPC) and parallel HEVs (P1, P2, P2.5, P3, P4, IHPC) also, and it was tested with the following input fields: **t**, **v**, **gear**, *grad*.
 
 Header: **t, v, gear***\[, tc\_active, grad]\[, Padd]\[, vair\_res, vair\_beta]\[, Aux\_ID\]*
 
