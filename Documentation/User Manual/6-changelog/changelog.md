@@ -1,5 +1,13 @@
 # Changelog
 
+**VECTO-3.3.14**
+
+***Build 2981 (2023-03-01) RELEASE CANDIDATE***
+
+- Bugfixes
+    * [VECTO-1698] - Set CO2StandardsGroup in CIF/MRF for vocational vehicles to 'N/A'
+    * [VECTO-1701] - Report VTP CO2 unit
+
 **VECTO-3.3.13**
 
 ***Build 2924 (2023-01-03) OFFICIAL RELEASE***
