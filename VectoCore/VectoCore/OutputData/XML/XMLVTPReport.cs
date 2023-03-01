@@ -327,11 +327,11 @@ namespace TUGraz.VectoCore.OutputData.XML
 						),
 						new XElement(
 							tns + "Declared", new XAttribute(XMLNames.Report_Results_Unit_Attr, key),
-							new ConvertedSI(declaredCO2.Value(), declaredCO2.UnitString).ToMinSignificantDigits(3, 2)
+							declaredCO2.ConvertToGrammPerTonKilometer().ToMinSignificantDigits(3, 1)
 						),
 						new XElement(
 							tns + "Verified", new XAttribute(XMLNames.Report_Results_Unit_Attr, key),
-							new ConvertedSI(declaredCO2.Value(), verifiedCO2.UnitString).ToMinSignificantDigits(3, 2)
+							verifiedCO2.ConvertToGrammPerTonKilometer().ToMinSignificantDigits(3, 1)
 						)
 					),
 					new XElement(

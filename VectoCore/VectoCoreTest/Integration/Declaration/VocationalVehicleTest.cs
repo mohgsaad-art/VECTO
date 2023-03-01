@@ -32,16 +32,23 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Xml;
+using System.Xml.XPath;
 using Ninject;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 using TUGraz.VectoCommon.Models;
+using TUGraz.VectoCommon.Resources;
+using TUGraz.VectoCore.Configuration;
 using TUGraz.VectoCore.InputData.FileIO.JSON;
 using TUGraz.VectoCore.InputData.FileIO.XML;
 using TUGraz.VectoCore.InputData.FileIO.XML.Declaration;
 using TUGraz.VectoCore.Models.Simulation.Impl;
+using TUGraz.VectoCore.OutputData;
 using TUGraz.VectoCore.OutputData.FileIO;
+using TUGraz.VectoCore.Tests.Integration.Declaration;
 using TUGraz.VectoCore.Tests.Models.Simulation;
+using TUGraz.VectoCore.Utils;
 
 namespace TUGraz.VectoCore.Tests.Integration
 {
@@ -90,6 +97,45 @@ namespace TUGraz.VectoCore.Tests.Integration
 			jobContainer.WaitFinished();
 			var progress = jobContainer.GetProgress();
 			Assert.IsTrue(progress.All(r => r.Value.Success), string.Concat<Exception>(progress.Select(r => r.Value.Error)));
+		}
+
+		[Category("LongRunning")]
+		[TestCase(Class4Vocational, 4),
+		TestCase(Class5Vocational, 2)]
+		public void VocationalTestCO2StandardsGroup(string filename, int numRuns)
+		{
+			var writer = new MockDeclarationWriter(filename);
+			var inputData = xmlInputReader.CreateDeclaration(filename);
+			var factory = new SimulatorFactory(ExecutionMode.Declaration, inputData, writer) {
+				WriteModalResults = true,
+				ActualModalData = true,
+				ValidateComponentHashes = false
+			};
+			var jobContainer = new JobContainer(new MockSumWriter());
+
+			var runs = factory.SimulationRuns().ToList();
+			Assert.AreEqual(numRuns, runs.Count);
+			foreach (var run in runs) {
+				jobContainer.AddRun(run);
+			}
+            
+			//jobContainer.AddRuns(factory);
+
+			jobContainer.Execute();
+			jobContainer.WaitFinished();
+			var progress = jobContainer.GetProgress();
+			Assert.IsTrue(progress.All(r => r.Value.Success), string.Concat<Exception>(progress.Select(r => r.Value.Error)));
+
+			foreach (var reportType in new[]{ReportType.DeclarationReportCustomerXML, ReportType.DeclarationReportManufacturerXML}) {
+				var rpt = writer.GetReport(reportType);
+				var vocationalNode = rpt.XPathSelectElement(XMLHelper.QueryLocalName(XMLNames.Vehicle_VocationalVehicle));
+				Assert.NotNull(vocationalNode);
+				Assert.IsTrue(XmlConvert.ToBoolean(vocationalNode.Value));
+
+				var co2StandardsNode = rpt.XPathSelectElement(XMLHelper.QueryLocalName(XMLNames.Report_CO2StandardsGroup));
+				Assert.NotNull(co2StandardsNode);
+				Assert.AreEqual(Constants.NOT_AVAILABLE, co2StandardsNode.Value);
+			}
 		}
 	}
 }
