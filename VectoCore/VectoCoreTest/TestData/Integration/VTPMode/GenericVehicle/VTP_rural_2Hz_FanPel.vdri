@@ -1,4 +1,4 @@
-<t> [s],<v> [km/h],<n_eng> [rpm],<Pel_fan> [W],<tq_left> [Nm],<tq_right> [Nm],<n_wh_left> [rpm],<n_wh_right> [rpm],<fc_DIESEL CI> [g/h],<gear>,<tq_eng>,<CH4>,<CO>,<NMHC>,<NOx>,<THC>,<PN>
+<t> [s],<v> [km/h],<n_eng> [rpm],<Pel_fan> [W],<tq_wh_left> [Nm],<tq_wh_right> [Nm],<n_wh_left> [rpm],<n_wh_right> [rpm],<fc_DIESEL CI> [g/h],<gear>,<tq_eng>,<CH4>,<CO>,<NMHC>,<NOx>,<THC>,<PN>
 0,0,599.72,20,319.1147826,429.8065217,0.78,0.78,836,3,1,1,1,1,1,1,1
 0.5,0,600.29,20,316.7856522,430.0626087,0.7832,0.78,836,3,1,1,1,1,1,1,1
 1,0,600.1,20,319.9513043,430.8052174,0.78,0.78,836,3,1,1,1,1,1,1,1

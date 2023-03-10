@@ -1,4 +1,4 @@
-<t> [s],<v> [km/h],<n_eng> [rpm],<n_fan> [rpm],<tq_left> [Nm],<tq_right> [Nm],<n_wh_left> [rpm],<n_wh_right> [rpm],<fc_Diesel CI> [g/h],<gear> [-],<tq_eng> [Nm],<CH4> [g/s],<CO> [g/s],<NMHC> [g/s],<NOx> [g/s],<THC> [g/s]
+<t> [s],<v> [km/h],<n_eng> [rpm],<n_fan> [rpm],<tq_wh_left> [Nm],<tq_wh_right> [Nm],<n_wh_left> [rpm],<n_wh_right> [rpm],<fc_Diesel CI> [g/h],<gear> [-],<tq_eng> [Nm],<CH4> [g/s],<CO> [g/s],<NMHC> [g/s],<NOx> [g/s],<THC> [g/s]
 0,0,600,100,0,0,0,0,1312.6361,0,58.8566,1,2,3,4,5
 0.5,0,600,100,0,0,0,0,1312.6361,0,58.8566,1,2,3,4,5
 1,0,600,100,0,0,0,0,1312.6361,0,58.8566,1,2,3,4,5

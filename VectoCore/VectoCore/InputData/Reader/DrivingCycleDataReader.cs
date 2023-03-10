@@ -346,8 +346,8 @@ namespace TUGraz.VectoCore.InputData.Reader
 			public const string EngineSpeed = "n";
 			public const string EngineSpeedSuffix = "n_eng";
 			public const string FanSpeed = "n_fan";
-			public const string WheelTorqueLeft = "tq_left";
-			public const string WheelTorqueRight = "tq_right";
+			public const string WheelTorqueLeft = "tq_wh_left";
+			public const string WheelTorqueRight = "tq_wh_right";
 			public const string WheelSpeedLeft = "n_wh_left";
 			public const string WheelSpeedRight = "n_wh_right";
 			public const string FuelConsumption = "fc";
