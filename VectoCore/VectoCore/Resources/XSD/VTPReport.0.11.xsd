@@ -212,40 +212,53 @@
         </xs:complexType>  
       </xs:element>
       <xs:element name="VTP">
-        <xs:complexType>
+	    <xs:complexType>
           <xs:sequence>
-            <xs:element name="Measured">
-              <xs:complexType>
-                <xs:simpleContent>
-                  <xs:extension base="xs:double">
-                    <xs:attribute name="unit" type="FCUnitType" use="required"/>
-                  </xs:extension>
-                </xs:simpleContent>
-              </xs:complexType>
-            </xs:element>
-            <xs:element name="MeasuredCorrected">
-              <xs:complexType>
-                <xs:simpleContent>
-                  <xs:extension base="xs:double">
-                    <xs:attribute name="unit" type="FCUnitType" use="required"/>
-                  </xs:extension>
-                </xs:simpleContent>
-              </xs:complexType>
-            </xs:element>
-            <xs:element name="Simulated">
-              <xs:complexType>
-                <xs:simpleContent>
-                  <xs:extension base="xs:double">
-                    <xs:attribute name="unit" type="FCUnitType" use="required"/>
-                  </xs:extension>
-                </xs:simpleContent>
-              </xs:complexType>
-            </xs:element>
-          </xs:sequence>
-        </xs:complexType>
+		    <xs:element name="TotalEmissions" type="VTPEmissionsType"/>
+		    <xs:element name="Emissions" type="VTPEmissionsType" maxOccurs="2"/>
+		  </xs:sequence>
+		</xs:complexType>
       </xs:element>
     </xs:sequence> 
 	</xs:complexType>
+  <xs:complexType name="VTPEmissionsType"> 
+  <xs:sequence>
+	<xs:element name="Measured">
+	  <xs:complexType>
+		<xs:simpleContent>
+		  <xs:extension base="xs:double">
+			<xs:attribute name="unit" type="FCUnitType" use="required"/>
+		  </xs:extension>
+		</xs:simpleContent>
+	  </xs:complexType>
+	</xs:element>
+	<xs:element name="MeasuredCorrected">
+	  <xs:complexType>
+		<xs:simpleContent>
+		  <xs:extension base="xs:double">
+			<xs:attribute name="unit" type="FCUnitType" use="required"/>
+		  </xs:extension>
+		</xs:simpleContent>
+	  </xs:complexType>
+	</xs:element>
+	<xs:element name="Simulated">
+	  <xs:complexType>
+		<xs:simpleContent>
+		  <xs:extension base="xs:double">
+			<xs:attribute name="unit" type="FCUnitType" use="required"/>
+		  </xs:extension>
+		</xs:simpleContent>
+	  </xs:complexType>
+	</xs:element>
+  </xs:sequence>
+  <xs:attribute name="fuelType">
+	<xs:simpleType>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+  </xs:attribute>
+  </xs:complexType>
   <xs:complexType name="PositiveEngineWorkType">
     <xs:sequence>
       <xs:element name="Measured">
@@ -369,7 +382,7 @@
 				</xs:complexType>
 			</xs:element>
 		</xs:sequence>
-		<xs:attribute name="fuelType" use="required">
+		<xs:attribute name="fuelType">
 			<xs:simpleType>
 				<xs:restriction base="xs:string">
 					<xs:minLength value="1"/>
@@ -476,7 +489,8 @@
 					</xs:simpleContent>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="FuelConsumption" type="FuelConsumptionResultType" maxOccurs="unbounded"/>
+			<xs:element name="FuelConsumption" type="FuelConsumptionResultType" maxOccurs="2"/>
+			<xs:element name="TotalFuelConsumption" type="FuelConsumptionResultType"/>
 			<xs:element name="CO2" type="CO2ResultType"/>
 			<xs:element name="C_VTP" type="xs:double"/>
       <xs:element name="Pollutants">
