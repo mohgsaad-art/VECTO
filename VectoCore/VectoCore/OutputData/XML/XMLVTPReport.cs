@@ -95,6 +95,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 			public Scalar NOxEmissions { protected set; get; } = null;
 			public Scalar THCEmissions { protected set; get; } = null;
 			public Scalar PMFlow { protected set; get; } = null;
+			public Scalar CO2Emissions { protected set; get; } = null;
 			public Scalar PositiveEngineWorkDeviation { protected set; get; } = null;
 			public ConvertedSI MeasuredPositiveEngineWork { protected set; get; } = null;
 			public ConvertedSI SimulatedPositiveEngineWork { protected set; get; } = null;
@@ -181,6 +182,9 @@ namespace TUGraz.VectoCore.OutputData.XML
 	
 				var PN = entries.Pairwise().Sum(x => (x.Item1.PMNumberFlow * (x.Item2.Time - x.Item1.Time)).Value()).SI<Scalar>();
 				PMFlow = PN / measuredPositiveEngineWork;
+
+				var CO2 = entries.Pairwise().Sum(x => x.Item1.CO2MassFlow *  (x.Item2.Time - x.Item1.Time)).ConvertToGramm();
+				CO2Emissions = ((CO2 / measuredPositiveEngineWork) * Constants.GramsToMilligrams).SI<Scalar>();
 			}
 
 			#endregion
@@ -377,7 +381,7 @@ namespace TUGraz.VectoCore.OutputData.XML
 					vtpResult.NOxEmissions.ToXMLFormat(3)
 				),
 				new XElement(tns + "CO2", new XAttribute(XMLNames.Report_Results_Unit_Attr, "mg/kWh"),
-					(CO2MeasuredCorrected.ConvertToGramPerKiloWattHour() * Constants.GramsToMilligrams).ToXMLFormat(3)
+					vtpResult.CO2Emissions.ToXMLFormat(3)
 				)
 			);
 

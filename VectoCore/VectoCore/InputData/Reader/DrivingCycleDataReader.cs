@@ -369,6 +369,7 @@ namespace TUGraz.VectoCore.InputData.Reader
 			public const string NOxMassFlow = "NOx";
 			public const string THCMassFlow = "THC";
 			public const string PMNumberFlow = "PN";
+			public const string CO2MassFlow = "CO2";
 		}
 
 		#region DataParser
@@ -889,7 +890,8 @@ namespace TUGraz.VectoCore.InputData.Reader
 							THCMassFlow = table.Columns.Contains(Fields.THCMassFlow)
 								? row.ParseDouble(Fields.THCMassFlow).SI(Unit.SI.Gramm.Per.Second).Cast<KilogramPerSecond>()
 								: null,
-							PMNumberFlow = row.ParseDouble(Fields.PMNumberFlow).SI<PerSecond>()
+							PMNumberFlow = row.ParseDouble(Fields.PMNumberFlow).SI<PerSecond>(),
+							CO2MassFlow = row.ParseDouble(Fields.CO2MassFlow).SI(Unit.SI.Gramm.Per.Second).Cast<KilogramPerSecond>()
 						};
 					}).ToArray();
 
@@ -909,7 +911,8 @@ namespace TUGraz.VectoCore.InputData.Reader
 					Fields.CombustionEngineTorque,
 					Fields.COMassFlow,
 					Fields.NOxMassFlow,
-					Fields.PMNumberFlow
+					Fields.PMNumberFlow,
+					Fields.CO2MassFlow
 				};
 
 				var allowedCols = new[] {
@@ -930,7 +933,8 @@ namespace TUGraz.VectoCore.InputData.Reader
 					Fields.NMHCMassFlow,
 					Fields.NOxMassFlow,
 					Fields.THCMassFlow,
-					Fields.PMNumberFlow
+					Fields.PMNumberFlow,
+					Fields.CO2MassFlow
 				}.Concat(EnumHelper.GetValues<FuelType>().Select(x => "fc_" + x.ToXMLFormat()));
 
 				const bool allowAux = true;
