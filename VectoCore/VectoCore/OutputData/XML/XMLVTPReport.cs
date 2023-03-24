@@ -257,31 +257,44 @@ namespace TUGraz.VectoCore.OutputData.XML
 			var vtpResult = Missions.FirstOrDefault(x => x.Key == MissionType.VerificationTest).Value.ResultEntry
 									.FirstOrDefault().Value;
 
-			var fuel = vtpResult.FuelData.First();
-			//const MissionType selectedMission = DeclarationData.VTPMode.SelectedMission;
 			const LoadingType selectedLoading = DeclarationData.VTPMode.SelectedLoading;
 			var result = Missions.FirstOrDefault(x => x.Key != MissionType.VerificationTest).Value.ResultEntry
 								.FirstOrDefault(x => x.Key == selectedLoading).Value;
+
 			var vtpFcMeasured = vtpResult.VTPFcMeasured.Select(x => Tuple.Create(x.Key, x.Value / vtpResult.VTPWorkPWheelPos)).ToDictionary(x => x.Item1, x => x.Item2);
+			
 			var vtpFcMeasuredCorr = vtpResult.VTPFcMeasured
 				.Select(x =>
 					Tuple.Create(x.Key, x.Value / vtpResult.VTPWorkPWheelPos * vtpResult.VTPFcCorrectionFactors[x.Key]))
 				.ToDictionary(x => x.Item1, x => x.Item2);
+			
 			var vtpFcSimulated = vtpResult.VTPFcFinalSimulated
 				.Select(x => Tuple.Create(x.Key, x.Value / vtpResult.VTPWorPWheelSimPos))
 				.ToDictionary(x => x.Item1, x => x.Item2);
 
 			var fuels = DeclarationData.FuelData;
-	
+
+			var CO2MeasuredPerFuel = vtpFcMeasured.Select(e => new {
+					fuelType = e.Key,
+					co2 = e.Value * fuels.Lookup(e.Key, vtpResult.TankSystem).CO2PerFuelWeightVTP
+				}).ToDictionary(x => x.fuelType, x => x.co2);
+
+			var CO2MeasuredCorrectedPerFuel = vtpFcMeasuredCorr.Select(e => new {
+					fuelType = e.Key,
+					co2 = e.Value * fuels.Lookup(e.Key, vtpResult.TankSystem).CO2PerFuelWeightVTP
+				}).ToDictionary(x => x.fuelType, x => x.co2);
+
+			var CO2SimulatedPerFuel = vtpFcSimulated.Select(e => new {
+					fuelType = e.Key,
+					co2 = e.Value * fuels.Lookup(e.Key, vtpResult.TankSystem).CO2PerFuelWeightVTP
+				}).ToDictionary(x => x.fuelType, x => x.co2);
+
 			var CO2Measured = vtpFcMeasured.Sum(e => e.Value * fuels.Lookup(e.Key, vtpResult.TankSystem).CO2PerFuelWeightVTP);
 			var CO2MeasuredCorrected = vtpFcMeasuredCorr.Sum(e => e.Value * fuels.Lookup(e.Key, vtpResult.TankSystem).CO2PerFuelWeightVTP);
 			var CO2Simulated = vtpFcSimulated.Sum(e => e.Value * fuels.Lookup(e.Key, vtpResult.TankSystem).CO2PerFuelWeightVTP);
-
+					
 			var cVtp = CO2MeasuredCorrected / CO2Simulated;
-			var declaredCO2 = result.FuelConsumptionFinal[fuel.FuelType].TotalFuelConsumptionCorrected * fuel.CO2PerFuelWeight / result.Distance / result.Payload;
-			var verifiedCO2 = declaredCO2 * cVtp;
-			var key = "g/t-km";
-			
+
 			Results.Add(
 				new XElement(tns + "Status", cVtp < 1.075 ? "Passed" : "Failed"),
 				new XElement(
@@ -301,7 +314,128 @@ namespace TUGraz.VectoCore.OutputData.XML
 					new XAttribute(XMLNames.Report_Results_Unit_Attr, x.NCV.ConvertToMegaJoulePerKilogram().Units),
 					x.NCV.ConvertToMegaJoulePerKilogram().ToXMLFormat(3)
 				)),
-				vtpFcMeasured.Select(x =>
+				CreateConsumptionElements(vtpFcMeasured, vtpFcMeasuredCorr, vtpFcSimulated, 
+					CO2MeasuredPerFuel, CO2MeasuredCorrectedPerFuel, CO2SimulatedPerFuel),
+				CreateCO2Element(cVtp, CO2Measured, CO2MeasuredCorrected, CO2Simulated, 
+					CO2MeasuredPerFuel, CO2MeasuredCorrectedPerFuel, CO2SimulatedPerFuel),
+				new XElement(tns + "C_VTP", cVtp.ToXMLFormat(4)),
+				CreatePollutantsElement(vtpResult, CO2MeasuredCorrected));
+
+			var threshold = Constants.SimulationSettings.VTPEngineWorkDeviationThreshold;
+
+			if (Math.Abs(vtpResult.PositiveEngineWorkDeviation) > threshold) {
+				LogList.Add($@"Simulated positive engine work is deviating more than {threshold * 100}% 
+					from measured positive engine work through the vdri. 
+					Deviation = {(vtpResult.PositiveEngineWorkDeviation * 100).ToXMLFormat(2)}%");
+			}
+
+			if (LogList.Any()) {
+				Results.Add(new XElement(tns + "Warnings", LogList.Select(x => new XElement(tns + "Warning", x))));
+			}
+		}
+
+		private XElement CreateCO2Element(Scalar cVtp, 
+			SpecificFuelConsumption CO2Measured, 
+			SpecificFuelConsumption CO2MeasuredCorrected,
+			SpecificFuelConsumption CO2Simulated, 
+			Dictionary<FuelType, SpecificFuelConsumption> CO2MeasuredPerFuel,
+			Dictionary<FuelType, SpecificFuelConsumption> CO2MeasuredCorrectedPerFuel, 
+			Dictionary<FuelType, SpecificFuelConsumption> CO2SimulatedPerFuel)
+		{
+			var vtpResult = Missions.FirstOrDefault(x => x.Key == MissionType.VerificationTest).Value.ResultEntry
+									.FirstOrDefault().Value;
+
+			const LoadingType selectedLoading = DeclarationData.VTPMode.SelectedLoading;
+			var result = Missions.FirstOrDefault(x => x.Key != MissionType.VerificationTest).Value.ResultEntry
+								.FirstOrDefault(x => x.Key == selectedLoading).Value;
+
+			var declaredCO2 = vtpResult.FuelData.
+				Sum(fuel => result.FuelConsumptionFinal[fuel.FuelType].TotalFuelConsumptionCorrected * fuel.CO2PerFuelWeight)
+				/ result.Distance / result.Payload;
+
+			var verifiedCO2 = declaredCO2 * cVtp;
+			var CO2Unit = "g/t-km";
+			
+			return new XElement(
+				tns + "CO2",
+				new XElement(
+					tns + "Certification",
+					new XElement(
+						tns + "Mission",
+						string.Format("{0}, {1}", Missions.FirstOrDefault(x => x.Key != MissionType.VerificationTest).Key.ToXMLFormat(), 
+							selectedLoading.ToString())
+					),
+					new XElement(
+						tns + "Declared", 
+						new XAttribute(XMLNames.Report_Results_Unit_Attr, CO2Unit),
+						declaredCO2.ConvertToGrammPerTonKilometer().ToMinSignificantDigits(3, 1)
+					),
+					new XElement(
+						tns + "Verified", 
+						new XAttribute(XMLNames.Report_Results_Unit_Attr, CO2Unit),
+						verifiedCO2.ConvertToGrammPerTonKilometer().ToMinSignificantDigits(3, 1)
+					)
+				),
+				new XElement(
+					tns + "VTP",
+					new XElement(
+						tns + "TotalEmissions",
+						new XElement(
+							tns + "Measured",  
+							new XAttribute(XMLNames.Report_Results_Unit_Attr, CO2Measured.ConvertToGramPerKiloWattHour().Units),
+							CO2Measured.ConvertToGramPerKiloWattHour().Value.ToXMLFormat(3)
+						),
+						new XElement(
+							tns + "MeasuredCorrected",  
+							new XAttribute(XMLNames.Report_Results_Unit_Attr, CO2MeasuredCorrected.ConvertToGramPerKiloWattHour().Units),
+							CO2MeasuredCorrected.ConvertToGramPerKiloWattHour().Value.ToXMLFormat(3)
+						),
+						new XElement(
+							tns + "Simulated",  
+							new XAttribute(XMLNames.Report_Results_Unit_Attr, CO2Simulated.ConvertToGramPerKiloWattHour().Units),
+							CO2Simulated.ConvertToGramPerKiloWattHour().Value.ToXMLFormat(3)
+						)
+					),
+					vtpResult.FuelData.Select(f => new [] {
+						new XElement(
+							tns + "Emissions",
+							new XAttribute("fuelType", f.FuelType.ToXMLFormat()),
+							new XElement(
+								tns + "Measured", 
+								new XAttribute(XMLNames.Report_Results_Unit_Attr, 
+									CO2MeasuredPerFuel[f.FuelType].ConvertToGramPerKiloWattHour().Units),
+								CO2MeasuredPerFuel[f.FuelType].ConvertToGramPerKiloWattHour().Value.ToXMLFormat(3)
+							),
+							new XElement(
+								tns + "MeasuredCorrected", 
+								new XAttribute(XMLNames.Report_Results_Unit_Attr, 
+									CO2MeasuredCorrectedPerFuel[f.FuelType].ConvertToGramPerKiloWattHour().Units),
+								CO2MeasuredCorrectedPerFuel[f.FuelType].ConvertToGramPerKiloWattHour().Value.ToXMLFormat(3)
+							),
+							new XElement(
+								tns + "Simulated", 
+								new XAttribute(XMLNames.Report_Results_Unit_Attr, 
+									CO2SimulatedPerFuel[f.FuelType].ConvertToGramPerKiloWattHour().Units),
+								CO2SimulatedPerFuel[f.FuelType].ConvertToGramPerKiloWattHour().Value.ToXMLFormat(3)
+							)
+						)
+					}).ToArray()
+				));
+		}
+
+		private XElement[] CreateConsumptionElements(
+			Dictionary<FuelType, SpecificFuelConsumption> vtpFcMeasured,
+			Dictionary<FuelType, SpecificFuelConsumption> vtpFcMeasuredCorr, 
+			Dictionary<FuelType, SpecificFuelConsumption> vtpFcSimulated,
+			Dictionary<FuelType, SpecificFuelConsumption> CO2MeasuredPerFuel,
+			Dictionary<FuelType, SpecificFuelConsumption> CO2MeasuredCorrectedPerFuel, 
+			Dictionary<FuelType, SpecificFuelConsumption> CO2SimulatedPerFuel)
+		{
+			var fuels = DeclarationData.FuelData;
+			var vtpResult = Missions.FirstOrDefault(x => x.Key == MissionType.VerificationTest).Value.ResultEntry
+									.FirstOrDefault().Value;
+			
+			return vtpFcMeasured.Select(x =>
 				new XElement(
 					tns + "FuelConsumption",
 					new XAttribute("fuelType", x.Key.ToXMLFormat()),
@@ -320,54 +454,41 @@ namespace TUGraz.VectoCore.OutputData.XML
 						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/kWh"),
 						vtpFcSimulated[x.Key].ConvertToGramPerKiloWattHour().ToXMLFormat(3)
 					)
-				)),
+				)
+			).Concat(
 				new XElement(
-					tns + "CO2",
+					tns + "TotalFuelConsumption",
 					new XElement(
-						tns + "Certification",
-						new XElement(
-							tns + "Mission",
-							string.Format("{0}, {1}", Missions.FirstOrDefault(x => x.Key != MissionType.VerificationTest).Key.ToXMLFormat(), selectedLoading.ToString())
-						),
-						new XElement(
-							tns + "Declared", new XAttribute(XMLNames.Report_Results_Unit_Attr, key),
-							declaredCO2.ConvertToGrammPerTonKilometer().ToMinSignificantDigits(3, 1)
-						),
-						new XElement(
-							tns + "Verified", new XAttribute(XMLNames.Report_Results_Unit_Attr, key),
-							verifiedCO2.ConvertToGrammPerTonKilometer().ToMinSignificantDigits(3, 1)
-						)
+						tns + "Measured",
+						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/kWh"),
+						CalculateFuelConsumptionThroughCO2(vtpFcMeasured, CO2MeasuredPerFuel, fuels, vtpResult.TankSystem)
+							.ConvertToGramPerKiloWattHour().ToXMLFormat(3)
 					),
 					new XElement(
-						tns + "VTP",
-						new XElement(
-							tns + "Measured",  new XAttribute(XMLNames.Report_Results_Unit_Attr, CO2Measured.ConvertToGramPerKiloWattHour().Units),
-							CO2Measured.ConvertToGramPerKiloWattHour().Value.ToXMLFormat(3)
-						),
-						new XElement(
-							tns + "MeasuredCorrected",  new XAttribute(XMLNames.Report_Results_Unit_Attr, CO2MeasuredCorrected.ConvertToGramPerKiloWattHour().Units),
-							CO2MeasuredCorrected.ConvertToGramPerKiloWattHour().Value.ToXMLFormat(3)
-						),
-						new XElement(
-							tns + "Simulated",  new XAttribute(XMLNames.Report_Results_Unit_Attr, CO2Simulated.ConvertToGramPerKiloWattHour().Units),
-							CO2Simulated.ConvertToGramPerKiloWattHour().Value.ToXMLFormat(3)
-						)
+						tns + "MeasuredCorrected",
+						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/kWh"),
+						CalculateFuelConsumptionThroughCO2(vtpFcMeasuredCorr, CO2MeasuredCorrectedPerFuel, fuels, vtpResult.TankSystem)
+							.ConvertToGramPerKiloWattHour().ToXMLFormat(3)
+					),
+					new XElement(
+						tns + "Simulated",
+						new XAttribute(XMLNames.Report_Results_Unit_Attr, "g/kWh"),
+						CalculateFuelConsumptionThroughCO2(vtpFcSimulated, CO2SimulatedPerFuel, fuels, vtpResult.TankSystem)
+							.ConvertToGramPerKiloWattHour().ToXMLFormat(3)
 					)
-				),
-				new XElement(tns + "C_VTP", cVtp.ToXMLFormat(4)),
-				CreatePollutantsElement(vtpResult, CO2MeasuredCorrected));
+				).ToEnumerable()
+			).ToArray();
+		}
 
-			var threshold = Constants.SimulationSettings.VTPEngineWorkDeviationThreshold;
+		private SpecificFuelConsumption CalculateFuelConsumptionThroughCO2(Dictionary<FuelType, SpecificFuelConsumption> fc,
+			Dictionary<FuelType, SpecificFuelConsumption> co2, FuelData fuelData, TankSystem? tankSystem)
+		{
+			var totalFC = fc.Sum(x => x.Value);
+			var totalCO2 = co2.Sum(x => x.Value);
 
-			if (Math.Abs(vtpResult.PositiveEngineWorkDeviation) > threshold) {
-				LogList.Add($@"Simulated positive engine work is deviating more than {threshold * 100}% 
-					from measured positive engine work through the vdri. 
-					Deviation = {(vtpResult.PositiveEngineWorkDeviation * 100).ToXMLFormat(2)}%");
-			}
-
-			if (LogList.Any()) {
-				Results.Add(new XElement(tns + "Warnings", LogList.Select(x => new XElement(tns + "Warning", x))));
-			}
+			var co2ToFuel = co2.Sum(x => fuelData.Lookup(x.Key, tankSystem).CO2PerFuelWeightVTP * (fc[x.Key] / totalFC));
+			
+			return totalCO2 / co2ToFuel;
 		}
 
 		private XElement CreatePollutantsElement(ResultEntry vtpResult, SpecificFuelConsumption CO2MeasuredCorrected)
