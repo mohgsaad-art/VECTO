@@ -10,6 +10,8 @@ Changelog:
 	03.02.2022: First official version uploaded to CITnet
 	04.04.2022: Changes in 'TyreDimensionType': remove space between tyre design code and rim diameter (205/70 R15, 205/80 R15) 
     01.06.2022: Change type of WHTC Correction factors, CFRegPer, BFColdHot: constraint > 0.0
+    23.08.2022: Bugfix IEPC standard values: require gear attribute for power map, allow multiple power maps; 
+                                             require gear attribute for drac curve, allow multiple drag curves
 -->
 	<xs:complexType name="AbstractADCDataDeclarationType" abstract="true">
 		<xs:complexContent>
@@ -1267,11 +1269,18 @@ Changelog:
 					</xs:element>
 					<xs:element name="Gears" type="v2.3:AbstractIEPCGearsDeclarationType"/>
 					<xs:element name="VoltageLevel" type="v2.3:IEPCSystemVoltageLevelStandardValuesType"/>
-					<xs:element name="DragCurve">
+					<xs:element name="DragCurve" maxOccurs="unbounded">
 						<xs:complexType>
 							<xs:sequence>
 								<xs:element name="Entry" type="v2.3:IEPCSystemDragTorqueEntryType" minOccurs="2" maxOccurs="unbounded"/>
 							</xs:sequence>
+							<xs:attribute name="gear" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:int">
+										<xs:minInclusive value="1"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
 						</xs:complexType>
 					</xs:element>
 				</xs:sequence>
@@ -1425,11 +1434,18 @@ Changelog:
 							</xs:sequence>
 						</xs:complexType>
 					</xs:element>
-					<xs:element name="PowerMap">
+					<xs:element name="PowerMap" maxOccurs="unbounded">
 						<xs:complexType>
 							<xs:sequence>
 								<xs:element name="Entry" type="v2.3:IEPCSystemPowerMapEntryType" minOccurs="4" maxOccurs="unbounded"/>
 							</xs:sequence>
+							<xs:attribute name="gear" use="required">
+								<xs:simpleType>
+									<xs:restriction base="xs:int">
+										<xs:minInclusive value="1"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
 						</xs:complexType>
 					</xs:element>
 				</xs:sequence>
@@ -1541,7 +1557,7 @@ Changelog:
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="v1.0:Double4">
-						<xs:minExclusive value="0.0"/>
+						<xs:minExclusive value="0.0000"/>
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
@@ -1551,7 +1567,7 @@ Changelog:
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="v1.0:Double4">
-						<xs:minExclusive value="0.0"/>
+						<xs:minExclusive value="0.0000"/>
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
@@ -1561,7 +1577,7 @@ Changelog:
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="v1.0:Double4">
-						<xs:minExclusive value="0.0"/>
+						<xs:minExclusive value="0.0000"/>
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
@@ -1571,7 +1587,7 @@ Changelog:
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="v1.0:Double4">
-						<xs:minExclusive value="0.0"/>
+						<xs:minExclusive value="0.0000"/>
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
@@ -1581,7 +1597,7 @@ Changelog:
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="v1.0:Double4">
-						<xs:minExclusive value="0.0"/>
+						<xs:minExclusive value="0.0000"/>
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
@@ -1595,7 +1611,7 @@ Changelog:
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="v1.0:Double4">
-						<xs:minExclusive value="0.0"/>
+						<xs:minExclusive value="0.0000"/>
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
@@ -1605,7 +1621,7 @@ Changelog:
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="v1.0:Double4">
-						<xs:minExclusive value="0.0"/>
+						<xs:minExclusive value="0.0000"/>
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
@@ -1615,7 +1631,7 @@ Changelog:
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="v1.0:Double4">
-						<xs:minExclusive value="0.0"/>
+						<xs:minExclusive value="0.0000"/>
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
@@ -1625,7 +1641,7 @@ Changelog:
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="v1.0:Double4">
-						<xs:minExclusive value="0.0"/>
+						<xs:minExclusive value="0.0000"/>
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
@@ -1635,7 +1651,7 @@ Changelog:
 				</xs:annotation>
 				<xs:simpleType>
 					<xs:restriction base="v1.0:Double4">
-						<xs:minExclusive value="0.0"/>
+						<xs:minExclusive value="0.0000"/>
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:element>
