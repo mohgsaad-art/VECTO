@@ -42,7 +42,6 @@ namespace TUGraz.VectoCore.Configuration
 		public const double RPMToRad = 2 * Math.PI / 60;
 		public const double Kilo = 1000;
 		public const double MeterPerSecondToKMH = 3.6;
-		public const int GramsToMilligrams = 1000;
 		public const int Mega = 1000000;
 
 		public static class Auxiliaries
