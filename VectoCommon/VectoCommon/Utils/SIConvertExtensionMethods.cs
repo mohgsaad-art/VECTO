@@ -180,11 +180,21 @@ namespace TUGraz.VectoCommon.Utils
 			return new ConvertedSI(value.Value() * Kilo * Kilo * Kilo, "g/tkm");
 		}
 
-		
+
+		public static ConvertedSI ConvertToPerKiloWattHour(this PerWattSecond value)
+		{
+			return new ConvertedSI(value.Value() * 3600e3, "#/kWh");
+		}
+
 		public static ConvertedSI ConvertToGramPerKiloWattHour(this KilogramPerWattSecond value)
 		{
 			return new ConvertedSI(value.Value() * 3600e6, "g/kWh");
 		}
+		public static ConvertedSI ConvertToMilliGramPerKiloWattHour(this KilogramPerWattSecond value)
+		{
+			return new ConvertedSI(value.Value() * 3600e9, "mg/kWh");
+		}
+
 		public static ConvertedSI ConvertToKiloWattHour(this WattSecond value)
 		{
 			return new ConvertedSI(value.Value() / Kilo / SecondsPerHour, "kWh");

@@ -89,16 +89,16 @@ namespace TUGraz.VectoCore.OutputData.XML
 			public WattSecond VTPWorPWheelSimPos;
 			public TankSystem? TankSystem;
 
-			public Scalar CH4Emissions { protected set; get; } = null;
-			public Scalar COEmissions { protected set; get; } = null;
-			public Scalar NMHCEmissions { protected set; get; } = null;
-			public Scalar NOxEmissions { protected set; get; } = null;
-			public Scalar THCEmissions { protected set; get; } = null;
-			public Scalar PMFlow { protected set; get; } = null;
-			public Scalar CO2Emissions { protected set; get; } = null;
-			public Scalar PositiveEngineWorkDeviation { protected set; get; } = null;
-			public ConvertedSI MeasuredPositiveEngineWork { protected set; get; } = null;
-			public ConvertedSI SimulatedPositiveEngineWork { protected set; get; } = null;
+			public KilogramPerWattSecond CH4Emissions { protected set; get; } = null;
+			public KilogramPerWattSecond COEmissions { protected set; get; } = null;
+			public KilogramPerWattSecond NMHCEmissions { protected set; get; } = null;
+			public KilogramPerWattSecond NOxEmissions { protected set; get; } = null;
+			public KilogramPerWattSecond THCEmissions { protected set; get; } = null;
+			public PerWattSecond PMFlow { protected set; get; } = null;
+			public KilogramPerWattSecond CO2Emissions { protected set; get; } = null;
+			public double PositiveEngineWorkDeviation { protected set; get; } = double.NaN;
+			public WattSecond MeasuredPositiveEngineWork { protected set; get; } = null;
+			public WattSecond SimulatedPositiveEngineWork { protected set; get; } = null;
 			public IList<IFuelNCVData> FuelNCVs { protected set; get; } = null;
 
 			#region Overrides of ResultEntry
@@ -139,52 +139,52 @@ namespace TUGraz.VectoCore.OutputData.XML
 				CalculateEmissions(runData, MeasuredPositiveEngineWork);
 			}
 
-			private ConvertedSI CalculateMeasuredPositiveEngineWork(VectoRunData runData)
+			private WattSecond CalculateMeasuredPositiveEngineWork(VectoRunData runData)
 			{
 				return runData.Cycle.Entries.Pairwise()
 					.Where(x => x.Item1.CombustionEngineTorque.IsGreaterOrEqual(0))
-					.Sum(x => (x.Item1.EngineSpeed * x.Item1.CombustionEngineTorque) * (x.Item2.Time - x.Item1.Time))
-					.ConvertToKiloWattHour();
+					.Sum(x => (x.Item1.EngineSpeed * x.Item1.CombustionEngineTorque) * (x.Item2.Time - x.Item1.Time));
+					//.ConvertToKiloWattHour();
 			}
 
 			private void CalculatePositiveEngineWorkData(VectoRunData runData, IModalDataContainer data)
 			{ 
 				MeasuredPositiveEngineWork = CalculateMeasuredPositiveEngineWork(runData);
-				SimulatedPositiveEngineWork = data.TotalEngineWorkPositive().ConvertToKiloWattHour();
+				SimulatedPositiveEngineWork = data.TotalEngineWorkPositive();
 				PositiveEngineWorkDeviation = 
-					((MeasuredPositiveEngineWork - SimulatedPositiveEngineWork) / MeasuredPositiveEngineWork).SI<Scalar>();
+					((MeasuredPositiveEngineWork - SimulatedPositiveEngineWork) / MeasuredPositiveEngineWork);
 			}
 
-			private void CalculateEmissions(VectoRunData runData, ConvertedSI measuredPositiveEngineWork)
+			private void CalculateEmissions(VectoRunData runData, WattSecond measuredPositiveEngineWork)
 			{
 				var entries = runData.Cycle.Entries;
 
 				if (runData.Cycle.Entries.First().CH4MassFlow != null) {
-					var CH4 = entries.Pairwise().Sum(x => (x.Item1.CH4MassFlow) * (x.Item2.Time - x.Item1.Time)).ConvertToGramm();
-					CH4Emissions = ((CH4 / measuredPositiveEngineWork) * Constants.GramsToMilligrams).SI<Scalar>();
+					var CH4 = entries.Pairwise().Sum(x => (x.Item1.CH4MassFlow) * (x.Item2.Time - x.Item1.Time));
+					CH4Emissions = (CH4 / measuredPositiveEngineWork).Cast<KilogramPerWattSecond>();
 				}
 
-				var CO = entries.Pairwise().Sum(x => x.Item1.COMassFlow * (x.Item2.Time - x.Item1.Time)).ConvertToGramm();
-				COEmissions = ((CO / measuredPositiveEngineWork) * Constants.GramsToMilligrams).SI<Scalar>();
+				var CO = entries.Pairwise().Sum(x => x.Item1.COMassFlow * (x.Item2.Time - x.Item1.Time));
+				COEmissions = (CO / measuredPositiveEngineWork).Cast<KilogramPerWattSecond>();
 
 				if (entries.First().NMHCMassFlow != null) {
-					var NMHC = entries.Pairwise().Sum(x => x.Item1.NMHCMassFlow * (x.Item2.Time - x.Item1.Time)).ConvertToGramm();
-					NMHCEmissions = ((NMHC / measuredPositiveEngineWork) * Constants.GramsToMilligrams).SI<Scalar>();
+					var NMHC = entries.Pairwise().Sum(x => x.Item1.NMHCMassFlow * (x.Item2.Time - x.Item1.Time));
+					NMHCEmissions = (NMHC / measuredPositiveEngineWork).Cast<KilogramPerWattSecond>();
 				}
 
-				var NOx = entries.Pairwise().Sum(x => x.Item1.NOxMassFlow * (x.Item2.Time - x.Item1.Time)).ConvertToGramm();
-				NOxEmissions = ((NOx / measuredPositiveEngineWork) * Constants.GramsToMilligrams).SI<Scalar>();
+				var NOx = entries.Pairwise().Sum(x => x.Item1.NOxMassFlow * (x.Item2.Time - x.Item1.Time));
+				NOxEmissions = (NOx / measuredPositiveEngineWork).Cast<KilogramPerWattSecond>();
 
 				if (entries.First().THCMassFlow != null) {
-					var THC = entries.Pairwise().Sum(x => x.Item1.THCMassFlow * (x.Item2.Time - x.Item1.Time)).ConvertToGramm();
-					THCEmissions = ((THC / measuredPositiveEngineWork) * Constants.GramsToMilligrams).SI<Scalar>();
+					var THC = entries.Pairwise().Sum(x => x.Item1.THCMassFlow * (x.Item2.Time - x.Item1.Time));
+					THCEmissions = (THC / measuredPositiveEngineWork).Cast<KilogramPerWattSecond>();
 				}
 	
-				var PN = entries.Pairwise().Sum(x => (x.Item1.PMNumberFlow * (x.Item2.Time - x.Item1.Time)).Value()).SI<Scalar>();
+				var PN = entries.Pairwise().Sum(x => x.Item1.PMNumberFlow * (x.Item2.Time - x.Item1.Time));
 				PMFlow = PN / measuredPositiveEngineWork;
 
-				var CO2 = entries.Pairwise().Sum(x => x.Item1.CO2MassFlow *  (x.Item2.Time - x.Item1.Time)).ConvertToGramm();
-				CO2Emissions = ((CO2 / measuredPositiveEngineWork) * Constants.GramsToMilligrams).SI<Scalar>();
+				var CO2 = entries.Pairwise().Sum(x => x.Item1.CO2MassFlow *  (x.Item2.Time - x.Item1.Time));
+				CO2Emissions = (CO2 / measuredPositiveEngineWork).Cast<KilogramPerWattSecond>();
 			}
 
 			#endregion
@@ -495,50 +495,41 @@ namespace TUGraz.VectoCore.OutputData.XML
 		{ 
 			var pollutantsElement = new XElement(
 				tns + "Pollutants",
-				new XElement(tns + "CO", new XAttribute(XMLNames.Report_Results_Unit_Attr, "mg/kWh"),
-					vtpResult.COEmissions.ToXMLFormat(3)
+				new XElement(tns + "CO", XMLHelper.ValueAsUnit(vtpResult.COEmissions, "mg/kWh", 3)
 				),
-				new XElement(tns + "NOx", new XAttribute(XMLNames.Report_Results_Unit_Attr, "mg/kWh"),
-					vtpResult.NOxEmissions.ToXMLFormat(3)
+				new XElement(tns + "NOx", XMLHelper.ValueAsUnit(vtpResult.NOxEmissions, "mg/kWh", 3)
 				),
-				new XElement(tns + "CO2", new XAttribute(XMLNames.Report_Results_Unit_Attr, "mg/kWh"),
-					vtpResult.CO2Emissions.ToXMLFormat(3)
+				new XElement(tns + "CO2", XMLHelper.ValueAsUnit(vtpResult.CO2Emissions, "g/kWh", 3)
 				)
 			);
 
 			if (vtpResult.THCEmissions != null) {
 				pollutantsElement.Add(
-					new XElement(tns + "THC", new XAttribute(XMLNames.Report_Results_Unit_Attr, "mg/kWh"),
-						vtpResult.THCEmissions.ToXMLFormat(3)
+					new XElement(tns + "THC", XMLHelper.ValueAsUnit(vtpResult.THCEmissions, "mg/kWh", 3)
 					));
 			}
 
 			if (vtpResult.CH4Emissions != null) {
 				pollutantsElement.Add(
-					new XElement(tns + "CH4", new XAttribute(XMLNames.Report_Results_Unit_Attr, "mg/kWh"),
-						vtpResult.CH4Emissions.ToXMLFormat(3)
+					new XElement(tns + "CH4", XMLHelper.ValueAsUnit(vtpResult.CH4Emissions, "mg/kWh", 3)
 					));
 			}
 
 			if (vtpResult.NMHCEmissions != null) {
 				pollutantsElement.Add(
-					new XElement(tns + "NMHC", new XAttribute(XMLNames.Report_Results_Unit_Attr, "mg/kWh"),
-						vtpResult.NMHCEmissions.ToXMLFormat(3)
+					new XElement(tns + "NMHC", XMLHelper.ValueAsUnit(vtpResult.NMHCEmissions, "mg/kWh", 3)
 					));
 			}
 
 			pollutantsElement.Add(
-				new XElement(tns + "PM", new XAttribute(XMLNames.Report_Results_Unit_Attr, "#/kWh"),
-					vtpResult.PMFlow.ToXMLFormat(3)
+				new XElement(tns + "PM", XMLHelper.ValueAsUnit(vtpResult.PMFlow, "#/kWh", 3)
 				));
 
 			pollutantsElement.Add(
 				new XElement(tns + "PositiveEngineWork",
-					new XElement(tns + "Measured", new XAttribute(XMLNames.Report_Results_Unit_Attr, "kWh"),
-						vtpResult.MeasuredPositiveEngineWork.ToXMLFormat(3)
+					new XElement(tns + "Measured", XMLHelper.ValueAsUnit(vtpResult.MeasuredPositiveEngineWork, "kWh", 3)
 					),
-					new XElement(tns + "Simulated", new XAttribute(XMLNames.Report_Results_Unit_Attr, "kWh"),
-						vtpResult.SimulatedPositiveEngineWork.ToXMLFormat(3)
+					new XElement(tns + "Simulated", XMLHelper.ValueAsUnit(vtpResult.SimulatedPositiveEngineWork, "kWh", 3)
 					)
 				));
 
