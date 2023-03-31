@@ -646,7 +646,11 @@ Public Class MockEngineeringVehicle
     Public Property AxleConfiguration As AxleConfiguration Implements IVehicleDeclarationInputData.AxleConfiguration
     Public Property CurbMassChassis As Kilogram Implements IVehicleDeclarationInputData.CurbMassChassis
     Public Property GrossVehicleMassRating As Kilogram Implements IVehicleDeclarationInputData.GrossVehicleMassRating
-    Public Property TorqueLimits As IList(Of ITorqueLimitInputData) Implements IVehicleDeclarationInputData.TorqueLimits
+    Public readonly Property TorqueLimits As IList(Of ITorqueLimitInputData) Implements IVehicleDeclarationInputData.TorqueLimits
+	get
+			Return new List(Of ITorqueLimitInputData)
+    End Get
+    End Property
     Public Property ManufacturerAddress As String Implements IVehicleDeclarationInputData.ManufacturerAddress
     Public Property EngineIdleSpeed As PerSecond Implements IVehicleDeclarationInputData.EngineIdleSpeed
     Public Property VocationalVehicle As Boolean Implements IVehicleDeclarationInputData.VocationalVehicle
