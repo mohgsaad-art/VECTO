@@ -2,6 +2,17 @@
 
 **VECTO-3.3.14**
 
+***Build 3011 (2023-03-31) OFFICIAL RELEASE***
+
+- Bugfixes (compared to 3.3.14.2981)
+    * [VECTO-1719] - Missing CO2 values per fuel in the VTP report
+    * [VECTO-1720] - Torque signal names in the VTP vdri need to be updated
+    * [VECTO-1730] - VTP - CO2 from PEMS input and reporting
+    * [VECTO-1732] - Unit of CO2 figures in VTP report
+    * [VECTO-1733] - Update XML Schema v2.3 with the latest bugfixes
+    * [VECTO-1736] - Gearbox GUI error
+
+
 ***Build 2981 (2023-03-01) RELEASE CANDIDATE***
 
 - Bugfixes
