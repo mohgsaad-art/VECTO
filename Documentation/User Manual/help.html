@@ -6,76 +6,81 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <title>VECTO User Manual</title>
   <style>
-    code{white-space: pre-wrap;}
-    span.smallcaps{font-variant: small-caps;}
-    span.underline{text-decoration: underline;}
-    div.column{display: inline-block; vertical-align: top; width: 50%;}
-    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-    ul.task-list{list-style: none;}
-    pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-    pre > code.sourceCode > span:empty { height: 1.2em; }
-    .sourceCode { overflow: visible; }
-    code.sourceCode > span { color: inherit; text-decoration: inherit; }
-    div.sourceCode { margin: 1em 0; }
-    pre.sourceCode { margin: 0; }
-    @media screen {
-    div.sourceCode { overflow: auto; }
-    }
-    @media print {
-    pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-    }
-    pre.numberSource code
-      { counter-reset: source-line 0; }
-    pre.numberSource code > span
-      { position: relative; left: -4em; counter-increment: source-line; }
-    pre.numberSource code > span > a:first-child::before
-      { content: counter(source-line);
-        position: relative; left: -1em; text-align: right; vertical-align: baseline;
-        border: none; display: inline-block;
-        -webkit-touch-callout: none; -webkit-user-select: none;
-        -khtml-user-select: none; -moz-user-select: none;
-        -ms-user-select: none; user-select: none;
-        padding: 0 4px; width: 4em;
-        color: #aaaaaa;
-      }
-    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-    div.sourceCode
-      {   }
-    @media screen {
-    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-    }
-    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-    code span.at { color: #7d9029; } /* Attribute */
-    code span.bn { color: #40a070; } /* BaseN */
-    code span.bu { } /* BuiltIn */
-    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-    code span.ch { color: #4070a0; } /* Char */
-    code span.cn { color: #880000; } /* Constant */
-    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-    code span.dt { color: #902000; } /* DataType */
-    code span.dv { color: #40a070; } /* DecVal */
-    code span.er { color: #ff0000; font-weight: bold; } /* Error */
-    code span.ex { } /* Extension */
-    code span.fl { color: #40a070; } /* Float */
-    code span.fu { color: #06287e; } /* Function */
-    code span.im { } /* Import */
-    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-    code span.op { color: #666666; } /* Operator */
-    code span.ot { color: #007020; } /* Other */
-    code span.pp { color: #bc7a00; } /* Preprocessor */
-    code span.sc { color: #4070a0; } /* SpecialChar */
-    code span.ss { color: #bb6688; } /* SpecialString */
-    code span.st { color: #4070a0; } /* String */
-    code span.va { color: #19177c; } /* Variable */
-    code span.vs { color: #4070a0; } /* VerbatimString */
-    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-  </style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
   <style type="text/css">body {height: 100%;min-height: 100%;font-family: Calibri, sans-serif;}.section.level1 {padding-left:336px}nav, #TOC {position: fixed;width: 21em;left: 0px;top: 3.5em;bottom: 2em;background-color: #eee;overflow: scroll;}#HEADER{top: 0px;left: 1px;border-bottom-style: solid;border-bottom-width: thin;border-bottom-color: #aaa;height: 2.5em;}#FOOTER {border-top-style: solid;border-top-width: thin;border-top-color: #aaa;bottom: 0px;left: 1px;}#HEADER, #FOOTER {width: auto;position: fixed;width: 99%;background: white;padding: 5px;}body > div:not(#TOC):not(#HEADER):not(#FOOTER) {display: none;padding-left: 21em;padding-top: 2em;padding-bottom: 2em;margin-left: 1em;width: 50em;}table {border-collapse: collapse;border-spacing: 0;}nav ul {line-height: 1.7em;list-style-type: none;list-style-position: inside;}th {font-weight: bold;}th, td {padding: 6px;border-width: 1px;border-style: solid;border-color: #aaa;}h1, h2, h3 {padding-bottom: 3px;border-bottom-width: 1px;border-bottom-style: solid;border-bottom-color: #aaa;}dt {font-style: italic;font-weight: bold;}.ui-resizable-handle {position: absolute;width: 20px;cursor: ew-resize;right: 0px;height: 100%;top: 0px;}div.vecto2 {border-left: 3px solid gray;padding-left: 5px;margin-top: 2em;background: rgba(128,128,128,0.05);}div.vecto2:before {content: 'Note: Vecto 2.2!';background: gray;color: white;padding: 5px 5px 5px 5px;margin-left: -8px;font-weight: bold;display: inline-block;font-size: smaller;}div.vecto3 {border-left: 3px solid green;padding-left: 5px;margin-top: 2em;background: rgba(0,128,0,0.05);}div.vecto3:before {content: 'Note: Vecto 3.x!';background: green;color: white;padding: 5px 5px 5px 5px;margin-left: -8px;font-weight: bold;display: inline-block;font-size: smaller;}div.engineering{border-right: 5px solid #d51000;margin-right: -50px;background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+DQo8IS0tIENyZWF0ZWQgd2l0aCBJbmtzY2FwZSAoaHR0cDovL3d3dy5pbmtzY2FwZS5vcmcvKSAtLT4NCg0KPHN2Zw0KICAgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIg0KICAgeG1sbnM6Y2M9Imh0dHA6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL25zIyINCiAgIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyINCiAgIHhtbG5zOnN2Zz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciDQogICB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciDQogICB4bWxuczpzb2RpcG9kaT0iaHR0cDovL3NvZGlwb2RpLnNvdXJjZWZvcmdlLm5ldC9EVEQvc29kaXBvZGktMC5kdGQiDQogICB4bWxuczppbmtzY2FwZT0iaHR0cDovL3d3dy5pbmtzY2FwZS5vcmcvbmFtZXNwYWNlcy9pbmtzY2FwZSINCiAgIHdpZHRoPSI0NS4xNTU1NTZtbSINCiAgIGhlaWdodD0iNDQuMDI2NjY5bW0iDQogICB2aWV3Qm94PSIwIDAgMTYwIDE1Ni4wMDAwMSINCiAgIGlkPSJzdmc0MTY3Ig0KICAgdmVyc2lvbj0iMS4xIg0KICAgaW5rc2NhcGU6dmVyc2lvbj0iMC45MSByMTM3MjUiDQogICBzb2RpcG9kaTpkb2NuYW1lPSJpY29uX2VuZ2luZWVyaW5nLW1vZGUuc3ZnIj4NCiAgPGRlZnMNCiAgICAgaWQ9ImRlZnM0MTY5IiAvPg0KICA8c29kaXBvZGk6bmFtZWR2aWV3DQogICAgIGlkPSJiYXNlIg0KICAgICBwYWdlY29sb3I9IiNmZmZmZmYiDQogICAgIGJvcmRlcmNvbG9yPSIjNjY2NjY2Ig0KICAgICBib3JkZXJvcGFjaXR5PSIxLjAiDQogICAgIGlua3NjYXBlOnBhZ2VvcGFjaXR5PSIwLjAiDQogICAgIGlua3NjYXBlOnBhZ2VzaGFkb3c9IjIiDQogICAgIGlua3NjYXBlOnpvb209IjIuOCINCiAgICAgaW5rc2NhcGU6Y3g9IjE4LjI1ODUwNCINCiAgICAgaW5rc2NhcGU6Y3k9Ijk3LjIzNzM3NCINCiAgICAgaW5rc2NhcGU6ZG9jdW1lbnQtdW5pdHM9InB4Ig0KICAgICBpbmtzY2FwZTpjdXJyZW50LWxheWVyPSJsYXllcjEiDQogICAgIHNob3dncmlkPSJmYWxzZSINCiAgICAgZml0LW1hcmdpbi10b3A9IjAiDQogICAgIGZpdC1tYXJnaW4tbGVmdD0iMCINCiAgICAgZml0LW1hcmdpbi1yaWdodD0iMCINCiAgICAgZml0LW1hcmdpbi1ib3R0b209IjAiDQogICAgIGlua3NjYXBlOndpbmRvdy13aWR0aD0iMTkyMCINCiAgICAgaW5rc2NhcGU6d2luZG93LWhlaWdodD0iMTEzOCINCiAgICAgaW5rc2NhcGU6d2luZG93LXg9Ii04Ig0KICAgICBpbmtzY2FwZTp3aW5kb3cteT0iLTgiDQogICAgIGlua3NjYXBlOndpbmRvdy1tYXhpbWl6ZWQ9IjEiIC8+DQogIDxtZXRhZGF0YQ0KICAgICBpZD0ibWV0YWRhdGE0MTcyIj4NCiAgICA8cmRmOlJERj4NCiAgICAgIDxjYzpXb3JrDQogICAgICAgICByZGY6YWJvdXQ9IiI+DQogICAgICAgIDxkYzpmb3JtYXQ+aW1hZ2Uvc3ZnK3htbDwvZGM6Zm9ybWF0Pg0KICAgICAgICA8ZGM6dHlwZQ0KICAgICAgICAgICByZGY6cmVzb3VyY2U9Imh0dHA6Ly9wdXJsLm9yZy9kYy9kY21pdHlwZS9TdGlsbEltYWdlIiAvPg0KICAgICAgICA8ZGM6dGl0bGU+PC9kYzp0aXRsZT4NCiAgICAgIDwvY2M6V29yaz4NCiAgICA8L3JkZjpSREY+DQogIDwvbWV0YWRhdGE+DQogIDxnDQogICAgIGlua3NjYXBlOmxhYmVsPSJMYXllciAxIg0KICAgICBpbmtzY2FwZTpncm91cG1vZGU9ImxheWVyIg0KICAgICBpZD0ibGF5ZXIxIg0KICAgICB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMjM0LjI4NTcxLC0zNDUuNzkwNzgpIj4NCiAgICA8cGF0aA0KICAgICAgIGlua3NjYXBlOmNvbm5lY3Rvci1jdXJ2YXR1cmU9IjAiDQogICAgICAgZD0ibSAyNTQuMjg1NzEsMzQ1Ljc5MDc4IC0yLDQgMjEsMTIgYyAwLDEwIC00LDE4IC0xMywyMyBsIC0yMSwtMTIgLTEsMiBjIDUsMTUgMTUsMjUgMzUsMjUgNSwwIDIwLDE1IDI4LDIzIGwgMTYsLTE2IGMgLTgsLTggLTI2LC0yNiAtMjYsLTMxIDAsLTE4IC01LC0zMCAtMzcsLTMwIHogbSAxMjUsNSAtMjAsMTQgLTIsOCAtNTgsNTggLTgsLTUgLTQsNCBjIDAsMTIgLTE0LDE4IC0yMCwxOCBsIC0zMywzMyBjIDAsMTAgMTEsMjEgMjEsMjEgbCAzMywtMzMgYyAwLC02IDYsLTIwIDE4LC0yMCBsIDQsLTQgLTUsLTggNTgsLTU4IDgsLTIgMTQsLTIwIC02LC02IHogbSAtNTAsNjggLTE2LDE2IGMgMTIsMTIgMjgsMjggMjgsMzMgMCwxOCA1LDMwIDM3LDMwIGwgMiwtNCAtMjEsLTEyIGMgMCwtMTAgNCwtMTggMTMsLTIzIGwgMjEsMTIgMSwtMiBjIC01LC0xNSAtMTUsLTI1IC0zNSwtMjUgLTUsMCAtMTgsLTEzIC0zMCwtMjUgeiINCiAgICAgICBpZD0iaW1hZ2Vib3RfMy0wIg0KICAgICAgIHN0eWxlPSJmaWxsOiNkNTEwMDA7ZmlsbC1vcGFjaXR5OjEiIC8+DQogIDwvZz4NCjwvc3ZnPg0K);background-color: rgba(255,0,0,0.2);padding: 2px 50px 2px 5px;margin-bottom: 0.5em;background-repeat: no-repeat;background-size: 38px;background-position: top right;}div.declaration {border-right: 5px solid #08c300;margin-right: -50px;background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+DQo8IS0tIENyZWF0ZWQgd2l0aCBJbmtzY2FwZSAoaHR0cDovL3d3dy5pbmtzY2FwZS5vcmcvKSAtLT4NCg0KPHN2Zw0KICAgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIg0KICAgeG1sbnM6Y2M9Imh0dHA6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL25zIyINCiAgIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyINCiAgIHhtbG5zOnN2Zz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciDQogICB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciDQogICB4bWxuczpzb2RpcG9kaT0iaHR0cDovL3NvZGlwb2RpLnNvdXJjZWZvcmdlLm5ldC9EVEQvc29kaXBvZGktMC5kdGQiDQogICB4bWxuczppbmtzY2FwZT0iaHR0cDovL3d3dy5pbmtzY2FwZS5vcmcvbmFtZXNwYWNlcy9pbmtzY2FwZSINCiAgIHdpZHRoPSI0OS43OTY4MjJtbSINCiAgIGhlaWdodD0iNDkuNzk2ODIybW0iDQogICB2aWV3Qm94PSIwIDAgMTc2LjQ0NTQzIDE3Ni40NDU0MyINCiAgIGlkPSJzdmcyIg0KICAgdmVyc2lvbj0iMS4xIg0KICAgaW5rc2NhcGU6dmVyc2lvbj0iMC45MSByMTM3MjUiDQogICBzb2RpcG9kaTpkb2NuYW1lPSJpY29uX2RlY2xhcmF0aW9uLW1vZGUuc3ZnIj4NCiAgPGRlZnMNCiAgICAgaWQ9ImRlZnM0IiAvPg0KICA8c29kaXBvZGk6bmFtZWR2aWV3DQogICAgIGlkPSJiYXNlIg0KICAgICBwYWdlY29sb3I9IiNmZmZmZmYiDQogICAgIGJvcmRlcmNvbG9yPSIjNjY2NjY2Ig0KICAgICBib3JkZXJvcGFjaXR5PSIxLjAiDQogICAgIGlua3NjYXBlOnBhZ2VvcGFjaXR5PSIwLjAiDQogICAgIGlua3NjYXBlOnBhZ2VzaGFkb3c9IjIiDQogICAgIGlua3NjYXBlOnpvb209IjEuOTc5ODk5Ig0KICAgICBpbmtzY2FwZTpjeD0iMTcuMjkyOTMzIg0KICAgICBpbmtzY2FwZTpjeT0iNDYuODI4NzU0Ig0KICAgICBpbmtzY2FwZTpkb2N1bWVudC11bml0cz0icHgiDQogICAgIGlua3NjYXBlOmN1cnJlbnQtbGF5ZXI9ImxheWVyMSINCiAgICAgc2hvd2dyaWQ9ImZhbHNlIg0KICAgICBmaXQtbWFyZ2luLXRvcD0iMCINCiAgICAgZml0LW1hcmdpbi1sZWZ0PSIwIg0KICAgICBmaXQtbWFyZ2luLXJpZ2h0PSIwIg0KICAgICBmaXQtbWFyZ2luLWJvdHRvbT0iMCINCiAgICAgaW5rc2NhcGU6d2luZG93LXdpZHRoPSIxOTIwIg0KICAgICBpbmtzY2FwZTp3aW5kb3ctaGVpZ2h0PSIxMTM4Ig0KICAgICBpbmtzY2FwZTp3aW5kb3cteD0iLTgiDQogICAgIGlua3NjYXBlOndpbmRvdy15PSItOCINCiAgICAgaW5rc2NhcGU6d2luZG93LW1heGltaXplZD0iMSIgLz4NCiAgPG1ldGFkYXRhDQogICAgIGlkPSJtZXRhZGF0YTciPg0KICAgIDxyZGY6UkRGPg0KICAgICAgPGNjOldvcmsNCiAgICAgICAgIHJkZjphYm91dD0iIj4NCiAgICAgICAgPGRjOmZvcm1hdD5pbWFnZS9zdmcreG1sPC9kYzpmb3JtYXQ+DQogICAgICAgIDxkYzp0eXBlDQogICAgICAgICAgIHJkZjpyZXNvdXJjZT0iaHR0cDovL3B1cmwub3JnL2RjL2RjbWl0eXBlL1N0aWxsSW1hZ2UiIC8+DQogICAgICAgIDxkYzp0aXRsZT48L2RjOnRpdGxlPg0KICAgICAgPC9jYzpXb3JrPg0KICAgIDwvcmRmOlJERj4NCiAgPC9tZXRhZGF0YT4NCiAgPGcNCiAgICAgaW5rc2NhcGU6bGFiZWw9IkxheWVyIDEiDQogICAgIGlua3NjYXBlOmdyb3VwbW9kZT0ibGF5ZXIiDQogICAgIGlkPSJsYXllcjEiDQogICAgIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0yNjYuMzQwODMsLTUzLjQ4Njk3NCkiPg0KICAgIDxwYXRoDQogICAgICAgc29kaXBvZGk6dHlwZT0ic3RhciINCiAgICAgICBzdHlsZT0iZmlsbDojMDhjMzAwO2ZpbGwtb3BhY2l0eToxO3N0cm9rZTpub25lO3N0cm9rZS13aWR0aDoyO3N0cm9rZS1taXRlcmxpbWl0OjQ7c3Ryb2tlLWRhc2hhcnJheTpub25lO3N0cm9rZS1vcGFjaXR5OjEiDQogICAgICAgaWQ9InBhdGg0MTQzIg0KICAgICAgIHNvZGlwb2RpOnNpZGVzPSIxMiINCiAgICAgICBzb2RpcG9kaTpjeD0iMzU0LjU2MzU0Ig0KICAgICAgIHNvZGlwb2RpOmN5PSIxNDEuNzA5NjkiDQogICAgICAgc29kaXBvZGk6cjE9Ijc3LjY4MDA4NCINCiAgICAgICBzb2RpcG9kaTpyMj0iODguMjcyODI3Ig0KICAgICAgIHNvZGlwb2RpOmFyZzE9IjAuNzQ4OTc3MDMiDQogICAgICAgc29kaXBvZGk6YXJnMj0iMS4wMTA3NzY0Ig0KICAgICAgIGlua3NjYXBlOmZsYXRzaWRlZD0iZmFsc2UiDQogICAgICAgaW5rc2NhcGU6cm91bmRlZD0iMC40Ig0KICAgICAgIGlua3NjYXBlOnJhbmRvbWl6ZWQ9IjAiDQogICAgICAgZD0ibSA0MTEuNDU1MzMsMTk0LjYwMTI3IGMgLTYuNTU2MzksNy4wNTIyNSAtMS44NDI3NiwxNi43ODIwNiAtMTAuMDAwOTksMjEuODk3MDkgLTguMTU4MjQsNS4xMTUwMyAtMTQuODYyNzQsLTMuMzY2NTUgLTI0LjA2Njg2LC0wLjUzNzMyIC05LjIwNDEyLDIuODI5MjMgLTkuOTg2OSwxMy42MTIzMSAtMTkuNjA5NjYsMTMuOTYyOTMgLTkuNjIyNzUsMC4zNTA2MyAtMTEuMTg4MjMsLTEwLjM0Njg4IC0yMC41NzM4NCwtMTIuNDk4NzYgLTkuMzg1NjIsLTIuMTUxODcgLTE1LjQ1NTA3LDYuNzk1MTYgLTIzLjk2MzkzLDIuMjg3NDMgLTguNTA4ODcsLTQuNTA3NzIgLTQuNTE1ODUsLTE0LjU1NDc4IC0xMS41NjgxLC0yMS4xMTExNiAtNy4wNTIyNCwtNi41NTYzOSAtMTYuNzgyMDUsLTEuODQyNzYgLTIxLjg5NzA4LC0xMC4wMDEgLTUuMTE1MDMsLTguMTU4MjMgMy4zNjY1NSwtMTQuODYyNzMgMC41MzczMiwtMjQuMDY2ODUgLTIuODI5MjQsLTkuMjA0MTIgLTEzLjYxMjMxLC05Ljk4NjkgLTEzLjk2Mjk0LC0xOS42MDk2NiAtMC4zNTA2MywtOS42MjI3NSAxMC4zNDY4OSwtMTEuMTg4MjMgMTIuNDk4NzYsLTIwLjU3Mzg1IDIuMTUxODcsLTkuMzg1NjEgLTYuNzk1MTUsLTE1LjQ1NTA2IC0yLjI4NzQzLC0yMy45NjM5MiA0LjUwNzczLC04LjUwODg2NyAxNC41NTQ3OCwtNC41MTU4NTMgMjEuMTExMTcsLTExLjU2ODA5OSA2LjU1NjM4LC03LjA1MjI0NiAxLjg0Mjc1LC0xNi43ODIwNTYgMTAuMDAwOTksLTIxLjg5NzA4NCA4LjE1ODI0LC01LjExNTAzIDE0Ljg2Mjc0LDMuMzY2NTUgMjQuMDY2ODYsMC41MzczMTggOS4yMDQxMSwtMi44MjkyMzIgOS45ODY5LC0xMy42MTIzMDkgMTkuNjA5NjUsLTEzLjk2MjkzNSA5LjYyMjc2LC0wLjM1MDYyNyAxMS4xODgyMywxMC4zNDY4ODYgMjAuNTczODUsMTIuNDk4NzU5IDkuMzg1NjIsMi4xNTE4NzIgMTUuNDU1MDYsLTYuNzk1MTU1IDIzLjk2MzkzLC0yLjI4NzQzIDguNTA4ODYsNC41MDc3MjcgNC41MTU4NSwxNC41NTQ3ODMgMTEuNTY4MDksMjEuMTExMTY4IDcuMDUyMjUsNi41NTYzODQgMTYuNzgyMDYsMS44NDI3NTUgMjEuODk3MDksMTAuMDAwOTkyIDUuMTE1MDMsOC4xNTgyNDEgLTMuMzY2NTUsMTQuODYyNzQxIC0wLjUzNzMyLDI0LjA2Njg1MSAyLjgyOTIzLDkuMjA0MTIgMTMuNjEyMzEsOS45ODY5IDEzLjk2MjkzLDE5LjYwOTY2IDAuMzUwNjMsOS42MjI3NSAtMTAuMzQ2ODgsMTEuMTg4MjMgLTEyLjQ5ODc1LDIwLjU3Mzg1IC0yLjE1MTg4LDkuMzg1NjEgNi43OTUxNSwxNS40NTUwNiAyLjI4NzQyLDIzLjk2MzkzIC00LjUwNzcyLDguNTA4ODYgLTE0LjU1NDc4LDQuNTE1ODUgLTIxLjExMTE2LDExLjU2ODA5IHoiDQogICAgICAgaW5rc2NhcGU6dHJhbnNmb3JtLWNlbnRlci14PSI1LjI0NTM5ODgiDQogICAgICAgaW5rc2NhcGU6dHJhbnNmb3JtLWNlbnRlci15PSItMy4yODMzMTg2IiAvPg0KICAgIDxjaXJjbGUNCiAgICAgICBzdHlsZT0iZmlsbDojZmZmZmZmO2ZpbGwtb3BhY2l0eToxO3N0cm9rZTpub25lO3N0cm9rZS13aWR0aDoyO3N0cm9rZS1taXRlcmxpbWl0OjQ7c3Ryb2tlLWRhc2hhcnJheTpub25lO3N0cm9rZS1vcGFjaXR5OjEiDQogICAgICAgaWQ9InBhdGg0MTQ1Ig0KICAgICAgIGN4PSIzNTQuNTYzNTQiDQogICAgICAgY3k9IjE0MS43MDk2OSINCiAgICAgICByPSI1MC41MDc2MjkiIC8+DQogICAgPGNpcmNsZQ0KICAgICAgIHN0eWxlPSJmaWxsOm5vbmU7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlOiNmZmZmZmY7c3Ryb2tlLXdpZHRoOjcuMDE2MDIxNzM7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSINCiAgICAgICBpZD0icGF0aDQxNTAiDQogICAgICAgY3g9IjM1NC41NjM1NCINCiAgICAgICBjeT0iMTQxLjcwOTY5Ig0KICAgICAgIHI9IjYyLjg5OTM2OCIgLz4NCiAgICA8Zw0KICAgICAgIHN0eWxlPSJmb250LXN0eWxlOm5vcm1hbDtmb250LXdlaWdodDpub3JtYWw7Zm9udC1zaXplOjQwcHg7bGluZS1oZWlnaHQ6MTI1JTtmb250LWZhbWlseTpTYW5zO2xldHRlci1zcGFjaW5nOjBweDt3b3JkLXNwYWNpbmc6MHB4O2ZpbGw6IzA4YzMwMDtmaWxsLW9wYWNpdHk6MTtzdHJva2U6IzA4YzMwMDtzdHJva2Utd2lkdGg6MS4wNTc1NDUxOTtzdHJva2UtbGluZWNhcDpidXR0O3N0cm9rZS1saW5lam9pbjptaXRlcjtzdHJva2UtbWl0ZXJsaW1pdDo0O3N0cm9rZS1kYXNoYXJyYXk6bm9uZTtzdHJva2Utb3BhY2l0eToxIg0KICAgICAgIGlkPSJ0ZXh0NDEzNiINCiAgICAgICB0cmFuc2Zvcm09Im1hdHJpeCgxLjg5MTE3MjEsMCwwLDEuODkxMTcyMSw2LjExNzM1MzQsLTQ4LjY5NDQ2MikiPg0KICAgICAgPHBhdGgNCiAgICAgICAgIGQ9Im0gMjAwLjM5NzA1LDg1LjI0NTY4OSAwLjczMjQyLDEuMjY5NTMyIHEgLTcuMTUzMzIsNS4wNTM3MTEgLTEzLjI1Njg0LDEyLjc5Mjk2OCAtNi4xMDM1MSw3LjczOTI2MSAtOC44MTM0NywxNS4xNjExMzEgbCAtMS4wNzQyMiwwLjcwODAxIHEgLTEuMzkxNiwwLjkwMzMyIC0yLjM5MjU4LDEuODA2NjQgLTAuMTcwOSwtMC44Nzg5MSAtMC45NTIxNSwtMi44MzIwMyBsIC0wLjU2MTUyLC0xLjM5MTYgcSAtMS44MzEwNiwtNC41MTY2IC0zLjEwMDU5LC02LjI5ODgzIC0xLjI0NTExLC0xLjgwNjY0IC0yLjcwOTk2LC0xLjk1MzEzIDEuOTc3NTQsLTEuODA2NjQgMy40NDIzOSwtMS44MDY2NCAyLjAyNjM2LDAgNC40NDMzNSw1LjQ0NDM0IGwgMC44Nzg5MSwxLjk1MzEzIHEgNC4zMjEyOSwtNy43MzkyNiAxMC40MjQ4MSwtMTQuMjU3ODE3IDYuMTI3OTMsLTYuNTE4NTU1IDEyLjkzOTQ1LC0xMC41OTU3MDQgeiINCiAgICAgICAgIHN0eWxlPSJmb250LXN0eWxlOm5vcm1hbDtmb250LXZhcmlhbnQ6bm9ybWFsO2ZvbnQtd2VpZ2h0Om5vcm1hbDtmb250LXN0cmV0Y2g6bm9ybWFsO2ZvbnQtc2l6ZTo1MHB4O2xpbmUtaGVpZ2h0OjEyNSU7Zm9udC1mYW1pbHk6J1dpbmdkaW5ncyAyJzstaW5rc2NhcGUtZm9udC1zcGVjaWZpY2F0aW9uOidXaW5nZGluZ3MgMiwgTm9ybWFsJzt0ZXh0LWFsaWduOnN0YXJ0O3dyaXRpbmctbW9kZTpsci10Yjt0ZXh0LWFuY2hvcjpzdGFydDtmaWxsOiMwOGMzMDA7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlOiMwOGMzMDA7c3Ryb2tlLXdpZHRoOjEuMDU3NTQ1MTk7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSINCiAgICAgICAgIGlkPSJwYXRoNDE0MSINCiAgICAgICAgIGlua3NjYXBlOmNvbm5lY3Rvci1jdXJ2YXR1cmU9IjAiIC8+DQogICAgPC9nPg0KICA8L2c+DQo8L3N2Zz4NCg==);background-color: rgba(0,255,0,0.2);padding: 2px 50px 2px 5px;margin-bottom: 0.5em;background-repeat: no-repeat;background-size: 38px;background-position: top right;}pre {padding: 2px;border: 1px solid #EEEEEE;}.aaux_locked { background: gray;color: white;}</style>
   <style type="text/css">@media print {#CONTENT {display: none;}#HEADER {display: none;}body > div {display: block;padding-left: 2em;}.section.level2 {page-break-before: always;}a, a:visited, a:link {color: blue;}}</style>
   <script type="text/javascript">/*! jQuery v3.2.1 | (c) JS Foundation and other contributors | jquery.org/license */
@@ -221,145 +226,158 @@ Object.defineProperty(e,"__esModule",{value:!0}),e.mhchemParser=void 0;var r=fun
 </div>
 <nav id="TOC" role="doc-toc">
 <ul>
-<li><a href="#platform-requirements">Platform Requirements</a>
+<li><a href="#platform-requirements" id="toc-platform-requirements">Platform Requirements</a>
 <ul>
-<li><a href="#installation-options">Installation Options</a></li>
+<li><a href="#installation-options" id="toc-installation-options">Installation Options</a></li>
 </ul></li>
-<li><a href="#user-manual">User Manual</a></li>
-<li><a href="#user-interface">User Interface</a>
+<li><a href="#user-manual" id="toc-user-manual">User Manual</a></li>
+<li><a href="#user-interface" id="toc-user-interface">User Interface</a>
 <ul>
-<li><a href="#main-form">Main Form</a></li>
-<li><a href="#settings">Settings</a></li>
-<li><a href="#job-editor">Job Editor</a></li>
-<li><a href="#vtp-job-editor">VTP-Job Editor</a></li>
-<li><a href="#auxiliary-dialog">Auxiliary Dialog</a></li>
-<li><a href="#busauxiliary-dialog">BusAuxiliary Dialog</a></li>
-<li><a href="#vehicle-editor">Vehicle Editor</a></li>
-<li><a href="#vehicle-editor-powertrain-tab">Vehicle Editor – Powertrain
+<li><a href="#main-form" id="toc-main-form">Main Form</a></li>
+<li><a href="#settings" id="toc-settings">Settings</a></li>
+<li><a href="#job-editor" id="toc-job-editor">Job Editor</a></li>
+<li><a href="#vtp-job-editor" id="toc-vtp-job-editor">VTP-Job
+Editor</a></li>
+<li><a href="#auxiliary-dialog" id="toc-auxiliary-dialog">Auxiliary
+Dialog</a></li>
+<li><a href="#busauxiliary-dialog" id="toc-busauxiliary-dialog">BusAuxiliary Dialog</a></li>
+<li><a href="#vehicle-editor" id="toc-vehicle-editor">Vehicle
+Editor</a></li>
+<li><a href="#vehicle-editor-powertrain-tab" id="toc-vehicle-editor-powertrain-tab">Vehicle Editor – Powertrain
 Tab</a></li>
-<li><a href="#vehicle-editor-torque-limits-tab">Vehicle Editor – Torque
-Limits Tab</a></li>
-<li><a href="#vehicle-editor-adas-tab">Vehicle Editor – ADAS
+<li><a href="#vehicle-editor-torque-limits-tab" id="toc-vehicle-editor-torque-limits-tab">Vehicle Editor – Torque Limits
 Tab</a></li>
-<li><a href="#vehicle-editor-pto-tab">Vehicle Editor – PTO Tab</a></li>
-<li><a href="#engine-editor">Engine Editor</a></li>
-<li><a href="#gearbox-editor">Gearbox Editor</a></li>
-<li><a href="#graph-window">Graph Window</a></li>
-<li><a href="#command-line-arguments">Command Line Arguments</a></li>
+<li><a href="#vehicle-editor-adas-tab" id="toc-vehicle-editor-adas-tab">Vehicle Editor – ADAS Tab</a></li>
+<li><a href="#vehicle-editor-pto-tab" id="toc-vehicle-editor-pto-tab">Vehicle Editor – PTO Tab</a></li>
+<li><a href="#engine-editor" id="toc-engine-editor">Engine
+Editor</a></li>
+<li><a href="#gearbox-editor" id="toc-gearbox-editor">Gearbox
+Editor</a></li>
+<li><a href="#graph-window" id="toc-graph-window">Graph Window</a></li>
+<li><a href="#command-line-arguments" id="toc-command-line-arguments">Command Line Arguments</a></li>
 </ul></li>
-<li><a href="#calculation-modes">Calculation Modes</a>
+<li><a href="#calculation-modes" id="toc-calculation-modes">Calculation
+Modes</a>
 <ul>
-<li><a href="#engineering-mode">Engineering Mode</a></li>
-<li><a href="#declaration-mode">Declaration Mode</a></li>
-<li><a href="#verification-test-mode">Verification Test Mode</a></li>
-<li><a href="#engine-only-mode">Engine-Only Mode</a></li>
+<li><a href="#engineering-mode" id="toc-engineering-mode">Engineering
+Mode</a></li>
+<li><a href="#declaration-mode" id="toc-declaration-mode">Declaration
+Mode</a></li>
+<li><a href="#verification-test-mode" id="toc-verification-test-mode">Verification Test Mode</a></li>
+<li><a href="#engine-only-mode" id="toc-engine-only-mode">Engine-Only
+Mode</a></li>
 </ul></li>
-<li><a href="#simulation-models">Simulation Models</a>
+<li><a href="#simulation-models" id="toc-simulation-models">Simulation
+Models</a>
 <ul>
-<li><a href="#powertrain-and-components-structure">Powertrain and
-Components Structure</a></li>
-<li><a href="#driver-acceleration-limiting">Driver: Acceleration
+<li><a href="#powertrain-and-components-structure" id="toc-powertrain-and-components-structure">Powertrain and Components
+Structure</a></li>
+<li><a href="#driver-acceleration-limiting" id="toc-driver-acceleration-limiting">Driver: Acceleration
 Limiting</a></li>
-<li><a href="#driver-look-ahead-coasting">Driver: Look-Ahead
-Coasting</a></li>
-<li><a href="#driver-overspeed">Driver: Overspeed</a></li>
-<li><a href="#advanced-driver-assistant-systems-engine-stopstart">Advanced
+<li><a href="#driver-look-ahead-coasting" id="toc-driver-look-ahead-coasting">Driver: Look-Ahead Coasting</a></li>
+<li><a href="#driver-overspeed" id="toc-driver-overspeed">Driver:
+Overspeed</a></li>
+<li><a href="#advanced-driver-assistant-systems-engine-stopstart" id="toc-advanced-driver-assistant-systems-engine-stopstart">Advanced
 Driver Assistant Systems: Engine Stop/Start</a></li>
-<li><a href="#advanced-driver-assistant-systems-eco-roll">Advanced
-Driver Assistant Systems: Eco-Roll</a></li>
-<li><a href="#advanced-driver-assistant-systems-predictive-cruise-control">Advanced
+<li><a href="#advanced-driver-assistant-systems-eco-roll" id="toc-advanced-driver-assistant-systems-eco-roll">Advanced Driver
+Assistant Systems: Eco-Roll</a></li>
+<li><a href="#advanced-driver-assistant-systems-predictive-cruise-control" id="toc-advanced-driver-assistant-systems-predictive-cruise-control">Advanced
 Driver Assistant Systems: Predictive Cruise Control</a></li>
-<li><a href="#vehicle-cross-wind-correction">Vehicle: Cross Wind
+<li><a href="#vehicle-cross-wind-correction" id="toc-vehicle-cross-wind-correction">Vehicle: Cross Wind
 Correction</a></li>
-<li><a href="#vehicle-adas-technologies">Vehicle: ADAS
-Technologies</a></li>
-<li><a href="#vehicle-rolling-resistance-coefficient">Vehicle: Rolling
+<li><a href="#vehicle-adas-technologies" id="toc-vehicle-adas-technologies">Vehicle: ADAS Technologies</a></li>
+<li><a href="#vehicle-rolling-resistance-coefficient" id="toc-vehicle-rolling-resistance-coefficient">Vehicle: Rolling
 Resistance Coefficient</a></li>
-<li><a href="#engine-fuel-consumption-calculation">Engine: Fuel
-Consumption Calculation</a></li>
-<li><a href="#engine-transient-full-load">Engine: Transient Full
-Load</a></li>
-<li><a href="#engine-correction-factors">Engine: Correction
-Factors</a></li>
-<li><a href="#dual-fuel-engine">Dual Fuel Engine</a></li>
-<li><a href="#torque-and-speed-limitations">Torque and Speed
+<li><a href="#engine-fuel-consumption-calculation" id="toc-engine-fuel-consumption-calculation">Engine: Fuel Consumption
+Calculation</a></li>
+<li><a href="#engine-transient-full-load" id="toc-engine-transient-full-load">Engine: Transient Full Load</a></li>
+<li><a href="#engine-correction-factors" id="toc-engine-correction-factors">Engine: Correction Factors</a></li>
+<li><a href="#dual-fuel-engine" id="toc-dual-fuel-engine">Dual Fuel
+Engine</a></li>
+<li><a href="#torque-and-speed-limitations" id="toc-torque-and-speed-limitations">Torque and Speed
 Limitations</a></li>
-<li><a href="#engine-fuel-consumption-correction">Engine Fuel
-Consumption Correction</a></li>
-<li><a href="#engine-waste-heat-recovery-systems">Engine Waste Heat
-Recovery Systems</a></li>
-<li><a href="#fuel-properties">Fuel Properties</a></li>
-<li><a href="#transmission-losses">Transmission Losses</a></li>
-<li><a href="#gearbox-at-gearbox-model">Gearbox: AT Gearbox
-Model</a></li>
-<li><a href="#gearbox-gear-shift-model">Gearbox: Gear Shift
-Model</a></li>
-<li><a href="#shift-strategy-amt-gearshift-rules">Shift Strategy: AMT
+<li><a href="#engine-fuel-consumption-correction" id="toc-engine-fuel-consumption-correction">Engine Fuel Consumption
+Correction</a></li>
+<li><a href="#engine-waste-heat-recovery-systems" id="toc-engine-waste-heat-recovery-systems">Engine Waste Heat Recovery
+Systems</a></li>
+<li><a href="#fuel-properties" id="toc-fuel-properties">Fuel
+Properties</a></li>
+<li><a href="#transmission-losses" id="toc-transmission-losses">Transmission Losses</a></li>
+<li><a href="#gearbox-at-gearbox-model" id="toc-gearbox-at-gearbox-model">Gearbox: AT Gearbox Model</a></li>
+<li><a href="#gearbox-gear-shift-model" id="toc-gearbox-gear-shift-model">Gearbox: Gear Shift Model</a></li>
+<li><a href="#shift-strategy-amt-gearshift-rules" id="toc-shift-strategy-amt-gearshift-rules">Shift Strategy: AMT
 Gearshift Rules</a></li>
-<li><a href="#gearbox-at-gearshift-rules">Gearbox: AT Gearshift
-Rules</a></li>
-<li><a href="#gearbox-mt-and-amt-gearshift-rules">Gearbox: MT and AMT
+<li><a href="#gearbox-at-gearshift-rules" id="toc-gearbox-at-gearshift-rules">Gearbox: AT Gearshift Rules</a></li>
+<li><a href="#gearbox-mt-and-amt-gearshift-rules" id="toc-gearbox-mt-and-amt-gearshift-rules">Gearbox: MT and AMT
 Gearshift Rules</a></li>
-<li><a href="#torque-converter-model">Torque Converter Model</a></li>
-<li><a href="#auxiliaries">Auxiliaries</a></li>
-<li><a href="#bus-auxiliaries">Bus Auxiliaries</a></li>
-<li><a href="#pwheel-input-sico-mode">P<sub>wheel</sub>-Input (SiCo
+<li><a href="#torque-converter-model" id="toc-torque-converter-model">Torque Converter Model</a></li>
+<li><a href="#auxiliaries" id="toc-auxiliaries">Auxiliaries</a></li>
+<li><a href="#bus-auxiliaries" id="toc-bus-auxiliaries">Bus
+Auxiliaries</a></li>
+<li><a href="#pwheel-input-sico-mode" id="toc-pwheel-input-sico-mode">P<sub>wheel</sub>-Input (SiCo
 Mode)</a></li>
-<li><a href="#pto">PTO</a></li>
+<li><a href="#pto" id="toc-pto">PTO</a></li>
 </ul></li>
-<li><a href="#input-and-output">Input and Output</a>
+<li><a href="#input-and-output" id="toc-input-and-output">Input and
+Output</a>
 <ul>
-<li><a href="#xml-job-file-declaration-mode">XML Job-File (Declaration
+<li><a href="#xml-job-file-declaration-mode" id="toc-xml-job-file-declaration-mode">XML Job-File (Declaration
 Mode)</a></li>
-<li><a href="#xml-declaration-report">XML Declaration Report</a></li>
-<li><a href="#csv">CSV</a></li>
-<li><a href="#json">JSON</a></li>
-<li><a href="#job-file">Job File</a></li>
-<li><a href="#vtp-job-file">VTP-Job File</a></li>
-<li><a href="#vehicle-file-.vveh">Vehicle File (.vveh)</a></li>
-<li><a href="#speed-dependent-cross-wind-correction-input-file-.vcdv">Speed
+<li><a href="#xml-declaration-report" id="toc-xml-declaration-report">XML Declaration Report</a></li>
+<li><a href="#csv" id="toc-csv">CSV</a></li>
+<li><a href="#json" id="toc-json">JSON</a></li>
+<li><a href="#job-file" id="toc-job-file">Job File</a></li>
+<li><a href="#vtp-job-file" id="toc-vtp-job-file">VTP-Job File</a></li>
+<li><a href="#vehicle-file-.vveh" id="toc-vehicle-file-.vveh">Vehicle
+File (.vveh)</a></li>
+<li><a href="#speed-dependent-cross-wind-correction-input-file-.vcdv" id="toc-speed-dependent-cross-wind-correction-input-file-.vcdv">Speed
 Dependent Cross Wind Correction Input File (.vcdv)</a></li>
-<li><a href="#vair-beta-cross-wind-correction-input-file-.vcdb">Vair
-&amp; Beta Cross Wind Correction Input File (.vcdb)</a></li>
-<li><a href="#retarder-loss-torque-input-file-.vrlm">Retarder Loss
-Torque Input File (.vrlm)</a></li>
-<li><a href="#engine-file-.veng">Engine File (.veng)</a></li>
-<li><a href="#full-load-and-drag-curves-.vfld">Full Load and Drag Curves
+<li><a href="#vair-beta-cross-wind-correction-input-file-.vcdb" id="toc-vair-beta-cross-wind-correction-input-file-.vcdb">Vair &amp;
+Beta Cross Wind Correction Input File (.vcdb)</a></li>
+<li><a href="#retarder-loss-torque-input-file-.vrlm" id="toc-retarder-loss-torque-input-file-.vrlm">Retarder Loss Torque
+Input File (.vrlm)</a></li>
+<li><a href="#engine-file-.veng" id="toc-engine-file-.veng">Engine File
+(.veng)</a></li>
+<li><a href="#full-load-and-drag-curves-.vfld" id="toc-full-load-and-drag-curves-.vfld">Full Load and Drag Curves
 (.vfld)</a></li>
-<li><a href="#fuel-consumption-map-.vmap">Fuel Consumption Map
+<li><a href="#fuel-consumption-map-.vmap" id="toc-fuel-consumption-map-.vmap">Fuel Consumption Map
 (.vmap)</a></li>
-<li><a href="#gearbox-file-.vgbx">Gearbox File (.vgbx)</a></li>
-<li><a href="#shift-polygons-input-file-.vgbs">Shift Polygons Input File
+<li><a href="#gearbox-file-.vgbx" id="toc-gearbox-file-.vgbx">Gearbox
+File (.vgbx)</a></li>
+<li><a href="#shift-polygons-input-file-.vgbs" id="toc-shift-polygons-input-file-.vgbs">Shift Polygons Input File
 (.vgbs)</a></li>
-<li><a href="#transmission-loss-map-.vtlm">Transmission Loss Map
+<li><a href="#transmission-loss-map-.vtlm" id="toc-transmission-loss-map-.vtlm">Transmission Loss Map
 (.vtlm)</a></li>
-<li><a href="#torque-converter-characteristics-.vtcc">Torque Converter
+<li><a href="#torque-converter-characteristics-.vtcc" id="toc-torque-converter-characteristics-.vtcc">Torque Converter
 Characteristics (.vtcc)</a></li>
-<li><a href="#pto-cycle-.vptoc">PTO Cycle (.vptoc)</a></li>
-<li><a href="#pto-idle-consumption-map-.vptoi">PTO Idle Consumption Map
+<li><a href="#pto-cycle-.vptoc" id="toc-pto-cycle-.vptoc">PTO Cycle
+(.vptoc)</a></li>
+<li><a href="#pto-idle-consumption-map-.vptoi" id="toc-pto-idle-consumption-map-.vptoi">PTO Idle Consumption Map
 (.vptoi)</a></li>
-<li><a href="#pto-power-demand-during-drive-.vptor">PTO power demand
-during drive (.vptor)</a></li>
-<li><a href="#auxiliary-input-file-.vaux">Auxiliary Input File
+<li><a href="#pto-power-demand-during-drive-.vptor" id="toc-pto-power-demand-during-drive-.vptor">PTO power demand during
+drive (.vptor)</a></li>
+<li><a href="#auxiliary-input-file-.vaux" id="toc-auxiliary-input-file-.vaux">Auxiliary Input File
 (.vaux)</a></li>
-<li><a href="#advanced-auxiliary-input-data-.aaux">Advanced Auxiliary
-Input Data (.aaux)</a></li>
-<li><a href="#alternator-input-data-.aalt">Alternator Input Data
+<li><a href="#advanced-auxiliary-input-data-.aaux" id="toc-advanced-auxiliary-input-data-.aaux">Advanced Auxiliary Input
+Data (.aaux)</a></li>
+<li><a href="#alternator-input-data-.aalt" id="toc-alternator-input-data-.aalt">Alternator Input Data
 (.aalt)</a></li>
-<li><a href="#advanced-compressor-map-.acmp">Advanced Compressor Map
+<li><a href="#advanced-compressor-map-.acmp" id="toc-advanced-compressor-map-.acmp">Advanced Compressor Map
 (.acmp)</a></li>
-<li><a href="#pneumatic-actuations-map-.apac">Pneumatic Actuations Map
+<li><a href="#pneumatic-actuations-map-.apac" id="toc-pneumatic-actuations-map-.apac">Pneumatic Actuations Map
 (.apac)</a></li>
-<li><a href="#environmental-conditions-batch-input-file-.aenv">Environmental
+<li><a href="#environmental-conditions-batch-input-file-.aenv" id="toc-environmental-conditions-batch-input-file-.aenv">Environmental
 Conditions Batch Input File (.aenv)</a></li>
-<li><a href="#driving-cycles-.vdri">Driving Cycles (.vdri)</a></li>
-<li><a href="#acceleration-limiting-input-file-.vacc">Acceleration
-Limiting Input File (.vacc)</a></li>
-<li><a href="#modal-results-.vmod">Modal Results (.vmod)</a></li>
-<li><a href="#summary-results-.vsum">Summary Results (.vsum)</a></li>
-<li><a href="#application-files">Application Files</a></li>
+<li><a href="#driving-cycles-.vdri" id="toc-driving-cycles-.vdri">Driving Cycles (.vdri)</a></li>
+<li><a href="#acceleration-limiting-input-file-.vacc" id="toc-acceleration-limiting-input-file-.vacc">Acceleration Limiting
+Input File (.vacc)</a></li>
+<li><a href="#modal-results-.vmod" id="toc-modal-results-.vmod">Modal
+Results (.vmod)</a></li>
+<li><a href="#summary-results-.vsum" id="toc-summary-results-.vsum">Summary Results (.vsum)</a></li>
+<li><a href="#application-files" id="toc-application-files">Application
+Files</a></li>
 </ul></li>
-<li><a href="#changelog">Changelog</a></li>
+<li><a href="#changelog" id="toc-changelog">Changelog</a></li>
 </ul>
 </nav>
 <section id="platform-requirements" class="level1">
@@ -6367,10 +6385,11 @@ cycles are of type target-speed, distance-based.</p>
 <p>This kind of cycle is used for simulating vehicles defined in
 declaration mode (xml) on a real driving cycle.</p>
 <p>Header: <strong>&lt;t&gt;, &lt;v&gt;, &lt;n_eng&gt;,&lt;n_fan&gt;,
-&lt;Pel_fan&gt;, &lt;tq_left&gt;, &lt;tq_right&gt;, &lt;n_wh_left&gt;,
-&lt;n_wh_right&gt;, &lt;tq_eng&gt;, &lt;CO&gt;, &lt;NOx&gt;,
-&lt;PN&gt;</strong><em>, &lt;fc_X&gt;, &lt;gear&gt;, &lt;TC_active&gt;,
-&lt;THC&gt;, &lt;CH4&gt;, &lt;NMHC&gt;</em></p>
+&lt;Pel_fan&gt;, &lt;tq_wh_left&gt;, &lt;tq_wh_right&gt;,
+&lt;n_wh_left&gt;, &lt;n_wh_right&gt;, &lt;tq_eng&gt;, &lt;CO&gt;,
+&lt;NOx&gt;, &lt;PN&gt;, &lt;CO2&gt;</strong><em>, &lt;fc_X&gt;,
+&lt;gear&gt;, &lt;TC_active&gt;, &lt;THC&gt;, &lt;CH4&gt;,
+&lt;NMHC&gt;</em></p>
 <p><strong>Bold columns</strong> are mandatory. <em>Italic columns</em>
 are optional. Only the listed columns are allowed (no other
 columns!).<br /> Units are optional and are enclosed in
@@ -6420,12 +6439,12 @@ with <strong>Pel_fan</strong>.</td>
 <strong>n_fan</strong>.</td>
 </tr>
 <tr class="even">
-<td><strong>tq_left</strong></td>
+<td><strong>tq_wh_left</strong></td>
 <td>[Nm]</td>
 <td>The actual torque at the driven wheel (left side)</td>
 </tr>
 <tr class="odd">
-<td><strong>tq_right</strong></td>
+<td><strong>tq_wh_right</strong></td>
 <td>[Nm]</td>
 <td>The actual torque at the driven wheel (left side)</td>
 </tr>
@@ -6462,36 +6481,41 @@ with <strong>Pel_fan</strong>.</td>
 <td>PM number flow</td>
 </tr>
 <tr class="even">
+<td><strong>CO2</strong></td>
+<td>[g/s]</td>
+<td>CO2 mass flow</td>
+</tr>
+<tr class="odd">
 <td><em>fc_X</em></td>
 <td>[g/h]</td>
 <td>Fuel consumption. “X” shall be the fuel type, e.g. “&lt;fc_Diesel
 CI&gt;”. For dual-fuel engines a separate column for each fuel shall be
 provided.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><em>gear</em></td>
 <td>[-]</td>
 <td>The actual gear. Mandatory for APT transmissions.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><em>TC_active</em></td>
 <td>[-]</td>
 <td>Torque converter active. 0 = not active (locked); 1 = active
 (unlocked); mandatory for AT transmissions, not relevant for other
 transmission types.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><em>THC</em></td>
 <td>[g/s]</td>
 <td>THC mass flow. Mandatory if <em>CH4</em> and <em>NMHC</em> are not
 present.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><em>CH4</em></td>
 <td>[g/s]</td>
 <td>CH4 mass flow.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><em>NMHC</em></td>
 <td>[g/s]</td>
 <td>NMHC mass flow.</td>
@@ -6499,22 +6523,23 @@ present.</td>
 </tbody>
 </table>
 <p><strong>Example:</strong></p>
-<table>
+<table style="width:100%;">
 <colgroup>
 <col style="width: 3%" />
+<col style="width: 4%" />
+<col style="width: 6%" />
+<col style="width: 6%" />
+<col style="width: 7%" />
+<col style="width: 7%" />
+<col style="width: 7%" />
+<col style="width: 8%" />
+<col style="width: 6%" />
 <col style="width: 5%" />
 <col style="width: 6%" />
 <col style="width: 6%" />
 <col style="width: 6%" />
-<col style="width: 7%" />
+<col style="width: 5%" />
 <col style="width: 8%" />
-<col style="width: 8%" />
-<col style="width: 7%" />
-<col style="width: 6%" />
-<col style="width: 6%" />
-<col style="width: 6%" />
-<col style="width: 6%" />
-<col style="width: 10%" />
 <col style="width: 3%" />
 </colgroup>
 <thead>
@@ -6523,12 +6548,13 @@ present.</td>
 <th>&lt;v&gt; [km/h]</th>
 <th>&lt;n_eng&gt; [rpm]</th>
 <th>&lt;n_fan&gt; [rpm]</th>
-<th>&lt;tq_left&gt; [Nm]</th>
-<th>&lt;tq_right&gt; [Nm]</th>
+<th>&lt;tq_wh_left&gt; [Nm]</th>
+<th>&lt;tq_wh_right&gt; [Nm]</th>
 <th>&lt;n_wh_left&gt; [rpm]</th>
 <th>&lt;n_wh_right&gt; [rpm]</th>
 <th>&lt;tq_eng&gt; [Nm]</th>
 <th>&lt;CO&gt; [g/s]</th>
+<th>&lt;CO2&gt; [g/s]</th>
 <th>&lt;NOx&gt; [g/s]</th>
 <th>&lt;THC&gt; [g/s]</th>
 <th>&lt;PN&gt; [#/s]</th>
@@ -6548,6 +6574,7 @@ present.</td>
 <td>0.78</td>
 <td>219</td>
 <td>1234</td>
+<td>657</td>
 <td>243</td>
 <td>345</td>
 <td>6544</td>
@@ -6565,6 +6592,7 @@ present.</td>
 <td>0.78</td>
 <td>219</td>
 <td>1243</td>
+<td>765</td>
 <td>233</td>
 <td>345</td>
 <td>6544</td>
@@ -6582,6 +6610,7 @@ present.</td>
 <td>0.78</td>
 <td>220</td>
 <td>1211</td>
+<td>345</td>
 <td>244</td>
 <td>344</td>
 <td>5555</td>
@@ -6599,6 +6628,7 @@ present.</td>
 <td>0.79</td>
 <td>220</td>
 <td>1222</td>
+<td>445</td>
 <td>233</td>
 <td>455</td>
 <td>4565</td>
@@ -6616,6 +6646,7 @@ present.</td>
 <td>0.78</td>
 <td>220</td>
 <td>1233</td>
+<td>678</td>
 <td>233</td>
 <td>355</td>
 <td>6555</td>
@@ -6633,6 +6664,7 @@ present.</td>
 <td>0.78</td>
 <td>220</td>
 <td>1332</td>
+<td>666</td>
 <td>244</td>
 <td>454</td>
 <td>6555</td>
@@ -6650,6 +6682,7 @@ present.</td>
 <td>0.78</td>
 <td>220</td>
 <td>1223</td>
+<td>888</td>
 <td>243</td>
 <td>544</td>
 <td>4565</td>
@@ -6667,6 +6700,7 @@ present.</td>
 <td>0.78</td>
 <td>222</td>
 <td>1144</td>
+<td>456</td>
 <td>322</td>
 <td>345</td>
 <td>6565</td>
@@ -6684,6 +6718,7 @@ present.</td>
 <td>0.78</td>
 <td>223</td>
 <td>1232</td>
+<td>788</td>
 <td>234</td>
 <td>344</td>
 <td>4566</td>
@@ -6701,6 +6736,7 @@ present.</td>
 <td>0.78</td>
 <td>222</td>
 <td>1222</td>
+<td>566</td>
 <td>433</td>
 <td>555</td>
 <td>4566</td>
@@ -6718,6 +6754,7 @@ present.</td>
 <td>0.78</td>
 <td>218</td>
 <td>1122</td>
+<td>888</td>
 <td>222</td>
 <td>345</td>
 <td>6565</td>
