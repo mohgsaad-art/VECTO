@@ -92,6 +92,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				Distance = 0.SI<Meter>(),
 			};
 			CurrentState = PreviousState.Clone();
+
+			AbsTime = Data.Entries.First().Time;
 		}
 
 		public IResponse Initialize()
