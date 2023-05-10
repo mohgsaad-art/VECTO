@@ -112,6 +112,7 @@
     <Compile Include="Integration\Declaration\VocationalVehicleTest.cs" />
     <Compile Include="Integration\Declaration\TestMaxMassInMUCycle.cs" />
     <Compile Include="Integration\RoadSweepers\RoadSweeperTests.cs" />
+    <Compile Include="Integration\ConventionalTimeruns.cs" />
     <Compile Include="Integration\VTP\VTPTest.cs" />
     <Compile Include="Integration\FuelTypesTest.cs" />
     <Compile Include="Integration\FullCycleDeclarationTest.cs">
@@ -1050,6 +1051,81 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="TestData\Integration\BusAuxiliaries\testPneumaticActuationsMap.APAC">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\Integration\ConventionalTimeruns\Class5_Tractor_4x2\325kW.vfld">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\Integration\ConventionalTimeruns\Class5_Tractor_4x2\325kW.vmap">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\Integration\ConventionalTimeruns\Class5_Tractor_4x2\Alt.vaux">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\Integration\ConventionalTimeruns\Class5_Tractor_4x2\AMT_12.vgbx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\Integration\ConventionalTimeruns\Class5_Tractor_4x2\Axle_4x2_Tractor.vtlm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\Integration\ConventionalTimeruns\Class5_Tractor_4x2\Class5_Tractor.vveh">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\Integration\ConventionalTimeruns\Class5_Tractor_4x2\Class5_Tractor_ENG.vecto">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\Integration\ConventionalTimeruns\Class5_Tractor_4x2\Default.vrlm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\Integration\ConventionalTimeruns\Class5_Tractor_4x2\Engine_325kW_12.7l.veng">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\Integration\ConventionalTimeruns\Class5_Tractor_4x2\Gear_1.vtlm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\Integration\ConventionalTimeruns\Class5_Tractor_4x2\Gear_10.vtlm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\Integration\ConventionalTimeruns\Class5_Tractor_4x2\Gear_11.vtlm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\Integration\ConventionalTimeruns\Class5_Tractor_4x2\Gear_12.vtlm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\Integration\ConventionalTimeruns\Class5_Tractor_4x2\Gear_2.vtlm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\Integration\ConventionalTimeruns\Class5_Tractor_4x2\Gear_3.vtlm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\Integration\ConventionalTimeruns\Class5_Tractor_4x2\Gear_4.vtlm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\Integration\ConventionalTimeruns\Class5_Tractor_4x2\Gear_5.vtlm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\Integration\ConventionalTimeruns\Class5_Tractor_4x2\Gear_6.vtlm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\Integration\ConventionalTimeruns\Class5_Tractor_4x2\Gear_7.vtlm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\Integration\ConventionalTimeruns\Class5_Tractor_4x2\Gear_8.vtlm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\Integration\ConventionalTimeruns\Class5_Tractor_4x2\Gear_9.vtlm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\Integration\ConventionalTimeruns\Class5_Tractor_4x2\K-WHVC_timeBased.vdri">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\Integration\ConventionalTimeruns\Class5_Tractor_4x2\LAC-DF-Vdrop.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\Integration\ConventionalTimeruns\Class5_Tractor_4x2\LAC-DF-Vtarget.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\Integration\ConventionalTimeruns\Class5_Tractor_4x2\Truck.vacc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="TestData\Integration\DeclarationMode\12t Truck\12t Delivery Truck.pdf">
