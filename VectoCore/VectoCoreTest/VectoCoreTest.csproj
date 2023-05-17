@@ -99,6 +99,7 @@
     <Compile Include="GraphProgram.cs" />
     <Compile Include="Integration\ADAS\ADASTestsConventional.cs" />
     <Compile Include="Integration\ATPowerTrain.cs" />
+    <Compile Include="Integration\Auxiliaries.cs" />
     <Compile Include="Integration\BusAuxiliaries\AuxDemandTest.cs" />
     <Compile Include="Integration\BusAuxiliaries\BusAdapterTest.cs" />
     <Compile Include="Integration\BusAuxiliaries\AAuxTests.cs" />
@@ -1074,6 +1075,9 @@
     <None Include="TestData\Integration\ConventionalTimeruns\Class5_Tractor_4x2\Class5_Tractor_ENG.vecto">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="TestData\Integration\ConventionalTimeruns\Class5_Tractor_4x2\Class5_Tractor_ENG_Aux.vecto">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="TestData\Integration\ConventionalTimeruns\Class5_Tractor_4x2\Default.vrlm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -1117,6 +1121,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="TestData\Integration\ConventionalTimeruns\Class5_Tractor_4x2\K-WHVC_timeBased.vdri">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\Integration\ConventionalTimeruns\Class5_Tractor_4x2\K_WHVC_distbased_Aux.vdri">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="TestData\Integration\ConventionalTimeruns\Class5_Tractor_4x2\LAC-DF-Vdrop.csv">
