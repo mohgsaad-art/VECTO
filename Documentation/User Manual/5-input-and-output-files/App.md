@@ -13,8 +13,3 @@ Both files save the full file paths separated by line breaks. Additionally it i
 
 ### LOG.txt
 The tabulator-separated log file saves all messages of the [Main Form's Message List](#main-form) and is located in VECTO's program directory. The file is restarted whenever the [Logfile Size Limit](#settings) is reached.One backup is always stored as LOG\_backup.txt.
-
-### License file
-The license file license.dat is located in VECTO's program directory. Without a valid lisence file VECTO won't run.
-
-It no valid license file is provided with your VECTO version please contact [vecto@jrc.ec.europa.eu](mailto:vecto@jrc.ec.europa.eu).
