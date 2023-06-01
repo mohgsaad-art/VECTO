@@ -1228,10 +1228,22 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 					};
 				}
 
-				response = Driver.DrivingActionAccelerate(absTime, ds, 1.KMPHtoMeterPerSecond(), gradient);
-				if (response is ResponseUnderload) {
+
+				var tmpTargetVelocity = 
+					Math.Max
+					(
+						0.001.KMPHtoMeterPerSecond().Value(), 
+						Math.Min
+						(
+							1.KMPHtoMeterPerSecond().Value(),
+							(ds / 0.1).Value()
+						)
+					).SI<MeterPerSecond>();
+				response = Driver.DrivingActionAccelerate(absTime, ds, tmpTargetVelocity, gradient);
+                //response = Driver.DrivingActionAccelerate(absTime, ds, 0.01.KMPHtoMeterPerSecond(), gradient);
+                if (response is ResponseUnderload) {
 					response = Driver.DrivingActionBrake(
-						absTime, ds, 1.KMPHtoMeterPerSecond(), gradient, response, overrideAction: DrivingAction.Accelerate);
+						absTime, ds, tmpTargetVelocity, gradient, response, overrideAction: DrivingAction.Accelerate);
 				}
 			} else {
 				response = Driver.DrivingActionBrake(

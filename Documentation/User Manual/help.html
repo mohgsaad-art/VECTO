@@ -6367,10 +6367,11 @@ cycles are of type target-speed, distance-based.</p>
 <p>This kind of cycle is used for simulating vehicles defined in
 declaration mode (xml) on a real driving cycle.</p>
 <p>Header: <strong>&lt;t&gt;, &lt;v&gt;, &lt;n_eng&gt;,&lt;n_fan&gt;,
-&lt;Pel_fan&gt;, &lt;tq_left&gt;, &lt;tq_right&gt;, &lt;n_wh_left&gt;,
-&lt;n_wh_right&gt;, &lt;tq_eng&gt;, &lt;CO&gt;, &lt;NOx&gt;,
-&lt;PN&gt;</strong><em>, &lt;fc_X&gt;, &lt;gear&gt;, &lt;TC_active&gt;,
-&lt;THC&gt;, &lt;CH4&gt;, &lt;NMHC&gt;</em></p>
+&lt;Pel_fan&gt;, &lt;tq_wh_left&gt;, &lt;tq_wh_right&gt;,
+&lt;n_wh_left&gt;, &lt;n_wh_right&gt;, &lt;tq_eng&gt;, &lt;CO&gt;,
+&lt;NOx&gt;, &lt;PN&gt;, &lt;CO2&gt;</strong><em>, &lt;fc_X&gt;,
+&lt;gear&gt;, &lt;TC_active&gt;, &lt;THC&gt;, &lt;CH4&gt;,
+&lt;NMHC&gt;</em></p>
 <p><strong>Bold columns</strong> are mandatory. <em>Italic columns</em>
 are optional. Only the listed columns are allowed (no other
 columns!).<br /> Units are optional and are enclosed in
@@ -6420,12 +6421,12 @@ with <strong>Pel_fan</strong>.</td>
 <strong>n_fan</strong>.</td>
 </tr>
 <tr class="even">
-<td><strong>tq_left</strong></td>
+<td><strong>tq_wh_left</strong></td>
 <td>[Nm]</td>
 <td>The actual torque at the driven wheel (left side)</td>
 </tr>
 <tr class="odd">
-<td><strong>tq_right</strong></td>
+<td><strong>tq_wh_right</strong></td>
 <td>[Nm]</td>
 <td>The actual torque at the driven wheel (left side)</td>
 </tr>
@@ -6462,36 +6463,41 @@ with <strong>Pel_fan</strong>.</td>
 <td>PM number flow</td>
 </tr>
 <tr class="even">
+<td><strong>CO2</strong></td>
+<td>[g/s]</td>
+<td>CO2 mass flow</td>
+</tr>
+<tr class="odd">
 <td><em>fc_X</em></td>
 <td>[g/h]</td>
 <td>Fuel consumption. “X” shall be the fuel type, e.g. “&lt;fc_Diesel
 CI&gt;”. For dual-fuel engines a separate column for each fuel shall be
 provided.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><em>gear</em></td>
 <td>[-]</td>
 <td>The actual gear. Mandatory for APT transmissions.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><em>TC_active</em></td>
 <td>[-]</td>
 <td>Torque converter active. 0 = not active (locked); 1 = active
 (unlocked); mandatory for AT transmissions, not relevant for other
 transmission types.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><em>THC</em></td>
 <td>[g/s]</td>
 <td>THC mass flow. Mandatory if <em>CH4</em> and <em>NMHC</em> are not
 present.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><em>CH4</em></td>
 <td>[g/s]</td>
 <td>CH4 mass flow.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><em>NMHC</em></td>
 <td>[g/s]</td>
 <td>NMHC mass flow.</td>
@@ -6499,22 +6505,23 @@ present.</td>
 </tbody>
 </table>
 <p><strong>Example:</strong></p>
-<table>
+<table style="width:100%;">
 <colgroup>
 <col style="width: 3%" />
+<col style="width: 4%" />
+<col style="width: 6%" />
+<col style="width: 6%" />
+<col style="width: 7%" />
+<col style="width: 7%" />
+<col style="width: 7%" />
+<col style="width: 8%" />
+<col style="width: 6%" />
 <col style="width: 5%" />
 <col style="width: 6%" />
 <col style="width: 6%" />
 <col style="width: 6%" />
-<col style="width: 7%" />
+<col style="width: 5%" />
 <col style="width: 8%" />
-<col style="width: 8%" />
-<col style="width: 7%" />
-<col style="width: 6%" />
-<col style="width: 6%" />
-<col style="width: 6%" />
-<col style="width: 6%" />
-<col style="width: 10%" />
 <col style="width: 3%" />
 </colgroup>
 <thead>
@@ -6523,12 +6530,13 @@ present.</td>
 <th>&lt;v&gt; [km/h]</th>
 <th>&lt;n_eng&gt; [rpm]</th>
 <th>&lt;n_fan&gt; [rpm]</th>
-<th>&lt;tq_left&gt; [Nm]</th>
-<th>&lt;tq_right&gt; [Nm]</th>
+<th>&lt;tq_wh_left&gt; [Nm]</th>
+<th>&lt;tq_wh_right&gt; [Nm]</th>
 <th>&lt;n_wh_left&gt; [rpm]</th>
 <th>&lt;n_wh_right&gt; [rpm]</th>
 <th>&lt;tq_eng&gt; [Nm]</th>
 <th>&lt;CO&gt; [g/s]</th>
+<th>&lt;CO2&gt; [g/s]</th>
 <th>&lt;NOx&gt; [g/s]</th>
 <th>&lt;THC&gt; [g/s]</th>
 <th>&lt;PN&gt; [#/s]</th>
@@ -6548,6 +6556,7 @@ present.</td>
 <td>0.78</td>
 <td>219</td>
 <td>1234</td>
+<td>657</td>
 <td>243</td>
 <td>345</td>
 <td>6544</td>
@@ -6565,6 +6574,7 @@ present.</td>
 <td>0.78</td>
 <td>219</td>
 <td>1243</td>
+<td>765</td>
 <td>233</td>
 <td>345</td>
 <td>6544</td>
@@ -6582,6 +6592,7 @@ present.</td>
 <td>0.78</td>
 <td>220</td>
 <td>1211</td>
+<td>345</td>
 <td>244</td>
 <td>344</td>
 <td>5555</td>
@@ -6599,6 +6610,7 @@ present.</td>
 <td>0.79</td>
 <td>220</td>
 <td>1222</td>
+<td>445</td>
 <td>233</td>
 <td>455</td>
 <td>4565</td>
@@ -6616,6 +6628,7 @@ present.</td>
 <td>0.78</td>
 <td>220</td>
 <td>1233</td>
+<td>678</td>
 <td>233</td>
 <td>355</td>
 <td>6555</td>
@@ -6633,6 +6646,7 @@ present.</td>
 <td>0.78</td>
 <td>220</td>
 <td>1332</td>
+<td>666</td>
 <td>244</td>
 <td>454</td>
 <td>6555</td>
@@ -6650,6 +6664,7 @@ present.</td>
 <td>0.78</td>
 <td>220</td>
 <td>1223</td>
+<td>888</td>
 <td>243</td>
 <td>544</td>
 <td>4565</td>
@@ -6667,6 +6682,7 @@ present.</td>
 <td>0.78</td>
 <td>222</td>
 <td>1144</td>
+<td>456</td>
 <td>322</td>
 <td>345</td>
 <td>6565</td>
@@ -6684,6 +6700,7 @@ present.</td>
 <td>0.78</td>
 <td>223</td>
 <td>1232</td>
+<td>788</td>
 <td>234</td>
 <td>344</td>
 <td>4566</td>
@@ -6701,6 +6718,7 @@ present.</td>
 <td>0.78</td>
 <td>222</td>
 <td>1222</td>
+<td>566</td>
 <td>433</td>
 <td>555</td>
 <td>4566</td>
@@ -6718,6 +6736,7 @@ present.</td>
 <td>0.78</td>
 <td>218</td>
 <td>1122</td>
+<td>888</td>
 <td>222</td>
 <td>345</td>
 <td>6565</td>
@@ -8279,17 +8298,24 @@ loaded in checked state.</p>
 program directory. The file is restarted whenever the <a href="#settings">Logfile Size Limit</a> is reached.One backup is always
 stored as LOG_backup.txt.</p>
 </section>
-<section id="license-file" class="level3">
-<h3>License file</h3>
-<p>The license file license.dat is located in VECTO’s program directory.
-Without a valid lisence file VECTO won’t run.</p>
-<p>It no valid license file is provided with your VECTO version please
-contact <a href="mailto:vecto@jrc.ec.europa.eu">vecto@jrc.ec.europa.eu</a>.</p>
-</section>
 </section>
 </section>
 <section id="changelog" class="level1">
 <h1>Changelog</h1>
+<p><strong>VECTO-3.3.15 RELEASE CANDIDATE</strong></p>
+<p><strong><em>Buile 3073</em></strong></p>
+<ul>
+<li>Bugfixes
+<ul>
+<li>[VECTO-1741] - XML Schema for BatterySystem with standard
+values</li>
+<li>[VECTO-1744] - XML Schema Bug IEPC standard values</li>
+<li>[VECTO-1758] - Simulation Abort for class 1 vehicle by “Infinity is
+not allowed for SI-Values”</li>
+<li>[VECTO-1763] - CodeEU #14: Unable to run time-based cycle in
+engineering mode with AT</li>
+</ul></li>
+</ul>
 <p><strong>VECTO-3.3.14</strong></p>
 <p><strong><em>Build 3011 (2023-03-31) OFFICIAL
 RELEASE</em></strong></p>
@@ -9530,7 +9556,7 @@ lookup</li>
 </ul>
 </section>
 <div id="FOOTER">
-<a target="mainframe" href="mailto:vecto@jrc.ec.europa.eu">Contact</a>
+<a target="mainframe" href="mailto:JRC-VECTO@ec.europa.eu">Contact</a>
 <span style="text-align:right; float:right">Print View: <a href="javascript:$(&#39;div, section, nav&#39;).show().not(&#39;.vecto2&#39;).not(&#39;.vecto3&#39;).css({&#39;padding-left&#39;:&#39;0px&#39;}).filter(&#39;#CONTENT,#TOC,#HEADER,#FOOTER,#MathJax_Message&#39;).hide();void(0);">All</a>, <a href="javascript:$(&#39;div, section, nav&#39;).not(&#39;.vecto2&#39;).not(&#39;.vecto3&#39;).css({&#39;padding-left&#39;:&#39;0px&#39;}).filter(&#39;#TOC,#HEADER,#FOOTER,#MathJax_Message&#39;).hide();$(&#39;#CONTENT&#39;).css({&#39;display&#39;:&#39;inline&#39;});void(0);">Current</a>
 </div>
 </body>

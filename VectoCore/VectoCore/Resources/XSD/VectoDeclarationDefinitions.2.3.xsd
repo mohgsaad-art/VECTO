@@ -11,7 +11,10 @@ Changelog:
 	04.04.2022: Changes in 'TyreDimensionType': remove space between tyre design code and rim diameter (205/70 R15, 205/80 R15) 
     01.06.2022: Change type of WHTC Correction factors, CFRegPer, BFColdHot: constraint > 0.0
     23.08.2022: Bugfix IEPC standard values: require gear attribute for power map, allow multiple power maps; 
-                                             require gear attribute for drac curve, allow multiple drag curves
+                                             require gear attribute for drag curve, allow multiple drag curves
+    04.04.2023: Bugfix: new data type for Battery System with standard values. P520 and P511 are not applicable in case of standard 
+                        values
+    11.04.2023: Bugfix IEPC standard values: allow only one drag curve, remove gear attribute
 -->
 	<xs:complexType name="AbstractADCDataDeclarationType" abstract="true">
 		<xs:complexContent>
@@ -183,10 +186,15 @@ Changelog:
 							</xs:appinfo>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="CertificationMethod" type="v2.3:CertificationMethodType">
+					<xs:element name="CertificationMethod">
 						<xs:annotation>
 							<xs:documentation>P516 - enum</xs:documentation>
 						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="v2.3:CertificationMethodType">
+								<xs:enumeration value="Measured"/>
+							</xs:restriction>
+						</xs:simpleType>
 					</xs:element>
 					<xs:element name="BatteryType" type="v2.3:BatteryTypeType">
 						<xs:annotation>
@@ -231,7 +239,7 @@ Changelog:
 							</xs:appinfo>
 						</xs:annotation>
 					</xs:element>
-					<xs:element name="TestingTemperature" type="xs:int" minOccurs="0">
+					<xs:element name="TestingTemperature" type="xs:int">
 						<xs:annotation>
 							<xs:documentation>P521 - [°C]</xs:documentation>
 							<xs:appinfo>
@@ -241,6 +249,121 @@ Changelog:
 								</vectoParam:description>
 							</xs:appinfo>
 						</xs:annotation>
+					</xs:element>
+					<xs:element name="OCV">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Entry" type="v2.3:BatterySystemOCVEntryType" minOccurs="2" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="InternalResistance">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Entry" type="v2.3:BatterySystemInternalResistanceEntryType" minOccurs="2" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="CurrentLimits">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Entry" type="v2.3:BatterySystemCurrentLimitsEntryType" minOccurs="2" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="BatterySystemStandardValuesDataType">
+		<xs:complexContent>
+			<xs:extension base="v2.3:AbstractBatterySystemDataType">
+				<xs:sequence>
+					<xs:element name="Manufacturer" type="v1.0:ManufacturerType">
+						<xs:annotation>
+							<xs:documentation>P511 - [-]</xs:documentation>
+							<xs:appinfo>
+								<vectoParam:description>
+									<vectoParam:parameterId component="BatterySystem">511</vectoParam:parameterId>
+									<vectoParam:unit>-</vectoParam:unit>
+								</vectoParam:description>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Model" type="v1.0:ModelType">
+						<xs:annotation>
+							<xs:documentation>P512 - [-]</xs:documentation>
+							<xs:appinfo>
+								<vectoParam:description>
+									<vectoParam:parameterId component="BatterySystem">512</vectoParam:parameterId>
+									<vectoParam:unit>-</vectoParam:unit>
+								</vectoParam:description>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="CertificationNumber" type="v1.0:CertificationNumberType">
+						<xs:annotation>
+							<xs:documentation>P513 - [-]</xs:documentation>
+							<xs:appinfo>
+								<vectoParam:description>
+									<vectoParam:parameterId component="BatterySystem">513</vectoParam:parameterId>
+									<vectoParam:unit>-</vectoParam:unit>
+								</vectoParam:description>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="Date" type="v1.0:DateTimeWithTimezone">
+						<xs:annotation>
+							<xs:documentation>P514 - [-]</xs:documentation>
+							<xs:appinfo>
+								<vectoParam:description>
+									<vectoParam:parameterId component="BatterySystem">514</vectoParam:parameterId>
+									<vectoParam:unit>-</vectoParam:unit>
+								</vectoParam:description>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="AppVersion" type="v1.0:AppVersionType">
+						<xs:annotation>
+							<xs:documentation>P515 - [-]</xs:documentation>
+							<xs:appinfo>
+								<vectoParam:description>
+									<vectoParam:parameterId component="BatterySystem">515</vectoParam:parameterId>
+									<vectoParam:unit>-</vectoParam:unit>
+								</vectoParam:description>
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="CertificationMethod">
+						<xs:annotation>
+							<xs:documentation>P516 - enum</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="v2.3:CertificationMethodType">
+								<xs:enumeration value="Standard values"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="BatteryType" type="v2.3:BatteryTypeType">
+						<xs:annotation>
+							<xs:documentation>P517 - enum</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="RatedCapacity">
+						<xs:annotation>
+							<xs:documentation>P518 - [Ah]</xs:documentation>
+							<xs:appinfo>
+								<vectoParam:description>
+									<vectoParam:parameterId component="BatterySystem">518</vectoParam:parameterId>
+									<vectoParam:unit>Ah</vectoParam:unit>
+								</vectoParam:description>
+							</xs:appinfo>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="v1.0:Double2">
+								<xs:minExclusive value="0.00"/>
+							</xs:restriction>
+						</xs:simpleType>
 					</xs:element>
 					<xs:element name="OCV">
 						<xs:complexType>
@@ -1269,18 +1392,11 @@ Changelog:
 					</xs:element>
 					<xs:element name="Gears" type="v2.3:AbstractIEPCGearsDeclarationType"/>
 					<xs:element name="VoltageLevel" type="v2.3:IEPCSystemVoltageLevelStandardValuesType"/>
-					<xs:element name="DragCurve" maxOccurs="unbounded">
+					<xs:element name="DragCurve">
 						<xs:complexType>
 							<xs:sequence>
 								<xs:element name="Entry" type="v2.3:IEPCSystemDragTorqueEntryType" minOccurs="2" maxOccurs="unbounded"/>
 							</xs:sequence>
-							<xs:attribute name="gear" use="required">
-								<xs:simpleType>
-									<xs:restriction base="xs:int">
-										<xs:minInclusive value="1"/>
-									</xs:restriction>
-								</xs:simpleType>
-							</xs:attribute>
 						</xs:complexType>
 					</xs:element>
 				</xs:sequence>

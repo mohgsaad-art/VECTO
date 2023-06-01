@@ -146,7 +146,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 				}
 
 				var fullLoadPower = response.Engine.PowerRequest - response.DeltaFullLoad;
-				var reserve = 1 - response.Engine.PowerRequest / fullLoadPower;
+				var reserve = fullLoadPower.IsEqual(0) ? 0.SI<Scalar>() : 1 - response.Engine.PowerRequest / fullLoadPower;
 
 				//var reserve = 1 - response.EngineTorqueDemandTotal / response.EngineStationaryFullLoadTorque;
 
@@ -169,7 +169,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
 					response = RequestDryRunWithGear(absTime, dt, reducedTorque, outAngularVelocity, tryNextGear);
 					fullLoadPower = response.Engine.PowerRequest - response.DeltaFullLoad;
-					reserve = 1 - response.Engine.PowerRequest / fullLoadPower;
+					reserve = fullLoadPower.IsEqual(0) ? 0.SI<Scalar>() : 1 - response.Engine.PowerRequest / fullLoadPower;
 					if (reserve < GearshiftParams.TorqueReserve) {
 						continue;
 					} else {
