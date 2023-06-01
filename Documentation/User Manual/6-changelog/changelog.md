@@ -1,5 +1,15 @@
 # Changelog
 
+**VECTO-3.3.15 RELEASE CANDIDATE**
+
+***Buile 3073***
+
+- Bugfixes 
+    * [VECTO-1741] - XML Schema for BatterySystem with standard values
+    * [VECTO-1744] - XML Schema Bug IEPC standard values
+    * [VECTO-1758] - Simulation Abort for class 1 vehicle by "Infinity is not allowed for SI-Values"
+    * [VECTO-1763] - CodeEU #14: Unable to run time-based cycle in engineering mode with AT
+
 **VECTO-3.3.14**
 
 ***Build 3011 (2023-03-31) OFFICIAL RELEASE***
