@@ -6,19 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <title>Manual</title>
   <style>
-code{white-space: pre-wrap;}
-span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
-div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-ul.task-list{list-style: none;}
-ul.task-list li input[type="checkbox"] {
-width: 0.8em;
-margin: 0 0.8em 0.2em -1.6em;
-vertical-align: middle;
-}
-.display.math{display: block; text-align: center; margin: 0.5rem auto;}
-</style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
   <style type="text/css">body {height: 100%;min-height: 100%;font-family: Calibri, sans-serif;}.section.level1 {padding-left:336px}nav, #TOC {position: fixed;width: 21em;left: 0px;top: 3.5em;bottom: 2em;background-color: #eee;overflow: scroll;}#HEADER{top: 0px;left: 1px;border-bottom-style: solid;border-bottom-width: thin;border-bottom-color: #aaa;height: 2.5em;}#FOOTER {border-top-style: solid;border-top-width: thin;border-top-color: #aaa;bottom: 0px;left: 1px;}#HEADER, #FOOTER {width: auto;position: fixed;width: 99%;background: white;padding: 5px;}body > div:not(#TOC):not(#HEADER):not(#FOOTER) {display: none;padding-left: 21em;padding-top: 2em;padding-bottom: 2em;margin-left: 1em;width: 50em;}table {border-collapse: collapse;border-spacing: 0;}nav ul {line-height: 1.7em;list-style-type: none;list-style-position: inside;}th {font-weight: bold;}th, td {padding: 6px;border-width: 1px;border-style: solid;border-color: #aaa;}h1, h2, h3 {padding-bottom: 3px;border-bottom-width: 1px;border-bottom-style: solid;border-bottom-color: #aaa;}dt {font-style: italic;font-weight: bold;}.ui-resizable-handle {position: absolute;width: 20px;cursor: ew-resize;right: 0px;height: 100%;top: 0px;}div.vecto2 {border-left: 3px solid gray;padding-left: 5px;margin-top: 2em;background: rgba(128,128,128,0.05);}div.vecto2:before {content: 'Note: Vecto 2.2!';background: gray;color: white;padding: 5px 5px 5px 5px;margin-left: -8px;font-weight: bold;display: inline-block;font-size: smaller;}div.vecto3 {border-left: 3px solid green;padding-left: 5px;margin-top: 2em;background: rgba(0,128,0,0.05);}div.vecto3:before {content: 'Note: Vecto 3.x!';background: green;color: white;padding: 5px 5px 5px 5px;margin-left: -8px;font-weight: bold;display: inline-block;font-size: smaller;}pre {padding: 2px;border: 1px solid #EEEEEE;}.aaux_locked { background: gray;color: white;}</style>
   <style type="text/css">@media print {#CONTENT {display: none;}#HEADER {display: none;}body > div {display: block;padding-left: 2em;}.section.level2 {page-break-before: always;}a, a:visited, a:link {color: blue;}}</style>
   <script type="text/javascript">/*! jQuery v3.2.1 | (c) JS Foundation and other contributors | jquery.org/license */
@@ -129,22 +124,22 @@ vertical-align: middle;
 </div>
 <nav id="TOC" role="doc-toc">
 <ul>
-<li><a href="#vecto-hashing-tool" id="toc-vecto-hashing-tool">VECTO
-Hashing Tool</a>
+<li><a href="#vecto-hashing-tool">VECTO Hashing Tool</a>
 <ul>
-<li><a href="#general" id="toc-general">General</a></li>
-<li><a href="#method-of-hash-computation" id="toc-method-of-hash-computation">Method of Hash Computation</a></li>
-<li><a href="#main-screen" id="toc-main-screen">Main Screen</a></li>
-<li><a href="#hashing-component-data" id="toc-hashing-component-data">Hashing Component Data</a></li>
-<li><a href="#verifying-integrity-of-component-data" id="toc-verifying-integrity-of-component-data">Verifying Integrity of
-Component Data</a></li>
-<li><a href="#verifying-integrity-of-vecto-job-data" id="toc-verifying-integrity-of-vecto-job-data">Verifying Integrity of
-VECTO Job Data</a></li>
-<li><a href="#verifying-integrity-of-vecto-results" id="toc-verifying-integrity-of-vecto-results">Verifying Integrity of
-VECTO Results</a></li>
-<li><a href="#general-ui-elements" id="toc-general-ui-elements">General
-UI Elements</a></li>
-<li><a href="#using-the-hashing-library" id="toc-using-the-hashing-library">Using the Hashing Library</a></li>
+<li><a href="#general">General</a></li>
+<li><a href="#method-of-hash-computation">Method of Hash
+Computation</a></li>
+<li><a href="#main-screen">Main Screen</a></li>
+<li><a href="#hashing-component-data">Hashing Component Data</a></li>
+<li><a href="#verifying-integrity-of-component-data">Verifying Integrity
+of Component Data</a></li>
+<li><a href="#verifying-integrity-of-vecto-job-data">Verifying Integrity
+of VECTO Job Data</a></li>
+<li><a href="#verifying-integrity-of-vecto-results">Verifying Integrity
+of VECTO Results</a></li>
+<li><a href="#general-ui-elements">General UI Elements</a></li>
+<li><a href="#using-the-hashing-library">Using the Hashing
+Library</a></li>
 </ul></li>
 </ul>
 </nav>
