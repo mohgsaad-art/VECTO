@@ -264,7 +264,9 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 			}
 			if (halted || (driverDeceleratingNegTorque && vehicleSpeedBelowThreshold)) {
 				EngageTime = VectoMath.Max(EngageTime, absTime + dt);
-				_strategy?.Disengage(absTime, dt, outTorque, outAngularVelocity);
+				Log.Debug("disengaged due to low vehicle speed", dt);
+				postponeEngage = true;
+                _strategy?.Disengage(absTime, dt, outTorque, outAngularVelocity);
 				//if (_strategy != null && DataBus.HybridControllerInfo != null &&
 				//	DataBus.HybridControllerInfo.SelectedGear.Gear > 0 &&
 				//	NextGear.Gear != DataBus.HybridControllerInfo.SelectedGear.Gear) {

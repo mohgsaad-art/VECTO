@@ -2,7 +2,14 @@
 
 **VECTO-3.3.15 RELEASE CANDIDATE**
 
-***Buile 3073***
+***Build 3102 (2023-06-30) OFFICIAL RELEASE***
+
+- Bugfixes (compared to VECTO 3.3.15.3073)
+   - [CodeEU-41] – Article 10 notification
+   - [CodeEU-45] - Simulation Abort: Unexpected Response: ResponseUnderload (bugfix for CodeEU-41)
+
+
+***Build 3073 (2023-06-01) RELEASE CANDIDATE***
 
 - Bugfixes 
     * [VECTO-1741] - XML Schema for BatterySystem with standard values
