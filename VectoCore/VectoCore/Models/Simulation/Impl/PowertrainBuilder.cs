@@ -397,16 +397,17 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 
 			HybridController ctl;
 			SwitchableClutch clutch = null;
+			var strategy = new FMUSimulinkModelHybridStrategy(data, container);
 			if (data.GearboxData.Type.ManualTransmission()) {
-				var strategy = new HybridStrategy(data, container);
+				//var strategy = new HybridStrategy(data, container);
 				clutch = new SwitchableClutch(container, data.EngineData);
-				
 				ctl = new HybridController(container, strategy, es);
 			} else {
-				var strategy = new HybridStrategyAT(data, container);
-				
+				//var strategy = new HybridStrategyAT(data, container);
 				ctl = new HybridController(container, strategy, es);
 			}
+
+			ctl = new HybridController(container, strategy, es, true);
 
 			// add engine before gearbox so that gearbox can obtain if an ICE is available already in constructor
 			var engine = new StopStartCombustionEngine(container, data.EngineData);
