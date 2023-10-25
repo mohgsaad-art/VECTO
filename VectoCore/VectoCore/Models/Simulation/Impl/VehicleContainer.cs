@@ -508,10 +508,5 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 		{
 			get { return Wheels.ReducedMassWheels; }
 		}
-
-		public Second EngageTime 
-		{ 
-			get { return Gearbox.EngageTime;  }
-		}
 	}
 }

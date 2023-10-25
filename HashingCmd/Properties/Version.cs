@@ -1,7 +1,7 @@
 ﻿/*
 * This file is part of VECTO.
 *
-* Copyright © 2012-2019 European Union
+* Copyright © 2012-2017 European Union
 *
 * Developed by Graz University of Technology,
 *              Institute of Internal Combustion Engines and Thermodynamics,
@@ -11,7 +11,7 @@
 * by the European Commission - subsequent versions of the EUPL (the "Licence");
 * You may not use VECTO except in compliance with the Licence.
 * You may obtain a copy of the Licence at:
-*
+*	
 * https://joinup.ec.europa.eu/community/eupl/og_page/eupl
 *
 * Unless required by applicable law or agreed to in writing, VECTO
@@ -29,6 +29,9 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+
+
+
 using System.Reflection;
-[assembly: AssemblyVersion("0.1.0.274")]
-[assembly: AssemblyFileVersion("0.1.0.274")]
+[assembly: AssemblyVersion("0.1.0.2202")]
+[assembly: AssemblyFileVersion("0.1.0.2202")]

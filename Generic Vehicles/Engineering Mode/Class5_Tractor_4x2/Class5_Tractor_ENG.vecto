@@ -16,10 +16,39 @@
     "AdvancedAuxiliaryFilePath": "",
     "Aux": [
       {
+        "ID": "FAN",
+        "Type": "Fan",
+        "Technology": [
+          "Belt driven or driven via transm. - Electronically controlled visco clutch"
+        ]
+      },
+      {
+        "ID": "STP",
+        "Type": "Steering pump",
+        "Technology": [
+          "Fixed displacement with elec. control"
+        ]
+      },
+      {
+        "ID": "AC",
+        "Type": "HVAC",
+        "Technology": [
+          "Default"
+        ]
+      },
+      {
         "ID": "ES",
         "Type": "Electric System",
-        "Path": "Alt.vaux",
-        "Technology": []
+        "Technology": [
+          "Standard technology"
+        ]
+      },
+      {
+        "ID": "PS",
+        "Type": "Pneumatic System",
+        "Technology": [
+          "Medium Supply 2-stage + ESS + AMS"
+        ]
       }
     ],
     "Padd": 5000.0,

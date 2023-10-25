@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,11 +27,12 @@ namespace TUGraz.VectoCore.Utils
 
         public uint InitGearNextGear = 0;
         private decimal Time { get; set; }
+        private string FmuDLL { get; set; }
         public void InitFMU(string fmuPath)
         {
             Time = 0;
             string fmuDLL = LoadAndCopyFMUArchive(fmuPath);
-
+            FmuDLL = fmuDLL;
             FmuInstance fmu_instance = new FmuInstance(fmuDLL);
             
             fmu_instance.Log += Fmu_instance_Log;
@@ -42,6 +44,8 @@ namespace TUGraz.VectoCore.Utils
                   "file:///C:\\Users\\Work\\Programming\\vectosimulinkshiftstrategymodel\\AMTShiftStrategyModel_grt_fmi_rtw\\AMTShiftStrategyModel\\resources",
                   false,
                   true);
+
+            
             Fmi2Status experiment_status = fmu_instance.SetupExperiment(false, 0, 0, false, 10);
             //Console.WriteLine("Setup Experiment status: " + experiment_status);
 
@@ -53,8 +57,16 @@ namespace TUGraz.VectoCore.Utils
 
         }
 
+        ~FMUConnector()
+        {
+            //File.Delete(FmuDLL);
+        }
 
 
+        public void Terminate()
+        {
+            Instance.Terminate();
+        }
         public uint Step(int function_, Second absTime, Second dt, NewtonMeter outTorque, PerSecond outAngularVelocity, NewtonMeter inTorque, PerSecond inAngularVelocity, uint gear, Second lastShiftTime, IDataBus DataBus, Gearbox gearbox)
         {
             //LogShiftData.LogFunctionDataToExcel(function_, absTime, dt, outTorque, outAngularVelocity, inTorque, inAngularVelocity, gear, lastShiftTime, DataBus, gearbox);
@@ -214,7 +226,7 @@ namespace TUGraz.VectoCore.Utils
             SetInput(new uint[] { InputDict["EnginePreviousStatedt"] }, new double[] { EnginePreviousStatedt });
             //string jsonName = "VectoJsonModelData.json";
 
-            SetInput(new uint[] { InputDict["jsonName"] }, new double[] { 86, 101, 99, 116, 111, 74, 115, 111, 110, 77, 111, 100, 101, 108, 68, 97, 116, 97, 46, 106, 115, 111, 110 });
+            //SetInput(new uint[] { InputDict["jsonName"] }, new double[] { 86, 101, 99, 116, 111, 74, 115, 111, 110, 77, 111, 100, 101, 108, 68, 97, 116, 97, 46, 106, 115, 111, 110 });
         }
 
 
@@ -300,18 +312,50 @@ namespace TUGraz.VectoCore.Utils
 
                     using (var dll = fmuDLL.Open())
                     {
-                        int fileCounter = 1;
+                        
+                        //int fileCounter = 1;
                         string copyToPath = Path.Combine(tempPath, ModelIdentifier + ".dll");
-                        while(File.Exists(copyToPath))
+                        //while(File.Exists(copyToPath))
+                        //{
+                        //    copyToPath = Path.Combine(tempPath, ModelIdentifier + fileCounter + ".dll");
+                        //    fileCounter++;
+                        //}
+
+                        using (var md5 = MD5.Create())
                         {
-                            copyToPath = Path.Combine(tempPath, ModelIdentifier + fileCounter + ".dll");
-                            fileCounter++;
-                        }
-                        using (var target = File.Create(copyToPath))
-                        {
-                            dll.CopyTo(target);
+                            if(File.Exists(copyToPath))
+                            {
+                                using (var stream2 = File.OpenRead(copyToPath))
+                                {
+                                    byte[] hash = md5.ComputeHash(dll);
+                                    byte[] hash2 = md5.ComputeHash(stream2);
+                                    bool hashCompare = true;
+                                    for (int i = 0; i < hash.Length; i++)
+                                    {
+                                        if (hash[i] != hash2[i])
+                                            hashCompare = false;
+                                    }
+                                    if(!hashCompare)
+                                    {
+                                        stream2.Close();
+                                        using (var target = File.Create(copyToPath))
+                                        {
+                                            dll.CopyTo(target);
+                                        }
+                                    } 
+                                }
+                            }
+                            else
+                            {
+                                using (var target = File.Create(copyToPath))
+                                {
+                                    dll.CopyTo(target);
+                                }
+                            }
+                            
                             return copyToPath;
                         }
+                            //File.Copy(path, copyToPath);
                     }
                 }
                 

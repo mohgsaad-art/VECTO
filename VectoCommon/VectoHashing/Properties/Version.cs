@@ -29,6 +29,9 @@
 *   Martin Rexeis, rexeis@ivt.tugraz.at, IVT, Graz University of Technology
 */
 
+
+
+
 using System.Reflection;
-[assembly: AssemblyVersion("1.2.0.1916")]
-[assembly: AssemblyFileVersion("1.2.0.1916")]
+[assembly: AssemblyVersion("1.2.0.2202")]
+[assembly: AssemblyFileVersion("1.2.0.2202")]

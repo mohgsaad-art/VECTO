@@ -93,7 +93,7 @@ namespace TUGraz.VectoCore.Models.Simulation.Impl
 			factory.JobNumber = Interlocked.Increment(ref _jobNumber);
 
 			foreach (var run in factory.SimulationRuns()) {
-				if(run.CycleName == "UrbanDelivery" && run.RunSuffix == "ReferenceLoad")
+				if(run.CycleName == "LongHaulEMS" && run.RunSuffix == "LowLoading")
                 {
 					var entry = new RunEntry { Run = run, JobContainer = this };
 					Runs.Add(entry);

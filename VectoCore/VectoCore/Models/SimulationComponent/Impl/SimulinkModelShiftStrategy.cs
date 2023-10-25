@@ -31,6 +31,7 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
         ~SimulinkModelShiftStrategy()
         {
            Connector.Step(4, (0.0).SI<Second>(), (0.0).SI<Second>(), (0.0).SI<NewtonMeter>(), (0.0).SI<PerSecond>(), (0.0).SI<NewtonMeter>(), (0.0).SI<PerSecond>(), 0, (0.0).SI<Second>(), DataBus, _gearbox);
+           Connector.Terminate();
         }
         public override GearInfo NextGear
         {
