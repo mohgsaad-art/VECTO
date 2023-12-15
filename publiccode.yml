@@ -53,6 +53,14 @@ description:
       Simulation tool that developed by the European Commission used for
       determining CO2 emissions from Heavy Duty Vehicles.
 developmentStatus: beta
+inputTypes:
+  - application/xml
+  - application/json
+  - text/csv
+outputTypes:
+  - application/xml
+  - application/json
+  - text/csv
 intendedAudience:
   scope:
     - energy
@@ -111,3 +119,63 @@ dependsOn:
       version: ''
       versionMax: '4.8'
       versionMin: '4.5'
+    - name: 'Castle.Core,'
+      optional: false
+      version: 4.0.0.0
+      versionMax: ''
+      versionMin: ''
+    - name: 'JetBrains.Annotations,'
+      optional: false
+      version: 2018.3.0.0
+      versionMax: ''
+      versionMin: ''
+    - name: 'Newtonsoft.Json,'
+      optional: false
+      version: 4.5.0.0
+      versionMax: ''
+      versionMin: ''
+    - name: 'Ninject,'
+      optional: false
+      version: 3.3.4.0
+      versionMax: ''
+      versionMin: ''
+    - name: 'Ninject.Extensions.Factory,'
+      optional: false
+      version: 3.3.2.0
+      versionMax: ''
+      versionMin: ''
+    - name: 'Ninject.Extensions.NamedScope,'
+      optional: false
+      version: 3.3.0.0
+      versionMax: ''
+      versionMin: ''
+    - name: 'NLog,'
+      optional: false
+      version: 4.0.0.0
+      versionMax: ''
+      versionMin: ''
+    - name: Microsoft.VisualStudio.QualityTools.UnitTestFramework
+      optional: true
+      version: 10.0.0.0
+      versionMax: ''
+      versionMin: ''
+    - name: Omu.ValueInjecter
+      optional: true
+      version: 3.1.1.0
+      versionMax: ''
+      versionMin: ''
+    - name: nunit.framework
+      optional: true
+      version: 3.11.0.0
+      versionMax: ''
+      versionMin: ''
+    - name: Moq
+      optional: true
+      version: 4.2.1510.2205
+      versionMax: ''
+      versionMin: ''
+    - name: Microsoft.VisualStudio.QualityTools.UnitTestFramework
+      optional: true
+      version: 10.0.0.0
+      versionMax: ''
+      versionMin: ''
