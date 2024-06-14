@@ -1,0 +1,181 @@
+# This repository adheres to the publiccode.yml standard by including this 
+# metadata file that makes public software easily discoverable.
+# More info at https://github.com/italia/publiccode.yml
+
+publiccodeYmlVersion: '0.2'
+applicationSuite: vecto
+categories:
+  - compliance-management
+description:
+  en:
+    documentation: 'https://code.europa.eu/groups/vecto/-/wikis/home'
+    features:
+      - 'fuel, co2 and energy calculator'
+      - heavy duty vehicle simulator
+      - heavy duty vechicle certification
+    genericName: hdv;simulator;energy;fuel;co2
+    longDescription: |
+      VECTO is the simulation tool that has been developed by the European
+      Commission and is used for determining CO2 emissions and Fuel Consumption
+      from Heavy Duty Vehicles (trucks, buses and coaches) with a Gross Vehicle
+      Weight above 3500kg.
+
+      Since 1 January 2019, the tool is mandatory for new trucks under certain
+      vehicle categories in application to the certification legislation under
+      type approval. 
+
+      CO2 emissions and fuel consumption data determined with VECTO, together
+      with other related parameters, must be monitored and reported to the
+      Commission by Member States and manufacturers, and made publicly available
+      for each of those new trucks.
+
+      Five different mission profiles for trucks and five different mission
+      profiles for buses and coaches have been developed and implemented in the
+      tool to better reflect the current European fleet. VECTO is a downloadable
+      executable file designed to operate on a single computer.
+
+      The inputs for VECTO are characteristic parameters to determine the power
+      consumption of every relevant vehicle component. Among others, the
+      parameters for rolling resistance, air drag, masses and inertias, gearbox
+      friction, auxiliary power and engine performance are input values to
+      simulate fuel consumption and CO2 emissions on standardised driving
+      cycles.
+    screenshots:
+      - |-
+        https://code.europa.eu/vecto/vecto/-/raw/stable/Documentation/User%20Manual/pics/ENG-Editor.PNG
+      - |-
+        https://code.europa.eu/vecto/vecto/-/raw/stable/Documentation/User%20Manual/pics/VECTO-Editor.png
+      - |-
+        https://code.europa.eu/vecto/vecto/-/raw/stable/Documentation/User%20Manual/pics/VEH-Editor.PNG
+      - |-
+        https://code.europa.eu/vecto/vecto/-/raw/trailer/Documentation/User%20Manual/OriginalPictures/MainForm.png
+    shortDescription: |-
+      Simulation tool that developed by the European Commission used for
+      determining CO2 emissions from Heavy Duty Vehicles.
+developmentStatus: beta
+inputTypes:
+  - application/xml
+  - application/json
+  - text/csv
+outputTypes:
+  - application/xml
+  - application/json
+  - text/csv
+intendedAudience:
+  scope:
+    - energy
+    - environment
+    - research
+    - manufacturing
+    - transportation
+it:
+  conforme:
+    gdpr: false
+    lineeGuidaDesign: false
+    misureMinimeSicurezza: false
+    modelloInteroperabilita: false
+  countryExtensionVersion: '0.2'
+  piattaforme:
+    anpr: false
+    cie: false
+    pagopa: false
+    spid: false
+landingURL: 'https://code.europa.eu/groups/vecto/-/wikis/vecto-sim'
+legal:
+  license: EUPL-1.2
+  mainCopyrightOwner: European Commission
+  repoOwner: European Commission
+localisation:
+  availableLanguages:
+    - en
+  localisationReady: false
+logo: |-
+  https://code.europa.eu/vecto/vecto/-/raw/stable/Documentation/User%20Manual/pics/VECTOlarge.png
+maintenance:
+  contacts:
+    - affiliation: C4 JRC European Commission/DG CLIMA
+      email: jrc-vecto@ec.europa.eu
+      name: JRC-VECTO
+  type: internal
+name: vecto-sim
+platforms:
+  - windows
+  - linux
+releaseDate: '2023-10-23'
+roadmap: |-
+  https://code.europa.eu/groups/vecto/-/wikis/uploads/4db2af549a75a24a92070f38ef2a0c57/VECTO_poster.v10.png
+softwareType: standalone/desktop
+softwareVersion: 4.0.1.3217
+url: 'https://code.europa.eu/vecto/vecto.git'
+dependsOn:
+  open:
+    - name: dotnet
+      optional: false
+      version: ''
+      versionMax: ''
+      versionMin: '6'
+    - name: .NET
+      optional: true
+      version: ''
+      versionMax: '4.8'
+      versionMin: '4.5'
+    - name: 'Castle.Core,'
+      optional: false
+      version: 4.0.0.0
+      versionMax: ''
+      versionMin: ''
+    - name: 'JetBrains.Annotations,'
+      optional: false
+      version: 2018.3.0.0
+      versionMax: ''
+      versionMin: ''
+    - name: 'Newtonsoft.Json,'
+      optional: false
+      version: 4.5.0.0
+      versionMax: ''
+      versionMin: ''
+    - name: 'Ninject,'
+      optional: false
+      version: 3.3.4.0
+      versionMax: ''
+      versionMin: ''
+    - name: 'Ninject.Extensions.Factory,'
+      optional: false
+      version: 3.3.2.0
+      versionMax: ''
+      versionMin: ''
+    - name: 'Ninject.Extensions.NamedScope,'
+      optional: false
+      version: 3.3.0.0
+      versionMax: ''
+      versionMin: ''
+    - name: 'NLog,'
+      optional: false
+      version: 4.0.0.0
+      versionMax: ''
+      versionMin: ''
+    - name: Microsoft.VisualStudio.QualityTools.UnitTestFramework
+      optional: true
+      version: 10.0.0.0
+      versionMax: ''
+      versionMin: ''
+    - name: Omu.ValueInjecter
+      optional: true
+      version: 3.1.1.0
+      versionMax: ''
+      versionMin: ''
+    - name: nunit.framework
+      optional: true
+      version: 3.11.0.0
+      versionMax: ''
+      versionMin: ''
+    - name: Moq
+      optional: true
+      version: 4.2.1510.2205
+      versionMax: ''
+      versionMin: ''
+    - name: Microsoft.VisualStudio.QualityTools.UnitTestFramework
+      optional: true
+      version: 10.0.0.0
+      versionMax: ''
+      versionMin: ''
