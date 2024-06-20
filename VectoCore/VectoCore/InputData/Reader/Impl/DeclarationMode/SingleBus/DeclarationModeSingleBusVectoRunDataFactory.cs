@@ -171,7 +171,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.SingleBus
 				runData.EngineData.FuelMode = modeIdx.Value;
 				runData.VehicleData.VehicleClass = _segment.VehicleClass;
 				CreateGearboxAndGearshiftData(runData);
-				runData.Retarder = DataAdapter.CreateGenericRetarderData(PrimaryVehicle.Components.RetarderInputData, runData);
+				runData.Retarder = DataAdapter.CreateRetarderData(PrimaryVehicle.Components.RetarderInputData, PrimaryVehicle.ArchitectureID, PrimaryVehicle.Components.IEPC);
 				runData.BusAuxiliaries = DataAdapter.CreateBusAuxiliariesData(mission, PrimaryVehicle, CompletedVehicle, runData);
 				
                 return runData;
@@ -308,7 +308,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.SingleBus
                 }
 
 				CreateGearboxAndGearshiftData(runData);
-				runData.Retarder = DataAdapter.CreateGenericRetarderData(PrimaryVehicle.Components.RetarderInputData, runData);
+				runData.Retarder = DataAdapter.CreateRetarderData(PrimaryVehicle.Components.RetarderInputData, PrimaryVehicle.ArchitectureID, PrimaryVehicle.Components.IEPC);
 
                 runData.Aux = DataAdapter.CreateAuxiliaryData(PrimaryVehicle.Components.AuxiliaryInputData,
 					PrimaryVehicle.Components.BusAuxiliaries, mission.MissionType,
@@ -509,7 +509,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.SingleBus
 				runData.VehicleData.VehicleClass = _segment.VehicleClass;
 				
 				CreateGearboxAndGearshiftData(runData);
-				runData.Retarder = DataAdapter.CreateGenericRetarderData(PrimaryVehicle.Components.RetarderInputData, runData);
+				runData.Retarder = DataAdapter.CreateRetarderData(PrimaryVehicle.Components.RetarderInputData, PrimaryVehicle.ArchitectureID, PrimaryVehicle.Components.IEPC);
 				runData.BusAuxiliaries = DataAdapter.CreateBusAuxiliariesData(
 					mission, PrimaryVehicle, CompletedVehicle, runData);
 
@@ -677,7 +677,7 @@ namespace TUGraz.VectoCore.InputData.Reader.Impl.DeclarationMode.SingleBus
 
                 result.VehicleData.VehicleClass = _segment.VehicleClass;
                 CreateGearboxAndGearshiftData(result);
-                result.Retarder = DataAdapter.CreateGenericRetarderData(vehicle.Components.RetarderInputData, result);
+                result.Retarder = DataAdapter.CreateRetarderData(vehicle.Components.RetarderInputData, vehicle.ArchitectureID, vehicle.Components.IEPC);
                 result.BusAuxiliaries = DataAdapter.CreateBusAuxiliariesData(
                     mission, SingleBusDataProvider.PrimaryVehicle, SingleBusDataProvider.CompletedVehicle, result);
 
