@@ -177,7 +177,7 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SingleBus
 
 			public RetarderData CreateGenericRetarderData(IRetarderInputData retarderData, VectoRunData vectoRun)
 			{
-				return _retarderDataAdapter.CreateGenericRetarderData(retarderData, vectoRun);
+				throw new NotImplementedException("Not applicable to SingleBus");
 			}
 
 			#endregion
