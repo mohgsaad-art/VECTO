@@ -98,4 +98,4 @@ In the [`vecto` group](https://code.europa.eu/vecto) you may find additionally:
 - **Vecto Airdrag:** certify $C_d·A$ values from constant speed tests
 - **Vecto Engine:** certify engine declaration XML files as VECTO input
 - **Vecto EEA hashing-tool:** (archived) monitoring-aid for European Environment Agency 
-- **Vecto Git:** (unused) cirtify any pre-processing file
+- **Vecto Git:** (unused) certify any pre-processing file
