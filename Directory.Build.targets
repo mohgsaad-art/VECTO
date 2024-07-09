@@ -16,13 +16,14 @@
 			<CurrentDate>$([System.DateTime]::Now.ToString(yyy_MM_dd))</CurrentDate>
 			<DeployPath>$(SolutionDir)Deploy\$(CurrentDate)-VECTO-$(Version)\</DeployPath>
 			<NuGetPath>$(SolutionDir)Nuget\$(CurrentDate)-VECTO-NuGet-$(Version)\</NuGetPath>
+			<ReleasePath>$(SolutionDir)Release\</ReleasePath>
 		</PropertyGroup>
   		<RemoveDir Directories="$(SolutionDir)Deploy" Condition="Exists('$(SolutionDir)Deploy')"/>
 		<RemoveDir Directories="$(SolutionDir)Nuget" Condition="Exists('$(SolutionDir)Nuget')"/>
 		<RemoveDir Directories="$(NuGetPath)" Condition="Exists('$(NuGetPath)')"/>
 		<MakeDir Directories="$(DeployPath)"/>
 		<MakeDir Directories="$(NuGetPath)"/>
-
+		<MakeDir Directories="$(ReleasePath)"/>
 
 		<ItemGroup Condition="'$(Configuration)'=='Deploy'">
 			<!-- All files for net48 -->
@@ -242,17 +243,16 @@
 		<Copy SourceFiles="@(VectoNuget)" DestinationFolder ="$(NuGetPath)"/>
 
 		<Copy SourceFiles="@(VectoNuget)" DestinationFolder ="$(DeployPath)NuGet"/>
-
+		
 		<PropertyGroup>
-			<NugetDestinationZip>$(SolutionDir)$(CurrentDate)-VECTO-NuGet-$(Version).zip</NugetDestinationZip>
-			<NugetDestinationZip Condition="'$(Configuration)'=='MockupDeploy'">$(SolutionDir)$(CurrentDate)-VECTO-NuGet-$(Version).zip</NugetDestinationZip>
+			<NugetDestinationZip>$(ReleasePath)$(CurrentDate)-VECTO-NuGet-$(Version).zip</NugetDestinationZip>
+			<NugetDestinationZip Condition="'$(Configuration)'=='MockupDeploy'">$(ReleasePath)$(CurrentDate)-VECTO-NuGet-$(Version).zip</NugetDestinationZip>
 		</PropertyGroup>
 		<ZipDirectory SourceDirectory="$(NuGetPath)" DestinationFile="$(NugetDestinationZip)" Overwrite="true"/>
 
-
 		<PropertyGroup>
-			<DestinationZip>$(SolutionDir)$(CurrentDate)-VECTO-$(Version).zip</DestinationZip>
-			<DestinationZip Condition="'$(Configuration)'=='MockupDeploy'">$(SolutionDir)$(CurrentDate)-VECTO-$(Version).zip</DestinationZip>
+			<DestinationZip>$(ReleasePath)$(CurrentDate)-VECTO-$(Version).zip</DestinationZip>
+			<DestinationZip Condition="'$(Configuration)'=='MockupDeploy'">$(ReleasePath)$(CurrentDate)-VECTO-$(Version).zip</DestinationZip>
 		</PropertyGroup>
 		<ZipDirectory SourceDirectory="$(SolutionDir)Deploy\" DestinationFile="$(DestinationZip)" Overwrite="true"/>
 	</Target>
