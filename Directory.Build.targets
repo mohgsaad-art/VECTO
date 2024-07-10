@@ -10,8 +10,6 @@
 
 
 		<Message Text="Packaging in $(Configuration) Configuration $(VersionPrefix)" Importance="high" />
-		<Exec Command="cscript &quot;$(SolutionDir)documentation\user manual source\convertpptxtopdf.vbs&quot; &quot;$(SolutionDir)documentation\user manual source\release notes vecto3.x.pptx&quot; &quot;$(SolutionDir)documentation\user manual source\release notes vecto3.x.pdf&quot;"/>
-		<Exec Command="cscript &quot;$(SolutionDir)documentation\user manual source\convertpptxtopdf.vbs&quot; &quot;$(SolutionDir)documentation\user manual source\release notes vecto4.x.pptx&quot; &quot;$(SolutionDir)documentation\user manual source\release notes vecto4.x.pdf&quot;"/>
 		<PropertyGroup>
 			<CurrentDate>$([System.DateTime]::Now.ToString(yyy_MM_dd))</CurrentDate>
 			<DeployPath>$(SolutionDir)Deploy\$(CurrentDate)-VECTO-$(Version)\</DeployPath>
