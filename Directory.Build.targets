@@ -54,6 +54,8 @@
 			<Net48VectoCommandLine Include="$(SolutionDir)VectoConsole\bin\MockupRelease\net48\*.dll*" />
 			<Net48VectoMultistep Include="$(SolutionDir)VECTO3GUI2020\bin\MockupRelease\net48\*.exe*" />
 			<Net48VectoMultistep Include="$(SolutionDir)VECTO3GUI2020\bin\MockupRelease\net48\*.dll*" />
+			<Net48XMLConverterCmdLine Include="$(SolutionDir)XMLConverterCmdLine\bin\Release\net48\*.exe*"/>
+			<Net48XMLConverterCmdLine Include="$(SolutionDir)XMLConverterCmdLine\bin\Release\net48\*.dll*"/>
 		</ItemGroup>
 
 		<Copy SourceFiles="@(Net48VectoCommandLine)" DestinationFolder="$(DeployPath)net48"/>

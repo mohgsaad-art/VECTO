@@ -9,7 +9,6 @@
 
     <!-- Global VECTO Version -->
     <MainProductVersion>4.2.1</MainProductVersion>
-    <!--<VersionSuffix>RC</VersionSuffix>--> 
 
     <!-- The following settings are used as default values for ALL projects -->
     <Days>$([System.DateTime]::UtcNow.Subtract($([System.DateTime]::new(2015,1,1))).Days)</Days>
@@ -37,7 +36,7 @@
   <PropertyGroup Condition="$(DefineConstants.Contains('CERTIFICATION_RELEASE'))">
     <VersionSuffix></VersionSuffix>
   </PropertyGroup>
-
+  
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <RemoveIntegerChecks>false</RemoveIntegerChecks>
