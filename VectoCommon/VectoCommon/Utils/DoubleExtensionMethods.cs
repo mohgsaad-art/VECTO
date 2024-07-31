@@ -54,6 +54,11 @@ namespace TUGraz.VectoCommon.Utils
 		public const double ToleranceFactor = 1e-6;
 
 		/// <summary>
+		/// The tolerancefactor for relative comparisons.
+		/// </summary>
+		public const double VectoToleranceFactor = 0.003;
+
+		/// <summary>
 		/// Determines whether the specified other is equal within tolerance.
 		/// </summary>
 		/// <param name="self">The self.</param>

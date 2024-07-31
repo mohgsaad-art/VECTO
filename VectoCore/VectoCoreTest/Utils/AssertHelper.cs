@@ -34,17 +34,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using TUGraz.VectoCommon.Utils;
 using NUnit.Framework;
 using TUGraz.VectoCommon.InputData;
-using TUGraz.VectoCore.Models.Simulation.Impl;
 using TUGraz.VectoCore.Utils;
 using TUGraz.VectoCore.OutputData.FileIO;
 using TUGraz.VectoCore.Models.Simulation.Impl.SimulatorFactory;
+using TUGraz.VectoCore.Models.Simulation;
 
 namespace TUGraz.VectoCore.Tests.Utils
 {
@@ -97,7 +96,10 @@ namespace TUGraz.VectoCore.Tests.Utils
 		}
 
 		[DebuggerHidden]
-		public static void AreRelativeEqual(double? expected, double? actual, string message = null,
+		public static void AreRelativeEqual(
+			double? expected,
+			double? actual,
+			string message = null,
 			double toleranceFactor = DoubleExtensionMethods.ToleranceFactor)
 		{
 			if (!string.IsNullOrWhiteSpace(message)) {
@@ -109,12 +111,24 @@ namespace TUGraz.VectoCore.Tests.Utils
 			Assert.IsFalse(expected.HasValue ^ actual.HasValue, "Both Values have to be null or not null.");
 
 			if (double.IsNaN(expected.Value)) {
-				Assert.IsTrue(double.IsNaN(actual.Value), "Actual value is not NaN. Expected: {0}, Actual: {1}{2}", expected, actual, message);
+				Assert.IsTrue(
+					double.IsNaN(actual.Value),
+					"Actual value is not NaN. Expected: {0}, Actual: {1}{2}",
+					expected,
+					actual,
+					message);
 				return;
 			}
 
 			var ratio = expected == 0 ? Math.Abs(actual.Value) : Math.Abs(actual.Value / expected.Value - 1);
-				Assert.IsTrue(ratio < toleranceFactor, "Given values are not equal. Expected: {0}, Actual: {1}, Difference: {3} (Tolerance Factor: {2}){4}", expected, actual, toleranceFactor, expected - actual, message);
+			Assert.IsTrue(
+				ratio < toleranceFactor,
+				"Given values are not equal. Expected: {0}, Actual: {1}, Difference: {3} (Tolerance Factor: {2}){4}",
+				expected,
+				actual,
+				toleranceFactor,
+				expected - actual,
+				message);
 		}
 
 		public static void PublicPropertiesEqual(Type t, object expected, object actual, string[] ignoredProperties = null)
@@ -196,8 +210,13 @@ namespace TUGraz.VectoCore.Tests.Utils
 			TestContext.WriteLine();
 		}
 
-        public static void AssertMetrics(SimulatorFactory factory, Dictionary<String, double> metrics)
-        {
+		public static void AssertMetricsRange(ISimulatorFactory factory, Dictionary<String, double> metrics, double vectoTolerance = DoubleExtensionMethods.VectoToleranceFactor)
+		{
+			AssertMetrics(factory, metrics, vectoTolerance);
+		}
+
+		public static void AssertMetrics(ISimulatorFactory factory, Dictionary<String, double> metrics, double tolerance = DoubleExtensionMethods.ToleranceFactor)
+		{
 			String sumFilePath = WriteSumFile(factory);
 
 			var table = VectoCSVFile.Read(sumFilePath, true, true);
@@ -205,21 +224,57 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 			Dictionary<string, double> results = new Dictionary<string, double>();
 
-			foreach (var kvp in metrics) {
+			foreach (var kvp in metrics)
+			{
 				double result;
 				Assert.IsTrue(double.TryParse(row[kvp.Key].ToString(), out result));
 
 				results.Add(kvp.Key, result);
 
 				TestContext.WriteLine($"{kvp.Key} = {result}   (expected = {kvp.Value})");
-            }
+			}
 			TestContext.WriteLine();
 			TestContext.WriteLine(metrics.Keys.Select(x => results[x]).Join());
 
-			foreach (var kvp in metrics) {
-				AreRelativeEqual(kvp.Value.SI<Scalar>(), results[kvp.Key].SI<Scalar>(), $"{kvp.Key} ({results[kvp.Key]}) is other than expected ({kvp.Value})");
+			foreach (var metric in metrics)
+			{
+				var expected = metric.Value.SI<Scalar>();
+				var actual = results[metric.Key].SI<Scalar>();
+
+				AreRelativeEqual(expected, actual, $"{metric.Key} ({results[metric.Key]}) is other than expected ({metric.Value})", tolerance);
+				LogGitlabMetrics(metric.Key, actual);
 			}
-        }
+		}
+
+		/// <summary>
+		/// Appends the current test result to the metrics file gitlab_metrics.log.
+		/// 
+		/// The metrics file stores key value pairs in different lines with format:
+		/// MethodName_VehicleInputFile_CycleName(MetricField,ExpectedValue) ActualValue
+		/// </summary>
+		/// <param name="metricField">Name of the metric field to log.</param>
+		/// <param name="actual">Result of the current test to log.</param>
+		private static void LogGitlabMetrics(string metricField, double? actual)
+		{
+			var metricFieldFormatted = metricField.Replace(" ", "");
+			
+			string vehicleFileRaw = TestContext.CurrentContext.Test.Arguments[0].ToString();
+			string cycleName = TestContext.CurrentContext.Test.Arguments[1].ToString();
+			string expectedValue = TestContext.CurrentContext.Test.Arguments[2].ToString();
+
+			string vehicleFile =
+				Path.GetFileName(vehicleFileRaw)
+					.Replace(" ", "_")
+					.Replace(".", "_");
+
+
+			var metricKey = $"{TestContext.CurrentContext.Test.MethodName}.{vehicleFile}.{cycleName}_({metricFieldFormatted},{expectedValue})";
+
+			var filePath = Path.Join(TestContext.CurrentContext.TestDirectory, "gitlab_metrics.log");
+			File.AppendAllLines(
+				filePath,
+				new List<string>() { $"{metricKey} {actual}" });
+		}
 
 		public static void ReadMetricsFromVSum(String vsumPath, int vsumRow, Dictionary<String, double> metrics)
 		{
