@@ -1,12 +1,5 @@
 <Project>
   <PropertyGroup>
-     
-    <!-- For a Release-Candidate uncomment the following line: -->
-    <!--<DefineConstants>RELEASE_CANDIDATE</DefineConstants>--> 
-
-    <!-- For a Release uncomment the following line: -->
-    <DefineConstants>CERTIFICATION_RELEASE</DefineConstants>
-
     <!-- Global VECTO Version -->
     <MainProductVersion>4.2.1</MainProductVersion>
 
@@ -29,14 +22,6 @@
     <DebugSymbols>false</DebugSymbols>
   </PropertyGroup>
 
-
-  <PropertyGroup Condition="$(DefineConstants.Contains('RELEASE_CANDIDATE'))">
-    <VersionSuffix>RC</VersionSuffix>
-  </PropertyGroup>
-  <PropertyGroup Condition="$(DefineConstants.Contains('CERTIFICATION_RELEASE'))">
-    <VersionSuffix></VersionSuffix>
-  </PropertyGroup>
-  
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <RemoveIntegerChecks>false</RemoveIntegerChecks>
