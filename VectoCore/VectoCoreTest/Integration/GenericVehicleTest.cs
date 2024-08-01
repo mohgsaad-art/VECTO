@@ -28,13 +28,11 @@ namespace TUGraz.VectoCore.Tests.Integration
     /// <summary>
     /// Make sure all shipped generic vehicles actually can be simulated
     /// </summary>
+	[Ignore("New solution provided by GenericVehiclesDeclarationTests.")]
 	[TestFixture]
 	//[Parallelizable]
 	internal class GenericVehicleTest
     {
-
-
-		
 		private static string BASE_DIR = "TestData/Shipped_Generic";
 		private StandardKernel _kernel;
 		private IXMLInputDataReader _xmlReader;
@@ -146,15 +144,13 @@ namespace TUGraz.VectoCore.Tests.Integration
 					var busInputData = inputData as IMultistepBusInputDataProvider;
 					var multistepInputData = new XMLDeclarationVIFInputData(busInputData, null);
 					fileWriter = new FileOutputVIFWriter(path, busInputData.JobInputData.ManufacturingStages?.Count ?? 0);
-					runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration,
-						multistepInputData, fileWriter, null, null, true);
+					runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, multistepInputData, fileWriter, null, null, true);
 				}
 				else
 				{
 
-					runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter,
-						writeReports ? null : new NullDeclarationReport()); //, writeReports ? null : new NullDeclarationReport());
-
+					runsFactory = SimulatorFactory.CreateSimulatorFactory(ExecutionMode.Declaration, inputData, fileWriter, writeReports ? null : new NullDeclarationReport()); 
+					//, writeReports ? null : new NullDeclarationReport());
 				}
 
 				var sumWriter = new SummaryDataContainer(fileWriter); //new MockSumWriter();
