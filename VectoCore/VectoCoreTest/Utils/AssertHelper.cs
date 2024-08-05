@@ -287,15 +287,16 @@ namespace TUGraz.VectoCore.Tests.Utils
 
 				metrics[metric.Key] = distanceResult;
 			}
-        }
+		}
 
-		private static string WriteSumFile(SimulatorFactory factory)
-        {
-			String sumFilePath = ((FileOutputWriter) factory.ReportWriter).SumFileName;
+		private static string WriteSumFile(ISimulatorFactory factory)
+		{
+			string sumFilePath = ((FileOutputWriter)factory.ReportWriter).SumFileName;
 
-			if (!File.Exists(sumFilePath)) {
+			if (!File.Exists(sumFilePath))
+			{
 				factory.SumData.Finish();
-            }
+			}
 
 			return sumFilePath;
 		}

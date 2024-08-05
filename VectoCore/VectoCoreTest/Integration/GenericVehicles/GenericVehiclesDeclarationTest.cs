@@ -22,48 +22,54 @@ namespace TUGraz.VectoCore.Tests.Integration.GenericVehicles
 		private const string DeclarationBasePath = "TestData/Generic Vehicles/BaseGenericVehicles/DeclarationMode/";
 
 		// ICE
-		private const string GROUP_1s = @$"{DeclarationBasePath}ICE/Group_1s/Group 1s_Rigid_DECL.vecto";
-		private const string GROUP_2 = @$"{DeclarationBasePath}ICE/Group2_RigidTruck_4x2/Class2_RigidTruck_DECL.vecto";
-		private const string GROUP_5 = @$"{DeclarationBasePath}ICE/Group5_Tractor_4x2/Class5_Tractor_DECL.vecto";
-		private const string GROUP_53 = @$"{DeclarationBasePath}ICE/Group_53/ML3r.vecto";
-		private const string GROUP_54_ML3 = @$"{DeclarationBasePath}ICE/Group_54/ML3van.vecto";
-		private const string GROUP_54 = @$"{DeclarationBasePath}ICE/Group_54_xml/vecto_vehicle-medium_lorry_4x2.xml";
-		private const string GROUP_9 = @$"{DeclarationBasePath}ICE/Group9_RigidTruck_6x2/Class9_RigidTruck_DECL.vecto";
-		private const string GROUP_9_DF = @$"{DeclarationBasePath}ICE/Group9_RigidTruck_6x2_DF/Class9_RigidTruck_DECL_DF.vecto";
-		private const string GROUP_9_DF_WHR = @$"{DeclarationBasePath}ICE/Group9_RigidTruck_6x2_DF_WHR/Class9_RigidTruck_DECL_DF_WHR.vecto";
-		private const string GROUP_9_WHR = @$"{DeclarationBasePath}ICE/Group9_RigidTruck_6x2_WHR/Class9_RigidTruck_DECL_WHR.vecto";
-		private const string GROUP_9_AT = @$"{DeclarationBasePath}ICE/Group9_RigidTruck_AT_6x2/Class_9_RigidTruck_AT_Decl.vecto";
+		private const string GROUP_1s       = @$"{DeclarationBasePath}ICE/Group 1s/Group 1s_Rigid_DECL.vecto";
+		private const string GROUP_2        = @$"{DeclarationBasePath}ICE/Group2_RigidTruck_4x2/Class2_RigidTruck_DECL.vecto";
+		private const string GROUP_5        = @$"{DeclarationBasePath}ICE/Group5_Tractor_4x2/Class5_Tractor_DECL.vecto";
+		private const string GROUP_53       = @$"{DeclarationBasePath}ICE/Group 53/ML3r.vecto";
+		private const string GROUP_54_ML3   = @$"{DeclarationBasePath}ICE/Group 54/ML3van.vecto";
+		private const string GROUP_54       = @$"{DeclarationBasePath}ICE/Group 54_xml/vecto_vehicle-medium_lorry_4x2.xml";
+		private const string GROUP_9        = @$"{DeclarationBasePath}ICE/Group9_RigidTruck_6x2/Class9_RigidTruck_DECL.vecto";
+		private const string GROUP_9_DF     = @$"{DeclarationBasePath}ICE/Group9_RigidTruck_6x2/Class9_RigidTruck_DECL_DF.vecto";
+		private const string GROUP_9_DF_WHR = @$"{DeclarationBasePath}ICE/Group9_RigidTruck_6x2/Class9_RigidTruck_DECL_DF_WHR.vecto";
+		private const string GROUP_9_WHR    = @$"{DeclarationBasePath}ICE/Group9_RigidTruck_6x2/Class9_RigidTruck_DECL_WHR.vecto";
+		private const string GROUP_9_AT     = @$"{DeclarationBasePath}ICE/Group9_RigidTruck_AT_6x2/Class_9_RigidTruck_AT_Decl.vecto";
 		private const string GROUP_9_AT_ECOROLL = @$"{DeclarationBasePath}ICE/Group9_RigidTruck_AT_6x2_EcoRoll/Class_9_RigidTruck_AT_Decl_EcoRoll.vecto";
 
 		// BUS
-		private const string PRIMARYBUS_P31_32 = @$"{DeclarationBasePath}ICE/Group_P31_32_xml/primary_heavyBus_group_P31_32_Smart_ES.xml";
-		private const string PRIMARYBUS_P33_34 = @$"{DeclarationBasePath}ICE/Group_P33_34_xml/primary_heavyBus_group_P33_34_SmartPS.xml";
-		private const string PRIMARYBUS_P35_36 = @$"{DeclarationBasePath}ICE/Group_P35_36_xml/primary_heavyBus_group_P35_36_nonSmart.xml";
-		private const string PRIMARYBUS_P37_38 = @$"{DeclarationBasePath}ICE/Group_P37_38_xml/primary_heavyBus_group_P37_38_SmartES_PS.xml";
-		private const string PRIMARYBUS_P39_40 = @$"{DeclarationBasePath}ICE/Group_P39_40_xml/primary_heavyBus_group_P39_40_nonSmart_ESS.xml";
-		private const string SINGLEBUS_31B = @$"{DeclarationBasePath}ICE/SingleBus_31b_vecto2xml/SingleBus31b.vecto";
-		private const string SINGLEBUS_34F = @$"{DeclarationBasePath}ICE/SingleBus_34f_vecto2xml/SingleBus34f.vecto";
+		private const string PRIMARYBUS_P31_32 = @$"{DeclarationBasePath}ICE/Group P31_32_xml/primary_heavyBus_group_P31_32_Smart_ES.xml";
+		private const string PRIMARYBUS_P33_34 = @$"{DeclarationBasePath}ICE/Group P33_34_xml/primary_heavyBus_group_P33_34_SmartPS.xml";
+		private const string PRIMARYBUS_P35_36 = @$"{DeclarationBasePath}ICE/Group P35_36_xml/primary_heavyBus_group_P35_36_nonSmart.xml";
+		private const string PRIMARYBUS_P37_38 = @$"{DeclarationBasePath}ICE/Group P37_38_xml/primary_heavyBus_group_P37_38_SmartES_PS.xml";
+		private const string PRIMARYBUS_P39_40 = @$"{DeclarationBasePath}ICE/Group P39_40_xml/primary_heavyBus_group_P39_40_nonSmart_ESS.xml";
+		private const string SINGLEBUS_31B	   = @$"{DeclarationBasePath}ICE/SingleBus_31b_vecto2xml/SingleBus31b.vecto";
+		private const string SINGLEBUS_34F	   = @$"{DeclarationBasePath}ICE/SingleBus_34f_vecto2xml/SingleBus34f.vecto";
 		
 		// VTP
 		private const string VTP_TRUCK = @$"{DeclarationBasePath}ICE/VTP_Truck_vecto2xml/VTP.vecto";
 		
 		// E2
-		private const string E2_JOB = @$"{DeclarationBasePath}PEV/E2/BEV_E2.vecto";
-		private const string E2_CONST30_JOB = @$"{DeclarationBasePath}PEV/E2_Cont30kW/BEV_E2_Cont30kW.vecto";
-		private const string E2_PTO_JOB = @$"{DeclarationBasePath}PEV/E2_PTO/BEV_E2_PTO.vecto";
+		private const string E2_JOB         = @$"{DeclarationBasePath}PEV/GenericVehicleE2/BEV_E2.vecto";
+		private const string E2_CONST30_JOB = @$"{DeclarationBasePath}PEV/GenericVehicleE2/BEV_E2_Cont30kW.vecto";
+		private const string E2_PTO_JOB     = @$"{DeclarationBasePath}PEV/GenericVehicleE2/BEV_E2_PTO.vecto";
 
 		// IEPC GBX1
-		private const string IEPC_GBX1 = @$"{DeclarationBasePath}PEV/IEPC_Gbx1Speed/IEPC__Gbx1.vecto";
+		private const string IEPC_GBX1      = @$"{DeclarationBasePath}PEV/IEPC_Gbx1Speed/IEPC__Gbx1.vecto";
 		private const string IEPC_GBX1_AXLE = @$"{DeclarationBasePath}PEV/IEPC_Gbx1Speed+Axle/IEPC__Gbx1Axl.vecto";
 		private const string IEPC_GBX1_WHL1 = @$"{DeclarationBasePath}PEV/IEPC_Gbx1Speed-Whl1/IEPC__Gbx1Whl1.vecto";
 		private const string IEPC_GBX1_WHL2 = @$"{DeclarationBasePath}PEV/IEPC_Gbx1Speed-Whl2/IEPC__Gbx1Whl2.vecto";
 
 		// IEPC GBX3
-		private const string IEPC_GBX3 = @$"{DeclarationBasePath}PEV/IEPC_Gbx3Speed/IEPC__Gbx3.vecto";
+		private const string IEPC_GBX3      = @$"{DeclarationBasePath}PEV/IEPC_Gbx3Speed/IEPC__Gbx3.vecto";
 		private const string IEPC_GBX3_DRAG = @$"{DeclarationBasePath}PEV/IEPC_Gbx3Speed_drag/IEPC__Gbx3_drag.vecto";
 		private const string IEPC_GBX3_AXLE = @$"{DeclarationBasePath}PEV/IEPC_Gbx3Speed+Axle/IEPC__Gbx3Axl.vecto";
 		private const string IEPC_GBX3_WHL1 = @$"{DeclarationBasePath}PEV/IEPC_Gbx3Speed-Whl1/IEPC__Gbx3Whl1.vecto";
 		private const string IEPC_GBX3_WHL2 = @$"{DeclarationBasePath}PEV/IEPC_Gbx3Speed-Whl2/IEPC__Gbx3Whl2.vecto";
+
+		[OneTimeSetUp]
+		public void TestInitialize()
+		{
+			GenericVehiclesInputFilesAdapter.CopyDeclarationInputFiles(DeclarationBasePath);
+		}
 
 		[Category("Integration")]
 		[
