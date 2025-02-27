@@ -1054,7 +1054,14 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 							}
 
 							break;
-					}
+                        case ResponseOverload _:
+                            // for cases with IEPC while first is overspeed, second ist overload due to brake + downshift, third is coast with overload
+                            if (DataBus.GearboxInfo.GearboxType is GearboxType.APTN && absTime.IsEqual(DataBus.GearboxInfo.LastDownshift)) {
+                                third = Driver.DrivingActionAccelerate(absTime, ds, velocityWithOverspeed, gradient);
+                                debug.Add("[DMD.HRE-12] third:Overload (APTN,IEPC) -> Accelerate", third);
+                            }
+                            break;
+                    }
 					break;
 			}
 
@@ -1354,8 +1361,8 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 									debug.Add("[DMB-DB-12] Roll", response);
 									break;
 								case ResponseUnderload _:
-									if (gear.Gear != DataBus.GearboxInfo.Gear.Gear)
-									{
+									if (gear.Gear != DataBus.GearboxInfo.Gear.Gear || absTime.IsEqual(DataBus.GearboxInfo.LastDownshift))
+                                    {
 										// AT Gearbox switched gears, shift losses are no longer applied, try once more...
 										response = Driver.DrivingActionAccelerate(absTime, ds,
 											DriverStrategy.BrakeTrigger.NextTargetSpeed, gradient);
@@ -1367,7 +1374,13 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 												gradient, targetDistance: targetDistance);
 											debug.Add("[DMB-DB-14] Brake", response);
 										}
-									}
+                                        if (response is ResponseOverload && DataBus.GearboxInfo.GearboxType is GearboxType.APTN)
+                                        {
+                                            Log.Info("Brake -> Overload --> Accelerate -> Gearshift -> Accelerate --> Underload --> Accelerate --> Underload --> Brake -> Overload -> trying coast action");
+                                            response = Driver.DrivingActionCoast(absTime, ds, DriverStrategy.BrakeTrigger.NextTargetSpeed, gradient);
+                                            debug.Add("[DMB-DB-15] Coast", response);
+                                        }
+                                    }
 									break;
 							}
 						}
@@ -1439,7 +1452,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 						if (response is ResponseOverload && !DataBus.ClutchInfo.ClutchClosed(absTime)) {
 							response = Driver.DrivingActionRoll(absTime, ds, DataBus.VehicleInfo.VehicleSpeed, gradient);
 						}
-						if (response is ResponseGearShift) {
+                        // add a condition for APTN/IEPC as ResponseGearShift does not exist for them
+                        if (response is ResponseOverload && DataBus.GearboxInfo.GearboxType is GearboxType.APTN && absTime.IsEqual(DataBus.GearboxInfo.LastDownshift))
+                        {
+                            response = Driver.DrivingActionAccelerate(absTime, ds, DataBus.VehicleInfo.VehicleSpeed, gradient);
+                        }
+                        if (response is ResponseGearShift) {
 							response = Driver.DrivingActionBrake(absTime, ds, DataBus.VehicleInfo.VehicleSpeed, gradient);
 						}
 						break;
