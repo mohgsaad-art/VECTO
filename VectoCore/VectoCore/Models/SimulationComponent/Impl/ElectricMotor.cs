@@ -476,8 +476,12 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 
         private NewtonMeter GetMaxRecuperationTorque(Volt volt, Second dt, PerSecond avgSpeed, GearshiftPosition gear)
 		{
-			var tqContinuousPwr = DeRatingActive ? ModelData.Overload.ContinuousTorque : null;
-			
+
+            var tqContinuousPwr = DeRatingActive ? ModelData.Overload.ContinuousTorqueGen : null;
+            if (avgSpeed.IsGreater(0.0)) {
+                tqContinuousPwr = DeRatingActive ? VectoMath.Min(ModelData.Overload.ContinuousTorqueGen, ModelData.Overload.ContinuousPower / avgSpeed) : null;
+            }
+
 			var maxEmTorque = VectoMath.Min(tqContinuousPwr, ModelData.EfficiencyData.FullGenerationTorque(volt, avgSpeed));
 			var electricSystemResponse = ElectricPower.Request(0.SI<Second>(), dt, 0.SI<Watt>(), true);
 			var maxBatPower = electricSystemResponse.MaxPowerDrag;
@@ -517,8 +521,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Impl
 		private NewtonMeter GetMaxDriveTorque(Volt volt, Second dt, PerSecond avgSpeed, GearshiftPosition gear)
 		{
 			var tqContinuousPwr = DeRatingActive ? -ModelData.Overload.ContinuousTorque : null;
-			
-			var maxEmTorque = VectoMath.Max(tqContinuousPwr ,ModelData.EfficiencyData.FullLoadDriveTorque(volt, avgSpeed));
+            if (avgSpeed.IsGreater(0.0)) {
+                tqContinuousPwr = DeRatingActive ? -VectoMath.Min(ModelData.Overload.ContinuousTorque, ModelData.Overload.ContinuousPower / avgSpeed) : null;
+            }
+            var maxEmTorque = VectoMath.Max(tqContinuousPwr ,ModelData.EfficiencyData.FullLoadDriveTorque(volt, avgSpeed));
 			var electricSystemResponse = ElectricPower.Request(0.SI<Second>(), dt, 0.SI<Watt>(), true);
 			var maxBatPower = electricSystemResponse.MaxPowerDrive;
 

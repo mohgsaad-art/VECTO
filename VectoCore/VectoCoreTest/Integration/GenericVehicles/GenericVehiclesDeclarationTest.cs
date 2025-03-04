@@ -103,11 +103,11 @@ namespace TUGraz.VectoCore.Tests.Integration.GenericVehicles
 			TestCase(GROUP_9_DF, "LongHaul", 1003.3424),
 			TestCase(GROUP_9_DF, "RegionalDelivery", 725.8333),
 
-			TestCase(GROUP_9_DF_WHR, "LongHaul", 1001.4114),
-			TestCase(GROUP_9_DF_WHR, "RegionalDelivery", 723.4348),
+			TestCase(GROUP_9_DF_WHR, "LongHaul", 1001.412),
+			TestCase(GROUP_9_DF_WHR, "RegionalDelivery", 723.4352),
 
 			TestCase(GROUP_9_WHR, "LongHaul", 938.0763),
-			TestCase(GROUP_9_WHR, "RegionalDelivery", 677.2767),
+			TestCase(GROUP_9_WHR, "RegionalDelivery", 677.2773),
 
 			//TestCase(GROUP_9_AT, "LongHaul", 1136.1705),
 			//TestCase(GROUP_9_AT, "RegionalDelivery", 845.8791),
@@ -127,7 +127,7 @@ namespace TUGraz.VectoCore.Tests.Integration.GenericVehicles
 
 		[Category("Integration")]
 		[
-			TestCase(E2_JOB , "LongHaul", 155.3338),
+			TestCase(E2_JOB , "LongHaul", 155.2775),
 			TestCase(E2_JOB , "RegionalDelivery", 106.2072),
 			TestCase(E2_JOB, "UrbanDelivery", 85.2745),
 

@@ -14,7 +14,7 @@ using TUGraz.VectoCore.Models.SimulationComponent.Data;
 using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricMotor;
 using TUGraz.VectoCore.Models.SimulationComponent.Impl;
 using TUGraz.VectoCore.Utils.Ninject;
-
+using TUGraz.VectoCore.Models.SimulationComponent.Data.ElectricComponents.ElectricMotor;
 
 namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponents
 {
@@ -346,7 +346,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 			var retVal = new OverloadData() {
 				OverloadBuffer = VectoMath.Interpolate(vLow.VoltageLevel, vHigh.VoltageLevel, ovlLo.OverloadBuffer, ovlHi.OverloadBuffer, averageVoltage),
 				ContinuousTorque = VectoMath.Interpolate(vLow.VoltageLevel, vHigh.VoltageLevel, ovlLo.ContinuousTorque, ovlHi.ContinuousTorque, averageVoltage),
-				ContinuousPowerLoss = VectoMath.Interpolate(vLow.VoltageLevel, vHigh.VoltageLevel, ovlLo.ContinuousPowerLoss, ovlHi.ContinuousPowerLoss, averageVoltage)
+                ContinuousTorqueGen = VectoMath.Interpolate(vLow.VoltageLevel, vHigh.VoltageLevel, ovlLo.ContinuousTorqueGen, ovlHi.ContinuousTorqueGen, averageVoltage),
+                ContinuousPower = VectoMath.Interpolate(vLow.VoltageLevel, vHigh.VoltageLevel, ovlLo.ContinuousPower, ovlHi.ContinuousPower, averageVoltage),
+                ContinuousPowerLoss = VectoMath.Interpolate(vLow.VoltageLevel, vHigh.VoltageLevel, ovlLo.ContinuousPowerLoss, ovlHi.ContinuousPowerLoss, averageVoltage)
 			};
 			return retVal;
 		}
@@ -383,7 +385,9 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
             var retVal = new OverloadData() {
 				OverloadBuffer = VectoMath.Interpolate(vLow.VoltageLevel, vHigh.VoltageLevel, ovlLo.OverloadBuffer, ovlHi.OverloadBuffer, averageVoltage),
 				ContinuousTorque = VectoMath.Interpolate(vLow.VoltageLevel, vHigh.VoltageLevel, ovlLo.ContinuousTorque, ovlHi.ContinuousTorque, averageVoltage),
-				ContinuousPowerLoss = continuousPowerLoss
+                ContinuousTorqueGen = VectoMath.Interpolate(vLow.VoltageLevel, vHigh.VoltageLevel, ovlLo.ContinuousTorqueGen, ovlHi.ContinuousTorqueGen, averageVoltage),
+                ContinuousPower = VectoMath.Interpolate(vLow.VoltageLevel, vHigh.VoltageLevel, ovlLo.ContinuousPower, ovlHi.ContinuousPower, averageVoltage),
+                ContinuousPowerLoss = continuousPowerLoss
 			};
 			return retVal;
 		}
@@ -426,8 +430,21 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 			var overloadTorque = (voltageEntry.OverloadTorque ?? 0.SI<NewtonMeter>()) * count / gearRatioUsedForMeasurement;
 			var overloadTestSpeed = (voltageEntry.OverloadTestSpeed ?? 0.RPMtoRad()) * gearRatioUsedForMeasurement;
 
+            //ElectricMotorRatedSpeedHelper.GetRatedSpeed(voltageLevel.VoltageLevels.Where(x => x.Voltage == voltageEntry.VoltageLevel).First().FullLoadCurve.FullLoadEntries, row => row.MotorSpeed, row => row.FullDriveTorque)
+            var FullLoadCurve = voltageLevel.VoltageLevels.Where(x => x.Voltage == voltageEntry.VoltageLevel).First().FullLoadCurve;
+            // FullLoadCurve express torque and speed at the rotor level, not the output shaft
+            // note: selection might be to change in case of Multiple Torque curves
 
-			var peakElPwr = voltageLevel.LookupElectricPower(voltageEntry.VoltageLevel,
+            //var FullLoadEntries = voltageLevel.VoltageLevels.Where(x => x.Voltage == voltageEntry.VoltageLevel).First().FullLoadCurve.FullLoadEntries; 
+            var continuousPower = continuousTorque * continuousTorqueSpeed;
+
+            var continuousTorqueSpeedRef = VectoMath.Min(continuousTorqueSpeed, ElectricMotorRatedSpeedHelper.GetRatedSpeed(FullLoadCurve.FullLoadEntries, row => row.MotorSpeed, row => row.FullDriveTorque)); 
+            var continuousTorqueSpeedRefGen = VectoMath.Min(continuousTorqueSpeed, ElectricMotorRatedSpeedHelper.GetRatedSpeed(FullLoadCurve.FullLoadEntries, row => row.MotorSpeed, row => row.FullGenerationTorque));
+
+            var continuousTorqueRef = VectoMath.Min(continuousPower / continuousTorqueSpeedRef, -FullLoadCurve.MaxDriveTorque);
+			var continuousTorqueRefGen = VectoMath.Min(continuousPower / continuousTorqueSpeedRefGen, FullLoadCurve.MaxGenerationTorque);
+
+            var peakElPwr = voltageLevel.LookupElectricPower(voltageEntry.VoltageLevel,
 					overloadTestSpeed,
 					-overloadTorque,
 					gear,
@@ -441,86 +458,155 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 								voltageLevel.FullLoadDriveTorque(voltageEntry.VoltageLevel, continuousTorqueSpeed),
 								gear, true).ElectricalPower;
 			var continuousPowerLoss = -contElPwr - continuousTorque * continuousTorqueSpeed; // loss needs to be positive
-			var overloadBuffer = (peakPwrLoss - continuousPowerLoss) * voltageEntry.OverloadTime;
+			var overloadBuffer = VectoMath.Max(peakPwrLoss - continuousPowerLoss, continuousPowerLoss * 0.0001) * voltageEntry.OverloadTime;
 			return new OverloadData() {
 				OverloadBuffer = overloadBuffer,
-				ContinuousTorque = continuousTorque,
-				ContinuousPowerLoss = continuousPowerLoss
+				ContinuousTorque = continuousTorqueRef,
+                ContinuousTorqueGen = continuousTorqueRefGen,
+                ContinuousPower = continuousPower,
+                ContinuousPowerLoss = continuousPowerLoss
 			};
 		}
 
 		protected OverloadData CalculateOverloadBufferTransf(IElectricMotorVoltageLevel voltageEntry,
 			int count, VoltageLevelData voltageLevel, Tuple<uint, double> gearUsedForMeasurement = null)
 		{
-			var gearRatioUsedForMeasurement = gearUsedForMeasurement?.Item2 ?? 1.0;
+
+            /* Previous version computation:
+             * To compute derated max torque and buffer by comparing 2 transfered operating points (OP) based on:
+			 *   - the overload OP
+			 *   - the continuous OP 
+			 * Both points were "transfered" to the lowest speed of both, assuming an iso-power condition (Ttrans = Wop*Top/Wtrans, note that it means one of the two OP is unchanged)
+			 * The max torque in derated mode was then the torque of the transfered continuous OP (ensuring choosing the max possible torque at Pow=Pow,continuous)
+			 * The buffer was expressed as (Ploss,overload,trans - Ploss,continuous,trans) * OverloadTime assuming a constant efficiency eta (computed on OVL OP)
+			 * Expression can be simplified to (Pmech,overload,trans - Pmech,continuous,trans) * (1/eta - 1) * OverloadTime
+			 * OP is in most common scenario defined as declared speed and torque values for continuous OP, and measured speed and torque values for overload OP
+			 * If Manufacturer the same OP as overload and continuous OP, this means we can have Pmech,overload,trans<0.98*Pmech,continuous,trans, and buffer size < 0,
+			 * which is not expected.
+			 * 
+			 * New computation: Thermal derating is now made by limiting the mechanical power to the continuous OP power above rated speed, and Torque=(Pmech,continuous)/Wrated below
+			 * Most of the function was not relevant anymore for the definition of torque, except for the definition of the alternative thermal buffer, for which an alternative definition
+			 * is proposed, based on a condition comparing two OP:
+			 *   - the continuous OP 
+			 *   - the max torque OP (interpolated from maximum torque curve), which, according to regulation, shall be reached for at least 3 seconds
+			 * in that case, the buffer becomes buffer = (Ploss,max - Ploss,continuous) * 3seconds
+			 * By definition of those points, which are both based on declared Pmax - Pcontinous is always positive, avoiding the case of negative buffer as long as the losses respect the same constraint
+			 * A safety alternative formula is computed based on a constant efficiency assumption :  buffer_eta = (Pmech,max - Pmech,continuous) * (1/eta - 1) * 3seconds
+			 * If the buffer first computation gives negative value, the alternative formula is used instead, saturated to a minimum of 0.01% * Ploss,continuous * 3seconds (unsignificant non-zero buffer, but functional).
+			 */
+
+            var gearRatioUsedForMeasurement = gearUsedForMeasurement?.Item2 ?? 1.0;
 			var gear = new GearshiftPosition(gearUsedForMeasurement?.Item1 ?? 1);
 			var continuousTorqueSpeed = voltageEntry.ContinuousTorqueSpeed * gearRatioUsedForMeasurement;
 			//var overloadTorque = (voltageEntry.OverloadTorque ?? 0.SI<NewtonMeter>()) * count / gearRatioUsedForMeasurement;
 			var overloadTestSpeed = (voltageEntry.OverloadTestSpeed ?? 0.RPMtoRad()) * gearRatioUsedForMeasurement;
 
-			if (overloadTestSpeed.IsEqual(0)) {
+            var FullLoadCurve = voltageLevel.VoltageLevels.Where(x => x.Voltage == voltageEntry.VoltageLevel).First().FullLoadCurve;
+            // note: selection might be to change in case of Multiple Torque curves
+
+            var continuousTorqueSpeedRef = VectoMath.Min(continuousTorqueSpeed, ElectricMotorRatedSpeedHelper.GetRatedSpeed(FullLoadCurve.FullLoadEntries, row => row.MotorSpeed, row => row.FullDriveTorque));
+            var continuousTorqueSpeedRefGen = VectoMath.Min(continuousTorqueSpeed, ElectricMotorRatedSpeedHelper.GetRatedSpeed(FullLoadCurve.FullLoadEntries, row => row.MotorSpeed, row => row.FullGenerationTorque));
+
+
+            if (overloadTestSpeed.IsEqual(0)) {
 				throw new VectoException("Invalid model parameters for EM overload");
 			}
 
-			if (overloadTestSpeed > continuousTorqueSpeed) {
-				var overloadPwr = (voltageEntry.OverloadTorque ?? 0.SI<NewtonMeter>()) * count *
-								(voltageEntry.OverloadTestSpeed ?? 0.RPMtoRad());
-				var maxTqContSpeed = overloadPwr / continuousTorqueSpeed;
-				var maxTorqueFldContSpeed =
-					-voltageLevel.FullLoadDriveTorque(voltageEntry.VoltageLevel, continuousTorqueSpeed);
+            var overloadPwr = (voltageEntry.OverloadTorque ?? 0.SI<NewtonMeter>()) * count *
+                                (voltageEntry.OverloadTestSpeed ?? 0.RPMtoRad());
+            var continuousPwr = (voltageEntry.ContinuousTorque ?? 0.SI<NewtonMeter>()) * count *
+                                    (voltageEntry.ContinuousTorqueSpeed ?? 0.RPMtoRad());
 
-				var overloadTorqueTrans = VectoMath.Min(maxTqContSpeed, maxTorqueFldContSpeed);
-				var etaOvl = continuousTorqueSpeed * overloadTorqueTrans / -voltageLevel.LookupElectricPower(
-					voltageEntry.VoltageLevel,
-					continuousTorqueSpeed, -overloadTorqueTrans, gear, true).ElectricalPower;
+            var continuousTorque = voltageEntry.ContinuousTorque * count / gearRatioUsedForMeasurement;
+            var overloadTorque = (voltageEntry.OverloadTorque ?? 0.SI<NewtonMeter>()) * count / gearRatioUsedForMeasurement;
 
-				var continuousTorque = voltageEntry.ContinuousTorque * count / gearRatioUsedForMeasurement;
+            var maxTorqueDrvFldContSpeed =
+                    -voltageLevel.FullLoadDriveTorque(voltageEntry.VoltageLevel, continuousTorqueSpeed);
 
-                var continuousPowerLoss = (1 / etaOvl.Value() - 1) * continuousTorqueSpeed * continuousTorque;
-				var ovlElPwr = voltageLevel.LookupElectricPower(voltageEntry.VoltageLevel, continuousTorqueSpeed,
-					-overloadTorqueTrans, gear, true).ElectricalPower;
-				if (ovlElPwr == null) {
-					throw new VectoException(
-						$"Overloadbuffer calculation: failed to lookup electric power for overload point {overloadTestSpeed.AsRPM} [rpm] {overloadTorqueTrans / count}");
+            var maxTorqueGenFldContSpeed =
+                    voltageLevel.FullGenerationTorque(voltageEntry.VoltageLevel, continuousTorqueSpeed);
 
-				}
-				var overloadTorque = (voltageEntry.OverloadTorque ?? 0.SI<NewtonMeter>()) * count / gearRatioUsedForMeasurement;
-                var overloadPwrLoss = -ovlElPwr - overloadTorque * overloadTestSpeed; // loss needs to be positive
-				var overloadBuffer = (overloadPwrLoss - continuousPowerLoss) * voltageEntry.OverloadTime;
-				return new OverloadData() {
-					OverloadBuffer = overloadBuffer,
-					ContinuousTorque = continuousTorque,
-					ContinuousPowerLoss = continuousPowerLoss
-				};
-			} else {
+            var maxTorqueFldContSpeed = VectoMath.Max(maxTorqueGenFldContSpeed, maxTorqueDrvFldContSpeed);
 
-				var continuousPwr = (voltageEntry.ContinuousTorque ?? 0.SI<NewtonMeter>()) * count *
-									(voltageEntry.ContinuousTorqueSpeed ?? 0.RPMtoRad());
-				var maxTqOvlSpeed = continuousPwr / overloadTestSpeed;
-				var maxTorqueFldOvlSpeed =
-					-voltageLevel.FullLoadDriveTorque(voltageEntry.VoltageLevel, overloadTestSpeed);
-				var continuousTorqueTrans = VectoMath.Min(maxTqOvlSpeed, maxTorqueFldOvlSpeed);
-				var overloadTorque = (voltageEntry.OverloadTorque ?? 0.SI<NewtonMeter>()) * count / gearRatioUsedForMeasurement;
-				var etaOvl = overloadTestSpeed * overloadTorque / -voltageLevel.LookupElectricPower(
-					voltageEntry.VoltageLevel,
-					overloadTestSpeed, -overloadTorque, gear, true).ElectricalPower;
-				var continuousTorque = voltageEntry.ContinuousTorque * count / gearRatioUsedForMeasurement;
-                var continuousPowerLoss = (1 / etaOvl.Value() - 1) * continuousTorqueSpeed * continuousTorque;
-				
-				var ovlElPwr = voltageLevel.LookupElectricPower(voltageEntry.VoltageLevel, overloadTestSpeed,
-					-overloadTorque, gear, true).ElectricalPower;
-				if (ovlElPwr == null) {
-					throw new VectoException(
-						$"Overloadbuffer calculation: failed to lookup electric power for overload point {overloadTestSpeed.AsRPM} [rpm] {overloadTorque / count}");
-				}
-				var overloadPwrLoss = -ovlElPwr - overloadTorque * overloadTestSpeed; // loss needs to be positive
-				var overloadBuffer = (overloadPwrLoss - continuousPowerLoss) * voltageEntry.OverloadTime;
-				return new OverloadData() {
-					OverloadBuffer = overloadBuffer,
-					ContinuousTorque = continuousTorqueTrans,
-					ContinuousPowerLoss = continuousPowerLoss
-				};
+            // define the OVL point for reference efficiency: at continuous speed, in driving conditions
+
+            var overloadTorqueContSpeed = VectoMath.Min(overloadPwr / continuousTorqueSpeed, maxTorqueDrvFldContSpeed);
+
+            var ovlElPwr = voltageLevel.LookupElectricPower(voltageEntry.VoltageLevel, continuousTorqueSpeed,
+				-overloadTorqueContSpeed, gear, true).ElectricalPower;
+
+            if (ovlElPwr == null)
+            {
+                throw new VectoException(
+                    $"Overloadbuffer calculation: failed to lookup electric power for overload point {continuousTorqueSpeed.AsRPM} [rpm] {overloadTorqueContSpeed / count}");
             }
+
+            var etaOvl = continuousTorqueSpeed * overloadTorqueContSpeed / -ovlElPwr;
+
+            // continuous powerloss (standard and at etaOVL)
+
+            var contElPwr = voltageLevel.LookupElectricPower(voltageEntry.VoltageLevel, continuousTorqueSpeed,
+                                -continuousTorque, gear).ElectricalPower ??
+                            voltageLevel.LookupElectricPower(voltageEntry.VoltageLevel, continuousTorqueSpeed,
+                                voltageLevel.FullLoadDriveTorque(voltageEntry.VoltageLevel, continuousTorqueSpeed),
+                                gear, true).ElectricalPower;
+            var continuousPowerLoss = -contElPwr - continuousTorque * continuousTorqueSpeed; // loss needs to be positive
+
+            var continuousPowerLossEtaOVL = (1 / etaOvl.Value() - 1) * continuousTorqueSpeed * continuousTorque; // losses need to be positive
+
+            // peak losses considering maxTorque instead of OVL torque, but with a time of 3 seconds constraint instead of Tovl used in previous version
+
+            var peakElPwr = voltageLevel.LookupElectricPower(voltageEntry.VoltageLevel,
+                    continuousTorqueSpeed,
+                    -maxTorqueDrvFldContSpeed,
+                    gear,
+                    true)
+                    .ElectricalPower;
+            var peakPwrLoss = -peakElPwr - continuousTorqueSpeed * maxTorqueDrvFldContSpeed; // losses need to be positive
+            var peakPwrLossEtaOVL = (1 / etaOvl.Value() - 1) * continuousTorqueSpeed * maxTorqueDrvFldContSpeed; // losses need to be positive
+
+            // For case when Gen max Torque is higher than Drive Torque, The Buffer might need to be increased
+			// Use Gen torque, to ensure reaching it during 3 seconds
+            var peakElPwrGen = voltageLevel.LookupElectricPower(voltageEntry.VoltageLevel,
+                continuousTorqueSpeed,
+                maxTorqueGenFldContSpeed,
+                gear,
+                true)
+                .ElectricalPower;
+            var peakPwrLossGen = continuousTorqueSpeed * maxTorqueGenFldContSpeed - peakElPwrGen; // losses need to be positive
+            var peakPwrLossGenEtaOVL = (1 - etaOvl.Value()) * continuousTorqueSpeed * maxTorqueGenFldContSpeed; // losses need to be positive
+
+			// BUFFER
+			// buffer is the difference of power losses between the OVL point (a Max Torque point for 3s) and the CONT point,
+			// two computation methods:
+			// - using losses computation on maps
+			// - iso efficiency assumption for both leads to a difference of mechanical power in expression, which has to be positive
+
+			var dPloss = VectoMath.Max(peakPwrLoss, peakPwrLossGen) - continuousPowerLoss;
+            var dPlossEtaOVL = VectoMath.Max(peakPwrLossEtaOVL, peakPwrLossGenEtaOVL) - continuousPowerLossEtaOVL;
+
+            var OverloadTime = 3.SI<Second>();
+
+            var overloadBuffer = dPloss * OverloadTime;
+
+            if (overloadBuffer.IsSmaller(0.0)) {
+                overloadBuffer = VectoMath.Max(dPlossEtaOVL, continuousPowerLoss * 0.0001) * OverloadTime;
+            }
+
+            // definition of continuousPower and continuousTorqueRef@ratedSpeed limits in derated mode
+
+            var continuousPower = continuousTorque * continuousTorqueSpeed;
+            var continuousTorqueRef = VectoMath.Min(continuousPower / continuousTorqueSpeedRef, -FullLoadCurve.MaxDriveTorque);
+            var continuousTorqueRefGen = VectoMath.Min(continuousPower / continuousTorqueSpeedRefGen, FullLoadCurve.MaxGenerationTorque);
+
+			
+            return new OverloadData() {
+				OverloadBuffer = overloadBuffer,
+				ContinuousTorque = continuousTorqueRef,
+                ContinuousTorqueGen = continuousTorqueRefGen,
+                ContinuousPower = continuousPower,
+                ContinuousPowerLoss = continuousPowerLoss
+			};
 		}
 	}
 
