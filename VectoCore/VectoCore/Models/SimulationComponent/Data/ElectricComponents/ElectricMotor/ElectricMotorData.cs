@@ -248,6 +248,10 @@ namespace TUGraz.VectoCore.Models.SimulationComponent.Data
 	{
 		public NewtonMeter ContinuousTorque { get; internal set; }
 
+		public NewtonMeter ContinuousTorqueGen { get; internal set; }
+
+		public Watt ContinuousPower { get; internal set; }
+
 		public Joule OverloadBuffer { get; internal set; }
 
 		public Watt ContinuousPowerLoss { get; internal set; }
