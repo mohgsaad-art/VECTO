@@ -36,10 +36,15 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		private IXMLDeclarationVehicleData _vehicle;
 		
 		public XMLElectricStorageSystemDeclarationInputDataV24(
-			IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile)
+			IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile, bool obsolete = true)
 			: base(componentNode, sourceFile)
 		{
-			_vehicle = vehicle;
+			if (obsolete)
+			{
+				throw new VectoException($"{XSD_TYPE} v2.4 is no longer supported. Use newer version instead.");
+			}
+
+            _vehicle = vehicle;
 			//SourceType = DataSourceType.XMLEmbedded;
 		}
 
@@ -71,7 +76,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 					});
 				}
 			}
-		
+			
 			return electricStorages.Any() ? electricStorages : null;
 		}
 
@@ -101,12 +106,24 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 	// ---------------------------------------------------------------------------------------
 
-	public abstract class AbstractBatteryPackDeclarationInputDataProvider : AbstractCommonComponentType, IXMLBatteryPackDeclarationInputData
+	public class XMLElectricStorageSystemDeclarationInputDataV27 : XMLElectricStorageSystemDeclarationInputDataV24
+    {
+		public static new readonly XNamespace NAMESPACE_URI = XMLDefinitions.DECLARATION_DEFINITIONS_NAMESPACE_URI_V27;
+		public static new readonly string QUALIFIED_XSD_TYPE = XMLHelper.CombineNamespace(NAMESPACE_URI.NamespaceName, XSD_TYPE);
+
+		public XMLElectricStorageSystemDeclarationInputDataV27(IXMLDeclarationVehicleData vehicle, XmlNode componentNode, string sourceFile)
+			: base(vehicle, componentNode, sourceFile, obsolete: false)
+		{}
+	}
+
+    // ---------------------------------------------------------------------------------------
+
+    public abstract class AbstractBatteryPackDeclarationInputDataProvider : AbstractCommonComponentType, IXMLBatteryPackDeclarationInputData
 	{
 		protected AbstractBatteryPackDeclarationInputDataProvider(XmlNode node, string source) : base(node, source) { }
 		protected abstract XNamespace NamespaceURI { get; }
 
-        #region Implementation of IREESSPackInputData
+		#region Implementation of IREESSPackInputData
 
 		public REESSType StorageType => REESSType.Battery;
 
@@ -144,7 +161,19 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
             }
 		}
 
-		public virtual BatteryType BatteryType => GetString(XMLNames.REESS_BatteryType).ParseEnum<BatteryType>();
+        public virtual double? DeteriorationPerformanceRatio
+        {
+            get
+            {
+                // ancestor-or-self::*[local-name()='Battery']/*[local-name()='DeteriorationPerformanceRatio']
+                var node = BaseNode.SelectSingleNode($"ancestor-or-self::*[local-name()='{XMLNames.ElectricEnergyStorage_Battery}']/*[local-name()='DeteriorationPerformanceRatio']");
+                return node != null
+                    ? node.InnerText.ToDouble() / 100
+                    : (double?)null;
+            }
+        }
+
+        public virtual BatteryType BatteryType => GetString(XMLNames.REESS_BatteryType).ParseEnum<BatteryType>();
 		public virtual AmpereSecond Capacity => GetDouble(XMLNames.REESS_RatedCapacity).SI(Unit.SI.Ampere.Hour).Cast<AmpereSecond>();
 
 		public virtual bool? ConnectorsSubsystemsIncluded => CertificationMethod == CertificationMethod.StandardValues
@@ -185,7 +214,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		}
 
 
-        #region Overrides of AbstractXMLResource
+		#region Overrides of AbstractXMLResource
 
         protected override XNamespace SchemaNamespace => NamespaceURI;
 		protected override DataSourceType SourceType => DataSourceType.XMLFile;
@@ -206,7 +235,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		protected override XNamespace NamespaceURI => NAMESPACE_URI;
 
-        #endregion
+		#endregion
     }
 
 	public class XMLBatteryPackDeclarationInputDataStandardV23 : AbstractBatteryPackDeclarationInputDataProvider
@@ -226,7 +255,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 		protected override XNamespace NamespaceURI => NAMESPACE_URI;
 
-		protected override TableData GetInternalResistanceCurve()
+        protected override TableData GetInternalResistanceCurve()
 		{
 			var corrected = base.GetInternalResistanceCurve();
 			var socMap = BatterySOCReader.Create(VoltageCurve);
@@ -293,7 +322,15 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 		#endregion
 	}
 
-	public class XMLBatteryPackDeclarationInputDataStandardV26 : AbstractBatteryPackDeclarationInputDataProvider
+    public class XMLBatteryPackDeclarationInputDataMeasuredV26 : XMLBatteryPackDeclarationInputDataMeasuredV23
+    {
+        public static new readonly XNamespace NAMESPACE_URI = XMLDefinitions.DECLARATION_DEFINITIONS_NAMESPACE_URI_V26;
+        public static new readonly string QUALIFIED_XSD_TYPE = XMLHelper.CombineNamespace(NAMESPACE_URI.NamespaceName, XSD_TYPE);
+
+        public XMLBatteryPackDeclarationInputDataMeasuredV26(XmlNode componentNode, string sourceFile) : base(componentNode, sourceFile) { }
+    }
+
+    public class XMLBatteryPackDeclarationInputDataStandardV26 : AbstractBatteryPackDeclarationInputDataProvider
 	{
         public static readonly XNamespace NAMESPACE_URI = XMLDefinitions.DECLARATION_DEFINITIONS_NAMESPACE_URI_V26;
         public const string XSD_TYPE = "BatterySystemStandardValuesDataType";
@@ -497,7 +534,7 @@ namespace TUGraz.VectoCore.InputData.FileIO.XML.Declaration.DataProvider
 
 	//===================
 
-		public class XMLElectricStorageSystemDeclarationInputDataV01 : XMLElectricStorageSystemDeclarationInputDataV24
+	public class XMLElectricStorageSystemDeclarationInputDataV01 : XMLElectricStorageSystemDeclarationInputDataV24
 	{
 		public static readonly XNamespace NAMESPACE_URI = XMLDefinitions.DECLARATION_MULTISTAGE_BUS_VEHICLE_NAMESPACE_VO1;
 		public const string XSD_TYPE = "ElectricEnergyStorageType";

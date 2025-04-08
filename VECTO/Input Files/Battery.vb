@@ -223,6 +223,12 @@ Public Class Battery
         End Get
     End Property
 
+    Public ReadOnly Property DeteriorationPerformanceRatio As Double? Implements IBatteryPackDeclarationInputData.DeteriorationPerformanceRatio
+        Get
+            Return Nothing
+        End Get
+    End Property
+
     Public ReadOnly Property BatteryType As BatteryType Implements IBatteryPackDeclarationInputData.BatteryType
 
     Public ReadOnly Property Capacity As AmpereSecond Implements IBatteryPackDeclarationInputData.Capacity

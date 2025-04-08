@@ -50,6 +50,27 @@ namespace TUGraz.VectoCore.InputData.Reader.DataObjectAdapter.SimulationComponen
 				if (b.ConnectorsSubsystemsIncluded != null && !b.ConnectorsSubsystemsIncluded.Value) {
 					addConnectorSystemResistance = true;
 				}
+
+				if (jobType.IsOneOf(VectoSimulationJobType.BatteryElectricVehicle, VectoSimulationJobType.IEPC_E) ||
+					(jobType == VectoSimulationJobType.ParallelHybridVehicle) && ovc)
+				{
+					if (b.MinSOC == null)
+					{
+						throw new VectoException("Battery SOCmin is undefined");
+					}
+
+					if (b.MaxSOC == null)
+					{
+                        throw new VectoException("Battery SOCmax is undefined");
+                    }
+
+					if (b.DeteriorationPerformanceRatio == null)
+					{
+						//TODO: This should only apply to version v2.7 XSD
+                        //throw new VectoException("Battery DeteriorationPerformanceRatio is undefined");
+                    }
+				}
+
 				var minSoc = genericSOC.SOCMin;
 				if (b.MinSOC != null && b.MinSOC > minSoc) {
 					minSoc = b.MinSOC.Value;

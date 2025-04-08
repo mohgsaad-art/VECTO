@@ -1120,6 +1120,7 @@ Public Class ElectricStorageWrapper
 	Public ReadOnly Property DigestValue As DigestData Implements IComponentInputData.DigestValue
 	Public ReadOnly Property MinSOC As Double? Implements IBatteryPackDeclarationInputData.MinSOC
 	Public ReadOnly Property MaxSOC As Double? Implements IBatteryPackDeclarationInputData.MaxSOC
+	Public ReadOnly Property DeteriorationPerformanceRatio As Double? Implements IBatteryPackDeclarationInputData.DeteriorationPerformanceRatio
 	Public ReadOnly Property BatteryType As BatteryType Implements IBatteryPackDeclarationInputData.BatteryType
 	Public ReadOnly Property Capacity As AmpereSecond Implements IBatteryPackDeclarationInputData.Capacity
 	Public ReadOnly Property ConnectorsSubsystemsIncluded As Boolean? Implements IBatteryPackDeclarationInputData.ConnectorsSubsystemsIncluded

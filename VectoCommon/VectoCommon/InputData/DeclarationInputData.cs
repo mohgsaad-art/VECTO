@@ -1021,7 +1021,9 @@ namespace TUGraz.VectoCommon.InputData
 
 		double? MaxSOC { get; }
 
-		BatteryType BatteryType { get; }
+		double? DeteriorationPerformanceRatio { get; }
+
+        BatteryType BatteryType { get; }
 
 		AmpereSecond Capacity { get; }
 
