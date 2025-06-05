@@ -2,6 +2,74 @@
 
 
 
+**VECTO v5.0.0-RC (05-06-2025)**
+
+
+- Features
+
+    * CodeEU n.a.: Readers for v2.7 vehicle XSD, and support for fuel cell vehicles. (vecto/vecto!341)
+    * CodeEU n.a.: Read monitoring data from job (vecto/vecto!345)
+    * CodeEU #1002: 3rd amendment mrf cif xml schemas (vecto/vecto!340)
+    * CodeEU n.a.: MRF v1.0 vehicle (lorries and FCHV primary buses) writers (vecto/vecto!354)
+    * CodeEU n.a.: CIF v1.0 vehicle part (v2.4 vehicles and v2.7 lorries) (vecto/vecto!355)
+    * CodeEU n.a.: Use monitoring data from job to write report (vecto/vecto!360)
+    * CodeEU n.a.: In motion charging postprocessing (vecto/vecto!344)
+    * CodeEU n.a.: Disable (for RC & official) v27 vehicles except H2-ICE & FCHV lorries (vecto/vecto!375)
+    * CodeEU n.a.: Readers for v2.7 buses, improved reader tests. (vecto/vecto!382)
+    * CodeEU n.a.: HEV - Get Best dSOC in vsum (vecto/vecto!383)
+    * CodeEU 968: Forbid AT upshift for reduced dt before brake (vecto/vecto!381)
+    * CodeEU n.a.: New (v2.7) XSD for vehicles (vecto/vecto!334)
+    * CodeEU n.a.: Partial implementation for new vehicle battery (vecto/vecto!337)
+    * CodeEU n.a.: EM-IEPC Thermal Derating - Tq_max and Buffer Mods - Post VECTO-4.3.4 Feed-Back (vecto/vecto!378)
+
+- Bug Fixes
+
+    * CodeEU n.a.: Non-https link in manual (vecto/vecto!339)
+    * CodeEU n.a.: V2.7 reader & XSD (vecto/vecto!342)
+    * CodeEU n.a.: Updated XSLT file and hashing code for new vehicles and components. (vecto/vecto!338)
+    * CodeEU #1007: Lock StoredResults list before accessing it to avoid race condition (vecto/vecto!343)
+    * CodeEU n.a.: V27 vehicle issues (vecto/vecto!346)
+    * CodeEU n.a.: 882 merge artifacts (vecto/vecto!347)
+    * CodeEU n.a.: FCHV angledrive input (vecto/vecto!348)
+    * CodeEU n.a.: Modify schema so that results can be written compatible with results for 2nd amendment: (vecto/vecto!349)
+    * CodeEU n.a.: Restore deleted code in monitoring report (vecto/vecto!350)
+    * CodeEU n.a.: Typo in MRF Inject module (vecto/vecto!351)
+    * CodeEU n.a.: Proper namespace for VIF IEPC sub-element (vecto/vecto!352)
+    * CodeEU n.a.: Mockup tests run successfully (vecto/vecto!353)
+    * CodeEU #1002: Correcting errors in XML schema (and sample files): no engine output in... (vecto/vecto!356)
+    * CodeEU n.a.: Bugfixes/updates for the Monitoring report and testing via the MockupTests. (vecto/vecto!357)
+    * CodeEU n.a.: Replace U+2013 by regular dashes (vecto/vecto!359)
+    * CodeEU n.a.: Added missing IMC testdata (vecto/vecto!361)
+    * CodeEU n.a.: Retarder compulsory in all MRF vehicle components. (vecto/vecto!362)
+    * CodeEU n.a.: Add further condition to decide which results to write in case the input data is a Multistep bus (vecto/vecto!363)
+    * CodeEU n.a.: Check Articulated in json vehicle (vecto/vecto!365)
+    * CodeEU n.a.: Segment in Bus AirDrag data creation (vecto/vecto!364)
+    * CodeEU n.a.: FCHV pre-run execution (vecto/vecto!366)
+    * CodeEU n.a.: Write ZeroCO2EmissionsRange and HydrogenRange to H2-ICE reports. (vecto/vecto!367)
+    * CodeEU n.a.: Remove wrong angledrive restrictions (vecto/vecto!369)
+    * CodeEU n.a.: Set vectorundata in completed bus results, (vecto/vecto!368)
+    * CodeEU n.a.: Simulate OVC for FCHVs (vecto/vecto!370)
+    * CodeEU n.a.: FCHV H2 range in reports (vecto/vecto!371)
+    * CodeEU n.a.: Architecture in some MRF v1.0 tests (vecto/vecto!372)
+    * CodeEU n.a.: H2 properties check in exempted vehicle input (vecto/vecto!373)
+    * CodeEU n.a.: FCHV input classes inheritance (vecto/vecto!374)
+    * CodeEU n.a.: Standard values enum entry for v2.6 (vecto/vecto!376)
+    * CodeEU n.a.: Add Driving Actions for IEPC gearshift (vecto/vecto!377)
+    * CodeEU n.a.: Of v2.7, allow only IMC, H2-ICE conventional, FCHV Lorries (vecto/vecto!384)
+    * CodeEU n.a.: Disable reading data from external csv (vecto/vecto!385)
+    * CodeEU n.a.: OVC results (vecto/vecto!387)
+    * CodeEU n.a.: Ignore FCHV pre-run in best deltaSoC calculation (vecto/vecto!388)
+    * CodeEU 972: Take battery limit into account for EM overload - REESS Empty (vecto/vecto!380)
+    * CodeEU 994: ReEngage1C tolerance in AT (vecto/vecto!379)
+    * CodeEU 886, 888, 889: Add Driving Actions for IEPC gearshift (vecto/vecto!377)
+    * CodeEU n.a.: Updated Monitoring Report XSD (FCHV, Multiple powertrains) (vecto/vecto!335)
+
+- Drop
+
+    * CodeEU n.a.: MaxChargingPower requirement for OVC in v2.7 (vecto/vecto!358)
+
+
+
 **VECTO 0.11.4-DEV (02.04.2025)**
 
 * Features

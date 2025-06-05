@@ -16,7 +16,7 @@
     <Deterministic>true</Deterministic>
     <!-- Set to true for VectoCore to fix Ninject version conflicts-->
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Version>0.11.4</Version>
+    <Version>5.0.0</Version>
 	  <DefineTrace>false</DefineTrace>
     <DisableDiagnosticTracing>true</DisableDiagnosticTracing>
     <RemoveIntegerChecks>true</RemoveIntegerChecks>
